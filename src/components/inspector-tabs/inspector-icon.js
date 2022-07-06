@@ -13,6 +13,7 @@ import { getGroupAttributes, getIconWithColor } from '../../extensions/styles';
 
 const icon = ({
 	props,
+	label = __('Icon', 'maxi-blocks'),
 	type,
 	depth = 2,
 	disableBackground = false,
@@ -21,6 +22,7 @@ const icon = ({
 	disablePadding = false,
 	disablePosition = false,
 	disableSpacing = false,
+	prefix = '',
 }) => {
 	const {
 		attributes,
@@ -31,9 +33,9 @@ const icon = ({
 		clientId,
 	} = props;
 	const {
-		'icon-status-hover': hoverStatus,
+		[`${prefix}icon-status-hover`]: hoverStatus,
 		blockStyle,
-		svgType,
+		[`${prefix}svgType`]: svgType,
 	} = attributes;
 
 	const iconControlBasicProps = {
@@ -48,11 +50,23 @@ const icon = ({
 		disablePosition,
 		disableSpacing,
 		type,
-		getIconWithColor: args => getIconWithColor(attributes, args),
+		prefix,
+		getIconWithColor: args => getIconWithColor(attributes, args, prefix),
 	};
 
+	const groupAttributes = [
+		'icon',
+		'iconHover',
+		'iconBackgroundGradient',
+		'iconBackgroundColor',
+		'iconBorder',
+		'iconBackgroundHover',
+		'iconBorderWidth',
+		'iconBorderRadius',
+	];
+
 	return {
-		label: __('Icon', 'maxi-blocks'),
+		label,
 		content: (
 			<SettingTabsControl
 				items={[
@@ -60,16 +74,12 @@ const icon = ({
 						label: __('Normal state', 'maxi-blocks'),
 						content: (
 							<IconControl
-								{...getGroupAttributes(attributes, [
-									'icon',
-									'iconBackground',
-									'iconBackgroundGradient',
-									'iconBackgroundColor',
-									'iconBorder',
-									'iconBorderWidth',
-									'iconBorderRadius',
-									'iconPadding',
-								])}
+								{...getGroupAttributes(
+									attributes,
+									groupAttributes,
+									false,
+									prefix
+								)}
 								onChangeInline={(
 									obj,
 									target,
@@ -109,17 +119,9 @@ const icon = ({
 									<IconControl
 										{...getGroupAttributes(
 											attributes,
-											[
-												'icon',
-												'iconHover',
-												'iconBackgroundGradient',
-												'iconBackgroundColor',
-												'iconBorder',
-												'iconBackgroundHover',
-												'iconBorderWidth',
-												'iconBorderRadius',
-											],
-											true
+											groupAttributes,
+											true,
+											prefix
 										)}
 										onChange={obj => {
 											maxiSetAttributes(obj);

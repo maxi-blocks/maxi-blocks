@@ -66,10 +66,11 @@ const IconControl = props => {
 		disablePosition = false,
 		disableSpacing = false,
 		getIconWithColor,
-		'icon-only': iconOnly,
-		'icon-inherit': iconInherit,
-		'icon-content': iconContent,
 		type = 'button-icon',
+		prefix = '',
+		[`${prefix}icon-only`]: iconOnly,
+		[`${prefix}icon-inherit`]: iconInherit,
+		[`${prefix}icon-content`]: iconContent,
 	} = props;
 
 	const classes = classnames('maxi-icon-control', className);
@@ -142,7 +143,7 @@ const IconControl = props => {
 	};
 
 	const iconBackgroundActiveMedia = getLastBreakpointAttribute({
-		target: 'icon-background-active-media',
+		target: `${prefix}icon-background-active-media`,
 		breakpoint,
 		attributes: props,
 		isHover,
@@ -160,16 +161,17 @@ const IconControl = props => {
 					style={blockStyle}
 					onSelect={obj => {
 						const icon = getIconWithColor({
-							rawIcon: obj['icon-content'],
+							rawIcon: obj[`${prefix}icon-content`],
 						});
 
 						onChange({
 							...obj,
-							'icon-content': icon,
+							[`${prefix}icon-content`]: icon,
 						});
 					}}
 					onRemove={obj => onChange(obj)}
 					icon={iconContent}
+					prefix={prefix}
 				/>
 			)}
 			{iconContent && (
@@ -194,8 +196,8 @@ const IconControl = props => {
 										});
 
 										onChange({
-											'icon-only': val,
-											'icon-content': icon,
+											[`${prefix}icon-only`]: val,
+											[`${prefix}icon-content`]: icon,
 										});
 									}}
 								/>
@@ -205,10 +207,11 @@ const IconControl = props => {
 						{...getGroupAttributes(
 							props,
 							`icon${isHover ? 'Hover' : ''}`,
-							isHover
+							isHover,
+							prefix
 						)}
 						onChange={onChange}
-						prefix='icon-'
+						prefix={`${prefix}icon-`}
 						breakpoint={breakpoint}
 						isHover={isHover}
 					/>
@@ -216,13 +219,14 @@ const IconControl = props => {
 						{...getGroupAttributes(
 							props,
 							`icon${isHover ? 'Hover' : ''}`,
-							isHover
+							isHover,
+							prefix
 						)}
 						onChange={obj => onChange(obj)}
-						prefix='icon-'
+						prefix={`${prefix}icon-`}
 						breakpoint={breakpoint}
 						isHover={isHover}
-						content={props['icon-content']}
+						content={props[`${prefix}icon-content`]}
 					/>
 					{!disableSpacing && !isHover && !iconOnly && (
 						<>
@@ -233,10 +237,12 @@ const IconControl = props => {
 								initial={1}
 								step={1}
 								breakpoint={breakpoint}
-								value={props[`icon-spacing-${breakpoint}`]}
+								value={
+									props[`${prefix}icon-spacing-${breakpoint}`]
+								}
 								onChangeValue={val => {
 									onChange({
-										[`icon-spacing-${breakpoint}`]:
+										[`${prefix}icon-spacing-${breakpoint}`]:
 											val !== undefined && val !== ''
 												? val
 												: '',
@@ -244,9 +250,9 @@ const IconControl = props => {
 								}}
 								onReset={() =>
 									onChange({
-										[`icon-spacing-${breakpoint}`]:
+										[`${prefix}icon-spacing-${breakpoint}`]:
 											getDefaultAttribute(
-												`icon-spacing-${breakpoint}`
+												`${prefix}icon-spacing-${breakpoint}`
 											),
 									})
 								}
@@ -255,10 +261,10 @@ const IconControl = props => {
 								<AxisPositionControl
 									label='Icon'
 									className='maxi-icon-position-control'
-									selected={props['icon-position']}
+									selected={props[`${prefix}icon-position`]}
 									onChange={val => {
 										onChange({
-											'icon-position': val,
+											[`${prefix}icon-position`]: val,
 										});
 									}}
 									breakpoint={breakpoint}
@@ -282,8 +288,8 @@ const IconControl = props => {
 									});
 
 									onChange({
-										'icon-inherit': val,
-										'icon-content': icon,
+										[`${prefix}icon-inherit`]: val,
+										[`${prefix}icon-content`]: icon,
 									});
 								}}
 							/>
@@ -305,29 +311,29 @@ const IconControl = props => {
 									avoidBreakpointForDefault
 									color={
 										props[
-											`icon-stroke-color${
+											`${prefix}icon-stroke-color${
 												isHover ? '-hover' : ''
 											}`
 										]
 									}
-									prefix='icon-stroke-'
+									prefix={`${prefix}icon-stroke-`}
 									paletteColor={
 										props[
-											`icon-stroke-palette-color${
+											`${prefix}icon-stroke-palette-color${
 												isHover ? '-hover' : ''
 											}`
 										]
 									}
 									paletteOpacity={
 										props[
-											`icon-stroke-palette-opacity${
+											`${prefix}icon-stroke-palette-opacity${
 												isHover ? '-hover' : ''
 											}`
 										]
 									}
 									paletteStatus={
 										props[
-											`icon-stroke-palette-status${
+											`${prefix}icon-stroke-palette-status${
 												isHover ? '-hover' : ''
 											}`
 										]
@@ -355,19 +361,19 @@ const IconControl = props => {
 										});
 
 										onChange({
-											[`icon-stroke-color${
+											[`${prefix}icon-stroke-color${
 												isHover ? '-hover' : ''
 											}`]: color,
-											[`icon-stroke-palette-color${
+											[`${prefix}icon-stroke-palette-color${
 												isHover ? '-hover' : ''
 											}`]: paletteColor,
-											[`icon-stroke-palette-status${
+											[`${prefix}icon-stroke-palette-status${
 												isHover ? '-hover' : ''
 											}`]: paletteStatus,
-											[`icon-stroke-palette-opacity${
+											[`${prefix}icon-stroke-palette-opacity${
 												isHover ? '-hover' : ''
 											}`]: paletteOpacity,
-											'icon-content': icon,
+											[`${prefix}icon-content`]: icon,
 										});
 									}}
 									isHover={isHover}
@@ -400,12 +406,17 @@ const IconControl = props => {
 						))}
 					{iconStyle === 'border' && (
 						<BorderControl
-							{...getGroupAttributes(props, [
-								`iconBorder${isHover ? 'Hover' : ''}`,
-								`iconBorderWidth${isHover ? 'Hover' : ''}`,
-								`iconBorderRadius${isHover ? 'Hover' : ''}`,
-							])}
-							prefix='icon-'
+							{...getGroupAttributes(
+								props,
+								[
+									`iconBorder${isHover ? 'Hover' : ''}`,
+									`iconBorderWidth${isHover ? 'Hover' : ''}`,
+									`iconBorderRadius${isHover ? 'Hover' : ''}`,
+								],
+								isHover,
+								prefix
+							)}
+							prefix={`${prefix}icon-`}
 							onChange={onChange}
 							breakpoint={breakpoint}
 							clientId={clientId}
@@ -417,27 +428,29 @@ const IconControl = props => {
 							label={__('Icon fill', 'maxi-blocks')}
 							color={
 								props[
-									`icon-fill-color${isHover ? '-hover' : ''}`
+									`${prefix}icon-fill-color${
+										isHover ? '-hover' : ''
+									}`
 								]
 							}
-							prefix='icon-fill'
+							prefix={`${prefix}icon-fill`}
 							paletteColor={
 								props[
-									`icon-fill-palette-color${
+									`${prefix}icon-fill-palette-color${
 										isHover ? '-hover' : ''
 									}`
 								]
 							}
 							paletteOpacity={
 								props[
-									`icon-fill-palette-opacity${
+									`${prefix}icon-fill-palette-opacity${
 										isHover ? '-hover' : ''
 									}`
 								]
 							}
 							paletteStatus={
 								props[
-									`icon-fill-palette-status${
+									`${prefix}icon-fill-palette-status${
 										isHover ? '-hover' : ''
 									}`
 								]
@@ -466,19 +479,19 @@ const IconControl = props => {
 								});
 
 								onChange({
-									[`icon-fill-color${
+									[`${prefix}icon-fill-color${
 										isHover ? '-hover' : ''
 									}`]: color,
-									[`icon-fill-palette-color${
+									[`${prefix}icon-fill-palette-color${
 										isHover ? '-hover' : ''
 									}`]: paletteColor,
-									[`icon-fill-palette-status${
+									[`${prefix}icon-fill-palette-status${
 										isHover ? '-hover' : ''
 									}`]: paletteStatus,
-									[`icon-fill-palette-opacity${
+									[`${prefix}icon-fill-palette-opacity${
 										isHover ? '-hover' : ''
 									}`]: paletteOpacity,
-									'icon-content': icon,
+									[`${prefix}icon-content`]: icon,
 								});
 							}}
 							isHover={isHover}
@@ -503,7 +516,7 @@ const IconControl = props => {
 										[getAttributeKey(
 											'background-active-media',
 											isHover,
-											'icon-',
+											`${prefix}icon-`,
 											breakpoint
 										)]: val,
 									});
@@ -518,7 +531,7 @@ const IconControl = props => {
 										)}
 										paletteStatus={getLastBreakpointAttribute(
 											{
-												target: 'icon-background-palette-status',
+												target: `${prefix}icon-background-palette-status`,
 												breakpoint,
 												attributes: props,
 												isHover,
@@ -526,27 +539,30 @@ const IconControl = props => {
 										)}
 										paletteColor={getLastBreakpointAttribute(
 											{
-												target: 'icon-background-palette-color',
+												target: `${prefix}icon-background-palette-color`,
 												breakpoint,
 												attributes: props,
 												isHover,
+												prefix,
 											}
 										)}
 										paletteOpacity={getLastBreakpointAttribute(
 											{
-												target: 'icon-background-palette-opacity',
+												target: `${prefix}icon-background-palette-opacity`,
 												breakpoint,
 												attributes: props,
 												isHover,
+												prefix,
 											}
 										)}
 										color={getLastBreakpointAttribute({
-											target: 'icon-background-color',
+											target: `${prefix}icon-background-color`,
 											breakpoint,
 											attributes: props,
 											isHover,
+											prefix,
 										})}
-										prefix='icon-background-'
+										prefix={`${prefix}icon-background-`}
 										avoidBreakpointForDefault
 										onChangeInline={({ color }) =>
 											onChangeInline &&
@@ -568,25 +584,25 @@ const IconControl = props => {
 													[getAttributeKey(
 														'background-palette-status',
 														isHover,
-														'icon-',
+														`${prefix}icon-`,
 														breakpoint
 													)]: paletteStatus,
 													[getAttributeKey(
 														'background-palette-color',
 														isHover,
-														'icon-',
+														`${prefix}icon-`,
 														breakpoint
 													)]: paletteColor,
 													[getAttributeKey(
 														'background-palette-opacity',
 														isHover,
-														'icon-',
+														`${prefix}icon-`,
 														breakpoint
 													)]: paletteOpacity,
 													[getAttributeKey(
 														'background-color',
 														isHover,
-														'icon-',
+														`${prefix}icon-`,
 														breakpoint
 													)]: color,
 												},
@@ -620,14 +636,14 @@ const IconControl = props => {
 										'maxi-blocks'
 									)}
 									gradient={getLastBreakpointAttribute({
-										target: 'icon-background-gradient',
+										target: `${prefix}icon-background-gradient`,
 										breakpoint,
 										attributes: props,
 										isHover,
 									})}
 									gradientOpacity={getLastBreakpointAttribute(
 										{
-											target: 'icon-background-gradient-opacity',
+											target: `${prefix}icon-background-gradient-opacity`,
 											breakpoint,
 											attributes: props,
 											isHover,
@@ -637,7 +653,7 @@ const IconControl = props => {
 										getAttributeKey(
 											'background-gradient',
 											isHover,
-											'icon-',
+											`${prefix}icon-`,
 											breakpoint
 										)
 									)}
@@ -646,7 +662,7 @@ const IconControl = props => {
 											[getAttributeKey(
 												'background-gradient',
 												isHover,
-												'icon-',
+												`${prefix}icon-`,
 												breakpoint
 											)]: val,
 										})
@@ -656,7 +672,7 @@ const IconControl = props => {
 											[getAttributeKey(
 												'background-gradient-opacity',
 												isHover,
-												'icon-',
+												`${prefix}icon-`,
 												breakpoint
 											)]: val,
 										})
@@ -668,11 +684,16 @@ const IconControl = props => {
 					)}
 					{!disablePadding && !isHover && (
 						<AxisControl
-							{...getGroupAttributes(props, 'iconPadding')}
+							{...getGroupAttributes(
+								props,
+								'iconPadding',
+								false,
+								prefix
+							)}
 							label={__('Icon padding', 'maxi-blocks')}
 							onChange={onChange}
 							breakpoint={breakpoint}
-							target='icon-padding'
+							target={`${prefix}icon-padding`}
 							disableAuto
 							optionType='string'
 							minMaxSettings={minMaxSettings}

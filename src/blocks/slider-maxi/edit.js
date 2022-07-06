@@ -22,6 +22,7 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import getStyles from './styles';
 import copyPasteMapping from './copy-paste-mapping';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
+import TEMPLATE from './template';
 
 /**
  * External dependencies
@@ -33,17 +34,6 @@ import { isEmpty } from 'lodash';
 /**
  * Edit
  */
-const slideTemplate = {
-	type: 'color',
-	isHover: false,
-	'display-general': 'block',
-	'background-palette-status-general': true,
-	'background-palette-color-general': 1,
-	'background-color-clip-path-status-general': false,
-	order: 1,
-	id: 1,
-};
-
 const IconWrapper = forwardRef((props, ref) => {
 	const { children, className } = props;
 
@@ -53,76 +43,6 @@ const IconWrapper = forwardRef((props, ref) => {
 		</div>
 	);
 });
-
-const TEMPLATE = [
-	[
-		'maxi-blocks/slide-maxi',
-		{
-			'background-layers': [slideTemplate],
-			'height-general': 150,
-		},
-	],
-	[
-		'maxi-blocks/slide-maxi',
-		{
-			'background-layers': [
-				{
-					...slideTemplate,
-					'background-palette-color-general': 2,
-				},
-			],
-			'height-general': 150,
-		},
-	],
-	[
-		'maxi-blocks/slide-maxi',
-		{
-			'background-layers': [
-				{
-					...slideTemplate,
-					'background-palette-color-general': 3,
-				},
-			],
-			'height-general': 150,
-		},
-	],
-	[
-		'maxi-blocks/slide-maxi',
-		{
-			'background-layers': [
-				{
-					...slideTemplate,
-					'background-palette-color-general': 4,
-				},
-			],
-			'height-general': 150,
-		},
-	],
-	[
-		'maxi-blocks/slide-maxi',
-		{
-			'background-layers': [
-				{
-					...slideTemplate,
-					'background-palette-color-general': 5,
-				},
-			],
-			'height-general': 150,
-		},
-	],
-	[
-		'maxi-blocks/slide-maxi',
-		{
-			'background-layers': [
-				{
-					...slideTemplate,
-					'background-palette-color-general': 6,
-				},
-			],
-			'height-general': 150,
-		},
-	],
-];
 
 const SliderWrapper = props => {
 	const {
@@ -212,7 +132,10 @@ const SliderWrapper = props => {
 				return prev + 1;
 			});
 
-			setActiveDot(currentSlide + 1);
+			const activeDotNumber =
+				currentSlide + 1 < numberOfSlides ? currentSlide + 1 : 0;
+
+			setActiveDot(activeDotNumber);
 		}
 	};
 

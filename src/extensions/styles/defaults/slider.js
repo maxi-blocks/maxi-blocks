@@ -5,7 +5,7 @@ const slider = {
 	},
 	numberOfSlides: {
 		type: 'number',
-		default: 6,
+		default: 2,
 	},
 	isLoop: {
 		type: 'boolean',

@@ -70,8 +70,8 @@ const SliderControl = props => {
 						label={__('Autoplay speed (ms)', 'maxi-blocks')}
 						min={500}
 						max={10000}
-						initial={1}
-						step={1}
+						initial={2500}
+						step={100}
 						value={props['slider-autoplay-speed']}
 						onChangeValue={val => {
 							onChange({
@@ -88,7 +88,6 @@ const SliderControl = props => {
 					/>
 				</>
 			)}
-
 			<ToggleSwitch
 				label={__('Infinite loop', 'maxi-blocks')}
 				selected={isLoop}

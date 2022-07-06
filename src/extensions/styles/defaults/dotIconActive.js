@@ -11,7 +11,7 @@ export const dotIconActive = prefixAttributesCreator({
 	diffValAttr: {
 		[`${prefix}icon-width-general`]: '10',
 		[`${prefix}icon-stroke-palette-color`]: 2,
-		[`${prefix}icon-fill-palette-color`]: 5,
+		[`${prefix}icon-fill-palette-color`]: 4,
 	},
 	newAttr: {
 		[`${prefix}icon-status`]: {

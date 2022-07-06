@@ -619,7 +619,7 @@ const NavigationIconControl = props => {
 							isHover={isHover}
 						/>
 					)}
-					{iconStyle === 'fill' && svgType !== 'Line' && (
+					{iconStyle === 'color' && svgType !== 'Line' && (
 						<ColorControl
 							label={__(`${labelCapital} fill`, 'maxi-blocks')}
 							color={

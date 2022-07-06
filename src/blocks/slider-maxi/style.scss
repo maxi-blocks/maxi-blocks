@@ -4,9 +4,6 @@ body.maxi-blocks--active .maxi-slider-block {
 	flex-wrap: wrap;
 	justify-content: space-between;
 
-	// Provisional
-	border: 1px solid #000;
-
 	&:focus {
 		&:after {
 			box-shadow: none !important;

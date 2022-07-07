@@ -17,9 +17,6 @@ const attributes = {
 	/**
 	 * Block styles
 	 */
-	customLabel: {
-		type: 'string',
-	},
 	...attributesData.rowPattern,
 	...attributesData.blockBackground,
 	...attributesData.border,

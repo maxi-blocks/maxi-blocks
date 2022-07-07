@@ -27,9 +27,6 @@ const attributes = {
 	/**
 	 * Block styles
 	 */
-	customLabel: {
-		type: 'string',
-	},
 	content: {
 		type: 'string',
 		default: '',

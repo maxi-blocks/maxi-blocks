@@ -23,9 +23,6 @@ const attributes = {
 	/**
 	 * Block styles
 	 */
-	customLabel: {
-		type: 'string',
-	},
 	buttonContent: {
 		type: 'string',
 	},

@@ -18,9 +18,6 @@ const attributes = {
 	/**
 	 * Block styles
 	 */
-	customLabel: {
-		type: 'string',
-	},
 	...attributesData.arrow,
 	...attributesData.shapeDivider,
 	...{

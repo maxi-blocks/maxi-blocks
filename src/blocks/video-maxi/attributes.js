@@ -16,10 +16,6 @@ const attributes = {
 	 * Block styles
 	 */
 
-	customLabel: {
-		type: 'string',
-	},
-
 	...attributesData.video,
 	...prefixAttributesCreator({
 		obj: attributesData.background,

@@ -23,9 +23,6 @@ const attributes = {
 	/**
 	 * Block styles
 	 */
-	customLabel: {
-		type: 'string',
-	},
 	...attributesData.divider,
 	...prefixAttributesCreator({ obj: attributesData.boxShadow, prefix }),
 	...prefixAttributesCreator({ obj: attributesData.boxShadowHover, prefix }),

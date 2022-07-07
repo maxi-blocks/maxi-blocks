@@ -24,17 +24,11 @@ describe('FullSizeControl', () => {
 		);
 
 		await accordionPanel.$eval(
-			'.maxi-toggle-switch .maxi-base-control__label',
+			'.maxi-toggle-switch .maxi-toggle-switch__toggle input',
 			use => use.click()
 		);
 
 		expect(await getAttributes('full-width-general')).toStrictEqual('full');
-
-		// responsive
-		await accordionPanel.$eval(
-			'.maxi-toggle-switch .maxi-base-control__label',
-			use => use.click()
-		);
 
 		const inputs = await accordionPanel.$(
 			'.maxi-full-size-control .maxi-full-size-control__height .maxi-advanced-number-control__value'
@@ -43,7 +37,7 @@ describe('FullSizeControl', () => {
 		await inputs.focus();
 		await page.keyboard.type('330', { delay: 100 });
 
-		// check responsive
+		// check responsive height
 		const responsiveResult = await addResponsiveTest({
 			page,
 			instance:
@@ -55,6 +49,29 @@ describe('FullSizeControl', () => {
 		});
 		expect(responsiveResult).toBeTruthy();
 
+		// responsive full-width
+		await changeResponsive(page, 's');
+
+		await accordionPanel.$eval(
+			'.maxi-toggle-switch .maxi-toggle-switch__toggle input',
+			use => use.click()
+		);
+		expect(await getAttributes('full-width-s')).toStrictEqual('normal');
+
+		await changeResponsive(page, 'xs');
+		const fullWidthXs = await page.$eval(
+			'.maxi-toggle-switch .maxi-toggle-switch__toggle input',
+			input => input.checked
+		);
+		expect(fullWidthXs).toStrictEqual(false);
+		await changeResponsive(page, 'm');
+		const fullWidthM = await page.$eval(
+			'.maxi-toggle-switch .maxi-toggle-switch__toggle input',
+			input => input.checked
+		);
+		expect(fullWidthM).toStrictEqual(true);
+
+		await changeResponsive(page, 'base');
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
@@ -92,14 +109,12 @@ describe('FullSizeControl', () => {
 
 		const expectSize = {
 			'max-height-unit-general': 'em',
-			'max-width-unit-general': 'em',
 			'min-height-unit-general': 'em',
 			'min-width-unit-general': 'em',
 		};
 
 		const result = await getAttributes([
 			'max-height-unit-general',
-			'max-width-unit-general',
 			'min-height-unit-general',
 			'min-width-unit-general',
 		]);
@@ -129,7 +144,11 @@ describe('FullSizeControl', () => {
 			input => input.click()
 		);
 
-		// forceAspectRatioInput;
+		// forceAspectRatioInput
+		expect(await getAttributes('force-aspect-ratio-general')).toStrictEqual(
+			true
+		);
+
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
 		// check responsive
@@ -140,26 +159,24 @@ describe('FullSizeControl', () => {
 			'.maxi-full-size-control .maxi-full-size-control__force-aspect-ratio input',
 			input => input.click()
 		);
-
-		await page.waitForTimeout(100);
-		const inputs = await page.$(
-			'.maxi-full-size-control .maxi-advanced-number-control .maxi-advanced-number-control__value'
+		expect(await getAttributes('force-aspect-ratio-s')).toStrictEqual(
+			false
 		);
-
-		await inputs.focus();
-		await page.keyboard.type('55', { delay: 100 });
-
-		expect(await getAttributes('height-s')).toStrictEqual('55');
 
 		await changeResponsive(page, 'xs');
-		const fullSizeControlInputXs = await page.$eval(
-			'.maxi-full-size-control .maxi-advanced-number-control .maxi-advanced-number-control__value',
-			input => input.value
+		const forceAspectXs = await page.$eval(
+			'.maxi-full-size-control .maxi-full-size-control__force-aspect-ratio input',
+			input => input.checked
 		);
-		expect(fullSizeControlInputXs).toStrictEqual('55');
+		expect(forceAspectXs).toStrictEqual(false);
 
 		await changeResponsive(page, 'm');
-		await page.waitForTimeout(100);
+
+		const forceAspectM = await page.$eval(
+			'.maxi-full-size-control .maxi-full-size-control__force-aspect-ratio input',
+			input => input.checked
+		);
+		expect(forceAspectM).toStrictEqual(true);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

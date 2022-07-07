@@ -18,6 +18,7 @@ import transitionObj from './transitionObj';
  */
 const searchButtonPrefix = 'search-button-';
 const searchInputPrefix = 'search-input-';
+const closeIconPrefix = 'close-';
 
 const attributes = {
 	...attributesData.global,
@@ -149,13 +150,13 @@ const attributes = {
 	...attributesData.iconHover,
 	...prefixAttributesCreator({
 		obj: { ...attributesData.icon, ...attributesData.iconHover },
-		prefix: 'close-',
+		prefix: closeIconPrefix,
 		diffValAttr: {
-			'close-icon-inherit': false,
-			'close-icon-width-general': '25',
-			'close-icon-fill-palette-color': 1,
-			'close-icon-spacing-general': 0,
-			'close-icon-content':
+			[`${closeIconPrefix}close-icon-inherit`]: false,
+			[`${closeIconPrefix}close-icon-width-general`]: '25',
+			[`${closeIconPrefix}close-icon-fill-palette-color`]: 1,
+			[`${closeIconPrefix}-icon-spacing-general`]: 0,
+			[`${closeIconPrefix}close-icon-content`]:
 				'<svg class="cross-29-shape-maxi-svg" width="64px" height="64px" viewBox="0 0 36.1 36.1" data-fill fill="#081219"><path d="M26.1 13l-3-3-5 5-5.1-5-3 3 5 5-5 5.1 3 3 5.1-5 5 5 3-3-5-5.1zm4.5-7.5c-6.9-6.9-18.2-6.9-25.1 0s-6.9 18.2 0 25.1 18.2 6.9 25.1 0 6.9-18.2 0-25.1zm-2.1 23c-5.8 5.8-15.2 5.8-20.9 0-5.8-5.8-5.8-15.2 0-20.9 5.8-5.8 15.2-5.8 20.9 0 5.8 5.8 5.8 15.1 0 20.9z"/></svg>',
 		},
 	}),
@@ -179,3 +180,4 @@ const attributes = {
 };
 
 export default attributes;
+export { closeIconPrefix, searchButtonPrefix, searchInputPrefix };

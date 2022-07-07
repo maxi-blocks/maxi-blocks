@@ -1,3 +1,9 @@
+import {
+	closeIconPrefix,
+	searchButtonPrefix,
+	searchInputPrefix,
+} from './attributes';
+
 const transitionObj = {
 	block: {
 		border: {
@@ -31,26 +37,26 @@ const transitionObj = {
 			],
 			property: 'icon',
 			limitless: true,
-			prefix: 'close-',
+			prefix: closeIconPrefix,
 		},
 		typography: {
 			title: 'Typography',
 			target: ' .maxi-search-block__input__content',
 			property: 'typography',
 			limitless: true,
-			prefix: 'search-button-',
+			prefix: searchButtonPrefix,
 		},
 		border: {
 			title: 'Border',
 			target: ' .maxi-search-block__button',
 			property: 'border',
-			prefix: 'search-button-',
+			prefix: searchButtonPrefix,
 		},
 		'button background': {
 			title: 'button background',
 			target: ' .maxi-search-block__button',
 			property: 'background',
-			prefix: 'search-button-',
+			prefix: searchButtonPrefix,
 		},
 	},
 	input: {
@@ -59,19 +65,19 @@ const transitionObj = {
 			target: ' .maxi-search-block__input',
 			property: 'typography',
 			limitless: true,
-			prefix: 'search-input-',
+			prefix: searchInputPrefix,
 		},
 		border: {
 			title: 'Border',
 			target: ' .maxi-search-block__input',
 			property: 'border',
-			prefix: 'search-input-',
+			prefix: searchInputPrefix,
 		},
 		'input background': {
 			title: 'Input background',
 			target: ' .maxi-search-block__input',
 			property: 'background',
-			prefix: 'search-input-',
+			prefix: searchInputPrefix,
 		},
 	},
 };

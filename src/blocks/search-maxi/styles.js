@@ -26,6 +26,11 @@ import {
 } from '../../extensions/styles/helpers';
 import { selectorsSearch } from './custom-css';
 import transitionObj from './transitionObj';
+import {
+	closeIconPrefix,
+	searchButtonPrefix,
+	searchInputPrefix,
+} from './attributes';
 
 const getNormalObject = props => {
 	const response = {
@@ -109,8 +114,6 @@ const getHoverObject = props => {
 };
 
 const getSearchButtonStyles = (props, isHover = false) => {
-	const prefix = 'search-button-';
-
 	const { blockStyle } = props;
 
 	const response = {
@@ -119,11 +122,11 @@ const getSearchButtonStyles = (props, isHover = false) => {
 				props,
 				['background', 'backgroundColor'],
 				isHover,
-				prefix
+				searchButtonPrefix
 			),
 			isHover,
 			blockStyle,
-			prefix,
+			prefix: searchButtonPrefix,
 		}),
 		border: getBorderStyles({
 			obj: {
@@ -131,25 +134,39 @@ const getSearchButtonStyles = (props, isHover = false) => {
 					props,
 					['border', 'borderWidth', 'borderRadius'],
 					isHover,
-					prefix
+					searchButtonPrefix
 				),
 			},
 			isHover,
-			prefix,
+			prefix: searchButtonPrefix,
 			blockStyle: props.blockStyle,
 		}),
 		...(!isHover && {
 			margin: getMarginPaddingStyles({
-				obj: { ...getGroupAttributes(props, 'margin', false, prefix) },
-				prefix,
+				obj: {
+					...getGroupAttributes(
+						props,
+						'margin',
+						false,
+						searchButtonPrefix
+					),
+				},
+				prefix: searchButtonPrefix,
 			}),
 			padding: getMarginPaddingStyles({
-				obj: { ...getGroupAttributes(props, 'padding', false, prefix) },
-				prefix,
+				obj: {
+					...getGroupAttributes(
+						props,
+						'padding',
+						false,
+						searchButtonPrefix
+					),
+				},
+				prefix: searchButtonPrefix,
 			}),
 		}),
 	};
-	// console.log(response);
+
 	return response;
 };
 
@@ -184,7 +201,7 @@ const getSearchButtonIconStyles = props => {
 				blockStyle,
 				target: ' .maxi-search-block__button__icon--open',
 				wrapperTarget: ' .maxi-search-block__button',
-				prefix: 'close-',
+				prefix: closeIconPrefix,
 			}),
 			...getButtonIconStyles({
 				obj: props,
@@ -192,11 +209,11 @@ const getSearchButtonIconStyles = props => {
 				isHover: true,
 				target: ' .maxi-search-block__button__icon--open',
 				wrapperTarget: ' .maxi-search-block__button',
-				prefix: 'close-',
+				prefix: closeIconPrefix,
 			}),
 		}),
 	};
-	console.log('icon styles', response);
+
 	return response;
 };
 
@@ -210,11 +227,11 @@ const getSearchButtonContentStyles = props => {
 					props,
 					'typography',
 					false,
-					'search-button-'
+					searchButtonPrefix
 				),
 			},
 			blockStyle,
-			prefix: 'search-button-',
+			prefix: searchButtonPrefix,
 		}),
 	};
 
@@ -222,8 +239,6 @@ const getSearchButtonContentStyles = props => {
 };
 
 const getSearchInputStyles = (props, isHover = false) => {
-	const prefix = 'search-input-';
-
 	const { blockStyle } = props;
 
 	const response = {
@@ -232,10 +247,10 @@ const getSearchInputStyles = (props, isHover = false) => {
 				props,
 				['background', 'backgroundColor'],
 				isHover,
-				prefix
+				searchInputPrefix
 			),
 			isHover,
-			prefix,
+			prefix: searchInputPrefix,
 			blockStyle,
 		}),
 		border: getBorderStyles({
@@ -244,28 +259,38 @@ const getSearchInputStyles = (props, isHover = false) => {
 					props,
 					['border', 'borderWidth', 'borderRadius'],
 					isHover,
-					prefix
+					searchInputPrefix
 				),
 			},
 			isHover,
-			prefix,
+			prefix: searchInputPrefix,
 			blockStyle,
 		}),
 		...(!isHover && {
 			padding: getMarginPaddingStyles({
 				obj: {
-					...getGroupAttributes(props, 'padding', false, prefix),
+					...getGroupAttributes(
+						props,
+						'padding',
+						false,
+						searchInputPrefix
+					),
 				},
-				prefix,
+				prefix: searchInputPrefix,
 			}),
 		}),
 		typography: getTypographyStyles({
 			obj: {
-				...getGroupAttributes(props, 'typography', isHover, prefix),
+				...getGroupAttributes(
+					props,
+					'typography',
+					isHover,
+					searchInputPrefix
+				),
 			},
 			blockStyle,
 			isHover,
-			prefix,
+			prefix: searchInputPrefix,
 		}),
 	};
 
@@ -301,7 +326,7 @@ const getStyles = props => {
 			props
 		),
 	};
-	console.log(response);
+
 	return response;
 };
 

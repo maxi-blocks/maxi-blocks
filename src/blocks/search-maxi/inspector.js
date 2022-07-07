@@ -17,6 +17,11 @@ import {
 import { selectorsSearch, categoriesSearch } from './custom-css';
 import { withMaxiInspector } from '../../extensions/inspector';
 import * as inspectorTabs from '../../components/inspector-tabs';
+import {
+	closeIconPrefix,
+	searchButtonPrefix,
+	searchInputPrefix,
+} from './attributes';
 
 /**
  * Inspector
@@ -107,26 +112,26 @@ const Inspector = props => {
 															skin === 'classic'
 														) {
 															maxiSetAttributes({
-																'search-input-background-palette-color-general': 2,
+																[`${searchInputPrefix}background-palette-color-general`]: 2,
 															});
 														} else if (
 															skin === 'boxed'
 														) {
 															maxiSetAttributes({
-																'search-input-background-palette-color-general': 1,
+																[`${searchInputPrefix}background-palette-color-general`]: 1,
 															});
 														} else if (
 															skin ===
 															'icon-reveal'
 														) {
 															maxiSetAttributes({
-																'search-button-border-unit-radius-general':
+																[`${searchButtonPrefix}border-unit-radius-general`]:
 																	'%',
-																'search-button-border-top-left-radius-general': 50,
-																'search-button-border-top-right-radius-general': 50,
-																'search-button-border-bottom-left-radius-general': 50,
-																'search-button-border-bottom-right-radius-general': 50,
-																'search-button-margin-left-general':
+																[`${searchButtonPrefix}border-top-left-radius-general`]: 50,
+																[`${searchButtonPrefix}border-top-right-radius-general`]: 50,
+																[`${searchButtonPrefix}border-bottom-left-radius-general`]: 50,
+																[`${searchButtonPrefix}border-bottom-right-radius-general`]: 50,
+																[`${searchButtonPrefix}margin-left-general`]:
 																	'-20',
 															});
 														}
@@ -202,7 +207,7 @@ const Inspector = props => {
 												props,
 												disableCustomFormats: true,
 												hideAlignment: true,
-												prefix: 'search-button-',
+												prefix: searchButtonPrefix,
 												inlineTarget:
 													' .maxi-search-block__button__content',
 										  })),
@@ -241,13 +246,13 @@ const Inspector = props => {
 									},
 									...inspectorTabs.border({
 										props,
-										prefix: 'search-button-',
+										prefix: searchButtonPrefix,
 										selector: '.maxi-search-block__button',
 									}),
 									...inspectorTabs.background({
 										label: 'Button',
 										props,
-										prefix: 'search-button-',
+										prefix: searchButtonPrefix,
 										disableImage: true,
 										disableVideo: true,
 										disableGradient: true,
@@ -257,7 +262,7 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.marginPadding({
 										props,
-										prefix: 'search-button-',
+										prefix: searchButtonPrefix,
 									}),
 								]}
 							/>
@@ -273,18 +278,18 @@ const Inspector = props => {
 										props,
 										disableCustomFormats: true,
 										hideAlignment: true,
-										prefix: 'search-input-',
+										prefix: searchInputPrefix,
 										inlineTarget:
 											' .maxi-search-block__input',
 									}),
 									...inspectorTabs.border({
 										props,
-										prefix: 'search-input-',
+										prefix: searchInputPrefix,
 									}),
 									...inspectorTabs.background({
 										label: 'Input',
 										props,
-										prefix: 'search-input-',
+										prefix: searchInputPrefix,
 										disableImage: true,
 										disableVideo: true,
 										disableGradient: true,
@@ -294,7 +299,7 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.marginPadding({
 										props,
-										prefix: 'search-input-',
+										prefix: searchInputPrefix,
 										customLabel: __(
 											'Padding',
 											'maxi-blocks'

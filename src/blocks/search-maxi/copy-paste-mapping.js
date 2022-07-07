@@ -1,3 +1,9 @@
+import {
+	closeIconPrefix,
+	searchButtonPrefix,
+	searchInputPrefix,
+} from './attributes';
+
 const copyPasteMapping = {
 	block: {
 		_order: ['Border', 'Box shadow', 'Height/Width', 'Margin/Padding'],
@@ -79,7 +85,7 @@ const copyPasteMapping = {
 				props: {
 					icon: { label: 'Icon', props: ['icon', 'iconHover'] },
 				},
-				prefix: 'close-',
+				prefix: closeIconPrefix,
 			},
 			typography: {
 				groupLabel: 'Typography',
@@ -87,7 +93,7 @@ const copyPasteMapping = {
 					typography: 'Typography',
 					typographyHover: 'Typography hover',
 				},
-				prefix: 'search-button-',
+				prefix: searchButtonPrefix,
 			},
 			background: {
 				groupLabel: 'Button background',
@@ -101,7 +107,7 @@ const copyPasteMapping = {
 						props: ['backgroundHover', 'backgroundColorHover'],
 					},
 				},
-				prefix: 'search-button-',
+				prefix: searchButtonPrefix,
 			},
 			border: {
 				groupLabel: 'Border',
@@ -113,12 +119,12 @@ const copyPasteMapping = {
 					borderWidthHover: 'Border width hover',
 					borderRadiusHover: 'Border radius hover',
 				},
-				prefix: 'search-button-',
+				prefix: searchButtonPrefix,
 			},
 			'margin-padding': {
 				groupLabel: 'Margin/Padding',
 				props: { margin: 'Margin', padding: 'Padding' },
-				prefix: 'search-button-',
+				prefix: searchButtonPrefix,
 			},
 		},
 	},
@@ -132,7 +138,7 @@ const copyPasteMapping = {
 					typography: 'Typography',
 					typographyHover: 'Typography hover',
 				},
-				prefix: 'search-input-',
+				prefix: searchInputPrefix,
 			},
 			border: {
 				groupLabel: 'Border',
@@ -144,7 +150,7 @@ const copyPasteMapping = {
 					borderWidthHover: 'Border width hover',
 					borderRadiusHover: 'Border radius hover',
 				},
-				prefix: 'search-input-',
+				prefix: searchInputPrefix,
 			},
 			background: {
 				groupLabel: 'Input background',
@@ -158,12 +164,12 @@ const copyPasteMapping = {
 						props: ['backgroundHover', 'backgroundColorHover'],
 					},
 				},
-				prefix: 'search-input-',
+				prefix: searchInputPrefix,
 			},
 			padding: {
 				groupLabel: 'Padding',
 				props: { padding: 'Padding' },
-				prefix: 'search-input-',
+				prefix: searchInputPrefix,
 			},
 		},
 	},

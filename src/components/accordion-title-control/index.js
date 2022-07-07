@@ -147,7 +147,6 @@ const AccordionTitleSettings = props => {
 			/>
 			<SettingTabsControl
 				depth={2}
-				disablePadding
 				items={[
 					{
 						label: __('Normal state', 'maxi-blocks'),

@@ -1,6 +1,8 @@
 import { closeIconPrefix, buttonPrefix, inputPrefix } from './prefixes';
 
 const copyPasteMapping = {
+	exclude: ['placeholder'],
+
 	block: {
 		_order: ['Border', 'Box shadow', 'Height/Width', 'Margin/Padding'],
 
@@ -53,13 +55,7 @@ const copyPasteMapping = {
 		],
 
 		blockSpecific: {
-			skin: {
-				groupLabel: 'Skin',
-				props: {
-					skin: 'Skin',
-					placeholder: 'Placeholder',
-				},
-			},
+			skin: 'Skin',
 			button: {
 				groupLabel: 'Button',
 				props: {
@@ -125,8 +121,26 @@ const copyPasteMapping = {
 		},
 	},
 	input: {
-		_order: ['Typography', 'Border', 'Input background', 'Padding'],
+		_order: [
+			'Typography',
+			'Placeholder',
+			'Border',
+			'Input background',
+			'Padding',
+		],
 
+		blockSpecific: {
+			placeholder: {
+				groupLabel: 'Placeholder',
+				props: {
+					placeholder: 'Placeholder text',
+					placeholderColor: {
+						type: 'withoutPrefix',
+						label: 'Placeholder colour',
+					},
+				},
+			},
+		},
 		withPrefix: {
 			typography: {
 				groupLabel: 'Typography',

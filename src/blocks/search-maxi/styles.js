@@ -6,11 +6,17 @@ import { merge } from 'lodash';
 /**
  * Internal dependencies
  */
-import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+	getColorRGBAString,
+	stylesCleaner,
+} from '../../extensions/styles';
 import {
 	getBackgroundStyles,
 	getBorderStyles,
 	getBoxShadowStyles,
+	getButtonIconStyles,
 	getDisplayStyles,
 	getFlexStyles,
 	getMarginPaddingStyles,
@@ -18,15 +24,14 @@ import {
 	getOverflowStyles,
 	getPositionStyles,
 	getSizeStyles,
-	getButtonIconStyles,
 	getTransformStyles,
-	getTypographyStyles,
 	getTransitionStyles,
+	getTypographyStyles,
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsSearch } from './custom-css';
 import transitionObj from './transitionObj';
-import { closeIconPrefix, buttonPrefix, inputPrefix } from './prefixes';
+import { buttonPrefix, closeIconPrefix, inputPrefix } from './prefixes';
 
 const getNormalObject = props => {
 	const response = {
@@ -278,6 +283,58 @@ const getSearchInputStyles = (props, isHover = false) => {
 	return response;
 };
 
+const getSearchInputPlaceholderStyles = props => {
+	const { blockStyle } = props;
+
+	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
+	const response = {};
+
+	breakpoints.forEach(breakpoint => {
+		const paletteStatus = getLastBreakpointAttribute({
+			target: 'placeholder-palette-status',
+			attributes: props,
+			breakpoint,
+		});
+
+		const paletteColor = getLastBreakpointAttribute({
+			target: 'placeholder-palette-color',
+			attributes: props,
+			breakpoint,
+		});
+
+		const paletteOpacity = getLastBreakpointAttribute({
+			target: 'placeholder-palette-opacity',
+			attributes: props,
+			breakpoint,
+		});
+
+		const color = getLastBreakpointAttribute({
+			target: 'placeholder-color',
+			attributes: props,
+			breakpoint,
+		});
+
+		if (paletteStatus) {
+			response[breakpoint] = {
+				color: getColorRGBAString({
+					firstVar: `color-${paletteColor}`,
+					opacity: paletteOpacity,
+					blockStyle,
+				}),
+			};
+		} else if (color) {
+			response[breakpoint] = {
+				color,
+			};
+		}
+	});
+
+	return {
+		placeholder: response,
+	};
+};
+
 const getStyles = props => {
 	const { uniqueID } = props;
 
@@ -288,6 +345,8 @@ const getStyles = props => {
 					'': getNormalObject(props),
 					':hover': getHoverObject(props),
 					' .maxi-search-block__input': getSearchInputStyles(props),
+					' .maxi-search-block__input::placeholder':
+						getSearchInputPlaceholderStyles(props),
 					':hover .maxi-search-block__input': getSearchInputStyles(
 						props,
 						true

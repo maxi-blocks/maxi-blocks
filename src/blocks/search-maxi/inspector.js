@@ -10,14 +10,16 @@ import { InspectorControls } from '@wordpress/block-editor';
 import {
 	AccordionControl,
 	AxisPositionControl,
+	ColorControl,
 	SelectControl,
 	SettingTabsControl,
 	TextControl,
 } from '../../components';
+import { getLastBreakpointAttribute } from '../../extensions/styles';
 import { selectorsSearch, categoriesSearch } from './custom-css';
 import { withMaxiInspector } from '../../extensions/inspector';
 import * as inspectorTabs from '../../components/inspector-tabs';
-import { closeIconPrefix, buttonPrefix, inputPrefix } from './prefixes';
+import { buttonPrefix, closeIconPrefix, inputPrefix } from './prefixes';
 
 /**
  * Search controls
@@ -27,59 +29,48 @@ const SkinControl = props => {
 	const { skin } = attributes;
 
 	return (
-		<>
-			<SelectControl
-				label={__('Skin', 'maxi-blocks')}
-				value={skin}
-				options={[
-					{
-						label: __('Boxed', 'maxi-blocks'),
-						value: 'boxed',
-					},
-					{
-						label: __('Classic', 'maxi-blocks'),
-						value: 'classic',
-					},
-					{
-						label: __('Icon reveal', 'maxi-blocks'),
-						value: 'icon-reveal',
-					},
-				]}
-				onChange={skin => {
-					if (skin === 'classic') {
-						maxiSetAttributes({
-							[`${inputPrefix}background-palette-color-general`]: 2,
-						});
-					} else if (skin === 'boxed') {
-						maxiSetAttributes({
-							[`${inputPrefix}background-palette-color-general`]: 1,
-						});
-					} else if (skin === 'icon-reveal') {
-						maxiSetAttributes({
-							[`${buttonPrefix}border-unit-radius-general`]: '%',
-							[`${buttonPrefix}border-top-left-radius-general`]: 50,
-							[`${buttonPrefix}border-top-right-radius-general`]: 50,
-							[`${buttonPrefix}border-bottom-left-radius-general`]: 50,
-							[`${buttonPrefix}border-bottom-right-radius-general`]: 50,
-							[`${buttonPrefix}margin-left-general`]: '-20',
-						});
-					}
-
+		<SelectControl
+			label={__('Skin', 'maxi-blocks')}
+			value={skin}
+			options={[
+				{
+					label: __('Boxed', 'maxi-blocks'),
+					value: 'boxed',
+				},
+				{
+					label: __('Classic', 'maxi-blocks'),
+					value: 'classic',
+				},
+				{
+					label: __('Icon reveal', 'maxi-blocks'),
+					value: 'icon-reveal',
+				},
+			]}
+			onChange={skin => {
+				if (skin === 'classic') {
 					maxiSetAttributes({
-						skin,
+						[`${inputPrefix}background-palette-color-general`]: 2,
 					});
-				}}
-			/>
-			<TextControl
-				label={__('Placeholder text', 'maxi-blocks')}
-				value={attributes.placeholder}
-				onChange={placeholder =>
+				} else if (skin === 'boxed') {
 					maxiSetAttributes({
-						placeholder,
-					})
+						[`${inputPrefix}background-palette-color-general`]: 1,
+					});
+				} else if (skin === 'icon-reveal') {
+					maxiSetAttributes({
+						[`${buttonPrefix}border-unit-radius-general`]: '%',
+						[`${buttonPrefix}border-top-left-radius-general`]: 50,
+						[`${buttonPrefix}border-top-right-radius-general`]: 50,
+						[`${buttonPrefix}border-bottom-left-radius-general`]: 50,
+						[`${buttonPrefix}border-bottom-right-radius-general`]: 50,
+						[`${buttonPrefix}margin-left-general`]: '-20',
+					});
 				}
-			/>
-		</>
+
+				maxiSetAttributes({
+					skin,
+				});
+			}}
+		/>
 	);
 };
 
@@ -133,6 +124,86 @@ const ButtonControl = props => {
 					)}
 				</>
 			)}
+		</>
+	);
+};
+
+const PlaceholderColourControl = props => {
+	const {
+		attributes,
+		clientId,
+		deviceType,
+		maxiSetAttributes,
+		insertInlineStyles,
+		cleanInlineStyles,
+	} = props;
+
+	return (
+		<>
+			<TextControl
+				label={__('Placeholder text', 'maxi-blocks')}
+				value={attributes.placeholder}
+				onChange={placeholder =>
+					maxiSetAttributes({
+						placeholder,
+					})
+				}
+			/>
+			<ColorControl
+				label={__('Font', 'maxi-blocks')}
+				className='maxi-typography-control__color'
+				color={getLastBreakpointAttribute({
+					target: 'placeholder-color',
+					breakpoint: deviceType,
+					attributes,
+				})}
+				prefix='placeholder-'
+				paletteColor={getLastBreakpointAttribute({
+					target: 'placeholder-palette-color',
+					breakpoint: deviceType,
+					attributes,
+				})}
+				paletteOpacity={getLastBreakpointAttribute({
+					target: 'placeholder-palette-opacity',
+					breakpoint: deviceType,
+					attributes,
+				})}
+				paletteStatus={getLastBreakpointAttribute({
+					target: 'placeholder-palette-status',
+					breakpoint: deviceType,
+					attributes,
+				})}
+				onChangeInline={({ color }) =>
+					insertInlineStyles({
+						obj: { color },
+						target: ' .maxi-search-block__input',
+						pseudoElement: '::placeholder',
+					})
+				}
+				onChange={({
+					color,
+					paletteColor,
+					paletteStatus,
+					paletteOpacity,
+				}) => {
+					maxiSetAttributes({
+						[`placeholder-color-${deviceType}`]: color,
+						[`placeholder-palette-color-${deviceType}`]:
+							paletteColor,
+						[`placeholder-palette-status-${deviceType}`]:
+							paletteStatus,
+						[`placeholder-palette-opacity-${deviceType}`]:
+							paletteOpacity,
+					});
+					cleanInlineStyles(
+						' .maxi-search-block__input',
+						'::placeholder'
+					);
+				}}
+				deviceType={deviceType}
+				clientId={clientId}
+				disableGradient
+			/>
 		</>
 	);
 };
@@ -285,6 +356,14 @@ const Inspector = props => {
 										inlineTarget:
 											' .maxi-search-block__input',
 									}),
+									{
+										label: __('Placeholder', 'maxi-blocks'),
+										content: (
+											<PlaceholderColourControl
+												{...props}
+											/>
+										),
+									},
 									...inspectorTabs.border({
 										props,
 										prefix: inputPrefix,

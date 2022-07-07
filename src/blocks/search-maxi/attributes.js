@@ -8,6 +8,8 @@ import { __ } from '@wordpress/i18n';
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
 import {
+	breakpointAttributesCreator,
+	paletteAttributesCreator,
 	prefixAttributesCreator,
 	transitionAttributesCreator,
 } from '../../extensions/styles';
@@ -42,10 +44,6 @@ const attributes = {
 	/**
 	 * Input styles
 	 */
-	placeholder: {
-		type: 'string',
-		default: 'Search...',
-	},
 	skin: {
 		type: 'string',
 		default: 'boxed',
@@ -128,6 +126,11 @@ const attributes = {
 			[`${buttonPrefix}background-palette-color-general`]: 4,
 		},
 	}),
+	placeholder: {
+		type: 'string',
+		default: 'Search...',
+	},
+	...attributesData.placeholderColor,
 	...{
 		...attributesData.icon,
 		'icon-inherit': {

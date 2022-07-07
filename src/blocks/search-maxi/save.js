@@ -54,11 +54,7 @@ const save = (props, extendedAttributes = {}) => {
 			{...extendedAttributes}
 			classes={classes}
 		>
-			<RichText.Content
-				className={inputClasses}
-				placeholder={placeholder}
-				tagName='input'
-			/>
+			<input className={inputClasses} placeholder={placeholder} />
 			<div className='maxi-search-block__button'>
 				{searchButtonIsIcon ? (
 					searchButtonIcon && (

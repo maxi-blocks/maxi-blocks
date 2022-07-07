@@ -18,6 +18,7 @@ export { default as numberCounter } from './numberCounter';
 export { default as opacity } from './opacity';
 export { default as overflow } from './overflow';
 export { default as padding } from './padding';
+export { default as placeholderColor } from './placeholderColor';
 export { default as position } from './position';
 export { default as rowPattern } from './rowPattern';
 export { default as scroll } from './scroll';

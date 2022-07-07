@@ -63,22 +63,7 @@ const SearchBlock = props => {
 
 	return (
 		<>
-			<RichText
-				className={inputClasses}
-				value={placeholder}
-				onChange={placeholder => {
-					if (typingTimeout) {
-						clearTimeout(typingTimeout);
-					}
-
-					typingTimeout = setTimeout(() => {
-						maxiSetAttributes({ placeholder });
-					}, 100);
-				}}
-				identifier='content'
-				withoutInteractiveFormatting
-			/>
-
+			<input className={inputClasses} placeholder={placeholder} />
 			<div className='maxi-search-block__button' onClick={onInputToggle}>
 				{buttonSkin === 'icon' ? (
 					searchButtonIcon && (

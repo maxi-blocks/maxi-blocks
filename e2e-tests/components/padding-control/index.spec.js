@@ -59,7 +59,7 @@ describe('Padding control', () => {
 		expect(resetExpect).toBeTruthy();
 	});
 
-	/* it('Checking padding together control', async () => {
+	it('Checking padding together control', async () => {
 		await page.$eval(
 			'.maxi-axis-control__padding .maxi-axis-control__header .maxi-tabs-control .maxi-tabs-control__button-axis',
 			button => button.click()
@@ -68,7 +68,7 @@ describe('Padding control', () => {
 		await editAxisControl({
 			page,
 			instance: await page.$(
-				'.maxi-axis-control__padding .maxi-axis-control__content__item__top-/ bottom'
+				'.maxi-axis-control__padding .maxi-axis-control__content__item__top-bottom'
 			),
 			values: '34',
 			unit: '%',
@@ -77,7 +77,7 @@ describe('Padding control', () => {
 		await editAxisControl({
 			page,
 			instance: await page.$(
-				'.maxi-axis-control__padding .maxi-axis-control__content__item__left-/ right'
+				'.maxi-axis-control__padding .maxi-axis-control__content__item__left-right'
 			),
 			values: '44',
 			unit: 'em',
@@ -105,7 +105,7 @@ describe('Padding control', () => {
 		]);
 
 		expect(paddingResult).toStrictEqual(expectPadding);
-	}); */
+	});
 
 	it('Checking padding separately control', async () => {
 		await page.$eval(

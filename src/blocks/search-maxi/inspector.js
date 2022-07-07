@@ -17,6 +17,7 @@ import {
 	TextControl,
 } from '../../components';
 import {
+	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
@@ -34,6 +35,26 @@ import { isEmpty, without } from 'lodash';
  * Search controls
  */
 const SkinControl = ({ skin, onChange }) => {
+	const getDefaultAttributes = attributeKeys =>
+		attributeKeys.reduce((acc, key) => {
+			acc[key] = getDefaultAttribute(key);
+			return acc;
+		}, {});
+
+	const iconRevealResetStyles = getDefaultAttributes([
+		[`${buttonPrefix}border-unit-radius-general`],
+		[`${buttonPrefix}border-top-left-radius-general`],
+		[`${buttonPrefix}border-top-right-radius-general`],
+		[`${buttonPrefix}border-bottom-left-radius-general`],
+		[`${buttonPrefix}border-bottom-right-radius-general`],
+		[`${buttonPrefix}margin-left-general`],
+		[`${buttonPrefix}margin-sync-general`],
+	]);
+
+	const classicResetStyles = {
+		[`${inputPrefix}background-palette-color-general`]: 1,
+	};
+
 	return (
 		<SelectControl
 			label={__('Skin', 'maxi-blocks')}
@@ -56,19 +77,23 @@ const SkinControl = ({ skin, onChange }) => {
 				if (skin === 'classic') {
 					onChange({
 						[`${inputPrefix}background-palette-color-general`]: 2,
+						...iconRevealResetStyles,
 					});
 				} else if (skin === 'boxed') {
 					onChange({
-						[`${inputPrefix}background-palette-color-general`]: 1,
+						...iconRevealResetStyles,
+						...classicResetStyles,
 					});
 				} else if (skin === 'icon-reveal') {
 					onChange({
+						...classicResetStyles,
 						[`${buttonPrefix}border-unit-radius-general`]: '%',
 						[`${buttonPrefix}border-top-left-radius-general`]: 50,
 						[`${buttonPrefix}border-top-right-radius-general`]: 50,
 						[`${buttonPrefix}border-bottom-left-radius-general`]: 50,
 						[`${buttonPrefix}border-bottom-right-radius-general`]: 50,
 						[`${buttonPrefix}margin-left-general`]: '-20',
+						[`${buttonPrefix}margin-sync-general`]: 'none',
 					});
 				}
 
@@ -329,6 +354,9 @@ const Inspector = props => {
 										? inspectorTabs.icon({
 												props,
 												type: 'search-icon',
+												ignoreIndicator: [
+													'icon-position',
+												],
 												...iconControlsDisabledProps,
 										  })
 										: inspectorTabs.typography({
@@ -366,6 +394,7 @@ const Inspector = props => {
 												disableY
 											/>
 										),
+										extraIndicators: ['icon-position'],
 									},
 									...inspectorTabs.border({
 										props,

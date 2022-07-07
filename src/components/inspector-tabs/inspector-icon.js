@@ -25,6 +25,7 @@ const icon = ({
 	disableSpacing = false,
 	inlineTarget = '.maxi-button-block__icon',
 	prefix = '',
+	ignoreIndicator = [],
 }) => {
 	const {
 		attributes,
@@ -141,6 +142,7 @@ const icon = ({
 				depth={depth}
 			/>
 		),
+		ignoreIndicator,
 	};
 };
 

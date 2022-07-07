@@ -27,8 +27,44 @@ const attributes = {
 	},
 	...attributesData.slider,
 	...attributesData.blockBackground,
-	...attributesData.border,
-	...attributesData.borderWidth,
+	...{
+		...attributesData.border,
+		'border-style-general': {
+			type: 'string',
+			default: 'solid',
+		},
+		'border-palette-color-general': {
+			type: 'number',
+			default: 3,
+		},
+		'border-palette-opacity-general': {
+			type: 'number',
+			default: 0.25,
+		},
+	},
+	...{
+		...attributesData.borderWidth,
+		'border-top-width-general': {
+			type: 'number',
+			default: 1,
+		},
+		'border-right-width-general': {
+			type: 'number',
+			default: 1,
+		},
+		'border-bottom-width-general': {
+			type: 'number',
+			default: 1,
+		},
+		'border-left-width-general': {
+			type: 'number',
+			default: 1,
+		},
+		'border-sync-width-general': {
+			type: 'string',
+			default: 'all',
+		},
+	},
 	...attributesData.borderRadius,
 	...attributesData.borderHover,
 	...attributesData.borderWidthHover,

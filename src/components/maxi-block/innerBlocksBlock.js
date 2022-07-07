@@ -60,16 +60,13 @@ const getInnerBlocksChild = ({
 					key: `maxi-inner-content__${uniqueID}`,
 				}),
 			blockName === 'maxi-blocks/pane-maxi' && (
-				<>
-					<div
-						className='maxi-pane-block__content'
-						key={`maxi-pane-content__${uniqueID}`}
-					>
-						<hr />
-						{cloneElement(innerBlocksChildren)}
-					</div>
-					{accordionLayout === 'simple' && <hr />}
-				</>
+				<div
+					className='maxi-pane-block__content'
+					key={`maxi-pane-content__${uniqueID}`}
+				>
+					<hr />
+					{cloneElement(innerBlocksChildren)}
+				</div>
 			),
 			...(!isSave && hasInnerBlocks && renderWrapperInserter && (
 				<BlockInserter.WrapperInserter

@@ -36,7 +36,25 @@ const attributes = {
 	...attributesData.boxShadowHover,
 	...attributesData.size,
 	...attributesData.margin,
-	...attributesData.padding,
+	...{
+		...attributesData.padding,
+		'padding-top-general': {
+			type: 'string',
+			default: '25',
+		},
+		'padding-bottom-general': {
+			type: 'string',
+			default: '25',
+		},
+		'padding-left-general': {
+			type: 'string',
+			default: '25',
+		},
+		'padding-right-general': {
+			type: 'string',
+			default: '25',
+		},
+	},
 
 	/**
 	 * Advanced

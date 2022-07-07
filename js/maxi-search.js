@@ -1,8 +1,23 @@
-const searchEvent = input => {
+const onSearchEvent = input => {
 	const inputValue = input.value;
 	const searchUrl = `${window.location.origin}/?s=${inputValue}`;
 
 	window.location.href = searchUrl;
+};
+
+const onRevealEvent = (input, wrapper, content, contentClose, isIcon) => {
+	if (input.classList.contains('maxi-search-block__input--hidden')) {
+		wrapper.innerHTML = contentClose;
+	} else {
+		wrapper.innerHTML = content;
+	}
+
+	input.classList.toggle('maxi-search-block__input--hidden');
+
+	if (isIcon) {
+		wrapper.classList.toggle('maxi-search-block__button__close-icon');
+		wrapper.classList.toggle('maxi-search-block__button__default-icon');
+	}
 };
 
 const search = () => {
@@ -10,8 +25,8 @@ const search = () => {
 		([
 			uniqueID,
 			{
-				iconContent,
-				closeIconContent,
+				buttonIconContent,
+				buttonCloseIconContent,
 				buttonContent,
 				buttonContentClose,
 				buttonSkin,
@@ -30,55 +45,32 @@ const search = () => {
 			const buttonIcon = searchBlock.querySelector(
 				'.maxi-search-block__button__icon'
 			);
-			const buttonText = searchBlock.querySelector('.maxi-search-block__button__content');
+			const buttonText = searchBlock.querySelector(
+				'.maxi-search-block__button__content'
+			);
 			const input = searchBlock.querySelector(
 				'.maxi-search-block__input'
 			);
 
+			const isIcon = buttonSkin === 'icon';
+
+			const content = isIcon ? buttonIconContent : buttonContent;
+			const contentClose = isIcon
+				? buttonCloseIconContent
+				: buttonContentClose;
+			const wrapper = isIcon ? buttonIcon : buttonText;
+
 			if (skin === 'icon-reveal') {
-				button.addEventListener('click', () => {
-					if (
-						input.classList.contains(
-							'maxi-search-block__input--hidden'
-						)
-					) {
-						input.classList.remove(
-							'maxi-search-block__input--hidden'
-						);
-
-						if(buttonSkin === 'icon') {
-							buttonIcon.classList.add(
-								'maxi-search-block__button__close-icon'
-							);
-							buttonIcon.classList.remove(
-								'maxi-search-block__button__default-icon'
-							);
-							buttonIcon.innerHTML = closeIconContent;
-						}	else {
-							buttonText.innerHTML = buttonContentClose;
-						}
-					} else {
-						input.classList.add('maxi-search-block__input--hidden');
-
-						if(buttonSkin === 'icon') {
-							buttonIcon.classList.remove(
-								'maxi-search-block__button__close-icon'
-							);
-							buttonIcon.classList.add(
-								'maxi-search-block__button__default-icon'
-							);
-							buttonIcon.innerHTML = iconContent;
-						} else {
-							buttonText.innerHTML = buttonContent;
-						}
-					}
-				});
+				button.addEventListener('click', () =>
+					onRevealEvent(input, wrapper, content, contentClose, isIcon)
+				);
 			} else {
-				button.addEventListener('click', () => searchEvent(input));
+				button.addEventListener('click', () => onSearchEvent(input));
 			}
-			input.addEventListener('keypress', e => {
-				if (e.key === 'Enter') {
-					searchEvent(input);
+
+			input.addEventListener('keypress', event => {
+				if (event.key === 'Enter') {
+					onSearchEvent(input);
 				}
 			});
 		}

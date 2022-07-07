@@ -23,7 +23,7 @@ import { closeIconPrefix } from './attributes';
 import classnames from 'classnames';
 
 /**
- * Edit
+ * Search block
  */
 const SearchBlock = props => {
 	const { attributes, maxiSetAttributes } = props;
@@ -109,6 +109,9 @@ const SearchBlock = props => {
 	);
 };
 
+/**
+ * Edit
+ */
 class edit extends MaxiBlockComponent {
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
@@ -117,8 +120,8 @@ class edit extends MaxiBlockComponent {
 	get getMaxiCustomData() {
 		const { attributes } = this.props;
 		const {
-			'icon-content': iconContent,
-			[`${closeIconPrefix}icon-content`]: closeIconContent,
+			'icon-content': buttonIconContent,
+			[`${closeIconPrefix}icon-content`]: buttonCloseIconContent,
 			buttonContent,
 			buttonContentClose,
 			buttonSkin,
@@ -129,8 +132,8 @@ class edit extends MaxiBlockComponent {
 		return {
 			search: {
 				[uniqueID]: {
-					iconContent,
-					closeIconContent,
+					buttonIconContent,
+					buttonCloseIconContent,
 					buttonContent,
 					buttonContentClose,
 					buttonSkin,

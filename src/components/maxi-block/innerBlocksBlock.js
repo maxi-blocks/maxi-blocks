@@ -32,6 +32,7 @@ const getInnerBlocksChild = ({
 	isSelected,
 	hasSelectedChild,
 	accordionLayout,
+	renderWrapperInserter = true,
 }) => {
 	const needToSplit =
 		isArray(children) &&
@@ -70,17 +71,15 @@ const getInnerBlocksChild = ({
 					{accordionLayout === 'simple' && <hr />}
 				</>
 			),
-			...(!isSave &&
-				hasInnerBlocks &&
-				blockName !== 'maxi-blocks/row-maxi' && (
-					<BlockInserter.WrapperInserter
-						key={`maxi-block-wrapper-inserter__${clientId}`}
-						ref={ref}
-						clientId={clientId}
-						isSelected={isSelected}
-						hasSelectedChild={hasSelectedChild}
-					/>
-				)),
+			...(!isSave && hasInnerBlocks && renderWrapperInserter && (
+				<BlockInserter.WrapperInserter
+					key={`maxi-block-wrapper-inserter__${clientId}`}
+					ref={ref}
+					clientId={clientId}
+					isSelected={isSelected}
+					hasSelectedChild={hasSelectedChild}
+				/>
+			)),
 		];
 
 	const firstGroup = children.filter(child => !child?.props?.afterInnerProps);
@@ -110,17 +109,15 @@ const getInnerBlocksChild = ({
 			key: `maxi-inner-content__${uniqueID}`,
 		}),
 		...secondGroup,
-		...(!isSave &&
-			hasInnerBlocks &&
-			blockName !== 'maxi-blocks/row-maxi' && (
-				<BlockInserter.WrapperInserter
-					key={`maxi-block-wrapper-inserter__${clientId}`}
-					ref={ref}
-					clientId={clientId}
-					isSelected={isSelected}
-					hasSelectedChild={hasSelectedChild}
-				/>
-			)),
+		...(!isSave && hasInnerBlocks && renderWrapperInserter && (
+			<BlockInserter.WrapperInserter
+				key={`maxi-block-wrapper-inserter__${clientId}`}
+				ref={ref}
+				clientId={clientId}
+				isSelected={isSelected}
+				hasSelectedChild={hasSelectedChild}
+			/>
+		)),
 	];
 };
 
@@ -141,6 +138,7 @@ const MainInnerBlocksBlock = forwardRef(
 			isSelected,
 			hasSelectedChild,
 			accordionLayout,
+			renderWrapperInserter,
 			...props
 		},
 		ref
@@ -175,6 +173,7 @@ const MainInnerBlocksBlock = forwardRef(
 				isSelected,
 				hasSelectedChild,
 				accordionLayout,
+				renderWrapperInserter,
 			})
 		);
 

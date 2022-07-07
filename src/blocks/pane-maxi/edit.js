@@ -10,7 +10,7 @@ import { RawHTML } from '@wordpress/element';
  */
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { getMaxiBlockAttributes, MaxiBlock } from '../../components/maxi-block';
-import { BlockInserter, Toolbar } from '../../components';
+import { Toolbar } from '../../components';
 import getStyles from './styles';
 import AccordionContext from '../accordion-maxi/context';
 
@@ -25,8 +25,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, maxiSetAttributes, clientId, hasInnerBlocks } =
-			this.props;
+		const { attributes, maxiSetAttributes, clientId } = this.props;
 		const { uniqueID, title } = attributes;
 		const {
 			paneIcon,
@@ -58,12 +57,10 @@ class edit extends MaxiBlockComponent {
 					allowedBlocks: ALLOWED_BLOCKS,
 					template: ROW_TEMPLATE,
 					templateLock: false,
-					renderAppender: !hasInnerBlocks
-						? () => <BlockInserter clientId={clientId} />
-						: false,
 				}}
 				{...getMaxiBlockAttributes(this.props)}
 				accordionLayout={accordionLayout}
+				renderWrapperInserter={isOpen}
 				aria-expanded={isOpen}
 			>
 				<div

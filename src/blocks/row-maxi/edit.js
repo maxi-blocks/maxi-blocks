@@ -172,6 +172,7 @@ class edit extends MaxiBlockComponent {
 							  )
 							: false,
 					}}
+					renderWrapperInserter={false}
 				/>
 			</RowContext.Provider>,
 		];

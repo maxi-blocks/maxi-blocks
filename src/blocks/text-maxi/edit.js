@@ -19,6 +19,7 @@ import { Toolbar } from '../../components';
 import {
 	getColorRGBAString,
 	getPaletteAttributes,
+	createTransitionObj,
 } from '../../extensions/styles';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import getStyles from './styles';
@@ -104,9 +105,24 @@ class edit extends MaxiBlockComponent {
 			listReversed,
 			listStart,
 			textLevel,
+			transition,
 			typeOfList,
 			uniqueID,
 		} = attributes;
+
+		// Temporary code to ensure that all text-maxi transitions objects has link transitions
+		// Need to be removed
+		if (!transition.canvas?.link)
+			maxiSetAttributes({
+				transition: {
+					...transition,
+					canvas: {
+						...transition.canvas,
+						link: createTransitionObj(),
+					},
+				},
+			});
+		// End of temporary code
 
 		/**
 		 * Prevents losing general link format when the link is affecting whole content
@@ -138,7 +154,10 @@ class edit extends MaxiBlockComponent {
 			<textContext.Provider
 				key={`maxi-text-block__context-${uniqueID}`}
 				value={{
-					formatValue: this.state.formatValue,
+					content,
+					formatValue: {
+						...this.state.formatValue,
+					},
 					onChangeTextFormat: newFormatValue => {
 						this.state.onChangeFormat(newFormatValue);
 						onChangeRichText({

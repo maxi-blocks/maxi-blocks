@@ -1,6 +1,6 @@
 .maxi-text-block {
 	&__content {
-		border: 1.5px dashed #7fbddc !important;
+		border: 1.5px dashed var(--maxi-light-blue-3-color) !important;
 
 		a.maxi-text-block--link {
 			&:visited,
@@ -13,7 +13,7 @@
 		&:hover,
 		&.is-selected {
 			.maxi-text-block__content {
-				border: 2px dashed #7fbddc !important;
+				border: 2px dashed var(--maxi-light-blue-3-color) !important;
 			}
 		}
 		.maxi-text-block__content {

@@ -6,8 +6,8 @@ import { create } from '@wordpress/rich-text';
 /**
  * Generates RichText format value
  *
- * @param {Object} formatElement 		Preformatted object for RichText
- * @param {Object} node					Node DOM element
+ * @param {Object} formatElement Preformatted object for RichText
+ * @param {Object} node          Node DOM element
  *
  * @returns {Object} RichText format value
  */

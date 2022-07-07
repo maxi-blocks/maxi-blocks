@@ -5,6 +5,7 @@ const prefix = 'box-shadow-';
 
 const rawBoxShadow = {
 	...paletteAttributesCreator({ prefix, palette: 8, opacity: 1 }),
+	'box-shadow-inset': { type: 'boolean', default: false },
 	'box-shadow-horizontal': {
 		type: 'number',
 		default: 0,

@@ -90,7 +90,7 @@ describe('NumberCounterControl', () => {
 		]);
 
 		const expectAttributes = {
-			'number-counter-width-general': 31,
+			'number-counter-width-general': '31',
 			'number-counter-width-unit-general': '%',
 			'number-counter-duration': 10,
 			'number-counter-end': 50,

@@ -31,25 +31,6 @@ const attributes = {
 		type: 'string',
 		default: __('Search', 'maxi-blocks'),
 	},
-	content: {
-		type: 'string',
-	},
-	placeholder: {
-		type: 'string',
-		default: 'Search...',
-	},
-	svgType: {
-		type: 'string',
-		default: 'Shape',
-	},
-	[`${closeIconPrefix}svgType`]: {
-		type: 'string',
-		default: 'Shape',
-	},
-	skin: {
-		type: 'string',
-		default: 'boxed',
-	},
 	...attributesData.border,
 	...attributesData.borderHover,
 	...attributesData.borderRadius,
@@ -60,12 +41,19 @@ const attributes = {
 	...attributesData.boxShadowHover,
 	...attributesData.margin,
 	...attributesData.padding,
-	...attributesData.searchButton,
 	...attributesData.size,
 
 	/**
 	 * Input styles
 	 */
+	placeholder: {
+		type: 'string',
+		default: 'Search...',
+	},
+	skin: {
+		type: 'string',
+		default: 'boxed',
+	},
 	...prefixAttributesCreator({
 		obj: {
 			...attributesData.typography,
@@ -98,6 +86,26 @@ const attributes = {
 	/**
 	 * Button styles
 	 */
+	svgType: {
+		type: 'string',
+		default: 'Shape',
+	},
+	[`${closeIconPrefix}svgType`]: {
+		type: 'string',
+		default: 'Shape',
+	},
+	searchButtonSkin: {
+		type: 'string',
+		default: 'icon',
+	},
+	searchButtonContent: {
+		type: 'string',
+		default: 'Find',
+	},
+	searchButtonContentClose: {
+		type: 'string',
+		default: 'Close',
+	},
 	...prefixAttributesCreator({
 		obj: {
 			...attributesData.typography,

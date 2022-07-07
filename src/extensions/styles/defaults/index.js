@@ -21,7 +21,6 @@ export { default as padding } from './padding';
 export { default as position } from './position';
 export { default as rowPattern } from './rowPattern';
 export { default as scroll } from './scroll';
-export { default as searchButton } from './searchButton';
 export { default as shape } from './shape';
 export { default as shapeDivider } from './shapeDivider';
 export { default as size } from './size';

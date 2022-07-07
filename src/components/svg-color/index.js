@@ -187,7 +187,6 @@ export const SvgColorControl = props => {
 		disableHover = false,
 	} = props;
 	const hoverStatus = props['svg-status-hover'];
-	console.log(svgType);
 
 	const onChangeProps = {
 		onChangeFill: obj => {

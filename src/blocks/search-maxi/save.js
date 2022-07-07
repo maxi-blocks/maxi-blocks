@@ -67,10 +67,9 @@ const save = (props, extendedAttributes = {}) => {
 						</div>
 					)
 				) : (
-					<RichText.Content
-						className='maxi-search-block__button__content'
-						value={searchButtonContent}
-					/>
+					<div className='maxi-search-block__button__content'>
+						<RichText.Content value={searchButtonContent} />
+					</div>
 				)}
 			</div>
 		</MaxiBlock.save>

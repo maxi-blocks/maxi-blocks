@@ -24,6 +24,130 @@ import {
 } from './prefixes';
 
 /**
+ * Search controls
+ */
+const SkinControl = props => {
+	const { attributes, maxiSetAttributes } = props;
+	const { skin } = attributes;
+
+	return (
+		<>
+			<SelectControl
+				label={__('Skin', 'maxi-blocks')}
+				value={skin}
+				options={[
+					{
+						label: __('Boxed', 'maxi-blocks'),
+						value: 'boxed',
+					},
+					{
+						label: __('Classic', 'maxi-blocks'),
+						value: 'classic',
+					},
+					{
+						label: __('Icon reveal', 'maxi-blocks'),
+						value: 'icon-reveal',
+					},
+				]}
+				onChange={skin => {
+					if (skin === 'classic') {
+						maxiSetAttributes({
+							[`${searchInputPrefix}background-palette-color-general`]: 2,
+						});
+					} else if (skin === 'boxed') {
+						maxiSetAttributes({
+							[`${searchInputPrefix}background-palette-color-general`]: 1,
+						});
+					} else if (skin === 'icon-reveal') {
+						maxiSetAttributes({
+							[`${searchButtonPrefix}border-unit-radius-general`]:
+								'%',
+							[`${searchButtonPrefix}border-top-left-radius-general`]: 50,
+							[`${searchButtonPrefix}border-top-right-radius-general`]: 50,
+							[`${searchButtonPrefix}border-bottom-left-radius-general`]: 50,
+							[`${searchButtonPrefix}border-bottom-right-radius-general`]: 50,
+							[`${searchButtonPrefix}margin-left-general`]: '-20',
+						});
+					}
+
+					maxiSetAttributes({
+						skin,
+					});
+				}}
+			/>
+			<TextControl
+				label={__('Placeholder text', 'maxi-blocks')}
+				value={attributes.placeholder}
+				onChange={placeholder =>
+					maxiSetAttributes({
+						placeholder,
+					})
+				}
+			/>
+		</>
+	);
+};
+
+const ButtonControl = props => {
+	const { attributes, maxiSetAttributes } = props;
+	const {
+		searchButtonContent,
+		searchButtonContentClose,
+		searchButtonSkin,
+		skin,
+	} = attributes;
+
+	return (
+		<>
+			<SelectControl
+				className='maxi-search-button-control__skin'
+				label={__('Skin', 'maxi-blocks')}
+				value={searchButtonSkin}
+				options={[
+					{
+						label: __('Icon', 'maxi-blocks'),
+						value: 'icon',
+					},
+					{
+						label: __('Text', 'maxi-blocks'),
+						value: 'text',
+					},
+				]}
+				onChange={searchButtonSkin =>
+					maxiSetAttributes({
+						searchButtonSkin,
+					})
+				}
+			/>
+			{searchButtonSkin === 'text' && (
+				<>
+					<TextControl
+						label={__('Button text', 'maxi-blocks')}
+						value={searchButtonContent}
+						onChange={searchButtonContent =>
+							maxiSetAttributes({
+								searchButtonContent,
+							})
+						}
+					/>
+					{skin === 'icon-reveal' && (
+						<TextControl
+							label={__('Button close text', 'maxi-blocks')}
+							value={searchButtonContentClose}
+							onChange={searchButtonContentClose =>
+								maxiSetAttributes({
+									searchButtonContentClose,
+								})
+							}
+						/>
+					)}
+				</>
+			)}
+		</>
+	);
+};
+
+/**
  * Inspector
  */
 const Inspector = props => {
@@ -33,6 +157,23 @@ const Inspector = props => {
 		skin,
 		searchButtonSkin,
 	} = attributes;
+
+	const iconControlsDisabledProps = {
+		disableBackground: true,
+		disableIconInherit: true,
+		disableIconOnly: true,
+		disablePadding: true,
+		disablePosition: true,
+		disableSpacing: true,
+	};
+
+	const backgroundDisabledProps = {
+		disableImage: true,
+		disableVideo: true,
+		disableGradient: true,
+		disableSVG: true,
+		disableNoneStyle: true,
+	};
 
 	return (
 		<InspectorControls>
@@ -76,132 +217,17 @@ const Inspector = props => {
 								items={[
 									{
 										label: __('Skin', 'maxi-blocks'),
-										content: (
-											<>
-												<SelectControl
-													label={__(
-														'Skin',
-														'maxi-blocks'
-													)}
-													value={skin}
-													options={[
-														{
-															label: __(
-																'Boxed',
-																'maxi-blocks'
-															),
-															value: 'boxed',
-														},
-														{
-															label: __(
-																'Classic',
-																'maxi-blocks'
-															),
-															value: 'classic',
-														},
-														{
-															label: __(
-																'Icon reveal',
-																'maxi-blocks'
-															),
-															value: 'icon-reveal',
-														},
-													]}
-													onChange={skin => {
-														if (
-															skin === 'classic'
-														) {
-															maxiSetAttributes({
-																[`${searchInputPrefix}background-palette-color-general`]: 2,
-															});
-														} else if (
-															skin === 'boxed'
-														) {
-															maxiSetAttributes({
-																[`${searchInputPrefix}background-palette-color-general`]: 1,
-															});
-														} else if (
-															skin ===
-															'icon-reveal'
-														) {
-															maxiSetAttributes({
-																[`${searchButtonPrefix}border-unit-radius-general`]:
-																	'%',
-																[`${searchButtonPrefix}border-top-left-radius-general`]: 50,
-																[`${searchButtonPrefix}border-top-right-radius-general`]: 50,
-																[`${searchButtonPrefix}border-bottom-left-radius-general`]: 50,
-																[`${searchButtonPrefix}border-bottom-right-radius-general`]: 50,
-																[`${searchButtonPrefix}margin-left-general`]:
-																	'-20',
-															});
-														}
-
-														maxiSetAttributes({
-															skin,
-														});
-													}}
-												/>
-												<TextControl
-													label={__(
-														'Placeholder text',
-														'maxi-blocks'
-													)}
-													value={
-														attributes.placeholder
-													}
-													onChange={placeholder =>
-														maxiSetAttributes({
-															placeholder,
-														})
-													}
-												/>
-											</>
-										),
+										content: <SkinControl {...props} />,
 									},
 									{
 										label: __('Button', 'maxi-blocks'),
-										content: (
-											<SelectControl
-												className='maxi-search-button-control__skin'
-												label={__(
-													'Skin',
-													'maxi-blocks'
-												)}
-												value={searchButtonSkin}
-												options={[
-													{
-														label: __(
-															'Icon',
-															'maxi-blocks'
-														),
-														value: 'icon',
-													},
-													{
-														label: __(
-															'Text',
-															'maxi-blocks'
-														),
-														value: 'text',
-													},
-												]}
-												onChange={searchButtonSkin =>
-													maxiSetAttributes({
-														searchButtonSkin,
-													})
-												}
-											/>
-										),
+										content: <ButtonControl {...props} />,
 									},
 									...(searchButtonSkin === 'icon'
 										? inspectorTabs.icon({
 												props,
 												type: 'search-icon',
-												disableBackground: true,
-												disableIconInherit: true,
-												disableIconOnly: true,
-												disablePadding: true,
-												disablePosition: true,
-												disableSpacing: true,
+												...iconControlsDisabledProps,
 										  })
 										: inspectorTabs.typography({
 												props,
@@ -220,12 +246,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											type: 'search-icon',
-											disableBackground: true,
-											disableIconInherit: true,
-											disableIconOnly: true,
-											disablePadding: true,
-											disablePosition: true,
-											disableSpacing: true,
+											...iconControlsDisabledProps,
 											prefix: closeIconPrefix,
 										})),
 									{
@@ -253,11 +274,7 @@ const Inspector = props => {
 										label: 'Button',
 										props,
 										prefix: searchButtonPrefix,
-										disableImage: true,
-										disableVideo: true,
-										disableGradient: true,
-										disableSVG: true,
-										disableNoneStyle: true,
+										...backgroundDisabledProps,
 										selector: '.maxi-search-block__button',
 									}),
 									...inspectorTabs.marginPadding({
@@ -290,11 +307,7 @@ const Inspector = props => {
 										label: 'Input',
 										props,
 										prefix: searchInputPrefix,
-										disableImage: true,
-										disableVideo: true,
-										disableGradient: true,
-										disableSVG: true,
-										disableNoneStyle: true,
+										...backgroundDisabledProps,
 										selector: '.maxi-search-block__input',
 									}),
 									...inspectorTabs.marginPadding({

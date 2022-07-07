@@ -31,6 +31,7 @@ const SearchBlock = props => {
 		'icon-content': searchButtonIcon,
 		placeholder,
 		searchButtonContent,
+		searchButtonContentClose,
 		searchButtonSkin,
 		skin,
 	} = attributes;
@@ -93,7 +94,7 @@ const SearchBlock = props => {
 							</RawHTML>
 						</div>
 					)
-				) : (
+				) : skin !== 'icon-reveal' ? (
 					<RichText
 						className='maxi-search-block__button__content'
 						value={searchButtonContent}
@@ -104,11 +105,19 @@ const SearchBlock = props => {
 							}
 
 							typingTimeout = setTimeout(() => {
-								maxiSetAttributes({ searchButtonContent });
+								maxiSetAttributes({
+									searchButtonContent,
+								});
 							}, 100);
 						}}
 						withoutInteractiveFormatting
 					/>
+				) : (
+					<div className='maxi-search-block__button__content'>
+						{isInputOpen
+							? searchButtonContentClose
+							: searchButtonContent}
+					</div>
 				)}
 			</div>
 		</>
@@ -125,6 +134,9 @@ class edit extends MaxiBlockComponent {
 		const {
 			'icon-content': iconContent,
 			[`${closeIconPrefix}icon-content`]: closeIconContent,
+			searchButtonContent,
+			searchButtonContentClose,
+			searchButtonSkin,
 			skin,
 			uniqueID,
 		} = attributes;
@@ -134,6 +146,9 @@ class edit extends MaxiBlockComponent {
 				[uniqueID]: {
 					iconContent,
 					closeIconContent,
+					searchButtonContent,
+					searchButtonContentClose,
+					searchButtonSkin,
 					skin,
 				},
 			},

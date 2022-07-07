@@ -69,8 +69,6 @@ const IconToolbar = memo(
 			}
 
 			maxiSetAttributes(obj);
-
-			console.log('as');
 		};
 
 		return (

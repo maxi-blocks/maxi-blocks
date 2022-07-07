@@ -4,15 +4,7 @@
 		margin: 0;
 		border-color: #d6d6d6 !important;
 		border-style: solid !important;
-		border-top: 3px;
-		border-right: 0;
-		border-left: 0;
-		border-bottom: 0;
-	}
-
-	&__icon svg {
-		width: 32px;
-		height: 32px;
+		border-width: 3px 0 0 0;
 	}
 
 	&__header {

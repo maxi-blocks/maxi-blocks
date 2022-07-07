@@ -194,12 +194,15 @@ const getPaneSpacing = props => {
 	return response;
 };
 
-const getColor = (props, prefix) => {
+const getColor = ({ props, prefix, isHover, breakpoint }) => {
 	const { paletteStatus, paletteColor, paletteOpacity, color } =
 		getPaletteAttributes({
 			obj: props,
-			prefix,
+			...(prefix && { prefix }),
+			...(isHover && { isHover }),
+			...(breakpoint && { breakpoint }),
 		});
+
 	if (!paletteStatus && !isNil(color)) return color;
 	if (paletteStatus && paletteColor)
 		return getColorRGBAString({
@@ -207,30 +210,60 @@ const getColor = (props, prefix) => {
 			opacity: paletteOpacity,
 			blockStyle: props.blockStyle,
 		});
+
+	return null;
 };
 
-const getPaneTitleStyles = (props, target) => {
+const getPaneTitleStyles = (props, prefix, isHover = false) => {
 	const response = {
-		[`${target} .maxi-pane-block__title`]: {
-			paneTitleColor: {
-				label: 'Pane title color',
-				general: {
-					color: getColor(props, 'title-'),
-				},
+		paneTitleColor: {
+			label: 'Pane title color',
+			general: {
+				color: getColor({ props, prefix: `${prefix}title-`, isHover }),
 			},
 		},
-		[`${target} .maxi-pane-block__header`]: {
-			paneTitleBgColor: {
-				label: 'Pane title background color',
-				general: {
-					'background-color': getColor(props, 'title-background-'),
-					'flex-direction':
-						props['icon-position'] === 'right'
-							? 'row'
-							: 'row-reverse',
-				},
+	};
+
+	return response;
+};
+
+const getPaneHeaderStyles = (props, prefix, isHover = false) => {
+	const response = {
+		paneHeader: {
+			label: 'Pane header',
+			general: {
+				'background-color': getColor({
+					props,
+					prefix: `${prefix}title-background-`,
+					isHover,
+				}),
+				'flex-direction':
+					props['icon-position'] === 'right' ? 'row' : 'row-reverse',
 			},
 		},
+	};
+
+	return response;
+};
+
+const getPaneHeaderObject = props => {
+	const response = {
+		' .maxi-pane-block .maxi-pane-block__header': getPaneHeaderStyles(
+			props,
+			''
+		),
+		' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__header':
+			getPaneHeaderStyles(props, 'active-'),
+		' .maxi-pane-block[aria-expanded]:hover .maxi-pane-block__header':
+			getPaneHeaderStyles(props, '', true),
+		' .maxi-pane-block .maxi-pane-block__title': getPaneTitleStyles(
+			props,
+			''
+		),
+		' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__title':
+			getPaneTitleStyles(props, 'active-'),
+		' .maxi-pane-block[aria-expanded]:hover .maxi-pane-block__title':
+			getPaneTitleStyles(props, '', true),
 	};
 
 	return response;
@@ -285,9 +318,9 @@ const getStyles = props => {
 		[uniqueID]: stylesCleaner({
 			'': getNormalObject(props),
 			':hover': getHoverObject(props),
+			...getPaneHeaderObject(props),
 			'.maxi-accordion-block .maxi-accordion-block__content':
 				getPaneStyles(props),
-			...getPaneTitleStyles(props, ' .maxi-pane-block'),
 			...getIconObject(props),
 			...getBackgroundObject(props),
 		}),

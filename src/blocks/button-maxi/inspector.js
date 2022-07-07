@@ -20,9 +20,9 @@ import {
 } from '../../components';
 import * as defaultPresets from './defaults';
 import {
-	getColorRGBAString,
 	getGroupAttributes,
 	setHoverAttributes,
+	getIconWithColor,
 } from '../../extensions/styles';
 import { selectorsButton, categoriesButton } from './custom-css';
 import * as inspectorTabs from '../../components/inspector-tabs';
@@ -49,7 +49,6 @@ import {
 	presetTen,
 	presetEleven,
 } from '../../icons';
-import { setSVGContent, setSVGContentHover } from '../../extensions/svg';
 
 /**
  * Inspector
@@ -64,108 +63,7 @@ const Inspector = props => {
 		inlineStylesTargets,
 		clientId,
 	} = props;
-	const {
-		blockStyle,
-		svgType,
-		'icon-only': iconOnly,
-		'icon-inherit': iconInherit,
-		'icon-content': iconContent,
-	} = attributes;
-
-	const getIconWithColor = (args = {}) => {
-		let {
-			paletteColor,
-			paletteOpacity,
-			paletteStatus,
-			color,
-			isInherit,
-			isIconOnly,
-		} = args;
-		const { isHover, type = 'stroke', rawIcon } = args;
-
-		if (isNil(isInherit)) isInherit = iconInherit;
-		if (isNil(isIconOnly)) isIconOnly = iconOnly;
-
-		const useIconColor = isIconOnly || !isInherit;
-
-		let lineColorStr = '';
-
-		if (type === 'fill')
-			lineColorStr = getColorRGBAString({
-				firstVar: `icon-${type}${isHover ? '-hover' : ''}`,
-				secondVar: `color-${paletteColor}${isHover ? '-hover' : ''}`,
-				opacity: paletteOpacity,
-				blockStyle,
-			});
-		else if (
-			useIconColor ||
-			(isHover && !useIconColor && !attributes['typography-status-hover'])
-		) {
-			if (!paletteColor)
-				paletteColor =
-					attributes[
-						`icon-${type}-palette-color${isHover ? '-hover' : ''}`
-					];
-			if (!paletteOpacity)
-				paletteOpacity =
-					attributes[
-						`icon-${type}-palette-opacity${isHover ? '-hover' : ''}`
-					];
-			if (!paletteStatus)
-				paletteStatus =
-					attributes[
-						`icon-${type}-palette-status${isHover ? '-hover' : ''}`
-					];
-			if (!color)
-				color =
-					attributes[`icon-${type}-color${isHover ? '-hover' : ''}`];
-
-			lineColorStr = getColorRGBAString({
-				firstVar: `icon-${type}${isHover ? '-hover' : ''}`,
-				secondVar: `color-${paletteColor}${isHover ? '-hover' : ''}`,
-				opacity: paletteOpacity,
-				blockStyle,
-			});
-		} else {
-			if (!paletteColor)
-				paletteColor =
-					attributes[
-						`palette-color-general${isHover ? '-hover' : ''}`
-					];
-			if (!paletteOpacity)
-				paletteOpacity =
-					attributes[
-						`palette-opacity-general${isHover ? '-hover' : ''}`
-					];
-			if (!paletteStatus)
-				paletteStatus =
-					attributes[
-						`palette-status-general${isHover ? '-hover' : ''}`
-					];
-			if (!color)
-				color = attributes[`color-general${isHover ? '-hover' : ''}`];
-
-			lineColorStr = getColorRGBAString({
-				firstVar: `color-${paletteColor}${isHover ? '-hover' : ''}`,
-				opacity: paletteOpacity,
-				blockStyle,
-			});
-		}
-
-		const icon = isHover
-			? setSVGContentHover(
-					rawIcon ?? iconContent,
-					paletteStatus ? lineColorStr : color,
-					type
-			  )
-			: setSVGContent(
-					rawIcon ?? iconContent,
-					paletteStatus ? lineColorStr : color,
-					type
-			  );
-
-		return icon;
-	};
+	const { blockStyle, svgType, 'icon-only': iconOnly } = attributes;
 
 	const onChangePreset = (number, type = 'normal') => {
 		const newDefaultPresets = cloneDeep({ ...defaultPresets });
@@ -233,7 +131,7 @@ const Inspector = props => {
 				'icon-only': rawIconOnly,
 			} = newDefaultPresets[`preset${number}`];
 
-			icon = getIconWithColor({
+			icon = getIconWithColor(attributes, {
 				paletteStatus: strokePaletteStatus,
 				paletteColor: strokePaletteColor,
 				rawIcon,
@@ -241,7 +139,7 @@ const Inspector = props => {
 				isIconOnly: rawIconOnly,
 			});
 
-			icon = getIconWithColor({
+			icon = getIconWithColor(attributes, {
 				paletteStatus: strokePaletteHoverStatus,
 				paletteColor: strokePaletteHoverColor,
 				isHover: true,
@@ -268,7 +166,7 @@ const Inspector = props => {
 	useEffect(
 		() =>
 			maxiSetAttributes({
-				'icon-content': getIconWithColor(),
+				'icon-content': getIconWithColor(attributes),
 			}),
 		[
 			attributes['palette-color-general'],
@@ -558,8 +456,11 @@ const Inspector = props => {
 																blockStyle={
 																	blockStyle
 																}
-																getIconWithColor={
-																	getIconWithColor
+																getIconWithColor={args =>
+																	getIconWithColor(
+																		attributes,
+																		args
+																	)
 																}
 															/>
 														),
@@ -625,8 +526,11 @@ const Inspector = props => {
 																		blockStyle={
 																			blockStyle
 																		}
-																		getIconWithColor={
-																			getIconWithColor
+																		getIconWithColor={args =>
+																			getIconWithColor(
+																				attributes,
+																				args
+																			)
 																		}
 																		isHover
 																	/>
@@ -645,60 +549,50 @@ const Inspector = props => {
 												breakpoint={deviceType}
 											>
 												<>
-													<>
-														<label
-															className='maxi-base-control__label'
-															htmlFor={`${alignmentLabel}-alignment`}
-														>
-															{`${alignmentLabel} alignment`}
-														</label>
-														<AlignmentControl
-															id={`${alignmentLabel}-alignment`}
-															label={
-																alignmentLabel
-															}
-															{...getGroupAttributes(
-																attributes,
-																'alignment'
-															)}
-															onChange={obj =>
-																maxiSetAttributes(
-																	obj
-																)
-															}
-															breakpoint={
-																deviceType
-															}
-															disableJustify
-														/>
-													</>
-													<>
-														<label
-															className='maxi-base-control__label'
-															htmlFor={`${textAlignmentLabel}-alignment`}
-														>
-															{`${textAlignmentLabel} alignment`}
-														</label>
-														<AlignmentControl
-															id={`${textAlignmentLabel}-alignment`}
-															label={
-																textAlignmentLabel
-															}
-															{...getGroupAttributes(
-																attributes,
-																'textAlignment'
-															)}
-															onChange={obj =>
-																maxiSetAttributes(
-																	obj
-																)
-															}
-															breakpoint={
-																deviceType
-															}
-															type='text'
-														/>
-													</>
+													<label
+														className='maxi-base-control__label'
+														htmlFor={`${alignmentLabel}-alignment`}
+													>
+														{`${alignmentLabel} alignment`}
+													</label>
+													<AlignmentControl
+														id={`${alignmentLabel}-alignment`}
+														label={alignmentLabel}
+														{...getGroupAttributes(
+															attributes,
+															'alignment'
+														)}
+														onChange={obj =>
+															maxiSetAttributes(
+																obj
+															)
+														}
+														breakpoint={deviceType}
+														disableJustify
+													/>
+													<label
+														className='maxi-base-control__label'
+														htmlFor={`${textAlignmentLabel}-alignment`}
+													>
+														{`${textAlignmentLabel} alignment`}
+													</label>
+													<AlignmentControl
+														id={`${textAlignmentLabel}-alignment`}
+														label={
+															textAlignmentLabel
+														}
+														{...getGroupAttributes(
+															attributes,
+															'textAlignment'
+														)}
+														onChange={obj =>
+															maxiSetAttributes(
+																obj
+															)
+														}
+														breakpoint={deviceType}
+														type='text'
+													/>
 												</>
 											</ResponsiveTabsControl>
 										),
@@ -896,6 +790,7 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.relation({
 										props,
+										isButton: true,
 									}),
 								]}
 							/>

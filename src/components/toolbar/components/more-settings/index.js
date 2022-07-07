@@ -81,8 +81,8 @@ const MoreSettings = props => {
 						{blockName === 'maxi-blocks/text-maxi' && (
 							<TextGenerator
 								onChange={onChange}
-								content={content}
 								disableCustomFormats={disableCustomFormats}
+								closeMoreSettings={args.onClose}
 							/>
 						)}
 						{blockName === 'maxi-blocks/button-maxi' && (

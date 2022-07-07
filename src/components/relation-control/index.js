@@ -27,7 +27,7 @@ import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFrom
 /**
  * External dependencies
  */
-import { cloneDeep, isEmpty } from 'lodash';
+import { cloneDeep, isEmpty, merge } from 'lodash';
 
 /**
  * Styles
@@ -37,7 +37,7 @@ import './editor.scss';
 const RelationControl = props => {
 	const { getBlock } = select('core/block-editor');
 
-	const { deviceType, onChange, uniqueID } = props;
+	const { deviceType, onChange, uniqueID, isButton } = props;
 	const relations = cloneDeep(props.relations) ?? [];
 
 	const getRelationId = () =>
@@ -53,11 +53,7 @@ const RelationControl = props => {
 		const blockName = getBlock(clientId)?.name;
 		const blockOptions = settings[blockName] || [];
 
-		if (!blockOptions) {
-			return [];
-		}
-
-		return blockOptions;
+		return blockOptions || [];
 	};
 
 	const transitionDefaultAttributes = createTransitionObj();
@@ -66,7 +62,6 @@ const RelationControl = props => {
 		const relation = {
 			title: '',
 			uniqueID: '',
-			trigger: uniqueID,
 			target: '',
 			action: '',
 			settings: '',
@@ -74,6 +69,7 @@ const RelationControl = props => {
 			css: {},
 			id: getRelationId(),
 			effects: transitionDefaultAttributes,
+			isButton,
 		};
 
 		onChange({ relations: [...relations, relation] });
@@ -108,7 +104,7 @@ const RelationControl = props => {
 
 		const settingsComponent = selectedSettingsObj.component;
 		const prefix = selectedSettingsObj?.prefix || '';
-		const blockAttributes = getBlock(clientId)?.attributes;
+		const blockAttributes = cloneDeep(getBlock(clientId)?.attributes);
 
 		const storeBreakpoints = select('maxiBlocks').receiveMaxiBreakpoints();
 		const blockBreakpoints = getGroupAttributes(
@@ -138,9 +134,24 @@ const RelationControl = props => {
 			);
 		}
 
-		const mergedAttributes = {
-			...blockAttributes,
-			...item.attributes,
+		const mergedAttributes = merge(blockAttributes, item.attributes);
+
+		const transformGeneralAttributesToWinBreakpoint = obj => {
+			if (deviceType !== 'general') return {};
+
+			const winBreakpoint = select('maxiBlocks').receiveWinBreakpoint();
+
+			if (!winBreakpoint) return {};
+
+			return Object.keys(obj).reduce((acc, key) => {
+				if (key.includes('-general')) {
+					const newKey = key.replace('general', winBreakpoint);
+
+					acc[newKey] = obj[key];
+				}
+
+				return acc;
+			}, {});
 		};
 
 		return settingsComponent({
@@ -151,10 +162,12 @@ const RelationControl = props => {
 				prefix
 			),
 			attributes: mergedAttributes,
+			blockAttributes,
 			onChange: obj => {
 				const newAttributesObj = {
 					...item.attributes,
 					...obj,
+					...transformGeneralAttributesToWinBreakpoint(obj),
 				};
 
 				onChangeRelationProperty(
@@ -179,28 +192,60 @@ const RelationControl = props => {
 						...blockAttributes,
 						...newAttributesObj,
 					},
+					target: selectedSettingsObj?.target,
 				});
 
-				const styles = Object.keys(stylesObj).reduce((acc, key) => {
-					if (key !== 'label') {
-						acc[key] = {
-							styles: stylesObj[key],
-							breakpoint: breakpoints[key] || null,
-						};
+				const getStyles = (stylesObj, isFirst = false) => {
+					if (
+						Object.keys(stylesObj).some(key =>
+							key.includes('general')
+						)
+					) {
+						const styles = Object.keys(stylesObj).reduce(
+							(acc, key) => {
+								if (
+									breakpoints[key] ||
+									key === 'xxl' ||
+									key === 'general'
+								) {
+									acc[key] = {
+										styles: stylesObj[key],
+										breakpoint: breakpoints[key] || null,
+									};
 
-						return acc;
+									return acc;
+								}
+
+								return acc;
+							},
+							{}
+						);
+
+						return styles;
 					}
 
-					acc[key] = stylesObj[key];
+					const styles = Object.keys(stylesObj).reduce((acc, key) => {
+						if (isFirst) {
+							acc[key] = getStyles(stylesObj[key]);
+							return acc;
+						}
 
-					return acc;
-				}, {});
+						const newAcc = merge(acc, getStyles(stylesObj[key]));
+
+						return newAcc;
+					}, {});
+
+					return styles;
+				};
+
+				const styles = getStyles(stylesObj, true);
 
 				onChangeRelationProperty(item.id, 'css', styles);
 			},
 			prefix,
 			blockStyle: blockAttributes.blockStyle,
 			breakpoint: deviceType,
+			clientId,
 		});
 	};
 
@@ -373,6 +418,11 @@ const RelationControl = props => {
 														item.id,
 														'attributes',
 														{}
+													);
+													onChangeRelationProperty(
+														item.id,
+														'target',
+														''
 													);
 													onChangeRelationProperty(
 														item.id,

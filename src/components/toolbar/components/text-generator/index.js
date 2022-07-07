@@ -5,7 +5,6 @@
 
 import { __ } from '@wordpress/i18n';
 import { useContext, useState } from '@wordpress/element';
-import { create, insert } from '@wordpress/rich-text';
 
 /**
  * Internal dependencies
@@ -28,11 +27,8 @@ import { LoremIpsum } from 'react-lorem-ipsum';
 import './editor.scss';
 
 const TextGenerator = props => {
-	const { onChange, content, disableCustomFormats } = props;
-
-	const { formatValue, onChangeTextFormat } = !disableCustomFormats
-		? useContext(textContext)
-		: {};
+	const { onChange, closeMoreSettings } = props;
+	const { content } = useContext(textContext);
 
 	const [averageSentencesLength, setAverageSentencesLength] = useState(10);
 	const [averageWordsLength, setAverageWordsLength] = useState(15);
@@ -44,28 +40,15 @@ const TextGenerator = props => {
 			avgSentencesPerParagraph: sentencesPerParagraph,
 		}).map(text => text);
 
-		if (!disableCustomFormats) {
-			const newContent = `${formatValue.text}${generatedText[0].props.children}`;
+		const newContent = `${content}${generatedText[0].props.children}`;
 
-			const newFormatsArray = [];
-			const newReplacementsArray = [];
-			newFormatsArray.length = newContent.length;
-			newReplacementsArray.length = newContent.length;
+		const newFormatsArray = [];
+		const newReplacementsArray = [];
+		newFormatsArray.length = newContent.length;
+		newReplacementsArray.length = newContent.length;
 
-			const newFormatValue = insert(
-				formatValue,
-				` ${generatedText[0].props.children}`
-			);
-
-			onChangeTextFormat(newFormatValue);
-
-			onChange({ isList: false, content: newContent });
-		} else {
-			onChange({
-				isList: false,
-				content: content + generatedText[0].props.children,
-			});
-		}
+		onChange({ isList: false, content: newContent });
+		closeMoreSettings();
 	};
 
 	const replaceText = (sentencesPerParagraph, wordsPerSentence) => {
@@ -82,11 +65,8 @@ const TextGenerator = props => {
 		newFormatsArray.length = newContent.length;
 		newReplacementsArray.length = newContent.length;
 
-		const newFormatValue = create({ text: newContent });
-
-		onChangeTextFormat(newFormatValue);
-
 		onChange({ isList: false, content: generatedText[0].props.children });
+		closeMoreSettings();
 	};
 
 	return (

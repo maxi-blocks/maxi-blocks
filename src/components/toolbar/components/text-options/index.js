@@ -320,6 +320,7 @@ const TextOptions = props => {
 											});
 										}}
 										theme='dark'
+										breakpoint={breakpoint}
 									/>
 								</div>
 								<div className='toolbar-item__typography-control__extra-text-options'>

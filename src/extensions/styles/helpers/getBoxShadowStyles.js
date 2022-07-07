@@ -9,7 +9,7 @@ import getDefaultAttribute from '../getDefaultAttribute';
 /**
  * External dependencies
  */
-import { isNil, isNumber, round } from 'lodash';
+import { isBoolean, isNil, isNumber, round } from 'lodash';
 
 /**
  * General
@@ -62,6 +62,9 @@ const getBoxShadowStyles = ({
 				defaultValue,
 			};
 		};
+
+		// Inset
+		const { value: inset, defaultValue: defaultInset } = getValue('inset');
 
 		// Horizontal
 		const { value: horizontal, defaultValue: defaultHorizontal } =
@@ -121,6 +124,7 @@ const getBoxShadowStyles = ({
 				: paletteColor;
 
 		const isNotDefault =
+			(isBoolean(inset) && inset !== defaultInset) ||
 			(isNumber(horizontal) &&
 				horizontal !== 0 &&
 				horizontal !== defaultHorizontal) ||
@@ -159,7 +163,10 @@ const getBoxShadowStyles = ({
 		} else if (isNotDefault) {
 			const blurValue = isNumber(blur) ? blur : defaultBlur;
 			const spreadValue = isNumber(spread) ? spread : defaultSpread;
+			const insetValue = isBoolean(inset) ? inset : defaultInset;
 
+			boxShadowString +=
+				isBoolean(insetValue) && insetValue ? 'inset ' : '';
 			boxShadowString += `${horizontalValue || 0}${
 				horizontalUnit || 'px'
 			} `;

@@ -9,13 +9,15 @@ class Accordion {
 		this.autoPaneClose = maxiAccordion[0][this.uniqueID].autoPaneClose;
 		this.isCollapsible = maxiAccordion[0][this.uniqueID].isCollapsible;
 
-		Array.from(el.querySelectorAll('.maxi-pane-block__header')).forEach(
-			header => {
-				header.addEventListener('click', this.paneClick.bind(this));
-				header.querySelector('.maxi-pane-block__icon').innerHTML =
-					this.paneIcon;
-			}
-		);
+		Array.from(
+			el.querySelectorAll(
+				':scope > .maxi-pane-block > .maxi-pane-block__header'
+			)
+		).forEach(header => {
+			header.addEventListener('click', this.paneClick.bind(this));
+			header.querySelector('.maxi-pane-block__icon').innerHTML =
+				this.paneIcon;
+		});
 	}
 
 	closePane(pane) {

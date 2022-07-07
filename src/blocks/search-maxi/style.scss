@@ -32,6 +32,7 @@ body.maxi-blocks--active .maxi-search-block {
 		display: flex;
 		align-items: center;
 		z-index: 1;
+		cursor: pointer;
 
 		&__icon {
 			box-sizing: content-box;

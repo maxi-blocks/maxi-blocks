@@ -11,6 +11,7 @@ import {
 	AccordionControl,
 	AxisPositionControl,
 	ColorControl,
+	ResponsiveTabsControl,
 	SelectControl,
 	SettingTabsControl,
 	TextControl,
@@ -20,6 +21,11 @@ import { selectorsSearch, categoriesSearch } from './custom-css';
 import { withMaxiInspector } from '../../extensions/inspector';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { buttonPrefix, closeIconPrefix, inputPrefix } from './prefixes';
+
+/**
+ * External dependencies
+ */
+import { isEmpty, without } from 'lodash';
 
 /**
  * Search controls
@@ -149,61 +155,63 @@ const PlaceholderColourControl = props => {
 					})
 				}
 			/>
-			<ColorControl
-				label={__('Font', 'maxi-blocks')}
-				className='maxi-typography-control__color'
-				color={getLastBreakpointAttribute({
-					target: 'placeholder-color',
-					breakpoint: deviceType,
-					attributes,
-				})}
-				prefix='placeholder-'
-				paletteColor={getLastBreakpointAttribute({
-					target: 'placeholder-palette-color',
-					breakpoint: deviceType,
-					attributes,
-				})}
-				paletteOpacity={getLastBreakpointAttribute({
-					target: 'placeholder-palette-opacity',
-					breakpoint: deviceType,
-					attributes,
-				})}
-				paletteStatus={getLastBreakpointAttribute({
-					target: 'placeholder-palette-status',
-					breakpoint: deviceType,
-					attributes,
-				})}
-				onChangeInline={({ color }) =>
-					insertInlineStyles({
-						obj: { color },
-						target: ' .maxi-search-block__input',
-						pseudoElement: '::placeholder',
-					})
-				}
-				onChange={({
-					color,
-					paletteColor,
-					paletteStatus,
-					paletteOpacity,
-				}) => {
-					maxiSetAttributes({
-						[`placeholder-color-${deviceType}`]: color,
-						[`placeholder-palette-color-${deviceType}`]:
-							paletteColor,
-						[`placeholder-palette-status-${deviceType}`]:
-							paletteStatus,
-						[`placeholder-palette-opacity-${deviceType}`]:
-							paletteOpacity,
-					});
-					cleanInlineStyles(
-						' .maxi-search-block__input',
-						'::placeholder'
-					);
-				}}
-				deviceType={deviceType}
-				clientId={clientId}
-				disableGradient
-			/>
+			<ResponsiveTabsControl breakpoint={deviceType}>
+				<ColorControl
+					label={__('Font', 'maxi-blocks')}
+					className='maxi-typography-control__color'
+					color={getLastBreakpointAttribute({
+						target: 'placeholder-color',
+						breakpoint: deviceType,
+						attributes,
+					})}
+					prefix='placeholder-'
+					paletteColor={getLastBreakpointAttribute({
+						target: 'placeholder-palette-color',
+						breakpoint: deviceType,
+						attributes,
+					})}
+					paletteOpacity={getLastBreakpointAttribute({
+						target: 'placeholder-palette-opacity',
+						breakpoint: deviceType,
+						attributes,
+					})}
+					paletteStatus={getLastBreakpointAttribute({
+						target: 'placeholder-palette-status',
+						breakpoint: deviceType,
+						attributes,
+					})}
+					onChangeInline={({ color }) =>
+						insertInlineStyles({
+							obj: { color },
+							target: ' .maxi-search-block__input',
+							pseudoElement: '::placeholder',
+						})
+					}
+					onChange={({
+						color,
+						paletteColor,
+						paletteStatus,
+						paletteOpacity,
+					}) => {
+						maxiSetAttributes({
+							[`placeholder-color-${deviceType}`]: color,
+							[`placeholder-palette-color-${deviceType}`]:
+								paletteColor,
+							[`placeholder-palette-status-${deviceType}`]:
+								paletteStatus,
+							[`placeholder-palette-opacity-${deviceType}`]:
+								paletteOpacity,
+						});
+						cleanInlineStyles(
+							' .maxi-search-block__input',
+							'::placeholder'
+						);
+					}}
+					deviceType={deviceType}
+					clientId={clientId}
+					disableGradient
+				/>
+			</ResponsiveTabsControl>
 		</>
 	);
 };
@@ -214,6 +222,19 @@ const PlaceholderColourControl = props => {
 const Inspector = props => {
 	const { attributes, deviceType, maxiSetAttributes } = props;
 	const { 'icon-position': buttonPosition, skin, buttonSkin } = attributes;
+
+	const getCategoriesCss = () => {
+		const {
+			'icon-content': iconContent,
+			[`${closeIconPrefix}icon-content`]: closeIconContent,
+		} = attributes;
+		return without(
+			categoriesSearch,
+			isEmpty(iconContent) && 'icon',
+			isEmpty(closeIconContent) && 'close icon',
+			skin !== 'icon-reveal' && 'close icon'
+		);
+	};
 
 	const iconControlsDisabledProps = {
 		disableBackground: true,
@@ -408,7 +429,7 @@ const Inspector = props => {
 										props,
 										breakpoint: deviceType,
 										selectors: selectorsSearch,
-										categories: categoriesSearch,
+										categories: getCategoriesCss(),
 									}),
 									...inspectorTabs.scrollEffects({
 										props,

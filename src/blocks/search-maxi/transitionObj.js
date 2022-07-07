@@ -17,9 +17,9 @@ const transitionObj = {
 		icon: {
 			title: 'Icon',
 			target: [
-				' .maxi-search-block__button__icon svg > *',
-				' .maxi-search-block__button__icon svg',
-				' .maxi-search-block__button__icon',
+				' .maxi-search-block__button__default-icon svg > *',
+				' .maxi-search-block__button__default-icon svg',
+				' .maxi-search-block__button__default-icon',
 			],
 			property: 'icon',
 			limitless: true,

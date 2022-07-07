@@ -43,9 +43,7 @@ const save = (props, extendedAttributes = {}) => {
 
 	const buttonIconClasses = classnames(
 		'maxi-search-block__button__icon',
-		`maxi-search-block__button__icon--${
-			skin === 'icon-reveal' ? 'closed' : 'open'
-		}`
+		'maxi-search-block__button__default-icon'
 	);
 
 	return (

@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { RichText } from '@wordpress/block-editor';
-import { useState } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -41,6 +41,10 @@ const SearchBlock = props => {
 
 	const [isInputOpen, setIsInputOpen] = useState(skin !== 'icon-reveal');
 
+	useEffect(() => {
+		setIsInputOpen(skin !== 'icon-reveal');
+	}, [skin]);
+
 	const onInputToggle = () => {
 		skin === 'icon-reveal' && setIsInputOpen(!isInputOpen);
 	};
@@ -52,14 +56,13 @@ const SearchBlock = props => {
 
 	const buttonIconClasses = classnames(
 		'maxi-search-block__button__icon',
-		skin === 'icon-reveal'
-			? isInputOpen
-				? [
-						'maxi-search-block__button__icon--open',
-						'maxi-search-block__button__close-icon',
-				  ]
-				: 'maxi-search-block__button__icon--closed'
-			: 'maxi-search-block__button__icon--open'
+		`maxi-search-block__button__${
+			skin === 'icon-reveal'
+				? isInputOpen
+					? 'close-icon'
+					: 'default-icon'
+				: 'default-icon'
+		}`
 	);
 
 	return (

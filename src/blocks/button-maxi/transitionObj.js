@@ -33,12 +33,23 @@ const transitionObj = {
 		icon: {
 			title: 'Icon',
 			target: [
-				' .maxi-button-block__icon svg > *',
-				' .maxi-button-block__icon svg',
-				' .maxi-button-block__icon',
+				' .maxi-button-block__icon__default-icon svg > *',
+				' .maxi-button-block__icon__default-icon svg',
+				' .maxi-button-block__icon__default-icon',
 			],
 			property: 'icon',
 			limitless: true,
+		},
+		'close icon': {
+			title: 'Close icon',
+			target: [
+				' .maxi-button-block__icon__close-icon svg > *',
+				' .maxi-button-block__icon__close-icon svg',
+				' .maxi-button-block__icon__close-icon',
+			],
+			property: 'icon',
+			limitless: true,
+			prefix: 'close-',
 		},
 	},
 };

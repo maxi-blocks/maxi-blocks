@@ -12,9 +12,7 @@ import {
 	AccordionControl,
 	DefaultStylesControl,
 	Icon,
-	IconControl,
 	SettingTabsControl,
-	ToggleSwitch,
 	ResponsiveTabsControl,
 	AlignmentControl,
 } from '../../components';
@@ -54,16 +52,9 @@ import {
  * Inspector
  */
 const Inspector = props => {
-	const {
-		attributes,
-		deviceType,
-		maxiSetAttributes,
-		insertInlineStyles,
-		cleanInlineStyles,
-		inlineStylesTargets,
-		clientId,
-	} = props;
-	const { blockStyle, svgType, 'icon-only': iconOnly } = attributes;
+	const { attributes, deviceType, maxiSetAttributes, inlineStylesTargets } =
+		props;
+	const { 'icon-only': iconOnly } = attributes;
 
 	const onChangePreset = (number, type = 'normal') => {
 		const newDefaultPresets = cloneDeep({ ...defaultPresets });

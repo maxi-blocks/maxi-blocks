@@ -24,9 +24,6 @@ const attributes = {
 	/**
 	 * Block styles
 	 */
-	customLabel: {
-		type: 'string',
-	},
 	...{
 		...attributesData.alignment,
 		'alignment-general': {

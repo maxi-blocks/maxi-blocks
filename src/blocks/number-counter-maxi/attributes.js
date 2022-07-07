@@ -23,9 +23,6 @@ const attributes = {
 	/**
 	 * Block styles
 	 */
-	customLabel: {
-		type: 'string',
-	},
 	...attributesData.numberCounter,
 	...prefixAttributesCreator({ obj: attributesData.border, prefix }),
 	...prefixAttributesCreator({ obj: attributesData.borderHover, prefix }),

@@ -116,7 +116,7 @@ const VideoIconControl = props => {
 					/>
 					<AdvancedNumberControl
 						label='Icon height'
-						className='maxi-icon-height-control'
+						className='maxi-video-icon-control__icon-height'
 						optionType='string'
 						value={getLastBreakpointAttribute({
 							target: `${prefix}icon-height`,

@@ -25,7 +25,7 @@ describe('Video icon control', () => {
 
 		// Change type
 		const videoType = await accordionPanel.$(
-			'.maxi-accordion-control__item .maxi-video-type select'
+			'.maxi-accordion-control__item .maxi-video-control__type select'
 		);
 
 		await videoType.select('popup');
@@ -89,7 +89,7 @@ describe('Video icon control', () => {
 		// Icon height
 		await editAdvancedNumberControl({
 			page,
-			instance: await page.$('.maxi-icon-height-control '),
+			instance: await page.$('.maxi-video-icon-control__icon-height '),
 			newNumber: '44',
 		});
 
@@ -116,7 +116,7 @@ describe('Video icon control', () => {
 		// Icon height responsive
 		const responsiveHeight = await addResponsiveTest({
 			page,
-			instance: '.maxi-icon-height-control input',
+			instance: '.maxi-video-icon-control__icon-height input',
 			needFocus: true,
 			baseExpect: '44',
 			xsExpect: '27',

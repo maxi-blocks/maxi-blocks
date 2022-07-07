@@ -60,6 +60,7 @@ const IconControl = props => {
 		isHover = false,
 		isInteractionBuilder = false,
 		disableBackground = false,
+		disableBorder = false,
 		disableIconInherit = false,
 		disableIconOnly = false,
 		disablePadding = false,
@@ -67,6 +68,7 @@ const IconControl = props => {
 		disableSpacing = false,
 		getIconWithColor,
 		type = 'button-icon',
+		inlineTarget,
 		prefix = '',
 		[`${prefix}icon-only`]: iconOnly,
 		[`${prefix}icon-inherit`]: iconInherit,
@@ -94,10 +96,12 @@ const IconControl = props => {
 			});
 		else if (iconStyle === 'fill') setIconStyle('color');
 
-		options.push({
-			icon: <Icon icon={iconStroke} />,
-			value: 'border',
-		});
+		if (!disableBorder) {
+			options.push({
+				icon: <Icon icon={iconStroke} />,
+				value: 'border',
+			});
+		}
 
 		return options;
 	};
@@ -294,14 +298,16 @@ const IconControl = props => {
 								}}
 							/>
 						)}
-					<SettingTabsControl
-						className='maxi-icon-styles-control'
-						type='buttons'
-						fullWidthMode
-						selected={iconStyle}
-						items={getOptions()}
-						onChange={val => setIconStyle(val)}
-					/>
+					{getOptions().length > 1 && (
+						<SettingTabsControl
+							className='maxi-icon-styles-control'
+							type='buttons'
+							fullWidthMode
+							selected={iconStyle}
+							items={getOptions()}
+							onChange={val => setIconStyle(val)}
+						/>
+					)}
 					{iconStyle === 'color' &&
 						(!iconInherit || iconOnly ? (
 							svgType !== 'Shape' && (
@@ -570,7 +576,7 @@ const IconControl = props => {
 												{
 													background: color,
 												},
-												'.maxi-button-block__icon'
+												inlineTarget
 											)
 										}
 										onChange={({
@@ -606,7 +612,7 @@ const IconControl = props => {
 														breakpoint
 													)]: color,
 												},
-												'.maxi-button-block__icon'
+												inlineTarget
 											);
 										}}
 										isHover={isHover}

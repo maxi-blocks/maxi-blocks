@@ -17,11 +17,13 @@ const icon = ({
 	type,
 	depth = 2,
 	disableBackground = false,
+	disableBorder = false,
 	disableIconInherit = false,
 	disableIconOnly = false,
 	disablePadding = false,
 	disablePosition = false,
 	disableSpacing = false,
+	inlineTarget = '.maxi-button-block__icon',
 	prefix = '',
 }) => {
 	const {
@@ -44,6 +46,7 @@ const icon = ({
 		clientId,
 		blockStyle,
 		disableBackground,
+		disableBorder,
 		disableIconInherit,
 		disableIconOnly,
 		disablePadding,
@@ -95,6 +98,7 @@ const icon = ({
 									maxiSetAttributes(obj);
 									cleanInlineStyles(target);
 								}}
+								inlineTarget={inlineTarget}
 								{...iconControlBasicProps}
 							/>
 						),

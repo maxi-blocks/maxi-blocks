@@ -247,6 +247,7 @@ const Inspector = props => {
 
 	const iconControlsDisabledProps = {
 		disableBackground: true,
+		disableBorder: true,
 		disableIconInherit: true,
 		disableIconOnly: true,
 		disablePadding: true,
@@ -369,14 +370,16 @@ const Inspector = props => {
 									...inspectorTabs.border({
 										props,
 										prefix: buttonPrefix,
-										selector: '.maxi-search-block__button',
+										inlineTarget:
+											'.maxi-search-block__button',
 									}),
 									...inspectorTabs.background({
 										label: 'Button',
 										props,
 										prefix: buttonPrefix,
 										...backgroundDisabledProps,
-										selector: '.maxi-search-block__button',
+										inlineTarget:
+											'.maxi-search-block__button',
 									}),
 									...inspectorTabs.marginPadding({
 										props,

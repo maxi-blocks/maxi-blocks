@@ -87,18 +87,7 @@ const attributes = {
 		type: 'string',
 		default: 'Shape',
 	},
-	buttonSkin: {
-		type: 'string',
-		default: 'icon',
-	},
-	buttonContent: {
-		type: 'string',
-		default: 'Find',
-	},
-	buttonContentClose: {
-		type: 'string',
-		default: 'Close',
-	},
+	...attributesData.searchButton,
 	...prefixAttributesCreator({
 		obj: {
 			...attributesData.typography,

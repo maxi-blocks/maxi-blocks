@@ -16,7 +16,10 @@ import {
 	SettingTabsControl,
 	TextControl,
 } from '../../components';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import { selectorsSearch, categoriesSearch } from './custom-css';
 import { withMaxiInspector } from '../../extensions/inspector';
 import * as inspectorTabs from '../../components/inspector-tabs';
@@ -30,10 +33,7 @@ import { isEmpty, without } from 'lodash';
 /**
  * Search controls
  */
-const SkinControl = props => {
-	const { attributes, maxiSetAttributes } = props;
-	const { skin } = attributes;
-
+const SkinControl = ({ skin, onChange }) => {
 	return (
 		<SelectControl
 			label={__('Skin', 'maxi-blocks')}
@@ -54,15 +54,15 @@ const SkinControl = props => {
 			]}
 			onChange={skin => {
 				if (skin === 'classic') {
-					maxiSetAttributes({
+					onChange({
 						[`${inputPrefix}background-palette-color-general`]: 2,
 					});
 				} else if (skin === 'boxed') {
-					maxiSetAttributes({
+					onChange({
 						[`${inputPrefix}background-palette-color-general`]: 1,
 					});
 				} else if (skin === 'icon-reveal') {
-					maxiSetAttributes({
+					onChange({
 						[`${buttonPrefix}border-unit-radius-general`]: '%',
 						[`${buttonPrefix}border-top-left-radius-general`]: 50,
 						[`${buttonPrefix}border-top-right-radius-general`]: 50,
@@ -72,7 +72,7 @@ const SkinControl = props => {
 					});
 				}
 
-				maxiSetAttributes({
+				onChange({
 					skin,
 				});
 			}}
@@ -80,10 +80,13 @@ const SkinControl = props => {
 	);
 };
 
-const ButtonControl = props => {
-	const { attributes, maxiSetAttributes } = props;
-	const { buttonContent, buttonContentClose, buttonSkin, skin } = attributes;
-
+const ButtonControl = ({
+	buttonContent,
+	buttonContentClose,
+	buttonSkin,
+	skin,
+	onChange,
+}) => {
 	return (
 		<>
 			<SelectControl
@@ -101,7 +104,7 @@ const ButtonControl = props => {
 					},
 				]}
 				onChange={buttonSkin =>
-					maxiSetAttributes({
+					onChange({
 						buttonSkin,
 					})
 				}
@@ -112,7 +115,7 @@ const ButtonControl = props => {
 						label={__('Button text', 'maxi-blocks')}
 						value={buttonContent}
 						onChange={buttonContent =>
-							maxiSetAttributes({
+							onChange({
 								buttonContent,
 							})
 						}
@@ -122,7 +125,7 @@ const ButtonControl = props => {
 							label={__('Button close text', 'maxi-blocks')}
 							value={buttonContentClose}
 							onChange={buttonContentClose =>
-								maxiSetAttributes({
+								onChange({
 									buttonContentClose,
 								})
 							}
@@ -134,23 +137,22 @@ const ButtonControl = props => {
 	);
 };
 
-const PlaceholderColourControl = props => {
-	const {
-		attributes,
-		clientId,
-		deviceType,
-		maxiSetAttributes,
-		insertInlineStyles,
-		cleanInlineStyles,
-	} = props;
-
+const PlaceholderColourControl = ({
+	placeholder,
+	onChange,
+	deviceType,
+	clientId,
+	insertInlineStyles,
+	cleanInlineStyles,
+	...attributes
+}) => {
 	return (
 		<>
 			<TextControl
 				label={__('Placeholder text', 'maxi-blocks')}
-				value={attributes.placeholder}
+				value={placeholder}
 				onChange={placeholder =>
-					maxiSetAttributes({
+					onChange({
 						placeholder,
 					})
 				}
@@ -193,7 +195,7 @@ const PlaceholderColourControl = props => {
 						paletteStatus,
 						paletteOpacity,
 					}) => {
-						maxiSetAttributes({
+						onChange({
 							[`placeholder-color-${deviceType}`]: color,
 							[`placeholder-palette-color-${deviceType}`]:
 								paletteColor,
@@ -220,7 +222,14 @@ const PlaceholderColourControl = props => {
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, maxiSetAttributes } = props;
+	const {
+		attributes,
+		clientId,
+		deviceType,
+		maxiSetAttributes,
+		insertInlineStyles,
+		cleanInlineStyles,
+	} = props;
 	const { 'icon-position': buttonPosition, skin, buttonSkin } = attributes;
 
 	const getCategoriesCss = () => {
@@ -295,11 +304,25 @@ const Inspector = props => {
 								items={[
 									{
 										label: __('Skin', 'maxi-blocks'),
-										content: <SkinControl {...props} />,
+										content: (
+											<SkinControl
+												skin={skin}
+												onChange={maxiSetAttributes}
+											/>
+										),
 									},
 									{
 										label: __('Button', 'maxi-blocks'),
-										content: <ButtonControl {...props} />,
+										content: (
+											<ButtonControl
+												{...getGroupAttributes(
+													attributes,
+													'searchButton'
+												)}
+												onChange={maxiSetAttributes}
+												skin={skin}
+											/>
+										),
 									},
 									...(buttonSkin === 'icon'
 										? inspectorTabs.icon({
@@ -381,7 +404,22 @@ const Inspector = props => {
 										label: __('Placeholder', 'maxi-blocks'),
 										content: (
 											<PlaceholderColourControl
-												{...props}
+												{...getGroupAttributes(
+													attributes,
+													'placeholderColor'
+												)}
+												placeholder={
+													attributes.placeholder
+												}
+												onChange={maxiSetAttributes}
+												deviceType={deviceType}
+												insertInlineStyles={
+													insertInlineStyles
+												}
+												cleanInlineStyles={
+													cleanInlineStyles
+												}
+												clientId={clientId}
 											/>
 										),
 									},

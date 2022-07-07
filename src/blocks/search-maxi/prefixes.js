@@ -1,5 +1,5 @@
+const buttonPrefix = 'button-';
 const closeIconPrefix = 'close-';
-const searchButtonPrefix = 'search-button-';
-const searchInputPrefix = 'search-input-';
+const inputPrefix = 'input-';
 
-export { searchButtonPrefix, searchInputPrefix, closeIconPrefix };
+export { buttonPrefix, closeIconPrefix, inputPrefix };

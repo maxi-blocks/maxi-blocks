@@ -1,8 +1,4 @@
-import {
-	closeIconPrefix,
-	searchButtonPrefix,
-	searchInputPrefix,
-} from './prefixes';
+import { closeIconPrefix, buttonPrefix, inputPrefix } from './prefixes';
 
 const copyPasteMapping = {
 	block: {
@@ -67,7 +63,7 @@ const copyPasteMapping = {
 			button: {
 				groupLabel: 'Button',
 				props: {
-					searchButtonSkin: 'Skin',
+					buttonSkin: 'Skin',
 				},
 			},
 		},
@@ -93,7 +89,7 @@ const copyPasteMapping = {
 					typography: 'Typography',
 					typographyHover: 'Typography hover',
 				},
-				prefix: searchButtonPrefix,
+				prefix: buttonPrefix,
 			},
 			background: {
 				groupLabel: 'Button background',
@@ -107,7 +103,7 @@ const copyPasteMapping = {
 						props: ['backgroundHover', 'backgroundColorHover'],
 					},
 				},
-				prefix: searchButtonPrefix,
+				prefix: buttonPrefix,
 			},
 			border: {
 				groupLabel: 'Border',
@@ -119,12 +115,12 @@ const copyPasteMapping = {
 					borderWidthHover: 'Border width hover',
 					borderRadiusHover: 'Border radius hover',
 				},
-				prefix: searchButtonPrefix,
+				prefix: buttonPrefix,
 			},
 			'margin-padding': {
 				groupLabel: 'Margin/Padding',
 				props: { margin: 'Margin', padding: 'Padding' },
-				prefix: searchButtonPrefix,
+				prefix: buttonPrefix,
 			},
 		},
 	},
@@ -138,7 +134,7 @@ const copyPasteMapping = {
 					typography: 'Typography',
 					typographyHover: 'Typography hover',
 				},
-				prefix: searchInputPrefix,
+				prefix: inputPrefix,
 			},
 			border: {
 				groupLabel: 'Border',
@@ -150,7 +146,7 @@ const copyPasteMapping = {
 					borderWidthHover: 'Border width hover',
 					borderRadiusHover: 'Border radius hover',
 				},
-				prefix: searchInputPrefix,
+				prefix: inputPrefix,
 			},
 			background: {
 				groupLabel: 'Input background',
@@ -164,12 +160,12 @@ const copyPasteMapping = {
 						props: ['backgroundHover', 'backgroundColorHover'],
 					},
 				},
-				prefix: searchInputPrefix,
+				prefix: inputPrefix,
 			},
 			padding: {
 				groupLabel: 'Padding',
 				props: { padding: 'Padding' },
-				prefix: searchInputPrefix,
+				prefix: inputPrefix,
 			},
 		},
 	},

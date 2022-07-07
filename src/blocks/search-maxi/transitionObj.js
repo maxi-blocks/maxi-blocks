@@ -1,8 +1,4 @@
-import {
-	closeIconPrefix,
-	searchButtonPrefix,
-	searchInputPrefix,
-} from './prefixes';
+import { closeIconPrefix, buttonPrefix, inputPrefix } from './prefixes';
 
 const transitionObj = {
 	block: {
@@ -44,19 +40,19 @@ const transitionObj = {
 			target: ' .maxi-search-block__input__content',
 			property: 'typography',
 			limitless: true,
-			prefix: searchButtonPrefix,
+			prefix: buttonPrefix,
 		},
 		border: {
 			title: 'Border',
 			target: ' .maxi-search-block__button',
 			property: 'border',
-			prefix: searchButtonPrefix,
+			prefix: buttonPrefix,
 		},
 		'button background': {
 			title: 'button background',
 			target: ' .maxi-search-block__button',
 			property: 'background',
-			prefix: searchButtonPrefix,
+			prefix: buttonPrefix,
 		},
 	},
 	input: {
@@ -65,19 +61,19 @@ const transitionObj = {
 			target: ' .maxi-search-block__input',
 			property: 'typography',
 			limitless: true,
-			prefix: searchInputPrefix,
+			prefix: inputPrefix,
 		},
 		border: {
 			title: 'Border',
 			target: ' .maxi-search-block__input',
 			property: 'border',
-			prefix: searchInputPrefix,
+			prefix: inputPrefix,
 		},
 		'input background': {
 			title: 'Input background',
 			target: ' .maxi-search-block__input',
 			property: 'background',
-			prefix: searchInputPrefix,
+			prefix: inputPrefix,
 		},
 	},
 };

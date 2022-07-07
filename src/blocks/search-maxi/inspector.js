@@ -17,11 +17,7 @@ import {
 import { selectorsSearch, categoriesSearch } from './custom-css';
 import { withMaxiInspector } from '../../extensions/inspector';
 import * as inspectorTabs from '../../components/inspector-tabs';
-import {
-	closeIconPrefix,
-	searchButtonPrefix,
-	searchInputPrefix,
-} from './prefixes';
+import { closeIconPrefix, buttonPrefix, inputPrefix } from './prefixes';
 
 /**
  * Search controls
@@ -52,21 +48,20 @@ const SkinControl = props => {
 				onChange={skin => {
 					if (skin === 'classic') {
 						maxiSetAttributes({
-							[`${searchInputPrefix}background-palette-color-general`]: 2,
+							[`${inputPrefix}background-palette-color-general`]: 2,
 						});
 					} else if (skin === 'boxed') {
 						maxiSetAttributes({
-							[`${searchInputPrefix}background-palette-color-general`]: 1,
+							[`${inputPrefix}background-palette-color-general`]: 1,
 						});
 					} else if (skin === 'icon-reveal') {
 						maxiSetAttributes({
-							[`${searchButtonPrefix}border-unit-radius-general`]:
-								'%',
-							[`${searchButtonPrefix}border-top-left-radius-general`]: 50,
-							[`${searchButtonPrefix}border-top-right-radius-general`]: 50,
-							[`${searchButtonPrefix}border-bottom-left-radius-general`]: 50,
-							[`${searchButtonPrefix}border-bottom-right-radius-general`]: 50,
-							[`${searchButtonPrefix}margin-left-general`]: '-20',
+							[`${buttonPrefix}border-unit-radius-general`]: '%',
+							[`${buttonPrefix}border-top-left-radius-general`]: 50,
+							[`${buttonPrefix}border-top-right-radius-general`]: 50,
+							[`${buttonPrefix}border-bottom-left-radius-general`]: 50,
+							[`${buttonPrefix}border-bottom-right-radius-general`]: 50,
+							[`${buttonPrefix}margin-left-general`]: '-20',
 						});
 					}
 
@@ -90,19 +85,14 @@ const SkinControl = props => {
 
 const ButtonControl = props => {
 	const { attributes, maxiSetAttributes } = props;
-	const {
-		searchButtonContent,
-		searchButtonContentClose,
-		searchButtonSkin,
-		skin,
-	} = attributes;
+	const { buttonContent, buttonContentClose, buttonSkin, skin } = attributes;
 
 	return (
 		<>
 			<SelectControl
 				className='maxi-search-button-control__skin'
 				label={__('Skin', 'maxi-blocks')}
-				value={searchButtonSkin}
+				value={buttonSkin}
 				options={[
 					{
 						label: __('Icon', 'maxi-blocks'),
@@ -113,30 +103,30 @@ const ButtonControl = props => {
 						value: 'text',
 					},
 				]}
-				onChange={searchButtonSkin =>
+				onChange={buttonSkin =>
 					maxiSetAttributes({
-						searchButtonSkin,
+						buttonSkin,
 					})
 				}
 			/>
-			{searchButtonSkin === 'text' && (
+			{buttonSkin === 'text' && (
 				<>
 					<TextControl
 						label={__('Button text', 'maxi-blocks')}
-						value={searchButtonContent}
-						onChange={searchButtonContent =>
+						value={buttonContent}
+						onChange={buttonContent =>
 							maxiSetAttributes({
-								searchButtonContent,
+								buttonContent,
 							})
 						}
 					/>
 					{skin === 'icon-reveal' && (
 						<TextControl
 							label={__('Button close text', 'maxi-blocks')}
-							value={searchButtonContentClose}
-							onChange={searchButtonContentClose =>
+							value={buttonContentClose}
+							onChange={buttonContentClose =>
 								maxiSetAttributes({
-									searchButtonContentClose,
+									buttonContentClose,
 								})
 							}
 						/>
@@ -152,11 +142,7 @@ const ButtonControl = props => {
  */
 const Inspector = props => {
 	const { attributes, deviceType, maxiSetAttributes } = props;
-	const {
-		'icon-position': buttonPosition,
-		skin,
-		searchButtonSkin,
-	} = attributes;
+	const { 'icon-position': buttonPosition, skin, buttonSkin } = attributes;
 
 	const iconControlsDisabledProps = {
 		disableBackground: true,
@@ -223,7 +209,7 @@ const Inspector = props => {
 										label: __('Button', 'maxi-blocks'),
 										content: <ButtonControl {...props} />,
 									},
-									...(searchButtonSkin === 'icon'
+									...(buttonSkin === 'icon'
 										? inspectorTabs.icon({
 												props,
 												type: 'search-icon',
@@ -233,11 +219,11 @@ const Inspector = props => {
 												props,
 												disableCustomFormats: true,
 												hideAlignment: true,
-												prefix: searchButtonPrefix,
+												prefix: buttonPrefix,
 												inlineTarget:
 													' .maxi-search-block__button__content',
 										  })),
-									...(searchButtonSkin === 'icon' &&
+									...(buttonSkin === 'icon' &&
 										skin === 'icon-reveal' &&
 										inspectorTabs.icon({
 											props,
@@ -267,19 +253,19 @@ const Inspector = props => {
 									},
 									...inspectorTabs.border({
 										props,
-										prefix: searchButtonPrefix,
+										prefix: buttonPrefix,
 										selector: '.maxi-search-block__button',
 									}),
 									...inspectorTabs.background({
 										label: 'Button',
 										props,
-										prefix: searchButtonPrefix,
+										prefix: buttonPrefix,
 										...backgroundDisabledProps,
 										selector: '.maxi-search-block__button',
 									}),
 									...inspectorTabs.marginPadding({
 										props,
-										prefix: searchButtonPrefix,
+										prefix: buttonPrefix,
 									}),
 								]}
 							/>
@@ -295,24 +281,24 @@ const Inspector = props => {
 										props,
 										disableCustomFormats: true,
 										hideAlignment: true,
-										prefix: searchInputPrefix,
+										prefix: inputPrefix,
 										inlineTarget:
 											' .maxi-search-block__input',
 									}),
 									...inspectorTabs.border({
 										props,
-										prefix: searchInputPrefix,
+										prefix: inputPrefix,
 									}),
 									...inspectorTabs.background({
 										label: 'Input',
 										props,
-										prefix: searchInputPrefix,
+										prefix: inputPrefix,
 										...backgroundDisabledProps,
 										selector: '.maxi-search-block__input',
 									}),
 									...inspectorTabs.marginPadding({
 										props,
-										prefix: searchInputPrefix,
+										prefix: inputPrefix,
 										customLabel: __(
 											'Padding',
 											'maxi-blocks'

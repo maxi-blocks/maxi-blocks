@@ -22,12 +22,12 @@ const save = (props, extendedAttributes = {}) => {
 	const { attributes } = props;
 	const {
 		placeholder,
-		searchButtonContent,
+		buttonContent,
 		'icon-content': searchButtonIcon,
-		searchButtonSkin,
+		buttonSkin,
 		skin,
 	} = attributes;
-	const searchButtonIsIcon = searchButtonSkin === 'icon';
+	const searchButtonIsIcon = buttonSkin === 'icon';
 
 	const name = 'maxi-blocks/search-maxi';
 
@@ -68,7 +68,7 @@ const save = (props, extendedAttributes = {}) => {
 					)
 				) : (
 					<div className='maxi-search-block__button__content'>
-						<RichText.Content value={searchButtonContent} />
+						<RichText.Content value={buttonContent} />
 					</div>
 				)}
 			</div>

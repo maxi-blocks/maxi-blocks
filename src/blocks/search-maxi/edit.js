@@ -30,9 +30,9 @@ const SearchBlock = props => {
 	const {
 		'icon-content': searchButtonIcon,
 		placeholder,
-		searchButtonContent,
-		searchButtonContentClose,
-		searchButtonSkin,
+		buttonContent,
+		buttonContentClose,
+		buttonSkin,
 		skin,
 	} = attributes;
 
@@ -80,7 +80,7 @@ const SearchBlock = props => {
 			/>
 
 			<div className='maxi-search-block__button' onClick={onInputToggle}>
-				{searchButtonSkin === 'icon' ? (
+				{buttonSkin === 'icon' ? (
 					searchButtonIcon && (
 						<div className={buttonIconClasses}>
 							<RawHTML>
@@ -97,16 +97,16 @@ const SearchBlock = props => {
 				) : skin !== 'icon-reveal' ? (
 					<RichText
 						className='maxi-search-block__button__content'
-						value={searchButtonContent}
+						value={buttonContent}
 						identifier='content'
-						onChange={searchButtonContent => {
+						onChange={buttonContent => {
 							if (typingTimeout) {
 								clearTimeout(typingTimeout);
 							}
 
 							typingTimeout = setTimeout(() => {
 								maxiSetAttributes({
-									searchButtonContent,
+									buttonContent,
 								});
 							}, 100);
 						}}
@@ -114,9 +114,7 @@ const SearchBlock = props => {
 					/>
 				) : (
 					<div className='maxi-search-block__button__content'>
-						{isInputOpen
-							? searchButtonContentClose
-							: searchButtonContent}
+						{isInputOpen ? buttonContentClose : buttonContent}
 					</div>
 				)}
 			</div>
@@ -134,9 +132,9 @@ class edit extends MaxiBlockComponent {
 		const {
 			'icon-content': iconContent,
 			[`${closeIconPrefix}icon-content`]: closeIconContent,
-			searchButtonContent,
-			searchButtonContentClose,
-			searchButtonSkin,
+			buttonContent,
+			buttonContentClose,
+			buttonSkin,
 			skin,
 			uniqueID,
 		} = attributes;
@@ -146,9 +144,9 @@ class edit extends MaxiBlockComponent {
 				[uniqueID]: {
 					iconContent,
 					closeIconContent,
-					searchButtonContent,
-					searchButtonContentClose,
-					searchButtonSkin,
+					buttonContent,
+					buttonContentClose,
+					buttonSkin,
 					skin,
 				},
 			},

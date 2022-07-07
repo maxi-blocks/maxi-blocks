@@ -12,11 +12,7 @@ import {
 	transitionAttributesCreator,
 } from '../../extensions/styles';
 import transitionObj from './transitionObj';
-import {
-	closeIconPrefix,
-	searchButtonPrefix,
-	searchInputPrefix,
-} from './prefixes';
+import { closeIconPrefix, buttonPrefix, inputPrefix } from './prefixes';
 
 /**
  * Attributes
@@ -67,19 +63,19 @@ const attributes = {
 			...attributesData.background,
 			...attributesData.backgroundColor,
 		},
-		prefix: searchInputPrefix,
+		prefix: inputPrefix,
 		diffValAttr: {
-			[`${searchInputPrefix}font-size-general`]: '20',
-			[`${searchInputPrefix}border-style-general`]: 'solid',
-			[`${searchInputPrefix}border-top-width-general`]: 4,
-			[`${searchInputPrefix}border-right-width-general`]: 0,
-			[`${searchInputPrefix}border-bottom-width-general`]: 4,
-			[`${searchInputPrefix}border-left-width-general`]: 4,
-			[`${searchInputPrefix}padding-top-general`]: '8',
-			[`${searchInputPrefix}padding-right-general`]: '10',
-			[`${searchInputPrefix}padding-bottom-general`]: '8',
-			[`${searchInputPrefix}padding-left-general`]: '10',
-			[`${searchInputPrefix}background-active-media-general`]: 'color',
+			[`${inputPrefix}font-size-general`]: '20',
+			[`${inputPrefix}border-style-general`]: 'solid',
+			[`${inputPrefix}border-top-width-general`]: 4,
+			[`${inputPrefix}border-right-width-general`]: 0,
+			[`${inputPrefix}border-bottom-width-general`]: 4,
+			[`${inputPrefix}border-left-width-general`]: 4,
+			[`${inputPrefix}padding-top-general`]: '8',
+			[`${inputPrefix}padding-right-general`]: '10',
+			[`${inputPrefix}padding-bottom-general`]: '8',
+			[`${inputPrefix}padding-left-general`]: '10',
+			[`${inputPrefix}background-active-media-general`]: 'color',
 		},
 	}),
 
@@ -94,15 +90,15 @@ const attributes = {
 		type: 'string',
 		default: 'Shape',
 	},
-	searchButtonSkin: {
+	buttonSkin: {
 		type: 'string',
 		default: 'icon',
 	},
-	searchButtonContent: {
+	buttonContent: {
 		type: 'string',
 		default: 'Find',
 	},
-	searchButtonContentClose: {
+	buttonContentClose: {
 		type: 'string',
 		default: 'Close',
 	},
@@ -121,15 +117,15 @@ const attributes = {
 			...attributesData.borderRadius,
 			...attributesData.borderRadiusHover,
 		},
-		prefix: searchButtonPrefix,
+		prefix: buttonPrefix,
 		diffValAttr: {
-			[`${searchButtonPrefix}palette-color-general`]: 1,
-			[`${searchButtonPrefix}padding-top-general`]: '8',
-			[`${searchButtonPrefix}padding-right-general`]: '8',
-			[`${searchButtonPrefix}padding-bottom-general`]: '8',
-			[`${searchButtonPrefix}padding-left-general`]: '8',
-			[`${searchButtonPrefix}background-active-media-general`]: 'color',
-			[`${searchButtonPrefix}background-palette-color-general`]: 4,
+			[`${buttonPrefix}palette-color-general`]: 1,
+			[`${buttonPrefix}padding-top-general`]: '8',
+			[`${buttonPrefix}padding-right-general`]: '8',
+			[`${buttonPrefix}padding-bottom-general`]: '8',
+			[`${buttonPrefix}padding-left-general`]: '8',
+			[`${buttonPrefix}background-active-media-general`]: 'color',
+			[`${buttonPrefix}background-palette-color-general`]: 4,
 		},
 	}),
 	...{
@@ -189,4 +185,4 @@ const attributes = {
 };
 
 export default attributes;
-export { closeIconPrefix, searchButtonPrefix, searchInputPrefix };
+export { closeIconPrefix, buttonPrefix, inputPrefix };

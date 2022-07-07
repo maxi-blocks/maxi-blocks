@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import { isNil } from 'lodash';
+
+/**
  * Updates customData object on the store
  *
  * @param {Object} customData new/updated targets with customData
@@ -9,7 +14,7 @@ export function updateCustomData(customData) {
 	const hasContent =
 		(!!customData &&
 			Object.values(customData).some(target =>
-				Object.values(target).some(val => !!val)
+				Object.values(target).every(val => !isNil(val))
 			)) ||
 		false;
 

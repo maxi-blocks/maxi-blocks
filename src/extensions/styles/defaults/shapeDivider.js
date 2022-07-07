@@ -1,10 +1,7 @@
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import paletteAttributesCreator from '../paletteAttributesCreator';
 
-const shapeDivider = {
-	'shape-divider-top-status': {
-		type: 'boolean',
-		default: false,
-	},
+const rawShapeDivider = {
 	'shape-divider-top-height': {
 		type: 'number',
 		default: 100,
@@ -12,22 +9,6 @@ const shapeDivider = {
 	'shape-divider-top-height-unit': {
 		type: 'string',
 		default: 'px',
-	},
-	'shape-divider-top-opacity': {
-		type: 'number',
-		default: 1,
-	},
-	'shape-divider-top-shape-style': {
-		type: 'string',
-	},
-	...paletteAttributesCreator({ prefix: 'shape-divider-top-', palette: 5 }),
-	'shape-divider-top-effects-status': {
-		type: 'boolean',
-		default: false,
-	},
-	'shape-divider-bottom-status': {
-		type: 'boolean',
-		default: false,
 	},
 	'shape-divider-bottom-height': {
 		type: 'number',
@@ -37,17 +18,41 @@ const shapeDivider = {
 		type: 'string',
 		default: 'px',
 	},
-	'shape-divider-bottom-opacity': {
-		type: 'number',
-		default: 1,
-	},
-	'shape-divider-bottom-shape-style': {
-		type: 'string',
-	},
+	...paletteAttributesCreator({ prefix: 'shape-divider-top-', palette: 5 }),
 	...paletteAttributesCreator({
 		prefix: 'shape-divider-bottom-',
 		palette: 5,
 	}),
+	'shape-divider-top-opacity': {
+		type: 'number',
+		default: 1,
+	},
+	'shape-divider-bottom-opacity': {
+		type: 'number',
+		default: 1,
+	},
+};
+
+const shapeDivider = {
+	...breakpointAttributesCreator({ obj: rawShapeDivider }),
+	'shape-divider-top-status': {
+		type: 'boolean',
+		default: false,
+	},
+	'shape-divider-top-shape-style': {
+		type: 'string',
+	},
+	'shape-divider-top-effects-status': {
+		type: 'boolean',
+		default: false,
+	},
+	'shape-divider-bottom-status': {
+		type: 'boolean',
+		default: false,
+	},
+	'shape-divider-bottom-shape-style': {
+		type: 'string',
+	},
 	'shape-divider-bottom-effects-status': {
 		type: 'boolean',
 		default: false,

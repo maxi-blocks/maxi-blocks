@@ -60,6 +60,8 @@ const copyPasteMapping = {
 				groupLabel: 'Button',
 				props: {
 					buttonSkin: 'Skin',
+					buttonContent: 'Button text',
+					buttonContentClose: 'Button text close',
 				},
 			},
 		},

@@ -28,11 +28,12 @@ import classnames from 'classnames';
 const SearchBlock = props => {
 	const { attributes, maxiSetAttributes } = props;
 	const {
-		'icon-content': searchButtonIcon,
-		placeholder,
+		'icon-content': buttonIcon,
+		[`${closeIconPrefix}icon-content`]: closeButtonIcon,
 		buttonContent,
 		buttonContentClose,
 		buttonSkin,
+		placeholder,
 		skin,
 	} = attributes;
 
@@ -66,16 +67,14 @@ const SearchBlock = props => {
 			<input className={inputClasses} placeholder={placeholder} />
 			<div className='maxi-search-block__button' onClick={onInputToggle}>
 				{buttonSkin === 'icon' ? (
-					searchButtonIcon && (
+					buttonIcon && (
 						<div className={buttonIconClasses}>
 							<RawHTML>
 								{skin === 'icon-reveal'
 									? isInputOpen
-										? attributes[
-												`${closeIconPrefix}icon-content`
-										  ]
-										: searchButtonIcon
-									: searchButtonIcon}
+										? closeButtonIcon
+										: buttonIcon
+									: buttonIcon}
 							</RawHTML>
 						</div>
 					)

@@ -21,10 +21,10 @@ import classnames from 'classnames';
 const save = (props, extendedAttributes = {}) => {
 	const { attributes } = props;
 	const {
-		placeholder,
+		'icon-content': buttonIcon,
 		buttonContent,
-		'icon-content': searchButtonIcon,
 		buttonSkin,
+		placeholder,
 		skin,
 	} = attributes;
 	const searchButtonIsIcon = buttonSkin === 'icon';
@@ -57,9 +57,9 @@ const save = (props, extendedAttributes = {}) => {
 			<input className={inputClasses} placeholder={placeholder} />
 			<div className='maxi-search-block__button'>
 				{searchButtonIsIcon ? (
-					searchButtonIcon && (
+					buttonIcon && (
 						<div className={buttonIconClasses}>
-							<RawHTML>{searchButtonIcon}</RawHTML>
+							<RawHTML>{buttonIcon}</RawHTML>
 						</div>
 					)
 				) : (

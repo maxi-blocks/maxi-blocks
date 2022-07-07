@@ -157,7 +157,7 @@ const MaxiModal = props => {
 						icon={remove}
 						onClick={() =>
 							onRemove({
-								'icon-content': '',
+								[`${prefix}icon-content`]: '',
 							})
 						}
 					/>

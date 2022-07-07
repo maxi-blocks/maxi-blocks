@@ -8,8 +8,6 @@ import { __ } from '@wordpress/i18n';
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
 import {
-	breakpointAttributesCreator,
-	paletteAttributesCreator,
 	prefixAttributesCreator,
 	transitionAttributesCreator,
 } from '../../extensions/styles';
@@ -73,6 +71,7 @@ const attributes = {
 			[`${inputPrefix}padding-right-general`]: '10',
 			[`${inputPrefix}padding-bottom-general`]: '8',
 			[`${inputPrefix}padding-left-general`]: '10',
+			[`${inputPrefix}padding-sync-general`]: 'axis',
 			[`${inputPrefix}background-active-media-general`]: 'color',
 		},
 	}),
@@ -119,9 +118,9 @@ const attributes = {
 		diffValAttr: {
 			[`${buttonPrefix}palette-color-general`]: 1,
 			[`${buttonPrefix}padding-top-general`]: '8',
-			[`${buttonPrefix}padding-right-general`]: '8',
+			[`${buttonPrefix}padding-right-general`]: '10',
 			[`${buttonPrefix}padding-bottom-general`]: '8',
-			[`${buttonPrefix}padding-left-general`]: '8',
+			[`${buttonPrefix}padding-left-general`]: '10',
 			[`${buttonPrefix}background-active-media-general`]: 'color',
 			[`${buttonPrefix}background-palette-color-general`]: 4,
 		},
@@ -163,7 +162,7 @@ const attributes = {
 			[`${closeIconPrefix}icon-inherit`]: false,
 			[`${closeIconPrefix}icon-width-general`]: '25',
 			[`${closeIconPrefix}icon-fill-palette-color`]: 1,
-			[`${closeIconPrefix}-icon-spacing-general`]: 0,
+			[`${closeIconPrefix}icon-spacing-general`]: 0,
 			[`${closeIconPrefix}icon-content`]:
 				'<svg class="cross-29-shape-maxi-svg" width="64px" height="64px" viewBox="0 0 36.1 36.1" data-fill fill="#081219"><path d="M26.1 13l-3-3-5 5-5.1-5-3 3 5 5-5 5.1 3 3 5.1-5 5 5 3-3-5-5.1zm4.5-7.5c-6.9-6.9-18.2-6.9-25.1 0s-6.9 18.2 0 25.1 18.2 6.9 25.1 0 6.9-18.2 0-25.1zm-2.1 23c-5.8 5.8-15.2 5.8-20.9 0-5.8-5.8-5.8-15.2 0-20.9 5.8-5.8 15.2-5.8 20.9 0 5.8 5.8 5.8 15.1 0 20.9z"/></svg>',
 		},

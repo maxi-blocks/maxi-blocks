@@ -312,9 +312,9 @@ class edit extends MaxiBlockComponent {
 						allowedTypes='image'
 						value={mediaID}
 						render={({ open }) => (
-							<div className='maxi-image-block__settings'>
+							<div className='maxi-image-block__settings maxi-settings-media-upload'>
 								<Button
-									className='maxi-image-block__settings__upload-button'
+									className='maxi-image-block__settings__upload-button maxi-settings-media-upload__button'
 									label={__(
 										'Upload / Add from Media Library',
 										'maxi-blocks'

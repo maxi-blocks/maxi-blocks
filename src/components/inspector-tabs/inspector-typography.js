@@ -133,6 +133,7 @@ const typography = ({
 										}
 										blockStyle={blockStyle}
 										styleCardPrefix={styleCardPrefix}
+										isList={isList}
 										globalProps={hoverGlobalProps}
 										prefix={prefix}
 									/>

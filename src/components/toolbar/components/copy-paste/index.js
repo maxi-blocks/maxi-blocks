@@ -46,6 +46,9 @@ const CopyPaste = props => {
 	const [specialPaste, setSpecialPaste] = useState({
 		settings: [],
 		canvas: [],
+		block: [],
+		button: [],
+		input: [],
 		advanced: [],
 	});
 
@@ -208,6 +211,9 @@ const CopyPaste = props => {
 		setSpecialPaste({
 			settings: [],
 			canvas: [],
+			block: [],
+			button: [],
+			input: [],
 			advanced: [],
 		});
 

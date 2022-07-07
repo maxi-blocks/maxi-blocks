@@ -1,7 +1,6 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
 import { RichText } from '@wordpress/block-editor';
 import { useState } from '@wordpress/element';
 
@@ -15,7 +14,7 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 
 import { getIconPositionClass } from '../../extensions/styles';
 import getStyles from './styles';
-// import copyPasteMapping from './copy-paste-mapping';
+import copyPasteMapping from './copy-paste-mapping';
 
 /**
  * External dependencies
@@ -156,7 +155,7 @@ class edit extends MaxiBlockComponent {
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}
 				{...this.props}
-				// copyPasteMapping={copyPasteMapping}
+				copyPasteMapping={copyPasteMapping}
 			/>,
 			<MaxiBlock
 				{...getMaxiBlockAttributes(this.props)}

@@ -21,7 +21,7 @@ import {
 	closeIconPrefix,
 	searchButtonPrefix,
 	searchInputPrefix,
-} from './attributes';
+} from './prefixes';
 
 /**
  * Inspector
@@ -226,7 +226,7 @@ const Inspector = props => {
 											disablePadding: true,
 											disablePosition: true,
 											disableSpacing: true,
-											prefix: 'close-',
+											prefix: closeIconPrefix,
 										})),
 									{
 										label: __('Position', 'maxi-blocks'),

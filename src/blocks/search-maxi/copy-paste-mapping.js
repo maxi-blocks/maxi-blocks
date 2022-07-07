@@ -2,7 +2,7 @@ import {
 	closeIconPrefix,
 	searchButtonPrefix,
 	searchInputPrefix,
-} from './attributes';
+} from './prefixes';
 
 const copyPasteMapping = {
 	block: {

@@ -15,6 +15,7 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import { getIconPositionClass } from '../../extensions/styles';
 import getStyles from './styles';
 import copyPasteMapping from './copy-paste-mapping';
+import { closeIconPrefix } from './attributes';
 
 /**
  * External dependencies
@@ -84,7 +85,9 @@ const SearchBlock = props => {
 							<RawHTML>
 								{skin === 'icon-reveal'
 									? isInputOpen
-										? attributes['close-icon-content']
+										? attributes[
+												`${closeIconPrefix}icon-content`
+										  ]
 										: searchButtonIcon
 									: searchButtonIcon}
 							</RawHTML>
@@ -121,7 +124,7 @@ class edit extends MaxiBlockComponent {
 		const { attributes } = this.props;
 		const {
 			'icon-content': iconContent,
-			'close-icon-content': closeIconContent,
+			[`${closeIconPrefix}icon-content`]: closeIconContent,
 			skin,
 			uniqueID,
 		} = attributes;

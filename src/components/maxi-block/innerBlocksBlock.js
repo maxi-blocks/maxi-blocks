@@ -64,7 +64,6 @@ const getInnerBlocksChild = ({
 					className='maxi-pane-block__content'
 					key={`maxi-pane-content__${uniqueID}`}
 				>
-					<hr />
 					{cloneElement(innerBlocksChildren)}
 				</div>
 			),

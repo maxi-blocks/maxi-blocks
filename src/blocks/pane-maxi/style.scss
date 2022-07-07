@@ -1,13 +1,23 @@
 .maxi-pane-block {
-	& hr {
-		width: 100%;
-		margin: 0;
-	}
-
 	&__header {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+
+		padding: 0 0 25px 0;
+
+		border-color: #d6d6d6 !important;
+		border-style: solid !important;
+		border-width: 0 0 3px 0;
+	}
+
+	&__title {
+		margin: 0;
+	}
+
+	&__content {
+		padding: 25px 0;
+
 		border-color: #d6d6d6 !important;
 		border-style: solid !important;
 		border-width: 0 0 3px 0;

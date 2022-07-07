@@ -21,7 +21,6 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-import { setSVGStrokeWidth } from '../../extensions/svg';
 import SvgWidthControl from '../svg-width-control';
 import SvgStrokeWidthControl from '../svg-stroke-width-control';
 import MaxiModal from '../../editor/library/modal';
@@ -58,10 +57,12 @@ const IconControl = props => {
 		breakpoint,
 		blockStyle,
 		isHover = false,
+		isInteractionBuilder = false,
+		disableIconInherit = false,
+		getIconWithColor,
 		'icon-only': iconOnly,
 		'icon-inherit': iconInherit,
 		'icon-content': iconContent,
-		getIconWithColor,
 	} = props;
 
 	const classes = classnames('maxi-icon-control', className);
@@ -146,7 +147,7 @@ const IconControl = props => {
 
 	return (
 		<div className={classes}>
-			{!isHover && breakpoint === 'general' && (
+			{!isInteractionBuilder && !isHover && breakpoint === 'general' && (
 				<MaxiModal
 					type='button-icon'
 					style={blockStyle}
@@ -163,30 +164,32 @@ const IconControl = props => {
 			)}
 			{iconContent && (
 				<>
-					{!isHover && breakpoint === 'general' && (
-						<>
-							<hr />
-							<ToggleSwitch
-								label={__(
-									'Icon only (remove text)',
-									'maxi-blocks'
-								)}
-								className='maxi-color-control__palette__custom'
-								selected={iconOnly}
-								onChange={val => {
-									const icon = getIconWithColor({
-										isIconOnly: val,
-										isHover,
-									});
+					{!isInteractionBuilder &&
+						!isHover &&
+						breakpoint === 'general' && (
+							<>
+								<hr />
+								<ToggleSwitch
+									label={__(
+										'Icon only (remove text)',
+										'maxi-blocks'
+									)}
+									className='maxi-color-control__palette__custom'
+									selected={iconOnly}
+									onChange={val => {
+										const icon = getIconWithColor({
+											isIconOnly: val,
+											isHover,
+										});
 
-									onChange({
-										'icon-only': val,
-										'icon-content': icon,
-									});
-								}}
-							/>
-						</>
-					)}
+										onChange({
+											'icon-only': val,
+											'icon-content': icon,
+										});
+									}}
+								/>
+							</>
+						)}
 					<SvgWidthControl
 						{...getGroupAttributes(
 							props,
@@ -204,22 +207,11 @@ const IconControl = props => {
 							`icon${isHover ? 'Hover' : ''}`,
 							isHover
 						)}
-						onChange={obj => {
-							onChange({
-								...obj,
-								'icon-content': setSVGStrokeWidth(
-									iconContent,
-									obj[
-										`icon-stroke-${breakpoint}${
-											isHover ? '-hover' : ''
-										}`
-									]
-								),
-							});
-						}}
+						onChange={obj => onChange(obj)}
 						prefix='icon-'
 						breakpoint={breakpoint}
 						isHover={isHover}
+						content={props['icon-content']}
 					/>
 					{!isHover && !iconOnly && (
 						<>
@@ -281,26 +273,28 @@ const IconControl = props => {
 							)}
 						</>
 					)}
-					{!isHover && breakpoint === 'general' && (
-						<ToggleSwitch
-							label={__(
-								'Inherit colour/background from button',
-								'maxi-block'
-							)}
-							selected={iconInherit}
-							onChange={val => {
-								const icon = getIconWithColor({
-									isInherit: val,
-									isHover,
-								});
+					{!disableIconInherit &&
+						!isHover &&
+						breakpoint === 'general' && (
+							<ToggleSwitch
+								label={__(
+									'Inherit colour/background from button',
+									'maxi-block'
+								)}
+								selected={iconInherit}
+								onChange={val => {
+									const icon = getIconWithColor({
+										isInherit: val,
+										isHover,
+									});
 
-								onChange({
-									'icon-inherit': val,
-									'icon-content': icon,
-								});
-							}}
-						/>
-					)}
+									onChange({
+										'icon-inherit': val,
+										'icon-content': icon,
+									});
+								}}
+							/>
+						)}
 					<SettingTabsControl
 						className='maxi-icon-styles-control'
 						type='buttons'
@@ -384,6 +378,13 @@ const IconControl = props => {
 										});
 									}}
 									isHover={isHover}
+									globalProps={{
+										target: `${
+											isHover ? 'hover-line' : 'line'
+										}`,
+										type: 'icon',
+									}}
+									noColorPrefix
 								/>
 							)
 						) : (
@@ -488,6 +489,11 @@ const IconControl = props => {
 								});
 							}}
 							isHover={isHover}
+							globalProps={{
+								target: `${isHover ? 'hover-fill' : 'fill'}`,
+								type: 'icon',
+							}}
+							noColorPrefix
 							avoidBreakpointForDefault
 						/>
 					)}

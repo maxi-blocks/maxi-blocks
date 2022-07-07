@@ -21,13 +21,14 @@ import { select, dispatch, useSelect } from '@wordpress/data';
  * Internal dependencies
  */
 import {
-	styleResolver,
-	styleGenerator,
-	getGroupAttributes,
 	getBlockStyle,
-	getParallaxLayers,
-	getHasVideo,
+	getGroupAttributes,
 	getHasScrollEffects,
+	getHasVideo,
+	getParallaxLayers,
+	getRelations,
+	styleGenerator,
+	styleResolver,
 } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
 import { loadFonts, getAllFonts } from '../text/fonts';
@@ -80,10 +81,6 @@ const StyleComponent = ({
  * Class
  */
 class MaxiBlockComponent extends Component {
-	propsToAvoidRendering = [];
-
-	propsToAvoidStyling = [];
-
 	constructor(...args) {
 		super(...args);
 
@@ -146,24 +143,15 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidMount() {
-		if (!this.getBreakpoints.xxl) this.forceUpdate();
-
 		if (this.maxiBlockDidMount) this.maxiBlockDidMount();
+
+		if (!this.getBreakpoints.xxl) this.forceUpdate();
 	}
 
 	/**
 	 * Prevents rendering
 	 */
 	shouldComponentUpdate(nextProps, nextState) {
-		// Even when not rendering, on breakpoint stage change
-		// re-render the styles
-		const breakpoint = select('maxiBlocks').receiveMaxiDeviceType();
-
-		if (breakpoint !== this.currentBreakpoint) {
-			this.currentBreakpoint = breakpoint;
-			this.displayStyles();
-		}
-
 		// Force rendering the block when SC related values change
 		if (this.scProps) {
 			const SC = select(
@@ -197,24 +185,6 @@ class MaxiBlockComponent extends Component {
 		// Check changes on states
 		if (!isEqual(this.state, nextState)) return true;
 
-		// Check changes on props
-		if (!isEmpty(this.propsToAvoidRendering)) {
-			const oldAttributes = cloneDeep(nextProps.attributes);
-			const newAttributes = cloneDeep(this.props.attributes);
-
-			this.propsToAvoidRendering.forEach(prop => {
-				delete oldAttributes[prop];
-				delete newAttributes[prop];
-			});
-
-			// eslint-disable-next-line no-constant-condition
-			if (!isEqual(oldAttributes, newAttributes) && false)
-				// Just for debugging 👍
-				this.difference(oldAttributes, newAttributes);
-
-			return !isEqual(oldAttributes, newAttributes);
-		}
-
 		if (this.shouldMaxiBlockUpdate)
 			return (
 				this.shouldMaxiBlockUpdate(
@@ -239,26 +209,15 @@ class MaxiBlockComponent extends Component {
 	 * Prevents styling
 	 */
 	getSnapshotBeforeUpdate(prevProps, prevState) {
-		if (!isEmpty(this.propsToAvoidStyling)) {
-			const oldAttributes = cloneDeep(prevProps.attributes);
-			const newAttributes = cloneDeep(this.props.attributes);
-
-			this.propsToAvoidStyling.forEach(prop => {
-				delete oldAttributes[prop];
-				delete newAttributes[prop];
-			});
-
-			if (!isEqual(oldAttributes, newAttributes))
-				this.difference(oldAttributes, newAttributes);
-
-			if (this.maxiBlockGetSnapshotBeforeUpdate)
-				this.maxiBlockGetSnapshotBeforeUpdate(prevProps, prevState);
-
-			return isEqual(oldAttributes, newAttributes);
-		}
-
 		// Force render styles when changing state
 		if (!isEqual(prevState, this.state)) return false;
+
+		if (this.maxiBlockGetSnapshotBeforeUpdate) {
+			return (
+				this.maxiBlockGetSnapshotBeforeUpdate(prevProps) &&
+				isEqual(prevProps.attributes, this.props.attributes)
+			);
+		}
 
 		// For render styles when there's no <style> element for the block
 		// Normally happens when duplicate the block
@@ -274,17 +233,18 @@ class MaxiBlockComponent extends Component {
 		)
 			return false;
 
-		if (this.maxiBlockGetSnapshotBeforeUpdate)
-			return (
-				this.maxiBlockGetSnapshotBeforeUpdate(prevProps) &&
-				isEqual(prevProps.attributes, this.props.attributes)
-			);
-
 		return isEqual(prevProps.attributes, this.props.attributes);
 	}
 
 	componentDidUpdate(prevProps, prevState, shouldDisplayStyles) {
-		if (!shouldDisplayStyles) this.displayStyles();
+		// Even when not rendering, on breakpoint stage change
+		// re-render the styles
+		const breakpoint = select('maxiBlocks').receiveMaxiDeviceType();
+
+		if (!shouldDisplayStyles || breakpoint !== this.currentBreakpoint) {
+			this.currentBreakpoint = breakpoint;
+			this.displayStyles();
+		}
 
 		if (this.maxiBlockDidUpdate)
 			this.maxiBlockDidUpdate(prevProps, prevState, shouldDisplayStyles);
@@ -324,7 +284,7 @@ class MaxiBlockComponent extends Component {
 		const {
 			uniqueID,
 			'background-layers': bgLayers,
-			relations,
+			relations: relationsRaw,
 		} = this.props.attributes;
 
 		const scroll = getGroupAttributes(
@@ -338,6 +298,7 @@ class MaxiBlockComponent extends Component {
 		const bgParallaxLayers = getParallaxLayers(uniqueID, bgLayers);
 		const hasVideo = getHasVideo(uniqueID, bgLayers);
 		const hasScrollEffects = getHasScrollEffects(uniqueID, scroll);
+		const relations = getRelations(uniqueID, relationsRaw);
 
 		return {
 			[uniqueID]: {

@@ -54,7 +54,7 @@ describe('Advanced Number Control', () => {
 
 		expect(await getAttributes('letter-spacing-m')).toStrictEqual(-3);
 
-		// reset value
+		// Reset value
 		await editAdvancedNumberControl({
 			page,
 			instance: await page.$('.maxi-typography-control__letter-spacing'),
@@ -69,6 +69,20 @@ describe('Advanced Number Control', () => {
 		expect(await getAttributes('letter-spacing-m')).toStrictEqual(
 			undefined
 		);
+
+		// Check max value change
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-typography-control__size'),
+			newNumber: '300',
+		});
+
+		const selector = await page.$(
+			'.maxi-typography-control .maxi-typography-control__size select'
+		);
+
+		await selector.select('em');
+		expect(await getAttributes('font-size-m')).toStrictEqual(100);
 	});
 	it('Checking the advanced number control max value', async () => {
 		await changeResponsive(page, 'base');

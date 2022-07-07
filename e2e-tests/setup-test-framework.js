@@ -12,6 +12,7 @@ import {
 	setBrowserViewport,
 	deactivatePlugin,
 	activatePlugin,
+	activateTheme,
 } from '@wordpress/e2e-test-utils';
 
 /**
@@ -161,9 +162,14 @@ function observeConsoleLogging() {
 beforeAll(async () => {
 	enablePageDialogAccept();
 	observeConsoleLogging();
+
 	await setupBrowser();
+
 	await deactivatePlugin('maxi-blocks-last-github-version');
 	await activatePlugin('maxi-blocks-last-github-version');
+
+	// Default theme, twentytwentytwo, has a bug that returns a console.error
+	await activateTheme('twentytwentyone');
 });
 
 afterEach(async () => {

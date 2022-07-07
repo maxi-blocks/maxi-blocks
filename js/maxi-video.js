@@ -100,7 +100,6 @@ function handleVimeoVideos() {
 
 function popupEvents(player, video, type, embedUrl) {
 	const wrapper = video.querySelector('.maxi-video-block__popup-wrapper');
-	const playButton = video.querySelector('.maxi-video-block__play-button');
 	const overlay = video.querySelector('.maxi-video-block__overlay');
 
 	const openVideo = () => {
@@ -120,7 +119,6 @@ function popupEvents(player, video, type, embedUrl) {
 	};
 
 	overlay.addEventListener('click', openVideo);
-	playButton.addEventListener('click', openVideo);
 	wrapper.addEventListener('click', closeVideo);
 }
 

@@ -34,7 +34,6 @@ const attributes = {
 		prefix: 'lightbox-',
 		diffValAttr: {
 			'lightbox-background-palette-color-general': 5,
-			'lightbox-background-palette-opacity-general': 0.7,
 		},
 	}),
 
@@ -48,7 +47,10 @@ const attributes = {
 	...prefixAttributesCreator({
 		obj: attributesData.backgroundColor,
 		prefix: 'overlay-',
-		diffValAttr: { 'overlay-background-palette-color-general': 2 },
+		diffValAttr: {
+			'overlay-background-palette-color-general': 5,
+			'overlay-background-palette-opacity-general': 0.7,
+		},
 	}),
 
 	'overlay-mediaID': {

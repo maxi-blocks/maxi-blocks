@@ -30,6 +30,21 @@ import {
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
+const getPaneSpacing = props => {
+	const response = { label: 'Pane spacing', general: {} };
+
+	breakpoints.forEach(breakpoint => {
+		response[breakpoint] = {};
+		if (!isNil(props[`pane-spacing-${breakpoint}`])) {
+			response[breakpoint]['row-gap'] = `${
+				props[`pane-spacing-${breakpoint}`]
+			}px`;
+		}
+	});
+
+	return response;
+};
+
 const getNormalObject = props => {
 	const response = {
 		border: getBorderStyles({
@@ -82,6 +97,7 @@ const getNormalObject = props => {
 		flex: getFlexStyles({
 			...getGroupAttributes(props, 'flex'),
 		}),
+		paneSpacing: getPaneSpacing(props),
 	};
 
 	return response;
@@ -178,19 +194,6 @@ const getIconObject = props => {
 			false
 		),
 	};
-	return response;
-};
-
-const getPaneSpacing = props => {
-	const response = { label: 'Pane spacing', general: {} };
-	breakpoints.forEach(breakpoint => {
-		response[breakpoint] = {};
-		if (!isNil(props[`pane-spacing-${breakpoint}`])) {
-			response[breakpoint]['row-gap'] = `${
-				props[`pane-spacing-${breakpoint}`]
-			}px`;
-		}
-	});
 	return response;
 };
 
@@ -305,13 +308,6 @@ const getBackgroundObject = props => {
 	return response;
 };
 
-const getPaneStyles = props => {
-	const response = {
-		paneSpacing: getPaneSpacing(props),
-	};
-	return response;
-};
-
 const getStyles = props => {
 	const { uniqueID } = props;
 	const response = {
@@ -319,8 +315,6 @@ const getStyles = props => {
 			'': getNormalObject(props),
 			':hover': getHoverObject(props),
 			...getPaneHeaderObject(props),
-			'.maxi-accordion-block .maxi-accordion-block__content':
-				getPaneStyles(props),
 			...getIconObject(props),
 			...getBackgroundObject(props),
 		}),

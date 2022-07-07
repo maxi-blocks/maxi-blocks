@@ -210,14 +210,20 @@ const getSearchButtonIconStyles = props => {
 	return response;
 };
 
-const getSearchButtonContentStyles = props => {
+const getSearchButtonContentStyles = (props, isHover = false) => {
 	const { blockStyle } = props;
 
 	const response = {
 		typography: getTypographyStyles({
 			obj: {
-				...getGroupAttributes(props, 'typography', false, buttonPrefix),
+				...getGroupAttributes(
+					props,
+					'typography',
+					isHover,
+					buttonPrefix
+				),
 			},
+			isHover,
 			blockStyle,
 			prefix: buttonPrefix,
 		}),
@@ -340,22 +346,25 @@ const getStyles = props => {
 			merge(
 				{
 					'': getNormalObject(props),
-					':hover': getHoverObject(props),
 					' .maxi-search-block__input': getSearchInputStyles(props),
 					' .maxi-search-block__input::placeholder':
 						getSearchInputPlaceholderStyles(props),
+					' .maxi-search-block__button': getSearchButtonStyles(props),
+					...getSearchButtonIconStyles(props),
+					' .maxi-search-block__button__content':
+						getSearchButtonContentStyles(props),
+					// Hover styles
+					':hover': getHoverObject(props),
 					':hover .maxi-search-block__input': getSearchInputStyles(
 						props,
 						true
 					),
-					' .maxi-search-block__button': getSearchButtonStyles(props),
 					':hover .maxi-search-block__button': getSearchButtonStyles(
 						props,
 						true
 					),
-					...getSearchButtonIconStyles(props),
-					' .maxi-search-block__button__content':
-						getSearchButtonContentStyles(props),
+					':hover .maxi-search-block__button__content':
+						getSearchButtonContentStyles(props, true),
 				},
 				...getTransitionStyles(props, transitionObj)
 			),

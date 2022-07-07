@@ -75,6 +75,13 @@ const transitionObj = {
 			property: 'background',
 			prefix: inputPrefix,
 		},
+		'icon reveal appear': {
+			title: 'Icon reveal appear',
+			target: ' .maxi-search-block__input',
+			property: ['opacity', 'visibility'],
+			prefix: inputPrefix,
+			ignoreHoverProp: true,
+		},
 	},
 };
 

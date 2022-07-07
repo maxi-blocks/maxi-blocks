@@ -12,6 +12,7 @@ const checkCSS = async ({ page, cssInstances }) => {
 		await cssTextArea.focus();
 
 		await page.keyboard.type('background: red');
+		await page.waitForTimeout(200);
 
 		// validate css
 		await page.$$eval(

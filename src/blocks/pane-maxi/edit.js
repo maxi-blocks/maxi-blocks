@@ -13,6 +13,7 @@ import { getMaxiBlockAttributes, MaxiBlock } from '../../components/maxi-block';
 import { Toolbar } from '../../components';
 import getStyles from './styles';
 import AccordionContext from '../accordion-maxi/context';
+import Inspector from './inspector';
 
 /**
  * Edit
@@ -43,6 +44,7 @@ class edit extends MaxiBlockComponent {
 		const ROW_TEMPLATE = [['maxi-blocks/row-maxi']];
 
 		return [
+			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}

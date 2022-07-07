@@ -86,9 +86,6 @@ const attributes = {
 	...attributesData.position,
 	...attributesData.overflow,
 	...attributesData.zIndex,
-	...attributesData.size,
-	...attributesData.margin,
-	...attributesData.padding,
 	...attributesData.customCss,
 	...attributesData.flex,
 };

@@ -47,6 +47,8 @@ const MapControl = props => {
 
 	const classes = classnames('maxi-map-control', className);
 
+	console.log('hasApiKey in MapControl', hasApiKey);
+
 	return (
 		<div className={classes}>
 			{!hasApiKey && (

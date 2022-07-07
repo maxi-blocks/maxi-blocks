@@ -59,7 +59,7 @@ const map = {
 	},
 	'map-marker-scale': {
 		type: 'number',
-		default: 20,
+		default: 1,
 	},
 	'map-marker-custom-color-status': {
 		type: 'boolean',

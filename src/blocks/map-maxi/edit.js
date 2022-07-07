@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { compose } from '@wordpress/compose';
-import { withSelect, withDispatch } from '@wordpress/data';
+import { withDispatch, select } from '@wordpress/data';
 import { useRef, useState, createRef } from '@wordpress/element';
 import { Button, TextControl } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
@@ -123,7 +123,7 @@ const GoogleMapsContent = props => {
 	return (
 		<p className='maxi-map-block__not-found'>
 			{__(
-				'Oops, you can not see the map because, you have not set your Google map API key, please navigate to the Maxi Block',
+				'Oops, you can not see the map because you have not set your Google map API key, please navigate to the Maxi Block',
 				'maxi-blocks'
 			)}
 			<a target='_blank' href='/wp-admin/admin.php?page=maxi-blocks.php'>
@@ -397,7 +397,7 @@ const OpenStreetMapContent = props => {
 				minZoom={mapMinZoom}
 				maxZoom={mapMaxZoom}
 				zoom={mapZoom}
-				whenCreated={map => setOsmMap(map)}
+				whenCreated={setOsmMap}
 			>
 				<TileLayer
 					attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -505,6 +505,14 @@ const OpenStreetMapContent = props => {
 	);
 };
 class edit extends MaxiBlockComponent {
+	constructor(...args) {
+		super(...args);
+
+		this.state = {
+			isFirstClick: false,
+		};
+	}
+
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
@@ -522,10 +530,6 @@ class edit extends MaxiBlockComponent {
 		};
 	}
 
-	state = {
-		isFirstClick: false,
-	};
-
 	maxiBlockDidUpdate(prevProps) {
 		// Prevent showing alert on first click to map
 		const { isSelected } = this.props;
@@ -541,12 +545,23 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, blockFullWidth, maxiSetAttributes } = this.props;
+		const { attributes, maxiSetAttributes } = this.props;
 		const {
 			uniqueID,
 			'map-provider': mapProvider,
 			'map-marker-icon': mapMarkerIcon,
 		} = attributes;
+
+		const getApiKey = () => {
+			const { receiveMaxiSettings } = select('maxiBlocks');
+
+			const maxiSettings = receiveMaxiSettings();
+
+			const key = maxiSettings?.google_api_key;
+
+			if (key) return key;
+			return false;
+		};
 
 		if (!mapMarkerIcon) {
 			maxiSetAttributes({
@@ -559,7 +574,11 @@ class edit extends MaxiBlockComponent {
 		}
 
 		return [
-			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
+			<Inspector
+				key={`block-settings-${uniqueID}`}
+				{...this.props}
+				apiKey={getApiKey()}
+			/>,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}
@@ -569,11 +588,10 @@ class edit extends MaxiBlockComponent {
 				key={`maxi-map--${uniqueID}`}
 				ref={this.blockRef}
 				className='maxi-map-block'
-				blockFullWidth={blockFullWidth}
 				{...getMaxiBlockAttributes(this.props)}
 			>
 				{mapProvider === 'googlemaps' && (
-					<GoogleMapsContent {...this.props} />
+					<GoogleMapsContent {...this.props} apiKey={getApiKey()} />
 				)}
 				{mapProvider === 'openstreetmap' && (
 					<OpenStreetMapContent
@@ -585,17 +603,6 @@ class edit extends MaxiBlockComponent {
 		];
 	}
 }
-
-const editSelect = withSelect(select => {
-	const { receiveMaxiSettings } = select('maxiBlocks');
-
-	const maxiSettings = receiveMaxiSettings();
-	const { google_api_key: apiKey = false } = maxiSettings;
-
-	return {
-		apiKey,
-	};
-});
 
 const editDispatch = withDispatch((dispatch, ownProps) => {
 	const { maxiSetAttributes } = ownProps;
@@ -617,4 +624,4 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	return { changeSVGContent };
 });
 
-export default compose(editSelect, withMaxiProps, editDispatch)(edit);
+export default compose(withMaxiProps, editDispatch)(edit);

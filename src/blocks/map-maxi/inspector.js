@@ -39,8 +39,8 @@ const Inspector = props => {
 		maxiSetAttributes,
 		clientId,
 		parentBlockStyle,
+		apiKey,
 	} = props;
-	const { apiKey } = attributes;
 
 	return (
 		<InspectorControls>
@@ -109,116 +109,114 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<>
-													<SettingTabsControl
-														items={[
-															{
-																label: __(
-																	'Title',
-																	'maxi-blocks'
-																),
-																content: (
-																	<>
-																		<span>
-																			Marker
-																			title
-																			text
-																		</span>
-																		<FontLevelControl
-																			{...getGroupAttributes(
+												<SettingTabsControl
+													items={[
+														{
+															label: __(
+																'Title',
+																'maxi-blocks'
+															),
+															content: (
+																<>
+																	<span>
+																		Marker
+																		title
+																		text
+																	</span>
+																	<FontLevelControl
+																		{...getGroupAttributes(
+																			attributes,
+																			'map'
+																		)}
+																		value={
+																			attributes[
+																				'map-marker-heading-level'
+																			]
+																		}
+																		onChange={obj => {
+																			maxiSetAttributes(
+																				{
+																					'map-marker-heading-level':
+																						obj.textLevel,
+																				}
+																			);
+																		}}
+																	/>
+																	<TypographyControl
+																		typography={{
+																			...getGroupAttributes(
 																				attributes,
-																				'map'
-																			)}
-																			value={
-																				attributes[
-																					'map-marker-heading-level'
-																				]
-																			}
-																			onChange={obj => {
-																				maxiSetAttributes(
-																					{
-																						'map-marker-heading-level':
-																							obj.textLevel,
-																					}
-																				);
-																			}}
-																		/>
-																		<TypographyControl
-																			typography={{
-																				...getGroupAttributes(
-																					attributes,
-																					'typography'
-																				),
-																			}}
-																			onChange={obj => {
-																				maxiSetAttributes(
-																					obj
-																				);
-																			}}
-																			textLevel={
-																				attributes[
-																					'map-marker-heading-level'
-																				]
-																			}
-																			hideAlignment
-																			clientId={
-																				clientId
-																			}
-																			blockStyle={
-																				parentBlockStyle
-																			}
-																			breakpoint={
-																				deviceType
-																			}
-																		/>
-																	</>
-																),
-															},
-															{
-																label: __(
-																	'Description',
-																	'maxi-blocks'
-																),
-																content: (
-																	<>
-																		<span>
-																			Marker
-																			description
-																			text
-																		</span>
-																		<TypographyControl
-																			typography={{
-																				...getGroupAttributes(
-																					attributes,
-																					'typography',
-																					false,
-																					'description-'
-																				),
-																			}}
-																			textLevel='p'
-																			prefix='description-'
-																			onChange={obj => {
-																				maxiSetAttributes(
-																					obj
-																				);
-																			}}
-																			hideAlignment
-																			clientId={
-																				clientId
-																			}
-																			blockStyle={
-																				parentBlockStyle
-																			}
-																			breakpoint={
-																				deviceType
-																			}
-																		/>
-																	</>
-																),
-															},
-														]}
-													/>
-												</>
+																				'typography'
+																			),
+																		}}
+																		onChange={obj => {
+																			maxiSetAttributes(
+																				obj
+																			);
+																		}}
+																		textLevel={
+																			attributes[
+																				'map-marker-heading-level'
+																			]
+																		}
+																		hideAlignment
+																		clientId={
+																			clientId
+																		}
+																		blockStyle={
+																			parentBlockStyle
+																		}
+																		breakpoint={
+																			deviceType
+																		}
+																	/>
+																</>
+															),
+														},
+														{
+															label: __(
+																'Description',
+																'maxi-blocks'
+															),
+															content: (
+																<>
+																	<span>
+																		Marker
+																		description
+																		text
+																	</span>
+																	<TypographyControl
+																		typography={{
+																			...getGroupAttributes(
+																				attributes,
+																				'typography',
+																				false,
+																				'description-'
+																			),
+																		}}
+																		textLevel='p'
+																		prefix='description-'
+																		onChange={obj => {
+																			maxiSetAttributes(
+																				obj
+																			);
+																		}}
+																		hideAlignment
+																		clientId={
+																			clientId
+																		}
+																		blockStyle={
+																			parentBlockStyle
+																		}
+																		breakpoint={
+																			deviceType
+																		}
+																	/>
+																</>
+															),
+														},
+													]}
+												/>
 											),
 										},
 										{
@@ -227,24 +225,20 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<>
-													<MapPopupsControl
-														onChange={obj =>
-															maxiSetAttributes(
-																obj
-															)
-														}
-														parentBlockStyle={
-															parentBlockStyle
-														}
-														deviceType={deviceType}
-														changeSVGContent={
-															changeSVGContent
-														}
-														clientId={clientId}
-														attributes={attributes}
-													/>
-												</>
+												<MapPopupsControl
+													onChange={obj =>
+														maxiSetAttributes(obj)
+													}
+													parentBlockStyle={
+														parentBlockStyle
+													}
+													deviceType={deviceType}
+													changeSVGContent={
+														changeSVGContent
+													}
+													clientId={clientId}
+													attributes={attributes}
+												/>
 											),
 										},
 										...inspectorTabs.border({

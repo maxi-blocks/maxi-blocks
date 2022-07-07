@@ -24,10 +24,6 @@ const attributes = {
 		type: 'string',
 		default: __('Map', 'maxi-blocks'),
 	},
-	blockFullWidth: {
-		type: 'string',
-		default: 'normal',
-	},
 	...attributesData.typography,
 	...prefixAttributesCreator({
 		obj: attributesData.typography,

@@ -24,7 +24,7 @@ describe('Video overlay control', () => {
 
 		// Change type
 		const videoType = await accordionPanel.$(
-			'.maxi-accordion-control__item .maxi-video-type select'
+			'.maxi-accordion-control__item .maxi-video-control__type select'
 		);
 
 		await videoType.select('popup');
@@ -87,7 +87,7 @@ describe('Video overlay control', () => {
 		await editAdvancedNumberControl({
 			page,
 			instance: await page.$(
-				'.maxi-accordion-control__item .icon-height-number-control '
+				'.maxi-accordion-control__item .maxi-video-icon-control__icon-height '
 			),
 			newNumber: '23',
 		});
@@ -101,7 +101,7 @@ describe('Video overlay control', () => {
 		const responsiveValue = await addResponsiveTest({
 			page,
 			instance:
-				'.maxi-accordion-control__item .icon-height-number-control input',
+				'.maxi-accordion-control__item .maxi-video-icon-control__icon-height input',
 			needFocus: true,
 			baseExpect: '23',
 			xsExpect: '32',

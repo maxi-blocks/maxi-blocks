@@ -2,17 +2,81 @@
  * Internal dependencies
  */
 import { getGroupAttributes, paletteAttributesCreator } from '../styles';
+import getPrefix from './getPrefix';
 
 /**
  * External dependencies
  */
-import { isNil, isEmpty } from 'lodash';
+import { isEmpty } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
+const orderAttributes = (obj, property, copyPasteMapping, tab) => {
+	if (isEmpty(obj)) return {};
+	let orderedKeys;
+
+	const getOrderedKeys = order =>
+		Object.keys(obj).sort(
+			(a, b) =>
+				order.indexOf(obj[a][property]) -
+				order.indexOf(obj[b][property])
+		);
+
+	if (tab === 'settings') {
+		const { _order } = copyPasteMapping;
+
+		orderedKeys = getOrderedKeys(_order);
+	} else if (tab === 'canvas') {
+		const _order = [
+			'Background',
+			'Border',
+			'Box shadow',
+			'Opacity',
+			'Size',
+			'Margin/Padding',
+		];
+
+		orderedKeys = getOrderedKeys(_order);
+	} else if (tab === 'advanced') {
+		const _order = [
+			'Custom CSS classes',
+			'Anchor',
+			'Custom CSS',
+			'Scroll',
+			'Transform',
+			'Hyperlink hover transition',
+			'Show/hide block',
+			'Opacity',
+			'Position',
+			'Overflow',
+			'Flexbox',
+			'Z-index',
+		];
+
+		orderedKeys = getOrderedKeys(_order);
+	} else {
+		const _order = copyPasteMapping[tab]?._order;
+
+		orderedKeys = getOrderedKeys(_order);
+	}
+
+	const response = {};
+	orderedKeys.forEach(key => {
+		response[key] = obj[key];
+	});
+	return response;
+};
+
 const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 	const response = {};
-	const settingTabs = ['settings', 'canvas', 'advanced'];
+	const settingTabs = [
+		'settings',
+		'canvas',
+		'block',
+		'button',
+		'input',
+		'advanced',
+	];
 
 	settingTabs.forEach(tab => {
 		if (copyPasteMapping[tab]) {
@@ -85,10 +149,11 @@ const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 													attributes,
 													prop,
 													false,
-													attrContent.props[prop]
-														.type === 'withPrefix'
-														? prefix
-														: ''
+													getPrefix(
+														attrContent.props[prop],
+														attrContent.prefix,
+														prefix
+													)
 												)
 											);
 										}
@@ -215,7 +280,11 @@ const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 											attributes,
 											propArray,
 											false,
-											type === 'withPrefix' ? prefix : ''
+											getPrefix(
+												type,
+												attrContent.prefix,
+												prefix
+											)
 										);
 
 										groupObj.group[prop] = {
@@ -237,7 +306,7 @@ const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 									attributes,
 									attrContent.value,
 									false,
-									type === 'withPrefix' ? prefix : ''
+									getPrefix(type, attrContent.prefix, prefix)
 								);
 
 								response[tab][attrType] = {
@@ -249,7 +318,7 @@ const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 									attributes,
 									attrType,
 									false,
-									type === 'withPrefix' ? prefix : ''
+									getPrefix(type, attrContent.prefix, prefix)
 								);
 
 								response[tab][attrType] = {
@@ -270,63 +339,6 @@ const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 		);
 	});
 
-	return response;
-};
-
-const orderAttributes = (obj, property, copyPasteMapping, tab) => {
-	if (isEmpty(obj)) return {};
-	let orderedKeys;
-
-	if (tab === 'settings') {
-		const { _order } = copyPasteMapping;
-
-		orderedKeys = Object.keys(obj).sort(
-			(a, b) =>
-				_order.indexOf(obj[a][property]) -
-				_order.indexOf(obj[b][property])
-		);
-	} else if (tab === 'canvas') {
-		const _order = [
-			'Background',
-			'Border',
-			'Box shadow',
-			'Opacity',
-			'Size',
-			'Margin/Padding',
-		];
-
-		orderedKeys = Object.keys(obj).sort(
-			(a, b) =>
-				_order.indexOf(obj[a][property]) -
-				_order.indexOf(obj[b][property])
-		);
-	} else if (tab === 'advanced') {
-		const _order = [
-			'Custom CSS classes',
-			'Anchor',
-			'Custom CSS',
-			'Scroll',
-			'Transform',
-			'Hyperlink hover transition',
-			'Show/hide block',
-			'Opacity',
-			'Position',
-			'Overflow',
-			'Flexbox',
-			'Z-index',
-		];
-
-		orderedKeys = Object.keys(obj).sort(
-			(a, b) =>
-				_order.indexOf(obj[a][property]) -
-				_order.indexOf(obj[b][property])
-		);
-	}
-
-	const response = {};
-	orderedKeys.forEach(key => {
-		response[key] = obj[key];
-	});
 	return response;
 };
 

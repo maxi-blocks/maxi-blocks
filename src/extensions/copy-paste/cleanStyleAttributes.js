@@ -2,17 +2,20 @@
  * Internal dependencies
  */
 import { getGroupAttributes, paletteAttributesCreator } from '../styles';
-
-/**
- * External dependencies
- */
-import { isNil, isEmpty } from 'lodash';
+import getPrefix from './getPrefix';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const cleanStyleAttributes = (attributes, copyPasteMapping, prefix) => {
 	let response = {};
-	const settingTabs = ['settings', 'canvas', 'advanced'];
+	const settingTabs = [
+		'settings',
+		'canvas',
+		'block',
+		'button',
+		'input',
+		'advanced',
+	];
 
 	settingTabs.forEach(tab => {
 		if (copyPasteMapping[tab]) {
@@ -87,10 +90,12 @@ const cleanStyleAttributes = (attributes, copyPasteMapping, prefix) => {
 													attributes,
 													prop,
 													false,
-													attrContent.props[prop]
-														.type === 'withPrefix'
-														? prefix
-														: ''
+													getPrefix(
+														attrContent.props[prop]
+															.type,
+														attrContent.prefix,
+														prefix
+													)
 												)
 											)
 										);
@@ -171,7 +176,7 @@ const cleanStyleAttributes = (attributes, copyPasteMapping, prefix) => {
 									attributes,
 									attrArray,
 									false,
-									type === 'withPrefix' ? prefix : ''
+									getPrefix(type, attr.prefix, prefix)
 								),
 							};
 						}

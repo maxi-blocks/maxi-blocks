@@ -415,7 +415,7 @@ class edit extends MaxiBlockComponent {
 																this.setState(
 																	newState
 																);
-															}, 10);
+															}, 300);
 													},
 													richTextValues,
 												})
@@ -477,8 +477,24 @@ class edit extends MaxiBlockComponent {
 													maxiSetAttributes,
 													oldFormatValue:
 														this.state.formatValue,
-													onChange: newState =>
-														this.setState(newState),
+													onChange: newState => {
+														if (
+															this
+																.typingTimeoutFormatValue
+														) {
+															clearTimeout(
+																this
+																	.typingTimeoutFormatValue
+															);
+														}
+
+														this.typingTimeoutFormatValue =
+															setTimeout(() => {
+																this.setState(
+																	newState
+																);
+															}, 300);
+													},
 													richTextValues,
 												})
 											}

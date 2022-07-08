@@ -84,9 +84,6 @@ class MaxiSlider {
 			return false;
 		};
 
-		console.log('transition', this.transition);
-		console.log('speed', this.transitionSpeed);
-
 		if (this.isAutoplay && !isPaused()) {
 			setInterval(() => {
 				this.slideNext();

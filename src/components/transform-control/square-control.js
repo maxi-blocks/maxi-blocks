@@ -12,6 +12,7 @@ import Button from '../button';
 import SelectControl from '../select-control';
 import BlockResizer from '../block-resizer';
 import { validateOriginValue } from '../../extensions/styles';
+import ResetButton from '../reset-control';
 
 /**
  * External dependencies
@@ -80,6 +81,10 @@ const SquareControl = props => {
 			default:
 				return false;
 		}
+	};
+
+	const klik = () => {
+		console.log('asd');
 	};
 
 	const getMinMax = () => {
@@ -801,6 +806,7 @@ const SquareControl = props => {
 					</div>
 				</>
 			)}
+
 			<div className='maxi-transform-control__square-control__sync'>
 				{type !== 'drag' && (
 					<Tooltip
@@ -820,14 +826,15 @@ const SquareControl = props => {
 						</Button>
 					</Tooltip>
 				)}
-				<Button
+				<ResetButton
 					aria-label={__('Reset', 'maxi-blocks')}
-					onClick={onReset}
+					onClick={klik}
 					action='reset'
 					type='reset'
+					{...props}
 				>
 					{reset}
-				</Button>
+				</ResetButton>
 			</div>
 		</div>
 	);

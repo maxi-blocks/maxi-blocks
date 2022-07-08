@@ -1,3 +1,5 @@
+import { cloneElement } from '@wordpress/element';
+
 import { isNil } from 'lodash';
 
 const isEligible = blockAttributes => !isNil(blockAttributes.blockFullWidth);
@@ -25,24 +27,34 @@ const migrate = ({ newAttributes, prefix }) => {
 	return newAttributes;
 };
 
-const getSaveProps = (
-	prefix,
-	[props, extendedWrapperAttributes, extendedAttributes]
-) => {
+const saveMigrator = (saveInstance, props) => {
 	const { attributes } = props;
-	const { fullWidth, blockFullWidth, ...restAttrs } = attributes;
+	const { fullWidth, blockFullWidth } = attributes;
 
-	return [
-		{ ...props, attributes: restAttrs },
-		{
-			...extendedWrapperAttributes,
-			'data-align': blockFullWidth,
-		},
-		{
-			...extendedAttributes,
-			...(prefix && { 'data-align': fullWidth }),
-		},
-	];
+	let newInstance = cloneElement(saveInstance, {
+		'data-align': blockFullWidth,
+	});
+
+	// Concrete case for Button Maxi
+	if (attributes.uniqueID.includes('button')) {
+		const buttonChildren = newInstance.props.children;
+		const buttonChild = buttonChildren[0];
+
+		buttonChildren[0] = cloneElement({
+			...buttonChild,
+			props: { ...buttonChild.props, 'data-align': fullWidth },
+		});
+
+		newInstance = cloneElement({
+			...newInstance,
+			props: {
+				...newInstance.props,
+				children: buttonChildren,
+			},
+		});
+	}
+
+	return newInstance;
 };
 
-export default { isEligible, attributes, migrate, getSaveProps };
+export default { isEligible, attributes, migrate, saveMigrator };

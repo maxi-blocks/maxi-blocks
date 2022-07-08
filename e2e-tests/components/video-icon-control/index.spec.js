@@ -33,7 +33,7 @@ describe('Video icon control', () => {
 		expect(await getAttributes('playerType')).toStrictEqual('popup');
 
 		// Change lightbox background colour
-		await openSidebarTab(page, 'style', 'video options');
+		await openSidebarTab(page, 'style', 'popup settings');
 
 		await editColorControl({
 			page,

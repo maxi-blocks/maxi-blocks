@@ -62,9 +62,6 @@ const RelationControl = props => {
 		const relation = {
 			title: '',
 			uniqueID: '',
-			trigger: `${uniqueID} ${
-				isButton ? '.maxi-button-block__button' : ''
-			}`,
 			target: '',
 			action: '',
 			settings: '',
@@ -72,6 +69,7 @@ const RelationControl = props => {
 			css: {},
 			id: getRelationId(),
 			effects: transitionDefaultAttributes,
+			isButton,
 		};
 
 		onChange({ relations: [...relations, relation] });
@@ -138,6 +136,24 @@ const RelationControl = props => {
 
 		const mergedAttributes = merge(blockAttributes, item.attributes);
 
+		const transformGeneralAttributesToWinBreakpoint = obj => {
+			if (deviceType !== 'general') return {};
+
+			const winBreakpoint = select('maxiBlocks').receiveWinBreakpoint();
+
+			if (!winBreakpoint) return {};
+
+			return Object.keys(obj).reduce((acc, key) => {
+				if (key.includes('-general')) {
+					const newKey = key.replace('general', winBreakpoint);
+
+					acc[newKey] = obj[key];
+				}
+
+				return acc;
+			}, {});
+		};
+
 		return settingsComponent({
 			...getGroupAttributes(
 				mergedAttributes,
@@ -151,6 +167,7 @@ const RelationControl = props => {
 				const newAttributesObj = {
 					...item.attributes,
 					...obj,
+					...transformGeneralAttributesToWinBreakpoint(obj),
 				};
 
 				onChangeRelationProperty(
@@ -228,7 +245,7 @@ const RelationControl = props => {
 			prefix,
 			blockStyle: blockAttributes.blockStyle,
 			breakpoint: deviceType,
-			clientId: getClientIdFromUniqueId(item.uniqueID),
+			clientId,
 		});
 	};
 

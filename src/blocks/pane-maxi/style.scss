@@ -16,13 +16,17 @@
 	}
 
 	&__content {
-		padding: 25px 0;
+		overflow: hidden;
+
+		transition: all 1000ms;
 
 		border-color: #d6d6d6 !important;
 		border-style: solid !important;
 		border-width: 0 0 3px 0;
 	}
 }
+
 .maxi-pane-block[aria-expanded='false'] .maxi-pane-block__content {
-	display: none;
+	border-width: 0;
+	max-height: 0px;
 }

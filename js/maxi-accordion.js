@@ -21,12 +21,16 @@ class Accordion {
 	}
 
 	closePane(pane) {
+		const content = pane.querySelector('.maxi-pane-block__content');
+		content.style.maxHeight = 0;
 		pane.setAttribute('aria-expanded', false);
 		pane.querySelector('.maxi-pane-block__icon').innerHTML = this.paneIcon;
 		this.openPanes.splice(this.openPanes.indexOf(pane.id), 1);
 	}
 
 	openPane(pane) {
+		const content = pane.querySelector('.maxi-pane-block__content');
+		content.style.maxHeight = content.scrollHeight + 'px';
 		pane.setAttribute('aria-expanded', true);
 		pane.querySelector('.maxi-pane-block__icon').innerHTML =
 			this.paneIconActive;

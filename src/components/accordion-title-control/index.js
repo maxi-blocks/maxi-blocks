@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { select, dispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -114,35 +113,17 @@ const TitleColor = props => {
 };
 
 const AccordionTitleSettings = props => {
-	const { titleLevel, onChange, clientId } = props;
+	const { titleLevel, onChange } = props;
 
 	const prefix = 'title-';
 	const bgPrefix = 'title-background-';
 
-	const onChangeValue = obj => {
-		const blocks = select('core/block-editor').getClientIdsOfDescendants([
-			clientId,
-		]);
-
-		blocks.forEach(block => {
-			if (
-				select('core/block-editor').getBlockName(block) ===
-				'maxi-blocks/pane-maxi'
-			) {
-				dispatch('core/block-editor').updateBlockAttributes(block, obj);
-			}
-		});
-		onChange(obj);
-	};
 	return (
 		<>
 			<FontLevelControl
 				value={titleLevel}
 				onChange={obj => {
-					onChangeValue({
-						titleLevel: obj.textLevel,
-					});
-					onChange(obj);
+					onChange({ titleLevel: obj.textLevel });
 				}}
 			/>
 			<SettingTabsControl

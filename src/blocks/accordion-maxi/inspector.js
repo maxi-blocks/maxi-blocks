@@ -11,9 +11,6 @@ import {
 	SettingTabsControl,
 	AccordionControl,
 	AccordionSettings,
-	AccordionTitleSettings,
-	AccordionIconSettings,
-	AccordionBackgroundSettings,
 } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { withMaxiInspector } from '../../extensions/inspector';
@@ -25,7 +22,6 @@ import { categoriesAccordion, selectorsAccordion } from './custom-css';
  */
 const Inspector = props => {
 	const { attributes, deviceType, maxiSetAttributes, clientId } = props;
-	const { blockStyle } = attributes;
 
 	return (
 		<InspectorControls>
@@ -62,52 +58,6 @@ const Inspector = props => {
 												onChange={obj =>
 													maxiSetAttributes(obj)
 												}
-											/>
-										),
-									},
-									deviceType === 'general' && {
-										label: __('Title', 'maxi-blocks'),
-										content: (
-											<AccordionTitleSettings
-												onChange={obj =>
-													maxiSetAttributes(obj)
-												}
-												{...getGroupAttributes(
-													attributes,
-													'accordionTitle'
-												)}
-												clientId={clientId}
-											/>
-										),
-									},
-									{
-										label: __('Icon', 'maxi-blocks'),
-										content: (
-											<AccordionIconSettings
-												{...getGroupAttributes(
-													attributes,
-													'accordionIcon'
-												)}
-												blockStyle={blockStyle}
-												onChange={obj =>
-													maxiSetAttributes(obj)
-												}
-												breakpoint={deviceType}
-											/>
-										),
-									},
-									{
-										label: __(
-											'Pane background',
-											'maxi-blocks'
-										),
-										content: (
-											<AccordionBackgroundSettings
-												{...attributes}
-												onChange={obj =>
-													maxiSetAttributes(obj)
-												}
-												breakpoint={deviceType}
 											/>
 										),
 									},

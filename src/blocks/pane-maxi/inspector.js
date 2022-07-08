@@ -7,16 +7,29 @@ import { InspectorControls } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import { SettingTabsControl, AccordionControl } from '../../components';
+import {
+	SettingTabsControl,
+	AccordionControl,
+	AccordionBackgroundSettings,
+	AccordionIconSettings,
+	AccordionTitleSettings,
+} from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { withMaxiInspector } from '../../extensions/inspector';
 import { categoriesPane, selectorsPane } from './custom-css';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * Inspector
  */
 const Inspector = props => {
-	const { deviceType } = props;
+	const {
+		deviceType,
+		attributes,
+		setAccordionAttributes,
+		accordionAttributes,
+	} = props;
+	const { blockStyle } = attributes;
 
 	return (
 		<InspectorControls>
@@ -37,6 +50,51 @@ const Inspector = props => {
 						content: (
 							<AccordionControl
 								items={[
+									deviceType === 'general' && {
+										label: __('Title', 'maxi-blocks'),
+										content: (
+											<AccordionTitleSettings
+												onChange={obj =>
+													setAccordionAttributes(obj)
+												}
+												{...getGroupAttributes(
+													accordionAttributes,
+													'accordionTitle'
+												)}
+											/>
+										),
+									},
+									{
+										label: __('Icon', 'maxi-blocks'),
+										content: (
+											<AccordionIconSettings
+												{...getGroupAttributes(
+													accordionAttributes,
+													'accordionIcon'
+												)}
+												blockStyle={blockStyle}
+												onChange={obj =>
+													setAccordionAttributes(obj)
+												}
+												breakpoint={deviceType}
+											/>
+										),
+									},
+									{
+										label: __(
+											'Pane background',
+											'maxi-blocks'
+										),
+										content: (
+											<AccordionBackgroundSettings
+												{...accordionAttributes}
+												onChange={obj =>
+													setAccordionAttributes(obj)
+												}
+												breakpoint={deviceType}
+											/>
+										),
+									},
 									...inspectorTabs.border({
 										props,
 									}),

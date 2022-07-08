@@ -65,7 +65,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes } = this.props;
+		const { attributes, maxiSetAttributes } = this.props;
 		const { uniqueID, accordionLayout, titleLevel } = attributes;
 
 		/**
@@ -91,6 +91,10 @@ class edit extends MaxiBlockComponent {
 					openPanes: this.state.openPanes,
 					onOpen: paneId => this.openPane(paneId),
 					onClose: paneId => this.closePane(paneId),
+					setAccordionAttributes: obj => {
+						maxiSetAttributes(obj);
+					},
+					accordionAttributes: attributes,
 				}}
 			>
 				<MaxiBlock
@@ -102,12 +106,7 @@ class edit extends MaxiBlockComponent {
 						allowedBlocks: ALLOWED_BLOCKS,
 						renderAppender: false,
 						templateLock: false,
-						template: [
-							[
-								'maxi-blocks/pane-maxi',
-								{ accordionLayout: 'simple' },
-							],
-						],
+						template: [['maxi-blocks/pane-maxi']],
 					}}
 					{...getMaxiBlockAttributes(this.props)}
 				/>

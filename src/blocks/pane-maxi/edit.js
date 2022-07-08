@@ -25,6 +25,14 @@ class edit extends MaxiBlockComponent {
 		return getStyles(this.props.attributes);
 	}
 
+	maxiBlockDidUpdate() {
+		if (this.context.titleLevel !== this.props.attributes.titleLevel) {
+			const { maxiSetAttributes } = this.props;
+
+			maxiSetAttributes({ titleLevel: this.context.titleLevel });
+		}
+	}
+
 	render() {
 		const { attributes, maxiSetAttributes, clientId, hasInnerBlocks } =
 			this.props;
@@ -37,6 +45,8 @@ class edit extends MaxiBlockComponent {
 			openPanes,
 			onOpen,
 			onClose,
+			setAccordionAttributes,
+			accordionAttributes,
 		} = this.context;
 
 		const isOpen = openPanes.includes(clientId);
@@ -45,7 +55,12 @@ class edit extends MaxiBlockComponent {
 		const ROW_TEMPLATE = [['maxi-blocks/row-maxi']];
 
 		return [
-			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
+			<Inspector
+				key={`block-settings-${uniqueID}`}
+				{...this.props}
+				setAccordionAttributes={setAccordionAttributes}
+				accordionAttributes={accordionAttributes}
+			/>,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}

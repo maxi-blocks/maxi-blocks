@@ -15,7 +15,6 @@ const accordionTitle = {
 	...hoverAttributesCreator({
 		obj: titleColor,
 		sameValAttr: [
-			'title-palette-color',
 			'title-palette-status',
 			'title-background-palette-status',
 		],

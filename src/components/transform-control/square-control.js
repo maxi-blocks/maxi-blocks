@@ -23,7 +23,7 @@ import { isEmpty, isNaN, isNumber, isString, round, toNumber } from 'lodash';
 /**
  * Icons
  */
-import { reset, sync as syncIcon } from '../../icons';
+import { sync as syncIcon } from '../../icons';
 
 /**
  * Component
@@ -81,10 +81,6 @@ const SquareControl = props => {
 			default:
 				return false;
 		}
-	};
-
-	const klik = () => {
-		console.log('asd');
 	};
 
 	const getMinMax = () => {
@@ -826,15 +822,7 @@ const SquareControl = props => {
 						</Button>
 					</Tooltip>
 				)}
-				<ResetButton
-					aria-label={__('Reset', 'maxi-blocks')}
-					onClick={klik}
-					action='reset'
-					type='reset'
-					{...props}
-				>
-					{reset}
-				</ResetButton>
+				<ResetButton onReset={onReset} action='reset' type='reset' />
 			</div>
 		</div>
 	);

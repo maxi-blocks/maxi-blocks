@@ -50,6 +50,8 @@ const numberCounterEffect = () => {
 					'number-counter-duration': numberCounterDuration,
 					'number-counter-percentage-sign-status': usePercentage,
 					'number-counter-start-animation': startAnimation,
+					'number-counter-start-animation-offset':
+						startAnimationOffset,
 				} = numberData;
 				const startCountValue = +numberCounterStart;
 				const endCountValue = +numberCounterEnd;
@@ -61,9 +63,9 @@ const numberCounterEffect = () => {
 					1000;
 
 				let count = startCountValue;
-				const startTime = Date.now();
+				let startTime;
 
-				function animate() {
+				const animate = () => {
 					const newCount = parseInt(
 						(Date.now() - startTime) / frameDuration
 					);
@@ -96,9 +98,10 @@ const numberCounterEffect = () => {
 							)} ${circumference}`
 						);
 					if (count < endCountValue) requestAnimationFrame(animate);
-				}
+				};
 
 				const startCounter = () => {
+					startTime = Date.now();
 					requestAnimationFrame(animate);
 				};
 
@@ -116,7 +119,7 @@ const numberCounterEffect = () => {
 						handler() {
 							startCounter();
 						},
-						offset: '100%',
+						offset: `${startAnimationOffset}%`,
 					});
 				} else {
 					startCounter();

@@ -25,6 +25,17 @@ class edit extends MaxiBlockComponent {
 		return getStyles(this.props.attributes);
 	}
 
+	maxiBlockDidMount() {
+		const content = this.blockRef.current.querySelector(
+			'.maxi-pane-block__content'
+		);
+		content.ontransitionend = () => {
+			content.style = null;
+		};
+
+		this.content = content;
+	}
+
 	maxiBlockDidUpdate() {
 		if (this.context.titleLevel !== this.props.attributes.titleLevel) {
 			const { maxiSetAttributes } = this.props;
@@ -87,8 +98,20 @@ class edit extends MaxiBlockComponent {
 				<div
 					className='maxi-pane-block__header'
 					onClick={() => {
-						if (!isOpen) onOpen(clientId);
-						else onClose(clientId);
+						if (!isOpen) {
+							this.content.style.overflow = 'hidden';
+							// the css doesn't transition to 100% so need to set exact value, for transition to happen
+							this.content.style.maxHeight = `${this.content.scrollHeight}px`;
+							onOpen(clientId);
+						} else {
+							this.content.style.overflow = 'hidden';
+							// same here, transition doesn't start if it max-height value is not set to exact value
+							this.content.style.maxHeight = `${this.content.scrollHeight}px`;
+							setTimeout(() => {
+								this.content.style.maxHeight = 0;
+							}, 1);
+							onClose(clientId);
+						}
 					}}
 				>
 					<RichText

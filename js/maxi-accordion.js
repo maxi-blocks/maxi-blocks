@@ -8,15 +8,27 @@ class Accordion {
 		this.accordionLayout = maxiAccordion[0][this.uniqueID].accordionLayout;
 		this.autoPaneClose = maxiAccordion[0][this.uniqueID].autoPaneClose;
 		this.isCollapsible = maxiAccordion[0][this.uniqueID].isCollapsible;
+		this.panes = Array.from(
+			el.querySelectorAll(':scope > .maxi-pane-block')
+		);
 
-		Array.from(
-			el.querySelectorAll(
-				':scope > .maxi-pane-block > .maxi-pane-block__header'
-			)
-		).forEach(header => {
+		this.events();
+	}
+
+	events() {
+		this.panes.forEach(pane => {
+			const header = pane.querySelector(
+				':scope > .maxi-pane-block__header'
+			);
+			const content = pane.querySelector(
+				':scope > .maxi-pane-block__content'
+			);
 			header.addEventListener('click', this.paneClick.bind(this));
 			header.querySelector('.maxi-pane-block__icon').innerHTML =
 				this.paneIcon;
+			content.addEventListener('transitionend', () => {
+				content.style.overflow = null;
+			});
 		});
 	}
 
@@ -30,6 +42,7 @@ class Accordion {
 
 	openPane(pane) {
 		const content = pane.querySelector('.maxi-pane-block__content');
+		content.style.overflow = 'hidden';
 		content.style.maxHeight = content.scrollHeight + 'px';
 		pane.setAttribute('aria-expanded', true);
 		pane.querySelector('.maxi-pane-block__icon').innerHTML =

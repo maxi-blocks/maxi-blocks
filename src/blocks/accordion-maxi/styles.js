@@ -144,12 +144,13 @@ const getIconSize = (obj, isHover = false) => {
 		const iconWidth = obj[`icon-width-${breakpoint}`];
 
 		if (!isNil(iconWidth) && !isEmpty(iconWidth)) {
-			const iconUnit = getLastBreakpointAttribute({
-				target: 'icon-width-unit',
-				breakpoint,
-				attributes: obj,
-				isHover,
-			});
+			const iconUnit =
+				getLastBreakpointAttribute({
+					target: 'icon-width-unit',
+					breakpoint,
+					attributes: obj,
+					isHover,
+				}) ?? 'px';
 			response[breakpoint].width = `${iconWidth}${iconUnit}`;
 			response[breakpoint].height = `${iconWidth}${iconUnit}`;
 		}
@@ -215,6 +216,25 @@ const getColor = ({ props, prefix, isHover, breakpoint }) => {
 		});
 
 	return null;
+};
+
+const getPaneContentStyles = props => {
+	const { animationDuration } = props;
+
+	const getPaneContentTransition = duration => {
+		return `max-height ${duration}ms, border ${duration}ms`;
+	};
+
+	const response = {
+		paneTransition: {
+			label: 'Pane transition',
+			general: {
+				transition: getPaneContentTransition(animationDuration),
+			},
+		},
+	};
+
+	return response;
 };
 
 const getPaneTitleStyles = (props, prefix, isHover = false) => {
@@ -317,6 +337,8 @@ const getStyles = props => {
 			...getPaneHeaderObject(props),
 			...getIconObject(props),
 			...getBackgroundObject(props),
+			' .maxi-pane-block .maxi-pane-block__content':
+				getPaneContentStyles(props),
 		}),
 	};
 	return response;

@@ -27,6 +27,7 @@ const AccordionSettings = props => {
 		onChange,
 		autoPaneClose,
 		isCollapsible,
+		animationDuration,
 		breakpoint,
 	} = props;
 
@@ -107,6 +108,24 @@ const AccordionSettings = props => {
 						[`pane-spacing-${breakpoint}`]: getDefaultAttribute(
 							`pane-spacing-${breakpoint}`
 						),
+					})
+				}
+			/>
+			<AdvancedNumberControl
+				label={__('Animation duration (ms)', 'maxi-blocks')}
+				min={0}
+				max={9999}
+				step={1}
+				value={animationDuration}
+				onChangeValue={val => {
+					onChange({
+						animationDuration: val !== undefined ? val : '',
+					});
+				}}
+				onReset={() =>
+					onChange({
+						animationDuration:
+							getDefaultAttribute('animationDuration'),
 					})
 				}
 			/>

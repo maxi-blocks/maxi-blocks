@@ -10,6 +10,10 @@ const accordion = {
 		type: 'boolean',
 		default: true,
 	},
+	animationDuration: {
+		type: 'number',
+		default: 0,
+	},
 };
 
 export default accordion;

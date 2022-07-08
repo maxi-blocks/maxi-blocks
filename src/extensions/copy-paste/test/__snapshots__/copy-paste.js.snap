@@ -680,8 +680,6 @@ Object {
     "transition": Object {
       "attribute": Object {
         "transition": undefined,
-        "transition-block-selected": undefined,
-        "transition-canvas-selected": undefined,
         "transition-change-all": undefined,
       },
       "label": "Hyperlink hover transition",
@@ -699,6 +697,8 @@ Object {
       "label": "Z-index",
     },
   },
+  "block": Object {},
+  "button": Object {},
   "canvas": Object {
     "blockBackground": Object {
       "attribute": Object {
@@ -1456,6 +1456,7 @@ Object {
       "label": "Size",
     },
   },
+  "input": Object {},
   "settings": Object {
     "alignment": Object {
       "attribute": Object {
@@ -6197,8 +6198,6 @@ Object {
   "transform-translate-y-xs": undefined,
   "transform-translate-y-xxl": undefined,
   "transition": undefined,
-  "transition-block-selected": undefined,
-  "transition-canvas-selected": undefined,
   "transition-change-all": undefined,
   "useInitSize": undefined,
   "vertical-align-general": undefined,

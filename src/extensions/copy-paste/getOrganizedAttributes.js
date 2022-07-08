@@ -150,7 +150,8 @@ const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 													prop,
 													false,
 													getPrefix(
-														attrContent.props[prop],
+														attrContent.props[prop]
+															.type,
 														attrContent.prefix,
 														prefix
 													)

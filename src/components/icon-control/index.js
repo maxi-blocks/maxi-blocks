@@ -219,19 +219,21 @@ const IconControl = props => {
 						breakpoint={breakpoint}
 						isHover={isHover}
 					/>
-					<SvgStrokeWidthControl
-						{...getGroupAttributes(
-							props,
-							`icon${isHover ? 'Hover' : ''}`,
-							isHover,
-							prefix
-						)}
-						onChange={obj => onChange(obj)}
-						prefix={`${prefix}icon-`}
-						breakpoint={breakpoint}
-						isHover={isHover}
-						content={props[`${prefix}icon-content`]}
-					/>
+					{svgType !== 'Shape' && (
+						<SvgStrokeWidthControl
+							{...getGroupAttributes(
+								props,
+								`icon${isHover ? 'Hover' : ''}`,
+								isHover,
+								prefix
+							)}
+							onChange={obj => onChange(obj)}
+							prefix={`${prefix}icon-`}
+							breakpoint={breakpoint}
+							isHover={isHover}
+							content={props[`${prefix}icon-content`]}
+						/>
+					)}
 					{!disableSpacing && !isHover && !iconOnly && (
 						<>
 							<AdvancedNumberControl

@@ -225,6 +225,7 @@ const MapEventsListener = props => {
 
 const SearchBox = props => {
 	const { attributes, maxiSetAttributes, map } = props;
+
 	const { 'map-markers': mapMarkers } = attributes;
 
 	const [keywords, setKeywords] = useState('');
@@ -362,7 +363,7 @@ const OpenStreetMapContent = props => {
 		'map-popup': mapPopup,
 	} = attributes;
 
-	const [osmMap, setOsmMap] = useState(null);
+	const [osmMap, setOsmMap] = useState();
 
 	const removeMarker = event => {
 		const index = parseInt(event.target.getAttribute('dataindex'));
@@ -386,6 +387,7 @@ const OpenStreetMapContent = props => {
 	const alert =
 		mapAddingMarker === ' pinning' ? (
 			<div className='map-alert'>
+				setOsmMap
 				{__('Release to drop a marker here', 'maxi-blocks')}
 			</div>
 		) : null;
@@ -397,7 +399,7 @@ const OpenStreetMapContent = props => {
 				minZoom={mapMinZoom}
 				maxZoom={mapMaxZoom}
 				zoom={mapZoom}
-				whenCreated={setOsmMap}
+				ref={setOsmMap}
 			>
 				<TileLayer
 					attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

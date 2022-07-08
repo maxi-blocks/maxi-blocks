@@ -32,7 +32,7 @@ describe('Video overlay control', () => {
 		expect(await getAttributes('playerType')).toStrictEqual('popup');
 
 		// Overlay background button
-		await openSidebarTab(page, 'style', 'video overlay');
+		await openSidebarTab(page, 'style', 'image');
 
 		await editColorControl({
 			page,
@@ -59,56 +59,17 @@ describe('Video overlay control', () => {
 			await getAttributes('overlay-background-palette-opacity-general')
 		).toStrictEqual(0.33);
 
-		// Play icon color
-		await editColorControl({
-			page,
-			instance: await page.$('.maxi-video-icon-control__icon-colour '),
-			paletteStatus: true,
-			colorPalette: 6,
-		});
-		expect(
-			await getAttributes('play-icon-fill-palette-color')
-		).toStrictEqual(6);
+		// Hide image(icon only)
 
-		// Opacity
-		await editAdvancedNumberControl({
-			page,
-			instance: await page.$(
-				'.maxi-video-icon-control__icon-colour .maxi-opacity-control'
-			),
-			newNumber: '56',
-		});
-
-		expect(
-			await getAttributes('play-icon-fill-palette-opacity')
-		).toStrictEqual(0.56);
-
-		// Icon height
-		await editAdvancedNumberControl({
-			page,
-			instance: await page.$(
-				'.maxi-accordion-control__item .maxi-video-icon-control__icon-height '
-			),
-			newNumber: '23',
-		});
-
-		expect(await getAttributes('play-icon-height-general')).toStrictEqual(
-			'23'
+		await page.$eval(
+			'.maxi-video-overlay-control__hide-image input',
+			input => input.click()
 		);
+
+		expect(await getAttributes('hideImage')).toStrictEqual(true);
 	});
 
 	it('Check video overlay control responsive', async () => {
-		const responsiveValue = await addResponsiveTest({
-			page,
-			instance:
-				'.maxi-accordion-control__item .maxi-video-icon-control__icon-height input',
-			needFocus: true,
-			baseExpect: '23',
-			xsExpect: '32',
-			newValue: '32',
-		});
-		expect(responsiveValue).toBeTruthy();
-
 		const responsiveOpacityValue = await addResponsiveTest({
 			page,
 			instance:

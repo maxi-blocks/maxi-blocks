@@ -61,37 +61,45 @@ const numberCounterEffect = () => {
 					1000;
 
 				let count = startCountValue;
+				const startTime = Date.now();
+
+				function animate() {
+					const newCount = parseInt(
+						(Date.now() - startTime) / frameDuration
+					);
+
+					if (newCount === count) {
+						requestAnimationFrame(animate);
+						return;
+					} else
+						count =
+							newCount > endCountValue ? endCountValue : newCount;
+
+					let newInnerHTML = `${count}`;
+
+					if (usePercentage) {
+						const percentageNode =
+							numberCounterElemText.nodeName === 'SPAN'
+								? '<sup>%</sup>'
+								: '<tspan baseline-shift="super">%</tspan>';
+
+						newInnerHTML += percentageNode;
+					}
+
+					numberCounterElemText.innerHTML = newInnerHTML;
+
+					numberCounterElemCircle &&
+						numberCounterElemCircle.setAttribute(
+							'stroke-dasharray',
+							`${Math.ceil(
+								(count / 100) * circumference
+							)} ${circumference}`
+						);
+					if (count < endCountValue) requestAnimationFrame(animate);
+				}
 
 				const startCounter = () => {
-					const interval = setInterval(() => {
-						count += 1;
-
-						if (count >= endCountValue) {
-							count = endCountValue;
-							clearInterval(interval);
-						}
-
-						let newInnerHTML = `${count}`;
-
-						if (usePercentage) {
-							const percentageNode =
-								numberCounterElemText.nodeName === 'SPAN'
-									? '<sup>%</sup>'
-									: '<tspan baseline-shift="super">%</tspan>';
-
-							newInnerHTML += percentageNode;
-						}
-
-						numberCounterElemText.innerHTML = newInnerHTML;
-
-						numberCounterElemCircle &&
-							numberCounterElemCircle.setAttribute(
-								'stroke-dasharray',
-								`${Math.ceil(
-									(count / 100) * circumference
-								)} ${circumference}`
-							);
-					}, frameDuration);
+					requestAnimationFrame(animate);
 				};
 
 				const breakpoint = checkMediaQuery(numberID);

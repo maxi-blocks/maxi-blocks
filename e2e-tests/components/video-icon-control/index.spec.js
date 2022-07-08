@@ -98,6 +98,37 @@ describe('Video icon control', () => {
 		);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
+
+		// Icon position
+		const iconPositionSelector = await page.$(
+			'.maxi-video-icon-control__icon-position select'
+		);
+
+		await iconPositionSelector.select('top-right-above-video');
+
+		expect(await getAttributes('close-icon-position')).toStrictEqual(
+			'top-right-above-video'
+		);
+
+		// Icon spacing
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-video-icon-control__icon-spacing '),
+			newNumber: '44',
+		});
+
+		expect(await getAttributes('close-icon-spacing-general')).toStrictEqual(
+			44
+		);
+
+		// Pop animation
+		const popAnimationSelector = await page.$(
+			'.maxi-video-popup-control__pop-animation select'
+		);
+
+		await popAnimationSelector.select('zoom-out');
+
+		expect(await getAttributes('popAnimation')).toStrictEqual('zoom-out');
 	});
 
 	it('Check video icon control responsive', async () => {
@@ -123,6 +154,18 @@ describe('Video icon control', () => {
 			newValue: '27',
 		});
 		expect(responsiveHeight).toBeTruthy();
+
+		// Icon spacing responsive
+
+		const responsiveSpacing = await addResponsiveTest({
+			page,
+			instance: '.maxi-video-icon-control__icon-spacing input',
+			needFocus: true,
+			baseExpect: '44',
+			xsExpect: '-33',
+			newValue: '-33',
+		});
+		expect(responsiveSpacing).toBeTruthy();
 
 		// Change lightbox responsive
 		// Change S responsive

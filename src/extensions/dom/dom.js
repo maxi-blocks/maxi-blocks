@@ -360,7 +360,10 @@ wp.domReady(() => {
 										if (value === 'Desktop')
 											editorWrapper.style.width = '';
 
-										setMaxiDeviceType(maxiValue);
+										setMaxiDeviceType({
+											deviceType: maxiValue,
+											isGutenbergButton: true,
+										});
 									});
 								});
 							}

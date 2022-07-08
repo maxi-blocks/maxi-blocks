@@ -55,7 +55,7 @@ class edit extends MaxiBlockComponent {
 	closePane(paneId) {
 		const { isCollapsible } = this.props.attributes;
 
-		if (!isCollapsible && this.state.openPanes.length === 1) return;
+		if (!isCollapsible && this.state.openPanes.length <= 1) return;
 
 		this.setState({
 			openPanes: [

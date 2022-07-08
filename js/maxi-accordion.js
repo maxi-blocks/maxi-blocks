@@ -44,7 +44,7 @@ class Accordion {
 		const pane = e.currentTarget.parentNode;
 
 		if (this.openPanes.includes(pane.id)) {
-			if (!this.isCollapsible && this.openPanes.length === 1) return;
+			if (!this.isCollapsible && this.openPanes.length <= 1) return;
 			this.closePane.call(this, pane);
 		} else {
 			this.openPane.call(this, pane);

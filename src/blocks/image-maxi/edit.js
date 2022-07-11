@@ -415,7 +415,7 @@ class edit extends MaxiBlockComponent {
 																this.setState(
 																	newState
 																);
-															}, 300);
+															}, 600);
 													},
 													richTextValues,
 												})
@@ -493,7 +493,7 @@ class edit extends MaxiBlockComponent {
 																this.setState(
 																	newState
 																);
-															}, 300);
+															}, 600);
 													},
 													richTextValues,
 												})

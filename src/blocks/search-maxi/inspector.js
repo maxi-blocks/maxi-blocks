@@ -281,11 +281,12 @@ const Inspector = props => {
 	};
 
 	const backgroundDisabledProps = {
-		disableImage: true,
-		disableVideo: true,
+		disableClipPath: true,
 		disableGradient: true,
-		disableSVG: true,
+		disableImage: true,
 		disableNoneStyle: true,
+		disableSVG: true,
+		disableVideo: true,
 	};
 
 	return (

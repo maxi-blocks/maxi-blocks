@@ -82,6 +82,7 @@ class edit extends MaxiBlockComponent {
 			<MaxiBlock
 				key={`maxi-pane--${uniqueID}`}
 				ref={this.blockRef}
+				className={`maxi-pane-block--${accordionLayout}-layout`}
 				useInnerBlocks
 				innerBlocksSettings={{
 					allowedBlocks: ALLOWED_BLOCKS,
@@ -92,7 +93,6 @@ class edit extends MaxiBlockComponent {
 						: false,
 				}}
 				{...getMaxiBlockAttributes(this.props)}
-				accordionLayout={accordionLayout}
 				renderWrapperInserter={isOpen}
 				aria-expanded={isOpen}
 			>

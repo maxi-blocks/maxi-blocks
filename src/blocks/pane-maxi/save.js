@@ -19,8 +19,8 @@ const save = props => {
 	return (
 		<MaxiBlock.save
 			{...getMaxiBlockAttributes({ ...props, name })}
+			className={`maxi-accordion-block--${accordionLayout}-layout`}
 			useInnerBlocks
-			accordionLayout={accordionLayout}
 			aria-expanded={false}
 		>
 			<div className='maxi-pane-block__header'>

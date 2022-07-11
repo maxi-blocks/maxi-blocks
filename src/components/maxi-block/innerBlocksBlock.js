@@ -31,7 +31,6 @@ const getInnerBlocksChild = ({
 	hasInnerBlocks,
 	isSelected,
 	hasSelectedChild,
-	accordionLayout,
 	renderWrapperInserter = true,
 }) => {
 	const needToSplit =
@@ -133,7 +132,6 @@ const MainInnerBlocksBlock = forwardRef(
 			hasInnerBlocks,
 			isSelected,
 			hasSelectedChild,
-			accordionLayout,
 			renderWrapperInserter,
 			...props
 		},
@@ -168,7 +166,6 @@ const MainInnerBlocksBlock = forwardRef(
 				hasInnerBlocks,
 				isSelected,
 				hasSelectedChild,
-				accordionLayout,
 				renderWrapperInserter,
 			})
 		);

@@ -1,12 +1,4 @@
 .maxi-accordion-block {
 	display: flex;
 	flex-direction: column;
-
-	&--boxed-layout {
-		& .maxi-pane-block {
-			border-width: 5px !important;
-			border-style: solid !important;
-			border-color: #f2f9fe !important;
-		}
-	}
 }

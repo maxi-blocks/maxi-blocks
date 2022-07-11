@@ -98,7 +98,6 @@ class edit extends MaxiBlockComponent {
 				<MaxiBlock
 					key={`maxi-accordion--${uniqueID}`}
 					ref={this.blockRef}
-					className={`maxi-accordion-block--${accordionLayout}-layout`}
 					useInnerBlocks
 					innerBlocksSettings={{
 						allowedBlocks: ALLOWED_BLOCKS,

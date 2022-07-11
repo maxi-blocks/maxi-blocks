@@ -54,6 +54,7 @@ const getWrapperObject = props => {
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
+			dropShadow: !isEmpty(props.clipPath) || !isNil(props.SVGElement),
 			blockStyle: props.blockStyle,
 		}),
 		margin: getMarginPaddingStyles({
@@ -305,6 +306,8 @@ const getHoverImageObject = props => {
 					...getGroupAttributes(props, 'boxShadow', true, 'image-'),
 				},
 				isHover: true,
+				dropShadow:
+					!isEmpty(props.clipPath) || !isNil(props.SVGElement),
 				blockStyle: props.blockStyle,
 				prefix: 'image-',
 			}),

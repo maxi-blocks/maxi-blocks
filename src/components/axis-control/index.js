@@ -28,7 +28,6 @@ import {
 	isNaN,
 	capitalize,
 	isNumber,
-	replace,
 	round,
 	isNil,
 	kebabCase,
@@ -381,7 +380,10 @@ const AxisControlContent = props => {
 							<Button
 								className='components-maxi-control__reset-button'
 								onClick={() =>
-									onReset({ customBreakpoint: breakpoint })
+									onReset({
+										reset: 'unit',
+										customBreakpoint: breakpoint,
+									})
 								}
 								aria-label={sprintf(
 									__('Reset %s settings', 'maxi-blocks'),
@@ -480,9 +482,6 @@ const AxisControl = props => {
 			'bottom-unit',
 			'left-unit',
 			'unit',
-			'sync',
-			'sync-horizontal',
-			'sync-vertical',
 		],
 		optionType = 'number',
 		disableSync = false,
@@ -549,40 +548,35 @@ const AxisControl = props => {
 
 	const onReset = ({ customBreakpoint, reset }) => {
 		const response = {};
-		let attributesKeys = [];
 
-		switch (reset) {
-			case 'vertical':
-				attributesKeys = [
-					inputsArray[0],
-					inputsArray[2],
-					inputsArray[4],
-					inputsArray[6],
-				];
-				break;
-			case 'horizontal':
-				attributesKeys = [
-					inputsArray[1],
-					inputsArray[3],
-					inputsArray[5],
-					inputsArray[7],
-				];
-				break;
-			case 'top':
-				attributesKeys = [inputsArray[0], inputsArray[4]];
-				break;
-			case 'right':
-				attributesKeys = [inputsArray[1], inputsArray[5]];
-				break;
-			case 'bottom':
-				attributesKeys = [inputsArray[2], inputsArray[6]];
-				break;
-			case 'left':
-				attributesKeys = [inputsArray[3], inputsArray[7]];
-				break;
-			default:
-				attributesKeys = [...inputsArray];
-		}
+		const attributesKeysFilter = keys =>
+			inputsArray.filter(input =>
+				keys.some(
+					key =>
+						input === key ||
+						(input.includes(key) && input.includes('-unit'))
+				)
+			);
+
+		const top = ['top', 'top-left'];
+		const right = ['right', 'top-right'];
+		const bottom = ['bottom', 'bottom-right'];
+		const left = ['left', 'bottom-left'];
+
+		const cases = {
+			all: [...top, ...bottom, ...left, ...right],
+			vertical: [...top, ...bottom],
+			horizontal: [...left, ...right],
+			top,
+			right,
+			bottom,
+			left,
+			unit: ['unit'],
+		};
+
+		const attributesKeys = cases[reset]
+			? attributesKeysFilter(cases[reset])
+			: [...inputsArray];
 
 		attributesKeys.forEach(key => {
 			response[

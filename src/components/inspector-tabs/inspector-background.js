@@ -13,7 +13,6 @@ import {
 	getGroupAttributes,
 	setHoverAttributes,
 } from '../../extensions/styles';
-import { openTransitions } from '../../extensions/inspector';
 import ManageHoverTransitions from '../manage-hover-transitions';
 
 /**
@@ -97,14 +96,8 @@ const background = ({
 						label: __('Hover state', 'maxi-blocks'),
 						content: (
 							<>
-								<div
-									className='maxi-warning-box manage-transitions'
-									onClick={() => {
-										openTransitions();
-									}}
-								>
-									<ManageHoverTransitions />
-								</div>
+								<ManageHoverTransitions />
+
 								<ToggleSwitch
 									label={__(
 										'Enable background hover',

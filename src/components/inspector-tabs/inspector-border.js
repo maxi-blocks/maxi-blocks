@@ -9,7 +9,6 @@ import { __ } from '@wordpress/i18n';
 import SettingTabsControl from '../setting-tabs-control';
 import BorderControl from '../border-control';
 import ToggleSwitch from '../toggle-switch';
-import { openTransitions } from '../../extensions/inspector';
 import {
 	getGroupAttributes,
 	setHoverAttributes,
@@ -95,14 +94,7 @@ const border = ({
 							label: __('Hover state', 'maxi-blocks'),
 							content: (
 								<>
-									<div
-										className='maxi-warning-box manage-transitions'
-										onClick={() => {
-											openTransitions();
-										}}
-									>
-										<ManageHoverTransitions />
-									</div>
+									<ManageHoverTransitions />
 									{!globalHoverStatus && (
 										<ToggleSwitch
 											label={__(

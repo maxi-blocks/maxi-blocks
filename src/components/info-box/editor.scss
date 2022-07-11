@@ -7,6 +7,10 @@
 	&__links {
 		margin-top: 5px;
 
+		&.manage-transitions {
+			margin-bottom: 20px;
+		}
+
 		a {
 			text-decoration: underline;
 			font-size: 11px !important;

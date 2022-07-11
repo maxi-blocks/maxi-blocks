@@ -17,6 +17,7 @@ import {
 	ToggleSwitch,
 	ResponsiveTabsControl,
 	AlignmentControl,
+	ManageHoverTransitions,
 } from '../../components';
 import * as defaultPresets from './defaults';
 import {
@@ -26,7 +27,7 @@ import {
 } from '../../extensions/styles';
 import { selectorsButton, categoriesButton } from './custom-css';
 import * as inspectorTabs from '../../components/inspector-tabs';
-import { withMaxiInspector, openTransitions } from '../../extensions/inspector';
+import { withMaxiInspector } from '../../extensions/inspector';
 /**
  * External dependencies
  */
@@ -471,20 +472,7 @@ const Inspector = props => {
 														),
 														content: (
 															<>
-																<div
-																	className='maxi-warning-box manage-transitions'
-																	onClick={() => {
-																		openTransitions();
-																	}}
-																>
-																	<div className='maxi-warning-box__links'>
-																		<a>
-																			Manage
-																			hover
-																			transitions
-																		</a>
-																	</div>
-																</div>
+																<ManageHoverTransitions />
 																<ToggleSwitch
 																	label={__(
 																		'Enable Icon Hover',

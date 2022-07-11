@@ -9,7 +9,6 @@ import { __ } from '@wordpress/i18n';
 import SettingTabsControl from '../setting-tabs-control';
 import BoxShadowControl from '../box-shadow-control';
 import ToggleSwitch from '../toggle-switch';
-import { openTransitions } from '../../extensions/inspector';
 import {
 	getGroupAttributes,
 	setHoverAttributes,
@@ -68,14 +67,7 @@ const boxShadow = ({ props, prefix = '', depth = 2, inlineTarget = '' }) => {
 							label: __('Hover state', 'maxi-blocks'),
 							content: (
 								<>
-									<div
-										className='maxi-warning-box manage-transitions'
-										onClick={() => {
-											openTransitions();
-										}}
-									>
-										<ManageHoverTransitions />
-									</div>
+									<ManageHoverTransitions />
 									<ToggleSwitch
 										label={__(
 											'Enable box shadow hover',

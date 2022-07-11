@@ -8,7 +8,6 @@ import { __ } from '@wordpress/i18n';
  */
 import SettingTabsControl from '../setting-tabs-control';
 import BlockBackgroundControl from '../background-control/blockBackgroundControl';
-import { openTransitions } from '../../extensions/inspector';
 import ToggleSwitch from '../toggle-switch';
 import { getGroupAttributes } from '../../extensions/styles';
 import ManageHoverTransitions from '../manage-hover-transitions';
@@ -72,14 +71,7 @@ const blockBackground = ({
 						label: __('Hover state', 'maxi-blocks'),
 						content: (
 							<>
-								<div
-									className='maxi-warning-box manage-transitions'
-									onClick={() => {
-										openTransitions();
-									}}
-								>
-									<ManageHoverTransitions />
-								</div>
+								<ManageHoverTransitions />
 								<ToggleSwitch
 									label={__(
 										'Enable background hover',

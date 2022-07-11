@@ -9,7 +9,6 @@ import { __ } from '@wordpress/i18n';
 import SettingTabsControl from '../setting-tabs-control';
 import TypographyControl from '../typography-control';
 import ToggleSwitch from '../toggle-switch';
-import { openTransitions } from '../../extensions/inspector';
 import { getGroupAttributes } from '../../extensions/styles';
 import ManageHoverTransitions from '../manage-hover-transitions';
 
@@ -98,14 +97,7 @@ const typography = ({
 						label: __('Hover state', 'maxi-blocks'),
 						content: (
 							<>
-								<div
-									className='maxi-warning-box manage-transitions'
-									onClick={() => {
-										openTransitions();
-									}}
-								>
-									<ManageHoverTransitions />
-								</div>
+								<ManageHoverTransitions />
 								{!globalHoverStatus && (
 									<ToggleSwitch
 										label={__(

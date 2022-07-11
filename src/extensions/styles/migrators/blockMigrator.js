@@ -19,7 +19,7 @@ const blockMigrator = ({
 		fullWidthNonToResponsiveMigrator,
 		transformMigrator,
 		...innerBlockMigrators,
-	];
+	].reverse();
 
 	/**
 	 * There are going to be at least 2 types of migrators:

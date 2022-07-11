@@ -74,6 +74,7 @@ describe('Background Color Layer', () => {
 			'.maxi-color-control__palette-container .maxi-color-control__palette-box--active',
 			select => select.getAttribute('data-item')
 		);
+
 		expect(sColorSelected).toStrictEqual('6');
 
 		// expect xs

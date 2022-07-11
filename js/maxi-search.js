@@ -1,8 +1,14 @@
 const onSearchEvent = input => {
 	const inputValue = input.value;
-	const searchUrl = `${window.location.origin}/?s=${inputValue}`;
 
-	window.location.href = searchUrl;
+	if (input.checkValidity()) {
+		const searchUrl = `${window.location.origin}/?s=${inputValue}`;
+
+		window.location.href = searchUrl;
+	} else {
+		input.setCustomValidity('Please fill in the search field.');
+		input.reportValidity();
+	}
 };
 
 const onRevealEvent = (input, wrapper, content, contentClose, isIcon) => {

@@ -52,7 +52,11 @@ const save = (props, extendedAttributes = {}) => {
 			{...extendedAttributes}
 			classes={classes}
 		>
-			<input className={inputClasses} placeholder={placeholder} />
+			<input
+				className={inputClasses}
+				placeholder={placeholder}
+				required
+			/>
 			<div className='maxi-search-block__button'>
 				{searchButtonIsIcon ? (
 					buttonIcon && (

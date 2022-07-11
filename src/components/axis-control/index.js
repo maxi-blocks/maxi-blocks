@@ -24,6 +24,7 @@ import {
  */
 import classnames from 'classnames';
 import {
+	isArray,
 	isEmpty,
 	isNaN,
 	capitalize,
@@ -549,8 +550,10 @@ const AxisControl = props => {
 	const onReset = ({ customBreakpoint, reset }) => {
 		const response = {};
 
-		const attributesKeysFilter = keys =>
-			inputsArray.filter(input =>
+		const attributesKeysFilter = rawKeys => {
+			const keys = isArray(rawKeys) ? rawKeys : [rawKeys];
+
+			const filteredResult = inputsArray.filter(input =>
 				keys.some(
 					key =>
 						input === key ||
@@ -558,15 +561,18 @@ const AxisControl = props => {
 				)
 			);
 
-		const top = ['top', 'top-left'];
-		const right = ['right', 'top-right'];
-		const bottom = ['bottom', 'bottom-right'];
-		const left = ['left', 'bottom-left'];
+			return filteredResult;
+		};
+
+		const top = inputsArray[0];
+		const right = inputsArray[1];
+		const bottom = inputsArray[2];
+		const left = inputsArray[3];
 
 		const cases = {
-			all: [...top, ...bottom, ...left, ...right],
-			vertical: [...top, ...bottom],
-			horizontal: [...left, ...right],
+			all: [top, bottom, left, right],
+			vertical: [top, bottom],
+			horizontal: [left, right],
 			top,
 			right,
 			bottom,

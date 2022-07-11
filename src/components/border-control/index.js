@@ -400,7 +400,6 @@ const BorderControl = props => {
 							'bottom-right',
 							'bottom-left',
 							'unit',
-							'sync',
 						]}
 					/>
 				</>

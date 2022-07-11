@@ -80,23 +80,13 @@ const RelationControl = props => {
 		onChange({ relations: [...newRelations, relation] });
 	};
 
-	const onChangeRelationProperty = (
-		relations,
-		id,
-		rawProperties,
-		rawValues
-	) => {
+	const onChangeRelation = (relations, id, obj) => {
 		const newRelations = cloneRelations(relations);
-
-		const toArray = value => (isArray(value) ? value : [value]);
-
-		const properties = toArray(rawProperties);
-		const values = toArray(rawValues);
 
 		newRelations.forEach(relation => {
 			if (relation.id === id) {
-				properties.forEach((property, index) => {
-					relation[property] = values[index];
+				Object.keys(obj).forEach(key => {
+					relation[key] = obj[key];
 				});
 			}
 		});
@@ -148,12 +138,9 @@ const RelationControl = props => {
 			selectedSettingsObj?.target &&
 			item.target !== selectedSettingsObj?.target
 		) {
-			onChangeRelationProperty(
-				relations,
-				item.id,
-				'target',
-				selectedSettingsObj?.target
-			);
+			onChangeRelation(relations, item.id, {
+				target: selectedSettingsObj?.target,
+			});
 		}
 
 		const mergedAttributes = merge(blockAttributes, item.attributes);
@@ -256,12 +243,10 @@ const RelationControl = props => {
 
 				const styles = getStyles(stylesObj, true);
 
-				onChangeRelationProperty(
-					relations,
-					item.id,
-					['attributes', 'css'],
-					[newAttributesObj, styles]
-				);
+				onChangeRelation(relations, item.id, {
+					attributes: newAttributesObj,
+					css: styles,
+				});
 			},
 			prefix,
 			blockStyle: blockAttributes.blockStyle,
@@ -332,11 +317,12 @@ const RelationControl = props => {
 										value={item.title}
 										placeholder={__('Give memorable name…')}
 										onChange={value =>
-											onChangeRelationProperty(
+											onChangeRelation(
 												relations,
 												item.id,
-												'title',
-												value
+												{
+													title: value,
+												}
 											)
 										}
 									/>
@@ -366,11 +352,12 @@ const RelationControl = props => {
 											...blocksToAffect,
 										]}
 										onChange={value =>
-											onChangeRelationProperty(
+											onChangeRelation(
 												relations,
 												item.id,
-												'uniqueID',
-												value
+												{
+													uniqueID: value,
+												}
 											)
 										}
 									/>
@@ -406,11 +393,12 @@ const RelationControl = props => {
 													},
 												]}
 												onChange={value =>
-													onChangeRelationProperty(
+													onChangeRelation(
 														relations,
 														item.id,
-														'action',
-														value
+														{
+															action: value,
+														}
 													)
 												}
 											/>
@@ -438,15 +426,14 @@ const RelationControl = props => {
 													})),
 												]}
 												onChange={value => {
-													onChangeRelationProperty(
+													onChangeRelation(
 														relations,
 														item.id,
-														[
-															'attributes',
-															'target',
-															'settings',
-														],
-														[{}, '', value]
+														{
+															attributes: {},
+															target: '',
+															settings: value,
+														}
 													);
 												}}
 											/>
@@ -480,13 +467,15 @@ const RelationControl = props => {
 															<TransitionControl
 																className='maxi-relation-control__item__effects'
 																onChange={obj =>
-																	onChangeRelationProperty(
+																	onChangeRelation(
 																		relations,
 																		item.id,
-																		'effects',
 																		{
-																			...item.effects,
-																			...obj,
+																			effects:
+																				{
+																					...item.effects,
+																					...obj,
+																				},
 																		}
 																	)
 																}

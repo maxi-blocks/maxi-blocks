@@ -14,6 +14,7 @@ import {
 	setHoverAttributes,
 } from '../../extensions/styles';
 import { openTransitions } from '../../extensions/inspector';
+import ManageHoverTransitions from '../manage-hover-transitions';
 
 /**
  * Component
@@ -102,9 +103,7 @@ const background = ({
 										openTransitions();
 									}}
 								>
-									<div className='maxi-warning-box__links'>
-										<a>Manage hover transitions</a>
-									</div>
+									<ManageHoverTransitions />
 								</div>
 								<ToggleSwitch
 									label={__(

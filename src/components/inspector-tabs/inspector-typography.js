@@ -11,6 +11,7 @@ import TypographyControl from '../typography-control';
 import ToggleSwitch from '../toggle-switch';
 import { openTransitions } from '../../extensions/inspector';
 import { getGroupAttributes } from '../../extensions/styles';
+import ManageHoverTransitions from '../manage-hover-transitions';
 
 /**
  * Component
@@ -103,9 +104,7 @@ const typography = ({
 										openTransitions();
 									}}
 								>
-									<div className='maxi-warning-box__links'>
-										<a>Manage hover transitions</a>
-									</div>
+									<ManageHoverTransitions />
 								</div>
 								{!globalHoverStatus && (
 									<ToggleSwitch

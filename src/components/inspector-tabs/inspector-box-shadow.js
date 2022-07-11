@@ -15,6 +15,7 @@ import {
 	setHoverAttributes,
 } from '../../extensions/styles';
 import ResponsiveTabsControl from '../responsive-tabs-control';
+import ManageHoverTransitions from '../manage-hover-transitions';
 
 /**
  * Component
@@ -73,9 +74,7 @@ const boxShadow = ({ props, prefix = '', depth = 2, inlineTarget = '' }) => {
 											openTransitions();
 										}}
 									>
-										<div className='maxi-warning-box__links'>
-											<a>Manage hover transitions</a>
-										</div>
+										<ManageHoverTransitions />
 									</div>
 									<ToggleSwitch
 										label={__(

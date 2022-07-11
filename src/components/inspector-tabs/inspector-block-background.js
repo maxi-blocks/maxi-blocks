@@ -11,6 +11,7 @@ import BlockBackgroundControl from '../background-control/blockBackgroundControl
 import { openTransitions } from '../../extensions/inspector';
 import ToggleSwitch from '../toggle-switch';
 import { getGroupAttributes } from '../../extensions/styles';
+import ManageHoverTransitions from '../manage-hover-transitions';
 
 /**
  * Component
@@ -77,9 +78,7 @@ const blockBackground = ({
 										openTransitions();
 									}}
 								>
-									<div className='maxi-warning-box__links'>
-										<a>Manage hover transitions</a>
-									</div>
+									<ManageHoverTransitions />
 								</div>
 								<ToggleSwitch
 									label={__(

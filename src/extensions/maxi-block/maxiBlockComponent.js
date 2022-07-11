@@ -31,6 +31,7 @@ import {
 	styleResolver,
 } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
+import getIsUniqueIDRepeated from './getIsUniqueIDRepeated';
 import { loadFonts, getAllFonts } from '../text/fonts';
 import uniqueIDGenerator from '../attributes/uniqueIDGenerator';
 
@@ -316,7 +317,7 @@ class MaxiBlockComponent extends Component {
 	}
 
 	uniqueIDChecker(idToCheck) {
-		if (!isEmpty(document.getElementsByClassName(idToCheck))) {
+		if (getIsUniqueIDRepeated(idToCheck)) {
 			const newUniqueID = uniqueIDGenerator(idToCheck);
 
 			this.props.attributes.uniqueID = newUniqueID;

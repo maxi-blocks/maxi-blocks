@@ -76,7 +76,7 @@ describe('Shape divider', () => {
 		).toStrictEqual(5);
 
 		await page.$eval(
-			'.maxi-tabs-content .maxi-divider-height input',
+			'.maxi-tabs-content .maxi-shape-divider-control__height input',
 			input => input.focus()
 		);
 
@@ -139,7 +139,7 @@ describe('Shape divider', () => {
 
 		// Divider height
 		await page.$eval(
-			'.maxi-tabs-content .maxi-divider-height input',
+			'.maxi-tabs-content .maxi-shape-divider-control__height input',
 			input => input.focus()
 		);
 
@@ -155,7 +155,8 @@ describe('Shape divider', () => {
 		// Bottom height responsive
 		const responsiveBottomHeight = await addResponsiveTest({
 			page,
-			instance: '.maxi-tabs-content .maxi-divider-height input',
+			instance:
+				'.maxi-tabs-content .maxi-shape-divider-control__height input',
 			needFocus: true,
 			baseExpect: '254',
 			xsExpect: '231',
@@ -220,7 +221,8 @@ describe('Shape divider', () => {
 
 		const responsiveTopHeight = await addResponsiveTest({
 			page,
-			instance: '.maxi-tabs-content .maxi-divider-height input',
+			instance:
+				'.maxi-tabs-content .maxi-shape-divider-control__height input',
 			needFocus: true,
 			baseExpect: '70',
 			xsExpect: '45',

@@ -343,7 +343,7 @@ const ShapeDividerControl = props => {
 													disableOpacity
 												/>
 												<AdvancedNumberControl
-													className='maxi-divider-height'
+													className='maxi-shape-divider-control__height'
 													label={__(
 														'Divider height',
 														'maxi-blocks'
@@ -550,7 +550,7 @@ const ShapeDividerControl = props => {
 													disableOpacity
 												/>
 												<AdvancedNumberControl
-													className='maxi-divider-height'
+													className='maxi-shape-divider-control__height'
 													label={__(
 														'Divider height',
 														'maxi-blocks'

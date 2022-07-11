@@ -27,7 +27,7 @@ import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFrom
 /**
  * External dependencies
  */
-import { cloneDeep, isEmpty, merge } from 'lodash';
+import { cloneDeep, isArray, isEmpty, merge } from 'lodash';
 
 /**
  * Styles
@@ -75,10 +75,17 @@ const RelationControl = props => {
 		onChange({ relations: [...relations, relation] });
 	};
 
-	const onChangeRelationProperty = (id, property, value) => {
+	const onChangeRelationProperty = (id, rawProperties, rawValues) => {
+		const toArray = value => (isArray(value) ? value : [value]);
+
+		const properties = toArray(rawProperties);
+		const values = toArray(rawValues);
+
 		relations.forEach(relation => {
 			if (relation.id === id) {
-				relation[property] = value;
+				properties.forEach((property, index) => {
+					relation[property] = values[index];
+				});
 			}
 		});
 
@@ -170,12 +177,6 @@ const RelationControl = props => {
 					...transformGeneralAttributesToWinBreakpoint(obj),
 				};
 
-				onChangeRelationProperty(
-					item.id,
-					'attributes',
-					newAttributesObj
-				);
-
 				const newGroupAttributes = getGroupAttributes(
 					{ ...blockAttributes, ...newAttributesObj },
 					selectedSettingsObj.attrGroupName,
@@ -240,7 +241,11 @@ const RelationControl = props => {
 
 				const styles = getStyles(stylesObj, true);
 
-				onChangeRelationProperty(item.id, 'css', styles);
+				onChangeRelationProperty(
+					item.id,
+					['attributes', 'css'],
+					[newAttributesObj, styles]
+				);
 			},
 			prefix,
 			blockStyle: blockAttributes.blockStyle,

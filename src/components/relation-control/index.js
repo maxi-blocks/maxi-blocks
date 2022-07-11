@@ -37,17 +37,20 @@ import './editor.scss';
 const RelationControl = props => {
 	const { getBlock } = select('core/block-editor');
 
-	const { deviceType, onChange, uniqueID, isButton } = props;
-	const relations = cloneDeep(props.relations) ?? [];
+	const { deviceType, isButton, onChange, relations, uniqueID } = props;
 
-	const getRelationId = () =>
-		relations && !isEmpty(relations)
+	const cloneRelations = relations =>
+		!isEmpty(relations) ? cloneDeep(relations) : [];
+
+	const getRelationId = relations => {
+		return relations && !isEmpty(relations)
 			? Math.max(
 					...relations.map(relation =>
 						typeof relation.id === 'number' ? relation.id : 0
 					)
 			  ) + 1
 			: 1;
+	};
 
 	const getOptions = clientId => {
 		const blockName = getBlock(clientId)?.name;
@@ -58,7 +61,9 @@ const RelationControl = props => {
 
 	const transitionDefaultAttributes = createTransitionObj();
 
-	const onAddRelation = () => {
+	const onAddRelation = relations => {
+		const newRelations = cloneRelations(relations);
+
 		const relation = {
 			title: '',
 			uniqueID: '',
@@ -67,21 +72,28 @@ const RelationControl = props => {
 			settings: '',
 			attributes: {},
 			css: {},
-			id: getRelationId(),
+			id: getRelationId(relations),
 			effects: transitionDefaultAttributes,
 			isButton,
 		};
 
-		onChange({ relations: [...relations, relation] });
+		onChange({ relations: [...newRelations, relation] });
 	};
 
-	const onChangeRelationProperty = (id, rawProperties, rawValues) => {
+	const onChangeRelationProperty = (
+		relations,
+		id,
+		rawProperties,
+		rawValues
+	) => {
+		const newRelations = cloneRelations(relations);
+
 		const toArray = value => (isArray(value) ? value : [value]);
 
 		const properties = toArray(rawProperties);
 		const values = toArray(rawValues);
 
-		relations.forEach(relation => {
+		newRelations.forEach(relation => {
 			if (relation.id === id) {
 				properties.forEach((property, index) => {
 					relation[property] = values[index];
@@ -89,12 +101,14 @@ const RelationControl = props => {
 			}
 		});
 
-		onChange({ relations });
+		onChange({ relations: newRelations });
 	};
 
-	const onRemoveRelation = id => {
+	const onRemoveRelation = (id, relations) => {
+		const newRelations = cloneRelations(relations);
+
 		onChange({
-			relations: relations.filter(relation => relation.id !== id),
+			relations: newRelations.filter(relation => relation.id !== id),
 		});
 	};
 
@@ -135,6 +149,7 @@ const RelationControl = props => {
 			item.target !== selectedSettingsObj?.target
 		) {
 			onChangeRelationProperty(
+				relations,
 				item.id,
 				'target',
 				selectedSettingsObj?.target
@@ -242,6 +257,7 @@ const RelationControl = props => {
 				const styles = getStyles(stylesObj, true);
 
 				onChangeRelationProperty(
+					relations,
 					item.id,
 					['attributes', 'css'],
 					[newAttributesObj, styles]
@@ -295,13 +311,13 @@ const RelationControl = props => {
 				className='maxi-relation-control__button'
 				type='button'
 				variant='secondary'
-				onClick={onAddRelation}
+				onClick={() => onAddRelation(props.relations)}
 			>
 				{__('Add new interaction', 'maxi-blocks')}
 			</Button>
-			{!isEmpty(relations) && (
+			{!isEmpty(props.relations) && (
 				<ListControl>
-					{relations.map(item => (
+					{props.relations.map(item => (
 						<ListItemControl
 							key={item.id}
 							className='maxi-relation-control__item'
@@ -317,6 +333,7 @@ const RelationControl = props => {
 										placeholder={__('Give memorable name…')}
 										onChange={value =>
 											onChangeRelationProperty(
+												relations,
 												item.id,
 												'title',
 												value
@@ -350,6 +367,7 @@ const RelationControl = props => {
 										]}
 										onChange={value =>
 											onChangeRelationProperty(
+												relations,
 												item.id,
 												'uniqueID',
 												value
@@ -389,6 +407,7 @@ const RelationControl = props => {
 												]}
 												onChange={value =>
 													onChangeRelationProperty(
+														relations,
 														item.id,
 														'action',
 														value
@@ -420,19 +439,14 @@ const RelationControl = props => {
 												]}
 												onChange={value => {
 													onChangeRelationProperty(
+														relations,
 														item.id,
-														'attributes',
-														{}
-													);
-													onChangeRelationProperty(
-														item.id,
-														'target',
-														''
-													);
-													onChangeRelationProperty(
-														item.id,
-														'settings',
-														value
+														[
+															'attributes',
+															'target',
+															'settings',
+														],
+														[{}, '', value]
 													);
 												}}
 											/>
@@ -467,6 +481,7 @@ const RelationControl = props => {
 																className='maxi-relation-control__item__effects'
 																onChange={obj =>
 																	onChangeRelationProperty(
+																		relations,
 																		item.id,
 																		'effects',
 																		{
@@ -494,7 +509,9 @@ const RelationControl = props => {
 								</div>
 							}
 							id={item.id}
-							onRemove={() => onRemoveRelation(item.id)}
+							onRemove={() =>
+								onRemoveRelation(item.id, relations)
+							}
 						/>
 					))}
 				</ListControl>

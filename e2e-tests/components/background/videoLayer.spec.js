@@ -32,40 +32,40 @@ describe('BackgroundControl', () => {
 		const video =
 			'https://www.youtube.com/watch?v=C0DPdy98e4c&ab_channel=SimonYapp';
 
-		// add VideoURL
+		// Add VideoURL
 		await page.$eval(
 			'.maxi-background-control__video .maxi-text-control input',
 			input => input.focus()
 		);
 
 		await page.keyboard.type(video);
-		await page.waitForTimeout(500);
 
-		// edit start time
+		// Edit start time
 		await page.$eval('.maxi-background-video-start-time input', input =>
 			input.focus()
 		);
 
 		await page.keyboard.type('55');
-		await page.waitForTimeout(150);
 
-		// edit end time
+		// Edit end time
 		await page.$eval('.maxi-background-video-end-time input', input =>
 			input.focus()
 		);
 		await page.keyboard.type('77');
-		await page.waitForTimeout(500);
 
-		// add loop
+		// Add loop
 		await page.$eval('.video-loop input', button => button.click());
-		await page.waitForTimeout(500);
 
-		// video opacity
+		// Add reduce black borders
+		await page.$eval('.video-reduce-border input', button =>
+			button.click()
+		);
+
+		// Video opacity
 		await page.$$eval(
 			'.maxi-background-control .maxi-opacity-control input',
 			opacity => opacity[0].focus()
 		);
-		await page.waitForTimeout(500);
 
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('44');
@@ -76,7 +76,7 @@ describe('BackgroundControl', () => {
 	});
 
 	it('Check Background video layer responsive', async () => {
-		// general
+		// General
 		await changeResponsive(page, 's');
 		const backgroundOpacityBase = await page.$eval(
 			'.maxi-background-control .maxi-opacity-control input',
@@ -85,7 +85,7 @@ describe('BackgroundControl', () => {
 
 		expect(backgroundOpacityBase).toStrictEqual('44');
 
-		// change opacity S
+		// Change opacity S
 		await page.$eval(
 			'.maxi-background-control .maxi-opacity-control input',
 			input => input.focus()
@@ -94,7 +94,7 @@ describe('BackgroundControl', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('32');
 
-		// expect s
+		// Expect s
 		const backgroundOpacityS = await page.$eval(
 			'.maxi-background-control .maxi-opacity-control input',
 			input => input.value
@@ -102,14 +102,14 @@ describe('BackgroundControl', () => {
 
 		expect(backgroundOpacityS).toStrictEqual('32');
 
-		// expect Xs
+		// Expect Xs
 		await changeResponsive(page, 'xs');
 		const backgroundOpacityXs = await page.$eval(
 			'.maxi-background-control .maxi-opacity-control input',
 			input => input.value
 		);
 		expect(backgroundOpacityXs).toStrictEqual('32');
-		// expect M
+		// Expect M
 		await changeResponsive(page, 'm');
 		const backgroundOpacityM = await page.$eval(
 			'.maxi-background-control .maxi-opacity-control input',
@@ -128,24 +128,24 @@ describe('BackgroundControl', () => {
 			'background layer'
 		);
 
-		// hover
+		// Hover
 		await accordion.$$eval('.maxi-tabs-control button', button =>
 			button[1].click()
 		);
 
-		// enable hover
+		// Enable hover
 		await page.$eval(
 			'.maxi-background-status-hover .maxi-toggle-switch__toggle input',
 			button => button.click()
 		);
 
-		// hover options
+		// Hover options
 		await page.$$eval(
 			'.maxi-list-control__options .maxi-list-item-control',
 			options => options[0].click()
 		);
 
-		// video opacity
+		// Video opacity
 		await page.$$eval(
 			'.maxi-background-control .maxi-opacity-control input',
 			opacity => opacity[0].focus()
@@ -160,7 +160,7 @@ describe('BackgroundControl', () => {
 	});
 
 	it('Check Background video layer hover responsive', async () => {
-		// general
+		// General
 		await changeResponsive(page, 's');
 
 		const backgroundOpacityBase = await page.$$eval(
@@ -170,7 +170,7 @@ describe('BackgroundControl', () => {
 
 		expect(backgroundOpacityBase).toStrictEqual('82');
 
-		// change opacity S
+		// Change opacity S
 		await page.$eval(
 			'.maxi-background-control .maxi-opacity-control input',
 			input => input.focus()
@@ -179,7 +179,7 @@ describe('BackgroundControl', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('45');
 
-		// expect s
+		// Expect s
 		const backgroundOpacityS = await page.$eval(
 			'.maxi-background-control .maxi-opacity-control input',
 			input => input.value
@@ -187,7 +187,7 @@ describe('BackgroundControl', () => {
 
 		expect(backgroundOpacityS).toStrictEqual('45');
 
-		// expect Xs
+		// Expect Xs
 		await changeResponsive(page, 'xs');
 		const backgroundOpacityXs = await page.$eval(
 			'.maxi-background-control .maxi-opacity-control input',
@@ -195,7 +195,7 @@ describe('BackgroundControl', () => {
 		);
 		expect(backgroundOpacityXs).toStrictEqual('45');
 
-		// expect M
+		// Expect M
 		await changeResponsive(page, 'm');
 		const backgroundOpacityM = await page.$eval(
 			'.maxi-background-control .maxi-opacity-control input',

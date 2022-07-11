@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`BackgroundControl Check Background Shape layer display 1`] = `"<div class=\\"maxi-background-displayer__layer maxi-background-displayer__video-player maxi-background-displayer__1\\" data-type=\\"youtube\\" data-start=\\"55\\" data-end=\\"77\\"><div class=\\"maxi-background-displayer__iframe-wrapper\\"><iframe title=\\"youtube video\\" src=\\"https://www.youtube.com/embed/C0DPdy98e4c?controls=0&amp;showinfo=0&amp;rel=0&amp;autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=C0DPdy98e4c&amp;start=55&amp;end=77\\" frameborder=\\"0\\" allow=\\"autoplay\\" allowfullscreen=\\"\\" style=\\"height: 344.633px;\\"></iframe></div></div>"`;
+exports[`BackgroundControl Check Background Shape layer display 1`] = `"<div class=\\"maxi-background-displayer__layer maxi-background-displayer__video-player maxi-background-displayer__video-player--no-border maxi-background-displayer__1\\" data-type=\\"youtube\\" data-start=\\"55\\" data-end=\\"77\\"><div class=\\"maxi-background-displayer__iframe-wrapper\\"><iframe title=\\"youtube video\\" src=\\"https://www.youtube.com/embed/C0DPdy98e4c?controls=0&amp;showinfo=0&amp;rel=0&amp;autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=C0DPdy98e4c&amp;start=55&amp;end=77\\" frameborder=\\"0\\" allow=\\"autoplay\\" allowfullscreen=\\"\\" style=\\"height: 344.633px;\\"></iframe></div></div>"`;
 
-exports[`BackgroundControl Check Background Shape layer display 2`] = `"<div class=\\"maxi-background-displayer__layer maxi-background-displayer__video-player maxi-background-displayer__1\\" data-start=\\"55\\" data-end=\\"77\\" data-type=\\"youtube\\"><div class=\\"maxi-background-displayer__iframe-wrapper\\"><iframe title=\\"youtube video\\" src=\\"https://www.youtube.com/embed/C0DPdy98e4c?controls=0&amp;showinfo=0&amp;rel=0&amp;autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=C0DPdy98e4c&amp;start=55&amp;end=77\\" frameborder=\\"0\\" allow=\\"autoplay\\" allowfullscreen=\\"\\" style=\\"height:100%\\"></iframe></div></div>"`;
+exports[`BackgroundControl Check Background Shape layer display 2`] = `"<div class=\\"maxi-background-displayer__layer maxi-background-displayer__video-player maxi-background-displayer__video-player--no-border maxi-background-displayer__1\\" data-start=\\"55\\" data-end=\\"77\\" data-type=\\"youtube\\"><div class=\\"maxi-background-displayer__iframe-wrapper\\"><iframe title=\\"youtube video\\" src=\\"https://www.youtube.com/embed/C0DPdy98e4c?controls=0&amp;showinfo=0&amp;rel=0&amp;autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=C0DPdy98e4c&amp;start=55&amp;end=77\\" frameborder=\\"0\\" allow=\\"autoplay\\" allowfullscreen=\\"\\" style=\\"height:100%\\"></iframe></div></div>"`;
 
 exports[`BackgroundControl Check Background video layer 1`] = `
 Array [
@@ -13,6 +13,7 @@ Array [
     "background-video-mediaURL": "https://www.youtube.com/watch?v=C0DPdy98e4c&ab_channel=SimonYapp",
     "background-video-opacity-general": 0.44,
     "background-video-playOnMobile-general": false,
+    "background-video-reduce-border": true,
     "background-video-reduce-border-general": false,
     "background-video-startTime": 55,
     "display-general": "block",
@@ -37,6 +38,7 @@ Array [
     "background-video-opacity-general-hover": 0.82,
     "background-video-opacity-s": 0.32,
     "background-video-playOnMobile-general": false,
+    "background-video-reduce-border": true,
     "background-video-reduce-border-general": false,
     "background-video-startTime": 55,
     "display-general": "block",

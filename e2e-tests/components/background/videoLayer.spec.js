@@ -17,14 +17,16 @@ import {
 	addBackgroundLayer,
 	changeResponsive,
 	getBlockStyle,
+	openPreviewPage,
 } from '../../utils';
 
-describe.skip('BackgroundControl', () => {
+describe('BackgroundControl', () => {
 	it('Check Background video layer', async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
 		await openSidebarTab(page, 'style', 'background layer');
 		await addBackgroundLayer(page, 'video');
+
 		await page.waitForTimeout(150);
 
 		const video =

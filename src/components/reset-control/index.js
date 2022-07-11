@@ -6,6 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
+import './editor.scss';
 import Button from '../button';
 
 /**
@@ -15,7 +16,11 @@ import { reset } from '../../icons';
 
 const ResetButton = props => {
 	return (
-		<Button aria-label={__('Reset', 'maxi-blocks')} onClick={props.onReset}>
+		<Button
+			className='maxi-reset-button'
+			aria-label={__('Reset', 'maxi-blocks')}
+			onClick={props.reset}
+		>
 			{reset}
 		</Button>
 	);

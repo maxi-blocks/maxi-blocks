@@ -18,6 +18,7 @@ import {
 	getDefaultAttribute,
 	getAttributeKey,
 } from '../../extensions/styles';
+import ResetButton from '../reset-control';
 
 /**
  * External dependencies
@@ -44,7 +45,6 @@ import {
 	paddingSeparate as paddingSeparateIcon,
 	paddingSyncAll as paddingSyncAllIcon,
 	paddingSyncDirection as paddingSyncDirectionIcon,
-	reset,
 } from '../../icons';
 
 /**
@@ -259,20 +259,16 @@ const AxisContent = props => {
 			)}
 			{disableSync && (
 				<BaseControl className='maxi-axis-control__unit-header'>
-					<Button
+					<ResetButton
 						className='components-maxi-control__reset-button'
-						onClick={() =>
-							onReset({ customBreakpoint: breakpoint })
-						}
+						reset={() => onReset({ customBreakpoint: breakpoint })}
 						aria-label={sprintf(
 							__('Reset %s settings', 'maxi-blocks'),
 							type.toLowerCase()
 						)}
 						action='reset'
 						type='reset'
-					>
-						{reset}
-					</Button>
+					/>
 				</BaseControl>
 			)}
 		</div>
@@ -383,7 +379,7 @@ const AxisControlContent = props => {
 							/>
 							<Button
 								className='components-maxi-control__reset-button'
-								onClick={() =>
+								reset={() =>
 									onReset({ customBreakpoint: breakpoint })
 								}
 								aria-label={sprintf(
@@ -392,9 +388,7 @@ const AxisControlContent = props => {
 								)}
 								action='reset'
 								type='reset'
-							>
-								{reset}
-							</Button>
+							/>
 						</BaseControl>
 					)}
 					<SettingTabsControl

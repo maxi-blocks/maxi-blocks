@@ -10,7 +10,7 @@ import { useEffect, useState } from '@wordpress/element';
 import Icon from '../icon';
 import BaseControl from '../base-control';
 import OpacityControl from '../opacity-control';
-import Button from '../button';
+import ResetButton from '../reset-control';
 
 /**
  * External dependencies
@@ -23,7 +23,7 @@ import { isEmpty } from 'lodash';
  * Icons
  */
 import './editor.scss';
-import { colorOpacity, reset } from '../../icons';
+import { colorOpacity } from '../../icons';
 
 /**
  * Component
@@ -68,9 +68,9 @@ const CustomColorControl = props => {
 								/>
 							</div>
 							{!disableReset && (
-								<Button
+								<ResetButton
 									className='components-maxi-control__reset-button'
-									onClick={e => {
+									reset={e => {
 										e.preventDefault();
 										onReset();
 									}}
@@ -81,9 +81,7 @@ const CustomColorControl = props => {
 										label?.toLowerCase()
 									)}
 									type='reset'
-								>
-									{reset}
-								</Button>
+								/>
 							)}
 						</BaseControl>
 					)}

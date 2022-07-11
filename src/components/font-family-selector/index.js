@@ -9,8 +9,8 @@ import { useState, useEffect } from '@wordpress/element';
  * Internal dependencies
  */
 import { loadFonts } from '../../extensions/text/fonts';
-import Button from '../button';
 import BaseControl from '../base-control';
+import ResetButton from '../reset-control';
 
 /**
  * External dependencies
@@ -23,7 +23,6 @@ import classnames from 'classnames';
  * Styles and icons
  */
 import './editor.scss';
-import { reset } from '../../icons';
 
 /**
  * Component
@@ -95,9 +94,9 @@ const FontFamilySelector = props => {
 			/>
 
 			{!disableFontFamilyReset && (
-				<Button
+				<ResetButton
 					className='components-maxi-control__reset-button components-maxi-control__font-reset-button'
-					onClick={e => {
+					reset={e => {
 						e.preventDefault();
 						onFontChange({
 							label: defaultValue,
@@ -110,9 +109,7 @@ const FontFamilySelector = props => {
 						'Font Family'.toLowerCase()
 					)}
 					type='reset'
-				>
-					{reset}
-				</Button>
+				/>
 			)}
 		</BaseControl>
 	);

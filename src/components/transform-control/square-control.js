@@ -822,7 +822,7 @@ const SquareControl = props => {
 						</Button>
 					</Tooltip>
 				)}
-				<ResetButton onReset={onReset} action='reset' type='reset' />
+				<ResetButton reset={onReset} action='reset' type='reset' />
 			</div>
 		</div>
 	);

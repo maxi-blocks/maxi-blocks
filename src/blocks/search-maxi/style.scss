@@ -37,12 +37,7 @@ body.maxi-blocks--active .maxi-search-block {
 
 		&__icon {
 			box-sizing: content-box;
-
-			div {
-				display: flex;
-				align-items: center;
-				justify-content: center;
-			}
+			display: flex;
 
 			svg {
 				width: 100%;

@@ -44,5 +44,9 @@ body.maxi-blocks--active .maxi-search-block {
 				height: 100%;
 			}
 		}
+
+		&__content {
+			white-space: pre !important;
+		}
 	}
 }

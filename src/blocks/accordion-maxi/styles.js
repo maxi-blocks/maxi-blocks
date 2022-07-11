@@ -38,7 +38,7 @@ const getPaneSpacing = props => {
 		if (!isNil(props[`pane-spacing-${breakpoint}`])) {
 			response[breakpoint]['row-gap'] = `${
 				props[`pane-spacing-${breakpoint}`]
-			}px`;
+			}${props[`pane-spacing-unit-${breakpoint}`] ?? 'px'}`;
 		}
 	});
 

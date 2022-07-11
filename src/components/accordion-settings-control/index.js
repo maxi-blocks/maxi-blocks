@@ -31,6 +31,24 @@ const AccordionSettings = props => {
 		breakpoint,
 	} = props;
 
+	const minMaxSettings = {
+		px: {
+			min: 0,
+			max: 999,
+			step: 1,
+		},
+		em: {
+			min: 0,
+			max: 99,
+			step: 1,
+		},
+		vh: {
+			min: 0,
+			max: 99,
+			step: 1,
+		},
+	};
+
 	return (
 		<>
 			{breakpoint === 'general' && (
@@ -89,18 +107,28 @@ const AccordionSettings = props => {
 			)}
 			<AdvancedNumberControl
 				label={__('Spacing', 'maxi-blocks')}
-				min={0}
-				max={999}
-				step={1}
+				minMaxSettings={minMaxSettings}
 				value={getLastBreakpointAttribute({
 					target: 'pane-spacing',
 					breakpoint,
 					attributes: props,
 				})}
+				unit={getLastBreakpointAttribute({
+					target: 'pane-spacing-unit',
+					breakpoint,
+					attributes: props,
+				})}
+				enableUnit
+				allowedUnits={['px', 'em', 'vh']}
 				onChangeValue={val => {
 					onChange({
 						[`pane-spacing-${breakpoint}`]:
 							val !== undefined ? val : '',
+					});
+				}}
+				onChangeUnit={val => {
+					onChange({
+						[`pane-spacing-unit-${breakpoint}`]: val,
 					});
 				}}
 				onReset={() =>

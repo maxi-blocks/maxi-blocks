@@ -27,7 +27,7 @@ import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFrom
 /**
  * External dependencies
  */
-import { cloneDeep, isArray, isEmpty, merge } from 'lodash';
+import { cloneDeep, isEmpty, merge } from 'lodash';
 
 /**
  * Styles

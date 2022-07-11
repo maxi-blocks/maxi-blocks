@@ -11,7 +11,7 @@ import { useInstanceId } from '@wordpress/compose';
 import SelectControl from '../select-control';
 import BaseControl from '../base-control';
 import ToggleSwitch from '../toggle-switch';
-import Button from '../button';
+import ResetButton from '../reset-control';
 
 /**
  * External dependencies
@@ -23,7 +23,6 @@ import { trim, isEmpty, isNumber, merge } from 'lodash';
  * Styles
  */
 import './editor.scss';
-import { reset } from '../../icons';
 import { getIsValid } from '../../extensions/styles';
 
 /**
@@ -233,9 +232,9 @@ const AdvancedNumberControl = props => {
 						/>
 					)}
 					{!disableReset && (
-						<Button
+						<ResetButton
 							className='components-maxi-control__reset-button'
-							onClick={e => {
+							reset={e => {
 								e.preventDefault();
 								onReset();
 							}}
@@ -246,9 +245,7 @@ const AdvancedNumberControl = props => {
 								label?.toLowerCase()
 							)}
 							type='reset'
-						>
-							{reset}
-						</Button>
+						/>
 					)}
 					<RangeControl
 						label={label}

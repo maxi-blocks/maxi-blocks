@@ -10,8 +10,7 @@ import { useSelect } from '@wordpress/data';
 import BaseControl from '../base-control';
 import OpacityControl from '../opacity-control';
 import { getBlockStyle } from '../../extensions/styles';
-import Button from '../button';
-
+import ResetButton from '../reset-control';
 /**
  * External dependencies
  */
@@ -21,7 +20,6 @@ import classnames from 'classnames';
  * Styles
  */
 import './editor.scss';
-import { reset } from '../../icons';
 
 /**
  * Component
@@ -125,9 +123,9 @@ const ColorPaletteControl = props => {
 					))}
 				</div>
 				{!disableReset && (
-					<Button
+					<ResetButton
 						className='components-maxi-control__reset-button'
-						onClick={e => {
+						reset={e => {
 							e.preventDefault();
 							onReset();
 						}}
@@ -138,9 +136,7 @@ const ColorPaletteControl = props => {
 							label.toLowerCase()
 						)}
 						type='reset'
-					>
-						{reset}
-					</Button>
+					/>
 				)}
 			</BaseControl>
 			{!disableOpacity && (

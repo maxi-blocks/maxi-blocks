@@ -58,6 +58,7 @@ class edit extends MaxiBlockComponent {
 			onClose,
 			setAccordionAttributes,
 			accordionAttributes,
+			isCollapsible,
 		} = this.context;
 
 		const isOpen = openPanes.includes(clientId);
@@ -99,6 +100,7 @@ class edit extends MaxiBlockComponent {
 					className='maxi-pane-block__header'
 					onClick={() => {
 						if (!isOpen) {
+							if (!isCollapsible && openPanes.length <= 1) return;
 							this.content.style.overflow = 'hidden';
 							// the css doesn't transition to 100% so need to set exact value, for transition to happen
 							this.content.style.maxHeight = `${this.content.scrollHeight}px`;

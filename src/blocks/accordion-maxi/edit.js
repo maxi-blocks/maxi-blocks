@@ -53,10 +53,6 @@ class edit extends MaxiBlockComponent {
 	}
 
 	closePane(paneId) {
-		const { isCollapsible } = this.props.attributes;
-
-		if (!isCollapsible && this.state.openPanes.length <= 1) return;
-
 		this.setState({
 			openPanes: [
 				...this.state.openPanes.filter(pane => pane !== paneId),
@@ -66,7 +62,8 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes, maxiSetAttributes } = this.props;
-		const { uniqueID, accordionLayout, titleLevel } = attributes;
+		const { uniqueID, accordionLayout, titleLevel, isCollapsible } =
+			attributes;
 
 		/**
 		 * TODO: Gutenberg still does not have the disallowedBlocks feature
@@ -88,6 +85,7 @@ class edit extends MaxiBlockComponent {
 					paneIconActive: attributes['active-icon-content'],
 					accordionLayout,
 					titleLevel,
+					isCollapsible,
 					openPanes: this.state.openPanes,
 					onOpen: paneId => this.openPane(paneId),
 					onClose: paneId => this.closePane(paneId),

@@ -23,12 +23,7 @@ export const getMigratorsCombinations = migrators => {
 /**
  * Generates an array of migrators
  */
-export const migratorGenerator = ({
-	mainMigrator,
-	saveMigrators,
-	save,
-	prefix = '',
-}) => [
+export const migratorGenerator = ({ mainMigrator, saveMigrators, save }) => [
 	...mainMigrator,
 	...saveMigrators.map(migrator => {
 		return {

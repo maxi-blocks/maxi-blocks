@@ -4,17 +4,17 @@ import { getMigratorsCombinations, migratorGenerator } from '../utils';
 
 describe('getMigratorsCombinations', () => {
 	it('Should return a one element array', () => {
-		const baseMigrator = {
+		const mainMigrator = {
 			isEligible: null,
 			attributes: {},
 			migrate: null,
 		};
 
 		const migrators = [
-			{ ...baseMigrator, saveMigrator: 1 },
-			{ ...baseMigrator, saveMigrator: 2 },
-			{ ...baseMigrator, saveMigrator: 3 },
-			{ ...baseMigrator, saveMigrator: 4 },
+			{ ...mainMigrator, saveMigrator: 1 },
+			{ ...mainMigrator, saveMigrator: 2 },
+			{ ...mainMigrator, saveMigrator: 3 },
+			{ ...mainMigrator, saveMigrator: 4 },
 		];
 
 		expect(getMigratorsCombinations(migrators)).toMatchSnapshot();
@@ -34,7 +34,7 @@ const TestComponent = ({
 
 describe('migratorGenerator', () => {
 	it('Should return a one element array', () => {
-		const baseMigrator = {
+		const mainMigrator = {
 			isEligible: null,
 			attributes: {},
 			migrate: null,
@@ -43,7 +43,7 @@ describe('migratorGenerator', () => {
 
 		const migrators = [
 			{
-				...baseMigrator,
+				...mainMigrator,
 				// Modifies content
 				saveMigrator: saveInstance => {
 					const newInstance = cloneElement(saveInstance, {
@@ -54,7 +54,7 @@ describe('migratorGenerator', () => {
 				},
 			},
 			{
-				...baseMigrator,
+				...mainMigrator,
 				// Add a new attribute
 				saveMigrator: saveInstance => {
 					const newInstance = cloneElement(saveInstance, {
@@ -65,7 +65,7 @@ describe('migratorGenerator', () => {
 				},
 			},
 			{
-				...baseMigrator,
+				...mainMigrator,
 				// Add a new className
 				saveMigrator: saveInstance => {
 					const newInstance = cloneElement(saveInstance, {
@@ -76,7 +76,7 @@ describe('migratorGenerator', () => {
 				},
 			},
 			{
-				...baseMigrator,
+				...mainMigrator,
 				// Change tagName
 				saveMigrator: saveInstance => {
 					const newInstance = cloneElement(saveInstance, {
@@ -91,7 +91,7 @@ describe('migratorGenerator', () => {
 		const saveMigrators = getMigratorsCombinations(migrators);
 
 		const finalMigrators = migratorGenerator({
-			baseMigrator,
+			mainMigrator,
 			saveMigrators,
 			save: props => (
 				<TestComponent className='test-migrators' {...props} />

@@ -10,7 +10,6 @@ import { InspectorControls } from '@wordpress/block-editor';
 import {
 	SettingTabsControl,
 	AccordionControl,
-	AccordionBackgroundSettings,
 	AccordionIconSettings,
 	AccordionTitleSettings,
 } from '../../components';
@@ -73,21 +72,6 @@ const Inspector = props => {
 													'accordionIcon'
 												)}
 												blockStyle={blockStyle}
-												onChange={obj =>
-													setAccordionAttributes(obj)
-												}
-												breakpoint={deviceType}
-											/>
-										),
-									},
-									{
-										label: __(
-											'Pane background',
-											'maxi-blocks'
-										),
-										content: (
-											<AccordionBackgroundSettings
-												{...accordionAttributes}
 												onChange={obj =>
 													setAccordionAttributes(obj)
 												}

@@ -2,7 +2,6 @@ export { default as AccordionControl } from './accordion-control';
 export { default as AccordionSettings } from './accordion-settings-control';
 export { default as AccordionTitleSettings } from './accordion-title-control';
 export { default as AccordionIconSettings } from './accordion-icon-control';
-export { default as AccordionBackgroundSettings } from './accordion-background-control';
 export { default as AdvancedNumberControl } from './advanced-number-control';
 export { default as AlignmentControl } from './alignment-control';
 export { default as ArrowControl } from './arrow-control';

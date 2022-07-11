@@ -292,42 +292,6 @@ const getPaneHeaderObject = props => {
 	return response;
 };
 
-const getBackgroundObject = props => {
-	const response = {};
-
-	['active-background-', 'background-'].forEach(prefix => {
-		[false, true].forEach(isHover => {
-			const resp = {};
-			breakpoints.forEach(breakpoint => {
-				resp[breakpoint] = {};
-				const { paletteStatus, paletteColor, paletteOpacity, color } =
-					getPaletteAttributes({
-						obj: props,
-						prefix,
-						breakpoint,
-						isHover,
-					});
-				if (!paletteStatus && !isNil(color))
-					resp[breakpoint]['background-color'] = color;
-				if (paletteStatus && paletteColor)
-					resp[breakpoint]['background-color'] = getColorRGBAString({
-						firstVar: `color-${paletteColor}`,
-						opacity: paletteOpacity,
-						blockStyle: props.blockStyle,
-					});
-			});
-
-			response[
-				` .maxi-pane-block[aria-expanded=${
-					prefix === 'background-' ? 'false' : 'true'
-				}] .maxi-pane-block__content${isHover ? ':hover' : ''}`
-			] = { paneBackground: resp };
-		});
-	});
-
-	return response;
-};
-
 const getStyles = props => {
 	const { uniqueID } = props;
 	const response = {
@@ -336,7 +300,6 @@ const getStyles = props => {
 			':hover': getHoverObject(props),
 			...getPaneHeaderObject(props),
 			...getIconObject(props),
-			...getBackgroundObject(props),
 			' .maxi-pane-block .maxi-pane-block__content':
 				getPaneContentStyles(props),
 		}),

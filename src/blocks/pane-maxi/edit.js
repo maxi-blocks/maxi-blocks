@@ -14,6 +14,7 @@ import { BlockInserter, Toolbar } from '../../components';
 import getStyles from './styles';
 import AccordionContext from '../accordion-maxi/context';
 import Inspector from './inspector';
+import copyPasteMapping from './copy-paste-mapping';
 
 /**
  * Edit
@@ -69,7 +70,7 @@ class edit extends MaxiBlockComponent {
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}
 				{...this.props}
-				// copyPasteMapping={copyPasteMapping}
+				copyPasteMapping={copyPasteMapping}
 			/>,
 			<MaxiBlock
 				key={`maxi-pane--${uniqueID}`}

@@ -8,6 +8,7 @@ import { getMaxiBlockAttributes, MaxiBlock } from '../../components/maxi-block';
 import getStyles from './styles';
 import { Toolbar } from '../../components';
 import AccordionContext from './context';
+import copyPasteMapping from './copy-paste-mapping';
 
 /**
  * Edit
@@ -61,7 +62,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, maxiSetAttributes } = this.props;
+		const { attributes } = this.props;
 		const { uniqueID, accordionLayout, titleLevel, isCollapsible } =
 			attributes;
 
@@ -82,7 +83,7 @@ class edit extends MaxiBlockComponent {
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}
 				{...this.props}
-				// copyPasteMapping={copyPasteMapping}
+				copyPasteMapping={copyPasteMapping}
 			/>,
 			<AccordionContext.Provider
 				key={`accordion-content-${uniqueID}`}
@@ -95,10 +96,6 @@ class edit extends MaxiBlockComponent {
 					openPanes: this.state.openPanes,
 					onOpen: paneId => this.openPane(paneId),
 					onClose: paneId => this.closePane(paneId),
-					setAccordionAttributes: obj => {
-						maxiSetAttributes(obj);
-					},
-					accordionAttributes: attributes,
 				}}
 			>
 				<MaxiBlock

@@ -328,6 +328,12 @@ const SliderWrapper = props => {
 	}, [numberOfSlides]);
 
 	useEffect(() => {
+		if (currentSlide === 0) {
+			setTimeout(() => setActiveSlide(0), 10);
+		}
+	}, [currentSlide]);
+
+	useEffect(() => {
 		const isPaused = () => {
 			if (isHovered && pauseOnHover) return true;
 			if (pauseOnInteraction) return true;

@@ -17,7 +17,7 @@ import ResetButton from '../reset-control';
  * External dependencies
  */
 import classnames from 'classnames';
-import { trim, isEmpty, isNumber, merge } from 'lodash';
+import { trim, isEmpty, isNumber, isNil, merge } from 'lodash';
 
 /**
  * Styles
@@ -250,12 +250,9 @@ const AdvancedNumberControl = props => {
 					<RangeControl
 						label={label}
 						value={
-							+(
-								value ??
-								defaultValue ??
-								initial ??
-								placeholder
-							) || 0
+							+(!isNil(value)
+								? value
+								: defaultValue || initial || placeholder || 0)
 						}
 						onChange={val => {
 							onChangeValue(

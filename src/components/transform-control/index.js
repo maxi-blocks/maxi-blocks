@@ -35,7 +35,7 @@ import './editor.scss';
 const TransformControl = props => {
 	const {
 		className,
-		onChangeInline,
+		onChangeInline = null,
 		onChange,
 		breakpoint = 'general',
 		depth,
@@ -75,10 +75,11 @@ const TransformControl = props => {
 			[breakpoint]: { transform, 'transform-origin': transformOrigin },
 		} = transformObj;
 
-		onChangeInline({
-			transform: transform ?? '',
-			'transform-origin': transformOrigin ?? '',
-		});
+		onChangeInline &&
+			onChangeInline({
+				transform: transform ?? '',
+				'transform-origin': transformOrigin ?? '',
+			});
 	};
 
 	const classes = classnames('maxi-transform-control', className);
@@ -176,23 +177,33 @@ const TransformControl = props => {
 						breakpoint,
 						attributes: props,
 					})}
-					defaultX={getDefaultAttribute('transform-translate-x')}
+					defaultX={getDefaultAttribute(
+						`transform-translate-x-${breakpoint}`
+					)}
 					y={getLastBreakpointAttribute({
 						target: 'transform-translate-y',
 						breakpoint,
 						attributes: props,
 					})}
-					defaultY={getDefaultAttribute('transform-translate-y')}
+					defaultY={getDefaultAttribute(
+						`transform-translate-y-${breakpoint}`
+					)}
 					xUnit={getLastBreakpointAttribute({
 						target: 'transform-translate-x-unit',
 						breakpoint,
 						attributes: props,
 					})}
+					defaultXUnit={getDefaultAttribute(
+						`transform-translate-x-unit-${breakpoint}`
+					)}
 					yUnit={getLastBreakpointAttribute({
 						target: 'transform-translate-y-unit',
 						breakpoint,
 						attributes: props,
 					})}
+					defaultYUnit={getDefaultAttribute(
+						`transform-translate-y-unit-${breakpoint}`
+					)}
 					onChange={(x, y, xUnit, yUnit) => {
 						onChangeTransform({
 							'transform-translate-x': x,
@@ -224,19 +235,25 @@ const TransformControl = props => {
 						breakpoint,
 						attributes: props,
 					})}
-					defaultX={getDefaultAttribute('transform-rotate-x')}
+					defaultX={getDefaultAttribute(
+						`transform-rotate-x-${breakpoint}`
+					)}
 					y={getLastBreakpointAttribute({
 						target: 'transform-rotate-y',
 						breakpoint,
 						attributes: props,
 					})}
-					defaultY={getDefaultAttribute('transform-rotate-y')}
+					defaultY={getDefaultAttribute(
+						`transform-rotate-y-${breakpoint}`
+					)}
 					z={getLastBreakpointAttribute({
 						target: 'transform-rotate-z',
 						breakpoint,
 						attributes: props,
 					})}
-					defaultZ={getDefaultAttribute('transform-rotate-z')}
+					defaultZ={getDefaultAttribute(
+						`transform-rotate-z-${breakpoint}`
+					)}
 					onChange={(x, y, z) => {
 						onChangeTransform({
 							'transform-rotate-x': x,
@@ -261,7 +278,9 @@ const TransformControl = props => {
 							attributes: props,
 						}) || 'center'
 					}
-					defaultX={getDefaultAttribute('transform-origin-x')}
+					defaultX={getDefaultAttribute(
+						`transform-origin-x-${breakpoint}`
+					)}
 					y={
 						getLastBreakpointAttribute({
 							target: 'transform-origin-y',
@@ -269,17 +288,25 @@ const TransformControl = props => {
 							attributes: props,
 						}) || 'middle'
 					}
-					defaultY={getDefaultAttribute('transform-origin-y')}
+					defaultY={getDefaultAttribute(
+						`transform-origin-y-${breakpoint}`
+					)}
 					xUnit={getLastBreakpointAttribute({
 						target: 'transform-origin-x-unit',
 						breakpoint,
 						attributes: props,
 					})}
+					defaultXUnit={getDefaultAttribute(
+						`transform-origin-x-unit-${breakpoint}`
+					)}
 					yUnit={getLastBreakpointAttribute({
 						target: 'transform-origin-y-unit',
 						breakpoint,
 						attributes: props,
 					})}
+					defaultYUnit={getDefaultAttribute(
+						`transform-origin-y-unit-${breakpoint}`
+					)}
 					onChange={(x, y, xUnit, yUnit) => {
 						onChangeTransform({
 							'transform-origin-x': x,

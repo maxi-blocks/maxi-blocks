@@ -142,7 +142,7 @@ const MasonryItem = props => {
 									'image-shape',
 									'bg-shape',
 									'sidebar-block-shape',
-									'video-shape',
+									'video-icon',
 							  ].includes(target) || target.includes('Shape')
 							? serial.replace(' shape', '')
 							: serial}
@@ -367,7 +367,7 @@ const LibraryContainer = props => {
 		switch (type) {
 			case 'button-icon' || 'accordion-icon' || 'accordion-icon-active':
 				return 'icon';
-			case 'video-shape':
+			case 'video-icon':
 				return 'shape';
 			case 'sidebar-block-shape':
 				return 'shape';
@@ -542,7 +542,7 @@ const LibraryContainer = props => {
 
 			if (
 				type === 'button-icon' ||
-				type === 'video-shape' ||
+				type === 'video-icon' ||
 				type === 'accordion-icon'
 			) {
 				onSelect({
@@ -722,7 +722,8 @@ const LibraryContainer = props => {
 					</InstantSearch>
 				</div>
 			)}
-			{(type.includes('shape') || type === 'video-shape') && (
+
+			{(type.includes('shape') || type === 'video-icon') && (
 				<InstantSearch
 					indexName='svg_icon'
 					searchClient={searchClientSvg}

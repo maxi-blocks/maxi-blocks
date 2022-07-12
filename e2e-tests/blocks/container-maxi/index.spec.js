@@ -50,6 +50,7 @@ describe('Container Maxi', () => {
 		);
 
 		await page.keyboard.type('background: red');
+		await page.waitForTimeout(200);
 
 		// check second background
 		await accordionTab.$eval(
@@ -58,6 +59,7 @@ describe('Container Maxi', () => {
 		);
 
 		await page.keyboard.type('background: blue');
+		await page.waitForTimeout(200);
 
 		await expect(await addCustomCSS(page)).toMatchSnapshot();
 	}, 500000);

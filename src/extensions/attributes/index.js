@@ -38,7 +38,7 @@ const allowedBlocks = [
 const withAttributes = createHigherOrderComponent(
 	BlockEdit => props => {
 		const { attributes, name, clientId } = props;
-		const { uniqueID } = attributes;
+		const { uniqueID, customLabel } = attributes;
 
 		if (allowedBlocks.includes(name)) {
 			// uniqueID
@@ -50,6 +50,12 @@ const withAttributes = createHigherOrderComponent(
 					`${name.replace('maxi-blocks/', '')}-`
 				);
 				attributes.uniqueID = uniqueIDGenerator(newName);
+
+				if (isNil(customLabel)) {
+					const label = attributes.uniqueID.replace('-maxi-', '_');
+					attributes.customLabel =
+						label.charAt(0).toUpperCase() + label.slice(1);
+				}
 			}
 			// isFirstOnHierarchy
 			const parentBlocks = select('core/block-editor')

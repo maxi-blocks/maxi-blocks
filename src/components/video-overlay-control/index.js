@@ -6,49 +6,31 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import VideoIconControl from '../video-icon-control';
 import {
-	getGroupAttributes,
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
 } from '../../extensions/styles';
 import ColorControl from '../color-control';
-import MediaUploaderControl from '../media-uploader-control';
+import ToggleSwitch from '../toggle-switch';
 
 const VideoOverlayControl = props => {
 	const {
-		blockStyle,
 		breakpoint,
 		clientId,
 		onChange,
 		insertInlineStyles,
 		inlineStylesTargets,
 		cleanInlineStyles,
-		mediaID,
-		altSelector,
+		hideImage,
 	} = props;
 
 	return (
 		<>
-			<MediaUploaderControl
-				className='maxi-video-overlay-control__cover-image'
-				placeholder={__('Image overlay')}
-				mediaID={mediaID}
-				onSelectImage={val => {
-					const alt =
-						(altSelector === 'wordpress' && val?.alt) ||
-						(altSelector === 'title' && val?.title) ||
-						null;
-
-					onChange({
-						'overlay-mediaID': val.id,
-						'overlay-mediaURL': val.url,
-						'overlay-mediaAlt':
-							altSelector === 'wordpress' && !alt
-								? val.title
-								: alt,
-					});
-				}}
+			<ToggleSwitch
+				className='maxi-video-overlay-control__hide-image'
+				label={__('Hide image(icon only)', 'maxi-blocks')}
+				selected={hideImage}
+				onChange={val => onChange({ hideImage: val })}
 			/>
 			<ColorControl
 				className='maxi-video-overlay-control__overlay-background-colour'
@@ -109,29 +91,6 @@ const VideoOverlayControl = props => {
 				globalProps={{
 					target: 'overlay',
 				}}
-			/>
-			<VideoIconControl
-				prefix='play-'
-				label={__('Play icon', 'maxi-blocks')}
-				blockStyle={blockStyle}
-				breakpoint={breakpoint}
-				clientId={clientId}
-				onChangeInline={obj =>
-					insertInlineStyles({
-						obj,
-						target: inlineStylesTargets.playIcon,
-					})
-				}
-				onChange={obj => {
-					onChange(obj);
-					cleanInlineStyles(inlineStylesTargets.playIcon);
-				}}
-				{...getGroupAttributes(
-					props,
-					['icon', 'iconBackground', 'iconBackgroundColor'],
-					false,
-					'play-'
-				)}
 			/>
 		</>
 	);

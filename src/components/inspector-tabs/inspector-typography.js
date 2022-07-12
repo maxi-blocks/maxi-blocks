@@ -10,6 +10,7 @@ import SettingTabsControl from '../setting-tabs-control';
 import TypographyControl from '../typography-control';
 import ToggleSwitch from '../toggle-switch';
 import { getGroupAttributes } from '../../extensions/styles';
+import ManageHoverTransitions from '../manage-hover-transitions';
 
 /**
  * Component
@@ -96,6 +97,7 @@ const typography = ({
 						label: __('Hover state', 'maxi-blocks'),
 						content: (
 							<>
+								<ManageHoverTransitions />
 								{!globalHoverStatus && (
 									<ToggleSwitch
 										label={__(
@@ -127,6 +129,7 @@ const typography = ({
 										}
 										blockStyle={blockStyle}
 										styleCardPrefix={styleCardPrefix}
+										isList={isList}
 										globalProps={hoverGlobalProps}
 									/>
 								)}

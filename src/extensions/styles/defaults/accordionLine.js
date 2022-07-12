@@ -4,7 +4,19 @@ import dividerHover from './dividerHover';
 
 const accordionLine = {
 	...divider,
+	'divider-border-palette-color-general': {
+		type: 'number',
+		default: 3,
+	},
+	'divider-width-general': {
+		type: 'number',
+		default: 100,
+	},
 	...dividerHover,
+	'divider-width-general-hover': {
+		type: 'number',
+		default: 100,
+	},
 	'line-status-hover': {
 		type: 'boolean',
 		default: false,
@@ -16,6 +28,10 @@ const accordionLine = {
 	...prefixAttributesCreator({
 		obj: divider,
 		prefix: 'active-',
+		diffValAttr: {
+			'active-divider-border-palette-color-general': 3,
+			'active-divider-width-general': 100,
+		},
 	}),
 };
 

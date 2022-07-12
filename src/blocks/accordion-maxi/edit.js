@@ -65,13 +65,19 @@ class edit extends MaxiBlockComponent {
 		const { uniqueID, accordionLayout, titleLevel, isCollapsible } =
 			attributes;
 
-		/**
-		 * TODO: Gutenberg still does not have the disallowedBlocks feature
-		 */
+		const inlineStylesTargets = {
+			headerLine: ':scope > .maxi-pane-block > .maxi-pane-block__header',
+			contentLine:
+				':scope > .maxi-pane-block > .maxi-pane-block__content',
+		};
 
 		const ALLOWED_BLOCKS = ['maxi-blocks/pane-maxi'];
 		return [
-			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
+			<Inspector
+				key={`block-settings-${uniqueID}`}
+				{...this.props}
+				inlineStylesTargets={inlineStylesTargets}
+			/>,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}

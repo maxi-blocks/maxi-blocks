@@ -17,6 +17,7 @@ import {
 	getBorderStyles,
 	getBoxShadowStyles,
 	getDisplayStyles,
+	getDividerStyles,
 	getFlexStyles,
 	getMarginPaddingStyles,
 	getOpacityStyles,
@@ -275,6 +276,38 @@ const getPaneHeaderObject = props => {
 			props,
 			''
 		),
+		' .maxi-pane-block .maxi-pane-block__header::after': {
+			headerLine: {
+				...getDividerStyles(props, 'line', props.blockStyle, false),
+			},
+		},
+		...(props['line-status-active'] && {
+			' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__header::after':
+				{
+					headerLine: {
+						...getDividerStyles(
+							props,
+							'line',
+							props.blockStyle,
+							false,
+							'active-'
+						),
+					},
+				},
+		}),
+		...(props['line-status-hover'] && {
+			' .maxi-pane-block[aria-expanded] .maxi-pane-block__header:hover::after':
+				{
+					headerLine: {
+						...getDividerStyles(
+							props,
+							'line',
+							props.blockStyle,
+							true
+						),
+					},
+				},
+		}),
 		' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__header':
 			getPaneHeaderStyles(props, 'active-'),
 		' .maxi-pane-block[aria-expanded]:hover .maxi-pane-block__header':
@@ -292,6 +325,47 @@ const getPaneHeaderObject = props => {
 	return response;
 };
 
+const getPaneContentObject = props => {
+	const response = {
+		' .maxi-pane-block .maxi-pane-block__content':
+			getPaneContentStyles(props),
+		' .maxi-pane-block .maxi-pane-block__content::after': {
+			paneLine: {
+				...getDividerStyles(props, 'line', props.blockStyle, false),
+			},
+		},
+		...(props['line-status-active'] && {
+			' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__content::after':
+				{
+					paneLine: {
+						...getDividerStyles(
+							props,
+							'line',
+							props.blockStyle,
+							false,
+							'active-'
+						),
+					},
+				},
+		}),
+		...(props['line-status-hover'] && {
+			' .maxi-pane-block[aria-expanded] .maxi-pane-block__content:hover::after':
+				{
+					paneLine: {
+						...getDividerStyles(
+							props,
+							'line',
+							props.blockStyle,
+							true
+						),
+					},
+				},
+		}),
+	};
+
+	return response;
+};
+
 const getStyles = props => {
 	const { uniqueID } = props;
 	const response = {
@@ -300,8 +374,7 @@ const getStyles = props => {
 			':hover': getHoverObject(props),
 			...getPaneHeaderObject(props),
 			...getIconObject(props),
-			' .maxi-pane-block .maxi-pane-block__content':
-				getPaneContentStyles(props),
+			...getPaneContentObject(props),
 		}),
 	};
 	return response;

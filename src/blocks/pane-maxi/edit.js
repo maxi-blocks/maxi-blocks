@@ -42,6 +42,16 @@ class edit extends MaxiBlockComponent {
 
 			maxiSetAttributes({ titleLevel: this.context.titleLevel });
 		}
+		if (
+			this.context.accordionLayout !==
+			this.props.attributes.accordionLayout
+		) {
+			const { maxiSetAttributes } = this.props;
+
+			maxiSetAttributes({
+				accordionLayout: this.context.accordionLayout,
+			});
+		}
 	}
 
 	render() {

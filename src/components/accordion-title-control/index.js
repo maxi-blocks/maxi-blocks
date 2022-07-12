@@ -165,4 +165,5 @@ const AccordionTitleSettings = props => {
 		</>
 	);
 };
+
 export default AccordionTitleSettings;

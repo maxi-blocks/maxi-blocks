@@ -1,5 +1,6 @@
 export { default as accordion } from './accordion';
 export { default as accordionIcon } from './accordionIcon';
+export { default as accordionLine } from './accordionLine';
 export { default as accordionTitle } from './accordionTitle';
 export { default as alignment } from './alignment';
 export { default as arrow } from './arrow';
@@ -11,6 +12,7 @@ export { default as customCss } from './customCss';
 export { default as display } from './display';
 export { default as displayHover } from './displayHover';
 export { default as divider } from './divider';
+export { default as dividerHover } from './dividerHover';
 export { default as global } from './global';
 export { default as link } from './link';
 export { default as map } from './map';

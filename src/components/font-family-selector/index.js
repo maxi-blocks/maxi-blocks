@@ -8,7 +8,8 @@ import { useState, useEffect } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { loadFonts } from '../../extensions/text/fonts';
+
+import { loadFontsInEditor } from '../../extensions/text/fonts';
 import BaseControl from '../base-control';
 import ResetButton from '../reset-control';
 
@@ -36,6 +37,7 @@ const FontFamilySelector = props => {
 		fontWeight,
 		fontStyle,
 		disableFontFamilyReset = false,
+		breakpoint,
 	} = props;
 
 	const { options } = useSelect(select => {
@@ -64,7 +66,7 @@ const FontFamilySelector = props => {
 
 		if (fontWeight) objFont[newFont.value].weight = fontWeight.toString();
 		if (fontStyle) objFont[newFont.value].style = fontStyle;
-		loadFonts(objFont);
+		loadFontsInEditor(breakpoint, objFont);
 
 		setValue({ label: newFont.value, value: newFont.value });
 	};

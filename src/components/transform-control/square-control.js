@@ -33,9 +33,11 @@ const SquareControl = props => {
 		x,
 		defaultX,
 		xUnit = null,
+		defaultXUnit,
 		y,
 		defaultY,
 		yUnit = null,
+		defaultYUnit,
 		onChange,
 		onSave,
 		type = 'resize',
@@ -70,14 +72,14 @@ const SquareControl = props => {
 		};
 	};
 
-	const getPlaceholder = value => {
+	const getPlaceholder = (value, isYAxis = false) => {
 		switch (type) {
 			case 'resize':
 				return '100';
 			case 'drag':
 				return '0%';
 			case 'origin':
-				return isString(value) ? value : 'center';
+				return isYAxis ? 'middle' : 'center';
 			default:
 				return false;
 		}
@@ -110,18 +112,17 @@ const SquareControl = props => {
 			case 'resize':
 				changeXAxis(defaultX);
 				changeYAxis(defaultY);
-				onChange(defaultX, defaultY);
 				onSave(defaultX, defaultY);
 				break;
 			case 'drag':
 				changeXAxis(0);
 				changeYAxis(0);
-				onSave(0, 0, '%', '%');
+				onSave(0, 0, defaultXUnit, defaultYUnit);
 				break;
 			case 'origin':
 				changeXAxis(defaultX);
 				changeYAxis(defaultY);
-				onChange(defaultX, defaultY);
+				onSave(defaultX, defaultY, defaultXUnit, defaultYUnit);
 				break;
 			default:
 				return false;
@@ -325,7 +326,8 @@ const SquareControl = props => {
 						/>
 						<Button
 							aria-pressed={
-								xAxis === 'middle' && yAxis === 'center'
+								(xAxis === 'middle' && yAxis === 'center') ||
+								(!xAxis && !yAxis)
 									? 'active'
 									: ''
 							}
@@ -470,7 +472,7 @@ const SquareControl = props => {
 						<div className='maxi-transform-control__square-control__y-control__value'>
 							<input
 								type='number'
-								placeholder={getPlaceholder(yAxis)}
+								placeholder={getPlaceholder(yAxis, true)}
 								className='maxi-transform-control__square-control__y-control__value__input'
 								value={
 									!isNumber(validateOriginValue(yAxis))

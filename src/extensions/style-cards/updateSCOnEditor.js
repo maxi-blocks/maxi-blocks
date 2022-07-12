@@ -42,7 +42,7 @@ const getColorString = (obj, target, style) => {
 };
 
 const getParsedObj = obj => {
-	const newObj = cloneDeep(obj);
+	const newObj = { ...cloneDeep(obj) };
 
 	const typographyObj = getGroupAttributes(
 		newObj,
@@ -111,7 +111,6 @@ export const getSCVariablesObject = styleCards => {
 	styles.forEach(style => {
 		elements.forEach(element => {
 			const obj = getParsedObj(SC[style][element]);
-
 			if (!elementsForColor.includes(element))
 				settings.forEach(setting => {
 					breakpoints.forEach(breakpoint => {
@@ -201,10 +200,14 @@ export const getSCVariablesObject = styleCards => {
 					break;
 			}
 		});
-
-		times(8, n => {
-			response[`--maxi-${style}-color-${n + 1}`] = SC[style].color[n + 1];
-		});
+		if (SC[style].color) {
+			times(8, n => {
+				if (SC[style].color[n + 1]) {
+					response[`--maxi-${style}-color-${n + 1}`] =
+						SC[style].color[n + 1];
+				}
+			});
+		}
 	});
 
 	return response;
@@ -255,7 +258,6 @@ const getSCFontsData = obj => {
 const updateSCOnEditor = styleCards => {
 	const SCObject = getSCVariablesObject({ ...cloneDeep(styleCards) });
 	let SCStyle = document.getElementById('maxi-blocks-sc-vars-inline-css');
-
 	if (!SCStyle) {
 		SCStyle = document.createElement('style');
 		SCStyle.id = 'maxi-blocks-sc-vars-inline-css';

@@ -441,7 +441,7 @@ describe('Responsive attributes mechanisms', () => {
 
 		// Reset
 		await borderAccordion.$eval(
-			'.components-maxi-control__reset-button',
+			'.maxi-axis-control__content__item__border-radius .components-maxi-control__reset-button',
 			button => button.click()
 		);
 
@@ -465,7 +465,7 @@ describe('Responsive attributes mechanisms', () => {
 
 		// Reset
 		await borderAccordion.$eval(
-			'.components-maxi-control__reset-button',
+			'.maxi-axis-control__content__item__border-radius .components-maxi-control__reset-button',
 			button => button.click()
 		);
 

@@ -29,6 +29,7 @@ const PositionControl = props => {
 		disablePosition = false,
 		breakpoint = 'general',
 		prefix = '',
+		isHover = false,
 	} = props;
 
 	const classes = classnames('maxi-position-control', className);
@@ -96,6 +97,7 @@ const PositionControl = props => {
 			optionType='string'
 			enableAxisUnits
 			allowedUnits={['px', 'em', 'vw', '%', '-']}
+			isHover={isHover}
 		/>
 	);
 

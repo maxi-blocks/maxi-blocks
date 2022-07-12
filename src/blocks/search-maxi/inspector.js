@@ -296,17 +296,251 @@ const Inspector = props => {
 				props,
 			})}
 			<SettingTabsControl
-				target='sidebar-settings-tabs'
 				disablePadding
 				deviceType={deviceType}
-				depth={0}
 				items={[
 					{
-						label: __('Block', 'maxi-blocks'),
+						label: __('Settings', 'maxi-blocks'),
 						content: (
 							<AccordionControl
 								isPrimary
 								items={[
+									{
+										label: __('Skin', 'maxi-blocks'),
+										content: (
+											<SkinControl
+												skin={skin}
+												onChange={maxiSetAttributes}
+											/>
+										),
+									},
+									{
+										label: __(
+											'Search settings',
+											'maxi-blocks'
+										),
+										disablePadding: true,
+										content: (
+											<SettingTabsControl
+												disablePadding
+												isNestedAccordion
+												items={[
+													{
+														label: __(
+															'Button',
+															'maxi-blocks'
+														),
+														content: (
+															<AccordionControl
+																isNestedAccordion
+																items={[
+																	{
+																		label: __(
+																			'Button',
+																			'maxi-blocks'
+																		),
+																		content:
+																			(
+																				<ButtonControl
+																					{...getGroupAttributes(
+																						attributes,
+																						'searchButton'
+																					)}
+																					onChange={
+																						maxiSetAttributes
+																					}
+																					skin={
+																						skin
+																					}
+																				/>
+																			),
+																	},
+																	...(buttonSkin ===
+																	'icon'
+																		? inspectorTabs.icon(
+																				{
+																					props,
+																					type: 'search-icon',
+																					ignoreIndicator:
+																						[
+																							'icon-position',
+																						],
+																					...iconControlsDisabledProps,
+																				}
+																		  )
+																		: inspectorTabs.typography(
+																				{
+																					props,
+																					disableCustomFormats: true,
+																					hideAlignment: true,
+																					prefix: buttonPrefix,
+																					inlineTarget:
+																						' .maxi-search-block__button__content',
+																				}
+																		  )),
+																	...(buttonSkin ===
+																		'icon' &&
+																		skin ===
+																			'icon-reveal' &&
+																		inspectorTabs.icon(
+																			{
+																				props,
+																				label: __(
+																					'Close icon',
+																					'maxi-blocks'
+																				),
+																				type: 'search-icon',
+																				...iconControlsDisabledProps,
+																				prefix: closeIconPrefix,
+																			}
+																		)),
+																	{
+																		label: __(
+																			'Position',
+																			'maxi-blocks'
+																		),
+																		content:
+																			(
+																				<AxisPositionControl
+																					label='Button'
+																					selected={
+																						buttonPosition
+																					}
+																					onChange={val =>
+																						maxiSetAttributes(
+																							{
+																								'icon-position':
+																									val,
+																							}
+																						)
+																					}
+																					breakpoint={
+																						deviceType
+																					}
+																					disableY
+																				/>
+																			),
+																		extraIndicators:
+																			[
+																				'icon-position',
+																			],
+																	},
+																	...inspectorTabs.border(
+																		{
+																			props,
+																			prefix: buttonPrefix,
+																			inlineTarget:
+																				'.maxi-search-block__button',
+																		}
+																	),
+																	...inspectorTabs.background(
+																		{
+																			label: 'Button',
+																			props,
+																			prefix: buttonPrefix,
+																			...backgroundDisabledProps,
+																			inlineTarget:
+																				'.maxi-search-block__button',
+																		}
+																	),
+																	...inspectorTabs.marginPadding(
+																		{
+																			props,
+																			prefix: buttonPrefix,
+																		}
+																	),
+																]}
+															/>
+														),
+													},
+													{
+														label: __(
+															'Input',
+															'maxi-blocks'
+														),
+														content: (
+															<AccordionControl
+																isPrimary
+																items={[
+																	...inspectorTabs.typography(
+																		{
+																			props,
+																			disableCustomFormats: true,
+																			hideAlignment: true,
+																			prefix: inputPrefix,
+																			inlineTarget:
+																				' .maxi-search-block__input',
+																		}
+																	),
+																	{
+																		label: __(
+																			'Placeholder',
+																			'maxi-blocks'
+																		),
+																		content:
+																			(
+																				<PlaceholderColourControl
+																					{...getGroupAttributes(
+																						attributes,
+																						'placeholderColor'
+																					)}
+																					placeholder={
+																						attributes.placeholder
+																					}
+																					onChange={
+																						maxiSetAttributes
+																					}
+																					deviceType={
+																						deviceType
+																					}
+																					insertInlineStyles={
+																						insertInlineStyles
+																					}
+																					cleanInlineStyles={
+																						cleanInlineStyles
+																					}
+																					clientId={
+																						clientId
+																					}
+																				/>
+																			),
+																	},
+																	...inspectorTabs.border(
+																		{
+																			props,
+																			prefix: inputPrefix,
+																		}
+																	),
+																	...inspectorTabs.background(
+																		{
+																			label: 'Input',
+																			props,
+																			prefix: inputPrefix,
+																			...backgroundDisabledProps,
+																			selector:
+																				'.maxi-search-block__input',
+																		}
+																	),
+																	...inspectorTabs.marginPadding(
+																		{
+																			props,
+																			prefix: inputPrefix,
+																			customLabel:
+																				__(
+																					'Padding',
+																					'maxi-blocks'
+																				),
+																			disableMargin: true,
+																		}
+																	),
+																]}
+															/>
+														),
+													},
+												]}
+											/>
+										),
+									},
 									...inspectorTabs.border({
 										props,
 									}),
@@ -319,162 +553,6 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.marginPadding({
 										props,
-									}),
-								]}
-							/>
-						),
-					},
-					{
-						label: __('Button', 'maxi-blocks'),
-						content: (
-							<AccordionControl
-								items={[
-									{
-										label: __('Skin', 'maxi-blocks'),
-										content: (
-											<SkinControl
-												skin={skin}
-												onChange={maxiSetAttributes}
-											/>
-										),
-									},
-									{
-										label: __('Button', 'maxi-blocks'),
-										content: (
-											<ButtonControl
-												{...getGroupAttributes(
-													attributes,
-													'searchButton'
-												)}
-												onChange={maxiSetAttributes}
-												skin={skin}
-											/>
-										),
-									},
-									...(buttonSkin === 'icon'
-										? inspectorTabs.icon({
-												props,
-												type: 'search-icon',
-												ignoreIndicator: [
-													'icon-position',
-												],
-												...iconControlsDisabledProps,
-										  })
-										: inspectorTabs.typography({
-												props,
-												disableCustomFormats: true,
-												hideAlignment: true,
-												prefix: buttonPrefix,
-												inlineTarget:
-													' .maxi-search-block__button__content',
-										  })),
-									...(buttonSkin === 'icon' &&
-										skin === 'icon-reveal' &&
-										inspectorTabs.icon({
-											props,
-											label: __(
-												'Close icon',
-												'maxi-blocks'
-											),
-											type: 'search-icon',
-											...iconControlsDisabledProps,
-											prefix: closeIconPrefix,
-										})),
-									{
-										label: __('Position', 'maxi-blocks'),
-										content: (
-											<AxisPositionControl
-												label='Button'
-												selected={buttonPosition}
-												onChange={val =>
-													maxiSetAttributes({
-														'icon-position': val,
-													})
-												}
-												breakpoint={deviceType}
-												disableY
-											/>
-										),
-										extraIndicators: ['icon-position'],
-									},
-									...inspectorTabs.border({
-										props,
-										prefix: buttonPrefix,
-										inlineTarget:
-											'.maxi-search-block__button',
-									}),
-									...inspectorTabs.background({
-										label: 'Button',
-										props,
-										prefix: buttonPrefix,
-										...backgroundDisabledProps,
-										inlineTarget:
-											'.maxi-search-block__button',
-									}),
-									...inspectorTabs.marginPadding({
-										props,
-										prefix: buttonPrefix,
-									}),
-								]}
-							/>
-						),
-					},
-					{
-						label: __('Input', 'maxi-blocks'),
-						content: (
-							<AccordionControl
-								isPrimary
-								items={[
-									...inspectorTabs.typography({
-										props,
-										disableCustomFormats: true,
-										hideAlignment: true,
-										prefix: inputPrefix,
-										inlineTarget:
-											' .maxi-search-block__input',
-									}),
-									{
-										label: __('Placeholder', 'maxi-blocks'),
-										content: (
-											<PlaceholderColourControl
-												{...getGroupAttributes(
-													attributes,
-													'placeholderColor'
-												)}
-												placeholder={
-													attributes.placeholder
-												}
-												onChange={maxiSetAttributes}
-												deviceType={deviceType}
-												insertInlineStyles={
-													insertInlineStyles
-												}
-												cleanInlineStyles={
-													cleanInlineStyles
-												}
-												clientId={clientId}
-											/>
-										),
-									},
-									...inspectorTabs.border({
-										props,
-										prefix: inputPrefix,
-									}),
-									...inspectorTabs.background({
-										label: 'Input',
-										props,
-										prefix: inputPrefix,
-										...backgroundDisabledProps,
-										selector: '.maxi-search-block__input',
-									}),
-									...inspectorTabs.marginPadding({
-										props,
-										prefix: inputPrefix,
-										customLabel: __(
-											'Padding',
-											'maxi-blocks'
-										),
-										disableMargin: true,
 									}),
 								]}
 							/>

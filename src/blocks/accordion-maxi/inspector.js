@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
+import { dispatch, select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -13,6 +14,8 @@ import {
 	AccordionSettings,
 	ResponsiveTabsControl,
 	AccordionLineControl,
+	AccordionIconSettings,
+	AccordionTitleSettings,
 } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { withMaxiInspector } from '../../extensions/inspector';
@@ -33,7 +36,36 @@ const Inspector = props => {
 		inlineStylesTargets,
 	} = props;
 
-	const { accrordionLayout } = attributes;
+	const { accrordionLayout, blockStyle } = attributes;
+
+	const onChangePanes = obj => {
+		const innerBlocks = select(
+			'core/block-editor'
+		).getClientIdsOfDescendants([clientId]);
+
+		innerBlocks.forEach(blockClientId => {
+			if (
+				select('core/block-editor').getBlockRootClientId(
+					blockClientId
+				) === clientId
+			) {
+				const blockAttributes =
+					select('core/block-editor').getBlockAttributes(
+						blockClientId
+					);
+				maxiSetAttributes(
+					obj,
+					blockAttributes,
+					blockClientId,
+					response =>
+						dispatch('core/block-editor').updateBlockAttributes(
+							blockClientId,
+							response
+						)
+				);
+			}
+		});
+	};
 
 	return (
 		<InspectorControls>
@@ -73,6 +105,38 @@ const Inspector = props => {
 											/>
 										),
 									},
+									deviceType === 'general' && {
+										label: __('Title', 'maxi-blocks'),
+										content: (
+											<AccordionTitleSettings
+												onChange={obj => {
+													onChangePanes(obj);
+													maxiSetAttributes(obj);
+												}}
+												{...getGroupAttributes(
+													attributes,
+													'accordionTitle'
+												)}
+											/>
+										),
+									},
+									{
+										label: __('Icon', 'maxi-blocks'),
+										content: (
+											<AccordionIconSettings
+												{...getGroupAttributes(
+													attributes,
+													'accordionIcon'
+												)}
+												blockStyle={blockStyle}
+												onChange={obj => {
+													onChangePanes(obj);
+													maxiSetAttributes(obj);
+												}}
+												breakpoint={deviceType}
+											/>
+										),
+									},
 									{
 										label: __(
 											'Line settings',
@@ -107,6 +171,7 @@ const Inspector = props => {
 													}}
 													onChange={obj => {
 														maxiSetAttributes(obj);
+														onChangePanes(obj);
 														cleanInlineStyles(
 															inlineStylesTargets.headerLine,
 															'::after'

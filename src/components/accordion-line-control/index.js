@@ -43,7 +43,7 @@ const AccordionLineControl = props => {
 					content: (
 						<>
 							<ToggleSwitch
-								label={__('Enable hover', 'maxi-blocks')}
+								label={__('Enable active', 'maxi-blocks')}
 								selected={props['line-status-active']}
 								onChange={val =>
 									onChange({ 'line-status-active': val })

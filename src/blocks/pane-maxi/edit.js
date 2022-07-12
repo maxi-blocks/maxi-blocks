@@ -53,27 +53,25 @@ class edit extends MaxiBlockComponent {
 		const { attributes, maxiSetAttributes, clientId, hasInnerBlocks } =
 			this.props;
 		const { uniqueID, title, titleLevel } = attributes;
-		const {
-			accordionLayout,
-			openPanes,
-			onOpen,
-			onClose,
-			setAccordionAttributes,
-			accordionAttributes,
-			isCollapsible,
-		} = this.context;
+		const { accordionLayout, openPanes, onOpen, onClose, isCollapsible } =
+			this.context;
 
 		const isOpen = openPanes.includes(clientId);
 
 		const ALLOWED_BLOCKS = ['maxi-blocks/row-maxi'];
 		const ROW_TEMPLATE = [['maxi-blocks/row-maxi']];
 
+		const inlineStylesTargets = {
+			headerLine: ':scope > .maxi-pane-block__header',
+			contentLine: ':scope > .maxi-pane-block__content',
+		};
+
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}
 				{...this.props}
-				setAccordionAttributes={setAccordionAttributes}
-				accordionAttributes={accordionAttributes}
+				accordionLayout={accordionLayout}
+				inlineStylesTargets={inlineStylesTargets}
 			/>,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}

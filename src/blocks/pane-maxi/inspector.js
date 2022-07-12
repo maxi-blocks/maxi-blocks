@@ -12,6 +12,8 @@ import {
 	AccordionControl,
 	AccordionIconSettings,
 	AccordionTitleSettings,
+	AccordionLineControl,
+	ResponsiveTabsControl,
 } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { withMaxiInspector } from '../../extensions/inspector';
@@ -22,7 +24,16 @@ import { getGroupAttributes } from '../../extensions/styles';
  * Inspector
  */
 const Inspector = props => {
-	const { deviceType, attributes, maxiSetAttributes } = props;
+	const {
+		deviceType,
+		attributes,
+		maxiSetAttributes,
+		clientId,
+		insertInlineStyles,
+		cleanInlineStyles,
+		inlineStylesTargets,
+		accrordionLayout,
+	} = props;
 	const { blockStyle } = attributes;
 
 	return (
@@ -72,6 +83,59 @@ const Inspector = props => {
 												}
 												breakpoint={deviceType}
 											/>
+										),
+									},
+									{
+										label: __(
+											'Line settings',
+											'maxi-blocks'
+										),
+										content: (
+											<ResponsiveTabsControl
+												breakpoint={deviceType}
+											>
+												<AccordionLineControl
+													{...getGroupAttributes(
+														attributes,
+														'accordionLine'
+													)}
+													onChangeInline={obj => {
+														insertInlineStyles({
+															obj,
+															target: inlineStylesTargets.headerLine,
+															isMultiplySelector: true,
+															pseudoElement:
+																'::after',
+														});
+														if (
+															accrordionLayout ===
+															'simple'
+														)
+															insertInlineStyles({
+																obj,
+																target: inlineStylesTargets.contentLine,
+																isMultiplySelector: true,
+															});
+													}}
+													onChange={obj => {
+														maxiSetAttributes(obj);
+														cleanInlineStyles(
+															inlineStylesTargets.headerLine,
+															'::after'
+														);
+														if (
+															accrordionLayout ===
+															'simple'
+														)
+															cleanInlineStyles(
+																inlineStylesTargets.contentLine,
+																'::after'
+															);
+													}}
+													breakpoint={deviceType}
+													clientId={clientId}
+												/>
+											</ResponsiveTabsControl>
 										),
 									},
 									...inspectorTabs.border({

@@ -29,12 +29,34 @@ export const selectorsPane = {
 			target: ':hover::after',
 		},
 	},
+	header: {
+		normal: {
+			label: 'pane header',
+			target: ' .maxi-pane-block__header',
+		},
+		hover: {
+			label: 'pane header on hover',
+			target: ' .maxi-pane-block__header:hover',
+		},
+	},
+	content: {
+		normal: {
+			label: 'pane content',
+			target: ' .maxi-pane-block__content',
+		},
+		hover: {
+			label: 'pane content on hover',
+			target: ' .maxi-pane-block__content:hover',
+		},
+	},
 };
 
 export const categoriesPane = [
 	'pane',
 	'before pane',
 	'after pane',
+	'header',
+	'content',
 	'background',
 	'background hover',
 ];

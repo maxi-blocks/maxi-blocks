@@ -326,40 +326,44 @@ const getPaneHeaderObject = props => {
 };
 
 const getPaneContentObject = props => {
+	const { accordionLayout } = props;
+
 	const response = {
 		' .maxi-pane-block .maxi-pane-block__content':
 			getPaneContentStyles(props),
-		' .maxi-pane-block .maxi-pane-block__content::after': {
-			paneLine: {
-				...getDividerStyles(props, 'line', props.blockStyle, false),
+		...(accordionLayout === 'simple' && {
+			' .maxi-pane-block .maxi-pane-block__content::after': {
+				paneLine: {
+					...getDividerStyles(props, 'line', props.blockStyle, false),
+				},
 			},
-		},
-		...(props['line-status-active'] && {
-			' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__content::after':
-				{
-					paneLine: {
-						...getDividerStyles(
-							props,
-							'line',
-							props.blockStyle,
-							false,
-							'active-'
-						),
+			...(props['line-status-active'] && {
+				' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__content::after':
+					{
+						paneLine: {
+							...getDividerStyles(
+								props,
+								'line',
+								props.blockStyle,
+								false,
+								'active-'
+							),
+						},
 					},
-				},
-		}),
-		...(props['line-status-hover'] && {
-			' .maxi-pane-block[aria-expanded]:hover .maxi-pane-block__content::after':
-				{
-					paneLine: {
-						...getDividerStyles(
-							props,
-							'line',
-							props.blockStyle,
-							true
-						),
+			}),
+			...(props['line-status-hover'] && {
+				' .maxi-pane-block[aria-expanded]:hover .maxi-pane-block__content::after':
+					{
+						paneLine: {
+							...getDividerStyles(
+								props,
+								'line',
+								props.blockStyle,
+								true
+							),
+						},
 					},
-				},
+			}),
 		}),
 	};
 

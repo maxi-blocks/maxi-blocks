@@ -13,13 +13,12 @@ import { getMaxiBlockAttributes, MaxiBlock } from '../../components/maxi-block';
  */
 const save = props => {
 	const { attributes } = props;
-	const { title, titleLevel, accordionLayout } = attributes;
+	const { title, titleLevel } = attributes;
 	const name = 'maxi-blocks/pane-maxi';
 
 	return (
 		<MaxiBlock.save
 			{...getMaxiBlockAttributes({ ...props, name })}
-			className={`maxi-accordion-block--${accordionLayout}-layout`}
 			useInnerBlocks
 			aria-expanded={false}
 		>

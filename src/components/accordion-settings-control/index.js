@@ -75,6 +75,17 @@ const AccordionSettings = props => {
 										'core/block-editor'
 									).updateBlockAttributes(block, {
 										accordionLayout: val,
+										'border-bottom-left-radius-general': 10,
+										'border-bottom-right-radius-general': 10,
+										'border-bottom-width-general': 5,
+										'border-left-width-general': 5,
+										'border-right-width-general': 5,
+										'border-top-left-radius-general': 10,
+										'border-top-right-radius-general': 10,
+										'border-top-width-general': 5,
+										'border-unit-radius-general': 'px',
+										'border-unit-width-general': 'px',
+										'border-style-general': 'solid',
 									});
 								}
 							});

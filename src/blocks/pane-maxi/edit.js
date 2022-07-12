@@ -42,16 +42,6 @@ class edit extends MaxiBlockComponent {
 
 			maxiSetAttributes({ titleLevel: this.context.titleLevel });
 		}
-		if (
-			this.context.accordionLayout !==
-			this.props.attributes.accordionLayout
-		) {
-			const { maxiSetAttributes } = this.props;
-
-			maxiSetAttributes({
-				accordionLayout: this.context.accordionLayout,
-			});
-		}
 	}
 
 	render() {
@@ -61,7 +51,6 @@ class edit extends MaxiBlockComponent {
 		const {
 			paneIcon,
 			paneIconActive,
-			accordionLayout,
 			titleLevel,
 			openPanes,
 			onOpen,
@@ -85,7 +74,6 @@ class edit extends MaxiBlockComponent {
 			<MaxiBlock
 				key={`maxi-pane--${uniqueID}`}
 				ref={this.blockRef}
-				className={`maxi-pane-block--${accordionLayout}-layout`}
 				useInnerBlocks
 				innerBlocksSettings={{
 					allowedBlocks: ALLOWED_BLOCKS,

@@ -24,7 +24,7 @@ describe('DisplayControl', () => {
 		);
 
 		await accordionPanel.$eval(
-			'.maxi-display-control .maxi-tabs-control__button-Hide',
+			'.maxi-display-control .maxi-tabs-control__button-hide',
 			button => button.click()
 		);
 
@@ -35,7 +35,7 @@ describe('DisplayControl', () => {
 		await openSidebarTab(page, 'advanced', 'show hide block');
 
 		const isItemChecked = await page.$eval(
-			'.maxi-display-control .maxi-tabs-control__button-Hide',
+			'.maxi-display-control .maxi-tabs-control__button-hide',
 			select => select.ariaPressed
 		);
 
@@ -44,11 +44,11 @@ describe('DisplayControl', () => {
 		// responsive S
 		await changeResponsive(page, 's');
 		await page.$eval(
-			'.maxi-display-control .maxi-tabs-control__button-Show',
+			'.maxi-display-control .maxi-tabs-control__button-show',
 			button => button.click()
 		);
 		const responsiveSOption = await page.$eval(
-			'.maxi-display-control .maxi-tabs-control__button-Show',
+			'.maxi-display-control .maxi-tabs-control__button-show',
 			select => select.ariaPressed
 		);
 
@@ -60,7 +60,7 @@ describe('DisplayControl', () => {
 		await changeResponsive(page, 'xs');
 
 		const responsiveXsOption = await page.$eval(
-			'.maxi-display-control .maxi-tabs-control__button-Show',
+			'.maxi-display-control .maxi-tabs-control__button-show',
 			select => select.ariaPressed
 		);
 
@@ -70,7 +70,7 @@ describe('DisplayControl', () => {
 		await changeResponsive(page, 'm');
 
 		const responsiveMOption = await page.$eval(
-			'.maxi-display-control .maxi-tabs-control__button-Hide',
+			'.maxi-display-control .maxi-tabs-control__button-hide',
 			select => select.ariaPressed
 		);
 

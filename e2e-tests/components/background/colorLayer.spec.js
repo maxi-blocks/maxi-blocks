@@ -109,7 +109,7 @@ describe('Background Color Layer', () => {
 
 		// hover
 		await accordion.$eval(
-			'.maxi-tabs-control .maxi-tabs-control__button-Hover',
+			'.maxi-tabs-control .maxi-tabs-control__button-hover',
 			button => button.click()
 		);
 

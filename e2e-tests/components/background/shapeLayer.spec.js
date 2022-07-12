@@ -51,7 +51,7 @@ describe('BackgroundControl', () => {
 
 		// size
 		await page.$eval(
-			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control__button-Size',
+			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control__button-size',
 			sizeButton => sizeButton.click()
 		);
 
@@ -80,7 +80,7 @@ describe('BackgroundControl', () => {
 		expect(baseBackgroundOpacity).toStrictEqual('77');
 
 		await page.$eval(
-			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control__button-Size',
+			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control__button-size',
 			sizeButton => sizeButton.click()
 		);
 
@@ -134,7 +134,7 @@ describe('BackgroundControl', () => {
 		expect(xsBackgroundOpacity).toStrictEqual('54');
 
 		await page.$eval(
-			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control__button-Size',
+			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control__button-size',
 			sizeButton => sizeButton.click()
 		);
 
@@ -156,7 +156,7 @@ describe('BackgroundControl', () => {
 		expect(mBackgroundOpacity).toStrictEqual('77');
 
 		await page.$eval(
-			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control__button-Size',
+			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control__button-size',
 			sizeButton => sizeButton.click()
 		);
 
@@ -179,7 +179,7 @@ describe('BackgroundControl', () => {
 
 		// hover
 		await accordion.$eval(
-			'.maxi-tabs-control .maxi-tabs-control__button-Hover',
+			'.maxi-tabs-control .maxi-tabs-control__button-hover',
 			button => button.click()
 		);
 

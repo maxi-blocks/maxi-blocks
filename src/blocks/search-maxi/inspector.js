@@ -336,7 +336,7 @@ const Inspector = props => {
 																items={[
 																	{
 																		label: __(
-																			'Button',
+																			'Shortcut',
 																			'maxi-blocks'
 																		),
 																		content:

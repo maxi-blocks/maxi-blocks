@@ -181,7 +181,6 @@ const IconSettings = props => {
 						prefix={`${prefix}icon-`}
 					/>
 					<AdvancedNumberControl
-						className='maxi-video-icon-control__icon-height'
 						label='Icon height'
 						className='maxi-video-icon-control__icon-height'
 						optionType='string'

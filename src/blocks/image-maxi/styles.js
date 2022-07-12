@@ -36,7 +36,7 @@ import transitionObj from './transitionObj';
 /**
  * External dependencies
  */
-import { isEmpty, isNil, merge } from 'lodash';
+import { isNil, merge } from 'lodash';
 
 const getWrapperObject = props => {
 	const response = {
@@ -54,7 +54,6 @@ const getWrapperObject = props => {
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			dropShadow: !isEmpty(props.clipPath) || !isNil(props.SVGElement),
 			blockStyle: props.blockStyle,
 		}),
 		margin: getMarginPaddingStyles({
@@ -116,8 +115,6 @@ const getHoverWrapperObject = props => {
 				obj: {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
-				dropShadow:
-					!isEmpty(props.clipPath) || !isNil(props.SVGElement),
 				blockStyle: props.blockStyle,
 				isHover: true,
 			}),
@@ -255,14 +252,17 @@ const getImageObject = props => {
 			blockStyle: props.blockStyle,
 			prefix: 'image-',
 		}),
-		boxShadow: getBoxShadowStyles({
-			obj: {
-				...getGroupAttributes(props, 'boxShadow', false, 'image-'),
-			},
-			dropShadow: !isEmpty(props.clipPath) || !isNil(props.SVGElement),
-			blockStyle: props.blockStyle,
-			prefix: 'image-',
-		}),
+		...{
+			boxShadow: getBoxShadowStyles({
+				obj: {
+					...getGroupAttributes(props, 'boxShadow', false, 'image-'),
+					...getGroupAttributes(props, 'clipPath'),
+					SVGElement: props.SVGElement,
+				},
+				blockStyle: props.blockStyle,
+				prefix: 'image-',
+			}),
+		},
 		...(imageRatio && getAspectRatio(imageRatio)),
 		size: getSizeStyles(
 			{
@@ -304,15 +304,57 @@ const getHoverImageObject = props => {
 			boxShadow: getBoxShadowStyles({
 				obj: {
 					...getGroupAttributes(props, 'boxShadow', true, 'image-'),
+					...getGroupAttributes(props, 'clipPath'),
+					SVGElement: props.SVGElement,
 				},
 				isHover: true,
-				dropShadow:
-					!isEmpty(props.clipPath) || !isNil(props.SVGElement),
 				blockStyle: props.blockStyle,
 				prefix: 'image-',
 			}),
 		}),
 	};
+};
+
+const getClipPathDropShadowObject = props => {
+	// for clip path drop shadow should be applied to wrapper div
+	const response = {
+		' .maxi-image-block-wrapper': {
+			boxShadow: getBoxShadowStyles({
+				obj: {
+					...getGroupAttributes(props, 'boxShadow', false, 'image-'),
+					...getGroupAttributes(props, 'clipPath'),
+					SVGElement: props.SVGElement,
+				},
+				dropShadow: true,
+				blockStyle: props.blockStyle,
+				prefix: 'image-',
+				forClipPath: true,
+			}),
+		},
+		...(props['image-box-shadow-status-hover'] && {
+			':hover .maxi-image-block-wrapper': {
+				boxShadow: getBoxShadowStyles({
+					obj: {
+						...getGroupAttributes(
+							props,
+							'boxShadow',
+							true,
+							'image-'
+						),
+						...getGroupAttributes(props, 'clipPath'),
+						SVGElement: props.SVGElement,
+					},
+					isHover: true,
+					dropShadow: true,
+					blockStyle: props.blockStyle,
+					prefix: 'image-',
+					forClipPath: true,
+				}),
+			},
+		}),
+	};
+
+	return response;
 };
 
 const getFigcaptionObject = props => {
@@ -402,6 +444,7 @@ const getStyles = props => {
 						getImageObject(props),
 					[`:hover .maxi-image-block-wrapper ${imgTag}`]:
 						getHoverImageObject(props),
+					...getClipPathDropShadowObject(props),
 					' .maxi-image-block-wrapper > svg:first-child':
 						getImageShapeObject('svg', props),
 					' .maxi-image-block-wrapper > svg:first-child pattern image':

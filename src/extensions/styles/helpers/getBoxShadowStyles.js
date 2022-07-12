@@ -9,7 +9,7 @@ import getDefaultAttribute from '../getDefaultAttribute';
 /**
  * External dependencies
  */
-import { isBoolean, isNil, isNumber, round } from 'lodash';
+import { isBoolean, isNil, isNumber, round, isEmpty } from 'lodash';
 
 /**
  * General
@@ -30,6 +30,7 @@ const getBoxShadowStyles = ({
 	dropShadow = false,
 	prefix = '',
 	blockStyle,
+	forClipPath = false,
 }) => {
 	const response = {};
 
@@ -62,6 +63,38 @@ const getBoxShadowStyles = ({
 				defaultValue,
 			};
 		};
+
+		const getClipPathValue = target => {
+			const value = getAttributeValue({
+				target,
+				props: obj,
+				isHover: false,
+				breakpoint,
+			});
+
+			const defaultValue =
+				breakpoint === 'general'
+					? getDefaultAttribute(`${target}-${breakpoint}`)
+					: getLastBreakpointAttribute({
+							target,
+							breakpoint: getPrevBreakpoint(breakpoint),
+							attributes: obj,
+							isHover: false,
+					  });
+
+			return {
+				value,
+				defaultValue,
+			};
+		};
+
+		// clip-path
+		const { value: clipPath, defaultValue: defaultClipPath } =
+			getClipPathValue('clip-path');
+
+		// clip-path-status
+		const { value: clipPathStatus, defaultValue: defaultClipPathStatus } =
+			getClipPathValue('clip-path-status');
 
 		// Inset
 		const { value: inset, defaultValue: defaultInset } = getValue('inset');
@@ -124,6 +157,8 @@ const getBoxShadowStyles = ({
 				: paletteColor;
 
 		const isNotDefault =
+			clipPath !== defaultClipPath ||
+			clipPathStatus !== defaultClipPathStatus ||
 			(isBoolean(inset) && inset !== defaultInset) ||
 			(isNumber(horizontal) &&
 				horizontal !== 0 &&
@@ -145,6 +180,18 @@ const getBoxShadowStyles = ({
 			: defaultHorizontal;
 		const verticalValue = isNumber(vertical) ? vertical : defaultVertical;
 
+		const clipPathExists =
+			getLastBreakpointAttribute({
+				target: 'clip-path',
+				breakpoint,
+				attributes: obj,
+			}) &&
+			getLastBreakpointAttribute({
+				target: 'clip-path-status',
+				breakpoint,
+				attributes: obj,
+			});
+
 		if (isNotDefault && dropShadow) {
 			const blurValue = isNumber(blur)
 				? round(blur / 3)
@@ -157,9 +204,10 @@ const getBoxShadowStyles = ({
 			boxShadowString += `${blurValue || 0}${blurUnit || 'px'} `;
 			boxShadowString += color || defaultColor;
 
-			response[breakpoint] = {
-				filter: `drop-shadow(${boxShadowString.trim()})`,
-			};
+			if (!(forClipPath && !clipPathExists && isEmpty(obj.SVGElement)))
+				response[breakpoint] = {
+					filter: `drop-shadow(${boxShadowString.trim()})`,
+				};
 		} else if (isNotDefault) {
 			const blurValue = isNumber(blur) ? blur : defaultBlur;
 			const spreadValue = isNumber(spread) ? spread : defaultSpread;
@@ -175,11 +223,22 @@ const getBoxShadowStyles = ({
 			boxShadowString += `${spreadValue || 0}${spreadUnit || 'px'} `;
 			boxShadowString += color || defaultColor;
 
-			response[breakpoint] = {
-				'box-shadow': `${boxShadowString.trim()}`,
-			};
+			if (
+				!(
+					prefix === 'image-' &&
+					(clipPathExists || !isEmpty(obj.SVGElement))
+				)
+			)
+				response[breakpoint] = {
+					'box-shadow': `${boxShadowString.trim()}`,
+				};
+			else
+				response[breakpoint] = {
+					'box-shadow': 'none',
+				};
 		}
 	});
+	if (isHover && 'image-' && !forClipPath) console.log(response);
 
 	return response;
 };

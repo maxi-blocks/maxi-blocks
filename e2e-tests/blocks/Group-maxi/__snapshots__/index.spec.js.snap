@@ -3,7 +3,7 @@
 exports[`Group Maxi Group Maxi Custom CSS 1`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-2.maxi-group-block,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-2.maxi-group-block{ background: red;}body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-2.maxi-group-block::before,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-2.maxi-group-block::before{ background: red;}body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-2.maxi-group-block::after,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-2.maxi-group-block::after{ background: red;}</style>"`;
 
 exports[`Group Maxi Group Maxi does not break 1`] = `
-"<!-- wp:maxi-blocks/group-maxi {\\"blockStyle\\":\\"light\\",\\"isFirstOnHierarchy\\":true,\\"uniqueID\\":\\"group-maxi-2\\"} -->
+"<!-- wp:maxi-blocks/group-maxi {\\"blockStyle\\":\\"light\\",\\"isFirstOnHierarchy\\":true,\\"uniqueID\\":\\"group-maxi-2\\",\\"customLabel\\":\\"Group_2\\"} -->
 <div class=\\"wp-block-maxi-blocks-group-maxi maxi-block maxi-group-block maxi-light group-maxi-2\\" id=\\"group-maxi-2\\"></div>
 <!-- /wp:maxi-blocks/group-maxi -->"
 `;

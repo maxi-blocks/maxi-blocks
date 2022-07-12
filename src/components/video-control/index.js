@@ -31,6 +31,7 @@ const VideoControl = props => {
 	return (
 		<>
 			<SelectControl
+				className='maxi-video-control__type'
 				label={__('Type', 'maxi-blocks')}
 				value={playerType}
 				options={[

@@ -45,9 +45,6 @@ const attributes = {
 	},
 
 	...attributesData.accordion,
-	...attributesData.accordionIcon,
-	...attributesData.accordionTitle,
-	...attributesData.accordionLine,
 
 	'background-status-hover': { type: 'boolean', default: false },
 	'active-background-status-hover': { type: 'boolean', default: false },

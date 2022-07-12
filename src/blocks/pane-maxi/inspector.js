@@ -22,12 +22,7 @@ import { getGroupAttributes } from '../../extensions/styles';
  * Inspector
  */
 const Inspector = props => {
-	const {
-		deviceType,
-		attributes,
-		setAccordionAttributes,
-		accordionAttributes,
-	} = props;
+	const { deviceType, attributes, maxiSetAttributes } = props;
 	const { blockStyle } = attributes;
 
 	return (
@@ -54,10 +49,10 @@ const Inspector = props => {
 										content: (
 											<AccordionTitleSettings
 												onChange={obj =>
-													setAccordionAttributes(obj)
+													maxiSetAttributes(obj)
 												}
 												{...getGroupAttributes(
-													accordionAttributes,
+													attributes,
 													'accordionTitle'
 												)}
 											/>
@@ -68,12 +63,12 @@ const Inspector = props => {
 										content: (
 											<AccordionIconSettings
 												{...getGroupAttributes(
-													accordionAttributes,
+													attributes,
 													'accordionIcon'
 												)}
 												blockStyle={blockStyle}
 												onChange={obj =>
-													setAccordionAttributes(obj)
+													maxiSetAttributes(obj)
 												}
 												breakpoint={deviceType}
 											/>

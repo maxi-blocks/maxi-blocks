@@ -37,11 +37,6 @@ class edit extends MaxiBlockComponent {
 	}
 
 	maxiBlockDidUpdate() {
-		if (this.context.titleLevel !== this.props.attributes.titleLevel) {
-			const { maxiSetAttributes } = this.props;
-
-			maxiSetAttributes({ titleLevel: this.context.titleLevel });
-		}
 		if (
 			this.context.accordionLayout !==
 			this.props.attributes.accordionLayout
@@ -57,12 +52,9 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const { attributes, maxiSetAttributes, clientId, hasInnerBlocks } =
 			this.props;
-		const { uniqueID, title } = attributes;
+		const { uniqueID, title, titleLevel } = attributes;
 		const {
-			paneIcon,
-			paneIconActive,
 			accordionLayout,
-			titleLevel,
 			openPanes,
 			onOpen,
 			onClose,
@@ -145,7 +137,11 @@ class edit extends MaxiBlockComponent {
 					/>
 
 					<div className='maxi-pane-block__icon'>
-						<RawHTML>{isOpen ? paneIconActive : paneIcon}</RawHTML>
+						<RawHTML>
+							{isOpen
+								? attributes['active-icon-content']
+								: attributes['icon-content']}
+						</RawHTML>
 					</div>
 				</div>
 			</MaxiBlock>,

@@ -238,7 +238,6 @@ const getBoxShadowStyles = ({
 				};
 		}
 	});
-	if (isHover && 'image-' && !forClipPath) console.log(response);
 
 	return response;
 };

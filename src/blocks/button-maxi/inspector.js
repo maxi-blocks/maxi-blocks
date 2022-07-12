@@ -36,19 +36,7 @@ import { isEmpty, isNil, cloneDeep, without } from 'lodash';
 /**
  * Icons
  */
-import {
-	presetOne,
-	presetTwo,
-	presetThree,
-	presetFour,
-	presetFive,
-	presetSix,
-	presetSeven,
-	presetEight,
-	presetNine,
-	presetTen,
-	presetEleven,
-} from '../../icons';
+import * as iconPresets from '../../icons/button-presets/index';
 
 /**
  * Inspector
@@ -180,6 +168,28 @@ const Inspector = props => {
 		]
 	);
 
+	const buttonPresets = [];
+	[
+		'presetOne',
+		'presetTwo',
+		'presetThree',
+		'presetFour',
+		'presetFive',
+		'presetSix',
+		'presetSeven',
+		'presetEight',
+		'presetNine',
+		'presetTen',
+		'presetEleven',
+	].forEach((preset, i) => {
+		buttonPresets.push({
+			label: __(`Button shortcut ${i + 1}`, 'maxi-blocks'),
+			content: <Icon icon={iconPresets[preset]} />,
+			onChange: () =>
+				i < 3 ? onChangePreset(i + 1) : onChangePreset(i + 1, 'icon'),
+		});
+	});
+
 	return (
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}
@@ -208,189 +218,7 @@ const Inspector = props => {
 										content: (
 											<DefaultStylesControl
 												className='maxi-button-default-styles'
-												items={[
-													{
-														label: __(
-															'Button shortcut 1',
-															'maxi-blocks'
-														),
-														content: (
-															<Icon
-																icon={presetOne}
-															/>
-														),
-														onChange: () =>
-															onChangePreset(1),
-													},
-													{
-														label: __(
-															'Button shortcut 2',
-															'maxi-blocks'
-														),
-														content: (
-															<Icon
-																icon={presetTwo}
-															/>
-														),
-														onChange: () =>
-															onChangePreset(2),
-													},
-													{
-														label: __(
-															'Button shortcut 3',
-															'maxi-blocks'
-														),
-														content: (
-															<Icon
-																icon={
-																	presetThree
-																}
-															/>
-														),
-														onChange: () =>
-															onChangePreset(3),
-													},
-													{
-														label: __(
-															'Button shortcut 4',
-															'maxi-blocks'
-														),
-														content: (
-															<Icon
-																icon={
-																	presetFour
-																}
-															/>
-														),
-														onChange: () =>
-															onChangePreset(
-																4,
-																'icon'
-															),
-													},
-													{
-														label: __(
-															'Button shortcut 5',
-															'maxi-blocks'
-														),
-														content: (
-															<Icon
-																icon={
-																	presetFive
-																}
-															/>
-														),
-														onChange: () =>
-															onChangePreset(
-																5,
-																'icon'
-															),
-													},
-													{
-														label: __(
-															'Button shortcut 6',
-															'maxi-blocks'
-														),
-														content: (
-															<Icon
-																icon={presetSix}
-															/>
-														),
-														onChange: () =>
-															onChangePreset(
-																6,
-																'icon'
-															),
-													},
-													{
-														label: __(
-															'Button shortcut 7',
-															'maxi-blocks'
-														),
-														content: (
-															<Icon
-																icon={
-																	presetSeven
-																}
-															/>
-														),
-														onChange: () =>
-															onChangePreset(
-																7,
-																'icon'
-															),
-													},
-													{
-														label: __(
-															'Button shortcut 8',
-															'maxi-blocks'
-														),
-														content: (
-															<Icon
-																icon={
-																	presetEight
-																}
-															/>
-														),
-														onChange: () =>
-															onChangePreset(
-																8,
-																'icon'
-															),
-													},
-													{
-														label: __(
-															'Button shortcut 9',
-															'maxi-blocks'
-														),
-														content: (
-															<Icon
-																icon={
-																	presetNine
-																}
-															/>
-														),
-														onChange: () =>
-															onChangePreset(
-																9,
-																'icon'
-															),
-													},
-													{
-														label: __(
-															'Button shortcut 10',
-															'maxi-blocks'
-														),
-														content: (
-															<Icon
-																icon={presetTen}
-															/>
-														),
-														onChange: () =>
-															onChangePreset(
-																10,
-																'icon'
-															),
-													},
-													{
-														label: __(
-															'Button shortcut 11',
-															'maxi-blocks'
-														),
-														content: (
-															<Icon
-																icon={
-																	presetEleven
-																}
-															/>
-														),
-														onChange: () =>
-															onChangePreset(
-																11,
-																'icon'
-															),
-													},
-												]}
+												items={buttonPresets}
 											/>
 										),
 									},

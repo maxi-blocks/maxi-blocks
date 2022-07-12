@@ -89,7 +89,7 @@ describe('ShapeDividerControl', () => {
 		await editAdvancedNumberControl({
 			page,
 			instance: await page.$(
-				'.maxi-shape-divider-control .maxi-divider-height'
+				'.maxi-shape-divider-control .maxi-shape-divider-control__height'
 			),
 			newNumber: '200',
 		});

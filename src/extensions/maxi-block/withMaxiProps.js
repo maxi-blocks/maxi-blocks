@@ -58,13 +58,19 @@ const withMaxiProps = createHigherOrderComponent(
 				};
 			});
 
-			const maxiSetAttributes = useCallback(obj =>
-				handleSetAttributes({
+			const maxiSetAttributes = useCallback(
+				(
 					obj,
-					attributes,
-					clientId,
-					onChange: setAttributes,
-				})
+					additionalAttributes,
+					additionalClientId,
+					additionalOnChange
+				) =>
+					handleSetAttributes({
+						obj,
+						attributes: additionalAttributes ?? attributes,
+						clientId: additionalClientId ?? clientId,
+						onChange: additionalOnChange ?? setAttributes,
+					})
 			);
 
 			const ref = useRef(null);

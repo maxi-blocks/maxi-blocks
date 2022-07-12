@@ -95,7 +95,7 @@ describe('FlexSettings', () => {
 
 		// check warning box
 		await accordionPanel.$eval(
-			'.maxi-settingstab-control_has-border-left-right .maxi-tabs-control__button-Flex-child',
+			'.maxi-settingstab-control_has-border-left-right .maxi-tabs-control__button-flex-child',
 			button => button.click()
 		);
 
@@ -119,7 +119,7 @@ describe('FlexSettings', () => {
 		);
 
 		await accordionPanel.$eval(
-			'.maxi-settingstab-control_has-border-left-right .maxi-tabs-control__button-Flex-child',
+			'.maxi-settingstab-control_has-border-left-right .maxi-tabs-control__button-flex-child',
 			button => button.click()
 		);
 		await editAdvancedNumberControl({

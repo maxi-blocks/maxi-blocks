@@ -12,7 +12,13 @@ import getPaletteAttributes from '../getPaletteAttributes';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-const getDividerStyles = (obj, target, blockStyle) => {
+const getDividerStyles = (
+	obj,
+	target,
+	blockStyle,
+	isHover = false,
+	prefix = ''
+) => {
 	const response = {
 		label: 'Divider',
 		general: {},
@@ -22,14 +28,15 @@ const getDividerStyles = (obj, target, blockStyle) => {
 		const { paletteStatus, paletteColor, paletteOpacity, color } =
 			getPaletteAttributes({
 				obj,
-				prefix: 'divider-border-',
+				prefix: `${prefix}divider-border-`,
 				breakpoint,
+				isHover,
 			});
 
 		if (paletteStatus && isNumber(paletteColor))
 			return {
 				'border-color': getColorRGBAString({
-					firstVar: 'divider-color',
+					firstVar: `${prefix}divider-color`,
 					secondVar: `color-${paletteColor}`,
 					opacity: paletteOpacity,
 					blockStyle,
@@ -46,59 +53,68 @@ const getDividerStyles = (obj, target, blockStyle) => {
 		if (target === 'line') {
 			const isHorizontal =
 				getLastBreakpointAttribute({
-					target: 'line-orientation',
+					target: `${prefix}line-orientation`,
 					breakpoint,
 					attributes: obj,
+					isHover,
 				}) === 'horizontal';
 
 			const dividerBorderStyle = getLastBreakpointAttribute({
-				target: 'divider-border-style',
+				target: `${prefix}divider-border-style`,
 				breakpoint,
 				attributes: obj,
+				isHover,
 			});
 
 			const dividerLineWeight = isHorizontal
 				? getLastBreakpointAttribute({
-						target: 'divider-border-top-width',
+						target: `${prefix}divider-border-top-width`,
 						breakpoint,
 						attributes: obj,
+						isHover,
 				  })
 				: getLastBreakpointAttribute({
-						target: 'divider-border-right-width',
+						target: `${prefix}divider-border-right-width`,
 						breakpoint,
 						attributes: obj,
+						isHover,
 				  });
 			const dividerLineWeightUnit =
 				getLastBreakpointAttribute({
 					target: isHorizontal
-						? 'divider-border-top-unit'
-						: 'divider-border-right-unit',
+						? `${prefix}divider-border-top-unit`
+						: `${prefix}divider-border-right-unit`,
 					breakpoint,
 					attributes: obj,
+					isHover,
 				}) ?? 'px';
 
 			const dividerSize = isHorizontal
 				? getLastBreakpointAttribute({
-						target: 'divider-width',
+						target: `${prefix}divider-width`,
 						breakpoint,
 						attributes: obj,
+						isHover,
 				  })
 				: getLastBreakpointAttribute({
-						target: 'divider-height',
+						target: `${prefix}divider-height`,
 						breakpoint,
 						attributes: obj,
+						isHover,
 				  });
 			const dividerSizeUnit =
 				getLastBreakpointAttribute({
-					target: 'divider-width-unit',
+					target: `${prefix}divider-width-unit`,
 					breakpoint,
 					attributes: obj,
+					isHover,
 				}) ?? 'px';
 
 			const dividerBorderRaidus = getLastBreakpointAttribute({
-				target: 'divider-border-radius',
+				target: `${prefix}divider-border-radius`,
 				breakpoint,
 				attributes: obj,
+				isHover,
 			});
 
 			response[breakpoint] = {
@@ -109,9 +125,10 @@ const getDividerStyles = (obj, target, blockStyle) => {
 								'border-radius': '20px',
 						  }
 						: getLastBreakpointAttribute({
-								target: 'divider-border-radius',
+								target: `${prefix}divider-border-radius`,
 								breakpoint: getPrevBreakpoint(breakpoint),
 								attributes: obj,
+								isHover,
 						  }) && {
 								'border-radius': '0px',
 						  })),
@@ -144,16 +161,18 @@ const getDividerStyles = (obj, target, blockStyle) => {
 				'align-items': obj[`line-vertical-${breakpoint}`]
 					? obj[`line-vertical-${breakpoint}`]
 					: getLastBreakpointAttribute({
-							target: 'line-vertical',
+							target: `${prefix}line-vertical`,
 							breakpoint,
 							attributes: obj,
+							isHover,
 					  }),
 				'justify-content': obj[`line-horizontal-${breakpoint}`]
 					? obj[`line-horizontal-${breakpoint}`]
 					: getLastBreakpointAttribute({
-							target: 'line-horizontal',
+							target: `${prefix}line-horizontal`,
 							breakpoint,
 							attributes: obj,
+							isHover,
 					  }),
 			};
 		}

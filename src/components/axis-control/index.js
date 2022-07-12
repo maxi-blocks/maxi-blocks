@@ -374,7 +374,7 @@ const AxisControlContent = props => {
 								onChange={onChangeUnit}
 							/>
 							<ResetButton
-								className='components-maxi-control__reset-button
+								className='components-maxi-control__reset-button'
 								reset={() =>
 									onReset({
 										reset: 'unit',

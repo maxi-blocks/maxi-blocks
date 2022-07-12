@@ -9,7 +9,6 @@ import { __, sprintf } from '@wordpress/i18n';
  */
 import AdvancedNumberControl from '../advanced-number-control';
 import BaseControl from '../base-control';
-import Button from '../button';
 import SettingTabsControl from '../setting-tabs-control';
 import SelectControl from '../select-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
@@ -377,7 +376,7 @@ const AxisControlContent = props => {
 								value={currentUnit}
 								onChange={onChangeUnit}
 							/>
-							<Button
+							<ResetButton
 								className='components-maxi-control__reset-button'
 								reset={() =>
 									onReset({ customBreakpoint: breakpoint })

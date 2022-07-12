@@ -1,7 +1,11 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import {
+	createNewPost,
+	insertBlock,
+	getEditedPostContent,
+} from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -45,5 +49,6 @@ describe('Video options control', () => {
 		expect(await getAttributes('showPlayerControls')).toStrictEqual(false);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
+		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
 });

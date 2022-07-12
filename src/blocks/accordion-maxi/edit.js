@@ -62,7 +62,8 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes, maxiSetAttributes } = this.props;
-		const { uniqueID, accordionLayout, isCollapsible } = attributes;
+		const { uniqueID, accordionLayout, titleLevel, isCollapsible } =
+			attributes;
 
 		const inlineStylesTargets = {
 			headerLine: ':scope > .maxi-pane-block > .maxi-pane-block__header',
@@ -86,7 +87,10 @@ class edit extends MaxiBlockComponent {
 			<AccordionContext.Provider
 				key={`accordion-content-${uniqueID}`}
 				value={{
+					paneIcon: attributes['icon-content'],
+					paneIconActive: attributes['active-icon-content'],
 					accordionLayout,
+					titleLevel,
 					isCollapsible,
 					openPanes: this.state.openPanes,
 					onOpen: paneId => this.openPane(paneId),

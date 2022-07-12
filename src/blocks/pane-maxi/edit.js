@@ -37,6 +37,11 @@ class edit extends MaxiBlockComponent {
 	}
 
 	maxiBlockDidUpdate() {
+		if (this.context.titleLevel !== this.props.attributes.titleLevel) {
+			const { maxiSetAttributes } = this.props;
+
+			maxiSetAttributes({ titleLevel: this.context.titleLevel });
+		}
 		if (
 			this.context.accordionLayout !==
 			this.props.attributes.accordionLayout
@@ -52,27 +57,25 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const { attributes, maxiSetAttributes, clientId, hasInnerBlocks } =
 			this.props;
-		const { uniqueID, title, titleLevel } = attributes;
-		const { accordionLayout, openPanes, onOpen, onClose, isCollapsible } =
-			this.context;
+		const { uniqueID, title } = attributes;
+		const {
+			paneIcon,
+			paneIconActive,
+			accordionLayout,
+			titleLevel,
+			openPanes,
+			onOpen,
+			onClose,
+			isCollapsible,
+		} = this.context;
 
 		const isOpen = openPanes.includes(clientId);
 
 		const ALLOWED_BLOCKS = ['maxi-blocks/row-maxi'];
 		const ROW_TEMPLATE = [['maxi-blocks/row-maxi']];
 
-		const inlineStylesTargets = {
-			headerLine: ':scope > .maxi-pane-block__header',
-			contentLine: ':scope > .maxi-pane-block__content',
-		};
-
 		return [
-			<Inspector
-				key={`block-settings-${uniqueID}`}
-				{...this.props}
-				accordionLayout={accordionLayout}
-				inlineStylesTargets={inlineStylesTargets}
-			/>,
+			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}
@@ -135,11 +138,7 @@ class edit extends MaxiBlockComponent {
 					/>
 
 					<div className='maxi-pane-block__icon'>
-						<RawHTML>
-							{isOpen
-								? attributes['active-icon-content']
-								: attributes['icon-content']}
-						</RawHTML>
+						<RawHTML>{isOpen ? paneIconActive : paneIcon}</RawHTML>
 					</div>
 				</div>
 			</MaxiBlock>,

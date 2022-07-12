@@ -24,12 +24,9 @@ const attributes = {
 		default: __('Pane', 'maxi-blocks'),
 	},
 
-	...attributesData.accordionIcon,
-	...attributesData.accordionTitle,
-	...attributesData.accordionLine,
-
 	title: { type: 'string' },
 	accordionLayout: { type: 'string' },
+	titleLevel: { type: 'string', default: 'h6' },
 
 	...attributesData.border,
 	...attributesData.borderHover,

@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
-import { dispatch, select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -37,35 +36,6 @@ const Inspector = props => {
 	} = props;
 
 	const { accrordionLayout, blockStyle } = attributes;
-
-	const onChangePanes = obj => {
-		const innerBlocks = select(
-			'core/block-editor'
-		).getClientIdsOfDescendants([clientId]);
-
-		innerBlocks.forEach(blockClientId => {
-			if (
-				select('core/block-editor').getBlockRootClientId(
-					blockClientId
-				) === clientId
-			) {
-				const blockAttributes =
-					select('core/block-editor').getBlockAttributes(
-						blockClientId
-					);
-				maxiSetAttributes(
-					obj,
-					blockAttributes,
-					blockClientId,
-					response =>
-						dispatch('core/block-editor').updateBlockAttributes(
-							blockClientId,
-							response
-						)
-				);
-			}
-		});
-	};
 
 	return (
 		<InspectorControls>
@@ -110,7 +80,6 @@ const Inspector = props => {
 										content: (
 											<AccordionTitleSettings
 												onChange={obj => {
-													onChangePanes(obj);
 													maxiSetAttributes(obj);
 												}}
 												{...getGroupAttributes(
@@ -130,7 +99,6 @@ const Inspector = props => {
 												)}
 												blockStyle={blockStyle}
 												onChange={obj => {
-													onChangePanes(obj);
 													maxiSetAttributes(obj);
 												}}
 												breakpoint={deviceType}
@@ -171,7 +139,6 @@ const Inspector = props => {
 													}}
 													onChange={obj => {
 														maxiSetAttributes(obj);
-														onChangePanes(obj);
 														cleanInlineStyles(
 															inlineStylesTargets.headerLine,
 															'::after'

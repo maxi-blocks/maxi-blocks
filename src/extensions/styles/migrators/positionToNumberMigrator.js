@@ -23,28 +23,11 @@ const getAttrsToChange = attributes =>
 		...getOldUnits(attributes)
 	);
 
-// Check if unit no axis
-const unitChecker = (key, val) =>
-	val && key.includes('unit') && !keyWords.some(word => key.includes(word));
-
 const migratePositionAttributes = (key, val, oldAttributes, attributes) => {
 	if (key.includes('position')) {
 		// Convert number to string
 		if (isFinite(val) && attributes?.[key]?.type === 'string') {
 			oldAttributes[key] = val.toString();
-		}
-
-		// Convert non-axis unit to axis unit
-		if (unitChecker(key, val)) {
-			keyWords.forEach(keyWord => {
-				const stringBeforeUnit = key.slice(0, key.indexOf('unit'));
-				const stringAfterUnit = key.slice(key.indexOf('unit'));
-				const newKey = `${stringBeforeUnit}${keyWord}-${stringAfterUnit}`;
-
-				oldAttributes[newKey] = val;
-			});
-
-			delete oldAttributes[key];
 		}
 	}
 };
@@ -59,8 +42,6 @@ const isEligible = (blockAttributes, attributes) => {
 
 				return defaultType === 'string';
 			}
-
-			return unitChecker(attrKey, attrVal);
 		}
 
 		if (attrKey.includes('background-layers') && !isEmpty(attrVal)) {
@@ -69,8 +50,6 @@ const isEligible = (blockAttributes, attributes) => {
 					return Object.entries(layer).some(([key, val]) => {
 						if (key.includes('position')) {
 							if (isFinite(val)) return true;
-
-							return unitChecker(key, val);
 						}
 
 						return false;
@@ -95,10 +74,6 @@ const attributes = () =>
 
 				return acc;
 			}, {}),
-			'position-unit': {
-				type: 'string',
-				default: 'px',
-			},
 		},
 	});
 
@@ -120,4 +95,8 @@ const migrate = ({ newAttributes, attributes }) => {
 	return newAttributes;
 };
 
-export default { isEligible, attributes, migrate };
+export default {
+	isEligible,
+	attributes,
+	migrate,
+};

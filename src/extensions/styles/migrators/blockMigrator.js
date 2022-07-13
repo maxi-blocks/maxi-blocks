@@ -1,81 +1,110 @@
 /**
  * Internal dependencies
  */
-import positionMigrator from './positionMigrator';
 import fullWidthNonToResponsiveMigrator from './fullWidthNonToResponsive';
 import transformMigrator from './transformMigrator';
-import { getMigratorsCombinations, migratorGenerator } from './utils';
+import positionToNumberMigrator from './positionToNumberMigrator';
+import positionUnitsToAxisMigrator from './positionUnitsToAxisMigrator';
+import { getMigratorsCombinations } from './utils';
 
-const blockMigrator = ({
+/**
+ * External dependencies
+ */
+import { compact } from 'lodash';
+
+/**
+ * Create a combination of the different migrators, from the most populate ones to the lighter ones.
+ */
+export const handleBlockMigrator = ({
 	attributes,
 	save,
 	prefix = '',
-	migrators: innerBlockMigrators = [],
 	isContainer = false,
 	selectors,
+	migrators,
 }) => {
-	const migrators = [
-		positionMigrator,
-		fullWidthNonToResponsiveMigrator,
-		transformMigrator,
-		...innerBlockMigrators,
-	].reverse();
+	const combinedMigrators = getMigratorsCombinations(migrators);
 
-	/**
-	 * There are going to be at least 2 types of migrators:
-	 * 1. Attributes migrator: updates attributes without affecting the HTML content created by save
-	 * 2. Save migrator: updates the HTML content created by save
-	 *
-	 * Both types share the main part of the migrator (isEligible, attributes and migrate).
-	 * First type of migrators shouldn't be affected by second type, that's why they have their own migrator
-	 * with a non-modified save function. The second type needs to be added as a standalone migrator and with
-	 * different combinations with the rest of the second type.
-	 */
-	const mainMigrator = {
-		isEligible: blockAttributes =>
-			migrators.some(migrator =>
-				migrator.isEligible(blockAttributes, attributes)
-			),
+	return combinedMigrators
+		.sort()
+		.reverse()
+		.map(combinedMigrator => {
+			const result = {};
 
-		attributes: {
-			...attributes,
-			...migrators.reduce((acc, migrator) => {
-				return {
-					...acc,
-					...migrator.attributes(isContainer),
-				};
-			}, {}),
-		},
+			const isEligibleFunctions = compact(
+				combinedMigrator.map(migrator => migrator.isEligible)
+			);
+			const attributesFunctions = compact(
+				combinedMigrator.map(migrator => migrator.attributes)
+			);
+			const migrateFunctions = compact(
+				combinedMigrator.map(migrator => migrator.migrate)
+			);
+			const saveFunctions = compact(
+				combinedMigrator.map(migrator => migrator.saveMigrator)
+			);
 
-		migrate: newAttributes => {
-			return migrators.reduce(
-				(acc, migrator) => {
-					if (migrator.isEligible(newAttributes, attributes))
-						return migrator.migrate({
+			result.isEligible = blockAttributes => {
+				return isEligibleFunctions.every(isEligible =>
+					isEligible(blockAttributes, attributes)
+				);
+			};
+			result.attributes = {
+				...attributes,
+				...attributesFunctions.reduce((acc, attributesFunction) => {
+					return {
+						...acc,
+						...attributesFunction(isContainer),
+					};
+				}, {}),
+			};
+			result.migrate = newAttributes => {
+				return migrateFunctions.reduce(
+					(acc, migrateFunction) => {
+						return migrateFunction({
 							newAttributes: { ...acc },
 							attributes,
 							prefix,
 							selectors,
 						});
+					},
+					{ ...newAttributes }
+				);
+			};
+			if (saveFunctions.length > 0)
+				result.save = props => {
+					// Return corrupted save function
+					if (
+						!isEligibleFunctions.every(isEligible =>
+							isEligible(props.attributes, attributes)
+						)
+					)
+						return false;
 
-					return acc;
-				},
-				{ ...newAttributes }
-			);
-		},
-		save,
-	};
+					let currentInstance = save(props);
 
-	const saveMigrators = getMigratorsCombinations(
-		migrators.filter(migrator => migrator.saveMigrator)
-	);
+					saveFunctions.forEach((saveMigrator, i) => {
+						currentInstance = saveMigrator(currentInstance, props);
+					});
 
-	return migratorGenerator({
-		mainMigrator,
-		saveMigrators,
-		save,
-		prefix,
-	});
+					return currentInstance;
+				};
+			else result.save = save;
+
+			return result;
+		});
+};
+
+const blockMigrator = blockMigratorProps => {
+	const migrators = [
+		positionToNumberMigrator,
+		positionUnitsToAxisMigrator,
+		fullWidthNonToResponsiveMigrator,
+		transformMigrator,
+		...(blockMigratorProps.migrators ?? []),
+	];
+
+	return handleBlockMigrator({ ...blockMigratorProps, migrators });
 };
 
 export default blockMigrator;

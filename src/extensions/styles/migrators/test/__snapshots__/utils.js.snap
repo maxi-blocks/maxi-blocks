@@ -3,87 +3,246 @@
 exports[`getMigratorsCombinations Should return a one element array 1`] = `
 Array [
   Array [
-    1,
+    Object {
+      "attributes": Object {},
+      "isEligible": null,
+      "migrate": null,
+      "saveMigrator": 1,
+    },
   ],
   Array [
-    1,
-    2,
+    Object {
+      "attributes": Object {},
+      "isEligible": null,
+      "migrate": null,
+      "saveMigrator": 1,
+    },
+    Object {
+      "attributes": Object {},
+      "isEligible": null,
+      "migrate": null,
+      "saveMigrator": 2,
+    },
   ],
   Array [
-    1,
-    2,
-    3,
+    Object {
+      "attributes": Object {},
+      "isEligible": null,
+      "migrate": null,
+      "saveMigrator": 1,
+    },
+    Object {
+      "attributes": Object {},
+      "isEligible": null,
+      "migrate": null,
+      "saveMigrator": 2,
+    },
+    Object {
+      "attributes": Object {},
+      "isEligible": null,
+      "migrate": null,
+      "saveMigrator": 3,
+    },
   ],
   Array [
-    1,
-    2,
-    3,
-    4,
+    Object {
+      "attributes": Object {},
+      "isEligible": null,
+      "migrate": null,
+      "saveMigrator": 1,
+    },
+    Object {
+      "attributes": Object {},
+      "isEligible": null,
+      "migrate": null,
+      "saveMigrator": 2,
+    },
+    Object {
+      "attributes": Object {},
+      "isEligible": null,
+      "migrate": null,
+      "saveMigrator": 3,
+    },
+    Object {
+      "attributes": Object {},
+      "isEligible": null,
+      "migrate": null,
+      "saveMigrator": 4,
+    },
   ],
   Array [
-    1,
-    2,
-    4,
+    Object {
+      "attributes": Object {},
+      "isEligible": null,
+      "migrate": null,
+      "saveMigrator": 1,
+    },
+    Object {
+      "attributes": Object {},
+      "isEligible": null,
+      "migrate": null,
+      "saveMigrator": 2,
+    },
+    Object {
+      "attributes": Object {},
+      "isEligible": null,
+      "migrate": null,
+      "saveMigrator": 4,
+    },
   ],
   Array [
-    1,
-    3,
+    Object {
+      "attributes": Object {},
+      "isEligible": null,
+      "migrate": null,
+      "saveMigrator": 1,
+    },
+    Object {
+      "attributes": Object {},
+      "isEligible": null,
+      "migrate": null,
+      "saveMigrator": 3,
+    },
   ],
   Array [
-    1,
-    3,
-    4,
+    Object {
+      "attributes": Object {},
+      "isEligible": null,
+      "migrate": null,
+      "saveMigrator": 1,
+    },
+    Object {
+      "attributes": Object {},
+      "isEligible": null,
+      "migrate": null,
+      "saveMigrator": 3,
+    },
+    Object {
+      "attributes": Object {},
+      "isEligible": null,
+      "migrate": null,
+      "saveMigrator": 4,
+    },
   ],
   Array [
-    1,
-    4,
+    Object {
+      "attributes": Object {},
+      "isEligible": null,
+      "migrate": null,
+      "saveMigrator": 1,
+    },
+    Object {
+      "attributes": Object {},
+      "isEligible": null,
+      "migrate": null,
+      "saveMigrator": 4,
+    },
   ],
   Array [
-    2,
+    Object {
+      "attributes": Object {},
+      "isEligible": null,
+      "migrate": null,
+      "saveMigrator": 2,
+    },
   ],
   Array [
-    2,
-    3,
+    Object {
+      "attributes": Object {},
+      "isEligible": null,
+      "migrate": null,
+      "saveMigrator": 2,
+    },
+    Object {
+      "attributes": Object {},
+      "isEligible": null,
+      "migrate": null,
+      "saveMigrator": 3,
+    },
   ],
   Array [
-    2,
-    3,
-    4,
+    Object {
+      "attributes": Object {},
+      "isEligible": null,
+      "migrate": null,
+      "saveMigrator": 2,
+    },
+    Object {
+      "attributes": Object {},
+      "isEligible": null,
+      "migrate": null,
+      "saveMigrator": 3,
+    },
+    Object {
+      "attributes": Object {},
+      "isEligible": null,
+      "migrate": null,
+      "saveMigrator": 4,
+    },
   ],
   Array [
-    2,
-    4,
+    Object {
+      "attributes": Object {},
+      "isEligible": null,
+      "migrate": null,
+      "saveMigrator": 2,
+    },
+    Object {
+      "attributes": Object {},
+      "isEligible": null,
+      "migrate": null,
+      "saveMigrator": 4,
+    },
   ],
   Array [
-    3,
+    Object {
+      "attributes": Object {},
+      "isEligible": null,
+      "migrate": null,
+      "saveMigrator": 3,
+    },
   ],
   Array [
-    3,
-    4,
+    Object {
+      "attributes": Object {},
+      "isEligible": null,
+      "migrate": null,
+      "saveMigrator": 3,
+    },
+    Object {
+      "attributes": Object {},
+      "isEligible": null,
+      "migrate": null,
+      "saveMigrator": 4,
+    },
   ],
   Array [
-    4,
+    Object {
+      "attributes": Object {},
+      "isEligible": null,
+      "migrate": null,
+      "saveMigrator": 4,
+    },
   ],
 ]
 `;
 
-exports[`migratorGenerator Should return a one element array 1`] = `
+exports[`handleBlockMigrator Should return a one element array 1`] = `
 Array [
-  "",
-  "<h1 class=\\"test-migrators\\">Modified content</h1>",
-  "<h1 class=\\"test-migrators\\" data-align=\\"full\\">Modified content</h1>",
-  "<h1 class=\\"test-migrators new-class\\" data-align=\\"full\\">Modified content</h1>",
   "<p class=\\"test-migrators new-class\\" data-align=\\"full\\">Modified content</p>",
-  "<p class=\\"test-migrators\\" data-align=\\"full\\">Modified content</p>",
-  "<h1 class=\\"test-migrators new-class\\">Modified content</h1>",
-  "<p class=\\"test-migrators new-class\\">Modified content</p>",
-  "<p class=\\"test-migrators\\">Modified content</p>",
-  "<h1 class=\\"test-migrators\\" data-align=\\"full\\">test</h1>",
-  "<h1 class=\\"test-migrators new-class\\" data-align=\\"full\\">test</h1>",
   "<p class=\\"test-migrators new-class\\" data-align=\\"full\\">test</p>",
-  "<p class=\\"test-migrators\\" data-align=\\"full\\">test</p>",
-  "<h1 class=\\"test-migrators new-class\\">test</h1>",
+  "<p class=\\"test-migrators new-class\\">Modified content</p>",
+  "<p class=\\"test-migrators\\" data-align=\\"full\\">Modified content</p>",
+  "<h1 class=\\"test-migrators new-class\\" data-align=\\"full\\">Modified content</h1>",
   "<p class=\\"test-migrators new-class\\">test</p>",
+  "<p class=\\"test-migrators\\" data-align=\\"full\\">test</p>",
+  "<h1 class=\\"test-migrators new-class\\" data-align=\\"full\\">test</h1>",
+  "<p class=\\"test-migrators\\">Modified content</p>",
+  "<h1 class=\\"test-migrators new-class\\">Modified content</h1>",
+  "<h1 class=\\"test-migrators\\" data-align=\\"full\\">Modified content</h1>",
   "<p class=\\"test-migrators\\">test</p>",
+  "<h1 class=\\"test-migrators new-class\\">test</h1>",
+  "<h1 class=\\"test-migrators\\" data-align=\\"full\\">test</h1>",
+  "<h1 class=\\"test-migrators\\">Modified content</h1>",
 ]
 `;

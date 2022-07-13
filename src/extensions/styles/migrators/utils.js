@@ -6,12 +6,9 @@ export const getMigratorsCombinations = migrators => {
 
 	const combinator = (props, migrators) => {
 		for (let i = 0; i < migrators.length; i += 1) {
-			result.push([...props, migrators[i].saveMigrator]);
+			result.push([...props, migrators[i]]);
 
-			combinator(
-				[...props, migrators[i].saveMigrator],
-				migrators.slice(i + 1)
-			);
+			combinator([...props, migrators[i]], migrators.slice(i + 1));
 		}
 	};
 

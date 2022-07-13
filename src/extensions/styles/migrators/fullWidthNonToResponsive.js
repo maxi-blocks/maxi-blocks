@@ -1,6 +1,6 @@
 import { cloneElement } from '@wordpress/element';
 
-import { isNil } from 'lodash';
+import { isNil, isArray } from 'lodash';
 
 const isEligible = blockAttributes => !isNil(blockAttributes.blockFullWidth);
 
@@ -37,13 +37,18 @@ const saveMigrator = (saveInstance, props) => {
 
 	// Concrete case for Button Maxi
 	if (attributes.uniqueID.includes('button')) {
-		const buttonChildren = newInstance.props.children;
-		const buttonChild = buttonChildren[0];
+		let buttonChildren = newInstance.props.children;
+		const buttonChild = isArray(buttonChildren)
+			? buttonChildren[0]
+			: buttonChildren;
 
-		buttonChildren[0] = cloneElement({
+		const newButtonChild = cloneElement({
 			...buttonChild,
 			props: { ...buttonChild.props, 'data-align': fullWidth },
 		});
+
+		if (isArray(buttonChildren)) buttonChildren[0] = newButtonChild;
+		else buttonChildren = newButtonChild;
 
 		newInstance = cloneElement({
 			...newInstance,
@@ -57,4 +62,9 @@ const saveMigrator = (saveInstance, props) => {
 	return newInstance;
 };
 
-export default { isEligible, attributes, migrate, saveMigrator };
+export default {
+	isEligible,
+	attributes,
+	migrate,
+	saveMigrator,
+};

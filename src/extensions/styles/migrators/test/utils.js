@@ -1,6 +1,13 @@
+/**
+ * WordPress dependencies
+ */
 import { cloneElement, renderToString } from '@wordpress/element';
 
-import { getMigratorsCombinations, migratorGenerator } from '../utils';
+/**
+ * Internal dependencies
+ */
+import { getMigratorsCombinations } from '../utils';
+import { handleBlockMigrator } from '../blockMigrator';
 
 describe('getMigratorsCombinations', () => {
 	it('Should return a one element array', () => {
@@ -32,11 +39,11 @@ const TestComponent = ({
 	</TagName>
 );
 
-describe('migratorGenerator', () => {
+describe('handleBlockMigrator', () => {
 	it('Should return a one element array', () => {
 		const mainMigrator = {
 			isEligible: null,
-			attributes: {},
+			attributes: () => {},
 			migrate: null,
 			save: () => null,
 		};
@@ -88,11 +95,8 @@ describe('migratorGenerator', () => {
 			},
 		];
 
-		const saveMigrators = getMigratorsCombinations(migrators);
-
-		const finalMigrators = migratorGenerator({
-			mainMigrator,
-			saveMigrators,
+		const finalMigrators = handleBlockMigrator({
+			migrators,
 			save: props => (
 				<TestComponent className='test-migrators' {...props} />
 			),

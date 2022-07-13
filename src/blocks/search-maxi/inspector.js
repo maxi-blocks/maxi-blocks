@@ -418,6 +418,10 @@ const Inspector = props => {
 																						deviceType
 																					}
 																					disableY
+																					enableCenter={
+																						skin ===
+																						'icon-reveal'
+																					}
 																				/>
 																			),
 																		extraIndicators:

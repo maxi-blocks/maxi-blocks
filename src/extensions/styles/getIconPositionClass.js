@@ -4,6 +4,8 @@ const getIconPositionClass = (position, className) => {
 			return `${className}--icon-top`;
 		case 'bottom':
 			return `${className}--icon-bottom`;
+		case 'center':
+			return `${className}--icon-center`;
 		case 'left':
 			return `${className}--icon-left`;
 		case 'right':

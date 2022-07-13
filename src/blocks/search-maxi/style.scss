@@ -5,11 +5,28 @@ body.maxi-blocks--active .maxi-search-block {
 	height: auto;
 
 	&--icon-left {
+		justify-content: space-between;
+
 		.maxi-search-block__button {
 			order: 0;
 		}
 	}
+
+	&--icon-center {
+		justify-content: center;
+
+		.maxi-search-block__button {
+			order: 1;
+
+			.maxi-search-block__input--hidden + & {
+				margin: 0 !important;
+			}
+		}
+	}
+
 	&--icon-right {
+		justify-content: flex-end;
+
 		.maxi-search-block__button {
 			order: 2;
 		}
@@ -24,6 +41,7 @@ body.maxi-blocks--active .maxi-search-block {
 		margin: 0;
 
 		&--hidden {
+			width: 0;
 			opacity: 0;
 			visibility: hidden;
 		}

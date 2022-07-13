@@ -20,6 +20,7 @@ const AxisPositionControl = ({
 	breakpoint,
 	className,
 	disableY = false,
+	enableCenter = false,
 }) => {
 	const classes = classnames('maxi-axis-position-control', className);
 
@@ -44,6 +45,10 @@ const AxisPositionControl = ({
 					{
 						label: __('Left', 'maxi-block'),
 						value: 'left',
+					},
+					enableCenter && {
+						label: __('Center', 'maxi-block'),
+						value: 'center',
 					},
 					{
 						label: __('Right', 'maxi-block'),

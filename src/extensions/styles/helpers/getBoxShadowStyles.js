@@ -88,11 +88,11 @@ const getBoxShadowStyles = ({
 			};
 		};
 
-		// clip-path
+		// Clip Path
 		const { value: clipPath, defaultValue: defaultClipPath } =
 			getClipPathValue('clip-path');
 
-		// clip-path-status
+		// Clip Path Status
 		const { value: clipPathStatus, defaultValue: defaultClipPathStatus } =
 			getClipPathValue('clip-path-status');
 
@@ -157,8 +157,8 @@ const getBoxShadowStyles = ({
 				: paletteColor;
 
 		const isNotDefault =
-			clipPath !== defaultClipPath ||
-			clipPathStatus !== defaultClipPathStatus ||
+			(clipPath !== defaultClipPath && prefix === 'image-') ||
+			(clipPathStatus !== defaultClipPathStatus && prefix === 'image-') ||
 			(isBoolean(inset) && inset !== defaultInset) ||
 			(isNumber(horizontal) &&
 				horizontal !== 0 &&

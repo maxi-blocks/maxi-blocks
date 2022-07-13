@@ -21,7 +21,7 @@ import './editor.scss';
 function Placeholder({
 	icon,
 	children,
-	label,
+	label = '',
 	instructions,
 	className,
 	notices,

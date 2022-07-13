@@ -33,6 +33,7 @@ const SearchBlock = props => {
 		buttonContent,
 		buttonContentClose,
 		buttonSkin,
+		iconRevealAction,
 		placeholder,
 		skin,
 	} = attributes;
@@ -53,6 +54,10 @@ const SearchBlock = props => {
 		skin === 'icon-reveal' && setIsInputOpen(!isInputOpen);
 	};
 
+	const onInputToggleByClick = () => {
+		iconRevealAction === 'click' && onInputToggle();
+	};
+
 	const onButtonContentChange = buttonContent => {
 		if (typingTimeout) {
 			clearTimeout(typingTimeout);
@@ -66,8 +71,8 @@ const SearchBlock = props => {
 	};
 
 	const inputClasses = classnames(
-		'maxi-search-block__input',
-		!isInputOpen && 'maxi-search-block__input--hidden'
+		'maxi-search-block__input'
+		// !isInputOpen && 'maxi-search-block__input--hidden'
 	);
 
 	const buttonIconClasses = classnames(
@@ -84,7 +89,10 @@ const SearchBlock = props => {
 	return (
 		<>
 			<input className={inputClasses} placeholder={placeholder} />
-			<div className='maxi-search-block__button' onClick={onInputToggle}>
+			<div
+				className='maxi-search-block__button'
+				onClick={onInputToggleByClick}
+			>
 				{buttonSkin === 'icon' ? (
 					buttonIcon && (
 						<div className={buttonIconClasses}>
@@ -131,6 +139,7 @@ class edit extends MaxiBlockComponent {
 			buttonContent,
 			buttonContentClose,
 			buttonSkin,
+			iconRevealAction,
 			skin,
 			uniqueID,
 		} = attributes;
@@ -143,6 +152,7 @@ class edit extends MaxiBlockComponent {
 					buttonContent,
 					buttonContentClose,
 					buttonSkin,
+					iconRevealAction,
 					skin,
 				},
 			},

@@ -3,6 +3,10 @@ const searchButton = {
 		type: 'string',
 		default: 'icon',
 	},
+	iconRevealAction: {
+		type: 'string',
+		default: 'click',
+	},
 	buttonContent: {
 		type: 'string',
 		default: 'Find',

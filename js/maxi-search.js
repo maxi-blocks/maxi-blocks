@@ -21,23 +21,39 @@ const toggleClasses = (input, wrapper, isIcon) => {
 };
 
 const onRevealEvent = (
-	target,
+	event,
 	input,
 	{ wrapper, content, contentClose, isIcon },
 	searchBlock
 ) => {
-	const isClickInside = searchBlock.contains(target);
-	const isCLickOnButton = searchBlock
+	const { target, type } = event;
+
+	const isClickType = type !== 'mouseover' && type !== 'mouseout';
+
+	const isTargetInside = searchBlock.contains(target);
+	const isTargetOnButton = searchBlock
 		.querySelector('.maxi-search-block__button')
 		.contains(target);
 	const isInputHidden = input.classList.contains(
 		'maxi-search-block__input--hidden'
 	);
+	const isInputFocussed = input === document.activeElement;
 
-	if (isInputHidden && isCLickOnButton) {
+	if (
+		(isClickType || (!isClickType && type === 'mouseover')) &&
+		isInputHidden &&
+		isTargetOnButton
+	) {
 		wrapper.innerHTML = contentClose;
 		toggleClasses(input, wrapper, isIcon);
-	} else if (!isInputHidden && (isCLickOnButton || !isClickInside)) {
+	} else if (
+		!isInputHidden &&
+		((isClickType && (isTargetOnButton || !isTargetInside)) ||
+			(!isClickType &&
+				type === 'mouseout' &&
+				!isInputFocussed &&
+				!isTargetInside))
+	) {
 		wrapper.innerHTML = content;
 		toggleClasses(input, wrapper, isIcon);
 	}
@@ -53,6 +69,7 @@ const search = () => {
 				buttonContent,
 				buttonContentClose,
 				buttonSkin,
+				iconRevealAction,
 				skin,
 			},
 		]) => {
@@ -84,14 +101,26 @@ const search = () => {
 			const wrapper = isIcon ? buttonIcon : buttonText;
 
 			if (skin === 'icon-reveal') {
-				document.addEventListener('click', event =>
-					onRevealEvent(
-						event.target,
-						input,
-						{ wrapper, content, contentClose, isIcon },
-						searchBlock
-					)
-				);
+				const events = [
+					'click',
+					...(iconRevealAction === 'hover'
+						? ['mouseover', 'mouseout']
+						: []),
+				];
+
+				events.forEach(event => {
+					const eventTarget =
+						event === 'click' ? document : searchBlock;
+
+					eventTarget.addEventListener(event, event =>
+						onRevealEvent(
+							event,
+							input,
+							{ wrapper, content, contentClose, isIcon },
+							searchBlock
+						)
+					);
+				});
 			} else {
 				button.addEventListener('click', () => onSearchEvent(input));
 			}

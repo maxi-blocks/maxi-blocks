@@ -156,9 +156,25 @@ const getBoxShadowStyles = ({
 				  })
 				: paletteColor;
 
+		const clipPathExists =
+			getLastBreakpointAttribute({
+				target: 'clip-path',
+				breakpoint,
+				attributes: obj,
+			}) &&
+			getLastBreakpointAttribute({
+				target: 'clip-path-status',
+				breakpoint,
+				attributes: obj,
+			});
+
 		const isNotDefault =
-			(clipPath !== defaultClipPath && prefix === 'image-') ||
-			(clipPathStatus !== defaultClipPathStatus && prefix === 'image-') ||
+			(clipPath !== defaultClipPath &&
+				prefix === 'image-' &&
+				(clipPathExists || !isEmpty(obj.SVGElement))) ||
+			(clipPathStatus !== defaultClipPathStatus &&
+				prefix === 'image-' &&
+				(clipPathExists || !isEmpty(obj.SVGElement))) ||
 			(isBoolean(inset) && inset !== defaultInset) ||
 			(isNumber(horizontal) &&
 				horizontal !== 0 &&
@@ -179,18 +195,6 @@ const getBoxShadowStyles = ({
 			? horizontal
 			: defaultHorizontal;
 		const verticalValue = isNumber(vertical) ? vertical : defaultVertical;
-
-		const clipPathExists =
-			getLastBreakpointAttribute({
-				target: 'clip-path',
-				breakpoint,
-				attributes: obj,
-			}) &&
-			getLastBreakpointAttribute({
-				target: 'clip-path-status',
-				breakpoint,
-				attributes: obj,
-			});
 
 		if (isNotDefault && dropShadow) {
 			const blurValue = isNumber(blur)

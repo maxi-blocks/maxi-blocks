@@ -64,37 +64,33 @@ const getBoxShadowStyles = ({
 			};
 		};
 
-		const getClipPathValue = target => {
-			const value = getAttributeValue({
-				target,
-				props: obj,
-				isHover: false,
+		const clipPathExists =
+			(getLastBreakpointAttribute({
+				target: 'clip-path',
 				breakpoint,
-			});
+				attributes: obj,
+			}) &&
+				getLastBreakpointAttribute({
+					target: 'clip-path-status',
+					breakpoint,
+					attributes: obj,
+				})) ||
+			!isEmpty(obj.SVGElement);
 
-			const defaultValue =
-				breakpoint === 'general'
-					? getDefaultAttribute(`${target}-${breakpoint}`)
-					: getLastBreakpointAttribute({
-							target,
+		const defaultClipPathExists =
+			breakpoint === 'general'
+				? false
+				: (getLastBreakpointAttribute({
+						target: 'clip-path',
+						breakpoint: getPrevBreakpoint(breakpoint),
+						attributes: obj,
+				  }) &&
+						getLastBreakpointAttribute({
+							target: 'clip-path-status',
 							breakpoint: getPrevBreakpoint(breakpoint),
 							attributes: obj,
-							isHover: false,
-					  });
-
-			return {
-				value,
-				defaultValue,
-			};
-		};
-
-		// Clip Path
-		const { value: clipPath, defaultValue: defaultClipPath } =
-			getClipPathValue('clip-path');
-
-		// Clip Path Status
-		const { value: clipPathStatus, defaultValue: defaultClipPathStatus } =
-			getClipPathValue('clip-path-status');
+						})) ||
+				  !isEmpty(obj.SVGElement);
 
 		// Inset
 		const { value: inset, defaultValue: defaultInset } = getValue('inset');
@@ -156,25 +152,11 @@ const getBoxShadowStyles = ({
 				  })
 				: paletteColor;
 
-		const clipPathExists =
-			getLastBreakpointAttribute({
-				target: 'clip-path',
-				breakpoint,
-				attributes: obj,
-			}) &&
-			getLastBreakpointAttribute({
-				target: 'clip-path-status',
-				breakpoint,
-				attributes: obj,
-			});
-
 		const isNotDefault =
-			(clipPath !== defaultClipPath &&
+			(breakpoint !== 'general' &&
+				clipPathExists !== defaultClipPathExists &&
 				prefix === 'image-' &&
-				(clipPathExists || !isEmpty(obj.SVGElement))) ||
-			(clipPathStatus !== defaultClipPathStatus &&
-				prefix === 'image-' &&
-				(clipPathExists || !isEmpty(obj.SVGElement))) ||
+				clipPathExists) ||
 			(isBoolean(inset) && inset !== defaultInset) ||
 			(isNumber(horizontal) &&
 				horizontal !== 0 &&
@@ -208,7 +190,7 @@ const getBoxShadowStyles = ({
 			boxShadowString += `${blurValue || 0}${blurUnit || 'px'} `;
 			boxShadowString += color || defaultColor;
 
-			if (!(forClipPath && !clipPathExists && isEmpty(obj.SVGElement)))
+			if (!(forClipPath && !clipPathExists))
 				response[breakpoint] = {
 					filter: `drop-shadow(${boxShadowString.trim()})`,
 				};
@@ -227,12 +209,7 @@ const getBoxShadowStyles = ({
 			boxShadowString += `${spreadValue || 0}${spreadUnit || 'px'} `;
 			boxShadowString += color || defaultColor;
 
-			if (
-				!(
-					prefix === 'image-' &&
-					(clipPathExists || !isEmpty(obj.SVGElement))
-				)
-			)
+			if (!(prefix === 'image-' && clipPathExists))
 				response[breakpoint] = {
 					'box-shadow': `${boxShadowString.trim()}`,
 				};

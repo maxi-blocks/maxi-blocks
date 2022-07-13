@@ -49,6 +49,7 @@ const SkinControl = ({ skin, onChange }) => {
 		[`${buttonPrefix}border-bottom-right-radius-general`],
 		[`${buttonPrefix}margin-left-general`],
 		[`${buttonPrefix}margin-sync-general`],
+		'icon-position',
 	]);
 
 	const classicResetStyles = {

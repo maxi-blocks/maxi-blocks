@@ -25,7 +25,6 @@ import {
 	TextBold,
 	TextColor,
 	TextItalic,
-	TextLink,
 	TextOptions,
 } from './components';
 
@@ -54,13 +53,7 @@ const CaptionToolbar = memo(
 			cleanInlineStyles,
 			isSelected,
 		} = props;
-		const {
-			isList = false,
-			linkSettings,
-			textLevel = 'p',
-			uniqueID,
-			blockStyle,
-		} = attributes;
+		const { isList = false, textLevel = 'p', uniqueID } = attributes;
 
 		const typography = { ...getGroupAttributes(props, 'typography') };
 
@@ -199,17 +192,6 @@ const CaptionToolbar = memo(
 						<TextItalic
 							onChangeFormat={onChangeFormat}
 							getValue={getValue}
-							isCaptionToolbar
-						/>
-						<TextLink
-							{...getGroupAttributes(attributes, 'typography')}
-							onChange={obj => processAttributes(obj)}
-							isList={isList}
-							linkSettings={linkSettings}
-							breakpoint={breakpoint}
-							textLevel={textLevel}
-							blockStyle={blockStyle}
-							styleCard={styleCard}
 							isCaptionToolbar
 						/>
 					</div>

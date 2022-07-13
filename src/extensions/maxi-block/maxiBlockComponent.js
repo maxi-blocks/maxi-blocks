@@ -31,6 +31,7 @@ import {
 	styleResolver,
 } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
+import getIsUniqueIDRepeated from './getIsUniqueIDRepeated';
 import { loadFonts, getAllFonts } from '../text/fonts';
 import uniqueIDGenerator from '../attributes/uniqueIDGenerator';
 
@@ -144,6 +145,8 @@ class MaxiBlockComponent extends Component {
 
 	componentDidMount() {
 		if (this.maxiBlockDidMount) this.maxiBlockDidMount();
+
+		this.displayStyles();
 
 		if (!this.getBreakpoints.xxl) this.forceUpdate();
 	}
@@ -316,12 +319,22 @@ class MaxiBlockComponent extends Component {
 	}
 
 	uniqueIDChecker(idToCheck) {
-		if (!isEmpty(document.getElementsByClassName(idToCheck))) {
+		if (getIsUniqueIDRepeated(idToCheck)) {
 			const newUniqueID = uniqueIDGenerator(idToCheck);
 
 			this.props.attributes.uniqueID = newUniqueID;
+			const label = this.props.attributes.uniqueID.replace('-maxi-', '_');
+			this.props.attributes.customLabel =
+				label.charAt(0).toUpperCase() + label.slice(1);
 
 			return newUniqueID;
+		}
+
+		// This code can be removed after migrating #3474
+		if (isEmpty(this.props.attributes.customLabel)) {
+			const label = idToCheck.replace('-maxi-', '_');
+			this.props.attributes.customLabel =
+				label.charAt(0).toUpperCase() + label.slice(1);
 		}
 
 		return idToCheck;

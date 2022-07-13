@@ -201,26 +201,7 @@ wp.domReady(() => {
 
 						const editorWrapper = iframeDocument.body;
 
-						editorWrapper.setAttribute(
-							'maxi-blocks-responsive',
-							mutation.target.classList.contains(
-								'is-tablet-preview'
-							)
-								? 's'
-								: 'xs'
-						);
-
-						if (
-							iframe &&
-							!iframeDocument.body.classList.contains(
-								'maxi-blocks--active'
-							)
-						) {
-							// Iframe needs Maxi classes and attributes
-							iframeDocument.body.classList.add(
-								'maxi-blocks--active'
-							);
-							const editorWrapper = iframeDocument.body;
+						if (editorWrapper) {
 							editorWrapper.setAttribute(
 								'maxi-blocks-responsive',
 								mutation.target.classList.contains(
@@ -230,83 +211,107 @@ wp.domReady(() => {
 									: 'xs'
 							);
 
-							// Copy all fonts to iframe
-							loadFonts(getPageFonts(), true, iframeDocument);
-
-							// Get all Maxi blocks <style> from <head>
-							// and move to new iframe
-							const maxiStyles = Array.from(
-								document.querySelectorAll(
-									'div.maxi-blocks__styles'
+							if (
+								iframe &&
+								!iframeDocument.body.classList.contains(
+									'maxi-blocks--active'
 								)
-							);
+							) {
+								// Iframe needs Maxi classes and attributes
+								iframeDocument.body.classList.add(
+									'maxi-blocks--active'
+								);
 
-							if (!isEmpty(maxiStyles))
-								maxiStyles.forEach(rawMaxiStyle => {
-									const maxiStyle =
-										rawMaxiStyle.cloneNode(true);
-									const { id } = maxiStyle;
+								editorWrapper.setAttribute(
+									'maxi-blocks-responsive',
+									mutation.target.classList.contains(
+										'is-tablet-preview'
+									)
+										? 's'
+										: 'xs'
+								);
 
-									iframeDocument
-										.querySelector(`#${id}`)
-										?.remove();
+								// Copy all fonts to iframe
+								loadFonts(getPageFonts(), true, iframeDocument);
 
-									maxiStyle.children[0].innerText =
-										maxiStyle.children[0].innerText.replaceAll(
-											' .edit-post-visual-editor',
-											'.editor-styles-wrapper'
+								// Get all Maxi blocks <style> from <head>
+								// and move to new iframe
+								const maxiStyles = Array.from(
+									document.querySelectorAll(
+										'div.maxi-blocks__styles'
+									)
+								);
+
+								if (!isEmpty(maxiStyles))
+									maxiStyles.forEach(rawMaxiStyle => {
+										const maxiStyle =
+											rawMaxiStyle.cloneNode(true);
+										const { id } = maxiStyle;
+
+										iframeDocument
+											.querySelector(`#${id}`)
+											?.remove();
+
+										maxiStyle.children[0].innerText =
+											maxiStyle.children[0].innerText.replaceAll(
+												' .edit-post-visual-editor',
+												'.editor-styles-wrapper'
+											);
+
+										iframe.contentDocument.head.appendChild(
+											maxiStyle
 										);
+									});
 
-									iframe.contentDocument.head.appendChild(
-										maxiStyle
-									);
-								});
-
-							// Move Maxi variables to iframe
-							const maxiVariables = document
-								.querySelector(
-									'#maxi-blocks-sc-vars-inline-css'
-								)
-								?.cloneNode(true);
-
-							if (maxiVariables) {
-								iframeDocument
+								// Move Maxi variables to iframe
+								const maxiVariables = document
 									.querySelector(
 										'#maxi-blocks-sc-vars-inline-css'
 									)
-									?.remove();
+									?.cloneNode(true);
 
-								iframe.contentDocument.head.appendChild(
-									maxiVariables
-								);
-							}
+								if (maxiVariables) {
+									iframeDocument
+										.querySelector(
+											'#maxi-blocks-sc-vars-inline-css'
+										)
+										?.remove();
 
-							// Ensures all Maxi styles are loaded on iframe
-							const editStyles = iframeDocument.querySelector(
-								'#maxi-blocks-block-editor-css'
-							);
-							const frontStyles = iframeDocument.querySelector(
-								'#maxi-blocks-block-css'
-							);
+									iframe.contentDocument.head.appendChild(
+										maxiVariables
+									);
+								}
 
-							if (!editStyles) {
-								const rawEditStyles = document.querySelector(
+								// Ensures all Maxi styles are loaded on iframe
+								const editStyles = iframeDocument.querySelector(
 									'#maxi-blocks-block-editor-css'
 								);
+								const frontStyles =
+									iframeDocument.querySelector(
+										'#maxi-blocks-block-css'
+									);
 
-								iframe.contentDocument.head.appendChild(
-									rawEditStyles.cloneNode(true)
-								);
-							}
+								if (!editStyles) {
+									const rawEditStyles =
+										document.querySelector(
+											'#maxi-blocks-block-editor-css'
+										);
 
-							if (!frontStyles) {
-								const rawFrontStyles = document.querySelector(
-									'#maxi-blocks-block-css'
-								);
+									iframe.contentDocument.head.appendChild(
+										rawEditStyles.cloneNode(true)
+									);
+								}
 
-								iframe.contentDocument.head.appendChild(
-									rawFrontStyles.cloneNode(true)
-								);
+								if (!frontStyles) {
+									const rawFrontStyles =
+										document.querySelector(
+											'#maxi-blocks-block-css'
+										);
+
+									iframe.contentDocument.head.appendChild(
+										rawFrontStyles.cloneNode(true)
+									);
+								}
 							}
 						}
 					}
@@ -361,7 +366,10 @@ wp.domReady(() => {
 										if (value === 'Desktop')
 											editorWrapper.style.width = '';
 
-										setMaxiDeviceType(maxiValue);
+										setMaxiDeviceType({
+											deviceType: maxiValue,
+											isGutenbergButton: true,
+										});
 									});
 								});
 							}

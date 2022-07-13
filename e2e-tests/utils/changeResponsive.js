@@ -4,7 +4,10 @@ const changeResponsive = async (page, size) => {
 	);
 
 	await page.evaluate(
-		_size => wp.data.dispatch('maxiBlocks').setMaxiDeviceType(_size),
+		_size =>
+			wp.data
+				.dispatch('maxiBlocks')
+				.setMaxiDeviceType({ deviceType: _size }),
 		((size, winBreakpoint) =>
 			size === 'base' || winBreakpoint === size ? 'general' : size)(
 			size,

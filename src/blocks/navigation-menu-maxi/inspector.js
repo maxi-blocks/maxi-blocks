@@ -9,7 +9,10 @@ import { InspectorControls } from '@wordpress/block-editor';
  */
 import { AccordionControl, SettingTabsControl } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
-import { selectorsVideo, categoriesVideo } from './custom-css';
+import {
+	selectorsNavigationMenu,
+	categoriesNavigationMenu,
+} from './custom-css';
 
 /**
  * Inspector
@@ -72,8 +75,8 @@ const Inspector = props => {
 									...inspectorTabs.customCss({
 										props,
 										breakpoint: deviceType,
-										selectors: selectorsVideo,
-										categories: categoriesVideo,
+										selectors: selectorsNavigationMenu,
+										categories: categoriesNavigationMenu,
 									}),
 									...inspectorTabs.scrollEffects({
 										props,

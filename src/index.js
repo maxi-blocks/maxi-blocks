@@ -29,6 +29,7 @@ import './blocks/row-maxi/row-maxi';
 import './blocks/svg-icon-maxi/svg-icon-maxi';
 import './blocks/text-maxi/text-maxi';
 import './blocks/video-maxi/video-maxi';
+import './blocks/navigation-menu-maxi/navigation-menu-maxi';
 
 // Editor
 import './editor/saver';

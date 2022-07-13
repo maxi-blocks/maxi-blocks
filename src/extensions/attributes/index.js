@@ -27,6 +27,7 @@ const allowedBlocks = [
 	'maxi-blocks/number-counter-maxi',
 	'maxi-blocks/svg-icon-maxi',
 	'maxi-blocks/video-maxi',
+	'maxi-blocks/navigation-menu-maxi',
 ];
 
 /**

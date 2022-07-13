@@ -78,7 +78,7 @@ const transitionObj = {
 		'icon reveal appear': {
 			title: 'Icon reveal appear',
 			target: ' .maxi-search-block__input',
-			property: ['opacity', 'visibility'],
+			property: ['opacity', 'visibility', 'width'],
 			prefix: inputPrefix,
 			ignoreHoverProp: true,
 		},

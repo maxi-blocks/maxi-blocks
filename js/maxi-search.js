@@ -11,18 +11,35 @@ const onSearchEvent = input => {
 	}
 };
 
-const onRevealEvent = (input, wrapper, content, contentClose, isIcon) => {
-	if (input.classList.contains('maxi-search-block__input--hidden')) {
-		wrapper.innerHTML = contentClose;
-	} else {
-		wrapper.innerHTML = content;
-	}
-
+const toggleClasses = (input, wrapper, isIcon) => {
 	input.classList.toggle('maxi-search-block__input--hidden');
 
 	if (isIcon) {
 		wrapper.classList.toggle('maxi-search-block__button__close-icon');
 		wrapper.classList.toggle('maxi-search-block__button__default-icon');
+	}
+};
+
+const onRevealEvent = (
+	target,
+	input,
+	{ wrapper, content, contentClose, isIcon },
+	searchBlock
+) => {
+	const isClickInside = searchBlock.contains(target);
+	const isCLickOnButton = searchBlock
+		.querySelector('.maxi-search-block__button')
+		.contains(target);
+	const isInputHidden = input.classList.contains(
+		'maxi-search-block__input--hidden'
+	);
+
+	if (isInputHidden && isCLickOnButton) {
+		wrapper.innerHTML = contentClose;
+		toggleClasses(input, wrapper, isIcon);
+	} else if (!isInputHidden && (isCLickOnButton || !isClickInside)) {
+		wrapper.innerHTML = content;
+		toggleClasses(input, wrapper, isIcon);
 	}
 };
 
@@ -67,8 +84,13 @@ const search = () => {
 			const wrapper = isIcon ? buttonIcon : buttonText;
 
 			if (skin === 'icon-reveal') {
-				button.addEventListener('click', () =>
-					onRevealEvent(input, wrapper, content, contentClose, isIcon)
+				document.addEventListener('click', event =>
+					onRevealEvent(
+						event.target,
+						input,
+						{ wrapper, content, contentClose, isIcon },
+						searchBlock
+					)
 				);
 			} else {
 				button.addEventListener('click', () => onSearchEvent(input));

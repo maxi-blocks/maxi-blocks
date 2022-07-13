@@ -26,7 +26,7 @@ import classnames from 'classnames';
  * Search block
  */
 const SearchBlock = props => {
-	const { attributes, maxiSetAttributes } = props;
+	const { attributes, isSelected, maxiSetAttributes } = props;
 	const {
 		'icon-content': buttonIcon,
 		[`${closeIconPrefix}icon-content`]: closeButtonIcon,
@@ -45,8 +45,24 @@ const SearchBlock = props => {
 		setIsInputOpen(skin !== 'icon-reveal');
 	}, [skin]);
 
+	useEffect(() => {
+		!isSelected && skin === 'icon-reveal' && setIsInputOpen(false);
+	}, [isSelected]);
+
 	const onInputToggle = () => {
 		skin === 'icon-reveal' && setIsInputOpen(!isInputOpen);
+	};
+
+	const onButtonContentChange = buttonContent => {
+		if (typingTimeout) {
+			clearTimeout(typingTimeout);
+		}
+
+		typingTimeout = setTimeout(() => {
+			maxiSetAttributes({
+				buttonContent,
+			});
+		}, 100);
 	};
 
 	const inputClasses = classnames(
@@ -86,17 +102,7 @@ const SearchBlock = props => {
 						className='maxi-search-block__button__content'
 						value={buttonContent}
 						identifier='content'
-						onChange={buttonContent => {
-							if (typingTimeout) {
-								clearTimeout(typingTimeout);
-							}
-
-							typingTimeout = setTimeout(() => {
-								maxiSetAttributes({
-									buttonContent,
-								});
-							}, 100);
-						}}
+						onChange={onButtonContentChange}
 						withoutInteractiveFormatting
 					/>
 				) : (

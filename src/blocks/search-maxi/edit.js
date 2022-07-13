@@ -54,8 +54,12 @@ const SearchBlock = props => {
 		skin === 'icon-reveal' && setIsInputOpen(!isInputOpen);
 	};
 
-	const onInputToggleByClick = () => {
-		iconRevealAction === 'click' && onInputToggle();
+	const onInputChange = val => {
+		setIsInputOpen(val);
+	};
+
+	const onInputChangeByHover = val => {
+		iconRevealAction === 'hover' && onInputChange(val);
 	};
 
 	const onButtonContentChange = buttonContent => {
@@ -71,8 +75,8 @@ const SearchBlock = props => {
 	};
 
 	const inputClasses = classnames(
-		'maxi-search-block__input'
-		// !isInputOpen && 'maxi-search-block__input--hidden'
+		'maxi-search-block__input',
+		!isInputOpen && 'maxi-search-block__input--hidden'
 	);
 
 	const buttonIconClasses = classnames(
@@ -88,10 +92,22 @@ const SearchBlock = props => {
 
 	return (
 		<>
-			<input className={inputClasses} placeholder={placeholder} />
+			<input
+				className={inputClasses}
+				placeholder={placeholder}
+				onMouseOver={() => onInputChangeByHover(true)}
+				onMouseOut={event =>
+					event.target !==
+						document.querySelector('.editor-styles-wrapper')
+							.ownerDocument.activeElement &&
+					onInputChangeByHover(false)
+				}
+			/>
 			<div
 				className='maxi-search-block__button'
-				onClick={onInputToggleByClick}
+				onClick={() => iconRevealAction === 'click' && onInputToggle}
+				onMouseOver={() => onInputChangeByHover(true)}
+				onMouseOut={() => onInputChangeByHover(false)}
 			>
 				{buttonSkin === 'icon' ? (
 					buttonIcon && (

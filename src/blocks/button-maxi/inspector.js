@@ -15,7 +15,6 @@ import {
 	SettingTabsControl,
 	ResponsiveTabsControl,
 	AlignmentControl,
-	ManageHoverTransitions,
 } from '../../components';
 import * as defaultPresets from './defaults';
 import {

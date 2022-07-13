@@ -10,6 +10,7 @@ import IconControl from '../icon-control';
 import ToggleSwitch from '../toggle-switch';
 import SettingTabsControl from '../setting-tabs-control';
 import { getGroupAttributes, getIconWithColor } from '../../extensions/styles';
+import ManageHoverTransitions from '../manage-hover-transitions';
 
 const icon = ({
 	props,
@@ -108,6 +109,7 @@ const icon = ({
 						label: __('Hover state', 'maxi-blocks'),
 						content: (
 							<>
+								<ManageHoverTransitions />
 								<ToggleSwitch
 									label={__(
 										'Enable Icon Hover',

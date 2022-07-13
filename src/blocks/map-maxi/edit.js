@@ -17,7 +17,7 @@ import { Toolbar } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
-import { defaultMarkers } from './defaultMarkers';
+import defaultMarkers from './defaultMarkers';
 import * as mapMarkerIcons from '../../icons/map-icons/markers';
 
 /**

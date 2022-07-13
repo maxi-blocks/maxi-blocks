@@ -16,6 +16,24 @@ import AccordionContext from '../accordion-maxi/context';
 import Inspector from './inspector';
 import copyPasteMapping from './copy-paste-mapping';
 
+const boxedPreset = {
+	'border-bottom-left-radius-general': 10,
+	'border-bottom-right-radius-general': 10,
+	'border-bottom-width-general': 5,
+	'border-left-width-general': 5,
+	'border-right-width-general': 5,
+	'border-top-left-radius-general': 10,
+	'border-top-right-radius-general': 10,
+	'border-top-width-general': 5,
+	'border-unit-radius-general': 'px',
+	'border-unit-width-general': 'px',
+	'border-style-general': 'solid',
+};
+
+const simplePreset = {
+	'border-style-general': 'none',
+};
+
 /**
  * Edit
  */
@@ -34,11 +52,31 @@ class edit extends MaxiBlockComponent {
 		this.content = content;
 	}
 
-	maxiBlockDidUpdate() {
+	// maxiBlockDidMount() {}
+
+	maxiBlockDidUpdate(prevProps) {
 		if (this.context.titleLevel !== this.props.attributes.titleLevel) {
 			const { maxiSetAttributes } = this.props;
 
 			maxiSetAttributes({ titleLevel: this.context.titleLevel });
+		}
+		if (
+			this.context.accordionLayout !==
+			this.props.attributes.accordionLayout
+		) {
+			const { maxiSetAttributes } = this.props;
+
+			if (this.context.accordionLayout === 'boxed') {
+				maxiSetAttributes({
+					...boxedPreset,
+					accordionLayout: this.context.accordionLayout,
+				});
+			} else {
+				maxiSetAttributes({
+					...simplePreset,
+					accordionLayout: this.context.accordionLayout,
+				});
+			}
 		}
 	}
 
@@ -55,6 +93,7 @@ class edit extends MaxiBlockComponent {
 			onClose,
 			isCollapsible,
 			animationDuration,
+			accordionLayout,
 		} = this.context;
 
 		const isOpen = openPanes.includes(clientId);
@@ -73,6 +112,7 @@ class edit extends MaxiBlockComponent {
 			<MaxiBlock
 				key={`maxi-pane--${uniqueID}`}
 				ref={this.blockRef}
+				className={`maxi-pane-block--${accordionLayout}-layout`}
 				useInnerBlocks
 				innerBlocksSettings={{
 					allowedBlocks: ALLOWED_BLOCKS,

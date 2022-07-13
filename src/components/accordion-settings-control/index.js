@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { select, dispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -23,7 +22,6 @@ import './editor.scss';
 const AccordionSettings = props => {
 	const {
 		accordionLayout,
-		clientId,
 		onChange,
 		autoPaneClose,
 		isCollapsible,
@@ -60,38 +58,7 @@ const AccordionSettings = props => {
 							{ label: 'Simple', value: 'simple' },
 							{ label: 'Boxed', value: 'boxed' },
 						]}
-						onChange={val => {
-							const blocks = select(
-								'core/block-editor'
-							).getClientIdsOfDescendants([clientId]);
-
-							blocks.forEach(block => {
-								if (
-									select('core/block-editor').getBlockName(
-										block
-									) === 'maxi-blocks/pane-maxi'
-								) {
-									dispatch(
-										'core/block-editor'
-									).updateBlockAttributes(block, {
-										accordionLayout: val,
-										'border-bottom-left-radius-general': 10,
-										'border-bottom-right-radius-general': 10,
-										'border-bottom-width-general': 5,
-										'border-left-width-general': 5,
-										'border-right-width-general': 5,
-										'border-top-left-radius-general': 10,
-										'border-top-right-radius-general': 10,
-										'border-top-width-general': 5,
-										'border-unit-radius-general': 'px',
-										'border-unit-width-general': 'px',
-										'border-style-general': 'solid',
-									});
-								}
-							});
-
-							onChange({ accordionLayout: val });
-						}}
+						onChange={val => onChange({ accordionLayout: val })}
 					/>
 					<ToggleSwitch
 						label={__('Collapsible', 'maxi-block')}

@@ -231,20 +231,20 @@ const SearchBox = props => {
 	const [keywords, setKeywords] = useState('');
 	const [searchResults, setSearchResults] = useState();
 	const inputRef = createRef(null);
-	const findMarkers = () => {
+
+	const findMarkers = async () => {
 		if (keywords && keywords.length > 2) {
-			fetch(
+			const response = await fetch(
 				`https://nominatim.openstreetmap.org/search?q=${keywords}&format=json`
-			)
-				.then(response => {
-					if (response.status !== 200) {
-						return;
-					}
-					return response.json();
-				})
-				.then(data => {
-					setSearchResults(data);
-				});
+			);
+
+			if (response.status !== 200) {
+				return;
+			}
+
+			const data = await response.json();
+
+			setSearchResults(data);
 		}
 	};
 
@@ -387,7 +387,6 @@ const OpenStreetMapContent = props => {
 	const alert =
 		mapAddingMarker === ' pinning' ? (
 			<div className='map-alert'>
-				setOsmMap
 				{__('Release to drop a marker here', 'maxi-blocks')}
 			</div>
 		) : null;

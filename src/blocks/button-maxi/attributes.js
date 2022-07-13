@@ -23,10 +23,6 @@ const attributes = {
 	/**
 	 * Block styles
 	 */
-	customLabel: {
-		type: 'string',
-		default: __('Button', 'maxi-blocks'),
-	},
 	buttonContent: {
 		type: 'string',
 	},

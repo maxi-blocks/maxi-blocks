@@ -13,6 +13,7 @@ import {
 	getGroupAttributes,
 	setHoverAttributes,
 } from '../../extensions/styles';
+import ManageHoverTransitions from '../manage-hover-transitions';
 
 /**
  * Component
@@ -95,6 +96,8 @@ const background = ({
 						label: __('Hover state', 'maxi-blocks'),
 						content: (
 							<>
+								<ManageHoverTransitions />
+
 								<ToggleSwitch
 									label={__(
 										'Enable background hover',

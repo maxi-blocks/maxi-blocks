@@ -7,8 +7,8 @@ describe('Breadcrumbs', () => {
 	it('Test breadcrumbs', async () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
-		await page.$$eval('.maxi-row-block__template button', button =>
-			button[0].click()
+		await page.$eval('.maxi-row-block__template button', button =>
+			button.click()
 		);
 
 		// Select column

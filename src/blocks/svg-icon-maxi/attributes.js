@@ -33,6 +33,8 @@ const attributes = {
 	content: {
 		type: 'string',
 	},
+	altTitle: { type: 'string' },
+	altDescription: { type: 'string' },
 	...attributesData.svg,
 	...attributesData.svgHover,
 	...{

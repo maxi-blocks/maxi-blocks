@@ -27,14 +27,23 @@ export const getResponsiveStyles = styles => {
 	return responsiveStyles;
 };
 
-const getTargetString = (target, isIframe) => {
-	if (!isIframe)
-		return `body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.${target},body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.${target}{`;
+const getTargetString = (target, isIframe, isSiteEditor) => {
+	if (isIframe)
+		return `body.maxi-blocks--active.editor-styles-wrapper .maxi-block.maxi-block--backend.${target},body.maxi-blocks--active.editor-styles-wrapper[maxi-blocks-responsive] .maxi-block.maxi-block--backend.${target}{`;
 
-	return `body.maxi-blocks--active.editor-styles-wrapper .maxi-block.maxi-block--backend.${target},body.maxi-blocks--active.editor-styles-wrapper[maxi-blocks-responsive] .maxi-block.maxi-block--backend.${target}{`;
+	if (isSiteEditor)
+		return `body.editor-styles-wrapper .wp-site-blocks .maxi-block.maxi-block--backend.${target},body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.${target}{`;
+
+	return `body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.${target},body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.${target}{`;
 };
 
-const styleStringGenerator = (target, content, breakpoint, isIframe) => {
+const styleStringGenerator = (
+	target,
+	content,
+	breakpoint,
+	isIframe,
+	isSiteEditor
+) => {
 	let string = '';
 	let generalString = '';
 	let finalContent = content;
@@ -42,20 +51,22 @@ const styleStringGenerator = (target, content, breakpoint, isIframe) => {
 	if (content.includes('css:'))
 		finalContent = content.replace('css: ', '').replace(';;', ';');
 
-	generalString += getTargetString(target, isIframe);
+	generalString += getTargetString(target, isIframe, isSiteEditor);
 
 	if (breakpoint === 'general') {
 		string += generalString;
 	} else if (breakpoint === 'xxl') {
 		string += `body.maxi-blocks--active${
-			!isIframe ? ' .edit-post-visual-editor' : '.editor-styles-wrapper'
+			!isIframe && !isSiteEditor
+				? ' .edit-post-visual-editor'
+				: '.editor-styles-wrapper'
 		}[maxi-blocks-responsive="xxl"] .maxi-block.maxi-block--backend.${target}{`;
 	} else {
 		let breakpointPos = ALLOWED_BREAKPOINTS.indexOf(breakpoint);
 
 		do {
 			string += `body.maxi-blocks--active${
-				!isIframe
+				!isIframe && !isSiteEditor
 					? ' .edit-post-visual-editor'
 					: '.editor-styles-wrapper'
 			}[maxi-blocks-responsive="${
@@ -73,7 +84,14 @@ const styleStringGenerator = (target, content, breakpoint, isIframe) => {
 	return string;
 };
 
-const mediaStylesGenerator = (target, content, breakpoint, media, isIframe) => {
+const mediaStylesGenerator = (
+	target,
+	content,
+	breakpoint,
+	media,
+	isIframe,
+	isSiteEditor
+) => {
 	let string = '';
 	let generalString = '';
 	let finalContent = content;
@@ -82,7 +100,7 @@ const mediaStylesGenerator = (target, content, breakpoint, media, isIframe) => {
 		finalContent = content.replaceAll('css: ', '').replaceAll(';;', ';');
 	}
 
-	generalString += getTargetString(target, isIframe);
+	generalString += getTargetString(target, isIframe, isSiteEditor);
 
 	// Media
 	if (breakpoint !== 'general')
@@ -99,7 +117,8 @@ const styleGenerator = (
 	styles,
 	breakpoints,
 	currentBreakpoint,
-	isIframe = false
+	isIframe = false,
+	isSiteEditor = false
 ) => {
 	let response = '';
 
@@ -118,21 +137,24 @@ const styleGenerator = (
 						style,
 						breakpoint,
 						breakpoints[breakpoint !== 'xxl' ? breakpoint : 'xl'],
-						isIframe
+						isIframe,
+						isSiteEditor
 					);
 					if (breakpoint === 'general')
 						response += styleStringGenerator(
 							`${target}${suffix}`,
 							style,
 							breakpoint,
-							isIframe
+							isIframe,
+							isSiteEditor
 						);
 				} else
 					response += styleStringGenerator(
 						`${target}${suffix}`,
 						style,
 						breakpoint,
-						isIframe
+						isIframe,
+						isSiteEditor
 					);
 			});
 		});

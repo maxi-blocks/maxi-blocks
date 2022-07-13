@@ -21,9 +21,9 @@
 	&__button {
 		display: block;
 		position: relative;
-		width: 16px;
-		height: 16px;
-		margin: auto;
+		width: 16px !important;
+		height: 16px !important;
+		margin: auto !important;
 		padding: 0 !important;
 		background: #ff4a17 !important;
 		box-shadow: none;

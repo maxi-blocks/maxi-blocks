@@ -14,7 +14,7 @@ import {
 	setHoverAttributes,
 } from '../../extensions/styles';
 import ResponsiveTabsControl from '../responsive-tabs-control';
-
+import ManageHoverTransitions from '../manage-hover-transitions';
 /**
  * Component
  */
@@ -94,6 +94,7 @@ const border = ({
 							label: __('Hover state', 'maxi-blocks'),
 							content: (
 								<>
+									<ManageHoverTransitions />
 									{!globalHoverStatus && (
 										<ToggleSwitch
 											label={__(

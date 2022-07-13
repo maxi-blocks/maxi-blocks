@@ -17,6 +17,7 @@ import {
 	ToggleSwitch,
 	ResponsiveTabsControl,
 	AlignmentControl,
+	ManageHoverTransitions,
 } from '../../components';
 import * as defaultPresets from './defaults';
 import {
@@ -27,7 +28,6 @@ import {
 import { selectorsButton, categoriesButton } from './custom-css';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { withMaxiInspector } from '../../extensions/inspector';
-
 /**
  * External dependencies
  */
@@ -300,6 +300,7 @@ const Inspector = props => {
 														),
 														content: (
 															<>
+																<ManageHoverTransitions />
 																<ToggleSwitch
 																	label={__(
 																		'Enable Icon Hover',

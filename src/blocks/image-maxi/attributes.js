@@ -24,10 +24,6 @@ const attributes = {
 	/**
 	 * Block styles
 	 */
-	customLabel: {
-		type: 'string',
-		default: __('Image', 'maxi-blocks'),
-	},
 	...{
 		...attributesData.alignment,
 		'alignment-general': {

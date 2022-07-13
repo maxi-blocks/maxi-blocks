@@ -17,9 +17,9 @@ describe('GradientControl', () => {
 		await insertBlock('Button Maxi');
 		await openSidebarTab(page, 'style', 'button background');
 
-		await page.$$eval(
-			'.maxi-settingstab-control .maxi-background-control__simple .maxi-tabs-control__full-width button',
-			button => button[2].click()
+		await page.$eval(
+			'.maxi-settingstab-control .maxi-background-control__simple .maxi-tabs-control__full-width .maxi-tabs-control__button-gradient',
+			button => button.click()
 		);
 
 		await page.$eval(

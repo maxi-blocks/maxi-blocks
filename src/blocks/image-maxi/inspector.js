@@ -493,7 +493,6 @@ const Inspector = props => {
 																	type: 'p',
 																}}
 																styleCardPrefix=''
-																allowLink
 															/>
 														</>
 													)}

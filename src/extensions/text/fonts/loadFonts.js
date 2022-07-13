@@ -62,10 +62,46 @@ const loadFonts = (font, backendOnly = true, target = document) => {
 					`url(${url})`,
 					fontDataNew
 				);
+
+				dispatch('core/notices').createNotice(
+					'info',
+					__('Downloading font…', 'maxi-blocks'),
+					{
+						id: url,
+						type: 'snackbar',
+					}
+				);
+
 				fontLoad.load().then(() => {
+					dispatch('core/notices').removeNotice(url);
+					dispatch('core/notices').createNotice(
+						'info',
+						__('Font downloaded', 'maxi-blocks'),
+						{
+							id: url,
+							type: 'snackbar',
+						}
+					);
+					setTimeout(() => {
+						dispatch('core/notices').removeNotice(url);
+					}, 1000);
+
 					target.fonts.add(fontLoad);
 				});
+
 				fontLoad.loaded.catch(err => {
+					dispatch('core/notices').removeNotice(url);
+					dispatch('core/notices').createNotice(
+						'info',
+						__('Font download failed', 'maxi-blocks'),
+						{
+							id: url,
+							type: 'snackbar',
+						}
+					);
+					setTimeout(() => {
+						dispatch('core/notices').removeNotice(url);
+					}, 1000);
 					console.error(
 						__(`Font hasn't been able to download: ${err}`)
 					);

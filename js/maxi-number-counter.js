@@ -64,6 +64,7 @@ const numberCounterEffect = () => {
 
 				let count = startCountValue;
 				let startTime;
+				let hasAnimated = false;
 
 				const animate = () => {
 					const newCount = parseInt(
@@ -117,9 +118,13 @@ const numberCounterEffect = () => {
 					const waypoint = new Waypoint({
 						element: numberCounterElem,
 						handler() {
-							startCounter();
+							if (!hasAnimated) {
+								hasAnimated = true;
+								startCounter();
+							}
 						},
-						offset: `${startAnimationOffset}%`,
+
+						offset: `${startAnimationOffset || 100}%`,
 					});
 				} else {
 					startCounter();

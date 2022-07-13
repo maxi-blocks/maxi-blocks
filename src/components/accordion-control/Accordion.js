@@ -47,13 +47,13 @@ const Accordion = props => {
 		select('core/block-editor');
 
 	const toggleExpanded = uuid => {
-		if (!isUpdateInspectorPath) updateInspectorPath({ depth, value: uuid });
+		if (isUpdateInspectorPath) updateInspectorPath({ depth, value: uuid });
 		setItemExpanded(uuid);
 	};
 
 	useEffect(() => {
 		if (updatedItemExpanded !== itemExpanded) {
-			if (!isUpdateInspectorPath) setItemExpanded(updatedItemExpanded);
+			if (isUpdateInspectorPath) setItemExpanded(updatedItemExpanded);
 		}
 	}, [updatedItemExpanded]);
 

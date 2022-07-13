@@ -136,6 +136,7 @@ const NumberCounter = attributes => {
 
 	replayCounter(() => {
 		setCount(startCountValue);
+		startTimeRef.current = Date.now();
 		setReplayStatus(true);
 	});
 	return (

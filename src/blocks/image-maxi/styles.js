@@ -315,10 +315,10 @@ const getHoverImageObject = props => {
 	};
 };
 
-const getClipPathDropShadowObject = props => {
+const getClipPathDropShadowObject = (props, isHover = false) => {
 	// for clip path drop shadow should be applied to wrapper div
 	const response = {
-		' .maxi-image-block-wrapper': {
+		...(!isHover && {
 			boxShadow: getBoxShadowStyles({
 				obj: {
 					...getGroupAttributes(props, 'boxShadow', false, 'image-'),
@@ -330,28 +330,29 @@ const getClipPathDropShadowObject = props => {
 				prefix: 'image-',
 				forClipPath: true,
 			}),
-		},
-		...(props['image-box-shadow-status-hover'] && {
-			':hover .maxi-image-block-wrapper': {
-				boxShadow: getBoxShadowStyles({
-					obj: {
-						...getGroupAttributes(
-							props,
-							'boxShadow',
-							true,
-							'image-'
-						),
-						...getGroupAttributes(props, 'clipPath'),
-						SVGElement: props.SVGElement,
-					},
-					isHover: true,
-					dropShadow: true,
-					blockStyle: props.blockStyle,
-					prefix: 'image-',
-					forClipPath: true,
-				}),
-			},
 		}),
+		...(props['image-box-shadow-status-hover'] &&
+			isHover && {
+				':hover .maxi-image-block-wrapper': {
+					boxShadow: getBoxShadowStyles({
+						obj: {
+							...getGroupAttributes(
+								props,
+								'boxShadow',
+								true,
+								'image-'
+							),
+							...getGroupAttributes(props, 'clipPath'),
+							SVGElement: props.SVGElement,
+						},
+						isHover: true,
+						dropShadow: true,
+						blockStyle: props.blockStyle,
+						prefix: 'image-',
+						forClipPath: true,
+					}),
+				},
+			}),
 	};
 
 	return response;
@@ -439,12 +440,15 @@ const getStyles = props => {
 				{
 					'': getWrapperObject(props),
 					':hover': getHoverWrapperObject(props),
-					' .maxi-image-block-wrapper': getImageWrapperObject(props),
+					' .maxi-image-block-wrapper': {
+						...getImageWrapperObject(props),
+						...getClipPathDropShadowObject(props),
+					},
 					[` .maxi-image-block-wrapper ${imgTag}`]:
 						getImageObject(props),
 					[`:hover .maxi-image-block-wrapper ${imgTag}`]:
 						getHoverImageObject(props),
-					...getClipPathDropShadowObject(props),
+					...getClipPathDropShadowObject(props, true),
 					' .maxi-image-block-wrapper > svg:first-child':
 						getImageShapeObject('svg', props),
 					' .maxi-image-block-wrapper > svg:first-child pattern image':

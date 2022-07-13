@@ -30,9 +30,6 @@ class edit extends MaxiBlockComponent {
 		const content = this.blockRef.current.querySelector(
 			'.maxi-pane-block__content'
 		);
-		content.ontransitionend = () => {
-			content.style = null;
-		};
 
 		this.content = content;
 	}
@@ -57,6 +54,7 @@ class edit extends MaxiBlockComponent {
 			onOpen,
 			onClose,
 			isCollapsible,
+			animationDuration,
 		} = this.context;
 
 		const isOpen = openPanes.includes(clientId);
@@ -96,6 +94,9 @@ class edit extends MaxiBlockComponent {
 							this.content.style.overflow = 'hidden';
 							// the css doesn't transition to 100% so need to set exact value, for transition to happen
 							this.content.style.maxHeight = `${this.content.scrollHeight}px`;
+							setTimeout(() => {
+								this.content.style = null;
+							}, animationDuration);
 							onOpen(clientId);
 						} else {
 							this.content.style.overflow = 'hidden';
@@ -103,6 +104,9 @@ class edit extends MaxiBlockComponent {
 							this.content.style.maxHeight = `${this.content.scrollHeight}px`;
 							setTimeout(() => {
 								this.content.style.maxHeight = 0;
+								setTimeout(() => {
+									this.content.style = null;
+								}, animationDuration);
 							}, 1);
 							onClose(clientId);
 						}

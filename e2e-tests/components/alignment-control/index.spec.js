@@ -51,8 +51,9 @@ describe('AlignmentControl', () => {
 
 		// responsive S
 		await changeResponsive(page, 's');
-		await accordionPanel.$$eval('.maxi-alignment-control button', button =>
-			button[1].click()
+		await accordionPanel.$eval(
+			'.maxi-alignment-control .maxi-tabs-control__button-center',
+			button => button.click()
 		);
 
 		const responsiveSOption = await page.$$eval(
@@ -92,8 +93,9 @@ describe('AlignmentControl', () => {
 		await insertBlock('Button Maxi');
 		const accordionPanel = await openSidebarTab(page, 'style', 'alignment');
 
-		await accordionPanel.$$eval('.maxi-alignment-control button', button =>
-			button[1].click()
+		await accordionPanel.$eval(
+			'.maxi-alignment-control .maxi-tabs-control__button-center',
+			button => button.click()
 		);
 
 		const isItemChecked = await page.$$eval(
@@ -105,8 +107,9 @@ describe('AlignmentControl', () => {
 
 		// responsive S
 		await changeResponsive(page, 's');
-		await accordionPanel.$$eval('.maxi-alignment-control button', button =>
-			button[2].click()
+		await accordionPanel.$eval(
+			'.maxi-alignment-control .maxi-tabs-control__button-right',
+			button => button.click()
 		);
 
 		const responsiveSOption = await page.$$eval(

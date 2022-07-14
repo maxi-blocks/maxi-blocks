@@ -17,8 +17,8 @@ describe('Column size from Toolbar', () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
 
-		await page.$$eval('.maxi-row-block__template button', button =>
-			button[0].click()
+		await page.$eval('.maxi-row-block__template button', button =>
+			button.click()
 		);
 
 		// column size

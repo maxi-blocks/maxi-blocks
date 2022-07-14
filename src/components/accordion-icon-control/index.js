@@ -67,7 +67,7 @@ const AccordionIconSettings = props => {
 			/>
 			<SettingTabsControl
 				items={[
-					{
+					props['icon-content'] !== '' && {
 						label: __('Normal state', 'maxi-blocks'),
 						content: (
 							<>

@@ -177,20 +177,22 @@ const getIconObject = props => {
 			prefix: 'active-icon-',
 			blockStyle: props.blockStyle,
 		}),
-		...getSVGStyles({
-			obj: props,
-			target: '.maxi-pane-block[aria-expanded=false]:hover .maxi-pane-block__icon',
-			prefix: 'icon-',
-			blockStyle: props.blockStyle,
-			isHover: true,
-		}),
-		...getSVGStyles({
-			obj: props,
-			target: '.maxi-pane-block[aria-expanded=true]:hover .maxi-pane-block__icon',
-			prefix: 'active-icon-',
-			blockStyle: props.blockStyle,
-			isHover: true,
-		}),
+		...(props['icon-status-hover'] &&
+			getSVGStyles({
+				obj: props,
+				target: '.maxi-pane-block[aria-expanded=false]:hover .maxi-pane-block__icon',
+				prefix: 'icon-',
+				blockStyle: props.blockStyle,
+				isHover: true,
+			})),
+		...(props['active-icon-status-hover'] &&
+			getSVGStyles({
+				obj: props,
+				target: '.maxi-pane-block[aria-expanded=true]:hover .maxi-pane-block__icon',
+				prefix: 'active-icon-',
+				blockStyle: props.blockStyle,
+				isHover: true,
+			})),
 		'.maxi-accordion-block .maxi-pane-block__icon svg': getIconSize(
 			props,
 			false

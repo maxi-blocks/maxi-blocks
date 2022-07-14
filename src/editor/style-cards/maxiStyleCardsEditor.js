@@ -298,27 +298,6 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 								}}
 							/>
 							<Button
-								disabled={!canBeReset(selectedSCKey)}
-								className='maxi-style-cards__sc__more-sc--reset'
-								onClick={() => {
-									if (
-										window.confirm(
-											sprintf(
-												__(
-													'Are you sure to reset the "%s" style card\'s styles to defaults? Don\'t forget to apply the changes after.',
-													'maxi-blocks'
-												),
-												getCurrentSCName
-											)
-										)
-									) {
-										resetCurrentSC();
-									}
-								}}
-							>
-								<Icon icon={reset} />
-							</Button>
-							<Button
 								disabled={!canBeRemoved(selectedSCKey)}
 								className='maxi-style-cards__sc__more-sc--delete'
 								onClick={() => {

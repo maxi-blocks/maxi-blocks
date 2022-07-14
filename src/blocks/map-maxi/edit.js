@@ -2,9 +2,8 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { compose } from '@wordpress/compose';
-import { withDispatch, select } from '@wordpress/data';
-import { useRef, useState, createRef } from '@wordpress/element';
+import { select } from '@wordpress/data';
+import { createRef, useState } from '@wordpress/element';
 import { Button, TextControl } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
 
@@ -54,7 +53,7 @@ const GoogleMapsContent = props => {
 		'map-marker-address': mapMarkerAddress,
 	} = attributes;
 
-	const gmRef = useRef(null);
+	const gmRef = createRef();
 
 	if (apiKey) {
 		const loader = new Loader({
@@ -605,24 +604,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-const editDispatch = withDispatch((dispatch, ownProps) => {
-	const { maxiSetAttributes } = ownProps;
-
-	const changeSVGContent = (value, type) => {
-		const fillRegExp = new RegExp(`${type}:".+?(?=")`, 'g');
-		const fillStr = `${type}:${value}`;
-
-		const fillRegExp2 = new RegExp(`${type}=".+?(?=")`, 'g');
-		const fillStr2 = ` ${type}="${value}`;
-
-		const newContent = ownProps.attributes['map-marker-icon']
-			.replace(fillRegExp, fillStr)
-			.replace(fillRegExp2, fillStr2);
-
-		maxiSetAttributes({ 'map-marker-icon': newContent });
-	};
-
-	return { changeSVGContent };
-});
-
-export default compose(withMaxiProps, editDispatch)(edit);
+export default withMaxiProps(edit);

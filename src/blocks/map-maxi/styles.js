@@ -16,13 +16,14 @@ import {
 	getTransformStyles,
 	getZIndexStyles,
 	getTypographyStyles,
-	getCustomFormatsStyles,
 	getSVGStyles,
 	getFlexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsMap } from './custom-css';
 
 const getNormalObject = props => {
+	const { blockStyle } = props;
+
 	const response = {
 		border: getBorderStyles({
 			obj: {
@@ -32,13 +33,13 @@ const getNormalObject = props => {
 					'borderRadius',
 				]),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle,
 		}),
 		boxShadow: getBoxShadowStyles({
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			parentBlockStyle: props.parentBlockStyle,
+			blockStyle,
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
@@ -80,6 +81,8 @@ const getNormalObject = props => {
 };
 
 const getHoverNormalObject = props => {
+	const { blockStyle } = props;
+
 	const response = {
 		border:
 			props['border-status-hover'] &&
@@ -92,7 +95,7 @@ const getHoverNormalObject = props => {
 					),
 				},
 				isHover: true,
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle,
 			}),
 		boxShadow:
 			props['box-shadow-status-hover'] &&
@@ -101,7 +104,7 @@ const getHoverNormalObject = props => {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
 				isHover: true,
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle,
 			}),
 	};
 
@@ -109,13 +112,15 @@ const getHoverNormalObject = props => {
 };
 
 const getMapObject = (props, target) => {
+	const { blockStyle } = props;
+
 	const typography =
 		target === 'text'
 			? getTypographyStyles({
 					obj: {
 						...getGroupAttributes(props, 'typography'),
 					},
-					parentBlockStyle: props.parentBlockStyle,
+					blockStyle,
 			  })
 			: getTypographyStyles({
 					obj: {
@@ -126,7 +131,7 @@ const getMapObject = (props, target) => {
 							'description-'
 						),
 					},
-					parentBlockStyle: props.parentBlockStyle,
+					blockStyle,
 					prefix: 'description-',
 			  });
 
@@ -136,7 +141,7 @@ const getMapObject = (props, target) => {
 				...getGroupAttributes(props, 'map'),
 			},
 			target,
-			props.parentBlockStyle
+			blockStyle
 		),
 		[target === 'text' ? 'typography' : 'description-typography']:
 			typography,
@@ -241,6 +246,8 @@ const modifyBorderWidths = (obj, arrowNumber) => {
 };
 
 const getBorderArrowObject = props => {
+	const { blockStyle } = props;
+
 	const newObj = {
 		border: changeAttributeName(
 			getBorderStyles({
@@ -252,7 +259,7 @@ const getBorderArrowObject = props => {
 						'popup-'
 					),
 				},
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle,
 				prefix: 'popup-',
 			}),
 			['border-color'],
@@ -264,7 +271,7 @@ const getBorderArrowObject = props => {
 };
 
 const getStyles = props => {
-	const { uniqueID } = props;
+	const { uniqueID, blockStyle } = props;
 
 	const response = {
 		[uniqueID]: stylesCleaner(
@@ -291,7 +298,7 @@ const getStyles = props => {
 								'popup-'
 							),
 						},
-						parentBlockStyle: props.parentBlockStyle,
+						blockStyle,
 						prefix: 'popup-',
 					}),
 					boxShadow: getBoxShadowStyles({
@@ -303,7 +310,7 @@ const getStyles = props => {
 								'popup-'
 							),
 						},
-						parentBlockStyle: props.parentBlockStyle,
+						blockStyle,
 						prefix: 'popup-',
 					}),
 					...getBackgroundStyles({
@@ -313,7 +320,7 @@ const getStyles = props => {
 							false,
 							'popup-'
 						),
-						blockStyle: props.parentBlockStyle,
+						blockStyle,
 						prefix: 'popup-',
 					}),
 				},
@@ -326,7 +333,7 @@ const getStyles = props => {
 								false,
 								'popup-'
 							),
-							blockStyle: props.parentBlockStyle,
+							blockStyle,
 							prefix: 'popup-',
 						}),
 						['background-color', 'background'],
@@ -341,31 +348,8 @@ const getStyles = props => {
 					...getGroupAttributes(props, 'svg'),
 				},
 				target: ' .map-marker-icon',
-				blockStyle: props.parentBlockStyle,
+				blockStyle,
 			}),
-			...getCustomFormatsStyles(
-				' map-marker-info-window__title',
-				props['custom-formats'],
-				false,
-				{ ...getGroupAttributes(props, 'typography') },
-				props['map-marker-heading-level'],
-				props.parentBlockStyle
-			),
-			...getCustomFormatsStyles(
-				' map-marker-info-window__address',
-				props['custom-formats'],
-				false,
-				{
-					...getGroupAttributes(
-						props,
-						'typography',
-						false,
-						'description-'
-					),
-				},
-				'p',
-				props.parentBlockStyle
-			),
 			selectorsMap,
 			props
 		),

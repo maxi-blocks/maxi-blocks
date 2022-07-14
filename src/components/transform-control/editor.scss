@@ -4,7 +4,7 @@
 		width: 100%;
 		height: 2px;
 		border-radius: 0;
-		background: #dddfe1;
+		background: var(--maxi-grey-11-color);
 		outline: none;
 		-webkit-transition: 0.2s;
 		transition: opacity 0.2s;
@@ -41,7 +41,7 @@
 			align-items: center;
 			width: 65%;
 			height: 11rem;
-			border: 1px solid #dddfe1;
+			border: 1px solid var(--maxi-grey-11-color);
 			border-radius: 5px;
 			overflow: hidden;
 			&:before {
@@ -52,7 +52,7 @@
 				transform: translateY(-50%);
 				width: 100%;
 				height: 1px;
-				border: 1px solid #dddfe1;
+				border: 1px solid var(--maxi-grey-11-color);
 			}
 			&:after {
 				content: '';
@@ -62,7 +62,7 @@
 				transform: translateX(-50%);
 				width: 1px;
 				height: 100%;
-				border: 1px solid #dddfe1;
+				border: 1px solid var(--maxi-grey-11-color);
 			}
 			&__placeholder,
 			&__origin {
@@ -72,7 +72,7 @@
 				transform: translate(-50%, -50%);
 				width: 40px;
 				height: 40px;
-				border: 1px solid #dddfe1;
+				border: 1px solid var(--maxi-grey-11-color);
 				border-radius: 5px;
 				&__button {
 					&[aria-pressed='active'] {
@@ -83,14 +83,14 @@
 			}
 			&__resizer {
 				z-index: 1;
-				border: 1px solid #dddfe1;
+				border: 1px solid var(--maxi-grey-11-color);
 			}
 			&__draggable {
 				z-index: 9;
 				cursor: move;
 				width: 40px;
 				height: 40px;
-				border: 1px solid #dddfe1;
+				border: 1px solid var(--maxi-grey-11-color);
 				border-radius: 5px;
 				background-color: rgba(0, 0, 0, 0.3);
 			}
@@ -102,7 +102,7 @@
 					width: 8px;
 					height: 8px;
 					padding: 0;
-					background-color: #dddfe1;
+					background-color: var(--maxi-grey-11-color);
 					border-radius: 100%;
 				}
 				&__top {
@@ -213,7 +213,7 @@
 			}
 			button[type='button'],
 			button[type='reset'] {
-				border: 2px solid #dddfe1;
+				border: 2px solid var(--maxi-grey-11-color);
 				border-radius: 0;
 				width: 32px;
 				height: 32px;
@@ -272,10 +272,13 @@
 	.maxi-transform-control__rotate-control__item__input {
 		width: 64px;
 	}
-	.maxi-transform-control__square-control__y-control__value .maxi-base-control,
+	.maxi-transform-control__square-control__y-control__value
+		.maxi-base-control,
 	.maxi-transform-control__square-control__x-control__value__input,
-	.maxi-transform-control__square-control__x-control__value .maxi-base-control
-	.maxi-transform-control__square-control__y-control__value .maxi-base-control,
+	.maxi-transform-control__square-control__x-control__value
+		.maxi-base-control
+		.maxi-transform-control__square-control__y-control__value
+		.maxi-base-control,
 	.maxi-transform-control__square-control__y-control__value__input {
 		width: 70px;
 	}

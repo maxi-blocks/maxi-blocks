@@ -1,6 +1,6 @@
 .maxi-toolbar__popover {
 	z-index: 29;
-	
+
 	.components-popover__content {
 		overflow: visible;
 		background-color: transparent;
@@ -72,7 +72,6 @@
 					padding-right: 10px;
 					cursor: pointer;
 				}
-			
 			}
 
 			@at-root .rtl #{&} {
@@ -302,7 +301,7 @@ body .toolbar-item__popover {
 					background-color: #4f515c;
 					position: relative;
 					z-index: 1;
-					border: 2px solid #dddfe1;
+					border: 2px solid var(--maxi-grey-11-color);
 					border-bottom: 2px solid var(--maxi-primary-color);
 				}
 			}

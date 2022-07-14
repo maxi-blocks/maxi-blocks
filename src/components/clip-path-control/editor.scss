@@ -18,18 +18,18 @@
 			justify-content: center;
 			margin: 0;
 			padding: 0;
-			border: 1px solid #dddfe1;
+			border: 1px solid var(--maxi-grey-11-color);
 			border-top: 0;
 			border-left: 0;
 			border-radius: 0;
 			cursor: pointer;
 
 			&:nth-child(-n + 8) {
-				border-top: 1px solid #dddfe1;
+				border-top: 1px solid var(--maxi-grey-11-color);
 			}
 
 			&:nth-child(8n + 1) {
-				border-left: 1px solid #dddfe1;
+				border-left: 1px solid var(--maxi-grey-11-color);
 			}
 
 			&::after {
@@ -124,7 +124,7 @@
 	}
 
 	.maxi-clip-path-visual-editor-wrapper {
-		border: 2px solid #dddfe1;
+		border: 2px solid var(--maxi-grey-11-color);
 		border-radius: 5px;
 	}
 	.maxi-clip-path-visual-editor {

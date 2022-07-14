@@ -50,9 +50,9 @@ describe('BackgroundControl', () => {
 		});
 
 		// size
-		await page.$$eval(
-			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control button',
-			sizeButton => sizeButton[1].click()
+		await page.$eval(
+			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control__button-size',
+			sizeButton => sizeButton.click()
 		);
 
 		await editAdvancedNumberControl({
@@ -79,9 +79,9 @@ describe('BackgroundControl', () => {
 
 		expect(baseBackgroundOpacity).toStrictEqual('77');
 
-		await page.$$eval(
-			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control button',
-			sizeButton => sizeButton[1].click()
+		await page.$eval(
+			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control__button-size',
+			sizeButton => sizeButton.click()
 		);
 
 		const baseBackgroundShapeSize = await page.$$eval(
@@ -133,9 +133,9 @@ describe('BackgroundControl', () => {
 
 		expect(xsBackgroundOpacity).toStrictEqual('54');
 
-		await page.$$eval(
-			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control button',
-			sizeButton => sizeButton[1].click()
+		await page.$eval(
+			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control__button-size',
+			sizeButton => sizeButton.click()
 		);
 
 		const xsBackgroundShapeSize = await page.$$eval(
@@ -155,9 +155,9 @@ describe('BackgroundControl', () => {
 
 		expect(mBackgroundOpacity).toStrictEqual('77');
 
-		await page.$$eval(
-			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control button',
-			sizeButton => sizeButton[1].click()
+		await page.$eval(
+			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control__button-size',
+			sizeButton => sizeButton.click()
 		);
 
 		const mBackgroundShapeSize = await page.$$eval(
@@ -178,8 +178,9 @@ describe('BackgroundControl', () => {
 		);
 
 		// hover
-		await accordion.$$eval('.maxi-tabs-control button', button =>
-			button[1].click()
+		await accordion.$eval(
+			'.maxi-tabs-control .maxi-tabs-control__button-hover',
+			button => button.click()
 		);
 
 		// enable hover

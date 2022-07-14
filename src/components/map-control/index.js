@@ -19,11 +19,11 @@ import SettingTabsControl from '../setting-tabs-control';
 import { SvgColor } from '../svg-color';
 import {
 	getDefaultAttribute,
-	getColorRGBAString,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 	setHoverAttributes,
 } from '../../extensions/styles';
+import { setSVGContent } from '../../extensions/svg';
 
 /**
  * External dependencies
@@ -46,8 +46,6 @@ const MapControl = props => {
 	const { className, onChange, hasApiKey = false } = props;
 
 	const classes = classnames('maxi-map-control', className);
-
-	console.log('hasApiKey in MapControl', hasApiKey);
 
 	return (
 		<div className={classes}>
@@ -155,7 +153,7 @@ const MapControl = props => {
 };
 
 export const MapMarkersControl = props => {
-	const { onChange, parentBlockStyle, deviceType, changeSVGContent } = props;
+	const { onChange, deviceType } = props;
 
 	return (
 		<>
@@ -188,13 +186,16 @@ export const MapMarkersControl = props => {
 					<OpacityControl
 						label={__('Icon opacity', 'maxi-blocks')}
 						opacity={props['svg-fill-palette-opacity']}
-						onChange={val => {
+						onChange={val =>
 							onChange({
 								'svg-fill-palette-opacity': val,
-							});
-
-							changeSVGContent(val, 'opacity');
-						}}
+								'map-marker-icon': setSVGContent(
+									props['map-marker-icon'],
+									val,
+									'opacity'
+								),
+							})
+						}
 					/>
 					<AdvancedNumberControl
 						label={__('Icon size', 'maxi-blocks')}
@@ -210,40 +211,37 @@ export const MapMarkersControl = props => {
 						onChangeValue={val => {
 							onChange({
 								[`svg-width-${deviceType}`]: val,
+								'map-marker-icon': setSVGContent(
+									props['map-marker-icon'],
+									val,
+									' width'
+								),
 							});
-
-							changeSVGContent(val, ' width');
 						}}
 						onReset={() => {
 							const defaultAttr =
 								getDefaultAttribute('svg-width-general');
 							onChange({
 								[`svg-width-${deviceType}`]: defaultAttr,
+								'map-marker-icon': setSVGContent(
+									props['map-marker-icon'],
+									defaultAttr,
+									' width'
+								),
 							});
-							changeSVGContent(defaultAttr, ' width');
 						}}
 					/>
 					<SvgColor
 						{...props}
 						type='fill'
 						label={__('Icon', 'maxi-blocks')}
-						onChange={obj => {
-							onChange(obj);
-
-							const fillColorStr = getColorRGBAString({
-								firstVar: 'icon-fill',
-								secondVar: `color-${obj['svg-fill-palette-color']}`,
-								opacity: obj['svg-fill-palette-opacity'],
-								blockStyle: parentBlockStyle,
+						onChangeFill={({ content, ...rest }) => {
+							onChange({
+								'map-marker-icon': content,
+								...rest,
 							});
-
-							changeSVGContent(
-								obj['svg-fill-palette-status']
-									? fillColorStr
-									: obj['svg-fill-color'],
-								'fill'
-							);
 						}}
+						content={props['map-marker-icon']}
 					/>
 				</>
 			) : (

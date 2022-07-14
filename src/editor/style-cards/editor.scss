@@ -116,9 +116,11 @@ body {
 				}
 			}
 		}
-
+		.maxi-style-cards__sc__more-sc button {
+			width: 100%;
+		}
 		.maxi-style-cards__sc__more-sc--delete {
-			margin-left: 10px;
+			margin-left: 5px;
 
 			svg {
 				transform: scale(1.4);

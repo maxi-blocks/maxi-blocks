@@ -10,7 +10,7 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockStyle, openSidebarTab, getAttributes } from '../../utils';
+import { openSidebarTab, getAttributes } from '../../utils';
 
 describe('Video options control', () => {
 	it('Check video options control', async () => {
@@ -19,7 +19,7 @@ describe('Video options control', () => {
 
 		await openSidebarTab(page, 'style', 'video options');
 
-		// Add start time
+		// Add autoplay
 		await page.$eval('.maxi-video-options-control__autoplay input', input =>
 			input.click()
 		);
@@ -48,7 +48,13 @@ describe('Video options control', () => {
 
 		expect(await getAttributes('showPlayerControls')).toStrictEqual(false);
 
-		expect(await getBlockStyle(page)).toMatchSnapshot();
+		// Check video content
+		const videoContent = await page.$eval(
+			'.maxi-video-block__video-container',
+			block => block.innerHTML
+		);
+
+		expect(videoContent).toMatchSnapshot();
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
 });

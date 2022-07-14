@@ -343,23 +343,14 @@ const SearchBox = props => {
 	);
 };
 
-const OpenStreetMapContent = props => {
+const Markers = props => {
 	const { attributes, maxiSetAttributes } = props;
 	const {
-		uniqueID,
-		'map-markers': mapMarkers,
-		'map-latitude': mapLatitude,
-		'map-longitude': mapLongitude,
-		'map-zoom': mapZoom,
-		'map-min-zoom': mapMinZoom,
-		'map-max-zoom': mapMaxZoom,
 		'map-marker-heading-level': mapMarkerHeadingLevel,
-		'map-adding-marker': mapAddingMarker,
 		'map-marker-icon': mapMarkerIcon,
+		'map-markers': mapMarkers,
 		'map-popup': mapPopup,
 	} = attributes;
-
-	const [osmMap, setOsmMap] = useState();
 
 	const removeMarker = event => {
 		const index = parseInt(event.target.getAttribute('dataindex'));
@@ -379,6 +370,104 @@ const OpenStreetMapContent = props => {
 	const markerIcon = L.divIcon({
 		html: mapMarkerIcon,
 	});
+
+	return mapMarkers?.map((marker, index) => (
+		<Marker
+			position={[marker.latitude, marker.longitude]}
+			key={marker.id}
+			icon={markerIcon}
+			draggable
+			eventHandlers={{
+				dragstart: () => {
+					maxiSetAttributes({
+						'map-is-dragging-marker': true,
+					});
+				},
+				dragend: event => {
+					const { lat, lng } = event.target._latlng;
+					const updatedMarkers = [...mapMarkers];
+					updatedMarkers[index] = {
+						...updatedMarkers[index],
+						latitude: lat,
+						longitude: lng,
+					};
+
+					updateMarkers(updatedMarkers);
+					maxiSetAttributes({
+						'map-is-dragging-marker': false,
+					});
+				},
+				mouseover: () => {
+					maxiSetAttributes({
+						'map-is-dragging-marker': true,
+					});
+				},
+			}}
+		>
+			<Popup closeButton={false}>
+				<div
+					className={`map-marker-info-window map-marker-info-window__${mapPopup}`}
+				>
+					<div className='map-marker-info-window__content'>
+						<RichText
+							className='map-marker-info-window__title'
+							value={marker.heading}
+							identifier='title'
+							tagName={mapMarkerHeadingLevel}
+							onChange={content => {
+								const updatedMarkers = [...mapMarkers];
+								updatedMarkers[index].heading = content;
+
+								updateMarkers(updatedMarkers);
+							}}
+							placeholder={__('Title', 'maxi-blocks')}
+							withoutInteractiveFormatting
+						/>
+						<RichText
+							className='map-marker-info-window__address'
+							value={marker.description}
+							identifier='description'
+							tagName='p'
+							onChange={content => {
+								const updatedMarkers = [...mapMarkers];
+								updatedMarkers[index].description = content;
+
+								updateMarkers(updatedMarkers);
+							}}
+							placeholder={__('Description', 'maxi-blocks')}
+							withoutInteractiveFormatting
+						/>
+						<div className='map-marker-info-window__marker-remove'>
+							<Button
+								onClick={removeMarker}
+								dataindex={index}
+								icon='trash'
+								showTooltip
+								label={__('Remove this marker', 'maxi-blocks')}
+							>
+								{__('Remove', 'maxi-blocks')}
+							</Button>
+						</div>
+					</div>
+				</div>
+			</Popup>
+		</Marker>
+	));
+};
+
+const OpenStreetMapContent = props => {
+	const { attributes, maxiSetAttributes } = props;
+	const {
+		uniqueID,
+		'map-latitude': mapLatitude,
+		'map-longitude': mapLongitude,
+		'map-zoom': mapZoom,
+		'map-min-zoom': mapMinZoom,
+		'map-max-zoom': mapMaxZoom,
+		'map-adding-marker': mapAddingMarker,
+	} = attributes;
+
+	const [osmMap, setOsmMap] = useState();
 
 	const alert =
 		mapAddingMarker === ' pinning' ? (
@@ -401,100 +490,10 @@ const OpenStreetMapContent = props => {
 					url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 				/>
 				<MapEventsListener {...props} />
-				{mapMarkers?.map((marker, index) => (
-					<Marker
-						position={[marker.latitude, marker.longitude]}
-						key={marker.id}
-						icon={markerIcon}
-						draggable
-						eventHandlers={{
-							dragstart: () => {
-								maxiSetAttributes({
-									'map-is-dragging-marker': true,
-								});
-							},
-							dragend: event => {
-								const { lat, lng } = event.target._latlng;
-								const updatedMarkers = [...mapMarkers];
-								updatedMarkers[index] = {
-									...updatedMarkers[index],
-									latitude: lat,
-									longitude: lng,
-								};
-
-								updateMarkers(updatedMarkers);
-								maxiSetAttributes({
-									'map-is-dragging-marker': false,
-								});
-							},
-							mouseover: () => {
-								maxiSetAttributes({
-									'map-is-dragging-marker': true,
-								});
-							},
-						}}
-					>
-						<Popup closeButton={false}>
-							<div
-								className={`map-marker-info-window map-marker-info-window__${mapPopup}`}
-							>
-								<div className='map-marker-info-window__content'>
-									<RichText
-										className='map-marker-info-window__title'
-										value={marker.heading}
-										identifier='title'
-										tagName={mapMarkerHeadingLevel}
-										onChange={content => {
-											const updatedMarkers = [
-												...mapMarkers,
-											];
-											updatedMarkers[index].heading =
-												content;
-
-											updateMarkers(updatedMarkers);
-										}}
-										placeholder={__('Title', 'maxi-blocks')}
-										withoutInteractiveFormatting
-									/>
-									<RichText
-										className='map-marker-info-window__address'
-										value={marker.description}
-										identifier='description'
-										tagName='p'
-										onChange={content => {
-											const updatedMarkers = [
-												...mapMarkers,
-											];
-											updatedMarkers[index].description =
-												content;
-
-											updateMarkers(updatedMarkers);
-										}}
-										placeholder={__(
-											'Description',
-											'maxi-blocks'
-										)}
-										withoutInteractiveFormatting
-									/>
-									<div className='map-marker-info-window__marker-remove'>
-										<Button
-											onClick={removeMarker}
-											dataindex={index}
-											icon='trash'
-											showTooltip
-											label={__(
-												'Remove this marker',
-												'maxi-blocks'
-											)}
-										>
-											{__('Remove', 'maxi-blocks')}
-										</Button>
-									</div>
-								</div>
-							</div>
-						</Popup>
-					</Marker>
-				))}
+				<Markers
+					attributes={getGroupAttributes(attributes, 'map')}
+					maxiSetAttributes={maxiSetAttributes}
+				/>
 			</MapContainer>
 			<SearchBox {...props} map={osmMap} />
 			{alert}

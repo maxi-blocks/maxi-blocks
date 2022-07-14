@@ -54,7 +54,7 @@ class edit extends MaxiBlockComponent {
 
 	// maxiBlockDidMount() {}
 
-	maxiBlockDidUpdate(prevProps) {
+	maxiBlockDidUpdate() {
 		if (this.context.titleLevel !== this.props.attributes.titleLevel) {
 			const { maxiSetAttributes } = this.props;
 
@@ -113,6 +113,7 @@ class edit extends MaxiBlockComponent {
 				key={`maxi-pane--${uniqueID}`}
 				ref={this.blockRef}
 				className={`maxi-pane-block--${accordionLayout}-layout`}
+				context={this.context}
 				useInnerBlocks
 				innerBlocksSettings={{
 					allowedBlocks: ALLOWED_BLOCKS,

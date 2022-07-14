@@ -233,7 +233,6 @@ const SearchBox = props => {
 
 	const [keywords, setKeywords] = useState('');
 	const [searchResults, setSearchResults] = useState();
-	const inputRef = createRef(null);
 
 	const findMarkers = async () => {
 		if (keywords && keywords.length > 2) {
@@ -252,19 +251,14 @@ const SearchBox = props => {
 	};
 
 	const detectEnter = event => {
-		if (!inputRef) {
-			inputRef.current = event;
-		}
 		if (event.key === 'Enter') {
 			findMarkers();
 		}
 	};
 
 	const clearSearchBox = () => {
-		if (inputRef) {
-			setSearchResults([]);
-			setKeywords('');
-		}
+		setSearchResults([]);
+		setKeywords('');
 	};
 
 	const onButtonClick = () => {
@@ -317,7 +311,6 @@ const SearchBox = props => {
 		<>
 			<div className='map-searchbox'>
 				<TextControl
-					ref={inputRef}
 					value={keywords}
 					onChange={setKeywords}
 					onKeyDown={detectEnter}
@@ -336,7 +329,9 @@ const SearchBox = props => {
 							? __('Clear results', 'maxi-blocks')
 							: __('Find locations', 'maxi-blocks')
 					}
-					disabled={!(keywords && keywords.length > 2)}
+					disabled={
+						!((keywords && keywords.length > 2) || searchResults)
+					}
 				/>
 			</div>
 			{searchResults && searchResults.length ? (

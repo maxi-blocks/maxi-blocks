@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { select } from '@wordpress/data';
-import { createRef, useState } from '@wordpress/element';
+import { createRef, useEffect, useState } from '@wordpress/element';
 import { Button, TextControl } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
 
@@ -206,10 +206,6 @@ const MapEventsListener = props => {
 				'map-longitude': lng,
 			});
 		},
-		zoom: () => {
-			mapEvents.setMinZoom(mapMinZoom);
-			mapEvents.setMaxZoom(mapMaxZoom);
-		},
 		zoomend: () => {
 			const newZoom = mapEvents.getZoom();
 
@@ -218,6 +214,11 @@ const MapEventsListener = props => {
 			});
 		},
 	});
+
+	useEffect(() => {
+		mapEvents.setMinZoom(mapMinZoom);
+		mapEvents.setMaxZoom(mapMaxZoom);
+	}, [mapMinZoom, mapMaxZoom]);
 
 	return null;
 };
@@ -245,10 +246,6 @@ const SearchBox = props => {
 
 			setSearchResults(data);
 		}
-	};
-
-	const onTyping = text => {
-		setKeywords(text);
 	};
 
 	const detectEnter = event => {
@@ -319,7 +316,7 @@ const SearchBox = props => {
 				<TextControl
 					ref={inputRef}
 					value={keywords}
-					onChange={onTyping}
+					onChange={setKeywords}
 					onKeyDown={detectEnter}
 					placeholder={__('Enter your keywords…', 'maxi-blocks')}
 				/>

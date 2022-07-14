@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
+
 /**
  * External dependencies
  */
@@ -151,6 +152,8 @@ const CustomCssControl = props => {
 			return !isEmpty(notValidValue) ? notValidValue : validValue;
 		};
 
+		let typingTimeout = null;
+
 		return (
 			<BaseControl
 				key={`${label}`}
@@ -178,9 +181,13 @@ const CustomCssControl = props => {
 				<CodeEditor
 					language='css'
 					value={getValue()}
-					onChange={textarea =>
-						onChangeCssCode(textarea?.target?.value)
-					}
+					onChange={textarea => {
+						if (typingTimeout) clearTimeout(typingTimeout);
+						typingTimeout = setTimeout(
+							() => onChangeCssCode(textarea?.target?.value),
+							200
+						);
+					}}
 					onBlur={textarea => {
 						validateCss(textarea?.target?.value);
 					}}

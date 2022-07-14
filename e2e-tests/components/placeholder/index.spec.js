@@ -12,9 +12,9 @@ describe('Placeholder', () => {
 		);
 
 		// display template library
-		await page.$$eval(
+		await page.$eval(
 			'.maxi-responsive-selector .action-buttons__button',
-			button => button[0].click()
+			button => button.click()
 		);
 
 		// close modal

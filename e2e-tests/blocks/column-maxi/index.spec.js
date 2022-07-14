@@ -25,8 +25,8 @@ describe('Column Maxi', () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
 
-		await page.$$eval('.maxi-row-block__template button', button =>
-			button[0].click()
+		await page.$eval('.maxi-row-block__template button', button =>
+			button.click()
 		);
 
 		expect(await getEditedPostContent()).toMatchSnapshot();

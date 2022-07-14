@@ -18,6 +18,8 @@ import { cloneDeep, flatten, compact } from 'lodash';
 const loadTemplate = (template, clientId) => {
 	template.content.forEach(column => {
 		column[1].uniqueID = uniqueIDGenerator('column-maxi-');
+		const label = column[1].uniqueID.replace('-maxi-', '_');
+		column[1].customLabel = label.charAt(0).toUpperCase() + label.slice(1);
 	});
 
 	const newAttributes = template.attributes;

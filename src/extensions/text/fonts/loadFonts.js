@@ -62,34 +62,50 @@ const loadFonts = (font, backendOnly = true, target = document) => {
 					`url(${url})`,
 					fontDataNew
 				);
-
-				dispatch('core/notices').createNotice(
-					'info',
-					__('Downloading font…', 'maxi-blocks'),
-					{
-						id: url,
-						type: 'snackbar',
-					}
-				);
+				let fontLoaded = false;
+				let noticeCreated = false;
+				let downloadFailed = false;
+				if (target.fonts.check(`12px ${fontName}`)) fontLoaded = true;
+				else {
+					setTimeout(() => {
+						if (downloadFailed) return;
+						if (target.fonts.check(`12px ${fontName}`))
+							fontLoaded = true;
+						else {
+							noticeCreated = true;
+							dispatch('core/notices').createNotice(
+								'info',
+								__('Downloading font…', 'maxi-blocks'),
+								{
+									id: url,
+									type: 'snackbar',
+								}
+							);
+						}
+					}, 1000);
+				}
 
 				fontLoad.load().then(() => {
-					dispatch('core/notices').removeNotice(url);
-					dispatch('core/notices').createNotice(
-						'info',
-						__('Font downloaded', 'maxi-blocks'),
-						{
-							id: url,
-							type: 'snackbar',
-						}
-					);
-					setTimeout(() => {
+					if (!fontLoaded && noticeCreated) {
 						dispatch('core/notices').removeNotice(url);
-					}, 1000);
+						dispatch('core/notices').createNotice(
+							'info',
+							__('Font downloaded', 'maxi-blocks'),
+							{
+								id: url,
+								type: 'snackbar',
+							}
+						);
+						setTimeout(() => {
+							dispatch('core/notices').removeNotice(url);
+						}, 1000);
+					}
 
 					target.fonts.add(fontLoad);
 				});
 
 				fontLoad.loaded.catch(err => {
+					downloadFailed = true;
 					dispatch('core/notices').removeNotice(url);
 					dispatch('core/notices').createNotice(
 						'info',

@@ -41,14 +41,6 @@ const map = {
 		type: 'number',
 		default: 1,
 	},
-	'map-is-dragging-marker': {
-		type: 'boolean',
-		default: false,
-	},
-	'map-adding-marker': {
-		type: 'string',
-		default: '',
-	},
 	'map-marker-heading-level': {
 		type: 'string',
 		default: 'h6',

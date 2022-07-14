@@ -133,7 +133,7 @@ const GoogleMapsContent = props => {
 	);
 };
 
-const getMarkerUniqueId = mapMarkers =>
+const getMarkerId = mapMarkers =>
 	mapMarkers && !isEmpty(mapMarkers)
 		? mapMarkers.reduce((markerA, markerB) =>
 				markerA.id > markerB.id ? markerA : markerB
@@ -141,12 +141,18 @@ const getMarkerUniqueId = mapMarkers =>
 		: 0;
 
 const MapEventsListener = props => {
-	const { attributes, maxiSetAttributes, isFirstClick } = props;
+	const {
+		attributes,
+		isFirstClick,
+		maxiSetAttributes,
+		isDraggingMarker,
+		setIsDraggingMarker,
+		isAddingMarker,
+		setIsAddingMarker,
+	} = props;
 	const {
 		'map-min-zoom': mapMinZoom,
 		'map-max-zoom': mapMaxZoom,
-		'map-is-dragging-marker': mapIsDraggingMarker,
-		'map-adding-marker': mapAddingMarker,
 		'map-markers': mapMarkers,
 	} = attributes;
 	const timeout = 300;
@@ -157,30 +163,28 @@ const MapEventsListener = props => {
 			const elementClicked =
 				event.originalEvent.target.nodeName.toLowerCase();
 			if (elementClicked === 'div') {
-				maxiSetAttributes({ 'map-is-dragging-marker': false });
+				setIsDraggingMarker(false);
 			}
-			if (mapIsDraggingMarker === false && isFirstClick) {
+			if (!isDraggingMarker && isFirstClick) {
 				delay = setTimeout(() => {
-					maxiSetAttributes({ 'map-adding-marker': ' pinning' });
+					setIsAddingMarker(true);
 					setTimeout(() => {
 						// If hangs for too long, stop it.
-						maxiSetAttributes({ 'map-adding-marker': '' });
+						setIsAddingMarker(false);
 					}, timeout * 5);
 				}, timeout);
 			}
 		},
 		drag: () => {
 			clearTimeout(delay);
-			maxiSetAttributes({
-				'map-adding-marker': '',
-				'map-is-dragging-marker': false,
-			});
+			setIsAddingMarker(false);
+			setIsDraggingMarker(false);
 		},
 		mouseup: event => {
 			clearTimeout(delay);
-			if (mapAddingMarker) {
+			if (isAddingMarker) {
 				const newMarker = {
-					id: getMarkerUniqueId(mapMarkers),
+					id: getMarkerId(mapMarkers),
 					latitude: event.latlng.lat,
 					longitude: event.latlng.lng,
 					heading: '',
@@ -189,10 +193,10 @@ const MapEventsListener = props => {
 				};
 				maxiSetAttributes({
 					'map-markers': [...mapMarkers, newMarker],
-					'map-adding-marker': '',
 				});
+				setIsAddingMarker(false);
 				setTimeout(() => {
-					maxiSetAttributes({ 'map-is-dragging-marker': false });
+					setIsDraggingMarker(false);
 				}, timeout * 2);
 			}
 		},
@@ -274,7 +278,7 @@ const SearchBox = props => {
 		const { lat, lon } = searchResults[index];
 
 		const newMarker = {
-			id: getMarkerUniqueId(mapMarkers),
+			id: getMarkerId(mapMarkers),
 			latitude: lat,
 			longitude: lon,
 			heading: '',
@@ -342,7 +346,7 @@ const SearchBox = props => {
 };
 
 const Markers = props => {
-	const { attributes, maxiSetAttributes } = props;
+	const { attributes, maxiSetAttributes, setIsDraggingMarker } = props;
 	const {
 		'map-marker-heading-level': mapMarkerHeadingLevel,
 		'map-marker-icon': mapMarkerIcon,
@@ -377,9 +381,7 @@ const Markers = props => {
 			draggable
 			eventHandlers={{
 				dragstart: () => {
-					maxiSetAttributes({
-						'map-is-dragging-marker': true,
-					});
+					setIsDraggingMarker(true);
 				},
 				dragend: event => {
 					const { lat, lng } = event.target._latlng;
@@ -391,14 +393,10 @@ const Markers = props => {
 					};
 
 					updateMarkers(updatedMarkers);
-					maxiSetAttributes({
-						'map-is-dragging-marker': false,
-					});
+					setIsDraggingMarker(false);
 				},
 				mouseover: () => {
-					maxiSetAttributes({
-						'map-is-dragging-marker': true,
-					});
+					setIsDraggingMarker(true);
 				},
 			}}
 		>
@@ -462,15 +460,16 @@ const OpenStreetMapContent = props => {
 		'map-zoom': mapZoom,
 		'map-min-zoom': mapMinZoom,
 		'map-max-zoom': mapMaxZoom,
-		'map-adding-marker': mapAddingMarker,
 	} = attributes;
 
-	const alert =
-		mapAddingMarker === ' pinning' ? (
-			<div className='map-alert'>
-				{__('Release to drop a marker here', 'maxi-blocks')}
-			</div>
-		) : null;
+	const [isDraggingMarker, setIsDraggingMarker] = useState(false);
+	const [isAddingMarker, setIsAddingMarker] = useState(false);
+
+	const alert = isAddingMarker ? (
+		<div className='map-alert'>
+			{__('Release to drop a marker here', 'maxi-blocks')}
+		</div>
+	) : null;
 
 	return (
 		<div className='maxi-map-container' id={`map-container-${uniqueID}`}>
@@ -484,10 +483,17 @@ const OpenStreetMapContent = props => {
 					attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 					url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 				/>
-				<MapEventsListener {...props} />
+				<MapEventsListener
+					{...props}
+					isDraggingMarker={isDraggingMarker}
+					setIsDraggingMarker={setIsDraggingMarker}
+					isAddingMarker={isAddingMarker}
+					setIsAddingMarker={setIsAddingMarker}
+				/>
 				<Markers
 					attributes={getGroupAttributes(attributes, 'map')}
 					maxiSetAttributes={maxiSetAttributes}
+					setIsDraggingMarker={setIsDraggingMarker}
 				/>
 				<SearchBox {...props} />
 			</MapContainer>

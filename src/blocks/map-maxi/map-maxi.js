@@ -1,7 +1,7 @@
 /**
- * BLOCK: maxi-blocks/group-maxi
+ * BLOCK: maxi-blocks/map-maxi
  *
- * Group of blocks composed with a similar style or layout
+ * Create a map with marker and description
  */
 
 /**
@@ -31,7 +31,7 @@ import { mapIcon } from '../../icons';
 registerBlockType('maxi-blocks/map-maxi', {
 	title: __('Map Maxi', 'maxi-blocks'),
 	icon: mapIcon,
-	description: __('Show Google Map', 'maxi-blocks'),
+	description: __('Create a map with marker and description', 'maxi-blocks'),
 	category: 'maxi-blocks',
 	supports: {
 		align: true,

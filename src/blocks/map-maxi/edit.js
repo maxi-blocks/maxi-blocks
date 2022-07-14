@@ -29,6 +29,7 @@ import {
 	Marker,
 	Popup,
 	TileLayer,
+	useMap,
 	useMapEvents,
 } from 'react-leaflet';
 import L from 'leaflet';
@@ -224,9 +225,11 @@ const MapEventsListener = props => {
 };
 
 const SearchBox = props => {
-	const { attributes, maxiSetAttributes, map } = props;
+	const { attributes, maxiSetAttributes } = props;
 
 	const { 'map-markers': mapMarkers } = attributes;
+
+	const map = useMap();
 
 	const [keywords, setKeywords] = useState('');
 	const [searchResults, setSearchResults] = useState();
@@ -467,8 +470,6 @@ const OpenStreetMapContent = props => {
 		'map-adding-marker': mapAddingMarker,
 	} = attributes;
 
-	const [osmMap, setOsmMap] = useState();
-
 	const alert =
 		mapAddingMarker === ' pinning' ? (
 			<div className='map-alert'>
@@ -483,7 +484,6 @@ const OpenStreetMapContent = props => {
 				minZoom={mapMinZoom}
 				maxZoom={mapMaxZoom}
 				zoom={mapZoom}
-				ref={setOsmMap}
 			>
 				<TileLayer
 					attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -494,8 +494,8 @@ const OpenStreetMapContent = props => {
 					attributes={getGroupAttributes(attributes, 'map')}
 					maxiSetAttributes={maxiSetAttributes}
 				/>
+				<SearchBox {...props} />
 			</MapContainer>
-			<SearchBox {...props} map={osmMap} />
 			{alert}
 		</div>
 	);

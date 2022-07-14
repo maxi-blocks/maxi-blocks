@@ -136,19 +136,17 @@ const GoogleMapsContent = props => {
 
 const MapEventsListener = props => {
 	const {
-		attributes,
-		isFirstClick,
-		maxiSetAttributes,
-		isDraggingMarker,
-		setIsDraggingMarker,
 		isAddingMarker,
+		isDraggingMarker,
+		isFirstClick,
+		mapMarkers,
+		mapMaxZoom,
+		mapMinZoom,
+		maxiSetAttributes,
 		setIsAddingMarker,
+		setIsDraggingMarker,
 	} = props;
-	const {
-		'map-min-zoom': mapMinZoom,
-		'map-max-zoom': mapMaxZoom,
-		'map-markers': mapMarkers,
-	} = attributes;
+
 	const timeout = 300;
 	let delay;
 
@@ -436,14 +434,15 @@ const Markers = props => {
 };
 
 const OpenStreetMapContent = props => {
-	const { attributes, maxiSetAttributes } = props;
+	const { attributes, maxiSetAttributes, isFirstClick } = props;
 	const {
 		uniqueID,
 		'map-latitude': mapLatitude,
 		'map-longitude': mapLongitude,
-		'map-zoom': mapZoom,
-		'map-min-zoom': mapMinZoom,
+		'map-markers': mapMarkers,
 		'map-max-zoom': mapMaxZoom,
+		'map-min-zoom': mapMinZoom,
+		'map-zoom': mapZoom,
 	} = attributes;
 
 	const [isDraggingMarker, setIsDraggingMarker] = useState(false);
@@ -468,11 +467,15 @@ const OpenStreetMapContent = props => {
 					url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 				/>
 				<MapEventsListener
-					{...props}
-					isDraggingMarker={isDraggingMarker}
-					setIsDraggingMarker={setIsDraggingMarker}
 					isAddingMarker={isAddingMarker}
+					isDraggingMarker={isDraggingMarker}
+					isFirstClick={isFirstClick}
+					mapMarkers={mapMarkers}
+					mapMaxZoom={mapMaxZoom}
+					mapMinZoom={mapMinZoom}
+					maxiSetAttributes={maxiSetAttributes}
 					setIsAddingMarker={setIsAddingMarker}
+					setIsDraggingMarker={setIsDraggingMarker}
 				/>
 				<Markers
 					attributes={getGroupAttributes(attributes, 'map')}
@@ -516,8 +519,9 @@ class edit extends MaxiBlockComponent {
 		const { isSelected } = this.props;
 
 		if (
-			prevProps.isSelected === isSelected &&
-			this.state.isFirstClick !== isSelected
+			(prevProps.isSelected === isSelected &&
+				this.state.isFirstClick !== isSelected) ||
+			(prevProps.isSelected && !isSelected)
 		) {
 			this.setState({
 				isFirstClick: isSelected,

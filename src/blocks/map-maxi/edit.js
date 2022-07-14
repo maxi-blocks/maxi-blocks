@@ -15,6 +15,7 @@ import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';
+import { getNewMarker, getUpdatedMarkers } from './utils';
 import getStyles from './styles';
 import defaultMarkers from './defaultMarkers';
 import * as mapMarkerIcons from '../../icons/map-icons/markers';
@@ -133,13 +134,6 @@ const GoogleMapsContent = props => {
 	);
 };
 
-const getMarkerId = mapMarkers =>
-	mapMarkers && !isEmpty(mapMarkers)
-		? mapMarkers.reduce((markerA, markerB) =>
-				markerA.id > markerB.id ? markerA : markerB
-		  ).id + 1
-		: 0;
-
 const MapEventsListener = props => {
 	const {
 		attributes,
@@ -182,17 +176,13 @@ const MapEventsListener = props => {
 		},
 		mouseup: event => {
 			clearTimeout(delay);
+
 			if (isAddingMarker) {
-				const newMarker = {
-					id: getMarkerId(mapMarkers),
-					latitude: event.latlng.lat,
-					longitude: event.latlng.lng,
-					heading: '',
-					description: '',
-					text: '',
-				};
+				const { lat, lng } = event.latlng;
+				const newMarker = getNewMarker([lat, lng], mapMarkers);
+
 				maxiSetAttributes({
-					'map-markers': [...mapMarkers, newMarker],
+					'map-markers': getUpdatedMarkers(mapMarkers, newMarker),
 				});
 				setIsAddingMarker(false);
 				setTimeout(() => {
@@ -273,23 +263,15 @@ const SearchBox = props => {
 		}
 	};
 
-	const addMarker = event => {
+	const onAddMarker = event => {
 		const index = event.target.getAttribute('data-index');
 		const { lat, lon } = searchResults[index];
 
-		const newMarker = {
-			id: getMarkerId(mapMarkers),
-			latitude: lat,
-			longitude: lon,
-			heading: '',
-			description: '',
-		};
+		const newMarker = getNewMarker([lat, lon], mapMarkers);
 
 		map.flyTo([lat, lon]);
 		maxiSetAttributes({
-			'map-markers': mapMarkers
-				? [...mapMarkers, newMarker]
-				: [newMarker],
+			'map-markers': getUpdatedMarkers(mapMarkers, newMarker),
 		});
 		clearSearchBox();
 	};
@@ -300,7 +282,7 @@ const SearchBox = props => {
 
 			return (
 				<Button
-					onClick={addMarker}
+					onClick={onAddMarker}
 					className='map-searchbox__buttons'
 					key={placeId}
 					data-index={index}
@@ -354,6 +336,8 @@ const Markers = props => {
 		'map-popup': mapPopup,
 	} = attributes;
 
+	if (isEmpty(mapMarkers)) return null;
+
 	const removeMarker = event => {
 		const index = parseInt(event.target.getAttribute('dataindex'));
 		const updatedMarkers = [...mapMarkers];
@@ -373,7 +357,7 @@ const Markers = props => {
 		html: mapMarkerIcon,
 	});
 
-	return mapMarkers?.map((marker, index) => (
+	return mapMarkers.map((marker, index) => (
 		<Marker
 			position={[marker.latitude, marker.longitude]}
 			key={marker.id}

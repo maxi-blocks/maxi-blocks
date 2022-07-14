@@ -28,7 +28,6 @@ const map = {
 	},
 	'map-markers': {
 		type: 'array',
-		default: [],
 	},
 	'map-marker': {
 		type: 'number',

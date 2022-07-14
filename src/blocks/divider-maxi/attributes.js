@@ -23,10 +23,6 @@ const attributes = {
 	/**
 	 * Block styles
 	 */
-	customLabel: {
-		type: 'string',
-		default: __('Divider', 'maxi-blocks'),
-	},
 	...attributesData.divider,
 	...prefixAttributesCreator({ obj: attributesData.boxShadow, prefix }),
 	...prefixAttributesCreator({ obj: attributesData.boxShadowHover, prefix }),

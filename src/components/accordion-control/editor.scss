@@ -92,6 +92,11 @@
 	&--nested-accordion {
 		.maxi-accordion-control__item {
 			margin: 0 -1px;
+			&__panel {
+				margin-bottom: -8px;
+				padding-bottom: 8px;
+				background-color: #fff;
+			}
 		}
 		.maxi-accordion-control__item__button {
 			background: var(--maxi-white-4-color);

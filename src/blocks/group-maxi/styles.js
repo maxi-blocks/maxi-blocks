@@ -1,9 +1,4 @@
 /**
- * External dependencies
- */
-import { merge } from 'lodash';
-
-/**
  * Internal dependencies
  */
 import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
@@ -15,7 +10,6 @@ import {
 	getZIndexStyles,
 	getPositionStyles,
 	getDisplayStyles,
-	getTransitionStyles,
 	getArrowStyles,
 	getBlockBackgroundStyles,
 	getMarginPaddingStyles,
@@ -108,64 +102,61 @@ const getStyles = props => {
 
 	const response = {
 		[uniqueID]: stylesCleaner(
-			merge(
-				{
-					'': getNormalObject(props),
-					':hover': getHoverObject(props),
-					...getBlockBackgroundStyles({
-						...getGroupAttributes(props, [
+			{
+				'': getNormalObject(props),
+				':hover': getHoverObject(props),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(props, [
+						'blockBackground',
+						'border',
+						'borderWidth',
+						'borderRadius',
+					]),
+					blockStyle: props.blockStyle,
+				}),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(
+						props,
+						[
 							'blockBackground',
 							'border',
 							'borderWidth',
 							'borderRadius',
-						]),
-						blockStyle: props.blockStyle,
-					}),
-					...getBlockBackgroundStyles({
-						...getGroupAttributes(
-							props,
-							[
-								'blockBackground',
-								'border',
-								'borderWidth',
-								'borderRadius',
-							],
-							true
-						),
-						isHover: true,
-						blockStyle: props.blockStyle,
-					}),
-					...getArrowStyles({
-						...getGroupAttributes(props, [
+						],
+						true
+					),
+					isHover: true,
+					blockStyle: props.blockStyle,
+				}),
+				...getArrowStyles({
+					...getGroupAttributes(props, [
+						'arrow',
+						'border',
+						'borderWidth',
+						'borderRadius',
+						'blockBackground',
+						'boxShadow',
+					]),
+					blockStyle: props.blockStyle,
+				}),
+				...getArrowStyles({
+					...getGroupAttributes(
+						props,
+						[
 							'arrow',
 							'border',
 							'borderWidth',
 							'borderRadius',
 							'blockBackground',
 							'boxShadow',
-						]),
-						blockStyle: props.blockStyle,
-					}),
-					...getArrowStyles({
-						...getGroupAttributes(
-							props,
-							[
-								'arrow',
-								'border',
-								'borderWidth',
-								'borderRadius',
-								'blockBackground',
-								'boxShadow',
-							],
-							true
-						),
-						...getGroupAttributes(props, ['arrow']),
-						blockStyle: props.blockStyle,
-						isHover: true,
-					}),
-				},
-				...getTransitionStyles(props)
-			),
+						],
+						true
+					),
+					...getGroupAttributes(props, ['arrow']),
+					blockStyle: props.blockStyle,
+					isHover: true,
+				}),
+			},
 			selectorsGroup,
 			props
 		),

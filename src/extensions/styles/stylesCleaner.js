@@ -1,7 +1,11 @@
 /**
  * Internal dependencies
  */
-import { getCustomCssObject, getTransformStyles } from './helpers';
+import {
+	getCustomCssObject,
+	getTransformStyles,
+	getTransitionStyles,
+} from './helpers';
 import { getSelectorsCss } from '../../components/custom-css-control/utils';
 import { getTransformSelectors } from '../../components/transform-control/utils';
 
@@ -100,8 +104,11 @@ const hoverStylesCleaner = (normalObj, hoverObj) => {
 	return hoverObj;
 };
 
-const stylesCleaner = (obj, selectors, props) => {
+const stylesCleaner = (obj, selectors, props, transitionSelectors) => {
 	const response = cloneDeep(obj);
+
+	const transitionObject = getTransitionStyles(props, transitionSelectors);
+	if (!isEmpty(transitionObject)) merge(response, transitionObject);
 
 	// Process custom styles if they exist
 	const newCssSelectors = getSelectorsCss(selectors, props);

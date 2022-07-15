@@ -1,9 +1,4 @@
 /**
- * External dependencies
- */
-import { merge } from 'lodash';
-
-/**
  * Internal dependencies
  */
 import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
@@ -18,7 +13,6 @@ import {
 	getOverflowStyles,
 	getPositionStyles,
 	getSizeStyles,
-	getTransitionStyles,
 	getZIndexStyles,
 	getFlexStyles,
 } from '../../extensions/styles/helpers';
@@ -166,41 +160,38 @@ const getStyles = props => {
 
 	const response = {
 		[uniqueID]: stylesCleaner(
-			merge(
-				{
-					'': getWrapperObject(props),
-					':hover': getHoverWrapperObject(props),
-					' hr.maxi-divider-block__divider:hover':
-						getHoverObject(props),
-					' hr.maxi-divider-block__divider': getDividerObject(props),
-					...getBlockBackgroundStyles({
-						...getGroupAttributes(props, [
+			{
+				'': getWrapperObject(props),
+				':hover': getHoverWrapperObject(props),
+				' hr.maxi-divider-block__divider:hover': getHoverObject(props),
+				' hr.maxi-divider-block__divider': getDividerObject(props),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(props, [
+						'blockBackground',
+						'border',
+						'borderWidth',
+						'borderRadius',
+					]),
+					blockStyle: props.blockStyle,
+				}),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(
+						props,
+						[
 							'blockBackground',
 							'border',
 							'borderWidth',
 							'borderRadius',
-						]),
-						blockStyle: props.blockStyle,
-					}),
-					...getBlockBackgroundStyles({
-						...getGroupAttributes(
-							props,
-							[
-								'blockBackground',
-								'border',
-								'borderWidth',
-								'borderRadius',
-							],
-							true
-						),
-						isHover: true,
-						blockStyle: props.blockStyle,
-					}),
-				},
-				...getTransitionStyles(props, transitionObj)
-			),
+						],
+						true
+					),
+					isHover: true,
+					blockStyle: props.blockStyle,
+				}),
+			},
 			selectorsDivider,
-			props
+			props,
+			transitionObj
 		),
 	};
 

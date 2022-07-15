@@ -1,9 +1,4 @@
 /**
- * External dependencies
- */
-import { merge } from 'lodash';
-
-/**
  * Internal dependencies
  */
 import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
@@ -23,7 +18,6 @@ import {
 	getSVGWidthStyles,
 	getFlexStyles,
 	getBackgroundStyles,
-	getTransitionStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsSvgIcon } from './custom-css';
 import transitionObj from './transitionObj';
@@ -211,58 +205,56 @@ const getStyles = props => {
 
 	const response = {
 		[uniqueID]: stylesCleaner(
-			merge(
-				{
-					'': getWrapperObject(props),
-					':hover': getWrapperObjectHover(props),
-					' .maxi-svg-icon-block__icon': getNormalObject(props),
-					' .maxi-svg-icon-block__icon:hover': getHoverObject(props),
+			{
+				'': getWrapperObject(props),
+				':hover': getWrapperObjectHover(props),
+				' .maxi-svg-icon-block__icon': getNormalObject(props),
+				' .maxi-svg-icon-block__icon:hover': getHoverObject(props),
+				...getSVGStyles({
+					obj: {
+						...getGroupAttributes(props, 'svg'),
+					},
+					target: ' .maxi-svg-icon-block__icon',
+					blockStyle,
+				}),
+
+				...(props['svg-status-hover'] && {
 					...getSVGStyles({
 						obj: {
-							...getGroupAttributes(props, 'svg'),
+							...getGroupAttributes(props, 'svgHover', true),
 						},
-						target: ' .maxi-svg-icon-block__icon',
+						target: '.maxi-svg-icon-block__icon:hover',
 						blockStyle,
+						isHover: true,
 					}),
-
-					...(props['svg-status-hover'] && {
-						...getSVGStyles({
-							obj: {
-								...getGroupAttributes(props, 'svgHover', true),
-							},
-							target: '.maxi-svg-icon-block__icon:hover',
-							blockStyle,
-							isHover: true,
-						}),
-					}),
-					...getBlockBackgroundStyles({
-						...getGroupAttributes(props, [
+				}),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(props, [
+						'blockBackground',
+						'border',
+						'borderWidth',
+						'borderRadius',
+					]),
+					blockStyle,
+				}),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(
+						props,
+						[
 							'blockBackground',
 							'border',
 							'borderWidth',
 							'borderRadius',
-						]),
-						blockStyle,
-					}),
-					...getBlockBackgroundStyles({
-						...getGroupAttributes(
-							props,
-							[
-								'blockBackground',
-								'border',
-								'borderWidth',
-								'borderRadius',
-							],
-							true
-						),
-						isHover: true,
-						blockStyle,
-					}),
-				},
-				...getTransitionStyles(props, transitionObj)
-			),
+						],
+						true
+					),
+					isHover: true,
+					blockStyle,
+				}),
+			},
 			selectorsSvgIcon,
-			props
+			props,
+			transitionObj
 		),
 	};
 

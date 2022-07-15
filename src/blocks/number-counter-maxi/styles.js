@@ -1,9 +1,4 @@
 /**
- * External dependencies
- */
-import { merge } from 'lodash';
-
-/**
  * Internal dependencies
  */
 import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
@@ -18,7 +13,6 @@ import {
 	getOverflowStyles,
 	getPositionStyles,
 	getSizeStyles,
-	getTransitionStyles,
 	getZIndexStyles,
 	getFlexStyles,
 	getAlignmentFlexStyles,
@@ -223,48 +217,45 @@ const getStyles = props => {
 
 	const response = {
 		[uniqueID]: stylesCleaner(
-			merge(
-				{
-					'': getWrapperObject(props),
-					':hover': getHoverWrapperObject(props),
-					':hover .maxi-number-counter__box':
-						getHoverBoxObject(props),
-					' .maxi-number-counter__box': getBoxObject(props),
-					...getNumberCounterStyles({
-						obj: {
-							...getGroupAttributes(props, 'numberCounter'),
-						},
-						target: '.maxi-number-counter__box',
-						blockStyle,
-					}),
-					...getBlockBackgroundStyles({
-						...getGroupAttributes(props, [
+			{
+				'': getWrapperObject(props),
+				':hover': getHoverWrapperObject(props),
+				':hover .maxi-number-counter__box': getHoverBoxObject(props),
+				' .maxi-number-counter__box': getBoxObject(props),
+				...getNumberCounterStyles({
+					obj: {
+						...getGroupAttributes(props, 'numberCounter'),
+					},
+					target: '.maxi-number-counter__box',
+					blockStyle,
+				}),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(props, [
+						'blockBackground',
+						'border',
+						'borderWidth',
+						'borderRadius',
+					]),
+					blockStyle: props.blockStyle,
+				}),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(
+						props,
+						[
 							'blockBackground',
 							'border',
 							'borderWidth',
 							'borderRadius',
-						]),
-						blockStyle: props.blockStyle,
-					}),
-					...getBlockBackgroundStyles({
-						...getGroupAttributes(
-							props,
-							[
-								'blockBackground',
-								'border',
-								'borderWidth',
-								'borderRadius',
-							],
-							true
-						),
-						blockStyle: props.blockStyle,
-						isHover: true,
-					}),
-				},
-				...getTransitionStyles(props, transitionObj)
-			),
+						],
+						true
+					),
+					blockStyle: props.blockStyle,
+					isHover: true,
+				}),
+			},
 			selectorsNumberCounter,
-			props
+			props,
+			transitionObj
 		),
 	};
 	return response;

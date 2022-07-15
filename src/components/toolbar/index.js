@@ -261,6 +261,11 @@ const MaxiToolbar = memo(
 								<span className='toolbar-block-custom-label__block-style'>
 									{` | ${blockStyle}`}
 								</span>
+								{!isFirstOnHierarchy && (
+									<span className='toolbar-more-indicator'>
+										&gt;
+									</span>
+								)}
 							</div>
 						)}
 						<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />

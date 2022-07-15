@@ -1,6 +1,19 @@
 .maxi-toolbar__popover {
 	z-index: 29;
 
+	.toolbar-more-indicator {
+		margin-left: 10px;
+		position: absolute;
+		right: -16px;
+		background: var(--maxi-primary-color);
+		border-radius: 0 3px 3px 0px;
+		height: 20px;
+		top: 0;
+		align-items: center;
+		display: flex;
+		width: 15px;
+		justify-content: center;
+	}
 	.components-popover__content {
 		overflow: visible;
 		background-color: transparent;
@@ -56,7 +69,7 @@
 				left: 0;
 				padding: 4px 10px;
 				background: var(--maxi-primary-color);
-				border-radius: 3px;
+				border-radius: 3px 0 0 3px;
 				color: #fff;
 				font-size: 10px;
 				font-weight: 400;

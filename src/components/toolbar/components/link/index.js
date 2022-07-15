@@ -5,6 +5,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { __experimentalLinkControl as LinkControl } from '@wordpress/block-editor';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -28,7 +29,7 @@ import { toolbarLink } from '../../../../icons';
  * Link
  */
 const Link = props => {
-	const { blockName, onChange, linkSettings } = props;
+	const { blockName, onChange, linkSettings, clientId } = props;
 
 	if (
 		blockName === 'maxi-blocks/divider-maxi' ||
@@ -41,6 +42,24 @@ const Link = props => {
 			url: '',
 		});
 	};
+	let childHasLink = false;
+	if (linkSettings?.disabled) childHasLink = true;
+	else {
+		const children = select('core/block-editor').getClientIdsOfDescendants([
+			clientId,
+		]);
+
+		if (children?.length) {
+			children.forEach(child => {
+				const { linkSettings } =
+					select('core/block-editor').getBlockAttributes(child);
+
+				if (!isEmpty(linkSettings?.url)) {
+					childHasLink = true;
+				}
+			});
+		}
+	}
 
 	return (
 		<div className='toolbar-item toolbar-item__link'>
@@ -52,47 +71,52 @@ const Link = props => {
 					!isEmpty(linkSettings.url) &&
 					'toolbar-item__link--active'
 				}
+				disabled={childHasLink}
 			>
-				<>
-					<LinkControl
-						searchInputPlaceholder='Search or type URL'
-						value={linkSettings}
-						onChange={value => onChange(value)}
-						settings={[
-							{
-								id: 'opensInNewTab',
-								title: __('Open in new tab', 'maxi-blocks'),
-							},
-							{
-								id: 'noFollow',
-								title: __('"nofollow"', 'maxi-blocks'),
-							},
-							{
-								id: 'sponsored',
-								title: __('"sponsored"', 'maxi-blocks'),
-							},
-							{
-								id: 'ugc',
-								title: __('"UGC"', 'maxi-blocks'),
-							},
-						]}
-					/>
-					{!isNil(linkSettings) && !isEmpty(linkSettings.url) && (
-						<ToolbarContext.Consumer>
-							{context => (
-								<Button
-									className='toolbar-popover-link-destroyer'
-									onClick={() => {
-										removeLinkHandle();
-										context.onClose();
-									}}
-								>
-									{__('Remove link', 'maxi-blocks')}
-								</Button>
-							)}
-						</ToolbarContext.Consumer>
-					)}
-				</>
+				{!childHasLink && (
+					<>
+						<LinkControl
+							searchInputPlaceholder='Search or type URL'
+							value={linkSettings}
+							onChange={value => {
+								onChange(value);
+							}}
+							settings={[
+								{
+									id: 'opensInNewTab',
+									title: __('Open in new tab', 'maxi-blocks'),
+								},
+								{
+									id: 'noFollow',
+									title: __('"nofollow"', 'maxi-blocks'),
+								},
+								{
+									id: 'sponsored',
+									title: __('"sponsored"', 'maxi-blocks'),
+								},
+								{
+									id: 'ugc',
+									title: __('"UGC"', 'maxi-blocks'),
+								},
+							]}
+						/>
+						{!isNil(linkSettings) && !isEmpty(linkSettings.url) && (
+							<ToolbarContext.Consumer>
+								{context => (
+									<Button
+										className='toolbar-popover-link-destroyer'
+										onClick={() => {
+											removeLinkHandle();
+											context.onClose();
+										}}
+									>
+										{__('Remove link', 'maxi-blocks')}
+									</Button>
+								)}
+							</ToolbarContext.Consumer>
+						)}
+					</>
+				)}
 			</ToolbarPopover>
 		</div>
 	);

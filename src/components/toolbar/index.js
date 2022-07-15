@@ -568,6 +568,7 @@ const MaxiToolbar = memo(
 							onChange={linkSettings =>
 								maxiSetAttributes({ linkSettings })
 							}
+							clientId={clientId}
 							textLevel={textLevel}
 						/>
 						<TextLink
@@ -580,6 +581,7 @@ const MaxiToolbar = memo(
 							textLevel={textLevel}
 							blockStyle={blockStyle}
 							styleCard={styleCard}
+							clientId={clientId}
 						/>
 						<VerticalAlign
 							clientId={clientId}

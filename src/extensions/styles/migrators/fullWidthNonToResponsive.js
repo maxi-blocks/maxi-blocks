@@ -1,12 +1,8 @@
-import { isNil } from 'lodash';
+import { cloneElement } from '@wordpress/element';
 
-const isEligible = blockAttributes => {
-	if (!isNil(blockAttributes.blockFullWidth)) {
-		return true;
-	}
+import { isNil, isArray } from 'lodash';
 
-	return false;
-};
+const isEligible = blockAttributes => !isNil(blockAttributes.blockFullWidth);
 
 const attributes = isContainer => {
 	return {
@@ -21,12 +17,54 @@ const attributes = isContainer => {
 	};
 };
 
-const migrate = (newAttributes, prefix) => {
+const migrate = ({ newAttributes, prefix }) => {
 	const { blockFullWidth, fullWidth } = newAttributes;
 	delete newAttributes.blockFullWidth;
 
 	newAttributes['full-width-general'] = blockFullWidth;
 	if (prefix) newAttributes[`${prefix}full-width-general`] = fullWidth;
+
+	return newAttributes;
 };
 
-export { isEligible, attributes, migrate };
+const saveMigrator = (saveInstance, props) => {
+	const { attributes } = props;
+	const { fullWidth, blockFullWidth } = attributes;
+
+	let newInstance = cloneElement(saveInstance, {
+		'data-align': blockFullWidth,
+	});
+
+	// Concrete case for Button Maxi
+	if (attributes.uniqueID.includes('button')) {
+		let buttonChildren = newInstance.props.children;
+		const buttonChild = isArray(buttonChildren)
+			? buttonChildren[0]
+			: buttonChildren;
+
+		const newButtonChild = cloneElement({
+			...buttonChild,
+			props: { ...buttonChild.props, 'data-align': fullWidth },
+		});
+
+		if (isArray(buttonChildren)) buttonChildren[0] = newButtonChild;
+		else buttonChildren = newButtonChild;
+
+		newInstance = cloneElement({
+			...newInstance,
+			props: {
+				...newInstance.props,
+				children: buttonChildren,
+			},
+		});
+	}
+
+	return newInstance;
+};
+
+export default {
+	isEligible,
+	attributes,
+	migrate,
+	saveMigrator,
+};

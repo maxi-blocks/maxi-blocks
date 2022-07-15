@@ -58,6 +58,7 @@
 		"react/state-in-constructor": "off",
 		"no-underscore-dangle": "off",
 		"no-nested-ternary": "off",
+		"default-param-last": "off",
 		"import/named": "off",
 		"react/destructuring-assignment": "off",
 		"jsx-a11y/anchor-is-valid": "off",

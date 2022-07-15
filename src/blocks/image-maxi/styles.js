@@ -21,7 +21,6 @@ import {
 	getOpacityStyles,
 	getPositionStyles,
 	getSizeStyles,
-	getTransformStyles,
 	getTransitionStyles,
 	getTypographyStyles,
 	getZIndexStyles,
@@ -74,9 +73,6 @@ const getWrapperObject = props => {
 		}),
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
-		}),
-		transform: getTransformStyles({
-			...getGroupAttributes(props, 'transform'),
 		}),
 		alignment: getAlignmentFlexStyles({
 			...getGroupAttributes(props, 'alignment'),

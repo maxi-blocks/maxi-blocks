@@ -7,6 +7,10 @@
 	&__links {
 		margin-top: 5px;
 
+		&.manage-transitions {
+			margin-bottom: 20px;
+		}
+
 		a {
 			text-decoration: underline;
 			font-size: 11px !important;
@@ -34,7 +38,7 @@
 }
 .maxi-accordion-control__item__panel {
 	.maxi-warning-box {
-		border: 1px solid #faebcc;
+		border: 1px solid var(--maxi-light-yellow-1-color);
 		margin-bottom: 8px;
 	}
 }

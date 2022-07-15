@@ -154,7 +154,10 @@ class edit extends MaxiBlockComponent {
 			<textContext.Provider
 				key={`maxi-text-block__context-${uniqueID}`}
 				value={{
-					formatValue: this.state.formatValue,
+					content,
+					formatValue: {
+						...this.state.formatValue,
+					},
 					onChangeTextFormat: newFormatValue => {
 						this.state.onChangeFormat(newFormatValue);
 						onChangeRichText({

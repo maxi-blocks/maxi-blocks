@@ -15,17 +15,13 @@ import {
 	SvgColorControl,
 	SvgStrokeWidthControl,
 	SvgWidthControl,
+	SvgAltControl,
 } from '../../components';
 import {
 	getColorRGBAString,
 	getGroupAttributes,
 } from '../../extensions/styles';
-import {
-	setSVGStrokeWidth,
-	setSVGContent,
-	setSVGContentHover,
-	setSVGContentWithBlockStyle,
-} from '../../extensions/svg';
+import { setSVGContentWithBlockStyle } from '../../extensions/svg';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsSvgIcon, categoriesSvgIcon } from './custom-css';
 import ResponsiveTabsControl from '../../components/responsive-tabs-control';
@@ -123,6 +119,20 @@ const Inspector = props => {
 										isAlignment: true,
 										disableJustify: true,
 									}),
+									{
+										label: __('Icon alt', 'maxi-blocks'),
+										content: deviceType === 'general' && (
+											<SvgAltControl
+												altTitle={attributes.altTitle}
+												altDescription={
+													attributes.altDescription
+												}
+												onChange={obj =>
+													maxiSetAttributes(obj)
+												}
+											/>
+										),
+									},
 									attributes.content && {
 										label: __('Icon colour', 'maxi-blocks'),
 										content: (
@@ -151,136 +161,27 @@ const Inspector = props => {
 												}}
 												onChangeFill={obj => {
 													maxiSetAttributes(obj);
-
-													if (svgType !== 'Line') {
-														const fillColorStr =
-															getColorRGBAString({
-																firstVar:
-																	'icon-fill',
-																secondVar: `color-${obj['svg-fill-palette-color']}`,
-																opacity:
-																	obj[
-																		'svg-fill-palette-opacity'
-																	],
-																blockStyle,
-															});
-														maxiSetAttributes({
-															content:
-																setSVGContent(
-																	attributes.content,
-																	obj[
-																		'svg-fill-palette-status'
-																	]
-																		? fillColorStr
-																		: obj[
-																				'svg-fill-color'
-																		  ],
-																	'fill'
-																),
-														});
+													if (svgType !== 'Line')
 														cleanInlineStyles(
 															'[data-fill]'
 														);
-													}
 												}}
 												onChangeStroke={obj => {
 													maxiSetAttributes(obj);
 
-													if (svgType !== 'Shape') {
-														const lineColorStr =
-															getColorRGBAString({
-																firstVar:
-																	'icon-stroke',
-																secondVar: `color-${obj['svg-line-palette-color']}`,
-																opacity:
-																	obj[
-																		'svg-line-palette-opacity'
-																	],
-																blockStyle,
-															});
-														maxiSetAttributes({
-															content:
-																setSVGContent(
-																	attributes.content,
-																	obj[
-																		'svg-line-palette-status'
-																	]
-																		? lineColorStr
-																		: obj[
-																				'svg-line-color'
-																		  ],
-																	'stroke'
-																),
-														});
+													if (svgType !== 'Shape')
 														cleanInlineStyles(
 															'[data-stroke]'
 														);
-													}
 												}}
 												onChangeHoverFill={obj => {
 													maxiSetAttributes(obj);
-
-													if (svgType === 'Filled') {
-														const fillColorStrHover =
-															getColorRGBAString({
-																firstVar:
-																	'icon-fill-hover',
-																secondVar: `color-${obj['svg-fill-palette-color-hover']}`,
-																opacity:
-																	obj[
-																		'svg-fill-palette-opacity-hover'
-																	],
-																blockStyle,
-															});
-
-														maxiSetAttributes({
-															content:
-																setSVGContentHover(
-																	attributes.content,
-																	obj[
-																		'svg-fill-palette-status-hover'
-																	]
-																		? fillColorStrHover
-																		: obj[
-																				'svg-fill-color-hover'
-																		  ],
-																	'fill'
-																),
-														});
-													}
 												}}
 												onChangeHoverStroke={obj => {
 													maxiSetAttributes(obj);
-
-													if (svgType === 'Filled') {
-														const lineColorStrHover =
-															getColorRGBAString({
-																firstVar:
-																	'icon-stroke-hover',
-																secondVar: `color-${obj['svg-line-palette-color-hover']}`,
-																opacity:
-																	obj[
-																		'svg-line-palette-opacity-hover'
-																	],
-																blockStyle,
-															});
-
-														maxiSetAttributes({
-															content:
-																setSVGContentHover(
-																	attributes.content,
-																	obj[
-																		'svg-line-palette-status-hover'
-																	]
-																		? lineColorStrHover
-																		: obj[
-																				'svg-line-color-hover'
-																		  ],
-																	'stroke'
-																),
-														});
-													}
 												}}
+												blockStyle={blockStyle}
+												content={attributes.content}
 											/>
 										),
 										ignoreIndicator: [
@@ -296,30 +197,18 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<ResponsiveTabsControl
+												<SvgStrokeWidthControl
+													{...getGroupAttributes(
+														attributes,
+														'svg'
+													)}
+													prefix='svg-'
+													onChange={obj => {
+														maxiSetAttributes(obj);
+													}}
+													content={attributes.content}
 													breakpoint={deviceType}
-												>
-													<SvgStrokeWidthControl
-														{...getGroupAttributes(
-															attributes,
-															'svg'
-														)}
-														prefix='svg-'
-														onChange={obj => {
-															maxiSetAttributes({
-																...obj,
-																content:
-																	setSVGStrokeWidth(
-																		attributes.content,
-																		obj[
-																			`svg-stroke-${deviceType}`
-																		]
-																	),
-															});
-														}}
-														breakpoint={deviceType}
-													/>
-												</ResponsiveTabsControl>
+												/>
 											),
 											ignoreIndicator: [
 												'svg-fill-palette-color',

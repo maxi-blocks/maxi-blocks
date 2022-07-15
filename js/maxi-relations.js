@@ -4,53 +4,110 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const relations = () => {
 	const getCssResponsiveObj = (css, effects) => {
-		let stylesObj = {};
-		let effectsObj = {};
+		const getCssObjForEachTarget = (css, effects) => {
+			let stylesObj = {};
+			let effectsObj = {};
 
-		Object.entries(css).forEach(([breakpoint, obj]) => {
-			if (
-				breakpoints.includes(breakpoint) &&
-				(window.innerWidth < obj.breakpoint || !obj.breakpoint)
-			) {
-				stylesObj = {
-					...stylesObj,
-					...obj.styles,
-				};
+			Object.entries(css).forEach(([breakpoint, obj]) => {
+				if (
+					breakpoints.includes(breakpoint) &&
+					(window.innerWidth <= obj.breakpoint || !obj.breakpoint)
+				) {
+					stylesObj = {
+						...stylesObj,
+						...obj.styles,
+					};
 
-				effectsObj = {
-					...effectsObj,
-					...(effects[`transition-duration-${breakpoint}`] !==
-						undefined && {
-						'transition-duration':
-							effects[`transition-duration-${breakpoint}`],
-					}),
-					...(effects[`transition-delay-${breakpoint}`] !==
-						undefined && {
-						'transition-delay':
-							effects[`transition-delay-${breakpoint}`],
-					}),
-					...(effects[`easing-${breakpoint}`] !== undefined && {
-						easing: effects[`easing-${breakpoint}`],
-					}),
-					...(effects[`transition-status-${breakpoint}`] !==
-						undefined && {
-						'transition-status':
-							effects[`transition-status-${breakpoint}`],
-					}),
-				};
-			}
-		});
+					const getLastEffectsBreakpointAttribute = target =>
+						effects[`${target}-${breakpoint}`] !== undefined
+							? {
+									[target]:
+										effects[`${target}-${breakpoint}`],
+							  }
+							: {};
+
+					effectsObj = {
+						...effectsObj,
+						...getLastEffectsBreakpointAttribute(
+							'transition-status'
+						),
+						...getLastEffectsBreakpointAttribute(
+							'transition-duration'
+						),
+						...getLastEffectsBreakpointAttribute(
+							'transition-delay'
+						),
+						...getLastEffectsBreakpointAttribute('easing'),
+					};
+				} else if (!obj.breakpoint) {
+					const { stylesObj: rawStyles, effectsObj: rawEffects } =
+						getCssObjForEachTarget(obj, effects);
+
+					stylesObj = {
+						...stylesObj,
+						[breakpoint]: rawStyles,
+						isTargets: true,
+					};
+
+					effectsObj = {
+						...effectsObj,
+						...rawEffects,
+					};
+				}
+			});
+
+			return { stylesObj, effectsObj };
+		};
+
+		const { stylesObj, effectsObj } = getCssObjForEachTarget(css, effects);
 
 		return {
-			css: stylesObj,
+			stylesObj,
 			effectsObj,
 		};
 	};
 
 	const toggleInlineStyles = (stylesObj, element, remove = false) => {
-		Object.entries(stylesObj).forEach(([key, value]) => {
-			element.style[key] = !remove ? value : '';
-		});
+		if (stylesObj.isTargets) {
+			Object.entries(stylesObj).forEach(([target, styles]) => {
+				if (target === 'isTargets') return;
+
+				const targetEls = element.querySelectorAll(
+					target.includes('>') ? `:scope ${target}` : target
+				);
+
+				targetEls.forEach(targetEl =>
+					toggleInlineStyles(styles, targetEl, remove)
+				);
+			});
+		} else {
+			Object.entries(stylesObj).forEach(
+				([key, value]) => (element.style[key] = !remove ? value : '')
+			);
+		}
+	};
+
+	const toggleTransition = (
+		transitionString,
+		element,
+		stylesObj,
+		remove = false
+	) => {
+		const targets = stylesObj.isTargets ? Object.keys(stylesObj) : null;
+
+		if (targets) {
+			targets.forEach(target => {
+				const targetEls = element.querySelectorAll(
+					target.includes('>') ? `:scope ${target}` : target
+				);
+
+				targetEls.forEach(targetEl =>
+					toggleTransition(transitionString, targetEl, remove)
+				);
+			});
+		} else {
+			element.style.transition = !remove ? transitionString : '';
+		}
 	};
 
 	const getTransitionString = effectsObj =>
@@ -72,36 +129,54 @@ const relations = () => {
 			case 'hover': {
 				triggerEl.addEventListener('mouseenter', () => {
 					clearTimeout(timeout);
-					const { css, effectsObj } = getCssResponsiveObj(
+
+					const { stylesObj, effectsObj } = getCssResponsiveObj(
 						item.css,
 						item.effects
 					);
 
-					targetEl.style.transition = getTransitionString(effectsObj);
+					toggleTransition(
+						getTransitionString(effectsObj),
+						targetEl,
+						stylesObj
+					);
 
-					toggleInlineStyles(css, targetEl);
+					toggleInlineStyles(stylesObj, targetEl);
 				});
 
 				triggerEl.addEventListener('mouseleave', () => {
-					const { css } = getCssResponsiveObj(item.css, item.effects);
+					const { stylesObj, effectsObj } = getCssResponsiveObj(
+						item.css,
+						item.effects
+					);
 
-					toggleInlineStyles(css, targetEl, true);
+					toggleInlineStyles(stylesObj, targetEl, true);
 
 					timeout = setTimeout(() => {
 						// Removing transition after transition-duration + 1s to make sure it's done
-						targetEl.style.transition = '';
+						toggleTransition(
+							getTransitionString(effectsObj),
+							targetEl,
+							stylesObj,
+							true
+						);
 					}, item.effects['transition-duration-general'] * 1000 + 1000);
 				});
 			}
 			case 'click': {
 				triggerEl.addEventListener('click', () => {
-					const { css, effectsObj } = getCssResponsiveObj(
+					const { stylesObj, effectsObj } = getCssResponsiveObj(
 						item.css,
 						item.effects
 					);
 
-					targetEl.style.transition = getTransitionString(effectsObj);
-					toggleInlineStyles(css, targetEl);
+					toggleTransition(
+						getTransitionString(effectsObj),
+						targetEl,
+						stylesObj
+					);
+
+					toggleInlineStyles(stylesObj, targetEl);
 				});
 			}
 		}

@@ -24,13 +24,14 @@ import {
  */
 import classnames from 'classnames';
 import {
+	isArray,
 	isEmpty,
 	isNaN,
 	capitalize,
 	isNumber,
-	replace,
 	round,
 	isNil,
+	kebabCase,
 } from 'lodash';
 
 /**
@@ -75,11 +76,7 @@ const AxisInput = props => {
 			label={__(capitalize(label), 'maxi-blocks')}
 			className={classnames(
 				'maxi-axis-control__content__item',
-				`maxi-axis-control__content__item__${replace(
-					label,
-					' ',
-					'-'
-				).toLowerCase()}`
+				`maxi-axis-control__content__item__${kebabCase(label)}`
 			)}
 			placeholder={lastValue}
 			value={value}
@@ -384,7 +381,10 @@ const AxisControlContent = props => {
 							<Button
 								className='components-maxi-control__reset-button'
 								onClick={() =>
-									onReset({ customBreakpoint: breakpoint })
+									onReset({
+										reset: 'unit',
+										customBreakpoint: breakpoint,
+									})
 								}
 								aria-label={sprintf(
 									__('Reset %s settings', 'maxi-blocks'),
@@ -483,9 +483,6 @@ const AxisControl = props => {
 			'bottom-unit',
 			'left-unit',
 			'unit',
-			'sync',
-			'sync-horizontal',
-			'sync-vertical',
 		],
 		optionType = 'number',
 		disableSync = false,
@@ -552,40 +549,40 @@ const AxisControl = props => {
 
 	const onReset = ({ customBreakpoint, reset }) => {
 		const response = {};
-		let attributesKeys = [];
 
-		switch (reset) {
-			case 'vertical':
-				attributesKeys = [
-					inputsArray[0],
-					inputsArray[2],
-					inputsArray[4],
-					inputsArray[6],
-				];
-				break;
-			case 'horizontal':
-				attributesKeys = [
-					inputsArray[1],
-					inputsArray[3],
-					inputsArray[5],
-					inputsArray[7],
-				];
-				break;
-			case 'top':
-				attributesKeys = [inputsArray[0], inputsArray[4]];
-				break;
-			case 'right':
-				attributesKeys = [inputsArray[1], inputsArray[5]];
-				break;
-			case 'bottom':
-				attributesKeys = [inputsArray[2], inputsArray[6]];
-				break;
-			case 'left':
-				attributesKeys = [inputsArray[3], inputsArray[7]];
-				break;
-			default:
-				attributesKeys = [...inputsArray];
-		}
+		const attributesKeysFilter = rawKeys => {
+			const keys = isArray(rawKeys) ? rawKeys : [rawKeys];
+
+			const filteredResult = inputsArray.filter(input =>
+				keys.some(
+					key =>
+						input === key ||
+						(input.includes(key) && input.includes('-unit'))
+				)
+			);
+
+			return filteredResult;
+		};
+
+		const top = inputsArray[0];
+		const right = inputsArray[1];
+		const bottom = inputsArray[2];
+		const left = inputsArray[3];
+
+		const cases = {
+			all: [top, bottom, left, right],
+			vertical: [top, bottom],
+			horizontal: [left, right],
+			top,
+			right,
+			bottom,
+			left,
+			unit: ['unit'],
+		};
+
+		const attributesKeys = cases[reset]
+			? attributesKeysFilter(cases[reset])
+			: [...inputsArray];
 
 		attributesKeys.forEach(key => {
 			response[

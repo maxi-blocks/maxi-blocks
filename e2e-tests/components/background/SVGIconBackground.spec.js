@@ -52,7 +52,7 @@ describe('Icon background', () => {
 			button.click()
 		);
 
-		await accordion.$eval('.maxi-tabs-control__button-Hover', button =>
+		await accordion.$eval('.maxi-tabs-control__button-hover', button =>
 			button.click()
 		);
 

@@ -17,17 +17,17 @@ import {
 	ToggleSwitch,
 	ResponsiveTabsControl,
 	AlignmentControl,
+	ManageHoverTransitions,
 } from '../../components';
 import * as defaultPresets from './defaults';
 import {
-	getColorRGBAString,
 	getGroupAttributes,
 	setHoverAttributes,
+	getIconWithColor,
 } from '../../extensions/styles';
 import { selectorsButton, categoriesButton } from './custom-css';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { withMaxiInspector } from '../../extensions/inspector';
-
 /**
  * External dependencies
  */
@@ -36,20 +36,7 @@ import { isEmpty, isNil, cloneDeep, without } from 'lodash';
 /**
  * Icons
  */
-import {
-	presetOne,
-	presetTwo,
-	presetThree,
-	presetFour,
-	presetFive,
-	presetSix,
-	presetSeven,
-	presetEight,
-	presetNine,
-	presetTen,
-	presetEleven,
-} from '../../icons';
-import { setSVGContent, setSVGContentHover } from '../../extensions/svg';
+import * as iconPresets from '../../icons/button-presets/index';
 
 /**
  * Inspector
@@ -64,108 +51,7 @@ const Inspector = props => {
 		inlineStylesTargets,
 		clientId,
 	} = props;
-	const {
-		blockStyle,
-		svgType,
-		'icon-only': iconOnly,
-		'icon-inherit': iconInherit,
-		'icon-content': iconContent,
-	} = attributes;
-
-	const getIconWithColor = (args = {}) => {
-		let {
-			paletteColor,
-			paletteOpacity,
-			paletteStatus,
-			color,
-			isInherit,
-			isIconOnly,
-		} = args;
-		const { isHover, type = 'stroke', rawIcon } = args;
-
-		if (isNil(isInherit)) isInherit = iconInherit;
-		if (isNil(isIconOnly)) isIconOnly = iconOnly;
-
-		const useIconColor = isIconOnly || !isInherit;
-
-		let lineColorStr = '';
-
-		if (type === 'fill')
-			lineColorStr = getColorRGBAString({
-				firstVar: `icon-${type}${isHover ? '-hover' : ''}`,
-				secondVar: `color-${paletteColor}${isHover ? '-hover' : ''}`,
-				opacity: paletteOpacity,
-				blockStyle,
-			});
-		else if (
-			useIconColor ||
-			(isHover && !useIconColor && !attributes['typography-status-hover'])
-		) {
-			if (!paletteColor)
-				paletteColor =
-					attributes[
-						`icon-${type}-palette-color${isHover ? '-hover' : ''}`
-					];
-			if (!paletteOpacity)
-				paletteOpacity =
-					attributes[
-						`icon-${type}-palette-opacity${isHover ? '-hover' : ''}`
-					];
-			if (!paletteStatus)
-				paletteStatus =
-					attributes[
-						`icon-${type}-palette-status${isHover ? '-hover' : ''}`
-					];
-			if (!color)
-				color =
-					attributes[`icon-${type}-color${isHover ? '-hover' : ''}`];
-
-			lineColorStr = getColorRGBAString({
-				firstVar: `icon-${type}${isHover ? '-hover' : ''}`,
-				secondVar: `color-${paletteColor}${isHover ? '-hover' : ''}`,
-				opacity: paletteOpacity,
-				blockStyle,
-			});
-		} else {
-			if (!paletteColor)
-				paletteColor =
-					attributes[
-						`palette-color-general${isHover ? '-hover' : ''}`
-					];
-			if (!paletteOpacity)
-				paletteOpacity =
-					attributes[
-						`palette-opacity-general${isHover ? '-hover' : ''}`
-					];
-			if (!paletteStatus)
-				paletteStatus =
-					attributes[
-						`palette-status-general${isHover ? '-hover' : ''}`
-					];
-			if (!color)
-				color = attributes[`color-general${isHover ? '-hover' : ''}`];
-
-			lineColorStr = getColorRGBAString({
-				firstVar: `color-${paletteColor}${isHover ? '-hover' : ''}`,
-				opacity: paletteOpacity,
-				blockStyle,
-			});
-		}
-
-		const icon = isHover
-			? setSVGContentHover(
-					rawIcon ?? iconContent,
-					paletteStatus ? lineColorStr : color,
-					type
-			  )
-			: setSVGContent(
-					rawIcon ?? iconContent,
-					paletteStatus ? lineColorStr : color,
-					type
-			  );
-
-		return icon;
-	};
+	const { blockStyle, svgType, 'icon-only': iconOnly } = attributes;
 
 	const onChangePreset = (number, type = 'normal') => {
 		const newDefaultPresets = cloneDeep({ ...defaultPresets });
@@ -233,7 +119,7 @@ const Inspector = props => {
 				'icon-only': rawIconOnly,
 			} = newDefaultPresets[`preset${number}`];
 
-			icon = getIconWithColor({
+			icon = getIconWithColor(attributes, {
 				paletteStatus: strokePaletteStatus,
 				paletteColor: strokePaletteColor,
 				rawIcon,
@@ -241,7 +127,7 @@ const Inspector = props => {
 				isIconOnly: rawIconOnly,
 			});
 
-			icon = getIconWithColor({
+			icon = getIconWithColor(attributes, {
 				paletteStatus: strokePaletteHoverStatus,
 				paletteColor: strokePaletteHoverColor,
 				isHover: true,
@@ -268,7 +154,7 @@ const Inspector = props => {
 	useEffect(
 		() =>
 			maxiSetAttributes({
-				'icon-content': getIconWithColor(),
+				'icon-content': getIconWithColor(attributes),
 			}),
 		[
 			attributes['palette-color-general'],
@@ -281,6 +167,28 @@ const Inspector = props => {
 			attributes['color-general-hover'],
 		]
 	);
+
+	const buttonPresets = [];
+	[
+		'presetOne',
+		'presetTwo',
+		'presetThree',
+		'presetFour',
+		'presetFive',
+		'presetSix',
+		'presetSeven',
+		'presetEight',
+		'presetNine',
+		'presetTen',
+		'presetEleven',
+	].forEach((preset, i) => {
+		buttonPresets.push({
+			label: __(`Button shortcut ${i + 1}`, 'maxi-blocks'),
+			content: <Icon icon={iconPresets[preset]} />,
+			onChange: () =>
+				i < 3 ? onChangePreset(i + 1) : onChangePreset(i + 1, 'icon'),
+		});
+	});
 
 	return (
 		<InspectorControls>
@@ -310,189 +218,7 @@ const Inspector = props => {
 										content: (
 											<DefaultStylesControl
 												className='maxi-button-default-styles'
-												items={[
-													{
-														label: __(
-															'Button shortcut 1',
-															'maxi-blocks'
-														),
-														content: (
-															<Icon
-																icon={presetOne}
-															/>
-														),
-														onChange: () =>
-															onChangePreset(1),
-													},
-													{
-														label: __(
-															'Button shortcut 2',
-															'maxi-blocks'
-														),
-														content: (
-															<Icon
-																icon={presetTwo}
-															/>
-														),
-														onChange: () =>
-															onChangePreset(2),
-													},
-													{
-														label: __(
-															'Button shortcut 3',
-															'maxi-blocks'
-														),
-														content: (
-															<Icon
-																icon={
-																	presetThree
-																}
-															/>
-														),
-														onChange: () =>
-															onChangePreset(3),
-													},
-													{
-														label: __(
-															'Button shortcut 4',
-															'maxi-blocks'
-														),
-														content: (
-															<Icon
-																icon={
-																	presetFour
-																}
-															/>
-														),
-														onChange: () =>
-															onChangePreset(
-																4,
-																'icon'
-															),
-													},
-													{
-														label: __(
-															'Button shortcut 5',
-															'maxi-blocks'
-														),
-														content: (
-															<Icon
-																icon={
-																	presetFive
-																}
-															/>
-														),
-														onChange: () =>
-															onChangePreset(
-																5,
-																'icon'
-															),
-													},
-													{
-														label: __(
-															'Button shortcut 6',
-															'maxi-blocks'
-														),
-														content: (
-															<Icon
-																icon={presetSix}
-															/>
-														),
-														onChange: () =>
-															onChangePreset(
-																6,
-																'icon'
-															),
-													},
-													{
-														label: __(
-															'Button shortcut 7',
-															'maxi-blocks'
-														),
-														content: (
-															<Icon
-																icon={
-																	presetSeven
-																}
-															/>
-														),
-														onChange: () =>
-															onChangePreset(
-																7,
-																'icon'
-															),
-													},
-													{
-														label: __(
-															'Button shortcut 8',
-															'maxi-blocks'
-														),
-														content: (
-															<Icon
-																icon={
-																	presetEight
-																}
-															/>
-														),
-														onChange: () =>
-															onChangePreset(
-																8,
-																'icon'
-															),
-													},
-													{
-														label: __(
-															'Button shortcut 9',
-															'maxi-blocks'
-														),
-														content: (
-															<Icon
-																icon={
-																	presetNine
-																}
-															/>
-														),
-														onChange: () =>
-															onChangePreset(
-																9,
-																'icon'
-															),
-													},
-													{
-														label: __(
-															'Button shortcut 10',
-															'maxi-blocks'
-														),
-														content: (
-															<Icon
-																icon={presetTen}
-															/>
-														),
-														onChange: () =>
-															onChangePreset(
-																10,
-																'icon'
-															),
-													},
-													{
-														label: __(
-															'Button shortcut 11',
-															'maxi-blocks'
-														),
-														content: (
-															<Icon
-																icon={
-																	presetEleven
-																}
-															/>
-														),
-														onChange: () =>
-															onChangePreset(
-																11,
-																'icon'
-															),
-													},
-												]}
+												items={buttonPresets}
 											/>
 										),
 									},
@@ -558,8 +284,11 @@ const Inspector = props => {
 																blockStyle={
 																	blockStyle
 																}
-																getIconWithColor={
-																	getIconWithColor
+																getIconWithColor={args =>
+																	getIconWithColor(
+																		attributes,
+																		args
+																	)
 																}
 															/>
 														),
@@ -571,6 +300,7 @@ const Inspector = props => {
 														),
 														content: (
 															<>
+																<ManageHoverTransitions />
 																<ToggleSwitch
 																	label={__(
 																		'Enable Icon Hover',
@@ -625,8 +355,11 @@ const Inspector = props => {
 																		blockStyle={
 																			blockStyle
 																		}
-																		getIconWithColor={
-																			getIconWithColor
+																		getIconWithColor={args =>
+																			getIconWithColor(
+																				attributes,
+																				args
+																			)
 																		}
 																		isHover
 																	/>
@@ -645,60 +378,50 @@ const Inspector = props => {
 												breakpoint={deviceType}
 											>
 												<>
-													<>
-														<label
-															className='maxi-base-control__label'
-															htmlFor={`${alignmentLabel}-alignment`}
-														>
-															{`${alignmentLabel} alignment`}
-														</label>
-														<AlignmentControl
-															id={`${alignmentLabel}-alignment`}
-															label={
-																alignmentLabel
-															}
-															{...getGroupAttributes(
-																attributes,
-																'alignment'
-															)}
-															onChange={obj =>
-																maxiSetAttributes(
-																	obj
-																)
-															}
-															breakpoint={
-																deviceType
-															}
-															disableJustify
-														/>
-													</>
-													<>
-														<label
-															className='maxi-base-control__label'
-															htmlFor={`${textAlignmentLabel}-alignment`}
-														>
-															{`${textAlignmentLabel} alignment`}
-														</label>
-														<AlignmentControl
-															id={`${textAlignmentLabel}-alignment`}
-															label={
-																textAlignmentLabel
-															}
-															{...getGroupAttributes(
-																attributes,
-																'textAlignment'
-															)}
-															onChange={obj =>
-																maxiSetAttributes(
-																	obj
-																)
-															}
-															breakpoint={
-																deviceType
-															}
-															type='text'
-														/>
-													</>
+													<label
+														className='maxi-base-control__label'
+														htmlFor={`${alignmentLabel}-alignment`}
+													>
+														{`${alignmentLabel} alignment`}
+													</label>
+													<AlignmentControl
+														id={`${alignmentLabel}-alignment`}
+														label={alignmentLabel}
+														{...getGroupAttributes(
+															attributes,
+															'alignment'
+														)}
+														onChange={obj =>
+															maxiSetAttributes(
+																obj
+															)
+														}
+														breakpoint={deviceType}
+														disableJustify
+													/>
+													<label
+														className='maxi-base-control__label'
+														htmlFor={`${textAlignmentLabel}-alignment`}
+													>
+														{`${textAlignmentLabel} alignment`}
+													</label>
+													<AlignmentControl
+														id={`${textAlignmentLabel}-alignment`}
+														label={
+															textAlignmentLabel
+														}
+														{...getGroupAttributes(
+															attributes,
+															'textAlignment'
+														)}
+														onChange={obj =>
+															maxiSetAttributes(
+																obj
+															)
+														}
+														breakpoint={deviceType}
+														type='text'
+													/>
 												</>
 											</ResponsiveTabsControl>
 										),
@@ -896,6 +619,7 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.relation({
 										props,
+										isButton: true,
 									}),
 								]}
 							/>

@@ -19,7 +19,7 @@ import { isEmpty } from 'lodash';
 /**
  * Save
  */
-const save = (props, extendedWrapperAttributes = {}) => {
+const save = props => {
 	const { attributes } = props;
 	const {
 		uniqueID,
@@ -53,7 +53,6 @@ const save = (props, extendedWrapperAttributes = {}) => {
 		<MaxiBlock.save
 			tagName='figure'
 			{...getMaxiBlockAttributes({ ...props, name })}
-			{...extendedWrapperAttributes}
 		>
 			<>
 				{captionType !== 'none' &&

@@ -17,6 +17,7 @@ import { registerBlockType } from '@wordpress/blocks';
 import attributes from './attributes';
 import edit from './edit';
 import save from './save';
+import { selectorsSvgIcon } from './custom-css';
 
 /**
  * Styles and icons
@@ -28,7 +29,7 @@ import { iconBox } from '../../icons';
 /**
  * Migrators
  */
-import blockMigrator from '../../extensions/styles/migrators/blockMigrator';
+import { blockMigrator } from '../../extensions/styles/migrators';
 
 /**
  * Block
@@ -54,5 +55,9 @@ registerBlockType('maxi-blocks/svg-icon-maxi', {
 	},
 	edit,
 	save,
-	deprecated: [blockMigrator({ attributes, save })],
+	deprecated: blockMigrator({
+		attributes,
+		save,
+		selectors: selectorsSvgIcon,
+	}),
 });

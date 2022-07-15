@@ -17,6 +17,7 @@ import { registerBlockType } from '@wordpress/blocks';
 import attributes from './attributes';
 import edit from './edit';
 import save from './save';
+import { selectorsButton } from './custom-css';
 
 /**
  * Styles and icons
@@ -28,7 +29,7 @@ import { buttonIcon } from '../../icons';
 /**
  * Migrators
  */
-import blockMigrator from '../../extensions/styles/migrators/blockMigrator';
+import { blockMigrator } from '../../extensions/styles/migrators';
 
 /**
  * Block
@@ -54,5 +55,10 @@ registerBlockType('maxi-blocks/button-maxi', {
 	},
 	edit,
 	save,
-	deprecated: [blockMigrator({ attributes, save, prefix: 'button-' })],
+	deprecated: blockMigrator({
+		attributes,
+		save,
+		prefix: 'button-',
+		selectors: selectorsButton,
+	}),
 });

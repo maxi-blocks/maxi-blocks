@@ -89,4 +89,15 @@
 			}
 		}
 	}
+	&--nested-accordion {
+		.maxi-accordion-control__item {
+			margin: 0 -1px;
+		}
+		.maxi-accordion-control__item__button {
+			background: var(--maxi-white-4-color);
+			&:hover {
+				background: var(--maxi-white-3-color);
+			}
+		}
+	}
 }

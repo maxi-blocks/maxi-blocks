@@ -17,6 +17,15 @@
 		&--nested-accordion {
 			padding: 8px 8px 0;
 			margin-bottom: -18px;
+
+			.maxi-tabs-control__button {
+				&:hover {
+					background-color: var(--maxi-grey-8-color);
+				}
+				&:focus:not(:disabled) {
+					background-color: var(--maxi-white-2-color);
+				}
+			}
 		}
 
 		&__sidebar-settings-tabs {
@@ -127,7 +136,9 @@
 
 		&--nested-accordion {
 			border: 1px solid var(--maxi-secondary-color);
-			padding-top: 20px;
+			padding-top: 23px;
+			padding-bottom: 5px;
+			background: var(--maxi-white-4-color);
 		}
 
 		.maxi-tab-content {

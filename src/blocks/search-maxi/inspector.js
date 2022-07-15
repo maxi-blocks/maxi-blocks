@@ -357,6 +357,7 @@ const Inspector = props => {
 											<SettingTabsControl
 												disablePadding
 												isNestedAccordion
+												hasBorder
 												items={[
 													{
 														label: __(
@@ -497,6 +498,7 @@ const Inspector = props => {
 														),
 														content: (
 															<AccordionControl
+																isNestedAccordion
 																isPrimary
 																items={[
 																	...inspectorTabs.typography(

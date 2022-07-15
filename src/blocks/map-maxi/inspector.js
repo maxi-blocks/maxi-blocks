@@ -97,6 +97,7 @@ const Inspector = props => {
 												deviceType={deviceType}
 											/>
 										),
+										ignoreIndicator: ['map-marker-icon'],
 									},
 									{
 										label: __(
@@ -120,7 +121,7 @@ const Inspector = props => {
 																<FontLevelControl
 																	{...getGroupAttributes(
 																		attributes,
-																		'map'
+																		'typography'
 																	)}
 																	value={
 																		attributes[
@@ -137,12 +138,10 @@ const Inspector = props => {
 																	}}
 																/>
 																<TypographyControl
-																	typography={{
-																		...getGroupAttributes(
-																			attributes,
-																			'typography'
-																		),
-																	}}
+																	{...getGroupAttributes(
+																		attributes,
+																		'typography'
+																	)}
 																	onChange={obj => {
 																		maxiSetAttributes(
 																			obj
@@ -181,15 +180,12 @@ const Inspector = props => {
 																	text
 																</span>
 																<TypographyControl
-																	typography={{
-																		...getGroupAttributes(
-																			attributes,
-																			'typography',
-																			false,
-																			'description-'
-																		),
-																	}}
-																	textLevel='p'
+																	{...getGroupAttributes(
+																		attributes,
+																		'typography',
+																		false,
+																		'description-'
+																	)}
 																	prefix='description-'
 																	onChange={obj => {
 																		maxiSetAttributes(
@@ -222,13 +218,16 @@ const Inspector = props => {
 										),
 										content: (
 											<MapPopupsControl
+												{...getGroupAttributes(
+													attributes,
+													'mapPopup'
+												)}
 												onChange={obj =>
 													maxiSetAttributes(obj)
 												}
 												blockStyle={blockStyle}
 												deviceType={deviceType}
 												clientId={clientId}
-												attributes={attributes}
 											/>
 										),
 									},

@@ -203,7 +203,7 @@ export const MapMarkersControl = props => {
 };
 
 export const MapPopupsControl = props => {
-	const { onChange, clientId, deviceType, attributes } = props;
+	const { onChange, clientId, deviceType, ...attributes } = props;
 	const prefix = 'popup-';
 	const hoverStatus = attributes[`${prefix}box-shadow-status-hover`];
 

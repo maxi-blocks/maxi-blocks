@@ -74,6 +74,79 @@ const MapInteracitonControl = ({ onChange, ...attributes }) => {
 	);
 };
 
+const MapPopupTextControl = ({
+	blockStyle,
+	clientId,
+	deviceType,
+	onChange,
+	...attributes
+}) => {
+	const typographyProps = {
+		blockStyle,
+		breakpoint: deviceType,
+		clientId,
+		disableCustomFormats: true,
+		hideAlignment: true,
+		onChange,
+	};
+
+	return (
+		<SettingTabsControl
+			items={[
+				{
+					label: __('Title', 'maxi-blocks'),
+					content: (
+						<>
+							<span>Marker title text</span>
+							<FontLevelControl
+								{...getGroupAttributes(
+									attributes,
+									'typography'
+								)}
+								value={attributes['map-marker-heading-level']}
+								onChange={obj => {
+									onChange({
+										'map-marker-heading-level':
+											obj.textLevel,
+									});
+								}}
+							/>
+							<TypographyControl
+								{...getGroupAttributes(
+									attributes,
+									'typography'
+								)}
+								textLevel={
+									attributes['map-marker-heading-level']
+								}
+								{...typographyProps}
+							/>
+						</>
+					),
+				},
+				{
+					label: __('Description', 'maxi-blocks'),
+					content: (
+						<>
+							<span>Marker description text</span>
+							<TypographyControl
+								{...getGroupAttributes(
+									attributes,
+									'typography',
+									false,
+									'description-'
+								)}
+								prefix='description-'
+								{...typographyProps}
+							/>
+						</>
+					),
+				},
+			]}
+		/>
+	);
+};
+
 /**
  * Inspector
  */
@@ -151,109 +224,27 @@ const Inspector = props => {
 											'maxi-blocks'
 										),
 										content: (
-											<SettingTabsControl
-												items={[
-													{
-														label: __(
-															'Title',
-															'maxi-blocks'
-														),
-														content: (
-															<>
-																<span>
-																	Marker title
-																	text
-																</span>
-																<FontLevelControl
-																	{...getGroupAttributes(
-																		attributes,
-																		'typography'
-																	)}
-																	value={
-																		attributes[
-																			'map-marker-heading-level'
-																		]
-																	}
-																	onChange={obj => {
-																		maxiSetAttributes(
-																			{
-																				'map-marker-heading-level':
-																					obj.textLevel,
-																			}
-																		);
-																	}}
-																/>
-																<TypographyControl
-																	{...getGroupAttributes(
-																		attributes,
-																		'typography'
-																	)}
-																	onChange={obj => {
-																		maxiSetAttributes(
-																			obj
-																		);
-																	}}
-																	textLevel={
-																		attributes[
-																			'map-marker-heading-level'
-																		]
-																	}
-																	hideAlignment
-																	clientId={
-																		clientId
-																	}
-																	blockStyle={
-																		blockStyle
-																	}
-																	breakpoint={
-																		deviceType
-																	}
-																	disableCustomFormats
-																/>
-															</>
-														),
-													},
-													{
-														label: __(
-															'Description',
-															'maxi-blocks'
-														),
-														content: (
-															<>
-																<span>
-																	Marker
-																	description
-																	text
-																</span>
-																<TypographyControl
-																	{...getGroupAttributes(
-																		attributes,
-																		'typography',
-																		false,
-																		'description-'
-																	)}
-																	prefix='description-'
-																	onChange={obj => {
-																		maxiSetAttributes(
-																			obj
-																		);
-																	}}
-																	hideAlignment
-																	clientId={
-																		clientId
-																	}
-																	blockStyle={
-																		blockStyle
-																	}
-																	breakpoint={
-																		deviceType
-																	}
-																	disableCustomFormats
-																/>
-															</>
-														),
-													},
-												]}
+											<MapPopupTextControl
+												{...getGroupAttributes(
+													attributes,
+													'typography'
+												)}
+												{...getGroupAttributes(
+													attributes,
+													'typography',
+													false,
+													'description-'
+												)}
+												{...{
+													'map-marker-heading-level':
+														attributes[
+															'map-marker-heading-level'
+														],
+												}}
+												blockStyle={blockStyle}
+												clientId={clientId}
+												deviceType={deviceType}
+												onChange={maxiSetAttributes}
 											/>
 										),
 									},

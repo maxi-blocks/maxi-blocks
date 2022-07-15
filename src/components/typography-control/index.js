@@ -320,11 +320,16 @@ const TypographyControl = props => {
 
 	const typography =
 		props.typography ||
-		getGroupAttributes(props, [
-			'typography',
-			...(allowLink ? ['link'] : []),
-			...(isHover ? ['typographyHover'] : []),
-		]);
+		getGroupAttributes(
+			props,
+			[
+				'typography',
+				...(allowLink ? ['link'] : []),
+				...(isHover ? ['typographyHover'] : []),
+			],
+			isHover,
+			prefix
+		);
 
 	const { styleCard, winBreakpoint } = useSelect(select => {
 		const { receiveMaxiSelectedStyleCard } = select(

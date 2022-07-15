@@ -66,10 +66,15 @@ const Inspector = props => {
 										),
 										content: (
 											<MapControl
-												{...getGroupAttributes(
-													attributes,
-													'map'
-												)}
+												mapProvider={
+													attributes['map-provider']
+												}
+												minZoom={
+													attributes['map-min-zoom']
+												}
+												maxZoom={
+													attributes['map-max-zoom']
+												}
 												onChange={obj =>
 													maxiSetAttributes(obj)
 												}
@@ -83,7 +88,7 @@ const Inspector = props => {
 											<MapMarkersControl
 												{...getGroupAttributes(
 													attributes,
-													['map', 'svg']
+													'mapMarker'
 												)}
 												onChange={obj =>
 													maxiSetAttributes(obj)

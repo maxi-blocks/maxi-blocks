@@ -29,13 +29,6 @@ const map = {
 	'map-markers': {
 		type: 'array',
 	},
-	'map-marker': {
-		type: 'number',
-		default: 1,
-	},
-	'map-marker-icon': {
-		type: 'string',
-	},
 	'map-popup': {
 		type: 'number',
 		default: 1,

@@ -17,6 +17,7 @@ import {
 	getZIndexStyles,
 	getTypographyStyles,
 	getSVGStyles,
+	getSVGWidthStyles,
 	getFlexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsMap } from './custom-css';
@@ -342,14 +343,20 @@ const getStyles = props => {
 				},
 				[` .map-marker-info-window__${props['map-popup']}:after`]:
 					getBorderArrowObject(props),
+				' .leaflet-marker-icon': getSVGWidthStyles(
+					getGroupAttributes(props, 'svg'),
+					'',
+					true
+				),
+				...getSVGStyles({
+					obj: {
+						...getGroupAttributes(props, 'svg'),
+					},
+					target: ' .leaflet-marker-icon',
+					blockStyle,
+				}),
 			},
-			...getSVGStyles({
-				obj: {
-					...getGroupAttributes(props, 'svg'),
-				},
-				target: ' .map-marker-icon',
-				blockStyle,
-			}),
+
 			selectorsMap,
 			props
 		),

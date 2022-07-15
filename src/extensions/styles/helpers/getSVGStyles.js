@@ -13,7 +13,7 @@ import { isNil, isEmpty, isBoolean } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-export const getSVGWidthStyles = (obj, prefix = '') => {
+export const getSVGWidthStyles = (obj, prefix = '', isImportant = false) => {
 	const response = {
 		label: 'SVG width',
 		general: {},
@@ -32,10 +32,12 @@ export const getSVGWidthStyles = (obj, prefix = '') => {
 				target: `${prefix}svg-width-unit`,
 				breakpoint,
 				attributes: obj,
-			})}`;
+			})} ${isImportant ? '!important' : ''}`;
 
 		if (isBoolean(svgResponsive))
-			response[breakpoint]['max-width'] = svgResponsive ? '100%' : 'none';
+			response[breakpoint]['max-width'] = `${
+				svgResponsive ? '100%' : 'none'
+			} ${isImportant ? '!important' : ''}`;
 
 		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')
 			delete response[breakpoint];

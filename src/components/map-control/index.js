@@ -2,28 +2,27 @@
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { SelectControl, TextControl } from '@wordpress/components';
+import { SelectControl } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
+import { SvgColor } from '../svg-color';
 import AdvancedNumberControl from '../advanced-number-control';
 import AxisControl from '../axis-control';
-import BoxShadowControl from '../box-shadow-control';
 import BackgroundControl from '../background-control';
+import BoxShadowControl from '../box-shadow-control';
 import ColorControl from '../color-control';
 import InfoBox from '../info-box';
-import ToggleSwitch from '../toggle-switch';
-import OpacityControl from '../opacity-control';
+import ResponsiveTabsControl from '../responsive-tabs-control';
 import SettingTabsControl from '../setting-tabs-control';
-import { SvgColor } from '../svg-color';
+import ToggleSwitch from '../toggle-switch';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 	setHoverAttributes,
 } from '../../extensions/styles';
-import { setSVGContent } from '../../extensions/svg';
 
 /**
  * External dependencies
@@ -147,58 +146,10 @@ export const MapMarkersControl = props => {
 					</div>
 				))}
 			</div>
-			<OpacityControl
-				label={__('Icon opacity', 'maxi-blocks')}
-				opacity={props['svg-fill-palette-opacity']}
-				onChange={val =>
-					onChange({
-						'svg-fill-palette-opacity': val,
-						'map-marker-icon': setSVGContent(
-							props['map-marker-icon'],
-							val,
-							'opacity'
-						),
-					})
-				}
-			/>
-			<AdvancedNumberControl
-				label={__('Icon size', 'maxi-blocks')}
-				min={15}
-				max={40}
-				initial={20}
-				step={1}
-				value={getLastBreakpointAttribute({
-					target: 'svg-width',
-					breakpoint: deviceType,
-					attributes: props,
-				})}
-				onChangeValue={val => {
-					onChange({
-						[`svg-width-${deviceType}`]: val,
-						'map-marker-icon': setSVGContent(
-							props['map-marker-icon'],
-							val,
-							' width'
-						),
-					});
-				}}
-				onReset={() => {
-					const defaultAttr =
-						getDefaultAttribute('svg-width-general');
-					onChange({
-						[`svg-width-${deviceType}`]: defaultAttr,
-						'map-marker-icon': setSVGContent(
-							props['map-marker-icon'],
-							defaultAttr,
-							' width'
-						),
-					});
-				}}
-			/>
 			<SvgColor
 				{...props}
 				type='fill'
-				label={__('Icon', 'maxi-blocks')}
+				label={__('Marker fill', 'maxi-blocks')}
 				onChangeFill={({ content, ...rest }) => {
 					onChange({
 						'map-marker-icon': content,
@@ -207,6 +158,48 @@ export const MapMarkersControl = props => {
 				}}
 				content={props['map-marker-icon']}
 			/>
+			<SvgColor
+				{...props}
+				type='line'
+				label={__('Marker stroke', 'maxi-blocks')}
+				onChangeStroke={({ content, ...rest }) => {
+					onChange({
+						'map-marker-icon': content,
+						...rest,
+					});
+				}}
+				content={props['map-marker-icon']}
+			/>
+			<ResponsiveTabsControl breakpoint={deviceType}>
+				<AdvancedNumberControl
+					label={__('Marker size', 'maxi-blocks')}
+					min={15}
+					max={40}
+					step={1}
+					value={getLastBreakpointAttribute({
+						target: 'svg-width',
+						breakpoint: deviceType,
+						attributes: props,
+					})}
+					defaultValue={getDefaultAttribute(
+						`svg-width-${deviceType}`
+					)}
+					onChangeValue={val => {
+						onChange({
+							[`svg-width-${deviceType}`]: val,
+						});
+					}}
+					onReset={() => {
+						const defaultAttr = getDefaultAttribute(
+							`svg-width-${deviceType}`
+						);
+						onChange({
+							[`svg-width-${deviceType}`]: defaultAttr,
+						});
+					}}
+					optionType='string'
+				/>
+			</ResponsiveTabsControl>
 		</>
 	);
 };

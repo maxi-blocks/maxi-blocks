@@ -395,7 +395,10 @@ const MapContent = props => {
 							setIsDraggingMarker={setIsDraggingMarker}
 						/>
 						<Markers
-							attributes={getGroupAttributes(attributes, 'map')}
+							attributes={getGroupAttributes(attributes, [
+								'map',
+								'mapMarker',
+							])}
 							maxiSetAttributes={maxiSetAttributes}
 							setIsDraggingMarker={setIsDraggingMarker}
 						/>

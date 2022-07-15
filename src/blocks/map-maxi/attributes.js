@@ -15,20 +15,13 @@ const attributes = {
 	 * Block styles
 	 */
 	...attributesData.map,
+	...attributesData.mapMarker,
 	...attributesData.typography,
 	...prefixAttributesCreator({
 		obj: attributesData.typography,
 		prefix: 'description-',
 		diffValAttr: {
 			'description-font-size-general': 16,
-		},
-	}),
-	...prefixAttributesCreator({
-		obj: attributesData.svg,
-		prefix: '',
-		diffValAttr: {
-			'svg-width-general': 20,
-			'svg-fill-palette-opacity': 1,
 		},
 	}),
 	...prefixAttributesCreator({

@@ -185,15 +185,20 @@ const Inspector = props => {
 										),
 										content: (
 											<MapControl
-												mapProvider={
-													attributes['map-provider']
-												}
-												minZoom={
-													attributes['map-min-zoom']
-												}
-												maxZoom={
-													attributes['map-max-zoom']
-												}
+												{...{
+													'map-provider':
+														attributes[
+															'map-provider'
+														],
+													'map-min-zoom':
+														attributes[
+															'map-min-zoom'
+														],
+													'map-max-zoom':
+														attributes[
+															'map-max-zoom'
+														],
+												}}
 												onChange={obj =>
 													maxiSetAttributes(obj)
 												}

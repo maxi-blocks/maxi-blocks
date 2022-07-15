@@ -20,7 +20,12 @@ import './editor.scss';
  * Component
  */
 const MapControl = props => {
-	const { onChange, hasApiKey = false } = props;
+	const { onChange, hasApiKey = false, ...attributes } = props;
+	const {
+		'map-provider': mapProvider,
+		'map-min-zoom': mapMinZoom,
+		'map-max-zoom': mapMaxZoom,
+	} = attributes;
 
 	return (
 		<div className='maxi-map-control'>
@@ -40,7 +45,7 @@ const MapControl = props => {
 			)}
 			<SelectControl
 				label={__('Map service provider', 'maxi-blocks')}
-				value={props['map-provider']}
+				value={mapProvider}
 				options={[
 					{
 						label: __('Open Street Map', 'maxi-blocks'),
@@ -59,7 +64,7 @@ const MapControl = props => {
 				max={21}
 				initial={1}
 				step={1}
-				value={props['map-min-zoom']}
+				value={mapMinZoom}
 				onChangeValue={val => onChange({ 'map-min-zoom': val })}
 				onReset={() =>
 					onChange({
@@ -73,7 +78,7 @@ const MapControl = props => {
 				max={22}
 				initial={1}
 				step={1}
-				value={props['map-max-zoom']}
+				value={mapMaxZoom}
 				onChangeValue={val => onChange({ 'map-max-zoom': val })}
 				onReset={() =>
 					onChange({

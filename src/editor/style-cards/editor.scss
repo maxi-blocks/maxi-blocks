@@ -510,3 +510,24 @@ body {
 		}
 	}
 }
+
+.active-sc-name-subtitle {
+	display: block;
+	color: #999 !important;
+}
+.active-sc-name {
+	font-size: 24px !important;
+}
+.active-date {
+	font-size: 12px;
+}
+.maxi-style-cards__popover__content {
+	background: #fff;
+	display: flex;
+	padding: 10px;
+	justify-content: space-between;
+}
+.maxi-style-cards__popover__content > div {
+	width: 48% !important;
+	background: #eee;
+}

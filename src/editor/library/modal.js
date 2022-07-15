@@ -80,7 +80,8 @@ const MaxiModal = props => {
 						className='maxi-style-cards__sc__more-sc--add-more'
 						onClick={onClick}
 					>
-						<Icon icon={SCaddMore} /> Load
+						<Icon icon={SCaddMore} />{' '}
+						{__('Browse style cards ', 'maxi-blocks')}
 					</Button>
 				)}
 				{type === 'svg' && !forceHide && (

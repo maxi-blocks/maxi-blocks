@@ -12,6 +12,7 @@ export { default as global } from './global';
 export { default as link } from './link';
 export { default as map } from './map';
 export { default as mapMarker } from './mapMarker';
+export { default as mapPopup } from './mapPopup';
 export { default as margin } from './margin';
 export { default as scroll } from './scroll';
 export { default as numberCounter } from './numberCounter';

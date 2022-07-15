@@ -1,6 +1,3 @@
-import { __ } from '@wordpress/i18n';
-import paletteAttributesCreator from '../paletteAttributesCreator';
-
 const map = {
 	'map-provider': {
 		type: 'string',
@@ -29,10 +26,6 @@ const map = {
 	'map-markers': {
 		type: 'array',
 	},
-	'map-popup': {
-		type: 'number',
-		default: 1,
-	},
 	'map-marker-heading-level': {
 		type: 'string',
 		default: 'h6',
@@ -53,12 +46,6 @@ const map = {
 		type: 'boolean',
 		default: true,
 	},
-	...paletteAttributesCreator({ prefix: 'map-marker-text-', palette: 4 }),
-	'map-marker-address': {
-		type: 'string',
-		default: __('Marker Address', 'maxi-blocks'),
-	},
-	...paletteAttributesCreator({ prefix: 'map-marker-address-', palette: 5 }),
 };
 
 export default map;

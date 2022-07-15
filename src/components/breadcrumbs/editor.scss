@@ -10,12 +10,14 @@
 	left: 25px;
 	border-radius: 3px;
 	margin: 0 !important;
-	padding: 5px 10px 5px 0px !important;
+	padding: 0 10px 0 5px !important;
 	background: var(--maxi-primary-color);
 	z-index: 9;
 	transition: 0.3s;
 	transform: scaleX(0);
 	transform-origin: left center;
+	height: 20px;
+	align-items: center;
 	&:hover {
 		transform: scaleX(1);
 		.maxi-breadcrumbs__item {

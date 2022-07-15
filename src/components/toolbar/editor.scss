@@ -1,6 +1,19 @@
 .maxi-toolbar__popover {
 	z-index: 29;
 
+	.toolbar-more-indicator {
+		margin-left: 10px;
+		position: absolute;
+		right: -16px;
+		background: var(--maxi-primary-color);
+		border-radius: 0 3px 3px 0px;
+		height: 20px;
+		top: 0;
+		align-items: center;
+		display: flex;
+		width: 15px;
+		justify-content: center;
+	}
 	.components-popover__content {
 		overflow: visible;
 		background-color: transparent;
@@ -30,14 +43,17 @@
 
 			.breadcrumbs-pin-toltip {
 				position: absolute;
-				top: -18px;
+				top: -22px;
 				left: 0;
-				background-color: #1e1e1e;
-				padding: 4px 8px;
+				background-color: rgba(0, 0, 0, 0.95);
+				padding: 6px 8px;
 				text-align: center;
 				color: #fff;
 				display: none;
 				z-index: 5;
+				font-size: 12px;
+				font-weight: normal;
+				border-radius: 2px;
 			}
 			.breadcrumbs-pin:hover .breadcrumbs-pin-toltip {
 				display: block;
@@ -56,12 +72,13 @@
 				left: 0;
 				padding: 4px 10px;
 				background: var(--maxi-primary-color);
-				border-radius: 3px;
+				border-radius: 3px 0 0 3px;
 				color: #fff;
 				font-size: 10px;
 				font-weight: 400;
 				font-family: 'Roboto', sans-serif !important;
 				line-height: 100%;
+				height: 20px;
 
 				&__block-style {
 					text-transform: capitalize;
@@ -72,7 +89,6 @@
 					padding-right: 10px;
 					cursor: pointer;
 				}
-			
 			}
 
 			@at-root .rtl #{&} {
@@ -302,7 +318,7 @@ body .toolbar-item__popover {
 					background-color: #4f515c;
 					position: relative;
 					z-index: 1;
-					border: 2px solid #dddfe1;
+					border: 2px solid var(--maxi-grey-11-color);
 					border-bottom: 2px solid var(--maxi-primary-color);
 				}
 			}

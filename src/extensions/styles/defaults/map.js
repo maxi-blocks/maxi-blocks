@@ -26,26 +26,6 @@ const map = {
 	'map-markers': {
 		type: 'array',
 	},
-	'map-marker-heading-level': {
-		type: 'string',
-		default: 'h6',
-	},
-	'map-dragging': {
-		type: 'boolean',
-		default: true,
-	},
-	'map-touch-zoom': {
-		type: 'boolean',
-		default: true,
-	},
-	'map-double-click-zoom': {
-		type: 'boolean',
-		default: true,
-	},
-	'map-scroll-wheel-zoom': {
-		type: 'boolean',
-		default: true,
-	},
 };
 
 export default map;

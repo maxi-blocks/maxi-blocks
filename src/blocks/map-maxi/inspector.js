@@ -27,6 +27,54 @@ import { selectorsMap, categoriesMap } from './custom-css';
 import * as inspectorTabs from '../../components/inspector-tabs';
 
 /**
+ * Controls
+ */
+const MapInteracitonControl = ({ onChange, ...attributes }) => {
+	return (
+		<>
+			<ToggleSwitch
+				label={__('Map dragging', 'maxi-blocks')}
+				selected={attributes['map-dragging']}
+				onChange={() => {
+					onChange({
+						'map-dragging': !attributes['map-dragging'],
+					});
+				}}
+			/>
+			<ToggleSwitch
+				label={__('Touch zoom', 'maxi-blocks')}
+				selected={attributes['map-touch-zoom']}
+				onChange={() => {
+					onChange({
+						'map-touch-zoom': !attributes['map-touch-zoom'],
+					});
+				}}
+			/>
+			<ToggleSwitch
+				label={__('Double click zoom', 'maxi-blocks')}
+				selected={attributes['map-double-click-zoom']}
+				onChange={() => {
+					onChange({
+						'map-double-click-zoom':
+							!attributes['map-double-click-zoom'],
+					});
+				}}
+			/>
+			<ToggleSwitch
+				label={__('Scroll wheel zoom', 'maxi-blocks')}
+				selected={attributes['map-scroll-wheel-zoom']}
+				onChange={() => {
+					onChange({
+						'map-scroll-wheel-zoom':
+							!attributes['map-scroll-wheel-zoom'],
+					});
+				}}
+			/>
+		</>
+	);
+};
+
+/**
  * Inspector
  */
 const Inspector = props => {
@@ -248,84 +296,13 @@ const Inspector = props => {
 											'maxi-blocks'
 										),
 										content: (
-											<>
-												<ToggleSwitch
-													label={__(
-														'Map dragging',
-														'maxi-blocks'
-													)}
-													selected={
-														attributes[
-															'map-dragging'
-														]
-													}
-													onChange={() => {
-														maxiSetAttributes({
-															'map-dragging':
-																!attributes[
-																	'map-dragging'
-																],
-														});
-													}}
-												/>
-												<ToggleSwitch
-													label={__(
-														'Touch zoom',
-														'maxi-blocks'
-													)}
-													selected={
-														attributes[
-															'map-touch-zoom'
-														]
-													}
-													onChange={() => {
-														maxiSetAttributes({
-															'map-touch-zoom':
-																!attributes[
-																	'map-touch-zoom'
-																],
-														});
-													}}
-												/>
-												<ToggleSwitch
-													label={__(
-														'Double click zoom',
-														'maxi-blocks'
-													)}
-													selected={
-														attributes[
-															'map-double-click-zoom'
-														]
-													}
-													onChange={() => {
-														maxiSetAttributes({
-															'map-double-click-zoom':
-																!attributes[
-																	'map-double-click-zoom'
-																],
-														});
-													}}
-												/>
-												<ToggleSwitch
-													label={__(
-														'Scroll wheel zoom',
-														'maxi-blocks'
-													)}
-													selected={
-														attributes[
-															'map-scroll-wheel-zoom'
-														]
-													}
-													onChange={() => {
-														maxiSetAttributes({
-															'map-scroll-wheel-zoom':
-																!attributes[
-																	'map-scroll-wheel-zoom'
-																],
-														});
-													}}
-												/>
-											</>
+											<MapInteracitonControl
+												{...getGroupAttributes(
+													attributes,
+													'mapInteraction'
+												)}
+												onChange={maxiSetAttributes}
+											/>
 										),
 									},
 								]}

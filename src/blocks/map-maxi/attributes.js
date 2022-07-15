@@ -13,6 +13,7 @@ const attributes = {
 	 * Block styles
 	 */
 	...attributesData.map,
+	...attributesData.mapInteraction,
 	...attributesData.mapMarker,
 	...attributesData.mapPopup,
 	...attributesData.border,

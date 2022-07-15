@@ -13,6 +13,10 @@ const mapPopup = {
 		type: 'number',
 		default: 1,
 	},
+	'map-marker-heading-level': {
+		type: 'string',
+		default: 'h6',
+	},
 	...typography,
 	...prefixAttributesCreator({
 		obj: typography,

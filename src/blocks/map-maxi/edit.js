@@ -444,7 +444,12 @@ class edit extends MaxiBlockComponent {
 			map: [
 				{
 					uniqueID: attributes.uniqueID,
-					...getGroupAttributes(attributes, 'map'),
+					...getGroupAttributes(attributes, [
+						'map',
+						'mapMarker',
+						'mapPopup',
+						'mapInteraction',
+					]),
 				},
 			],
 		};

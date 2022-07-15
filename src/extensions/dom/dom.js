@@ -37,6 +37,7 @@ const allowedBlocks = [
 	'maxi-blocks/svg-icon-maxi',
 	'maxi-blocks/video-maxi',
 	'maxi-blocks/navigation-menu-maxi',
+	'maxi-blocks/navigation-link-maxi',
 ];
 
 wp.domReady(() => {

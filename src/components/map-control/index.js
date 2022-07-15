@@ -106,54 +106,21 @@ const MapControl = props => {
 					})
 				}
 			/>
-			{props['map-provider'] === 'googlemaps' && (
-				<>
-					<TextControl
-						label={__('Latitude', 'maxi-blocks')}
-						value={props['map-latitude']}
-						onChange={val => onChange({ 'map-latitude': val })}
-					/>
-					<TextControl
-						label={__('Longitude', 'maxi-blocks')}
-						value={props['map-longitude']}
-						onChange={val => onChange({ 'map-longitude': val })}
-					/>
-				</>
-			)}
-
-			<TextControl
-				className='maxi-map-control__full-width-text'
-				label={__('Marker Text', 'maxi-blocks')}
-				value={props['map-marker-text']}
-				onChange={val => onChange({ 'map-marker-text': val })}
-			/>
-			<TextControl
-				className='maxi-map-control__full-width-text'
-				label={__('Marker Address', 'maxi-blocks')}
-				value={props['map-marker-address']}
-				onChange={val => onChange({ 'map-marker-address': val })}
-			/>
-			<ColorControl
-				label={__('Marker Address', 'maxi-blocks')}
-				color={props['map-marker-address-color']}
-				prefix='map-marker-address-'
-				paletteColor={props['map-marker-address-palette-color']}
-				paletteStatus={props['map-marker-address-palette-status']}
-				onChange={({ color, paletteColor, paletteStatus }) =>
-					onChange({
-						'map-marker-address-color': color,
-						'map-marker-address-palette-color': paletteColor,
-						'map-marker-address-palette-status': paletteStatus,
-					})
-				}
-				disableOpacity
-			/>
 		</div>
 	);
 };
 
 export const MapMarkersControl = props => {
 	const { onChange, deviceType } = props;
+
+	const getMarkerItemClasses = (mapMarker, index) => {
+		const classes = classnames(
+			'maxi-map-control__markers__item',
+			mapMarker - 1 === index && 'maxi-map-control__markers__item--active'
+		);
+
+		return classes;
+	};
 
 	return (
 		<>
@@ -171,144 +138,75 @@ export const MapMarkersControl = props => {
 									),
 							})
 						}
-						className={`maxi-map-control__markers__item ${
-							props['map-marker'] - 1 === index
-								? 'maxi-map-control__markers__item--active'
-								: null
-						}`}
+						className={getMarkerItemClasses(
+							props['map-marker'],
+							index
+						)}
 					>
 						{mapMarkers[item]}
 					</div>
 				))}
 			</div>
-			{props['map-provider'] === 'openstreetmap' ? (
-				<>
-					<OpacityControl
-						label={__('Icon opacity', 'maxi-blocks')}
-						opacity={props['svg-fill-palette-opacity']}
-						onChange={val =>
-							onChange({
-								'svg-fill-palette-opacity': val,
-								'map-marker-icon': setSVGContent(
-									props['map-marker-icon'],
-									val,
-									'opacity'
-								),
-							})
-						}
-					/>
-					<AdvancedNumberControl
-						label={__('Icon size', 'maxi-blocks')}
-						min={15}
-						max={40}
-						initial={20}
-						step={1}
-						value={getLastBreakpointAttribute({
-							target: 'svg-width',
-							breakpoint: deviceType,
-							attributes: props,
-						})}
-						onChangeValue={val => {
-							onChange({
-								[`svg-width-${deviceType}`]: val,
-								'map-marker-icon': setSVGContent(
-									props['map-marker-icon'],
-									val,
-									' width'
-								),
-							});
-						}}
-						onReset={() => {
-							const defaultAttr =
-								getDefaultAttribute('svg-width-general');
-							onChange({
-								[`svg-width-${deviceType}`]: defaultAttr,
-								'map-marker-icon': setSVGContent(
-									props['map-marker-icon'],
-									defaultAttr,
-									' width'
-								),
-							});
-						}}
-					/>
-					<SvgColor
-						{...props}
-						type='fill'
-						label={__('Icon', 'maxi-blocks')}
-						onChangeFill={({ content, ...rest }) => {
-							onChange({
-								'map-marker-icon': content,
-								...rest,
-							});
-						}}
-						content={props['map-marker-icon']}
-					/>
-				</>
-			) : (
-				<>
-					<OpacityControl
-						label={__('Marker Opacity', 'maxi-blocks')}
-						opacity={props['map-marker-opacity']}
-						onChange={val =>
-							onChange({
-								'map-marker-opacity': val,
-							})
-						}
-					/>
-					<AdvancedNumberControl
-						label={__('Marker Scale', 'maxi-blocks')}
-						min={1}
-						max={10}
-						initial={1}
-						step={1}
-						value={props['map-marker-scale']}
-						onChangeValue={val =>
-							onChange({ 'map-marker-scale': val })
-						}
-						onReset={() =>
-							onChange({
-								'map-marker-scale':
-									getDefaultAttribute('map-marker-scale'),
-							})
-						}
-					/>
-					<ToggleSwitch
-						label={__('Custom Maker Colours', 'maxi-block')}
-						selected={props['map-marker-custom-color-status']}
-						onChange={val =>
-							onChange({
-								'map-marker-custom-color-status': val,
-							})
-						}
-					/>
-					{props['map-marker-custom-color-status'] && (
-						<>
-							<ColorControl
-								label={__('Marker Fill', 'maxi-blocks')}
-								disableOpacity
-								color={props['map-marker-fill-color']}
-								prefix='map-marker-fill-'
-								onChange={({ color }) =>
-									onChange({ 'map-marker-fill-color': color })
-								}
-								disablePalette
-							/>
-							<ColorControl
-								label={__('Marker Stroke', 'maxi-blocks')}
-								disableOpacity
-								color={props['map-marker-stroke-color']}
-								prefix='map-marker-stroke-'
-								onChange={({ color }) =>
-									onChange({
-										'map-marker-stroke-color': color,
-									})
-								}
-								disablePalette
-							/>
-						</>
-					)}
-				</>
-			)}
+			<OpacityControl
+				label={__('Icon opacity', 'maxi-blocks')}
+				opacity={props['svg-fill-palette-opacity']}
+				onChange={val =>
+					onChange({
+						'svg-fill-palette-opacity': val,
+						'map-marker-icon': setSVGContent(
+							props['map-marker-icon'],
+							val,
+							'opacity'
+						),
+					})
+				}
+			/>
+			<AdvancedNumberControl
+				label={__('Icon size', 'maxi-blocks')}
+				min={15}
+				max={40}
+				initial={20}
+				step={1}
+				value={getLastBreakpointAttribute({
+					target: 'svg-width',
+					breakpoint: deviceType,
+					attributes: props,
+				})}
+				onChangeValue={val => {
+					onChange({
+						[`svg-width-${deviceType}`]: val,
+						'map-marker-icon': setSVGContent(
+							props['map-marker-icon'],
+							val,
+							' width'
+						),
+					});
+				}}
+				onReset={() => {
+					const defaultAttr =
+						getDefaultAttribute('svg-width-general');
+					onChange({
+						[`svg-width-${deviceType}`]: defaultAttr,
+						'map-marker-icon': setSVGContent(
+							props['map-marker-icon'],
+							defaultAttr,
+							' width'
+						),
+					});
+				}}
+			/>
+			<SvgColor
+				{...props}
+				type='fill'
+				label={__('Icon', 'maxi-blocks')}
+				onChangeFill={({ content, ...rest }) => {
+					onChange({
+						'map-marker-icon': content,
+						...rest,
+					});
+				}}
+				content={props['map-marker-icon']}
+			/>
 		</>
 	);
 };

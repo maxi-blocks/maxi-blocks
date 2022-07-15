@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { select } from '@wordpress/data';
-import { createRef, useEffect, useState } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 import { Button, TextControl } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
 
@@ -17,14 +17,12 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';
 import { getNewMarker, getUpdatedMarkers } from './utils';
 import getStyles from './styles';
-import defaultMarkers from './defaultMarkers';
 import * as mapMarkerIcons from '../../icons/map-icons/markers';
 
 /**
  * External dependencies
  */
 import { isEmpty } from 'lodash';
-import { Loader } from '@googlemaps/js-api-loader';
 import {
 	MapContainer,
 	Marker,
@@ -35,105 +33,11 @@ import {
 } from 'react-leaflet';
 import L from 'leaflet';
 import ReactDOMServer from 'react-dom/server';
+import ReactLeafletGoogleLayer from 'react-leaflet-google-layer';
 
 /**
  * Content
  */
-const GoogleMapsContent = props => {
-	const { attributes, apiKey } = props;
-	const {
-		uniqueID,
-		'map-latitude': mapLatitude,
-		'map-longitude': mapLongitude,
-		'map-zoom': mapZoom,
-		'map-marker': mapMarker,
-		'map-marker-opacity': mapMarkerOpacity,
-		'map-marker-scale': mapMarkerScale,
-		'map-marker-fill-color': mapMarkerFillColor,
-		'map-marker-stroke-color': mapMarkerStrokeColor,
-		'map-marker-text': mapMarkerText,
-		'map-marker-address': mapMarkerAddress,
-	} = attributes;
-
-	const gmRef = createRef();
-
-	if (apiKey) {
-		const loader = new Loader({
-			apiKey,
-			version: 'weekly',
-			libraries: ['places'],
-		});
-
-		loader
-			.load()
-			.then(() => {
-				return new google.maps.Map(gmRef.current, {
-					center: {
-						lat: +mapLatitude,
-						lng: +mapLongitude,
-					},
-					zoom: mapZoom,
-				});
-			})
-			.then(map => {
-				const contentTitleString = `<h6 class="map-marker-info-window__title">${mapMarkerText}</h6>`;
-				const contentAddressString = `<p class="map-marker-info-window__address">${mapMarkerAddress}</p>`;
-				const contentString = `<div class="map-marker-info-window">${
-					!isEmpty(mapMarkerText) ? contentTitleString : ''
-				}${
-					!isEmpty(mapMarkerAddress) ? contentAddressString : ''
-				}</div>`;
-
-				const infowindow = new google.maps.InfoWindow({
-					content: contentString,
-				});
-
-				const marker = new google.maps.Marker({
-					position: { lat: +mapLatitude, lng: +mapLongitude },
-					map,
-					icon: {
-						...defaultMarkers[`marker-icon-${mapMarker}`],
-						fillColor: mapMarkerFillColor,
-						fillOpacity: mapMarkerOpacity || 1,
-						strokeWeight: 2,
-						strokeColor: mapMarkerStrokeColor,
-						rotation: 0,
-						scale: mapMarkerScale,
-					},
-				});
-
-				marker.addListener('click', () => {
-					(!isEmpty(mapMarkerText) || !isEmpty(mapMarkerAddress)) &&
-						infowindow.open(map, marker);
-				});
-			})
-			.catch(ex => {
-				console.error('outer', ex.message);
-			});
-	}
-
-	if (apiKey)
-		return (
-			<div
-				ref={gmRef}
-				className='maxi-map-container'
-				id={`map-container-${uniqueID}`}
-			/>
-		);
-
-	return (
-		<p className='maxi-map-block__not-found'>
-			{__(
-				'Oops, you can not see the map because you have not set your Google map API key, please navigate to the Maxi Block',
-				'maxi-blocks'
-			)}
-			<a target='_blank' href='/wp-admin/admin.php?page=maxi-blocks.php'>
-				{__(' Options > Google API Key', 'maxi-blocks')}
-			</a>
-		</p>
-	);
-};
-
 const MapEventsListener = props => {
 	const {
 		isAddingMarker,
@@ -433,8 +337,14 @@ const Markers = props => {
 	));
 };
 
-const OpenStreetMapContent = props => {
-	const { attributes, maxiSetAttributes, isFirstClick } = props;
+const MapContent = props => {
+	const {
+		attributes,
+		maxiSetAttributes,
+		isFirstClick,
+		isGoogleMaps,
+		apiKey,
+	} = props;
 	const {
 		uniqueID,
 		'map-latitude': mapLatitude,
@@ -456,35 +366,57 @@ const OpenStreetMapContent = props => {
 
 	return (
 		<div className='maxi-map-container' id={`map-container-${uniqueID}`}>
-			<MapContainer
-				center={[mapLatitude, mapLongitude]}
-				minZoom={mapMinZoom}
-				maxZoom={mapMaxZoom}
-				zoom={mapZoom}
-			>
-				<TileLayer
-					attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-					url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-				/>
-				<MapEventsListener
-					isAddingMarker={isAddingMarker}
-					isDraggingMarker={isDraggingMarker}
-					isFirstClick={isFirstClick}
-					mapMarkers={mapMarkers}
-					mapMaxZoom={mapMaxZoom}
-					mapMinZoom={mapMinZoom}
-					maxiSetAttributes={maxiSetAttributes}
-					setIsAddingMarker={setIsAddingMarker}
-					setIsDraggingMarker={setIsDraggingMarker}
-				/>
-				<Markers
-					attributes={getGroupAttributes(attributes, 'map')}
-					maxiSetAttributes={maxiSetAttributes}
-					setIsDraggingMarker={setIsDraggingMarker}
-				/>
-				<SearchBox {...props} />
-			</MapContainer>
-			{alert}
+			{(isGoogleMaps && apiKey) || !isGoogleMaps ? (
+				<>
+					<MapContainer
+						center={[mapLatitude, mapLongitude]}
+						minZoom={mapMinZoom}
+						maxZoom={mapMaxZoom}
+						zoom={mapZoom}
+					>
+						{isGoogleMaps ? (
+							<ReactLeafletGoogleLayer apiKey={apiKey} />
+						) : (
+							<TileLayer
+								attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+								url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+							/>
+						)}
+
+						<MapEventsListener
+							isAddingMarker={isAddingMarker}
+							isDraggingMarker={isDraggingMarker}
+							isFirstClick={isFirstClick}
+							mapMarkers={mapMarkers}
+							mapMaxZoom={mapMaxZoom}
+							mapMinZoom={mapMinZoom}
+							maxiSetAttributes={maxiSetAttributes}
+							setIsAddingMarker={setIsAddingMarker}
+							setIsDraggingMarker={setIsDraggingMarker}
+						/>
+						<Markers
+							attributes={getGroupAttributes(attributes, 'map')}
+							maxiSetAttributes={maxiSetAttributes}
+							setIsDraggingMarker={setIsDraggingMarker}
+						/>
+						<SearchBox {...props} />
+					</MapContainer>
+					{alert}
+				</>
+			) : (
+				<p className='maxi-map-block__not-found'>
+					{__(
+						'Oops, you can not see the map because you have not set your Google map API key, please navigate to the Maxi Block',
+						'maxi-blocks'
+					)}
+					<a
+						target='_blank'
+						href='/wp-admin/admin.php?page=maxi-blocks.php'
+					>
+						{__(' Options > Google API Key', 'maxi-blocks')}
+					</a>
+				</p>
+			)}
 		</div>
 	);
 };
@@ -575,15 +507,12 @@ class edit extends MaxiBlockComponent {
 				className='maxi-map-block'
 				{...getMaxiBlockAttributes(this.props)}
 			>
-				{mapProvider === 'googlemaps' && (
-					<GoogleMapsContent {...this.props} apiKey={getApiKey()} />
-				)}
-				{mapProvider === 'openstreetmap' && (
-					<OpenStreetMapContent
-						{...this.props}
-						isFirstClick={this.state.isFirstClick}
-					/>
-				)}
+				<MapContent
+					{...this.props}
+					isFirstClick={this.state.isFirstClick}
+					isGoogleMaps={mapProvider === 'googlemaps'}
+					apiKey={getApiKey()}
+				/>
 			</MaxiBlock>,
 		];
 	}

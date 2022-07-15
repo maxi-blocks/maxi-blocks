@@ -4,7 +4,7 @@ import paletteAttributesCreator from '../paletteAttributesCreator';
 const map = {
 	'map-provider': {
 		type: 'string',
-		default: 'openstreetmap',
+		default: 'openstreetmap', // or googlemaps
 	},
 	'map-latitude': {
 		type: 'number',
@@ -43,30 +43,6 @@ const map = {
 	'map-marker-heading-level': {
 		type: 'string',
 		default: 'h6',
-	},
-	'map-marker-opacity': {
-		type: 'number',
-		default: 1,
-	},
-	'map-marker-scale': {
-		type: 'number',
-		default: 1,
-	},
-	'map-marker-custom-color-status': {
-		type: 'boolean',
-		default: false,
-	},
-	'map-marker-fill-color': {
-		type: 'string',
-		default: '#FF4A17',
-	},
-	'map-marker-stroke-color': {
-		type: 'string',
-		default: '#081219',
-	},
-	'map-marker-text': {
-		type: 'string',
-		default: __('Marker Title', 'maxi-blocks'),
 	},
 	'map-dragging': {
 		type: 'boolean',

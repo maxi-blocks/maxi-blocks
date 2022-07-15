@@ -14,16 +14,14 @@ import { isEmpty } from 'lodash';
  */
 import {
 	AccordionControl,
-	SettingTabsControl,
 	FontLevelControl,
-	TypographyControl,
-	ToggleSwitch,
 	MapControl,
-} from '../../components';
-import {
 	MapMarkersControl,
-	MapPopupsControl,
-} from '../../components/map-control';
+	MapPopupControl,
+	SettingTabsControl,
+	ToggleSwitch,
+	TypographyControl,
+} from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 import { selectorsMap, categoriesMap } from './custom-css';
 import * as inspectorTabs from '../../components/inspector-tabs';
@@ -217,7 +215,7 @@ const Inspector = props => {
 											'maxi-blocks'
 										),
 										content: (
-											<MapPopupsControl
+											<MapPopupControl
 												{...getGroupAttributes(
 													attributes,
 													'mapPopup'

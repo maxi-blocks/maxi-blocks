@@ -109,17 +109,14 @@ const MapControl = props => {
 	);
 };
 
+const getPresetItemClasses = (className, attrIndex, presetIndex) =>
+	classnames(
+		className,
+		attrIndex - 1 === presetIndex && `${className}--active`
+	);
+
 export const MapMarkersControl = props => {
 	const { onChange, deviceType } = props;
-
-	const getMarkerItemClasses = (mapMarker, index) => {
-		const classes = classnames(
-			'maxi-map-control__markers__item',
-			mapMarker - 1 === index && 'maxi-map-control__markers__item--active'
-		);
-
-		return classes;
-	};
 
 	return (
 		<>
@@ -137,7 +134,8 @@ export const MapMarkersControl = props => {
 									),
 							})
 						}
-						className={getMarkerItemClasses(
+						className={getPresetItemClasses(
+							'maxi-map-control__markers__item',
 							props['map-marker'],
 							index
 						)}
@@ -214,18 +212,18 @@ export const MapPopupsControl = props => {
 			<div className='maxi-map-control__popups'>
 				{Object.keys(mapPopups).map((item, index) => (
 					<div
-						key={`map-marker-${uniqueId()}`}
+						key={`map-popup-${uniqueId()}`}
 						data-item={index + 1}
 						onClick={e =>
 							onChange({
 								'map-popup': +e.currentTarget.dataset.item,
 							})
 						}
-						className={`maxi-map-control__popups__item ${
-							props['map-marker'] - 1 === index
-								? 'maxi-map-control__popups__item--active'
-								: null
-						}`}
+						className={getPresetItemClasses(
+							'maxi-map-control__popups__item',
+							attributes['map-popup'],
+							index
+						)}
 					>
 						{mapPopups[item]}
 					</div>

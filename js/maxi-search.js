@@ -28,7 +28,7 @@ const onRevealEvent = (
 ) => {
 	const { target, type } = event;
 
-	const isClickType = type !== 'mouseover' && type !== 'mouseout';
+	const isClickType = type !== 'mouseover' && type !== 'mouseleave';
 
 	const isTargetInside = searchBlock.contains(target);
 	const isTargetOnButton = searchBlock
@@ -50,9 +50,8 @@ const onRevealEvent = (
 		!isInputHidden &&
 		((isClickType && (isTargetOnButton || !isTargetInside)) ||
 			(!isClickType &&
-				type === 'mouseout' &&
-				!isInputFocussed &&
-				!isTargetInside))
+				type === 'mouseleave' &&
+				!isInputFocussed))
 	) {
 		wrapper.innerHTML = content;
 		toggleClasses(input, wrapper, isIcon);
@@ -104,7 +103,7 @@ const search = () => {
 				const events = [
 					'click',
 					...(iconRevealAction === 'hover'
-						? ['mouseover', 'mouseout']
+						? ['mouseover', 'mouseleave']
 						: []),
 				];
 

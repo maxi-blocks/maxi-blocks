@@ -1,8 +1,9 @@
 const onSearchEvent = input => {
+	const searchLink = maxiSearch[0][1];
 	const inputValue = input.value;
 
 	if (input.checkValidity()) {
-		const searchUrl = `${window.location.origin}/?s=${inputValue}`;
+		const searchUrl = `${searchLink}${inputValue}`;
 
 		window.location.href = searchUrl;
 	} else {
@@ -49,9 +50,7 @@ const onRevealEvent = (
 	} else if (
 		!isInputHidden &&
 		((isClickType && (isTargetOnButton || !isTargetInside)) ||
-			(!isClickType &&
-				type === 'mouseleave' &&
-				!isInputFocussed))
+			(!isClickType && type === 'mouseleave' && !isInputFocussed))
 	) {
 		wrapper.innerHTML = content;
 		toggleClasses(input, wrapper, isIcon);
@@ -59,7 +58,7 @@ const onRevealEvent = (
 };
 
 const search = () => {
-	Object.entries(maxiSearch[0]).forEach(
+	Object.entries(maxiSearch[0][0]).forEach(
 		([
 			uniqueID,
 			{

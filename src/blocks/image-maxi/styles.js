@@ -252,17 +252,15 @@ const getImageObject = props => {
 			blockStyle: props.blockStyle,
 			prefix: 'image-',
 		}),
-		...{
-			boxShadow: getBoxShadowStyles({
-				obj: {
-					...getGroupAttributes(props, 'boxShadow', false, 'image-'),
-					...getGroupAttributes(props, 'clipPath'),
-					SVGElement: props.SVGElement,
-				},
-				blockStyle: props.blockStyle,
-				prefix: 'image-',
-			}),
-		},
+		boxShadow: getBoxShadowStyles({
+			obj: {
+				...getGroupAttributes(props, 'boxShadow', false, 'image-'),
+				...getGroupAttributes(props, 'clipPath'),
+				SVGElement: props.SVGElement,
+			},
+			blockStyle: props.blockStyle,
+			prefix: 'image-',
+		}),
 		...(imageRatio && getAspectRatio(imageRatio)),
 		size: getSizeStyles(
 			{
@@ -333,25 +331,23 @@ const getClipPathDropShadowObject = (props, isHover = false) => {
 		}),
 		...(props['image-box-shadow-status-hover'] &&
 			isHover && {
-				':hover .maxi-image-block-wrapper': {
-					boxShadow: getBoxShadowStyles({
-						obj: {
-							...getGroupAttributes(
-								props,
-								'boxShadow',
-								true,
-								'image-'
-							),
-							...getGroupAttributes(props, 'clipPath'),
-							SVGElement: props.SVGElement,
-						},
-						isHover: true,
-						dropShadow: true,
-						blockStyle: props.blockStyle,
-						prefix: 'image-',
-						forClipPath: true,
-					}),
-				},
+				boxShadow: getBoxShadowStyles({
+					obj: {
+						...getGroupAttributes(
+							props,
+							'boxShadow',
+							true,
+							'image-'
+						),
+						...getGroupAttributes(props, 'clipPath'),
+						SVGElement: props.SVGElement,
+					},
+					isHover: true,
+					dropShadow: true,
+					blockStyle: props.blockStyle,
+					prefix: 'image-',
+					forClipPath: true,
+				}),
 			}),
 	};
 
@@ -448,7 +444,8 @@ const getStyles = props => {
 						getImageObject(props),
 					[`:hover .maxi-image-block-wrapper ${imgTag}`]:
 						getHoverImageObject(props),
-					...getClipPathDropShadowObject(props, true),
+					':hover .maxi-image-block-wrapper':
+						getClipPathDropShadowObject(props, true),
 					' .maxi-image-block-wrapper > svg:first-child':
 						getImageShapeObject('svg', props),
 					' .maxi-image-block-wrapper > svg:first-child pattern image':

@@ -9,6 +9,11 @@ const attributes = {
 	/**
 	 * Block styles
 	 */
+	selectedMenuId: {
+		type: 'number',
+	},
+
+	...attributesData.menuItem,
 	...attributesData.border,
 	...attributesData.borderHover,
 	...attributesData.borderRadius,

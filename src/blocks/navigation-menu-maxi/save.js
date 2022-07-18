@@ -9,7 +9,13 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 const save = props => {
 	const name = 'maxi-blocks/navigation-menu-maxi';
 
-	return <MaxiBlock.save {...getMaxiBlockAttributes({ ...props, name })} />;
+	return (
+		<MaxiBlock.save
+			tagName='nav'
+			{...getMaxiBlockAttributes({ ...props, name })}
+			useInnerBlocks
+		/>
+	);
 };
 
 export default save;

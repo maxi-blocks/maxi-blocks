@@ -9,7 +9,7 @@ const attributes = {
 	/**
 	 * Block styles
 	 */
-	title: {
+	label: {
 		type: 'string',
 	},
 	url: {

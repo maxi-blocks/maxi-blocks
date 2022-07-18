@@ -135,10 +135,10 @@
 		}
 
 		&--nested-accordion {
-			border: 1px solid var(--maxi-secondary-color);
-			padding-top: 23px;
-			padding-bottom: 5px;
 			background: var(--maxi-white-4-color);
+			border: 1px solid var(--maxi-secondary-color);
+			padding: 25px 0 0;
+			margin-bottom: 8px;
 		}
 
 		.maxi-tab-content {

@@ -90,12 +90,10 @@
 		}
 	}
 	&--nested-accordion {
+		margin-bottom: 0;
 		.maxi-accordion-control__item {
-			margin: 0 -1px;
-			&__panel {
-				margin-bottom: -8px;
-				padding-bottom: 8px;
-				background-color: #fff;
+			&:last-child {
+				margin-bottom: 0;
 			}
 		}
 		.maxi-accordion-control__item__button {

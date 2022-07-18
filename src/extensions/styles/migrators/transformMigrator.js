@@ -68,6 +68,8 @@ const isEligible = blockAttributes =>
 		));
 
 const migrate = ({ newAttributes, selectors }) => {
+	if (isNil(selectors)) return false;
+
 	const getAxis = attribute => attribute.match(/[x,y,z](-unit)?/)[0];
 
 	const target = Object.entries(selectors).find(

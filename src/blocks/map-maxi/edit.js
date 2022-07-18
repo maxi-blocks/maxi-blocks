@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { select } from '@wordpress/data';
-import { useEffect, useState } from '@wordpress/element';
+import { useEffect, useState, renderToString } from '@wordpress/element';
 import { Button, TextControl } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
 
@@ -17,11 +17,13 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';
 import { getNewMarker, getUpdatedMarkers } from './utils';
 import getStyles from './styles';
+import copyPasteMapping from './copy-paste-mapping';
 import * as mapMarkerIcons from '../../icons/map-icons/markers';
 
 /**
  * External dependencies
  */
+import classnames from 'classnames';
 import { isEmpty } from 'lodash';
 import {
 	MapContainer,
@@ -32,7 +34,6 @@ import {
 	useMapEvents,
 } from 'react-leaflet';
 import L from 'leaflet';
-import ReactDOMServer from 'react-dom/server';
 import ReactLeafletGoogleLayer from 'react-leaflet-google-layer';
 
 /**
@@ -185,7 +186,7 @@ const SearchBox = props => {
 			return (
 				<Button
 					onClick={onAddMarker}
-					className='map-searchbox__buttons'
+					className='maxi-map-block__searchbox__buttons'
 					key={placeId}
 					data-index={index}
 				>
@@ -197,7 +198,7 @@ const SearchBox = props => {
 
 	return (
 		<>
-			<div className='map-searchbox'>
+			<div className='maxi-map-block__searchbox'>
 				<TextControl
 					value={keywords}
 					onChange={setKeywords}
@@ -223,7 +224,9 @@ const SearchBox = props => {
 				/>
 			</div>
 			{searchResults && searchResults.length ? (
-				<div className='map-searchbox__results'>{resultsList()}</div>
+				<div className='maxi-map-block__searchbox__results'>
+					{resultsList()}
+				</div>
 			) : null}
 		</>
 	);
@@ -288,13 +291,15 @@ const Markers = props => {
 		>
 			<Popup closeButton={false}>
 				<div
-					className={`map-marker-info-window map-marker-info-window__${mapPopup}`}
+					className={classnames(
+						'maxi-map-block__popup',
+						`maxi-map-block__popup--${mapPopup}`
+					)}
 				>
-					<div className='map-marker-info-window__content'>
+					<div className='maxi-map-block__popup__content'>
 						<RichText
-							className='map-marker-info-window__title'
+							className='maxi-map-block__popup__content__title'
 							value={marker.heading}
-							identifier='title'
 							tagName={mapMarkerHeadingLevel}
 							onChange={content => {
 								const updatedMarkers = [...mapMarkers];
@@ -306,10 +311,8 @@ const Markers = props => {
 							withoutInteractiveFormatting
 						/>
 						<RichText
-							className='map-marker-info-window__address'
+							className='maxi-map-block__popup__content__description'
 							value={marker.description}
-							identifier='description'
-							tagName='p'
 							onChange={content => {
 								const updatedMarkers = [...mapMarkers];
 								updatedMarkers[index].description = content;
@@ -319,7 +322,7 @@ const Markers = props => {
 							placeholder={__('Description', 'maxi-blocks')}
 							withoutInteractiveFormatting
 						/>
-						<div className='map-marker-info-window__marker-remove'>
+						<div className='maxi-map-block__popup__content__marker-remove'>
 							<Button
 								onClick={removeMarker}
 								dataindex={index}
@@ -359,13 +362,16 @@ const MapContent = props => {
 	const [isAddingMarker, setIsAddingMarker] = useState(false);
 
 	const alert = isAddingMarker ? (
-		<div className='map-alert'>
+		<div className='maxi-map-block__alert'>
 			{__('Release to drop a marker here', 'maxi-blocks')}
 		</div>
 	) : null;
 
 	return (
-		<div className='maxi-map-container' id={`map-container-${uniqueID}`}>
+		<div
+			className='maxi-map-block__container'
+			id={`maxi-map-block__container-${uniqueID}`}
+		>
 			{(isGoogleMaps && apiKey) || !isGoogleMaps ? (
 				<>
 					<MapContainer
@@ -382,7 +388,6 @@ const MapContent = props => {
 								url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 							/>
 						)}
-
 						<MapEventsListener
 							isAddingMarker={isAddingMarker}
 							isDraggingMarker={isDraggingMarker}
@@ -491,9 +496,7 @@ class edit extends MaxiBlockComponent {
 
 		if (!mapMarkerIcon) {
 			maxiSetAttributes({
-				'map-marker-icon': ReactDOMServer.renderToString(
-					mapMarkerIcons.mapMarker1
-				),
+				'map-marker-icon': renderToString(mapMarkerIcons.mapMarker1),
 			});
 
 			return null;
@@ -509,6 +512,7 @@ class edit extends MaxiBlockComponent {
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}
 				{...this.props}
+				copyPasteMapping={copyPasteMapping}
 			/>,
 			<MaxiBlock
 				key={`maxi-map--${uniqueID}`}

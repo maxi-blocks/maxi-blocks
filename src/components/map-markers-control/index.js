@@ -2,6 +2,7 @@
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { renderToString } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -40,10 +41,9 @@ const MapMarkersControl = props => {
 						onClick={e =>
 							onChange({
 								'map-marker': +e.currentTarget.dataset.item,
-								'map-marker-icon':
-									ReactDOMServer.renderToString(
-										mapMarkers[item]
-									),
+								'map-marker-icon': renderToString(
+									mapMarkers[item]
+								),
 							})
 						}
 						className={getMapPresetItemClasses(

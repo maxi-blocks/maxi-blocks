@@ -1,6 +1,6 @@
 .maxi-map-block {
 	&__not-found {
-		padding: 1 rem;
+		padding: 1rem;
 		background: #fcf8e3;
 		color: #8a6d3b !important;
 	}
@@ -10,7 +10,7 @@
 		animation: animate-marker 400ms ease-in-out;
 	}
 
-	.map-alert {
+	&__alert {
 		position: absolute;
 		bottom: 1em;
 		width: calc(100% - 2em);
@@ -24,20 +24,22 @@
 		z-index: 9999;
 	}
 
-	.map-marker-info-window {
-		&__marker-remove {
-			background: #f5f5f5;
-			border-radius: 5px;
-			border: 1px solid #eee;
-			text-align: center;
+	&__popup {
+		&__content {
+			&__marker-remove {
+				background: #f5f5f5;
+				border-radius: 5px;
+				border: 1px solid #eee;
+				text-align: center;
 
-			svg.dashicon {
-				fill: #b52727;
+				svg.dashicon {
+					fill: #b52727;
+				}
 			}
 		}
 	}
 
-	.map-searchbox {
+	&__searchbox {
 		display: flex;
 		align-items: center;
 		background: #fff;

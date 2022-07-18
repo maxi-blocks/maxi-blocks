@@ -279,8 +279,11 @@ const getStyles = props => {
 			{
 				'': getNormalObject(props),
 				':hover': getHoverNormalObject(props),
-				' .map-marker-info-window__title': getMapObject(props, 'text'),
-				' .map-marker-info-window__address': getMapObject(
+				' .maxi-map-block__popup__content__title': getMapObject(
+					props,
+					'text'
+				),
+				' .maxi-map-block__popup__content__description': getMapObject(
 					props,
 					'address'
 				),
@@ -289,7 +292,7 @@ const getStyles = props => {
 						...getGroupAttributes(props, 'size'),
 					}),
 				},
-				' .map-marker-info-window': {
+				' .maxi-map-block__popup': {
 					border: getBorderStyles({
 						obj: {
 							...getGroupAttributes(
@@ -325,7 +328,7 @@ const getStyles = props => {
 						prefix: 'popup-',
 					}),
 				},
-				[` .map-marker-info-window__${props['map-popup']}:before`]: {
+				[` .maxi-map-block__popup--${props['map-popup']}:before`]: {
 					...changeAttributeName(
 						getBackgroundStyles({
 							...getGroupAttributes(
@@ -341,7 +344,7 @@ const getStyles = props => {
 						'border-top-color'
 					),
 				},
-				[` .map-marker-info-window__${props['map-popup']}:after`]:
+				[` .maxi-map-block__popup--${props['map-popup']}:after`]:
 					getBorderArrowObject(props),
 				' .leaflet-marker-icon': getSVGWidthStyles(
 					getGroupAttributes(props, 'svg'),
@@ -356,7 +359,6 @@ const getStyles = props => {
 					blockStyle,
 				}),
 			},
-
 			selectorsMap,
 			props
 		),

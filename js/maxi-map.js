@@ -92,7 +92,7 @@ window.onload = () => {
 					'map-marker-heading-level': mapMarkerHeadingLevel,
 				} = item;
 
-				const map = L.map(`map-container-${uniqueID}`, {
+				const map = L.map(`maxi-map-block__container-${uniqueID}`, {
 					dragging: mapDragging,
 					touchZoom: mapTouchZoom,
 					doubleClickZoom: mapDoubleClickZoom,
@@ -128,12 +128,12 @@ window.onload = () => {
 						.bindPopup(
 							`
 						<div
-							class='map-marker-info-window map-marker-info-window__${mapPopup}'
+							class='maxi-map-block__popup maxi-map-block__popup--${mapPopup}'
 
 						>
-							<div class='map-marker-info-window__content'>
-								<${mapMarkerHeadingLevel} class='map-marker-info-window__title'>${heading}</${mapMarkerHeadingLevel}>
-								<p class='map-marker-info-window__address'>${description}</p>
+							<div class='maxi-map-block__popup__content'>
+								<${mapMarkerHeadingLevel} class='maxi-map-block__popup__content__title'>${heading}</${mapMarkerHeadingLevel}>
+								<p class='maxi-map-block__popup__content__address'>${description}</p>
 							</div>
 						</div>
 					`,

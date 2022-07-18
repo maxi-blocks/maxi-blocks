@@ -50,5 +50,16 @@ describe('StyleCards ColorPresets', () => {
 
 		await page.waitForTimeout(150);
 		expect(await checkSCResult(page)).toMatchSnapshot();
+
+		// Test reset
+		await page.$eval(
+			'.maxi-accordion-control__item__panel button',
+			button => button.click()
+		);
+
+		expect(colorInput).toStrictEqual('#FF4A17');
+
+		await page.waitForTimeout(150);
+		expect(await checkSCResult(page)).toMatchSnapshot();
 	});
 });

@@ -11,8 +11,7 @@ import {
 	changeResponsive,
 } from '../../utils';
 
-// Needs a deep check; snapshot is totally different
-describe.skip('StyleCards headings', () => {
+describe('StyleCards headings', () => {
 	it('Check Headings', async () => {
 		await createNewPost();
 		await page.setViewport({
@@ -49,6 +48,7 @@ describe.skip('StyleCards headings', () => {
 			transform: 'capitalize',
 			style: 'italic',
 			orientation: 'mixed',
+			direction: 'ltr',
 		});
 
 		await page.$$eval(

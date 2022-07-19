@@ -30,6 +30,7 @@ import { buttonIcon } from '../../icons';
  * Migrators
  */
 import { blockMigrator } from '../../extensions/styles/migrators';
+import transitionMigrator from '../../extensions/styles/migrators/transitionMigrator';
 
 /**
  * Block
@@ -60,5 +61,6 @@ registerBlockType('maxi-blocks/button-maxi', {
 		save,
 		prefix: 'button-',
 		selectors: selectorsButton,
+		migrators: [transitionMigrator],
 	}),
 });

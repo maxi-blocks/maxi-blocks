@@ -12,140 +12,17 @@ import { isEmpty } from 'lodash';
 /**
  * Internal dependencies
  */
+import { AccordionControl, SettingTabsControl } from '../../components';
 import {
-	AccordionControl,
-	FontLevelControl,
 	MapControl,
+	MapInteracitonControl,
 	MapMarkersControl,
 	MapPopupControl,
-	SettingTabsControl,
-	ToggleSwitch,
-	TypographyControl,
-} from '../../components';
+	MapPopupTextControl,
+} from './components';
 import { getGroupAttributes } from '../../extensions/styles';
 import { selectorsMap, categoriesMap } from './custom-css';
 import * as inspectorTabs from '../../components/inspector-tabs';
-
-/**
- * Controls
- */
-const MapInteracitonControl = ({ onChange, ...attributes }) => {
-	return (
-		<>
-			<ToggleSwitch
-				label={__('Map dragging', 'maxi-blocks')}
-				selected={attributes['map-dragging']}
-				onChange={() => {
-					onChange({
-						'map-dragging': !attributes['map-dragging'],
-					});
-				}}
-			/>
-			<ToggleSwitch
-				label={__('Touch zoom', 'maxi-blocks')}
-				selected={attributes['map-touch-zoom']}
-				onChange={() => {
-					onChange({
-						'map-touch-zoom': !attributes['map-touch-zoom'],
-					});
-				}}
-			/>
-			<ToggleSwitch
-				label={__('Double click zoom', 'maxi-blocks')}
-				selected={attributes['map-double-click-zoom']}
-				onChange={() => {
-					onChange({
-						'map-double-click-zoom':
-							!attributes['map-double-click-zoom'],
-					});
-				}}
-			/>
-			<ToggleSwitch
-				label={__('Scroll wheel zoom', 'maxi-blocks')}
-				selected={attributes['map-scroll-wheel-zoom']}
-				onChange={() => {
-					onChange({
-						'map-scroll-wheel-zoom':
-							!attributes['map-scroll-wheel-zoom'],
-					});
-				}}
-			/>
-		</>
-	);
-};
-
-const MapPopupTextControl = ({
-	blockStyle,
-	clientId,
-	deviceType,
-	onChange,
-	...attributes
-}) => {
-	const typographyProps = {
-		blockStyle,
-		breakpoint: deviceType,
-		clientId,
-		disableCustomFormats: true,
-		hideAlignment: true,
-		onChange,
-	};
-
-	return (
-		<SettingTabsControl
-			items={[
-				{
-					label: __('Title', 'maxi-blocks'),
-					content: (
-						<>
-							<span>Marker title text</span>
-							<FontLevelControl
-								{...getGroupAttributes(
-									attributes,
-									'typography'
-								)}
-								value={attributes['map-marker-heading-level']}
-								onChange={obj => {
-									onChange({
-										'map-marker-heading-level':
-											obj.textLevel,
-									});
-								}}
-							/>
-							<TypographyControl
-								{...getGroupAttributes(
-									attributes,
-									'typography'
-								)}
-								textLevel={
-									attributes['map-marker-heading-level']
-								}
-								{...typographyProps}
-							/>
-						</>
-					),
-				},
-				{
-					label: __('Description', 'maxi-blocks'),
-					content: (
-						<>
-							<span>Marker description text</span>
-							<TypographyControl
-								{...getGroupAttributes(
-									attributes,
-									'typography',
-									false,
-									'description-'
-								)}
-								prefix='description-'
-								{...typographyProps}
-							/>
-						</>
-					),
-				},
-			]}
-		/>
-	);
-};
 
 /**
  * Inspector

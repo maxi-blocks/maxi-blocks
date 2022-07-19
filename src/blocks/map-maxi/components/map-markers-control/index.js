@@ -7,26 +7,25 @@ import { renderToString } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { SvgColor } from '../svg-color';
-import AdvancedNumberControl from '../advanced-number-control';
+import { SvgColor } from '../../../../components/svg-color';
+import AdvancedNumberControl from '../../../../components/advanced-number-control';
 
-import ResponsiveTabsControl from '../responsive-tabs-control';
+import ResponsiveTabsControl from '../../../../components/responsive-tabs-control';
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 	getMapPresetItemClasses,
-} from '../../extensions/styles';
+} from '../../../../extensions/styles';
 
 /**
  * External dependencies
  */
 import { uniqueId } from 'lodash';
-import ReactDOMServer from 'react-dom/server';
 
 /**
  * Icons
  */
-import * as mapMarkers from '../../icons/map-icons/markers';
+import * as mapMarkers from '../../../../icons/map-icons/markers';
 
 const MapMarkersControl = props => {
 	const { onChange, deviceType } = props;

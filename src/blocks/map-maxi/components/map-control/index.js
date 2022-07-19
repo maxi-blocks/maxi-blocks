@@ -6,10 +6,10 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
-import InfoBox from '../info-box';
-import SelectControl from '../select-control';
-import { getDefaultAttribute } from '../../extensions/styles';
+import AdvancedNumberControl from '../../../../components/advanced-number-control';
+import InfoBox from '../../../../components/info-box';
+import SelectControl from '../../../../components/select-control';
+import { getDefaultAttribute } from '../../../../extensions/styles';
 
 /**
  * Styles and icons

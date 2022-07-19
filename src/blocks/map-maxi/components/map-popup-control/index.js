@@ -6,18 +6,20 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AxisControl from '../axis-control';
-import BackgroundControl from '../background-control';
-import BoxShadowControl from '../box-shadow-control';
-import ColorControl from '../color-control';
-import SettingTabsControl from '../setting-tabs-control';
-import ToggleSwitch from '../toggle-switch';
+import {
+	AxisControl,
+	BackgroundControl,
+	BoxShadowControl,
+	ColorControl,
+	SettingTabsControl,
+	ToggleSwitch,
+} from '../../../../components';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 	getMapPresetItemClasses,
 	setHoverAttributes,
-} from '../../extensions/styles';
+} from '../../../../extensions/styles';
 
 /**
  * External dependencies
@@ -27,7 +29,7 @@ import { uniqueId } from 'lodash';
 /**
  * Icons
  */
-import * as mapPopups from '../../icons/map-icons/popups';
+import * as mapPopups from '../../../../icons/map-icons/popups';
 
 const MapPopupControl = props => {
 	const { onChange, clientId, deviceType, ...attributes } = props;

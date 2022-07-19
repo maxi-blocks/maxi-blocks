@@ -24,9 +24,9 @@ const migrate = ({ newAttributes }) => {
 				...transition.block.icon,
 			};
 		});
+		
+		delete transition.block.icon;
 	}
-
-	delete transition.block.icon;
 
 	return newAttributes;
 };

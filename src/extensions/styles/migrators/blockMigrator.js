@@ -5,7 +5,6 @@ import fullWidthNonToResponsiveMigrator from './fullWidthNonToResponsive';
 import transformMigrator from './transformMigrator';
 import positionToNumberMigrator from './positionToNumberMigrator';
 import positionUnitsToAxisMigrator from './positionUnitsToAxisMigrator';
-import transitionMigrator from './transitionMigrator';
 import { getMigratorsCombinations } from './utils';
 
 /**
@@ -102,7 +101,6 @@ const blockMigrator = blockMigratorProps => {
 		positionUnitsToAxisMigrator,
 		fullWidthNonToResponsiveMigrator,
 		transformMigrator,
-		transitionMigrator,
 		...(blockMigratorProps.migrators ?? []),
 	];
 

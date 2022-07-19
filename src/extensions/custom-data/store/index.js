@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { registerStore } from '@wordpress/data';
+import { createReduxStore, register } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -11,9 +11,11 @@ import controls from './controls';
 import * as selectors from './selectors';
 import * as actions from './actions';
 
-registerStore('maxiBlocks/customData', {
+const store = createReduxStore('maxiBlocks/customData', {
 	reducer,
 	controls,
 	selectors,
 	actions,
 });
+
+register(store);

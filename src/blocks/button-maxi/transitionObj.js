@@ -39,7 +39,7 @@ const transitionObj = {
 		'icon width': {
 			title: 'Icon width',
 			target: ' .maxi-button-block__icon svg',
-			property: 'width',
+			property: ['width', 'height'],
 			hoverProp: 'icon-status-hover',
 		},
 		'icon background': {

@@ -43,7 +43,7 @@ const MapEventsListener = props => {
 	const {
 		isAddingMarker,
 		isDraggingMarker,
-		isFirstClick,
+		isSelected,
 		mapMarkers,
 		mapMaxZoom,
 		mapMinZoom,
@@ -51,6 +51,12 @@ const MapEventsListener = props => {
 		setIsAddingMarker,
 		setIsDraggingMarker,
 	} = props;
+
+	const [isFirstClick, setIsFirstClick] = useState(true);
+
+	useEffect(() => {
+		isSelected === isFirstClick && setIsFirstClick(!isSelected);
+	}, [isSelected]);
 
 	const timeout = 300;
 	let delay;
@@ -62,7 +68,7 @@ const MapEventsListener = props => {
 			if (elementClicked === 'div') {
 				setIsDraggingMarker(false);
 			}
-			if (!isDraggingMarker && isFirstClick) {
+			if (!isDraggingMarker && !isFirstClick) {
 				delay = setTimeout(() => {
 					setIsAddingMarker(true);
 					setTimeout(() => {
@@ -186,7 +192,7 @@ const SearchBox = props => {
 			return (
 				<Button
 					onClick={onAddMarker}
-					className='maxi-map-block__searchbox__buttons'
+					className='maxi-map-block__search-box-results__button'
 					key={placeId}
 					data-index={index}
 				>
@@ -198,7 +204,7 @@ const SearchBox = props => {
 
 	return (
 		<>
-			<div className='maxi-map-block__searchbox'>
+			<div className='maxi-map-block__search-box'>
 				<TextControl
 					value={keywords}
 					onChange={setKeywords}
@@ -224,7 +230,7 @@ const SearchBox = props => {
 				/>
 			</div>
 			{searchResults && searchResults.length ? (
-				<div className='maxi-map-block__searchbox__results'>
+				<div className='maxi-map-block__search-box-results'>
 					{resultsList()}
 				</div>
 			) : null}
@@ -244,6 +250,8 @@ const Markers = props => {
 	if (isEmpty(mapMarkers)) return null;
 
 	const removeMarker = event => {
+		event.stopPropagation();
+
 		const index = parseInt(event.target.getAttribute('dataindex'));
 		const updatedMarkers = [...mapMarkers];
 		updatedMarkers.splice(index, 1);
@@ -342,11 +350,12 @@ const Markers = props => {
 
 const MapContent = props => {
 	const {
+		apiKey,
 		attributes,
-		maxiSetAttributes,
 		isFirstClick,
 		isGoogleMaps,
-		apiKey,
+		isSelected,
+		maxiSetAttributes,
 	} = props;
 	const {
 		uniqueID,
@@ -392,6 +401,7 @@ const MapContent = props => {
 							isAddingMarker={isAddingMarker}
 							isDraggingMarker={isDraggingMarker}
 							isFirstClick={isFirstClick}
+							isSelected={isSelected}
 							mapMarkers={mapMarkers}
 							mapMaxZoom={mapMaxZoom}
 							mapMinZoom={mapMinZoom}
@@ -430,14 +440,6 @@ const MapContent = props => {
 	);
 };
 class edit extends MaxiBlockComponent {
-	constructor(...args) {
-		super(...args);
-
-		this.state = {
-			isFirstClick: false,
-		};
-	}
-
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
@@ -460,23 +462,8 @@ class edit extends MaxiBlockComponent {
 		};
 	}
 
-	maxiBlockDidUpdate(prevProps) {
-		// Prevent showing alert on first click to map
-		const { isSelected } = this.props;
-
-		if (
-			(prevProps.isSelected === isSelected &&
-				this.state.isFirstClick !== isSelected) ||
-			(prevProps.isSelected && !isSelected)
-		) {
-			this.setState({
-				isFirstClick: isSelected,
-			});
-		}
-	}
-
 	render() {
-		const { attributes, maxiSetAttributes } = this.props;
+		const { attributes, maxiSetAttributes, isSelected } = this.props;
 		const {
 			uniqueID,
 			'map-provider': mapProvider,
@@ -522,9 +509,10 @@ class edit extends MaxiBlockComponent {
 			>
 				<MapContent
 					{...this.props}
+					apiKey={getApiKey()}
 					isFirstClick={this.state.isFirstClick}
 					isGoogleMaps={mapProvider === 'googlemaps'}
-					apiKey={getApiKey()}
+					isSelected={isSelected}
 				/>
 			</MaxiBlock>,
 		];

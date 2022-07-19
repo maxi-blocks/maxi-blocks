@@ -2,13 +2,13 @@
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { SelectControl } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
 import InfoBox from '../info-box';
+import SelectControl from '../select-control';
 import { getDefaultAttribute } from '../../extensions/styles';
 
 /**
@@ -44,6 +44,7 @@ const MapControl = props => {
 				/>
 			)}
 			<SelectControl
+				className='maxi-map-control__provider'
 				label={__('Map service provider', 'maxi-blocks')}
 				value={mapProvider}
 				options={[
@@ -59,6 +60,7 @@ const MapControl = props => {
 				onChange={val => onChange({ 'map-provider': val })}
 			/>
 			<AdvancedNumberControl
+				className='maxi-map-control__min-zoom'
 				label={__('Minimum zoom', 'maxi-blocks')}
 				min={1}
 				max={21}
@@ -73,6 +75,7 @@ const MapControl = props => {
 				}
 			/>
 			<AdvancedNumberControl
+				className='maxi-map-control__max-zoom'
 				label={__('Maximum zoom', 'maxi-blocks')}
 				min={2}
 				max={22}

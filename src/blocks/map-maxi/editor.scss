@@ -39,7 +39,7 @@
 		}
 	}
 
-	&__searchbox {
+	&__search-box {
 		display: flex;
 		align-items: center;
 		background: #fff;
@@ -73,14 +73,14 @@
 			fill: #000;
 		}
 
-		&__buttons {
+		&__button {
 			border-top: 1px solid #ddd;
 			display: flex;
 			padding: 0.7rem 0;
 			margin: 0 0.5rem;
 		}
 
-		&__results {
+		&-results {
 			position: absolute;
 			z-index: 999;
 			background: #fff;

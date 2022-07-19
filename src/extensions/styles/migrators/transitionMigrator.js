@@ -5,15 +5,7 @@ const NEW_KEYS = [
 	'icon border',
 ];
 
-const isEligible = blockAttributes => {
-	const { transition } = blockAttributes;
-
-	if (transition && transition.block.icon) {
-		return true;
-	}
-
-	return false;
-};
+const isEligible = blockAttributes => !!blockAttributes?.transition?.block?.icon;
 
 const migrate = ({ newAttributes }) => {
 	const { transition } = newAttributes;

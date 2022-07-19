@@ -100,10 +100,7 @@ const MapEventsListener = props => {
 			}
 		},
 		moveend: () => {
-			const { _northEast, _southWest } = mapEvents.getBounds();
-
-			const lat = (_northEast.lat + _southWest.lat) / 2;
-			const lng = (_northEast.lng + _southWest.lng) / 2;
+			const { lat, lng } = mapEvents.getCenter();
 
 			maxiSetAttributes({
 				'map-latitude': lat,
@@ -252,7 +249,7 @@ const Markers = props => {
 	const removeMarker = event => {
 		event.stopPropagation();
 
-		const index = parseInt(event.target.getAttribute('dataindex'));
+		const index = parseInt(event.target.getAttribute('data-index'));
 		const updatedMarkers = [...mapMarkers];
 		updatedMarkers.splice(index, 1);
 		maxiSetAttributes({
@@ -332,11 +329,11 @@ const Markers = props => {
 						/>
 						<div className='maxi-map-block__popup__content__marker-remove'>
 							<Button
-								onClick={removeMarker}
-								dataindex={index}
+								data-index={index}
 								icon='trash'
-								showTooltip
 								label={__('Remove this marker', 'maxi-blocks')}
+								onClick={removeMarker}
+								showTooltip
 							>
 								{__('Remove', 'maxi-blocks')}
 							</Button>

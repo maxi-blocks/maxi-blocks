@@ -1,4 +1,4 @@
-const NEW_KEYS = ['icon colour', 'icon width', 'icon background'];
+const NEW_KEYS = ['icon colour', 'icon width', 'icon background', 'icon border'];
 
 const isEligible = blockAttributes => {
 	const { transition } = blockAttributes;

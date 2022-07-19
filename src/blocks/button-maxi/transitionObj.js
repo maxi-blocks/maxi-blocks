@@ -48,6 +48,12 @@ const transitionObj = {
 			property: 'background',
 			hoverProp: 'icon-status-hover',
 		},
+		'icon border': {
+			title: 'Icon border',
+			target: ' .maxi-button-block__icon',
+			property: 'border',
+			hoverProp: 'icon-status-hover',
+		},
 	},
 };
 

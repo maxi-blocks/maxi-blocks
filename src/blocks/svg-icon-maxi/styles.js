@@ -18,7 +18,6 @@ import {
 	getPositionStyles,
 	getSizeStyles,
 	getSVGStyles,
-	getTransformStyles,
 	getZIndexStyles,
 	getOverflowStyles,
 	getSVGWidthStyles,
@@ -71,9 +70,6 @@ const getWrapperObject = props => {
 		}),
 		position: getPositionStyles({
 			...getGroupAttributes(props, 'position'),
-		}),
-		transform: getTransformStyles({
-			...getGroupAttributes(props, 'transform'),
 		}),
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),

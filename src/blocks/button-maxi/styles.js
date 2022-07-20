@@ -21,7 +21,6 @@ import {
 	getOverflowStyles,
 	getPositionStyles,
 	getSizeStyles,
-	getTransformStyles,
 	getTransitionStyles,
 	getTypographyStyles,
 	getZIndexStyles,
@@ -70,9 +69,6 @@ const getWrapperObject = props => {
 			obj: {
 				...getGroupAttributes(props, 'padding'),
 			},
-		}),
-		transform: getTransformStyles({
-			...getGroupAttributes(props, 'transform'),
 		}),
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),

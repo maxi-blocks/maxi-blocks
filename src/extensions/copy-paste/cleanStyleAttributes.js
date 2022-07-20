@@ -1,12 +1,8 @@
 /**
  * Internal dependencies
  */
+import getPrefix from './getPrefix';
 import { getGroupAttributes, paletteAttributesCreator } from '../styles';
-
-/**
- * External dependencies
- */
-import { isNil, isEmpty } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -87,10 +83,12 @@ const cleanStyleAttributes = (attributes, copyPasteMapping, prefix) => {
 													attributes,
 													prop,
 													false,
-													attrContent.props[prop]
-														.type === 'withPrefix'
-														? prefix
-														: ''
+													getPrefix(
+														attrContent.props[prop]
+															.type,
+														attrContent.prefix,
+														prefix
+													)
 												)
 											)
 										);
@@ -171,7 +169,7 @@ const cleanStyleAttributes = (attributes, copyPasteMapping, prefix) => {
 									attributes,
 									attrArray,
 									false,
-									type === 'withPrefix' ? prefix : ''
+									getPrefix(type, attr.prefix, prefix)
 								),
 							};
 						}

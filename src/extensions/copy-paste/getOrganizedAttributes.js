@@ -1,6 +1,7 @@
 /**
  * Internal dependencies
  */
+import getPrefix from './getPrefix';
 import { getGroupAttributes, paletteAttributesCreator } from '../styles';
 
 /**
@@ -137,10 +138,12 @@ const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 													attributes,
 													prop,
 													false,
-													attrContent.props[prop]
-														.type === 'withPrefix'
-														? prefix
-														: ''
+													getPrefix(
+														attrContent.props[prop]
+															.type,
+														attrContent.prefix,
+														prefix
+													)
 												)
 											);
 										}
@@ -267,7 +270,11 @@ const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 											attributes,
 											propArray,
 											false,
-											type === 'withPrefix' ? prefix : ''
+											getPrefix(
+												type,
+												attrContent.prefix,
+												prefix
+											)
 										);
 
 										groupObj.group[prop] = {
@@ -289,7 +296,7 @@ const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 									attributes,
 									attrContent.value,
 									false,
-									type === 'withPrefix' ? prefix : ''
+									getPrefix(type, attrContent.prefix, prefix)
 								);
 
 								response[tab][attrType] = {
@@ -301,7 +308,7 @@ const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
 									attributes,
 									attrType,
 									false,
-									type === 'withPrefix' ? prefix : ''
+									getPrefix(type, attrContent.prefix, prefix)
 								);
 
 								response[tab][attrType] = {

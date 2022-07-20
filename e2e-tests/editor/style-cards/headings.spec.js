@@ -68,4 +68,54 @@ describe('StyleCards headings', () => {
 
 		expect(await checkSCResult(page)).toMatchSnapshot();
 	});
+
+	it('Works on responsive', async () => {
+		await createNewPost();
+		await page.setViewport({
+			width: 1280,
+			height: 1800,
+		});
+
+		await getStyleCardEditor({
+			page,
+			accordion: 'heading',
+		});
+
+		await changeResponsive(page, 'm');
+
+		// size, line-height, letter-spacing
+		await addTypographyOptions({
+			page,
+			instance: await page.$(
+				'.maxi-blocks-sc__type--heading .maxi-style-cards-control__sc__h1-typography'
+			),
+			size: '15',
+			lineHeight: '0',
+			letterSpacing: '5',
+		});
+
+		// Selectors
+		// Weight, Transform, Style, Decoration
+		await addTypographyStyle({
+			instance: await page.$(
+				'.maxi-blocks-sc__type--heading .maxi-style-cards-control__sc__h1-typography'
+			),
+			decoration: 'underline',
+			weight: '400',
+			transform: 'capitalize',
+			style: 'italic',
+			orientation: 'mixed',
+			direction: 'ltr',
+		});
+
+		await page.$$eval(
+			'.maxi-style-cards-control__sc__h1-typography .maxi-typography-control__text-indent input',
+			input => input[0].focus()
+		);
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('44');
+
+		expect(await checkSCResult(page)).toMatchSnapshot();
+	});
 });

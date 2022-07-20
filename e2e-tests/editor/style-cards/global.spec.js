@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 /**
  * WordPress dependencies
  */
@@ -162,6 +163,22 @@ describe('SC settings', () => {
 		await page.$eval('.maxi-style-cards__sc__more-sc--delete', button =>
 			button.click()
 		);
+
+		expect(
+			Array.from(
+				await page.$$eval(
+					'.maxi-style-cards__sc__more-sc--select select option',
+					options => options.map(option => option.value)
+				)
+			)
+		).not.toContain(SCToDelete);
+
+		// Check if SC is deleted on all pages
+		await createNewPost();
+		await getStyleCardEditor({
+			page,
+			accordion: 'color',
+		});
 
 		expect(
 			Array.from(

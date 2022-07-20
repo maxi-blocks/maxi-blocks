@@ -18,7 +18,6 @@ import {
 	getOverflowStyles,
 	getPositionStyles,
 	getSizeStyles,
-	getTransformStyles,
 	getTransitionStyles,
 	getZIndexStyles,
 	getFlexStyles,
@@ -43,9 +42,6 @@ const getWrapperObject = props => {
 		}),
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
-		}),
-		transform: getTransformStyles({
-			...getGroupAttributes(props, 'transform'),
 		}),
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),

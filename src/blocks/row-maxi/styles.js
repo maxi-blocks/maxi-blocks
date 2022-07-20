@@ -13,7 +13,6 @@ import {
 	getZIndexStyles,
 	getPositionStyles,
 	getDisplayStyles,
-	getTransformStyles,
 	getTransitionStyles,
 	getMarginPaddingStyles,
 	getBlockBackgroundStyles,
@@ -62,9 +61,6 @@ const getNormalObject = props => {
 		}),
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
-		}),
-		transform: getTransformStyles({
-			...getGroupAttributes(props, 'transform'),
 		}),
 		row: {
 			general: {},

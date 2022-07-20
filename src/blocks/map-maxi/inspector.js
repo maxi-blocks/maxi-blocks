@@ -209,6 +209,8 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.transform({
 										props,
+										selectors: selectorsMap,
+										categories: categoriesMap,
 									}),
 									...inspectorTabs.display({
 										props,

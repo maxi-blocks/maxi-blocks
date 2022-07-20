@@ -16,6 +16,7 @@ import { registerBlockType } from '@wordpress/blocks';
 import attributes from './attributes';
 import edit from './edit';
 import save from './save';
+import { selectorsMap } from './custom-css';
 
 /**
  * Styles and icons
@@ -23,6 +24,11 @@ import save from './save';
 import './style.scss';
 import './editor.scss';
 import { mapIcon } from '../../icons';
+
+/**
+ * Migrators
+ */
+import { blockMigrator } from '../../extensions/styles/migrators';
 
 /**
  * Block
@@ -49,4 +55,5 @@ registerBlockType('maxi-blocks/map-maxi', {
 	},
 	edit,
 	save,
+	deprecated: blockMigrator({ attributes, save, selectors: selectorsMap }),
 });

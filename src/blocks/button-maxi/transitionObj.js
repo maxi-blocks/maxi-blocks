@@ -30,15 +30,29 @@ const transitionObj = {
 			property: 'box-shadow',
 			prefix,
 		},
-		icon: {
-			title: 'Icon',
-			target: [
-				' .maxi-button-block__icon svg > *',
-				' .maxi-button-block__icon svg',
-				' .maxi-button-block__icon',
-			],
-			property: 'icon',
+		'icon colour': {
+			title: 'Icon colour',
+			target: ' .maxi-button-block__icon svg > *',
+			hoverProp: 'icon-status-hover',
 			limitless: true,
+		},
+		'icon width': {
+			title: 'Icon width',
+			target: ' .maxi-button-block__icon svg',
+			property: ['width', 'height'],
+			hoverProp: 'icon-status-hover',
+		},
+		'icon background': {
+			title: 'Icon background',
+			target: ' .maxi-button-block__icon',
+			property: 'background',
+			hoverProp: 'icon-status-hover',
+		},
+		'icon border': {
+			title: 'Icon border',
+			target: ' .maxi-button-block__icon',
+			property: 'border',
+			hoverProp: 'icon-status-hover',
 		},
 	},
 };

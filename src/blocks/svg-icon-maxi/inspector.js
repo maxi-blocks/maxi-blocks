@@ -341,6 +341,8 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.transform({
 										props,
+										selectors: selectorsSvgIcon,
+										categories: categoriesSvgIcon,
 									}),
 									...inspectorTabs.transition({
 										props: {

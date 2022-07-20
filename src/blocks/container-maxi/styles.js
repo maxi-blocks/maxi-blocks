@@ -15,7 +15,6 @@ import {
 	getZIndexStyles,
 	getPositionStyles,
 	getDisplayStyles,
-	getTransformStyles,
 	getBlockBackgroundStyles,
 	getArrowStyles,
 	getMarginPaddingStyles,
@@ -62,9 +61,6 @@ const getNormalObject = props => {
 		}),
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
-		}),
-		transform: getTransformStyles({
-			...getGroupAttributes(props, 'transform'),
 		}),
 		margin: getMarginPaddingStyles({
 			obj: {

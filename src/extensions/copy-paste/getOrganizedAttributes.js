@@ -1,6 +1,7 @@
 /**
  * Internal dependencies
  */
+import getPrefix from './getPrefix';
 import { getGroupAttributes, paletteAttributesCreator } from '../styles';
 import getPrefix from './getPrefix';
 

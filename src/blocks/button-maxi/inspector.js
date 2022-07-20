@@ -423,6 +423,8 @@ const Inspector = props => {
 										props: {
 											...props,
 										},
+										categories: getCategoriesCss(),
+										selectors: selectorsButton,
 									}),
 									...inspectorTabs.transition({
 										props: {

@@ -11,7 +11,7 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 /**
  * Save
  */
-const save = (props, extendedWrapperAttributes = {}) => {
+const save = props => {
 	const { attributes } = props;
 	const {
 		uniqueID,
@@ -29,7 +29,6 @@ const save = (props, extendedWrapperAttributes = {}) => {
 			className={classes}
 			id={uniqueID}
 			{...getMaxiBlockAttributes(props)}
-			{...extendedWrapperAttributes}
 		>
 			<div className='maxi-number-counter__box'>
 				{!circleStatus && (

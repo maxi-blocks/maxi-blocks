@@ -1,8 +1,8 @@
 /**
  * Internal dependencies
  */
-import { getGroupAttributes, paletteAttributesCreator } from '../styles';
 import getPrefix from './getPrefix';
+import { getGroupAttributes, paletteAttributesCreator } from '../styles';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 

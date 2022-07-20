@@ -38,7 +38,7 @@ const handleInsertInlineStyles = ({
 			if (styleElement) {
 				modifyStyleElement(
 					styleElement,
-					`${target}${pseudoElement}`,
+					`#${parentElement.id}${target}${pseudoElement}`,
 					styleObj
 				);
 			} else {
@@ -46,7 +46,7 @@ const handleInsertInlineStyles = ({
 				styleElement.setAttribute('data-pseudo-element', pseudoElement);
 				modifyStyleElement(
 					styleElement,
-					`${target}${pseudoElement}`,
+					`#${parentElement.id}${target}${pseudoElement}`,
 					styleObj
 				);
 

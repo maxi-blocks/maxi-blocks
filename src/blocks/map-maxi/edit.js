@@ -134,7 +134,7 @@ const SearchBox = props => {
 	const [keywords, setKeywords] = useState('');
 	const [searchResults, setSearchResults] = useState();
 
-	const findMarkers = async () => {
+	const findMarkers = async keywords => {
 		if (keywords && keywords.length > 2) {
 			const response = await fetch(
 				`https://nominatim.openstreetmap.org/search?q=${keywords}&format=json`
@@ -150,9 +150,9 @@ const SearchBox = props => {
 		}
 	};
 
-	const detectEnter = event => {
+	const handleKeyDown = event => {
 		if (event.key === 'Enter') {
-			findMarkers();
+			findMarkers(keywords);
 		}
 	};
 
@@ -161,7 +161,7 @@ const SearchBox = props => {
 		setKeywords('');
 	};
 
-	const onButtonClick = () => {
+	const handleButtonClick = () => {
 		if (searchResults && searchResults.length) {
 			clearSearchBox();
 		} else {
@@ -169,29 +169,28 @@ const SearchBox = props => {
 		}
 	};
 
-	const onAddMarker = event => {
-		const index = event.target.getAttribute('data-index');
+	const handleAddMarker = index => {
 		const { lat, lon } = searchResults[index];
-
 		const newMarker = getNewMarker([lat, lon], mapMarkers);
 
 		map.flyTo([lat, lon]);
+
 		maxiSetAttributes({
 			'map-markers': getUpdatedMarkers(mapMarkers, newMarker),
 		});
+
 		clearSearchBox();
 	};
 
-	const resultsList = () => {
+	const renderResultsList = () => {
 		return searchResults.map((item, index) => {
 			const { display_name: displayName, place_id: placeId } = item;
 
 			return (
 				<Button
-					onClick={onAddMarker}
 					className='maxi-map-block__search-box-results__button'
 					key={placeId}
-					data-index={index}
+					onClick={() => handleAddMarker(index)}
 				>
 					{displayName}
 				</Button>
@@ -204,12 +203,12 @@ const SearchBox = props => {
 			<div className='maxi-map-block__search-box'>
 				<TextControl
 					value={keywords}
-					onChange={setKeywords}
-					onKeyDown={detectEnter}
+					onChange={keyWords => setKeywords(keyWords)}
+					onKeyDown={event => handleKeyDown(event)}
 					placeholder={__('Enter your keywords…', 'maxi-blocks')}
 				/>
 				<Button
-					onClick={onButtonClick}
+					onClick={() => handleButtonClick()}
 					icon={
 						searchResults && searchResults.length > 0
 							? 'no'
@@ -228,7 +227,7 @@ const SearchBox = props => {
 			</div>
 			{searchResults && searchResults.length ? (
 				<div className='maxi-map-block__search-box-results'>
-					{resultsList()}
+					{renderResultsList()}
 				</div>
 			) : null}
 		</>
@@ -246,10 +245,13 @@ const Markers = props => {
 
 	if (isEmpty(mapMarkers)) return null;
 
-	const removeMarker = event => {
+	const markerIcon = L.divIcon({
+		html: mapMarkerIcon,
+	});
+
+	const handleRemoveMarker = (event, index) => {
 		event.stopPropagation();
 
-		const index = parseInt(event.target.getAttribute('data-index'));
 		const updatedMarkers = [...mapMarkers];
 		updatedMarkers.splice(index, 1);
 		maxiSetAttributes({
@@ -263,86 +265,99 @@ const Markers = props => {
 		});
 	};
 
-	const markerIcon = L.divIcon({
-		html: mapMarkerIcon,
-	});
+	return mapMarkers.map((marker, index) => {
+		const { id, latitude, longitude } = marker;
 
-	return mapMarkers.map((marker, index) => (
-		<Marker
-			position={[marker.latitude, marker.longitude]}
-			key={marker.id}
-			icon={markerIcon}
-			draggable
-			eventHandlers={{
-				dragstart: () => {
-					setIsDraggingMarker(true);
-				},
-				dragend: event => {
-					const { lat, lng } = event.target._latlng;
-					const updatedMarkers = [...mapMarkers];
-					updatedMarkers[index] = {
-						...updatedMarkers[index],
-						latitude: lat,
-						longitude: lng,
-					};
+		return (
+			<Marker
+				position={[latitude, longitude]}
+				key={id}
+				icon={markerIcon}
+				draggable
+				eventHandlers={{
+					dragstart: () => {
+						setIsDraggingMarker(true);
+					},
+					dragend: event => {
+						const { lat, lng } = event.target._latlng;
 
-					updateMarkers(updatedMarkers);
-					setIsDraggingMarker(false);
-				},
-				mouseover: () => {
-					setIsDraggingMarker(true);
-				},
-			}}
-		>
-			<Popup closeButton={false}>
-				<div
-					className={classnames(
-						'maxi-map-block__popup',
-						`maxi-map-block__popup--${mapPopup}`
-					)}
-				>
-					<div className='maxi-map-block__popup__content'>
-						<RichText
-							className='maxi-map-block__popup__content__title'
-							value={marker.heading}
-							tagName={mapMarkerHeadingLevel}
-							onChange={content => {
-								const updatedMarkers = [...mapMarkers];
-								updatedMarkers[index].heading = content;
+						const updatedMarkers = [...mapMarkers];
+						updatedMarkers[index] = {
+							...updatedMarkers[index],
+							latitude: lat,
+							longitude: lng,
+						};
 
-								updateMarkers(updatedMarkers);
-							}}
-							placeholder={__('Title', 'maxi-blocks')}
-							withoutInteractiveFormatting
-						/>
-						<RichText
-							className='maxi-map-block__popup__content__description'
-							value={marker.description}
-							onChange={content => {
-								const updatedMarkers = [...mapMarkers];
-								updatedMarkers[index].description = content;
+						updateMarkers(updatedMarkers);
+						setIsDraggingMarker(false);
+					},
+					mouseover: () => {
+						setIsDraggingMarker(true);
+					},
+				}}
+			>
+				<Popup closeButton={false}>
+					<div
+						className={classnames(
+							'maxi-map-block__popup',
+							`maxi-map-block__popup--${mapPopup}`
+						)}
+					>
+						<div className='maxi-map-block__popup__content'>
+							<RichText
+								className='maxi-map-block__popup__content__title'
+								value={marker.heading}
+								tagName={mapMarkerHeadingLevel}
+								onChange={content => {
+									const updatedMarkers = [...mapMarkers];
+									updatedMarkers[index].heading = content;
 
-								updateMarkers(updatedMarkers);
-							}}
-							placeholder={__('Description', 'maxi-blocks')}
-							withoutInteractiveFormatting
-						/>
-						<div className='maxi-map-block__popup__content__marker-remove'>
-							<Button
-								data-index={index}
-								icon='trash'
-								label={__('Remove this marker', 'maxi-blocks')}
-								onClick={removeMarker}
-								showTooltip
-							>
-								{__('Remove', 'maxi-blocks')}
-							</Button>
+									updateMarkers(updatedMarkers);
+								}}
+								placeholder={__('Title', 'maxi-blocks')}
+								withoutInteractiveFormatting
+							/>
+							<RichText
+								className='maxi-map-block__popup__content__description'
+								value={marker.description}
+								onChange={content => {
+									const updatedMarkers = [...mapMarkers];
+									updatedMarkers[index].description = content;
+
+									updateMarkers(updatedMarkers);
+								}}
+								placeholder={__('Description', 'maxi-blocks')}
+								withoutInteractiveFormatting
+							/>
+							<div className='maxi-map-block__popup__content__marker-remove'>
+								<Button
+									icon='trash'
+									label={__(
+										'Remove this marker',
+										'maxi-blocks'
+									)}
+									onClick={event =>
+										handleRemoveMarker(event, index)
+									}
+									showTooltip
+								>
+									{__('Remove', 'maxi-blocks')}
+								</Button>
+							</div>
 						</div>
 					</div>
-				</div>
-			</Popup>
-		</Marker>
-	));
+				</Popup>
+			</Marker>
+		);
+	});
+};
+
+const DropMarkerAlert = ({ isAddingMarker }) => {
+	return isAddingMarker ? (
+		<div className='maxi-map-block__alert'>
+			{__('Release to drop a marker here', 'maxi-blocks')}
+		</div>
+	) : null;
 };
 
 const MapContent = props => {
@@ -366,12 +381,6 @@ const MapContent = props => {
 
 	const [isDraggingMarker, setIsDraggingMarker] = useState(false);
 	const [isAddingMarker, setIsAddingMarker] = useState(false);
-
-	const alert = isAddingMarker ? (
-		<div className='maxi-map-block__alert'>
-			{__('Release to drop a marker here', 'maxi-blocks')}
-		</div>
-	) : null;
 
 	return (
 		<div
@@ -417,7 +426,7 @@ const MapContent = props => {
 						/>
 						<SearchBox {...props} />
 					</MapContainer>
-					{alert}
+					<DropMarkerAlert isAddingMarker={isAddingMarker} />
 				</>
 			) : (
 				<p className='maxi-map-block__not-found'>

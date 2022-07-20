@@ -9,6 +9,7 @@ import {
 	getStyleCardEditor,
 	editGlobalStyles,
 	checkSCResult,
+	changeResponsive,
 } from '../../utils';
 
 describe('StyleCards, Buttons', () => {
@@ -101,6 +102,53 @@ describe('StyleCards, Buttons', () => {
 			block: 'button',
 			type: 'hover-border',
 		});
+
+		expect(await checkSCResult(page)).toMatchSnapshot();
+	});
+
+	it('Should work on responsive', async () => {
+		await createNewPost();
+
+		await getStyleCardEditor({
+			page,
+			accordion: 'button',
+		});
+
+		await changeResponsive(page, 'l');
+
+		// size, line-height, letter-spacing
+		await addTypographyOptions({
+			page,
+			instance: await page.$(
+				'.maxi-typography-control.maxi-style-cards-control__sc__button-typography'
+			),
+			size: '20',
+			lineHeight: '10',
+			letterSpacing: '5',
+		});
+
+		// Selectors
+		// Weight, Transform, Style, Decoration
+		await page.waitForTimeout(100);
+
+		await addTypographyStyle({
+			instance: page,
+			decoration: 'overline',
+			weight: '300',
+			transform: 'capitalize',
+			style: 'italic',
+			orientation: 'mixed',
+			direction: 'ltr',
+		});
+		await page.waitForTimeout(100);
+
+		await page.$$eval(
+			'.maxi-blocks-sc__type--button .maxi-typography-control__text-indent input',
+			input => input[0].focus()
+		);
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('44');
 
 		expect(await checkSCResult(page)).toMatchSnapshot();
 	});

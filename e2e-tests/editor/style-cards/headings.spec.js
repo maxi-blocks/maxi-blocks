@@ -71,10 +71,6 @@ describe('StyleCards headings', () => {
 
 	it('Works on responsive', async () => {
 		await createNewPost();
-		await page.setViewport({
-			width: 1280,
-			height: 1800,
-		});
 
 		await getStyleCardEditor({
 			page,

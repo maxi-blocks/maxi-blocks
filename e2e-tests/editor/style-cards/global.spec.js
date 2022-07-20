@@ -6,13 +6,15 @@ import {
 	setBrowserViewport,
 	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
-
 import {
 	checkSCResult,
 	getStyleCardEditor,
 	receiveSelectedMaxiStyleCard,
 } from '../../utils';
 
+/**
+ * External dependencies
+ */
 import path from 'path';
 import fs from 'fs';
 
@@ -270,6 +272,9 @@ describe('SC settings', () => {
 			button => button.click()
 		);
 
+		// Delete downloadFolder once we don't need it, before assertion to make sure it is deleted in cases when test fails.
+		fs.rmSync(downloadFolder, { recursive: true });
+
 		await page.waitForTimeout(150);
 
 		const {
@@ -277,8 +282,5 @@ describe('SC settings', () => {
 		} = await receiveSelectedMaxiStyleCard(page);
 
 		expect(newName).toStrictEqual(name);
-
-		// Delete download folder
-		fs.rmSync(downloadFolder, { recursive: true });
 	});
 });

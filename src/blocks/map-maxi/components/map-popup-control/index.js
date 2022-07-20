@@ -14,17 +14,12 @@ import {
 	SettingTabsControl,
 	ToggleSwitch,
 } from '../../../../components';
+import PresetsControl from '../presets-control';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-	getMapPresetItemClasses,
 	setHoverAttributes,
 } from '../../../../extensions/styles';
-
-/**
- * External dependencies
- */
-import { uniqueId } from 'lodash';
 
 /**
  * Icons
@@ -38,25 +33,16 @@ const MapPopupControl = props => {
 
 	return (
 		<>
-			<div className='maxi-map-control__popups'>
-				{Object.keys(mapPopups).map((item, index) => (
-					<div
-						key={`map-popup-${uniqueId()}`}
-						data-item={index + 1}
-						onClick={e =>
-							onChange({
-								'map-popup': +e.currentTarget.dataset.item,
-							})
-						}
-						className={getMapPresetItemClasses(
-							'maxi-map-control__popups__item',
-							attributes['map-popup'],
-							index
-						)}
-					>
-						{mapPopups[item]}
-					</div>
-				))}
+			<div className='maxi-map-popup-control'>
+				<PresetsControl
+					items={mapPopups}
+					onChange={mapPopup => {
+						onChange({
+							'map-popup': mapPopup,
+						});
+					}}
+					prop={attributes['map-popup']}
+				/>
 			</div>
 			<BackgroundControl
 				{...getGroupAttributes(

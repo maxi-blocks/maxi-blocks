@@ -2,7 +2,6 @@
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { renderToString } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -11,16 +10,11 @@ import { SvgColor } from '../../../../components/svg-color';
 import AdvancedNumberControl from '../../../../components/advanced-number-control';
 
 import ResponsiveTabsControl from '../../../../components/responsive-tabs-control';
+import PresetsControl from '../presets-control';
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-	getMapPresetItemClasses,
 } from '../../../../extensions/styles';
-
-/**
- * External dependencies
- */
-import { uniqueId } from 'lodash';
 
 /**
  * Icons
@@ -32,28 +26,17 @@ const MapMarkersControl = props => {
 
 	return (
 		<>
-			<div className='maxi-map-control__markers'>
-				{Object.keys(mapMarkers).map((item, index) => (
-					<div
-						key={`map-marker-${uniqueId()}`}
-						data-item={index + 1}
-						onClick={e =>
-							onChange({
-								'map-marker': +e.currentTarget.dataset.item,
-								'map-marker-icon': renderToString(
-									mapMarkers[item]
-								),
-							})
-						}
-						className={getMapPresetItemClasses(
-							'maxi-map-control__markers__item',
-							props['map-marker'],
-							index
-						)}
-					>
-						{mapMarkers[item]}
-					</div>
-				))}
+			<div className='maxi-map-markers-control'>
+				<PresetsControl
+					items={mapMarkers}
+					onChange={(mapMarker, mapMarkerIcon) => {
+						onChange({
+							'map-marker': mapMarker,
+							'map-marker-icon': mapMarkerIcon,
+						});
+					}}
+					prop={props['map-marker']}
+				/>
 			</div>
 			<SvgColor
 				{...props}

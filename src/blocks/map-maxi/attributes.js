@@ -12,10 +12,6 @@ const attributes = {
 	/**
 	 * Block styles
 	 */
-	...attributesData.map,
-	...attributesData.mapInteraction,
-	...attributesData.mapMarker,
-	...attributesData.mapPopup,
 	...attributesData.border,
 	...attributesData.borderHover,
 	...attributesData.borderRadius,
@@ -24,11 +20,15 @@ const attributes = {
 	...attributesData.borderWidthHover,
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
+	...attributesData.map,
+	...attributesData.mapInteraction,
+	...attributesData.mapMarker,
+	...attributesData.mapPopup,
 	...{
 		...attributesData.size,
 		'height-general': {
-			type: 'number',
-			default: 300,
+			type: 'string',
+			default: '300',
 		},
 		'height-unit-general': {
 			type: 'string',

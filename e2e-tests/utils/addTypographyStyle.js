@@ -9,6 +9,7 @@ const addTypographyStyle = async ({
 	transform,
 	style,
 	orientation,
+	direction,
 }) => {
 	// Weight, Transform, Style, Decoration
 	const weightSelector = await instance.$(
@@ -35,6 +36,11 @@ const addTypographyStyle = async ({
 		'.maxi-typography-control__orientation .maxi-base-control__field select'
 	);
 	await orientationSelector.select(orientation);
+
+	const directionSelector = await instance.$(
+		'.maxi-typography-control__direction .maxi-base-control__field select'
+	);
+	await directionSelector.select(direction);
 };
 
 export default addTypographyStyle;

@@ -187,6 +187,7 @@ describe('TypographyControl', () => {
 			transform: 'capitalize',
 			style: 'italic',
 			orientation: 'mixed',
+			direction: 'ltr',
 		});
 
 		const typographyResult = await getAttributes([

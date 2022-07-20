@@ -44,7 +44,7 @@ const NumberCounter = attributes => {
 		resizerProps,
 		replayCounter,
 	} = attributes;
-	const countRef = useRef(null);
+	const startTimeRef = useRef(Date.now());
 	const startCountValue = Math.ceil((startNumber * 360) / 100);
 	const endCountValue = Math.ceil((endNumber * 360) / 100);
 	const radius = 90;
@@ -64,21 +64,25 @@ const NumberCounter = attributes => {
 				return;
 			}
 
-			countRef.current = setInterval(() => {
-				setCount(count + 1);
-			}, frameDuration);
-
-			// eslint-disable-next-line consistent-return
-			return () => clearInterval(countRef.current);
+			requestAnimationFrame(function animate() {
+				const newCount = parseInt(
+					(Date.now() - startTimeRef.current) / frameDuration
+				);
+				newCount === count
+					? requestAnimationFrame(animate)
+					: setCount(
+							newCount > endCountValue ? endCountValue : newCount
+					  );
+			});
 		}
 	}, [count, replayStatus, preview, endCountValue]);
 
 	useEffect(() => {
 		if ((startCountValue < endCountValue && preview) || replayStatus) {
 			setCount(startCountValue);
+			startTimeRef.current = Date.now();
 			if (count >= endCountValue) {
 				setReplayStatus(false);
-				clearInterval(countRef.current);
 			}
 		}
 	}, [
@@ -132,6 +136,7 @@ const NumberCounter = attributes => {
 
 	replayCounter(() => {
 		setCount(startCountValue);
+		startTimeRef.current = Date.now();
 		setReplayStatus(true);
 	});
 	return (
@@ -194,7 +199,7 @@ const NumberCounter = attributes => {
 						y='50%'
 						dy={`${round(fontSize / 4, 2)}px`}
 					>
-						{`${parseInt((count / 360) * 100)}`}
+						{`${round((count / 360) * 100)}`}
 						{usePercentage && (
 							<tspan baselineShift='super'>%</tspan>
 						)}
@@ -203,7 +208,7 @@ const NumberCounter = attributes => {
 			)}
 			{circleStatus && (
 				<span className='maxi-number-counter__box__text'>
-					{`${Math.round((count / 360) * 100)}`}
+					{`${round((count / 360) * 100)}`}
 					{usePercentage && <sup>%</sup>}
 				</span>
 			)}

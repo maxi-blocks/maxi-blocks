@@ -297,11 +297,10 @@ const getStyles = props => {
 				},
 				[` .maxi-map-block__popup--${props['map-popup']}:after`]:
 					getBorderArrowObject(props),
-				' .leaflet-marker-icon': getSVGWidthStyles(
-					getGroupAttributes(props, 'svg'),
-					'',
-					true
-				),
+				' .leaflet-marker-icon': getSVGWidthStyles({
+					obj: getGroupAttributes(props, 'svg'),
+					isImportant: true,
+				}),
 				...getSVGStyles({
 					obj: {
 						...getGroupAttributes(props, 'svg'),

@@ -13,7 +13,11 @@ import { isNil, isEmpty, isBoolean } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-export const getSVGWidthStyles = (obj, prefix = '', isImportant = false) => {
+export const getSVGWidthStyles = ({
+	obj,
+	prefix = '',
+	isImportant = false,
+}) => {
 	const response = {
 		label: 'SVG width',
 		general: {},

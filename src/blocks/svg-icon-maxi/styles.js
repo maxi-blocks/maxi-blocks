@@ -151,7 +151,7 @@ const getNormalObject = props => {
 			blockStyle: props.blockStyle,
 			prefix: 'svg-',
 		}),
-		...getSVGWidthStyles(getGroupAttributes(props, 'svg')),
+		...getSVGWidthStyles({ obj: getGroupAttributes(props, 'svg') }),
 		...getBackgroundStyles({
 			...getGroupAttributes(
 				props,

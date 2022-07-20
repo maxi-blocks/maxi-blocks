@@ -500,16 +500,6 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 										)
 									}
 								>
-									<span
-										className='maxi-style-cards__quick-color-presets__reset-button__preview'
-										style={{
-											background: `rgba(${getDefaultSCAttribute(
-												SC,
-												quickColorPreset,
-												'color'
-											)}, 1)`,
-										}}
-									/>
 									<Icon icon={reset} />
 									{__('Reset Preset', 'maxi-blocks')}
 								</Button>

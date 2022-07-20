@@ -8,6 +8,7 @@ import { useState, useEffect } from '@wordpress/element';
 import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 import { PostPreviewButton } from '@wordpress/editor';
 import { Popover } from '@wordpress/components';
+import * as wpDate from '@wordpress/date';
 
 /**
  * Internal dependencies
@@ -213,7 +214,8 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 		saveSCStyles(true);
 	};
 
-	const activatedDate = '2019-01-01';
+	const post = wp.data.select('core/editor').getCurrentPost();
+	const postDate = wpDate.format('d M Y', post.date);
 
 	const saveImportedStyleCard = card => {
 		const newId = `sc_${new Date().getTime()}`;
@@ -244,7 +246,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 							Activated
 						</span>
 						{activeStyleCard.value.name.substr(0, 20)}{' '}
-						<span className='active-date'>{activatedDate}</span>
+						<span className='active-date'>{postDate}</span>
 					</span>
 					<span
 						className='maxi-sc--close'
@@ -318,6 +320,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 									}
 								}}
 							>
+								{__('Delete', 'maxi-blocks')}
 								<Icon icon={SCDelete} />
 							</Button>
 							<Button

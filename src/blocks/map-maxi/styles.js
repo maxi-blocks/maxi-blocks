@@ -7,7 +7,6 @@ import {
 	getBorderStyles,
 	getBoxShadowStyles,
 	getDisplayStyles,
-	getMapStyles,
 	getMarginPaddingStyles,
 	getOpacityStyles,
 	getOverflowStyles,
@@ -20,6 +19,7 @@ import {
 	getSVGWidthStyles,
 	getFlexStyles,
 } from '../../extensions/styles/helpers';
+import arrowProperties from './arrowProperties';
 import { selectorsMap } from './custom-css';
 
 const getNormalObject = props => {
@@ -112,40 +112,31 @@ const getHoverNormalObject = props => {
 	return response;
 };
 
-const getMapObject = (props, target) => {
+const getMapObject = (props, isTitle) => {
 	const { blockStyle } = props;
 
-	const typography =
-		target === 'text'
-			? getTypographyStyles({
-					obj: {
-						...getGroupAttributes(props, 'typography'),
-					},
-					blockStyle,
-			  })
-			: getTypographyStyles({
-					obj: {
-						...getGroupAttributes(
-							props,
-							'typography',
-							false,
-							'description-'
-						),
-					},
-					blockStyle,
-					prefix: 'description-',
-			  });
+	const typography = isTitle
+		? getTypographyStyles({
+				obj: {
+					...getGroupAttributes(props, 'typography'),
+				},
+				blockStyle,
+		  })
+		: getTypographyStyles({
+				obj: {
+					...getGroupAttributes(
+						props,
+						'typography',
+						false,
+						'description-'
+					),
+				},
+				blockStyle,
+				prefix: 'description-',
+		  });
 
 	const response = {
-		map: getMapStyles(
-			{
-				...getGroupAttributes(props, 'map'),
-			},
-			target,
-			blockStyle
-		),
-		[target === 'text' ? 'typography' : 'description-typography']:
-			typography,
+		[isTitle ? 'typography' : 'description-typography']: typography,
 	};
 
 	return response;
@@ -189,39 +180,6 @@ const changeAttributeName = (
 					newAttributeName.slice(1).replace(/-/g, ' '),
 		  }
 		: newObj;
-};
-
-const arrowProperties = {
-	1: {
-		width: '20px',
-		allowedBordersToModify: [
-			'border-top-width',
-			'border-right-width',
-			'border-bottom-width',
-			'border-left-width',
-		],
-	},
-	2: {
-		width: '30px',
-		allowedBordersToModify: ['border-top-width', 'border-left-width'],
-	},
-	3: {
-		width: '30px',
-		allowedBordersToModify: ['border-top-width', 'border-left-width'],
-	},
-	4: {
-		width: '25px',
-		allowedBordersToModify: [
-			'border-top-width',
-			'border-right-width',
-			'border-bottom-width',
-			'border-left-width',
-		],
-	},
-	5: {
-		width: '30px',
-		allowedBordersToModify: ['border-top-width', 'border-left-width'],
-	},
 };
 
 const modifyBorderWidths = (obj, arrowNumber) => {
@@ -281,17 +239,10 @@ const getStyles = props => {
 				':hover': getHoverNormalObject(props),
 				' .maxi-map-block__popup__content__title': getMapObject(
 					props,
-					'text'
+					true
 				),
-				' .maxi-map-block__popup__content__description': getMapObject(
-					props,
-					'address'
-				),
-				' .leaflet-container': {
-					size: getSizeStyles({
-						...getGroupAttributes(props, 'size'),
-					}),
-				},
+				' .maxi-map-block__popup__content__description':
+					getMapObject(props),
 				' .maxi-map-block__popup': {
 					border: getBorderStyles({
 						obj: {

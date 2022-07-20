@@ -57,12 +57,9 @@ body.maxi-blocks--active .maxi-map-block {
 			z-index: 10;
 
 			&__title {
-				font-family: 'Roboto', sans-serif;
 				margin: 0 0 10px;
 			}
-			&__address {
-				font-family: 'Roboto', sans-serif;
-				font-style: normal;
+			&__description {
 				margin: 0;
 			}
 		}

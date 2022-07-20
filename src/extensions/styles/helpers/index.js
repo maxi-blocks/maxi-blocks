@@ -14,7 +14,6 @@ export { default as getIconPathStyles } from './getIconPathStyles';
 export { default as getIconStyles } from './getIconStyles';
 export { default as getImageShapeStyles } from './getImageShapeStyles';
 export { default as getLinkStyles } from './getLinkStyles';
-export { default as getMapStyles } from './getMapStyles';
 export { default as getMarginPaddingStyles } from './getMarginPaddingStyles';
 export { default as getNumberCounterStyles } from './getNumberCounterStyles';
 export { default as getOpacityStyles } from './getOpacityStyles';

@@ -13,10 +13,13 @@ import {
 	receiveSelectedMaxiStyleCard,
 } from '../../utils';
 
+import path from 'path';
+import fs from 'fs';
+
 /**
  * Searches given title in SC modal, and selects first SC found
  */
-const addMoreSC = async (page, title) => {
+const addMoreSC = async (page, title = 'Daemon') => {
 	// Open SC modal
 	await page.$eval('.maxi-style-cards__sc__more-sc--add-more', button =>
 		button.click()
@@ -50,7 +53,7 @@ describe('SC settings', () => {
 			accordion: 'divider',
 		});
 
-		await addMoreSC(page, 'Daemon');
+		await addMoreSC(page);
 
 		// Check SC name, because key will be different every time
 		const {
@@ -79,7 +82,7 @@ describe('SC settings', () => {
 			accordion: 'color',
 		});
 
-		await addMoreSC(page, 'Daemon');
+		await addMoreSC(page);
 
 		await page.$eval('.maxi-style-cards__sc__actions--apply', button =>
 			button.click()
@@ -147,7 +150,7 @@ describe('SC settings', () => {
 			page,
 			accordion: 'color',
 		});
-		await addMoreSC(page, 'Daemon');
+		await addMoreSC(page);
 
 		const SCToDelete = await page.$eval(
 			'.maxi-style-cards__sc__more-sc--select select',
@@ -192,5 +195,90 @@ describe('SC settings', () => {
 		} = await receiveSelectedMaxiStyleCard(page);
 
 		expect(SCName).toStrictEqual(customName);
+	});
+
+	it('Can export/import style cards', async () => {
+		await createNewPost();
+		await getStyleCardEditor({
+			page,
+			accordion: 'color',
+		});
+
+		// Change name and colour preset, and save
+		await page.$eval('.maxi-style-cards__sc__save input', input =>
+			input.focus()
+		);
+
+		const name = 'Random SC name';
+
+		await page.keyboard.type(name);
+
+		await page.$eval('.maxi-style-cards__sc__save button', button =>
+			button.click()
+		);
+
+		await page.$eval(
+			'.maxi-color-control .maxi-color-control__color input',
+			input => input.focus()
+		);
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('106D3C');
+
+		await page.$eval('.maxi-style-cards__sc__actions--apply', button =>
+			button.click()
+		);
+
+		// Export
+		const fileName = `${name}.txt`;
+		const downloadFolder = path.join(__dirname, './SC-downloads');
+
+		await page._client.send('Page.setDownloadBehavior', {
+			behavior: 'allow',
+			downloadPath: downloadFolder,
+		});
+
+		await page.$eval('.maxi-style-cards__sc__ie--export', button =>
+			button.click()
+		);
+
+		// Switch to default SC
+		await page.select(
+			'.maxi-style-cards__sc__more-sc--select select',
+			'sc_maxi'
+		);
+
+		await page.$eval('.maxi-style-cards__sc__actions--apply', button =>
+			button.click()
+		);
+
+		// Import
+		await page.$eval('.maxi-style-cards__sc__ie--import', button =>
+			button.click()
+		);
+
+		const uploader = await page.$('.media-frame input[type=file]');
+
+		uploader.uploadFile(path.join(downloadFolder, fileName));
+
+		await page.waitForSelector(
+			'.media-frame-toolbar .media-toolbar-primary button:not([disabled])'
+		);
+
+		await page.$eval(
+			'.media-frame-toolbar .media-toolbar-primary button',
+			button => button.click()
+		);
+
+		await page.waitForTimeout(150);
+
+		const {
+			value: { name: newName },
+		} = await receiveSelectedMaxiStyleCard(page);
+
+		expect(newName).toStrictEqual(name);
+
+		// Delete download folder
+		fs.rmSync(downloadFolder, { recursive: true });
 	});
 });

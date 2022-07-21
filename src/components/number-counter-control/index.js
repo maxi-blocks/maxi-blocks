@@ -142,6 +142,29 @@ const NumberCounterControl = props => {
 					onChange({ 'number-counter-start-animation': val })
 				}
 			/>
+			{props['number-counter-start-animation'] === 'view-scroll' && (
+				<AdvancedNumberControl
+					label={__('Offset', 'maxi-blocks')}
+					min={50}
+					max={100}
+					initial={100}
+					step={1}
+					value={props['number-counter-start-animation-offset']}
+					onChangeValue={val =>
+						onChange({
+							'number-counter-start-animation-offset': val,
+						})
+					}
+					onReset={() =>
+						onChange({
+							'number-counter-start-animation-offset':
+								getDefaultAttribute(
+									'number-counter-start-animation-offset'
+								),
+						})
+					}
+				/>
+			)}
 			{props['number-counter-start'] >= props['number-counter-end'] && (
 				<div className='maxi-number-counter-control__alert-warning'>
 					<i>{__('Start Number ', 'maxi-blocks')}</i>
@@ -168,7 +191,7 @@ const NumberCounterControl = props => {
 			<AdvancedNumberControl
 				label={__('End number', 'maxi-blocks')}
 				min={1}
-				max={props['number-counter-circle-status'] ? 9999 : 100}
+				max={props['number-counter-circle-status'] ? 9999999999 : 100}
 				initial={100}
 				step={1}
 				value={props['number-counter-end']}

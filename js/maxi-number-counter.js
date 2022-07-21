@@ -50,6 +50,8 @@ const numberCounterEffect = () => {
 					'number-counter-duration': numberCounterDuration,
 					'number-counter-percentage-sign-status': usePercentage,
 					'number-counter-start-animation': startAnimation,
+					'number-counter-start-animation-offset':
+						startAnimationOffset,
 				} = numberData;
 				const startCountValue = +numberCounterStart;
 				const endCountValue = +numberCounterEnd;
@@ -61,37 +63,47 @@ const numberCounterEffect = () => {
 					1000;
 
 				let count = startCountValue;
+				let startTime;
+				let hasAnimated = false;
+
+				const animate = () => {
+					const newCount =
+						startCountValue +
+						parseInt((Date.now() - startTime) / frameDuration);
+
+					if (newCount === count) {
+						requestAnimationFrame(animate);
+						return;
+					} else
+						count =
+							newCount > endCountValue ? endCountValue : newCount;
+
+					let newInnerHTML = `${count}`;
+
+					if (usePercentage) {
+						const percentageNode =
+							numberCounterElemText.nodeName === 'SPAN'
+								? '<sup>%</sup>'
+								: '<tspan baseline-shift="super">%</tspan>';
+
+						newInnerHTML += percentageNode;
+					}
+
+					numberCounterElemText.innerHTML = newInnerHTML;
+
+					numberCounterElemCircle &&
+						numberCounterElemCircle.setAttribute(
+							'stroke-dasharray',
+							`${Math.ceil(
+								(count / 100) * circumference
+							)} ${circumference}`
+						);
+					if (count < endCountValue) requestAnimationFrame(animate);
+				};
 
 				const startCounter = () => {
-					const interval = setInterval(() => {
-						count += 1;
-
-						if (count >= endCountValue) {
-							count = endCountValue;
-							clearInterval(interval);
-						}
-
-						let newInnerHTML = `${count}`;
-
-						if (usePercentage) {
-							const percentageNode =
-								numberCounterElemText.nodeName === 'SPAN'
-									? '<sup>%</sup>'
-									: '<tspan baseline-shift="super">%</tspan>';
-
-							newInnerHTML += percentageNode;
-						}
-
-						numberCounterElemText.innerHTML = newInnerHTML;
-
-						numberCounterElemCircle &&
-							numberCounterElemCircle.setAttribute(
-								'stroke-dasharray',
-								`${Math.ceil(
-									(count / 100) * circumference
-								)} ${circumference}`
-							);
-					}, frameDuration);
+					startTime = Date.now();
+					requestAnimationFrame(animate);
 				};
 
 				const breakpoint = checkMediaQuery(numberID);
@@ -106,9 +118,13 @@ const numberCounterEffect = () => {
 					const waypoint = new Waypoint({
 						element: numberCounterElem,
 						handler() {
-							startCounter();
+							if (!hasAnimated) {
+								hasAnimated = true;
+								startCounter();
+							}
 						},
-						offset: '100%',
+
+						offset: `${startAnimationOffset || 100}%`,
 					});
 				} else {
 					startCounter();

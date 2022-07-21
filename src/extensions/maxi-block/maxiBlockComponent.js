@@ -106,43 +106,6 @@ class MaxiBlockComponent extends Component {
 		this.displayStyles(newUniqueID);
 	}
 
-	// Just for debugging!
-	// eslint-disable-next-line react/sort-comp
-	difference(obj1, obj2) {
-		Object.keys(obj1).forEach(key => {
-			if (obj1[key] !== obj2[key])
-				// eslint-disable-next-line no-console
-				console.log(
-					`The block is rendering due to changes on this prop: ${key}.`,
-					`Old prop was: ${obj1[key]}.`,
-					`New prop is: ${obj2[key]}`
-				);
-		});
-	}
-
-	// Removes non-necessary entries of props object for comparison
-	propsObjectCleaner(props) {
-		const newProps = cloneDeep(props);
-		const entriesToRemove = [
-			'maxiSetAttributes',
-			'insertInlineStyles',
-			'cleanInlineStyles',
-			'context',
-		];
-
-		entriesToRemove.forEach(entry => {
-			delete newProps[entry];
-		});
-
-		// Transform objects into strings to compare easier
-		Object.entries(newProps).forEach(([key, value]) => {
-			if (typeof value === 'object')
-				newProps[key] = JSON.stringify(value);
-		});
-
-		return newProps;
-	}
-
 	componentDidMount() {
 		if (this.maxiBlockDidMount) this.maxiBlockDidMount();
 
@@ -318,11 +281,52 @@ class MaxiBlockComponent extends Component {
 		};
 	}
 
+	getCurrentBlockStyle() {
+		const {
+			clientId,
+			attributes: { blockStyle },
+		} = this.props;
+
+		const newBlockStyle = getBlockStyle(clientId);
+
+		if (blockStyle !== newBlockStyle) {
+			this.props.attributes.blockStyle = newBlockStyle;
+
+			return true;
+		}
+
+		return false;
+	}
+
+	// Removes non-necessary entries of props object for comparison
+	propsObjectCleaner(props) {
+		const newProps = cloneDeep(props);
+		const entriesToRemove = [
+			'maxiSetAttributes',
+			'insertInlineStyles',
+			'cleanInlineStyles',
+			'context',
+		];
+
+		entriesToRemove.forEach(entry => {
+			delete newProps[entry];
+		});
+
+		// Transform objects into strings to compare easier
+		Object.entries(newProps).forEach(([key, value]) => {
+			if (typeof value === 'object')
+				newProps[key] = JSON.stringify(value);
+		});
+
+		return newProps;
+	}
+
 	uniqueIDChecker(idToCheck) {
 		if (getIsUniqueIDRepeated(idToCheck)) {
-			const newUniqueID = uniqueIDGenerator(idToCheck);
+			const newUniqueID = uniqueIDGenerator(this.props.name);
 
 			this.props.attributes.uniqueID = newUniqueID;
+
 			const label = this.props.attributes.uniqueID.replace('-maxi-', '_');
 			this.props.attributes.customLabel =
 				label.charAt(0).toUpperCase() + label.slice(1);
@@ -344,23 +348,6 @@ class MaxiBlockComponent extends Component {
 		const response = getAllFonts(this.typography, 'custom-formats');
 
 		if (!isEmpty(response)) loadFonts(response);
-	}
-
-	getCurrentBlockStyle() {
-		const {
-			clientId,
-			attributes: { blockStyle },
-		} = this.props;
-
-		const newBlockStyle = getBlockStyle(clientId);
-
-		if (blockStyle !== newBlockStyle) {
-			this.props.attributes.blockStyle = newBlockStyle;
-
-			return true;
-		}
-
-		return false;
 	}
 
 	/**

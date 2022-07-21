@@ -51,12 +51,16 @@ const Link = props => {
 
 		if (children?.length) {
 			children.forEach(child => {
-				const { linkSettings } =
+				const attributes =
 					select('core/block-editor').getBlockAttributes(child);
 
-				if (!isEmpty(linkSettings?.url)) {
+				if (
+					!isEmpty(attributes.linkSettings?.url) ||
+					(select('core/block-editor').getBlockName(child) ===
+						'maxi-blocks/text-maxi' &&
+						attributes.content.includes('<a '))
+				)
 					childHasLink = true;
-				}
 			});
 		}
 	}

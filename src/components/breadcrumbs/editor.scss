@@ -38,7 +38,10 @@
 
 		.maxi-breadcrumbs__item__content {
 			text-decoration: underline;
+			text-underline-offset: 3px;
 			text-decoration-color: rgba(255, 255, 255, 0.6);
+			top: -1px;
+			position: relative;
 		}
 
 		&:not(:last-child):after {
@@ -60,6 +63,9 @@
 	}
 }
 .toolbar-block-custom-label {
+	display: flex !important;
+	align-items: center;
+
 	&:hover {
 		& ~ .maxi-breadcrumbs {
 			transform: scaleY(1);

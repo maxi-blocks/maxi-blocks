@@ -1,16 +1,15 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	pressKeyTimes,
-	pressKeyWithModifier,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 
 import {
 	getStyleCardEditor,
 	editGlobalStyles,
 	checkSCResult,
+	addTypographyOptions,
+	addTypographyStyle,
+	changeResponsive,
 } from '../../utils';
 
 describe('StyleCards Paragraph', () => {
@@ -22,75 +21,35 @@ describe('StyleCards Paragraph', () => {
 			accordion: 'paragraph',
 		});
 
-		// screen size L
-		await page.$$eval(
-			'.maxi-blocks-sc__type--paragraph .maxi-tabs-control button',
-			screenSize => screenSize[1].click()
-		);
-		// Size
-		await page.$eval(
-			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__size input',
-			size => size.focus()
-		);
-		await pressKeyTimes('Backspace', '4');
-		await page.keyboard.type('20');
+		await changeResponsive(page, 'base');
 
-		// Line Height
-		await page.$eval(
-			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__line-height input',
-			size => size.focus()
-		);
-		await pressKeyTimes('Backspace', '4');
-		await page.keyboard.type('0');
-
-		// Letter Spacing
-		await page.$eval(
-			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__letter-spacing input',
-			size => size.focus()
-		);
-		await page.keyboard.type('5');
+		await addTypographyOptions({
+			page,
+			instance: await page.$(
+				'.maxi-blocks-sc__type--paragraph .maxi-style-cards-control__sc__p-typography'
+			),
+			size: '20',
+			lineHeight: '0',
+			letterSpacing: '5',
+		});
 
 		// Selectors
-		// Weight
-		const weightOptions = await page.$(
-			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__weight select'
-		);
+		// Weight, Transform, Style, Decoration
+		await addTypographyStyle({
+			instance: await page.$(
+				'.maxi-blocks-sc__type--paragraph .maxi-style-cards-control__sc__p-typography'
+			),
+			decoration: 'overline',
+			weight: '300',
+			transform: 'capitalize',
+			style: 'italic',
+			orientation: 'mixed',
+			direction: 'ltr',
+		});
 
-		// Transform
-		const transformOptions = await page.$(
-			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__transform select'
-		);
-
-		// Style
-		const styleOptions = await page.$(
-			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__font-style select'
-		);
-
-		// Decoration
-		const decorationOptions = await page.$(
-			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__decoration select'
-		);
-
-		// Orientation
-		const orientationOptions = await page.$(
-			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__orientation select'
-		);
-
-		// Direction
-		const directionOptions = await page.$(
-			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__direction select'
-		);
-
-		await weightOptions.select('300');
-		await transformOptions.select('capitalize');
-		await styleOptions.select('italic');
-		await decorationOptions.select('overline');
-		await orientationOptions.select('none');
-		await directionOptions.select('ltr');
-
-		await page.$$eval(
+		await page.$eval(
 			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__text-indent input',
-			input => input[0].focus()
+			input => input.focus()
 		);
 
 		await pressKeyWithModifier('primary', 'a');
@@ -103,6 +62,50 @@ describe('StyleCards Paragraph', () => {
 			page,
 			block: 'paragraph',
 		});
+
+		expect(await checkSCResult(page)).toMatchSnapshot();
+	});
+
+	it('Works on responsive', async () => {
+		await createNewPost();
+		await getStyleCardEditor({
+			page,
+			accordion: 'paragraph',
+		});
+
+		await changeResponsive(page, 'm');
+
+		await addTypographyOptions({
+			page,
+			instance: await page.$(
+				'.maxi-blocks-sc__type--paragraph .maxi-style-cards-control__sc__p-typography'
+			),
+			size: '15',
+			lineHeight: '0',
+			letterSpacing: '5',
+		});
+
+		// Selectors
+		// Weight, Transform, Style, Decoration
+		await addTypographyStyle({
+			instance: await page.$(
+				'.maxi-blocks-sc__type--paragraph .maxi-style-cards-control__sc__p-typography'
+			),
+			decoration: 'underline',
+			weight: '400',
+			transform: 'capitalize',
+			style: 'italic',
+			orientation: 'mixed',
+			direction: 'ltr',
+		});
+
+		await page.$eval(
+			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__text-indent input',
+			input => input.focus()
+		);
+
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.type('44');
 
 		expect(await checkSCResult(page)).toMatchSnapshot();
 	});

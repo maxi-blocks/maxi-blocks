@@ -130,6 +130,56 @@ Object {
   " p.maxi-text-block__content a:visited": Object {
     "link": Object {
       "general": Object {
+        "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))",
+      },
+      "l": Object {
+        "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))",
+      },
+      "m": Object {
+        "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))",
+      },
+      "s": Object {
+        "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))",
+      },
+      "xl": Object {
+        "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))",
+      },
+      "xs": Object {
+        "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))",
+      },
+      "xxl": Object {
+        "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))",
+      },
+    },
+  },
+  " p.maxi-text-block__content a:visited span": Object {
+    "link": Object {
+      "general": Object {
+        "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))",
+      },
+      "l": Object {
+        "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))",
+      },
+      "m": Object {
+        "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))",
+      },
+      "s": Object {
+        "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))",
+      },
+      "xl": Object {
+        "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))",
+      },
+      "xs": Object {
+        "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))",
+      },
+      "xxl": Object {
+        "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4,255,74,23),1))",
+      },
+    },
+  },
+  ".wp-site-blocks  p.maxi-text-block__content a:visited": Object {
+    "link": Object {
+      "general": Object {
         "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3,155,155,155),1))",
       },
       "l": Object {
@@ -152,7 +202,7 @@ Object {
       },
     },
   },
-  " p.maxi-text-block__content a:visited span": Object {
+  ".wp-site-blocks  p.maxi-text-block__content a:visited span": Object {
     "link": Object {
       "general": Object {
         "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3,155,155,155),1))",
@@ -308,6 +358,30 @@ Object {
     },
   },
   " p.maxi-text-block__content a:visited": Object {
+    "color": "rgba(57,189,39,1)",
+    "link": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
+  " p.maxi-text-block__content a:visited span": Object {
+    "color": "rgba(57,189,39,1)",
+    "link": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
+  ".wp-site-blocks  p.maxi-text-block__content a:visited": Object {
     "link": Object {
       "general": Object {
         "color": "rgba(27,109,168,1)",
@@ -332,7 +406,7 @@ Object {
       },
     },
   },
-  " p.maxi-text-block__content a:visited span": Object {
+  ".wp-site-blocks  p.maxi-text-block__content a:visited span": Object {
     "link": Object {
       "general": Object {
         "color": "rgba(27,109,168,1)",

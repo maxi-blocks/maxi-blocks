@@ -41,6 +41,7 @@ const getTransformControl = name => {
 					categories,
 					props.attributes
 				)}
+				disableHover
 			/>
 		),
 		helper: props =>

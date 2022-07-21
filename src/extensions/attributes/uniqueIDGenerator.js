@@ -1,16 +1,22 @@
 /**
- * External dependencies
+ * WordPress dependencies
  */
-import { isEmpty, isNil, uniqueId } from 'lodash';
+import { select } from '@wordpress/data';
 
-const uniqueIDGenerator = name => {
-	const newID = uniqueId(name.replace(/[0-9]/g, ''));
+/**
+ * Internal dependencies
+ */
+import getIsUniqueIDRepeated from '../maxi-block/getIsUniqueIDRepeated';
 
-	if (
-		!isEmpty(document.getElementsByClassName(newID)) ||
-		!isNil(document.getElementById(newID))
-	)
-		return uniqueIDGenerator(name);
+const uniqueIDGenerator = (blockName, diff = 0) => {
+	const { getGlobalBlockCount } = select('core/block-editor');
+
+	const newID = `${blockName
+		.replace('maxi-blocks/', '')
+		.replace(/[0-9]/g, '')}-${getGlobalBlockCount(blockName) + diff}`;
+
+	if (getIsUniqueIDRepeated(newID, 0))
+		return uniqueIDGenerator(blockName, diff + 1);
 
 	return newID;
 };

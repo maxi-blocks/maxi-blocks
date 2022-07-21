@@ -86,6 +86,8 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.transform({
 										props,
+										selectors: selectorsGroup,
+										categories: categoriesGroup,
 									}),
 									...inspectorTabs.transition({
 										props: {

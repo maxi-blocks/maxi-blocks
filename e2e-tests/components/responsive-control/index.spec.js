@@ -30,49 +30,49 @@ describe('ResponsiveControl', () => {
 		await openSidebarTab(page, 'style', 'alignment');
 		await changeResponsive(page, 'xxl');
 
-		await page.$$eval(
+		await page.$eval(
 			'.maxi-tabs-control__full-width .maxi-settingstab-control_has-border-left-right button',
-			button => button[0].click()
+			button => button.click()
 		);
 
 		expect(await getAttributes('alignment-xxl')).toStrictEqual('left');
 
 		await changeResponsive(page, 'xl');
-		await page.$$eval(
-			'.maxi-tabs-control__full-width .maxi-settingstab-control_has-border-left-right button',
-			button => button[2].click()
+		await page.$eval(
+			'.maxi-tabs-control__full-width .maxi-settingstab-control_has-border-left-right .maxi-tabs-control__button-right',
+			button => button.click()
 		);
 
 		expect(await getAttributes('alignment-general')).toStrictEqual('right');
 
 		await changeResponsive(page, 'l');
-		await page.$$eval(
-			'.maxi-tabs-control__full-width .maxi-settingstab-control_has-border-left-right button',
-			button => button[1].click()
+		await page.$eval(
+			'.maxi-tabs-control__full-width .maxi-settingstab-control_has-border-left-right .maxi-tabs-control__button-center',
+			button => button.click()
 		);
 
 		expect(await getAttributes('alignment-l')).toStrictEqual('center');
 
 		await changeResponsive(page, 'm');
-		await page.$$eval(
+		await page.$eval(
 			'.maxi-tabs-control__full-width .maxi-settingstab-control_has-border-left-right button',
-			button => button[0].click()
+			button => button.click()
 		);
 
 		expect(await getAttributes('alignment-m')).toStrictEqual('left');
 
 		await changeResponsive(page, 's');
-		await page.$$eval(
-			'.maxi-tabs-control__full-width .maxi-settingstab-control_has-border-left-right button',
-			button => button[2].click()
+		await page.$eval(
+			'.maxi-tabs-control__full-width .maxi-settingstab-control_has-border-left-right .maxi-tabs-control__button-right',
+			button => button.click()
 		);
 
 		expect(await getAttributes('alignment-s')).toStrictEqual('right');
 
 		await changeResponsive(page, 'xs');
-		await page.$$eval(
-			'.maxi-tabs-control__full-width .maxi-settingstab-control_has-border-left-right button',
-			button => button[1].click()
+		await page.$eval(
+			'.maxi-tabs-control__full-width .maxi-settingstab-control_has-border-left-right .maxi-tabs-control__button-center',
+			button => button.click()
 		);
 
 		expect(await getAttributes('alignment-xs')).toStrictEqual('center');

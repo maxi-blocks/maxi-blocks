@@ -35,7 +35,7 @@ const deprecatedAttributes = {
 	},
 };
 
-const migrate = newAttributes => {
+const migrate = ({ newAttributes }) => {
 	Object.entries(newAttributes).forEach(([key, attr]) => {
 		if (key in deprecatedAttributes) {
 			newAttributes[`${key}-general`] = attr;
@@ -43,6 +43,8 @@ const migrate = newAttributes => {
 			delete newAttributes[key];
 		}
 	});
+
+	return newAttributes;
 };
 
 const isEligible = blockAttributes =>
@@ -52,22 +54,4 @@ const isEligible = blockAttributes =>
 			blockAttributes[key] !== deprecatedAttributes[key].default
 	);
 
-const shapeDividerMigrator = ({ attributes, save }) => {
-	return {
-		isEligible,
-		attributes: {
-			...attributes,
-			...deprecatedAttributes,
-		},
-		migrate: oldAttributes => {
-			const newAttributes = { ...oldAttributes };
-
-			migrate(newAttributes);
-
-			return newAttributes;
-		},
-		save: props => save(props),
-	};
-};
-
-export { shapeDividerMigrator, isEligible, deprecatedAttributes, migrate };
+export default { isEligible, attributes: () => deprecatedAttributes, migrate };

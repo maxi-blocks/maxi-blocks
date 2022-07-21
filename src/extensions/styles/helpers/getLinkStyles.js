@@ -19,6 +19,10 @@ const getLinkStyles = (obj, target, blockStyle) => {
 		[`${target}:active span`]: { link: {} },
 		[`${target}:visited`]: { link: {} },
 		[`${target}:visited span`]: { link: {} },
+		[`${target}:visited`]: { link: {} },
+		[`${target}:visited span`]: { link: {} },
+		[`.wp-site-blocks ${target}:visited`]: { link: {} },
+		[`.wp-site-blocks ${target}:visited span`]: { link: {} },
 	};
 
 	breakpoints.forEach(breakpoint => {
@@ -35,10 +39,16 @@ const getLinkStyles = (obj, target, blockStyle) => {
 
 		if (isBoolean(linkPaletteStatus) && !linkPaletteStatus) {
 			response[target].link[breakpoint] = {};
+			response[`${target}:visited`].link[breakpoint] = {};
+			response[`${target}:visited span`].link[breakpoint] = {};
 
 			response[target].link[breakpoint].color = linkColor;
+			response[`${target}:visited`].color = linkColor;
+			response[`${target}:visited span`].color = linkColor;
 		} else if (linkPaletteColor) {
 			response[target].link[breakpoint] = {};
+			response[`${target}:visited`].link[breakpoint] = {};
+			response[`${target}:visited span`].link[breakpoint] = {};
 
 			response[target].link[breakpoint].color = getColorRGBAString({
 				firstVar: 'link',
@@ -46,6 +56,20 @@ const getLinkStyles = (obj, target, blockStyle) => {
 				opacity: linkPaletteOpacity,
 				blockStyle,
 			});
+			response[`${target}:visited`].link[breakpoint].color =
+				getColorRGBAString({
+					firstVar: 'link',
+					secondVar: `color-${linkPaletteColor}`,
+					opacity: linkPaletteOpacity,
+					blockStyle,
+				});
+			response[`${target}:visited span`].link[breakpoint].color =
+				getColorRGBAString({
+					firstVar: 'link',
+					secondVar: `color-${linkPaletteColor}`,
+					opacity: linkPaletteOpacity,
+					blockStyle,
+				});
 		}
 
 		const {
@@ -121,13 +145,17 @@ const getLinkStyles = (obj, target, blockStyle) => {
 		});
 
 		if (isBoolean(linkVisitedPaletteStatus) && !linkVisitedPaletteStatus) {
-			response[`${target}:visited`].link[breakpoint] = {};
-			response[`${target}:visited span`].link[breakpoint] = {};
+			response[`.wp-site-blocks ${target}:visited`].link[breakpoint] = {};
+			response[`.wp-site-blocks ${target}:visited span`].link[
+				breakpoint
+			] = {};
 
-			response[`${target}:visited`].link[breakpoint].color =
-				linkVisitedColor;
-			response[`${target}:visited span`].link[breakpoint].color =
-				linkVisitedColor;
+			response[`.wp-site-blocks ${target}:visited`].link[
+				breakpoint
+			].color = linkVisitedColor;
+			response[`.wp-site-blocks ${target}:visited span`].link[
+				breakpoint
+			].color = linkVisitedColor;
 		} else if (linkVisitedPaletteColor) {
 			const color = getColorRGBAString({
 				firstVar: 'link-visited',
@@ -136,8 +164,12 @@ const getLinkStyles = (obj, target, blockStyle) => {
 				blockStyle,
 			});
 
-			response[`${target}:visited`].link[breakpoint] = { color };
-			response[`${target}:visited span`].link[breakpoint] = { color };
+			response[`.wp-site-blocks ${target}:visited`].link[breakpoint] = {
+				color,
+			};
+			response[`.wp-site-blocks ${target}:visited span`].link[
+				breakpoint
+			] = { color };
 		}
 	});
 

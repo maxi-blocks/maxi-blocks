@@ -1,13 +1,6 @@
 .maxi-text-block {
 	&__content {
 		border: 1.5px dashed var(--maxi-light-blue-3-color) !important;
-
-		a.maxi-text-block--link {
-			&:visited,
-			&:visited span {
-				color: inherit !important;
-			}
-		}
 	}
 	&__has-text {
 		&:hover,

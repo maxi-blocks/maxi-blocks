@@ -23,6 +23,7 @@ const withMaxiProps = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
 			const { setAttributes, attributes, clientId } = ownProps;
+
 			const {
 				deviceType,
 				winBreakpoint,
@@ -58,19 +59,13 @@ const withMaxiProps = createHigherOrderComponent(
 				};
 			});
 
-			const maxiSetAttributes = useCallback(
-				(
+			const maxiSetAttributes = useCallback(obj =>
+				handleSetAttributes({
 					obj,
-					additionalAttributes,
-					additionalClientId,
-					additionalOnChange
-				) =>
-					handleSetAttributes({
-						obj,
-						attributes: additionalAttributes ?? attributes,
-						clientId: additionalClientId ?? clientId,
-						onChange: additionalOnChange ?? setAttributes,
-					})
+					attributes,
+					clientId,
+					onChange: setAttributes,
+				})
 			);
 
 			const ref = useRef(null);

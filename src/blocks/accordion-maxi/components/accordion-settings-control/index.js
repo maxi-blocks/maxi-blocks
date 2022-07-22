@@ -2,17 +2,20 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import {
+	AdvancedNumberControl,
+	ToggleSwitch,
+	SelectControl,
+} from '../../../../components';
 
 /**
  * Internal dependencies
  */
-import SelectControl from '../select-control';
-import ToggleSwitch from '../toggle-switch';
-import AdvancedNumberControl from '../advanced-number-control';
+
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '../../../../extensions/styles';
 
 const AccordionSettings = props => {
 	const {

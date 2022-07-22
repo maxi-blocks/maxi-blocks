@@ -11,13 +11,13 @@ import {
 	SettingTabsControl,
 	AdvancedNumberControl,
 	ToggleSwitch,
-} from '..';
-import MaxiModal from '../../editor/library/modal';
+} from '../../../../components';
+import MaxiModal from '../../../../editor/library/modal';
 import {
 	getAttributeKey,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '../../../../extensions/styles';
 import IconColor from './IconColor';
 
 const AccordionIconSettings = props => {

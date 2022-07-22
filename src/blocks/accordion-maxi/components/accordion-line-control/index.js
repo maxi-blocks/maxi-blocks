@@ -6,9 +6,11 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import SettingTabsControl from '../setting-tabs-control';
-import DividerControl from '../divider-control';
-import ToggleSwitch from '../toggle-switch';
+import {
+	SettingTabsControl,
+	DividerControl,
+	ToggleSwitch,
+} from '../../../../components';
 
 const AccordionLineControl = props => {
 	const { onChange } = props;

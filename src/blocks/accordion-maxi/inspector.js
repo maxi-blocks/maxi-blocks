@@ -10,16 +10,18 @@ import { InspectorControls } from '@wordpress/block-editor';
 import {
 	SettingTabsControl,
 	AccordionControl,
-	AccordionSettings,
 	ResponsiveTabsControl,
-	AccordionLineControl,
-	AccordionIconSettings,
-	AccordionTitleSettings,
 } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { withMaxiInspector } from '../../extensions/inspector';
 import { getGroupAttributes } from '../../extensions/styles';
 import { categoriesAccordion, selectorsAccordion } from './custom-css';
+import {
+	AccordionIconSettings,
+	AccordionLineControl,
+	AccordionSettings,
+	AccordionTitleSettings,
+} from './components';
 
 /**
  * Inspector

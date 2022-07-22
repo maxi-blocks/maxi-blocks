@@ -6,10 +6,15 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ColorControl from '../color-control';
-import FontLevelControl from '../font-level-control';
-import SettingTabsControl from '../setting-tabs-control';
-import { getAttributeKey, getAttributeValue } from '../../extensions/styles';
+import {
+	ColorControl,
+	FontLevelControl,
+	SettingTabsControl,
+} from '../../../../components';
+import {
+	getAttributeKey,
+	getAttributeValue,
+} from '../../../../extensions/styles';
 
 const TitleColor = props => {
 	const { onChange, clientId, prefix, bgPrefix, isHover = false } = props;

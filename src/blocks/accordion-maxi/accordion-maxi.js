@@ -20,7 +20,7 @@ import save from './save';
  */
 import './style.scss';
 import './editor.scss';
-import { groupIcon } from '../../icons';
+import { accordionIcon } from '../../icons';
 
 /**
  * Block
@@ -28,7 +28,7 @@ import { groupIcon } from '../../icons';
 
 registerBlockType('maxi-blocks/accordion-maxi', {
 	title: __('Accordion Maxi', 'maxi-blocks'),
-	icon: groupIcon,
+	icon: accordionIcon,
 	description: 'Expand or collapse content inside of a panel',
 	category: 'maxi-blocks',
 	supports: {

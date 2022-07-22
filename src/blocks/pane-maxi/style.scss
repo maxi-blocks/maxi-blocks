@@ -33,10 +33,10 @@
 		left: 50%;
 		transform: translateX(-50%);
 	}
-}
 
-.maxi-pane-block[aria-expanded='false'] .maxi-pane-block__content {
-	overflow: hidden;
-	border-width: 0;
-	max-height: 0px;
+	&[aria-expanded='false'] .maxi-pane-block__content {
+		overflow: hidden;
+		border-width: 0;
+		max-height: 0px;
+	}
 }

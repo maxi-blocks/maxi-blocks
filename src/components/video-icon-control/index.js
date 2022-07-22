@@ -182,21 +182,18 @@ const IconSettings = props => {
 					/>
 					<AdvancedNumberControl
 						label='Icon height'
-						className='maxi-video-icon-control__icon-height'
+						className='maxi-video-icon-control__icon-width'
 						optionType='string'
 						value={getLastBreakpointAttribute({
-							target: getAttributeKey(
-								'icon-height',
-								isHover,
-								prefix
-							),
+							target: `${prefix}icon-width`,
 							breakpoint,
+							isHover,
 							attributes: props,
 						})}
 						onChangeValue={val =>
 							onChange({
 								[getAttributeKey(
-									'icon-height',
+									'icon-width',
 									isHover,
 									prefix,
 									breakpoint
@@ -204,12 +201,12 @@ const IconSettings = props => {
 							})
 						}
 						defaultValue={getDefaultAttribute(
-							`${prefix}icon-height-${breakpoint}`
+							`${prefix}icon-width-${breakpoint}`
 						)}
 						enableUnit
 						unit={getLastBreakpointAttribute({
 							target: getAttributeKey(
-								'icon-height-unit',
+								'icon-width-unit',
 								isHover,
 								prefix
 							),
@@ -217,12 +214,12 @@ const IconSettings = props => {
 							attributes: props,
 						})}
 						defaultUnit={getDefaultAttribute(
-							`${prefix}icon-height-unit-${breakpoint}`
+							`${prefix}icon-width-unit-${breakpoint}`
 						)}
 						onChangeUnit={val =>
 							onChange({
 								[getAttributeKey(
-									'icon-height-unit',
+									'icon-width-unit',
 									isHover,
 									prefix,
 									breakpoint
@@ -232,18 +229,18 @@ const IconSettings = props => {
 						onReset={() =>
 							onChange({
 								[getAttributeKey(
-									'icon-height',
+									'icon-width',
 									isHover,
 									prefix,
 									breakpoint
-								)]: getDefaultAttribute(`${prefix}icon-height`),
+								)]: getDefaultAttribute(`${prefix}icon-width`),
 								[getAttributeKey(
-									'icon-height-unit',
+									'icon-width-unit',
 									isHover,
 									prefix,
 									breakpoint
 								)]: getDefaultAttribute(
-									`${prefix}icon-height-unit`
+									`${prefix}icon-width-unit`
 								),
 							})
 						}

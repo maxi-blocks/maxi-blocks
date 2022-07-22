@@ -1,3 +1,11 @@
+/**
+ * External dependencies
+ */
+import { isNil } from 'lodash';
+
+/**
+ * Internal dependencies
+ */
 import {
 	getColorBackgroundObject,
 	getGradientBackgroundObject,
@@ -10,40 +18,9 @@ import getIconStyles from './getIconStyles';
 import getIconPathStyles from './getIconPathStyles';
 import getGroupAttributes from '../getGroupAttributes';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
-
-import { isNil, isEmpty } from 'lodash';
+import getIconSize from './getIconSize';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-
-const getIconSize = (obj, isHover = false) => {
-	const response = {
-		label: 'Icon size',
-		general: {},
-	};
-
-	breakpoints.forEach(breakpoint => {
-		response[breakpoint] = {};
-
-		const iconWidth =
-			obj[`icon-width-${breakpoint}${isHover ? '-hover' : ''}`];
-
-		if (!isNil(iconWidth) && !isEmpty(iconWidth)) {
-			const iconUnit = getLastBreakpointAttribute({
-				target: 'icon-width-unit',
-				breakpoint,
-				attributes: obj,
-				isHover,
-			});
-			response[breakpoint].width = `${iconWidth}${iconUnit}`;
-			response[breakpoint].height = `${iconWidth}${iconUnit}`;
-		}
-
-		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')
-			delete response[breakpoint];
-	});
-
-	return { iconSize: response };
-};
 
 const getIconObject = (props, target) => {
 	const response = {

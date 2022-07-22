@@ -58,7 +58,9 @@ describe('Button Maxi', () => {
 		expect(true).toBeTruthy();
 	});
 
-	it.skip('Check Button Icon', async () => {
+	it('Check Button Icon', async () => {
+		const buttons = await page.$$('.maxi-button-default-styles button');
+		buttons[4].click();
 		await openSidebarTab(page, 'style', 'icon');
 
 		// Width spacing
@@ -93,7 +95,7 @@ describe('Button Maxi', () => {
 		]);
 
 		const expectedAttributesTwo = {
-			'icon-width-general': 343,
+			'icon-width-general': '343',
 			'icon-stroke-general': 2,
 			'icon-spacing-general': 14,
 		};
@@ -110,7 +112,9 @@ describe('Button Maxi', () => {
 			colorPalette: 5,
 		});
 
-		expect(await getAttributes('icon-palette-color')).toStrictEqual(5);
+		expect(await getAttributes('icon-stroke-palette-color')).toStrictEqual(
+			5
+		);
 
 		await page.$$eval(
 			'.maxi-icon-styles-control .maxi-tabs-control__full-width button',
@@ -131,12 +135,16 @@ describe('Button Maxi', () => {
 		).toStrictEqual(6);
 
 		// icon position
-		await page.$eval('.maxi-icon-position-control button', leftButton =>
-			leftButton.click()
+		await page.$eval(
+			'.maxi-icon-position-control button.maxi-tabs-control__button-bottom',
+			bottomButton => bottomButton.click()
 		);
-		expect(await getAttributes('icon-position')).toStrictEqual('left');
+		expect(await getAttributes('icon-position')).toStrictEqual('bottom');
 
 		// border
+		await page.$eval('button.maxi-tabs-control__button-border', button =>
+			button.click()
+		);
 		await page.$$eval(
 			'.maxi-border-control .maxi-default-styles-control button',
 			button => button[2].click()
@@ -195,9 +203,10 @@ describe('Button Maxi', () => {
 
 		expect(
 			await getAttributes('icon-padding-bottom-general')
-		).toStrictEqual(33);
+		).toStrictEqual('33');
 	});
-	it.skip('Check Button Icon Hover', async () => {
+
+	it('Check Button Icon Hover', async () => {
 		const accordion = await openSidebarTab(page, 'style', 'icon');
 
 		await accordion.$$eval(
@@ -227,7 +236,7 @@ describe('Button Maxi', () => {
 			4
 		);
 		expect(await getAttributes('icon-width-general-hover')).toStrictEqual(
-			245
+			'245'
 		);
 
 		// select border
@@ -245,10 +254,6 @@ describe('Button Maxi', () => {
 			await getAttributes('icon-border-style-general-hover')
 		).toStrictEqual('dotted');
 
-		await accordion.$eval(
-			'.maxi-border-control .maxi-color-control .maxi-toggle-switch__toggle input',
-			button => button.click()
-		);
 		// border color
 		await editColorControl({
 			page,

@@ -1,7 +1,5 @@
 /**
- * BLOCK: maxi-blocks/group-maxi
- *
- * Group of blocks composed with a similar style or layout
+ * BLOCK: maxi-blocks/accordion-maxi
  */
 
 /**

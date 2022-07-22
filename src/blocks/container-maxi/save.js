@@ -8,7 +8,7 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 /**
  * Save
  */
-const save = (props, extendedAttributes = {}) => {
+const save = props => {
 	const { attributes } = props;
 	const { uniqueID } = attributes;
 
@@ -18,7 +18,6 @@ const save = (props, extendedAttributes = {}) => {
 		<MaxiBlock.save
 			tagName='section'
 			{...getMaxiBlockAttributes({ ...props, name })}
-			{...extendedAttributes}
 			useInnerBlocks
 		>
 			<ArrowDisplayer

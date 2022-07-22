@@ -55,26 +55,26 @@ describe('NumberCounterControl', () => {
 		});
 
 		// Start Number
-		await inputs[1].focus();
+		await inputs[2].focus();
 		await pressKeyTimes('Backspace', '1');
 		await page.keyboard.type('20');
 
 		// End Number
-		await inputs[2].focus();
+		await inputs[3].focus();
 		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('50');
 
 		// Duration
-		await inputs[3].focus();
+		await inputs[4].focus();
 		await page.keyboard.type('0');
 
 		// Stroke
-		await inputs[4].focus();
+		await inputs[5].focus();
 		await pressKeyTimes('Backspace', '2');
 		await page.keyboard.type('50');
 
 		// Title Font Size
-		await inputs[5].focus();
+		await inputs[6].focus();
 		await pressKeyTimes('Backspace', '2');
 		await page.keyboard.type('19');
 

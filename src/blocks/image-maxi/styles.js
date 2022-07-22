@@ -21,7 +21,6 @@ import {
 	getOpacityStyles,
 	getPositionStyles,
 	getSizeStyles,
-	getTransformStyles,
 	getTransitionStyles,
 	getTypographyStyles,
 	getZIndexStyles,
@@ -36,7 +35,7 @@ import transitionObj from './transitionObj';
 /**
  * External dependencies
  */
-import { isEmpty, isNil, merge } from 'lodash';
+import { isNil, merge } from 'lodash';
 
 const getWrapperObject = props => {
 	const response = {
@@ -75,9 +74,6 @@ const getWrapperObject = props => {
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
 		}),
-		transform: getTransformStyles({
-			...getGroupAttributes(props, 'transform'),
-		}),
 		alignment: getAlignmentFlexStyles({
 			...getGroupAttributes(props, 'alignment'),
 		}),
@@ -115,8 +111,6 @@ const getHoverWrapperObject = props => {
 				obj: {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
-				dropShadow:
-					!isEmpty(props.clipPath) || !isNil(props.SVGElement),
 				blockStyle: props.blockStyle,
 				isHover: true,
 			}),
@@ -257,8 +251,9 @@ const getImageObject = props => {
 		boxShadow: getBoxShadowStyles({
 			obj: {
 				...getGroupAttributes(props, 'boxShadow', false, 'image-'),
+				...getGroupAttributes(props, 'clipPath'),
+				SVGElement: props.SVGElement,
 			},
-			dropShadow: !isEmpty(props.clipPath) || !isNil(props.SVGElement),
 			blockStyle: props.blockStyle,
 			prefix: 'image-',
 		}),
@@ -303,6 +298,8 @@ const getHoverImageObject = props => {
 			boxShadow: getBoxShadowStyles({
 				obj: {
 					...getGroupAttributes(props, 'boxShadow', true, 'image-'),
+					...getGroupAttributes(props, 'clipPath'),
+					SVGElement: props.SVGElement,
 				},
 				isHover: true,
 				blockStyle: props.blockStyle,
@@ -310,6 +307,47 @@ const getHoverImageObject = props => {
 			}),
 		}),
 	};
+};
+
+const getClipPathDropShadowObject = (props, isHover = false) => {
+	// for clip path drop shadow should be applied to wrapper div
+	const response = {
+		...(!isHover && {
+			boxShadow: getBoxShadowStyles({
+				obj: {
+					...getGroupAttributes(props, 'boxShadow', false, 'image-'),
+					...getGroupAttributes(props, 'clipPath'),
+					SVGElement: props.SVGElement,
+				},
+				dropShadow: true,
+				blockStyle: props.blockStyle,
+				prefix: 'image-',
+				forClipPath: true,
+			}),
+		}),
+		...(props['image-box-shadow-status-hover'] &&
+			isHover && {
+				boxShadow: getBoxShadowStyles({
+					obj: {
+						...getGroupAttributes(
+							props,
+							'boxShadow',
+							true,
+							'image-'
+						),
+						...getGroupAttributes(props, 'clipPath'),
+						SVGElement: props.SVGElement,
+					},
+					isHover: true,
+					dropShadow: true,
+					blockStyle: props.blockStyle,
+					prefix: 'image-',
+					forClipPath: true,
+				}),
+			}),
+	};
+
+	return response;
 };
 
 const getFigcaptionObject = props => {
@@ -394,11 +432,16 @@ const getStyles = props => {
 				{
 					'': getWrapperObject(props),
 					':hover': getHoverWrapperObject(props),
-					' .maxi-image-block-wrapper': getImageWrapperObject(props),
+					' .maxi-image-block-wrapper': {
+						...getImageWrapperObject(props),
+						...getClipPathDropShadowObject(props),
+					},
 					[` .maxi-image-block-wrapper ${imgTag}`]:
 						getImageObject(props),
 					[`:hover .maxi-image-block-wrapper ${imgTag}`]:
 						getHoverImageObject(props),
+					':hover .maxi-image-block-wrapper':
+						getClipPathDropShadowObject(props, true),
 					' .maxi-image-block-wrapper > svg:first-child':
 						getImageShapeObject('svg', props),
 					' .maxi-image-block-wrapper > svg:first-child pattern image':

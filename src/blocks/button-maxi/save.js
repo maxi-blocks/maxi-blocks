@@ -19,11 +19,7 @@ import { RichText } from '@wordpress/block-editor';
 /**
  * Save
  */
-const save = (
-	props,
-	extendedWrapperAttributes = {},
-	extendedAttributes = {}
-) => {
+const save = props => {
 	const { attributes } = props;
 	const { linkSettings, buttonContent } = attributes;
 
@@ -54,14 +50,10 @@ const save = (
 	);
 
 	return (
-		<MaxiBlock.save
-			{...getMaxiBlockAttributes({ ...props, name })}
-			{...extendedWrapperAttributes}
-		>
+		<MaxiBlock.save {...getMaxiBlockAttributes({ ...props, name })}>
 			<Button
 				className={buttonClasses}
 				{...(!isEmpty(linkProps.href) && linkProps)}
-				{...extendedAttributes}
 			>
 				{!attributes['icon-only'] && (
 					<RichText.Content

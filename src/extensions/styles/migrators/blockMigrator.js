@@ -1,63 +1,110 @@
-import {
-	isEligible as positionIsEligible,
-	attributes as positionAttributes,
-	migrate as positionMigrator,
-} from './positionMigrator';
-import {
-	isEligible as fromFullWidthNonToResponsiveIsEligible,
-	attributes as fromFullWidthNonToResponsiveAttributes,
-	migrate as fromFullWidthNonToResponsiveMigrator,
-} from './fullWidthNonToResponsive';
-import {
-	isEligible as shapeDividerIsEligible,
-	deprecatedAttributes as shapeDividerAttributes,
-	migrate as shapeDividerMigrator,
-} from './shapeDividerMigrator';
+/**
+ * Internal dependencies
+ */
+import fullWidthNonToResponsiveMigrator from './fullWidthNonToResponsive';
+import transformMigrator from './transformMigrator';
+import positionToNumberMigrator from './positionToNumberMigrator';
+import positionUnitsToAxisMigrator from './positionUnitsToAxisMigrator';
+import { getMigratorsCombinations } from './utils';
 
-const blockMigrator = ({ attributes, save, prefix, isContainer = false }) => {
-	return {
-		isEligible(blockAttributes) {
-			return (
-				positionIsEligible(blockAttributes, attributes) ||
-				fromFullWidthNonToResponsiveIsEligible(blockAttributes) ||
-				(isContainer && shapeDividerIsEligible(blockAttributes))
+/**
+ * External dependencies
+ */
+import { compact } from 'lodash';
+
+/**
+ * Create a combination of the different migrators, from the most populate ones to the lighter ones.
+ */
+export const handleBlockMigrator = ({
+	attributes,
+	save,
+	prefix = '',
+	isContainer = false,
+	selectors,
+	migrators,
+}) => {
+	const combinedMigrators = getMigratorsCombinations(migrators);
+
+	return combinedMigrators
+		.sort()
+		.reverse()
+		.map(combinedMigrator => {
+			const result = {};
+
+			const isEligibleFunctions = compact(
+				combinedMigrator.map(migrator => migrator.isEligible)
 			);
-		},
-
-		attributes: {
-			...attributes,
-			...positionAttributes,
-			...fromFullWidthNonToResponsiveAttributes(isContainer),
-			...(isContainer && shapeDividerAttributes),
-		},
-
-		migrate(oldAttributes) {
-			const newAttributes = { ...oldAttributes };
-
-			positionMigrator(newAttributes, attributes);
-			fromFullWidthNonToResponsiveMigrator(newAttributes, prefix);
-			if (isContainer) shapeDividerMigrator(newAttributes);
-
-			return newAttributes;
-		},
-
-		save(props) {
-			const { attributes } = props;
-			const { fullWidth, blockFullWidth, ...restAttrs } = attributes;
-
-			const newSave = save(
-				{ ...props, attributes: restAttrs },
-				{
-					'data-align': blockFullWidth,
-				},
-				...(prefix && {
-					'data-align': fullWidth,
-				})
+			const attributesFunctions = compact(
+				combinedMigrator.map(migrator => migrator.attributes)
+			);
+			const migrateFunctions = compact(
+				combinedMigrator.map(migrator => migrator.migrate)
+			);
+			const saveFunctions = compact(
+				combinedMigrator.map(migrator => migrator.saveMigrator)
 			);
 
-			return newSave;
-		},
-	};
+			result.isEligible = blockAttributes => {
+				return isEligibleFunctions.every(isEligible =>
+					isEligible(blockAttributes, attributes)
+				);
+			};
+			result.attributes = {
+				...attributes,
+				...attributesFunctions.reduce((acc, attributesFunction) => {
+					return {
+						...acc,
+						...attributesFunction(isContainer),
+					};
+				}, {}),
+			};
+			result.migrate = newAttributes => {
+				return migrateFunctions.reduce(
+					(acc, migrateFunction) => {
+						return migrateFunction({
+							newAttributes: { ...acc },
+							attributes,
+							prefix,
+							selectors,
+						});
+					},
+					{ ...newAttributes }
+				);
+			};
+			if (saveFunctions.length > 0)
+				result.save = props => {
+					// Return corrupted save function
+					if (
+						!isEligibleFunctions.every(isEligible =>
+							isEligible(props.attributes, attributes)
+						)
+					)
+						return false;
+
+					let currentInstance = save(props);
+
+					saveFunctions.forEach((saveMigrator, i) => {
+						currentInstance = saveMigrator(currentInstance, props);
+					});
+
+					return currentInstance;
+				};
+			else result.save = save;
+
+			return result;
+		});
+};
+
+const blockMigrator = blockMigratorProps => {
+	const migrators = [
+		positionToNumberMigrator,
+		positionUnitsToAxisMigrator,
+		fullWidthNonToResponsiveMigrator,
+		transformMigrator,
+		...(blockMigratorProps.migrators ?? []),
+	];
+
+	return handleBlockMigrator({ ...blockMigratorProps, migrators });
 };
 
 export default blockMigrator;

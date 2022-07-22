@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { registerStore } from '@wordpress/data';
+import { register, createReduxStore } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -12,10 +12,12 @@ import * as selectors from './selectors';
 import * as actions from './actions';
 import resolvers from './resolvers';
 
-registerStore('maxiBlocks/style-cards', {
+const store = createReduxStore('maxiBlocks/style-cards', {
 	reducer,
 	controls,
 	selectors,
 	actions,
 	resolvers,
 });
+
+register(store);

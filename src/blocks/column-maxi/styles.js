@@ -12,7 +12,6 @@ import {
 	getZIndexStyles,
 	getColumnSizeStyles,
 	getDisplayStyles,
-	getTransformStyles,
 	getMarginPaddingStyles,
 	getBlockBackgroundStyles,
 	getBorderStyles,
@@ -56,9 +55,6 @@ const getNormalObject = (props, rowGapProps, clientId) => {
 		}),
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
-		}),
-		transform: getTransformStyles({
-			...getGroupAttributes(props, 'transform'),
 		}),
 		columnSize: {
 			...getColumnSizeStyles(

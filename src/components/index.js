@@ -72,6 +72,7 @@ export { default as SettingTabsControl } from './setting-tabs-control';
 export { default as ShapeDivider } from './shape-divider';
 export { default as ShapeDividerControl } from './shape-divider-control';
 export { default as Spinner } from './spinner';
+export { default as SvgAltControl } from './svg-alt-control';
 export { default as SVGFillControl } from './svg-fill-control';
 export { default as SvgStrokeWidthControl } from './svg-stroke-width-control';
 export { default as SvgWidthControl } from './svg-width-control';

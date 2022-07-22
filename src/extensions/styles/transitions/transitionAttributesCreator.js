@@ -18,18 +18,7 @@ const getHoverProp = (property, prefix = '') => {
 
 const transitionAttributesCreator = (transitionObj = transitionDefault) => {
 	const getTransitionOptions = transitionObj =>
-		transitionObj
-			? Object.values(transitionObj).map(
-					({ title, property, prefix, ignoreHoverProp = false }) => {
-						return {
-							title,
-							property,
-							prefix,
-							ignoreHoverProp,
-						};
-					}
-			  )
-			: null;
+		transitionObj ? Object.values(transitionObj) : null;
 
 	const blockOptions = getTransitionOptions(transitionObj?.block);
 	const canvasOptions = getTransitionOptions(transitionObj?.canvas);
@@ -43,17 +32,20 @@ const transitionAttributesCreator = (transitionObj = transitionDefault) => {
 
 	const createTransitionStyleObjForType = (type, options) =>
 		options &&
-		options.forEach(({ title, property, prefix, ignoreHoverProp }) => {
-			transitionStyleObj[type] = {
-				...transitionStyleObj[type],
-				[title.toLowerCase()]: {
-					...transitionRawObj,
-					...(!ignoreHoverProp && {
-						hoverProp: getHoverProp(property, prefix),
-					}),
-				},
-			};
-		});
+		options.forEach(
+			({ hoverProp, ignoreHoverProp, prefix, property, title }) => {
+				transitionStyleObj[type] = {
+					...transitionStyleObj[type],
+					[title.toLowerCase()]: {
+						...transitionRawObj,
+						...(!ignoreHoverProp && {
+							hoverProp:
+								hoverProp ?? getHoverProp(property, prefix),
+						}),
+					},
+				};
+			}
+		);
 
 	createTransitionStyleObjForType('block', blockOptions);
 	createTransitionStyleObjForType('canvas', canvasOptions);

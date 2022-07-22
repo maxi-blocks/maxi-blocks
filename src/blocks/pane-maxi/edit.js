@@ -52,8 +52,6 @@ class edit extends MaxiBlockComponent {
 		this.content = content;
 	}
 
-	// maxiBlockDidMount() {}
-
 	maxiBlockDidUpdate() {
 		if (this.context.titleLevel !== this.props.attributes.titleLevel) {
 			const { maxiSetAttributes } = this.props;

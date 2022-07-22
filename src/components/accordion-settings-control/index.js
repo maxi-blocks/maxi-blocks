@@ -14,11 +14,6 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 
-/**
- * Styles
- */
-import './editor.scss';
-
 const AccordionSettings = props => {
 	const {
 		accordionLayout,

@@ -45,5 +45,5 @@ export const openTransitions = () => {
 				value: 2,
 			})
 		)
-		.then(() => openSidebar('hovertransition'));
+		.then(() => openSidebar('hover transition'));
 };

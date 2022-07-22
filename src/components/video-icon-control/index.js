@@ -182,10 +182,10 @@ const IconSettings = props => {
 					/>
 					<AdvancedNumberControl
 						label='Icon height'
-						className='maxi-video-icon-control__icon-width'
+						className='maxi-video-icon-control__icon-height'
 						optionType='string'
 						value={getLastBreakpointAttribute({
-							target: `${prefix}icon-width`,
+							target: `${prefix}icon-height`,
 							breakpoint,
 							isHover,
 							attributes: props,
@@ -193,7 +193,7 @@ const IconSettings = props => {
 						onChangeValue={val =>
 							onChange({
 								[getAttributeKey(
-									'icon-width',
+									'icon-height',
 									isHover,
 									prefix,
 									breakpoint
@@ -201,12 +201,12 @@ const IconSettings = props => {
 							})
 						}
 						defaultValue={getDefaultAttribute(
-							`${prefix}icon-width-${breakpoint}`
+							`${prefix}icon-height-${breakpoint}`
 						)}
 						enableUnit
 						unit={getLastBreakpointAttribute({
 							target: getAttributeKey(
-								'icon-width-unit',
+								'icon-height-unit',
 								isHover,
 								prefix
 							),
@@ -214,12 +214,12 @@ const IconSettings = props => {
 							attributes: props,
 						})}
 						defaultUnit={getDefaultAttribute(
-							`${prefix}icon-width-unit-${breakpoint}`
+							`${prefix}icon-height-unit-${breakpoint}`
 						)}
 						onChangeUnit={val =>
 							onChange({
 								[getAttributeKey(
-									'icon-width-unit',
+									'icon-height-unit',
 									isHover,
 									prefix,
 									breakpoint
@@ -229,18 +229,18 @@ const IconSettings = props => {
 						onReset={() =>
 							onChange({
 								[getAttributeKey(
-									'icon-width',
+									'icon-height',
 									isHover,
 									prefix,
 									breakpoint
-								)]: getDefaultAttribute(`${prefix}icon-width`),
+								)]: getDefaultAttribute(`${prefix}icon-height`),
 								[getAttributeKey(
-									'icon-width-unit',
+									'icon-height-unit',
 									isHover,
 									prefix,
 									breakpoint
 								)]: getDefaultAttribute(
-									`${prefix}icon-width-unit`
+									`${prefix}icon-height-unit`
 								),
 							})
 						}

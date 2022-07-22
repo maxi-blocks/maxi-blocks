@@ -59,12 +59,28 @@ const rawIcon = {
 	svgType: {
 		type: 'string',
 	},
+	...icon,
+	...iconHover,
 	'icon-inherit': {
 		type: 'boolean',
 		default: false,
 	},
-	...icon,
-	...iconHover,
+	'icon-width-general': {
+		type: 'string',
+		default: null,
+	},
+	'icon-width-unit-general': {
+		type: 'string',
+		default: null,
+	},
+	'icon-width-general-hover': {
+		type: 'string',
+		default: null,
+	},
+	'icon-width-unit-general-hover': {
+		type: 'string',
+		default: null,
+	},
 };
 
 const icons = {

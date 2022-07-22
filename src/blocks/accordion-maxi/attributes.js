@@ -1,9 +1,4 @@
 /**
- * WordPress dependencies
- */
-import { __ } from '@wordpress/i18n';
-
-/**
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
@@ -23,12 +18,6 @@ const attributes = {
 	/**
 	 * Block styles
 	 */
-
-	customLabel: {
-		type: 'string',
-		default: __('Accordion', 'maxi-blocks'),
-	},
-
 	...attributesData.border,
 	...attributesData.borderHover,
 	...attributesData.borderRadius,

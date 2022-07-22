@@ -25,9 +25,9 @@ import {
 	getPositionStyles,
 	getSizeStyles,
 	getSVGStyles,
-	getTransformStyles,
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
+import { selectorsAccordion } from './custom-css';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -81,9 +81,6 @@ const getNormalObject = props => {
 		}),
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
-		}),
-		transform: getTransformStyles({
-			...getGroupAttributes(props, 'transform'),
 		}),
 		margin: getMarginPaddingStyles({
 			obj: {
@@ -375,13 +372,17 @@ const getPaneContentObject = props => {
 const getStyles = props => {
 	const { uniqueID } = props;
 	const response = {
-		[uniqueID]: stylesCleaner({
-			'': getNormalObject(props),
-			':hover': getHoverObject(props),
-			...getPaneHeaderObject(props),
-			...getIconObject(props),
-			...getPaneContentObject(props),
-		}),
+		[uniqueID]: stylesCleaner(
+			{
+				'': getNormalObject(props),
+				':hover': getHoverObject(props),
+				...getPaneHeaderObject(props),
+				...getIconObject(props),
+				...getPaneContentObject(props),
+			},
+			selectorsAccordion,
+			props
+		),
 	};
 	return response;
 };

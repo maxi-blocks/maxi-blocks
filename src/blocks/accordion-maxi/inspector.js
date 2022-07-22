@@ -212,6 +212,8 @@ const Inspector = props => {
 										props: {
 											...props,
 										},
+										selectors: selectorsAccordion,
+										categories: categoriesAccordion,
 									}),
 									...inspectorTabs.transition({
 										props: {

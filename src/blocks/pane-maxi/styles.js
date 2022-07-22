@@ -12,9 +12,9 @@ import {
 	getOverflowStyles,
 	getPositionStyles,
 	getSizeStyles,
-	getTransformStyles,
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
+import { selectorsPane } from './custom-css';
 
 const getNormalObject = props => {
 	const response = {
@@ -51,9 +51,6 @@ const getNormalObject = props => {
 		}),
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
-		}),
-		transform: getTransformStyles({
-			...getGroupAttributes(props, 'transform'),
 		}),
 		margin: getMarginPaddingStyles({
 			obj: {
@@ -106,10 +103,14 @@ const getStyles = props => {
 	const { uniqueID } = props;
 
 	const response = {
-		[uniqueID]: stylesCleaner({
-			'': getNormalObject(props),
-			':hover': getHoverObject(props),
-		}),
+		[uniqueID]: stylesCleaner(
+			{
+				'': getNormalObject(props),
+				':hover': getHoverObject(props),
+			},
+			selectorsPane,
+			props
+		),
 	};
 	return response;
 };

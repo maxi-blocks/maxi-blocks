@@ -96,45 +96,48 @@ const getSVGPathStrokeStyles = (
 	blockStyle,
 	prefix = 'svg-',
 	isHover,
-	useIconColor
+	useIconColor = true
 ) => {
+	const brkpts = !useIconColor ? breakpoints : ['general'];
 	const response = {
 		label: 'SVG Path stroke',
-		general: {},
 	};
+	for (const breakpoint of brkpts) {
+		response[breakpoint] = {};
+		if (isHover && !useIconColor && !obj['typography-status-hover']) {
+			response.general.stroke = '';
 
-	if (isHover && !useIconColor && !obj['typography-status-hover']) {
-		response.general.stroke = '';
+			return response;
+		}
 
-		return response;
+		const linePrefix =
+			prefix === 'icon-' ? `${prefix}stroke-` : `${prefix}line-`;
+
+		const { paletteStatus, paletteColor, paletteOpacity, color } =
+			getPaletteAttributes({
+				obj,
+				prefix: useIconColor ? linePrefix : '',
+				...(!useIconColor && { breakpoint }),
+				isHover,
+			});
+
+		if (paletteStatus && paletteColor) {
+			if (useIconColor)
+				response.general.stroke = getColorRGBAString({
+					firstVar: `icon-stroke${isHover ? '-hover' : ''}`,
+					secondVar: `color-${paletteColor}`,
+					opacity: paletteOpacity,
+					blockStyle,
+				});
+			else
+				response[breakpoint].stroke = getColorRGBAString({
+					firstVar: `color-${paletteColor}`,
+					opacity: paletteOpacity,
+					blockStyle,
+				});
+		} else if (!paletteStatus && !isNil(color))
+			response[breakpoint].stroke = color;
 	}
-
-	const linePrefix =
-		prefix === 'icon-' ? `${prefix}stroke-` : `${prefix}line-`;
-
-	const { paletteStatus, paletteColor, paletteOpacity, color } =
-		getPaletteAttributes({
-			obj,
-			prefix: useIconColor ? linePrefix : '',
-			isHover,
-		});
-
-	if (paletteStatus && paletteColor) {
-		if (useIconColor)
-			response.general.stroke = getColorRGBAString({
-				firstVar: `icon-stroke${isHover ? '-hover' : ''}`,
-				secondVar: `color-${paletteColor}`,
-				opacity: paletteOpacity,
-				blockStyle,
-			});
-		else
-			response.general.stroke = getColorRGBAString({
-				firstVar: `color-${paletteColor}`,
-				opacity: paletteOpacity,
-				blockStyle,
-			});
-	} else if (!paletteStatus && !isNil(color)) response.general.stroke = color;
-
 	return { SVGPathStroke: response };
 };
 

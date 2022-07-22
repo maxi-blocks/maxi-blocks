@@ -33,7 +33,7 @@ describe('Button Maxi', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it('Button Style', async () => {
+	it('Button Presets Test', async () => {
 		await openSidebarTab(page, 'style', 'quick styles');
 
 		const buttons = await page.$$('.maxi-button-default-styles button');
@@ -63,7 +63,7 @@ describe('Button Maxi', () => {
 		buttons[4].click();
 		await openSidebarTab(page, 'style', 'icon');
 
-		// Width spacing
+		// Icon Width
 		await page.$$eval(
 			'.maxi-tabs-content .maxi-icon-control .maxi-advanced-number-control input',
 			select => select[0].focus()
@@ -86,18 +86,26 @@ describe('Button Maxi', () => {
 			select => select[4].focus()
 		);
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('14');
+		await page.keyboard.type('20');
+
+		// icon position
+		await page.$eval(
+			'.maxi-icon-position-control button.maxi-tabs-control__button-bottom',
+			bottomButton => bottomButton.click()
+		);
 
 		const attributes = await getAttributes([
 			'icon-width-general',
 			'icon-stroke-general',
 			'icon-spacing-general',
+			'icon-position',
 		]);
 
 		const expectedAttributesTwo = {
 			'icon-width-general': '343',
 			'icon-stroke-general': 2,
-			'icon-spacing-general': 14,
+			'icon-spacing-general': 20,
+			'icon-position': 'bottom',
 		};
 
 		expect(attributes).toStrictEqual(expectedAttributesTwo);
@@ -116,9 +124,10 @@ describe('Button Maxi', () => {
 			5
 		);
 
-		await page.$$eval(
-			'.maxi-icon-styles-control .maxi-tabs-control__full-width button',
-			button => button[1].click()
+		// Icon inherit color
+
+		await page.$eval('button.maxi-tabs-control__button-border', button =>
+			button.click()
 		);
 
 		await editColorControl({
@@ -134,17 +143,7 @@ describe('Button Maxi', () => {
 			await getAttributes('icon-border-palette-color-general')
 		).toStrictEqual(6);
 
-		// icon position
-		await page.$eval(
-			'.maxi-icon-position-control button.maxi-tabs-control__button-bottom',
-			bottomButton => bottomButton.click()
-		);
-		expect(await getAttributes('icon-position')).toStrictEqual('bottom');
-
 		// border
-		await page.$eval('button.maxi-tabs-control__button-border', button =>
-			button.click()
-		);
 		await page.$$eval(
 			'.maxi-border-control .maxi-default-styles-control button',
 			button => button[2].click()
@@ -240,9 +239,8 @@ describe('Button Maxi', () => {
 		);
 
 		// select border
-		await page.$$eval(
-			'.maxi-icon-styles-control .maxi-tabs-control__full-width button',
-			button => button[1].click()
+		await page.$eval('button.maxi-tabs-control__button-border', button =>
+			button.click()
 		);
 
 		await page.$$eval(

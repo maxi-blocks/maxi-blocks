@@ -3,11 +3,13 @@ class Accordion {
 		this.openPanes = [];
 		this.accordion = el;
 		this.uniqueID = el.id;
-		this.paneIcon = maxiAccordion[0][this.uniqueID].paneIcon;
-		this.paneIconActive = maxiAccordion[0][this.uniqueID].paneIconActive;
-		this.accordionLayout = maxiAccordion[0][this.uniqueID].accordionLayout;
-		this.autoPaneClose = maxiAccordion[0][this.uniqueID].autoPaneClose;
-		this.isCollapsible = maxiAccordion[0][this.uniqueID].isCollapsible;
+		({
+			paneIcon: this.paneIcon,
+			paneIconActive: this.paneIconActive,
+			accordionLayout: this.accordionLayout,
+			autoPaneClose: this.autoPaneClose,
+			isCollapsible: this.isCollapsible,
+		} = maxiAccordion[0][this.uniqueID]);
 		this.panes = Array.from(
 			el.querySelectorAll(':scope > .maxi-pane-block')
 		);

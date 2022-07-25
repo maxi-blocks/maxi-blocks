@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 
 import {
 	addTypographyOptions,
@@ -100,14 +100,7 @@ describe('StyleCards, Buttons', () => {
 	});
 
 	it('Should work on responsive', async () => {
-		await createNewPost();
-
-		await getStyleCardEditor({
-			page,
-			accordion: 'button',
-		});
-
-		await changeResponsive(page, 'l');
+		await changeResponsive(page, 'm');
 
 		// size, line-height, letter-spacing
 		await addTypographyOptions({

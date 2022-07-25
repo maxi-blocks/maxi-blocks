@@ -68,12 +68,6 @@ describe('StyleCards Paragraph', () => {
 	});
 
 	it('Works on responsive', async () => {
-		await createNewPost();
-		await getStyleCardEditor({
-			page,
-			accordion: 'paragraph',
-		});
-
 		await changeResponsive(page, 'm');
 
 		await addTypographyOptions({

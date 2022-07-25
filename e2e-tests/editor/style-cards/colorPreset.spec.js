@@ -1,11 +1,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	setBrowserViewport,
-	pressKeyWithModifier,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 
 import {
 	getStyleCardEditor,
@@ -16,7 +12,6 @@ import {
 describe('StyleCards ColorPresets', () => {
 	it('Check Quick Pick Colour Presets', async () => {
 		await createNewPost();
-		await setBrowserViewport('large');
 
 		await getStyleCardEditor({
 			page,
@@ -68,14 +63,6 @@ describe('StyleCards ColorPresets', () => {
 	});
 
 	it('Should work on responsive', async () => {
-		await createNewPost();
-		await setBrowserViewport('large');
-
-		await getStyleCardEditor({
-			page,
-			accordion: 'color',
-		});
-
 		await changeResponsive(page, 'm');
 
 		// ColorControl check palette-color

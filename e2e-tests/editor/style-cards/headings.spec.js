@@ -14,17 +14,11 @@ import {
 describe('StyleCards headings', () => {
 	it('Check Headings', async () => {
 		await createNewPost();
-		await page.setViewport({
-			width: 1280,
-			height: 1800,
-		});
 
 		await getStyleCardEditor({
 			page,
 			accordion: 'heading',
 		});
-
-		await changeResponsive(page, 'l');
 
 		// size, line-height, letter-spacing
 		await addTypographyOptions({
@@ -71,13 +65,6 @@ describe('StyleCards headings', () => {
 	});
 
 	it('Works on responsive', async () => {
-		await createNewPost();
-
-		await getStyleCardEditor({
-			page,
-			accordion: 'heading',
-		});
-
 		await changeResponsive(page, 'm');
 
 		// size, line-height, letter-spacing

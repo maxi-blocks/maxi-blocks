@@ -22,13 +22,13 @@ import fs from 'fs';
 /**
  * Searches given title in SC modal, and selects first SC found
  */
-const addMoreSC = async (page, title = 'Daemon') => {
+const addMoreSC = async (title = 'Daemon') => {
 	// Open SC modal
 	await page.$eval('.maxi-style-cards__sc__more-sc--add-more', button =>
 		button.click()
 	);
 
-	// To ensure we always select the same SC search it by name(hopefully it doesn't change)
+	// To ensure we always select the same SC search it by name (hopefully it doesn't change)
 	await page.$eval(
 		'.maxi-cloud-container .maxi-cloud-container__sc__sidebar .ais-SearchBox-input',
 		input => input.focus()
@@ -56,7 +56,7 @@ describe('SC settings', () => {
 			accordion: 'divider',
 		});
 
-		await addMoreSC(page);
+		await addMoreSC();
 
 		// Check SC name, because key will be different every time
 		const {
@@ -85,7 +85,7 @@ describe('SC settings', () => {
 			accordion: 'color',
 		});
 
-		await addMoreSC(page);
+		await addMoreSC();
 
 		await page.$eval('.maxi-style-cards__sc__actions--apply', button =>
 			button.click()
@@ -153,7 +153,7 @@ describe('SC settings', () => {
 			page,
 			accordion: 'color',
 		});
-		await addMoreSC(page);
+		await addMoreSC();
 
 		const SCToDelete = await page.$eval(
 			'.maxi-style-cards__sc__more-sc--select select',

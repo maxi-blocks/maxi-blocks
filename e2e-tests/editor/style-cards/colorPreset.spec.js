@@ -52,13 +52,21 @@ describe('StyleCards ColorPresets', () => {
 
 		// Test reset
 		await page.$eval(
-			'.maxi-accordion-control__item__panel button',
-			button => button.click()
+			'.maxi-blocks-sc__type--color button.maxi-style-cards__quick-color-presets__reset-button',
+			button => {
+				button.focus();
+				button.click();
+			}
 		);
 
-		expect(colorInput).toStrictEqual('#FF4A17');
+		const colorInput2 = await page.$eval(
+			'.maxi-color-control .maxi-color-control__color input',
+			input => input.value
+		);
 
 		await page.waitForTimeout(150);
+		expect(colorInput2).toStrictEqual('#FF4A17');
+
 		expect(await checkSCResult(page)).toMatchSnapshot();
 	});
 
@@ -100,10 +108,18 @@ describe('StyleCards ColorPresets', () => {
 		// Test reset
 		await page.$eval(
 			'.maxi-accordion-control__item__panel button',
-			button => button.click()
+			button => {
+				button.focus();
+				button.click();
+			}
 		);
 
-		expect(colorInput).toStrictEqual('#FF4A17');
+		const colorInput2 = await page.$eval(
+			'.maxi-color-control .maxi-color-control__color input',
+			input => input.value
+		);
+
+		expect(colorInput2).toStrictEqual('#FF4A17');
 
 		await page.waitForTimeout(150);
 		expect(await checkSCResult(page)).toMatchSnapshot();

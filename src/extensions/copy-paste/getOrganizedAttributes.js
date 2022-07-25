@@ -7,7 +7,7 @@ import { getGroupAttributes, paletteAttributesCreator } from '../styles';
 /**
  * External dependencies
  */
-import { isEmpty, isObject, isString } from 'lodash';
+import { isEmpty, isObject, isPlainObject, isString } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -105,35 +105,37 @@ const getOrganizedAttributes = (
 					const { prefix, hasBreakpoints, isPalette, isHover } =
 						localCondition;
 
-					if (value.groupAttributes) {
-						const groupAttributesNames = isString(
-							value.groupAttributes
-						)
-							? [value.groupAttributes]
-							: value.groupAttributes;
+					if (
+						Object.values(value).some(value => isPlainObject(value))
+					) {
+						attr = {
+							...(!isClean && { group: true }),
+							...attr,
+							...recursive(value, localCondition),
+						};
+					} else {
+						if (value.groupAttributes) {
+							const groupAttributesNames = isString(
+								value.groupAttributes
+							)
+								? [value.groupAttributes]
+								: value.groupAttributes;
 
-						const groupAttributes = getGroupAttributes(
-							attributes,
-							groupAttributesNames,
-							isHover,
-							prefix
-						);
+							const groupAttributes = getGroupAttributes(
+								attributes,
+								groupAttributesNames,
+								isHover,
+								prefix
+							);
 
-						Object.entries(groupAttributes).forEach(
-							([name, value]) => {
-								attr[name] = value;
-							}
-						);
-					}
+							Object.entries(groupAttributes).forEach(
+								([name, value]) => {
+									attr[name] = value;
+								}
+							);
+						}
 
-					if (value.props) {
-						if (isObject(value.props)) {
-							attr = {
-								...(!isClean && { group: true }),
-								...attr,
-								...recursive(value.props, localCondition),
-							};
-						} else {
+						if (value.props) {
 							const props = isString(value.props)
 								? [value.props]
 								: value.props;

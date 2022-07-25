@@ -78,39 +78,7 @@ const copyPasteMapping = {
 		},
 	},
 	advanced: {
-		'Custom CSS classes': 'extraClassName',
-		Anchor: ['anchor', 'linkSettings'],
-		Interaction: 'relations',
-		Breakpoints: {
-			groupAttributes: 'breakpoints',
-		},
-		'Custom CSS': {
-			groupAttributes: 'customCss',
-		},
-		Scroll: {
-			groupAttributes: 'scroll',
-		},
-		Transform: {
-			groupAttributes: 'transform',
-		},
-		'Hover transition': {
-			groupAttributes: 'transition',
-		},
-		'Show/hide block': {
-			groupAttributes: 'display',
-		},
-		Position: {
-			groupAttributes: 'position',
-		},
-		Overflow: {
-			groupAttributes: 'overflow',
-		},
-		Flexbox: {
-			groupAttributes: 'flex',
-		},
-		'Z-index': {
-			groupAttributes: 'zIndex',
-		},
+		template: 'advanced',
 	},
 };
 

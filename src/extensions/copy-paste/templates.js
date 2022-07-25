@@ -64,6 +64,87 @@ const templates = {
 			groupAttributes: 'padding',
 		},
 	},
+	// Advanced
+	customCssClasses: {
+		props: 'extraClassName',
+	},
+	anchor: {
+		props: ['anchor', 'linkSettings'],
+	},
+	interaction: {
+		props: 'relations',
+	},
+	breakpoints: {
+		groupAttributes: 'breakpoints',
+	},
+	customCss: {
+		groupAttributes: 'customCss',
+	},
+	scroll: {
+		groupAttributes: 'scroll',
+	},
+	transform: {
+		groupAttributes: 'transform',
+	},
+	transition: {
+		groupAttributes: 'transition',
+	},
+	display: {
+		groupAttributes: 'display',
+	},
+	position: {
+		groupAttributes: 'position',
+	},
+	overflow: {
+		groupAttributes: 'overflow',
+	},
+	flex: {
+		groupAttributes: 'flex',
+	},
+	zIndex: {
+		groupAttributes: 'zIndex',
+	},
+	advanced: {
+		'Custom CSS classes': {
+			template: 'customCssClasses',
+		},
+		Anchor: {
+			template: 'anchor',
+		},
+		Interaction: {
+			template: 'interaction',
+		},
+		Breakpoints: {
+			template: 'breakpoints',
+		},
+		'Custom CSS': {
+			template: 'customCss',
+		},
+		Scroll: {
+			template: 'scroll',
+		},
+		Transform: {
+			template: 'transform',
+		},
+		'Hover transition': {
+			template: 'transition',
+		},
+		'Show/hide block': {
+			template: 'display',
+		},
+		Position: {
+			template: 'position',
+		},
+		Overflow: {
+			template: 'overflow',
+		},
+		Flexbox: {
+			template: 'flex',
+		},
+		'Z-index': {
+			template: 'zIndex',
+		},
+	},
 };
 
 export default templates;

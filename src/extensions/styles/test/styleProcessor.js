@@ -1,4 +1,4 @@
-import stylesCleaner from '../stylesCleaner';
+import styleProcessor from '../styleProcessor';
 
 describe('styleCleaner', () => {
 	it('Returns cleaned styles obj', () => {
@@ -241,6 +241,6 @@ describe('styleCleaner', () => {
 			},
 		};
 
-		expect(stylesCleaner(obj, {}, props)).toMatchSnapshot();
+		expect(styleProcessor(obj, {}, props)).toMatchSnapshot();
 	});
 });

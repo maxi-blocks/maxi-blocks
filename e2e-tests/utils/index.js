@@ -13,6 +13,7 @@ export { default as getBlockAttributes } from './getBlockAttributes';
 export { default as getAttributes } from './getAttributes';
 export { default as getBlockStyle } from './getBlockStyle';
 export { default as getClientId } from './getClientId';
+export { default as getElementAttribute } from './getElementAttribute';
 export { default as modalMock } from './modalMock';
 export { default as openPreviewPage } from './openPreviewPage';
 export { default as openSidebarTab } from './openSidebarTab';

@@ -12,6 +12,26 @@ import {
 	changeResponsive,
 } from '../../utils';
 
+const generalTypographeStyle = {
+	decoration: 'overline',
+	weight: '300',
+	transform: 'capitalize',
+	style: 'italic',
+	orientation: 'mixed',
+	direction: 'ltr',
+	indent: '44',
+};
+
+const responsiveTypographyStyle = {
+	decoration: 'underline',
+	weight: '400',
+	transform: 'uppercase',
+	style: 'oblique',
+	orientation: 'mixed',
+	direction: 'rtl',
+	indent: '22',
+};
+
 describe('StyleCards, Buttons', () => {
 	it('Check Button', async () => {
 		await createNewPost();
@@ -38,13 +58,7 @@ describe('StyleCards, Buttons', () => {
 
 		await addTypographyStyle({
 			instance: page,
-			decoration: 'overline',
-			weight: '300',
-			transform: 'capitalize',
-			style: 'italic',
-			orientation: 'mixed',
-			direction: 'ltr',
-			indent: '44',
+			...generalTypographeStyle,
 		});
 		await page.waitForTimeout(100);
 
@@ -119,16 +133,22 @@ describe('StyleCards, Buttons', () => {
 
 		await addTypographyStyle({
 			instance: page,
-			decoration: 'overline',
-			weight: '300',
-			transform: 'capitalize',
-			style: 'italic',
-			orientation: 'mixed',
-			direction: 'ltr',
-			indent: '44',
+			...responsiveTypographyStyle,
 		});
 		await page.waitForTimeout(100);
 
 		expect(await checkSCResult(page)).toMatchSnapshot();
+
+		// Check values on S to be the same as on M breakpoint
+		await changeResponsive(page, 's');
+		const typographyStylesS = await addTypographyStyle({ instance: page });
+
+		expect(typographyStylesS).toEqual(responsiveTypographyStyle);
+
+		// Check values on L to be the same as on general breakpoint
+		await changeResponsive(page, 'l');
+		const typographyStylesL = await addTypographyStyle({ instance: page });
+
+		expect(typographyStylesL).toEqual(generalTypographeStyle);
 	});
 });

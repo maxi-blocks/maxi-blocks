@@ -11,58 +11,6 @@ import { isEmpty, isObject, isPlainObject, isString } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-const orderAttributes = (obj, property, copyPasteMapping, tab) => {
-	if (isEmpty(obj)) return {};
-	let orderedKeys;
-
-	const getOrderedKeys = order =>
-		Object.keys(obj).sort(
-			(a, b) =>
-				order.indexOf(obj[a][property]) -
-				order.indexOf(obj[b][property])
-		);
-
-	if (tab === 'settings') {
-		const { _order } = copyPasteMapping;
-
-		orderedKeys = getOrderedKeys(_order);
-	} else if (tab === 'canvas') {
-		const _order = [
-			'Background',
-			'Border',
-			'Box shadow',
-			'Opacity',
-			'Size',
-			'Margin/Padding',
-		];
-
-		orderedKeys = getOrderedKeys(_order);
-	} else if (tab === 'advanced') {
-		const _order = [
-			'Custom CSS classes',
-			'Anchor',
-			'Custom CSS',
-			'Scroll',
-			'Transform',
-			'Hyperlink hover transition',
-			'Show/hide block',
-			'Opacity',
-			'Position',
-			'Overflow',
-			'Flexbox',
-			'Z-index',
-		];
-
-		orderedKeys = getOrderedKeys(_order);
-	}
-
-	const response = {};
-	orderedKeys.forEach(key => {
-		response[key] = obj[key];
-	});
-	return response;
-};
-
 const getOrganizedAttributes = (
 	attributes,
 	copyPasteMapping,

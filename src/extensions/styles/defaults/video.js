@@ -100,7 +100,7 @@ const icons = {
 		prefix: 'play-',
 		diffValAttr: {
 			'play-icon-fill-palette-color': 1,
-			'play-icon-height-general': 50,
+			'play-icon-height-general': '50',
 			'play-icon-content':
 				'<svg class="play-16-shape-maxi-svg" width="64px" height="64px" viewBox="0 0 36.099 36.099"><path d="M18.05.438C8.323.438.438 8.323.438 18.05S8.323 35.661 18.05 35.661s17.611-7.885 17.611-17.611S27.776.438 18.05.438zM13.238 25.71V10.39l13.267 7.66-13.267 7.66z" data-fill fill="#ff4a17"/></svg>',
 		},

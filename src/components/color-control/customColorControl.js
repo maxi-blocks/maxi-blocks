@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { __, sprintf } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 import { useEffect, useState } from '@wordpress/element';
 
 /**
@@ -69,18 +69,10 @@ const CustomColorControl = props => {
 							</div>
 							{!disableReset && (
 								<ResetButton
-									className='components-maxi-control__reset-button'
-									reset={e => {
-										e.preventDefault();
+									onReset={e => {
 										onReset();
 									}}
 									isSmall
-									aria-label={sprintf(
-										/* translators: %s: a textual label  */
-										__('Reset %s settings', 'maxi-blocks'),
-										label?.toLowerCase()
-									)}
-									type='reset'
 								/>
 							)}
 						</BaseControl>

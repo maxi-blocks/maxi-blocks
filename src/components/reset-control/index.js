@@ -18,8 +18,15 @@ const ResetButton = props => {
 	return (
 		<Button
 			className='maxi-reset-button'
+			action='reset'
+			type='reset'
 			aria-label={__('Reset', 'maxi-blocks')}
-			onClick={props.reset}
+			onClick={
+				(e => {
+					e.preventDefault();
+				},
+				props.onReset)
+			}
 		>
 			{reset}
 		</Button>

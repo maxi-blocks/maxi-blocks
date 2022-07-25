@@ -60,12 +60,7 @@ const RotateControl = props => {
 							}
 						}}
 					/>
-					<ResetButton
-						className='components-maxi-control__reset-button'
-						reset={() => onChange(defaultX, y, z)}
-						action='reset'
-						type='reset'
-					/>
+					<ResetButton onReset={() => onChange(defaultX, y, z)} />
 				</BaseControl>
 			</div>
 			<div className='maxi-transform-control__rotate-control__item'>
@@ -105,12 +100,7 @@ const RotateControl = props => {
 							}
 						}}
 					/>
-					<ResetButton
-						className='components-maxi-control__reset-button'
-						reset={() => onChange(x, defaultY, z)}
-						action='reset'
-						type='reset'
-					/>
+					<ResetButton onReset={() => onChange(x, defaultY, z)} />
 				</BaseControl>
 			</div>
 			<div className='maxi-transform-control__rotate-control__item'>
@@ -150,12 +140,7 @@ const RotateControl = props => {
 							}
 						}}
 					/>
-					<ResetButton
-						className='components-maxi-control__reset-button'
-						reset={() => onChange(x, y, defaultZ)}
-						action='reset'
-						type='reset'
-					/>
+					<ResetButton onReset={() => onChange(x, y, defaultZ)} />
 				</BaseControl>
 			</div>
 		</div>

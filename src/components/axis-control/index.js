@@ -2,7 +2,7 @@
 /**
  * WordPress dependencies
  */
-import { __, sprintf } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -256,14 +256,9 @@ const AxisContent = props => {
 			{disableSync && (
 				<BaseControl className='maxi-axis-control__unit-header'>
 					<ResetButton
-						className='components-maxi-control__reset-button'
-						reset={() => onReset({ customBreakpoint: breakpoint })}
-						aria-label={sprintf(
-							__('Reset %s settings', 'maxi-blocks'),
-							type.toLowerCase()
-						)}
-						action='reset'
-						type='reset'
+						onReset={() =>
+							onReset({ customBreakpoint: breakpoint })
+						}
 					/>
 				</BaseControl>
 			)}
@@ -374,19 +369,12 @@ const AxisControlContent = props => {
 								onChange={onChangeUnit}
 							/>
 							<ResetButton
-								className='components-maxi-control__reset-button'
-								reset={() =>
+								onReset={() =>
 									onReset({
 										reset: 'unit',
 										customBreakpoint: breakpoint,
 									})
 								}
-								aria-label={sprintf(
-									__('Reset %s settings', 'maxi-blocks'),
-									type.toLowerCase()
-								)}
-								action='reset'
-								type='reset'
 							/>
 						</BaseControl>
 					)}

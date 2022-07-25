@@ -104,29 +104,8 @@ const hoverStylesCleaner = (normalObj, hoverObj) => {
 	return hoverObj;
 };
 
-const stylesCleaner = (obj, selectors, props, transitionSelectors) => {
-	const response = cloneDeep(obj);
-
-	const transitionObject = getTransitionStyles(props, transitionSelectors);
-	if (!isEmpty(transitionObject)) merge(response, transitionObject);
-
-	// Process custom styles if they exist
-	const newCssSelectors = getSelectorsCss(selectors, props);
-	const newTransformSelectors = getTransformSelectors(selectors);
-
-	if (!isEmpty(newCssSelectors)) {
-		const customCssObject = getCustomCssObject(newCssSelectors, props);
-		!isEmpty(customCssObject) && merge(response, customCssObject);
-	}
-	if (!isEmpty(newTransformSelectors)) {
-		const transformObject = getTransformStyles(
-			props,
-			newTransformSelectors
-		);
-		!isEmpty(transformObject) && merge(response, transformObject);
-	}
-
-	Object.entries(response).forEach(item => {
+const styleCleaner = styles => {
+	Object.entries(styles).forEach(item => {
 		const [target, rawVal] = item;
 
 		// Clean non-object and empty targets
@@ -134,54 +113,79 @@ const stylesCleaner = (obj, selectors, props, transitionSelectors) => {
 		const val = objectsCleaner(rawVal);
 
 		if (isEmpty(val)) {
-			delete response[target];
+			delete styles[target];
 
 			return;
 		}
 
-		response[target] = val;
+		styles[target] = val;
 
 		// Clean breakpoint repeated values
 		Object.entries(val).forEach(([typeKey, typeVal]) => {
 			if (Object.keys(typeVal).length > 1)
-				response[target][typeKey] = repeatedBreakpointCleaner(typeVal);
+				styles[target][typeKey] = repeatedBreakpointCleaner(typeVal);
 		});
 
 		// Clean non-necessary breakpoint values when is same than general
 		Object.entries(val).forEach(([typeKey, typeVal]) => {
 			if (Object.keys(typeVal).length > 1)
-				response[target][typeKey] = generalBreakpointCleaner(typeVal);
+				styles[target][typeKey] = generalBreakpointCleaner(typeVal);
 		});
 
 		// Clean hover values
 		if (target.includes(':hover')) {
 			const normalKey = target.replace(':hover', '');
 
-			response[target] = hoverStylesCleaner(response[normalKey], val);
+			styles[target] = hoverStylesCleaner(styles[normalKey], val);
 		}
 
 		// Clean empty breakpoints
 		Object.entries(val).forEach(([typeKey, typeVal]) => {
 			Object.entries(typeVal).forEach(([breakpoint, breakpointVal]) => {
 				if (!isObject(breakpointVal) || isEmpty(breakpointVal))
-					delete response[target][typeKey][breakpoint];
+					delete styles[target][typeKey][breakpoint];
 			});
 		});
 
 		// Clean non-object and empty targets
 		// Second clean before returning
-		const cleanedVal = objectsCleaner(response[target]);
+		const cleanedVal = objectsCleaner(styles[target]);
 
 		if (isEmpty(cleanedVal)) {
-			delete response[target];
+			delete styles[target];
 
 			return;
 		}
 
-		response[target] = cleanedVal;
+		styles[target] = cleanedVal;
 	});
 
-	return response;
+	return styles;
 };
 
-export default stylesCleaner;
+const styleProcessor = (obj, selectors, props, transitionSelectors) => {
+	const styles = cloneDeep(obj);
+
+	const transitionObject = getTransitionStyles(props, transitionSelectors);
+	if (!isEmpty(transitionObject)) merge(styles, transitionObject);
+
+	// Process custom styles if they exist
+	const newCssSelectors = getSelectorsCss(selectors, props);
+	const newTransformSelectors = getTransformSelectors(selectors);
+
+	if (!isEmpty(newCssSelectors)) {
+		const customCssObject = getCustomCssObject(newCssSelectors, props);
+		!isEmpty(customCssObject) && merge(styles, customCssObject);
+	}
+	if (!isEmpty(newTransformSelectors)) {
+		const transformObject = getTransformStyles(
+			props,
+			newTransformSelectors
+		);
+		!isEmpty(transformObject) && merge(styles, transformObject);
+	}
+
+	return styleCleaner(styles);
+};
+
+export default styleProcessor;

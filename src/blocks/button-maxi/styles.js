@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
+import { getGroupAttributes, styleProcessor } from '../../extensions/styles';
 import {
 	getAlignmentFlexStyles,
 	getAlignmentTextStyles,
@@ -251,7 +251,7 @@ const getStyles = (props, scValues) => {
 	const { uniqueID, blockStyle } = props;
 
 	const response = {
-		[uniqueID]: stylesCleaner(
+		[uniqueID]: styleProcessor(
 			{
 				'': getWrapperObject(props),
 				':hover': getHoverWrapperObject(props),
@@ -280,7 +280,6 @@ const getStyles = (props, scValues) => {
 					isHover: true,
 				}),
 			},
-
 			selectorsButton,
 			props,
 			transitionObj

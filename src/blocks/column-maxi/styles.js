@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
+import { getGroupAttributes, styleProcessor } from '../../extensions/styles';
 import {
 	getBoxShadowStyles,
 	getZIndexStyles,
@@ -106,7 +106,7 @@ const getStyles = (props, rowGapProps, clientId) => {
 	const { uniqueID } = props;
 
 	const response = {
-		[uniqueID]: stylesCleaner(
+		[uniqueID]: styleProcessor(
 			{
 				'': getNormalObject(props, rowGapProps, clientId),
 				':hover': getHoverObject(props),

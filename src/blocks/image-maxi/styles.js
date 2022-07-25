@@ -4,7 +4,7 @@
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-	stylesCleaner,
+	styleProcessor,
 } from '../../extensions/styles';
 import {
 	getAlignmentFlexStyles,
@@ -426,7 +426,7 @@ const getStyles = props => {
 	const imgTag = props.SVGElement === '' || !props.SVGElement ? 'img' : 'svg';
 
 	const response = {
-		[uniqueID]: stylesCleaner(
+		[uniqueID]: styleProcessor(
 			{
 				'': getWrapperObject(props),
 				':hover': getHoverWrapperObject(props),

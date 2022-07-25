@@ -12,7 +12,7 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 	getPaletteAttributes,
-	stylesCleaner,
+	styleProcessor,
 } from '../../extensions/styles';
 import {
 	getAlignmentTextStyles,
@@ -518,7 +518,7 @@ const getStyles = props => {
 	const { isRTL } = select('core/editor').getEditorSettings();
 
 	return {
-		[uniqueID]: stylesCleaner(
+		[uniqueID]: styleProcessor(
 			{
 				'': getNormalObject(props),
 				':hover': getHoverObject(props),

@@ -33,10 +33,7 @@ class edit extends Component {
 				{isEmpty(content) && (
 					<Placeholder
 						key='placeholder'
-						label={__(
-							'Template library',
-							'gutenberg-extra-blocks'
-						)}
+						label={__('Template library', 'gutenberg-extra-blocks')}
 						instructions={__(
 							'Find templates and patterns to build your page',
 							'gutenberg-extra-blocks'

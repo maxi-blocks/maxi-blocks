@@ -2,34 +2,38 @@ const copyPasteMapping = {
 	settings: {
 		'Button text': 'buttonContent',
 		Icon: {
-			Icon: { groupAttributes: ['icon', 'iconHover'] },
-			'Icon border': {
-				groupAttributes: [
-					'iconBorder',
-					'iconBorderWidth',
-					'iconBorderRadius',
-					'iconBorderHover',
-					'iconBorderWidthHover',
-					'iconBorderRadiusHover',
-				],
-			},
-			'Icon background': {
-				groupAttributes: [
-					'iconBackground',
-					'iconBackgroundColor',
-					'iconBackgroundGradient',
-					'iconBackgroundHover',
-					'iconBackgroundColorHover',
-					'iconBackgroundGradientHover',
-				],
-			},
-			'Icon padding': {
-				groupAttributes: 'Icon padding',
+			group: {
+				Icon: { groupAttributes: ['icon', 'iconHover'] },
+				'Icon border': {
+					groupAttributes: [
+						'iconBorder',
+						'iconBorderWidth',
+						'iconBorderRadius',
+						'iconBorderHover',
+						'iconBorderWidthHover',
+						'iconBorderRadiusHover',
+					],
+				},
+				'Icon background': {
+					groupAttributes: [
+						'iconBackground',
+						'iconBackgroundColor',
+						'iconBackgroundGradient',
+						'iconBackgroundHover',
+						'iconBackgroundColorHover',
+						'iconBackgroundGradientHover',
+					],
+				},
+				'Icon padding': {
+					groupAttributes: 'Icon padding',
+				},
 			},
 		},
 		Alignment: {
-			Alignment: { groupAttributes: 'alignment' },
-			'Text alignment': { groupAttributes: 'textAlignment' },
+			group: {
+				Alignment: { groupAttributes: 'alignment' },
+				'Text alignment': { groupAttributes: 'textAlignment' },
+			},
 		},
 		Typography: {
 			template: 'typography',
@@ -59,22 +63,20 @@ const copyPasteMapping = {
 		Size: {
 			template: 'size',
 		},
-		withoutPrefix: {
-			Background: {
-				groupAttributes: 'blockBackground',
-			},
-			Border: {
-				template: 'border',
-			},
-			'Box shadow': {
-				template: 'boxShadow',
-			},
-			Opacity: {
-				groupAttributes: 'opacity',
-			},
-			'Margin/Padding': {
-				template: 'marginPadding',
-			},
+		Background: {
+			template: 'blockBackground',
+		},
+		Border: {
+			template: 'border',
+		},
+		'Box shadow': {
+			template: 'boxShadow',
+		},
+		Opacity: {
+			groupAttributes: 'opacity',
+		},
+		'Margin/Padding': {
+			template: 'marginPadding',
 		},
 	},
 	advanced: {

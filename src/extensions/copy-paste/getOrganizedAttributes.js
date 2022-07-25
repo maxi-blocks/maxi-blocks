@@ -7,7 +7,7 @@ import { getGroupAttributes, paletteAttributesCreator } from '../styles';
 /**
  * External dependencies
  */
-import { isEmpty, isObject, isPlainObject, isString } from 'lodash';
+import { isEmpty, isPlainObject, isString } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -36,6 +36,39 @@ const getTemplate = templateName => {
 	return getNestedTemplates(template);
 };
 
+const getAttrsFromConditions = (rawProps, attr, attributes, conditions) => {
+	const { prefix, hasBreakpoints, isPalette, isHover } = conditions;
+
+	const props = isString(rawProps) ? [rawProps] : rawProps;
+
+	props.forEach(prop => {
+		const key = `${prefix}${prop}`;
+
+		let currAttrKeys = [key];
+
+		if (isPalette) {
+			currAttrKeys = currAttrKeys.flatMap(currAttrKey =>
+				Object.keys(paletteAttributesCreator(currAttrKey))
+			);
+		}
+
+		if (hasBreakpoints) {
+			currAttrKeys = currAttrKeys.flatMap(currAttrKey =>
+				breakpoints.map(breakpoint => `${currAttrKey}-${breakpoint}`)
+			);
+		}
+
+		if (isHover)
+			currAttrKeys = currAttrKeys.map(
+				currAttrKey => `${currAttrKey}-hover`
+			);
+
+		currAttrKeys.forEach(currAttrKey => {
+			attr[currAttrKey] = attributes[currAttrKey];
+		});
+	});
+};
+
 const getOrganizedAttributes = (
 	attributes,
 	copyPasteMapping,
@@ -43,7 +76,7 @@ const getOrganizedAttributes = (
 ) => {
 	let response = {};
 
-	const recursive = (obj, conditions) => {
+	const recursive = (obj, conditions, isTab) => {
 		let newObj = {};
 
 		Object.entries(obj).forEach(([key, rawValue]) => {
@@ -51,9 +84,8 @@ const getOrganizedAttributes = (
 			let attr = {};
 
 			if (isString(rawValue)) {
-				// TODO: conditions support
-				attr[rawValue] = attributes[rawValue];
-			} else if (isObject(rawValue)) {
+				getAttrsFromConditions(rawValue, attr, attributes, conditions);
+			} else if (isPlainObject(rawValue)) {
 				const value = rawValue.template
 					? {
 							...rawValue,
@@ -72,14 +104,16 @@ const getOrganizedAttributes = (
 					isHover: value?.isHover || conditions?.isHover || false,
 				};
 
-				const { prefix, hasBreakpoints, isPalette, isHover } =
-					localCondition;
+				const { prefix, isHover } = localCondition;
 
-				if (Object.values(value).some(value => isPlainObject(value))) {
+				if (!isEmpty(value.group) || isTab) {
 					attr = {
 						...(!isClean && { group: true }),
 						...attr,
-						...recursive(value, localCondition),
+						...recursive(
+							isTab ? value : value.group,
+							localCondition
+						),
 					};
 				} else {
 					if (value.groupAttributes) {
@@ -104,45 +138,12 @@ const getOrganizedAttributes = (
 					}
 
 					if (value.props) {
-						const props = isString(value.props)
-							? [value.props]
-							: value.props;
-
-						props.forEach(prop => {
-							const key = `${prefix}${prop}`;
-
-							let currAttrKeys = [key];
-
-							if (isPalette) {
-								currAttrKeys = currAttrKeys.flatMap(
-									currAttrKey =>
-										Object.keys(
-											paletteAttributesCreator(
-												currAttrKey
-											)
-										)
-								);
-							}
-
-							if (hasBreakpoints) {
-								currAttrKeys = currAttrKeys.flatMap(
-									currAttrKey =>
-										breakpoints.map(
-											breakpoint =>
-												`${currAttrKey}-${breakpoint}`
-										)
-								);
-							}
-
-							if (isHover)
-								currAttrKeys = currAttrKeys.map(
-									currAttrKey => `${currAttrKey}-hover`
-								);
-
-							currAttrKeys.forEach(currAttrKey => {
-								attr[currAttrKey] = attributes[key];
-							});
-						});
+						getAttrsFromConditions(
+							value.props,
+							attr,
+							attributes,
+							localCondition
+						);
 					}
 				}
 			}
@@ -160,7 +161,7 @@ const getOrganizedAttributes = (
 		return newObj;
 	};
 
-	const recursiveResponse = recursive(copyPasteMapping);
+	const recursiveResponse = recursive(copyPasteMapping, false, true);
 
 	if (isClean) {
 		response = {

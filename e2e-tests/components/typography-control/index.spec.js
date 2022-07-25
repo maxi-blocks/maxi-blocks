@@ -188,6 +188,7 @@ describe('TypographyControl', () => {
 			style: 'italic',
 			orientation: 'mixed',
 			direction: 'ltr',
+			indent: '44',
 		});
 
 		const typographyResult = await getAttributes([

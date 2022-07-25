@@ -151,13 +151,14 @@ describe.skip('Image Maxi', () => {
 
 		// Weight, Transform, Style, Decoration
 		await addTypographyStyle({
-			page,
+			instance: page,
 			decoration: 'overline',
 			weight: '300',
 			transform: 'capitalize',
 			style: 'italic',
 			orientation: 'mixed',
 			direction: 'ltr',
+			indent: '44',
 		});
 
 		const result = await getAttributes([

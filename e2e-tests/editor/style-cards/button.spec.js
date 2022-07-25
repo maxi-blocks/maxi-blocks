@@ -44,16 +44,9 @@ describe('StyleCards, Buttons', () => {
 			style: 'italic',
 			orientation: 'mixed',
 			direction: 'ltr',
+			indent: '44',
 		});
 		await page.waitForTimeout(100);
-
-		await page.$$eval(
-			'.maxi-blocks-sc__type--button .maxi-typography-control__text-indent input',
-			input => input[0].focus()
-		);
-
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('44');
 
 		// Check Button global styles
 
@@ -139,16 +132,9 @@ describe('StyleCards, Buttons', () => {
 			style: 'italic',
 			orientation: 'mixed',
 			direction: 'ltr',
+			indent: '44',
 		});
 		await page.waitForTimeout(100);
-
-		await page.$$eval(
-			'.maxi-blocks-sc__type--button .maxi-typography-control__text-indent input',
-			input => input[0].focus()
-		);
-
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('44');
 
 		expect(await checkSCResult(page)).toMatchSnapshot();
 	});

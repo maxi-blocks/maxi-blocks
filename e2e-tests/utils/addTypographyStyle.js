@@ -2,6 +2,8 @@
  * WordPress dependencies
  */
 
+import { pressKeyWithModifier } from '@wordpress/e2e-test-utils';
+
 const addTypographyStyle = async ({
 	instance,
 	decoration,
@@ -10,6 +12,7 @@ const addTypographyStyle = async ({
 	style,
 	orientation,
 	direction,
+	indent,
 }) => {
 	// Weight, Transform, Style, Decoration
 	const weightSelector = await instance.$(
@@ -41,6 +44,14 @@ const addTypographyStyle = async ({
 		'.maxi-typography-control__direction .maxi-base-control__field select'
 	);
 	await directionSelector.select(direction);
+
+	const textIndextInput = await instance.$(
+		'.maxi-typography-control__text-indent input'
+	);
+
+	textIndextInput.focus();
+	await pressKeyWithModifier('primary', 'a');
+	await textIndextInput.type(indent);
 };
 
 export default addTypographyStyle;

@@ -45,6 +45,7 @@ describe('StyleCards Paragraph', () => {
 			style: 'italic',
 			orientation: 'mixed',
 			direction: 'ltr',
+			indent: '44',
 		});
 
 		await page.$eval(
@@ -97,6 +98,7 @@ describe('StyleCards Paragraph', () => {
 			style: 'italic',
 			orientation: 'mixed',
 			direction: 'ltr',
+			indent: '44',
 		});
 
 		await page.$eval(

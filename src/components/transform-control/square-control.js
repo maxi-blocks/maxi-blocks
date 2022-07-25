@@ -18,7 +18,7 @@ import ResetButton from '../reset-control';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNaN, isNumber, isString, round, toNumber } from 'lodash';
+import { isEmpty, isNaN, isNumber, round, toNumber } from 'lodash';
 
 /**
  * Icons
@@ -824,7 +824,7 @@ const SquareControl = props => {
 						</Button>
 					</Tooltip>
 				)}
-				<ResetButton reset={onReset} action='reset' type='reset' />
+				<ResetButton onReset={onReset} />
 			</div>
 		</div>
 	);

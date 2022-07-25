@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 import {
 	addTypographyOptions,
 	addTypographyStyle,
@@ -10,6 +10,26 @@ import {
 	checkSCResult,
 	changeResponsive,
 } from '../../utils';
+
+const generalTypographeStyle = {
+	decoration: 'overline',
+	weight: '300',
+	transform: 'capitalize',
+	style: 'italic',
+	orientation: 'mixed',
+	direction: 'ltr',
+	indent: '44',
+};
+
+const responsiveTypographyStyle = {
+	decoration: 'underline',
+	weight: '400',
+	transform: 'uppercase',
+	style: 'oblique',
+	orientation: 'mixed',
+	direction: 'rtl',
+	indent: '22',
+};
 
 describe('StyleCards headings', () => {
 	it('Check Headings', async () => {
@@ -37,22 +57,8 @@ describe('StyleCards headings', () => {
 			instance: await page.$(
 				'.maxi-blocks-sc__type--heading .maxi-style-cards-control__sc__h1-typography'
 			),
-			decoration: 'overline',
-			weight: '300',
-			transform: 'capitalize',
-			style: 'italic',
-			orientation: 'mixed',
-			direction: 'ltr',
-			indent: '44',
+			...generalTypographeStyle,
 		});
-
-		await page.$$eval(
-			'.maxi-style-cards-control__sc__h1-typography .maxi-typography-control__text-indent input',
-			input => input[0].focus()
-		);
-
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('44');
 
 		// Check paragraph global styles
 		// Paragraph Colour
@@ -84,23 +90,21 @@ describe('StyleCards headings', () => {
 			instance: await page.$(
 				'.maxi-blocks-sc__type--heading .maxi-style-cards-control__sc__h1-typography'
 			),
-			decoration: 'underline',
-			weight: '400',
-			transform: 'capitalize',
-			style: 'italic',
-			orientation: 'mixed',
-			direction: 'ltr',
-			indent: '44',
+			...responsiveTypographyStyle,
 		});
 
-		await page.$$eval(
-			'.maxi-style-cards-control__sc__h1-typography .maxi-typography-control__text-indent input',
-			input => input[0].focus()
-		);
-
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('44');
-
 		expect(await checkSCResult(page)).toMatchSnapshot();
+
+		// Check values on S to be the same as on M breakpoint
+		await changeResponsive(page, 's');
+		const typographyStylesS = await addTypographyStyle({ instance: page });
+
+		expect(typographyStylesS).toEqual(responsiveTypographyStyle);
+
+		// Check values on L to be the same as on general breakpoint
+		await changeResponsive(page, 'l');
+		const typographyStylesL = await addTypographyStyle({ instance: page });
+
+		expect(typographyStylesL).toEqual(generalTypographeStyle);
 	});
 });

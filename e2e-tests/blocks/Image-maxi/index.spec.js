@@ -151,13 +151,15 @@ describe.skip('Image Maxi', () => {
 
 		// Weight, Transform, Style, Decoration
 		await addTypographyStyle({
-			instance: page,
+			instance: await page.$(
+				'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-tabs-content'
+			),
 			decoration: 'overline',
 			weight: '300',
 			transform: 'capitalize',
 			style: 'italic',
 			orientation: 'mixed',
-			direction: 'ltr',
+			direction: 'rtl',
 			indent: '44',
 		});
 

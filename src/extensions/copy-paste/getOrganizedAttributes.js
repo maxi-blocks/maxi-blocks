@@ -1,345 +1,178 @@
 /**
  * Internal dependencies
  */
-import getPrefix from './getPrefix';
+import templates from './templates';
 import { getGroupAttributes, paletteAttributesCreator } from '../styles';
-import getPrefix from './getPrefix';
 
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import { isEmpty, isPlainObject, isString, omit } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-const orderAttributes = (obj, property, copyPasteMapping, tab) => {
-	if (isEmpty(obj)) return {};
-	let orderedKeys;
+const getTemplate = templateName => {
+	const getNestedTemplates = obj => {
+		let response = {};
 
-	const getOrderedKeys = order =>
-		Object.keys(obj).sort(
-			(a, b) =>
-				order.indexOf(obj[a][property]) -
-				order.indexOf(obj[b][property])
-		);
+		Object.entries(obj).forEach(([key, value]) => {
+			if (key === 'template') {
+				response = {
+					...response,
+					...templates[value],
+				};
+			} else if (isPlainObject(value)) {
+				response[key] = getNestedTemplates(value);
+			} else {
+				response[key] = value;
+			}
+		});
 
-	if (tab === 'settings') {
-		const { _order } = copyPasteMapping;
+		return response;
+	};
 
-		orderedKeys = getOrderedKeys(_order);
-	} else if (tab === 'canvas') {
-		const _order = [
-			'Background',
-			'Border',
-			'Box shadow',
-			'Opacity',
-			'Size',
-			'Margin/Padding',
-		];
+	const template = templates[templateName];
 
-		orderedKeys = getOrderedKeys(_order);
-	} else if (tab === 'advanced') {
-		const _order = [
-			'Custom CSS classes',
-			'Anchor',
-			'Custom CSS',
-			'Scroll',
-			'Transform',
-			'Hyperlink hover transition',
-			'Show/hide block',
-			'Opacity',
-			'Position',
-			'Overflow',
-			'Flexbox',
-			'Z-index',
-		];
-
-		orderedKeys = getOrderedKeys(_order);
-	} else {
-		const _order = copyPasteMapping[tab]?._order;
-
-		orderedKeys = getOrderedKeys(_order);
-	}
-
-	const response = {};
-	orderedKeys.forEach(key => {
-		response[key] = obj[key];
-	});
-	return response;
+	return getNestedTemplates(template);
 };
 
-const getOrganizedAttributes = (attributes, copyPasteMapping, prefix) => {
-	const response = {};
-	const settingTabs = [
-		'settings',
-		'canvas',
-		'block',
-		'button',
-		'input',
-		'advanced',
-	];
+const getAttrsFromConditions = (rawProps, attr, attributes, conditions) => {
+	const { prefix, hasBreakpoints, isPalette, isHover } = conditions;
 
-	settingTabs.forEach(tab => {
-		if (copyPasteMapping[tab]) {
-			response[tab] = {};
+	const props = isString(rawProps) ? [rawProps] : rawProps;
 
-			['blockSpecific', 'withBreakpoint', 'withPalette'].forEach(type => {
-				if (copyPasteMapping[tab][type])
-					Object.entries(copyPasteMapping[tab][type]).forEach(
-						([attrType, attrContent]) => {
-							if (
-								typeof attrContent === 'object' &&
-								attrContent.groupLabel
-							) {
-								const groupObj = {
-									label: attrContent.groupLabel,
-									group: {},
-								};
+	props.forEach(prop => {
+		const key = `${prefix}${prop}`;
 
-								Object.entries(attrContent.props).forEach(
-									([prop, label]) => {
-										let attrArray = [];
-										if (typeof label === 'string')
-											attrArray = [prop];
-										else if (label.props) {
-											attrArray = label.props;
-										} else if (
-											attrContent.props[prop].type ===
-											'withPalette'
-										) {
-											const withPalette =
-												paletteAttributesCreator({
-													prefix: prop,
-												});
-											attrArray =
-												Object.keys(withPalette);
-										} else if (
-											attrContent.props[prop].type ===
-											'withPaletteHover'
-										) {
-											const withPaletteHover =
-												paletteAttributesCreator({
-													prefix: prop.replace(
-														'hover',
-														''
-													),
-												});
-											attrArray = Object.keys(
-												withPaletteHover
-											).map(prop => `${prop}-hover`);
-										} else if (
-											attrContent.props[prop].type ===
-											'withBreakpoint'
-										) {
-											const withBrkpt = [];
+		let currAttrKeys = [key];
 
-											breakpoints.forEach(breakpoint =>
-												withBrkpt.push(
-													`${prop}-${breakpoint}`
-												)
-											);
-											attrArray = withBrkpt;
-										} else if (
-											attrContent.props[prop].type ===
-												'withoutPrefix' ||
-											attrContent.props[prop].type ===
-												'withPrefix'
-										) {
-											attrArray = Object.keys(
-												getGroupAttributes(
-													attributes,
-													prop,
-													false,
-													getPrefix(
-														attrContent.props[prop]
-															.type,
-														attrContent.prefix,
-														prefix
-													)
-												)
-											);
-										}
-
-										if (type === 'withBreakpoint') {
-											const newArray = [...attrArray];
-											attrArray = [];
-											newArray.forEach(prop => {
-												const withBrkpt = [];
-
-												breakpoints.forEach(
-													breakpoint =>
-														withBrkpt.push(
-															`${prop}-${breakpoint}`
-														)
-												);
-												attrArray =
-													attrArray.concat(withBrkpt);
-											});
-										}
-
-										if (type === 'withPalette') {
-											const newArray = [...attrArray];
-											attrArray = [];
-											newArray.forEach(a => {
-												const withPalette =
-													paletteAttributesCreator({
-														prefix: a,
-													});
-												attrArray = attrArray.concat(
-													Object.keys(withPalette)
-												);
-											});
-										}
-
-										const resp = {};
-
-										attrArray.forEach(attr => {
-											resp[attr] = attributes[attr];
-										});
-
-										groupObj.group[prop] = {
-											label:
-												typeof label === 'string'
-													? label
-													: label.label,
-											attribute: resp,
-										};
-									}
-								);
-
-								response[tab][attrType] = groupObj;
-							} else {
-								let attrArray = [];
-
-								if (
-									typeof attrContent === 'object' &&
-									attrContent.value
-								)
-									attrArray = [...attrContent.value];
-								else attrArray = [attrType];
-
-								if (type === 'withBreakpoint') {
-									const newArray = [...attrArray];
-									attrArray = [];
-									newArray.forEach(a => {
-										const withBrkpt = [];
-
-										breakpoints.forEach(breakpoint =>
-											withBrkpt.push(`${a}-${breakpoint}`)
-										);
-										attrArray = attrArray.concat(withBrkpt);
-									});
-								}
-
-								if (type === 'withPalette') {
-									const newArray = [...attrArray];
-									attrArray = [];
-									newArray.forEach(a => {
-										const withPalette =
-											paletteAttributesCreator({
-												prefix: a,
-											});
-										attrArray = attrArray.concat(
-											Object.keys(withPalette)
-										);
-									});
-								}
-								const resp = {};
-								attrArray.forEach(attr => {
-									resp[attr] = attributes[attr];
-								});
-
-								response[tab][attrType] = {
-									label:
-										typeof attrContent === 'string'
-											? attrContent
-											: attrContent.label,
-									attribute: resp,
-								};
-							}
-						}
-					);
-			});
-			['withPrefix', 'withoutPrefix'].forEach(type => {
-				if (copyPasteMapping[tab][type])
-					Object.entries(copyPasteMapping[tab][type]).forEach(
-						([attrType, attrContent]) => {
-							if (
-								typeof attrContent === 'object' &&
-								attrContent.groupLabel
-							) {
-								const groupObj = {
-									label: attrContent.groupLabel,
-									group: {},
-								};
-								Object.entries(attrContent.props).forEach(
-									([prop, label]) => {
-										let propArray = [];
-										if (typeof label === 'string')
-											propArray = [prop];
-										else propArray = label.props;
-										const resp = getGroupAttributes(
-											attributes,
-											propArray,
-											false,
-											getPrefix(
-												type,
-												attrContent.prefix,
-												prefix
-											)
-										);
-
-										groupObj.group[prop] = {
-											label:
-												typeof label === 'string'
-													? label
-													: label.label,
-											attribute: resp,
-										};
-									}
-								);
-
-								response[tab][attrType] = groupObj;
-							} else if (
-								typeof attrContent === 'object' &&
-								attrContent.value
-							) {
-								const resp = getGroupAttributes(
-									attributes,
-									attrContent.value,
-									false,
-									getPrefix(type, attrContent.prefix, prefix)
-								);
-
-								response[tab][attrType] = {
-									label: attrContent.label,
-									attribute: resp,
-								};
-							} else if (typeof attrContent === 'string') {
-								const resp = getGroupAttributes(
-									attributes,
-									attrType,
-									false,
-									getPrefix(type, attrContent.prefix, prefix)
-								);
-
-								response[tab][attrType] = {
-									label: attrContent,
-									attribute: resp,
-								};
-							}
-						}
-					);
-			});
+		if (isPalette) {
+			currAttrKeys = currAttrKeys.flatMap(currAttrKey =>
+				Object.keys(
+					paletteAttributesCreator({ prefix: `${currAttrKey}-` })
+				)
+			);
 		}
 
-		response[tab] = orderAttributes(
-			response[tab],
-			'label',
-			copyPasteMapping,
-			tab
-		);
+		if (hasBreakpoints) {
+			currAttrKeys = currAttrKeys.flatMap(currAttrKey =>
+				breakpoints.map(breakpoint => `${currAttrKey}-${breakpoint}`)
+			);
+		}
+
+		if (isHover)
+			currAttrKeys = currAttrKeys.map(
+				currAttrKey => `${currAttrKey}-hover`
+			);
+
+		currAttrKeys.forEach(currAttrKey => {
+			attr[currAttrKey] = attributes[currAttrKey];
+		});
 	});
+};
+
+const getOrganizedAttributes = (
+	attributes,
+	copyPasteMapping,
+	isClean = false
+) => {
+	let response = {};
+
+	const recursive = (obj, conditions, isTab) => {
+		let newObj = {};
+
+		Object.entries(obj).forEach(([key, rawValue]) => {
+			if (isEmpty(rawValue) || key.startsWith('_')) return;
+			let attr = {};
+
+			if (isString(rawValue)) {
+				getAttrsFromConditions(rawValue, attr, attributes, conditions);
+			} else if (isPlainObject(rawValue)) {
+				const value = rawValue.template
+					? {
+							...omit(rawValue, 'template'),
+							...getTemplate(rawValue.template),
+					  }
+					: rawValue;
+
+				const localCondition = {
+					prefix: value?.prefix || conditions?.prefix || '',
+					hasBreakpoints:
+						value?.hasBreakpoints ||
+						conditions?.hasBreakpoints ||
+						false,
+					isPalette:
+						value?.isPalette || conditions?.isPalette || false,
+					isHover: value?.isHover || conditions?.isHover || false,
+				};
+
+				const { prefix, isHover } = localCondition;
+
+				if (!isEmpty(value.group) || isTab) {
+					attr = {
+						...(!isClean && { group: true }),
+						...attr,
+						...recursive(
+							isTab ? value : value.group,
+							localCondition
+						),
+					};
+				} else {
+					if (value.groupAttributes) {
+						const groupAttributesNames = isString(
+							value.groupAttributes
+						)
+							? [value.groupAttributes]
+							: value.groupAttributes;
+
+						const groupAttributes = getGroupAttributes(
+							attributes,
+							groupAttributesNames,
+							isHover,
+							prefix
+						);
+
+						Object.entries(groupAttributes).forEach(
+							([name, value]) => {
+								attr[name] = value;
+							}
+						);
+					}
+
+					if (value.props) {
+						getAttrsFromConditions(
+							value.props,
+							attr,
+							attributes,
+							localCondition
+						);
+					}
+				}
+			}
+
+			if (isClean) {
+				newObj = {
+					...newObj,
+					...attr,
+				};
+			} else {
+				newObj[key] = attr;
+			}
+		});
+
+		return newObj;
+	};
+
+	const recursiveResponse = recursive(copyPasteMapping, false, true);
+
+	if (isClean) {
+		response = {
+			...response,
+			...recursiveResponse,
+		};
+	} else {
+		response = recursiveResponse;
+	}
 
 	return response;
 };

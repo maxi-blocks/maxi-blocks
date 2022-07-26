@@ -1,9 +1,353 @@
 import getOrganizedAttributes from '../getOrganizedAttributes';
-import cleanStyleAttributes from '../cleanStyleAttributes';
-import { default as imageMaxiMapping } from '../../../blocks/image-maxi/copy-paste-mapping';
+import copyPasteMapping from '../../../blocks/image-maxi/copy-paste-mapping';
 
 describe('getOrganizedAttributes', () => {
-	it('Ensure getOrganizedAttributes and cleanStyleAttributes work correctly', () => {
+	it('Ensure it works with simple copy paste object', () => {
+		const copyPasteMapping = {
+			settings: {
+				Content: 'content',
+				Alt: 'alt',
+			},
+			advanced: {
+				Class: 'class',
+				Style: 'style',
+			},
+		};
+
+		const attributes = {
+			content: 'Test',
+			alt: 'Alt text',
+			class: 'class text',
+			style: 'style text',
+		};
+
+		const result = getOrganizedAttributes(attributes, copyPasteMapping);
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Ensure it works with groups', () => {
+		const copyPasteMapping = {
+			settings: {
+				Content: {
+					group: {
+						Content: 'content',
+						'Content on close': 'closeContent',
+					},
+				},
+			},
+		};
+
+		const attributes = {
+			content: 'Test',
+			closeContent: 'Test on close',
+		};
+
+		const result = getOrganizedAttributes(attributes, copyPasteMapping);
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Ensure it works with multiply nested groups', () => {
+		const copyPasteMapping = {
+			settings: {
+				Content: {
+					group: {
+						Content: 'content',
+						'Content settings': {
+							group: {
+								'Content font size': 'fontSize',
+								'Content font weight': 'fontWeight',
+							},
+						},
+					},
+				},
+			},
+		};
+
+		const attributes = {
+			content: 'Test',
+			fontSize: '12px',
+			fontWeight: 'bold',
+		};
+
+		const result = getOrganizedAttributes(attributes, copyPasteMapping);
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Ensure it works with responsive attributes', () => {
+		const copyPasteMapping = {
+			settings: {
+				Width: {
+					props: 'width',
+					hasBreakpoints: true,
+				},
+			},
+		};
+
+		const attributes = {
+			'width-general': '80%',
+			'width-l': undefined,
+			'width-m': '100%',
+			'width-s': '50%',
+			'width-xs': '60%',
+			'width-xxl': '95%',
+		};
+
+		const result = getOrganizedAttributes(attributes, copyPasteMapping);
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Ensure it works with prefixes', () => {
+		const copyPasteMapping = {
+			settings: {
+				Width: {
+					group: {
+						'Column width': {
+							props: 'width',
+							prefix: 'column-',
+						},
+						'Row width': 'width',
+					},
+					// Checking if row will take this prefix and column prefix will be overridden by his own
+					prefix: 'row-',
+				},
+			},
+		};
+
+		const attributes = {
+			'row-width': '80%',
+			'column-width': '100%',
+		};
+
+		const result = getOrganizedAttributes(attributes, copyPasteMapping);
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Ensure it works with palette', () => {
+		const copyPasteMapping = {
+			settings: {
+				Color: {
+					props: 'text',
+					isPalette: true,
+				},
+			},
+		};
+
+		const attributes = {
+			'text-palette-status': true,
+			'text-palette-color': 4,
+			'text-palette-opacity': 0.5,
+			'text-color': '#fff',
+		};
+
+		const result = getOrganizedAttributes(attributes, copyPasteMapping);
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Ensure it works with group attributes', () => {
+		const copyPasteMapping = {
+			settings: {
+				Overflow: {
+					groupAttributes: 'overflow',
+				},
+			},
+		};
+
+		const attributes = {
+			'overflow-x-general': 'visible',
+			'overflow-y-general': 'hidden',
+			'overflow-x-xxl': 'hidden',
+			'overflow-y-xxl': 'visible',
+			'overflow-x-xl': 'auto',
+			'overflow-y-xl': 'clip',
+			'overflow-x-l': 'clip',
+			'overflow-y-l': 'auto',
+			'overflow-x-m': 'scroll',
+			'overflow-y-m': 'scroll',
+			'overflow-x-s': 'auto',
+			'overflow-y-s': 'auto',
+			'overflow-x-xs': 'visible',
+			'overflow-y-xs': 'visible',
+			// add some random attributes to check if they are not copied
+			'text-palette-status': true,
+			'text-palette-color': 4,
+			'text-palette-opacity': 0.5,
+			'text-color': '#fff',
+		};
+
+		const result = getOrganizedAttributes(attributes, copyPasteMapping);
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Ensure it works with group attributes with prefix', () => {
+		const copyPasteMapping = {
+			settings: {
+				Overflow: {
+					groupAttributes: 'overflow',
+					prefix: 'row-',
+				},
+			},
+		};
+
+		const attributes = {
+			'row-overflow-x-general': 'visible',
+			'row-overflow-y-general': 'hidden',
+			'overflow-x-xxl': 'hidden',
+			'row-overflow-y-xxl': 'visible',
+			'overflow-x-xl': 'auto',
+			'row-overflow-y-xl': 'clip',
+			'overflow-x-l': 'clip',
+			'overflow-y-l': 'auto',
+			'row-overflow-x-m': 'scroll',
+			'overflow-y-m': 'scroll',
+			'row-overflow-x-s': 'auto',
+			'overflow-y-s': 'auto',
+			'row-overflow-x-xs': 'visible',
+			'overflow-y-xs': 'visible',
+			// add some random attributes to check if they are not copied
+			'text-palette-status': true,
+			'row-text-palette-color': 4,
+			'text-palette-opacity': 0.5,
+			'row-text-color': '#fff',
+		};
+
+		const result = getOrganizedAttributes(attributes, copyPasteMapping);
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Ensure it works with multiply conditions', () => {
+		const copyPasteMapping = {
+			settings: {
+				Color: {
+					group: {
+						Color: {
+							props: ['fill', 'line'],
+						},
+						'Color on hover': {
+							props: ['fill', 'line'],
+							isHover: true,
+						},
+					},
+					hasBreakpoints: true,
+					isPalette: true,
+					prefix: 'row-',
+				},
+			},
+		};
+
+		const attributes = {
+			// Fill
+			'row-fill-color-general-hover': null,
+			'color-general': null,
+			'row-fill-color-l-hover': null,
+			'color-fill-fill-l': null,
+			'row-color-m-hover': 'rgba(43,108,153,0.85)',
+			'color-fill-m': 'rgba(166,105,105,0.44)',
+			'row-fill-color-s-hover': 'rgba(43,108,153,0.85)',
+			'color-s': 'rgba(166,105,105,0.44)',
+			'row-fill-color-xs-hover': 'rgba(43,108,153,0.85)',
+			'color-xs': 'rgba(166,105,105,0.44)',
+			'row-fill-palette-color-general-hover': 6,
+			'palette-fill-color-general': 4,
+			'row-palette-color-l-hover': 7,
+			'palette-fill-color-l': 5,
+			'row-palette-color-m-hover': 7,
+			'palette-fill-color-m': 5,
+			'row-fill-palette-color-s-hover': 6,
+			'palette-fill-color-s': 3,
+			'row-palette-color-xs-hover': 3,
+			'palette-fill-color-xs': 8,
+			'row-palette-opacity-general-hover': 1,
+			'palette-fill-opacity-general': 1,
+			'row-fill-palette-opacity-l-hover': 0.52,
+			'palette-opacity-l': 0.44,
+			'row-fill-palette-opacity-m-hover': 0.85,
+			'palette-opacity-m': 0.44,
+			'row-fill-palette-opacity-s-hover': 1,
+			'palette-fill-opacity-s': 1,
+			'row-fill-palette-opacity-xs-hover': 0.58,
+			'palette-opacity-xs': 0.06,
+			'row-fill-palette-status-general-hover': true,
+			'palette-status-general': true,
+			'row-fill-palette-status-l-hover': true,
+			'palette-fill-status-l': true,
+			'row-palette-status-m-hover': false,
+			'palette-fill-status-m': false,
+			'row-palette-status-s-hover': true,
+			'palette-fill-status-s': true,
+			'row-fill-palette-status-xs-hover': true,
+			'palette-fill-status-xs': true,
+			// Line
+			'row-color-general-hover': null,
+			'color-line-general': null,
+			'row-line-color-l-hover': null,
+			'color-l': null,
+			'row-line-color-m-hover': 'rgba(43,108,153,0.85)',
+			'color-m': 'rgba(166,105,105,0.44)',
+			'row-color-s-hover': 'rgba(43,108,153,0.85)',
+			'color-line-s': 'rgba(166,105,105,0.44)',
+			'row-line-color-xs-hover': 'rgba(43,108,153,0.85)',
+			'row-palette-color-general-hover': 6,
+			'palette-color-general': 4,
+			'row-line-palette-color-l-hover': 7,
+			'palette-line-color-l': 5,
+			'palette-color-m': 5,
+			'row-palette-color-s-hover': 6,
+			'palette-line-color-s': 3,
+			'palette-color-xs': 8,
+			'palette-line-opacity-general': 1,
+			'row-line-palette-opacity-l-hover': 0.52,
+			'palette-line-opacity-l': 0.44,
+			'row-line-palette-opacity-m-hover': 0.85,
+			'row-palette-opacity-s-hover': 1,
+			'palette-line-opacity-s': 1,
+			'row-palette-opacity-xs-hover': 0.58,
+			'row-palette-status-general-hover': true,
+			'row-line-palette-status-l-hover': true,
+			'palette-status-l': true,
+			'row-line-palette-status-m-hover': false,
+			'palette-line-status-m': false,
+			'palette-line-status-s': true,
+			'row-palette-status-xs-hover': true,
+			'palette-line-status-xs': true,
+			// Other attributes to check if they are not copied
+			blockStyle: 'light',
+			'column-gap-unit-general': 'px',
+			customLabel: 'Text_1',
+			'flex-basis-unit-general': 'px',
+			'font-size-unit-general': 'px',
+			'full-width-general': 'normal',
+			'height-unit-general': 'px',
+			isFirstOnHierarchy: true,
+			'letter-spacing-unit-general': 'px',
+			'line-height-unit-general': 'px',
+			'list-palette-color-general': 4,
+			'list-palette-status-general': true,
+			'max-height-unit-general': 'px',
+			'max-width-unit-general': 'px',
+			'min-height-unit-general': 'px',
+			'min-width-unit-general': 'px',
+			'overflow-x-general': 'visible',
+			'overflow-y-general': 'visible',
+			'position-bottom-unit-general': 'px',
+			'position-general': 'inherit',
+			'position-left-unit-general': 'px',
+			'position-right-unit-general': 'px',
+			'position-sync-general': 'all',
+			'position-top-unit-general': 'px',
+			'row-gap-unit-general': 'px',
+			'size-advanced-options': false,
+			'text-indent-unit-general': 'px',
+			'typography-status-hover': true,
+			uniqueID: 'text-maxi-1',
+			'width-fit-content-general': false,
+			'width-unit-general': 'px',
+		};
+
+		const result = getOrganizedAttributes(attributes, copyPasteMapping);
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Ensure getOrganizedAttributes work correctly with image copy-paste', () => {
 		const object = {
 			defaultBlockStyle: 'maxi-def-light',
 			customLabel: 'Image',
@@ -280,18 +624,10 @@ describe('getOrganizedAttributes', () => {
 			'transform-scale-y-general': 110,
 		};
 
-		const result = getOrganizedAttributes(
-			object,
-			imageMaxiMapping,
-			'image-'
-		);
+		const result = getOrganizedAttributes(object, copyPasteMapping);
 		expect(result).toMatchSnapshot();
 
-		const result2 = cleanStyleAttributes(
-			object,
-			imageMaxiMapping,
-			'image-'
-		);
+		const result2 = getOrganizedAttributes(object, copyPasteMapping, true);
 		expect(result2).toMatchSnapshot();
 	});
 });

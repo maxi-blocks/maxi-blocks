@@ -12,7 +12,7 @@ import { isEmpty, isEqual } from 'lodash';
 const CopyPasteGroup = props => {
 	const {
 		tab,
-		attrType,
+		label,
 		organizedAttributes,
 		currentOrganizedAttributes,
 		specialPaste,
@@ -42,14 +42,14 @@ const CopyPasteGroup = props => {
 			>
 				<input
 					type='checkbox'
-					name={attrType}
-					id={attrType}
+					name={label}
+					id={label}
 					onChange={e =>
-						checkNestedCheckboxes(attrType, tab, e.target.checked)
+						checkNestedCheckboxes(label, tab, e.target.checked)
 					}
 				/>
 				<span onClick={e => e.preventDefault()}>
-					<label htmlFor={attrType}>{attrType}</label>
+					<label htmlFor={label}>{label}</label>
 				</span>
 				<span
 					onClick={e => setIsOpen(!isOpen)}
@@ -58,25 +58,29 @@ const CopyPasteGroup = props => {
 				/>
 			</div>
 			{isOpen &&
-				Object.keys(organizedAttributes[tab][attrType]).map(attr => {
+				Object.keys(organizedAttributes[tab][label]).map(attr => {
+					// To prevent the group checkbox triggering from nested items
+					const uniqueAttr =
+						attr === label ? `${label}-nested` : attr;
+
 					return (
 						!isEqual(
-							currentOrganizedAttributes[tab][attrType][attr],
-							organizedAttributes[tab][attrType][attr]
+							currentOrganizedAttributes[tab][label][attr],
+							organizedAttributes[tab][label][attr]
 						) && (
 							<div
 								className='toolbar-item__copy-paste__popover__item'
-								key={`copy-paste-${tab}-${attr}`}
-								data-copy_paste_group={attrType}
+								key={`copy-paste-${tab}-${uniqueAttr}`}
+								data-copy_paste_group={label}
 							>
 								<label
-									htmlFor={attr}
+									htmlFor={uniqueAttr}
 									className='maxi-axis-control__content__item__checkbox'
 								>
 									<input
 										type='checkbox'
-										name={attr}
-										id={attr}
+										name={uniqueAttr}
+										id={uniqueAttr}
 										checked={
 											!isEmpty(
 												specialPaste[tab].filter(sp => {
@@ -95,7 +99,7 @@ const CopyPasteGroup = props => {
 												attr,
 												tab,
 												checked: e.target.checked,
-												group: attrType,
+												group: label,
 											})
 										}
 									/>

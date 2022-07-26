@@ -279,7 +279,7 @@ const CopyPaste = props => {
 								<CopyPasteGroup
 									key={`copy-paste-group-${tab}-${label}`}
 									tab={tab}
-									attrType={label}
+									label={label}
 									organizedAttributes={organizedAttributes}
 									currentOrganizedAttributes={
 										currentOrganizedAttributes

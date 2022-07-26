@@ -7,7 +7,7 @@ import { useState } from '@wordpress/element';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isEqual } from 'lodash';
+import { isEmpty, isEqual, omit } from 'lodash';
 
 const CopyPasteGroup = props => {
 	const {
@@ -22,11 +22,25 @@ const CopyPasteGroup = props => {
 
 	const checkNestedCheckboxes = (attrType, tab, checked) => {
 		handleSpecialPaste({
-			attr: Object.keys(organizedAttributes[tab][attrType]),
+			attr: Object.keys(
+				omit(organizedAttributes[tab][attrType], 'group')
+			),
 			tab,
 			group: attrType,
 			checked,
 		});
+	};
+
+	const isGroupCheckboxChecked = (
+		tabSpecialPaste,
+		labelOrganizedAttributes,
+		label
+	) => {
+		const count = Object.keys(labelOrganizedAttributes).length - 1;
+		const currentCount = tabSpecialPaste.filter(item =>
+			Object.keys(item).includes(label)
+		).length;
+		return currentCount === count;
 	};
 
 	return (
@@ -44,6 +58,11 @@ const CopyPasteGroup = props => {
 					type='checkbox'
 					name={label}
 					id={label}
+					checked={isGroupCheckboxChecked(
+						specialPaste[tab],
+						organizedAttributes[tab][label],
+						label
+					)}
 					onChange={e =>
 						checkNestedCheckboxes(label, tab, e.target.checked)
 					}

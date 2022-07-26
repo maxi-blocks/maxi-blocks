@@ -40,13 +40,6 @@ const WRAPPER_BLOCKS = [
 const CopyPaste = props => {
 	const { blockName, clientId, closeMoreSettings, copyPasteMapping } = props;
 
-	// TODO: make it no specific to the block
-	const [specialPaste, setSpecialPaste] = useState({
-		settings: [],
-		canvas: [],
-		advanced: [],
-	});
-
 	const {
 		blockAttributes,
 		organizedAttributes,
@@ -91,6 +84,16 @@ const CopyPaste = props => {
 			hasInnerBlocks,
 		};
 	});
+
+	const getDefaultSpecialPaste = obj =>
+		Object.keys(obj).reduce((acc, tab) => {
+			acc[tab] = [];
+			return acc;
+		}, {});
+
+	const [specialPaste, setSpecialPaste] = useState(
+		getDefaultSpecialPaste(organizedAttributes)
+	);
 
 	const cleanInnerBlocks = innerBlocks => {
 		const test = innerBlocks.map(block => {
@@ -197,12 +200,7 @@ const CopyPaste = props => {
 			});
 		});
 
-		// TODO: make it no specific to the block
-		setSpecialPaste({
-			settings: [],
-			canvas: [],
-			advanced: [],
-		});
+		setSpecialPaste(getDefaultSpecialPaste(organizedAttributes));
 
 		closeMoreSettings();
 

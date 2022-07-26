@@ -79,6 +79,9 @@ const templates = {
 			},
 		},
 	},
+	opacity: {
+		groupAttributes: 'opacity',
+	},
 	// Advanced
 	customCssClasses: {
 		props: 'extraClassName',

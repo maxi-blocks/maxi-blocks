@@ -48,7 +48,9 @@ const getAttrsFromConditions = (rawProps, attr, attributes, conditions) => {
 
 		if (isPalette) {
 			currAttrKeys = currAttrKeys.flatMap(currAttrKey =>
-				Object.keys(paletteAttributesCreator(currAttrKey))
+				Object.keys(
+					paletteAttributesCreator({ prefix: `${currAttrKey}-` })
+				)
 			);
 		}
 

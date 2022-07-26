@@ -351,15 +351,15 @@ const getStyles = props => {
 						getSearchButtonContentStyles(props),
 					// Hover styles
 					':hover': getHoverObject(props),
-					':hover .maxi-search-block__input': getSearchInputStyles(
+					' .maxi-search-block__input:hover': getSearchInputStyles(
 						props,
 						true
 					),
-					':hover .maxi-search-block__button': getSearchButtonStyles(
+					' .maxi-search-block__button:hover': getSearchButtonStyles(
 						props,
 						true
 					),
-					':hover .maxi-search-block__button__content':
+					' .maxi-search-block__button__content:hover':
 						getSearchButtonContentStyles(props, true),
 				},
 				...getTransitionStyles(props, transitionObj)

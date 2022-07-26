@@ -127,8 +127,6 @@ const CaptionToolbar = memo(
 
 			const newFormatValue = {
 				...obj.formatValue,
-				start: formatValue.start,
-				end: formatValue.end,
 			};
 			delete obj.formatValue;
 
@@ -142,7 +140,7 @@ const CaptionToolbar = memo(
 				<Popover
 					noArrow
 					animate={false}
-					position='bottom center right'
+					position='bottom center'
 					focusOnMount={false}
 					anchorRef={anchorRef}
 					className={classnames('maxi-toolbar__popover')}

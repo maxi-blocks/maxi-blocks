@@ -18,7 +18,6 @@ import Dropdown from '../../../dropdown';
 import './editor.scss';
 import { alignCenter } from '../../../../icons';
 
-
 /**
  * Alignment
  */
@@ -41,18 +40,17 @@ const Alignment = props => {
 		<Dropdown
 			className='toolbar-item__alignment'
 			contentClassName='maxi-dropdown__child-content maxi-dropdown__alignment-content'
-			position='bottom right'
+			position='top center'
 			renderToggle={({ isOpen, onToggle }) => (
 				<Button onClick={onToggle} text='Copy'>
-					{isText ?
-						<Icon className='toolbar-item__icon toolbar-item__icon__alignment' icon={alignCenter} />
-		
-					:
-						<>
-							{__('Align', 'maxi-blocks')}
-						</>
-					}
-					
+					{isText ? (
+						<Icon
+							className='toolbar-item__icon toolbar-item__icon__alignment'
+							icon={alignCenter}
+						/>
+					) : (
+						<>{__('Align', 'maxi-blocks')}</>
+					)}
 				</Button>
 			)}
 			renderContent={() => (

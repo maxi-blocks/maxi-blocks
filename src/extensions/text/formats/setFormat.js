@@ -82,8 +82,6 @@ const setFormat = ({
 		const newTypography = { ...typography };
 		const newFormatValue = {
 			...formatValue,
-			start: 0,
-			end: formatsLength,
 		};
 
 		Object.entries(value).forEach(([key, val]) => {

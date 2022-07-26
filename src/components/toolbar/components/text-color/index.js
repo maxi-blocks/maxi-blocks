@@ -96,8 +96,6 @@ const TextColor = props => {
 
 		const newFormatValue = {
 			...obj.formatValue,
-			start: formatValue.start,
-			end: formatValue.end,
 		};
 		delete obj.formatValue;
 

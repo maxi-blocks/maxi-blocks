@@ -310,6 +310,10 @@ const settings = {
 		...canvasSettings,
 	],
 	'maxi-blocks/row-maxi': [...getTransformControl('row'), ...canvasSettings],
+	'maxi-blocks/search-maxi': [
+		...getTransformControl('search'),
+		...canvasSettings,
+	],
 	'maxi-blocks/svg-icon-maxi': [
 		{
 			label: __('Icon colour'),

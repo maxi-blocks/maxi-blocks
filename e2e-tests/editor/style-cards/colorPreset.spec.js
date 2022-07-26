@@ -34,14 +34,17 @@ describe('StyleCards ColorPresets', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('106D3C');
+		await page.keyboard.type('#106D3C');
 
 		const customColor = await page.$eval(
 			'.maxi-color-control .maxi-color-control__color input',
-			input => input.value
+			input => {
+				input.blur();
+				return input.value;
+			}
 		);
 
-		expect(customColor).toStrictEqual('106D3C');
+		expect(customColor).toStrictEqual('#106D3C');
 
 		await page.waitForTimeout(150);
 		expect(await checkSCResult(page)).toMatchSnapshot();
@@ -49,10 +52,7 @@ describe('StyleCards ColorPresets', () => {
 		// Test reset
 		await page.$eval(
 			'.maxi-blocks-sc__type--color button.maxi-style-cards__quick-color-presets__reset-button',
-			button => {
-				button.focus();
-				button.click();
-			}
+			button => button.click()
 		);
 
 		const colorInput2 = await page.$eval(

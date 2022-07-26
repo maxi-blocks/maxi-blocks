@@ -9,79 +9,39 @@ const copyPasteMapping = {
 	],
 
 	settings: {
-		blockSpecific: {
-			size: {
-				groupLabel: 'Size',
-				props: {
-					blockFullWidth: 'Full width',
-					size: { label: 'Size', type: 'withoutPrefix' },
+		'Row settings': {
+			group: {
+				'Row pattern': 'row-pattern',
+				'Row gap': {
+					props: ['row-gap', 'row-gap-unit'],
 				},
+				'Column gap': {
+					props: ['column-gap', 'column-gap-unit'],
+				},
+				'Flex wrap': 'flex-wrap',
 			},
+			hasBreakpoints: true,
 		},
-		withBreakpoint: {
-			rowSettings: {
-				groupLabel: 'Row settings',
-				props: {
-					'row-pattern': 'Row pattern',
-					'row-gap': {
-						label: 'Row gap',
-						props: ['row-gap', 'row-gap-unit'],
-					},
-					'column-gap': {
-						label: 'Column gap',
-						props: ['column-gap', 'column-gap-unit'],
-					},
-					'flex-wrap': 'Flex wrap',
-				},
-			},
+		Background: {
+			template: 'blockBackground',
 		},
-		withoutPrefix: {
-			blockBackground: 'Background',
-			border: {
-				groupLabel: 'Border',
-				props: {
-					border: 'Border',
-					borderWidth: 'Border width',
-					borderRadius: 'Border radius',
-					borderHover: 'Border hover',
-					borderWidthHover: 'Border width hover',
-					borderRadiusHover: 'Border radius hover',
-				},
-			},
-			boxShadow: {
-				groupLabel: 'Box shadow',
-				props: {
-					boxShadow: 'Box shadow',
-					boxShadowHover: 'Box shadow hover',
-				},
-			},
-			'margin-padding': {
-				groupLabel: 'Margin/Padding',
-				props: { margin: 'Margin', padding: 'Padding' },
-			},
+		Border: {
+			template: 'border',
+		},
+		'Box shadow': {
+			template: 'boxShadow',
+		},
+		Size: {
+			template: 'size',
+		},
+		'Margin/Padding': {
+			template: 'marginPadding',
 		},
 	},
 	advanced: {
-		blockSpecific: {
-			extraClassName: 'Custom CSS classes',
-			anchorLink: {
-				label: 'Anchor',
-				value: ['anchorLink', 'linkSettings'],
-			},
-			relations: 'Interaction',
-		},
-		withoutPrefix: {
-			breakpoints: 'Breakpoints',
-			customCss: 'Custom CSS',
-			scroll: 'Scroll effects',
-			transform: 'Transform',
-			transition: 'Hyperlink hover transition',
-			display: 'Show/hide block',
-			opacity: 'Opacity',
-			position: 'Position',
-			overflow: 'Overflow',
-			flex: 'Flexbox',
-			zIndex: 'Z-index',
+		template: 'advanced',
+		Opacity: {
+			template: 'opacity',
 		},
 	},
 };

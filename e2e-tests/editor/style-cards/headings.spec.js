@@ -97,13 +97,21 @@ describe('StyleCards headings', () => {
 
 		// Check values on S to be the same as on M breakpoint
 		await changeResponsive(page, 's');
-		const typographyStylesS = await addTypographyStyle({ instance: page });
+		const typographyStylesS = await addTypographyStyle({
+			instance: await page.$(
+				'.maxi-blocks-sc__type--heading .maxi-style-cards-control__sc__h1-typography'
+			),
+		});
 
 		expect(typographyStylesS).toEqual(responsiveTypographyStyle);
 
 		// Check values on L to be the same as on general breakpoint
 		await changeResponsive(page, 'l');
-		const typographyStylesL = await addTypographyStyle({ instance: page });
+		const typographyStylesL = await addTypographyStyle({
+			instance: await page.$(
+				'.maxi-blocks-sc__type--heading .maxi-style-cards-control__sc__h1-typography'
+			),
+		});
 
 		expect(typographyStylesL).toEqual(generalTypographeStyle);
 	});

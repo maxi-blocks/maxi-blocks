@@ -57,7 +57,9 @@ describe('StyleCards, Buttons', () => {
 		await page.waitForTimeout(100);
 
 		await addTypographyStyle({
-			instance: page,
+			instance: await page.$(
+				'.maxi-typography-control.maxi-style-cards-control__sc__button-typography'
+			),
 			...generalTypographeStyle,
 		});
 		await page.waitForTimeout(100);
@@ -132,7 +134,9 @@ describe('StyleCards, Buttons', () => {
 		await page.waitForTimeout(100);
 
 		await addTypographyStyle({
-			instance: page,
+			instance: await page.$(
+				'.maxi-typography-control.maxi-style-cards-control__sc__button-typography'
+			),
 			...responsiveTypographyStyle,
 		});
 		await page.waitForTimeout(100);
@@ -141,13 +145,21 @@ describe('StyleCards, Buttons', () => {
 
 		// Check values on S to be the same as on M breakpoint
 		await changeResponsive(page, 's');
-		const typographyStylesS = await addTypographyStyle({ instance: page });
+		const typographyStylesS = await addTypographyStyle({
+			instance: await page.$(
+				'.maxi-typography-control.maxi-style-cards-control__sc__button-typography'
+			),
+		});
 
 		expect(typographyStylesS).toEqual(responsiveTypographyStyle);
 
 		// Check values on L to be the same as on general breakpoint
 		await changeResponsive(page, 'l');
-		const typographyStylesL = await addTypographyStyle({ instance: page });
+		const typographyStylesL = await addTypographyStyle({
+			instance: await page.$(
+				'.maxi-typography-control.maxi-style-cards-control__sc__button-typography'
+			),
+		});
 
 		expect(typographyStylesL).toEqual(generalTypographeStyle);
 	});

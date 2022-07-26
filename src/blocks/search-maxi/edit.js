@@ -82,10 +82,8 @@ const SearchBlock = props => {
 	const buttonIconClasses = classnames(
 		'maxi-search-block__button__icon',
 		`maxi-search-block__button__${
-			skin === 'icon-reveal'
-				? isInputOpen
-					? 'close-icon'
-					: 'default-icon'
+			skin === 'icon-reveal' && isInputOpen
+				? 'close-icon'
 				: 'default-icon'
 		}`
 	);
@@ -105,7 +103,7 @@ const SearchBlock = props => {
 			/>
 			<div
 				className='maxi-search-block__button'
-				onClick={() => iconRevealAction === 'click' && onInputToggle}
+				onClick={() => iconRevealAction === 'click' && onInputToggle()}
 				onMouseOver={() => onInputChangeByHover(true)}
 				onMouseOut={() => onInputChangeByHover(false)}
 			>

@@ -4,8 +4,6 @@
  * @param {any}    element
  * @param {string} attribute
  */
-const getElementAttribute = async (element, attribute) => {
-	return (await element.getProperty(attribute)).jsonValue();
-};
+const getElementAttribute = async (element, attribute) => element.getProperty(attribute)).jsonValue();
 
 export default getElementAttribute;

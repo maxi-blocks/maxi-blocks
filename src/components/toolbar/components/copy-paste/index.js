@@ -343,7 +343,7 @@ const CopyPaste = props => {
 									className='toolbar-item__copy-paste__popover__button toolbar-item__copy-paste__popover__button--special'
 									onClick={onSpecialPaste}
 								>
-									{__('Paste Special Style', 'maxi-blocks')}
+									{__('Paste special style', 'maxi-blocks')}
 								</Button>
 							</form>
 						)}
@@ -354,7 +354,7 @@ const CopyPaste = props => {
 					className='toolbar-item__copy-paste__popover__button toolbar-item__copy-nested-block__popover__button'
 					onClick={onCopyBlocks}
 				>
-					{__('Copy Nested Blocks', 'maxi-blocks')}
+					{__('Copy nested blocks', 'maxi-blocks')}
 				</Button>
 			)}
 			{WRAPPER_BLOCKS.includes(blockName) && (
@@ -363,7 +363,7 @@ const CopyPaste = props => {
 					onClick={onPasteBlocks}
 					disabled={isEmpty(copiedBlocks)}
 				>
-					{__('Paste Nested Blocks', 'maxi-blocks')}
+					{__('Paste nested blocks', 'maxi-blocks')}
 				</Button>
 			)}
 		</div>

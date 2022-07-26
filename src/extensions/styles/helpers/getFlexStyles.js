@@ -5,7 +5,7 @@ import { isNil, isEmpty } from 'lodash';
 /**
  * Internal dependencies
  */
-import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+import { getLastBreakpointAttribute } from '../getLastBreakpointAttribute';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 

@@ -4,7 +4,7 @@
 import getBoxShadowStyles from './getBoxShadowStyles';
 import getColorRGBAString from '../getColorRGBAString';
 import getGroupAttributes from '../getGroupAttributes';
-import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+import { getLastBreakpointAttribute } from '../getLastBreakpointAttribute';
 import getPaletteAttributes from '../getPaletteAttributes';
 
 /**

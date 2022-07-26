@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import getColorRGBAString from '../getColorRGBAString';
-import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+import { getLastBreakpointAttribute } from '../getLastBreakpointAttribute';
 import getPaletteAttributes from '../getPaletteAttributes';
 import { getIsValid } from '../utils';
 

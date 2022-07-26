@@ -174,7 +174,7 @@ describe('CopyPaste from Toolbar', () => {
 
 		// select border
 		await page.$eval(
-			'.maxi-settingstab-control .maxi-tabs-content--disable-padding .toolbar-item__copy-paste__popover__item input#border',
+			'.maxi-settingstab-control .maxi-tabs-content--disable-padding .toolbar-item__copy-paste__popover__item input#Border',
 			button => button.click()
 		);
 		// open advanced
@@ -185,7 +185,7 @@ describe('CopyPaste from Toolbar', () => {
 
 		// select flex
 		await page.$eval(
-			'.maxi-settingstab-control .maxi-tabs-content--disable-padding .toolbar-item__copy-paste__popover__item input#flex',
+			'.maxi-settingstab-control .maxi-tabs-content--disable-padding .toolbar-item__copy-paste__popover__item input#Flexbox',
 			button => button.click()
 		);
 

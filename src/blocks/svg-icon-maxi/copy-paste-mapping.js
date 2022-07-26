@@ -1,154 +1,97 @@
-const copyPasteMapping = {
-	_order: [
-		'Alignment',
-		'Icon colour',
-		'Icon line width',
-		'Icon background',
-		'Border',
-		'Box shadow',
-		'Size',
-		'Margin/Padding',
-	],
+const prefix = 'svg-';
 
-	exclude: ['content', 'svgType'],
+const copyPasteMapping = {
 	settings: {
-		blockSpecific: {
-			content: { label: 'Icon content', value: ['svgType', 'content'] },
-			iconColor: {
-				groupLabel: 'Icon colour',
-				props: {
-					'svg-status-hover': 'Icon hover status',
-					'svg-fill-': { label: 'Fill colour', type: 'withPalette' },
-					'svg-line-': { label: 'Line colour', type: 'withPalette' },
-					'svg-fill-hover': {
-						label: 'Fill hover colour',
-						type: 'withPaletteHover',
-					},
-					'svg-line-hover': {
-						label: 'Line hover colour',
-						type: 'withPaletteHover',
-					},
-				},
+		'Icon content': { props: ['svgType', 'content'] },
+		Alignment: {
+			groupAttributes: 'alignment',
+		},
+		'Icon alt': {
+			group: {
+				'Alt title': 'altTitle',
+				'Alt description': 'altDescription',
 			},
-			size: {
-				groupLabel: 'Size',
-				props: {
-					'svg-responsive': {
-						label: 'Force responsive',
-						type: 'withBreakpoint',
-					},
-					size: { label: 'Size', type: 'withPrefix' },
+		},
+		'Icon colour': {
+			group: {
+				'Icon hover status': 'svg-status-hover',
+				'Fill colour': { props: 'svg-fill', isPalette: true },
+				'Line colour': { label: 'svg-line', isPalette: true },
+				'Fill hover colour': {
+					props: 'svg-fill',
+					isPalette: true,
+					isHover: true,
+				},
+				'Line hover colour': {
+					props: 'svg-line',
+					isPalette: true,
+					isHover: true,
 				},
 			},
 		},
-		withBreakpoint: { 'svg-stroke': 'Icon line width' },
-		withPrefix: {
-			background: {
-				groupLabel: 'Icon background',
-				props: {
-					backgroundColor: {
-						label: 'Background color',
-						props: ['background', 'backgroundColor'],
-					},
-					backgroundColorHover: {
-						label: 'Background color hover',
-						props: ['backgroundHover', 'backgroundColorHover'],
-					},
-					backgroundGradient: {
-						label: 'Background gradient',
-						props: ['background', 'backgroundGradient'],
-					},
-					backgroundGradientHover: {
-						label: 'Background gradient hover',
-						props: ['backgroundHover', 'backgroundGradientHover'],
-					},
-				},
-			},
-			border: {
-				groupLabel: 'Border',
-				props: {
-					border: 'Border',
-					borderWidth: 'Border width',
-					borderRadius: 'Border radius',
-					borderHover: 'Border hover',
-					borderWidthHover: 'Border width hover',
-					borderRadiusHover: 'Border radius hover',
-				},
-			},
-			boxShadow: {
-				groupLabel: 'Box shadow',
-				props: {
-					boxShadow: 'Box shadow',
-					boxShadowHover: 'Box shadow hover',
-				},
-			},
-			'margin-padding': {
-				groupLabel: 'Margin/Padding',
-				props: { margin: 'Margin', padding: 'Padding' },
-			},
+		'Icon line width': {
+			props: 'svg-stroke',
+			hasBreakpoints: true,
 		},
-		withoutPrefix: {
-			alignment: 'Alignment',
+		'Icon background': {
+			group: {
+				'Background colour': {
+					groupAttributes: ['background', 'backgroundColor'],
+				},
+				'Background color hover': {
+					groupAttributes: ['background', 'backgroundColor'],
+				},
+				'Background gradient': {
+					groupAttributes: ['background', 'backgroundGradient'],
+				},
+				'Background gradient hover': {
+					groupAttributes: [
+						'backgroundHover',
+						'backgroundGradientHover',
+					],
+				},
+			},
+			prefix,
+		},
+		Border: {
+			template: 'border',
+			prefix,
+		},
+		'Box shadow': {
+			template: 'boxShadow',
+			prefix,
+		},
+		Size: {
+			template: 'size',
+			prefix,
+		},
+		'Margin/Padding': {
+			template: 'marginPadding',
+			prefix,
 		},
 	},
 	canvas: {
-		blockSpecific: {
-			size: {
-				groupLabel: 'Size',
-				props: {
-					blockFullWidth: 'Full width',
-					size: { label: 'Size', type: 'withoutPrefix' },
-				},
-			},
+		Size: {
+			template: 'size',
 		},
-		withoutPrefix: {
-			blockBackground: 'Background',
-			border: {
-				groupLabel: 'Border',
-				props: {
-					border: 'Border',
-					borderWidth: 'Border width',
-					borderRadius: 'Border radius',
-					borderHover: 'Border hover',
-					borderWidthHover: 'Border width hover',
-					borderRadiusHover: 'Border radius hover',
-				},
-			},
-			boxShadow: {
-				groupLabel: 'Box shadow',
-				props: {
-					boxShadow: 'Box shadow',
-					boxShadowHover: 'Box shadow hover',
-				},
-			},
-			opacity: 'Opacity',
-			'margin-padding': {
-				groupLabel: 'Margin/Padding',
-				props: { margin: 'Margin', padding: 'Padding' },
-			},
+		Background: {
+			template: 'blockBackground',
+		},
+		Border: {
+			template: 'border',
+		},
+		'Box shadow': {
+			template: 'boxShadow',
+		},
+		Opacity: {
+			template: 'opacity',
+		},
+		'Margin/Padding': {
+			template: 'marginPadding',
 		},
 	},
 	advanced: {
-		blockSpecific: {
-			extraClassName: 'Custom CSS classes',
-			anchorLink: {
-				label: 'Anchor',
-				value: ['anchorLink', 'linkSettings'],
-			},
-			relations: 'Interaction',
-		},
-		withoutPrefix: {
-			breakpoints: 'Breakpoints',
-			customCss: 'Custom CSS',
-			scroll: 'Scroll',
-			transform: 'Transform',
-			transition: 'Hyperlink hover transition',
-			display: 'Show/hide block',
-			position: 'Position',
-			overflow: 'Overflow',
-			flex: 'Flexbox',
-			zIndex: 'Z-index',
-		},
+		template: 'advanced',
 	},
 };
 

@@ -13,6 +13,7 @@ import getStyles from './styles';
 import Inspector from './inspector';
 import {
 	getGroupAttributes,
+	getIsOverflowHidden,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
@@ -180,18 +181,6 @@ class edit extends MaxiBlockComponent {
 			}
 		};
 
-		const getIsOverflowHidden = () =>
-			getLastBreakpointAttribute({
-				target: 'overflow-y',
-				breakpoint: deviceType,
-				attributes,
-			}) === 'hidden' &&
-			getLastBreakpointAttribute({
-				target: 'overflow-x',
-				breakpoint: deviceType,
-				attributes,
-			}) === 'hidden';
-
 		const getMaxWidth = () => {
 			const maxWidth = getLastBreakpointAttribute({
 				target: 'image-max-width',
@@ -346,7 +335,10 @@ class edit extends MaxiBlockComponent {
 							key={uniqueID}
 							className='maxi-block__resizer maxi-image-block__resizer'
 							resizableObject={this.resizableObject}
-							isOverflowHidden={getIsOverflowHidden()}
+							isOverflowHidden={getIsOverflowHidden(
+								attributes,
+								deviceType
+							)}
 							defaultSize={{
 								width: `${
 									fullWidth !== 'full' && !useInitSize

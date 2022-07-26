@@ -150,7 +150,7 @@ const getLastBreakpointAttributeGroup = (
 	return null;
 };
 
-const getLastBreakpointAttribute = ({
+export const getLastBreakpointAttribute = ({
 	target,
 	breakpoint,
 	attributes = null,
@@ -179,4 +179,14 @@ const getLastBreakpointAttribute = ({
 	);
 };
 
-export default getLastBreakpointAttribute;
+export const getIsOverflowHidden = (attributes, breakpoint) =>
+	getLastBreakpointAttribute({
+		target: 'overflow-y',
+		breakpoint,
+		attributes,
+	}) === 'hidden' &&
+	getLastBreakpointAttribute({
+		target: 'overflow-x',
+		breakpoint,
+		attributes,
+	}) === 'hidden';

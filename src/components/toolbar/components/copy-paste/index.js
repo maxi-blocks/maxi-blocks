@@ -19,7 +19,14 @@ import { loadColumnsTemplate } from '../../../../extensions/column-templates';
 /**
  * External dependencies
  */
-import { capitalize, isEmpty, isEqual, isObject, isString } from 'lodash';
+import {
+	capitalize,
+	isArray,
+	isEmpty,
+	isEqual,
+	isObject,
+	isString,
+} from 'lodash';
 
 /**
  * Styles
@@ -152,10 +159,10 @@ const CopyPaste = props => {
 		closeMoreSettings();
 	};
 
-	// TODO: check code
 	const handleSpecialPaste = ({ attr, tab, checked, group }) => {
 		const specPaste = { ...specialPaste };
-		if (!Array.isArray(attr)) {
+
+		if (!isArray(attr)) {
 			if (group) {
 				if (!checked)
 					specPaste[tab] = specPaste[tab].filter(sp => {

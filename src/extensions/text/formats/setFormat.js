@@ -82,6 +82,8 @@ const setFormat = ({
 		const newTypography = { ...typography };
 		const newFormatValue = {
 			...formatValue,
+			start: 0,
+			end: formatsLength,
 		};
 
 		Object.entries(value).forEach(([key, val]) => {
@@ -117,7 +119,13 @@ const setFormat = ({
 			return {
 				...cleanedTypography,
 				content: cleanedContent,
-				...(returnFormatValue && { formatValue: cleanedFormatValue }),
+				...(returnFormatValue && {
+					formatValue: {
+						...cleanedFormatValue,
+						start: formatValue.start,
+						end: formatValue.end,
+					},
+				}),
 			};
 		}
 
@@ -134,7 +142,13 @@ const setFormat = ({
 		return {
 			...newTypography,
 			...(newContent && { content: newContent }),
-			...(returnFormatValue && { formatValue: newFormatValue }),
+			...(returnFormatValue && {
+				formatValue: {
+					...newFormatValue,
+					start: formatValue.start,
+					end: formatValue.end,
+				},
+			}),
 		};
 	}
 

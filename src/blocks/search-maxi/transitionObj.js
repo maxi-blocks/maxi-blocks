@@ -37,7 +37,7 @@ const transitionObj = {
 		},
 		typography: {
 			title: 'Typography',
-			target: ' .maxi-search-block__input__content',
+			target: ' .maxi-search-block__button__content',
 			property: 'typography',
 			limitless: true,
 			prefix: buttonPrefix,

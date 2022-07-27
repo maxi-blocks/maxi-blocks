@@ -2,6 +2,14 @@ const prefix = 'image-';
 
 const copyPasteMapping = {
 	settings: {
+		Image: [
+			'mediaID',
+			'isImageUrl',
+			'mediaURL',
+			'mediaWidth',
+			'mediaHeight',
+			'mediaAlt',
+		],
 		Dimension: {
 			group: {
 				'Image size': 'imageSize',
@@ -74,15 +82,6 @@ const copyPasteMapping = {
 		'Clip path': {
 			groupAttributes: 'clipPath',
 		},
-		Image: [
-			'mediaID',
-			'isImageUrl',
-			'mediaURL',
-			'mediaWidth',
-			'mediaHeight',
-			'mediaAlt',
-		],
-
 		Border: {
 			template: 'border',
 			prefix,

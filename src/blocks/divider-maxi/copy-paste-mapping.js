@@ -1,5 +1,4 @@
 const copyPasteMapping = {
-	_order: ['Alignment', 'Line settings', 'Box shadow'],
 	settings: {
 		Alignment: {
 			group: {
@@ -28,6 +27,7 @@ const copyPasteMapping = {
 		},
 		'Box shadow': {
 			template: 'boxShadow',
+			prefix: 'divider-',
 		},
 	},
 	canvas: {

@@ -1,3 +1,5 @@
+const prefix = 'button-';
+
 const copyPasteMapping = {
 	settings: {
 		'Button text': 'buttonContent',
@@ -40,23 +42,23 @@ const copyPasteMapping = {
 		},
 		'Button background': {
 			template: 'background',
-			prefix: 'button-',
+			prefix,
 		},
 		Border: {
 			template: 'border',
-			prefix: 'button-',
+			prefix,
 		},
 		'Box shadow': {
 			template: 'boxShadow',
-			prefix: 'button-',
+			prefix,
 		},
 		Size: {
 			template: 'size',
-			prefix: 'button-',
+			prefix,
 		},
 		'Margin/Padding': {
 			template: 'marginPadding',
-			prefix: 'button-',
+			prefix,
 		},
 	},
 	canvas: {
@@ -73,7 +75,7 @@ const copyPasteMapping = {
 			template: 'boxShadow',
 		},
 		Opacity: {
-			groupAttributes: 'opacity',
+			template: 'opacity',
 		},
 		'Margin/Padding': {
 			template: 'marginPadding',

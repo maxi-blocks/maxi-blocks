@@ -1,17 +1,4 @@
 const copyPasteMapping = {
-	exclude: ['content'],
-	_order: [
-		'Heading / Paragraph tag',
-		'List options',
-		'Text alignment',
-		'Typography',
-		'Background',
-		'Border',
-		'Box shadow',
-		'Size',
-		'Margin/Padding',
-	],
-
 	settings: {
 		'Text content': 'content',
 		'Heading / Paragraph tag': 'textLevel',

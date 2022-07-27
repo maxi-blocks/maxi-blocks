@@ -8,7 +8,7 @@ import getBlockCategoriesAndSelectors from '../../../components/relation-control
 /**
  * External dependencies
  */
-import { isNil } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 
 const types = ['scale', 'translate', 'rotate', 'origin'];
 
@@ -68,7 +68,7 @@ const isEligible = blockAttributes =>
 		));
 
 const migrate = ({ newAttributes, selectors }) => {
-	if (isNil(selectors)) return false;
+	if (isEmpty(selectors)) return false;
 
 	const getAxis = attribute => attribute.match(/[x,y,z](-unit)?/)[0];
 
@@ -115,7 +115,10 @@ const migrate = ({ newAttributes, selectors }) => {
 				const { selectors: relationSelectors } =
 					getBlockCategoriesAndSelectors(name);
 
-				migrate(newRelationAttributes, relationSelectors);
+				migrate({
+					newAttributes: newRelationAttributes,
+					selectors: relationSelectors,
+				});
 
 				newRelations[index] = {
 					...newRelations[index],

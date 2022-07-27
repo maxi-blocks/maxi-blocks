@@ -9,7 +9,7 @@ import getPaletteAttributes from '../getPaletteAttributes';
 /**
  * External dependencies
  */
-import { isNil, isEmpty, isBoolean } from 'lodash';
+import { isNil, isEmpty } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -27,7 +27,6 @@ export const getSVGWidthStyles = ({
 		response[breakpoint] = {};
 
 		const svgWidth = obj[`${prefix}svg-width-${breakpoint}`];
-		const svgResponsive = obj[`${prefix}svg-responsive-${breakpoint}`];
 
 		if (!isNil(svgWidth))
 			response[
@@ -37,11 +36,6 @@ export const getSVGWidthStyles = ({
 				breakpoint,
 				attributes: obj,
 			})} ${isImportant ? '!important' : ''}`;
-
-		if (isBoolean(svgResponsive))
-			response[breakpoint]['max-width'] = `${
-				svgResponsive ? '100%' : 'none'
-			} ${isImportant ? '!important' : ''}`;
 
 		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')
 			delete response[breakpoint];

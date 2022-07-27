@@ -237,6 +237,14 @@ export const getSVGStyles = ({
 						isHover,
 						useIconColor
 					),
+				[` ${target} svg path[data-hover-stroke]:not([stroke^="none"])`]:
+					getSVGPathStrokeStyles(
+						obj,
+						blockStyle,
+						prefix,
+						isHover,
+						useIconColor
+					),
 				[` ${target} svg g[data-hover-stroke]:not([stroke^="none"])`]:
 					getSVGPathStrokeStyles(
 						obj,

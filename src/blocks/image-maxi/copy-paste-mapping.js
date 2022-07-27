@@ -13,7 +13,7 @@ const copyPasteMapping = {
 		Alignment: {
 			groupAttributes: 'alignment',
 		},
-		'Alt tag': { props: ['mediaAlt', 'altSelector'] },
+		'Alt tag': ['mediaAlt', 'altSelector'],
 		Caption: {
 			group: {
 				'Caption type': 'captionType',
@@ -74,16 +74,15 @@ const copyPasteMapping = {
 		'Clip path': {
 			groupAttributes: 'clipPath',
 		},
-		Image: {
-			props: [
-				'mediaID',
-				'isImageUrl',
-				'mediaURL',
-				'mediaWidth',
-				'mediaHeight',
-				'mediaAlt',
-			],
-		},
+		Image: [
+			'mediaID',
+			'isImageUrl',
+			'mediaURL',
+			'mediaWidth',
+			'mediaHeight',
+			'mediaAlt',
+		],
+
 		Border: {
 			template: 'border',
 			prefix,

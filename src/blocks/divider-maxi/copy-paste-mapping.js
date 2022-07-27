@@ -16,17 +16,13 @@ const copyPasteMapping = {
 					props: 'divider-border',
 					isPalette: true,
 				},
-				'Line size': {
-					props: ['divider-height', 'divider-width'],
-				},
-				'Line weight': {
-					props: [
-						'divider-border-top-width',
-						'divider-border-top-unit',
-						'divider-border-right-width',
-						'divider-border-right-unit',
-					],
-				},
+				'Line size': ['divider-height', 'divider-width'],
+				'Line weight': [
+					'divider-border-top-width',
+					'divider-border-top-unit',
+					'divider-border-right-width',
+					'divider-border-right-unit',
+				],
 			},
 			hasBreakpoints: true,
 		},

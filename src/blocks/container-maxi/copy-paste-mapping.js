@@ -7,13 +7,11 @@ const shapeDividerCopyPasteGenerator = position => {
 				'Divider status': `shape-divider-${position}-status`,
 				'Divider style': `shape-divider-${position}-shape-style`,
 				'Divider opacity': `shape-divider-${position}-opacity`,
-				'Divider color': {
-					props: [
-						`shape-divider-${position}-palette-color`,
-						`shape-divider-${position}-color`,
-						`shape-divider-${position}-palette-status`,
-					],
-				},
+				'Divider color': [
+					`shape-divider-${position}-palette-color`,
+					`shape-divider-${position}-color`,
+					`shape-divider-${position}-palette-status`,
+				],
 				'Divider height': `shape-divider-${position}-height`,
 				'Divider height unit': `shape-divider-${position}-height-unit`,
 				'Divider scroll effect': `shape-divider-${position}-effects-status`,

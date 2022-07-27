@@ -219,9 +219,7 @@ describe('getOrganizedAttributes', () => {
 			settings: {
 				Color: {
 					group: {
-						Color: {
-							props: ['fill', 'line'],
-						},
+						Color: ['fill', 'line'],
 						'Color on hover': {
 							props: ['fill', 'line'],
 							isHover: true,

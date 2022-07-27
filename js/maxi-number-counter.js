@@ -67,9 +67,9 @@ const numberCounterEffect = () => {
 				let hasAnimated = false;
 
 				const animate = () => {
-					const newCount = parseInt(
-						(Date.now() - startTime) / frameDuration
-					);
+					const newCount =
+						startCountValue +
+						parseInt((Date.now() - startTime) / frameDuration);
 
 					if (newCount === count) {
 						requestAnimationFrame(animate);

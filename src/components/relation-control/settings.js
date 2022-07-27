@@ -293,7 +293,10 @@ const settings = {
 		...getTransformControl('divider'),
 		...canvasSettings,
 	],
-	'maxi-blocks/group-maxi': [...canvasSettings],
+	'maxi-blocks/group-maxi': [
+		...getTransformControl('group'),
+		...canvasSettings,
+	],
 	'maxi-blocks/image-maxi': [
 		{
 			label: __('Alignment', 'maxi-blocks'),

@@ -65,9 +65,11 @@ const NumberCounter = attributes => {
 			}
 
 			requestAnimationFrame(function animate() {
-				const newCount = parseInt(
-					(Date.now() - startTimeRef.current) / frameDuration
-				);
+				const newCount =
+					startCountValue +
+					parseInt(
+						(Date.now() - startTimeRef.current) / frameDuration
+					);
 				newCount === count
 					? requestAnimationFrame(animate)
 					: setCount(

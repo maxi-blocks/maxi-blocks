@@ -98,17 +98,19 @@ const getSVGPathStrokeStyles = (
 	isHover,
 	useIconColor = true
 ) => {
-	const brkpts = !useIconColor ? breakpoints : ['general'];
 	const response = {
 		label: 'SVG Path stroke',
 	};
-	for (const breakpoint of brkpts) {
-		response[breakpoint] = {};
-		if (isHover && !useIconColor && !obj['typography-status-hover']) {
-			response.general.stroke = '';
 
-			return response;
-		}
+	if (isHover && !useIconColor && !obj['typography-status-hover']) {
+		response.general = {};
+		response.general.stroke = '';
+
+		return response;
+	}
+
+	(!useIconColor ? breakpoints : ['general']).forEach(breakpoint => {
+		response[breakpoint] = {};
 
 		const linePrefix =
 			prefix === 'icon-' ? `${prefix}stroke-` : `${prefix}line-`;
@@ -137,7 +139,7 @@ const getSVGPathStrokeStyles = (
 				});
 		} else if (!paletteStatus && !isNil(color))
 			response[breakpoint].stroke = color;
-	}
+	});
 	return { SVGPathStroke: response };
 };
 

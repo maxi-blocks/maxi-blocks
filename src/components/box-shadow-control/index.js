@@ -128,9 +128,11 @@ const BoxShadowControl = props => {
 		isHover = false,
 		prefix = '',
 		clientId,
+		dropShadow = false,
 	} = props;
 
-	const boxShadowItems = ['horizontal', 'vertical', 'blur', 'spread'];
+	const boxShadowItems = ['horizontal', 'vertical', 'blur'];
+	!dropShadow && boxShadowItems.push('spread');
 
 	const onChangeDefault = defaultProp => {
 		const response = {};
@@ -232,7 +234,7 @@ const BoxShadowControl = props => {
 					},
 				]}
 			/>
-			{isToolbar && (
+			{isToolbar && !dropShadow && (
 				<>
 					<div className='maxi-shadow-control__icon'>
 						<Icon icon={boxShadow} />
@@ -328,22 +330,24 @@ const BoxShadowControl = props => {
 					/>
 					{!isToolbar && (
 						<>
-							<ToggleSwitch
-								label={__('Inset', 'maxi-block')}
-								selected={getLastBreakpointAttribute({
-									target: `${prefix}box-shadow-inset`,
-									breakpoint,
-									attributes: props,
-									isHover,
-								})}
-								onChange={val =>
-									onChange({
-										[`${prefix}box-shadow-inset-${breakpoint}${
-											isHover ? '-hover' : ''
-										}`]: val,
-									})
-								}
-							/>
+							{!dropShadow && (
+								<ToggleSwitch
+									label={__('Inset', 'maxi-block')}
+									selected={getLastBreakpointAttribute({
+										target: `${prefix}box-shadow-inset`,
+										breakpoint,
+										attributes: props,
+										isHover,
+									})}
+									onChange={val =>
+										onChange({
+											[`${prefix}box-shadow-inset-${breakpoint}${
+												isHover ? '-hover' : ''
+											}`]: val,
+										})
+									}
+								/>
+							)}
 							{boxShadowItems.map(type => (
 								<BoxShadowValueControl
 									type={type}

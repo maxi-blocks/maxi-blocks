@@ -140,7 +140,7 @@ const CaptionToolbar = memo(
 				<Popover
 					noArrow
 					animate={false}
-					position='bottom center'
+					position='bottom right'
 					focusOnMount={false}
 					anchorRef={anchorRef}
 					className={classnames('maxi-toolbar__popover')}

@@ -16,4 +16,7 @@
 	&::after {
 		display: none;
 	}
+	.maxi-text-block--link:visited span {
+		color: inherit !important;
+	}
 }

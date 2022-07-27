@@ -19,10 +19,8 @@ const getLinkStyles = (obj, target, blockStyle) => {
 		[`${target}:active span`]: { link: {} },
 		[`${target}:visited`]: { link: {} },
 		[`${target}:visited span`]: { link: {} },
-		[`${target}:visited`]: { link: {} },
-		[`${target}:visited span`]: { link: {} },
-		[`.wp-site-blocks ${target}:visited`]: { link: {} },
-		[`.wp-site-blocks ${target}:visited span`]: { link: {} },
+		[`${target}:visited:hover`]: { link: {} },
+		[`${target}:visited:hover span`]: { link: {} },
 	};
 
 	breakpoints.forEach(breakpoint => {
@@ -40,15 +38,12 @@ const getLinkStyles = (obj, target, blockStyle) => {
 		if (isBoolean(linkPaletteStatus) && !linkPaletteStatus) {
 			response[target].link[breakpoint] = {};
 			response[`${target}:visited`].link[breakpoint] = {};
-			response[`${target}:visited span`].link[breakpoint] = {};
 
 			response[target].link[breakpoint].color = linkColor;
-			response[`${target}:visited`].color = linkColor;
-			response[`${target}:visited span`].color = linkColor;
+			response[`${target}:visited`].link[breakpoint].color = linkColor;
 		} else if (linkPaletteColor) {
 			response[target].link[breakpoint] = {};
 			response[`${target}:visited`].link[breakpoint] = {};
-			response[`${target}:visited span`].link[breakpoint] = {};
 
 			response[target].link[breakpoint].color = getColorRGBAString({
 				firstVar: 'link',
@@ -57,13 +52,6 @@ const getLinkStyles = (obj, target, blockStyle) => {
 				blockStyle,
 			});
 			response[`${target}:visited`].link[breakpoint].color =
-				getColorRGBAString({
-					firstVar: 'link',
-					secondVar: `color-${linkPaletteColor}`,
-					opacity: linkPaletteOpacity,
-					blockStyle,
-				});
-			response[`${target}:visited span`].link[breakpoint].color =
 				getColorRGBAString({
 					firstVar: 'link',
 					secondVar: `color-${linkPaletteColor}`,
@@ -86,9 +74,15 @@ const getLinkStyles = (obj, target, blockStyle) => {
 		if (isBoolean(linkHoverPaletteStatus) && !linkHoverPaletteStatus) {
 			response[`${target}:hover`].link[breakpoint] = {};
 			response[`${target}:hover span`].link[breakpoint] = {};
+			response[`${target}:visited:hover`].link[breakpoint] = {};
+			response[`${target}:visited:hover span`].link[breakpoint] = {};
 
 			response[`${target}:hover`].link[breakpoint].color = linkHoverColor;
 			response[`${target}:hover span`].link[breakpoint].color =
+				linkHoverColor;
+			response[`${target}:visited:hover`].link[breakpoint].color =
+				linkHoverColor;
+			response[`${target}:visited:hover span`].link[breakpoint].color =
 				linkHoverColor;
 		} else if (linkHoverPaletteColor) {
 			const color = getColorRGBAString({
@@ -100,6 +94,11 @@ const getLinkStyles = (obj, target, blockStyle) => {
 
 			response[`${target}:hover`].link[breakpoint] = { color };
 			response[`${target}:hover span`].link[breakpoint] = { color };
+
+			response[`${target}:visited:hover`].link[breakpoint] = { color };
+			response[`${target}:visited:hover span`].link[breakpoint] = {
+				color,
+			};
 		}
 
 		const {
@@ -145,17 +144,10 @@ const getLinkStyles = (obj, target, blockStyle) => {
 		});
 
 		if (isBoolean(linkVisitedPaletteStatus) && !linkVisitedPaletteStatus) {
-			response[`.wp-site-blocks ${target}:visited`].link[breakpoint] = {};
-			response[`.wp-site-blocks ${target}:visited span`].link[
-				breakpoint
-			] = {};
+			response[`${target}:visited span`].link[breakpoint] = {};
 
-			response[`.wp-site-blocks ${target}:visited`].link[
-				breakpoint
-			].color = linkVisitedColor;
-			response[`.wp-site-blocks ${target}:visited span`].link[
-				breakpoint
-			].color = linkVisitedColor;
+			response[`${target}:visited span`].link[breakpoint].color =
+				linkVisitedColor;
 		} else if (linkVisitedPaletteColor) {
 			const color = getColorRGBAString({
 				firstVar: 'link-visited',
@@ -164,12 +156,7 @@ const getLinkStyles = (obj, target, blockStyle) => {
 				blockStyle,
 			});
 
-			response[`.wp-site-blocks ${target}:visited`].link[breakpoint] = {
-				color,
-			};
-			response[`.wp-site-blocks ${target}:visited span`].link[
-				breakpoint
-			] = { color };
+			response[`${target}:visited span`].link[breakpoint] = { color };
 		}
 	});
 

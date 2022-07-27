@@ -8,9 +8,8 @@ import { __ } from '@wordpress/i18n';
  */
 import { SvgColor } from '../../../../components/svg-color';
 import AdvancedNumberControl from '../../../../components/advanced-number-control';
-
-import ResponsiveTabsControl from '../../../../components/responsive-tabs-control';
 import PresetsControl from '../presets-control';
+import ResponsiveTabsControl from '../../../../components/responsive-tabs-control';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,

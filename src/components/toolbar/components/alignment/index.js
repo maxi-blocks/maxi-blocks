@@ -40,7 +40,7 @@ const Alignment = props => {
 		<Dropdown
 			className='toolbar-item__alignment'
 			contentClassName='maxi-dropdown__child-content maxi-dropdown__alignment-content'
-			position='top center'
+			position='bottom right'
 			renderToggle={({ isOpen, onToggle }) => (
 				<Button onClick={onToggle} text='Copy'>
 					{isText ? (

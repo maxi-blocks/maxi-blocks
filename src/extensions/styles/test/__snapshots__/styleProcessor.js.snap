@@ -18,6 +18,11 @@ Object {
         "box-shadow": "0px 0px 0px 0px var(--maxi-light-color-1)",
       },
     },
+    "transition": Object {
+      "general": Object {
+        "transition": "box-shadow 0.3s 0s ease",
+      },
+    },
   },
   " .maxi-container-arrow": Object {
     "shadow": Object {

@@ -61,13 +61,7 @@ const templates = {
 		},
 	},
 	size: {
-		group: {
-			'Full width': {
-				props: 'full-width',
-				hasBreakpoints: true,
-			},
-			Size: { groupAttributes: 'size' },
-		},
+		groupAttributes: 'size',
 	},
 	marginPadding: {
 		group: {

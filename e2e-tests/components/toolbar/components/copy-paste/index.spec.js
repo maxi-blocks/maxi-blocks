@@ -98,8 +98,6 @@ describe('CopyPaste from Toolbar', () => {
 		expect(positionResult).toStrictEqual(expectPosition);
 	});
 	it('Should copy and paste styles with special paste', async () => {
-		await createNewPost();
-		await page.waitForTimeout(1000);
 		await insertBlock('Group Maxi');
 
 		// add border attributes

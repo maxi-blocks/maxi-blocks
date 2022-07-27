@@ -15,6 +15,7 @@ import CopyPasteGroup from './CopyPasteGroup';
 import Dropdown from '../../../dropdown';
 import { getOrganizedAttributes } from '../../../../extensions/copy-paste';
 import { loadColumnsTemplate } from '../../../../extensions/column-templates';
+import normalizeLabel from './normalizeLabel';
 
 /**
  * External dependencies
@@ -241,6 +242,8 @@ const CopyPaste = props => {
 					!isEmpty(organizedAttributes[tab]) &&
 					!isEqual(currentOrganizedAttributes[tab], attributes) &&
 					Object.entries(attributes).map(([label, obj]) => {
+						const normalizedLabel = normalizeLabel(label);
+
 						if (
 							!obj.group &&
 							!isEqual(
@@ -251,16 +254,16 @@ const CopyPaste = props => {
 							return (
 								<div
 									className='toolbar-item__copy-paste__popover__item'
-									key={`copy-paste-${tab}-${label}`}
+									key={`copy-paste-${tab}-${normalizedLabel}`}
 								>
 									<label
-										htmlFor={label}
+										htmlFor={normalizedLabel}
 										className='maxi-axis-control__content__item__checkbox'
 									>
 										<input
 											type='checkbox'
-											name={label}
-											id={label}
+											name={normalizedLabel}
+											id={normalizedLabel}
 											checked={specialPaste[tab].includes(
 												label
 											)}

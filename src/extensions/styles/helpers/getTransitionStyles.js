@@ -12,7 +12,7 @@ import transitionDefault from '../transitions/transitionDefault';
 /**
  * External dependencies
  */
-import { isNil, isEqual } from 'lodash';
+import { isNil, isEqual, isEmpty } from 'lodash';
 
 /**
  * Generates size styles object
@@ -21,6 +21,7 @@ import { isNil, isEqual } from 'lodash';
  */
 const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 	const { transition } = props;
+	if (isEmpty(transition)) return null;
 
 	const response = {};
 	Object.entries(transitionObj).forEach(([type, obj]) => {

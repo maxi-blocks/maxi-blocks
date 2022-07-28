@@ -78,7 +78,10 @@ const getAttributesFromStyle = (styles, selector) => {
 				key.includes('origin') &&
 				!['top', 'right', 'bottom', 'left', 'center'].includes(value);
 
-			if (['scale', 'rotate'].includes(type) || !isOriginWithUnit) {
+			if (
+				['scale', 'rotate'].includes(type) ||
+				(type === 'origin' && !isOriginWithUnit)
+			) {
 				result[`transform-${type}-${breakpoint}`] = {
 					...result[`transform-${type}-${breakpoint}`],
 					[selector]: {
@@ -94,7 +97,10 @@ const getAttributesFromStyle = (styles, selector) => {
 					},
 				};
 			}
-			if (['translate', 'origin'].includes(type) || isOriginWithUnit) {
+			if (
+				['translate'].includes(type) ||
+				(type === 'origin' && isOriginWithUnit)
+			) {
 				const { value: num, unit } = splitValueAndUnit(value);
 
 				result[`transform-${type}-${breakpoint}`] = {

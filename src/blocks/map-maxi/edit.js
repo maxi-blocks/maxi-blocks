@@ -14,7 +14,10 @@ import Inspector from './inspector';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import { getNewMarker, getUpdatedMarkers } from './utils';
 import getStyles from './styles';
 import copyPasteMapping from './copy-paste-mapping';
@@ -364,6 +367,7 @@ const MapContent = props => {
 	const {
 		apiKey,
 		attributes,
+		deviceType,
 		isFirstClick,
 		isGoogleMaps,
 		isSelected,
@@ -394,6 +398,20 @@ const MapContent = props => {
 						minZoom={mapMinZoom}
 						maxZoom={mapMaxZoom}
 						zoom={mapZoom}
+						style={{
+							height: ['height', 'height-unit'].reduce(
+								(acc, key) => {
+									const value = getLastBreakpointAttribute({
+										target: key,
+										breakpoint: deviceType,
+										attributes,
+									});
+
+									return `${acc}${value}`;
+								},
+								''
+							),
+						}}
 					>
 						{isGoogleMaps ? (
 							<ReactLeafletGoogleLayer apiKey={apiKey} />

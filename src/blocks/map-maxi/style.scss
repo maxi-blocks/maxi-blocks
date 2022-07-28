@@ -5,11 +5,12 @@ body.maxi-blocks--active .maxi-map-block {
 
 	&__container {
 		height: 100%;
+		padding: 1px;
 	}
 
 	.leaflet-container {
 		width: 100%;
-		height: 100vh;
+		height: 100%;
 	}
 
 	.leaflet-div-icon {
@@ -43,6 +44,7 @@ body.maxi-blocks--active .maxi-map-block {
 		height: 100%;
 		position: relative;
 		box-sizing: content-box !important;
+		left: 5px;
 
 		&__background {
 			position: absolute;
@@ -54,7 +56,8 @@ body.maxi-blocks--active .maxi-map-block {
 		}
 
 		&__content {
-			padding: 32px;
+			min-width: 100px;
+			margin: 32px;
 			position: relative;
 			z-index: 10;
 

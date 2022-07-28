@@ -21,6 +21,11 @@ body.maxi-blocks--active .maxi-map-block {
 		animation: animate-marker 400ms ease-in-out;
 	}
 
+	.leaflet-popup-close-button {
+		top: 18px;
+		right: 25px;
+	}
+
 	.leaflet-popup-tip-container {
 		display: none;
 	}

@@ -297,7 +297,7 @@ const Markers = props => {
 					},
 				}}
 			>
-				<Popup closeButton={false}>
+				<Popup>
 					<div className='maxi-map-block__popup'>
 						<div className='maxi-map-block__popup__content'>
 							<RichText

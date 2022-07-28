@@ -133,7 +133,7 @@ window.onload = () => {
 						icon: markerIcon,
 					})
 						.addTo(map)
-						.bindPopup(popupContent, { closeButton: false })
+						.bindPopup(popupContent)
 						.openPopup();
 				});
 			});

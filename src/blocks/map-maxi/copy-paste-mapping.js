@@ -39,7 +39,6 @@ const copyPasteMapping = {
 		},
 		'Map popup': {
 			group: {
-				'Popup icon': 'map-popup',
 				Background: {
 					groupAttributes: ['background', 'backgroundColor'],
 					prefix: 'popup-',

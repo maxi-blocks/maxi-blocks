@@ -26,7 +26,6 @@ import * as mapMarkerIcons from '../../icons/map-icons/markers';
 /**
  * External dependencies
  */
-import classnames from 'classnames';
 import { isEmpty } from 'lodash';
 import {
 	MapContainer,
@@ -243,7 +242,6 @@ const Markers = props => {
 		'map-marker-heading-level': mapMarkerHeadingLevel,
 		'map-marker-icon': mapMarkerIcon,
 		'map-markers': mapMarkers,
-		'map-popup': mapPopup,
 	} = attributes;
 
 	if (isEmpty(mapMarkers)) return null;
@@ -300,12 +298,7 @@ const Markers = props => {
 				}}
 			>
 				<Popup closeButton={false}>
-					<div
-						className={classnames(
-							'maxi-map-block__popup',
-							`maxi-map-block__popup--${mapPopup}`
-						)}
-					>
+					<div className='maxi-map-block__popup'>
 						<div className='maxi-map-block__popup__content'>
 							<RichText
 								className='maxi-map-block__popup__content__title'

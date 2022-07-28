@@ -18,7 +18,6 @@ import {
 	getTypographyStyles,
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
-import arrowProperties from './arrowProperties';
 import { selectorsMap } from './custom-css';
 
 const getNormalObject = props => {
@@ -138,55 +137,6 @@ const getMapObject = (props, isTitle) => {
 	return response;
 };
 
-const modifyBorderWidths = (obj, arrowNumber) => {
-	const newObj = {};
-
-	Object.keys(obj).forEach(key => {
-		if (typeof obj[key] === 'object') {
-			newObj[key] = modifyBorderWidths(obj[key], arrowNumber);
-		} else if (
-			arrowProperties[arrowNumber].allowedBordersToModify.includes(key)
-		) {
-			const unit = obj[key].slice(-2);
-
-			newObj[key] = `calc(${
-				parseInt(obj['border-bottom-width']) * 2
-			}${unit} + ${arrowProperties[arrowNumber].width})`;
-
-			if (!newObj.bottom && arrowNumber === 4) {
-				newObj.bottom = `-${obj['border-bottom-width']}`;
-			}
-		} else {
-			newObj[key] = obj[key];
-		}
-	});
-
-	return newObj;
-};
-
-const getBorderArrowObject = props => {
-	const { blockStyle } = props;
-
-	const newObj = {
-		border: getBorderStyles({
-			obj: {
-				...getGroupAttributes(
-					props,
-					['border', 'borderWidth', 'borderRadius'],
-					false,
-					'popup-'
-				),
-			},
-			blockStyle,
-			prefix: 'popup-',
-			borderColorProperty: 'border-top-color',
-		}),
-	};
-	const response = modifyBorderWidths(newObj, props['map-popup'] - 1);
-
-	return response;
-};
-
 const getStyles = props => {
 	const { uniqueID, blockStyle } = props;
 
@@ -202,18 +152,6 @@ const getStyles = props => {
 				' .maxi-map-block__popup__content__description':
 					getMapObject(props),
 				' .maxi-map-block__popup': {
-					border: getBorderStyles({
-						obj: {
-							...getGroupAttributes(
-								props,
-								['border', 'borderWidth', 'borderRadius'],
-								false,
-								'popup-'
-							),
-						},
-						blockStyle,
-						prefix: 'popup-',
-					}),
 					boxShadow: getBoxShadowStyles({
 						obj: {
 							...getGroupAttributes(
@@ -237,7 +175,7 @@ const getStyles = props => {
 						prefix: 'popup-',
 					}),
 				},
-				[` .maxi-map-block__popup--${props['map-popup']}:before`]: {
+				' .maxi-map-block__popup:before': {
 					...getBackgroundStyles({
 						...getGroupAttributes(
 							props,
@@ -250,8 +188,6 @@ const getStyles = props => {
 						backgroundColorProperty: 'border-top-color',
 					}),
 				},
-				[` .maxi-map-block__popup--${props['map-popup']}:after`]:
-					getBorderArrowObject(props),
 				' .leaflet-marker-icon': getSVGWidthStyles({
 					obj: getGroupAttributes(props, 'svg'),
 					isImportant: true,

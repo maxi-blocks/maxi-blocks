@@ -17,6 +17,7 @@ body.maxi-blocks--active .maxi-map-block {
 		background-color: transparent;
 		border: transparent;
 		top: 0;
+		height: auto !important;
 		animation: animate-marker 400ms ease-in-out;
 	}
 
@@ -25,7 +26,7 @@ body.maxi-blocks--active .maxi-map-block {
 	}
 
 	.leaflet-popup-content-wrapper {
-		margin-bottom: 25px;
+		margin-bottom: 5px;
 		text-align: center;
 		background: transparent;
 		box-shadow: none;
@@ -45,6 +46,7 @@ body.maxi-blocks--active .maxi-map-block {
 		position: relative;
 		box-sizing: content-box !important;
 		left: 5px;
+		border-radius: 16px;
 
 		&__background {
 			position: absolute;
@@ -69,8 +71,7 @@ body.maxi-blocks--active .maxi-map-block {
 			}
 		}
 
-		&::before,
-		&::after {
+		&::before {
 			content: '';
 			position: absolute;
 			width: 0;
@@ -78,89 +79,9 @@ body.maxi-blocks--active .maxi-map-block {
 			border-style: solid;
 			border-color: transparent;
 			bottom: 0;
+			left: 50%;
 			transform: translate(-50%, 100%);
-		}
-
-		&::before {
-			z-index: 9;
-		}
-
-		&::after {
-			z-index: 8;
-		}
-
-		&--1 {
-			border-radius: 16px;
-
-			&::before,
-			&::after {
-				left: 50%;
-			}
-
-			&::before {
-				border-width: 20px;
-			}
-		}
-
-		&--2 {
-			left: 64px;
-			border-radius: 8px;
-
-			&::before,
-			&::after {
-				left: 30%;
-			}
-
-			&::before {
-				border-width: 30px 30px 0 0;
-			}
-		}
-
-		&--3 {
-			left: 64px;
-			border-radius: 200%/100px 100px 8px 8px;
-
-			&::before,
-			&::after {
-				left: 30%;
-			}
-
-			&::before {
-				border-width: 30px 30px 0 0;
-			}
-		}
-
-		&--4 {
-			border-radius: 8px;
-
-			&::before,
-			&::after {
-				left: 50%;
-			}
-
-			&::before {
-				border-width: 25px;
-			}
-		}
-
-		&--5 {
-			top: 28px;
-			left: 100px;
-			border-radius: 50%;
-
-			&::before,
-			&::after {
-				left: 30%;
-			}
-
-			&::before {
-				transform: rotate(30deg) translate(-50%, 94%);
-				border-width: 30px 30px 0 0;
-			}
-
-			&::after {
-				transform: rotate(30deg) translate(-50%, 98%);
-			}
+			border-width: 15px;
 		}
 	}
 

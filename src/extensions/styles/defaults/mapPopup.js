@@ -1,18 +1,12 @@
 import { background, backgroundColor } from './background';
-import { border, borderWidth } from './border';
 import { svg } from './svg';
 import { typography } from './typography';
 import boxShadow from './boxShadow';
-import boxShadowHover from './boxShadowHover';
 import prefixAttributesCreator from '../prefixAttributesCreator';
 
 const prefix = 'popup-';
 
 const mapPopup = {
-	'map-popup': {
-		type: 'number',
-		default: 1,
-	},
 	'map-marker-heading-level': {
 		type: 'string',
 		default: 'h6',
@@ -44,23 +38,7 @@ const mapPopup = {
 		prefix,
 	}),
 	...prefixAttributesCreator({
-		obj: border,
-		prefix,
-		diffValAttr: {
-			[`${prefix}border-style-general`]: 'solid',
-			[`${prefix}border-palette-color-general`]: 4,
-		},
-	}),
-	...prefixAttributesCreator({
-		obj: borderWidth,
-		prefix,
-	}),
-	...prefixAttributesCreator({
 		obj: boxShadow,
-		prefix,
-	}),
-	...prefixAttributesCreator({
-		obj: boxShadowHover,
 		prefix,
 	}),
 };

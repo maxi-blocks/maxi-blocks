@@ -88,7 +88,6 @@ window.onload = () => {
 					'map-marker-zoom': mapMarkerZoom,
 					'map-markers': mapMarkers,
 					'map-marker-icon': mapMarkerIcon,
-					'map-popup': mapPopup,
 					'map-marker-heading-level': mapMarkerHeadingLevel,
 				} = item;
 
@@ -122,10 +121,7 @@ window.onload = () => {
 						marker;
 
 					const popupContent = `
-					<div
-						class='maxi-map-block__popup maxi-map-block__popup--${mapPopup}'
-
-					>
+					<div class='maxi-map-block__popup'>
 						<div class='maxi-map-block__popup__content'>
 							<${mapMarkerHeadingLevel} class='maxi-map-block__popup__content__title'>${heading}</${mapMarkerHeadingLevel}>
 							<p class='maxi-map-block__popup__content__description'>${description}</p>

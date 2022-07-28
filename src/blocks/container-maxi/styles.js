@@ -1,12 +1,7 @@
 /**
- * External dependencies
- */
-import { merge } from 'lodash';
-
-/**
  * Internal dependencies
  */
-import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
+import { getGroupAttributes, styleProcessor } from '../../extensions/styles';
 import {
 	getBorderStyles,
 	getSizeStyles,
@@ -21,7 +16,6 @@ import {
 	getShapeDividerStyles,
 	getShapeDividerSVGStyles,
 	getOverflowStyles,
-	getTransitionStyles,
 	getFlexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsContainer } from './custom-css';
@@ -113,123 +107,120 @@ const getStyles = props => {
 	const { uniqueID } = props;
 
 	const response = {
-		[uniqueID]: stylesCleaner(
-			merge(
-				{
-					'': getNormalObject(props),
-					':hover': getHoverObject(props),
-					...(props['shape-divider-top-status'] && {
-						' .maxi-shape-divider__top': {
-							shapeDivider: {
-								...getShapeDividerStyles(
-									{
-										...getGroupAttributes(props, [
-											'shapeDivider',
-											'padding',
-										]),
-									},
-									'top'
-								),
-							},
+		[uniqueID]: styleProcessor(
+			{
+				'': getNormalObject(props),
+				':hover': getHoverObject(props),
+				...(props['shape-divider-top-status'] && {
+					' .maxi-shape-divider__top': {
+						shapeDivider: {
+							...getShapeDividerStyles(
+								{
+									...getGroupAttributes(props, [
+										'shapeDivider',
+										'padding',
+									]),
+								},
+								'top'
+							),
 						},
-						' .maxi-shape-divider__top svg': {
-							shapeDivider: {
-								...getShapeDividerSVGStyles(
-									{
-										...getGroupAttributes(props, [
-											'shapeDivider',
-											'padding',
-										]),
-									},
-									'top',
-									props.blockStyle
-								),
-							},
+					},
+					' .maxi-shape-divider__top svg': {
+						shapeDivider: {
+							...getShapeDividerSVGStyles(
+								{
+									...getGroupAttributes(props, [
+										'shapeDivider',
+										'padding',
+									]),
+								},
+								'top',
+								props.blockStyle
+							),
 						},
-					}),
-					...(props['shape-divider-bottom-status'] && {
-						' .maxi-shape-divider__bottom': {
-							shapeDivider: {
-								...getShapeDividerStyles(
-									{
-										...getGroupAttributes(props, [
-											'shapeDivider',
-											'padding',
-										]),
-									},
-									'bottom'
-								),
-							},
+					},
+				}),
+				...(props['shape-divider-bottom-status'] && {
+					' .maxi-shape-divider__bottom': {
+						shapeDivider: {
+							...getShapeDividerStyles(
+								{
+									...getGroupAttributes(props, [
+										'shapeDivider',
+										'padding',
+									]),
+								},
+								'bottom'
+							),
 						},
-						' .maxi-shape-divider__bottom svg': {
-							shapeDivider: {
-								...getShapeDividerSVGStyles(
-									{
-										...getGroupAttributes(props, [
-											'shapeDivider',
-											'padding',
-										]),
-									},
-									'bottom',
-									props.blockStyle
-								),
-							},
+					},
+					' .maxi-shape-divider__bottom svg': {
+						shapeDivider: {
+							...getShapeDividerSVGStyles(
+								{
+									...getGroupAttributes(props, [
+										'shapeDivider',
+										'padding',
+									]),
+								},
+								'bottom',
+								props.blockStyle
+							),
 						},
-					}),
-					...getBlockBackgroundStyles({
-						...getGroupAttributes(props, [
+					},
+				}),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(props, [
+						'blockBackground',
+						'border',
+						'borderWidth',
+						'borderRadius',
+					]),
+					blockStyle: props.blockStyle,
+				}),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(
+						props,
+						[
 							'blockBackground',
 							'border',
 							'borderWidth',
 							'borderRadius',
-						]),
-						blockStyle: props.blockStyle,
-					}),
-					...getBlockBackgroundStyles({
-						...getGroupAttributes(
-							props,
-							[
-								'blockBackground',
-								'border',
-								'borderWidth',
-								'borderRadius',
-							],
-							true
-						),
-						isHover: true,
-						blockStyle: props.blockStyle,
-					}),
-					...getArrowStyles({
-						...getGroupAttributes(props, [
+						],
+						true
+					),
+					isHover: true,
+					blockStyle: props.blockStyle,
+				}),
+				...getArrowStyles({
+					...getGroupAttributes(props, [
+						'arrow',
+						'border',
+						'borderWidth',
+						'borderRadius',
+						'blockBackground',
+						'boxShadow',
+					]),
+					blockStyle: props.blockStyle,
+				}),
+				...getArrowStyles({
+					...getGroupAttributes(
+						props,
+						[
 							'arrow',
 							'border',
 							'borderWidth',
 							'borderRadius',
 							'blockBackground',
 							'boxShadow',
-						]),
-						blockStyle: props.blockStyle,
-					}),
-					...getArrowStyles({
-						...getGroupAttributes(
-							props,
-							[
-								'arrow',
-								'border',
-								'borderWidth',
-								'borderRadius',
-								'blockBackground',
-								'boxShadow',
-							],
-							true
-						),
-						...getGroupAttributes(props, ['arrow']),
-						blockStyle: props.blockStyle,
-						isHover: true,
-					}),
-				},
-				...getTransitionStyles(props)
-			),
+						],
+						true
+					),
+					...getGroupAttributes(props, ['arrow']),
+					blockStyle: props.blockStyle,
+					isHover: true,
+				}),
+			},
 			selectorsContainer,
 			props
 		),

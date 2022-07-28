@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
+import { getGroupAttributes, styleProcessor } from '../../extensions/styles';
 import {
 	getBackgroundStyles,
 	getBorderStyles,
@@ -132,7 +132,7 @@ const getStyles = props => {
 	const { uniqueID, blockStyle } = props;
 
 	const response = {
-		[uniqueID]: stylesCleaner(
+		[uniqueID]: styleProcessor(
 			{
 				'': getNormalObject(props),
 				':hover': getHoverNormalObject(props),

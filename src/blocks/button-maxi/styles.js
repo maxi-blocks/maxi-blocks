@@ -1,12 +1,7 @@
 /**
- * External dependencies
- */
-import { merge } from 'lodash';
-
-/**
  * Internal dependencies
  */
-import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
+import { getGroupAttributes, styleProcessor } from '../../extensions/styles';
 import {
 	getAlignmentFlexStyles,
 	getAlignmentTextStyles,
@@ -21,7 +16,6 @@ import {
 	getOverflowStyles,
 	getPositionStyles,
 	getSizeStyles,
-	getTransitionStyles,
 	getTypographyStyles,
 	getZIndexStyles,
 	getButtonIconStyles,
@@ -257,40 +251,38 @@ const getStyles = (props, scValues) => {
 	const { uniqueID, blockStyle } = props;
 
 	const response = {
-		[uniqueID]: stylesCleaner(
-			merge(
-				{
-					'': getWrapperObject(props),
-					':hover': getHoverWrapperObject(props),
-					' .maxi-button-block__button': getNormalObject(props),
-					' .maxi-button-block__content': getContentObject(props),
-					...getButtonIconStyles({ obj: props, blockStyle }),
-					// Hover
-					' .maxi-button-block__button:hover': getHoverObject(
-						props,
-						scValues
-					),
-					' .maxi-button-block__button:hover .maxi-button-block__content':
-						getHoverContentObject(props, scValues),
-					...getBlockBackgroundStyles({
-						...getGroupAttributes(props, [
-							'blockBackground',
-							'border',
-							'borderWidth',
-							'borderRadius',
-						]),
-						blockStyle,
-					}),
-					...getButtonIconStyles({
-						obj: props,
-						blockStyle,
-						isHover: true,
-					}),
-				},
-				...getTransitionStyles(props, transitionObj)
-			),
+		[uniqueID]: styleProcessor(
+			{
+				'': getWrapperObject(props),
+				':hover': getHoverWrapperObject(props),
+				' .maxi-button-block__button': getNormalObject(props),
+				' .maxi-button-block__content': getContentObject(props),
+				...getButtonIconStyles({ obj: props, blockStyle }),
+				// Hover
+				' .maxi-button-block__button:hover': getHoverObject(
+					props,
+					scValues
+				),
+				' .maxi-button-block__button:hover .maxi-button-block__content':
+					getHoverContentObject(props, scValues),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(props, [
+						'blockBackground',
+						'border',
+						'borderWidth',
+						'borderRadius',
+					]),
+					blockStyle,
+				}),
+				...getButtonIconStyles({
+					obj: props,
+					blockStyle,
+					isHover: true,
+				}),
+			},
 			selectorsButton,
-			props
+			props,
+			transitionObj
 		),
 	};
 

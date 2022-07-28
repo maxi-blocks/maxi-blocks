@@ -447,14 +447,14 @@ const MapContent = props => {
 			) : (
 				<p className='maxi-map-block__not-found'>
 					{__(
-						'Oops, you can not see the map because you have not set your Google map API key, please navigate to the Maxi Block',
+						'Oops, you can not see the map because you have not set your Google map API key, please navigate to the Maxi Block ',
 						'maxi-blocks'
 					)}
 					<a
 						target='_blank'
-						href='/wp-admin/admin.php?page=maxi-blocks.php'
+						href='/wp-admin/admin.php?page=maxi-blocks-dashboard&tab=maxi_blocks_settings'
 					>
-						{__(' Options > Google API Key', 'maxi-blocks')}
+						{__('General > Google API Key', 'maxi-blocks')}
 					</a>
 				</p>
 			)}

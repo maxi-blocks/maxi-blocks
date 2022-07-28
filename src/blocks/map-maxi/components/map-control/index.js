@@ -37,8 +37,8 @@ const MapControl = props => {
 					)}
 					links={[
 						{
-							title: __('Maxi Block Options', 'maxi-blocks'),
-							href: '/wp-admin/admin.php?page=maxi-blocks.php',
+							title: __('Maxi Block Settings', 'maxi-blocks'),
+							href: '/wp-admin/admin.php?page=maxi-blocks-dashboard&tab=maxi_blocks_settings',
 						},
 					]}
 				/>

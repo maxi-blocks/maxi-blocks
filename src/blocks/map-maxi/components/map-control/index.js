@@ -29,7 +29,7 @@ const MapControl = props => {
 
 	return (
 		<div className='maxi-map-control'>
-			{!hasApiKey && (
+			{!hasApiKey && mapProvider === 'googlemaps' && (
 				<InfoBox
 					message={__(
 						'You have not set your Google map API key, please navigate to the Maxi Block Options and set it',

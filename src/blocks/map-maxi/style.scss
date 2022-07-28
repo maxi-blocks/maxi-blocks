@@ -1,14 +1,15 @@
 @import '~leaflet/dist/leaflet.css';
 
 body.maxi-blocks--active .maxi-map-block {
+	overflow: hidden;
+
 	&__container {
 		height: 100%;
-		overflow: hidden;
 	}
 
 	.leaflet-container {
 		width: 100%;
-		height: 100%;
+		height: 100vh;
 	}
 
 	.leaflet-div-icon {
@@ -23,14 +24,14 @@ body.maxi-blocks--active .maxi-map-block {
 	}
 
 	.leaflet-popup-content-wrapper {
-		margin-bottom: 20px;
+		margin-bottom: 25px;
 		text-align: center;
 		background: transparent;
 		box-shadow: none;
 	}
 
 	.leaflet-popup-content {
-		width: 160px;
+		width: fit-content;
 		position: relative;
 		display: flex;
 		justify-content: center;
@@ -41,6 +42,7 @@ body.maxi-blocks--active .maxi-map-block {
 		width: 100%;
 		height: 100%;
 		position: relative;
+		box-sizing: content-box !important;
 
 		&__background {
 			position: absolute;
@@ -87,71 +89,74 @@ body.maxi-blocks--active .maxi-map-block {
 		&--1 {
 			border-radius: 16px;
 
-			&::before {
-				left: 50%;
-				border-width: 20px;
-			}
-
+			&::before,
 			&::after {
 				left: 50%;
+			}
+
+			&::before {
+				border-width: 20px;
 			}
 		}
 
 		&--2 {
-			right: 64px;
+			left: 64px;
 			border-radius: 8px;
 
-			&::before {
-				left: 75%;
-				border-width: 30px 0 0 30px;
+			&::before,
+			&::after {
+				left: 30%;
 			}
 
-			&::after {
-				left: 75%;
+			&::before {
+				border-width: 30px 30px 0 0;
 			}
 		}
 
 		&--3 {
-			right: 64px;
+			left: 64px;
 			border-radius: 200%/100px 100px 8px 8px;
 
-			&::before {
-				left: 75%;
-				border-width: 30px 0 0 30px;
+			&::before,
+			&::after {
+				left: 30%;
 			}
 
-			&::after {
-				left: 75%;
+			&::before {
+				border-width: 30px 30px 0 0;
 			}
 		}
 
 		&--4 {
 			border-radius: 8px;
 
-			&::before {
-				left: 50%;
-				border-width: 25px;
-			}
-
+			&::before,
 			&::after {
 				left: 50%;
+			}
+
+			&::before {
+				border-width: 25px;
 			}
 		}
 
 		&--5 {
 			top: 28px;
-			right: 75px;
+			left: 100px;
 			border-radius: 50%;
 
+			&::before,
+			&::after {
+				left: 30%;
+			}
+
 			&::before {
-				left: 75%;
-				transform: rotate(-30deg) translate(-50%, 28%);
-				border-width: 30px 0 0 30px;
+				transform: rotate(30deg) translate(-50%, 94%);
+				border-width: 30px 30px 0 0;
 			}
 
 			&::after {
-				left: 75%;
-				transform: rotate(-30deg) translate(-50%, 36%);
+				transform: rotate(30deg) translate(-50%, 98%);
 			}
 		}
 	}

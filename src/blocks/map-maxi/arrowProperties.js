@@ -1,5 +1,5 @@
-const arrowProperties = {
-	1: {
+const arrowProperties = [
+	{
 		width: '20px',
 		allowedBordersToModify: [
 			'border-top-width',
@@ -8,15 +8,15 @@ const arrowProperties = {
 			'border-left-width',
 		],
 	},
-	2: {
+	{
 		width: '30px',
-		allowedBordersToModify: ['border-top-width', 'border-left-width'],
+		allowedBordersToModify: ['border-top-width', 'border-right-width'],
 	},
-	3: {
+	{
 		width: '30px',
-		allowedBordersToModify: ['border-top-width', 'border-left-width'],
+		allowedBordersToModify: ['border-top-width', 'border-right-width'],
 	},
-	4: {
+	{
 		width: '25px',
 		allowedBordersToModify: [
 			'border-top-width',
@@ -25,10 +25,10 @@ const arrowProperties = {
 			'border-left-width',
 		],
 	},
-	5: {
+	{
 		width: '30px',
-		allowedBordersToModify: ['border-top-width', 'border-left-width'],
+		allowedBordersToModify: ['border-top-width', 'border-right-width'],
 	},
-};
+];
 
 export default arrowProperties;

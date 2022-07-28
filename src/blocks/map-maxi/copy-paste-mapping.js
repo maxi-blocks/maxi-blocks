@@ -43,12 +43,8 @@ const copyPasteMapping = {
 					groupAttributes: ['background', 'backgroundColor'],
 					prefix: 'popup-',
 				},
-				Border: {
-					groupAttributes: ['border', 'borderWidth'],
-					prefix: 'popup-',
-				},
 				'Box shadow': {
-					groupAttributes: ['boxShadow', 'boxShadowHover'],
+					groupAttributes: 'boxShadow',
 					prefix: 'popup-',
 				},
 			},

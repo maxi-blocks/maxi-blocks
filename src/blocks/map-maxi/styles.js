@@ -7,16 +7,16 @@ import {
 	getBorderStyles,
 	getBoxShadowStyles,
 	getDisplayStyles,
+	getFlexStyles,
 	getMarginPaddingStyles,
 	getOpacityStyles,
 	getOverflowStyles,
 	getPositionStyles,
 	getSizeStyles,
-	getZIndexStyles,
-	getTypographyStyles,
 	getSVGStyles,
 	getSVGWidthStyles,
-	getFlexStyles,
+	getTypographyStyles,
+	getZIndexStyles,
 } from '../../extensions/styles/helpers';
 import arrowProperties from './arrowProperties';
 import { selectorsMap } from './custom-css';
@@ -138,46 +138,6 @@ const getMapObject = (props, isTitle) => {
 	return response;
 };
 
-const changeAttributeName = (
-	obj,
-	attributesNames,
-	newAttributeName,
-	addedValue = '',
-	level = 0
-) => {
-	const newObj = {};
-
-	Object.keys(obj).forEach(key => {
-		if (typeof obj[key] === 'object') {
-			if (attributesNames.includes(key)) {
-				newObj[newAttributeName] = obj[key] + addedValue;
-			}
-			newObj[key] = changeAttributeName(
-				obj[key],
-				attributesNames,
-				newAttributeName,
-				addedValue,
-				level + 1
-			);
-		} else {
-			if (attributesNames.includes(key)) {
-				newObj[newAttributeName] = obj[key] + addedValue;
-				return;
-			}
-			newObj[key] = obj[key];
-		}
-	});
-
-	return level === 1
-		? {
-				...newObj,
-				label:
-					newAttributeName.charAt(0).toUpperCase() +
-					newAttributeName.slice(1).replace(/-/g, ' '),
-		  }
-		: newObj;
-};
-
 const modifyBorderWidths = (obj, arrowNumber) => {
 	const newObj = {};
 
@@ -192,6 +152,10 @@ const modifyBorderWidths = (obj, arrowNumber) => {
 			newObj[key] = `calc(${
 				parseInt(obj['border-bottom-width']) * 2
 			}${unit} + ${arrowProperties[arrowNumber].width})`;
+
+			if (!newObj.bottom && arrowNumber === 4) {
+				newObj.bottom = `-${obj['border-bottom-width']}`;
+			}
 		} else {
 			newObj[key] = obj[key];
 		}
@@ -204,25 +168,23 @@ const getBorderArrowObject = props => {
 	const { blockStyle } = props;
 
 	const newObj = {
-		border: changeAttributeName(
-			getBorderStyles({
-				obj: {
-					...getGroupAttributes(
-						props,
-						['border', 'borderWidth', 'borderRadius'],
-						false,
-						'popup-'
-					),
-				},
-				blockStyle,
-				prefix: 'popup-',
-			}),
-			['border-color'],
-			'border-top-color'
-		),
+		border: getBorderStyles({
+			obj: {
+				...getGroupAttributes(
+					props,
+					['border', 'borderWidth', 'borderRadius'],
+					false,
+					'popup-'
+				),
+			},
+			blockStyle,
+			prefix: 'popup-',
+			borderColorProperty: 'border-top-color',
+		}),
 	};
+	const response = modifyBorderWidths(newObj, props['map-popup'] - 1);
 
-	return modifyBorderWidths(newObj, props['map-popup']);
+	return response;
 };
 
 const getStyles = props => {
@@ -276,20 +238,17 @@ const getStyles = props => {
 					}),
 				},
 				[` .maxi-map-block__popup--${props['map-popup']}:before`]: {
-					...changeAttributeName(
-						getBackgroundStyles({
-							...getGroupAttributes(
-								props,
-								['background', 'backgroundColor'],
-								false,
-								'popup-'
-							),
-							blockStyle,
-							prefix: 'popup-',
-						}),
-						['background-color', 'background'],
-						'border-top-color'
-					),
+					...getBackgroundStyles({
+						...getGroupAttributes(
+							props,
+							['background', 'backgroundColor'],
+							false,
+							'popup-'
+						),
+						blockStyle,
+						prefix: 'popup-',
+						backgroundColorProperty: 'border-top-color',
+					}),
 				},
 				[` .maxi-map-block__popup--${props['map-popup']}:after`]:
 					getBorderArrowObject(props),

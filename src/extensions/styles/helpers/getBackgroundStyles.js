@@ -39,6 +39,7 @@ export const getColorBackgroundObject = ({
 	isIconInherit = false,
 	breakpoint = 'general',
 	scValues = {},
+	backgroundColorProperty = 'background-color',
 	...props
 }) => {
 	const hoverStatus = props[`${prefix}background-hover-status`];
@@ -79,7 +80,7 @@ export const getColorBackgroundObject = ({
 	});
 
 	if (!paletteStatus && !isEmpty(color))
-		response[breakpoint]['background-color'] = color;
+		response[breakpoint][backgroundColorProperty] = color;
 	else if (paletteStatus && (paletteColor || paletteOpacity)) {
 		if (isButton && (!isHover || hoverStatus || globalHoverStatus))
 			response[breakpoint].background = getColorRGBAString({
@@ -89,7 +90,7 @@ export const getColorBackgroundObject = ({
 				blockStyle,
 			});
 		else
-			response[breakpoint]['background-color'] = getColorRGBAString({
+			response[breakpoint][backgroundColorProperty] = getColorRGBAString({
 				firstVar: `color-${paletteColor}`,
 				opacity: paletteOpacity,
 				blockStyle,
@@ -102,7 +103,7 @@ export const getColorBackgroundObject = ({
 			props['background-active-media'] !== 'none';
 
 		if (hasBackground)
-			response[breakpoint]['background-color'] =
+			response[breakpoint][backgroundColorProperty] =
 				props['background-active-media'] !== '' && paletteStatus
 					? getColorRGBAString({
 							firstVar: `button-background-color${
@@ -113,7 +114,7 @@ export const getColorBackgroundObject = ({
 							blockStyle,
 					  })
 					: color;
-		else response[breakpoint]['background-color'] = '';
+		else response[breakpoint][backgroundColorProperty] = '';
 	}
 
 	if (!isIconInherit && isIcon)
@@ -1084,6 +1085,7 @@ export const getBackgroundStyles = ({
 	blockStyle,
 	isIconInherit = false,
 	scValues = {},
+	backgroundColorProperty,
 	...props
 }) => {
 	const response = {};
@@ -1114,6 +1116,7 @@ export const getBackgroundStyles = ({
 					prefix,
 					isIconInherit,
 					scValues,
+					backgroundColorProperty,
 				}),
 			}),
 			...(currentActiveMedia === 'gradient' && {

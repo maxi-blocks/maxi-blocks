@@ -3,7 +3,12 @@
  */
 import { __ } from '@wordpress/i18n';
 import { select } from '@wordpress/data';
-import { useEffect, useState, renderToString } from '@wordpress/element';
+import {
+	useEffect,
+	useState,
+	renderToString,
+	useRef,
+} from '@wordpress/element';
 import { Button, TextControl } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
 
@@ -14,10 +19,7 @@ import Inspector from './inspector';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-import {
-	getGroupAttributes,
-	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/styles';
 import { getNewMarker, getUpdatedMarkers } from './utils';
 import getStyles from './styles';
 import copyPasteMapping from './copy-paste-mapping';
@@ -360,7 +362,6 @@ const MapContent = props => {
 	const {
 		apiKey,
 		attributes,
-		deviceType,
 		isFirstClick,
 		isGoogleMaps,
 		isSelected,
@@ -376,8 +377,24 @@ const MapContent = props => {
 		'map-zoom': mapZoom,
 	} = attributes;
 
+	const mapRef = useRef(null);
+
 	const [isDraggingMarker, setIsDraggingMarker] = useState(false);
 	const [isAddingMarker, setIsAddingMarker] = useState(false);
+
+	const resizeMap = mapRef => {
+		const resizeObserver = new ResizeObserver(() =>
+			mapRef.current?.invalidateSize()
+		);
+
+		const container = document.getElementById(
+			`maxi-map-block__container-${uniqueID}`
+		);
+
+		if (container) {
+			resizeObserver.observe(container);
+		}
+	};
 
 	return (
 		<div
@@ -387,24 +404,12 @@ const MapContent = props => {
 			{(isGoogleMaps && apiKey) || !isGoogleMaps ? (
 				<>
 					<MapContainer
+						ref={mapRef}
 						center={[mapLatitude, mapLongitude]}
 						minZoom={mapMinZoom}
 						maxZoom={mapMaxZoom}
 						zoom={mapZoom}
-						style={{
-							height: ['height', 'height-unit'].reduce(
-								(acc, key) => {
-									const value = getLastBreakpointAttribute({
-										target: key,
-										breakpoint: deviceType,
-										attributes,
-									});
-
-									return `${acc}${value}`;
-								},
-								''
-							),
-						}}
+						whenReady={() => resizeMap(mapRef)}
 					>
 						{isGoogleMaps ? (
 							<ReactLeafletGoogleLayer apiKey={apiKey} />

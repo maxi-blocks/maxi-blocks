@@ -100,6 +100,7 @@ const Markers = props => {
 								}}
 								placeholder={__('Description', 'maxi-blocks')}
 								withoutInteractiveFormatting
+								tagName='p'
 							/>
 							<div className='maxi-map-block__popup__content__marker-remove'>
 								<Button

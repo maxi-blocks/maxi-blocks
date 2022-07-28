@@ -107,31 +107,22 @@ const getHoverNormalObject = props => {
 	return response;
 };
 
-const getMapObject = (props, isTitle) => {
+const getPopupTypographyStyles = (props, isTitle = false) => {
 	const { blockStyle } = props;
 
-	const typography = isTitle
-		? getTypographyStyles({
-				obj: {
-					...getGroupAttributes(props, 'typography'),
-				},
-				blockStyle,
-		  })
-		: getTypographyStyles({
-				obj: {
-					...getGroupAttributes(
-						props,
-						'typography',
-						false,
-						'description-'
-					),
-				},
-				blockStyle,
-				prefix: 'description-',
-		  });
+	const prefix = isTitle ? '' : 'description-';
 
 	const response = {
-		[isTitle ? 'typography' : 'description-typography']: typography,
+		[isTitle ? 'typography' : 'typographyDescription']: getTypographyStyles(
+			{
+				obj: {
+					...getGroupAttributes(props, 'typography', false, prefix),
+				},
+				blockStyle,
+				prefix,
+				textLevel: isTitle ? props['map-marker-heading-level'] : 'p',
+			}
+		),
 	};
 
 	return response;
@@ -145,12 +136,10 @@ const getStyles = props => {
 			{
 				'': getNormalObject(props),
 				':hover': getHoverNormalObject(props),
-				' .maxi-map-block__popup__content__title': getMapObject(
-					props,
-					true
-				),
+				' .maxi-map-block__popup__content__title':
+					getPopupTypographyStyles(props, true),
 				' .maxi-map-block__popup__content__description':
-					getMapObject(props),
+					getPopupTypographyStyles(props),
 				' .maxi-map-block__popup': {
 					boxShadow: getBoxShadowStyles({
 						obj: {
@@ -204,7 +193,7 @@ const getStyles = props => {
 			props
 		),
 	};
-
+	console.log(response);
 	return response;
 };
 

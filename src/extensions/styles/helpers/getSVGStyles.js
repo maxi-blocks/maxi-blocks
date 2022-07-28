@@ -35,7 +35,7 @@ export const getSVGWidthStyles = ({
 				target: `${prefix}svg-width-unit`,
 				breakpoint,
 				attributes: obj,
-			})} ${isImportant ? '!important' : ''}`;
+			})}${isImportant ? ' !important' : ''}`;
 
 		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')
 			delete response[breakpoint];

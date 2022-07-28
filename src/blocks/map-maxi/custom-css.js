@@ -49,6 +49,7 @@ export const selectorsMap = {
 			target: ':hover .map-marker-info-window__address',
 		},
 	},
+	// TODO: add new targets
 };
 
 export const categoriesMap = [

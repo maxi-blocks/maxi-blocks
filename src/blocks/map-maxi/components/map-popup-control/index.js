@@ -124,15 +124,17 @@ const MapPopupControl = props => {
 				minMaxSettings={{
 					px: {
 						min: 0,
-						max: 99,
+						max: 20,
 					},
 					em: {
 						min: 0,
-						max: 10,
+						max: 4,
+						step: 0.1,
 					},
 					vw: {
 						min: 0,
-						max: 10,
+						max: 3,
+						step: 0.1,
 					},
 				}}
 				disableAuto

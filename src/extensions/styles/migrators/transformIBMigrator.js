@@ -71,13 +71,12 @@ const getAttributesFromStyle = (styles, selector) => {
 
 			if (!key || !value) return;
 
-			const axis = key.replace(key, '').toLowerCase();
+			const type = key.slice(0, -1);
+			const axis = key.slice(-1).toLowerCase();
 
 			const isOriginWithUnit =
 				key.includes('origin') &&
 				!['top', 'right', 'bottom', 'left', 'center'].includes(value);
-
-			const type = key.slice(0, -1);
 
 			if (['scale', 'rotate'].includes(type) || !isOriginWithUnit) {
 				result[`transform-${type}-${breakpoint}`] = {

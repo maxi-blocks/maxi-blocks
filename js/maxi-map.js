@@ -85,7 +85,6 @@ window.onload = () => {
 					'map-latitude': mapLatitude,
 					'map-longitude': mapLongitude,
 					'map-zoom': mapZoom,
-					'map-marker-zoom': mapMarkerZoom,
 					'map-markers': mapMarkers,
 					'map-marker-icon': mapMarkerIcon,
 					'map-marker-heading-level': mapMarkerHeadingLevel,

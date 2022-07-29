@@ -6,8 +6,8 @@ const roundMarkersCoords = markers => {
 
 		return {
 			...marker,
-			latitude: round(latitude, 1),
-			longitude: round(longitude, 1),
+			latitude: round(latitude),
+			longitude: round(longitude),
 		};
 	});
 };

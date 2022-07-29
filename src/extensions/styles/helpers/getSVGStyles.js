@@ -101,14 +101,14 @@ const getSVGPathStrokeStyles = (
 	blockStyle,
 	prefix = 'svg-',
 	isHover,
-	useIconColor
+	useIconColor = true
 ) => {
 	const response = {
 		label: 'SVG Path stroke',
-		general: {},
 	};
 
 	if (isHover && !useIconColor && !obj['typography-status-hover']) {
+		response.general = {};
 		response.general.stroke = '';
 
 		return response;
@@ -131,29 +131,37 @@ const getSVGPathStrokeStyles = (
 			break;
 	}
 
-	const { paletteStatus, paletteColor, paletteOpacity, color } =
-		getPaletteAttributes({
-			obj,
-			prefix: useIconColor ? linePrefix : '',
-			isHover,
-		});
+	(!useIconColor ? breakpoints : ['general']).forEach(breakpoint => {
+		response[breakpoint] = {};
 
-	if (paletteStatus && paletteColor) {
-		if (useIconColor)
-			response.general.stroke = getColorRGBAString({
-				firstVar: `icon-stroke${isHover ? '-hover' : ''}`,
-				secondVar: `color-${paletteColor}`,
-				opacity: paletteOpacity,
-				blockStyle,
-			});
-		else
-			response.general.stroke = getColorRGBAString({
-				firstVar: `color-${paletteColor}`,
-				opacity: paletteOpacity,
-				blockStyle,
-			});
-	} else if (!paletteStatus && !isNil(color)) response.general.stroke = color;
+		const linePrefix =
+			prefix === 'icon-' ? `${prefix}stroke-` : `${prefix}line-`;
 
+		const { paletteStatus, paletteColor, paletteOpacity, color } =
+			getPaletteAttributes({
+				obj,
+				prefix: useIconColor ? linePrefix : '',
+				...(!useIconColor && { breakpoint }),
+				isHover,
+			});
+
+		if (paletteStatus && paletteColor) {
+			if (useIconColor)
+				response.general.stroke = getColorRGBAString({
+					firstVar: `icon-stroke${isHover ? '-hover' : ''}`,
+					secondVar: `color-${paletteColor}`,
+					opacity: paletteOpacity,
+					blockStyle,
+				});
+			else
+				response[breakpoint].stroke = getColorRGBAString({
+					firstVar: `color-${paletteColor}`,
+					opacity: paletteOpacity,
+					blockStyle,
+				});
+		} else if (!paletteStatus && !isNil(color))
+			response[breakpoint].stroke = color;
+	});
 	return { SVGPathStroke: response };
 };
 
@@ -244,6 +252,14 @@ export const getSVGStyles = ({
 				[` ${target} svg g[data-hover-fill]:not([fill^="none"])`]:
 					getSVGPathFillStyles(obj, blockStyle, prefix, isHover),
 				[` ${target} svg[data-hover-stroke] path:not([stroke^="none"])`]:
+					getSVGPathStrokeStyles(
+						obj,
+						blockStyle,
+						prefix,
+						isHover,
+						useIconColor
+					),
+				[` ${target} svg path[data-hover-stroke]:not([stroke^="none"])`]:
 					getSVGPathStrokeStyles(
 						obj,
 						blockStyle,

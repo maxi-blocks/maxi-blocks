@@ -262,30 +262,31 @@ const MenuSelect = ({ items, currentRefinement, refine }) => {
 	);
 };
 
-const HierarchicalMenu = ({ items, refine }) => (
-	<ul>
-		{items.map(item => (
-			<li key={item.label} className='ais-HierarchicalMenu-item'>
-				<a
-					href='#'
-					onClick={event => {
-						event.preventDefault();
-						refine(item.value);
-					}}
-				>
-					{unescape(item.label)} ({item.count})
-				</a>
-				<ToggleSwitch
-					selected={item.isRefined}
-					onChange={val => refine(item.value)}
-				/>
-				{item.items && (
-					<HierarchicalMenu items={item.items} refine={refine} />
-				)}
-			</li>
-		))}
-	</ul>
-);
+const HierarchicalMenu = ({ items, refine }) =>
+	!isEmpty(items) && (
+		<ul>
+			{items.map(item => (
+				<li key={item.label} className='ais-HierarchicalMenu-item'>
+					<a
+						href='#'
+						onClick={event => {
+							event.preventDefault();
+							refine(item.value);
+						}}
+					>
+						{unescape(item.label)} ({item.count})
+					</a>
+					<ToggleSwitch
+						selected={item.isRefined}
+						onChange={val => refine(item.value)}
+					/>
+					{item.items && (
+						<HierarchicalMenu items={item.items} refine={refine} />
+					)}
+				</li>
+			))}
+		</ul>
+	);
 
 /**
  * Component

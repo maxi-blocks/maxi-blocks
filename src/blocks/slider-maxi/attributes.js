@@ -1,9 +1,4 @@
 /**
- * WordPress dependencies
- */
-import { __ } from '@wordpress/i18n';
-
-/**
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
@@ -17,14 +12,6 @@ const attributes = {
 	/**
 	 * Block styles
 	 */
-	customLabel: {
-		type: 'string',
-		default: __('Slider', 'maxi-blocks'),
-	},
-	blockFullWidth: {
-		type: 'string',
-		default: 'normal',
-	},
 	...attributesData.slider,
 	...attributesData.blockBackground,
 	...{

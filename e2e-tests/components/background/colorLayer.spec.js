@@ -108,8 +108,9 @@ describe('Background Color Layer', () => {
 		);
 
 		// hover
-		await accordion.$$eval('.maxi-tabs-control button', button =>
-			button[1].click()
+		await accordion.$eval(
+			'.maxi-tabs-control .maxi-tabs-control__button-hover',
+			button => button.click()
 		);
 
 		// enable hover

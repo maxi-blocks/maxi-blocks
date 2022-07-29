@@ -19,6 +19,38 @@ import {
 	getLastBreakpointAttribute,
 	getIconWithColor,
 } from '../../extensions/styles';
+import {
+	getTransformCategories,
+	getTransformSelectors,
+} from '../transform-control/utils';
+import getBlockCategoriesAndSelectors from './getBlockCategoriesAndSelectors';
+
+const getTransformControl = name => {
+	const { categories, selectors } = getBlockCategoriesAndSelectors(name);
+
+	return {
+		label: __('Transform', 'maxi-blocks'),
+		attrGroupName: 'transform',
+		component: props => (
+			<Controls.TransformControl
+				{...props}
+				uniqueID={props.attributes.uniqueID}
+				depth={2}
+				selectors={getTransformSelectors(selectors)}
+				categories={getTransformCategories(
+					categories,
+					props.attributes
+				)}
+				disableHover
+			/>
+		),
+		helper: props =>
+			styleHelpers.getTransformStyles(
+				props.obj,
+				getTransformSelectors(selectors)
+			),
+	};
+};
 
 const canvasSettings = [
 	{
@@ -107,18 +139,6 @@ const canvasSettings = [
 			</>
 		),
 		helper: props => styleHelpers.getMarginPaddingStyles(props),
-	},
-	{
-		label: __('Transform', 'maxi-blocks'),
-		attrGroupName: 'transform',
-		component: props => (
-			<Controls.TransformControl
-				{...props}
-				uniqueID={props.attributes.uniqueID}
-				depth={2}
-			/>
-		),
-		helper: props => styleHelpers.getTransformStyles(props.obj),
 	},
 	{
 		label: __('Position', 'maxi-blocks'),
@@ -238,10 +258,17 @@ const settings = {
 			helper: props => styleHelpers.getMarginPaddingStyles(props),
 			target: '.maxi-button-block__button',
 		},
+		...getTransformControl('button'),
 		...canvasSettings,
 	],
-	'maxi-blocks/column-maxi': [...canvasSettings],
-	'maxi-blocks/container-maxi': [...canvasSettings],
+	'maxi-blocks/column-maxi': [
+		...getTransformControl('column'),
+		...canvasSettings,
+	],
+	'maxi-blocks/container-maxi': [
+		...getTransformControl('container'),
+		...canvasSettings,
+	],
 	'maxi-blocks/divider-maxi': [
 		{
 			label: __('Divider box shadow', 'maxi-blocks'),
@@ -263,9 +290,13 @@ const settings = {
 				),
 			target: ' hr.maxi-divider-block__divider',
 		},
+		...getTransformControl('divider'),
 		...canvasSettings,
 	],
-	'maxi-blocks/group-maxi': [...canvasSettings],
+	'maxi-blocks/group-maxi': [
+		...getTransformControl('group'),
+		...canvasSettings,
+	],
 	'maxi-blocks/image-maxi': [
 		{
 			label: __('Alignment', 'maxi-blocks'),
@@ -273,11 +304,15 @@ const settings = {
 			component: props => <Controls.AlignmentControl {...props} />,
 			helper: props => styleHelpers.getAlignmentFlexStyles(props.obj),
 		},
+		...getTransformControl('image'),
 		...canvasSettings,
 	],
-	'maxi-blocks/map-maxi': [...canvasSettings],
-	'maxi-blocks/number-counter-maxi': [...canvasSettings],
-	'maxi-blocks/row-maxi': [...canvasSettings],
+	'maxi-blocks/map-maxi': [...getTransformControl('map'), ...canvasSettings],
+	'maxi-blocks/number-counter-maxi': [
+		...getTransformControl('number-counter'),
+		...canvasSettings,
+	],
+	'maxi-blocks/row-maxi': [...getTransformControl('row'), ...canvasSettings],
 	'maxi-blocks/svg-icon-maxi': [
 		{
 			label: __('Icon colour'),
@@ -357,6 +392,7 @@ const settings = {
 			helper: props => styleHelpers.getBorderStyles(props),
 			target: ' .maxi-svg-icon-block__icon',
 		},
+		...getTransformControl('svg-icon'),
 		...canvasSettings,
 	],
 	'maxi-blocks/text-maxi': [
@@ -382,6 +418,7 @@ const settings = {
 			helper: props => styleHelpers.getTypographyStyles({ ...props }),
 			target: '.maxi-text-block__content',
 		},
+		...getTransformControl('text'),
 		...canvasSettings,
 	],
 	'maxi-blocks/slider-maxi': [...canvasSettings],

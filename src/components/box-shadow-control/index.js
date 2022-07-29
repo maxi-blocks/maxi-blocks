@@ -47,6 +47,27 @@ const BoxShadowValueControl = props => {
 		onChange,
 	} = props;
 
+	const minMaxSettings = {
+		px: {
+			min: type === 'blur' ? 0 : -3999,
+			max: 3999,
+			minRange: -1999,
+			maxRange: 1999,
+		},
+		em: {
+			min: type === 'blur' ? 0 : -999,
+			max: 999,
+			minRange: -300,
+			maxRange: 300,
+		},
+		vw: {
+			min: type === 'blur' ? 0 : -999,
+			max: 999,
+			minRange: -300,
+			maxRange: 300,
+		},
+	};
+
 	return (
 		<AdvancedNumberControl
 			{...(!isToolbar && { label: __(capitalize(type), 'maxi-blocks') })}
@@ -65,6 +86,7 @@ const BoxShadowValueControl = props => {
 			}}
 			min={-100}
 			max={100}
+			minMaxSettings={minMaxSettings}
 			onReset={() =>
 				onChange({
 					[`${prefix}box-shadow-${type}-${breakpoint}${

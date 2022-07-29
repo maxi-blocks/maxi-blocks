@@ -114,28 +114,25 @@ const getSVGPathStrokeStyles = (
 		return response;
 	}
 
-	let linePrefix = '';
-
-	switch (prefix) {
-		case 'icon-':
-			linePrefix = `${prefix}stroke-`;
-			break;
-		case 'navigation-arrow-both-icon-':
-			linePrefix = `${prefix}stroke-`;
-			break;
-		case 'navigation-dot-icon-':
-			linePrefix = `${prefix}stroke-`;
-			break;
-		default:
-			linePrefix = `${prefix}line-`;
-			break;
-	}
-
 	(!useIconColor ? breakpoints : ['general']).forEach(breakpoint => {
 		response[breakpoint] = {};
 
-		const linePrefix =
-			prefix === 'icon-' ? `${prefix}stroke-` : `${prefix}line-`;
+		let linePrefix = '';
+
+		switch (prefix) {
+			case 'icon-':
+				linePrefix = `${prefix}stroke-`;
+				break;
+			case 'navigation-arrow-both-icon-':
+				linePrefix = `${prefix}stroke-`;
+				break;
+			case 'navigation-dot-icon-':
+				linePrefix = `${prefix}stroke-`;
+				break;
+			default:
+				linePrefix = `${prefix}line-`;
+				break;
+		}
 
 		const { paletteStatus, paletteColor, paletteOpacity, color } =
 			getPaletteAttributes({

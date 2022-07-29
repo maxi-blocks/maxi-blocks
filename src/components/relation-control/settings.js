@@ -333,7 +333,9 @@ const settings = {
 					acc[key] = {
 						transform: styleHelpers.getImageShapeStyles(
 							type,
-							props.obj
+							props.obj,
+							'',
+							true
 						),
 					};
 					return acc;

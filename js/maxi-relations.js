@@ -67,34 +67,42 @@ const relations = () => {
 		};
 	};
 
-	const getTargetEls = (target, element) =>
-		target !== ''
-			? element.querySelectorAll(
-					target.includes('>') ? `:scope ${target}` : target
-			  )
-			: [element];
-
-	const toggleStylesForTarget = (target, element, callback) => {
-		if (target === 'isTargets') return;
-
-		const targetEls = getTargetEls(target, element);
-
-		targetEls.forEach(targetEl => {
-			callback(targetEl);
-		});
-	};
-
-	const toggleInlineStyles = (stylesObj, element, remove = false) => {
+	const toggleInlineStyles = (stylesObj, target, remove = false) => {
 		if (stylesObj.isTargets) {
-			Object.entries(stylesObj).forEach(([target, styles]) => {
-				toggleStylesForTarget(target, element, targetEl => {
-					toggleInlineStyles(styles, targetEl, remove);
-				});
+			Object.entries(stylesObj).forEach(([targetSelector, styles]) => {
+				targetSelector !== 'isTargets' &&
+					toggleInlineStyles(
+						styles,
+						`${target} ${targetSelector}`,
+						remove
+					);
 			});
 		} else {
-			Object.entries(stylesObj).forEach(
-				([key, value]) => (element.style[key] = !remove ? value : '')
+			const interactionStyle = document.querySelector(
+				'#maxi-blocks-interaction-css'
 			);
+			const selector = `body.maxi-blocks--active ${target} {`;
+
+			Object.entries(stylesObj).forEach(([key, value]) => {
+				if (remove) {
+					const styleRegExp = new RegExp(
+						`(${selector}.*) ${key}:.*?;`
+					);
+
+					interactionStyle.textContent =
+						interactionStyle.textContent.replace(styleRegExp, '$1');
+				} else {
+					const selectorRegExp = new RegExp(`(${selector})`);
+					if (!interactionStyle.textContent.match(selectorRegExp))
+						interactionStyle.textContent += `${selector}}`;
+
+					interactionStyle.textContent =
+						interactionStyle.textContent.replace(
+							selectorRegExp,
+							`$1 ${key}: ${value};`
+						);
+				}
+			});
 		}
 	};
 
@@ -126,9 +134,7 @@ const relations = () => {
 		if (!item?.uniqueID) return;
 
 		const triggerEl = document.querySelector(`.${item.trigger}`);
-		const targetEl = document.querySelector(
-			`.${item.uniqueID} ${item.target ?? ''}`
-		);
+		const target = `#${item.uniqueID} ${item.target ?? ''}`;
 
 		let timeout;
 
@@ -142,13 +148,13 @@ const relations = () => {
 						item.effects
 					);
 
-					toggleTransition(
-						getTransitionString(effectsObj),
-						targetEl,
-						stylesObj
-					);
+					// toggleTransition(
+					// 	getTransitionString(effectsObj),
+					// 	targetEl,
+					// 	stylesObj
+					// );
 
-					toggleInlineStyles(stylesObj, targetEl);
+					toggleInlineStyles(stylesObj, target);
 				});
 
 				triggerEl.addEventListener('mouseleave', () => {
@@ -157,17 +163,17 @@ const relations = () => {
 						item.effects
 					);
 
-					toggleInlineStyles(stylesObj, targetEl, true);
+					toggleInlineStyles(stylesObj, target, true);
 
-					timeout = setTimeout(() => {
-						// Removing transition after transition-duration + 1s to make sure it's done
-						toggleTransition(
-							getTransitionString(effectsObj),
-							targetEl,
-							stylesObj,
-							true
-						);
-					}, item.effects['transition-duration-general'] * 1000 + 1000);
+					// timeout = setTimeout(() => {
+					// 	// Removing transition after transition-duration + 1s to make sure it's done
+					// 	toggleTransition(
+					// 		getTransitionString(effectsObj),
+					// 		targetEl,
+					// 		stylesObj,
+					// 		true
+					// 	);
+					// }, item.effects['transition-duration-general'] * 1000 + 1000);
 				});
 			}
 			case 'click': {
@@ -179,11 +185,11 @@ const relations = () => {
 
 					toggleTransition(
 						getTransitionString(effectsObj),
-						targetEl,
+						target,
 						stylesObj
 					);
 
-					toggleInlineStyles(stylesObj, targetEl);
+					toggleInlineStyles(stylesObj, target);
 				});
 			}
 		}
@@ -191,4 +197,21 @@ const relations = () => {
 };
 
 window.addEventListener('load', relations);
+window.addEventListener('load', () => {
+	if (maxiRelations[0].length) {
+		if (!document.querySelector('#maxi-blocks-interaction-css')) {
+			const inlineStyle = document.querySelector(
+				'#maxi-blocks-inline-css'
+			);
+			if (inlineStyle) {
+				const interactionStyle = document.createElement('style');
+				interactionStyle.id = 'maxi-blocks-interaction-css';
+				inlineStyle.parentNode.insertBefore(
+					interactionStyle,
+					inlineStyle.nextSibling
+				);
+			}
+		}
+	}
+});
 window.addEventListener('resize', relations);

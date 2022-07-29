@@ -441,7 +441,7 @@ describe('Responsive attributes mechanisms', () => {
 
 		// Reset
 		await borderAccordion.$eval(
-			'.maxi-axis-control__content__item__border-radius .components-maxi-control__reset-button',
+			'.maxi-axis-control__content__item__border-radius .maxi-reset-button',
 			button => button.click()
 		);
 
@@ -465,7 +465,7 @@ describe('Responsive attributes mechanisms', () => {
 
 		// Reset
 		await borderAccordion.$eval(
-			'.maxi-axis-control__content__item__border-radius .components-maxi-control__reset-button',
+			'.maxi-axis-control__content__item__border-radius .maxi-reset-button',
 			button => button.click()
 		);
 
@@ -540,9 +540,8 @@ describe('Responsive attributes mechanisms', () => {
 			'.maxi-axis-control__padding'
 		);
 
-		await axisControlInstance.$eval(
-			'.components-maxi-control__reset-button',
-			button => button.click()
+		await axisControlInstance.$eval('.maxi-reset-button', button =>
+			button.click()
 		);
 
 		const expectPaddingAfterReset = {
@@ -645,7 +644,7 @@ describe('Responsive attributes mechanisms', () => {
 
 		// Size reset button 1
 		await page.$eval(
-			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__size .components-maxi-control__reset-button',
+			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__size .maxi-reset-button',
 			input => input.click()
 		);
 
@@ -653,7 +652,7 @@ describe('Responsive attributes mechanisms', () => {
 
 		// Size reset button 2
 		await page.$eval(
-			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__size .components-maxi-control__reset-button',
+			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__size .maxi-reset-button',
 			input => input.click()
 		);
 
@@ -661,7 +660,7 @@ describe('Responsive attributes mechanisms', () => {
 
 		// Size reset button 3
 		await page.$eval(
-			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__size .components-maxi-control__reset-button',
+			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__size .maxi-reset-button',
 			input => input.click()
 		);
 

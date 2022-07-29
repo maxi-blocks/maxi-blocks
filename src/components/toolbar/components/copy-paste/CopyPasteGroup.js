@@ -6,7 +6,6 @@ import { useState } from '@wordpress/element';
 /**
  * External dependencies
  */
-import classnames from 'classnames';
 import { isEmpty, isEqual, kebabCase, omit } from 'lodash';
 
 const CopyPasteGroup = props => {
@@ -48,10 +47,7 @@ const CopyPasteGroup = props => {
 	return (
 		<>
 			<div
-				className={classnames(
-					'toolbar-item__copy-paste__popover__item',
-					'toolbar-item__copy-paste__popover__item__group'
-				)}
+				className='toolbar-item__copy-paste__popover__item toolbar-item__copy-paste__popover__item__group'
 				onClick={e => {
 					if (e.target.nodeName !== 'INPUT') setIsOpen(!isOpen);
 				}}

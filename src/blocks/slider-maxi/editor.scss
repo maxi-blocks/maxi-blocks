@@ -21,10 +21,6 @@
 			display: none !important;
 		}
 	}
-
-	.maxi-slide-block:not([data-slide-active='true']) * {
-		pointer-events: none !important;
-	}
 }
 
 html body.maxi-blocks--active .maxi-slider-block[data-align='full'] {

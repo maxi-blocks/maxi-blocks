@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { dispatch, select } from '@wordpress/data';
+import { select } from '@wordpress/data';
 import { useInnerBlocksProps } from '@wordpress/block-editor';
 import { useEntityBlockEditor } from '@wordpress/core-data';
 
@@ -18,6 +18,7 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
 import copyPasteMapping from './copy-paste-mapping';
+import createNewMenu from '../../extensions/navigation-menu/create-new-menu';
 
 const Navigation = props => {
 	const { selectedMenuId } = props.attributes;
@@ -32,8 +33,6 @@ const Navigation = props => {
 
 	const ALLOWED_BLOCKS = ['maxi-blocks/navigation-link-maxi'];
 
-	console.log(blocks);
-
 	return (
 		<div
 			{...useInnerBlocksProps(
@@ -44,7 +43,7 @@ const Navigation = props => {
 					value: blocks,
 					onInput,
 					onChange,
-					allowedBlocks: ALLOWED_BLOCKS,
+					// allowedBlocks: ALLOWED_BLOCKS,
 				}
 			)}
 		/>
@@ -80,31 +79,23 @@ class edit extends MaxiBlockComponent {
 		return response;
 	}
 
-	maxiBlockDidUpdate() {
+	maxiBlockDidUpdate(prevProps) {
 		const { selectedMenuId } = this.props.attributes;
+		const { selectedMenuId: prevMenuId } = prevProps.attributes;
 
-		this.updateSelectedMenu(selectedMenuId);
-	}
-
-	createNewMenu(title) {
-		const { maxiSetAttributes } = this.props;
-
-		const record = {
-			title,
-			content: [],
-			status: 'publish',
-		};
-		dispatch('core')
-			.saveEntityRecord('postType', 'wp_navigation', record)
-			.then(res => {
-				maxiSetAttributes({ selectedMenuId: res.id });
-			});
+		if (selectedMenuId !== prevMenuId)
+			this.updateSelectedMenu(selectedMenuId);
 	}
 
 	updateSelectedMenu(id) {
 		if (!id) return;
+
+		const { maxiSetAttributes } = this.props;
+
 		if (id === '-1') {
-			this.createNewMenu('New menu');
+			createNewMenu([]).then(newId =>
+				maxiSetAttributes({ selectedMenuId: newId })
+			);
 		}
 
 		const { getEditedEntityRecord } = select('core');

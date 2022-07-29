@@ -103,15 +103,12 @@ const CopyPaste = props => {
 		getDefaultSpecialPaste(organizedAttributes)
 	);
 
-	const cleanInnerBlocks = innerBlocks => {
-		const test = innerBlocks.map(block => {
+	const cleanInnerBlocks = innerBlocks =>
+		innerBlocks.map(block => {
 			block.innerBlocks = cleanInnerBlocks(block.innerBlocks);
 
 			return cloneBlock(block);
 		});
-
-		return test;
-	};
 
 	const { copyStyles, copyNestedBlocks } = useDispatch('maxiBlocks');
 	const { updateBlockAttributes, replaceInnerBlocks } =

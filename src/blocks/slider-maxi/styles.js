@@ -8,7 +8,7 @@ import { isNil, isEmpty } from 'lodash';
  */
 import {
 	getGroupAttributes,
-	stylesCleaner,
+	styleProcessor,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import {
@@ -17,7 +17,6 @@ import {
 	getZIndexStyles,
 	getPositionStyles,
 	getDisplayStyles,
-	getTransformStyles,
 	getMarginPaddingStyles,
 	getBlockBackgroundStyles,
 	getColorBackgroundObject,
@@ -71,9 +70,6 @@ const getNormalObject = props => {
 		}),
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
-		}),
-		transform: getTransformStyles({
-			...getGroupAttributes(props, 'transform'),
 		}),
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
@@ -533,7 +529,7 @@ const getStyles = (props, breakpoint, clientId) => {
 	});
 
 	const response = {
-		[uniqueID]: stylesCleaner(
+		[uniqueID]: styleProcessor(
 			{
 				'': getNormalObject(props),
 				':hover': getHoverObject(props),

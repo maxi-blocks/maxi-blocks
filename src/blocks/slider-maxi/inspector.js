@@ -231,6 +231,8 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.transform({
 										props,
+										selectors: selectorsSlider,
+										categories: categoriesSlider,
 									}),
 									...inspectorTabs.display({
 										props,

@@ -212,6 +212,11 @@ const Inspector = props => {
 										selectors: selectorsMap,
 										categories: categoriesMap,
 									}),
+									...inspectorTabs.transition({
+										props: {
+											...props,
+										},
+									}),
 									...inspectorTabs.display({
 										props,
 									}),

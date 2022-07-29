@@ -121,11 +121,7 @@ const getSVGPathStrokeStyles = (
 
 		switch (prefix) {
 			case 'icon-':
-				linePrefix = `${prefix}stroke-`;
-				break;
 			case 'navigation-arrow-both-icon-':
-				linePrefix = `${prefix}stroke-`;
-				break;
 			case 'navigation-dot-icon-':
 				linePrefix = `${prefix}stroke-`;
 				break;

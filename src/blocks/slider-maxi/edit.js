@@ -131,8 +131,8 @@ const SliderWrapper = props => {
 			el.removeAttribute('data-slide-active');
 		});
 		const activeSlide = document.querySelectorAll(
-			`.${uniqueID} ul > li.maxi-slide-block:nth-child(${number + 1})`
-		)[0];
+			`.${uniqueID} ul > li.maxi-slide-block:not(.maxi-slide-block--clone)`
+		)[number];
 
 		activeSlide?.setAttribute('data-slide-active', 'true');
 	};
@@ -259,11 +259,12 @@ const SliderWrapper = props => {
 
 		const clone = slide.cloneNode(true);
 		clone.classList.add('maxi-slide-block--clone');
-		clone.id = `clone-${slide.id}`;
 		clone.setAttribute(
 			'uniqueid',
 			`clone-${slide.getAttribute('uniqueid')}`
 		);
+
+		clone.removeAttribute('data-block');
 		return clone;
 	};
 
@@ -271,6 +272,8 @@ const SliderWrapper = props => {
 		for (let i = 0; i < numberOfClones; i += 1) {
 			const backClone = getSlideClone(numberOfSlides - 1 - i);
 			const frontClone = getSlideClone(i);
+			backClone.id = `back-clone-slide-${numberOfSlides - 1 - i}`;
+			backClone.id = `front-clone-slide-${i}`;
 
 			wrapperRef.current.append(frontClone);
 			wrapperRef.current.prepend(backClone);
@@ -311,7 +314,7 @@ const SliderWrapper = props => {
 	useEffect(() => {
 		if (wrapperTranslate !== getSlidePosition(currentSlide))
 			setWrapperTranslate(getSlidePosition(currentSlide));
-	}, [slidesWidth, isLoop, currentSlide]);
+	}, [slidesWidth, isLoop, currentSlide, realFirstSlideOffset]);
 
 	useEffect(() => {
 		if (isLoop) {

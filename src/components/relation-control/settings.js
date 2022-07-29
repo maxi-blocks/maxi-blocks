@@ -315,6 +315,8 @@ const settings = {
 						{...props}
 						icon={SVGElement}
 						disableModal
+						disableImagePosition
+						disableImageRatio
 					/>
 				) : (
 					<InfoBox

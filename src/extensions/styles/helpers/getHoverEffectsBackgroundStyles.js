@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import getGroupAttributes from '../getGroupAttributes';
-import { getLastBreakpointAttribute } from '../getLastBreakpointAttribute';
+import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 import {
 	getColorBackgroundObject,
 	getGradientBackgroundObject,

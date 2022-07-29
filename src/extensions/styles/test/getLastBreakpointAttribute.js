@@ -1,4 +1,4 @@
-import { getLastBreakpointAttribute } from '../getLastBreakpointAttribute';
+import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 
 jest.mock('@wordpress/data', () => {
 	return {

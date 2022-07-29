@@ -9,7 +9,7 @@ import { getSVGStyles } from './getSVGStyles';
 import getIconStyles from './getIconStyles';
 import getIconPathStyles from './getIconPathStyles';
 import getGroupAttributes from '../getGroupAttributes';
-import { getLastBreakpointAttribute } from '../getLastBreakpointAttribute';
+import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 
 import { isNil, isEmpty } from 'lodash';
 

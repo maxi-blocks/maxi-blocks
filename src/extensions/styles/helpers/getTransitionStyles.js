@@ -6,7 +6,7 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 /**
  * Internal dependencies
  */
-import { getLastBreakpointAttribute } from '../getLastBreakpointAttribute';
+import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 import transitionDefault from '../transitions/transitionDefault';
 
 /**

@@ -7,7 +7,7 @@ import getColorRGBAString from '../getColorRGBAString';
 import getDisplayStyles from './getDisplayStyles';
 import getGroupAttributes from '../getGroupAttributes';
 import getImageShapeStyles from './getImageShapeStyles';
-import { getLastBreakpointAttribute } from '../getLastBreakpointAttribute';
+import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 
 /**
  * External dependencies

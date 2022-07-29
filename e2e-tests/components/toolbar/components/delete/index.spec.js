@@ -10,7 +10,7 @@ describe('Delete block', () => {
 		await page.keyboard.type('Block 1', { delay: 100 });
 
 		const textContent = await page.$eval(
-			'.is-root-container.block-editor-block-list__layout div',
+			'.is-root-container.block-editor-block-list__layout',
 			content => content.outerText
 		);
 
@@ -27,12 +27,14 @@ describe('Delete block', () => {
 			button => button.click()
 		);
 
+		await page.waitForTimeout(500);
+
 		// check block not exist
 		const textContentBeforeDelete = await page.$eval(
-			'.is-root-container.block-editor-block-list__layout div',
+			'.is-root-container.block-editor-block-list__layout',
 			content => content.outerText
 		);
 
-		expect(textContentBeforeDelete).toBe('');
+		expect(textContentBeforeDelete.length).toStrictEqual(1);
 	});
 });

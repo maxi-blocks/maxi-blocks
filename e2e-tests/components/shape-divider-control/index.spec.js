@@ -71,9 +71,9 @@ describe('ShapeDividerControl', () => {
 		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('50');
 
-		expect(await getAttributes('shape-divider-top-opacity')).toStrictEqual(
-			0.5
-		);
+		expect(
+			await getAttributes('shape-divider-top-opacity-general')
+		).toStrictEqual(0.5);
 
 		// color
 		await accordionPanel.$$eval(
@@ -82,21 +82,21 @@ describe('ShapeDividerControl', () => {
 		);
 
 		expect(
-			await getAttributes('shape-divider-top-palette-color')
+			await getAttributes('shape-divider-top-palette-color-general')
 		).toStrictEqual(4);
 
 		// divider height
 		await editAdvancedNumberControl({
 			page,
 			instance: await page.$(
-				'.maxi-shape-divider-control .maxi-divider-height'
+				'.maxi-shape-divider-control .maxi-shape-divider-control__height'
 			),
 			newNumber: '200',
 		});
 
-		expect(await getAttributes('shape-divider-top-height')).toStrictEqual(
-			200
-		);
+		expect(
+			await getAttributes('shape-divider-top-height-general')
+		).toStrictEqual(200);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

@@ -67,18 +67,29 @@ const relations = () => {
 		};
 	};
 
+	const getTargetEls = (target, element) =>
+		target !== ''
+			? element.querySelectorAll(
+					target.includes('>') ? `:scope ${target}` : target
+			  )
+			: [element];
+
+	const toggleStylesForTarget = (target, element, callback) => {
+		if (target === 'isTargets') return;
+
+		const targetEls = getTargetEls(target, element);
+
+		targetEls.forEach(targetEl => {
+			callback(targetEl);
+		});
+	};
+
 	const toggleInlineStyles = (stylesObj, element, remove = false) => {
 		if (stylesObj.isTargets) {
 			Object.entries(stylesObj).forEach(([target, styles]) => {
-				if (target === 'isTargets') return;
-
-				const targetEls = element.querySelectorAll(
-					target.includes('>') ? `:scope ${target}` : target
-				);
-
-				targetEls.forEach(targetEl =>
-					toggleInlineStyles(styles, targetEl, remove)
-				);
+				toggleStylesForTarget(target, element, targetEl => {
+					toggleInlineStyles(styles, targetEl, remove);
+				});
 			});
 		} else {
 			Object.entries(stylesObj).forEach(
@@ -93,17 +104,13 @@ const relations = () => {
 		stylesObj,
 		remove = false
 	) => {
-		const targets = stylesObj.isTargets ? Object.keys(stylesObj) : null;
+		const targets = stylesObj?.isTargets ? Object.keys(stylesObj) : null;
 
 		if (targets) {
 			targets.forEach(target => {
-				const targetEls = element.querySelectorAll(
-					target.includes('>') ? `:scope ${target}` : target
-				);
-
-				targetEls.forEach(targetEl =>
-					toggleTransition(transitionString, targetEl, remove)
-				);
+				toggleStylesForTarget(target, element, targetEl => {
+					toggleTransition(transitionString, targetEl, null, remove);
+				});
 			});
 		} else {
 			element.style.transition = !remove ? transitionString : '';

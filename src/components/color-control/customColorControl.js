@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { __, sprintf } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 import { useEffect, useState } from '@wordpress/element';
 
 /**
@@ -10,7 +10,7 @@ import { useEffect, useState } from '@wordpress/element';
 import Icon from '../icon';
 import BaseControl from '../base-control';
 import OpacityControl from '../opacity-control';
-import Button from '../button';
+import ResetButton from '../reset-control';
 
 /**
  * External dependencies
@@ -23,7 +23,7 @@ import { isEmpty } from 'lodash';
  * Icons
  */
 import './editor.scss';
-import { colorOpacity, reset } from '../../icons';
+import { colorOpacity } from '../../icons';
 
 /**
  * Component
@@ -68,22 +68,12 @@ const CustomColorControl = props => {
 								/>
 							</div>
 							{!disableReset && (
-								<Button
-									className='components-maxi-control__reset-button'
-									onClick={e => {
-										e.preventDefault();
+								<ResetButton
+									onReset={e => {
 										onReset();
 									}}
 									isSmall
-									aria-label={sprintf(
-										/* translators: %s: a textual label  */
-										__('Reset %s settings', 'maxi-blocks'),
-										label?.toLowerCase()
-									)}
-									type='reset'
-								>
-									{reset}
-								</Button>
+								/>
 							)}
 						</BaseControl>
 					)}

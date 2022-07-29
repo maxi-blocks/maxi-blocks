@@ -7,15 +7,15 @@ import { isNil, isEmpty } from 'lodash';
  * Internal dependencies
  */
 import {
+	getAttributeValue,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-	stylesCleaner,
+	styleProcessor,
 } from '../../extensions/styles';
 import {
 	getBoxShadowStyles,
 	getZIndexStyles,
 	getDisplayStyles,
-	getTransformStyles,
 	getMarginPaddingStyles,
 	getBorderStyles,
 	getOpacityStyles,
@@ -26,6 +26,7 @@ import {
 	getIconPathStyles,
 	getIconStyles,
 	getAspectRatio,
+	getSVGStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsVideo } from './custom-css';
 
@@ -63,9 +64,6 @@ const getNormalObject = props => {
 		}),
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
-		}),
-		transform: getTransformStyles({
-			...getGroupAttributes(props, 'transform'),
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
@@ -144,7 +142,7 @@ const getOverlayBackgroundObject = props => {
 	return response;
 };
 
-const getVideoPlayerOject = props => {
+const getVideoContainerOject = props => {
 	const { videoRatio } = props;
 
 	const response = {
@@ -154,7 +152,7 @@ const getVideoPlayerOject = props => {
 	return response;
 };
 
-const getIconSize = (obj, prefix = '') => {
+const getIconSize = (obj, prefix = '', isHover = false) => {
 	const response = {
 		label: 'Icon size',
 		general: {},
@@ -163,20 +161,42 @@ const getIconSize = (obj, prefix = '') => {
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
-		if (!isNil(obj[`${prefix}icon-height-${breakpoint}`])) {
-			response[breakpoint].height = `${
-				obj[`${prefix}icon-height-${breakpoint}`]
-			}${getLastBreakpointAttribute({
-				target: `${prefix}icon-height-unit`,
+		if (
+			!isNil(
+				getAttributeValue({
+					target: 'icon-height',
+					isHover,
+					breakpoint,
+					prefix,
+					props: obj,
+				})
+			)
+		) {
+			response[breakpoint].height = `${getAttributeValue({
+				target: 'icon-height',
+				isHover,
 				breakpoint,
-				attributes: obj,
+				prefix,
+				props: obj,
+			})}${getAttributeValue({
+				target: 'icon-height-unit',
+				isHover,
+				breakpoint,
+				prefix,
+				props: obj,
 			})}`;
-			response[breakpoint].width = `${
-				obj[`${prefix}icon-height-${breakpoint}`]
-			}${getLastBreakpointAttribute({
-				target: `${prefix}icon-height-unit`,
+			response[breakpoint].width = `${getAttributeValue({
+				target: 'icon-height',
+				isHover,
 				breakpoint,
-				attributes: obj,
+				prefix,
+				props: obj,
+			})}${getAttributeValue({
+				target: 'icon-height-unit',
+				isHover,
+				breakpoint,
+				prefix,
+				props: obj,
 			})}`;
 		}
 
@@ -187,50 +207,139 @@ const getIconSize = (obj, prefix = '') => {
 	return { iconSize: response };
 };
 
+const getCloseIconPosition = obj => {
+	const response = {
+		label: 'Icon position',
+	};
+
+	const { 'close-icon-position': iconPosition } = obj;
+
+	// if the icon is spacing from the screen boundaries we want to move it left down,
+	// if it is spacing from the video we want to move it top right
+	const isSpacingPositive = iconPosition === 'top-screen-right';
+
+	breakpoints.forEach(breakpoint => {
+		response[breakpoint] = {};
+
+		const rawIconSpacing = getLastBreakpointAttribute({
+			target: 'close-icon-spacing',
+			breakpoint,
+			attributes: obj,
+		});
+		const iconSpacingUnit = getLastBreakpointAttribute({
+			target: 'close-icon-spacing-unit',
+			breakpoint,
+			attributes: obj,
+		});
+
+		const iconSpacing = isSpacingPositive
+			? rawIconSpacing
+			: -rawIconSpacing;
+
+		response[breakpoint].top = `${iconSpacing ?? 0}${
+			iconSpacingUnit ?? 'px'
+		}`;
+		response[breakpoint].right = `${iconSpacing ?? 0}${
+			iconSpacingUnit ?? 'px'
+		}`;
+	});
+
+	return {
+		iconPosition: {
+			response,
+		},
+	};
+};
+
+const getIconObject = (prefix, obj) => {
+	const { [`${prefix}icon-status-hover`]: iconHoverStatus } = obj;
+
+	return {
+		[` .maxi-video-block__${prefix}button svg`]: getIconSize(obj, prefix),
+		[` .maxi-video-block__${prefix}button svg path`]: getIconPathStyles(
+			obj,
+			false,
+			prefix
+		),
+		[` .maxi-video-block__${prefix}button`]: {
+			icon: getIconStyles(obj, obj.blockStyle, false, false, prefix),
+			...(prefix === 'close-' && {
+				iconPosition: getCloseIconPosition(obj),
+			}),
+		},
+		...getSVGStyles({
+			obj,
+			target: `.maxi-video-block__${prefix}button`,
+			blockStyle: obj.blockStyle,
+			prefix: `${prefix}icon-`,
+			useIconColor: true,
+		}),
+		...(iconHoverStatus &&
+			(prefix === 'play-'
+				? {
+						[`:hover .maxi-video-block__${prefix}button svg`]:
+							getIconSize(obj, prefix),
+						[`:hover .maxi-video-block__${prefix}button svg`]: {
+							icon: getIconStyles(
+								obj,
+								obj.blockStyle,
+								false,
+								true,
+								prefix
+							),
+						},
+						[`:hover .maxi-video-block__${prefix}button svg path`]:
+							getIconPathStyles(obj, true, prefix),
+						...getSVGStyles({
+							obj,
+							target: `:hover .maxi-video-block__${prefix}button`,
+							blockStyle: obj.blockStyle,
+							prefix: `${prefix}icon-`,
+							useIconColor: true,
+							isHover: true,
+						}),
+				  }
+				: {
+						[` .maxi-video-block__${prefix}button:hover svg`]:
+							getIconSize(obj, prefix),
+						[` .maxi-video-block__${prefix}button:hover svg`]: {
+							icon: getIconStyles(
+								obj,
+								obj.blockStyle,
+								false,
+								true,
+								prefix
+							),
+						},
+						[` .maxi-video-block__${prefix}button:hover svg path`]:
+							getIconPathStyles(obj, true, prefix),
+						...getSVGStyles({
+							obj,
+							target: ` .maxi-video-block__${prefix}button:hover`,
+							blockStyle: obj.blockStyle,
+							prefix: `${prefix}icon-`,
+							useIconColor: true,
+							isHover: true,
+						}),
+				  })),
+	};
+};
+
 const getStyles = props => {
 	const { uniqueID } = props;
 
 	const response = {
-		[uniqueID]: stylesCleaner(
+		[uniqueID]: styleProcessor(
 			{
 				'': getNormalObject(props),
 				':hover': getHoverObject(props),
 				' .maxi-video-block__popup-wrapper': getLightBoxObject(props),
-				' .maxi-video-block__video-player': getVideoPlayerOject(props),
+				' .maxi-video-block__video-container':
+					getVideoContainerOject(props),
 				' .maxi-video-block__overlay-background':
 					getOverlayBackgroundObject(props),
-				' .maxi-video-block__close-button': getIconStyles(
-					props,
-					props.blockStyle,
-					false,
-					false,
-					'close-'
-				),
-				' .maxi-video-block__close-button svg': getIconSize(
-					props,
-					'close-'
-				),
-				' .maxi-video-block__close-button svg path': getIconPathStyles(
-					props,
-					false,
-					'close-'
-				),
-				' .maxi-video-block__play-button svg': getIconSize(
-					props,
-					'play-'
-				),
-				' .maxi-video-block__play-button': getIconStyles(
-					props,
-					props.blockStyle,
-					false,
-					false,
-					'play-'
-				),
-				' .maxi-video-block__play-button svg path': getIconPathStyles(
-					props,
-					false,
-					'play-'
-				),
+				...getIconObject('play-', props),
+				...getIconObject('close-', props),
 			},
 			selectorsVideo,
 			props

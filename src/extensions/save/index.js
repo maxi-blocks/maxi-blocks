@@ -32,7 +32,8 @@ const withSave = (element, blockType, attributes) => {
 	if (
 		allowedBlocks.includes(blockType.name) &&
 		!!linkSettings &&
-		!!linkSettings.url
+		!!linkSettings.url &&
+		!linkSettings?.disabled
 	) {
 		let rel = '';
 		if (linkSettings.nofollow) rel += ' nofollow';

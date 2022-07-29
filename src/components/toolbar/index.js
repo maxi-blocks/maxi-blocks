@@ -254,7 +254,10 @@ const MaxiToolbar = memo(
 										</span>
 									</span>
 								)}
-								{customLabel}
+								{customLabel.length > 30
+									? `${customLabel.substring(0, 30)}...`
+									: customLabel}
+
 								<span className='toolbar-block-custom-label__block-style'>
 									{` | ${blockStyle}`}
 								</span>
@@ -565,6 +568,7 @@ const MaxiToolbar = memo(
 							onChange={linkSettings =>
 								maxiSetAttributes({ linkSettings })
 							}
+							clientId={clientId}
 							textLevel={textLevel}
 						/>
 						<TextLink
@@ -577,6 +581,7 @@ const MaxiToolbar = memo(
 							textLevel={textLevel}
 							blockStyle={blockStyle}
 							styleCard={styleCard}
+							clientId={clientId}
 						/>
 						<VerticalAlign
 							clientId={clientId}

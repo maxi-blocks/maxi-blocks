@@ -1,4 +1,4 @@
-import stylesCleaner from '../stylesCleaner';
+import styleProcessor from '../styleProcessor';
 
 describe('styleCleaner', () => {
 	it('Returns cleaned styles obj', () => {
@@ -187,6 +187,60 @@ describe('styleCleaner', () => {
 			},
 		};
 
-		expect(stylesCleaner(obj)).toMatchSnapshot();
+		const props = {
+			'box-shadow-blur-general': 50,
+			'box-shadow-blur-general-hover': 50,
+			'box-shadow-blur-unit-general': 'px',
+			'box-shadow-blur-unit-general-hover': 'px',
+			'box-shadow-horizontal-general': 0,
+			'box-shadow-horizontal-general-hover': 0,
+			'box-shadow-horizontal-unit-general': 'px',
+			'box-shadow-horizontal-unit-general-hover': 'px',
+			'box-shadow-inset-general': false,
+			'box-shadow-inset-general-hover': false,
+			'box-shadow-palette-color-general': 8,
+			'box-shadow-palette-color-general-hover': 6,
+			'box-shadow-palette-opacity-general': 0.23,
+			'box-shadow-palette-opacity-general-hover': 0.23,
+			'box-shadow-palette-status-general': true,
+			'box-shadow-palette-status-general-hover': true,
+			'box-shadow-spread-general': 0,
+			'box-shadow-spread-general-hover': 0,
+			'box-shadow-spread-unit-general': 'px',
+			'box-shadow-spread-unit-general-hover': 'px',
+			'box-shadow-status-hover': true,
+			'box-shadow-vertical-general': 30,
+			'box-shadow-vertical-general-hover': 30,
+			'box-shadow-vertical-unit-general': 'px',
+			'box-shadow-vertical-unit-general-hover': 'px',
+			transition: {
+				block: {},
+				canvas: {
+					border: {
+						'transition-duration-general': 0.3,
+						'transition-delay-general': 0,
+						'easing-general': 'ease',
+						'transition-status-general': true,
+						hoverProp: 'border-status-hover',
+					},
+					'box shadow': {
+						'transition-duration-general': 0.3,
+						'transition-delay-general': 0,
+						'easing-general': 'ease',
+						'transition-status-general': true,
+						hoverProp: 'box-shadow-status-hover',
+					},
+					'background / layer': {
+						'transition-duration-general': 0.3,
+						'transition-delay-general': 0,
+						'easing-general': 'ease',
+						'transition-status-general': true,
+						hoverProp: 'block-background-hover-status',
+					},
+				},
+			},
+		};
+
+		expect(styleProcessor(obj, {}, props)).toMatchSnapshot();
 	});
 });

@@ -230,7 +230,9 @@ const TextOptions = props => {
 			returnFormatValue: true,
 		});
 
-		const newFormatValue = { ...obj.formatValue };
+		const newFormatValue = {
+			...obj.formatValue,
+		};
 		delete obj.formatValue;
 
 		onChangeTextFormat(newFormatValue);

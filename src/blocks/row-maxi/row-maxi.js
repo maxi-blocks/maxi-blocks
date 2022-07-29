@@ -23,11 +23,12 @@ import { rowIcon } from '../../icons';
 import attributes from './attributes';
 import edit from './edit';
 import save from './save';
+import { selectorsRow } from './custom-css';
 
 /**
  * Migrators
  */
-import blockMigrator from '../../extensions/styles/migrators/blockMigrator';
+import { blockMigrator } from '../../extensions/styles/migrators';
 
 /**
  * Block
@@ -55,5 +56,5 @@ registerBlockType('maxi-blocks/row-maxi', {
 	},
 	edit,
 	save,
-	deprecated: [blockMigrator({ attributes, save })],
+	deprecated: blockMigrator({ attributes, save, selectors: selectorsRow }),
 });

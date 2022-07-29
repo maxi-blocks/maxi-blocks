@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import BaseControl from '../base-control';
-import Button from '../button';
+import ResetButton from '../reset-control';
 
 /**
  * External dependencies
@@ -15,16 +15,12 @@ import Button from '../button';
 import { isNil } from 'lodash';
 
 /**
- * Icons
- */
-import { reset } from '../../icons';
-
-/**
  * Component
  */
 const RotateControl = props => {
 	const { x, y, z, defaultX, defaultY, defaultZ, onChange } = props;
-
+	const min = -360;
+	const max = 360;
 	return (
 		<div className='maxi-transform-control__rotate-control'>
 			<div className='maxi-transform-control__rotate-control__item'>
@@ -41,37 +37,30 @@ const RotateControl = props => {
 
 							onChange(value, y, z);
 						}}
-						min={-360}
-						max={360}
+						min={min}
+						max={max}
 					/>
 					<input
 						type='number'
 						placeholder='0deg'
 						className='maxi-transform-control__rotate-control__item__input'
 						value={isNil(x) ? '' : x}
-						min={-360}
-						max={360}
+						min={min}
+						max={max}
 						onChange={e => {
 							if (e.target.value === '') {
 								onChange(defaultX, y, z);
 							} else {
 								let value = +e.target.value;
 
-								if (value > 360) value = 360;
-								if (value < -360) value = -360;
+								if (value > max) value = max;
+								if (value < min) value = min;
 
 								onChange(value, y, z);
 							}
 						}}
 					/>
-					<Button
-						className='components-maxi-control__reset-button'
-						onClick={() => onChange(defaultX, y, z)}
-						action='reset'
-						type='reset'
-					>
-						{reset}
-					</Button>
+					<ResetButton onReset={() => onChange(defaultX, y, z)} />
 				</BaseControl>
 			</div>
 			<div className='maxi-transform-control__rotate-control__item'>
@@ -88,37 +77,30 @@ const RotateControl = props => {
 
 							onChange(x, value, z);
 						}}
-						min={-360}
-						max={360}
+						min={min}
+						max={max}
 					/>
 					<input
 						type='number'
 						placeholder='0deg'
 						className='maxi-transform-control__rotate-control__item__input'
 						value={isNil(y) ? '' : y}
-						min={-360}
-						max={360}
+						min={min}
+						max={max}
 						onChange={e => {
 							if (e.target.value === '') {
 								onChange(x, defaultY, z);
 							} else {
 								let value = +e.target.value;
 
-								if (value > 360) value = 360;
-								if (value < -360) value = -360;
+								if (value > max) value = max;
+								if (value < min) value = min;
 
 								onChange(x, value, z);
 							}
 						}}
 					/>
-					<Button
-						className='components-maxi-control__reset-button'
-						onClick={() => onChange(x, defaultY, z)}
-						action='reset'
-						type='reset'
-					>
-						{reset}
-					</Button>
+					<ResetButton onReset={() => onChange(x, defaultY, z)} />
 				</BaseControl>
 			</div>
 			<div className='maxi-transform-control__rotate-control__item'>
@@ -135,37 +117,30 @@ const RotateControl = props => {
 
 							onChange(x, y, value);
 						}}
-						min={-360}
-						max={360}
+						min={min}
+						max={max}
 					/>
 					<input
 						type='number'
 						placeholder='0deg'
 						className='maxi-transform-control__rotate-control__item__input'
 						value={isNil(z) ? '' : z}
-						min={-360}
-						max={360}
+						min={min}
+						max={max}
 						onChange={e => {
 							if (e.target.value === '') {
 								onChange(x, y, defaultZ);
 							} else {
 								let value = +e.target.value;
 
-								if (value > 360) value = 360;
-								if (value < -360) value = -360;
+								if (value > max) value = max;
+								if (value < min) value = min;
 
 								onChange(x, y, value);
 							}
 						}}
 					/>
-					<Button
-						className='components-maxi-control__reset-button'
-						onClick={() => onChange(z, y, defaultZ)}
-						action='reset'
-						type='reset'
-					>
-						{reset}
-					</Button>
+					<ResetButton onReset={() => onChange(x, y, defaultZ)} />
 				</BaseControl>
 			</div>
 		</div>

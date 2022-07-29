@@ -14,6 +14,7 @@ import {
 	setHoverAttributes,
 } from '../../extensions/styles';
 import ResponsiveTabsControl from '../responsive-tabs-control';
+import ManageHoverTransitions from '../manage-hover-transitions';
 
 /**
  * Component
@@ -66,6 +67,7 @@ const boxShadow = ({ props, prefix = '', depth = 2, inlineTarget = '' }) => {
 							label: __('Hover state', 'maxi-blocks'),
 							content: (
 								<>
+									<ManageHoverTransitions />
 									<ToggleSwitch
 										label={__(
 											'Enable box shadow hover',

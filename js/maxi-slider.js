@@ -278,7 +278,7 @@ class MaxiSlider {
 
 	slideNext() {
 		if (
-			this.currentSlide + 1 <= this._slides.length ||
+			this.currentSlide + 1 < this._slides.length ||
 			this.isLoop ||
 			this.isAutoplay
 		) {

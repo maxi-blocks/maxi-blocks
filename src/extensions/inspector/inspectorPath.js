@@ -34,3 +34,16 @@ export const openSidebarAccordion = (tab, accordionName) => {
 		)
 		.then(() => openSidebar(accordionName));
 };
+
+export const openTransitions = () => {
+	const { openGeneralSidebar } = dispatch('core/edit-post');
+	openGeneralSidebar('edit-post/block')
+		.then(() =>
+			dispatch('maxiBlocks').updateInspectorPath({
+				depth: 0,
+				name: 'Advanced',
+				value: 2,
+			})
+		)
+		.then(() => openSidebar('hover transition'));
+};

@@ -31,6 +31,7 @@ import {
 	styleResolver,
 } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
+import getIsUniqueIDRepeated from './getIsUniqueIDRepeated';
 import { loadFonts, getAllFonts } from '../text/fonts';
 import uniqueIDGenerator from '../attributes/uniqueIDGenerator';
 
@@ -81,10 +82,6 @@ const StyleComponent = ({
  * Class
  */
 class MaxiBlockComponent extends Component {
-	propsToAvoidRendering = [];
-
-	propsToAvoidStyling = [];
-
 	constructor(...args) {
 		super(...args);
 
@@ -109,45 +106,10 @@ class MaxiBlockComponent extends Component {
 		this.displayStyles(newUniqueID);
 	}
 
-	// Just for debugging!
-	// eslint-disable-next-line react/sort-comp
-	difference(obj1, obj2) {
-		Object.keys(obj1).forEach(key => {
-			if (obj1[key] !== obj2[key])
-				// eslint-disable-next-line no-console
-				console.log(
-					`The block is rendering due to changes on this prop: ${key}.`,
-					`Old prop was: ${obj1[key]}.`,
-					`New prop is: ${obj2[key]}`
-				);
-		});
-	}
-
-	// Removes non-necessary entries of props object for comparison
-	propsObjectCleaner(props) {
-		const newProps = cloneDeep(props);
-		const entriesToRemove = [
-			'maxiSetAttributes',
-			'insertInlineStyles',
-			'cleanInlineStyles',
-			'context',
-		];
-
-		entriesToRemove.forEach(entry => {
-			delete newProps[entry];
-		});
-
-		// Transform objects into strings to compare easier
-		Object.entries(newProps).forEach(([key, value]) => {
-			if (typeof value === 'object')
-				newProps[key] = JSON.stringify(value);
-		});
-
-		return newProps;
-	}
-
 	componentDidMount() {
 		if (this.maxiBlockDidMount) this.maxiBlockDidMount();
+
+		this.displayStyles();
 
 		if (!this.getBreakpoints.xxl) this.forceUpdate();
 	}
@@ -189,24 +151,6 @@ class MaxiBlockComponent extends Component {
 		// Check changes on states
 		if (!isEqual(this.state, nextState)) return true;
 
-		// Check changes on props
-		if (!isEmpty(this.propsToAvoidRendering)) {
-			const oldAttributes = cloneDeep(nextProps.attributes);
-			const newAttributes = cloneDeep(this.props.attributes);
-
-			this.propsToAvoidRendering.forEach(prop => {
-				delete oldAttributes[prop];
-				delete newAttributes[prop];
-			});
-
-			// eslint-disable-next-line no-constant-condition
-			if (!isEqual(oldAttributes, newAttributes) && false)
-				// Just for debugging 👍
-				this.difference(oldAttributes, newAttributes);
-
-			return !isEqual(oldAttributes, newAttributes);
-		}
-
 		if (this.shouldMaxiBlockUpdate)
 			return (
 				this.shouldMaxiBlockUpdate(
@@ -231,24 +175,6 @@ class MaxiBlockComponent extends Component {
 	 * Prevents styling
 	 */
 	getSnapshotBeforeUpdate(prevProps, prevState) {
-		if (!isEmpty(this.propsToAvoidStyling)) {
-			const oldAttributes = cloneDeep(prevProps.attributes);
-			const newAttributes = cloneDeep(this.props.attributes);
-
-			this.propsToAvoidStyling.forEach(prop => {
-				delete oldAttributes[prop];
-				delete newAttributes[prop];
-			});
-
-			if (!isEqual(oldAttributes, newAttributes))
-				this.difference(oldAttributes, newAttributes);
-
-			if (this.maxiBlockGetSnapshotBeforeUpdate)
-				this.maxiBlockGetSnapshotBeforeUpdate(prevProps, prevState);
-
-			return isEqual(oldAttributes, newAttributes);
-		}
-
 		// Force render styles when changing state
 		if (!isEqual(prevState, this.state)) return false;
 
@@ -355,24 +281,6 @@ class MaxiBlockComponent extends Component {
 		};
 	}
 
-	uniqueIDChecker(idToCheck) {
-		if (!isEmpty(document.getElementsByClassName(idToCheck))) {
-			const newUniqueID = uniqueIDGenerator(idToCheck);
-
-			this.props.attributes.uniqueID = newUniqueID;
-
-			return newUniqueID;
-		}
-
-		return idToCheck;
-	}
-
-	loadFonts() {
-		const response = getAllFonts(this.typography, 'custom-formats');
-
-		if (!isEmpty(response)) loadFonts(response);
-	}
-
 	getCurrentBlockStyle() {
 		const {
 			clientId,
@@ -388,6 +296,58 @@ class MaxiBlockComponent extends Component {
 		}
 
 		return false;
+	}
+
+	// Removes non-necessary entries of props object for comparison
+	propsObjectCleaner(props) {
+		const newProps = cloneDeep(props);
+		const entriesToRemove = [
+			'maxiSetAttributes',
+			'insertInlineStyles',
+			'cleanInlineStyles',
+			'context',
+		];
+
+		entriesToRemove.forEach(entry => {
+			delete newProps[entry];
+		});
+
+		// Transform objects into strings to compare easier
+		Object.entries(newProps).forEach(([key, value]) => {
+			if (typeof value === 'object')
+				newProps[key] = JSON.stringify(value);
+		});
+
+		return newProps;
+	}
+
+	uniqueIDChecker(idToCheck) {
+		if (getIsUniqueIDRepeated(idToCheck)) {
+			const newUniqueID = uniqueIDGenerator(this.props.name);
+
+			this.props.attributes.uniqueID = newUniqueID;
+
+			const label = this.props.attributes.uniqueID.replace('-maxi-', '_');
+			this.props.attributes.customLabel =
+				label.charAt(0).toUpperCase() + label.slice(1);
+
+			return newUniqueID;
+		}
+
+		// This code can be removed after migrating #3474
+		if (isEmpty(this.props.attributes.customLabel)) {
+			const label = idToCheck.replace('-maxi-', '_');
+			this.props.attributes.customLabel =
+				label.charAt(0).toUpperCase() + label.slice(1);
+		}
+
+		return idToCheck;
+	}
+
+	loadFonts() {
+		const response = getAllFonts(this.typography, 'custom-formats');
+
+		if (!isEmpty(response)) loadFonts(response);
 	}
 
 	/**

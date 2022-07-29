@@ -1,16 +1,15 @@
 /**
- * External dependencies
+ * Internal dependencies
  */
-import { isEmpty, isNil, uniqueId } from 'lodash';
+import getIsUniqueIDRepeated from '../maxi-block/getIsUniqueIDRepeated';
 
-const uniqueIDGenerator = name => {
-	const newID = uniqueId(name.replace(/[0-9]/g, ''));
+const uniqueIDGenerator = (blockName, diff = 1) => {
+	const newID = `${blockName
+		.replace('maxi-blocks/', '')
+		.replace(/[0-9]/g, '')}-${diff}`;
 
-	if (
-		!isEmpty(document.getElementsByClassName(newID)) ||
-		!isNil(document.getElementById(newID))
-	)
-		return uniqueIDGenerator(name);
+	if (getIsUniqueIDRepeated(newID, 0))
+		return uniqueIDGenerator(blockName, diff + 1);
 
 	return newID;
 };

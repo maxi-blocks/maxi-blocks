@@ -23,10 +23,6 @@ const attributes = {
 	/**
 	 * Block styles
 	 */
-	customLabel: {
-		type: 'string',
-		default: __('Icon Maxi', 'maxi-blocks'),
-	},
 	openFirstTime: {
 		type: 'boolean',
 		default: true,
@@ -37,6 +33,8 @@ const attributes = {
 	content: {
 		type: 'string',
 	},
+	altTitle: { type: 'string' },
+	altDescription: { type: 'string' },
 	...attributesData.svg,
 	...attributesData.svgHover,
 	...{

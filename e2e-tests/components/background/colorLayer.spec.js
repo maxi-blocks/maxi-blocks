@@ -74,6 +74,7 @@ describe('Background Color Layer', () => {
 			'.maxi-color-control__palette-container .maxi-color-control__palette-box--active',
 			select => select.getAttribute('data-item')
 		);
+
 		expect(sColorSelected).toStrictEqual('6');
 
 		// expect xs
@@ -107,8 +108,9 @@ describe('Background Color Layer', () => {
 		);
 
 		// hover
-		await accordion.$$eval('.maxi-tabs-control button', button =>
-			button[1].click()
+		await accordion.$eval(
+			'.maxi-tabs-control .maxi-tabs-control__button-hover',
+			button => button.click()
 		);
 
 		// enable hover

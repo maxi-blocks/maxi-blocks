@@ -1,4 +1,4 @@
-const receiveSelectedMaxiStyle = async page => {
+export const receiveSelectedMaxiStyleCard = async page => {
 	return page.evaluate(() => {
 		return wp.data
 			.select('maxiBlocks/style-cards')
@@ -6,14 +6,12 @@ const receiveSelectedMaxiStyle = async page => {
 	});
 };
 
-const checkSCResults = async page => {
+export const checkSCResult = async page => {
 	const {
 		value: {
 			light: { styleCard: expectPresets },
 		},
-	} = await receiveSelectedMaxiStyle(page);
+	} = await receiveSelectedMaxiStyleCard(page);
 
 	return expectPresets;
 };
-
-export default checkSCResults;

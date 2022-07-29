@@ -493,7 +493,6 @@ const Inspector = props => {
 																	type: 'p',
 																}}
 																styleCardPrefix=''
-																allowLink
 															/>
 														</>
 													)}
@@ -670,6 +669,8 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.transform({
 										props,
+										selectors: selectorsImage,
+										categories: categoriesImage,
 									}),
 									...inspectorTabs.transition({
 										props: {

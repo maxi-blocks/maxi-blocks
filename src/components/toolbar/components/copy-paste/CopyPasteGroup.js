@@ -7,12 +7,7 @@ import { useState } from '@wordpress/element';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isEqual, omit } from 'lodash';
-
-/**
- * Internal dependencies
- */
-import normalizeLabel from './normalizeLabel';
+import { isEmpty, isEqual, kebabCase, omit } from 'lodash';
 
 const CopyPasteGroup = props => {
 	const {
@@ -25,7 +20,7 @@ const CopyPasteGroup = props => {
 	} = props;
 	const [isOpen, setIsOpen] = useState(false);
 
-	const normalizedLabel = normalizeLabel(label);
+	const normalizedLabel = kebabCase(label);
 
 	const checkNestedCheckboxes = (attrType, tab, checked) => {
 		handleSpecialPaste({
@@ -86,7 +81,7 @@ const CopyPasteGroup = props => {
 			{isOpen &&
 				Object.keys(organizedAttributes[tab][label]).map(attr => {
 					// To prevent the group checkbox triggering from nested items
-					const uniqueAttr = normalizeLabel(
+					const uniqueAttr = kebabCase(
 						attr === label ? `${label}-nested` : attr
 					);
 
@@ -98,7 +93,7 @@ const CopyPasteGroup = props => {
 							<div
 								className='toolbar-item__copy-paste__popover__item'
 								key={`copy-paste-${tab}-${uniqueAttr}`}
-								data-copy_paste_group={normalizeLabel(label)}
+								data-copy_paste_group={kebabCase(label)}
 							>
 								<label
 									htmlFor={uniqueAttr}

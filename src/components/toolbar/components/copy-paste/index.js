@@ -15,7 +15,6 @@ import CopyPasteGroup from './CopyPasteGroup';
 import Dropdown from '../../../dropdown';
 import { getOrganizedAttributes } from '../../../../extensions/copy-paste';
 import { loadColumnsTemplate } from '../../../../extensions/column-templates';
-import normalizeLabel from './normalizeLabel';
 
 /**
  * External dependencies
@@ -27,6 +26,7 @@ import {
 	isEqual,
 	isObject,
 	isString,
+	kebabCase,
 } from 'lodash';
 
 /**
@@ -242,7 +242,7 @@ const CopyPaste = props => {
 					!isEmpty(organizedAttributes[tab]) &&
 					!isEqual(currentOrganizedAttributes[tab], attributes) &&
 					Object.entries(attributes).map(([label, obj]) => {
-						const normalizedLabel = normalizeLabel(label);
+						const normalizedLabel = kebabCase(label);
 
 						if (
 							!obj.group &&

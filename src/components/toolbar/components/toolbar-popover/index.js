@@ -104,6 +104,7 @@ class ToolbarPopover extends Component {
 			advancedOptions = false,
 			tab = 0,
 			position = 'top center',
+			disabled = false,
 		} = this.props;
 
 		const { isOpen, onClose } = this.state;
@@ -128,6 +129,7 @@ class ToolbarPopover extends Component {
 					onClick={() => this.onToggle()}
 					aria-expanded={isOpen}
 					action='popup'
+					disabled={disabled}
 				>
 					<Icon className='toolbar-item__icon' icon={icon} />
 					{__(text, 'maxi-blocks')}

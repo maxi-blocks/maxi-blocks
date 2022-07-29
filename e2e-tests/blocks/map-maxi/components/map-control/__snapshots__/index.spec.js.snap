@@ -7,20 +7,8 @@ Object {
 }
 `;
 
-exports[`Map Control Map Maxi custom min/max zoom 2`] = `
-Object {
-  "map-zoom": 4,
-}
-`;
+exports[`Map Control Map Maxi custom min/max zoom 2`] = `4`;
 
-exports[`Map Control Map Maxi custom min/max zoom 3`] = `
-Object {
-  "map-zoom": 3,
-}
-`;
+exports[`Map Control Map Maxi custom min/max zoom 3`] = `3`;
 
-exports[`Map Control Map Maxi custom min/max zoom 4`] = `
-Object {
-  "map-zoom": 5,
-}
-`;
+exports[`Map Control Map Maxi custom min/max zoom 4`] = `5`;

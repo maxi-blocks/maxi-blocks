@@ -44,7 +44,7 @@ export const getSVGWidthStyles = ({
 	return { SVGWidth: response };
 };
 
-const getSVGPathStyles = (obj, prefix = '') => {
+const getSVGPathStyles = (obj, prefix = 'svg-', isHover) => {
 	const response = {
 		label: 'SVG path',
 		general: {},
@@ -53,9 +53,13 @@ const getSVGPathStyles = (obj, prefix = '') => {
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
-		if (!isNil(obj[`${prefix}svg-stroke-${breakpoint}`])) {
-			response[breakpoint][`${prefix}stroke-width`] = `${
-				obj[`${prefix}svg-stroke-${breakpoint}`]
+		if (
+			!isNil(
+				obj[`${prefix}stroke-${breakpoint}${isHover ? '-hover' : ''}`]
+			)
+		) {
+			response[breakpoint]['stroke-width'] = `${
+				obj[`${prefix}stroke-${breakpoint}${isHover ? '-hover' : ''}`]
 			}`;
 		}
 

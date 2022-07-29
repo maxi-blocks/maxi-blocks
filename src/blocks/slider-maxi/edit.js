@@ -228,9 +228,13 @@ const SliderWrapper = props => {
 		wrapperRef.current.style.transition = '';
 		if (currentSlide >= numberOfSlides) {
 			setCurrentSlide(0);
+			setActiveDot(0);
+			setActiveSlide(0);
 		}
 		if (currentSlide < 0) {
 			setCurrentSlide(numberOfSlides - 1);
+			setActiveDot(numberOfSlides - 1);
+			setActiveSlide(numberOfSlides - 1);
 		}
 	};
 

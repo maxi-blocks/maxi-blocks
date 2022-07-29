@@ -51,6 +51,9 @@ const Inspector = props => {
 	return (
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}
+			{inspectorTabs.blockSettings({
+				props,
+			})}
 			<SettingTabsControl
 				target='sidebar-settings-tabs'
 				disablePadding
@@ -60,155 +63,145 @@ const Inspector = props => {
 					{
 						label: __('Settings', 'maxi-blocks'),
 						content: (
-							<>
-								{inspectorTabs.blockSettings({
-									props,
-								})}
-								<AccordionControl
-									isPrimary
-									items={[
-										{
-											label: __(
-												'Slider settings',
-												'maxi-blocks'
-											),
-											content: (
-												<SliderControl
-													{...getGroupAttributes(
-														attributes,
-														'slider'
-													)}
-													onChange={obj =>
-														maxiSetAttributes(obj)
-													}
-													isEditView={isEditView}
-													setEditView={setEditView}
-												/>
-											),
-										},
-										{
-											label: __(
-												'Navigation',
-												'maxi-blocks'
-											),
-											content: (
-												<NavigationControl
-													{...getGroupAttributes(
-														attributes,
-														'navigation'
-													)}
-													onChange={obj =>
-														maxiSetAttributes(obj)
-													}
-													deviceType={deviceType}
-													blockStyle={blockStyle}
-												/>
-											),
-										},
-										...(navigationType.includes(
-											'arrow'
-										) && {
-											label: __('Arrows', 'maxi-blocks'),
-											content: (
-												<NavigationArrowControl
-													{...getGroupAttributes(
-														attributes,
-														[
-															'arrowIcon',
-															'arrowIconBackground',
-															'arrowIconBackgroundColor',
-															'arrowIconBackgroundGradient',
-															'arrowIconBorder',
-															'arrowIconBorderRadius',
-															'arrowIconBorderWidth',
-															'arrowIconPadding',
-															'arrowIconBoxShadow',
-															'arrowIconHover',
-															'arrowIconBackgroundHover',
-															'arrowIconBackgroundColorHover',
-															'arrowIconBackgroundGradientHover',
-															'arrowIconBorderHover',
-															'arrowIconBorderRadiusHover',
-															'arrowIconBorderWidthHover',
-															'arrowIconBoxShadowHover',
-														]
-													)}
-													onChange={obj =>
-														maxiSetAttributes(obj)
-													}
-													deviceType={deviceType}
-													insertInlineStyles={
-														insertInlineStyles
-													}
-													cleanInlineStyles={
-														cleanInlineStyles
-													}
-													blockStyle={blockStyle}
-													svgType={svgType}
-												/>
-											),
-										}),
-										...(navigationType.includes('dot') && {
-											label: __('Dots', 'maxi-blocks'),
-											content: (
-												<NavigationDotControl
-													{...getGroupAttributes(
-														attributes,
-														[
-															'dotIcon',
-															'dotIconHover',
-															'dotIconActive',
-															'dotIconBackground',
-															'dotIconBackgroundColor',
-															'dotIconBackgroundGradient',
-															'dotIconBorder',
-															'dotIconBorderRadius',
-															'dotIconBorderWidth',
-															'dotIconPadding',
-															'dotIconBoxShadow',
-															'dotIconBackgroundHover',
-															'dotIconBackgroundColorHover',
-															'dotIconBackgroundGradientHover',
-															'dotIconBorderHover',
-															'dotIconBorderRadiusHover',
-															'dotIconBorderWidthHover',
-															'dotIconBoxShadowHover',
-														]
-													)}
-													onChange={obj =>
-														maxiSetAttributes(obj)
-													}
-													deviceType={deviceType}
-													insertInlineStyles={
-														insertInlineStyles
-													}
-													cleanInlineStyles={
-														cleanInlineStyles
-													}
-													blockStyle={blockStyle}
-													svgType={svgType}
-												/>
-											),
-										}),
-										...inspectorTabs.blockBackground({
-											props,
-										}),
-										...inspectorTabs.border({
-											props,
-										}),
-										...inspectorTabs.boxShadow({
-											props,
-										}),
-										...inspectorTabs.size({
-											props,
-											block: true,
-										}),
-										...inspectorTabs.marginPadding({
-											props,
-										}),
-									]}
-								/>
-							</>
+							<AccordionControl
+								isPrimary
+								items={[
+									{
+										label: __(
+											'Slider settings',
+											'maxi-blocks'
+										),
+										content: (
+											<SliderControl
+												{...getGroupAttributes(
+													attributes,
+													'slider'
+												)}
+												onChange={obj =>
+													maxiSetAttributes(obj)
+												}
+												isEditView={isEditView}
+												setEditView={setEditView}
+											/>
+										),
+									},
+									{
+										label: __('Navigation', 'maxi-blocks'),
+										content: (
+											<NavigationControl
+												{...getGroupAttributes(
+													attributes,
+													'navigation'
+												)}
+												onChange={obj =>
+													maxiSetAttributes(obj)
+												}
+												deviceType={deviceType}
+												blockStyle={blockStyle}
+											/>
+										),
+									},
+									...(navigationType.includes('arrow') && {
+										label: __('Arrows', 'maxi-blocks'),
+										content: (
+											<NavigationArrowControl
+												{...getGroupAttributes(
+													attributes,
+													[
+														'arrowIcon',
+														'arrowIconBackground',
+														'arrowIconBackgroundColor',
+														'arrowIconBackgroundGradient',
+														'arrowIconBorder',
+														'arrowIconBorderRadius',
+														'arrowIconBorderWidth',
+														'arrowIconPadding',
+														'arrowIconBoxShadow',
+														'arrowIconHover',
+														'arrowIconBackgroundHover',
+														'arrowIconBackgroundColorHover',
+														'arrowIconBackgroundGradientHover',
+														'arrowIconBorderHover',
+														'arrowIconBorderRadiusHover',
+														'arrowIconBorderWidthHover',
+														'arrowIconBoxShadowHover',
+													]
+												)}
+												onChange={obj =>
+													maxiSetAttributes(obj)
+												}
+												deviceType={deviceType}
+												insertInlineStyles={
+													insertInlineStyles
+												}
+												cleanInlineStyles={
+													cleanInlineStyles
+												}
+												blockStyle={blockStyle}
+												svgType={svgType}
+											/>
+										),
+									}),
+									...(navigationType.includes('dot') && {
+										label: __('Dots', 'maxi-blocks'),
+										content: (
+											<NavigationDotControl
+												{...getGroupAttributes(
+													attributes,
+													[
+														'dotIcon',
+														'dotIconHover',
+														'dotIconActive',
+														'dotIconBackground',
+														'dotIconBackgroundColor',
+														'dotIconBackgroundGradient',
+														'dotIconBorder',
+														'dotIconBorderRadius',
+														'dotIconBorderWidth',
+														'dotIconPadding',
+														'dotIconBoxShadow',
+														'dotIconBackgroundHover',
+														'dotIconBackgroundColorHover',
+														'dotIconBackgroundGradientHover',
+														'dotIconBorderHover',
+														'dotIconBorderRadiusHover',
+														'dotIconBorderWidthHover',
+														'dotIconBoxShadowHover',
+													]
+												)}
+												onChange={obj =>
+													maxiSetAttributes(obj)
+												}
+												deviceType={deviceType}
+												insertInlineStyles={
+													insertInlineStyles
+												}
+												cleanInlineStyles={
+													cleanInlineStyles
+												}
+												blockStyle={blockStyle}
+												svgType={svgType}
+											/>
+										),
+									}),
+									...inspectorTabs.blockBackground({
+										props,
+									}),
+									...inspectorTabs.border({
+										props,
+									}),
+									...inspectorTabs.boxShadow({
+										props,
+									}),
+									...inspectorTabs.size({
+										props,
+										block: true,
+									}),
+									...inspectorTabs.marginPadding({
+										props,
+									}),
+								]}
+							/>
 						),
 					},
 					{

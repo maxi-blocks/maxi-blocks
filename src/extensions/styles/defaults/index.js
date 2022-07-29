@@ -14,6 +14,7 @@ export { default as map } from './map';
 export { default as mapInteraction } from './mapInteraction';
 export { default as mapMarker } from './mapMarker';
 export { default as mapPopup } from './mapPopup';
+export { default as mapPopupText } from './mapPopupText';
 export { default as margin } from './margin';
 export { default as scroll } from './scroll';
 export { default as numberCounter } from './numberCounter';

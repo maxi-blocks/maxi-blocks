@@ -24,6 +24,7 @@ const attributes = {
 	...attributesData.mapInteraction,
 	...attributesData.mapMarker,
 	...attributesData.mapPopup,
+	...attributesData.mapPopupText,
 	...{
 		...attributesData.size,
 		'height-general': {

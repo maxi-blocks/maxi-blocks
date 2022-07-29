@@ -97,6 +97,7 @@ const MapContent = props => {
 								'map',
 								'mapMarker',
 								'mapPopup',
+								'mapPopupText',
 							])}
 							maxiSetAttributes={maxiSetAttributes}
 							setIsDraggingMarker={setIsDraggingMarker}

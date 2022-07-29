@@ -34,9 +34,10 @@ class edit extends MaxiBlockComponent {
 					uniqueID: attributes.uniqueID,
 					...getGroupAttributes(attributes, [
 						'map',
+						'mapInteraction',
 						'mapMarker',
 						'mapPopup',
-						'mapInteraction',
+						'mapPopupText',
 					]),
 				},
 			],

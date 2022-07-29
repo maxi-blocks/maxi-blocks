@@ -430,7 +430,9 @@ body.maxi-blocks--active {
 			@each $style in $styles {
 				.maxi-#{$style} {
 					&.maxi-text-block,
-					.maxi-text-block {
+					.maxi-text-block,
+					&.maxi-map-block__popup__content,
+					.maxi-map-block__popup__content {
 						@each $level in $levels {
 							#{$level} {
 								font-family: var(

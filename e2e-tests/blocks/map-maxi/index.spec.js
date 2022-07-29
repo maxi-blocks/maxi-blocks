@@ -112,9 +112,11 @@ describe('Map Maxi', () => {
 		await searchBox.type('London');
 
 		// Starting search
-		await searchBox.press('Enter');
+		await searchBox.$eval('.maxi-map-block__search-box__button', button =>
+			button.click()
+		);
 
-		await page.waitForTimeout(600);
+		await page.waitForTimeout(1000);
 
 		const searchBoxResults = await map.$(
 			'.maxi-map-block__search-box-results'

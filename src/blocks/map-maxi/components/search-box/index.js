@@ -57,7 +57,7 @@ const SearchBox = props => {
 		if (searchResults && searchResults.length) {
 			clearSearchBox();
 		} else {
-			findMarkers();
+			findMarkers(keywords);
 		}
 	};
 
@@ -100,6 +100,7 @@ const SearchBox = props => {
 					placeholder={__('Enter your keywords…', 'maxi-blocks')}
 				/>
 				<Button
+					className='maxi-map-block__search-box__button'
 					onClick={() => handleButtonClick()}
 					icon={
 						searchResults && searchResults.length > 0

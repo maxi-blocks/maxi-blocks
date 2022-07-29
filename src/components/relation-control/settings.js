@@ -304,6 +304,41 @@ const settings = {
 			component: props => <Controls.AlignmentControl {...props} />,
 			helper: props => styleHelpers.getAlignmentFlexStyles(props.obj),
 		},
+		{
+			label: __('Shape mask', 'maxi-blocks'),
+			attrGroupName: 'imageShape',
+			component: props => {
+				const { SVGElement } = props.blockAttributes;
+
+				return SVGElement ? (
+					<Controls.ImageShape
+						{...props}
+						icon={SVGElement}
+						disableModal
+					/>
+				) : (
+					<InfoBox
+						message={__(
+							'Add shape icon to be able to use this control'
+						)}
+					/>
+				);
+			},
+			helper: props =>
+				Object.entries({
+					' .maxi-image-block-wrapper > svg:first-child': 'svg',
+					' .maxi-image-block-wrapper > svg:first-child pattern image':
+						'image',
+				}).reduce((acc, [key, type]) => {
+					acc[key] = {
+						transform: styleHelpers.getImageShapeStyles(
+							type,
+							props.obj
+						),
+					};
+					return acc;
+				}, {}),
+		},
 		...getTransformControl('image'),
 		...canvasSettings,
 	],

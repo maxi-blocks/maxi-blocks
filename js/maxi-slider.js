@@ -348,10 +348,12 @@ class MaxiSlider {
 	loop() {
 		if (this.currentSlide >= this._slides.length) {
 			this.currentSlide = 0;
+			this.setActiveDot(this.currentSlide);
 			this.sliderAction(false);
 		}
 		if (this.currentSlide < 0) {
 			this.currentSlide = this._slides.length - 1;
+			this.setActiveDot(this.currentSlide);
 			this.sliderAction(false);
 		}
 	}

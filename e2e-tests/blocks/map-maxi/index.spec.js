@@ -116,7 +116,7 @@ describe('Map Maxi', () => {
 			button.click()
 		);
 
-		await page.waitForTimeout(1000);
+		await map.waitForSelector('.maxi-map-block__search-box-results');
 
 		const searchBoxResults = await map.$(
 			'.maxi-map-block__search-box-results'

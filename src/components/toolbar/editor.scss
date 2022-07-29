@@ -58,6 +58,7 @@
 				font-weight: 400;
 				border-radius: 2px;
 				opacity: 0;
+				pointer-events: none;
 			}
 			.breadcrumbs-pin:hover .breadcrumbs-pin-toltip {
 				visibility: visible;

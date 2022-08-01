@@ -222,6 +222,19 @@ class edit extends MaxiBlockComponent {
 			attributes,
 		});
 
+		const dropShadow =
+			(getLastBreakpointAttribute({
+				target: 'clip-path',
+				breakpoint: deviceType,
+				attributes,
+			}) &&
+				getLastBreakpointAttribute({
+					target: 'clip-path-status',
+					breakpoint: deviceType,
+					attributes,
+				})) ||
+			!isEmpty(attributes.SVGElement);
+
 		return [
 			<textContext.Provider
 				key={`maxi-text-block__context-${uniqueID}`}
@@ -250,6 +263,7 @@ class edit extends MaxiBlockComponent {
 					{...this.props}
 					copyPasteMapping={copyPasteMapping}
 					prefix='image-'
+					dropShadow={dropShadow}
 				/>
 				<MaxiPopoverButton
 					key={`popover-${uniqueID}`}

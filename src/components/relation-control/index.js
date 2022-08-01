@@ -196,6 +196,7 @@ const RelationControl = props => {
 						...newAttributesObj,
 					},
 					target: selectedSettingsObj?.target,
+					clientId,
 				});
 
 				const getStyles = (stylesObj, isFirst = false) => {

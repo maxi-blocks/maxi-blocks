@@ -35,6 +35,7 @@ const BoxShadow = props => {
 		breakpoint,
 		clientId,
 		prefix = '',
+		dropShadow,
 	} = props;
 
 	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
@@ -56,6 +57,7 @@ const BoxShadow = props => {
 					disableAdvanced
 					prefix={prefix}
 					isToolbar
+					dropShadow={dropShadow}
 				/>
 			</div>
 		</ToolbarPopover>

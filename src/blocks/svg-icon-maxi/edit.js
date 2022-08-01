@@ -21,7 +21,10 @@ import {
 	RawHTML,
 	MaxiPopoverButton,
 } from '../../components';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
+import {
+	getIsOverflowHidden,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 
 import MaxiModal from '../../editor/library/modal';
@@ -134,18 +137,6 @@ class edit extends MaxiBlockComponent {
 			});
 		};
 
-		const getIsOverflowHidden = () =>
-			getLastBreakpointAttribute({
-				target: 'overflow-y',
-				breakpoint: deviceType,
-				attributes,
-			}) === 'hidden' &&
-			getLastBreakpointAttribute({
-				target: 'overflow-x',
-				breakpoint: deviceType,
-				attributes,
-			}) === 'hidden';
-
 		const maxiModalProps = {
 			clientId,
 			type: 'svg',
@@ -226,7 +217,10 @@ class edit extends MaxiBlockComponent {
 						<BlockResizer
 							className='maxi-svg-icon-block__icon'
 							resizableObject={this.resizableObject}
-							isOverflowHidden={getIsOverflowHidden()}
+							isOverflowHidden={getIsOverflowHidden(
+								attributes,
+								deviceType
+							)}
 							lockAspectRatio
 							deviceType={deviceType}
 							defaultSize={{

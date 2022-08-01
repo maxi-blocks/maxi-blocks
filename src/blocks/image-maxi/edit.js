@@ -13,6 +13,7 @@ import getStyles from './styles';
 import Inspector from './inspector';
 import {
 	getGroupAttributes,
+	getIsOverflowHidden,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
@@ -180,18 +181,6 @@ class edit extends MaxiBlockComponent {
 			}
 		};
 
-		const getIsOverflowHidden = () =>
-			getLastBreakpointAttribute({
-				target: 'overflow-y',
-				breakpoint: deviceType,
-				attributes,
-			}) === 'hidden' &&
-			getLastBreakpointAttribute({
-				target: 'overflow-x',
-				breakpoint: deviceType,
-				attributes,
-			}) === 'hidden';
-
 		const getMaxWidth = () => {
 			const maxWidth = getLastBreakpointAttribute({
 				target: 'image-max-width',
@@ -222,6 +211,19 @@ class edit extends MaxiBlockComponent {
 			attributes,
 		});
 
+		const dropShadow =
+			(getLastBreakpointAttribute({
+				target: 'clip-path',
+				breakpoint: deviceType,
+				attributes,
+			}) &&
+				getLastBreakpointAttribute({
+					target: 'clip-path-status',
+					breakpoint: deviceType,
+					attributes,
+				})) ||
+			!isEmpty(attributes.SVGElement);
+
 		return [
 			<textContext.Provider
 				key={`maxi-text-block__context-${uniqueID}`}
@@ -250,6 +252,7 @@ class edit extends MaxiBlockComponent {
 					{...this.props}
 					copyPasteMapping={copyPasteMapping}
 					prefix='image-'
+					dropShadow={dropShadow}
 				/>
 				<MaxiPopoverButton
 					key={`popover-${uniqueID}`}
@@ -346,7 +349,10 @@ class edit extends MaxiBlockComponent {
 							key={uniqueID}
 							className='maxi-block__resizer maxi-image-block__resizer'
 							resizableObject={this.resizableObject}
-							isOverflowHidden={getIsOverflowHidden()}
+							isOverflowHidden={getIsOverflowHidden(
+								attributes,
+								deviceType
+							)}
 							defaultSize={{
 								width: `${
 									fullWidth !== 'full' && !useInitSize

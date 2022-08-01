@@ -1,110 +1,56 @@
 const copyPasteMapping = {
-	_order: [
-		'Slider settings',
-		'Navigation',
-		'Background',
-		'Border',
-		'Box shadow',
-		'Size',
-		'Margin/Padding',
-	],
-
 	settings: {
-		blockSpecific: {
-			sliderSettings: {
-				groupLabel: 'Slider settings',
-				props: {
-					isEditView: 'Edit view',
-					numberOfSlides: 'Slides number',
-					isLoop: 'Loop',
-					isAutoplay: 'Autoplay',
-					pauseOnHover: 'pause on hover',
-					pauseOnInteraction: 'Pause on interaction',
-					'slider-autoplay-speed': 'Autoplay speed',
-					'slider-transition': 'Transition type',
-					'slider-transition-speed': 'Transition speed',
-				},
-			},
-			navigation: {
-				groupLabel: 'Navigation',
-				props: {
-					'navigation-type': 'Navigation type',
-					'navigation-arrow-position': 'Arrows position',
-					'navigation-dot-position': 'Dots position',
-				},
-			},
-			arrows: {
-				groupLabel: 'Arrows',
-				props: {
-					arrowIcon: 'Arrow icons',
-					arrowIconHover: 'Arrow icons - hover',
-				},
-			},
-			dots: {
-				groupLabel: 'Dots',
-				props: {
-					dotIcon: 'Dot icons',
-					dotIconHover: 'Dot icons - hover',
-					dotIconActive: 'Dot icons - active',
-				},
-			},
-			size: {
-				groupLabel: 'Size',
-				props: {
-					blockFullWidth: 'Full width',
-					size: { label: 'Size', type: 'withoutPrefix' },
-				},
+		'Slider settings': {
+			group: {
+				'Edit view': 'isEditView',
+				'Slides number': 'numberOfSlides',
+				Loop: 'isLoop',
+				Autoplay: 'isAutoplay',
+				'Pause on hover': 'pauseOnHover',
+				'Pause on interaction': 'pauseOnInteraction',
+				'Autoplay speed': 'slider-autoplay-speed',
+				'Transition type': 'slider-transition',
+				'Transition speed': 'slider-transition-speed',
 			},
 		},
-		withBreakpoint: {},
-		withoutPrefix: {
-			blockBackground: 'Background',
-			border: {
-				groupLabel: 'Border',
-				props: {
-					border: 'Border',
-					borderWidth: 'Border width',
-					borderRadius: 'Border radius',
-					borderHover: 'Border hover',
-					borderWidthHover: 'Border width hover',
-					borderRadiusHover: 'Border radius hover',
-				},
+		Navigation: {
+			group: {
+				'Navigation type': 'navigation-type',
+				'Arrows position': 'navigation-arrow-position',
+				'Dots position': 'navigation-dot-position',
 			},
-			boxShadow: {
-				groupLabel: 'Box shadow',
-				props: {
-					boxShadow: 'Box shadow',
-					boxShadowHover: 'Box shadow hover',
-				},
+		},
+		Arrows: {
+			group: {
+				'Arrow icons': 'arrowIcon',
+				'Arrow icons - hover': 'arrowIconHover',
 			},
-			'margin-padding': {
-				groupLabel: 'Margin/Padding',
-				props: { margin: 'Margin', padding: 'Padding' },
+		},
+		Dots: {
+			group: {
+				'Dot icons': 'dotIcon',
+				'Dot icons - hover': 'dotIconHover',
+				'Dot icons - active': 'dotIconActive',
 			},
+		},
+		Background: {
+			template: 'blockBackground',
+		},
+		Border: {
+			template: 'border',
+		},
+		'Box shadow': {
+			template: 'boxShadow',
+		},
+		Size: {
+			template: 'size',
+		},
+		'Margin/Padding': {
+			template: 'marginPadding',
 		},
 	},
 	advanced: {
-		blockSpecific: {
-			extraClassName: 'Custom CSS classes',
-			anchorLink: {
-				label: 'Anchor',
-				value: ['anchorLink', 'linkSettings'],
-			},
-			relations: 'Interaction',
-		},
-		withoutPrefix: {
-			breakpoints: 'Breakpoints',
-			customCss: 'Custom CSS',
-			scroll: 'Scroll effects',
-			transform: 'Transform',
-			transition: 'Hyperlink hover transition',
-			display: 'Show/hide block',
-			opacity: 'Opacity',
-			position: 'Position',
-			overflow: 'Overflow',
-			flex: 'Flexbox',
-			zIndex: 'Z-index',
-		},
+		template: 'advanced',
 	},
 };
 

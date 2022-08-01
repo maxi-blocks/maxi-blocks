@@ -1,66 +1,41 @@
 const copyPasteMapping = {
-	_order: [
-		'Line',
-		'Title',
-		'Icon',
-		'Background',
-		'Border',
-		'Box shadow',
-		'Margin/Padding',
-	],
-
 	settings: {
-		withoutPrefix: {
-			accordionLine: 'Line',
-			accordionTitle: 'Title',
-			accordionIcon: 'Icon',
-			blockBackground: 'Background',
-			border: {
-				groupLabel: 'Border',
-				props: {
-					border: 'Border',
-					borderWidth: 'Border width',
-					borderRadius: 'Border radius',
-					borderHover: 'Border hover',
-					borderWidthHover: 'Border width hover',
-					borderRadiusHover: 'Border radius hover',
+		'Accordion settings': {
+			group: {
+				'Accordion layout': { props: 'accordionLayout' },
+				Collapsible: { props: 'isCollapsible' },
+				'Pane closes when another opens': {
+					props: 'autoPaneClose',
 				},
-			},
-			boxShadow: {
-				groupLabel: 'Box shadow',
-				props: {
-					boxShadow: 'Box shadow',
-					boxShadowHover: 'Box shadow hover',
+				'Pane spacing': {
+					props: ['pane-spacing', 'pane-spacing-unit'],
+					hasBreakpoints: true,
 				},
+				'Animation duration': { props: 'animationDuration' },
 			},
-			'margin-padding': {
-				groupLabel: 'Margin/Padding',
-				props: { margin: 'Margin', padding: 'Padding' },
-			},
+			groupAttributes: 'accordion',
+		},
+		'Accordion line': { groupAttributes: 'accordionLine' },
+		'Accordion title': { groupAttributes: 'accordionTitle' },
+		Icon: { groupAttributes: 'accordionIcon' },
+		Background: {
+			template: 'blockBackground',
+		},
+		Border: {
+			template: 'border',
+		},
+		'Box shadow': {
+			template: 'boxShadow',
+		},
+		Size: {
+			template: 'size',
+		},
+		'Margin/Padding': {
+			template: 'marginPadding',
 		},
 	},
 	advanced: {
-		blockSpecific: {
-			extraClassName: 'Custom CSS classes',
-			anchorLink: {
-				label: 'Anchor',
-				value: ['anchorLink', 'linkSettings'],
-			},
-			relations: 'Interaction',
-		},
-		withoutPrefix: {
-			breakpoints: 'Breakpoints',
-			customCss: 'Custom CSS',
-			scroll: 'Scroll effects',
-			transform: 'Transform',
-			transition: 'Hyperlink hover transition',
-			display: 'Show/hide block',
-			opacity: 'Opacity',
-			position: 'Position',
-			overflow: 'Overflow',
-			flex: 'Flexbox',
-			zIndex: 'Z-index',
-		},
+		template: 'advanced',
 	},
 };
 

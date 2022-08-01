@@ -13,7 +13,10 @@ import {
 	withMaxiProps,
 } from '../../extensions/maxi-block';
 import { BlockResizer, Toolbar } from '../../components';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
+import {
+	getIsOverflowHidden,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import getStyles from './styles';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 
@@ -131,18 +134,6 @@ class edit extends MaxiBlockComponent {
 			...(position && { position }),
 		};
 
-		const getIsOverflowHidden = () =>
-			getLastBreakpointAttribute({
-				target: 'overflow-y',
-				breakpoint: deviceType,
-				attributes,
-			}) === 'hidden' &&
-			getLastBreakpointAttribute({
-				target: 'overflow-x',
-				breakpoint: deviceType,
-				attributes,
-			}) === 'hidden';
-
 		const inlineStylesTargets = {
 			dividerColor: '.maxi-divider-block__divider',
 		};
@@ -168,7 +159,7 @@ class edit extends MaxiBlockComponent {
 				resizableObject={this.resizableObject}
 				{...getMaxiBlockAttributes(this.props)}
 				tagName={BlockResizer}
-				isOverflowHidden={getIsOverflowHidden()}
+				isOverflowHidden={getIsOverflowHidden(attributes, deviceType)}
 				defaultSize={{
 					width: '100%',
 					height: `${getLastBreakpointAttribute({

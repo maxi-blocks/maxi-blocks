@@ -502,8 +502,8 @@ const settings = {
 		},
 		...getCanvasSettings('text'),
 	],
-	'maxi-blocks/slider-maxi': [...canvasSettings],
-	'maxi-blocks/slide-maxi': [...canvasSettings],
+	'maxi-blocks/slider-maxi': [...getCanvasSettings('slider')],
+	'maxi-blocks/slide-maxi': [...getCanvasSettings('slide')],
 };
 
 export default settings;

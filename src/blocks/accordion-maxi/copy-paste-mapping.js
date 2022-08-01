@@ -2,18 +2,15 @@ const copyPasteMapping = {
 	settings: {
 		'Accordion settings': {
 			group: {
-				'Accordion layout': { props: 'accordionLayout' },
-				Collapsible: { props: 'isCollapsible' },
-				'Pane closes when another opens': {
-					props: 'autoPaneClose',
-				},
+				'Accordion layout': 'accordionLayout',
+				Collapsible: 'isCollapsible',
+				'Pane closes when another opens': 'autoPaneClose',
 				'Pane spacing': {
 					props: ['pane-spacing', 'pane-spacing-unit'],
 					hasBreakpoints: true,
 				},
-				'Animation duration': { props: 'animationDuration' },
+				'Animation duration': 'animationDuration',
 			},
-			groupAttributes: 'accordion',
 		},
 		'Accordion line': { groupAttributes: 'accordionLine' },
 		'Accordion title': { groupAttributes: 'accordionTitle' },

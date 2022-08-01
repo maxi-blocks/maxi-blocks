@@ -10,7 +10,7 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 	getColorRGBAString,
-	stylesCleaner,
+	styleProcessor,
 } from '../../extensions/styles';
 import {
 	getBackgroundStyles,
@@ -338,7 +338,7 @@ const getStyles = props => {
 	const { uniqueID } = props;
 
 	const response = {
-		[uniqueID]: stylesCleaner(
+		[uniqueID]: styleProcessor(
 			merge(
 				{
 					'': getNormalObject(props),
@@ -365,7 +365,8 @@ const getStyles = props => {
 				...getTransitionStyles(props, transitionObj)
 			),
 			selectorsSearch,
-			props
+			props,
+			transitionObj
 		),
 	};
 

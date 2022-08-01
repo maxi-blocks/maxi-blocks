@@ -13,7 +13,6 @@ import ListControl from '../list-control';
 import ListItemControl from '../list-control/list-item-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
-import settings from './settings';
 import SettingTabsControl from '../setting-tabs-control';
 import TextControl from '../text-control';
 import TransitionControl from '../transition-control';
@@ -23,6 +22,7 @@ import {
 	getGroupAttributes,
 } from '../../extensions/styles';
 import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
+import settings from './settings';
 
 /**
  * External dependencies

@@ -7,3 +7,11 @@ Object {
   },
 }
 `;
+
+exports[`StyleCards ColorPresets Check Quick Pick Colour Presets 2`] = `
+Object {
+  "color": Object {
+    "4": "255,74,23",
+  },
+}
+`;

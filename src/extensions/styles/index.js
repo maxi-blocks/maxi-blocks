@@ -22,6 +22,6 @@ export { default as styleGenerator } from './styleGenerator';
 export { default as transitionAttributesCreator } from './transitions/transitionAttributesCreator';
 export * from './styleGenerator';
 export { default as styleResolver } from './styleResolver';
-export { default as stylesCleaner } from './stylesCleaner';
+export { default as styleProcessor } from './styleProcessor';
 
 export * from './utils';

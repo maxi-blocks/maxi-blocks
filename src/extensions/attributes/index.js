@@ -40,7 +40,7 @@ const allowedBlocks = [
 const withAttributes = createHigherOrderComponent(
 	BlockEdit => props => {
 		const { attributes, name: blockName, clientId } = props;
-		const { uniqueID, customLabel } = attributes;
+		const { uniqueID } = attributes;
 
 		if (allowedBlocks.includes(blockName)) {
 			// uniqueID
@@ -50,11 +50,9 @@ const withAttributes = createHigherOrderComponent(
 			) {
 				attributes.uniqueID = uniqueIDGenerator(blockName);
 
-				if (isNil(customLabel)) {
-					const label = attributes.uniqueID.replace('-maxi-', '_');
-					attributes.customLabel =
-						label.charAt(0).toUpperCase() + label.slice(1);
-				}
+				const label = attributes.uniqueID.replace('-maxi-', '_');
+				attributes.customLabel =
+					label.charAt(0).toUpperCase() + label.slice(1);
 			}
 			// isFirstOnHierarchy
 			const parentBlocks = select('core/block-editor')

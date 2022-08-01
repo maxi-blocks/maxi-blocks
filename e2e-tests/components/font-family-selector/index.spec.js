@@ -33,7 +33,7 @@ describe('FontFamilySelector', () => {
 
 		// reset button
 		await page.$eval(
-			'.maxi-tabs-content .maxi-typography-control .maxi-base-control .components-maxi-control__font-reset-button',
+			'.maxi-tabs-content .maxi-typography-control .maxi-base-control .maxi-reset-button',
 			button => button.click()
 		);
 

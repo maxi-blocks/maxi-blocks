@@ -4,7 +4,7 @@
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-	stylesCleaner,
+	styleProcessor,
 } from '../../extensions/styles';
 import {
 	getBoxShadowStyles,
@@ -271,7 +271,7 @@ const getStyles = props => {
 	const { uniqueID } = props;
 
 	const response = {
-		[uniqueID]: stylesCleaner(
+		[uniqueID]: styleProcessor(
 			{
 				'': getNormalObject(props),
 				':hover': getHoverObject(props),

@@ -237,7 +237,7 @@ describe('BorderControl', () => {
 
 		// reset button
 		await page.$eval(
-			'.maxi-axis-control__border .maxi-axis-control__unit-header button',
+			'.maxi-axis-control__border .maxi-axis-control__content__item__border-width .maxi-reset-button',
 			button => button.click()
 		);
 
@@ -245,9 +245,9 @@ describe('BorderControl', () => {
 			2
 		);
 
-		await page.$$eval(
-			'.maxi-axis-control__border .maxi-axis-control__unit-header button',
-			button => button[1].click()
+		await page.$eval(
+			'.maxi-axis-control__border .maxi-axis-control__content__item__border-radius .maxi-reset-button',
+			button => button.click()
 		);
 
 		expect(

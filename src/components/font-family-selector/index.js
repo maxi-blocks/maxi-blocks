@@ -1,16 +1,17 @@
 /**
  * WordPress dependencies
  */
-import { __, sprintf } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
 import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+
 import { loadFontsInEditor } from '../../extensions/text/fonts';
-import Button from '../button';
 import BaseControl from '../base-control';
+import ResetButton from '../reset-control';
 
 /**
  * External dependencies
@@ -23,7 +24,6 @@ import classnames from 'classnames';
  * Styles and icons
  */
 import './editor.scss';
-import { reset } from '../../icons';
 
 /**
  * Component
@@ -94,24 +94,14 @@ const FontFamilySelector = props => {
 			/>
 
 			{!disableFontFamilyReset && (
-				<Button
-					className='components-maxi-control__reset-button components-maxi-control__font-reset-button'
-					onClick={e => {
-						e.preventDefault();
+				<ResetButton
+					onReset={e => {
 						onFontChange({
 							label: defaultValue,
 							value: defaultValue,
 						});
 					}}
-					aria-label={sprintf(
-						/* translators: %s: a textual label  */
-						__('Reset %s settings', 'maxi-blocks'),
-						'Font Family'.toLowerCase()
-					)}
-					type='reset'
-				>
-					{reset}
-				</Button>
+				/>
 			)}
 		</BaseControl>
 	);

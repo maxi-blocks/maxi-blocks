@@ -28,10 +28,15 @@ const ToolbarMediaUpload = props => {
 		[`${prefix}mediaID`]: mediaID,
 		[`${prefix}altSelector`]: altSelector,
 		playerType,
+		hideImage,
 		uniqueID,
 	} = attributes;
 
-	if (!ALLOWED_BLOCKS.includes(blockName) || playerType === 'video')
+	if (
+		!ALLOWED_BLOCKS.includes(blockName) ||
+		playerType === 'video' ||
+		hideImage
+	)
 		return null;
 
 	return (

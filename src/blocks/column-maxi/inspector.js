@@ -57,10 +57,9 @@ const Inspector = props => {
 												]}
 											>
 												<ColumnSizeControl
-													props
 													{...getGroupAttributes(
 														attributes,
-														'flex'
+														['columnSize', 'flex']
 													)}
 													rowPattern={rowPattern}
 													clientId={clientId}
@@ -126,6 +125,8 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.transform({
 										props,
+										selectors: selectorsColumn,
+										categories: categoriesColumn,
 									}),
 									...inspectorTabs.transition({
 										props: {

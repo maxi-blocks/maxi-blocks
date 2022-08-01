@@ -41,6 +41,7 @@ describe('Custom-Css-Control', () => {
 
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('background: blue');
+		await page.waitForTimeout(200);
 
 		// change xs responsive
 		await changeResponsive(page, 'xs');
@@ -81,6 +82,8 @@ describe('Custom-Css-Control', () => {
 		);
 
 		await page.keyboard.type('VALIDATE ERROR');
+		await page.waitForTimeout(200);
+		await page.waitForSelector('.maxi-additional__css-group button');
 
 		await accordionPanel.$eval(
 			'.maxi-additional__css-group button',

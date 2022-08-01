@@ -132,7 +132,17 @@ const SVGLayerContent = props => {
 		<div className='maxi-background-control__svg-layer--size'>
 			{isHover ? (
 				!isEmpty(SVGOptions['background-svg-SVGElement']) && (
-					<SVGSize {...props} />
+					<>
+						<SVGSize {...props} />
+						<PositionControl
+							{...SVGOptions}
+							prefix='background-svg-'
+							onChange={onChange}
+							breakpoint={breakpoint}
+							disablePosition
+							isHover
+						/>
+					</>
 				)
 			) : (
 				<SettingTabsControl

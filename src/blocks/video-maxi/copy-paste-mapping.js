@@ -1,100 +1,72 @@
 const copyPasteMapping = {
-	exclude: ['url', 'embedUrl', 'videoType'],
-	_order: [
-		'Video',
-		'Video options',
-		'Video overlay',
-		'Border',
-		'Box shadow',
-		'Size',
-		'Margin/Padding',
-	],
-
 	settings: {
-		blockSpecific: {
-			video: {
-				groupLabel: 'Video',
-				props: {
-					playerType: 'Video type',
-					startTime: 'Start time',
-					endTime: 'End time',
-					videoRatio: 'Aspect ratio',
-				},
+		Video: {
+			group: {
+				'Video type': 'playerType',
+				'Start time': 'startTime',
+				'End time': 'endTime',
+				'Aspect ratio': 'videoRatio',
 			},
-			videoOptions: {
-				groupLabel: 'Video options',
-				props: {
-					isAutoplay: 'Autoplay',
-					isMuted: 'Mute',
-					isLoop: 'Loop',
-					showPlayerControls: 'Player controls',
-					reduceBorders: 'Reduce black borders',
-					lightBoxBackground: {
-						label: 'Lightbox background colour',
-						props: [
-							'lightboxBackground',
-							'lightboxBackgroundColor',
-						],
-					},
-					closeIcon: { label: 'Close button', props: ['icon'] },
-				},
-			},
-			videoOverlay: {
-				groupLabel: 'Video overlay',
-				props: {
-					overlayBackground: {
-						label: 'Overlay background colour',
-						props: ['background', 'backgroundColor'],
-					},
-					playIcon: 'Play button',
+		},
+		'Video options': {
+			group: {
+				Autoplay: 'isAutoplay',
+				Mute: 'isMuted',
+				Loop: 'isLoop',
+				'Player controls': 'showPlayerControls',
+				'Reduce black borders': 'reduceBorders',
+				'Lightbox background colour': {
+					groupAttributes: [
+						'lightboxBackground',
+						'lightboxBackgroundColor',
+					],
 				},
 			},
 		},
-		withPrefix: {
-			border: {
-				groupLabel: 'Border',
-				props: {
-					border: 'Border',
-					borderWidth: 'Border width',
-					borderRadius: 'Border radius',
-					borderHover: 'Border hover',
-					borderWidthHover: 'Border width hover',
-					borderRadiusHover: 'Border radius hover',
+		'Video overlay': {
+			group: {
+				'Overlay background colour': {
+					groupAttributes: ['background', 'backgroundColor'],
+				},
+				'Play button': { groupAttributes: 'icon', prefix: 'play-' },
+			},
+		},
+		'Popup settings': {
+			group: {
+				'Lightbox background': {
+					groupAttributes: ['background', 'backgroundColor'],
+					prefix: 'lightbox-',
+				},
+				'Close button': { groupAttributes: 'icon', prefix: 'close-' },
+				'Pop animation': 'popAnimation',
+			},
+		},
+		Image: {
+			group: {
+				'Hide image(icon only)': 'hideImage',
+				'Overlay background': {
+					groupAttributes: ['background', 'backgroundColor'],
+					prefix: 'overlay-',
 				},
 			},
-			boxShadow: {
-				groupLabel: 'Box shadow',
-				props: {
-					boxShadow: 'Box shadow',
-					boxShadowHover: 'Box shadow hover',
-				},
-			},
-			'margin-padding': {
-				groupLabel: 'Margin/Padding',
-				props: { margin: 'Margin', padding: 'Padding' },
-			},
+		},
+		Border: {
+			template: 'border',
+			prefix: 'overlay-',
+		},
+		'Box shadow': {
+			template: 'boxShadow',
+			prefix: 'overlay-',
+		},
+		'Margin/Padding': {
+			template: 'marginPadding',
+			prefix: 'overlay-',
 		},
 	},
 	advanced: {
-		blockSpecific: {
-			extraClassName: 'Custom CSS classes',
-			anchorLink: {
-				label: 'Anchor',
-				value: ['anchorLink', 'linkSettings'],
-			},
-			relations: 'Interaction',
-		},
-		withoutPrefix: {
-			breakpoints: 'Breakpoints',
-			customCss: 'Custom CSS',
-			scroll: 'Scroll',
-			transform: 'Transform',
-			transition: 'Hyperlink hover transition',
-			display: 'Show/hide block',
-			position: 'Position',
-			overflow: 'Overflow',
-			flex: 'Flexbox',
-			zIndex: 'Z-index',
+		template: 'advanced',
+		Opacity: {
+			template: 'opacity',
 		},
 	},
 };

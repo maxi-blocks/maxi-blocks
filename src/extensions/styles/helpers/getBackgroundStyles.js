@@ -528,12 +528,14 @@ const getSVGWrapperBackgroundObject = ({
 			target: `background-svg-position-${keyWord}`,
 			breakpoint,
 			attributes: props,
+			isHover,
 		});
 
 		const positionUnit = getLastBreakpointAttribute({
 			target: `background-svg-position-${keyWord}-unit`,
 			breakpoint,
 			attributes: props,
+			isHover,
 		});
 
 		if (!isNil(positionValue) && !isNil(positionUnit)) {

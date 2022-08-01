@@ -2,11 +2,12 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
+import { select } from '@wordpress/data';
 
 /**
  * External dependencies.
  */
-import { isEmpty } from 'lodash';
+import { isEmpty, merge } from 'lodash';
 
 /**
  * Internal dependencies.
@@ -19,8 +20,42 @@ import {
 	getLastBreakpointAttribute,
 	getIconWithColor,
 } from '../../extensions/styles';
+import getRowGapProps from '../../extensions/attributes/getRowGapProps';
+import {
+	getTransformCategories,
+	getTransformSelectors,
+} from '../transform-control/utils';
+import getBlockCategoriesAndSelectors from '../../extensions/styles/getBlockCategoriesAndSelectors';
+import getParentRowClientId from './getParentRowClientId';
 
-const canvasSettings = [
+const getTransformControl = name => {
+	const { categories, selectors } = getBlockCategoriesAndSelectors(name);
+
+	return {
+		label: __('Transform', 'maxi-blocks'),
+		attrGroupName: 'transform',
+		component: props => (
+			<Controls.TransformControl
+				{...props}
+				uniqueID={props.attributes.uniqueID}
+				depth={2}
+				selectors={getTransformSelectors(selectors)}
+				categories={getTransformCategories(
+					categories,
+					props.attributes
+				)}
+				disableHover
+			/>
+		),
+		helper: props =>
+			styleHelpers.getTransformStyles(
+				props.obj,
+				getTransformSelectors(selectors)
+			),
+	};
+};
+
+const getCanvasSettings = name => [
 	{
 		label: __('Background / Layer', 'maxi-blocks'),
 		attrGroupName: [
@@ -89,7 +124,7 @@ const canvasSettings = [
 			return (
 				<Controls.FullSizeControl
 					{...props}
-					hideWidth={isBlockFullWidth}
+					hideWidth={isBlockFullWidth || name === 'column'}
 					hideMaxWidth={isBlockFullWidth}
 					isBlockFullWidth={isBlockFullWidth}
 				/>
@@ -109,23 +144,12 @@ const canvasSettings = [
 		helper: props => styleHelpers.getMarginPaddingStyles(props),
 	},
 	{
-		label: __('Transform', 'maxi-blocks'),
-		attrGroupName: 'transform',
-		component: props => (
-			<Controls.TransformControl
-				{...props}
-				uniqueID={props.attributes.uniqueID}
-				depth={2}
-			/>
-		),
-		helper: props => styleHelpers.getTransformStyles(props.obj),
-	},
-	{
 		label: __('Position', 'maxi-blocks'),
 		attrGroupName: 'position',
 		component: props => <Controls.PositionControl {...props} />,
 		helper: props => styleHelpers.getPositionStyles(props.obj),
 	},
+	...getTransformControl(name),
 ];
 
 const settings = {
@@ -238,10 +262,65 @@ const settings = {
 			helper: props => styleHelpers.getMarginPaddingStyles(props),
 			target: '.maxi-button-block__button',
 		},
-		...canvasSettings,
+		...getCanvasSettings('button'),
 	],
-	'maxi-blocks/column-maxi': [...canvasSettings],
-	'maxi-blocks/container-maxi': [...canvasSettings],
+	'maxi-blocks/column-maxi': [
+		{
+			label: __('Column settings', 'maxi-blocks'),
+			attrGroupName: ['columnSize', 'flex'],
+			component: props => {
+				const { getBlockAttributes } = select('core/block-editor');
+
+				const rowPattern = getGroupAttributes(
+					getBlockAttributes(getParentRowClientId(props.clientId)),
+					'rowPattern'
+				);
+
+				return (
+					<Controls.ColumnSizeControl
+						{...props}
+						rowPattern={rowPattern}
+					/>
+				);
+			},
+			helper: props => {
+				const { getBlock } = select('core/block-editor');
+
+				const parentRowBlock = getBlock(
+					getParentRowClientId(props.clientId)
+				);
+
+				const columnsSize = parentRowBlock.innerBlocks.reduce(
+					(acc, block) => ({
+						...acc,
+						[block.clientId]: getGroupAttributes(
+							block.attributes,
+							'columnSize'
+						),
+					}),
+					{}
+				);
+
+				const columnNum = parentRowBlock.innerBlocks.length;
+				const rowGapProps = getRowGapProps(parentRowBlock.attributes);
+
+				return merge(
+					styleHelpers.getColumnSizeStyles(
+						props.obj,
+						{
+							...rowGapProps,
+							columnNum,
+							columnsSize,
+						},
+						props.clientId
+					),
+					styleHelpers.getFlexStyles(props.obj)
+				);
+			},
+		},
+		...getCanvasSettings('column'),
+	],
+	'maxi-blocks/container-maxi': [...getCanvasSettings('container')],
 	'maxi-blocks/divider-maxi': [
 		{
 			label: __('Divider box shadow', 'maxi-blocks'),
@@ -263,9 +342,9 @@ const settings = {
 				),
 			target: ' hr.maxi-divider-block__divider',
 		},
-		...canvasSettings,
+		...getCanvasSettings('divider'),
 	],
-	'maxi-blocks/group-maxi': [...canvasSettings],
+	'maxi-blocks/group-maxi': [...getCanvasSettings('group')],
 	'maxi-blocks/image-maxi': [
 		{
 			label: __('Alignment', 'maxi-blocks'),
@@ -273,11 +352,50 @@ const settings = {
 			component: props => <Controls.AlignmentControl {...props} />,
 			helper: props => styleHelpers.getAlignmentFlexStyles(props.obj),
 		},
-		...canvasSettings,
+		{
+			label: __('Shape mask', 'maxi-blocks'),
+			attrGroupName: 'imageShape',
+			component: props => {
+				const { SVGElement } = props.blockAttributes;
+
+				return SVGElement ? (
+					<Controls.ImageShape
+						{...props}
+						icon={SVGElement}
+						disableModal
+						disableImagePosition
+						disableImageRatio
+					/>
+				) : (
+					<InfoBox
+						message={__(
+							'Add shape icon to be able to use this control'
+						)}
+					/>
+				);
+			},
+			helper: props =>
+				Object.entries({
+					' .maxi-image-block-wrapper > svg:first-child': 'svg',
+					' .maxi-image-block-wrapper > svg:first-child pattern image':
+						'image',
+				}).reduce((acc, [key, type]) => {
+					acc[key] = {
+						transform: styleHelpers.getImageShapeStyles(
+							type,
+							props.obj,
+							'',
+							true
+						),
+					};
+					return acc;
+				}, {}),
+		},
+		...getCanvasSettings('image'),
 	],
-	'maxi-blocks/map-maxi': [...canvasSettings],
-	'maxi-blocks/number-counter-maxi': [...canvasSettings],
-	'maxi-blocks/row-maxi': [...canvasSettings],
+	'maxi-blocks/map-maxi': [...getCanvasSettings('map')],
+	'maxi-blocks/number-counter-maxi': [...getCanvasSettings('number-counter')],
+	'maxi-blocks/row-maxi': [...getCanvasSettings('row')],
 	'maxi-blocks/svg-icon-maxi': [
 		{
 			label: __('Icon colour'),
@@ -357,7 +475,7 @@ const settings = {
 			helper: props => styleHelpers.getBorderStyles(props),
 			target: ' .maxi-svg-icon-block__icon',
 		},
-		...canvasSettings,
+		...getCanvasSettings('svg-icon'),
 	],
 	'maxi-blocks/text-maxi': [
 		{
@@ -382,7 +500,7 @@ const settings = {
 			helper: props => styleHelpers.getTypographyStyles({ ...props }),
 			target: '.maxi-text-block__content',
 		},
-		...canvasSettings,
+		...getCanvasSettings('text'),
 	],
 };
 

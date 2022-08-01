@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 
 import {
 	addTypographyOptions,
@@ -9,7 +9,28 @@ import {
 	getStyleCardEditor,
 	editGlobalStyles,
 	checkSCResult,
+	changeResponsive,
 } from '../../utils';
+
+const generalTypographeStyle = {
+	decoration: 'overline',
+	weight: '300',
+	transform: 'capitalize',
+	style: 'italic',
+	orientation: 'mixed',
+	direction: 'ltr',
+	indent: '44',
+};
+
+const responsiveTypographyStyle = {
+	decoration: 'underline',
+	weight: '400',
+	transform: 'uppercase',
+	style: 'oblique',
+	orientation: 'mixed',
+	direction: 'rtl',
+	indent: '22',
+};
 
 describe('StyleCards, Buttons', () => {
 	it('Check Button', async () => {
@@ -36,23 +57,12 @@ describe('StyleCards, Buttons', () => {
 		await page.waitForTimeout(100);
 
 		await addTypographyStyle({
-			instance: page,
-			decoration: 'overline',
-			weight: '300',
-			transform: 'capitalize',
-			style: 'italic',
-			orientation: 'mixed',
-			direction: 'ltr',
+			instance: await page.$(
+				'.maxi-typography-control.maxi-style-cards-control__sc__button-typography'
+			),
+			...generalTypographeStyle,
 		});
 		await page.waitForTimeout(100);
-
-		await page.$$eval(
-			'.maxi-blocks-sc__type--button .maxi-typography-control__text-indent input',
-			input => input[0].focus()
-		);
-
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('44');
 
 		// Check Button global styles
 
@@ -103,5 +113,54 @@ describe('StyleCards, Buttons', () => {
 		});
 
 		expect(await checkSCResult(page)).toMatchSnapshot();
+	});
+
+	it('Should work on responsive', async () => {
+		await changeResponsive(page, 'm');
+
+		// size, line-height, letter-spacing
+		await addTypographyOptions({
+			page,
+			instance: await page.$(
+				'.maxi-typography-control.maxi-style-cards-control__sc__button-typography'
+			),
+			size: '20',
+			lineHeight: '10',
+			letterSpacing: '5',
+		});
+
+		// Selectors
+		// Weight, Transform, Style, Decoration
+		await page.waitForTimeout(100);
+
+		await addTypographyStyle({
+			instance: await page.$(
+				'.maxi-typography-control.maxi-style-cards-control__sc__button-typography'
+			),
+			...responsiveTypographyStyle,
+		});
+		await page.waitForTimeout(100);
+
+		expect(await checkSCResult(page)).toMatchSnapshot();
+
+		// Check values on S to be the same as on M breakpoint
+		await changeResponsive(page, 's');
+		const typographyStylesS = await addTypographyStyle({
+			instance: await page.$(
+				'.maxi-typography-control.maxi-style-cards-control__sc__button-typography'
+			),
+		});
+
+		expect(typographyStylesS).toEqual(responsiveTypographyStyle);
+
+		// Check values on L to be the same as on general breakpoint
+		await changeResponsive(page, 'l');
+		const typographyStylesL = await addTypographyStyle({
+			instance: await page.$(
+				'.maxi-typography-control.maxi-style-cards-control__sc__button-typography'
+			),
+		});
+
+		expect(typographyStylesL).toEqual(generalTypographeStyle);
 	});
 });

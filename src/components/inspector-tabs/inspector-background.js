@@ -14,6 +14,7 @@ import {
 	setHoverAttributes,
 } from '../../extensions/styles';
 import { getIgnoreIndicator } from '../../extensions/indicators';
+import ManageHoverTransitions from '../manage-hover-transitions';
 
 /**
  * Component
@@ -113,6 +114,8 @@ const background = ({
 						label: __('Hover state', 'maxi-blocks'),
 						content: (
 							<>
+								<ManageHoverTransitions />
+
 								<ToggleSwitch
 									label={__(
 										'Enable background hover',

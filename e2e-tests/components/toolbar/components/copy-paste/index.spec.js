@@ -115,6 +115,31 @@ describe('CopyPaste from Toolbar', () => {
 			unit: '%',
 		});
 
+		// add margin/padding attributes
+		const marginAccordion = await openSidebarTab(
+			page,
+			'style',
+			'margin padding'
+		);
+
+		await editAxisControl({
+			page,
+			instance: await marginAccordion.$(
+				'.maxi-axis-control .maxi-axis-control__content__item__margin'
+			),
+			values: '24',
+			unit: 'em',
+		});
+
+		await editAxisControl({
+			page,
+			instance: await marginAccordion.$(
+				'.maxi-axis-control .maxi-axis-control__content__item__padding'
+			),
+			values: '27',
+			unit: 'px',
+		});
+
 		// add flex attributes
 		const accordionPanel = await openSidebarTab(
 			page,
@@ -177,17 +202,44 @@ describe('CopyPaste from Toolbar', () => {
 			'.maxi-settingstab-control .maxi-tabs-content--disable-padding .toolbar-item__copy-paste__popover__item input#border',
 			button => button.click()
 		);
+
+		// open margin/padding group
+		await page.$$eval(
+			'.maxi-settingstab-control .maxi-tabs-content--disable-padding .toolbar-item__copy-paste__popover__item__group',
+			buttons => buttons[buttons.length - 1].click()
+		);
+
+		// select only margin
+		await page.$eval(
+			'.maxi-settingstab-control .maxi-tabs-content--disable-padding .toolbar-item__copy-paste__popover__item[data-copy_paste_group="margin-padding"] input#margin',
+			button => button.click()
+		);
+
 		// open advanced
 		await page.$eval(
-			'.components-popover__content .maxi-tabs-control__button-Advanced',
+			'.components-popover__content .maxi-tabs-control__button-advanced',
 			button => button.click()
 		);
 
 		// select flex
 		await page.$eval(
-			'.maxi-settingstab-control .maxi-tabs-content--disable-padding .toolbar-item__copy-paste__popover__item input#flex',
+			'.maxi-settingstab-control .maxi-tabs-content--disable-padding .toolbar-item__copy-paste__popover__item input#flexbox',
 			button => button.click()
 		);
+
+		// open settings
+		await page.$eval(
+			'.components-popover__content .maxi-tabs-control__button-settings',
+			button => button.click()
+		);
+
+		// check if the border group checkbox is checked after switching between tabs
+		const borderCheckboxChecked = await page.$eval(
+			'.maxi-settingstab-control .maxi-tabs-content--disable-padding .toolbar-item__copy-paste__popover__item input#border',
+			button => button.checked
+		);
+
+		expect(borderCheckboxChecked).toBeTruthy();
 
 		await page.$eval(
 			'.components-popover__content .toolbar-item__copy-paste__popover__button--special',
@@ -204,17 +256,26 @@ describe('CopyPaste from Toolbar', () => {
 			'border-top-right-radius-general': 15,
 			'box-shadow-blur-general': 0,
 			'box-shadow-color-general': undefined,
+			'margin-top-general': '24',
+			'margin-right-general': '24',
+			'margin-bottom-general': '24',
+			'margin-left-general': '24',
+			'margin-top-unit-general': 'em',
+			'margin-right-unit-general': 'em',
+			'margin-bottom-unit-general': 'em',
+			'margin-left-unit-general': 'em',
+			'padding-top-general': undefined,
+			'padding-right-general': undefined,
+			'padding-bottom-general': undefined,
+			'padding-left-general': undefined,
+			'padding-top-unit-general': 'px',
+			'padding-right-unit-general': 'px',
+			'padding-bottom-unit-general': 'px',
+			'padding-left-unit-general': 'px',
 		};
-		const attributesResult = await getAttributes([
-			'flex-direction-general',
-			'flex-wrap-general',
-			'border-bottom-left-radius-general',
-			'border-bottom-right-radius-general',
-			'border-top-left-radius-general',
-			'border-top-right-radius-general',
-			'box-shadow-blur-general',
-			'box-shadow-color-general',
-		]);
+		const attributesResult = await getAttributes(
+			Object.keys(expectAttributes)
+		);
 
 		expect(attributesResult).toStrictEqual(expectAttributes);
 	});
@@ -250,7 +311,7 @@ describe('CopyPaste from Toolbar', () => {
 		);
 
 		await page.$eval(
-			'.edit-post-editor__list-view-panel-content .block-editor-list-view-leaf .block-editor-list-view-block__contents-container button',
+			'.edit-post-editor__list-view-panel-content .block-editor-list-view-leaf .block-editor-list-view-block__contents-container .components-button',
 			column => column.click()
 		);
 		await page.waitForTimeout(500);

@@ -15,6 +15,7 @@ import {
 	SvgColorControl,
 	SvgStrokeWidthControl,
 	SvgWidthControl,
+	SvgAltControl,
 } from '../../components';
 import {
 	getColorRGBAString,
@@ -118,6 +119,20 @@ const Inspector = props => {
 										isAlignment: true,
 										disableJustify: true,
 									}),
+									{
+										label: __('Icon alt', 'maxi-blocks'),
+										content: deviceType === 'general' && (
+											<SvgAltControl
+												altTitle={attributes.altTitle}
+												altDescription={
+													attributes.altDescription
+												}
+												onChange={obj =>
+													maxiSetAttributes(obj)
+												}
+											/>
+										),
+									},
 									attributes.content && {
 										label: __('Icon colour', 'maxi-blocks'),
 										content: (
@@ -330,6 +345,8 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.transform({
 										props,
+										selectors: selectorsSvgIcon,
+										categories: categoriesSvgIcon,
 									}),
 									...inspectorTabs.transition({
 										props: {

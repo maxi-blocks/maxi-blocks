@@ -12,17 +12,18 @@ import Button from '../button';
 import SelectControl from '../select-control';
 import BlockResizer from '../block-resizer';
 import { validateOriginValue } from '../../extensions/styles';
+import ResetButton from '../reset-control';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNaN, isNumber, isString, round, toNumber } from 'lodash';
+import { isEmpty, isNaN, isNumber, round, toNumber } from 'lodash';
 
 /**
  * Icons
  */
-import { reset, sync as syncIcon } from '../../icons';
+import { sync as syncIcon } from '../../icons';
 
 /**
  * Component
@@ -71,14 +72,14 @@ const SquareControl = props => {
 		};
 	};
 
-	const getPlaceholder = value => {
+	const getPlaceholder = (value, isYAxis = false) => {
 		switch (type) {
 			case 'resize':
 				return '100';
 			case 'drag':
 				return '0%';
 			case 'origin':
-				return isString(value) ? value : 'center';
+				return isYAxis ? 'middle' : 'center';
 			default:
 				return false;
 		}
@@ -325,7 +326,8 @@ const SquareControl = props => {
 						/>
 						<Button
 							aria-pressed={
-								xAxis === 'middle' && yAxis === 'center'
+								(xAxis === 'middle' && yAxis === 'center') ||
+								(!xAxis && !yAxis)
 									? 'active'
 									: ''
 							}
@@ -470,7 +472,7 @@ const SquareControl = props => {
 						<div className='maxi-transform-control__square-control__y-control__value'>
 							<input
 								type='number'
-								placeholder={getPlaceholder(yAxis)}
+								placeholder={getPlaceholder(yAxis, true)}
 								className='maxi-transform-control__square-control__y-control__value__input'
 								value={
 									!isNumber(validateOriginValue(yAxis))
@@ -802,6 +804,7 @@ const SquareControl = props => {
 					</div>
 				</>
 			)}
+
 			<div className='maxi-transform-control__square-control__sync'>
 				{type !== 'drag' && (
 					<Tooltip
@@ -821,14 +824,7 @@ const SquareControl = props => {
 						</Button>
 					</Tooltip>
 				)}
-				<Button
-					aria-label={__('Reset', 'maxi-blocks')}
-					onClick={onReset}
-					action='reset'
-					type='reset'
-				>
-					{reset}
-				</Button>
+				<ResetButton onReset={onReset} />
 			</div>
 		</div>
 	);

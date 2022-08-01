@@ -140,11 +140,11 @@ const SettingTabsControl = props => {
 
 						return (
 							<Button
-								key={`maxi-tabs-control__button-${buttonLabel}`}
+								key={`maxi-tabs-control__button-${buttonLabel.toLowerCase()}`}
 								label={item.value}
 								className={classnames(
 									'maxi-tabs-control__button',
-									`maxi-tabs-control__button-${buttonLabel}`,
+									`maxi-tabs-control__button-${buttonLabel.toLowerCase()}`,
 									selected === item.value &&
 										'maxi-tabs-control__button--selected',
 									isActive &&

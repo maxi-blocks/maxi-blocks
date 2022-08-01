@@ -305,6 +305,8 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.transform({
 										props,
+										selectors: selectorsDivider,
+										categories: categoriesDivider,
 									}),
 									...inspectorTabs.transition({
 										props: {

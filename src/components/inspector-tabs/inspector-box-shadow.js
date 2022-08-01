@@ -14,11 +14,18 @@ import {
 	setHoverAttributes,
 } from '../../extensions/styles';
 import ResponsiveTabsControl from '../responsive-tabs-control';
+import ManageHoverTransitions from '../manage-hover-transitions';
 
 /**
  * Component
  */
-const boxShadow = ({ props, prefix = '', depth = 2, inlineTarget = '' }) => {
+const boxShadow = ({
+	props,
+	prefix = '',
+	depth = 2,
+	inlineTarget = '',
+	dropShadow,
+}) => {
 	const {
 		attributes,
 		clientId,
@@ -59,6 +66,7 @@ const boxShadow = ({ props, prefix = '', depth = 2, inlineTarget = '' }) => {
 									}}
 									breakpoint={deviceType}
 									clientId={clientId}
+									dropShadow={dropShadow}
 								/>
 							),
 						},
@@ -66,6 +74,7 @@ const boxShadow = ({ props, prefix = '', depth = 2, inlineTarget = '' }) => {
 							label: __('Hover state', 'maxi-blocks'),
 							content: (
 								<>
+									<ManageHoverTransitions />
 									<ToggleSwitch
 										label={__(
 											'Enable box shadow hover',
@@ -114,6 +123,7 @@ const boxShadow = ({ props, prefix = '', depth = 2, inlineTarget = '' }) => {
 											breakpoint={deviceType}
 											isHover
 											clientId={clientId}
+											dropShadow={dropShadow}
 										/>
 									)}
 								</>

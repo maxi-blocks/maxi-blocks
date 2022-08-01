@@ -279,6 +279,7 @@ const getButtonIconStyles = ({ obj, blockStyle, isHover = false }) => {
 							target: ':hover .maxi-button-block__icon',
 							blockStyle,
 							prefix: 'icon-',
+							useIconColor,
 							isHover: true,
 						}),
 					};

@@ -69,6 +69,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 	delete extraProps.attributes;
 	delete extraProps.isChild;
 	delete extraProps.deviceType;
+	delete extraProps.state;
 
 	// Not usable/necessary on save blocks
 	const [isDragOverBlock, setIsDragOverBlock] = isSave ? [] : useState(false);

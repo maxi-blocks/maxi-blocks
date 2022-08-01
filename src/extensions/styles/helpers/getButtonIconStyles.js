@@ -299,6 +299,7 @@ const getButtonIconStyles = ({
 							target: `:hover ${target}`,
 							blockStyle,
 							prefix: `${prefix}icon-`,
+							useIconColor,
 							isHover: true,
 						}),
 					};

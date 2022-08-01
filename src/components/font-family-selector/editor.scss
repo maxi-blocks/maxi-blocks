@@ -16,7 +16,7 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 	z-index: 9;
 	display: block;
 	width: 100%;
-	margin-bottom: 8px;
+	height: 32px;
 
 	.maxi-font-family-selector__control {
 		&__menu {
@@ -38,6 +38,10 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 			border-color: var(--maxi-grey-1-color);
 			padding: 8px;
 			border-radius: 0;
+			min-height: unset;
+			display: flex;
+			align-content: center;
+			height: 32px;
 
 			&:focus,
 			&:hover {
@@ -60,6 +64,7 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 		}
 		&__value-container {
 			padding: 0;
+			cursor: pointer;
 		}
 		&__clear-indicator {
 			width: 16px;
@@ -98,10 +103,4 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 			background-color: var(--maxi-grey-1-color);
 		}
 	}
-}
-
-.maxi-base-control .components-maxi-control__font-reset-button {
-	margin-top: -8px;
-	height: 38px;
-	width: 38px;
 }

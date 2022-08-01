@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { __, sprintf } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 import { RangeControl } from '@wordpress/components';
 import { useInstanceId } from '@wordpress/compose';
 
@@ -11,7 +11,7 @@ import { useInstanceId } from '@wordpress/compose';
 import SelectControl from '../select-control';
 import BaseControl from '../base-control';
 import ToggleSwitch from '../toggle-switch';
-import Button from '../button';
+import ResetButton from '../reset-control';
 
 /**
  * External dependencies
@@ -23,7 +23,6 @@ import { trim, isEmpty, isNumber, isNil, merge } from 'lodash';
  * Styles
  */
 import './editor.scss';
-import { reset } from '../../icons';
 import { getIsValid } from '../../extensions/styles';
 
 /**
@@ -233,22 +232,12 @@ const AdvancedNumberControl = props => {
 						/>
 					)}
 					{!disableReset && (
-						<Button
-							className='components-maxi-control__reset-button'
-							onClick={e => {
-								e.preventDefault();
+						<ResetButton
+							onReset={e => {
 								onReset();
 							}}
 							isSmall
-							aria-label={sprintf(
-								/* translators: %s: a textual label  */
-								__('Reset %s settings', 'maxi-blocks'),
-								label?.toLowerCase()
-							)}
-							type='reset'
-						>
-							{reset}
-						</Button>
+						/>
 					)}
 					<RangeControl
 						label={label}

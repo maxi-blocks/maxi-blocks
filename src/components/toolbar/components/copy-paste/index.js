@@ -19,7 +19,15 @@ import { loadColumnsTemplate } from '../../../../extensions/column-templates';
 /**
  * External dependencies
  */
-import { capitalize, isEmpty, isEqual, isObject, isString } from 'lodash';
+import {
+	capitalize,
+	isArray,
+	isEmpty,
+	isEqual,
+	isObject,
+	isString,
+	kebabCase,
+} from 'lodash';
 
 /**
  * Styles
@@ -95,15 +103,12 @@ const CopyPaste = props => {
 		getDefaultSpecialPaste(organizedAttributes)
 	);
 
-	const cleanInnerBlocks = innerBlocks => {
-		const test = innerBlocks.map(block => {
+	const cleanInnerBlocks = innerBlocks =>
+		innerBlocks.map(block => {
 			block.innerBlocks = cleanInnerBlocks(block.innerBlocks);
 
 			return cloneBlock(block);
 		});
-
-		return test;
-	};
 
 	const { copyStyles, copyNestedBlocks } = useDispatch('maxiBlocks');
 	const { updateBlockAttributes, replaceInnerBlocks } =
@@ -155,7 +160,8 @@ const CopyPaste = props => {
 	// TODO: check code
 	const handleSpecialPaste = ({ attr, tab, checked, group }) => {
 		const specPaste = { ...specialPaste };
-		if (!Array.isArray(attr)) {
+
+		if (!isArray(attr)) {
 			if (group) {
 				if (!checked)
 					specPaste[tab] = specPaste[tab].filter(sp => {
@@ -234,6 +240,8 @@ const CopyPaste = props => {
 					!isEmpty(organizedAttributes[tab]) &&
 					!isEqual(currentOrganizedAttributes[tab], attributes) &&
 					Object.entries(attributes).map(([label, obj]) => {
+						const normalizedLabel = kebabCase(label);
+
 						if (
 							!obj.group &&
 							!isEqual(
@@ -244,16 +252,16 @@ const CopyPaste = props => {
 							return (
 								<div
 									className='toolbar-item__copy-paste__popover__item'
-									key={`copy-paste-${tab}-${label}`}
+									key={`copy-paste-${tab}-${normalizedLabel}`}
 								>
 									<label
-										htmlFor={label}
+										htmlFor={normalizedLabel}
 										className='maxi-axis-control__content__item__checkbox'
 									>
 										<input
 											type='checkbox'
-											name={label}
-											id={label}
+											name={normalizedLabel}
+											id={normalizedLabel}
 											checked={specialPaste[tab].includes(
 												label
 											)}
@@ -336,7 +344,7 @@ const CopyPaste = props => {
 									className='toolbar-item__copy-paste__popover__button toolbar-item__copy-paste__popover__button--special'
 									onClick={onSpecialPaste}
 								>
-									{__('Paste Special Style', 'maxi-blocks')}
+									{__('Paste special style', 'maxi-blocks')}
 								</Button>
 							</form>
 						)}
@@ -347,7 +355,7 @@ const CopyPaste = props => {
 					className='toolbar-item__copy-paste__popover__button toolbar-item__copy-nested-block__popover__button'
 					onClick={onCopyBlocks}
 				>
-					{__('Copy Nested Blocks', 'maxi-blocks')}
+					{__('Copy nested blocks', 'maxi-blocks')}
 				</Button>
 			)}
 			{WRAPPER_BLOCKS.includes(blockName) && (
@@ -356,7 +364,7 @@ const CopyPaste = props => {
 					onClick={onPasteBlocks}
 					disabled={isEmpty(copiedBlocks)}
 				>
-					{__('Paste Nested Blocks', 'maxi-blocks')}
+					{__('Paste nested blocks', 'maxi-blocks')}
 				</Button>
 			)}
 		</div>

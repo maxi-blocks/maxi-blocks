@@ -63,6 +63,7 @@ export { default as RawHTML } from './raw-html';
 export { default as RelationControl } from './relation-control';
 export { default as ResponsiveControl } from './responsive-control';
 export { default as ResponsiveTabsControl } from './responsive-tabs-control';
+export { default as ResetButton } from './reset-control';
 export { default as ScrollEffectsControl } from './scroll-effects-control';
 export { default as SelectControl } from './select-control';
 export { default as SettingTabsControl } from './setting-tabs-control';

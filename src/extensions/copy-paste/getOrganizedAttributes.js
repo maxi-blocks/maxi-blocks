@@ -7,7 +7,7 @@ import { getGroupAttributes, paletteAttributesCreator } from '../styles';
 /**
  * External dependencies
  */
-import { isEmpty, isPlainObject, isString, omit } from 'lodash';
+import { isArray, isEmpty, isPlainObject, isString, omit } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -85,7 +85,7 @@ const getOrganizedAttributes = (
 			if (isEmpty(rawValue) || key.startsWith('_')) return;
 			let attr = {};
 
-			if (isString(rawValue)) {
+			if (isString(rawValue) || isArray(rawValue)) {
 				getAttrsFromConditions(rawValue, attr, attributes, conditions);
 			} else if (isPlainObject(rawValue)) {
 				const value = rawValue.template

@@ -4,6 +4,7 @@ export { default as breakpointAttributesCreator } from './breakpointAttributesCr
 export { default as createTransitionObj } from './transitions/createTransitionObj';
 export { default as getAttributeKey } from './getAttributeKey';
 export { default as getAttributeValue } from './getAttributeValue';
+export { default as getBlockCategoriesAndSelectors } from './getBlockCategoriesAndSelectors';
 export { default as getBlockStyle } from './getBlockStyle';
 export { default as getColorRGBAParts } from './getColorRGBAParts';
 export { default as getColorRGBAString } from './getColorRGBAString';
@@ -12,6 +13,7 @@ export { default as getGroupAttributes } from './getGroupAttributes';
 export { default as getIconPositionClass } from './getIconPositionClass';
 export { default as getIconWithColor } from './getIconWithColor';
 export { default as getLastBreakpointAttribute } from './getLastBreakpointAttribute';
+export { default as getIsOverflowHidden } from './getIsOverflowHidden';
 export { default as getPaletteAttributes } from './getPaletteAttributes';
 export { default as hoverAttributesCreator } from './hoverAttributesCreator';
 export { default as paletteAttributesCreator } from './paletteAttributesCreator';
@@ -23,6 +25,6 @@ export { default as styleGenerator } from './styleGenerator';
 export { default as transitionAttributesCreator } from './transitions/transitionAttributesCreator';
 export * from './styleGenerator';
 export { default as styleResolver } from './styleResolver';
-export { default as stylesCleaner } from './stylesCleaner';
+export { default as styleProcessor } from './styleProcessor';
 
 export * from './utils';

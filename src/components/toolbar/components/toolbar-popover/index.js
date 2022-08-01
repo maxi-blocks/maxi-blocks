@@ -42,23 +42,32 @@ class ToolbarPopover extends Component {
 		this.ref = createRef();
 	}
 
+	componentDidMount() {
+		this.mounted = true;
+	}
+
+	componentWillUnmount() {
+		this.mounted = false;
+	}
+
 	/**
 	 * Ensures the popover closes when clicking outside
 	 */
 	onClickOutside(event) {
 		const path = event.path || (event.composedPath && event.composedPath());
 		if (
-			this.ref.current?.ownerDocument.querySelectorAll(
+			this.mounted &&
+			(this.ref.current?.ownerDocument.querySelectorAll(
 				'.toolbar-item__popover'
 			).length >= 2 ||
-			// If the click isn't inside the popover and isn't inside the button
-			(path &&
-				!path.includes(
-					this.ref.current?.ownerDocument.querySelector(
-						'.toolbar-item__popover'
-					)
-				) &&
-				!path.includes(this.ref.current))
+				// If the click isn't inside the popover and isn't inside the button
+				(path &&
+					!path.includes(
+						this.ref.current?.ownerDocument.querySelector(
+							'.toolbar-item__popover'
+						)
+					) &&
+					!path.includes(this.ref.current)))
 		)
 			this.state.onClose();
 	}
@@ -95,6 +104,7 @@ class ToolbarPopover extends Component {
 			advancedOptions = false,
 			tab = 0,
 			position = 'top center',
+			disabled = false,
 		} = this.props;
 
 		const { isOpen, onClose } = this.state;
@@ -119,6 +129,7 @@ class ToolbarPopover extends Component {
 					onClick={() => this.onToggle()}
 					aria-expanded={isOpen}
 					action='popup'
+					disabled={disabled}
 				>
 					<Icon className='toolbar-item__icon' icon={icon} />
 					{__(text, 'maxi-blocks')}

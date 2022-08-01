@@ -2,7 +2,7 @@ const prefix = 'svg-';
 
 const copyPasteMapping = {
 	settings: {
-		'Icon content': { props: ['svgType', 'content'] },
+		'Icon content': ['svgType', 'content'],
 		Alignment: {
 			groupAttributes: 'alignment',
 		},

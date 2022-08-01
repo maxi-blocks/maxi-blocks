@@ -14,6 +14,7 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 
 import {
 	getGroupAttributes,
+	getIsOverflowHidden,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import getStyles from './styles';
@@ -187,18 +188,6 @@ class edit extends MaxiBlockComponent {
 					].indexOf(blockName) === -1
 			);
 
-		const getIsOverflowHidden = () =>
-			getLastBreakpointAttribute({
-				target: 'overflow-y',
-				breakpoint: deviceType,
-				attributes,
-			}) === 'hidden' &&
-			getLastBreakpointAttribute({
-				target: 'overflow-x',
-				breakpoint: deviceType,
-				attributes,
-			}) === 'hidden';
-
 		const emptyColumnClass = !hasInnerBlocks
 			? 'maxi-column-block__empty'
 			: 'maxi-column-block__has-innerBlock';
@@ -228,7 +217,10 @@ class edit extends MaxiBlockComponent {
 						key={`maxi-column--${uniqueID}`}
 						ref={this.blockRef}
 						{...getMaxiBlockAttributes(this.props)}
-						isOverflowHidden={getIsOverflowHidden()}
+						isOverflowHidden={getIsOverflowHidden(
+							attributes,
+							deviceType
+						)}
 						tagName={BlockResizer}
 						resizableObject={this.resizableObject}
 						classes={classnames(

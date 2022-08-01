@@ -1,81 +1,31 @@
 const copyPasteMapping = {
-	_order: [
-		'Column settings',
-		'Background',
-		'Border',
-		'Box shadow',
-		'Size',
-		'Margin/Padding',
-	],
-
 	settings: {
-		blockSpecific: {
-			size: {
-				groupLabel: 'Size',
-				props: {
-					fullWidth: 'Full width',
-					size: { label: 'Size', type: 'withoutPrefix' },
-				},
+		'Column settings': {
+			group: {
+				'Fit content': 'column-fit-content',
+				'Column size': 'column-size',
+				'Vertical align': 'justify-content',
 			},
+			hasBreakpoints: true,
 		},
-		withBreakpoint: {
-			'column-settings': {
-				groupLabel: 'Column settings',
-				props: {
-					'column-fit-content': 'Fit content',
-					'column-size': 'Column size',
-					'justify-content': 'Vertical align',
-				},
-			},
+		Background: {
+			template: 'blockBackground',
 		},
-		withoutPrefix: {
-			blockBackground: 'Background',
-			border: {
-				groupLabel: 'Border',
-				props: {
-					border: 'Border',
-					borderWidth: 'Border width',
-					borderRadius: 'Border radius',
-					borderHover: 'Border hover',
-					borderWidthHover: 'Border width hover',
-					borderRadiusHover: 'Border radius hover',
-				},
-			},
-			boxShadow: {
-				groupLabel: 'Box shadow',
-				props: {
-					boxShadow: 'Box shadow',
-					boxShadowHover: 'Box shadow hover',
-				},
-			},
-			'margin-padding': {
-				groupLabel: 'Margin/Padding',
-				props: { margin: 'Margin', padding: 'Padding' },
-			},
+		Border: {
+			template: 'border',
+		},
+		'Box shadow': {
+			template: 'boxShadow',
+		},
+		Size: {
+			template: 'size',
+		},
+		'Margin/Padding': {
+			template: 'marginPadding',
 		},
 	},
 	advanced: {
-		blockSpecific: {
-			extraClassName: 'Custom CSS classes',
-			anchorLink: {
-				label: 'Anchor',
-				value: ['anchorLink', 'linkSettings'],
-			},
-			relations: 'Interaction',
-		},
-		withoutPrefix: {
-			breakpoints: 'Breakpoints',
-			customCss: 'Custom CSS',
-			scroll: 'Scroll effects',
-			transform: 'Transform',
-			transition: 'Hyperlink hover transition',
-			display: 'Show/hide block',
-			opacity: 'Opacity',
-			position: 'Position',
-			overflow: 'Overflow',
-			flex: 'Flexbox',
-			zIndex: 'Z-index',
-		},
+		template: 'advanced',
 	},
 };
 

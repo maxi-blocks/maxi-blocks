@@ -105,7 +105,7 @@ const Inspector = props => {
 
 		const {
 			'icon-stroke-palette-status': strokePaletteStatus,
-			'icon-stroke-palette-hover-status': strokePaletteHoverStatus,
+			'icon-stroke-palette-status-hover': strokePaletteHoverStatus,
 			'icon-content': rawIcon,
 		} = newDefaultPresets[`preset${number}`];
 
@@ -114,7 +114,7 @@ const Inspector = props => {
 		if (rawIcon && (strokePaletteStatus || strokePaletteHoverStatus)) {
 			const {
 				'icon-stroke-palette-color': strokePaletteColor,
-				'icon-stroke-palette-hover-color': strokePaletteHoverColor,
+				'icon-stroke-palette-color-hover': strokePaletteHoverColor,
 				'icon-inherit': rawIconInherit,
 				'icon-only': rawIconOnly,
 			} = newDefaultPresets[`preset${number}`];
@@ -579,6 +579,8 @@ const Inspector = props => {
 										props: {
 											...props,
 										},
+										categories: getCategoriesCss(),
+										selectors: selectorsButton,
 									}),
 									...inspectorTabs.transition({
 										props: {

@@ -30,7 +30,7 @@ const ColumnSizeControl = props => {
 				selected={getLastBreakpointAttribute({
 					target: 'column-fit-content',
 					breakpoint,
-					props,
+					attributes: props,
 				})}
 				onChange={val => {
 					onChange({
@@ -41,14 +41,14 @@ const ColumnSizeControl = props => {
 			{!getLastBreakpointAttribute({
 				target: 'column-fit-content',
 				breakpoint,
-				props,
+				attributes: props,
 			}) && (
 				<AdvancedNumberControl
 					label={__('Column size (%)', 'maxi-blocks')}
 					value={getLastBreakpointAttribute({
 						target: 'column-size',
 						breakpoint,
-						props,
+						attributes: props,
 					})}
 					onChangeValue={val => {
 						onChange({

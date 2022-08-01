@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
+import { getGroupAttributes, styleProcessor } from '../../extensions/styles';
 import {
 	getBorderStyles,
 	getBoxShadowStyles,
@@ -12,7 +12,6 @@ import {
 	getOverflowStyles,
 	getPositionStyles,
 	getSizeStyles,
-	getTransformStyles,
 	getZIndexStyles,
 	getFlexStyles,
 } from '../../extensions/styles/helpers';
@@ -60,9 +59,6 @@ const getNormalObject = props => {
 		}),
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
-		}),
-		transform: getTransformStyles({
-			...getGroupAttributes(props, 'transform'),
 		}),
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
@@ -122,7 +118,7 @@ const getStyles = props => {
 	const { uniqueID } = props;
 
 	const response = {
-		[uniqueID]: stylesCleaner(
+		[uniqueID]: styleProcessor(
 			{
 				'': getNormalObject(props),
 				':hover': getHoverNormalObject(props),

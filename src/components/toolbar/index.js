@@ -84,16 +84,20 @@ const MaxiToolbar = memo(
 		const {
 			attributes,
 			backgroundAdvancedOptions,
-			backgroundPrefix,
 			backgroundGlobalProps,
+			backgroundPrefix,
+			blockStyle,
 			cleanInlineStyles,
 			clientId,
+			content,
 			copyPasteMapping,
 			disableCustomFormats = false,
+			dropShadow,
 			inlineStylesTargets = inlineStylesTargetsDefault,
 			insertInlineStyles,
 			isSelected,
 			maxiSetAttributes,
+			mediaPrefix,
 			name,
 			prefix = '',
 			resetNumberHelper,
@@ -101,7 +105,6 @@ const MaxiToolbar = memo(
 			rowPattern,
 			toggleHandlers,
 		} = props;
-		const { blockStyle, content, mediaPrefix } = props;
 		const {
 			customLabel,
 			isFirstOnHierarchy,
@@ -515,6 +518,7 @@ const MaxiToolbar = memo(
 							clientId={clientId}
 							breakpoint={breakpoint}
 							prefix={prefix}
+							dropShadow={dropShadow}
 						/>
 						<ToolbarColumnPattern
 							clientId={clientId}
@@ -579,6 +583,7 @@ const MaxiToolbar = memo(
 							onChange={linkSettings =>
 								maxiSetAttributes({ linkSettings })
 							}
+							clientId={clientId}
 							textLevel={textLevel}
 						/>
 						<TextLink
@@ -595,6 +600,7 @@ const MaxiToolbar = memo(
 							blockStyle={blockStyle}
 							styleCard={styleCard}
 							disableCustomFormats={disableCustomFormats}
+							clientId={clientId}
 						/>
 						<VerticalAlign
 							clientId={clientId}

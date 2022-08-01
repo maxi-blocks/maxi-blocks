@@ -1,53 +1,27 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
 const rawTransform = {
-	'transform-scale-x': {
-		type: 'number',
+	'transform-scale': {
+		type: 'object',
 	},
-	'transform-scale-y': {
-		type: 'number',
+	'transform-translate': {
+		type: 'object',
 	},
-	'transform-translate-x-unit': {
-		type: 'string',
-		default: '%',
+	'transform-rotate': {
+		type: 'object',
 	},
-	'transform-translate-x': {
-		type: 'number',
-	},
-	'transform-translate-y-unit': {
-		type: 'string',
-		default: '%',
-	},
-	'transform-translate-y': {
-		type: 'number',
-	},
-	'transform-rotate-x': {
-		type: 'number',
-	},
-	'transform-rotate-y': {
-		type: 'number',
-	},
-	'transform-rotate-z': {
-		type: 'number',
-	},
-	'transform-origin-x': {
-		type: 'string',
-	},
-	'transform-origin-y': {
-		type: 'string',
-	},
-	'transform-origin-x-unit': {
-		type: 'string',
-		default: '%',
-	},
-	'transform-origin-y-unit': {
-		type: 'string',
-		default: '%',
+	'transform-origin': {
+		type: 'object',
 	},
 };
 
-const transform = breakpointAttributesCreator({
-	obj: rawTransform,
-});
+const transform = {
+	'transform-target': {
+		type: 'string',
+	},
+	...breakpointAttributesCreator({
+		obj: rawTransform,
+	}),
+};
 
 export default transform;

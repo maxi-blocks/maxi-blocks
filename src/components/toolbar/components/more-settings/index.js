@@ -72,9 +72,8 @@ const MoreSettings = props => {
 				renderContent={args => (
 					<div>
 						<CopyPaste
-							clientId={clientId}
 							blockName={blockName}
-							prefix={prefix}
+							clientId={clientId}
 							closeMoreSettings={args.onClose}
 							copyPasteMapping={copyPasteMapping}
 						/>

@@ -11,7 +11,7 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 /**
  * Save
  */
-const save = (props, extendedAttributes = {}) => {
+const save = props => {
 	const {
 		textLevel,
 		isList,
@@ -33,7 +33,6 @@ const save = (props, extendedAttributes = {}) => {
 		<MaxiBlock.save
 			classes={`${isList ? 'maxi-list-block' : ''}`}
 			{...getMaxiBlockAttributes({ ...props, name })}
-			{...extendedAttributes}
 		>
 			{!dcStatus && (
 				<RichText.Content

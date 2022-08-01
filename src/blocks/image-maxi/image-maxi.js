@@ -17,6 +17,7 @@ import { registerBlockType } from '@wordpress/blocks';
 import attributes from './attributes';
 import edit from './edit';
 import save from './save';
+import { selectorsImage } from './custom-css';
 
 /**
  * Styles and icons
@@ -28,7 +29,7 @@ import { imageBox } from '../../icons';
 /**
  * Migrators
  */
-import blockMigrator from '../../extensions/styles/migrators/blockMigrator';
+import { blockMigrator } from '../../extensions/styles/migrators';
 
 /**
  * Block
@@ -54,5 +55,10 @@ registerBlockType('maxi-blocks/image-maxi', {
 	},
 	edit,
 	save,
-	deprecated: [blockMigrator({ attributes, save, prefix: 'image-' })],
+	deprecated: blockMigrator({
+		attributes,
+		save,
+		prefix: 'image-',
+		selectors: selectorsImage,
+	}),
 });

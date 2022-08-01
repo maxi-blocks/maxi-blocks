@@ -1,20 +1,13 @@
 /**
- * External dependencies
- */
-import { merge } from 'lodash';
-
-/**
  * Internal dependencies
  */
-import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
+import { getGroupAttributes, styleProcessor } from '../../extensions/styles';
 import {
 	getSizeStyles,
 	getBoxShadowStyles,
 	getZIndexStyles,
 	getPositionStyles,
 	getDisplayStyles,
-	getTransformStyles,
-	getTransitionStyles,
 	getMarginPaddingStyles,
 	getBlockBackgroundStyles,
 	getBorderStyles,
@@ -63,9 +56,6 @@ const getNormalObject = props => {
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
 		}),
-		transform: getTransformStyles({
-			...getGroupAttributes(props, 'transform'),
-		}),
 		row: {
 			general: {},
 		},
@@ -113,39 +103,34 @@ const getStyles = props => {
 	const { uniqueID } = props;
 
 	const response = {
-		[uniqueID]: stylesCleaner(
-			merge(
-				{
-					'': getNormalObject(props),
-					':hover': getHoverObject(props),
-					...getBlockBackgroundStyles({
-						...getGroupAttributes(props, [
+		[uniqueID]: styleProcessor(
+			{
+				'': getNormalObject(props),
+				':hover': getHoverObject(props),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(props, [
+						'blockBackground',
+						'border',
+						'borderWidth',
+						'borderRadius',
+					]),
+					blockStyle: props.blockStyle,
+				}),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(
+						props,
+						[
 							'blockBackground',
 							'border',
 							'borderWidth',
 							'borderRadius',
-						]),
-						blockStyle: props.blockStyle,
-					}),
-					...getBlockBackgroundStyles({
-						...getGroupAttributes(
-							props,
-							[
-								'blockBackground',
-								'border',
-								'borderWidth',
-								'borderRadius',
-							],
-							true
-						),
-						isHover: true,
-						blockStyle: props.blockStyle,
-					}),
-				},
-				...getTransitionStyles({
-					...getGroupAttributes(props, 'transition'),
-				})
-			),
+						],
+						true
+					),
+					isHover: true,
+					blockStyle: props.blockStyle,
+				}),
+			},
 			selectorsRow,
 			props
 		),

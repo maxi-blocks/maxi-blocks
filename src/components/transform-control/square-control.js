@@ -12,17 +12,18 @@ import Button from '../button';
 import SelectControl from '../select-control';
 import BlockResizer from '../block-resizer';
 import { validateOriginValue } from '../../extensions/styles';
+import ResetButton from '../reset-control';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNaN, isNumber, isString, round, toNumber } from 'lodash';
+import { isEmpty, isNaN, isNumber, round, toNumber } from 'lodash';
 
 /**
  * Icons
  */
-import { reset, sync as syncIcon } from '../../icons';
+import { sync as syncIcon } from '../../icons';
 
 /**
  * Component
@@ -803,6 +804,7 @@ const SquareControl = props => {
 					</div>
 				</>
 			)}
+
 			<div className='maxi-transform-control__square-control__sync'>
 				{type !== 'drag' && (
 					<Tooltip
@@ -822,14 +824,7 @@ const SquareControl = props => {
 						</Button>
 					</Tooltip>
 				)}
-				<Button
-					aria-label={__('Reset', 'maxi-blocks')}
-					onClick={onReset}
-					action='reset'
-					type='reset'
-				>
-					{reset}
-				</Button>
+				<ResetButton onReset={onReset} />
 			</div>
 		</div>
 	);

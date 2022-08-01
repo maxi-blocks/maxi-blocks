@@ -2,31 +2,31 @@ export const selectorsRow = {
 	row: {
 		normal: {
 			label: 'row',
-			target: '.maxi-row-block',
+			target: '',
 		},
 		hover: {
 			label: 'row on hover',
-			target: '.maxi-row-block:hover',
+			target: ':hover',
 		},
 	},
 	'before row': {
 		normal: {
 			label: 'row :before',
-			target: '.maxi-row-block::before',
+			target: '::before',
 		},
 		hover: {
 			label: 'row ::before on hover',
-			target: '.maxi-row-block:hover::before',
+			target: ':hover::before',
 		},
 	},
 	'after row': {
 		normal: {
 			label: 'row ::after',
-			target: '.maxi-row-block::after',
+			target: '::after',
 		},
 		hover: {
 			label: 'row :after on hover',
-			target: '.maxi-row-block:hover::after',
+			target: ':hover::after',
 		},
 	},
 };

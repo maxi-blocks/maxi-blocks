@@ -47,6 +47,27 @@ const BoxShadowValueControl = props => {
 		onChange,
 	} = props;
 
+	const minMaxSettings = {
+		px: {
+			min: type === 'blur' ? 0 : -3999,
+			max: 3999,
+			minRange: -1999,
+			maxRange: 1999,
+		},
+		em: {
+			min: type === 'blur' ? 0 : -999,
+			max: 999,
+			minRange: -300,
+			maxRange: 300,
+		},
+		vw: {
+			min: type === 'blur' ? 0 : -999,
+			max: 999,
+			minRange: -300,
+			maxRange: 300,
+		},
+	};
+
 	return (
 		<AdvancedNumberControl
 			{...(!isToolbar && { label: __(capitalize(type), 'maxi-blocks') })}
@@ -65,6 +86,7 @@ const BoxShadowValueControl = props => {
 			}}
 			min={-100}
 			max={100}
+			minMaxSettings={minMaxSettings}
 			onReset={() =>
 				onChange({
 					[`${prefix}box-shadow-${type}-${breakpoint}${
@@ -106,9 +128,11 @@ const BoxShadowControl = props => {
 		isHover = false,
 		prefix = '',
 		clientId,
+		dropShadow = false,
 	} = props;
 
-	const boxShadowItems = ['horizontal', 'vertical', 'blur', 'spread'];
+	const boxShadowItems = ['horizontal', 'vertical', 'blur'];
+	!dropShadow && boxShadowItems.push('spread');
 
 	const onChangeDefault = defaultProp => {
 		const response = {};
@@ -210,7 +234,7 @@ const BoxShadowControl = props => {
 					},
 				]}
 			/>
-			{isToolbar && (
+			{isToolbar && !dropShadow && (
 				<>
 					<div className='maxi-shadow-control__icon'>
 						<Icon icon={boxShadow} />
@@ -306,22 +330,24 @@ const BoxShadowControl = props => {
 					/>
 					{!isToolbar && (
 						<>
-							<ToggleSwitch
-								label={__('Inset', 'maxi-block')}
-								selected={getLastBreakpointAttribute({
-									target: `${prefix}box-shadow-inset`,
-									breakpoint,
-									attributes: props,
-									isHover,
-								})}
-								onChange={val =>
-									onChange({
-										[`${prefix}box-shadow-inset-${breakpoint}${
-											isHover ? '-hover' : ''
-										}`]: val,
-									})
-								}
-							/>
+							{!dropShadow && (
+								<ToggleSwitch
+									label={__('Inset', 'maxi-block')}
+									selected={getLastBreakpointAttribute({
+										target: `${prefix}box-shadow-inset`,
+										breakpoint,
+										attributes: props,
+										isHover,
+									})}
+									onChange={val =>
+										onChange({
+											[`${prefix}box-shadow-inset-${breakpoint}${
+												isHover ? '-hover' : ''
+											}`]: val,
+										})
+									}
+								/>
+							)}
 							{boxShadowItems.map(type => (
 								<BoxShadowValueControl
 									type={type}

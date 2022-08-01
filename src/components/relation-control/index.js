@@ -13,7 +13,6 @@ import ListControl from '../list-control';
 import ListItemControl from '../list-control/list-item-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
-import settings from './settings';
 import SettingTabsControl from '../setting-tabs-control';
 import TextControl from '../text-control';
 import TransitionControl from '../transition-control';
@@ -23,6 +22,7 @@ import {
 	getGroupAttributes,
 } from '../../extensions/styles';
 import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
+import settings from './settings';
 
 /**
  * External dependencies
@@ -196,6 +196,7 @@ const RelationControl = props => {
 						...newAttributesObj,
 					},
 					target: selectedSettingsObj?.target,
+					clientId,
 				});
 
 				const getStyles = (stylesObj, isFirst = false) => {
@@ -229,7 +230,9 @@ const RelationControl = props => {
 
 					const styles = Object.keys(stylesObj).reduce((acc, key) => {
 						if (isFirst) {
-							acc[key] = getStyles(stylesObj[key]);
+							if (!key.includes(':hover'))
+								acc[key] = getStyles(stylesObj[key]);
+
 							return acc;
 						}
 

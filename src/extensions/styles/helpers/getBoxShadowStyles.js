@@ -9,7 +9,7 @@ import getDefaultAttribute from '../getDefaultAttribute';
 /**
  * External dependencies
  */
-import { isBoolean, isNil, isNumber, round } from 'lodash';
+import { isBoolean, isNil, isNumber, round, isEmpty } from 'lodash';
 
 /**
  * General
@@ -30,6 +30,7 @@ const getBoxShadowStyles = ({
 	dropShadow = false,
 	prefix = '',
 	blockStyle,
+	forClipPath = false,
 }) => {
 	const response = {};
 
@@ -62,6 +63,34 @@ const getBoxShadowStyles = ({
 				defaultValue,
 			};
 		};
+
+		const clipPathExists =
+			(getLastBreakpointAttribute({
+				target: 'clip-path',
+				breakpoint,
+				attributes: obj,
+			}) &&
+				getLastBreakpointAttribute({
+					target: 'clip-path-status',
+					breakpoint,
+					attributes: obj,
+				})) ||
+			!isEmpty(obj.SVGElement);
+
+		const defaultClipPathExists =
+			breakpoint === 'general'
+				? false
+				: (getLastBreakpointAttribute({
+						target: 'clip-path',
+						breakpoint: getPrevBreakpoint(breakpoint),
+						attributes: obj,
+				  }) &&
+						getLastBreakpointAttribute({
+							target: 'clip-path-status',
+							breakpoint: getPrevBreakpoint(breakpoint),
+							attributes: obj,
+						})) ||
+				  !isEmpty(obj.SVGElement);
 
 		// Inset
 		const { value: inset, defaultValue: defaultInset } = getValue('inset');
@@ -124,6 +153,10 @@ const getBoxShadowStyles = ({
 				: paletteColor;
 
 		const isNotDefault =
+			(breakpoint !== 'general' &&
+				clipPathExists !== defaultClipPathExists &&
+				prefix === 'image-' &&
+				clipPathExists) ||
 			(isBoolean(inset) && inset !== defaultInset) ||
 			(isNumber(horizontal) &&
 				horizontal !== 0 &&
@@ -157,9 +190,10 @@ const getBoxShadowStyles = ({
 			boxShadowString += `${blurValue || 0}${blurUnit || 'px'} `;
 			boxShadowString += color || defaultColor;
 
-			response[breakpoint] = {
-				filter: `drop-shadow(${boxShadowString.trim()})`,
-			};
+			if (!(forClipPath && !clipPathExists))
+				response[breakpoint] = {
+					filter: `drop-shadow(${boxShadowString.trim()})`,
+				};
 		} else if (isNotDefault) {
 			const blurValue = isNumber(blur) ? blur : defaultBlur;
 			const spreadValue = isNumber(spread) ? spread : defaultSpread;
@@ -175,9 +209,14 @@ const getBoxShadowStyles = ({
 			boxShadowString += `${spreadValue || 0}${spreadUnit || 'px'} `;
 			boxShadowString += color || defaultColor;
 
-			response[breakpoint] = {
-				'box-shadow': `${boxShadowString.trim()}`,
-			};
+			if (!(prefix === 'image-' && clipPathExists))
+				response[breakpoint] = {
+					'box-shadow': `${boxShadowString.trim()}`,
+				};
+			else
+				response[breakpoint] = {
+					'box-shadow': 'none',
+				};
 		}
 	});
 

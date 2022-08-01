@@ -98,7 +98,9 @@ const TextColor = props => {
 			disableCustomFormats,
 		});
 
-		const newFormatValue = { ...obj.formatValue };
+		const newFormatValue = {
+			...obj.formatValue,
+		};
 		delete obj.formatValue;
 
 		if (!disableCustomFormats) onChangeTextFormat(newFormatValue);

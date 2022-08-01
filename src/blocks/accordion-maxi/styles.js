@@ -9,7 +9,7 @@ import { isNil, isEmpty } from 'lodash';
 import {
 	getPaletteAttributes,
 	getColorRGBAString,
-	stylesCleaner,
+	styleProcessor,
 	getLastBreakpointAttribute,
 	getGroupAttributes,
 } from '../../extensions/styles';
@@ -367,7 +367,7 @@ const getPaneContentObject = props => {
 const getStyles = props => {
 	const { uniqueID } = props;
 	const response = {
-		[uniqueID]: stylesCleaner(
+		[uniqueID]: styleProcessor(
 			{
 				'': getNormalObject(props),
 				':hover': getHoverObject(props),

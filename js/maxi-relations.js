@@ -85,20 +85,23 @@ const relations = () => {
 			const interactionStyle = document.querySelector(
 				'#maxi-blocks-interaction-css'
 			);
-			const selector = escapeRegExp(
-				`body.maxi-blocks--active ${target} {`.replace(/\s{2,}/g, ' ')
+			const selector = `body.maxi-blocks--active ${target} {`.replace(
+				/\s{2,}/g,
+				' '
 			);
 
 			Object.entries(stylesObj).forEach(([key, value]) => {
 				if (remove) {
 					const styleRegExp = new RegExp(
-						`(${selector}.*?) ${key}:.*?;`
+						`(${escapeRegExp(selector)}.*?) ${key}:.*?;`
 					);
 
 					interactionStyle.textContent =
 						interactionStyle.textContent.replace(styleRegExp, '$1');
 				} else {
-					const selectorRegExp = new RegExp(`(${selector})`);
+					const selectorRegExp = new RegExp(
+						`(${escapeRegExp(selector)})`
+					);
 					if (!interactionStyle.textContent.match(selectorRegExp))
 						interactionStyle.textContent += `${selector}}`;
 
@@ -133,24 +136,27 @@ const relations = () => {
 			const interactionStyle = document.querySelector(
 				'#maxi-blocks-interaction-css'
 			);
-			const selector = escapeRegExp(
-				`body.maxi-blocks--active ${target} {`.replace(/\s{2,}/g, ' ')
+			const selector = `body.maxi-blocks--active ${target} {`.replace(
+				/\s{2,}/g,
+				' '
 			);
 			const transitionString = getTransitionString(stylesObj, effectsObj);
 
 			if (remove) {
 				const styleRegExp = new RegExp(
-					`(${selector}.*?) transition:.*?;`
+					`(${escapeRegExp(selector)}.*?) transition:.*?;`
 				);
 				interactionStyle.textContent =
 					interactionStyle.textContent.replace(styleRegExp, '$1');
 			} else {
-				const selectorRegExp = new RegExp(`(${selector})`);
+				const selectorRegExp = new RegExp(
+					`(${escapeRegExp(selector)})`
+				);
 				if (!interactionStyle.textContent.match(selectorRegExp))
 					interactionStyle.textContent += `${selector}}`;
 
 				const transitionExistsRegExp = new RegExp(
-					`(${selector}[^{]*transition:)`
+					`(${escapeRegExp(selector)}[^{]*transition:)`
 				);
 				if (
 					interactionStyle.textContent.match(transitionExistsRegExp)

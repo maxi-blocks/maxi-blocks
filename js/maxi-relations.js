@@ -67,6 +67,10 @@ const relations = () => {
 		};
 	};
 
+	function escapeRegExp(string) {
+		return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+	}
+
 	const toggleInlineStyles = (stylesObj, target, remove = false) => {
 		if (stylesObj.isTargets) {
 			Object.entries(stylesObj).forEach(([targetSelector, styles]) => {
@@ -81,9 +85,8 @@ const relations = () => {
 			const interactionStyle = document.querySelector(
 				'#maxi-blocks-interaction-css'
 			);
-			const selector = `body.maxi-blocks--active ${target} {`.replace(
-				/\s{2,}/g,
-				' '
+			const selector = escapeRegExp(
+				`body.maxi-blocks--active ${target} {`.replace(/\s{2,}/g, ' ')
 			);
 
 			Object.entries(stylesObj).forEach(([key, value]) => {
@@ -130,9 +133,8 @@ const relations = () => {
 			const interactionStyle = document.querySelector(
 				'#maxi-blocks-interaction-css'
 			);
-			const selector = `body.maxi-blocks--active ${target} {`.replace(
-				/\s{2,}/g,
-				' '
+			const selector = escapeRegExp(
+				`body.maxi-blocks--active ${target} {`.replace(/\s{2,}/g, ' ')
 			);
 			const transitionString = getTransitionString(stylesObj, effectsObj);
 

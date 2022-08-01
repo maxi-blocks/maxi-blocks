@@ -2,11 +2,12 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
+import { select } from '@wordpress/data';
 
 /**
  * External dependencies.
  */
-import { isEmpty } from 'lodash';
+import { isEmpty, merge } from 'lodash';
 
 /**
  * Internal dependencies.
@@ -19,11 +20,13 @@ import {
 	getLastBreakpointAttribute,
 	getIconWithColor,
 } from '../../extensions/styles';
+import getRowGapProps from '../../extensions/attributes/getRowGapProps';
 import {
 	getTransformCategories,
 	getTransformSelectors,
 } from '../transform-control/utils';
-import getBlockCategoriesAndSelectors from './getBlockCategoriesAndSelectors';
+import getBlockCategoriesAndSelectors from '../../extensions/styles/getBlockCategoriesAndSelectors';
+import getParentRowClientId from './getParentRowClientId';
 
 const getTransformControl = name => {
 	const { categories, selectors } = getBlockCategoriesAndSelectors(name);
@@ -52,7 +55,7 @@ const getTransformControl = name => {
 	};
 };
 
-const canvasSettings = [
+const getCanvasSettings = name => [
 	{
 		label: __('Background / Layer', 'maxi-blocks'),
 		attrGroupName: [
@@ -121,7 +124,7 @@ const canvasSettings = [
 			return (
 				<Controls.FullSizeControl
 					{...props}
-					hideWidth={isBlockFullWidth}
+					hideWidth={isBlockFullWidth || name === 'column'}
 					hideMaxWidth={isBlockFullWidth}
 					isBlockFullWidth={isBlockFullWidth}
 				/>
@@ -146,6 +149,7 @@ const canvasSettings = [
 		component: props => <Controls.PositionControl {...props} />,
 		helper: props => styleHelpers.getPositionStyles(props.obj),
 	},
+	...getTransformControl(name),
 ];
 
 const settings = {
@@ -258,17 +262,65 @@ const settings = {
 			helper: props => styleHelpers.getMarginPaddingStyles(props),
 			target: '.maxi-button-block__button',
 		},
-		...getTransformControl('button'),
-		...canvasSettings,
+		...getCanvasSettings('button'),
 	],
 	'maxi-blocks/column-maxi': [
-		...getTransformControl('column'),
-		...canvasSettings,
+		{
+			label: __('Column settings', 'maxi-blocks'),
+			attrGroupName: ['columnSize', 'flex'],
+			component: props => {
+				const { getBlockAttributes } = select('core/block-editor');
+
+				const rowPattern = getGroupAttributes(
+					getBlockAttributes(getParentRowClientId(props.clientId)),
+					'rowPattern'
+				);
+
+				return (
+					<Controls.ColumnSizeControl
+						{...props}
+						rowPattern={rowPattern}
+					/>
+				);
+			},
+			helper: props => {
+				const { getBlock } = select('core/block-editor');
+
+				const parentRowBlock = getBlock(
+					getParentRowClientId(props.clientId)
+				);
+
+				const columnsSize = parentRowBlock.innerBlocks.reduce(
+					(acc, block) => ({
+						...acc,
+						[block.clientId]: getGroupAttributes(
+							block.attributes,
+							'columnSize'
+						),
+					}),
+					{}
+				);
+
+				const columnNum = parentRowBlock.innerBlocks.length;
+				const rowGapProps = getRowGapProps(parentRowBlock.attributes);
+
+				return merge(
+					styleHelpers.getColumnSizeStyles(
+						props.obj,
+						{
+							...rowGapProps,
+							columnNum,
+							columnsSize,
+						},
+						props.clientId
+					),
+					styleHelpers.getFlexStyles(props.obj)
+				);
+			},
+		},
+		...getCanvasSettings('column'),
 	],
-	'maxi-blocks/container-maxi': [
-		...getTransformControl('container'),
-		...canvasSettings,
-	],
+	'maxi-blocks/container-maxi': [...getCanvasSettings('container')],
 	'maxi-blocks/divider-maxi': [
 		{
 			label: __('Divider box shadow', 'maxi-blocks'),
@@ -290,13 +342,9 @@ const settings = {
 				),
 			target: ' hr.maxi-divider-block__divider',
 		},
-		...getTransformControl('divider'),
-		...canvasSettings,
+		...getCanvasSettings('divider'),
 	],
-	'maxi-blocks/group-maxi': [
-		...getTransformControl('group'),
-		...canvasSettings,
-	],
+	'maxi-blocks/group-maxi': [...getCanvasSettings('group')],
 	'maxi-blocks/image-maxi': [
 		{
 			label: __('Alignment', 'maxi-blocks'),
@@ -343,15 +391,11 @@ const settings = {
 					return acc;
 				}, {}),
 		},
-		...getTransformControl('image'),
-		...canvasSettings,
+		...getCanvasSettings('image'),
 	],
-	'maxi-blocks/map-maxi': [...getTransformControl('map'), ...canvasSettings],
-	'maxi-blocks/number-counter-maxi': [
-		...getTransformControl('number-counter'),
-		...canvasSettings,
-	],
-	'maxi-blocks/row-maxi': [...getTransformControl('row'), ...canvasSettings],
+	'maxi-blocks/map-maxi': [...getCanvasSettings('map')],
+	'maxi-blocks/number-counter-maxi': [...getCanvasSettings('number-counter')],
+	'maxi-blocks/row-maxi': [...getCanvasSettings('row')],
 	'maxi-blocks/svg-icon-maxi': [
 		{
 			label: __('Icon colour'),
@@ -431,8 +475,7 @@ const settings = {
 			helper: props => styleHelpers.getBorderStyles(props),
 			target: ' .maxi-svg-icon-block__icon',
 		},
-		...getTransformControl('svg-icon'),
-		...canvasSettings,
+		...getCanvasSettings('svg-icon'),
 	],
 	'maxi-blocks/text-maxi': [
 		{
@@ -457,8 +500,7 @@ const settings = {
 			helper: props => styleHelpers.getTypographyStyles({ ...props }),
 			target: '.maxi-text-block__content',
 		},
-		...getTransformControl('text'),
-		...canvasSettings,
+		...getCanvasSettings('text'),
 	],
 };
 

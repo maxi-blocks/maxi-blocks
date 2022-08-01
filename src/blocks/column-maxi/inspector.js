@@ -53,10 +53,9 @@ const Inspector = props => {
 												breakpoint={deviceType}
 											>
 												<ColumnSizeControl
-													props
 													{...getGroupAttributes(
 														attributes,
-														'flex'
+														['columnSize', 'flex']
 													)}
 													rowPattern={rowPattern}
 													clientId={clientId}

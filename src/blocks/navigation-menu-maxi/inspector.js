@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
-import { useSelect } from '@wordpress/data';
+import { select, useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -20,6 +20,8 @@ import {
 	categoriesNavigationMenu,
 } from './custom-css';
 import { getGroupAttributes } from '../../extensions/styles';
+import menuItemsToBlocks from '../../extensions/navigation-menu/classic-menu-to-blocks';
+import createNewMenu from '../../extensions/navigation-menu/create-new-menu';
 
 /**
  * Inspector
@@ -29,29 +31,60 @@ const Inspector = props => {
 		props;
 	const { selectedMenuId } = attributes;
 
-	const { navigationMenus } = useSelect(select => {
-		const { getEntityRecords } = select('core');
+	const { navigationMenus, classicMenus } = useSelect(select => {
+		const { getEntityRecords, getMenuItems } = select('core');
 
 		const args = [
 			'postType',
 			'wp_navigation',
 			{ per_page: -1, status: 'publish' },
 		];
-
+		getMenuItems({ per_page: -1, context: 'view' });
 		return {
 			navigationMenus: getEntityRecords(...args),
+			classicMenus: getEntityRecords('root', 'menu', {
+				per_page: -1,
+				context: 'view',
+			}),
 		};
 	});
-	console.log(navigationMenus);
-	const getMenuSourceItems = navigationMenus => {
-		return (
-			navigationMenus?.map(({ title, id }) => {
+
+	const getMenuSourceItems = (navigationMenus, classicMenus) => {
+		return [
+			...(navigationMenus?.map(({ title, id }) => {
 				return {
 					label: __(title.rendered, 'maxi-blocks'),
 					value: id,
 				};
-			}) || []
-		);
+			}) || []),
+			{ label: 'a', value: 10000000000000000 },
+			...(classicMenus?.map(({ name, id }) => {
+				return {
+					label: __(name, 'maxi-blocks'),
+					value: id,
+				};
+			}) || []),
+		];
+	};
+
+	const convertClassicMenuToBlocks = async menuId => {
+		const { getMenuItems, hasFinishedResolution } = select('core');
+
+		const args = {
+			menus: menuId,
+			per_page: -1,
+			context: 'view',
+		};
+		const menuItems = getMenuItems(args);
+		const itemsLoaded = hasFinishedResolution('getMenuItems', [args]);
+
+		const innerBlocks = menuItemsToBlocks(menuItems);
+		console.log(innerBlocks, menuItems);
+		const newMenuId = await createNewMenu(innerBlocks);
+		console.log(newMenuId);
+		maxiSetAttributes({
+			selectedMenuId: newMenuId,
+		});
 	};
 
 	return (
@@ -84,7 +117,8 @@ const Inspector = props => {
 												value={selectedMenuId}
 												options={[
 													...getMenuSourceItems(
-														navigationMenus
+														navigationMenus,
+														classicMenus
 													),
 													{
 														label: __(
@@ -94,11 +128,28 @@ const Inspector = props => {
 														value: -1,
 													},
 												]}
-												onChange={val =>
+												onChange={async val => {
+													// console.log(
+													// 	'iamhere',
+													// 	classicMenus,
+													// 	val
+													// );
+													if (
+														classicMenus.find(
+															menu =>
+																menu.id === +val
+														)
+													) {
+														convertClassicMenuToBlocks(
+															+val
+														);
+														return;
+													}
+
 													maxiSetAttributes({
 														selectedMenuId: val,
-													})
-												}
+													});
+												}}
 											/>
 										),
 									},

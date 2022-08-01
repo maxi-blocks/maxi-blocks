@@ -3,6 +3,7 @@
  */
 import { dispatch, select } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
+import { serialize } from '@wordpress/blocks';
 
 const DRAFT_MENU_PARAMS = [
 	'postType',
@@ -44,10 +45,10 @@ const generateTitle = async () => {
 const createNewMenu = async innerBlocks => {
 	const record = {
 		title: await generateTitle(),
-		content: innerBlocks,
+		content: serialize(innerBlocks),
 		status: 'publish',
 	};
-
+	console.log(record);
 	const { id } = await dispatch('core').saveEntityRecord(
 		'postType',
 		'wp_navigation',

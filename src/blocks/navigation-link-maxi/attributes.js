@@ -15,6 +15,22 @@ const attributes = {
 	url: {
 		type: 'string',
 	},
+	kind: {
+		type: 'string',
+	},
+	rel: {
+		type: 'string',
+	},
+	description: {
+		type: 'string',
+	},
+	opensInNewTab: {
+		type: 'boolean',
+		default: false,
+	},
+	title: {
+		type: 'string',
+	},
 
 	...attributesData.border,
 	...attributesData.borderHover,

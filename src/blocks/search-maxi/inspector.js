@@ -188,7 +188,8 @@ const Inspector = props => {
 																				prefix: closeIconPrefix,
 																			}
 																		)),
-																	{
+																	...(deviceType ===
+																		'general' && {
 																		label: __(
 																			'Position',
 																			'maxi-blocks'
@@ -222,7 +223,7 @@ const Inspector = props => {
 																			[
 																				'icon-position',
 																			],
-																	},
+																	}),
 																	...inspectorTabs.border(
 																		{
 																			props,

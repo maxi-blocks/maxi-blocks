@@ -1,5 +1,5 @@
 const onSearchEvent = input => {
-	const searchLink = maxiSearch[0][1];
+	const searchLink = maxiSearch[1];
 	const inputValue = input.value;
 
 	if (input.checkValidity()) {
@@ -58,7 +58,7 @@ const onRevealEvent = (
 };
 
 const search = () => {
-	Object.entries(maxiSearch[0][0]).forEach(
+	Object.entries(maxiSearch[0]).forEach(
 		([
 			uniqueID,
 			{
@@ -73,9 +73,7 @@ const search = () => {
 		]) => {
 			const searchBlock = document.getElementById(uniqueID);
 
-			if (!searchBlock) {
-				return;
-			}
+			if (!searchBlock) return;
 
 			const button = searchBlock.querySelector(
 				'.maxi-search-block__button'
@@ -132,4 +130,4 @@ const search = () => {
 	);
 };
 
-window.addEventListener('load', search);
+window.addEventListener('DOMContentLoaded', search);

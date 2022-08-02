@@ -112,7 +112,7 @@ class MaxiBlocks_Styles
 							? [$meta, get_search_link()]
 							: $meta;
 
-                    wp_localize_script($jsScriptName, $jsVarToPass, [$data]);
+                    wp_localize_script($jsScriptName, $jsVarToPass, [...$data]);
                 }
             }
         }

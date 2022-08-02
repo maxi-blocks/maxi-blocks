@@ -1,9 +1,4 @@
 /**
- * WordPress dependencies
- */
-import { __ } from '@wordpress/i18n';
-
-/**
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
@@ -23,10 +18,6 @@ const attributes = {
 	/**
 	 * Block styles
 	 */
-	customLabel: {
-		type: 'string',
-		default: __('Search', 'maxi-blocks'),
-	},
 	...attributesData.border,
 	...attributesData.borderHover,
 	...attributesData.borderRadius,
@@ -68,11 +59,6 @@ const attributes = {
 			[`${inputPrefix}border-bottom-width-general`]: 4,
 			[`${inputPrefix}border-left-width-general`]: 4,
 			[`${inputPrefix}border-sync-general`]: 'none',
-			[`${inputPrefix}padding-top-general`]: '8',
-			[`${inputPrefix}padding-right-general`]: '10',
-			[`${inputPrefix}padding-bottom-general`]: '8',
-			[`${inputPrefix}padding-left-general`]: '10',
-			[`${inputPrefix}padding-sync-general`]: 'axis',
 			[`${inputPrefix}background-active-media-general`]: 'color',
 		},
 	}),

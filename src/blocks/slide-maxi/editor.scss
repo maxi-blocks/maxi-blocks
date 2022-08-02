@@ -2,7 +2,8 @@
 	&:not([data-slide-active='true']) {
 		* {
 			pointer-events: none !important;
-			display: none;
+			user-select: none !important;
+			display: none !important;
 		}
 	}
 }

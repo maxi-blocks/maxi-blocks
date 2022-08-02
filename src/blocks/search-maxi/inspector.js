@@ -10,17 +10,14 @@ import { InspectorControls } from '@wordpress/block-editor';
 import {
 	AccordionControl,
 	AxisPositionControl,
-	ColorControl,
-	ResponsiveTabsControl,
-	SelectControl,
 	SettingTabsControl,
-	TextControl,
 } from '../../components';
 import {
-	getDefaultAttribute,
-	getGroupAttributes,
-	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+	ButtonControl,
+	SkinControl,
+	PlaceholderColorControl,
+} from './components';
+import { getGroupAttributes } from '../../extensions/styles';
 import { selectorsSearch, categoriesSearch } from './custom-css';
 import { withMaxiInspector } from '../../extensions/inspector';
 import * as inspectorTabs from '../../components/inspector-tabs';
@@ -30,243 +27,6 @@ import { buttonPrefix, closeIconPrefix, inputPrefix } from './prefixes';
  * External dependencies
  */
 import { isEmpty, without } from 'lodash';
-
-/**
- * Search controls
- */
-const SkinControl = ({ skin, iconRevealAction, onChange }) => {
-	const getDefaultAttributes = attributeKeys =>
-		attributeKeys.reduce((acc, key) => {
-			acc[key] = getDefaultAttribute(key);
-			return acc;
-		}, {});
-
-	const iconRevealResetStyles = getDefaultAttributes([
-		[`${buttonPrefix}border-unit-radius-general`],
-		[`${buttonPrefix}border-top-left-radius-general`],
-		[`${buttonPrefix}border-top-right-radius-general`],
-		[`${buttonPrefix}border-bottom-left-radius-general`],
-		[`${buttonPrefix}border-bottom-right-radius-general`],
-		[`${buttonPrefix}margin-left-general`],
-		[`${buttonPrefix}margin-sync-general`],
-		'icon-position',
-	]);
-
-	const classicResetStyles = {
-		[`${inputPrefix}background-palette-color-general`]: 1,
-	};
-
-	return (
-		<>
-			<SelectControl
-				label={__('Skin', 'maxi-blocks')}
-				value={skin}
-				options={[
-					{
-						label: __('Boxed', 'maxi-blocks'),
-						value: 'boxed',
-					},
-					{
-						label: __('Classic', 'maxi-blocks'),
-						value: 'classic',
-					},
-					{
-						label: __('Icon reveal', 'maxi-blocks'),
-						value: 'icon-reveal',
-					},
-				]}
-				onChange={skin => {
-					if (skin === 'classic') {
-						onChange({
-							[`${inputPrefix}background-palette-color-general`]: 2,
-							...iconRevealResetStyles,
-						});
-					} else if (skin === 'boxed') {
-						onChange({
-							...iconRevealResetStyles,
-							...classicResetStyles,
-						});
-					} else if (skin === 'icon-reveal') {
-						onChange({
-							...classicResetStyles,
-							[`${buttonPrefix}border-unit-radius-general`]: '%',
-							[`${buttonPrefix}border-top-left-radius-general`]: 50,
-							[`${buttonPrefix}border-top-right-radius-general`]: 50,
-							[`${buttonPrefix}border-bottom-left-radius-general`]: 50,
-							[`${buttonPrefix}border-bottom-right-radius-general`]: 50,
-							[`${buttonPrefix}margin-left-general`]: '-20',
-							[`${buttonPrefix}margin-sync-general`]: 'none',
-						});
-					}
-
-					onChange({
-						skin,
-					});
-				}}
-			/>
-			{skin === 'icon-reveal' && (
-				<SettingTabsControl
-					label={__('Reveal action', 'maxi-blocks')}
-					type='buttons'
-					selected={iconRevealAction}
-					items={[
-						{
-							label: __('Click', 'maxi-blocks'),
-							value: 'click',
-						},
-						{
-							label: __('Hover', 'maxi-blocks'),
-							value: 'hover',
-						},
-					]}
-					onChange={iconRevealAction =>
-						onChange({
-							iconRevealAction,
-						})
-					}
-				/>
-			)}
-		</>
-	);
-};
-
-const ButtonControl = ({
-	buttonContent,
-	buttonContentClose,
-	buttonSkin,
-	skin,
-	onChange,
-}) => {
-	return (
-		<>
-			<SelectControl
-				className='maxi-search-button-control__skin'
-				label={__('Skin', 'maxi-blocks')}
-				value={buttonSkin}
-				options={[
-					{
-						label: __('Icon', 'maxi-blocks'),
-						value: 'icon',
-					},
-					{
-						label: __('Text', 'maxi-blocks'),
-						value: 'text',
-					},
-				]}
-				onChange={buttonSkin =>
-					onChange({
-						buttonSkin,
-					})
-				}
-			/>
-			{buttonSkin === 'text' && (
-				<>
-					<TextControl
-						label={__('Button text', 'maxi-blocks')}
-						value={buttonContent}
-						onChange={buttonContent =>
-							onChange({
-								buttonContent,
-							})
-						}
-					/>
-					{skin === 'icon-reveal' && (
-						<TextControl
-							label={__('Button close text', 'maxi-blocks')}
-							value={buttonContentClose}
-							onChange={buttonContentClose =>
-								onChange({
-									buttonContentClose,
-								})
-							}
-						/>
-					)}
-				</>
-			)}
-		</>
-	);
-};
-
-const PlaceholderColourControl = ({
-	placeholder,
-	onChange,
-	deviceType,
-	clientId,
-	insertInlineStyles,
-	cleanInlineStyles,
-	...attributes
-}) => {
-	return (
-		<>
-			<TextControl
-				label={__('Placeholder text', 'maxi-blocks')}
-				value={placeholder}
-				onChange={placeholder =>
-					onChange({
-						placeholder,
-					})
-				}
-			/>
-			<ResponsiveTabsControl breakpoint={deviceType}>
-				<ColorControl
-					label={__('Font', 'maxi-blocks')}
-					className='maxi-typography-control__color'
-					color={getLastBreakpointAttribute({
-						target: 'placeholder-color',
-						breakpoint: deviceType,
-						attributes,
-					})}
-					prefix='placeholder-'
-					paletteColor={getLastBreakpointAttribute({
-						target: 'placeholder-palette-color',
-						breakpoint: deviceType,
-						attributes,
-					})}
-					paletteOpacity={getLastBreakpointAttribute({
-						target: 'placeholder-palette-opacity',
-						breakpoint: deviceType,
-						attributes,
-					})}
-					paletteStatus={getLastBreakpointAttribute({
-						target: 'placeholder-palette-status',
-						breakpoint: deviceType,
-						attributes,
-					})}
-					onChangeInline={({ color }) =>
-						insertInlineStyles({
-							obj: { color },
-							target: ' .maxi-search-block__input',
-							pseudoElement: '::placeholder',
-						})
-					}
-					onChange={({
-						color,
-						paletteColor,
-						paletteStatus,
-						paletteOpacity,
-					}) => {
-						onChange({
-							[`placeholder-color-${deviceType}`]: color,
-							[`placeholder-palette-color-${deviceType}`]:
-								paletteColor,
-							[`placeholder-palette-status-${deviceType}`]:
-								paletteStatus,
-							[`placeholder-palette-opacity-${deviceType}`]:
-								paletteOpacity,
-						});
-						cleanInlineStyles(
-							' .maxi-search-block__input',
-							'::placeholder'
-						);
-					}}
-					deviceType={deviceType}
-					clientId={clientId}
-					disableGradient
-				/>
-			</ResponsiveTabsControl>
-		</>
-	);
-};
 
 /**
  * Inspector
@@ -518,7 +278,7 @@ const Inspector = props => {
 																		),
 																		content:
 																			(
-																				<PlaceholderColourControl
+																				<PlaceholderColorControl
 																					{...getGroupAttributes(
 																						attributes,
 																						'placeholderColor'

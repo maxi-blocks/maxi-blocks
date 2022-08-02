@@ -49,14 +49,10 @@ const copyPasteMapping = {
 		},
 	},
 	input: {
-		_order: [
-			'Typography',
-			'Placeholder',
-			'Border',
-			'Input background',
-			'Padding',
-		],
-
+		Typography: {
+			template: 'typography',
+			prefix: inputPrefix,
+		},
 		Placeholder: {
 			group: {
 				'Placeholder text': 'placeholder',
@@ -64,10 +60,6 @@ const copyPasteMapping = {
 					groupAttributes: 'placeholderColor',
 				},
 			},
-		},
-		Typography: {
-			template: 'typography',
-			prefix: inputPrefix,
 		},
 		Border: {
 			template: 'border',

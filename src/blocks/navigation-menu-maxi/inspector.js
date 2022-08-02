@@ -22,6 +22,7 @@ import {
 import { getGroupAttributes } from '../../extensions/styles';
 import menuItemsToBlocks from '../../extensions/navigation-menu/classic-menu-to-blocks';
 import createNewMenu from '../../extensions/navigation-menu/create-new-menu';
+import { createBlock, parse } from '@wordpress/blocks';
 
 /**
  * Inspector
@@ -49,6 +50,57 @@ const Inspector = props => {
 		};
 	});
 
+	// TODO: move to separate file and REFACTOR.
+	const convertBlockMenuToMaxi = async menuId => {
+		const menu = select('core').getEntityRecord(
+			'postType',
+			'wp_navigation',
+			menuId
+		);
+		const content = menu.content.raw;
+
+		const blocks = parse(content);
+
+		if (blocks.some(block => block.name === 'core/navigation-link')) {
+			const convertBlocks = blocks => {
+				const res = [];
+
+				blocks.forEach(block => {
+					if (block.name === 'core/navigation-link') {
+						res.push(
+							createBlock(
+								'maxi-blocks/navigation-link-maxi',
+								block.attributes,
+								block.innerBlocks
+							)
+						);
+					} else if (
+						block.name === 'maxi-blocks/navigation-submenu-maxi'
+					) {
+						res.push(
+							createBlock(
+								'maxi-blocks/navigation-submenu-maxi',
+								block.attributes,
+								convertBlocks(block.innerBlocks)
+							)
+						);
+					} else {
+						res.push(block);
+					}
+				});
+
+				return res;
+			};
+			const convertedBlocks = convertBlocks(blocks);
+			console.log(convertedBlocks);
+			const newMenuId = await createNewMenu(convertedBlocks);
+
+			return newMenuId;
+		}
+
+		return menuId;
+	};
+
 	const getMenuSourceItems = (navigationMenus, classicMenus) => {
 		return [
 			...(navigationMenus?.map(({ title, id }) => {
@@ -57,7 +109,6 @@ const Inspector = props => {
 					value: id,
 				};
 			}) || []),
-			{ label: 'a', value: 10000000000000000 },
 			...(classicMenus?.map(({ name, id }) => {
 				return {
 					label: __(name, 'maxi-blocks'),
@@ -82,9 +133,7 @@ const Inspector = props => {
 		console.log(innerBlocks, menuItems);
 		const newMenuId = await createNewMenu(innerBlocks);
 		console.log(newMenuId);
-		maxiSetAttributes({
-			selectedMenuId: newMenuId,
-		});
+		return newMenuId;
 	};
 
 	return (
@@ -129,25 +178,29 @@ const Inspector = props => {
 													},
 												]}
 												onChange={async val => {
-													// console.log(
-													// 	'iamhere',
-													// 	classicMenus,
-													// 	val
-													// );
 													if (
 														classicMenus.find(
 															menu =>
 																menu.id === +val
 														)
 													) {
-														convertClassicMenuToBlocks(
-															+val
-														);
+														const newMenuId =
+															convertClassicMenuToBlocks(
+																+val
+															);
+														maxiSetAttributes({
+															selectedMenuId:
+																newMenuId,
+														});
 														return;
 													}
+													const newId =
+														await convertBlockMenuToMaxi(
+															+val
+														);
 
 													maxiSetAttributes({
-														selectedMenuId: val,
+														selectedMenuId: `${newId}`,
 													});
 												}}
 											/>

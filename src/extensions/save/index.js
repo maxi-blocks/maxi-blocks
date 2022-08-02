@@ -19,6 +19,7 @@ const allowedBlocks = [
 	'maxi-blocks/video-maxi',
 	'maxi-blocks/navigation-menu-maxi',
 	'maxi-blocks/navigation-link-maxi',
+	'maxi-blocks/navigation-submenu-maxi',
 ];
 
 /**

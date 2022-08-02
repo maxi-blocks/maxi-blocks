@@ -31,7 +31,7 @@ const AccordionControl = props => {
 		className,
 		isPrimary && 'is-primary',
 		isSecondary && 'is-secondary',
-		isNestedAccordion && 'maxi-accordion-control--nested-accordion'
+		isNestedAccordion && 'maxi-accordion-control--nested'
 	);
 
 	const preExpandedAccordion = getActiveAccordion(1);

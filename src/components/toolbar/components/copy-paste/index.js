@@ -157,7 +157,6 @@ const CopyPaste = props => {
 		closeMoreSettings();
 	};
 
-	// TODO: check code
 	const handleSpecialPaste = ({ attr, tab, checked, group }) => {
 		const specPaste = { ...specialPaste };
 

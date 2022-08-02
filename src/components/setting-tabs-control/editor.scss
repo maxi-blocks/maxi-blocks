@@ -3,7 +3,7 @@
 
 	&:not(.maxi-responsive-tabs-control) {
 		& > .maxi-tabs-control {
-			.maxi-tabs-control__button:not(.maxi-tabs-control__button--nested-accordion) {
+			.maxi-tabs-control__button:not(.maxi-tabs-control__button--nested) {
 				&[aria-pressed='true'] {
 					border-bottom: 2px solid var(--maxi-primary-color) !important;
 				}
@@ -14,7 +14,7 @@
 		display: flex;
 		padding-top: 0;
 
-		&--nested-accordion {
+		&--nested {
 			padding: 8px 8px 0;
 			margin-bottom: -18px;
 
@@ -134,7 +134,7 @@
 			background-color: #fff;
 		}
 
-		&--nested-accordion {
+		&--nested {
 			background: var(--maxi-white-4-color);
 			border: 1px solid var(--maxi-secondary-color);
 			padding: 25px 0 0;

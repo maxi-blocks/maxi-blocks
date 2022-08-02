@@ -69,7 +69,7 @@ const SettingTabsControl = props => {
 		disablePadding ? 'maxi-tabs-control--disable-padding' : null,
 		fullWidthMode && 'maxi-tabs-control__full-width',
 		hasBorder && 'maxi-settingstab-control_has-border-left-right',
-		isNestedAccordion && 'maxi-tabs-control--nested-accordion'
+		isNestedAccordion && 'maxi-tabs-control--nested'
 	);
 
 	const classesBase = classnames(
@@ -79,7 +79,7 @@ const SettingTabsControl = props => {
 	const classesContent = classnames(
 		'maxi-tabs-content',
 		disablePadding ? 'maxi-tabs-content--disable-padding' : null,
-		isNestedAccordion && 'maxi-tabs-content--nested-accordion'
+		isNestedAccordion && 'maxi-tabs-content--nested'
 	);
 
 	const setActiveTab = (tab, name) => {
@@ -129,7 +129,7 @@ const SettingTabsControl = props => {
 									selected === item.value &&
 										'maxi-tabs-control__button--selected',
 									isNestedAccordion &&
-										'maxi-tabs-control__button--nested-accordion',
+										'maxi-tabs-control__button--nested',
 									getIsActiveTab(
 										getMaxiAttrsFromChildren({
 											items: itemsIndicators,

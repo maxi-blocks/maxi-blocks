@@ -39,6 +39,7 @@ body.maxi-blocks--active .maxi-search-block {
 		align-items: center;
 		outline: none;
 		margin: 0;
+		padding: 0;
 
 		&--hidden {
 			width: 0;
@@ -66,8 +67,8 @@ body.maxi-blocks--active .maxi-search-block {
 		&__content {
 			white-space: pre;
 			background-color: transparent;
-			padding: 0;
 			margin: 0;
+			padding: 0;
 			text-align: center;
 
 			&,

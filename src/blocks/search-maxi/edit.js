@@ -25,7 +25,7 @@ import classnames from 'classnames';
  * Search block
  */
 const SearchBlock = props => {
-	const { attributes, isSelected, maxiSetAttributes } = props;
+	const { attributes, isSelected } = props;
 	const {
 		'icon-content': buttonIcon,
 		[`${closeIconPrefix}icon-content`]: closeButtonIcon,
@@ -47,8 +47,6 @@ const SearchBlock = props => {
 		!isSelected && skin === 'icon-reveal' && setIsInputOpen(false);
 	}, [isSelected]);
 
-	let typingTimeout = 0;
-
 	const onInputToggle = () =>
 		skin === 'icon-reveal' && setIsInputOpen(!isInputOpen);
 
@@ -58,20 +56,6 @@ const SearchBlock = props => {
 
 	const onInputChangeByHover = val => {
 		iconRevealAction === 'hover' && onInputChange(val);
-	};
-
-	const onButtonContentChange = event => {
-		const buttonContent = event.target.value;
-
-		if (typingTimeout) {
-			clearTimeout(typingTimeout);
-		}
-
-		typingTimeout = setTimeout(() => {
-			maxiSetAttributes({
-				buttonContent,
-			});
-		}, 100);
 	};
 
 	const inputClasses = classnames(
@@ -89,7 +73,7 @@ const SearchBlock = props => {
 	);
 
 	const renderButtonContent = () => {
-		if (buttonSkin === 'icon' && buttonIcon) {
+		if (buttonSkin === 'icon' && buttonIcon)
 			return (
 				<div className={buttonIconClasses}>
 					<RawHTML>
@@ -101,27 +85,15 @@ const SearchBlock = props => {
 					</RawHTML>
 				</div>
 			);
-		}
 
-		if (buttonSkin === 'text') {
-			if (skin !== 'icon-reveal') {
-				return (
-					<input
-						className='maxi-search-block__button__content'
-						type='text'
-						value={buttonContent}
-						onChange={onButtonContentChange}
-						size={buttonContent.length}
-					/>
-				);
-			}
-
+		if (buttonSkin === 'text')
 			return (
 				<div className='maxi-search-block__button__content'>
-					{isInputOpen ? buttonContentClose : buttonContent}
+					{isInputOpen && skin === 'icon-reveal'
+						? buttonContentClose
+						: buttonContent}
 				</div>
 			);
-		}
 
 		return null;
 	};

@@ -21,10 +21,10 @@ import { containerIcon } from '../../icons';
  * Block
  */
 
-registerBlockType('maxi-blocks/navigation-link-maxi', {
-	title: __('Navigation Link Maxi', 'maxi-blocks'),
+registerBlockType('maxi-blocks/navigation-submenu-maxi', {
+	title: __('Submenu Maxi', 'maxi-blocks'),
 	icon: containerIcon,
-	description: 'Link in menu',
+	description: 'Submenu',
 	category: 'maxi-blocks',
 	parent: [
 		'maxi-blocks/navigation-menu-maxi',

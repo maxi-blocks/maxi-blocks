@@ -32,7 +32,7 @@ const Navigation = props => {
 	);
 
 	const ALLOWED_BLOCKS = ['maxi-blocks/navigation-link-maxi'];
-
+	// console.log(blocks);
 	return (
 		<div
 			{...useInnerBlocksProps(
@@ -43,7 +43,8 @@ const Navigation = props => {
 					value: blocks,
 					onInput,
 					onChange,
-					// allowedBlocks: ALLOWED_BLOCKS,
+					allowedBlocks: ALLOWED_BLOCKS,
+					direction: 'horizontal',
 				}
 			)}
 		/>

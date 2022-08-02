@@ -3,7 +3,7 @@
  */
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import getBreakpointFromAttribute from '../getBreakpointFromAttribute';
-import getBlockCategoriesAndSelectors from '../../../components/relation-control/getBlockCategoriesAndSelectors';
+import getBlockCategoriesAndSelectors from '../getBlockCategoriesAndSelectors';
 
 /**
  * External dependencies

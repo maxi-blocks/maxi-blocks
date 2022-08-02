@@ -7,17 +7,12 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import BaseControl from '../base-control';
-import Button from '../button';
+import ResetButton from '../reset-control';
 
 /**
  * External dependencies
  */
 import { isNil } from 'lodash';
-
-/**
- * Icons
- */
-import { reset } from '../../icons';
 
 /**
  * Component
@@ -65,14 +60,7 @@ const RotateControl = props => {
 							}
 						}}
 					/>
-					<Button
-						className='components-maxi-control__reset-button'
-						onClick={() => onChange(defaultX, y, z)}
-						action='reset'
-						type='reset'
-					>
-						{reset}
-					</Button>
+					<ResetButton onReset={() => onChange(defaultX, y, z)} />
 				</BaseControl>
 			</div>
 			<div className='maxi-transform-control__rotate-control__item'>
@@ -112,14 +100,7 @@ const RotateControl = props => {
 							}
 						}}
 					/>
-					<Button
-						className='components-maxi-control__reset-button'
-						onClick={() => onChange(x, defaultY, z)}
-						action='reset'
-						type='reset'
-					>
-						{reset}
-					</Button>
+					<ResetButton onReset={() => onChange(x, defaultY, z)} />
 				</BaseControl>
 			</div>
 			<div className='maxi-transform-control__rotate-control__item'>
@@ -159,14 +140,7 @@ const RotateControl = props => {
 							}
 						}}
 					/>
-					<Button
-						className='components-maxi-control__reset-button'
-						onClick={() => onChange(x, y, defaultZ)}
-						action='reset'
-						type='reset'
-					>
-						{reset}
-					</Button>
+					<ResetButton onReset={() => onChange(x, y, defaultZ)} />
 				</BaseControl>
 			</div>
 		</div>

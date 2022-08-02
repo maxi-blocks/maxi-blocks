@@ -64,7 +64,18 @@ body.maxi-blocks--active .maxi-search-block {
 		}
 
 		&__content {
-			white-space: pre !important;
+			white-space: pre;
+			background-color: transparent;
+			padding: 0;
+			margin: 0;
+			text-align: center;
+
+			&,
+			&:focus {
+				outline: none;
+				border: none;
+				box-shadow: none;
+			}
 		}
 	}
 }

@@ -18,7 +18,7 @@ import classnames from 'classnames';
 /**
  * Save
  */
-const save = (props, extendedAttributes = {}) => {
+const save = props => {
 	const { attributes } = props;
 	const {
 		'icon-content': buttonIcon,
@@ -41,19 +41,17 @@ const save = (props, extendedAttributes = {}) => {
 		skin === 'icon-reveal' && 'maxi-search-block__input--hidden'
 	);
 
-	const buttonIconClasses = classnames(
-		'maxi-search-block__button__icon',
-		'maxi-search-block__button__default-icon'
-	);
+	const buttonIconClasses =
+		'maxi-search-block__button__icon maxi-search-block__button__default-icon';
 
 	return (
 		<MaxiBlock.save
 			{...getMaxiBlockAttributes({ ...props, name })}
-			{...extendedAttributes}
 			classes={classes}
 		>
 			<input
 				className={inputClasses}
+				type='text'
 				placeholder={placeholder}
 				required
 			/>
@@ -66,7 +64,7 @@ const save = (props, extendedAttributes = {}) => {
 					)
 				) : (
 					<div className='maxi-search-block__button__content'>
-						<RichText.Content value={buttonContent} />
+						{buttonContent}
 					</div>
 				)}
 			</div>

@@ -1,7 +1,6 @@
 /**
  * WordPress dependencies
  */
-import { RichText } from '@wordpress/block-editor';
 import { useEffect, useState } from '@wordpress/element';
 
 /**
@@ -38,8 +37,6 @@ const SearchBlock = props => {
 		skin,
 	} = attributes;
 
-	let typingTimeout = 0;
-
 	const [isInputOpen, setIsInputOpen] = useState(skin !== 'icon-reveal');
 
 	useEffect(() => {
@@ -50,9 +47,10 @@ const SearchBlock = props => {
 		!isSelected && skin === 'icon-reveal' && setIsInputOpen(false);
 	}, [isSelected]);
 
-	const onInputToggle = () => {
+	let typingTimeout = 0;
+
+	const onInputToggle = () =>
 		skin === 'icon-reveal' && setIsInputOpen(!isInputOpen);
-	};
 
 	const onInputChange = val => {
 		setIsInputOpen(val);
@@ -62,7 +60,9 @@ const SearchBlock = props => {
 		iconRevealAction === 'hover' && onInputChange(val);
 	};
 
-	const onButtonContentChange = buttonContent => {
+	const onButtonContentChange = event => {
+		const buttonContent = event.target.value;
+
 		if (typingTimeout) {
 			clearTimeout(typingTimeout);
 		}
@@ -88,10 +88,49 @@ const SearchBlock = props => {
 		}`
 	);
 
+	const renderButtonContent = () => {
+		if (buttonSkin === 'icon' && buttonIcon) {
+			return (
+				<div className={buttonIconClasses}>
+					<RawHTML>
+						{skin === 'icon-reveal'
+							? isInputOpen
+								? closeButtonIcon
+								: buttonIcon
+							: buttonIcon}
+					</RawHTML>
+				</div>
+			);
+		}
+
+		if (buttonSkin === 'text') {
+			if (skin !== 'icon-reveal') {
+				return (
+					<input
+						className='maxi-search-block__button__content'
+						type='text'
+						value={buttonContent}
+						onChange={onButtonContentChange}
+						size={buttonContent.length}
+					/>
+				);
+			}
+
+			return (
+				<div className='maxi-search-block__button__content'>
+					{isInputOpen ? buttonContentClose : buttonContent}
+				</div>
+			);
+		}
+
+		return null;
+	};
+
 	return (
 		<>
 			<input
 				className={inputClasses}
+				type='text'
 				placeholder={placeholder}
 				onMouseOver={() => onInputChangeByHover(true)}
 				onMouseOut={event =>
@@ -107,31 +146,7 @@ const SearchBlock = props => {
 				onMouseOver={() => onInputChangeByHover(true)}
 				onMouseOut={() => onInputChangeByHover(false)}
 			>
-				{buttonSkin === 'icon' ? (
-					buttonIcon && (
-						<div className={buttonIconClasses}>
-							<RawHTML>
-								{skin === 'icon-reveal'
-									? isInputOpen
-										? closeButtonIcon
-										: buttonIcon
-									: buttonIcon}
-							</RawHTML>
-						</div>
-					)
-				) : skin !== 'icon-reveal' ? (
-					<RichText
-						className='maxi-search-block__button__content'
-						value={buttonContent}
-						identifier='content'
-						onChange={onButtonContentChange}
-						withoutInteractiveFormatting
-					/>
-				) : (
-					<div className='maxi-search-block__button__content'>
-						{isInputOpen ? buttonContentClose : buttonContent}
-					</div>
-				)}
+				{renderButtonContent()}
 			</div>
 		</>
 	);

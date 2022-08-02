@@ -4,10 +4,6 @@
 @import './maxi-themes.scss';
 @import './maxi-themes-banner.scss';
 
-#maxi-main-container {
-	margin-left: calc(-100vw / 2 + 500px / 2);
-	margin-right: calc(-100vw / 2 + 500px / 2);
-}
 .maxi-block {
 	position: relative;
 	z-index: 0;

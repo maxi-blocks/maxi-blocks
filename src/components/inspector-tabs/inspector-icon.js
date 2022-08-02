@@ -68,6 +68,7 @@ const icon = ({
 		'iconBackgroundHover',
 		'iconBorderWidth',
 		'iconBorderRadius',
+		'iconPadding',
 	];
 
 	return {

@@ -701,7 +701,7 @@ const IconControl = props => {
 							label={__('Icon padding', 'maxi-blocks')}
 							onChange={onChange}
 							breakpoint={breakpoint}
-							target={`${prefix}icon-padding`}
+							target='icon-padding'
 							disableAuto
 							optionType='string'
 							minMaxSettings={minMaxSettings}

@@ -110,9 +110,9 @@ class MaxiBlocks_Styles
 					$data =
 						$jsVar === 'search'
 							? [$meta, get_search_link()]
-							: $meta;
+							: [$meta];
 
-                    wp_localize_script($jsScriptName, $jsVarToPass, [...$data]);
+                    wp_localize_script($jsScriptName, $jsVarToPass, $data);
                 }
             }
         }

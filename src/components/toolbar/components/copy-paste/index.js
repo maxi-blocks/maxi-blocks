@@ -15,7 +15,6 @@ import CopyPasteGroup from './CopyPasteGroup';
 import Dropdown from '../../../dropdown';
 import { getOrganizedAttributes } from '../../../../extensions/copy-paste';
 import { loadColumnsTemplate } from '../../../../extensions/column-templates';
-import normalizeLabel from './normalizeLabel';
 
 /**
  * External dependencies
@@ -27,6 +26,7 @@ import {
 	isEqual,
 	isObject,
 	isString,
+	kebabCase,
 } from 'lodash';
 
 /**
@@ -103,15 +103,12 @@ const CopyPaste = props => {
 		getDefaultSpecialPaste(organizedAttributes)
 	);
 
-	const cleanInnerBlocks = innerBlocks => {
-		const test = innerBlocks.map(block => {
+	const cleanInnerBlocks = innerBlocks =>
+		innerBlocks.map(block => {
 			block.innerBlocks = cleanInnerBlocks(block.innerBlocks);
 
 			return cloneBlock(block);
 		});
-
-		return test;
-	};
 
 	const { copyStyles, copyNestedBlocks } = useDispatch('maxiBlocks');
 	const { updateBlockAttributes, replaceInnerBlocks } =
@@ -242,7 +239,7 @@ const CopyPaste = props => {
 					!isEmpty(organizedAttributes[tab]) &&
 					!isEqual(currentOrganizedAttributes[tab], attributes) &&
 					Object.entries(attributes).map(([label, obj]) => {
-						const normalizedLabel = normalizeLabel(label);
+						const normalizedLabel = kebabCase(label);
 
 						if (
 							!obj.group &&

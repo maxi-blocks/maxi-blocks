@@ -1,17 +1,16 @@
 /**
  * Internal dependencies
  */
-import getLastBreakpointAttribute from '../../styles/getLastBreakpointAttribute';
 import getCurrentFormatClassName from './getCurrentFormatClassName';
 import getCustomFormat from './getCustomFormat';
 import { getTypographyFromSC } from '../../style-cards';
 import getActiveStyleCard from '../../style-cards/getActiveStyleCard';
+import { getBlockStyle, getLastBreakpointAttribute } from '../../styles';
 
 /**
  * External dependencies
  */
 import { isBoolean, isNumber } from 'lodash';
-import { getBlockStyle } from '../../styles';
 
 /**
  * Returns if is a valid value

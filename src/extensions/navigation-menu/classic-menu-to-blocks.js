@@ -112,7 +112,7 @@ const mapMenuItemsToBlocks = menuItems => {
 		};
 
 		const blockType = menuItem.children?.length
-			? 'core/navigation-submenu'
+			? 'maxi-blocks/navigation-submenu-maxi'
 			: 'maxi-blocks/navigation-link-maxi';
 
 		// Create block with nested "innerBlocks".

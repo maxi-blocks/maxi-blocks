@@ -68,12 +68,12 @@ class edit extends MaxiBlockComponent {
 				copyPasteMapping={copyPasteMapping}
 			/>,
 			<MaxiBlock
-				key={`maxi-navigation-link--${uniqueID}`}
+				key={`maxi-navigation-submenu--${uniqueID}`}
 				ref={this.blockRef}
 				{...getMaxiBlockAttributes(this.props)}
 			>
 				<RichText
-					className='maxi-navigation-link-block__content'
+					className='maxi-navigation-submenu-block__content'
 					href={url}
 					value={label}
 					identifier='content'

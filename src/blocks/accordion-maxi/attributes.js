@@ -2,12 +2,7 @@
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
-import {
-	breakpointAttributesCreator,
-	hoverAttributesCreator,
-	paletteAttributesCreator,
-	transitionAttributesCreator,
-} from '../../extensions/styles';
+import { transitionAttributesCreator } from '../../extensions/styles';
 
 /**
  * Attributes
@@ -18,6 +13,11 @@ const attributes = {
 	/**
 	 * Block styles
 	 */
+	...attributesData.accordion,
+	...attributesData.accordionIcon,
+	...attributesData.accordionTitle,
+	...attributesData.accordionLine,
+
 	...attributesData.border,
 	...attributesData.borderHover,
 	...attributesData.borderRadius,
@@ -28,44 +28,9 @@ const attributes = {
 	...attributesData.margin,
 	...attributesData.padding,
 
-	lastIndex: {
-		type: 'number',
-		default: 2,
-	},
-
-	...attributesData.accordion,
-	...attributesData.accordionIcon,
-	...attributesData.accordionTitle,
-	...attributesData.accordionLine,
-
-	'background-status-hover': { type: 'boolean', default: false },
-	'active-background-status-hover': { type: 'boolean', default: false },
-	...breakpointAttributesCreator({
-		obj: {
-			...paletteAttributesCreator({ prefix: 'background-', palette: 1 }),
-			...paletteAttributesCreator({
-				prefix: 'active-background-',
-				palette: 1,
-			}),
-			...hoverAttributesCreator({
-				obj: {
-					...paletteAttributesCreator({
-						prefix: 'background-',
-						palette: 1,
-					}),
-					...paletteAttributesCreator({
-						prefix: 'active-background-',
-						palette: 1,
-					}),
-				},
-			}),
-		},
-	}),
-
 	/**
 	 * Advanced
 	 */
-	...attributesData.blockBackground,
 	...attributesData.scroll,
 	...attributesData.transform,
 	...{

@@ -64,8 +64,10 @@ class MaxiSlider {
 		this.initPosition;
 		this.dragPosition;
 		this.endPosition;
-
 		this.realFirstElOffset = 0;
+
+		this.isInteracting = false;
+		this.isHovering = false;
 
 		// Binded methods
 		this.onDragStart = this.dragStart.bind(this);
@@ -75,18 +77,18 @@ class MaxiSlider {
 		this.onHoverEnd = this.onHoverEnd.bind(this);
 
 		this._container.addEventListener('mouseenter', this.onHover);
-		this._container.addEventListener('mouseout', this.onHoverEnd);
+		this._container.addEventListener('mouseleave', this.onHoverEnd);
 
 		const isPaused = () => {
-			if (this.hoverPause) return true;
-			if (this.interactionPause) return true;
+			if (this.hoverPause && this.isHovering) return true;
+			if (this.interactionPause && this.isInteracting) return true;
 
 			return false;
 		};
 
-		if (this.isAutoplay && !isPaused()) {
+		if (this.isAutoplay) {
 			setInterval(() => {
-				this.slideNext();
+				if (!isPaused()) this.slideNext();
 			}, this.autoplaySpeed);
 		}
 
@@ -196,6 +198,7 @@ class MaxiSlider {
 		this._wrapper.style.transition = '';
 		this._wrapper.style.animation = '';
 
+		this.isInteracting = true;
 		this._wrapper.classList.add('maxi-slider-interaction');
 
 		if (e.type === 'touchstart') {
@@ -254,6 +257,7 @@ class MaxiSlider {
 			this.sliderAction();
 		}
 
+		this.isInteracting = false;
 		this._wrapper.classList.remove('maxi-slider-interaction');
 
 		document.removeEventListener('mousemove', this.onDragAction);
@@ -277,11 +281,7 @@ class MaxiSlider {
 	}
 
 	slideNext() {
-		if (
-			this.currentSlide + 1 < this._slides.length ||
-			this.isLoop ||
-			this.isAutoplay
-		) {
+		if (this.currentSlide + 1 < this._slides.length || this.isLoop) {
 			// Update current slide
 			this.currentSlide += 1;
 			this.setActiveDot(this.currentSlide);
@@ -338,10 +338,13 @@ class MaxiSlider {
 	}
 
 	onHover() {
+		this.isHovering = true;
 		this._wrapper.classList.add('maxi-slider-hovered');
 	}
 
 	onHoverEnd() {
+		console.log('im here');
+		this.isHovering = false;
 		this._wrapper.classList.remove('maxi-slider-hovered');
 	}
 

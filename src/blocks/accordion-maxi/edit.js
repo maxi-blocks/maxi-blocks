@@ -14,11 +14,7 @@ import copyPasteMapping from './copy-paste-mapping';
  * Edit
  */
 class edit extends MaxiBlockComponent {
-	constructor(...args) {
-		super(...args);
-
-		this.state = { openPanes: [] };
-	}
+	state = { openPanes: [] };
 
 	get getStylesObject() {
 		return getStyles(this.props.attributes);

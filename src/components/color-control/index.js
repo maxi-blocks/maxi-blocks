@@ -84,11 +84,18 @@ const ColorControl = props => {
 		color,
 	};
 
-	const onChangeValue = obj =>
-		onChange({
+	const onChangeValue = obj => {
+		const colorObject = {
 			...colorObj,
 			...obj,
-		});
+		};
+		obj.color === 'delete' && delete colorObject.color;
+		obj.color === 'delete' &&
+			colorObject.paletteOpacity === 1 &&
+			delete colorObject.paletteOpacity;
+
+		onChange(colorObject);
+	};
 
 	const onChangeInlineValue = obj =>
 		onChangeInline
@@ -196,13 +203,15 @@ const ColorControl = props => {
 						onChangeValue({
 							paletteStatus: !val,
 							// If palette is disabled, set custom color from palette one
-							...(val && {
-								color: `rgba(${getPaletteColor({
-									clientId,
-									color: paletteColor,
-									blockStyle,
-								})},${paletteOpacity || 1})`,
-							}),
+							...(val
+								? {
+										color: `rgba(${getPaletteColor({
+											clientId,
+											color: paletteColor,
+											blockStyle,
+										})},${paletteOpacity || 1})`,
+								  }
+								: { color: 'delete' }),
 							// If palette is set, save the custom color opacity
 							...(!disableOpacity &&
 								!val && {

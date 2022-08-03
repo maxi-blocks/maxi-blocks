@@ -89,4 +89,18 @@
 			}
 		}
 	}
+	&--nested {
+		margin-bottom: 0;
+		.maxi-accordion-control__item {
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+		.maxi-accordion-control__item__button {
+			background: var(--maxi-white-4-color);
+			&:hover {
+				background: var(--maxi-white-3-color);
+			}
+		}
+	}
 }

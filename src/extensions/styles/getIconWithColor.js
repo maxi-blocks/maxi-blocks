@@ -3,12 +3,12 @@ import { isNil } from 'lodash';
 import getColorRGBAString from './getColorRGBAString';
 import { setSVGContent, setSVGContentHover } from '../svg';
 
-const getIconWithColor = (attributes, args = {}) => {
+const getIconWithColor = (attributes, args = {}, prefix = '') => {
 	const {
 		blockStyle,
-		'icon-only': iconOnly,
-		'icon-inherit': iconInherit,
-		'icon-content': iconContent,
+		[`${prefix}icon-only`]: iconOnly,
+		[`${prefix}icon-inherit`]: iconInherit,
+		[`${prefix}icon-content`]: iconContent,
 	} = attributes;
 
 	let {

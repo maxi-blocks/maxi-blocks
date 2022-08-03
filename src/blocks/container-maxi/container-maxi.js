@@ -16,6 +16,7 @@ import { registerBlockType } from '@wordpress/blocks';
 import attributes from './attributes';
 import edit from './edit';
 import save from './save';
+import { selectorsContainer } from './custom-css';
 
 /**
  * Styles and icons
@@ -27,8 +28,8 @@ import { containerIcon } from '../../icons';
 /**
  * Migrators
  */
-import blockMigrator from '../../extensions/styles/migrators/blockMigrator';
-import { shapeDividerMigrator } from '../../extensions/styles/migrators/shapeDividerMigrator';
+import { blockMigrator } from '../../extensions/styles/migrators';
+import shapeDividerMigrator from '../../extensions/styles/migrators/shapeDividerMigrator';
 
 /**
  * Block
@@ -55,8 +56,11 @@ registerBlockType('maxi-blocks/container-maxi', {
 	},
 	edit,
 	save,
-	deprecated: [
-		shapeDividerMigrator({ attributes, save }),
-		blockMigrator({ attributes, save, isContainer: true }),
-	],
+	deprecated: blockMigrator({
+		attributes,
+		save,
+		isContainer: true,
+		selectors: selectorsContainer,
+		migrators: [shapeDividerMigrator],
+	}),
 });

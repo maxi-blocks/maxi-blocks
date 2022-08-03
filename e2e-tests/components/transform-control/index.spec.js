@@ -25,6 +25,11 @@ describe('TransformControl', () => {
 		const buttons = await accordionPanel.$$(
 			'.maxi-transform-control .maxi-settingstab-control button'
 		);
+		const targetSelect = await accordionPanel.$(
+			'.maxi-transform-control .maxi-transform-control__target-select .maxi-base-control__field select'
+		);
+
+		await targetSelect.select('canvas');
 
 		// Scale
 		// Y
@@ -35,10 +40,6 @@ describe('TransformControl', () => {
 
 		await page.keyboard.type('55');
 
-		expect(await getAttributes('transform-scale-y-general')).toStrictEqual(
-			55
-		);
-
 		// X
 		await accordionPanel.$eval(
 			'.maxi-transform-control .maxi-transform-control__square-control .maxi-transform-control__square-control__x-control__value input',
@@ -47,9 +48,9 @@ describe('TransformControl', () => {
 
 		await page.keyboard.type('44');
 
-		expect(await getAttributes('transform-scale-x-general')).toStrictEqual(
-			44
-		);
+		expect(
+			await getAttributes('transform-scale-general')
+		).toMatchSnapshot();
 
 		// translate
 		await buttons[1].click();
@@ -66,14 +67,6 @@ describe('TransformControl', () => {
 		);
 		await selectYUnit.select('px');
 
-		expect(
-			await getAttributes('transform-translate-y-general')
-		).toStrictEqual(55);
-
-		expect(
-			await getAttributes('transform-translate-y-unit-general')
-		).toStrictEqual('px');
-
 		// X
 		await accordionPanel.$eval(
 			'.maxi-transform-control .maxi-transform-control__square-control .maxi-transform-control__square-control__x-control__value input',
@@ -87,12 +80,8 @@ describe('TransformControl', () => {
 		await selectXUnit.select('px');
 
 		expect(
-			await getAttributes('transform-translate-x-general')
-		).toStrictEqual(66);
-
-		expect(
-			await getAttributes('transform-translate-x-unit-general')
-		).toStrictEqual('px');
+			await getAttributes('transform-translate-general')
+		).toMatchSnapshot();
 
 		// Rotate
 		await buttons[2].click();
@@ -112,20 +101,9 @@ describe('TransformControl', () => {
 		await rotateInputs[2].focus();
 		await page.keyboard.type('100');
 
-		// expect
-		const colorResult = await getAttributes([
-			'transform-rotate-x-general',
-			'transform-rotate-y-general',
-			'transform-rotate-z-general',
-		]);
-
-		const expectedAttributes = {
-			'transform-rotate-x-general': 150,
-			'transform-rotate-y-general': 200,
-			'transform-rotate-z-general': 100,
-		};
-
-		expect(colorResult).toStrictEqual(expectedAttributes);
+		expect(
+			await getAttributes('transform-rotate-general')
+		).toMatchSnapshot();
 
 		// Origin
 		await buttons[3].click();
@@ -137,10 +115,6 @@ describe('TransformControl', () => {
 
 		await page.keyboard.type('80');
 
-		expect(await getAttributes('transform-origin-y-general')).toStrictEqual(
-			'80'
-		);
-
 		// X
 		await accordionPanel.$eval(
 			'.maxi-transform-control .maxi-transform-control__square-control .maxi-transform-control__square-control__x-control__value input',
@@ -149,9 +123,9 @@ describe('TransformControl', () => {
 
 		await page.keyboard.type('20');
 
-		expect(await getAttributes('transform-origin-x-general')).toStrictEqual(
-			'20'
-		);
+		expect(
+			await getAttributes('transform-origin-general')
+		).toMatchSnapshot();
 
 		// check responsive scale
 		await buttons[0].click();

@@ -51,6 +51,10 @@ const numberCounter = {
 		type: 'string',
 		default: 'page-load',
 	},
+	'number-counter-start-animation-offset': {
+		type: 'number',
+		default: 100,
+	},
 
 	...paletteAttributesCreator({
 		prefix: 'number-counter-circle-background-',

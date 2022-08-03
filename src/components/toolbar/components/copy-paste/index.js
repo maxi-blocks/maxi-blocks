@@ -2,29 +2,35 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
-import { useSelect, useDispatch, select } from '@wordpress/data';
 import { cloneBlock } from '@wordpress/blocks';
+import { select, useDispatch, useSelect } from '@wordpress/data';
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
-import Button from '../../../button';
-import Dropdown from '../../../dropdown';
 import { SettingTabsControl } from '../../../../components';
-import {
-	getOrganizedAttributes,
-	cleanStyleAttributes,
-} from '../../../../extensions/copy-paste';
-import { loadColumnsTemplate } from '../../../../extensions/column-templates';
+import Button from '../../../button';
 import CopyPasteGroup from './CopyPasteGroup';
+import Dropdown from '../../../dropdown';
+import { getOrganizedAttributes } from '../../../../extensions/copy-paste';
+import { loadColumnsTemplate } from '../../../../extensions/column-templates';
+
 /**
  * External dependencies
  */
-import { isNil, isEmpty, isEqual } from 'lodash';
+import {
+	capitalize,
+	isArray,
+	isEmpty,
+	isEqual,
+	isObject,
+	isString,
+	kebabCase,
+} from 'lodash';
 
 /**
- * Styles & Icons
+ * Styles
  */
 import './editor.scss';
 
@@ -40,14 +46,7 @@ const WRAPPER_BLOCKS = [
 ];
 
 const CopyPaste = props => {
-	const { clientId, blockName, copyPasteMapping, prefix, closeMoreSettings } =
-		props;
-
-	const [specialPaste, setSpecialPaste] = useState({
-		settings: [],
-		canvas: [],
-		advanced: [],
-	});
+	const { blockName, clientId, closeMoreSettings, copyPasteMapping } = props;
 
 	const {
 		blockAttributes,
@@ -67,23 +66,18 @@ const CopyPaste = props => {
 
 		const organizedAttributes =
 			(copiedStyles &&
-				getOrganizedAttributes(
-					copiedStyles,
-					copyPasteMapping,
-					prefix
-				)) ||
+				getOrganizedAttributes(copiedStyles, copyPasteMapping)) ||
 			{};
 
 		const blockValues = getBlock(clientId);
-		const blockAttributes = cleanStyleAttributes(
+		const blockAttributes = getOrganizedAttributes(
 			blockValues.attributes,
 			copyPasteMapping,
-			prefix
+			true
 		);
 		const currentOrganizedAttributes = getOrganizedAttributes(
 			blockAttributes,
-			copyPasteMapping,
-			prefix
+			copyPasteMapping
 		);
 		const { innerBlocks } = blockValues;
 		const hasInnerBlocks = !isEmpty(innerBlocks);
@@ -99,15 +93,22 @@ const CopyPaste = props => {
 		};
 	});
 
-	const cleanInnerBlocks = innerBlocks => {
-		const test = innerBlocks.map(block => {
+	const getDefaultSpecialPaste = obj =>
+		Object.keys(obj).reduce((acc, tab) => {
+			acc[tab] = [];
+			return acc;
+		}, {});
+
+	const [specialPaste, setSpecialPaste] = useState(
+		getDefaultSpecialPaste(organizedAttributes)
+	);
+
+	const cleanInnerBlocks = innerBlocks =>
+		innerBlocks.map(block => {
 			block.innerBlocks = cleanInnerBlocks(block.innerBlocks);
 
 			return cloneBlock(block);
 		});
-
-		return test;
-	};
 
 	const { copyStyles, copyNestedBlocks } = useDispatch('maxiBlocks');
 	const { updateBlockAttributes, replaceInnerBlocks } =
@@ -119,12 +120,14 @@ const CopyPaste = props => {
 	};
 	const onPasteStyles = () => {
 		const styles = { ...copiedStyles };
+
 		if (copyPasteMapping.exclude)
 			copyPasteMapping.exclude.forEach(prop => {
 				if (styles[prop]) delete styles[prop];
 			});
 
 		closeMoreSettings();
+
 		if (blockName === 'maxi-blocks/row-maxi') {
 			Object.entries(styles).forEach(([key, style]) => {
 				if (key.includes('row-pattern-')) {
@@ -141,6 +144,7 @@ const CopyPaste = props => {
 				}
 			});
 		}
+
 		updateBlockAttributes(clientId, styles);
 	};
 
@@ -155,14 +159,14 @@ const CopyPaste = props => {
 
 	const handleSpecialPaste = ({ attr, tab, checked, group }) => {
 		const specPaste = { ...specialPaste };
-		if (!Array.isArray(attr)) {
+
+		if (!isArray(attr)) {
 			if (group) {
 				if (!checked)
 					specPaste[tab] = specPaste[tab].filter(sp => {
 						return (
-							typeof sp !== 'object' ||
-							(typeof sp === 'object' &&
-								!Object.values(sp).includes(attr))
+							!isObject(sp) ||
+							(isObject(sp) && !Object.values(sp).includes(attr))
 						);
 					});
 				else specPaste[tab] = [...specPaste[tab], { [group]: attr }];
@@ -173,8 +177,8 @@ const CopyPaste = props => {
 		} else {
 			specPaste[tab] = specPaste[tab].filter(sp => {
 				return (
-					typeof sp !== 'object' ||
-					(typeof sp === 'object' && !Object.keys(sp).includes(group))
+					!isObject(sp) ||
+					(isObject(sp) && !Object.keys(sp).includes(group))
 				);
 			});
 			attr.forEach(attrType => {
@@ -188,28 +192,20 @@ const CopyPaste = props => {
 	const onSpecialPaste = () => {
 		let res = {};
 
-		Object.keys(specialPaste).forEach(tab => {
-			specialPaste[tab].forEach(key => {
-				if (typeof key === 'string')
-					res = {
-						...res,
-						...organizedAttributes[tab][key].attribute,
-					};
-				else
-					res = {
-						...res,
-						...organizedAttributes[tab][Object.keys(key)[0]].group[
-							Object.values(key)[0]
-						].attribute,
-					};
+		Object.entries(specialPaste).forEach(([tab, keys]) => {
+			keys.forEach(key => {
+				res = {
+					...res,
+					...(isString(key)
+						? organizedAttributes[tab][key]
+						: organizedAttributes[tab][Object.keys(key)[0]][
+								Object.values(key)[0]
+						  ]),
+				};
 			});
 		});
 
-		setSpecialPaste({
-			settings: [],
-			canvas: [],
-			advanced: [],
-		});
+		setSpecialPaste(getDefaultSpecialPaste(organizedAttributes));
 
 		closeMoreSettings();
 
@@ -235,70 +231,60 @@ const CopyPaste = props => {
 
 	const getTabItems = () => {
 		const response = [];
-		Object.keys(organizedAttributes).forEach(tab => {
+
+		Object.entries(organizedAttributes).forEach(([tab, attributes]) => {
 			const option = {
-				label: __(
-					`${tab.charAt(0).toUpperCase()}${tab.slice(1)}`,
-					'maxi-blocks'
-				),
+				label: __(capitalize(tab), 'maxi-blocks'),
 				content:
-					!isNil(organizedAttributes[tab]) &&
 					!isEmpty(organizedAttributes[tab]) &&
-					!isEqual(
-						currentOrganizedAttributes[tab],
-						organizedAttributes[tab]
-					) &&
-					Object.keys(organizedAttributes[tab]).map((attrType, i) => {
+					!isEqual(currentOrganizedAttributes[tab], attributes) &&
+					Object.entries(attributes).map(([label, obj]) => {
+						const normalizedLabel = kebabCase(label);
+
 						if (
-							!organizedAttributes[tab][attrType].group &&
+							!obj.group &&
 							!isEqual(
-								currentOrganizedAttributes[tab][attrType],
-								organizedAttributes[tab][attrType]
+								currentOrganizedAttributes[tab][label],
+								obj
 							)
 						)
 							return (
 								<div
 									className='toolbar-item__copy-paste__popover__item'
-									key={`copy-paste-${tab}-${attrType}`}
+									key={`copy-paste-${tab}-${normalizedLabel}`}
 								>
 									<label
-										htmlFor={attrType}
+										htmlFor={normalizedLabel}
 										className='maxi-axis-control__content__item__checkbox'
 									>
 										<input
 											type='checkbox'
-											name={attrType}
-											id={attrType}
+											name={normalizedLabel}
+											id={normalizedLabel}
 											checked={specialPaste[tab].includes(
-												attrType
+												label
 											)}
 											onChange={() =>
 												handleSpecialPaste({
-													attr: attrType,
+													attr: label,
 													tab,
 												})
 											}
 										/>
-										<span>
-											{
-												organizedAttributes[tab][
-													attrType
-												].label
-											}
-										</span>
+										<span>{label}</span>
 									</label>
 								</div>
 							);
 
 						return (
 							!isEqual(
-								currentOrganizedAttributes[tab][attrType],
-								organizedAttributes[tab][attrType]
+								currentOrganizedAttributes[tab][label],
+								obj
 							) && (
 								<CopyPasteGroup
-									key={`copy-paste-group-${tab}-${attrType}`}
+									key={`copy-paste-group-${tab}-${label}`}
 									tab={tab}
-									attrType={attrType}
+									label={label}
 									organizedAttributes={organizedAttributes}
 									currentOrganizedAttributes={
 										currentOrganizedAttributes
@@ -338,7 +324,7 @@ const CopyPaste = props => {
 						className='maxi-copypaste__copy-selector'
 						contentClassName='maxi-more-settings__popover maxi-dropdown__child-content maxi-copy-paste__popover'
 						position='right bottom'
-						renderToggle={({ isOpen, onToggle }) => (
+						renderToggle={({ onToggle }) => (
 							<Button
 								className='toolbar-item__copy-paste__popover__button'
 								onClick={onToggle}
@@ -357,7 +343,7 @@ const CopyPaste = props => {
 									className='toolbar-item__copy-paste__popover__button toolbar-item__copy-paste__popover__button--special'
 									onClick={onSpecialPaste}
 								>
-									{__('Paste Special Style', 'maxi-blocks')}
+									{__('Paste special style', 'maxi-blocks')}
 								</Button>
 							</form>
 						)}
@@ -368,7 +354,7 @@ const CopyPaste = props => {
 					className='toolbar-item__copy-paste__popover__button toolbar-item__copy-nested-block__popover__button'
 					onClick={onCopyBlocks}
 				>
-					{__('Copy Nested Blocks', 'maxi-blocks')}
+					{__('Copy nested blocks', 'maxi-blocks')}
 				</Button>
 			)}
 			{WRAPPER_BLOCKS.includes(blockName) && (
@@ -377,7 +363,7 @@ const CopyPaste = props => {
 					onClick={onPasteBlocks}
 					disabled={isEmpty(copiedBlocks)}
 				>
-					{__('Paste Nested Blocks', 'maxi-blocks')}
+					{__('Paste nested blocks', 'maxi-blocks')}
 				</Button>
 			)}
 		</div>

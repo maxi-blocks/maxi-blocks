@@ -83,6 +83,7 @@ describe('Custom-Css-Control', () => {
 
 		await page.keyboard.type('VALIDATE ERROR');
 		await page.waitForTimeout(200);
+		await page.waitForSelector('.maxi-additional__css-group button');
 
 		await accordionPanel.$eval(
 			'.maxi-additional__css-group button',

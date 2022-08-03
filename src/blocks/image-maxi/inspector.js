@@ -257,6 +257,19 @@ const Inspector = props => {
 		[mediaID]
 	);
 
+	const dropShadow =
+		(getLastBreakpointAttribute({
+			target: 'clip-path',
+			breakpoint: deviceType,
+			attributes,
+		}) &&
+			getLastBreakpointAttribute({
+				target: 'clip-path-status',
+				breakpoint: deviceType,
+				attributes,
+			})) ||
+		!isEmpty(attributes.SVGElement);
+
 	const getCaptionOptions = () => {
 		const response = [
 			{ label: 'None', value: 'none' },
@@ -592,6 +605,7 @@ const Inspector = props => {
 									...inspectorTabs.boxShadow({
 										props,
 										prefix: 'image-',
+										dropShadow,
 									}),
 									...inspectorTabs.size({
 										props,
@@ -669,6 +683,8 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.transform({
 										props,
+										selectors: selectorsImage,
+										categories: categoriesImage,
 									}),
 									...inspectorTabs.transition({
 										props: {

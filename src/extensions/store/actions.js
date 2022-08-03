@@ -37,23 +37,26 @@ const actions = {
 			deviceType,
 		};
 	},
-	setMaxiDeviceType(deviceType, width) {
-		const { __experimentalSetPreviewDeviceType: setPostPreviewDeviceType } =
-			dispatch('core/edit-post');
+	setMaxiDeviceType({ deviceType, width, isGutenbergButton = false }) {
+		if (!isGutenbergButton) {
+			const {
+				__experimentalSetPreviewDeviceType: setPostPreviewDeviceType,
+			} = dispatch('core/edit-post');
 
-		const setPreviewDeviceType = document.querySelector('div#editor')
-			? setPostPreviewDeviceType
-			: dispatch('core/edit-site').__experimentalSetPreviewDeviceType;
+			const setPreviewDeviceType = document.querySelector('div#editor')
+				? setPostPreviewDeviceType
+				: dispatch('core/edit-site').__experimentalSetPreviewDeviceType;
 
-		const breakpoints = select('maxiBlocks').receiveMaxiBreakpoints();
+			const breakpoints = select('maxiBlocks').receiveMaxiBreakpoints();
 
-		const gutenbergDeviceType =
-			(deviceType === 'general' && 'Desktop') ||
-			(width >= breakpoints.m && 'Desktop') ||
-			(width >= breakpoints.s && 'Tablet') ||
-			(width < breakpoints.s && 'Mobile');
+			const gutenbergDeviceType =
+				(deviceType === 'general' && 'Desktop') ||
+				(width >= breakpoints.m && 'Desktop') ||
+				(width >= breakpoints.s && 'Tablet') ||
+				(width < breakpoints.s && 'Mobile');
 
-		if (gutenbergDeviceType) setPreviewDeviceType(gutenbergDeviceType);
+			if (gutenbergDeviceType) setPreviewDeviceType(gutenbergDeviceType);
+		}
 
 		return {
 			type: 'SET_DEVICE_TYPE',

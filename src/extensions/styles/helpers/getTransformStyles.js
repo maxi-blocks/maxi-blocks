@@ -14,119 +14,172 @@ import { isNumber, isString, isEmpty } from 'lodash';
  */
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-/**
- * Generates size styles object
- *
- * @param {Object} obj Block size properties
- */
-const getTransformStyles = obj => {
+const getTransformStrings = (category, breakpoint, index, obj) => {
+	const scaleObj = getLastBreakpointAttribute({
+		target: 'transform-scale',
+		breakpoint,
+		attributes: obj,
+	});
+	const translateObj = getLastBreakpointAttribute({
+		target: 'transform-translate',
+		breakpoint,
+		attributes: obj,
+	});
+	const rotateObj = getLastBreakpointAttribute({
+		target: 'transform-rotate',
+		breakpoint,
+		attributes: obj,
+	});
+	const originObj = getLastBreakpointAttribute({
+		target: 'transform-origin',
+		breakpoint,
+		attributes: obj,
+	});
+
+	const originValueToNumber = value => {
+		switch (validateOriginValue(value)) {
+			case 'top':
+			case 'left':
+				return 0;
+			case 'middle':
+			case 'center':
+				return 50;
+			case 'bottom':
+			case 'right':
+				return 100;
+			default:
+				return value;
+		}
+	};
+
+	const getScaleString = (scaleObj, category, index) => {
+		let scaleString = '';
+		if (isEmpty(scaleObj)) return scaleString;
+		if (index === 'hover' && !scaleObj?.[category]?.['hover-status'])
+			return getScaleString(scaleObj, category, 'normal');
+
+		if (isNumber(scaleObj?.[category]?.[index]?.x))
+			scaleString += `scaleX(${scaleObj[category][index].x / 100}) `;
+		if (isNumber(scaleObj?.[category]?.[index]?.y))
+			scaleString += `scaleY(${scaleObj[category][index].y / 100}) `;
+
+		if (
+			!scaleString &&
+			index === 'hover' &&
+			(isNumber(scaleObj?.[category]?.normal?.x) ||
+				isNumber(scaleObj?.[category]?.normal?.y))
+		)
+			scaleString += 'scale(1) ';
+		return scaleString;
+	};
+
+	const getTranslateString = (translateObj, category, index) => {
+		let translateString = '';
+		if (isEmpty(translateObj)) return translateString;
+		if (index === 'hover' && !translateObj?.[category]?.['hover-status'])
+			return getTranslateString(translateObj, category, 'normal');
+
+		if (isNumber(translateObj?.[category]?.[index]?.x))
+			translateString += `translateX(${translateObj[category][index].x}${
+				translateObj[category][index]['x-unit'] ?? '%'
+			}) `;
+		if (isNumber(translateObj?.[category]?.[index]?.y))
+			translateString += `translateY(${translateObj[category][index].y}${
+				translateObj[category][index]['y-unit'] ?? '%'
+			}) `;
+
+		if (
+			!translateString &&
+			index === 'hover' &&
+			(isNumber(translateObj?.[category]?.normal?.x) ||
+				isNumber(translateObj?.[category]?.normal?.y))
+		)
+			translateString += 'translate(0) ';
+
+		return translateString;
+	};
+
+	const getRotateString = (rotateObj, category, index) => {
+		let rotateString = '';
+		if (isEmpty(rotateObj)) return rotateString;
+		if (index === 'hover' && !rotateObj?.[category]?.['hover-status'])
+			return getRotateString(rotateObj, category, 'normal');
+
+		if (isNumber(rotateObj?.[category]?.[index]?.x))
+			rotateString += `rotateX(${rotateObj[category][index].x}deg) `;
+		if (isNumber(rotateObj?.[category]?.[index]?.y))
+			rotateString += `rotateY(${rotateObj[category][index].y}deg) `;
+		if (isNumber(rotateObj?.[category]?.[index]?.z))
+			rotateString += `rotateZ(${rotateObj[category][index].z}deg) `;
+
+		if (
+			!rotateString &&
+			index === 'hover' &&
+			(isNumber(rotateObj?.[category]?.normal?.x) ||
+				isNumber(rotateObj?.[category]?.normal?.y))
+		)
+			rotateString += 'rotate(0) ';
+
+		return rotateString;
+	};
+
+	const getOriginString = (originObj, category, index) => {
+		let originString = '';
+
+		if (
+			isEmpty(originObj) ||
+			(index === 'hover' && !originObj?.[category]?.['hover-status'])
+		)
+			return originString;
+
+		if (isString(validateOriginValue(originObj?.[category]?.[index]?.x)))
+			originString += `${originValueToNumber(
+				originObj[category][index].x
+			)}% `;
+		if (isString(validateOriginValue(originObj?.[category]?.[index]?.y)))
+			originString += `${originValueToNumber(
+				originObj[category][index].y
+			)}% `;
+
+		if (isNumber(validateOriginValue(originObj?.[category]?.[index]?.x)))
+			originString += `${originObj[category][index].x}${
+				originObj[category][index]['x-unit'] ?? '%'
+			} `;
+		if (isNumber(validateOriginValue(originObj?.[category]?.[index]?.y)))
+			originString += `${originObj[category][index].y}${
+				originObj[category][index]['y-unit'] ?? '%'
+			} `;
+
+		if (
+			!originString &&
+			index === 'hover' &&
+			(validateOriginValue(originObj?.[category]?.normal?.x) ||
+				validateOriginValue(originObj?.[category]?.normal?.y))
+		)
+			originString += '50% 50% ';
+
+		return originString;
+	};
+
+	const transformString =
+		getScaleString(scaleObj, category, index) +
+		getTranslateString(translateObj, category, index) +
+		getRotateString(rotateObj, category, index);
+	const transformOriginString = getOriginString(originObj, category, index);
+
+	return [transformString, transformOriginString];
+};
+
+const getTransformValue = (obj, category, index) => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
-		let transformString = '';
-		let transformOriginString = '';
-
-		const scaleX = getLastBreakpointAttribute({
-			target: 'transform-scale-x',
+		const [transformString, transformOriginString] = getTransformStrings(
+			category,
 			breakpoint,
-			attributes: obj,
-		});
-		const scaleY = getLastBreakpointAttribute({
-			target: 'transform-scale-y',
-			breakpoint,
-			attributes: obj,
-		});
-		const translateX = getLastBreakpointAttribute({
-			target: 'transform-translate-x',
-			breakpoint,
-			attributes: obj,
-		});
-		const translateXUnit = getLastBreakpointAttribute({
-			target: 'transform-translate-x-unit',
-			breakpoint,
-			attributes: obj,
-		});
-		const translateY = getLastBreakpointAttribute({
-			target: 'transform-translate-y',
-			breakpoint,
-			attributes: obj,
-		});
-		const translateYUnit = getLastBreakpointAttribute({
-			target: 'transform-translate-y-unit',
-			breakpoint,
-			attributes: obj,
-		});
-		const rotateX = getLastBreakpointAttribute({
-			target: 'transform-rotate-x',
-			breakpoint,
-			attributes: obj,
-		});
-		const rotateY = getLastBreakpointAttribute({
-			target: 'transform-rotate-y',
-			breakpoint,
-			attributes: obj,
-		});
-		const rotateZ = getLastBreakpointAttribute({
-			target: 'transform-rotate-z',
-			breakpoint,
-			attributes: obj,
-		});
-		const originX = getLastBreakpointAttribute({
-			target: 'transform-origin-x',
-			breakpoint,
-			attributes: obj,
-		});
-		const originY = getLastBreakpointAttribute({
-			target: 'transform-origin-y',
-			breakpoint,
-			attributes: obj,
-		});
-		const originXUnit = getLastBreakpointAttribute({
-			target: 'transform-origin-x-unit',
-			breakpoint,
-			attributes: obj,
-		});
-		const originYUnit = getLastBreakpointAttribute({
-			target: 'transform-origin-y-unit',
-			breakpoint,
-			attributes: obj,
-		});
-
-		const originValueToNumber = value => {
-			switch (validateOriginValue(value)) {
-				case 'top':
-				case 'left':
-					return 0;
-				case 'middle':
-				case 'center':
-					return 50;
-				case 'bottom':
-				case 'right':
-					return 100;
-				default:
-					return value;
-			}
-		};
-
-		if (isNumber(scaleX)) transformString += `scaleX(${scaleX / 100}) `;
-		if (isNumber(scaleY)) transformString += `scaleY(${scaleY / 100}) `;
-		if (isNumber(translateX))
-			transformString += `translateX(${translateX}${translateXUnit}) `;
-		if (isNumber(translateY))
-			transformString += `translateY(${translateY}${translateYUnit}) `;
-		if (isNumber(rotateX)) transformString += `rotateX(${rotateX}deg) `;
-		if (isNumber(rotateY)) transformString += `rotateY(${rotateY}deg) `;
-		if (isNumber(rotateZ)) transformString += `rotateZ(${rotateZ}deg) `;
-
-		if (isString(validateOriginValue(originX)))
-			transformOriginString += `${originValueToNumber(originX)}% `;
-		if (isString(validateOriginValue(originY)))
-			transformOriginString += `${originValueToNumber(originY)}% `;
-
-		if (isNumber(validateOriginValue(originX)))
-			transformOriginString += `${originX}${originXUnit} `;
-		if (isNumber(validateOriginValue(originY)))
-			transformOriginString += `${originY}${originYUnit} `;
+			index,
+			obj
+		);
 
 		const transformObj = {
 			...(!isEmpty(transformString) && { transform: transformString }),
@@ -135,6 +188,26 @@ const getTransformStyles = obj => {
 			}),
 		};
 		if (!isEmpty(transformObj)) response[breakpoint] = transformObj;
+	});
+
+	return response;
+};
+
+/**
+ * Generates size styles object
+ *
+ * @param {Object} obj Block size properties
+ */
+const getTransformStyles = (obj, selectors) => {
+	const response = {};
+
+	Object.entries(selectors).forEach(([category, targets]) => {
+		Object.entries(targets).forEach(([index, targetObj]) => {
+			const { target } = targetObj;
+			const transformObj = getTransformValue(obj, category, index);
+			if (!isEmpty(transformObj))
+				response[target] = { transform: transformObj };
+		});
 	});
 
 	return response;

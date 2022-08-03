@@ -90,6 +90,19 @@ const TransitionControlWrapper = props => {
 		if (transitionChangeAll) onChangeTransition();
 	}, [transitionChangeAll]);
 
+	const getTransitionAttributes = () => {
+		return {
+			...getGroupAttributes(attributes, 'transition'),
+			...Object.entries(attributes).reduce((acc, [key, value]) => {
+				if (key.startsWith('transition-') && key.includes('selected')) {
+					acc[key] = value;
+				}
+
+				return acc;
+			}),
+		};
+	};
+
 	return !isEmpty(transition[type]) ? (
 		<>
 			{!transitionChangeAll && (
@@ -117,7 +130,7 @@ const TransitionControlWrapper = props => {
 			{selected && selected !== 'none' && (
 				<ResponsiveTabsControl breakpoint={deviceType}>
 					<TransitionControl
-						{...getGroupAttributes(attributes, 'transition')}
+						{...getTransitionAttributes(attributes, 'transition')}
 						onChange={onChangeTransition}
 						getDefaultTransitionAttribute={
 							getDefaultTransitionAttribute
@@ -164,75 +177,55 @@ const transition = ({
 		});
 	});
 
-	const availableType = isEmpty(transition?.block) ? 'canvas' : 'block';
-
-	const ignoreIndicator = [
-		'transition-block-selected',
-		'transition-canvas-selected',
-	];
+	const availableType = Object.keys(transition).filter(
+		type => !isEmpty(transition[type])
+	)[0];
 
 	return {
 		label,
-		content:
-			isEmpty(transition.block) && isEmpty(transition.canvas) ? (
-				<InfoBox
-					message={__(
-						'No transition settings available. Please turn on some hover settings.',
-						'maxi-blocks'
-					)}
+		content: Object.values(transition).every(obj => isEmpty(obj)) ? (
+			<InfoBox
+				message={__(
+					'No transition settings available. Please turn on some hover settings.',
+					'maxi-blocks'
+				)}
+			/>
+		) : (
+			<>
+				<ToggleSwitch
+					label={__('Change all transitions', 'maxi-blocks')}
+					selected={transitionChangeAll}
+					onChange={val => {
+						maxiSetAttributes({
+							'transition-change-all': val,
+						});
+					}}
 				/>
-			) : (
-				<>
-					<ToggleSwitch
-						label={__('Change all transitions', 'maxi-blocks')}
-						selected={transitionChangeAll}
-						onChange={val => {
-							maxiSetAttributes({
-								'transition-change-all': val,
-							});
-						}}
+				{Object.values(rawTransition).every(obj => !isEmpty(obj)) &&
+				!transitionChangeAll ? (
+					<SettingTabsControl
+						breakpoint={deviceType}
+						items={Object.keys(rawTransition).map(type => ({
+							label: __(capitalize(type), 'maxi-blocks'),
+							content: (
+								<TransitionControlWrapper
+									type={type}
+									transition={transition}
+									{...props}
+								/>
+							),
+						}))}
 					/>
-					{!isEmpty(rawTransition.block) &&
-					!isEmpty(rawTransition.canvas) &&
-					!transitionChangeAll ? (
-						<SettingTabsControl
-							breakpoint={deviceType}
-							items={[
-								{
-									label: __('Block', 'maxi-blocks'),
-									content: (
-										<TransitionControlWrapper
-											type='block'
-											transition={transition}
-											{...props}
-										/>
-									),
-									ignoreIndicator,
-								},
-								{
-									label: __('Canvas', 'maxi-blocks'),
-									content: (
-										<TransitionControlWrapper
-											type='canvas'
-											transition={transition}
-											{...props}
-										/>
-									),
-									ignoreIndicator,
-								},
-							]}
-						/>
-					) : (
-						<TransitionControlWrapper
-							type={availableType}
-							transition={transition}
-							isOneType
-							{...props}
-						/>
-					)}
-				</>
-			),
-		ignoreIndicator,
+				) : (
+					<TransitionControlWrapper
+						type={availableType}
+						transition={transition}
+						isOneType
+						{...props}
+					/>
+				)}
+			</>
+		),
 	};
 };
 

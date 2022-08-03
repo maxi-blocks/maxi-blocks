@@ -1,9 +1,4 @@
 /**
- * WordPress dependencies
- */
-import { __ } from '@wordpress/i18n';
-
-/**
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
@@ -33,6 +28,8 @@ const attributes = {
 	content: {
 		type: 'string',
 	},
+	altTitle: { type: 'string' },
+	altDescription: { type: 'string' },
 	...attributesData.svg,
 	...attributesData.svgHover,
 	...{

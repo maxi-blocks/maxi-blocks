@@ -55,7 +55,7 @@ const SliderWrapper = props => {
 		clientId,
 	} = props;
 
-	const { isLoop, isAutoplay } = attributes;
+	const { isLoop } = attributes;
 
 	const sliderTransition = attributes['slider-transition'];
 	const sliderTransitionSpeed = attributes['slider-transition-speed'];
@@ -87,6 +87,12 @@ const SliderWrapper = props => {
 		effect += ` ${sliderTransitionSpeed / 1000}s ease-out`;
 
 		return effect;
+	};
+
+	const addSliderTransition = () => {
+		if (sliderTransition !== 'slide')
+			wrapperRef.current.style.animation = getSliderEffect();
+		else wrapperRef.current.style.transition = getSliderEffect();
 	};
 
 	const getSlidePosition = currentSlide => {
@@ -136,10 +142,8 @@ const SliderWrapper = props => {
 	};
 
 	const nextSlide = () => {
-		if (currentSlide + 1 < numberOfSlides || isLoop || isAutoplay) {
-			if (sliderTransition !== 'slide')
-				wrapperRef.current.style.animation = getSliderEffect();
-			else wrapperRef.current.style.transition = getSliderEffect();
+		if (currentSlide + 1 < numberOfSlides || isLoop) {
+			addSliderTransition();
 
 			setCurrentSlide(prev => {
 				return prev + 1;
@@ -150,27 +154,29 @@ const SliderWrapper = props => {
 
 			setActiveDot(activeDotNumber);
 			setActiveSlide(activeDotNumber);
+		} else {
+			addSliderTransition();
+			setWrapperTranslate(getSlidePosition(currentSlide));
 		}
 	};
 
 	const prevSlide = () => {
 		if (currentSlide - 1 >= 0 || isLoop) {
-			if (sliderTransition !== 'slide')
-				wrapperRef.current.style.animation = getSliderEffect();
-			else wrapperRef.current.style.transition = getSliderEffect();
+			addSliderTransition();
 			setCurrentSlide(next => {
 				return next - 1;
 			});
 
 			setActiveDot(currentSlide - 1);
 			setActiveSlide(currentSlide - 1);
+		} else {
+			addSliderTransition();
+			setWrapperTranslate(getSlidePosition(currentSlide));
 		}
 	};
 
 	const exactSlide = slideNumber => {
-		if (sliderTransition !== 'slide')
-			wrapperRef.current.style.animation = getSliderEffect();
-		else wrapperRef.current.style.transition = getSliderEffect();
+		addSliderTransition();
 		setCurrentSlide(slideNumber);
 		setActiveDot(slideNumber);
 		setActiveSlide(slideNumber);
@@ -199,9 +205,7 @@ const SliderWrapper = props => {
 		} else if (dragPosition - initPosition > 100) {
 			prevSlide();
 		} else {
-			if (sliderTransition !== 'slide')
-				wrapperRef.current.style.animation = getSliderEffect();
-			else wrapperRef.current.style.transition = getSliderEffect();
+			addSliderTransition();
 			setWrapperTranslate(getSlidePosition(currentSlide));
 		}
 

@@ -55,12 +55,10 @@ const SliderWrapper = props => {
 		clientId,
 	} = props;
 
-	const { isLoop, isAutoplay, isHovered, pauseOnHover, pauseOnInteraction } =
-		attributes;
+	const { isLoop, isAutoplay } = attributes;
 
 	const sliderTransition = attributes['slider-transition'];
 	const sliderTransitionSpeed = attributes['slider-transition-speed'];
-	const sliderAutoplaySpeed = attributes['slider-autoplay-speed'];
 
 	const ALLOWED_BLOCKS = ['maxi-blocks/slide-maxi'];
 	const wrapperRef = useRef(null);
@@ -339,29 +337,6 @@ const SliderWrapper = props => {
 			setTimeout(() => setActiveSlide(0), 10);
 		}
 	}, [currentSlide]);
-
-	useEffect(() => {
-		const isPaused = () => {
-			if (isHovered && pauseOnHover) return true;
-			if (pauseOnInteraction) return true;
-
-			return false;
-		};
-
-		if (isAutoplay && !isPaused()) {
-			const autoplayInterval = setInterval(() => {
-				nextSlide();
-			}, sliderAutoplaySpeed);
-			return () => clearInterval(autoplayInterval);
-		}
-		return null;
-	}, [
-		isAutoplay,
-		sliderAutoplaySpeed,
-		isHovered,
-		pauseOnHover,
-		pauseOnInteraction,
-	]);
 
 	const classes = classnames(
 		'maxi-slider-block__wrapper',

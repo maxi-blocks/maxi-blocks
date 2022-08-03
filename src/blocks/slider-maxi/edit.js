@@ -11,6 +11,7 @@ import {
 	createRef,
 	forwardRef,
 } from '@wordpress/element';
+import { dispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -53,6 +54,7 @@ const SliderWrapper = props => {
 		uniqueID,
 		deviceType,
 		clientId,
+		isSelected,
 	} = props;
 
 	const { isLoop } = attributes;
@@ -154,6 +156,9 @@ const SliderWrapper = props => {
 
 			setActiveDot(activeDotNumber);
 			setActiveSlide(activeDotNumber);
+
+			if (!isSelected)
+				dispatch('core/block-editor').selectBlock(clientId);
 		} else {
 			addSliderTransition();
 			setWrapperTranslate(getSlidePosition(currentSlide));
@@ -169,6 +174,8 @@ const SliderWrapper = props => {
 
 			setActiveDot(currentSlide - 1);
 			setActiveSlide(currentSlide - 1);
+			if (!isSelected)
+				dispatch('core/block-editor').selectBlock(clientId);
 		} else {
 			addSliderTransition();
 			setWrapperTranslate(getSlidePosition(currentSlide));

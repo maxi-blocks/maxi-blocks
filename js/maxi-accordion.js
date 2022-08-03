@@ -14,10 +14,10 @@ class Accordion {
 			el.querySelectorAll(':scope > .maxi-pane-block')
 		);
 
-		this.events();
+		this.init();
 	}
 
-	events() {
+	init() {
 		this.panes.forEach(pane => {
 			const header = pane.querySelector(
 				':scope > .maxi-pane-block__header'

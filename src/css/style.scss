@@ -5,7 +5,8 @@
 @import './maxi-themes-banner.scss';
 
 .page-template-full-width-template-php {
-	#header {
+	#header,
+	#footer {
 		padding: 0 5%;
 	}
 }

@@ -22,12 +22,13 @@ const background = ({
 	label = '',
 	props,
 	prefix = '',
-	disableImage = false,
-	disableVideo = false,
-	disableGradient = false,
-	disableColor = false,
-	disableSVG = false,
 	disableClipPath = false,
+	disableColor = false,
+	disableGradient = false,
+	disableImage = false,
+	disableNoneStyle = false,
+	disableSVG = false,
+	disableVideo = false,
 	globalProps,
 	hoverGlobalProps,
 	groupAttributes = ['background', 'backgroundColor', 'backgroundGradient'],
@@ -53,6 +54,20 @@ const background = ({
 	const hoverStatus =
 		attributes[`${prefix}background-hover-status`] || globalHoverStatus;
 
+	const backgroundControlBasicProps = {
+		prefix,
+		disableClipPath,
+		disableColor,
+		disableGradient,
+		disableImage,
+		disableNoneStyle,
+		disableSVG,
+		disableVideo,
+		clientId,
+		breakpoint: deviceType,
+		globalProps,
+	};
+
 	return {
 		label: __(`${label} background`, 'maxi-blocks'),
 		disablePadding: true,
@@ -69,7 +84,6 @@ const background = ({
 									false,
 									prefix
 								)}
-								prefix={prefix}
 								onChangeInline={obj => {
 									insertInlineStyles({
 										obj,
@@ -80,15 +94,7 @@ const background = ({
 									maxiSetAttributes(obj);
 									cleanInlineStyles(inlineTarget);
 								}}
-								disableColor={disableColor}
-								disableImage={disableImage}
-								disableGradient={disableGradient}
-								disableVideo={disableVideo}
-								disableSVG={disableSVG}
-								disableClipPath={disableClipPath}
-								clientId={clientId}
-								breakpoint={deviceType}
-								globalProps={globalProps}
+								{...backgroundControlBasicProps}
 							/>
 						),
 					},
@@ -151,18 +157,11 @@ const background = ({
 											true,
 											prefix
 										)}
-										prefix={prefix}
 										onChange={obj => {
 											maxiSetAttributes(obj);
 										}}
-										disableImage
-										disableVideo
-										disableClipPath
-										disableSVG
 										isHover
-										clientId={clientId}
-										breakpoint={deviceType}
-										globalProps={hoverGlobalProps}
+										{...backgroundControlBasicProps}
 									/>
 								)}
 							</>

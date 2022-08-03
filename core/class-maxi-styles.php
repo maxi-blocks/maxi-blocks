@@ -74,6 +74,7 @@ class MaxiBlocks_Styles
                 'shape-divider',
                 'relations',
 				'video',
+				'search',
             ];
 
             foreach ($scripts as &$script) {
@@ -106,7 +107,12 @@ class MaxiBlocks_Styles
                         plugins_url($jsScriptPath, dirname(__FILE__))
                     );
 
-                    wp_localize_script($jsScriptName, $jsVarToPass, [$meta]);
+					$data =
+						$jsVar === 'search'
+							? [$meta, get_search_link()]
+							: [$meta];
+
+                    wp_localize_script($jsScriptName, $jsVarToPass, $data);
                 }
             }
         }

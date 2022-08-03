@@ -3,7 +3,7 @@
 
 	&:not(.maxi-responsive-tabs-control) {
 		& > .maxi-tabs-control {
-			.maxi-tabs-control__button {
+			.maxi-tabs-control__button:not(.maxi-tabs-control__button--nested) {
 				&[aria-pressed='true'] {
 					border-bottom: 2px solid var(--maxi-primary-color) !important;
 				}
@@ -13,6 +13,20 @@
 	.maxi-tabs-control {
 		display: flex;
 		padding-top: 0;
+
+		&--nested {
+			padding: 8px 8px 0;
+			margin-bottom: -18px;
+
+			.maxi-tabs-control__button {
+				&:hover {
+					background-color: var(--maxi-grey-8-color);
+				}
+				&:focus:not(:disabled) {
+					background-color: var(--maxi-white-2-color);
+				}
+			}
+		}
 
 		&__sidebar-settings-tabs {
 			.maxi-tabs-control__button[aria-pressed='true'] {
@@ -120,6 +134,13 @@
 			background-color: #fff;
 		}
 
+		&--nested {
+			background: var(--maxi-white-4-color);
+			border: 1px solid var(--maxi-secondary-color);
+			padding: 25px 0 0;
+			margin-bottom: 8px;
+		}
+
 		.maxi-tab-content {
 			display: none;
 			background: #fff;
@@ -178,7 +199,7 @@
 		padding-left: 10px !important;
 	}
 	.maxi-select-control__input {
-		padding-left: 12px !important;	
+		padding-left: 12px !important;
 	}
 	.maxi-select-control__input:hover,
 	.maxi-text-control__input:hover {
@@ -201,7 +222,7 @@
 	.maxi-block-style-preview {
 		position: relative;
 		min-width: 100px;
-		margin-left: 10px;		
+		margin-left: 10px;
 		height: 32px;
 	}
 	.block-style-label-2,
@@ -244,7 +265,7 @@
 /*******************************
 * RTL
 *******************************/
-html[dir="rtl"]  {
+html[dir='rtl'] {
 	.maxi-settingstab-control .maxi-tabs-control__button {
 		border-left: 1px solid var(--maxi-grey-1-color);
 		border-right: none;

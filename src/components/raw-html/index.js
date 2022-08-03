@@ -29,6 +29,8 @@ const getNodeOnDOM = props => {
 const RawHTML = forwardRef((props, ref) => {
 	const { children } = props;
 
+	if (!children) return null;
+
 	const cleanedChildren = DOMPurify.sanitize(children, {
 		ADD_TAGS: ['use'],
 	});
@@ -44,7 +46,7 @@ const RawHTML = forwardRef((props, ref) => {
 
 	if (ref && refTarget) ref(refTarget);
 
-	return <>{parsedContent}</>;
+	return parsedContent;
 });
 
 export default RawHTML;

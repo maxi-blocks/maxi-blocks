@@ -12,7 +12,7 @@ import Inspector from './inspector';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-
+import { getIconPositionClass } from '../../extensions/styles';
 import getStyles from './styles';
 import IconToolbar from '../../components/toolbar/iconToolbar';
 import copyPasteMapping from './copy-paste-mapping';
@@ -69,18 +69,10 @@ class edit extends MaxiBlockComponent {
 
 		const buttonClasses = classnames(
 			'maxi-button-block__button',
-			attributes['icon-content'] &&
-				attributes['icon-position'] === 'top' &&
-				'maxi-button-block__button--icon-top',
-			attributes['icon-content'] &&
-				attributes['icon-position'] === 'bottom' &&
-				'maxi-button-block__button--icon-bottom',
-			attributes['icon-content'] &&
-				attributes['icon-position'] === 'left' &&
-				'maxi-button-block__button--icon-left',
-			attributes['icon-content'] &&
-				attributes['icon-position'] === 'right' &&
-				'maxi-button-block__button--icon-right'
+			getIconPositionClass(
+				attributes['icon-position'],
+				'maxi-button-block__button'
+			)
 		);
 
 		const inlineStylesTargets = {

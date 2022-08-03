@@ -58,10 +58,14 @@ const actions = {
 			if (gutenbergDeviceType) setPreviewDeviceType(gutenbergDeviceType);
 		}
 
+		const { receiveWinBreakpoint } = select('maxiBlocks');
+		const winBreakpoint = receiveWinBreakpoint();
+
 		return {
 			type: 'SET_DEVICE_TYPE',
 			deviceType,
 			width,
+			winBreakpoint,
 		};
 	},
 	setWindowSize(winSize) {

@@ -1,10 +1,12 @@
+import { select } from '@wordpress/data';
 import { omit } from 'lodash';
 
 const breakpointResizer = (
 	size,
 	breakpoints,
 	xxlSize = breakpoints.xl + 1,
-	winSize = 0
+	winSize = 0,
+	winBreakpoint
 ) => {
 	const editorWrapper =
 		document.querySelector('.edit-post-visual-editor') ||
@@ -20,7 +22,7 @@ const breakpointResizer = (
 
 	editorWrapper.setAttribute(
 		'maxi-blocks-responsive',
-		size !== 'general' ? size : ''
+		size !== 'general' ? size : winBreakpoint
 	);
 	editorWrapper.setAttribute('maxi-blocks-responsive-width', responsiveWidth);
 
@@ -71,7 +73,8 @@ const reducer = (
 				action.deviceType,
 				state.breakpoints,
 				action.width,
-				state.settings.window.width
+				state.settings.window.width,
+				action.winBreakpoint
 			);
 			return {
 				...state,

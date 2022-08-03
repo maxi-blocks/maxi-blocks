@@ -180,11 +180,17 @@ wp.domReady(() => {
 							!editorWrapper
 								.getAttributeNames()
 								.includes('maxi-blocks-responsive')
-						)
+						) {
+							const { receiveWinBreakpoint } =
+								select('maxiBlocks');
+
+							const winBreakpoint = receiveWinBreakpoint();
+
 							editorWrapper.setAttribute(
 								'maxi-blocks-responsive',
-								''
+								winBreakpoint
 							);
+						}
 					}
 
 					// Responsive editor

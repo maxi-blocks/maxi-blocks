@@ -6,7 +6,12 @@ const breakpointResizer = (
 	xxlSize = breakpoints.xl + 1,
 	winSize = 0
 ) => {
-	const editorWrapper = document.querySelector('.edit-post-visual-editor');
+	const editorWrapper =
+		document.querySelector('.edit-post-visual-editor') ||
+		document.querySelector(
+			'iframe[name="editor-canvas"].edit-site-visual-editor__editor-canvas'
+		).contentDocument.body;
+
 	const winHeight = window.outerWidth;
 	const responsiveWidth =
 		(size === 'general' && 'none') ||

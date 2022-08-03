@@ -51,7 +51,9 @@ wp.domReady(() => {
 		const maxiToolbar = document.querySelector(
 			'#maxi-blocks__toolbar-buttons'
 		);
-		const parentNode = document.querySelector('.edit-post-header__toolbar');
+		const parentNode =
+			document.querySelector('.edit-post-header__toolbar') ||
+			document.querySelector('.edit-site-header__toolbar');
 
 		// Insert Maxi buttons on Gutenberg topbar
 		if (!maxiToolbar && parentNode) {

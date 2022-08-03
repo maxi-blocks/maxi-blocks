@@ -38,8 +38,12 @@ const actions = {
 		};
 	},
 	setMaxiDeviceType(deviceType, width) {
-		const { __experimentalSetPreviewDeviceType: setPreviewDeviceType } =
+		const { __experimentalSetPreviewDeviceType: setPostPreviewDeviceType } =
 			dispatch('core/edit-post');
+
+		const setPreviewDeviceType = document.querySelector('div#editor')
+			? setPostPreviewDeviceType
+			: dispatch('core/edit-site').__experimentalSetPreviewDeviceType;
 
 		const breakpoints = select('maxiBlocks').receiveMaxiBreakpoints();
 

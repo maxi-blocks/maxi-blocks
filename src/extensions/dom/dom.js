@@ -51,7 +51,9 @@ wp.domReady(() => {
 	window.addEventListener('resize', e => setWindowSize(e));
 
 	const observerSubscribe = subscribe(() => {
-		const targetNode = document.querySelector('.edit-post-layout');
+		const targetNode =
+			document.querySelector('.edit-post-layout') ||
+			document.querySelector('.edit-site');
 
 		if (targetNode) {
 			/**
@@ -90,8 +92,9 @@ wp.domReady(() => {
 								'core/block-editor'
 							).getSelectedBlockClientId()
 						);
-						const editPostSidebarNode =
-							document.querySelector('.edit-post-sidebar');
+						const editPostSidebarNode = document.querySelector(
+							'.interface-complementary-area'
+						);
 						const blockEditorBlockInspectorNode =
 							document.querySelector(
 								'.block-editor-block-inspector'
@@ -102,6 +105,17 @@ wp.domReady(() => {
 						const blockToolbarEditor = document.querySelector(
 							'.block-editor-block-list__block-popover'
 						);
+						const editorWrapper =
+							document.querySelector(
+								'.edit-post-visual-editor'
+							) ||
+							document
+								.querySelector(
+									'iframe[name="editor-canvas"].edit-site-visual-editor__editor-canvas'
+								)
+								?.contentDocument.querySelector(
+									'.editor-styles-wrapper'
+								);
 
 						if (
 							!isEmpty(blockNames) &&
@@ -160,14 +174,27 @@ wp.domReady(() => {
 									blockToolbarEditor.style.display = null;
 							}
 						}
+						if (
+							editorWrapper &&
+							!editorWrapper
+								.getAttributeNames()
+								.includes('maxi-blocks-responsive')
+						)
+							editorWrapper.setAttribute(
+								'maxi-blocks-responsive',
+								''
+							);
 					}
 
 					// Responsive editor
 					if (
 						mutation.type === 'attributes' &&
-						mutation.target.classList.contains(
+						(mutation.target.classList.contains(
 							'edit-post-visual-editor'
-						) &&
+						) ||
+							mutation.target.classList.contains(
+								'edit-site-visual-editor'
+							)) &&
 						mutation.target.classList.contains(
 							'editor-styles-wrapper'
 						)
@@ -318,7 +345,7 @@ wp.domReady(() => {
 					) {
 						if (mutation.target.getAttribute('aria-expanded')) {
 							const node = document.querySelector(
-								'.edit-post-post-preview-dropdown'
+								'.block-editor-post-preview__dropdown-content'
 							);
 							const repeatedNode = document.querySelector(
 								'#maxi-blocks__responsive-toolbar'
@@ -348,7 +375,15 @@ wp.domReady(() => {
 										const editorWrapper =
 											document.querySelector(
 												'.edit-post-visual-editor'
-											);
+											) ||
+											document
+												.querySelector(
+													'iframe[name="editor-canvas"].edit-site-visual-editor__editor-canvas'
+												)
+												.contentDocument.querySelector(
+													'.editor-styles-wrapper'
+												);
+
 										editorWrapper.setAttribute(
 											'maxi-blocks-responsive',
 											maxiValue

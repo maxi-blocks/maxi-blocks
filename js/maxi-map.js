@@ -1,6 +1,6 @@
 window.onload = () => {
-	const apiKey = maxiMap[0][1];
-	const mapItems = maxiMap[0][0];
+	const apiKey = maxiMap[1];
+	const mapItems = maxiMap[0];
 
 	const isGoogleProvider = mapItems.some(
 		item => item['map-provider'] === 'googlemaps'

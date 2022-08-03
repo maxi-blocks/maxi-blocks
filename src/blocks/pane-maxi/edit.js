@@ -129,7 +129,6 @@ class edit extends MaxiBlockComponent {
 					className='maxi-pane-block__header'
 					onClick={() => {
 						if (!isOpen) {
-							if (!isCollapsible && openPanes.length <= 1) return;
 							this.content.style.overflow = 'hidden';
 							// the css doesn't transition to 100% so need to set exact value, for transition to happen
 							this.content.style.maxHeight = `${this.content.scrollHeight}px`;
@@ -138,6 +137,7 @@ class edit extends MaxiBlockComponent {
 							}, animationDuration);
 							onOpen(clientId);
 						} else {
+							if (!isCollapsible && openPanes.length <= 1) return;
 							this.content.style.overflow = 'hidden';
 							// same here, transition doesn't start if it max-height value is not set to exact value
 							this.content.style.maxHeight = `${this.content.scrollHeight}px`;

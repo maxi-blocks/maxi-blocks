@@ -4,9 +4,6 @@
 $styles: 'dark', 'light';
 $levels: 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6';
 $responsive_sizes: 'general', 'xxl', 'xl', 'l', 'm', 's', 'xs';
-$responsive_breakpoints: 1921, 1920, 1366, 1024, 768, 480;
-$responsive_width: '';
-$current_responsive_stage: 'general';
 $color_set: '1', '2', '3', '4', '5', '6', '7', '8';
 
 /**
@@ -14,174 +11,98 @@ $color_set: '1', '2', '3', '4', '5', '6', '7', '8';
 */
 
 /* Frontend */
-body.maxi-blocks--active .edit-post-visual-editor {
-	@each $style in $styles {
-		/* Color Presets */
-		.maxi-#{$style} {
+body.maxi-blocks--active {
+	.edit-post-visual-editor,
+	.edit-site-visual-editor {
+		@each $style in $styles {
 			/* Color Presets */
-			@each $color_number in $color_set {
-				&.maxi-sc-#{$style}-link-color-#{$color_number},
-				.maxi-sc-#{$style}-link-color-#{$color_number} {
-					&.maxi-block--has-link {
-						--maxi-#{$style}-link-palette: var(
-							--maxi-#{$style}-color-#{$color_number}
-						);
+			.maxi-#{$style} {
+				/* Color Presets */
+				@each $color_number in $color_set {
+					&.maxi-sc-#{$style}-link-color-#{$color_number},
+					.maxi-sc-#{$style}-link-color-#{$color_number} {
+						&.maxi-block--has-link {
+							--maxi-#{$style}-link-palette: var(
+								--maxi-#{$style}-color-#{$color_number}
+							);
+						}
+						a.maxi-text-block--link {
+							--maxi-#{$style}-link-palette: var(
+								--maxi-#{$style}-color-#{$color_number}
+							);
+						}
 					}
-					a.maxi-text-block--link {
-						--maxi-#{$style}-link-palette: var(
-							--maxi-#{$style}-color-#{$color_number}
-						);
+					&.maxi-sc-#{$style}-link-hover-color-#{$color_number},
+					.maxi-sc-#{$style}-link-hover-color-#{$color_number} {
+						&.maxi-block--has-link {
+							--maxi-#{$style}-link-hover-palette: var(
+								--maxi-#{$style}-color-#{$color_number}
+							);
+						}
+						a.maxi-text-block--link {
+							--maxi-#{$style}-link-hover-palette: var(
+								--maxi-#{$style}-color-#{$color_number}
+							);
+						}
 					}
-				}
-				&.maxi-sc-#{$style}-link-hover-color-#{$color_number},
-				.maxi-sc-#{$style}-link-hover-color-#{$color_number} {
-					&.maxi-block--has-link {
-						--maxi-#{$style}-link-hover-palette: var(
-							--maxi-#{$style}-color-#{$color_number}
-						);
+					&.maxi-sc-#{$style}-link-active-color-#{$color_number},
+					.maxi-sc-#{$style}-link-active-color-#{$color_number} {
+						&.maxi-block--has-link {
+							--maxi-#{$style}-link-active-palette: var(
+								--maxi-#{$style}-color-#{$color_number}
+							);
+						}
+						a.maxi-text-block--link {
+							--maxi-#{$style}-link-active-palette: var(
+								--maxi-#{$style}-color-#{$color_number}
+							);
+						}
 					}
-					a.maxi-text-block--link {
-						--maxi-#{$style}-link-hover-palette: var(
-							--maxi-#{$style}-color-#{$color_number}
-						);
-					}
-				}
-				&.maxi-sc-#{$style}-link-active-color-#{$color_number},
-				.maxi-sc-#{$style}-link-active-color-#{$color_number} {
-					&.maxi-block--has-link {
-						--maxi-#{$style}-link-active-palette: var(
-							--maxi-#{$style}-color-#{$color_number}
-						);
-					}
-					a.maxi-text-block--link {
-						--maxi-#{$style}-link-active-palette: var(
-							--maxi-#{$style}-color-#{$color_number}
-						);
-					}
-				}
-				&.maxi-sc-#{$style}-link-visited-color-#{$color_number},
-				.maxi-sc-#{$style}-link-visited-color-#{$color_number} {
-					&.maxi-block--has-link {
-						--maxi-#{$style}-link-visited-palette: var(
-							--maxi-#{$style}-color-#{$color_number}
-						);
-					}
-					a.maxi-text-block--link {
-						--maxi-#{$style}-link-visited-palette: var(
-							--maxi-#{$style}-color-#{$color_number}
-						);
-					}
-				}
-			}
-		}
-
-		/* Individual settings per a block type */
-		.maxi-#{$style}.maxi-block {
-			&.maxi-text-block,
-			.maxi-text-block,
-			&.maxi-image-block figcaption,
-			.maxi-image-block figcaption {
-				@each $level in $levels {
-					#{$level} {
-						font-family: var(
-							--maxi-#{$style}-#{$level}-font-family-general
-						);
-						font-weight: var(
-							--maxi-#{$style}-#{$level}-font-weight-general
-						);
-						font-style: var(
-							--maxi-#{$style}-#{$level}-font-style-general
-						);
-						text-transform: var(
-							--maxi-#{$style}-#{$level}-text-transform-general
-						);
-						text-decoration: var(
-							--maxi-#{$style}-#{$level}-text-decoration-general
-						);
+					&.maxi-sc-#{$style}-link-visited-color-#{$color_number},
+					.maxi-sc-#{$style}-link-visited-color-#{$color_number} {
+						&.maxi-block--has-link {
+							--maxi-#{$style}-link-visited-palette: var(
+								--maxi-#{$style}-color-#{$color_number}
+							);
+						}
+						a.maxi-text-block--link {
+							--maxi-#{$style}-link-visited-palette: var(
+								--maxi-#{$style}-color-#{$color_number}
+							);
+						}
 					}
 				}
 			}
 
-			&.maxi-text-block li,
-			.maxi-text-block li {
-				font-family: var(--maxi-#{$style}-p-font-family-general);
-				font-weight: var(--maxi-#{$style}-p-font-weight-general);
-				font-style: var(--maxi-#{$style}-p-font-style-general);
-				text-transform: var(--maxi-#{$style}-p-text-transform-general);
-				text-decoration: var(
-					--maxi-#{$style}-p-text-decoration-general
-				);
-			}
-
-			&.maxi-block--has-link .maxi-text-block__content {
-				color: var(--maxi-#{$style}-link);
-				&:hover,
-				&:focus {
-					color: var(--maxi-#{$style}-link-hover);
-				}
-				&:active {
-					color: var(--maxi-#{$style}-link-active);
-				}
-				&:visited {
-					color: var(--maxi-#{$style}-link-visited);
-				}
-			}
-
-			&.maxi-text-block a.maxi-text-block--link,
-			.maxi-text-block a.maxi-text-block--link {
-				color: var(--maxi-#{$style}-link);
-				&:hover,
-				&:focus {
-					color: var(--maxi-#{$style}-link-hover);
-					span {
-						color: var(--maxi-#{$style}-link-hover);
+			/* Individual settings per a block type */
+			.maxi-#{$style}.maxi-block {
+				&.maxi-text-block,
+				.maxi-text-block,
+				&.maxi-image-block figcaption,
+				.maxi-image-block figcaption {
+					@each $level in $levels {
+						#{$level} {
+							font-family: var(
+								--maxi-#{$style}-#{$level}-font-family-general
+							);
+							font-weight: var(
+								--maxi-#{$style}-#{$level}-font-weight-general
+							);
+							font-style: var(
+								--maxi-#{$style}-#{$level}-font-style-general
+							);
+							text-transform: var(
+								--maxi-#{$style}-#{$level}-text-transform-general
+							);
+							text-decoration: var(
+								--maxi-#{$style}-#{$level}-text-decoration-general
+							);
+						}
 					}
 				}
-				&:active {
-					color: var(--maxi-#{$style}-link-active);
-					span {
-						color: var(--maxi-#{$style}-link-active);
-					}
-				}
-				&:visited {
-					color: var(--maxi-#{$style}-link-visited);
-					span {
-						color: var(--maxi-#{$style}-link-visited);
-					}
-				}
-			}
 
-			&.maxi-button-block .maxi-button-block__content,
-			.maxi-button-block .maxi-button-block__content {
-				font-family: var(
-					--maxi-#{$style}-button-font-family-general,
-					var(--maxi-#{$style}-p-font-family-general)
-				);
-				font-weight: var(--maxi-#{$style}-button-font-weight-general);
-				font-style: var(--maxi-#{$style}-button-font-style-general);
-				text-transform: var(
-					--maxi-#{$style}-button-text-transform-general
-				);
-				text-decoration: var(
-					--maxi-#{$style}-button-text-decoration-general
-				);
-			}
-
-			&.maxi-image-block .maxi-hover-details,
-			.maxi-image-block .maxi-hover-details {
-				h4 {
-					font-family: var(--maxi-#{$style}-h4-font-family-general);
-					font-weight: var(--maxi-#{$style}-h4-font-weight-general);
-					font-style: var(--maxi-#{$style}-h4-font-style-general);
-					text-transform: var(
-						--maxi-#{$style}-h4-text-transform-general
-					);
-					text-decoration: var(
-						--maxi-#{$style}-h4-text-decoration-general
-					);
-				}
-
-				p {
+				&.maxi-text-block li,
+				.maxi-text-block li {
 					font-family: var(--maxi-#{$style}-p-font-family-general);
 					font-weight: var(--maxi-#{$style}-p-font-weight-general);
 					font-style: var(--maxi-#{$style}-p-font-style-general);
@@ -191,6 +112,97 @@ body.maxi-blocks--active .edit-post-visual-editor {
 					text-decoration: var(
 						--maxi-#{$style}-p-text-decoration-general
 					);
+				}
+
+				&.maxi-block--has-link .maxi-text-block__content {
+					color: var(--maxi-#{$style}-link);
+					&:hover,
+					&:focus {
+						color: var(--maxi-#{$style}-link-hover);
+					}
+					&:active {
+						color: var(--maxi-#{$style}-link-active);
+					}
+					&:visited {
+						color: var(--maxi-#{$style}-link-visited);
+					}
+				}
+
+				&.maxi-text-block a.maxi-text-block--link,
+				.maxi-text-block a.maxi-text-block--link {
+					color: var(--maxi-#{$style}-link);
+					&:hover,
+					&:focus {
+						color: var(--maxi-#{$style}-link-hover);
+						span {
+							color: var(--maxi-#{$style}-link-hover);
+						}
+					}
+					&:active {
+						color: var(--maxi-#{$style}-link-active);
+						span {
+							color: var(--maxi-#{$style}-link-active);
+						}
+					}
+					&:visited {
+						color: var(--maxi-#{$style}-link-visited);
+						span {
+							color: var(--maxi-#{$style}-link-visited);
+						}
+					}
+				}
+
+				&.maxi-button-block .maxi-button-block__content,
+				.maxi-button-block .maxi-button-block__content {
+					font-family: var(
+						--maxi-#{$style}-button-font-family-general,
+						var(--maxi-#{$style}-p-font-family-general)
+					);
+					font-weight: var(
+						--maxi-#{$style}-button-font-weight-general
+					);
+					font-style: var(--maxi-#{$style}-button-font-style-general);
+					text-transform: var(
+						--maxi-#{$style}-button-text-transform-general
+					);
+					text-decoration: var(
+						--maxi-#{$style}-button-text-decoration-general
+					);
+				}
+
+				&.maxi-image-block .maxi-hover-details,
+				.maxi-image-block .maxi-hover-details {
+					h4 {
+						font-family: var(
+							--maxi-#{$style}-h4-font-family-general
+						);
+						font-weight: var(
+							--maxi-#{$style}-h4-font-weight-general
+						);
+						font-style: var(--maxi-#{$style}-h4-font-style-general);
+						text-transform: var(
+							--maxi-#{$style}-h4-text-transform-general
+						);
+						text-decoration: var(
+							--maxi-#{$style}-h4-text-decoration-general
+						);
+					}
+
+					p {
+						font-family: var(
+							--maxi-#{$style}-p-font-family-general
+						);
+						font-weight: var(
+							--maxi-#{$style}-p-font-weight-general
+						);
+						font-style: var(--maxi-#{$style}-p-font-style-general);
+						text-transform: var(
+							--maxi-#{$style}-p-text-transform-general
+						);
+						text-decoration: var(
+							--maxi-#{$style}-p-text-decoration-general
+						);
+					}
 				}
 			}
 		}
@@ -203,7 +215,8 @@ body.maxi-blocks--active .edit-post-visual-editor {
 body.maxi-blocks--active {
 	@each $style in $styles {
 		/* Palette */
-		div#editor .maxi-color-palette--#{$style} {
+		div#editor .maxi-color-palette--#{$style},
+		div#site-editor .maxi-color-palette--#{$style} {
 			@each $color_number in $color_set {
 				.maxi-color-control__palette
 					.maxi-color-control__palette-box
@@ -224,7 +237,8 @@ body.maxi-blocks--active {
 @each $responsive_size in $responsive_sizes {
 	body.maxi-blocks--active {
 		@each $style in $styles {
-			.edit-post-visual-editor[maxi-blocks-responsive='#{$responsive_size}'] {
+			.edit-post-visual-editor[maxi-blocks-responsive='#{$responsive_size}'],
+			.editor-styles-wrapper[maxi-blocks-responsive='#{$responsive_size}'] {
 				.maxi-block--backend {
 					&.maxi-#{$style} {
 						&.maxi-text-block,
@@ -398,33 +412,16 @@ body.maxi-blocks--active {
 	}
 }
 
-@each $responsive_breakpoint in $responsive_breakpoints {
-	@if $responsive_breakpoint == 480 {
-		$responsive_width: max-width;
-		$current_responsive_stage: 'xs';
+@each $responsive_size in $responsive_sizes {
+	$current_responsive_attribute: '[maxi-blocks-responsive=#{$responsive_size}]';
+
+	@if ($responsive_size == 'general') {
+		$current_responsive_attribute: '[maxi-blocks-responsive]';
 	}
-	@if $responsive_breakpoint == 768 {
-		$responsive_width: max-width;
-		$current_responsive_stage: 's';
-	}
-	@if $responsive_breakpoint == 1024 {
-		$responsive_width: max-width;
-		$current_responsive_stage: 'm';
-	}
-	@if $responsive_breakpoint == 1366 {
-		$responsive_width: max-width;
-		$current_responsive_stage: 'l';
-	}
-	@if $responsive_breakpoint == 1920 {
-		$responsive_width: max-width;
-		$current_responsive_stage: 'xl';
-	}
-	@if $responsive_breakpoint == 1921 {
-		$responsive_width: min-width;
-		$current_responsive_stage: 'xxl';
-	}
-	@media only screen and ($responsive_width: #{$responsive_breakpoint}px) {
-		body.maxi-blocks--active {
+
+	body.maxi-blocks--active {
+		.edit-post-visual-editor#{$current_responsive_attribute},
+		&.editor-styles-wrapper#{$current_responsive_attribute} {
 			@each $style in $styles {
 				.maxi-#{$style} {
 					&.maxi-text-block,
@@ -432,28 +429,28 @@ body.maxi-blocks--active {
 						@each $level in $levels {
 							#{$level} {
 								font-family: var(
-									--maxi-#{$style}-#{$level}-font-family-#{$current_responsive_stage}
+									--maxi-#{$style}-#{$level}-font-family-#{$responsive_size}
 								);
 								font-size: var(
-									--maxi-#{$style}-#{$level}-font-size-#{$current_responsive_stage}
+									--maxi-#{$style}-#{$level}-font-size-#{$responsive_size}
 								);
 								line-height: var(
-									--maxi-#{$style}-#{$level}-line-height-#{$current_responsive_stage}
+									--maxi-#{$style}-#{$level}-line-height-#{$responsive_size}
 								);
 								letter-spacing: var(
-									--maxi-#{$style}-#{$level}-letter-spacing-#{$current_responsive_stage}
+									--maxi-#{$style}-#{$level}-letter-spacing-#{$responsive_size}
 								);
 								font-weight: var(
-									--maxi-#{$style}-#{$level}-font-weight-#{$current_responsive_stage}
+									--maxi-#{$style}-#{$level}-font-weight-#{$responsive_size}
 								);
 								text-transform: var(
-									--maxi-#{$style}-#{$level}-text-transform-#{$current_responsive_stage}
+									--maxi-#{$style}-#{$level}-text-transform-#{$responsive_size}
 								);
 								font-style: var(
-									--maxi-#{$style}-#{$level}-font-style-#{$current_responsive_stage}
+									--maxi-#{$style}-#{$level}-font-style-#{$responsive_size}
 								);
 								text-decoration: var(
-									--maxi-#{$style}-#{$level}-text-decoration-#{$current_responsive_stage}
+									--maxi-#{$style}-#{$level}-text-decoration-#{$responsive_size}
 								);
 							}
 						}
@@ -462,43 +459,43 @@ body.maxi-blocks--active {
 					&.maxi-text-block li,
 					.maxi-text-block li {
 						font-family: var(
-							--maxi-#{$style}-p-font-family-#{$current_responsive_stage}
+							--maxi-#{$style}-p-font-family-#{$responsive_size}
 						);
 						font-size: var(
-							--maxi-#{$style}-p-font-size-#{$current_responsive_stage}
+							--maxi-#{$style}-p-font-size-#{$responsive_size}
 						);
 						line-height: var(
-							--maxi-#{$style}-p-line-height-#{$current_responsive_stage}
+							--maxi-#{$style}-p-line-height-#{$responsive_size}
 						);
 						letter-spacing: var(
-							--maxi-#{$style}-p-letter-spacing-#{$current_responsive_stage}
+							--maxi-#{$style}-p-letter-spacing-#{$responsive_size}
 						);
 					}
 
 					.maxi-button-block__content {
 						font-family: var(
-							--maxi-#{$style}-button-font-family-#{$current_responsive_stage}
+							--maxi-#{$style}-button-font-family-#{$responsive_size}
 						);
 						font-size: var(
-							--maxi-#{$style}-button-font-size-#{$current_responsive_stage}
+							--maxi-#{$style}-button-font-size-#{$responsive_size}
 						);
 						line-height: var(
-							--maxi-#{$style}-button-line-height-#{$current_responsive_stage}
+							--maxi-#{$style}-button-line-height-#{$responsive_size}
 						);
 						letter-spacing: var(
-							--maxi-#{$style}-button-letter-spacing-#{$current_responsive_stage}
+							--maxi-#{$style}-button-letter-spacing-#{$responsive_size}
 						);
 						font-weight: var(
-							--maxi-#{$style}-button-font-weight-#{$current_responsive_stage}
+							--maxi-#{$style}-button-font-weight-#{$responsive_size}
 						);
 						text-transform: var(
-							--maxi-#{$style}-button-text-transform-#{$current_responsive_stage}
+							--maxi-#{$style}-button-text-transform-#{$responsive_size}
 						);
 						font-style: var(
-							--maxi-#{$style}-button-font-style-#{$current_responsive_stage}
+							--maxi-#{$style}-button-font-style-#{$responsive_size}
 						);
 						text-decoration: var(
-							--maxi-#{$style}-button-text-decoration-#{$current_responsive_stage}
+							--maxi-#{$style}-button-text-decoration-#{$responsive_size}
 						);
 					}
 
@@ -506,83 +503,83 @@ body.maxi-blocks--active {
 					.maxi-image-block {
 						figcaption {
 							font-family: var(
-								--maxi-#{$style}-p-font-family-#{$current_responsive_stage}
+								--maxi-#{$style}-p-font-family-#{$responsive_size}
 							);
 							font-size: var(
-								--maxi-#{$style}-p-font-size-#{$current_responsive_stage}
+								--maxi-#{$style}-p-font-size-#{$responsive_size}
 							);
 							line-height: var(
-								--maxi-#{$style}-p-line-height-#{$current_responsive_stage}
+								--maxi-#{$style}-p-line-height-#{$responsive_size}
 							);
 							letter-spacing: var(
-								--maxi-#{$style}-p-letter-spacing-#{$current_responsive_stage}
+								--maxi-#{$style}-p-letter-spacing-#{$responsive_size}
 							);
 							font-weight: var(
-								--maxi-#{$style}-p-font-weight-#{$current_responsive_stage}
+								--maxi-#{$style}-p-font-weight-#{$responsive_size}
 							);
 							text-transform: var(
-								--maxi-#{$style}-p-text-transform-#{$current_responsive_stage}
+								--maxi-#{$style}-p-text-transform-#{$responsive_size}
 							);
 							font-style: var(
-								--maxi-#{$style}-p-font-style-#{$current_responsive_stage}
+								--maxi-#{$style}-p-font-style-#{$responsive_size}
 							);
 							text-decoration: var(
-								--maxi-#{$style}-p-text-decoration-#{$current_responsive_stage}
+								--maxi-#{$style}-p-text-decoration-#{$responsive_size}
 							);
 						}
 
 						.maxi-hover-details {
 							h4 {
 								font-family: var(
-									--maxi-#{$style}-h4-font-family-#{$current_responsive_stage}
+									--maxi-#{$style}-h4-font-family-#{$responsive_size}
 								);
 								font-size: var(
-									--maxi-#{$style}-h4-font-size-#{$current_responsive_stage}
+									--maxi-#{$style}-h4-font-size-#{$responsive_size}
 								);
 								line-height: var(
-									--maxi-#{$style}-h4-line-height-#{$current_responsive_stage}
+									--maxi-#{$style}-h4-line-height-#{$responsive_size}
 								);
 								letter-spacing: var(
-									--maxi-#{$style}-h4-letter-spacing-#{$current_responsive_stage}
+									--maxi-#{$style}-h4-letter-spacing-#{$responsive_size}
 								);
 								font-weight: var(
-									--maxi-#{$style}-h4-font-weight-#{$current_responsive_stage}
+									--maxi-#{$style}-h4-font-weight-#{$responsive_size}
 								);
 								text-transform: var(
-									--maxi-#{$style}-h4-text-transform-#{$current_responsive_stage}
+									--maxi-#{$style}-h4-text-transform-#{$responsive_size}
 								);
 								font-style: var(
-									--maxi-#{$style}-h4-font-style-#{$current_responsive_stage}
+									--maxi-#{$style}-h4-font-style-#{$responsive_size}
 								);
 								text-decoration: var(
-									--maxi-#{$style}-h4-text-decoration-#{$current_responsive_stage}
+									--maxi-#{$style}-h4-text-decoration-#{$responsive_size}
 								);
 							}
 
 							p {
 								font-family: var(
-									--maxi-#{$style}-p-font-family-#{$current_responsive_stage}
+									--maxi-#{$style}-p-font-family-#{$responsive_size}
 								);
 								font-size: var(
-									--maxi-#{$style}-p-font-size-#{$current_responsive_stage}
+									--maxi-#{$style}-p-font-size-#{$responsive_size}
 								);
 								line-height: var(
-									--maxi-#{$style}-p-line-height-#{$current_responsive_stage}
+									--maxi-#{$style}-p-line-height-#{$responsive_size}
 								);
 								letter-spacing: var(
-									--maxi-#{$style}-p-letter-spacing-#{$current_responsive_stage}
+									--maxi-#{$style}-p-letter-spacing-#{$responsive_size}
 								);
 								font-weight: var(
-									--maxi-#{$style}-p-font-weight-#{$current_responsive_stage}
+									--maxi-#{$style}-p-font-weight-#{$responsive_size}
 								);
 								text-transform: var(
-									--maxi-#{$style}-p-text-transform-#{$current_responsive_stage}
+									--maxi-#{$style}-p-text-transform-#{$responsive_size}
 								);
 								font-style: var(
-									--maxi-#{$style}-p-font-style-#{$current_responsive_stage}
+									--maxi-#{$style}-p-font-style-#{$responsive_size}
 								);
 								text-decoration: var(
-									--maxi-#{$style}-p-text-decoration-#{$current_responsive_stage}
+									--maxi-#{$style}-p-text-decoration-#{$responsive_size}
 								);
 							}
 						}

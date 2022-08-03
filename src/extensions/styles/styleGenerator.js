@@ -32,7 +32,7 @@ const getTargetString = (target, isIframe, isSiteEditor) => {
 		return `body.maxi-blocks--active.editor-styles-wrapper .maxi-block.maxi-block--backend.${target},body.maxi-blocks--active.editor-styles-wrapper[maxi-blocks-responsive] .maxi-block.maxi-block--backend.${target}{`;
 
 	if (isSiteEditor)
-		return `body.editor-styles-wrapper .wp-site-blocks .maxi-block.maxi-block--backend.${target},body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.${target}{`;
+		return `body.editor-styles-wrapper .wp-site-blocks .maxi-block.maxi-block--backend.${target},body.maxi-blocks--active.editor-styles-wrapper[maxi-blocks-responsive] .maxi-block.maxi-block--backend.${target}{`;
 
 	return `body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.${target},body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.${target}{`;
 };
@@ -122,7 +122,14 @@ const styleGenerator = (
 ) => {
 	let response = '';
 
-	BREAKPOINTS.forEach(breakpoint => {
+	const availableBreakpoints = BREAKPOINTS.slice(
+		0,
+		BREAKPOINTS.indexOf(
+			currentBreakpoint === 'general' ? 'xl' : currentBreakpoint
+		) + 1
+	);
+
+	availableBreakpoints.forEach(breakpoint => {
 		Object.entries(styles).forEach(([key, value]) => {
 			const target = getTarget(key);
 			const { content } = value;

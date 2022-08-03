@@ -362,7 +362,7 @@ class MaxiBlockComponent extends Component {
 	 * Refresh the styles on Editor
 	 */
 	displayStyles(rawUniqueID) {
-		console.log('STYLES');
+		// console.log('STYLES');
 		const obj = this.getStylesObject;
 		const breakpoints = this.getBreakpoints;
 
@@ -379,69 +379,33 @@ class MaxiBlockComponent extends Component {
 		dispatch('maxiBlocks/customData').updateCustomData(customData);
 
 		if (document.body.classList.contains('maxi-blocks--active')) {
-			let wrapper = document.querySelector(
-				`#maxi-blocks__styles--${uniqueID}`
-			);
-
-			if (!wrapper) {
-				wrapper = document.createElement('div');
-				wrapper.id = `maxi-blocks__styles--${uniqueID}`;
-				wrapper.classList.add('maxi-blocks__styles');
-				document.head.appendChild(wrapper);
-			}
-
-			render(
-				<StyleComponent
-					uniqueID={uniqueID}
-					stylesObj={obj}
-					currentBreakpoint={this.currentBreakpoint}
-					blockBreakpoints={breakpoints}
-				/>,
-				wrapper
-			);
-
-			// Since WP 5.9 Gutenberg includes the responsive into iframes, so need to add the styles there also
-			const iframe = document.querySelector(
-				'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)'
-			);
-
-			if (iframe) {
-				console.log('IFRAME');
-				const iframeDocument = iframe.contentDocument;
-
-				if (iframeDocument.head) {
-					let iframeWrapper = iframeDocument.querySelector(
-						`#maxi-blocks__styles--${uniqueID}`
-					);
-
-					if (!iframeWrapper) {
-						iframeWrapper = iframeDocument.createElement('div');
-						iframeWrapper.id = `maxi-blocks__styles--${uniqueID}`;
-						iframeWrapper.classList.add('maxi-blocks__styles');
-						iframeDocument.head.appendChild(iframeWrapper);
-					}
-
-					render(
-						<StyleComponent
-							uniqueID={uniqueID}
-							stylesObj={obj}
-							currentBreakpoint={this.currentBreakpoint}
-							blockBreakpoints={breakpoints}
-							isIframe
-						/>,
-						iframeWrapper
-					);
-				}
-			}
-
 			// for full site editor (FSE)
 			const siteEditorIframe = document.querySelector(
 				'iframe[name="editor-canvas"].edit-site-visual-editor__editor-canvas'
 			);
 
-			if (siteEditorIframe) {
-				console.log('Site editor');
+			if (!siteEditorIframe) {
+				let wrapper = document.querySelector(
+					`#maxi-blocks__styles--${uniqueID}`
+				);
 
+				if (!wrapper) {
+					wrapper = document.createElement('div');
+					wrapper.id = `maxi-blocks__styles--${uniqueID}`;
+					wrapper.classList.add('maxi-blocks__styles');
+					document.head.appendChild(wrapper);
+				}
+
+				render(
+					<StyleComponent
+						uniqueID={uniqueID}
+						stylesObj={obj}
+						currentBreakpoint={this.currentBreakpoint}
+						blockBreakpoints={breakpoints}
+					/>,
+					wrapper
+				);
+			} else {
 				const iframeDocument = siteEditorIframe.contentDocument;
 
 				iframeDocument.body.classList.add('maxi-blocks--active');
@@ -465,6 +429,40 @@ class MaxiBlockComponent extends Component {
 							currentBreakpoint={this.currentBreakpoint}
 							blockBreakpoints={breakpoints}
 							isSiteEditor
+						/>,
+						iframeWrapper
+					);
+				}
+			}
+
+			// Since WP 5.9 Gutenberg includes the responsive into iframes, so need to add the styles there also
+			const iframe = document.querySelector(
+				'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)'
+			);
+
+			if (iframe) {
+				// console.log('IFRAME');
+				const iframeDocument = iframe.contentDocument;
+
+				if (iframeDocument.head) {
+					let iframeWrapper = iframeDocument.querySelector(
+						`#maxi-blocks__styles--${uniqueID}`
+					);
+
+					if (!iframeWrapper) {
+						iframeWrapper = iframeDocument.createElement('div');
+						iframeWrapper.id = `maxi-blocks__styles--${uniqueID}`;
+						iframeWrapper.classList.add('maxi-blocks__styles');
+						iframeDocument.head.appendChild(iframeWrapper);
+					}
+
+					render(
+						<StyleComponent
+							uniqueID={uniqueID}
+							stylesObj={obj}
+							currentBreakpoint={this.currentBreakpoint}
+							blockBreakpoints={breakpoints}
+							isIframe
 						/>,
 						iframeWrapper
 					);

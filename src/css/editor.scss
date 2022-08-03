@@ -54,8 +54,11 @@ h2.gx_error {
 /*****************
 * Editor settings
 ******************/
-.edit-post-visual-editor i {
-	font-style: normal;
+.edit-post-visual-editor,
+.edit-site-visual-editor {
+	i {
+		font-style: normal;
+	}
 }
 
 /*****************

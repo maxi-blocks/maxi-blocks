@@ -257,12 +257,19 @@ const getSCFontsData = obj => {
 
 const updateSCOnEditor = styleCards => {
 	const SCObject = getSCVariablesObject({ ...cloneDeep(styleCards) });
-	let SCStyle = document.getElementById('maxi-blocks-sc-vars-inline-css');
+
+	const siteEditorIFrame = document.querySelector(
+		'iframe[name="editor-canvas"].edit-site-visual-editor__editor-canvas'
+	)?.contentDocument;
+
+	const element = siteEditorIFrame || document;
+
+	let SCStyle = element.getElementById('maxi-blocks-sc-vars-inline-css');
 	if (!SCStyle) {
-		SCStyle = document.createElement('style');
+		SCStyle = element.createElement('style');
 		SCStyle.id = 'maxi-blocks-sc-vars-inline-css';
 		SCStyle.innerHTML = createSCStyleString(SCObject);
-		document.head.appendChild(SCStyle);
+		element.head.appendChild(SCStyle);
 		const { saveSCStyles } = dispatch('maxiBlocks/style-cards');
 
 		// Needs a delay, if not Redux returns error 3

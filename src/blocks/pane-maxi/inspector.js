@@ -37,6 +37,9 @@ const Inspector = props => {
 						content: (
 							<AccordionControl
 								items={[
+									...inspectorTabs.blockBackground({
+										props,
+									}),
 									...inspectorTabs.border({
 										props,
 									}),

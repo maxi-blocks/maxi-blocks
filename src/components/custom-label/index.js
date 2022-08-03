@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import TextControl from '../text-control';
+import TextInput from '../text-input';
 
 /**
  * External dependencies
@@ -23,11 +24,14 @@ const CustomLabel = props => {
 
 	return (
 		<div className={classes}>
-			<TextControl
+			<TextInput
 				label={__('Block name', 'maxi-blocks')}
-				placeholder={__('Give a name...')}
+				placeholder={__('Give a name…')}
 				value={customLabel}
-				onChange={value => onChange(value)}
+				onChange={setTimeout(() => {
+					// onChange(customLabel);
+					console.log('asd');
+				}, 10)}
 			/>
 		</div>
 	);

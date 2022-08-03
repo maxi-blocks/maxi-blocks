@@ -544,9 +544,7 @@ const LibraryContainer = props => {
 			}
 
 			if (
-				type === 'button-icon' ||
-				type === 'video-icon' ||
-				type === 'accordion-icon'
+				['button-icon', 'video-icon', 'accordion-icon'].includes(type)
 			) {
 				onSelect({
 					[`${prefix}icon-content`]: svgCode,

@@ -10,6 +10,7 @@ export { default as customClasses } from './inspector-custom-classes';
 export { default as customCss } from './inspector-custom-css';
 export { default as display } from './inspector-display';
 export { default as flex } from './inspector-flex';
+export { default as icon } from './inspector-icon';
 export { default as marginPadding } from './inspector-margin-padding';
 export { default as opacity } from './inspector-opacity';
 export { default as overflow } from './inspector-overflow';

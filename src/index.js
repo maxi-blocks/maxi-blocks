@@ -31,6 +31,7 @@ import './blocks/text-maxi/text-maxi';
 import './blocks/slider-maxi/slider-maxi';
 import './blocks/slide-maxi/slide-maxi';
 import './blocks/video-maxi/video-maxi';
+import './blocks/search-maxi/search-maxi';
 
 // Editor
 import './editor/saver';

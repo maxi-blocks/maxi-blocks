@@ -73,8 +73,9 @@ class MaxiBlocks_Styles
                 'number-counter',
                 'shape-divider',
                 'relations',
-                'slider',
-                'video'
+				'video',
+				'search',
+				'slider'
             ];
 
             foreach ($scripts as &$script) {
@@ -107,7 +108,12 @@ class MaxiBlocks_Styles
                         plugins_url($jsScriptPath, dirname(__FILE__))
                     );
 
-                    wp_localize_script($jsScriptName, $jsVarToPass, [$meta]);
+					$data =
+						$jsVar === 'search'
+							? [$meta, get_search_link()]
+							: [$meta];
+
+                    wp_localize_script($jsScriptName, $jsVarToPass, $data);
                 }
             }
         }

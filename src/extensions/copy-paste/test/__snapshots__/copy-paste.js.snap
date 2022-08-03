@@ -137,8 +137,6 @@ Object {
     },
     "Hover transition": Object {
       "transition": undefined,
-      "transition-block-selected": undefined,
-      "transition-canvas-selected": undefined,
       "transition-change-all": undefined,
     },
     "Interaction": Object {
@@ -5662,8 +5660,6 @@ Object {
   "transform-translate-xs": undefined,
   "transform-translate-xxl": undefined,
   "transition": undefined,
-  "transition-block-selected": undefined,
-  "transition-canvas-selected": undefined,
   "transition-change-all": undefined,
   "useInitSize": undefined,
   "vertical-align-general": undefined,

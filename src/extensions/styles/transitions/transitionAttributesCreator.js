@@ -8,7 +8,7 @@ const getHoverProp = (property, prefix = '') => {
 				? `${prefix}background-hover-status`
 				: 'block-background-hover-status';
 		case 'typography':
-			return 'typography-status-hover';
+			return `${prefix}typography-status-hover`;
 		default:
 			return `${prefix}${
 				Array.isArray(property) ? property[0] : property
@@ -20,15 +20,9 @@ const transitionAttributesCreator = (transitionObj = transitionDefault) => {
 	const getTransitionOptions = transitionObj =>
 		transitionObj ? Object.values(transitionObj) : null;
 
-	const blockOptions = getTransitionOptions(transitionObj?.block);
-	const canvasOptions = getTransitionOptions(transitionObj?.canvas);
-
 	const transitionRawObj = createTransitionObj();
 
-	const transitionStyleObj = {
-		block: {},
-		canvas: {},
-	};
+	const transitionStyleObj = {};
 
 	const createTransitionStyleObjForType = (type, options) =>
 		options &&
@@ -47,14 +41,29 @@ const transitionAttributesCreator = (transitionObj = transitionDefault) => {
 			}
 		);
 
-	createTransitionStyleObjForType('block', blockOptions);
-	createTransitionStyleObjForType('canvas', canvasOptions);
+	Object.keys(transitionObj).forEach(type => {
+		transitionStyleObj[type] = {};
+
+		const options = getTransitionOptions(transitionObj[type]);
+		createTransitionStyleObjForType(type, options);
+	});
+
+	const createTransitionSelectedAttributes = transitionObj =>
+		Object.keys(transitionObj).reduce((acc, type) => {
+			acc[`transition-${type}-selected`] = {
+				type: 'string',
+				default: 'none',
+			};
+
+			return acc;
+		}, {});
 
 	return {
 		transition: {
 			type: 'object',
 			default: transitionStyleObj,
 		},
+		...createTransitionSelectedAttributes(transitionObj),
 	};
 };
 

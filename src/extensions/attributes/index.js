@@ -29,6 +29,7 @@ const allowedBlocks = [
 	'maxi-blocks/slider-maxi',
 	'maxi-blocks/slide-maxi',
 	'maxi-blocks/video-maxi',
+	'maxi-blocks/search-maxi',
 ];
 
 /**

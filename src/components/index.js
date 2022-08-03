@@ -4,6 +4,7 @@ export { default as AlignmentControl } from './alignment-control';
 export { default as ArrowControl } from './arrow-control';
 export { default as ArrowDisplayer } from './arrow-displayer';
 export { default as AxisControl } from './axis-control';
+export { default as AxisPositionControl } from './axis-position-control';
 export { default as BackgroundControl } from './background-control';
 export { default as BackgroundDisplayer } from './background-displayer';
 export { default as BaseControl } from './base-control';

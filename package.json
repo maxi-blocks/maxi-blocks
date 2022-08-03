@@ -19,7 +19,6 @@
 		"minify:frontend": "minify js/maxi-bg-video.js > js/maxi-bg-video.min.js && minify js/maxi-hover-effects.js > js/maxi-hover-effects.min.js && minify js/maxi-map.js > js/maxi-map.min.js && minify js/maxi-number-counter.js > js/maxi-number-counter.min.js && minify js/maxi-parallax.js > js/maxi-parallax.min.js && minify js/maxi-scroll-effects.js > js/maxi-scroll-effects.min.js && minify js/maxi-shape-divider.js > js/maxi-shape-divider.min.js && minify js/maxi-relations.js > js/maxi-relations.min.js && minify js/maxi-video.js > js/maxi-video.min.js && minify js/maxi-search.js > js/maxi-search.min.js"
 	},
 	"dependencies": {
-		"@googlemaps/js-api-loader": "^1.14.3",
 		"@uiw/react-textarea-code-editor": "^2.0.3",
 		"@wordpress/block-editor": "^9.6.0",
 		"@wordpress/blocks": "^11.13.0",
@@ -51,12 +50,12 @@
 		"react-icons": "^4.4.0",
 		"react-iframe": "^1.8.0",
 		"react-image-crop": "^10.0.4",
-		"react-instantsearch": "^6.30.2",
 		"react-instantsearch-dom": "^6.30.2",
+		"react-instantsearch": "^6.30.2",
 		"react-lazy-load": "^3.1.14",
-		"react-linear-gradient-picker": "^3.0.1",
-		"react-leaflet": "^4.0.1",
 		"react-leaflet-google-layer": "^2.0.7",
+		"react-leaflet": "^4.0.1",
+		"react-linear-gradient-picker": "^3.0.1",
 		"react-lorem-ipsum": "^1.4.10",
 		"react-paginate": "^8.1.3",
 		"react-select": "^5.4.0",

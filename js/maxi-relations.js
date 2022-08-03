@@ -164,6 +164,8 @@ const relations = () => {
 				const transitionExistsRegExp = new RegExp(
 					`(${escapeRegExp(selector)}[^{]*transition:)`
 				);
+				if (!transitionString) return;
+
 				if (
 					interactionStyle.textContent.match(transitionExistsRegExp)
 				) {

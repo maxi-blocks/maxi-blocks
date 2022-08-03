@@ -74,7 +74,8 @@ class MaxiBlocks_Styles
                 'shape-divider',
                 'relations',
                 'video',
-                'map'
+				'search',
+				'map'
             ];
 
             foreach ($scripts as &$script) {
@@ -107,7 +108,18 @@ class MaxiBlocks_Styles
                         plugins_url($jsScriptPath, dirname(__FILE__))
                     );
 
-                    wp_localize_script($jsScriptName, $jsVarToPass, [$jsVar === 'map' ? [$meta, get_option('google_api_key_option')] : $meta]);
+					public function get_data($jsVar) {
+						switch ($jsVar) {
+							case 'search':
+								return [$meta, get_search_link()];
+								break;
+							case 'map':
+								return [$meta, get_option('google_api_key_option')];
+								break;
+							default:
+								return [$meta];
+
+                    wp_localize_script($jsScriptName, $jsVarToPass, get_data($jsVar));
                 }
             }
         }

@@ -183,15 +183,34 @@ export const SvgColorControl = props => {
 		onChangeInline,
 		svgType,
 		maxiSetAttributes,
+		cleanInlineStyles,
 		disableHover = false,
 	} = props;
 	const hoverStatus = props['svg-status-hover'];
 
+	const onChangeProps = {
+		onChangeFill: obj => {
+			maxiSetAttributes(obj);
+			if (svgType !== 'Line') cleanInlineStyles('[data-fill]');
+		},
+		onChangeStroke: obj => {
+			maxiSetAttributes(obj);
+
+			if (svgType !== 'Shape') cleanInlineStyles('[data-stroke]');
+		},
+		onChangeHoverFill: obj => {
+			maxiSetAttributes(obj);
+		},
+		onChangeHoverStroke: obj => {
+			maxiSetAttributes(obj);
+		},
+	};
 	const normalSvgColor = (
 		<>
 			{svgType !== 'Line' && (
 				<SvgColor
 					{...props}
+					{...onChangeProps}
 					type='fill'
 					label={__('Icon fill', 'maxi-blocks')}
 					onChangeInline={obj => onChangeInline(obj, '[data-fill]')}
@@ -200,6 +219,7 @@ export const SvgColorControl = props => {
 			{svgType !== 'Shape' && (
 				<SvgColor
 					{...props}
+					{...onChangeProps}
 					type='line'
 					label={__('Icon line', 'maxi-blocks')}
 					onChangeInline={obj => onChangeInline(obj, '[data-stroke]')}
@@ -251,6 +271,7 @@ export const SvgColorControl = props => {
 									{svgType !== 'Line' && (
 										<SvgColor
 											{...props}
+											{...onChangeProps}
 											type='fill'
 											label={__(
 												'Icon fill hover',
@@ -263,6 +284,7 @@ export const SvgColorControl = props => {
 									{svgType !== 'Shape' && (
 										<SvgColor
 											{...props}
+											{...onChangeProps}
 											type='line'
 											label={__(
 												'Icon line hover',

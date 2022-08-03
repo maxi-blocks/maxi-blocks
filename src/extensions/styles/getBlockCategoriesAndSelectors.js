@@ -29,6 +29,10 @@ import {
 } from '../../blocks/number-counter-maxi/custom-css';
 import { selectorsRow, categoriesRow } from '../../blocks/row-maxi/custom-css';
 import {
+	selectorsSearch,
+	categoriesSearch,
+} from '../../blocks/search-maxi/custom-css';
+import {
 	selectorsSvgIcon,
 	categoriesSvgIcon,
 } from '../../blocks/svg-icon-maxi/custom-css';
@@ -83,6 +87,11 @@ const getBlockCategoriesAndSelectors = name => {
 			return {
 				categories: categoriesRow,
 				selectors: selectorsRow,
+			};
+		case 'search':
+			return {
+				categories: categoriesSearch,
+				selectors: selectorsSearch,
 			};
 		case 'svg-icon':
 			return {

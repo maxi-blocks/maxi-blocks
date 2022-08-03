@@ -366,7 +366,9 @@ const LibraryContainer = props => {
 
 	const getShapeType = type => {
 		switch (type) {
-			case 'button-icon' || 'accordion-icon' || 'accordion-icon-active':
+			case 'button-icon':
+			case 'accordion-icon':
+			case 'accordion-icon-active':
 				return 'icon';
 			case 'video-icon':
 				return 'shape';

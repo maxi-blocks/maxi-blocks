@@ -144,10 +144,11 @@ const RelationControl = props => {
 		) {
 			onChangeRelation(relations, item.id, {
 				target: `${
-					textMaxiPrefix &&
-					(blockAttributes?.isList
-						? blockAttributes?.typeOfList
-						: blockAttributes?.textLevel)
+					textMaxiPrefix
+						? blockAttributes?.isList
+							? blockAttributes?.typeOfList
+							: blockAttributes?.textLevel
+						: ''
 				}${selectedSettingsObj?.target}`,
 			});
 		}

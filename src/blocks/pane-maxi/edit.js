@@ -3,14 +3,14 @@
  */
 import { RichText, useInnerBlocksProps } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
-import { RawHTML } from '@wordpress/element';
+import { forwardRef, RawHTML } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { getMaxiBlockAttributes, MaxiBlock } from '../../components/maxi-block';
-import { BlockInserter, Toolbar } from '../../components';
+import { Toolbar, BlockInserter } from '../../components';
 import getStyles from './styles';
 import AccordionContext from '../accordion-maxi/context';
 import Inspector from './inspector';
@@ -34,28 +34,37 @@ const simplePreset = {
 	'border-style-general': 'none',
 };
 
-const Content = props => {
-	const { hasInnerBlocks, clientId } = props;
+const Content = forwardRef((props, ref) => {
+	const { clientId, isSelected, hasSelectedChild, isOpen } = props;
 
 	const ALLOWED_BLOCKS = ['maxi-blocks/row-maxi'];
 	const ROW_TEMPLATE = [['maxi-blocks/row-maxi']];
 
 	return (
-		<div
-			{...useInnerBlocksProps(
-				{ className: 'maxi-pane-block__content' },
-				{
-					allowedBlocks: ALLOWED_BLOCKS,
-					template: ROW_TEMPLATE,
-					templateLock: false,
-					renderAppender: !hasInnerBlocks
-						? () => <BlockInserter clientId={clientId} />
-						: false,
-				}
+		<>
+			<div
+				{...useInnerBlocksProps(
+					{ className: 'maxi-pane-block__content' },
+					{
+						allowedBlocks: ALLOWED_BLOCKS,
+						template: ROW_TEMPLATE,
+						templateLock: false,
+						renderAppender: false,
+					}
+				)}
+			/>
+			{isOpen && (
+				<BlockInserter.WrapperInserter
+					key={`maxi-block-wrapper-inserter__${clientId}`}
+					ref={ref}
+					clientId={clientId}
+					isSelected={isSelected}
+					hasSelectedChild={hasSelectedChild}
+				/>
 			)}
-		/>
+		</>
 	);
-};
+});
 
 /**
  * Edit
@@ -102,8 +111,13 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, maxiSetAttributes, clientId, hasInnerBlocks } =
-			this.props;
+		const {
+			attributes,
+			maxiSetAttributes,
+			clientId,
+			isSelected,
+			hasSelectedChild,
+		} = this.props;
 		const { uniqueID, title } = attributes;
 		const {
 			paneIcon,
@@ -133,7 +147,6 @@ class edit extends MaxiBlockComponent {
 				className={`maxi-pane-block--${accordionLayout}-layout`}
 				context={this.context}
 				{...getMaxiBlockAttributes(this.props)}
-				renderWrapperInserter={isOpen}
 				aria-expanded={isOpen}
 			>
 				<div
@@ -184,7 +197,13 @@ class edit extends MaxiBlockComponent {
 						<RawHTML>{isOpen ? paneIconActive : paneIcon}</RawHTML>
 					</div>
 				</div>
-				<Content clientId={clientId} hasInnerBlocks={hasInnerBlocks} />
+				<Content
+					ref={this.blockRef}
+					clientId={clientId}
+					isSelected={isSelected}
+					hasSelectedChild={hasSelectedChild}
+					isOpen={isOpen}
+				/>
 			</MaxiBlock>,
 		];
 	}

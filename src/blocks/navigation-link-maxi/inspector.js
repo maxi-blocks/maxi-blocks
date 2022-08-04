@@ -83,6 +83,8 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.transform({
 										props,
+										selectors: selectorsNavigationLink,
+										categories: categoriesNavigationLink,
 									}),
 									...inspectorTabs.display({
 										props,

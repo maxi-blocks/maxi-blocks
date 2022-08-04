@@ -272,6 +272,8 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.transform({
 										props,
+										selectors: selectorsNavigationMenu,
+										categories: categoriesNavigationMenu,
 									}),
 									...inspectorTabs.display({
 										props,

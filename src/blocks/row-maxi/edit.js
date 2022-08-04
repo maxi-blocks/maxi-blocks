@@ -16,6 +16,7 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 
 import { getTemplates } from '../../extensions/column-templates';
 import { getGroupAttributes } from '../../extensions/styles';
+import getRowGapProps from '../../extensions/attributes/getRowGapProps';
 import getStyles from './styles';
 import copyPasteMapping from './copy-paste-mapping';
 
@@ -137,15 +138,7 @@ class edit extends MaxiBlockComponent {
 
 						this.forceUpdate();
 					},
-					rowGapProps: (() => {
-						const response = getGroupAttributes(attributes, 'flex');
-
-						Object.keys(response).forEach(key => {
-							if (!key.includes('gap')) delete response[key];
-						});
-
-						return response;
-					})(),
+					rowGapProps: getRowGapProps(attributes),
 					rowBorderRadius: getGroupAttributes(
 						attributes,
 						'borderRadius'

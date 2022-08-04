@@ -10,7 +10,6 @@ const transitionObj = {
 			target: ' .maxi-button-block__content',
 			property: 'typography',
 			limitless: true,
-			prefix,
 		},
 		'button background': {
 			title: 'Button background',

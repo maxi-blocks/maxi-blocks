@@ -38,6 +38,7 @@ const allowedBlocks = [
 	'maxi-blocks/accordion-maxi',
 	'maxi-blocks/pane-maxi',
 	'maxi-blocks/video-maxi',
+	'maxi-blocks/search-maxi',
 ];
 
 wp.domReady(() => {

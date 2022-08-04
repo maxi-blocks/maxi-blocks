@@ -67,9 +67,9 @@ const relations = () => {
 		};
 	};
 
-	function escapeRegExp(string) {
+	const escapeRegExp = string => {
 		return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-	}
+	};
 
 	const toggleInlineStyles = (stylesObj, target, remove = false) => {
 		if (stylesObj.isTargets) {
@@ -189,18 +189,20 @@ const relations = () => {
 		}
 	};
 
-	const getTransitionString = (styleObj, effectsObj, isIcon) =>
-		isIcon
-			? effectsObj['transition-status']
+	const getTransitionString = (styleObj, effectsObj, isIcon) => {
+		if (isIcon)
+			return effectsObj['transition-status']
 				? `all ${effectsObj['transition-duration']}s ${effectsObj['transition-delay']}s ${effectsObj['easing']}`
-				: `all 0s 0s, `
-			: Object.keys(styleObj).reduce(
-					(transitionString, style) =>
-						effectsObj['transition-status']
-							? `${transitionString}${style} ${effectsObj['transition-duration']}s ${effectsObj['transition-delay']}s ${effectsObj['easing']}, `
-							: `${transitionString}${style} 0s 0s, `,
-					''
-			  );
+				: `all 0s 0s, `;
+		else
+			return Object.keys(styleObj).reduce(
+				(transitionString, style) =>
+					effectsObj['transition-status']
+						? `${transitionString}${style} ${effectsObj['transition-duration']}s ${effectsObj['transition-delay']}s ${effectsObj['easing']}, `
+						: `${transitionString}${style} 0s 0s, `,
+				''
+			);
+	};
 
 	maxiRelations[0]?.forEach(item => {
 		if (!item?.uniqueID) return;

@@ -140,9 +140,7 @@ const SliderWrapper = props => {
 		});
 
 		const activeSlideIndex = isLoop ? number + numberOfClones : number;
-		const activeSlide = document.querySelectorAll(
-			`.${uniqueID} ul > li.maxi-slide-block`
-		)[activeSlideIndex];
+		const activeSlide = slides[activeSlideIndex];
 
 		activeSlide?.setAttribute('data-slide-active', 'true');
 	};
@@ -155,11 +153,8 @@ const SliderWrapper = props => {
 				return prev + 1;
 			});
 
-			const activeDotNumber =
-				currentSlide + 1 < numberOfSlides ? currentSlide + 1 : 0;
-
-			setActiveDot(activeDotNumber);
-			setActiveSlide(activeDotNumber);
+			setActiveDot(currentSlide + 1);
+			setActiveSlide(currentSlide + 1);
 
 			if (!isSelected)
 				dispatch('core/block-editor').selectBlock(clientId);

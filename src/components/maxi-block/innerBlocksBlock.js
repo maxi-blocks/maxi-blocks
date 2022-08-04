@@ -54,18 +54,9 @@ const getInnerBlocksChild = ({
 				/>
 			)),
 			...(children ?? children),
-			blockName !== 'maxi-blocks/pane-maxi' &&
-				cloneElement(innerBlocksChildren, {
-					key: `maxi-inner-content__${uniqueID}`,
-				}),
-			blockName === 'maxi-blocks/pane-maxi' && (
-				<div
-					className='maxi-pane-block__content'
-					key={`maxi-pane-content__${uniqueID}`}
-				>
-					{cloneElement(innerBlocksChildren)}
-				</div>
-			),
+			cloneElement(innerBlocksChildren, {
+				key: `maxi-inner-content__${uniqueID}`,
+			}),
 			...(!isSave && hasInnerBlocks && renderWrapperInserter && (
 				<BlockInserter.WrapperInserter
 					key={`maxi-block-wrapper-inserter__${clientId}`}

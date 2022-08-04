@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { RichText } from '@wordpress/block-editor';
+import { RichText, useInnerBlocksProps } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 import { RawHTML } from '@wordpress/element';
 
@@ -32,6 +32,29 @@ const boxedPreset = {
 
 const simplePreset = {
 	'border-style-general': 'none',
+};
+
+const Content = props => {
+	const { hasInnerBlocks, clientId } = props;
+
+	const ALLOWED_BLOCKS = ['maxi-blocks/row-maxi'];
+	const ROW_TEMPLATE = [['maxi-blocks/row-maxi']];
+
+	return (
+		<div
+			{...useInnerBlocksProps(
+				{ className: 'maxi-pane-block__content' },
+				{
+					allowedBlocks: ALLOWED_BLOCKS,
+					template: ROW_TEMPLATE,
+					templateLock: false,
+					renderAppender: !hasInnerBlocks
+						? () => <BlockInserter clientId={clientId} />
+						: false,
+				}
+			)}
+		/>
+	);
 };
 
 /**
@@ -96,9 +119,6 @@ class edit extends MaxiBlockComponent {
 
 		const isOpen = openPanes.includes(clientId);
 
-		const ALLOWED_BLOCKS = ['maxi-blocks/row-maxi'];
-		const ROW_TEMPLATE = [['maxi-blocks/row-maxi']];
-
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar
@@ -112,15 +132,6 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				className={`maxi-pane-block--${accordionLayout}-layout`}
 				context={this.context}
-				useInnerBlocks
-				innerBlocksSettings={{
-					allowedBlocks: ALLOWED_BLOCKS,
-					template: ROW_TEMPLATE,
-					templateLock: false,
-					renderAppender: !hasInnerBlocks
-						? () => <BlockInserter clientId={clientId} />
-						: false,
-				}}
 				{...getMaxiBlockAttributes(this.props)}
 				renderWrapperInserter={isOpen}
 				aria-expanded={isOpen}
@@ -173,6 +184,7 @@ class edit extends MaxiBlockComponent {
 						<RawHTML>{isOpen ? paneIconActive : paneIcon}</RawHTML>
 					</div>
 				</div>
+				<Content clientId={clientId} hasInnerBlocks={hasInnerBlocks} />
 			</MaxiBlock>,
 		];
 	}

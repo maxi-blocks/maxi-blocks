@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { RichText } from '@wordpress/block-editor';
+import { RichText, useInnerBlocksProps } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -19,7 +19,6 @@ const save = props => {
 	return (
 		<MaxiBlock.save
 			{...getMaxiBlockAttributes({ ...props, name })}
-			useInnerBlocks
 			aria-expanded={false}
 		>
 			<div className='maxi-pane-block__header'>
@@ -30,6 +29,11 @@ const save = props => {
 				/>
 				<div className='maxi-pane-block__icon' />
 			</div>
+			<div
+				{...useInnerBlocksProps.save({
+					className: 'maxi-pane-block__content',
+				})}
+			/>
 		</MaxiBlock.save>
 	);
 };

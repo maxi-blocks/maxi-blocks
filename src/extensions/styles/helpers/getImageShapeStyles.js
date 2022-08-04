@@ -6,7 +6,7 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 /**
  * External dependencies
  */
-import { isNumber, isEmpty } from 'lodash';
+import { isEmpty, isNumber } from 'lodash';
 
 /**
  * Internal dependencies
@@ -18,7 +18,12 @@ import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
  *
  * @param {Object} obj Block overflow properties
  */
-const getImageShapeStyles = (target = 'svg', obj, prefix = '') => {
+const getImageShapeStyles = (
+	target = 'svg',
+	obj,
+	prefix = '',
+	ignoreGeneralOmit = false
+) => {
 	const response = {};
 	let omitTransformScale = true;
 	breakpoints.forEach(breakpoint => {
@@ -48,10 +53,16 @@ const getImageShapeStyles = (target = 'svg', obj, prefix = '') => {
 
 		if (isNumber(scale)) {
 			omitTransformScale = omitTransformScale ? scale === 100 : false;
-			if (target === 'svg' && !(scale === 100 && omitTransformScale))
-				transformString += `scale(${scale / 100}) `;
-			if (target === 'image' && !(scale === 100 && omitTransformScale))
-				transformString += `scale(${100 / scale}) `;
+			const calculationNumbers =
+				target === 'svg' ? [scale, 100] : [100, scale];
+
+			if (
+				(breakpoint === 'general' && ignoreGeneralOmit) ||
+				!(scale === 100 && omitTransformScale)
+			)
+				transformString += `scale(${
+					calculationNumbers[0] / calculationNumbers[1]
+				}) `;
 		}
 
 		if (isNumber(rotate)) {

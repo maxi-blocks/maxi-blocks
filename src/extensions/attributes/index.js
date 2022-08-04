@@ -8,7 +8,7 @@ import { select } from '@wordpress/data';
 /**
  * External Dependencies
  */
-import { uniqueId, isEmpty, isNil } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 import uniqueIDGenerator from './uniqueIDGenerator';
 
 /**
@@ -30,6 +30,7 @@ const allowedBlocks = [
 	'maxi-blocks/navigation-menu-maxi',
 	'maxi-blocks/navigation-link-maxi',
 	'maxi-blocks/navigation-submenu-maxi',
+	'maxi-blocks/search-maxi',
 ];
 
 /**
@@ -40,25 +41,20 @@ const allowedBlocks = [
  */
 const withAttributes = createHigherOrderComponent(
 	BlockEdit => props => {
-		const { attributes, name, clientId } = props;
-		const { uniqueID, customLabel } = attributes;
+		const { attributes, name: blockName, clientId } = props;
+		const { uniqueID } = attributes;
 
-		if (allowedBlocks.includes(name)) {
+		if (allowedBlocks.includes(blockName)) {
 			// uniqueID
 			if (
 				isNil(uniqueID) ||
 				document.getElementsByClassName(uniqueID).length > 1
 			) {
-				const newName = uniqueId(
-					`${name.replace('maxi-blocks/', '')}-`
-				);
-				attributes.uniqueID = uniqueIDGenerator(newName);
+				attributes.uniqueID = uniqueIDGenerator(blockName);
 
-				if (isNil(customLabel)) {
-					const label = attributes.uniqueID.replace('-maxi-', '_');
-					attributes.customLabel =
-						label.charAt(0).toUpperCase() + label.slice(1);
-				}
+				const label = attributes.uniqueID.replace('-maxi-', '_');
+				attributes.customLabel =
+					label.charAt(0).toUpperCase() + label.slice(1);
 			}
 			// isFirstOnHierarchy
 			const parentBlocks = select('core/block-editor')

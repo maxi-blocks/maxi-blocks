@@ -15,6 +15,7 @@ import {
 	SvgColorControl,
 	SvgStrokeWidthControl,
 	SvgWidthControl,
+	SvgAltControl,
 } from '../../components';
 import {
 	getColorRGBAString,
@@ -118,6 +119,20 @@ const Inspector = props => {
 										isAlignment: true,
 										disableJustify: true,
 									}),
+									{
+										label: __('Icon alt', 'maxi-blocks'),
+										content: deviceType === 'general' && (
+											<SvgAltControl
+												altTitle={attributes.altTitle}
+												altDescription={
+													attributes.altDescription
+												}
+												onChange={obj =>
+													maxiSetAttributes(obj)
+												}
+											/>
+										),
+									},
 									attributes.content && {
 										label: __('Icon colour', 'maxi-blocks'),
 										content: (
@@ -134,6 +149,9 @@ const Inspector = props => {
 												maxiSetAttributes={
 													maxiSetAttributes
 												}
+												cleanInlineStyles={
+													cleanInlineStyles
+												}
 												onChangeInline={(
 													obj,
 													target
@@ -143,27 +161,6 @@ const Inspector = props => {
 														target,
 														isMultiplySelector: true,
 													});
-												}}
-												onChangeFill={obj => {
-													maxiSetAttributes(obj);
-													if (svgType !== 'Line')
-														cleanInlineStyles(
-															'[data-fill]'
-														);
-												}}
-												onChangeStroke={obj => {
-													maxiSetAttributes(obj);
-
-													if (svgType !== 'Shape')
-														cleanInlineStyles(
-															'[data-stroke]'
-														);
-												}}
-												onChangeHoverFill={obj => {
-													maxiSetAttributes(obj);
-												}}
-												onChangeHoverStroke={obj => {
-													maxiSetAttributes(obj);
 												}}
 												blockStyle={blockStyle}
 												content={attributes.content}
@@ -326,6 +323,8 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.transform({
 										props,
+										selectors: selectorsSvgIcon,
+										categories: categoriesSvgIcon,
 									}),
 									...inspectorTabs.transition({
 										props: {

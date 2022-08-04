@@ -1,18 +1,12 @@
 /**
- * External dependencies
- */
-import { merge } from 'lodash';
-
-/**
  * Internal dependencies
  */
-import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
+import { getGroupAttributes, styleProcessor } from '../../extensions/styles';
 import {
 	getBoxShadowStyles,
 	getZIndexStyles,
 	getColumnSizeStyles,
 	getDisplayStyles,
-	getTransformStyles,
 	getMarginPaddingStyles,
 	getBlockBackgroundStyles,
 	getBorderStyles,
@@ -20,7 +14,6 @@ import {
 	getOverflowStyles,
 	getFlexStyles,
 	getSizeStyles,
-	getTransitionStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsColumn } from './custom-css';
 
@@ -56,9 +49,6 @@ const getNormalObject = (props, rowGapProps, clientId) => {
 		}),
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
-		}),
-		transform: getTransformStyles({
-			...getGroupAttributes(props, 'transform'),
 		}),
 		columnSize: {
 			...getColumnSizeStyles(
@@ -116,39 +106,36 @@ const getStyles = (props, rowGapProps, clientId) => {
 	const { uniqueID } = props;
 
 	const response = {
-		[uniqueID]: stylesCleaner(
-			merge(
-				{
-					'': getNormalObject(props, rowGapProps, clientId),
-					':hover': getHoverObject(props),
-					...getBlockBackgroundStyles({
-						...getGroupAttributes(props, [
+		[uniqueID]: styleProcessor(
+			{
+				'': getNormalObject(props, rowGapProps, clientId),
+				':hover': getHoverObject(props),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(props, [
+						'blockBackground',
+						'border',
+						'borderWidth',
+						'borderRadius',
+					]),
+					blockStyle: props.blockStyle,
+					rowBorderRadius: props.rowBorderRadius,
+				}),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(
+						props,
+						[
 							'blockBackground',
 							'border',
 							'borderWidth',
 							'borderRadius',
-						]),
-						blockStyle: props.blockStyle,
-						rowBorderRadius: props.rowBorderRadius,
-					}),
-					...getBlockBackgroundStyles({
-						...getGroupAttributes(
-							props,
-							[
-								'blockBackground',
-								'border',
-								'borderWidth',
-								'borderRadius',
-							],
-							true
-						),
-						isHover: true,
-						blockStyle: props.blockStyle,
-						rowBorderRadius: props.rowBorderRadius,
-					}),
-				},
-				...getTransitionStyles(props)
-			),
+						],
+						true
+					),
+					isHover: true,
+					blockStyle: props.blockStyle,
+					rowBorderRadius: props.rowBorderRadius,
+				}),
+			},
 			selectorsColumn,
 			props
 		),

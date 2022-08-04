@@ -1,17 +1,36 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	pressKeyTimes,
-	pressKeyWithModifier,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 
 import {
 	getStyleCardEditor,
 	editGlobalStyles,
 	checkSCResult,
+	addTypographyOptions,
+	addTypographyStyle,
+	changeResponsive,
 } from '../../utils';
+
+const generalTypographeStyle = {
+	decoration: 'overline',
+	weight: '300',
+	transform: 'capitalize',
+	style: 'italic',
+	orientation: 'mixed',
+	direction: 'ltr',
+	indent: '44',
+};
+
+const responsiveTypographyStyle = {
+	decoration: 'underline',
+	weight: '400',
+	transform: 'uppercase',
+	style: 'oblique',
+	orientation: 'mixed',
+	direction: 'rtl',
+	indent: '22',
+};
 
 describe('StyleCards Paragraph', () => {
 	it('Check Paragraph', async () => {
@@ -22,79 +41,26 @@ describe('StyleCards Paragraph', () => {
 			accordion: 'paragraph',
 		});
 
-		// screen size L
-		await page.$$eval(
-			'.maxi-blocks-sc__type--paragraph .maxi-tabs-control button',
-			screenSize => screenSize[1].click()
-		);
-		// Size
-		await page.$eval(
-			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__size input',
-			size => size.focus()
-		);
-		await pressKeyTimes('Backspace', '4');
-		await page.keyboard.type('20');
+		await changeResponsive(page, 'base');
 
-		// Line Height
-		await page.$eval(
-			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__line-height input',
-			size => size.focus()
-		);
-		await pressKeyTimes('Backspace', '4');
-		await page.keyboard.type('0');
-
-		// Letter Spacing
-		await page.$eval(
-			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__letter-spacing input',
-			size => size.focus()
-		);
-		await page.keyboard.type('5');
+		await addTypographyOptions({
+			page,
+			instance: await page.$(
+				'.maxi-blocks-sc__type--paragraph .maxi-style-cards-control__sc__p-typography'
+			),
+			size: '20',
+			lineHeight: '0',
+			letterSpacing: '5',
+		});
 
 		// Selectors
-		// Weight
-		const weightOptions = await page.$(
-			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__weight select'
-		);
-
-		// Transform
-		const transformOptions = await page.$(
-			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__transform select'
-		);
-
-		// Style
-		const styleOptions = await page.$(
-			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__font-style select'
-		);
-
-		// Decoration
-		const decorationOptions = await page.$(
-			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__decoration select'
-		);
-
-		// Orientation
-		const orientationOptions = await page.$(
-			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__orientation select'
-		);
-
-		// Direction
-		const directionOptions = await page.$(
-			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__direction select'
-		);
-
-		await weightOptions.select('300');
-		await transformOptions.select('capitalize');
-		await styleOptions.select('italic');
-		await decorationOptions.select('overline');
-		await orientationOptions.select('none');
-		await directionOptions.select('ltr');
-
-		await page.$$eval(
-			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__text-indent input',
-			input => input[0].focus()
-		);
-
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('44');
+		// Weight, Transform, Style, Decoration
+		await addTypographyStyle({
+			instance: await page.$(
+				'.maxi-blocks-sc__type--paragraph .maxi-style-cards-control__sc__p-typography'
+			),
+			...generalTypographeStyle,
+		});
 
 		// Check paragraph global styles
 		// Paragraph Colour
@@ -105,5 +71,50 @@ describe('StyleCards Paragraph', () => {
 		});
 
 		expect(await checkSCResult(page)).toMatchSnapshot();
+	});
+
+	it('Works on responsive', async () => {
+		await changeResponsive(page, 'm');
+
+		await addTypographyOptions({
+			page,
+			instance: await page.$(
+				'.maxi-blocks-sc__type--paragraph .maxi-style-cards-control__sc__p-typography'
+			),
+			size: '15',
+			lineHeight: '0',
+			letterSpacing: '5',
+		});
+
+		// Selectors
+		// Weight, Transform, Style, Decoration
+		await addTypographyStyle({
+			instance: await page.$(
+				'.maxi-blocks-sc__type--paragraph .maxi-style-cards-control__sc__p-typography'
+			),
+			...responsiveTypographyStyle,
+		});
+
+		expect(await checkSCResult(page)).toMatchSnapshot();
+
+		// Check values on S to be the same as on M breakpoint
+		await changeResponsive(page, 's');
+		const typographyStylesS = await addTypographyStyle({
+			instance: await page.$(
+				'.maxi-blocks-sc__type--paragraph .maxi-style-cards-control__sc__p-typography'
+			),
+		});
+
+		expect(typographyStylesS).toEqual(responsiveTypographyStyle);
+
+		// Check values on L to be the same as on general breakpoint
+		await changeResponsive(page, 'l');
+		const typographyStylesL = await addTypographyStyle({
+			instance: await page.$(
+				'.maxi-blocks-sc__type--paragraph .maxi-style-cards-control__sc__p-typography'
+			),
+		});
+
+		expect(typographyStylesL).toEqual(generalTypographeStyle);
 	});
 });

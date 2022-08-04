@@ -25,6 +25,7 @@ const typography = ({
 	hoverGlobalProps,
 	depth = 2,
 	inlineTarget = '.maxi-text-block__content',
+	prefix = '',
 }) => {
 	const {
 		attributes,
@@ -39,7 +40,7 @@ const typography = ({
 		blockStyle,
 		textLevel,
 		isList,
-		'typography-status-hover': typographyHoverStatus,
+		[`${prefix}typography-status-hover`]: typographyHoverStatus,
 	} = attributes;
 
 	const { 'hover-color-global': isActive, 'hover-color-all': affectAll } =
@@ -62,7 +63,9 @@ const typography = ({
 							<TypographyControl
 								{...getGroupAttributes(
 									attributes,
-									typographyTarget
+									typographyTarget,
+									false,
+									prefix
 								)}
 								onChangeInline={(
 									obj,
@@ -90,6 +93,7 @@ const typography = ({
 								isList={isList}
 								allowLink={allowLink}
 								globalProps={globalProps}
+								prefix={prefix}
 							/>
 						),
 					},
@@ -107,7 +111,8 @@ const typography = ({
 										selected={hoverStatus}
 										onChange={val =>
 											maxiSetAttributes({
-												'typography-status-hover': val,
+												[`${prefix}typography-status-hover`]:
+													val,
 											})
 										}
 									/>
@@ -117,7 +122,8 @@ const typography = ({
 										{...getGroupAttributes(
 											attributes,
 											'typography',
-											true
+											true,
+											prefix
 										)}
 										onChange={obj => maxiSetAttributes(obj)}
 										hideAlignment={hideAlignment}
@@ -131,6 +137,7 @@ const typography = ({
 										styleCardPrefix={styleCardPrefix}
 										isList={isList}
 										globalProps={hoverGlobalProps}
+										prefix={prefix}
 									/>
 								)}
 							</>

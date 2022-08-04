@@ -11,7 +11,7 @@ import {
 	useCallback,
 	useReducer,
 } from '@wordpress/element';
-import { select } from '@wordpress/data';
+import { dispatch, select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -65,6 +65,44 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		isHovered,
 		...extraProps
 	} = props;
+
+	// To forbid the use of links for container blocks from having links when their child has one
+	if (!isSave && useInnerBlocks && hasLink) {
+		let childHasLink = false;
+		const children = select('core/block-editor').getClientIdsOfDescendants([
+			clientId,
+		]);
+
+		for (const child of children) {
+			const attributes =
+				select('core/block-editor').getBlockAttributes(child);
+
+			if (
+				!isEmpty(attributes.linkSettings?.url) ||
+				(select('core/block-editor').getBlockName(child) ===
+					'maxi-blocks/text-maxi' &&
+					attributes.content.includes('<a '))
+			) {
+				childHasLink = true;
+				break;
+			}
+		}
+		if (childHasLink) {
+			dispatch('core/block-editor').updateBlockAttributes(clientId, {
+				linkSettings: {
+					...extraProps.attributes.linkSettings,
+					disabled: true,
+				},
+			});
+		} else if (extraProps.attributes.linkSettings.disabled) {
+			dispatch('core/block-editor').updateBlockAttributes(clientId, {
+				linkSettings: {
+					...extraProps.attributes.linkSettings,
+					disabled: false,
+				},
+			});
+		}
+	}
 	// Are just necessary for the memo() part
 	delete extraProps.attributes;
 	delete extraProps.isChild;

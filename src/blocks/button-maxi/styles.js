@@ -1,12 +1,7 @@
 /**
- * External dependencies
- */
-import { merge } from 'lodash';
-
-/**
  * Internal dependencies
  */
-import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
+import { getGroupAttributes, styleProcessor } from '../../extensions/styles';
 import {
 	getAlignmentFlexStyles,
 	getAlignmentTextStyles,
@@ -21,8 +16,6 @@ import {
 	getOverflowStyles,
 	getPositionStyles,
 	getSizeStyles,
-	getTransformStyles,
-	getTransitionStyles,
 	getTypographyStyles,
 	getZIndexStyles,
 	getButtonIconStyles,
@@ -70,9 +63,6 @@ const getWrapperObject = props => {
 			obj: {
 				...getGroupAttributes(props, 'padding'),
 			},
-		}),
-		transform: getTransformStyles({
-			...getGroupAttributes(props, 'transform'),
 		}),
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
@@ -261,40 +251,45 @@ const getStyles = (props, scValues) => {
 	const { uniqueID, blockStyle } = props;
 
 	const response = {
-		[uniqueID]: stylesCleaner(
-			merge(
-				{
-					'': getWrapperObject(props),
-					':hover': getHoverWrapperObject(props),
-					' .maxi-button-block__button': getNormalObject(props),
-					' .maxi-button-block__content': getContentObject(props),
-					...getButtonIconStyles({ obj: props, blockStyle }),
-					// Hover
-					' .maxi-button-block__button:hover': getHoverObject(
-						props,
-						scValues
-					),
-					' .maxi-button-block__button:hover .maxi-button-block__content':
-						getHoverContentObject(props, scValues),
-					...getBlockBackgroundStyles({
-						...getGroupAttributes(props, [
-							'blockBackground',
-							'border',
-							'borderWidth',
-							'borderRadius',
-						]),
-						blockStyle,
-					}),
-					...getButtonIconStyles({
-						obj: props,
-						blockStyle,
-						isHover: true,
-					}),
-				},
-				...getTransitionStyles(props, transitionObj)
-			),
+		[uniqueID]: styleProcessor(
+			{
+				'': getWrapperObject(props),
+				':hover': getHoverWrapperObject(props),
+				' .maxi-button-block__button': getNormalObject(props),
+				' .maxi-button-block__content': getContentObject(props),
+				...getButtonIconStyles({
+					obj: props,
+					blockStyle,
+					target: '.maxi-button-block__icon',
+					wrapperTarget: '.maxi-button-block__button',
+				}),
+				// Hover
+				' .maxi-button-block__button:hover': getHoverObject(
+					props,
+					scValues
+				),
+				' .maxi-button-block__button:hover .maxi-button-block__content':
+					getHoverContentObject(props, scValues),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(props, [
+						'blockBackground',
+						'border',
+						'borderWidth',
+						'borderRadius',
+					]),
+					blockStyle,
+				}),
+				...getButtonIconStyles({
+					obj: props,
+					blockStyle,
+					isHover: true,
+					target: '.maxi-button-block__icon',
+					wrapperTarget: '.maxi-button-block__button',
+				}),
+			},
 			selectorsButton,
-			props
+			props,
+			transitionObj
 		),
 	};
 

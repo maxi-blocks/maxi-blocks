@@ -117,6 +117,8 @@
 			.maxi-font-family-selector {
 				margin-bottom: 0;
 				width: 115px;
+				height: 38px;
+
 				&__button {
 					color: #fff;
 					border-color: #80828a;
@@ -142,6 +144,11 @@
 			&_family {
 				.maxi-base-control__field {
 					margin-bottom: 0;
+
+					.maxi-font-family-selector__control__control:hover {
+						background-color: var(--maxi-grey-3-color);
+						cursor: pointer;
+					}
 				}
 			}
 

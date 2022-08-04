@@ -20,6 +20,7 @@ const allowedBlocks = [
 	'maxi-blocks/navigation-menu-maxi',
 	'maxi-blocks/navigation-link-maxi',
 	'maxi-blocks/navigation-submenu-maxi',
+	'maxi-blocks/search-maxi',
 ];
 
 /**
@@ -35,7 +36,8 @@ const withSave = (element, blockType, attributes) => {
 	if (
 		allowedBlocks.includes(blockType.name) &&
 		!!linkSettings &&
-		!!linkSettings.url
+		!!linkSettings.url &&
+		!linkSettings?.disabled
 	) {
 		let rel = '';
 		if (linkSettings.nofollow) rel += ' nofollow';

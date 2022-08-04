@@ -149,7 +149,7 @@
 				position: absolute;
 				right: 4px;
 				left: auto;
-				top: 3px;
+				top: 4px;
 				padding: 0;
 				box-shadow: none;
 				svg {
@@ -762,6 +762,13 @@
 						font-size: 12px;
 						color: #bdbdbd;
 					}
+					&.use-placeholer-all-images {
+						.components-base-control__field {
+							display: flex;
+							column-gap: 2px;
+							padding-right: 8px;
+						}
+					}
 				}
 				.ais-HierarchicalMenu-item,
 				.ais-RefinementList-item {
@@ -899,6 +906,12 @@
 							display: block;
 							width: 100%;
 						}
+						&__patterns {
+							padding: 6px;
+							.maxi-cloud-masonry-card__button {
+								margin-right: 0;
+							}
+						}
 					}
 
 					.maxi-cloud-masonry-card__image {
@@ -1033,6 +1046,7 @@
 
 			.maxi-cloud-masonry-card {
 				&__button-icon,
+				&__search-icon,
 				&__Line {
 					.maxi-cloud-masonry-card__svg-container__code {
 						svg,

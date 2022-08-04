@@ -72,6 +72,8 @@ const SliderWrapper = props => {
 	const [wrapperTranslate, setWrapperTranslate] = useState(0);
 	const [realFirstSlideOffset, setRealFirstSlideOffset] = useState(0);
 
+	const numberOfClones = 2;
+
 	const getSliderEffect = () => {
 		let effect = '';
 
@@ -136,9 +138,11 @@ const SliderWrapper = props => {
 		[].forEach.call(slides, function removeActiveClass(el) {
 			el.removeAttribute('data-slide-active');
 		});
+
+		const activeSlideIndex = isLoop ? number + numberOfClones : number;
 		const activeSlide = document.querySelectorAll(
-			`.${uniqueID} ul > li.maxi-slide-block:not(.maxi-slide-block--clone)`
-		)[number];
+			`.${uniqueID} ul > li.maxi-slide-block`
+		)[activeSlideIndex];
 
 		activeSlide?.setAttribute('data-slide-active', 'true');
 	};
@@ -322,7 +326,14 @@ const SliderWrapper = props => {
 			slider.removeEventListener('touchmove', onDragAction);
 			slider.removeEventListener('touchend', onDragEnd);
 		};
-	}, [currentSlide, slidesWidth, isEditView]);
+	}, [
+		currentSlide,
+		slidesWidth,
+		isEditView,
+		realFirstSlideOffset,
+		isSelected,
+		numberOfSlides,
+	]);
 
 	useEffect(() => {
 		if (wrapperTranslate !== getSlidePosition(currentSlide))
@@ -331,7 +342,7 @@ const SliderWrapper = props => {
 
 	useEffect(() => {
 		if (isLoop) {
-			updateSlideClones(Math.min(2, numberOfSlides));
+			updateSlideClones(numberOfClones);
 		} else {
 			deleteSlideClones();
 		}

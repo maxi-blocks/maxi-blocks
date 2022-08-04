@@ -19,7 +19,7 @@ const getIconSize = (obj, isHover = false, prefix = '') => {
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
-		const iconWidth =
+		const iconSize =
 			getAttributeValue({
 				target: 'icon-width',
 				isHover,
@@ -52,9 +52,9 @@ const getIconSize = (obj, isHover = false, prefix = '') => {
 			}) ??
 			'px';
 
-		if (!isNil(iconWidth) && !isEmpty(iconWidth)) {
-			response[breakpoint].height = `${iconWidth}${iconUnit}`;
-			response[breakpoint].width = `${iconWidth}${iconUnit}`;
+		if (!isNil(iconSize) && !isEmpty(iconSize)) {
+			response[breakpoint].height = `${iconSize}${iconUnit}`;
+			response[breakpoint].width = `${iconSize}${iconUnit}`;
 		}
 
 		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')

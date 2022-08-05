@@ -86,6 +86,9 @@ const Inspector = props => {
 										selectors: selectorsNavigationLink,
 										categories: categoriesNavigationLink,
 									}),
+									...inspectorTabs.transition({
+										props,
+									}),
 									...inspectorTabs.display({
 										props,
 									}),

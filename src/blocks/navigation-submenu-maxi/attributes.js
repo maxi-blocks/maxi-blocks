@@ -1,6 +1,7 @@
 /**
  * Imports
  */
+import { transitionAttributesCreator } from '../../extensions/styles';
 import * as attributesData from '../../extensions/styles/defaults/index';
 
 const attributes = {
@@ -46,6 +47,10 @@ const attributes = {
 	 * Advanced
 	 */
 	...attributesData.transform,
+	...{
+		...attributesData.transition,
+		...transitionAttributesCreator(),
+	},
 	...attributesData.display,
 	...attributesData.opacity,
 	...attributesData.overflow,

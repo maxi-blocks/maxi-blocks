@@ -83,6 +83,9 @@ const Inspector = props => {
 										selectors: selectorsSubMenu,
 										categories: categoriesSubMenu,
 									}),
+									...inspectorTabs.transition({
+										props,
+									}),
 									...inspectorTabs.display({
 										props,
 									}),

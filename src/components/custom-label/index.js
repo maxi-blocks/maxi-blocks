@@ -28,11 +28,14 @@ const CustomLabel = props => {
 				label={__('Block name', 'maxi-blocks')}
 				placeholder={__('Give a name…')}
 				value={customLabel}
-				onChange={setTimeout(() => {
-					// onChange(customLabel);
-					console.log('asd');
-				}, 10)}
+				onChange={value => onChange(value)}
 			/>
+			{/* <TextControl
+				label={__('Block name', 'maxi-blocks')}
+				placeholder={__('Give a name…')}
+				value={customLabel}
+				onChange={value => onChange(value)}
+			/> */}
 		</div>
 	);
 };

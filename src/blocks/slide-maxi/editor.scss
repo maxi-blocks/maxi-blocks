@@ -1,13 +1,3 @@
-.maxi-slide-block {
-	&:not([data-slide-active='true']) {
-		* {
-			pointer-events: none !important;
-			user-select: none !important;
-			display: none !important;
-		}
-	}
-}
-
 .maxi-column-size-control {
 	.components-base-control__field {
 		flex-direction: column;

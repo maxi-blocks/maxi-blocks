@@ -16,9 +16,21 @@
 		}
 	}
 
-	&__wrapper--edit-view {
-		.maxi-slide-block--clone {
-			display: none !important;
+	&__wrapper {
+		&--edit-view {
+			.maxi-slide-block--clone {
+				display: none !important;
+			}
+		}
+
+		&:not(&--edit-view) {
+			.maxi-slide-block:not([data-slide-active='true']) {
+				* {
+					pointer-events: none !important;
+					user-select: none !important;
+					display: none !important;
+				}
+			}
 		}
 	}
 }

@@ -14,10 +14,15 @@ import Button from '../button';
  */
 import { reset } from '../../icons';
 
+/**
+ * External dependencies
+ */
+import classnames from 'classnames';
+
 const ResetButton = props => {
 	return (
 		<Button
-			className='maxi-reset-button'
+			className={classnames('maxi-reset-button', props.className)}
 			action='reset'
 			type='reset'
 			aria-label={__('Reset', 'maxi-blocks')}

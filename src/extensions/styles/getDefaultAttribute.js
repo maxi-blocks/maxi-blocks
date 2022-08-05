@@ -73,7 +73,8 @@ const getDefaultAttribute = (
 		const winBreakpoint = select('maxiBlocks').receiveWinBreakpoint();
 
 		response = getDefaultAttribute(
-			prop.replace('general', winBreakpoint, clientIds)
+			prop.replace('general', winBreakpoint),
+			clientIds
 		);
 	}
 

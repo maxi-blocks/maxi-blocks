@@ -84,26 +84,13 @@ const ColorControl = props => {
 		color,
 	};
 
-	const onChangeValue = obj => {
-		const colorObject = {
-			...colorObj,
-			...obj,
-		};
-		obj.color === 'delete' && delete colorObject.color;
-		obj.color === 'delete' &&
-			colorObject.paletteOpacity === 1 &&
-			delete colorObject.paletteOpacity;
-
-		onChange(colorObject);
-	};
-
 	const onChangeInlineValue = obj =>
 		onChangeInline
 			? onChangeInline({
 					...colorObj,
 					...obj,
 			  })
-			: onChangeValue(obj);
+			: onChange(obj);
 
 	const getDefaultColorAttribute = target =>
 		getDefaultAttribute(
@@ -131,10 +118,7 @@ const ColorControl = props => {
 
 		if (showPalette)
 			onChange({
-				paletteStatus: defaultColorAttr.paletteStatus,
 				paletteColor: defaultColorAttr.paletteColor,
-				paletteOpacity: defaultColorAttr.paletteOpacity,
-				color,
 			});
 		else {
 			const defaultColor = `rgba(${getPaletteColor({
@@ -144,9 +128,6 @@ const ColorControl = props => {
 			})},${paletteOpacity || 1})`;
 
 			onChange({
-				paletteStatus,
-				paletteColor,
-				paletteOpacity,
 				color: defaultColor,
 			});
 		}
@@ -167,12 +148,12 @@ const ColorControl = props => {
 		const { color: rgbaColor } = getColorRGBAParts(color);
 
 		onChange({
-			paletteStatus,
-			paletteColor,
 			paletteOpacity: opacity,
-			color:
-				rgbaColor &&
-				`rgba(${getColorRGBAParts(color).color},${opacity || 1})`,
+			...(!paletteStatus && {
+				color:
+					rgbaColor &&
+					`rgba(${getColorRGBAParts(color).color},${opacity || 1})`,
+			}),
 		});
 	};
 
@@ -184,7 +165,7 @@ const ColorControl = props => {
 					value={paletteColor}
 					globalProps={globalProps}
 					isHover={isHover}
-					onChange={obj => onChangeValue(obj)}
+					onChange={onChange}
 					deviceType={deviceType}
 					clientId={clientId}
 					disableOpacity={disableOpacity}
@@ -200,7 +181,7 @@ const ColorControl = props => {
 					label={__('Set custom colour', 'maxi-blocks')}
 					selected={!paletteStatus}
 					onChange={val => {
-						onChangeValue({
+						onChange({
 							paletteStatus: !val,
 							// If palette is disabled, set custom color from palette one
 							...(val
@@ -211,14 +192,7 @@ const ColorControl = props => {
 											blockStyle,
 										})},${paletteOpacity || 1})`,
 								  }
-								: { color: 'delete' }),
-							// If palette is set, save the custom color opacity
-							...(!disableOpacity &&
-								!val && {
-									paletteOpacity:
-										tinycolor(color).getAlpha() ||
-										paletteOpacity,
-								}),
+								: { color: undefined }),
 						});
 					}}
 				/>
@@ -228,7 +202,7 @@ const ColorControl = props => {
 					label={label}
 					color={getRGBA(color)}
 					onChangeInlineValue={onChangeInlineValue}
-					onChangeValue={onChangeValue}
+					onChangeValue={onChange}
 					onReset={onReset}
 					onResetOpacity={onResetOpacity}
 					disableColorDisplay={disableColorDisplay}

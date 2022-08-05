@@ -211,6 +211,7 @@ const getIsActiveTab = ({
 								attribute === 'background-layers-hover'
 								? currentAttributes[attribute]
 								: false,
+
 							attribute === 'transition'
 								? {
 										canvas: currentAttributes[

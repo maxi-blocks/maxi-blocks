@@ -103,37 +103,40 @@ const ColorLayerContent = props => {
 						'background-color': color,
 					});
 				}}
-				onChange={({
-					color,
-					paletteColor,
-					paletteStatus,
-					paletteOpacity,
-				}) => {
+				onChange={obj => {
 					onChange({
-						[getAttributeKey(
-							'background-palette-status',
-							isHover,
-							prefix,
-							breakpoint
-						)]: paletteStatus,
-						[getAttributeKey(
-							'background-palette-color',
-							isHover,
-							prefix,
-							breakpoint
-						)]: paletteColor,
-						[getAttributeKey(
-							'background-palette-opacity',
-							isHover,
-							prefix,
-							breakpoint
-						)]: paletteOpacity,
-						[getAttributeKey(
-							'background-color',
-							isHover,
-							prefix,
-							breakpoint
-						)]: color,
+						...('paletteStatus' in obj && {
+							[getAttributeKey(
+								'background-palette-status',
+								isHover,
+								prefix,
+								breakpoint
+							)]: obj.paletteStatus,
+						}),
+						...('paletteColor' in obj && {
+							[getAttributeKey(
+								'background-palette-color',
+								isHover,
+								prefix,
+								breakpoint
+							)]: obj.paletteColor,
+						}),
+						...('paletteOpacity' in obj && {
+							[getAttributeKey(
+								'background-palette-opacity',
+								isHover,
+								prefix,
+								breakpoint
+							)]: obj.paletteOpacity,
+						}),
+						...('color' in obj && {
+							[getAttributeKey(
+								'background-color',
+								isHover,
+								prefix,
+								breakpoint
+							)]: obj.color,
+						}),
 					});
 				}}
 				globalProps={globalProps}

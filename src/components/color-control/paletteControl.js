@@ -11,6 +11,7 @@ import BaseControl from '../base-control';
 import OpacityControl from '../opacity-control';
 import { getBlockStyle } from '../../extensions/styles';
 import ResetButton from '../reset-control';
+
 /**
  * External dependencies
  */
@@ -124,6 +125,7 @@ const ColorPaletteControl = props => {
 				</div>
 				{!disableReset && (
 					<ResetButton
+						className='color-reset-button'
 						onReset={e => {
 							onReset();
 						}}

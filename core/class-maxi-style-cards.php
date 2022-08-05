@@ -169,7 +169,7 @@ class MaxiBlocks_StyleCards
 					"styleCard": {},
 					"defaultStyleCard": {
 						"color": {
-							"1": "8,18,25",
+							"1": "0,0,0",
 							"2": "5,23,33",
 							"3": "155,155,155",
 							"4": "255,74,23",

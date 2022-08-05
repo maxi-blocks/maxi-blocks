@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import { ToggleSwitch } from '../../../../components';
 
-const MapInteracitonControl = ({ onChange, ...attributes }) => {
+const MapInteractionControl = ({ onChange, ...attributes }) => {
 	return (
 		<>
 			<ToggleSwitch
@@ -53,4 +53,4 @@ const MapInteracitonControl = ({ onChange, ...attributes }) => {
 	);
 };
 
-export default MapInteracitonControl;
+export default MapInteractionControl;

@@ -44,13 +44,20 @@ class edit extends MaxiBlockComponent {
 		};
 	}
 
+	maxiBlockDidMount() {
+		const { attributes, maxiSetAttributes } = this.props;
+		const { 'map-marker-icon': mapMarkerIcon } = attributes;
+
+		if (!mapMarkerIcon) {
+			maxiSetAttributes({
+				'map-marker-icon': renderToString(mapMarkerIcons.mapMarker1),
+			});
+		}
+	}
+
 	render() {
-		const { attributes, maxiSetAttributes, isSelected } = this.props;
-		const {
-			uniqueID,
-			'map-provider': mapProvider,
-			'map-marker-icon': mapMarkerIcon,
-		} = attributes;
+		const { attributes, isSelected } = this.props;
+		const { uniqueID, 'map-provider': mapProvider } = attributes;
 
 		const getApiKey = () => {
 			const { receiveMaxiSettings } = select('maxiBlocks');
@@ -62,14 +69,6 @@ class edit extends MaxiBlockComponent {
 			if (key) return key;
 			return false;
 		};
-
-		if (!mapMarkerIcon) {
-			maxiSetAttributes({
-				'map-marker-icon': renderToString(mapMarkerIcons.mapMarker1),
-			});
-
-			return null;
-		}
 
 		return [
 			<Inspector

@@ -36,7 +36,9 @@ const MapPopupTextControl = ({
 					label: __('Title', 'maxi-blocks'),
 					content: (
 						<>
-							<span>Marker title text</span>
+							<span>
+								{__('Marker title text', 'maxi-blocks')}
+							</span>
 							<FontLevelControl
 								{...getGroupAttributes(
 									attributes,
@@ -67,7 +69,9 @@ const MapPopupTextControl = ({
 					label: __('Description', 'maxi-blocks'),
 					content: (
 						<>
-							<span>Marker description text</span>
+							<span>
+								{__('Marker description text', 'maxi-blocks')}
+							</span>
 							<TypographyControl
 								{...getGroupAttributes(
 									attributes,

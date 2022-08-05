@@ -62,7 +62,7 @@ const MapContent = props => {
 			className='maxi-map-block__container'
 			id={`maxi-map-block__container-${uniqueID}`}
 		>
-			{(isGoogleMaps && apiKey) || !isGoogleMaps ? (
+			{apiKey || !isGoogleMaps ? (
 				<>
 					<MapContainer
 						ref={mapRef}
@@ -102,7 +102,10 @@ const MapContent = props => {
 							maxiSetAttributes={maxiSetAttributes}
 							setIsDraggingMarker={setIsDraggingMarker}
 						/>
-						<SearchBox {...props} />
+						<SearchBox
+							mapMarkers={mapMarkers}
+							maxiSetAttributes={maxiSetAttributes}
+						/>
 					</MapContainer>
 					<DropMarkerAlert isAddingMarker={isAddingMarker} />
 				</>

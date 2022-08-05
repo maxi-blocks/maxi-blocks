@@ -12,11 +12,6 @@ import SelectControl from '../../../../components/select-control';
 import { getDefaultAttribute } from '../../../../extensions/styles';
 
 /**
- * Styles and icons
- */
-import './editor.scss';
-
-/**
  * Component
  */
 const MapControl = props => {

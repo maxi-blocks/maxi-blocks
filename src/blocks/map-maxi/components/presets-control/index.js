@@ -13,7 +13,7 @@ import getPresetItemClasses from './getPresetItemClasses';
  */
 import './editor.scss';
 
-const PresetsControl = ({ items, onChange, className, prop }) => {
+const PresetsControl = ({ items, onChange, prop }) => {
 	return (
 		<div className='maxi-presets-control'>
 			{Object.entries(items).map(([key, value], index) => {

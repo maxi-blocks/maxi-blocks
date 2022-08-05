@@ -16,11 +16,7 @@ import { getNewMarker, getUpdatedMarkers } from '../../utils';
  */
 import { useMap } from 'react-leaflet';
 
-const SearchBox = props => {
-	const { attributes, maxiSetAttributes } = props;
-
-	const { 'map-markers': mapMarkers } = attributes;
-
+const SearchBox = ({ mapMarkers, maxiSetAttributes }) => {
 	const map = useMap();
 
 	const [keywords, setKeywords] = useState('');

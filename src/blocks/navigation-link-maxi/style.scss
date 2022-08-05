@@ -1,6 +1,12 @@
 body.maxi-blocks--active .maxi-navigation-link-block {
 	width: fit-content;
-	margin: 0;
 
-	line-height: 30px;
+	&__content {
+		text-decoration: none;
+
+		&:focus {
+			outline: none !important;
+			box-shadow: none !important;
+		}
+	}
 }

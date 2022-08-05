@@ -351,6 +351,7 @@ const settings = {
 			attrGroupName: 'alignment',
 			component: props => <Controls.AlignmentControl {...props} />,
 			helper: props => styleHelpers.getAlignmentFlexStyles(props.obj),
+			target: ' .maxi-image-block-wrapper',
 		},
 		{
 			label: __('Shape mask', 'maxi-blocks'),

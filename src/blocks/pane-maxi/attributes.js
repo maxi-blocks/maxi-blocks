@@ -17,6 +17,7 @@ const attributes = {
 	accordionLayout: { type: 'string' },
 	titleLevel: { type: 'string', default: 'h6' },
 
+	...attributesData.blockBackground,
 	...attributesData.border,
 	...attributesData.borderHover,
 	...attributesData.borderRadius,
@@ -48,7 +49,6 @@ const attributes = {
 	/**
 	 * Advanced
 	 */
-	...attributesData.blockBackground,
 	...attributesData.scroll,
 	...attributesData.transform,
 	...{

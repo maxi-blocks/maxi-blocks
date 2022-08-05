@@ -12,6 +12,7 @@ import {
 	getOverflowStyles,
 	getFlexStyles,
 	getSizeStyles,
+	getTypographyStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsNavigationMenu } from './custom-css';
 
@@ -91,6 +92,45 @@ const getHoverObject = props => {
 	return response;
 };
 
+const getMenuItemObject = props => {
+	const prefix = 'menu-item-';
+
+	const response = {
+		' .maxi-navigation-link-block .maxi-navigation-link-block__content': {
+			typogrpahy: getTypographyStyles({
+				obj: getGroupAttributes(props, 'menuItem'),
+				prefix,
+				blockStyle: props.blockStyle,
+				textLevel: 'a',
+			}),
+		},
+		' .maxi-navigation-link-block .maxi-navigation-link-block__content:hover':
+			{
+				typogrpahy: getTypographyStyles({
+					obj: getGroupAttributes(props, 'menuItem', true),
+					prefix,
+					blockStyle: props.blockStyle,
+					textLevel: 'a',
+					isHover: true,
+					normalTypography: {
+						...getGroupAttributes(props, 'menuItem'),
+					},
+				}),
+			},
+		' .maxi-navigation-link-block .maxi-navigation-link-block__content:active':
+			{
+				typogrpahy: getTypographyStyles({
+					obj: getGroupAttributes(props, 'menuItem'),
+					prefix: `active-${prefix}`,
+					blockStyle: props.blockStyle,
+					textLevel: 'a',
+				}),
+			},
+	};
+
+	return response;
+};
+
 const getStyles = props => {
 	const { uniqueID } = props;
 
@@ -99,6 +139,7 @@ const getStyles = props => {
 			{
 				'': getNormalObject(props),
 				':hover': getHoverObject(props),
+				...getMenuItemObject(props),
 			},
 			selectorsNavigationMenu,
 			props

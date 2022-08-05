@@ -6,9 +6,11 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import SettingTabsControl from '../setting-tabs-control';
-import ToggleSwitch from '../toggle-switch';
-import TypographyControl from '../typography-control';
+import {
+	ToggleSwitch,
+	TypographyControl,
+	SettingTabsControl,
+} from '../../../../components';
 
 const MenuItemControl = props => {
 	const { onChange } = props;
@@ -21,7 +23,7 @@ const MenuItemControl = props => {
 			items={[
 				{
 					label: __('Normal state', 'maxi-blocks'),
-					content: <TypographyControl {...props} />,
+					content: <TypographyControl {...props} prefix={prefix} />,
 				},
 				{
 					label: __('Hover state', 'maxi-blocks'),
@@ -29,13 +31,22 @@ const MenuItemControl = props => {
 						<>
 							<ToggleSwitch
 								label={__('Enable hover', 'maxi-blocks')}
-								selected={props[`${prefix}status-hover`]}
+								selected={
+									props[`${prefix}typography-status-hover`]
+								}
 								onChange={val =>
-									onChange({ [`${prefix}status-hover`]: val })
+									onChange({
+										[`${prefix}typography-status-hover`]:
+											val,
+									})
 								}
 							/>
-							{props[`${prefix}status-hover`] && (
-								<TypographyControl {...props} isHover />
+							{props[`${prefix}typography-status-hover`] && (
+								<TypographyControl
+									{...props}
+									isHover
+									prefix={prefix}
+								/>
 							)}
 						</>
 					),
@@ -46,14 +57,17 @@ const MenuItemControl = props => {
 						<>
 							<ToggleSwitch
 								label={__('Enable active', 'maxi-blocks')}
-								selected={props[`${prefix}status-active`]}
+								selected={
+									props[`${prefix}typography-status-active`]
+								}
 								onChange={val =>
 									onChange({
-										[`${prefix}status-active`]: val,
+										[`${prefix}typography-status-active`]:
+											val,
 									})
 								}
 							/>
-							{props[`${prefix}status-active`] && (
+							{props[`${prefix}typography-status-active`] && (
 								<TypographyControl
 									{...props}
 									prefix={`active-${prefix}`}

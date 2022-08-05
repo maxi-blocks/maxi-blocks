@@ -12,7 +12,6 @@ import {
 	AccordionControl,
 	SettingTabsControl,
 	SelectControl,
-	MenuItemControl,
 } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import {
@@ -23,6 +22,7 @@ import { getGroupAttributes } from '../../extensions/styles';
 import menuItemsToBlocks from '../../extensions/navigation-menu/classic-menu-to-blocks';
 import createNewMenu from '../../extensions/navigation-menu/create-new-menu';
 import { createBlock, parse } from '@wordpress/blocks';
+import MenuItemControl from './components/menu-item-control';
 
 /**
  * Inspector
@@ -61,7 +61,13 @@ const Inspector = props => {
 
 		const blocks = parse(content);
 
-		if (blocks.some(block => block.name === 'core/navigation-link')) {
+		if (
+			blocks.some(block =>
+				['core/navigation-link', 'core/navigation-submenu'].includes(
+					block.name
+				)
+			)
+		) {
 			const convertBlocks = blocks => {
 				const res = [];
 
@@ -74,9 +80,7 @@ const Inspector = props => {
 								block.innerBlocks
 							)
 						);
-					} else if (
-						block.name === 'maxi-blocks/navigation-submenu-maxi'
-					) {
+					} else if (block.name === 'core/navigation-submenu') {
 						res.push(
 							createBlock(
 								'maxi-blocks/navigation-submenu-maxi',
@@ -91,8 +95,8 @@ const Inspector = props => {
 
 				return res;
 			};
+
 			const convertedBlocks = convertBlocks(blocks);
-			console.log(convertedBlocks);
 			const newMenuId = await createNewMenu(convertedBlocks);
 
 			return newMenuId;
@@ -127,12 +131,11 @@ const Inspector = props => {
 			context: 'view',
 		};
 		const menuItems = getMenuItems(args);
-		const itemsLoaded = hasFinishedResolution('getMenuItems', [args]);
+		// const itemsLoaded = hasFinishedResolution('getMenuItems', [args]);
 
 		const innerBlocks = menuItemsToBlocks(menuItems);
-		console.log(innerBlocks, menuItems);
 		const newMenuId = await createNewMenu(innerBlocks);
-		console.log(newMenuId);
+
 		return newMenuId;
 	};
 
@@ -274,6 +277,9 @@ const Inspector = props => {
 										props,
 										selectors: selectorsNavigationMenu,
 										categories: categoriesNavigationMenu,
+									}),
+									...inspectorTabs.transition({
+										props,
 									}),
 									...inspectorTabs.display({
 										props,

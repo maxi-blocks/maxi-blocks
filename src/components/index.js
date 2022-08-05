@@ -51,7 +51,6 @@ export { default as MapControl } from './map-control';
 export { default as ManageHoverTransitions } from './manage-hover-transitions';
 export { default as MarginControl } from './margin-control';
 export { default as MaxiPopoverButton } from './maxi-popover-button';
-export { default as MenuItemControl } from './menu-item-control';
 export { default as MotionPreview } from './motion-preview';
 export { default as NumberCounterControl } from './number-counter-control';
 export { default as OpacityControl } from './opacity-control';

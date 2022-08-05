@@ -4,6 +4,7 @@
 import { select } from '@wordpress/data';
 import { useInnerBlocksProps } from '@wordpress/block-editor';
 import { useEntityBlockEditor } from '@wordpress/core-data';
+import { Spinner } from '@wordpress/components';
 
 /**
  * External dependencies
@@ -32,7 +33,7 @@ const Navigation = props => {
 	);
 
 	const ALLOWED_BLOCKS = ['maxi-blocks/navigation-link-maxi'];
-	// console.log(blocks);
+
 	return (
 		<div
 			{...useInnerBlocksProps(
@@ -78,6 +79,19 @@ class edit extends MaxiBlockComponent {
 		};
 
 		return response;
+	}
+
+	maxiBlockDidMount() {
+		const { selectedMenuId } = this.props.attributes;
+
+		if (!selectedMenuId) return;
+
+		const { getEditedEntityRecord } = select('core');
+
+		const args = ['postType', 'wp_navigation', selectedMenuId];
+		const editedNavigationMenu = getEditedEntityRecord(...args);
+
+		this.setState({ editedNavigationMenu });
 	}
 
 	maxiBlockDidUpdate(prevProps) {
@@ -127,8 +141,10 @@ class edit extends MaxiBlockComponent {
 				tagName='nav'
 				state={this.state}
 			>
-				{this.state.editedNavigationMenu && (
+				{this.state.editedNavigationMenu ? (
 					<Navigation {...this.props} />
+				) : (
+					<Spinner />
 				)}
 			</MaxiBlock>,
 		];

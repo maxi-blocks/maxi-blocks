@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { useInstanceId } from '@wordpress/compose';
-
+import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
@@ -30,13 +30,20 @@ export default function TextInput({
 }) {
 	const instanceId = useInstanceId(TextInput);
 	const id = `inspector-text-input-${instanceId}`;
-	const onChangeValue = event => onChange(event.target.value);
 
 	const classes = classnames(
 		'maxi-text-input',
 		isFullwidth && ' maxi-text-input--fullwidth',
 		className
 	);
+
+	const [inputValue, setInputValue] = useState('');
+	const valueChange = e => {
+		setInputValue(e.target.value);
+		setTimeout(() => {
+			onChange(e.target.value);
+		}, 300);
+	};
 
 	return (
 		<BaseControl
@@ -50,8 +57,8 @@ export default function TextInput({
 				className='maxi-text-input__input'
 				type={type}
 				id={id}
-				value={value || ''}
-				onChange={onChangeValue}
+				value={inputValue || ''}
+				onChange={valueChange}
 				aria-describedby={help ? `${id}__help` : undefined}
 				{...props}
 			/>

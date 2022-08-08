@@ -19,7 +19,6 @@ import save from './save';
  * Styles and icons
  */
 import './style.scss';
-import './editor.scss';
 import { accordionIcon } from '../../icons';
 
 /**

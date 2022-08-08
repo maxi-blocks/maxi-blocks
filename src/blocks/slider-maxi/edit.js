@@ -123,9 +123,8 @@ const SliderWrapper = props => {
 		[].forEach.call(dots, function removeActiveClass(el) {
 			el.classList.remove('maxi-slider-block__dot--active');
 		});
-		const activeDot = document.querySelectorAll(
-			`.${uniqueID} .maxi-slider-block__dot--${dotNumber}`
-		)[0];
+
+		const activeDot = dots[dotNumber];
 
 		activeDot?.classList.add('maxi-slider-block__dot--active');
 	};
@@ -148,7 +147,6 @@ const SliderWrapper = props => {
 	const nextSlide = () => {
 		if (currentSlide + 1 < numberOfSlides || isLoop) {
 			addSliderTransition();
-
 			setCurrentSlide(prev => {
 				return prev + 1;
 			});
@@ -265,18 +263,23 @@ const SliderWrapper = props => {
 
 		if (!slide) {
 			const clone = document.createElement('li');
+			clone.classList.add('maxi-slide-block');
 			clone.classList.add('maxi-slide-block--clone');
 			return clone;
 		}
 
 		const clone = slide.cloneNode(true);
 		clone.classList.add('maxi-slide-block--clone');
-		clone.setAttribute(
-			'uniqueid',
-			`clone-${slide.getAttribute('uniqueid')}`
-		);
-
+		clone.removeAttribute('uniqueid');
 		clone.removeAttribute('data-block');
+		clone.id = `clone-${clone.id}`;
+
+		Array.from(clone.children).forEach(child => {
+			child.id = `clone-${child.id}`;
+			child.removeAttribute('data-block');
+			child.removeAttribute('uniqueid');
+		});
+
 		return clone;
 	};
 
@@ -284,8 +287,8 @@ const SliderWrapper = props => {
 		for (let i = 0; i < numberOfClones; i += 1) {
 			const backClone = getSlideClone(numberOfSlides - 1 - i);
 			const frontClone = getSlideClone(i);
-			backClone.id = `back-clone-slide-${numberOfSlides - 1 - i}`;
-			backClone.id = `front-clone-slide-${i}`;
+			backClone.id = `back-${backClone.id}`;
+			frontClone.id = `front-${frontClone.id}`;
 
 			wrapperRef.current.append(frontClone);
 			wrapperRef.current.prepend(backClone);
@@ -346,6 +349,7 @@ const SliderWrapper = props => {
 	useEffect(() => {
 		if (currentSlide >= numberOfSlides && numberOfSlides > 0) {
 			setCurrentSlide(numberOfSlides - 1);
+			setActiveSlide(numberOfSlides - 1);
 		}
 	}, [numberOfSlides]);
 

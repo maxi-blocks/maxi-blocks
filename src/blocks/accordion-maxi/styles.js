@@ -217,7 +217,7 @@ const getPaneContentStyles = props => {
 	const { animationDuration } = props;
 
 	const getPaneContentTransition = duration => {
-		return `max-height ${duration}ms`;
+		return `max-height ${duration}s`;
 	};
 
 	const response = {

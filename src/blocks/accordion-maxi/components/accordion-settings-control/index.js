@@ -122,10 +122,10 @@ const AccordionSettings = props => {
 				/>
 			)}
 			<AdvancedNumberControl
-				label={__('Animation duration (ms)', 'maxi-blocks')}
+				label={__('Animation duration', 'maxi-blocks')}
 				min={0}
-				max={9999}
-				step={1}
+				max={10}
+				step={0.1}
 				value={animationDuration}
 				onChangeValue={val => {
 					onChange({

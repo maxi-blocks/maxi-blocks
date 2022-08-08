@@ -1,4 +1,12 @@
 .maxi-image-block {
+	&.is-selected {
+		.maxi-block__resizer--overflow .maxi-resizable__handle-wrapper {
+			width: calc(100% + 40px) !important;
+			left: -20px !important;
+			height: calc(100% + 20px) !important;
+		}
+	}
+
 	.maxi-hover-effect__text {
 		.maxi-hover-details {
 			visibility: hidden;

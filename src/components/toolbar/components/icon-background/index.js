@@ -9,10 +9,7 @@ import { __ } from '@wordpress/i18n';
 import ToolbarPopover from '../toolbar-popover';
 import ColorControl from '../../../color-control';
 import ToggleSwitch from '../../../toggle-switch';
-import {
-	getAttributeKey,
-	getLastBreakpointAttribute,
-} from '../../../../extensions/styles';
+import { getLastBreakpointAttribute } from '../../../../extensions/styles';
 
 /**
  * Styles
@@ -100,38 +97,29 @@ const IconBackground = props => {
 								'.maxi-button-block__icon'
 							)
 						}
-						onChange={({
-							paletteStatus,
-							paletteColor,
-							paletteOpacity,
-							color,
-						}) => {
+						onChange={obj => {
 							onChange(
 								{
-									[getAttributeKey(
-										'background-palette-status',
-										isHover,
-										'icon-',
-										breakpoint
-									)]: paletteStatus,
-									[getAttributeKey(
-										'background-palette-color',
-										isHover,
-										'icon-',
-										breakpoint
-									)]: paletteColor,
-									[getAttributeKey(
-										'background-palette-opacity',
-										isHover,
-										'icon-',
-										breakpoint
-									)]: paletteOpacity,
-									[getAttributeKey(
-										'background-color',
-										isHover,
-										'icon-',
-										breakpoint
-									)]: color,
+									...('paletteStatus' in obj && {
+										[`icon-background-palette-status-${breakpoint}${
+											isHover ? '-hover' : ''
+										}`]: obj.paletteStatus,
+									}),
+									...('paletteColor' in obj && {
+										[`icon-background-palette-color-${breakpoint}${
+											isHover ? '-hover' : ''
+										}`]: obj.paletteColor,
+									}),
+									...('paletteOpacity' in obj && {
+										[`icon-background-palette-opacity-${breakpoint}${
+											isHover ? '-hover' : ''
+										}`]: obj.paletteOpacity,
+									}),
+									...('color' in obj && {
+										[`icon-background-color-${breakpoint}${
+											isHover ? '-hover' : ''
+										}`]: obj.color,
+									}),
 								},
 								'.maxi-button-block__icon'
 							);

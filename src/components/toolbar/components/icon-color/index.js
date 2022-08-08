@@ -73,14 +73,13 @@ const IconColor = props => {
 										'[data-stroke]'
 									)
 								}
-								onChange={({
-									color,
-									paletteColor,
-									paletteStatus,
-								}) => {
+								onChange={obj => {
 									const lineColorStr = getColorRGBAString({
 										firstVar: 'icon-stroke',
-										secondVar: `color-${paletteColor}`,
+										secondVar: `color-${
+											obj.paletteColor ??
+											props['icon-stroke-palette-color']
+										}`,
 										opacity:
 											props[
 												'icon-stroke-palette-opacity'
@@ -90,16 +89,28 @@ const IconColor = props => {
 
 									onChange(
 										{
-											'icon-stroke-color': color,
-											'icon-stroke-palette-color':
-												paletteColor,
-											'icon-stroke-palette-status':
-												paletteStatus,
+											...('color' in obj && {
+												'icon-stroke-color': obj.color,
+											}),
+											...('paletteColor' in obj && {
+												'icon-stroke-palette-color':
+													obj.paletteColor,
+											}),
+											...('paletteStatus' in obj && {
+												'icon-stroke-palette-status':
+													obj.paletteStatus,
+											}),
 											'icon-content': setSVGContent(
 												props['icon-content'],
-												paletteStatus
+												obj.paletteStatus ??
+													props[
+														'icon-stroke-palette-status'
+													]
 													? lineColorStr
-													: color,
+													: obj.color ??
+															props[
+																'icon-stroke-color'
+															],
 												'stroke'
 											),
 										},
@@ -124,14 +135,13 @@ const IconColor = props => {
 										'[data-fill]'
 									)
 								}
-								onChange={({
-									color,
-									paletteColor,
-									paletteStatus,
-								}) => {
+								onChange={obj => {
 									const fillColorStr = getColorRGBAString({
 										firstVar: 'icon-fill',
-										secondVar: `color-${paletteColor}`,
+										secondVar: `color-${
+											obj.paletteColor ??
+											props['icon-fill-palette-color']
+										}`,
 										opacity:
 											props['icon-fill-palette-opacity'],
 										blockStyle,
@@ -139,16 +149,28 @@ const IconColor = props => {
 
 									onChange(
 										{
-											'icon-fill-color': color,
-											'icon-fill-palette-color':
-												paletteColor,
-											'icon-fill-palette-status':
-												paletteStatus,
+											...('color' in obj && {
+												'icon-fill-color': obj.color,
+											}),
+											...('paletteColor' in obj && {
+												'icon-fill-palette-color':
+													obj.paletteColor,
+											}),
+											...('paletteStatus' in obj && {
+												'icon-fill-palette-status':
+													obj.paletteStatus,
+											}),
 											'icon-content': setSVGContent(
 												props['icon-content'],
-												paletteStatus
+												obj.paletteStatus ??
+													props[
+														'icon-fill-palette-status'
+													]
 													? fillColorStr
-													: color,
+													: obj.color ??
+															props[
+																'icon-fill-color'
+															],
 												'fill'
 											),
 										},

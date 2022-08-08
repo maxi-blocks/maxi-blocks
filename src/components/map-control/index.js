@@ -164,11 +164,17 @@ const MapControl = props => {
 				paletteColor={props['map-marker-text-palette-color']}
 				color={props['map-marker-text-color']}
 				prefix='map-marker-text-'
-				onChange={({ color, paletteColor, paletteStatus }) =>
+				onChange={obj =>
 					onChange({
-						'map-marker-text-color': color,
-						'map-marker-text-palette-color': paletteColor,
-						'map-marker-text-palette-status': paletteStatus,
+						...('color' in obj && {
+							'map-marker-text-color': obj.color,
+						}),
+						...('paletteColor' in obj && {
+							'map-marker-text-palette-color': obj.paletteColor,
+						}),
+						...('paletteStatus' in obj && {
+							'map-marker-text-palette-status': obj.paletteStatus,
+						}),
 					})
 				}
 				disableOpacity
@@ -185,11 +191,19 @@ const MapControl = props => {
 				prefix='map-marker-address-'
 				paletteColor={props['map-marker-address-palette-color']}
 				paletteStatus={props['map-marker-address-palette-status']}
-				onChange={({ color, paletteColor, paletteStatus }) =>
+				onChange={obj =>
 					onChange({
-						'map-marker-address-color': color,
-						'map-marker-address-palette-color': paletteColor,
-						'map-marker-address-palette-status': paletteStatus,
+						...('color' in obj && {
+							'map-marker-address-color': obj.color,
+						}),
+						...('paletteColor' in obj && {
+							'map-marker-address-palette-color':
+								obj.paletteColor,
+						}),
+						...('paletteStatus' in obj && {
+							'map-marker-address-palette-status':
+								obj.paletteStatus,
+						}),
 					})
 				}
 				disableOpacity

@@ -278,8 +278,21 @@ const TextShadow = props => {
 						paletteOpacity={currentPaletteOpacity}
 						color={!isPaletteActive ? getCurrentColor() : ''}
 						onChangeInline={value => onChangeInlineValue(3, value)}
-						onChange={value => {
-							onChangeValue(3, value);
+						onChange={obj => {
+							onChangeValue(3, {
+								color:
+									'color' in obj
+										? obj.color
+										: (!isPaletteActive &&
+												getCurrentColor()) ||
+										  '',
+								paletteColor:
+									obj.paletteColor ?? currentPaletteColor,
+								paletteOpacity:
+									obj.paletteOpacity ?? currentPaletteOpacity,
+								paletteStatus:
+									obj.paletteColor ?? isPaletteActive,
+							});
 						}}
 						defaultColorAttributes={{
 							paletteStatus: isPaletteActive,

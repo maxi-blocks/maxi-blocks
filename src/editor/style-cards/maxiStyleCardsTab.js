@@ -115,18 +115,21 @@ const GlobalColor = props => {
 								groupAttr,
 							}),
 						}}
-						onChange={({
-							paletteStatus: newPaletteStatus,
-							paletteColor: newPaletteColor,
-							paletteOpacity: newPaletteOpacity,
-							color: newColor,
-						}) => {
+						onChange={obj => {
 							onChangeValue(
 								{
-									[paletteStatus]: newPaletteStatus,
-									[paletteColor]: newPaletteColor,
-									[paletteOpacity]: newPaletteOpacity,
-									[color]: newColor,
+									...('paletteStatus' in obj && {
+										[paletteStatus]: obj.paletteStatus,
+									}),
+									...('paletteColor' in obj && {
+										[paletteColor]: obj.paletteColor,
+									}),
+									...('paletteOpacity' in obj && {
+										[paletteOpacity]: obj.paletteOpacity,
+									}),
+									...('color' in obj && {
+										[color]: obj.color,
+									}),
 								},
 								groupAttr
 							);

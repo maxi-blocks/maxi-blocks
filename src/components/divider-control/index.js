@@ -218,22 +218,26 @@ const DividerControl = props => {
 					onChangeInline={({ color }) =>
 						onChangeInline({ 'border-color': color })
 					}
-					onChange={({
-						color,
-						paletteColor,
-						paletteStatus,
-						paletteOpacity,
-					}) =>
+					onChange={obj => {
 						onChange({
-							[`divider-border-color-${breakpoint}`]: color,
-							[`divider-border-palette-color-${breakpoint}`]:
-								paletteColor,
-							[`divider-border-palette-status-${breakpoint}`]:
-								paletteStatus,
-							[`divider-border-palette-opacity-${breakpoint}`]:
-								paletteOpacity,
-						})
-					}
+							...('paletteStatus' in obj && {
+								[`divider-border-palette-status-${breakpoint}`]:
+									obj.paletteStatus,
+							}),
+							...('paletteColor' in obj && {
+								[`divider-border-palette-color-${breakpoint}`]:
+									obj.paletteColor,
+							}),
+							...('paletteOpacity' in obj && {
+								[`divider-border-palette-opacity-${breakpoint}`]:
+									obj.paletteOpacity,
+							}),
+							...('color' in obj && {
+								[`divider-border-color-${breakpoint}`]:
+									obj.color,
+							}),
+						});
+					}}
 					disableGradient
 					globalProps={{ target: '', type: 'divider' }}
 					isHover={isHover}

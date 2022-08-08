@@ -65,15 +65,18 @@ const ColorContent = ({
 				attributes: value,
 				isHover,
 			})}
-			onChange={({
-				paletteStatus,
-				paletteColor,
-				paletteOpacity,
-				color,
-			}) => {
+			onChange={obj => {
 				SVGData[id][
 					getAttributeKey('color', isHover, false, breakpoint)
-				] = color;
+				] =
+					'color' in obj
+						? obj.color
+						: getLastBreakpointAttribute({
+								target: 'color',
+								breakpoint,
+								attributes: value,
+								isHover,
+						  });
 
 				onChange({
 					'background-svg-SVGElement': injectImgSVG(
@@ -81,30 +84,38 @@ const ColorContent = ({
 						SVGData
 					).outerHTML,
 					'background-svg-SVGData': SVGData,
-					[getAttributeKey(
-						'background-svg-palette-status',
-						isHover,
-						false,
-						breakpoint
-					)]: paletteStatus,
-					[getAttributeKey(
-						'background-svg-palette-color',
-						isHover,
-						false,
-						breakpoint
-					)]: paletteColor,
-					[getAttributeKey(
-						'background-svg-palette-opacity',
-						isHover,
-						false,
-						breakpoint
-					)]: paletteOpacity,
-					[getAttributeKey(
-						'background-svg-color',
-						isHover,
-						false,
-						breakpoint
-					)]: color,
+					...('paletteStatus' in obj && {
+						[getAttributeKey(
+							'background-svg-palette-status',
+							isHover,
+							false,
+							breakpoint
+						)]: obj.paletteStatus,
+					}),
+					...('paletteColor' in obj && {
+						[getAttributeKey(
+							'background-svg-palette-color',
+							isHover,
+							false,
+							breakpoint
+						)]: obj.paletteColor,
+					}),
+					...('paletteOpacity' in obj && {
+						[getAttributeKey(
+							'background-svg-palette-opacity',
+							isHover,
+							false,
+							breakpoint
+						)]: obj.paletteOpacity,
+					}),
+					...('color' in obj && {
+						[getAttributeKey(
+							'background-svg-color',
+							isHover,
+							false,
+							breakpoint
+						)]: obj.color,
+					}),
 				});
 			}}
 			isHover={isHover}

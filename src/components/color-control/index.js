@@ -21,7 +21,7 @@ import { getPaletteColor } from '../../extensions/style-cards';
  * External dependencies
  */
 import classnames from 'classnames';
-import tinycolor from 'tinycolor2';
+
 /**
  * Styles
  */

@@ -347,33 +347,60 @@ const IconControl = props => {
 											true
 										)
 									}
-									onChange={({
-										color,
-										paletteColor,
-										paletteStatus,
-										paletteOpacity,
-									}) => {
+									onChange={obj => {
 										const icon = getIconWithColor({
-											color,
-											paletteColor,
-											paletteStatus,
-											paletteOpacity,
+											color:
+												obj.color ??
+												props[
+													`icon-stroke-color${
+														isHover ? '-hover' : ''
+													}`
+												],
+											paletteColor:
+												obj.paletteColor ??
+												props[
+													`icon-stroke-palette-color${
+														isHover ? '-hover' : ''
+													}`
+												],
+											paletteStatus:
+												obj.paletteStatus ??
+												props[
+													`icon-stroke-palette-status${
+														isHover ? '-hover' : ''
+													}`
+												],
+											paletteOpacity:
+												obj.paletteOpacity ??
+												props[
+													`icon-stroke-palette-opacity${
+														isHover ? '-hover' : ''
+													}`
+												],
 											isHover,
 										});
 
 										onChange({
-											[`icon-stroke-color${
-												isHover ? '-hover' : ''
-											}`]: color,
-											[`icon-stroke-palette-color${
-												isHover ? '-hover' : ''
-											}`]: paletteColor,
-											[`icon-stroke-palette-status${
-												isHover ? '-hover' : ''
-											}`]: paletteStatus,
-											[`icon-stroke-palette-opacity${
-												isHover ? '-hover' : ''
-											}`]: paletteOpacity,
+											...('color' in obj && {
+												[`icon-stroke-color${
+													isHover ? '-hover' : ''
+												}`]: obj.color,
+											}),
+											...('paletteColor' in obj && {
+												[`icon-stroke-palette-color${
+													isHover ? '-hover' : ''
+												}`]: obj.paletteColor,
+											}),
+											...('paletteStatus' in obj && {
+												[`icon-stroke-palette-status${
+													isHover ? '-hover' : ''
+												}`]: obj.paletteStatus,
+											}),
+											...('paletteOpacity' in obj && {
+												[`icon-stroke-palette-opacity${
+													isHover ? '-hover' : ''
+												}`]: obj.paletteOpacity,
+											}),
 											'icon-content': icon,
 										});
 									}}
@@ -457,34 +484,61 @@ const IconControl = props => {
 									true
 								)
 							}
-							onChange={({
-								color,
-								paletteColor,
-								paletteStatus,
-								paletteOpacity,
-							}) => {
+							onChange={obj => {
 								const icon = getIconWithColor({
-									color,
-									paletteColor,
-									paletteStatus,
-									paletteOpacity,
-									type: 'fill',
+									color:
+										obj.color ??
+										props[
+											`icon-fill-color${
+												isHover ? '-hover' : ''
+											}`
+										],
+									paletteColor:
+										obj.paletteColor ??
+										props[
+											`icon-fill-palette-color${
+												isHover ? '-hover' : ''
+											}`
+										],
+									paletteStatus:
+										obj.paletteStatus ??
+										props[
+											`icon-fill-palette-status${
+												isHover ? '-hover' : ''
+											}`
+										],
+									paletteOpacity:
+										obj.paletteOpacity ??
+										props[
+											`icon-fill-palette-opacity${
+												isHover ? '-hover' : ''
+											}`
+										],
 									isHover,
+									type: 'fill',
 								});
 
 								onChange({
-									[`icon-fill-color${
-										isHover ? '-hover' : ''
-									}`]: color,
-									[`icon-fill-palette-color${
-										isHover ? '-hover' : ''
-									}`]: paletteColor,
-									[`icon-fill-palette-status${
-										isHover ? '-hover' : ''
-									}`]: paletteStatus,
-									[`icon-fill-palette-opacity${
-										isHover ? '-hover' : ''
-									}`]: paletteOpacity,
+									...('color' in obj && {
+										[`icon-fill-color${
+											isHover ? '-hover' : ''
+										}`]: obj.color,
+									}),
+									...('paletteColor' in obj && {
+										[`icon-fill-palette-color${
+											isHover ? '-hover' : ''
+										}`]: obj.paletteColor,
+									}),
+									...('paletteStatus' in obj && {
+										[`icon-fill-palette-status${
+											isHover ? '-hover' : ''
+										}`]: obj.paletteStatus,
+									}),
+									...('paletteOpacity' in obj && {
+										[`icon-fill-palette-opacity${
+											isHover ? '-hover' : ''
+										}`]: obj.paletteOpacity,
+									}),
 									'icon-content': icon,
 								});
 							}}
@@ -553,38 +607,29 @@ const IconControl = props => {
 										'.maxi-button-block__icon'
 									)
 								}
-								onChange={({
-									paletteStatus,
-									paletteColor,
-									paletteOpacity,
-									color,
-								}) => {
+								onChange={obj => {
 									onChange(
 										{
-											[getAttributeKey(
-												'background-palette-status',
-												isHover,
-												'icon-',
-												breakpoint
-											)]: paletteStatus,
-											[getAttributeKey(
-												'background-palette-color',
-												isHover,
-												'icon-',
-												breakpoint
-											)]: paletteColor,
-											[getAttributeKey(
-												'background-palette-opacity',
-												isHover,
-												'icon-',
-												breakpoint
-											)]: paletteOpacity,
-											[getAttributeKey(
-												'background-color',
-												isHover,
-												'icon-',
-												breakpoint
-											)]: color,
+											...('paletteStatus' in obj && {
+												[`icon-background-palette-status-${breakpoint}${
+													isHover ? '-hover' : ''
+												}`]: obj.paletteStatus,
+											}),
+											...('paletteColor' in obj && {
+												[`icon-background-palette-color-${breakpoint}${
+													isHover ? '-hover' : ''
+												}`]: obj.paletteColor,
+											}),
+											...('paletteOpacity' in obj && {
+												[`icon-background-palette-opacity-${breakpoint}${
+													isHover ? '-hover' : ''
+												}`]: obj.paletteOpacity,
+											}),
+											...('color' in obj && {
+												[`icon-background-color-${breakpoint}${
+													isHover ? '-hover' : ''
+												}`]: obj.color,
+											}),
 										},
 										'.maxi-button-block__icon'
 									);

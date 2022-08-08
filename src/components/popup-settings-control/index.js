@@ -47,20 +47,24 @@ const PopupSettingsControl = props => {
 					attributes: props,
 				})}
 				onChangeInline={() => null}
-				onChange={({
-					paletteColor,
-					paletteStatus,
-					paletteOpacity,
-					color,
-				}) => {
+				onChange={obj => {
 					onChange({
-						[`lightbox-background-palette-status-${breakpoint}`]:
-							paletteStatus,
-						[`lightbox-background-palette-color-${breakpoint}`]:
-							paletteColor,
-						[`lightbox-background-palette-opacity-${breakpoint}`]:
-							paletteOpacity,
-						[`lightbox-background-color-${breakpoint}`]: color,
+						...('paletteStatus' in obj && {
+							[`lightbox-background-palette-status-${breakpoint}`]:
+								obj.paletteStatus,
+						}),
+						...('paletteColor' in obj && {
+							[`lightbox-background-palette-color-${breakpoint}`]:
+								obj.paletteColor,
+						}),
+						...('paletteOpacity' in obj && {
+							[`lightbox-background-palette-opacity-${breakpoint}`]:
+								obj.paletteOpacity,
+						}),
+						...('color' in obj && {
+							[`lightbox-background-color-${breakpoint}`]:
+								obj.color,
+						}),
 					});
 				}}
 				disableImage

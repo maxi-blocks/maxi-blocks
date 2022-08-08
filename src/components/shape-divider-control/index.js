@@ -326,18 +326,23 @@ const ShapeDividerControl = props => {
 															fill: color,
 														})
 													}
-													onChange={({
-														color,
-														paletteColor,
-														paletteStatus,
-													}) =>
+													onChange={obj =>
 														onChange({
-															[`shape-divider-top-color-${breakpoint}`]:
-																color,
-															[`shape-divider-top-palette-color-${breakpoint}`]:
-																paletteColor,
-															[`shape-divider-top-palette-status-${breakpoint}`]:
-																paletteStatus,
+															...('paletteStatus' in
+																obj && {
+																[`shape-divider-top-palette-status-${breakpoint}`]:
+																	obj.paletteStatus,
+															}),
+															...('paletteColor' in
+																obj && {
+																[`shape-divider-top-palette-color-${breakpoint}`]:
+																	obj.paletteColor,
+															}),
+															...('color' in
+																obj && {
+																[`shape-divider-top-color-${breakpoint}`]:
+																	obj.color,
+															}),
 														})
 													}
 													disableOpacity
@@ -533,18 +538,23 @@ const ShapeDividerControl = props => {
 															fill: color,
 														})
 													}
-													onChange={({
-														color,
-														paletteColor,
-														paletteStatus,
-													}) =>
+													onChange={obj =>
 														onChange({
-															[`shape-divider-bottom-color-${breakpoint}`]:
-																color,
-															[`shape-divider-bottom-palette-color-${breakpoint}`]:
-																paletteColor,
-															[`shape-divider-bottom-palette-status-${breakpoint}`]:
-																paletteStatus,
+															...('paletteStatus' in
+																obj && {
+																[`shape-divider-bottom-palette-status-${breakpoint}`]:
+																	obj.paletteStatus,
+															}),
+															...('paletteColor' in
+																obj && {
+																[`shape-divider-bottom-palette-color-${breakpoint}`]:
+																	obj.paletteColor,
+															}),
+															...('color' in
+																obj && {
+																[`shape-divider-bottom-color-${breakpoint}`]:
+																	obj.color,
+															}),
 														})
 													}
 													disableOpacity

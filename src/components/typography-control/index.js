@@ -124,19 +124,24 @@ const LinkOptions = props => {
 					onChangeInline={({ color }) =>
 						onChangeInline({ color }, 'a')
 					}
-					onChange={({
-						paletteColor,
-						paletteStatus,
-						paletteOpacity,
-						color,
-					}) =>
+					onChange={obj =>
 						onChangeFormat(
 							{
-								[`${prefix}link-palette-status`]: paletteStatus,
-								[`${prefix}link-palette-color`]: paletteColor,
-								[`${prefix}link-palette-opacity`]:
-									paletteOpacity,
-								[`${prefix}link-color`]: color,
+								...('paletteStatus' in obj && {
+									[`${prefix}link-palette-status`]:
+										obj.paletteStatus,
+								}),
+								...('paletteColor' in obj && {
+									[`${prefix}link-palette-color`]:
+										obj.paletteColor,
+								}),
+								...('paletteOpacity' in obj && {
+									[`${prefix}link-palette-opacity`]:
+										obj.paletteOpacity,
+								}),
+								...('color' in obj && {
+									[`${prefix}link-color`]: obj.color,
+								}),
 							},
 							false,
 							true,
@@ -166,21 +171,24 @@ const LinkOptions = props => {
 					onChangeInline={({ color }) =>
 						onChangeInline({ color }, 'a:hover')
 					}
-					onChange={({
-						paletteColor,
-						paletteStatus,
-						paletteOpacity,
-						color,
-					}) =>
+					onChange={obj =>
 						onChangeFormat(
 							{
-								[`${prefix}link-hover-palette-status`]:
-									paletteStatus,
-								[`${prefix}link-hover-palette-color`]:
-									paletteColor,
-								[`${prefix}link-hover-palette-opacity`]:
-									paletteOpacity,
-								[`${prefix}link-hover-color`]: color,
+								...('paletteStatus' in obj && {
+									[`${prefix}link-hover-palette-status`]:
+										obj.paletteStatus,
+								}),
+								...('paletteColor' in obj && {
+									[`${prefix}link-hover-palette-color`]:
+										obj.paletteColor,
+								}),
+								...('paletteOpacity' in obj && {
+									[`${prefix}link-hover-palette-opacity`]:
+										obj.paletteOpacity,
+								}),
+								...('color' in obj && {
+									[`${prefix}link-hover-color`]: obj.color,
+								}),
 							},
 							false,
 							true,
@@ -212,21 +220,24 @@ const LinkOptions = props => {
 					onChangeInline={({ color }) =>
 						onChangeInline({ color }, 'a:active')
 					}
-					onChange={({
-						paletteColor,
-						paletteStatus,
-						paletteOpacity,
-						color,
-					}) =>
+					onChange={obj =>
 						onChangeFormat(
 							{
-								[`${prefix}link-active-palette-status`]:
-									paletteStatus,
-								[`${prefix}link-active-palette-color`]:
-									paletteColor,
-								[`${prefix}link-active-palette-opacity`]:
-									paletteOpacity,
-								[`${prefix}link-active-color`]: color,
+								...('paletteStatus' in obj && {
+									[`${prefix}link-active-palette-status`]:
+										obj.paletteStatus,
+								}),
+								...('paletteColor' in obj && {
+									[`${prefix}link-active-palette-color`]:
+										obj.paletteColor,
+								}),
+								...('paletteOpacity' in obj && {
+									[`${prefix}link-active-palette-opacity`]:
+										obj.paletteOpacity,
+								}),
+								...('color' in obj && {
+									[`${prefix}link-active-color`]: obj.color,
+								}),
 							},
 							false,
 							true,
@@ -258,21 +269,24 @@ const LinkOptions = props => {
 					onChangeInline={({ color }) =>
 						onChangeInline({ color }, 'a:visited')
 					}
-					onChange={({
-						paletteColor,
-						paletteStatus,
-						paletteOpacity,
-						color,
-					}) =>
+					onChange={obj =>
 						onChangeFormat(
 							{
-								[`${prefix}link-visited-palette-status`]:
-									paletteStatus,
-								[`${prefix}link-visited-palette-color`]:
-									paletteColor,
-								[`${prefix}link-visited-palette-opacity`]:
-									paletteOpacity,
-								[`${prefix}link-visited-color`]: color,
+								...('paletteStatus' in obj && {
+									[`${prefix}link-visited-palette-status`]:
+										obj.paletteStatus,
+								}),
+								...('paletteColor' in obj && {
+									[`${prefix}link-visited-palette-color`]:
+										obj.paletteColor,
+								}),
+								...('paletteOpacity' in obj && {
+									[`${prefix}link-visited-palette-opacity`]:
+										obj.paletteOpacity,
+								}),
+								...('color' in obj && {
+									[`${prefix}link-visited-color`]: obj.color,
+								}),
 							},
 							false,
 							true,
@@ -493,17 +507,21 @@ const TypographyControlInner = props => {
 					onChangeInline={({ color }) =>
 						onChangeInlineValue({ color })
 					}
-					onChange={({
-						color,
-						paletteColor,
-						paletteStatus,
-						paletteOpacity,
-					}) =>
+					onChange={obj =>
 						onChangeFormat({
-							[`${prefix}color`]: color,
-							[`${prefix}palette-color`]: paletteColor,
-							[`${prefix}palette-status`]: paletteStatus,
-							[`${prefix}palette-opacity`]: paletteOpacity,
+							...('paletteStatus' in obj && {
+								[`${prefix}palette-status`]: obj.paletteStatus,
+							}),
+							...('paletteColor' in obj && {
+								[`${prefix}palette-color`]: obj.paletteColor,
+							}),
+							...('paletteOpacity' in obj && {
+								[`${prefix}palette-opacity`]:
+									obj.paletteOpacity,
+							}),
+							...('color' in obj && {
+								[`${prefix}color`]: obj.color,
+							}),
 						})
 					}
 					globalProps={globalProps}

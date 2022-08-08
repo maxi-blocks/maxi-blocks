@@ -60,41 +60,64 @@ export const SvgColor = props => {
 				onChangeInline &&
 				onChangeInline({ stroke: color }, '[data-stroke]')
 			}
-			onChange={({ color, paletteColor, paletteStatus }) => {
+			onChange={obj => {
 				const isNeededType = isHover
 					? svgType === 'Filled'
 					: svgType !== 'Shape';
 
 				const lineColorStr =
-					isNeededType &&
-					getColorRGBAString({
-						firstVar: 'icon-stroke',
-						secondVar: `color-${paletteColor}`,
-						opacity: 1,
-						blockStyle,
-					});
+					obj.paletteStatus ??
+					props[`svg-line-palette-status${isHover ? '-hover' : ''}`]
+						? isNeededType &&
+						  getColorRGBAString({
+								firstVar: 'icon-stroke',
+								secondVar: `color-${
+									obj.paletteColor ??
+									props[
+										`svg-line-palette-color${
+											isHover ? '-hover' : ''
+										}`
+									]
+								}`,
+								opacity: 1,
+								blockStyle,
+						  })
+						: obj.paletteColor ??
+						  props[
+								`svg-line-palette-color${
+									isHover ? '-hover' : ''
+								}`
+						  ];
 
 				if (isHover)
 					onChangeHoverStroke({
-						'svg-line-color-hover': color,
-						'svg-line-palette-color-hover': paletteColor,
-						'svg-line-palette-status-hover': paletteStatus,
+						...('color' in obj && {
+							'svg-line-color-hover': obj.color,
+						}),
+						...('paletteColor' in obj && {
+							'svg-line-palette-color-hover': obj.paletteColor,
+						}),
+						...('paletteStatus' in obj && {
+							'svg-line-palette-status-hover': obj.paletteStatus,
+						}),
 						content: setSVGContentHover(
 							content,
-							paletteStatus ? lineColorStr : paletteColor,
+							lineColorStr,
 							'stroke'
 						),
 					});
 				else
 					onChangeStroke({
-						'svg-line-color': color,
-						'svg-line-palette-color': paletteColor,
-						'svg-line-palette-status': paletteStatus,
-						content: setSVGContent(
-							content,
-							paletteStatus ? lineColorStr : paletteColor,
-							'stroke'
-						),
+						...('color' in obj && {
+							'svg-line-color': obj.color,
+						}),
+						...('paletteColor' in obj && {
+							'svg-line-palette-color': obj.paletteColor,
+						}),
+						...('paletteStatus' in obj && {
+							'svg-line-palette-status': obj.paletteStatus,
+						}),
+						content: setSVGContent(content, lineColorStr, 'stroke'),
 					});
 			}}
 			globalProps={{
@@ -129,43 +152,66 @@ export const SvgColor = props => {
 			onChangeInline={({ color }) =>
 				onChangeInline && onChangeInline({ fill: color }, '[data-fill]')
 			}
-			onChange={({ color, paletteColor, paletteStatus }) => {
+			onChange={obj => {
 				const isNeededType = isHover
 					? svgType === 'Filled'
 					: svgType !== 'Line';
 
 				const fillColorStr =
-					isNeededType &&
-					getColorRGBAString({
-						firstVar: 'icon-fill',
-						secondVar: `color-${paletteColor}`,
-						opacity: 1,
-						blockStyle,
-					});
+					obj.paletteStatus ??
+					props[`svg-fill-palette-status${isHover ? '-hover' : ''}`]
+						? isNeededType &&
+						  getColorRGBAString({
+								firstVar: 'icon-fill',
+								secondVar: `color-${
+									obj.paletteColor ??
+									props[
+										`svg-fill-palette-color${
+											isHover ? '-hover' : ''
+										}`
+									]
+								}`,
+								opacity: 1,
+								blockStyle,
+						  })
+						: obj.paletteColor ??
+						  props[
+								`svg-fill-palette-color${
+									isHover ? '-hover' : ''
+								}`
+						  ];
 
 				if (isHover)
 					onChangeHoverFill({
-						'svg-fill-color-hover': color,
-						'svg-fill-palette-color-hover': paletteColor,
-						'svg-fill-palette-status-hover': paletteStatus,
+						...('color' in obj && {
+							'svg-fill-color-hover': obj.color,
+						}),
+						...('paletteColor' in obj && {
+							'svg-fill-palette-color-hover': obj.paletteColor,
+						}),
+						...('paletteStatus' in obj && {
+							'svg-fill-palette-status-hover': obj.paletteStatus,
+						}),
 						content: setSVGContentHover(
 							content,
-							paletteStatus ? fillColorStr : paletteColor,
+							fillColorStr,
 							'fill'
 						),
 					});
 				else
 					onChangeFill({
-						'svg-fill-color': color,
-						'svg-fill-palette-color': paletteColor,
-						'svg-fill-palette-status': paletteStatus,
+						...('color' in obj && {
+							'svg-fill-color': obj.color,
+						}),
+						...('paletteColor' in obj && {
+							'svg-fill-palette-color': obj.paletteColor,
+						}),
+						...('paletteStatus' in obj && {
+							'svg-fill-palette-status': obj.paletteStatus,
+						}),
 						content:
 							fillColorStr &&
-							setSVGContent(
-								content,
-								paletteStatus ? fillColorStr : paletteColor,
-								'fill'
-							),
+							setSVGContent(content, fillColorStr, 'fill'),
 					});
 			}}
 			globalProps={{

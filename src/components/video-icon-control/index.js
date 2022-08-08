@@ -122,22 +122,55 @@ const IconSettings = props => {
 									fill: color,
 								});
 						}}
-						onChange={({
-							paletteColor,
-							paletteStatus,
-							paletteOpacity,
-							color,
-						}) => {
+						onChange={obj => {
 							const fillColorStr = getColorRGBAString({
 								firstVar: 'icon-fill',
-								secondVar: `color-${paletteColor}`,
-								opacity: paletteOpacity,
+								secondVar: `color-${
+									obj.paletteColor ??
+									props[
+										getAttributeKey(
+											'icon-fill-palette-color',
+											isHover,
+											prefix
+										)
+									]
+								}`,
+								opacity:
+									obj.paletteOpacity ??
+									props[
+										getAttributeKey(
+											'icon-fill-palette-opacity',
+											isHover,
+											prefix
+										)
+									],
 								blockStyle,
 							});
+							const paletteStatus =
+								obj.paletteStatus ??
+								props[
+									getAttributeKey(
+										'icon-fill-palette-status',
+										isHover,
+										prefix
+									)
+								];
+							const color =
+								obj.color ??
+								props[
+									getAttributeKey(
+										'icon-fill-color',
+										isHover,
+										prefix
+									)
+								];
+
 							const icon = isHover
 								? setSVGContentHover(
 										props[`${prefix}icon-content`],
-										paletteStatus ? fillColorStr : color,
+										obj.paletteStatus
+											? fillColorStr
+											: color,
 										'fill'
 								  )
 								: setSVGContent(
@@ -147,26 +180,34 @@ const IconSettings = props => {
 								  );
 
 							onChange({
-								[getAttributeKey(
-									'icon-fill-palette-status',
-									isHover,
-									prefix
-								)]: paletteStatus,
-								[getAttributeKey(
-									'icon-fill-palette-color',
-									isHover,
-									prefix
-								)]: paletteColor,
-								[getAttributeKey(
-									'icon-fill-palette-opacity',
-									isHover,
-									prefix
-								)]: paletteOpacity,
-								[getAttributeKey(
-									'icon-fill-color',
-									isHover,
-									prefix
-								)]: color,
+								...('paletteStatus' in obj && {
+									[getAttributeKey(
+										'icon-fill-palette-status',
+										isHover,
+										prefix
+									)]: obj.paletteStatus,
+								}),
+								...('paletteColor' in obj && {
+									[getAttributeKey(
+										'icon-fill-palette-color',
+										isHover,
+										prefix
+									)]: obj.paletteColor,
+								}),
+								...('paletteOpacity' in obj && {
+									[getAttributeKey(
+										'icon-fill-palette-opacity',
+										isHover,
+										prefix
+									)]: obj.paletteOpacity,
+								}),
+								...('color' in obj && {
+									[getAttributeKey(
+										'icon-fill-color',
+										isHover,
+										prefix
+									)]: obj.color,
+								}),
 								...(!isHover && {
 									[`${prefix}icon-content`]: icon,
 								}),

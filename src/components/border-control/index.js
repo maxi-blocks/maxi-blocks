@@ -81,25 +81,28 @@ const BorderColorControl = props => {
 						'border-color': color,
 					});
 			}}
-			onChange={({
-				paletteColor,
-				paletteStatus,
-				paletteOpacity,
-				color,
-			}) => {
+			onChange={obj => {
 				onChange({
-					[`${prefix}border-palette-status-${breakpoint}${
-						isHover ? '-hover' : ''
-					}`]: paletteStatus,
-					[`${prefix}border-palette-color-${breakpoint}${
-						isHover ? '-hover' : ''
-					}`]: paletteColor,
-					[`${prefix}border-palette-opacity-${breakpoint}${
-						isHover ? '-hover' : ''
-					}`]: paletteOpacity,
-					[`${prefix}border-color-${breakpoint}${
-						isHover ? '-hover' : ''
-					}`]: color,
+					...('paletteStatus' in obj && {
+						[`${prefix}border-palette-status-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`]: obj.paletteStatus,
+					}),
+					...('paletteColor' in obj && {
+						[`${prefix}border-palette-color-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`]: obj.paletteColor,
+					}),
+					...('paletteOpacity' in obj && {
+						[`${prefix}border-palette-opacity-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`]: obj.paletteOpacity,
+					}),
+					...('color' in obj && {
+						[`${prefix}border-color-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`]: obj.color,
+					}),
 				});
 			}}
 			disableImage

@@ -142,17 +142,14 @@ const TextColor = props => {
 						onChangeInline({ color });
 						textColor.current.style.background = color;
 					}}
-					onChange={({
-						color,
-						paletteColor,
-						paletteStatus,
-						paletteOpacity,
-					}) =>
+					onChange={obj =>
 						onChangeFormat({
-							color,
-							'palette-color': paletteColor,
-							'palette-status': paletteStatus,
-							'palette-opacity': paletteOpacity,
+							color: obj.color ?? color,
+							'palette-color': obj.paletteColor ?? colorPalette,
+							'palette-status':
+								obj.paletteStatus ?? colorPaletteStatus,
+							'palette-opacity':
+								obj.paletteOpacity ?? colorOpacity,
 						})
 					}
 					globalProps={{ target: '', type: textLevel }}

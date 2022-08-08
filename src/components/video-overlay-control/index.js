@@ -66,20 +66,24 @@ const VideoOverlayControl = props => {
 						target: inlineStylesTargets.overlay,
 					})
 				}
-				onChange={({
-					paletteColor,
-					paletteStatus,
-					paletteOpacity,
-					color,
-				}) => {
+				onChange={obj => {
 					onChange({
-						[`overlay-background-palette-status-${breakpoint}`]:
-							paletteStatus,
-						[`overlay-background-palette-color-${breakpoint}`]:
-							paletteColor,
-						[`overlay-background-palette-opacity-${breakpoint}`]:
-							paletteOpacity,
-						[`overlay-background-color-${breakpoint}`]: color,
+						...('paletteStatus' in obj && {
+							[`overlay-background-palette-status-${breakpoint}`]:
+								obj.paletteStatus,
+						}),
+						...('paletteColor' in obj && {
+							[`overlay-background-palette-color-${breakpoint}`]:
+								obj.paletteColor,
+						}),
+						...('paletteOpacity' in obj && {
+							[`overlay-background-palette-opacity-${breakpoint}`]:
+								obj.paletteOpacity,
+						}),
+						...('color' in obj && {
+							[`overlay-background-color-${breakpoint}`]:
+								obj.color,
+						}),
 					});
 					cleanInlineStyles(inlineStylesTargets.overlay);
 				}}

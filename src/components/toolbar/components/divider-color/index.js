@@ -66,20 +66,24 @@ const DividerColor = props => {
 					onChangeInline={({ color }) =>
 						onChangeInline({ 'border-color': color })
 					}
-					onChange={({
-						color,
-						paletteColor,
-						paletteStatus,
-						paletteOpacity,
-					}) => {
+					onChange={obj => {
 						onChange({
-							[`divider-border-color-${breakpoint}`]: color,
-							[`divider-border-palette-color-${breakpoint}`]:
-								paletteColor,
-							[`divider-border-palette-opacity-${breakpoint}`]:
-								paletteOpacity,
-							[`divider-border-palette-status-${breakpoint}`]:
-								paletteStatus,
+							...('paletteStatus' in obj && {
+								[`divider-border-palette-status-${breakpoint}`]:
+									obj.paletteStatus,
+							}),
+							...('paletteColor' in obj && {
+								[`divider-border-palette-color-${breakpoint}`]:
+									obj.paletteColor,
+							}),
+							...('paletteOpacity' in obj && {
+								[`divider-border-palette-opacity-${breakpoint}`]:
+									obj.paletteOpacity,
+							}),
+							...('color' in obj && {
+								[`divider-border-color-${breakpoint}`]:
+									obj.color,
+							}),
 						});
 					}}
 					deviceType={breakpoint}

@@ -300,25 +300,28 @@ const BoxShadowControl = props => {
 									})}px ${color}`,
 								});
 						}}
-						onChange={({
-							color,
-							paletteColor,
-							paletteStatus,
-							paletteOpacity,
-						}) => {
+						onChange={obj => {
 							onChange({
-								[`${prefix}box-shadow-palette-status-${breakpoint}${
-									isHover ? '-hover' : ''
-								}`]: paletteStatus,
-								[`${prefix}box-shadow-palette-color-${breakpoint}${
-									isHover ? '-hover' : ''
-								}`]: paletteColor,
-								[`${prefix}box-shadow-palette-opacity-${breakpoint}${
-									isHover ? '-hover' : ''
-								}`]: paletteOpacity,
-								[`${prefix}box-shadow-color-${breakpoint}${
-									isHover ? '-hover' : ''
-								}`]: color,
+								...('paletteStatus' in obj && {
+									[`${prefix}box-shadow-palette-status-${breakpoint}${
+										isHover ? '-hover' : ''
+									}`]: obj.paletteStatus,
+								}),
+								...('paletteColor' in obj && {
+									[`${prefix}box-shadow-palette-color-${breakpoint}${
+										isHover ? '-hover' : ''
+									}`]: obj.paletteColor,
+								}),
+								...('paletteOpacity' in obj && {
+									[`${prefix}box-shadow-palette-opacity-${breakpoint}${
+										isHover ? '-hover' : ''
+									}`]: obj.paletteOpacity,
+								}),
+								...('color' in obj && {
+									[`${prefix}box-shadow-color-${breakpoint}${
+										isHover ? '-hover' : ''
+									}`]: obj.color,
+								}),
 							});
 						}}
 						disableGradient

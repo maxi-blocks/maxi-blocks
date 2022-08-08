@@ -555,25 +555,41 @@ const listTab = props => {
 									pseudoElement: '::before',
 								})
 							}
-							onChange={({
-								paletteStatus,
-								paletteColor,
-								paletteOpacity,
-								color,
-							}) => {
-								const colorStr = paletteStatus
-									? getColorRGBAString({
-											firstVar: `color-${paletteColor}`,
-											opacity: paletteOpacity,
-											blockStyle,
-									  })
-									: color;
+							onChange={obj => {
+								const colorStr =
+									obj.paletteStatus ??
+									attributes['list-palette-status']
+										? getColorRGBAString({
+												firstVar: `color-${
+													obj.paletteColor ??
+													attributes[
+														'list-palette-color'
+													]
+												}`,
+												opacity:
+													obj.paletteOpacity ??
+													attributes[
+														'list-palette-opacity'
+													],
+												blockStyle,
+										  })
+										: obj.color ?? attributes['list-color'];
 
 								maxiSetAttributes({
-									'list-palette-status': paletteStatus,
-									'list-palette-color': paletteColor,
-									'list-palette-opacity': paletteOpacity,
-									'list-color': color,
+									...('paletteStatus' in obj && {
+										'list-palette-status':
+											obj.paletteStatus,
+									}),
+									...('paletteColor' in obj && {
+										'list-palette-color': obj.paletteColor,
+									}),
+									...('paletteOpacity' in obj && {
+										'list-palette-opacity':
+											obj.paletteOpacity,
+									}),
+									...('color' in obj && {
+										'list-color': obj.color,
+									}),
 									...(listStyleCustom?.includes('<svg ') && {
 										listStyleCustom: setSVGColor({
 											svg: listStyleCustom,

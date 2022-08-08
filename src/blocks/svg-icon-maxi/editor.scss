@@ -54,4 +54,11 @@
 	.maxi-library-modal__action-section {
 		margin-right: 0;
 	}
+
+	&.is-selected {
+		//Keep SVG resizer clickable when the block has overflow hidden
+		.maxi-resizable__handle-wrapper {
+			z-index: 30 !important;
+		}
+	}
 }

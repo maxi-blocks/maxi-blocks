@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+import { select } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import {
 	AdvancedNumberControl,
@@ -25,6 +26,7 @@ const AccordionSettings = props => {
 		isCollapsible,
 		animationDuration,
 		breakpoint,
+		clientId,
 	} = props;
 
 	const minMaxSettings = {
@@ -44,6 +46,8 @@ const AccordionSettings = props => {
 			step: 1,
 		},
 	};
+
+	const showSpacing = select('core/block-editor').getBlockCount(clientId) > 1;
 
 	return (
 		<>
@@ -81,40 +85,42 @@ const AccordionSettings = props => {
 					/>
 				</>
 			)}
-			<AdvancedNumberControl
-				label={__('Spacing', 'maxi-blocks')}
-				minMaxSettings={minMaxSettings}
-				value={getLastBreakpointAttribute({
-					target: 'pane-spacing',
-					breakpoint,
-					attributes: props,
-				})}
-				unit={getLastBreakpointAttribute({
-					target: 'pane-spacing-unit',
-					breakpoint,
-					attributes: props,
-				})}
-				enableUnit
-				allowedUnits={['px', 'em', 'vh']}
-				onChangeValue={val => {
-					onChange({
-						[`pane-spacing-${breakpoint}`]:
-							val !== undefined ? val : '',
-					});
-				}}
-				onChangeUnit={val => {
-					onChange({
-						[`pane-spacing-unit-${breakpoint}`]: val,
-					});
-				}}
-				onReset={() =>
-					onChange({
-						[`pane-spacing-${breakpoint}`]: getDefaultAttribute(
-							`pane-spacing-${breakpoint}`
-						),
-					})
-				}
-			/>
+			{showSpacing && (
+				<AdvancedNumberControl
+					label={__('Spacing', 'maxi-blocks')}
+					minMaxSettings={minMaxSettings}
+					value={getLastBreakpointAttribute({
+						target: 'pane-spacing',
+						breakpoint,
+						attributes: props,
+					})}
+					unit={getLastBreakpointAttribute({
+						target: 'pane-spacing-unit',
+						breakpoint,
+						attributes: props,
+					})}
+					enableUnit
+					allowedUnits={['px', 'em', 'vh']}
+					onChangeValue={val => {
+						onChange({
+							[`pane-spacing-${breakpoint}`]:
+								val !== undefined ? val : '',
+						});
+					}}
+					onChangeUnit={val => {
+						onChange({
+							[`pane-spacing-unit-${breakpoint}`]: val,
+						});
+					}}
+					onReset={() =>
+						onChange({
+							[`pane-spacing-${breakpoint}`]: getDefaultAttribute(
+								`pane-spacing-${breakpoint}`
+							),
+						})
+					}
+				/>
+			)}
 			<AdvancedNumberControl
 				label={__('Animation duration (ms)', 'maxi-blocks')}
 				min={0}

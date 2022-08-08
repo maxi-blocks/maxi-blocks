@@ -255,8 +255,6 @@ const getPaneHeaderStyles = (props, prefix, isHover = false) => {
 					prefix: `${prefix}title-background-`,
 					isHover,
 				}),
-				'flex-direction':
-					props['icon-position'] === 'right' ? 'row' : 'row-reverse',
 			},
 		},
 	};
@@ -266,10 +264,18 @@ const getPaneHeaderStyles = (props, prefix, isHover = false) => {
 
 const getPaneHeaderObject = props => {
 	const response = {
-		' .maxi-pane-block .maxi-pane-block__header': getPaneHeaderStyles(
-			props,
-			''
-		),
+		' .maxi-pane-block .maxi-pane-block__header': {
+			paneHeader: {
+				label: 'Pane header',
+				general: {
+					...getPaneHeaderStyles(props, '').paneHeader.general,
+					'flex-direction':
+						props['icon-position'] === 'right'
+							? 'row'
+							: 'row-reverse',
+				},
+			},
+		},
 		' .maxi-pane-block .maxi-pane-block__header::after': {
 			headerLine: {
 				...getDividerStyles(props, 'line', props.blockStyle, false),

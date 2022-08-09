@@ -246,7 +246,7 @@ const MaxiToolbar = memo(
 										}}
 									>
 										<span className='breadcrumbs-pin-toltip'>
-											{pinActive ? 'Unpin' : 'Pin Open'}
+											{pinActive ? 'Unlock' : 'Lock'}
 										</span>
 										<span className='breadcrumbs-pin-icon'>
 											{pinActive
@@ -262,6 +262,11 @@ const MaxiToolbar = memo(
 								<span className='toolbar-block-custom-label__block-style'>
 									{` | ${blockStyle}`}
 								</span>
+								{!isFirstOnHierarchy && (
+									<span className='toolbar-more-indicator'>
+										&gt;
+									</span>
+								)}
 							</div>
 						)}
 						<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />

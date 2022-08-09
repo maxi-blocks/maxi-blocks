@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { subscribe } from '@wordpress/data';
+import { select, subscribe } from '@wordpress/data';
 import { useState, render } from '@wordpress/element';
 
 /**
@@ -47,7 +47,16 @@ wp.domReady(() => {
 	 * - Add special classes on Settings Sidebar
 	 * - Hide original WP toolbar on selected Maxi Blocks
 	 */
-	const unsubscribe = subscribe(() => {
+	let isMaxiToolbar = false;
+
+	subscribe(() => {
+		// Resetting isMaxiToolbar if we are switching to a different template
+		if (select('core/edit-site')?.isNavigationOpened()) {
+			isMaxiToolbar = false;
+		}
+
+		if (isMaxiToolbar) return;
+
 		const maxiToolbar = document.querySelector(
 			'#maxi-blocks__toolbar-buttons'
 		);
@@ -57,14 +66,14 @@ wp.domReady(() => {
 
 		// Insert Maxi buttons on Gutenberg topbar
 		if (!maxiToolbar && parentNode) {
+			isMaxiToolbar = true;
+
 			const toolbarButtonsWrapper = document.createElement('div');
 			toolbarButtonsWrapper.id = 'maxi-blocks__toolbar-buttons';
 
 			parentNode.appendChild(toolbarButtonsWrapper);
 
 			render(<ToolbarButtons />, toolbarButtonsWrapper);
-
-			unsubscribe();
 		}
 	});
 });

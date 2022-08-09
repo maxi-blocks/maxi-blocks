@@ -325,7 +325,11 @@ class MaxiBlockComponent extends Component {
 
 	uniqueIDChecker(idToCheck) {
 		if (getIsUniqueIDRepeated(idToCheck)) {
-			const newUniqueID = uniqueIDGenerator(this.props.name);
+			const newUniqueID = uniqueIDGenerator(
+				this.props.name,
+				1,
+				!!select('core/edit-site')
+			);
 
 			this.props.attributes.uniqueID = newUniqueID;
 
@@ -404,28 +408,35 @@ class MaxiBlockComponent extends Component {
 
 				iframeDocument.body.classList.add('maxi-blocks--active');
 
-				if (iframeDocument.head) {
-					let iframeWrapper = iframeDocument.querySelector(
-						`#maxi-blocks__styles--${uniqueID}`
-					);
+				const iframeHeads = iframeDocument.querySelectorAll('head');
 
-					if (!iframeWrapper) {
-						iframeWrapper = iframeDocument.createElement('div');
-						iframeWrapper.id = `maxi-blocks__styles--${uniqueID}`;
-						iframeWrapper.classList.add('maxi-blocks__styles');
-						iframeDocument.head.appendChild(iframeWrapper);
-					}
+				if (
+					iframeDocument.head &&
+					!isEmpty(iframeDocument.head.childNodes)
+				) {
+					iframeHeads.forEach(iframeHead => {
+						let iframeWrapper = iframeHead.querySelector(
+							`#maxi-blocks__styles--${uniqueID}`
+						);
 
-					render(
-						<StyleComponent
-							uniqueID={uniqueID}
-							stylesObj={obj}
-							currentBreakpoint={this.currentBreakpoint}
-							blockBreakpoints={breakpoints}
-							isSiteEditor
-						/>,
-						iframeWrapper
-					);
+						if (!iframeWrapper) {
+							iframeWrapper = document.createElement('div');
+							iframeWrapper.id = `maxi-blocks__styles--${uniqueID}`;
+							iframeWrapper.classList.add('maxi-blocks__styles');
+							iframeHead.appendChild(iframeWrapper);
+						}
+
+						render(
+							<StyleComponent
+								uniqueID={uniqueID}
+								stylesObj={obj}
+								currentBreakpoint={this.currentBreakpoint}
+								blockBreakpoints={breakpoints}
+								isSiteEditor
+							/>,
+							iframeWrapper
+						);
+					});
 				}
 			}
 

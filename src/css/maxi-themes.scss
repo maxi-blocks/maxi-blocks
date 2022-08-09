@@ -6,106 +6,182 @@ $levels: 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6';
 $responsive_sizes: 'xxl', 'xl', 'l', 'm', 's', 'xs';
 $responsive_breakpoints: 1921, 1920, 1366, 1024, 768, 480;
 $responsive_width: '';
-$current_responsive_stage: 'general';
+$current_responsive_stage: '';
 $color_set: '1', '2', '3', '4', '5', '6', '7', '8';
 
 /**
 * Styles
 */
 
-/* Frontend */
+/* General style card styles (backend, frontend) */
 body.maxi-blocks--active {
-	.edit-post-visual-editor,
-	.edit-site-visual-editor {
-		@each $style in $styles {
+	@each $style in $styles {
+		/* Color Presets */
+		.maxi-#{$style} {
 			/* Color Presets */
-			.maxi-#{$style} {
-				/* Color Presets */
-				@each $color_number in $color_set {
-					&.maxi-sc-#{$style}-link-color-#{$color_number},
-					.maxi-sc-#{$style}-link-color-#{$color_number} {
-						&.maxi-block--has-link {
-							--maxi-#{$style}-link-palette: var(
-								--maxi-#{$style}-color-#{$color_number}
-							);
-						}
-						a.maxi-text-block--link {
-							--maxi-#{$style}-link-palette: var(
-								--maxi-#{$style}-color-#{$color_number}
-							);
-						}
+			@each $color_number in $color_set {
+				&.maxi-sc-#{$style}-link-color-#{$color_number},
+				.maxi-sc-#{$style}-link-color-#{$color_number} {
+					&.maxi-block--has-link {
+						--maxi-#{$style}-link-palette: var(
+							--maxi-#{$style}-color-#{$color_number}
+						);
 					}
-					&.maxi-sc-#{$style}-link-hover-color-#{$color_number},
-					.maxi-sc-#{$style}-link-hover-color-#{$color_number} {
-						&.maxi-block--has-link {
-							--maxi-#{$style}-link-hover-palette: var(
-								--maxi-#{$style}-color-#{$color_number}
-							);
-						}
-						a.maxi-text-block--link {
-							--maxi-#{$style}-link-hover-palette: var(
-								--maxi-#{$style}-color-#{$color_number}
-							);
-						}
+					a.maxi-text-block--link {
+						--maxi-#{$style}-link-palette: var(
+							--maxi-#{$style}-color-#{$color_number}
+						);
 					}
-					&.maxi-sc-#{$style}-link-active-color-#{$color_number},
-					.maxi-sc-#{$style}-link-active-color-#{$color_number} {
-						&.maxi-block--has-link {
-							--maxi-#{$style}-link-active-palette: var(
-								--maxi-#{$style}-color-#{$color_number}
-							);
-						}
-						a.maxi-text-block--link {
-							--maxi-#{$style}-link-active-palette: var(
-								--maxi-#{$style}-color-#{$color_number}
-							);
-						}
+				}
+				&.maxi-sc-#{$style}-link-hover-color-#{$color_number},
+				.maxi-sc-#{$style}-link-hover-color-#{$color_number} {
+					&.maxi-block--has-link {
+						--maxi-#{$style}-link-hover-palette: var(
+							--maxi-#{$style}-color-#{$color_number}
+						);
 					}
-					&.maxi-sc-#{$style}-link-visited-color-#{$color_number},
-					.maxi-sc-#{$style}-link-visited-color-#{$color_number} {
-						&.maxi-block--has-link {
-							--maxi-#{$style}-link-visited-palette: var(
-								--maxi-#{$style}-color-#{$color_number}
-							);
-						}
-						a.maxi-text-block--link {
-							--maxi-#{$style}-link-visited-palette: var(
-								--maxi-#{$style}-color-#{$color_number}
-							);
-						}
+					a.maxi-text-block--link {
+						--maxi-#{$style}-link-hover-palette: var(
+							--maxi-#{$style}-color-#{$color_number}
+						);
+					}
+				}
+				&.maxi-sc-#{$style}-link-active-color-#{$color_number},
+				.maxi-sc-#{$style}-link-active-color-#{$color_number} {
+					&.maxi-block--has-link {
+						--maxi-#{$style}-link-active-palette: var(
+							--maxi-#{$style}-color-#{$color_number}
+						);
+					}
+					a.maxi-text-block--link {
+						--maxi-#{$style}-link-active-palette: var(
+							--maxi-#{$style}-color-#{$color_number}
+						);
+					}
+				}
+				&.maxi-sc-#{$style}-link-visited-color-#{$color_number},
+				.maxi-sc-#{$style}-link-visited-color-#{$color_number} {
+					&.maxi-block--has-link {
+						--maxi-#{$style}-link-visited-palette: var(
+							--maxi-#{$style}-color-#{$color_number}
+						);
+					}
+					a.maxi-text-block--link {
+						--maxi-#{$style}-link-visited-palette: var(
+							--maxi-#{$style}-color-#{$color_number}
+						);
+					}
+				}
+			}
+		}
+
+		/* Individual settings per a block type */
+		.maxi-#{$style}.maxi-block {
+			&.maxi-text-block,
+			.maxi-text-block,
+			&.maxi-image-block figcaption,
+			.maxi-image-block figcaption {
+				@each $level in $levels {
+					#{$level} {
+						font-family: var(
+							--maxi-#{$style}-#{$level}-font-family-general
+						);
+						font-weight: var(
+							--maxi-#{$style}-#{$level}-font-weight-general
+						);
+						font-style: var(
+							--maxi-#{$style}-#{$level}-font-style-general
+						);
+						text-transform: var(
+							--maxi-#{$style}-#{$level}-text-transform-general
+						);
+						text-decoration: var(
+							--maxi-#{$style}-#{$level}-text-decoration-general
+						);
 					}
 				}
 			}
 
-			/* Individual settings per a block type */
-			.maxi-#{$style}.maxi-block {
-				&.maxi-text-block,
-				.maxi-text-block,
-				&.maxi-image-block figcaption,
-				.maxi-image-block figcaption {
-					@each $level in $levels {
-						#{$level} {
-							font-family: var(
-								--maxi-#{$style}-#{$level}-font-family-general
-							);
-							font-weight: var(
-								--maxi-#{$style}-#{$level}-font-weight-general
-							);
-							font-style: var(
-								--maxi-#{$style}-#{$level}-font-style-general
-							);
-							text-transform: var(
-								--maxi-#{$style}-#{$level}-text-transform-general
-							);
-							text-decoration: var(
-								--maxi-#{$style}-#{$level}-text-decoration-general
-							);
-						}
+			&.maxi-text-block li,
+			.maxi-text-block li {
+				font-family: var(--maxi-#{$style}-p-font-family-general);
+				font-weight: var(--maxi-#{$style}-p-font-weight-general);
+				font-style: var(--maxi-#{$style}-p-font-style-general);
+				text-transform: var(--maxi-#{$style}-p-text-transform-general);
+				text-decoration: var(
+					--maxi-#{$style}-p-text-decoration-general
+				);
+			}
+
+			&.maxi-block--has-link .maxi-text-block__content {
+				color: var(--maxi-#{$style}-link);
+				&:hover,
+				&:focus {
+					color: var(--maxi-#{$style}-link-hover);
+				}
+				&:active {
+					color: var(--maxi-#{$style}-link-active);
+				}
+				&:visited {
+					color: var(--maxi-#{$style}-link-visited);
+				}
+			}
+
+			&.maxi-text-block a.maxi-text-block--link,
+			.maxi-text-block a.maxi-text-block--link {
+				color: var(--maxi-#{$style}-link);
+				&:hover,
+				&:focus {
+					color: var(--maxi-#{$style}-link-hover);
+					span {
+						color: var(--maxi-#{$style}-link-hover);
 					}
 				}
+				&:active {
+					color: var(--maxi-#{$style}-link-active);
+					span {
+						color: var(--maxi-#{$style}-link-active);
+					}
+				}
+				&:visited {
+					color: var(--maxi-#{$style}-link-visited);
+					span {
+						color: var(--maxi-#{$style}-link-visited);
+					}
+				}
+			}
 
-				&.maxi-text-block li,
-				.maxi-text-block li {
+			&.maxi-button-block .maxi-button-block__content,
+			.maxi-button-block .maxi-button-block__content {
+				font-family: var(
+					--maxi-#{$style}-button-font-family-general,
+					var(--maxi-#{$style}-p-font-family-general)
+				);
+				font-weight: var(--maxi-#{$style}-button-font-weight-general);
+				font-style: var(--maxi-#{$style}-button-font-style-general);
+				text-transform: var(
+					--maxi-#{$style}-button-text-transform-general
+				);
+				text-decoration: var(
+					--maxi-#{$style}-button-text-decoration-general
+				);
+			}
+
+			&.maxi-image-block .maxi-hover-details,
+			.maxi-image-block .maxi-hover-details {
+				h4 {
+					font-family: var(--maxi-#{$style}-h4-font-family-general);
+					font-weight: var(--maxi-#{$style}-h4-font-weight-general);
+					font-style: var(--maxi-#{$style}-h4-font-style-general);
+					text-transform: var(
+						--maxi-#{$style}-h4-text-transform-general
+					);
+					text-decoration: var(
+						--maxi-#{$style}-h4-text-decoration-general
+					);
+				}
+
+				p {
 					font-family: var(--maxi-#{$style}-p-font-family-general);
 					font-weight: var(--maxi-#{$style}-p-font-weight-general);
 					font-style: var(--maxi-#{$style}-p-font-style-general);
@@ -116,115 +192,22 @@ body.maxi-blocks--active {
 						--maxi-#{$style}-p-text-decoration-general
 					);
 				}
-
-				&.maxi-block--has-link .maxi-text-block__content {
-					color: var(--maxi-#{$style}-link);
-					&:hover,
-					&:focus {
-						color: var(--maxi-#{$style}-link-hover);
-					}
-					&:active {
-						color: var(--maxi-#{$style}-link-active);
-					}
-					&:visited {
-						color: var(--maxi-#{$style}-link-visited);
-					}
-				}
-
-				&.maxi-text-block a.maxi-text-block--link,
-				.maxi-text-block a.maxi-text-block--link {
-					color: var(--maxi-#{$style}-link);
-					&:hover,
-					&:focus {
-						color: var(--maxi-#{$style}-link-hover);
-						span {
-							color: var(--maxi-#{$style}-link-hover);
-						}
-					}
-					&:active {
-						color: var(--maxi-#{$style}-link-active);
-						span {
-							color: var(--maxi-#{$style}-link-active);
-						}
-					}
-					&:visited {
-						color: var(--maxi-#{$style}-link-visited);
-						span {
-							color: var(--maxi-#{$style}-link-visited);
-						}
-					}
-				}
-
-				&.maxi-button-block .maxi-button-block__content,
-				.maxi-button-block .maxi-button-block__content {
-					font-family: var(
-						--maxi-#{$style}-button-font-family-general,
-						var(--maxi-#{$style}-p-font-family-general)
-					);
-					font-weight: var(
-						--maxi-#{$style}-button-font-weight-general
-					);
-					font-style: var(--maxi-#{$style}-button-font-style-general);
-					text-transform: var(
-						--maxi-#{$style}-button-text-transform-general
-					);
-					text-decoration: var(
-						--maxi-#{$style}-button-text-decoration-general
-					);
-				}
-
-				&.maxi-image-block .maxi-hover-details,
-				.maxi-image-block .maxi-hover-details {
-					h4 {
-						font-family: var(
-							--maxi-#{$style}-h4-font-family-general
-						);
-						font-weight: var(
-							--maxi-#{$style}-h4-font-weight-general
-						);
-						font-style: var(--maxi-#{$style}-h4-font-style-general);
-						text-transform: var(
-							--maxi-#{$style}-h4-text-transform-general
-						);
-						text-decoration: var(
-							--maxi-#{$style}-h4-text-decoration-general
-						);
-					}
-
-					p {
-						font-family: var(
-							--maxi-#{$style}-p-font-family-general
-						);
-						font-weight: var(
-							--maxi-#{$style}-p-font-weight-general
-						);
-						font-style: var(--maxi-#{$style}-p-font-style-general);
-						text-transform: var(
-							--maxi-#{$style}-p-text-transform-general
-						);
-						text-decoration: var(
-							--maxi-#{$style}-p-text-decoration-general
-						);
-					}
-				}
 			}
+		}
 
-			&.maxi-search-block,
-			.maxi-search-block {
-				&__input,
-				&__button__content {
-					font-family: var(--maxi-#{$style}-p-font-family-general);
-					font-size: var(--maxi-#{$style}-p-font-size-general);
-					line-height: var(--maxi-#{$style}-p-line-height-general);
-					font-weight: var(--maxi-#{$style}-p-font-weight-general);
-					font-style: var(--maxi-#{$style}-p-font-style-general);
-					text-transform: var(
-						--maxi-#{$style}-p-text-transform-general
-					);
-					text-decoration: var(
-						--maxi-#{$style}-p-text-decoration-general
-					);
-				}
+		&.maxi-search-block,
+		.maxi-search-block {
+			&__input,
+			&__button__content {
+				font-family: var(--maxi-#{$style}-p-font-family-general);
+				font-size: var(--maxi-#{$style}-p-font-size-general);
+				line-height: var(--maxi-#{$style}-p-line-height-general);
+				font-weight: var(--maxi-#{$style}-p-font-weight-general);
+				font-style: var(--maxi-#{$style}-p-font-style-general);
+				text-transform: var(--maxi-#{$style}-p-text-transform-general);
+				text-decoration: var(
+					--maxi-#{$style}-p-text-decoration-general
+				);
 			}
 		}
 	}
@@ -236,23 +219,26 @@ body.maxi-blocks--active {
 body.maxi-blocks--active {
 	@each $style in $styles {
 		/* Palette */
-		div#editor .maxi-color-palette--#{$style},
-		div#site-editor .maxi-color-palette--#{$style} {
-			@each $color_number in $color_set {
-				.maxi-color-control__palette
-					.maxi-color-control__palette-box
-					.maxi-color-control__palette-item__#{$color_number} {
-					background-color: rgba(
-						var(--maxi-#{$style}-color-#{$color_number}),
-						1
-					);
+		div#editor,
+		div#site-editor {
+			.maxi-color-palette--#{$style} {
+				@each $color_number in $color_set {
+					.maxi-color-control__palette
+						.maxi-color-control__palette-box
+						.maxi-color-control__palette-item__#{$color_number} {
+						background-color: rgba(
+							var(--maxi-#{$style}-color-#{$color_number}),
+							1
+						);
+					}
 				}
 			}
 		}
 	}
 }
 
-@mixin style-card-styles($breakpoint, $is_backend) {
+/* Style cards responsive mixin */
+@mixin style-card-styles($responsive_size, $is_backend) {
 	@each $style in $styles {
 		$class_name: '.maxi-#{$style}';
 
@@ -268,28 +254,28 @@ body.maxi-blocks--active {
 				@each $level in $levels {
 					#{$level} {
 						font-family: var(
-							--maxi-#{$style}-#{$level}-font-family-#{$breakpoint}
+							--maxi-#{$style}-#{$level}-font-family-#{$responsive_size}
 						);
 						font-size: var(
-							--maxi-#{$style}-#{$level}-font-size-#{$breakpoint}
+							--maxi-#{$style}-#{$level}-font-size-#{$responsive_size}
 						);
 						line-height: var(
-							--maxi-#{$style}-#{$level}-line-height-#{$breakpoint}
+							--maxi-#{$style}-#{$level}-line-height-#{$responsive_size}
 						);
 						letter-spacing: var(
-							--maxi-#{$style}-#{$level}-letter-spacing-#{$breakpoint}
+							--maxi-#{$style}-#{$level}-letter-spacing-#{$responsive_size}
 						);
 						font-weight: var(
-							--maxi-#{$style}-#{$level}-font-weight-#{$breakpoint}
+							--maxi-#{$style}-#{$level}-font-weight-#{$responsive_size}
 						);
 						text-transform: var(
-							--maxi-#{$style}-#{$level}-text-transform-#{$breakpoint}
+							--maxi-#{$style}-#{$level}-text-transform-#{$responsive_size}
 						);
 						font-style: var(
-							--maxi-#{$style}-#{$level}-font-style-#{$breakpoint}
+							--maxi-#{$style}-#{$level}-font-style-#{$responsive_size}
 						);
 						text-decoration: var(
-							--maxi-#{$style}-#{$level}-text-decoration-#{$breakpoint}
+							--maxi-#{$style}-#{$level}-text-decoration-#{$responsive_size}
 						);
 					}
 				}
@@ -297,38 +283,44 @@ body.maxi-blocks--active {
 
 			&.maxi-text-block li,
 			.maxi-text-block li {
-				font-family: var(--maxi-#{$style}-p-font-family-#{$breakpoint});
-				font-size: var(--maxi-#{$style}-p-font-size-#{$breakpoint});
-				line-height: var(--maxi-#{$style}-p-line-height-#{$breakpoint});
+				font-family: var(
+					--maxi-#{$style}-p-font-family-#{$responsive_size}
+				);
+				font-size: var(
+					--maxi-#{$style}-p-font-size-#{$responsive_size}
+				);
+				line-height: var(
+					--maxi-#{$style}-p-line-height-#{$responsive_size}
+				);
 				letter-spacing: var(
-					--maxi-#{$style}-p-letter-spacing-#{$breakpoint}
+					--maxi-#{$style}-p-letter-spacing-#{$responsive_size}
 				);
 			}
 
 			.maxi-button-block__content {
 				font-family: var(
-					--maxi-#{$style}-button-font-family-#{$breakpoint}
+					--maxi-#{$style}-button-font-family-#{$responsive_size}
 				);
 				font-size: var(
-					--maxi-#{$style}-button-font-size-#{$breakpoint}
+					--maxi-#{$style}-button-font-size-#{$responsive_size}
 				);
 				line-height: var(
-					--maxi-#{$style}-button-line-height-#{$breakpoint}
+					--maxi-#{$style}-button-line-height-#{$responsive_size}
 				);
 				letter-spacing: var(
-					--maxi-#{$style}-button-letter-spacing-#{$breakpoint}
+					--maxi-#{$style}-button-letter-spacing-#{$responsive_size}
 				);
 				font-weight: var(
-					--maxi-#{$style}-button-font-weight-#{$breakpoint}
+					--maxi-#{$style}-button-font-weight-#{$responsive_size}
 				);
 				text-transform: var(
-					--maxi-#{$style}-button-text-transform-#{$breakpoint}
+					--maxi-#{$style}-button-text-transform-#{$responsive_size}
 				);
 				font-style: var(
-					--maxi-#{$style}-button-font-style-#{$breakpoint}
+					--maxi-#{$style}-button-font-style-#{$responsive_size}
 				);
 				text-decoration: var(
-					--maxi-#{$style}-button-text-decoration-#{$breakpoint}
+					--maxi-#{$style}-button-text-decoration-#{$responsive_size}
 				);
 			}
 
@@ -336,81 +328,83 @@ body.maxi-blocks--active {
 			.maxi-image-block {
 				figcaption {
 					font-family: var(
-						--maxi-#{$style}-p-font-family-#{$breakpoint}
+						--maxi-#{$style}-p-font-family-#{$responsive_size}
 					);
-					font-size: var(--maxi-#{$style}-p-font-size-#{$breakpoint});
+					font-size: var(
+						--maxi-#{$style}-p-font-size-#{$responsive_size}
+					);
 					line-height: var(
-						--maxi-#{$style}-p-line-height-#{$breakpoint}
+						--maxi-#{$style}-p-line-height-#{$responsive_size}
 					);
 					letter-spacing: var(
-						--maxi-#{$style}-p-letter-spacing-#{$breakpoint}
+						--maxi-#{$style}-p-letter-spacing-#{$responsive_size}
 					);
 					font-weight: var(
-						--maxi-#{$style}-p-font-weight-#{$breakpoint}
+						--maxi-#{$style}-p-font-weight-#{$responsive_size}
 					);
 					text-transform: var(
-						--maxi-#{$style}-p-text-transform-#{$breakpoint}
+						--maxi-#{$style}-p-text-transform-#{$responsive_size}
 					);
 					font-style: var(
-						--maxi-#{$style}-p-font-style-#{$breakpoint}
+						--maxi-#{$style}-p-font-style-#{$responsive_size}
 					);
 					text-decoration: var(
-						--maxi-#{$style}-p-text-decoration-#{$breakpoint}
+						--maxi-#{$style}-p-text-decoration-#{$responsive_size}
 					);
 				}
 
 				.maxi-hover-details {
 					h4 {
 						font-family: var(
-							--maxi-#{$style}-h4-font-family-#{$breakpoint}
+							--maxi-#{$style}-h4-font-family-#{$responsive_size}
 						);
 						font-size: var(
-							--maxi-#{$style}-h4-font-size-#{$breakpoint}
+							--maxi-#{$style}-h4-font-size-#{$responsive_size}
 						);
 						line-height: var(
-							--maxi-#{$style}-h4-line-height-#{$breakpoint}
+							--maxi-#{$style}-h4-line-height-#{$responsive_size}
 						);
 						letter-spacing: var(
-							--maxi-#{$style}-h4-letter-spacing-#{$breakpoint}
+							--maxi-#{$style}-h4-letter-spacing-#{$responsive_size}
 						);
 						font-weight: var(
-							--maxi-#{$style}-h4-font-weight-#{$breakpoint}
+							--maxi-#{$style}-h4-font-weight-#{$responsive_size}
 						);
 						text-transform: var(
-							--maxi-#{$style}-h4-text-transform-#{$breakpoint}
+							--maxi-#{$style}-h4-text-transform-#{$responsive_size}
 						);
 						font-style: var(
-							--maxi-#{$style}-h4-font-style-#{$breakpoint}
+							--maxi-#{$style}-h4-font-style-#{$responsive_size}
 						);
 						text-decoration: var(
-							--maxi-#{$style}-h4-text-decoration-#{$breakpoint}
+							--maxi-#{$style}-h4-text-decoration-#{$responsive_size}
 						);
 					}
 
 					p {
 						font-family: var(
-							--maxi-#{$style}-p-font-family-#{$breakpoint}
+							--maxi-#{$style}-p-font-family-#{$responsive_size}
 						);
 						font-size: var(
-							--maxi-#{$style}-p-font-size-#{$breakpoint}
+							--maxi-#{$style}-p-font-size-#{$responsive_size}
 						);
 						line-height: var(
-							--maxi-#{$style}-p-line-height-#{$breakpoint}
+							--maxi-#{$style}-p-line-height-#{$responsive_size}
 						);
 						letter-spacing: var(
-							--maxi-#{$style}-p-letter-spacing-#{$breakpoint}
+							--maxi-#{$style}-p-letter-spacing-#{$responsive_size}
 						);
 						font-weight: var(
-							--maxi-#{$style}-p-font-weight-#{$breakpoint}
+							--maxi-#{$style}-p-font-weight-#{$responsive_size}
 						);
 						text-transform: var(
-							--maxi-#{$style}-p-text-transform-#{$breakpoint}
+							--maxi-#{$style}-p-text-transform-#{$responsive_size}
 						);
 						font-style: var(
-							--maxi-#{$style}-p-font-style-#{$breakpoint}
+							--maxi-#{$style}-p-font-style-#{$responsive_size}
 						);
 						text-decoration: var(
-							--maxi-#{$style}-p-text-decoration-#{$breakpoint}
+							--maxi-#{$style}-p-text-decoration-#{$responsive_size}
 						);
 					}
 				}
@@ -421,26 +415,28 @@ body.maxi-blocks--active {
 				&__input,
 				&__button__content {
 					font-family: var(
-						--maxi-#{$style}-p-font-family-#{$breakpoint}
+						--maxi-#{$style}-p-font-family-#{$responsive_size}
 					);
-					font-size: var(--maxi-#{$style}-p-font-size-#{$breakpoint});
+					font-size: var(
+						--maxi-#{$style}-p-font-size-#{$responsive_size}
+					);
 					line-height: var(
-						--maxi-#{$style}-p-line-height-#{$breakpoint}
+						--maxi-#{$style}-p-line-height-#{$responsive_size}
 					);
 					letter-spacing: var(
-						--maxi-#{$style}-p-letter-spacing-#{$breakpoint}
+						--maxi-#{$style}-p-letter-spacing-#{$responsive_size}
 					);
 					font-weight: var(
-						--maxi-#{$style}-p-font-weight-#{$breakpoint}
+						--maxi-#{$style}-p-font-weight-#{$responsive_size}
 					);
 					text-transform: var(
-						--maxi-#{$style}-p-text-transform-#{$breakpoint}
+						--maxi-#{$style}-p-text-transform-#{$responsive_size}
 					);
 					font-style: var(
-						--maxi-#{$style}-p-font-style-#{$breakpoint}
+						--maxi-#{$style}-p-font-style-#{$responsive_size}
 					);
 					text-decoration: var(
-						--maxi-#{$style}-p-text-decoration-#{$breakpoint}
+						--maxi-#{$style}-p-text-decoration-#{$responsive_size}
 					);
 				}
 			}
@@ -448,19 +444,19 @@ body.maxi-blocks--active {
 	}
 }
 
+/* Style cards backend */
 @each $responsive_size in $responsive_sizes {
 	$current_responsive_attribute: '[maxi-blocks-responsive=#{$responsive_size}]';
 
-	@if ($responsive_size != 'general') {
-		body.maxi-blocks--active {
-			.edit-post-visual-editor#{$current_responsive_attribute},
-			&.editor-styles-wrapper#{$current_responsive_attribute} {
-				@include style-card-styles($responsive_size, true);
-			}
+	body.maxi-blocks--active {
+		.edit-post-visual-editor#{$current_responsive_attribute},
+		&.editor-styles-wrapper#{$current_responsive_attribute} {
+			@include style-card-styles($responsive_size, true);
 		}
 	}
 }
 
+/* Style cards frontend */
 @each $responsive_breakpoint in $responsive_breakpoints {
 	@if $responsive_breakpoint == 480 {
 		$responsive_width: max-width;

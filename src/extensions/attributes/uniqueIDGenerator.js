@@ -9,7 +9,7 @@ const uniqueIDGenerator = (blockName, diff = 1, isSiteEditor = false) => {
 		.replace(/[0-9]/g, '')}${isSiteEditor ? '-template' : ''}-${diff}`;
 
 	if (getIsUniqueIDRepeated(newID, 0))
-		return uniqueIDGenerator(blockName, diff + 1);
+		return uniqueIDGenerator(blockName, diff + 1, isSiteEditor);
 
 	return newID;
 };

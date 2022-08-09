@@ -262,7 +262,14 @@ const getPaneHeaderObject = props => {
 		},
 		' .maxi-pane-block .maxi-pane-block__header::after': {
 			headerLine: {
-				...getDividerStyles(props, 'line', props.blockStyle, false),
+				...getDividerStyles(
+					props,
+					'line',
+					props.blockStyle,
+					false,
+					'',
+					true
+				),
 			},
 		},
 		...(props['line-status-active'] && {
@@ -274,7 +281,8 @@ const getPaneHeaderObject = props => {
 							'line',
 							props.blockStyle,
 							false,
-							'active-'
+							'active-',
+							true
 						),
 					},
 				},
@@ -287,6 +295,8 @@ const getPaneHeaderObject = props => {
 							props,
 							'line',
 							props.blockStyle,
+							true,
+							'',
 							true
 						),
 					},
@@ -318,7 +328,14 @@ const getPaneContentObject = props => {
 		...(accordionLayout === 'simple' && {
 			' .maxi-pane-block .maxi-pane-block__content::after': {
 				paneLine: {
-					...getDividerStyles(props, 'line', props.blockStyle, false),
+					...getDividerStyles(
+						props,
+						'line',
+						props.blockStyle,
+						false,
+						'',
+						true
+					),
 				},
 			},
 			...(props['line-status-active'] && {
@@ -330,7 +347,8 @@ const getPaneContentObject = props => {
 								'line',
 								props.blockStyle,
 								false,
-								'active-'
+								'active-',
+								true
 							),
 						},
 					},
@@ -343,6 +361,8 @@ const getPaneContentObject = props => {
 								props,
 								'line',
 								props.blockStyle,
+								true,
+								'',
 								true
 							),
 						},

@@ -17,7 +17,8 @@ const getDividerStyles = (
 	target,
 	blockStyle,
 	isHover = false,
-	prefix = ''
+	prefix = '',
+	useBottomBorder = false
 ) => {
 	const response = {
 		label: 'Divider',
@@ -66,15 +67,18 @@ const getDividerStyles = (
 				isHover,
 			});
 
+			const positionHorizontal = useBottomBorder ? 'bottom' : 'top';
+			const positionVertical = 'right';
+
 			const dividerLineWeight = isHorizontal
 				? getLastBreakpointAttribute({
-						target: `${prefix}divider-border-top-width`,
+						target: `${prefix}divider-border-${positionHorizontal}-width`,
 						breakpoint,
 						attributes: obj,
 						isHover,
 				  })
 				: getLastBreakpointAttribute({
-						target: `${prefix}divider-border-right-width`,
+						target: `${prefix}divider-border-${positionVertical}-width`,
 						breakpoint,
 						attributes: obj,
 						isHover,
@@ -82,8 +86,8 @@ const getDividerStyles = (
 			const dividerLineWeightUnit =
 				getLastBreakpointAttribute({
 					target: isHorizontal
-						? `${prefix}divider-border-top-unit`
-						: `${prefix}divider-border-right-unit`,
+						? `${prefix}divider-border-${positionHorizontal}-unit`
+						: `${prefix}divider-border-${positionVertical}-unit`,
 					breakpoint,
 					attributes: obj,
 					isHover,
@@ -134,10 +138,10 @@ const getDividerStyles = (
 						  })),
 
 				...(isHorizontal && {
-					'border-top-style': dividerBorderStyle,
-					'border-right-style': 'none',
+					[`border-${positionHorizontal}-style`]: dividerBorderStyle,
+					[`border-${positionVertical}-style`]: 'none',
 					...(!isNil(dividerLineWeight) && {
-						'border-top-width': `${dividerLineWeight}${dividerLineWeightUnit}`,
+						[`border-${positionHorizontal}-width`]: `${dividerLineWeight}${dividerLineWeightUnit}`,
 						height: `${dividerLineWeight}${dividerLineWeightUnit}`,
 					}),
 					...(!isNil(dividerSize) && {
@@ -146,10 +150,10 @@ const getDividerStyles = (
 				}),
 
 				...(!isHorizontal && {
-					'border-top-style': 'none',
-					'border-right-style': dividerBorderStyle,
+					[`border-${positionHorizontal}-style`]: 'none',
+					[`border-${positionVertical}-style`]: dividerBorderStyle,
 					...(!isNil(dividerLineWeight) && {
-						'border-right-width': `${dividerLineWeight}${dividerLineWeightUnit}`,
+						[`border-${positionVertical}-width`]: `${dividerLineWeight}${dividerLineWeightUnit}`,
 						width: `${dividerLineWeight}${dividerLineWeightUnit}`,
 					}),
 					...(!isNil(dividerSize) && { height: `${dividerSize}%` }),

@@ -7,6 +7,7 @@ import { select, dispatch, subscribe } from '@wordpress/data';
  * Internal dependencies
  */
 import { getPageFonts, loadFonts } from '../text/fonts';
+import initMaxiBlocksResponsiveAttribute from './initMaxiBlocksResponsiveAttribute';
 
 /**
  * External dependencies
@@ -106,17 +107,6 @@ wp.domReady(() => {
 						const blockToolbarEditor = document.querySelector(
 							'.block-editor-block-list__block-popover'
 						);
-						const editorWrapper =
-							document.querySelector(
-								'.edit-post-visual-editor'
-							) ||
-							document
-								.querySelector(
-									'iframe[name="editor-canvas"].edit-site-visual-editor__editor-canvas'
-								)
-								?.contentDocument.querySelector(
-									'.editor-styles-wrapper'
-								);
 
 						if (
 							!isEmpty(blockNames) &&
@@ -175,33 +165,32 @@ wp.domReady(() => {
 									blockToolbarEditor.style.display = null;
 							}
 						}
-						if (
-							editorWrapper &&
-							!editorWrapper
-								.getAttributeNames()
-								.includes('maxi-blocks-responsive')
-						) {
-							const { receiveWinBreakpoint } =
-								select('maxiBlocks');
 
-							const winBreakpoint = receiveWinBreakpoint();
+						const editorWrapper =
+							document.querySelector(
+								'.edit-post-visual-editor'
+							) ||
+							document.querySelector('.edit-site-visual-editor');
 
-							editorWrapper.setAttribute(
-								'maxi-blocks-responsive',
-								winBreakpoint
+						const fseEditorWrapper = document
+							.querySelector(
+								'iframe[name="editor-canvas"].edit-site-visual-editor__editor-canvas'
+							)
+							?.contentDocument.querySelector(
+								'.editor-styles-wrapper'
 							);
-						}
+
+						[editorWrapper, fseEditorWrapper].forEach(wrapper => {
+							initMaxiBlocksResponsiveAttribute(wrapper);
+						});
 					}
 
 					// Responsive editor
 					if (
 						mutation.type === 'attributes' &&
-						(mutation.target.classList.contains(
+						mutation.target.classList.contains(
 							'edit-post-visual-editor'
-						) ||
-							mutation.target.classList.contains(
-								'edit-site-visual-editor'
-							)) &&
+						) &&
 						mutation.target.classList.contains(
 							'editor-styles-wrapper'
 						)
@@ -217,7 +206,18 @@ wp.domReady(() => {
 							mutation.target.style.width = `${responsiveWidth}px`;
 						}
 					}
-					// Responsive iframe
+
+					// FSE
+					if (
+						mutation.type === 'attributes' &&
+						mutation.target.classList.contains(
+							'edit-site-visual-editor__editor-canvas'
+						)
+					) {
+						// Remove width which gutenberg adds to the iframe
+						mutation.target.style.width = '100%';
+					}
+
 					if (
 						mutation.type === 'attributes' &&
 						(mutation.target.classList.contains(
@@ -227,6 +227,7 @@ wp.domReady(() => {
 								'is-mobile-preview'
 							))
 					) {
+						// Responsive iframe
 						const iframe = mutation.target.querySelector(
 							'iframe[name="editor-canvas"]'
 						);

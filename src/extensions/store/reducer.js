@@ -1,4 +1,3 @@
-import { select } from '@wordpress/data';
 import { omit } from 'lodash';
 
 const breakpointResizer = (
@@ -10,9 +9,13 @@ const breakpointResizer = (
 ) => {
 	const editorWrapper =
 		document.querySelector('.edit-post-visual-editor') ||
-		document.querySelector(
+		document.querySelector('.edit-site-visual-editor');
+
+	const fseEditorWrapper = document
+		.querySelector(
 			'iframe[name="editor-canvas"].edit-site-visual-editor__editor-canvas'
-		).contentDocument.body;
+		)
+		?.contentDocument.querySelector('.editor-styles-wrapper');
 
 	const winHeight = window.outerWidth;
 	const responsiveWidth =
@@ -20,10 +23,13 @@ const breakpointResizer = (
 		(size === 'xxl' && (xxlSize > winSize ? xxlSize : winSize)) ||
 		breakpoints[size];
 
-	editorWrapper.setAttribute(
-		'maxi-blocks-responsive',
-		size !== 'general' ? size : winBreakpoint
-	);
+	[editorWrapper, fseEditorWrapper].forEach(element => {
+		element?.setAttribute(
+			'maxi-blocks-responsive',
+			size !== 'general' ? size : winBreakpoint
+		);
+	});
+
 	editorWrapper.setAttribute('maxi-blocks-responsive-width', responsiveWidth);
 
 	if (size === 'general') {

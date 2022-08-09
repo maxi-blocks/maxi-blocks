@@ -15,7 +15,21 @@ import { isEmpty, uniq } from 'lodash';
  *
  * @param {string} font Name of the selected font
  */
-const loadFonts = (font, backendOnly = true, target = document) => {
+const loadFonts = (font, backendOnly = true, rawTarget) => {
+	const getTarget = target => {
+		if (target) return target;
+
+		const siteEditorIframe = document.querySelector(
+			'iframe[name="editor-canvas"].edit-site-visual-editor__editor-canvas'
+		);
+
+		if (siteEditorIframe) return siteEditorIframe.contentDocument;
+
+		return document;
+	};
+
+	const target = getTarget(rawTarget);
+
 	if (typeof font === 'object' && font !== null) {
 		Object.entries(font).forEach(([fontName, fontData]) => {
 			if (isEmpty(fontName)) return null;

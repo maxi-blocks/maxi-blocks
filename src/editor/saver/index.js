@@ -3,6 +3,7 @@
  */
 import { useEffect } from '@wordpress/element';
 import { useDispatch, useSelect } from '@wordpress/data';
+import { some } from 'lodash';
 
 /**
  * Internal dependencies
@@ -17,9 +18,19 @@ const BlockStylesSaver = () => {
 		select => {
 			const { isSavingPost, isPreviewingPost, getCurrentPostAttribute } =
 				select('core/editor');
+			const {
+				__experimentalGetDirtyEntityRecords,
+				isSavingEntityRecord,
+			} = select('core');
 			const { getEditorMode } = select('core/edit-post');
 
-			const isSaving = isSavingPost();
+			const dirtyEntityRecords = __experimentalGetDirtyEntityRecords();
+
+			const isSaving =
+				isSavingPost() ||
+				dirtyEntityRecords.some(record =>
+					isSavingEntityRecord(record.kind, record.name, record.key)
+				);
 			const isPreviewing = isPreviewingPost();
 			const isDraft = getCurrentPostAttribute('status') === 'draft';
 			const isCodeEditor = getEditorMode() === 'text';

@@ -74,6 +74,7 @@ class edit extends MaxiBlockComponent {
 		};
 
 		const ALLOWED_BLOCKS = ['maxi-blocks/pane-maxi'];
+
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}

@@ -31,21 +31,6 @@ import { selectorsAccordion } from './custom-css';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-const getPaneSpacing = props => {
-	const response = { label: 'Pane spacing', general: {} };
-
-	breakpoints.forEach(breakpoint => {
-		response[breakpoint] = {};
-		if (!isNil(props[`pane-spacing-${breakpoint}`])) {
-			response[breakpoint]['row-gap'] = `${
-				props[`pane-spacing-${breakpoint}`]
-			}${props[`pane-spacing-unit-${breakpoint}`] ?? 'px'}`;
-		}
-	});
-
-	return response;
-};
-
 const getNormalObject = props => {
 	const response = {
 		border: getBorderStyles({
@@ -95,7 +80,6 @@ const getNormalObject = props => {
 		flex: getFlexStyles({
 			...getGroupAttributes(props, 'flex'),
 		}),
-		paneSpacing: getPaneSpacing(props),
 	};
 
 	return response;

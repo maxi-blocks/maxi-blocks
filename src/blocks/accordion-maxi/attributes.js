@@ -42,7 +42,17 @@ const attributes = {
 	...attributesData.overflow,
 	...attributesData.zIndex,
 	...attributesData.customCss,
-	...attributesData.flex,
+	...{
+		...attributesData.flex,
+		'row-gap-general': {
+			type: 'number',
+			default: 15,
+		},
+		'flex-direction-general': {
+			type: 'string',
+			default: 'column',
+		},
+	},
 };
 
 export default attributes;

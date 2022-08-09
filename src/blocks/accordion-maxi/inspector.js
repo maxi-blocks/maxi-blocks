@@ -68,7 +68,7 @@ const Inspector = props => {
 												clientId={clientId}
 												{...getGroupAttributes(
 													attributes,
-													'accordion'
+													['accordion', 'flex']
 												)}
 												breakpoint={deviceType}
 												onChange={obj =>

@@ -29,7 +29,7 @@ const AccordionSettings = props => {
 		clientId,
 	} = props;
 
-	const minMaxSettings = {
+	const spacingMinMaxSettings = {
 		px: {
 			min: 0,
 			max: 999,
@@ -88,14 +88,14 @@ const AccordionSettings = props => {
 			{showSpacing && (
 				<AdvancedNumberControl
 					label={__('Spacing', 'maxi-blocks')}
-					minMaxSettings={minMaxSettings}
+					minMaxSettings={spacingMinMaxSettings}
 					value={getLastBreakpointAttribute({
-						target: 'pane-spacing',
+						target: 'row-gap',
 						breakpoint,
 						attributes: props,
 					})}
 					unit={getLastBreakpointAttribute({
-						target: 'pane-spacing-unit',
+						target: 'row-gap-unit',
 						breakpoint,
 						attributes: props,
 					})}
@@ -103,19 +103,19 @@ const AccordionSettings = props => {
 					allowedUnits={['px', 'em', 'vh']}
 					onChangeValue={val => {
 						onChange({
-							[`pane-spacing-${breakpoint}`]:
+							[`row-gap-${breakpoint}`]:
 								val !== undefined ? val : '',
 						});
 					}}
 					onChangeUnit={val => {
 						onChange({
-							[`pane-spacing-unit-${breakpoint}`]: val,
+							[`row-gap-unit-${breakpoint}`]: val,
 						});
 					}}
 					onReset={() =>
 						onChange({
-							[`pane-spacing-${breakpoint}`]: getDefaultAttribute(
-								`pane-spacing-${breakpoint}`
+							[`row-gap-${breakpoint}`]: getDefaultAttribute(
+								`row-gap-${breakpoint}`
 							),
 						})
 					}

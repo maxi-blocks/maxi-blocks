@@ -262,19 +262,23 @@ const updateSCOnEditor = styleCards => {
 		'iframe[name="editor-canvas"].edit-site-visual-editor__editor-canvas'
 	)?.contentDocument;
 
-	const element = siteEditorIFrame || document;
+	const elements = [document, siteEditorIFrame];
 
-	let SCStyle = element.getElementById('maxi-blocks-sc-vars-inline-css');
-	if (!SCStyle) {
-		SCStyle = element.createElement('style');
-		SCStyle.id = 'maxi-blocks-sc-vars-inline-css';
-		SCStyle.innerHTML = createSCStyleString(SCObject);
-		element.head.appendChild(SCStyle);
-		const { saveSCStyles } = dispatch('maxiBlocks/style-cards');
+	elements.forEach(element => {
+		if (!element) return;
 
-		// Needs a delay, if not Redux returns error 3
-		setTimeout(() => saveSCStyles(false), 150);
-	} else SCStyle.innerHTML = createSCStyleString(SCObject);
+		let SCStyle = element.getElementById('maxi-blocks-sc-vars-inline-css');
+		if (!SCStyle) {
+			SCStyle = element.createElement('style');
+			SCStyle.id = 'maxi-blocks-sc-vars-inline-css';
+			SCStyle.innerHTML = createSCStyleString(SCObject);
+			element.head.appendChild(SCStyle);
+			const { saveSCStyles } = dispatch('maxiBlocks/style-cards');
+
+			// Needs a delay, if not Redux returns error 3
+			setTimeout(() => saveSCStyles(false), 150);
+		} else SCStyle.innerHTML = createSCStyleString(SCObject);
+	});
 
 	const allSCFonts = getSCFontsData(SCObject);
 	if (!isEmpty(allSCFonts)) loadFonts(allSCFonts);

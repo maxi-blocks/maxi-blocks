@@ -38,6 +38,7 @@ const getIsActiveTab = ({
 	attributes,
 	breakpoint,
 	extraIndicators = [],
+	extraIndicatorGroups = [],
 	extraIndicatorsResponsive: extraIndicatorsResponsiveRaw = [],
 	ignoreIndicator = [],
 	ignoreIndicatorResponsive: ignoreIndicatorResponsiveRaw = [],
@@ -62,6 +63,14 @@ const getIsActiveTab = ({
 			...Object.keys(getGroupAttributes(currentAttributes, group))
 		);
 	});
+
+	const extraAttributes = [...extraIndicators];
+
+	extraIndicatorGroups.forEach(group =>
+		Object.keys(getGroupAttributes(currentAttributes, group)).forEach(key =>
+			extraAttributes.push(key)
+		)
+	);
 
 	const extraIndicatorsResponsive = getResponsiveAttributeKeys(
 		extraIndicatorsResponsiveRaw
@@ -186,7 +195,7 @@ const getIsActiveTab = ({
 
 	return ![
 		...attributes,
-		...extraIndicators,
+		...extraAttributes,
 		...extraIndicatorsResponsive,
 	].every(attribute => {
 		if (excludedAttributes.includes(attribute)) return true;

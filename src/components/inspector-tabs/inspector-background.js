@@ -13,7 +13,6 @@ import {
 	getGroupAttributes,
 	setHoverAttributes,
 } from '../../extensions/styles';
-import { getIgnoreIndicator } from '../../extensions/indicators';
 import ManageHoverTransitions from '../manage-hover-transitions';
 
 /**
@@ -54,22 +53,6 @@ const background = ({
 	const hoverStatus =
 		attributes[`${prefix}background-hover-status`] || globalHoverStatus;
 
-	const ignoreIndicator = getIgnoreIndicator({
-		attributes,
-		ignoreGroupAttributes: groupAttributes,
-		prefix,
-		target: 'background-active-media',
-		valueToCompare: 'none',
-	});
-	const ignoreIndicatorHover = getIgnoreIndicator({
-		attributes,
-		ignoreGroupAttributes: groupAttributes,
-		isHover: true,
-		prefix,
-		target: 'background-active-media',
-		valueToCompare: 'none',
-	});
-
 	return {
 		label: __(`${label} background`, 'maxi-blocks'),
 		disablePadding: true,
@@ -108,7 +91,6 @@ const background = ({
 								globalProps={globalProps}
 							/>
 						),
-						ignoreIndicator,
 					},
 					{
 						label: __('Hover state', 'maxi-blocks'),
@@ -186,13 +168,11 @@ const background = ({
 							</>
 						),
 						extraIndicators: [`${prefix}background-hover-status`],
-						ignoreIndicator: ignoreIndicatorHover,
 					},
 				]}
 				depth={depth}
 			/>
 		),
-		ignoreIndicator: [...ignoreIndicator, ...ignoreIndicatorHover],
 	};
 };
 

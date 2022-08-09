@@ -106,3 +106,8 @@ body.maxi-blocks--active.ast-highlight-wpblock-onhover
 		border-radius: 0;
 	}
 }
+/*Overwrites Astra container for the Maxi full width template*/
+body.maxi-blocks--active.page-template-full-width-template .ast-container {
+	max-width: 100%;
+	padding: 0;
+}

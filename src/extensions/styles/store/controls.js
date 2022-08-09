@@ -28,12 +28,17 @@ async function processCss(code) {
  */
 const controls = {
 	async SAVE_STYLES({ isUpdate, styles }) {
-		const id = select('core/editor').getCurrentPostId();
+		const isSiteEditing = !!select('core/edit-site');
+
+		const id = isSiteEditing
+			? select('core/edit-site').getEditedPostId()
+			: select('core/editor').getCurrentPostId();
+
 		const parsedStyles = await processCss(frontendStyleGenerator(styles));
 		const fonts = select('maxiBlocks/text').getPostFonts();
 
 		await apiFetch({
-			path: '/maxi-blocks/v1.0/post',
+			path: '/maxi-blocks/v1.0/meta',
 			method: 'POST',
 			data: {
 				id,
@@ -42,6 +47,7 @@ const controls = {
 					fonts,
 				}),
 				update: isUpdate,
+				isTemplate: isSiteEditing,
 			},
 		}).catch(err => {
 			console.error('Error saving styles. Code error: ', err);

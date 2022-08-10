@@ -55,7 +55,7 @@ const withAttributes = createHigherOrderComponent(
 			}
 			// isFirstOnHierarchy
 			const parentBlocks = select('core/block-editor')
-				.getBlockParents(clientId)
+				.getBlockParentsByBlockName(clientId, allowedBlocks)
 				.filter(el => {
 					return el !== clientId;
 				});

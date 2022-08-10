@@ -198,18 +198,12 @@ const getAttributesFromStyle = (styles, selector) => {
 									splitValueAndUnit(value);
 
 								return {
-									...result[
-										`transform-origin-${breakpoint}`
-									]?.[selector].normal,
 									[axis]: `${num}`,
 									[`${axis}-unit`]: unit,
 								};
 						  })()
 						: (() => {
 								return {
-									...result[
-										`transform-origin-${breakpoint}`
-									]?.[selector].normal,
 									[axis]: value,
 								};
 						  })()),
@@ -220,6 +214,9 @@ const getAttributesFromStyle = (styles, selector) => {
 					[selector]: {
 						...result[`transform-origin-${breakpoint}`]?.[selector],
 						normal: {
+							...result[`transform-origin-${breakpoint}`]?.[
+								selector
+							].normal,
 							...response,
 						},
 					},

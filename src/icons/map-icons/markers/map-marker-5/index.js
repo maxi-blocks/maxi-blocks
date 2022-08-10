@@ -13,6 +13,8 @@ const mapMarker5 = (
 			strokeMiterlimit='10'
 			strokeWidth='2'
 			d='M6.6 1.7v20.6M20 1.7H6.6l.1 11.4H20l-4.9-5.7zM4 22.3h5.2'
+			data-stroke
+			data-fill
 		/>
 	</SVG>
 );

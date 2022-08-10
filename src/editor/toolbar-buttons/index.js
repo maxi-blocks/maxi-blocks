@@ -51,9 +51,8 @@ wp.domReady(() => {
 
 	subscribe(() => {
 		// Resetting isMaxiToolbar if we are switching to a different template
-		if (select('core/edit-site')?.isNavigationOpened()) {
+		if (select('core/edit-site')?.isNavigationOpened())
 			isMaxiToolbar = false;
-		}
 
 		if (isMaxiToolbar) return;
 

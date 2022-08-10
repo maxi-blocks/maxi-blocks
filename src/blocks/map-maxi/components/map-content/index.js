@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState, useRef } from '@wordpress/element';
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -38,15 +38,13 @@ const MapContent = props => {
 		'map-zoom': mapZoom,
 	} = attributes;
 
-	const mapRef = useRef(null);
-
 	const [isDraggingMarker, setIsDraggingMarker] = useState(false);
 	const [isAddingMarker, setIsAddingMarker] = useState(false);
 
-	const resizeMap = mapRef => {
-		const resizeObserver = new ResizeObserver(() =>
-			mapRef.current?.invalidateSize()
-		);
+	const resizeMap = map => {
+		// To get rid of the grey bars, we need to update the map size
+		// https://stackoverflow.com/a/71006998
+		const resizeObserver = new ResizeObserver(() => map?.invalidateSize());
 
 		const container = document.getElementById(
 			`maxi-map-block__container-${uniqueID}`
@@ -65,12 +63,11 @@ const MapContent = props => {
 			{apiKey || !isGoogleMaps ? (
 				<>
 					<MapContainer
-						ref={mapRef}
 						center={[mapLatitude, mapLongitude]}
 						minZoom={mapMinZoom}
 						maxZoom={mapMaxZoom}
 						zoom={mapZoom}
-						whenReady={() => resizeMap(mapRef)}
+						whenReady={map => resizeMap(map.target)}
 					>
 						{isGoogleMaps ? (
 							<ReactLeafletGoogleLayer apiKey={apiKey} />

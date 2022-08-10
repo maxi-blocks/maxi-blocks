@@ -7,7 +7,6 @@ const mapMarker = {
 			type: 'string',
 			default: '20',
 		},
-		'svg-fill-palette-opacity': 1,
 	},
 	'map-marker': {
 		type: 'number',

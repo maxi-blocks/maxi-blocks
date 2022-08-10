@@ -136,9 +136,23 @@ class MaxiBlocks_Styles
 		$template_slug = get_page_template_slug();
 		$template_id = get_template() . '//';
 
-		if($template_slug != '')
-        {
+		if($template_slug != '' && $template_slug !== false) {
 			$template_id .= $template_slug;
+		}
+		else if(is_home()) {
+			$template_id .= 'home';
+		}
+		else if(is_search()) {
+			$template_id .= 'search';
+		}
+		else if(is_404()) {
+			$template_id .= '404';
+		}
+		else if(is_archive()) {
+			$template_id .= 'archive';
+		}
+		else if(is_page()) {
+			$template_id .= 'page';
 		}
         else {
 			$template_id .= 'single';

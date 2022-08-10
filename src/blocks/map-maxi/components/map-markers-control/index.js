@@ -21,39 +21,40 @@ import {
  */
 import * as mapMarkers from '../../../../icons/map-icons/markers';
 
-const MarkerSize = ({ deviceType, onChange, ...props }) => {
-	return (
-		<AdvancedNumberControl
-			label={__('Marker size', 'maxi-blocks')}
-			min={15}
-			max={40}
-			step={1}
-			value={getLastBreakpointAttribute({
-				target: 'svg-width',
-				breakpoint: deviceType,
-				attributes: props,
-			})}
-			defaultValue={getDefaultAttribute(`svg-width-${deviceType}`)}
-			onChangeValue={val => {
-				onChange({
-					[`svg-width-${deviceType}`]: val,
-				});
-			}}
-			onReset={() => {
-				const defaultAttr = getDefaultAttribute(
-					`svg-width-${deviceType}`
-				);
-				onChange({
-					[`svg-width-${deviceType}`]: defaultAttr,
-				});
-			}}
-			optionType='string'
-		/>
-	);
-};
+const MarkerSize = ({ deviceType, onChange, ...props }) => (
+	<AdvancedNumberControl
+		label={__('Marker size', 'maxi-blocks')}
+		min={15}
+		max={40}
+		step={1}
+		value={getLastBreakpointAttribute({
+			target: 'svg-width',
+			breakpoint: deviceType,
+			attributes: props,
+		})}
+		defaultValue={getDefaultAttribute(`svg-width-${deviceType}`)}
+		onChangeValue={val => {
+			onChange({
+				[`svg-width-${deviceType}`]: val,
+			});
+		}}
+		onReset={() => {
+			const defaultAttr = getDefaultAttribute(`svg-width-${deviceType}`);
+			onChange({
+				[`svg-width-${deviceType}`]: defaultAttr,
+			});
+		}}
+		optionType='string'
+	/>
+);
 
 const MapMarkersControl = props => {
-	const { onChange, deviceType } = props;
+	const { blockStyle, deviceType, onChangeInline, onChange } = props;
+	const svgAttributes = {
+		...getGroupAttributes(props, 'svg'),
+		...getGroupAttributes(props, 'svgHover'),
+	};
+
 	return (
 		<>
 			<div className='maxi-map-markers-control'>
@@ -69,27 +70,31 @@ const MapMarkersControl = props => {
 				/>
 			</div>
 			<SvgColor
-				{...props}
+				{...svgAttributes}
 				type='fill'
 				label={__('Marker fill', 'maxi-blocks')}
+				onChangeInline={onChangeInline}
 				onChangeFill={({ content, ...rest }) => {
 					onChange({
 						'map-marker-icon': content,
 						...rest,
 					});
 				}}
+				blockStyle={blockStyle}
 				content={props['map-marker-icon']}
 			/>
 			<SvgColor
-				{...props}
+				{...svgAttributes}
 				type='line'
 				label={__('Marker stroke', 'maxi-blocks')}
+				onChangeInline={onChangeInline}
 				onChangeStroke={({ content, ...rest }) => {
 					onChange({
 						'map-marker-icon': content,
 						...rest,
 					});
 				}}
+				blockStyle={blockStyle}
 				content={props['map-marker-icon']}
 			/>
 			<ResponsiveTabsControl breakpoint={deviceType}>

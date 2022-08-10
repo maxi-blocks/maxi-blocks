@@ -31,11 +31,13 @@ const Inspector = props => {
 	const {
 		attributes,
 		deviceType,
-		maxiSetAttributes,
 		clientId,
-		blockStyle,
 		apiKey,
+		maxiSetAttributes,
+		insertInlineStyles,
+		cleanInlineStyles,
 	} = props;
+	const { blockStyle } = attributes;
 
 	return (
 		<InspectorControls>
@@ -91,9 +93,16 @@ const Inspector = props => {
 													attributes,
 													'mapMarker'
 												)}
-												onChange={obj =>
-													maxiSetAttributes(obj)
+												onChangeInline={obj =>
+													insertInlineStyles({
+														obj,
+														target: 'path',
+													})
 												}
+												onChange={obj => {
+													maxiSetAttributes(obj);
+													cleanInlineStyles('path');
+												}}
 												blockStyle={blockStyle}
 												deviceType={deviceType}
 											/>

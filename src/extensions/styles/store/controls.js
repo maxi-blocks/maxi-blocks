@@ -29,6 +29,11 @@ async function processCss(code) {
 const controls = {
 	async SAVE_STYLES({ isUpdate, styles }) {
 		const isSiteEditing = !!select('core/edit-site');
+		const isTemplatePart =
+			isSiteEditing &&
+			select('core/edit-site').getEditedPostType() === 'wp_template_part';
+
+		if (isTemplatePart) return;
 
 		const id = isSiteEditing
 			? select('core/edit-site').getEditedPostId()

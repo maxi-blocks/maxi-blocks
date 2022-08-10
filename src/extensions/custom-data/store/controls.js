@@ -15,6 +15,11 @@ const controls = {
 	},
 	async SAVE_CUSTOM_DATA({ isUpdate, customData }) {
 		const isSiteEditing = !!select('core/edit-site');
+		const isTemplatePart =
+			isSiteEditing &&
+			select('core/edit-site').getEditedPostType() === 'wp_template_part';
+
+		if (isTemplatePart) return;
 
 		const id = isSiteEditing
 			? select('core/edit-site').getEditedPostId()

@@ -47,11 +47,7 @@ const withAttributes = createHigherOrderComponent(
 				isNil(uniqueID) ||
 				document.getElementsByClassName(uniqueID).length > 1
 			) {
-				attributes.uniqueID = uniqueIDGenerator(
-					blockName,
-					1,
-					!!select('core/edit-site')
-				);
+				attributes.uniqueID = uniqueIDGenerator(blockName, 1);
 
 				const label = attributes.uniqueID.replace('-maxi-', '_');
 				attributes.customLabel =

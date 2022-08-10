@@ -26,7 +26,11 @@ import { getBoundaryElement } from '../../extensions/dom';
 /**
  * Component
  */
-const WRAPPER_BLOCKS = ['maxi-blocks/column-maxi', 'maxi-blocks/group-maxi'];
+const WRAPPER_BLOCKS = [
+	'maxi-blocks/column-maxi',
+	'maxi-blocks/group-maxi',
+	'maxi-blocks/slide-maxi',
+];
 
 const BlockInserter = props => {
 	const { className, clientId } = props;
@@ -102,7 +106,7 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 				animate={false}
 				position='bottom center'
 				focusOnMount={false}
-				style={{ zIndex: Object.keys(blockHierarchy).length + 1 }}
+				style={{ zIndex: Object.keys(blockHierarchy).length + 2 }}
 				anchorRef={ref.current}
 				__unstableSlotName='block-toolbar'
 				__unstableStickyBoundaryElement={getBoundaryElement(

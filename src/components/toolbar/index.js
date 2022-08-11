@@ -193,19 +193,28 @@ const MaxiToolbar = memo(
 							?.querySelector('.components-popover__content')
 							?.getBoundingClientRect();
 
-						const { width, x } = rect;
-						const { width: popoverWidth } = popoverRect;
+						const { width, x, y, height } = rect;
+						const { width: popoverWidth, height: popoverHeight } =
+							popoverRect;
 
 						const expectedContentX =
 							x + width / 2 - popoverWidth / 2;
+						const expectedContentY = y - popoverHeight;
 
-						const container = document
-							.querySelector('.editor-styles-wrapper')
-							?.getBoundingClientRect();
+						const container =
+							document.querySelector('.editor-styles-wrapper') ||
+							document.querySelector(
+								'iframe[name="editor-canvas"]'
+							).contentDocument.body;
 
-						if (container) {
-							const { x: containerX, width: containerWidth } =
-								container;
+						const containerRect = container.getBoundingClientRect();
+
+						if (containerRect) {
+							const {
+								x: containerX,
+								width: containerWidth,
+								y: containerY,
+							} = containerRect;
 
 							// Left cut off check
 							if (expectedContentX < containerX)
@@ -220,6 +229,19 @@ const MaxiToolbar = memo(
 									expectedContentX +
 									popoverWidth -
 									(containerX + containerWidth);
+
+							// Top cut off check
+							if (expectedContentY < containerY) {
+								const popovers =
+									document.querySelectorAll(
+										'.toolbar-wrapper'
+									);
+
+								const allPopoversHeight =
+									popovers.length * popoverHeight;
+
+								rect.y = y + height + allPopoversHeight + 28;
+							}
 						}
 
 						return rect;

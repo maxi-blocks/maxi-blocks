@@ -2,13 +2,14 @@
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { renderToString } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import { SvgColor } from '../../../../components/svg-color';
 import AdvancedNumberControl from '../../../../components/advanced-number-control';
-import PresetsControl from '../presets-control';
+import DefaultStylesControl from '../../../../components/default-styles-control';
 import ResponsiveTabsControl from '../../../../components/responsive-tabs-control';
 import {
 	getDefaultAttribute,
@@ -49,26 +50,39 @@ const MarkerSize = ({ deviceType, onChange, ...props }) => (
 );
 
 const MapMarkersControl = props => {
-	const { blockStyle, deviceType, onChangeInline, onChange } = props;
+	const {
+		blockStyle,
+		deviceType,
+		'map-marker': mapMarker,
+		onChangeInline,
+		onChange,
+	} = props;
 	const svgAttributes = {
 		...getGroupAttributes(props, 'svg'),
 		...getGroupAttributes(props, 'svgHover'),
 	};
 
+	const markerPresets = Object.values(mapMarkers).map((value, rawIndex) => {
+		const index = rawIndex + 1;
+
+		return {
+			label: __(`Default marker ${index}`, 'maxi-blocks'),
+			content: value,
+			activeItem: index === mapMarker,
+			onChange: () =>
+				onChange({
+					'map-marker': index,
+					'map-marker-icon': renderToString(value),
+				}),
+		};
+	});
+
 	return (
-		<>
-			<div className='maxi-map-markers-control'>
-				<PresetsControl
-					items={mapMarkers}
-					onChange={(mapMarker, mapMarkerIcon) => {
-						onChange({
-							'map-marker': mapMarker,
-							'map-marker-icon': mapMarkerIcon,
-						});
-					}}
-					prop={props['map-marker']}
-				/>
-			</div>
+		<div className='maxi-map-markers-control'>
+			<DefaultStylesControl
+				className='maxi-map-markers-control__marker-presets'
+				items={markerPresets}
+			/>
 			<SvgColor
 				{...svgAttributes}
 				type='fill'
@@ -114,7 +128,7 @@ const MapMarkersControl = props => {
 					deviceType={deviceType}
 				/>
 			</ResponsiveTabsControl>
-		</>
+		</div>
 	);
 };
 

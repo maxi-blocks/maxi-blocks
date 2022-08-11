@@ -178,7 +178,14 @@ class edit extends MaxiBlockComponent {
 			>
 				<div
 					className='maxi-pane-block__header'
-					onClick={() => {
+					onClick={e => {
+						if (
+							e.target.classList.contains(
+								'maxi-pane-block__title'
+							)
+						)
+							return;
+
 						if (!isOpen) {
 							this.openPane();
 						} else {

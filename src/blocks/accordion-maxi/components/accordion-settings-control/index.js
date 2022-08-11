@@ -3,16 +3,15 @@
  */
 import { select } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
+
+/**
+ * Internal dependencies
+ */
 import {
 	AdvancedNumberControl,
 	ToggleSwitch,
 	SelectControl,
 } from '../../../../components';
-
-/**
- * Internal dependencies
- */
-
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,

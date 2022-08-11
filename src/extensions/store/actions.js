@@ -43,9 +43,9 @@ const actions = {
 				__experimentalSetPreviewDeviceType: setPostPreviewDeviceType,
 			} = dispatch('core/edit-post');
 
-			const setPreviewDeviceType = document.querySelector('div#editor')
-				? setPostPreviewDeviceType
-				: dispatch('core/edit-site').__experimentalSetPreviewDeviceType;
+			const setPreviewDeviceType = select('core/edit-site')
+				? dispatch('core/edit-site').__experimentalSetPreviewDeviceType
+				: setPostPreviewDeviceType;
 
 			const breakpoints = select('maxiBlocks').receiveMaxiBreakpoints();
 

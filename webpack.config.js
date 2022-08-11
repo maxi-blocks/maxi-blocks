@@ -13,17 +13,17 @@ const { sync: glob } = require('fast-glob');
 // Frontend scripts config
 const jsFiles = {};
 
-glob(resolve(process.cwd(), 'js/*')).forEach(file => {
+glob(resolve(__dirname, 'js/*')).forEach(file => {
 	if (
 		file.endsWith('.js') &&
-		file.startsWith(resolve(process.cwd(), 'js/maxi-'))
+		file.startsWith(resolve(__dirname, 'js/maxi-'))
 	) {
 		const name = file
 			.replace('.js', '')
-			.replace(resolve(process.cwd(), 'js'), '')
+			.replace(resolve(__dirname, 'js'), '')
 			.replace('/', '');
 
-		jsFiles[name] = resolve(process.cwd(), 'js', file);
+		jsFiles[name] = resolve(__dirname, 'js', file);
 	}
 });
 
@@ -33,7 +33,7 @@ const scriptsConfig = {
 	entry: jsFiles,
 	output: {
 		filename: '[name].min.js',
-		path: resolve(process.cwd(), 'js/min'),
+		path: resolve(__dirname, 'js/min'),
 	},
 };
 

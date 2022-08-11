@@ -41,6 +41,8 @@ const MapContent = props => {
 	const [isDraggingMarker, setIsDraggingMarker] = useState(false);
 	const [isAddingMarker, setIsAddingMarker] = useState(false);
 
+	const showError = !apiKey && isGoogleMaps;
+
 	const resizeMap = map => {
 		// To get rid of the grey bars, we need to update the map size
 		// https://stackoverflow.com/a/71006998
@@ -50,9 +52,7 @@ const MapContent = props => {
 			`maxi-map-block__container-${uniqueID}`
 		);
 
-		if (container) {
-			resizeObserver.observe(container);
-		}
+		if (container) resizeObserver.observe(container);
 	};
 
 	return (
@@ -60,7 +60,7 @@ const MapContent = props => {
 			className='maxi-map-block__container'
 			id={`maxi-map-block__container-${uniqueID}`}
 		>
-			{apiKey || !isGoogleMaps ? (
+			{!showError && (
 				<>
 					<MapContainer
 						center={[mapLatitude, mapLongitude]}
@@ -106,7 +106,8 @@ const MapContent = props => {
 					</MapContainer>
 					<DropMarkerAlert isAddingMarker={isAddingMarker} />
 				</>
-			) : (
+			)}
+			{showError && (
 				<p className='maxi-map-block__not-found'>
 					{__(
 						'Oops, you can not see the map because you have not set your Google map API key, please navigate to the Maxi Block ',

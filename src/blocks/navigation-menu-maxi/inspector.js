@@ -23,14 +23,14 @@ import menuItemsToBlocks from '../../extensions/navigation-menu/classic-menu-to-
 import createNewMenu from '../../extensions/navigation-menu/create-new-menu';
 import { createBlock, parse } from '@wordpress/blocks';
 import MenuItemControl from './components/menu-item-control';
+import MenuItemEffectControl from './components/menu-item-effect-control';
 
 /**
  * Inspector
  */
 const Inspector = props => {
-	const { deviceType, maxiSetAttributes, attributes, clientId, blockStyle } =
-		props;
-	const { selectedMenuId } = attributes;
+	const { deviceType, maxiSetAttributes, attributes, clientId } = props;
+	const { selectedMenuId, blockStyle } = attributes;
 
 	const { navigationMenus, classicMenus } = useSelect(select => {
 		const { getEntityRecords, getMenuItems } = select('core');
@@ -189,7 +189,7 @@ const Inspector = props => {
 													) {
 														const newMenuId =
 															convertClassicMenuToBlocks(
-																+val
+																val
 															);
 														maxiSetAttributes({
 															selectedMenuId:
@@ -199,7 +199,7 @@ const Inspector = props => {
 													}
 													const newId =
 														await convertBlockMenuToMaxi(
-															+val
+															val
 														);
 
 													maxiSetAttributes({
@@ -213,6 +213,12 @@ const Inspector = props => {
 										label: 'Menu item',
 										content: (
 											<MenuItemControl
+												typography={{
+													...getGroupAttributes(
+														attributes,
+														'menuItem'
+													),
+												}}
 												{...getGroupAttributes(
 													attributes,
 													'menuItem'
@@ -225,8 +231,33 @@ const Inspector = props => {
 												hideAlignment
 												disableCustomFormats
 												blockStyle={blockStyle}
-												textLevel='p'
-												inlineTarget=' .maxi-navigation-link-block a'
+												textLevel='a'
+												inlineTarget=' .maxi-navigation-link-block .maxi-navigation-link-block__content'
+												globalProps={{
+													target: '',
+													type: 'a',
+												}}
+												hoverGlobalProps={{
+													target: 'hover',
+													type: 'a',
+												}}
+												styleCardPrefix=''
+											/>
+										),
+									},
+									{
+										label: 'Menu item effect',
+										content: (
+											<MenuItemEffectControl
+												{...getGroupAttributes(
+													attributes,
+													'menuItemEffect'
+												)}
+												onChange={obj =>
+													maxiSetAttributes(obj)
+												}
+												clientId={clientId}
+												breakpoint={deviceType}
 											/>
 										),
 									},

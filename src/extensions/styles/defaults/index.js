@@ -15,6 +15,7 @@ export { default as link } from './link';
 export { default as map } from './map';
 export { default as margin } from './margin';
 export { default as menuItem } from './menuItem';
+export { default as menuItemEffect } from './menuItemEffect';
 export { default as numberCounter } from './numberCounter';
 export { default as opacity } from './opacity';
 export { default as overflow } from './overflow';

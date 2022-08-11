@@ -15,6 +15,7 @@ const attributes = {
 	},
 
 	...attributesData.menuItem,
+	...attributesData.menuItemEffect,
 	...attributesData.border,
 	...attributesData.borderHover,
 	...attributesData.borderRadius,

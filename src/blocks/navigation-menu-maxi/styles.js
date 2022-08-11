@@ -1,7 +1,12 @@
 /**
  * Internal dependencies
  */
-import { getGroupAttributes, styleProcessor } from '../../extensions/styles';
+import {
+	getColorRGBAString,
+	getGroupAttributes,
+	getPaletteAttributes,
+	styleProcessor,
+} from '../../extensions/styles';
 import {
 	getBoxShadowStyles,
 	getZIndexStyles,
@@ -92,12 +97,77 @@ const getHoverObject = props => {
 	return response;
 };
 
+const getMenuItemEffectObject = (props, isHover = false, prefix = '') => {
+	const { 'effect-type': effectType } = props;
+
+	const effectTypetoStylesMapping = {
+		underline: {
+			'border-width': '0 0 1px 0',
+		},
+		overline: {
+			'border-width': '1px 0 0 0',
+		},
+		doubleLine: {
+			'border-width': '1px 0',
+		},
+		boxed: {
+			'border-width': '1px',
+		},
+	};
+
+	const getEffectTypeStyles = () => {
+		const getColor = () => {
+			const { paletteStatus, paletteColor, paletteOpacity, color } =
+				getPaletteAttributes({
+					obj: props,
+					prefix: `${prefix}effect-`,
+					isHover,
+				});
+
+			if (paletteStatus)
+				return getColorRGBAString({
+					firstVar: `${prefix}effect-color`,
+					secondVar: `color-${paletteColor}`,
+					opacity: paletteOpacity,
+					blockStyle: props.blockStyle,
+				});
+
+			return color;
+		};
+
+		return {
+			...(effectType === 'solidBackground'
+				? {
+						'background-color': getColor(),
+				  }
+				: {
+						'border-color': getColor(),
+						'border-style': 'solid',
+				  }),
+			...effectTypetoStylesMapping[effectType],
+		};
+	};
+
+	const response = {
+		' .maxi-navigation-link-block .maxi-navigation-link-block__content::after':
+			{
+				effect: {
+					general: {
+						...getEffectTypeStyles(),
+					},
+				},
+			},
+	};
+
+	return response;
+};
+
 const getMenuItemObject = props => {
 	const prefix = 'menu-item-';
 
 	const response = {
 		' .maxi-navigation-link-block .maxi-navigation-link-block__content': {
-			typogrpahy: getTypographyStyles({
+			typography: getTypographyStyles({
 				obj: getGroupAttributes(props, 'menuItem'),
 				prefix,
 				blockStyle: props.blockStyle,
@@ -106,7 +176,7 @@ const getMenuItemObject = props => {
 		},
 		' .maxi-navigation-link-block .maxi-navigation-link-block__content:hover':
 			{
-				typogrpahy: getTypographyStyles({
+				typography: getTypographyStyles({
 					obj: getGroupAttributes(props, 'menuItem', true),
 					prefix,
 					blockStyle: props.blockStyle,
@@ -119,13 +189,14 @@ const getMenuItemObject = props => {
 			},
 		' .maxi-navigation-link-block .maxi-navigation-link-block__content:active':
 			{
-				typogrpahy: getTypographyStyles({
+				typography: getTypographyStyles({
 					obj: getGroupAttributes(props, 'menuItem'),
 					prefix: `active-${prefix}`,
 					blockStyle: props.blockStyle,
 					textLevel: 'a',
 				}),
 			},
+		...getMenuItemEffectObject(props),
 	};
 
 	return response;

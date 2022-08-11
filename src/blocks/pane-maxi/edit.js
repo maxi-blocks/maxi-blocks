@@ -35,10 +35,20 @@ const simplePreset = {
 };
 
 const Content = forwardRef((props, ref) => {
-	const { clientId, isSelected, hasSelectedChild, isOpen } = props;
+	const { clientId, isSelected, hasSelectedChild, hasInnerBlocks, isOpen } =
+		props;
 
-	const ALLOWED_BLOCKS = ['maxi-blocks/row-maxi'];
-	const ROW_TEMPLATE = [['maxi-blocks/row-maxi']];
+	const ALLOWED_BLOCKS = wp.blocks
+		.getBlockTypes()
+		.map(block => block.name)
+		.filter(
+			blockName =>
+				[
+					'maxi-blocks/container-maxi',
+					'maxi-blocks/column-maxi',
+					'maxi-blocks/pane-maxi',
+				].indexOf(blockName) === -1
+		);
 
 	return (
 		<>
@@ -47,9 +57,9 @@ const Content = forwardRef((props, ref) => {
 					{ className: 'maxi-pane-block__content' },
 					{
 						allowedBlocks: ALLOWED_BLOCKS,
-						template: ROW_TEMPLATE,
-						templateLock: false,
-						renderAppender: false,
+						renderAppender: !hasInnerBlocks
+							? () => <BlockInserter clientId={clientId} />
+							: false,
 					}
 				)}
 			/>
@@ -148,6 +158,7 @@ class edit extends MaxiBlockComponent {
 			clientId,
 			isSelected,
 			hasSelectedChild,
+			hasInnerBlocks,
 		} = this.props;
 		const { uniqueID, title } = attributes;
 		const {
@@ -219,6 +230,7 @@ class edit extends MaxiBlockComponent {
 					clientId={clientId}
 					isSelected={isSelected}
 					hasSelectedChild={hasSelectedChild}
+					hasInnerBlocks={hasInnerBlocks}
 					isOpen={isOpen}
 				/>
 			</MaxiBlock>,

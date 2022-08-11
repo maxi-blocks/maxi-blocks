@@ -402,37 +402,39 @@ class MaxiBlockComponent extends Component {
 			} else {
 				const iframeDocument = siteEditorIframe.contentDocument;
 
-				iframeDocument.body.classList.add('maxi-blocks--active');
+				const getLastElement = (selector, element = iframeDocument) =>
+					Array.from(element.querySelectorAll(selector)).pop();
 
 				// Iframe on creation generates head, then gutenberg generates their own head
 				// and in some moment we have two heads, so we need to add styles only to head which isn't empty(gutenberg one)
-				const iframeHeads = iframeDocument.querySelectorAll('head');
+				const iframeHead = getLastElement('head');
 
-				iframeHeads.forEach(iframeHead => {
-					if (isEmpty(iframeHead.childNodes)) return;
+				// the same situation with body
+				getLastElement('body').classList.add('maxi-blocks--active');
 
-					let iframeWrapper = iframeHead.querySelector(
-						`#maxi-blocks__styles--${uniqueID}`
-					);
+				if (isEmpty(iframeHead.childNodes)) return;
 
-					if (!iframeWrapper) {
-						iframeWrapper = document.createElement('div');
-						iframeWrapper.id = `maxi-blocks__styles--${uniqueID}`;
-						iframeWrapper.classList.add('maxi-blocks__styles');
-						iframeHead.appendChild(iframeWrapper);
-					}
+				let iframeWrapper = iframeHead.querySelector(
+					`#maxi-blocks__styles--${uniqueID}`
+				);
 
-					render(
-						<StyleComponent
-							uniqueID={uniqueID}
-							stylesObj={obj}
-							currentBreakpoint={this.currentBreakpoint}
-							blockBreakpoints={breakpoints}
-							isSiteEditor
-						/>,
-						iframeWrapper
-					);
-				});
+				if (!iframeWrapper) {
+					iframeWrapper = document.createElement('div');
+					iframeWrapper.id = `maxi-blocks__styles--${uniqueID}`;
+					iframeWrapper.classList.add('maxi-blocks__styles');
+					iframeHead.appendChild(iframeWrapper);
+				}
+
+				render(
+					<StyleComponent
+						uniqueID={uniqueID}
+						stylesObj={obj}
+						currentBreakpoint={this.currentBreakpoint}
+						blockBreakpoints={breakpoints}
+						isSiteEditor
+					/>,
+					iframeWrapper
+				);
 			}
 
 			// Since WP 5.9 Gutenberg includes the responsive into iframes, so need to add the styles there also

@@ -35,6 +35,8 @@ const save = props => {
 	const name = 'maxi-blocks/slider-maxi';
 
 	const classes = classnames(
+		// https://github.com/yeahcan/maxi-blocks/issues/3555 sometimes causes validation error,
+		// remove next line once it is fixed.
 		'wp-block-maxi-blocks-slider-maxi',
 		fullWidth === 'full' ? 'alignfull' : null
 	);

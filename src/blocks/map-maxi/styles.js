@@ -1,7 +1,11 @@
 /**
  * Internal dependencies
  */
-import { getGroupAttributes, styleProcessor } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+	styleProcessor,
+} from '../../extensions/styles';
 import {
 	getBackgroundStyles,
 	getBorderStyles,
@@ -19,6 +23,8 @@ import {
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsMap } from './custom-css';
+
+const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const getNormalObject = props => {
 	const { blockStyle } = props;
@@ -128,6 +134,26 @@ const getPopupTypographyStyles = (props, isTitle = false) => {
 	return response;
 };
 
+const getAdjustedPositionPopupStyles = props => {
+	const response = {};
+
+	breakpoints.forEach(breakpoint => {
+		response[breakpoint] = {
+			'margin-left': `${
+				+getLastBreakpointAttribute({
+					target: 'svg-width',
+					breakpoint,
+					attributes: props,
+				}) * 0.85
+			}px`,
+		};
+	});
+
+	return {
+		popupPosition: response,
+	};
+};
+
 const getStyles = props => {
 	const { uniqueID, blockStyle } = props;
 
@@ -179,8 +205,9 @@ const getStyles = props => {
 				},
 				' .leaflet-marker-icon': getSVGWidthStyles({
 					obj: getGroupAttributes(props, 'svg'),
-					isImportant: true,
 				}),
+				' .leaflet-popup-content-wrapper':
+					getAdjustedPositionPopupStyles(props),
 				...getSVGStyles({
 					obj: {
 						...getGroupAttributes(props, 'svg'),

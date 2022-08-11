@@ -16,8 +16,6 @@ body.maxi-blocks--active .maxi-map-block {
 	.leaflet-div-icon {
 		background-color: transparent;
 		border: transparent;
-		top: 0;
-		height: auto !important;
 		animation: animate-marker 400ms ease-in-out;
 	}
 
@@ -31,15 +29,12 @@ body.maxi-blocks--active .maxi-map-block {
 	}
 
 	.leaflet-popup-content-wrapper {
-		margin-bottom: 5px;
 		text-align: center;
 		background: transparent;
 		box-shadow: none;
 	}
 
 	.leaflet-popup-content {
-		width: fit-content;
-		position: relative;
 		display: flex;
 		justify-content: center;
 		align-items: center;

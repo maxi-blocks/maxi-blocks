@@ -24,6 +24,7 @@ const Markers = props => {
 
 	const markerIcon = L.divIcon({
 		html: mapMarkerIcon,
+		iconSize: [null, null],
 	});
 
 	const handleRemoveMarker = (event, index) => {

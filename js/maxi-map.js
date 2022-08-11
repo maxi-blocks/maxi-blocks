@@ -113,6 +113,7 @@ window.onload = () => {
 
 				const markerIcon = L.divIcon({
 					html: mapMarkerIcon,
+					iconSize: [null, null],
 				});
 
 				mapMarkers?.map(marker => {

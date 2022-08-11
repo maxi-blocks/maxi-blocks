@@ -110,6 +110,37 @@ class edit extends MaxiBlockComponent {
 		}
 	}
 
+	openPane() {
+		const { clientId } = this.props;
+		const { onOpen, animationDuration } = this.context;
+
+		this.content.style.overflow = 'hidden';
+		// The css doesn't run transition if set to 100% so need to set exact value, for transition to happen
+		this.content.style.maxHeight = `${this.content.scrollHeight}px`;
+		setTimeout(() => {
+			this.content.style = null;
+		}, animationDuration);
+		onOpen(clientId);
+	}
+
+	closePane() {
+		const { clientId } = this.props;
+		const { onClose, animationDuration, isCollapsible, openPanes } =
+			this.context;
+
+		if (!isCollapsible && openPanes.length <= 1) return;
+		this.content.style.overflow = 'hidden';
+		// Same here, transition doesn't run if max-height is not set to exact value
+		this.content.style.maxHeight = `${this.content.scrollHeight}px`;
+		setTimeout(() => {
+			this.content.style.maxHeight = 0;
+			setTimeout(() => {
+				this.content.style = null;
+			}, animationDuration);
+		}, 1);
+		onClose(clientId);
+	}
+
 	render() {
 		const {
 			attributes,
@@ -124,10 +155,6 @@ class edit extends MaxiBlockComponent {
 			paneIconActive,
 			titleLevel,
 			openPanes,
-			onOpen,
-			onClose,
-			isCollapsible,
-			animationDuration,
 			accordionLayout,
 		} = this.context;
 
@@ -153,25 +180,9 @@ class edit extends MaxiBlockComponent {
 					className='maxi-pane-block__header'
 					onClick={() => {
 						if (!isOpen) {
-							this.content.style.overflow = 'hidden';
-							// The css doesn't run transition if set to 100% so need to set exact value, for transition to happen
-							this.content.style.maxHeight = `${this.content.scrollHeight}px`;
-							setTimeout(() => {
-								this.content.style = null;
-							}, animationDuration);
-							onOpen(clientId);
+							this.openPane();
 						} else {
-							if (!isCollapsible && openPanes.length <= 1) return;
-							this.content.style.overflow = 'hidden';
-							// Same here, transition doesn't run if max-height is not set to exact value
-							this.content.style.maxHeight = `${this.content.scrollHeight}px`;
-							setTimeout(() => {
-								this.content.style.maxHeight = 0;
-								setTimeout(() => {
-									this.content.style = null;
-								}, animationDuration);
-							}, 1);
-							onClose(clientId);
+							this.closePane();
 						}
 					}}
 				>

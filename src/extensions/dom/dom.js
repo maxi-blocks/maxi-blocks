@@ -218,6 +218,7 @@ wp.domReady(() => {
 						mutation.target.style.width = '100%';
 					}
 
+					// Responsive iframe
 					if (
 						mutation.type === 'attributes' &&
 						(mutation.target.classList.contains(

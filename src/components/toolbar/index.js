@@ -232,15 +232,17 @@ const MaxiToolbar = memo(
 
 							// Top cut off check
 							if (expectedContentY < containerY) {
-								const popovers =
+								// To avoid conflicts in position with another block toolbars(icon toolbar for example)
+								// we should move the toolbar lower than the rest of the toolbars
+								const toolbars =
 									document.querySelectorAll(
 										'.toolbar-wrapper'
 									);
 
-								const allPopoversHeight =
-									popovers.length * popoverHeight;
+								const allToolbarsHeight =
+									toolbars.length * popoverHeight;
 
-								rect.y = y + height + allPopoversHeight + 28;
+								rect.y = y + height + allToolbarsHeight + 28;
 							}
 						}
 

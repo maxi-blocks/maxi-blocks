@@ -13,9 +13,17 @@
 /*****************
 * General settings
 ******************/
-.interface-interface-skeleton__sidebar {
-	overflow-x: hidden;
-	scrollbar-gutter: stable;
+.interface-interface-skeleton {
+	&__sidebar {
+		overflow-x: hidden;
+		scrollbar-gutter: stable;
+	}
+
+	&__content {
+		// Removing background-color which this class has in FSE editor
+		// to make the iframe look good with small breakpoints
+		background-color: transparent !important;
+	}
 }
 
 // Scrollbar fix for Safari

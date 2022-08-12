@@ -42,7 +42,7 @@ const controls = {
 		const fonts = select('maxiBlocks/text').getPostFonts();
 
 		await apiFetch({
-			path: '/maxi-blocks/v1.0/meta',
+			path: '/maxi-blocks/v1.0/styles',
 			method: 'POST',
 			data: {
 				id,

@@ -82,7 +82,7 @@ if (!class_exists('MaxiBlocks_API')):
                     return current_user_can('edit_posts');
                 },
             ]);
-            register_rest_route($this->namespace, '/meta', [
+            register_rest_route($this->namespace, '/styles', [
                 'methods' => 'POST',
 				'callback' => [$this, 'post_maxi_blocks_meta'],
                 'args' => [

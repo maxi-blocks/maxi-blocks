@@ -3,6 +3,11 @@
  */
 import { dispatch, select } from '@wordpress/data';
 
+/**
+ * Internal dependencies
+ */
+import { getIsSiteEditorAndIsTemplatePart } from '../fse';
+
 const actions = {
 	receiveMaxiSettings() {
 		return {
@@ -43,7 +48,9 @@ const actions = {
 				__experimentalSetPreviewDeviceType: setPostPreviewDeviceType,
 			} = dispatch('core/edit-post');
 
-			const setPreviewDeviceType = select('core/edit-site')
+			const { isSiteEditor } = getIsSiteEditorAndIsTemplatePart();
+
+			const setPreviewDeviceType = isSiteEditor
 				? dispatch('core/edit-site').__experimentalSetPreviewDeviceType
 				: setPostPreviewDeviceType;
 

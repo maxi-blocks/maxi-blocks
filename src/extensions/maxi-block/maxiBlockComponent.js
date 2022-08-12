@@ -356,7 +356,6 @@ class MaxiBlockComponent extends Component {
 	 * Refresh the styles on Editor
 	 */
 	displayStyles(rawUniqueID) {
-		// console.log('STYLES');
 		const obj = this.getStylesObject;
 		const breakpoints = this.getBreakpoints;
 
@@ -439,7 +438,6 @@ class MaxiBlockComponent extends Component {
 			);
 
 			if (iframe) {
-				// console.log('IFRAME');
 				const iframeDocument = iframe.contentDocument;
 
 				if (iframeDocument.head) {

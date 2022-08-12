@@ -228,7 +228,6 @@ wp.domReady(() => {
 								'is-mobile-preview'
 							))
 					) {
-						// Responsive iframe
 						const iframe = mutation.target.querySelector(
 							'iframe[name="editor-canvas"]'
 						);

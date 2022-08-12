@@ -35,7 +35,7 @@ const controls = {
 				id,
 				data: JSON.stringify(customData),
 				update: isUpdate,
-				isTemplate: isSiteEditing,
+				isTemplate: isSiteEditor,
 			},
 		}).catch(err => {
 			console.error('Error saving Custom Data. Code error: ', err);

@@ -23,8 +23,9 @@ class edit extends MaxiBlockComponent {
 		return getStyles(this.props.attributes);
 	}
 
-	maxiBlockDidUpdate() {
-		const { clientId } = this.props;
+	maxiBlockDidUpdate(prevProps) {
+		const { clientId, isSelected } = this.props;
+		const { isSelected: wasSelected } = prevProps;
 		if (
 			this.context.slidesWidth[clientId] !==
 			this.blockRef.current.getBoundingClientRect().width
@@ -33,6 +34,9 @@ class edit extends MaxiBlockComponent {
 				clientId,
 				this.blockRef.current.getBoundingClientRect().width
 			);
+		}
+		if (isSelected !== wasSelected && isSelected) {
+			this.blockRef.current.setAttribute('data-slide-active', 'true');
 		}
 	}
 

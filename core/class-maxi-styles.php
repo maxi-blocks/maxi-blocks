@@ -387,7 +387,7 @@ class MaxiBlocks_Styles
     public function customMeta($metaJs, $is_template)
     {
         global $post;
-        if (!$is_template && (!$post || !isset($post->ID) || empty($metaJs))) {
+        if ((!$is_template && (!$post || !isset($post->ID))) || empty($metaJs)) {
             return [];
         }
 

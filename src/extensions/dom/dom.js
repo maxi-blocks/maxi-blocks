@@ -426,4 +426,23 @@ wp.domReady(() => {
 			observerSubscribe();
 		}
 	});
+
+	const fseIframeObserverUnsubscribe = subscribe(() => {
+		// Need to add 'maxi-blocks--active' class to the FSE iframe body
+		// because gutenberg is filtering the iframe classList
+		// https://github.com/WordPress/gutenberg/blob/trunk/packages/block-editor/src/components/iframe/index.js#L213-L220
+		const targetNode = document
+			.querySelector(
+				'iframe[name="editor-canvas"].edit-site-visual-editor__editor-canvas'
+			)
+			?.contentDocument.querySelector('.editor-styles-wrapper');
+
+		if (targetNode && !targetNode.classList.contains('maxi-blocks--active'))
+			targetNode.classList.add('maxi-blocks--active');
+
+		if (!targetNode && document.querySelector('.edit-post-visual-editor')) {
+			// Dismantling the second bomb if we are in the FSE
+			fseIframeObserverUnsubscribe();
+		}
+	});
 });

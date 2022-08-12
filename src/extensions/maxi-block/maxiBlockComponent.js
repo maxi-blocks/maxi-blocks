@@ -402,15 +402,11 @@ class MaxiBlockComponent extends Component {
 			} else {
 				const iframeDocument = siteEditorIframe.contentDocument;
 
-				const getLastElement = (selector, element = iframeDocument) =>
-					Array.from(element.querySelectorAll(selector)).pop();
-
 				// Iframe on creation generates head, then gutenberg generates their own head
 				// and in some moment we have two heads, so we need to add styles only to head which isn't empty(gutenberg one)
-				const iframeHead = getLastElement('head');
-
-				// the same situation with body
-				getLastElement('body').classList.add('maxi-blocks--active');
+				const iframeHead = Array.from(
+					iframeDocument.querySelectorAll('head')
+				).pop();
 
 				if (isEmpty(iframeHead.childNodes)) return;
 

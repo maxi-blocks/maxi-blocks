@@ -240,93 +240,48 @@ body.maxi-blocks--active {
 /* Style cards responsive mixin */
 @mixin style-card-styles($responsive_size, $is_backend) {
 	@each $style in $styles {
-		$class_name: '.maxi-#{$style}';
+		$class_name: '.maxi-block--backend';
 
-		@if ($is_backend) {
-			$class_name: '.maxi-#{$style}.maxi-block--backend';
-		} @else {
+		@if (not $is_backend) {
 			$class_name: '.maxi-#{$style}:not(.maxi-block--backend)';
 		}
 
-		#{$class_name} {
-			&.maxi-text-block,
-			.maxi-text-block {
-				@each $level in $levels {
-					#{$level} {
-						font-family: var(
-							--maxi-#{$style}-#{$level}-font-family-#{$responsive_size}
-						);
-						font-size: var(
-							--maxi-#{$style}-#{$level}-font-size-#{$responsive_size}
-						);
-						line-height: var(
-							--maxi-#{$style}-#{$level}-line-height-#{$responsive_size}
-						);
-						letter-spacing: var(
-							--maxi-#{$style}-#{$level}-letter-spacing-#{$responsive_size}
-						);
-						font-weight: var(
-							--maxi-#{$style}-#{$level}-font-weight-#{$responsive_size}
-						);
-						text-transform: var(
-							--maxi-#{$style}-#{$level}-text-transform-#{$responsive_size}
-						);
-						font-style: var(
-							--maxi-#{$style}-#{$level}-font-style-#{$responsive_size}
-						);
-						text-decoration: var(
-							--maxi-#{$style}-#{$level}-text-decoration-#{$responsive_size}
-						);
+		.maxi-#{$style} {
+			&#{$class_name} {
+				&.maxi-text-block,
+				.maxi-text-block {
+					@each $level in $levels {
+						#{$level} {
+							font-family: var(
+								--maxi-#{$style}-#{$level}-font-family-#{$responsive_size}
+							);
+							font-size: var(
+								--maxi-#{$style}-#{$level}-font-size-#{$responsive_size}
+							);
+							line-height: var(
+								--maxi-#{$style}-#{$level}-line-height-#{$responsive_size}
+							);
+							letter-spacing: var(
+								--maxi-#{$style}-#{$level}-letter-spacing-#{$responsive_size}
+							);
+							font-weight: var(
+								--maxi-#{$style}-#{$level}-font-weight-#{$responsive_size}
+							);
+							text-transform: var(
+								--maxi-#{$style}-#{$level}-text-transform-#{$responsive_size}
+							);
+							font-style: var(
+								--maxi-#{$style}-#{$level}-font-style-#{$responsive_size}
+							);
+							text-decoration: var(
+								--maxi-#{$style}-#{$level}-text-decoration-#{$responsive_size}
+							);
+						}
 					}
 				}
-			}
 
-			&.maxi-text-block li,
-			.maxi-text-block li {
-				font-family: var(
-					--maxi-#{$style}-p-font-family-#{$responsive_size}
-				);
-				font-size: var(
-					--maxi-#{$style}-p-font-size-#{$responsive_size}
-				);
-				line-height: var(
-					--maxi-#{$style}-p-line-height-#{$responsive_size}
-				);
-				letter-spacing: var(
-					--maxi-#{$style}-p-letter-spacing-#{$responsive_size}
-				);
-			}
-
-			.maxi-button-block__content {
-				font-family: var(
-					--maxi-#{$style}-button-font-family-#{$responsive_size}
-				);
-				font-size: var(
-					--maxi-#{$style}-button-font-size-#{$responsive_size}
-				);
-				line-height: var(
-					--maxi-#{$style}-button-line-height-#{$responsive_size}
-				);
-				letter-spacing: var(
-					--maxi-#{$style}-button-letter-spacing-#{$responsive_size}
-				);
-				font-weight: var(
-					--maxi-#{$style}-button-font-weight-#{$responsive_size}
-				);
-				text-transform: var(
-					--maxi-#{$style}-button-text-transform-#{$responsive_size}
-				);
-				font-style: var(
-					--maxi-#{$style}-button-font-style-#{$responsive_size}
-				);
-				text-decoration: var(
-					--maxi-#{$style}-button-text-decoration-#{$responsive_size}
-				);
-			}
-
-			&.maxi-image-block,
-			.maxi-image-block {
-				figcaption {
+				&.maxi-text-block li,
+				.maxi-text-block li {
 					font-family: var(
 						--maxi-#{$style}-p-font-family-#{$responsive_size}
 					);
@@ -339,49 +294,38 @@ body.maxi-blocks--active {
 					letter-spacing: var(
 						--maxi-#{$style}-p-letter-spacing-#{$responsive_size}
 					);
+				}
+
+				.maxi-button-block__content {
+					font-family: var(
+						--maxi-#{$style}-button-font-family-#{$responsive_size}
+					);
+					font-size: var(
+						--maxi-#{$style}-button-font-size-#{$responsive_size}
+					);
+					line-height: var(
+						--maxi-#{$style}-button-line-height-#{$responsive_size}
+					);
+					letter-spacing: var(
+						--maxi-#{$style}-button-letter-spacing-#{$responsive_size}
+					);
 					font-weight: var(
-						--maxi-#{$style}-p-font-weight-#{$responsive_size}
+						--maxi-#{$style}-button-font-weight-#{$responsive_size}
 					);
 					text-transform: var(
-						--maxi-#{$style}-p-text-transform-#{$responsive_size}
+						--maxi-#{$style}-button-text-transform-#{$responsive_size}
 					);
 					font-style: var(
-						--maxi-#{$style}-p-font-style-#{$responsive_size}
+						--maxi-#{$style}-button-font-style-#{$responsive_size}
 					);
 					text-decoration: var(
-						--maxi-#{$style}-p-text-decoration-#{$responsive_size}
+						--maxi-#{$style}-button-text-decoration-#{$responsive_size}
 					);
 				}
 
-				.maxi-hover-details {
-					h4 {
-						font-family: var(
-							--maxi-#{$style}-h4-font-family-#{$responsive_size}
-						);
-						font-size: var(
-							--maxi-#{$style}-h4-font-size-#{$responsive_size}
-						);
-						line-height: var(
-							--maxi-#{$style}-h4-line-height-#{$responsive_size}
-						);
-						letter-spacing: var(
-							--maxi-#{$style}-h4-letter-spacing-#{$responsive_size}
-						);
-						font-weight: var(
-							--maxi-#{$style}-h4-font-weight-#{$responsive_size}
-						);
-						text-transform: var(
-							--maxi-#{$style}-h4-text-transform-#{$responsive_size}
-						);
-						font-style: var(
-							--maxi-#{$style}-h4-font-style-#{$responsive_size}
-						);
-						text-decoration: var(
-							--maxi-#{$style}-h4-text-decoration-#{$responsive_size}
-						);
-					}
-
-					p {
+				&.maxi-image-block,
+				.maxi-image-block {
+					figcaption {
 						font-family: var(
 							--maxi-#{$style}-p-font-family-#{$responsive_size}
 						);
@@ -407,37 +351,93 @@ body.maxi-blocks--active {
 							--maxi-#{$style}-p-text-decoration-#{$responsive_size}
 						);
 					}
-				}
-			}
 
-			&.maxi-search-block,
-			.maxi-search-block {
-				&__input,
-				&__button__content {
-					font-family: var(
-						--maxi-#{$style}-p-font-family-#{$responsive_size}
-					);
-					font-size: var(
-						--maxi-#{$style}-p-font-size-#{$responsive_size}
-					);
-					line-height: var(
-						--maxi-#{$style}-p-line-height-#{$responsive_size}
-					);
-					letter-spacing: var(
-						--maxi-#{$style}-p-letter-spacing-#{$responsive_size}
-					);
-					font-weight: var(
-						--maxi-#{$style}-p-font-weight-#{$responsive_size}
-					);
-					text-transform: var(
-						--maxi-#{$style}-p-text-transform-#{$responsive_size}
-					);
-					font-style: var(
-						--maxi-#{$style}-p-font-style-#{$responsive_size}
-					);
-					text-decoration: var(
-						--maxi-#{$style}-p-text-decoration-#{$responsive_size}
-					);
+					.maxi-hover-details {
+						h4 {
+							font-family: var(
+								--maxi-#{$style}-h4-font-family-#{$responsive_size}
+							);
+							font-size: var(
+								--maxi-#{$style}-h4-font-size-#{$responsive_size}
+							);
+							line-height: var(
+								--maxi-#{$style}-h4-line-height-#{$responsive_size}
+							);
+							letter-spacing: var(
+								--maxi-#{$style}-h4-letter-spacing-#{$responsive_size}
+							);
+							font-weight: var(
+								--maxi-#{$style}-h4-font-weight-#{$responsive_size}
+							);
+							text-transform: var(
+								--maxi-#{$style}-h4-text-transform-#{$responsive_size}
+							);
+							font-style: var(
+								--maxi-#{$style}-h4-font-style-#{$responsive_size}
+							);
+							text-decoration: var(
+								--maxi-#{$style}-h4-text-decoration-#{$responsive_size}
+							);
+						}
+
+						p {
+							font-family: var(
+								--maxi-#{$style}-p-font-family-#{$responsive_size}
+							);
+							font-size: var(
+								--maxi-#{$style}-p-font-size-#{$responsive_size}
+							);
+							line-height: var(
+								--maxi-#{$style}-p-line-height-#{$responsive_size}
+							);
+							letter-spacing: var(
+								--maxi-#{$style}-p-letter-spacing-#{$responsive_size}
+							);
+							font-weight: var(
+								--maxi-#{$style}-p-font-weight-#{$responsive_size}
+							);
+							text-transform: var(
+								--maxi-#{$style}-p-text-transform-#{$responsive_size}
+							);
+							font-style: var(
+								--maxi-#{$style}-p-font-style-#{$responsive_size}
+							);
+							text-decoration: var(
+								--maxi-#{$style}-p-text-decoration-#{$responsive_size}
+							);
+						}
+					}
+				}
+
+				&.maxi-search-block,
+				.maxi-search-block {
+					&__input,
+					&__button__content {
+						font-family: var(
+							--maxi-#{$style}-p-font-family-#{$responsive_size}
+						);
+						font-size: var(
+							--maxi-#{$style}-p-font-size-#{$responsive_size}
+						);
+						line-height: var(
+							--maxi-#{$style}-p-line-height-#{$responsive_size}
+						);
+						letter-spacing: var(
+							--maxi-#{$style}-p-letter-spacing-#{$responsive_size}
+						);
+						font-weight: var(
+							--maxi-#{$style}-p-font-weight-#{$responsive_size}
+						);
+						text-transform: var(
+							--maxi-#{$style}-p-text-transform-#{$responsive_size}
+						);
+						font-style: var(
+							--maxi-#{$style}-p-font-style-#{$responsive_size}
+						);
+						text-decoration: var(
+							--maxi-#{$style}-p-text-decoration-#{$responsive_size}
+						);
+					}
 				}
 			}
 		}

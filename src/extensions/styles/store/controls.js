@@ -15,6 +15,7 @@ import postcss from 'postcss';
  * Internal dependencies
  */
 import frontendStyleGenerator from '../frontendStyleGenerator';
+import { getIsSiteEditorAndIsTemplatePart } from '../../fse';
 
 async function processCss(code) {
 	const { css } = postcss([autoprefixer]).process(code);
@@ -28,14 +29,12 @@ async function processCss(code) {
  */
 const controls = {
 	async SAVE_STYLES({ isUpdate, styles }) {
-		const isSiteEditing = !!select('core/edit-site');
-		const isTemplatePart =
-			isSiteEditing &&
-			select('core/edit-site').getEditedPostType() === 'wp_template_part';
+		const { isSiteEditor, isTemplatePart } =
+			getIsSiteEditorAndIsTemplatePart();
 
 		if (isTemplatePart) return;
 
-		const id = isSiteEditing
+		const id = isSiteEditor
 			? select('core/edit-site').getEditedPostId()
 			: select('core/editor').getCurrentPostId();
 
@@ -52,7 +51,7 @@ const controls = {
 					fonts,
 				}),
 				update: isUpdate,
-				isTemplate: isSiteEditing,
+				isTemplate: isSiteEditor,
 			},
 		}).catch(err => {
 			console.error('Error saving styles. Code error: ', err);

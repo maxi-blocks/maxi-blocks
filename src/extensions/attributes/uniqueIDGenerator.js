@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import getIsUniqueIDRepeated from '../maxi-block/getIsUniqueIDRepeated';
+import { getIsSiteEditorAndIsTemplatePart } from '../fse';
 
 /**
  * External dependencies
@@ -18,10 +19,7 @@ const generateUniqueID = (blockName, diff = 1) => {
 };
 
 const uniqueIDGenerator = (blockName, diff = 1) => {
-	const isSiteEditor = !!select('core/edit-site');
-	const isTemplatePart =
-		isSiteEditor &&
-		select('core/edit-site').getEditedPostType() === 'wp_template_part';
+	const { isSiteEditor, isTemplatePart } = getIsSiteEditorAndIsTemplatePart();
 
 	let modifiedBlockName = blockName;
 

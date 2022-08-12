@@ -5,6 +5,11 @@ import apiFetch from '@wordpress/api-fetch';
 import { select } from '@wordpress/data';
 
 /**
+ * Internal dependencies
+ */
+import { getIsSiteEditorAndIsTemplatePart } from '../../fse';
+
+/**
  * Controls
  */
 const controls = {
@@ -14,14 +19,12 @@ const controls = {
 		return apiFetch({ path: `/maxi-blocks/v1.0/custom-data/${id}` });
 	},
 	async SAVE_CUSTOM_DATA({ isUpdate, customData }) {
-		const isSiteEditing = !!select('core/edit-site');
-		const isTemplatePart =
-			isSiteEditing &&
-			select('core/edit-site').getEditedPostType() === 'wp_template_part';
+		const { isSiteEditor, isTemplatePart } =
+			getIsSiteEditorAndIsTemplatePart();
 
 		if (isTemplatePart) return;
 
-		const id = isSiteEditing
+		const id = isSiteEditor
 			? select('core/edit-site').getEditedPostId()
 			: select('core/editor').getCurrentPostId();
 

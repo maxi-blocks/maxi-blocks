@@ -47,7 +47,7 @@ const withAttributes = createHigherOrderComponent(
 				isNil(uniqueID) ||
 				document.getElementsByClassName(uniqueID).length > 1
 			) {
-				attributes.uniqueID = uniqueIDGenerator(blockName, 1);
+				attributes.uniqueID = uniqueIDGenerator(blockName);
 
 				const label = attributes.uniqueID.replace('-maxi-', '_');
 				attributes.customLabel =

@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useDispatch, select } from '@wordpress/data';
+import { useDispatch, useSelect } from '@wordpress/data';
 
 /**
  * External dependencies
@@ -28,16 +28,18 @@ import { toolbarSlideSettings, toolbarRemove } from '../../../../icons';
 const SliderSlidesSettings = props => {
 	const { numberOfSlides } = props;
 
-	const { duplicateBlocks } = useDispatch('core/block-editor');
-	const { removeBlock } = useDispatch('core/block-editor');
+	const { removeBlock, duplicateBlocks } = useDispatch('core/block-editor');
 
-	const sliderId = wp.data
-		.select('core/block-editor')
-		.getSelectedBlockClientId();
+	const { innerBlocks, innerBlockCount } = useSelect(select => {
+		const sliderId = wp.data
+			.select('core/block-editor')
+			.getSelectedBlockClientId();
 
-	const innerBlocks =
-		select('core/block-editor').getBlock(sliderId)?.innerBlocks;
-	const innerBlockCount = innerBlocks?.length || numberOfSlides;
+		const innerBlocks = select('core/block-editor').getBlocks(sliderId);
+		const innerBlockCount = innerBlocks?.length || numberOfSlides;
+
+		return { innerBlocks, innerBlockCount };
+	});
 
 	const getInnerBlocksIds = () => {
 		const array = Object.values(innerBlocks);
@@ -92,7 +94,7 @@ const SliderSlidesSettings = props => {
 					showTooltip='false'
 					onClick={() => {
 						const id = slideIds[slideIds.length - 1];
-						duplicateBlocks([id]);
+						duplicateBlocks([id], false);
 					}}
 				>
 					<span>+</span>

@@ -353,9 +353,9 @@ const getIconSpacing = (
 		general: {},
 	};
 
-	const innerBlockCount =
-		wp.data.select('core/block-editor').getBlocksByClientId(clientId)?.[0]
-			?.innerBlocks?.length ?? 0;
+	const innerBlockCount = wp.data
+		.select('core/block-editor')
+		.getBlocks(clientId).length;
 
 	breakpoints.forEach(breakpoint => {
 		responsive[breakpoint] = {};

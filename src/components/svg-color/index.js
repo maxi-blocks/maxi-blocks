@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import ColorControl from '../color-control';
+import ManageHoverTransitions from '../manage-hover-transitions';
 import SettingTabsControl from '../setting-tabs-control';
 import ToggleSwitch from '../toggle-switch';
 import {
@@ -242,6 +243,8 @@ export const SvgColorControl = props => {
 					label: __('Hover state', 'maxi-blocks'),
 					content: (
 						<>
+							<ManageHoverTransitions />
+
 							<ToggleSwitch
 								label={__('Enable hover colour', 'maxi-blocks')}
 								selected={hoverStatus}

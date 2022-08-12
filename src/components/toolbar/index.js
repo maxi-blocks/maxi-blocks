@@ -676,6 +676,7 @@ const MaxiToolbar = memo(
 							clientId={clientId}
 							blockName={name}
 							tooltipsHide={tooltipsHide}
+							updateSelection={name !== 'maxi-blocks/slide-maxi'}
 						/>
 						<Help tooltipsHide={tooltipsHide} />
 						<MoreSettings

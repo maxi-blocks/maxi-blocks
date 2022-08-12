@@ -21,7 +21,7 @@ import { toolbarDuplicate } from '../../../../icons';
  * Duplicate
  */
 const Duplicate = props => {
-	const { clientId, blockName, tooltipsHide } = props;
+	const { clientId, blockName, tooltipsHide, updateSelection = true } = props;
 
 	if (blockName === 'maxi-blocks/column-maxi') return null;
 
@@ -30,7 +30,9 @@ const Duplicate = props => {
 	const duplicateContent = () => {
 		return (
 			<div className='toolbar-item toolbar-item__duplicate'>
-				<Button onClick={() => duplicateBlocks([clientId])}>
+				<Button
+					onClick={() => duplicateBlocks([clientId], updateSelection)}
+				>
 					<Icon
 						className='toolbar-item__icon'
 						icon={toolbarDuplicate}

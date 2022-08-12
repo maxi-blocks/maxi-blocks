@@ -413,6 +413,8 @@ const settings = {
 						blockStyle={blockStyle}
 						content={content}
 						svgType={svgType}
+						// Needs a bit of a hack to get the correct value ⬇
+						maxiSetAttributes={onChange}
 						disableHover
 					/>
 				);

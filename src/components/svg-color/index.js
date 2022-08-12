@@ -191,12 +191,15 @@ export const SvgColorControl = props => {
 	const onChangeProps = {
 		onChangeFill: obj => {
 			maxiSetAttributes(obj);
-			if (svgType !== 'Line') cleanInlineStyles('[data-fill]');
+
+			if (cleanInlineStyles && svgType !== 'Line')
+				cleanInlineStyles('[data-fill]');
 		},
 		onChangeStroke: obj => {
 			maxiSetAttributes(obj);
 
-			if (svgType !== 'Shape') cleanInlineStyles('[data-stroke]');
+			if (cleanInlineStyles && svgType !== 'Shape')
+				cleanInlineStyles('[data-stroke]');
 		},
 		onChangeHoverFill: obj => {
 			maxiSetAttributes(obj);

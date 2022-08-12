@@ -139,23 +139,23 @@ const EffectControl = props => {
 				label={__('Thickness', 'maxi-blocks')}
 				className='menu-item-effect-control__effect-thickness'
 				placeholder={getLastBreakpointAttribute({
-					target: `${prefix}height`,
+					target: `${prefix}thickness`,
 					breakpoint,
 					attributes: props,
 				})}
 				value={getLastBreakpointAttribute({
-					target: `${prefix}height`,
+					target: `${prefix}thickness`,
 					breakpoint,
 					attributes: props,
 				})}
 				onChangeValue={val =>
 					onChange({
-						[`${prefix}height-${breakpoint}`]: val,
+						[`${prefix}thickness-${breakpoint}`]: val,
 					})
 				}
 				enableUnit
 				unit={getLastBreakpointAttribute({
-					target: `${prefix}height-unit`,
+					target: `${prefix}thickness-unit`,
 					breakpoint,
 					attributes: props,
 				})}
@@ -179,17 +179,18 @@ const EffectControl = props => {
 				}}
 				onChangeUnit={val =>
 					onChange({
-						[`${prefix}height-unit-${breakpoint}`]: val,
+						[`${prefix}thickness-unit-${breakpoint}`]: val,
 					})
 				}
 				onReset={() => {
 					onChange({
-						[`${prefix}height-${breakpoint}`]: getDefaultAttribute(
-							`${prefix}height-${breakpoint}`
-						),
-						[`${prefix}height-unit-${breakpoint}`]:
+						[`${prefix}thickness-${breakpoint}`]:
 							getDefaultAttribute(
-								`${prefix}height-unit-${breakpoint}`
+								`${prefix}thickness-${breakpoint}`
+							),
+						[`${prefix}thickness-unit-${breakpoint}`]:
+							getDefaultAttribute(
+								`${prefix}thickness-unit-${breakpoint}`
 							),
 					});
 				}}

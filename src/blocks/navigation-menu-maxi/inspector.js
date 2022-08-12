@@ -231,17 +231,16 @@ const Inspector = props => {
 												hideAlignment
 												disableCustomFormats
 												blockStyle={blockStyle}
-												textLevel='a'
+												textLevel='p'
 												inlineTarget=' .maxi-navigation-link-block .maxi-navigation-link-block__content'
 												globalProps={{
 													target: '',
-													type: 'a',
+													type: 'p',
 												}}
 												hoverGlobalProps={{
 													target: 'hover',
-													type: 'a',
+													type: 'p',
 												}}
-												styleCardPrefix=''
 											/>
 										),
 									},

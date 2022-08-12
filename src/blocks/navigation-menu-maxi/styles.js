@@ -4,6 +4,7 @@
 import {
 	getColorRGBAString,
 	getGroupAttributes,
+	getLastBreakpointAttribute,
 	getPaletteAttributes,
 	styleProcessor,
 } from '../../extensions/styles';
@@ -97,69 +98,153 @@ const getHoverObject = props => {
 	return response;
 };
 
-const getMenuItemEffectObject = (props, isHover = false, prefix = '') => {
+const getEffectStyles = (props, target, isHover = false, prefix = '') => {
 	const { 'effect-type': effectType } = props;
 
-	const effectTypetoStylesMapping = {
-		underline: {
-			'border-width': '0 0 1px 0',
-		},
-		overline: {
-			'border-width': '1px 0 0 0',
-		},
-		doubleLine: {
-			'border-width': '1px 0',
-		},
-		boxed: {
-			'border-width': '1px',
-		},
+	const getColor = () => {
+		const { paletteStatus, paletteColor, paletteOpacity, color } =
+			getPaletteAttributes({
+				obj: props,
+				prefix: `${prefix}effect-`,
+				isHover,
+			});
+
+		if (paletteStatus)
+			return getColorRGBAString({
+				firstVar: `${prefix}effect-color`,
+				secondVar: `color-${paletteColor}`,
+				opacity: paletteOpacity,
+				blockStyle: props.blockStyle,
+			});
+
+		return color;
 	};
 
-	const getEffectTypeStyles = () => {
-		const getColor = () => {
-			const { paletteStatus, paletteColor, paletteOpacity, color } =
-				getPaletteAttributes({
-					obj: props,
-					prefix: `${prefix}effect-`,
-					isHover,
-				});
+	const effectThickness = `${getLastBreakpointAttribute({
+		target: `${prefix}effect-thickness`,
+		breakpoint: 'general',
+		attributes: props,
+		isHover,
+	})}${
+		getLastBreakpointAttribute({
+			target: `${prefix}effect-thickness-unit`,
+			breakpoint: 'general',
+			attributes: props,
+			isHover,
+		}) ?? 'px'
+	}`;
+	const effectWidth = `${getLastBreakpointAttribute({
+		target: `${prefix}effect-width`,
+		breakpoint: 'general',
+		attributes: props,
+		isHover,
+	})}${
+		getLastBreakpointAttribute({
+			target: `${prefix}effect-width-unit`,
+			breakpoint: 'general',
+			attributes: props,
+			isHover,
+		}) ?? '%'
+	}`;
 
-			if (paletteStatus)
-				return getColorRGBAString({
-					firstVar: `${prefix}effect-color`,
-					secondVar: `color-${paletteColor}`,
-					opacity: paletteOpacity,
-					blockStyle: props.blockStyle,
-				});
-
-			return color;
-		};
-
-		return {
-			...(effectType === 'solidBackground'
-				? {
-						'background-color': getColor(),
-				  }
-				: {
-						'border-color': getColor(),
-						'border-style': 'solid',
-				  }),
-			...effectTypetoStylesMapping[effectType],
-		};
-	};
-
-	const response = {
-		' .maxi-navigation-link-block .maxi-navigation-link-block__content::after':
-			{
-				effect: {
-					general: {
-						...getEffectTypeStyles(),
+	switch (effectType) {
+		case 'solidBackground':
+			return {
+				[`${target}::after`]: {
+					effect: {
+						general: {
+							top: 0,
+							bottom: 0,
+							left: 0,
+							right: 0,
+							'background-color': getColor(),
+						},
 					},
 				},
-			},
-	};
-
-	return response;
+			};
+		case 'underline':
+			return {
+				[`${target}::after`]: {
+					effect: {
+						general: {
+							bottom: 0,
+							left: 0,
+							height: effectThickness,
+							width: effectWidth,
+							'background-color': getColor(),
+						},
+					},
+				},
+			};
+		case 'overline':
+			return {
+				[`${target}::before`]: {
+					effect: {
+						general: {
+							top: 0,
+							left: 0,
+							height: effectThickness,
+							width: effectWidth,
+							'background-color': getColor(),
+						},
+					},
+				},
+			};
+		case 'doubleLine':
+			return {
+				[`${target}::before`]: {
+					effect: {
+						general: {
+							top: 0,
+							left: 0,
+							height: effectThickness,
+							width: effectWidth,
+							'background-color': getColor(),
+						},
+					},
+				},
+				[`${target}::after`]: {
+					effect: {
+						general: {
+							bottom: 0,
+							left: 0,
+							height: effectThickness,
+							width: effectWidth,
+							'background-color': getColor(),
+						},
+					},
+				},
+			};
+		case 'boxed':
+			return {
+				[`${target}::after`]: {
+					effect: {
+						general: {
+							top: 0,
+							bottom: 0,
+							left: 0,
+							right: 0,
+							background: 'transparent',
+							'border-width': effectThickness,
+							'border-color': getColor(),
+							'border-style': 'solid',
+						},
+					},
+				},
+			};
+		case 'boldText':
+			return {
+				[`${target}`]: {
+					effect: {
+						general: {
+							'font-weight': 'bold',
+						},
+					},
+				},
+			};
+		default:
+			return null;
+	}
 };
 
 const getMenuItemObject = props => {
@@ -171,7 +256,7 @@ const getMenuItemObject = props => {
 				obj: getGroupAttributes(props, 'menuItem'),
 				prefix,
 				blockStyle: props.blockStyle,
-				textLevel: 'a',
+				textLevel: 'p',
 			}),
 		},
 		' .maxi-navigation-link-block .maxi-navigation-link-block__content:hover':
@@ -180,7 +265,7 @@ const getMenuItemObject = props => {
 					obj: getGroupAttributes(props, 'menuItem', true),
 					prefix,
 					blockStyle: props.blockStyle,
-					textLevel: 'a',
+					textLevel: 'p',
 					isHover: true,
 					normalTypography: {
 						...getGroupAttributes(props, 'menuItem'),
@@ -193,10 +278,13 @@ const getMenuItemObject = props => {
 					obj: getGroupAttributes(props, 'menuItem'),
 					prefix: `active-${prefix}`,
 					blockStyle: props.blockStyle,
-					textLevel: 'a',
+					textLevel: 'p',
 				}),
 			},
-		...getMenuItemEffectObject(props),
+		...getEffectStyles(
+			props,
+			' .maxi-navigation-link-block .maxi-navigation-link-block__content'
+		),
 	};
 
 	return response;

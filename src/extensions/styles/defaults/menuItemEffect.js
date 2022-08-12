@@ -1,7 +1,8 @@
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import hoverAttributesCreator from '../hoverAttributesCreator';
 import paletteAttributesCreator from '../paletteAttributesCreator';
 import prefixAttributesCreator from '../prefixAttributesCreator';
-import { height, width } from './size';
+import { width } from './size';
 
 const prefix = 'effect-';
 
@@ -25,9 +26,24 @@ const normalMenuItemEffect = {
 	...prefixAttributesCreator({
 		obj: width,
 		prefix,
+		diffValAttr: {
+			[`${prefix}width-general`]: '100',
+			[`${prefix}width-unit-general`]: '%',
+		},
 	}),
 	...prefixAttributesCreator({
-		obj: height,
+		obj: breakpointAttributesCreator({
+			obj: {
+				'thickness-unit': {
+					type: 'string',
+					default: 'px',
+				},
+				thickness: {
+					type: 'string',
+					default: 3,
+				},
+			},
+		}),
 		prefix,
 	}),
 	...paletteAttributesCreator({

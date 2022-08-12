@@ -1,5 +1,6 @@
 body.maxi-blocks--active .maxi-navigation-link-block {
 	width: fit-content;
+	height: fit-content;
 
 	&__content {
 		text-decoration: none;
@@ -13,10 +14,6 @@ body.maxi-blocks--active .maxi-navigation-link-block {
 			content: ' ';
 			position: absolute;
 			z-index: -1;
-			top: 0;
-			bottom: 0;
-			right: 0;
-			left: 0;
 		}
 	}
 }

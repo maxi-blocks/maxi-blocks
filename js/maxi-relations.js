@@ -122,7 +122,10 @@ const relations = () => {
 		isIcon = false,
 		remove = false
 	) => {
-		const targets = stylesObj?.isTargets ? Object.keys(stylesObj) : null;
+		const targets =
+			stylesObj?.isTargets && !target.includes('svg-icon') // svg-icon is a special case; avoid disco effect 🪩
+				? Object.keys(stylesObj)
+				: null;
 		if (targets) {
 			targets.forEach(targetSelector => {
 				targetSelector !== 'isTargets' &&

@@ -11,7 +11,7 @@ import {
 	createRef,
 	forwardRef,
 } from '@wordpress/element';
-import { dispatch } from '@wordpress/data';
+import { dispatch, useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -49,18 +49,20 @@ const SliderWrapper = props => {
 	const {
 		slidesWidth,
 		isEditView,
-		numberOfSlides,
 		attributes,
 		uniqueID,
 		deviceType,
 		clientId,
 		isSelected,
 	} = props;
-
 	const { isLoop } = attributes;
-
 	const sliderTransition = attributes['slider-transition'];
 	const sliderTransitionSpeed = attributes['slider-transition-speed'];
+	const numberOfClones = 2;
+	const numberOfSlides = useSelect(
+		select =>
+			select('core/block-editor').getBlock(clientId).innerBlocks.length
+	);
 
 	const ALLOWED_BLOCKS = ['maxi-blocks/slide-maxi'];
 	const wrapperRef = useRef(null);
@@ -71,8 +73,6 @@ const SliderWrapper = props => {
 	const [currentSlide, setCurrentSlide] = useState(0);
 	const [wrapperTranslate, setWrapperTranslate] = useState(0);
 	const [realFirstSlideOffset, setRealFirstSlideOffset] = useState(0);
-
-	const numberOfClones = 2;
 
 	const getSliderEffect = () => {
 		let effect = '';
@@ -139,7 +139,9 @@ const SliderWrapper = props => {
 		});
 
 		const activeSlideIndex = isLoop ? number + numberOfClones : number;
-		const activeSlide = slides[activeSlideIndex];
+		const activeSlide = document.querySelectorAll(
+			`.${uniqueID} ul > li.maxi-slide-block`
+		)[activeSlideIndex];
 
 		activeSlide?.setAttribute('data-slide-active', 'true');
 	};
@@ -294,9 +296,7 @@ const SliderWrapper = props => {
 			wrapperRef.current.prepend(backClone);
 
 			setRealFirstSlideOffset(
-				prev =>
-					prev + Object.values(slidesWidth)[numberOfSlides - 1 - i] ||
-					prev
+				prev => prev + backClone.offsetWidth || prev
 			);
 		}
 	};
@@ -371,10 +371,6 @@ const SliderWrapper = props => {
 		forceSingle: true,
 	});
 
-	const innerBlockCount = wp.data
-		.select('core/block-editor')
-		.getBlock(clientId).innerBlocks.length;
-
 	return (
 		<>
 			<ul
@@ -447,7 +443,7 @@ const SliderWrapper = props => {
 					{navigationType?.includes('dot') &&
 						attributes['navigation-dot-icon-content'] && (
 							<div className='maxi-slider-block__dots'>
-								{Array.from(Array(innerBlockCount).keys()).map(
+								{Array.from(Array(numberOfSlides).keys()).map(
 									i => {
 										return (
 											<span
@@ -496,7 +492,6 @@ class edit extends MaxiBlockComponent {
 		this.state = {
 			slidesWidth: {},
 			isEditView: false,
-			numberOfSlides: 0,
 		};
 
 		this.iconRef = createRef(null);
@@ -517,14 +512,6 @@ class edit extends MaxiBlockComponent {
 		};
 
 		return response;
-	}
-
-	maxiBlockDidUpdate() {
-		const { numberOfSlides: prevNumberOfSlides, slidesWidth } = this.state;
-		const numberOfSlides = Object.keys(slidesWidth).length;
-		if (numberOfSlides !== prevNumberOfSlides) {
-			this.setState({ numberOfSlides });
-		}
 	}
 
 	render() {

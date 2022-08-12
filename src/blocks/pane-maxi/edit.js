@@ -197,11 +197,7 @@ class edit extends MaxiBlockComponent {
 						)
 							return;
 
-						if (!isOpen) {
-							this.openPane();
-						} else {
-							this.closePane();
-						}
+						!isOpen ? this.openPane() : this.closePane();
 					}}
 				>
 					<RichText

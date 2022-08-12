@@ -12,6 +12,7 @@ import {
 	getLastBreakpointAttribute,
 } from '../styles';
 import { loadFonts } from '../text/fonts';
+import { getSiteEditorIframe } from '../fse';
 
 /**
  * External dependencies
@@ -258,9 +259,7 @@ const getSCFontsData = obj => {
 const updateSCOnEditor = styleCards => {
 	const SCObject = getSCVariablesObject({ ...cloneDeep(styleCards) });
 
-	const siteEditorIFrame = document.querySelector(
-		'iframe[name="editor-canvas"].edit-site-visual-editor__editor-canvas'
-	)?.contentDocument;
+	const siteEditorIFrame = getSiteEditorIframe();
 
 	const elements = [document, siteEditorIFrame];
 

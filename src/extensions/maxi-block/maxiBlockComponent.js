@@ -34,6 +34,7 @@ import getBreakpoints from '../styles/helpers/getBreakpoints';
 import getIsUniqueIDRepeated from './getIsUniqueIDRepeated';
 import { loadFonts, getAllFonts } from '../text/fonts';
 import uniqueIDGenerator from '../attributes/uniqueIDGenerator';
+import { getSiteEditorIframe } from '../fse';
 
 /**
  * External dependencies
@@ -373,9 +374,7 @@ class MaxiBlockComponent extends Component {
 
 		if (document.body.classList.contains('maxi-blocks--active')) {
 			// for full site editor (FSE)
-			const siteEditorIframe = document.querySelector(
-				'iframe[name="editor-canvas"].edit-site-visual-editor__editor-canvas'
-			);
+			const siteEditorIframe = getSiteEditorIframe();
 
 			if (!siteEditorIframe) {
 				let wrapper = document.querySelector(
@@ -399,12 +398,10 @@ class MaxiBlockComponent extends Component {
 					wrapper
 				);
 			} else {
-				const iframeDocument = siteEditorIframe.contentDocument;
-
 				// Iframe on creation generates head, then gutenberg generates their own head
 				// and in some moment we have two heads, so we need to add styles only to head which isn't empty(gutenberg one)
 				const iframeHead = Array.from(
-					iframeDocument.querySelectorAll('head')
+					siteEditorIframe.querySelectorAll('head')
 				).pop();
 
 				if (isEmpty(iframeHead.childNodes)) return;

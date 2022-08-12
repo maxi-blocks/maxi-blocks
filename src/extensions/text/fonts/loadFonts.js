@@ -5,6 +5,11 @@ import { __ } from '@wordpress/i18n';
 import { dispatch, select } from '@wordpress/data';
 
 /**
+ * Internal dependencies
+ */
+import { getSiteEditorIframe } from '../../fse';
+
+/**
  * External dependencies
  */
 import { isEmpty, uniq } from 'lodash';
@@ -19,11 +24,9 @@ const loadFonts = (font, backendOnly = true, rawTarget) => {
 	const getTarget = target => {
 		if (target) return target;
 
-		const siteEditorIframe = document.querySelector(
-			'iframe[name="editor-canvas"].edit-site-visual-editor__editor-canvas'
-		);
+		const siteEditorIframe = getSiteEditorIframe();
 
-		if (siteEditorIframe) return siteEditorIframe.contentDocument;
+		if (siteEditorIframe) return siteEditorIframe;
 
 		return document;
 	};

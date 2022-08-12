@@ -1,3 +1,11 @@
+/**
+ * Internal dependencies
+ */
+import { getSiteEditorIframeBody } from '../fse';
+
+/**
+ * External dependencies
+ */
 import { omit } from 'lodash';
 
 const breakpointResizer = (
@@ -11,19 +19,13 @@ const breakpointResizer = (
 		document.querySelector('.edit-post-visual-editor') ||
 		document.querySelector('.edit-site-visual-editor');
 
-	const fseEditorWrapper = document
-		.querySelector(
-			'iframe[name="editor-canvas"].edit-site-visual-editor__editor-canvas'
-		)
-		?.contentDocument.querySelector('.editor-styles-wrapper');
-
 	const winHeight = window.outerWidth;
 	const responsiveWidth =
 		(size === 'general' && 'none') ||
 		(size === 'xxl' && (xxlSize > winSize ? xxlSize : winSize)) ||
 		breakpoints[size];
 
-	[editorWrapper, fseEditorWrapper].forEach(element => {
+	[editorWrapper, getSiteEditorIframeBody()].forEach(element => {
 		element?.setAttribute(
 			'maxi-blocks-responsive',
 			size !== 'general' ? size : winBreakpoint

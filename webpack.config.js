@@ -13,17 +13,22 @@ const { sync: glob } = require('fast-glob');
 // Frontend scripts config
 const jsFiles = {};
 
-glob(resolve(__dirname, 'js/*')).forEach(file => {
+// glob doesn't work with backslash (Windows) paths, this function is required to normalize paths between platforms.
+// https://github.com/mrmlnc/fast-glob#how-to-write-patterns-on-windows
+const resolveNormalized = (...pathSegments) =>
+	resolve(...pathSegments).replace(/\\/g, '/');
+
+glob(resolveNormalized(__dirname, 'js/*')).forEach(file => {
 	if (
 		file.endsWith('.js') &&
-		file.startsWith(resolve(__dirname, 'js/maxi-'))
+		file.startsWith(resolveNormalized(__dirname, 'js/maxi-'))
 	) {
 		const name = file
 			.replace('.js', '')
-			.replace(resolve(__dirname, 'js'), '')
+			.replace(resolveNormalized(__dirname, 'js'), '')
 			.replace('/', '');
 
-		jsFiles[name] = resolve(__dirname, 'js', file);
+		jsFiles[name] = resolveNormalized(__dirname, 'js', file);
 	}
 });
 
@@ -33,7 +38,7 @@ const scriptsConfig = {
 	entry: jsFiles,
 	output: {
 		filename: '[name].min.js',
-		path: resolve(__dirname, 'js/min'),
+		path: resolveNormalized(__dirname, 'js/min'),
 	},
 };
 

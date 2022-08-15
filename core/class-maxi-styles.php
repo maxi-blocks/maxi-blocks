@@ -36,13 +36,13 @@ class MaxiBlocks_Styles
     {
 		global $post;
 
-        $post_content = $this->getContent();
-		$template_content = $this->getContent(true);
+        $post_content = $this->get_content();
+		$template_content = $this->get_content(true);
 
-        $this->applyContent('maxi-blocks-styles', $post_content);
-		$this->applyContent('maxi-blocks-styles-templates', $template_content);
+        $this->apply_content('maxi-blocks-styles', $post_content);
+		$this->apply_content('maxi-blocks-styles-templates', $template_content);
 
-        if ($this->needCustomMeta([$post_content, $template_content])) {
+        if ($this->need_custom_meta([$post_content, $template_content])) {
             $scripts = [
                 'hover-effects',
                 'bg-video',
@@ -67,8 +67,8 @@ class MaxiBlocks_Styles
                 $jsScriptName = 'maxi-' . $script;
                 $jsScriptPath = '//js//' . $jsScriptName . '.min.js';
 
-				$post_meta = $this->customMeta($jsVar, false);
-				$template_meta = $this->customMeta($jsVar, true);
+				$post_meta = $this->custom_meta($jsVar, false);
+				$template_meta = $this->custom_meta($jsVar, true);
 
 				$meta = array_merge($post_meta, $template_meta);
 
@@ -102,7 +102,7 @@ class MaxiBlocks_Styles
 	/**
 	 * Apply content
 	 */
-	public function applyContent($name, $content)
+	public function apply_content($name, $content)
 	{
 		if (!$content || empty($content)) {
             return false;
@@ -126,7 +126,7 @@ class MaxiBlocks_Styles
 	/**
      * Get id
      */
-	public function getId($is_template = false)
+	public function get_id($is_template = false)
 	{
 		if(!$is_template) {
 			global $post;
@@ -164,8 +164,8 @@ class MaxiBlocks_Styles
 	/**
 	 * Get need custom meta
 	 */
-	public function needCustomMeta($contents) {
-		$needCustomMeta = false;
+	public function need_custom_meta($contents) {
+		$need_custom_meta = false;
 
 		if ($contents) {
 			foreach ($contents as $content) {
@@ -174,19 +174,19 @@ class MaxiBlocks_Styles
 					((int) $content['prev_active_custom_data'] === 1 ||
 					(int) $content['active_custom_data'] === 1)
 				) {
-					$needCustomMeta = true;
+					$need_custom_meta = true;
 					break;
 				}
 			}
 		}
 
-		return $needCustomMeta;
+		return $need_custom_meta;
 	}
 
     /**
      * Gets content
      */
-    public function getContent($is_template = false)
+    public function get_content($is_template = false)
     {
         global $post;
 
@@ -194,7 +194,7 @@ class MaxiBlocks_Styles
             return false;
         }
 
-        $id = $this->getId($is_template);
+        $id = $this->get_id($is_template);
 
         if (!$id) {
             return false;
@@ -225,7 +225,7 @@ class MaxiBlocks_Styles
     /**
      * Gets post meta
      */
-    public function getMeta($id, $is_template = false)
+    public function get_meta($id, $is_template = false)
     {
         global $post;
 
@@ -384,16 +384,16 @@ class MaxiBlocks_Styles
     /**
      * Custom Meta
      */
-    public function customMeta($metaJs, $is_template)
+    public function custom_meta($metaJs, $is_template)
     {
         global $post;
         if ((!$is_template && (!$post || !isset($post->ID))) || empty($metaJs)) {
             return [];
         }
 
-		$id = $this->getId($is_template);
+		$id = $this->get_id($is_template);
 
-        $custom_data = $this->getMeta($id, $is_template);
+        $custom_data = $this->get_meta($id, $is_template);
 
         if (!$custom_data) {
             return [];

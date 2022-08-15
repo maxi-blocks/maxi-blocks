@@ -40,6 +40,8 @@ import uniqueIDGenerator from '../attributes/uniqueIDGenerator';
  */
 import { isEmpty, isEqual, cloneDeep, isNil } from 'lodash';
 
+const MAXI_VERSION = '0.1';
+
 /**
  * Style Component
  */
@@ -107,6 +109,9 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidMount() {
+		if (MAXI_VERSION !== this.props.attributes['maxi-version'])
+			this.props.attributes['maxi-version'] = MAXI_VERSION;
+
 		if (this.maxiBlockDidMount) this.maxiBlockDidMount();
 
 		this.displayStyles();

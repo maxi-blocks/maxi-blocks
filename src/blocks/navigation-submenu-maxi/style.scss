@@ -1,4 +1,25 @@
 body.maxi-blocks--active .maxi-navigation-submenu-block {
 	width: fit-content;
+	z-index: 1;
+	position: relative;
 	margin: 0;
+
+	&__dropdown {
+		display: none;
+		flex-direction: column;
+		justify-content: space-around;
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		transform: translateY(100%);
+		margin: 0;
+		padding: 0;
+		width: 100%;
+		min-height: 40px;
+		background-color: white;
+	}
+
+	&:hover .maxi-navigation-submenu-block__dropdown {
+		display: flex;
+	}
 }

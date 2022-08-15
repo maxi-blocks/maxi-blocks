@@ -42,13 +42,13 @@ const generateTitle = async () => {
 	return title;
 };
 
-const createNewMenu = async innerBlocks => {
+const createNewMenu = async (innerBlocks, title = '') => {
 	const record = {
-		title: await generateTitle(),
+		title: title ? `${title} - maxi` : await generateTitle(),
 		content: serialize(innerBlocks),
 		status: 'publish',
 	};
-	console.log(record);
+
 	const { id } = await dispatch('core').saveEntityRecord(
 		'postType',
 		'wp_navigation',

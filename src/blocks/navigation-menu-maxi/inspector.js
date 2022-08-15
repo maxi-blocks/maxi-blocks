@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
-import { select, useSelect } from '@wordpress/data';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -19,11 +19,12 @@ import {
 	categoriesNavigationMenu,
 } from './custom-css';
 import { getGroupAttributes } from '../../extensions/styles';
-import menuItemsToBlocks from '../../extensions/navigation-menu/classic-menu-to-blocks';
-import createNewMenu from '../../extensions/navigation-menu/create-new-menu';
-import { createBlock, parse } from '@wordpress/blocks';
 import MenuItemControl from './components/menu-item-control';
 import MenuItemEffectControl from './components/menu-item-effect-control';
+import {
+	convertClassicMenuToBlocks,
+	convertGutenbergMenuToMaxi,
+} from '../../extensions/navigation-menu';
 
 /**
  * Inspector
@@ -50,61 +51,6 @@ const Inspector = props => {
 		};
 	});
 
-	// TODO: move to separate file and REFACTOR.
-	const convertBlockMenuToMaxi = async menuId => {
-		const menu = select('core').getEntityRecord(
-			'postType',
-			'wp_navigation',
-			menuId
-		);
-		const content = menu.content.raw;
-
-		const blocks = parse(content);
-
-		if (
-			blocks.some(block =>
-				['core/navigation-link', 'core/navigation-submenu'].includes(
-					block.name
-				)
-			)
-		) {
-			const convertBlocks = blocks => {
-				const res = [];
-
-				blocks.forEach(block => {
-					if (block.name === 'core/navigation-link') {
-						res.push(
-							createBlock(
-								'maxi-blocks/navigation-link-maxi',
-								block.attributes,
-								block.innerBlocks
-							)
-						);
-					} else if (block.name === 'core/navigation-submenu') {
-						res.push(
-							createBlock(
-								'maxi-blocks/navigation-submenu-maxi',
-								block.attributes,
-								convertBlocks(block.innerBlocks)
-							)
-						);
-					} else {
-						res.push(block);
-					}
-				});
-
-				return res;
-			};
-
-			const convertedBlocks = convertBlocks(blocks);
-			const newMenuId = await createNewMenu(convertedBlocks);
-
-			return newMenuId;
-		}
-
-		return menuId;
-	};
-
 	const getMenuSourceItems = (navigationMenus, classicMenus) => {
 		return [
 			...(navigationMenus?.map(({ title, id }) => {
@@ -120,23 +66,6 @@ const Inspector = props => {
 				};
 			}) || []),
 		];
-	};
-
-	const convertClassicMenuToBlocks = async menuId => {
-		const { getMenuItems, hasFinishedResolution } = select('core');
-
-		const args = {
-			menus: menuId,
-			per_page: -1,
-			context: 'view',
-		};
-		const menuItems = getMenuItems(args);
-		// const itemsLoaded = hasFinishedResolution('getMenuItems', [args]);
-
-		const innerBlocks = menuItemsToBlocks(menuItems);
-		const newMenuId = await createNewMenu(innerBlocks);
-
-		return newMenuId;
 	};
 
 	return (
@@ -198,7 +127,7 @@ const Inspector = props => {
 														return;
 													}
 													const newId =
-														await convertBlockMenuToMaxi(
+														await convertGutenbergMenuToMaxi(
 															val
 														);
 

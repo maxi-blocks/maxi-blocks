@@ -2,11 +2,16 @@
  * WordPress dependencies
  */
 import { createBlock, parse } from '@wordpress/blocks';
+import { select } from '@wordpress/data';
+
+/**
+ * Internal dependencies
+ */
+import createNewMenu from './create-new-menu';
 
 /**
  * External dependencies
  */
-
 import { sortBy } from 'lodash';
 
 const createDataTree = dataset => {
@@ -79,9 +84,7 @@ const menuItemToBlockAttributes = ({
 };
 
 const mapMenuItemsToBlocks = menuItems => {
-	let mapping = {};
-
-	// The menuItem should be in menu_order sort order.
+	// The menu itema should be placed in menu_order sort order.
 	const sortedItems = sortBy(menuItems, 'menu_order');
 
 	const innerBlocks = sortedItems.map(menuItem => {
@@ -100,42 +103,47 @@ const mapMenuItemsToBlocks = menuItems => {
 		const attributes = menuItemToBlockAttributes(menuItem);
 
 		// If there are children recurse to build those nested blocks.
-		const { innerBlocks: nestedBlocks = [], mapping: nestedMapping = {} } =
-			menuItem.children?.length
-				? mapMenuItemsToBlocks(menuItem.children)
-				: {};
-
-		// Update parent mapping with nested mapping.
-		mapping = {
-			...mapping,
-			...nestedMapping,
-		};
+		const nestedBlocks = menuItem.children?.length
+			? mapMenuItemsToBlocks(menuItem.children)
+			: {};
 
 		const blockType = menuItem.children?.length
 			? 'maxi-blocks/navigation-submenu-maxi'
 			: 'maxi-blocks/navigation-link-maxi';
 
-		// Create block with nested "innerBlocks".
 		const block = createBlock(blockType, attributes, nestedBlocks);
-
-		// Create mapping for menuItem -> block.
-		mapping[menuItem.id] = block.clientId;
 
 		return block;
 	});
 
-	return {
-		innerBlocks,
-		mapping,
-	};
+	return innerBlocks;
 };
 
-export default function menuItemsToBlocks(menuItems) {
+const menuItemsToBlocks = menuItems => {
 	if (!menuItems) {
 		return null;
 	}
 
 	const menuTree = createDataTree(menuItems);
-	const { innerBlocks } = mapMenuItemsToBlocks(menuTree);
+	const innerBlocks = mapMenuItemsToBlocks(menuTree);
 	return innerBlocks;
-}
+};
+
+const convertClassicMenuToBlocks = async menuId => {
+	const { getMenuItems } = select('core');
+
+	const args = {
+		menus: menuId,
+		per_page: -1,
+		context: 'view',
+	};
+	const menuItems = getMenuItems(args);
+	// const itemsLoaded = hasFinishedResolution('getMenuItems', [args]);
+
+	const innerBlocks = menuItemsToBlocks(menuItems);
+	const newMenuId = await createNewMenu(innerBlocks);
+
+	return newMenuId;
+};
+
+export default convertClassicMenuToBlocks;

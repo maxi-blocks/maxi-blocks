@@ -122,10 +122,10 @@ const relations = () => {
 		isIcon = false,
 		remove = false
 	) => {
-		const targets =
-			stylesObj?.isTargets && !target.includes('svg-icon') // svg-icon is a special case; avoid disco effect 🪩
-				? Object.keys(stylesObj)
-				: null;
+		const isSVGIcon = target.includes('svg-icon'); // svg-icon is a special case; avoid disco effect 🪩
+
+		const targets = stylesObj?.isTargets ? Object.keys(stylesObj) : null;
+
 		if (targets) {
 			targets.forEach(targetSelector => {
 				targetSelector !== 'isTargets' &&
@@ -141,10 +141,9 @@ const relations = () => {
 			const interactionStyle = document.querySelector(
 				'#maxi-blocks-interaction-css'
 			);
-			const selector = `body.maxi-blocks--active ${target} {`.replace(
-				/\s{2,}/g,
-				' '
-			);
+			const selector = `body.maxi-blocks--active ${target}${
+				'' // isSVGIcon ? ' *' : ''
+			} {`.replace(/\s{2,}/g, ' ');
 			const transitionString = getTransitionString(
 				stylesObj,
 				effectsObj,
@@ -212,18 +211,33 @@ const relations = () => {
 
 		const triggerEl = document.querySelector(`.${item.trigger}`);
 		const target = `#${item.uniqueID} ${item.target ?? ''}`;
+		const targetEl = document.querySelector(target);
+
+		if (!triggerEl || !targetEl) return;
+
+		const transitionDuration =
+			parseFloat(
+				getComputedStyle(
+					targetEl.querySelector(
+						'.maxi-svg-icon-block__icon svg > *' // temp!!!
+					)
+				)
+					.getPropertyValue('transition-duration')
+					.replace('s', '')
+			) * 1000;
 
 		let timeout;
+		let contentTimeout;
+		let dataTimeout;
 
 		switch (item.action) {
 			case 'hover':
 				{
 					triggerEl.addEventListener('mouseenter', () => {
 						clearTimeout(timeout);
+						clearTimeout(dataTimeout);
 
-						document
-							.querySelector(target)
-							.setAttribute('data-maxi-relations', 'true');
+						targetEl.setAttribute('data-maxi-relations', 'true');
 
 						const { stylesObj, effectsObj } = getCssResponsiveObj(
 							item.css,
@@ -231,7 +245,7 @@ const relations = () => {
 						);
 
 						toggleTransition(
-							target,
+							`${target.trim()}[data-maxi-relations="true"]`,
 							stylesObj,
 							effectsObj,
 							item.settings === 'Icon colour' ||
@@ -242,28 +256,73 @@ const relations = () => {
 							stylesObj,
 							`${target.trim()}[data-maxi-relations="true"]`
 						);
+
+						/**
+						 * In case the target element is nested inside the trigger element, we need to ensure the original hover transition
+						 * works correctly on hovering. It means, we need to remove the transitions added by the trigger when hovering the target
+						 * to ensure it has the selected effects
+						 */
+						if (triggerEl.contains(targetEl)) {
+							targetEl.addEventListener('mouseenter', () => {
+								clearTimeout(contentTimeout);
+
+								// Remove transitions to let the original ones be applied
+								toggleTransition(
+									`${target.trim()}[data-maxi-relations="true"]`,
+									stylesObj,
+									effectsObj,
+									false,
+									true
+								);
+							});
+
+							targetEl.addEventListener('mouseleave', () => {
+								contentTimeout = setTimeout(() => {
+									// Set the transitions back waiting the original to be done
+									toggleTransition(
+										`${target.trim()}[data-maxi-relations="true"]`,
+										stylesObj,
+										effectsObj,
+										item.settings === 'Icon colour' ||
+											item.settings === 'Button icon'
+									);
+								}, transitionDuration);
+							});
+						}
 					});
 
 					triggerEl.addEventListener('mouseleave', () => {
-						document
-							.querySelector(target)
-							.setAttribute('data-maxi-relations', 'false');
-
 						const { stylesObj, effectsObj } = getCssResponsiveObj(
 							item.css,
 							item.effects
 						);
 
+						if (triggerEl.contains(targetEl))
+							toggleTransition(
+								`${target.trim()}[data-maxi-relations="true"]`,
+								stylesObj,
+								effectsObj,
+								item.settings === 'Icon colour' ||
+									item.settings === 'Button icon'
+							);
+
+						dataTimeout = setTimeout(() => {
+							targetEl.setAttribute(
+								'data-maxi-relations',
+								'false'
+							);
+						}, item.effects['transition-duration-general'] * 1000 + 1000);
+
 						toggleInlineStyles(
 							stylesObj,
-							`${target.trim()}[data-maxi-relations="false"]`,
+							`${target.trim()}[data-maxi-relations="true"]`,
 							true
 						);
 
 						timeout = setTimeout(() => {
 							// Removing transition after transition-duration + 1s to make sure it's done
 							toggleTransition(
-								target,
+								`${target.trim()}[data-maxi-relations="true"]`,
 								stylesObj,
 								effectsObj,
 								false,
@@ -276,9 +335,7 @@ const relations = () => {
 			case 'click':
 				{
 					triggerEl.addEventListener('click', () => {
-						document
-							.querySelector(target)
-							.setAttribute('data-maxi-relations', 'true');
+						targetEl.setAttribute('data-maxi-relations', 'true');
 
 						const { stylesObj, effectsObj } = getCssResponsiveObj(
 							item.css,

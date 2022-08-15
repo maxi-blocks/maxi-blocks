@@ -278,28 +278,36 @@ const MenuItemEffectControl = props => {
 			<SelectControl
 				label={__('Direction', 'maxi-blocks')}
 				className='menu-item-effect-control__direction'
-				value={props[`${prefix}animation`]}
+				value={props[`${prefix}direction`]}
 				options={[
 					{
 						label: __('None', 'maxi-blocks'),
 						value: 'none',
 					},
 					{
-						label: __('Fade', 'maxi-blocks'),
-						value: 'fade',
+						label: __('Left', 'maxi-blocks'),
+						value: 'left',
 					},
 					{
-						label: __('Slide', 'maxi-blocks'),
-						value: 'slide',
+						label: __('Center', 'maxi-blocks'),
+						value: 'center',
 					},
 					{
-						label: __('Grow', 'maxi-blocks'),
-						value: 'grow',
+						label: __('Right', 'maxi-blocks'),
+						value: 'right',
+					},
+					{
+						label: __('Top', 'maxi-blocks'),
+						value: 'top',
+					},
+					{
+						label: __('Bottom', 'maxi-blocks'),
+						value: 'bottom',
 					},
 				]}
 				onChange={val =>
 					onChange({
-						[`${prefix}animation`]: val,
+						[`${prefix}direction`]: val,
 					})
 				}
 			/>

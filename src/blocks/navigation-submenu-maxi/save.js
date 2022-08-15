@@ -13,7 +13,11 @@ const save = props => {
 	const name = 'maxi-blocks/navigation-submenu-maxi';
 
 	return (
-		<MaxiBlock.save {...getMaxiBlockAttributes({ ...props, name })}>
+		<MaxiBlock.save
+			// Remove after https://github.com/maxi-blocks/maxi-blocks/issues/3555 is fixed
+			className='wp-block-maxi-blocks-navigation-submenu-maxi'
+			{...getMaxiBlockAttributes({ ...props, name })}
+		>
 			<RichText.Content value={label} tagName='a' />
 			<ul
 				{...useInnerBlocksProps.save({

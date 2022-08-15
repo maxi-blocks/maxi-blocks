@@ -24,9 +24,14 @@ const getIsUniqueIDRepeated = (uniqueIDToCompare, repeatCount = 1) => {
 				}
 			}
 
-			if (block.innerBlocks.length) {
+			const innerBlocks =
+				block.name === 'maxi-blocks/navigation-menu-maxi'
+					? getBlocks(block.clientId)
+					: block.innerBlocks;
+
+			if (innerBlocks.length) {
 				const foundRepeated = goThroughBlocks(
-					block.innerBlocks,
+					innerBlocks,
 					uniqueIDToCompare,
 					repeatCount,
 					currentRepeatCount

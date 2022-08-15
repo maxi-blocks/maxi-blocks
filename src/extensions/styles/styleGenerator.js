@@ -168,7 +168,7 @@ const styleGenerator = (
 			});
 		});
 	});
-	console.log(response);
+
 	return response;
 };
 

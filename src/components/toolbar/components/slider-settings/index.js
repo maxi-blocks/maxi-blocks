@@ -37,7 +37,7 @@ const SliderSettings = props => {
 	return (
 		<ToolbarPopover
 			className='toolbar-item__size'
-			tooltip={__('Slider Settings', 'maxi-blocks')}
+			tooltip={__('Slider settings', 'maxi-blocks')}
 			icon={toolbarSliderSettings}
 			advancedOptions='height width'
 		>

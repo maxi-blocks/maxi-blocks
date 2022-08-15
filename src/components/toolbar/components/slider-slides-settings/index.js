@@ -56,7 +56,7 @@ const SliderSlidesSettings = props => {
 	return (
 		<ToolbarPopover
 			className='toolbar-item__slide'
-			tooltip={__('Slides Settings', 'maxi-blocks')}
+			tooltip={__('Add/Remove slides', 'maxi-blocks')}
 			icon={toolbarSlideSettings}
 		>
 			<div className='toolbar-item__slide__popover'>

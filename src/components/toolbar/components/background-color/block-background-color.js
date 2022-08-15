@@ -70,8 +70,8 @@ const BlockBackgroundColor = props => {
 			advancedOptions='background layer'
 			tooltip={
 				!isBackgroundColor
-					? __('Background Colour Disabled', 'maxi-blocks')
-					: __('Background Colour', 'maxi-blocks')
+					? __('Background colour disabled', 'maxi-blocks')
+					: __('Background colour', 'maxi-blocks')
 			}
 			icon={backgroundColor}
 		>

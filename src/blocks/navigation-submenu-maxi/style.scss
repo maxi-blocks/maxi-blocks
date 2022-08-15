@@ -4,6 +4,22 @@ body.maxi-blocks--active .maxi-navigation-submenu-block {
 	position: relative;
 	margin: 0;
 
+	&__content {
+		text-decoration: none;
+		padding: 10px;
+
+		&:focus {
+			outline: none !important;
+			box-shadow: none !important;
+		}
+
+		&::after {
+			content: ' ';
+			position: absolute;
+			z-index: -1;
+		}
+	}
+
 	&__dropdown {
 		display: none;
 		flex-direction: column;

@@ -87,7 +87,7 @@ const LibraryToolbar = props => {
 					/>
 					<Button icon={fullScreen} onClick={goFullScreen} />
 					<ToolbarButton
-						label={__('Load', 'maxi-blocks')}
+						label={__('Insert', 'maxi-blocks')}
 						onClick={() => {
 							clickLoadButton(cardId);
 							onRequestClose();

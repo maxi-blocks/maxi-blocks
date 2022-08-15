@@ -108,8 +108,8 @@ class MaxiBlocks_Styles
             return false;
         }
 
-		$styles = $this->getStyles($content);
-        $fonts = $this->getFonts($content);
+		$styles = $this->get_styles($content);
+        $fonts = $this->get_fonts($content);
 
 		if ($styles) {
             // Inline styles
@@ -253,7 +253,7 @@ class MaxiBlocks_Styles
     /**
      * Gets post styles content
      */
-    public function getStyles($content)
+    public function get_styles($content)
     {
         $style =
             is_preview() || is_admin()
@@ -272,12 +272,12 @@ class MaxiBlocks_Styles
     /**
      * Gets post styles content
      */
-    public function getFonts($post_content)
+    public function get_fonts($content)
     {
         $fonts =
             is_preview() || is_admin()
-                ? $post_content['prev_fonts_value']
-                : $post_content['fonts_value'];
+                ? $content['prev_fonts_value']
+                : $content['fonts_value'];
 
         if (!$fonts || empty($fonts)) {
             return false;

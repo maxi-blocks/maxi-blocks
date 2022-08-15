@@ -305,7 +305,7 @@ if (!class_exists('MaxiBlocks_API')):
 		}
 
         /**
-         * Post the posts
+         * Post the styles
          */
         public function post_maxi_blocks_styles($data) {
             global $wpdb;

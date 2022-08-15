@@ -122,12 +122,14 @@ const styleGenerator = (
 ) => {
 	let response = '';
 
-	const availableBreakpoints = BREAKPOINTS.slice(
-		0,
-		BREAKPOINTS.indexOf(
-			currentBreakpoint === 'general' ? 'xl' : currentBreakpoint
-		) + 1
-	);
+	const availableBreakpoints = isSiteEditor
+		? BREAKPOINTS.slice(
+				0,
+				BREAKPOINTS.indexOf(
+					currentBreakpoint === 'general' ? 'xl' : currentBreakpoint
+				) + 1
+		  )
+		: BREAKPOINTS;
 
 	availableBreakpoints.forEach(breakpoint => {
 		Object.entries(styles).forEach(([key, value]) => {
@@ -166,7 +168,7 @@ const styleGenerator = (
 			});
 		});
 	});
-
+	console.log(response);
 	return response;
 };
 

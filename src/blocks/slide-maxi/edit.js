@@ -23,9 +23,19 @@ class edit extends MaxiBlockComponent {
 		return getStyles(this.props.attributes);
 	}
 
+	maxiBlockDidMount() {
+		const { clientId } = this.props;
+
+		this.context.setSlideWidth(
+			clientId,
+			this.blockRef.current.getBoundingClientRect().width
+		);
+	}
+
 	maxiBlockDidUpdate(prevProps) {
 		const { clientId, isSelected } = this.props;
 		const { isSelected: wasSelected } = prevProps;
+
 		if (
 			this.context.slidesWidth[clientId] !==
 			this.blockRef.current.getBoundingClientRect().width

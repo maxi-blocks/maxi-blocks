@@ -364,9 +364,9 @@ const SliderWrapper = props => {
 		isEditView && 'maxi-slider-block__wrapper--edit-view'
 	);
 
-	const dotsClasses = classnames(
-		'maxi-slider-block__dots',
-		isEditView && 'maxi-slider-block__dots--edit-view'
+	const navClasses = classnames(
+		'maxi-slider-block__nav',
+		isEditView && 'maxi-slider-block__nav--edit-view'
 	);
 
 	const navigationType = getLastBreakpointAttribute({
@@ -398,7 +398,7 @@ const SliderWrapper = props => {
 				)}
 			/>
 			{navigationType !== 'none' && (
-				<div className='maxi-slider-block__nav'>
+				<div className={navClasses}>
 					{navigationType?.includes('arrow') &&
 						attributes['navigation-arrow-first-icon-content'] && (
 							<span
@@ -447,7 +447,7 @@ const SliderWrapper = props => {
 						)}
 					{navigationType?.includes('dot') &&
 						attributes['navigation-dot-icon-content'] && (
-							<div className={dotsClasses}>
+							<div className='maxi-slider-block__dots'>
 								{Array.from(Array(numberOfSlides).keys()).map(
 									i => {
 										return (

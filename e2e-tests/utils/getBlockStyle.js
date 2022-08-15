@@ -2,7 +2,7 @@ import getBlockAttributes from './getBlockAttributes';
 import changeResponsive from './changeResponsive';
 
 const getBlockStyle = async page => {
-	changeResponsive(page, 'xs');
+	await changeResponsive(page, 'xs');
 
 	const { uniqueID } = await getBlockAttributes();
 
@@ -10,6 +10,8 @@ const getBlockStyle = async page => {
 		`#maxi-blocks__styles--${uniqueID}`,
 		style => style.innerHTML
 	);
+
+	await changeResponsive(page, 'base');
 
 	return stylesString;
 };

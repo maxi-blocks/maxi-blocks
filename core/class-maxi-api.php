@@ -84,7 +84,7 @@ if (!class_exists('MaxiBlocks_API')):
             ]);
             register_rest_route($this->namespace, '/styles', [
                 'methods' => 'POST',
-				'callback' => [$this, 'post_maxi_blocks_meta'],
+				'callback' => [$this, 'post_maxi_blocks_styles'],
                 'args' => [
                     'id' => [
                         'validate_callback' => function ($param) {
@@ -307,7 +307,7 @@ if (!class_exists('MaxiBlocks_API')):
         /**
          * Post the posts
          */
-        public function post_maxi_blocks_meta($data) {
+        public function post_maxi_blocks_styles($data) {
             global $wpdb;
 
             $id = $data['id'];

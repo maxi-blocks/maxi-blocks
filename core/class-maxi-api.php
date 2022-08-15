@@ -289,7 +289,7 @@ if (!class_exists('MaxiBlocks_API')):
             return $response;
         }
 
-		public function getQueryParams($table, $is_template)
+		public function get_query_params($table, $is_template)
 		{
 			global $wpdb;
 
@@ -321,7 +321,7 @@ if (!class_exists('MaxiBlocks_API')):
             }
             $fonts = json_encode(array_merge_recursive(...$fontsArr));
 
-			['table' => $table, 'id_key' => $id_key, 'where_clause' => $where_clause] = $this->getQueryParams('maxi_blocks_styles', $is_template);
+			['table' => $table, 'id_key' => $id_key, 'where_clause' => $where_clause] = $this->get_query_params('maxi_blocks_styles', $is_template);
 
             if (empty($styles) || $styles === '{}') {
                 $wpdb->query($wpdb->prepare("DELETE FROM $table WHERE $where_clause", $id));
@@ -598,8 +598,8 @@ if (!class_exists('MaxiBlocks_API')):
             $dataVal = $data['data'];
 			$is_template = $data['isTemplate'];
 
-			['table' => $table, 'id_key' => $id_key, 'where_clause' => $where_clause] = $this->getQueryParams('maxi_blocks_custom_data', $is_template);
-			['table' => $styles_table] = $this->getQueryParams('maxi_blocks_styles', $is_template);
+			['table' => $table, 'id_key' => $id_key, 'where_clause' => $where_clause] = $this->get_query_params('maxi_blocks_custom_data', $is_template);
+			['table' => $styles_table] = $this->get_query_params('maxi_blocks_styles', $is_template);
 
             if (empty($dataVal) || $dataVal === '{}') {
                 $wpdb->update("{$styles_table}", array(

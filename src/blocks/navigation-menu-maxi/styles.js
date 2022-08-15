@@ -250,17 +250,23 @@ const getEffectStyles = (props, target, isHover = false, prefix = '') => {
 const getMenuItemObject = props => {
 	const prefix = 'menu-item-';
 
-	const response = {
-		' .maxi-navigation-link-block .maxi-navigation-link-block__content': {
-			typography: getTypographyStyles({
-				obj: getGroupAttributes(props, 'menuItem'),
-				prefix,
-				blockStyle: props.blockStyle,
-				textLevel: 'p',
-			}),
-		},
-		' .maxi-navigation-link-block .maxi-navigation-link-block__content:hover':
-			{
+	const itemSelectors = [
+		'.maxi-navigation-link-block',
+		'.maxi-navigation-submenu-block',
+	];
+
+	const response = itemSelectors.reduce((acc, selector) => {
+		return {
+			...acc,
+			[` ${selector} ${selector}__content`]: {
+				typography: getTypographyStyles({
+					obj: getGroupAttributes(props, 'menuItem'),
+					prefix,
+					blockStyle: props.blockStyle,
+					textLevel: 'p',
+				}),
+			},
+			[` ${selector} ${selector}__content:hover`]: {
 				typography: getTypographyStyles({
 					obj: getGroupAttributes(props, 'menuItem', true),
 					prefix,
@@ -272,8 +278,7 @@ const getMenuItemObject = props => {
 					},
 				}),
 			},
-		' .maxi-navigation-link-block .maxi-navigation-link-block__content:active':
-			{
+			[` ${selector} ${selector}__content:active`]: {
 				typography: getTypographyStyles({
 					obj: getGroupAttributes(props, 'menuItem'),
 					prefix: `active-${prefix}`,
@@ -281,11 +286,9 @@ const getMenuItemObject = props => {
 					textLevel: 'p',
 				}),
 			},
-		...getEffectStyles(
-			props,
-			' .maxi-navigation-link-block .maxi-navigation-link-block__content'
-		),
-	};
+			...getEffectStyles(props, ` ${selector} ${selector}__content`),
+		};
+	}, {});
 
 	return response;
 };

@@ -246,6 +246,8 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.transform({
 										props,
+										selectors: selectorsVideo,
+										categories: categoriesVideo,
 									}),
 									...inspectorTabs.transition({
 										props: {

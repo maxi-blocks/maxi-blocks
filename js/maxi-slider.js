@@ -219,13 +219,15 @@ class MaxiSlider {
 
 		if (
 			this.currentSlide + 1 >= this._slides.length &&
-			this.dragPosition < this.initPosition
+			this.dragPosition < this.initPosition &&
+			this.isLoop
 		) {
 			this.currentSlide -= this._slides.length;
 			this.sliderAction(false);
 		} else if (
 			this.currentSlide <= 0 &&
-			this.dragPosition > this.initPosition
+			this.dragPosition > this.initPosition &&
+			this.isLoop
 		) {
 			this.currentSlide += this._slides.length;
 			this.sliderAction(false);
@@ -343,7 +345,6 @@ class MaxiSlider {
 	}
 
 	onHoverEnd() {
-		console.log('im here');
 		this.isHovering = false;
 		this._wrapper.classList.remove('maxi-slider-hovered');
 	}

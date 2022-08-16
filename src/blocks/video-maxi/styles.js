@@ -1,13 +1,7 @@
 /**
- * External dependencies
- */
-import { isNil, isEmpty } from 'lodash';
-
-/**
  * Internal dependencies
  */
 import {
-	getAttributeValue,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 	styleProcessor,
@@ -27,6 +21,7 @@ import {
 	getIconStyles,
 	getAspectRatio,
 	getSVGStyles,
+	getIconSize,
 } from '../../extensions/styles/helpers';
 import { selectorsVideo } from './custom-css';
 
@@ -152,61 +147,6 @@ const getVideoContainerOject = props => {
 	return response;
 };
 
-const getIconSize = (obj, prefix = '', isHover = false) => {
-	const response = {
-		label: 'Icon size',
-		general: {},
-	};
-
-	breakpoints.forEach(breakpoint => {
-		response[breakpoint] = {};
-
-		if (
-			!isNil(
-				getAttributeValue({
-					target: 'icon-height',
-					isHover,
-					breakpoint,
-					prefix,
-					props: obj,
-				})
-			)
-		) {
-			response[breakpoint].height = `${getAttributeValue({
-				target: 'icon-height',
-				isHover,
-				breakpoint,
-				prefix,
-				props: obj,
-			})}${getAttributeValue({
-				target: 'icon-height-unit',
-				isHover,
-				breakpoint,
-				prefix,
-				props: obj,
-			})}`;
-			response[breakpoint].width = `${getAttributeValue({
-				target: 'icon-height',
-				isHover,
-				breakpoint,
-				prefix,
-				props: obj,
-			})}${getAttributeValue({
-				target: 'icon-height-unit',
-				isHover,
-				breakpoint,
-				prefix,
-				props: obj,
-			})}`;
-		}
-
-		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')
-			delete response[breakpoint];
-	});
-
-	return { iconSize: response };
-};
-
 const getCloseIconPosition = obj => {
 	const response = {
 		label: 'Icon position',
@@ -255,7 +195,11 @@ const getIconObject = (prefix, obj) => {
 	const { [`${prefix}icon-status-hover`]: iconHoverStatus } = obj;
 
 	return {
-		[` .maxi-video-block__${prefix}button svg`]: getIconSize(obj, prefix),
+		[` .maxi-video-block__${prefix}button svg`]: getIconSize(
+			obj,
+			false,
+			prefix
+		),
 		[` .maxi-video-block__${prefix}button svg path`]: getIconPathStyles(
 			obj,
 			false,
@@ -277,9 +221,8 @@ const getIconObject = (prefix, obj) => {
 		...(iconHoverStatus &&
 			(prefix === 'play-'
 				? {
-						[`:hover .maxi-video-block__${prefix}button svg`]:
-							getIconSize(obj, prefix),
 						[`:hover .maxi-video-block__${prefix}button svg`]: {
+							...getIconSize(obj, true, prefix),
 							icon: getIconStyles(
 								obj,
 								obj.blockStyle,
@@ -300,9 +243,8 @@ const getIconObject = (prefix, obj) => {
 						}),
 				  }
 				: {
-						[` .maxi-video-block__${prefix}button:hover svg`]:
-							getIconSize(obj, prefix),
 						[` .maxi-video-block__${prefix}button:hover svg`]: {
+							...getIconSize(obj, true, prefix),
 							icon: getIconStyles(
 								obj,
 								obj.blockStyle,

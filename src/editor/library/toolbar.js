@@ -76,6 +76,8 @@ const LibraryToolbar = props => {
 				{type.includes('shape') && __('Shape library', 'maxi-blocks')}
 				{(type.includes('button') || type.includes('search')) &&
 					__('Button icon library', 'maxi-blocks')}
+				{type.includes('accordion') &&
+					__('Maxi accordion icon library', 'maxi-blocks')}
 				{type.includes('video') &&
 					__('Video icon library', 'maxi-blocks')}
 			</a>
@@ -87,7 +89,7 @@ const LibraryToolbar = props => {
 					/>
 					<Button icon={fullScreen} onClick={goFullScreen} />
 					<ToolbarButton
-						label={__('Load', 'maxi-blocks')}
+						label={__('Insert', 'maxi-blocks')}
 						onClick={() => {
 							clickLoadButton(cardId);
 							onRequestClose();

@@ -92,7 +92,8 @@ class MaxiBlocks_Styles
                 'relations',
                 'video',
 				'search',
-				'map'
+				'map',
+                'accordion',
             ];
 
             foreach ($scripts as &$script) {
@@ -105,7 +106,7 @@ class MaxiBlocks_Styles
                         ucwords(str_replace('-', ' ', $script))
                     );
                 $jsScriptName = 'maxi-' . $script;
-                $jsScriptPath = '//js//' . $jsScriptName . '.min.js';
+                $jsScriptPath = '//js//min//' . $jsScriptName . '.min.js';
 
                 $meta = $this->customMeta($jsVar);
 

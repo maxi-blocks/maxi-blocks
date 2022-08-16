@@ -144,6 +144,11 @@
 			&_family {
 				.maxi-base-control__field {
 					margin-bottom: 0;
+
+					.maxi-font-family-selector__control__control:hover {
+						background-color: var(--maxi-grey-3-color);
+						cursor: pointer;
+					}
 				}
 			}
 

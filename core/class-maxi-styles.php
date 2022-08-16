@@ -73,9 +73,9 @@ class MaxiBlocks_Styles
                 'number-counter',
                 'shape-divider',
                 'relations',
-				'video',
-				'search',
-				'accordion',
+                'video',
+                'search',
+                'accordion',
             ];
 
             foreach ($scripts as &$script) {
@@ -88,7 +88,7 @@ class MaxiBlocks_Styles
                         ucwords(str_replace('-', ' ', $script))
                     );
                 $jsScriptName = 'maxi-' . $script;
-                $jsScriptPath = '//js//' . $jsScriptName . '.min.js';
+                $jsScriptPath = '//js//min//' . $jsScriptName . '.min.js';
 
                 $meta = $this->customMeta($jsVar);
 
@@ -108,10 +108,10 @@ class MaxiBlocks_Styles
                         plugins_url($jsScriptPath, dirname(__FILE__))
                     );
 
-					$data =
-						$jsVar === 'search'
-							? [$meta, get_search_link()]
-							: [$meta];
+                    $data =
+                        $jsVar === 'search'
+                            ? [$meta, get_search_link()]
+                            : [$meta];
 
                     wp_localize_script($jsScriptName, $jsVarToPass, $data);
                 }

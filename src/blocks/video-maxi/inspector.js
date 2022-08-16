@@ -176,12 +176,7 @@ const Inspector = props => {
 													)}
 													{...getGroupAttributes(
 														attributes,
-														[
-															'background',
-															'backgroundColor',
-														],
-														false,
-														'overlay-'
+														'videoOverlay'
 													)}
 													mediaID={overlayMediaId}
 													altSelector={

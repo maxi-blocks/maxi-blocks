@@ -12,6 +12,7 @@ const attributes = {
 	 */
 
 	...attributesData.video,
+	...attributesData.videoOverlay,
 	...prefixAttributesCreator({
 		obj: attributesData.background,
 		prefix: 'lightbox-',
@@ -26,36 +27,6 @@ const attributes = {
 			'lightbox-background-palette-color-general': 5,
 		},
 	}),
-
-	...prefixAttributesCreator({
-		obj: attributesData.background,
-		prefix: 'overlay-',
-		diffValAttr: {
-			'overlay-background-active-media-general': 'color',
-		},
-	}),
-	...prefixAttributesCreator({
-		obj: attributesData.backgroundColor,
-		prefix: 'overlay-',
-		diffValAttr: {
-			'overlay-background-palette-color-general': 5,
-			'overlay-background-palette-opacity-general': 0.7,
-		},
-	}),
-
-	'overlay-mediaID': {
-		type: 'number',
-	},
-	'overlay-mediaURL': {
-		type: 'string',
-	},
-	'overlay-altSelector': {
-		type: 'string',
-		default: 'wordpress',
-	},
-	'overlay-mediaAlt': {
-		type: 'string',
-	},
 
 	...attributesData.border,
 	...attributesData.borderHover,

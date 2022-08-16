@@ -120,17 +120,13 @@ const getLightBoxObject = props => {
 	return response;
 };
 
-const getOverlayBackgroundObject = props => {
+const getOverlayBackgroundObject = (props, isHover = false) => {
 	const response = {
 		...getBackgroundStyles({
-			...getGroupAttributes(
-				props,
-				['background', 'backgroundColor'],
-				false,
-				'overlay-'
-			),
+			...getGroupAttributes(props, 'videoOverlay'),
 			prefix: 'overlay-',
 			blockStyle: props.blockStyle,
+			isHover,
 		}),
 	};
 
@@ -280,6 +276,10 @@ const getStyles = props => {
 					getVideoContainerOject(props),
 				' .maxi-video-block__overlay-background':
 					getOverlayBackgroundObject(props),
+				...(props['overlay-background-hover-status'] && {
+					' .maxi-video-block__overlay-background:hover':
+						getOverlayBackgroundObject(props, true),
+				}),
 				...getIconObject('play-', props),
 				...getIconObject('close-', props),
 			},

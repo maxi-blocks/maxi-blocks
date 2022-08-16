@@ -185,12 +185,9 @@ const IconSettings = props => {
 						className='maxi-video-icon-control__icon-height'
 						optionType='string'
 						value={getLastBreakpointAttribute({
-							target: getAttributeKey(
-								'icon-height',
-								isHover,
-								prefix
-							),
+							target: `${prefix}icon-height`,
 							breakpoint,
+							isHover,
 							attributes: props,
 						})}
 						onChangeValue={val =>

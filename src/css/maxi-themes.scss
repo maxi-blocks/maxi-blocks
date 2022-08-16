@@ -101,6 +101,33 @@ body.maxi-blocks--active {
 					}
 				}
 			}
+			& .maxi-pane-block .maxi-pane-block__header {
+				@each $level in $levels {
+					#{$level} {
+						font-family: var(
+							--maxi-#{$style}-#{$level}-font-family-general
+						);
+						font-size: var(
+							--maxi-#{$style}-#{$level}-font-size-general
+						);
+						line-height: var(
+							--maxi-#{$style}-#{$level}-line-height-general
+						);
+						font-weight: var(
+							--maxi-#{$style}-#{$level}-font-weight-general
+						);
+						font-style: var(
+							--maxi-#{$style}-#{$level}-font-style-general
+						);
+						text-transform: var(
+							--maxi-#{$style}-#{$level}-text-transform-general
+						);
+						text-decoration: var(
+							--maxi-#{$style}-#{$level}-text-decoration-general
+						);
+					}
+				}
+			}
 
 			&.maxi-text-block li,
 			.maxi-text-block li {
@@ -249,7 +276,9 @@ body.maxi-blocks--active {
 		.maxi-#{$style} {
 			&#{$class_name} {
 				&.maxi-text-block,
-				.maxi-text-block {
+				.maxi-text-block,
+				& .maxi-pane-block .maxi-pane-block__header,
+				.maxi-pane-block .maxi-pane-block__header {
 					@each $level in $levels {
 						#{$level} {
 							font-family: var(

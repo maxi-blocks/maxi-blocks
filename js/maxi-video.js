@@ -101,7 +101,6 @@ function handleVimeoVideos() {
 function popupEvents(player, video, type, embedUrl) {
 	const wrapper = video.querySelector('.maxi-video-block__popup-wrapper');
 	const overlay = video.querySelector('.maxi-video-block__overlay');
-
 	const openVideo = () => {
 		wrapper.style.display = 'flex';
 		if (type !== 'youtube') player.src = embedUrl;
@@ -139,8 +138,8 @@ function insertYoutubeScript() {
 	document.body.appendChild(script);
 }
 
-function onYouTubeIframeAPIReady() {
+window.onYouTubeIframeAPIReady = () => {
 	handleYoutubeVideos();
-}
+};
 
 window.addEventListener('load', videoEvents);

@@ -16,6 +16,7 @@ import {
 	AdvancedNumberControl,
 	SelectControl,
 	TextControl,
+	SettingTabsControl,
 } from '../../../../components';
 
 const VideoControl = props => {
@@ -32,11 +33,9 @@ const VideoControl = props => {
 
 	return (
 		<>
-			<SelectControl
-				className='maxi-video-control__type'
-				label={__('Type', 'maxi-blocks')}
-				value={playerType}
-				options={[
+			<SettingTabsControl
+				type='buttons'
+				items={[
 					{
 						label: __('Video', 'maxi-blocks'),
 						value: 'video',
@@ -51,6 +50,8 @@ const VideoControl = props => {
 						playerType: val,
 					})
 				}
+				selected={playerType}
+				fullWidthMode
 			/>
 			<TextControl
 				label={__('URL', 'maxi-blocks')}

@@ -18,7 +18,7 @@ import { getTemplates } from '../../extensions/column-templates';
 import { getGroupAttributes } from '../../extensions/styles';
 import getRowGapProps from '../../extensions/attributes/getRowGapProps';
 import getStyles from './styles';
-import copyPasteMapping from './copy-paste-mapping';
+import { copyPasteMapping } from './data';
 
 /**
  * External dependencies

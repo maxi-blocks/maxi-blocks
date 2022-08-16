@@ -121,6 +121,35 @@ const MaxiModal = props => {
 							: __('Replace icon', 'maxi-blocks')}
 					</Button>
 				)}
+				{(type === 'accordion-icon' ||
+					type === 'accordion-icon-active') && (
+					<>
+						<Button
+							className='maxi-library-modal__action-section__buttons__load-library'
+							onClick={onClick}
+						>
+							{__('Load icon library', 'maxi-blocks')}
+						</Button>
+						{!isEmpty(icon) && (
+							<div className='maxi-library-modal__action-section__preview'>
+								<Icon
+									className='maxi-library-modal__action-section__preview--remove'
+									icon={remove}
+									onClick={() =>
+										onRemove({
+											[type === 'accordion-icon'
+												? 'icon-content'
+												: 'active-icon-content']: '',
+										})
+									}
+								/>
+								<RawHTML className='maxi-library-modal__action-section__preview__icon'>
+									{icon}
+								</RawHTML>
+							</div>
+						)}
+					</>
+				)}
 				{type === 'preview' && (
 					<Button
 						className='maxi-cloud-masonry-card__button'

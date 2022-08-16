@@ -37,6 +37,8 @@ const allowedBlocks = [
 	'maxi-blocks/svg-icon-maxi',
 	'maxi-blocks/slider-maxi',
 	'maxi-blocks/slide-maxi',
+	'maxi-blocks/accordion-maxi',
+	'maxi-blocks/pane-maxi',
 	'maxi-blocks/video-maxi',
 	'maxi-blocks/search-maxi',
 ];

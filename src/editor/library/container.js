@@ -52,6 +52,7 @@ const MasonryItem = props => {
 		onRequestInsert,
 		previewIMG,
 		demoUrl,
+		title,
 		currentItemColorStatus = false,
 	} = props;
 
@@ -72,7 +73,8 @@ const MasonryItem = props => {
 				<div className='maxi-cloud-masonry-card__container'>
 					<div className='maxi-cloud-masonry-card__container__top-bar'>
 						<div className='maxi-cloud-masonry__serial-tag'>
-							{serial}
+							{type === 'patterns' && title}
+							{type === 'sc' && serial}
 						</div>
 					</div>
 				</div>
@@ -93,13 +95,13 @@ const MasonryItem = props => {
 								className='maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-load'
 								onClick={onRequestInsert}
 							>
-								{__('Load', 'maxi-blocks')}
+								{__('Insert', 'maxi-blocks')}
 							</Button>
 						</>
 					)}
 					{type === 'sc' && (
 						<span className='maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-load'>
-							{__('Load', 'maxi-block')}
+							{__('Insert', 'maxi-block')}
 						</span>
 					)}
 					<div className='maxi-cloud-masonry-card__tags'>
@@ -140,7 +142,7 @@ const MasonryItem = props => {
 						target === 'navigation-icon' ||
 						target === 'search-icon' ||
 						target.includes('Line')
-							? serial.replace(' Line', '')
+							? serial.replace(' Line', '').replace(' line', '')
 							: [
 									'image-shape',
 									'bg-shape',
@@ -150,7 +152,7 @@ const MasonryItem = props => {
 							? serial.replace(' shape', '')
 							: serial}
 					</div>
-					<span>{__('Load', 'maxi-block')}</span>
+					<span>{__('Insert', 'maxi-block')}</span>
 				</div>
 			)}
 		</div>
@@ -377,6 +379,8 @@ const LibraryContainer = props => {
 	const getShapeType = type => {
 		switch (type) {
 			case 'button-icon':
+			case 'accordion-icon':
+			case 'accordion-icon-active':
 			case 'search-icon':
 				return 'icon';
 			case 'video-icon':
@@ -397,6 +401,7 @@ const LibraryContainer = props => {
 				type='patterns'
 				target='patterns'
 				key={`maxi-cloud-masonry__item-${hit.post_id}`}
+				title={hit.post_title}
 				demoUrl={hit.demo_url}
 				previewIMG={hit.preview_image_url}
 				isPro={hit.cost?.[0] === 'pro'}
@@ -553,14 +558,26 @@ const LibraryContainer = props => {
 			}
 
 			if (
-				type === 'button-icon' ||
-				type === 'video-icon' ||
-				type === 'navigation-icon' ||
-				type === 'search-icon'
+				[
+					'button-icon',
+					'video-icon',
+					'accordion-icon',
+					'search-icon',
+					'navigation-icon',
+				].includes(type)
 			) {
 				onSelect({
 					[`${prefix}icon-content`]: svgCode,
 					[`${prefix}svgType`]: svgType,
+				});
+
+				onRequestClose();
+			}
+
+			if (type === 'accordion-icon-active') {
+				onSelect({
+					'active-icon-content': svgCode,
+					svgTypeActive: svgType,
 				});
 
 				onRequestClose();
@@ -791,6 +808,37 @@ const LibraryContainer = props => {
 				</InstantSearch>
 			)}
 
+			{(type === 'accordion-icon' ||
+				type === 'accordion-icon-active') && (
+				<InstantSearch
+					indexName='svg_icon'
+					searchClient={searchClientSvg}
+				>
+					<Configure hitsPerPage={49} />
+					<div className='maxi-cloud-container__svg-shape'>
+						<div className='maxi-cloud-container__svg-shape__sidebar'>
+							<SearchBox
+								submit={__('Find', 'maxi-blocks')}
+								autoFocus
+								searchAsYouType
+								showLoadingIndicator
+							/>
+							<CustomRefinementList
+								className='hidden'
+								attribute='svg_category'
+								defaultRefinement={['Line']}
+								showLoadingIndicator
+							/>
+						</div>
+						<div className='maxi-cloud-container__content-svg-shape'>
+							<div className='maxi-cloud-container__sc__content-sc'>
+								<Stats translations={resultsCount} />
+								<InfiniteHits hitComponent={svgShapeResults} />
+							</div>
+						</div>
+					</div>
+				</InstantSearch>
+			)}
 			{type === 'preview' && (
 				<div className='maxi-cloud-container__patterns'>
 					{maxiPreviewIframe(url, title)}

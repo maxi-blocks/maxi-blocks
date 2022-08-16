@@ -19,6 +19,8 @@ const allowedBlocks = [
 	'maxi-blocks/slider-maxi',
 	'maxi-blocks/slide-maxi',
 	'maxi-blocks/video-maxi',
+	'maxi-blocks/accordion-maxi',
+	'maxi-blocks/pane-maxi',
 	'maxi-blocks/search-maxi',
 ];
 

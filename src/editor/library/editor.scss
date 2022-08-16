@@ -11,19 +11,19 @@
 		flex-wrap: wrap;
 		width: 100%;
 
-		&__label {
+		& &__label {
 			flex-basis: 100%;
 		}
 
 		&__buttons {
 			width: 100%;
 			flex: 5;
+			display: flex;
 
 			&__load-library {
 				background: var(--maxi-light-blue-1-color);
 				border: 1px dashed var(--maxi-grey-9-color);
 				color: var(--maxi-black-2-color) !important;
-				display: flex;
 				align-items: center;
 				justify-content: center;
 				width: 100%;

@@ -11,6 +11,7 @@ const boxClass = `${blockClass}__box`;
 const prefix = 'number-counter-';
 
 const data = {
+	name: 'number-counter-maxi',
 	copyPasteMapping: {
 		settings: {
 			Alignment: {

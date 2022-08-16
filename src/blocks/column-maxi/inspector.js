@@ -13,7 +13,7 @@ import {
 	SettingTabsControl,
 } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
-import { selectorsColumn, categoriesColumn } from './custom-css';
+import { customCss } from './data';
 import ResponsiveTabsControl from '../../components/responsive-tabs-control';
 import { getGroupAttributes } from '../../extensions/styles';
 import { withMaxiInspector } from '../../extensions/inspector';
@@ -113,16 +113,16 @@ const Inspector = props => {
 									...inspectorTabs.customCss({
 										props,
 										breakpoint: deviceType,
-										selectors: selectorsColumn,
-										categories: categoriesColumn,
+										selectors: customCss.selectors,
+										categories: customCss.categories,
 									}),
 									...inspectorTabs.scrollEffects({
 										props,
 									}),
 									...inspectorTabs.transform({
 										props,
-										selectors: selectorsColumn,
-										categories: categoriesColumn,
+										selectors: customCss.selectors,
+										categories: customCss.categories,
 									}),
 									...inspectorTabs.transition({
 										props: {

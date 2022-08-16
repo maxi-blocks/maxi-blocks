@@ -15,6 +15,7 @@ const iconClass = `${blockClass}__icon`;
 const prefix = 'svg-';
 
 const data = {
+	name: 'svg-icon-maxi',
 	copyPasteMapping: {
 		settings: {
 			'Icon content': ['svgType', 'content'],

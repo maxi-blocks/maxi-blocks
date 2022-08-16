@@ -93,7 +93,12 @@ const relations = () => {
 			Object.entries(stylesObj).forEach(([key, value]) => {
 				if (remove) {
 					const styleRegExp = new RegExp(
-						`(${escapeRegExp(selector)}.*?) ${key}:.*?;`
+						`(${escapeRegExp(
+							selector.replace(
+								'data-maxi-relations="false"',
+								'data-maxi-relations="true"'
+							)
+						)}.*?) ${key}:.*?;`
 					);
 
 					interactionStyle.textContent =

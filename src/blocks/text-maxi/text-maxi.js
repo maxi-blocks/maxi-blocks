@@ -18,7 +18,7 @@ import attributes from './attributes';
 import edit from './edit';
 import save from './save';
 import transforms from './transforms';
-import { selectorsText } from './custom-css';
+import { customCss } from './data';
 
 /**
  * Styles and icons
@@ -57,5 +57,9 @@ registerBlockType('maxi-blocks/text-maxi', {
 	edit,
 	save,
 	transforms,
-	deprecated: blockMigrator({ attributes, save, selectors: selectorsText }),
+	deprecated: blockMigrator({
+		attributes,
+		save,
+		selectors: customCss.selectors,
+	}),
 });

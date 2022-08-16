@@ -14,7 +14,7 @@ import {
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
-import { selectorsText, categoriesText } from './custom-css';
+import { customCss } from './data';
 import listTab from './list-tab';
 import { withMaxiInspector } from '../../extensions/inspector';
 
@@ -123,16 +123,16 @@ const Inspector = props => {
 									...inspectorTabs.customCss({
 										props,
 										breakpoint: deviceType,
-										selectors: selectorsText,
-										categories: categoriesText,
+										selectors: customCss.selectors,
+										categories: customCss.categories,
 									}),
 									...inspectorTabs.scrollEffects({
 										props,
 									}),
 									...inspectorTabs.transform({
 										props,
-										selectors: selectorsText,
-										categories: categoriesText,
+										selectors: customCss.selectors,
+										categories: customCss.categories,
 									}),
 									...inspectorTabs.transition({
 										props: {

@@ -14,6 +14,7 @@ import {
 	SettingTabsControl,
 } from '../../../../components';
 import {
+	getAttributeKey,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
@@ -62,10 +63,13 @@ const EffectControl = props => {
 					paletteOpacity,
 				}) => {
 					onChange({
-						[`${prefix}color`]: color,
-						[`${prefix}palette-color`]: paletteColor,
-						[`${prefix}palette-status`]: paletteStatus,
-						[`${prefix}palette-opacity`]: paletteOpacity,
+						[getAttributeKey('color', isHover, prefix)]: color,
+						[getAttributeKey('palette-color', isHover, prefix)]:
+							paletteColor,
+						[getAttributeKey('palette-status', isHover, prefix)]:
+							paletteStatus,
+						[getAttributeKey('palette-opacity', isHover, prefix)]:
+							paletteOpacity,
 					});
 					// cleanInlineStyles(
 					// 	' .maxi-search-block__input',
@@ -82,15 +86,18 @@ const EffectControl = props => {
 					target: `${prefix}width`,
 					breakpoint,
 					attributes: props,
+					isHover,
 				})}
 				value={getLastBreakpointAttribute({
 					target: `${prefix}width`,
 					breakpoint,
 					attributes: props,
+					isHover,
 				})}
 				onChangeValue={val =>
 					onChange({
-						[`${prefix}width-${breakpoint}`]: val,
+						[getAttributeKey('width', isHover, prefix, breakpoint)]:
+							val,
 					})
 				}
 				enableUnit
@@ -98,39 +105,60 @@ const EffectControl = props => {
 					target: `${prefix}width-unit`,
 					breakpoint,
 					attributes: props,
+					isHover,
 				})}
 				minMaxSettings={{
 					px: {
-						min: -999,
+						min: 0,
 						max: 999,
 					},
 					em: {
-						min: -99,
+						min: 0,
 						max: 99,
 					},
 					vw: {
-						min: -99,
+						min: 0,
 						max: 99,
 					},
 					'%': {
-						min: -100,
+						min: 0,
 						max: 100,
 					},
 				}}
 				onChangeUnit={val =>
 					onChange({
-						[`${prefix}width-unit-${breakpoint}`]: val,
+						[getAttributeKey(
+							'width-unit',
+							isHover,
+							prefix,
+							breakpoint
+						)]: val,
 					})
 				}
 				onReset={() => {
 					onChange({
-						[`${prefix}width-${breakpoint}`]: getDefaultAttribute(
-							`${prefix}width-${breakpoint}`
-						),
-						[`${prefix}width-unit-${breakpoint}`]:
+						[getAttributeKey('width', isHover, prefix, breakpoint)]:
 							getDefaultAttribute(
-								`${prefix}width-unit-${breakpoint}`
+								getAttributeKey(
+									'width',
+									isHover,
+									prefix,
+									breakpoint
+								)
 							),
+						[getAttributeKey(
+							'width-unit',
+							isHover,
+							prefix,
+							breakpoint
+						)]: getDefaultAttribute(
+							getAttributeKey(
+								'width-unit',
+								isHover,
+								prefix,
+								breakpoint
+							)
+						),
 					});
 				}}
 				optionType='string'
@@ -142,15 +170,22 @@ const EffectControl = props => {
 					target: `${prefix}thickness`,
 					breakpoint,
 					attributes: props,
+					isHover,
 				})}
 				value={getLastBreakpointAttribute({
 					target: `${prefix}thickness`,
 					breakpoint,
 					attributes: props,
+					isHover,
 				})}
 				onChangeValue={val =>
 					onChange({
-						[`${prefix}thickness-${breakpoint}`]: val,
+						[getAttributeKey(
+							'thickness',
+							isHover,
+							prefix,
+							breakpoint
+						)]: val,
 					})
 				}
 				enableUnit
@@ -158,40 +193,64 @@ const EffectControl = props => {
 					target: `${prefix}thickness-unit`,
 					breakpoint,
 					attributes: props,
+					isHover,
 				})}
 				minMaxSettings={{
 					px: {
-						min: -999,
-						max: 999,
-					},
-					em: {
-						min: -99,
+						min: 0,
 						max: 99,
 					},
-					vw: {
-						min: -99,
+					em: {
+						min: 0,
+						max: 99,
+					},
+					vh: {
+						min: 0,
 						max: 99,
 					},
 					'%': {
-						min: -100,
+						min: 0,
 						max: 100,
 					},
 				}}
 				onChangeUnit={val =>
 					onChange({
-						[`${prefix}thickness-unit-${breakpoint}`]: val,
+						[getAttributeKey(
+							'thickness-unit',
+							isHover,
+							prefix,
+							breakpoint
+						)]: val,
 					})
 				}
 				onReset={() => {
 					onChange({
-						[`${prefix}thickness-${breakpoint}`]:
-							getDefaultAttribute(
-								`${prefix}thickness-${breakpoint}`
-							),
-						[`${prefix}thickness-unit-${breakpoint}`]:
-							getDefaultAttribute(
-								`${prefix}thickness-unit-${breakpoint}`
-							),
+						[getAttributeKey(
+							'thickness',
+							isHover,
+							prefix,
+							breakpoint
+						)]: getDefaultAttribute(
+							getAttributeKey(
+								'thickness',
+								isHover,
+								prefix,
+								breakpoint
+							)
+						),
+						[getAttributeKey(
+							'thickness-unit',
+							isHover,
+							prefix,
+							breakpoint
+						)]: getDefaultAttribute(
+							getAttributeKey(
+								'thickness-unit',
+								isHover,
+								prefix,
+								breakpoint
+							)
+						),
 					});
 				}}
 				optionType='string'
@@ -244,70 +303,6 @@ const MenuItemEffectControl = props => {
 				onChange={val =>
 					onChange({
 						[`${prefix}type`]: val,
-					})
-				}
-			/>
-			<SelectControl
-				label={__('Hover animation', 'maxi-blocks')}
-				className='menu-item-effect-control__hover-animation'
-				value={props[`${prefix}animation`]}
-				options={[
-					{
-						label: __('None', 'maxi-blocks'),
-						value: 'none',
-					},
-					{
-						label: __('Fade', 'maxi-blocks'),
-						value: 'fade',
-					},
-					{
-						label: __('Slide', 'maxi-blocks'),
-						value: 'slide',
-					},
-					{
-						label: __('Grow', 'maxi-blocks'),
-						value: 'grow',
-					},
-				]}
-				onChange={val =>
-					onChange({
-						[`${prefix}animation`]: val,
-					})
-				}
-			/>
-			<SelectControl
-				label={__('Direction', 'maxi-blocks')}
-				className='menu-item-effect-control__direction'
-				value={props[`${prefix}direction`]}
-				options={[
-					{
-						label: __('None', 'maxi-blocks'),
-						value: 'none',
-					},
-					{
-						label: __('Left', 'maxi-blocks'),
-						value: 'left',
-					},
-					{
-						label: __('Center', 'maxi-blocks'),
-						value: 'center',
-					},
-					{
-						label: __('Right', 'maxi-blocks'),
-						value: 'right',
-					},
-					{
-						label: __('Top', 'maxi-blocks'),
-						value: 'top',
-					},
-					{
-						label: __('Bottom', 'maxi-blocks'),
-						value: 'bottom',
-					},
-				]}
-				onChange={val =>
-					onChange({
-						[`${prefix}direction`]: val,
 					})
 				}
 			/>

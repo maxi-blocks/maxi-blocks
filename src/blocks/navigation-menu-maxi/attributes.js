@@ -3,6 +3,7 @@
  */
 import { transitionAttributesCreator } from '../../extensions/styles';
 import * as attributesData from '../../extensions/styles/defaults/index';
+import transitionObj from './transitionObj';
 
 const attributes = {
 	...attributesData.global,
@@ -32,7 +33,7 @@ const attributes = {
 	...attributesData.transform,
 	...{
 		...attributesData.transition,
-		...transitionAttributesCreator(),
+		...transitionAttributesCreator(transitionObj),
 	},
 	...attributesData.display,
 	...attributesData.opacity,

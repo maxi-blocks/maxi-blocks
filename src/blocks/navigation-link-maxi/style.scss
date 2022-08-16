@@ -3,6 +3,7 @@ body.maxi-blocks--active .maxi-navigation-link-block {
 	height: fit-content;
 
 	&__content {
+		display: inline-block;
 		text-decoration: none;
 		padding: 10px;
 

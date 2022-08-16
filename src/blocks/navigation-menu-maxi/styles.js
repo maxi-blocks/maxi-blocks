@@ -21,6 +21,7 @@ import {
 	getTypographyStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsNavigationMenu } from './custom-css';
+import transitionObj from './transitionObj';
 
 const getNormalObject = props => {
 	const response = {
@@ -98,20 +99,29 @@ const getHoverObject = props => {
 	return response;
 };
 
-const getEffectStyles = (props, target, isHover = false, prefix = '') => {
+const getEffectStyles = (
+	props,
+	target,
+	isHover = false,
+	isActive = false,
+	prefix = ''
+) => {
 	const { 'effect-type': effectType } = props;
+	const statusPrefix = isActive ? `active-${prefix}` : prefix;
+
+	const statusSelector = isActive ? ':active' : isHover ? ':hover' : '';
 
 	const getColor = () => {
 		const { paletteStatus, paletteColor, paletteOpacity, color } =
 			getPaletteAttributes({
 				obj: props,
-				prefix: `${prefix}effect-`,
+				prefix: `${statusPrefix}effect-`,
 				isHover,
 			});
 
 		if (paletteStatus)
 			return getColorRGBAString({
-				firstVar: `${prefix}effect-color`,
+				firstVar: `${statusPrefix}effect-color`,
 				secondVar: `color-${paletteColor}`,
 				opacity: paletteOpacity,
 				blockStyle: props.blockStyle,
@@ -121,26 +131,26 @@ const getEffectStyles = (props, target, isHover = false, prefix = '') => {
 	};
 
 	const effectThickness = `${getLastBreakpointAttribute({
-		target: `${prefix}effect-thickness`,
+		target: `${statusPrefix}effect-thickness`,
 		breakpoint: 'general',
 		attributes: props,
 		isHover,
 	})}${
 		getLastBreakpointAttribute({
-			target: `${prefix}effect-thickness-unit`,
+			target: `${statusPrefix}effect-thickness-unit`,
 			breakpoint: 'general',
 			attributes: props,
 			isHover,
 		}) ?? 'px'
 	}`;
 	const effectWidth = `${getLastBreakpointAttribute({
-		target: `${prefix}effect-width`,
+		target: `${statusPrefix}effect-width`,
 		breakpoint: 'general',
 		attributes: props,
 		isHover,
 	})}${
 		getLastBreakpointAttribute({
-			target: `${prefix}effect-width-unit`,
+			target: `${statusPrefix}effect-width-unit`,
 			breakpoint: 'general',
 			attributes: props,
 			isHover,
@@ -150,7 +160,7 @@ const getEffectStyles = (props, target, isHover = false, prefix = '') => {
 	switch (effectType) {
 		case 'solidBackground':
 			return {
-				[`${target}::after`]: {
+				[`${target}${statusSelector}::after`]: {
 					effect: {
 						general: {
 							top: 0,
@@ -164,7 +174,7 @@ const getEffectStyles = (props, target, isHover = false, prefix = '') => {
 			};
 		case 'underline':
 			return {
-				[`${target}::after`]: {
+				[`${target}${statusSelector}::after`]: {
 					effect: {
 						general: {
 							bottom: 0,
@@ -178,7 +188,7 @@ const getEffectStyles = (props, target, isHover = false, prefix = '') => {
 			};
 		case 'overline':
 			return {
-				[`${target}::before`]: {
+				[`${target}${statusSelector}::before`]: {
 					effect: {
 						general: {
 							top: 0,
@@ -192,7 +202,7 @@ const getEffectStyles = (props, target, isHover = false, prefix = '') => {
 			};
 		case 'doubleLine':
 			return {
-				[`${target}::before`]: {
+				[`${target}${statusSelector}::before`]: {
 					effect: {
 						general: {
 							top: 0,
@@ -203,7 +213,7 @@ const getEffectStyles = (props, target, isHover = false, prefix = '') => {
 						},
 					},
 				},
-				[`${target}::after`]: {
+				[`${target}${statusSelector}::after`]: {
 					effect: {
 						general: {
 							bottom: 0,
@@ -217,7 +227,7 @@ const getEffectStyles = (props, target, isHover = false, prefix = '') => {
 			};
 		case 'boxed':
 			return {
-				[`${target}::after`]: {
+				[`${target}${statusSelector}::after`]: {
 					effect: {
 						general: {
 							top: 0,
@@ -234,7 +244,7 @@ const getEffectStyles = (props, target, isHover = false, prefix = '') => {
 			};
 		case 'boldText':
 			return {
-				[`${target}`]: {
+				[`${target}${statusSelector}`]: {
 					effect: {
 						general: {
 							'font-weight': 'bold',
@@ -287,6 +297,17 @@ const getMenuItemObject = props => {
 				}),
 			},
 			...getEffectStyles(props, ` ${selector} ${selector}__content`),
+			...getEffectStyles(
+				props,
+				` ${selector} ${selector}__content`,
+				true
+			),
+			...getEffectStyles(
+				props,
+				` ${selector} ${selector}__content`,
+				false,
+				true
+			),
 		};
 	}, {});
 
@@ -304,7 +325,8 @@ const getStyles = props => {
 				...getMenuItemObject(props),
 			},
 			selectorsNavigationMenu,
-			props
+			props,
+			transitionObj
 		),
 	};
 

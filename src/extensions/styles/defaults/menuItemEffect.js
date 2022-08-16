@@ -10,12 +10,6 @@ const rawMenuItemEffect = {
 	type: {
 		type: 'string',
 	},
-	animation: {
-		type: 'string',
-	},
-	direction: {
-		type: 'string',
-	},
 };
 
 const normalMenuItemEffect = {
@@ -54,9 +48,9 @@ const normalMenuItemEffect = {
 const menuItemEffect = {
 	...normalMenuItemEffect,
 	...hoverAttributesCreator({
-		obj: rawMenuItemEffect,
+		obj: normalMenuItemEffect,
 		newAttr: {
-			'status-hover': {
+			[`${prefix}status-hover`]: {
 				type: 'boolean',
 				default: false,
 			},
@@ -66,7 +60,7 @@ const menuItemEffect = {
 		obj: normalMenuItemEffect,
 		prefix: 'active-',
 		newAttr: {
-			'status-active': {
+			[`${prefix}status-active`]: {
 				type: 'boolean',
 				default: false,
 			},

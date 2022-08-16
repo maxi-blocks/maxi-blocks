@@ -46,13 +46,7 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 			__unstableStickyBoundaryElement={boundaryElement}
 			getAnchorRect={() => {
 				// Return default anchor rect if no ref is available.
-				if (!ref.current)
-					return DOMRect.fromRect({
-						top: 0,
-						left: 0,
-						width: 0,
-						height: 0,
-					});
+				if (!ref.current) return DOMRect.fromRect();
 
 				const { x, y, width, height } =
 					ref.current.getBoundingClientRect();

@@ -1,4 +1,4 @@
-const createSelectors = selectors => {
+const createSelectors = (selectors, addPseudoElementSelectors = true) => {
 	const getNormalAndHoverSelectors = obj => {
 		const { label, target } = obj;
 
@@ -22,11 +22,12 @@ const createSelectors = selectors => {
 
 	const result = { ...selectors };
 
-	['before', 'after'].forEach(pseudoElement => {
-		Object.entries(selectors).forEach(([key, selector]) => {
-			addPseudoElementSelector(key, selector, pseudoElement, result);
+	if (addPseudoElementSelectors)
+		['before', 'after'].forEach(pseudoElement => {
+			Object.entries(selectors).forEach(([key, selector]) => {
+				addPseudoElementSelector(key, selector, pseudoElement, result);
+			});
 		});
-	});
 
 	Object.entries(result).forEach(([key, obj]) => {
 		result[key] = getNormalAndHoverSelectors(obj);

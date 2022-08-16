@@ -15,7 +15,7 @@ import {
 	getZIndexStyles,
 	getFlexStyles,
 } from '../../extensions/styles/helpers';
-import { selectorsMap } from './custom-css';
+import data from './data';
 
 const getNormalObject = props => {
 	const response = {
@@ -128,7 +128,7 @@ const getStyles = props => {
 					'address'
 				),
 			},
-			selectorsMap,
+			data,
 			props
 		),
 	};

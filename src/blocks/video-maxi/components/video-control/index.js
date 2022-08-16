@@ -7,14 +7,16 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
-import TextControl from '../text-control';
-import SelectControl from '../select-control';
 import {
 	getParsedVideoUrl,
 	parseVideo,
 	videoUrlRegex,
-} from '../../extensions/video';
+} from '../../../../extensions/video';
+import {
+	AdvancedNumberControl,
+	SelectControl,
+	TextControl,
+} from '../../../../components';
 
 const VideoControl = props => {
 	const {

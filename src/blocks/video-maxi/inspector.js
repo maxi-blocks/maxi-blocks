@@ -7,18 +7,17 @@ import { InspectorControls } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import {
-	AccordionControl,
-	SettingTabsControl,
-	VideoControl,
-	VideoOptionsControl,
-	VideoOverlayControl,
-	PopupSettingsControl,
-	VideoIconControl,
-} from '../../components';
+import { AccordionControl, SettingTabsControl } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsVideo, categoriesVideo } from './custom-css';
 import { getGroupAttributes } from '../../extensions/styles';
+import {
+	PopupSettingsControl,
+	VideoControl,
+	VideoIconControl,
+	VideoOptionsControl,
+	VideoOverlayControl,
+} from './components';
 
 /**
  * Inspector

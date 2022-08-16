@@ -6,12 +6,11 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
+import { ColorControl, ToggleSwitch } from '../../../../components';
 import {
-	getLastBreakpointAttribute,
 	getDefaultAttribute,
-} from '../../extensions/styles';
-import ColorControl from '../color-control';
-import ToggleSwitch from '../toggle-switch';
+	getLastBreakpointAttribute,
+} from '../../../../extensions/styles';
 
 const VideoOverlayControl = props => {
 	const {

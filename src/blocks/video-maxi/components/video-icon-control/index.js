@@ -6,24 +6,26 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ColorControl from '../color-control';
 import {
-	getLastBreakpointAttribute,
-	getDefaultAttribute,
-	getColorRGBAString,
+	AdvancedNumberControl,
+	SelectControl,
+	SettingTabsControl,
+	ColorControl,
+	ToggleSwitch,
+} from '../../../../components';
+import MaxiModal from '../../../../editor/library/modal';
+import {
 	getAttributeKey,
-} from '../../extensions/styles';
-import MaxiModal from '../../editor/library/modal';
-import AdvancedNumberControl from '../advanced-number-control';
-import SettingTabsControl from '../setting-tabs-control';
-import ToggleSwitch from '../toggle-switch';
-import SelectControl from '../select-control';
+	getColorRGBAString,
+	getDefaultAttribute,
+	getLastBreakpointAttribute,
+} from '../../../../extensions/styles';
+import { setSVGContent, setSVGContentHover } from '../../../../extensions/svg';
 
 /**
  * External dependencies
  */
 import { isEmpty } from 'lodash';
-import { setSVGContent, setSVGContentHover } from '../../extensions/svg';
 
 const IconSettings = props => {
 	const {

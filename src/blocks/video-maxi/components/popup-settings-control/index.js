@@ -6,14 +6,13 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
+import VideoIconControl from '../video-icon-control';
+import { SelectControl, ColorControl } from '../../../../components';
 import {
-	getLastBreakpointAttribute,
 	getDefaultAttribute,
 	getGroupAttributes,
-} from '../../extensions/styles';
-import ColorControl from '../color-control';
-import SelectControl from '../select-control';
-import VideoIconControl from '../video-icon-control';
+	getLastBreakpointAttribute,
+} from '../../../../extensions/styles';
 
 const PopupSettingsControl = props => {
 	const { breakpoint, clientId, blockStyle, onChange, popAnimation } = props;

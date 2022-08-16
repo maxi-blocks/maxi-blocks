@@ -73,7 +73,7 @@ class edit extends MaxiBlockComponent {
 				{...getMaxiBlockAttributes(this.props)}
 			>
 				<RichText
-					className='maxi-navigation-submenu-block__content'
+					className='maxi-navigation-submenu-block__content menu-item__content'
 					href={url}
 					value={label}
 					identifier='content'

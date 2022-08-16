@@ -24,6 +24,7 @@ import {
 	getIconSize,
 } from '../../extensions/styles/helpers';
 import { selectorsVideo } from './custom-css';
+import transitionObj from './transitionObj';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -277,14 +278,15 @@ const getStyles = props => {
 				' .maxi-video-block__overlay-background':
 					getOverlayBackgroundObject(props),
 				...(props['overlay-background-hover-status'] && {
-					' .maxi-video-block__overlay-background:hover':
+					':hover .maxi-video-block__overlay-background':
 						getOverlayBackgroundObject(props, true),
 				}),
 				...getIconObject('play-', props),
 				...getIconObject('close-', props),
 			},
 			selectorsVideo,
-			props
+			props,
+			transitionObj
 		),
 	};
 

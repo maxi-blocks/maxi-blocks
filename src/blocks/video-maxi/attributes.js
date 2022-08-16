@@ -2,7 +2,11 @@
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
-import { prefixAttributesCreator } from '../../extensions/styles';
+import {
+	prefixAttributesCreator,
+	transitionAttributesCreator,
+} from '../../extensions/styles';
+import transitionObj from './transitionObj';
 
 const attributes = {
 	...attributesData.global,
@@ -42,6 +46,10 @@ const attributes = {
 	 * Advanced
 	 */
 	...attributesData.transform,
+	...{
+		...attributesData.transition,
+		...transitionAttributesCreator(transitionObj),
+	},
 	...attributesData.display,
 	...attributesData.opacity,
 	...attributesData.overflow,

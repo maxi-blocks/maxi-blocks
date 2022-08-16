@@ -1,0 +1,42 @@
+.maxi-pane-block {
+	&__header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		position: relative;
+
+		padding: 0 0 25px 0;
+	}
+
+	&__header::after {
+		content: '';
+		display: block;
+		position: absolute;
+		bottom: 0;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+
+	&__title {
+		margin: 0;
+	}
+
+	&__content {
+		position: relative;
+	}
+
+	&__content::after {
+		content: '';
+		display: block;
+		position: absolute;
+		bottom: 0;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+
+	&[aria-expanded='false'] .maxi-pane-block__content {
+		overflow: hidden;
+		border-width: 0;
+		max-height: 0px;
+	}
+}

@@ -1,0 +1,105 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getIconSize Should return correct icon size 1`] = `
+Object {
+  "iconSize": Object {
+    "general": Object {
+      "height": "71%",
+      "width": "71%",
+    },
+    "label": "Icon size",
+  },
+}
+`;
+
+exports[`getIconSize Should return correct icon size 2`] = `
+Object {
+  "iconSize": Object {
+    "general": Object {
+      "height": "123px",
+      "width": "123px",
+    },
+    "label": "Icon size",
+  },
+}
+`;
+
+exports[`getIconSize Should use height when width is not specified 1`] = `
+Object {
+  "iconSize": Object {
+    "general": Object {
+      "height": "32px",
+      "width": "32px",
+    },
+    "label": "Icon size",
+  },
+}
+`;
+
+exports[`getIconSize Should use height when width is not specified 2`] = `
+Object {
+  "iconSize": Object {
+    "general": Object {
+      "height": "50%",
+      "width": "50%",
+    },
+    "label": "Icon size",
+  },
+}
+`;
+
+exports[`getIconSize Should work on responsive 1`] = `
+Object {
+  "iconSize": Object {
+    "general": Object {
+      "height": "32px",
+      "width": "32px",
+    },
+    "label": "Icon size",
+    "m": Object {
+      "height": "12em",
+      "width": "12em",
+    },
+  },
+}
+`;
+
+exports[`getIconSize Should work on responsive 2`] = `
+Object {
+  "iconSize": Object {
+    "general": Object {
+      "height": "50%",
+      "width": "50%",
+    },
+    "label": "Icon size",
+    "m": Object {
+      "height": "15px",
+      "width": "15px",
+    },
+  },
+}
+`;
+
+exports[`getIconSize Should work with prefixes 1`] = `
+Object {
+  "iconSize": Object {
+    "general": Object {
+      "height": "32px",
+      "width": "32px",
+    },
+    "label": "Icon size",
+  },
+}
+`;
+
+exports[`getIconSize Should work with prefixes 2`] = `
+Object {
+  "iconSize": Object {
+    "general": Object {
+      "height": "50%",
+      "width": "50%",
+    },
+    "label": "Icon size",
+  },
+}
+`;

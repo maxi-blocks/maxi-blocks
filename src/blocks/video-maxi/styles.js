@@ -28,7 +28,7 @@ import {
 	getAspectRatio,
 	getSVGStyles,
 } from '../../extensions/styles/helpers';
-import { selectorsVideo } from './custom-css';
+import data from './data';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -341,7 +341,7 @@ const getStyles = props => {
 				...getIconObject('play-', props),
 				...getIconObject('close-', props),
 			},
-			selectorsVideo,
+			data,
 			props
 		),
 	};

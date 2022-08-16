@@ -17,7 +17,7 @@ import {
 	VideoIconControl,
 } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
-import { selectorsVideo, categoriesVideo } from './custom-css';
+import { customCss } from './data';
 import { getGroupAttributes } from '../../extensions/styles';
 
 /**
@@ -244,14 +244,16 @@ const Inspector = props => {
 									...inspectorTabs.customCss({
 										props,
 										breakpoint: deviceType,
-										selectors: selectorsVideo,
-										categories: categoriesVideo,
+										selectors: customCss.selectors,
+										categories: customCss.categories,
 									}),
 									...inspectorTabs.scrollEffects({
 										props,
 									}),
 									...inspectorTabs.transform({
 										props,
+										selectors: customCss.selectors,
+										categories: customCss.categories,
 									}),
 									...inspectorTabs.display({
 										props,

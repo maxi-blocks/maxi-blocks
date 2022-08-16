@@ -18,7 +18,7 @@ import {
 	PlaceholderColorControl,
 } from './components';
 import { getGroupAttributes } from '../../extensions/styles';
-import { selectorsSearch, categoriesSearch } from './custom-css';
+import { customCss } from './data';
 import { withMaxiInspector } from '../../extensions/inspector';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { buttonPrefix, closeIconPrefix, inputPrefix } from './prefixes';
@@ -53,7 +53,7 @@ const Inspector = props => {
 			[`${closeIconPrefix}icon-content`]: closeIconContent,
 		} = attributes;
 		return without(
-			categoriesSearch,
+			customCss.categories,
 			isEmpty(iconContent) && 'icon',
 			isEmpty(closeIconContent) && 'close icon',
 			skin !== 'icon-reveal' && 'close icon'
@@ -377,7 +377,7 @@ const Inspector = props => {
 									...inspectorTabs.customCss({
 										props,
 										breakpoint: deviceType,
-										selectors: selectorsSearch,
+										selectors: customCss.selectors,
 										categories: getCategoriesCss(),
 									}),
 									...inspectorTabs.scrollEffects({
@@ -385,6 +385,8 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.transform({
 										props,
+										selectors: customCss.selectors,
+										categories: getCategoriesCss(),
 									}),
 									...inspectorTabs.transition({
 										props: {

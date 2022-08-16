@@ -18,7 +18,7 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import getStyles from './styles';
-import copyPasteMapping from './copy-paste-mapping';
+import { copyPasteMapping } from './data';
 import getRowBorderRadius from './utils';
 
 /**

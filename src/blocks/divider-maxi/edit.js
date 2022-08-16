@@ -19,8 +19,7 @@ import {
 } from '../../extensions/styles';
 import getStyles from './styles';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-
-import copyPasteMapping from './copy-paste-mapping';
+import { copyPasteMapping } from './data';
 
 /**
  * External dependencies

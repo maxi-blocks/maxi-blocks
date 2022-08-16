@@ -27,6 +27,7 @@ import {
 } from '../transform-control/utils';
 import getBlockCategoriesAndSelectors from '../../extensions/styles/getBlockCategoriesAndSelectors';
 import getParentRowClientId from './getParentRowClientId';
+import transitionsBlockObjs from '../../extensions/styles/transitions/transitionsBlockObjs';
 
 const getTransformControl = name => {
 	const { categories, selectors } = getBlockCategoriesAndSelectors(name);
@@ -58,6 +59,7 @@ const getTransformControl = name => {
 const getCanvasSettings = name => [
 	{
 		label: __('Background / Layer', 'maxi-blocks'),
+		transitionTarget: ' > .maxi-background-displayer > div',
 		attrGroupName: [
 			'blockBackground',
 			'border',
@@ -81,6 +83,7 @@ const getCanvasSettings = name => [
 	},
 	{
 		label: __('Border', 'maxi-blocks'),
+		transitionTarget: ['', ' > .maxi-background-displayer'],
 		attrGroupName: ['border', 'borderWidth', 'borderRadius'],
 		component: props => <Controls.BorderControl {...props} />,
 		helper: props => styleHelpers.getBorderStyles(props),
@@ -156,6 +159,13 @@ const settings = {
 	'maxi-blocks/button-maxi': [
 		{
 			label: __('Button icon', 'maxi-blocks'),
+			transitionTarget: [
+				transitionsBlockObjs['button-maxi'].block['icon colour'].target,
+				transitionsBlockObjs['button-maxi'].block['icon width'].target,
+				transitionsBlockObjs['button-maxi'].block['icon background']
+					.target,
+				transitionsBlockObjs['button-maxi'].block['icon border'].target,
+			],
 			attrGroupName: [
 				'icon',
 				'iconBackground',
@@ -193,6 +203,8 @@ const settings = {
 		},
 		{
 			label: __('Button typography', 'maxi-blocks'),
+			transitionTarget:
+				transitionsBlockObjs['button-maxi'].block.typography.target,
 			attrGroupName: 'typography',
 			component: props => (
 				<Controls.TypographyControl
@@ -210,6 +222,8 @@ const settings = {
 		},
 		{
 			label: __('Button border', 'maxi-blocks'),
+			transitionTarget:
+				transitionsBlockObjs['button-maxi'].block.border.target,
 			attrGroupName: ['border', 'borderWidth', 'borderRadius'],
 			prefix: 'button-',
 			component: props => <Controls.BorderControl {...props} />,
@@ -218,6 +232,9 @@ const settings = {
 		},
 		{
 			label: __('Button background', 'maxi-blocks'),
+			transitionTarget:
+				transitionsBlockObjs['button-maxi'].block['button background']
+					.target,
 			attrGroupName: [
 				'background',
 				'backgroundColor',
@@ -243,6 +260,8 @@ const settings = {
 		},
 		{
 			label: __('Button box shadow', 'maxi-blocks'),
+			transitionTarget:
+				transitionsBlockObjs['button-maxi'].block['box shadow'].target,
 			attrGroupName: 'boxShadow',
 			prefix: 'button-',
 			component: props => <Controls.BoxShadowControl {...props} />,
@@ -324,6 +343,8 @@ const settings = {
 	'maxi-blocks/divider-maxi': [
 		{
 			label: __('Divider box shadow', 'maxi-blocks'),
+			transitionTarget:
+				transitionsBlockObjs['divider-maxi'].block['box shadow'].target,
 			attrGroupName: 'boxShadow',
 			prefix: 'divider-',
 			component: props => <Controls.BoxShadowControl {...props} />,
@@ -400,6 +421,8 @@ const settings = {
 	'maxi-blocks/svg-icon-maxi': [
 		{
 			label: __('Icon colour'),
+			transitionTarget:
+				transitionsBlockObjs['svg-icon-maxi'].block.colour.target,
 			attrGroupName: 'svg',
 			component: props => {
 				const { attributes, onChange } = props;
@@ -450,6 +473,8 @@ const settings = {
 		},
 		{
 			label: __('Icon background', 'maxi-blocks'),
+			transitionTarget:
+				transitionsBlockObjs['svg-icon-maxi'].block.background.target,
 			attrGroupName: [
 				'background',
 				'backgroundColor',
@@ -472,6 +497,8 @@ const settings = {
 		},
 		{
 			label: __('Icon border', 'maxi-blocks'),
+			transitionTarget:
+				transitionsBlockObjs['svg-icon-maxi'].block.border.target,
 			attrGroupName: ['border', 'borderWidth', 'borderRadius'],
 			prefix: 'svg-',
 			component: props => <Controls.BorderControl {...props} />,
@@ -491,6 +518,8 @@ const settings = {
 		},
 		{
 			label: __('Typography', 'maxi-blocks'),
+			transitionTarget:
+				transitionsBlockObjs['text-maxi'].canvas.typography.target,
 			attrGroupName: 'typography',
 			component: props => (
 				<Controls.TypographyControl

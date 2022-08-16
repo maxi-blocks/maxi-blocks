@@ -153,6 +153,19 @@ const RelationControl = props => {
 			});
 		}
 
+		// As an alternative to a migrator... Remove after used!
+		if (!('transitionTarget' in item.effects)) {
+			const { transitionTarget } = selectedSettingsObj;
+
+			if (transitionTarget)
+				onChangeRelation(relations, item.id, {
+					effects: {
+						...item.effects,
+						transitionTarget,
+					},
+				});
+		}
+
 		const mergedAttributes = merge(blockAttributes, item.attributes);
 
 		const transformGeneralAttributesToWinBreakpoint = obj => {
@@ -439,6 +452,17 @@ const RelationControl = props => {
 													})),
 												]}
 												onChange={value => {
+													const { transitionTarget } =
+														getOptions(
+															getClientIdFromUniqueId(
+																item.uniqueID
+															)
+														).find(
+															option =>
+																option.label ===
+																value
+														);
+
 													onChangeRelation(
 														relations,
 														item.id,
@@ -446,6 +470,12 @@ const RelationControl = props => {
 															attributes: {},
 															target: '',
 															settings: value,
+															...(transitionTarget && {
+																effects: {
+																	...item.effects,
+																	transitionTarget,
+																},
+															}),
 														}
 													);
 												}}

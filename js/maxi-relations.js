@@ -215,17 +215,6 @@ const relations = () => {
 
 		if (!triggerEl || !targetEl) return;
 
-		const transitionDuration =
-			parseFloat(
-				getComputedStyle(
-					targetEl.querySelector(
-						'.maxi-svg-icon-block__icon svg > *' // temp!!!
-					)
-				)
-					.getPropertyValue('transition-duration')
-					.replace('s', '')
-			) * 1000;
-
 		let timeout;
 		let contentTimeout;
 		let dataTimeout;
@@ -263,30 +252,53 @@ const relations = () => {
 						 * to ensure it has the selected effects
 						 */
 						if (triggerEl.contains(targetEl)) {
-							targetEl.addEventListener('mouseenter', () => {
-								clearTimeout(contentTimeout);
+							const { transitionTarget } = item.effects;
+							const transitionTargets =
+								typeof transitionTarget === 'string'
+									? [transitionTarget]
+									: transitionTarget;
 
-								// Remove transitions to let the original ones be applied
-								toggleTransition(
-									`${target.trim()}[data-maxi-relations="true"]`,
-									stylesObj,
-									effectsObj,
-									false,
-									true
-								);
-							});
+							transitionTargets.forEach(transitionTarget => {
+								const transitionDuration =
+									parseFloat(
+										getComputedStyle(
+											transitionTarget
+												? targetEl.querySelector(
+														transitionTarget
+												  )
+												: targetEl
+										)
+											.getPropertyValue(
+												'transition-duration'
+											)
+											.replace('s', '')
+									) * 1000;
 
-							targetEl.addEventListener('mouseleave', () => {
-								contentTimeout = setTimeout(() => {
-									// Set the transitions back waiting the original to be done
+								targetEl.addEventListener('mouseenter', () => {
+									clearTimeout(contentTimeout);
+
+									// Remove transitions to let the original ones be applied
 									toggleTransition(
 										`${target.trim()}[data-maxi-relations="true"]`,
 										stylesObj,
 										effectsObj,
-										item.settings === 'Icon colour' ||
-											item.settings === 'Button icon'
+										false,
+										true
 									);
-								}, transitionDuration);
+								});
+
+								targetEl.addEventListener('mouseleave', () => {
+									contentTimeout = setTimeout(() => {
+										// Set the transitions back waiting the original to be done
+										toggleTransition(
+											`${target.trim()}[data-maxi-relations="true"]`,
+											stylesObj,
+											effectsObj,
+											item.settings === 'Icon colour' ||
+												item.settings === 'Button icon'
+										);
+									}, transitionDuration);
+								});
 							});
 						}
 					});

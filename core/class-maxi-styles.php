@@ -75,6 +75,7 @@ class MaxiBlocks_Styles
                 'relations',
 				'video',
 				'search',
+				'accordion',
             ];
 
             foreach ($scripts as &$script) {

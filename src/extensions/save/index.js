@@ -20,6 +20,8 @@ const allowedBlocks = [
 	'maxi-blocks/navigation-menu-maxi',
 	'maxi-blocks/navigation-link-maxi',
 	'maxi-blocks/navigation-submenu-maxi',
+	'maxi-blocks/accordion-maxi',
+	'maxi-blocks/pane-maxi',
 	'maxi-blocks/search-maxi',
 ];
 

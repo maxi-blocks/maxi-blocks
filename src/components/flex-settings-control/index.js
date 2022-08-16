@@ -52,6 +52,7 @@ const FlexSettingsControl = props => {
 		'maxi-blocks/row-maxi',
 		'maxi-blocks/column-maxi',
 		'maxi-blocks/group-maxi',
+		'maxi-blocks/accordion-maxi',
 	];
 
 	const classes = classnames('maxi-flex-settings--control', className);

@@ -16,6 +16,7 @@ const imageWrapperClass = `${blockClass}-wrapper`;
 const prefix = 'image-';
 
 const data = {
+	name: 'image-maxi',
 	copyPasteMapping: {
 		settings: {
 			Image: [

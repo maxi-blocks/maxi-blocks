@@ -2,6 +2,7 @@ import { createSelectors } from '../../extensions/styles/custom-css';
 import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
 
 const data = {
+	name: 'group-maxi',
 	copyPasteMapping: {
 		settings: {
 			'Callout arrow': {

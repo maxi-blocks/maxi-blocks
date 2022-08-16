@@ -1,64 +1,16 @@
-export const selectorsButton = {
-	canvas: {
-		normal: {
+import { createSelectors } from '../../extensions/styles/custom-css';
+
+const selectorsButton = {
+	...createSelectors({
+		canvas: {
 			label: 'canvas',
 			target: '',
 		},
-		hover: {
-			label: 'canvas on hover',
-			target: ':hover',
-		},
-	},
-	'before canvas': {
-		normal: {
-			label: 'canvas ::before',
-			target: '::before',
-		},
-		hover: {
-			label: 'canvas ::before on hover',
-			target: ':hover::before',
-		},
-	},
-	'after canvas': {
-		normal: {
-			label: 'canvas ::after',
-			target: '::after',
-		},
-		hover: {
-			label: 'canvas ::after on hover',
-			target: ':hover::after',
-		},
-	},
-	button: {
-		normal: {
+		button: {
 			label: 'button',
 			target: ' .maxi-button-block__button',
 		},
-		hover: {
-			label: 'button on hover',
-			target: ' .maxi-button-block__button:hover',
-		},
-	},
-	'before button': {
-		normal: {
-			label: 'button ::before',
-			target: ' .maxi-button-block__button::before',
-		},
-		hover: {
-			label: 'button :before on hover',
-			target: ' .maxi-button-block__button:hover::before',
-		},
-	},
-	'after button': {
-		normal: {
-			label: 'button ::after',
-			target: ' .maxi-button-block__button::after',
-		},
-		hover: {
-			label: 'button ::after on hover',
-			target: ' .maxi-button-block__button:hover::after',
-		},
-	},
+	}),
 	icon: {
 		normal: {
 			label: 'icon',
@@ -95,7 +47,7 @@ export const selectorsButton = {
 	},
 };
 
-export const categoriesButton = [
+const categoriesButton = [
 	'canvas',
 	'before canvas',
 	'after canvas',

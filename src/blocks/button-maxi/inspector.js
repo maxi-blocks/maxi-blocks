@@ -22,7 +22,7 @@ import {
 	setHoverAttributes,
 	getIconWithColor,
 } from '../../extensions/styles';
-import { selectorsButton, categoriesButton } from './custom-css';
+import { customCss } from './data';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { withMaxiInspector } from '../../extensions/inspector';
 /**
@@ -135,7 +135,7 @@ const Inspector = props => {
 
 	const getCategoriesCss = () => {
 		const { 'icon-content': iconContent } = attributes;
-		return without(categoriesButton, isEmpty(iconContent) && 'icon');
+		return without(customCss.categories, isEmpty(iconContent) && 'icon');
 	};
 
 	const alignmentLabel = __('Button', 'maxi-blocks');
@@ -411,7 +411,7 @@ const Inspector = props => {
 											...props,
 										},
 										breakpoint: deviceType,
-										selectors: selectorsButton,
+										selectors: customCss.selectors,
 										categories: getCategoriesCss(),
 									}),
 									...inspectorTabs.scrollEffects({
@@ -424,7 +424,7 @@ const Inspector = props => {
 											...props,
 										},
 										categories: getCategoriesCss(),
-										selectors: selectorsButton,
+										selectors: customCss.selectors,
 									}),
 									...inspectorTabs.transition({
 										props: {

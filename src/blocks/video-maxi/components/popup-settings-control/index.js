@@ -71,20 +71,6 @@ const PopupSettingsControl = props => {
 					target: 'lightbox',
 				}}
 			/>
-			<VideoIconControl
-				prefix='close-'
-				label={__('Lightbox close button', 'maxi-blocks')}
-				blockStyle={blockStyle}
-				breakpoint={breakpoint}
-				clientId={clientId}
-				onChange={obj => onChange(obj)}
-				{...getGroupAttributes(
-					props,
-					['icon', 'iconHover'],
-					false,
-					'close-'
-				)}
-			/>
 			<SelectControl
 				label={__('Pop animation', 'maxi-blocks')}
 				className='maxi-video-popup-control__pop-animation'
@@ -108,6 +94,20 @@ const PopupSettingsControl = props => {
 						popAnimation: val,
 					})
 				}
+			/>
+			<VideoIconControl
+				prefix='close-'
+				label={__('Lightbox close button', 'maxi-blocks')}
+				blockStyle={blockStyle}
+				breakpoint={breakpoint}
+				clientId={clientId}
+				onChange={obj => onChange(obj)}
+				{...getGroupAttributes(
+					props,
+					['icon', 'iconHover'],
+					false,
+					'close-'
+				)}
 			/>
 		</>
 	);

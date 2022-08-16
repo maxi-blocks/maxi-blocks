@@ -163,7 +163,11 @@ const styleCleaner = styles => {
 	return styles;
 };
 
-const styleProcessor = (obj, selectors, props, transitionSelectors) => {
+const styleProcessor = (
+	obj,
+	{ customCss: { selectors }, transition: transitionSelectors },
+	props
+) => {
 	const styles = cloneDeep(obj);
 
 	const transitionObject = getTransitionStyles(props, transitionSelectors);

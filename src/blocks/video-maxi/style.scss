@@ -2,7 +2,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	z-index: unset;
+	z-index: 10;
 
 	&__popup-wrapper {
 		top: 0;

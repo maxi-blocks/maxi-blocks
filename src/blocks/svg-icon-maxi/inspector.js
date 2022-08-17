@@ -41,6 +41,7 @@ const Inspector = props => {
 		inlineStylesTargets,
 	} = props;
 	const { blockStyle, customLabel, isFirstOnHierarchy, svgType } = attributes;
+	const { selectors, categories } = customCss;
 
 	return (
 		<InspectorControls>
@@ -315,16 +316,16 @@ const Inspector = props => {
 									...inspectorTabs.customCss({
 										props,
 										breakpoint: deviceType,
-										selectors: customCss.selectors,
-										categories: customCss.categories,
+										selectors,
+										categories,
 									}),
 									...inspectorTabs.scrollEffects({
 										props,
 									}),
 									...inspectorTabs.transform({
 										props,
-										selectors: customCss.selectors,
-										categories: customCss.categories,
+										selectors,
+										categories,
 									}),
 									...inspectorTabs.transition({
 										props: {

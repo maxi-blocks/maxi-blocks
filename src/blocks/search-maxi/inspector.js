@@ -46,6 +46,7 @@ const Inspector = props => {
 		iconRevealAction,
 		skin,
 	} = attributes;
+	const { selectors, categories } = customCss;
 
 	const getCategoriesCss = () => {
 		const {
@@ -53,7 +54,7 @@ const Inspector = props => {
 			[`${closeIconPrefix}icon-content`]: closeIconContent,
 		} = attributes;
 		return without(
-			customCss.categories,
+			categories,
 			isEmpty(iconContent) && 'icon',
 			isEmpty(closeIconContent) && 'close icon',
 			skin !== 'icon-reveal' && 'close icon'
@@ -377,7 +378,7 @@ const Inspector = props => {
 									...inspectorTabs.customCss({
 										props,
 										breakpoint: deviceType,
-										selectors: customCss.selectors,
+										selectors,
 										categories: getCategoriesCss(),
 									}),
 									...inspectorTabs.scrollEffects({
@@ -385,7 +386,7 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.transform({
 										props,
-										selectors: customCss.selectors,
+										selectors,
 										categories: getCategoriesCss(),
 									}),
 									...inspectorTabs.transition({

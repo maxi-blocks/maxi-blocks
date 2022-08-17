@@ -205,52 +205,56 @@ class edit extends MaxiBlockComponent {
 				backgroundPrefix='overlay-'
 				mediaPrefix='overlay-'
 			/>,
-			<MaxiPopoverButton
-				key={`popover-${uniqueID}`}
-				ref={this.blockRef}
-				isOpen={isUploaderOpen}
-				{...this.props}
-			>
-				<MediaUpload
-					onSelect={val => {
-						const alt =
-							(altSelector === 'wordpress' && val?.alt) ||
-							(altSelector === 'title' && val?.title) ||
-							null;
+			playerType === 'popup' && (
+				<MaxiPopoverButton
+					key={`popover-${uniqueID}`}
+					ref={this.blockRef}
+					isOpen={isUploaderOpen}
+					{...this.props}
+				>
+					<MediaUpload
+						onSelect={val => {
+							const alt =
+								(altSelector === 'wordpress' && val?.alt) ||
+								(altSelector === 'title' && val?.title) ||
+								null;
 
-						maxiSetAttributes({
-							'overlay-mediaID': val.id,
-							'overlay-mediaURL': val.url,
-							'overlay-mediaAlt':
-								altSelector === 'wordpress' && !alt
-									? val.title
-									: alt,
-						});
-					}}
-					allowedTypes='image'
-					value={mediaID}
-					render={({ open }) =>
-						!hideImage && (
-							<div className='maxi-video-block__settings maxi-settings-media-upload'>
-								<Button
-									className='maxi-video-block__settings__upload-button maxi-settings-media-upload__button'
-									label={__(
-										'Upload / Add from Media Library',
-										'maxi-blocks'
-									)}
-									showTooltip='true'
-									onClick={() => {
-										open();
-										this.setState({ isUploaderOpen: true });
-									}}
-									icon={toolbarReplaceImage}
-								/>
-							</div>
-						)
-					}
-					onClose={() => this.setState({ isUploaderOpen: false })}
-				/>
-			</MaxiPopoverButton>,
+							maxiSetAttributes({
+								'overlay-mediaID': val.id,
+								'overlay-mediaURL': val.url,
+								'overlay-mediaAlt':
+									altSelector === 'wordpress' && !alt
+										? val.title
+										: alt,
+							});
+						}}
+						allowedTypes='image'
+						value={mediaID}
+						render={({ open }) =>
+							!hideImage && (
+								<div className='maxi-video-block__settings maxi-settings-media-upload'>
+									<Button
+										className='maxi-video-block__settings__upload-button maxi-settings-media-upload__button'
+										label={__(
+											'Upload / Add from Media Library',
+											'maxi-blocks'
+										)}
+										showTooltip='true'
+										onClick={() => {
+											open();
+											this.setState({
+												isUploaderOpen: true,
+											});
+										}}
+										icon={toolbarReplaceImage}
+									/>
+								</div>
+							)
+						}
+						onClose={() => this.setState({ isUploaderOpen: false })}
+					/>
+				</MaxiPopoverButton>
+			),
 			<MaxiBlock
 				key={`maxi-video--${uniqueID}`}
 				className={classes}

@@ -11,8 +11,11 @@ import { createSelectors } from '../../extensions/styles/custom-css';
 import { getGroupAttributes } from '../../extensions/styles';
 import getParentRowClientId from '../../components/relation-control/getParentRowClientId';
 import getRowGapProps from '../../extensions/attributes/getRowGapProps';
-import * as Controls from '../../components';
-import * as styleHelpers from '../../extensions/styles/helpers';
+import { ColumnSizeControl } from '../../components';
+import {
+	getColumnSizeStyles,
+	getFlexStyles,
+} from '../../extensions/styles/helpers';
 import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
 
 /**
@@ -83,10 +86,7 @@ const data = {
 					);
 
 					return (
-						<Controls.ColumnSizeControl
-							{...props}
-							rowPattern={rowPattern}
-						/>
+						<ColumnSizeControl {...props} rowPattern={rowPattern} />
 					);
 				},
 				helper: props => {
@@ -113,7 +113,7 @@ const data = {
 					);
 
 					return merge(
-						styleHelpers.getColumnSizeStyles(
+						getColumnSizeStyles(
 							props.obj,
 							{
 								...rowGapProps,
@@ -122,7 +122,7 @@ const data = {
 							},
 							props.clientId
 						),
-						styleHelpers.getFlexStyles(props.obj)
+						getFlexStyles(props.obj)
 					);
 				},
 			},

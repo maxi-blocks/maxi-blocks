@@ -7,8 +7,11 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import { createSelectors } from '../../extensions/styles/custom-css';
-import * as Controls from '../../components';
-import * as styleHelpers from '../../extensions/styles/helpers';
+import { BoxShadowControl, DividerControl } from '../../components';
+import {
+	getBoxShadowStyles,
+	getDividerStyles,
+} from '../../extensions/styles/helpers';
 import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
@@ -116,20 +119,16 @@ const data = {
 				label: __('Divider box shadow', 'maxi-blocks'),
 				attrGroupName: 'boxShadow',
 				prefix: 'divider-',
-				component: props => <Controls.BoxShadowControl {...props} />,
-				helper: props => styleHelpers.getBoxShadowStyles(props),
+				component: props => <BoxShadowControl {...props} />,
+				helper: props => getBoxShadowStyles(props),
 				target: dividerClass,
 			},
 			{
 				label: __('Line settings', 'maxi-blocks'),
 				attrGroupName: ['divider', 'size'],
-				component: props => <Controls.DividerControl {...props} />,
+				component: props => <DividerControl {...props} />,
 				helper: props =>
-					styleHelpers.getDividerStyles(
-						props.obj,
-						'line',
-						props.blockStyle
-					),
+					getDividerStyles(props.obj, 'line', props.blockStyle),
 				target: dividerClass,
 			},
 			...getCanvasSettings(this),

@@ -7,8 +7,11 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import { createSelectors } from '../../extensions/styles/custom-css';
-import * as Controls from '../../components';
-import * as styleHelpers from '../../extensions/styles/helpers';
+import { AlignmentControl, TypographyControl } from '../../components';
+import {
+	getAlignmentTextStyles,
+	getTypographyStyles,
+} from '../../extensions/styles/helpers';
 import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
@@ -182,23 +185,21 @@ const data = {
 			{
 				label: __('Alignment', 'maxi-blocks'),
 				attrGroupName: 'textAlignment',
-				component: props => (
-					<Controls.AlignmentControl {...props} type='text' />
-				),
-				helper: props => styleHelpers.getAlignmentTextStyles(props.obj),
+				component: props => <AlignmentControl {...props} type='text' />,
+				helper: props => getAlignmentTextStyles(props.obj),
 			},
 			{
 				label: __('Typography', 'maxi-blocks'),
 				attrGroupName: 'typography',
 				component: props => (
-					<Controls.TypographyControl
+					<TypographyControl
 						{...props}
 						styleCardPrefix=''
 						hideAlignment
 						disableCustomFormats
 					/>
 				),
-				helper: props => styleHelpers.getTypographyStyles({ ...props }),
+				helper: props => getTypographyStyles({ ...props }),
 				target: contentClass,
 			},
 			...getCanvasSettings(this),

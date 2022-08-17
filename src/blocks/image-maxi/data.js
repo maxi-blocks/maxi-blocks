@@ -7,8 +7,11 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import { createSelectors } from '../../extensions/styles/custom-css';
-import * as Controls from '../../components';
-import * as styleHelpers from '../../extensions/styles/helpers';
+import { AlignmentControl, ImageShape, InfoBox } from '../../components';
+import {
+	getAlignmentFlexStyles,
+	getImageShapeStyles,
+} from '../../extensions/styles/helpers';
 import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
@@ -191,8 +194,8 @@ const data = {
 			{
 				label: __('Alignment', 'maxi-blocks'),
 				attrGroupName: 'alignment',
-				component: props => <Controls.AlignmentControl {...props} />,
-				helper: props => styleHelpers.getAlignmentFlexStyles(props.obj),
+				component: props => <AlignmentControl {...props} />,
+				helper: props => getAlignmentFlexStyles(props.obj),
 				target: ' .maxi-image-block-wrapper',
 			},
 			{
@@ -202,7 +205,7 @@ const data = {
 					const { SVGElement } = props.blockAttributes;
 
 					return SVGElement ? (
-						<Controls.ImageShape
+						<ImageShape
 							{...props}
 							icon={SVGElement}
 							disableModal
@@ -210,7 +213,7 @@ const data = {
 							disableImageRatio
 						/>
 					) : (
-						<Controls.InfoBox
+						<InfoBox
 							message={__(
 								'Add shape icon to be able to use this control'
 							)}
@@ -224,7 +227,7 @@ const data = {
 							'image',
 					}).reduce((acc, [key, type]) => {
 						acc[key] = {
-							transform: styleHelpers.getImageShapeStyles(
+							transform: getImageShapeStyles(
 								type,
 								props.obj,
 								'',

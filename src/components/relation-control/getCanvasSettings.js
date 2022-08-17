@@ -1,6 +1,26 @@
 import { __ } from '@wordpress/i18n';
-import * as Controls from '../../components';
-import * as styleHelpers from '../../extensions/styles/helpers';
+import {
+	BlockBackgroundControl,
+	BorderControl,
+	BoxShadowControl,
+	FullSizeControl,
+	InfoBox,
+	MarginControl,
+	OpacityControl,
+	PaddingControl,
+	PositionControl,
+	TransformControl,
+} from '../../components';
+import {
+	getBlockBackgroundStyles,
+	getBorderStyles,
+	getBoxShadowStyles,
+	getMarginPaddingStyles,
+	getOpacityStyles,
+	getPositionStyles,
+	getSizeStyles,
+	getTransformStyles,
+} from '../../extensions/styles/helpers';
 import {
 	getTransformCategories,
 	getTransformSelectors,
@@ -15,7 +35,7 @@ const getTransformControl = ({ categories, selectors }) => ({
 	label: __('Transform', 'maxi-blocks'),
 	attrGroupName: 'transform',
 	component: props => (
-		<Controls.TransformControl
+		<TransformControl
 			{...props}
 			uniqueID={props.attributes.uniqueID}
 			depth={2}
@@ -25,10 +45,7 @@ const getTransformControl = ({ categories, selectors }) => ({
 		/>
 	),
 	helper: props =>
-		styleHelpers.getTransformStyles(
-			props.obj,
-			getTransformSelectors(selectors)
-		),
+		getTransformStyles(props.obj, getTransformSelectors(selectors)),
 });
 
 const getCanvasSettings = ({ name, customCss }) => [
@@ -45,33 +62,33 @@ const getCanvasSettings = ({ name, customCss }) => [
 			const { 'background-layers': bgLayers } = attributes;
 
 			return !isEmpty(bgLayers) ? (
-				<Controls.BlockBackgroundControl {...props} disableAddLayer />
+				<BlockBackgroundControl {...props} disableAddLayer />
 			) : (
-				<Controls.InfoBox
+				<InfoBox
 					message={__('No background layers added', 'maxi-blocks')}
 				/>
 			);
 		},
 		helper: ({ obj, blockStyle }) =>
-			styleHelpers.getBlockBackgroundStyles({ ...obj, blockStyle }),
+			getBlockBackgroundStyles({ ...obj, blockStyle }),
 	},
 	{
 		label: __('Border', 'maxi-blocks'),
 		attrGroupName: ['border', 'borderWidth', 'borderRadius'],
-		component: props => <Controls.BorderControl {...props} />,
-		helper: props => styleHelpers.getBorderStyles(props),
+		component: props => <BorderControl {...props} />,
+		helper: props => getBorderStyles(props),
 	},
 	{
 		label: __('Box shadow', 'maxi-blocks'),
 		attrGroupName: 'boxShadow',
-		component: props => <Controls.BoxShadowControl {...props} />,
-		helper: props => styleHelpers.getBoxShadowStyles(props),
+		component: props => <BoxShadowControl {...props} />,
+		helper: props => getBoxShadowStyles(props),
 	},
 	{
 		label: __('Opacity', 'maxi-blocks'),
 		attrGroupName: 'opacity',
 		component: props => (
-			<Controls.OpacityControl
+			<OpacityControl
 				{...props}
 				opacity={getLastBreakpointAttribute({
 					target: 'opacity',
@@ -83,7 +100,7 @@ const getCanvasSettings = ({ name, customCss }) => [
 				}
 			/>
 		),
-		helper: props => styleHelpers.getOpacityStyles(props.obj),
+		helper: props => getOpacityStyles(props.obj),
 	},
 	{
 		label: __('Height / Width', 'maxi-blocks'),
@@ -98,7 +115,7 @@ const getCanvasSettings = ({ name, customCss }) => [
 			const isBlockFullWidth = fullWidth === 'full';
 
 			return (
-				<Controls.FullSizeControl
+				<FullSizeControl
 					{...props}
 					hideWidth={isBlockFullWidth || name === 'column-maxi'}
 					hideMaxWidth={isBlockFullWidth}
@@ -106,24 +123,24 @@ const getCanvasSettings = ({ name, customCss }) => [
 				/>
 			);
 		},
-		helper: props => styleHelpers.getSizeStyles(props.obj, props.prefix),
+		helper: props => getSizeStyles(props.obj, props.prefix),
 	},
 	{
 		label: __('Margin / Padding', 'maxi-blocks'),
 		attrGroupName: ['margin', 'padding'],
 		component: props => (
 			<>
-				<Controls.MarginControl {...props} />
-				<Controls.PaddingControl {...props} />
+				<MarginControl {...props} />
+				<PaddingControl {...props} />
 			</>
 		),
-		helper: props => styleHelpers.getMarginPaddingStyles(props),
+		helper: props => getMarginPaddingStyles(props),
 	},
 	{
 		label: __('Position', 'maxi-blocks'),
 		attrGroupName: 'position',
-		component: props => <Controls.PositionControl {...props} />,
-		helper: props => styleHelpers.getPositionStyles(props.obj),
+		component: props => <PositionControl {...props} />,
+		helper: props => getPositionStyles(props.obj),
 	},
 	...getTransformControl(customCss),
 ];

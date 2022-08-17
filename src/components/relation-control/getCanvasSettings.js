@@ -1,4 +1,11 @@
+/**
+ * WordPress dependencies
+ */
 import { __ } from '@wordpress/i18n';
+
+/**
+ * Internal dependencies
+ */
 import {
 	BlockBackgroundControl,
 	BorderControl,
@@ -29,6 +36,10 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+
+/**
+ * External dependencies
+ */
 import { isEmpty } from 'lodash';
 
 const getTransformControl = ({ categories, selectors }) => ({

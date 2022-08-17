@@ -88,20 +88,11 @@ const data = {
 	customCss: {
 		selectors: {
 			...createSelectors({
-				canvas: {
-					label: 'canvas',
-					target: '',
-				},
+				canvas: '',
 			}),
 			...createSelectors({
-				video: {
-					label: 'video',
-					target: videoClass,
-				},
-				overlay: {
-					label: 'overlay',
-					target: overlayClass,
-				},
+				video: videoClass,
+				overlay: overlayClass,
 			}),
 		},
 		categories: [

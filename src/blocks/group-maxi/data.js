@@ -39,10 +39,7 @@ const data = {
 	},
 	customCss: {
 		selectors: createSelectors({
-			group: {
-				label: 'group',
-				target: '',
-			},
+			group: '',
 		}),
 		categories: [
 			'group',

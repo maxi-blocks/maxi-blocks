@@ -1,36 +1,49 @@
-const createSelectors = (selectors, addPseudoElementSelectors = true) => {
-	const getNormalAndHoverSelectors = obj => {
-		const { label, target } = obj;
+const createSelectors = (rawSelectors, addPseudoElementSelectors = true) => {
+	const getNormalAndHoverSelectors = ({ label, target }) => ({
+		normal: {
+			label,
+			target,
+		},
+		hover: {
+			label: `${label} on hover`,
+			target: `${target}:hover`,
+		},
+	});
 
-		return {
-			normal: obj,
-			hover: {
-				label: `${label} on hover`,
-				target: `${target}:hover`,
-			},
-		};
-	};
-
-	const addPseudoElementSelector = (key, selector, pseudoElement, obj) => {
-		const { label, target } = selector;
-
+	const addPseudoElementSelector = (
+		key,
+		{ target, label },
+		pseudoElement,
+		obj
+	) => {
 		obj[`${pseudoElement} ${key}`] = {
 			label: `${label} ::${pseudoElement}`,
 			target: `${target}::${pseudoElement}`,
 		};
 	};
 
+	const selectors = Object.entries(rawSelectors).reduce(
+		(acc, [label, target]) => {
+			acc[label] = {
+				label,
+				target,
+			};
+			return acc;
+		},
+		{}
+	);
+
 	const result = { ...selectors };
 
 	if (addPseudoElementSelectors)
 		['before', 'after'].forEach(pseudoElement => {
-			Object.entries(selectors).forEach(([key, selector]) => {
-				addPseudoElementSelector(key, selector, pseudoElement, result);
-			});
+			Object.entries(selectors).forEach(([key, selector]) =>
+				addPseudoElementSelector(key, selector, pseudoElement, result)
+			);
 		});
 
-	Object.entries(result).forEach(([key, obj]) => {
-		result[key] = getNormalAndHoverSelectors(obj);
+	Object.entries(result).forEach(([key, selector]) => {
+		result[key] = getNormalAndHoverSelectors(selector);
 	});
 
 	return result;

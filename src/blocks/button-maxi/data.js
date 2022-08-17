@@ -107,14 +107,8 @@ const data = {
 	customCss: {
 		selectors: {
 			...createSelectors({
-				canvas: {
-					label: 'canvas',
-					target: '',
-				},
-				button: {
-					label: 'button',
-					target: buttonClass,
-				},
+				canvas: '',
+				button: buttonClass,
 			}),
 			icon: {
 				normal: {

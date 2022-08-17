@@ -117,22 +117,13 @@ const data = {
 		selectors: {
 			...createSelectors(
 				{
-					'text wrapper': {
-						label: 'text wrapper',
-						target: '',
-					},
-					links: {
-						label: 'links',
-						target: linkClass,
-					},
+					'text wrapper': '',
+					links: linkClass,
 				},
 				false
 			),
 			...createSelectors({
-				text: {
-					label: 'text',
-					target: contentClass,
-				},
+				text: contentClass,
 			}),
 			lists: {
 				ordered: {

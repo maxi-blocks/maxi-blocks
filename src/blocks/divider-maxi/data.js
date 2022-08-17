@@ -75,14 +75,8 @@ const data = {
 	customCss: {
 		selectors: {
 			...createSelectors({
-				canvas: {
-					label: 'canvas',
-					target: '',
-				},
-				divider: {
-					label: 'divider',
-					target: dividerClass,
-				},
+				canvas: '',
+				divider: dividerClass,
 			}),
 		},
 		categories: [

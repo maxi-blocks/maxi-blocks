@@ -146,14 +146,8 @@ const data = {
 	},
 	customCss: {
 		selectors: createSelectors({
-			canvas: {
-				label: 'canvas',
-				target: '',
-			},
-			image: {
-				label: 'image',
-				target: imageClass,
-			},
+			canvas: '',
+			image: imageClass,
 		}),
 		categories: [
 			'canvas',

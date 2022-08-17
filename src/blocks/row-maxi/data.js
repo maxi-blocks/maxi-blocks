@@ -1,6 +1,12 @@
+/**
+ * Internal dependencies
+ */
 import { createSelectors } from '../../extensions/styles/custom-css';
 import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
 
+/**
+ * Data object
+ */
 const data = {
 	name: 'row-maxi',
 	copyPasteMapping: {

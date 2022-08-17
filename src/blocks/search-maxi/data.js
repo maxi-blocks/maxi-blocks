@@ -1,3 +1,6 @@
+/**
+ * Internal dependencies
+ */
 import { createSelectors } from '../../extensions/styles/custom-css';
 import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
 import { closeIconPrefix, buttonPrefix, inputPrefix } from './prefixes';
@@ -11,6 +14,9 @@ const inputClass = `${blockClass}__input`;
 const defaultIconClass = `${buttonClass}__default-icon`;
 const closeIconClass = `${buttonClass}__close-icon`;
 
+/**
+ * Data object
+ */
 const data = {
 	name: 'search-maxi',
 	copyPasteMapping: {

@@ -1,5 +1,11 @@
+/**
+ * WordPress dependencies
+ */
 import { __ } from '@wordpress/i18n';
 
+/**
+ * Internal dependencies
+ */
 import { createSelectors } from '../../extensions/styles/custom-css';
 import * as Controls from '../../components';
 import * as styleHelpers from '../../extensions/styles/helpers';
@@ -14,6 +20,9 @@ const dividerClass = `${dividerWrapperClass}__divider`;
 
 const prefix = 'divider-';
 
+/**
+ * Data object
+ */
 const data = {
 	name: 'divider-maxi',
 	copyPasteMapping: {

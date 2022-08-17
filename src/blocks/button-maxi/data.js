@@ -1,13 +1,17 @@
+/**
+ * WordPress dependencies
+ */
 import { __ } from '@wordpress/i18n';
 
+/**
+ * Internal dependencies
+ */
 import { createSelectors } from '../../extensions/styles/custom-css';
 import { getIconWithColor } from '../../extensions/styles';
 import * as Controls from '../../components';
 import * as styleHelpers from '../../extensions/styles/helpers';
 import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
-
-const prefix = 'button-';
 
 /**
  * Classnames
@@ -17,6 +21,11 @@ const buttonClass = `${buttonWrapperClass}__button`;
 const iconClass = `${buttonWrapperClass}__icon`;
 const contentClass = `${buttonWrapperClass}__content`;
 
+const prefix = 'button-';
+
+/**
+ * Data object
+ */
 const data = {
 	name: 'button-maxi',
 	copyPasteMapping: {

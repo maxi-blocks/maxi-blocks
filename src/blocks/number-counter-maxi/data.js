@@ -1,3 +1,6 @@
+/**
+ * Internal dependencies
+ */
 import { createSelectors } from '../../extensions/styles/custom-css';
 import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
@@ -10,6 +13,9 @@ const boxClass = `${blockClass}__box`;
 
 const prefix = 'number-counter-';
 
+/**
+ * Data object
+ */
 const data = {
 	name: 'number-counter-maxi',
 	copyPasteMapping: {

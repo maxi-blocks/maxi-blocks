@@ -1,3 +1,6 @@
+/**
+ * Internal dependencies
+ */
 import { createSelectors } from '../../extensions/styles/custom-css';
 import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
 
@@ -6,6 +9,9 @@ import getCanvasSettings from '../../components/relation-control/getCanvasSettin
  */
 const infoWindowClass = ' .map-marker-info-window';
 
+/**
+ * Data object
+ */
 const data = {
 	name: 'map-maxi',
 	customCss: {

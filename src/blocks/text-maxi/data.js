@@ -1,5 +1,11 @@
+/**
+ * WordPress dependencies
+ */
 import { __ } from '@wordpress/i18n';
 
+/**
+ * Internal dependencies
+ */
 import { createSelectors } from '../../extensions/styles/custom-css';
 import * as Controls from '../../components';
 import * as styleHelpers from '../../extensions/styles/helpers';
@@ -13,6 +19,9 @@ const blockClass = ' .maxi-text-block';
 const contentClass = `${blockClass}__content`;
 const linkClass = `${blockClass}--link`;
 
+/**
+ * Data object
+ */
 const data = {
 	name: 'text-maxi',
 	copyPasteMapping: {

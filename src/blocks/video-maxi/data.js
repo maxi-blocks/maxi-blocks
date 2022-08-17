@@ -1,3 +1,6 @@
+/**
+ * Internal dependencies
+ */
 import { createSelectors } from '../../extensions/styles/custom-css';
 import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
 
@@ -8,6 +11,9 @@ const blockClass = ' .maxi-video-block';
 const videoClass = `${blockClass}__video-player`;
 const overlayClass = `${blockClass}__overlay`;
 
+/**
+ * Data object
+ */
 const data = {
 	name: 'video-maxi',
 	copyPasteMapping: {

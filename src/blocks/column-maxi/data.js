@@ -45,10 +45,7 @@ const data = {
 	},
 	customCss: {
 		selectors: createSelectors({
-			column: {
-				label: 'column',
-				target: '',
-			},
+			column: '',
 		}),
 		categories: [
 			'column',

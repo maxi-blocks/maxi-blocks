@@ -97,18 +97,9 @@ const data = {
 	customCss: {
 		selectors: {
 			...createSelectors({
-				block: {
-					label: 'block',
-					target: '',
-				},
-				button: {
-					label: 'button',
-					target: buttonClass,
-				},
-				input: {
-					label: 'input',
-					target: inputClass,
-				},
+				block: '',
+				button: buttonClass,
+				input: inputClass,
 			}),
 			'placeholder input': {
 				normal: {

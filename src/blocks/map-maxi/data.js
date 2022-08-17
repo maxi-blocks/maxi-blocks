@@ -11,21 +11,12 @@ const data = {
 	customCss: {
 		selectors: {
 			...createSelectors({
-				map: {
-					label: 'map',
-					target: '',
-				},
+				map: '',
 			}),
 			...createSelectors(
 				{
-					title: {
-						label: 'title',
-						target: `${infoWindowClass}__title`,
-					},
-					address: {
-						label: 'address',
-						target: `${infoWindowClass}__address`,
-					},
+					title: `${infoWindowClass}__title`,
+					address: `${infoWindowClass}__address`,
 				},
 				false
 			),

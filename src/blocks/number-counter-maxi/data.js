@@ -60,21 +60,12 @@ const data = {
 	customCss: {
 		selectors: {
 			...createSelectors({
-				canvas: {
-					label: 'canvas',
-					target: '',
-				},
-				number: {
-					label: 'number',
-					target: `${boxClass}__text`,
-				},
+				canvas: '',
+				number: `${boxClass}__text`,
 			}),
 			...createSelectors(
 				{
-					circle: {
-						label: 'circle',
-						target: `${boxClass}__circle`,
-					},
+					circle: `${boxClass}__circle`,
 				},
 				false
 			),

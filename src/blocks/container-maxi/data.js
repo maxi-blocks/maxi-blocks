@@ -60,10 +60,7 @@ const data = {
 	},
 	customCss: {
 		selectors: createSelectors({
-			container: {
-				label: 'container',
-				target: '',
-			},
+			container: '',
 		}),
 		categories: [
 			'container',

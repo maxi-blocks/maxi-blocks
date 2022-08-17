@@ -1,18 +1,7 @@
 /**
  * Internal dependencies
  */
-import { selectorsButton } from '../../../blocks/button-maxi/custom-css';
-import { selectorsColumn } from '../../../blocks/column-maxi/custom-css';
-import { selectorsContainer } from '../../../blocks/container-maxi/custom-css';
-import { selectorsDivider } from '../../../blocks/divider-maxi/custom-css';
-import { selectorsGroup } from '../../../blocks/group-maxi/custom-css';
-import { selectorsImage } from '../../../blocks/image-maxi/custom-css';
-import { selectorsMap } from '../../../blocks/map-maxi/custom-css';
-import { selectorsNumberCounter } from '../../../blocks/number-counter-maxi/custom-css';
-import { selectorsRow } from '../../../blocks/row-maxi/custom-css';
-import { selectorsSvgIcon } from '../../../blocks/svg-icon-maxi/custom-css';
-import { selectorsText } from '../../../blocks/text-maxi/custom-css';
-import { selectorsVideo } from '../../../blocks/video-maxi/custom-css';
+import * as blocksData from '../../../blocks/data';
 
 /**
  * External dependencies
@@ -22,20 +11,9 @@ import { splitValueAndUnit } from '../utils';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-const selectorsDictionary = {
-	'button-maxi': selectorsButton,
-	'column-maxi': selectorsColumn,
-	'container-maxi': selectorsContainer,
-	'divider-maxi': selectorsDivider,
-	'group-maxi': selectorsGroup,
-	'image-maxi': selectorsImage,
-	'map-maxi': selectorsMap,
-	'number-counter-maxi': selectorsNumberCounter,
-	'row-maxi': selectorsRow,
-	'svg-icon-maxi': selectorsSvgIcon,
-	'text-maxi': selectorsText,
-	'video-maxi': selectorsVideo,
-};
+const selectorsDictionary = blockName =>
+	Object.values(blocksData).find(data => data.name === blockName).customCss
+		.selectors;
 
 const isEligible = blockAttributes => {
 	const { relations } = blockAttributes;
@@ -243,7 +221,7 @@ const migrate = ({ newAttributes }) => {
 
 		// Returns the empty target selector, so the main one
 		const selector = findKey(
-			selectorsDictionary[typeOfTarget],
+			selectorsDictionary(typeOfTarget),
 			selector => selector.normal.target === ''
 		);
 

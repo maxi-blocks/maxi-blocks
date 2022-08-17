@@ -65,6 +65,7 @@ const OverlayColor = props => {
 				isHover,
 			})}
 			onChangeInline={({ color }) =>
+				insertInlineStyles &&
 				insertInlineStyles({
 					obj: {
 						background: color,
@@ -104,7 +105,8 @@ const OverlayColor = props => {
 						breakpoint
 					)]: color,
 				});
-				cleanInlineStyles(inlineStylesTargets.overlay);
+				cleanInlineStyles &&
+					cleanInlineStyles(inlineStylesTargets.overlay);
 			}}
 			disableImage
 			disableVideo
@@ -120,16 +122,18 @@ const OverlayColor = props => {
 };
 
 const VideoOverlayControl = props => {
-	const { onChange, hideImage } = props;
+	const { onChange, hideImage, disableHideImage = false } = props;
 
 	return (
 		<>
-			<ToggleSwitch
-				className='maxi-video-overlay-control__hide-image'
-				label={__('Hide image(icon only)', 'maxi-blocks')}
-				selected={hideImage}
-				onChange={val => onChange({ hideImage: val })}
-			/>
+			{!disableHideImage && (
+				<ToggleSwitch
+					className='maxi-video-overlay-control__hide-image'
+					label={__('Hide image(icon only)', 'maxi-blocks')}
+					selected={hideImage}
+					onChange={val => onChange({ hideImage: val })}
+				/>
+			)}
 			<SettingTabsControl
 				depth={2}
 				items={[

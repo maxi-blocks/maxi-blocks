@@ -163,11 +163,10 @@ const Inspector = props => {
 												<VideoOverlayControl
 													{...getGroupAttributes(
 														attributes,
-														'video'
-													)}
-													{...getGroupAttributes(
-														attributes,
-														'videoOverlay'
+														[
+															'video',
+															'videoOverlay',
+														]
 													)}
 													mediaID={overlayMediaId}
 													altSelector={

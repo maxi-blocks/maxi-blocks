@@ -1,6 +1,12 @@
+/**
+ * Internal dependencies
+ */
 import { createSelectors } from '../../extensions/styles/custom-css';
 import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
 
+/**
+ * External dependencies
+ */
 import { capitalize } from 'lodash';
 
 const shapeDividerCopyPasteGenerator = position => {
@@ -23,6 +29,9 @@ const shapeDividerCopyPasteGenerator = position => {
 	};
 };
 
+/**
+ * Data object
+ */
 const data = {
 	name: 'container-maxi',
 	copyPasteMapping: {
@@ -71,7 +80,7 @@ const data = {
 		],
 	},
 	get interactionBuilderSettings() {
-		return [...getCanvasSettings(this)];
+		return getCanvasSettings(this);
 	},
 };
 

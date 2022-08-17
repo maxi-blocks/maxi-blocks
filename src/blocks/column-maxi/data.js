@@ -1,6 +1,12 @@
+/**
+ * WordPress dependencies
+ */
 import { __ } from '@wordpress/i18n';
 import { select } from '@wordpress/data';
 
+/**
+ * Internal dependencies
+ */
 import { createSelectors } from '../../extensions/styles/custom-css';
 import { getGroupAttributes } from '../../extensions/styles';
 import getParentRowClientId from '../../components/relation-control/getParentRowClientId';
@@ -9,8 +15,14 @@ import * as Controls from '../../components';
 import * as styleHelpers from '../../extensions/styles/helpers';
 import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
 
+/**
+ * External dependencies
+ */
 import { merge } from 'lodash';
 
+/**
+ * Data object
+ */
 const data = {
 	name: 'column-maxi',
 	copyPasteMapping: {

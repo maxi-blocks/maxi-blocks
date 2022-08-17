@@ -1,5 +1,11 @@
+/**
+ * WordPress dependencies
+ */
 import { __ } from '@wordpress/i18n';
 
+/**
+ * Internal dependencies
+ */
 import { createSelectors } from '../../extensions/styles/custom-css';
 import * as Controls from '../../components';
 import * as styleHelpers from '../../extensions/styles/helpers';
@@ -14,6 +20,9 @@ const iconClass = `${blockClass}__icon`;
 
 const prefix = 'svg-';
 
+/**
+ * Data object
+ */
 const data = {
 	name: 'svg-icon-maxi',
 	copyPasteMapping: {

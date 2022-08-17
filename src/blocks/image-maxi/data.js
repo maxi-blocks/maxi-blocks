@@ -1,5 +1,11 @@
+/**
+ * WordPress dependencies
+ */
 import { __ } from '@wordpress/i18n';
 
+/**
+ * Internal dependencies
+ */
 import { createSelectors } from '../../extensions/styles/custom-css';
 import * as Controls from '../../components';
 import * as styleHelpers from '../../extensions/styles/helpers';
@@ -15,6 +21,9 @@ const imageWrapperClass = `${blockClass}-wrapper`;
 
 const prefix = 'image-';
 
+/**
+ * Data object
+ */
 const data = {
 	name: 'image-maxi',
 	copyPasteMapping: {

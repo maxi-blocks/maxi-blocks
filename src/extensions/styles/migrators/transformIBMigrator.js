@@ -1,19 +1,15 @@
 /**
  * Internal dependencies
  */
-import * as blocksData from '../../../blocks/data';
+import { getBlockSelectorsByUniqueID } from './utils';
+import { splitValueAndUnit } from '../utils';
 
 /**
  * External dependencies
  */
 import { isEmpty, findKey, isEqual } from 'lodash';
-import { splitValueAndUnit } from '../utils';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-
-const selectorsDictionary = blockName =>
-	Object.values(blocksData).find(data => data.name === blockName).customCss
-		.selectors;
 
 const isEligible = blockAttributes => {
 	const { relations } = blockAttributes;
@@ -216,12 +212,9 @@ const migrate = ({ newAttributes }) => {
 
 		const { attributes, css, uniqueID } = relation;
 
-		// Gets the type of block to look for its selectors on the dictionary
-		const typeOfTarget = uniqueID.slice(0, uniqueID.lastIndexOf('-'));
-
 		// Returns the empty target selector, so the main one
 		const selector = findKey(
-			selectorsDictionary(typeOfTarget),
+			getBlockSelectorsByUniqueID(uniqueID),
 			selector => selector.normal.target === ''
 		);
 

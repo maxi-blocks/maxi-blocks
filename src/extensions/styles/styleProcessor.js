@@ -165,7 +165,7 @@ const styleCleaner = styles => {
 
 const styleProcessor = (obj, data, props) => {
 	const selectors = data?.customCss?.selectors;
-	const transitionSelectors = data?.transition?.selectors;
+	const transitionSelectors = data?.transition;
 
 	const styles = cloneDeep(obj);
 

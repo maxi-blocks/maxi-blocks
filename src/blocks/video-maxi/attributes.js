@@ -45,12 +45,14 @@ const attributes = {
 	/**
 	 * Advanced
 	 */
+	...attributesData.scroll,
 	...attributesData.transform,
 	...{
 		...attributesData.transition,
 		...transitionAttributesCreator(transitionObj),
 	},
 	...attributesData.display,
+	...attributesData.position,
 	...attributesData.opacity,
 	...attributesData.overflow,
 	...attributesData.zIndex,

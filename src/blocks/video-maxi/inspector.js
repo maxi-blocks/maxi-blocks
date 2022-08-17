@@ -257,6 +257,9 @@ const Inspector = props => {
 									...inspectorTabs.display({
 										props,
 									}),
+									...inspectorTabs.position({
+										props,
+									}),
 									deviceType !== 'general' && {
 										...inspectorTabs.responsive({
 											props,
@@ -272,6 +275,9 @@ const Inspector = props => {
 										props,
 									}),
 									...inspectorTabs.zindex({
+										props,
+									}),
+									...inspectorTabs.relation({
 										props,
 									}),
 								]}

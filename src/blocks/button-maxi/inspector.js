@@ -42,6 +42,7 @@ const Inspector = props => {
 	const { attributes, deviceType, maxiSetAttributes, inlineStylesTargets } =
 		props;
 	const { 'icon-only': iconOnly } = attributes;
+	const { selectors, categories } = customCss;
 
 	const onChangePreset = (number, type = 'normal') => {
 		const newDefaultPresets = cloneDeep({ ...defaultPresets });
@@ -135,7 +136,7 @@ const Inspector = props => {
 
 	const getCategoriesCss = () => {
 		const { 'icon-content': iconContent } = attributes;
-		return without(customCss.categories, isEmpty(iconContent) && 'icon');
+		return without(categories, isEmpty(iconContent) && 'icon');
 	};
 
 	const alignmentLabel = __('Button', 'maxi-blocks');
@@ -411,7 +412,7 @@ const Inspector = props => {
 											...props,
 										},
 										breakpoint: deviceType,
-										selectors: customCss.selectors,
+										selectors,
 										categories: getCategoriesCss(),
 									}),
 									...inspectorTabs.scrollEffects({
@@ -424,7 +425,7 @@ const Inspector = props => {
 											...props,
 										},
 										categories: getCategoriesCss(),
-										selectors: customCss.selectors,
+										selectors,
 									}),
 									...inspectorTabs.transition({
 										props: {

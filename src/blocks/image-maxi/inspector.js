@@ -251,6 +251,7 @@ const Inspector = props => {
 		mediaID,
 		captionPosition,
 	} = attributes;
+	const { selectors, categories } = customCss;
 
 	const imageData = useSelect(
 		select => select('core').getMedia(mediaID),
@@ -675,16 +676,16 @@ const Inspector = props => {
 									...inspectorTabs.customCss({
 										props,
 										breakpoint: deviceType,
-										selectors: customCss.selectors,
-										categories: customCss.categories,
+										selectors,
+										categories,
 									}),
 									...inspectorTabs.scrollEffects({
 										props,
 									}),
 									...inspectorTabs.transform({
 										props,
-										selectors: customCss.selectors,
-										categories: customCss.categories,
+										selectors,
+										categories,
 									}),
 									...inspectorTabs.transition({
 										props: {

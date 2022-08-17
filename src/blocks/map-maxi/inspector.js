@@ -29,6 +29,7 @@ import { withMaxiInspector } from '../../extensions/inspector';
 const Inspector = props => {
 	const { attributes, deviceType, maxiSetAttributes } = props;
 	const { apiKey } = attributes;
+	const { selectors, categories } = customCss;
 
 	return (
 		<InspectorControls>
@@ -103,16 +104,16 @@ const Inspector = props => {
 									...inspectorTabs.customCss({
 										props,
 										breakpoint: deviceType,
-										selectors: customCss.selectors,
-										categories: customCss.categories,
+										selectors,
+										categories,
 									}),
 									...inspectorTabs.scrollEffects({
 										props,
 									}),
 									...inspectorTabs.transform({
 										props,
-										selectors: customCss.selectors,
-										categories: customCss.categories,
+										selectors,
+										categories,
 									}),
 									...inspectorTabs.display({
 										props,

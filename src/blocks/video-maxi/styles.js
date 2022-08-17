@@ -36,16 +36,6 @@ const getNormalObject = props => {
 			},
 			blockStyle: props.blockStyle,
 		}),
-		border: getBorderStyles({
-			obj: {
-				...getGroupAttributes(props, [
-					'border',
-					'borderWidth',
-					'borderRadius',
-				]),
-			},
-			blockStyle: props.blockStyle,
-		}),
 		padding: getMarginPaddingStyles({
 			obj: { ...getGroupAttributes(props, 'padding') },
 		}),
@@ -140,6 +130,28 @@ const getVideoContainerOject = props => {
 	const response = {
 		...(videoRatio && getAspectRatio(videoRatio)),
 	};
+
+	return response;
+};
+
+const getVideoPlayerStyles = props => {
+	const { playerType } = props;
+
+	const response =
+		playerType === 'video'
+			? {
+					border: getBorderStyles({
+						obj: {
+							...getGroupAttributes(props, [
+								'border',
+								'borderWidth',
+								'borderRadius',
+							]),
+						},
+						blockStyle: props.blockStyle,
+					}),
+			  }
+			: {};
 
 	return response;
 };
@@ -264,6 +276,21 @@ const getIconObject = (prefix, obj) => {
 	};
 };
 
+const getOverlayStyles = props => {
+	return {
+		border: getBorderStyles({
+			obj: {
+				...getGroupAttributes(props, [
+					'border',
+					'borderWidth',
+					'borderRadius',
+				]),
+			},
+			blockStyle: props.blockStyle,
+		}),
+	};
+};
+
 const getStyles = props => {
 	const { uniqueID } = props;
 
@@ -275,6 +302,8 @@ const getStyles = props => {
 				' .maxi-video-block__popup-wrapper': getLightBoxObject(props),
 				' .maxi-video-block__video-container':
 					getVideoContainerOject(props),
+				' .maxi-video-block__video-player': getVideoPlayerStyles(props),
+				' .maxi-video-block__overlay': getOverlayStyles(props),
 				' .maxi-video-block__overlay-background':
 					getOverlayBackgroundObject(props),
 				...(props['overlay-background-hover-status'] && {

@@ -7,8 +7,17 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import { createSelectors } from '../../extensions/styles/custom-css';
-import * as Controls from '../../components';
-import * as styleHelpers from '../../extensions/styles/helpers';
+import {
+	SvgColorControl,
+	SvgStrokeWidthControl,
+	BackgroundControl,
+	BorderControl,
+} from '../../components';
+import {
+	getBackgroundStyles,
+	getBorderStyles,
+	getSVGStyles,
+} from '../../extensions/styles/helpers';
 import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
@@ -160,7 +169,7 @@ const data = {
 					const { blockStyle, content, svgType } = attributes;
 
 					return (
-						<Controls.SvgColorControl
+						<SvgColorControl
 							{...props}
 							onChangeFill={onChange}
 							onChangeStroke={onChange}
@@ -172,7 +181,7 @@ const data = {
 					);
 				},
 				helper: props =>
-					styleHelpers.getSVGStyles({
+					getSVGStyles({
 						...props,
 						target: ' .maxi-svg-icon-block__icon',
 						prefix: 'svg-',
@@ -186,7 +195,7 @@ const data = {
 					const { content } = attributes;
 
 					return (
-						<Controls.SvgStrokeWidthControl
+						<SvgStrokeWidthControl
 							{...props}
 							content={content}
 							prefix='svg-'
@@ -194,7 +203,7 @@ const data = {
 					);
 				},
 				helper: props =>
-					styleHelpers.getSVGStyles({
+					getSVGStyles({
 						...props,
 						target: ' .maxi-svg-icon-block__icon',
 						prefix: 'svg-',
@@ -209,7 +218,7 @@ const data = {
 				],
 				prefix: 'svg-',
 				component: props => (
-					<Controls.BackgroundControl
+					<BackgroundControl
 						{...props}
 						disableImage
 						disableVideo
@@ -218,16 +227,15 @@ const data = {
 					/>
 				),
 				helper: props =>
-					styleHelpers.getBackgroundStyles({ ...props, ...props.obj })
-						.background,
+					getBackgroundStyles({ ...props, ...props.obj }).background,
 				target: ' .maxi-svg-icon-block__icon',
 			},
 			{
 				label: __('Icon border', 'maxi-blocks'),
 				attrGroupName: ['border', 'borderWidth', 'borderRadius'],
 				prefix: 'svg-',
-				component: props => <Controls.BorderControl {...props} />,
-				helper: props => styleHelpers.getBorderStyles(props),
+				component: props => <BorderControl {...props} />,
+				helper: props => getBorderStyles(props),
 				target: ' .maxi-svg-icon-block__icon',
 			},
 			...getCanvasSettings(this),

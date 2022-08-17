@@ -8,8 +8,24 @@ import { __ } from '@wordpress/i18n';
  */
 import { createSelectors } from '../../extensions/styles/custom-css';
 import { getIconWithColor } from '../../extensions/styles';
-import * as Controls from '../../components';
-import * as styleHelpers from '../../extensions/styles/helpers';
+import {
+	BackgroundControl,
+	BorderControl,
+	BoxShadowControl,
+	IconControl,
+	InfoBox,
+	MarginControl,
+	PaddingControl,
+	TypographyControl,
+} from '../../components';
+import {
+	getBackgroundStyles,
+	getBorderStyles,
+	getBoxShadowStyles,
+	getButtonIconStyles,
+	getMarginPaddingStyles,
+	getTypographyStyles,
+} from '../../extensions/styles/helpers';
 import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
@@ -239,7 +255,7 @@ const data = {
 					const { svgType, 'icon-content': iconContent } = attributes;
 					const { 'icon-inherit': iconInherit } = blockAttributes;
 					return iconContent ? (
-						<Controls.IconControl
+						<IconControl
 							{...props}
 							svgType={svgType}
 							isInteractionBuilder
@@ -249,27 +265,27 @@ const data = {
 							disableIconInherit={!iconInherit}
 						/>
 					) : (
-						<Controls.InfoBox
+						<InfoBox
 							message={__(
 								'Add button icon to be able to use this control'
 							)}
 						/>
 					);
 				},
-				helper: props => styleHelpers.getButtonIconStyles(props),
+				helper: props => getButtonIconStyles(props),
 			},
 			{
 				label: __('Button typography', 'maxi-blocks'),
 				attrGroupName: 'typography',
 				component: props => (
-					<Controls.TypographyControl
+					<TypographyControl
 						{...props}
 						hideAlignment
 						disableCustomFormats
 					/>
 				),
 				helper: props =>
-					styleHelpers.getTypographyStyles({
+					getTypographyStyles({
 						...props,
 						textLevel: 'button',
 					}),
@@ -279,8 +295,8 @@ const data = {
 				label: __('Button border', 'maxi-blocks'),
 				attrGroupName: ['border', 'borderWidth', 'borderRadius'],
 				prefix: 'button-',
-				component: props => <Controls.BorderControl {...props} />,
-				helper: props => styleHelpers.getBorderStyles(props),
+				component: props => <BorderControl {...props} />,
+				helper: props => getBorderStyles(props),
 				target: '.maxi-button-block__button',
 			},
 			{
@@ -292,7 +308,7 @@ const data = {
 				],
 				prefix: 'button-',
 				component: props => (
-					<Controls.BackgroundControl
+					<BackgroundControl
 						{...props}
 						disableImage
 						disableVideo
@@ -301,7 +317,7 @@ const data = {
 					/>
 				),
 				helper: props =>
-					styleHelpers.getBackgroundStyles({
+					getBackgroundStyles({
 						...props,
 						...props.obj,
 						isButton: true,
@@ -312,8 +328,8 @@ const data = {
 				label: __('Button box shadow', 'maxi-blocks'),
 				attrGroupName: 'boxShadow',
 				prefix: 'button-',
-				component: props => <Controls.BoxShadowControl {...props} />,
-				helper: props => styleHelpers.getBoxShadowStyles(props),
+				component: props => <BoxShadowControl {...props} />,
+				helper: props => getBoxShadowStyles(props),
 				target: '.maxi-button-block__button',
 			},
 			{
@@ -322,11 +338,11 @@ const data = {
 				prefix: 'button-',
 				component: props => (
 					<>
-						<Controls.MarginControl {...props} />
-						<Controls.PaddingControl {...props} />
+						<MarginControl {...props} />
+						<PaddingControl {...props} />
 					</>
 				),
-				helper: props => styleHelpers.getMarginPaddingStyles(props),
+				helper: props => getMarginPaddingStyles(props),
 				target: '.maxi-button-block__button',
 			},
 			...getCanvasSettings(this),

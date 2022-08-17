@@ -34,6 +34,7 @@ const VideoControl = props => {
 	return (
 		<>
 			<SettingTabsControl
+				className='maxi-video-control__player-type'
 				type='buttons'
 				items={[
 					{

@@ -33,9 +33,7 @@ const data = {
 		categories: ['map', 'before map', 'after map', 'title', 'address'],
 	},
 	get interactionBuilderSettings() {
-		delete this.interactionBuilderSettings;
-		this.interactionBuilderSettings = getCanvasSettings(this);
-		return this.interactionBuilderSettings;
+		return getCanvasSettings(this);
 	},
 };
 

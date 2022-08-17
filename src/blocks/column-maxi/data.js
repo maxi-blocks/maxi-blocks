@@ -59,8 +59,7 @@ const data = {
 		],
 	},
 	get interactionBuilderSettings() {
-		delete this.interactionBuilderSettings;
-		this.interactionBuilderSettings = [
+		return [
 			{
 				label: __('Column settings', 'maxi-blocks'),
 				attrGroupName: ['columnSize', 'flex'],
@@ -120,7 +119,6 @@ const data = {
 			},
 			...getCanvasSettings(this),
 		];
-		return this.interactionBuilderSettings;
 	},
 };
 

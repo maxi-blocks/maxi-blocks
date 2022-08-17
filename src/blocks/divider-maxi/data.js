@@ -108,8 +108,7 @@ const data = {
 		},
 	},
 	get interactionBuilderSettings() {
-		delete this.interactionBuilderSettings;
-		this.interactionBuilderSettings = [
+		return [
 			{
 				label: __('Divider box shadow', 'maxi-blocks'),
 				attrGroupName: 'boxShadow',
@@ -132,7 +131,6 @@ const data = {
 			},
 			...getCanvasSettings(this),
 		];
-		return this.interactionBuilderSettings;
 	},
 };
 

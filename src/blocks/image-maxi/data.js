@@ -184,8 +184,7 @@ const data = {
 		},
 	},
 	get interactionBuilderSettings() {
-		delete this.interactionBuilderSettings;
-		this.interactionBuilderSettings = [
+		return [
 			{
 				label: __('Alignment', 'maxi-blocks'),
 				attrGroupName: 'alignment',
@@ -234,7 +233,6 @@ const data = {
 			},
 			...getCanvasSettings(this),
 		];
-		return this.interactionBuilderSettings;
 	},
 };
 

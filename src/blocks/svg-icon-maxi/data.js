@@ -148,8 +148,7 @@ const data = {
 		},
 	},
 	get interactionBuilderSettings() {
-		delete this.interactionBuilderSettings;
-		this.interactionBuilderSettings = [
+		return [
 			{
 				label: __('Icon colour'),
 				attrGroupName: 'svg',
@@ -230,7 +229,6 @@ const data = {
 			},
 			...getCanvasSettings(this),
 		];
-		return this.interactionBuilderSettings;
 	},
 };
 

@@ -14,6 +14,7 @@ const contentClass = `${blockClass}__content`;
 const linkClass = `${blockClass}--link`;
 
 const data = {
+	name: 'text-maxi',
 	copyPasteMapping: {
 		settings: {
 			'Text content': 'content',
@@ -177,8 +178,7 @@ const data = {
 		},
 	},
 	get interactionBuilderSettings() {
-		delete this.interactionBuilderSettings;
-		this.interactionBuilderSettings = [
+		return [
 			{
 				label: __('Alignment', 'maxi-blocks'),
 				attrGroupName: 'textAlignment',
@@ -203,7 +203,6 @@ const data = {
 			},
 			...getCanvasSettings(this),
 		];
-		return this.interactionBuilderSettings;
 	},
 };
 

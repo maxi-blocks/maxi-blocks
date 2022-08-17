@@ -109,9 +109,7 @@ const data = {
 		},
 	},
 	get interactionBuilderSettings() {
-		delete this.interactionBuilderSettings;
-		this.interactionBuilderSettings = getCanvasSettings(this);
-		return this.interactionBuilderSettings;
+		return getCanvasSettings(this);
 	},
 };
 

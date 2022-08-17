@@ -46,13 +46,6 @@ registerBlockType('maxi-blocks/svg-icon-maxi', {
 	attributes: {
 		...attributes,
 	},
-	getEditWrapperProps(attributes) {
-		const { uniqueID } = attributes;
-
-		return {
-			uniqueid: uniqueID,
-		};
-	},
 	edit,
 	save,
 	deprecated: blockMigrator({

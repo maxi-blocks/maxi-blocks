@@ -6,8 +6,14 @@ import { cloneElement, renderToString } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { getMigratorsCombinations } from '../utils';
+import {
+	getBlockNameFromUniqueID,
+	getBlockSelectorsByUniqueID,
+	getMigratorsCombinations,
+} from '../utils';
 import { handleBlockMigrator } from '../blockMigrator';
+
+jest.mock('src/components/index.js', () => jest.fn());
 
 describe('getMigratorsCombinations', () => {
 	it('Should return a one element array', () => {
@@ -107,5 +113,36 @@ describe('handleBlockMigrator', () => {
 		);
 
 		expect(result).toMatchSnapshot();
+	});
+});
+
+describe('getBlockNameFromUniqueID', () => {
+	it('Should return the block name', () =>
+		expect(getBlockNameFromUniqueID('button-maxi-5')).toMatchSnapshot());
+
+	it('Should return the block name, when uniqueID is big digit', () =>
+		expect(getBlockNameFromUniqueID('text-maxi-123456')).toMatchSnapshot());
+});
+
+describe('getBlockSelectorsByUniqueID', () => {
+	[
+		'button',
+		'column',
+		'container',
+		'divider',
+		'group',
+		'image',
+		'map',
+		'number-counter',
+		'row',
+		'search',
+		'svg-icon',
+		'text',
+		'video',
+	].forEach(blockName => {
+		it(`Should return ${blockName} selectors`, () =>
+			expect(
+				getBlockSelectorsByUniqueID(`${blockName}-maxi-5`)
+			).toMatchSnapshot());
 	});
 });

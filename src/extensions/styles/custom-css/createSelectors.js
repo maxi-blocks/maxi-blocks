@@ -32,7 +32,7 @@ const createSelectors = (selectors, addPseudoElementSelectors = true) => {
 	Object.entries(result).forEach(([key, obj]) => {
 		result[key] = getNormalAndHoverSelectors(obj);
 	});
-	console.log(result);
+
 	return result;
 };
 

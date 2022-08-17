@@ -2,10 +2,7 @@
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
-import {
-	prefixAttributesCreator,
-	transitionAttributesCreator,
-} from '../../extensions/styles';
+import { transitionAttributesCreator } from '../../extensions/styles';
 import transitionObj from './transitionObj';
 
 const attributes = {
@@ -17,20 +14,7 @@ const attributes = {
 
 	...attributesData.video,
 	...attributesData.videoOverlay,
-	...prefixAttributesCreator({
-		obj: attributesData.background,
-		prefix: 'lightbox-',
-		diffValAttr: {
-			'lightbox-background-active-media-general': 'color',
-		},
-	}),
-	...prefixAttributesCreator({
-		obj: attributesData.backgroundColor,
-		prefix: 'lightbox-',
-		diffValAttr: {
-			'lightbox-background-palette-color-general': 5,
-		},
-	}),
+	...attributesData.videoPopup,
 
 	...attributesData.border,
 	...attributesData.borderHover,

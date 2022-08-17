@@ -110,16 +110,7 @@ const Inspector = props => {
 												<PopupSettingsControl
 													{...getGroupAttributes(
 														attributes,
-														'video'
-													)}
-													{...getGroupAttributes(
-														attributes,
-														[
-															'background',
-															'backgroundColor',
-														],
-														false,
-														'lightbox-'
+														['video', 'videoPopup']
 													)}
 													breakpoint={deviceType}
 													clientId={clientId}

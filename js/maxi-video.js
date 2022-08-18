@@ -112,6 +112,7 @@ function insertPopup(popupContent, uniqueID) {
 	if (!popupSlot) {
 		const popupSlot = document.createElement('div');
 		popupSlot.id = 'maxi-popup-slot';
+		popupSlot.style.zIndex = '999999';
 
 		popupSlot.appendChild(createPopup());
 

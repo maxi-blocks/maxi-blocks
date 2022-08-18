@@ -6,15 +6,19 @@ import {
 	insertBlock,
 	getEditedPostContent,
 } from '@wordpress/e2e-test-utils';
-import { getBlockStyle, addCustomCSS } from '../../utils';
+import { getBlockStyle, addCustomCSS, waitForAttribute } from '../../utils';
 
 describe('Number Counter Maxi', () => {
 	it('Number Counter Maxi does not break', async () => {
 		await createNewPost();
 		await insertBlock('Number Counter Maxi');
 
-		expect(await getEditedPostContent()).toMatchSnapshot();
+		await waitForAttribute(page, [
+			'maxi-version-current',
+			'maxi-version-on-creating',
+		]);
 
+		expect(await getEditedPostContent()).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 	it('Number Counter Custom CSS', async () => {

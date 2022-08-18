@@ -6,15 +6,19 @@ import {
 	insertBlock,
 	getEditedPostContent,
 } from '@wordpress/e2e-test-utils';
-import { getBlockStyle, addCustomCSS } from '../../utils';
+import { getBlockStyle, addCustomCSS, waitForAttribute } from '../../utils';
 
 describe('Group Maxi', () => {
 	it('Group Maxi does not break', async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
 
-		expect(await getEditedPostContent()).toMatchSnapshot();
+		await waitForAttribute(page, [
+			'maxi-version-current',
+			'maxi-version-on-creating',
+		]);
 
+		expect(await getEditedPostContent()).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 	it('Group Maxi Custom CSS', async () => {

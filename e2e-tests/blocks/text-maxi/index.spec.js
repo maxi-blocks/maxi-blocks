@@ -25,6 +25,7 @@ import {
 	openPreviewPage,
 	setAttributes,
 	addCustomCSS,
+	waitForAttribute,
 } from '../../utils';
 
 const linkExample = 'test.com';
@@ -61,8 +62,12 @@ describe('TextMaxi', () => {
 		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
 		await page.waitForTimeout(150);
 
-		expect(await getEditedPostContent()).toMatchSnapshot();
+		await waitForAttribute(page, [
+			'maxi-version-current',
+			'maxi-version-on-creating',
+		]);
 
+		expect(await getEditedPostContent()).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 

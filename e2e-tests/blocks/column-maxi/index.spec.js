@@ -18,6 +18,7 @@ import {
 	getBlockStyle,
 	editAxisControl,
 	addCustomCSS,
+	waitForAttribute,
 } from '../../utils';
 
 describe('Column Maxi', () => {
@@ -28,6 +29,11 @@ describe('Column Maxi', () => {
 		await page.$eval('.maxi-row-block__template button', button =>
 			button.click()
 		);
+
+		await waitForAttribute(page, [
+			'maxi-version-current',
+			'maxi-version-on-creating',
+		]);
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});

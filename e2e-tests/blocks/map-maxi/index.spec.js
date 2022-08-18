@@ -11,6 +11,7 @@ import {
 	getAttributes,
 	getBlockStyle,
 	openPreviewPage,
+	waitForAttribute,
 } from '../../utils';
 import getMapContainer from './utils/getMapContainer';
 import roundMarkersCoords from './utils/roundMarkersCoords';
@@ -66,6 +67,11 @@ describe('Map Maxi', () => {
 	});
 
 	it('Map Maxi does not break', async () => {
+		await waitForAttribute(page, [
+			'maxi-version-current',
+			'maxi-version-on-creating',
+		]);
+
 		expect(await getEditedPostContent()).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 

@@ -13,6 +13,7 @@ import {
 	addResponsiveTest,
 	getAttributes,
 	addCustomCSS,
+	waitForAttribute,
 } from '../../utils';
 
 describe('Divider Maxi', () => {
@@ -20,8 +21,12 @@ describe('Divider Maxi', () => {
 		await createNewPost();
 		await insertBlock('Divider Maxi');
 
-		expect(await getEditedPostContent()).toMatchSnapshot();
+		await waitForAttribute(page, [
+			'maxi-version-current',
+			'maxi-version-on-creating',
+		]);
 
+		expect(await getEditedPostContent()).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 

@@ -18,6 +18,7 @@ import {
 	getAttributes,
 	editColorControl,
 	addCustomCSS,
+	waitForAttribute,
 } from '../../utils';
 
 describe('Button Maxi', () => {
@@ -28,8 +29,12 @@ describe('Button Maxi', () => {
 		await page.keyboard.type('Hello', { delay: 100 });
 		await page.waitForTimeout(150);
 
-		expect(await getEditedPostContent()).toMatchSnapshot();
+		await waitForAttribute(page, [
+			'maxi-version-current',
+			'maxi-version-on-creating',
+		]);
 
+		expect(await getEditedPostContent()).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 

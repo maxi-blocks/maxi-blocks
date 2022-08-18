@@ -18,6 +18,7 @@ describe('Row Maxi', () => {
 		);
 		expect(await getEditedPostContent()).toMatchSnapshot();
 
+		await page.waitForTimeout(150);
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 	it('Row Maxi Custom CSS', async () => {

@@ -9,7 +9,7 @@ Object {
   "after button": Object {
     "hover": Object {
       "label": "button ::after on hover",
-      "target": " .maxi-button-block__button::after:hover",
+      "target": " .maxi-button-block__button:hover::after",
     },
     "normal": Object {
       "label": "button ::after",
@@ -19,7 +19,7 @@ Object {
   "after canvas": Object {
     "hover": Object {
       "label": "canvas ::after on hover",
-      "target": "::after:hover",
+      "target": ":hover::after",
     },
     "normal": Object {
       "label": "canvas ::after",
@@ -29,7 +29,7 @@ Object {
   "before button": Object {
     "hover": Object {
       "label": "button ::before on hover",
-      "target": " .maxi-button-block__button::before:hover",
+      "target": " .maxi-button-block__button:hover::before",
     },
     "normal": Object {
       "label": "button ::before",
@@ -39,7 +39,7 @@ Object {
   "before canvas": Object {
     "hover": Object {
       "label": "canvas ::before on hover",
-      "target": "::before:hover",
+      "target": ":hover::before",
     },
     "normal": Object {
       "label": "canvas ::before",
@@ -108,7 +108,7 @@ Object {
   "after column": Object {
     "hover": Object {
       "label": "column ::after on hover",
-      "target": "::after:hover",
+      "target": ":hover::after",
     },
     "normal": Object {
       "label": "column ::after",
@@ -118,7 +118,7 @@ Object {
   "before column": Object {
     "hover": Object {
       "label": "column ::before on hover",
-      "target": "::before:hover",
+      "target": ":hover::before",
     },
     "normal": Object {
       "label": "column ::before",
@@ -143,7 +143,7 @@ Object {
   "after container": Object {
     "hover": Object {
       "label": "container ::after on hover",
-      "target": "::after:hover",
+      "target": ":hover::after",
     },
     "normal": Object {
       "label": "container ::after",
@@ -153,7 +153,7 @@ Object {
   "before container": Object {
     "hover": Object {
       "label": "container ::before on hover",
-      "target": "::before:hover",
+      "target": ":hover::before",
     },
     "normal": Object {
       "label": "container ::before",
@@ -178,7 +178,7 @@ Object {
   "after canvas": Object {
     "hover": Object {
       "label": "canvas ::after on hover",
-      "target": "::after:hover",
+      "target": ":hover::after",
     },
     "normal": Object {
       "label": "canvas ::after",
@@ -188,7 +188,7 @@ Object {
   "after divider": Object {
     "hover": Object {
       "label": "divider ::after on hover",
-      "target": " .maxi-divider-block__divider::after:hover",
+      "target": " .maxi-divider-block__divider:hover::after",
     },
     "normal": Object {
       "label": "divider ::after",
@@ -198,7 +198,7 @@ Object {
   "before canvas": Object {
     "hover": Object {
       "label": "canvas ::before on hover",
-      "target": "::before:hover",
+      "target": ":hover::before",
     },
     "normal": Object {
       "label": "canvas ::before",
@@ -208,7 +208,7 @@ Object {
   "before divider": Object {
     "hover": Object {
       "label": "divider ::before on hover",
-      "target": " .maxi-divider-block__divider::before:hover",
+      "target": " .maxi-divider-block__divider:hover::before",
     },
     "normal": Object {
       "label": "divider ::before",
@@ -243,7 +243,7 @@ Object {
   "after group": Object {
     "hover": Object {
       "label": "group ::after on hover",
-      "target": "::after:hover",
+      "target": ":hover::after",
     },
     "normal": Object {
       "label": "group ::after",
@@ -253,7 +253,7 @@ Object {
   "before group": Object {
     "hover": Object {
       "label": "group ::before on hover",
-      "target": "::before:hover",
+      "target": ":hover::before",
     },
     "normal": Object {
       "label": "group ::before",
@@ -278,7 +278,7 @@ Object {
   "after canvas": Object {
     "hover": Object {
       "label": "canvas ::after on hover",
-      "target": "::after:hover",
+      "target": ":hover::after",
     },
     "normal": Object {
       "label": "canvas ::after",
@@ -288,7 +288,7 @@ Object {
   "after image": Object {
     "hover": Object {
       "label": "image ::after on hover",
-      "target": " .maxi-image-block__image::after:hover",
+      "target": " .maxi-image-block__image:hover::after",
     },
     "normal": Object {
       "label": "image ::after",
@@ -298,7 +298,7 @@ Object {
   "before canvas": Object {
     "hover": Object {
       "label": "canvas ::before on hover",
-      "target": "::before:hover",
+      "target": ":hover::before",
     },
     "normal": Object {
       "label": "canvas ::before",
@@ -308,7 +308,7 @@ Object {
   "before image": Object {
     "hover": Object {
       "label": "image ::before on hover",
-      "target": " .maxi-image-block__image::before:hover",
+      "target": " .maxi-image-block__image:hover::before",
     },
     "normal": Object {
       "label": "image ::before",
@@ -353,7 +353,7 @@ Object {
   "after map": Object {
     "hover": Object {
       "label": "map ::after on hover",
-      "target": "::after:hover",
+      "target": ":hover::after",
     },
     "normal": Object {
       "label": "map ::after",
@@ -363,7 +363,7 @@ Object {
   "before map": Object {
     "hover": Object {
       "label": "map ::before on hover",
-      "target": "::before:hover",
+      "target": ":hover::before",
     },
     "normal": Object {
       "label": "map ::before",
@@ -398,7 +398,7 @@ Object {
   "after canvas": Object {
     "hover": Object {
       "label": "canvas ::after on hover",
-      "target": "::after:hover",
+      "target": ":hover::after",
     },
     "normal": Object {
       "label": "canvas ::after",
@@ -408,7 +408,7 @@ Object {
   "after number": Object {
     "hover": Object {
       "label": "number ::after on hover",
-      "target": " .maxi-number-counter__box__text::after:hover",
+      "target": " .maxi-number-counter__box__text:hover::after",
     },
     "normal": Object {
       "label": "number ::after",
@@ -418,7 +418,7 @@ Object {
   "before canvas": Object {
     "hover": Object {
       "label": "canvas ::before on hover",
-      "target": "::before:hover",
+      "target": ":hover::before",
     },
     "normal": Object {
       "label": "canvas ::before",
@@ -428,7 +428,7 @@ Object {
   "before number": Object {
     "hover": Object {
       "label": "number ::before on hover",
-      "target": " .maxi-number-counter__box__text::before:hover",
+      "target": " .maxi-number-counter__box__text:hover::before",
     },
     "normal": Object {
       "label": "number ::before",
@@ -473,7 +473,7 @@ Object {
   "after row": Object {
     "hover": Object {
       "label": "row ::after on hover",
-      "target": "::after:hover",
+      "target": ":hover::after",
     },
     "normal": Object {
       "label": "row ::after",
@@ -483,7 +483,7 @@ Object {
   "before row": Object {
     "hover": Object {
       "label": "row ::before on hover",
-      "target": "::before:hover",
+      "target": ":hover::before",
     },
     "normal": Object {
       "label": "row ::before",
@@ -508,7 +508,7 @@ Object {
   "after block": Object {
     "hover": Object {
       "label": "block ::after on hover",
-      "target": "::after:hover",
+      "target": ":hover::after",
     },
     "normal": Object {
       "label": "block ::after",
@@ -518,7 +518,7 @@ Object {
   "after button": Object {
     "hover": Object {
       "label": "button ::after on hover",
-      "target": " .maxi-search-block__button::after:hover",
+      "target": " .maxi-search-block__button:hover::after",
     },
     "normal": Object {
       "label": "button ::after",
@@ -528,7 +528,7 @@ Object {
   "after input": Object {
     "hover": Object {
       "label": "input ::after on hover",
-      "target": " .maxi-search-block__input::after:hover",
+      "target": " .maxi-search-block__input:hover::after",
     },
     "normal": Object {
       "label": "input ::after",
@@ -538,7 +538,7 @@ Object {
   "before block": Object {
     "hover": Object {
       "label": "block ::before on hover",
-      "target": "::before:hover",
+      "target": ":hover::before",
     },
     "normal": Object {
       "label": "block ::before",
@@ -548,7 +548,7 @@ Object {
   "before button": Object {
     "hover": Object {
       "label": "button ::before on hover",
-      "target": " .maxi-search-block__button::before:hover",
+      "target": " .maxi-search-block__button:hover::before",
     },
     "normal": Object {
       "label": "button ::before",
@@ -558,7 +558,7 @@ Object {
   "before input": Object {
     "hover": Object {
       "label": "input ::before on hover",
-      "target": " .maxi-search-block__input::before:hover",
+      "target": " .maxi-search-block__input:hover::before",
     },
     "normal": Object {
       "label": "input ::before",
@@ -681,41 +681,21 @@ Object {
   "after canvas": Object {
     "hover": Object {
       "label": "canvas ::after on hover",
-      "target": "::after:hover",
+      "target": ":hover::after",
     },
     "normal": Object {
       "label": "canvas ::after",
       "target": "::after",
     },
   },
-  "after svg": Object {
-    "hover": Object {
-      "label": "svg ::after on hover",
-      "target": " .maxi-svg-icon-block__icon svg::after:hover",
-    },
-    "normal": Object {
-      "label": "svg ::after",
-      "target": " .maxi-svg-icon-block__icon svg::after",
-    },
-  },
   "before canvas": Object {
     "hover": Object {
       "label": "canvas ::before on hover",
-      "target": "::before:hover",
+      "target": ":hover::before",
     },
     "normal": Object {
       "label": "canvas ::before",
       "target": "::before",
-    },
-  },
-  "before svg": Object {
-    "hover": Object {
-      "label": "svg ::before on hover",
-      "target": " .maxi-svg-icon-block__icon svg::before:hover",
-    },
-    "normal": Object {
-      "label": "svg ::before",
-      "target": " .maxi-svg-icon-block__icon svg::before",
     },
   },
   "canvas": Object {
@@ -746,7 +726,7 @@ Object {
   "after text": Object {
     "hover": Object {
       "label": "text ::after on hover",
-      "target": " .maxi-text-block__content::after:hover",
+      "target": " .maxi-text-block__content:hover::after",
     },
     "normal": Object {
       "label": "text ::after",
@@ -756,7 +736,7 @@ Object {
   "before text": Object {
     "hover": Object {
       "label": "text ::before on hover",
-      "target": " .maxi-text-block__content::before:hover",
+      "target": " .maxi-text-block__content:hover::before",
     },
     "normal": Object {
       "label": "text ::before",
@@ -811,7 +791,7 @@ Object {
   "after canvas": Object {
     "hover": Object {
       "label": "canvas ::after on hover",
-      "target": "::after:hover",
+      "target": ":hover::after",
     },
     "normal": Object {
       "label": "canvas ::after",
@@ -821,7 +801,7 @@ Object {
   "after overlay": Object {
     "hover": Object {
       "label": "overlay ::after on hover",
-      "target": " .maxi-video-block__overlay::after:hover",
+      "target": " .maxi-video-block__overlay:hover::after",
     },
     "normal": Object {
       "label": "overlay ::after",
@@ -831,7 +811,7 @@ Object {
   "after video": Object {
     "hover": Object {
       "label": "video ::after on hover",
-      "target": " .maxi-video-block__video-player::after:hover",
+      "target": " .maxi-video-block__video-player:hover::after",
     },
     "normal": Object {
       "label": "video ::after",
@@ -841,7 +821,7 @@ Object {
   "before canvas": Object {
     "hover": Object {
       "label": "canvas ::before on hover",
-      "target": "::before:hover",
+      "target": ":hover::before",
     },
     "normal": Object {
       "label": "canvas ::before",
@@ -851,7 +831,7 @@ Object {
   "before overlay": Object {
     "hover": Object {
       "label": "overlay ::before on hover",
-      "target": " .maxi-video-block__overlay::before:hover",
+      "target": " .maxi-video-block__overlay:hover::before",
     },
     "normal": Object {
       "label": "overlay ::before",
@@ -861,7 +841,7 @@ Object {
   "before video": Object {
     "hover": Object {
       "label": "video ::before on hover",
-      "target": " .maxi-video-block__video-player::before:hover",
+      "target": " .maxi-video-block__video-player:hover::before",
     },
     "normal": Object {
       "label": "video ::before",

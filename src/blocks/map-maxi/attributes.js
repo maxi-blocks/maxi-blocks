@@ -2,6 +2,7 @@
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
+import { transitionAttributesCreator } from '../../extensions/styles';
 
 /**
  * Attributes
@@ -12,7 +13,6 @@ const attributes = {
 	/**
 	 * Block styles
 	 */
-	...attributesData.map,
 	...attributesData.border,
 	...attributesData.borderHover,
 	...attributesData.borderRadius,
@@ -21,6 +21,11 @@ const attributes = {
 	...attributesData.borderWidthHover,
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
+	...attributesData.map,
+	...attributesData.mapInteraction,
+	...attributesData.mapMarker,
+	...attributesData.mapPopup,
+	...attributesData.mapPopupText,
 	...{
 		...attributesData.size,
 		'height-general': {
@@ -39,6 +44,10 @@ const attributes = {
 	 * Advanced
 	 */
 	...attributesData.transform,
+	...{
+		...attributesData.transition,
+		...transitionAttributesCreator(),
+	},
 	...attributesData.display,
 	...attributesData.opacity,
 	...attributesData.position,

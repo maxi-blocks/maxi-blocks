@@ -5,7 +5,7 @@ Object {
   "after button": Object {
     "hover": Object {
       "label": "button ::after on hover",
-      "target": "buttonClassName::after:hover",
+      "target": "buttonClassName:hover::after",
     },
     "normal": Object {
       "label": "button ::after",
@@ -15,7 +15,7 @@ Object {
   "after canvas": Object {
     "hover": Object {
       "label": "canvas ::after on hover",
-      "target": "::after:hover",
+      "target": ":hover::after",
     },
     "normal": Object {
       "label": "canvas ::after",
@@ -25,7 +25,7 @@ Object {
   "before button": Object {
     "hover": Object {
       "label": "button ::before on hover",
-      "target": "buttonClassName::before:hover",
+      "target": "buttonClassName:hover::before",
     },
     "normal": Object {
       "label": "button ::before",
@@ -35,7 +35,7 @@ Object {
   "before canvas": Object {
     "hover": Object {
       "label": "canvas ::before on hover",
-      "target": "::before:hover",
+      "target": ":hover::before",
     },
     "normal": Object {
       "label": "canvas ::before",

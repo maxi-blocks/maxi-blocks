@@ -340,14 +340,14 @@ Object {
 
 exports[`getBlockSelectorsByUniqueID Should return map selectors 1`] = `
 Object {
-  "address": Object {
+  "after description": Object {
     "hover": Object {
-      "label": "address on hover",
-      "target": " .map-marker-info-window__address:hover",
+      "label": "description ::after on hover",
+      "target": " .maxi-map-block__popup__content__description:hover::after",
     },
     "normal": Object {
-      "label": "address",
-      "target": " .map-marker-info-window__address",
+      "label": "description ::after",
+      "target": " .maxi-map-block__popup__content__description::after",
     },
   },
   "after map": Object {
@@ -360,6 +360,36 @@ Object {
       "target": "::after",
     },
   },
+  "after popup": Object {
+    "hover": Object {
+      "label": "popup ::after on hover",
+      "target": " .maxi-map-block__popup:hover::after",
+    },
+    "normal": Object {
+      "label": "popup ::after",
+      "target": " .maxi-map-block__popup::after",
+    },
+  },
+  "after title": Object {
+    "hover": Object {
+      "label": "title ::after on hover",
+      "target": " .maxi-map-block__popup__content__title:hover::after",
+    },
+    "normal": Object {
+      "label": "title ::after",
+      "target": " .maxi-map-block__popup__content__title::after",
+    },
+  },
+  "before description": Object {
+    "hover": Object {
+      "label": "description ::before on hover",
+      "target": " .maxi-map-block__popup__content__description:hover::before",
+    },
+    "normal": Object {
+      "label": "description ::before",
+      "target": " .maxi-map-block__popup__content__description::before",
+    },
+  },
   "before map": Object {
     "hover": Object {
       "label": "map ::before on hover",
@@ -368,6 +398,36 @@ Object {
     "normal": Object {
       "label": "map ::before",
       "target": "::before",
+    },
+  },
+  "before popup": Object {
+    "hover": Object {
+      "label": "popup ::before on hover",
+      "target": " .maxi-map-block__popup:hover::before",
+    },
+    "normal": Object {
+      "label": "popup ::before",
+      "target": " .maxi-map-block__popup::before",
+    },
+  },
+  "before title": Object {
+    "hover": Object {
+      "label": "title ::before on hover",
+      "target": " .maxi-map-block__popup__content__title:hover::before",
+    },
+    "normal": Object {
+      "label": "title ::before",
+      "target": " .maxi-map-block__popup__content__title::before",
+    },
+  },
+  "description": Object {
+    "hover": Object {
+      "label": "description on hover",
+      "target": " .maxi-map-block__popup__content__description:hover",
+    },
+    "normal": Object {
+      "label": "description",
+      "target": " .maxi-map-block__popup__content__description",
     },
   },
   "map": Object {
@@ -380,14 +440,24 @@ Object {
       "target": "",
     },
   },
+  "popup": Object {
+    "hover": Object {
+      "label": "popup on hover",
+      "target": " .maxi-map-block__popup:hover",
+    },
+    "normal": Object {
+      "label": "popup",
+      "target": " .maxi-map-block__popup",
+    },
+  },
   "title": Object {
     "hover": Object {
       "label": "title on hover",
-      "target": " .map-marker-info-window__title:hover",
+      "target": " .maxi-map-block__popup__content__title:hover",
     },
     "normal": Object {
       "label": "title",
-      "target": " .map-marker-info-window__title",
+      "target": " .maxi-map-block__popup__content__title",
     },
   },
 }

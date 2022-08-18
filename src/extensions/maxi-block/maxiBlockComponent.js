@@ -66,7 +66,7 @@ const StyleComponent = ({
 		return areBreakpointsLoaded ? blockBreakpoints : breakpoints;
 	};
 
-	const styles = styleResolver(uniqueID, stylesObj, false, getBreakpoints());
+	const styles = styleResolver(stylesObj, false, getBreakpoints());
 
 	const styleContent = styleGenerator(
 		styles,
@@ -227,7 +227,7 @@ class MaxiBlockComponent extends Component {
 			).length <= 1
 		) {
 			const obj = this.getStylesObject;
-			styleResolver('', obj, true);
+			styleResolver(obj, true);
 		}
 
 		dispatch('maxiBlocks/customData').removeCustomData(

@@ -193,6 +193,41 @@ const Inspector = props => {
 									]),
 									...inspectorTabs.border({
 										props,
+										prefix: 'video-',
+									}),
+									...inspectorTabs.boxShadow({
+										props,
+										prefix: 'video-',
+									}),
+									...inspectorTabs.size({
+										props,
+										prefix: 'video-',
+										hideWidth: true,
+									}),
+									...inspectorTabs.marginPadding({
+										props,
+										prefix: 'video-',
+										customLabel: __(
+											'Padding',
+											'maxi-blocks'
+										),
+										disableMargin: true,
+									}),
+								]}
+							/>
+						),
+					},
+					{
+						label: __('Canvas', 'maxi-blocks'),
+						content: (
+							<AccordionControl
+								isPrimary
+								items={[
+									...inspectorTabs.blockBackground({
+										props,
+									}),
+									...inspectorTabs.border({
+										props,
 									}),
 									...inspectorTabs.boxShadow({
 										props,
@@ -200,7 +235,6 @@ const Inspector = props => {
 									...inspectorTabs.size({
 										props,
 										block: true,
-										hideWidth: true,
 									}),
 									...inspectorTabs.marginPadding({
 										props,

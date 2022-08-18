@@ -27,12 +27,23 @@ import { selectorsVideo } from './custom-css';
 import transitionObj from './transitionObj';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const videoPrefix = 'video-';
 
 const getNormalObject = props => {
 	const response = {
 		boxShadow: getBoxShadowStyles({
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
+			},
+			blockStyle: props.blockStyle,
+		}),
+		border: getBorderStyles({
+			obj: {
+				...getGroupAttributes(props, [
+					'border',
+					'borderWidth',
+					'borderRadius',
+				]),
 			},
 			blockStyle: props.blockStyle,
 		}),
@@ -134,7 +145,7 @@ const getVideoContainerOject = props => {
 	return response;
 };
 
-const getVideoPlayerStyles = props => {
+const getVideoPlayerStyles = (props, isHover = false) => {
 	const { playerType } = props;
 
 	const response =
@@ -142,13 +153,49 @@ const getVideoPlayerStyles = props => {
 			? {
 					border: getBorderStyles({
 						obj: {
-							...getGroupAttributes(props, [
-								'border',
-								'borderWidth',
-								'borderRadius',
-							]),
+							...getGroupAttributes(
+								props,
+								['border', 'borderWidth', 'borderRadius'],
+								isHover,
+								videoPrefix
+							),
 						},
 						blockStyle: props.blockStyle,
+						prefix: videoPrefix,
+						isHover,
+					}),
+					boxShadow: getBoxShadowStyles({
+						obj: {
+							...getGroupAttributes(
+								props,
+								'boxShadow',
+								isHover,
+								videoPrefix
+							),
+						},
+						blockStyle: props.blockStyle,
+						prefix: videoPrefix,
+						isHover,
+					}),
+					padding: getMarginPaddingStyles({
+						obj: {
+							...getGroupAttributes(
+								props,
+								'padding',
+								false,
+								videoPrefix
+							),
+						},
+						prefix: videoPrefix,
+					}),
+					size: getSizeStyles({
+						...getGroupAttributes(
+							props,
+							'size',
+							false,
+							videoPrefix
+						),
+						prefix: videoPrefix,
 					}),
 			  }
 			: {};
@@ -276,17 +323,38 @@ const getIconObject = (prefix, obj) => {
 	};
 };
 
-const getOverlayStyles = props => {
+const getOverlayStyles = (props, isHover = false) => {
 	return {
 		border: getBorderStyles({
 			obj: {
-				...getGroupAttributes(props, [
-					'border',
-					'borderWidth',
-					'borderRadius',
-				]),
+				...getGroupAttributes(
+					props,
+					['border', 'borderWidth', 'borderRadius'],
+					isHover,
+					videoPrefix
+				),
 			},
 			blockStyle: props.blockStyle,
+			prefix: videoPrefix,
+			isHover,
+		}),
+		boxShadow: getBoxShadowStyles({
+			obj: {
+				...getGroupAttributes(props, 'boxShadow', isHover, videoPrefix),
+			},
+			blockStyle: props.blockStyle,
+			prefix: videoPrefix,
+			isHover,
+		}),
+		padding: getMarginPaddingStyles({
+			obj: {
+				...getGroupAttributes(props, 'padding', false, videoPrefix),
+			},
+			prefix: videoPrefix,
+		}),
+		size: getSizeStyles({
+			...getGroupAttributes(props, 'size', false, videoPrefix),
+			prefix: videoPrefix,
 		}),
 	};
 };

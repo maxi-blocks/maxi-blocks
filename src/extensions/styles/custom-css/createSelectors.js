@@ -1,14 +1,28 @@
+const PSEUDO_ELEMENTS = ['before', 'after'];
+
 const createSelectors = (rawSelectors, addPseudoElementSelectors = true) => {
-	const getNormalAndHoverSelectors = ({ label, target }) => ({
-		normal: {
-			label,
-			target,
-		},
-		hover: {
-			label: `${label} on hover`,
-			target: `${target}:hover`,
-		},
-	});
+	const getNormalAndHoverSelectors = ({ label, target }) => {
+		const pseudoElement = PSEUDO_ELEMENTS.find(pseudo =>
+			label.includes(pseudo)
+		);
+		const targetWithoutPseudoElement = target.replace(
+			`::${pseudoElement}`,
+			''
+		);
+
+		return {
+			normal: {
+				label,
+				target,
+			},
+			hover: {
+				label: `${label} on hover`,
+				target: `${targetWithoutPseudoElement}:hover${
+					pseudoElement ? `::${pseudoElement}` : ''
+				}`,
+			},
+		};
+	};
 
 	const addPseudoElementSelector = (
 		key,
@@ -36,7 +50,7 @@ const createSelectors = (rawSelectors, addPseudoElementSelectors = true) => {
 	const result = { ...selectors };
 
 	if (addPseudoElementSelectors)
-		['before', 'after'].forEach(pseudoElement => {
+		PSEUDO_ELEMENTS.forEach(pseudoElement => {
 			Object.entries(selectors).forEach(([key, selector]) =>
 				addPseudoElementSelector(key, selector, pseudoElement, result)
 			);

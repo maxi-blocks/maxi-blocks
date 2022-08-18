@@ -12,7 +12,14 @@ import getPaletteAttributes from '../getPaletteAttributes';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-const getDividerStyles = (obj, target, blockStyle) => {
+const getDividerStyles = (
+	obj,
+	target,
+	blockStyle,
+	isHover = false,
+	prefix = '',
+	useBottomBorder = false
+) => {
 	const response = {
 		label: 'Divider',
 		general: {},
@@ -22,14 +29,15 @@ const getDividerStyles = (obj, target, blockStyle) => {
 		const { paletteStatus, paletteColor, paletteOpacity, color } =
 			getPaletteAttributes({
 				obj,
-				prefix: 'divider-border-',
+				prefix: `${prefix}divider-border-`,
 				breakpoint,
+				isHover,
 			});
 
 		if (paletteStatus && isNumber(paletteColor))
 			return {
 				'border-color': getColorRGBAString({
-					firstVar: 'divider-color',
+					firstVar: `${prefix}divider-color`,
 					secondVar: `color-${paletteColor}`,
 					opacity: paletteOpacity,
 					blockStyle,
@@ -46,59 +54,71 @@ const getDividerStyles = (obj, target, blockStyle) => {
 		if (target === 'line') {
 			const isHorizontal =
 				getLastBreakpointAttribute({
-					target: 'line-orientation',
+					target: `${prefix}line-orientation`,
 					breakpoint,
 					attributes: obj,
+					isHover,
 				}) === 'horizontal';
 
 			const dividerBorderStyle = getLastBreakpointAttribute({
-				target: 'divider-border-style',
+				target: `${prefix}divider-border-style`,
 				breakpoint,
 				attributes: obj,
+				isHover,
 			});
+
+			const positionHorizontal = useBottomBorder ? 'bottom' : 'top';
+			const positionVertical = 'right';
 
 			const dividerLineWeight = isHorizontal
 				? getLastBreakpointAttribute({
-						target: 'divider-border-top-width',
+						target: `${prefix}divider-border-${positionHorizontal}-width`,
 						breakpoint,
 						attributes: obj,
+						isHover,
 				  })
 				: getLastBreakpointAttribute({
-						target: 'divider-border-right-width',
+						target: `${prefix}divider-border-${positionVertical}-width`,
 						breakpoint,
 						attributes: obj,
+						isHover,
 				  });
 			const dividerLineWeightUnit =
 				getLastBreakpointAttribute({
 					target: isHorizontal
-						? 'divider-border-top-unit'
-						: 'divider-border-right-unit',
+						? `${prefix}divider-border-${positionHorizontal}-unit`
+						: `${prefix}divider-border-${positionVertical}-unit`,
 					breakpoint,
 					attributes: obj,
+					isHover,
 				}) ?? 'px';
 
 			const dividerSize = isHorizontal
 				? getLastBreakpointAttribute({
-						target: 'divider-width',
+						target: `${prefix}divider-width`,
 						breakpoint,
 						attributes: obj,
+						isHover,
 				  })
 				: getLastBreakpointAttribute({
-						target: 'divider-height',
+						target: `${prefix}divider-height`,
 						breakpoint,
 						attributes: obj,
+						isHover,
 				  });
 			const dividerSizeUnit =
 				getLastBreakpointAttribute({
-					target: 'divider-width-unit',
+					target: `${prefix}divider-width-unit`,
 					breakpoint,
 					attributes: obj,
+					isHover,
 				}) ?? 'px';
 
 			const dividerBorderRaidus = getLastBreakpointAttribute({
-				target: 'divider-border-radius',
+				target: `${prefix}divider-border-radius`,
 				breakpoint,
 				attributes: obj,
+				isHover,
 			});
 
 			response[breakpoint] = {
@@ -109,18 +129,19 @@ const getDividerStyles = (obj, target, blockStyle) => {
 								'border-radius': '20px',
 						  }
 						: getLastBreakpointAttribute({
-								target: 'divider-border-radius',
+								target: `${prefix}divider-border-radius`,
 								breakpoint: getPrevBreakpoint(breakpoint),
 								attributes: obj,
+								isHover,
 						  }) && {
 								'border-radius': '0px',
 						  })),
 
 				...(isHorizontal && {
-					'border-top-style': dividerBorderStyle,
-					'border-right-style': 'none',
+					[`border-${positionHorizontal}-style`]: dividerBorderStyle,
+					[`border-${positionVertical}-style`]: 'none',
 					...(!isNil(dividerLineWeight) && {
-						'border-top-width': `${dividerLineWeight}${dividerLineWeightUnit}`,
+						[`border-${positionHorizontal}-width`]: `${dividerLineWeight}${dividerLineWeightUnit}`,
 						height: `${dividerLineWeight}${dividerLineWeightUnit}`,
 					}),
 					...(!isNil(dividerSize) && {
@@ -129,10 +150,10 @@ const getDividerStyles = (obj, target, blockStyle) => {
 				}),
 
 				...(!isHorizontal && {
-					'border-top-style': 'none',
-					'border-right-style': dividerBorderStyle,
+					[`border-${positionHorizontal}-style`]: 'none',
+					[`border-${positionVertical}-style`]: dividerBorderStyle,
 					...(!isNil(dividerLineWeight) && {
-						'border-right-width': `${dividerLineWeight}${dividerLineWeightUnit}`,
+						[`border-${positionVertical}-width`]: `${dividerLineWeight}${dividerLineWeightUnit}`,
 						width: `${dividerLineWeight}${dividerLineWeightUnit}`,
 					}),
 					...(!isNil(dividerSize) && { height: `${dividerSize}%` }),
@@ -144,16 +165,18 @@ const getDividerStyles = (obj, target, blockStyle) => {
 				'align-items': obj[`line-vertical-${breakpoint}`]
 					? obj[`line-vertical-${breakpoint}`]
 					: getLastBreakpointAttribute({
-							target: 'line-vertical',
+							target: `${prefix}line-vertical`,
 							breakpoint,
 							attributes: obj,
+							isHover,
 					  }),
 				'justify-content': obj[`line-horizontal-${breakpoint}`]
 					? obj[`line-horizontal-${breakpoint}`]
 					: getLastBreakpointAttribute({
-							target: 'line-horizontal',
+							target: `${prefix}line-horizontal`,
 							breakpoint,
 							attributes: obj,
+							isHover,
 					  }),
 			};
 		}

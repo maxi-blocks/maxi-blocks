@@ -317,6 +317,18 @@ const getStyles = props => {
 			props,
 			transitionObj
 		),
+		[`popup-${uniqueID}`]: styleProcessor(
+			{
+				' .maxi-video-block__popup-wrapper': getLightBoxObject(props),
+				' .maxi-video-block__video-container':
+					getVideoContainerOject(props),
+				' .maxi-video-block__video-player': getVideoPlayerStyles(props),
+				...getIconObject('close-', props),
+			},
+			selectorsVideo,
+			props,
+			transitionObj
+		),
 	};
 
 	return response;

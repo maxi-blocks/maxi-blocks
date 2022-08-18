@@ -35,6 +35,7 @@ describe('Button Maxi', () => {
 		]);
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
+
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 

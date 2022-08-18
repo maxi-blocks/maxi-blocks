@@ -29,12 +29,8 @@ describe('Svg Icon Maxi', () => {
 		);
 		await page.waitForTimeout(200);
 
-		await waitForAttribute(page, [
-			'maxi-version-current',
-			'maxi-version-on-creating',
-		]);
-
 		expect(await getEditedPostContent()).toMatchSnapshot();
+
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 	it('Svg Icon Custom CSS', async () => {

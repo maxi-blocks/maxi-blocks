@@ -109,7 +109,9 @@ const getSVGPathStrokeStyles = (
 		response[breakpoint] = {};
 
 		const linePrefix =
-			prefix === 'icon-' ? `${prefix}stroke-` : `${prefix}line-`;
+			prefix === 'icon-' || prefix === 'active-icon-'
+				? `${prefix}stroke-`
+				: `${prefix}line-`;
 
 		const { paletteStatus, paletteColor, paletteOpacity, color } =
 			getPaletteAttributes({

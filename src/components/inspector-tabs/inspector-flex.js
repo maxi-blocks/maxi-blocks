@@ -29,6 +29,7 @@ const flex = ({ props }) => {
 		'maxi-blocks/row-maxi',
 		'maxi-blocks/column-maxi',
 		'maxi-blocks/group-maxi',
+		'maxi-blocks/accordion-maxi',
 	];
 
 	if (

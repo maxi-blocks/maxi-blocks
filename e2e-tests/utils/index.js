@@ -22,3 +22,4 @@ export { default as resettingAttributes } from './resettingAttributes';
 export { checkSCResult, receiveSelectedMaxiStyleCard } from './checkSCResult';
 export { default as changeResponsive } from './changeResponsive';
 export { default as setAttributes } from './setAttributes';
+export { default as waitForAttribute } from './waitForAttribute';

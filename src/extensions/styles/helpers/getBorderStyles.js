@@ -28,6 +28,7 @@ const getBorderStyles = ({
 	blockStyle,
 	isButton = false,
 	scValues = {},
+	borderColorProperty = 'border-color',
 }) => {
 	const response = {};
 
@@ -134,7 +135,7 @@ const getBorderStyles = ({
 						(key.includes('color') || key.includes('opacity')) &&
 						(!isBorderNone || (isHover && globalHoverStatus))
 					) {
-						response[breakpoint]['border-color'] = getColorString();
+						response[breakpoint][borderColorProperty] = getColorString();
 					} else if (
 						![
 							'border-palette-status',

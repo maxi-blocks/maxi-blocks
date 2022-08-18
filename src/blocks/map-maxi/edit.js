@@ -1,9 +1,8 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
-import { compose } from '@wordpress/compose';
-import { withSelect } from '@wordpress/data';
+import { select } from '@wordpress/data';
+import { renderToString } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -11,20 +10,15 @@ import { withSelect } from '@wordpress/data';
 import Inspector from './inspector';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
+import { MapContent } from './components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
-import { defaultMarkers } from './defaultMarkers';
+import copyPasteMapping from './copy-paste-mapping';
+import * as mapMarkerIcons from '../../icons/map-icons/markers';
 
 /**
- * External dependencies
- */
-import { isEmpty } from 'lodash';
-import { Loader } from '@googlemaps/js-api-loader';
-
-/**
- * Content
+ * Edit
  */
 class edit extends MaxiBlockComponent {
 	get getStylesObject() {
@@ -35,88 +29,58 @@ class edit extends MaxiBlockComponent {
 		const { attributes } = this.props;
 
 		return {
-			...getGroupAttributes(attributes, 'map'),
+			map: [
+				{
+					uniqueID: attributes.uniqueID,
+					...getGroupAttributes(attributes, [
+						'map',
+						'mapInteraction',
+						'mapMarker',
+						'mapPopup',
+						'mapPopupText',
+					]),
+				},
+			],
 		};
 	}
 
-	render() {
-		const { attributes, apiKey } = this.props;
-		const {
-			uniqueID,
-			'map-latitude': mapLatitude,
-			'map-longitude': mapLongitude,
-			'map-zoom': mapZoom,
-			'map-marker': mapMarker,
-			'map-marker-opacity': mapMarkerOpacity,
-			'map-marker-scale': mapMarkerScale,
-			'map-marker-fill-color': mapMarkerFillColor,
-			'map-marker-stroke-color': mapMarkerStrokeColor,
-			'map-marker-text': mapMarkerText,
-			'map-marker-address': mapMarkerAddress,
-		} = attributes;
+	maxiBlockDidMount() {
+		const { attributes, maxiSetAttributes } = this.props;
+		const { 'map-marker-icon': mapMarkerIcon } = attributes;
 
-		if (apiKey) {
-			const loader = new Loader({
-				apiKey,
-				version: 'weekly',
-				libraries: ['places'],
+		if (!mapMarkerIcon) {
+			maxiSetAttributes({
+				'map-marker-icon': renderToString(mapMarkerIcons.mapMarker1),
 			});
-
-			loader
-				.load()
-				.then(() => {
-					return new google.maps.Map(this.blockRef.current, {
-						center: {
-							lat: +mapLatitude,
-							lng: +mapLongitude,
-						},
-						zoom: mapZoom,
-					});
-				})
-				.then(map => {
-					const contentTitleString = `<h6 class="map-marker-info-window__title">${mapMarkerText}</h6>`;
-					const contentAddressString = `<p class="map-marker-info-window__address">${mapMarkerAddress}</p>`;
-					const contentString = `<div class="map-marker-info-window">${
-						!isEmpty(mapMarkerText) ? contentTitleString : ''
-					}${
-						!isEmpty(mapMarkerAddress) ? contentAddressString : ''
-					}</div>`;
-
-					const infowindow = new google.maps.InfoWindow({
-						content: contentString,
-					});
-
-					const marker = new google.maps.Marker({
-						position: { lat: +mapLatitude, lng: +mapLongitude },
-						map,
-						icon: {
-							...defaultMarkers[`marker-icon-${mapMarker}`],
-							fillColor: mapMarkerFillColor,
-							fillOpacity: mapMarkerOpacity || 1,
-							strokeWeight: 2,
-							strokeColor: mapMarkerStrokeColor,
-							rotation: 0,
-							scale: mapMarkerScale,
-						},
-					});
-
-					marker.addListener('click', () => {
-						(!isEmpty(mapMarkerText) ||
-							!isEmpty(mapMarkerAddress)) &&
-							infowindow.open(map, marker);
-					});
-				})
-				.catch(ex => {
-					console.error('outer', ex.message);
-				});
 		}
+	}
+
+	render() {
+		const { attributes, isSelected } = this.props;
+		const { uniqueID, 'map-provider': mapProvider } = attributes;
+
+		const getApiKey = () => {
+			const { receiveMaxiSettings } = select('maxiBlocks');
+
+			const maxiSettings = receiveMaxiSettings();
+
+			const key = maxiSettings?.google_api_key;
+
+			if (key) return key;
+			return false;
+		};
 
 		return [
-			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
+			<Inspector
+				key={`block-settings-${uniqueID}`}
+				{...this.props}
+				apiKey={getApiKey()}
+			/>,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}
 				{...this.props}
+				copyPasteMapping={copyPasteMapping}
 			/>,
 			<MaxiBlock
 				key={`maxi-map--${uniqueID}`}
@@ -124,39 +88,16 @@ class edit extends MaxiBlockComponent {
 				className='maxi-map-block'
 				{...getMaxiBlockAttributes(this.props)}
 			>
-				{apiKey ? (
-					<div
-						className='maxi-map-container'
-						id={`map-container-${uniqueID}`}
-					/>
-				) : (
-					<p className='maxi-map-block__not-found'>
-						{__(
-							'Oops, you can not see the map because, you have not set your Google map API key, please navigate to the Maxi Block',
-							'maxi-blocks'
-						)}
-						<a
-							target='_blank'
-							href='/wp-admin/admin.php?page=maxi-blocks.php'
-						>
-							{__(' Options > Google API Key', 'maxi-blocks')}
-						</a>
-					</p>
-				)}
+				<MapContent
+					{...this.props}
+					apiKey={getApiKey()}
+					isFirstClick={this.state.isFirstClick}
+					isGoogleMaps={mapProvider === 'googlemaps'}
+					isSelected={isSelected}
+				/>
 			</MaxiBlock>,
 		];
 	}
 }
 
-const editSelect = withSelect(select => {
-	const { receiveMaxiSettings } = select('maxiBlocks');
-
-	const maxiSettings = receiveMaxiSettings();
-	const { google_api_key: apiKey = false } = maxiSettings;
-
-	return {
-		apiKey,
-	};
-});
-
-export default compose(editSelect, withMaxiProps)(edit);
+export default withMaxiProps(edit);

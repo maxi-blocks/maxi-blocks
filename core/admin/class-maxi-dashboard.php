@@ -105,7 +105,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             } else {
                 $current_tab = $tab =  self::$maxi_prefix.'welcome';
             }
-            
+           
             echo '<div class="maxi-dashboard_wrap">';
             echo '<header class="maxi-dashboard_header"><img class="maxi-dashboard_logo" width="200" src="'.esc_url(MAXI_PLUGIN_URL_PATH) . 'img/maxi-logo-dashboard.svg'.'" alt="'.esc_html(__('Maxi Blocks Logo', self::$maxi_text_domain)).'"></header>';
             echo  '<h4 class="maxi-dashboard_nav-tab-wrapper nav-tab-wrapper">';

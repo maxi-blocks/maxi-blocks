@@ -15,7 +15,7 @@
  * WordPress dependencies
  */
 import { Component, render, createRef } from '@wordpress/element';
-import { select, dispatch, useSelect } from '@wordpress/data';
+import { dispatch, resolveSelect, select, useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -39,8 +39,6 @@ import uniqueIDGenerator from '../attributes/uniqueIDGenerator';
  * External dependencies
  */
 import { isEmpty, isEqual, cloneDeep, isNil } from 'lodash';
-
-const MAXI_VERSION = '0.1';
 
 /**
  * Style Component
@@ -109,8 +107,19 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidMount() {
-		if (MAXI_VERSION !== this.props.attributes['maxi-version'])
-			this.props.attributes['maxi-version'] = MAXI_VERSION;
+		const { receiveMaxiSettings } = resolveSelect('maxiBlocks');
+		receiveMaxiSettings()
+			.then(settings => {
+				const { attributes } = this.props;
+				const maxiVersion = settings.maxi_version;
+
+				if (maxiVersion !== attributes['maxi-version-current'])
+					attributes['maxi-version-current'] = maxiVersion;
+
+				if (!attributes['maxi-version-on-creating'])
+					attributes['maxi-version-on-creating'] = maxiVersion;
+			})
+			.catch(() => console.error('Maxi Blocks: Could not load settings'));
 
 		if (this.maxiBlockDidMount) this.maxiBlockDidMount();
 

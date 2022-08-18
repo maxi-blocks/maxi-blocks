@@ -129,10 +129,12 @@ const data = {
 		},
 	},
 	customCss: {
-		selectors: createSelectors({
-			canvas: '',
-			svg: `${iconClass} svg`,
-		}),
+		selectors: {
+			...createSelectors({
+				canvas: '',
+			}),
+			...createSelectors({ svg: `${iconClass} svg` }, false),
+		},
 		categories: [
 			'canvas',
 			'before canvas',

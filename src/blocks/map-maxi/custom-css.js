@@ -29,24 +29,74 @@ export const selectorsMap = {
 			target: ':hover::after',
 		},
 	},
+	popup: {
+		normal: {
+			label: 'popup',
+			target: ' .maxi-map-block__popup',
+		},
+		hover: {
+			label: 'popup on hover',
+			target: ' .maxi-map-block__popup:hover',
+		},
+	},
+	'after popup': {
+		normal: {
+			label: 'popup ::after',
+			target: ' .maxi-map-block__popup::after',
+		},
+		hover: {
+			label: 'popup ::after on hover',
+			target: ' .maxi-map-block__popup:hover::after',
+		},
+	},
+	'popup arrow': {
+		normal: {
+			label: 'popup arrow',
+			target: ' .maxi-map-block__popup::before',
+		},
+		hover: {
+			label: 'popup arrow on hover',
+			target: ' .maxi-map-block__popup:hover::before',
+		},
+	},
 	title: {
 		normal: {
 			label: 'title',
-			target: ' .map-marker-info-window__title',
+			target: ' .maxi-map-block__popup__content__title',
 		},
 		hover: {
-			label: 'title on map hover',
-			target: ':hover .map-marker-info-window__title',
+			label: 'title on popup hover',
+			target: ' .maxi-map-block__popup:hover .maxi-map-block__popup__content__title',
 		},
 	},
-	address: {
+	'after title': {
 		normal: {
-			label: 'address',
-			target: ' .map-marker-info-window__address',
+			label: 'title ::after',
+			target: ' .maxi-map-block__popup__content__title::after',
+		},
+		hover: {
+			label: 'title ::after on popup hover',
+			target: ' .maxi-map-block__popup:hover .maxi-map-block__popup__content__title::after',
+		},
+	},
+	description: {
+		normal: {
+			label: 'description',
+			target: ' .maxi-map-block__popup__content__description',
 		},
 		hover: {
 			label: 'address on map hover',
-			target: ':hover .map-marker-info-window__address',
+			target: ' .maxi-map-block__popup:hover .maxi-map-block__popup__content__description',
+		},
+	},
+	'after description': {
+		normal: {
+			label: 'description ::after',
+			target: ' .maxi-map-block__popup__content__description::after',
+		},
+		hover: {
+			label: 'description ::after on map hover',
+			target: ' .maxi-map-block__popup:hover .maxi-map-block__popup__content__description::after',
 		},
 	},
 };
@@ -55,6 +105,13 @@ export const categoriesMap = [
 	'map',
 	'before map',
 	'after map',
+	'popup',
+	'after popup',
+	'popup arrow',
 	'title',
-	'address',
+	'after title',
+	'before title',
+	'description',
+	'after description',
+	'before description',
 ];

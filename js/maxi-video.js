@@ -98,18 +98,45 @@ function handleVimeoVideos() {
 	});
 }
 
+function insertPopup(popupContent, uniqueID) {
+	const popupSlot = document.getElementById('maxi-popup-slot');
+
+	const createPopup = () => {
+		const popup = document.createElement('div');
+		popup.id = `popup-${uniqueID}`;
+		popup.appendChild(popupContent);
+
+		return popup;
+	};
+
+	if (!popupSlot) {
+		const popupSlot = document.createElement('div');
+		popupSlot.id = 'maxi-popup-slot';
+
+		popupSlot.appendChild(createPopup());
+
+		const entryContent = document.querySelector('.entry-content');
+		entryContent.appendChild(popupSlot);
+	} else {
+		popupSlot.appendChild(createPopup());
+	}
+}
+
 function popupEvents(player, video, type, embedUrl) {
 	const wrapper = video.querySelector('.maxi-video-block__popup-wrapper');
+	const popupContent = wrapper.cloneNode(true);
+	insertPopup(popupContent, video.id);
+
 	const overlay = video.querySelector('.maxi-video-block__overlay');
 	const openVideo = () => {
-		wrapper.style.display = 'flex';
+		popupContent.style.display = 'flex';
 		if (type !== 'youtube') player.src = embedUrl;
 	};
 
 	const closeVideo = e => {
 		if (e.target.classList.contains('maxi-video-block__video-player'))
 			return;
-		wrapper.style.display = 'none';
+		popupContent.style.display = 'none';
 		if (type === 'youtube') {
 			player.pauseVideo();
 		} else {
@@ -118,7 +145,7 @@ function popupEvents(player, video, type, embedUrl) {
 	};
 
 	overlay.addEventListener('click', openVideo);
-	wrapper.addEventListener('click', closeVideo);
+	popupContent.addEventListener('click', closeVideo);
 }
 
 function isScriptMounted(id) {

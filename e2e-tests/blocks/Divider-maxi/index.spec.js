@@ -1,19 +1,15 @@
 /**
  * WordPress dependencies
  */
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 import {
-	createNewPost,
-	insertBlock,
-	getEditedPostContent,
-} from '@wordpress/e2e-test-utils';
-import {
-	getBlockStyle,
-	openSidebarTab,
-	changeResponsive,
-	addResponsiveTest,
-	getAttributes,
 	addCustomCSS,
-	waitForAttribute,
+	addResponsiveTest,
+	changeResponsive,
+	getAttributes,
+	getBlockStyle,
+	getEditedPostContent,
+	openSidebarTab,
 } from '../../utils';
 
 describe('Divider Maxi', () => {
@@ -21,12 +17,7 @@ describe('Divider Maxi', () => {
 		await createNewPost();
 		await insertBlock('Divider Maxi');
 
-		await waitForAttribute(page, [
-			'maxi-version-current',
-			'maxi-version-on-creating',
-		]);
-
-		expect(await getEditedPostContent()).toMatchSnapshot();
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 

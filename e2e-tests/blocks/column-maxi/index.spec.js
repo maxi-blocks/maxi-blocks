@@ -4,7 +4,6 @@
 import {
 	createNewPost,
 	insertBlock,
-	getEditedPostContent,
 	pressKeyTimes,
 	selectBlockByClientId,
 } from '@wordpress/e2e-test-utils';
@@ -12,13 +11,13 @@ import {
  * Internal dependencies
  */
 import {
-	openSidebarTab,
+	addCustomCSS,
 	changeResponsive,
+	editAxisControl,
 	getAttributes,
 	getBlockStyle,
-	editAxisControl,
-	addCustomCSS,
-	waitForAttribute,
+	getEditedPostContent,
+	openSidebarTab,
 } from '../../utils';
 
 describe('Column Maxi', () => {
@@ -30,12 +29,7 @@ describe('Column Maxi', () => {
 			button.click()
 		);
 
-		await waitForAttribute(page, [
-			'maxi-version-current',
-			'maxi-version-on-creating',
-		]);
-
-		expect(await getEditedPostContent()).toMatchSnapshot();
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
 	});
 
 	it('check column settings', async () => {

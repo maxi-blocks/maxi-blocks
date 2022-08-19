@@ -1,21 +1,17 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	getEditedPostContent,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
 import {
-	getBlockStyle,
-	addCustomCSS,
-	openSidebarTab,
 	addBackgroundLayer,
-	waitForAttribute,
+	addCustomCSS,
+	getBlockStyle,
+	getEditedPostContent,
+	openSidebarTab,
 } from '../../utils';
 
 describe('Container Maxi', () => {
@@ -23,12 +19,7 @@ describe('Container Maxi', () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
 
-		await waitForAttribute(page, [
-			'maxi-version-current',
-			'maxi-version-on-creating',
-		]);
-
-		expect(await getEditedPostContent()).toMatchSnapshot();
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 

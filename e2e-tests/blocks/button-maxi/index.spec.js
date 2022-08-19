@@ -5,7 +5,6 @@
 import {
 	createNewPost,
 	insertBlock,
-	getEditedPostContent,
 	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
 
@@ -13,12 +12,12 @@ import {
  * Internal dependencies
  */
 import {
-	getBlockStyle,
-	openSidebarTab,
-	getAttributes,
-	editColorControl,
 	addCustomCSS,
-	waitForAttribute,
+	editColorControl,
+	getAttributes,
+	getBlockStyle,
+	getEditedPostContent,
+	openSidebarTab,
 } from '../../utils';
 
 describe('Button Maxi', () => {
@@ -29,13 +28,7 @@ describe('Button Maxi', () => {
 		await page.keyboard.type('Hello', { delay: 100 });
 		await page.waitForTimeout(150);
 
-		await waitForAttribute(page, [
-			'maxi-version-current',
-			'maxi-version-on-creating',
-		]);
-
-		expect(await getEditedPostContent()).toMatchSnapshot();
-
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
@@ -53,8 +46,7 @@ describe('Button Maxi', () => {
 
 			await page.waitForTimeout(500);
 
-			expect(await getEditedPostContent()).toMatchSnapshot();
-
+			expect(await getEditedPostContent(page)).toMatchSnapshot();
 			expect(await getBlockStyle(page)).toMatchSnapshot();
 
 			await page.waitForTimeout(500);

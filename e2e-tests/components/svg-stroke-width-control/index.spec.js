@@ -43,7 +43,7 @@ describe('Svg stroke width control', () => {
 
 		expect(await getAttributes('svg-stroke-general')).toStrictEqual(3);
 
-		expect(await getEditedPostContent()).toMatchSnapshot();
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
 	});
 	it('Check responsive svg stroke width control', async () => {
 		await changeResponsive(page, 's');

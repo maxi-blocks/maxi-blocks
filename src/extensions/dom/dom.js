@@ -7,7 +7,6 @@ import { select, dispatch, subscribe } from '@wordpress/data';
  * Internal dependencies
  */
 import { getPageFonts, loadFonts } from '../text/fonts';
-import initMaxiBlocksResponsiveAttribute from './initMaxiBlocksResponsiveAttribute';
 import { getSiteEditorIframeBody } from '../fse';
 
 /**
@@ -177,7 +176,23 @@ wp.domReady(() => {
 
 						[editorWrapper, getSiteEditorIframeBody()].forEach(
 							wrapper => {
-								initMaxiBlocksResponsiveAttribute(wrapper);
+								if (
+									wrapper &&
+									!wrapper
+										.getAttributeNames()
+										.includes('maxi-blocks-responsive')
+								) {
+									const { receiveWinBreakpoint } =
+										select('maxiBlocks');
+
+									const winBreakpoint =
+										receiveWinBreakpoint();
+
+									wrapper.setAttribute(
+										'maxi-blocks-responsive',
+										winBreakpoint
+									);
+								}
 							}
 						);
 					}

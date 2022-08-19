@@ -5,7 +5,7 @@ const global = {
 	'maxi-version-current': {
 		type: 'string',
 	},
-	'maxi-version-on-creating': {
+	'maxi-version-origin': {
 		type: 'string',
 	},
 	blockStyle: {

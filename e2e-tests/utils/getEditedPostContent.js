@@ -11,7 +11,7 @@ import waitForAttribute from './waitForAttribute';
 const getEditedPostContent = async page => {
 	await waitForAttribute(page, [
 		'maxi-version-current',
-		'maxi-version-on-creating',
+		'maxi-version-origin',
 	]);
 
 	return getWordPressEditedPostContent();

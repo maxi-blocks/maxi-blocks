@@ -116,8 +116,8 @@ class MaxiBlockComponent extends Component {
 				if (maxiVersion !== attributes['maxi-version-current'])
 					attributes['maxi-version-current'] = maxiVersion;
 
-				if (!attributes['maxi-version-on-creating'])
-					attributes['maxi-version-on-creating'] = maxiVersion;
+				if (!attributes['maxi-version-origin'])
+					attributes['maxi-version-origin'] = maxiVersion;
 			})
 			.catch(() => console.error('Maxi Blocks: Could not load settings'));
 

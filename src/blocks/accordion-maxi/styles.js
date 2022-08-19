@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { isNil, isEmpty } from 'lodash';
+import { isNil } from 'lodash';
 
 /**
  * Internal dependencies
@@ -10,12 +10,12 @@ import {
 	getPaletteAttributes,
 	getColorRGBAString,
 	styleProcessor,
-	getLastBreakpointAttribute,
 	getGroupAttributes,
 } from '../../extensions/styles';
 import {
 	getBorderStyles,
 	getBoxShadowStyles,
+	getButtonIconStyles,
 	getDisplayStyles,
 	getDividerStyles,
 	getFlexStyles,
@@ -24,12 +24,9 @@ import {
 	getOverflowStyles,
 	getPositionStyles,
 	getSizeStyles,
-	getSVGStyles,
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsAccordion } from './custom-css';
-
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const getNormalObject = props => {
 	const response = {
@@ -114,66 +111,34 @@ const getHoverObject = props => {
 	return response;
 };
 
-const getIconSize = (obj, isHover = false) => {
-	const response = {
-		label: 'Icon size',
-		general: {},
-	};
-
-	breakpoints.forEach(breakpoint => {
-		response[breakpoint] = {};
-
-		const iconWidth = obj[`icon-width-${breakpoint}`];
-
-		if (!isNil(iconWidth) && !isEmpty(iconWidth)) {
-			const iconUnit =
-				getLastBreakpointAttribute({
-					target: 'icon-width-unit',
-					breakpoint,
-					attributes: obj,
-					isHover,
-				}) ?? 'px';
-			response[breakpoint].width = `${iconWidth}${iconUnit}`;
-			response[breakpoint].height = `${iconWidth}${iconUnit}`;
-		}
-
-		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')
-			delete response[breakpoint];
-	});
-
-	return { iconSize: response };
-};
-
 const getIconObject = props => {
 	const response = {
-		...getSVGStyles({
+		...getButtonIconStyles({
 			obj: props,
-			target: '.maxi-pane-block[aria-expanded=false] .maxi-pane-block__icon',
-			prefix: 'icon-',
 			blockStyle: props.blockStyle,
+			target: ' .maxi-pane-block__icon',
+			wrapperTarget:
+				' .maxi-pane-block[aria-expanded=false] .maxi-pane-block__header',
 		}),
-		...getSVGStyles({
-			obj: props,
-			target: '.maxi-pane-block[aria-expanded=true] .maxi-pane-block__icon',
-			prefix: 'active-icon-',
-			blockStyle: props.blockStyle,
-		}),
-		...(props['icon-status-hover'] && {
-			...getSVGStyles({
+		...(props['icon-status-hover'] &&
+			getButtonIconStyles({
 				obj: props,
-				target: '.maxi-pane-block[aria-expanded]:hover .maxi-pane-block__icon',
-				prefix: 'icon-',
 				blockStyle: props.blockStyle,
+				target: ' .maxi-pane-block__icon',
+				wrapperTarget:
+					' .maxi-pane-block[aria-expanded] .maxi-pane-block__header',
 				isHover: true,
-			}),
-			' .maxi-pane-block[aria-expanded]:hover .maxi-pane-block__icon svg':
-				getIconSize(props, true),
+			})),
+		...getButtonIconStyles({
+			obj: props,
+			blockStyle: props.blockStyle,
+			target: ' .maxi-pane-block__icon',
+			wrapperTarget:
+				' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__header',
+			prefix: 'active-',
 		}),
-		' .maxi-pane-block[aria-expanded=false] .maxi-pane-block__icon svg':
-			getIconSize(props, false),
-		' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__icon svg':
-			getIconSize(props, false, 'active-'),
 	};
+
 	return response;
 };
 

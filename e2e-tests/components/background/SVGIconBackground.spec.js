@@ -1,16 +1,17 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	getEditedPostContent,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
-import { modalMock, openSidebarTab, getAttributes } from '../../utils';
+import {
+	getAttributes,
+	getEditedPostContent,
+	modalMock,
+	openSidebarTab,
+} from '../../utils';
 
 describe('Icon background', () => {
 	it('Check Icon background', async () => {
@@ -73,13 +74,13 @@ describe('Icon background', () => {
 		expect(
 			await getAttributes('svg-background-palette-color-general-hover')
 		).toStrictEqual(7);
-		expect(await getEditedPostContent()).toMatchSnapshot();
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
 
 		await accordion.$eval(
 			'.maxi-tab-content--selected .maxi-background-status-hover input',
 			input => input.click()
 		);
 
-		expect(await getEditedPostContent()).toMatchSnapshot();
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
 	});
 });

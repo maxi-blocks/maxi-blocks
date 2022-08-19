@@ -238,15 +238,27 @@ const getButtonIconStyles = ({
 			? {
 					...getSVGStyles({
 						obj,
-						target,
+						target: `${wrapperTarget} ${target}`,
 						blockStyle,
 						prefix: `${prefix}icon-`,
 						useIconColor,
 					}),
-					[` ${target}`]: getIconObject(obj, 'icon', prefix),
-					[` ${target} svg`]: getIconSize(obj, false, prefix),
-					[` ${target} svg > *`]: getIconObject(obj, 'svg', prefix),
-					[` ${target} svg path`]: getIconPathStyles(
+					[` ${wrapperTarget} ${target}`]: getIconObject(
+						obj,
+						'icon',
+						prefix
+					),
+					[` ${wrapperTarget} ${target} svg`]: getIconSize(
+						obj,
+						false,
+						prefix
+					),
+					[` ${wrapperTarget} ${target} svg > *`]: getIconObject(
+						obj,
+						'svg',
+						prefix
+					),
+					[` ${wrapperTarget} ${target} svg path`]: getIconPathStyles(
 						obj,
 						false,
 						prefix
@@ -284,7 +296,7 @@ const getButtonIconStyles = ({
 		// Background
 		...getBlockBackgroundStyles({
 			...getGroupAttributes(obj, 'svg'),
-			[`${target} svg path`]: getIconPathStyles(obj, false),
+			[` ${target} svg path`]: getIconPathStyles(obj, false),
 			[` ${wrapperTarget}:hover ${target}`]:
 				obj['icon-status-hover'] &&
 				getIconHoverObject(obj, 'iconHover'),

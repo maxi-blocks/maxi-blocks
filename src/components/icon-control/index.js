@@ -311,7 +311,7 @@ const IconControl = props => {
 						/>
 					)}
 					{iconStyle === 'color' &&
-						(!iconInherit || iconOnly ? (
+						(!iconInherit || iconOnly || disableIconInherit ? (
 							svgType !== 'Shape' && (
 								<ColorControl
 									label={__('Icon stroke', 'maxi-blocks')}
@@ -531,7 +531,7 @@ const IconControl = props => {
 								}}
 							/>
 							{iconBgActive === 'color' &&
-								(!iconInherit ? (
+								(!iconInherit || disableIconInherit ? (
 									<ColorControl
 										label={__(
 											'Icon background',

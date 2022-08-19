@@ -273,7 +273,7 @@ const getButtonIconStyles = ({
 							getIconPathStyles(obj, true),
 						...getSVGStyles({
 							obj,
-							target: `:hover ${target}`,
+							target: `${wrapperTarget}:hover ${target}`,
 							blockStyle,
 							prefix: `${prefix}icon-`,
 							useIconColor,

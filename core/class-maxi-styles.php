@@ -29,6 +29,23 @@ class MaxiBlocks_Styles
         add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
     }
 
+	/**
+     * Get block data
+     */
+	public function get_block_data($js_var, $meta) {
+		switch ($js_var) {
+			case 'search':
+				return [$meta, get_search_link()];
+				break;
+			case 'map':
+				return [$meta, get_option('google_api_key_option')];
+				break;
+			default:
+				return [$meta];
+				break;
+		}
+	}
+
     /**
      * Enqueuing styles
      */
@@ -51,9 +68,10 @@ class MaxiBlocks_Styles
                 'number-counter',
                 'shape-divider',
                 'relations',
-				'video',
+                'video',
 				'search',
-				'accordion',
+				'map',
+                'accordion',
             ];
 
             foreach ($scripts as &$script) {
@@ -66,7 +84,7 @@ class MaxiBlocks_Styles
                         ucwords(str_replace('-', ' ', $script))
                     );
                 $jsScriptName = 'maxi-' . $script;
-                $jsScriptPath = '//js//' . $jsScriptName . '.min.js';
+                $jsScriptPath = '//js//min//' . $jsScriptName . '.min.js';
 
 				$post_meta = $this->custom_meta($jsVar, false);
 				$template_meta = $this->custom_meta($jsVar, true);
@@ -89,12 +107,7 @@ class MaxiBlocks_Styles
                         plugins_url($jsScriptPath, dirname(__FILE__))
                     );
 
-					$data =
-						$jsVar === 'search'
-							? [$meta, get_search_link()]
-							: [$meta];
-
-                    wp_localize_script($jsScriptName, $jsVarToPass, $data);
+                    wp_localize_script($jsScriptName, $jsVarToPass, $this->get_block_data($jsVar, $meta));
                 }
             }
         }

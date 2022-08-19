@@ -80,7 +80,9 @@ body.maxi-blocks--active {
 			&.maxi-text-block,
 			.maxi-text-block,
 			&.maxi-image-block figcaption,
-			.maxi-image-block figcaption {
+			.maxi-image-block figcaption,
+			&.maxi-map-block__popup__content,
+			.maxi-map-block__popup__content {
 				@each $level in $levels {
 					#{$level} {
 						font-family: var(
@@ -278,7 +280,9 @@ body.maxi-blocks--active {
 				&.maxi-text-block,
 				.maxi-text-block,
 				& .maxi-pane-block .maxi-pane-block__header,
-				.maxi-pane-block .maxi-pane-block__header {
+				.maxi-pane-block .maxi-pane-block__header,
+				&.maxi-map-block__popup__content,
+				.maxi-map-block__popup__content {
 					@each $level in $levels {
 						#{$level} {
 							font-family: var(

@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import getIsUniqueIDRepeated from '../maxi-block/getIsUniqueIDRepeated';
-import { getIsSiteEditorAndIsTemplatePart } from '../fse';
+import { getIsSiteEditor, getIsTemplatePart } from '../fse';
 
 /**
  * External dependencies
@@ -19,7 +19,8 @@ const generateUniqueID = (blockName, diff = 1) => {
 };
 
 const uniqueIDGenerator = (blockName, diff = 1) => {
-	const { isSiteEditor, isTemplatePart } = getIsSiteEditorAndIsTemplatePart();
+	const isSiteEditor = getIsSiteEditor();
+	const isTemplatePart = getIsTemplatePart();
 
 	let modifiedBlockName = blockName;
 

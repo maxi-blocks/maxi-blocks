@@ -7,7 +7,7 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { getIsSiteEditorAndIsTemplatePart } from '../../fse';
+import { getIsSiteEditor, getIsTemplatePart } from '../../fse';
 
 /**
  * Controls
@@ -19,10 +19,11 @@ const controls = {
 		return apiFetch({ path: `/maxi-blocks/v1.0/custom-data/${id}` });
 	},
 	async SAVE_CUSTOM_DATA({ isUpdate, customData }) {
-		const { isSiteEditor, isTemplatePart } =
-			getIsSiteEditorAndIsTemplatePart();
+		const isTemplatePart = getIsTemplatePart();
 
 		if (isTemplatePart) return;
+
+		const isSiteEditor = getIsSiteEditor();
 
 		const id = isSiteEditor
 			? select('core/edit-site').getEditedPostId()

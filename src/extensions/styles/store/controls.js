@@ -15,7 +15,7 @@ import postcss from 'postcss';
  * Internal dependencies
  */
 import frontendStyleGenerator from '../frontendStyleGenerator';
-import { getIsSiteEditorAndIsTemplatePart } from '../../fse';
+import { getIsSiteEditor, getIsTemplatePart } from '../../fse';
 
 async function processCss(code) {
 	const { css } = postcss([autoprefixer]).process(code);
@@ -29,10 +29,11 @@ async function processCss(code) {
  */
 const controls = {
 	async SAVE_STYLES({ isUpdate, styles }) {
-		const { isSiteEditor, isTemplatePart } =
-			getIsSiteEditorAndIsTemplatePart();
+		const isTemplatePart = getIsTemplatePart();
 
 		if (isTemplatePart) return;
+
+		const isSiteEditor = getIsSiteEditor();
 
 		const id = isSiteEditor
 			? select('core/edit-site').getEditedPostId()

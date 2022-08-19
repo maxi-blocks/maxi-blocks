@@ -1,5 +1,13 @@
 /* eslint-disable no-await-in-loop */
+
+/**
+ * Internal dependencies
+ */
 import getAttributes from './getAttributes';
+
+/**
+ * External dependencies
+ */
 import { isArray } from 'lodash';
 
 const waitForAttribute = async (page, rawAttributesKeys) => {

@@ -42,6 +42,7 @@ const AlignmentControl = props => {
 		type = '',
 		isHover = false,
 		isToolbar = false,
+		prefix = '',
 	} = props;
 	const getOptions = () => {
 		const options = [];
@@ -87,6 +88,9 @@ const AlignmentControl = props => {
 		className
 	);
 
+	const target =
+		type === 'text' ? `${prefix}text-alignment` : `${prefix}alignment`;
+
 	return (
 		<SettingTabsControl
 			type='buttons'
@@ -96,26 +100,16 @@ const AlignmentControl = props => {
 			items={getOptions()}
 			selected={
 				getLastBreakpointAttribute({
-					target: type === 'text' ? 'text-alignment' : 'alignment',
+					target,
 					breakpoint,
 					attributes: props,
 					isHover,
 				}) || getOptions()[0].value
 			}
 			onChange={val =>
-				onChange(
-					type === 'text'
-						? {
-								[`text-alignment-${breakpoint}${
-									isHover ? '-hover' : ''
-								}`]: val,
-						  }
-						: {
-								[`alignment-${breakpoint}${
-									isHover ? '-hover' : ''
-								}`]: val,
-						  }
-				)
+				onChange({
+					[`${target}-${breakpoint}${isHover ? '-hover' : ''}`]: val,
+				})
 			}
 		/>
 	);

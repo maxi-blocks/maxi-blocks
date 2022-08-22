@@ -13,7 +13,6 @@ import {
 	withMaxiProps,
 } from '../../extensions/maxi-block';
 import { BlockResizer, Toolbar } from '../../components';
-import TextInput from '../../components/text-input';
 import {
 	getIsOverflowHidden,
 	getLastBreakpointAttribute,
@@ -153,7 +152,6 @@ class edit extends MaxiBlockComponent {
 				{...this.props}
 				copyPasteMapping={copyPasteMapping}
 			/>,
-			<TextInput />,
 			<MaxiBlock
 				key={`maxi-divider--${uniqueID}`}
 				ref={this.blockRef}

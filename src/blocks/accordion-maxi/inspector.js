@@ -39,6 +39,31 @@ const Inspector = props => {
 
 	const { accordionLayout, blockStyle, titleLevel } = attributes;
 
+	const lineSettingsProps = {
+		...getGroupAttributes(attributes, 'accordionLine'),
+		onChangeInline: obj => {
+			insertInlineStyles({
+				obj,
+				target: inlineStylesTargets.headerLine,
+				isMultiplySelector: true,
+			});
+			if (accordionLayout === 'simple')
+				insertInlineStyles({
+					obj,
+					target: inlineStylesTargets.contentLine,
+					isMultiplySelector: true,
+				});
+		},
+		onChange: obj => {
+			maxiSetAttributes(obj);
+			cleanInlineStyles(inlineStylesTargets.headerLine);
+			if (accordionLayout === 'simple')
+				cleanInlineStyles(inlineStylesTargets.contentLine);
+		},
+		breakpoint: deviceType,
+		clientId,
+	};
+
 	return (
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}
@@ -131,42 +156,34 @@ const Inspector = props => {
 											<ResponsiveTabsControl
 												breakpoint={deviceType}
 											>
-												<AccordionLineControl
-													{...getGroupAttributes(
-														attributes,
-														'accordionLine'
-													)}
-													onChangeInline={obj => {
-														insertInlineStyles({
-															obj,
-															target: inlineStylesTargets.headerLine,
-															isMultiplySelector: true,
-														});
-														if (
-															accordionLayout ===
-															'simple'
-														)
-															insertInlineStyles({
-																obj,
-																target: inlineStylesTargets.contentLine,
-																isMultiplySelector: true,
-															});
-													}}
-													onChange={obj => {
-														maxiSetAttributes(obj);
-														cleanInlineStyles(
-															inlineStylesTargets.headerLine
-														);
-														if (
-															accordionLayout ===
-															'simple'
-														)
-															cleanInlineStyles(
-																inlineStylesTargets.contentLine
-															);
-													}}
-													breakpoint={deviceType}
-													clientId={clientId}
+												<SettingTabsControl
+													depth={2}
+													items={[
+														{
+															label: __(
+																'Header line',
+																'maxi-blocks'
+															),
+															content: (
+																<AccordionLineControl
+																	{...lineSettingsProps}
+																	prefix='header-'
+																/>
+															),
+														},
+														{
+															label: __(
+																'Content line',
+																'maxi-blocks'
+															),
+															content: (
+																<AccordionLineControl
+																	{...lineSettingsProps}
+																	prefix='content-'
+																/>
+															),
+														},
+													]}
 												/>
 											</ResponsiveTabsControl>
 										),

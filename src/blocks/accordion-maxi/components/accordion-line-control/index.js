@@ -15,16 +15,16 @@ import {
 import { getLastBreakpointAttribute } from '../../../../extensions/styles';
 
 const AccordionLineControl = props => {
-	const { onChange, breakpoint } = props;
+	const { onChange, breakpoint, prefix } = props;
 
 	return (
 		<>
 			<SelectControl
 				label={__('Line horizontal position', 'maxi-blocks')}
 				value={getLastBreakpointAttribute({
-					target: 'line-horizontal',
+					target: `${prefix}line-horizontal`,
 					breakpoint,
-					props,
+					attributes: props,
 				})}
 				options={[
 					{
@@ -42,12 +42,12 @@ const AccordionLineControl = props => {
 				]}
 				onChange={val =>
 					onChange({
-						[`line-horizontal-${breakpoint}`]: val,
+						[`${prefix}line-horizontal-${breakpoint}`]: val,
 					})
 				}
 			/>
 			<SettingTabsControl
-				depth={2}
+				depth={3}
 				items={[
 					{
 						label: __('Normal state', 'maxi-blocks'),
@@ -84,7 +84,7 @@ const AccordionLineControl = props => {
 								{props['line-status-active'] && (
 									<DividerControl
 										{...props}
-										prefix='active-'
+										prefix={`active-${prefix}`}
 									/>
 								)}
 							</>

@@ -240,7 +240,8 @@ const getPaneHeaderObject = props => {
 					props,
 					'container',
 					props.blockStyle,
-					false
+					false,
+					'header-'
 				),
 			},
 		},
@@ -251,7 +252,7 @@ const getPaneHeaderObject = props => {
 					'line',
 					props.blockStyle,
 					false,
-					'',
+					'header-',
 					true
 				),
 			},
@@ -265,7 +266,7 @@ const getPaneHeaderObject = props => {
 							'line',
 							props.blockStyle,
 							false,
-							'active-',
+							'header-active-',
 							true
 						),
 					},
@@ -280,7 +281,7 @@ const getPaneHeaderObject = props => {
 							'line',
 							props.blockStyle,
 							true,
-							'',
+							'header-',
 							true
 						),
 					},
@@ -320,7 +321,8 @@ const getPaneContentObject = props => {
 						props,
 						'container',
 						props.blockStyle,
-						false
+						false,
+						'content-'
 					),
 				},
 			},
@@ -331,7 +333,7 @@ const getPaneContentObject = props => {
 						'line',
 						props.blockStyle,
 						false,
-						'',
+						'content-',
 						true
 					),
 				},
@@ -345,7 +347,7 @@ const getPaneContentObject = props => {
 								'line',
 								props.blockStyle,
 								false,
-								'active-',
+								'content-active-',
 								true
 							),
 						},
@@ -360,7 +362,7 @@ const getPaneContentObject = props => {
 								'line',
 								props.blockStyle,
 								true,
-								'',
+								'content-',
 								true
 							),
 						},

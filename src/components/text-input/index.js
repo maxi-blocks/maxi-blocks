@@ -4,6 +4,11 @@
 import { useState } from '@wordpress/element';
 
 /**
+ * Styles
+ */
+import './editor.scss';
+
+/**
  * Component
  */
 export default function TextInput({
@@ -27,6 +32,7 @@ export default function TextInput({
 			value={inputValue}
 			onChange={valueChange}
 			{...props}
+			placeholder='ads'
 		/>
 	);
 }

@@ -7,7 +7,9 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { getIsSiteEditor, getIsTemplatePart } from '../../fse';
+import { getIsSiteEditor } from '../../fse';
+import entityRecordsWrapper from '../../styles/entityRecordsWrapper';
+import getFilteredData from '../../styles/getFilteredData';
 
 /**
  * Controls
@@ -19,27 +21,28 @@ const controls = {
 		return apiFetch({ path: `/maxi-blocks/v1.0/custom-data/${id}` });
 	},
 	async SAVE_CUSTOM_DATA({ isUpdate, customData }) {
-		const isTemplatePart = getIsTemplatePart();
+		entityRecordsWrapper(async ({ key: id, name }) => {
+			const isSiteEditor = getIsSiteEditor();
 
-		if (isTemplatePart) return;
-
-		const isSiteEditor = getIsSiteEditor();
-
-		const id = isSiteEditor
-			? select('core/edit-site').getEditedPostId()
-			: select('core/editor').getCurrentPostId();
-
-		await apiFetch({
-			path: '/maxi-blocks/v1.0/custom-data',
-			method: 'POST',
-			data: {
+			const filteredCustomData = getFilteredData(customData, {
 				id,
-				data: JSON.stringify(customData),
-				update: isUpdate,
-				isTemplate: isSiteEditor,
-			},
-		}).catch(err => {
-			console.error('Error saving Custom Data. Code error: ', err);
+				name,
+			});
+
+			console.log(customData, filteredCustomData);
+
+			await apiFetch({
+				path: '/maxi-blocks/v1.0/custom-data',
+				method: 'POST',
+				data: {
+					id,
+					data: JSON.stringify(filteredCustomData),
+					update: isUpdate,
+					isTemplate: isSiteEditor,
+				},
+			}).catch(err => {
+				console.error('Error saving Custom Data. Code error: ', err);
+			});
 		});
 	},
 };

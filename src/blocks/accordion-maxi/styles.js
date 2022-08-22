@@ -24,6 +24,7 @@ import {
 	getOverflowStyles,
 	getPositionStyles,
 	getSizeStyles,
+	getTypographyStyles,
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsAccordion } from './custom-css';
@@ -183,12 +184,20 @@ const getPaneContentStyles = props => {
 
 const getPaneTitleStyles = (props, prefix, isHover = false) => {
 	const response = {
-		paneTitleColor: {
-			label: 'Pane title color',
-			general: {
-				color: getColor({ props, prefix: `${prefix}title-`, isHover }),
+		typography: getTypographyStyles({
+			obj: {
+				...getGroupAttributes(props, 'accordionTitle'),
 			},
-		},
+			...(isHover && {
+				normalTypography: {
+					...getGroupAttributes(props, 'typography', false, prefix),
+				},
+			}),
+			isHover,
+			prefix,
+			blockStyle: props.blockStyle,
+			textLevel: props.titleLevel,
+		}),
 	};
 
 	return response;
@@ -273,12 +282,16 @@ const getPaneHeaderObject = props => {
 			getPaneHeaderStyles(props, '', true),
 		' .maxi-pane-block .maxi-pane-block__title': getPaneTitleStyles(
 			props,
-			''
+			'title-'
 		),
-		' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__title':
-			getPaneTitleStyles(props, 'active-'),
-		' .maxi-pane-block[aria-expanded]:hover .maxi-pane-block__title':
-			getPaneTitleStyles(props, '', true),
+		...(props['title-typography-status-active'] && {
+			' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__title':
+				getPaneTitleStyles(props, 'active-title-'),
+		}),
+		...(props['title-typography-status-hover'] && {
+			' .maxi-pane-block[aria-expanded]:hover .maxi-pane-block__title':
+				getPaneTitleStyles(props, 'title-', true),
+		}),
 	};
 
 	return response;

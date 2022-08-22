@@ -37,7 +37,7 @@ const Inspector = props => {
 		inlineStylesTargets,
 	} = props;
 
-	const { accrordionLayout, blockStyle } = attributes;
+	const { accrordionLayout, blockStyle, titleLevel } = attributes;
 
 	return (
 		<InspectorControls>
@@ -88,6 +88,21 @@ const Inspector = props => {
 													attributes,
 													'accordionTitle'
 												)}
+												disableCustomFormats
+												hideAlignment
+												breakpoint={deviceType}
+												clientId={clientId}
+												blockStyle={blockStyle}
+												textLevel={titleLevel}
+												globalProps={{
+													target: '',
+													type: titleLevel,
+												}}
+												hoverGlobalProps={{
+													target: 'hover',
+													type: titleLevel,
+												}}
+												styleCardPrefix=''
 											/>
 										),
 									},

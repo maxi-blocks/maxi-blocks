@@ -13,6 +13,12 @@
 		display: flex;
 	}
 
+	&__content-line-container {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+	}
+
 	&__line {
 		border-top: none;
 	}

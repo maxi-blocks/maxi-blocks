@@ -1,4 +1,11 @@
 .maxi-svg-icon-block {
+	&.is-selected {
+		.maxi-block__resizer .maxi-resizable__handle-wrapper {
+			width: calc(100% + 40px) !important;
+			left: -20px !important;
+		}
+	}
+
 	&__placeholder {
 		z-index: 100;
 		display: flex;

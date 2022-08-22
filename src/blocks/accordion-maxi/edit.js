@@ -31,6 +31,7 @@ class edit extends MaxiBlockComponent {
 					accordionLayout: attributes.accordionLayout,
 					autoPaneClose: attributes.autoPaneClose,
 					isCollapsible: attributes.isCollapsible,
+					animationDuration: attributes.animationDuration,
 				},
 			},
 		};

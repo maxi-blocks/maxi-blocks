@@ -30,22 +30,40 @@ class Accordion {
 				this.paneIcon;
 			content.addEventListener('transitionend', () => {
 				content.style.overflow = null;
+				content.style.maxHeight = null;
 			});
 		});
 	}
 
-	closePane(pane) {
+	triggerAnimation(pane, isClose = false) {
 		const content = pane.querySelector('.maxi-pane-block__content');
-		content.style.maxHeight = 0;
+
+		if (isClose) {
+			content.style.maxHeight = content.scrollHeight + 'px';
+			setTimeout(() => {
+				content.style.maxHeight = 0;
+			}, 0);
+		} else {
+			content.style.overflow = 'hidden';
+			content.style.maxHeight = content.scrollHeight + 'px';
+		}
+		// If animationDuration === 0, the transitionend listener is not triggered,
+		// so need to clear styles here
+		if (this.animationDuration === 0) {
+			content.style.overflow = null;
+			content.style.maxHeight = null;
+		}
+	}
+
+	closePane(pane) {
+		this.triggerAnimation(pane, true);
 		pane.setAttribute('aria-expanded', false);
 		pane.querySelector('.maxi-pane-block__icon').innerHTML = this.paneIcon;
 		this.openPanes.splice(this.openPanes.indexOf(pane.id), 1);
 	}
 
 	openPane(pane) {
-		const content = pane.querySelector('.maxi-pane-block__content');
-		content.style.overflow = 'hidden';
-		content.style.maxHeight = content.scrollHeight + 'px';
+		this.triggerAnimation(pane);
 		pane.setAttribute('aria-expanded', true);
 		pane.querySelector('.maxi-pane-block__icon').innerHTML =
 			this.paneIconActive;

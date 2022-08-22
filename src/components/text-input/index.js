@@ -32,7 +32,6 @@ export default function TextInput({
 			value={inputValue}
 			onChange={valueChange}
 			{...props}
-			placeholder='ads'
 		/>
 	);
 }

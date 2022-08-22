@@ -2,12 +2,7 @@
  * Internal dependencies
  */
 import getIsUniqueIDRepeated from '../maxi-block/getIsUniqueIDRepeated';
-import { getIsSiteEditor, getIsTemplatePart } from '../fse';
-
-/**
- * External dependencies
- */
-import { select } from '@wordpress/data';
+import { getIsSiteEditor, getTemplatePartSlug } from '../fse';
 
 const generateUniqueID = (blockName, diff = 1) => {
 	const newID = `${blockName
@@ -18,24 +13,22 @@ const generateUniqueID = (blockName, diff = 1) => {
 	return newID;
 };
 
-const uniqueIDGenerator = (blockName, diff = 1) => {
+const uniqueIDGenerator = ({ blockName, diff = 1, clientId }) => {
 	const isSiteEditor = getIsSiteEditor();
-	const isTemplatePart = getIsTemplatePart();
+	const templatePartSlug = getTemplatePartSlug(clientId);
 
 	let modifiedBlockName = blockName;
 
 	if (isSiteEditor) {
-		if (isTemplatePart) {
-			const id =
-				isSiteEditor &&
-				select('core/edit-site').getEditedPostId().split('//', 2)[1];
+		if (templatePartSlug) {
+			const id = templatePartSlug;
 
 			modifiedBlockName += `-${id}`;
 		}
 
 		modifiedBlockName += '-template';
 
-		if (isTemplatePart) modifiedBlockName += '-part';
+		if (templatePartSlug) modifiedBlockName += '-part';
 	}
 
 	return generateUniqueID(modifiedBlockName, diff);

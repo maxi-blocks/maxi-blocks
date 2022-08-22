@@ -326,7 +326,11 @@ class MaxiBlockComponent extends Component {
 
 	uniqueIDChecker(idToCheck) {
 		if (getIsUniqueIDRepeated(idToCheck)) {
-			const newUniqueID = uniqueIDGenerator(this.props.name, 1);
+			const newUniqueID = uniqueIDGenerator({
+				blockName: this.props.name,
+				diff: 1,
+				clientId: this.props.clientId,
+			});
 
 			this.props.attributes.uniqueID = newUniqueID;
 

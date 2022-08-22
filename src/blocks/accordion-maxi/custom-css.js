@@ -43,6 +43,48 @@ export const selectorsAccordion = {
 			target: ' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__header',
 		},
 	},
+	'pane header content': {
+		normal: {
+			label: 'header content',
+			target: ' .maxi-pane-block[aria-expanded] .maxi-pane-block__header-content',
+		},
+		hover: {
+			label: 'header content on hover',
+			target: ' .maxi-pane-block[aria-expanded] .maxi-pane-block__header-content:hover',
+		},
+		active: {
+			label: 'header content on active state',
+			target: ' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__header-content',
+		},
+	},
+	'pane header line': {
+		normal: {
+			label: 'header line',
+			target: ' .maxi-pane-block[aria-expanded] .maxi-pane-block__header-line',
+		},
+		hover: {
+			label: 'header line on hover',
+			target: ' .maxi-pane-block[aria-expanded] .maxi-pane-block__header-line:hover',
+		},
+		active: {
+			label: 'header line on active state',
+			target: ' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__header-line',
+		},
+	},
+	'pane content line': {
+		normal: {
+			label: 'content line',
+			target: ' .maxi-pane-block[aria-expanded] .maxi-pane-block__content-line',
+		},
+		hover: {
+			label: 'content line on hover',
+			target: ' .maxi-pane-block[aria-expanded] .maxi-pane-block__content-line:hover',
+		},
+		active: {
+			label: 'content line on active state',
+			target: ' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__content-line',
+		},
+	},
 	'pane icon': {
 		normal: {
 			label: 'icon',
@@ -112,6 +154,9 @@ export const categoriesAccordion = [
 	'background',
 	'background hover',
 	'pane header',
+	'pane header content',
+	'pane header line',
+	'pane content line',
 	'pane content',
 	'pane icon',
 ];

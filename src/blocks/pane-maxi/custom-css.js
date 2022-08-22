@@ -43,6 +43,48 @@ export const selectorsPane = {
 			target: '[aria-expanded=true] .maxi-pane-block__header',
 		},
 	},
+	'header content': {
+		normal: {
+			label: 'header content',
+			target: '[aria-expanded] .maxi-pane-block__header-content',
+		},
+		hover: {
+			label: 'header content on hover',
+			target: '[aria-expanded] .maxi-pane-block__header-content:hover',
+		},
+		active: {
+			label: 'header content on active state',
+			target: '[aria-expanded=true] .maxi-pane-block__header-content',
+		},
+	},
+	'header line': {
+		normal: {
+			label: 'header line',
+			target: '[aria-expanded] .maxi-pane-block__header-line',
+		},
+		hover: {
+			label: 'header line on hover',
+			target: '[aria-expanded] .maxi-pane-block__header-line:hover',
+		},
+		active: {
+			label: 'header line on active state',
+			target: '[aria-expanded=true] .maxi-pane-block__header-line',
+		},
+	},
+	'content line': {
+		normal: {
+			label: 'content line',
+			target: '[aria-expanded] .maxi-pane-block__content-line',
+		},
+		hover: {
+			label: 'content line on hover',
+			target: '[aria-expanded] .maxi-pane-block__content-line:hover',
+		},
+		active: {
+			label: 'content line on active state',
+			target: '[aria-expanded=true] .maxi-pane-block__content-line',
+		},
+	},
 	icon: {
 		normal: {
 			label: 'icon',
@@ -110,6 +152,9 @@ export const categoriesPane = [
 	'before pane',
 	'after pane',
 	'header',
+	'header content',
+	'header line',
+	'content line',
 	'content',
 	'icon',
 	'background',

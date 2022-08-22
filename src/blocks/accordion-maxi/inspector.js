@@ -37,7 +37,7 @@ const Inspector = props => {
 		inlineStylesTargets,
 	} = props;
 
-	const { accrordionLayout, blockStyle, titleLevel } = attributes;
+	const { accordionLayout, blockStyle, titleLevel } = attributes;
 
 	return (
 		<InspectorControls>
@@ -141,11 +141,9 @@ const Inspector = props => {
 															obj,
 															target: inlineStylesTargets.headerLine,
 															isMultiplySelector: true,
-															pseudoElement:
-																'::after',
 														});
 														if (
-															accrordionLayout ===
+															accordionLayout ===
 															'simple'
 														)
 															insertInlineStyles({
@@ -157,16 +155,14 @@ const Inspector = props => {
 													onChange={obj => {
 														maxiSetAttributes(obj);
 														cleanInlineStyles(
-															inlineStylesTargets.headerLine,
-															'::after'
+															inlineStylesTargets.headerLine
 														);
 														if (
-															accrordionLayout ===
+															accordionLayout ===
 															'simple'
 														)
 															cleanInlineStyles(
-																inlineStylesTargets.contentLine,
-																'::after'
+																inlineStylesTargets.contentLine
 															);
 													}}
 													breakpoint={deviceType}

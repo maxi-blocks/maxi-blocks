@@ -105,6 +105,11 @@ if (!class_exists('MaxiBlocks_API')):
 						'validate_callback' => function ($param) {
 							return is_bool($param);
 						},
+					],
+					'templateParts' => [
+						'validate_callback' => function ($param) {
+							return is_string($param);
+						},
 					]
                 ],
                 'permission_callback' => function () {
@@ -314,6 +319,7 @@ if (!class_exists('MaxiBlocks_API')):
             $meta = json_decode($data['meta'], true);
             $styles = $meta['styles'];
 			$is_template = $data['isTemplate'];
+			$template_parts = $data['templateParts'];
 
             $fontsArr = $meta['fonts'];
             foreach ($fontsArr as $key => $font) {
@@ -336,37 +342,64 @@ if (!class_exists('MaxiBlocks_API')):
                 OBJECT
             );
 
+			$dictionary = array(
+				"{$id_key}" => $id,
+				'prev_css_value' => $styles,
+				'css_value' => $styles,
+				'prev_fonts_value' => $fonts,
+				'fonts_value' => $fonts,
+				'template_parts' => $template_parts,
+			);
+
+			$get_array = function ($keys, $dictionary) {
+				$array = [];
+
+				foreach ($keys as $key) {
+					if(($key === 'template_parts' && $dictionary[$key] !== 'null') || $key !== 'template_parts') {
+						$array[$key] = $dictionary[$key];
+					}
+				}
+
+				return $array;
+			};
+
             if (!empty($exists)) {
                 if ($data['update']) {
-                    $wpdb->update("{$table}", array(
+                    $wpdb->update("{$table}", $get_array([
+						"{$id_key}",
+						'prev_css_value',
+						'css_value',
+						'prev_fonts_value',
+						'fonts_value',
+						'template_parts',
+					], $dictionary), [
 						"{$id_key}" => $id,
-                        'prev_css_value' =>  $styles,
-                        'css_value' =>  $styles,
-                        'prev_fonts_value' =>  $fonts,
-                        'fonts_value' =>  $fonts,
-                    ), ["{$id_key}" => $id]);
+					]);
                 } else {
-                    $wpdb->update("{$table}", array(
-                        "{$id_key}" => $id,
-                        'prev_css_value' =>  $styles,
-                        'prev_fonts_value' =>  $fonts,
-                    ), ["{$id_key}" => $id]);
+                    $wpdb->update("{$table}", $get_array([
+						"{$id_key}",
+						'prev_css_value',
+						'prev_fonts_value',
+						'template_parts',
+					], $dictionary), ["{$id_key}" => $id]);
                 }
             } else {
                 if ($data['update']) {
-                    $wpdb->insert("{$table}", array(
-                        "{$id_key}" => $id,
-                        'prev_css_value' =>  $styles,
-                        'css_value' =>  $styles,
-                        'prev_fonts_value' =>  $fonts,
-                        'fonts_value' =>  $fonts,
-                    ));
+                    $wpdb->insert("{$table}", $get_array([
+						"{$id_key}",
+						'prev_css_value',
+						'css_value',
+						'prev_fonts_value',
+						'fonts_value',
+						'template_parts',
+					], $dictionary));
                 } else {
-                    $wpdb->insert("{$table}", array(
-                        "{$id_key}" => $id,
-                        'prev_css_value' =>  $styles,
-                        'prev_fonts_value' =>  $fonts,
-                    ));
+                    $wpdb->insert("{$table}", $get_array([
+						"{$id_key}",
+						'prev_css_value',
+						'prev_fonts_value',
+						'template_parts',
+					], $dictionary));
                 }
             }
 
@@ -621,11 +654,10 @@ if (!class_exists('MaxiBlocks_API')):
                     'active_custom_data' =>  1,
                 ), ["{$id_key}" => $id]);
 
-                $wpdb->replace("{$table}", array(
-                    "{$id_key}" => $id,
+                $wpdb->update("{$table}", array(
                     'prev_custom_data_value' =>  $new_custom_data,
                     'custom_data_value' =>  $new_custom_data,
-                ));
+                ), ["{$id_key}" =>  $id]);
             }
 
             return $new_custom_data;

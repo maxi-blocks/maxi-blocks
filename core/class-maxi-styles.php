@@ -88,8 +88,17 @@ class MaxiBlocks_Styles
 
 				$post_meta = $this->custom_meta($jsVar, false);
 				$template_meta = $this->custom_meta($jsVar, true);
+				$template_parts_meta = [];
 
-				$meta = array_merge($post_meta, $template_meta);
+				$template_parts = $template_content ? json_decode($template_content['template_parts'], true) : false;
+
+				if($template_parts && !empty($template_parts)) {
+					foreach ($template_parts as $template_part_id) {
+						$template_parts_meta = array_merge($template_parts_meta, $this->custom_meta($jsVar, true, $template_part_id));
+					}
+				}
+
+				$meta = array_merge($post_meta, $template_meta, $template_parts_meta);
 
                 if (!empty($meta)) {
                     if ($script === 'number-counter') {
@@ -124,6 +133,7 @@ class MaxiBlocks_Styles
 
 		$styles = $this->get_styles($content);
         $fonts = $this->get_fonts($content);
+		$template_parts = array_key_exists('template_parts', $content) ? json_decode($content['template_parts'], true) : null;
 
 		if ($styles) {
             // Inline styles
@@ -135,6 +145,13 @@ class MaxiBlocks_Styles
         if ($fonts) {
             $this->enqueue_fonts($fonts);
         }
+
+		if($template_parts && !empty($template_parts)) {
+			foreach($template_parts as $template_part) {
+				$template_part_name = 'maxi-blocks-style-templates-' . @end( explode('//', $template_part, 2));
+				$this->apply_content($template_part_name, $this->get_content(true, $template_part));
+			}
+		}
 	}
 
 	/**
@@ -183,13 +200,25 @@ class MaxiBlocks_Styles
 
 		if ($contents) {
 			foreach ($contents as $content) {
-				if (
-					$content &&
-					((int) $content['prev_active_custom_data'] === 1 ||
-					(int) $content['active_custom_data'] === 1)
-				) {
-					$need_custom_meta = true;
-					break;
+				if($content) {
+					if (
+						((int) $content['prev_active_custom_data'] === 1 ||
+						(int) $content['active_custom_data'] === 1)
+					) {
+						$need_custom_meta = true;
+						break;
+					}
+
+					if(array_key_exists('template_parts', $content)) {
+						$template_parts = json_decode($content['template_parts'], true);
+						foreach($template_parts as $template_part) {
+							$template_part_content = $this->get_content(true, $template_part);
+							if($template_part_content && $this->need_custom_meta([$template_part_content])) {
+								$need_custom_meta = true;
+								break;
+							}
+						}
+					}
 				}
 			}
 		}
@@ -200,7 +229,7 @@ class MaxiBlocks_Styles
     /**
      * Gets content
      */
-    public function get_content($is_template = false)
+    public function get_content($is_template = false, $id = null)
     {
         global $post;
 
@@ -208,7 +237,9 @@ class MaxiBlocks_Styles
             return false;
         }
 
-        $id = $this->get_id($is_template);
+        if(!$id) {
+			$id = $this->get_id($is_template);
+		}
 
         if (!$id) {
             return false;
@@ -398,14 +429,16 @@ class MaxiBlocks_Styles
     /**
      * Custom Meta
      */
-    public function custom_meta($metaJs, $is_template)
+    public function custom_meta($metaJs, $is_template, $id = null)
     {
         global $post;
         if ((!$is_template && (!$post || !isset($post->ID))) || empty($metaJs)) {
             return [];
         }
 
-		$id = $this->get_id($is_template);
+		if(!$id) {
+			$id = $this->get_id($is_template);
+		}
 
         $custom_data = $this->get_meta($id, $is_template);
 

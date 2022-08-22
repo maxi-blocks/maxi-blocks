@@ -31,7 +31,11 @@ const boxedPreset = {
 };
 
 const simplePreset = {
-	'border-style-general': 'none',
+	'border-style-general': null,
+	'border-top-left-radius-general': 0,
+	'border-top-right-radius-general': 0,
+	'border-bottom-left-radius-general': 0,
+	'border-bottom-right-radius-general': 0,
 };
 
 const Content = forwardRef((props, ref) => {

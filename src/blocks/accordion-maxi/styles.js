@@ -234,7 +234,17 @@ const getPaneHeaderObject = props => {
 				},
 			},
 		},
-		' .maxi-pane-block .maxi-pane-block__header::after': {
+		' .maxi-pane-block .maxi-pane-block__header-line-container': {
+			headerLine: {
+				...getDividerStyles(
+					props,
+					'container',
+					props.blockStyle,
+					false
+				),
+			},
+		},
+		' .maxi-pane-block .maxi-pane-block__header-line': {
 			headerLine: {
 				...getDividerStyles(
 					props,
@@ -247,7 +257,7 @@ const getPaneHeaderObject = props => {
 			},
 		},
 		...(props['line-status-active'] && {
-			' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__header::after':
+			' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__header-line':
 				{
 					headerLine: {
 						...getDividerStyles(
@@ -262,7 +272,7 @@ const getPaneHeaderObject = props => {
 				},
 		}),
 		...(props['line-status-hover'] && {
-			' .maxi-pane-block[aria-expanded]:hover .maxi-pane-block__header::after':
+			' .maxi-pane-block[aria-expanded]:hover .maxi-pane-block__header-line':
 				{
 					headerLine: {
 						...getDividerStyles(
@@ -304,7 +314,17 @@ const getPaneContentObject = props => {
 		' .maxi-pane-block .maxi-pane-block__content':
 			getPaneContentStyles(props),
 		...(accordionLayout === 'simple' && {
-			' .maxi-pane-block .maxi-pane-block__content::after': {
+			' .maxi-pane-block .maxi-pane-block__content-line-container': {
+				paneLine: {
+					...getDividerStyles(
+						props,
+						'container',
+						props.blockStyle,
+						false
+					),
+				},
+			},
+			' .maxi-pane-block .maxi-pane-block__content-line': {
 				paneLine: {
 					...getDividerStyles(
 						props,
@@ -317,7 +337,7 @@ const getPaneContentObject = props => {
 				},
 			},
 			...(props['line-status-active'] && {
-				' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__content::after':
+				' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__content-line':
 					{
 						paneLine: {
 							...getDividerStyles(
@@ -332,7 +352,7 @@ const getPaneContentObject = props => {
 					},
 			}),
 			...(props['line-status-hover'] && {
-				' .maxi-pane-block[aria-expanded]:hover .maxi-pane-block__content::after':
+				' .maxi-pane-block[aria-expanded]:hover .maxi-pane-block__content-line':
 					{
 						paneLine: {
 							...getDividerStyles(

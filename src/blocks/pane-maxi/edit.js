@@ -54,19 +54,24 @@ const Content = forwardRef((props, ref) => {
 				].indexOf(blockName) === -1
 		);
 
+	const { children, ...restInnerBlocksProps } = useInnerBlocksProps(
+		{ className: 'maxi-pane-block__content' },
+		{
+			allowedBlocks: ALLOWED_BLOCKS,
+			renderAppender: !hasInnerBlocks
+				? () => <BlockInserter clientId={clientId} />
+				: false,
+		}
+	);
+
 	return (
 		<>
-			<div
-				{...useInnerBlocksProps(
-					{ className: 'maxi-pane-block__content' },
-					{
-						allowedBlocks: ALLOWED_BLOCKS,
-						renderAppender: !hasInnerBlocks
-							? () => <BlockInserter clientId={clientId} />
-							: false,
-					}
-				)}
-			/>
+			<div {...restInnerBlocksProps}>
+				{children}
+				<div className='maxi-pane-block__content-line-container maxi-pane-block__line-container'>
+					<hr className='maxi-pane-block__content-line maxi-pane-block__line' />
+				</div>
+			</div>
 			{isOpen && (
 				<BlockInserter.WrapperInserter
 					key={`maxi-block-wrapper-inserter__${clientId}`}
@@ -204,25 +209,32 @@ class edit extends MaxiBlockComponent {
 						!isOpen ? this.openPane() : this.closePane();
 					}}
 				>
-					<RichText
-						className='maxi-pane-block__title'
-						value={title}
-						identifier='content'
-						onChange={title => {
-							if (this.typingTimeout) {
-								clearTimeout(this.typingTimeout);
-							}
+					<div className='maxi-pane-block__header-content'>
+						<RichText
+							className='maxi-pane-block__title'
+							value={title}
+							identifier='content'
+							onChange={title => {
+								if (this.typingTimeout) {
+									clearTimeout(this.typingTimeout);
+								}
 
-							this.typingTimeout = setTimeout(() => {
-								maxiSetAttributes({ title });
-							}, 100);
-						}}
-						placeholder={__('Title', 'maxi-blocks')}
-						withoutInteractiveFormatting
-						tagName={titleLevel}
-					/>
-					<div className='maxi-pane-block__icon'>
-						<RawHTML>{isOpen ? paneIconActive : paneIcon}</RawHTML>
+								this.typingTimeout = setTimeout(() => {
+									maxiSetAttributes({ title });
+								}, 100);
+							}}
+							placeholder={__('Title', 'maxi-blocks')}
+							withoutInteractiveFormatting
+							tagName={titleLevel}
+						/>
+						<div className='maxi-pane-block__icon'>
+							<RawHTML>
+								{isOpen ? paneIconActive : paneIcon}
+							</RawHTML>
+						</div>
+					</div>
+					<div className='maxi-pane-block__header-line-container maxi-pane-block__line-container'>
+						<hr className='maxi-pane-block__header-line maxi-pane-block__line' />
 					</div>
 				</div>
 				<Content

@@ -1,10 +1,12 @@
-.maxi-blocks--active #wpwrap {
+body.maxi-blocks--active #wpwrap {
 	.maxi-text-input__input {
 		border: none;
 		border-radius: 0;
 		outline: none;
 		padding: 0;
+		margin: 0;
 		width: 100%;
+		background-color: transparent;
 
 		&:focus {
 			border: none;

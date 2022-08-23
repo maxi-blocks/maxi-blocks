@@ -28,6 +28,7 @@ import {
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsAccordion } from './custom-css';
+import transitionObj from './transitionObj';
 
 const getNormalObject = props => {
 	const response = {
@@ -386,7 +387,8 @@ const getStyles = props => {
 				...getPaneContentObject(props),
 			},
 			selectorsAccordion,
-			props
+			props,
+			transitionObj
 		),
 	};
 	return response;

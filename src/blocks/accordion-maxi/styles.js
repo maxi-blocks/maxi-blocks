@@ -258,7 +258,7 @@ const getPaneHeaderObject = props => {
 				),
 			},
 		},
-		...(props['line-status-active'] && {
+		...(props['header-line-status-active'] && {
 			' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__header-line':
 				{
 					headerLine: {
@@ -273,7 +273,7 @@ const getPaneHeaderObject = props => {
 					},
 				},
 		}),
-		...(props['line-status-hover'] && {
+		...(props['header-line-status-hover'] && {
 			' .maxi-pane-block[aria-expanded]:hover .maxi-pane-block__header-line':
 				{
 					headerLine: {
@@ -339,7 +339,7 @@ const getPaneContentObject = props => {
 					),
 				},
 			},
-			...(props['line-status-active'] && {
+			...(props['content-line-status-active'] && {
 				' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__content-line':
 					{
 						paneLine: {
@@ -354,7 +354,7 @@ const getPaneContentObject = props => {
 						},
 					},
 			}),
-			...(props['line-status-hover'] && {
+			...(props['content-line-status-hover'] && {
 				' .maxi-pane-block[aria-expanded]:hover .maxi-pane-block__content-line':
 					{
 						paneLine: {

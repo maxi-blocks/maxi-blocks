@@ -6,13 +6,13 @@ const transitionObj = {
 		'header line': {
 			title: 'Header line',
 			target: ' > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__line',
-			hoverProps: 'header-line-status-hover',
+			hoverProp: 'header-line-status-hover',
 			limitless: true,
 		},
 		'content line': {
 			title: 'Content line',
 			target: ' > .maxi-pane-block > .maxi-pane-block__content-wrapper > .maxi-pane-block__line-container .maxi-pane-block__line',
-			hoverProps: 'content-line-status-hover',
+			hoverProp: 'content-line-status-hover',
 			limitless: true,
 		},
 		'pane title': {

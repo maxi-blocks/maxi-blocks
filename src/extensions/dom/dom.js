@@ -444,7 +444,7 @@ wp.domReady(() => {
 			targetNode.classList.add('maxi-blocks--active');
 
 		if (!targetNode && document.querySelector('.edit-post-visual-editor')) {
-			// Dismantling the second bomb if we are in the FSE
+			// Dismantling the second bomb if we aren't in the FSE
 			fseIframeObserverUnsubscribe();
 		}
 	});

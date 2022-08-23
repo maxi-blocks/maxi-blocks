@@ -23,7 +23,6 @@ const mutualAttributes = {
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
 	...attributesData.size,
-	...attributesData.padding,
 };
 
 /**
@@ -72,7 +71,7 @@ const attributes = {
 	 * Header
 	 */
 	...prefixAttributesCreator({
-		obj: mutualAttributes,
+		obj: { ...mutualAttributes, ...attributesData.padding },
 		prefix: 'header-',
 	}),
 

@@ -13,7 +13,7 @@ import { isNil, isEmpty } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-export const getSVGWidthStyles = obj => {
+export const getSVGWidthStyles = ({ obj, prefix = '' }) => {
 	const response = {
 		label: 'SVG width',
 		general: {},
@@ -22,13 +22,13 @@ export const getSVGWidthStyles = obj => {
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
-		const svgWidth = obj[`svg-width-${breakpoint}`];
+		const svgWidth = obj[`${prefix}svg-width-${breakpoint}`];
 
 		if (!isNil(svgWidth))
 			response[
 				breakpoint
 			].width = `${svgWidth}${getLastBreakpointAttribute({
-				target: 'svg-width-unit',
+				target: `${prefix}svg-width-unit`,
 				breakpoint,
 				attributes: obj,
 			})}`;
@@ -109,7 +109,9 @@ const getSVGPathStrokeStyles = (
 		response[breakpoint] = {};
 
 		const linePrefix =
-			prefix === 'icon-' ? `${prefix}stroke-` : `${prefix}line-`;
+			prefix === 'icon-' || prefix === 'active-icon-'
+				? `${prefix}stroke-`
+				: `${prefix}line-`;
 
 		const { paletteStatus, paletteColor, paletteOpacity, color } =
 			getPaletteAttributes({

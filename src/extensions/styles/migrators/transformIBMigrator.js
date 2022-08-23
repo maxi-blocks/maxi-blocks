@@ -17,7 +17,7 @@ import { selectorsVideo } from '../../../blocks/video-maxi/custom-css';
 /**
  * External dependencies
  */
-import { isEmpty, findKey } from 'lodash';
+import { isEmpty, findKey, isEqual } from 'lodash';
 import { splitValueAndUnit } from '../utils';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -54,72 +54,175 @@ const isEligible = blockAttributes => {
 	return isOldStructure;
 };
 
+const transformIBCleaner = relations =>
+	relations.map(relation => {
+		const { attributes, css } = relation;
+
+		const reversedBreakpoints = breakpoints.slice().reverse();
+
+		['scale', 'rotate', 'translate', 'origin'].forEach(type => {
+			reversedBreakpoints.forEach((breakpoint, i) => {
+				if (
+					attributes[`transform-${type}-${breakpoint}`] &&
+					isEqual(
+						attributes[`transform-${type}-${breakpoint}`],
+						attributes[
+							`transform-${type}-${reversedBreakpoints[i + 1]}`
+						]
+					)
+				) {
+					delete attributes[`transform-${type}-${breakpoint}`];
+				}
+			});
+		});
+
+		const cssUsesTarget = Object.keys(css).some(target =>
+			breakpoints.includes(target)
+		);
+
+		if (cssUsesTarget)
+			reversedBreakpoints.forEach((breakpoint, i) => {
+				if (
+					css[breakpoint] &&
+					isEqual(
+						css[breakpoint]?.styles,
+						css[reversedBreakpoints[i + 1]]?.styles
+					)
+				) {
+					delete css[breakpoint];
+				}
+			});
+
+		if (!cssUsesTarget)
+			Object.entries(css).forEach(([target, styles]) => {
+				reversedBreakpoints.forEach((breakpoint, i) => {
+					if (
+						styles[breakpoint] &&
+						isEqual(
+							styles[breakpoint]?.styles,
+							styles[reversedBreakpoints[i + 1]]?.styles
+						)
+					) {
+						delete css[target][breakpoint];
+					}
+				});
+			});
+
+		return { ...relation, attributes, css };
+	});
+
 const getAttributesFromStyle = (styles, selector) => {
 	const result = {};
 
 	breakpoints.forEach(breakpoint => {
 		if (!styles[breakpoint]) return;
 
-		const { transform } = styles[breakpoint].styles;
+		const { transform, 'transform-origin': transformOrigin } =
+			styles[breakpoint].styles;
 
-		if (!transform) return;
+		if (!transform && !transformOrigin) return;
 
-		const transformAttrs = transform.split(' ');
+		if (transform) {
+			const transformAttrs = transform.split(' ');
 
-		transformAttrs.forEach(attr => {
-			const [key, value] = attr.replace(')', '').split('(');
+			transformAttrs.forEach(attr => {
+				const [key, value] = attr.replace(')', '').split('(');
 
-			if (!key || !value) return;
+				if (!key || !value) return;
 
-			const type = key.slice(0, -1);
-			const axis = key.slice(-1).toLowerCase();
+				const type = key.slice(0, -1);
+				const axis = key.slice(-1).toLowerCase();
 
-			const isOriginWithUnit =
-				key.includes('origin') &&
-				!['top', 'right', 'bottom', 'left', 'center'].includes(value);
+				if (['scale', 'rotate'].includes(type)) {
+					let finalValue;
+					if (type === 'scale') {
+						finalValue = parseFloat(value) * 100;
+					}
+					if (type === 'rotate') {
+						finalValue = parseFloat(value.replace('deg', ''));
+					}
 
-			if (
-				['scale', 'rotate'].includes(type) ||
-				(type === 'origin' && !isOriginWithUnit)
-			) {
-				result[`transform-${type}-${breakpoint}`] = {
-					...result[`transform-${type}-${breakpoint}`],
-					[selector]: {
-						...result[`transform-${type}-${breakpoint}`]?.[
-							selector
-						],
-						normal: {
+					result[`transform-${type}-${breakpoint}`] = {
+						...result[`transform-${type}-${breakpoint}`],
+						[selector]: {
 							...result[`transform-${type}-${breakpoint}`]?.[
 								selector
+							],
+							normal: {
+								...result[`transform-${type}-${breakpoint}`]?.[
+									selector
+								].normal,
+								[axis]: finalValue,
+							},
+						},
+					};
+				}
+				if (type === 'translate') {
+					const { value: num, unit } = splitValueAndUnit(value);
+
+					result[`transform-${type}-${breakpoint}`] = {
+						...result[`transform-${type}-${breakpoint}`],
+						[selector]: {
+							...result[`transform-${type}-${breakpoint}`]?.[
+								selector
+							],
+							normal: {
+								...result[`transform-${type}-${breakpoint}`]?.[
+									selector
+								].normal,
+								[axis]: num,
+								[`${axis}-unit`]: unit,
+							},
+						},
+					};
+				}
+			});
+		}
+		if (transformOrigin) {
+			const [x, y] = transformOrigin.split(' ');
+			const originAxis = { x, y };
+
+			Object.entries(originAxis).forEach(([axis, value]) => {
+				const isOriginWithUnit = ![
+					'top',
+					'right',
+					'bottom',
+					'left',
+					'center',
+				].includes(value);
+
+				const response = {
+					...(isOriginWithUnit
+						? (() => {
+								const { value: num, unit } =
+									splitValueAndUnit(value);
+
+								return {
+									[axis]: `${num}`,
+									[`${axis}-unit`]: unit,
+								};
+						  })()
+						: (() => {
+								return {
+									[axis]: value,
+								};
+						  })()),
+				};
+
+				result[`transform-origin-${breakpoint}`] = {
+					...result[`transform-origin-${breakpoint}`],
+					[selector]: {
+						...result[`transform-origin-${breakpoint}`]?.[selector],
+						normal: {
+							...result[`transform-origin-${breakpoint}`]?.[
+								selector
 							].normal,
-							[axis]: value,
+							...response,
 						},
 					},
 				};
-			}
-			if (
-				['translate'].includes(type) ||
-				(type === 'origin' && isOriginWithUnit)
-			) {
-				const { value: num, unit } = splitValueAndUnit(value);
-
-				result[`transform-${type}-${breakpoint}`] = {
-					...result[`transform-${type}-${breakpoint}`],
-					[selector]: {
-						...result[`transform-${type}-${breakpoint}`]?.[
-							selector
-						],
-						normal: {
-							...result[`transform-${type}-${breakpoint}`]?.[
-								selector
-							].normal,
-							[axis]: num,
-							[`${axis}-unit`]: unit,
-						},
-					},
-				};
-			}
-		});
+			});
+		}
 	});
 
 	return result;
@@ -152,7 +255,7 @@ const migrate = ({ newAttributes }) => {
 		newRelations[i].css = { '': { ...css } };
 	});
 
-	return { ...newAttributes, relations: newRelations };
+	return { ...newAttributes, relations: transformIBCleaner(newRelations) };
 };
 
 export default { isEligible, migrate };

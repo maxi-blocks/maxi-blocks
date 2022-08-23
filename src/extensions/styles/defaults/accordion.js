@@ -1,0 +1,14 @@
+const accordion = {
+	accordionLayout: { type: 'string', default: 'simple' },
+	autoPaneClose: { type: 'boolean', default: true },
+	isCollapsible: {
+		type: 'boolean',
+		default: true,
+	},
+	animationDuration: {
+		type: 'number',
+		default: 0,
+	},
+};
+
+export default accordion;

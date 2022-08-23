@@ -29,14 +29,19 @@ const getTemplatePartSlug = clientId => {
 	// Checking if we on the FSE template editor and clientId in inside of the template part.
 	const { getBlock, getBlockParents } = select('core/block-editor');
 
-	const firstOnHierarchyParent = getBlock(getBlockParents(clientId)[0]);
+	const templatePartParent = getBlock(
+		getBlockParents(clientId).filter(
+			currentClientId =>
+				getBlock(currentClientId)?.name === 'core/template-part'
+		)
+	);
 
-	if (!firstOnHierarchyParent) return false;
+	if (!templatePartParent) return false;
 
 	const {
 		name,
 		attributes: { slug },
-	} = firstOnHierarchyParent;
+	} = templatePartParent;
 
 	return name === 'core/template-part' ? slug : false;
 };

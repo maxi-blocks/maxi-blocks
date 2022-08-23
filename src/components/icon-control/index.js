@@ -702,6 +702,7 @@ const IconControl = props => {
 								false,
 								prefix
 							)}
+							prefix={prefix}
 							label={__('Icon padding', 'maxi-blocks')}
 							onChange={onChange}
 							breakpoint={breakpoint}

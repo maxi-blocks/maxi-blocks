@@ -488,7 +488,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'default' => false,
             );
 
-            $argsRollback = array(
+            $args_rollback = array(
                 'type' => 'string',
                 'default' => 'current',
             );
@@ -501,7 +501,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             register_setting('maxi-blocks-settings-group', 'hide_tooltips', $args);
             register_setting('maxi-blocks-settings-group', 'google_api_key_option');
             register_setting('maxi-blocks-settings-group', 'maxi_breakpoints');
-            register_setting('maxi-blocks-settings-group', 'maxi_rollback_version', $argsRollback);
+            register_setting('maxi-blocks-settings-group', 'maxi_rollback_version', $args_rollback);
         }
 
         public function get_folder_size($folder)

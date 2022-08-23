@@ -105,11 +105,11 @@ class MaxiBlocks_StyleCards
         ) {
             return $maxi_blocks_style_cards_current;
         } else {
-            $defaultStyleCard = self::getDefaultStyleCard();
+            $default_style_card = self::getDefaultStyleCard();
 
             $wpdb->replace($table_name, [
                 'id' => 'style_cards_current',
-                'object' => $defaultStyleCard
+                'object' => $default_style_card
             ]);
             
             $maxi_blocks_style_cards_current = $wpdb->get_var(
@@ -167,7 +167,7 @@ class MaxiBlocks_StyleCards
 				"status": "active",
 				"dark": {
 					"styleCard": {},
-					"defaultStyleCard": {
+					"default_style_card": {
 						"color": {
 							"1": "0,0,0",
 							"2": "5,23,33",
@@ -572,7 +572,7 @@ class MaxiBlocks_StyleCards
 				},
 				"light": {
 					"styleCard": {},
-					"defaultStyleCard": {
+					"default_style_card": {
 						"color": {
 							"1": "255,255,255",
 							"2": "242,249,253",

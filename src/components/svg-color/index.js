@@ -81,7 +81,7 @@ export const SvgColor = props => {
 						'svg-line-palette-status-hover': paletteStatus,
 						content: setSVGContentHover(
 							content,
-							paletteStatus ? lineColorStr : paletteColor,
+							paletteStatus ? lineColorStr : color,
 							'stroke'
 						),
 					});
@@ -92,7 +92,7 @@ export const SvgColor = props => {
 						'svg-line-palette-status': paletteStatus,
 						content: setSVGContent(
 							content,
-							paletteStatus ? lineColorStr : paletteColor,
+							paletteStatus ? lineColorStr : color,
 							'stroke'
 						),
 					});
@@ -150,7 +150,7 @@ export const SvgColor = props => {
 						'svg-fill-palette-status-hover': paletteStatus,
 						content: setSVGContentHover(
 							content,
-							paletteStatus ? fillColorStr : paletteColor,
+							paletteStatus ? fillColorStr : color,
 							'fill'
 						),
 					});
@@ -163,7 +163,7 @@ export const SvgColor = props => {
 							fillColorStr &&
 							setSVGContent(
 								content,
-								paletteStatus ? fillColorStr : paletteColor,
+								paletteStatus ? fillColorStr : color,
 								'fill'
 							),
 					});

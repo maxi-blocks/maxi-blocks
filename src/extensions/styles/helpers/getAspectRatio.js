@@ -1,4 +1,6 @@
 const getAspectRatio = ratio => {
+	if (ratio === 'original') return null;
+
 	return {
 		ratio: {
 			general: {
@@ -14,9 +16,8 @@ const getAspectRatio = ratio => {
 							return '4 / 3';
 						case 'ar169':
 							return '16 / 9';
-						case 'original':
 						default:
-							return 'initial';
+							return '';
 					}
 				})(),
 			},

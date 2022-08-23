@@ -67,128 +67,232 @@ const relations = () => {
 		};
 	};
 
-	const getTargetEls = (target, element) =>
-		target !== ''
-			? element.querySelectorAll(
-					target.includes('>') ? `:scope ${target}` : target
-			  )
-			: [element];
-
-	const toggleStylesForTarget = (target, element, callback) => {
-		if (target === 'isTargets') return;
-
-		const targetEls = getTargetEls(target, element);
-
-		targetEls.forEach(targetEl => {
-			callback(targetEl);
-		});
+	const escapeRegExp = string => {
+		return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 	};
 
-	const toggleInlineStyles = (stylesObj, element, remove = false) => {
+	const toggleInlineStyles = (stylesObj, target, remove = false) => {
 		if (stylesObj.isTargets) {
-			Object.entries(stylesObj).forEach(([target, styles]) => {
-				toggleStylesForTarget(target, element, targetEl => {
-					toggleInlineStyles(styles, targetEl, remove);
-				});
+			Object.entries(stylesObj).forEach(([targetSelector, styles]) => {
+				targetSelector !== 'isTargets' &&
+					toggleInlineStyles(
+						styles,
+						`${target} ${targetSelector}`,
+						remove
+					);
 			});
 		} else {
-			Object.entries(stylesObj).forEach(
-				([key, value]) => (element.style[key] = !remove ? value : '')
+			const interactionStyle = document.querySelector(
+				'#maxi-blocks-interaction-css'
 			);
+			const selector = `body.maxi-blocks--active ${target} {`.replace(
+				/\s{2,}/g,
+				' '
+			);
+
+			Object.entries(stylesObj).forEach(([key, value]) => {
+				if (remove) {
+					const styleRegExp = new RegExp(
+						`(${escapeRegExp(selector)}.*?) ${key}:.*?;`
+					);
+
+					interactionStyle.textContent =
+						interactionStyle.textContent.replace(styleRegExp, '$1');
+				} else {
+					const selectorRegExp = new RegExp(
+						`(${escapeRegExp(selector)})`
+					);
+					if (!interactionStyle.textContent.match(selectorRegExp))
+						interactionStyle.textContent += `${selector}}`;
+
+					interactionStyle.textContent =
+						interactionStyle.textContent.replace(
+							selectorRegExp,
+							`$1 ${key}: ${value};`
+						);
+				}
+			});
 		}
 	};
 
 	const toggleTransition = (
-		transitionString,
-		element,
+		target,
 		stylesObj,
+		effectsObj,
+		isIcon = false,
 		remove = false
 	) => {
 		const targets = stylesObj?.isTargets ? Object.keys(stylesObj) : null;
-
 		if (targets) {
-			targets.forEach(target => {
-				toggleStylesForTarget(target, element, targetEl => {
-					toggleTransition(transitionString, targetEl, null, remove);
-				});
+			targets.forEach(targetSelector => {
+				targetSelector !== 'isTargets' &&
+					toggleTransition(
+						`${target} ${targetSelector}`,
+						stylesObj[targetSelector],
+						effectsObj,
+						isIcon,
+						remove
+					);
 			});
 		} else {
-			element.style.transition = !remove ? transitionString : '';
+			const interactionStyle = document.querySelector(
+				'#maxi-blocks-interaction-css'
+			);
+			const selector = `body.maxi-blocks--active ${target} {`.replace(
+				/\s{2,}/g,
+				' '
+			);
+			const transitionString = getTransitionString(
+				stylesObj,
+				effectsObj,
+				isIcon
+			);
+
+			if (remove) {
+				const styleRegExp = new RegExp(
+					`(${escapeRegExp(selector)}.*?) transition:.*?;`
+				);
+				interactionStyle.textContent =
+					interactionStyle.textContent.replace(styleRegExp, '$1');
+			} else {
+				const selectorRegExp = new RegExp(
+					`(${escapeRegExp(selector)})`
+				);
+				if (!interactionStyle.textContent.match(selectorRegExp))
+					interactionStyle.textContent += `${selector}}`;
+
+				const transitionExistsRegExp = new RegExp(
+					`(${escapeRegExp(selector)}[^{]*transition:)`
+				);
+				if (!transitionString) return;
+
+				if (
+					interactionStyle.textContent.match(transitionExistsRegExp)
+				) {
+					!isIcon &&
+						(interactionStyle.textContent =
+							interactionStyle.textContent.replace(
+								transitionExistsRegExp,
+								`$1 ${transitionString}`
+							));
+				} else {
+					interactionStyle.textContent =
+						interactionStyle.textContent.replace(
+							selectorRegExp,
+							`$1 transition: ${transitionString.replace(
+								/, $/,
+								''
+							)};`
+						);
+				}
+			}
 		}
 	};
 
-	const getTransitionString = effectsObj =>
-		effectsObj['transition-status']
-			? `all ${effectsObj['transition-duration']}s ${effectsObj['transition-delay']}s ${effectsObj['easing']}`
-			: 'all 0s 0s';
+	const getTransitionString = (styleObj, effectsObj, isIcon) => {
+		if (isIcon)
+			return effectsObj['transition-status']
+				? `all ${effectsObj['transition-duration']}s ${effectsObj['transition-delay']}s ${effectsObj['easing']}`
+				: `all 0s 0s, `;
+		else
+			return Object.keys(styleObj).reduce(
+				(transitionString, style) =>
+					effectsObj['transition-status']
+						? `${transitionString}${style} ${effectsObj['transition-duration']}s ${effectsObj['transition-delay']}s ${effectsObj['easing']}, `
+						: `${transitionString}${style} 0s 0s, `,
+				''
+			);
+	};
 
 	maxiRelations[0]?.forEach(item => {
 		if (!item?.uniqueID) return;
 
 		const triggerEl = document.querySelector(`.${item.trigger}`);
-		const targetEl = document.querySelector(
-			`.${item.uniqueID} ${item.target ?? ''}`
-		);
+		const target = `#${item.uniqueID} ${item.target ?? ''}`;
 
 		let timeout;
 
 		switch (item.action) {
-			case 'hover': {
-				triggerEl.addEventListener('mouseenter', () => {
-					clearTimeout(timeout);
+			case 'hover':
+				{
+					triggerEl.addEventListener('mouseenter', () => {
+						clearTimeout(timeout);
 
-					const { stylesObj, effectsObj } = getCssResponsiveObj(
-						item.css,
-						item.effects
-					);
-
-					toggleTransition(
-						getTransitionString(effectsObj),
-						targetEl,
-						stylesObj
-					);
-
-					toggleInlineStyles(stylesObj, targetEl);
-				});
-
-				triggerEl.addEventListener('mouseleave', () => {
-					const { stylesObj, effectsObj } = getCssResponsiveObj(
-						item.css,
-						item.effects
-					);
-
-					toggleInlineStyles(stylesObj, targetEl, true);
-
-					timeout = setTimeout(() => {
-						// Removing transition after transition-duration + 1s to make sure it's done
-						toggleTransition(
-							getTransitionString(effectsObj),
-							targetEl,
-							stylesObj,
-							true
+						const { stylesObj, effectsObj } = getCssResponsiveObj(
+							item.css,
+							item.effects
 						);
-					}, item.effects['transition-duration-general'] * 1000 + 1000);
-				});
-			}
-			case 'click': {
-				triggerEl.addEventListener('click', () => {
-					const { stylesObj, effectsObj } = getCssResponsiveObj(
-						item.css,
-						item.effects
-					);
 
-					toggleTransition(
-						getTransitionString(effectsObj),
-						targetEl,
-						stylesObj
-					);
+						toggleTransition(
+							target,
+							stylesObj,
+							effectsObj,
+							item.settings === 'Icon colour' ||
+								item.settings === 'Button icon'
+						);
 
-					toggleInlineStyles(stylesObj, targetEl);
-				});
-			}
+						toggleInlineStyles(stylesObj, target);
+					});
+
+					triggerEl.addEventListener('mouseleave', () => {
+						const { stylesObj, effectsObj } = getCssResponsiveObj(
+							item.css,
+							item.effects
+						);
+
+						toggleInlineStyles(stylesObj, target, true);
+
+						timeout = setTimeout(() => {
+							// Removing transition after transition-duration + 1s to make sure it's done
+							toggleTransition(
+								target,
+								stylesObj,
+								effectsObj,
+								false,
+								true
+							);
+						}, item.effects['transition-duration-general'] * 1000 + 1000);
+					});
+				}
+				break;
+			case 'click':
+				{
+					triggerEl.addEventListener('click', () => {
+						const { stylesObj, effectsObj } = getCssResponsiveObj(
+							item.css,
+							item.effects
+						);
+						toggleTransition(
+							target,
+							stylesObj,
+							effectsObj,
+							item.settings === 'Icon colour' ||
+								item.settings === 'Button icon'
+						);
+
+						toggleInlineStyles(stylesObj, target);
+					});
+				}
+				break;
 		}
 	});
 };
 
 window.addEventListener('load', relations);
-window.addEventListener('resize', relations);
+window.addEventListener('load', () => {
+	if (maxiRelations[0].length) {
+		if (!document.querySelector('#maxi-blocks-interaction-css')) {
+			const inlineStyle = document.querySelector(
+				'#maxi-blocks-inline-css'
+			);
+			if (inlineStyle) {
+				const interactionStyle = document.createElement('style');
+				interactionStyle.id = 'maxi-blocks-interaction-css';
+				inlineStyle.parentNode.insertBefore(
+					interactionStyle,
+					inlineStyle.nextSibling
+				);
+			}
+		}
+	}
+});

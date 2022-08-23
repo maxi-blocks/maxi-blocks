@@ -127,11 +127,6 @@ class MaxiBlocks_Styles
                         plugins_url($jsScriptPath, dirname(__FILE__))
                     );
 
-                    $data =
-                        $jsVar === 'search'
-                            ? [$meta, get_search_link()]
-                            : [$meta];
-
                     wp_localize_script($jsScriptName, $jsVarToPass, $this->get_block_data($jsVar, $meta));
                 }
             }

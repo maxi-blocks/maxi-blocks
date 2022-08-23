@@ -62,11 +62,6 @@ const AccordionIconSettings = props => {
 						content: props['icon-content'] !== '' && (
 							<IconControl
 								{...props}
-								disableIconOnly
-								disableSpacing
-								disablePosition
-								disableIconInherit
-								disableModal
 								getIconWithColor={args =>
 									getIconWithColor(props, args, '')
 								}
@@ -93,11 +88,6 @@ const AccordionIconSettings = props => {
 								{props['icon-status-hover'] && (
 									<IconControl
 										{...props}
-										disableIconOnly
-										disableSpacing
-										disablePosition
-										disableModal
-										disableIconInherit
 										getIconWithColor={args =>
 											getIconWithColor(props, args, '')
 										}
@@ -112,13 +102,8 @@ const AccordionIconSettings = props => {
 						content: (
 							<IconControl
 								{...props}
-								disableIconOnly
-								disableSpacing
-								disablePosition
-								disableModal
-								disableIconInherit
 								getIconWithColor={args =>
-									getIconWithColor(props, args, '')
+									getIconWithColor(props, args, 'active-')
 								}
 								prefix='active-'
 								svgType={svgTypeActive}

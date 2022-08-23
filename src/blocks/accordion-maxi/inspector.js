@@ -139,6 +139,11 @@ const Inspector = props => {
 													attributes,
 													'accordionIcon'
 												)}
+												disableIconOnly
+												disableSpacing
+												disablePosition
+												disableIconInherit
+												disableModal
 												blockStyle={blockStyle}
 												onChange={obj => {
 													maxiSetAttributes(obj);

@@ -258,9 +258,9 @@ const getSCFontsData = obj => {
 
 const updateSCOnEditor = styleCards => {
 	const SCObject = getSCVariablesObject({ ...cloneDeep(styleCards) });
+	const allSCFonts = getSCFontsData(SCObject);
 
 	const siteEditorIFrame = getSiteEditorIframe();
-
 	const elements = [document, siteEditorIFrame];
 
 	elements.forEach(element => {
@@ -277,10 +277,9 @@ const updateSCOnEditor = styleCards => {
 			// Needs a delay, if not Redux returns error 3
 			setTimeout(() => saveSCStyles(false), 150);
 		} else SCStyle.innerHTML = createSCStyleString(SCObject);
-	});
 
-	const allSCFonts = getSCFontsData(SCObject);
-	if (!isEmpty(allSCFonts)) loadFonts(allSCFonts);
+		if (!isEmpty(allSCFonts)) loadFonts(allSCFonts, false, element);
+	});
 };
 
 export default updateSCOnEditor;

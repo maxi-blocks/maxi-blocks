@@ -20,7 +20,7 @@
 	}
 
 	&__line {
-		border-top: none;
+		border: none;
 	}
 
 	&__title,
@@ -36,5 +36,7 @@
 		overflow: hidden;
 		border-width: 0;
 		max-height: 0px;
+		padding-top: 0 !important;
+		padding-bottom: 0 !important;
 	}
 }

@@ -6,6 +6,7 @@ import {
 	prefixAttributesCreator,
 	transitionAttributesCreator,
 } from '../../extensions/styles';
+import transitionObj from './transitionObj';
 
 const mutualAttributes = {
 	...attributesData.background,
@@ -23,6 +24,7 @@ const mutualAttributes = {
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
 	...attributesData.size,
+	...attributesData.padding,
 };
 
 /**
@@ -71,7 +73,7 @@ const attributes = {
 	 * Header
 	 */
 	...prefixAttributesCreator({
-		obj: { ...mutualAttributes, ...attributesData.padding },
+		obj: mutualAttributes,
 		prefix: 'header-',
 	}),
 
@@ -79,7 +81,21 @@ const attributes = {
 	 * Content
 	 */
 	...prefixAttributesCreator({
-		obj: mutualAttributes,
+		obj: {
+			...mutualAttributes,
+			'padding-top-general': {
+				type: 'string',
+				default: '25',
+			},
+			'padding-bottom-general': {
+				type: 'string',
+				default: '25',
+			},
+			'padding-sync-general': {
+				type: 'string',
+				default: 'axis',
+			},
+		},
 		prefix: 'content-',
 	}),
 
@@ -90,7 +106,7 @@ const attributes = {
 	...attributesData.transform,
 	...{
 		...attributesData.transition,
-		...transitionAttributesCreator(),
+		...transitionAttributesCreator(transitionObj),
 	},
 	...attributesData.display,
 	...attributesData.position,

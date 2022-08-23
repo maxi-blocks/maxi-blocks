@@ -17,6 +17,7 @@ import {
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsPane } from './custom-css';
+import transitionObj from './transitionObj';
 
 const getNormalObject = props => {
 	const response = {
@@ -237,7 +238,8 @@ const getStyles = props => {
 				}),
 			},
 			selectorsPane,
-			props
+			props,
+			transitionObj
 		),
 	};
 	return response;

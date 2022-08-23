@@ -121,6 +121,12 @@ const Inspector = props => {
 										props,
 										prefix: 'content-',
 									}),
+									...inspectorTabs.marginPadding({
+										props,
+										customLabel: 'Padding',
+										prefix: 'content-',
+										disableMargin: true,
+									}),
 								]}
 							/>
 						),

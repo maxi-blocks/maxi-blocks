@@ -14,23 +14,17 @@ const getLinkStyles = (obj, target, blockStyle) => {
 	const response = {
 		[target]: { link: {} },
 		[`${target}:hover`]: { link: {} },
-		[`${target}:hover span`]: { link: {} },
 		[`${target}:active`]: { link: {} },
 		[`${target}:active span`]: { link: {} },
 		[`${target}:visited`]: { link: {} },
 		[`${target}:visited span`]: { link: {} },
-		'.block-editor-block-list__block .maxi-text-block--link:visited': {
+		[`.block-editor-block-list__block ${target}:visited`]: {
 			link: {},
 		},
 		[`${target}:visited span`]: { link: {} },
-		'.block-editor-block-list__block .maxi-text-block--link:visited span': {
+		[`${target}:visited:hover`]: {
 			link: {},
 		},
-		[`${target}:visited span`]: { link: {} },
-		'.block-editor-block-list__block .maxi-text-block--link:visited:hover':
-			{
-				link: {},
-			},
 	};
 
 	breakpoints.forEach(breakpoint => {
@@ -48,26 +42,17 @@ const getLinkStyles = (obj, target, blockStyle) => {
 		if (isBoolean(linkPaletteStatus) && !linkPaletteStatus) {
 			response[target].link[breakpoint] = {};
 			response[
-				'.block-editor-block-list__block .maxi-text-block--link:visited'
-			].link[breakpoint] = {};
-			response[
-				'.block-editor-block-list__block .maxi-text-block--link:visited span'
+				[`.block-editor-block-list__block ${target}:visited`]
 			].link[breakpoint] = {};
 
 			response[target].link[breakpoint].color = linkColor;
 			response[
-				'.block-editor-block-list__block .maxi-text-block--link:visited'
-			].link[breakpoint].color = linkColor;
-			response[
-				'.block-editor-block-list__block .maxi-text-block--link:visited span'
+				[`.block-editor-block-list__block ${target}:visited`]
 			].link[breakpoint].color = linkColor;
 		} else if (linkPaletteColor) {
 			response[target].link[breakpoint] = {};
 			response[
-				'.block-editor-block-list__block .maxi-text-block--link:visited'
-			].link[breakpoint] = {};
-			response[
-				'.block-editor-block-list__block .maxi-text-block--link:visited span'
+				[`.block-editor-block-list__block ${target}:visited`]
 			].link[breakpoint] = {};
 
 			response[target].link[breakpoint].color = getColorRGBAString({
@@ -77,15 +62,7 @@ const getLinkStyles = (obj, target, blockStyle) => {
 				blockStyle,
 			});
 			response[
-				'.block-editor-block-list__block .maxi-text-block--link:visited'
-			].link[breakpoint].color = getColorRGBAString({
-				firstVar: 'link',
-				secondVar: `color-${linkPaletteColor}`,
-				opacity: linkPaletteOpacity,
-				blockStyle,
-			});
-			response[
-				'.block-editor-block-list__block .maxi-text-block--link:visited span'
+				[`.block-editor-block-list__block ${target}:visited`]
 			].link[breakpoint].color = getColorRGBAString({
 				firstVar: 'link',
 				secondVar: `color-${linkPaletteColor}`,
@@ -107,19 +84,13 @@ const getLinkStyles = (obj, target, blockStyle) => {
 
 		if (isBoolean(linkHoverPaletteStatus) && !linkHoverPaletteStatus) {
 			response[`${target}:hover`].link[breakpoint] = {};
-			response[`${target}:hover span`].link[breakpoint] = {};
 
-			response[
-				'.block-editor-block-list__block .maxi-text-block--link:visited:hover'
-			].link[breakpoint] = {};
+			response[[`${target}:visited:hover`]].link[breakpoint] = {};
 
 			response[`${target}:hover`].link[breakpoint].color = linkHoverColor;
-			response[`${target}:hover span`].link[breakpoint].color =
-				linkHoverColor;
 
-			response[
-				'.block-editor-block-list__block .maxi-text-block--link:visited:hover'
-			].link[breakpoint].color = linkHoverColor;
+			response[[`${target}:visited:hover`]].link[breakpoint].color =
+				linkHoverColor;
 		} else if (linkHoverPaletteColor) {
 			const color = getColorRGBAString({
 				firstVar: 'link-hover',
@@ -129,11 +100,8 @@ const getLinkStyles = (obj, target, blockStyle) => {
 			});
 
 			response[`${target}:hover`].link[breakpoint] = { color };
-			response[`${target}:hover span`].link[breakpoint] = { color };
 
-			response[
-				'.block-editor-block-list__block .maxi-text-block--link:visited:hover'
-			].link[breakpoint] = { color };
+			response[[`${target}:visited:hover`]].link[breakpoint] = { color };
 		}
 
 		const {

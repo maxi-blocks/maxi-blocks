@@ -2,7 +2,29 @@
  * Internal dependencies
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
-import { transitionAttributesCreator } from '../../extensions/styles';
+import {
+	prefixAttributesCreator,
+	transitionAttributesCreator,
+} from '../../extensions/styles';
+
+const mutualAttributes = {
+	...attributesData.background,
+	...attributesData.backgroundColor,
+	...attributesData.backgroundGradient,
+
+	...attributesData.backgroundHover,
+	...attributesData.backgroundColorHover,
+	...attributesData.backgroundGradientHover,
+
+	...attributesData.border,
+	...attributesData.borderHover,
+	...attributesData.borderRadius,
+	...attributesData.borderWidth,
+	...attributesData.boxShadow,
+	...attributesData.boxShadowHover,
+	...attributesData.size,
+	...attributesData.padding,
+};
 
 /**
  * Attributes
@@ -45,6 +67,22 @@ const attributes = {
 			default: '25',
 		},
 	},
+
+	/**
+	 * Header
+	 */
+	...prefixAttributesCreator({
+		obj: mutualAttributes,
+		prefix: 'header-',
+	}),
+
+	/**
+	 * Content
+	 */
+	...prefixAttributesCreator({
+		obj: mutualAttributes,
+		prefix: 'content-',
+	}),
 
 	/**
 	 * Advanced

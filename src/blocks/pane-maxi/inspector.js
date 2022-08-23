@@ -33,7 +33,7 @@ const Inspector = props => {
 				depth={0}
 				items={[
 					{
-						label: __('Settings', 'maxi-blocks'),
+						label: __('Pane', 'maxi-blocks'),
 						content: (
 							<AccordionControl
 								items={[
@@ -52,6 +52,80 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.marginPadding({
 										props,
+									}),
+								]}
+							/>
+						),
+					},
+					{
+						label: __('Header', 'maxi-blocks'),
+						content: (
+							<AccordionControl
+								items={[
+									...inspectorTabs.background({
+										props,
+										label: 'Header',
+										prefix: 'header-',
+										inlineTarget:
+											'.maxi-pane-block__header',
+										disableImage: true,
+										disableVideo: true,
+										disableSVG: true,
+									}),
+									...inspectorTabs.border({
+										props,
+										prefix: 'header-',
+									}),
+									...inspectorTabs.boxShadow({
+										props,
+										prefix: 'header-',
+									}),
+									...inspectorTabs.size({
+										props,
+										prefix: 'header-',
+									}),
+									...inspectorTabs.marginPadding({
+										props,
+										customLabel: 'Padding',
+										prefix: 'header-',
+										disableMargin: true,
+									}),
+								]}
+							/>
+						),
+					},
+					{
+						label: __('Content', 'maxi-blocks'),
+						content: (
+							<AccordionControl
+								items={[
+									...inspectorTabs.background({
+										props,
+										label: 'Content',
+										prefix: 'content-',
+										inlineTarget:
+											'.maxi-pane-block__content',
+										disableImage: true,
+										disableVideo: true,
+										disableSVG: true,
+									}),
+									...inspectorTabs.border({
+										props,
+										prefix: 'content-',
+									}),
+									...inspectorTabs.boxShadow({
+										props,
+										prefix: 'content-',
+									}),
+									...inspectorTabs.size({
+										props,
+										prefix: 'content-',
+									}),
+									...inspectorTabs.marginPadding({
+										props,
+										customLabel: 'Padding',
+										prefix: 'content-',
+										disableMargin: true,
 									}),
 								]}
 							/>

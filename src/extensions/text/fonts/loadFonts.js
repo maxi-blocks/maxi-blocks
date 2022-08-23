@@ -13,12 +13,15 @@ import { getSiteEditorIframe } from '../../fse';
  * External dependencies
  */
 import { isEmpty, uniq } from 'lodash';
+
 /**
  * Loads the font on background using JS FontFace API
  * FontFaceSet API uses check() to check if a font exists, but needs to compare with some exact value:
  * in this case is used '12px' as a standard that returns if the font has been loaded.
  *
- * @param {string} font Name of the selected font
+ * @param {string}      font        Name of the selected font
+ * @param {boolean}     backendOnly If true, `dispatch('maxiBlocks/text').updateFonts()` isn't called
+ * @param {HTMLElement} rawTarget   Element, where the font will be loaded
  */
 const loadFonts = (font, backendOnly = true, rawTarget) => {
 	const getTarget = target => {

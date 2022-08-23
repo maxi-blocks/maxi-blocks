@@ -93,7 +93,12 @@ const relations = () => {
 			Object.entries(stylesObj).forEach(([key, value]) => {
 				if (remove) {
 					const styleRegExp = new RegExp(
-						`(${escapeRegExp(selector)}.*?) ${key}:.*?;`
+						`(${escapeRegExp(
+							selector.replace(
+								'data-maxi-relations="false"',
+								'data-maxi-relations="true"'
+							)
+						)}.*?) ${key}:.*?;`
 					);
 
 					interactionStyle.textContent =
@@ -218,6 +223,10 @@ const relations = () => {
 					triggerEl.addEventListener('mouseenter', () => {
 						clearTimeout(timeout);
 
+						document
+							.querySelector(target)
+							.setAttribute('data-maxi-relations', 'true');
+
 						const { stylesObj, effectsObj } = getCssResponsiveObj(
 							item.css,
 							item.effects
@@ -231,16 +240,27 @@ const relations = () => {
 								item.settings === 'Button icon'
 						);
 
-						toggleInlineStyles(stylesObj, target);
+						toggleInlineStyles(
+							stylesObj,
+							`${target.trim()}[data-maxi-relations="true"]`
+						);
 					});
 
 					triggerEl.addEventListener('mouseleave', () => {
+						document
+							.querySelector(target)
+							.setAttribute('data-maxi-relations', 'false');
+
 						const { stylesObj, effectsObj } = getCssResponsiveObj(
 							item.css,
 							item.effects
 						);
 
-						toggleInlineStyles(stylesObj, target, true);
+						toggleInlineStyles(
+							stylesObj,
+							`${target.trim()}[data-maxi-relations="false"]`,
+							true
+						);
 
 						timeout = setTimeout(() => {
 							// Removing transition after transition-duration + 1s to make sure it's done
@@ -258,10 +278,15 @@ const relations = () => {
 			case 'click':
 				{
 					triggerEl.addEventListener('click', () => {
+						document
+							.querySelector(target)
+							.setAttribute('data-maxi-relations', 'true');
+
 						const { stylesObj, effectsObj } = getCssResponsiveObj(
 							item.css,
 							item.effects
 						);
+
 						toggleTransition(
 							target,
 							stylesObj,
@@ -270,7 +295,10 @@ const relations = () => {
 								item.settings === 'Button icon'
 						);
 
-						toggleInlineStyles(stylesObj, target);
+						toggleInlineStyles(
+							stylesObj,
+							`${target.trim()}[data-maxi-relations="true"]`
+						);
 					});
 				}
 				break;

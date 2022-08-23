@@ -28,11 +28,12 @@
 		margin: 0;
 	}
 
-	&__content {
+	&__content-wrapper {
 		position: relative;
+		padding: 0;
 	}
 
-	&[aria-expanded='false'] .maxi-pane-block__content {
+	&[aria-expanded='false'] .maxi-pane-block__content-wrapper {
 		overflow: hidden;
 		border-width: 0;
 		max-height: 0px;

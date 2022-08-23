@@ -41,10 +41,12 @@ const save = props => {
 					<hr className='maxi-pane-block__header-line maxi-pane-block__line' />
 				</div>
 			</div>
-			<div {...restInnerBlocksProps}>
-				{children}
-				<div className='maxi-pane-block__content-line-container maxi-pane-block__line-container'>
-					<hr className='maxi-pane-block__content-line maxi-pane-block__line' />
+			<div className='maxi-pane-block__content-wrapper'>
+				<div {...restInnerBlocksProps}>
+					{children}
+					<div className='maxi-pane-block__content-line-container maxi-pane-block__line-container'>
+						<hr className='maxi-pane-block__content-line maxi-pane-block__line' />
+					</div>
 				</div>
 			</div>
 		</MaxiBlock.save>

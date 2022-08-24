@@ -62,6 +62,8 @@ const selectors = {
 					?.getBoundingClientRect().width
 			: state?.settings?.window?.width ?? window.innerWidth;
 
+		if (!winWidth) return false;
+
 		const breakpoints = !isEmpty(state.breakpoints)
 			? state.breakpoints
 			: {

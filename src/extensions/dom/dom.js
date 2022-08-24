@@ -468,6 +468,8 @@ wp.domReady(() => {
 		};
 
 		const templatePartResizeObserver = new ResizeObserver(entries => {
+			if (select('core/edit-site').isNavigationOpened()) return;
+
 			setTimeout(async () => {
 				const editorWrapper = entries[0].target;
 
@@ -508,23 +510,25 @@ wp.domReady(() => {
 			}, 150);
 		});
 
-		let templatePartSlug = '';
+		let isNewObserver = true;
 
 		subscribe(() => {
 			if (getIsTemplatePart()) {
+				const { isNavigationOpened: getIsNavigationOpened } =
+					select('core/edit-site');
+				const isNavigationOpened = getIsNavigationOpened();
+
+				if (isNavigationOpened) {
+					isNewObserver = true;
+					return;
+				}
+
 				const targetNode = document.querySelector(
 					'.components-resizable-box__container'
 				);
 
-				const currentTemplatePartSlug = getTemplatePartSlug();
-
-				if (
-					targetNode &&
-					templatePartSlug !== currentTemplatePartSlug
-				) {
+				if (targetNode && isNewObserver)
 					templatePartResizeObserver.observe(targetNode);
-					templatePartSlug = currentTemplatePartSlug;
-				}
 			} else templatePartResizeObserver.disconnect();
 		});
 	}

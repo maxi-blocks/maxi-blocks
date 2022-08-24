@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { select, subscribe } from '@wordpress/data';
+import { subscribe } from '@wordpress/data';
 import { useState, render } from '@wordpress/element';
 
 /**
@@ -10,6 +10,7 @@ import { useState, render } from '@wordpress/element';
 import Button from '../../components/button';
 import Icon from '../../components/icon';
 import ResponsiveSelector from '../responsive-selector';
+import { getIsTemplatesListOpened } from '../../extensions/fse';
 /**
  * Styles
  */
@@ -51,8 +52,7 @@ wp.domReady(() => {
 
 	subscribe(() => {
 		// Resetting isMaxiToolbar if we are switching to a different template
-		if (select('core/edit-site')?.isNavigationOpened())
-			isMaxiToolbar = false;
+		if (getIsTemplatesListOpened()) isMaxiToolbar = false;
 
 		if (isMaxiToolbar) return;
 

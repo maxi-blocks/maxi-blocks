@@ -11,7 +11,7 @@ import {
 	getIsSiteEditor,
 	getIsTemplatePart,
 	getSiteEditorIframeBody,
-	getTemplatePartSlug,
+	getIsTemplatesListOpened,
 } from '../fse';
 
 /**
@@ -468,7 +468,7 @@ wp.domReady(() => {
 		};
 
 		const templatePartResizeObserver = new ResizeObserver(entries => {
-			if (select('core/edit-site').isNavigationOpened()) return;
+			if (getIsTemplatesListOpened()) return;
 
 			setTimeout(async () => {
 				const editorWrapper = entries[0].target;
@@ -514,11 +514,7 @@ wp.domReady(() => {
 
 		subscribe(() => {
 			if (getIsTemplatePart()) {
-				const { isNavigationOpened: getIsNavigationOpened } =
-					select('core/edit-site');
-				const isNavigationOpened = getIsNavigationOpened();
-
-				if (isNavigationOpened) {
+				if (getIsTemplatesListOpened()) {
 					isNewObserver = true;
 					return;
 				}

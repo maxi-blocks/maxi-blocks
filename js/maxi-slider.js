@@ -75,6 +75,7 @@ class MaxiSlider {
 		this.onDragEnd = this.dragEnd.bind(this);
 		this.onHover = this.onHover.bind(this);
 		this.onHoverEnd = this.onHoverEnd.bind(this);
+		this.exactSlide = this.exactSlide.bind(this);
 
 		this._container.addEventListener('mouseenter', this.onHover);
 		this._container.addEventListener('mouseleave', this.onHoverEnd);
@@ -150,12 +151,8 @@ class MaxiSlider {
 		this._arrowNext.addEventListener('click', this.slideNext.bind(this));
 		this._arrowPrev.addEventListener('click', this.slidePrev.bind(this));
 
-		const self = this;
-		self._dots.forEach(function addClickToDot(dot, currentSlide) {
-			dot.addEventListener(
-				'click',
-				self.exactSlide.bind(this, currentSlide, self)
-			);
+		this._dots.forEach((dot, currentSlide) => {
+			dot.addEventListener('click', () => this.exactSlide(currentSlide));
 		});
 	}
 
@@ -256,7 +253,7 @@ class MaxiSlider {
 		} else if (this.endPosition - this.initPosition > 100) {
 			this.slidePrev();
 		} else {
-			this.sliderAction();
+			this.exactSlide(this.currentSlide);
 		}
 
 		this.isInteracting = false;
@@ -284,26 +281,31 @@ class MaxiSlider {
 
 	slideNext() {
 		if (this.currentSlide + 1 < this._slides.length || this.isLoop) {
-			// Update current slide
-			this.currentSlide += 1;
-			this.setActiveDot(this.currentSlide);
+			this.exactSlide(this.currentSlide + 1);
+		} else {
+			this.exactSlide(this.currentSlide);
 		}
-		this.sliderAction();
 	}
 
 	slidePrev() {
 		if (this.currentSlide - 1 >= 0 || this.isLoop) {
-			// Update current slide
-			this.currentSlide -= 1;
-			this.setActiveDot(this.currentSlide);
+			this.exactSlide(this.currentSlide - 1);
+		} else {
+			this.exactSlide(this.currentSlide);
 		}
-		this.sliderAction();
 	}
 
-	exactSlide(slideNumber, self) {
-		self.currentSlide = slideNumber;
-		self.setActiveDot(slideNumber);
-		self.sliderAction();
+	exactSlide(slideNumber) {
+		const changedSlide = this.currentSlide !== slideNumber;
+
+		if (changedSlide) {
+			this.currentSlide = slideNumber;
+			this.setActiveDot(slideNumber);
+		}
+
+		// For fade, animation should fire only when changing slide
+		const addAnimation = this.transition !== 'fade' || changedSlide;
+		this.sliderAction(addAnimation);
 	}
 
 	getSliderEffect() {

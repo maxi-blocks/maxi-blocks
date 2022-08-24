@@ -15,7 +15,8 @@ const NavigationIconsControl = props => {
 		deviceType,
 		insertInlineStyles,
 		cleanInlineStyles,
-		inlineStylesTargets,
+		normalInlineTarget,
+		activeInlineTarget,
 		clientId,
 		blockStyle,
 		prefix = 'navigation-arrow-both-icon',
@@ -47,14 +48,14 @@ const NavigationIconsControl = props => {
 							) =>
 								insertInlineStyles({
 									obj,
-									target: `${inlineStylesTargets.dot} ${target}`,
+									target: `${normalInlineTarget} ${target}`,
 									isMultiplySelector,
 								})
 							}
 							onChange={(obj, target) => {
 								onChange(obj);
 								cleanInlineStyles(
-									`${inlineStylesTargets.dot} ${target}`
+									`${normalInlineTarget} ${target}`
 								);
 							}}
 							svgType={svgType}
@@ -124,14 +125,14 @@ const NavigationIconsControl = props => {
 									) =>
 										insertInlineStyles({
 											obj,
-											target: `${inlineStylesTargets.dotActive} ${target}`,
+											target: `${activeInlineTarget} ${target}`,
 											isMultiplySelector,
 										})
 									}
 									onChange={(obj, target) => {
 										onChange(obj);
 										cleanInlineStyles(
-											`${inlineStylesTargets.dotActive} ${target}`
+											`${activeInlineTarget} ${target}`
 										);
 									}}
 									svgType={svgType}

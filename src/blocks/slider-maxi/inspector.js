@@ -134,6 +134,9 @@ const Inspector = props => {
 												cleanInlineStyles={
 													cleanInlineStyles
 												}
+												normalInlineTarget={
+													inlineStylesTargets.arrow
+												}
 												blockStyle={blockStyle}
 												svgType={svgType}
 												prefix='navigation-arrow-both-icon'
@@ -177,8 +180,11 @@ const Inspector = props => {
 												cleanInlineStyles={
 													cleanInlineStyles
 												}
-												inlineStylesTargets={
-													inlineStylesTargets
+												normalInlineTarget={
+													inlineStylesTargets.dot
+												}
+												activeInlineTarget={
+													inlineStylesTargets.dotActive
 												}
 												blockStyle={blockStyle}
 												svgType={svgType}

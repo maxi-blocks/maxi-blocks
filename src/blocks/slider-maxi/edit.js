@@ -529,6 +529,7 @@ class edit extends MaxiBlockComponent {
 		const inlineStylesTargets = {
 			dot: '.maxi-slider-block__dot:not(.maxi-slider-block__dot--active)',
 			dotActive: '.maxi-slider-block__dot--active',
+			arrow: '.maxi-slider-block__arrow',
 		};
 
 		return [

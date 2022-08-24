@@ -241,7 +241,7 @@ class MaxiSlider {
 			this.dragPosition = e.clientX;
 		}
 
-		this.wrapperTranslate += dragMove;
+		if (this.transition !== 'fade') this.wrapperTranslate += dragMove;
 	}
 
 	dragEnd(e) {

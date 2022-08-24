@@ -1,8 +1,28 @@
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
+const prefix = 'video-';
+
 const transitionObj = {
 	...transitionDefault,
 	block: {
+		border: {
+			title: 'Border',
+			target: [
+				' .maxi-video-block__overlay',
+				' .maxi-video-block__video-player',
+			],
+			property: 'border',
+			prefix,
+		},
+		'box shadow': {
+			title: 'Box shadow',
+			target: [
+				' .maxi-video-block__overlay',
+				' .maxi-video-block__video-player',
+			],
+			property: 'box-shadow',
+			prefix,
+		},
 		'overlay colour': {
 			title: 'Overlay colour',
 			target: ' .maxi-video-block__overlay-background',

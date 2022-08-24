@@ -645,6 +645,14 @@ if (!class_exists('MaxiBlocks_API')):
                 return '{}';
             }
 
+			$exists = $wpdb->get_results(
+                $wpdb->prepare(
+                    "SELECT * FROM $table WHERE $where_clause",
+                    $id
+                ),
+                OBJECT
+            );
+
             if ($update) {
                 $arrayNewData = json_decode($dataVal, true);
                 $new_custom_data = serialize(array_merge_recursive(...array_values($arrayNewData)));
@@ -654,10 +662,19 @@ if (!class_exists('MaxiBlocks_API')):
                     'active_custom_data' =>  1,
                 ), ["{$id_key}" => $id]);
 
-                $wpdb->update("{$table}", array(
-                    'prev_custom_data_value' =>  $new_custom_data,
-                    'custom_data_value' =>  $new_custom_data,
-                ), ["{$id_key}" =>  $id]);
+
+				if(!empty($exists)) {
+					$wpdb->update("{$table}", array(
+						'prev_custom_data_value' =>  $new_custom_data,
+						'custom_data_value' =>  $new_custom_data,
+					), ["{$id_key}" =>  $id]);
+				} else {
+					$wpdb->insert("{$table}", array(
+						$id_key => $id,
+						'prev_custom_data_value' =>  $new_custom_data,
+						'custom_data_value' => $new_custom_data,
+					));
+				}
             }
 
             return $new_custom_data;

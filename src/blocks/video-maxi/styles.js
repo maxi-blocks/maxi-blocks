@@ -188,15 +188,17 @@ const getVideoPlayerStyles = (props, isHover = false) => {
 						},
 						prefix: videoPrefix,
 					}),
-					size: getSizeStyles({
-						...getGroupAttributes(
-							props,
-							'size',
-							false,
-							videoPrefix
-						),
-						prefix: videoPrefix,
-					}),
+					size: getSizeStyles(
+						{
+							...getGroupAttributes(
+								props,
+								'size',
+								false,
+								videoPrefix
+							),
+						},
+						videoPrefix
+					),
 			  }
 			: {};
 
@@ -352,10 +354,12 @@ const getOverlayStyles = (props, isHover = false) => {
 			},
 			prefix: videoPrefix,
 		}),
-		size: getSizeStyles({
-			...getGroupAttributes(props, 'size', false, videoPrefix),
-			prefix: videoPrefix,
-		}),
+		size: getSizeStyles(
+			{
+				...getGroupAttributes(props, 'size', false, videoPrefix),
+			},
+			videoPrefix
+		),
 	};
 };
 

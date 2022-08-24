@@ -10,7 +10,7 @@ import Inspector from './inspector';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar, RawHTML } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-
+import { getIsSiteEditor, getSiteEditorIframeBody } from '../../extensions/fse';
 import { getIconPositionClass } from '../../extensions/styles';
 import getStyles from './styles';
 import copyPasteMapping from './copy-paste-mapping';
@@ -98,6 +98,15 @@ const SearchBlock = props => {
 		return null;
 	};
 
+	const getActiveElement = () => {
+		const element = getIsSiteEditor()
+			? getSiteEditorIframeBody()
+			: document.querySelector('.editor-styles-wrapper');
+		const { activeElement } = element.ownerDocument;
+
+		return activeElement;
+	};
+
 	return (
 		<>
 			<input
@@ -106,9 +115,7 @@ const SearchBlock = props => {
 				placeholder={placeholder}
 				onMouseOver={() => onInputChangeByHover(true)}
 				onMouseOut={event =>
-					event.target !==
-						document.querySelector('.editor-styles-wrapper')
-							.ownerDocument.activeElement &&
+					event.target !== getActiveElement() &&
 					onInputChangeByHover(false)
 				}
 			/>

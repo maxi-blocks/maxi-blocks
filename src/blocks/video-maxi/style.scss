@@ -102,6 +102,12 @@
 	&__video-container &__close-button {
 		transform: translate(100%, -100%);
 	}
+
+	&__placeholder {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
 }
 
 @keyframes popup-zoom-out {

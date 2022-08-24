@@ -330,8 +330,7 @@ const getIconSpacing = (
 	props,
 	icon,
 	isHover = false,
-	prefix = 'navigation-arrow-both',
-	clientId = ''
+	prefix = 'navigation-arrow-both'
 ) => {
 	const response = {
 		padding: getMarginPaddingStyles({
@@ -353,119 +352,33 @@ const getIconSpacing = (
 		general: {},
 	};
 
-	const innerBlockCount = wp.data
-		.select('core/block-editor')
-		.getBlocks(clientId).length;
-
 	breakpoints.forEach(breakpoint => {
 		responsive[breakpoint] = {};
 
-		const size = `${getLastBreakpointAttribute({
-			target: `${prefix}-icon-width`,
+		const horizontalSpacing = getLastBreakpointAttribute({
+			target: `${prefix}-icon-spacing-horizontal`,
 			breakpoint,
 			attributes: props,
 			isHover,
-		})}${getLastBreakpointAttribute({
-			target: `${prefix}-icon-width-unit`,
+		});
+		const verticalSpacing = getLastBreakpointAttribute({
+			target: `${prefix}-icon-spacing-vertical`,
 			breakpoint,
 			attributes: props,
 			isHover,
-		})}`;
+		});
 
-		const halfSize = `${
-			getLastBreakpointAttribute({
-				target: `${prefix}-icon-width`,
-				breakpoint,
-				attributes: props,
-				isHover,
-			}) / 2
-		}${getLastBreakpointAttribute({
-			target: `${prefix}-icon-width-unit`,
-			breakpoint,
-			attributes: props,
-			isHover,
-		})}`;
-
-		const halfSizeAll = `${
-			(getLastBreakpointAttribute({
-				target: `${prefix}-icon-width`,
-				breakpoint,
-				attributes: props,
-				isHover,
-			}) *
-				innerBlockCount) /
-			2
-		}${getLastBreakpointAttribute({
-			target: `${prefix}-icon-width-unit`,
-			breakpoint,
-			attributes: props,
-			isHover,
-		})}`;
-
-		const halfSizeSpacingBetween = `${
-			(getLastBreakpointAttribute({
-				target: `${prefix}-icon-spacing-between`,
-				breakpoint,
-				attributes: props,
-				isHover,
-			}) *
-				innerBlockCount) /
-			2
-		}px`;
-
-		if (
-			!isNil(
-				props[
-					`${prefix}-icon-spacing-horizontal-${breakpoint}${
-						isHover ? '-hover' : ''
-					}`
-				]
-			)
-		) {
+		if (!isNil(horizontalSpacing)) {
 			if (icon === 'prev')
-				responsive[
-					breakpoint
-				].left = `calc(${-getLastBreakpointAttribute({
-					target: `${prefix}-icon-spacing-horizontal`,
-					breakpoint,
-					attributes: props,
-					isHover,
-				})}px - ${halfSize})`;
+				responsive[breakpoint].left = `${-horizontalSpacing}px`;
 			if (icon === 'next')
-				responsive[
-					breakpoint
-				].right = `calc(${-getLastBreakpointAttribute({
-					target: `${prefix}-icon-spacing-horizontal`,
-					breakpoint,
-					attributes: props,
-					isHover,
-				})}px - (${size} + ${halfSize}))`;
+				responsive[breakpoint].right = `${-horizontalSpacing}px`;
 			if (icon === 'dots')
-				responsive[
-					breakpoint
-				].left = `calc(${getLastBreakpointAttribute({
-					target: `${prefix}-icon-spacing-horizontal`,
-					breakpoint,
-					attributes: props,
-					isHover,
-				})}% - ${halfSizeAll} - ${halfSizeSpacingBetween})`;
+				responsive[breakpoint].left = `${horizontalSpacing}%`;
 		}
 
-		if (
-			!isNil(
-				props[
-					`${prefix}-icon-spacing-vertical-${breakpoint}${
-						isHover ? '-hover' : ''
-					}`
-				]
-			)
-		) {
-			responsive[breakpoint].top = `${getLastBreakpointAttribute({
-				target: `${prefix}-icon-spacing-vertical`,
-				breakpoint,
-				attributes: props,
-				isHover,
-			})}%`;
+		if (!isNil(verticalSpacing)) {
+			responsive[breakpoint].top = `${verticalSpacing}%`;
 		}
 	});
 
@@ -556,197 +469,166 @@ const getStyles = (props, breakpoint, clientId) => {
 					isHover: true,
 					blockStyle: props.blockStyle,
 				}),
+				...(navigationType.includes('arrow') && {
+					...getSVGStyles({
+						obj: props,
+						target: ' .maxi-slider-block__arrow',
+						blockStyle,
+						prefix: 'navigation-arrow-both-icon-',
+					}),
+					' .maxi-slider-block__arrow': getIconObject(
+						props,
+						'navigation-arrow-both-icon-'
+					),
+					' .maxi-slider-block__arrow > div > div': getIconSize(
+						props,
+						'navigation-arrow-both-icon',
+						false
+					),
+					' .maxi-slider-block__arrow--prev': getIconSpacing(
+						props,
+						'prev',
+						false,
+						'navigation-arrow-both'
+					),
+					' .maxi-slider-block__arrow--next': getIconSpacing(
+						props,
+						'next',
+						false,
+						'navigation-arrow-both'
+					),
+					' .maxi-slider-block__arrow svg': getIconSize(
+						props,
+						'navigation-arrow-both-icon',
+						false
+					),
+					' .maxi-slider-block__arrow svg path': getIconPathStyles(
+						props,
+						false,
+						'navigation-arrow-both'
+					),
+				}),
 				...(navigationType.includes('arrow') &&
-					(() => {
-						return {
-							...getSVGStyles({
-								obj: props,
-								target: ' .maxi-slider-block__arrow',
-								blockStyle,
-								prefix: 'navigation-arrow-both-icon-',
-							}),
-							' .maxi-slider-block__arrow': getIconObject(
-								props,
-								'navigation-arrow-both-icon-'
-							),
-							' .maxi-slider-block__arrow > div > div':
-								getIconSize(
-									props,
-									'navigation-arrow-both-icon',
-									false
-								),
-							' .maxi-slider-block__arrow--prev': getIconSpacing(
-								props,
-								'prev',
-								false,
-								'navigation-arrow-both'
-							),
-							' .maxi-slider-block__arrow--next': getIconSpacing(
-								props,
-								'next',
-								false,
-								'navigation-arrow-both'
-							),
-							' .maxi-slider-block__arrow svg': getIconSize(
+					arrowIconHoverStatus && {
+						...getSVGStyles({
+							obj: props,
+							target: ' .maxi-slider-block__arrow--prev:hover',
+							blockStyle,
+							prefix: 'navigation-arrow-both-icon-',
+							isHover: true,
+						}),
+						...getSVGStyles({
+							obj: props,
+							target: ' .maxi-slider-block__arrow--next:hover',
+							blockStyle,
+							prefix: 'navigation-arrow-both-icon-',
+							isHover: true,
+						}),
+						' .maxi-slider-block__arrow:hover': getIconHoverObject(
+							props,
+							'navigation-arrow-both-icon-'
+						),
+						' .maxi-slider-block__arrow--prev:hover':
+							getIconSpacing(props, 'prev', true),
+						' .maxi-slider-block__arrow--prev:hover svg':
+							getIconSize(
 								props,
 								'navigation-arrow-both-icon',
-								false
+								true
 							),
-							' .maxi-slider-block__arrow svg path':
-								getIconPathStyles(
-									props,
-									false,
-									'navigation-arrow-both'
-								),
-						};
-					})()),
-				...(navigationType.includes('arrow') &&
-					arrowIconHoverStatus &&
-					(() => {
-						return {
-							...getSVGStyles({
-								obj: props,
-								target: ' .maxi-slider-block__arrow--prev:hover',
-								blockStyle,
-								prefix: 'navigation-arrow-both-icon-',
-								isHover: true,
-							}),
-							...getSVGStyles({
-								obj: props,
-								target: ' .maxi-slider-block__arrow--next:hover',
-								blockStyle,
-								prefix: 'navigation-arrow-both-icon-',
-								isHover: true,
-							}),
-							' .maxi-slider-block__arrow:hover':
-								getIconHoverObject(
-									props,
-									'navigation-arrow-both-icon-'
-								),
-							' .maxi-slider-block__arrow--prev:hover':
-								getIconSpacing(props, 'prev', true),
-							' .maxi-slider-block__arrow--prev:hover svg':
-								getIconSize(
-									props,
-									'navigation-arrow-both-icon',
-									true
-								),
-							' .maxi-slider-block__arrow--prev:hover svg path':
-								getIconPathStyles(
-									props,
-									true,
-									'navigation-arrow-both'
-								),
-
-							' .maxi-slider-block__arrow--next:hover':
-								getIconSpacing(props, 'next', true),
-							' .maxi-slider-block__arrow--next:hover svg':
-								getIconSize(
-									props,
-									'navigation-arrow-both-icon',
-									true
-								),
-							' .maxi-slider-block__arrow--next:hover svg path':
-								getIconPathStyles(
-									props,
-									true,
-									'navigation-arrow-both'
-								),
-						};
-					})()),
-				...(navigationType.includes('dot') &&
-					(() => {
-						return {
-							...getSVGStyles({
-								obj: props,
-								target: ' .maxi-slider-block__dot',
-								blockStyle,
-								prefix: 'navigation-dot-icon-',
-							}),
-							' .maxi-slider-block__dots': getIconSpacing(
+						' .maxi-slider-block__arrow--prev:hover svg path':
+							getIconPathStyles(
 								props,
-								'dots',
-								false,
-								'navigation-dot',
-								clientId
-							),
-							' .maxi-navigation-dot-icon-block__icon':
-								getIconSize(
-									props,
-									'navigation-dot-icon',
-									false
-								),
-							' .maxi-navigation-dot-icon-block__icon > div':
-								getIconSize(
-									props,
-									'navigation-dot-icon',
-									false
-								),
-							' .maxi-slider-block__dot svg': getIconSize(
-								props,
-								'navigation-dot-icon',
-								false
-							),
-							' .maxi-slider-block__dot': getIconObject(
-								props,
-								'navigation-dot-icon-'
+								true,
+								'navigation-arrow-both'
 							),
 
-							' .maxi-slider-block__dot:not(:last-child)':
-								getIconSpacingBetween(
-									props,
-									'navigation-dot',
-									false
-								),
-							' .maxi-slider-block__dot svg path':
-								getIconPathStyles(
-									props,
-									false,
-									'navigation-dot'
-								),
-						};
-					})()),
+						' .maxi-slider-block__arrow--next:hover':
+							getIconSpacing(props, 'next', true),
+						' .maxi-slider-block__arrow--next:hover svg':
+							getIconSize(
+								props,
+								'navigation-arrow-both-icon',
+								true
+							),
+						' .maxi-slider-block__arrow--next:hover svg path':
+							getIconPathStyles(
+								props,
+								true,
+								'navigation-arrow-both'
+							),
+					}),
+				...(navigationType.includes('dot') && {
+					...getSVGStyles({
+						obj: props,
+						target: ' .maxi-slider-block__dot',
+						blockStyle,
+						prefix: 'navigation-dot-icon-',
+					}),
+					' .maxi-slider-block__dots': getIconSpacing(
+						props,
+						'dots',
+						false,
+						'navigation-dot'
+					),
+					' .maxi-navigation-dot-icon-block__icon': getIconSize(
+						props,
+						'navigation-dot-icon',
+						false
+					),
+					' .maxi-navigation-dot-icon-block__icon > div': getIconSize(
+						props,
+						'navigation-dot-icon',
+						false
+					),
+					' .maxi-slider-block__dot svg': getIconSize(
+						props,
+						'navigation-dot-icon',
+						false
+					),
+					' .maxi-slider-block__dot': getIconObject(
+						props,
+						'navigation-dot-icon-'
+					),
+
+					' .maxi-slider-block__dot:not(:last-child)':
+						getIconSpacingBetween(props, 'navigation-dot', false),
+					' .maxi-slider-block__dot svg path': getIconPathStyles(
+						props,
+						false,
+						'navigation-dot'
+					),
+				}),
 				...(navigationType.includes('dot') &&
-					dotIconHoverStatus &&
-					(() => {
-						return {
-							...getSVGStyles({
-								obj: props,
-								target: ' .maxi-slider-block__dot:not(.maxi-slider-block__dot--active):hover',
-								blockStyle,
-								prefix: 'navigation-dot-icon-',
-								isHover: true,
-							}),
-							' .maxi-slider-block__dot:hover':
-								getIconHoverObject(
-									props,
-									'navigation-dot-icon-'
-								),
-							' .maxi-slider-block__dot:not(.maxi-slider-block__dot--active):hover':
-								getIconSpacing(props, 'prev', true),
-							' .maxi-slider-block__dot:not(.maxi-slider-block__dot--active):hover svg':
-								getIconSize(props, 'navigation-dot-icon', true),
-							' .maxi-slider-block__dot:(.maxi-slider-block__dot--active):hover svg path':
-								getIconPathStyles(
-									props,
-									true,
-									'navigation-dot'
-								),
-						};
-					})()),
+					dotIconHoverStatus && {
+						...getSVGStyles({
+							obj: props,
+							target: ' .maxi-slider-block__dot:not(.maxi-slider-block__dot--active):hover',
+							blockStyle,
+							prefix: 'navigation-dot-icon-',
+							isHover: true,
+						}),
+						' .maxi-slider-block__dot:hover': getIconHoverObject(
+							props,
+							'navigation-dot-icon-'
+						),
+						' .maxi-slider-block__dot:not(.maxi-slider-block__dot--active):hover':
+							getIconSpacing(props, 'prev', true),
+						' .maxi-slider-block__dot:not(.maxi-slider-block__dot--active):hover svg':
+							getIconSize(props, 'navigation-dot-icon', true),
+						' .maxi-slider-block__dot:(.maxi-slider-block__dot--active):hover svg path':
+							getIconPathStyles(props, true, 'navigation-dot'),
+					}),
 				...(navigationType.includes('dot') &&
-					dotIconActiveStatus &&
-					(() => {
-						return {
-							...getSVGStyles({
-								obj: props,
-								target: ' .maxi-slider-block__dot--active',
-								blockStyle,
-								prefix: 'navigation-active-dot-icon-',
-								isHover: false,
-							}),
-						};
-					})()),
+					dotIconActiveStatus && {
+						...getSVGStyles({
+							obj: props,
+							target: ' .maxi-slider-block__dot--active',
+							blockStyle,
+							prefix: 'navigation-active-dot-icon-',
+							isHover: false,
+						}),
+					}),
 			},
 			selectorsSlider,
 			props

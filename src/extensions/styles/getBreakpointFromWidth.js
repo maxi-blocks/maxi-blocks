@@ -15,9 +15,9 @@ const getBreakpointRange = (width, breakpoints) => {
  * @param {Object.<string, number>} breakpoints Object of breakpoints, where keys - are breakpoint names, and values - are breakpoint widths.
  * @returns {string}
  */
-const getBreakpointByWidth = (width, breakpoints) => {
+const getBreakpointFromWidth = (width, breakpoints) => {
 	if (width > breakpoints.xl) return 'xxl';
 	return getBreakpointRange(width, breakpoints);
 };
 
-export default getBreakpointByWidth;
+export default getBreakpointFromWidth;

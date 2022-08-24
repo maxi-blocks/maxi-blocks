@@ -7,7 +7,7 @@ import { dispatch, select, resolveSelect } from '@wordpress/data';
  * Internal dependencies
  */
 import { getIsSiteEditor } from '../fse';
-import { getBreakpointByWidth } from '../styles';
+import { getBreakpointFromWidth } from '../styles';
 
 const actions = {
 	receiveMaxiSettings() {
@@ -54,7 +54,7 @@ const actions = {
 		).receiveMaxiBreakpoints();
 
 		const deviceType =
-			rawDeviceType ?? getBreakpointByWidth(width, breakpoints);
+			rawDeviceType ?? getBreakpointFromWidth(width, breakpoints);
 
 		if (!isGutenbergButton) {
 			const {

@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getBreakpointByWidth } from '../styles';
+import { getBreakpointFromWidth } from '../styles';
 import { getIsSiteEditor } from '../fse';
 
 /**
@@ -56,13 +56,11 @@ const selectors = {
 	receiveWinBreakpoint(state) {
 		if (!state) return false;
 
-		const winWidth =
-			(getIsSiteEditor() &&
-				document
+		const winWidth = getIsSiteEditor()
+			? document
 					.querySelector('.interface-interface-skeleton__content')
-					?.getBoundingClientRect().width) ??
-			state?.settings?.window?.width ??
-			window.innerWidth;
+					?.getBoundingClientRect().width
+			: state?.settings?.window?.width ?? window.innerWidth;
 
 		const breakpoints = !isEmpty(state.breakpoints)
 			? state.breakpoints
@@ -74,7 +72,7 @@ const selectors = {
 					xl: 1920,
 			  };
 
-		return getBreakpointByWidth(winWidth, breakpoints);
+		return getBreakpointFromWidth(winWidth, breakpoints);
 	},
 };
 

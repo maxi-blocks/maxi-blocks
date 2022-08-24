@@ -145,66 +145,6 @@ const getVideoContainerOject = props => {
 	return response;
 };
 
-const getVideoPlayerStyles = (props, isHover = false) => {
-	const { playerType } = props;
-
-	const response =
-		playerType === 'video'
-			? {
-					border: getBorderStyles({
-						obj: {
-							...getGroupAttributes(
-								props,
-								['border', 'borderWidth', 'borderRadius'],
-								isHover,
-								videoPrefix
-							),
-						},
-						blockStyle: props.blockStyle,
-						prefix: videoPrefix,
-						isHover,
-					}),
-					boxShadow: getBoxShadowStyles({
-						obj: {
-							...getGroupAttributes(
-								props,
-								'boxShadow',
-								isHover,
-								videoPrefix
-							),
-						},
-						blockStyle: props.blockStyle,
-						prefix: videoPrefix,
-						isHover,
-					}),
-					padding: getMarginPaddingStyles({
-						obj: {
-							...getGroupAttributes(
-								props,
-								'padding',
-								false,
-								videoPrefix
-							),
-						},
-						prefix: videoPrefix,
-					}),
-					size: getSizeStyles(
-						{
-							...getGroupAttributes(
-								props,
-								'size',
-								false,
-								videoPrefix
-							),
-						},
-						videoPrefix
-					),
-			  }
-			: {};
-
-	return response;
-};
-
 const getCloseIconPosition = obj => {
 	const response = {
 		label: 'Icon position',
@@ -325,46 +265,57 @@ const getIconObject = (prefix, obj) => {
 	};
 };
 
-const getOverlayStyles = (props, isHover = false) => {
+const getVideoStyles = (props, isHover = false) => {
 	return {
-		border: getBorderStyles({
-			obj: {
-				...getGroupAttributes(
-					props,
-					['border', 'borderWidth', 'borderRadius'],
-					isHover,
-					videoPrefix
-				),
-			},
-			blockStyle: props.blockStyle,
-			prefix: videoPrefix,
-			isHover,
+		...((!isHover || props[`${videoPrefix}border-status-hover`]) && {
+			border: getBorderStyles({
+				obj: {
+					...getGroupAttributes(
+						props,
+						['border', 'borderWidth', 'borderRadius'],
+						isHover,
+						videoPrefix
+					),
+				},
+				blockStyle: props.blockStyle,
+				prefix: videoPrefix,
+				isHover,
+			}),
 		}),
-		boxShadow: getBoxShadowStyles({
-			obj: {
-				...getGroupAttributes(props, 'boxShadow', isHover, videoPrefix),
-			},
-			blockStyle: props.blockStyle,
-			prefix: videoPrefix,
-			isHover,
+		...((!isHover || props[`${videoPrefix}box-shadow-status-hover`]) && {
+			boxShadow: getBoxShadowStyles({
+				obj: {
+					...getGroupAttributes(
+						props,
+						'boxShadow',
+						isHover,
+						videoPrefix
+					),
+				},
+				blockStyle: props.blockStyle,
+				prefix: videoPrefix,
+				isHover,
+			}),
 		}),
-		padding: getMarginPaddingStyles({
-			obj: {
-				...getGroupAttributes(props, 'padding', false, videoPrefix),
-			},
-			prefix: videoPrefix,
+		...(!isHover && {
+			padding: getMarginPaddingStyles({
+				obj: {
+					...getGroupAttributes(props, 'padding', false, videoPrefix),
+				},
+				prefix: videoPrefix,
+			}),
+			size: getSizeStyles(
+				{
+					...getGroupAttributes(props, 'size', false, videoPrefix),
+				},
+				videoPrefix
+			),
 		}),
-		size: getSizeStyles(
-			{
-				...getGroupAttributes(props, 'size', false, videoPrefix),
-			},
-			videoPrefix
-		),
 	};
 };
 
 const getStyles = props => {
-	const { uniqueID } = props;
+	const { uniqueID, playerType } = props;
 
 	const response = {
 		[uniqueID]: styleProcessor(
@@ -374,8 +325,21 @@ const getStyles = props => {
 				' .maxi-video-block__popup-wrapper': getLightBoxObject(props),
 				' .maxi-video-block__video-container':
 					getVideoContainerOject(props),
-				' .maxi-video-block__video-player': getVideoPlayerStyles(props),
-				' .maxi-video-block__overlay': getOverlayStyles(props),
+				...(playerType === 'video'
+					? {
+							' .maxi-video-block__video-player':
+								getVideoStyles(props),
+							' .maxi-video-block__video-player:hover':
+								getVideoStyles(props, true),
+					  }
+					: {
+							' .maxi-video-block__overlay':
+								getVideoStyles(props),
+							' .maxi-video-block__overlay:hover': getVideoStyles(
+								props,
+								true
+							),
+					  }),
 				' .maxi-video-block__overlay-background':
 					getOverlayBackgroundObject(props),
 				...(props['overlay-background-hover-status'] && {
@@ -394,7 +358,6 @@ const getStyles = props => {
 				' .maxi-video-block__popup-wrapper': getLightBoxObject(props),
 				' .maxi-video-block__video-container':
 					getVideoContainerOject(props),
-				' .maxi-video-block__video-player': getVideoPlayerStyles(props),
 				...getIconObject('close-', props),
 			},
 			selectorsVideo,

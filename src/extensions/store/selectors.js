@@ -1,4 +1,10 @@
 /**
+ * Internal dependencies
+ */
+import { getBreakpointByWidth } from '../styles';
+import { getIsSiteEditor } from '../fse';
+
+/**
  * External dependencies
  */
 import { isEmpty } from 'lodash';
@@ -50,7 +56,13 @@ const selectors = {
 	receiveWinBreakpoint(state) {
 		if (!state) return false;
 
-		const winWidth = state?.settings?.window?.width ?? window.innerWidth;
+		const winWidth =
+			(getIsSiteEditor() &&
+				document
+					.querySelector('.interface-interface-skeleton__content')
+					?.getBoundingClientRect().width) ??
+			state?.settings?.window?.width ??
+			window.innerWidth;
 
 		const breakpoints = !isEmpty(state.breakpoints)
 			? state.breakpoints
@@ -62,23 +74,7 @@ const selectors = {
 					xl: 1920,
 			  };
 
-		if (winWidth > breakpoints.xl) return 'xxl';
-
-		// Objects are unordered collection of properties, so as we can't rely on
-		// its own order, we need to iterate over an ordered array
-		const getBreakpointRange = (obj, minWidth) => {
-			let result;
-
-			['xl', 'l', 'm', 's', 'xs'].forEach(breakpoint => {
-				if (obj[breakpoint] >= minWidth) {
-					result = breakpoint;
-				}
-			});
-
-			return result;
-		};
-
-		return getBreakpointRange(breakpoints, winWidth);
+		return getBreakpointByWidth(winWidth, breakpoints);
 	},
 };
 

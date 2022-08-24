@@ -7,7 +7,12 @@ import { select, dispatch, subscribe } from '@wordpress/data';
  * Internal dependencies
  */
 import { getPageFonts, loadFonts } from '../text/fonts';
-import { getSiteEditorIframeBody } from '../fse';
+import {
+	getIsSiteEditor,
+	getIsTemplatePart,
+	getSiteEditorIframeBody,
+	getTemplatePartSlug,
+} from '../fse';
 
 /**
  * External dependencies
@@ -448,4 +453,79 @@ wp.domReady(() => {
 			fseIframeObserverUnsubscribe();
 		}
 	});
+
+	if (!getIsSiteEditor()) {
+		const changeHandlesDisplay = (display, wrapper) =>
+			Array.from(
+				wrapper.querySelectorAll('.resizable-editor__drag-handle')
+			).forEach(handle => {
+				handle.style.display = display;
+			});
+
+		const changeSiteEditorWidth = (width = '') => {
+			document.querySelector('.edit-site-visual-editor').style.width =
+				width;
+		};
+
+		const templatePartResizeObserver = new ResizeObserver(entries => {
+			setTimeout(async () => {
+				const editorWrapper = entries[0].target;
+
+				if (!editorWrapper) return;
+
+				editorWrapper.style.maxWidth = 'initial';
+
+				const { width } = editorWrapper.getBoundingClientRect();
+
+				const { setMaxiDeviceType } = dispatch('maxiBlocks');
+				await setMaxiDeviceType({
+					width,
+					ignoreMaxiBlockResponsiveWidth: true,
+				});
+
+				const maxiBlocksResponsiveAttribute =
+					editorWrapper.getAttribute('maxi-blocks-responsive');
+
+				const { receiveWinBreakpoint } = select('maxiBlocks');
+				const winBreakpoint = receiveWinBreakpoint();
+
+				const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
+
+				// Hiding handles if current breakpoint smaller than winBreakpoint,
+				// because resizing is broken in this case
+				if (
+					winBreakpoint &&
+					maxiBlocksResponsiveAttribute &&
+					breakpoints.indexOf(winBreakpoint) >
+						breakpoints.indexOf(maxiBlocksResponsiveAttribute)
+				) {
+					changeSiteEditorWidth('fit-content');
+					changeHandlesDisplay('none', editorWrapper);
+				} else {
+					changeSiteEditorWidth();
+					changeHandlesDisplay('inline-block', editorWrapper);
+				}
+			}, 150);
+		});
+
+		let templatePartSlug = '';
+
+		subscribe(() => {
+			if (getIsTemplatePart()) {
+				const targetNode = document.querySelector(
+					'.components-resizable-box__container'
+				);
+
+				const currentTemplatePartSlug = getTemplatePartSlug();
+
+				if (
+					targetNode &&
+					templatePartSlug !== currentTemplatePartSlug
+				) {
+					templatePartResizeObserver.observe(targetNode);
+					templatePartSlug = currentTemplatePartSlug;
+				}
+			} else templatePartResizeObserver.disconnect();
+		});
+	}
 });

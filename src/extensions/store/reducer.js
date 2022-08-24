@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getSiteEditorIframeBody } from '../fse';
+import { getIsTemplatePart, getSiteEditorIframeBody } from '../fse';
 
 /**
  * External dependencies
@@ -11,19 +11,17 @@ import { omit } from 'lodash';
 const breakpointResizer = (
 	size,
 	breakpoints,
-	xxlSize = breakpoints.xl + 1,
 	winSize = 0,
-	winBreakpoint
+	winBreakpoint,
+	ignoreMaxiBlockResponsiveWidth
 ) => {
+	const xxlSize = breakpoints.xl + 1;
+
 	const editorWrapper =
 		document.querySelector('.edit-post-visual-editor') ||
+		(getIsTemplatePart() &&
+			document.querySelector('.components-resizable-box__container')) ||
 		document.querySelector('.edit-site-visual-editor');
-
-	const winHeight = window.outerWidth;
-	const responsiveWidth =
-		(size === 'general' && 'none') ||
-		(size === 'xxl' && (xxlSize > winSize ? xxlSize : winSize)) ||
-		breakpoints[size];
 
 	[editorWrapper, getSiteEditorIframeBody()].forEach(element => {
 		element?.setAttribute(
@@ -32,16 +30,28 @@ const breakpointResizer = (
 		);
 	});
 
-	editorWrapper.setAttribute('maxi-blocks-responsive-width', responsiveWidth);
+	if (!ignoreMaxiBlockResponsiveWidth) {
+		const winHeight = window.outerWidth;
+		const responsiveWidth =
+			(size === 'general' && 'none') ||
+			(size === 'xxl' && (xxlSize > winSize ? xxlSize : winSize)) ||
+			breakpoints[size];
 
-	if (size === 'general') {
-		editorWrapper.style.width = '';
-		editorWrapper.style.margin = '';
-	} else {
-		editorWrapper.style.width = `${responsiveWidth}px`;
+		editorWrapper.setAttribute(
+			'maxi-blocks-responsive-width',
+			responsiveWidth
+		);
 
-		if (winHeight > responsiveWidth) editorWrapper.style.margin = '0 auto';
-		else editorWrapper.style.margin = '';
+		if (size === 'general') {
+			editorWrapper.style.width = '';
+			editorWrapper.style.margin = '';
+		} else {
+			editorWrapper.style.width = `${responsiveWidth}px`;
+
+			if (winHeight > responsiveWidth)
+				editorWrapper.style.margin = '0 auto';
+			else editorWrapper.style.margin = '';
+		}
 	}
 };
 
@@ -80,9 +90,9 @@ const reducer = (
 			breakpointResizer(
 				action.deviceType,
 				state.breakpoints,
-				action.width,
 				state.settings.window.width,
-				action.winBreakpoint
+				action.winBreakpoint,
+				action.ignoreMaxiBlockResponsiveWidth
 			);
 			return {
 				...state,

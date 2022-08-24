@@ -37,6 +37,7 @@ const Inspector = props => {
 		attributes,
 		insertInlineStyles,
 		cleanInlineStyles,
+		inlineStylesTargets,
 	} = props;
 
 	const { blockStyle, svgType } = attributes;
@@ -178,6 +179,9 @@ const Inspector = props => {
 												}
 												cleanInlineStyles={
 													cleanInlineStyles
+												}
+												inlineStylesTargets={
+													inlineStylesTargets
 												}
 												blockStyle={blockStyle}
 												svgType={svgType}

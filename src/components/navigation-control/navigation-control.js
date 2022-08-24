@@ -15,6 +15,7 @@ const NavigationIconsControl = props => {
 		deviceType,
 		insertInlineStyles,
 		cleanInlineStyles,
+		inlineStylesTargets,
 		clientId,
 		blockStyle,
 		prefix = 'navigation-arrow-both-icon',
@@ -27,11 +28,10 @@ const NavigationIconsControl = props => {
 			props['navigation-arrow-first-svgType'] ===
 			props['navigation-arrow-second-svgType']
 				? props['navigation-arrow-first-svgType']
-				: 'Filed';
+				: 'Filled';
 
 	if (prefix === 'navigation-dot-icon')
 		svgType = props['navigation-dot-svgType'];
-
 	return (
 		<SettingTabsControl
 			items={[
@@ -47,13 +47,15 @@ const NavigationIconsControl = props => {
 							) =>
 								insertInlineStyles({
 									obj,
-									target,
+									target: `${inlineStylesTargets.dot} ${target}`,
 									isMultiplySelector,
 								})
 							}
 							onChange={(obj, target) => {
 								onChange(obj);
-								cleanInlineStyles(target);
+								cleanInlineStyles(
+									`${inlineStylesTargets.dot} ${target}`
+								);
 							}}
 							svgType={svgType}
 							breakpoint={deviceType}
@@ -79,20 +81,8 @@ const NavigationIconsControl = props => {
 							{props[`${prefix}-status-hover`] && (
 								<NavigationIconControl
 									{...props}
-									onChangeInline={(
-										obj,
-										target,
-										isMultiplySelector = false
-									) =>
-										insertInlineStyles({
-											obj,
-											target,
-											isMultiplySelector,
-										})
-									}
 									onChange={(obj, target) => {
 										onChange(obj);
-										cleanInlineStyles(target);
 									}}
 									svgType={svgType}
 									breakpoint={deviceType}
@@ -134,13 +124,15 @@ const NavigationIconsControl = props => {
 									) =>
 										insertInlineStyles({
 											obj,
-											target,
+											target: `${inlineStylesTargets.dotActive} ${target}`,
 											isMultiplySelector,
 										})
 									}
 									onChange={(obj, target) => {
 										onChange(obj);
-										cleanInlineStyles(target);
+										cleanInlineStyles(
+											`${inlineStylesTargets.dotActive} ${target}`
+										);
 									}}
 									svgType={svgType}
 									breakpoint={deviceType}

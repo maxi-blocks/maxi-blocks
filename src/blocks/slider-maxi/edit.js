@@ -526,12 +526,17 @@ class edit extends MaxiBlockComponent {
 		const emptySliderClass = !hasInnerBlocks
 			? 'maxi-slider-block__empty'
 			: 'maxi-slider-block__has-innerBlock';
+		const inlineStylesTargets = {
+			dot: '.maxi-slider-block__dot:not(.maxi-slider-block__dot--active)',
+			dotActive: '.maxi-slider-block__dot--active',
+		};
 
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}
 				{...this.props}
 				{...this.state}
+				inlineStylesTargets={inlineStylesTargets}
 				setEditView={val => this.setState({ isEditView: val })}
 			/>,
 			<Toolbar

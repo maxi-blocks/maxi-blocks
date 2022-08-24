@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
+
 /**
  * Internal dependencies
  */
@@ -11,8 +12,6 @@ import {
 	SettingTabsControl,
 	SliderControl,
 	NavigationControl,
-	NavigationDotControl,
-	NavigationArrowControl,
 } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsSlider, categoriesSlider } from './custom-css';
@@ -20,10 +19,7 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-
-/**
- * External dependencies
- */
+import NavigationIconsControl from '../../components/navigation-control/navigation-control';
 
 /**
  * Inspector
@@ -105,7 +101,7 @@ const Inspector = props => {
 									...(navigationType.includes('arrow') && {
 										label: __('Arrows', 'maxi-blocks'),
 										content: (
-											<NavigationArrowControl
+											<NavigationIconsControl
 												{...getGroupAttributes(
 													attributes,
 													[
@@ -140,13 +136,14 @@ const Inspector = props => {
 												}
 												blockStyle={blockStyle}
 												svgType={svgType}
+												prefix='navigation-arrow-both-icon'
 											/>
 										),
 									}),
 									...(navigationType.includes('dot') && {
 										label: __('Dots', 'maxi-blocks'),
 										content: (
-											<NavigationDotControl
+											<NavigationIconsControl
 												{...getGroupAttributes(
 													attributes,
 													[
@@ -185,6 +182,7 @@ const Inspector = props => {
 												}
 												blockStyle={blockStyle}
 												svgType={svgType}
+												prefix='navigation-dot-icon'
 											/>
 										),
 									}),

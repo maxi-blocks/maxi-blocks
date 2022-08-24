@@ -7,6 +7,7 @@ import { select } from '@wordpress/data';
  * Internal dependencies
  */
 import getIsSiteEditor from './getIsSiteEditor';
+import getIsTemplatePart from './getIsTemplatePart';
 
 /**
  * Returns the slug of the template part if we are on the FSE template part editor.
@@ -18,11 +19,10 @@ import getIsSiteEditor from './getIsSiteEditor';
 const getTemplatePartSlug = clientId => {
 	if (!getIsSiteEditor()) return false;
 
-	const { getEditedPostType, getEditedPostId } = select('core/edit-site');
+	const { getEditedPostId } = select('core/edit-site');
 
 	// Checking if we on the FSE template part editor.
-	if (getEditedPostType() === 'wp_template_part')
-		return getEditedPostId().split('//', 2)[1];
+	if (getIsTemplatePart()) return getEditedPostId().split('//', 2)[1];
 
 	if (!clientId) return false;
 

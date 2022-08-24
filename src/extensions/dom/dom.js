@@ -454,7 +454,7 @@ wp.domReady(() => {
 		}
 	});
 
-	if (!getIsSiteEditor()) {
+	if (getIsSiteEditor()) {
 		const changeHandlesDisplay = (display, wrapper) =>
 			Array.from(
 				wrapper.querySelectorAll('.resizable-editor__drag-handle')

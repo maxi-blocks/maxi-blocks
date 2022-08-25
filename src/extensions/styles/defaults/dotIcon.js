@@ -1,36 +1,61 @@
 import prefixAttributesCreator from '../prefixAttributesCreator';
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
-import { icon } from './icon';
-import padding from './padding';
-import { background, backgroundColor, backgroundGradient } from './background';
+import {
+	icon,
+	iconBackground,
+	iconBackgroundColor,
+	iconBackgroundGradient,
+	iconBoxShadow,
+	iconPadding,
+} from './icon';
+import { iconBorder, iconBorderRadius, iconBorderWidth } from './iconBorder';
 
 const prefix = 'navigation-dot-';
-const prefixIcon = 'navigation-dot-icon-';
 
-export const dotIcon = {
+const dotIcon = {
 	...prefixAttributesCreator({
-		obj: icon,
+		obj: {
+			...icon,
+			...iconPadding,
+			...iconBackground,
+			...iconBackgroundColor,
+			...iconBackgroundGradient,
+			...iconBorder,
+			...iconBorderRadius,
+			...iconBorderWidth,
+			...iconBoxShadow,
+		},
 		prefix,
 		diffValAttr: {
 			'navigation-dot-icon-width-general': '10',
 			'navigation-dot-icon-stroke-palette-color': 5,
 			'navigation-dot-icon-fill-palette-color': 3,
+			'navigation-dot-icon-border-unit-radius-general': 'px',
+			'navigation-dot-icon-background-active-media-general': 'none',
+			'navigation-dot-icon-content':
+				'<svg class="circle-2-shape-maxi-svg__3" width="64px" height="64px" viewBox="0 0 36.1 36.1"><circle cx="18" cy="18" r="17.2" data-fill  fill="var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-5,0,0,0),1))"/></svg>',
 		},
 		exclAttr: [
 			'icon-inherit',
 			'icon-only',
 			'icon-position',
-			'icon-content',
 			'icon-spacing',
 		],
-	}),
-	...{
-		'navigation-dot-icon-content': {
-			type: 'string',
-			default:
-				'<svg class="circle-2-shape-maxi-svg__3" width="64px" height="64px" viewBox="0 0 36.1 36.1"><circle cx="18" cy="18" r="17.2" data-fill  fill="var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-5,0,0,0),1))"/></svg>',
+		newAttr: {
+			'navigation-dot-icon-status-border': {
+				type: 'boolean',
+				default: false,
+			},
+			'navigation-dot-icon-status-background': {
+				type: 'boolean',
+				default: false,
+			},
+			'navigation-dot-icon-status-shadow': {
+				type: 'boolean',
+				default: false,
+			},
 		},
-	},
+	}),
 	...breakpointAttributesCreator({
 		obj: {
 			'navigation-dot-icon-spacing-horizontal': {
@@ -47,41 +72,6 @@ export const dotIcon = {
 			},
 		},
 	}),
-	...{
-		'navigation-dot-svgType': {
-			type: 'string',
-			default: 'Shape',
-		},
-	},
 };
 
-export const dotIconPadding = prefixAttributesCreator({
-	obj: padding,
-	prefix: prefixIcon,
-});
-
-export const dotIconBackground = prefixAttributesCreator({
-	obj: background,
-	prefix: prefixIcon,
-	newAttr: {
-		'navigation-dot-icon-status-background': {
-			type: 'boolean',
-			default: false,
-		},
-	},
-	diffValAttr: {
-		'navigation-dot-icon-background-active-media-general': 'none',
-	},
-});
-
-export const dotIconBackgroundColor = prefixAttributesCreator({
-	obj: backgroundColor,
-	prefix: prefixIcon,
-	exclAttr: ['background-color-clip-path'],
-});
-
-export const dotIconBackgroundGradient = prefixAttributesCreator({
-	obj: backgroundGradient,
-	prefix: prefixIcon,
-	exclAttr: ['background-gradient-clip-path'],
-});
+export default dotIcon;

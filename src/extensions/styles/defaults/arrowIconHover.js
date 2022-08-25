@@ -1,13 +1,15 @@
 import hoverAttributesCreator from '../hoverAttributesCreator';
-import {
-	arrowIcon,
-	arrowIconBackground,
-	arrowIconBackgroundColor,
-	arrowIconBackgroundGradient,
-} from './arrowIcon';
+import arrowIcon from './arrowIcon';
 
-export const arrowIconHover = hoverAttributesCreator({
+const arrowIconHover = hoverAttributesCreator({
 	obj: arrowIcon,
+	diffValAttr: {
+		'navigation-arrow-both-icon-background-gradient-opacity-general-hover': 1,
+		'navigation-arrow-both-icon-background-palette-color-general-hover': 6,
+		'navigation-arrow-both-icon-background-active-media-general-hover':
+			'none',
+		'navigation-arrow-both-icon-box-shadow-palette-color-general': 6,
+	},
 	newAttr: {
 		'navigation-arrow-both-icon-status-hover': {
 			type: 'boolean',
@@ -29,27 +31,11 @@ export const arrowIconHover = hoverAttributesCreator({
 			type: 'number',
 			default: 2,
 		},
+		'navigation-arrow-both-icon-box-shadow-status-hover': {
+			type: 'boolean',
+			default: false,
+		},
 	},
 });
 
-export const arrowIconBackgroundHover = hoverAttributesCreator({
-	obj: arrowIconBackground,
-	diffValAttr: {
-		'navigation-arrow-both-icon-background-active-media-general-hover':
-			'none',
-	},
-});
-
-export const arrowIconBackgroundColorHover = hoverAttributesCreator({
-	obj: arrowIconBackgroundColor,
-	diffValAttr: {
-		'navigation-arrow-both-icon-background-palette-color-general-hover': 6,
-	},
-});
-
-export const arrowIconBackgroundGradientHover = hoverAttributesCreator({
-	obj: arrowIconBackgroundGradient,
-	diffValAttr: {
-		'navigation-arrow-both-icon-background-gradient-opacity-general-hover': 1,
-	},
-});
+export default arrowIconHover;

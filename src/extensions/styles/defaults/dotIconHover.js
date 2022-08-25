@@ -1,13 +1,11 @@
 import hoverAttributesCreator from '../hoverAttributesCreator';
-import {
-	dotIcon,
-	dotIconBackground,
-	dotIconBackgroundColor,
-	dotIconBackgroundGradient,
-} from './dotIcon';
+import dotIcon from './dotIcon';
 
-export const dotIconHover = hoverAttributesCreator({
+const dotIconHover = hoverAttributesCreator({
 	obj: dotIcon,
+	diffValAttr: {
+		'navigation-dot-icon-box-shadow-palette-color-general': 6,
+	},
 	newAttr: {
 		'navigation-dot-icon-status-hover': {
 			type: 'boolean',
@@ -29,26 +27,11 @@ export const dotIconHover = hoverAttributesCreator({
 			type: 'number',
 			default: 6,
 		},
+		'navigation-dot-icon-box-shadow-status-hover': {
+			type: 'boolean',
+			default: false,
+		},
 	},
 });
 
-export const dotIconBackgroundHover = hoverAttributesCreator({
-	obj: dotIconBackground,
-	diffValAttr: {
-		'navigation-dot-icon-background-active-media-general-hover': 'none',
-	},
-});
-
-export const dotIconBackgroundColorHover = hoverAttributesCreator({
-	obj: dotIconBackgroundColor,
-	diffValAttr: {
-		'navigation-dot-icon-background-palette-color-general-hover': 6,
-	},
-});
-
-export const dotIconBackgroundGradientHover = hoverAttributesCreator({
-	obj: dotIconBackgroundGradient,
-	diffValAttr: {
-		'navigation-dot-icon-background-gradient-opacity-general-hover': 1,
-	},
-});
+export default dotIconHover;

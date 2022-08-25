@@ -1,19 +1,37 @@
 import prefixAttributesCreator from '../prefixAttributesCreator';
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
-import { icon } from './icon';
-import padding from './padding';
-import { background, backgroundColor, backgroundGradient } from './background';
+import {
+	icon,
+	iconBackground,
+	iconBackgroundColor,
+	iconBackgroundGradient,
+	iconBoxShadow,
+	iconPadding,
+} from './icon';
+import { iconBorder, iconBorderRadius, iconBorderWidth } from './iconBorder';
 
 const prefix = 'navigation-arrow-both-';
-const prefixIcon = 'navigation-arrow-both-icon-';
 
-export const arrowIcon = {
+const arrowIcon = {
 	...prefixAttributesCreator({
-		obj: icon,
+		obj: {
+			...icon,
+			...iconPadding,
+			...iconBackground,
+			...iconBackgroundColor,
+			...iconBackgroundGradient,
+			...iconBorder,
+			...iconBorderRadius,
+			...iconBorderWidth,
+			...iconBoxShadow,
+		},
 		prefix,
 		diffValAttr: {
 			'navigation-arrow-both-icon-width-general': '20',
 			'navigation-arrow-both-icon-stroke-palette-color': 5,
+			'navigation-arrow-both-icon-background-active-media-general':
+				'none',
+			'navigation-arrow-both-icon-border-unit-radius-general': 'px',
 		},
 		exclAttr: [
 			'icon-inherit',
@@ -22,6 +40,20 @@ export const arrowIcon = {
 			'icon-content',
 			'icon-spacing',
 		],
+		newAttr: {
+			'navigation-arrow-both-icon-status-background': {
+				type: 'boolean',
+				default: false,
+			},
+			'navigation-arrow-both-icon-status-border': {
+				type: 'boolean',
+				default: false,
+			},
+			'navigation-arrow-both-icon-status-shadow': {
+				type: 'boolean',
+				default: false,
+			},
+		},
 	}),
 	...{
 		'navigation-arrow-first-icon-content': {
@@ -47,47 +79,14 @@ export const arrowIcon = {
 			},
 		},
 	}),
-	...{
-		'navigation-arrow-first-svgType': {
-			type: 'string',
-			default: 'Line',
-		},
+	'navigation-arrow-first-svgType': {
+		type: 'string',
+		default: 'Line',
 	},
-	...{
-		'navigation-arrow-second-svgType': {
-			type: 'string',
-			default: 'Line',
-		},
+	'navigation-arrow-second-svgType': {
+		type: 'string',
+		default: 'Line',
 	},
 };
 
-export const arrowIconPadding = prefixAttributesCreator({
-	obj: padding,
-	prefix: prefixIcon,
-});
-
-export const arrowIconBackground = prefixAttributesCreator({
-	obj: background,
-	prefix: prefixIcon,
-	diffValAttr: {
-		'navigation-arrow-both-icon-background-active-media-general': 'none',
-	},
-	newAttr: {
-		'navigation-arrow-both-icon-status-background': {
-			type: 'boolean',
-			default: false,
-		},
-	},
-});
-
-export const arrowIconBackgroundColor = prefixAttributesCreator({
-	obj: backgroundColor,
-	prefix: prefixIcon,
-	exclAttr: ['background-color-clip-path'],
-});
-
-export const arrowIconBackgroundGradient = prefixAttributesCreator({
-	obj: backgroundGradient,
-	prefix: prefixIcon,
-	exclAttr: ['background-gradient-clip-path'],
-});
+export default arrowIcon;

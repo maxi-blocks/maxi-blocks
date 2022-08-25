@@ -1,13 +1,12 @@
 import prefixAttributesCreator from '../prefixAttributesCreator';
-import { icon } from './icon';
-import { background, backgroundColor, backgroundGradient } from './background';
+import dotIcon from './dotIcon';
 
-const prefix = 'navigation-active-dot-';
-const prefixIcon = 'navigation-active-dot-icon-';
+const activePrefix = 'active-';
+const prefix = 'active-navigation-dot-';
 
-export const dotIconActive = prefixAttributesCreator({
-	obj: icon,
-	prefix,
+const dotIconActive = prefixAttributesCreator({
+	obj: dotIcon,
+	prefix: activePrefix,
 	diffValAttr: {
 		[`${prefix}icon-width-general`]: '10',
 		[`${prefix}icon-stroke-palette-color`]: 2,
@@ -27,37 +26,6 @@ export const dotIconActive = prefixAttributesCreator({
 			default: true,
 		},
 	},
-	exclAttr: [
-		'icon-inherit',
-		'icon-only',
-		'icon-position',
-		'icon-content',
-		'icon-spacing',
-	],
 });
 
-export const dotIconActiveBackground = prefixAttributesCreator({
-	obj: background,
-	prefix: prefixIcon,
-	newAttr: {
-		'navigation-active-dot-icon-status-background': {
-			type: 'boolean',
-			default: false,
-		},
-	},
-	diffValAttr: {
-		'navigation-active-dot-icon-background-active-media-general': 'none',
-	},
-});
-
-export const dotIconActiveBackgroundColor = prefixAttributesCreator({
-	obj: backgroundColor,
-	prefix: prefixIcon,
-	exclAttr: ['background-color-clip-path'],
-});
-
-export const dotIconActiveBackgroundGradient = prefixAttributesCreator({
-	obj: backgroundGradient,
-	prefix: prefixIcon,
-	exclAttr: ['background-gradient-clip-path'],
-});
+export default dotIconActive;

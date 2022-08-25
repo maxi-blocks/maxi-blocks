@@ -25,9 +25,7 @@ import { toolbarSlideSettings, toolbarRemove } from '../../../../icons';
 /**
  * Slider settings
  */
-const SliderSlidesSettings = props => {
-	const { numberOfSlides } = props;
-
+const SliderSlidesSettings = () => {
 	const { removeBlock, duplicateBlocks } = useDispatch('core/block-editor');
 
 	const { innerBlocks, innerBlockCount } = useSelect(select => {
@@ -36,7 +34,7 @@ const SliderSlidesSettings = props => {
 			.getSelectedBlockClientId();
 
 		const innerBlocks = select('core/block-editor').getBlocks(sliderId);
-		const innerBlockCount = innerBlocks?.length || numberOfSlides;
+		const innerBlockCount = innerBlocks?.length || 0;
 
 		return { innerBlocks, innerBlockCount };
 	});

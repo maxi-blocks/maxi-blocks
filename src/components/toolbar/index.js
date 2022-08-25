@@ -113,7 +113,6 @@ const MaxiToolbar = memo(
 			uniqueID,
 			blockStyle,
 			svgType,
-			numberOfSlides,
 		} = attributes;
 
 		const { breakpoint, styleCard, isTyping, tooltipsHide } = useSelect(
@@ -574,9 +573,7 @@ const MaxiToolbar = memo(
 						/>
 						{name === 'maxi-blocks/slider-maxi' && (
 							<>
-								<SliderSlidesSettings
-									numberOfSlides={numberOfSlides}
-								/>
+								<SliderSlidesSettings />
 								<SliderSettings
 									{...getGroupAttributes(
 										attributes,

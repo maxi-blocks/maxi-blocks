@@ -18,7 +18,7 @@ import classnames from 'classnames';
  * Save
  */
 const save = props => {
-	const { attributes, clientId } = props;
+	const { attributes } = props;
 	const {
 		isLoop,
 		isAutoplay,
@@ -40,10 +40,6 @@ const save = props => {
 		'wp-block-maxi-blocks-slider-maxi',
 		fullWidth === 'full' ? 'alignfull' : null
 	);
-
-	const innerBlockCount =
-		wp?.data?.select('core/block-editor')?.getBlock(clientId)?.innerBlocks
-			?.length || numberOfSlides;
 
 	return (
 		<MaxiBlock.save
@@ -91,7 +87,7 @@ const save = props => {
 						)}
 						{attributes['navigation-dot-icon-content'] && (
 							<div className='maxi-slider-block__dots'>
-								{Array.from(Array(innerBlockCount).keys()).map(
+								{Array.from(Array(numberOfSlides).keys()).map(
 									i => {
 										return (
 											<span

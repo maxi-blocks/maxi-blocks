@@ -3,7 +3,6 @@ const copyPasteMapping = {
 		'Slider settings': {
 			group: {
 				'Edit view': 'isEditView',
-				'Slides number': 'numberOfSlides',
 				Loop: 'isLoop',
 				Autoplay: 'isAutoplay',
 				'Pause on hover': 'pauseOnHover',

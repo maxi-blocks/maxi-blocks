@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-constructed-context-values */
 /**
  * WordPress dependencies
  */
@@ -54,6 +55,7 @@ const SliderWrapper = props => {
 		deviceType,
 		clientId,
 		isSelected,
+		maxiSetAttributes,
 	} = props;
 	const { isLoop } = attributes;
 	const sliderTransition = attributes['slider-transition'];
@@ -61,7 +63,8 @@ const SliderWrapper = props => {
 	const numberOfClones = 2;
 	const numberOfSlides = useSelect(
 		select =>
-			select('core/block-editor').getBlock(clientId).innerBlocks.length
+			select('core/block-editor').getBlock(clientId).innerBlocks.length,
+		[clientId]
 	);
 
 	const ALLOWED_BLOCKS = ['maxi-blocks/slide-maxi'];
@@ -351,6 +354,7 @@ const SliderWrapper = props => {
 			setCurrentSlide(numberOfSlides - 1);
 			setActiveSlide(numberOfSlides - 1);
 		}
+		maxiSetAttributes({ numberOfSlides });
 	}, [numberOfSlides]);
 
 	useEffect(() => {

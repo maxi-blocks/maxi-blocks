@@ -148,17 +148,14 @@ const NavigationIconControl = props => {
 			? 'navigation-arrow'
 			: 'navigation-dot';
 
-	let shortestPrefix = 'arrow';
 	let labelLow = 'arrows';
 	let labelCapital = 'Arrows';
 
 	if (isActive) {
-		shortestPrefix = 'dotActive';
 		labelLow = 'dots';
 		labelCapital = 'Dots';
 	}
 	if (!isActive && shortPrefix.includes('dot')) {
-		shortestPrefix = 'dot';
 		labelLow = 'dots';
 		labelCapital = 'Dots';
 	}
@@ -436,7 +433,9 @@ const NavigationIconControl = props => {
 									<AxisControl
 										{...getGroupAttributes(
 											props,
-											`${shortestPrefix}IconPadding`
+											'iconPadding',
+											false,
+											prefix
 										)}
 										label={__(
 											`${labelCapital} padding`,
@@ -784,18 +783,12 @@ const NavigationIconControl = props => {
 					/>
 					{props[`${prefix}-status-border`] && (
 						<BorderControl
-							{...getGroupAttributes(props, [
-								`${shortestPrefix}IconBorder${
-									isHover ? 'Hover' : ''
-								}`,
-
-								`${shortestPrefix}IconBorderWidth${
-									isHover ? 'Hover' : ''
-								}`,
-								`${shortestPrefix}IconBorderRadius${
-									isHover ? 'Hover' : ''
-								}`,
-							])}
+							{...getGroupAttributes(
+								props,
+								['border', 'borderWidth', 'borderRadius'],
+								isHover,
+								`${prefix}-`
+							)}
 							prefix={`${prefix}-`}
 							onChange={onChange}
 							breakpoint={breakpoint}
@@ -834,7 +827,7 @@ const NavigationIconControl = props => {
 							{iconBgActive === 'color' && (
 								<ColorControl
 									label={__(
-										'{labelCapital} background',
+										`${labelCapital} background`,
 										'maxi-blocks'
 									)}
 									paletteStatus={getLastBreakpointAttribute({
@@ -981,8 +974,9 @@ const NavigationIconControl = props => {
 						<BoxShadowControl
 							{...getGroupAttributes(
 								props,
-								`${shortestPrefix}IconBoxShadow`,
-								isHover
+								'boxShadow',
+								isHover,
+								`${prefix}-`
 							)}
 							prefix={`${prefix}-`}
 							customLabel={`${labelCapital} box shadow`}

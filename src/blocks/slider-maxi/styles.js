@@ -111,61 +111,60 @@ const getHoverObject = props => {
 	return response;
 };
 
-const getIconObject = (props, prefix = 'navigation-arrow-both-icon-') => {
-	let attrPrefix = 'arrow';
-	if (prefix.includes('active')) attrPrefix = 'dotActive';
-	else if (prefix.includes('dot')) attrPrefix = 'dot';
-
+const getIconObject = (props, prefix = 'navigation-arrow-both-') => {
+	const iconPrefix = `${prefix}icon-`;
 	const response = {
-		background: props[`${prefix}background-active-media-general`] ===
+		background: props[`${iconPrefix}background-active-media-general`] ===
 			'color' && {
 			...getColorBackgroundObject({
-				...getGroupAttributes(props, [
-					`${attrPrefix}Icon`,
-					'background',
-					'backgroundColor',
-					`${attrPrefix}IconBackgroundColor`,
-				]),
-				prefix,
+				...getGroupAttributes(
+					props,
+					['icon', 'iconBackgroundColor'],
+					false,
+					prefix
+				),
+				...getGroupAttributes(props, ['background', 'backgroundColor']),
+				prefix: iconPrefix,
 				blockStyle: props.blockStyle,
-				isIconInherit: false,
 				isIcon: true,
 			}),
 		},
 		boxShadow: getBoxShadowStyles({
 			obj: {
-				...getGroupAttributes(props, `${attrPrefix}IconBoxShadow`),
+				...getGroupAttributes(props, 'iconBoxShadow', false, prefix),
 			},
-			prefix,
+			prefix: iconPrefix,
 			blockStyle: props.blockStyle,
 		}),
-		gradient: props[`${prefix}background-active-media-general`] ===
+		gradient: props[`${iconPrefix}background-active-media-general`] ===
 			'gradient' && {
 			...getGradientBackgroundObject({
-				...getGroupAttributes(props, [
-					`${attrPrefix}Icon`,
-					`${attrPrefix}IconBackground`,
-					`${attrPrefix}IconBackgroundGradient`,
-				]),
-				prefix,
+				...getGroupAttributes(
+					props,
+					['icon', 'iconBackground', 'iconBackgroundGradient'],
+					false,
+					prefix
+				),
+				prefix: iconPrefix,
 				isIcon: true,
 			}),
 		},
 		padding: getMarginPaddingStyles({
 			obj: {
-				...getGroupAttributes(props, `${attrPrefix}IconPadding`),
+				...getGroupAttributes(props, 'iconPadding', false, prefix),
 			},
-			prefix,
+			iconPrefix,
 		}),
 		border: getBorderStyles({
 			obj: {
-				...getGroupAttributes(props, [
-					`${attrPrefix}IconBorder`,
-					`${attrPrefix}IconBorderWidth`,
-					`${attrPrefix}IconBorderRadius`,
-				]),
+				...getGroupAttributes(
+					props,
+					['iconBorder', 'iconBorderWidth', 'iconBorderRadius'],
+					false,
+					prefix
+				),
 			},
-			prefix,
+			prefix: iconPrefix,
 			blockStyle: props.blockStyle,
 		}),
 	};
@@ -174,13 +173,10 @@ const getIconObject = (props, prefix = 'navigation-arrow-both-icon-') => {
 };
 
 const getIconHoverObject = (props, prefix) => {
-	let attrPrefix = 'arrow';
-	if (prefix.includes('active')) attrPrefix = 'dotActive';
-	else if (prefix.includes('dot')) attrPrefix = 'dot';
-
-	const iconHoverStatus = props[`${prefix}status-hover`];
+	const iconPrefix = `${prefix}icon-`;
+	const iconHoverStatus = props[`${iconPrefix}status-hover`];
 	const iconHoverActiveMedia =
-		props[`${prefix}background-active-media-general-hover`];
+		props[`${iconPrefix}background-active-media-general-hover`];
 
 	const response = {
 		background: iconHoverStatus &&
@@ -188,15 +184,16 @@ const getIconHoverObject = (props, prefix) => {
 				...getColorBackgroundObject({
 					...getGroupAttributes(
 						props,
-						[
-							`${attrPrefix}Icon`,
-							`${attrPrefix}IconBackgroundColor`,
-							'background',
-							'backgroundColor',
-						],
+						['icon', 'iconBackgroundColor'],
+						true,
+						prefix
+					),
+					...getGroupAttributes(
+						props,
+						['background', 'backgroundColor'],
 						true
 					),
-					prefix,
+					prefix: iconPrefix,
 					blockStyle: props.blockStyle,
 					isHover: true,
 					isIcon: true,
@@ -208,14 +205,11 @@ const getIconHoverObject = (props, prefix) => {
 					...getGroupAttributes(
 						props,
 						(props,
-						[
-							`${attrPrefix}Icon`,
-							`${attrPrefix}IconBackground`,
-							`${attrPrefix}IconBackgroundGradient`,
-						]),
-						true
+						['icon', 'iconBackground', 'iconBackgroundGradient']),
+						true,
+						prefix
 					),
-					prefix,
+					prefix: iconPrefix,
 					isHover: true,
 					isIcon: true,
 				}),
@@ -226,15 +220,12 @@ const getIconHoverObject = (props, prefix) => {
 				obj: {
 					...getGroupAttributes(
 						props,
-						[
-							`${attrPrefix}IconBorder`,
-							`${attrPrefix}IconBorderWidth`,
-							`${attrPrefix}IconBorderRadius`,
-						],
-						true
+						['iconBorder', 'iconBorderWidth', 'iconBorderRadius'],
+						true,
+						prefix
 					),
 				},
-				prefix,
+				prefix: iconPrefix,
 				blockStyle: props.blockStyle,
 				isHover: true,
 			}),
@@ -433,7 +424,7 @@ const getStyles = (props, breakpoint, clientId) => {
 	const arrowIconHoverStatus =
 		props['navigation-arrow-both-icon-status-hover'];
 	const dotIconHoverStatus = props['navigation-dot-icon-status-hover'];
-	const dotIconActiveStatus = props['navigation-active-dot-icon-status'];
+	const dotIconActiveStatus = props['active-navigation-dot-icon-status'];
 	const navigationType = getLastBreakpointAttribute({
 		target: 'navigation-type',
 		breakpoint,
@@ -478,7 +469,7 @@ const getStyles = (props, breakpoint, clientId) => {
 					}),
 					' .maxi-slider-block__arrow': getIconObject(
 						props,
-						'navigation-arrow-both-icon-'
+						'navigation-arrow-both-'
 					),
 					' .maxi-slider-block__arrow > div > div': getIconSize(
 						props,
@@ -526,7 +517,7 @@ const getStyles = (props, breakpoint, clientId) => {
 						}),
 						' .maxi-slider-block__arrow:hover': getIconHoverObject(
 							props,
-							'navigation-arrow-both-icon-'
+							'navigation-arrow-both-'
 						),
 						' .maxi-slider-block__arrow--prev:hover':
 							getIconSpacing(props, 'prev', true),
@@ -588,7 +579,7 @@ const getStyles = (props, breakpoint, clientId) => {
 					),
 					' .maxi-slider-block__dot': getIconObject(
 						props,
-						'navigation-dot-icon-'
+						'navigation-dot-'
 					),
 
 					' .maxi-slider-block__dot:not(:last-child)':
@@ -610,7 +601,7 @@ const getStyles = (props, breakpoint, clientId) => {
 						}),
 						' .maxi-slider-block__dot:hover': getIconHoverObject(
 							props,
-							'navigation-dot-icon-'
+							'navigation-dot-'
 						),
 						' .maxi-slider-block__dot:not(.maxi-slider-block__dot--active):hover':
 							getIconSpacing(props, 'prev', true),
@@ -625,7 +616,7 @@ const getStyles = (props, breakpoint, clientId) => {
 							obj: props,
 							target: ' .maxi-slider-block__dot--active',
 							blockStyle,
-							prefix: 'navigation-active-dot-icon-',
+							prefix: 'active-navigation-dot-icon-',
 							isHover: false,
 						}),
 					}),

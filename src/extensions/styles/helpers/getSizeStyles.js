@@ -81,9 +81,8 @@ const getSizeStyles = (obj, prefix = '') => {
 					attributes: obj,
 				});
 
-				if (forceAspectRatio) {
-					return { 'aspect-ratio': 1, height: '100%' };
-				}
+				if (forceAspectRatio)
+					return { 'aspect-ratio': 1, height: 'auto' };
 			}
 			if (target === 'width') {
 				const fitContent = getLastBreakpointAttribute({

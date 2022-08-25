@@ -88,13 +88,15 @@ class edit extends MaxiBlockComponent {
 
 		let columnHeight = 'auto';
 
-		if (forceAspectRatio) columnHeight = '100%';
-		else if (columnHeightAttribute);
-		columnHeight = `${columnHeightAttribute}${getLastBreakpointAttribute({
-			target: 'height-unit',
-			breakpoint: this.props.deviceType || 'general',
-			attributes: this.props.attributes,
-		})}`;
+		if (forceAspectRatio) columnHeight = 'auto';
+		else if (columnHeightAttribute)
+			columnHeight = `${columnHeightAttribute}${getLastBreakpointAttribute(
+				{
+					target: 'height-unit',
+					breakpoint: this.props.deviceType || 'general',
+					attributes: this.props.attributes,
+				}
+			)}`;
 
 		return columnHeight;
 	}

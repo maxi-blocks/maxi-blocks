@@ -9,6 +9,9 @@ import paletteAttributesCreator from '../paletteAttributesCreator';
 const prefix = 'icon-';
 
 export const icon = {
+	svgType: {
+		type: 'string',
+	},
 	'icon-inherit': {
 		type: 'boolean',
 		default: true,

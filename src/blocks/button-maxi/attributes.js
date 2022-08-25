@@ -21,9 +21,6 @@ const attributes = {
 	buttonContent: {
 		type: 'string',
 	},
-	svgType: {
-		type: 'string',
-	},
 	...attributesData.icon,
 	...attributesData.iconBackground,
 	...attributesData.iconHover,

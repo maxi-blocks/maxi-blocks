@@ -56,9 +56,6 @@ const rawVideo = {
 };
 
 const rawIcon = {
-	svgType: {
-		type: 'string',
-	},
 	...icon,
 	...iconHover,
 	'icon-inherit': {

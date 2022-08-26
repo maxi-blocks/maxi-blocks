@@ -8,7 +8,7 @@ import { getMaxiBlockAttributes, MaxiBlock } from '../../components/maxi-block';
 import getStyles from './styles';
 import { Toolbar } from '../../components';
 import AccordionContext from './context';
-import copyPasteMapping from './copy-paste-mapping';
+import { copyPasteMapping } from './data';
 
 /**
  * Edit

@@ -1,3 +1,4 @@
+export { default as accordionData } from './accordion-maxi/data';
 export { default as buttonData } from './button-maxi/data';
 export { default as columnData } from './column-maxi/data';
 export { default as containerData } from './container-maxi/data';

@@ -26,118 +26,118 @@ const prefix = 'divider-';
 /**
  * Data object
  */
-const data = {
-	name: 'divider-maxi',
-	copyPasteMapping: {
-		settings: {
-			Alignment: {
-				group: {
-					'Line orientation': 'line-orientation',
-					'Line vertical position': 'line-vertical',
-					'Line horizontal position': 'line-horizontal',
+const name = 'divider-maxi';
+const copyPasteMapping = {
+	settings: {
+		Alignment: {
+			group: {
+				'Line orientation': 'line-orientation',
+				'Line vertical position': 'line-vertical',
+				'Line horizontal position': 'line-horizontal',
+			},
+			hasBreakpoints: true,
+		},
+		'Line settings': {
+			group: {
+				'Line style': 'divider-border-style',
+				'Line colour': {
+					props: 'divider-border',
+					isPalette: true,
 				},
-				hasBreakpoints: true,
+				'Line size': ['divider-height', 'divider-width'],
+				'Line weight': [
+					'divider-border-top-width',
+					'divider-border-top-unit',
+					'divider-border-right-width',
+					'divider-border-right-unit',
+				],
 			},
-			'Line settings': {
-				group: {
-					'Line style': 'divider-border-style',
-					'Line colour': {
-						props: 'divider-border',
-						isPalette: true,
-					},
-					'Line size': ['divider-height', 'divider-width'],
-					'Line weight': [
-						'divider-border-top-width',
-						'divider-border-top-unit',
-						'divider-border-right-width',
-						'divider-border-right-unit',
-					],
-				},
-				hasBreakpoints: true,
-			},
-			'Box shadow': {
-				template: 'boxShadow',
-				prefix: 'divider-',
-			},
+			hasBreakpoints: true,
 		},
-		canvas: {
-			Size: {
-				template: 'size',
-			},
-			Background: {
-				template: 'blockBackground',
-			},
-			Border: {
-				template: 'border',
-			},
-			'Box shadow': {
-				template: 'boxShadow',
-			},
-			Opacity: {
-				template: 'opacity',
-			},
-			'Margin/Padding': {
-				template: 'marginPadding',
-			},
-		},
-		advanced: {
-			template: 'advanced',
+		'Box shadow': {
+			template: 'boxShadow',
+			prefix: 'divider-',
 		},
 	},
-	customCss: {
-		selectors: {
-			...createSelectors({
-				canvas: '',
-				divider: dividerClass,
-			}),
+	canvas: {
+		Size: {
+			template: 'size',
 		},
-		categories: [
-			'canvas',
-			'before canvas',
-			'after canvas',
-			'divider',
-			'before divider',
-			'after divider',
-			'background',
-			'background hover',
-		],
-	},
-	transition: {
-		...transitionDefault,
-		block: {
-			'box shadow': {
-				title: 'Box shadow',
-				target: dividerClass,
-				property: 'box-shadow',
-				prefix,
-			},
+		Background: {
+			template: 'blockBackground',
+		},
+		Border: {
+			template: 'border',
+		},
+		'Box shadow': {
+			template: 'boxShadow',
+		},
+		Opacity: {
+			template: 'opacity',
+		},
+		'Margin/Padding': {
+			template: 'marginPadding',
 		},
 	},
-	get interactionBuilderSettings() {
-		return [
-			{
-				label: __('Divider box shadow', 'maxi-blocks'),
-				attrGroupName: 'boxShadow',
-				prefix: 'divider-',
-				component: props => <BoxShadowControl {...props} />,
-				helper: props => getBoxShadowStyles(props),
-				target: dividerClass,
-			},
-			{
-				label: __('Line settings', 'maxi-blocks'),
-				attrGroupName: ['divider', 'size'],
-				component: props => <DividerControl {...props} />,
-				helper: props =>
-					getDividerStyles(props.obj, 'line', props.blockStyle),
-				target: dividerClass,
-			},
-			...getCanvasSettings(this),
-		];
+	advanced: {
+		template: 'advanced',
 	},
 };
+const customCss = {
+	selectors: {
+		...createSelectors({
+			canvas: '',
+			divider: dividerClass,
+		}),
+	},
+	categories: [
+		'canvas',
+		'before canvas',
+		'after canvas',
+		'divider',
+		'before divider',
+		'after divider',
+		'background',
+		'background hover',
+	],
+};
+const transition = {
+	...transitionDefault,
+	block: {
+		'box shadow': {
+			title: 'Box shadow',
+			target: dividerClass,
+			property: 'box-shadow',
+			prefix,
+		},
+	},
+};
+const interactionBuilderSettings = [
+	{
+		label: __('Divider box shadow', 'maxi-blocks'),
+		attrGroupName: 'boxShadow',
+		prefix: 'divider-',
+		component: props => <BoxShadowControl {...props} />,
+		helper: props => getBoxShadowStyles(props),
+		target: dividerClass,
+	},
+	{
+		label: __('Line settings', 'maxi-blocks'),
+		attrGroupName: ['divider', 'size'],
+		component: props => <DividerControl {...props} />,
+		helper: props => getDividerStyles(props.obj, 'line', props.blockStyle),
+		target: dividerClass,
+	},
+	...getCanvasSettings({ name, customCss }),
+];
 
-const { copyPasteMapping, customCss, transition, interactionBuilderSettings } =
-	data;
+const data = {
+	name,
+	copyPasteMapping,
+	customCss,
+	transition,
+	interactionBuilderSettings,
+};
 
 export { copyPasteMapping, customCss, transition, interactionBuilderSettings };
 export default data;

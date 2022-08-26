@@ -26,112 +26,107 @@ import { merge } from 'lodash';
 /**
  * Data object
  */
-const data = {
-	name: 'column-maxi',
-	copyPasteMapping: {
-		settings: {
-			'Column settings': {
-				group: {
-					'Fit content': 'column-fit-content',
-					'Column size': 'column-size',
-					'Vertical align': 'justify-content',
-				},
-				hasBreakpoints: true,
+const name = 'column-maxi';
+const copyPasteMapping = {
+	settings: {
+		'Column settings': {
+			group: {
+				'Fit content': 'column-fit-content',
+				'Column size': 'column-size',
+				'Vertical align': 'justify-content',
 			},
-			Background: {
-				template: 'blockBackground',
-			},
-			Border: {
-				template: 'border',
-			},
-			'Box shadow': {
-				template: 'boxShadow',
-			},
-			Size: {
-				template: 'size',
-			},
-			'Margin/Padding': {
-				template: 'marginPadding',
-			},
+			hasBreakpoints: true,
 		},
-		advanced: {
-			template: 'advanced',
+		Background: {
+			template: 'blockBackground',
+		},
+		Border: {
+			template: 'border',
+		},
+		'Box shadow': {
+			template: 'boxShadow',
+		},
+		Size: {
+			template: 'size',
+		},
+		'Margin/Padding': {
+			template: 'marginPadding',
 		},
 	},
-	customCss: {
-		selectors: createSelectors({
-			column: '',
-		}),
-		categories: [
-			'column',
-			'before column',
-			'after column',
-			'background',
-			'background hover',
-		],
-	},
-	get interactionBuilderSettings() {
-		return [
-			{
-				label: __('Column settings', 'maxi-blocks'),
-				attrGroupName: ['columnSize', 'flex'],
-				component: props => {
-					const { getBlockAttributes } = select('core/block-editor');
-
-					const rowPattern = getGroupAttributes(
-						getBlockAttributes(
-							getParentRowClientId(props.clientId)
-						),
-						'rowPattern'
-					);
-
-					return (
-						<ColumnSizeControl {...props} rowPattern={rowPattern} />
-					);
-				},
-				helper: props => {
-					const { getBlock } = select('core/block-editor');
-
-					const parentRowBlock = getBlock(
-						getParentRowClientId(props.clientId)
-					);
-
-					const columnsSize = parentRowBlock.innerBlocks.reduce(
-						(acc, block) => ({
-							...acc,
-							[block.clientId]: getGroupAttributes(
-								block.attributes,
-								'columnSize'
-							),
-						}),
-						{}
-					);
-
-					const columnNum = parentRowBlock.innerBlocks.length;
-					const rowGapProps = getRowGapProps(
-						parentRowBlock.attributes
-					);
-
-					return merge(
-						getColumnSizeStyles(
-							props.obj,
-							{
-								...rowGapProps,
-								columnNum,
-								columnsSize,
-							},
-							props.clientId
-						),
-						getFlexStyles(props.obj)
-					);
-				},
-			},
-			...getCanvasSettings(this),
-		];
+	advanced: {
+		template: 'advanced',
 	},
 };
+const customCss = {
+	selectors: createSelectors({
+		column: '',
+	}),
+	categories: [
+		'column',
+		'before column',
+		'after column',
+		'background',
+		'background hover',
+	],
+};
+const interactionBuilderSettings = [
+	{
+		label: __('Column settings', 'maxi-blocks'),
+		attrGroupName: ['columnSize', 'flex'],
+		component: props => {
+			const { getBlockAttributes } = select('core/block-editor');
 
-const { copyPasteMapping, customCss, interactionBuilderSettings } = data;
+			const rowPattern = getGroupAttributes(
+				getBlockAttributes(getParentRowClientId(props.clientId)),
+				'rowPattern'
+			);
+
+			return <ColumnSizeControl {...props} rowPattern={rowPattern} />;
+		},
+		helper: props => {
+			const { getBlock } = select('core/block-editor');
+
+			const parentRowBlock = getBlock(
+				getParentRowClientId(props.clientId)
+			);
+
+			const columnsSize = parentRowBlock.innerBlocks.reduce(
+				(acc, block) => ({
+					...acc,
+					[block.clientId]: getGroupAttributes(
+						block.attributes,
+						'columnSize'
+					),
+				}),
+				{}
+			);
+
+			const columnNum = parentRowBlock.innerBlocks.length;
+			const rowGapProps = getRowGapProps(parentRowBlock.attributes);
+
+			return merge(
+				getColumnSizeStyles(
+					props.obj,
+					{
+						...rowGapProps,
+						columnNum,
+						columnsSize,
+					},
+					props.clientId
+				),
+				getFlexStyles(props.obj)
+			);
+		},
+	},
+	...getCanvasSettings({ name, customCss }),
+];
+
+const data = {
+	name,
+	copyPasteMapping,
+	customCss,
+	interactionBuilderSettings,
+};
 
 export { copyPasteMapping, customCss, interactionBuilderSettings };
 export default data;

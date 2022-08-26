@@ -61,5 +61,5 @@ const interactionBuilderSettings = getCanvasSettings({ name, customCss });
 
 const data = { name, copyPasteMapping, customCss, interactionBuilderSettings };
 
-export { copyPasteMapping, customCss };
+export { copyPasteMapping, customCss, interactionBuilderSettings };
 export default data;

@@ -342,6 +342,7 @@ const data = {
 	name,
 	copyPasteMapping,
 	customCss,
+	transition,
 	interactionBuilderSettings,
 };
 

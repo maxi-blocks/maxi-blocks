@@ -238,7 +238,8 @@ const interactionBuilderSettings = [
 ];
 
 const data = {
-	name: 'svg-icon-maxi',
+	name,
+	copyPasteMapping,
 	customCss,
 	transition,
 	interactionBuilderSettings,

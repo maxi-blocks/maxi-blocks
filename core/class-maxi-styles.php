@@ -30,6 +30,24 @@ class MaxiBlocks_Styles
     }
 
     /**
+     * Get block data
+     */
+    public function get_block_data($js_var, $meta)
+    {
+        switch ($js_var) {
+            case 'search':
+                return [$meta, get_search_link()];
+                break;
+            case 'map':
+                return [$meta, get_option('google_api_key_option')];
+                break;
+            default:
+                return [$meta];
+                break;
+        }
+    }
+
+    /**
      * Enqueuing styles
      */
     public function enqueue_styles()
@@ -73,7 +91,10 @@ class MaxiBlocks_Styles
                 'number-counter',
                 'shape-divider',
                 'relations',
-				'video',
+                'video',
+                'search',
+                'map',
+                'accordion',
             ];
 
             foreach ($scripts as &$script) {
@@ -86,7 +107,7 @@ class MaxiBlocks_Styles
                         ucwords(str_replace('-', ' ', $script))
                     );
                 $jsScriptName = 'maxi-' . $script;
-                $jsScriptPath = '//js//' . $jsScriptName . '.min.js';
+                $jsScriptPath = '//js//min//' . $jsScriptName . '.min.js';
 
                 $meta = $this->customMeta($jsVar);
 
@@ -106,7 +127,7 @@ class MaxiBlocks_Styles
                         plugins_url($jsScriptPath, dirname(__FILE__))
                     );
 
-                    wp_localize_script($jsScriptName, $jsVarToPass, [$meta]);
+                    wp_localize_script($jsScriptName, $jsVarToPass, $this->get_block_data($jsVar, $meta));
                 }
             }
         }

@@ -134,12 +134,22 @@ const RelationControl = props => {
 			}, {}),
 		};
 
+		const textMaxiPrefix =
+			getBlock(clientId)?.name === 'maxi-blocks/text-maxi' &&
+			item?.settings === 'Typography';
+
 		if (
 			selectedSettingsObj?.target &&
 			item.target !== selectedSettingsObj?.target
 		) {
 			onChangeRelation(relations, item.id, {
-				target: selectedSettingsObj?.target,
+				target: `${
+					textMaxiPrefix
+						? blockAttributes?.isList
+							? blockAttributes?.typeOfList
+							: blockAttributes?.textLevel
+						: ''
+				}${selectedSettingsObj?.target}`,
 			});
 		}
 
@@ -196,6 +206,7 @@ const RelationControl = props => {
 						...newAttributesObj,
 					},
 					target: selectedSettingsObj?.target,
+					clientId,
 				});
 
 				const getStyles = (stylesObj, isFirst = false) => {

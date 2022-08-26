@@ -1,10 +1,12 @@
 export { default as accordion } from './accordion';
+export { default as accordionIcon } from './accordion-icon';
 export { default as backToTop } from './back-to-top';
 export { default as basicGallery } from './basic-gallery';
 export { default as blog } from './blog';
 export { default as button } from './button';
 export { default as buttonIcon } from './button-icon';
 export { default as callToAction } from './call-to-action';
+export { default as searchIcon } from './search-icon';
 export { default as container } from './container';
 export { default as columnIcon } from './column';
 export { default as containerIcon } from './container-icon';

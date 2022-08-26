@@ -17,6 +17,7 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 
 import {
 	getGroupAttributes,
+	getIsOverflowHidden,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import getStyles from './styles';
@@ -124,18 +125,6 @@ const NumberCounter = attributes => {
 		attributes,
 	});
 
-	const getIsOverflowHidden = () =>
-		getLastBreakpointAttribute({
-			target: 'overflow-y',
-			breakpoint: deviceType,
-			attributes,
-		}) === 'hidden' &&
-		getLastBreakpointAttribute({
-			target: 'overflow-x',
-			breakpoint: deviceType,
-			attributes,
-		}) === 'hidden';
-
 	replayCounter(() => {
 		setCount(startCountValue);
 		startTimeRef.current = Date.now();
@@ -144,7 +133,7 @@ const NumberCounter = attributes => {
 	return (
 		<BlockResizer
 			className='maxi-number-counter__box'
-			isOverflowHidden={getIsOverflowHidden()}
+			isOverflowHidden={getIsOverflowHidden(attributes, deviceType)}
 			lockAspectRatio
 			deviceType={deviceType}
 			size={getResizerSize()}

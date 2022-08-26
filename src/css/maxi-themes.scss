@@ -80,11 +80,40 @@ body.maxi-blocks--active .edit-post-visual-editor {
 			&.maxi-text-block,
 			.maxi-text-block,
 			&.maxi-image-block figcaption,
-			.maxi-image-block figcaption {
+			.maxi-image-block figcaption,
+			&.maxi-map-block__popup__content,
+			.maxi-map-block__popup__content {
 				@each $level in $levels {
 					#{$level} {
 						font-family: var(
 							--maxi-#{$style}-#{$level}-font-family-general
+						);
+						font-weight: var(
+							--maxi-#{$style}-#{$level}-font-weight-general
+						);
+						font-style: var(
+							--maxi-#{$style}-#{$level}-font-style-general
+						);
+						text-transform: var(
+							--maxi-#{$style}-#{$level}-text-transform-general
+						);
+						text-decoration: var(
+							--maxi-#{$style}-#{$level}-text-decoration-general
+						);
+					}
+				}
+			}
+			& .maxi-pane-block .maxi-pane-block__header {
+				@each $level in $levels {
+					#{$level} {
+						font-family: var(
+							--maxi-#{$style}-#{$level}-font-family-general
+						);
+						font-size: var(
+							--maxi-#{$style}-#{$level}-font-size-general
+						);
+						line-height: var(
+							--maxi-#{$style}-#{$level}-line-height-general
 						);
 						font-weight: var(
 							--maxi-#{$style}-#{$level}-font-weight-general
@@ -183,6 +212,24 @@ body.maxi-blocks--active .edit-post-visual-editor {
 
 				p {
 					font-family: var(--maxi-#{$style}-p-font-family-general);
+					font-weight: var(--maxi-#{$style}-p-font-weight-general);
+					font-style: var(--maxi-#{$style}-p-font-style-general);
+					text-transform: var(
+						--maxi-#{$style}-p-text-transform-general
+					);
+					text-decoration: var(
+						--maxi-#{$style}-p-text-decoration-general
+					);
+				}
+			}
+
+			&.maxi-search-block,
+			.maxi-search-block {
+				&__input,
+				&__button__content {
+					font-family: var(--maxi-#{$style}-p-font-family-general);
+					font-size: var(--maxi-#{$style}-p-font-size-general);
+					line-height: var(--maxi-#{$style}-p-line-height-general);
 					font-weight: var(--maxi-#{$style}-p-font-weight-general);
 					font-style: var(--maxi-#{$style}-p-font-style-general);
 					text-transform: var(
@@ -391,6 +438,37 @@ body.maxi-blocks--active {
 								);
 							}
 						}
+
+						&.maxi-search-block,
+						.maxi-search-block {
+							&__input,
+							&__button__content {
+								font-family: var(
+									--maxi-#{$style}-p-font-family-#{$responsive_size}
+								);
+								font-size: var(
+									--maxi-#{$style}-p-font-size-#{$responsive_size}
+								);
+								line-height: var(
+									--maxi-#{$style}-p-line-height-#{$responsive_size}
+								);
+								letter-spacing: var(
+									--maxi-#{$style}-p-letter-spacing-#{$responsive_size}
+								);
+								font-weight: var(
+									--maxi-#{$style}-p-font-weight-#{$responsive_size}
+								);
+								text-transform: var(
+									--maxi-#{$style}-p-text-transform-#{$responsive_size}
+								);
+								font-style: var(
+									--maxi-#{$style}-p-font-style-#{$responsive_size}
+								);
+								text-decoration: var(
+									--maxi-#{$style}-p-text-decoration-#{$responsive_size}
+								);
+							}
+						}
 					}
 				}
 			}
@@ -428,7 +506,10 @@ body.maxi-blocks--active {
 			@each $style in $styles {
 				.maxi-#{$style} {
 					&.maxi-text-block,
-					.maxi-text-block {
+					.maxi-text-block,
+					&.maxi-map-block__popup__content,
+					.maxi-map-block__popup__content,
+					& .maxi-pane-block .maxi-pane-block__header {
 						@each $level in $levels {
 							#{$level} {
 								font-family: var(
@@ -585,6 +666,37 @@ body.maxi-blocks--active {
 									--maxi-#{$style}-p-text-decoration-#{$current_responsive_stage}
 								);
 							}
+						}
+					}
+
+					&.maxi-search-block,
+					.maxi-search-block {
+						&__input,
+						&__button__content {
+							font-family: var(
+								--maxi-#{$style}-p-font-family-#{$current_responsive_stage}
+							);
+							font-size: var(
+								--maxi-#{$style}-p-font-size-#{$current_responsive_stage}
+							);
+							line-height: var(
+								--maxi-#{$style}-p-line-height-#{$current_responsive_stage}
+							);
+							letter-spacing: var(
+								--maxi-#{$style}-p-letter-spacing-#{$current_responsive_stage}
+							);
+							font-weight: var(
+								--maxi-#{$style}-p-font-weight-#{$current_responsive_stage}
+							);
+							text-transform: var(
+								--maxi-#{$style}-p-text-transform-#{$current_responsive_stage}
+							);
+							font-style: var(
+								--maxi-#{$style}-p-font-style-#{$current_responsive_stage}
+							);
+							text-decoration: var(
+								--maxi-#{$style}-p-text-decoration-#{$current_responsive_stage}
+							);
 						}
 					}
 				}

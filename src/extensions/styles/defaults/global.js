@@ -2,6 +2,12 @@ import breakpoints from './breakpoints';
 
 const global = {
 	...breakpoints,
+	'maxi-version-current': {
+		type: 'string',
+	},
+	'maxi-version-origin': {
+		type: 'string',
+	},
 	blockStyle: {
 		type: 'string',
 	},

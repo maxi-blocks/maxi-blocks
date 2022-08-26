@@ -8,7 +8,6 @@ import { useSelect } from '@wordpress/data';
 /**
  * External dependencies
  */
-import classnames from 'classnames';
 import { isEmpty, cloneDeep, isEqual } from 'lodash';
 
 /**
@@ -69,8 +68,6 @@ const IconToolbar = memo(
 			}
 
 			maxiSetAttributes(obj);
-
-			console.log('as');
 		};
 
 		return (

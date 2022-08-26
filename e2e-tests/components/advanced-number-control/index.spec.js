@@ -62,7 +62,7 @@ describe('Advanced Number Control', () => {
 		});
 
 		await accordionPanel.$eval(
-			'.maxi-typography-control__letter-spacing .components-maxi-control__reset-button',
+			'.maxi-typography-control__letter-spacing .maxi-reset-button',
 			click => click.click()
 		);
 

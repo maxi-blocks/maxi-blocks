@@ -2,14 +2,13 @@
 /**
  * WordPress dependencies
  */
-import { __, sprintf } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
 import BaseControl from '../base-control';
-import Button from '../button';
 import SettingTabsControl from '../setting-tabs-control';
 import SelectControl from '../select-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
@@ -18,6 +17,7 @@ import {
 	getDefaultAttribute,
 	getAttributeKey,
 } from '../../extensions/styles';
+import ResetButton from '../reset-control';
 
 /**
  * External dependencies
@@ -45,7 +45,6 @@ import {
 	paddingSeparate as paddingSeparateIcon,
 	paddingSyncAll as paddingSyncAllIcon,
 	paddingSyncDirection as paddingSyncDirectionIcon,
-	reset,
 } from '../../icons';
 
 /**
@@ -256,20 +255,11 @@ const AxisContent = props => {
 			)}
 			{disableSync && (
 				<BaseControl className='maxi-axis-control__unit-header'>
-					<Button
-						className='components-maxi-control__reset-button'
-						onClick={() =>
+					<ResetButton
+						onReset={() =>
 							onReset({ customBreakpoint: breakpoint })
 						}
-						aria-label={sprintf(
-							__('Reset %s settings', 'maxi-blocks'),
-							type.toLowerCase()
-						)}
-						action='reset'
-						type='reset'
-					>
-						{reset}
-					</Button>
+					/>
 				</BaseControl>
 			)}
 		</div>
@@ -378,23 +368,14 @@ const AxisControlContent = props => {
 								value={currentUnit}
 								onChange={onChangeUnit}
 							/>
-							<Button
-								className='components-maxi-control__reset-button'
-								onClick={() =>
+							<ResetButton
+								onReset={() =>
 									onReset({
 										reset: 'unit',
 										customBreakpoint: breakpoint,
 									})
 								}
-								aria-label={sprintf(
-									__('Reset %s settings', 'maxi-blocks'),
-									type.toLowerCase()
-								)}
-								action='reset'
-								type='reset'
-							>
-								{reset}
-							</Button>
+							/>
 						</BaseControl>
 					)}
 					<SettingTabsControl

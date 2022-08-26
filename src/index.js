@@ -28,7 +28,10 @@ import './blocks/number-counter-maxi/number-counter-maxi';
 import './blocks/row-maxi/row-maxi';
 import './blocks/svg-icon-maxi/svg-icon-maxi';
 import './blocks/text-maxi/text-maxi';
+import './blocks/accordion-maxi/accordion-maxi';
+import './blocks/pane-maxi/pane-maxi';
 import './blocks/video-maxi/video-maxi';
+import './blocks/search-maxi/search-maxi';
 
 // Editor
 import './editor/saver';

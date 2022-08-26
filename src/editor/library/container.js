@@ -52,6 +52,7 @@ const MasonryItem = props => {
 		onRequestInsert,
 		previewIMG,
 		demoUrl,
+		title,
 		currentItemColorStatus = false,
 	} = props;
 
@@ -72,7 +73,8 @@ const MasonryItem = props => {
 				<div className='maxi-cloud-masonry-card__container'>
 					<div className='maxi-cloud-masonry-card__container__top-bar'>
 						<div className='maxi-cloud-masonry__serial-tag'>
-							{serial}
+							{type === 'patterns' && title}
+							{type === 'sc' && serial}
 						</div>
 					</div>
 				</div>
@@ -93,13 +95,13 @@ const MasonryItem = props => {
 								className='maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-load'
 								onClick={onRequestInsert}
 							>
-								{__('Load', 'maxi-blocks')}
+								{__('Insert', 'maxi-blocks')}
 							</Button>
 						</>
 					)}
 					{type === 'sc' && (
 						<span className='maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-load'>
-							{__('Load', 'maxi-block')}
+							{__('Insert', 'maxi-block')}
 						</span>
 					)}
 					<div className='maxi-cloud-masonry-card__tags'>
@@ -136,8 +138,10 @@ const MasonryItem = props => {
 						{svgCode}
 					</RawHTML>
 					<div className='maxi-cloud-masonry-card__svg-container__title'>
-						{target === 'button-icon' || target.includes('Line')
-							? serial.replace(' Line', '')
+						{target === 'button-icon' ||
+						target === 'search-icon' ||
+						target.includes('Line')
+							? serial.replace(' Line', '').replace(' line', '')
 							: [
 									'image-shape',
 									'bg-shape',
@@ -147,7 +151,7 @@ const MasonryItem = props => {
 							? serial.replace(' shape', '')
 							: serial}
 					</div>
-					<span>{__('Load', 'maxi-block')}</span>
+					<span>{__('Insert', 'maxi-block')}</span>
 				</div>
 			)}
 		</div>
@@ -260,30 +264,31 @@ const MenuSelect = ({ items, currentRefinement, refine }) => {
 	);
 };
 
-const HierarchicalMenu = ({ items, refine }) => (
-	<ul>
-		{items.map(item => (
-			<li key={item.label} className='ais-HierarchicalMenu-item'>
-				<a
-					href='#'
-					onClick={event => {
-						event.preventDefault();
-						refine(item.value);
-					}}
-				>
-					{unescape(item.label)} ({item.count})
-				</a>
-				<ToggleSwitch
-					selected={item.isRefined}
-					onChange={val => refine(item.value)}
-				/>
-				{item.items && (
-					<HierarchicalMenu items={item.items} refine={refine} />
-				)}
-			</li>
-		))}
-	</ul>
-);
+const HierarchicalMenu = ({ items, refine }) =>
+	!isEmpty(items) && (
+		<ul>
+			{items.map(item => (
+				<li key={item.label} className='ais-HierarchicalMenu-item'>
+					<a
+						href='#'
+						onClick={event => {
+							event.preventDefault();
+							refine(item.value);
+						}}
+					>
+						{unescape(item.label)} ({item.count})
+					</a>
+					<ToggleSwitch
+						selected={item.isRefined}
+						onChange={val => refine(item.value)}
+					/>
+					{item.items && (
+						<HierarchicalMenu items={item.items} refine={refine} />
+					)}
+				</li>
+			))}
+		</ul>
+	);
 
 /**
  * Component
@@ -366,11 +371,12 @@ const LibraryContainer = props => {
 	const getShapeType = type => {
 		switch (type) {
 			case 'button-icon':
+			case 'accordion-icon':
+			case 'accordion-icon-active':
+			case 'search-icon':
 				return 'icon';
 			case 'video-icon':
-				return 'shape';
 			case 'sidebar-block-shape':
-				return 'shape';
 			case 'bg-shape':
 				return 'shape';
 			default:
@@ -385,6 +391,7 @@ const LibraryContainer = props => {
 				type='patterns'
 				target='patterns'
 				key={`maxi-cloud-masonry__item-${hit.post_id}`}
+				title={hit.post_title}
 				demoUrl={hit.demo_url}
 				previewIMG={hit.preview_image_url}
 				isPro={hit.cost?.[0] === 'pro'}
@@ -540,10 +547,26 @@ const LibraryContainer = props => {
 				onRequestClose();
 			}
 
-			if (type === 'button-icon' || type === 'video-icon') {
+			if (
+				[
+					'button-icon',
+					'video-icon',
+					'accordion-icon',
+					'search-icon',
+				].includes(type)
+			) {
 				onSelect({
 					[`${prefix}icon-content`]: svgCode,
 					[`${prefix}svgType`]: svgType,
+				});
+
+				onRequestClose();
+			}
+
+			if (type === 'accordion-icon-active') {
+				onSelect({
+					'active-icon-content': svgCode,
+					svgTypeActive: svgType,
 				});
 
 				onRequestClose();
@@ -741,7 +764,7 @@ const LibraryContainer = props => {
 				</InstantSearch>
 			)}
 
-			{type === 'button-icon' && (
+			{(type === 'button-icon' || type === 'search-icon') && (
 				<InstantSearch
 					indexName='svg_icon'
 					searchClient={searchClientSvg}
@@ -772,6 +795,37 @@ const LibraryContainer = props => {
 				</InstantSearch>
 			)}
 
+			{(type === 'accordion-icon' ||
+				type === 'accordion-icon-active') && (
+				<InstantSearch
+					indexName='svg_icon'
+					searchClient={searchClientSvg}
+				>
+					<Configure hitsPerPage={49} />
+					<div className='maxi-cloud-container__svg-shape'>
+						<div className='maxi-cloud-container__svg-shape__sidebar'>
+							<SearchBox
+								submit={__('Find', 'maxi-blocks')}
+								autoFocus
+								searchAsYouType
+								showLoadingIndicator
+							/>
+							<CustomRefinementList
+								className='hidden'
+								attribute='svg_category'
+								defaultRefinement={['Line']}
+								showLoadingIndicator
+							/>
+						</div>
+						<div className='maxi-cloud-container__content-svg-shape'>
+							<div className='maxi-cloud-container__sc__content-sc'>
+								<Stats translations={resultsCount} />
+								<InfiniteHits hitComponent={svgShapeResults} />
+							</div>
+						</div>
+					</div>
+				</InstantSearch>
+			)}
 			{type === 'preview' && (
 				<div className='maxi-cloud-container__patterns'>
 					{maxiPreviewIframe(url, title)}

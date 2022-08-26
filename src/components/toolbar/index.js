@@ -99,6 +99,7 @@ const MaxiToolbar = memo(
 			resetNumberHelper,
 			copyPasteMapping,
 			mediaPrefix,
+			dropShadow,
 		} = props;
 		const {
 			customLabel,
@@ -245,7 +246,7 @@ const MaxiToolbar = memo(
 										}}
 									>
 										<span className='breadcrumbs-pin-toltip'>
-											{pinActive ? 'Unpin' : 'Pin Open'}
+											{pinActive ? 'Unlock' : 'Lock'}
 										</span>
 										<span className='breadcrumbs-pin-icon'>
 											{pinActive
@@ -261,6 +262,11 @@ const MaxiToolbar = memo(
 								<span className='toolbar-block-custom-label__block-style'>
 									{` | ${blockStyle}`}
 								</span>
+								{!isFirstOnHierarchy && (
+									<span className='toolbar-more-indicator'>
+										&gt;
+									</span>
+								)}
 							</div>
 						)}
 						<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />
@@ -512,6 +518,7 @@ const MaxiToolbar = memo(
 							clientId={clientId}
 							breakpoint={breakpoint}
 							prefix={prefix}
+							dropShadow={dropShadow}
 						/>
 						<ToolbarColumnPattern
 							clientId={clientId}
@@ -568,6 +575,7 @@ const MaxiToolbar = memo(
 							onChange={linkSettings =>
 								maxiSetAttributes({ linkSettings })
 							}
+							clientId={clientId}
 							textLevel={textLevel}
 						/>
 						<TextLink
@@ -580,6 +588,7 @@ const MaxiToolbar = memo(
 							textLevel={textLevel}
 							blockStyle={blockStyle}
 							styleCard={styleCard}
+							clientId={clientId}
 						/>
 						<VerticalAlign
 							clientId={clientId}

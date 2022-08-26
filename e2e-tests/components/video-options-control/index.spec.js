@@ -1,16 +1,16 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	getEditedPostContent,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
-import { openSidebarTab, getAttributes } from '../../utils';
+import {
+	getAttributes,
+	getEditedPostContent,
+	openSidebarTab,
+} from '../../utils';
 
 describe('Video options control', () => {
 	it('Check video options control', async () => {
@@ -55,6 +55,6 @@ describe('Video options control', () => {
 		);
 
 		expect(videoContent).toMatchSnapshot();
-		expect(await getEditedPostContent()).toMatchSnapshot();
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
 	});
 });

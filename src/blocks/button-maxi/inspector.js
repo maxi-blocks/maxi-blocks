@@ -12,12 +12,9 @@ import {
 	AccordionControl,
 	DefaultStylesControl,
 	Icon,
-	IconControl,
 	SettingTabsControl,
-	ToggleSwitch,
 	ResponsiveTabsControl,
 	AlignmentControl,
-	ManageHoverTransitions,
 } from '../../components';
 import * as defaultPresets from './defaults';
 import {
@@ -42,16 +39,9 @@ import * as iconPresets from '../../icons/button-presets/index';
  * Inspector
  */
 const Inspector = props => {
-	const {
-		attributes,
-		deviceType,
-		maxiSetAttributes,
-		insertInlineStyles,
-		cleanInlineStyles,
-		inlineStylesTargets,
-		clientId,
-	} = props;
-	const { blockStyle, svgType, 'icon-only': iconOnly } = attributes;
+	const { attributes, deviceType, maxiSetAttributes, inlineStylesTargets } =
+		props;
+	const { 'icon-only': iconOnly } = attributes;
 
 	const onChangePreset = (number, type = 'normal') => {
 		const newDefaultPresets = cloneDeep({ ...defaultPresets });
@@ -105,7 +95,7 @@ const Inspector = props => {
 
 		const {
 			'icon-stroke-palette-status': strokePaletteStatus,
-			'icon-stroke-palette-hover-status': strokePaletteHoverStatus,
+			'icon-stroke-palette-status-hover': strokePaletteHoverStatus,
 			'icon-content': rawIcon,
 		} = newDefaultPresets[`preset${number}`];
 
@@ -114,7 +104,7 @@ const Inspector = props => {
 		if (rawIcon && (strokePaletteStatus || strokePaletteHoverStatus)) {
 			const {
 				'icon-stroke-palette-color': strokePaletteColor,
-				'icon-stroke-palette-hover-color': strokePaletteHoverColor,
+				'icon-stroke-palette-color-hover': strokePaletteHoverColor,
 				'icon-inherit': rawIconInherit,
 				'icon-only': rawIconOnly,
 			} = newDefaultPresets[`preset${number}`];
@@ -222,155 +212,9 @@ const Inspector = props => {
 											/>
 										),
 									},
-									{
-										label: __('Icon', 'maxi-blocks'),
-										disablePadding: true,
-										content: (
-											<SettingTabsControl
-												items={[
-													{
-														label: __(
-															'Normal state',
-															'maxi-blocks'
-														),
-														content: (
-															<IconControl
-																{...getGroupAttributes(
-																	attributes,
-																	[
-																		'icon',
-																		'iconBackground',
-																		'iconBackgroundGradient',
-																		'iconBackgroundColor',
-																		'iconBorder',
-																		'iconBorderWidth',
-																		'iconBorderRadius',
-																		'iconPadding',
-																	]
-																)}
-																onChangeInline={(
-																	obj,
-																	target,
-																	isMultiplySelector = false
-																) =>
-																	insertInlineStyles(
-																		{
-																			obj,
-																			target,
-																			isMultiplySelector,
-																		}
-																	)
-																}
-																onChange={(
-																	obj,
-																	target
-																) => {
-																	maxiSetAttributes(
-																		obj
-																	);
-																	cleanInlineStyles(
-																		target
-																	);
-																}}
-																svgType={
-																	svgType
-																}
-																breakpoint={
-																	deviceType
-																}
-																clientId={
-																	clientId
-																}
-																blockStyle={
-																	blockStyle
-																}
-																getIconWithColor={args =>
-																	getIconWithColor(
-																		attributes,
-																		args
-																	)
-																}
-															/>
-														),
-													},
-													{
-														label: __(
-															'Hover state',
-															'maxi-blocks'
-														),
-														content: (
-															<>
-																<ManageHoverTransitions />
-																<ToggleSwitch
-																	label={__(
-																		'Enable Icon Hover',
-																		'maxi-blocks'
-																	)}
-																	selected={
-																		attributes[
-																			'icon-status-hover'
-																		]
-																	}
-																	onChange={val =>
-																		maxiSetAttributes(
-																			{
-																				'icon-status-hover':
-																					val,
-																			}
-																		)
-																	}
-																/>
-																{attributes[
-																	'icon-status-hover'
-																] && (
-																	<IconControl
-																		{...getGroupAttributes(
-																			attributes,
-																			[
-																				'icon',
-																				'iconHover',
-																				'iconBackgroundGradient',
-																				'iconBackgroundColor',
-																				'iconBorder',
-																				'iconBackgroundHover',
-																				'iconBorderWidth',
-																				'iconBorderRadius',
-																			],
-																			true
-																		)}
-																		onChange={obj => {
-																			maxiSetAttributes(
-																				obj
-																			);
-																		}}
-																		svgType={
-																			svgType
-																		}
-																		breakpoint={
-																			deviceType
-																		}
-																		clientId={
-																			clientId
-																		}
-																		blockStyle={
-																			blockStyle
-																		}
-																		getIconWithColor={args =>
-																			getIconWithColor(
-																				attributes,
-																				args
-																			)
-																		}
-																		isHover
-																	/>
-																)}
-															</>
-														),
-													},
-												]}
-											/>
-										),
-									},
+									...inspectorTabs.icon({
+										props,
+									}),
 									{
 										label: __('Alignment', 'maxi-blocks'),
 										content: (

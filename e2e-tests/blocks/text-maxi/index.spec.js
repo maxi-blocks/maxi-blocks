@@ -10,7 +10,6 @@
 import {
 	createNewPost,
 	insertBlock,
-	getEditedPostContent,
 	pressKeyWithModifier,
 	setClipboardData,
 } from '@wordpress/e2e-test-utils';
@@ -20,11 +19,12 @@ import {
  */
 import pasteHTML from './pasteExamples';
 import {
+	addCustomCSS,
 	getBlockAttributes,
 	getBlockStyle,
+	getEditedPostContent,
 	openPreviewPage,
 	setAttributes,
-	addCustomCSS,
 } from '../../utils';
 
 const linkExample = 'test.com';
@@ -61,8 +61,7 @@ describe('TextMaxi', () => {
 		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
 		await page.waitForTimeout(150);
 
-		expect(await getEditedPostContent()).toMatchSnapshot();
-
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
@@ -72,8 +71,7 @@ describe('TextMaxi', () => {
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(150);
 
-		expect(await getEditedPostContent()).toMatchSnapshot();
-
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
@@ -85,8 +83,7 @@ describe('TextMaxi', () => {
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(150);
 
-		expect(await getEditedPostContent()).toMatchSnapshot();
-
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
@@ -101,8 +98,7 @@ describe('TextMaxi', () => {
 		await page.keyboard.press('Delete');
 		await page.waitForTimeout(150);
 
-		expect(await getEditedPostContent()).toMatchSnapshot();
-
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
@@ -117,8 +113,7 @@ describe('TextMaxi', () => {
 		await page.keyboard.press('Backspace');
 		await page.waitForTimeout(150);
 
-		expect(await getEditedPostContent()).toMatchSnapshot();
-
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
@@ -155,8 +150,7 @@ describe('TextMaxi', () => {
 		await page.keyboard.press('Delete');
 		await page.waitForTimeout(150);
 
-		expect(await getEditedPostContent()).toMatchSnapshot();
-
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
@@ -193,8 +187,7 @@ describe('TextMaxi', () => {
 		await page.keyboard.press('Backspace');
 		await page.waitForTimeout(150);
 
-		expect(await getEditedPostContent()).toMatchSnapshot();
-
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
@@ -208,8 +201,7 @@ describe('TextMaxi', () => {
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(150);
 
-		expect(await getEditedPostContent()).toMatchSnapshot();
-
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
 		// Check frontend
@@ -241,8 +233,7 @@ describe('TextMaxi', () => {
 		await page.keyboard.type(' and its awesome features', { delay: 100 });
 		await page.waitForTimeout(150);
 
-		expect(await getEditedPostContent()).toMatchSnapshot();
-
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
@@ -328,8 +319,7 @@ describe('TextMaxi', () => {
 		);
 		await page.waitForTimeout(150);
 
-		expect(await getEditedPostContent()).toMatchSnapshot();
-
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
@@ -364,8 +354,7 @@ describe('TextMaxi', () => {
 		);
 		await page.waitForTimeout(150);
 
-		expect(await getEditedPostContent()).toMatchSnapshot();
-
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
 		// Check frontend
@@ -407,8 +396,7 @@ describe('TextMaxi', () => {
 		);
 		await page.waitForTimeout(150);
 
-		expect(await getEditedPostContent()).toMatchSnapshot();
-
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
@@ -434,8 +422,7 @@ describe('TextMaxi', () => {
 				contentWrapper => contentWrapper.textContent.trim()
 			)
 		).toStrictEqual(`${linkExample}(opens in a new tab)`);
-		expect(await getEditedPostContent()).toMatchSnapshot();
-
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
 		// Check frontend
@@ -496,8 +483,7 @@ describe('TextMaxi', () => {
 		);
 		await page.waitForTimeout(200);
 
-		expect(await getEditedPostContent()).toMatchSnapshot();
-
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
@@ -541,8 +527,7 @@ describe('TextMaxi', () => {
 		);
 		await page.waitForTimeout(200);
 
-		expect(await getEditedPostContent()).toMatchSnapshot();
-
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
 		// Check frontend
@@ -594,8 +579,7 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 
 		// Check content with multiple and different urls
-		expect(await getEditedPostContent()).toMatchSnapshot();
-
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
 		await selectMaxiTextP.focus();
@@ -624,8 +608,7 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 
 		// Check content after changing one link
-		expect(await getEditedPostContent()).toMatchSnapshot();
-
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
 		// Check frontend
@@ -663,8 +646,7 @@ describe('TextMaxi', () => {
 		);
 		await selectMaxiTextP.focus();
 
-		expect(await getEditedPostContent()).toMatchSnapshot();
-
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
@@ -676,8 +658,7 @@ describe('TextMaxi', () => {
 		await setAttributes(page, { uniqueID: 'text-maxi-1' });
 		await page.waitForTimeout(150);
 
-		expect(await getEditedPostContent()).toMatchSnapshot();
-
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 

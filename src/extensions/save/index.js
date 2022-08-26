@@ -17,6 +17,9 @@ const allowedBlocks = [
 	'maxi-blocks/number-counter-maxi',
 	'maxi-blocks/svg-icon-maxi',
 	'maxi-blocks/video-maxi',
+	'maxi-blocks/accordion-maxi',
+	'maxi-blocks/pane-maxi',
+	'maxi-blocks/search-maxi',
 ];
 
 /**
@@ -32,7 +35,8 @@ const withSave = (element, blockType, attributes) => {
 	if (
 		allowedBlocks.includes(blockType.name) &&
 		!!linkSettings &&
-		!!linkSettings.url
+		!!linkSettings.url &&
+		!linkSettings?.disabled
 	) {
 		let rel = '';
 		if (linkSettings.nofollow) rel += ' nofollow';

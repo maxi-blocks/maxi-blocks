@@ -3,7 +3,7 @@ const setSVGContent = (content, color, type) => {
 	const fillStr = `${type}:${color}`;
 
 	const fillRegExp2 = new RegExp(`${type}=[^-]([^none])([^\\"]+)`, 'g');
-	const fillStr2 = ` ${type}="${color}`;
+	const fillStr2 = `${type}="${color}`;
 
 	const newContent = content
 		.replace(fillRegExp, fillStr)

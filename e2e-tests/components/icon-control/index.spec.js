@@ -5,16 +5,16 @@ import {
 	createNewPost,
 	insertBlock,
 	pressKeyTimes,
-	getEditedPostContent,
 } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
 import {
-	getBlockAttributes,
-	openSidebarTab,
-	modalMock,
 	getAttributes,
+	getBlockAttributes,
+	getEditedPostContent,
+	modalMock,
+	openSidebarTab,
 } from '../../utils';
 
 describe('IconControl', () => {
@@ -26,7 +26,7 @@ describe('IconControl', () => {
 		// select icon
 		await modalMock(page, { type: 'button-icon' });
 
-		expect(await getEditedPostContent()).toMatchSnapshot();
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
 
 		// width, stroke width
 		const inputs = await page.$$(

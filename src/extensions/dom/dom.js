@@ -234,7 +234,11 @@ wp.domReady(() => {
 								);
 
 								// Copy all fonts to iframe
-								loadFonts(getPageFonts(), true, iframeDocument);
+								loadFonts(
+									getPageFonts(true),
+									true,
+									iframeDocument
+								);
 
 								// Get all Maxi blocks <style> from <head>
 								// and move to new iframe

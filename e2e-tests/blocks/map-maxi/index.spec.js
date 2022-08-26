@@ -1,15 +1,12 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	getEditedPostContent,
-	insertBlock,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 import {
 	addCustomCSS,
 	getAttributes,
 	getBlockStyle,
+	getEditedPostContent,
 	openPreviewPage,
 } from '../../utils';
 import getMapContainer from './utils/getMapContainer';
@@ -66,7 +63,7 @@ describe('Map Maxi', () => {
 	});
 
 	it('Map Maxi does not break', async () => {
-		expect(await getEditedPostContent()).toMatchSnapshot();
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
 		// Check frontend

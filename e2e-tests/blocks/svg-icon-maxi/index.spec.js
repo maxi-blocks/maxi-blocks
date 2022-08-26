@@ -1,16 +1,17 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	getEditedPostContent,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
-import { getBlockStyle, modalMock, addCustomCSS } from '../../utils';
+import {
+	getBlockStyle,
+	modalMock,
+	addCustomCSS,
+	getEditedPostContent,
+} from '../../utils';
 
 describe('Svg Icon Maxi', () => {
 	it('Svg Icon Maxi does not break', async () => {
@@ -24,8 +25,7 @@ describe('Svg Icon Maxi', () => {
 		);
 		await page.waitForTimeout(200);
 
-		expect(await getEditedPostContent()).toMatchSnapshot();
-
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 	it('Svg Icon Custom CSS', async () => {

@@ -4,9 +4,14 @@ const breakpointResizer = (
 	size,
 	breakpoints,
 	xxlSize = breakpoints.xl + 1,
-	winSize = 0
+	winSize = 0,
+	isGutenbergButton = false
 ) => {
 	const editorWrapper = document.querySelector('.edit-post-visual-editor');
+	const editorContent = document.querySelector(
+		'.edit-post-visual-editor__content-area'
+	).firstChild;
+
 	const winHeight = window.outerWidth;
 	const responsiveWidth =
 		(size === 'general' && 'none') ||
@@ -19,11 +24,15 @@ const breakpointResizer = (
 	);
 	editorWrapper.setAttribute('maxi-blocks-responsive-width', responsiveWidth);
 
+	if (!isGutenbergButton) editorContent.setAttribute('is-maxi-preview', true);
+	else editorContent.removeAttribute('is-maxi-preview');
+
 	if (size === 'general') {
 		editorWrapper.style.width = '';
 		editorWrapper.style.margin = '';
 	} else {
-		editorWrapper.style.width = `${responsiveWidth}px`;
+		if (['s', 'xs'].includes(size)) editorWrapper.style.width = '100%';
+		else editorWrapper.style.width = `${responsiveWidth}px`;
 
 		if (winHeight > responsiveWidth) editorWrapper.style.margin = '0 auto';
 		else editorWrapper.style.margin = '';
@@ -66,7 +75,8 @@ const reducer = (
 				action.deviceType,
 				state.breakpoints,
 				action.width,
-				state.settings.window.width
+				state.settings.window.width,
+				action.isGutenbergButton
 			);
 			return {
 				...state,
@@ -100,7 +110,7 @@ const reducer = (
 			} else if (depth < newInspectorPath.length) {
 				newInspectorPath[depth] = newValue;
 
-				for (let i = depth + 1; i <= newInspectorPath.length; i++) {
+				for (let i = depth + 1; i <= newInspectorPath.length; i += 1) {
 					newInspectorPath.splice(i, 1);
 				}
 

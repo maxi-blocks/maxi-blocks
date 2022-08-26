@@ -55,4 +55,4 @@ export const getBlockNameFromUniqueID = uniqueID =>
 export const getBlockSelectorsByUniqueID = uniqueID =>
 	Object.values(blocksData).find(
 		data => data.name === getBlockNameFromUniqueID(uniqueID)
-	).customCss.selectors;
+	)?.customCss.selectors;

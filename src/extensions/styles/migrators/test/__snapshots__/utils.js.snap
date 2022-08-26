@@ -4,6 +4,41 @@ exports[`getBlockNameFromUniqueID Should return the block name 1`] = `"button-ma
 
 exports[`getBlockNameFromUniqueID Should return the block name, when uniqueID is big digit 1`] = `"text-maxi"`;
 
+exports[`getBlockSelectorsByUniqueID Should return accordion selectors 1`] = `
+Object {
+  "accordion": Object {
+    "hover": Object {
+      "label": "accordion on hover",
+      "target": ":hover",
+    },
+    "normal": Object {
+      "label": "accordion",
+      "target": "",
+    },
+  },
+  "after accordion": Object {
+    "hover": Object {
+      "label": "accordion ::after on hover",
+      "target": ":hover::after",
+    },
+    "normal": Object {
+      "label": "accordion ::after",
+      "target": "::after",
+    },
+  },
+  "before accordion": Object {
+    "hover": Object {
+      "label": "accordion ::before on hover",
+      "target": ":hover::before",
+    },
+    "normal": Object {
+      "label": "accordion ::before",
+      "target": "::before",
+    },
+  },
+}
+`;
+
 exports[`getBlockSelectorsByUniqueID Should return button selectors 1`] = `
 Object {
   "after button": Object {
@@ -533,6 +568,61 @@ Object {
     "normal": Object {
       "label": "number",
       "target": " .maxi-number-counter__box__text",
+    },
+  },
+}
+`;
+
+exports[`getBlockSelectorsByUniqueID Should return pane selectors 1`] = `
+Object {
+  "after pane": Object {
+    "hover": Object {
+      "label": "pane ::after on hover",
+      "target": ":hover::after",
+    },
+    "normal": Object {
+      "label": "pane ::after",
+      "target": "::after",
+    },
+  },
+  "before pane": Object {
+    "hover": Object {
+      "label": "pane ::before on hover",
+      "target": ":hover::before",
+    },
+    "normal": Object {
+      "label": "pane ::before",
+      "target": "::before",
+    },
+  },
+  "content": Object {
+    "hover": Object {
+      "label": "pane content on hover",
+      "target": " .maxi-pane-block__content:hover",
+    },
+    "normal": Object {
+      "label": "pane content",
+      "target": " .maxi-pane-block__content",
+    },
+  },
+  "header": Object {
+    "hover": Object {
+      "label": "pane header on hover",
+      "target": " .maxi-pane-block__header:hover",
+    },
+    "normal": Object {
+      "label": "pane header",
+      "target": " .maxi-pane-block__header",
+    },
+  },
+  "pane": Object {
+    "hover": Object {
+      "label": "pane on hover",
+      "target": ":hover",
+    },
+    "normal": Object {
+      "label": "pane",
+      "target": "",
     },
   },
 }

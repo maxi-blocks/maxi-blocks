@@ -57,6 +57,7 @@ const customCss = {
 const interactionBuilderSettings = getCanvasSettings({ name, customCss });
 
 const data = {
+	name,
 	copyPasteMapping,
 	customCss,
 	interactionBuilderSettings,

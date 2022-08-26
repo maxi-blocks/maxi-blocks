@@ -7,6 +7,7 @@ export { default as groupData } from './group-maxi/data';
 export { default as imageData } from './image-maxi/data';
 export { default as mapData } from './map-maxi/data';
 export { default as numberCounterData } from './number-counter-maxi/data';
+export { default as paneData } from './pane-maxi/data';
 export { default as rowData } from './row-maxi/data';
 export { default as searchData } from './search-maxi/data';
 export { default as svgIconData } from './svg-icon-maxi/data';

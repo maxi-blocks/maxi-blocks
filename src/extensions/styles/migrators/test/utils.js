@@ -126,6 +126,7 @@ describe('getBlockNameFromUniqueID', () => {
 
 describe('getBlockSelectorsByUniqueID', () => {
 	[
+		'accordion',
 		'button',
 		'column',
 		'container',
@@ -134,6 +135,7 @@ describe('getBlockSelectorsByUniqueID', () => {
 		'image',
 		'map',
 		'number-counter',
+		'pane',
 		'row',
 		'search',
 		'svg-icon',

@@ -27,7 +27,7 @@ import {
 	getSVGStyles,
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
-import { selectorsAccordion } from './custom-css';
+import data from './data';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -385,7 +385,7 @@ const getStyles = props => {
 				...getIconObject(props),
 				...getPaneContentObject(props),
 			},
-			selectorsAccordion,
+			data,
 			props
 		),
 	};

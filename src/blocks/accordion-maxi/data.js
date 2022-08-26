@@ -1,3 +1,13 @@
+/**
+ * Internal dependencies
+ */
+import { createSelectors } from '../../extensions/styles/custom-css';
+import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
+
+/**
+ * Data object
+ */
+const name = 'accordion-maxi';
 const copyPasteMapping = {
 	settings: {
 		'Accordion settings': {
@@ -35,5 +45,21 @@ const copyPasteMapping = {
 		template: 'advanced',
 	},
 };
+const customCss = {
+	selectors: createSelectors({
+		accordion: '',
+	}),
+	categories: [
+		'accordion',
+		'before accordion',
+		'after accordion',
+		'background',
+		'background hover',
+	],
+};
+const interactionBuilderSettings = getCanvasSettings({ name, customCss });
 
-export default copyPasteMapping;
+const data = { name, copyPasteMapping, customCss, interactionBuilderSettings };
+
+export { copyPasteMapping, customCss };
+export default data;

@@ -15,7 +15,7 @@ import {
 	getSizeStyles,
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
-import { selectorsPane } from './custom-css';
+import data from './data';
 
 const getNormalObject = props => {
 	const response = {
@@ -132,7 +132,7 @@ const getStyles = props => {
 					blockStyle: props.blockStyle,
 				}),
 			},
-			selectorsPane,
+			data,
 			props
 		),
 	};

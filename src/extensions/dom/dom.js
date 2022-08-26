@@ -205,7 +205,6 @@ wp.domReady(() => {
 							'iframe[name="editor-canvas"]'
 						);
 						const iframeDocument = iframe.contentDocument;
-
 						const editorWrapper = iframeDocument.body;
 
 						const responsiveWidth = mutation.target
@@ -246,6 +245,10 @@ wp.domReady(() => {
 										? 's'
 										: 'xs'
 								);
+
+								// Hides scrollbar in firefox
+								iframeDocument.documentElement.style.scrollbarWidth =
+									'none';
 
 								// Copy all fonts to iframe
 								loadFonts(getPageFonts(), true, iframeDocument);

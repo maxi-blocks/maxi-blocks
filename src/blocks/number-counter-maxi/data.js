@@ -16,102 +16,103 @@ const prefix = 'number-counter-';
 /**
  * Data object
  */
-const data = {
-	name: 'number-counter-maxi',
-	copyPasteMapping: {
-		settings: {
-			Alignment: {
-				groupAttributes: 'alignment',
-			},
-			Number: {
-				groupAttributes: 'numberCounter',
-			},
-			Border: {
-				template: 'border',
-				prefix,
-			},
-			'Box shadow': {
-				template: 'boxShadow',
-				prefix,
-			},
-			'Margin/Padding': {
-				template: 'marginPadding',
-				prefix,
-			},
+const name = 'number-counter-maxi';
+const copyPasteMapping = {
+	settings: {
+		Alignment: {
+			groupAttributes: 'alignment',
 		},
-		canvas: {
-			Size: {
-				template: 'size',
-			},
-			Background: {
-				template: 'blockBackground',
-			},
-			Border: {
-				template: 'border',
-			},
-			'Box shadow': {
-				template: 'boxShadow',
-			},
-			Opacity: {
-				template: 'opacity',
-			},
-			'Margin/Padding': {
-				template: 'marginPadding',
-			},
+		Number: {
+			groupAttributes: 'numberCounter',
 		},
-		advanced: {
-			template: 'advanced',
+		Border: {
+			template: 'border',
+			prefix,
+		},
+		'Box shadow': {
+			template: 'boxShadow',
+			prefix,
+		},
+		'Margin/Padding': {
+			template: 'marginPadding',
+			prefix,
 		},
 	},
-	customCss: {
-		selectors: {
-			...createSelectors({
-				canvas: '',
-				number: `${boxClass}__text`,
-			}),
-			...createSelectors(
-				{
-					circle: `${boxClass}__circle`,
-				},
-				false
-			),
+	canvas: {
+		Size: {
+			template: 'size',
 		},
-		categories: [
-			'canvas',
-			'before canvas',
-			'after canvas',
-			'number',
-			'before number',
-			'after number',
-			'circle',
-			'background',
-			'background hover',
-		],
-	},
-	transition: {
-		...transitionDefault,
-		block: {
-			border: {
-				title: 'Border',
-				target: boxClass,
-				property: 'border',
-				prefix,
-			},
-			'box shadow': {
-				title: 'Box shadow',
-				target: boxClass,
-				property: 'box-shadow',
-				prefix,
-			},
+		Background: {
+			template: 'blockBackground',
+		},
+		Border: {
+			template: 'border',
+		},
+		'Box shadow': {
+			template: 'boxShadow',
+		},
+		Opacity: {
+			template: 'opacity',
+		},
+		'Margin/Padding': {
+			template: 'marginPadding',
 		},
 	},
-	get interactionBuilderSettings() {
-		return getCanvasSettings(this);
+	advanced: {
+		template: 'advanced',
 	},
 };
+const customCss = {
+	selectors: {
+		...createSelectors({
+			canvas: '',
+			number: `${boxClass}__text`,
+		}),
+		...createSelectors(
+			{
+				circle: `${boxClass}__circle`,
+			},
+			false
+		),
+	},
+	categories: [
+		'canvas',
+		'before canvas',
+		'after canvas',
+		'number',
+		'before number',
+		'after number',
+		'circle',
+		'background',
+		'background hover',
+	],
+};
+const transition = {
+	...transitionDefault,
+	block: {
+		border: {
+			title: 'Border',
+			target: boxClass,
+			property: 'border',
+			prefix,
+		},
+		'box shadow': {
+			title: 'Box shadow',
+			target: boxClass,
+			property: 'box-shadow',
+			prefix,
+		},
+	},
+};
+const interactionBuilderSettings = getCanvasSettings({ name, customCss });
 
-const { copyPasteMapping, customCss, transition, interactionBuilderSettings } =
-	data;
+const data = {
+	name,
+	copyPasteMapping,
+	customCss,
+	transition,
+	interactionBuilderSettings,
+};
 
 export { copyPasteMapping, customCss, transition, interactionBuilderSettings };
 export default data;

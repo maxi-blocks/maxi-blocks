@@ -7,60 +7,61 @@ import getCanvasSettings from '../../components/relation-control/getCanvasSettin
 /**
  * Data object
  */
-const data = {
-	name: 'group-maxi',
-	copyPasteMapping: {
-		settings: {
-			'Callout arrow': {
-				group: {
-					'Show arrow': 'arrow-status',
-					'Arrow side': 'arrow-side',
-					'Arrow position': 'arrow-position',
-					'Arrow size': 'arrow-width',
-				},
-				hasBreakpoints: true,
+const name = 'group-maxi';
+const copyPasteMapping = {
+	settings: {
+		'Callout arrow': {
+			group: {
+				'Show arrow': 'arrow-status',
+				'Arrow side': 'arrow-side',
+				'Arrow position': 'arrow-position',
+				'Arrow size': 'arrow-width',
 			},
-			Background: {
-				template: 'blockBackground',
-			},
-			Border: {
-				template: 'border',
-			},
-			'Box shadow': {
-				template: 'boxShadow',
-			},
-			Size: {
-				template: 'size',
-			},
-			'Margin/Padding': {
-				template: 'marginPadding',
-			},
+			hasBreakpoints: true,
 		},
-		advanced: {
-			template: 'advanced',
-			Opacity: {
-				template: 'opacity',
-			},
+		Background: {
+			template: 'blockBackground',
+		},
+		Border: {
+			template: 'border',
+		},
+		'Box shadow': {
+			template: 'boxShadow',
+		},
+		Size: {
+			template: 'size',
+		},
+		'Margin/Padding': {
+			template: 'marginPadding',
 		},
 	},
-	customCss: {
-		selectors: createSelectors({
-			group: '',
-		}),
-		categories: [
-			'group',
-			'before group',
-			'after group',
-			'background',
-			'background hover',
-		],
-	},
-	get interactionBuilderSettings() {
-		return getCanvasSettings(this);
+	advanced: {
+		template: 'advanced',
+		Opacity: {
+			template: 'opacity',
+		},
 	},
 };
+const customCss = {
+	selectors: createSelectors({
+		group: '',
+	}),
+	categories: [
+		'group',
+		'before group',
+		'after group',
+		'background',
+		'background hover',
+	],
+};
+const interactionBuilderSettings = getCanvasSettings({ name, customCss });
 
-const { copyPasteMapping, customCss, interactionBuilderSettings } = data;
+const data = {
+	name,
+	copyPasteMapping,
+	customCss,
+	interactionBuilderSettings,
+};
 
 export { copyPasteMapping, customCss, interactionBuilderSettings };
 export default data;

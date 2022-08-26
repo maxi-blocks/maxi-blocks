@@ -7,60 +7,60 @@ import getCanvasSettings from '../../components/relation-control/getCanvasSettin
 /**
  * Data object
  */
-const data = {
-	name: 'row-maxi',
-	copyPasteMapping: {
-		settings: {
-			'Row settings': {
-				group: {
-					'Row pattern': 'row-pattern',
-					'Row gap': ['row-gap', 'row-gap-unit'],
-					'Column gap': ['column-gap', 'column-gap-unit'],
-					'Flex wrap': 'flex-wrap',
-				},
-				hasBreakpoints: true,
+const name = 'row-maxi';
+const copyPasteMapping = {
+	settings: {
+		'Row settings': {
+			group: {
+				'Row pattern': 'row-pattern',
+				'Row gap': ['row-gap', 'row-gap-unit'],
+				'Column gap': ['column-gap', 'column-gap-unit'],
+				'Flex wrap': 'flex-wrap',
 			},
-			Background: {
-				template: 'blockBackground',
-			},
-			Border: {
-				template: 'border',
-			},
-			'Box shadow': {
-				template: 'boxShadow',
-			},
-			Size: {
-				template: 'size',
-			},
-			'Margin/Padding': {
-				template: 'marginPadding',
-			},
+			hasBreakpoints: true,
 		},
-		advanced: {
-			template: 'advanced',
-			Opacity: {
-				template: 'opacity',
-			},
+		Background: {
+			template: 'blockBackground',
+		},
+		Border: {
+			template: 'border',
+		},
+		'Box shadow': {
+			template: 'boxShadow',
+		},
+		Size: {
+			template: 'size',
+		},
+		'Margin/Padding': {
+			template: 'marginPadding',
 		},
 	},
-	customCss: {
-		selectors: createSelectors({
-			row: '',
-		}),
-		categories: [
-			'row',
-			'before row',
-			'after row',
-			'background',
-			'background hover',
-		],
-	},
-	get interactionBuilderSettings() {
-		return getCanvasSettings(this);
+	advanced: {
+		template: 'advanced',
+		Opacity: {
+			template: 'opacity',
+		},
 	},
 };
+const customCss = {
+	selectors: createSelectors({
+		row: '',
+	}),
+	categories: [
+		'row',
+		'before row',
+		'after row',
+		'background',
+		'background hover',
+	],
+};
+const interactionBuilderSettings = getCanvasSettings({ name, customCss });
 
-const { copyPasteMapping, customCss, interactionBuilderSettings } = data;
+const data = {
+	copyPasteMapping,
+	customCss,
+	interactionBuilderSettings,
+};
 
 export { copyPasteMapping, customCss, interactionBuilderSettings };
 export default data;

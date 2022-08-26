@@ -32,59 +32,60 @@ const shapeDividerCopyPasteGenerator = position => {
 /**
  * Data object
  */
-const data = {
-	name: 'container-maxi',
-	copyPasteMapping: {
-		settings: {
-			'Callout arrow': {
-				group: {
-					'Show arrow': 'arrow-status',
-					'Arrow side': 'arrow-side',
-					'Arrow position': 'arrow-position',
-					'Arrow size': 'arrow-width',
-				},
-				hasBreakpoints: true,
+const name = 'container-maxi';
+const copyPasteMapping = {
+	settings: {
+		'Callout arrow': {
+			group: {
+				'Show arrow': 'arrow-status',
+				'Arrow side': 'arrow-side',
+				'Arrow position': 'arrow-position',
+				'Arrow size': 'arrow-width',
 			},
-			...shapeDividerCopyPasteGenerator('top'),
-			...shapeDividerCopyPasteGenerator('bottom'),
-			Background: {
-				template: 'blockBackground',
-			},
-			Border: {
-				template: 'border',
-			},
-			'Box shadow': {
-				template: 'boxShadow',
-			},
-			Size: {
-				template: 'size',
-			},
-			'Margin/Padding': {
-				template: 'marginPadding',
-			},
+			hasBreakpoints: true,
 		},
-		advanced: {
-			template: 'advanced',
+		...shapeDividerCopyPasteGenerator('top'),
+		...shapeDividerCopyPasteGenerator('bottom'),
+		Background: {
+			template: 'blockBackground',
+		},
+		Border: {
+			template: 'border',
+		},
+		'Box shadow': {
+			template: 'boxShadow',
+		},
+		Size: {
+			template: 'size',
+		},
+		'Margin/Padding': {
+			template: 'marginPadding',
 		},
 	},
-	customCss: {
-		selectors: createSelectors({
-			container: '',
-		}),
-		categories: [
-			'container',
-			'before container',
-			'after container',
-			'background',
-			'background hover',
-		],
-	},
-	get interactionBuilderSettings() {
-		return getCanvasSettings(this);
+	advanced: {
+		template: 'advanced',
 	},
 };
+const customCss = {
+	selectors: createSelectors({
+		container: '',
+	}),
+	categories: [
+		'container',
+		'before container',
+		'after container',
+		'background',
+		'background hover',
+	],
+};
+const interactionBuilderSettings = getCanvasSettings({ name, customCss });
 
-const { copyPasteMapping, customCss, interactionBuilderSettings } = data;
+const data = {
+	name,
+	copyPasteMapping,
+	customCss,
+	interactionBuilderSettings,
+};
 
 export { copyPasteMapping, customCss, interactionBuilderSettings };
 export default data;

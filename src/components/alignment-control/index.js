@@ -88,9 +88,7 @@ const AlignmentControl = props => {
 		className
 	);
 
-	const target =
-		type === 'text' ? `${prefix}text-alignment` : `${prefix}alignment`;
-
+	const target = `${prefix}${type === 'text' ? 'text-' : ''}alignment`;
 	return (
 		<SettingTabsControl
 			type='buttons'

@@ -46,6 +46,13 @@ registerBlockType('maxi-blocks/image-maxi', {
 	attributes: {
 		...attributes,
 	},
+	getEditWrapperProps(attributes) {
+		const { uniqueID } = attributes;
+
+		return {
+			uniqueid: uniqueID,
+		};
+	},
 	edit,
 	save,
 	deprecated: blockMigrator({

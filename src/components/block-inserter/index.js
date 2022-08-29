@@ -49,7 +49,7 @@ const BlockInserter = props => {
 		>
 			<ButtonBlockAppender
 				rootClientId={clientId}
-				className='maxi-block-inserter__button'
+				className='maxi-components-button maxi-block-inserter__button'
 			/>
 		</div>
 	);

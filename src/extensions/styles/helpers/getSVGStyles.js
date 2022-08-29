@@ -13,7 +13,7 @@ import { isNil, isEmpty } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-export const getSVGWidthStyles = (obj, prefix = 'svg-') => {
+export const getSVGWidthStyles = ({ obj, prefix = '' }) => {
 	const response = {
 		label: 'SVG width',
 		general: {},
@@ -22,13 +22,13 @@ export const getSVGWidthStyles = (obj, prefix = 'svg-') => {
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
-		const svgWidth = obj[`${prefix}width-${breakpoint}`];
+		const svgWidth = obj[`${prefix}svg-width-${breakpoint}`];
 
 		if (!isNil(svgWidth))
 			response[
 				breakpoint
 			].width = `${svgWidth}${getLastBreakpointAttribute({
-				target: `${prefix}width-unit`,
+				target: `${prefix}svg-width-unit`,
 				breakpoint,
 				attributes: obj,
 			})}`;

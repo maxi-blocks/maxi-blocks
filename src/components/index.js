@@ -47,7 +47,6 @@ export { default as Indicators } from './indicators';
 export { default as InfoBox } from './info-box';
 export { default as ListControl } from './list-control';
 export { default as ListItemControl } from './list-control/list-item-control';
-export { default as MapControl } from './map-control';
 export { default as ManageHoverTransitions } from './manage-hover-transitions';
 export { default as MarginControl } from './margin-control';
 export { default as MaxiPopoverButton } from './maxi-popover-button';

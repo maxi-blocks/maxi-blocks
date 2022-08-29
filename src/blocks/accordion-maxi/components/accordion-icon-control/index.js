@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import {
-	SelectControl,
+	AxisPositionControl,
 	SettingTabsControl,
 	ToggleSwitch,
 	IconControl,
@@ -16,23 +16,15 @@ import MaxiModal from '../../../../editor/library/modal';
 import { getIconWithColor } from '../../../../extensions/styles';
 
 const AccordionIconSettings = props => {
-	const { onChange, blockStyle, svgTypeActive } = props;
+	const { onChange, blockStyle, svgTypeActive, breakpoint } = props;
 
 	return (
 		<>
-			<SelectControl
-				label={__('Icon position', 'maxi-blocks')}
-				options={[
-					{
-						label: 'Right',
-						value: 'right',
-					},
-					{
-						label: 'Left',
-						value: 'left',
-					},
-				]}
-				value={props['icon-position']}
+			<AxisPositionControl
+				label={__('Icon', 'maxi-blocks')}
+				disableY
+				selected={props['icon-position']}
+				breakpoint={breakpoint}
 				onChange={val =>
 					onChange({
 						'icon-position': val,

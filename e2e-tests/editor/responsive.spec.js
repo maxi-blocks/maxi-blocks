@@ -19,7 +19,7 @@ import {
 describe('Responsive attributes mechanisms', () => {
 	beforeEach(async () => {
 		// Base responsive is "M"
-		await setBrowserViewport('large');
+		await setBrowserViewport({ width: 1240, height: 700 });
 
 		await createNewPost();
 		await insertBlock('Group Maxi');
@@ -486,7 +486,7 @@ describe('Responsive attributes mechanisms', () => {
 
 	it('On change XL default attributes from General responsive and then reset, changes on General', async () => {
 		// Base responsive is "XL"
-		await setBrowserViewport({ width: 1425, height: 700 });
+		await setBrowserViewport({ width: 1920, height: 700 });
 
 		await createNewPost();
 		await insertBlock('Button Maxi');
@@ -561,7 +561,7 @@ describe('Responsive attributes mechanisms', () => {
 
 	it('On change XXL default attributes from XL screen, then change the screen size to XXL, on changing the General attribute it changes on General and XXL', async () => {
 		// Base responsive is "XL"
-		await setBrowserViewport({ width: 1425, height: 700 });
+		await setBrowserViewport({ width: 1920, height: 700 });
 
 		await createNewPost();
 		await insertBlock('Group Maxi');
@@ -629,7 +629,7 @@ describe('Responsive attributes mechanisms', () => {
 
 	it('On resetting Typography values from SC having XXL as baseBreakpoint', async () => {
 		// Base responsive is "XXL"
-		await setBrowserViewport({ width: 2000, height: 700 });
+		await setBrowserViewport({ width: 2400, height: 700 });
 		await createNewPost();
 
 		await getStyleCardEditor({
@@ -685,8 +685,8 @@ describe('Responsive attributes mechanisms', () => {
 	// was supposed to be fixed and tested here. Things are different now, so this test is skipped but kept in case we find a future
 	// situation related that will need it 👍
 	it.skip('On L as a baseBreakpoint and changing a default L attribute with no higher value, it changes General and L', async () => {
-		// Base responsive is "XL"
-		await setBrowserViewport({ width: 1040, height: 700 });
+		// Base responsive is "L"
+		await setBrowserViewport({ width: 1400, height: 700 });
 
 		await createNewPost();
 		await insertBlock('Container Maxi');

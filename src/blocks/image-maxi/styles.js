@@ -446,9 +446,10 @@ const getStyles = props => {
 				...[
 					' .maxi-image-block__image',
 					' .maxi-image-block__image:hover',
-				].map(selector => ({
-					[selector]: getImageObject('svg', props),
-				})),
+				].reduce((acc, selector) => {
+					acc[selector] = getImageShapeObject('svg', props);
+					return acc;
+				}, {}),
 				' .maxi-image-block__image pattern image': getImageShapeObject(
 					'image',
 					props

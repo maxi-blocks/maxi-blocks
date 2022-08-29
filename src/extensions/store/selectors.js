@@ -47,7 +47,7 @@ const selectors = {
 		if (state) return state.tabsPath;
 		return false;
 	},
-	receiveWinBreakpoint(state) {
+	receiveBaseBreakpoint(state) {
 		if (!state) return false;
 
 		const editorContentWidth = state?.settings?.editorContent?.width;

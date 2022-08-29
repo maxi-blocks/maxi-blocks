@@ -512,7 +512,11 @@ const settings = {
 				const { playerType } = props.blockAttributes;
 
 				return playerType === 'popup' ? (
-					<VideoOverlayControl {...props} disableHideImage />
+					<VideoOverlayControl
+						{...props}
+						disableHideImage
+						disableHover
+					/>
 				) : (
 					<InfoBox
 						message={__(

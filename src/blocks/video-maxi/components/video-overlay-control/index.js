@@ -123,7 +123,12 @@ const OverlayColor = props => {
 };
 
 const VideoOverlayControl = props => {
-	const { onChange, hideImage, disableHideImage = false } = props;
+	const {
+		onChange,
+		hideImage,
+		disableHideImage = false,
+		disableHover = false,
+	} = props;
 
 	return (
 		<>
@@ -135,37 +140,45 @@ const VideoOverlayControl = props => {
 					onChange={val => onChange({ hideImage: val })}
 				/>
 			)}
-			<SettingTabsControl
-				depth={2}
-				items={[
-					{
-						label: __('Normal state', 'maxi-blocks'),
-						content: <OverlayColor {...props} />,
-					},
-					{
-						label: __('Hover state', 'maxi-blocks'),
-						content: (
-							<>
-								<ToggleSwitch
-									label={__('Enable hover', 'maxi-blocks')}
-									selected={
-										props['overlay-background-hover-status']
-									}
-									onChange={val =>
-										onChange({
-											'overlay-background-hover-status':
-												val,
-										})
-									}
-								/>
-								{props['overlay-background-hover-status'] && (
-									<OverlayColor {...props} isHover />
-								)}
-							</>
-						),
-					},
-				]}
-			/>
+			{disableHover && <OverlayColor {...props} />}
+			{!disableHover && (
+				<SettingTabsControl
+					depth={2}
+					items={[
+						{
+							label: __('Normal state', 'maxi-blocks'),
+							content: <OverlayColor {...props} />,
+						},
+						{
+							label: __('Hover state', 'maxi-blocks'),
+							content: (
+								<>
+									<ToggleSwitch
+										label={__(
+											'Enable hover',
+											'maxi-blocks'
+										)}
+										selected={
+											props[
+												'overlay-background-hover-status'
+											]
+										}
+										onChange={val =>
+											onChange({
+												'overlay-background-hover-status':
+													val,
+											})
+										}
+									/>
+									{props[
+										'overlay-background-hover-status'
+									] && <OverlayColor {...props} isHover />}
+								</>
+							),
+						},
+					]}
+				/>
+			)}
 		</>
 	);
 };

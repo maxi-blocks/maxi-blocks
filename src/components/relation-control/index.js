@@ -155,16 +155,16 @@ const RelationControl = props => {
 
 		const mergedAttributes = merge(blockAttributes, item.attributes);
 
-		const transformGeneralAttributesToWinBreakpoint = obj => {
+		const transformGeneralAttributesToBaseBreakpoint = obj => {
 			if (deviceType !== 'general') return {};
 
-			const winBreakpoint = select('maxiBlocks').receiveWinBreakpoint();
+			const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 
-			if (!winBreakpoint) return {};
+			if (!baseBreakpoint) return {};
 
 			return Object.keys(obj).reduce((acc, key) => {
 				if (key.includes('-general')) {
-					const newKey = key.replace('general', winBreakpoint);
+					const newKey = key.replace('general', baseBreakpoint);
 
 					acc[newKey] = obj[key];
 				}
@@ -186,7 +186,7 @@ const RelationControl = props => {
 				const newAttributesObj = {
 					...item.attributes,
 					...obj,
-					...transformGeneralAttributesToWinBreakpoint(obj),
+					...transformGeneralAttributesToBaseBreakpoint(obj),
 				};
 
 				const newGroupAttributes = getGroupAttributes(

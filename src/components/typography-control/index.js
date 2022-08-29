@@ -331,19 +331,19 @@ const TypographyControl = props => {
 			prefix
 		);
 
-	const { styleCard, winBreakpoint } = useSelect(select => {
+	const { styleCard, baseBreakpoint } = useSelect(select => {
 		const { receiveMaxiSelectedStyleCard } = select(
 			'maxiBlocks/style-cards'
 		);
-		const { receiveWinBreakpoint } = select('maxiBlocks');
+		const { receiveBaseBreakpoint } = select('maxiBlocks');
 
 		const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
 
-		const winBreakpoint = receiveWinBreakpoint();
+		const baseBreakpoint = receiveBaseBreakpoint();
 
 		return {
 			styleCard,
-			winBreakpoint,
+			baseBreakpoint,
 		};
 	});
 
@@ -405,7 +405,7 @@ const TypographyControl = props => {
 
 	const getDefault = prop => {
 		const currentBreakpoint =
-			(isStyleCards && breakpoint === 'general' && winBreakpoint) ||
+			(isStyleCards && breakpoint === 'general' && baseBreakpoint) ||
 			breakpoint;
 
 		const defaultAttribute = !isStyleCards

@@ -627,7 +627,7 @@ describe('Responsive attributes mechanisms', () => {
 		expect(paddingOnXxl).toStrictEqual(expectPaddingOnXxl);
 	});
 
-	it('On resetting Typography values from SC having XXL as winBreakpoint', async () => {
+	it('On resetting Typography values from SC having XXL as baseBreakpoint', async () => {
 		// Base responsive is "XXL"
 		await setBrowserViewport({ width: 2000, height: 700 });
 		await createNewPost();
@@ -684,7 +684,7 @@ describe('Responsive attributes mechanisms', () => {
 	// start with XXL, General or XL. In this case, having the width-l default value as the first was creating this concrete issue that
 	// was supposed to be fixed and tested here. Things are different now, so this test is skipped but kept in case we find a future
 	// situation related that will need it 👍
-	it.skip('On L as a winBreakpoint and changing a default L attribute with no higher value, it changes General and L', async () => {
+	it.skip('On L as a baseBreakpoint and changing a default L attribute with no higher value, it changes General and L', async () => {
 		// Base responsive is "XL"
 		await setBrowserViewport({ width: 1040, height: 700 });
 

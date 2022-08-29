@@ -3,7 +3,7 @@
  */
 import { RichText, useInnerBlocksProps } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
-import { forwardRef, RawHTML } from '@wordpress/element';
+import { createRef, forwardRef, RawHTML } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -86,16 +86,14 @@ const Content = forwardRef((props, ref) => {
 class edit extends MaxiBlockComponent {
 	static contextType = AccordionContext;
 
-	get getStylesObject() {
-		return getStyles(this.props.attributes);
+	constructor(...args) {
+		super(...args);
+
+		this.contentWrapper = createRef();
 	}
 
-	maxiBlockDidMount() {
-		const contentWrapper = this.blockRef.current.querySelector(
-			'.maxi-pane-block__content-wrapper'
-		);
-
-		this.contentWrapper = contentWrapper;
+	get getStylesObject() {
+		return getStyles(this.props.attributes);
 	}
 
 	maxiBlockDidUpdate() {
@@ -128,11 +126,11 @@ class edit extends MaxiBlockComponent {
 		const { clientId } = this.props;
 		const { onOpen, animationDuration } = this.context;
 
-		this.contentWrapper.style.overflow = 'hidden';
+		this.contentWrapper.current.style.overflow = 'hidden';
 		// The css doesn't run transition if set to 100% so need to set exact value, for transition to happen
-		this.contentWrapper.style.maxHeight = `${this.contentWrapper.scrollHeight}px`;
+		this.contentWrapper.current.style.maxHeight = `${this.contentWrapper.current.scrollHeight}px`;
 		setTimeout(() => {
-			this.contentWrapper.style = null;
+			this.contentWrapper.current.style = null;
 		}, animationDuration);
 		onOpen(clientId);
 	}
@@ -143,13 +141,13 @@ class edit extends MaxiBlockComponent {
 			this.context;
 
 		if (!isCollapsible && openPanes.length <= 1) return;
-		this.contentWrapper.style.overflow = 'hidden';
+		this.contentWrapper.current.style.overflow = 'hidden';
 		// Same here, transition doesn't run if max-height is not set to exact value
-		this.contentWrapper.style.maxHeight = `${this.contentWrapper.scrollHeight}px`;
+		this.contentWrapper.current.style.maxHeight = `${this.contentWrapper.current.scrollHeight}px`;
 		setTimeout(() => {
-			this.contentWrapper.style.maxHeight = 0;
+			this.contentWrapper.current.style.maxHeight = 0;
 			setTimeout(() => {
-				this.contentWrapper.style = null;
+				this.contentWrapper.current.style = null;
 			}, animationDuration);
 		}, 1);
 		onClose(clientId);
@@ -233,7 +231,10 @@ class edit extends MaxiBlockComponent {
 					</div>
 				</div>
 				{/* Wrapper is only for open/close animations, no styles should be applied on it */}
-				<div className='maxi-pane-block__content-wrapper'>
+				<div
+					className='maxi-pane-block__content-wrapper'
+					ref={this.contentWrapper}
+				>
 					<Content
 						ref={this.blockRef}
 						clientId={clientId}

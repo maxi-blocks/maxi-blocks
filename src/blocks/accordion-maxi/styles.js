@@ -223,9 +223,9 @@ const getPaneHeaderStyles = (props, prefix, isHover = false) => {
 
 const getPaneHeaderObject = props => {
 	const response = {
-		' .maxi-pane-block .maxi-pane-block__header': {
+		' .maxi-pane-block .maxi-pane-block__header-content': {
 			paneHeader: {
-				label: 'Pane header',
+				label: 'Pane header content',
 				general: {
 					...getPaneHeaderStyles(props, '').paneHeader.general,
 					'flex-direction':

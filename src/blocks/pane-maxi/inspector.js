@@ -18,6 +18,36 @@ import { categoriesPane, selectorsPane } from './custom-css';
 const Inspector = props => {
 	const { deviceType } = props;
 
+	const getBaseSettings = (prefix, inlineTarget, label) => [
+		...inspectorTabs.background({
+			props,
+			label,
+			prefix,
+			inlineTarget,
+			disableImage: true,
+			disableVideo: true,
+			disableSVG: true,
+		}),
+		...inspectorTabs.border({
+			props,
+			prefix,
+		}),
+		...inspectorTabs.boxShadow({
+			props,
+			prefix,
+		}),
+		...inspectorTabs.size({
+			props,
+			prefix,
+		}),
+		...inspectorTabs.marginPadding({
+			props,
+			customLabel: 'Padding',
+			prefix,
+			disableMargin: true,
+		}),
+	];
+
 	return (
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}
@@ -33,10 +63,59 @@ const Inspector = props => {
 				depth={0}
 				items={[
 					{
-						label: __('Pane', 'maxi-blocks'),
+						label: __('Settings', 'maxi-blocks'),
 						content: (
 							<AccordionControl
 								items={[
+									{
+										label: __(
+											'Pane settings',
+											'maxi-blocks'
+										),
+										disablePadding: true,
+										content: (
+											<SettingTabsControl
+												depth={2}
+												disablePadding
+												isNestedAccordion
+												hasBorder
+												items={[
+													{
+														label: __(
+															'Header',
+															'maxi-blocks'
+														),
+														content: (
+															<AccordionControl
+																isNestedAccordion
+																items={getBaseSettings(
+																	'header-',
+																	'.maxi-pane-block__header',
+																	'Header'
+																)}
+															/>
+														),
+													},
+													{
+														label: __(
+															'Content',
+															'maxi-blocks'
+														),
+														content: (
+															<AccordionControl
+																isNestedAccordion
+																items={getBaseSettings(
+																	'content-',
+																	'.maxi-pane-block__content',
+																	'Content'
+																)}
+															/>
+														),
+													},
+												]}
+											/>
+										),
+									},
 									...inspectorTabs.blockBackground({
 										props,
 									}),
@@ -52,80 +131,6 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.marginPadding({
 										props,
-									}),
-								]}
-							/>
-						),
-					},
-					{
-						label: __('Header', 'maxi-blocks'),
-						content: (
-							<AccordionControl
-								items={[
-									...inspectorTabs.background({
-										props,
-										label: 'Header',
-										prefix: 'header-',
-										inlineTarget:
-											'.maxi-pane-block__header',
-										disableImage: true,
-										disableVideo: true,
-										disableSVG: true,
-									}),
-									...inspectorTabs.border({
-										props,
-										prefix: 'header-',
-									}),
-									...inspectorTabs.boxShadow({
-										props,
-										prefix: 'header-',
-									}),
-									...inspectorTabs.size({
-										props,
-										prefix: 'header-',
-									}),
-									...inspectorTabs.marginPadding({
-										props,
-										customLabel: 'Padding',
-										prefix: 'header-',
-										disableMargin: true,
-									}),
-								]}
-							/>
-						),
-					},
-					{
-						label: __('Content', 'maxi-blocks'),
-						content: (
-							<AccordionControl
-								items={[
-									...inspectorTabs.background({
-										props,
-										label: 'Content',
-										prefix: 'content-',
-										inlineTarget:
-											'.maxi-pane-block__content',
-										disableImage: true,
-										disableVideo: true,
-										disableSVG: true,
-									}),
-									...inspectorTabs.border({
-										props,
-										prefix: 'content-',
-									}),
-									...inspectorTabs.boxShadow({
-										props,
-										prefix: 'content-',
-									}),
-									...inspectorTabs.size({
-										props,
-										prefix: 'content-',
-									}),
-									...inspectorTabs.marginPadding({
-										props,
-										customLabel: 'Padding',
-										prefix: 'content-',
-										disableMargin: true,
 									}),
 								]}
 							/>

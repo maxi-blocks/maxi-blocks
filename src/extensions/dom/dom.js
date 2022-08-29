@@ -42,17 +42,6 @@ const allowedBlocks = [
 ];
 
 wp.domReady(() => {
-	// Window size
-	const setWindowSize = e => {
-		const { innerWidth: width, innerHeight: height } = e.target;
-
-		dispatch('maxiBlocks').setWindowSize({ width, height });
-	};
-
-	setWindowSize({ target: window });
-
-	window.addEventListener('resize', e => setWindowSize(e));
-
 	const observerSubscribe = subscribe(() => {
 		const targetNode = document.querySelector('.edit-post-layout');
 
@@ -165,7 +154,6 @@ wp.domReady(() => {
 						}
 					}
 
-					// Responsive editor
 					if (
 						mutation.type === 'attributes' &&
 						mutation.target.classList.contains(
@@ -175,6 +163,7 @@ wp.domReady(() => {
 							'editor-styles-wrapper'
 						)
 					) {
+						// Responsive editor
 						const responsiveWidth = mutation.target.getAttribute(
 							'maxi-blocks-responsive-width'
 						);
@@ -387,6 +376,27 @@ wp.domReady(() => {
 
 			// Dismantling the bomb
 			observerSubscribe();
+		}
+	});
+
+	const editorContentUnsubscribe = subscribe(() => {
+		const targetNode = document.querySelector(
+			'.interface-interface-skeleton__content'
+		);
+
+		if (targetNode) {
+			const { setEditorContentSize } = dispatch('maxiBlocks');
+
+			const resizeObserver = new ResizeObserver(() => {
+				const { width, height } = targetNode.getBoundingClientRect();
+				setEditorContentSize({ width, height });
+			});
+
+			[targetNode, document.body].forEach(element =>
+				resizeObserver.observe(element)
+			);
+
+			editorContentUnsubscribe();
 		}
 	});
 });

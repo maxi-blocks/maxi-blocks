@@ -31,10 +31,14 @@ class Accordion {
 			contentWrapper.addEventListener('transitionend', e => {
 				// Don't clear styles when child's transition ends
 				if (e.target !== e.currentTarget) return;
-				contentWrapper.style.overflow = null;
-				contentWrapper.style.maxHeight = null;
+				this.cleanAnimationStyles(contentWrapper);
 			});
 		});
+	}
+
+	cleanAnimationStyles(contentWrapper) {
+		contentWrapper.style.overflow = null;
+		contentWrapper.style.maxHeight = null;
 	}
 
 	triggerAnimation(pane, isClose = false) {
@@ -43,19 +47,18 @@ class Accordion {
 		);
 
 		if (isClose) {
-			contentWrapper.style.maxHeight = contentWrapper.scrollHeight + 'px';
+			contentWrapper.style.maxHeight = `${contentWrapper.scrollHeight}px`;
 			setTimeout(() => {
 				contentWrapper.style.maxHeight = 0;
 			}, 0);
 		} else {
 			contentWrapper.style.overflow = 'hidden';
-			contentWrapper.style.maxHeight = contentWrapper.scrollHeight + 'px';
+			contentWrapper.style.maxHeight = `${contentWrapper.scrollHeight}px`;
 		}
 		// If animationDuration === 0, the transitionend listener is not triggered,
 		// so need to clear styles here
 		if (this.animationDuration === 0) {
-			contentWrapper.style.overflow = null;
-			contentWrapper.style.maxHeight = null;
+			this.cleanAnimationStyles(contentWrapper);
 		}
 	}
 

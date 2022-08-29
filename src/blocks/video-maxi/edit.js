@@ -187,7 +187,7 @@ class edit extends MaxiBlockComponent {
 
 		const inlineStylesTargets = {
 			playIcon: '.maxi-video-block__play-button svg path',
-			overlay: '.maxi-video-block__overlay',
+			overlay: '.maxi-video-block__overlay-background',
 		};
 
 		return [

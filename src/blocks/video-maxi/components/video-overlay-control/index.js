@@ -66,6 +66,7 @@ const OverlayColor = props => {
 			})}
 			onChangeInline={({ color }) =>
 				insertInlineStyles &&
+				!isHover &&
 				insertInlineStyles({
 					obj: {
 						background: color,

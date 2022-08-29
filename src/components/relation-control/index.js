@@ -27,7 +27,7 @@ import settings from './settings';
 /**
  * External dependencies
  */
-import { cloneDeep, isEmpty, merge } from 'lodash';
+import { cloneDeep, isEmpty, merge, isNil } from 'lodash';
 
 /**
  * Styles
@@ -154,14 +154,25 @@ const RelationControl = props => {
 		}
 
 		// As an alternative to a migrator... Remove after used!
-		if (!('transitionTarget' in item.effects)) {
-			const { transitionTarget } = selectedSettingsObj;
+		if (
+			!(
+				'transitionTarget' in item.effects &&
+				'hoverStatus' in item.effects
+			)
+		) {
+			const { transitionTarget, hoverProp } = selectedSettingsObj;
+
+			let hoverStatus = null;
+
+			if (!('hoverStatus' in item.effects))
+				hoverStatus = blockAttributes?.[hoverProp];
 
 			if (transitionTarget)
 				onChangeRelation(relations, item.id, {
 					effects: {
 						...item.effects,
 						transitionTarget,
+						...(!isNil(hoverStatus) && { hoverStatus }),
 					},
 				});
 		}
@@ -452,16 +463,29 @@ const RelationControl = props => {
 													})),
 												]}
 												onChange={value => {
-													const { transitionTarget } =
-														getOptions(
-															getClientIdFromUniqueId(
-																item.uniqueID
-															)
-														).find(
-															option =>
-																option.label ===
-																value
+													const {
+														transitionTarget,
+														hoverProp,
+													} = getOptions(
+														getClientIdFromUniqueId(
+															item.uniqueID
+														)
+													).find(
+														option =>
+															option.label ===
+															value
+													);
+
+													const clientId =
+														getClientIdFromUniqueId(
+															item.uniqueID
 														);
+
+													const hoverStatus =
+														getBlock(clientId)
+															?.attributes?.[
+															hoverProp
+														];
 
 													onChangeRelation(
 														relations,
@@ -474,6 +498,7 @@ const RelationControl = props => {
 																effects: {
 																	...item.effects,
 																	transitionTarget,
+																	hoverStatus,
 																},
 															}),
 														}

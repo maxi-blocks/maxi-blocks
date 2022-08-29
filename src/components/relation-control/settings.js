@@ -32,6 +32,7 @@ import transitionsBlockObjs from '../../extensions/styles/transitions/transition
 const getTransformControl = name => {
 	const { categories, selectors } = getBlockCategoriesAndSelectors(name);
 
+	// TODO: add hoverProp entry
 	return {
 		label: __('Transform', 'maxi-blocks'),
 		attrGroupName: 'transform',

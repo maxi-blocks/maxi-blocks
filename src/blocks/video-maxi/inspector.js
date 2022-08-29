@@ -201,6 +201,7 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.size({
 										props,
+										hideFullWidth: true,
 										prefix: 'video-',
 									}),
 									...inspectorTabs.marginPadding({

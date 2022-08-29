@@ -24,6 +24,7 @@ const size = ({
 	hideWidth = false,
 	hideMaxWidth = false,
 	isImage = false,
+	hideFullWidth = false,
 }) => {
 	const { attributes, deviceType, maxiSetAttributes, name } = props;
 	const { isFirstOnHierarchy } = attributes;
@@ -34,7 +35,9 @@ const size = ({
 		attributes,
 	});
 
-	const showFullWidth = isFirstOnHierarchy || name === 'maxi-blocks/row-maxi';
+	const showFullWidth =
+		(isFirstOnHierarchy || name === 'maxi-blocks/row-maxi') &&
+		!hideFullWidth;
 	const isBlockFullWidth = fullWidth === 'full';
 
 	return {

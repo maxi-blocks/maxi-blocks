@@ -59,10 +59,10 @@ const actions = {
 			width,
 		};
 	},
-	setWindowSize(winSize) {
+	setEditorContentSize(editorContentSize) {
 		return {
-			type: 'SET_WINDOW_SIZE',
-			winSize,
+			type: 'SET_EDITOR_CONTENT_SIZE',
+			editorContentSize,
 		};
 	},
 	copyStyles(copiedStyles) {

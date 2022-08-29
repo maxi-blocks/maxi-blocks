@@ -66,18 +66,18 @@ const reducer = (
 				action.deviceType,
 				state.breakpoints,
 				action.width,
-				state.settings.window.width
+				state.settings.editorContent.width
 			);
 			return {
 				...state,
 				deviceType: action.deviceType,
 			};
-		case 'SET_WINDOW_SIZE':
+		case 'SET_EDITOR_CONTENT_SIZE':
 			return {
 				...state,
 				settings: {
 					...state.settings,
-					window: action.winSize,
+					editorContent: action.editorContentSize,
 				},
 			};
 		case 'COPY_STYLES':

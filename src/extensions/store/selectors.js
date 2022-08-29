@@ -21,11 +21,11 @@ const selectors = {
 		return false;
 	},
 	receiveXXLSize(state) {
-		if (state && state.settings?.window?.width) {
-			const { width: winWidth } = state.settings.window;
+		if (state && state.settings?.editorContent?.width) {
+			const { width: editorContentWidth } = state.settings.editorContent;
 
-			return winWidth >= state.breakpoints.xl
-				? winWidth
+			return editorContentWidth >= state.breakpoints.xl
+				? editorContentWidth
 				: state.breakpoints.xl + 1;
 		}
 
@@ -50,7 +50,9 @@ const selectors = {
 	receiveWinBreakpoint(state) {
 		if (!state) return false;
 
-		const winWidth = state?.settings?.window?.width ?? window.innerWidth;
+		const editorContentWidth = state?.settings?.editorContent?.width;
+
+		if (!editorContentWidth) return false;
 
 		const breakpoints = !isEmpty(state.breakpoints)
 			? state.breakpoints
@@ -62,7 +64,7 @@ const selectors = {
 					xl: 1920,
 			  };
 
-		if (winWidth > breakpoints.xl) return 'xxl';
+		if (editorContentWidth > breakpoints.xl) return 'xxl';
 
 		// Objects are unordered collection of properties, so as we can't rely on
 		// its own order, we need to iterate over an ordered array
@@ -78,7 +80,7 @@ const selectors = {
 			return result;
 		};
 
-		return getBreakpointRange(breakpoints, winWidth);
+		return getBreakpointRange(breakpoints, editorContentWidth);
 	},
 };
 

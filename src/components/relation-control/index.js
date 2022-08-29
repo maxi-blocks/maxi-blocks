@@ -449,22 +449,17 @@ const RelationControl = props => {
 																	clientId
 																)?.attributes;
 
-															let prefix = '';
-
 															const {
 																isList,
 																typeOfList,
 																textLevel,
 															} = blockAttributes;
 
-															if (isList)
-																prefix =
-																	typeOfList;
-															else
-																prefix =
-																	textLevel;
-
-															return `${prefix}${target}`;
+															return `${
+																isList
+																	? typeOfList
+																	: textLevel
+															}${target}`;
 														}
 
 														return target;

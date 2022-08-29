@@ -35,6 +35,8 @@ const allowedBlocks = [
 	'maxi-blocks/group-maxi',
 	'maxi-blocks/number-counter-maxi',
 	'maxi-blocks/svg-icon-maxi',
+	'maxi-blocks/accordion-maxi',
+	'maxi-blocks/pane-maxi',
 	'maxi-blocks/video-maxi',
 	'maxi-blocks/search-maxi',
 ];
@@ -232,7 +234,11 @@ wp.domReady(() => {
 								);
 
 								// Copy all fonts to iframe
-								loadFonts(getPageFonts(), true, iframeDocument);
+								loadFonts(
+									getPageFonts(true),
+									true,
+									iframeDocument
+								);
 
 								// Get all Maxi blocks <style> from <head>
 								// and move to new iframe

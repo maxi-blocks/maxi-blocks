@@ -230,15 +230,16 @@ const getButtonIconStyles = ({
 		[`${prefix}icon-inherit`]: iconInherit,
 		[`${prefix}icon-status-hover`]: iconHoverStatus,
 	} = obj;
-
 	const useIconColor = !iconInherit;
+	const normalTarget = `${wrapperTarget} ${target}`;
+	const hoverTarget = `${wrapperTarget}:hover ${target}`;
 
 	const response = {
 		...(hasIcon && !isHover
 			? {
 					...getSVGStyles({
 						obj,
-						target: `${wrapperTarget} ${target}`,
+						target: normalTarget,
 						blockStyle,
 						prefix: `${prefix}icon-`,
 						useIconColor,
@@ -273,19 +274,16 @@ const getButtonIconStyles = ({
 					);
 
 					return {
-						[` ${wrapperTarget}:hover ${target}`]: iconHoverObj,
-						[` ${wrapperTarget}:hover ${target} svg > *`]:
-							iconHoverObj,
-						[` ${wrapperTarget}:hover ${target} svg`]: getIconSize(
+						[` ${hoverTarget}`]: iconHoverObj,
+						[` ${hoverTarget} svg > *`]: iconHoverObj,
+						[` ${hoverTarget} svg`]: getIconSize(obj, true, prefix),
+						[` ${hoverTarget} svg path`]: getIconPathStyles(
 							obj,
-							true,
-							prefix
+							true
 						),
-						[` ${wrapperTarget}:hover ${target} svg path`]:
-							getIconPathStyles(obj, true),
 						...getSVGStyles({
 							obj,
-							target: `${wrapperTarget}:hover ${target}`,
+							target: hoverTarget,
 							blockStyle,
 							prefix: `${prefix}icon-`,
 							useIconColor,
@@ -296,16 +294,16 @@ const getButtonIconStyles = ({
 		// Background
 		...getBlockBackgroundStyles({
 			...getGroupAttributes(obj, 'svg'),
-			[` ${target} svg path`]: getIconPathStyles(obj, false),
-			[` ${wrapperTarget}:hover ${target}`]:
+			[` ${normalTarget} svg path`]: getIconPathStyles(obj, false),
+			[` ${hoverTarget}`]:
 				obj['icon-status-hover'] &&
 				getIconHoverObject(obj, 'iconHover'),
-			[` ${wrapperTarget}:hover ${target} svg > *`]:
+			[` ${hoverTarget} svg > *`]:
 				obj['icon-status-hover'] &&
 				getIconHoverObject(obj, 'iconHover'),
-			[` ${wrapperTarget}:hover ${target} svg`]:
+			[` ${hoverTarget} svg`]:
 				obj['icon-status-hover'] && getIconSize(obj, true),
-			[` ${wrapperTarget}:hover ${target} svg path`]:
+			[` ${hoverTarget} svg path`]:
 				obj['icon-status-hover'] && getIconPathStyles(obj, true),
 			...getBlockBackgroundStyles({
 				...getGroupAttributes(obj, [

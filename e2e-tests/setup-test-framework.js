@@ -39,7 +39,7 @@ const OBSERVED_CONSOLE_MESSAGE_TYPES = {
 jest.setTimeout(PUPPETEER_TIMEOUT || 100000);
 
 async function setupBrowser() {
-	await setBrowserViewport({ width: 1425, height: 700 });
+	await setBrowserViewport({ width: 1680, height: 700 });
 }
 
 /**

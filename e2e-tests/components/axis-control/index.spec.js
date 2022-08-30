@@ -82,7 +82,7 @@ describe('AxisControl', () => {
 			page,
 			instance:
 				'.maxi-axis-control__margin .maxi-axis-control__content__item__margin input',
-			needFocus: true,
+			needFocusPlaceholder: true,
 			baseExpect: '66',
 			xsExpect: '44',
 			newValue: '44',

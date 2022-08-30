@@ -182,7 +182,6 @@ const relations = () => {
 				});
 			}
 		} else {
-			console.log(target);
 			const interactionStyle = document.querySelector(
 				'#maxi-blocks-interaction-css'
 			);

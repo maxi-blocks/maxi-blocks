@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import {
 	AdvancedNumberControl,
+	ResponsiveTabsControl,
 	SelectControl,
 	ToggleSwitch,
 } from '../../components';
@@ -23,6 +24,83 @@ import {
 	getSVGRatio,
 } from '../../extensions/svg';
 
+const ImageShapeResponsiveSettings = ({
+	breakpoint,
+	prefix = '',
+	onChange,
+	...attributes
+}) => {
+	const getLastShapeAttribute = target =>
+		getLastBreakpointAttribute({
+			target,
+			breakpoint,
+			attributes,
+		});
+
+	const getProps = (rawTarget, component = 'AdvancedNumberControl') => {
+		const dictionary = {
+			AdvancedNumberControl: {
+				value: 'value',
+				onChange: 'onChangeValue',
+			},
+			ToggleSwitch: {
+				value: 'selected',
+				onChange: 'onChange',
+			},
+		};
+
+		const getDictionaryValue = value => dictionary[component][value];
+
+		const target = `${prefix}image-shape-${rawTarget}`;
+		const targetWithBreakpoint = `${target}-${breakpoint}`;
+
+		return {
+			[getDictionaryValue('value')]: getLastShapeAttribute(target) || '',
+			[getDictionaryValue('onChange')]: value =>
+				onChange({
+					[targetWithBreakpoint]:
+						value !== undefined && value !== '' ? value : '',
+				}),
+			...(component === 'AdvancedNumberControl' && {
+				onReset: () =>
+					onChange({
+						[targetWithBreakpoint]:
+							getDefaultAttribute(targetWithBreakpoint),
+					}),
+			}),
+		};
+	};
+
+	return (
+		<>
+			<AdvancedNumberControl
+				label={__('Scale shape', 'maxi-blocks')}
+				min={0}
+				max={500}
+				step={1}
+				initial={100}
+				{...getProps('scale')}
+			/>
+			<AdvancedNumberControl
+				label={__('Rotate shape', 'maxi-blocks')}
+				min={0}
+				max={360}
+				step={1}
+				placeholder='0deg'
+				{...getProps('rotate')}
+			/>
+			<ToggleSwitch
+				label={__('Flip shape horizontally', 'maxi-blocks')}
+				{...getProps('flip-x', 'ToggleSwitch')}
+			/>
+			<ToggleSwitch
+				label={__('Flip shape vertically', 'maxi-blocks')}
+				{...getProps('flip-y', 'ToggleSwitch')}
+			/>
+		</>
+	);
+};
+
 /**
  * ImageShape
  */
@@ -31,17 +109,11 @@ const ImageShape = props => {
 		onChange,
 		breakpoint,
 		icon,
-		prefix = '',
 		disableModal = false,
 		disableImagePosition = false,
 		disableImageRatio = false,
 	} = props;
 
-	const {
-		[`${prefix}image-shape-rotate-${breakpoint}`]: shapeRotate,
-		[`${prefix}image-shape-flip-x-${breakpoint}`]: shapeFlipHorizontally,
-		[`${prefix}image-shape-flip-y-${breakpoint}`]: shapeFlipVertically,
-	} = props;
 	const shapePosition = getSVGPosition(icon);
 	const shapeRatio = getSVGRatio(icon);
 
@@ -174,71 +246,9 @@ const ImageShape = props => {
 							)}
 						</>
 					)}
-					<AdvancedNumberControl
-						label={__('Scale shape', 'maxi-blocks')}
-						value={getLastBreakpointAttribute({
-							target: `${prefix}image-shape-scale`,
-							attributes: props,
-							breakpoint,
-						})}
-						min={0}
-						max={500}
-						step={1}
-						initial={100}
-						onChangeValue={val => {
-							onChange({
-								[`${prefix}image-shape-scale-${breakpoint}`]:
-									val !== undefined && val !== '' ? val : '',
-							});
-						}}
-						onReset={() =>
-							onChange({
-								[`${prefix}image-shape-scale-${breakpoint}`]:
-									getDefaultAttribute('image-shape-scale'),
-							})
-						}
-					/>
-					<AdvancedNumberControl
-						label={__('Rotate shape', 'maxi-blocks')}
-						value={shapeRotate || null}
-						min={0}
-						max={360}
-						step={1}
-						initialPosition={0}
-						placeholder='0deg'
-						onChangeValue={val => {
-							onChange({
-								[`${prefix}image-shape-rotate-${breakpoint}`]:
-									val !== undefined && val !== '' ? val : '',
-							});
-						}}
-						onReset={() =>
-							onChange({
-								[`${prefix}image-shape-rotate-${breakpoint}`]:
-									'',
-							})
-						}
-					/>
-					<ToggleSwitch
-						label={__('Flip shape horizontally', 'maxi-blocks')}
-						selected={shapeFlipHorizontally || 0}
-						onChange={val => {
-							onChange({
-								[`${prefix}image-shape-flip-x-${breakpoint}`]:
-									val,
-							});
-						}}
-					/>
-					<ToggleSwitch
-						label={__('Flip shape vertically', 'maxi-blocks')}
-						selected={shapeFlipVertically || 0}
-						onChange={val => {
-							onChange({
-								[`${prefix}image-shape-flip-y-${breakpoint}`]:
-									val,
-							});
-						}}
-					/>
+					<ResponsiveTabsControl breakpoint={breakpoint}>
+						<ImageShapeResponsiveSettings {...props} />
+					</ResponsiveTabsControl>
 				</>
 			)}
 		</>

@@ -6,7 +6,6 @@ import {
 	createNewPost,
 	insertBlock,
 	pressKeyTimes,
-	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
@@ -308,8 +307,6 @@ describe('AxisControl', () => {
 			expect(await getAttributes('margin-top-m')).toStrictEqual(
 				`${value}`
 			);
-
-			debugger;
 		}
 	});
 });

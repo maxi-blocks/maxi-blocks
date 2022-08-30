@@ -86,7 +86,6 @@ const ImageShapeResponsiveSettings = ({
 				min={0}
 				max={360}
 				step={1}
-				initialPosition={0}
 				placeholder='0deg'
 				{...getProps('rotate')}
 			/>

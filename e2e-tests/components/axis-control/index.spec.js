@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 /**
  * WordPress dependencies
  */
@@ -5,6 +6,7 @@ import {
 	createNewPost,
 	insertBlock,
 	pressKeyTimes,
+	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
@@ -81,7 +83,7 @@ describe('AxisControl', () => {
 			page,
 			instance:
 				'.maxi-axis-control__margin .maxi-axis-control__content__item__margin input',
-			needFocusPlaceholder: true,
+			needFocus: true,
 			baseExpect: '66',
 			xsExpect: '44',
 			newValue: '44',
@@ -257,5 +259,57 @@ describe('AxisControl', () => {
 		await pressKeyTimes('ArrowDown', '5');
 
 		expect(await getAttributes('padding-top-general')).toStrictEqual('0');
+	});
+
+	it('Checking AxisControl arrows when value inherited from higher breakpoints', async () => {
+		await createNewPost();
+		await insertBlock('Text Maxi');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'margin padding'
+		);
+
+		for (const [index, value] of [-30, 30].entries()) {
+			const itemMarginContentClass =
+				' .maxi-axis-control__margin .maxi-axis-control__content__item__margin';
+
+			if (index !== 0) {
+				await accordionPanel.$eval(
+					`${itemMarginContentClass} .maxi-reset-button`,
+					button => button.click()
+				);
+
+				await changeResponsive(page, 'base');
+			}
+
+			await editAxisControl({
+				page,
+				instance: await page.$(itemMarginContentClass),
+				values: `${value}`,
+				unit: 'px',
+			});
+
+			await changeResponsive(page, 'm');
+
+			await accordionPanel.$eval(
+				`${itemMarginContentClass} .maxi-advanced-number-control__value`,
+				input => input.focus()
+			);
+
+			await page.keyboard.press('ArrowDown');
+
+			expect(await getAttributes('margin-top-m')).toStrictEqual(
+				`${value - 1}`
+			);
+
+			await page.keyboard.press('ArrowUp');
+
+			expect(await getAttributes('margin-top-m')).toStrictEqual(
+				`${value}`
+			);
+
+			debugger;
+		}
 	});
 });

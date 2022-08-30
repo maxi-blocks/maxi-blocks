@@ -183,7 +183,7 @@ describe('Padding control', () => {
 			page,
 			instance:
 				'.maxi-axis-control__padding .maxi-axis-control__content__item__padding input',
-			needFocusPlaceholder: true,
+			needFocus: true,
 			baseExpect: '10',
 			xsExpect: '56',
 			newValue: '56',

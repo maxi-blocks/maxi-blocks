@@ -55,7 +55,6 @@ const AxisInput = props => {
 		label,
 		target,
 		singleTarget = null,
-		getValue,
 		getLastBreakpointValue,
 		breakpoint,
 		disableAuto,
@@ -67,7 +66,6 @@ const AxisInput = props => {
 		onReset,
 	} = props;
 
-	const value = getValue(target, breakpoint);
 	const lastValue = getLastBreakpointValue(target);
 	const unit = getLastBreakpointValue(`${target}-unit`, breakpoint);
 	return (
@@ -77,8 +75,7 @@ const AxisInput = props => {
 				'maxi-axis-control__content__item',
 				`maxi-axis-control__content__item__${kebabCase(label)}`
 			)}
-			placeholder={lastValue}
-			value={value}
+			value={lastValue}
 			onChangeValue={val => onChangeValue(val, singleTarget, breakpoint)}
 			minMaxSettings={minMaxSettings}
 			enableAuto={!disableAuto}
@@ -103,7 +100,6 @@ const AxisContent = props => {
 		breakpoint,
 		isHover,
 		inputsArray,
-		getValue,
 		getLastBreakpointValue,
 		disableAuto,
 		onChangeValue,
@@ -130,7 +126,6 @@ const AxisContent = props => {
 				<AxisInput
 					label={type}
 					target={inputsArray[0]}
-					getValue={getValue}
 					getLastBreakpointValue={getLastBreakpointValue}
 					breakpoint={breakpoint}
 					disableAuto={disableAuto}
@@ -149,7 +144,6 @@ const AxisContent = props => {
 						label={`${inputsArray[0]} / ${inputsArray[2]}`}
 						target={inputsArray[0]}
 						singleTarget='vertical'
-						getValue={getValue}
 						getLastBreakpointValue={getLastBreakpointValue}
 						breakpoint={breakpoint}
 						disableAuto={disableAuto}
@@ -166,7 +160,6 @@ const AxisContent = props => {
 							label={`${inputsArray[3]} / ${inputsArray[1]}`}
 							target={inputsArray[1]}
 							singleTarget='horizontal'
-							getValue={getValue}
 							getLastBreakpointValue={getLastBreakpointValue}
 							breakpoint={breakpoint}
 							disableAuto={disableAuto}
@@ -187,7 +180,6 @@ const AxisContent = props => {
 						label={inputsArray[0]}
 						target={inputsArray[0]}
 						singleTarget={inputsArray[0]}
-						getValue={getValue}
 						getLastBreakpointValue={getLastBreakpointValue}
 						breakpoint={breakpoint}
 						disableAuto={disableAuto}
@@ -204,7 +196,6 @@ const AxisContent = props => {
 							label={inputsArray[1]}
 							target={inputsArray[1]}
 							singleTarget={inputsArray[1]}
-							getValue={getValue}
 							getLastBreakpointValue={getLastBreakpointValue}
 							breakpoint={breakpoint}
 							disableAuto={disableAuto}
@@ -221,7 +212,6 @@ const AxisContent = props => {
 						label={inputsArray[2]}
 						target={inputsArray[2]}
 						singleTarget={inputsArray[2]}
-						getValue={getValue}
 						getLastBreakpointValue={getLastBreakpointValue}
 						breakpoint={breakpoint}
 						disableAuto={disableAuto}
@@ -238,7 +228,6 @@ const AxisContent = props => {
 							label={inputsArray[3]}
 							target={inputsArray[3]}
 							singleTarget={inputsArray[3]}
-							getValue={getValue}
 							getLastBreakpointValue={getLastBreakpointValue}
 							breakpoint={breakpoint}
 							disableAuto={disableAuto}
@@ -512,22 +501,6 @@ const AxisControl = props => {
 		return inputValue;
 	};
 
-	const getValue = (key, customBreakpoint) => {
-		const value =
-			props[
-				getAttributeKey(
-					getKey(key),
-					isHover,
-					false,
-					customBreakpoint ?? breakpoint
-				)
-			];
-
-		if (isNumber(value) || value) return value;
-
-		return '';
-	};
-
 	const onReset = ({ customBreakpoint, reset }) => {
 		const response = {};
 
@@ -768,7 +741,6 @@ const AxisControl = props => {
 						onReset={onReset}
 						inputsArray={inputsArray}
 						getLastBreakpointValue={getLastBreakpointValue}
-						getValue={getValue}
 						onChangeValue={onChangeValue}
 						minMaxSettings={minMaxSettings}
 						disableAuto={disableAuto}
@@ -793,7 +765,6 @@ const AxisControl = props => {
 					onReset={onReset}
 					inputsArray={inputsArray}
 					getLastBreakpointValue={getLastBreakpointValue}
-					getValue={getValue}
 					onChangeValue={onChangeValue}
 					minMaxSettings={minMaxSettings}
 					disableAuto={disableAuto}

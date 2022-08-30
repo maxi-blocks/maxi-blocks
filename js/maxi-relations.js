@@ -182,8 +182,7 @@ const relations = () => {
 				});
 			}
 		} else {
-			const targetEl = document.querySelector(target);
-
+			console.log(target);
 			const interactionStyle = document.querySelector(
 				'#maxi-blocks-interaction-css'
 			);
@@ -314,7 +313,7 @@ const relations = () => {
 								// This part is not really solid, but it works for now
 								const transitionTarget =
 									rawTransitionTarget?.endsWith('> *')
-										? rawTransitionTarget
+										? rawTransitionTarget.slice(0, -3)
 										: rawTransitionTarget;
 								let transitionTargetEl = transitionTarget
 									? targetEl.querySelector(transitionTarget)

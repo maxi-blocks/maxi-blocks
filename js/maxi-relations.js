@@ -140,35 +140,57 @@ const relations = () => {
 		}
 	};
 
-	const toggleTransition = (
+	const toggleTransition = ({
 		target,
 		stylesObj,
+		transitionTarget,
 		effectsObj,
 		isIcon = false,
-		remove = false
-	) => {
+		remove = false,
+	}) => {
+		const isSVG = target.includes('svg-icon-maxi');
 		const targets = stylesObj?.isTargets ? Object.keys(stylesObj) : null;
 
 		if (targets) {
-			targets.forEach(targetSelector => {
-				targetSelector !== 'isTargets' &&
-					toggleTransition(
-						`${target} ${targetSelector}`,
-						stylesObj[targetSelector],
-						effectsObj,
-						isIcon,
-						remove
-					);
-			});
+			if (!isSVG)
+				targets.forEach(targetSelector => {
+					targetSelector !== 'isTargets' &&
+						toggleTransition({
+							target: `${target} ${targetSelector}`,
+							stylesObj: stylesObj[targetSelector],
+							transitionTarget,
+							effectsObj,
+							isIcon,
+							remove,
+						});
+				});
+			else {
+				const svgTarget = `${target} ${
+					transitionTarget.endsWith('> *')
+						? transitionTarget.slice(0, -4) +
+						  ':not(:hover)' +
+						  transitionTarget.slice(transitionTarget.length - 4)
+						: transitionTarget
+				}`;
+
+				toggleTransition({
+					target: svgTarget,
+					transitionTarget,
+					effectsObj,
+					isIcon: isIcon || isSVG,
+					remove,
+				});
+			}
 		} else {
+			const targetEl = document.querySelector(target);
+
 			const interactionStyle = document.querySelector(
 				'#maxi-blocks-interaction-css'
 			);
-			const selector =
-				`body.maxi-blocks--active ${target}${''} {`.replace(
-					/\s{2,}/g,
-					' '
-				);
+			const selector = `body.maxi-blocks--active ${target} {`.replace(
+				/\s{2,}/g,
+				' '
+			);
 			const transitionString = getTransitionString(
 				stylesObj,
 				effectsObj,
@@ -258,15 +280,17 @@ const relations = () => {
 							item.effects
 						);
 
-						toggleTransition(
-							`${target.trim()}[data-maxi-relations="true"]`,
-							stylesObj,
-							effectsObj,
-							item.settings === 'Icon colour' ||
-								item.settings === 'Button icon'
-						);
-
 						const { hoverStatus, transitionTarget } = item.effects;
+
+						toggleTransition({
+							target: `${target.trim()}[data-maxi-relations="true"]`,
+							stylesObj,
+							transitionTarget,
+							effectsObj,
+							isIcon:
+								item.settings === 'Icon colour' ||
+								item.settings === 'Button icon',
+						});
 
 						toggleInlineStyles({
 							stylesObj,
@@ -280,7 +304,7 @@ const relations = () => {
 						 * works correctly on hovering. It means, we need to remove the transitions added by the trigger when hovering the target
 						 * to ensure it has the selected effects
 						 */
-						if (triggerEl.contains(targetEl)) {
+						if (hoverStatus && triggerEl.contains(targetEl)) {
 							const transitionTargets =
 								typeof transitionTarget === 'string'
 									? [transitionTarget]
@@ -290,7 +314,7 @@ const relations = () => {
 								// This part is not really solid, but it works for now
 								const transitionTarget =
 									rawTransitionTarget?.endsWith('> *')
-										? rawTransitionTarget.slice(0, -3)
+										? rawTransitionTarget
 										: rawTransitionTarget;
 								let transitionTargetEl = transitionTarget
 									? targetEl.querySelector(transitionTarget)
@@ -315,13 +339,13 @@ const relations = () => {
 										clearTimeout(contentTimeout);
 
 										// Remove transitions to let the original ones be applied
-										toggleTransition(
-											`${target.trim()}[data-maxi-relations="true"]`,
+										toggleTransition({
+											target: `${target.trim()}[data-maxi-relations="true"]`,
 											stylesObj,
+											transitionTarget,
 											effectsObj,
-											false,
-											true
-										);
+											remove: true,
+										});
 									}
 								);
 
@@ -330,15 +354,17 @@ const relations = () => {
 									() => {
 										contentTimeout = setTimeout(() => {
 											// Set the transitions back waiting the original to be done
-											toggleTransition(
-												`${target.trim()}[data-maxi-relations="true"]`,
+											toggleTransition({
+												target: `${target.trim()}[data-maxi-relations="true"]`,
 												stylesObj,
+												transitionTarget,
 												effectsObj,
-												item.settings ===
-													'Icon colour' ||
+												isIcon:
 													item.settings ===
-														'Button icon'
-											);
+														'Icon colour' ||
+													item.settings ===
+														'Button icon',
+											});
 										}, transitionDuration);
 									}
 								);
@@ -351,15 +377,18 @@ const relations = () => {
 							item.css,
 							item.effects
 						);
+						const { hoverStatus, transitionTarget } = item.effects;
 
 						if (triggerEl.contains(targetEl))
-							toggleTransition(
-								`${target.trim()}[data-maxi-relations="true"]`,
+							toggleTransition({
+								target: `${target.trim()}[data-maxi-relations="true"]`,
 								stylesObj,
+								transitionTarget,
 								effectsObj,
-								item.settings === 'Icon colour' ||
-									item.settings === 'Button icon'
-							);
+								isIcon:
+									item.settings === 'Icon colour' ||
+									item.settings === 'Button icon',
+							});
 
 						dataTimeout = setTimeout(() => {
 							targetEl.setAttribute(
@@ -367,8 +396,6 @@ const relations = () => {
 								'false'
 							);
 						}, item.effects['transition-duration-general'] * 1000 + 1000);
-
-						const { hoverStatus, transitionTarget } = item.effects;
 
 						toggleInlineStyles({
 							stylesObj,
@@ -380,13 +407,13 @@ const relations = () => {
 
 						timeout = setTimeout(() => {
 							// Removing transition after transition-duration + 1s to make sure it's done
-							toggleTransition(
-								`${target.trim()}[data-maxi-relations="true"]`,
+							toggleTransition({
+								target: `${target.trim()}[data-maxi-relations="true"]`,
 								stylesObj,
+								transitionTarget,
 								effectsObj,
-								false,
-								true
-							);
+								remove: true,
+							});
 						}, item.effects['transition-duration-general'] * 1000 + 1000);
 					});
 				}
@@ -401,13 +428,14 @@ const relations = () => {
 							item.effects
 						);
 
-						toggleTransition(
+						toggleTransition({
 							target,
 							stylesObj,
 							effectsObj,
-							item.settings === 'Icon colour' ||
-								item.settings === 'Button icon'
-						);
+							isIcon:
+								item.settings === 'Icon colour' ||
+								item.settings === 'Button icon',
+						});
 
 						const { hoverStatus, transitionTarget } = item.effects;
 

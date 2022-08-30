@@ -144,7 +144,11 @@ const AdvancedNumberControl = props => {
 
 		switch (typeofEvent) {
 			case 'click':
-				return (isNumber(placeholder) ? placeholder : 0) + +newValue;
+				return (
+					(isNumber(+placeholder) && isEmpty(value)
+						? +placeholder
+						: 0) + +newValue
+				);
 			case 'type':
 			default:
 				return newValue;

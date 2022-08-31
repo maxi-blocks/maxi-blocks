@@ -328,7 +328,10 @@ body.maxi-blocks--active {
 
 						.maxi-button-block__content {
 							font-family: var(
-								--maxi-#{$style}-button-font-family-#{$responsive_size}
+								--maxi-#{$style}-button-font-family-#{$responsive_size},
+								var(
+									--maxi-#{$style}-p-font-family-#{$responsive_size}
+								)
 							);
 							font-size: var(
 								--maxi-#{$style}-button-font-size-#{$responsive_size}
@@ -558,7 +561,10 @@ body.maxi-blocks--active {
 
 					.maxi-button-block__content {
 						font-family: var(
-							--maxi-#{$style}-button-font-family-#{$current_responsive_stage}
+							--maxi-#{$style}-button-font-family-#{$current_responsive_stage},
+							var(
+								--maxi-#{$style}-p-font-family-#{$current_responsive_stage}
+							)
 						);
 						font-size: var(
 							--maxi-#{$style}-button-font-size-#{$current_responsive_stage}

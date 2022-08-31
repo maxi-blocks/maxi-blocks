@@ -6,6 +6,9 @@ import { clipPathRaw } from './clipPath';
 
 const prefix = 'background-';
 
+// eslint-disable-next-line no-unused-vars
+const { position, ...backgroundPosition } = rawPosition;
+
 export const blockBackground = {
 	'background-layers': {
 		type: 'array',
@@ -45,7 +48,7 @@ export const rawBackgroundColor = {
 	}),
 
 	...prefixAttributesCreator({
-		obj: { ...rawPosition, ...layerSize },
+		obj: { ...backgroundPosition, ...layerSize },
 		prefix: 'background-color-wrapper-',
 	}),
 };
@@ -146,7 +149,7 @@ export const rawBackgroundImage = {
 		type: 'string',
 	},
 	...prefixAttributesCreator({
-		obj: { ...rawPosition, ...layerSize },
+		obj: { ...backgroundPosition, ...layerSize },
 		prefix: 'background-image-wrapper-',
 	}),
 };
@@ -194,7 +197,7 @@ export const rawBackgroundVideo = {
 		default: false,
 	},
 	...prefixAttributesCreator({
-		obj: { ...rawPosition, ...layerSize },
+		obj: { ...backgroundPosition, ...layerSize },
 		prefix: 'background-video-wrapper-',
 	}),
 };
@@ -212,7 +215,7 @@ export const rawBackgroundGradient = {
 		obj: clipPathRaw,
 	}),
 	...prefixAttributesCreator({
-		obj: { ...rawPosition, ...layerSize },
+		obj: { ...backgroundPosition, ...layerSize },
 		prefix: 'background-gradient-wrapper-',
 	}),
 };
@@ -230,8 +233,8 @@ export const rawBackgroundSVG = {
 		default: '%',
 	},
 	...prefixAttributesCreator({
-		obj: { ...rawPosition, ...layerSize },
-		prefix: 'background-svg-wrapper-',
+		obj: { ...backgroundPosition, ...layerSize },
+		prefix: 'background-svg-',
 	}),
 };
 

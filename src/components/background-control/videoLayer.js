@@ -253,6 +253,7 @@ const VideoLayer = props => {
 						onChange={onChange}
 						isHover={isHover}
 						prefix={prefix}
+						breakpoint={breakpoint}
 					/>
 					<SizeAndPositionLayerControl
 						type='video'

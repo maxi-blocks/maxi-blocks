@@ -841,7 +841,7 @@ const getBackgroundLayers = ({
 									isHover
 								),
 								breakpoint,
-								prefix: 'background-svg-wrapper-',
+								prefix: 'background-svg-',
 								isHover,
 							}),
 							getDisplayStyles(

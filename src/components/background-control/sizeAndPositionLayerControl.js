@@ -130,7 +130,9 @@ const SizeAndPositionLayerControl = props => {
 		breakpoint,
 		options: rawOptions,
 	} = props;
-	const prefix = `${rawPrefix}background-${type}-wrapper-`;
+	const prefix = `${rawPrefix}background-${type}-${
+		type === 'svg' ? '' : 'wrapper-'
+	}`;
 
 	const options = cloneDeep(rawOptions);
 

@@ -331,6 +331,27 @@ const getIconSpacingBetween = (
 	return response;
 };
 
+const getDisabledStyles = (props, prefix) => {
+	const response = {
+		iconDisplay: {},
+	};
+
+	breakpoints.forEach(breakpoint => {
+		response.iconDisplay[breakpoint] = {};
+
+		const isEnabled = getLastBreakpointAttribute({
+			target: `${prefix}status`,
+			breakpoint,
+			attributes: props,
+			forceSingle: true,
+		});
+		if (!isNil(isEnabled) && !isEnabled)
+			response.iconDisplay[breakpoint] = { display: 'none' };
+	});
+
+	return response;
+};
+
 const getIconObject = (props, prefix, target, isHover = false) => {
 	const hoverFlag = isHover ? ':hover' : '';
 	const fullTarget = `${target}${hoverFlag}`;
@@ -343,7 +364,15 @@ const getIconObject = (props, prefix, target, isHover = false) => {
 			prefix: `${prefix}icon-`,
 			isHover,
 		}),
-		...(!isHover && { [` ${fullTarget}`]: getIconStyles(props, prefix) }),
+		...(!isHover && {
+			[` ${fullTarget}`]: {
+				...getIconStyles(props, prefix),
+				...getDisabledStyles(
+					getGroupAttributes(props, 'navigation'),
+					prefix
+				),
+			},
+		}),
 		...(isHover && {
 			[` ${fullTarget}`]: getIconHoverStyles(props, prefix),
 		}),
@@ -420,7 +449,7 @@ const getDotsIconObject = props => {
 		...(dotIconActiveStatus && {
 			...getIconObject(
 				props,
-				'active-navigation-dot-',
+				`active-${prefix}`,
 				'.maxi-slider-block__dot--active'
 			),
 		}),
@@ -432,18 +461,6 @@ const getStyles = props => {
 
 	const arrowIconHoverStatus =
 		props['navigation-arrow-both-icon-status-hover'];
-	const dotsEnabled = getLastBreakpointAttribute({
-		target: 'navigation-dots-status',
-		breakpoint: 'general',
-		attributes: props,
-		forceSingle: true,
-	});
-	const arrowsEnabled = getLastBreakpointAttribute({
-		target: 'navigation-arrows-status',
-		breakpoint: 'general',
-		attributes: props,
-		forceSingle: true,
-	});
 
 	const response = {
 		[uniqueID]: styleProcessor(
@@ -473,14 +490,11 @@ const getStyles = props => {
 					isHover: true,
 					blockStyle,
 				}),
-				...(arrowsEnabled && { ...getArrowIconObject(props) }),
-				...(arrowsEnabled &&
-					arrowIconHoverStatus && {
-						...getArrowIconObject(props, true),
-					}),
-				...(dotsEnabled && {
-					...getDotsIconObject(props),
+				...getArrowIconObject(props),
+				...(arrowIconHoverStatus && {
+					...getArrowIconObject(props, true),
 				}),
+				...getDotsIconObject(props),
 			},
 			selectorsSlider,
 			props

@@ -26,13 +26,13 @@ const NavigationControl = props => {
 	const classes = classnames('maxi-slider-navigation', className);
 
 	const arrowsEnabled = getLastBreakpointAttribute({
-		target: 'navigation-arrows-status',
+		target: 'navigation-arrow-both-status',
 		breakpoint: deviceType,
 		props,
 		forceSingle: true,
 	});
 	const dotsEnabled = getLastBreakpointAttribute({
-		target: 'navigation-dots-status',
+		target: 'navigation-dot-status',
 		breakpoint: deviceType,
 		props,
 		forceSingle: true,
@@ -45,7 +45,7 @@ const NavigationControl = props => {
 				selected={arrowsEnabled}
 				onChange={val =>
 					onChange({
-						[`navigation-arrows-status-${deviceType}`]: val,
+						[`navigation-arrow-both-status-${deviceType}`]: val,
 					})
 				}
 			/>
@@ -53,7 +53,7 @@ const NavigationControl = props => {
 				label={__('Enable dots')}
 				selected={dotsEnabled}
 				onChange={val =>
-					onChange({ [`navigation-dots-status-${deviceType}`]: val })
+					onChange({ [`navigation-dot-status-${deviceType}`]: val })
 				}
 			/>
 			{arrowsEnabled && (

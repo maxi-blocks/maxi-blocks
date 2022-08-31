@@ -2,11 +2,11 @@ import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
 const navigation = breakpointAttributesCreator({
 	obj: {
-		'navigation-arrows-status': {
+		'navigation-arrow-both-status': {
 			type: 'boolean',
 			default: true,
 		},
-		'navigation-dots-status': {
+		'navigation-dot-status': {
 			type: 'boolean',
 			default: true,
 		},

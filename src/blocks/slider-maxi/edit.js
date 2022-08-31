@@ -23,7 +23,6 @@ import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import getStyles from './styles';
 import copyPasteMapping from './copy-paste-mapping';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
 import TEMPLATE from './template';
 
 /**
@@ -52,7 +51,6 @@ const SliderWrapper = props => {
 		isEditView,
 		attributes,
 		uniqueID,
-		deviceType,
 		clientId,
 		isSelected,
 		maxiSetAttributes,
@@ -373,19 +371,6 @@ const SliderWrapper = props => {
 		isEditView && 'maxi-slider-block__nav--edit-view'
 	);
 
-	const dotsEnabled = getLastBreakpointAttribute({
-		target: 'navigation-dots-status',
-		breakpoint: deviceType,
-		attributes,
-		forceSingle: true,
-	});
-	const arrowsEnabled = getLastBreakpointAttribute({
-		target: 'navigation-arrows-status',
-		breakpoint: deviceType,
-		attributes,
-		forceSingle: true,
-	});
-
 	return (
 		<>
 			<ul
@@ -407,92 +392,84 @@ const SliderWrapper = props => {
 					}
 				)}
 			/>
-			{(dotsEnabled || arrowsEnabled) && (
-				<div className={navClasses}>
-					{arrowsEnabled &&
-						attributes['navigation-arrow-first-icon-content'] && (
-							<span
-								className='maxi-slider-block__arrow maxi-slider-block__arrow--prev'
-								onClick={
-									!isEditView ? () => prevSlide() : undefined
+			<div className={navClasses}>
+				{attributes['navigation-arrow-first-icon-content'] && (
+					<span
+						className='maxi-slider-block__arrow maxi-slider-block__arrow--prev'
+						onClick={!isEditView ? () => prevSlide() : undefined}
+					>
+						<IconWrapper
+							ref={iconRef}
+							uniqueID={uniqueID}
+							className='maxi-navigation-arrow-first-icon-block__icon'
+						>
+							<RawHTML>
+								{
+									attributes[
+										'navigation-arrow-first-icon-content'
+									]
 								}
-							>
-								<IconWrapper
-									ref={iconRef}
-									uniqueID={uniqueID}
-									className='maxi-navigation-arrow-first-icon-block__icon'
-								>
-									<RawHTML>
-										{
-											attributes[
-												'navigation-arrow-first-icon-content'
-											]
-										}
-									</RawHTML>
-								</IconWrapper>
-							</span>
-						)}
-					{arrowsEnabled &&
-						attributes['navigation-arrow-second-icon-content'] && (
-							<span
-								className='maxi-slider-block__arrow maxi-slider-block__arrow--next'
-								onClick={
-									!isEditView ? () => nextSlide() : undefined
+							</RawHTML>
+						</IconWrapper>
+					</span>
+				)}
+				{attributes['navigation-arrow-second-icon-content'] && (
+					<span
+						className='maxi-slider-block__arrow maxi-slider-block__arrow--next'
+						onClick={!isEditView ? () => nextSlide() : undefined}
+					>
+						<IconWrapper
+							ref={iconRef}
+							uniqueID={uniqueID}
+							className='maxi-navigation-arrow-second-icon-block__icon'
+						>
+							<RawHTML>
+								{
+									attributes[
+										'navigation-arrow-second-icon-content'
+									]
 								}
-							>
-								<IconWrapper
-									ref={iconRef}
-									uniqueID={uniqueID}
-									className='maxi-navigation-arrow-second-icon-block__icon'
+							</RawHTML>
+						</IconWrapper>
+					</span>
+				)}
+				{attributes['navigation-dot-icon-content'] && (
+					<div className='maxi-slider-block__dots'>
+						{Array.from(Array(numberOfSlides).keys()).map(i => {
+							return (
+								<span
+									className={classnames(
+										'maxi-slider-block__dot',
+										`maxi-slider-block__dot--${i}`,
+										i === 0 &&
+											' maxi-slider-block__dot--active'
+									)}
+									key={`maxi-slider-block__dot--${i}`}
+									onClick={
+										!isEditView
+											? () => exactSlide(i)
+											: undefined
+									}
 								>
-									<RawHTML>
-										{
-											attributes[
-												'navigation-arrow-second-icon-content'
-											]
-										}
-									</RawHTML>
-								</IconWrapper>
-							</span>
-						)}
-					{dotsEnabled && attributes['navigation-dot-icon-content'] && (
-						<div className='maxi-slider-block__dots'>
-							{Array.from(Array(numberOfSlides).keys()).map(i => {
-								return (
-									<span
-										className={classnames(
-											'maxi-slider-block__dot',
-											`maxi-slider-block__dot--${i}`,
-											i === 0 &&
-												' maxi-slider-block__dot--active'
-										)}
-										key={`maxi-slider-block__dot--${i}`}
-										onClick={
-											!isEditView
-												? () => exactSlide(i)
-												: undefined
-										}
+									<IconWrapper
+										ref={iconRef}
+										uniqueID={uniqueID}
+										className='maxi-navigation-dot-icon-block__icon'
 									>
-										<IconWrapper
-											ref={iconRef}
-											uniqueID={uniqueID}
-											className='maxi-navigation-dot-icon-block__icon'
-										>
-											<RawHTML>
-												{
-													attributes[
-														'navigation-dot-icon-content'
-													]
-												}
-											</RawHTML>
-										</IconWrapper>
-									</span>
-								);
-							})}
-						</div>
-					)}
-				</div>
-			)}
+										<RawHTML>
+											{
+												attributes[
+													'navigation-dot-icon-content'
+												]
+											}
+										</RawHTML>
+									</IconWrapper>
+								</span>
+							);
+						})}
+					</div>
+				)}
+			</div>
 		</>
 	);
 };

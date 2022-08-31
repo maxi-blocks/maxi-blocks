@@ -39,13 +39,13 @@ const Inspector = props => {
 	const { blockStyle, svgType } = attributes;
 
 	const dotsEnabled = getLastBreakpointAttribute({
-		target: 'navigation-dots-status',
+		target: 'navigation-dot-status',
 		breakpoint: deviceType,
 		attributes,
 		forceSingle: true,
 	});
 	const arrowsEnabled = getLastBreakpointAttribute({
-		target: 'navigation-arrows-status',
+		target: 'navigation-arrow-both-status',
 		breakpoint: deviceType,
 		attributes,
 		forceSingle: true,

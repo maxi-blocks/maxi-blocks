@@ -67,6 +67,10 @@ const attributes = {
 
 	...{
 		...attributesData.size,
+		'size-advanced-options': {
+			type: 'boolean',
+			default: true,
+		},
 		'max-width-xxl': {
 			type: 'number',
 			default: 1690,

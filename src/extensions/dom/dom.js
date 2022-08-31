@@ -178,12 +178,16 @@ wp.domReady(() => {
 						const responsiveWidth = mutation.target.getAttribute(
 							'maxi-blocks-responsive-width'
 						);
+						const isMaxiPreview =
+							mutation.target.getAttribute('is-maxi-preview');
 						const breakpoint = mutation.target.getAttribute(
 							'maxi-blocks-responsive'
 						);
 
-						if (['s', 'xs'].includes(breakpoint)) {
-							mutation.target.style.width = '100%';
+						if (!isMaxiPreview) {
+							mutation.target.style = null;
+						} else if (['s', 'xs'].includes(breakpoint)) {
+							mutation.target.style.width = 'fit-content';
 						} else if (
 							mutation.target.style.width !==
 							`${responsiveWidth}px`
@@ -207,11 +211,16 @@ wp.domReady(() => {
 						const iframeDocument = iframe.contentDocument;
 						const editorWrapper = iframeDocument.body;
 
-						const responsiveWidth = mutation.target
-							.closest('.edit-post-visual-editor')
-							.getAttribute('maxi-blocks-responsive-width');
+						const postEditor = mutation.target.closest(
+							'.edit-post-visual-editor'
+						);
+						const responsiveWidth = postEditor.getAttribute(
+							'maxi-blocks-responsive-width'
+						);
+						const isMaxiPreview =
+							postEditor.getAttribute('is-maxi-preview');
 
-						if (mutation.target.getAttribute('is-maxi-preview')) {
+						if (isMaxiPreview) {
 							mutation.target.style.width = `${responsiveWidth}px`;
 							mutation.target.style.boxSizing = 'content-box';
 						}

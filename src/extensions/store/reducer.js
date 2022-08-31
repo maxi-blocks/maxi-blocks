@@ -8,9 +8,6 @@ const breakpointResizer = (
 	isGutenbergButton = false
 ) => {
 	const editorWrapper = document.querySelector('.edit-post-visual-editor');
-	const editorContent = document.querySelector(
-		'.edit-post-visual-editor__content-area'
-	).firstChild;
 
 	const winHeight = window.outerWidth;
 	const responsiveWidth =
@@ -24,18 +21,23 @@ const breakpointResizer = (
 	);
 	editorWrapper.setAttribute('maxi-blocks-responsive-width', responsiveWidth);
 
-	if (!isGutenbergButton) editorContent.setAttribute('is-maxi-preview', true);
-	else editorContent.removeAttribute('is-maxi-preview');
+	if (!isGutenbergButton) editorWrapper.setAttribute('is-maxi-preview', true);
+	else editorWrapper.removeAttribute('is-maxi-preview');
 
 	if (size === 'general') {
 		editorWrapper.style.width = '';
 		editorWrapper.style.margin = '';
 	} else {
-		if (['s', 'xs'].includes(size)) editorWrapper.style.width = '100%';
-		else editorWrapper.style.width = `${responsiveWidth}px`;
-
 		if (winHeight > responsiveWidth) editorWrapper.style.margin = '0 auto';
 		else editorWrapper.style.margin = '';
+
+		if (isGutenbergButton) {
+			editorWrapper.style = null;
+		} else if (['s', 'xs'].includes(size)) {
+			editorWrapper.style.width = 'fit-content';
+		} else if (editorWrapper.style.width !== `${responsiveWidth}px`) {
+			editorWrapper.style.width = `${responsiveWidth}px`;
+		}
 	}
 };
 

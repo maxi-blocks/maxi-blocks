@@ -548,7 +548,7 @@ const getWrapperObject = ({
 		}
 	});
 
-	return response;
+	return !isEmpty(response[breakpoint]) ? response : {};
 };
 
 const getSVGBackgroundObject = ({

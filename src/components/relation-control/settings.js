@@ -425,28 +425,29 @@ const settings = {
 					prefix: 'svg-',
 				}),
 		},
-		{
-			label: __('Icon line width', 'maxi-blocks'),
-			attrGroupName: 'svg',
-			component: props => {
-				const { attributes } = props;
-				const { content } = attributes;
+		// TODO: fix #3619
+		// {
+		// 	label: __('Icon line width', 'maxi-blocks'),
+		// 	attrGroupName: 'svg',
+		// 	component: props => {
+		// 		const { attributes } = props;
+		// 		const { content } = attributes;
 
-				return (
-					<Controls.SvgStrokeWidthControl
-						{...props}
-						content={content}
-						prefix='svg-'
-					/>
-				);
-			},
-			helper: props =>
-				styleHelpers.getSVGStyles({
-					...props,
-					target: ' .maxi-svg-icon-block__icon',
-					prefix: 'svg-',
-				}),
-		},
+		// 		return (
+		// 			<Controls.SvgStrokeWidthControl
+		// 				{...props}
+		// 				content={content}
+		// 				prefix='svg-'
+		// 			/>
+		// 		);
+		// 	},
+		// 	helper: props =>
+		// 		styleHelpers.getSVGStyles({
+		// 			...props,
+		// 			target: ' .maxi-svg-icon-block__icon',
+		// 			prefix: 'svg-',
+		// 		}),
+		// },
 		{
 			label: __('Icon background', 'maxi-blocks'),
 			attrGroupName: [

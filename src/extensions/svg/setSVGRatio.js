@@ -1,16 +1,6 @@
-import getSVGAspectRatio from './getSVGAspectRatio';
-
-const setSVGRatio = (icon, value) => {
-	const oldPreserveAspectRatio = getSVGAspectRatio(icon);
-
-	const newPreserveAspectRatio = `${oldPreserveAspectRatio} ${value}`;
-
-	const newIcon = icon
-		.replaceAll(' meet', '')
-		.replaceAll(' slice', '')
-		.replace(oldPreserveAspectRatio, newPreserveAspectRatio);
-
-	return newIcon;
-};
+const setSVGRatio = (icon, value) =>
+	value === 'meet'
+		? icon.replaceAll(' slice', ' meet')
+		: icon.replaceAll(' meet', ' slice');
 
 export default setSVGRatio;

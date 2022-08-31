@@ -17,6 +17,18 @@ const transitionObj = {
 			property: 'box-shadow',
 			prefix,
 		},
+		colour: {
+			title: 'Colour',
+			target: ' .maxi-svg-icon-block__icon svg > *',
+			hoverProp: 'svg-status-hover',
+			limitless: true,
+		},
+		background: {
+			title: 'Background',
+			target: ' .maxi-svg-icon-block__icon',
+			property: 'background',
+			hoverProp: 'svg-background-hover-status',
+		},
 	},
 };
 

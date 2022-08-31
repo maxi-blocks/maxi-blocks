@@ -27,7 +27,7 @@ import settings from './settings';
 /**
  * External dependencies
  */
-import { cloneDeep, isEmpty, merge } from 'lodash';
+import { cloneDeep, isEmpty, merge, isNil } from 'lodash';
 
 /**
  * Styles
@@ -137,6 +137,32 @@ const RelationControl = props => {
 				return acc;
 			}, {}),
 		};
+
+		// As an alternative to a migrator... Remove after used!
+		if (
+			!(
+				'transitionTarget' in item.effects &&
+				'hoverStatus' in item.effects
+			) ||
+			item.effects.hoverStatus !==
+				blockAttributes?.[selectedSettingsObj.hoverProp]
+		) {
+			const { transitionTarget, hoverProp } = selectedSettingsObj;
+
+			let hoverStatus = null;
+
+			if (!('hoverStatus' in item.effects))
+				hoverStatus = blockAttributes?.[hoverProp];
+
+			if (transitionTarget)
+				onChangeRelation(relations, item.id, {
+					effects: {
+						...item.effects,
+						transitionTarget,
+						...(!isNil(hoverStatus) && { hoverStatus }),
+					},
+				});
+		}
 
 		const mergedAttributes = merge(blockAttributes, item.attributes);
 
@@ -424,6 +450,30 @@ const RelationControl = props => {
 													})),
 												]}
 												onChange={value => {
+													const {
+														transitionTarget,
+														hoverProp,
+													} = getOptions(
+														getClientIdFromUniqueId(
+															item.uniqueID
+														)
+													).find(
+														option =>
+															option.label ===
+															value
+													);
+
+													const clientId =
+														getClientIdFromUniqueId(
+															item.uniqueID
+														);
+
+													const hoverStatus =
+														getBlock(clientId)
+															?.attributes?.[
+															hoverProp
+														];
+
 													const getTarget = () => {
 														const clientId =
 															getClientIdFromUniqueId(
@@ -472,6 +522,13 @@ const RelationControl = props => {
 															attributes: {},
 															target: getTarget(),
 															settings: value,
+															...(transitionTarget && {
+																effects: {
+																	...item.effects,
+																	transitionTarget,
+																	hoverStatus,
+																},
+															}),
 														}
 													);
 												}}

@@ -327,9 +327,7 @@ const Inspector = props => {
 										categories: categoriesSvgIcon,
 									}),
 									...inspectorTabs.transition({
-										props: {
-											...props,
-										},
+										props,
 									}),
 									...inspectorTabs.display({
 										props,

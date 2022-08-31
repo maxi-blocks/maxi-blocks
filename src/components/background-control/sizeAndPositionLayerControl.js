@@ -55,10 +55,14 @@ const Size = props => {
 
 	const getDefaultAttr = target => {
 		if (isLayer)
-			return getDefaultLayerAttr(
-				`${type === 'svg' ? upperCase(type) : type}Options`,
-				`${prefix}${target}-${breakpoint}`
-			);
+			// getDefaultLayerAttr does not support breakpoints,
+			// so I wrote a little hack to reset it correctly
+			return breakpoint === 'general'
+				? getDefaultLayerAttr(
+						`${type === 'svg' ? upperCase(type) : type}Options`,
+						`${prefix}${target}`
+				  )
+				: undefined;
 
 		return getDefaultAttribute(
 			getAttributeKey(target, isHover, prefix, breakpoint)

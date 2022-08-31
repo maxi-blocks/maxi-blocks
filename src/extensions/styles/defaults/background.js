@@ -1,6 +1,7 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import paletteAttributesCreator from '../paletteAttributesCreator';
 import prefixAttributesCreator from '../prefixAttributesCreator';
+import { rawPosition } from './position';
 import { clipPathRaw } from './clipPath';
 
 const prefix = 'background-';
@@ -24,12 +25,28 @@ export const rawBackground = {
 	},
 };
 
+const layerSize = {
+	size: {
+		type: 'number',
+		default: 100,
+	},
+	'size-unit': {
+		type: 'string',
+		default: '%',
+	},
+};
+
 export const rawBackgroundColor = {
 	...paletteAttributesCreator({ prefix, palette: 1 }),
 
 	...prefixAttributesCreator({
 		prefix: 'background-color-',
 		obj: clipPathRaw,
+	}),
+
+	...prefixAttributesCreator({
+		obj: { ...rawPosition, ...layerSize },
+		prefix: 'background-color-wrapper-',
 	}),
 };
 
@@ -128,6 +145,10 @@ export const rawBackgroundImage = {
 	'background-image-parallax-alt-selector': {
 		type: 'string',
 	},
+	...prefixAttributesCreator({
+		obj: { ...rawPosition, ...layerSize },
+		prefix: 'background-image-wrapper-',
+	}),
 };
 
 export const rawBackgroundVideo = {
@@ -172,6 +193,10 @@ export const rawBackgroundVideo = {
 		type: 'boolean',
 		default: false,
 	},
+	...prefixAttributesCreator({
+		obj: { ...rawPosition, ...layerSize },
+		prefix: 'background-video-wrapper-',
+	}),
 };
 
 export const rawBackgroundGradient = {
@@ -185,6 +210,10 @@ export const rawBackgroundGradient = {
 	...prefixAttributesCreator({
 		prefix: 'background-gradient-',
 		obj: clipPathRaw,
+	}),
+	...prefixAttributesCreator({
+		obj: { ...rawPosition, ...layerSize },
+		prefix: 'background-gradient-wrapper-',
 	}),
 };
 
@@ -200,50 +229,10 @@ export const rawBackgroundSVG = {
 		type: 'string',
 		default: '%',
 	},
-	'background-svg-position-top': {
-		type: 'string',
-		default: '0',
-	},
-	'background-svg-position-right': {
-		type: 'string',
-		default: '0',
-	},
-	'background-svg-position-bottom': {
-		type: 'string',
-		default: '0',
-	},
-	'background-svg-position-left': {
-		type: 'string',
-		default: '0',
-	},
-	'background-svg-position-top-unit': {
-		type: 'string',
-		default: '%',
-	},
-	'background-svg-position-right-unit': {
-		type: 'string',
-		default: '%',
-	},
-	'background-svg-position-bottom-unit': {
-		type: 'string',
-		default: '%',
-	},
-	'background-svg-position-left-unit': {
-		type: 'string',
-		default: '%',
-	},
-	'background-svg-position-sync': {
-		type: 'string',
-		default: 'all',
-	},
-	'background-svg-size': {
-		type: 'number',
-		default: 100,
-	},
-	'background-svg-size-unit': {
-		type: 'string',
-		default: '%',
-	},
+	...prefixAttributesCreator({
+		obj: { ...rawPosition, ...layerSize },
+		prefix: 'background-svg-wrapper-',
+	}),
 };
 
 export const background = breakpointAttributesCreator({

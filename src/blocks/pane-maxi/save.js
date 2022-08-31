@@ -16,6 +16,10 @@ const save = props => {
 	const { title, titleLevel } = attributes;
 	const name = 'maxi-blocks/pane-maxi';
 
+	const { children, ...restInnerBlocksProps } = useInnerBlocksProps.save({
+		className: 'maxi-pane-block__content',
+	});
+
 	return (
 		<MaxiBlock.save
 			{...getMaxiBlockAttributes({ ...props, name })}
@@ -25,18 +29,26 @@ const save = props => {
 			aria-expanded={false}
 		>
 			<div className='maxi-pane-block__header'>
-				<RichText.Content
-					className='maxi-pane-block__title'
-					value={title}
-					tagName={titleLevel}
-				/>
-				<div className='maxi-pane-block__icon' />
+				<div className='maxi-pane-block__header-content'>
+					<RichText.Content
+						className='maxi-pane-block__title'
+						value={title}
+						tagName={titleLevel}
+					/>
+					<div className='maxi-pane-block__icon' />
+				</div>
+				<div className='maxi-pane-block__header-line-container maxi-pane-block__line-container'>
+					<hr className='maxi-pane-block__header-line maxi-pane-block__line' />
+				</div>
 			</div>
-			<div
-				{...useInnerBlocksProps.save({
-					className: 'maxi-pane-block__content',
-				})}
-			/>
+			<div className='maxi-pane-block__content-wrapper'>
+				<div {...restInnerBlocksProps}>
+					{children}
+					<div className='maxi-pane-block__content-line-container maxi-pane-block__line-container'>
+						<hr className='maxi-pane-block__content-line maxi-pane-block__line' />
+					</div>
+				</div>
+			</div>
 		</MaxiBlock.save>
 	);
 };

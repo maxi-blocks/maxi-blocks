@@ -132,13 +132,13 @@ const getTypographyStyles = ({
 			}),
 			...(!isNil(obj[getName('line-height', breakpoint)]) && {
 				'line-height': `${obj[getName('line-height', breakpoint)]}${
-					getUnitValue(`${prefix}line-height-unit`, breakpoint) || ''
+					getUnitValue('line-height-unit', breakpoint) || ''
 				}`,
 			}),
 			...(!isNil(obj[getName('letter-spacing', breakpoint)]) && {
 				'letter-spacing': `${
 					obj[getName('letter-spacing', breakpoint)]
-				}${getUnitValue(`${prefix}letter-spacing-unit`, breakpoint)}`,
+				}${getUnitValue('letter-spacing-unit', breakpoint)}`,
 			}),
 			...(!isNil(obj[getName('font-weight', breakpoint)]) && {
 				'font-weight': obj[getName('font-weight', breakpoint)],

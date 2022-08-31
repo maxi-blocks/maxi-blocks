@@ -27,6 +27,7 @@ import {
 } from '../transform-control/utils';
 import getBlockCategoriesAndSelectors from '../../extensions/styles/getBlockCategoriesAndSelectors';
 import getParentRowClientId from './getParentRowClientId';
+import { VideoOverlayControl } from '../../blocks/video-maxi/components';
 
 const getTransformControl = name => {
 	const { categories, selectors } = getBlockCategoriesAndSelectors(name);
@@ -502,6 +503,38 @@ const settings = {
 			target: '.maxi-text-block__content',
 		},
 		...getCanvasSettings('text'),
+	],
+	'maxi-blocks/video-maxi': [
+		{
+			label: __('Overlay', 'maxi-blocks'),
+			attrGroupName: ['video', 'videoOverlay'],
+			component: props => {
+				const { playerType } = props.blockAttributes;
+
+				return playerType === 'popup' ? (
+					<VideoOverlayControl
+						{...props}
+						disableHideImage
+						disableHover
+					/>
+				) : (
+					<InfoBox
+						message={__(
+							'Video must be in popup to have overlay settings',
+							'maxi-blocks'
+						)}
+					/>
+				);
+			},
+			helper: props =>
+				styleHelpers.getBackgroundStyles({
+					...props,
+					...props.obj,
+					prefix: 'overlay-',
+				}).background,
+			target: ' .maxi-video-block__overlay-background',
+		},
+		...getCanvasSettings('video'),
 	],
 };
 

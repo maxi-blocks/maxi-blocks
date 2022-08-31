@@ -6,14 +6,13 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
+import VideoIconControl from '../video-icon-control';
+import { SelectControl, ColorControl } from '../../../../components';
 import {
-	getLastBreakpointAttribute,
 	getDefaultAttribute,
 	getGroupAttributes,
-} from '../../extensions/styles';
-import ColorControl from '../color-control';
-import SelectControl from '../select-control';
-import VideoIconControl from '../video-icon-control';
+	getLastBreakpointAttribute,
+} from '../../../../extensions/styles';
 
 const PopupSettingsControl = props => {
 	const { breakpoint, clientId, blockStyle, onChange, popAnimation } = props;
@@ -72,20 +71,6 @@ const PopupSettingsControl = props => {
 					target: 'lightbox',
 				}}
 			/>
-			<VideoIconControl
-				prefix='close-'
-				label={__('Lightbox close button', 'maxi-blocks')}
-				blockStyle={blockStyle}
-				breakpoint={breakpoint}
-				clientId={clientId}
-				onChange={obj => onChange(obj)}
-				{...getGroupAttributes(
-					props,
-					['icon', 'iconHover'],
-					false,
-					'close-'
-				)}
-			/>
 			<SelectControl
 				label={__('Pop animation', 'maxi-blocks')}
 				className='maxi-video-popup-control__pop-animation'
@@ -109,6 +94,20 @@ const PopupSettingsControl = props => {
 						popAnimation: val,
 					})
 				}
+			/>
+			<VideoIconControl
+				prefix='close-'
+				label={__('Lightbox close button', 'maxi-blocks')}
+				blockStyle={blockStyle}
+				breakpoint={breakpoint}
+				clientId={clientId}
+				onChange={obj => onChange(obj)}
+				{...getGroupAttributes(
+					props,
+					['icon', 'iconHover'],
+					false,
+					'close-'
+				)}
 			/>
 		</>
 	);

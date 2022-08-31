@@ -2,9 +2,13 @@ import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
 const navigation = breakpointAttributesCreator({
 	obj: {
-		'navigation-type': {
-			type: 'string',
-			default: 'arrows-dots',
+		'navigation-arrows-status': {
+			type: 'boolean',
+			default: true,
+		},
+		'navigation-dots-status': {
+			type: 'boolean',
+			default: true,
 		},
 		'navigation-arrow-position': {
 			type: 'string',

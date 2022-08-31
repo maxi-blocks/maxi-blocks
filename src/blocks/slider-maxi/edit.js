@@ -373,8 +373,14 @@ const SliderWrapper = props => {
 		isEditView && 'maxi-slider-block__nav--edit-view'
 	);
 
-	const navigationType = getLastBreakpointAttribute({
-		target: 'navigation-type',
+	const dotsEnabled = getLastBreakpointAttribute({
+		target: 'navigation-dots-status',
+		breakpoint: deviceType,
+		attributes,
+		forceSingle: true,
+	});
+	const arrowsEnabled = getLastBreakpointAttribute({
+		target: 'navigation-arrows-status',
 		breakpoint: deviceType,
 		attributes,
 		forceSingle: true,
@@ -401,9 +407,9 @@ const SliderWrapper = props => {
 					}
 				)}
 			/>
-			{navigationType !== 'none' && (
+			{(dotsEnabled || arrowsEnabled) && (
 				<div className={navClasses}>
-					{navigationType?.includes('arrow') &&
+					{arrowsEnabled &&
 						attributes['navigation-arrow-first-icon-content'] && (
 							<span
 								className='maxi-slider-block__arrow maxi-slider-block__arrow--prev'
@@ -426,7 +432,7 @@ const SliderWrapper = props => {
 								</IconWrapper>
 							</span>
 						)}
-					{navigationType?.includes('arrow') &&
+					{arrowsEnabled &&
 						attributes['navigation-arrow-second-icon-content'] && (
 							<span
 								className='maxi-slider-block__arrow maxi-slider-block__arrow--next'
@@ -449,45 +455,42 @@ const SliderWrapper = props => {
 								</IconWrapper>
 							</span>
 						)}
-					{navigationType?.includes('dot') &&
-						attributes['navigation-dot-icon-content'] && (
-							<div className='maxi-slider-block__dots'>
-								{Array.from(Array(numberOfSlides).keys()).map(
-									i => {
-										return (
-											<span
-												className={classnames(
-													'maxi-slider-block__dot',
-													`maxi-slider-block__dot--${i}`,
-													i === 0 &&
-														' maxi-slider-block__dot--active'
-												)}
-												key={`maxi-slider-block__dot--${i}`}
-												onClick={
-													!isEditView
-														? () => exactSlide(i)
-														: undefined
+					{dotsEnabled && attributes['navigation-dot-icon-content'] && (
+						<div className='maxi-slider-block__dots'>
+							{Array.from(Array(numberOfSlides).keys()).map(i => {
+								return (
+									<span
+										className={classnames(
+											'maxi-slider-block__dot',
+											`maxi-slider-block__dot--${i}`,
+											i === 0 &&
+												' maxi-slider-block__dot--active'
+										)}
+										key={`maxi-slider-block__dot--${i}`}
+										onClick={
+											!isEditView
+												? () => exactSlide(i)
+												: undefined
+										}
+									>
+										<IconWrapper
+											ref={iconRef}
+											uniqueID={uniqueID}
+											className='maxi-navigation-dot-icon-block__icon'
+										>
+											<RawHTML>
+												{
+													attributes[
+														'navigation-dot-icon-content'
+													]
 												}
-											>
-												<IconWrapper
-													ref={iconRef}
-													uniqueID={uniqueID}
-													className='maxi-navigation-dot-icon-block__icon'
-												>
-													<RawHTML>
-														{
-															attributes[
-																'navigation-dot-icon-content'
-															]
-														}
-													</RawHTML>
-												</IconWrapper>
-											</span>
-										);
-									}
-								)}
-							</div>
-						)}
+											</RawHTML>
+										</IconWrapper>
+									</span>
+								);
+							})}
+						</div>
+					)}
 				</div>
 			)}
 		</>

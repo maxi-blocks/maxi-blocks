@@ -14,7 +14,8 @@ const copyPasteMapping = {
 		},
 		Navigation: {
 			group: {
-				'Navigation type': 'navigation-type',
+				'Enable arrows': 'navigation-arrows-status',
+				'Enable dots': 'navigation-dots-status',
 				'Arrows position': 'navigation-arrow-position',
 				'Dots position': 'navigation-dot-position',
 			},

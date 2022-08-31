@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import SelectControl from '../select-control';
+import ToggleSwitch from '../toggle-switch';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 
 /**
@@ -24,8 +25,14 @@ const NavigationControl = props => {
 
 	const classes = classnames('maxi-slider-navigation', className);
 
-	const navigationType = getLastBreakpointAttribute({
-		target: 'navigation-type',
+	const arrowsEnabled = getLastBreakpointAttribute({
+		target: 'navigation-arrows-status',
+		breakpoint: deviceType,
+		props,
+		forceSingle: true,
+	});
+	const dotsEnabled = getLastBreakpointAttribute({
+		target: 'navigation-dots-status',
 		breakpoint: deviceType,
 		props,
 		forceSingle: true,
@@ -33,28 +40,23 @@ const NavigationControl = props => {
 
 	return (
 		<div className={classes}>
-			<SelectControl
-				label={__('Navigation', 'maxi-blocks')}
-				options={[
-					{
-						label: __('Arrows and dots ', 'maxi-blocks'),
-						value: 'arrows-dots',
-					},
-					{
-						label: __('Arrows', 'maxi-blocks'),
-						value: 'arrows',
-					},
-					{ label: __('Dots', 'maxi-blocks'), value: 'dots' },
-					{ label: __('None', 'maxi-blocks'), value: 'none' },
-				]}
-				value={navigationType}
+			<ToggleSwitch
+				label={__('Enable arrows')}
+				selected={arrowsEnabled}
 				onChange={val =>
 					onChange({
-						[`navigation-type-${deviceType}`]: val,
+						[`navigation-arrows-status-${deviceType}`]: val,
 					})
 				}
 			/>
-			{navigationType.includes('arrow') && (
+			<ToggleSwitch
+				label={__('Enable dots')}
+				selected={dotsEnabled}
+				onChange={val =>
+					onChange({ [`navigation-dots-status-${deviceType}`]: val })
+				}
+			/>
+			{arrowsEnabled && (
 				<SelectControl
 					label={__('Arrow position', 'maxi-blocks')}
 					options={[
@@ -88,7 +90,7 @@ const NavigationControl = props => {
 					}}
 				/>
 			)}
-			{navigationType.includes('dot') && (
+			{dotsEnabled && (
 				<SelectControl
 					label={__('Dots position', 'maxi-blocks')}
 					options={[

@@ -38,8 +38,14 @@ const Inspector = props => {
 
 	const { blockStyle, svgType } = attributes;
 
-	const navigationType = getLastBreakpointAttribute({
-		target: 'navigation-type',
+	const dotsEnabled = getLastBreakpointAttribute({
+		target: 'navigation-dots-status',
+		breakpoint: deviceType,
+		attributes,
+		forceSingle: true,
+	});
+	const arrowsEnabled = getLastBreakpointAttribute({
+		target: 'navigation-arrows-status',
 		breakpoint: deviceType,
 		attributes,
 		forceSingle: true,
@@ -98,7 +104,7 @@ const Inspector = props => {
 											/>
 										),
 									},
-									...(navigationType.includes('arrow') && {
+									...(arrowsEnabled && {
 										label: __('Arrows', 'maxi-blocks'),
 										content: (
 											<NavigationIconsControl
@@ -143,7 +149,7 @@ const Inspector = props => {
 											/>
 										),
 									}),
-									...(navigationType.includes('dot') && {
+									...(dotsEnabled && {
 										label: __('Dots', 'maxi-blocks'),
 										content: (
 											<NavigationIconsControl

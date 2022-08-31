@@ -159,7 +159,6 @@ const ColorLayerContent = props => {
 				/>
 			)}
 			<SizeAndPositionLayerControl
-				type='color'
 				prefix={prefix}
 				options={colorOptions}
 				onChange={onChange}

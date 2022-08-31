@@ -20,7 +20,7 @@ describe('TextControl', () => {
 		);
 
 		await accordionPanel.$eval(
-			'.maxi-custom-css-control__classes .maxi-base-control__field input',
+			'.maxi-additional__css-classes .maxi-base-control__field input',
 			select => select.focus()
 		);
 

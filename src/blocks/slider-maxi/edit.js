@@ -131,6 +131,7 @@ const SliderWrapper = props => {
 	};
 
 	const setActiveSlide = number => {
+		setActiveDot(number);
 		const slides = wrapperRef.current.querySelectorAll(
 			'li.maxi-slide-block'
 		);
@@ -154,7 +155,6 @@ const SliderWrapper = props => {
 				return prev + 1;
 			});
 
-			setActiveDot(currentSlide + 1);
 			setActiveSlide(currentSlide + 1);
 
 			if (!isSelected)
@@ -172,7 +172,6 @@ const SliderWrapper = props => {
 				return next - 1;
 			});
 
-			setActiveDot(currentSlide - 1);
 			setActiveSlide(currentSlide - 1);
 			if (!isSelected)
 				dispatch('core/block-editor').selectBlock(clientId);
@@ -185,7 +184,6 @@ const SliderWrapper = props => {
 	const exactSlide = slideNumber => {
 		addSliderTransition();
 		setCurrentSlide(slideNumber);
-		setActiveDot(slideNumber);
 		setActiveSlide(slideNumber);
 	};
 
@@ -237,12 +235,10 @@ const SliderWrapper = props => {
 		wrapperRef.current.style.transition = '';
 		if (currentSlide >= numberOfSlides) {
 			setCurrentSlide(0);
-			setActiveDot(0);
 			setActiveSlide(0);
 		}
 		if (currentSlide < 0) {
 			setCurrentSlide(numberOfSlides - 1);
-			setActiveDot(numberOfSlides - 1);
 			setActiveSlide(numberOfSlides - 1);
 		}
 	};
@@ -349,7 +345,6 @@ const SliderWrapper = props => {
 
 	useEffect(() => {
 		if (currentSlide >= numberOfSlides && numberOfSlides > 0) {
-			setCurrentSlide(numberOfSlides - 1);
 			setActiveSlide(numberOfSlides - 1);
 		}
 		maxiSetAttributes({ numberOfSlides });

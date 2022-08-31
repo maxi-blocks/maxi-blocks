@@ -42,7 +42,13 @@ const attributes = {
 	...attributesData.overflow,
 	...attributesData.zIndex,
 	...attributesData.customCss,
-	...attributesData.flex,
+	...{
+		...attributesData.flex,
+		'flex-direction-general': {
+			type: 'string',
+			default: 'column',
+		},
+	},
 };
 
 export default attributes;

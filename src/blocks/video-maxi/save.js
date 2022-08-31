@@ -14,6 +14,7 @@ import { videoValidation } from '../../extensions/video';
  */
 import { isNil } from 'lodash';
 import classNames from 'classnames';
+import { placeholderImage } from '../../icons';
 
 /**
  * Save
@@ -58,14 +59,18 @@ const save = props => {
 				(playerType === 'popup' ? (
 					<>
 						<div className='maxi-video-block__overlay'>
-							{(!isNil(overlayMediaId) || overlayMediaUrl) &&
-								!hideImage && (
+							{!hideImage &&
+								(!isNil(overlayMediaId) || overlayMediaUrl ? (
 									<img
 										className={`maxi-video-block__overlay-image wp-image-${overlayMediaId}`}
 										src={overlayMediaUrl}
 										alt={overlayMediaAlt}
 									/>
-								)}
+								) : (
+									<div className='maxi-video-block__placeholder'>
+										{placeholderImage}
+									</div>
+								))}
 							<div className='maxi-video-block__overlay-background' />
 							<div className='maxi-video-block__play-button'>
 								<RawHTML>{playIcon}</RawHTML>

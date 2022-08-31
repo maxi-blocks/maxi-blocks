@@ -7,14 +7,17 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
-import TextControl from '../text-control';
-import SelectControl from '../select-control';
 import {
 	getParsedVideoUrl,
 	parseVideo,
 	videoUrlRegex,
-} from '../../extensions/video';
+} from '../../../../extensions/video';
+import {
+	AdvancedNumberControl,
+	SelectControl,
+	TextControl,
+	SettingTabsControl,
+} from '../../../../components';
 
 const VideoControl = props => {
 	const {
@@ -30,11 +33,10 @@ const VideoControl = props => {
 
 	return (
 		<>
-			<SelectControl
-				className='maxi-video-control__type'
-				label={__('Type', 'maxi-blocks')}
-				value={playerType}
-				options={[
+			<SettingTabsControl
+				className='maxi-video-control__player-type'
+				type='buttons'
+				items={[
 					{
 						label: __('Video', 'maxi-blocks'),
 						value: 'video',
@@ -49,6 +51,8 @@ const VideoControl = props => {
 						playerType: val,
 					})
 				}
+				selected={playerType}
+				fullWidthMode
 			/>
 			<TextControl
 				label={__('URL', 'maxi-blocks')}

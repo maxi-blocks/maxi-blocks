@@ -40,6 +40,10 @@ import {
 	selectorsText,
 	categoriesText,
 } from '../../blocks/text-maxi/custom-css';
+import {
+	categoriesVideo,
+	selectorsVideo,
+} from '../../blocks/video-maxi/custom-css';
 
 const getBlockCategoriesAndSelectors = name => {
 	switch (name) {
@@ -102,6 +106,11 @@ const getBlockCategoriesAndSelectors = name => {
 			return {
 				categories: categoriesText,
 				selectors: selectorsText,
+			};
+		case 'video':
+			return {
+				categories: categoriesVideo,
+				selectors: selectorsVideo,
 			};
 		default:
 			return {

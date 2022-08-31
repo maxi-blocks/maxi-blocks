@@ -2,7 +2,13 @@
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
-import { prefixAttributesCreator } from '../../extensions/styles';
+import {
+	prefixAttributesCreator,
+	transitionAttributesCreator,
+} from '../../extensions/styles';
+import transitionObj from './transitionObj';
+
+const prefix = 'video-';
 
 const attributes = {
 	...attributesData.global,
@@ -12,57 +18,35 @@ const attributes = {
 	 */
 
 	...attributesData.video,
+	...attributesData.videoOverlay,
+	...attributesData.videoPopup,
+	...prefixAttributesCreator({ obj: attributesData.border, prefix }),
+	...prefixAttributesCreator({ obj: attributesData.borderHover, prefix }),
+	...prefixAttributesCreator({ obj: attributesData.borderRadius, prefix }),
 	...prefixAttributesCreator({
-		obj: attributesData.background,
-		prefix: 'lightbox-',
-		diffValAttr: {
-			'lightbox-background-active-media-general': 'color',
-		},
+		obj: attributesData.borderRadiusHover,
+		prefix,
 	}),
+	...prefixAttributesCreator({ obj: attributesData.borderWidth, prefix }),
 	...prefixAttributesCreator({
-		obj: attributesData.backgroundColor,
-		prefix: 'lightbox-',
-		diffValAttr: {
-			'lightbox-background-palette-color-general': 5,
-		},
+		obj: attributesData.borderWidthHover,
+		prefix,
 	}),
+	...prefixAttributesCreator({ obj: attributesData.boxShadow, prefix }),
+	...prefixAttributesCreator({ obj: attributesData.boxShadowHover, prefix }),
+	...prefixAttributesCreator({ obj: attributesData.size, prefix }),
+	...prefixAttributesCreator({ obj: attributesData.padding, prefix }),
 
-	...prefixAttributesCreator({
-		obj: attributesData.background,
-		prefix: 'overlay-',
-		diffValAttr: {
-			'overlay-background-active-media-general': 'color',
-		},
-	}),
-	...prefixAttributesCreator({
-		obj: attributesData.backgroundColor,
-		prefix: 'overlay-',
-		diffValAttr: {
-			'overlay-background-palette-color-general': 5,
-			'overlay-background-palette-opacity-general': 0.7,
-		},
-	}),
-
-	'overlay-mediaID': {
-		type: 'number',
-	},
-	'overlay-mediaURL': {
-		type: 'string',
-	},
-	'overlay-altSelector': {
-		type: 'string',
-		default: 'wordpress',
-	},
-	'overlay-mediaAlt': {
-		type: 'string',
-	},
-
+	/**
+	 * Canvas styles
+	 */
 	...attributesData.border,
 	...attributesData.borderHover,
 	...attributesData.borderRadius,
 	...attributesData.borderWidth,
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
+	...attributesData.opacity,
 	...attributesData.size,
 	...attributesData.margin,
 	...attributesData.padding,
@@ -70,9 +54,14 @@ const attributes = {
 	/**
 	 * Advanced
 	 */
+	...attributesData.scroll,
 	...attributesData.transform,
+	...{
+		...attributesData.transition,
+		...transitionAttributesCreator(transitionObj),
+	},
 	...attributesData.display,
-	...attributesData.opacity,
+	...attributesData.position,
 	...attributesData.overflow,
 	...attributesData.zIndex,
 	...attributesData.customCss,

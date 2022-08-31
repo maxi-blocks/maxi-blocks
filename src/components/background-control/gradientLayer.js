@@ -6,9 +6,10 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import GradientControl from '../gradient-control';
 import ClipPath from '../clip-path-control';
+import GradientControl from '../gradient-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
+import SizeAndPositionLayerControl from './sizeAndPositionLayerControl';
 import {
 	getDefaultAttribute,
 	getAttributeKey,
@@ -38,7 +39,8 @@ const GradientLayerContent = props => {
 	const gradientOptions = cloneDeep(props.gradientOptions);
 
 	const getDefaultAttr = target => {
-		if (isLayer) return getDefaultLayerAttr('colorOptions', target);
+		if (isLayer)
+			return getDefaultLayerAttr('colorOptions', `${prefix}${target}`);
 
 		return getDefaultAttribute(
 			getAttributeKey(target, isHover, prefix, breakpoint)
@@ -98,6 +100,15 @@ const GradientLayerContent = props => {
 					breakpoint={breakpoint}
 				/>
 			)}
+			<SizeAndPositionLayerControl
+				type='gradient'
+				prefix={prefix}
+				options={gradientOptions}
+				onChange={onChange}
+				isHover={isHover}
+				isLayer={isLayer}
+				breakpoint={breakpoint}
+			/>
 		</>
 	);
 };

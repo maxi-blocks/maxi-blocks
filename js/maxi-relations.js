@@ -166,7 +166,7 @@ const relations = () => {
 				});
 			else {
 				const svgTarget = `${target} ${
-					transitionTarget.endsWith('> *')
+					transitionTarget?.endsWith('> *')
 						? transitionTarget.slice(0, -4) +
 						  ':not(:hover)' +
 						  transitionTarget.slice(transitionTarget.length - 4)

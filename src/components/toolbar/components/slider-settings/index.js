@@ -39,7 +39,7 @@ const SliderSettings = props => {
 			className='toolbar-item__size'
 			tooltip={__('Slider settings', 'maxi-blocks')}
 			icon={toolbarSliderSettings}
-			advancedOptions='height width'
+			advancedOptions='slider settings'
 		>
 			<div className='toolbar-item__size__popover'>
 				<ToggleSwitch

@@ -102,13 +102,17 @@ const RelationControl = props => {
 		});
 	};
 
+	const getSelectedSettingsObj = (clientId, settingsLabel) =>
+		getOptions(clientId).find(option => option.label === settingsLabel);
+
 	const displaySelectedSetting = item => {
 		if (!item) return null;
 
 		const clientId = getClientIdFromUniqueId(item.uniqueID);
 
-		const selectedSettingsObj = getOptions(clientId).find(
-			option => option.label === item.settings
+		const selectedSettingsObj = getSelectedSettingsObj(
+			clientId,
+			item.settings
 		);
 
 		if (!selectedSettingsObj) return null;
@@ -133,25 +137,6 @@ const RelationControl = props => {
 				return acc;
 			}, {}),
 		};
-
-		const textMaxiPrefix =
-			getBlock(clientId)?.name === 'maxi-blocks/text-maxi' &&
-			item?.settings === 'Typography';
-
-		if (
-			selectedSettingsObj?.target &&
-			item.target !== selectedSettingsObj?.target
-		) {
-			onChangeRelation(relations, item.id, {
-				target: `${
-					textMaxiPrefix
-						? blockAttributes?.isList
-							? blockAttributes?.typeOfList
-							: blockAttributes?.textLevel
-						: ''
-				}${selectedSettingsObj?.target}`,
-			});
-		}
 
 		const mergedAttributes = merge(blockAttributes, item.attributes);
 
@@ -439,12 +424,53 @@ const RelationControl = props => {
 													})),
 												]}
 												onChange={value => {
+													const getTarget = () => {
+														const clientId =
+															getClientIdFromUniqueId(
+																item.uniqueID
+															);
+
+														const target =
+															getSelectedSettingsObj(
+																clientId,
+																value
+															)?.target || '';
+
+														const textMaxiPrefix =
+															getBlock(clientId)
+																?.name ===
+																'maxi-blocks/text-maxi' &&
+															value ===
+																'Typography';
+
+														if (textMaxiPrefix) {
+															const blockAttributes =
+																getBlock(
+																	clientId
+																)?.attributes;
+
+															const {
+																isList,
+																typeOfList,
+																textLevel,
+															} = blockAttributes;
+
+															return `${
+																isList
+																	? typeOfList
+																	: textLevel
+															}${target}`;
+														}
+
+														return target;
+													};
+
 													onChangeRelation(
 														relations,
 														item.id,
 														{
 															attributes: {},
-															target: '',
+															target: getTarget(),
 															settings: value,
 														}
 													);

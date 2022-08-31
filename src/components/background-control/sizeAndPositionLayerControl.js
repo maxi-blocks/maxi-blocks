@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -133,6 +134,26 @@ const SizeAndPositionLayerControl = props => {
 	const prefix = `${rawPrefix}background-${type}-${
 		type === 'svg' ? '' : 'wrapper-'
 	}`;
+
+	// Add new attributes if they are not exist
+	useEffect(() => {
+		if (
+			type !== 'svg' &&
+			Object.keys(rawOptions).every(key => !key.includes(prefix))
+		) {
+			const defaultOptions = Object.entries(
+				getDefaultLayerAttr(`${type}Options`)
+			).reduce(
+				(acc, [key, value]) => ({
+					...acc,
+					...(key.includes(prefix) && { [`${key}-general`]: value }),
+				}),
+				{}
+			);
+
+			onChange({ ...rawOptions, ...defaultOptions });
+		}
+	}, []);
 
 	const options = cloneDeep(rawOptions);
 

@@ -36,19 +36,21 @@ const getGeneralSizeAndPositionAttributes = ({
 	isHover = false,
 	isResponsive = false,
 }) => {
+	const typeString = `${type}${type === 'svg' ? '' : '-wrapper'}`;
+
 	const generalAttributes = {
-		[`background-${type}-wrapper-position-bottom-general`]: '10',
-		[`background-${type}-wrapper-position-bottom-unit-general`]: 'px',
-		[`background-${type}-wrapper-position-general`]: 'inherit',
-		[`background-${type}-wrapper-position-left-general`]: '10',
-		[`background-${type}-wrapper-position-left-unit-general`]: 'px',
-		[`background-${type}-wrapper-position-right-general`]: '10',
-		[`background-${type}-wrapper-position-right-unit-general`]: 'px',
-		[`background-${type}-wrapper-position-sync-general`]: 'all',
-		[`background-${type}-wrapper-position-top-general`]: '10',
-		[`background-${type}-wrapper-position-top-unit-general`]: 'px',
-		[`background-${type}-wrapper-size-general`]: 100,
-		[`background-${type}-wrapper-size-unit-general`]: '%',
+		[`background-${typeString}-position-bottom-general`]: '10',
+		[`background-${typeString}-position-bottom-unit-general`]: 'px',
+		[`background-${typeString}-position-general`]: 'inherit',
+		[`background-${typeString}-position-left-general`]: '10',
+		[`background-${typeString}-position-left-unit-general`]: 'px',
+		[`background-${typeString}-position-right-general`]: '10',
+		[`background-${typeString}-position-right-unit-general`]: 'px',
+		[`background-${typeString}-position-sync-general`]: 'all',
+		[`background-${typeString}-position-top-general`]: '10',
+		[`background-${typeString}-position-top-unit-general`]: 'px',
+		[`background-${typeString}-size-general`]: 100,
+		[`background-${typeString}-size-unit-general`]: '%',
 	};
 
 	if (!isResponsive) return generalAttributes;
@@ -537,8 +539,8 @@ describe('getBackgroundStyles', () => {
 					'background-svg-top-general': null,
 					'background-svg-left-unit-general': '%',
 					'background-svg-left-general': null,
-					'background-svg-wrapper-size-general': 100,
-					'background-svg-wrapper-size-unit-general': '%',
+					'background-svg-size-general': 100,
+					'background-svg-size-unit-general': '%',
 					order: 4,
 				},
 			],

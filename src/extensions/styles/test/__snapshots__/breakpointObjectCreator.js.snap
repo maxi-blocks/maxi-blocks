@@ -517,13 +517,6 @@ Object {
   "background-image-wrapper-position-bottom-xxl": Object {
     "type": "string",
   },
-  "background-image-wrapper-position-general": Object {
-    "default": "inherit",
-    "type": "string",
-  },
-  "background-image-wrapper-position-l": Object {
-    "type": "string",
-  },
   "background-image-wrapper-position-left-general": Object {
     "type": "string",
   },
@@ -567,9 +560,6 @@ Object {
   "background-image-wrapper-position-left-xxl": Object {
     "type": "string",
   },
-  "background-image-wrapper-position-m": Object {
-    "type": "string",
-  },
   "background-image-wrapper-position-right-general": Object {
     "type": "string",
   },
@@ -611,9 +601,6 @@ Object {
     "type": "string",
   },
   "background-image-wrapper-position-right-xxl": Object {
-    "type": "string",
-  },
-  "background-image-wrapper-position-s": Object {
     "type": "string",
   },
   "background-image-wrapper-position-sync-general": Object {
@@ -679,15 +666,6 @@ Object {
     "type": "string",
   },
   "background-image-wrapper-position-top-xxl": Object {
-    "type": "string",
-  },
-  "background-image-wrapper-position-xl": Object {
-    "type": "string",
-  },
-  "background-image-wrapper-position-xs": Object {
-    "type": "string",
-  },
-  "background-image-wrapper-position-xxl": Object {
     "type": "string",
   },
   "background-image-wrapper-size-general": Object {

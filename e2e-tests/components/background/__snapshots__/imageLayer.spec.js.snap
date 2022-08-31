@@ -23,6 +23,13 @@ Array [
     "background-image-size-general": "contain",
     "background-image-width-general": 100,
     "background-image-width-unit-general": "%",
+    "background-image-wrapper-position-bottom-unit-general": "px",
+    "background-image-wrapper-position-left-unit-general": "px",
+    "background-image-wrapper-position-right-unit-general": "px",
+    "background-image-wrapper-position-sync-general": "all",
+    "background-image-wrapper-position-top-unit-general": "px",
+    "background-image-wrapper-size-general": 100,
+    "background-image-wrapper-size-unit-general": "%",
     "display-general": "block",
     "id": 1,
     "isHover": false,
@@ -32,7 +39,7 @@ Array [
 ]
 `;
 
-exports[`BackgroundControl Check Background image layer 2`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1{ display: block;}</style>"`;
+exports[`BackgroundControl Check Background image layer 2`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1{ width: 100%; display: block;}</style>"`;
 
 exports[`BackgroundControl Check Background image layer hover 1`] = `
 Array [
@@ -68,6 +75,25 @@ Array [
     "background-image-size-s": "cover",
     "background-image-width-general": 100,
     "background-image-width-unit-general": "%",
+    "background-image-wrapper-position-bottom-s": "3",
+    "background-image-wrapper-position-bottom-unit-general": "px",
+    "background-image-wrapper-position-left-s": "5",
+    "background-image-wrapper-position-left-unit-general": "px",
+    "background-image-wrapper-position-right-s": "2",
+    "background-image-wrapper-position-right-unit-general": "px",
+    "background-image-wrapper-position-sync-general": "all",
+    "background-image-wrapper-position-sync-m": "none",
+    "background-image-wrapper-position-sync-s": "none",
+    "background-image-wrapper-position-sync-xs": "none",
+    "background-image-wrapper-position-top-m": "8",
+    "background-image-wrapper-position-top-s": "1",
+    "background-image-wrapper-position-top-unit-general": "px",
+    "background-image-wrapper-position-top-unit-m": "vw",
+    "background-image-wrapper-position-top-unit-s": "%",
+    "background-image-wrapper-size-general": 50,
+    "background-image-wrapper-size-m": 57,
+    "background-image-wrapper-size-unit-general": "px",
+    "background-image-wrapper-size-unit-m": "vw",
     "display-general": "block",
     "id": 1,
     "isHover": false,
@@ -77,8 +103,8 @@ Array [
 ]
 `;
 
-exports[`BackgroundControl Check Background image layer hover 2`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1{ display: block;}body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer > div,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer > div{ transition: all 0.3s 0s ease;}</style>"`;
+exports[`BackgroundControl Check Background image layer hover 2`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1{ width: 50px; display: block;}body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-1:hover > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-1:hover > .maxi-background-displayer .maxi-background-displayer__1{ width: 7px;}body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer > div,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer > div{ transition: all 0.3s 0s ease;}@media only screen and (max-width: 1024px){body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1{ width: 57vw; top: 8vw;}}@media only screen and (max-width: 1024px){body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-1:hover > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-1:hover > .maxi-background-displayer .maxi-background-displayer__1{ width: 7vw;}}@media only screen and (max-width: 767px){body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1{ top: 1%; right: 2px; bottom: 3px; left: 5px;}}</style>"`;
 
-exports[`BackgroundControl Check Background image layer hover responsive 1`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1{ display: block;}body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer > div,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer > div{ transition: all 0.3s 0s ease;}</style>"`;
+exports[`BackgroundControl Check Background image layer hover responsive 1`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1{ width: 50px; display: block;}body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-1:hover > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-1:hover > .maxi-background-displayer .maxi-background-displayer__1{ width: 75%;}body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer > div,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer > div{ transition: all 0.3s 0s ease;}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"m\\"] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"s\\"] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"xs\\"] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1{ width: 57vw; top: 8vw;}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"m\\"] .maxi-block.maxi-block--backend.group-maxi-1:hover > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"s\\"] .maxi-block.maxi-block--backend.group-maxi-1:hover > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"xs\\"] .maxi-block.maxi-block--backend.group-maxi-1:hover > .maxi-background-displayer .maxi-background-displayer__1{ width: 44%; top: 8px;}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"s\\"] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"xs\\"] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1{ top: 1%; right: 2px; bottom: 3px; left: 5px;}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"s\\"] .maxi-block.maxi-block--backend.group-maxi-1:hover > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"xs\\"] .maxi-block.maxi-block--backend.group-maxi-1:hover > .maxi-background-displayer .maxi-background-displayer__1{ top: 1px;}</style>"`;
 
-exports[`BackgroundControl Check Background image layer responsive 1`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1{ display: block;}</style>"`;
+exports[`BackgroundControl Check Background image layer responsive 1`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1{ width: 50px; display: block;}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"m\\"] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"s\\"] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"xs\\"] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1{ width: 1px;}body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"s\\"] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive=\\"xs\\"] .maxi-block.maxi-block--backend.group-maxi-1 > .maxi-background-displayer .maxi-background-displayer__1{ top: 1%; right: 2px; bottom: 3px; left: 5px;}</style>"`;

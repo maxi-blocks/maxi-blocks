@@ -121,7 +121,7 @@ const SliderWrapper = props => {
 			'.maxi-slider-block__dot'
 		);
 
-		[].forEach.call(dots, function removeActiveClass(el) {
+		Array.from(dots).forEach(el => {
 			el.classList.remove('maxi-slider-block__dot--active');
 		});
 
@@ -135,7 +135,7 @@ const SliderWrapper = props => {
 			'li.maxi-slide-block'
 		);
 
-		[].forEach.call(slides, function removeActiveClass(el) {
+		Array.from(slides).forEach(el => {
 			el.removeAttribute('data-slide-active');
 		});
 

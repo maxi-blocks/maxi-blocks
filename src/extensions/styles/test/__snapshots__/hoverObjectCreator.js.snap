@@ -98,12 +98,6 @@ Object {
   "background-color-wrapper-position-bottom-xxl-hover": Object {
     "type": "string",
   },
-  "background-color-wrapper-position-general-hover": Object {
-    "type": "string",
-  },
-  "background-color-wrapper-position-l-hover": Object {
-    "type": "string",
-  },
   "background-color-wrapper-position-left-general-hover": Object {
     "type": "string",
   },
@@ -146,9 +140,6 @@ Object {
   "background-color-wrapper-position-left-xxl-hover": Object {
     "type": "string",
   },
-  "background-color-wrapper-position-m-hover": Object {
-    "type": "string",
-  },
   "background-color-wrapper-position-right-general-hover": Object {
     "type": "string",
   },
@@ -189,9 +180,6 @@ Object {
     "type": "string",
   },
   "background-color-wrapper-position-right-xxl-hover": Object {
-    "type": "string",
-  },
-  "background-color-wrapper-position-s-hover": Object {
     "type": "string",
   },
   "background-color-wrapper-position-sync-general-hover": Object {
@@ -255,15 +243,6 @@ Object {
     "type": "string",
   },
   "background-color-wrapper-position-top-xxl-hover": Object {
-    "type": "string",
-  },
-  "background-color-wrapper-position-xl-hover": Object {
-    "type": "string",
-  },
-  "background-color-wrapper-position-xs-hover": Object {
-    "type": "string",
-  },
-  "background-color-wrapper-position-xxl-hover": Object {
     "type": "string",
   },
   "background-color-wrapper-size-general-hover": Object {

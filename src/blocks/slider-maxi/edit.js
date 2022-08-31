@@ -117,8 +117,8 @@ const SliderWrapper = props => {
 	};
 
 	const setActiveDot = dotNumber => {
-		const dots = document.querySelectorAll(
-			`.${uniqueID} .maxi-slider-block__dot`
+		const dots = wrapperRef.current.querySelectorAll(
+			'.maxi-slider-block__dot'
 		);
 
 		[].forEach.call(dots, function removeActiveClass(el) {
@@ -131,8 +131,8 @@ const SliderWrapper = props => {
 	};
 
 	const setActiveSlide = number => {
-		const slides = document.querySelectorAll(
-			`.${uniqueID} ul > li.maxi-slide-block`
+		const slides = wrapperRef.current.querySelectorAll(
+			'li.maxi-slide-block'
 		);
 
 		[].forEach.call(slides, function removeActiveClass(el) {
@@ -140,8 +140,8 @@ const SliderWrapper = props => {
 		});
 
 		const activeSlideIndex = isLoop ? number + numberOfClones : number;
-		const activeSlide = document.querySelectorAll(
-			`.${uniqueID} ul > li.maxi-slide-block`
+		const activeSlide = wrapperRef.current.querySelectorAll(
+			'li.maxi-slide-block'
 		)[activeSlideIndex];
 
 		activeSlide?.setAttribute('data-slide-active', 'true');

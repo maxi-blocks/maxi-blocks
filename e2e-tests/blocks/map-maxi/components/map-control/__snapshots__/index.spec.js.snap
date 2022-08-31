@@ -2,7 +2,7 @@
 
 exports[`Map Control Map Maxi custom min/max zoom 1`] = `
 Object {
-  "map-max-zoom": 6,
+  "map-max-zoom": 5,
   "map-min-zoom": 3,
 }
 `;

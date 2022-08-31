@@ -494,18 +494,19 @@ export const getVideoBackgroundObject = ({
 	return response;
 };
 
-const getSVGWrapperBackgroundObject = ({
+const getWrapperObject = ({
 	breakpoint,
 	isHover = false,
+	prefix = '',
 	...props
 }) => {
 	const response = {
-		label: 'SVG Wrapper Background',
+		label: 'Background layer wrapper',
 		[breakpoint]: {},
 	};
 
 	const bgSVGSize = getLastBreakpointAttribute({
-		target: 'background-svg-size',
+		target: `${prefix}size`,
 		breakpoint,
 		attributes: props,
 		isHover,
@@ -513,7 +514,7 @@ const getSVGWrapperBackgroundObject = ({
 
 	if (isNumber(bgSVGSize)) {
 		const bgSVGSizeUnit = getLastBreakpointAttribute({
-			target: 'background-svg-size-unit',
+			target: `${prefix}size-unit`,
 			breakpoint,
 			attributes: props,
 			isHover,
@@ -526,14 +527,14 @@ const getSVGWrapperBackgroundObject = ({
 
 	keyWords.forEach(keyWord => {
 		const positionValue = getLastBreakpointAttribute({
-			target: `background-svg-position-${keyWord}`,
+			target: `${prefix}position-${keyWord}`,
 			breakpoint,
 			attributes: props,
 			isHover,
 		});
 
 		const positionUnit = getLastBreakpointAttribute({
-			target: `background-svg-position-${keyWord}-unit`,
+			target: `${prefix}position-${keyWord}-unit`,
 			breakpoint,
 			attributes: props,
 			isHover,
@@ -601,6 +602,16 @@ const getBackgroundLayers = ({
 					[type]: {
 						...merge(
 							response?.[layerTarget]?.[type],
+							getWrapperObject({
+								...getGroupAttributes(
+									layer,
+									'backgroundColor',
+									isHover
+								),
+								breakpoint,
+								prefix: 'background-color-wrapper-',
+								isHover,
+							}),
 							getColorBackgroundObject({
 								...getGroupAttributes(
 									layer,
@@ -642,6 +653,16 @@ const getBackgroundLayers = ({
 								prefix,
 								blockStyle,
 								breakpoint,
+							}),
+							getWrapperObject({
+								...getGroupAttributes(
+									layer,
+									'backgroundGradient',
+									isHover
+								),
+								breakpoint,
+								prefix: 'background-gradient-wrapper-',
+								isHover,
 							}),
 							getDisplayStyles(
 								{
@@ -692,6 +713,16 @@ const getBackgroundLayers = ({
 									prefix,
 									breakpoint,
 									isParallax: parallaxStatus,
+								}),
+								getWrapperObject({
+									...getGroupAttributes(
+										layer,
+										'backgroundImage',
+										isHover
+									),
+									breakpoint,
+									prefix: 'background-image-wrapper-',
+									isHover,
 								}),
 								getDisplayStyles(
 									{
@@ -773,6 +804,16 @@ const getBackgroundLayers = ({
 								prefix,
 								breakpoint,
 							}),
+							getWrapperObject({
+								...getGroupAttributes(
+									layer,
+									'backgroundVideo',
+									isHover
+								),
+								breakpoint,
+								prefix: 'background-video-wrapper-',
+								isHover,
+							}),
 							getDisplayStyles(
 								{
 									...getGroupAttributes(
@@ -793,13 +834,14 @@ const getBackgroundLayers = ({
 					[type]: {
 						...merge(
 							response?.[layerTarget]?.[type],
-							getSVGWrapperBackgroundObject({
+							getWrapperObject({
 								...getGroupAttributes(
 									layer,
 									'backgroundSVG',
 									isHover
 								),
 								breakpoint,
+								prefix: 'background-svg-wrapper-',
 								isHover,
 							}),
 							getDisplayStyles(

@@ -300,13 +300,12 @@ const NavigationIconControl = props => {
 											initial={1}
 											step={1}
 											breakpoint={breakpoint}
-											value={
-												props[
-													`${prefix}-spacing-horizontal-${breakpoint}${
-														isHover ? '-hover' : ''
-													}`
-												]
-											}
+											value={getLastBreakpointAttribute({
+												target: `${prefix}-spacing-horizontal`,
+												breakpoint,
+												attributes: props,
+												isHover,
+											})}
 											onChangeValue={val => {
 												onChange({
 													[`${prefix}-spacing-horizontal-${breakpoint}${
@@ -343,13 +342,12 @@ const NavigationIconControl = props => {
 											initial={1}
 											step={1}
 											breakpoint={breakpoint}
-											value={
-												props[
-													`${prefix}-spacing-vertical-${breakpoint}${
-														isHover ? '-hover' : ''
-													}`
-												]
-											}
+											value={getLastBreakpointAttribute({
+												target: `${prefix}-spacing-vertical`,
+												breakpoint,
+												attributes: props,
+												isHover,
+											})}
 											onChangeValue={val => {
 												onChange({
 													[`${prefix}-spacing-vertical-${breakpoint}${
@@ -387,15 +385,14 @@ const NavigationIconControl = props => {
 												initial={1}
 												step={1}
 												breakpoint={breakpoint}
-												value={
-													props[
-														`${prefix}-spacing-between-${breakpoint}${
-															isHover
-																? '-hover'
-																: ''
-														}`
-													]
-												}
+												value={getLastBreakpointAttribute(
+													{
+														target: `${prefix}-spacing-between`,
+														breakpoint,
+														attributes: props,
+														isHover,
+													}
+												)}
 												onChangeValue={val => {
 													onChange({
 														[`${prefix}-spacing-between-${breakpoint}${

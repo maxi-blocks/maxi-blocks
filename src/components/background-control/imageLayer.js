@@ -541,7 +541,6 @@ const ImageLayerSettings = props => {
 				/>
 			)}
 			<SizeAndPositionLayerControl
-				type='image'
 				prefix={prefix}
 				options={imageOptions}
 				onChange={onChange}

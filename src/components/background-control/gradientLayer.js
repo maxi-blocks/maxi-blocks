@@ -101,7 +101,6 @@ const GradientLayerContent = props => {
 				/>
 			)}
 			<SizeAndPositionLayerControl
-				type='gradient'
 				prefix={prefix}
 				options={gradientOptions}
 				onChange={onChange}

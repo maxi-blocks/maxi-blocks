@@ -19,20 +19,19 @@ import { getDefaultLayerAttr } from './utils';
 /**
  * External dependencies
  */
-import { cloneDeep, upperCase } from 'lodash';
+import { upperCase } from 'lodash';
 
 /**
  * Component
  */
 const Size = props => {
 	const {
-		type,
+		options,
 		breakpoint,
 		isHover,
 		isLayer = false,
 		onChange,
 		prefix = '',
-		options,
 	} = props;
 
 	const minMaxSettings = {
@@ -55,7 +54,9 @@ const Size = props => {
 	};
 
 	const getDefaultAttr = target => {
-		if (isLayer)
+		if (isLayer) {
+			const { type } = options;
+
 			// getDefaultLayerAttr does not support breakpoints,
 			// so I wrote a little hack to reset it correctly
 			return breakpoint === 'general'
@@ -64,6 +65,7 @@ const Size = props => {
 						`${prefix}${target}`
 				  )
 				: undefined;
+		}
 
 		return getDefaultAttribute(
 			getAttributeKey(target, isHover, prefix, breakpoint)
@@ -124,13 +126,13 @@ const Size = props => {
 
 const SizeAndPositionLayerControl = props => {
 	const {
-		type,
+		options,
 		prefix: rawPrefix = '',
 		onChange,
 		isHover = false,
 		breakpoint,
-		options: rawOptions,
 	} = props;
+	const { type } = options;
 	const prefix = `${rawPrefix}background-${type}-${
 		type === 'svg' ? '' : 'wrapper-'
 	}`;
@@ -139,7 +141,7 @@ const SizeAndPositionLayerControl = props => {
 	useEffect(() => {
 		if (
 			type !== 'svg' &&
-			Object.keys(rawOptions).every(key => !key.includes(prefix))
+			Object.keys(options).every(key => !key.includes(prefix))
 		) {
 			const defaultOptions = Object.entries(
 				getDefaultLayerAttr(`${type}Options`)
@@ -151,11 +153,9 @@ const SizeAndPositionLayerControl = props => {
 				{}
 			);
 
-			onChange({ ...rawOptions, ...defaultOptions });
+			onChange({ ...options, ...defaultOptions });
 		}
 	}, []);
-
-	const options = cloneDeep(rawOptions);
 
 	return (
 		<>

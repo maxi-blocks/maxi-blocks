@@ -60,7 +60,6 @@ const SVGLayer = props => {
 					/>
 					<ResponsiveTabsControl breakpoint={breakpoint}>
 						<SizeAndPositionLayerControl
-							type='svg'
 							prefix={prefix}
 							options={SVGOptions}
 							onChange={onChange}

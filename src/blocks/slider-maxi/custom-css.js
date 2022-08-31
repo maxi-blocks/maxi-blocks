@@ -2,101 +2,101 @@ export const selectorsSlider = {
 	slider: {
 		normal: {
 			label: 'slider',
-			target: '.maxi-slider-block',
+			target: '',
 		},
 		hover: {
 			label: 'slider on hover',
-			target: '.maxi-slider-block:hover',
+			target: ':hover',
 		},
 	},
 	'before slider': {
 		normal: {
 			label: 'slider :before',
-			target: '.maxi-slider-block::before',
+			target: '::before',
 		},
 		hover: {
 			label: 'slider ::before on hover',
-			target: '.maxi-slider-block:hover::before',
+			target: ':hover::before',
 		},
 	},
 	'after slider': {
 		normal: {
 			label: 'slider ::after',
-			target: '.maxi-slider-block::after',
+			target: '::after',
 		},
 		hover: {
 			label: 'slider :after on hover',
-			target: '.maxi-slider-block:hover::after',
+			target: ':hover::after',
 		},
-		'first arrow': {
-			normal: {
-				label: 'first arrow',
-				target: ' .maxi-slider-block__arrow--prev',
-			},
-			hover: {
-				label: 'first arrow on hover',
-				target: ' .maxi-slider-block__arrow--prev:hover',
-			},
+	},
+	'first arrow': {
+		normal: {
+			label: 'first arrow',
+			target: ' .maxi-slider-block__arrow--prev',
 		},
-		'second arrow': {
-			normal: {
-				label: 'second arrow',
-				target: ' .maxi-slider-block__arrow--next',
-			},
-			hover: {
-				label: 'second arrow on hover',
-				target: ' .maxi-slider-block__arrow--next:hover',
-			},
+		hover: {
+			label: 'first arrow on hover',
+			target: ' .maxi-slider-block__arrow--prev:hover',
 		},
-		'first arrow icon': {
-			normal: {
-				label: 'first arrow icon',
-				target: ' .maxi-slider-block__arrow--prev svg',
-			},
-			hover: {
-				label: 'first arrow icon on hover',
-				target: ' .maxi-slider-block__arrow--prev:hover svg',
-			},
+	},
+	'second arrow': {
+		normal: {
+			label: 'second arrow',
+			target: ' .maxi-slider-block__arrow--next',
 		},
-		'second arrow icon': {
-			normal: {
-				label: 'second arrow icon',
-				target: ' .maxi-slider-block__arrow--next svg',
-			},
-			hover: {
-				label: 'second arrow icon on hover',
-				target: ' .maxi-slider-block__arrow--next:hover svg',
-			},
+		hover: {
+			label: 'second arrow on hover',
+			target: ' .maxi-slider-block__arrow--next:hover',
 		},
-		'all dots': {
-			normal: {
-				label: 'all dots',
-				target: ' .maxi-slider-block__dots',
-			},
-			hover: {
-				label: 'all dots on hover',
-				target: ' .maxi-slider-block__dots:hover',
-			},
+	},
+	'first arrow icon': {
+		normal: {
+			label: 'first arrow icon',
+			target: ' .maxi-slider-block__arrow--prev svg',
 		},
-		dot: {
-			normal: {
-				label: 'Each dot',
-				target: ' .maxi-slider-block__dot',
-			},
-			hover: {
-				label: 'Each dot on hover',
-				target: ' .maxi-slider-block__dot:hover',
-			},
+		hover: {
+			label: 'first arrow icon on hover',
+			target: ' .maxi-slider-block__arrow--prev:hover svg',
 		},
-		'dot icon': {
-			normal: {
-				label: 'Each dot icon',
-				target: ' .maxi-slider-block__dot svg',
-			},
-			hover: {
-				label: 'Each dot icon on hover',
-				target: ' .maxi-slider-block__dot:hover svg',
-			},
+	},
+	'second arrow icon': {
+		normal: {
+			label: 'second arrow icon',
+			target: ' .maxi-slider-block__arrow--next svg',
+		},
+		hover: {
+			label: 'second arrow icon on hover',
+			target: ' .maxi-slider-block__arrow--next:hover svg',
+		},
+	},
+	'all dots': {
+		normal: {
+			label: 'all dots',
+			target: ' .maxi-slider-block__dots',
+		},
+		hover: {
+			label: 'all dots on hover',
+			target: ' .maxi-slider-block__dots:hover',
+		},
+	},
+	dot: {
+		normal: {
+			label: 'Each dot',
+			target: ' .maxi-slider-block__dot',
+		},
+		hover: {
+			label: 'Each dot on hover',
+			target: ' .maxi-slider-block__dot:hover',
+		},
+	},
+	'dot icon': {
+		normal: {
+			label: 'Each dot icon',
+			target: ' .maxi-slider-block__dot svg',
+		},
+		hover: {
+			label: 'Each dot icon on hover',
+			target: ' .maxi-slider-block__dot:hover svg',
 		},
 	},
 };

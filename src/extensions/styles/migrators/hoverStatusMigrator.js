@@ -17,15 +17,12 @@ const attributes = () =>
 		return acc;
 	}, {});
 
-const isEligible = blockAttributes => {
-	console.log(blockAttributes);
-	return Object.keys(blockAttributes).some(key =>
+const isEligible = blockAttributes =>
+	Object.keys(blockAttributes).some(key =>
 		key.includes('background-hover-status')
 	);
-};
 
 const migrate = ({ newAttributes }) => {
-	console.log(newAttributes);
 	Object.entries(newAttributes).forEach(([key, attr]) => {
 		if (key.includes('background-hover-status')) {
 			const newKey = key.replace('hover-status', 'status-hover');

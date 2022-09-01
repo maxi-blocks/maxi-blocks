@@ -617,7 +617,13 @@ const TypographyControl = props => {
 							),
 						})
 					}
-					minMaxSettings={minMaxSettings}
+					minMaxSettings={{
+						...minMaxSettings,
+						'%': {
+							min: 0,
+							max: 300,
+						},
+					}}
 					allowedUnits={['px', 'em', 'vw', '%', '-']}
 				/>
 				<AdvancedNumberControl

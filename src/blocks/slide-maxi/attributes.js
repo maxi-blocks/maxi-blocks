@@ -13,10 +13,6 @@ const attributes = {
 	/**
 	 * Block styles
 	 */
-	verticalAlign: {
-		type: 'string',
-		default: 'stretch',
-	},
 	...attributesData.blockBackground,
 	...attributesData.border,
 	...attributesData.borderHover,

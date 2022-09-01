@@ -346,6 +346,8 @@ const SliderWrapper = props => {
 	useEffect(() => {
 		if (currentSlide >= numberOfSlides && numberOfSlides > 0) {
 			setActiveSlide(numberOfSlides - 1);
+		} else {
+			setActiveSlide(currentSlide);
 		}
 		maxiSetAttributes({ numberOfSlides });
 	}, [numberOfSlides]);

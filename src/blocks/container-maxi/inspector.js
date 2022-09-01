@@ -18,6 +18,11 @@ import { selectorsContainer, categoriesContainer } from './custom-css';
 import { withMaxiInspector } from '../../extensions/inspector';
 
 /**
+ * External dependencies
+ */
+import { without } from 'lodash';
+
+/**
  * Inspector
  */
 const Inspector = props => {
@@ -28,6 +33,18 @@ const Inspector = props => {
 		insertInlineStyles,
 		cleanInlineStyles,
 	} = props;
+
+	const getCategoriesCss = () => {
+		const {
+			'shape-divider-top-status': shapeDividerTopStatus,
+			'shape-divider-bottom-status': shapeDividerBottomStatus,
+		} = attributes;
+		return without(
+			categoriesContainer,
+			!shapeDividerTopStatus && 'top shape divider',
+			!shapeDividerBottomStatus && 'bottom shape divider'
+		);
+	};
 
 	return (
 		<InspectorControls>
@@ -116,7 +133,7 @@ const Inspector = props => {
 										props,
 										breakpoint: deviceType,
 										selectors: selectorsContainer,
-										categories: categoriesContainer,
+										categories: getCategoriesCss(),
 									}),
 									...inspectorTabs.scrollEffects({
 										props,
@@ -124,7 +141,7 @@ const Inspector = props => {
 									...inspectorTabs.transform({
 										props,
 										selectors: selectorsContainer,
-										categories: categoriesContainer,
+										categories: getCategoriesCss(),
 									}),
 									...inspectorTabs.transition({
 										props: {

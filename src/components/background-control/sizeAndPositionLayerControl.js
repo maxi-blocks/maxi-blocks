@@ -147,7 +147,7 @@ const SizeAndPositionLayerControl = ({
 				{}
 			);
 
-			onChange({ ...options, ...defaultOptions });
+			onChange(defaultOptions);
 		}
 	}, []);
 

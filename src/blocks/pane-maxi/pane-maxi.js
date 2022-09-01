@@ -14,12 +14,18 @@ import { registerBlockType } from '@wordpress/blocks';
 import attributes from './attributes';
 import edit from './edit';
 import save from './save';
+import { selectorsPane } from './custom-css';
 
 /**
  * Styles and icons
  */
 import './style.scss';
 import { groupIcon } from '../../icons';
+
+/**
+ * Migrators
+ */
+import { blockMigrator } from '../../extensions/styles/migrators';
 
 /**
  * Block
@@ -47,4 +53,9 @@ registerBlockType('maxi-blocks/pane-maxi', {
 	},
 	edit,
 	save,
+	deprecated: blockMigrator({
+		attributes,
+		save,
+		selectors: selectorsPane,
+	}),
 });

@@ -23,6 +23,7 @@ import {
  */
 import classnames from 'classnames';
 import { toString } from 'lodash';
+import getOptions from './utils';
 
 /**
  * Component
@@ -71,35 +72,19 @@ const FlexSettingsControl = props => {
 								<SelectControl
 									label={__('Flex direction', 'maxi-blocks')}
 									className='maxi-flex__direction'
-									value={getLastBreakpointAttribute({
-										target: 'flex-direction',
-										breakpoint,
-										attributes: props,
-									})}
-									options={[
-										{
-											label: __('Row', 'maxi-blocks'),
-											value: 'row',
-										},
-										{
-											label: __(
-												'Row-reverse',
-												'maxi-blocks'
-											),
-											value: 'row-reverse',
-										},
-										{
-											label: __('Column', 'maxi-blocks'),
-											value: 'column',
-										},
-										{
-											label: __(
-												'Column-reverse',
-												'maxi-blocks'
-											),
-											value: 'column-reverse',
-										},
-									]}
+									value={
+										getLastBreakpointAttribute({
+											target: 'flex-direction',
+											breakpoint,
+											attributes: props,
+										}) ?? 'none'
+									}
+									options={getOptions([
+										'row',
+										'row-reverse',
+										'column',
+										'column-reverse',
+									])}
 									onChange={val =>
 										onChange({
 											[`flex-direction-${breakpoint}`]:
@@ -116,63 +101,23 @@ const FlexSettingsControl = props => {
 								<SelectControl
 									label={__('Align content', 'maxi-blocks')}
 									className='maxi-flex__align-content'
-									value={getLastBreakpointAttribute({
-										target: 'align-content',
-										breakpoint,
-										attributes: props,
-									})}
-									options={[
-										{
-											label: __(
-												'Flex-start',
-												'maxi-blocks'
-											),
-											value: 'flex-start',
-										},
-										{
-											label: __(
-												'Flex-end',
-												'maxi-blocks'
-											),
-											value: 'flex-end',
-										},
-										{
-											label: __('Center', 'maxi-blocks'),
-											value: 'center ',
-										},
-										{
-											label: __(
-												'Space-between',
-												'maxi-blocks'
-											),
-											value: 'space-between',
-										},
-										{
-											label: __(
-												'Space-around',
-												'maxi-blocks'
-											),
-											value: 'space-around',
-										},
-										{
-											label: __(
-												'Space-evenly',
-												'maxi-blocks'
-											),
-											value: 'space-evenly',
-										},
-										{
-											label: __('Stretch', 'maxi-blocks'),
-											value: 'stretch ',
-										},
-										{
-											label: __(
-												'Baseline',
-												'maxi-blocks'
-											),
-											value: 'baseline',
-										},
-									]}
+									value={
+										getLastBreakpointAttribute({
+											target: 'align-content',
+											breakpoint,
+											attributes: props,
+										}) ?? 'none'
+									}
+									options={getOptions([
+										'flex-start',
+										'flex-end',
+										'center',
+										'space-between',
+										'space-around',
+										'space-evenly',
+										'stretch',
+										'baseline',
+									])}
 									onChange={val =>
 										onChange({
 											[`align-content-${breakpoint}`]:
@@ -183,21 +128,14 @@ const FlexSettingsControl = props => {
 								<SelectControl
 									label={__('Flex-flow', 'maxi-blocks')}
 									className='maxi-flex__flow'
-									value={getLastBreakpointAttribute({
-										target: 'flex-flow',
-										breakpoint,
-										attributes: props,
-									})}
-									options={[
-										{
-											label: __('Column', 'maxi-blocks'),
-											value: 'column',
-										},
-										{
-											label: __('Wrap', 'maxi-blocks'),
-											value: 'wrap',
-										},
-									]}
+									value={
+										getLastBreakpointAttribute({
+											target: 'flex-flow',
+											breakpoint,
+											attributes: props,
+										}) ?? 'none'
+									}
+									options={getOptions(['column', 'wrap'])}
 									onChange={val =>
 										onChange({
 											[`flex-flow-${breakpoint}`]: val,
@@ -303,39 +241,15 @@ const FlexSettingsControl = props => {
 													target: 'flex-basis',
 													breakpoint,
 													attributes: props,
-											  })
+											  }) ?? 'none'
 									}
-									options={[
-										{
-											label: __('Content', 'maxi-blocks'),
-											value: 'content',
-										},
-										{
-											label: __(
-												'Max-content',
-												'maxi-blocks'
-											),
-											value: 'max-content',
-										},
-										{
-											label: __(
-												'Min-content',
-												'maxi-blocks'
-											),
-											value: 'min-content',
-										},
-										{
-											label: __(
-												'Fit-content',
-												'maxi-blocks'
-											),
-											value: 'fit-content',
-										},
-										{
-											label: __('Custom', 'maxi-blocks'),
-											value: 'custom',
-										},
-									]}
+									options={getOptions([
+										'content',
+										'max-content',
+										'min-content',
+										'fit-content',
+										'custom',
+									])}
 									onChange={val => {
 										if (val !== 'custom') {
 											onChange({

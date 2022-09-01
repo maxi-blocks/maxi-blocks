@@ -13,15 +13,6 @@ import getOptions from './utils';
 const FlexAlignControl = props => {
 	const { breakpoint, onChange } = props;
 
-	const alignValues = [
-		'flex-start',
-		'flex-end',
-		'center',
-		'space-between',
-		'space-around',
-		'space-evenly',
-	];
-
 	return (
 		<>
 			<SelectControl
@@ -34,7 +25,14 @@ const FlexAlignControl = props => {
 						attributes: props,
 					}) ?? 'none'
 				}
-				options={getOptions(alignValues)}
+				options={getOptions([
+					'flex-start',
+					'flex-end',
+					'center',
+					'space-between',
+					'space-around',
+					'space-evenly',
+				])}
 				onChange={val =>
 					onChange({
 						[`justify-content-${breakpoint}`]: val,
@@ -51,7 +49,13 @@ const FlexAlignControl = props => {
 						attributes: props,
 					}) ?? 'none'
 				}
-				options={getOptions(alignValues)}
+				options={getOptions([
+					'flex-start',
+					'flex-end',
+					'center',
+					'stretch',
+					'baseline',
+				])}
 				onChange={val =>
 					onChange({
 						[`align-items-${breakpoint}`]: val,

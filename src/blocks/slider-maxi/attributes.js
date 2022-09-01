@@ -65,37 +65,7 @@ const attributes = {
 	...attributesData.dotIconHover,
 	...attributesData.dotIconActive,
 
-	...{
-		...attributesData.size,
-		'size-advanced-options': {
-			type: 'boolean',
-			default: true,
-		},
-		'max-width-xxl': {
-			type: 'number',
-			default: 1690,
-		},
-		'max-width-xl': {
-			type: 'number',
-			default: 1170,
-		},
-		'max-width-l': {
-			type: 'number',
-			default: 90,
-		},
-		'max-width-unit-xxl': {
-			type: 'string',
-			default: 'px',
-		},
-		'max-width-unit-xl': {
-			type: 'string',
-			default: 'px',
-		},
-		'max-width-unit-l': {
-			type: 'string',
-			default: '%',
-		},
-	},
+	...attributesData.size,
 	...attributesData.margin,
 	...attributesData.padding,
 

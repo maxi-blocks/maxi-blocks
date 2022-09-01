@@ -336,7 +336,7 @@ const SliderWrapper = props => {
 	}, [slidesWidth, isLoop, currentSlide, realFirstSlideOffset]);
 
 	useEffect(() => {
-		if (isLoop) {
+		if (isLoop && !isEditView) {
 			updateSlideClones(numberOfClones);
 		} else {
 			deleteSlideClones();

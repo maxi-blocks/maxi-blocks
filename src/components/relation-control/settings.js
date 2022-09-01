@@ -62,7 +62,7 @@ const getCanvasSettings = name => [
 	{
 		label: __('Background / Layer', 'maxi-blocks'),
 		transitionTarget: ' > .maxi-background-displayer > div',
-		hoverProp: 'block-background-hover-status',
+		hoverProp: 'block-background-status-hover',
 		attrGroupName: [
 			'blockBackground',
 			'border',
@@ -242,7 +242,7 @@ const settings = {
 			transitionTarget:
 				transitionsBlockObjs['button-maxi'].block['button background']
 					.target,
-			hoverProp: 'button-background-hover-status',
+			hoverProp: 'button-background-status-hover',
 			attrGroupName: [
 				'background',
 				'backgroundColor',
@@ -487,7 +487,7 @@ const settings = {
 			label: __('Icon background', 'maxi-blocks'),
 			transitionTarget:
 				transitionsBlockObjs['svg-icon-maxi'].block.background.target,
-			hoverProp: 'svg-background-hover-status',
+			hoverProp: 'svg-background-status-hover',
 			attrGroupName: [
 				'background',
 				'backgroundColor',

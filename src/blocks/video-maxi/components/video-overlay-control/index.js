@@ -160,18 +160,18 @@ const VideoOverlayControl = props => {
 										)}
 										selected={
 											props[
-												'overlay-background-hover-status'
+												'overlay-background-status-hover'
 											]
 										}
 										onChange={val =>
 											onChange({
-												'overlay-background-hover-status':
+												'overlay-background-status-hover':
 													val,
 											})
 										}
 									/>
 									{props[
-										'overlay-background-hover-status'
+										'overlay-background-status-hover'
 									] && <OverlayColor {...props} isHover />}
 								</>
 							),

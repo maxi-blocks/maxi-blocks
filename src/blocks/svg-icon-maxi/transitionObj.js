@@ -27,7 +27,7 @@ const transitionObj = {
 			title: 'Background',
 			target: ' .maxi-svg-icon-block__icon',
 			property: 'background',
-			hoverProp: 'svg-background-hover-status',
+			hoverProp: 'svg-background-status-hover',
 		},
 	},
 };

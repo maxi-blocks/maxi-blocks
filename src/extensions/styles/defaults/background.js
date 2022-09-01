@@ -12,7 +12,7 @@ export const blockBackground = {
 	'background-layers-hover': {
 		type: 'array',
 	},
-	'block-background-hover-status': {
+	'block-background-status-hover': {
 		type: 'boolean',
 		default: false,
 	},

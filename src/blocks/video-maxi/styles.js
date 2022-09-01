@@ -342,7 +342,7 @@ const getStyles = props => {
 					  }),
 				' .maxi-video-block__overlay-background':
 					getOverlayBackgroundObject(props),
-				...(props['overlay-background-hover-status'] && {
+				...(props['overlay-background-status-hover'] && {
 					':hover .maxi-video-block__overlay-background':
 						getOverlayBackgroundObject(props, true),
 				}),

@@ -26,7 +26,7 @@ const transitionObj = {
 		'overlay colour': {
 			title: 'Overlay colour',
 			target: ' .maxi-video-block__overlay-background',
-			hoverProp: 'overlay-background-hover-status',
+			hoverProp: 'overlay-background-status-hover',
 			property: 'background-color',
 		},
 		'play icon colour': {

@@ -17,23 +17,16 @@ import {
 import { getDefaultLayerAttr } from './utils';
 
 /**
- * External dependencies
- */
-import { upperCase } from 'lodash';
-
-/**
  * Component
  */
-const Size = props => {
-	const {
-		options,
-		breakpoint,
-		isHover,
-		isLayer = false,
-		onChange,
-		prefix = '',
-	} = props;
-
+const Size = ({
+	options,
+	onChange,
+	breakpoint,
+	isHover,
+	isLayer = false,
+	prefix,
+}) => {
 	const minMaxSettings = {
 		px: {
 			min: 0,
@@ -61,7 +54,7 @@ const Size = props => {
 			// so I wrote a little hack to reset it correctly
 			return breakpoint === 'general'
 				? getDefaultLayerAttr(
-						`${type === 'svg' ? upperCase(type) : type}Options`,
+						`${type === 'shape' ? 'SVG' : type}Options`,
 						`${prefix}${target}`
 				  )
 				: undefined;
@@ -124,23 +117,24 @@ const Size = props => {
 	);
 };
 
-const SizeAndPositionLayerControl = props => {
-	const {
-		options,
-		prefix: rawPrefix = '',
-		onChange,
-		isHover = false,
-		breakpoint,
-	} = props;
+const SizeAndPositionLayerControl = ({
+	options,
+	onChange,
+	prefix: rawPrefix = '',
+	isHover = false,
+	isLayer = false,
+	breakpoint,
+}) => {
 	const { type } = options;
-	const prefix = `${rawPrefix}background-${type}-${
-		type === 'svg' ? '' : 'wrapper-'
-	}`;
+	const prefix = `${rawPrefix}background-${
+		type === 'shape' ? 'svg' : `${type}-wrapper`
+	}-`;
 
 	// Add new attributes if they are not exist
 	useEffect(() => {
 		if (
-			type !== 'svg' &&
+			isLayer &&
+			type !== 'shape' &&
 			Object.keys(options).every(key => !key.includes(prefix))
 		) {
 			const defaultOptions = Object.entries(
@@ -157,16 +151,22 @@ const SizeAndPositionLayerControl = props => {
 		}
 	}, []);
 
+	if (!isLayer) return null;
+
+	const equivalentProps = {
+		onChange,
+		prefix,
+		breakpoint,
+		isHover,
+	};
+
 	return (
 		<>
-			<Size {...props} prefix={prefix} />
+			<Size {...equivalentProps} options={options} isLayer={isLayer} />
 			<PositionControl
 				{...options}
+				{...equivalentProps}
 				className='maxi-background-control__position'
-				prefix={prefix}
-				onChange={onChange}
-				breakpoint={breakpoint}
-				isHover={isHover}
 				disablePosition
 			/>
 		</>

@@ -375,7 +375,8 @@ class MaxiBlockComponent extends Component {
 
 			if (uniqueID !== blockUniqueID && !isEmpty(relations)) {
 				const filteredRelations = relations.filter(
-					({ uniqueID: relationUniqueID }) => relationUniqueID !== uniqueID
+					({ uniqueID: relationUniqueID }) =>
+						relationUniqueID !== uniqueID
 				);
 
 				if (!isEqual(relations, filteredRelations)) {

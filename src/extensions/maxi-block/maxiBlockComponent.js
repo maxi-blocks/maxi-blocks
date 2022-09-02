@@ -248,6 +248,11 @@ class MaxiBlockComponent extends Component {
 			this.props.attributes.uniqueID
 		);
 
+		this.removeUnmountedBlockFromRelations(
+			this.props.attributes.uniqueID,
+			select('core/block-editor').getBlocks()
+		);
+
 		if (this.maxiBlockWillUnmount) this.maxiBlockWillUnmount();
 	}
 
@@ -362,6 +367,30 @@ class MaxiBlockComponent extends Component {
 		const response = getAllFonts(this.typography, 'custom-formats');
 
 		if (!isEmpty(response)) loadFonts(response);
+	}
+
+	removeUnmountedBlockFromRelations(uniqueID, blocksToCheck) {
+		blocksToCheck.forEach(({ clientId, attributes, innerBlocks }) => {
+			const { relations, uniqueID: blockUniqueID } = attributes;
+
+			if (uniqueID !== blockUniqueID && !isEmpty(relations)) {
+				const filteredRelations = relations.filter(
+					({ uniqueID: relationUniqueID }) => relationUniqueID !== uniqueID
+				);
+
+				if (!isEqual(relations, filteredRelations)) {
+					const { updateBlockAttributes } =
+						dispatch('core/block-editor');
+
+					updateBlockAttributes(clientId, {
+						relations: filteredRelations,
+					});
+				}
+			}
+
+			if (!isEmpty(innerBlocks))
+				this.removeUnmountedBlockFromRelations(uniqueID, innerBlocks);
+		});
 	}
 
 	/**

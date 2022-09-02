@@ -349,7 +349,9 @@ const settings = {
 		{
 			label: __('Alignment', 'maxi-blocks'),
 			attrGroupName: 'alignment',
-			component: props => <Controls.AlignmentControl {...props} />,
+			component: props => (
+				<Controls.AlignmentControl disableJustify {...props} />
+			),
 			helper: props => styleHelpers.getAlignmentFlexStyles(props.obj),
 			target: ' .maxi-image-block-wrapper',
 		},

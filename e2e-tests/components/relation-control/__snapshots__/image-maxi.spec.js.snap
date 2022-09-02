@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Image Maxi hover simple actions Image size 1`] = `
+Array [
+  Object {
+    "action": "hover",
+    "attributes": Object {},
+    "css": Object {},
+    "effects": Object {
+      "easing-general": "ease",
+      "transition-delay-general": 0,
+      "transition-duration-general": 0.3,
+      "transition-status-general": true,
+    },
+    "id": 1,
+    "isButton": true,
+    "settings": "",
+    "target": "",
+    "title": "Hello World!",
+    "uniqueID": "image-maxi-1",
+  },
+]
+`;

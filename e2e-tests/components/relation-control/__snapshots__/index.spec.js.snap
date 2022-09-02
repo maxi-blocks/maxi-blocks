@@ -1,0 +1,342 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button Maxi hover simple actions Button icon 1`] = `
+Array [
+  Object {
+    "action": "hover",
+    "attributes": Object {
+      "icon-background-palette-color-general": 5,
+      "icon-background-palette-color-xl": 5,
+      "icon-background-palette-opacity-general": 0.43,
+      "icon-background-palette-opacity-xl": 0.43,
+      "icon-background-palette-status-general": true,
+      "icon-background-palette-status-xl": true,
+      "icon-content": "<svg stroke-miterlimit=\\"10\\" stroke-linejoin=\\"round\\" stroke-linecap=\\"round\\" stroke-width=\\"2\\" data-hover-stroke stroke=\\"var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.44))\\" fill=\\"none\\" viewBox=\\"0 0 24 24\\" height=\\"64px\\" width=\\"64px\\" class=\\"arrow-right-6-line-maxi-svg\\"><path d=\\"M14 3.6l8.4 8.4-8.4 8.4m8.4-8.4H1.6\\"></path></svg>",
+      "icon-padding-unit-general": "%",
+      "icon-padding-unit-xl": "%",
+      "icon-position": "bottom",
+      "icon-stroke-palette-color": 8,
+      "icon-stroke-palette-opacity": 0.44,
+      "icon-stroke-palette-status": true,
+      "icon-width-unit-general": "%",
+      "icon-width-unit-xl": "%",
+    },
+    "css": Object {
+      " ": Object {
+        "general": Object {
+          "breakpoint": null,
+          "styles": Object {
+            "background": "rgba(var(--maxi-undefined-color-5,0,0,0),0.43)",
+            "background-color": "rgba(var(--maxi-undefined-color-5,0,0,0),0.43)",
+            "border-bottom-left-radius": "5px",
+            "border-bottom-right-radius": "5px",
+            "border-color": "0",
+            "border-style": "none",
+            "border-top-left-radius": "5px",
+            "border-top-right-radius": "5px",
+            "margin-top": "14px",
+            "padding-bottom": "13px",
+            "padding-left": "13px",
+            "padding-right": "13px",
+            "padding-top": "13px",
+          },
+        },
+        "l": Object {
+          "breakpoint": 1366,
+          "styles": Object {},
+        },
+        "m": Object {
+          "breakpoint": 1024,
+          "styles": Object {},
+        },
+        "s": Object {
+          "breakpoint": 767,
+          "styles": Object {},
+        },
+        "xl": Object {
+          "breakpoint": 1920,
+          "styles": Object {},
+        },
+        "xs": Object {
+          "breakpoint": 480,
+          "styles": Object {},
+        },
+        "xxl": Object {
+          "breakpoint": null,
+          "styles": Object {
+            "border-bottom-left-radius": "5px",
+            "border-bottom-right-radius": "5px",
+            "border-top-left-radius": "5px",
+            "border-top-right-radius": "5px",
+            "margin-top": "23px",
+            "padding-bottom": "22px",
+            "padding-left": "22px",
+            "padding-right": "22px",
+            "padding-top": "22px",
+          },
+        },
+      },
+      "  svg": Object {
+        "general": Object {
+          "breakpoint": null,
+          "styles": Object {
+            "height": "14%",
+            "width": "14%",
+          },
+        },
+        "xxl": Object {
+          "breakpoint": null,
+          "styles": Object {
+            "height": "18px",
+            "width": "18px",
+          },
+        },
+      },
+      "  svg > *": Object {
+        "general": Object {
+          "breakpoint": null,
+          "styles": Object {
+            "background": "rgba(var(--maxi-undefined-color-5,0,0,0),0.43)",
+            "background-color": "rgba(var(--maxi-undefined-color-5,0,0,0),0.43)",
+            "margin-top": "14px",
+          },
+        },
+        "l": Object {
+          "breakpoint": 1366,
+          "styles": Object {},
+        },
+        "m": Object {
+          "breakpoint": 1024,
+          "styles": Object {},
+        },
+        "s": Object {
+          "breakpoint": 767,
+          "styles": Object {},
+        },
+        "xl": Object {
+          "breakpoint": 1920,
+          "styles": Object {},
+        },
+        "xs": Object {
+          "breakpoint": 480,
+          "styles": Object {},
+        },
+        "xxl": Object {
+          "breakpoint": null,
+          "styles": Object {
+            "margin-top": "23px",
+          },
+        },
+      },
+      "  svg circle[data-fill]:not([fill^=\\"none\\"])": Object {
+        "general": Object {
+          "breakpoint": null,
+          "styles": Object {
+            "fill": "var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1))",
+          },
+        },
+      },
+      "  svg circle[data-stroke]:not([stroke^=\\"none\\"])": Object {
+        "general": Object {
+          "breakpoint": null,
+          "styles": Object {
+            "stroke": "var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.44))",
+          },
+        },
+      },
+      "  svg g[data-fill]:not([fill^=\\"none\\"])": Object {
+        "general": Object {
+          "breakpoint": null,
+          "styles": Object {
+            "fill": "var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1))",
+          },
+        },
+      },
+      "  svg g[data-stroke]:not([stroke^=\\"none\\"])": Object {
+        "general": Object {
+          "breakpoint": null,
+          "styles": Object {
+            "stroke": "var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.44))",
+          },
+        },
+      },
+      "  svg path": Object {
+        "general": Object {
+          "breakpoint": null,
+          "styles": Object {
+            "stroke-width": "3",
+          },
+        },
+        "xxl": Object {
+          "breakpoint": null,
+          "styles": Object {
+            "stroke-width": "4",
+          },
+        },
+      },
+      "  svg path[data-fill]:not([fill^=\\"none\\"])": Object {
+        "general": Object {
+          "breakpoint": null,
+          "styles": Object {
+            "fill": "var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1))",
+          },
+        },
+      },
+      "  svg path[data-stroke]:not([stroke^=\\"none\\"])": Object {
+        "general": Object {
+          "breakpoint": null,
+          "styles": Object {
+            "stroke": "var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.44))",
+          },
+        },
+      },
+      "  svg use[data-fill]:not([fill^=\\"none\\"])": Object {
+        "general": Object {
+          "breakpoint": null,
+          "styles": Object {
+            "fill": "var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1))",
+          },
+        },
+      },
+      "  svg use[data-stroke]:not([stroke^=\\"none\\"])": Object {
+        "general": Object {
+          "breakpoint": null,
+          "styles": Object {
+            "stroke": "var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.44))",
+          },
+        },
+      },
+      "  svg[data-fill]:not([fill^=\\"none\\"])": Object {
+        "general": Object {
+          "breakpoint": null,
+          "styles": Object {
+            "fill": "var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1))",
+          },
+        },
+      },
+      "  svg[data-stroke]:not([stroke^=\\"none\\"])": Object {
+        "general": Object {
+          "breakpoint": null,
+          "styles": Object {
+            "stroke": "var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.44))",
+          },
+        },
+      },
+      " > .maxi-background-displayer": Object {
+        "general": Object {
+          "breakpoint": null,
+          "styles": Object {},
+        },
+        "l": Object {
+          "breakpoint": 1366,
+          "styles": Object {},
+        },
+        "m": Object {
+          "breakpoint": 1024,
+          "styles": Object {},
+        },
+        "s": Object {
+          "breakpoint": 767,
+          "styles": Object {},
+        },
+        "xl": Object {
+          "breakpoint": 1920,
+          "styles": Object {},
+        },
+        "xs": Object {
+          "breakpoint": 480,
+          "styles": Object {},
+        },
+        "xxl": Object {
+          "breakpoint": null,
+          "styles": Object {},
+        },
+      },
+    },
+    "effects": Object {
+      "easing-general": "ease",
+      "transition-delay-general": 0,
+      "transition-duration-general": 0.3,
+      "transition-status-general": true,
+    },
+    "id": 1,
+    "isButton": true,
+    "settings": "Button icon",
+    "target": "",
+    "title": "33",
+    "uniqueID": "button-maxi-1",
+  },
+]
+`;
+
+exports[`Button Maxi hover simple actions Change button background 1`] = `
+Array [
+  Object {
+    "action": "hover",
+    "attributes": Object {
+      "button-background-palette-color-general": 8,
+      "button-background-palette-color-xl": 8,
+      "button-background-palette-opacity-general": 0.2,
+      "button-background-palette-opacity-xl": 0.2,
+      "button-background-palette-status-general": true,
+      "button-background-palette-status-xl": true,
+    },
+    "css": Object {
+      "general": Object {
+        "breakpoint": null,
+        "styles": Object {
+          "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.2))",
+        },
+      },
+      "l": Object {
+        "breakpoint": 1366,
+        "styles": Object {
+          "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.2))",
+        },
+      },
+      "m": Object {
+        "breakpoint": 1024,
+        "styles": Object {
+          "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.2))",
+        },
+      },
+      "s": Object {
+        "breakpoint": 767,
+        "styles": Object {
+          "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.2))",
+        },
+      },
+      "xl": Object {
+        "breakpoint": 1920,
+        "styles": Object {
+          "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.2))",
+        },
+      },
+      "xs": Object {
+        "breakpoint": 480,
+        "styles": Object {
+          "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.2))",
+        },
+      },
+      "xxl": Object {
+        "breakpoint": null,
+        "styles": Object {
+          "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.2))",
+        },
+      },
+    },
+    "effects": Object {
+      "easing-general": "ease",
+      "transition-delay-general": 0,
+      "transition-duration-general": 0.3,
+      "transition-status-general": true,
+    },
+    "id": 1,
+    "isButton": true,
+    "settings": "Button background",
+    "target": ".maxi-button-block__button",
+    "title": "Hello World!",
+    "uniqueID": "button-maxi-1",
+  },
+]
+`;

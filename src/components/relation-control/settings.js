@@ -27,10 +27,13 @@ import {
 } from '../transform-control/utils';
 import getBlockCategoriesAndSelectors from '../../extensions/styles/getBlockCategoriesAndSelectors';
 import getParentRowClientId from './getParentRowClientId';
+import transitionsBlockObjs from '../../extensions/styles/transitions/transitionsBlockObjs';
+import { VideoOverlayControl } from '../../blocks/video-maxi/components';
 
 const getTransformControl = name => {
 	const { categories, selectors } = getBlockCategoriesAndSelectors(name);
 
+	// TODO: add hoverProp entry
 	return {
 		label: __('Transform', 'maxi-blocks'),
 		attrGroupName: 'transform',
@@ -58,6 +61,8 @@ const getTransformControl = name => {
 const getCanvasSettings = name => [
 	{
 		label: __('Background / Layer', 'maxi-blocks'),
+		transitionTarget: ' > .maxi-background-displayer > div',
+		hoverProp: 'block-background-hover-status',
 		attrGroupName: [
 			'blockBackground',
 			'border',
@@ -81,6 +86,8 @@ const getCanvasSettings = name => [
 	},
 	{
 		label: __('Border', 'maxi-blocks'),
+		transitionTarget: ['', ' > .maxi-background-displayer'],
+		hoverProp: 'border-status-hover',
 		attrGroupName: ['border', 'borderWidth', 'borderRadius'],
 		component: props => <Controls.BorderControl {...props} />,
 		helper: props => styleHelpers.getBorderStyles(props),
@@ -156,6 +163,14 @@ const settings = {
 	'maxi-blocks/button-maxi': [
 		{
 			label: __('Button icon', 'maxi-blocks'),
+			transitionTarget: [
+				transitionsBlockObjs['button-maxi'].block['icon colour'].target,
+				transitionsBlockObjs['button-maxi'].block['icon width'].target,
+				transitionsBlockObjs['button-maxi'].block['icon background']
+					.target,
+				transitionsBlockObjs['button-maxi'].block['icon border'].target,
+			],
+			hoverProp: 'button-icon-status-hover',
 			attrGroupName: [
 				'icon',
 				'iconBackground',
@@ -193,6 +208,9 @@ const settings = {
 		},
 		{
 			label: __('Button typography', 'maxi-blocks'),
+			transitionTarget:
+				transitionsBlockObjs['button-maxi'].block.typography.target,
+			hoverProp: 'typography-status-hover',
 			attrGroupName: 'typography',
 			component: props => (
 				<Controls.TypographyControl
@@ -210,6 +228,9 @@ const settings = {
 		},
 		{
 			label: __('Button border', 'maxi-blocks'),
+			transitionTarget:
+				transitionsBlockObjs['button-maxi'].block.border.target,
+			hoverProp: 'button-border-status-hover',
 			attrGroupName: ['border', 'borderWidth', 'borderRadius'],
 			prefix: 'button-',
 			component: props => <Controls.BorderControl {...props} />,
@@ -218,6 +239,10 @@ const settings = {
 		},
 		{
 			label: __('Button background', 'maxi-blocks'),
+			transitionTarget:
+				transitionsBlockObjs['button-maxi'].block['button background']
+					.target,
+			hoverProp: 'button-background-hover-status',
 			attrGroupName: [
 				'background',
 				'backgroundColor',
@@ -243,6 +268,9 @@ const settings = {
 		},
 		{
 			label: __('Button box shadow', 'maxi-blocks'),
+			transitionTarget:
+				transitionsBlockObjs['button-maxi'].block['box shadow'].target,
+			hoverProp: 'button-box-shadow-status-hover',
 			attrGroupName: 'boxShadow',
 			prefix: 'button-',
 			component: props => <Controls.BoxShadowControl {...props} />,
@@ -324,6 +352,9 @@ const settings = {
 	'maxi-blocks/divider-maxi': [
 		{
 			label: __('Divider box shadow', 'maxi-blocks'),
+			transitionTarget:
+				transitionsBlockObjs['divider-maxi'].block['box shadow'].target,
+			hoverProp: 'divider-box-shadow-status-hover',
 			attrGroupName: 'boxShadow',
 			prefix: 'divider-',
 			component: props => <Controls.BoxShadowControl {...props} />,
@@ -402,6 +433,9 @@ const settings = {
 	'maxi-blocks/svg-icon-maxi': [
 		{
 			label: __('Icon colour'),
+			transitionTarget:
+				transitionsBlockObjs['svg-icon-maxi'].block.colour.target,
+			hoverProp: 'svg-status-hover',
 			attrGroupName: 'svg',
 			component: props => {
 				const { attributes, onChange } = props;
@@ -415,6 +449,8 @@ const settings = {
 						blockStyle={blockStyle}
 						content={content}
 						svgType={svgType}
+						// Needs a bit of a hack to get the correct value ⬇
+						maxiSetAttributes={onChange}
 						disableHover
 					/>
 				);
@@ -426,30 +462,34 @@ const settings = {
 					prefix: 'svg-',
 				}),
 		},
-		{
-			label: __('Icon line width', 'maxi-blocks'),
-			attrGroupName: 'svg',
-			component: props => {
-				const { attributes } = props;
-				const { content } = attributes;
+		// TODO: fix #3619
+		// {
+		// 	label: __('Icon line width', 'maxi-blocks'),
+		// 	attrGroupName: 'svg',
+		// 	component: props => {
+		// 		const { attributes } = props;
+		// 		const { content } = attributes;
 
-				return (
-					<Controls.SvgStrokeWidthControl
-						{...props}
-						content={content}
-						prefix='svg-'
-					/>
-				);
-			},
-			helper: props =>
-				styleHelpers.getSVGStyles({
-					...props,
-					target: ' .maxi-svg-icon-block__icon',
-					prefix: 'svg-',
-				}),
-		},
+		// 		return (
+		// 			<Controls.SvgStrokeWidthControl
+		// 				{...props}
+		// 				content={content}
+		// 				prefix='svg-'
+		// 			/>
+		// 		);
+		// 	},
+		// 	helper: props =>
+		// 		styleHelpers.getSVGStyles({
+		// 			...props,
+		// 			target: ' .maxi-svg-icon-block__icon',
+		// 			prefix: 'svg-',
+		// 		}),
+		// },
 		{
 			label: __('Icon background', 'maxi-blocks'),
+			transitionTarget:
+				transitionsBlockObjs['svg-icon-maxi'].block.background.target,
+			hoverProp: 'svg-background-hover-status',
 			attrGroupName: [
 				'background',
 				'backgroundColor',
@@ -472,6 +512,9 @@ const settings = {
 		},
 		{
 			label: __('Icon border', 'maxi-blocks'),
+			transitionTarget:
+				transitionsBlockObjs['svg-icon-maxi'].block.border.target,
+			hoverProp: 'svg-border-status-hover',
 			attrGroupName: ['border', 'borderWidth', 'borderRadius'],
 			prefix: 'svg-',
 			component: props => <Controls.BorderControl {...props} />,
@@ -491,6 +534,9 @@ const settings = {
 		},
 		{
 			label: __('Typography', 'maxi-blocks'),
+			transitionTarget:
+				transitionsBlockObjs['text-maxi'].canvas.typography.target,
+			hoverProp: 'typography-status-hover',
 			attrGroupName: 'typography',
 			component: props => (
 				<Controls.TypographyControl
@@ -504,6 +550,38 @@ const settings = {
 			target: '.maxi-text-block__content',
 		},
 		...getCanvasSettings('text'),
+	],
+	'maxi-blocks/video-maxi': [
+		{
+			label: __('Overlay', 'maxi-blocks'),
+			attrGroupName: ['video', 'videoOverlay'],
+			component: props => {
+				const { playerType } = props.blockAttributes;
+
+				return playerType === 'popup' ? (
+					<VideoOverlayControl
+						{...props}
+						disableHideImage
+						disableHover
+					/>
+				) : (
+					<InfoBox
+						message={__(
+							'Video must be in popup to have overlay settings',
+							'maxi-blocks'
+						)}
+					/>
+				);
+			},
+			helper: props =>
+				styleHelpers.getBackgroundStyles({
+					...props,
+					...props.obj,
+					prefix: 'overlay-',
+				}).background,
+			target: ' .maxi-video-block__overlay-background',
+		},
+		...getCanvasSettings('video'),
 	],
 };
 

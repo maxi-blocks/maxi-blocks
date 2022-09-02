@@ -15,7 +15,7 @@
  * WordPress dependencies
  */
 import { Component, render, createRef } from '@wordpress/element';
-import { select, dispatch, useSelect } from '@wordpress/data';
+import { dispatch, resolveSelect, select, useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -66,7 +66,7 @@ const StyleComponent = ({
 		return areBreakpointsLoaded ? blockBreakpoints : breakpoints;
 	};
 
-	const styles = styleResolver(uniqueID, stylesObj, false, getBreakpoints());
+	const styles = styleResolver(stylesObj, false, getBreakpoints());
 
 	const styleContent = styleGenerator(
 		styles,
@@ -107,6 +107,20 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidMount() {
+		const { receiveMaxiSettings } = resolveSelect('maxiBlocks');
+		receiveMaxiSettings()
+			.then(settings => {
+				const { attributes } = this.props;
+				const maxiVersion = settings.maxi_version;
+
+				if (maxiVersion !== attributes['maxi-version-current'])
+					attributes['maxi-version-current'] = maxiVersion;
+
+				if (!attributes['maxi-version-origin'])
+					attributes['maxi-version-origin'] = maxiVersion;
+			})
+			.catch(() => console.error('Maxi Blocks: Could not load settings'));
+
 		if (this.maxiBlockDidMount) this.maxiBlockDidMount();
 
 		this.displayStyles();
@@ -227,7 +241,7 @@ class MaxiBlockComponent extends Component {
 			).length <= 1
 		) {
 			const obj = this.getStylesObject;
-			styleResolver('', obj, true);
+			styleResolver(obj, true);
 		}
 
 		dispatch('maxiBlocks/customData').removeCustomData(

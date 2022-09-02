@@ -5,7 +5,6 @@
 import {
 	createNewPost,
 	insertBlock,
-	getEditedPostContent,
 	pressKeyTimes,
 	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
@@ -14,21 +13,22 @@ import {
  * Internal dependencies
  */
 import {
-	openSidebarTab,
-	openPreviewPage,
-	getAttributes,
-	editColorControl,
-	getBlockStyle,
 	addCustomCSS,
 	addTypographyOptions,
 	addTypographyStyle,
+	editColorControl,
+	getAttributes,
+	getBlockStyle,
+	getEditedPostContent,
+	openPreviewPage,
+	openSidebarTab,
 } from '../../utils';
 
 describe.skip('Image Maxi', () => {
 	it('Image Maxi does not break', async () => {
 		await createNewPost();
 		await insertBlock('Image Maxi');
-		expect(await getEditedPostContent()).toMatchSnapshot();
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
 	});
 
 	it('Checking the image caption', async () => {

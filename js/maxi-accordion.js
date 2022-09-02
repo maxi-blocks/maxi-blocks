@@ -22,30 +22,55 @@ class Accordion {
 			const header = pane.querySelector(
 				':scope > .maxi-pane-block__header'
 			);
-			const content = pane.querySelector(
-				':scope > .maxi-pane-block__content'
+			const contentWrapper = pane.querySelector(
+				':scope > .maxi-pane-block__content-wrapper'
 			);
 			header.addEventListener('click', this.paneClick.bind(this));
 			header.querySelector('.maxi-pane-block__icon').innerHTML =
 				this.paneIcon;
-			content.addEventListener('transitionend', () => {
-				content.style.overflow = null;
+			contentWrapper.addEventListener('transitionend', e => {
+				// Don't clear styles when child's transition ends
+				if (e.target !== e.currentTarget) return;
+				this.cleanAnimationStyles(contentWrapper);
 			});
 		});
 	}
 
+	cleanAnimationStyles(contentWrapper) {
+		contentWrapper.style.overflow = null;
+		contentWrapper.style.maxHeight = null;
+	}
+
+	triggerAnimation(pane, isClose = false) {
+		const contentWrapper = pane.querySelector(
+			'.maxi-pane-block__content-wrapper'
+		);
+
+		if (isClose) {
+			contentWrapper.style.maxHeight = `${contentWrapper.scrollHeight}px`;
+			setTimeout(() => {
+				contentWrapper.style.maxHeight = 0;
+			}, 0);
+		} else {
+			contentWrapper.style.overflow = 'hidden';
+			contentWrapper.style.maxHeight = `${contentWrapper.scrollHeight}px`;
+		}
+		// If animationDuration === 0, the transitionend listener is not triggered,
+		// so need to clear styles here
+		if (this.animationDuration === 0) {
+			this.cleanAnimationStyles(contentWrapper);
+		}
+	}
+
 	closePane(pane) {
-		const content = pane.querySelector('.maxi-pane-block__content');
-		content.style.maxHeight = 0;
+		this.triggerAnimation(pane, true);
 		pane.setAttribute('aria-expanded', false);
 		pane.querySelector('.maxi-pane-block__icon').innerHTML = this.paneIcon;
 		this.openPanes.splice(this.openPanes.indexOf(pane.id), 1);
 	}
 
 	openPane(pane) {
-		const content = pane.querySelector('.maxi-pane-block__content');
-		content.style.overflow = 'hidden';
-		content.style.maxHeight = content.scrollHeight + 'px';
+		this.triggerAnimation(pane);
 		pane.setAttribute('aria-expanded', true);
 		pane.querySelector('.maxi-pane-block__icon').innerHTML =
 			this.paneIconActive;

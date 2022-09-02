@@ -178,8 +178,17 @@ wp.domReady(() => {
 						const responsiveWidth = mutation.target.getAttribute(
 							'maxi-blocks-responsive-width'
 						);
+						const isMaxiPreview =
+							mutation.target.getAttribute('is-maxi-preview');
+						const breakpoint = mutation.target.getAttribute(
+							'maxi-blocks-responsive'
+						);
 
-						if (
+						if (!isMaxiPreview) {
+							mutation.target.style = null;
+						} else if (['s', 'xs'].includes(breakpoint)) {
+							mutation.target.style.width = 'fit-content';
+						} else if (
 							mutation.target.style.width !==
 							`${responsiveWidth}px`
 						) {
@@ -200,8 +209,21 @@ wp.domReady(() => {
 							'iframe[name="editor-canvas"]'
 						);
 						const iframeDocument = iframe.contentDocument;
-
 						const editorWrapper = iframeDocument.body;
+
+						const postEditor = mutation.target.closest(
+							'.edit-post-visual-editor'
+						);
+						const responsiveWidth = postEditor.getAttribute(
+							'maxi-blocks-responsive-width'
+						);
+						const isMaxiPreview =
+							postEditor.getAttribute('is-maxi-preview');
+
+						if (isMaxiPreview) {
+							mutation.target.style.width = `${responsiveWidth}px`;
+							mutation.target.style.boxSizing = 'content-box';
+						}
 
 						if (editorWrapper) {
 							editorWrapper.setAttribute(
@@ -233,8 +255,16 @@ wp.domReady(() => {
 										: 'xs'
 								);
 
+								// Hides scrollbar in firefox
+								iframeDocument.documentElement.style.scrollbarWidth =
+									'none';
+
 								// Copy all fonts to iframe
-								loadFonts(getPageFonts(), true, iframeDocument);
+								loadFonts(
+									getPageFonts(true),
+									true,
+									iframeDocument
+								);
 
 								// Get all Maxi blocks <style> from <head>
 								// and move to new iframe

@@ -292,7 +292,7 @@ describe('FlexSettings', () => {
 			input => input.value
 		);
 
-		expect(flexBasisM).toStrictEqual('content');
+		expect(flexBasisM).toStrictEqual('none');
 
 		// warning box
 		const warningBoxFlex = await accordionPanel.$eval(

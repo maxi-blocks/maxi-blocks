@@ -12,7 +12,17 @@ import { getTransformSelectors } from '../../components/transform-control/utils'
 /**
  * External dependencies
  */
-import { isObject, isEmpty, merge, cloneDeep, isEqual, isNil } from 'lodash';
+import {
+	cloneDeep,
+	findKey,
+	isEmpty,
+	isEqual,
+	isNil,
+	isObject,
+	isString,
+	merge,
+	mergeWith,
+} from 'lodash';
 
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].reverse();
 
@@ -182,9 +192,21 @@ const styleProcessor = (obj, selectors, props, transitionSelectors) => {
 			props,
 			newTransformSelectors
 		);
-		!isEmpty(transformObject) && merge(styles, transformObject);
-	}
 
+		if (!isEmpty(transformObject)) {
+			const isTransformString = string =>
+				isString(string) &&
+				['rotate', 'scale', 'translate'].some(word =>
+					string.includes(word)
+				);
+
+			// eslint-disable-next-line consistent-return
+			mergeWith(styles, transformObject, (objValue, srcValue) => {
+				if ([objValue, srcValue].every(isTransformString))
+					return `${objValue} ${srcValue}`;
+			});
+		}
+	}
 	return styleCleaner(styles);
 };
 

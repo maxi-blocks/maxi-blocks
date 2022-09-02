@@ -77,7 +77,7 @@ const FlexSettingsControl = props => {
 											target: 'flex-direction',
 											breakpoint,
 											attributes: props,
-										}) ?? 'none'
+										}) ?? ''
 									}
 									options={getOptions([
 										'row',
@@ -106,7 +106,7 @@ const FlexSettingsControl = props => {
 											target: 'align-content',
 											breakpoint,
 											attributes: props,
-										}) ?? 'none'
+										}) ?? ''
 									}
 									options={getOptions([
 										'flex-start',
@@ -133,7 +133,7 @@ const FlexSettingsControl = props => {
 											target: 'flex-flow',
 											breakpoint,
 											attributes: props,
-										}) ?? 'none'
+										}) ?? ''
 									}
 									options={getOptions(['column', 'wrap'])}
 									onChange={val =>
@@ -241,7 +241,7 @@ const FlexSettingsControl = props => {
 													target: 'flex-basis',
 													breakpoint,
 													attributes: props,
-											  }) ?? 'none'
+											  }) ?? ''
 									}
 									options={getOptions([
 										'content',

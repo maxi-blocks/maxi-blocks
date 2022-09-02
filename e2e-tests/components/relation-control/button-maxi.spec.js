@@ -55,14 +55,19 @@ describe('Button Maxi hover simple actions', () => {
 		const previewPage = await openPreviewPage(page);
 		await previewPage.waitForSelector('.entry-content');
 
+		await previewPage.waitForSelector(
+			'#button-maxi-2 .maxi-button-block__button'
+		);
 		await previewPage.hover('#button-maxi-2 .maxi-button-block__button');
+		await previewPage.waitForTimeout(100);
 
-		const test = await previewPage.$eval(
+		await previewPage.waitForSelector('#maxi-blocks-interaction-css');
+		const interactionCSS = await previewPage.$eval(
 			'#maxi-blocks-interaction-css',
 			el => el.textContent
 		);
 
-		expect(test).toMatchSnapshot();
+		expect(interactionCSS).toMatchSnapshot();
 	};
 
 	it('Button icon', async () => {

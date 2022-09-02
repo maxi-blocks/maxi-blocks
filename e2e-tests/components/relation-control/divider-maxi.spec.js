@@ -5,16 +5,31 @@ import {
 	createNewPost,
 	insertBlock,
 	pressKeyWithModifier,
+	selectBlockByClientId,
 } from '@wordpress/e2e-test-utils';
+
 /**
  * Internal dependencies
  */
-import { openSidebarTab, editColorControl, getAttributes } from '../../utils';
+import {
+	openSidebarTab,
+	editColorControl,
+	getAttributes,
+	openPreviewPage,
+} from '../../utils';
 
 describe('Divider Maxi hover simple actions', () => {
 	beforeEach(async () => {
 		await createNewPost();
 		await insertBlock('Divider Maxi');
+
+		// Add native paragraph block
+		await selectBlockByClientId(
+			await page.$eval('.maxi-divider-block', el =>
+				el.getAttribute('data-block')
+			)
+		);
+		await page.keyboard.press('Enter');
 
 		await insertBlock('Button Maxi');
 		await openSidebarTab(page, 'advanced', 'interaction builder');
@@ -30,12 +45,31 @@ describe('Divider Maxi hover simple actions', () => {
 
 		// Add target
 		let selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[1].select('button-maxi-1');
+		await selectControls[1].select('divider-maxi-1');
 
 		// Add action
 		selectControls = await page.$$('.maxi-select-control__input');
 		await selectControls[2].select('hover');
 	});
+
+	const checkFrontend = async () => {
+		const previewPage = await openPreviewPage(page);
+		await previewPage.waitForSelector('.entry-content');
+
+		await previewPage.waitForSelector(
+			'#button-maxi-1 .maxi-button-block__button'
+		);
+		await previewPage.hover('#button-maxi-1 .maxi-button-block__button');
+		await previewPage.waitForTimeout(100);
+
+		await previewPage.waitForSelector('#maxi-blocks-interaction-css');
+		const interactionCSS = await previewPage.$eval(
+			'#maxi-blocks-interaction-css',
+			el => el.textContent
+		);
+
+		expect(interactionCSS).toMatchSnapshot();
+	};
 
 	it('Divider shadow', async () => {
 		// Select setting
@@ -89,6 +123,8 @@ describe('Divider Maxi hover simple actions', () => {
 		await page.keyboard.type('55');
 
 		expect(await getAttributes('relations')).toMatchSnapshot();
+
+		await checkFrontend();
 	});
 
 	it('Line settings', async () => {
@@ -127,5 +163,7 @@ describe('Divider Maxi hover simple actions', () => {
 		await page.keyboard.type('22');
 
 		expect(await getAttributes('relations')).toMatchSnapshot();
+
+		await checkFrontend();
 	});
 });

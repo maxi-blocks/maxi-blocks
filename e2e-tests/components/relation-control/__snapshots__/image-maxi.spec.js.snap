@@ -1,11 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Image Maxi hover simple actions Image size 1`] = `
+exports[`Image Maxi hover simple actions Alignment 1`] = `
 Array [
   Object {
     "action": "hover",
-    "attributes": Object {},
-    "css": Object {},
+    "attributes": Object {
+      "alignment-general": "right",
+      "alignment-xl": "right",
+    },
+    "css": Object {
+      "general": Object {
+        "breakpoint": null,
+        "styles": Object {
+          "justify-content": "flex-end",
+        },
+      },
+      "xl": Object {
+        "breakpoint": 1920,
+        "styles": Object {
+          "justify-content": "flex-end",
+        },
+      },
+    },
     "effects": Object {
       "easing-general": "ease",
       "transition-delay-general": 0,
@@ -14,10 +30,12 @@ Array [
     },
     "id": 1,
     "isButton": true,
-    "settings": "",
-    "target": "",
+    "settings": "Alignment",
+    "target": " .maxi-image-block-wrapper",
     "title": "Hello World!",
     "uniqueID": "image-maxi-1",
   },
 ]
 `;
+
+exports[`Image Maxi hover simple actions Alignment 2`] = `"body.maxi-blocks--active #image-maxi-1 .maxi-image-block-wrapper[data-maxi-relations=\\"true\\"] { justify-content: flex-end; transition: justify-content 0.3s 0s ease;}"`;

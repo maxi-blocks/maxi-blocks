@@ -5,6 +5,7 @@ import {
 	createNewPost,
 	insertBlock,
 	pressKeyWithModifier,
+	selectBlockByClientId,
 } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
@@ -21,6 +22,14 @@ describe('Column Maxi hover simple actions', () => {
 			'.maxi-row-block__template .maxi-row-block__template__button',
 			rowButtons => rowButtons[0].click()
 		);
+
+		// Add native paragraph block
+		await selectBlockByClientId(
+			await page.$eval('.maxi-container-block', el =>
+				el.getAttribute('data-block')
+			)
+		);
+		await page.keyboard.press('Enter');
 
 		await insertBlock('Button Maxi');
 		await openSidebarTab(page, 'advanced', 'interaction builder');
@@ -47,14 +56,19 @@ describe('Column Maxi hover simple actions', () => {
 		const previewPage = await openPreviewPage(page);
 		await previewPage.waitForSelector('.entry-content');
 
+		await previewPage.waitForSelector(
+			'#button-maxi-1 .maxi-button-block__button'
+		);
 		await previewPage.hover('#button-maxi-1 .maxi-button-block__button');
+		await previewPage.waitForTimeout(100);
 
-		const test = await previewPage.$eval(
+		await previewPage.waitForSelector('#maxi-blocks-interaction-css');
+		const interactionCSS = await previewPage.$eval(
 			'#maxi-blocks-interaction-css',
 			el => el.textContent
 		);
 
-		expect(test).toMatchSnapshot();
+		expect(interactionCSS).toMatchSnapshot();
 	};
 
 	it('Column size', async () => {

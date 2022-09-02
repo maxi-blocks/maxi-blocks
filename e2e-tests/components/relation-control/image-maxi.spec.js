@@ -9,6 +9,7 @@ import {
 	openSidebarTab,
 	addImageToImageMaxi,
 	getAttributes,
+	openPreviewPage,
 } from '../../utils';
 
 describe('Image Maxi hover simple actions', () => {
@@ -39,6 +40,25 @@ describe('Image Maxi hover simple actions', () => {
 		await selectControls[2].select('hover');
 	});
 
+	const checkFrontend = async () => {
+		const previewPage = await openPreviewPage(page);
+		await previewPage.waitForSelector('.entry-content');
+
+		await previewPage.waitForSelector(
+			'#button-maxi-1 .maxi-button-block__button'
+		);
+		await previewPage.hover('#button-maxi-1 .maxi-button-block__button');
+		await previewPage.waitForTimeout(100);
+
+		await previewPage.waitForSelector('#maxi-blocks-interaction-css');
+		const interactionCSS = await previewPage.$eval(
+			'#maxi-blocks-interaction-css',
+			el => el.textContent
+		);
+
+		expect(interactionCSS).toMatchSnapshot();
+	};
+
 	it('Alignment', async () => {
 		const selectControls = await page.$$('.maxi-select-control__input');
 		await selectControls[3].select('Alignment');
@@ -51,6 +71,8 @@ describe('Image Maxi hover simple actions', () => {
 				.click()
 		);
 		expect(await getAttributes('relations')).toMatchSnapshot();
+
+		await checkFrontend();
 	});
 
 	// TODO: shape mask (need)

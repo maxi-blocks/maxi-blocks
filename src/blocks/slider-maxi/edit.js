@@ -95,9 +95,9 @@ const SliderWrapper = props => {
 	};
 
 	const addSliderTransition = () => {
-		if (sliderTransition !== 'slide')
-			wrapperRef.current.style.animation = getSliderEffect();
-		else wrapperRef.current.style.transition = getSliderEffect();
+		const property =
+			sliderTransition === 'slide' ? 'transition' : 'animation';
+		wrapperRef.current.style[property] = getSliderEffect();
 	};
 
 	const getSlidePosition = currentSlide => {

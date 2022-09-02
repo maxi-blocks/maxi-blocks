@@ -340,9 +340,9 @@ class MaxiSlider {
 
 		// Move the slider
 		if (withTransition) {
-			if (this.transition !== 'slide')
-				this._wrapper.style.animation = this.getSliderEffect();
-			else this._wrapper.style.transition = this.getSliderEffect();
+			const property =
+				this.transition === 'slide' ? 'transition' : 'animation';
+			this._wrapper.style[property] = this.getSliderEffect();
 		}
 
 		this.wrapperTranslate = this.activeSlidePosition;

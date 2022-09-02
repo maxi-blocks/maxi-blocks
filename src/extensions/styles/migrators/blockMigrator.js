@@ -6,6 +6,7 @@ import transformMigrator from './transformMigrator';
 import positionToNumberMigrator from './positionToNumberMigrator';
 import positionUnitsToAxisMigrator from './positionUnitsToAxisMigrator';
 import transformIBMigrator from './transformIBMigrator';
+import SVGIBTargetsMigrator from './SVGIBTargetsMigrator';
 import hoverStatusMigrator from './hoverStatusMigrator';
 import { getMigratorsCombinations } from './utils';
 
@@ -104,6 +105,7 @@ const blockMigrator = blockMigratorProps => {
 		fullWidthNonToResponsiveMigrator,
 		transformMigrator,
 		transformIBMigrator,
+		SVGIBTargetsMigrator,
 		hoverStatusMigrator,
 		...(blockMigratorProps.migrators ?? []),
 	];

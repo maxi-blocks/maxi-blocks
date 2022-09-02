@@ -10,7 +10,6 @@ import { useState } from '@wordpress/element';
 import ColorControl from '../color-control';
 import ImageShape from '../image-shape';
 import MediaUploaderControl from '../media-uploader-control';
-import SettingTabsControl from '../setting-tabs-control';
 import ToggleSwitch from '../toggle-switch';
 import { injectImgSVG, getSVGHasImage } from '../../extensions/svg';
 
@@ -285,17 +284,6 @@ const SVGFillControl = props => {
 				)}
 			</>
 		);
-	};
-
-	const getFillItems = () => {
-		const response = Object.entries(SVGData).map(([id, value], i) => {
-			return {
-				label: i,
-				content: getFillItem([id, value], i),
-			};
-		});
-
-		return response;
 	};
 
 	return (

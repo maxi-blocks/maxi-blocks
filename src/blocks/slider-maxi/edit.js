@@ -116,22 +116,7 @@ const SliderWrapper = props => {
 		);
 	};
 
-	const setActiveDot = dotNumber => {
-		const dots = wrapperRef.current.querySelectorAll(
-			'.maxi-slider-block__dot'
-		);
-
-		Array.from(dots).forEach(el => {
-			el.classList.remove('maxi-slider-block__dot--active');
-		});
-
-		const activeDot = dots[dotNumber];
-
-		activeDot?.classList.add('maxi-slider-block__dot--active');
-	};
-
 	const setActiveSlide = number => {
-		setActiveDot(number);
 		const slides = wrapperRef.current.querySelectorAll(
 			'li.maxi-slide-block'
 		);
@@ -438,7 +423,7 @@ const SliderWrapper = props => {
 									className={classnames(
 										'maxi-slider-block__dot',
 										`maxi-slider-block__dot--${i}`,
-										i === 0 &&
+										i === currentSlide &&
 											' maxi-slider-block__dot--active'
 									)}
 									key={`maxi-slider-block__dot--${i}`}

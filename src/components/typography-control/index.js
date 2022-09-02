@@ -622,6 +622,7 @@ const TypographyControl = props => {
 						'%': {
 							min: 0,
 							max: 300,
+							maxRange: 300,
 						},
 					}}
 					allowedUnits={['px', 'em', 'vw', '%', '-']}

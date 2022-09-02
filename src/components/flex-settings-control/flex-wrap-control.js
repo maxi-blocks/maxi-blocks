@@ -26,7 +26,7 @@ const FlexWrapControl = props => {
 					target: 'flex-wrap',
 					breakpoint,
 					attributes: props,
-				}) ?? 'none'
+				}) ?? ''
 			}
 			options={getOptions(['nowrap', 'wrap', 'wrap-reverse'])}
 			onChange={val =>

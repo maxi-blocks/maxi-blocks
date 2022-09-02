@@ -23,7 +23,7 @@ const FlexAlignControl = props => {
 						target: 'justify-content',
 						breakpoint,
 						attributes: props,
-					}) ?? 'none'
+					}) ?? ''
 				}
 				options={getOptions([
 					'flex-start',
@@ -47,7 +47,7 @@ const FlexAlignControl = props => {
 						target: 'align-items',
 						breakpoint,
 						attributes: props,
-					}) ?? 'none'
+					}) ?? ''
 				}
 				options={getOptions([
 					'flex-start',

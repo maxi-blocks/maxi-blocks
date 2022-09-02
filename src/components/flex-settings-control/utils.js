@@ -12,7 +12,7 @@ const getOptions = values => {
 	return [
 		{
 			label: __('Choose', 'maxi-blocks'),
-			value: 'none',
+			value: '',
 		},
 		...values.map(value => {
 			return {

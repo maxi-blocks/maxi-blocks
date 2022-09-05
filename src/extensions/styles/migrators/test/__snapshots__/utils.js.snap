@@ -36,6 +36,122 @@ Object {
       "target": "::before",
     },
   },
+  "pane content": Object {
+    "hover": Object {
+      "label": "pane content on hover",
+      "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__content:hover",
+    },
+    "normal": Object {
+      "label": "pane content",
+      "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__content",
+    },
+  },
+  "pane content line": Object {
+    "active": Object {
+      "label": "content line on active state",
+      "target": " .maxi-pane-block[aria-expanded=true] .maxi-pane-block__content-line",
+    },
+    "hover": Object {
+      "label": "content line on hover",
+      "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__content-line:hover",
+    },
+    "normal": Object {
+      "label": "content line",
+      "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__content-line",
+    },
+  },
+  "pane header": Object {
+    "active": Object {
+      "label": "pane header on active state",
+      "target": " .maxi-pane-block[aria-expanded=true] .maxi-pane-block__header",
+    },
+    "hover": Object {
+      "label": "pane header on hover",
+      "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__header:hover",
+    },
+    "normal": Object {
+      "label": "pane header",
+      "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__header",
+    },
+  },
+  "pane header content": Object {
+    "active": Object {
+      "label": "header content on active state",
+      "target": " .maxi-pane-block[aria-expanded=true] .maxi-pane-block__header-content",
+    },
+    "hover": Object {
+      "label": "header content on hover",
+      "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__header-content:hover",
+    },
+    "normal": Object {
+      "label": "header content",
+      "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__header-content",
+    },
+  },
+  "pane header line": Object {
+    "active": Object {
+      "label": "header line on active state",
+      "target": " .maxi-pane-block[aria-expanded=true] .maxi-pane-block__header-line",
+    },
+    "hover": Object {
+      "label": "header line on hover",
+      "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__header-line:hover",
+    },
+    "normal": Object {
+      "label": "header line",
+      "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__header-line",
+    },
+  },
+  "pane icon": Object {
+    "active": Object {
+      "label": "active icon",
+      "target": " .maxi-pane-block[aria-expanded=true] .maxi-pane-block__icon",
+    },
+    "activeInsideSvg": Object {
+      "label": "everything inside active svg (svg > *)",
+      "target": " .maxi-pane-block[aria-expanded=true] .maxi-pane-block__icon svg > *",
+    },
+    "activePath": Object {
+      "label": "active svg's path",
+      "target": " .maxi-pane-block[aria-expanded=true] .maxi-pane-block__icon svg path",
+    },
+    "activeSvg": Object {
+      "label": "active icon's svg",
+      "target": " .maxi-pane-block[aria-expanded=true] .maxi-pane-block__icon svg",
+    },
+    "hover": Object {
+      "label": "icon on hover",
+      "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__icon:hover",
+    },
+    "hoverInsideSvg": Object {
+      "label": "everything inside svg on hover (:hover svg > *)",
+      "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__icon:hover svg > *",
+    },
+    "hoverPath": Object {
+      "label": "svg's path on hover",
+      "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__icon:hover svg path",
+    },
+    "hoverSvg": Object {
+      "label": "icon's svg on hover",
+      "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__icon:hover svg",
+    },
+    "insideSvg": Object {
+      "label": "everything inside svg (svg > *)",
+      "target": " .maxi-pane-block[aria-expanded=false] .maxi-pane-block__icon svg > *",
+    },
+    "normal": Object {
+      "label": "icon",
+      "target": " .maxi-pane-block[aria-expanded=false] .maxi-pane-block__icon",
+    },
+    "path": Object {
+      "label": "svg's path",
+      "target": " .maxi-pane-block[aria-expanded=false] .maxi-pane-block__icon svg path",
+    },
+    "svg": Object {
+      "label": "icon's svg",
+      "target": " .maxi-pane-block[aria-expanded=false] .maxi-pane-block__icon svg",
+    },
+  },
 }
 `;
 
@@ -195,6 +311,16 @@ Object {
       "target": "::before",
     },
   },
+  "bottom shape divider": Object {
+    "hover": Object {
+      "label": "bottom shape divider on hover",
+      "target": " .maxi-shape-divider__bottom:hover",
+    },
+    "normal": Object {
+      "label": "bottom shape divider",
+      "target": " .maxi-shape-divider__bottom",
+    },
+  },
   "container": Object {
     "hover": Object {
       "label": "container on hover",
@@ -203,6 +329,16 @@ Object {
     "normal": Object {
       "label": "container",
       "target": "",
+    },
+  },
+  "top shape divider": Object {
+    "hover": Object {
+      "label": "top shape divider on hover",
+      "target": " .maxi-shape-divider__top:hover",
+    },
+    "normal": Object {
+      "label": "top shape divider",
+      "target": " .maxi-shape-divider__top",
     },
   },
 }
@@ -598,21 +734,117 @@ Object {
   "content": Object {
     "hover": Object {
       "label": "pane content on hover",
-      "target": " .maxi-pane-block__content:hover",
+      "target": "[aria-expanded] .maxi-pane-block__content:hover",
     },
     "normal": Object {
       "label": "pane content",
-      "target": " .maxi-pane-block__content",
+      "target": "[aria-expanded] .maxi-pane-block__content",
+    },
+  },
+  "content line": Object {
+    "active": Object {
+      "label": "content line on active state",
+      "target": "[aria-expanded=true] .maxi-pane-block__content-line",
+    },
+    "hover": Object {
+      "label": "content line on hover",
+      "target": "[aria-expanded] .maxi-pane-block__content-line:hover",
+    },
+    "normal": Object {
+      "label": "content line",
+      "target": "[aria-expanded] .maxi-pane-block__content-line",
     },
   },
   "header": Object {
+    "active": Object {
+      "label": "pane header on active state",
+      "target": "[aria-expanded=true] .maxi-pane-block__header",
+    },
     "hover": Object {
       "label": "pane header on hover",
-      "target": " .maxi-pane-block__header:hover",
+      "target": "[aria-expanded] .maxi-pane-block__header:hover",
     },
     "normal": Object {
       "label": "pane header",
-      "target": " .maxi-pane-block__header",
+      "target": "[aria-expanded] .maxi-pane-block__header",
+    },
+  },
+  "header content": Object {
+    "active": Object {
+      "label": "header content on active state",
+      "target": "[aria-expanded=true] .maxi-pane-block__header-content",
+    },
+    "hover": Object {
+      "label": "header content on hover",
+      "target": "[aria-expanded] .maxi-pane-block__header-content:hover",
+    },
+    "normal": Object {
+      "label": "header content",
+      "target": "[aria-expanded] .maxi-pane-block__header-content",
+    },
+  },
+  "header line": Object {
+    "active": Object {
+      "label": "header line on active state",
+      "target": "[aria-expanded=true] .maxi-pane-block__header-line",
+    },
+    "hover": Object {
+      "label": "header line on hover",
+      "target": "[aria-expanded] .maxi-pane-block__header-line:hover",
+    },
+    "normal": Object {
+      "label": "header line",
+      "target": "[aria-expanded] .maxi-pane-block__header-line",
+    },
+  },
+  "icon": Object {
+    "active": Object {
+      "label": "active icon",
+      "target": "[aria-expanded=true] .maxi-pane-block__icon",
+    },
+    "activeInsideSvg": Object {
+      "label": "everything inside active svg (svg > *)",
+      "target": "[aria-expanded=true] .maxi-pane-block__icon svg > *",
+    },
+    "activePath": Object {
+      "label": "active svg's path",
+      "target": "[aria-expanded=true] .maxi-pane-block__icon svg path",
+    },
+    "activeSvg": Object {
+      "label": "active icon's svg",
+      "target": "[aria-expanded=true] .maxi-pane-block__icon svg",
+    },
+    "hover": Object {
+      "label": "icon on hover",
+      "target": "[aria-expanded] .maxi-pane-block__icon:hover",
+    },
+    "hoverInsideSvg": Object {
+      "label": "everything inside svg on hover (:hover svg > *)",
+      "target": "[aria-expanded] .maxi-pane-block__icon:hover svg > *",
+    },
+    "hoverPath": Object {
+      "label": "svg's path on hover",
+      "target": "[aria-expanded] .maxi-pane-block__icon:hover svg path",
+    },
+    "hoverSvg": Object {
+      "label": "icon's svg on hover",
+      "target": "[aria-expanded] .maxi-pane-block__icon:hover svg",
+    },
+    "insideSvg": Object {
+      "label": "everything inside svg (svg > *)",
+      "target": "[aria-expanded=false] .maxi-pane-block__icon svg > *",
+    },
+    "normal": Object {
+      "label": "icon",
+      "target": "[aria-expanded=false] .maxi-pane-block__icon",
+    },
+    "path": Object {
+      "label": "svg's path",
+      "target": "[aria-expanded=false] .maxi-pane-block__icon svg path",
+    },
+    "svg": Object {
+      "label": "icon's svg",
+      "target": "[aria-expanded=false] .maxi-pane-block__icon svg",
     },
   },
   "pane": Object {
@@ -1018,6 +1250,40 @@ Object {
       "target": "",
     },
   },
+  "close icon": Object {
+    "hover": Object {
+      "label": "close icon on hover",
+      "target": " .maxi-video-block__close-button:hover",
+    },
+    "hoverInsideSvg": Object {
+      "label": "everything inside svg on hover (:hover svg > *)",
+      "target": " .maxi-video-block__close-button:hover svg > *",
+    },
+    "hoverPath": Object {
+      "label": "svg's path on hover",
+      "target": " .maxi-video-block__close-button:hover svg path",
+    },
+    "hoverSvg": Object {
+      "label": "close icon's svg on hover",
+      "target": " .maxi-video-block__close-button:hover svg",
+    },
+    "insideSvg": Object {
+      "label": "everything inside svg (svg > *)",
+      "target": " .maxi-video-block__close-button svg > *",
+    },
+    "normal": Object {
+      "label": "close icon",
+      "target": " .maxi-video-block__close-button",
+    },
+    "path": Object {
+      "label": "svg's path",
+      "target": " .maxi-video-block__close-button svg path",
+    },
+    "svg": Object {
+      "label": "close icon's svg",
+      "target": " .maxi-video-block__close-button svg",
+    },
+  },
   "overlay": Object {
     "hover": Object {
       "label": "overlay on hover",
@@ -1026,6 +1292,40 @@ Object {
     "normal": Object {
       "label": "overlay",
       "target": " .maxi-video-block__overlay",
+    },
+  },
+  "play icon": Object {
+    "hover": Object {
+      "label": "play icon on hover",
+      "target": " .maxi-video-block__play-button:hover",
+    },
+    "hoverInsideSvg": Object {
+      "label": "everything inside svg on hover (:hover svg > *)",
+      "target": " .maxi-video-block__play-button:hover svg > *",
+    },
+    "hoverPath": Object {
+      "label": "svg's path on hover",
+      "target": " .maxi-video-block__play-button:hover svg path",
+    },
+    "hoverSvg": Object {
+      "label": "play icon's svg on hover",
+      "target": " .maxi-video-block__play-button:hover svg",
+    },
+    "insideSvg": Object {
+      "label": "everything inside svg (svg > *)",
+      "target": " .maxi-video-block__play-button svg > *",
+    },
+    "normal": Object {
+      "label": "play icon",
+      "target": " .maxi-video-block__play-button",
+    },
+    "path": Object {
+      "label": "svg's path",
+      "target": " .maxi-video-block__play-button svg path",
+    },
+    "svg": Object {
+      "label": "play icon's svg",
+      "target": " .maxi-video-block__play-button svg",
     },
   },
   "video": Object {
@@ -1266,6 +1566,41 @@ Array [
     },
   ],
 ]
+`;
+
+exports[`getTransitionSetting Should return the IB setting 1`] = `
+Object {
+  "attrGroupName": "boxShadow",
+  "component": [Function],
+  "helper": [Function],
+  "label": "Box shadow",
+}
+`;
+
+exports[`getTransitionSetting Should return the IB setting, which has transitionTarget 1`] = `
+Object {
+  "attrGroupName": Array [
+    "icon",
+    "iconBackground",
+    "iconBackgroundGradient",
+    "iconBackgroundColor",
+    "iconBorder",
+    "iconBorderWidth",
+    "iconBorderRadius",
+    "iconPadding",
+    "typography",
+  ],
+  "component": [Function],
+  "helper": [Function],
+  "hoverProp": "button-icon-status-hover",
+  "label": "Button icon",
+  "transitionTarget": Array [
+    " .maxi-button-block__icon svg > *",
+    " .maxi-button-block__icon svg",
+    " .maxi-button-block__icon",
+    " .maxi-button-block__icon",
+  ],
+}
 `;
 
 exports[`handleBlockMigrator Should return a one element array 1`] = `

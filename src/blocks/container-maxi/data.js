@@ -67,13 +67,37 @@ const copyPasteMapping = {
 	},
 };
 const customCss = {
-	selectors: createSelectors({
-		container: '',
-	}),
+	selectors: {
+		...createSelectors({
+			container: '',
+		}),
+		'top shape divider': {
+			normal: {
+				label: 'top shape divider',
+				target: ' .maxi-shape-divider__top',
+			},
+			hover: {
+				label: 'top shape divider on hover',
+				target: ' .maxi-shape-divider__top:hover',
+			},
+		},
+		'bottom shape divider': {
+			normal: {
+				label: 'bottom shape divider',
+				target: ' .maxi-shape-divider__bottom',
+			},
+			hover: {
+				label: 'bottom shape divider on hover',
+				target: ' .maxi-shape-divider__bottom:hover',
+			},
+		},
+	},
 	categories: [
 		'container',
 		'before container',
 		'after container',
+		'top shape divider',
+		'bottom shape divider',
 		'background',
 		'background hover',
 	],

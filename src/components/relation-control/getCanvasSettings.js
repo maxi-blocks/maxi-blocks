@@ -62,6 +62,8 @@ const getTransformControl = ({ categories, selectors }) => ({
 const getCanvasSettings = ({ name, customCss }) => [
 	{
 		label: __('Background / Layer', 'maxi-blocks'),
+		transitionTarget: ' > .maxi-background-displayer > div',
+		hoverProp: 'block-background-hover-status',
 		attrGroupName: [
 			'blockBackground',
 			'border',
@@ -85,6 +87,8 @@ const getCanvasSettings = ({ name, customCss }) => [
 	},
 	{
 		label: __('Border', 'maxi-blocks'),
+		transitionTarget: ['', ' > .maxi-background-displayer'],
+		hoverProp: 'border-status-hover',
 		attrGroupName: ['border', 'borderWidth', 'borderRadius'],
 		component: props => <BorderControl {...props} />,
 		helper: props => getBorderStyles(props),

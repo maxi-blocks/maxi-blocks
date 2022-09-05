@@ -115,6 +115,8 @@ const transition = {
 const interactionBuilderSettings = [
 	{
 		label: __('Divider box shadow', 'maxi-blocks'),
+		transitionTarget: transition.block['box shadow'].target,
+		hoverProp: 'divider-box-shadow-status-hover',
 		attrGroupName: 'boxShadow',
 		prefix: 'divider-',
 		component: props => <BoxShadowControl {...props} />,

@@ -184,6 +184,8 @@ const interactionBuilderSettings = [
 	},
 	{
 		label: __('Typography', 'maxi-blocks'),
+		transitionTarget: transition.canvas.typography.target,
+		hoverProp: 'typography-status-hover',
 		attrGroupName: 'typography',
 		component: props => (
 			<TypographyControl

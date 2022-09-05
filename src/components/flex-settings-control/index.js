@@ -180,30 +180,6 @@ const FlexSettingsControl = props => {
 										})
 									}
 								/>
-								<SelectControl
-									label={__('Flex-flow', 'maxi-blocks')}
-									className='maxi-flex__flow'
-									value={getLastBreakpointAttribute({
-										target: 'flex-flow',
-										breakpoint,
-										attributes: props,
-									})}
-									options={[
-										{
-											label: __('Column', 'maxi-blocks'),
-											value: 'column',
-										},
-										{
-											label: __('Wrap', 'maxi-blocks'),
-											value: 'wrap',
-										},
-									]}
-									onChange={val =>
-										onChange({
-											[`flex-flow-${breakpoint}`]: val,
-										})
-									}
-								/>
 								<FlexGapControl
 									{...props}
 									onChange={onChange}

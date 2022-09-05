@@ -31,9 +31,9 @@ const transitionObj = {
 		},
 		'icon colour': {
 			title: 'Icon colour',
-			target: ' .maxi-button-block__icon svg > *',
+			target: ' .maxi-button-block__icon svg *:not(g)',
+			property: ['fill', 'stroke'],
 			hoverProp: 'icon-status-hover',
-			limitless: true,
 		},
 		'icon width': {
 			title: 'Icon width',

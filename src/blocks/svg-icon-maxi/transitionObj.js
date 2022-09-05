@@ -1,3 +1,4 @@
+import { createIconTransitions } from '../../extensions/styles';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
 const prefix = 'svg-';
@@ -17,12 +18,13 @@ const transitionObj = {
 			property: 'box-shadow',
 			prefix,
 		},
-		colour: {
-			title: 'Colour',
-			target: ' .maxi-svg-icon-block__icon svg *:not(g)',
-			property: ['fill', 'stroke'],
-			hoverProp: 'svg-status-hover',
-		},
+		...createIconTransitions({
+			className: ' .maxi-svg-icon-block__icon',
+			prefix,
+			disableBackground: true,
+			disableBorder: true,
+			disableWidth: true,
+		}),
 		background: {
 			title: 'Background',
 			target: ' .maxi-svg-icon-block__icon',

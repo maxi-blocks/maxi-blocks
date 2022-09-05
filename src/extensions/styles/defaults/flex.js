@@ -17,9 +17,6 @@ const rawFlex = {
 	'flex-wrap': {
 		type: 'string',
 	},
-	'flex-flow': {
-		type: 'string',
-	},
 	'justify-content': {
 		type: 'string',
 	},

@@ -77,22 +77,22 @@ describe('Custom-Css-Control', () => {
 
 		await selector.select('group');
 
-		await page.$eval('.maxi-additional__css-group textarea', input =>
+		await page.$eval('.maxi-custom-css-control__group textarea', input =>
 			input.focus()
 		);
 
 		await page.keyboard.type('VALIDATE ERROR');
 		await page.waitForTimeout(200);
-		await page.waitForSelector('.maxi-additional__css-group button');
+		await page.waitForSelector('.maxi-custom-css-control__group button');
 
 		await accordionPanel.$eval(
-			'.maxi-additional__css-group button',
+			'.maxi-custom-css-control__group button',
 			button => button.click()
 		);
 		await page.waitForTimeout(150);
 
 		const error = await accordionPanel.$$eval(
-			'.maxi-additional__css-error',
+			'.maxi-custom-css-control__error',
 			input => input[0].innerText
 		);
 		expect(error).not.toBe('Valid');

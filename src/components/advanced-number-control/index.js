@@ -224,7 +224,11 @@ const AdvancedNumberControl = props => {
 
 								if (value > minMaxSettings[val]?.max) {
 									onChangeValue(
-										minMaxSettings[val]?.max,
+										optionType === 'string'
+											? minMaxSettings[
+													val
+											  ]?.max.toString()
+											: minMaxSettings[val]?.max,
 										val
 									);
 								}

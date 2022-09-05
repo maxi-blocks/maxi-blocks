@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+import { __ } from '@wordpress/i18n';
 import { cloneElement, renderToString } from '@wordpress/element';
 
 /**
@@ -10,8 +11,9 @@ import {
 	getBlockNameFromUniqueID,
 	getBlockSelectorsByUniqueID,
 	getMigratorsCombinations,
+	getTransitionSetting,
 } from '../utils';
-// import { handleBlockMigrator } from '../blockMigrator';
+import { handleBlockMigrator } from '../blockMigrator';
 
 jest.mock('src/components/index.js', () => jest.fn());
 
@@ -147,4 +149,30 @@ describe('getBlockSelectorsByUniqueID', () => {
 				getBlockSelectorsByUniqueID(`${blockName}-maxi-5`)
 			).toMatchSnapshot());
 	});
+});
+
+describe('getTransitionSetting', () => {
+	it('Should return the IB setting', () =>
+		expect(
+			getTransitionSetting({
+				uniqueID: 'button-maxi-5',
+				settings: __('Box shadow', 'maxi-blocks'),
+			})
+		).toMatchSnapshot());
+
+	it('Should return the IB setting, which has transitionTarget', () =>
+		expect(
+			getTransitionSetting({
+				uniqueID: 'button-maxi-5',
+				settings: __('Button icon', 'maxi-blocks'),
+			})
+		).toMatchSnapshot());
+
+	it('Should return undefined', () =>
+		expect(
+			getTransitionSetting({
+				uniqueID: 'button-maxi-5',
+				settings: __('Divider box shadow', 'maxi-blocks'),
+			})
+		).toBeUndefined());
 });

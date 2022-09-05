@@ -237,6 +237,13 @@ const transition = {
 const interactionBuilderSettings = [
 	{
 		label: __('Button icon', 'maxi-blocks'),
+		transitionTarget: [
+			transition.block['icon colour'].target,
+			transition.block['icon width'].target,
+			transition.block['icon background'].target,
+			transition.block['icon border'].target,
+		],
+		hoverProp: 'button-icon-status-hover',
 		attrGroupName: [
 			'icon',
 			'iconBackground',
@@ -274,6 +281,8 @@ const interactionBuilderSettings = [
 	},
 	{
 		label: __('Button typography', 'maxi-blocks'),
+		transitionTarget: transition.block.typography.target,
+		hoverProp: 'typography-status-hover',
 		attrGroupName: 'typography',
 		component: props => (
 			<TypographyControl {...props} hideAlignment disableCustomFormats />
@@ -287,6 +296,8 @@ const interactionBuilderSettings = [
 	},
 	{
 		label: __('Button border', 'maxi-blocks'),
+		transitionTarget: transition.block.border.target,
+		hoverProp: 'button-border-status-hover',
 		attrGroupName: ['border', 'borderWidth', 'borderRadius'],
 		prefix: 'button-',
 		component: props => <BorderControl {...props} />,
@@ -295,6 +306,8 @@ const interactionBuilderSettings = [
 	},
 	{
 		label: __('Button background', 'maxi-blocks'),
+		transitionTarget: transition.block['button background'].target,
+		hoverProp: 'button-background-hover-status',
 		attrGroupName: ['background', 'backgroundColor', 'backgroundGradient'],
 		prefix: 'button-',
 		component: props => (
@@ -316,6 +329,8 @@ const interactionBuilderSettings = [
 	},
 	{
 		label: __('Button box shadow', 'maxi-blocks'),
+		transitionTarget: transition.block['box shadow'].target,
+		hoverProp: 'button-box-shadow-status-hover',
 		attrGroupName: 'boxShadow',
 		prefix: 'button-',
 		component: props => <BoxShadowControl {...props} />,

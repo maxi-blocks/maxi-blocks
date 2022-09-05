@@ -9,7 +9,7 @@ import { __ } from '@wordpress/i18n';
 import { createSelectors } from '../../extensions/styles/custom-css';
 import {
 	SvgColorControl,
-	SvgStrokeWidthControl,
+	// SvgStrokeWidthControl,
 	BackgroundControl,
 	BorderControl,
 } from '../../components';
@@ -158,11 +158,25 @@ const transition = {
 			property: 'box-shadow',
 			prefix,
 		},
+		colour: {
+			title: 'Colour',
+			target: ' .maxi-svg-icon-block__icon svg > *',
+			hoverProp: 'svg-status-hover',
+			limitless: true,
+		},
+		background: {
+			title: 'Background',
+			target: ' .maxi-svg-icon-block__icon',
+			property: 'background',
+			hoverProp: 'svg-background-hover-status',
+		},
 	},
 };
 const interactionBuilderSettings = [
 	{
 		label: __('Icon colour'),
+		transitionTarget: transition.block.colour.target,
+		hoverProp: 'svg-status-hover',
 		attrGroupName: 'svg',
 		component: props => {
 			const { attributes, onChange } = props;
@@ -176,6 +190,8 @@ const interactionBuilderSettings = [
 					blockStyle={blockStyle}
 					content={content}
 					svgType={svgType}
+					// Needs a bit of a hack to get the correct value ⬇
+					maxiSetAttributes={onChange}
 					disableHover
 				/>
 			);
@@ -187,30 +203,33 @@ const interactionBuilderSettings = [
 				prefix: 'svg-',
 			}),
 	},
-	{
-		label: __('Icon line width', 'maxi-blocks'),
-		attrGroupName: 'svg',
-		component: props => {
-			const { attributes } = props;
-			const { content } = attributes;
+	// TODO: fix #3619
+	// {
+	// 	label: __('Icon line width', 'maxi-blocks'),
+	// 	attrGroupName: 'svg',
+	// 	component: props => {
+	// 		const { attributes } = props;
+	// 		const { content } = attributes;
 
-			return (
-				<SvgStrokeWidthControl
-					{...props}
-					content={content}
-					prefix='svg-'
-				/>
-			);
-		},
-		helper: props =>
-			getSVGStyles({
-				...props,
-				target: ' .maxi-svg-icon-block__icon',
-				prefix: 'svg-',
-			}),
-	},
+	// 		return (
+	// 			<SvgStrokeWidthControl
+	// 				{...props}
+	// 				content={content}
+	// 				prefix='svg-'
+	// 			/>
+	// 		);
+	// 	},
+	// 	helper: props =>
+	// 		getSVGStyles({
+	// 			...props,
+	// 			target: ' .maxi-svg-icon-block__icon',
+	// 			prefix: 'svg-',
+	// 		}),
+	// },
 	{
 		label: __('Icon background', 'maxi-blocks'),
+		transitionTarget: transition.block.background.target,
+		hoverProp: 'svg-background-hover-status',
 		attrGroupName: ['background', 'backgroundColor', 'backgroundGradient'],
 		prefix: 'svg-',
 		component: props => (
@@ -228,6 +247,8 @@ const interactionBuilderSettings = [
 	},
 	{
 		label: __('Icon border', 'maxi-blocks'),
+		transitionTarget: transition.block.border.target,
+		hoverProp: 'svg-border-status-hover',
 		attrGroupName: ['border', 'borderWidth', 'borderRadius'],
 		prefix: 'svg-',
 		component: props => <BorderControl {...props} />,

@@ -1,4 +1,10 @@
-.maxi-additional__css {
+.maxi-custom-css-control {
+	.maxi-custom-css-control__category {
+		.maxi-base-control__field {
+			display: flex !important;
+			flex-direction: row;
+		}
+	}
 	.maxi-base-control {
 		&__field {
 			align-items: start;
@@ -41,7 +47,7 @@
 			font-family: monospace !important;
 		}
 	}
-	.maxi-additional__css-error {
+	.maxi-custom-css-control__error {
 		margin-top: 8px;
 		padding-left: 10px;
 		padding-right: 5px;

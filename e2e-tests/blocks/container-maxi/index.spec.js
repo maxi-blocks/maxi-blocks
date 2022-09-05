@@ -34,14 +34,14 @@ describe('Container Maxi', () => {
 		);
 
 		const customCssSelector = await accordionTab.$(
-			'.maxi-typography-control__text-options-tabs .maxi-custom-css-control__category select'
+			'.maxi-custom-css-control__category select'
 		);
 		await customCssSelector.select('background');
 
 		// check first background
 
 		await accordionTab.$eval(
-			'.maxi-additional__css-background_color_1 textarea',
+			'.maxi-custom-css-control__group--background_color_1 textarea',
 			input => input.focus()
 		);
 
@@ -50,7 +50,7 @@ describe('Container Maxi', () => {
 
 		// check second background
 		await accordionTab.$eval(
-			'.maxi-additional__css-background_color_2 textarea',
+			'.maxi-custom-css-control__group--background_color_2 textarea',
 			input => input.focus()
 		);
 

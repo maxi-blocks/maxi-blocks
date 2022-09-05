@@ -27,7 +27,7 @@ import settings from './settings';
 /**
  * External dependencies
  */
-import { cloneDeep, isEmpty, merge } from 'lodash';
+import { cloneDeep, isEmpty, merge, isNil } from 'lodash';
 
 /**
  * Styles
@@ -102,13 +102,17 @@ const RelationControl = props => {
 		});
 	};
 
+	const getSelectedSettingsObj = (clientId, settingsLabel) =>
+		getOptions(clientId).find(option => option.label === settingsLabel);
+
 	const displaySelectedSetting = item => {
 		if (!item) return null;
 
 		const clientId = getClientIdFromUniqueId(item.uniqueID);
 
-		const selectedSettingsObj = getOptions(clientId).find(
-			option => option.label === item.settings
+		const selectedSettingsObj = getSelectedSettingsObj(
+			clientId,
+			item.settings
 		);
 
 		if (!selectedSettingsObj) return null;
@@ -134,23 +138,30 @@ const RelationControl = props => {
 			}, {}),
 		};
 
-		const textMaxiPrefix =
-			getBlock(clientId)?.name === 'maxi-blocks/text-maxi' &&
-			item?.settings === 'Typography';
-
+		// As an alternative to a migrator... Remove after used!
 		if (
-			selectedSettingsObj?.target &&
-			item.target !== selectedSettingsObj?.target
+			!(
+				'transitionTarget' in item.effects &&
+				'hoverStatus' in item.effects
+			) ||
+			item.effects.hoverStatus !==
+				blockAttributes?.[selectedSettingsObj.hoverProp]
 		) {
-			onChangeRelation(relations, item.id, {
-				target: `${
-					textMaxiPrefix
-						? blockAttributes?.isList
-							? blockAttributes?.typeOfList
-							: blockAttributes?.textLevel
-						: ''
-				}${selectedSettingsObj?.target}`,
-			});
+			const { transitionTarget, hoverProp } = selectedSettingsObj;
+
+			let hoverStatus = null;
+
+			if (!('hoverStatus' in item.effects))
+				hoverStatus = blockAttributes?.[hoverProp];
+
+			if (transitionTarget)
+				onChangeRelation(relations, item.id, {
+					effects: {
+						...item.effects,
+						transitionTarget,
+						...(!isNil(hoverStatus) && { hoverStatus }),
+					},
+				});
 		}
 
 		const mergedAttributes = merge(blockAttributes, item.attributes);
@@ -439,13 +450,85 @@ const RelationControl = props => {
 													})),
 												]}
 												onChange={value => {
+													const {
+														transitionTarget,
+														hoverProp,
+													} = getOptions(
+														getClientIdFromUniqueId(
+															item.uniqueID
+														)
+													).find(
+														option =>
+															option.label ===
+															value
+													);
+
+													const clientId =
+														getClientIdFromUniqueId(
+															item.uniqueID
+														);
+
+													const hoverStatus =
+														getBlock(clientId)
+															?.attributes?.[
+															hoverProp
+														];
+
+													const getTarget = () => {
+														const clientId =
+															getClientIdFromUniqueId(
+																item.uniqueID
+															);
+
+														const target =
+															getSelectedSettingsObj(
+																clientId,
+																value
+															)?.target || '';
+
+														const textMaxiPrefix =
+															getBlock(clientId)
+																?.name ===
+																'maxi-blocks/text-maxi' &&
+															value ===
+																'Typography';
+
+														if (textMaxiPrefix) {
+															const blockAttributes =
+																getBlock(
+																	clientId
+																)?.attributes;
+
+															const {
+																isList,
+																typeOfList,
+																textLevel,
+															} = blockAttributes;
+
+															return `${
+																isList
+																	? typeOfList
+																	: textLevel
+															}${target}`;
+														}
+
+														return target;
+													};
+
 													onChangeRelation(
 														relations,
 														item.id,
 														{
 															attributes: {},
-															target: '',
+															target: getTarget(),
 															settings: value,
+															...(transitionTarget && {
+																effects: {
+																	...item.effects,
+																	transitionTarget,
+																	hoverStatus,
+																},
+															}),
 														}
 													);
 												}}

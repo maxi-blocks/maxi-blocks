@@ -135,6 +135,10 @@ const attributes = {
 			type: 'string',
 			default: 'px',
 		},
+		'flex-direction-general': {
+			type: 'string',
+			default: 'column',
+		},
 	},
 };
 

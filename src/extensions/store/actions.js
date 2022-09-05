@@ -57,6 +57,7 @@ const actions = {
 			type: 'SET_DEVICE_TYPE',
 			deviceType,
 			width,
+			isGutenbergButton,
 		};
 	},
 	setEditorContentSize(editorContentSize) {

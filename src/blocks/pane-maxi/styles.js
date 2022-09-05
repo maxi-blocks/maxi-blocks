@@ -3,6 +3,7 @@
  */
 import { getGroupAttributes, styleProcessor } from '../../extensions/styles';
 import {
+	getBackgroundStyles,
 	getBlockBackgroundStyles,
 	getBorderStyles,
 	getBoxShadowStyles,
@@ -16,6 +17,7 @@ import {
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
 import { selectorsPane } from './custom-css';
+import transitionObj from './transitionObj';
 
 const getNormalObject = props => {
 	const response = {
@@ -100,6 +102,96 @@ const getHoverObject = props => {
 	return response;
 };
 
+const getNormalStyles = (props, prefix) => {
+	const response = {
+		...getBackgroundStyles({
+			...getGroupAttributes(
+				props,
+				['background', 'backgroundColor', 'backgroundGradient'],
+				false,
+				prefix
+			),
+			blockStyle: props.blockStyle,
+			prefix,
+		}),
+		border: getBorderStyles({
+			obj: {
+				...getGroupAttributes(
+					props,
+					['border', 'borderWidth', 'borderRadius'],
+					false,
+					prefix
+				),
+			},
+			blockStyle: props.blockStyle,
+			prefix,
+		}),
+		size: getSizeStyles({
+			...getGroupAttributes(props, 'size', false, prefix),
+			prefix,
+		}),
+		boxShadow: getBoxShadowStyles({
+			obj: {
+				...getGroupAttributes(props, 'boxShadow', false, prefix),
+			},
+			blockStyle: props.blockStyle,
+			prefix,
+		}),
+		padding: getMarginPaddingStyles({
+			obj: {
+				...getGroupAttributes(props, 'padding', false, prefix),
+			},
+			prefix,
+		}),
+	};
+
+	return response;
+};
+
+const getHoverStyles = (props, prefix) => {
+	const response = {
+		...(props[`${prefix}background-hover-status`] &&
+			getBackgroundStyles({
+				...getGroupAttributes(
+					props,
+					['background', 'backgroundColor', 'backgroundGradient'],
+					true,
+					prefix
+				),
+				blockStyle: props.blockStyle,
+				prefix,
+				isHover: true,
+			})),
+		border:
+			props[`${prefix}border-status-hover`] &&
+			getBorderStyles({
+				obj: {
+					...getGroupAttributes(
+						props,
+						['border', 'borderWidth', 'borderRadius'],
+						true,
+						prefix
+					),
+				},
+				blockStyle: props.blockStyle,
+				prefix,
+				isHover: true,
+			}),
+		boxShadow:
+			props[`${prefix}box-shadow-status-hover`] &&
+			getBoxShadowStyles({
+				obj: {
+					...getGroupAttributes(props, 'boxShadow', true, prefix),
+				},
+				blockStyle: props.blockStyle,
+				prefix,
+				isHover: true,
+			}),
+	};
+
+	return response;
+};
+
 const getStyles = props => {
 	const { uniqueID } = props;
 
@@ -108,6 +200,19 @@ const getStyles = props => {
 			{
 				'': getNormalObject(props),
 				':hover': getHoverObject(props),
+				' .maxi-pane-block__header': getNormalStyles(props, 'header-'),
+				' .maxi-pane-block__content': getNormalStyles(
+					props,
+					'content-'
+				),
+				' .maxi-pane-block__header:hover': getHoverStyles(
+					props,
+					'header-'
+				),
+				' .maxi-pane-block__content:hover': getHoverStyles(
+					props,
+					'content-'
+				),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [
 						'blockBackground',
@@ -133,7 +238,8 @@ const getStyles = props => {
 				}),
 			},
 			selectorsPane,
-			props
+			props,
+			transitionObj
 		),
 	};
 	return response;

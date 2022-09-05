@@ -147,6 +147,7 @@ const relations = () => {
 		effectsObj,
 		isIcon = false,
 		remove = false,
+		hoverStatus = false,
 	}) => {
 		const isSVG = target.includes('svg-icon-maxi');
 		const targets = stylesObj?.isTargets ? Object.keys(stylesObj) : null;
@@ -162,11 +163,24 @@ const relations = () => {
 							effectsObj,
 							isIcon,
 							remove,
+							hoverStatus,
 						});
 				});
 			else {
+				const targetEl = document.querySelector(target);
+
+				// Checks if the element needs special CSS to be avoided in case the element is hovered
+				const avoidHover =
+					hoverStatus &&
+					targetEl &&
+					targetEl.isSameNode(
+						targetEl
+							.closest('.maxi-block')
+							.querySelector(transitionTarget)
+					);
+
 				const svgTarget = `${target} ${
-					transitionTarget?.endsWith('> *')
+					avoidHover && transitionTarget?.endsWith('> *')
 						? transitionTarget.slice(0, -4) +
 						  ':not(:hover)' +
 						  transitionTarget.slice(transitionTarget.length - 4)
@@ -179,6 +193,7 @@ const relations = () => {
 					effectsObj,
 					isIcon: isIcon || isSVG,
 					remove,
+					hoverStatus,
 				});
 			}
 		} else {
@@ -288,6 +303,7 @@ const relations = () => {
 							isIcon:
 								item.settings === 'Icon colour' ||
 								item.settings === 'Button icon',
+							hoverStatus,
 						});
 
 						toggleInlineStyles({
@@ -343,6 +359,7 @@ const relations = () => {
 											transitionTarget,
 											effectsObj,
 											remove: true,
+											hoverStatus,
 										});
 									}
 								);
@@ -362,6 +379,7 @@ const relations = () => {
 														'Icon colour' ||
 													item.settings ===
 														'Button icon',
+												hoverStatus,
 											});
 										}, transitionDuration);
 									}
@@ -386,6 +404,7 @@ const relations = () => {
 								isIcon:
 									item.settings === 'Icon colour' ||
 									item.settings === 'Button icon',
+								hoverStatus,
 							});
 
 						dataTimeout = setTimeout(() => {
@@ -411,6 +430,7 @@ const relations = () => {
 								transitionTarget,
 								effectsObj,
 								remove: true,
+								hoverStatus,
 							});
 						}, item.effects['transition-duration-general'] * 1000 + 1000);
 					});

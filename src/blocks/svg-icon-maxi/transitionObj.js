@@ -19,9 +19,9 @@ const transitionObj = {
 		},
 		colour: {
 			title: 'Colour',
-			target: ' .maxi-svg-icon-block__icon svg > *',
+			target: ' .maxi-svg-icon-block__icon svg *:not(g)',
+			property: ['fill', 'stroke'],
 			hoverProp: 'svg-status-hover',
-			limitless: true,
 		},
 		background: {
 			title: 'Background',

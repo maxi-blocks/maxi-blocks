@@ -37,7 +37,32 @@ const Inspector = props => {
 		inlineStylesTargets,
 	} = props;
 
-	const { accrordionLayout, blockStyle } = attributes;
+	const { accordionLayout, blockStyle, titleLevel } = attributes;
+
+	const lineSettingsProps = {
+		...getGroupAttributes(attributes, 'accordionLine'),
+		onChangeInline: obj => {
+			insertInlineStyles({
+				obj,
+				target: inlineStylesTargets.headerLine,
+				isMultiplySelector: true,
+			});
+			if (accordionLayout === 'simple')
+				insertInlineStyles({
+					obj,
+					target: inlineStylesTargets.contentLine,
+					isMultiplySelector: true,
+				});
+		},
+		onChange: obj => {
+			maxiSetAttributes(obj);
+			cleanInlineStyles(inlineStylesTargets.headerLine);
+			if (accordionLayout === 'simple')
+				cleanInlineStyles(inlineStylesTargets.contentLine);
+		},
+		breakpoint: deviceType,
+		clientId,
+	};
 
 	const { selectors, categories } = customCss;
 
@@ -90,6 +115,21 @@ const Inspector = props => {
 													attributes,
 													'accordionTitle'
 												)}
+												disableCustomFormats
+												hideAlignment
+												breakpoint={deviceType}
+												clientId={clientId}
+												blockStyle={blockStyle}
+												textLevel={titleLevel}
+												globalProps={{
+													target: '',
+													type: titleLevel,
+												}}
+												hoverGlobalProps={{
+													target: 'hover',
+													type: titleLevel,
+												}}
+												styleCardPrefix=''
 											/>
 										),
 									},
@@ -101,6 +141,11 @@ const Inspector = props => {
 													attributes,
 													'accordionIcon'
 												)}
+												disableIconOnly
+												disableSpacing
+												disablePosition
+												disableIconInherit
+												disableModal
 												blockStyle={blockStyle}
 												onChange={obj => {
 													maxiSetAttributes(obj);
@@ -118,46 +163,34 @@ const Inspector = props => {
 											<ResponsiveTabsControl
 												breakpoint={deviceType}
 											>
-												<AccordionLineControl
-													{...getGroupAttributes(
-														attributes,
-														'accordionLine'
-													)}
-													onChangeInline={obj => {
-														insertInlineStyles({
-															obj,
-															target: inlineStylesTargets.headerLine,
-															isMultiplySelector: true,
-															pseudoElement:
-																'::after',
-														});
-														if (
-															accrordionLayout ===
-															'simple'
-														)
-															insertInlineStyles({
-																obj,
-																target: inlineStylesTargets.contentLine,
-																isMultiplySelector: true,
-															});
-													}}
-													onChange={obj => {
-														maxiSetAttributes(obj);
-														cleanInlineStyles(
-															inlineStylesTargets.headerLine,
-															'::after'
-														);
-														if (
-															accrordionLayout ===
-															'simple'
-														)
-															cleanInlineStyles(
-																inlineStylesTargets.contentLine,
-																'::after'
-															);
-													}}
-													breakpoint={deviceType}
-													clientId={clientId}
+												<SettingTabsControl
+													depth={2}
+													items={[
+														{
+															label: __(
+																'Header line',
+																'maxi-blocks'
+															),
+															content: (
+																<AccordionLineControl
+																	{...lineSettingsProps}
+																	prefix='header-'
+																/>
+															),
+														},
+														{
+															label: __(
+																'Content line',
+																'maxi-blocks'
+															),
+															content: (
+																<AccordionLineControl
+																	{...lineSettingsProps}
+																	prefix='content-'
+																/>
+															),
+														},
+													]}
 												/>
 											</ResponsiveTabsControl>
 										),

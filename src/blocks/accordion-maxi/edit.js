@@ -31,6 +31,7 @@ class edit extends MaxiBlockComponent {
 					accordionLayout: attributes.accordionLayout,
 					autoPaneClose: attributes.autoPaneClose,
 					isCollapsible: attributes.isCollapsible,
+					animationDuration: attributes.animationDuration,
 				},
 			},
 		};
@@ -68,9 +69,10 @@ class edit extends MaxiBlockComponent {
 		} = attributes;
 
 		const inlineStylesTargets = {
-			headerLine: ':scope > .maxi-pane-block > .maxi-pane-block__header',
+			headerLine:
+				':scope > .maxi-pane-block > .maxi-pane-block__header > .maxi-pane-block__header-line-container > .maxi-pane-block__header-line',
 			contentLine:
-				':scope > .maxi-pane-block > .maxi-pane-block__content',
+				':scope > .maxi-pane-block > .maxi-pane-block__content > .maxi-pane-block__content-line-container > .maxi-pane-block__content-line',
 		};
 
 		const ALLOWED_BLOCKS = ['maxi-blocks/pane-maxi'];

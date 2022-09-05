@@ -149,11 +149,11 @@ const ColorLayerContent = props => {
 						props,
 						'clipPath',
 						false,
-						'background-color-'
+						`${prefix}background-color-`
 					)}
 					{...colorOptions}
 					isHover={isHover}
-					prefix='background-color-'
+					prefix={`${prefix}background-color-`}
 					breakpoint={breakpoint}
 				/>
 			)}

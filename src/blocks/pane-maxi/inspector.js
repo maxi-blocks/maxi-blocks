@@ -17,8 +17,37 @@ import { customCss } from './data';
  */
 const Inspector = props => {
 	const { deviceType } = props;
-
 	const { selectors, categories } = customCss;
+
+	const getBaseSettings = (prefix, inlineTarget, label) => [
+		...inspectorTabs.background({
+			props,
+			label,
+			prefix,
+			inlineTarget,
+			disableImage: true,
+			disableVideo: true,
+			disableSVG: true,
+		}),
+		...inspectorTabs.border({
+			props,
+			prefix,
+		}),
+		...inspectorTabs.boxShadow({
+			props,
+			prefix,
+		}),
+		...inspectorTabs.size({
+			props,
+			prefix,
+		}),
+		...inspectorTabs.marginPadding({
+			props,
+			customLabel: 'Padding',
+			prefix,
+			disableMargin: true,
+		}),
+	];
 
 	return (
 		<InspectorControls>
@@ -39,6 +68,55 @@ const Inspector = props => {
 						content: (
 							<AccordionControl
 								items={[
+									{
+										label: __(
+											'Pane settings',
+											'maxi-blocks'
+										),
+										disablePadding: true,
+										content: (
+											<SettingTabsControl
+												depth={2}
+												disablePadding
+												isNestedAccordion
+												hasBorder
+												items={[
+													{
+														label: __(
+															'Header',
+															'maxi-blocks'
+														),
+														content: (
+															<AccordionControl
+																isNestedAccordion
+																items={getBaseSettings(
+																	'header-',
+																	'.maxi-pane-block__header',
+																	'Header'
+																)}
+															/>
+														),
+													},
+													{
+														label: __(
+															'Content',
+															'maxi-blocks'
+														),
+														content: (
+															<AccordionControl
+																isNestedAccordion
+																items={getBaseSettings(
+																	'content-',
+																	'.maxi-pane-block__content',
+																	'Content'
+																)}
+															/>
+														),
+													},
+												]}
+											/>
+										),
+									},
 									...inspectorTabs.blockBackground({
 										props,
 									}),

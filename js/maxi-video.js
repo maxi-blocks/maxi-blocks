@@ -7,18 +7,10 @@ const videoEvents = () => {
 		}
 
 		const videoID = video.id;
-
 		const videoData =
 			maxiVideo[0][videoID] !== undefined ? maxiVideo[0][videoID] : null;
 
-		const player = video.querySelector('.maxi-video-block__video-player');
 		const videoType = videoData['videoType'];
-		const embedUrl = videoData['embedUrl'];
-
-		if (videoData['playerType'] === 'popup') {
-			popupEvents(player, video, videoType, embedUrl);
-		}
-
 		const videoEnd = videoData['endTime'];
 
 		if (videoType === 'vimeo' && videoEnd) {
@@ -35,6 +27,14 @@ const videoEvents = () => {
 				};
 				document.body.appendChild(script);
 			}
+			return;
+		}
+
+		const embedUrl = videoData['embedUrl'];
+
+		if (videoData['playerType'] === 'popup') {
+			const popupContent = insertPopup(video);
+			popupEvents(video, popupContent, embedUrl);
 		}
 	});
 };
@@ -49,11 +49,16 @@ const handleYoutubeVideos = () => {
 		const videoData =
 			maxiVideo[0][videoID] !== undefined ? maxiVideo[0][videoID] : null;
 
-		const iframe = video.querySelector('iframe');
+		const popupContent = insertPopup(video);
+		const iframe =
+			videoData['playerType'] === 'popup'
+				? popupContent.querySelector('iframe')
+				: video.querySelector('iframe');
+
 		iframe.id = `${videoID}-iframe`;
 		iframe.src = videoData['embedUrl'];
 
-		const player = new YT.Player(iframe.id, {
+		const player = new YT.Player(iframe, {
 			events: {
 				onStateChange: handleStateChange,
 			},
@@ -68,7 +73,7 @@ const handleYoutubeVideos = () => {
 		}
 
 		if (videoData['playerType'] === 'popup') {
-			popupEvents(player, video, 'youtube');
+			popupEvents(video, popupContent, '', () => player.pauseVideo());
 		}
 	});
 };
@@ -81,7 +86,11 @@ function handleVimeoVideos() {
 		const videoData =
 			maxiVideo[0][videoID] !== undefined ? maxiVideo[0][videoID] : null;
 
-		const player = video.querySelector('iframe');
+		const popupContent = insertPopup(video);
+		const player =
+			videoData['playerType'] === 'popup'
+				? popupContent.querySelector('iframe')
+				: video.querySelector('iframe');
 
 		player.src = videoData['embedUrl'];
 		const vimeoPlayer = new Vimeo.Player(player);
@@ -95,31 +104,68 @@ function handleVimeoVideos() {
 				else vimeoPlayer.pause();
 			}
 		});
+
+		if (videoData['playerType'] === 'popup') {
+			popupEvents(video, popupContent, '', () => vimeoPlayer.pause());
+		}
 	});
 }
 
-function popupEvents(player, video, type, embedUrl) {
-	const wrapper = video.querySelector('.maxi-video-block__popup-wrapper');
+function insertPopup(video) {
+	const popupContent = video
+		.querySelector('.maxi-video-block__popup-wrapper')
+		.cloneNode(true);
+	const uniqueID = video.id;
+	const popupSlot = document.getElementById('maxi-popup-slot');
+
+	const createPopup = () => {
+		const popup = document.createElement('div');
+		popup.id = `popup-${uniqueID}`;
+		popup.appendChild(popupContent);
+
+		return popup;
+	};
+
+	if (!popupSlot) {
+		const popupSlot = document.createElement('div');
+		popupSlot.id = 'maxi-popup-slot';
+		popupSlot.style.zIndex = '999999';
+
+		popupSlot.appendChild(createPopup());
+
+		const entryContent = document.querySelector('.entry-content');
+		entryContent.appendChild(popupSlot);
+	} else {
+		popupSlot.appendChild(createPopup());
+	}
+
+	return popupContent;
+}
+
+function popupEvents(video, popupContent, embedUrl, pauseVideo = null) {
 	const overlay = video.querySelector('.maxi-video-block__overlay');
+	const player = popupContent.querySelector(
+		'.maxi-video-block__video-player'
+	);
 
 	const openVideo = () => {
-		wrapper.style.display = 'flex';
-		if (type !== 'youtube') player.src = embedUrl;
+		popupContent.style.display = 'flex';
+		if (!pauseVideo) player.src = embedUrl;
 	};
 
 	const closeVideo = e => {
 		if (e.target.classList.contains('maxi-video-block__video-player'))
 			return;
-		wrapper.style.display = 'none';
-		if (type === 'youtube') {
-			player.pauseVideo();
+		popupContent.style.display = 'none';
+		if (pauseVideo) {
+			pauseVideo();
 		} else {
 			player.src = '';
 		}
 	};
 
 	overlay.addEventListener('click', openVideo);
-	wrapper.addEventListener('click', closeVideo);
+	popupContent.addEventListener('click', closeVideo);
 }
 
 function isScriptMounted(id) {
@@ -139,8 +185,8 @@ function insertYoutubeScript() {
 	document.body.appendChild(script);
 }
 
-function onYouTubeIframeAPIReady() {
+window.onYouTubeIframeAPIReady = () => {
 	handleYoutubeVideos();
-}
+};
 
 window.addEventListener('load', videoEvents);

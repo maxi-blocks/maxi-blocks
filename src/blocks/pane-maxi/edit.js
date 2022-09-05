@@ -3,7 +3,7 @@
  */
 import { RichText, useInnerBlocksProps } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
-import { forwardRef, RawHTML } from '@wordpress/element';
+import { createRef, forwardRef, RawHTML } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -31,7 +31,11 @@ const boxedPreset = {
 };
 
 const simplePreset = {
-	'border-style-general': 'none',
+	'border-style-general': null,
+	'border-top-left-radius-general': 0,
+	'border-top-right-radius-general': 0,
+	'border-bottom-left-radius-general': 0,
+	'border-bottom-right-radius-general': 0,
 };
 
 const Content = forwardRef((props, ref) => {
@@ -82,16 +86,14 @@ const Content = forwardRef((props, ref) => {
 class edit extends MaxiBlockComponent {
 	static contextType = AccordionContext;
 
-	get getStylesObject() {
-		return getStyles(this.props.attributes);
+	constructor(...args) {
+		super(...args);
+
+		this.contentWrapper = createRef();
 	}
 
-	maxiBlockDidMount() {
-		const content = this.blockRef.current.querySelector(
-			'.maxi-pane-block__content'
-		);
-
-		this.content = content;
+	get getStylesObject() {
+		return getStyles(this.props.attributes);
 	}
 
 	maxiBlockDidUpdate() {
@@ -124,11 +126,11 @@ class edit extends MaxiBlockComponent {
 		const { clientId } = this.props;
 		const { onOpen, animationDuration } = this.context;
 
-		this.content.style.overflow = 'hidden';
+		this.contentWrapper.current.style.overflow = 'hidden';
 		// The css doesn't run transition if set to 100% so need to set exact value, for transition to happen
-		this.content.style.maxHeight = `${this.content.scrollHeight}px`;
+		this.contentWrapper.current.style.maxHeight = `${this.contentWrapper.current.scrollHeight}px`;
 		setTimeout(() => {
-			this.content.style = null;
+			this.contentWrapper.current.style = null;
 		}, animationDuration);
 		onOpen(clientId);
 	}
@@ -139,13 +141,13 @@ class edit extends MaxiBlockComponent {
 			this.context;
 
 		if (!isCollapsible && openPanes.length <= 1) return;
-		this.content.style.overflow = 'hidden';
+		this.contentWrapper.current.style.overflow = 'hidden';
 		// Same here, transition doesn't run if max-height is not set to exact value
-		this.content.style.maxHeight = `${this.content.scrollHeight}px`;
+		this.contentWrapper.current.style.maxHeight = `${this.contentWrapper.current.scrollHeight}px`;
 		setTimeout(() => {
-			this.content.style.maxHeight = 0;
+			this.contentWrapper.current.style.maxHeight = 0;
 			setTimeout(() => {
-				this.content.style = null;
+				this.contentWrapper.current.style = null;
 			}, animationDuration);
 		}, 1);
 		onClose(clientId);
@@ -200,35 +202,51 @@ class edit extends MaxiBlockComponent {
 						!isOpen ? this.openPane() : this.closePane();
 					}}
 				>
-					<RichText
-						className='maxi-pane-block__title'
-						value={title}
-						identifier='content'
-						onChange={title => {
-							if (this.typingTimeout) {
-								clearTimeout(this.typingTimeout);
-							}
+					<div className='maxi-pane-block__header-content'>
+						<RichText
+							className='maxi-pane-block__title'
+							value={title}
+							identifier='content'
+							onChange={title => {
+								if (this.typingTimeout) {
+									clearTimeout(this.typingTimeout);
+								}
 
-							this.typingTimeout = setTimeout(() => {
-								maxiSetAttributes({ title });
-							}, 100);
-						}}
-						placeholder={__('Title', 'maxi-blocks')}
-						withoutInteractiveFormatting
-						tagName={titleLevel}
-					/>
-					<div className='maxi-pane-block__icon'>
-						<RawHTML>{isOpen ? paneIconActive : paneIcon}</RawHTML>
+								this.typingTimeout = setTimeout(() => {
+									maxiSetAttributes({ title });
+								}, 100);
+							}}
+							placeholder={__('Title', 'maxi-blocks')}
+							withoutInteractiveFormatting
+							tagName={titleLevel}
+						/>
+						<div className='maxi-pane-block__icon'>
+							<RawHTML>
+								{isOpen ? paneIconActive : paneIcon}
+							</RawHTML>
+						</div>
+					</div>
+					<div className='maxi-pane-block__header-line-container maxi-pane-block__line-container'>
+						<hr className='maxi-pane-block__header-line maxi-pane-block__line' />
 					</div>
 				</div>
-				<Content
-					ref={this.blockRef}
-					clientId={clientId}
-					isSelected={isSelected}
-					hasSelectedChild={hasSelectedChild}
-					hasInnerBlocks={hasInnerBlocks}
-					isOpen={isOpen}
-				/>
+				{/* Wrapper is only for open/close animations, no styles should be applied on it */}
+				<div
+					className='maxi-pane-block__content-wrapper'
+					ref={this.contentWrapper}
+				>
+					<Content
+						ref={this.blockRef}
+						clientId={clientId}
+						isSelected={isSelected}
+						hasSelectedChild={hasSelectedChild}
+						hasInnerBlocks={hasInnerBlocks}
+						isOpen={isOpen}
+					/>
+					<div className='maxi-pane-block__content-line-container maxi-pane-block__line-container'>
+						<hr className='maxi-pane-block__content-line maxi-pane-block__line' />
+					</div>
+				</div>
 			</MaxiBlock>,
 		];
 	}

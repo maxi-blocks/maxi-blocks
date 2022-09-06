@@ -27,6 +27,8 @@ const BlockResizer = memo(
 			showHandle = false,
 			resizableObject,
 			isOverflowHidden = false,
+			onResizeStop,
+			cleanStyles = true,
 			...rest
 		} = props;
 		// Needed for memo part only
@@ -139,6 +141,10 @@ const BlockResizer = memo(
 						),
 				}}
 				handleWrapperClass={handlesWrapperClassName}
+				onResizeStop={(e, direction, refToElement, ...rest) => {
+					onResizeStop?.(e, direction, refToElement, ...rest);
+					if (cleanStyles) refToElement.style = '';
+				}}
 			>
 				{children}
 			</Resizable>

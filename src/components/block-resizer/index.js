@@ -60,7 +60,7 @@ const BlockResizer = memo(
 
 		const handleRef = newRef => {
 			if (newRef) {
-				newRef.resizable.style = null;
+				if (cleanStyles) newRef.resizable.style = null;
 				if (resizableObject) resizableObject.current = newRef;
 				if (ref) {
 					if (typeof ref === 'function') ref(newRef.resizable);

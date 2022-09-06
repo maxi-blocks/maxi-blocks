@@ -60,6 +60,7 @@ const BlockResizer = memo(
 
 		const handleRef = newRef => {
 			if (newRef) {
+				newRef.resizable.style = null;
 				if (resizableObject) resizableObject.current = newRef;
 				if (ref) {
 					if (typeof ref === 'function') ref(newRef.resizable);
@@ -143,7 +144,7 @@ const BlockResizer = memo(
 				handleWrapperClass={handlesWrapperClassName}
 				onResizeStop={(e, direction, refToElement, ...rest) => {
 					onResizeStop?.(e, direction, refToElement, ...rest);
-					if (cleanStyles) refToElement.style = '';
+					if (cleanStyles) refToElement.style = null;
 				}}
 			>
 				{children}

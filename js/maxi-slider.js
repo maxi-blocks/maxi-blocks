@@ -73,8 +73,8 @@ class MaxiSlider {
 		this.onDragStart = this.dragStart.bind(this);
 		this.onDragAction = this.dragAction.bind(this);
 		this.onDragEnd = this.dragEnd.bind(this);
-		this.onHover = this.onHover.bind(this);
-		this.onHoverEnd = this.onHoverEnd.bind(this);
+		this.onHoverEnd = this.onHover.bind(this, true);
+		this.onHover = this.onHover.bind(this, false);
 		this.exactSlide = this.exactSlide.bind(this);
 
 		this._container.addEventListener('mouseenter', this.onHover);
@@ -87,11 +87,10 @@ class MaxiSlider {
 			return false;
 		};
 
-		if (this.isAutoplay) {
+		if (this.isAutoplay)
 			setInterval(() => {
 				if (!isPaused()) this.slideNext();
 			}, this.autoplaySpeed);
-		}
 
 		this.init();
 	}
@@ -140,9 +139,7 @@ class MaxiSlider {
 	}
 
 	init() {
-		if (this.isLoop) {
-			this.insertSlideClones(2);
-		}
+		if (this.isLoop) this.insertSlideClones(2);
 
 		// Init styles
 		this.wrapperTranslate = this.realFirstElOffset;
@@ -182,7 +179,6 @@ class MaxiSlider {
 			this._wrapper.append(frontClone);
 			this._wrapper.prepend(backClone);
 			this.realFirstElOffset += backClone.getBoundingClientRect().width;
-			this.lastSlideTranslate += backClone.getBoundingClientRect().width;
 		}
 	}
 
@@ -348,14 +344,14 @@ class MaxiSlider {
 		this.wrapperTranslate = this.activeSlidePosition;
 	}
 
-	onHover() {
-		this.isHovering = true;
-		this._wrapper.classList.add('maxi-slider-hovered');
-	}
+	onHover(isEnd) {
+		this.isHovering = !isEnd;
 
-	onHoverEnd() {
-		this.isHovering = false;
-		this._wrapper.classList.remove('maxi-slider-hovered');
+		if (isEnd) {
+			this._wrapper.classList.remove('maxi-slider-hovered');
+		} else {
+			this._wrapper.classList.add('maxi-slider-hovered');
+		}
 	}
 
 	loop() {

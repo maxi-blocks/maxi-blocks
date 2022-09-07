@@ -7,7 +7,7 @@ import { select } from '@wordpress/data';
 /**
  * External dependencies.
  */
-import { isEmpty, merge } from 'lodash';
+import { isEmpty, isPlainObject, merge } from 'lodash';
 
 /**
  * Internal dependencies.
@@ -36,6 +36,13 @@ const getTransformControl = name => {
 	// TODO: add hoverProp entry
 	return {
 		label: __('Transform', 'maxi-blocks'),
+		transitionTarget: [],
+		hoverProp: attributes =>
+			Object.values(getGroupAttributes(attributes, 'transform')).some(
+				attribute =>
+					isPlainObject(attribute) &&
+					Object.values(attribute).some(obj => obj?.['hover-status'])
+			),
 		attrGroupName: 'transform',
 		component: props => (
 			<Controls.TransformControl

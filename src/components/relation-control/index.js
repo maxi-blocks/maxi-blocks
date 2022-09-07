@@ -27,7 +27,7 @@ import settings from './settings';
 /**
  * External dependencies
  */
-import { cloneDeep, isEmpty, merge, isNil } from 'lodash';
+import { cloneDeep, isEmpty, isFunction, isNil, merge } from 'lodash';
 
 /**
  * Styles
@@ -105,6 +105,11 @@ const RelationControl = props => {
 	const getSelectedSettingsObj = (clientId, settingsLabel) =>
 		getOptions(clientId).find(option => option.label === settingsLabel);
 
+	const getHoverStatus = (hoverProp, blockAttributes) =>
+		isFunction(hoverProp)
+			? hoverProp(blockAttributes)
+			: blockAttributes[hoverProp];
+
 	const displaySelectedSetting = item => {
 		if (!item) return null;
 
@@ -145,14 +150,14 @@ const RelationControl = props => {
 				'hoverStatus' in item.effects
 			) ||
 			item.effects.hoverStatus !==
-				blockAttributes?.[selectedSettingsObj.hoverProp]
+				getHoverStatus(selectedSettingsObj.hoverProp, blockAttributes)
 		) {
 			const { transitionTarget, hoverProp } = selectedSettingsObj;
 
 			let hoverStatus = null;
 
 			if (!('hoverStatus' in item.effects))
-				hoverStatus = blockAttributes?.[hoverProp];
+				hoverStatus = getHoverStatus(hoverProp, blockAttributes);
 
 			if (transitionTarget)
 				onChangeRelation(relations, item.id, {
@@ -270,6 +275,12 @@ const RelationControl = props => {
 				onChangeRelation(relations, item.id, {
 					attributes: newAttributesObj,
 					css: styles,
+					...(item.settings === 'Transform' && {
+						effects: {
+							...item.effects,
+							transitionTarget: Object.keys(styles),
+						},
+					}),
 				});
 			},
 			prefix,
@@ -468,11 +479,16 @@ const RelationControl = props => {
 															item.uniqueID
 														);
 
+													const blockAttributes =
+														getBlock(
+															clientId
+														)?.attributes;
+
 													const hoverStatus =
-														getBlock(clientId)
-															?.attributes?.[
-															hoverProp
-														];
+														getHoverStatus(
+															hoverProp,
+															blockAttributes
+														);
 
 													const getTarget = () => {
 														const clientId =

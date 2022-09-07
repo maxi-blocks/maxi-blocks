@@ -71,6 +71,14 @@ const relations = () => {
 		return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 	};
 
+	const getAvoidHover = (hoverStatus, targetEl, transitionTarget) =>
+		hoverStatus &&
+		targetEl &&
+		transitionTarget?.length > 0 &&
+		targetEl.isSameNode(
+			targetEl.closest('.maxi-block').querySelector(transitionTarget)
+		);
+
 	const toggleInlineStyles = ({
 		stylesObj,
 		target,
@@ -97,14 +105,11 @@ const relations = () => {
 			const targetEl = document.querySelector(target);
 
 			// Checks if the element needs special CSS to be avoided in case the element is hovered
-			const avoidHover =
-				hoverStatus &&
-				targetEl &&
-				targetEl.isSameNode(
-					targetEl
-						.closest('.maxi-block')
-						.querySelector(transitionTarget)
-				);
+			const avoidHover = getAvoidHover(
+				hoverStatus,
+				targetEl,
+				transitionTarget
+			);
 
 			const selector = `body.maxi-blocks--active ${target}${
 				avoidHover ? ':not(:hover)' : ''
@@ -170,14 +175,11 @@ const relations = () => {
 				const targetEl = document.querySelector(target);
 
 				// Checks if the element needs special CSS to be avoided in case the element is hovered
-				const avoidHover =
-					hoverStatus &&
-					targetEl &&
-					targetEl.isSameNode(
-						targetEl
-							.closest('.maxi-block')
-							.querySelector(transitionTarget)
-					);
+				const avoidHover = getAvoidHover(
+					hoverStatus,
+					targetEl,
+					transitionTarget
+				);
 
 				const svgTarget = `${target} ${
 					avoidHover && transitionTarget?.endsWith('> *')

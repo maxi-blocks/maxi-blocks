@@ -18,10 +18,9 @@ import {
 	PlaceholderColorControl,
 } from './components';
 import { getGroupAttributes } from '../../extensions/styles';
-import { customCss } from './data';
+import { customCss, prefixes } from './data';
 import { withMaxiInspector } from '../../extensions/inspector';
 import * as inspectorTabs from '../../components/inspector-tabs';
-import { buttonPrefix, closeIconPrefix, inputPrefix } from './prefixes';
 
 /**
  * External dependencies
@@ -47,6 +46,7 @@ const Inspector = props => {
 		skin,
 	} = attributes;
 	const { selectors, categories } = customCss;
+	const { buttonPrefix, closeIconPrefix, inputPrefix } = prefixes;
 
 	const getCategoriesCss = () => {
 		const {

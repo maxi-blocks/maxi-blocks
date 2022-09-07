@@ -3,7 +3,6 @@
  */
 import { createSelectors } from '../../extensions/styles/custom-css';
 import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
-import { closeIconPrefix, buttonPrefix, inputPrefix } from './prefixes';
 
 /**
  * Classnames
@@ -14,10 +13,19 @@ const inputClass = `${blockClass}__input`;
 const defaultIconClass = `${buttonClass}__default-icon`;
 const closeIconClass = `${buttonClass}__close-icon`;
 
+const buttonPrefix = 'button-';
+const closeIconPrefix = 'close-';
+const inputPrefix = 'input-';
+
 /**
  * Data object
  */
 const name = 'search-maxi';
+const prefixes = {
+	buttonPrefix,
+	closeIconPrefix,
+	inputPrefix,
+};
 const copyPasteMapping = {
 	block: {
 		Border: {
@@ -288,11 +296,18 @@ const interactionBuilderSettings = getCanvasSettings({ name, customCss });
 
 const data = {
 	name,
+	prefixes,
 	copyPasteMapping,
 	customCss,
 	transition,
 	interactionBuilderSettings,
 };
 
-export { copyPasteMapping, customCss, transition, interactionBuilderSettings };
+export {
+	prefixes,
+	copyPasteMapping,
+	customCss,
+	transition,
+	interactionBuilderSettings,
+};
 export default data;

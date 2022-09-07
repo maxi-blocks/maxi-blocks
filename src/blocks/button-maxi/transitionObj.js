@@ -31,7 +31,7 @@ const transitionObj = {
 			prefix,
 		},
 		...createIconTransitions({
-			className: ' .maxi-button-block__icon',
+			target: ' .maxi-button-block__icon',
 			prefix: 'icon-',
 			titlePrefix: 'icon',
 		}),

@@ -4,7 +4,7 @@
 import { capitalize } from 'lodash';
 
 const createIconTransitions = ({
-	className,
+	target,
 	titlePrefix,
 	prefix = '',
 	disableBackground = false,
@@ -23,14 +23,14 @@ const createIconTransitions = ({
 	return {
 		[colorKey]: {
 			title: capitalize(colorKey),
-			target: ` ${className} svg *:not(g)`,
+			target: ` ${target} svg *:not(g)`,
 			hoverProp: iconStatusHover,
 			limitless: true,
 		},
 		...(!disableBackground && {
 			[backgroundKey]: {
 				title: capitalize(backgroundKey),
-				target: className,
+				target,
 				property: 'background',
 				hoverProp: iconStatusHover,
 			},
@@ -38,7 +38,7 @@ const createIconTransitions = ({
 		...(!disableWidth && {
 			[widthKey]: {
 				title: capitalize(widthKey),
-				target: `${className} svg`,
+				target: `${target} svg`,
 				property: ['width', 'height'],
 				hoverProp: iconStatusHover,
 			},
@@ -46,7 +46,7 @@ const createIconTransitions = ({
 		...(!disableBorder && {
 			[borderKey]: {
 				title: capitalize(borderKey),
-				target: className,
+				target,
 				property: 'border',
 				hoverProp: iconStatusHover,
 			},

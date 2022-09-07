@@ -1,3 +1,4 @@
+import { createIconTransitions } from '../../extensions/styles';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
 const transitionObj = {
@@ -22,30 +23,11 @@ const transitionObj = {
 			limitless: true,
 			prefix: 'title-',
 		},
-		'icon colour': {
-			title: 'Icon colour',
-			target: ' > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__icon svg > *',
-			hoverProp: 'icon-status-hover',
-			limitless: true,
-		},
-		'icon width': {
-			title: 'Icon width',
-			target: ' > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__icon svg',
-			property: ['width', 'height'],
-			hoverProp: 'icon-status-hover',
-		},
-		'icon background': {
-			title: 'Icon background',
+		...createIconTransitions({
 			target: ' > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__icon',
-			property: 'background',
-			hoverProp: 'icon-status-hover',
-		},
-		'icon border': {
-			title: 'Icon border',
-			target: ' > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__icon',
-			property: 'border',
-			hoverProp: 'icon-status-hover',
-		},
+			prefix: 'icon-',
+			titlePrefix: 'icon',
+		}),
 	},
 };
 

@@ -19,7 +19,7 @@ const transitionObj = {
 			prefix,
 		},
 		...createIconTransitions({
-			className: ' .maxi-svg-icon-block__icon',
+			target: ' .maxi-svg-icon-block__icon',
 			prefix,
 			disableBackground: true,
 			disableBorder: true,

@@ -16,14 +16,14 @@ const transitionObj = {
 	},
 	button: {
 		...createIconTransitions({
-			className: ' .maxi-search-block__button__default-icon',
+			target: ' .maxi-search-block__button__default-icon',
 			prefix: 'icon-',
 			titlePrefix: 'icon',
 			disableBackground: true,
 			disableBorder: true,
 		}),
 		...createIconTransitions({
-			className: ' .maxi-search-block__button__close-icon',
+			target: ' .maxi-search-block__button__close-icon',
 			prefix: `${closeIconPrefix}icon-`,
 			titlePrefix: 'close icon',
 			disableBackground: true,

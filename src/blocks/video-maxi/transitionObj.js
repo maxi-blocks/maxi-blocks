@@ -31,14 +31,14 @@ const transitionObj = {
 			property: 'background-color',
 		},
 		...createIconTransitions({
-			className: ' .maxi-video-block__play-button',
+			target: ' .maxi-video-block__play-button',
 			prefix: 'play-icon-',
 			titlePrefix: 'play icon',
 			disableBorder: true,
 			disableBackground: true,
 		}),
 		...createIconTransitions({
-			className: ' .maxi-video-block__close-button',
+			target: ' .maxi-video-block__close-button',
 			prefix: 'close-icon-',
 			titlePrefix: 'close icon',
 			disableBorder: true,

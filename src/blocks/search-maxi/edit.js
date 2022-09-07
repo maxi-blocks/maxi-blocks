@@ -13,8 +13,7 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 
 import { getIconPositionClass } from '../../extensions/styles';
 import getStyles from './styles';
-import { copyPasteMapping } from './data';
-import { closeIconPrefix } from './attributes';
+import { prefixes, copyPasteMapping } from './data';
 
 /**
  * External dependencies
@@ -25,6 +24,7 @@ import classnames from 'classnames';
  * Search block
  */
 const SearchBlock = props => {
+	const { closeIconPrefix } = prefixes;
 	const { attributes, isSelected } = props;
 	const {
 		'icon-content': buttonIcon,
@@ -133,6 +133,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	get getMaxiCustomData() {
+		const { closeIconPrefix } = prefixes;
 		const { attributes } = this.props;
 		const {
 			'icon-content': buttonIconContent,

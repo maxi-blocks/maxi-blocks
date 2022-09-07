@@ -22,8 +22,9 @@ import {
 	getTypographyStyles,
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
-import data from './data';
-import { buttonPrefix, closeIconPrefix, inputPrefix } from './prefixes';
+import data, { prefixes } from './data';
+
+const { buttonPrefix, closeIconPrefix, inputPrefix } = prefixes;
 
 const getNormalObject = props => {
 	const response = {

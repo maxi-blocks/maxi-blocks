@@ -336,9 +336,7 @@ const SliderWrapper = props => {
 	}, [numberOfSlides]);
 
 	useEffect(() => {
-		if (currentSlide === 0) {
-			setTimeout(() => setActiveSlide(0), 10);
-		}
+		if (currentSlide === 0) setTimeout(() => setActiveSlide(0), 10);
 	}, [currentSlide]);
 
 	const classes = classnames(

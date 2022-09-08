@@ -72,9 +72,9 @@ class edit extends MaxiBlockComponent {
 					].indexOf(blockName) === -1
 			);
 
-		const emptySlideClass = !hasInnerBlocks
-			? 'maxi-slide-block__empty'
-			: 'maxi-slide-block__has-innerBlock';
+		const emptySlideClass = `maxi-slide-block__${
+			hasInnerBlocks ? 'has-innerBlock' : 'empty'
+		}`;
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,

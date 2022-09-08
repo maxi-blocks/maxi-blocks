@@ -485,9 +485,9 @@ class edit extends MaxiBlockComponent {
 		const { attributes, hasInnerBlocks } = this.props;
 		const { uniqueID } = attributes;
 
-		const emptySliderClass = !hasInnerBlocks
-			? 'maxi-slider-block__empty'
-			: 'maxi-slider-block__has-innerBlock';
+		const emptySliderClass = `maxi-slide-block__${
+			hasInnerBlocks ? 'has-innerBlock' : 'empty'
+		}`;
 		const inlineStylesTargets = {
 			dot: '.maxi-slider-block__dot:not(.maxi-slider-block__dot--active)',
 			dotActive: '.maxi-slider-block__dot--active',

@@ -68,9 +68,15 @@ const getImageShapeStyles = (
 		if (isNumber(rotate)) {
 			if (target === 'svg') transformString += `rotate(${rotate}deg) `;
 			if (target === 'image')
-				if ((flipX && !flipY) || (!flipX && flipY))
+				if ((flipX && !flipY) || (!flipX && flipY)){
 					transformString += `rotate(${rotate}deg) `;
-				else transformString += `rotate(-${rotate}deg) `;
+				}else{ 
+					if(rotate > 0){
+						transformString += `rotate(-${rotate}deg) `;
+					}else{
+						transformString += `rotate(${Math.abs(rotate)}deg) `;
+					}
+				}
 		}
 
 		if (flipX) {

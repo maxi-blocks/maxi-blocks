@@ -71,12 +71,18 @@ const relations = () => {
 		return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 	};
 
-	const getAvoidHover = (hoverStatus, targetEl, transitionTarget) =>
+	const getAvoidHover = (hoverStatus, targetEl, target, transitionTarget) =>
 		hoverStatus &&
 		targetEl &&
 		transitionTarget?.length > 0 &&
 		targetEl.isSameNode(
-			targetEl.closest('.maxi-block').querySelector(transitionTarget)
+			targetEl
+				.closest('.maxi-block')
+				.querySelector(
+					transitionTarget.map(currentTarget =>
+						currentTarget === '' ? target : currentTarget
+					)
+				)
 		);
 
 	const toggleInlineStyles = ({
@@ -108,6 +114,7 @@ const relations = () => {
 			const avoidHover = getAvoidHover(
 				hoverStatus,
 				targetEl,
+				target,
 				transitionTarget
 			);
 
@@ -178,6 +185,7 @@ const relations = () => {
 				const avoidHover = getAvoidHover(
 					hoverStatus,
 					targetEl,
+					target,
 					transitionTarget
 				);
 

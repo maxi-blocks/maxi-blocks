@@ -19,6 +19,8 @@ import classnames from 'classnames';
  * Editor
  */
 class edit extends MaxiBlockComponent {
+	static contextType = SliderContext;
+
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
@@ -116,7 +118,5 @@ class edit extends MaxiBlockComponent {
 		];
 	}
 }
-
-edit.contextType = SliderContext;
 
 export default withMaxiProps(edit);

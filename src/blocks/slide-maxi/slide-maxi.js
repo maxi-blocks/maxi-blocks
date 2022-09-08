@@ -40,7 +40,7 @@ registerBlockType('maxi-blocks/slide-maxi', {
 	attributes: {
 		...attributes,
 	},
-	parent: ['maxi-blocks/row-maxi'],
+	parent: ['maxi-blocks/slider-maxi'],
 	getEditWrapperProps(attributes) {
 		const { uniqueID } = attributes;
 		return {

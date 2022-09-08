@@ -33,7 +33,6 @@ import { VideoOverlayControl } from '../../blocks/video-maxi/components';
 const getTransformControl = name => {
 	const { categories, selectors } = getBlockCategoriesAndSelectors(name);
 
-	// TODO: add hoverProp entry
 	return {
 		label: __('Transform', 'maxi-blocks'),
 		transitionTarget: [],

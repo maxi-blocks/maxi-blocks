@@ -152,7 +152,12 @@ const RelationControl = props => {
 			item.effects.hoverStatus !==
 				getHoverStatus(selectedSettingsObj.hoverProp, blockAttributes)
 		) {
-			const { transitionTarget, hoverProp } = selectedSettingsObj;
+			const { transitionTarget: rawTransitionTarget, hoverProp } =
+				selectedSettingsObj;
+			const transitionTarget =
+				item.settings === 'Transform'
+					? Object.keys(item.css)
+					: rawTransitionTarget;
 
 			let hoverStatus = null;
 

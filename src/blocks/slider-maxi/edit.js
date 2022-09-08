@@ -134,8 +134,9 @@ const SliderWrapper = props => {
 	};
 
 	const nextSlide = () => {
+		addSliderTransition();
+
 		if (currentSlide + 1 < numberOfSlides || isLoop) {
-			addSliderTransition();
 			setCurrentSlide(prev => {
 				return prev + 1;
 			});
@@ -145,14 +146,13 @@ const SliderWrapper = props => {
 			if (!isSelected)
 				dispatch('core/block-editor').selectBlock(clientId);
 		} else {
-			addSliderTransition();
 			setWrapperTranslate(getSlidePosition(currentSlide));
 		}
 	};
 
 	const prevSlide = () => {
+		addSliderTransition();
 		if (currentSlide - 1 >= 0 || isLoop) {
-			addSliderTransition();
 			setCurrentSlide(next => {
 				return next - 1;
 			});
@@ -161,7 +161,6 @@ const SliderWrapper = props => {
 			if (!isSelected)
 				dispatch('core/block-editor').selectBlock(clientId);
 		} else {
-			addSliderTransition();
 			setWrapperTranslate(getSlidePosition(currentSlide));
 		}
 	};
@@ -233,9 +232,7 @@ const SliderWrapper = props => {
 			':scope > .maxi-slide-block--clone'
 		);
 
-		clones.forEach(clone => {
-			clone.remove();
-		});
+		clones.forEach(clone => clone.remove());
 
 		setRealFirstSlideOffset(0);
 	};
@@ -247,21 +244,22 @@ const SliderWrapper = props => {
 
 		if (!slide) {
 			const clone = document.createElement('li');
-			clone.classList.add('maxi-slide-block');
-			clone.classList.add('maxi-slide-block--clone');
+			clone.classList.add('maxi-slide-block', 'maxi-slide-block--clone');
 			return clone;
 		}
 
 		const clone = slide.cloneNode(true);
 		clone.classList.add('maxi-slide-block--clone');
-		clone.removeAttribute('uniqueid');
-		clone.removeAttribute('data-block');
-		clone.id = `clone-${clone.id}`;
 
+		const cleanClone = clone => {
+			clone.removeAttribute('uniqueid');
+			clone.removeAttribute('data-block');
+			clone.id = `clone-${clone.id}`;
+		};
+
+		cleanClone(clone);
 		Array.from(clone.children).forEach(child => {
-			child.id = `clone-${child.id}`;
-			child.removeAttribute('data-block');
-			child.removeAttribute('uniqueid');
+			cleanClone(child);
 		});
 
 		return clone;

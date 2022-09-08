@@ -14,23 +14,34 @@ const copyPasteMapping = {
 		},
 		Navigation: {
 			group: {
-				'Enable arrows': 'navigation-arrows-status',
-				'Enable dots': 'navigation-dots-status',
+				'Enable arrows': 'navigation-arrow-both-status',
+				'Enable dots': 'navigation-dot-status',
 				'Arrows position': 'navigation-arrow-position',
 				'Dots position': 'navigation-dot-position',
 			},
+			hasBreakpoints: true,
 		},
 		Arrows: {
 			group: {
-				'Arrow icons': 'arrowIcon',
-				'Arrow icons - hover': 'arrowIconHover',
+				'Arrow icons': {
+					groupAttributes: 'arrowIcon',
+				},
+				'Arrow icons - hover': {
+					groupAttributes: 'arrowIconHover',
+				},
 			},
 		},
 		Dots: {
 			group: {
-				'Dot icons': 'dotIcon',
-				'Dot icons - hover': 'dotIconHover',
-				'Dot icons - active': 'dotIconActive',
+				'Dot icons': {
+					groupAttributes: 'dotIcon',
+				},
+				'Dot icons - hover': {
+					groupAttributes: 'dotIconHover',
+				},
+				'Dot icons - active': {
+					groupAttributes: 'dotIconActive',
+				},
 			},
 		},
 		Background: {

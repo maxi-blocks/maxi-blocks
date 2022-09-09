@@ -340,13 +340,15 @@ const relations = () => {
 										? rawTransitionTarget.slice(0, -3)
 										: rawTransitionTarget;
 
-								const transitionTargetsEl = transitionTarget
-									? targetEl.querySelectorAll(
-											transitionTarget
-									  )
-									: [targetEl];
+								let transitionTargetEls =
+									transitionTarget &&
+									targetEl.querySelectorAll(transitionTarget);
 
-								Array.from(transitionTargetsEl).forEach(
+								if (transitionTargetEls?.length === 0)
+									transitionTargetEls = [targetEl];
+
+								console.log(transitionTargetEls, targetEl);
+								Array.from(transitionTargetEls).forEach(
 									transitionTargetEl => {
 										const transitionDuration =
 											parseFloat(

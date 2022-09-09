@@ -71,3 +71,4 @@ export { default as toolbarAlignCenter } from './toolbar-align-center';
 export { default as toolbarAlignLeft } from './toolbar-align-left';
 export { default as toolbarAlignRight } from './toolbar-align-right';
 export { default as toolbarAlignJustify } from './toolbar-align-justify';
+export { default as toolbarDynamicContent } from './dynamic-content';

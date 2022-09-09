@@ -521,6 +521,7 @@ const RelationControl = props => {
 														item.id,
 														{
 															attributes: {},
+															css: {},
 															target: getTarget(),
 															settings: value,
 															effects: {

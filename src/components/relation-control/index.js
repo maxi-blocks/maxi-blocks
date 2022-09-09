@@ -453,15 +453,16 @@ const RelationControl = props => {
 													const {
 														transitionTarget,
 														hoverProp,
-													} = getOptions(
-														getClientIdFromUniqueId(
-															item.uniqueID
-														)
-													).find(
-														option =>
-															option.label ===
-															value
-													);
+													} =
+														getOptions(
+															getClientIdFromUniqueId(
+																item.uniqueID
+															)
+														).find(
+															option =>
+																option.label ===
+																value
+														) || {};
 
 													const clientId =
 														getClientIdFromUniqueId(
@@ -522,13 +523,12 @@ const RelationControl = props => {
 															attributes: {},
 															target: getTarget(),
 															settings: value,
-															...(transitionTarget && {
-																effects: {
-																	...item.effects,
-																	transitionTarget,
-																	hoverStatus,
-																},
-															}),
+															effects: {
+																...item.effects,
+																transitionTarget,
+																hoverStatus:
+																	!!hoverStatus,
+															},
 														}
 													);
 												}}

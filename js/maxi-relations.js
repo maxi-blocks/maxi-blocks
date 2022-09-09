@@ -344,7 +344,7 @@ const relations = () => {
 									? targetEl.querySelectorAll(
 											transitionTarget
 									  )
-									: targetEl;
+									: [targetEl];
 
 								Array.from(transitionTargetsEl).forEach(
 									transitionTargetEl => {

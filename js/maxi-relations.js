@@ -188,10 +188,11 @@ const relations = () => {
 					);
 
 				const svgTarget = `${target} ${
-					avoidHover && transitionTarget?.endsWith('> *')
-						? transitionTarget.slice(0, -4) +
-						  ':not(:hover)' +
-						  transitionTarget.slice(transitionTarget.length - 4)
+					avoidHover
+						? transitionTarget.replace(
+								'maxi-svg-icon-block__icon',
+								match => `${match}:not(:hover)`
+						  )
 						: transitionTarget
 				}`;
 

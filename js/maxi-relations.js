@@ -339,58 +339,69 @@ const relations = () => {
 									rawTransitionTarget?.endsWith('> *')
 										? rawTransitionTarget.slice(0, -3)
 										: rawTransitionTarget;
-								let transitionTargetEl = transitionTarget
-									? targetEl.querySelector(transitionTarget)
+
+								const transitionTargetsEl = transitionTarget
+									? targetEl.querySelectorAll(
+											transitionTarget
+									  )
 									: targetEl;
 
-								// Need a better way to do this
-								transitionTargetEl =
-									transitionTargetEl ?? targetEl;
+								Array.from(transitionTargetsEl).forEach(
+									transitionTargetEl => {
+										const transitionDuration =
+											parseFloat(
+												getComputedStyle(
+													transitionTargetEl
+												)
+													.getPropertyValue(
+														'transition-duration'
+													)
+													.replace('s', '')
+											) * 1000;
 
-								const transitionDuration =
-									parseFloat(
-										getComputedStyle(transitionTargetEl)
-											.getPropertyValue(
-												'transition-duration'
-											)
-											.replace('s', '')
-									) * 1000;
+										transitionTargetEl.addEventListener(
+											'mouseenter',
+											() => {
+												clearTimeout(contentTimeout);
 
-								transitionTargetEl.addEventListener(
-									'mouseenter',
-									() => {
-										clearTimeout(contentTimeout);
+												// Remove transitions to let the original ones be applied
+												toggleTransition({
+													target: `${target.trim()}[data-maxi-relations="true"]`,
+													stylesObj,
+													transitionTarget,
+													effectsObj,
+													remove: true,
+													hoverStatus,
+												});
+											}
+										);
 
-										// Remove transitions to let the original ones be applied
-										toggleTransition({
-											target: `${target.trim()}[data-maxi-relations="true"]`,
-											stylesObj,
-											transitionTarget,
-											effectsObj,
-											remove: true,
-											hoverStatus,
-										});
-									}
-								);
-
-								transitionTargetEl.addEventListener(
-									'mouseleave',
-									() => {
-										contentTimeout = setTimeout(() => {
-											// Set the transitions back waiting the original to be done
-											toggleTransition({
-												target: `${target.trim()}[data-maxi-relations="true"]`,
-												stylesObj,
-												transitionTarget,
-												effectsObj,
-												isIcon:
-													item.settings ===
-														'Icon colour' ||
-													item.settings ===
-														'Button icon',
-												hoverStatus,
-											});
-										}, transitionDuration);
+										transitionTargetEl.addEventListener(
+											'mouseleave',
+											() => {
+												contentTimeout = setTimeout(
+													() => {
+														// Set the transitions back waiting the original to be done
+														toggleTransition({
+															target: `${target.trim()}[data-maxi-relations="true"]`,
+															stylesObj,
+															transitionTarget,
+															effectsObj,
+															isIcon:
+																item.settings ===
+																	'Icon colour' ||
+																item.settings ===
+																	'Button icon',
+															hoverStatus,
+														});
+														console.log(
+															'back transitions'
+														);
+													},
+													transitionDuration
+												);
+											}
+										);
 									}
 								);
 							});

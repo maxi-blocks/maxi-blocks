@@ -288,6 +288,8 @@ const relations = () => {
 		let contentTimeout;
 		let dataTimeout;
 
+		let isNestedHoverTransition = false;
+
 		switch (item.action) {
 			case 'hover':
 				{
@@ -303,24 +305,6 @@ const relations = () => {
 						);
 
 						const { hoverStatus, transitionTarget } = item.effects;
-
-						toggleTransition({
-							target: `${target.trim()}[data-maxi-relations="true"]`,
-							stylesObj,
-							transitionTarget,
-							effectsObj,
-							isIcon:
-								item.settings === 'Icon colour' ||
-								item.settings === 'Button icon',
-							hoverStatus,
-						});
-
-						toggleInlineStyles({
-							stylesObj,
-							target: `${target.trim()}[data-maxi-relations="true"]`,
-							hoverStatus,
-							transitionTarget,
-						});
 
 						/**
 						 * In case the target element is nested inside the trigger element, we need to ensure the original hover transition
@@ -363,6 +347,7 @@ const relations = () => {
 										transitionTargetEl.addEventListener(
 											'mouseenter',
 											() => {
+												isNestedHoverTransition = true;
 												clearTimeout(contentTimeout);
 
 												// Remove transitions to let the original ones be applied
@@ -395,6 +380,7 @@ const relations = () => {
 																	'Button icon',
 															hoverStatus,
 														});
+														isNestedHoverTransition = false;
 													},
 													transitionDuration
 												);
@@ -404,6 +390,25 @@ const relations = () => {
 								);
 							});
 						}
+
+						!isNestedHoverTransition &&
+							toggleTransition({
+								target: `${target.trim()}[data-maxi-relations="true"]`,
+								stylesObj,
+								transitionTarget,
+								effectsObj,
+								isIcon:
+									item.settings === 'Icon colour' ||
+									item.settings === 'Button icon',
+								hoverStatus,
+							});
+
+						toggleInlineStyles({
+							stylesObj,
+							target: `${target.trim()}[data-maxi-relations="true"]`,
+							hoverStatus,
+							transitionTarget,
+						});
 					});
 
 					triggerEl.addEventListener('mouseleave', () => {
@@ -413,7 +418,7 @@ const relations = () => {
 						);
 						const { hoverStatus, transitionTarget } = item.effects;
 
-						if (triggerEl.contains(targetEl))
+						if (triggerEl.contains(targetEl) && !isNestedHoverTransition)
 							toggleTransition({
 								target: `${target.trim()}[data-maxi-relations="true"]`,
 								stylesObj,

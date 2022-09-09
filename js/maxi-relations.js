@@ -395,9 +395,6 @@ const relations = () => {
 																	'Button icon',
 															hoverStatus,
 														});
-														console.log(
-															'back transitions'
-														);
 													},
 													transitionDuration
 												);

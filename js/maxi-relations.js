@@ -100,14 +100,22 @@ const relations = () => {
 			const avoidHover =
 				hoverStatus &&
 				targetEl &&
-				targetEl.isSameNode(
+				targetEl.contains(
 					targetEl
 						.closest('.maxi-block')
 						.querySelector(transitionTarget)
 				);
 
-			const selector = `body.maxi-blocks--active ${target}${
-				avoidHover ? ':not(:hover)' : ''
+			const isSVG = target.includes('svg-icon-maxi');
+			const avoidHoverString = avoidHover ? ':not(:hover)' : '';
+
+			const selector = `body.maxi-blocks--active ${
+				isSVG
+					? target.replace(
+							'maxi-svg-icon-block__icon',
+							match => `${match}${avoidHoverString}`
+					  )
+					: `${target}${avoidHoverString}`
 			} {`.replace(/\s{2,}/g, ' ');
 
 			Object.entries(stylesObj).forEach(([key, value]) => {
@@ -173,7 +181,7 @@ const relations = () => {
 				const avoidHover =
 					hoverStatus &&
 					targetEl &&
-					targetEl.isSameNode(
+					targetEl.contains(
 						targetEl
 							.closest('.maxi-block')
 							.querySelector(transitionTarget)

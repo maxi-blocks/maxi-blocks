@@ -347,7 +347,6 @@ const relations = () => {
 								if (transitionTargetEls?.length === 0)
 									transitionTargetEls = [targetEl];
 
-								console.log(transitionTargetEls, targetEl);
 								Array.from(transitionTargetEls).forEach(
 									transitionTargetEl => {
 										const transitionDuration =

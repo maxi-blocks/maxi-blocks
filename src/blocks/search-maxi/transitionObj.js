@@ -1,3 +1,4 @@
+import { createIconTransitions } from '../../extensions/styles';
 import { closeIconPrefix, buttonPrefix, inputPrefix } from './prefixes';
 
 const transitionObj = {
@@ -14,27 +15,20 @@ const transitionObj = {
 		},
 	},
 	button: {
-		icon: {
-			title: 'Icon',
-			target: [
-				' .maxi-search-block__button__default-icon svg > *',
-				' .maxi-search-block__button__default-icon svg',
-				' .maxi-search-block__button__default-icon',
-			],
-			property: 'icon',
-			limitless: true,
-		},
-		'close icon': {
-			title: 'Close icon',
-			target: [
-				' .maxi-search-block__button__close-icon svg > *',
-				' .maxi-search-block__button__close-icon svg',
-				' .maxi-search-block__button__close-icon',
-			],
-			property: 'icon',
-			limitless: true,
-			prefix: closeIconPrefix,
-		},
+		...createIconTransitions({
+			target: ' .maxi-search-block__button__default-icon',
+			prefix: 'icon-',
+			titlePrefix: 'icon',
+			disableBackground: true,
+			disableBorder: true,
+		}),
+		...createIconTransitions({
+			target: ' .maxi-search-block__button__close-icon',
+			prefix: `${closeIconPrefix}icon-`,
+			titlePrefix: 'close icon',
+			disableBackground: true,
+			disableBorder: true,
+		}),
 		typography: {
 			title: 'Typography',
 			target: ' .maxi-search-block__button__content',

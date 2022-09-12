@@ -128,7 +128,7 @@ const BoxShadowControl = props => {
 		isHover = false,
 		prefix = '',
 		clientId,
-		customLabel = 'Box shadow',
+		label = 'Box shadow',
 		dropShadow = false,
 	} = props;
 
@@ -246,7 +246,7 @@ const BoxShadowControl = props => {
 			{(isToolbar || !isNone) && (
 				<>
 					<ColorControl
-						label={__(`${customLabel}`, 'maxi-blocks')}
+						label={__(`${label}`, 'maxi-blocks')}
 						className='maxi-shadow-control__color'
 						color={getLastBreakpointAttribute({
 							target: `${prefix}box-shadow-color`,

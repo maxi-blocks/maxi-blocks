@@ -976,7 +976,7 @@ const NavigationIconControl = props => {
 								`${prefix}-`
 							)}
 							prefix={`${prefix}-`}
-							customLabel={`${labelCapital} box shadow`}
+							label={`${labelCapital} box shadow`}
 							onChange={onChange}
 							breakpoint={breakpoint}
 							clientId={clientId}

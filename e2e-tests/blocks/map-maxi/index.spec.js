@@ -69,7 +69,8 @@ describe('Map Maxi', () => {
 		// Check frontend
 		const previewPage = await openPreviewPage(page);
 		await previewPage.waitForSelector('.leaflet-container');
-		await page.waitForTimeout(150);
+		// Waiting for the animation to complete
+		await page.waitForTimeout(400);
 		const container = await previewPage.$eval(
 			'.maxi-map-block__container',
 			container => container.innerHTML.trim()

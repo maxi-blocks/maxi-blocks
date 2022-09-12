@@ -7,7 +7,10 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import { createSelectors } from '../../extensions/styles/custom-css';
-import { getIconWithColor } from '../../extensions/styles';
+import {
+	createIconTransitions,
+	getIconWithColor,
+} from '../../extensions/styles';
 import {
 	BackgroundControl,
 	BorderControl,
@@ -208,30 +211,11 @@ const transition = {
 			property: 'box-shadow',
 			prefix,
 		},
-		'icon colour': {
-			title: 'Icon colour',
-			target: `${iconClass} svg > *`,
-			hoverProp: 'icon-status-hover',
-			limitless: true,
-		},
-		'icon width': {
-			title: 'Icon width',
-			target: `${iconClass} svg`,
-			property: ['width', 'height'],
-			hoverProp: 'icon-status-hover',
-		},
-		'icon background': {
-			title: 'Icon background',
-			target: iconClass,
-			property: 'background',
-			hoverProp: 'icon-status-hover',
-		},
-		'icon border': {
-			title: 'Icon border',
-			target: iconClass,
-			property: 'border',
-			hoverProp: 'icon-status-hover',
-		},
+		...createIconTransitions({
+			target: ' .maxi-button-block__icon',
+			prefix: 'icon-',
+			titlePrefix: 'icon',
+		}),
 	},
 };
 const interactionBuilderSettings = [

@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import { createSelectors } from '../../extensions/styles/custom-css';
+import { createIconTransitions } from '../../extensions/styles';
 import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
 
 /**
@@ -222,27 +223,20 @@ const transition = {
 		},
 	},
 	button: {
-		icon: {
-			title: 'Icon',
-			target: [
-				`${defaultIconClass} svg > *`,
-				`${defaultIconClass} svg`,
-				defaultIconClass,
-			],
-			property: 'icon',
-			limitless: true,
-		},
-		'close icon': {
-			title: 'Close icon',
-			target: [
-				`${closeIconClass} svg > *`,
-				`${closeIconClass} svg`,
-				closeIconClass,
-			],
-			property: 'icon',
-			limitless: true,
-			prefix: closeIconPrefix,
-		},
+		...createIconTransitions({
+			target: ' .maxi-search-block__button__default-icon',
+			prefix: 'icon-',
+			titlePrefix: 'icon',
+			disableBackground: true,
+			disableBorder: true,
+		}),
+		...createIconTransitions({
+			target: ' .maxi-search-block__button__close-icon',
+			prefix: `${closeIconPrefix}icon-`,
+			titlePrefix: 'close icon',
+			disableBackground: true,
+			disableBorder: true,
+		}),
 		typography: {
 			title: 'Typography',
 			target: `${buttonClass}__content`,

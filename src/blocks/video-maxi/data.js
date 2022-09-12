@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import { createSelectors } from '../../extensions/styles/custom-css';
+import { createIconTransitions } from '../../extensions/styles';
 import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
@@ -208,54 +209,20 @@ const transition = {
 			hoverProp: 'overlay-background-hover-status',
 			property: 'background-color',
 		},
-		'play icon colour': {
-			title: 'Play icon colour',
-			target: ' .maxi-video-block__play-button svg > *',
-			hoverProp: 'play-icon-status-hover',
-			limitless: true,
-		},
-		'play icon width': {
-			title: 'Play icon width',
-			target: ' .maxi-video-block__play-button svg',
-			property: ['width', 'height'],
-			hoverProp: 'play-icon-status-hover',
-		},
-		'play icon background': {
-			title: 'Play icon background',
+		...createIconTransitions({
 			target: ' .maxi-video-block__play-button',
-			property: 'background',
-			hoverProp: 'play-icon-status-hover',
-		},
-		'play icon border': {
-			title: 'Play icon border',
-			target: ' .maxi-video-block__play-button',
-			property: 'border',
-			hoverProp: 'play-icon-status-hover',
-		},
-		'close icon colour': {
-			title: 'Close icon colour',
-			target: ' .maxi-video-block__close-button svg > *',
-			hoverProp: 'close-icon-status-hover',
-			limitless: true,
-		},
-		'close icon width': {
-			title: 'Close icon width',
-			target: ' .maxi-video-block__close-button svg',
-			property: ['width', 'height'],
-			hoverProp: 'close-icon-status-hover',
-		},
-		'close icon background': {
-			title: 'Close icon background',
+			prefix: 'play-icon-',
+			titlePrefix: 'play icon',
+			disableBorder: true,
+			disableBackground: true,
+		}),
+		...createIconTransitions({
 			target: ' .maxi-video-block__close-button',
-			property: 'background',
-			hoverProp: 'close-icon-status-hover',
-		},
-		'close icon border': {
-			title: 'Close icon border',
-			target: ' .maxi-video-block__close-button',
-			property: 'border',
-			hoverProp: 'close-icon-status-hover',
-		},
+			prefix: 'close-icon-',
+			titlePrefix: 'close icon',
+			disableBorder: true,
+			disableBackground: true,
+		}),
 	},
 };
 const interactionBuilderSettings = getCanvasSettings({ name, customCss });

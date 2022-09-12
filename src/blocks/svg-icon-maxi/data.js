@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import { createSelectors } from '../../extensions/styles/custom-css';
+import { createIconTransitions } from '../../extensions/styles';
 import {
 	SvgColorControl,
 	// SvgStrokeWidthControl,
@@ -164,6 +165,13 @@ const transition = {
 			hoverProp: 'svg-status-hover',
 			limitless: true,
 		},
+		...createIconTransitions({
+			target: ' .maxi-svg-icon-block__icon',
+			prefix,
+			disableBackground: true,
+			disableBorder: true,
+			disableWidth: true,
+		}),
 		background: {
 			title: 'Background',
 			target: ' .maxi-svg-icon-block__icon',

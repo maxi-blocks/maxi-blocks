@@ -60,6 +60,23 @@ const DynamicContent = props => {
 	const [postIdOptions, setPostIdOptions] = useState([]);
 	const [isEmptyIdOptions, setIsEmptyIdOptions] = useState(true);
 
+	const validationsValues = variableValue => {
+		const result = fieldOptions[variableValue].map(x => x.value);
+		if (result.includes(field)) {
+			return {};
+		} else {
+			return { 'dc-field': result[0] };
+		}
+	};
+
+	const disabledType = valueType => {
+		Object.keys(typeOptions).forEach(key => {
+			if (typeOptions[key]['value'] === valueType) {
+				typeOptions[key].disabled = true;
+			}
+		});
+	};
+
 	const getContentPath = (type, id, field) => {
 		if (relationTypes.includes(type) && relation === 'last-published')
 			return `/wp/v2/${type}&per_page=1`;
@@ -190,7 +207,7 @@ const DynamicContent = props => {
 		return `/wp/v2/${type}?_fields=id, ${idOptionByField[type]}`;
 	};
 
-	const getIdOptions = async newType =>
+	const getIdOptions = async (newType, additionalParameters = null) =>
 		idFields.includes(newType ?? type) &&
 		apiFetch({
 			path: getIdOptionsPath(newType ?? type),
@@ -211,14 +228,19 @@ const DynamicContent = props => {
 					};
 				});
 
-				if (isEmpty(newPostIdOptions)) setIsEmptyIdOptions(true);
-				else {
+				if (isEmpty(newPostIdOptions)) {
+					setIsEmptyIdOptions(true);
+					disabledType(newType ?? type);
+					additionalParameters && onChange(additionalParameters);
+				} else {
 					setIsEmptyIdOptions(false);
 
 					setPostIdOptions(newPostIdOptions);
 
 					// Set default values in case they are not defined
-					const defaultValues = {};
+					const defaultValues = additionalParameters
+						? additionalParameters
+						: {};
 
 					// Ensures first post id is selected
 					if (isEmpty(find(newPostIdOptions, { value: id })))
@@ -279,9 +301,19 @@ const DynamicContent = props => {
 							value={type}
 							options={typeOptions}
 							onChange={value => {
-								onChange({ 'dc-type': value });
+								const dcFieldActual = validationsValues(value);
 
-								getIdOptions(value);
+								if (idFields.includes(value)) {
+									getIdOptions(value, {
+										'dc-type': value,
+										...dcFieldActual,
+									});
+								} else {
+									onChange({
+										'dc-type': value,
+										...dcFieldActual,
+									});
+								}
 							}}
 						/>
 						{isEmptyIdOptions ? (

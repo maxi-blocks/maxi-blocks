@@ -106,7 +106,7 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 				animate={false}
 				position='bottom center'
 				focusOnMount={false}
-				style={{ zIndex: Object.keys(blockHierarchy).length + 2 }}
+				style={{ zIndex: Object.keys(blockHierarchy).length + 1 }}
 				anchorRef={ref.current}
 				__unstableSlotName='block-toolbar'
 				__unstableStickyBoundaryElement={getBoundaryElement(

@@ -59,61 +59,41 @@ const save = props => {
 						className: 'maxi-slider-block__wrapper',
 					})}
 				/>
-				{(attributes['navigation-arrow-first-icon-content'] ||
-					attributes['navigation-arrow-first-icon-content'] ||
-					attributes['navigation-dot-icon-content']) && (
-					<div className='maxi-slider-block__nav'>
-						{attributes['navigation-arrow-first-icon-content'] && (
-							<span className='maxi-slider-block__arrow maxi-slider-block__arrow--prev'>
-								<RawHTML>
-									{
-										attributes[
-											'navigation-arrow-first-icon-content'
-										]
-									}
-								</RawHTML>
-							</span>
-						)}
-						{attributes['navigation-arrow-second-icon-content'] && (
-							<span className='maxi-slider-block__arrow maxi-slider-block__arrow--next'>
-								<RawHTML>
-									{
-										attributes[
-											'navigation-arrow-second-icon-content'
-										]
-									}
-								</RawHTML>
-							</span>
-						)}
-						{attributes['navigation-dot-icon-content'] && (
-							<div className='maxi-slider-block__dots'>
-								{Array.from(Array(numberOfSlides).keys()).map(
-									i => {
-										return (
-											<span
-												className={classnames(
-													'maxi-slider-block__dot',
-													`maxi-slider-block__dot--${i}`,
-													i === 0 &&
-														' maxi-slider-block__dot--active'
-												)}
-												key={`maxi-slider-block__dot--${i}`}
-											>
-												<RawHTML className='maxi-navigation-dot-icon-block__icon'>
-													{
-														attributes[
-															'navigation-dot-icon-content'
-														]
-													}
-												</RawHTML>
-											</span>
-										);
-									}
-								)}
-							</div>
-						)}
+				<div className='maxi-slider-block__nav'>
+					<span className='maxi-slider-block__arrow maxi-slider-block__arrow--prev'>
+						<RawHTML>
+							{attributes['navigation-arrow-first-icon-content']}
+						</RawHTML>
+					</span>
+					<span className='maxi-slider-block__arrow maxi-slider-block__arrow--next'>
+						<RawHTML>
+							{attributes['navigation-arrow-second-icon-content']}
+						</RawHTML>
+					</span>
+					<div className='maxi-slider-block__dots'>
+						{Array.from(Array(numberOfSlides).keys()).map(i => {
+							return (
+								<span
+									className={classnames(
+										'maxi-slider-block__dot',
+										`maxi-slider-block__dot--${i}`,
+										i === 0 &&
+											' maxi-slider-block__dot--active'
+									)}
+									key={`maxi-slider-block__dot--${i}`}
+								>
+									<RawHTML className='maxi-navigation-dot-icon-block__icon'>
+										{
+											attributes[
+												'navigation-dot-icon-content'
+											]
+										}
+									</RawHTML>
+								</span>
+							);
+						})}
 					</div>
-				)}
+				</div>
 			</div>
 		</MaxiBlock.save>
 	);

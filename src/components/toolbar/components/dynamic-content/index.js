@@ -124,7 +124,7 @@ const DynamicContent = props => {
 					if (typeof res[0] === 'object' && 'id' in res[0]) {
 						return res;
 					} else {
-						throw new Error('Value is not object');
+						throw new Error('Value is not an object');
 					}
 				})
 				.then(
@@ -161,7 +161,7 @@ const DynamicContent = props => {
 					if (typeof res[getBy] === 'object' && 'id' in res[getBy]) {
 						return res;
 					} else {
-						throw new Error('Value is not object');
+						throw new Error('Value is not an object');
 					}
 				})
 				.then(
@@ -257,12 +257,11 @@ const DynamicContent = props => {
 
 	return (
 		<ToolbarPopover
-			className='toolbar-item__text-margin'
+			className='toolbar-item__dynamic-content'
 			tooltip={__('Dynamic Content', 'maxi-blocks')}
 			icon={toolbarDynamicContent}
-			advancedOptions='margin padding'
 		>
-			<div className='toolbar-item__text-margin__popover toolbar-item__padding-margin__popover'>
+			<div className='toolbar-item__dynamic-content__popover toolbar-item__padding-margin__popover'>
 				<ToggleSwitch
 					label={__('Use dynamic content', 'maxi-blocks')}
 					selected={status}

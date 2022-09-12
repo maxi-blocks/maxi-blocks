@@ -32,13 +32,13 @@ const ResponsiveTabsControl = props => {
 		target,
 	} = props;
 
-	const { winBreakpoint } = useSelect(select => {
-		const { receiveWinBreakpoint } = select('maxiBlocks');
+	const { baseBreakpoint } = useSelect(select => {
+		const { receiveBaseBreakpoint } = select('maxiBlocks');
 
-		const winBreakpoint = receiveWinBreakpoint();
+		const baseBreakpoint = receiveBaseBreakpoint();
 
 		return {
-			winBreakpoint,
+			baseBreakpoint,
 		};
 	});
 
@@ -50,13 +50,13 @@ const ResponsiveTabsControl = props => {
 		if (breakpoint !== 'general')
 			return breakpoints.indexOf(breakpoint.toUpperCase());
 
-		if (!winBreakpoint) return null;
+		if (!baseBreakpoint) return null;
 
-		return breakpoints.indexOf(winBreakpoint.toUpperCase());
+		return breakpoints.indexOf(baseBreakpoint.toUpperCase());
 	};
 
 	const showNotification = customBreakpoint => {
-		return winBreakpoint === customBreakpoint.toLowerCase();
+		return baseBreakpoint === customBreakpoint.toLowerCase();
 	};
 
 	return (
@@ -67,7 +67,7 @@ const ResponsiveTabsControl = props => {
 					label: breakpoint,
 					content: cloneElement(children, {
 						breakpoint:
-							winBreakpoint === breakpoint.toLowerCase()
+							baseBreakpoint === breakpoint.toLowerCase()
 								? 'general'
 								: breakpoint.toLowerCase(),
 					}),
@@ -75,7 +75,7 @@ const ResponsiveTabsControl = props => {
 					showNotification: showNotification(breakpoint),
 					callback: () =>
 						!disableCallback
-							? winBreakpoint === breakpoint.toLowerCase()
+							? baseBreakpoint === breakpoint.toLowerCase()
 								? setScreenSize('general')
 								: setScreenSize(breakpoint.toLowerCase())
 							: null,

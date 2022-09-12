@@ -19,9 +19,10 @@ import SelectControl from '../../../select-control';
 import { find, isEmpty, isFinite, isNil, random, isArray } from 'lodash';
 
 /**
- * Icons
+ * Styles & Icons
  */
-import { toolbarTextMargin } from '../../../../icons';
+import './editor.scss';
+import { toolbarDynamicContent } from '../../../../icons';
 import {
 	renderedFields,
 	fieldOptions,
@@ -119,12 +120,24 @@ const DynamicContent = props => {
 
 			return apiFetch({
 				path: randomPath,
-			}).then(res =>
-				requestContent({
-					...dataRequest,
-					id: res[random(res.length - 1)].id,
+			})
+				.then(res => {
+					if (typeof res[0] === 'object' && 'id' in res[0]) {
+						return res;
+					} else {
+						throw new Error('Value is not an object');
+					}
 				})
-			);
+				.then(
+					res =>
+						requestContent({
+							...dataRequest,
+							id: res[random(res.length - 1)].id,
+						}),
+					error => {
+						console.error(error);
+					}
+				);
 		}
 
 		if (
@@ -144,15 +157,27 @@ const DynamicContent = props => {
 
 			return apiFetch({
 				path: prevNextPath,
-			}).then(res =>
-				isFinite(res[getBy].id)
-					? requestContent({
-							...dataRequest,
-							type: postTypeDic[postType],
-							id: res[getBy].id,
-					  })
-					: ''
-			);
+			})
+				.then(res => {
+					if (typeof res[getBy] === 'object' && 'id' in res[getBy]) {
+						return res;
+					} else {
+						throw new Error('Value is not an object');
+					}
+				})
+				.then(
+					res =>
+						isFinite(res[getBy].id)
+							? requestContent({
+									...dataRequest,
+									type: postTypeDic[postType],
+									id: res[getBy].id,
+							  })
+							: '',
+					error => {
+						console.error(error);
+					}
+				);
 		}
 
 		return requestContent(dataRequest);
@@ -233,12 +258,11 @@ const DynamicContent = props => {
 
 	return (
 		<ToolbarPopover
-			className='toolbar-item__text-margin'
-			tooltip={__('Margin', 'maxi-blocks')}
-			icon={toolbarTextMargin}
-			advancedOptions='margin padding'
+			className='toolbar-item__dynamic-content'
+			tooltip={__('Dynamic Content', 'maxi-blocks')}
+			icon={toolbarDynamicContent}
 		>
-			<div className='toolbar-item__text-margin__popover toolbar-item__padding-margin__popover'>
+			<div className='toolbar-item__dynamic-content__popover toolbar-item__dynamic-content__popover'>
 				<ToggleSwitch
 					label={__('Use dynamic content', 'maxi-blocks')}
 					selected={status}

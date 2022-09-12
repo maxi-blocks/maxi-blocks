@@ -158,7 +158,7 @@ class MaxiBlockComponent extends Component {
 		if (
 			this.props.isSelected !== nextProps.isSelected || // In case selecting/unselecting the block
 			this.props.deviceType !== nextProps.deviceType || // In case of breakpoint change
-			this.props.winBreakpoint !== nextProps.winBreakpoint // In case of winBreakpoint change
+			this.props.baseBreakpoint !== nextProps.baseBreakpoint // In case of baseBreakpoint change
 		)
 			return true;
 
@@ -246,6 +246,11 @@ class MaxiBlockComponent extends Component {
 
 		dispatch('maxiBlocks/customData').removeCustomData(
 			this.props.attributes.uniqueID
+		);
+
+		this.removeUnmountedBlockFromRelations(
+			this.props.attributes.uniqueID,
+			select('core/block-editor').getBlocks()
 		);
 
 		if (this.maxiBlockWillUnmount) this.maxiBlockWillUnmount();
@@ -362,6 +367,31 @@ class MaxiBlockComponent extends Component {
 		const response = getAllFonts(this.typography, 'custom-formats');
 
 		if (!isEmpty(response)) loadFonts(response);
+	}
+
+	removeUnmountedBlockFromRelations(uniqueID, blocksToCheck) {
+		blocksToCheck.forEach(({ clientId, attributes, innerBlocks }) => {
+			const { relations, uniqueID: blockUniqueID } = attributes;
+
+			if (uniqueID !== blockUniqueID && !isEmpty(relations)) {
+				const filteredRelations = relations.filter(
+					({ uniqueID: relationUniqueID }) =>
+						relationUniqueID !== uniqueID
+				);
+
+				if (!isEqual(relations, filteredRelations)) {
+					const { updateBlockAttributes } =
+						dispatch('core/block-editor');
+
+					updateBlockAttributes(clientId, {
+						relations: filteredRelations,
+					});
+				}
+			}
+
+			if (!isEmpty(innerBlocks))
+				this.removeUnmountedBlockFromRelations(uniqueID, innerBlocks);
+		});
 	}
 
 	/**

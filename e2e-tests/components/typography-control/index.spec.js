@@ -269,7 +269,7 @@ describe('TypographyControl', () => {
 	});
 
 	it('Check Size, line height and letter spacing', async () => {
-		await changeResponsive(page, 'xl');
+		await changeResponsive(page, 'base');
 
 		await addTypographyOptions({
 			page,

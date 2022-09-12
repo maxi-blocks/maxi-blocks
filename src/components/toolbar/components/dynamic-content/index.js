@@ -19,8 +19,9 @@ import SelectControl from '../../../select-control';
 import { find, isEmpty, isFinite, isNil, random, isArray } from 'lodash';
 
 /**
- * Icons
+ * Styles & Icons
  */
+import './editor.scss';
 import { toolbarDynamicContent } from '../../../../icons';
 import {
 	renderedFields,
@@ -261,7 +262,7 @@ const DynamicContent = props => {
 			tooltip={__('Dynamic Content', 'maxi-blocks')}
 			icon={toolbarDynamicContent}
 		>
-			<div className='toolbar-item__dynamic-content__popover toolbar-item__padding-margin__popover'>
+			<div className='toolbar-item__dynamic-content__popover toolbar-item__dynamic-content__popover'>
 				<ToggleSwitch
 					label={__('Use dynamic content', 'maxi-blocks')}
 					selected={status}

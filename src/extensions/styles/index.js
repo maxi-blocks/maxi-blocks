@@ -5,7 +5,6 @@ export { default as createIconTransitions } from './transitions/createIconTransi
 export { default as createTransitionObj } from './transitions/createTransitionObj';
 export { default as getAttributeKey } from './getAttributeKey';
 export { default as getAttributeValue } from './getAttributeValue';
-export { default as getBlockCategoriesAndSelectors } from './getBlockCategoriesAndSelectors';
 export { default as getBlockStyle } from './getBlockStyle';
 export { default as getColorRGBAParts } from './getColorRGBAParts';
 export { default as getColorRGBAString } from './getColorRGBAString';

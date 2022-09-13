@@ -15,7 +15,7 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import { getIconPositionClass } from '../../extensions/styles';
 import getStyles from './styles';
 import IconToolbar from '../../components/toolbar/iconToolbar';
-import copyPasteMapping from './copy-paste-mapping';
+import { copyPasteMapping } from './data';
 
 /**
  * External dependencies

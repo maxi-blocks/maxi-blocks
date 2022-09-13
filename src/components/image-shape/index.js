@@ -86,7 +86,7 @@ const ImageShapeResponsiveSettings = ({
 				min={-360}
 				max={360}
 				step={1}
-				placeholder='0deg'
+				placeholder='0'
 				{...getProps('rotate')}
 			/>
 			<ToggleSwitch

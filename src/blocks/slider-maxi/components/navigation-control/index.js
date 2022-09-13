@@ -70,7 +70,7 @@ const NavigationControl = props => {
 					]}
 					value={getLastBreakpointAttribute({
 						target: 'navigation-arrow-position',
-						deviceType,
+						breakpoint: deviceType,
 						props,
 					})}
 					onChange={val => {
@@ -104,7 +104,7 @@ const NavigationControl = props => {
 					]}
 					value={getLastBreakpointAttribute({
 						target: 'navigation-dot-position',
-						deviceType,
+						breakpoint: deviceType,
 						props,
 					})}
 					onChange={val => {

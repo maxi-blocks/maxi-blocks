@@ -28,7 +28,7 @@ import {
 	MaxiPopoverButton,
 } from '../../components';
 import { injectImgSVG } from '../../extensions/svg';
-import copyPasteMapping from './copy-paste-mapping';
+import { copyPasteMapping } from './data';
 import { textContext, onChangeRichText } from '../../extensions/text/formats';
 import CaptionToolbar from '../../components/toolbar/captionToolbar';
 

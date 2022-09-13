@@ -14,7 +14,7 @@ import {
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
-import { selectorsContainer, categoriesContainer } from './custom-css';
+import { customCss } from './data';
 import { withMaxiInspector } from '../../extensions/inspector';
 
 /**
@@ -33,6 +33,7 @@ const Inspector = props => {
 		insertInlineStyles,
 		cleanInlineStyles,
 	} = props;
+	const { selectors, categories } = customCss;
 
 	const getCategoriesCss = () => {
 		const {
@@ -40,7 +41,7 @@ const Inspector = props => {
 			'shape-divider-bottom-status': shapeDividerBottomStatus,
 		} = attributes;
 		return without(
-			categoriesContainer,
+			categories,
 			!shapeDividerTopStatus && 'top shape divider',
 			!shapeDividerBottomStatus && 'bottom shape divider'
 		);
@@ -132,7 +133,7 @@ const Inspector = props => {
 									...inspectorTabs.customCss({
 										props,
 										breakpoint: deviceType,
-										selectors: selectorsContainer,
+										selectors,
 										categories: getCategoriesCss(),
 									}),
 									...inspectorTabs.scrollEffects({
@@ -140,7 +141,7 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.transform({
 										props,
-										selectors: selectorsContainer,
+										selectors,
 										categories: getCategoriesCss(),
 									}),
 									...inspectorTabs.transition({

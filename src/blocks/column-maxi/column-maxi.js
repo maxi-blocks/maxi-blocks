@@ -23,7 +23,7 @@ import { columnIcon } from '../../icons';
 import attributes from './attributes';
 import edit from './edit';
 import save from './save';
-import { selectorsColumn } from './custom-css';
+import { customCss } from './data';
 
 /**
  * Migrators
@@ -49,11 +49,16 @@ registerBlockType('maxi-blocks/column-maxi', {
 	parent: ['maxi-blocks/row-maxi'],
 	getEditWrapperProps(attributes) {
 		const { uniqueID } = attributes;
+
 		return {
 			uniqueid: uniqueID,
 		};
 	},
 	edit,
 	save,
-	deprecated: blockMigrator({ attributes, save, selectors: selectorsColumn }),
+	deprecated: blockMigrator({
+		attributes,
+		save,
+		selectors: customCss.selectors,
+	}),
 });

@@ -1,15 +1,12 @@
-import relationSettings from '../../../components/relation-control/settings';
+/**
+ * Internal dependencies
+ */
+import { getTransitionSetting } from './utils';
 
 const isEligible = blockAttributes =>
 	!!blockAttributes?.relations &&
 	blockAttributes.relations.some(relation => {
-		const blockName = relation.uniqueID.slice(
-			0,
-			relation.uniqueID.lastIndexOf('-')
-		);
-		const transitionSetting = relationSettings[
-			`maxi-blocks/${blockName}`
-		]?.find(transition => transition.label === relation.settings);
+		const transitionSetting = getTransitionSetting(relation);
 
 		if (
 			transitionSetting &&
@@ -26,13 +23,7 @@ const migrate = ({ newAttributes }) => {
 	const { relations } = newAttributes;
 
 	relations.forEach((relation, i) => {
-		const blockName = relation.uniqueID.slice(
-			0,
-			relation.uniqueID.lastIndexOf('-')
-		);
-		const transitionSetting = relationSettings[
-			`maxi-blocks/${blockName}`
-		]?.find(transition => transition.label === relation.settings);
+		const transitionSetting = getTransitionSetting(relation);
 
 		if (
 			transitionSetting &&

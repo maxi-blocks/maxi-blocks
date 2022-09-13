@@ -557,7 +557,7 @@ const ImageLayer = props => {
 		breakpoint,
 		onChange,
 		isHover,
-		prefix,
+		prefix = '',
 		hideSettings = false,
 		isLayer = false,
 	} = props;
@@ -568,10 +568,9 @@ const ImageLayer = props => {
 
 	const getDefaultAttr = target => {
 		if (isLayer)
-			return getDefaultLayerAttr(
-				'imageOptions',
-				`${prefix}${target}-${breakpoint}`
-			);
+			return breakpoint === 'general'
+				? getDefaultLayerAttr('imageOptions', `${prefix}${target}`)
+				: undefined;
 
 		return getDefaultAttribute(
 			getAttributeKey(target, isHover, prefix, breakpoint)

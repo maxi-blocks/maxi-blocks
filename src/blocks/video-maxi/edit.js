@@ -20,7 +20,7 @@ import {
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 import { videoValidation } from '../../extensions/video';
-import copyPasteMapping from './copy-paste-mapping';
+import { copyPasteMapping } from './data';
 import { placeholderImage, toolbarReplaceImage } from '../../icons';
 
 /**

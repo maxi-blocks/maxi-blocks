@@ -20,8 +20,7 @@ import {
 	getZIndexStyles,
 	getButtonIconStyles,
 } from '../../extensions/styles/helpers';
-import { selectorsButton } from './custom-css';
-import transitionObj from './transitionObj';
+import data from './data';
 
 const getWrapperObject = props => {
 	const response = {
@@ -287,9 +286,8 @@ const getStyles = (props, scValues) => {
 					wrapperTarget: '.maxi-button-block__button',
 				}),
 			},
-			selectorsButton,
-			props,
-			transitionObj
+			data,
+			props
 		),
 	};
 

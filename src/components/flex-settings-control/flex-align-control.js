@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import SelectControl from '../select-control';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
+import getOptions from './utils';
 
 const FlexAlignControl = props => {
 	const { breakpoint, onChange } = props;
@@ -17,37 +18,21 @@ const FlexAlignControl = props => {
 			<SelectControl
 				label={__('Justify content horizontally', 'maxi-blocks')}
 				className='maxi-flex-align-control__justify-content'
-				value={getLastBreakpointAttribute({
-					target: 'justify-content',
-					breakpoint,
-					attributes: props,
-				})}
-				options={[
-					{
-						label: __('Flex-start', 'maxi-blocks'),
-						value: 'flex-start',
-					},
-					{
-						label: __('Flex-end', 'maxi-blocks'),
-						value: 'flex-end',
-					},
-					{
-						label: __('Center', 'maxi-blocks'),
-						value: 'center',
-					},
-					{
-						label: __('Space between', 'maxi-blocks'),
-						value: 'space-between',
-					},
-					{
-						label: __('Space around', 'maxi-blocks'),
-						value: 'space-around',
-					},
-					{
-						label: __('Space-evenly', 'maxi-blocks'),
-						value: 'space-evenly',
-					},
-				]}
+				value={
+					getLastBreakpointAttribute({
+						target: 'justify-content',
+						breakpoint,
+						attributes: props,
+					}) ?? ''
+				}
+				options={getOptions([
+					'flex-start',
+					'flex-end',
+					'center',
+					'space-between',
+					'space-around',
+					'space-evenly',
+				])}
 				onChange={val =>
 					onChange({
 						[`justify-content-${breakpoint}`]: val,
@@ -57,33 +42,20 @@ const FlexAlignControl = props => {
 			<SelectControl
 				label={__('Align items vertically', 'maxi-blocks')}
 				className='maxi-flex-align-control__align-items'
-				value={getLastBreakpointAttribute({
-					target: 'align-items',
-					breakpoint,
-					attributes: props,
-				})}
-				options={[
-					{
-						label: __('Flex-start', 'maxi-blocks'),
-						value: 'flex-start',
-					},
-					{
-						label: __('Flex-end', 'maxi-blocks'),
-						value: 'flex-end',
-					},
-					{
-						label: __('Center', 'maxi-blocks'),
-						value: 'center ',
-					},
-					{
-						label: __('Stretch', 'maxi-blocks'),
-						value: 'stretch',
-					},
-					{
-						label: __('Baseline', 'maxi-blocks'),
-						value: 'baseline',
-					},
-				]}
+				value={
+					getLastBreakpointAttribute({
+						target: 'align-items',
+						breakpoint,
+						attributes: props,
+					}) ?? ''
+				}
+				options={getOptions([
+					'flex-start',
+					'flex-end',
+					'center',
+					'stretch',
+					'baseline',
+				])}
 				onChange={val =>
 					onChange({
 						[`align-items-${breakpoint}`]: val,

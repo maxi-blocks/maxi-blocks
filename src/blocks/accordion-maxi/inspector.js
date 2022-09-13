@@ -15,7 +15,7 @@ import {
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { withMaxiInspector } from '../../extensions/inspector';
 import { getGroupAttributes } from '../../extensions/styles';
-import { categoriesAccordion, selectorsAccordion } from './custom-css';
+import { customCss } from './data';
 import {
 	AccordionIconSettings,
 	AccordionLineControl,
@@ -63,6 +63,8 @@ const Inspector = props => {
 		breakpoint: deviceType,
 		clientId,
 	};
+
+	const { selectors, categories } = customCss;
 
 	return (
 		<InspectorControls>
@@ -235,8 +237,8 @@ const Inspector = props => {
 											...props,
 										},
 										breakpoint: deviceType,
-										selectors: selectorsAccordion,
-										categories: categoriesAccordion,
+										selectors,
+										categories,
 									}),
 									...inspectorTabs.scrollEffects({
 										props: {
@@ -247,8 +249,8 @@ const Inspector = props => {
 										props: {
 											...props,
 										},
-										selectors: selectorsAccordion,
-										categories: categoriesAccordion,
+										selectors,
+										categories,
 									}),
 									...inspectorTabs.transition({
 										props: {

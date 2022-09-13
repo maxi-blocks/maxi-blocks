@@ -15,7 +15,7 @@ import {
 	getOverflowStyles,
 	getFlexStyles,
 } from '../../extensions/styles/helpers';
-import { selectorsRow } from './custom-css';
+import data from './data';
 
 const getNormalObject = props => {
 	const response = {
@@ -131,7 +131,7 @@ const getStyles = props => {
 					blockStyle: props.blockStyle,
 				}),
 			},
-			selectorsRow,
+			data,
 			props
 		),
 	};

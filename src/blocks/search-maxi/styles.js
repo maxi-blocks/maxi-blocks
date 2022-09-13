@@ -1,9 +1,4 @@
 /**
- * External dependencies
- */
-import { merge } from 'lodash';
-
-/**
  * Internal dependencies
  */
 import {
@@ -24,13 +19,12 @@ import {
 	getOverflowStyles,
 	getPositionStyles,
 	getSizeStyles,
-	getTransitionStyles,
 	getTypographyStyles,
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
-import { selectorsSearch } from './custom-css';
-import transitionObj from './transitionObj';
-import { buttonPrefix, closeIconPrefix, inputPrefix } from './prefixes';
+import data, { prefixes } from './data';
+
+const { buttonPrefix, closeIconPrefix, inputPrefix } = prefixes;
 
 const getNormalObject = props => {
 	const response = {
@@ -339,34 +333,30 @@ const getStyles = props => {
 
 	const response = {
 		[uniqueID]: styleProcessor(
-			merge(
-				{
-					'': getNormalObject(props),
-					' .maxi-search-block__input': getSearchInputStyles(props),
-					' .maxi-search-block__input::placeholder':
-						getSearchInputPlaceholderStyles(props),
-					' .maxi-search-block__button': getSearchButtonStyles(props),
-					...getSearchButtonIconStyles(props),
-					' .maxi-search-block__button__content':
-						getSearchButtonContentStyles(props),
-					// Hover styles
-					':hover': getHoverObject(props),
-					' .maxi-search-block__input:hover': getSearchInputStyles(
-						props,
-						true
-					),
-					' .maxi-search-block__button:hover': getSearchButtonStyles(
-						props,
-						true
-					),
-					' .maxi-search-block__button__content:hover':
-						getSearchButtonContentStyles(props, true),
-				},
-				...getTransitionStyles(props, transitionObj)
-			),
-			selectorsSearch,
-			props,
-			transitionObj
+			{
+				'': getNormalObject(props),
+				' .maxi-search-block__input': getSearchInputStyles(props),
+				' .maxi-search-block__input::placeholder':
+					getSearchInputPlaceholderStyles(props),
+				' .maxi-search-block__button': getSearchButtonStyles(props),
+				...getSearchButtonIconStyles(props),
+				' .maxi-search-block__button__content':
+					getSearchButtonContentStyles(props),
+				// Hover styles
+				':hover': getHoverObject(props),
+				' .maxi-search-block__input:hover': getSearchInputStyles(
+					props,
+					true
+				),
+				' .maxi-search-block__button:hover': getSearchButtonStyles(
+					props,
+					true
+				),
+				' .maxi-search-block__button__content:hover':
+					getSearchButtonContentStyles(props, true),
+			},
+			data,
+			props
 		),
 	};
 

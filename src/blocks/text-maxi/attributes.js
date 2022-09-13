@@ -11,7 +11,7 @@ import {
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
-import transitionObj from './transitionObj';
+import { transition } from './data';
 
 /**
  * Attributes
@@ -133,7 +133,7 @@ const attributes = {
 	...attributesData.transform,
 	...{
 		...attributesData.transition,
-		...transitionAttributesCreator(transitionObj),
+		...transitionAttributesCreator(transition),
 	},
 	...attributesData.display,
 	...attributesData.opacity,

@@ -77,6 +77,15 @@ const DynamicContent = props => {
 		});
 	};
 
+	const getAuthorByID = async idAuthor => {
+		return await apiFetch({ path: '/wp/v2/users/' + idAuthor }).then(
+			author => {
+				const authorName = author.name ? author.name : 'No name';
+				return authorName;
+			}
+		);
+	};
+
 	const getContentPath = (type, id, field) => {
 		if (relationTypes.includes(type) && relation === 'last-published')
 			return `/wp/v2/${type}&per_page=1`;
@@ -119,6 +128,10 @@ const DynamicContent = props => {
 						return content[_field].rendered;
 
 					// Author conditional !!!
+					if (_field === 'author') {
+						const authorId = getAuthorByID(content[_field]);
+						return authorId.then(value => value);
+					}
 
 					return content[_field];
 				}

@@ -115,6 +115,7 @@ const getHoverObject = props => {
 
 const getIconStyles = (props, prefix = 'navigation-arrow-both-') => {
 	const iconPrefix = `${prefix}icon-`;
+
 	const response = {
 		background: props[`${iconPrefix}background-active-media-general`] ===
 			'color' && {
@@ -155,7 +156,7 @@ const getIconStyles = (props, prefix = 'navigation-arrow-both-') => {
 			obj: {
 				...getGroupAttributes(props, 'iconPadding', false, prefix),
 			},
-			iconPrefix,
+			prefix: iconPrefix,
 		}),
 		border: getBorderStyles({
 			obj: {

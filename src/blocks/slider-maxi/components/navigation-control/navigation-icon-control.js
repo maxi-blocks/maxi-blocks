@@ -420,9 +420,9 @@ const NavigationIconControl = props => {
 								<AxisControl
 									{...getGroupAttributes(
 										props,
-										'iconPadding',
+										'padding',
 										false,
-										prefix
+										`${prefix}-`
 									)}
 									label={__(
 										`${labelCapital} padding`,

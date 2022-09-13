@@ -130,7 +130,7 @@ const SizeAndPositionLayerControl = ({
 		type === 'shape' ? 'svg' : `${type}-wrapper`
 	}-`;
 
-	// Add new attributes if they are not exist
+	// Add new attributes if they don't exist
 	useEffect(() => {
 		if (
 			isLayer &&

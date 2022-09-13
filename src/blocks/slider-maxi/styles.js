@@ -355,6 +355,7 @@ const getDisabledStyles = (props, prefix) => {
 const getIconObject = (props, prefix, target, isHover = false) => {
 	const hoverFlag = isHover ? ':hover' : '';
 	const fullTarget = `${target}${hoverFlag}`;
+	const isActive = prefix.includes('active');
 
 	const response = {
 		...getSVGStyles({
@@ -376,8 +377,14 @@ const getIconObject = (props, prefix, target, isHover = false) => {
 		...(isHover && {
 			[` ${fullTarget}`]: getIconHoverStyles(props, prefix),
 		}),
-		[` ${fullTarget} svg`]: getIconSize(props, isHover, prefix),
-		[` ${fullTarget} svg path`]: getIconPathStyles(props, isHover, prefix),
+		...(!isActive && {
+			[` ${fullTarget} svg`]: getIconSize(props, isHover, prefix),
+			[` ${fullTarget} svg path`]: getIconPathStyles(
+				props,
+				isHover,
+				prefix
+			),
+		}),
 	};
 
 	return response;

@@ -14,7 +14,7 @@ import { Toolbar, BlockInserter } from '../../components';
 import getStyles from './styles';
 import AccordionContext from '../accordion-maxi/context';
 import Inspector from './inspector';
-import copyPasteMapping from './copy-paste-mapping';
+import { copyPasteMapping } from './data';
 
 const boxedPreset = {
 	'border-bottom-left-radius-general': 10,

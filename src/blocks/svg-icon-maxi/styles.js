@@ -19,8 +19,7 @@ import {
 	getFlexStyles,
 	getBackgroundStyles,
 } from '../../extensions/styles/helpers';
-import { selectorsSvgIcon } from './custom-css';
-import transitionObj from './transitionObj';
+import data from './data';
 
 const getWrapperObject = props => {
 	const response = {
@@ -252,9 +251,8 @@ const getStyles = props => {
 					blockStyle,
 				}),
 			},
-			selectorsSvgIcon,
-			props,
-			transitionObj
+			data,
+			props
 		),
 	};
 

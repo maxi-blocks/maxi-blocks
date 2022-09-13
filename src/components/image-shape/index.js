@@ -83,10 +83,10 @@ const ImageShapeResponsiveSettings = ({
 			/>
 			<AdvancedNumberControl
 				label={__('Rotate shape', 'maxi-blocks')}
-				min={0}
+				min={-360}
 				max={360}
 				step={1}
-				placeholder='0deg'
+				placeholder='0'
 				{...getProps('rotate')}
 			/>
 			<ToggleSwitch

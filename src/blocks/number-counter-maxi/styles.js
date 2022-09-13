@@ -17,8 +17,7 @@ import {
 	getFlexStyles,
 	getAlignmentFlexStyles,
 } from '../../extensions/styles/helpers';
-import { selectorsNumberCounter } from './custom-css';
-import transitionObj from './transitionObj';
+import data from './data';
 
 const getWrapperObject = props => {
 	const response = {
@@ -253,9 +252,8 @@ const getStyles = props => {
 					isHover: true,
 				}),
 			},
-			selectorsNumberCounter,
-			props,
-			transitionObj
+			data,
+			props
 		),
 	};
 	return response;

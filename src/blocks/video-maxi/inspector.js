@@ -9,7 +9,7 @@ import { InspectorControls } from '@wordpress/block-editor';
  */
 import { AccordionControl, SettingTabsControl } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
-import { selectorsVideo, categoriesVideo } from './custom-css';
+import { customCss } from './data';
 import { getGroupAttributes } from '../../extensions/styles';
 import {
 	PopupSettingsControl,
@@ -38,6 +38,7 @@ const Inspector = props => {
 		'overlay-mediaID': overlayMediaId,
 		'overlay-altSelector': overlayAltSelector,
 	} = attributes;
+	const { selectors, categories } = customCss;
 
 	return (
 		<InspectorControls>
@@ -262,16 +263,16 @@ const Inspector = props => {
 									...inspectorTabs.customCss({
 										props,
 										breakpoint: deviceType,
-										selectors: selectorsVideo,
-										categories: categoriesVideo,
+										selectors,
+										categories,
 									}),
 									...inspectorTabs.scrollEffects({
 										props,
 									}),
 									...inspectorTabs.transform({
 										props,
-										selectors: selectorsVideo,
-										categories: categoriesVideo,
+										selectors,
+										categories,
 									}),
 									...inspectorTabs.transition({
 										props: {

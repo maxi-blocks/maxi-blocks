@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { SettingTabsControl, ToggleSwitch } from '../../components';
+import { SettingTabsControl, ToggleSwitch } from '../../../../components';
 import NavigationIconControl from './navigation-icon-control';
 
 const NavigationIconsControl = props => {

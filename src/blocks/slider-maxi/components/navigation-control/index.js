@@ -6,9 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import SelectControl from '../select-control';
-import ToggleSwitch from '../toggle-switch';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
+import { getLastBreakpointAttribute } from '../../../../extensions/styles';
 
 /**
  * External dependencies
@@ -19,6 +17,7 @@ import classnames from 'classnames';
  * Styles and icons
  */
 import './editor.scss';
+import { ToggleSwitch, SelectControl } from '../../../../components';
 
 const NavigationControl = props => {
 	const { className, onChange, deviceType } = props;

@@ -7,32 +7,33 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import AxisControl from '../axis-control';
-import AdvancedNumberControl from '../advanced-number-control';
-import BorderControl from '../border-control';
-import BoxShadowControl from '../box-shadow-control';
-import ColorControl from '../color-control';
-import GradientControl from '../gradient-control';
-import SettingTabsControl from '../setting-tabs-control';
-import ToggleSwitch from '../toggle-switch';
-import ResponsiveTabsControl from '../responsive-tabs-control';
-
 import {
+	getAttributeKey,
+	getColorRGBAString,
 	getDefaultAttribute,
 	getGroupAttributes,
-	getColorRGBAString,
-	getAttributeKey,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '../../../../extensions/styles';
 import {
-	setSVGStrokeWidth,
+	Icon,
+	ResponsiveTabsControl,
+	SvgWidthControl,
+	SvgStrokeWidthControl,
+	AdvancedNumberControl,
+	AxisControl,
+	SettingTabsControl,
+	ColorControl,
+	ToggleSwitch,
+	BorderControl,
+	BoxShadowControl,
+} from '../../../../components';
+import MaxiModal from '../../../../editor/library/modal';
+import {
 	setSVGContent,
 	setSVGContentHover,
-} from '../../extensions/svg';
-import SvgWidthControl from '../svg-width-control';
-import SvgStrokeWidthControl from '../svg-stroke-width-control';
-import MaxiModal from '../../editor/library/modal';
-import Icon from '../icon';
+	setSVGStrokeWidth,
+} from '../../../../extensions/svg';
+import GradientControl from '../../../../components/gradient-control';
 
 /**
  * External dependencies
@@ -48,7 +49,7 @@ import {
 	backgroundColor,
 	backgroundGradient,
 	styleNone,
-} from '../../icons';
+} from '../../../../icons';
 
 /**
  * Component

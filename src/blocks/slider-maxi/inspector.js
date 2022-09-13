@@ -7,19 +7,16 @@ import { InspectorControls } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import {
-	AccordionControl,
-	SettingTabsControl,
-	SliderControl,
-	NavigationControl,
-} from '../../components';
+import { AccordionControl, SettingTabsControl } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { selectorsSlider, categoriesSlider } from './custom-css';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-import NavigationIconsControl from '../../components/navigation-control/navigation-control';
+import SliderControl from './components/slider-control';
+import NavigationControl from './components/navigation-control';
+import NavigationIconsControl from './components/navigation-control/navigation-control';
 
 /**
  * Inspector

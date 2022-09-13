@@ -6,18 +6,20 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ToggleSwitch from '../toggle-switch';
-import AdvancedNumberControl from '../advanced-number-control';
-import SelectControl from '../select-control';
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '../../../../extensions/styles';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
+import {
+	ToggleSwitch,
+	AdvancedNumberControl,
+	SelectControl,
+} from '../../../../components';
 
 const SliderControl = props => {
 	const {

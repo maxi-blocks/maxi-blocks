@@ -8,9 +8,11 @@ import { __ } from '@wordpress/i18n';
  */
 import { SelectControl, SettingTabsControl } from '../../../../components';
 import { getDefaultAttribute } from '../../../../extensions/styles';
-import { buttonPrefix, inputPrefix } from '../../prefixes';
+import { prefixes } from '../../data';
 
 const SkinControl = ({ skin, iconRevealAction, onChange }) => {
+	const { buttonPrefix, inputPrefix } = prefixes;
+
 	const getDefaultAttributes = attributeKeys =>
 		attributeKeys.reduce((acc, key) => {
 			acc[key] = getDefaultAttribute(key);

@@ -60,6 +60,7 @@ const BlockResizer = memo(
 
 		const handleRef = newRef => {
 			if (newRef) {
+				// Needed to clean styles before first onResizeStop, so that blocks don't jump after resizing
 				if (cleanStyles) newRef.resizable.style = null;
 				if (resizableObject) resizableObject.current = newRef;
 				if (ref) {

@@ -40,10 +40,17 @@ import {
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import { isEmpty, isPlainObject } from 'lodash';
 
 const getTransformControl = ({ categories, selectors }) => ({
 	label: __('Transform', 'maxi-blocks'),
+	transitionTarget: [],
+	hoverProp: attributes =>
+		Object.values(getGroupAttributes(attributes, 'transform')).some(
+			attribute =>
+				isPlainObject(attribute) &&
+				Object.values(attribute).some(obj => obj?.['hover-status'])
+		),
 	attrGroupName: 'transform',
 	component: props => (
 		<TransformControl

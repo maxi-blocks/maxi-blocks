@@ -27,8 +27,7 @@ import {
 	getTypographyStyles,
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
-import { selectorsAccordion } from './custom-css';
-import transitionObj from './transitionObj';
+import data from './data';
 
 const getNormalObject = props => {
 	const response = {
@@ -386,9 +385,8 @@ const getStyles = props => {
 				...getIconObject(props),
 				...getPaneContentObject(props),
 			},
-			selectorsAccordion,
-			props,
-			transitionObj
+			data,
+			props
 		),
 	};
 	return response;

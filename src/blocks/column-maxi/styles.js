@@ -15,7 +15,7 @@ import {
 	getFlexStyles,
 	getSizeStyles,
 } from '../../extensions/styles/helpers';
-import { selectorsColumn } from './custom-css';
+import data from './data';
 
 const getNormalObject = (props, rowGapProps, clientId) => {
 	const response = {
@@ -136,7 +136,7 @@ const getStyles = (props, rowGapProps, clientId) => {
 					rowBorderRadius: props.rowBorderRadius,
 				}),
 			},
-			selectorsColumn,
+			data,
 			props
 		),
 	};

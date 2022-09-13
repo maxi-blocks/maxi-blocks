@@ -22,7 +22,7 @@ import {
 	getGroupAttributes,
 } from '../../extensions/styles';
 import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
-import settings from './settings';
+import * as blocksData from '../../blocks/data';
 
 /**
  * External dependencies
@@ -53,8 +53,11 @@ const RelationControl = props => {
 	};
 
 	const getOptions = clientId => {
-		const blockName = getBlock(clientId)?.name;
-		const blockOptions = settings[blockName] || [];
+		const blockName = getBlock(clientId)?.name.replace('maxi-blocks/', '');
+
+		const blockOptions =
+			Object.values(blocksData).find(data => data.name === blockName)
+				.interactionBuilderSettings || [];
 
 		return blockOptions || [];
 	};

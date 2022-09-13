@@ -71,19 +71,28 @@ const relations = () => {
 		return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 	};
 
-	const getAvoidHover = (hoverStatus, targetEl, target, transitionTarget) =>
-		hoverStatus &&
-		targetEl &&
-		transitionTarget?.length > 0 &&
-		targetEl.isSameNode(
-			targetEl
-				.closest('.maxi-block')
-				.querySelector(
-					transitionTarget.map(currentTarget =>
-						currentTarget === '' ? target : currentTarget
-					)
+	const getAvoidHover = (hoverStatus, targetEl, target, transitionTarget) => {
+		if (
+			!hoverStatus ||
+			!targetEl ||
+			(!transitionTarget?.length && transitionTarget !== '')
+		)
+			return;
+		const transitionTargets =
+			typeof transitionTarget === 'string'
+				? [transitionTarget]
+				: transitionTarget;
+
+		const transitionTargetEl = Array.from(
+			document.querySelectorAll(
+				transitionTargets.map(currentTarget =>
+					currentTarget === '' ? target : currentTarget
 				)
-		);
+			)
+		).find(element => targetEl.closest('.maxi-block').contains(element));
+
+		return targetEl.isSameNode(transitionTargetEl);
+	};
 
 	const toggleInlineStyles = ({
 		stylesObj,
@@ -97,7 +106,9 @@ const relations = () => {
 				targetSelector !== 'isTargets' &&
 					toggleInlineStyles({
 						stylesObj: styles,
-						target: `${target} ${targetSelector}`,
+						target: `${target}${
+							targetSelector !== '' ? ` ${targetSelector}` : ''
+						}`,
 						remove,
 						hoverStatus,
 						transitionTarget,
@@ -189,21 +200,30 @@ const relations = () => {
 					transitionTarget
 				);
 
-				const svgTarget = `${target} ${
-					avoidHover && transitionTarget?.endsWith('> *')
-						? transitionTarget.slice(0, -4) +
-						  ':not(:hover)' +
-						  transitionTarget.slice(transitionTarget.length - 4)
-						: transitionTarget
-				}`;
+				const transitionTargets =
+					typeof transitionTarget === 'string'
+						? [transitionTarget]
+						: transitionTarget;
 
-				toggleTransition({
-					target: svgTarget,
-					transitionTarget,
-					effectsObj,
-					isIcon: isIcon || isSVG,
-					remove,
-					hoverStatus,
+				transitionTargets.forEach(currentTransitionTarget => {
+					const svgTarget = `${target} ${
+						avoidHover && currentTransitionTarget?.endsWith('> *')
+							? currentTransitionTarget.slice(0, -4) +
+							  ':not(:hover)' +
+							  currentTransitionTarget.slice(
+									currentTransitionTarget.length - 4
+							  )
+							: currentTransitionTarget
+					}`;
+
+					toggleTransition({
+						target: svgTarget,
+						transitionTarget: currentTransitionTarget,
+						effectsObj,
+						isIcon: isIcon || isSVG,
+						remove,
+						hoverStatus,
+					});
 				});
 			}
 		} else {

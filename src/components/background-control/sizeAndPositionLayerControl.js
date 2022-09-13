@@ -14,7 +14,7 @@ import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-import { getDefaultLayerAttr } from './utils';
+import { getDefaultLayerAttr, getDefaultLayerAttrs } from './utils';
 
 /**
  * Component
@@ -138,7 +138,7 @@ const SizeAndPositionLayerControl = ({
 			Object.keys(options).every(key => !key.includes(prefix))
 		) {
 			const defaultOptions = Object.entries(
-				getDefaultLayerAttr(`${type}Options`)
+				getDefaultLayerAttrs(`${type}Options`)
 			).reduce(
 				(acc, [key, value]) => ({
 					...acc,

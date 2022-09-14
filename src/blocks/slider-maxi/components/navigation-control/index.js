@@ -23,15 +23,17 @@ const NavigationControl = props => {
 	const { className, onChange, deviceType } = props;
 
 	const classes = classnames('maxi-slider-navigation', className);
+	const dotPrefix = 'navigation-dot-';
+	const arrowPrefix = 'navigation-arrow-';
 
 	const arrowsEnabled = getLastBreakpointAttribute({
-		target: 'navigation-arrow-both-status',
+		target: `${arrowPrefix}both-status`,
 		breakpoint: deviceType,
 		props,
 		forceSingle: true,
 	});
 	const dotsEnabled = getLastBreakpointAttribute({
-		target: 'navigation-dot-status',
+		target: `${dotPrefix}status`,
 		breakpoint: deviceType,
 		props,
 		forceSingle: true,
@@ -44,7 +46,7 @@ const NavigationControl = props => {
 				selected={arrowsEnabled}
 				onChange={val =>
 					onChange({
-						[`navigation-arrow-both-status-${deviceType}`]: val,
+						[`${arrowPrefix}both-status-${deviceType}`]: val,
 					})
 				}
 			/>
@@ -52,7 +54,7 @@ const NavigationControl = props => {
 				label={__('Enable dots')}
 				selected={dotsEnabled}
 				onChange={val =>
-					onChange({ [`navigation-dot-status-${deviceType}`]: val })
+					onChange({ [`${dotPrefix}status-${deviceType}`]: val })
 				}
 			/>
 			{arrowsEnabled && (
@@ -69,22 +71,22 @@ const NavigationControl = props => {
 						},
 					]}
 					value={getLastBreakpointAttribute({
-						target: 'navigation-arrow-position',
+						target: `${arrowPrefix}position`,
 						breakpoint: deviceType,
 						props,
 					})}
 					onChange={val => {
 						onChange({
-							[`navigation-arrow-position-${deviceType}`]: val,
+							[`${arrowPrefix}position-${deviceType}`]: val,
 						});
 						val === 'inside' &&
 							onChange({
-								[`navigation-arrow-both-icon-spacing-horizontal-${deviceType}`]:
+								[`${arrowPrefix}both-icon-spacing-horizontal-${deviceType}`]:
 									-40,
 							});
 						val === 'outside' &&
 							onChange({
-								[`navigation-arrow-both-icon-spacing-horizontal-${deviceType}`]: 10,
+								[`${arrowPrefix}both-icon-spacing-horizontal-${deviceType}`]: 10,
 							});
 					}}
 				/>
@@ -103,21 +105,21 @@ const NavigationControl = props => {
 						},
 					]}
 					value={getLastBreakpointAttribute({
-						target: 'navigation-dot-position',
+						target: `${dotPrefix}position`,
 						breakpoint: deviceType,
 						props,
 					})}
 					onChange={val => {
 						onChange({
-							[`navigation-dot-position-${deviceType}`]: val,
+							[`${dotPrefix}position-${deviceType}`]: val,
 						});
 						val === 'inside' &&
 							onChange({
-								[`navigation-dot-icon-spacing-vertical-${deviceType}`]: 85,
+								[`${dotPrefix}icon-spacing-vertical-${deviceType}`]: 85,
 							});
 						val === 'outside' &&
 							onChange({
-								[`navigation-dot-icon-spacing-vertical-${deviceType}`]: 110,
+								[`${dotPrefix}icon-spacing-vertical-${deviceType}`]: 110,
 							});
 					}}
 				/>

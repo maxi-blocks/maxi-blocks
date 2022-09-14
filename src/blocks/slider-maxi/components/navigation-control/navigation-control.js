@@ -22,17 +22,20 @@ const NavigationIconsControl = props => {
 		prefix = 'navigation-arrow-both-icon-',
 	} = props;
 
-	let svgType = 'Filled';
+	const getSvgType = prefix => {
+		switch (prefix) {
+			case 'navigation-arrow-both-icon-':
+				return props['navigation-arrow-first-svgType'] ===
+					props['navigation-arrow-second-svgType']
+					? props['navigation-arrow-first-svgType']
+					: 'Filled';
+			case 'navigation-dot-icon-':
+			default:
+				return props['navigation-dot-svgType'];
+		}
+	};
+	const svgType = getSvgType(prefix);
 
-	if (prefix === 'navigation-arrow-both-icon-')
-		svgType =
-			props['navigation-arrow-first-svgType'] ===
-			props['navigation-arrow-second-svgType']
-				? props['navigation-arrow-first-svgType']
-				: 'Filled';
-
-	if (prefix === 'navigation-dot-icon-')
-		svgType = props['navigation-dot-svgType'];
 	return (
 		<SettingTabsControl
 			items={[

@@ -156,3 +156,15 @@ export const sanitizeContent = content =>
 	content && !isEmpty(content)
 		? content
 		: __('No content found', 'maxi-blocks');
+
+export const descriptionOfErrors = {
+	next: __(
+		'Sorry, there is no next post, please choose something else.',
+		'maxi-blocks'
+	),
+	previous: __(
+		'Sorry, there is no previous post, please choose something else.',
+		'maxi-blocks'
+	),
+	object: __('Value is not an object.', 'maxi-blocks'),
+};

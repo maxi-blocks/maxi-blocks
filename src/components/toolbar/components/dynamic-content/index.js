@@ -34,6 +34,7 @@ import {
 	idFields,
 	idOptionByField,
 	randomOptions,
+	descriptionOfErrors,
 } from './utils';
 import ToggleSwitch from '../../../toggle-switch';
 
@@ -155,7 +156,7 @@ const DynamicContent = props => {
 					if (typeof res[0] === 'object' && 'id' in res[0]) {
 						return res;
 					} else {
-						throw new Error('Value is not an object');
+						throw new Error(descriptionOfErrors.object);
 					}
 				})
 				.then(
@@ -188,26 +189,20 @@ const DynamicContent = props => {
 			return apiFetch({
 				path: prevNextPath,
 			})
+				.catch(rej => console.error(rej))
 				.then(res => {
 					if (typeof res[getBy] === 'object' && 'id' in res[getBy]) {
-						return res;
-					} else {
-						throw new Error('Value is not an object');
-					}
-				})
-				.then(
-					res =>
 						isFinite(res[getBy].id)
 							? requestContent({
 									...dataRequest,
 									type: postTypeDic[postType],
 									id: res[getBy].id,
 							  })
-							: '',
-					error => {
-						console.error(error);
+							: '';
+					} else {
+						return descriptionOfErrors[getBy];
 					}
-				);
+				});
 		}
 
 		return requestContent(dataRequest);

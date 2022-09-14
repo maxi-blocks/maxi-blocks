@@ -10,7 +10,6 @@ import {
 	useEffect,
 	RawHTML,
 	createRef,
-	forwardRef,
 } from '@wordpress/element';
 import { dispatch, useSelect } from '@wordpress/data';
 
@@ -35,15 +34,6 @@ import { isEmpty } from 'lodash';
 /**
  * Edit
  */
-const IconWrapper = forwardRef((props, ref) => {
-	const { children, className } = props;
-
-	return (
-		<div ref={ref} className={className}>
-			{children}
-		</div>
-	);
-});
 
 const SliderWrapper = props => {
 	const {
@@ -376,7 +366,7 @@ const SliderWrapper = props => {
 						className='maxi-slider-block__arrow maxi-slider-block__arrow--prev'
 						onClick={!isEditView ? () => prevSlide() : undefined}
 					>
-						<IconWrapper
+						<div
 							ref={iconRef}
 							uniqueID={uniqueID}
 							className='maxi-navigation-arrow-first-icon-block__icon'
@@ -388,7 +378,7 @@ const SliderWrapper = props => {
 									]
 								}
 							</RawHTML>
-						</IconWrapper>
+						</div>
 					</span>
 				)}
 				{attributes['navigation-arrow-second-icon-content'] && (
@@ -396,7 +386,7 @@ const SliderWrapper = props => {
 						className='maxi-slider-block__arrow maxi-slider-block__arrow--next'
 						onClick={!isEditView ? () => nextSlide() : undefined}
 					>
-						<IconWrapper
+						<div
 							ref={iconRef}
 							uniqueID={uniqueID}
 							className='maxi-navigation-arrow-second-icon-block__icon'
@@ -408,7 +398,7 @@ const SliderWrapper = props => {
 									]
 								}
 							</RawHTML>
-						</IconWrapper>
+						</div>
 					</span>
 				)}
 				{attributes['navigation-dot-icon-content'] && (
@@ -429,7 +419,7 @@ const SliderWrapper = props => {
 											: undefined
 									}
 								>
-									<IconWrapper
+									<div
 										ref={iconRef}
 										uniqueID={uniqueID}
 										className='maxi-navigation-dot-icon-block__icon'
@@ -441,7 +431,7 @@ const SliderWrapper = props => {
 												]
 											}
 										</RawHTML>
-									</IconWrapper>
+									</div>
 								</span>
 							);
 						})}

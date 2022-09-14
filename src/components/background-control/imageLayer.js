@@ -16,12 +16,14 @@ import OpacityControl from '../opacity-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
 import SettingTabsControl from '../setting-tabs-control';
+import SizeAndPositionLayerControl from './sizeAndPositionLayerControl';
 import ToggleSwitch from '../toggle-switch';
 import {
 	getAttributeKey,
 	getAttributeValue,
-	getLastBreakpointAttribute,
+	getDefaultAttribute,
 	getGroupAttributes,
+	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { getDefaultLayerAttr } from './utils';
 
@@ -43,6 +45,7 @@ const ImageLayerSettings = props => {
 		getDefaultAttr,
 		moreSettings,
 		setMoreSettings,
+		isLayer,
 	} = props;
 
 	const imageOptions = cloneDeep(props.imageOptions);
@@ -537,6 +540,14 @@ const ImageLayerSettings = props => {
 					breakpoint={breakpoint}
 				/>
 			)}
+			<SizeAndPositionLayerControl
+				prefix={prefix}
+				options={imageOptions}
+				onChange={onChange}
+				isHover={isHover}
+				isLayer={isLayer}
+				breakpoint={breakpoint}
+			/>
 		</>
 	);
 };
@@ -546,7 +557,7 @@ const ImageLayer = props => {
 		breakpoint,
 		onChange,
 		isHover,
-		prefix,
+		prefix = '',
 		hideSettings = false,
 		isLayer = false,
 	} = props;
@@ -556,9 +567,12 @@ const ImageLayer = props => {
 	const [moreSettings, setMoreSettings] = useState(false);
 
 	const getDefaultAttr = target => {
-		if (isLayer) return getDefaultLayerAttr('imageOptions', target);
+		if (isLayer)
+			return breakpoint === 'general'
+				? getDefaultLayerAttr('imageOptions', `${prefix}${target}`)
+				: undefined;
 
-		return getDefaultLayerAttr(
+		return getDefaultAttribute(
 			getAttributeKey(target, isHover, prefix, breakpoint)
 		);
 	};

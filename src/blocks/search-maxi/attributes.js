@@ -6,8 +6,9 @@ import {
 	prefixAttributesCreator,
 	transitionAttributesCreator,
 } from '../../extensions/styles';
-import transitionObj from './transitionObj';
-import { closeIconPrefix, buttonPrefix, inputPrefix } from './prefixes';
+import { prefixes, transition } from './data';
+
+const { buttonPrefix, closeIconPrefix, inputPrefix } = prefixes;
 
 /**
  * Attributes
@@ -158,7 +159,7 @@ const attributes = {
 	...attributesData.transform,
 	...{
 		...attributesData.transition,
-		...transitionAttributesCreator(transitionObj),
+		...transitionAttributesCreator(transition),
 	},
 	...attributesData.display,
 	...attributesData.opacity,
@@ -170,4 +171,3 @@ const attributes = {
 };
 
 export default attributes;
-export { closeIconPrefix, buttonPrefix, inputPrefix };

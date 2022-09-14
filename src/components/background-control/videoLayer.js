@@ -11,6 +11,7 @@ import AdvancedNumberControl from '../advanced-number-control';
 import MediaUploaderControl from '../media-uploader-control';
 import OpacityControl from '../opacity-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
+import SizeAndPositionLayerControl from './sizeAndPositionLayerControl';
 import TextControl from '../text-control';
 import ToggleSwitch from '../toggle-switch';
 import {
@@ -246,12 +247,23 @@ const VideoLayer = props => {
 				</>
 			)}
 			<ResponsiveTabsControl breakpoint={breakpoint}>
-				<VideoLayerContent
-					videoOptions={videoOptions}
-					onChange={onChange}
-					isHover={isHover}
-					prefix={prefix}
-				/>
+				<>
+					<VideoLayerContent
+						videoOptions={videoOptions}
+						onChange={onChange}
+						isHover={isHover}
+						prefix={prefix}
+						breakpoint={breakpoint}
+					/>
+					<SizeAndPositionLayerControl
+						prefix={prefix}
+						options={videoOptions}
+						onChange={onChange}
+						isHover={isHover}
+						isLayer
+						breakpoint={breakpoint}
+					/>
+				</>
 			</ResponsiveTabsControl>
 		</div>
 	);

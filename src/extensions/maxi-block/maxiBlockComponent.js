@@ -34,6 +34,7 @@ import getBreakpoints from '../styles/helpers/getBreakpoints';
 import getIsUniqueIDRepeated from './getIsUniqueIDRepeated';
 import { loadFonts, getAllFonts } from '../text/fonts';
 import uniqueIDGenerator from '../attributes/uniqueIDGenerator';
+import * as blocksData from '../../blocks/data';
 
 /**
  * External dependencies
@@ -158,7 +159,7 @@ class MaxiBlockComponent extends Component {
 		if (
 			this.props.isSelected !== nextProps.isSelected || // In case selecting/unselecting the block
 			this.props.deviceType !== nextProps.deviceType || // In case of breakpoint change
-			this.props.winBreakpoint !== nextProps.winBreakpoint // In case of winBreakpoint change
+			this.props.baseBreakpoint !== nextProps.baseBreakpoint // In case of baseBreakpoint change
 		)
 			return true;
 
@@ -217,6 +218,8 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState, shouldDisplayStyles) {
+		this.updateRelationHoverStatus();
+
 		// Even when not rendering, on breakpoint stage change
 		// re-render the styles
 		const breakpoint = select('maxiBlocks').receiveMaxiDeviceType();
@@ -246,6 +249,11 @@ class MaxiBlockComponent extends Component {
 
 		dispatch('maxiBlocks/customData').removeCustomData(
 			this.props.attributes.uniqueID
+		);
+
+		this.removeUnmountedBlockFromRelations(
+			this.props.attributes.uniqueID,
+			select('core/block-editor').getBlocks()
 		);
 
 		if (this.maxiBlockWillUnmount) this.maxiBlockWillUnmount();
@@ -362,6 +370,111 @@ class MaxiBlockComponent extends Component {
 		const response = getAllFonts(this.typography, 'custom-formats');
 
 		if (!isEmpty(response)) loadFonts(response);
+	}
+
+	updateRelationHoverStatus() {
+		const { name, attributes } = this.props;
+
+		const updateRelationHoverStatusRecursive = (
+			blockName,
+			blockAttributes,
+			blocksToCheck
+		) => {
+			const { uniqueID } = blockAttributes;
+
+			blocksToCheck.forEach(
+				({
+					clientId,
+					attributes: currentBlockAttributes,
+					innerBlocks,
+				}) => {
+					const { relations, uniqueID: blockUniqueID } =
+						currentBlockAttributes;
+
+					if (uniqueID !== blockUniqueID && !isEmpty(relations)) {
+						const newRelations = relations.map(relation => {
+							const {
+								settings: settingName,
+								uniqueID: relationUniqueID,
+							} = relation;
+
+							if (!settingName || uniqueID !== relationUniqueID)
+								return relation;
+
+							const { effects } = relation;
+
+							if (!('hoverStatus' in effects)) return relation;
+
+							const blockData = Object.values(blocksData).find(
+								({ name }) =>
+									name ===
+									blockName.replace('maxi-blocks/', '')
+							);
+
+							if (!blockData?.interactionBuilderSettings)
+								return relation;
+
+							const { hoverProp } =
+								blockData.interactionBuilderSettings.find(
+									({ label }) => label === settingName
+								);
+
+							return {
+								...relation,
+								effects: {
+									...effects,
+									hoverStatus: blockAttributes[hoverProp],
+								},
+							};
+						});
+
+						if (!isEqual(relations, newRelations))
+							dispatch('core/block-editor').updateBlockAttributes(
+								clientId,
+								{ relations: newRelations }
+							);
+					}
+
+					if (!isEmpty(innerBlocks))
+						updateRelationHoverStatusRecursive(
+							blockName,
+							blockAttributes,
+							innerBlocks
+						);
+				}
+			);
+		};
+
+		updateRelationHoverStatusRecursive(
+			name,
+			attributes,
+			select('core/block-editor').getBlocks()
+		);
+	}
+
+	removeUnmountedBlockFromRelations(uniqueID, blocksToCheck) {
+		blocksToCheck.forEach(({ clientId, attributes, innerBlocks }) => {
+			const { relations, uniqueID: blockUniqueID } = attributes;
+
+			if (uniqueID !== blockUniqueID && !isEmpty(relations)) {
+				const filteredRelations = relations.filter(
+					({ uniqueID: relationUniqueID }) =>
+						relationUniqueID !== uniqueID
+				);
+
+				if (!isEqual(relations, filteredRelations)) {
+					const { updateBlockAttributes } =
+						dispatch('core/block-editor');
+
+					updateBlockAttributes(clientId, {
+						relations: filteredRelations,
+					});
+				}
+			}
+
+			if (!isEmpty(innerBlocks))
+				this.removeUnmountedBlockFromRelations(uniqueID, innerBlocks);
+		});
 	}
 
 	/**

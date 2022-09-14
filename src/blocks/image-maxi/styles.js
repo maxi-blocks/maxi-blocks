@@ -28,8 +28,7 @@ import {
 	getFlexStyles,
 	getAspectRatio,
 } from '../../extensions/styles/helpers';
-import { selectorsImage } from './custom-css';
-import transitionObj from './transitionObj';
+import data from './data';
 
 /**
  * External dependencies
@@ -518,9 +517,8 @@ const getStyles = props => {
 					props.blockStyle
 				),
 			},
-			selectorsImage,
-			props,
-			transitionObj
+			data,
+			props
 		),
 	};
 

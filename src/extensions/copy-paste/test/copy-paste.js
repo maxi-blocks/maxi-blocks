@@ -1,5 +1,7 @@
 import getOrganizedAttributes from '../getOrganizedAttributes';
-import copyPasteMapping from '../../../blocks/image-maxi/copy-paste-mapping';
+import { copyPasteMapping } from '../../../blocks/image-maxi/data';
+
+jest.mock('src/components/index.js', () => jest.fn());
 
 describe('getOrganizedAttributes', () => {
 	it('Ensure it works with simple copy paste object', () => {

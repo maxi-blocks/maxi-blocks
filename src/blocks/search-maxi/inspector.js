@@ -18,10 +18,9 @@ import {
 	PlaceholderColorControl,
 } from './components';
 import { getGroupAttributes } from '../../extensions/styles';
-import { selectorsSearch, categoriesSearch } from './custom-css';
+import { customCss, prefixes } from './data';
 import { withMaxiInspector } from '../../extensions/inspector';
 import * as inspectorTabs from '../../components/inspector-tabs';
-import { buttonPrefix, closeIconPrefix, inputPrefix } from './prefixes';
 
 /**
  * External dependencies
@@ -46,6 +45,8 @@ const Inspector = props => {
 		iconRevealAction,
 		skin,
 	} = attributes;
+	const { selectors, categories } = customCss;
+	const { buttonPrefix, closeIconPrefix, inputPrefix } = prefixes;
 
 	const getCategoriesCss = () => {
 		const {
@@ -53,7 +54,7 @@ const Inspector = props => {
 			[`${closeIconPrefix}icon-content`]: closeIconContent,
 		} = attributes;
 		return without(
-			categoriesSearch,
+			categories,
 			isEmpty(iconContent) && 'icon',
 			isEmpty(closeIconContent) && 'close icon',
 			skin !== 'icon-reveal' && 'close icon'
@@ -377,7 +378,7 @@ const Inspector = props => {
 									...inspectorTabs.customCss({
 										props,
 										breakpoint: deviceType,
-										selectors: selectorsSearch,
+										selectors,
 										categories: getCategoriesCss(),
 									}),
 									...inspectorTabs.scrollEffects({
@@ -385,6 +386,8 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.transform({
 										props,
+										selectors,
+										categories: getCategoriesCss(),
 									}),
 									...inspectorTabs.transition({
 										props: {

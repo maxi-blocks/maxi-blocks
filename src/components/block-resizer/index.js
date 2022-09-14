@@ -27,6 +27,8 @@ const BlockResizer = memo(
 			showHandle = false,
 			resizableObject,
 			isOverflowHidden = false,
+			onResizeStop,
+			cleanStyles = true,
 			...rest
 		} = props;
 		// Needed for memo part only
@@ -58,6 +60,8 @@ const BlockResizer = memo(
 
 		const handleRef = newRef => {
 			if (newRef) {
+				// Needed to clean styles before first onResizeStop, so that blocks don't jump after resizing
+				if (cleanStyles) newRef.resizable.style = null;
 				if (resizableObject) resizableObject.current = newRef;
 				if (ref) {
 					if (typeof ref === 'function') ref(newRef.resizable);
@@ -139,6 +143,10 @@ const BlockResizer = memo(
 						),
 				}}
 				handleWrapperClass={handlesWrapperClassName}
+				onResizeStop={(e, direction, refToElement, ...rest) => {
+					onResizeStop?.(e, direction, refToElement, ...rest);
+					if (cleanStyles) refToElement.style = null;
+				}}
 			>
 				{children}
 			</Resizable>

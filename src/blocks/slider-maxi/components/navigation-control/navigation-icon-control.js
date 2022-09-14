@@ -217,34 +217,25 @@ const NavigationIconControl = props => {
 									shortPrefix === arrowShortPrefix &&
 										onChange({
 											...obj,
-											'navigation-arrow-first-icon-content':
-												setSVGStrokeWidth(
-													props[
-														'navigation-arrow-first-icon-content'
-													],
-													obj[
-														getAttributeKey(
-															'stroke',
-															isHover,
-															prefix,
-															breakpoint
-														)
-													]
-												),
-											'navigation-arrow-second-icon-content':
-												setSVGStrokeWidth(
-													props[
-														'navigation-arrow-second-icon-content'
-													],
-													obj[
-														getAttributeKey(
-															'stroke',
-															isHover,
-															prefix,
-															breakpoint
-														)
-													]
-												),
+											...['first', 'second'].reduce(
+												(prev, current) => ({
+													...prev,
+													[`navigation-arrow-${current}-icon-content`]:
+														setSVGStrokeWidth(
+															props[
+																`navigation-arrow-${current}-icon-content`
+															],
+															obj[
+																getAttributeKey(
+																	'stroke',
+																	isHover,
+																	prefix,
+																	breakpoint
+																)
+															]
+														),
+												})
+											),
 										});
 									shortPrefix === dotsShortPrefix &&
 										onChange({
@@ -535,29 +526,32 @@ const NavigationIconControl = props => {
 									opacity: paletteOpacity,
 									blockStyle,
 								});
+								const onChangeObj = {
+									[getAttributeKey(
+										'stroke-color',
+										isHover,
+										prefix
+									)]: color,
+									[getAttributeKey(
+										'stroke-palette-color',
+										isHover,
+										prefix
+									)]: paletteColor,
+									[getAttributeKey(
+										'stroke-palette-status',
+										isHover,
+										prefix
+									)]: paletteStatus,
+									[getAttributeKey(
+										'stroke-palette-opacity',
+										isHover,
+										prefix
+									)]: paletteOpacity,
+								};
 
 								shortPrefix === arrowShortPrefix &&
 									onChange({
-										[getAttributeKey(
-											'stroke-color',
-											isHover,
-											prefix
-										)]: color,
-										[getAttributeKey(
-											'stroke-palette-color',
-											isHover,
-											prefix
-										)]: paletteColor,
-										[getAttributeKey(
-											'stroke-palette-status',
-											isHover,
-											prefix
-										)]: paletteStatus,
-										[getAttributeKey(
-											'stroke-palette-opacity',
-											isHover,
-											prefix
-										)]: paletteOpacity,
+										...onChangeObj,
 										...['first', 'second'].reduce(
 											(prev, current) => {
 												return {
@@ -581,46 +575,20 @@ const NavigationIconControl = props => {
 									});
 								shortPrefix === dotsShortPrefix &&
 									onChange({
-										[getAttributeKey(
-											'stroke-color',
-											isHover,
-											prefix
-										)]: color,
-										[getAttributeKey(
-											'stroke-palette-color',
-											isHover,
-											prefix
-										)]: paletteColor,
-										[getAttributeKey(
-											'stroke-palette-status',
-											isHover,
-											prefix
-										)]: paletteStatus,
-										[getAttributeKey(
-											'stroke-palette-opacity',
-											isHover,
-											prefix
-										)]: paletteOpacity,
-										'navigation-dot-icon-content': isHover
-											? setSVGContentHover(
-													props[
-														'navigation-dot-icon-content'
-													],
-													paletteStatus
-														? strokeColorStr
-														: color,
-													'stroke'
-											  )
-											: !isActive &&
-											  setSVGContent(
-													props[
-														'navigation-dot-icon-content'
-													],
-													paletteStatus
-														? strokeColorStr
-														: color,
-													'stroke'
-											  ),
+										onChangeObj,
+										'navigation-dot-icon-content':
+											!isActive &&
+											(isHover
+												? setSVGContentHover
+												: setSVGContent)(
+												props[
+													'navigation-dot-icon-content'
+												],
+												paletteStatus
+													? strokeColorStr
+													: color,
+												'stroke'
+											),
 									});
 							}}
 							isHover={isHover}
@@ -697,29 +665,32 @@ const NavigationIconControl = props => {
 									opacity: paletteOpacity,
 									blockStyle,
 								});
+								const onChangeObj = {
+									[getAttributeKey(
+										'fill-color',
+										isHover,
+										prefix
+									)]: color,
+									[getAttributeKey(
+										'fill-palette-color',
+										isHover,
+										prefix
+									)]: paletteColor,
+									[getAttributeKey(
+										'fill-palette-status',
+										isHover,
+										prefix
+									)]: paletteStatus,
+									[getAttributeKey(
+										'fill-palette-opacity',
+										isHover,
+										prefix
+									)]: paletteOpacity,
+								};
 
 								shortPrefix === arrowShortPrefix &&
 									onChange({
-										[getAttributeKey(
-											'fill-color',
-											isHover,
-											prefix
-										)]: color,
-										[getAttributeKey(
-											'fill-palette-color',
-											isHover,
-											prefix
-										)]: paletteColor,
-										[getAttributeKey(
-											'fill-palette-status',
-											isHover,
-											prefix
-										)]: paletteStatus,
-										[getAttributeKey(
-											'fill-palette-opacity',
-											isHover,
-											prefix
-										)]: paletteOpacity,
+										...onChangeObj,
 										...['first', 'second'].reduce(
 											(prev, current) => {
 												return {
@@ -744,46 +715,20 @@ const NavigationIconControl = props => {
 
 								shortPrefix === dotsShortPrefix &&
 									onChange({
-										[getAttributeKey(
-											'fill-color',
-											isHover,
-											prefix
-										)]: color,
-										[getAttributeKey(
-											'fill-palette-color',
-											isHover,
-											prefix
-										)]: paletteColor,
-										[getAttributeKey(
-											'fill-palette-status',
-											isHover,
-											prefix
-										)]: paletteStatus,
-										[getAttributeKey(
-											'fill-palette-opacity',
-											isHover,
-											prefix
-										)]: paletteOpacity,
-										[`${prefix}content`]: isHover
-											? setSVGContentHover(
-													props[
-														'navigation-dot-icon-content'
-													],
-													paletteStatus
-														? fillColorStr
-														: color,
-													'fill'
-											  )
-											: !isActive &&
-											  setSVGContent(
-													props[
-														'navigation-dot-icon-content'
-													],
-													paletteStatus
-														? fillColorStr
-														: color,
-													'fill'
-											  ),
+										...onChangeObj,
+										[`${prefix}content`]:
+											!isActive &&
+											(isHover
+												? setSVGContentHover
+												: setSVGContent)(
+												props[
+													'navigation-dot-icon-content'
+												],
+												paletteStatus
+													? fillColorStr
+													: color,
+												'fill'
+											),
 									});
 							}}
 							isHover={isHover}

@@ -558,46 +558,26 @@ const NavigationIconControl = props => {
 											isHover,
 											prefix
 										)]: paletteOpacity,
-										'navigation-arrow-first-icon-content':
-											isHover
-												? setSVGContentHover(
-														props[
-															'navigation-arrow-first-icon-content'
-														],
-														paletteStatus
-															? strokeColorStr
-															: color,
-														'stroke'
-												  )
-												: setSVGContent(
-														props[
-															'navigation-arrow-first-icon-content'
-														],
-														paletteStatus
-															? strokeColorStr
-															: color,
-														'stroke'
-												  ),
-										'navigation-arrow-second-icon-content':
-											isHover
-												? setSVGContentHover(
-														props[
-															'navigation-arrow-second-icon-content'
-														],
-														paletteStatus
-															? strokeColorStr
-															: color,
-														'stroke'
-												  )
-												: setSVGContent(
-														props[
-															'navigation-arrow-second-icon-content'
-														],
-														paletteStatus
-															? strokeColorStr
-															: color,
-														'stroke'
-												  ),
+										...['first', 'second'].reduce(
+											(prev, current) => {
+												return {
+													...prev,
+													[`navigation-arrow-${current}-icon-content`]:
+														(isHover
+															? setSVGContentHover
+															: setSVGContent)(
+															props[
+																`navigation-arrow-${current}-icon-content`
+															],
+															paletteStatus
+																? strokeColorStr
+																: color,
+															'stroke'
+														),
+												};
+											},
+											{}
+										),
 									});
 								shortPrefix === dotsShortPrefix &&
 									onChange({
@@ -740,46 +720,26 @@ const NavigationIconControl = props => {
 											isHover,
 											prefix
 										)]: paletteOpacity,
-										'navigation-arrow-first-icon-content':
-											isHover
-												? setSVGContentHover(
-														props[
-															'navigation-arrow-first-icon-content'
-														],
-														paletteStatus
-															? fillColorStr
-															: color,
-														'fill'
-												  )
-												: setSVGContent(
-														props[
-															'navigation-arrow-first-icon-content'
-														],
-														paletteStatus
-															? fillColorStr
-															: color,
-														'fill'
-												  ),
-										'navigation-arrow-second-icon-content':
-											isHover
-												? setSVGContentHover(
-														props[
-															'navigation-arrow-second-icon-content'
-														],
-														paletteStatus
-															? fillColorStr
-															: color,
-														'fill'
-												  )
-												: setSVGContent(
-														props[
-															'navigation-arrow-second-icon-content'
-														],
-														paletteStatus
-															? fillColorStr
-															: color,
-														'fill'
-												  ),
+										...['first', 'second'].reduce(
+											(prev, current) => {
+												return {
+													...prev,
+													[`navigation-arrow-${current}-icon-content`]:
+														(isHover
+															? setSVGContentHover
+															: setSVGContent)(
+															props[
+																`navigation-arrow-${current}-icon-content`
+															],
+															paletteStatus
+																? fillColorStr
+																: color,
+															'fill'
+														),
+												};
+											},
+											{}
+										),
 									});
 
 								shortPrefix === dotsShortPrefix &&

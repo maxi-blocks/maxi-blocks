@@ -18,6 +18,8 @@ const attributes = {
 	...attributesData.borderHover,
 	...attributesData.borderRadius,
 	...attributesData.borderWidth,
+	...attributesData.borderWidthHover,
+	...attributesData.borderRadiusHover,
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
 	...attributesData.size,

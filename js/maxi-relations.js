@@ -84,15 +84,17 @@ const relations = () => {
 				? [transitionTarget]
 				: transitionTarget;
 
-		const transitionTargetEl = Array.from(
+		return !!Array.from(
 			document.querySelectorAll(
 				transitionTargets.map(currentTarget =>
 					currentTarget === '' ? target : currentTarget
 				)
 			)
-		).find(element => targetEl.closest('.maxi-block').contains(element));
-
-		return targetEl.contains(transitionTargetEl);
+		).find(
+			element =>
+				targetEl.closest('.maxi-block').contains(element) &&
+				targetEl.contains(element)
+		);
 	};
 
 	const toggleInlineStyles = ({
@@ -214,7 +216,7 @@ const relations = () => {
 						? [transitionTarget]
 						: transitionTarget;
 
-				transitionTargets.forEach(currentTransitionTarget => {
+				transitionTargets?.forEach(currentTransitionTarget => {
 					const svgTarget = `${target} ${
 						avoidHover && currentTransitionTarget?.endsWith('> *')
 							? currentTransitionTarget.slice(0, -4) +

@@ -141,10 +141,12 @@ const NavigationIconControl = props => {
 		},
 	};
 
+	const arrowShortPrefix = 'navigation-arrow-';
+	const dotsShortPrefix = 'navigation-dot-';
 	const shortPrefix =
 		prefix === 'navigation-arrow-both-icon-'
-			? 'navigation-arrow-'
-			: 'navigation-dot-';
+			? arrowShortPrefix
+			: dotsShortPrefix;
 	const isActive = prefix.includes('active');
 	const label = shortPrefix.includes('dot') ? 'dots' : 'arrows';
 
@@ -153,7 +155,7 @@ const NavigationIconControl = props => {
 			{!isHover &&
 				!isActive &&
 				breakpoint === 'general' &&
-				shortPrefix === 'navigation-arrow-' &&
+				shortPrefix === arrowShortPrefix &&
 				['first', 'second'].map(current => (
 					<MaxiModal
 						type='navigation-icon'
@@ -168,7 +170,7 @@ const NavigationIconControl = props => {
 			{!isHover &&
 				!isActive &&
 				breakpoint === 'general' &&
-				shortPrefix === 'navigation-dot-' && (
+				shortPrefix === dotsShortPrefix && (
 					<MaxiModal
 						type='navigation-icon'
 						title={__('Add dot icon', 'maxi-blocks')}
@@ -189,7 +191,7 @@ const NavigationIconControl = props => {
 								<SvgWidthControl
 									{...getGroupAttributes(
 										props,
-										shortPrefix === 'navigation-dot-'
+										shortPrefix === dotsShortPrefix
 											? `dotIcon${isHover ? 'Hover' : ''}`
 											: `arrowIcon${
 													isHover ? 'Hover' : ''
@@ -206,13 +208,13 @@ const NavigationIconControl = props => {
 							<SvgStrokeWidthControl
 								{...getGroupAttributes(
 									props,
-									shortPrefix === 'navigation-dot-'
+									shortPrefix === dotsShortPrefix
 										? `dotIcon${isHover ? 'Hover' : ''}`
 										: `arrowIcon${isHover ? 'Hover' : ''}`,
 									isHover
 								)}
 								onChange={obj => {
-									shortPrefix === 'navigation-arrow-' &&
+									shortPrefix === arrowShortPrefix &&
 										onChange({
 											...obj,
 											'navigation-arrow-first-icon-content':
@@ -242,7 +244,7 @@ const NavigationIconControl = props => {
 													]
 												),
 										});
-									shortPrefix === 'navigation-dot-' &&
+									shortPrefix === dotsShortPrefix &&
 										onChange({
 											...obj,
 											'navigation-dot-icon-content':
@@ -496,7 +498,7 @@ const NavigationIconControl = props => {
 									blockStyle,
 								});
 
-								shortPrefix === 'navigation-arrow-' &&
+								shortPrefix === arrowShortPrefix &&
 									onChange({
 										[`${prefix}stroke-color${
 											isHover ? '-hover' : ''
@@ -551,7 +553,7 @@ const NavigationIconControl = props => {
 														'stroke'
 												  ),
 									});
-								shortPrefix === 'navigation-dot-' &&
+								shortPrefix === dotsShortPrefix &&
 									onChange({
 										[`${prefix}stroke-color${
 											isHover ? '-hover' : ''
@@ -652,7 +654,7 @@ const NavigationIconControl = props => {
 									blockStyle,
 								});
 
-								shortPrefix === 'navigation-arrow-' &&
+								shortPrefix === arrowShortPrefix &&
 									onChange({
 										[`${prefix}fill-color${
 											isHover ? '-hover' : ''
@@ -708,7 +710,7 @@ const NavigationIconControl = props => {
 												  ),
 									});
 
-								shortPrefix === 'navigation-dot-' &&
+								shortPrefix === dotsShortPrefix &&
 									onChange({
 										[`${prefix}fill-color${
 											isHover ? '-hover' : ''
@@ -837,7 +839,7 @@ const NavigationIconControl = props => {
 											{
 												background: color,
 											},
-											shortPrefix === 'navigation-arrow-'
+											shortPrefix === arrowShortPrefix
 												? '.maxi-slider-block__arrow'
 												: '.maxi-slider-block__dot'
 										)
@@ -875,7 +877,7 @@ const NavigationIconControl = props => {
 													breakpoint
 												)]: color,
 											},
-											shortPrefix === 'navigation-arrow-'
+											shortPrefix === arrowShortPrefix
 												? '.maxi-slider-block__arrow'
 												: '.maxi-slider-block__dot'
 										);

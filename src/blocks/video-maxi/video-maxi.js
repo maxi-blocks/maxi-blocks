@@ -10,7 +10,7 @@ import { registerBlockType } from '@wordpress/blocks';
 import attributes from './attributes';
 import edit from './edit';
 import save from './save';
-import { selectorsVideo } from './custom-css';
+import { customCss } from './data';
 
 /**
  * Styles and icons
@@ -51,6 +51,6 @@ registerBlockType('maxi-blocks/video-maxi', {
 	deprecated: blockMigrator({
 		attributes,
 		save,
-		selectors: selectorsVideo,
+		selectors: customCss.selectors,
 	}),
 });

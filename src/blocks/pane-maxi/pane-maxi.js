@@ -14,7 +14,7 @@ import { registerBlockType } from '@wordpress/blocks';
 import attributes from './attributes';
 import edit from './edit';
 import save from './save';
-import { selectorsPane } from './custom-css';
+import { customCss } from './data';
 
 /**
  * Styles and icons
@@ -56,6 +56,6 @@ registerBlockType('maxi-blocks/pane-maxi', {
 	deprecated: blockMigrator({
 		attributes,
 		save,
-		selectors: selectorsPane,
+		selectors: customCss.selectors,
 	}),
 });

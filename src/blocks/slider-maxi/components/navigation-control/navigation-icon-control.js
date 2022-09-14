@@ -39,6 +39,7 @@ import GradientControl from '../../../../components/gradient-control';
  * External dependencies
  */
 import classnames from 'classnames';
+import { capitalize } from 'lodash';
 
 /**
  * Styles and icons
@@ -145,18 +146,7 @@ const NavigationIconControl = props => {
 			? 'navigation-arrow'
 			: 'navigation-dot';
 	const isActive = prefix.includes('active');
-
-	let labelLow = 'arrows';
-	let labelCapital = 'Arrows';
-
-	if (isActive) {
-		labelLow = 'dots';
-		labelCapital = 'Dots';
-	}
-	if (!isActive && shortPrefix.includes('dot')) {
-		labelLow = 'dots';
-		labelCapital = 'Dots';
-	}
+	const label = shortPrefix.includes('dot') ? 'dots' : 'arrows';
 
 	return (
 		<div className={classes}>
@@ -208,7 +198,7 @@ const NavigationIconControl = props => {
 									)}
 									onChange={onChange}
 									prefix={`${prefix}-`}
-									customLabel={`${labelCapital} size`}
+									customLabel={`${capitalize(label)} size`}
 									breakpoint={breakpoint}
 									isHover={isHover}
 								/>
@@ -271,7 +261,9 @@ const NavigationIconControl = props => {
 										});
 								}}
 								prefix={`${prefix}-`}
-								customLabel={`${labelCapital} stroke width`}
+								customLabel={`${capitalize(
+									label
+								)} stroke width`}
 								breakpoint={breakpoint}
 								isHover={isHover}
 							/>
@@ -279,7 +271,9 @@ const NavigationIconControl = props => {
 								<>
 									<AdvancedNumberControl
 										label={__(
-											`${labelCapital} horizontal spacing`,
+											`${capitalize(
+												label
+											)} horizontal spacing`,
 											'maxi-blocks'
 										)}
 										min={-300}
@@ -319,7 +313,9 @@ const NavigationIconControl = props => {
 									/>
 									<AdvancedNumberControl
 										label={__(
-											`${labelCapital} vertical spacing`,
+											`${capitalize(
+												label
+											)} vertical spacing`,
 											'maxi-blocks'
 										)}
 										min={-100}
@@ -412,7 +408,7 @@ const NavigationIconControl = props => {
 										`${prefix}-`
 									)}
 									label={__(
-										`${labelCapital} padding`,
+										`${capitalize(label)} padding`,
 										'maxi-blocks'
 									)}
 									onChange={onChange}
@@ -440,7 +436,10 @@ const NavigationIconControl = props => {
 					)}
 					{iconStyle === 'color' && svgType !== 'Shape' && (
 						<ColorControl
-							label={__(`${labelCapital} line`, 'maxi-blocks')}
+							label={__(
+								`${capitalize(label)} line`,
+								'maxi-blocks'
+							)}
 							color={
 								props[
 									`${prefix}-stroke-color${
@@ -593,7 +592,10 @@ const NavigationIconControl = props => {
 					)}
 					{iconStyle === 'color' && svgType !== 'Line' && (
 						<ColorControl
-							label={__(`${labelCapital} fill`, 'maxi-blocks')}
+							label={__(
+								`${capitalize(label)} fill`,
+								'maxi-blocks'
+							)}
 							color={
 								props[
 									`${prefix}-fill-color${
@@ -746,7 +748,7 @@ const NavigationIconControl = props => {
 						/>
 					)}
 					<ToggleSwitch
-						label={__(`Add ${labelLow} border`, 'maxi-blocks')}
+						label={__(`Add ${label} border`, 'maxi-blocks')}
 						selected={props[`${prefix}-status-border`]}
 						onChange={val =>
 							onChange({
@@ -770,7 +772,7 @@ const NavigationIconControl = props => {
 						/>
 					)}
 					<ToggleSwitch
-						label={__(`Add ${labelLow} background`, 'maxi-blocks')}
+						label={__(`Add ${label} background`, 'maxi-blocks')}
 						selected={props[`${prefix}-status-background`]}
 						onChange={val =>
 							onChange({
@@ -800,7 +802,7 @@ const NavigationIconControl = props => {
 							{iconBgActive === 'color' && (
 								<ColorControl
 									label={__(
-										`${labelCapital} background`,
+										`${capitalize(label)} background`,
 										'maxi-blocks'
 									)}
 									paletteStatus={getLastBreakpointAttribute({
@@ -884,7 +886,9 @@ const NavigationIconControl = props => {
 							{iconBgActive === 'gradient' && (
 								<GradientControl
 									label={__(
-										`${labelCapital} background gradient`,
+										`${capitalize(
+											label
+										)} background gradient`,
 										'maxi-blocks'
 									)}
 									gradient={getLastBreakpointAttribute({
@@ -935,7 +939,7 @@ const NavigationIconControl = props => {
 						</>
 					)}
 					<ToggleSwitch
-						label={__(`Add ${labelLow} shadow`, 'maxi-blocks')}
+						label={__(`Add ${label} shadow`, 'maxi-blocks')}
 						selected={props[`${prefix}-status-shadow`]}
 						onChange={val =>
 							onChange({
@@ -952,7 +956,7 @@ const NavigationIconControl = props => {
 								`${prefix}-`
 							)}
 							prefix={`${prefix}-`}
-							label={`${labelCapital} box shadow`}
+							label={`${capitalize(label)} box shadow`}
 							onChange={onChange}
 							breakpoint={breakpoint}
 							clientId={clientId}

@@ -22,12 +22,13 @@ import {
 	getGroupAttributes,
 } from '../../extensions/styles';
 import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
+import getHoverStatus from './getHoverStatus';
 import * as blocksData from '../../blocks/data';
 
 /**
  * External dependencies
  */
-import { cloneDeep, isEmpty, isFunction, isNil, merge } from 'lodash';
+import { cloneDeep, isEmpty, isNil, merge } from 'lodash';
 
 /**
  * Styles
@@ -108,11 +109,6 @@ const RelationControl = props => {
 	const getSelectedSettingsObj = (clientId, settingsLabel) =>
 		getOptions(clientId).find(option => option.label === settingsLabel);
 
-	const getHoverStatus = (hoverProp, blockAttributes) =>
-		isFunction(hoverProp)
-			? hoverProp(blockAttributes)
-			: blockAttributes[hoverProp];
-
 	const displaySelectedSetting = item => {
 		if (!item) return null;
 
@@ -165,7 +161,11 @@ const RelationControl = props => {
 			let hoverStatus = null;
 
 			if (!('hoverStatus' in item.effects))
-				hoverStatus = getHoverStatus(hoverProp, blockAttributes);
+				hoverStatus = getHoverStatus(
+					hoverProp,
+					blockAttributes,
+					item.attributes
+				);
 
 			if (transitionTarget)
 				onChangeRelation(relations, item.id, {

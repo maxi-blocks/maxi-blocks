@@ -37,15 +37,10 @@ class edit extends MaxiBlockComponent {
 	maxiBlockDidUpdate(prevProps) {
 		const { clientId, isSelected } = this.props;
 		const { isSelected: wasSelected } = prevProps;
+		const { width } = this.blockRef.current.getBoundingClientRect();
 
-		if (
-			this.context.slidesWidth[clientId] !==
-			this.blockRef.current.getBoundingClientRect().width
-		) {
-			this.context.setSlideWidth(
-				clientId,
-				this.blockRef.current.getBoundingClientRect().width
-			);
+		if (this.context.slidesWidth[clientId] !== width) {
+			this.context.setSlideWidth(clientId, width);
 		}
 		if (isSelected !== wasSelected && isSelected) {
 			this.blockRef.current.setAttribute('data-slide-active', 'true');

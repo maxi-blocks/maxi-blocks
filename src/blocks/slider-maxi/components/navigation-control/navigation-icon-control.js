@@ -166,28 +166,18 @@ const NavigationIconControl = props => {
 			{!isHover &&
 				!isActive &&
 				breakpoint === 'general' &&
-				shortPrefix === 'navigation-arrow' && (
-					<>
-						<MaxiModal
-							type='navigation-icon'
-							title={__('Add first arrow icon', 'maxi-blocks')}
-							style={blockStyle}
-							onSelect={obj => onChange(obj)}
-							onRemove={obj => onChange(obj)}
-							icon={props[`${shortPrefix}-first-icon-content`]}
-							prefix={`${shortPrefix}-first-`}
-						/>
-						<MaxiModal
-							type='navigation-icon'
-							title={__('Add second arrow icon', 'maxi-blocks')}
-							style={blockStyle}
-							onSelect={obj => onChange(obj)}
-							onRemove={obj => onChange(obj)}
-							icon={props[`${shortPrefix}-second-icon-content`]}
-							prefix={`${shortPrefix}-second-`}
-						/>
-					</>
-				)}
+				shortPrefix === 'navigation-arrow' &&
+				['first', 'second'].map(current => (
+					<MaxiModal
+						type='navigation-icon'
+						label={__(`Add ${current} arrow icon`, 'maxi-blocks')}
+						style={blockStyle}
+						onSelect={obj => onChange(obj)}
+						onRemove={obj => onChange(obj)}
+						icon={props[`${shortPrefix}-${current}-icon-content`]}
+						prefix={`${shortPrefix}-${current}-`}
+					/>
+				))}
 			{!isHover &&
 				!isActive &&
 				breakpoint === 'general' &&

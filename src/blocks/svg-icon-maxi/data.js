@@ -159,12 +159,6 @@ const transition = {
 			property: 'box-shadow',
 			prefix,
 		},
-		colour: {
-			title: 'Colour',
-			target: ` ${iconClass} svg > *`,
-			hoverProp: 'svg-status-hover',
-			limitless: true,
-		},
 		...createIconTransitions({
 			target: iconClass,
 			prefix,

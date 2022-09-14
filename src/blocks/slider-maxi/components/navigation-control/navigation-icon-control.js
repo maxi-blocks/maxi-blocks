@@ -66,13 +66,6 @@ const NavigationIconControl = props => {
 		prefix,
 		clientId,
 	} = props;
-
-	const isActive = prefix.includes('active');
-
-	const classes = classnames('maxi-icon-control', className);
-
-	const [iconStyle, setIconStyle] = useState('color');
-
 	const iconBgActiveMedia = getLastBreakpointAttribute({
 		target: `${prefix}-background-active-media`,
 		breakpoint,
@@ -80,9 +73,12 @@ const NavigationIconControl = props => {
 		isHover,
 	});
 
+	const [iconStyle, setIconStyle] = useState('color');
 	const [iconBgActive, setIconBgActive] = useState(
 		iconBgActiveMedia || 'none'
 	);
+
+	const classes = classnames('maxi-icon-control', className);
 
 	const getBackgroundOptions = () => {
 		const options = [];
@@ -148,6 +144,7 @@ const NavigationIconControl = props => {
 		prefix === 'navigation-arrow-both-icon'
 			? 'navigation-arrow'
 			: 'navigation-dot';
+	const isActive = prefix.includes('active');
 
 	let labelLow = 'arrows';
 	let labelCapital = 'Arrows';

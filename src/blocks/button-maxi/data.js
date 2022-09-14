@@ -291,7 +291,7 @@ const interactionBuilderSettings = [
 	{
 		label: __('Button background', 'maxi-blocks'),
 		transitionTarget: transition.block['button background'].target,
-		hoverProp: 'button-background-hover-status',
+		hoverProp: 'button-background-status-hover',
 		attrGroupName: ['background', 'backgroundColor', 'backgroundGradient'],
 		prefix: 'button-',
 		component: props => (

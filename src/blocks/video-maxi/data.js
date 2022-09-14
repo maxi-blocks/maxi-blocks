@@ -187,26 +187,20 @@ const transition = {
 	block: {
 		border: {
 			title: 'Border',
-			target: [
-				' .maxi-video-block__overlay',
-				' .maxi-video-block__video-player',
-			],
+			target: [overlayClass, videoClass],
 			property: 'border',
 			prefix,
 		},
 		'box shadow': {
 			title: 'Box shadow',
-			target: [
-				' .maxi-video-block__overlay',
-				' .maxi-video-block__video-player',
-			],
+			target: [overlayClass, videoClass],
 			property: 'box-shadow',
 			prefix,
 		},
 		'overlay colour': {
 			title: 'Overlay colour',
-			target: ' .maxi-video-block__overlay-background',
-			hoverProp: 'overlay-background-hover-status',
+			target: overlayClass,
+			hoverProp: 'overlay-background-status-hover',
 			property: 'background-color',
 		},
 		...createIconTransitions({

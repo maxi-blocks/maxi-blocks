@@ -276,7 +276,7 @@ const relations = () => {
 	};
 
 	maxiRelations[0]?.forEach(item => {
-		if (!item?.uniqueID) return;
+		if (!item?.uniqueID || item?.css?.length === 0) return;
 
 		const triggerEl = document.querySelector(`.${item.trigger}`);
 		const target = `#${item.uniqueID} ${item.target ?? ''}`;

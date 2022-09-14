@@ -17,6 +17,7 @@ import {
 	openPreviewPage,
 	editAdvancedNumberControl,
 } from '../../utils';
+import sizeAndPositionChecker from './utils/sizeAndPositionChecker';
 
 describe('BackgroundControl', () => {
 	it('Check Background gradient layer', async () => {
@@ -43,6 +44,8 @@ describe('BackgroundControl', () => {
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
 
+		await sizeAndPositionChecker({ page });
+
 		// check responsive
 		const responsiveResult = await addResponsiveTest({
 			page,
@@ -53,6 +56,9 @@ describe('BackgroundControl', () => {
 			newValue: '88',
 		});
 		expect(responsiveResult).toBeTruthy();
+
+		// after addResponsiveTest we have m breakpoint
+		await sizeAndPositionChecker({ page, breakpoint: 'm' });
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
@@ -98,8 +104,7 @@ describe('BackgroundControl', () => {
 
 		await selector.select('radial-gradient');
 
-		const layerExpect = await getBlockAttributes();
-		expect(layerExpect['background-layers']).toMatchSnapshot();
+		await sizeAndPositionChecker({ page, isHover: true });
 
 		// check responsive
 		const responsiveResult = await addResponsiveTest({
@@ -111,6 +116,11 @@ describe('BackgroundControl', () => {
 			newValue: '88',
 		});
 		expect(responsiveResult).toBeTruthy();
+
+		await sizeAndPositionChecker({ page, breakpoint: 'm', isHover: true });
+
+		const layerExpect = await getBlockAttributes();
+		expect(layerExpect['background-layers']).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 	it('Check Background Gradient layer display', async () => {

@@ -7,8 +7,8 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import {
+	getAttributeValue,
 	getDefaultAttribute,
-	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
 
 /**
@@ -78,7 +78,7 @@ const SliderControl = props => {
 						onChangeValue={val => {
 							onChange({
 								'slider-autoplay-speed':
-									val !== undefined && val !== '' ? val : '',
+									val !== undefined ? val : '',
 							});
 						}}
 						onReset={() =>
@@ -109,10 +109,7 @@ const SliderControl = props => {
 						value: 'fade',
 					},
 				]}
-				value={getLastBreakpointAttribute({
-					target: 'slider-transition',
-					attributes,
-				})}
+				value={getAttributeValue('slider-transition', attributes)}
 				onChange={val => {
 					onChange({
 						'slider-transition': val,

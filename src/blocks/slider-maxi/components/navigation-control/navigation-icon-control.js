@@ -885,9 +885,11 @@ const NavigationIconControl = props => {
 											{
 												background: color,
 											},
-											shortPrefix === arrowShortPrefix
-												? '.maxi-slider-block__arrow'
-												: '.maxi-slider-block__dot'
+											`.maxi-slider-block__${
+												shortPrefix === arrowShortPrefix
+													? 'arrow'
+													: 'dot'
+											}`
 										)
 									}
 									onChange={({

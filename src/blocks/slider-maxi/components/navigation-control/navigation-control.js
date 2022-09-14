@@ -19,19 +19,19 @@ const NavigationIconsControl = props => {
 		activeInlineTarget,
 		clientId,
 		blockStyle,
-		prefix = 'navigation-arrow-both-icon',
+		prefix = 'navigation-arrow-both-icon-',
 	} = props;
 
 	let svgType = 'Filled';
 
-	if (prefix === 'navigation-arrow-both-icon')
+	if (prefix === 'navigation-arrow-both-icon-')
 		svgType =
 			props['navigation-arrow-first-svgType'] ===
 			props['navigation-arrow-second-svgType']
 				? props['navigation-arrow-first-svgType']
 				: 'Filled';
 
-	if (prefix === 'navigation-dot-icon')
+	if (prefix === 'navigation-dot-icon-')
 		svgType = props['navigation-dot-svgType'];
 	return (
 		<SettingTabsControl
@@ -72,14 +72,14 @@ const NavigationIconsControl = props => {
 						<>
 							<ToggleSwitch
 								label={__('Enable icon hover', 'maxi-blocks')}
-								selected={props[`${prefix}-status-hover`]}
+								selected={props[`${prefix}status-hover`]}
 								onChange={val =>
 									onChange({
-										[`${prefix}-status-hover`]: val,
+										[`${prefix}status-hover`]: val,
 									})
 								}
 							/>
-							{props[`${prefix}-status-hover`] && (
+							{props[`${prefix}status-hover`] && (
 								<NavigationIconControl
 									{...props}
 									onChange={(obj, target) => {
@@ -139,7 +139,7 @@ const NavigationIconsControl = props => {
 									breakpoint={deviceType}
 									clientId={clientId}
 									blockStyle={blockStyle}
-									prefix='active-navigation-dot-icon'
+									prefix='active-navigation-dot-icon-'
 								/>
 							)}
 						</>

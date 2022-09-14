@@ -68,7 +68,7 @@ const NavigationIconControl = props => {
 		clientId,
 	} = props;
 	const iconBgActiveMedia = getLastBreakpointAttribute({
-		target: `${prefix}-background-active-media`,
+		target: `${prefix}background-active-media`,
 		breakpoint,
 		attributes: props,
 		isHover,
@@ -142,9 +142,9 @@ const NavigationIconControl = props => {
 	};
 
 	const shortPrefix =
-		prefix === 'navigation-arrow-both-icon'
-			? 'navigation-arrow'
-			: 'navigation-dot';
+		prefix === 'navigation-arrow-both-icon-'
+			? 'navigation-arrow-'
+			: 'navigation-dot-';
 	const isActive = prefix.includes('active');
 	const label = shortPrefix.includes('dot') ? 'dots' : 'arrows';
 
@@ -153,7 +153,7 @@ const NavigationIconControl = props => {
 			{!isHover &&
 				!isActive &&
 				breakpoint === 'general' &&
-				shortPrefix === 'navigation-arrow' &&
+				shortPrefix === 'navigation-arrow-' &&
 				['first', 'second'].map(current => (
 					<MaxiModal
 						type='navigation-icon'
@@ -161,22 +161,22 @@ const NavigationIconControl = props => {
 						style={blockStyle}
 						onSelect={obj => onChange(obj)}
 						onRemove={obj => onChange(obj)}
-						icon={props[`${shortPrefix}-${current}-icon-content`]}
-						prefix={`${shortPrefix}-${current}-`}
+						icon={props[`${shortPrefix}${current}-icon-content`]}
+						prefix={`${shortPrefix}${current}-`}
 					/>
 				))}
 			{!isHover &&
 				!isActive &&
 				breakpoint === 'general' &&
-				shortPrefix === 'navigation-dot' && (
+				shortPrefix === 'navigation-dot-' && (
 					<MaxiModal
 						type='navigation-icon'
 						title={__('Add dot icon', 'maxi-blocks')}
 						style={blockStyle}
 						onSelect={obj => onChange(obj)}
 						onRemove={obj => onChange(obj)}
-						icon={props[`${shortPrefix}-icon-content`]}
-						prefix={`${shortPrefix}-`}
+						icon={props[`${shortPrefix}icon-content`]}
+						prefix={shortPrefix}
 					/>
 				)}
 			{(props['navigation-arrow-first-icon-content'] ||
@@ -189,7 +189,7 @@ const NavigationIconControl = props => {
 								<SvgWidthControl
 									{...getGroupAttributes(
 										props,
-										shortPrefix === 'navigation-dot'
+										shortPrefix === 'navigation-dot-'
 											? `dotIcon${isHover ? 'Hover' : ''}`
 											: `arrowIcon${
 													isHover ? 'Hover' : ''
@@ -197,7 +197,7 @@ const NavigationIconControl = props => {
 										isHover
 									)}
 									onChange={onChange}
-									prefix={`${prefix}-`}
+									prefix={prefix}
 									customLabel={`${capitalize(label)} size`}
 									breakpoint={breakpoint}
 									isHover={isHover}
@@ -206,13 +206,13 @@ const NavigationIconControl = props => {
 							<SvgStrokeWidthControl
 								{...getGroupAttributes(
 									props,
-									shortPrefix === 'navigation-dot'
+									shortPrefix === 'navigation-dot-'
 										? `dotIcon${isHover ? 'Hover' : ''}`
 										: `arrowIcon${isHover ? 'Hover' : ''}`,
 									isHover
 								)}
 								onChange={obj => {
-									shortPrefix === 'navigation-arrow' &&
+									shortPrefix === 'navigation-arrow-' &&
 										onChange({
 											...obj,
 											'navigation-arrow-first-icon-content':
@@ -221,7 +221,7 @@ const NavigationIconControl = props => {
 														'navigation-arrow-first-icon-content'
 													],
 													obj[
-														`${prefix}-stroke-${breakpoint}${
+														`${prefix}stroke-${breakpoint}${
 															isHover
 																? '-hover'
 																: ''
@@ -234,7 +234,7 @@ const NavigationIconControl = props => {
 														'navigation-arrow-second-icon-content'
 													],
 													obj[
-														`${prefix}-stroke-${breakpoint}${
+														`${prefix}stroke-${breakpoint}${
 															isHover
 																? '-hover'
 																: ''
@@ -242,7 +242,7 @@ const NavigationIconControl = props => {
 													]
 												),
 										});
-									shortPrefix === 'navigation-dot' &&
+									shortPrefix === 'navigation-dot-' &&
 										onChange({
 											...obj,
 											'navigation-dot-icon-content':
@@ -251,7 +251,7 @@ const NavigationIconControl = props => {
 														'navigation-dot-icon-content'
 													],
 													obj[
-														`${prefix}-stroke-${breakpoint}${
+														`${prefix}stroke-${breakpoint}${
 															isHover
 																? '-hover'
 																: ''
@@ -260,7 +260,7 @@ const NavigationIconControl = props => {
 												),
 										});
 								}}
-								prefix={`${prefix}-`}
+								prefix={prefix}
 								customLabel={`${capitalize(
 									label
 								)} stroke width`}
@@ -282,14 +282,14 @@ const NavigationIconControl = props => {
 										step={1}
 										breakpoint={breakpoint}
 										value={getLastBreakpointAttribute({
-											target: `${prefix}-spacing-horizontal`,
+											target: `${prefix}spacing-horizontal`,
 											breakpoint,
 											attributes: props,
 											isHover,
 										})}
 										onChangeValue={val => {
 											onChange({
-												[`${prefix}-spacing-horizontal-${breakpoint}${
+												[`${prefix}spacing-horizontal-${breakpoint}${
 													isHover ? '-hover' : ''
 												}`]:
 													val !== undefined &&
@@ -300,10 +300,10 @@ const NavigationIconControl = props => {
 										}}
 										onReset={() =>
 											onChange({
-												[`${prefix}-spacing-horizontal-${breakpoint}${
+												[`${prefix}spacing-horizontal-${breakpoint}${
 													isHover ? '-hover' : ''
 												}`]: getDefaultAttribute(
-													`${prefix}-spacing-horizontal-${breakpoint}${
+													`${prefix}spacing-horizontal-${breakpoint}${
 														isHover ? '-hover' : ''
 													}`
 												),
@@ -324,14 +324,14 @@ const NavigationIconControl = props => {
 										step={1}
 										breakpoint={breakpoint}
 										value={getLastBreakpointAttribute({
-											target: `${prefix}-spacing-vertical`,
+											target: `${prefix}spacing-vertical`,
 											breakpoint,
 											attributes: props,
 											isHover,
 										})}
 										onChangeValue={val => {
 											onChange({
-												[`${prefix}-spacing-vertical-${breakpoint}${
+												[`${prefix}spacing-vertical-${breakpoint}${
 													isHover ? '-hover' : ''
 												}`]:
 													val !== undefined &&
@@ -342,10 +342,10 @@ const NavigationIconControl = props => {
 										}}
 										onReset={() =>
 											onChange({
-												[`${prefix}-spacing-vertical-${breakpoint}${
+												[`${prefix}spacing-vertical-${breakpoint}${
 													isHover ? '-hover' : ''
 												}`]: getDefaultAttribute(
-													`${prefix}-spacing-vertical-${breakpoint}${
+													`${prefix}spacing-vertical-${breakpoint}${
 														isHover ? '-hover' : ''
 													}`
 												),
@@ -365,14 +365,14 @@ const NavigationIconControl = props => {
 											step={1}
 											breakpoint={breakpoint}
 											value={getLastBreakpointAttribute({
-												target: `${prefix}-spacing-between`,
+												target: `${prefix}spacing-between`,
 												breakpoint,
 												attributes: props,
 												isHover,
 											})}
 											onChangeValue={val => {
 												onChange({
-													[`${prefix}-spacing-between-${breakpoint}${
+													[`${prefix}spacing-between-${breakpoint}${
 														isHover ? '-hover' : ''
 													}`]:
 														val !== undefined &&
@@ -383,10 +383,10 @@ const NavigationIconControl = props => {
 											}}
 											onReset={() =>
 												onChange({
-													[`${prefix}-spacing-between-${breakpoint}${
+													[`${prefix}spacing-between-${breakpoint}${
 														isHover ? '-hover' : ''
 													}`]: getDefaultAttribute(
-														`${prefix}-spacing-between-${breakpoint}${
+														`${prefix}spacing-between-${breakpoint}${
 															isHover
 																? '-hover'
 																: ''
@@ -405,7 +405,7 @@ const NavigationIconControl = props => {
 										props,
 										'padding',
 										false,
-										`${prefix}-`
+										prefix
 									)}
 									label={__(
 										`${capitalize(label)} padding`,
@@ -417,7 +417,7 @@ const NavigationIconControl = props => {
 									disableAuto
 									optionType='string'
 									minMaxSettings={minMaxSettings}
-									prefix={`${prefix}-`}
+									prefix={prefix}
 									noResponsiveTabs
 								/>
 							)}
@@ -442,30 +442,30 @@ const NavigationIconControl = props => {
 							)}
 							color={
 								props[
-									`${prefix}-stroke-color${
+									`${prefix}stroke-color${
 										isHover ? '-hover' : ''
 									}`
 								]
 							}
-							prefix={`${prefix}-stroke-`}
+							prefix={`${prefix}stroke-`}
 							avoidBreakpointForDefault
 							paletteColor={
 								props[
-									`${prefix}-stroke-palette-color${
+									`${prefix}stroke-palette-color${
 										isHover ? '-hover' : ''
 									}`
 								]
 							}
 							paletteOpacity={
 								props[
-									`${prefix}-stroke-palette-opacity${
+									`${prefix}stroke-palette-opacity${
 										isHover ? '-hover' : ''
 									}`
 								]
 							}
 							paletteStatus={
 								props[
-									`${prefix}-stroke-palette-status${
+									`${prefix}stroke-palette-status${
 										isHover ? '-hover' : ''
 									}`
 								]
@@ -486,7 +486,7 @@ const NavigationIconControl = props => {
 								paletteOpacity,
 							}) => {
 								const strokeColorStr = getColorRGBAString({
-									firstVar: `${prefix}-stroke${
+									firstVar: `${prefix}stroke${
 										isHover ? '-hover' : ''
 									}`,
 									secondVar: `color-${paletteColor}${
@@ -496,18 +496,18 @@ const NavigationIconControl = props => {
 									blockStyle,
 								});
 
-								shortPrefix === 'navigation-arrow' &&
+								shortPrefix === 'navigation-arrow-' &&
 									onChange({
-										[`${prefix}-stroke-color${
+										[`${prefix}stroke-color${
 											isHover ? '-hover' : ''
 										}`]: color,
-										[`${prefix}-stroke-palette-color${
+										[`${prefix}stroke-palette-color${
 											isHover ? '-hover' : ''
 										}`]: paletteColor,
-										[`${prefix}-stroke-palette-status${
+										[`${prefix}stroke-palette-status${
 											isHover ? '-hover' : ''
 										}`]: paletteStatus,
-										[`${prefix}-stroke-palette-opacity${
+										[`${prefix}stroke-palette-opacity${
 											isHover ? '-hover' : ''
 										}`]: paletteOpacity,
 										'navigation-arrow-first-icon-content':
@@ -551,18 +551,18 @@ const NavigationIconControl = props => {
 														'stroke'
 												  ),
 									});
-								shortPrefix === 'navigation-dot' &&
+								shortPrefix === 'navigation-dot-' &&
 									onChange({
-										[`${prefix}-stroke-color${
+										[`${prefix}stroke-color${
 											isHover ? '-hover' : ''
 										}`]: color,
-										[`${prefix}-stroke-palette-color${
+										[`${prefix}stroke-palette-color${
 											isHover ? '-hover' : ''
 										}`]: paletteColor,
-										[`${prefix}-stroke-palette-status${
+										[`${prefix}stroke-palette-status${
 											isHover ? '-hover' : ''
 										}`]: paletteStatus,
-										[`${prefix}-stroke-palette-opacity${
+										[`${prefix}stroke-palette-opacity${
 											isHover ? '-hover' : ''
 										}`]: paletteOpacity,
 										'navigation-dot-icon-content': isHover
@@ -598,30 +598,30 @@ const NavigationIconControl = props => {
 							)}
 							color={
 								props[
-									`${prefix}-fill-color${
+									`${prefix}fill-color${
 										isHover ? '-hover' : ''
 									}`
 								]
 							}
-							prefix={`${prefix}-fill-`}
+							prefix={`${prefix}fill-`}
 							avoidBreakpointForDefault
 							paletteColor={
 								props[
-									`${prefix}-fill-palette-color${
+									`${prefix}fill-palette-color${
 										isHover ? '-hover' : ''
 									}`
 								]
 							}
 							paletteOpacity={
 								props[
-									`${prefix}-fill-palette-opacity${
+									`${prefix}fill-palette-opacity${
 										isHover ? '-hover' : ''
 									}`
 								]
 							}
 							paletteStatus={
 								props[
-									`${prefix}-fill-palette-status${
+									`${prefix}fill-palette-status${
 										isHover ? '-hover' : ''
 									}`
 								]
@@ -642,7 +642,7 @@ const NavigationIconControl = props => {
 								paletteOpacity,
 							}) => {
 								const fillColorStr = getColorRGBAString({
-									firstVar: `${prefix}-fill${
+									firstVar: `${prefix}fill${
 										isHover ? '-hover' : ''
 									}`,
 									secondVar: `color-${paletteColor}${
@@ -652,18 +652,18 @@ const NavigationIconControl = props => {
 									blockStyle,
 								});
 
-								shortPrefix === 'navigation-arrow' &&
+								shortPrefix === 'navigation-arrow-' &&
 									onChange({
-										[`${prefix}-fill-color${
+										[`${prefix}fill-color${
 											isHover ? '-hover' : ''
 										}`]: color,
-										[`${prefix}-fill-palette-color${
+										[`${prefix}fill-palette-color${
 											isHover ? '-hover' : ''
 										}`]: paletteColor,
-										[`${prefix}-fill-palette-status${
+										[`${prefix}fill-palette-status${
 											isHover ? '-hover' : ''
 										}`]: paletteStatus,
-										[`${prefix}-fill-palette-opacity${
+										[`${prefix}fill-palette-opacity${
 											isHover ? '-hover' : ''
 										}`]: paletteOpacity,
 										'navigation-arrow-first-icon-content':
@@ -708,21 +708,21 @@ const NavigationIconControl = props => {
 												  ),
 									});
 
-								shortPrefix === 'navigation-dot' &&
+								shortPrefix === 'navigation-dot-' &&
 									onChange({
-										[`${prefix}-fill-color${
+										[`${prefix}fill-color${
 											isHover ? '-hover' : ''
 										}`]: color,
-										[`${prefix}-fill-palette-color${
+										[`${prefix}fill-palette-color${
 											isHover ? '-hover' : ''
 										}`]: paletteColor,
-										[`${prefix}-fill-palette-status${
+										[`${prefix}fill-palette-status${
 											isHover ? '-hover' : ''
 										}`]: paletteStatus,
-										[`${prefix}-fill-palette-opacity${
+										[`${prefix}fill-palette-opacity${
 											isHover ? '-hover' : ''
 										}`]: paletteOpacity,
-										[`${prefix}-content`]: isHover
+										[`${prefix}content`]: isHover
 											? setSVGContentHover(
 													props[
 														'navigation-dot-icon-content'
@@ -749,22 +749,22 @@ const NavigationIconControl = props => {
 					)}
 					<ToggleSwitch
 						label={__(`Add ${label} border`, 'maxi-blocks')}
-						selected={props[`${prefix}-status-border`]}
+						selected={props[`${prefix}status-border`]}
 						onChange={val =>
 							onChange({
-								[`${prefix}-status-border`]: val,
+								[`${prefix}status-border`]: val,
 							})
 						}
 					/>
-					{props[`${prefix}-status-border`] && (
+					{props[`${prefix}status-border`] && (
 						<BorderControl
 							{...getGroupAttributes(
 								props,
 								['border', 'borderWidth', 'borderRadius'],
 								isHover,
-								`${prefix}-`
+								prefix
 							)}
-							prefix={`${prefix}-`}
+							prefix={prefix}
 							onChange={onChange}
 							breakpoint={breakpoint}
 							clientId={clientId}
@@ -773,14 +773,14 @@ const NavigationIconControl = props => {
 					)}
 					<ToggleSwitch
 						label={__(`Add ${label} background`, 'maxi-blocks')}
-						selected={props[`${prefix}-status-background`]}
+						selected={props[`${prefix}status-background`]}
 						onChange={val =>
 							onChange({
-								[`${prefix}-status-background`]: val,
+								[`${prefix}status-background`]: val,
 							})
 						}
 					/>
-					{props[`${prefix}-status-background`] && (
+					{props[`${prefix}status-background`] && (
 						<>
 							<SettingTabsControl
 								type='buttons'
@@ -806,30 +806,30 @@ const NavigationIconControl = props => {
 										'maxi-blocks'
 									)}
 									paletteStatus={getLastBreakpointAttribute({
-										target: `${prefix}-background-palette-status`,
+										target: `${prefix}background-palette-status`,
 										breakpoint,
 										attributes: props,
 										isHover,
 									})}
 									paletteColor={getLastBreakpointAttribute({
-										target: `${prefix}-background-palette-color`,
+										target: `${prefix}background-palette-color`,
 										breakpoint,
 										attributes: props,
 										isHover,
 									})}
 									paletteOpacity={getLastBreakpointAttribute({
-										target: `${prefix}-background-palette-opacity`,
+										target: `${prefix}background-palette-opacity`,
 										breakpoint,
 										attributes: props,
 										isHover,
 									})}
 									color={getLastBreakpointAttribute({
-										target: `${prefix}-background-color`,
+										target: `${prefix}background-color`,
 										breakpoint,
 										attributes: props,
 										isHover,
 									})}
-									prefix={`${prefix}-background-`}
+									prefix={`${prefix}background-`}
 									avoidBreakpointForDefault
 									onChangeInline={({ color }) =>
 										onChangeInline &&
@@ -837,7 +837,7 @@ const NavigationIconControl = props => {
 											{
 												background: color,
 											},
-											shortPrefix === 'navigation-arrow'
+											shortPrefix === 'navigation-arrow-'
 												? '.maxi-slider-block__arrow'
 												: '.maxi-slider-block__dot'
 										)
@@ -875,7 +875,7 @@ const NavigationIconControl = props => {
 													breakpoint
 												)]: color,
 											},
-											shortPrefix === 'navigation-arrow'
+											shortPrefix === 'navigation-arrow-'
 												? '.maxi-slider-block__arrow'
 												: '.maxi-slider-block__dot'
 										);
@@ -892,14 +892,14 @@ const NavigationIconControl = props => {
 										'maxi-blocks'
 									)}
 									gradient={getLastBreakpointAttribute({
-										target: `${prefix}-background-gradient`,
+										target: `${prefix}background-gradient`,
 										breakpoint,
 										attributes: props,
 										isHover,
 									})}
 									gradientOpacity={getLastBreakpointAttribute(
 										{
-											target: `${prefix}-background-gradient-opacity`,
+											target: `${prefix}background-gradient-opacity`,
 											breakpoint,
 											attributes: props,
 											isHover,
@@ -940,22 +940,22 @@ const NavigationIconControl = props => {
 					)}
 					<ToggleSwitch
 						label={__(`Add ${label} shadow`, 'maxi-blocks')}
-						selected={props[`${prefix}-status-shadow`]}
+						selected={props[`${prefix}status-shadow`]}
 						onChange={val =>
 							onChange({
-								[`${prefix}-status-shadow`]: val,
+								[`${prefix}status-shadow`]: val,
 							})
 						}
 					/>
-					{props[`${prefix}-status-shadow`] && (
+					{props[`${prefix}status-shadow`] && (
 						<BoxShadowControl
 							{...getGroupAttributes(
 								props,
 								'boxShadow',
 								isHover,
-								`${prefix}-`
+								prefix
 							)}
-							prefix={`${prefix}-`}
+							prefix={prefix}
 							label={`${capitalize(label)} box shadow`}
 							onChange={onChange}
 							breakpoint={breakpoint}

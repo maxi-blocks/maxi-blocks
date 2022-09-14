@@ -199,7 +199,7 @@ const transition = {
 		},
 		'overlay colour': {
 			title: 'Overlay colour',
-			target: overlayClass,
+			target: `${overlayClass}-background`,
 			hoverProp: 'overlay-background-status-hover',
 			property: 'background-color',
 		},

@@ -45,11 +45,16 @@ import { isEmpty, isPlainObject } from 'lodash';
 const getTransformControl = ({ categories, selectors }) => ({
 	label: __('Transform', 'maxi-blocks'),
 	transitionTarget: [],
-	hoverProp: attributes =>
-		Object.values(getGroupAttributes(attributes, 'transform')).some(
-			attribute =>
+	hoverProp: (attributes, relationAttributes) =>
+		Object.entries(getGroupAttributes(attributes, 'transform')).some(
+			([attributeKey, attribute]) =>
+				relationAttributes?.[attributeKey] &&
 				isPlainObject(attribute) &&
-				Object.values(attribute).some(obj => obj?.['hover-status'])
+				Object.entries(attribute).some(
+					([objKey, obj]) =>
+						relationAttributes[attributeKey][objKey] &&
+						obj?.['hover-status']
+				)
 		),
 	attrGroupName: 'transform',
 	component: props => (

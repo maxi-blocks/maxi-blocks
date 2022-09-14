@@ -147,6 +147,9 @@ const NavigationIconControl = props => {
 		prefix === 'navigation-arrow-both-icon-'
 			? arrowShortPrefix
 			: dotsShortPrefix;
+	const groupLabel = `${
+		shortPrefix === 'navigation-dot-' ? 'dotIcon' : 'arrowIcon'
+	}${isHover ? 'Hover' : ''}`;
 	const isActive = prefix.includes('active');
 	const label = shortPrefix.includes('dot') ? 'dots' : 'arrows';
 
@@ -194,11 +197,7 @@ const NavigationIconControl = props => {
 								<SvgWidthControl
 									{...getGroupAttributes(
 										props,
-										shortPrefix === dotsShortPrefix
-											? `dotIcon${isHover ? 'Hover' : ''}`
-											: `arrowIcon${
-													isHover ? 'Hover' : ''
-											  }`,
+										groupLabel,
 										isHover
 									)}
 									onChange={onChange}
@@ -211,9 +210,7 @@ const NavigationIconControl = props => {
 							<SvgStrokeWidthControl
 								{...getGroupAttributes(
 									props,
-									shortPrefix === dotsShortPrefix
-										? `dotIcon${isHover ? 'Hover' : ''}`
-										: `arrowIcon${isHover ? 'Hover' : ''}`,
+									groupLabel,
 									isHover
 								)}
 								onChange={obj => {

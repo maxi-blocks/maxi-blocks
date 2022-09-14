@@ -1,7 +1,7 @@
 /**
  * WordPress Dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { sprintf, __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
 
 /**
@@ -159,7 +159,10 @@ const NavigationIconControl = props => {
 				['first', 'second'].map(current => (
 					<MaxiModal
 						type='navigation-icon'
-						label={__(`Add ${current} arrow icon`, 'maxi-blocks')}
+						label={__(
+							sprintf('Add %s shadow', label),
+							'maxi-blocks'
+						)}
 						style={blockStyle}
 						onSelect={obj => onChange(obj)}
 						onRemove={obj => onChange(obj)}
@@ -750,7 +753,10 @@ const NavigationIconControl = props => {
 						/>
 					)}
 					<ToggleSwitch
-						label={__(`Add ${label} border`, 'maxi-blocks')}
+						label={__(
+							sprintf('Add %s border', label),
+							'maxi-blocks'
+						)}
 						selected={props[`${prefix}status-border`]}
 						onChange={val =>
 							onChange({
@@ -774,7 +780,10 @@ const NavigationIconControl = props => {
 						/>
 					)}
 					<ToggleSwitch
-						label={__(`Add ${label} background`, 'maxi-blocks')}
+						label={__(
+							sprintf('Add %s background', label),
+							'maxi-blocks'
+						)}
 						selected={props[`${prefix}status-background`]}
 						onChange={val =>
 							onChange({
@@ -941,7 +950,10 @@ const NavigationIconControl = props => {
 						</>
 					)}
 					<ToggleSwitch
-						label={__(`Add ${label} shadow`, 'maxi-blocks')}
+						label={__(
+							sprintf('Add %s shadow', label),
+							'maxi-blocks'
+						)}
 						selected={props[`${prefix}status-shadow`]}
 						onChange={val =>
 							onChange({

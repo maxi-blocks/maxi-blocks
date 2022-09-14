@@ -1,6 +1,6 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
-const rawPosition = {
+export const rawPosition = {
 	position: {
 		type: 'string',
 		default: 'inherit',

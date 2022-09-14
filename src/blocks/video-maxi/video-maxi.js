@@ -41,6 +41,7 @@ registerBlockType('maxi-blocks/video-maxi', {
 	},
 	getEditWrapperProps(attributes) {
 		const { uniqueID } = attributes;
+
 		return {
 			uniqueid: uniqueID,
 		};

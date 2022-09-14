@@ -22,7 +22,7 @@ import {
 	getGroupAttributes,
 } from '../../extensions/styles';
 import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
-import settings from './settings';
+import * as blocksData from '../../blocks/data';
 
 /**
  * External dependencies
@@ -53,8 +53,11 @@ const RelationControl = props => {
 	};
 
 	const getOptions = clientId => {
-		const blockName = getBlock(clientId)?.name;
-		const blockOptions = settings[blockName] || [];
+		const blockName = getBlock(clientId)?.name.replace('maxi-blocks/', '');
+
+		const blockOptions =
+			Object.values(blocksData).find(data => data.name === blockName)
+				.interactionBuilderSettings || [];
 
 		return blockOptions || [];
 	};
@@ -166,16 +169,16 @@ const RelationControl = props => {
 
 		const mergedAttributes = merge(blockAttributes, item.attributes);
 
-		const transformGeneralAttributesToWinBreakpoint = obj => {
+		const transformGeneralAttributesToBaseBreakpoint = obj => {
 			if (deviceType !== 'general') return {};
 
-			const winBreakpoint = select('maxiBlocks').receiveWinBreakpoint();
+			const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 
-			if (!winBreakpoint) return {};
+			if (!baseBreakpoint) return {};
 
 			return Object.keys(obj).reduce((acc, key) => {
 				if (key.includes('-general')) {
-					const newKey = key.replace('general', winBreakpoint);
+					const newKey = key.replace('general', baseBreakpoint);
 
 					acc[newKey] = obj[key];
 				}
@@ -197,7 +200,7 @@ const RelationControl = props => {
 				const newAttributesObj = {
 					...item.attributes,
 					...obj,
-					...transformGeneralAttributesToWinBreakpoint(obj),
+					...transformGeneralAttributesToBaseBreakpoint(obj),
 				};
 
 				const newGroupAttributes = getGroupAttributes(
@@ -453,15 +456,16 @@ const RelationControl = props => {
 													const {
 														transitionTarget,
 														hoverProp,
-													} = getOptions(
-														getClientIdFromUniqueId(
-															item.uniqueID
-														)
-													).find(
-														option =>
-															option.label ===
-															value
-													);
+													} =
+														getOptions(
+															getClientIdFromUniqueId(
+																item.uniqueID
+															)
+														).find(
+															option =>
+																option.label ===
+																value
+														) || {};
 
 													const clientId =
 														getClientIdFromUniqueId(
@@ -520,15 +524,15 @@ const RelationControl = props => {
 														item.id,
 														{
 															attributes: {},
+															css: {},
 															target: getTarget(),
 															settings: value,
-															...(transitionTarget && {
-																effects: {
-																	...item.effects,
-																	transitionTarget,
-																	hoverStatus,
-																},
-															}),
+															effects: {
+																...item.effects,
+																transitionTarget,
+																hoverStatus:
+																	!!hoverStatus,
+															},
 														}
 													);
 												}}

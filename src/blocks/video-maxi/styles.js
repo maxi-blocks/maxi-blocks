@@ -23,8 +23,7 @@ import {
 	getSVGStyles,
 	getIconSize,
 } from '../../extensions/styles/helpers';
-import { selectorsVideo } from './custom-css';
-import transitionObj from './transitionObj';
+import data from './data';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 const videoPrefix = 'video-';
@@ -349,9 +348,8 @@ const getStyles = props => {
 				...getIconObject('play-', props),
 				...getIconObject('close-', props),
 			},
-			selectorsVideo,
-			props,
-			transitionObj
+			data,
+			props
 		),
 		[`popup-${uniqueID}`]: styleProcessor(
 			{
@@ -360,9 +358,8 @@ const getStyles = props => {
 					getVideoContainerOject(props),
 				...getIconObject('close-', props),
 			},
-			selectorsVideo,
-			props,
-			transitionObj
+			data,
+			props
 		),
 	};
 

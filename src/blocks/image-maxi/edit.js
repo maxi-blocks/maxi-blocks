@@ -380,6 +380,7 @@ class edit extends MaxiBlockComponent {
 									),
 								})
 							}
+							cleanStyles={false}
 						>
 							{captionType !== 'none' &&
 								captionPosition === 'top' && (

@@ -1,4 +1,9 @@
 /**
+ * Wordpress dependencies
+ */
+import { select } from '@wordpress/data';
+
+/**
  * Internal dependencies
  */
 import Inspector from './inspector';
@@ -43,6 +48,7 @@ class edit extends MaxiBlockComponent {
 			this.context.setSlideWidth(clientId, width);
 		}
 		if (isSelected !== wasSelected && isSelected) {
+			this.context.onSelect(clientId);
 			this.blockRef.current.setAttribute('data-slide-active', 'true');
 		}
 	}
@@ -70,6 +76,9 @@ class edit extends MaxiBlockComponent {
 		const emptySlideClass = `maxi-slide-block__${
 			hasInnerBlocks ? 'has-innerBlock' : 'empty'
 		}`;
+		const isActive =
+			this.context.selected ===
+			select('core/block-editor').getBlockIndex(clientId);
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
@@ -85,6 +94,7 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				{...getMaxiBlockAttributes(this.props)}
 				tagName='li'
+				data-slide-active={isActive}
 				classes={classnames(
 					emptySlideClass,
 					'maxi-block',

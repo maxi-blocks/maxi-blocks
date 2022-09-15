@@ -11,7 +11,7 @@ import {
 	RawHTML,
 	createRef,
 } from '@wordpress/element';
-import { dispatch, useSelect } from '@wordpress/data';
+import { dispatch, select, useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -107,27 +107,9 @@ const SliderWrapper = props => {
 		);
 	};
 
-	const setActiveSlide = number => {
-		const slides = wrapperRef.current.querySelectorAll(
-			'li.maxi-slide-block'
-		);
-
-		Array.from(slides).forEach(el => {
-			el.removeAttribute('data-slide-active');
-		});
-
-		const activeSlideIndex = isLoop ? number + numberOfClones : number;
-		const activeSlide = wrapperRef.current.querySelectorAll(
-			'li.maxi-slide-block'
-		)[activeSlideIndex];
-
-		activeSlide?.setAttribute('data-slide-active', 'true');
-	};
-
 	const exactSlide = slideNumber => {
 		addSliderTransition();
 		setCurrentSlide(slideNumber);
-		setActiveSlide(slideNumber);
 	};
 
 	const nextSlide = () => {
@@ -198,11 +180,9 @@ const SliderWrapper = props => {
 		wrapperRef.current.style.transition = '';
 		if (currentSlide >= numberOfSlides) {
 			setCurrentSlide(0);
-			setActiveSlide(0);
 		}
 		if (currentSlide < 0) {
 			setCurrentSlide(numberOfSlides - 1);
-			setActiveSlide(numberOfSlides - 1);
 		}
 	};
 
@@ -229,6 +209,7 @@ const SliderWrapper = props => {
 
 		const clone = slide.cloneNode(true);
 		clone.classList.add('maxi-slide-block--clone');
+		clone.setAttribute('data-slide-active', true);
 
 		const cleanClone = clone => {
 			clone.removeAttribute('uniqueid');
@@ -306,17 +287,8 @@ const SliderWrapper = props => {
 	}, [currentSlide, isLoop, isEditView, slidesWidth]);
 
 	useEffect(() => {
-		if (currentSlide >= numberOfSlides && numberOfSlides > 0) {
-			setActiveSlide(numberOfSlides - 1);
-		} else {
-			setActiveSlide(currentSlide);
-		}
 		maxiSetAttributes({ numberOfSlides });
 	}, [numberOfSlides]);
-
-	useEffect(() => {
-		if (currentSlide === 0) setTimeout(() => setActiveSlide(0), 10);
-	}, [currentSlide]);
 
 	const classes = classnames(
 		'maxi-slider-block__wrapper',
@@ -510,6 +482,13 @@ class edit extends MaxiBlockComponent {
 						delete newSlidesWidth[id];
 						this.setState({
 							slidesWidth: newSlidesWidth,
+						});
+					},
+					selected: this.state.currentSlide,
+					onSelect: clientId => {
+						const { getBlockIndex } = select('core/block-editor');
+						this.setState({
+							currentSlide: getBlockIndex(clientId),
 						});
 					},
 				}}

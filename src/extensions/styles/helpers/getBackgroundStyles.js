@@ -42,7 +42,7 @@ export const getColorBackgroundObject = ({
 	backgroundColorProperty = 'background-color',
 	...props
 }) => {
-	const hoverStatus = props[`${prefix}background-hover-status`];
+	const hoverStatus = props[`${prefix}background-status-hover`];
 	const {
 		'hover-background-color-global': isActive,
 		'hover-background-color-all': affectAll,
@@ -1078,7 +1078,7 @@ export const getBlockBackgroundStyles = ({
 		...props,
 	});
 
-	if (isHover && !props[`${prefix}block-background-hover-status`])
+	if (isHover && !props[`${prefix}block-background-status-hover`])
 		return response;
 
 	const layers = compact([

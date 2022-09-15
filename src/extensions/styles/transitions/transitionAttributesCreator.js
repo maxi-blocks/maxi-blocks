@@ -5,8 +5,8 @@ const getHoverProp = (property, prefix = '') => {
 	switch (property) {
 		case 'background':
 			return prefix
-				? `${prefix}background-hover-status`
-				: 'block-background-hover-status';
+				? `${prefix}background-status-hover`
+				: 'block-background-status-hover';
 		case 'typography':
 			return `${prefix}typography-status-hover`;
 		default:

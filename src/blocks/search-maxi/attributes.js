@@ -50,6 +50,8 @@ const attributes = {
 			...attributesData.padding,
 			...attributesData.background,
 			...attributesData.backgroundColor,
+			...attributesData.backgroundHover,
+			...attributesData.backgroundColorHover,
 		},
 		prefix: inputPrefix,
 		diffValAttr: {

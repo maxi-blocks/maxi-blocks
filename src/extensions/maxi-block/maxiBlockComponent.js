@@ -459,6 +459,13 @@ class MaxiBlockComponent extends Component {
 	}
 
 	removeUnmountedBlockFromRelations(uniqueID, blocksToCheck) {
+		if (
+			select('core/edit-post').getEditorMode() !== 'visual' ||
+			select('core/edit-post').__experimentalGetPreviewDeviceType() !==
+				this.currentBreakpoint
+		)
+			return;
+
 		blocksToCheck.forEach(({ clientId, attributes, innerBlocks }) => {
 			const { relations, uniqueID: blockUniqueID } = attributes;
 

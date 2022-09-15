@@ -31,7 +31,6 @@ const SliderControl = props => {
 		isAutoplay,
 		pauseOnHover,
 		pauseOnInteraction,
-		attributes,
 	} = props;
 
 	const classes = classnames('maxi-slider-control', className);
@@ -109,7 +108,7 @@ const SliderControl = props => {
 						value: 'fade',
 					},
 				]}
-				value={getAttributeValue('slider-transition', attributes)}
+				value={props['slider-transition']}
 				onChange={val => {
 					onChange({
 						'slider-transition': val,

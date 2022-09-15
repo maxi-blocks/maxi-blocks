@@ -594,7 +594,7 @@ Object {
     "Background": Object {
       "background-layers": undefined,
       "background-layers-hover": undefined,
-      "block-background-hover-status": false,
+      "block-background-status-hover": false,
     },
     "Border": Object {
       "Border": Object {
@@ -3093,7 +3093,7 @@ Object {
   "anchor": undefined,
   "background-layers": undefined,
   "background-layers-hover": undefined,
-  "block-background-hover-status": false,
+  "block-background-status-hover": false,
   "border-bottom-left-radius-general": undefined,
   "border-bottom-left-radius-general-hover": undefined,
   "border-bottom-left-radius-l": undefined,

@@ -76,7 +76,6 @@ const Inspector = props => {
 										disablePadding: true,
 										content: (
 											<SettingTabsControl
-												depth={2}
 												disablePadding
 												isNestedAccordion
 												hasBorder

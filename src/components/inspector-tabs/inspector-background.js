@@ -52,7 +52,7 @@ const background = ({
 	const globalHoverStatus = isActive && affectAll;
 
 	const hoverStatus =
-		attributes[`${prefix}background-hover-status`] || globalHoverStatus;
+		attributes[`${prefix}background-status-hover`] || globalHoverStatus;
 
 	const backgroundControlBasicProps = {
 		prefix,
@@ -140,7 +140,7 @@ const background = ({
 														),
 													}
 												)),
-											[`${prefix}background-hover-status`]:
+											[`${prefix}background-status-hover`]:
 												val,
 										})
 									}
@@ -166,7 +166,7 @@ const background = ({
 								)}
 							</>
 						),
-						extraIndicators: [`${prefix}background-hover-status`],
+						extraIndicators: [`${prefix}background-status-hover`],
 					},
 				]}
 				depth={depth}

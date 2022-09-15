@@ -149,7 +149,7 @@ const getNormalStyles = (props, prefix) => {
 
 const getHoverStyles = (props, prefix) => {
 	const response = {
-		...(props[`${prefix}background-hover-status`] &&
+		...(props[`${prefix}background-status-hover`] &&
 			getBackgroundStyles({
 				...getGroupAttributes(
 					props,

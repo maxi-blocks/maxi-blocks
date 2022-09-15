@@ -601,7 +601,7 @@ describe('getBackgroundStyles', () => {
 	it('Get correct block background styles for color layer with different values on different responsive stages and hover', () => {
 		const attributes = {
 			blockStyle: 'light',
-			'block-background-hover-status': true,
+			'block-background-status-hover': true,
 			'background-layers': [
 				{
 					type: 'color',
@@ -684,7 +684,7 @@ describe('getBackgroundStyles', () => {
 	it('Get correct block background styles for image layer with different values on different responsive stages and hovers', () => {
 		const attributes = {
 			blockStyle: 'light',
-			'block-background-hover-status': true,
+			'block-background-status-hover': true,
 			'background-layers': [
 				{
 					type: 'image',
@@ -782,7 +782,7 @@ describe('getBackgroundStyles', () => {
 	it('Get correct block background styles for video layer with different values on different responsive stages and hovers', () => {
 		const attributes = {
 			blockStyle: 'light',
-			'block-background-hover-status': true,
+			'block-background-status-hover': true,
 			'background-layers': [
 				{
 					type: 'video',
@@ -835,7 +835,7 @@ describe('getBackgroundStyles', () => {
 	it('Get correct block background styles for gradient layer with different values on different responsive stages and hovers', () => {
 		const attributes = {
 			blockStyle: 'light',
-			'block-background-hover-status': true,
+			'block-background-status-hover': true,
 			'background-layers': [
 				{
 					type: 'gradient',
@@ -915,7 +915,7 @@ describe('getBackgroundStyles', () => {
 	it('Get correct block background styles for shape layer with different values on different responsive stages and hovers', () => {
 		const attributes = {
 			blockStyle: 'light',
-			'block-background-hover-status': true,
+			'block-background-status-hover': true,
 			'background-layers': [
 				{
 					type: 'shape',

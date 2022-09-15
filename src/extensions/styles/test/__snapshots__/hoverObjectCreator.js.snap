@@ -387,7 +387,7 @@ Object {
   "background-active-media-xxl-hover": Object {
     "type": "string",
   },
-  "background-hover-status": Object {
+  "background-status-hover": Object {
     "default": false,
     "type": "boolean",
   },

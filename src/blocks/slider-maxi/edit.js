@@ -44,6 +44,8 @@ const SliderWrapper = props => {
 		clientId,
 		isSelected,
 		maxiSetAttributes,
+		currentSlide,
+		setCurrentSlide,
 	} = props;
 	const { isLoop } = attributes;
 	const sliderTransition = attributes['slider-transition'];
@@ -61,7 +63,6 @@ const SliderWrapper = props => {
 	const editor = document.querySelector('#editor');
 	let initPosition = 0;
 	let dragPosition = 0;
-	const [currentSlide, setCurrentSlide] = useState(0);
 	const [wrapperTranslate, setWrapperTranslate] = useState(0);
 	const [realFirstSlideOffset, setRealFirstSlideOffset] = useState(0);
 
@@ -123,16 +124,15 @@ const SliderWrapper = props => {
 		activeSlide?.setAttribute('data-slide-active', 'true');
 	};
 
-	const nextSlide = () => {
+	const exactSlide = slideNumber => {
 		addSliderTransition();
+		setCurrentSlide(slideNumber);
+		setActiveSlide(slideNumber);
+	};
 
+	const nextSlide = () => {
 		if (currentSlide + 1 < numberOfSlides || isLoop) {
-			setCurrentSlide(prev => {
-				return prev + 1;
-			});
-
-			setActiveSlide(currentSlide + 1);
-
+			exactSlide(currentSlide + 1);
 			if (!isSelected)
 				dispatch('core/block-editor').selectBlock(clientId);
 		} else {
@@ -141,24 +141,13 @@ const SliderWrapper = props => {
 	};
 
 	const prevSlide = () => {
-		addSliderTransition();
 		if (currentSlide - 1 >= 0 || isLoop) {
-			setCurrentSlide(next => {
-				return next - 1;
-			});
-
-			setActiveSlide(currentSlide - 1);
+			exactSlide(currentSlide - 1);
 			if (!isSelected)
 				dispatch('core/block-editor').selectBlock(clientId);
 		} else {
 			setWrapperTranslate(getSlidePosition(currentSlide));
 		}
-	};
-
-	const exactSlide = slideNumber => {
-		addSliderTransition();
-		setCurrentSlide(slideNumber);
-		setActiveSlide(slideNumber);
 	};
 
 	const onDragAction = e => {
@@ -449,6 +438,7 @@ class edit extends MaxiBlockComponent {
 		this.state = {
 			slidesWidth: {},
 			isEditView: false,
+			currentSlide: 0,
 		};
 
 		this.iconRef = createRef(null);
@@ -535,6 +525,9 @@ class edit extends MaxiBlockComponent {
 							{...this.props}
 							{...this.state}
 							{...this.iconRef}
+							setCurrentSlide={newCurrentSlide =>
+								this.setState({ currentSlide: newCurrentSlide })
+							}
 							uniqueID={uniqueID}
 						/>
 					</div>

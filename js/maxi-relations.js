@@ -279,7 +279,8 @@ const relations = () => {
 		if (!item?.uniqueID || item?.css?.length === 0) return;
 
 		const triggerEl = document.querySelector(`.${item.trigger}`);
-		const target = `#${item.uniqueID} ${item.target ?? ''}`;
+		// Ignoring clones of slide-maxi
+		const target = `#${item.uniqueID}:not(.clone) ${item.target ?? ''}`;
 		const targetEl = document.querySelector(target);
 
 		if (!triggerEl || !targetEl) return;
@@ -418,7 +419,10 @@ const relations = () => {
 						);
 						const { hoverStatus, transitionTarget } = item.effects;
 
-						if (triggerEl.contains(targetEl) && !isNestedHoverTransition)
+						if (
+							triggerEl.contains(targetEl) &&
+							!isNestedHoverTransition
+						)
 							toggleTransition({
 								target: `${target.trim()}[data-maxi-relations="true"]`,
 								stylesObj,

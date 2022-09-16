@@ -185,6 +185,7 @@ class MaxiSlider {
 	getSlideClone(slideIndex) {
 		const clone = this._slides[slideIndex]._slide.cloneNode(true);
 		clone.classList.add('maxi-slide-block--clone');
+		clone.classList.add('clone');
 		return clone;
 	}
 

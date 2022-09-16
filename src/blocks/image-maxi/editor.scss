@@ -1,12 +1,4 @@
 .maxi-image-block {
-	&.is-selected {
-		.maxi-block__resizer--overflow .maxi-resizable__handle-wrapper {
-			width: calc(100% + 40px) !important;
-			left: -20px !important;
-			height: calc(100% + 20px) !important;
-		}
-	}
-
 	.maxi-hover-effect__text {
 		.maxi-hover-details {
 			visibility: hidden;
@@ -19,19 +11,16 @@
 			}
 		}
 	}
-
 	&:focus:after {
 		box-shadow: none !important;
 	}
 	.maxi-imageupload-button {
 		height: 100%;
 	}
-
 	&__resizer {
 		height: inherit !important;
 		max-height: 100%;
 	}
-
 	.maxi-imageupload-button {
 		svg {
 			max-width: 100%;

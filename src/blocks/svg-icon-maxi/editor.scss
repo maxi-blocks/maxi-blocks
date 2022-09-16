@@ -1,11 +1,4 @@
 .maxi-svg-icon-block {
-	&.is-selected {
-		.maxi-block__resizer .maxi-resizable__handle-wrapper {
-			width: calc(100% + 40px) !important;
-			left: -20px !important;
-		}
-	}
-
 	&__placeholder {
 		z-index: 100;
 		display: flex;
@@ -50,7 +43,6 @@
 			}
 		}
 	}
-
 	.maxi-svg-icon-block__icon {
 		max-height: 100%;
 		svg {
@@ -60,12 +52,5 @@
 	}
 	.maxi-library-modal__action-section {
 		margin-right: 0;
-	}
-
-	&.is-selected {
-		//Keep SVG resizer clickable when the block has overflow hidden
-		.maxi-resizable__handle-wrapper {
-			z-index: 30 !important;
-		}
 	}
 }

@@ -264,11 +264,11 @@ export const onRequestInsertPattern = (
 
 			const idRegexp = new RegExp('(?<=mediaID":)(.*?)(?=,)', 'g');
 			const id = parsed.match(idRegexp);
-			imagesIds.push(id);
+			imagesIds.push(...id);
 
 			const urlRegexp = new RegExp('(?<=mediaURL":")(.*?)(?=",)', 'g');
 			const url = parsed.match(urlRegexp);
-			imagesLinks.push(url);
+			imagesLinks.push(...url);
 
 			return null;
 		});

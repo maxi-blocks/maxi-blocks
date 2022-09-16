@@ -37,15 +37,24 @@ export const typeOptions = [
 
 export const relationOptions = [
 	{ label: __('Get by id', 'maxi-blocks'), value: 'by-id' },
-	{ label: __('Get last published'), value: 'last-published' },
-	{ label: __('Get last published by…'), value: 'last-published-by' },
+	{ label: __('Get by author', 'maxi-blocks'), value: 'author' },
 	{ label: __('Get random'), value: 'random' },
+	{ label: __('Get last published'), value: 'last-published' },
+	{ label: __('Date', 'maxi-blocks'), value: 'date' },
+	{ label: __('Modified', 'maxi-blocks'), value: 'modified' },
+	//{ label: __('Get last published by…'), value: 'last-published-by' },
 ];
 
 export const getByOptions = [
 	{ label: __('Date', 'maxi-blocks'), value: 'date' },
 	{ label: __('Author', 'maxi-blocks'), value: 'author' },
 	{ label: __('Modified', 'maxi-blocks'), value: 'modified' },
+	// { label: __('Next', 'maxi-blocks'), value: 'next' },
+	// { label: __('Previous', 'maxi-blocks'), value: 'previous' },
+];
+
+export const showOptions = [
+	{ label: __('Current', 'maxi-blocks'), value: 'current' },
 	{ label: __('Next', 'maxi-blocks'), value: 'next' },
 	{ label: __('Previous', 'maxi-blocks'), value: 'previous' },
 ];
@@ -167,4 +176,9 @@ export const descriptionOfErrors = {
 		'maxi-blocks'
 	),
 	object: __('Value is not an object.', 'maxi-blocks'),
+};
+
+export const postTypeDic = {
+	post: 'posts',
+	page: 'pages',
 };

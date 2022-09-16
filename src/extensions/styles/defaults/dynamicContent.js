@@ -18,6 +18,14 @@ const dynamicContent = {
 	'dc-id': {
 		type: 'number',
 	},
+	'dc-author': {
+		type: 'number',
+		default: '',
+	},
+	'dc-show': {
+		type: 'string',
+		default: 'current',
+	},
 	'dc-field': {
 		type: 'string',
 	},

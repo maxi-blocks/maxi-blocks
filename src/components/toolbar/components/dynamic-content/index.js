@@ -34,6 +34,8 @@ import {
 	idFields,
 	idOptionByField,
 	randomOptions,
+	showOptions,
+	postTypeDic,
 	descriptionOfErrors,
 } from './utils';
 import ToggleSwitch from '../../../toggle-switch';
@@ -53,13 +55,18 @@ const DynamicContent = props => {
 		'dc-type': type,
 		'dc-relation': relation,
 		'dc-get-by': getBy,
+		'dc-author': author,
 		'dc-id': id,
+		'dc-show': show,
 		'dc-field': field,
 		// 'dc-content': content,
 	} = dynamicContent;
-
+	const [newId, setNewId] = useState('');
 	const [postIdOptions, setPostIdOptions] = useState([]);
 	const [isEmptyIdOptions, setIsEmptyIdOptions] = useState(true);
+
+	const [postAuthorOptions, setPostAuthorOptions] = useState([]);
+	const [isEmptyAuthorOptions, setIsEmptyAuthorOptions] = useState(true);
 
 	const validationsValues = variableValue => {
 		const result = fieldOptions[variableValue].map(x => x.value);
@@ -77,7 +84,43 @@ const DynamicContent = props => {
 			}
 		});
 	};
-
+	const setAuthorList = result => {
+		if (relation === 'author') {
+			const newPostAuthorOptions = result.map(item => {
+				return {
+					label: `${item.id} - ${
+						item[idOptionByField[relation]]?.rendered ??
+						item[idOptionByField[relation]]
+					}`,
+					value: +item.id,
+				};
+			});
+			if (isEmpty(newPostAuthorOptions)) {
+				setIsEmptyAuthorOptions(true);
+			} else {
+				setIsEmptyAuthorOptions(false);
+				setPostAuthorOptions(newPostAuthorOptions);
+			}
+		}
+	};
+	const setIdList = (result, newType) => {
+		const newPostIdOptions = result.map(item => {
+			return {
+				label: `${item.id} - ${
+					item[idOptionByField[newType]]?.rendered ??
+					item[idOptionByField[newType]]
+				}`,
+				value: +item.id,
+			};
+		});
+		if (isEmpty(newPostIdOptions)) {
+			setIsEmptyIdOptions(true);
+		} else {
+			setIsEmptyIdOptions(false);
+			setPostIdOptions(newPostIdOptions);
+		}
+		return newPostIdOptions;
+	};
 	const getAuthorByID = async idAuthor => {
 		return await apiFetch({ path: '/wp/v2/users/' + idAuthor }).then(
 			author => {
@@ -87,34 +130,86 @@ const DynamicContent = props => {
 		);
 	};
 
+	const changeContent = async (showValue = show, postId = id) => {
+		if (
+			relationTypes.includes(type) &&
+			['previous', 'next'].includes(show)
+		) {
+			const { /*id: postId,*/ type: postType } =
+				select('core/editor').getCurrentPost();
+
+			const prevNextPath = `/wp/v2/${postTypeDic[postType]}/${postId}?_fields=${showValue}`;
+
+			await apiFetch({
+				path: prevNextPath,
+			})
+				.catch(rej => console.error(rej))
+				.then(res => {
+					if (
+						// res[showValue] !== null &&
+						typeof res[showValue] === 'object' &&
+						'id' in res[showValue]
+					) {
+						if (isFinite(res[showValue].id)) {
+							setNewId(res[showValue].id);
+						}
+					} else {
+						setNewId('');
+						//return descriptionOfErrors[showValue];
+					}
+				});
+		}
+	};
+
 	const getContentPath = (type, id, field) => {
-		if (relationTypes.includes(type) && relation === 'last-published')
-			return `/wp/v2/${type}&per_page=1`;
-		if (
-			relationTypes.includes(type) &&
-			relation === 'last-published-by' &&
-			getBy === 'author'
-		)
-			return `/wp/v2/${type}?author=${id}&per_page=1&_fields=${field}`;
-		if (
-			relationTypes.includes(type) &&
-			relation === 'last-published-by' &&
-			['previous', 'next'].includes(getBy)
-		)
-			return `/wp/v2/${type}/${id}&_fields=${field}`;
-
-		if (relationTypes.includes(type) && relation === 'last-published-by')
-			return `/wp/v2/${type}?orderby=${getBy}&per_page=1&_fields=${field}`;
-
-		return `/wp/v2/${type}${
-			idFields.includes(type) ? `/${id}` : ''
-		}?_fields=${field}`;
+		const getForShow = async () => {
+			switch (show) {
+				case 'next':
+				case 'previous':
+					await changeContent(show, id);
+					return newId;
+				case 'current':
+				default:
+					return id;
+			}
+		};
+		const getForRelation = () => {
+			getForShow();
+			//const id = newId ?? id;
+			switch (relation) {
+				case 'author':
+					return `/wp/v2/${type}?author=${id}&per_page=1&_fields=${field}`;
+				case 'last-published':
+					return `/wp/v2/${type}&per_page=1`;
+				case 'date':
+				case 'modified':
+					return `/wp/v2/${type}?orderby=${getBy}&per_page=1&_fields=${field}`;
+				case 'random':
+					return `/wp/v2/${type}/?_fields=id&per_page=99&orderby=${
+						randomOptions[random(randomOptions.length - 1)]
+					}`;
+				case 'by-id':
+				default:
+					return `/wp/v2/${type}/${id}?_fields=${field}`;
+			}
+		};
+		const getForType = () => {
+			switch (type) {
+				case relationTypes.includes(type) ? type : false:
+					return getForRelation();
+				case 'settings':
+				case 'users':
+				default:
+					return `/wp/v2/${type}?_fields=${field}`;
+			}
+		};
+		return getForType();
 	};
 
 	const requestContent = async dataRequest => {
 		const { type: _type, id: _id, field: _field } = dataRequest;
 
-		return apiFetch({
+		return await apiFetch({
 			path: getContentPath(_type, _id, _field),
 		})
 			.catch(err => console.error(err)) // TODO: need a good error handler
@@ -125,8 +220,9 @@ const DynamicContent = props => {
 					if (
 						renderedFields.includes(_field) &&
 						!isNil(content[_field]?.rendered)
-					)
+					) {
 						return content[_field].rendered;
+					}
 
 					// Author conditional !!!
 					if (_field === 'author') {
@@ -173,16 +269,10 @@ const DynamicContent = props => {
 
 		if (
 			relationTypes.includes(type) &&
-			relation === 'last-published-by' &&
 			['previous', 'next'].includes(getBy)
 		) {
 			const { id: postId, type: postType } =
 				select('core/editor').getCurrentPost();
-
-			const postTypeDic = {
-				post: 'posts',
-				page: 'pages',
-			};
 
 			const prevNextPath = `/wp/v2/${postTypeDic[postType]}/${postId}?_fields=${getBy}`;
 
@@ -209,42 +299,26 @@ const DynamicContent = props => {
 	};
 
 	const getIdOptionsPath = type => {
-		if (relation === 'last-published-by' && getBy === 'author')
+		if (relation === 'author')
 			return '/wp/v2/users?per_page=99&_fields=id, name';
 
 		return `/wp/v2/${type}?_fields=id, ${idOptionByField[type]}`;
 	};
 
-	const getIdOptions = async (newType, additionalParameters = null) =>
-		idFields.includes(newType ?? type) &&
+	const getIdOptions = async (newType = type, additionalParameters = null) =>
+		idFields.includes(newType) &&
 		apiFetch({
-			path: getIdOptionsPath(newType ?? type),
+			path: getIdOptionsPath(newType),
 		})
 			.catch(err => console.error(err)) // TODO: need a good error handler
 			.then(async result => {
-				const isGetByAuthor =
-					relation === 'last-published-by' && getBy === 'author';
-				const _type = isGetByAuthor ? 'author' : newType ?? type;
-
-				const newPostIdOptions = result.map(item => {
-					return {
-						label: `${item.id} - ${
-							item[idOptionByField[_type]]?.rendered ??
-							item[idOptionByField[_type]]
-						}`,
-						value: +item.id,
-					};
-				});
-
+				// author
+				setAuthorList(result);
+				const newPostIdOptions = setIdList(result, newType);
 				if (isEmpty(newPostIdOptions)) {
-					setIsEmptyIdOptions(true);
-					disabledType(newType ?? type);
+					disabledType(newType);
 					additionalParameters && onChange(additionalParameters);
 				} else {
-					setIsEmptyIdOptions(false);
-
-					setPostIdOptions(newPostIdOptions);
-
 					// Set default values in case they are not defined
 					const defaultValues = additionalParameters
 						? additionalParameters
@@ -261,7 +335,7 @@ const DynamicContent = props => {
 					// Ensures content is selected
 					if (!isEmpty(defaultValues)) {
 						const newContent = await getContent({
-							type: newType ?? type,
+							type: newType,
 							id: defaultValues['dc-id'] ?? id,
 							field: defaultValues['dc-field'] ?? field,
 						});
@@ -284,7 +358,7 @@ const DynamicContent = props => {
 					await getContent({ type, id, field })
 				),
 			});
-	}, [type, id, field, relation, getBy]);
+	}, [type, id, field, relation, getBy, show, author]);
 
 	return (
 		<ToolbarPopover
@@ -298,7 +372,6 @@ const DynamicContent = props => {
 					selected={status}
 					onChange={() => {
 						onChange({ 'dc-status': !status });
-
 						if (!status) getIdOptions();
 					}}
 				/>
@@ -333,22 +406,36 @@ const DynamicContent = props => {
 										label={__('Relation', 'maxi-blocks')}
 										value={relation}
 										options={relationOptions}
-										onChange={value =>
-											onChange({ 'dc-relation': value })
-										}
+										onChange={value => {
+											onChange({ 'dc-relation': value });
+											getIdOptions();
+										}}
 									/>
 								)}
-								{relation === 'by-id' && (
+								{(type === 'users' ||
+									relation === 'author') && (
 									<SelectControl
-										label={__('Post id', 'maxi-blocks')}
-										value={id}
-										options={postIdOptions}
+										label={__('Author id', 'maxi-blocks')}
+										value={author}
+										options={postAuthorOptions}
 										onChange={value =>
-											onChange({ 'dc-id': value })
+											onChange({ 'dc-author': value })
 										}
 									/>
 								)}
 								{relationTypes.includes(type) &&
+									(relation === 'by-id' ||
+										relation === 'author') && (
+										<SelectControl
+											label={__('Post id', 'maxi-blocks')}
+											value={id}
+											options={postIdOptions}
+											onChange={value =>
+												onChange({ 'dc-id': value })
+											}
+										/>
+									)}
+								{/*relationTypes.includes(type) &&
 									relation === 'last-published-by' && (
 										<SelectControl
 											label={__(
@@ -365,24 +452,23 @@ const DynamicContent = props => {
 												getIdOptions();
 											}}
 										/>
-									)}
-								{relationTypes.includes(type) &&
-									relation === 'last-published-by' &&
-									getBy === 'author' && (
-										<SelectControl
-											label={__('Post id', 'maxi-blocks')}
-											value={id}
-											options={postIdOptions}
-											onChange={value =>
-												onChange({ 'dc-id': value })
-											}
-										/>
-									)}
+									)*/}
+
+								{relationTypes.includes(type) && (
+									<SelectControl
+										label={__('Show', 'maxi-blocks')}
+										value={show}
+										options={showOptions}
+										onChange={value => {
+											onChange({ 'dc-show': value });
+											changeContent(value);
+										}}
+									/>
+								)}
 								{(['settings'].includes(type) ||
 									(relation === 'by-id' && isFinite(id)) ||
 									relation === 'last-published' ||
-									(relation === 'last-published-by' &&
-										getBy) ||
+									relation === 'author' ||
 									relation === 'random') && (
 									<SelectControl
 										label={__('Field', 'maxi-blocks')}

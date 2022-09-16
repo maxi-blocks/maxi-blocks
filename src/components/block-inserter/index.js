@@ -35,6 +35,14 @@ const BlockInserter = props => {
 
 	const classes = classnames('maxi-block-inserter', className);
 
+	setTimeout(() => {
+		const addRowMaxi = document.querySelector(
+			'.block-editor-button-block-appender[aria-label="Add Row Maxi"]'
+		);
+
+		addRowMaxi ? addRowMaxi.click() : null;
+	}, 0);
+
 	return (
 		<div
 			className={classes}

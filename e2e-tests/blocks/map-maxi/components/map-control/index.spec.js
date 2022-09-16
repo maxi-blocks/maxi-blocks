@@ -34,7 +34,7 @@ describe('Map Control', () => {
 		await editAdvancedNumberControl({
 			page,
 			instance: await accordionTab.$('.maxi-map-control__max-zoom '),
-			newNumber: '6',
+			newNumber: '5',
 		});
 
 		const attributes = ['map-min-zoom', 'map-max-zoom'];

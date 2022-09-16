@@ -42,7 +42,7 @@ const getBlocksName = clientIds => {
 const getDefaultAttribute = (
 	prop,
 	clientIds = null,
-	avoidWinBreakpoint = false
+	avoidBaseBreakpoint = false
 ) => {
 	const { getBlockName, getSelectedBlockClientIds } =
 		select('core/block-editor');
@@ -66,14 +66,14 @@ const getDefaultAttribute = (
 	});
 
 	if (
-		!avoidWinBreakpoint &&
+		!avoidBaseBreakpoint &&
 		isNil(response) &&
 		getBreakpointFromAttribute(prop) === 'general'
 	) {
-		const winBreakpoint = select('maxiBlocks').receiveWinBreakpoint();
+		const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 
 		response = getDefaultAttribute(
-			prop.replace('general', winBreakpoint, clientIds)
+			prop.replace('general', baseBreakpoint, clientIds)
 		);
 	}
 

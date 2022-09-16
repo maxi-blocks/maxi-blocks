@@ -1,3 +1,5 @@
+import { isNaN, merge } from 'lodash';
+
 import {
 	getBlockBackgroundStyles,
 	getBackgroundStyles,
@@ -29,10 +31,95 @@ jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 	});
 });
 
+const getGeneralSizeAndPositionAttributes = ({
+	type,
+	isHover = false,
+	isResponsive = false,
+}) => {
+	const typeString = `${type}${type === 'svg' ? '' : '-wrapper'}`;
+
+	const generalAttributes = {
+		[`background-${typeString}-position-bottom-general`]: '10',
+		[`background-${typeString}-position-bottom-unit-general`]: 'px',
+		[`background-${typeString}-position-general`]: 'inherit',
+		[`background-${typeString}-position-left-general`]: '10',
+		[`background-${typeString}-position-left-unit-general`]: 'px',
+		[`background-${typeString}-position-right-general`]: '10',
+		[`background-${typeString}-position-right-unit-general`]: 'px',
+		[`background-${typeString}-position-sync-general`]: 'all',
+		[`background-${typeString}-position-top-general`]: '10',
+		[`background-${typeString}-position-top-unit-general`]: 'px',
+		[`background-${typeString}-size-general`]: 100,
+		[`background-${typeString}-size-unit-general`]: '%',
+	};
+
+	if (!isResponsive) return generalAttributes;
+
+	const response = {};
+	const units = ['px', '%', 'em', 'vw', 'vh'];
+	Object.entries(generalAttributes).forEach(([rawKey, rawValue]) => {
+		['', ...(isHover ? ['-hover'] : [])].forEach((suffix, suffixIndex) => {
+			['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].forEach(
+				(breakpoint, index) => {
+					let value;
+					if (!isNaN(+rawValue))
+						value = +rawValue + index + suffixIndex;
+					else if (units.includes(rawValue))
+						switch (rawValue) {
+							case 'px':
+								value = '%';
+								break;
+							case '%':
+								value = 'px';
+								break;
+							case 'em':
+								value = 'px';
+								break;
+							case 'vw':
+								value = 'vh';
+								break;
+							case 'vh':
+								value = 'vw';
+								break;
+							default:
+								value = 'px';
+								break;
+						}
+					else value = rawValue;
+
+					const key = `${rawKey.replace(
+						'general',
+						breakpoint
+					)}${suffix}`;
+					response[key] = value;
+				}
+			);
+		});
+	});
+
+	return response;
+};
+
 describe('getBackgroundStyles', () => {
+	const target = 'maxi-test';
+
+	const getBlockBackgroundNormalAndHoverStyles = attributes =>
+		merge(
+			getBlockBackgroundStyles({
+				target,
+				isHover: false,
+				...attributes,
+			}),
+			getBlockBackgroundStyles({
+				target,
+				isHover: true,
+				...attributes,
+			})
+		);
+
 	it('Get correct block background styles for color layer with different values on different responsive stages', () => {
 		const result = getBlockBackgroundStyles({
-			target: 'maxi-test',
+			target,
 			isHover: false,
 			blockStyle: 'light',
 			'background-layers': [
@@ -78,6 +165,10 @@ describe('getBackgroundStyles', () => {
 						'polygon(0% 20%, 60% 20%, 60% 0%, 100% 50%, 60% 100%, 60% 80%, 0% 80%)',
 					'background-color-clip-path-xs':
 						'polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%)',
+					...getGeneralSizeAndPositionAttributes({
+						type: 'color',
+						isResponsive: true,
+					}),
 				},
 			],
 		});
@@ -87,7 +178,7 @@ describe('getBackgroundStyles', () => {
 
 	it('Get correct block background styles for image layer with different values on different responsive stages', () => {
 		const result = getBlockBackgroundStyles({
-			target: 'maxi-test',
+			target,
 			isHover: false,
 			blockStyle: 'light',
 			'background-layers': [
@@ -158,7 +249,7 @@ describe('getBackgroundStyles', () => {
 
 	it('Get correct block background styles for image layer with parallax and different values on different responsive stages', () => {
 		const result = getBlockBackgroundStyles({
-			target: 'maxi-test',
+			target,
 			isHover: false,
 			blockStyle: 'light',
 			'background-layers': [
@@ -230,7 +321,7 @@ describe('getBackgroundStyles', () => {
 
 	it('Get correct block background styles for video layer with different values on different responsive stages', () => {
 		const result = getBlockBackgroundStyles({
-			target: 'maxi-test',
+			target,
 			isHover: false,
 			blockStyle: 'light',
 			'background-layers': [
@@ -263,6 +354,10 @@ describe('getBackgroundStyles', () => {
 						'http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg',
 					'background-video-opacity-s': 0.25,
 					'background-video-opacity-xs': 0.9,
+					...getGeneralSizeAndPositionAttributes({
+						type: 'video',
+						isResponsive: true,
+					}),
 				},
 			],
 		});
@@ -272,7 +367,7 @@ describe('getBackgroundStyles', () => {
 
 	it('Get correct block background styles for gradient layer with different values on different responsive stages', () => {
 		const result = getBlockBackgroundStyles({
-			target: 'maxi-test',
+			target,
 			isHover: false,
 			blockStyle: 'light',
 			'background-layers': [
@@ -312,7 +407,7 @@ describe('getBackgroundStyles', () => {
 
 	it('Get correct block background styles for shape layer with different values on different responsive stages', () => {
 		const result = getBlockBackgroundStyles({
-			target: 'maxi-test',
+			target,
 			isHover: false,
 			blockStyle: 'light',
 			'background-layers': [
@@ -325,17 +420,13 @@ describe('getBackgroundStyles', () => {
 					'background-svg-top-general': 0,
 					'background-svg-left-unit-general': '%',
 					'background-svg-left-general': 50,
-					'background-svg-size-general': 34,
-					'background-svg-size-unit-general': '%',
 					order: 0,
 					'background-svg-top-xl': 0,
-					'background-svg-size-xl': 34,
 					'background-svg-palette-status-xxl': true,
 					'background-svg-palette-color-xxl': 2,
 					'background-svg-palette-opacity-xxl': 0.37,
 					'background-svg-top-xxl': 72,
 					'background-svg-left-xxl': 14,
-					'background-svg-size-xxl': 84,
 					SVGElement:
 						'<svg viewBox="2.500000238418579, 11.457558631896973, 31.10000228881836, 12.842442512512207" class="shape-22-maxi-svg" data-item="group-maxi-12__svg"><pattern xmlns="http://www.w3.org/1999/xhtml" id="group-maxi-12__30__img" class="maxi-svg-block__pattern" width="100%" height="100%" x="0" y="0" patternunits="userSpaceOnUse"><image class="maxi-svg-block__pattern__image" width="100%" height="100%" x="0" y="0" href="http://localhost:8888/wp-content/uploads/2021/08/IMG_9344-2.jpeg" preserveaspectratio="xMidYMid"></image></pattern><path fill="url(#group-maxi-12__30__img)" data-fill="" d="M33.6 12.9c-.4-.8-1.5-1-2.3-.8s-1.6.8-2.3 1.3-1.5 1-2.4 1.1c-1 .1-2-.5-3-.5-1.3 0-2.5.8-3.8.6-1.9-.2-3-2.4-4.8-3-1.7-.5-3.4.4-4.9 1.4S7 15.1 5.3 14.8c-1.3-.2-2.5-1.3-2.8-2.6v12.1h31.1V12.9z" style="fill: url(#group-maxi-12__30__img)"/></svg>',
 					SVGData: {
@@ -360,6 +451,10 @@ describe('getBackgroundStyles', () => {
 					'background-svg-image-shape-flip-y-general': false,
 					'background-svg-image-shape-rotate-general': 104,
 					'background-svg-image-shape-scale-general': 72,
+					...getGeneralSizeAndPositionAttributes({
+						type: 'svg',
+						isResponsive: true,
+					}),
 				},
 			],
 		});
@@ -369,7 +464,7 @@ describe('getBackgroundStyles', () => {
 
 	it('Get correct block background styles for general responsive stage', () => {
 		const result = getBlockBackgroundStyles({
-			target: 'maxi-test',
+			target,
 			isHover: false,
 			blockStyle: 'light',
 			'background-layers': [
@@ -404,6 +499,10 @@ describe('getBackgroundStyles', () => {
 					'background-image-attachment-general': 'scroll',
 					'background-image-clip-path-general': '',
 					'background-image-opacity-general': 1,
+					...getGeneralSizeAndPositionAttributes({
+						type: 'image',
+						isResponsive: false,
+					}),
 					order: 1,
 				},
 				{
@@ -458,7 +557,7 @@ describe('getBackgroundStyles', () => {
 
 	it('Get correct simple background styles', () => {
 		const result = getBackgroundStyles({
-			target: 'maxi-test',
+			target,
 			isHover: false,
 			blockStyle: 'light',
 			'background-active-media-general': 'color',
@@ -500,11 +599,9 @@ describe('getBackgroundStyles', () => {
 	});
 
 	it('Get correct block background styles for color layer with different values on different responsive stages and hover', () => {
-		const result = getBlockBackgroundStyles({
-			target: 'maxi-test',
-			isHover: false,
+		const attributes = {
 			blockStyle: 'light',
-			'block-background-hover-status': true,
+			'block-background-status-hover': true,
 			'background-layers': [
 				{
 					type: 'color',
@@ -514,16 +611,12 @@ describe('getBackgroundStyles', () => {
 					'background-palette-opacity-general': 0.07,
 					'background-color-general': '',
 					'background-color-clip-path-general': true,
-					'background-color-clip-path-general':
-						'polygon(50% 0%, 0% 100%, 100% 100%)',
 					order: 0,
 					'background-palette-status-xl': true,
 					'background-palette-color-xl': 1,
 					'background-palette-opacity-xl': 0.07,
 					'background-color-xl': '',
 					'background-color-clip-path-xl': true,
-					'background-color-clip-path-xl':
-						'polygon(50% 0%, 0% 100%, 100% 100%)',
 					'background-color-clip-path-xxl':
 						'polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)',
 					'background-palette-status-xxl': true,
@@ -574,19 +667,24 @@ describe('getBackgroundStyles', () => {
 						'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)',
 					'background-color-clip-path-s-hover':
 						'polygon(40% 0%, 40% 20%, 100% 20%, 100% 80%, 40% 80%, 40% 100%, 0% 50%)',
+					...getGeneralSizeAndPositionAttributes({
+						type: 'color',
+						isResponsive: true,
+						isHover: true,
+					}),
 				},
 			],
-		});
+		};
+
+		const result = getBlockBackgroundNormalAndHoverStyles(attributes);
 
 		expect(result).toMatchSnapshot();
 	});
 
 	it('Get correct block background styles for image layer with different values on different responsive stages and hovers', () => {
-		const result = getBlockBackgroundStyles({
-			target: 'maxi-test',
-			isHover: false,
+		const attributes = {
 			blockStyle: 'light',
-			'block-background-hover-status': true,
+			'block-background-status-hover': true,
 			'background-layers': [
 				{
 					type: 'image',
@@ -674,17 +772,17 @@ describe('getBackgroundStyles', () => {
 						'ellipse(25% 40% at 50% 50%)',
 				},
 			],
-		});
+		};
+
+		const result = getBlockBackgroundNormalAndHoverStyles(attributes);
 
 		expect(result).toMatchSnapshot();
 	});
 
 	it('Get correct block background styles for video layer with different values on different responsive stages and hovers', () => {
-		const result = getBlockBackgroundStyles({
-			target: 'maxi-test',
-			isHover: false,
+		const attributes = {
 			blockStyle: 'light',
-			'block-background-hover-status': true,
+			'block-background-status-hover': true,
 			'background-layers': [
 				{
 					type: 'video',
@@ -720,18 +818,24 @@ describe('getBackgroundStyles', () => {
 					'background-video-opacity-xxl-hover': 0.21,
 					'background-video-opacity-m-hover': 0.06,
 					'background-video-opacity-s-hover': 1,
+					...getGeneralSizeAndPositionAttributes({
+						type: 'video',
+						isResponsive: true,
+						isHover: true,
+					}),
 				},
 			],
-		});
+		};
+
+		const result = getBlockBackgroundNormalAndHoverStyles(attributes);
 
 		expect(result).toMatchSnapshot();
 	});
 
 	it('Get correct block background styles for gradient layer with different values on different responsive stages and hovers', () => {
-		const result = getBlockBackgroundStyles({
-			target: 'maxi-test',
-			isHover: false,
+		const attributes = {
 			blockStyle: 'light',
+			'block-background-status-hover': true,
 			'background-layers': [
 				{
 					type: 'gradient',
@@ -794,18 +898,24 @@ describe('getBackgroundStyles', () => {
 					'background-gradient-clip-path-s-hover':
 						'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
 					'background-gradient-opacity-s-hover': 0.91,
+					...getGeneralSizeAndPositionAttributes({
+						type: 'gradient',
+						isResponsive: true,
+						isHover: true,
+					}),
 				},
 			],
-		});
+		};
+
+		const result = getBlockBackgroundNormalAndHoverStyles(attributes);
 
 		expect(result).toMatchSnapshot();
 	});
 
 	it('Get correct block background styles for shape layer with different values on different responsive stages and hovers', () => {
-		const result = getBlockBackgroundStyles({
-			target: 'maxi-test',
-			isHover: false,
+		const attributes = {
 			blockStyle: 'light',
+			'block-background-status-hover': true,
 			'background-layers': [
 				{
 					type: 'shape',
@@ -825,11 +935,8 @@ describe('getBackgroundStyles', () => {
 					'background-svg-top-general': 0,
 					'background-svg-left-unit-general': '%',
 					'background-svg-left-general': 50,
-					'background-svg-size-general': 34,
-					'background-svg-size-unit-general': '%',
 					order: 0,
 					'background-svg-top-xl': 0,
-					'background-svg-size-xl': 34,
 					'SVGElement-xxl':
 						'<html xmlns="http://www.w3.org/1999/xhtml" data-item="group-maxi-12__svg"><body><parsererror style="display: block; white-space: pre; border: 2px solid #c77; padding: 0 1em 0 1em; margin: 1em; background-color: #fdd; color: black"><h3>This page contains the following errors:</h3><div style="font-family:monospace;font-size:12px">error on line 1 at column 1: Document is empty\n</div><h3>Below is a rendering of the page up to the first error.</h3></parsererror></body></html>',
 					'SVGData-xxl': {
@@ -844,7 +951,6 @@ describe('getBackgroundStyles', () => {
 					'background-svg-palette-opacity-xxl': 0.37,
 					'background-svg-top-xxl': 72,
 					'background-svg-left-xxl': 14,
-					'background-svg-size-xxl': 84,
 					SVGElement:
 						'<html xmlns="http://www.w3.org/1999/xhtml" data-item="group-maxi-1718__svg"><body><parsererror style="display: block; white-space: pre; border: 2px solid #c77; padding: 0 1em 0 1em; margin: 1em; background-color: #fdd; color: black"><h3>This page contains the following errors:</h3><div style="font-family:monospace;font-size:12px">error on line 1 at column 1: Document is empty\n</div><h3>Below is a rendering of the page up to the first error.</h3></parsererror></body></html>',
 					SVGData: {
@@ -892,29 +998,32 @@ describe('getBackgroundStyles', () => {
 					'background-svg-top-general-hover': 57,
 					'background-svg-left-xl-hover': 39,
 					'background-svg-left-general-hover': 39,
-					'background-svg-size-xl-hover': 211,
-					'background-svg-size-general-hover': 211,
 					'background-svg-palette-status-xxl-hover': true,
 					'background-svg-palette-color-xxl-hover': 3,
 					'background-svg-palette-opacity-xxl-hover': 0.17,
 					'background-svg-top-xxl-hover': 16,
 					'background-svg-left-xxl-hover': 11,
-					'background-svg-size-xxl-hover': 50,
 					'background-svg-palette-status-s-hover': true,
 					'background-svg-palette-color-s-hover': 8,
 					'background-svg-palette-opacity-s-hover': 0.92,
 					'background-svg-top-s-hover': 10,
 					'background-svg-left-s-hover': 72,
-					'background-svg-size-s-hover': 55,
+					...getGeneralSizeAndPositionAttributes({
+						type: 'svg',
+						isResponsive: true,
+						isHover: true,
+					}),
 				},
 			],
-		});
+		};
+
+		const result = getBlockBackgroundNormalAndHoverStyles(attributes);
 
 		expect(result).toMatchSnapshot();
 	});
 	it('Get correct block background styles for different layers, onces created on normal and other on hover', () => {
 		const result = getBlockBackgroundStyles({
-			target: 'maxi-test',
+			target,
 			isHover: false,
 			blockStyle: 'light',
 			'background-layers': [
@@ -948,16 +1057,10 @@ describe('getBackgroundStyles', () => {
 						},
 					},
 					'background-svg-top-unit-general': '%',
-					'background-svg-position-top-general': 0,
-					'background-svg-position-right-general': 0,
-					'background-svg-position-bottom-general': 0,
-					'background-svg-position-left-general': 0,
-					'background-svg-position-top-unit-general': '%',
-					'background-svg-position-right-unit-general': '%',
-					'background-svg-position-bottom-unit-general': '%',
-					'background-svg-position-left-unit-general': '%',
-					'background-svg-size-general': 100,
-					'background-svg-size-unit-general': '%',
+					...getGeneralSizeAndPositionAttributes({
+						type: 'svg',
+						isResponsive: false,
+					}),
 					order: 3,
 					'background-svg-palette-status-xl': true,
 					'background-svg-palette-color-xl': 4,
@@ -1043,21 +1146,21 @@ describe('getBackgroundStyles', () => {
 					},
 					'background-svg-top-unit-general': '%',
 					'background-svg-top-unit-general-hover': '%',
-					'background-svg-position-top-general': 0,
-					'background-svg-position-top-general-hover': 0,
-					'background-svg-position-right-general': 0,
-					'background-svg-position-right-general-hover': 0,
-					'background-svg-position-bottom-general': 0,
-					'background-svg-position-bottom-general-hover': 0,
-					'background-svg-position-left-general': 0,
-					'background-svg-position-top-unit-general': '%',
-					'background-svg-position-right-unit-general': '%',
-					'background-svg-position-bottom-unit-general': '%',
-					'background-svg-position-left-unit-general': '%',
-					'background-svg-size-general': 100,
-					'background-svg-size-general-hover': 100,
-					'background-svg-size-unit-general': '%',
-					'background-svg-size-unit-general-hover': '%',
+					'background-svg-wrapper-position-top-general': 0,
+					'background-svg-wrapper-position-top-general-hover': 0,
+					'background-svg-wrapper-position-right-general': 0,
+					'background-svg-wrapper-position-right-general-hover': 0,
+					'background-svg-wrapper-position-bottom-general': 0,
+					'background-svg-wrapper-position-bottom-general-hover': 0,
+					'background-svg-wrapper-position-left-general': 0,
+					'background-svg-wrapper-position-top-unit-general': '%',
+					'background-svg-wrapper-position-right-unit-general': '%',
+					'background-svg-wrapper-position-bottom-unit-general': '%',
+					'background-svg-wrapper-position-left-unit-general': '%',
+					'background-svg-wrapper-size-general': 100,
+					'background-svg-wrapper-size-general-hover': 100,
+					'background-svg-wrapper-size-unit-general': '%',
+					'background-svg-wrapper-size-unit-general-hover': '%',
 					order: 1,
 					'background-svg-palette-status-xl-hover': true,
 					'background-svg-palette-color-xl-hover': 2,
@@ -1072,7 +1175,7 @@ describe('getBackgroundStyles', () => {
 
 	it('Get correct block background styles for color layer with border', () => {
 		const result = getBlockBackgroundStyles({
-			target: 'maxi-test',
+			target,
 			isHover: false,
 			blockStyle: 'light',
 			'background-layers': [
@@ -1115,7 +1218,7 @@ describe('getBackgroundStyles', () => {
 
 	it('Get correct block background styles for color layer with row border radius', () => {
 		const result = getBlockBackgroundStyles({
-			target: 'maxi-test',
+			target,
 			isHover: false,
 			blockStyle: 'light',
 			'background-layers': [
@@ -1142,7 +1245,7 @@ describe('getBackgroundStyles', () => {
 
 	it('Get correct block background styles for color layer with border radius and row border radius', () => {
 		const result = getBlockBackgroundStyles({
-			target: 'maxi-test',
+			target,
 			isHover: false,
 			blockStyle: 'light',
 			'background-layers': [
@@ -1165,6 +1268,88 @@ describe('getBackgroundStyles', () => {
 			'border-bottom-left-radius-general': 160,
 			'border-bottom-right-radius-general': 200,
 		});
+
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Get correct block background styles when hover status is disabled, but hover attributes are set', () => {
+		const attributes = {
+			blockStyle: 'light',
+			'background-layers': [
+				{
+					type: 'color',
+					'display-general': 'block',
+					'background-palette-status-general': true,
+					'background-palette-color-general': 1,
+					'background-palette-opacity-general': 0.07,
+					'background-color-general': '',
+					'background-color-clip-path-general': true,
+					order: 0,
+					'background-palette-status-xl': true,
+					'background-palette-color-xl': 1,
+					'background-palette-opacity-xl': 0.07,
+					'background-color-xl': '',
+					'background-color-clip-path-xl': true,
+					'background-color-clip-path-xxl':
+						'polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)',
+					'background-palette-status-xxl': true,
+					'background-palette-color-xxl': 2,
+					'background-palette-opacity-xxl': 0.2,
+					'background-color-xxl': '',
+					'background-palette-status-l': true,
+					'background-palette-color-l': 4,
+					'background-palette-opacity-l': 0.3,
+					'background-color-l': '',
+					'background-color-clip-path-l':
+						'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
+					'background-palette-status-m': true,
+					'background-palette-color-m': 5,
+					'background-palette-opacity-m': 0.59,
+					'background-color-m': '',
+					'background-color-clip-path-m':
+						'polygon(50% 0%, 80% 10%, 100% 35%, 100% 70%, 80% 90%, 50% 100%, 20% 90%, 0% 70%, 0% 35%, 20% 10%)',
+					'background-palette-status-s': false,
+					'background-palette-color-s': 5,
+					'background-palette-opacity-s': 0.59,
+					'background-color-s': 'rgba(204,68,68,0.59)',
+					'background-color-clip-path-s':
+						'polygon(0% 20%, 60% 20%, 60% 0%, 100% 50%, 60% 100%, 60% 80%, 0% 80%)',
+					'background-color-clip-path-xs':
+						'polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%)',
+					'background-palette-status-xl-hover': true,
+					'background-palette-color-xl-hover': 4,
+					'background-palette-opacity-xl-hover': 0.59,
+					'background-color-xl-hover': '',
+					'background-palette-status-general-hover': true,
+					'background-palette-color-general-hover': 4,
+					'background-palette-opacity-general-hover': 0.59,
+					'background-color-general-hover': '',
+					'background-palette-status-xxl-hover': true,
+					'background-palette-color-xxl-hover': 7,
+					'background-palette-opacity-xxl-hover': 0.22,
+					'background-color-xxl-hover': '',
+					'background-palette-status-l-hover': true,
+					'background-palette-color-l-hover': 1,
+					'background-palette-opacity-l-hover': 0.59,
+					'background-color-l-hover': '',
+					'background-palette-status-s-hover': true,
+					'background-palette-color-s-hover': 8,
+					'background-palette-opacity-s-hover': 0.59,
+					'background-color-s-hover': 'rgba(204,68,68,0.59)',
+					'background-color-clip-path-l-hover':
+						'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)',
+					'background-color-clip-path-s-hover':
+						'polygon(40% 0%, 40% 20%, 100% 20%, 100% 80%, 40% 80%, 40% 100%, 0% 50%)',
+					...getGeneralSizeAndPositionAttributes({
+						type: 'color',
+						isResponsive: true,
+						isHover: true,
+					}),
+				},
+			],
+		};
+
+		const result = getBlockBackgroundNormalAndHoverStyles(attributes);
 
 		expect(result).toMatchSnapshot();
 	});

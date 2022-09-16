@@ -21,7 +21,8 @@ export const getAllFonts = (
 	recursiveKey = false,
 	isHover = false,
 	textLevel = 'p',
-	blockStyle = 'light'
+	blockStyle = 'light',
+	onlyBackend = false
 ) => {
 	const { receiveMaxiSelectedStyleCard } = select('maxiBlocks/style-cards');
 	const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
@@ -48,7 +49,8 @@ export const getAllFonts = (
 						breakpoint,
 						isHover,
 						textLevel,
-						avoidSC: true,
+						avoidSC: !onlyBackend,
+						styleCard,
 					}) ??
 					`sc_font_${blockStyle}_${textLevel}`;
 
@@ -147,7 +149,7 @@ const mergeDeep = (target, source) => {
 	return target;
 };
 
-export const getPageFonts = () => {
+export const getPageFonts = (onlyBackend = false) => {
 	const { getBlocks } = select('core/block-editor');
 
 	let response = {};
@@ -208,14 +210,16 @@ export const getPageFonts = () => {
 							false,
 							false,
 							textLevel,
-							blockStyle
+							blockStyle,
+							onlyBackend
 						),
 						getAllFonts(
 							typographyHover,
 							false,
 							true,
 							textLevel,
-							blockStyle
+							blockStyle,
+							onlyBackend
 						)
 					);
 				else
@@ -224,7 +228,8 @@ export const getPageFonts = () => {
 						false,
 						false,
 						textLevel,
-						blockStyle
+						blockStyle,
+						onlyBackend
 					);
 
 				mergedResponse = mergeDeep(

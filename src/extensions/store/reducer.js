@@ -4,9 +4,11 @@ const breakpointResizer = (
 	size,
 	breakpoints,
 	xxlSize = breakpoints.xl + 1,
-	winSize = 0
+	winSize = 0,
+	isGutenbergButton = false
 ) => {
 	const editorWrapper = document.querySelector('.edit-post-visual-editor');
+
 	const winHeight = window.outerWidth;
 	const responsiveWidth =
 		(size === 'general' && 'none') ||
@@ -19,14 +21,23 @@ const breakpointResizer = (
 	);
 	editorWrapper.setAttribute('maxi-blocks-responsive-width', responsiveWidth);
 
+	if (!isGutenbergButton) editorWrapper.setAttribute('is-maxi-preview', true);
+	else editorWrapper.removeAttribute('is-maxi-preview');
+
 	if (size === 'general') {
 		editorWrapper.style.width = '';
 		editorWrapper.style.margin = '';
 	} else {
-		editorWrapper.style.width = `${responsiveWidth}px`;
-
 		if (winHeight > responsiveWidth) editorWrapper.style.margin = '0 auto';
 		else editorWrapper.style.margin = '';
+
+		if (isGutenbergButton) {
+			editorWrapper.style = null;
+		} else if (['s', 'xs'].includes(size)) {
+			editorWrapper.style.width = 'fit-content';
+		} else if (editorWrapper.style.width !== `${responsiveWidth}px`) {
+			editorWrapper.style.width = `${responsiveWidth}px`;
+		}
 	}
 };
 
@@ -66,18 +77,19 @@ const reducer = (
 				action.deviceType,
 				state.breakpoints,
 				action.width,
-				state.settings.window.width
+				state.settings.editorContent.width,
+				action.isGutenbergButton
 			);
 			return {
 				...state,
 				deviceType: action.deviceType,
 			};
-		case 'SET_WINDOW_SIZE':
+		case 'SET_EDITOR_CONTENT_SIZE':
 			return {
 				...state,
 				settings: {
 					...state.settings,
-					window: action.winSize,
+					editorContent: action.editorContentSize,
 				},
 			};
 		case 'COPY_STYLES':
@@ -100,7 +112,7 @@ const reducer = (
 			} else if (depth < newInspectorPath.length) {
 				newInspectorPath[depth] = newValue;
 
-				for (let i = depth + 1; i <= newInspectorPath.length; i++) {
+				for (let i = depth + 1; i <= newInspectorPath.length; i += 1) {
 					newInspectorPath.splice(i, 1);
 				}
 

@@ -1,5 +1,7 @@
 import getOrganizedAttributes from '../getOrganizedAttributes';
-import copyPasteMapping from '../../../blocks/image-maxi/copy-paste-mapping';
+import { copyPasteMapping } from '../../../blocks/image-maxi/data';
+
+jest.mock('src/components/index.js', () => jest.fn());
 
 describe('getOrganizedAttributes', () => {
 	it('Ensure it works with simple copy paste object', () => {
@@ -468,7 +470,7 @@ describe('getOrganizedAttributes', () => {
 			'image-padding-left-unit-general': 'px',
 			'image-padding-sync-general': 'all',
 			blockFullWidth: 'normal',
-			'block-background-hover-status': false,
+			'block-background-status-hover': false,
 			'border-palette-status-general': true,
 			'border-palette-color-general': 2,
 			'border-palette-status-general-hover': true,

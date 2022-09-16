@@ -262,7 +262,7 @@ export const onRequestInsertPattern = (
 		const allImagesLinksParsed = allImagesLinks?.map(image => {
 			const parsed = image.replace(/\\/g, '');
 
-			const idRegexp = new RegExp('(?<=":)(.*?)(?=,")', 'g');
+			const idRegexp = new RegExp('(?<=mediaID":)(.*?)(?=,)', 'g');
 			const id = parsed.match(idRegexp);
 			imagesIds.push(id);
 

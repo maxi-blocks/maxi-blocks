@@ -409,6 +409,7 @@ class edit extends MaxiBlockComponent {
 
 		this.state = {
 			slidesWidth: {},
+			sliderWidth: null,
 			isEditView: false,
 			currentSlide: 0,
 		};
@@ -431,6 +432,22 @@ class edit extends MaxiBlockComponent {
 		};
 
 		return response;
+	}
+
+	maxiBlockDidMount() {
+		this.resizeObserver = new ResizeObserver(entries => {
+			entries.forEach(entry => {
+				if (entry.contentBoxSize !== this.state.width) {
+					this.setState({ width: entry.contentBoxSize });
+				}
+			});
+		});
+
+		this.resizeObserver.observe(this.blockRef.current);
+	}
+
+	maxiBlockWillUnMount() {
+		this.resizeObserver.disconnect();
 	}
 
 	render() {
@@ -491,6 +508,8 @@ class edit extends MaxiBlockComponent {
 							currentSlide: getBlockIndex(clientId),
 						});
 					},
+					// Used to force render on slides when slider width changes, to update slidesWidth
+					sliderWidth: this.state.sliderWidth,
 				}}
 			>
 				<MaxiBlock

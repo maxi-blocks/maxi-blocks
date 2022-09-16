@@ -78,7 +78,7 @@ export const preset1 = {
 	'button-background-palette-color-general-hover': 6,
 	'button-background-active-media-general-hover': 'color',
 	'button-background-palette-status-hover-general': true,
-	'button-background-hover-status': true,
+	'button-background-status-hover': true,
 	'button-border-status-hover': false,
 	'typography-status-hover': false,
 };
@@ -355,7 +355,7 @@ export const preset4 = {
 	'button-background-palette-color-general-hover': 6,
 	'button-background-active-media-general-hover': 'color',
 	'button-background-palette-status-hover-general': true,
-	'button-background-hover-status': true,
+	'button-background-status-hover': true,
 	'button-border-status-hover': false,
 	'typography-status-hover': false,
 	'icon-status-hover': false,

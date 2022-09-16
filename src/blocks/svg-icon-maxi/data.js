@@ -159,14 +159,8 @@ const transition = {
 			property: 'box-shadow',
 			prefix,
 		},
-		colour: {
-			title: 'Colour',
-			target: ' .maxi-svg-icon-block__icon svg > *',
-			hoverProp: 'svg-status-hover',
-			limitless: true,
-		},
 		...createIconTransitions({
-			target: ' .maxi-svg-icon-block__icon',
+			target: iconClass,
 			prefix,
 			disableBackground: true,
 			disableBorder: true,
@@ -174,9 +168,9 @@ const transition = {
 		}),
 		background: {
 			title: 'Background',
-			target: ' .maxi-svg-icon-block__icon',
+			target: iconClass,
 			property: 'background',
-			hoverProp: 'svg-background-hover-status',
+			hoverProp: 'svg-background-status-hover',
 		},
 	},
 };
@@ -237,7 +231,7 @@ const interactionBuilderSettings = [
 	{
 		label: __('Icon background', 'maxi-blocks'),
 		transitionTarget: transition.block.background.target,
-		hoverProp: 'svg-background-hover-status',
+		hoverProp: 'svg-background-status-hover',
 		attrGroupName: ['background', 'backgroundColor', 'backgroundGradient'],
 		prefix: 'svg-',
 		component: props => (

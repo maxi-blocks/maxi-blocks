@@ -11,7 +11,7 @@ import {
 export const backgroundHover = hoverAttributesCreator({
 	obj: background,
 	newAttr: {
-		'background-hover-status': {
+		'background-status-hover': {
 			type: 'boolean',
 			default: false,
 		},

@@ -318,7 +318,7 @@ const Inspector = props => {
 																			props,
 																			prefix: inputPrefix,
 																			...backgroundDisabledProps,
-																			selector:
+																			inlineTarget:
 																				'.maxi-search-block__input',
 																		}
 																	),

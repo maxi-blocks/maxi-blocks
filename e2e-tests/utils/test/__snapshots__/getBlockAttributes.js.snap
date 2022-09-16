@@ -3,7 +3,6 @@
 exports[`getBlockAttributes Return attributes of nested block 1`] = `
 Object {
   "background-gradient-opacity": 1,
-  "background-hover-status": false,
   "background-image-attachment": "scroll",
   "background-image-clip": "border-box",
   "background-image-height": 100,
@@ -25,6 +24,7 @@ Object {
   "background-palette-color-hover": 6,
   "background-palette-status": true,
   "background-palette-status-hover": true,
+  "background-status-hover": false,
   "background-svg-left": 0,
   "background-svg-left-unit": "%",
   "background-svg-palette-color": 5,

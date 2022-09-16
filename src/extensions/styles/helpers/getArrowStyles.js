@@ -246,7 +246,7 @@ const getArrowStyles = props => {
 				),
 			},
 		},
-		...(props['block-background-hover-status'] && {
+		...(props['block-background-status-hover'] && {
 			[`${target}:hover .maxi-container-arrow:before`]: {
 				background: {
 					...getArrowColorObject(backgroundLayers, blockStyle, true),
@@ -259,7 +259,7 @@ const getArrowStyles = props => {
 				},
 			},
 		}),
-		...(props['block-background-hover-status'] && {
+		...(props['block-background-status-hover'] && {
 			[`${target}:hover .maxi-container-arrow .maxi-container-arrow--content:after`]:
 				{
 					background: {

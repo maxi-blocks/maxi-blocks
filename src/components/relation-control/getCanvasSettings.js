@@ -75,7 +75,7 @@ const getCanvasSettings = ({ name, customCss }) => [
 	{
 		label: __('Background / Layer', 'maxi-blocks'),
 		transitionTarget: ' > .maxi-background-displayer > div',
-		hoverProp: 'block-background-hover-status',
+		hoverProp: 'block-background-status-hover',
 		attrGroupName: [
 			'blockBackground',
 			'border',

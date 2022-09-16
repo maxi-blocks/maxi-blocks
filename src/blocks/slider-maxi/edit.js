@@ -40,7 +40,6 @@ const SliderWrapper = props => {
 		slidesWidth,
 		isEditView,
 		attributes,
-		uniqueID,
 		clientId,
 		isSelected,
 		maxiSetAttributes,
@@ -329,7 +328,6 @@ const SliderWrapper = props => {
 					>
 						<div
 							ref={iconRef}
-							uniqueID={uniqueID}
 							className='maxi-navigation-arrow-first-icon-block__icon'
 						>
 							<RawHTML>
@@ -349,7 +347,6 @@ const SliderWrapper = props => {
 					>
 						<div
 							ref={iconRef}
-							uniqueID={uniqueID}
 							className='maxi-navigation-arrow-second-icon-block__icon'
 						>
 							<RawHTML>
@@ -382,7 +379,6 @@ const SliderWrapper = props => {
 								>
 									<div
 										ref={iconRef}
-										uniqueID={uniqueID}
 										className='maxi-navigation-dot-icon-block__icon'
 									>
 										<RawHTML>

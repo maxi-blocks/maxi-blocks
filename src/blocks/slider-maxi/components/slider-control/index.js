@@ -6,10 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import {
-	getAttributeValue,
-	getDefaultAttribute,
-} from '../../../../extensions/styles';
+import { getDefaultAttribute } from '../../../../extensions/styles';
 
 /**
  * External dependencies

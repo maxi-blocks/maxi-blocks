@@ -437,8 +437,10 @@ class edit extends MaxiBlockComponent {
 	maxiBlockDidMount() {
 		this.resizeObserver = new ResizeObserver(entries => {
 			entries.forEach(entry => {
-				if (entry.contentBoxSize !== this.state.width) {
-					this.setState({ width: entry.contentBoxSize });
+				const { width } = entry.contentRect;
+
+				if (width !== this.state.width) {
+					this.setState({ width });
 				}
 			});
 		});

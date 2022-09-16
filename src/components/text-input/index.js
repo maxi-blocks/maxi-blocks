@@ -27,7 +27,7 @@ export default function TextInput({
 
 	return (
 		<input
-			className='maxi-text-input__input'
+			className='maxi-text-input'
 			type={type}
 			value={inputValue}
 			onChange={valueChange}

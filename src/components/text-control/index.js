@@ -7,6 +7,7 @@ import { useInstanceId } from '@wordpress/compose';
  * Internal dependencies
  */
 import BaseControl from '../base-control';
+import TextInput from '../text-input';
 
 /**
  * External dependencies
@@ -51,7 +52,7 @@ export default function TextControl({
 			help={help}
 			className={classes}
 		>
-			<input
+			<TextInput
 				className='maxi-text-control__input'
 				type={type}
 				id={id}

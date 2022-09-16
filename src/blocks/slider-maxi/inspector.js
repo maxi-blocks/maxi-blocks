@@ -9,7 +9,6 @@ import { InspectorControls } from '@wordpress/block-editor';
  */
 import { AccordionControl, SettingTabsControl } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
-import { selectorsSlider, categoriesSlider } from './custom-css';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -17,6 +16,7 @@ import {
 import SliderControl from './components/slider-control';
 import NavigationControl from './components/navigation-control';
 import NavigationIconsControl from './components/navigation-control/navigation-control';
+import { customCss } from './data';
 
 /**
  * Inspector
@@ -234,16 +234,16 @@ const Inspector = props => {
 									...inspectorTabs.customCss({
 										props,
 										breakpoint: deviceType,
-										selectors: selectorsSlider,
-										categories: categoriesSlider,
+										selectors: customCss.selectors,
+										categories: customCss.categories,
 									}),
 									...inspectorTabs.scrollEffects({
 										props,
 									}),
 									...inspectorTabs.transform({
 										props,
-										selectors: selectorsSlider,
-										categories: categoriesSlider,
+										selectors: customCss.selectors,
+										categories: customCss.categories,
 									}),
 									...inspectorTabs.display({
 										props,

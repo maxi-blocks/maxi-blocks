@@ -21,7 +21,7 @@ import { Toolbar } from '../../components';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import getStyles from './styles';
-import copyPasteMapping from './copy-paste-mapping';
+import { copyPasteMapping } from './data';
 import TEMPLATE from './template';
 
 /**

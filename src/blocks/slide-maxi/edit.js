@@ -13,12 +13,12 @@ import { BlockInserter, Toolbar } from '../../components';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 import getStyles from './styles';
 import SliderContext from '../slider-maxi/context';
-import copyPasteMapping from './copy-paste-mapping';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
+import { copyPasteMapping } from './data';
 
 /**
  * Editor

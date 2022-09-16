@@ -11,12 +11,12 @@ import {
 	getFlexStyles,
 	getSizeStyles,
 } from '../../extensions/styles/helpers';
-import { selectorsSlide } from './custom-css';
 
 /**
  * External dependencies
  */
 import { isEmpty } from 'lodash';
+import { customCss } from './data';
 
 const getNormalObject = props => {
 	const response = {
@@ -133,7 +133,7 @@ const getStyles = props => {
 					blockStyle: props.blockStyle,
 				}),
 			},
-			selectorsSlide,
+			customCss.selectors,
 			props
 		),
 	};

@@ -210,6 +210,7 @@ const relations = () => {
 					target,
 					transitionTarget
 				);
+				const avoidHoverString = avoidHover ? ':not(:hover)' : '';
 
 				const transitionTargets =
 					typeof transitionTarget === 'string'
@@ -217,15 +218,10 @@ const relations = () => {
 						: transitionTarget;
 
 				transitionTargets?.forEach(currentTransitionTarget => {
-					const svgTarget = `${target} ${
-						avoidHover && currentTransitionTarget?.endsWith('> *')
-							? currentTransitionTarget.slice(0, -4) +
-							  ':not(:hover)' +
-							  currentTransitionTarget.slice(
-									currentTransitionTarget.length - 4
-							  )
-							: currentTransitionTarget
-					}`;
+					const svgTarget = `${target} ${currentTransitionTarget.replace(
+						'maxi-svg-icon-block__icon',
+						match => `${match}${avoidHoverString}`
+					)}`;
 
 					toggleTransition({
 						target: svgTarget,

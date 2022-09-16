@@ -66,6 +66,7 @@ const IconControl = props => {
 		disablePadding = false,
 		disablePosition = false,
 		disableSpacing = false,
+		disableModal = false,
 		getIconWithColor,
 		type = 'button-icon',
 		inlineTarget,
@@ -159,25 +160,28 @@ const IconControl = props => {
 
 	return (
 		<div className={classes}>
-			{!isInteractionBuilder && !isHover && breakpoint === 'general' && (
-				<MaxiModal
-					type={type}
-					style={blockStyle}
-					onSelect={obj => {
-						const icon = getIconWithColor({
-							rawIcon: obj[`${prefix}icon-content`],
-						});
+			{!isInteractionBuilder &&
+				!disableModal &&
+				!isHover &&
+				breakpoint === 'general' && (
+					<MaxiModal
+						type={type}
+						style={blockStyle}
+						onSelect={obj => {
+							const icon = getIconWithColor({
+								rawIcon: obj[`${prefix}icon-content`],
+							});
 
-						onChange({
-							...obj,
-							[`${prefix}icon-content`]: icon,
-						});
-					}}
-					onRemove={obj => onChange(obj)}
-					icon={iconContent}
-					prefix={prefix}
-				/>
-			)}
+							onChange({
+								...obj,
+								[`${prefix}icon-content`]: icon,
+							});
+						}}
+						onRemove={obj => onChange(obj)}
+						icon={iconContent}
+						prefix={prefix}
+					/>
+				)}
 			{iconContent && (
 				<>
 					{!isInteractionBuilder &&
@@ -311,7 +315,7 @@ const IconControl = props => {
 						/>
 					)}
 					{iconStyle === 'color' &&
-						(!iconInherit || iconOnly ? (
+						(!iconInherit || iconOnly || disableIconInherit ? (
 							svgType !== 'Shape' && (
 								<ColorControl
 									label={__('Icon stroke', 'maxi-blocks')}
@@ -531,7 +535,7 @@ const IconControl = props => {
 								}}
 							/>
 							{iconBgActive === 'color' &&
-								(!iconInherit ? (
+								(!iconInherit || disableIconInherit ? (
 									<ColorControl
 										label={__(
 											'Icon background',
@@ -698,6 +702,7 @@ const IconControl = props => {
 								false,
 								prefix
 							)}
+							prefix={prefix}
 							label={__('Icon padding', 'maxi-blocks')}
 							onChange={onChange}
 							breakpoint={breakpoint}

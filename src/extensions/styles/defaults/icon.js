@@ -54,7 +54,7 @@ export const icon = {
 	}),
 	...prefixAttributesCreator({
 		obj: height,
-		prefix: 'icon-',
+		prefix,
 		diffValAttr: {
 			'icon-height-general': '32',
 		},

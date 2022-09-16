@@ -22,7 +22,7 @@ import {
 } from '../../extensions/styles';
 import getStyles from './styles';
 import { getBreakpoints } from '../../extensions/styles/helpers';
-import copyPasteMapping from './copy-paste-mapping';
+import { copyPasteMapping } from './data';
 
 /**
  * External dependencies
@@ -152,6 +152,7 @@ const NumberCounter = attributes => {
 			}}
 			{...resizerProps}
 			showHandle={!circleStatus ? resizerProps.showHandle : false}
+			cleanStyles={false}
 		>
 			{!circleStatus && (
 				<svg

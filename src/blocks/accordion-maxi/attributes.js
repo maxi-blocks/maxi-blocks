@@ -3,6 +3,7 @@
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
 import { transitionAttributesCreator } from '../../extensions/styles';
+import { transition } from './data';
 
 /**
  * Attributes
@@ -35,7 +36,7 @@ const attributes = {
 	...attributesData.transform,
 	...{
 		...attributesData.transition,
-		...transitionAttributesCreator(),
+		...transitionAttributesCreator(transition),
 	},
 	...attributesData.display,
 	...attributesData.position,

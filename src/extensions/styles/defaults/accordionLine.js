@@ -2,7 +2,7 @@ import prefixAttributesCreator from '../prefixAttributesCreator';
 import divider from './divider';
 import dividerHover from './dividerHover';
 
-const accordionLine = {
+const rawAccordionLine = {
 	...divider,
 	'divider-border-palette-color-general': {
 		type: 'number',
@@ -33,6 +33,11 @@ const accordionLine = {
 			'active-divider-width-general': 100,
 		},
 	}),
+};
+
+const accordionLine = {
+	...prefixAttributesCreator({ obj: rawAccordionLine, prefix: 'header-' }),
+	...prefixAttributesCreator({ obj: rawAccordionLine, prefix: 'content-' }),
 };
 
 export default accordionLine;

@@ -25,7 +25,7 @@ const handleSetAttributes = ({
 }) => {
 	const response = { ...obj };
 
-	const winBreakpoint = select('maxiBlocks').receiveWinBreakpoint();
+	const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 
 	Object.entries(obj).forEach(([key, value]) => {
 		const breakpoint = getBreakpointFromAttribute(key);
@@ -34,16 +34,16 @@ const handleSetAttributes = ({
 
 		const isHigherBreakpoint =
 			breakpoints.indexOf(breakpoint) <
-			breakpoints.indexOf(winBreakpoint);
+			breakpoints.indexOf(baseBreakpoint);
 
 		if (!isHigherBreakpoint) return;
 
-		const attrLabelOnWinBreakpoint = `${key.slice(
+		const attrLabelOnBaseBreakpoint = `${key.slice(
 			0,
 			key.lastIndexOf('-')
-		)}-${winBreakpoint}`;
-		const attrOnWinBreakpoint = attributes?.[attrLabelOnWinBreakpoint];
-		const attrExistOnWinBreakpoint = !isNil(attrOnWinBreakpoint);
+		)}-${baseBreakpoint}`;
+		const attrOnBaseBreakpoint = attributes?.[attrLabelOnBaseBreakpoint];
+		const attrExistOnBaseBreakpoint = !isNil(attrOnBaseBreakpoint);
 		const attrLabelOnGeneral = `${key.slice(
 			0,
 			key.lastIndexOf('-')
@@ -52,17 +52,17 @@ const handleSetAttributes = ({
 			defaultAttributes?.[attrLabelOnGeneral] ??
 			getDefaultAttribute(attrLabelOnGeneral, clientId, true);
 
-		if (attrExistOnWinBreakpoint && breakpoint !== 'general') return;
+		if (attrExistOnBaseBreakpoint && breakpoint !== 'general') return;
 
 		// Ensures saving both General and XXL attribute when XXL attribute is already set,
-		// winBreakpoint is XXL and breakpoint is General
+		// BaseBreakpoint is XXL and breakpoint is General
 		if (
 			breakpoint === 'general' &&
-			winBreakpoint === 'xxl' &&
-			attrExistOnWinBreakpoint &&
+			baseBreakpoint === 'xxl' &&
+			attrExistOnBaseBreakpoint &&
 			defaultGeneralAttribute !== value
 		) {
-			response[attrLabelOnWinBreakpoint] = value;
+			response[attrLabelOnBaseBreakpoint] = value;
 
 			return;
 		}
@@ -88,7 +88,7 @@ const handleSetAttributes = ({
 		if (breakpoint === 'xxl' && needsGeneralAttr) return;
 
 		const existHigherBreakpointAttribute = breakpoints
-			.slice(0, breakpoints.indexOf(winBreakpoint))
+			.slice(0, breakpoints.indexOf(baseBreakpoint))
 			.some(
 				breakpoint =>
 					!isNil(
@@ -102,13 +102,13 @@ const handleSetAttributes = ({
 			);
 
 		if (
-			!attrExistOnWinBreakpoint &&
+			!attrExistOnBaseBreakpoint &&
 			(breakpoint === 'general' || !existHigherBreakpointAttribute)
 		) {
 			// Checks if the higher breakpoint attribute is not on XXL
 			if (
 				!breakpoints
-					.slice(0, breakpoints.indexOf(winBreakpoint))
+					.slice(0, breakpoints.indexOf(baseBreakpoint))
 					.some(
 						breakpoint =>
 							breakpoint !== 'xxl' &&
@@ -125,25 +125,25 @@ const handleSetAttributes = ({
 				return;
 		}
 
-		const defaultOnWinBreakpointAttribute =
-			defaultAttributes?.[attrLabelOnWinBreakpoint] ??
-			getDefaultAttribute(attrLabelOnWinBreakpoint, clientId, true);
+		const defaultOnBaseBreakpointAttribute =
+			defaultAttributes?.[attrLabelOnBaseBreakpoint] ??
+			getDefaultAttribute(attrLabelOnBaseBreakpoint, clientId, true);
 
 		if (
 			!attrExistOnGeneral &&
 			breakpoint === 'general' &&
-			(!attrExistOnWinBreakpoint ||
-				defaultOnWinBreakpointAttribute === attrOnWinBreakpoint)
+			(!attrExistOnBaseBreakpoint ||
+				defaultOnBaseBreakpointAttribute === attrOnBaseBreakpoint)
 		)
-			response[attrLabelOnWinBreakpoint] = value;
+			response[attrLabelOnBaseBreakpoint] = value;
 
 		if (!attrExistOnGeneral) return;
 
 		if (
 			breakpoint === 'general' &&
-			defaultOnWinBreakpointAttribute === value
+			defaultOnBaseBreakpointAttribute === value
 		) {
-			response[attrLabelOnWinBreakpoint] = value;
+			response[attrLabelOnBaseBreakpoint] = value;
 
 			return;
 		}
@@ -157,12 +157,12 @@ const handleSetAttributes = ({
 		if (breakpoint !== 'general' && attrExistOnObjOnGeneral) return;
 
 		if (breakpoint === 'general') {
-			response[attrLabelOnWinBreakpoint] = value;
+			response[attrLabelOnBaseBreakpoint] = value;
 
 			return;
 		}
 
-		response[attrLabelOnWinBreakpoint] = attributes?.[attrLabelOnGeneral];
+		response[attrLabelOnBaseBreakpoint] = attributes?.[attrLabelOnGeneral];
 	});
 
 	return onChange(response);

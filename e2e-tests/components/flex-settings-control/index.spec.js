@@ -48,9 +48,6 @@ describe('FlexSettings', () => {
 		);
 		await alignContentSelector.select('flex-start');
 
-		const flowSelector = await accordionPanel.$('.maxi-flex__flow select');
-		await flowSelector.select('wrap');
-
 		await editAdvancedNumberControl({
 			page,
 			instance: await page.$('.maxi-gap-control__row-gap'),
@@ -68,7 +65,6 @@ describe('FlexSettings', () => {
 		// expect
 		const attributeParent = await getAttributes([
 			'flex-direction-general',
-			'flex-flow-general',
 			'flex-wrap-general',
 			'justify-content-general',
 			'align-content-general',
@@ -81,7 +77,6 @@ describe('FlexSettings', () => {
 
 		const expectedParentAttribute = {
 			'flex-direction-general': 'row',
-			'flex-flow-general': 'wrap',
 			'flex-wrap-general': 'wrap',
 			'justify-content-general': 'flex-end',
 			'align-content-general': 'flex-start',
@@ -292,7 +287,7 @@ describe('FlexSettings', () => {
 			input => input.value
 		);
 
-		expect(flexBasisM).toStrictEqual('content');
+		expect(flexBasisM).toStrictEqual('');
 
 		// warning box
 		const warningBoxFlex = await accordionPanel.$eval(
@@ -340,9 +335,6 @@ describe('FlexSettings', () => {
 		);
 		await alignContentSelector.select('flex-start');
 
-		const flowSelector = await accordionPanel.$('.maxi-flex__flow select');
-		await flowSelector.select('wrap');
-
 		await editAdvancedNumberControl({
 			page,
 			instance: await page.$('.maxi-gap-control__row-gap'),
@@ -385,9 +377,6 @@ describe('FlexSettings', () => {
 		);
 		await alignContentSelectorS.select('flex-end');
 
-		const flowSelectorS = await accordionPanel.$('.maxi-flex__flow select');
-		await flowSelectorS.select('column');
-
 		await editAdvancedNumberControl({
 			page,
 			instance: await page.$('.maxi-gap-control__row-gap'),
@@ -404,7 +393,6 @@ describe('FlexSettings', () => {
 
 		const attributeParentS = await getAttributes([
 			'flex-direction-s',
-			'flex-flow-s',
 			'flex-wrap-s',
 			'justify-content-s',
 			'align-content-s',
@@ -417,7 +405,6 @@ describe('FlexSettings', () => {
 
 		const expectedParentAttributeS = {
 			'flex-direction-s': 'column',
-			'flex-flow-s': 'column',
 			'flex-wrap-s': 'nowrap',
 			'justify-content-s': 'flex-start',
 			'align-content-s': 'flex-end',
@@ -461,12 +448,6 @@ describe('FlexSettings', () => {
 			selector => selector.value
 		);
 		expect(alignContentSelectorXS).toStrictEqual('flex-end');
-
-		const flowSelectorXS = await accordionPanel.$eval(
-			'.maxi-flex__flow select',
-			selector => selector.value
-		);
-		expect(flowSelectorXS).toStrictEqual('column');
 
 		const rowGapXS = await accordionPanel.$eval(
 			'.maxi-gap-control__row-gap input',
@@ -524,12 +505,6 @@ describe('FlexSettings', () => {
 			selector => selector.value
 		);
 		expect(alignContentSelectorM).toStrictEqual('flex-start');
-
-		const flowSelectorM = await accordionPanel.$eval(
-			'.maxi-flex__flow select',
-			selector => selector.value
-		);
-		expect(flowSelectorM).toStrictEqual('wrap');
 
 		const rowGapM = await accordionPanel.$eval(
 			'.maxi-gap-control__row-gap input',

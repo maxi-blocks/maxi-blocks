@@ -33,7 +33,7 @@ const blockBackground = ({
 		cleanInlineStyles,
 	} = props;
 
-	const bgHoverStatus = attributes['block-background-hover-status'];
+	const bgHoverStatus = attributes['block-background-status-hover'];
 
 	return {
 		label: __('Background / Layer', 'maxi-blocks'),
@@ -81,7 +81,7 @@ const blockBackground = ({
 									className='maxi-background-status-hover'
 									onChange={val => {
 										maxiSetAttributes({
-											'block-background-hover-status':
+											'block-background-status-hover':
 												val,
 										});
 									}}
@@ -101,7 +101,7 @@ const blockBackground = ({
 								)}
 							</>
 						),
-						extraIndicators: ['block-background-hover-status'],
+						extraIndicators: ['block-background-status-hover'],
 					},
 				]}
 				depth={depth}

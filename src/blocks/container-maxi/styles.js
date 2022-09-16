@@ -18,7 +18,7 @@ import {
 	getOverflowStyles,
 	getFlexStyles,
 } from '../../extensions/styles/helpers';
-import { selectorsContainer } from './custom-css';
+import data from './data';
 
 const getNormalObject = props => {
 	const response = {
@@ -221,7 +221,7 @@ const getStyles = props => {
 					isHover: true,
 				}),
 			},
-			selectorsContainer,
+			data,
 			props
 		),
 	};

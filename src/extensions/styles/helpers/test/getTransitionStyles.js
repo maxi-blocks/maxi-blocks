@@ -6,7 +6,7 @@ describe('getTransitionStyles', () => {
 		const object = {
 			'border-status-hover': true,
 			'box-shadow-status-hover': false,
-			'block-background-hover-status': true,
+			'block-background-status-hover': true,
 			transition: {
 				block: {},
 				canvas: {
@@ -29,7 +29,7 @@ describe('getTransitionStyles', () => {
 						'transition-delay-general': 0,
 						'easing-general': 'ease',
 						'transition-status-general': false,
-						hoverProp: 'block-background-hover-status',
+						hoverProp: 'block-background-status-hover',
 					},
 				},
 			},
@@ -64,7 +64,7 @@ describe('getTransitionStyles', () => {
 		const object = {
 			'border-status-hover': true,
 			'box-shadow-status-hover': true,
-			'block-background-hover-status': false,
+			'block-background-status-hover': false,
 			transition: {
 				block: {},
 				canvas: {
@@ -96,7 +96,7 @@ describe('getTransitionStyles', () => {
 						'transition-status-s': false,
 						'transition-status-xs': true,
 						'transition-status-xxl': false,
-						hoverProp: 'block-background-hover-status',
+						hoverProp: 'block-background-status-hover',
 					},
 				},
 			},
@@ -158,9 +158,9 @@ describe('getTransitionStyles', () => {
 		const object = {
 			'border-status-hover': true,
 			'box-shadow-status-hover': true,
-			'block-background-hover-status': false,
+			'block-background-status-hover': false,
 			'typography-status-hover': true,
-			'button-background-hover-status': true,
+			'button-background-status-hover': true,
 			transition: {
 				block: {
 					typography: {
@@ -169,7 +169,7 @@ describe('getTransitionStyles', () => {
 					},
 					'button background': {
 						...repeatedAttributes,
-						hoverProp: 'background-hover-status',
+						hoverProp: 'background-status-hover',
 					},
 				},
 				canvas: {
@@ -183,7 +183,7 @@ describe('getTransitionStyles', () => {
 					},
 					'background / layer': {
 						...repeatedAttributes,
-						hoverProp: 'block-background-hover-status',
+						hoverProp: 'block-background-status-hover',
 					},
 				},
 			},

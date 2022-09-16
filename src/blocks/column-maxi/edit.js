@@ -18,7 +18,7 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import getStyles from './styles';
-import copyPasteMapping from './copy-paste-mapping';
+import { copyPasteMapping } from './data';
 import getRowBorderRadius from './utils';
 
 /**
@@ -80,23 +80,22 @@ class edit extends MaxiBlockComponent {
 			attributes: this.props.attributes,
 		});
 
+		if (forceAspectRatio) return 'auto';
+
 		const columnHeightAttribute = getLastBreakpointAttribute({
 			target: 'height',
 			breakpoint: this.props.deviceType || 'general',
 			attributes: this.props.attributes,
 		});
 
-		let columnHeight = 'auto';
+		if (columnHeightAttribute)
+			return `${columnHeightAttribute}${getLastBreakpointAttribute({
+				target: 'height-unit',
+				breakpoint: this.props.deviceType || 'general',
+				attributes: this.props.attributes,
+			})}`;
 
-		if (forceAspectRatio) columnHeight = '100%';
-		else if (columnHeightAttribute);
-		columnHeight = `${columnHeightAttribute}${getLastBreakpointAttribute({
-			target: 'height-unit',
-			breakpoint: this.props.deviceType || 'general',
-			attributes: this.props.attributes,
-		})}`;
-
-		return columnHeight;
+		return 'auto';
 	}
 
 	maxiBlockDidUpdate(prevProps) {

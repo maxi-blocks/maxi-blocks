@@ -16,6 +16,7 @@ import {
 	openPreviewPage,
 	editAdvancedNumberControl,
 } from '../../utils';
+import sizeAndPositionChecker from './utils/sizeAndPositionChecker';
 
 describe('Background Color Layer', () => {
 	it('Check Background Color layer', async () => {
@@ -46,6 +47,8 @@ describe('Background Color Layer', () => {
 		await page.$$eval('.clip-path-defaults button', buttons =>
 			buttons[3].click()
 		);
+
+		await sizeAndPositionChecker({ page });
 
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
@@ -87,6 +90,11 @@ describe('Background Color Layer', () => {
 
 		expect(xsColorSelected).toStrictEqual('6');
 
+		await sizeAndPositionChecker({
+			page,
+			breakpoint: 'xs',
+		});
+
 		// expect m
 		await changeResponsive(page, 'm');
 
@@ -96,6 +104,12 @@ describe('Background Color Layer', () => {
 		);
 
 		expect(mColorSelected).toStrictEqual('5');
+
+		await sizeAndPositionChecker({
+			page,
+			breakpoint: 'm',
+		});
+
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
@@ -145,6 +159,11 @@ describe('Background Color Layer', () => {
 			buttons[2].click()
 		);
 
+		await sizeAndPositionChecker({
+			page,
+			isHover: true,
+		});
+
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
@@ -174,6 +193,12 @@ describe('Background Color Layer', () => {
 		);
 		expect(sColorSelected).toStrictEqual('4');
 
+		await sizeAndPositionChecker({
+			page,
+			breakpoint: 's',
+			isHover: true,
+		});
+
 		// expect xs
 		await changeResponsive(page, 'xs');
 
@@ -184,6 +209,12 @@ describe('Background Color Layer', () => {
 
 		expect(xsColorSelected).toStrictEqual('4');
 
+		await sizeAndPositionChecker({
+			page,
+			breakpoint: 'xs',
+			isHover: true,
+		});
+
 		// expect m
 		await changeResponsive(page, 'm');
 
@@ -193,6 +224,13 @@ describe('Background Color Layer', () => {
 		);
 
 		expect(mColorSelected).toStrictEqual('2');
+
+		await sizeAndPositionChecker({
+			page,
+			breakpoint: 'm',
+			isHover: true,
+		});
+
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 

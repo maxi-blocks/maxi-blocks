@@ -58,12 +58,6 @@ const Size = ({
 			minRange: -1999,
 			maxRange: 1999,
 		},
-		'-': {
-			min: 0,
-			max: 16,
-			minRange: 0,
-			maxRange: 16,
-		},
 	};
 
 	const getDefaultAttr = target => {

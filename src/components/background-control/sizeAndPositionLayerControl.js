@@ -30,19 +30,19 @@ const Size = ({
 	const minMaxSettings = {
 		px: {
 			min: 0,
-			max: 3999,
+			max: 1999,
 		},
 		em: {
 			min: 0,
-			max: 999,
+			max: 300,
 		},
 		vw: {
 			min: 0,
-			max: 999,
+			max: 300,
 		},
 		'%': {
 			min: 0,
-			max: 999,
+			max: 100,
 		},
 	};
 

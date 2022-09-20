@@ -4,7 +4,7 @@
  */
 import apiFetch from '@wordpress/api-fetch';
 import { __ } from '@wordpress/i18n';
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, useRef } from '@wordpress/element';
 import { select } from '@wordpress/data';
 
 /**
@@ -54,7 +54,7 @@ const DynamicContent = props => {
 		'dc-status': status,
 		'dc-type': type,
 		'dc-relation': relation,
-		'dc-get-by': getBy,
+		//'dc-get-by': getBy,
 		'dc-author': author,
 		'dc-id': id,
 		'dc-show': show,
@@ -62,15 +62,29 @@ const DynamicContent = props => {
 		// 'dc-content': content,
 	} = dynamicContent;
 
-	const [newId, setNewId] = useState('');
-	const [postIdOptions, setPostIdOptions] = useState([]);
-	const [isEmptyIdOptions, setIsEmptyIdOptions] = useState(true);
-	const [postAuthorOptions, setPostAuthorOptions] = useState([]);
-	const [isEmptyAuthorOptions, setIsEmptyAuthorOptions] = useState(true);
+	const isLoading = useRef(true);
+	const statusRef = useRef(status);
+	const typeRef = useRef(type);
+	const relationRef = useRef(relation);
+	const authorRef = useRef(author);
+	const idRef = useRef(id);
+	const showRef = useRef(show);
+	const fieldRef = useRef(field);
+	const postIdOptions = useRef(null);
+	const postAuthorOptions = useRef(null);
+
+	useEffect(async () => {
+		if (statusRef.current)
+			onChange({
+				'dc-content': sanitizeContent(
+					await getContent({ type, id, field })
+				),
+			});
+	}, [type, id, field, relation, show, author]);
 
 	const validationsValues = variableValue => {
 		const result = fieldOptions[variableValue].map(x => x.value);
-		if (result.includes(field)) {
+		if (result.includes(fieldRef.current)) {
 			return {};
 		} else {
 			return { 'dc-field': result[0] };
@@ -85,58 +99,80 @@ const DynamicContent = props => {
 		});
 	};
 
-	const setAuthorList = (result, _relation = relation) => {
-		if (_relation === 'author') {
-			const newPostAuthorOptions = result.map(item => {
-				return {
-					label: `${item.id} - ${
-						item[idOptionByField[_relation]]?.rendered ??
-						item[idOptionByField[_relation]]
-					}`,
-					value: +item.id,
-				};
-			});
-			if (isEmpty(newPostAuthorOptions)) {
-				setIsEmptyAuthorOptions(true);
-			} else {
-				setIsEmptyAuthorOptions(false);
-				setPostAuthorOptions(newPostAuthorOptions);
-			}
-			console.log('newPostAuthorOptions', newPostAuthorOptions);
+	const setAuthorList = (result, _relation = relationRef.current) => {
+		const newPostAuthorOptions = result.map(item => {
+			return {
+				label: `${item.id} - ${
+					item[idOptionByField[_relation]]?.rendered ??
+					item[idOptionByField[_relation]]
+				}`,
+				value: +item.id,
+			};
+		});
+		if (isEmpty(newPostAuthorOptions)) {
+			postAuthorOptions.current = {};
+		} else {
+			postAuthorOptions.current = newPostAuthorOptions;
 		}
 	};
 
-	const setIdList = (result, newType) => {
+	const setIdList = (result, _additional, _type) => {
 		const newPostIdOptions = result.map(item => {
 			return {
 				label: `${item.id} - ${
-					item[idOptionByField[newType]]?.rendered ??
-					item[idOptionByField[newType]]
+					item[idOptionByField[_type]]?.rendered ??
+					item[idOptionByField[_type]]
 				}`,
 				value: +item.id,
 			};
 		});
 		if (isEmpty(newPostIdOptions)) {
-			setIsEmptyIdOptions(true);
+			postIdOptions.current = null;
+			disabledType(_type);
+			_additional && onChange(_additional);
 		} else {
-			setIsEmptyIdOptions(false);
-			setPostIdOptions(newPostIdOptions);
+			postIdOptions.current = newPostIdOptions;
+
+			// Set default values in case they are not defined
+			const defaultValues = _additional ? _additional : {};
+
+			// Ensures first post id is selected
+			if (isEmpty(find(newPostIdOptions, { value: idRef.current })))
+				defaultValues['dc-id'] = result[0].id;
+
+			// Ensures first field is selected
+			if (!fieldRef.current)
+				defaultValues['dc-field'] = fieldOptions[type][0].value;
+
+			// Ensures content is selected
+			if (!isEmpty(defaultValues)) {
+				const newContent = getContent({
+					type: _type,
+					id: defaultValues['dc-id'] ?? idRef.current,
+					field: defaultValues['dc-field'] ?? fieldRef.current,
+				});
+
+				defaultValues['dc-content'] = sanitizeContent(newContent);
+			}
+
+			if (!isEmpty(defaultValues)) onChange(defaultValues);
 		}
 		return newPostIdOptions;
 	};
 
-	const getAuthorByID = async idAuthor => {
-		return await apiFetch({ path: '/wp/v2/users/' + idAuthor }).then(
-			author => {
-				const authorName = author.name ? author.name : 'No name';
-				return authorName;
-			}
-		);
+	const getAuthorByID = async _id => {
+		return await apiFetch({ path: '/wp/v2/users/' + _id }).then(author => {
+			const authorName = author.name ? author.name : 'No name';
+			return authorName;
+		});
 	};
 
-	const changeContent = async (_show = show, _id = id) => {
+	const changeContent = async (
+		_show = showRef.current,
+		_id = idRef.current
+	) => {
 		if (
-			relationTypes.includes(type) &&
+			relationTypes.includes(typeRef.current) &&
 			['previous', 'next'].includes(_show)
 		) {
 			const { /*id: postId,*/ type: postType } =
@@ -149,67 +185,61 @@ const DynamicContent = props => {
 			})
 				.catch(rej => console.error(rej))
 				.then(res => {
-					if (
-						// res[_show] !== null &&
-						typeof res[_show] === 'object' &&
-						'id' in res[_show]
-					) {
+					if (typeof res[_show] === 'object' && 'id' in res[_show]) {
 						if (isFinite(res[_show].id)) {
-							//setNewId(res[_show].id);
-							console.log('setNewId', _id, res[_show].id);
 							return res[_show].id;
 						}
 					} else {
-						console.log('setNewId_', _id, null);
 						return null;
-						//setNewId('');
 						//return descriptionOfErrors[_show];
 					}
 				});
 		}
 	};
 
-	const getContentPath = (type, id, field) => {
+	const getContentPath = (
+		_type = typeRef.current,
+		_id = idRef.current,
+		_field = fieldRef.current
+	) => {
 		const getForShow = async () => {
-			console.log('getForShow', show, id);
-			switch (show) {
+			switch (showRef.current) {
 				case 'next':
 				case 'previous':
-					return await changeContent(show, id);
+					return await changeContent(showRef.current, _id);
 				case 'current':
 				default:
-					return id;
+					return _id;
 			}
 		};
 		const getForRelation = () => {
 			const test = getForShow();
-			console.log('test', test);
 			//const id = newId ?? id;
 			switch (relation) {
 				case 'author':
-					return `/wp/v2/${type}?author=${id}&per_page=1&_fields=${field}`;
+					return `/wp/v2/${_type}?author=${_id}&per_page=1&_fields=${_field}`;
 				case 'last-published':
-					return `/wp/v2/${type}&per_page=1`;
+					return `/wp/v2/${_type}&per_page=1`;
 				case 'date':
 				case 'modified':
-					return `/wp/v2/${type}?orderby=${getBy}&per_page=1&_fields=${field}`;
+				//return `/wp/v2/${_type}?orderby=${_getBy}&per_page=1&_fields=${_field}`;
 				case 'random':
-					return `/wp/v2/${type}/?_fields=id&per_page=99&orderby=${
+					return `/wp/v2/${_type}/?_fields=id&per_page=99&orderby=${
 						randomOptions[random(randomOptions.length - 1)]
 					}`;
 				case 'by-id':
 				default:
-					return `/wp/v2/${type}/${id}?_fields=${field}`;
+					return `/wp/v2/${_type}/${_id}?_fields=${_field}`;
 			}
 		};
 		const getForType = () => {
-			switch (type) {
-				case relationTypes.includes(type) ? type : false:
+			switch (_type) {
+				case relationTypes.includes(_type) ? _type : false:
 					return getForRelation();
 				case 'settings':
 				case 'users':
 				default:
-					return `/wp/v2/${type}?_fields=${field}`;
+					return `/wp/v2/${_type}?_fields=${_field}`;
 			}
 		};
 		return getForType();
@@ -247,7 +277,10 @@ const DynamicContent = props => {
 	};
 
 	const getContent = async dataRequest => {
-		if (relationTypes.includes(type) && relation === 'random') {
+		if (
+			relationTypes.includes(typeRef.current) &&
+			relationRef.current === 'random'
+		) {
 			const { type } = dataRequest;
 
 			const randomPath = `/wp/v2/${type}/?_fields=id&per_page=99&orderby=${
@@ -276,8 +309,6 @@ const DynamicContent = props => {
 				);
 		}
 
-		const _id = await changeContent();
-		console.log('_id', _id);
 		/*if (
 			relationTypes.includes(type) &&
 			['previous', 'next'].includes(getBy)
@@ -309,70 +340,52 @@ const DynamicContent = props => {
 		return requestContent(dataRequest);
 	};
 
-	const getIdOptionsPath = (_type, _relation) => {
-		if (_relation === 'author')
-			return '/wp/v2/users?per_page=99&_fields=id, name';
-
-		return `/wp/v2/${_type}?_fields=id, ${idOptionByField[_type]}`;
+	const getIdOptionsPath = (_type, _relation = null) => {
+		return _relation === 'author' || _type === 'users'
+			? '/wp/v2/users?per_page=99&_fields=id, name'
+			: `/wp/v2/${_type}?_fields=id, ${idOptionByField[_type]}`;
 	};
 
-	const getIdOptions = async (
-		newType = type,
-		additionalParameters = null,
-		_relation = relation
-	) =>
-		idFields.includes(newType) &&
-		apiFetch({
-			path: getIdOptionsPath(newType, _relation),
+	const setIdOptions = async (_type, _additional, _relation) => {
+		_relation === 'author' &&
+			(await apiFetch({
+				path: getIdOptionsPath(_type, _relation),
+			})
+				.catch(err => console.error(err)) // TODO: need a good error handler
+				.then(async result => setAuthorList(result, _relation)));
+
+		return await apiFetch({
+			path: getIdOptionsPath(_type),
 		})
 			.catch(err => console.error(err)) // TODO: need a good error handler
-			.then(async result => {
-				// author
-				setAuthorList(result, _relation);
-				const newPostIdOptions = setIdList(result, newType);
-				if (isEmpty(newPostIdOptions)) {
-					disabledType(newType);
-					additionalParameters && onChange(additionalParameters);
-				} else {
-					// Set default values in case they are not defined
-					const defaultValues = additionalParameters
-						? additionalParameters
-						: {};
-
-					// Ensures first post id is selected
-					if (isEmpty(find(newPostIdOptions, { value: id })))
-						defaultValues['dc-id'] = result[0].id;
-
-					// Ensures first field is selected
-					if (!field)
-						defaultValues['dc-field'] = fieldOptions[type][0].value;
-
-					// Ensures content is selected
-					if (!isEmpty(defaultValues)) {
-						const newContent = await getContent({
-							type: newType,
-							id: defaultValues['dc-id'] ?? id,
-							field: defaultValues['dc-field'] ?? field,
-						});
-
-						defaultValues['dc-content'] =
-							sanitizeContent(newContent);
-					}
-
-					if (!isEmpty(defaultValues)) onChange(defaultValues);
-				}
-			});
-
-	const switchOnChange = async (_type, _value) => {
+			.then(result => setIdList(result, _additional, _type));
+	};
+	const getIdOptions = (
+		_type = typeRef.current,
+		_additional = null,
+		_relation = relationRef.current
+	) => {
+		if (idFields.includes(_type)) {
+			return setIdOptions(_type, _additional, _relation)
+				.catch(rej => console.error(rej))
+				.then(res => {
+					return res;
+				});
+		}
+	};
+	const switchOnChange = (_type, _value) => {
 		switch (_type) {
 			case 'status':
+				statusRef.current = _value;
 				onChange({ 'dc-status': _value });
-				if (!status) {
+				if (_value) {
 					getIdOptions();
 				}
 				break;
 			case 'type':
+				typeRef.current = _value;
 				const dcFieldActual = validationsValues(_value);
+				//console.log('dcFieldActual', dcFieldActual);
 				if (idFields.includes(_value)) {
 					getIdOptions(_value, {
 						'dc-type': _value,
@@ -386,38 +399,56 @@ const DynamicContent = props => {
 				}
 				break;
 			case 'relation':
+				relationRef.current = _value;
 				onChange({ 'dc-relation': _value });
 				getIdOptions(type, null, _value);
 				break;
 			case 'author':
+				authorRef.current = _value;
 				onChange({ 'dc-author': _value });
 				break;
 			case 'id':
+				idRef.current = _value;
 				onChange({ 'dc-id': _value });
 				break;
 			case 'show':
-				await onChange({ 'dc-show': _value });
-				console.log('show', await changeContent(_value));
+				showRef.current = _value;
+				onChange({ 'dc-show': _value });
+				changeContent(_value);
 				break;
 			case 'field':
+				fieldRef.current = _value;
 				onChange({ 'dc-field': _value });
 				break;
 		}
 	};
 
-	//console.log('set', status, type, isEmpty(postIdOptions), isEmptyIdOptions);
-	if (status && type && isEmpty(postIdOptions) && isEmptyIdOptions) {
-		getIdOptions();
+	//(async () => {
+	if (
+		statusRef.current &&
+		typeRef.current &&
+		isEmpty(postIdOptions.current)
+	) {
+		const myGetIdOptions = getIdOptions()
+			.catch(rej => console.error(rej))
+			.then(res => {
+				return res;
+			});
+		isLoading.current = myGetIdOptions ? false : true;
+		// console.log('myGetIdOptions', myGetIdOptions);
+		// console.log('isLoading', isLoading.current);
 	}
 
-	useEffect(async () => {
-		if (status)
-			onChange({
-				'dc-content': sanitizeContent(
-					await getContent({ type, id, field })
-				),
-			});
-	}, [type, id, field, relation, getBy, show, author]);
+	console.log('statusRef', statusRef.current);
+	console.log('typeRef', typeRef.current);
+	console.log('relationRef', relationRef.current);
+	console.log('authorRef', authorRef.current);
+	console.log('idRef', idRef.current);
+	console.log('showRef', showRef.current);
+	console.log('fieldRef', fieldRef.current);
+
+	console.log('postIdOptions', postIdOptions.current);
+	console.log('postAuthorOptions', postAuthorOptions.current);
 
 	return (
 		<ToolbarPopover
@@ -428,73 +459,76 @@ const DynamicContent = props => {
 			<div className='toolbar-item__dynamic-content__popover toolbar-item__dynamic-content__popover'>
 				<ToggleSwitch
 					label={__('Use dynamic content', 'maxi-blocks')}
-					selected={status}
-					onChange={() => switchOnChange('status', !status)}
+					selected={statusRef.current}
+					onChange={() =>
+						switchOnChange('status', !statusRef.current)
+					}
 				/>
-				{status && (
+				{statusRef.current && (
 					<>
 						<SelectControl
 							label={__('Type', 'maxi-blocks')}
-							value={type}
+							value={typeRef.current}
 							options={typeOptions}
 							onChange={value => switchOnChange('type', value)}
 						/>
-						{isEmptyIdOptions ? (
+						{isLoading.current && !postIdOptions.current ? (
 							<p>This type is empty</p>
 						) : (
 							<>
-								{relationTypes.includes(type) && (
+								{relationTypes.includes(typeRef.current) && (
 									<SelectControl
 										label={__('Relation', 'maxi-blocks')}
-										value={relation}
+										value={relationRef.current}
 										options={relationOptions}
 										onChange={value =>
 											switchOnChange('relation', value)
 										}
 									/>
 								)}
-								{(type === 'users' ||
-									relation === 'author') && (
+								{(typeRef.current === 'users' ||
+									relationRef.current === 'author') && (
 									<SelectControl
 										label={__('Author id', 'maxi-blocks')}
-										value={author}
-										options={postAuthorOptions}
+										value={authorRef.current}
+										options={postAuthorOptions.current}
 										onChange={value =>
 											switchOnChange('author', value)
 										}
 									/>
 								)}
-								{relationTypes.includes(type) &&
-									(relation === 'by-id' ||
-										relation === 'author') && (
+								{relationTypes.includes(typeRef.current) &&
+									(relationRef.current === 'by-id' ||
+										relationRef.current === 'author') && (
 										<SelectControl
 											label={__('Post id', 'maxi-blocks')}
-											value={id}
-											options={postIdOptions}
+											value={idRef.current}
+											options={postIdOptions.current}
 											onChange={value =>
 												switchOnChange('id', value)
 											}
 										/>
 									)}
-								{relationTypes.includes(type) && (
+								{relationTypes.includes(typeRef.current) && (
 									<SelectControl
 										label={__('Show', 'maxi-blocks')}
-										value={show}
+										value={showRef.current}
 										options={showOptions}
 										onChange={value =>
 											switchOnChange('show', value)
 										}
 									/>
 								)}
-								{(['settings'].includes(type) ||
-									(relation === 'by-id' && isFinite(id)) ||
-									relation === 'last-published' ||
-									relation === 'author' ||
-									relation === 'random') && (
+								{(['settings'].includes(typeRef.current) ||
+									(relationRef.current === 'by-id' &&
+										isFinite(idRef.current)) ||
+									relationRef.current === 'last-published' ||
+									relationRef.current === 'author' ||
+									relationRef.current === 'random') && (
 									<SelectControl
 										label={__('Field', 'maxi-blocks')}
-										value={field}
-										options={fieldOptions[type]}
+										value={fieldRef.current}
+										options={fieldOptions[typeRef.current]}
 										onChange={value =>
 											switchOnChange('field', value)
 										}

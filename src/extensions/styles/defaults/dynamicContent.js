@@ -11,10 +11,6 @@ const dynamicContent = {
 		type: 'string',
 		default: 'by-id',
 	},
-	'dc-get-by': {
-		type: 'string',
-		default: 'date',
-	},
 	'dc-id': {
 		type: 'number',
 	},

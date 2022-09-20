@@ -388,7 +388,8 @@ const relations = () => {
 														'transition-delay',
 													].reduce(
 														(sum, prop) =>
-															(sum += parseFloat(
+															sum +
+															parseFloat(
 																getComputedStyle(
 																	transitionTargetEl
 																)
@@ -399,7 +400,7 @@ const relations = () => {
 																		's',
 																		''
 																	)
-															)),
+															),
 														0
 													) * 1000;
 

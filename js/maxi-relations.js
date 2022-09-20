@@ -361,17 +361,6 @@ const relations = () => {
 
 								Array.from(transitionTargetEls).forEach(
 									transitionTargetEl => {
-										const transitionDuration =
-											parseFloat(
-												getComputedStyle(
-													transitionTargetEl
-												)
-													.getPropertyValue(
-														'transition-duration'
-													)
-													.replace('s', '')
-											) * 1000;
-
 										transitionTargetEl.addEventListener(
 											'mouseenter',
 											() => {
@@ -393,6 +382,27 @@ const relations = () => {
 										transitionTargetEl.addEventListener(
 											'mouseleave',
 											() => {
+												const transitionDuration =
+													[
+														'transition-duration',
+														'transition-delay',
+													].reduce(
+														(sum, prop) =>
+															(sum += parseFloat(
+																getComputedStyle(
+																	transitionTargetEl
+																)
+																	.getPropertyValue(
+																		prop
+																	)
+																	.replace(
+																		's',
+																		''
+																	)
+															)),
+														0
+													) * 1000;
+
 												contentTimeout = setTimeout(
 													() => {
 														// Set the transitions back waiting the original to be done

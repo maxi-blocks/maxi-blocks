@@ -386,20 +386,22 @@ const relations = () => {
 													[
 														'transition-duration',
 														'transition-delay',
-													].reduce((sum, prop) => {
-														sum += parseFloat(
-															getComputedStyle(
-																transitionTargetEl
-															)
-																.getPropertyValue(
-																	prop
+													].reduce(
+														(sum, prop) =>
+															(sum += parseFloat(
+																getComputedStyle(
+																	transitionTargetEl
 																)
-																.replace(
-																	's',
-																	''
-																)
-														);
-													}, 0) * 1000;
+																	.getPropertyValue(
+																		prop
+																	)
+																	.replace(
+																		's',
+																		''
+																	)
+															)),
+														0
+													) * 1000;
 
 												contentTimeout = setTimeout(
 													() => {

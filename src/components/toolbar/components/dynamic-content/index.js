@@ -62,7 +62,7 @@ const DynamicContent = props => {
 		// 'dc-content': content,
 	} = dynamicContent;
 
-	const isLoading = useRef(true);
+	const [isLoading, setIsLoading] = useState(true);
 	const statusRef = useRef(status);
 	const typeRef = useRef(type);
 	const relationRef = useRef(relation);
@@ -80,7 +80,7 @@ const DynamicContent = props => {
 					await getContent({ type, id, field })
 				),
 			});
-	}, [type, id, field, relation, show, author]);
+	}, [type, id, field, relation, show, author, isLoading]);
 
 	const validationsValues = variableValue => {
 		const result = fieldOptions[variableValue].map(x => x.value);
@@ -103,8 +103,8 @@ const DynamicContent = props => {
 		const newPostAuthorOptions = result.map(item => {
 			return {
 				label: `${item.id} - ${
-					item[idOptionByField[_relation]]?.rendered ??
-					item[idOptionByField[_relation]]
+					item[idOptionByField['author']]?.rendered ??
+					item[idOptionByField['author']]
 				}`,
 				value: +item.id,
 			};
@@ -113,6 +113,7 @@ const DynamicContent = props => {
 			postAuthorOptions.current = {};
 		} else {
 			postAuthorOptions.current = newPostAuthorOptions;
+			setIsLoading(false);
 		}
 	};
 
@@ -132,7 +133,7 @@ const DynamicContent = props => {
 			_additional && onChange(_additional);
 		} else {
 			postIdOptions.current = newPostIdOptions;
-
+			setIsLoading(false);
 			// Set default values in case they are not defined
 			const defaultValues = _additional ? _additional : {};
 
@@ -215,14 +216,16 @@ const DynamicContent = props => {
 		const getForRelation = () => {
 			const test = getForShow();
 			//const id = newId ?? id;
-			switch (relation) {
+			switch (relationRef.current) {
 				case 'author':
-					return `/wp/v2/${_type}?author=${_id}&per_page=1&_fields=${_field}`;
+					return `/wp/v2/${_type}?author=${
+						authorRef ? authorRef : _id
+					}&per_page=1&_fields=${_field}`;
 				case 'last-published':
 					return `/wp/v2/${_type}&per_page=1`;
 				case 'date':
 				case 'modified':
-				//return `/wp/v2/${_type}?orderby=${_getBy}&per_page=1&_fields=${_field}`;
+					return `/wp/v2/${_type}?orderby=${relationRef.current}&per_page=1&_fields=${_field}`;
 				case 'random':
 					return `/wp/v2/${_type}/?_fields=id&per_page=99&orderby=${
 						randomOptions[random(randomOptions.length - 1)]
@@ -236,8 +239,17 @@ const DynamicContent = props => {
 			switch (_type) {
 				case relationTypes.includes(_type) ? _type : false:
 					return getForRelation();
-				case 'settings':
 				case 'users':
+					console.log(
+						'tt',
+						`/wp/v2/${_type}/${
+							authorRef.current ? authorRef.current : _id
+						}/?_fields=${_field}`
+					);
+					return `/wp/v2/${_type}/${
+						authorRef.current ? authorRef.current : _id
+					}/?_fields=${_field}`;
+				case 'settings':
 				default:
 					return `/wp/v2/${_type}?_fields=${_field}`;
 			}
@@ -253,6 +265,10 @@ const DynamicContent = props => {
 		})
 			.catch(err => console.error(err)) // TODO: need a good error handler
 			.then(result => {
+				console.log(
+					'getContentPath',
+					getContentPath(_type, _id, _field)
+				);
 				const content = isArray(result) ? result[0] : result;
 
 				if (content) {
@@ -281,7 +297,7 @@ const DynamicContent = props => {
 			relationTypes.includes(typeRef.current) &&
 			relationRef.current === 'random'
 		) {
-			const { type } = dataRequest;
+			const { type, id } = dataRequest;
 
 			const randomPath = `/wp/v2/${type}/?_fields=id&per_page=99&orderby=${
 				randomOptions[random(randomOptions.length - 1)]
@@ -308,7 +324,13 @@ const DynamicContent = props => {
 					}
 				);
 		}
-
+		if (typeRef.current === 'users') {
+			dataRequest.id = authorRef.current ? authorRef.current : id;
+			// return requestContent({
+			// 	...dataRequest,
+			// 	id: authorRef.current,
+			// });
+		}
 		/*if (
 			relationTypes.includes(type) &&
 			['previous', 'next'].includes(getBy)
@@ -336,7 +358,7 @@ const DynamicContent = props => {
 					}
 				});
 		}*/
-
+		console.log('dataRequest', dataRequest);
 		return requestContent(dataRequest);
 	};
 
@@ -347,7 +369,7 @@ const DynamicContent = props => {
 	};
 
 	const setIdOptions = async (_type, _additional, _relation) => {
-		_relation === 'author' &&
+		(_relation === 'author' || _type === 'users') &&
 			(await apiFetch({
 				path: getIdOptionsPath(_type, _relation),
 			})
@@ -434,7 +456,7 @@ const DynamicContent = props => {
 			.then(res => {
 				return res;
 			});
-		isLoading.current = myGetIdOptions ? false : true;
+		//isLoading.current = myGetIdOptions ? false : true;
 		// console.log('myGetIdOptions', myGetIdOptions);
 		// console.log('isLoading', isLoading.current);
 	}
@@ -472,7 +494,7 @@ const DynamicContent = props => {
 							options={typeOptions}
 							onChange={value => switchOnChange('type', value)}
 						/>
-						{isLoading.current && !postIdOptions.current ? (
+						{!postIdOptions.current ? (
 							<p>This type is empty</p>
 						) : (
 							<>
@@ -524,6 +546,8 @@ const DynamicContent = props => {
 										isFinite(idRef.current)) ||
 									relationRef.current === 'last-published' ||
 									relationRef.current === 'author' ||
+									relationRef.current === 'date' ||
+									relationRef.current === 'modified' ||
 									relationRef.current === 'random') && (
 									<SelectControl
 										label={__('Field', 'maxi-blocks')}

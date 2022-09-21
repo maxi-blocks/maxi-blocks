@@ -43,6 +43,11 @@ body.maxi-blocks--active .maxi-block {
 	&.maxi-button-block .maxi-button-block__button {
 		background-color: transparent;
 	}
+
+	/*Seedlet theme overrides*/
+	span:focus {
+		outline: none;
+	}
 }
 
 body.maxi-blocks--active .maxi-block[data-align='full'] {
@@ -114,9 +119,4 @@ body.maxi-blocks--active.page-template-full-width-template .ast-container {
 	#maxi-main-container {
 		width: 100%;
 	}
-}
-
-/*Seedlet theme overrides*/
-body.maxi-blocks--active span:focus {
-	outline: none;
 }

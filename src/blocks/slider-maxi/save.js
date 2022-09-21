@@ -24,7 +24,6 @@ const save = props => {
 		isAutoplay,
 		pauseOnHover,
 		pauseOnInteraction,
-		fullWidth,
 		numberOfSlides,
 	} = attributes;
 

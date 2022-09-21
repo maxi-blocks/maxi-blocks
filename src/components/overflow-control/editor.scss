@@ -1,0 +1,38 @@
+.maxi-overflow-control {
+	position: relative;
+}
+.sync-wrapper {
+	position: absolute;
+	left: 75px;
+	top: 20px;
+}
+.sync-wrapper button {
+	border: 2px solid #dddfe1;
+	border-radius: 0;
+	width: 32px;
+	height: 32px;
+	padding: 0;
+	display: -webkit-inline-box;
+	display: -ms-inline-flexbox;
+	display: inline-flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	-webkit-transition: all 0.2s;
+	-o-transition: all 0.2s;
+	transition: all 0.2s;
+}
+.sync-wrapper button:focus {
+	border-color: var(--maxi-grey-6-color);
+}
+.sync-wrapper button[aria-pressed='true'] {
+	background: #f2f2f2 !important;
+	border-color: var(--maxi-grey-6-color);
+}
+.sync-wrapper button svg {
+	width: 14px;
+	height: 14px;
+}

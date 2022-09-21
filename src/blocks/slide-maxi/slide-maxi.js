@@ -41,12 +41,6 @@ registerBlockType('maxi-blocks/slide-maxi', {
 		...attributes,
 	},
 	parent: ['maxi-blocks/slider-maxi'],
-	getEditWrapperProps(attributes) {
-		const { uniqueID } = attributes;
-		return {
-			uniqueid: uniqueID,
-		};
-	},
 	edit,
 	save,
 });

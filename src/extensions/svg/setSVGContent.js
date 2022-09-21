@@ -1,6 +1,6 @@
 const setSVGContent = (content, color, type) => {
 	const svgRegExp = new RegExp(
-		`(?<!data-${type})( ${type}=[^-]([^none])([^\\"]+))`,
+		`(?<!data-${type})( data-${type}=[^-]([^none])([^\\"]+))`,
 		'g'
 	);
 	const svgStr = ` data-${type}$1`;

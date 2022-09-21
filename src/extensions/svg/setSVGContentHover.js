@@ -2,7 +2,7 @@ const setSVGContentHover = (content, color, type) => {
 	let newContent = content;
 
 	const svgRegExp = new RegExp(
-		`(?<!data-hover-${type})( ${type}=[^-]([^none])([^\\"]+))`,
+		`(?<!data-hover-${type})( data-hover-${type}=[^-]([^none])([^\\"]+))`,
 		'g'
 	);
 	const svgStr = ` data-hover-${type}$1`;

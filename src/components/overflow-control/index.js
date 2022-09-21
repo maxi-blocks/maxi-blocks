@@ -33,7 +33,7 @@ const OverflowControl = props => {
 	const classes = classnames('maxi-overflow-control', className);
 
 	const axes = ['x', 'y'];
-	const [sync, changeSync] = useState(false);
+	const [sync, changeSync] = useState(true);
 
 	return (
 		<div className={classes}>

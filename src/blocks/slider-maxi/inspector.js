@@ -109,22 +109,7 @@ const Inspector = props => {
 													attributes,
 													[
 														'arrowIcon',
-														'arrowIconBackground',
-														'arrowIconBackgroundColor',
-														'arrowIconBackgroundGradient',
-														'arrowIconBorder',
-														'arrowIconBorderRadius',
-														'arrowIconBorderWidth',
-														'arrowIconPadding',
-														'arrowIconBoxShadow',
 														'arrowIconHover',
-														'arrowIconBackgroundHover',
-														'arrowIconBackgroundColorHover',
-														'arrowIconBackgroundGradientHover',
-														'arrowIconBorderHover',
-														'arrowIconBorderRadiusHover',
-														'arrowIconBorderWidthHover',
-														'arrowIconBoxShadowHover',
 													]
 												)}
 												onChange={obj =>
@@ -156,21 +141,6 @@ const Inspector = props => {
 														'dotIcon',
 														'dotIconHover',
 														'dotIconActive',
-														'dotIconBackground',
-														'dotIconBackgroundColor',
-														'dotIconBackgroundGradient',
-														'dotIconBorder',
-														'dotIconBorderRadius',
-														'dotIconBorderWidth',
-														'dotIconPadding',
-														'dotIconBoxShadow',
-														'dotIconBackgroundHover',
-														'dotIconBackgroundColorHover',
-														'dotIconBackgroundGradientHover',
-														'dotIconBorderHover',
-														'dotIconBorderRadiusHover',
-														'dotIconBorderWidthHover',
-														'dotIconBoxShadowHover',
 													]
 												)}
 												onChange={obj =>

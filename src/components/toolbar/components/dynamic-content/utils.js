@@ -124,6 +124,7 @@ export const idOptionByField = {
 	media: 'title',
 	users: 'name',
 	author: 'name',
+	categories: 'name',
 };
 
 // Fields that use id field

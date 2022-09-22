@@ -1,4 +1,8 @@
 const dynamicContent = {
+	'dc-error': {
+		type: 'string',
+		default: '',
+	},
 	'dc-status': {
 		type: 'boolean',
 		default: false,

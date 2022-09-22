@@ -176,6 +176,10 @@ export const descriptionOfErrors = {
 		'maxi-blocks'
 	),
 	object: __('Value is not an object.', 'maxi-blocks'),
+	author: __(
+		'Sorry, this author has no posts yet, please choose something else.',
+		'maxi-blocks'
+	),
 };
 
 export const postTypeDic = {

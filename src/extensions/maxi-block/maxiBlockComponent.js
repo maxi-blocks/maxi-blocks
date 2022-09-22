@@ -99,6 +99,7 @@ class MaxiBlockComponent extends Component {
 		// eslint-disable-next-line react/no-unused-class-component-methods
 		this.blockRef = createRef();
 		this.typography = getGroupAttributes(attributes, 'typography');
+		this.stylesWrapperId = `maxi-blocks__styles--${uniqueID}`;
 
 		// Init
 		const newUniqueID = this.uniqueIDChecker(uniqueID);
@@ -498,18 +499,15 @@ class MaxiBlockComponent extends Component {
 		dispatch('maxiBlocks/customData').updateCustomData(customData);
 
 		if (document.body.classList.contains('maxi-blocks--active')) {
-			let wrapper = document.querySelector(
-				`#maxi-blocks__styles--${uniqueID}`
-			);
+			let wrapper = document.querySelector(`#${this.stylesWrapperId}`);
 
 			if (!wrapper) {
 				wrapper = document.createElement('div');
-				wrapper.id = `maxi-blocks__styles--${uniqueID}`;
-				this.stylesWrapperId = `maxi-blocks__styles--${uniqueID}`;
+				wrapper.id = this.stylesWrapperId;
 				wrapper.classList.add('maxi-blocks__styles');
 				document.head.appendChild(wrapper);
 			}
-			console.log(this.stylesWrapperId);
+
 			render(
 				<StyleComponent
 					uniqueID={uniqueID}
@@ -556,7 +554,6 @@ class MaxiBlockComponent extends Component {
 	}
 
 	removeStyles() {
-		console.log(this.stylesWrapperId);
 		document.getElementById(this.stylesWrapperId).remove();
 	}
 }

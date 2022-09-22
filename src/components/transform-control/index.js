@@ -90,6 +90,8 @@ const TransformControl = props => {
 	const getInlineTargetAndPseudoElement = target => target.split('::');
 
 	const insertInlineStyles = () => {
+		if (!onChangeInline) return;
+
 		const { targetSelector } = latestTarget.current;
 
 		const transformObj = getTransformStyles(transformOptions, selectors);
@@ -110,15 +112,14 @@ const TransformControl = props => {
 		const [inlineTarget, pseudoElement] =
 			getInlineTargetAndPseudoElement(targetSelector);
 
-		onChangeInline &&
-			onChangeInline(
-				{
-					transform: transform ?? '',
-					'transform-origin': transformOrigin ?? '',
-				},
-				inlineTarget,
-				pseudoElement
-			);
+		onChangeInline(
+			{
+				transform: transform ?? '',
+				'transform-origin': transformOrigin ?? '',
+			},
+			inlineTarget,
+			pseudoElement
+		);
 	};
 
 	const onChangeTransform = obj => {

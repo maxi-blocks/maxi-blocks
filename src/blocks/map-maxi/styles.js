@@ -22,7 +22,7 @@ import {
 	getTypographyStyles,
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
-import { selectorsMap } from './custom-css';
+import data from './data';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -216,7 +216,7 @@ const getStyles = props => {
 					blockStyle,
 				}),
 			},
-			selectorsMap,
+			data,
 			props
 		),
 	};

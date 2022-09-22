@@ -89,8 +89,16 @@ const CustomCssControl = props => {
 	};
 
 	const generateComponent = (label, index, category) => {
-		const labelForCss = label.replaceAll(' ', '_');
-		const id = `maxi-additional__css-error-text__${labelForCss}`;
+		const labelForCss = label
+			.replaceAll(':', '')
+			.replaceAll("'", '')
+			.replaceAll('>', '')
+			.replaceAll('*', '')
+			.replaceAll('(', '')
+			.replaceAll(')', '')
+			.trim()
+			.replaceAll(' ', '_');
+		const id = `maxi-custom-css-control__error-text--${labelForCss}`;
 
 		const onChangeCssCode = (code, valid = true) => {
 			const newCustomCss = !isEmpty(value) ? cloneDeep(value) : {};
@@ -161,12 +169,12 @@ const CustomCssControl = props => {
 					label,
 					'maxi-blocks'
 				)}`}
-				className={`maxi-additional__css maxi-additional__css-${labelForCss}`}
+				className={`maxi-custom-css-control__group maxi-custom-css-control__group--${labelForCss}`}
 			>
 				{!isEmpty(value?.[category]?.[index]) && (
 					<Button
 						aria-label={__('Validate', 'maxi-blocks')}
-						className='maxi-default-styles-control__button'
+						className={`maxi-custom-css-control__validate-button maxi-custom-css-control__validate-button--${labelForCss}`}
 						onClick={el => {
 							validateCss(
 								el?.target?.nextSibling?.getElementsByTagName(
@@ -180,6 +188,7 @@ const CustomCssControl = props => {
 				)}
 				<CodeEditor
 					language='css'
+					className={`maxi-custom-css-control__code-editor maxi-custom-css-control__code-editor--${labelForCss}`}
 					value={getValue()}
 					onChange={textarea => {
 						if (typingTimeout) clearTimeout(typingTimeout);
@@ -192,14 +201,14 @@ const CustomCssControl = props => {
 						validateCss(textarea?.target?.value);
 					}}
 				/>
-				<div className='maxi-additional__css-error' id={id} />
+				<div className='maxi-custom-css-control__error' id={id} />
 			</BaseControl>
 		);
 	};
 
 	return (
 		<ResponsiveTabsControl
-			className='maxi-typography-control__text-options-tabs'
+			className='maxi-custom-css-control'
 			breakpoint={breakpoint}
 			target='custom-css'
 		>

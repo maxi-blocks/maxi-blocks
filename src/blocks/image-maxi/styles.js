@@ -28,8 +28,7 @@ import {
 	getFlexStyles,
 	getAspectRatio,
 } from '../../extensions/styles/helpers';
-import { selectorsImage } from './custom-css';
-import transitionObj from './transitionObj';
+import data from './data';
 
 /**
  * External dependencies
@@ -441,10 +440,19 @@ const getStyles = props => {
 					props,
 					true
 				),
-				' .maxi-image-block-wrapper > svg:first-child':
-					getImageShapeObject('svg', props),
-				' .maxi-image-block-wrapper > svg:first-child pattern image':
-					getImageShapeObject('image', props),
+				// add the same styles to the hover to avoid conflict with transform styles
+				// which are also applied to the hover state
+				...[
+					' .maxi-image-block__image',
+					' .maxi-image-block__image:hover',
+				].reduce((acc, selector) => {
+					acc[selector] = getImageShapeObject('svg', props);
+					return acc;
+				}, {}),
+				' .maxi-image-block__image pattern image': getImageShapeObject(
+					'image',
+					props
+				),
 				' figcaption': getFigcaptionObject(props),
 				' .maxi-hover-details .maxi-hover-details__content h4':
 					getHoverEffectTitleTextObject(props),
@@ -509,9 +517,8 @@ const getStyles = props => {
 					props.blockStyle
 				),
 			},
-			selectorsImage,
-			props,
-			transitionObj
+			data,
+			props
 		),
 	};
 

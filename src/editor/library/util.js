@@ -122,7 +122,7 @@ export const imageUploader = async (imageSrc, usePlaceholderImage) => {
 	return null;
 };
 
-export const svgAttributesReplacer = (blockStyle, svgCode, target = 'svg') => {
+export const svgAttributesReplacer = (svgCode, target = 'svg') => {
 	const fillRegExp = /fill:[^n]+?(?=})/g;
 	const fillStr = 'fill:#ff4a17';
 

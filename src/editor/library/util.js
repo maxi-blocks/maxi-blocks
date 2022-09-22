@@ -259,7 +259,7 @@ export const onRequestInsertPattern = (
 
 		const allImagesLinks = parsedContent.match(allImagesRegexp);
 
-		const allImagesLinksParsed = allImagesLinks?.map(image => {
+		allImagesLinks?.forEach(image => {
 			const parsed = image.replace(/\\/g, '');
 
 			const idRegexp = new RegExp('(?<=mediaID":)(.*?)(?=,)', 'g');
@@ -269,11 +269,9 @@ export const onRequestInsertPattern = (
 			const urlRegexp = new RegExp('(?<=mediaURL":")(.*?)(?=",)', 'g');
 			const url = parsed.match(urlRegexp);
 			imagesLinks.push(...url);
-
-			return null;
 		});
 
-		if (!isEmpty(allImagesLinksParsed)) {
+		if (!isEmpty(imagesLinks) && !isEmpty(imagesIds)) {
 			let tempContent = parsedContent;
 			const imagesLinksUniq = uniq(imagesLinks);
 			const imagesIdsUniq = uniq(imagesIds);

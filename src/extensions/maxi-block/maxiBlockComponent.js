@@ -245,6 +245,7 @@ class MaxiBlockComponent extends Component {
 		) {
 			const obj = this.getStylesObject;
 			styleResolver(obj, true);
+			this.removeStyles();
 		}
 
 		dispatch('maxiBlocks/customData').removeCustomData(
@@ -504,10 +505,11 @@ class MaxiBlockComponent extends Component {
 			if (!wrapper) {
 				wrapper = document.createElement('div');
 				wrapper.id = `maxi-blocks__styles--${uniqueID}`;
+				this.stylesWrapperId = `maxi-blocks__styles--${uniqueID}`;
 				wrapper.classList.add('maxi-blocks__styles');
 				document.head.appendChild(wrapper);
 			}
-
+			console.log(this.stylesWrapperId);
 			render(
 				<StyleComponent
 					uniqueID={uniqueID}
@@ -551,6 +553,11 @@ class MaxiBlockComponent extends Component {
 				}
 			}
 		}
+	}
+
+	removeStyles() {
+		console.log(this.stylesWrapperId);
+		document.getElementById(this.stylesWrapperId).remove();
 	}
 }
 

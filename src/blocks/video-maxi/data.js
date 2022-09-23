@@ -189,19 +189,19 @@ const transition = {
 			title: 'Border',
 			target: [overlayClass, videoClass],
 			property: 'border',
-			prefix,
+			hoverStatus: `${prefix}border-status-hover`,
 		},
 		'box shadow': {
 			title: 'Box shadow',
 			target: [overlayClass, videoClass],
 			property: 'box-shadow',
-			prefix,
+			hoverStatus: `${prefix}box-shadow-status-hover`,
 		},
 		'overlay colour': {
 			title: 'Overlay colour',
 			target: `${overlayClass}-background`,
-			hoverProp: 'overlay-background-status-hover',
 			property: 'background-color',
+			hoverProp: 'overlay-background-status-hover',
 		},
 		...createIconTransitions({
 			target: ' .maxi-video-block__play-button',

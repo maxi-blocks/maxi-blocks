@@ -17,6 +17,7 @@ import {
 	getGroupAttributes,
 	getDefaultAttribute,
 } from '../../extensions/styles';
+import * as blocksData from '../../blocks/data';
 
 /**
  * External dependencies
@@ -34,6 +35,7 @@ const TransitionControlWrapper = props => {
 		transition,
 		type,
 		isOneType,
+		transitionData,
 	} = props;
 	const { 'transition-change-all': transitionChangeAll } = attributes;
 
@@ -50,6 +52,8 @@ const TransitionControlWrapper = props => {
 		defaultTransition[`${prop}-${deviceType}`];
 
 	const onChangeTransition = (obj = {}) => {
+		if (!transitionData) return null;
+
 		let newObj = {
 			transition: {},
 		};
@@ -62,7 +66,7 @@ const TransitionControlWrapper = props => {
 					newObj.transition[t][key] = {
 						...attributes.transition[t][key],
 						...attributes.transition[type][selected],
-						hoverProp: attributes.transition[t][key].hoverProp,
+						hoverProp: transitionData[t][key].hoverProp,
 						...obj,
 					};
 				});
@@ -159,7 +163,7 @@ const transition = ({
 	props,
 	label = __('Hover transition', 'maxi-blocks'),
 }) => {
-	const { attributes, deviceType, maxiSetAttributes } = props;
+	const { attributes, deviceType, maxiSetAttributes, name } = props;
 	const {
 		transition: rawTransition,
 		'transition-change-all': transitionChangeAll,
@@ -167,12 +171,14 @@ const transition = ({
 
 	const transition = cloneDeep(rawTransition);
 
+	const transitionData = Object.values(blocksData).find(
+		({ name: blockName }) => blockName === name.replace('maxi-blocks/', '')
+	)?.transition;
+
 	Object.keys(transition).forEach(type => {
 		Object.keys(transition[type]).forEach(key => {
-			if (
-				transition[type][key]?.hoverProp &&
-				!attributes[transition[type][key].hoverProp]
-			)
+			const hoverProp = transitionData?.[type]?.[key]?.hoverProp;
+			if (hoverProp && !attributes[hoverProp])
 				delete transition[type][key];
 		});
 	});
@@ -211,6 +217,7 @@ const transition = ({
 								<TransitionControlWrapper
 									type={type}
 									transition={transition}
+									transitionData={transitionData}
 									{...props}
 								/>
 							),
@@ -220,6 +227,7 @@ const transition = ({
 					<TransitionControlWrapper
 						type={availableType}
 						transition={transition}
+						transitionData={transitionData}
 						isOneType
 						{...props}
 					/>

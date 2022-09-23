@@ -22,12 +22,13 @@ import {
 	getGroupAttributes,
 } from '../../extensions/styles';
 import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
+import getHoverStatus from './getHoverStatus';
 import * as blocksData from '../../blocks/data';
 
 /**
  * External dependencies
  */
-import { cloneDeep, isEmpty, merge, isNil } from 'lodash';
+import { cloneDeep, isEmpty, isNil, merge } from 'lodash';
 
 /**
  * Styles
@@ -148,14 +149,23 @@ const RelationControl = props => {
 				'hoverStatus' in item.effects
 			) ||
 			item.effects.hoverStatus !==
-				blockAttributes?.[selectedSettingsObj.hoverProp]
+				getHoverStatus(selectedSettingsObj.hoverProp, blockAttributes)
 		) {
-			const { transitionTarget, hoverProp } = selectedSettingsObj;
+			const { transitionTarget: rawTransitionTarget, hoverProp } =
+				selectedSettingsObj;
+			const transitionTarget =
+				item.settings === 'Transform'
+					? Object.keys(item.css)
+					: rawTransitionTarget;
 
 			let hoverStatus = null;
 
 			if (!('hoverStatus' in item.effects))
-				hoverStatus = blockAttributes?.[hoverProp];
+				hoverStatus = getHoverStatus(
+					hoverProp,
+					blockAttributes,
+					item.attributes
+				);
 
 			if (transitionTarget)
 				onChangeRelation(relations, item.id, {
@@ -273,6 +283,12 @@ const RelationControl = props => {
 				onChangeRelation(relations, item.id, {
 					attributes: newAttributesObj,
 					css: styles,
+					...(item.settings === 'Transform' && {
+						effects: {
+							...item.effects,
+							transitionTarget: Object.keys(styles),
+						},
+					}),
 				});
 			},
 			prefix,
@@ -472,11 +488,16 @@ const RelationControl = props => {
 															item.uniqueID
 														);
 
+													const blockAttributes =
+														getBlock(
+															clientId
+														)?.attributes;
+
 													const hoverStatus =
-														getBlock(clientId)
-															?.attributes?.[
-															hoverProp
-														];
+														getHoverStatus(
+															hoverProp,
+															blockAttributes
+														);
 
 													const getTarget = () => {
 														const clientId =

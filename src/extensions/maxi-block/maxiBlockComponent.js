@@ -34,6 +34,7 @@ import getBreakpoints from '../styles/helpers/getBreakpoints';
 import getIsUniqueIDRepeated from './getIsUniqueIDRepeated';
 import { loadFonts, getAllFonts } from '../text/fonts';
 import uniqueIDGenerator from '../attributes/uniqueIDGenerator';
+import getHoverStatus from '../../components/relation-control/getHoverStatus';
 import * as blocksData from '../../blocks/data';
 
 /**
@@ -394,6 +395,7 @@ class MaxiBlockComponent extends Component {
 					if (uniqueID !== blockUniqueID && !isEmpty(relations)) {
 						const newRelations = relations.map(relation => {
 							const {
+								attributes: relationAttributes,
 								settings: settingName,
 								uniqueID: relationUniqueID,
 							} = relation;
@@ -423,7 +425,11 @@ class MaxiBlockComponent extends Component {
 								...relation,
 								effects: {
 									...effects,
-									hoverStatus: blockAttributes[hoverProp],
+									hoverStatus: getHoverStatus(
+										hoverProp,
+										blockAttributes,
+										relationAttributes
+									),
 								},
 							};
 						});
@@ -453,6 +459,13 @@ class MaxiBlockComponent extends Component {
 	}
 
 	removeUnmountedBlockFromRelations(uniqueID, blocksToCheck) {
+		if (
+			select('core/edit-post').getEditorMode() !== 'visual' ||
+			select('core/edit-post').__experimentalGetPreviewDeviceType() !==
+				this.currentBreakpoint
+		)
+			return;
+
 		blocksToCheck.forEach(({ clientId, attributes, innerBlocks }) => {
 			const { relations, uniqueID: blockUniqueID } = attributes;
 

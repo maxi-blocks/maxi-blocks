@@ -347,12 +347,9 @@ class MaxiSlider {
 
 	onHover(isEnd) {
 		this.isHovering = !isEnd;
-
-		if (isEnd) {
-			this._wrapper.classList.remove('maxi-slider-hovered');
-		} else {
-			this._wrapper.classList.add('maxi-slider-hovered');
-		}
+		this._wrapper.classList[isEnd ? 'remove' : 'add'](
+			'maxi-slider-hovered'
+		);
 	}
 
 	loop() {

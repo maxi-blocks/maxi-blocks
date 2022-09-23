@@ -350,9 +350,7 @@ class MaxiBlockComponent extends Component {
 
 			this.props.attributes.uniqueID = newUniqueID;
 
-			const label = this.props.attributes.uniqueID.replace('-maxi-', '_');
-			this.props.attributes.customLabel =
-				label.charAt(0).toUpperCase() + label.slice(1);
+			this.props.attributes.customLabel = this.props.attributes.customLabel + '_' + this.props.attributes.uniqueID.split('-maxi-')[1];
 
 			return newUniqueID;
 		}
@@ -462,7 +460,7 @@ class MaxiBlockComponent extends Component {
 		if (
 			select('core/edit-post').getEditorMode() !== 'visual' ||
 			select('core/edit-post').__experimentalGetPreviewDeviceType() !==
-				this.currentBreakpoint
+			this.currentBreakpoint
 		)
 			return;
 

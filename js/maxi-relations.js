@@ -1,540 +1,7 @@
+/* eslint-disable no-console */
 /* eslint-disable class-methods-use-this */
-// Relations
 
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-
-const relations = () => {
-	const getCssResponsiveObj = (css, effects) => {
-		const getCssObjForEachTarget = (css, effects) => {
-			let stylesObj = {};
-			let effectsObj = {};
-
-			Object.entries(css).forEach(([breakpoint, obj]) => {
-				if (
-					breakpoints.includes(breakpoint) &&
-					(window.innerWidth <= obj.breakpoint || !obj.breakpoint)
-				) {
-					stylesObj = {
-						...stylesObj,
-						...obj.styles,
-					};
-
-					const getLastEffectsBreakpointAttribute = target =>
-						effects[`${target}-${breakpoint}`] !== undefined
-							? {
-									[target]:
-										effects[`${target}-${breakpoint}`],
-							  }
-							: {};
-
-					effectsObj = {
-						...effectsObj,
-						...getLastEffectsBreakpointAttribute(
-							'transition-status'
-						),
-						...getLastEffectsBreakpointAttribute(
-							'transition-duration'
-						),
-						...getLastEffectsBreakpointAttribute(
-							'transition-delay'
-						),
-						...getLastEffectsBreakpointAttribute('easing'),
-					};
-				} else if (!obj.breakpoint) {
-					const { stylesObj: rawStyles, effectsObj: rawEffects } =
-						getCssObjForEachTarget(obj, effects);
-
-					stylesObj = {
-						...stylesObj,
-						[breakpoint]: rawStyles,
-						isTargets: true,
-					};
-
-					effectsObj = {
-						...effectsObj,
-						...rawEffects,
-					};
-				}
-			});
-
-			return { stylesObj, effectsObj };
-		};
-
-		const { stylesObj, effectsObj } = getCssObjForEachTarget(css, effects);
-
-		return {
-			stylesObj,
-			effectsObj,
-		};
-	};
-
-	const escapeRegExp = string => {
-		return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-	};
-
-	const getAvoidHover = (hoverStatus, targetEl, target, transitionTarget) => {
-		if (
-			!hoverStatus ||
-			!targetEl ||
-			(!transitionTarget?.length && transitionTarget !== '')
-		)
-			return;
-
-		const transitionTargets =
-			typeof transitionTarget === 'string'
-				? [transitionTarget]
-				: transitionTarget;
-
-		return !!Array.from(
-			document.querySelectorAll(
-				transitionTargets.map(currentTarget =>
-					currentTarget === '' ? target : currentTarget
-				)
-			)
-		).find(
-			element =>
-				targetEl.closest('.maxi-block').contains(element) &&
-				targetEl.contains(element)
-		);
-	};
-
-	const toggleInlineStyles = ({
-		stylesObj,
-		target,
-		remove = false,
-		hoverStatus,
-		transitionTarget,
-	}) => {
-		if (stylesObj.isTargets) {
-			Object.entries(stylesObj).forEach(([targetSelector, styles]) => {
-				targetSelector !== 'isTargets' &&
-					toggleInlineStyles({
-						stylesObj: styles,
-						target: `${target}${
-							targetSelector !== '' ? ` ${targetSelector}` : ''
-						}`,
-						remove,
-						hoverStatus,
-						transitionTarget,
-					});
-			});
-		} else {
-			const interactionStyle = document.querySelector(
-				'#maxi-blocks-interaction-css'
-			);
-
-			const targetEl = document.querySelector(target);
-
-			// Checks if the element needs special CSS to be avoided in case the element is hovered
-			const avoidHover = getAvoidHover(
-				hoverStatus,
-				targetEl,
-				target,
-				transitionTarget
-			);
-
-			const isSVG = target.includes('svg-icon-maxi');
-			const avoidHoverString = avoidHover ? ':not(:hover)' : '';
-
-			const selector = `body.maxi-blocks--active ${
-				isSVG
-					? target.replace(
-							'maxi-svg-icon-block__icon',
-							match => `${match}${avoidHoverString}`
-					  )
-					: `${target}${avoidHoverString}`
-			} {`.replace(/\s{2,}/g, ' ');
-
-			Object.entries(stylesObj).forEach(([key, value]) => {
-				if (remove) {
-					const styleRegExp = new RegExp(
-						`(${escapeRegExp(
-							selector.replace(
-								'data-maxi-relations="false"',
-								'data-maxi-relations="true"'
-							)
-						)}.*?) ${key}:.*?;`
-					);
-
-					interactionStyle.textContent =
-						interactionStyle.textContent.replace(styleRegExp, '$1');
-				} else {
-					const selectorRegExp = new RegExp(
-						`(${escapeRegExp(selector)})`
-					);
-					if (!interactionStyle.textContent.match(selectorRegExp))
-						interactionStyle.textContent += `${selector}}`;
-
-					interactionStyle.textContent =
-						interactionStyle.textContent.replace(
-							selectorRegExp,
-							`$1 ${key}: ${value};`
-						);
-				}
-			});
-		}
-	};
-
-	const toggleTransition = ({
-		target,
-		stylesObj,
-		transitionTarget,
-		effectsObj,
-		isIcon = false,
-		remove = false,
-		hoverStatus = false,
-	}) => {
-		const isSVG = target.includes('svg-icon-maxi');
-		const targets = stylesObj?.isTargets ? Object.keys(stylesObj) : null;
-
-		if (targets) {
-			if (!isSVG)
-				targets.forEach(targetSelector => {
-					targetSelector !== 'isTargets' &&
-						toggleTransition({
-							target: `${target} ${targetSelector}`,
-							stylesObj: stylesObj[targetSelector],
-							transitionTarget,
-							effectsObj,
-							isIcon,
-							remove,
-							hoverStatus,
-						});
-				});
-			else {
-				const targetEl = document.querySelector(target);
-
-				// Checks if the element needs special CSS to be avoided in case the element is hovered
-				const avoidHover = getAvoidHover(
-					hoverStatus,
-					targetEl,
-					target,
-					transitionTarget
-				);
-				const avoidHoverString = avoidHover ? ':not(:hover)' : '';
-
-				const transitionTargets =
-					typeof transitionTarget === 'string'
-						? [transitionTarget]
-						: transitionTarget;
-
-				transitionTargets?.forEach(currentTransitionTarget => {
-					const svgTarget = `${target} ${currentTransitionTarget.replace(
-						'maxi-svg-icon-block__icon',
-						match => `${match}${avoidHoverString}`
-					)}`;
-
-					toggleTransition({
-						target: svgTarget,
-						transitionTarget: currentTransitionTarget,
-						effectsObj,
-						isIcon: isIcon || isSVG,
-						remove,
-						hoverStatus,
-					});
-				});
-			}
-		} else {
-			const interactionStyle = document.querySelector(
-				'#maxi-blocks-interaction-css'
-			);
-			const selector = `body.maxi-blocks--active ${target} {`.replace(
-				/\s{2,}/g,
-				' '
-			);
-			const transitionString = getTransitionString(
-				stylesObj,
-				effectsObj,
-				isIcon
-			);
-
-			if (remove) {
-				const styleRegExp = new RegExp(
-					`(${escapeRegExp(selector)}.*?) transition:.*?;`
-				);
-				interactionStyle.textContent =
-					interactionStyle.textContent.replace(styleRegExp, '$1');
-			} else {
-				const selectorRegExp = new RegExp(
-					`(${escapeRegExp(selector)})`
-				);
-				if (!interactionStyle.textContent.match(selectorRegExp))
-					interactionStyle.textContent += `${selector}}`;
-
-				const transitionExistsRegExp = new RegExp(
-					`(${escapeRegExp(selector)}[^{]*transition:)`
-				);
-				if (!transitionString) return;
-
-				if (
-					interactionStyle.textContent.match(transitionExistsRegExp)
-				) {
-					!isIcon &&
-						(interactionStyle.textContent =
-							interactionStyle.textContent.replace(
-								transitionExistsRegExp,
-								`$1 ${transitionString}`
-							));
-				} else {
-					interactionStyle.textContent =
-						interactionStyle.textContent.replace(
-							selectorRegExp,
-							`$1 transition: ${transitionString.replace(
-								/, $/,
-								''
-							)};`
-						);
-				}
-			}
-		}
-	};
-
-	const getTransitionString = (styleObj, effectsObj, isIcon) => {
-		if (isIcon)
-			return effectsObj['transition-status']
-				? `all ${effectsObj['transition-duration']}s ${effectsObj['transition-delay']}s ${effectsObj.easing}`
-				: 'all 0s 0s, ';
-		return Object.keys(styleObj).reduce(
-			(transitionString, style) =>
-				effectsObj['transition-status']
-					? `${transitionString}${style} ${effectsObj['transition-duration']}s ${effectsObj['transition-delay']}s ${effectsObj.easing}, `
-					: `${transitionString}${style} 0s 0s, `,
-			''
-		);
-	};
-
-	maxiRelations[0]?.forEach(item => {
-		if (!item?.uniqueID || item?.css?.length === 0) return;
-
-		const triggerEl = document.querySelector(`.${item.trigger}`);
-		const target = `#${item.uniqueID} ${item.target ?? ''}`;
-		const targetEl = document.querySelector(target);
-
-		if (!triggerEl || !targetEl) return;
-
-		let timeout;
-		let contentTimeout;
-		let dataTimeout;
-
-		let isNestedHoverTransition = false;
-
-		switch (item.action) {
-			case 'hover':
-				{
-					triggerEl.addEventListener('mouseenter', () => {
-						clearTimeout(timeout);
-						clearTimeout(dataTimeout);
-
-						targetEl.setAttribute('data-maxi-relations', 'true');
-
-						const { stylesObj, effectsObj } = getCssResponsiveObj(
-							item.css,
-							item.effects
-						);
-
-						const { hoverStatus, transitionTarget } = item.effects;
-
-						/**
-						 * In case the target element is nested inside the trigger element, we need to ensure the original hover transition
-						 * works correctly on hovering. It means, we need to remove the transitions added by the trigger when hovering the target
-						 * to ensure it has the selected effects
-						 */
-						if (hoverStatus && triggerEl.contains(targetEl)) {
-							const transitionTargets =
-								typeof transitionTarget === 'string'
-									? [transitionTarget]
-									: transitionTarget;
-
-							transitionTargets.forEach(rawTransitionTarget => {
-								// This part is not really solid, but it works for now
-								const transitionTarget =
-									rawTransitionTarget?.endsWith('> *')
-										? rawTransitionTarget.slice(0, -3)
-										: rawTransitionTarget;
-
-								let transitionTargetEls =
-									transitionTarget &&
-									targetEl.querySelectorAll(transitionTarget);
-
-								if (transitionTargetEls?.length === 0)
-									transitionTargetEls = [targetEl];
-
-								Array.from(transitionTargetEls).forEach(
-									transitionTargetEl => {
-										transitionTargetEl.addEventListener(
-											'mouseenter',
-											() => {
-												isNestedHoverTransition = true;
-												clearTimeout(contentTimeout);
-
-												// Remove transitions to let the original ones be applied
-												toggleTransition({
-													target: `${target.trim()}[data-maxi-relations="true"]`,
-													stylesObj,
-													transitionTarget,
-													effectsObj,
-													remove: true,
-													hoverStatus,
-												});
-											}
-										);
-
-										transitionTargetEl.addEventListener(
-											'mouseleave',
-											() => {
-												const transitionDuration =
-													[
-														'transition-duration',
-														'transition-delay',
-													].reduce(
-														(sum, prop) =>
-															sum +
-															parseFloat(
-																getComputedStyle(
-																	transitionTargetEl
-																)
-																	.getPropertyValue(
-																		prop
-																	)
-																	.replace(
-																		's',
-																		''
-																	)
-															),
-														0
-													) * 1000;
-
-												contentTimeout = setTimeout(
-													() => {
-														// Set the transitions back waiting the original to be done
-														toggleTransition({
-															target: `${target.trim()}[data-maxi-relations="true"]`,
-															stylesObj,
-															transitionTarget,
-															effectsObj,
-															isIcon:
-																item.settings ===
-																	'Icon colour' ||
-																item.settings ===
-																	'Button icon',
-															hoverStatus,
-														});
-														isNestedHoverTransition = false;
-													},
-													transitionDuration
-												);
-											}
-										);
-									}
-								);
-							});
-						}
-
-						!isNestedHoverTransition &&
-							toggleTransition({
-								target: `${target.trim()}[data-maxi-relations="true"]`,
-								stylesObj,
-								transitionTarget,
-								effectsObj,
-								isIcon:
-									item.settings === 'Icon colour' ||
-									item.settings === 'Button icon',
-								hoverStatus,
-							});
-
-						toggleInlineStyles({
-							stylesObj,
-							target: `${target.trim()}[data-maxi-relations="true"]`,
-							hoverStatus,
-							transitionTarget,
-						});
-					});
-
-					triggerEl.addEventListener('mouseleave', () => {
-						const { stylesObj, effectsObj } = getCssResponsiveObj(
-							item.css,
-							item.effects
-						);
-						const { hoverStatus, transitionTarget } = item.effects;
-
-						if (
-							triggerEl.contains(targetEl) &&
-							!isNestedHoverTransition
-						)
-							toggleTransition({
-								target: `${target.trim()}[data-maxi-relations="true"]`,
-								stylesObj,
-								transitionTarget,
-								effectsObj,
-								isIcon:
-									item.settings === 'Icon colour' ||
-									item.settings === 'Button icon',
-								hoverStatus,
-							});
-
-						dataTimeout = setTimeout(() => {
-							targetEl.setAttribute(
-								'data-maxi-relations',
-								'false'
-							);
-						}, item.effects['transition-duration-general'] * 1000 + 1000);
-
-						toggleInlineStyles({
-							stylesObj,
-							target: `${target.trim()}[data-maxi-relations="true"]`,
-							remove: true,
-							hoverStatus,
-							transitionTarget,
-						});
-
-						timeout = setTimeout(() => {
-							// Removing transition after transition-duration + 1s to make sure it's done
-							toggleTransition({
-								target: `${target.trim()}[data-maxi-relations="true"]`,
-								stylesObj,
-								transitionTarget,
-								effectsObj,
-								remove: true,
-								hoverStatus,
-							});
-						}, item.effects['transition-duration-general'] * 1000 + 1000);
-					});
-				}
-				break;
-			case 'click':
-				{
-					triggerEl.addEventListener('click', () => {
-						targetEl.setAttribute('data-maxi-relations', 'true');
-
-						const { stylesObj, effectsObj } = getCssResponsiveObj(
-							item.css,
-							item.effects
-						);
-
-						toggleTransition({
-							target,
-							stylesObj,
-							effectsObj,
-							isIcon:
-								item.settings === 'Icon colour' ||
-								item.settings === 'Button icon',
-						});
-
-						const { hoverStatus, transitionTarget } = item.effects;
-
-						toggleInlineStyles({
-							stylesObj,
-							target: `${target.trim()}[data-maxi-relations="true"]`,
-							hoverStatus,
-							transitionTarget,
-						});
-					});
-				}
-				break;
-		}
-	});
-};
-
+// Relations (IB)
 class Relation {
 	constructor(item) {
 		this.uniqueID = item?.uniqueID;
@@ -544,84 +11,97 @@ class Relation {
 
 		this.trigger = item.trigger;
 		this.triggerEl = document.querySelector(`.${this.trigger}`);
+		this.blockTargetEl = document.querySelector(`#${this.uniqueID}`);
 		this.target = `#${item.uniqueID} ${item.target ?? ''}`;
 		this.targetEl = document.querySelector(this.target);
+		this.dataTarget = `#${item.uniqueID}[data-maxi-relations="true"]`;
 
 		if (!this.triggerEl || !this.targetEl) return;
 
 		this.action = item.action;
 		this.effects = item.effects;
 
-		this.stylesObj;
-		this.effectsObj;
-		this.generateCssResponsiveObj(this.css, this.effects);
-
-		this.stylesString = '';
-		this.generateStyles();
-
-		this.transitionString = '';
-		this.generateTransitions();
-
-		this.stylesWrapperEl;
-		this.stylesEl;
-		this.generateStylesEls();
+		this.stylesObj = null;
+		this.effectsObj = null;
+		this.generateCssResponsiveObj();
 
 		this.hoverStatus = this.effects.hoverStatus;
+		this.isContained = this.triggerEl.contains(this.targetEl);
+		this.isHoveredContained = this.hoverStatus && this.isContained;
+
+		this.transitionTrigger = this.effects.transitionTrigger;
+		this.transitionTriggerEl = this.transitionTrigger
+			? this.blockTargetEl.querySelector(this.transitionTrigger)
+			: this.targetEl;
 		this.transitionTarget =
 			typeof this.effects.transitionTarget === 'string'
 				? [this.effects.transitionTarget]
 				: this.effects.transitionTarget;
-		this.isContained =
-			this.hoverStatus && this.triggerEl.contains(this.targetEl);
+		this.transitionString = '';
+		this.generateTransitions();
+
+		this.stylesString = '';
+		this.generateStyles();
+
+		this.stylesEl = null;
+		this.transitionEl = null;
+		this.generateStylesEls();
 
 		this.isIcon =
 			item.settings === 'Icon colour' || item.settings === 'Button icon';
-		this.timeout;
-		this.contentTimeout;
-		this.dataTimeout;
-
 		this.isNestedHoverTransition = false;
 		this.isSVG = this.target.includes('svg-icon-maxi');
+
+		// Prevents removing the IB transitions before they end when mouse leave the IB trigger
+		this.transitionTimeout = null;
+		// Prevents IB transitions overwrite native hover ones (when is contained) when mouse
+		// leave the hover transition trigger
+		this.contentTimeout = null;
 
 		this.init();
 	}
 
-	// Nests the styles of each target el, that way is easier to deal with multiple
-	// relations targeting same element
+	/**
+	 * Creates a single style wrapper element under the '#maxi-blocks-inline-css' to
+	 * ensure it overwrites the default block styles. Also allows nesting more than one
+	 * style element that can deal easier with more than one interaction coming from
+	 * different triggers.
+	 */
 	generateStylesEls() {
-		if (!this.stylesWrapperEl || !this.stylesEl)
-			if (document.querySelector(`#relations--${this.uniqueID}`)) {
-				this.stylesWrapperEl = document.querySelector(
-					`#relations--${this.uniqueID}`
-				);
-				this.stylesEl = this.stylesWrapperEl.querySelector('styles');
-			} else {
-				this.stylesWrapperEl = document.createElement('div');
-				this.stylesWrapperEl.id = `relations--${this.uniqueID}`;
+		this.stylesEl = document.createElement('style');
+		this.stylesEl.id = `relations--${this.uniqueID}-styles`;
+		this.stylesEl.innerText = this.stylesString;
 
-				this.stylesEl = document.createElement('style');
-
-				this.stylesWrapperEl.append(this.stylesEl);
-
-				const inlineStylesEl = document.querySelector(
-					'#maxi-blocks-inline-css'
-				);
-
-				inlineStylesEl.parentNode.insertBefore(
-					this.stylesWrapperEl,
-					inlineStylesEl.nextSibling
-				);
-			}
+		this.transitionEl = document.createElement('style');
+		this.transitionEl.id = `relations--${this.uniqueID}-transitions`;
+		this.transitionEl.innerText = this.transitionString;
 	}
 
-	generateCssResponsiveObj(css, effects) {
+	addStyleEl(styleEl) {
+		const inlineStylesEl = document.querySelector(
+			'#maxi-blocks-inline-css'
+		);
+
+		inlineStylesEl.parentNode.insertBefore(
+			styleEl,
+			inlineStylesEl.nextSibling
+		);
+	}
+
+	/**
+	 * Generates a clean CSS and Effect object to be used to generate styles
+	 * and transition strings.
+	 */
+	generateCssResponsiveObj() {
 		const getCssObjForEachTarget = (css, effects) => {
 			let stylesObj = {};
 			let effectsObj = {};
 
 			Object.entries(css).forEach(([breakpoint, obj]) => {
 				if (
-					breakpoints.includes(breakpoint) &&
+					['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].includes(
+						breakpoint
+					) &&
 					(window.innerWidth <= obj.breakpoint || !obj.breakpoint)
 				) {
 					stylesObj = {
@@ -670,7 +150,10 @@ class Relation {
 			return { stylesObj, effectsObj };
 		};
 
-		const { stylesObj, effectsObj } = getCssObjForEachTarget(css, effects);
+		const { stylesObj, effectsObj } = getCssObjForEachTarget(
+			this.css,
+			this.effects
+		);
 
 		this.stylesObj = stylesObj;
 		this.effectsObj = effectsObj;
@@ -681,23 +164,39 @@ class Relation {
 	}
 
 	getAvoidHover(transitionTarget) {
-		return (
-			this.hoverStatus &&
-			this.targetEl &&
-			this.targetEl.contains(
-				this.targetEl
-					.closest('.maxi-block')
-					.querySelector(transitionTarget)
+		if (!this.hoverStatus || !this.targetEl) return;
+
+		const transitionTargets =
+			typeof transitionTarget === 'string'
+				? [transitionTarget]
+				: transitionTarget;
+
+		// eslint-disable-next-line consistent-return
+		return !!Array.from(
+			document.querySelectorAll(
+				transitionTargets.map(currentTarget =>
+					currentTarget === '' ? this.target : currentTarget
+				)
 			)
+		).find(
+			element =>
+				this.targetEl.closest('.maxi-block').contains(element) &&
+				this.targetEl.contains(element)
 		);
 	}
 
-	generateStyles(transitionTarget) {
-		const stylesTarget = `${this.target.trim()}[data-maxi-relations="true"]`;
+	addDataAttrToBlock() {
+		this.blockTargetEl.setAttribute('data-maxi-relations', 'true');
+	}
 
+	removeAddAttrToBlock() {
+		this.blockTargetEl.setAttribute('data-maxi-relations', 'false');
+	}
+
+	generateStyles() {
 		const getStylesLine = (stylesObj, target) => {
 			// Checks if the element needs special CSS to be avoided in case the element is hovered
-			const avoidHover = this.getAvoidHover(transitionTarget);
+			const avoidHover = this.getAvoidHover(this.transitionTarget[0]); // !!!
 
 			const avoidHoverString = avoidHover ? ':not(:hover)' : '';
 
@@ -707,7 +206,7 @@ class Relation {
 							'maxi-svg-icon-block__icon',
 							match => `${match}${avoidHoverString}`
 					  )
-					: `${this.target}${avoidHoverString}`
+					: `${target}${avoidHoverString}`
 			} {`.replace(/\s{2,}/g, ' ');
 
 			Object.entries(stylesObj).forEach(([key, value]) => {
@@ -725,28 +224,30 @@ class Relation {
 		};
 
 		if (this.stylesObj.isTargets)
-			this.stylesObj.forEach(
+			Object.keys(this.stylesObj).forEach(
 				([targetSelector, styles]) =>
 					targetSelector !== 'isTargets' &&
-					getStylesLine(styles, `${stylesTarget} ${targetSelector}`)
+					getStylesLine(
+						[styles],
+						`${this.dataTarget} ${targetSelector}`
+					)
 			);
-		else getStylesLine(this.stylesObj, stylesTarget);
+		else
+			getStylesLine(
+				this.stylesObj,
+				`${this.dataTarget} ${this.transitionTarget[0]}`
+			);
 	}
 
 	addStyles() {
-		this.stylesEl.innerText += this.stylesString;
+		this.addStyleEl(this.stylesEl);
 	}
 
 	removeStyles() {
-		this.stylesEl.innerText = this.stylesEl.innerText.replace(
-			this.stylesString,
-			''
-		);
+		this.stylesEl.remove();
 	}
 
 	generateTransitions() {
-		const transitionTarget = `${this.target.trim()}[data-maxi-relations="true"]`;
-
 		const getLine = (stylesObj, target) => {
 			const selector = `body.maxi-blocks--active ${target} {`.replace(
 				/\s{2,}/g,
@@ -789,14 +290,14 @@ class Relation {
 					targetSelector !== 'isTargets' &&
 						getLine(
 							this.stylesObj[targetSelector],
-							`${transitionTarget} ${targetSelector}`
+							`${this.dataTarget} ${targetSelector}`
 						);
 				});
 			else {
 				// Checks if the element needs special CSS to be avoided in case the element is hovered
 				const avoidHover = this.getAvoidHover(this.transitionTarget[0]);
 
-				const svgTarget = `${transitionTarget} ${
+				const svgTarget = `${this.dataTarget} ${
 					avoidHover
 						? this.transitionTarget[0].replace(
 								'maxi-svg-icon-block__icon',
@@ -809,18 +310,18 @@ class Relation {
 			}
 		}
 
-		getLine(this.stylesObj, transitionTarget);
+		getLine(
+			this.stylesObj,
+			`${this.dataTarget} ${this.transitionTarget[0]}`
+		);
 	}
 
 	addTransition() {
-		this.stylesEl.innerText += this.transitionString;
+		this.addStyleEl(this.transitionEl);
 	}
 
 	removeTransition() {
-		this.stylesEl.innerText = this.stylesEl.innerText.replace(
-			this.transitionString,
-			''
-		);
+		this.transitionEl.remove();
 	}
 
 	getTransitionString(styleObj, effectsObj, isIcon) {
@@ -858,80 +359,69 @@ class Relation {
 			'mouseleave',
 			this.onMouseLeave.bind(this)
 		);
-	}
-
-	onMouseEnter() {
-		clearTimeout(this.timeout);
-		clearTimeout(this.dataTimeout);
-
-		this.targetEl.setAttribute('data-maxi-relations', 'true');
 
 		/**
 		 * In case the target element is nested inside the trigger element, we need to ensure the original hover transition
 		 * works correctly on hovering. It means, we need to remove the transitions added by the trigger when hovering the target
 		 * to ensure it has the selected effects
 		 */
-		if (this.isContained) {
-			this.transitionTarget.forEach(rawTransitionTarget => {
-				// This part is not really solid, but it works for now
-				const transitionTarget = rawTransitionTarget?.endsWith('> *')
-					? rawTransitionTarget.slice(0, -3)
-					: rawTransitionTarget;
+		if (this.isHoveredContained) {
+			this.transitionTriggerEl.addEventListener('mouseenter', () => {
+				console.log('Entering hover target');
+				// Remove transitions to let the original ones be applied
+				this.removeTransition();
 
-				let transitionTargetEls =
-					transitionTarget &&
-					Array.from(
-						this.targetEl.querySelectorAll(transitionTarget)
-					);
+				this.isNestedHoverTransition = true;
+				clearTimeout(this.contentTimeout);
+			});
 
-				if (transitionTargetEls?.length === 0)
-					transitionTargetEls = [this.targetEl];
+			// const transitionDuration =
+			// 	['transition-duration', 'transition-delay'].reduce(
+			// 		(sum, prop) =>
+			// 			sum +
+			// 			parseFloat(
+			// 				getComputedStyle()
+			// 					.getPropertyValue(prop)
+			// 					.replace('s', '')
+			// 			),
+			// 		0
+			// 	) * 1000;
 
-				transitionTargetEls.forEach(transitionTargetEl => {
-					const transitionDuration =
-						parseFloat(
-							getComputedStyle(transitionTargetEl)
-								.getPropertyValue('transition-duration')
-								.replace('s', '')
-						) * 1000;
+			const transitionDuration = 5000; // !!
 
-					transitionTargetEl.addEventListener('mouseenter', () => {
-						this.isNestedHoverTransition = true;
-						clearTimeout(this.contentTimeout);
+			this.transitionTriggerEl.addEventListener('mouseleave', () => {
+				console.log('Leaving hover target');
+				this.contentTimeout = setTimeout(() => {
+					// Set the transitions back waiting the original to be done
+					this.addTransition();
 
-						// Remove transitions to let the original ones be applied
-						this.removeTransition();
-					});
-
-					transitionTargetEl.addEventListener('mouseleave', () => {
-						this.contentTimeout = setTimeout(() => {
-							// Set the transitions back waiting the original to be done
-							this.addTransition();
-
-							this.isNestedHoverTransition = false;
-						}, transitionDuration);
-					});
-				});
+					this.isNestedHoverTransition = false;
+				}, transitionDuration);
 			});
 		}
-		!this.isNestedHoverTransition && this.addTransition();
+	}
 
+	onMouseEnter() {
+		console.log('IB is active');
+		clearTimeout(this.transitionTimeout);
+
+		this.addDataAttrToBlock();
+		!this.isNestedHoverTransition && this.addTransition();
 		this.addStyles();
 	}
 
 	onMouseLeave() {
-		if (this.isContained && !this.isNestedHoverTransition)
-			this.addTransition();
-
-		this.dataTimeout = setTimeout(() => {
-			this.targetEl.setAttribute('data-maxi-relations', 'false');
-		}, this.effects['transition-duration-general'] * 1000 + 1000);
+		console.log('IB is inactive');
+		if (this.isContained) this.addTransition();
+		// if (this.isContained && !this.isNestedHoverTransition)
+		// 	this.addTransition();
 
 		this.removeStyles();
 
-		this.timeout = setTimeout(() => {
+		this.transitionTimeout = setTimeout(() => {
 			// Removing transition after transition-duration + 1s to make sure it's done
 			this.removeTransition();
+			this.removeAddAttrToBlock();
 		}, this.effects['transition-duration-general'] * 1000 + 1000);
 	}
 
@@ -945,22 +435,56 @@ window.addEventListener('load', () => {
 		maxiRelations[0].forEach(relation => new Relation(relation));
 	}
 });
+// this.transitionTarget.forEach(rawTransitionTarget => {
+// 	// This part is not really solid, but it works for now
+// 	const transitionTarget = rawTransitionTarget?.endsWith('> *')
+// 		? rawTransitionTarget.slice(0, -3)
+// 		: rawTransitionTarget;
 
-// window.addEventListener('load', relations);
-// window.addEventListener('load', () => {
-// 	if (maxiRelations[0].length) {
-// 		if (!document.querySelector('#maxi-blocks-interaction-css')) {
-// 			const inlineStyle = document.querySelector(
-// 				'#maxi-blocks-inline-css'
-// 			);
-// 			if (inlineStyle) {
-// 				const interactionStyle = document.createElement('style');
-// 				interactionStyle.id = 'maxi-blocks-interaction-css';
-// 				inlineStyle.parentNode.insertBefore(
-// 					interactionStyle,
-// 					inlineStyle.nextSibling
-// 				);
-// 			}
-// 		}
-// 	}
+// 	let transitionTargetEls =
+// 		transitionTarget &&
+// 		Array.from(
+// 			this.targetEl.querySelectorAll(transitionTarget)
+// 		);
+
+// 	if (transitionTargetEls.length > 1)
+// 		transitionTargetEls = transitionTargetEls.filter(
+// 			el => !transitionTargetEls.some(el2 => el2.contains(el))
+// 		);
+
+// 	if (transitionTargetEls?.length === 0)
+// 		transitionTargetEls = [this.targetEl];
+
+// 	transitionTargetEls.forEach(transitionTargetEl => {
+// 		const transitionDuration =
+// 			['transition-duration', 'transition-delay'].reduce(
+// 				(sum, prop) =>
+// 					sum +
+// 					parseFloat(
+// 						getComputedStyle(transitionTargetEl)
+// 							.getPropertyValue(prop)
+// 							.replace('s', '')
+// 					),
+// 				0
+// 			) * 1000;
+
+// 		transitionTargetEl.addEventListener('mouseenter', () => {
+// 			console.log('Entering hover target');
+// 			// Remove transitions to let the original ones be applied
+// 			this.removeTransition();
+
+// 			this.isNestedHoverTransition = true;
+// 			clearTimeout(this.contentTimeout);
+// 		});
+
+// 		transitionTargetEl.addEventListener('mouseleave', () => {
+// 			console.log('Leaving hover target');
+// 			this.contentTimeout = setTimeout(() => {
+// 				// Set the transitions back waiting the original to be done
+// 				this.addTransition();
+
+// 				this.isNestedHoverTransition = false;
+// 			}, transitionDuration);
+// 		});
+// 	});
 // });

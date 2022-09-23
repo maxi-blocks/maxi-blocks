@@ -51,9 +51,7 @@ const withAttributes = createHigherOrderComponent(
 			) {
 				attributes.uniqueID = uniqueIDGenerator(blockName);
 
-				const label = attributes.uniqueID.replace('-maxi-', '_');
-				attributes.customLabel =
-					label.charAt(0).toUpperCase() + label.slice(1);
+				attributes.customLabel = attributes.customLabel + '_' + attributes.uniqueID.split('-maxi-')[1];
 			}
 			// isFirstOnHierarchy
 			const parentBlocks = select('core/block-editor')

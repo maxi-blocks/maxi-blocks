@@ -127,6 +127,7 @@ class edit extends MaxiBlockComponent {
 			>
 				<NumberCounter
 					{...getGroupAttributes(attributes, 'numberCounter')}
+					{...getGroupAttributes(attributes, 'overflow')}
 					{...getGroupAttributes(
 						attributes,
 						'size',

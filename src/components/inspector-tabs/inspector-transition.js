@@ -207,7 +207,8 @@ const transition = ({
 						});
 					}}
 				/>
-				{Object.values(rawTransition).every(obj => !isEmpty(obj)) &&
+				{rawTransition.length > 1 &&
+				Object.values(rawTransition).every(obj => !isEmpty(obj)) &&
 				!transitionChangeAll ? (
 					<SettingTabsControl
 						breakpoint={deviceType}

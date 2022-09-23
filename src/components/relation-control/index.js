@@ -56,6 +56,9 @@ const RelationControl = props => {
 	const getOptions = clientId => {
 		const blockName = getBlock(clientId)?.name.replace('maxi-blocks/', '');
 
+		// 🔥
+		// if (!blockName) return [];
+
 		const blockOptions =
 			Object.values(blocksData).find(data => data.name === blockName)
 				.interactionBuilderSettings || [];
@@ -145,14 +148,18 @@ const RelationControl = props => {
 		// As an alternative to a migrator... Remove after used!
 		if (
 			!(
+				'transitionTrigger' in item.effects &&
 				'transitionTarget' in item.effects &&
 				'hoverStatus' in item.effects
 			) ||
 			item.effects.hoverStatus !==
 				getHoverStatus(selectedSettingsObj.hoverProp, blockAttributes)
 		) {
-			const { transitionTarget: rawTransitionTarget, hoverProp } =
-				selectedSettingsObj;
+			const {
+				transitionTarget: rawTransitionTarget,
+				transitionTrigger,
+				hoverProp,
+			} = selectedSettingsObj;
 			const transitionTarget =
 				item.settings === 'Transform'
 					? Object.keys(item.css)
@@ -167,11 +174,12 @@ const RelationControl = props => {
 					item.attributes
 				);
 
-			if (transitionTarget)
+			if (transitionTarget || transitionTrigger)
 				onChangeRelation(relations, item.id, {
 					effects: {
 						...item.effects,
-						transitionTarget,
+						...(transitionTarget && { transitionTarget }),
+						...(transitionTrigger && { transitionTrigger }),
 						...(!isNil(hoverStatus) && { hoverStatus }),
 					},
 				});

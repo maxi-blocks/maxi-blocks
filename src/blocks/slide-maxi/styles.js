@@ -11,11 +11,6 @@ import {
 	getFlexStyles,
 	getSizeStyles,
 } from '../../extensions/styles/helpers';
-
-/**
- * External dependencies
- */
-import { isEmpty } from 'lodash';
 import { customCss } from './data';
 
 const getNormalObject = props => {
@@ -56,13 +51,6 @@ const getNormalObject = props => {
 		}),
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
-		}),
-		...(!isEmpty(props.verticalAlign) && {
-			column: {
-				general: {
-					'justify-content': props.verticalAlign,
-				},
-			},
 		}),
 		flex: getFlexStyles({
 			...getGroupAttributes(props, 'flex'),

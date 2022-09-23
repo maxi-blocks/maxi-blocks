@@ -12,8 +12,9 @@ class Relation {
 		this.trigger = item.trigger;
 		this.triggerEl = document.querySelector(`.${this.trigger}`);
 		this.blockTargetEl = document.querySelector(`#${this.uniqueID}`);
-		this.target = `#${item.uniqueID} ${item.target ?? ''}`;
-		this.targetEl = document.querySelector(this.target);
+		this.target = item.target ?? '';
+		this.fullTarget = `#${item.uniqueID} ${this.target}`;
+		this.targetEl = document.querySelector(this.fullTarget);
 		this.dataTarget = `#${item.uniqueID}[data-maxi-relations="true"]`;
 
 		if (!this.triggerEl || !this.targetEl) return;
@@ -37,6 +38,7 @@ class Relation {
 			typeof this.effects.transitionTarget === 'string'
 				? [this.effects.transitionTarget]
 				: this.effects.transitionTarget;
+
 		this.transitionString = '';
 		this.generateTransitions();
 
@@ -50,7 +52,7 @@ class Relation {
 		this.isIcon =
 			item.settings === 'Icon colour' || item.settings === 'Button icon';
 		this.isNestedHoverTransition = false;
-		this.isSVG = this.target.includes('svg-icon-maxi');
+		this.isSVG = this.fullTarget.includes('svg-icon-maxi');
 
 		// Prevents removing the IB transitions before they end when mouse leave the IB trigger
 		this.transitionTimeout = null;
@@ -175,7 +177,7 @@ class Relation {
 		return !!Array.from(
 			document.querySelectorAll(
 				transitionTargets.map(currentTarget =>
-					currentTarget === '' ? this.target : currentTarget
+					currentTarget === '' ? this.fullTarget : currentTarget
 				)
 			)
 		).find(
@@ -193,10 +195,23 @@ class Relation {
 		this.blockTargetEl.setAttribute('data-maxi-relations', 'false');
 	}
 
+	// Target for the creation of styles and transition lines needs to be considered
+	// as it can create higher specificity than the default block styles.
+	getTargetForLine(transitionTarget) {
+		if (transitionTarget)
+			if (!this.dataTarget.includes(transitionTarget))
+				return `${this.dataTarget} ${transitionTarget}`;
+			else return this.dataTarget;
+
+		return `${this.dataTarget} ${this.target}`;
+	}
+
 	generateStyles() {
 		const getStylesLine = (stylesObj, target) => {
 			// Checks if the element needs special CSS to be avoided in case the element is hovered
-			const avoidHover = this.getAvoidHover(this.transitionTarget[0]); // !!!
+			const avoidHover = this.getAvoidHover(
+				this.transitionTarget ? this.transitionTarget[0] : ''
+			); // !!!
 
 			const avoidHoverString = avoidHover ? ':not(:hover)' : '';
 
@@ -224,18 +239,19 @@ class Relation {
 		};
 
 		if (this.stylesObj.isTargets)
-			Object.keys(this.stylesObj).forEach(
+			Object.entries(this.stylesObj).forEach(
 				([targetSelector, styles]) =>
 					targetSelector !== 'isTargets' &&
+					Object.keys(styles).length &&
 					getStylesLine(
-						[styles],
+						styles,
 						`${this.dataTarget} ${targetSelector}`
 					)
 			);
 		else
 			getStylesLine(
 				this.stylesObj,
-				`${this.dataTarget} ${this.transitionTarget[0]}`
+				this.getTargetForLine(this.transitionTarget?.[0])
 			);
 	}
 
@@ -312,7 +328,7 @@ class Relation {
 
 		getLine(
 			this.stylesObj,
-			`${this.dataTarget} ${this.transitionTarget[0]}`
+			this.getTargetForLine(this.transitionTarget?.[0])
 		);
 	}
 

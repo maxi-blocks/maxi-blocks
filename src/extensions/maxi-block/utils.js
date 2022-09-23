@@ -23,3 +23,7 @@ export const getResizerSize = (elt, blockRef, unit, axis = 'width') => {
 			return pxSize.toString();
 	}
 };
+
+export const getStylesWrapperId = uniqueID => {
+	return `maxi-blocks__styles--${uniqueID}`;
+};

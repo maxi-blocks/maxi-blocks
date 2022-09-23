@@ -40,6 +40,7 @@ import * as blocksData from '../../blocks/data';
  * External dependencies
  */
 import { isEmpty, isEqual, cloneDeep, isNil } from 'lodash';
+import { getStylesWrapperId } from './utils';
 
 /**
  * Style Component
@@ -99,7 +100,6 @@ class MaxiBlockComponent extends Component {
 		// eslint-disable-next-line react/no-unused-class-component-methods
 		this.blockRef = createRef();
 		this.typography = getGroupAttributes(attributes, 'typography');
-		this.stylesWrapperId = `maxi-blocks__styles--${uniqueID}`;
 
 		// Init
 		const newUniqueID = this.uniqueIDChecker(uniqueID);
@@ -499,11 +499,13 @@ class MaxiBlockComponent extends Component {
 		dispatch('maxiBlocks/customData').updateCustomData(customData);
 
 		if (document.body.classList.contains('maxi-blocks--active')) {
-			let wrapper = document.querySelector(`#${this.stylesWrapperId}`);
+			let wrapper = document.querySelector(
+				`#${getStylesWrapperId(uniqueID)}`
+			);
 
 			if (!wrapper) {
 				wrapper = document.createElement('div');
-				wrapper.id = this.stylesWrapperId;
+				wrapper.id = getStylesWrapperId(uniqueID);
 				wrapper.classList.add('maxi-blocks__styles');
 				document.head.appendChild(wrapper);
 			}
@@ -528,12 +530,12 @@ class MaxiBlockComponent extends Component {
 
 				if (iframeDocument.head) {
 					let iframeWrapper = iframeDocument.querySelector(
-						`#maxi-blocks__styles--${uniqueID}`
+						`#${getStylesWrapperId(uniqueID)}`
 					);
 
 					if (!iframeWrapper) {
 						iframeWrapper = iframeDocument.createElement('div');
-						iframeWrapper.id = `maxi-blocks__styles--${uniqueID}`;
+						iframeWrapper.id = getStylesWrapperId(uniqueID);
 						iframeWrapper.classList.add('maxi-blocks__styles');
 						iframeDocument.head.appendChild(iframeWrapper);
 					}
@@ -554,7 +556,9 @@ class MaxiBlockComponent extends Component {
 	}
 
 	removeStyles() {
-		document.getElementById(this.stylesWrapperId).remove();
+		document
+			.getElementById(getStylesWrapperId(this.props.attributes.uniqueID))
+			.remove();
 	}
 }
 

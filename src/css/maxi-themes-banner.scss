@@ -45,9 +45,11 @@ body.maxi-blocks--active .maxi-block {
 	}
 
 	/*Seedlet theme overrides*/
-	.maxi-components-button:focus,
-	.maxi-components-button span:focus {
-		outline: none;
+	.maxi-components-button {
+		&:focus,
+		& span:focus {
+			outline: none;
+		}
 	}
 }
 
@@ -68,11 +70,13 @@ body.maxi-blocks--active
 }
 
 /*Removes focus background for Twenty Twenty One*/
-body.maxi-blocks--active #content .maxi-button-block__button:focus,
-body.maxi-blocks--active #content .maxi-text-block--link:focus,
-body.maxi-blocks--active #content .maxi-link-wrapper:focus {
-	background: unset;
-	text-decoration: none;
+body.maxi-blocks--active #content {
+	.maxi-button-block__button:focus,
+	.maxi-text-block--link:focus,
+	.maxi-link-wrapper:focus {
+		background: unset;
+		text-decoration: none;
+	}
 }
 
 /*Removes image outline on link focus for Twenty Twenty One*/

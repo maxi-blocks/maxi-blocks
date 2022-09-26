@@ -4,13 +4,7 @@
  */
 import { useInnerBlocksProps } from '@wordpress/block-editor';
 import { compose, withInstanceId } from '@wordpress/compose';
-import {
-	useRef,
-	useState,
-	useEffect,
-	RawHTML,
-	createRef,
-} from '@wordpress/element';
+import { useRef, useState, useEffect, RawHTML } from '@wordpress/element';
 import { dispatch, select, useSelect } from '@wordpress/data';
 
 /**
@@ -46,9 +40,12 @@ const SliderWrapper = props => {
 		currentSlide,
 		setCurrentSlide,
 	} = props;
-	const { isLoop } = attributes;
-	const sliderTransition = attributes['slider-transition'];
-	const sliderTransitionSpeed = attributes['slider-transition-speed'];
+	const {
+		isLoop,
+		'slider-transition': sliderTransition,
+		'slider-transition-speed': sliderTransitionSpeed,
+	} = attributes;
+
 	const numberOfClones = 2;
 	const numberOfSlides = useSelect(
 		select =>
@@ -56,14 +53,14 @@ const SliderWrapper = props => {
 		[clientId]
 	);
 
+	const [wrapperTranslate, setWrapperTranslate] = useState(0);
+	const [realFirstSlideOffset, setRealFirstSlideOffset] = useState(0);
 	const ALLOWED_BLOCKS = ['maxi-blocks/slide-maxi'];
 	const wrapperRef = useRef(null);
-	const iconRef = createRef(null);
+	const iconRef = useRef(null);
 	const editor = document.querySelector('#editor');
 	let initPosition = 0;
 	let dragPosition = 0;
-	const [wrapperTranslate, setWrapperTranslate] = useState(0);
-	const [realFirstSlideOffset, setRealFirstSlideOffset] = useState(0);
 
 	const getSliderEffect = () => {
 		let effect = '';
@@ -409,8 +406,6 @@ class edit extends MaxiBlockComponent {
 			isEditView: false,
 			currentSlide: 0,
 		};
-
-		this.iconRef = createRef(null);
 	}
 
 	get getStylesObject() {
@@ -520,7 +515,6 @@ class edit extends MaxiBlockComponent {
 						<SliderWrapper
 							{...this.props}
 							{...this.state}
-							{...this.iconRef}
 							setCurrentSlide={newCurrentSlide =>
 								this.setState({ currentSlide: newCurrentSlide })
 							}

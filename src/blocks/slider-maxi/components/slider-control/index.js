@@ -7,16 +7,16 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import { getDefaultAttribute } from '../../../../extensions/styles';
-
-/**
- * External dependencies
- */
-import classnames from 'classnames';
 import {
 	ToggleSwitch,
 	AdvancedNumberControl,
 	SelectControl,
 } from '../../../../components';
+
+/**
+ * External dependencies
+ */
+import classnames from 'classnames';
 
 const SliderControl = props => {
 	const {

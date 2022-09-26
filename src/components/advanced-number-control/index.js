@@ -122,13 +122,13 @@ const AdvancedNumberControl = props => {
 
 	const minValueRange =
 		minMaxSettingsResult[isEmpty(unit) ? '-' : unit]?.minRange < minValue ||
-		disableInputsLimits
+			disableInputsLimits
 			? minValue
 			: minMaxSettingsResult[isEmpty(unit) ? '-' : unit]?.minRange;
 
 	const maxValueRange =
 		minMaxSettingsResult[isEmpty(unit) ? '-' : unit]?.maxRange > maxValue ||
-		disableInputsLimits
+			disableInputsLimits
 			? maxValue
 			: minMaxSettingsResult[isEmpty(unit) ? '-' : unit]?.maxRange;
 
@@ -199,7 +199,7 @@ const AdvancedNumberControl = props => {
 							}
 
 							onChangeValue(
-								value === '' || optionType === 'string'
+								value === '' ? +defaultValue : optionType === 'string'
 									? value.toString()
 									: +value
 							);
@@ -230,8 +230,8 @@ const AdvancedNumberControl = props => {
 									onChangeValue(
 										optionType === 'string'
 											? minMaxSettings[
-													val
-											  ]?.max.toString()
+												val
+											]?.max.toString()
 											: minMaxSettings[val]?.max,
 										val
 									);

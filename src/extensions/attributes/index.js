@@ -57,10 +57,9 @@ const withAttributes = createHigherOrderComponent(
 						label.charAt(0).toUpperCase() + label.slice(1);
 				}
 
-				attributes.customLabel =
-					attributes.customLabel +
-					'_' +
-					attributes.uniqueID.split('-maxi-')[1];
+				attributes.customLabel = `${attributes.customLabel}_${
+					attributes.uniqueID.split('-maxi-')[1]
+				}`;
 			}
 			// isFirstOnHierarchy
 			const parentBlocks = select('core/block-editor')

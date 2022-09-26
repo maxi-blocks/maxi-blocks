@@ -180,58 +180,64 @@ const getIconHoverStyles = (props, prefix) => {
 	const iconHoverActiveMedia =
 		props[`${iconPrefix}background-active-media-general-hover`];
 
-	const response = {
-		background: iconHoverStatus &&
-			iconHoverActiveMedia === 'color' && {
-				...getColorBackgroundObject({
-					...getGroupAttributes(
-						props,
-						['icon', 'iconBackgroundColor'],
-						true,
-						prefix
-					),
-					...getGroupAttributes(
-						props,
-						['background', 'backgroundColor'],
-						true
-					),
+	const response = iconHoverStatus
+		? {
+				background: iconHoverActiveMedia === 'color' && {
+					...getColorBackgroundObject({
+						...getGroupAttributes(
+							props,
+							['icon', 'iconBackgroundColor'],
+							true,
+							prefix
+						),
+						...getGroupAttributes(
+							props,
+							['background', 'backgroundColor'],
+							true
+						),
+						prefix: iconPrefix,
+						blockStyle: props.blockStyle,
+						isHover: true,
+						isIcon: true,
+					}),
+				},
+				gradient: iconHoverActiveMedia === 'gradient' && {
+					...getGradientBackgroundObject({
+						...getGroupAttributes(
+							props,
+							(props,
+							[
+								'icon',
+								'iconBackground',
+								'iconBackgroundGradient',
+							]),
+							true,
+							prefix
+						),
+						prefix: iconPrefix,
+						isHover: true,
+						isIcon: true,
+					}),
+				},
+				border: getBorderStyles({
+					obj: {
+						...getGroupAttributes(
+							props,
+							[
+								'iconBorder',
+								'iconBorderWidth',
+								'iconBorderRadius',
+							],
+							true,
+							prefix
+						),
+					},
 					prefix: iconPrefix,
 					blockStyle: props.blockStyle,
 					isHover: true,
-					isIcon: true,
 				}),
-			},
-		gradient: iconHoverStatus &&
-			iconHoverActiveMedia === 'gradient' && {
-				...getGradientBackgroundObject({
-					...getGroupAttributes(
-						props,
-						(props,
-						['icon', 'iconBackground', 'iconBackgroundGradient']),
-						true,
-						prefix
-					),
-					prefix: iconPrefix,
-					isHover: true,
-					isIcon: true,
-				}),
-			},
-		border:
-			iconHoverStatus &&
-			getBorderStyles({
-				obj: {
-					...getGroupAttributes(
-						props,
-						['iconBorder', 'iconBorderWidth', 'iconBorderRadius'],
-						true,
-						prefix
-					),
-				},
-				prefix: iconPrefix,
-				blockStyle: props.blockStyle,
-				isHover: true,
-			}),
-	};
+		  }
+		: {};
 
 	return response;
 };

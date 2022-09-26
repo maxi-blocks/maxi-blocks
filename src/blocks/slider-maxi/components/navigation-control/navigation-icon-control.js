@@ -501,7 +501,6 @@ const NavigationIconControl = props => {
 							}
 							onChangeInline={({ color }) =>
 								onChangeInline &&
-								!isActive &&
 								onChangeInline(
 									{ stroke: color },
 									'[data-stroke]',
@@ -550,46 +549,52 @@ const NavigationIconControl = props => {
 								};
 
 								shortPrefix === arrowShortPrefix &&
-									onChange({
-										...onChangeObj,
-										...['first', 'second'].reduce(
-											(prev, current) => {
-												return {
-													...prev,
-													[`navigation-arrow-${current}-icon-content`]:
-														(isHover
-															? setSVGContentHover
-															: setSVGContent)(
-															props[
-																`navigation-arrow-${current}-icon-content`
-															],
-															paletteStatus
-																? strokeColorStr
-																: color,
-															'stroke'
-														),
-												};
-											},
-											{}
-										),
-									});
-								shortPrefix === dotsShortPrefix &&
-									onChange({
-										onChangeObj,
-										'navigation-dot-icon-content':
-											!isActive &&
-											(isHover
-												? setSVGContentHover
-												: setSVGContent)(
-												props[
-													'navigation-dot-icon-content'
-												],
-												paletteStatus
-													? strokeColorStr
-													: color,
-												'stroke'
+									onChange(
+										{
+											...onChangeObj,
+											...['first', 'second'].reduce(
+												(prev, current) => {
+													return {
+														...prev,
+														[`navigation-arrow-${current}-icon-content`]:
+															(isHover
+																? setSVGContentHover
+																: setSVGContent)(
+																props[
+																	`navigation-arrow-${current}-icon-content`
+																],
+																paletteStatus
+																	? strokeColorStr
+																	: color,
+																'stroke'
+															),
+													};
+												},
+												{}
 											),
-									});
+										},
+										'[data-stroke]'
+									);
+								shortPrefix === dotsShortPrefix &&
+									onChange(
+										{
+											onChangeObj,
+											'navigation-dot-icon-content':
+												!isActive &&
+												(isHover
+													? setSVGContentHover
+													: setSVGContent)(
+													props[
+														'navigation-dot-icon-content'
+													],
+													paletteStatus
+														? strokeColorStr
+														: color,
+													'stroke'
+												),
+										},
+										'[data-stroke]'
+									);
 							}}
 							isHover={isHover}
 						/>
@@ -640,7 +645,6 @@ const NavigationIconControl = props => {
 							}
 							onChangeInline={({ color }) =>
 								onChangeInline &&
-								!isActive &&
 								onChangeInline(
 									{ fill: color },
 									'[data-fill]',
@@ -689,47 +693,53 @@ const NavigationIconControl = props => {
 								};
 
 								shortPrefix === arrowShortPrefix &&
-									onChange({
-										...onChangeObj,
-										...['first', 'second'].reduce(
-											(prev, current) => {
-												return {
-													...prev,
-													[`navigation-arrow-${current}-icon-content`]:
-														(isHover
-															? setSVGContentHover
-															: setSVGContent)(
-															props[
-																`navigation-arrow-${current}-icon-content`
-															],
-															paletteStatus
-																? fillColorStr
-																: color,
-															'fill'
-														),
-												};
-											},
-											{}
-										),
-									});
+									onChange(
+										{
+											...onChangeObj,
+											...['first', 'second'].reduce(
+												(prev, current) => {
+													return {
+														...prev,
+														[`navigation-arrow-${current}-icon-content`]:
+															(isHover
+																? setSVGContentHover
+																: setSVGContent)(
+																props[
+																	`navigation-arrow-${current}-icon-content`
+																],
+																paletteStatus
+																	? fillColorStr
+																	: color,
+																'fill'
+															),
+													};
+												},
+												{}
+											),
+										},
+										'[data-fill]'
+									);
 
 								shortPrefix === dotsShortPrefix &&
-									onChange({
-										...onChangeObj,
-										[`${prefix}content`]:
-											!isActive &&
-											(isHover
-												? setSVGContentHover
-												: setSVGContent)(
-												props[
-													'navigation-dot-icon-content'
-												],
-												paletteStatus
-													? fillColorStr
-													: color,
-												'fill'
-											),
-									});
+									onChange(
+										{
+											...onChangeObj,
+											[`${prefix}content`]:
+												!isActive &&
+												(isHover
+													? setSVGContentHover
+													: setSVGContent)(
+													props[
+														'navigation-dot-icon-content'
+													],
+													paletteStatus
+														? fillColorStr
+														: color,
+													'fill'
+												),
+										},
+										'[data-fill]'
+									);
 							}}
 							isHover={isHover}
 						/>
@@ -784,7 +794,7 @@ const NavigationIconControl = props => {
 									setIconBgActive(val);
 									onChange({
 										[getAttributeKey(
-											'-background-active-media',
+											'background-active-media',
 											isHover,
 											prefix,
 											breakpoint
@@ -846,25 +856,25 @@ const NavigationIconControl = props => {
 										onChange(
 											{
 												[getAttributeKey(
-													'-background-palette-status',
+													'background-palette-status',
 													isHover,
 													prefix,
 													breakpoint
 												)]: paletteStatus,
 												[getAttributeKey(
-													'-background-palette-color',
+													'background-palette-color',
 													isHover,
 													prefix,
 													breakpoint
 												)]: paletteColor,
 												[getAttributeKey(
-													'-background-palette-opacity',
+													'background-palette-opacity',
 													isHover,
 													prefix,
 													breakpoint
 												)]: paletteOpacity,
 												[getAttributeKey(
-													'-background-color',
+													'background-color',
 													isHover,
 													prefix,
 													breakpoint
@@ -902,7 +912,7 @@ const NavigationIconControl = props => {
 									)}
 									defaultGradient={getDefaultAttribute(
 										getAttributeKey(
-											'-background-gradient',
+											'background-gradient',
 											isHover,
 											prefix,
 											breakpoint
@@ -911,7 +921,7 @@ const NavigationIconControl = props => {
 									onChange={val =>
 										onChange({
 											[getAttributeKey(
-												'-background-gradient',
+												'background-gradient',
 												isHover,
 												prefix,
 												breakpoint
@@ -921,7 +931,7 @@ const NavigationIconControl = props => {
 									onChangeOpacity={val =>
 										onChange({
 											[getAttributeKey(
-												'-background-gradient-opacity',
+												'background-gradient-opacity',
 												isHover,
 												prefix,
 												breakpoint

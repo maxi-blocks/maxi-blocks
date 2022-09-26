@@ -78,16 +78,14 @@ const NavigationControl = props => {
 					onChange={val => {
 						onChange({
 							[`${arrowPrefix}position-${deviceType}`]: val,
-						});
-						val === 'inside' &&
-							onChange({
+							...(val === 'inside' && {
 								[`${arrowPrefix}both-icon-spacing-horizontal-${deviceType}`]:
 									-40,
-							});
-						val === 'outside' &&
-							onChange({
+							}),
+							...(val === 'outside' && {
 								[`${arrowPrefix}both-icon-spacing-horizontal-${deviceType}`]: 10,
-							});
+							}),
+						});
 					}}
 				/>
 			)}
@@ -112,15 +110,13 @@ const NavigationControl = props => {
 					onChange={val => {
 						onChange({
 							[`${dotPrefix}position-${deviceType}`]: val,
-						});
-						val === 'inside' &&
-							onChange({
+							...(val === 'inside' && {
 								[`${dotPrefix}icon-spacing-vertical-${deviceType}`]: 85,
-							});
-						val === 'outside' &&
-							onChange({
+							}),
+							...(val === 'outside' && {
 								[`${dotPrefix}icon-spacing-vertical-${deviceType}`]: 110,
-							});
+							}),
+						});
 					}}
 				/>
 			)}

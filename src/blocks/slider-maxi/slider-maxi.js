@@ -27,7 +27,6 @@ import save from './save';
 /**
  * Block
  */
-
 registerBlockType('maxi-blocks/slider-maxi', {
 	title: __('Slider Maxi', 'maxi-blocks'),
 	icon: sliderIcon,

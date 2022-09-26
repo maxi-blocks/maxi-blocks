@@ -34,23 +34,43 @@ export const typeOptions = [
 	{ label: __('Tags', 'maxi-blocks'), value: 'tags' },
 	// ...getCTOptions(),
 ];
-
-export const relationOptions = [
+export const relationOptionsPosts = [
 	{ label: __('Get by id', 'maxi-blocks'), value: 'by-id' },
 	{ label: __('Get by author', 'maxi-blocks'), value: 'author' },
 	{ label: __('Get random'), value: 'random' },
-	{ label: __('Get last published'), value: 'last-published' },
 	{ label: __('Date', 'maxi-blocks'), value: 'date' },
 	{ label: __('Modified', 'maxi-blocks'), value: 'modified' },
-	//{ label: __('Get last published by…'), value: 'last-published-by' },
 ];
+export const relationOptionsUsers = [
+	{ label: __('Get by author', 'maxi-blocks'), value: 'author' },
+];
+export const relationOptionsPages = [
+	{ label: __('Get by id', 'maxi-blocks'), value: 'by-id' },
+	{ label: __('Get by author', 'maxi-blocks'), value: 'author' },
+	{ label: __('Get random'), value: 'random' },
+];
+export const relationOptionsCategories = [
+	{ label: __('Get by id', 'maxi-blocks'), value: 'by-id' },
+	{ label: __('Get random'), value: 'random' },
+];
+export const relationOptionsTags = [
+	{ label: __('Get by id', 'maxi-blocks'), value: 'by-id' },
+	{ label: __('Get random'), value: 'random' },
+];
+export const relationOptions = {
+	posts: relationOptionsPosts,
+	pages: relationOptionsPages,
+	settings: relationOptionsPosts,
+	media: relationOptionsPosts,
+	users: relationOptionsUsers,
+	categories: relationOptionsCategories,
+	tags: relationOptionsTags,
+};
 
 export const getByOptions = [
 	{ label: __('Date', 'maxi-blocks'), value: 'date' },
 	{ label: __('Author', 'maxi-blocks'), value: 'author' },
 	{ label: __('Modified', 'maxi-blocks'), value: 'modified' },
-	// { label: __('Next', 'maxi-blocks'), value: 'next' },
-	// { label: __('Previous', 'maxi-blocks'), value: 'previous' },
 ];
 
 export const showOptions = [
@@ -122,6 +142,7 @@ export const idOptionByField = {
 	posts: 'title',
 	pages: 'title',
 	media: 'title',
+	tags: 'name',
 	users: 'name',
 	author: 'name',
 	categories: 'name',
@@ -148,18 +169,93 @@ export const renderedFields = [
 ];
 
 // Types that accept relations
-export const relationTypes = ['posts', 'pages', 'media', 'categories', 'tags'];
+export const relationTypes = [
+	'posts',
+	'pages',
+	'media',
+	'categories',
+	'tags',
+	'users',
+];
 
 // Random get-by types
-export const randomOptions = [
+export const postsRandomOptions = [
 	'author',
 	'date',
 	'id',
+	//'include',
 	'modified',
 	'parent',
+	//'relevance',
 	'slug',
+	'include_slugs',
 	'title',
 ];
+export const pagesRandomOptions = [
+	'author',
+	'date',
+	'id',
+	//'include',
+	'modified',
+	'parent',
+	//'relevance',
+	'slug',
+	'include_slugs',
+	'title',
+	//'menu_order',
+];
+export const mediaRandomOptions = [
+	'author',
+	'date',
+	'id',
+	//'include',
+	'modified',
+	'parent',
+	//'relevance',
+	'slug',
+	'include_slugs',
+	'title',
+];
+export const usersRandomOptions = [
+	'id',
+	'include',
+	'name',
+	'registered_date',
+	'slug',
+	'include_slugs',
+	'email',
+	'url',
+];
+export const categoriesRandomOptions = [
+	'id',
+	'include',
+	'name',
+	'slug',
+	'include_slugs',
+	'term_group',
+	'description',
+	'count',
+];
+export const tagsRandomOptions = [
+	'id',
+	'include',
+	'name',
+	'slug',
+	'include_slugs',
+	'term_group',
+	'description',
+	'count',
+];
+
+export const randomOptions = {
+	posts: postsRandomOptions,
+	pages: pagesRandomOptions,
+	settings: [],
+	media: mediaRandomOptions,
+	users: usersRandomOptions,
+	categories: categoriesRandomOptions,
+	tags: tagsRandomOptions,
+};
 
 // In case content is empty, show this text
 export const sanitizeContent = content =>

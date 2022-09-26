@@ -5,7 +5,6 @@
 import apiFetch from '@wordpress/api-fetch';
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect, useRef } from '@wordpress/element';
-import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -34,7 +33,6 @@ import {
 	idOptionByField,
 	randomOptions,
 	showOptions,
-	postTypeDic,
 	descriptionOfErrors,
 } from './utils';
 import ToggleSwitch from '../../../toggle-switch';
@@ -89,6 +87,7 @@ const DynamicContent = props => {
 		if (result.includes(fieldRef.current)) {
 			return {};
 		} else {
+			fieldRef.current = result[0];
 			return { 'dc-field': result[0] };
 		}
 	};
@@ -148,7 +147,6 @@ const DynamicContent = props => {
 	};
 
 	const setIdList = (result, _default, _type) => {
-		console.log(idOptionByField);
 		const newPostIdOptions = result.map(item => {
 			return {
 				label: `${item.id} - ${
@@ -196,7 +194,6 @@ const DynamicContent = props => {
 					id: defaultValues['dc-id'] ?? idRef.current,
 					field: defaultValues['dc-field'] ?? fieldRef.current,
 				});
-
 				//defaultValues['dc-content'] = sanitizeContent(newContent);
 			}
 
@@ -237,7 +234,6 @@ const DynamicContent = props => {
 						onChange({ 'dc-error': _show });
 						errorRef.current = _show;
 						return null;
-						//return descriptionOfErrors[_show];
 					}
 				});
 		}
@@ -261,7 +257,6 @@ const DynamicContent = props => {
 		const getForRelation = () => {
 			return getForShow(_type, _id, _field)
 				.then(res => {
-					console.log(res);
 					if (typeof res === 'number') {
 						alterIdRef.current = res;
 					} else {
@@ -276,14 +271,31 @@ const DynamicContent = props => {
 							return `/wp/v2/${_type}/${
 								alterIdRef.current ? alterIdRef.current : _id
 							}?_fields=${_field}`;
-						case 'last-published':
-							return `/wp/v2/${_type}&per_page=1`;
 						case 'date':
 						case 'modified':
-							return `/wp/v2/${_type}?orderby=${relationRef.current}&per_page=1&_fields=${_field}`;
+							if (
+								!['previous', 'next'].includes(
+									showRef.current
+								) ||
+								!alterIdRef.current
+							) {
+								return `/wp/v2/${_type}?orderby=${relationRef.current}&per_page=1&_fields=${_field},id`;
+							} else {
+								return `/wp/v2/${_type}/${
+									alterIdRef.current
+										? alterIdRef.current
+										: _id
+								}?_fields=${_field}`;
+							}
+
 						case 'random':
 							return `/wp/v2/${_type}/?_fields=${_field}&per_page=99&orderby=${
-								randomOptions[random(randomOptions.length - 1)]
+								randomOptions[_type][
+									random(
+										randomOptions[typeRef.current].length -
+											1
+									)
+								]
 							}`;
 						case 'by-id':
 						default:
@@ -313,11 +325,10 @@ const DynamicContent = props => {
 
 	const requestContent = async dataRequest => {
 		const { type: _type, id: _id, field: _field } = dataRequest;
-
 		return await apiFetch({
 			path: await getContentPath(_type, _id, _field),
 		})
-			.catch(err => console.log(err)) // TODO: need a good error handler
+			.catch(err => console.error(err)) // TODO: need a good error handler
 			.then(result => {
 				const content = isArray(result) ? result[0] : result;
 				if (
@@ -339,6 +350,10 @@ const DynamicContent = props => {
 					return descriptionOfErrors.author;
 				}
 				if (content) {
+					if (content.id) {
+						idRef.current = Number(content.id);
+						onChange({ 'dc-id': Number(content.id) });
+					}
 					if (
 						renderedFields.includes(_field) &&
 						!isNil(content[_field]?.rendered)
@@ -366,9 +381,10 @@ const DynamicContent = props => {
 		) {
 			const { type, id } = dataRequest;
 			const randomPath = `/wp/v2/${type}/?_fields=id&per_page=99&orderby=${
-				randomOptions[random(randomOptions.length - 1)]
+				randomOptions[typeRef.current][
+					random(randomOptions[typeRef.current].length - 1)
+				]
 			}`;
-
 			return apiFetch({
 				path: randomPath,
 			})
@@ -415,10 +431,6 @@ const DynamicContent = props => {
 			),
 		})
 			.catch(err => console.error(err)) // TODO: need a good error handler
-			.then(res => {
-				console.log(res);
-				return res;
-			})
 			.then(result => setIdList(result, _additional, _type));
 	};
 
@@ -435,7 +447,6 @@ const DynamicContent = props => {
 				});
 		}
 	};
-
 	const switchOnChange = (_type, _value) => {
 		switch (_type) {
 			case 'status':
@@ -447,12 +458,14 @@ const DynamicContent = props => {
 				break;
 			case 'type':
 				typeRef.current = _value;
+				showRef.current = 'current';
 				const dcFieldActual = validationsValues(_value);
 				if (idFields.includes(_value)) {
 					getIdOptions(
 						_value,
 						{
 							'dc-type': _value,
+							'dc-show': 'current',
 							...dcFieldActual,
 						},
 						null
@@ -460,13 +473,15 @@ const DynamicContent = props => {
 				} else {
 					onChange({
 						'dc-type': _value,
+						'dc-show': 'current',
 						...dcFieldActual,
 					});
 				}
 				break;
 			case 'relation':
 				relationRef.current = _value;
-				onChange({ 'dc-relation': _value });
+				showRef.current = 'current';
+				onChange({ 'dc-relation': _value, 'dc-show': 'current' });
 				getIdOptions(typeRef.current, null, _value);
 				break;
 			case 'author':
@@ -502,23 +517,6 @@ const DynamicContent = props => {
 			.catch(rej => console.error(rej))
 			.then(res => res);
 	}
-	// if (typeRef.current === 'categories') {
-	// 	disabledType('author', 'relation');
-	// 	if (relationRef.current === 'author') {
-	// 		relationRef.current = 'by-id';
-	// 		onChange({ 'dc-relation': 'by-id' });
-	// 	}
-	// }
-	// console.log('statusRef', statusRef.current);
-	// console.log('typeRef', typeRef.current);
-	// console.log('relationRef', relationRef.current);
-	// console.log('authorRef', authorRef.current);
-	// console.log('idRef', idRef.current);
-	// console.log('showRef', showRef.current);
-	// console.log('fieldRef', fieldRef.current);
-
-	// console.log('postIdOptions :', postIdOptions);
-	// console.log('postAuthorOptions :', postAuthorOptions);
 
 	return (
 		<ToolbarPopover
@@ -550,7 +548,9 @@ const DynamicContent = props => {
 									<SelectControl
 										label={__('Relation', 'maxi-blocks')}
 										value={relationRef.current}
-										options={relationOptions}
+										options={
+											relationOptions[typeRef.current]
+										}
 										onChange={value =>
 											switchOnChange('relation', value)
 										}
@@ -572,6 +572,7 @@ const DynamicContent = props => {
 										/>
 									)}
 								{relationTypes.includes(typeRef.current) &&
+									typeRef.current !== 'users' &&
 									['author', 'by-id'].includes(
 										relationRef.current
 									) && (
@@ -593,6 +594,9 @@ const DynamicContent = props => {
 									)}
 								{relationTypes.includes(typeRef.current) &&
 									typeRef.current === 'posts' &&
+									!['author', 'random'].includes(
+										relationRef.current
+									) &&
 									!isEmptyIdOptions && (
 										<SelectControl
 											label={__('Show', 'maxi-blocks')}
@@ -608,12 +612,9 @@ const DynamicContent = props => {
 										isFinite(idRef.current)) ||
 									(relationRef.current === 'author' &&
 										!isEmptyIdOptions) ||
-									[
-										'date',
-										'modified',
-										'random',
-										'last-published',
-									].includes(relationRef.current)) && (
+									['date', 'modified', 'random'].includes(
+										relationRef.current
+									)) && (
 									<SelectControl
 										label={__('Field', 'maxi-blocks')}
 										value={fieldRef.current}

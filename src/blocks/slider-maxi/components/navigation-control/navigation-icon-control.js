@@ -162,10 +162,7 @@ const NavigationIconControl = props => {
 				['first', 'second'].map(current => (
 					<MaxiModal
 						type='navigation-icon'
-						label={__(
-							sprintf('Add %s shadow', label),
-							'maxi-blocks'
-						)}
+						label={__(sprintf('Add %s icon', label), 'maxi-blocks')}
 						style={blockStyle}
 						onSelect={obj => onChange(obj)}
 						onRemove={obj => onChange(obj)}

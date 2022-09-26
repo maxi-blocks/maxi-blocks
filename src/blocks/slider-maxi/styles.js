@@ -116,58 +116,72 @@ const getIconStyles = (props, prefix = 'navigation-arrow-both-') => {
 	const iconPrefix = `${prefix}icon-`;
 
 	const response = {
-		background: props[`${iconPrefix}background-active-media-general`] ===
-			'color' && {
-			...getColorBackgroundObject({
-				...getGroupAttributes(
-					props,
-					['icon', 'iconBackgroundColor'],
-					false,
-					prefix
-				),
-				...getGroupAttributes(props, ['background', 'backgroundColor']),
+		background: props[`${iconPrefix}status-background`] &&
+			props[`${iconPrefix}background-active-media-general`] ===
+				'color' && {
+				...getColorBackgroundObject({
+					...getGroupAttributes(
+						props,
+						['icon', 'iconBackgroundColor'],
+						false,
+						prefix
+					),
+					...getGroupAttributes(props, [
+						'background',
+						'backgroundColor',
+					]),
+					prefix: iconPrefix,
+					blockStyle: props.blockStyle,
+					isIcon: true,
+				}),
+			},
+		gradient: props[`${iconPrefix}status-background`] &&
+			props[`${iconPrefix}background-active-media-general`] ===
+				'gradient' && {
+				...getGradientBackgroundObject({
+					...getGroupAttributes(
+						props,
+						['icon', 'iconBackground', 'iconBackgroundGradient'],
+						false,
+						prefix
+					),
+					prefix: iconPrefix,
+					isIcon: true,
+				}),
+			},
+		boxShadow:
+			props[`${iconPrefix}status-shadow`] &&
+			getBoxShadowStyles({
+				obj: {
+					...getGroupAttributes(
+						props,
+						'iconBoxShadow',
+						false,
+						prefix
+					),
+				},
 				prefix: iconPrefix,
 				blockStyle: props.blockStyle,
-				isIcon: true,
 			}),
-		},
-		boxShadow: getBoxShadowStyles({
-			obj: {
-				...getGroupAttributes(props, 'iconBoxShadow', false, prefix),
-			},
-			prefix: iconPrefix,
-			blockStyle: props.blockStyle,
-		}),
-		gradient: props[`${iconPrefix}background-active-media-general`] ===
-			'gradient' && {
-			...getGradientBackgroundObject({
-				...getGroupAttributes(
-					props,
-					['icon', 'iconBackground', 'iconBackgroundGradient'],
-					false,
-					prefix
-				),
+		border:
+			props[`${iconPrefix}status-border`] &&
+			getBorderStyles({
+				obj: {
+					...getGroupAttributes(
+						props,
+						['iconBorder', 'iconBorderWidth', 'iconBorderRadius'],
+						false,
+						prefix
+					),
+				},
 				prefix: iconPrefix,
-				isIcon: true,
+				blockStyle: props.blockStyle,
 			}),
-		},
 		padding: getMarginPaddingStyles({
 			obj: {
 				...getGroupAttributes(props, 'iconPadding', false, prefix),
 			},
 			prefix: iconPrefix,
-		}),
-		border: getBorderStyles({
-			obj: {
-				...getGroupAttributes(
-					props,
-					['iconBorder', 'iconBorderWidth', 'iconBorderRadius'],
-					false,
-					prefix
-				),
-			},
-			prefix: iconPrefix,
-			blockStyle: props.blockStyle,
 		}),
 	};
 

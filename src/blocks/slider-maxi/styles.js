@@ -402,17 +402,17 @@ const getArrowIconObject = (props, isHover = false) => {
 	const target = '.maxi-slider-block__arrow';
 
 	return {
-		[` ${target}--prev${hoverFlag}`]: getIconSpacing(
-			props,
-			'prev',
-			isHover,
-			prefix
-		),
-		[` ${target}--next${hoverFlag}`]: getIconSpacing(
-			props,
-			'next',
-			isHover,
-			prefix
+		...['prev', 'next'].reduce(
+			(acc, curr) => ({
+				...acc,
+				[` ${target}--${curr}${hoverFlag}`]: getIconSpacing(
+					props,
+					curr,
+					isHover,
+					prefix
+				),
+			}),
+			{}
 		),
 		[` ${target}${hoverFlag} > div > div`]: getIconSize(
 			props,

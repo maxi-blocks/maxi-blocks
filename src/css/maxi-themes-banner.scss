@@ -47,7 +47,7 @@ body.maxi-blocks--active .maxi-block {
 	/*Seedlet theme overrides*/
 	.maxi-components-button {
 		&:focus,
-		& span:focus {
+		span:focus {
 			outline: none;
 		}
 	}

@@ -67,7 +67,11 @@ const blocksConfig = {
 	},
 	resolve: {
 		...defaultConfig.resolve,
-		fallback: { ...defaultConfig.resolve.fallback, https: false },
+		fallback: {
+			...defaultConfig.resolve.fallback,
+			https: false,
+			util: false,
+		},
 	},
 };
 

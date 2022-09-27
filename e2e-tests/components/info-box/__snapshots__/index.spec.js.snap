@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`InfoBox Check Infobox 1`] = `"Responsive mode activated. Edits apply exclusively to selected break points. Return to \\"Your size\\" for global editing (recommended)."`;

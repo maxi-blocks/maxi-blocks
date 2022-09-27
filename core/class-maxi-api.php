@@ -47,6 +47,9 @@ if (!class_exists('MaxiBlocks_API')):
 
             // Handlers
             add_action('before_delete_post', [$this, 'mb_delete_register']);
+
+			// Extensions
+			add_filter( 'rest_prepare_post', [$this, 'mb_add_prev_next_to_rest'], 10, 3 );
         }
 
         /**
@@ -240,7 +243,7 @@ if (!class_exists('MaxiBlocks_API')):
             }
 
             $response = [
-				'maxi_version' => MAXI_PLUGIN_VERSION,
+                'maxi_version' => MAXI_PLUGIN_VERSION,
                 'google_api_key' => get_option('google_api_key_option'),
                 'core' => [
                     'version' => $wp_version,
@@ -369,7 +372,7 @@ if (!class_exists('MaxiBlocks_API')):
         public function get_maxi_blocks_sc_string()
         {
             global $wpdb;
-
+          
             $response =  maybe_unserialize($wpdb->get_var(
                 $wpdb->prepare(
                     "SELECT object FROM {$wpdb->prefix}maxi_blocks_general where id = %s",
@@ -445,7 +448,7 @@ if (!class_exists('MaxiBlocks_API')):
         public function mb_delete_register($postId)
         {
             global $wpdb;
-
+            
             $wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->prefix}maxi_blocks_styles WHERE post_id=%d", $postId));
             $wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->prefix}maxi_blocks_custom_data WHERE post_id=%d", $postId));
         }
@@ -477,14 +480,14 @@ if (!class_exists('MaxiBlocks_API')):
             global $wpdb;
 
             $table_name = $wpdb->prefix . 'maxi_blocks_general';
-
+        
             $style_cards = $wpdb->get_var(
                 $wpdb->prepare(
                     "SELECT object FROM {$wpdb->prefix}maxi_blocks_general where id = %s",
                     'style_cards_current'
                 )
             );
-
+            
             if ($style_cards && !empty($style_cards)) {
                 return $style_cards;
             } else {
@@ -498,7 +501,7 @@ if (!class_exists('MaxiBlocks_API')):
                     'id' => 'style_cards_current',
                     'object' => $defaultStyleCard,
                 ]);
-
+                
                 $style_cards = $wpdb->get_var(
                     $wpdb->prepare(
                         "SELECT object FROM {$wpdb->prefix}maxi_blocks_general where id = %s",
@@ -602,5 +605,24 @@ if (!class_exists('MaxiBlocks_API')):
 
             return $new_custom_data;
         }
+
+		/**
+		 * Add previous and next posts data on REST API requests for posts
+		 */
+		public function mb_add_prev_next_to_rest( $response, $post, $request ) {
+			global $post;
+
+			// Get the next post.
+			$next = get_adjacent_post( false, '', false );
+
+			// Get the previous post.
+			$previous = get_adjacent_post( false, '', true );
+
+			// Only send id and slug (or null, if there is no next/previous post).
+			$response->data['next'] = ( is_a( $next, 'WP_Post') ) ? array( "id" => $next->ID ) : null;
+			$response->data['previous'] = ( is_a( $previous, 'WP_Post') ) ? array( "id" => $previous->ID ) : null;
+
+			return $response;
+		}
     }
 endif;

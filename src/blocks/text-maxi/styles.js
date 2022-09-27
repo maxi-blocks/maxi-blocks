@@ -32,7 +32,9 @@ import {
 	getFlexStyles,
 } from '../../extensions/styles/helpers';
 import data from './data';
+import { selectorsText } from './custom-css';
 import { getSVGListStyle } from './utils';
+import transitionObj from './transitionObj';
 
 /**
  * External dependencies
@@ -600,8 +602,10 @@ const getStyles = props => {
 					props.blockStyle
 				),
 			},
+			selectorsText,
 			data,
-			props
+			props,
+			transitionObj
 		),
 	};
 };

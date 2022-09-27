@@ -13,6 +13,7 @@ export { default as customCss } from './customCss';
 export { default as display } from './display';
 export { default as displayHover } from './displayHover';
 export { default as divider } from './divider';
+export { default as dynamicContent } from './dynamicContent';
 export { default as dividerHover } from './dividerHover';
 export { default as flex } from './flex';
 export { default as global } from './global';

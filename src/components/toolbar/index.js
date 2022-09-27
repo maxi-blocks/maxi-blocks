@@ -38,6 +38,7 @@ import {
 	DividerAlignment,
 	DividerColor,
 	Duplicate,
+	DynamicContent,
 	Link,
 	Mover,
 	NumberCounterReplay,
@@ -84,7 +85,10 @@ const MaxiToolbar = memo(
 			attributes,
 			backgroundAdvancedOptions,
 			backgroundPrefix,
+			blockStyle,
 			clientId,
+			content,
+			disableCustomFormats = false,
 			isSelected,
 			name,
 			maxiSetAttributes,
@@ -109,7 +113,6 @@ const MaxiToolbar = memo(
 			textLevel,
 			typeOfList,
 			uniqueID,
-			blockStyle,
 			svgType,
 		} = attributes;
 
@@ -304,6 +307,7 @@ const MaxiToolbar = memo(
 							isList={isList}
 							textLevel={textLevel}
 							styleCard={styleCard}
+							disableCustomFormats={disableCustomFormats}
 						/>
 						<TextOptions
 							{...getGroupAttributes(attributes, [
@@ -317,6 +321,7 @@ const MaxiToolbar = memo(
 							textLevel={textLevel}
 							styleCard={styleCard}
 							clientId={clientId}
+							disableCustomFormats={disableCustomFormats}
 						/>
 						<Mover
 							clientId={clientId}
@@ -569,6 +574,14 @@ const MaxiToolbar = memo(
 							onChange={obj => maxiSetAttributes(obj)}
 							textLevel={textLevel}
 						/>
+						<DynamicContent
+							{...getGroupAttributes(
+								attributes,
+								'dynamicContent'
+							)}
+							blockName={name}
+							onChange={obj => maxiSetAttributes(obj)}
+						/>
 						<Link
 							blockName={name}
 							linkSettings={linkSettings}
@@ -579,7 +592,10 @@ const MaxiToolbar = memo(
 							textLevel={textLevel}
 						/>
 						<TextLink
-							{...getGroupAttributes(attributes, 'typography')}
+							{...getGroupAttributes(attributes, [
+								'typography',
+								'dynamicContent',
+							])}
 							blockName={name}
 							onChange={obj => maxiSetAttributes(obj)}
 							isList={isList}
@@ -588,6 +604,7 @@ const MaxiToolbar = memo(
 							textLevel={textLevel}
 							blockStyle={blockStyle}
 							styleCard={styleCard}
+							disableCustomFormats={disableCustomFormats}
 							clientId={clientId}
 						/>
 						<VerticalAlign
@@ -672,12 +689,14 @@ const MaxiToolbar = memo(
 								'alignment',
 								'textAlignment',
 							])}
+							content={content}
 							blockName={name}
 							breakpoint={breakpoint}
 							copyPasteMapping={copyPasteMapping}
 							prefix={prefix}
 							onChange={obj => maxiSetAttributes(obj)}
 							tooltipsHide={tooltipsHide}
+							disableCustomFormats={disableCustomFormats}
 						/>
 					</div>
 				</Popover>

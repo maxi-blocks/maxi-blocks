@@ -12,6 +12,7 @@ export { default as Divider } from './divider-line';
 export { default as DividerAlignment } from './divider-alignment';
 export { default as DividerColor } from './divider-color';
 export { default as Duplicate } from './duplicate';
+export { default as DynamicContent } from './dynamic-content';
 export { default as Favorite } from './favorite';
 export { default as IconBackground } from './icon-background';
 export { default as IconPosition } from './icon-position';

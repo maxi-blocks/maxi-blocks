@@ -277,6 +277,14 @@ export const descriptionOfErrors = {
 		'Sorry, this author has no posts yet, please choose something else.',
 		'maxi-blocks'
 	),
+	media: __(
+		'Sorry, you do not have any images yet, please choose something else.',
+		'maxi-blocks'
+	),
+	tags: __(
+		'Sorry, you do not have any tags yet, please choose something else.',
+		'maxi-blocks'
+	),
 };
 
 export const postTypeDic = {

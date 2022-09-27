@@ -74,12 +74,14 @@ const DynamicContent = props => {
 	const [isEmptyIdOptions, setIsEmptyIdOptions] = useState(true);
 
 	useEffect(async () => {
-		if (statusRef.current)
+		if (statusRef.current) {
+			//const res = [typeRef.current ? typeRef.current : type, id, field];
 			onChange({
 				'dc-content': sanitizeContent(
 					await getContent({ type, id, field })
 				),
 			});
+		}
 	}, [type, id, field, relation, show, author, error]);
 
 	const validationsValues = variableValue => {
@@ -157,12 +159,25 @@ const DynamicContent = props => {
 			};
 		});
 		if (isEmpty(newPostIdOptions)) {
+			const defaultValues = _default ? _default : {};
 			if (relationRef.current === 'author') {
-				onChange({ 'dc-error': relationRef.current });
+				defaultValues['dc-error'] = relationRef.current;
 				errorRef.current = relationRef.current;
 			}
+			if (typeRef.current === 'media') {
+				defaultValues['dc-error'] = typeRef.current;
+				//defaultValues['dc-id'] = null;
+				errorRef.current = typeRef.current;
+				disabledType(_type);
+			}
+			if (typeRef.current === 'tags') {
+				defaultValues['dc-error'] = typeRef.current;
+				//defaultValues['dc-id'] = null;
+				errorRef.current = typeRef.current;
+				disabledType(_type);
+			}
 			setIsEmptyIdOptions(true);
-			_default && onChange(_default);
+			if (!isEmpty(defaultValues)) onChange(defaultValues);
 			//disabledType(_type);
 		} else {
 			if (relationRef.current === 'author') {
@@ -189,11 +204,11 @@ const DynamicContent = props => {
 
 			// Ensures content is selected
 			if (!isEmpty(defaultValues)) {
-				const newContent = getContent({
-					type: _type,
-					id: defaultValues['dc-id'] ?? idRef.current,
-					field: defaultValues['dc-field'] ?? fieldRef.current,
-				});
+				// const newContent = getContent({
+				// 	type: _type,
+				// 	id: defaultValues['dc-id'] ?? idRef.current,
+				// 	field: defaultValues['dc-field'] ?? fieldRef.current,
+				// });
 				//defaultValues['dc-content'] = sanitizeContent(newContent);
 			}
 
@@ -325,30 +340,14 @@ const DynamicContent = props => {
 
 	const requestContent = async dataRequest => {
 		const { type: _type, id: _id, field: _field } = dataRequest;
+
 		return await apiFetch({
 			path: await getContentPath(_type, _id, _field),
 		})
 			.catch(err => console.error(err)) // TODO: need a good error handler
 			.then(result => {
 				const content = isArray(result) ? result[0] : result;
-				if (
-					_type === 'posts' &&
-					error === 'next' &&
-					showRef.current === 'next'
-				) {
-					return descriptionOfErrors.next;
-				} else if (
-					_type === 'posts' &&
-					error === 'previous' &&
-					relationRef.current === 'previous'
-				) {
-					return descriptionOfErrors.previous;
-				} else if (
-					error === 'author' &&
-					relationRef.current === 'author'
-				) {
-					return descriptionOfErrors.author;
-				}
+
 				if (content) {
 					if (content.id) {
 						idRef.current = Number(content.id);
@@ -375,11 +374,30 @@ const DynamicContent = props => {
 	};
 
 	const getContent = async dataRequest => {
+		const { type, id } = dataRequest;
+		if (
+			type === 'posts' &&
+			error === 'next' &&
+			showRef.current === 'next'
+		) {
+			return descriptionOfErrors.next;
+		} else if (
+			type === 'posts' &&
+			error === 'previous' &&
+			relationRef.current === 'previous'
+		) {
+			return descriptionOfErrors.previous;
+		} else if (error === 'author' && relationRef.current === 'author') {
+			return descriptionOfErrors.author;
+		} else if (type === 'media' && error === 'media') {
+			return descriptionOfErrors.media;
+		} else if (type === 'tags' && error === 'tags') {
+			return descriptionOfErrors.tags;
+		}
 		if (
 			relationTypes.includes(typeRef.current) &&
 			relationRef.current === 'random'
 		) {
-			const { type, id } = dataRequest;
 			const randomPath = `/wp/v2/${type}/?_fields=id&per_page=99&orderby=${
 				randomOptions[typeRef.current][
 					random(randomOptions[typeRef.current].length - 1)
@@ -401,9 +419,7 @@ const DynamicContent = props => {
 							...dataRequest,
 							id: res[random(res.length - 1)].id,
 						}),
-					error => {
-						console.error(error);
-					}
+					error => console.error(error)
 				);
 		}
 		if (typeRef.current === 'users') {
@@ -422,7 +438,7 @@ const DynamicContent = props => {
 		return path;
 	};
 
-	const setIdOptions = async (_type, _additional, _relation) => {
+	const setIdOptions = async (_type, _default, _relation) => {
 		return await apiFetch({
 			path: getIdOptionsPath(
 				_type,
@@ -431,20 +447,18 @@ const DynamicContent = props => {
 			),
 		})
 			.catch(err => console.error(err)) // TODO: need a good error handler
-			.then(result => setIdList(result, _additional, _type));
+			.then(result => setIdList(result, _default, _type));
 	};
 
 	const getIdOptions = (
 		_type = typeRef.current,
-		_additional = null,
+		_default = null,
 		_relation = relationRef.current
 	) => {
 		if (idFields.includes(_type)) {
-			return setIdOptions(_type, _additional, _relation)
+			return setIdOptions(_type, _default, _relation)
 				.catch(rej => console.error(rej))
-				.then(res => {
-					return res;
-				});
+				.then(res => res);
 		}
 	};
 	const switchOnChange = (_type, _value) => {
@@ -461,6 +475,11 @@ const DynamicContent = props => {
 				showRef.current = 'current';
 				const dcFieldActual = validationsValues(_value);
 				if (idFields.includes(_value)) {
+					// onChange({
+					// 	'dc-type': _value,
+					// 	'dc-show': 'current',
+					// 	...dcFieldActual,
+					// });
 					getIdOptions(
 						_value,
 						{

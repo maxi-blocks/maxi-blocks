@@ -55,9 +55,9 @@ registerBlockType('maxi-blocks/svg-icon-maxi', {
 	},
 	edit,
 	save,
-	deprecated: blockMigrator({
-		attributes,
-		save,
-		selectors: customCss.selectors,
-	}),
+	// deprecated: blockMigrator({
+	// 	attributes,
+	// 	save,
+	// 	selectors: customCss.selectors,
+	// }),
 });

@@ -55,10 +55,10 @@ registerBlockType('maxi-blocks/image-maxi', {
 	},
 	edit,
 	save,
-	deprecated: blockMigrator({
-		attributes,
-		save,
-		prefix: 'image-',
-		selectors: customCss.selectors,
-	}),
+	// deprecated: blockMigrator({
+	// 	attributes,
+	// 	save,
+	// 	prefix: 'image-',
+	// 	selectors: customCss.selectors,
+	// }),
 });

@@ -56,11 +56,11 @@ registerBlockType('maxi-blocks/button-maxi', {
 	},
 	edit,
 	save,
-	deprecated: blockMigrator({
-		attributes,
-		save,
-		prefix: 'button-',
-		selectors: customCss.selectors,
-		migrators: [transitionMigrator],
-	}),
+	// deprecated: blockMigrator({
+	// 	attributes,
+	// 	save,
+	// 	prefix: 'button-',
+	// 	selectors: customCss.selectors,
+	// 	migrators: [transitionMigrator],
+	// }),
 });

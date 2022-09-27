@@ -57,9 +57,9 @@ registerBlockType('maxi-blocks/text-maxi', {
 	edit,
 	save,
 	transforms,
-	deprecated: blockMigrator({
-		attributes,
-		save,
-		selectors: customCss.selectors,
-	}),
+	// deprecated: blockMigrator({
+	// 	attributes,
+	// 	save,
+	// 	selectors: customCss.selectors,
+	// }),
 });

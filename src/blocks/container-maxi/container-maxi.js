@@ -56,11 +56,11 @@ registerBlockType('maxi-blocks/container-maxi', {
 	},
 	edit,
 	save,
-	deprecated: blockMigrator({
-		attributes,
-		save,
-		isContainer: true,
-		selectors: customCss.selectors,
-		migrators: [shapeDividerMigrator],
-	}),
+	// deprecated: blockMigrator({
+	// 	attributes,
+	// 	save,
+	// 	isContainer: true,
+	// 	selectors: customCss.selectors,
+	// 	migrators: [shapeDividerMigrator],
+	// }),
 });

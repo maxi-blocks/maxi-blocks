@@ -178,6 +178,7 @@ const interactionBuilderSettings = [
 	{
 		label: __('Icon colour'),
 		transitionTarget: transition.block.colour.target,
+		transitionTrigger: ' svg',
 		hoverProp: 'svg-status-hover',
 		attrGroupName: 'svg',
 		component: props => {

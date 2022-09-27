@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* eslint-disable class-methods-use-this */
 
 // Relations (IB)
@@ -30,14 +29,18 @@ class Relation {
 		this.isContained = this.triggerEl.contains(this.targetEl);
 		this.isHoveredContained = this.hoverStatus && this.isContained;
 
+		// transitionTrigger is an alternative trigger to target; not always used
+		// Check its eventListeners to understand better about its responsibility
 		this.transitionTrigger = this.effects.transitionTrigger;
 		this.transitionTriggerEl = this.transitionTrigger
 			? this.blockTargetEl.querySelector(this.transitionTrigger)
 			: this.targetEl;
-		this.transitionTarget =
-			typeof this.effects.transitionTarget === 'string'
-				? [this.effects.transitionTarget]
-				: this.effects.transitionTarget;
+
+		this.transitionTarget = this.effects.transitionTarget;
+
+		this.isIcon =
+			item.settings === 'Icon colour' || item.settings === 'Button icon';
+		this.isSVG = this.fullTarget.includes('svg-icon-maxi');
 
 		this.transitionString = '';
 		this.generateTransitions();
@@ -49,11 +52,6 @@ class Relation {
 		this.transitionEl = null;
 		this.generateStylesEls();
 
-		this.isIcon =
-			item.settings === 'Icon colour' || item.settings === 'Button icon';
-		this.isNestedHoverTransition = false;
-		this.isSVG = this.fullTarget.includes('svg-icon-maxi');
-
 		// Prevents removing the IB transitions before they end when mouse leave the IB trigger
 		this.transitionTimeout = null;
 		// Prevents IB transitions overwrite native hover ones (when is contained) when mouse
@@ -63,12 +61,7 @@ class Relation {
 		this.init();
 	}
 
-	/**
-	 * Creates a single style wrapper element under the '#maxi-blocks-inline-css' to
-	 * ensure it overwrites the default block styles. Also allows nesting more than one
-	 * style element that can deal easier with more than one interaction coming from
-	 * different triggers.
-	 */
+	// Create two different <style> elements, one for the styles and one for the transitions.
 	generateStylesEls() {
 		this.stylesEl = document.createElement('style');
 		this.stylesEl.id = `relations--${this.uniqueID}-styles`;
@@ -79,14 +72,16 @@ class Relation {
 		this.transitionEl.innerText = this.transitionString;
 	}
 
+	// Insert transitions or styles element just after Maxi inline css element
 	addStyleEl(styleEl) {
-		const inlineStylesEl = document.querySelector(
-			'#maxi-blocks-inline-css'
-		);
+		if (!this.inlineStylesEl)
+			this.inlineStylesEl = document.querySelector(
+				'#maxi-blocks-inline-css'
+			);
 
-		inlineStylesEl.parentNode.insertBefore(
+		this.inlineStylesEl.parentNode.insertBefore(
 			styleEl,
-			inlineStylesEl.nextSibling
+			this.inlineStylesEl.nextSibling
 		);
 	}
 
@@ -209,9 +204,7 @@ class Relation {
 	generateStyles() {
 		const getStylesLine = (stylesObj, target) => {
 			// Checks if the element needs special CSS to be avoided in case the element is hovered
-			const avoidHover = this.getAvoidHover(
-				this.transitionTarget ? this.transitionTarget[0] : ''
-			); // !!!
+			const avoidHover = this.getAvoidHover(this.transitionTarget);
 
 			const avoidHoverString = avoidHover ? ':not(:hover)' : '';
 
@@ -251,7 +244,7 @@ class Relation {
 		else
 			getStylesLine(
 				this.stylesObj,
-				this.getTargetForLine(this.transitionTarget?.[0])
+				this.getTargetForLine(this.transitionTarget)
 			);
 	}
 
@@ -311,25 +304,22 @@ class Relation {
 				});
 			else {
 				// Checks if the element needs special CSS to be avoided in case the element is hovered
-				const avoidHover = this.getAvoidHover(this.transitionTarget[0]);
+				const avoidHover = this.getAvoidHover(this.transitionTarget);
 
 				const svgTarget = `${this.dataTarget} ${
 					avoidHover
-						? this.transitionTarget[0].replace(
+						? this.transitionTarget.replace(
 								'maxi-svg-icon-block__icon',
 								match => `${match}:not(:hover)`
 						  )
-						: this.transitionTarget[0]
+						: this.transitionTarget
 				}`;
 
 				getLine(this.stylesObj, svgTarget);
 			}
 		}
 
-		getLine(
-			this.stylesObj,
-			this.getTargetForLine(this.transitionTarget?.[0])
-		);
+		getLine(this.stylesObj, this.getTargetForLine(this.transitionTarget));
 	}
 
 	addTransition() {
@@ -383,7 +373,8 @@ class Relation {
 		 */
 		if (this.isHoveredContained) {
 			this.transitionTriggerEl.addEventListener('mouseenter', () => {
-				console.log('Entering hover target');
+				// console.log('Entering hover target'); // 🔥
+
 				// Remove transitions to let the original ones be applied
 				this.removeTransition();
 
@@ -391,46 +382,46 @@ class Relation {
 				clearTimeout(this.contentTimeout);
 			});
 
-			// const transitionDuration =
-			// 	['transition-duration', 'transition-delay'].reduce(
-			// 		(sum, prop) =>
-			// 			sum +
-			// 			parseFloat(
-			// 				getComputedStyle()
-			// 					.getPropertyValue(prop)
-			// 					.replace('s', '')
-			// 			),
-			// 		0
-			// 	) * 1000;
-
-			const transitionDuration = 5000; // !!
-
 			this.transitionTriggerEl.addEventListener('mouseleave', () => {
-				console.log('Leaving hover target');
+				const transitionTargetEl = document.querySelector(
+					`${this.dataTarget} ${this.transitionTarget ?? ''}`
+				);
+
+				const transitionDuration = transitionTargetEl
+					? ['transition-duration', 'transition-delay'].reduce(
+							(sum, prop) =>
+								sum +
+								parseFloat(
+									getComputedStyle(transitionTargetEl)
+										.getPropertyValue(prop)
+										.replace('s', '')
+								),
+							0
+					  ) * 1000
+					: 5000; // Max duration
+
+				// console.log('Leaving hover target'); // 🔥
+
 				this.contentTimeout = setTimeout(() => {
 					// Set the transitions back waiting the original to be done
 					this.addTransition();
-
-					this.isNestedHoverTransition = false;
 				}, transitionDuration);
 			});
 		}
 	}
 
 	onMouseEnter() {
-		console.log('IB is active');
+		// console.log('IB is active'); // 🔥
 		clearTimeout(this.transitionTimeout);
 
 		this.addDataAttrToBlock();
-		!this.isNestedHoverTransition && this.addTransition();
+		this.addTransition();
 		this.addStyles();
 	}
 
 	onMouseLeave() {
-		console.log('IB is inactive');
+		// console.log('IB is inactive'); // 🔥
 		if (this.isContained) this.addTransition();
-		// if (this.isContained && !this.isNestedHoverTransition)
-		// 	this.addTransition();
 
 		this.removeStyles();
 
@@ -451,56 +442,3 @@ window.addEventListener('load', () => {
 		maxiRelations[0].forEach(relation => new Relation(relation));
 	}
 });
-// this.transitionTarget.forEach(rawTransitionTarget => {
-// 	// This part is not really solid, but it works for now
-// 	const transitionTarget = rawTransitionTarget?.endsWith('> *')
-// 		? rawTransitionTarget.slice(0, -3)
-// 		: rawTransitionTarget;
-
-// 	let transitionTargetEls =
-// 		transitionTarget &&
-// 		Array.from(
-// 			this.targetEl.querySelectorAll(transitionTarget)
-// 		);
-
-// 	if (transitionTargetEls.length > 1)
-// 		transitionTargetEls = transitionTargetEls.filter(
-// 			el => !transitionTargetEls.some(el2 => el2.contains(el))
-// 		);
-
-// 	if (transitionTargetEls?.length === 0)
-// 		transitionTargetEls = [this.targetEl];
-
-// 	transitionTargetEls.forEach(transitionTargetEl => {
-// 		const transitionDuration =
-// 			['transition-duration', 'transition-delay'].reduce(
-// 				(sum, prop) =>
-// 					sum +
-// 					parseFloat(
-// 						getComputedStyle(transitionTargetEl)
-// 							.getPropertyValue(prop)
-// 							.replace('s', '')
-// 					),
-// 				0
-// 			) * 1000;
-
-// 		transitionTargetEl.addEventListener('mouseenter', () => {
-// 			console.log('Entering hover target');
-// 			// Remove transitions to let the original ones be applied
-// 			this.removeTransition();
-
-// 			this.isNestedHoverTransition = true;
-// 			clearTimeout(this.contentTimeout);
-// 		});
-
-// 		transitionTargetEl.addEventListener('mouseleave', () => {
-// 			console.log('Leaving hover target');
-// 			this.contentTimeout = setTimeout(() => {
-// 				// Set the transitions back waiting the original to be done
-// 				this.addTransition();
-
-// 				this.isNestedHoverTransition = false;
-// 			}, transitionDuration);
-// 		});
-// 	});
-// });

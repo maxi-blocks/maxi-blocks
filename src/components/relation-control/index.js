@@ -56,9 +56,6 @@ const RelationControl = props => {
 	const getOptions = clientId => {
 		const blockName = getBlock(clientId)?.name.replace('maxi-blocks/', '');
 
-		// 🔥
-		// if (!blockName) return [];
-
 		const blockOptions =
 			Object.values(blocksData).find(data => data.name === blockName)
 				.interactionBuilderSettings || [];

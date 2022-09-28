@@ -448,7 +448,15 @@ class Relation {
 		}, this.effects['transition-duration-general'] * 1000 + 1000);
 	}
 
-	addClickEvents() {}
+	addClickEvents() {
+		this.triggerEl.addEventListener('click', this.onMouseClick.bind(this));
+	}
+
+	onMouseClick() {
+		this.addDataAttrToBlock();
+		this.addTransition();
+		this.addStyles();
+	}
 }
 
 window.addEventListener('load', () => {

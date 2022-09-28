@@ -26,8 +26,7 @@ import getStyles from './styles';
 import onMerge, { onReplaceBlocks } from './utils';
 import { onChangeRichText, textContext } from '../../extensions/text/formats';
 import { setSVGColor } from '../../extensions/svg';
-//import { copyPasteMapping } from './data';
-import copyPasteMapping from './copy-paste-mapping';
+import { copyPasteMapping } from './data';
 /**
  * External dependencies
  */
@@ -161,6 +160,7 @@ class edit extends MaxiBlockComponent {
 			identifier: 'content',
 			value: content,
 			onChange: processContent,
+			multiline: isList ? 'li' : false,
 			tagName: isList ? typeOfList : textLevel,
 			onSplit: () => {
 				this.state.onChangeFormat(insert(this.state.formatValue, '\n'));
@@ -250,7 +250,7 @@ class edit extends MaxiBlockComponent {
 									attributes,
 									maxiSetAttributes,
 									oldFormatValue: this.state.formatValue,
-									onChange: (newState, newContent) => {
+									onChange: (newState, newContent = null) => {
 										if (this.typingTimeoutFormatValue) {
 											clearTimeout(
 												this.typingTimeoutFormatValue
@@ -270,7 +270,6 @@ class edit extends MaxiBlockComponent {
 									},
 									richTextValues,
 								});
-
 								if (isList && isSelected)
 									return (
 										<>

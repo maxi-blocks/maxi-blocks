@@ -75,6 +75,28 @@ const DynamicContent = props => {
 
 	useEffect(async () => {
 		if (statusRef.current) {
+			console.log(
+				'dc-error: ',
+				error,
+				' dc-status:',
+				status,
+				' dc-type:',
+				type,
+				' dc-relation:',
+				relation,
+				' dc-author:',
+				author,
+				' dc-id:',
+				id,
+				' dc-show:',
+				show,
+				' dc-field:',
+				field,
+				' postIdOptions:',
+				postIdOptions,
+				' postAuthorOptions:',
+				postAuthorOptions
+			);
 			//const res = [typeRef.current ? typeRef.current : type, id, field];
 			onChange({
 				'dc-content': sanitizeContent(
@@ -500,13 +522,21 @@ const DynamicContent = props => {
 			case 'relation':
 				relationRef.current = _value;
 				showRef.current = 'current';
-				onChange({ 'dc-relation': _value, 'dc-show': 'current' });
-				getIdOptions(typeRef.current, null, _value);
+				//onChange({ 'dc-relation': _value, 'dc-show': 'current' });
+				getIdOptions(
+					typeRef.current,
+					{ 'dc-relation': _value, 'dc-show': 'current' },
+					_value
+				);
 				break;
 			case 'author':
 				authorRef.current = _value;
-				onChange({ 'dc-author': _value });
-				getIdOptions(typeRef.current, null, relationRef.current);
+				//onChange({ 'dc-author': _value });
+				getIdOptions(
+					typeRef.current,
+					{ 'dc-author': _value },
+					relationRef.current
+				);
 				break;
 			case 'id':
 				idRef.current = Number(_value);

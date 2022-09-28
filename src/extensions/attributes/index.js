@@ -57,7 +57,8 @@ const withAttributes = createHigherOrderComponent(
 						label.charAt(0).toUpperCase() + label.slice(1);
 				}
 
-				attributes.customLabel = `${attributes.customLabel}_${
+				const newLabel = attributes.customLabel.split('_')[0];
+				attributes.customLabel = `${newLabel}_${
 					attributes.uniqueID.split('-maxi-')[1]
 				}`;
 			}

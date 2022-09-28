@@ -352,10 +352,11 @@ class MaxiBlockComponent extends Component {
 
 			this.props.attributes.uniqueID = newUniqueID;
 
-			this.props.attributes.customLabel =
-				this.props.attributes.customLabel +
-				'_' +
-				this.props.attributes.uniqueID.split('-maxi-')[1];
+			const newCustomLabel =
+				this.props.attributes.customLabel.split('_')[0];
+			this.props.attributes.customLabel = `${newCustomLabel}_${
+				this.props.attributes.uniqueID.split('-maxi-')[1]
+			}`;
 
 			return newUniqueID;
 		}

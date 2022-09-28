@@ -583,19 +583,20 @@ const NavigationIconControl = props => {
 									onChange(
 										{
 											onChangeObj,
-											'navigation-dot-icon-content':
-												!isActive &&
-												(isHover
-													? setSVGContentHover
-													: setSVGContent)(
-													props[
-														'navigation-dot-icon-content'
-													],
-													paletteStatus
-														? strokeColorStr
-														: color,
-													'stroke'
-												),
+											...(!isActive && {
+												'navigation-dot-icon-content':
+													(isHover
+														? setSVGContentHover
+														: setSVGContent)(
+														props[
+															'navigation-dot-icon-content'
+														],
+														paletteStatus
+															? strokeColorStr
+															: color,
+														'stroke'
+													),
+											}),
 										},
 										'[data-stroke]'
 									);
@@ -728,19 +729,20 @@ const NavigationIconControl = props => {
 									onChange(
 										{
 											...onChangeObj,
-											[`${prefix}content`]:
-												!isActive &&
-												(isHover
-													? setSVGContentHover
-													: setSVGContent)(
-													props[
-														'navigation-dot-icon-content'
-													],
-													paletteStatus
-														? fillColorStr
-														: color,
-													'fill'
-												),
+											...(!isActive && {
+												'navigation-dot-icon-content':
+													(isHover
+														? setSVGContentHover
+														: setSVGContent)(
+														props[
+															'navigation-dot-icon-content'
+														],
+														paletteStatus
+															? fillColorStr
+															: color,
+														'fill'
+													),
+											}),
 										},
 										'[data-fill]'
 									);

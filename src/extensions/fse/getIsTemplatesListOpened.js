@@ -6,9 +6,12 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
+import getIsSiteEditor from './getIsSiteEditor';
 import getSiteEditorIframeBody from './getSiteEditorIframeBody';
 
 const getIsTemplatesListOpened = () =>
-	!getSiteEditorIframeBody() && select('core/edit-site').isNavigationOpened();
+	getIsSiteEditor() &&
+	!getSiteEditorIframeBody() &&
+	select('core/edit-site').isNavigationOpened();
 
 export default getIsTemplatesListOpened;

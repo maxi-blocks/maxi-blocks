@@ -327,7 +327,11 @@ class edit extends MaxiBlockComponent {
 						</RichText>
 					)}
 					{dcStatus && (
-						<DCTagName className={className}>{dcContent}</DCTagName>
+						<RichText.Content
+							className={className}
+							value={dcContent}
+							tagName={textLevel}
+						/>
 					)}
 				</MaxiBlock>
 			</textContext.Provider>,

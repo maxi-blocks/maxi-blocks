@@ -75,28 +75,6 @@ const DynamicContent = props => {
 
 	useEffect(async () => {
 		if (statusRef.current) {
-			console.log(
-				'dc-error: ',
-				error,
-				' dc-status:',
-				status,
-				' dc-type:',
-				type,
-				' dc-relation:',
-				relation,
-				' dc-author:',
-				author,
-				' dc-id:',
-				id,
-				' dc-show:',
-				show,
-				' dc-field:',
-				field,
-				' postIdOptions:',
-				postIdOptions,
-				' postAuthorOptions:',
-				postAuthorOptions
-			);
 			//const res = [typeRef.current ? typeRef.current : type, id, field];
 			onChange({
 				'dc-content': sanitizeContent(

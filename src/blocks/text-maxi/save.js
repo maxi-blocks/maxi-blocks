@@ -19,6 +19,7 @@ const save = props => {
 		content,
 		listReversed,
 		listStart,
+		'dc-content': dcContent,
 		'dc-status': dcStatus,
 	} = props.attributes;
 
@@ -44,7 +45,11 @@ const save = props => {
 				/>
 			)}
 			{dcStatus && (
-				<DCTagName className={className}>$text-to-replace</DCTagName>
+				<RichText.Content
+					className={className}
+					value={dcContent}
+					tagName={textLevel}
+				/>
 			)}
 		</MaxiBlock.save>
 	);

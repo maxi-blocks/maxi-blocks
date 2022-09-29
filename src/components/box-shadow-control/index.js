@@ -183,7 +183,7 @@ const BoxShadowControl = props => {
 			return itemValue !== typeObj[item];
 		});
 
-		if (isActive) return true;
+		if (isActive) return false;
 
 		return false;
 	};

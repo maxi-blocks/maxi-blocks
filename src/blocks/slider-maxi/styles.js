@@ -385,6 +385,7 @@ const getIconObject = (props, prefix, target, isHover = false) => {
 			prefix: `${prefix}icon-`,
 			isHover,
 		}),
+		[` ${fullTarget} svg path`]: getIconPathStyles(props, isHover, prefix),
 		...(!isHover && {
 			[` ${fullTarget}`]: {
 				...getIconStyles(props, prefix),
@@ -399,11 +400,6 @@ const getIconObject = (props, prefix, target, isHover = false) => {
 		}),
 		...(!isActive && {
 			[` ${fullTarget} svg`]: getIconSize(props, isHover, prefix),
-			[` ${fullTarget} svg path`]: getIconPathStyles(
-				props,
-				isHover,
-				prefix
-			),
 		}),
 	};
 

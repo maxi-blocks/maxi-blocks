@@ -147,10 +147,10 @@ const NavigationIconControl = props => {
 		prefix === 'navigation-arrow-both-icon-'
 			? arrowShortPrefix
 			: dotsShortPrefix;
+	const isActive = prefix.includes('active');
 	const groupLabel = `${
 		shortPrefix === 'navigation-dot-' ? 'dotIcon' : 'arrowIcon'
-	}${isHover ? 'Hover' : ''}`;
-	const isActive = prefix.includes('active');
+	}${isActive ? 'Active' : ''}${isHover ? 'Hover' : ''}`;
 	const label = shortPrefix.includes('dot') ? 'dots' : 'arrows';
 
 	return (
@@ -191,61 +191,36 @@ const NavigationIconControl = props => {
 					<ResponsiveTabsControl breakpoint={breakpoint}>
 						<>
 							{!isActive && (
-								<>
-									<SvgWidthControl
-										{...getGroupAttributes(
-											props,
-											groupLabel,
-											isHover
-										)}
-										onChange={onChange}
-										prefix={prefix}
-										customLabel={`${capitalize(
-											label
-										)} size`}
-										breakpoint={breakpoint}
-										isHover={isHover}
-									/>
-									<SvgStrokeWidthControl
-										{...getGroupAttributes(
-											props,
-											groupLabel,
-											isHover
-										)}
-										onChange={obj => {
-											shortPrefix === arrowShortPrefix &&
-												onChange({
-													...obj,
-													...[
-														'first',
-														'second',
-													].reduce(
-														(prev, current) => ({
-															...prev,
-															[`navigation-arrow-${current}-icon-content`]:
-																setSVGStrokeWidth(
-																	props[
-																		`navigation-arrow-${current}-icon-content`
-																	],
-																	obj[
-																		getAttributeKey(
-																			'stroke',
-																			isHover,
-																			prefix,
-																			breakpoint
-																		)
-																	]
-																),
-														})
-													),
-												});
-											shortPrefix === dotsShortPrefix &&
-												onChange({
-													...obj,
-													'navigation-dot-icon-content':
+								<SvgWidthControl
+									{...getGroupAttributes(
+										props,
+										groupLabel,
+										isHover
+									)}
+									onChange={onChange}
+									prefix={prefix}
+									customLabel={`${capitalize(label)} size`}
+									breakpoint={breakpoint}
+									isHover={isHover}
+								/>
+							)}
+							<SvgStrokeWidthControl
+								{...getGroupAttributes(
+									props,
+									groupLabel,
+									isHover
+								)}
+								onChange={obj => {
+									shortPrefix === arrowShortPrefix &&
+										onChange({
+											...obj,
+											...['first', 'second'].reduce(
+												(prev, current) => ({
+													...prev,
+													[`navigation-arrow-${current}-icon-content`]:
 														setSVGStrokeWidth(
 															props[
-																'navigation-dot-icon-content'
+																`navigation-arrow-${current}-icon-content`
 															],
 															obj[
 																getAttributeKey(
@@ -256,17 +231,37 @@ const NavigationIconControl = props => {
 																)
 															]
 														),
-												});
-										}}
-										prefix={prefix}
-										customLabel={`${capitalize(
-											label
-										)} stroke width`}
-										breakpoint={breakpoint}
-										isHover={isHover}
-									/>
-								</>
-							)}
+												})
+											),
+										});
+									shortPrefix === dotsShortPrefix &&
+										onChange({
+											...obj,
+											...(!isActive && {
+												'navigation-dot-icon-content':
+													setSVGStrokeWidth(
+														props[
+															'navigation-dot-icon-content'
+														],
+														obj[
+															getAttributeKey(
+																'stroke',
+																isHover,
+																prefix,
+																breakpoint
+															)
+														]
+													),
+											}),
+										});
+								}}
+								prefix={prefix}
+								customLabel={`${capitalize(
+									label
+								)} stroke width`}
+								breakpoint={breakpoint}
+								isHover={isHover}
+							/>
 							{!isHover && !isActive && (
 								<>
 									<AdvancedNumberControl

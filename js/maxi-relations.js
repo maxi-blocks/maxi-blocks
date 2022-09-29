@@ -18,12 +18,18 @@ class Relation {
 
 		if (!this.triggerEl || !this.targetEl) return;
 
+		this.breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+		this.hasMultipleTargets = Object.keys(this.css).some(
+			key => !this.breakpoints.includes(key)
+		);
+
 		this.action = item.action;
 		this.effects = item.effects;
 
-		this.stylesObj = null;
-		this.effectsObj = null;
-		this.generateCssResponsiveObj();
+		({ stylesObj: this.stylesObj, effectsObj: this.effectsObj } =
+			this.generateCssResponsiveObj());
+
+		this.breakpointsObj = this.generateBreakpointsObj();
 
 		this.hoverStatus = this.effects.hoverStatus;
 		this.isContained = this.triggerEl.contains(this.targetEl);
@@ -54,13 +60,10 @@ class Relation {
 		this.getAvoidHover();
 
 		this.transitionString = '';
-		this.transitionTargets.forEach(transitionTarget =>
-			this.generateTransitions(transitionTarget)
-		);
+		this.generateTransitions();
+
 		this.stylesString = '';
-		this.transitionTargets.forEach(transitionTarget =>
-			this.generateStyles(transitionTarget)
-		);
+		this.generateStyles();
 
 		this.stylesEl = null;
 		this.transitionEl = null;
@@ -99,75 +102,146 @@ class Relation {
 		);
 	}
 
+	getLastUsableBreakpoint(currentBreakpoint, callback) {
+		return [...this.breakpoints]
+			.splice(0, this.breakpoints.indexOf(currentBreakpoint) + 1)
+			.reverse()
+			.find(breakpoint => callback(breakpoint));
+	}
+
 	/**
 	 * Generates a clean CSS and Effect object to be used to generate styles
 	 * and transition strings.
 	 */
 	generateCssResponsiveObj() {
 		const getCssObjForEachTarget = (css, effects) => {
-			let stylesObj = {};
-			let effectsObj = {};
+			const stylesObj = {};
+			const effectsObj = {};
 
-			Object.entries(css).forEach(([breakpoint, obj]) => {
-				if (
-					['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].includes(
+			const getLastEffectsBreakpointAttribute = (
+				target,
+				currentBreakpoint
+			) => {
+				const lastBreakpoint = this.getLastUsableBreakpoint(
+					currentBreakpoint,
+					breakpoint =>
+						Object.prototype.hasOwnProperty.call(
+							effects,
+							`${target}-${breakpoint}`
+						)
+				);
+
+				return {
+					[target]:
+						effects[`${target}-${lastBreakpoint ?? 'general'}`],
+				};
+			};
+
+			this.breakpoints.forEach(breakpoint => {
+				const hasCSS = Object.prototype.hasOwnProperty.call(
+					css,
+					breakpoint
+				);
+
+				if (hasCSS)
+					stylesObj[breakpoint] = { ...css[breakpoint].styles };
+
+				effectsObj[breakpoint] = {
+					...getLastEffectsBreakpointAttribute(
+						'transition-status',
 						breakpoint
-					) &&
-					(window.innerWidth <= obj.breakpoint || !obj.breakpoint)
-				) {
-					stylesObj = {
-						...stylesObj,
-						...obj.styles,
-					};
-
-					const getLastEffectsBreakpointAttribute = target =>
-						this.effects[`${target}-${breakpoint}`] !== undefined
-							? {
-									[target]:
-										effects[`${target}-${breakpoint}`],
-							  }
-							: {};
-
-					effectsObj = {
-						...effectsObj,
-						...getLastEffectsBreakpointAttribute(
-							'transition-status'
-						),
-						...getLastEffectsBreakpointAttribute(
-							'transition-duration'
-						),
-						...getLastEffectsBreakpointAttribute(
-							'transition-delay'
-						),
-						...getLastEffectsBreakpointAttribute('easing'),
-					};
-				} else if (!obj.breakpoint) {
-					const { stylesObj: rawStyles, effectsObj: rawEffects } =
-						getCssObjForEachTarget(obj, effects);
-
-					stylesObj = {
-						...stylesObj,
-						[breakpoint]: rawStyles,
-						isTargets: true,
-					};
-
-					effectsObj = {
-						...effectsObj,
-						...rawEffects,
-					};
-				}
+					),
+					...getLastEffectsBreakpointAttribute(
+						'transition-duration',
+						breakpoint
+					),
+					...getLastEffectsBreakpointAttribute(
+						'transition-delay',
+						breakpoint
+					),
+					...getLastEffectsBreakpointAttribute('easing', breakpoint),
+				};
 			});
 
 			return { stylesObj, effectsObj };
 		};
 
-		const { stylesObj, effectsObj } = getCssObjForEachTarget(
-			this.css,
-			this.effects
-		);
+		const cleanValues = obj => {
+			const response = { ...obj };
 
-		this.stylesObj = stylesObj;
-		this.effectsObj = effectsObj;
+			// Clean values
+			Object.entries(response).forEach(([key, value]) => {
+				[this.breakpoints]
+					.reverse()
+					.reduce((prevBreakpoint, breakpoint) => {
+						const isEmpty =
+							Object.keys(value[prevBreakpoint]).length === 0;
+						const isEqualThanPrevious =
+							JSON.stringify(value[breakpoint]) ===
+							JSON.stringify(value[prevBreakpoint]);
+
+						if (isEmpty || isEqualThanPrevious)
+							delete response[key][prevBreakpoint];
+
+						return breakpoint;
+					});
+			});
+
+			return response;
+		};
+
+		if (this.hasMultipleTargets) {
+			const stylesObj = {};
+			// effectsObj is the same for all targets
+			let effectsObj = {};
+
+			Object.keys(this.css).forEach(target => {
+				const { stylesObj: rawStylesObj, effectsObj: rawEffects } =
+					cleanValues(
+						getCssObjForEachTarget(this.css[target], this.effects)
+					);
+
+				stylesObj[target] = rawStylesObj;
+				effectsObj = rawEffects;
+			});
+
+			return { stylesObj, effectsObj };
+		}
+
+		return cleanValues(getCssObjForEachTarget(this.css, this.effects));
+	}
+
+	generateBreakpointsObj() {
+		const breakpointsObj = {};
+
+		const getBreakpointValues = css => {
+			this.breakpoints.forEach(breakpoint => {
+				if (
+					Object.prototype.hasOwnProperty.call(css, breakpoint) &&
+					(breakpoint !== 'xxl' ||
+						Object.prototype.hasOwnProperty.call(css, 'xl'))
+				) {
+					let { breakpoint: breakpointValue } = css[breakpoint];
+
+					breakpointValue =
+						breakpoint === 'general' ? '' : breakpointValue;
+					breakpointValue =
+						breakpoint === 'xxl'
+							? css.xl.breakpoint
+							: breakpointValue;
+
+					breakpointsObj[breakpoint] = breakpointValue;
+				}
+			});
+		};
+
+		if (this.hasMultipleTargets) {
+			Object.keys(this.css).forEach(target => {
+				getBreakpointValues(this.css[target]);
+			});
+		} else getBreakpointValues(this.css);
+
+		return breakpointsObj;
 	}
 
 	escapeRegExp(string) {
@@ -194,12 +268,16 @@ class Relation {
 		);
 	}
 
+	setDataAttrToBlock(value) {
+		this.blockTargetEl.setAttribute('data-maxi-relations', value);
+	}
+
 	addDataAttrToBlock() {
-		this.blockTargetEl.setAttribute('data-maxi-relations', 'true');
+		this.setDataAttrToBlock('true');
 	}
 
 	removeAddAttrToBlock() {
-		this.blockTargetEl.setAttribute('data-maxi-relations', 'false');
+		this.setDataAttrToBlock('false');
 	}
 
 	// Target for the creation of styles and transition lines needs to be considered
@@ -213,38 +291,70 @@ class Relation {
 		return `${this.dataTarget} ${this.target}`;
 	}
 
-	generateStyles(transitionTarget) {
+	getMediaLines(breakpoint, breakpointValue) {
+		let prevLine = '';
+		let postLine = '';
+
+		if (breakpoint === 'general') return { prevLine, postLine };
+
+		const mediaRule = breakpoint === 'xxl' ? 'min-width' : 'max-width';
+		const mediaValue =
+			breakpoint === 'xxl' ? breakpointValue + 1 : breakpointValue;
+
+		prevLine = `@media screen and (${mediaRule}: ${mediaValue}px) {`;
+		postLine = '}';
+
+		return { prevLine, postLine };
+	}
+
+	generateStyles() {
 		const getStylesLine = (stylesObj, target) => {
-			// Checks if the element needs special CSS to be avoided in case the element is hovered
-			const avoidHoverString = this.avoidHover ? ':not(:hover)' : '';
+			Object.entries(this.breakpointsObj).forEach(
+				([breakpoint, breakpointValue]) => {
+					if (stylesObj[breakpoint]) {
+						// Checks if the element needs special CSS to be avoided in case the element is hovered
+						const avoidHoverString = this.avoidHover
+							? ':not(:hover)'
+							: '';
 
-			const selector = `body.maxi-blocks--active ${
-				this.isSVG
-					? target.replace(
-							'maxi-svg-icon-block__icon',
-							match => `${match}${avoidHoverString}`
-					  )
-					: `${target.trim()}${avoidHoverString}`
-			} {`.replace(/\s{2,}/g, ' ');
+						const { prevLine, postLine } = this.getMediaLines(
+							breakpoint,
+							breakpointValue
+						);
 
-			Object.entries(stylesObj).forEach(([key, value]) => {
-				const selectorRegExp = new RegExp(
-					`(${this.escapeRegExp(selector)})`
-				);
-				if (!this.stylesString.match(selectorRegExp))
-					this.stylesString += `${selector}}`;
+						const selector =
+							`${prevLine} body.maxi-blocks--active ${
+								this.isSVG
+									? target.replace(
+											'maxi-svg-icon-block__icon',
+											match =>
+												`${match}${avoidHoverString}`
+									  )
+									: `${target.trim()}${avoidHoverString}`
+							} {`.replace(/\s{2,}/g, ' ');
 
-				this.stylesString = this.stylesString.replace(
-					selectorRegExp,
-					`$1 ${key}: ${value};`
-				);
-			});
+						Object.entries(stylesObj[breakpoint]).forEach(
+							([key, value]) => {
+								const selectorRegExp = new RegExp(
+									`(${this.escapeRegExp(selector)})`
+								);
+								if (!this.stylesString.match(selectorRegExp))
+									this.stylesString += `${selector}}${postLine}`;
+
+								this.stylesString = this.stylesString.replace(
+									selectorRegExp,
+									`$1 ${key}: ${value};`
+								);
+							}
+						);
+					}
+				}
+			);
 		};
 
-		if (this.stylesObj.isTargets)
+		if (this.hasMultipleTargets)
 			Object.entries(this.stylesObj).forEach(
 				([targetSelector, styles]) =>
-					targetSelector !== 'isTargets' &&
 					Object.keys(styles).length &&
 					getStylesLine(
 						styles,
@@ -252,9 +362,11 @@ class Relation {
 					)
 			);
 		else
-			getStylesLine(
-				this.stylesObj,
-				this.getTargetForLine(transitionTarget)
+			this.transitionTargets.forEach(transitionTarget =>
+				getStylesLine(
+					this.stylesObj,
+					this.getTargetForLine(transitionTarget)
+				)
 			);
 	}
 
@@ -266,66 +378,108 @@ class Relation {
 		this.stylesEl.remove();
 	}
 
-	generateTransitions(transitionTarget) {
-		const getLine = (stylesObj, target) => {
-			const selector = `body.maxi-blocks--active ${target} {`.replace(
-				/\s{2,}/g,
-				' '
-			);
-			const transitionString = this.getTransitionString(
-				stylesObj,
-				this.effectsObj,
-				this.isIcon
-			);
+	generateTransitions() {
+		const getTransitionLine = (stylesObj, target) => {
+			Object.entries(this.breakpointsObj).forEach(
+				([breakpoint, breakpointValue]) => {
+					if (this.effectsObj[breakpoint]) {
+						const { prevLine, postLine } = this.getMediaLines(
+							breakpoint,
+							breakpointValue
+						);
 
-			const selectorRegExp = new RegExp(
-				`(${this.escapeRegExp(selector)})`
-			);
-			if (!this.transitionString.match(selectorRegExp))
-				this.transitionString += `${selector}}`;
+						const selector =
+							`${prevLine}body.maxi-blocks--active ${target} {`.replace(
+								/\s{2,}/g,
+								' '
+							);
 
-			const transitionExistsRegExp = new RegExp(
-				`(${this.escapeRegExp(selector)}[^{]*transition:)`
-			);
-			if (!transitionString) return;
+						const currentStyleObj =
+							stylesObj[
+								this.getLastUsableBreakpoint(
+									breakpoint,
+									breakpoint =>
+										stylesObj?.[breakpoint] &&
+										Object.keys(stylesObj?.[breakpoint])
+											.length
+								)
+							];
 
-			if (this.transitionString.match(transitionExistsRegExp)) {
-				!this.isIcon &&
-					(this.transitionString = this.transitionString.replace(
-						transitionExistsRegExp,
-						`$1 ${transitionString}`
-					));
-			} else {
-				this.transitionString = this.transitionString.replace(
-					selectorRegExp,
-					`$1 transition: ${transitionString.replace(/, $/, '')};`
-				);
-			}
+						const transitionString = this.getTransitionString(
+							currentStyleObj,
+							this.effectsObj[breakpoint],
+							this.isIcon
+						);
+
+						const selectorRegExp = new RegExp(
+							`(${this.escapeRegExp(selector)})`
+						);
+						if (!this.transitionString.match(selectorRegExp))
+							this.transitionString += `${selector}}${postLine}`;
+
+						const transitionExistsRegExp = new RegExp(
+							`(${this.escapeRegExp(selector)}[^{]*transition:)`
+						);
+						if (!transitionString) return;
+
+						if (
+							this.transitionString.match(transitionExistsRegExp)
+						) {
+							if (!this.isIcon)
+								this.transitionString =
+									this.transitionString.replace(
+										transitionExistsRegExp,
+										`$1 ${transitionString}`
+									);
+						} else {
+							this.transitionString =
+								this.transitionString.replace(
+									selectorRegExp,
+									`$1 transition: ${transitionString.replace(
+										/, $/,
+										''
+									)};`
+								);
+						}
+					}
+				}
+			);
 		};
 
-		if (this.stylesObj.isTargets) {
+		if (this.hasMultipleTargets) {
 			if (!this.isSVG)
 				Object.keys(this.stylesObj).forEach(targetSelector => {
-					targetSelector !== 'isTargets' &&
-						getLine(
-							this.stylesObj[targetSelector],
-							`${this.dataTarget} ${targetSelector}`
-						);
+					getTransitionLine(
+						this.stylesObj[targetSelector],
+						`${this.dataTarget} ${targetSelector}`
+					);
 				});
-			else {
-				// Checks if the element needs special CSS to be avoided in case the element is hovered
-				const svgTarget = `${this.dataTarget} ${
-					this.avoidHover
-						? transitionTarget.replace(
-								'maxi-svg-icon-block__icon',
-								match => `${match}:not(:hover)`
-						  )
-						: transitionTarget
-				}`;
+			else
+				this.transitionTargets.forEach(transitionTarget => {
+					// Checks if the element needs special CSS to be avoided in case the element is hovered
+					const svgTarget = `${this.dataTarget} ${
+						this.avoidHover
+							? transitionTarget.replace(
+									'maxi-svg-icon-block__icon',
+									match => `${match}:not(:hover)`
+							  )
+							: transitionTarget
+					}`;
 
-				getLine(this.stylesObj, svgTarget);
-			}
-		} else getLine(this.stylesObj, this.getTargetForLine(transitionTarget));
+					Object.keys(this.stylesObj).forEach(targetSelector =>
+						getTransitionLine(
+							this.stylesObj[targetSelector],
+							svgTarget
+						)
+					);
+				});
+		} else
+			this.transitionTargets.forEach(transitionTarget =>
+				getTransitionLine(
+					this.stylesObj,
+					this.getTargetForLine(transitionTarget)
+				)
+			);
 	}
 
 	addTransition() {
@@ -337,17 +491,24 @@ class Relation {
 	}
 
 	getTransitionString(styleObj, effectsObj, isIcon) {
-		if (isIcon)
-			return effectsObj['transition-status']
-				? `all ${effectsObj['transition-duration']}s ${effectsObj['transition-delay']}s ${effectsObj.easing}`
-				: 'all 0s 0s, ';
-		return Object.keys(styleObj).reduce(
-			(transitionString, style) =>
-				effectsObj['transition-status']
-					? `${transitionString}${style} ${effectsObj['transition-duration']}s ${effectsObj['transition-delay']}s ${effectsObj.easing}, `
-					: `${transitionString}${style} 0s 0s, `,
-			''
-		);
+		const {
+			'transition-status': status,
+			'transition-duration': duration,
+			'transition-delay': delay,
+			easing,
+		} = effectsObj;
+
+		const transitionPropertiesString = `${
+			status ? `${duration}s ${delay}s ${easing}` : '0s 0s'
+		}, `;
+
+		return isIcon
+			? `all ${transitionPropertiesString}`
+			: Object.keys(styleObj).reduce(
+					(transitionString, style) =>
+						`${transitionString}${style} ${transitionPropertiesString}`,
+					''
+			  );
 	}
 
 	init() {

@@ -405,41 +405,47 @@ class Relation {
 								)
 							];
 
-						const transitionString = this.getTransitionString(
-							currentStyleObj,
-							this.effectsObj[breakpoint],
-							this.isIcon
-						);
+						if (currentStyleObj) {
+							const transitionString = this.getTransitionString(
+								currentStyleObj,
+								this.effectsObj[breakpoint],
+								this.isIcon
+							);
 
-						const selectorRegExp = new RegExp(
-							`(${this.escapeRegExp(selector)})`
-						);
-						if (!this.transitionString.match(selectorRegExp))
-							this.transitionString += `${selector}}${postLine}`;
+							const selectorRegExp = new RegExp(
+								`(${this.escapeRegExp(selector)})`
+							);
+							if (!this.transitionString.match(selectorRegExp))
+								this.transitionString += `${selector}}${postLine}`;
 
-						const transitionExistsRegExp = new RegExp(
-							`(${this.escapeRegExp(selector)}[^{]*transition:)`
-						);
-						if (!transitionString) return;
+							const transitionExistsRegExp = new RegExp(
+								`(${this.escapeRegExp(
+									selector
+								)}[^{]*transition:)`
+							);
+							if (!transitionString) return;
 
-						if (
-							this.transitionString.match(transitionExistsRegExp)
-						) {
-							if (!this.isIcon)
+							if (
+								this.transitionString.match(
+									transitionExistsRegExp
+								)
+							) {
+								if (!this.isIcon)
+									this.transitionString =
+										this.transitionString.replace(
+											transitionExistsRegExp,
+											`$1 ${transitionString}`
+										);
+							} else {
 								this.transitionString =
 									this.transitionString.replace(
-										transitionExistsRegExp,
-										`$1 ${transitionString}`
+										selectorRegExp,
+										`$1 transition: ${transitionString.replace(
+											/, $/,
+											''
+										)};`
 									);
-						} else {
-							this.transitionString =
-								this.transitionString.replace(
-									selectorRegExp,
-									`$1 transition: ${transitionString.replace(
-										/, $/,
-										''
-									)};`
-								);
+							}
 						}
 					}
 				}

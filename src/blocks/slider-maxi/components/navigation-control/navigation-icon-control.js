@@ -577,7 +577,7 @@ const NavigationIconControl = props => {
 								shortPrefix === dotsShortPrefix &&
 									onChange(
 										{
-											onChangeObj,
+											...onChangeObj,
 											...(!isActive && {
 												'navigation-dot-icon-content':
 													(isHover

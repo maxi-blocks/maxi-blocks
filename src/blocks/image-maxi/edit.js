@@ -266,7 +266,6 @@ class edit extends MaxiBlockComponent {
 								(altSelector === 'wordpress' && media?.alt) ||
 								(altSelector === 'title' && media?.title) ||
 								null;
-
 							maxiSetAttributes({
 								mediaID: media.id,
 								mediaURL: media.url,
@@ -279,6 +278,12 @@ class edit extends MaxiBlockComponent {
 									altSelector === 'wordpress' && !alt
 										? media.title
 										: alt,
+							});
+
+							maxiSetAttributes({
+								'custom-css-general': {
+									image: { normal: 'display: block;' },
+								},
 							});
 
 							this.setState({ isExternalClass: false });

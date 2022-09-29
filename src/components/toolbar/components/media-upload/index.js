@@ -92,6 +92,12 @@ const ToolbarMediaUpload = props => {
 							SVGData: SVGValue,
 						});
 					}
+
+					maxiSetAttributes({
+						'custom-css-general': {
+							image: { normal: 'display: block;' },
+						},
+					});
 				}}
 				allowedTypes='image'
 				value={mediaID}

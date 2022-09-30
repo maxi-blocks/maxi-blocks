@@ -1,7 +1,11 @@
 /**
  * Internal dependencies
  */
-import { getIsTemplatePart, getSiteEditorIframeBody } from '../fse';
+import {
+	getIsSiteEditor,
+	getIsTemplatePart,
+	getSiteEditorIframeBody,
+} from '../fse';
 
 /**
  * External dependencies
@@ -20,9 +24,12 @@ const breakpointResizer = (
 
 	const editorWrapper =
 		document.querySelector('.edit-post-visual-editor') ||
-		(getIsTemplatePart() &&
-			document.querySelector('.components-resizable-box__container')) ||
-		document.querySelector('.edit-site-visual-editor');
+		(getIsSiteEditor() &&
+			((getIsTemplatePart() &&
+				document.querySelector(
+					'.components-resizable-box__container'
+				)) ||
+				document.querySelector('.edit-site-visual-editor')));
 
 	[editorWrapper, getSiteEditorIframeBody()].forEach(element => {
 		element?.setAttribute(

@@ -484,3 +484,12 @@ html[dir='rtl'] {
 		}
 	}
 }
+
+/**
+* Hide scrollbar in iframe editor #3574
+*/
+body[maxi-blocks-responsive] {
+	&::-webkit-scrollbar {
+		width: 0;
+	}
+}

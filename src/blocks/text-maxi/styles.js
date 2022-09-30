@@ -31,9 +31,8 @@ import {
 	getZIndexStyles,
 	getFlexStyles,
 } from '../../extensions/styles/helpers';
-import { selectorsText } from './custom-css';
+import data from './data';
 import { getSVGListStyle } from './utils';
-import transitionObj from './transitionObj';
 
 /**
  * External dependencies
@@ -601,9 +600,8 @@ const getStyles = props => {
 					props.blockStyle
 				),
 			},
-			selectorsText,
-			props,
-			transitionObj
+			data,
+			props
 		),
 	};
 };

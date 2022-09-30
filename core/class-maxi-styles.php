@@ -29,22 +29,23 @@ class MaxiBlocks_Styles
         add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
     }
 
-	/**
+    /**
      * Get block data
      */
-	public function get_block_data($js_var, $meta) {
-		switch ($js_var) {
-			case 'search':
-				return [$meta, get_search_link()];
-				break;
-			case 'map':
-				return [$meta, get_option('google_api_key_option')];
-				break;
-			default:
-				return [$meta];
-				break;
-		}
-	}
+    public function get_block_data($js_var, $meta)
+    {
+        switch ($js_var) {
+            case 'search':
+                return [$meta, get_search_link()];
+                break;
+            case 'map':
+                return [$meta, get_option('google_api_key_option')];
+                break;
+            default:
+                return [$meta];
+                break;
+        }
+    }
 
     /**
      * Enqueuing styles
@@ -69,8 +70,8 @@ class MaxiBlocks_Styles
                 'shape-divider',
                 'relations',
                 'video',
-				'search',
-				'map',
+                'search',
+                'map',
                 'accordion',
             ];
 

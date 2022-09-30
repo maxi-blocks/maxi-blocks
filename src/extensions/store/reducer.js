@@ -13,6 +13,7 @@ const breakpointResizer = (
 	breakpoints,
 	winSize = 0,
 	winBreakpoint,
+	isGutenbergButton = false,
 	ignoreMaxiBlockResponsiveWidth
 ) => {
 	const xxlSize = breakpoints.xl + 1;
@@ -42,15 +43,25 @@ const breakpointResizer = (
 			responsiveWidth
 		);
 
+		if (!isGutenbergButton)
+			editorWrapper.setAttribute('is-maxi-preview', true);
+		else editorWrapper.removeAttribute('is-maxi-preview');
+
 		if (size === 'general') {
 			editorWrapper.style.width = '';
 			editorWrapper.style.margin = '';
 		} else {
-			editorWrapper.style.width = `${responsiveWidth}px`;
-
 			if (winHeight > responsiveWidth)
 				editorWrapper.style.margin = '0 auto';
 			else editorWrapper.style.margin = '';
+
+			if (isGutenbergButton) {
+				editorWrapper.style = null;
+			} else if (['s', 'xs'].includes(size)) {
+				editorWrapper.style.width = 'fit-content';
+			} else if (editorWrapper.style.width !== `${responsiveWidth}px`) {
+				editorWrapper.style.width = `${responsiveWidth}px`;
+			}
 		}
 	}
 };
@@ -92,18 +103,19 @@ const reducer = (
 				state.breakpoints,
 				state.settings.window.width,
 				action.winBreakpoint,
+				action.isGutenbergButton,
 				action.ignoreMaxiBlockResponsiveWidth
 			);
 			return {
 				...state,
 				deviceType: action.deviceType,
 			};
-		case 'SET_WINDOW_SIZE':
+		case 'SET_EDITOR_CONTENT_SIZE':
 			return {
 				...state,
 				settings: {
 					...state.settings,
-					window: action.winSize,
+					editorContent: action.editorContentSize,
 				},
 			};
 		case 'COPY_STYLES':
@@ -126,7 +138,7 @@ const reducer = (
 			} else if (depth < newInspectorPath.length) {
 				newInspectorPath[depth] = newValue;
 
-				for (let i = depth + 1; i <= newInspectorPath.length; i++) {
+				for (let i = depth + 1; i <= newInspectorPath.length; i += 1) {
 					newInspectorPath.splice(i, 1);
 				}
 

@@ -27,11 +27,11 @@ const selectors = {
 		return false;
 	},
 	receiveXXLSize(state) {
-		if (state && state.settings?.window?.width) {
-			const { width: winWidth } = state.settings.window;
+		if (state && state.settings?.editorContent?.width) {
+			const { width: editorContentWidth } = state.settings.editorContent;
 
-			return winWidth >= state.breakpoints.xl
-				? winWidth
+			return editorContentWidth >= state.breakpoints.xl
+				? editorContentWidth
 				: state.breakpoints.xl + 1;
 		}
 
@@ -53,16 +53,12 @@ const selectors = {
 		if (state) return state.tabsPath;
 		return false;
 	},
-	receiveWinBreakpoint(state) {
+	receiveBaseBreakpoint(state) {
 		if (!state) return false;
 
-		const winWidth = getIsSiteEditor()
-			? document
-					.querySelector('.interface-interface-skeleton__content')
-					?.getBoundingClientRect().width
-			: state?.settings?.window?.width ?? window.innerWidth;
+		const editorContentWidth = state?.settings?.editorContent?.width;
 
-		if (!winWidth) return false;
+		if (!editorContentWidth) return false;
 
 		const breakpoints = !isEmpty(state.breakpoints)
 			? state.breakpoints
@@ -74,7 +70,7 @@ const selectors = {
 					xl: 1920,
 			  };
 
-		return getBreakpointFromWidth(winWidth, breakpoints);
+		return getBreakpointFromWidth(breakpoints, editorContentWidth);
 	},
 };
 

@@ -54,7 +54,6 @@ const getCleanContent = content => {
 };
 
 const styleResolver = (
-	target,
 	styles,
 	// eslint-disable-next-line default-param-last
 	remover = false,
@@ -75,16 +74,18 @@ const styleResolver = (
 			response[target].content = props;
 		}
 		if (remover) response.push(target);
+
+		if (response?.[target]?.content)
+			response[target].content = getCleanContent(
+				response[target].content
+			);
+
+		if (update) {
+			if (!remover)
+				dispatch('maxiBlocks/styles').updateStyles(target, response);
+			else dispatch('maxiBlocks/styles').removeStyles(response);
+		}
 	});
-
-	if (response?.[target]?.content)
-		response[target].content = getCleanContent(response[target].content);
-
-	if (update) {
-		if (!remover)
-			dispatch('maxiBlocks/styles').updateStyles(target, response);
-		else dispatch('maxiBlocks/styles').removeStyles(response);
-	}
 
 	return response;
 };

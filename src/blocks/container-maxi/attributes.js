@@ -28,6 +28,9 @@ const attributes = {
 					'background-palette-opacity': 1,
 					'background-color-general': '',
 					'background-color-clip-path-general': '',
+					'background-color-wrapper-position-sync-general': 'all',
+					'background-color-wrapper-size-general': 100,
+					'background-color-wrapper-size-unit-general': '%',
 					order: 1,
 					id: 1,
 				},
@@ -134,6 +137,10 @@ const attributes = {
 		'row-gap-unit-general': {
 			type: 'string',
 			default: 'px',
+		},
+		'flex-direction-general': {
+			type: 'string',
+			default: 'column',
 		},
 	},
 };

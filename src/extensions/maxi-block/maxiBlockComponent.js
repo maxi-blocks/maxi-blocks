@@ -15,7 +15,7 @@
  * WordPress dependencies
  */
 import { Component, render, createRef } from '@wordpress/element';
-import { select, dispatch, useSelect } from '@wordpress/data';
+import { dispatch, resolveSelect, select, useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -40,11 +40,14 @@ import {
 	getSiteEditorIframe,
 	getTemplateViewIframe,
 } from '../fse';
+import getHoverStatus from '../../components/relation-control/getHoverStatus';
+import * as blocksData from '../../blocks/data';
 
 /**
  * External dependencies
  */
 import { isEmpty, isEqual, cloneDeep, isNil } from 'lodash';
+import { getStylesWrapperId } from './utils';
 
 /**
  * Style Component
@@ -73,7 +76,7 @@ const StyleComponent = ({
 		return areBreakpointsLoaded ? blockBreakpoints : breakpoints;
 	};
 
-	const styles = styleResolver(uniqueID, stylesObj, false, getBreakpoints());
+	const styles = styleResolver(stylesObj, false, getBreakpoints());
 
 	const styleContent = styleGenerator(
 		styles,
@@ -115,6 +118,20 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidMount() {
+		const { receiveMaxiSettings } = resolveSelect('maxiBlocks');
+		receiveMaxiSettings()
+			.then(settings => {
+				const { attributes } = this.props;
+				const maxiVersion = settings.maxi_version;
+
+				if (maxiVersion !== attributes['maxi-version-current'])
+					attributes['maxi-version-current'] = maxiVersion;
+
+				if (!attributes['maxi-version-origin'])
+					attributes['maxi-version-origin'] = maxiVersion;
+			})
+			.catch(() => console.error('Maxi Blocks: Could not load settings'));
+
 		if (this.maxiBlockDidMount) this.maxiBlockDidMount();
 
 		this.displayStyles();
@@ -152,7 +169,7 @@ class MaxiBlockComponent extends Component {
 		if (
 			this.props.isSelected !== nextProps.isSelected || // In case selecting/unselecting the block
 			this.props.deviceType !== nextProps.deviceType || // In case of breakpoint change
-			this.props.winBreakpoint !== nextProps.winBreakpoint // In case of winBreakpoint change
+			this.props.baseBreakpoint !== nextProps.baseBreakpoint // In case of baseBreakpoint change
 		)
 			return true;
 
@@ -211,6 +228,8 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState, shouldDisplayStyles) {
+		this.updateRelationHoverStatus();
+
 		// Even when not rendering, on breakpoint stage change
 		// re-render the styles
 		const breakpoint = select('maxiBlocks').receiveMaxiDeviceType();
@@ -235,11 +254,17 @@ class MaxiBlockComponent extends Component {
 			).length <= 1
 		) {
 			const obj = this.getStylesObject;
-			styleResolver('', obj, true);
+			styleResolver(obj, true);
+			this.removeStyles();
 		}
 
 		dispatch('maxiBlocks/customData').removeCustomData(
 			this.props.attributes.uniqueID
+		);
+
+		this.removeUnmountedBlockFromRelations(
+			this.props.attributes.uniqueID,
+			select('core/block-editor').getBlocks()
 		);
 
 		if (this.maxiBlockWillUnmount) this.maxiBlockWillUnmount();
@@ -367,6 +392,123 @@ class MaxiBlockComponent extends Component {
 		if (!isEmpty(response)) loadFonts(response);
 	}
 
+	updateRelationHoverStatus() {
+		const { name, attributes } = this.props;
+
+		const updateRelationHoverStatusRecursive = (
+			blockName,
+			blockAttributes,
+			blocksToCheck
+		) => {
+			const { uniqueID } = blockAttributes;
+
+			blocksToCheck.forEach(
+				({
+					clientId,
+					attributes: currentBlockAttributes,
+					innerBlocks,
+				}) => {
+					const { relations, uniqueID: blockUniqueID } =
+						currentBlockAttributes;
+
+					if (uniqueID !== blockUniqueID && !isEmpty(relations)) {
+						const newRelations = relations.map(relation => {
+							const {
+								attributes: relationAttributes,
+								settings: settingName,
+								uniqueID: relationUniqueID,
+							} = relation;
+
+							if (!settingName || uniqueID !== relationUniqueID)
+								return relation;
+
+							const { effects } = relation;
+
+							if (!('hoverStatus' in effects)) return relation;
+
+							const blockData = Object.values(blocksData).find(
+								({ name }) =>
+									name ===
+									blockName.replace('maxi-blocks/', '')
+							);
+
+							if (!blockData?.interactionBuilderSettings)
+								return relation;
+
+							const { hoverProp } =
+								blockData.interactionBuilderSettings.find(
+									({ label }) => label === settingName
+								);
+
+							return {
+								...relation,
+								effects: {
+									...effects,
+									hoverStatus: getHoverStatus(
+										hoverProp,
+										blockAttributes,
+										relationAttributes
+									),
+								},
+							};
+						});
+
+						if (!isEqual(relations, newRelations))
+							dispatch('core/block-editor').updateBlockAttributes(
+								clientId,
+								{ relations: newRelations }
+							);
+					}
+
+					if (!isEmpty(innerBlocks))
+						updateRelationHoverStatusRecursive(
+							blockName,
+							blockAttributes,
+							innerBlocks
+						);
+				}
+			);
+		};
+
+		updateRelationHoverStatusRecursive(
+			name,
+			attributes,
+			select('core/block-editor').getBlocks()
+		);
+	}
+
+	removeUnmountedBlockFromRelations(uniqueID, blocksToCheck) {
+		if (
+			select('core/edit-post').getEditorMode() !== 'visual' ||
+			select('core/edit-post').__experimentalGetPreviewDeviceType() !==
+				this.currentBreakpoint
+		)
+			return;
+
+		blocksToCheck.forEach(({ clientId, attributes, innerBlocks }) => {
+			const { relations, uniqueID: blockUniqueID } = attributes;
+
+			if (uniqueID !== blockUniqueID && !isEmpty(relations)) {
+				const filteredRelations = relations.filter(
+					({ uniqueID: relationUniqueID }) =>
+						relationUniqueID !== uniqueID
+				);
+
+				if (!isEqual(relations, filteredRelations)) {
+					const { updateBlockAttributes } =
+						dispatch('core/block-editor');
+
+					updateBlockAttributes(clientId, {
+						relations: filteredRelations,
+					});
+				}
+			}
+
+			if (!isEmpty(innerBlocks))
+				this.removeUnmountedBlockFromRelations(uniqueID, innerBlocks);
+		});
+	}
+
 	/**
 	 * Refresh the styles on Editor
 	 */
@@ -405,7 +547,7 @@ class MaxiBlockComponent extends Component {
 					iframeBody.setAttribute('maxi-blocks-responsive', 'xl');
 
 					let wrapper = iframeHead.querySelector(
-						`#maxi-blocks__styles--${uniqueID}`
+						`#${getStylesWrapperId(uniqueID)}`
 					);
 
 					if (!wrapper) {
@@ -435,7 +577,7 @@ class MaxiBlockComponent extends Component {
 					if (isEmpty(iframeHead.childNodes)) return;
 
 					let iframeWrapper = iframeHead.querySelector(
-						`#maxi-blocks__styles--${uniqueID}`
+						`#${getStylesWrapperId(uniqueID)}`
 					);
 
 					if (!iframeWrapper) {
@@ -458,7 +600,7 @@ class MaxiBlockComponent extends Component {
 				}
 			} else {
 				let wrapper = document.querySelector(
-					`#maxi-blocks__styles--${uniqueID}`
+					`#${getStylesWrapperId(uniqueID)}`
 				);
 
 				if (!wrapper) {
@@ -489,12 +631,12 @@ class MaxiBlockComponent extends Component {
 
 				if (iframeDocument.head) {
 					let iframeWrapper = iframeDocument.querySelector(
-						`#maxi-blocks__styles--${uniqueID}`
+						`#${getStylesWrapperId(uniqueID)}`
 					);
 
 					if (!iframeWrapper) {
 						iframeWrapper = iframeDocument.createElement('div');
-						iframeWrapper.id = `maxi-blocks__styles--${uniqueID}`;
+						iframeWrapper.id = getStylesWrapperId(uniqueID);
 						iframeWrapper.classList.add('maxi-blocks__styles');
 						iframeDocument.head.appendChild(iframeWrapper);
 					}
@@ -512,6 +654,12 @@ class MaxiBlockComponent extends Component {
 				}
 			}
 		}
+	}
+
+	removeStyles() {
+		document
+			.getElementById(getStylesWrapperId(this.props.attributes.uniqueID))
+			.remove();
 	}
 }
 

@@ -218,7 +218,7 @@ export const createSCStyleString = SCObject => {
 	let response = ':root{';
 
 	Object.entries(SCObject).forEach(([key, val]) => {
-		response += `${key}:${val};`;
+		if (val) response += `${key}:${val};`;
 	});
 
 	response += '}';

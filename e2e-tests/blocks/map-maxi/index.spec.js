@@ -1,15 +1,12 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	getEditedPostContent,
-	insertBlock,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 import {
 	addCustomCSS,
 	getAttributes,
 	getBlockStyle,
+	getEditedPostContent,
 	openPreviewPage,
 } from '../../utils';
 import getMapContainer from './utils/getMapContainer';
@@ -66,12 +63,14 @@ describe('Map Maxi', () => {
 	});
 
 	it('Map Maxi does not break', async () => {
-		expect(await getEditedPostContent()).toMatchSnapshot();
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
 		// Check frontend
 		const previewPage = await openPreviewPage(page);
-		await previewPage.waitForSelector('.maxi-map-block__container');
+		await previewPage.waitForSelector('.leaflet-container');
+		// Waiting for the animation to complete
+		await page.waitForTimeout(400);
 		const container = await previewPage.$eval(
 			'.maxi-map-block__container',
 			container => container.innerHTML.trim()

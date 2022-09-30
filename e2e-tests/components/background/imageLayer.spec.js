@@ -16,6 +16,7 @@ import {
 	getBlockStyle,
 	editAdvancedNumberControl,
 } from '../../utils';
+import sizeAndPositionChecker from './utils/sizeAndPositionChecker';
 
 describe('BackgroundControl', () => {
 	it('Check Background image layer', async () => {
@@ -86,6 +87,8 @@ describe('BackgroundControl', () => {
 		await page.$$eval('.clip-path-defaults button', buttons =>
 			buttons[3].click()
 		);
+
+		await sizeAndPositionChecker({ page });
 
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
@@ -179,6 +182,8 @@ describe('BackgroundControl', () => {
 		);
 		expect(sBackgroundAttachment).toStrictEqual('local');
 
+		await sizeAndPositionChecker({ page, breakpoint: 's' });
+
 		await changeResponsive(page, 'xs');
 		const xsBackgroundSize = await page.$eval(
 			'.maxi-background-control__image-layer__size-selector select',
@@ -207,6 +212,8 @@ describe('BackgroundControl', () => {
 		);
 		expect(xsBackgroundAttachment).toStrictEqual('local');
 
+		await sizeAndPositionChecker({ page, breakpoint: 'xs' });
+
 		await changeResponsive(page, 'm');
 		const mBackgroundSize = await page.$eval(
 			'.maxi-background-control__image-layer__size-selector select',
@@ -234,6 +241,9 @@ describe('BackgroundControl', () => {
 			selector => selector.value
 		);
 		expect(mBackgroundAttachment).toStrictEqual('fixed');
+
+		await sizeAndPositionChecker({ page, breakpoint: 'm' });
+
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
@@ -317,6 +327,8 @@ describe('BackgroundControl', () => {
 		await page.$$eval('.clip-path-defaults button', buttons =>
 			buttons[3].click()
 		);
+
+		await sizeAndPositionChecker({ page, isHover: true });
 
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
@@ -408,6 +420,8 @@ describe('BackgroundControl', () => {
 		);
 		expect(sBackgroundAttachment).toStrictEqual('scroll');
 
+		await sizeAndPositionChecker({ page, breakpoint: 's', isHover: true });
+
 		await changeResponsive(page, 'xs');
 		const xsBackgroundSize = await page.$eval(
 			'.maxi-background-control__image-layer__size-selector select',
@@ -436,6 +450,8 @@ describe('BackgroundControl', () => {
 		);
 		expect(xsBackgroundAttachment).toStrictEqual('scroll');
 
+		await sizeAndPositionChecker({ page, breakpoint: 'xs', isHover: true });
+
 		await changeResponsive(page, 'm');
 		const mBackgroundSize = await page.$eval(
 			'.maxi-background-control__image-layer__size-selector select',
@@ -463,6 +479,9 @@ describe('BackgroundControl', () => {
 			selector => selector.value
 		);
 		expect(mBackgroundAttachment).toStrictEqual('local');
+
+		await sizeAndPositionChecker({ page, breakpoint: 'm', isHover: true });
+
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 	it('Check Background Image layer display', async () => {

@@ -48,17 +48,6 @@ const allowedBlocks = [
 ];
 
 wp.domReady(() => {
-	// Window size
-	const setWindowSize = e => {
-		const { innerWidth: width, innerHeight: height } = e.target;
-
-		dispatch('maxiBlocks').setWindowSize({ width, height });
-	};
-
-	setWindowSize({ target: window });
-
-	window.addEventListener('resize', e => setWindowSize(e));
-
 	const observerSubscribe = subscribe(() => {
 		const targetNode =
 			document.querySelector('.edit-post-layout') ||
@@ -202,7 +191,6 @@ wp.domReady(() => {
 						);
 					}
 
-					// Responsive editor
 					if (
 						mutation.type === 'attributes' &&
 						mutation.target.classList.contains(
@@ -212,11 +200,21 @@ wp.domReady(() => {
 							'editor-styles-wrapper'
 						)
 					) {
+						// Responsive editor
 						const responsiveWidth = mutation.target.getAttribute(
 							'maxi-blocks-responsive-width'
 						);
+						const isMaxiPreview =
+							mutation.target.getAttribute('is-maxi-preview');
+						const breakpoint = mutation.target.getAttribute(
+							'maxi-blocks-responsive'
+						);
 
-						if (
+						if (!isMaxiPreview) {
+							mutation.target.style = null;
+						} else if (['s', 'xs'].includes(breakpoint)) {
+							mutation.target.style.width = 'fit-content';
+						} else if (
 							mutation.target.style.width !==
 							`${responsiveWidth}px`
 						) {
@@ -249,8 +247,21 @@ wp.domReady(() => {
 							'iframe[name="editor-canvas"]'
 						);
 						const iframeDocument = iframe.contentDocument;
-
 						const editorWrapper = iframeDocument.body;
+
+						const postEditor = mutation.target.closest(
+							'.edit-post-visual-editor'
+						);
+						const responsiveWidth = postEditor.getAttribute(
+							'maxi-blocks-responsive-width'
+						);
+						const isMaxiPreview =
+							postEditor.getAttribute('is-maxi-preview');
+
+						if (isMaxiPreview) {
+							mutation.target.style.width = `${responsiveWidth}px`;
+							mutation.target.style.boxSizing = 'content-box';
+						}
 
 						if (editorWrapper) {
 							editorWrapper.setAttribute(
@@ -282,8 +293,16 @@ wp.domReady(() => {
 										: 'xs'
 								);
 
+								// Hides scrollbar in firefox
+								iframeDocument.documentElement.style.scrollbarWidth =
+									'none';
+
 								// Copy all fonts to iframe
-								loadFonts(getPageFonts(), true, iframeDocument);
+								loadFonts(
+									getPageFonts(true),
+									true,
+									iframeDocument
+								);
 
 								// Get all Maxi blocks <style> from <head>
 								// and move to new iframe
@@ -528,4 +547,24 @@ wp.domReady(() => {
 			} else templatePartResizeObserver.disconnect();
 		});
 	}
+	const editorContentUnsubscribe = subscribe(() => {
+		const targetNode = document.querySelector(
+			'.interface-interface-skeleton__content'
+		);
+
+		if (targetNode) {
+			const { setEditorContentSize } = dispatch('maxiBlocks');
+
+			const resizeObserver = new ResizeObserver(() => {
+				const { width, height } = targetNode.getBoundingClientRect();
+				setEditorContentSize({ width, height });
+			});
+
+			[targetNode, document.body].forEach(element =>
+				resizeObserver.observe(element)
+			);
+
+			editorContentUnsubscribe();
+		}
+	});
 });

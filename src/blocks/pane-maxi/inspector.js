@@ -10,13 +10,44 @@ import { InspectorControls } from '@wordpress/block-editor';
 import { SettingTabsControl, AccordionControl } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { withMaxiInspector } from '../../extensions/inspector';
-import { categoriesPane, selectorsPane } from './custom-css';
+import { customCss } from './data';
 
 /**
  * Inspector
  */
 const Inspector = props => {
 	const { deviceType } = props;
+	const { selectors, categories } = customCss;
+
+	const getBaseSettings = (prefix, inlineTarget, label) => [
+		...inspectorTabs.background({
+			props,
+			label,
+			prefix,
+			inlineTarget,
+			disableImage: true,
+			disableVideo: true,
+			disableSVG: true,
+		}),
+		...inspectorTabs.border({
+			props,
+			prefix,
+		}),
+		...inspectorTabs.boxShadow({
+			props,
+			prefix,
+		}),
+		...inspectorTabs.size({
+			props,
+			prefix,
+		}),
+		...inspectorTabs.marginPadding({
+			props,
+			customLabel: 'Padding',
+			prefix,
+			disableMargin: true,
+		}),
+	];
 
 	return (
 		<InspectorControls>
@@ -37,6 +68,54 @@ const Inspector = props => {
 						content: (
 							<AccordionControl
 								items={[
+									{
+										label: __(
+											'Pane settings',
+											'maxi-blocks'
+										),
+										disablePadding: true,
+										content: (
+											<SettingTabsControl
+												disablePadding
+												isNestedAccordion
+												hasBorder
+												items={[
+													{
+														label: __(
+															'Header',
+															'maxi-blocks'
+														),
+														content: (
+															<AccordionControl
+																isNestedAccordion
+																items={getBaseSettings(
+																	'header-',
+																	'.maxi-pane-block__header',
+																	'Header'
+																)}
+															/>
+														),
+													},
+													{
+														label: __(
+															'Content',
+															'maxi-blocks'
+														),
+														content: (
+															<AccordionControl
+																isNestedAccordion
+																items={getBaseSettings(
+																	'content-',
+																	'.maxi-pane-block__content',
+																	'Content'
+																)}
+															/>
+														),
+													},
+												]}
+											/>
+										),
+									},
 									...inspectorTabs.blockBackground({
 										props,
 									}),
@@ -82,8 +161,8 @@ const Inspector = props => {
 											...props,
 										},
 										breakpoint: deviceType,
-										selectors: selectorsPane,
-										categories: categoriesPane,
+										selectors,
+										categories,
 									}),
 									...inspectorTabs.scrollEffects({
 										props: {
@@ -94,8 +173,8 @@ const Inspector = props => {
 										props: {
 											...props,
 										},
-										selectors: selectorsPane,
-										categories: categoriesPane,
+										selectors,
+										categories,
 									}),
 									...inspectorTabs.transition({
 										props: {

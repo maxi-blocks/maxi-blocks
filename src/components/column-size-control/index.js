@@ -17,10 +17,33 @@ import SelectControl from '../select-control';
 import { ToggleSwitch } from '../../components';
 
 /**
+ * General
+ */
+const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
+/**
  * Component
  */
 const ColumnSizeControl = props => {
 	const { breakpoint, rowPattern, clientId, onChange } = props;
+
+	breakpoints.forEach(breakpoint => {
+		const breakpointAttribute = getLastBreakpointAttribute({
+			target: 'column-fit-content',
+			breakpoint,
+			attributes: props,
+		});
+
+		onChange({
+			[`column-fit-content-${breakpoint}`]: !breakpointAttribute
+				? false
+				: getLastBreakpointAttribute({
+						target: 'column-fit-content',
+						breakpoint,
+						attributes: props,
+				  }),
+		});
+	});
 
 	return (
 		<>

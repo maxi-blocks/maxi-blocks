@@ -171,7 +171,7 @@ class MaxiBlocks_Styles
 			$template_id .= $template_slug;
 		}
 		else if(is_home()) {
-			$template_id .= 'home';
+			$template_id .= resolve_block_template('home', array('front-page', 'home'), '')->slug;
 		}
 		else if(is_search()) {
 			$template_id .= 'search';

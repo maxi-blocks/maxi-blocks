@@ -82,6 +82,8 @@ const attributes = () =>
 	});
 
 const migrate = ({ newAttributes, attributes }) => {
+	if (!isEligible(newAttributes)) return newAttributes;
+
 	const attrsToChange = getAttrsToChange(newAttributes);
 
 	Object.entries(attrsToChange).forEach(([key, val]) => {

@@ -23,6 +23,8 @@ const isEligible = blockAttributes =>
 	);
 
 const migrate = ({ newAttributes }) => {
+	if (!isEligible(newAttributes)) return newAttributes;
+
 	Object.entries(newAttributes).forEach(([key, attr]) => {
 		if (key.includes('background-hover-status')) {
 			const newKey = key.replace('hover-status', 'status-hover');

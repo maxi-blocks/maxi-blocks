@@ -28,6 +28,7 @@ const transitionAttributesCreator = (transitionObj = transitionDefault) => {
 		options &&
 		options.forEach(
 			({ hoverProp, ignoreHoverProp, prefix, property, title }) => {
+				console.log(title, options);
 				transitionStyleObj[type] = {
 					...transitionStyleObj[type],
 					[title.toLowerCase()]: {

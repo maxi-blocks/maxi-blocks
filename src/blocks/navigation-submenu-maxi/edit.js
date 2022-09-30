@@ -12,7 +12,7 @@ import Inspector from './inspector';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
-import copyPasteMapping from './copy-paste-mapping';
+import { copyPasteMapping } from './data';
 
 const DropDown = () => {
 	const ALLOWED_BLOCKS = [

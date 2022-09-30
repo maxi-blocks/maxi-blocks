@@ -20,8 +20,7 @@ import {
 	getSizeStyles,
 	getTypographyStyles,
 } from '../../extensions/styles/helpers';
-import { selectorsNavigationMenu } from './custom-css';
-import transitionObj from './transitionObj';
+import { customCss, transition } from './data';
 
 const getNormalObject = props => {
 	const response = {
@@ -324,9 +323,9 @@ const getStyles = props => {
 				':hover': getHoverObject(props),
 				...getMenuItemObject(props),
 			},
-			selectorsNavigationMenu,
+			customCss.selectors,
 			props,
-			transitionObj
+			transition
 		),
 	};
 

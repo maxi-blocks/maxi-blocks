@@ -14,10 +14,6 @@ import {
 	SelectControl,
 } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
-import {
-	selectorsNavigationMenu,
-	categoriesNavigationMenu,
-} from './custom-css';
 import { getGroupAttributes } from '../../extensions/styles';
 import MenuItemControl from './components/menu-item-control';
 import MenuItemEffectControl from './components/menu-item-effect-control';
@@ -25,6 +21,7 @@ import {
 	convertClassicMenuToBlocks,
 	convertGutenbergMenuToMaxi,
 } from '../../extensions/navigation-menu';
+import { customCss } from './data';
 
 /**
  * Inspector
@@ -226,16 +223,16 @@ const Inspector = props => {
 									...inspectorTabs.customCss({
 										props,
 										breakpoint: deviceType,
-										selectors: selectorsNavigationMenu,
-										categories: categoriesNavigationMenu,
+										selectors: customCss.selectors,
+										categories: customCss.categories,
 									}),
 									...inspectorTabs.scrollEffects({
 										props,
 									}),
 									...inspectorTabs.transform({
 										props,
-										selectors: selectorsNavigationMenu,
-										categories: categoriesNavigationMenu,
+										selectors: customCss.selectors,
+										categories: customCss.categories,
 									}),
 									...inspectorTabs.transition({
 										props,

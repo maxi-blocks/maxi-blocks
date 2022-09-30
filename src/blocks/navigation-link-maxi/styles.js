@@ -13,7 +13,7 @@ import {
 	getFlexStyles,
 	getSizeStyles,
 } from '../../extensions/styles/helpers';
-import { selectorsNavigationLink } from './custom-css';
+import { customCss } from './data';
 
 const getNormalObject = props => {
 	const response = {
@@ -100,7 +100,7 @@ const getStyles = props => {
 				'': getNormalObject(props),
 				':hover': getHoverObject(props),
 			},
-			selectorsNavigationLink,
+			customCss.selectors,
 			props
 		),
 	};

@@ -1,4 +1,4 @@
-const changeResponsive = async (page, size, enterIframe = false) => {
+const changeResponsive = async (page, size, checkForIframe = false) => {
 	const baseBreakpoint = await page.evaluate(() =>
 		wp.data.select('maxiBlocks').receiveBaseBreakpoint()
 	);
@@ -18,12 +18,12 @@ const changeResponsive = async (page, size, enterIframe = false) => {
 				...(width && { width }),
 			}),
 		parsedSize,
-		enterIframe &&
+		checkForIframe &&
 			parsedSize !== 'general' &&
 			(size !== 'xxl' ? breakpoints[size] : xxlSize)
 	);
 
-	if (enterIframe && (size === 's' || size === 'xs')) {
+	if (checkForIframe && (size === 's' || size === 'xs')) {
 		const iframe = await page.$('iframe[name="editor-canvas"]');
 		return iframe.contentFrame();
 	}

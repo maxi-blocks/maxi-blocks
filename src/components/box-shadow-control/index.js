@@ -159,7 +159,9 @@ const BoxShadowControl = props => {
 		onChange(response);
 	};
 
-	const getIsActive = typeObj => {
+	const getIsActive = (typeObj, isNone = false) => {
+		if (isNone) return false;
+
 		const items = [
 			`${prefix}box-shadow-palette-opacity`,
 			`${prefix}box-shadow-horizontal`,
@@ -183,12 +185,12 @@ const BoxShadowControl = props => {
 			return itemValue !== typeObj[item];
 		});
 
-		if (isActive) return false;
+		if (isActive) return true;
 
 		return false;
 	};
 
-	const isNone = getIsActive(boxShadowNone(prefix));
+	const isNone = getIsActive(boxShadowNone(prefix), true);
 
 	const classes = classnames(
 		'maxi-shadow-control',

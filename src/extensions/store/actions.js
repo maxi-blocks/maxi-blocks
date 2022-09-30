@@ -76,13 +76,13 @@ const actions = {
 			if (gutenbergDeviceType) setPreviewDeviceType(gutenbergDeviceType);
 		}
 
-		const { receiveWinBreakpoint } = select('maxiBlocks');
-		const winBreakpoint = receiveWinBreakpoint();
+		const { receiveBaseBreakpoint } = select('maxiBlocks');
+		const baseBreakpoint = receiveBaseBreakpoint();
 
 		return {
 			type: 'SET_DEVICE_TYPE',
 			deviceType,
-			winBreakpoint,
+			baseBreakpoint,
 			isGutenbergButton,
 			ignoreMaxiBlockResponsiveWidth,
 		};

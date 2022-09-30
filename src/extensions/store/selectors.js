@@ -2,7 +2,6 @@
  * Internal dependencies
  */
 import { getBreakpointFromWidth } from '../styles';
-import { getIsSiteEditor } from '../fse';
 
 /**
  * External dependencies
@@ -70,7 +69,7 @@ const selectors = {
 					xl: 1920,
 			  };
 
-		return getBreakpointFromWidth(breakpoints, editorContentWidth);
+		return getBreakpointFromWidth(editorContentWidth, breakpoints);
 	},
 };
 

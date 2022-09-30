@@ -12,7 +12,7 @@ const breakpointResizer = (
 	size,
 	breakpoints,
 	winSize = 0,
-	winBreakpoint,
+	baseBreakpoint,
 	isGutenbergButton = false,
 	ignoreMaxiBlockResponsiveWidth
 ) => {
@@ -27,7 +27,7 @@ const breakpointResizer = (
 	[editorWrapper, getSiteEditorIframeBody()].forEach(element => {
 		element?.setAttribute(
 			'maxi-blocks-responsive',
-			size !== 'general' ? size : winBreakpoint
+			size !== 'general' ? size : baseBreakpoint
 		);
 	});
 
@@ -101,8 +101,8 @@ const reducer = (
 			breakpointResizer(
 				action.deviceType,
 				state.breakpoints,
-				state.settings.window.width,
-				action.winBreakpoint,
+				state.settings.editorContent.width,
+				action.baseBreakpoint,
 				action.isGutenbergButton,
 				action.ignoreMaxiBlockResponsiveWidth
 			);

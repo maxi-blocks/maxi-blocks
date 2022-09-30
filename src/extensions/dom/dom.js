@@ -176,15 +176,15 @@ wp.domReady(() => {
 										.getAttributeNames()
 										.includes('maxi-blocks-responsive')
 								) {
-									const { receiveWinBreakpoint } =
+									const { receiveBaseBreakpoint } =
 										select('maxiBlocks');
 
-									const winBreakpoint =
-										receiveWinBreakpoint();
+									const baseBreakpoint =
+										receiveBaseBreakpoint();
 
 									wrapper.setAttribute(
 										'maxi-blocks-responsive',
-										winBreakpoint
+										baseBreakpoint
 									);
 								}
 							}
@@ -507,17 +507,17 @@ wp.domReady(() => {
 				const maxiBlocksResponsiveAttribute =
 					editorWrapper.getAttribute('maxi-blocks-responsive');
 
-				const { receiveWinBreakpoint } = select('maxiBlocks');
-				const winBreakpoint = receiveWinBreakpoint();
+				const { receiveBaseBreakpoint } = select('maxiBlocks');
+				const baseBreakpoint = receiveBaseBreakpoint();
 
 				const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 				// Hiding handles if current breakpoint smaller than winBreakpoint,
 				// because resizing is broken in this case
 				if (
-					winBreakpoint &&
+					baseBreakpoint &&
 					maxiBlocksResponsiveAttribute &&
-					breakpoints.indexOf(winBreakpoint) >
+					breakpoints.indexOf(baseBreakpoint) >
 						breakpoints.indexOf(maxiBlocksResponsiveAttribute)
 				) {
 					changeSiteEditorWidth('fit-content');

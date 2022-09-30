@@ -286,7 +286,7 @@ describe('NumberCounterControl', () => {
 		expect(typographyInput).toStrictEqual('Montserrat');
 
 		// s
-		await changeResponsive(page, 's');
+		await changeResponsive(page, 's', true);
 
 		await page.$eval('.maxi-typography-control__font-family input', input =>
 			input.focus()

@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import ColorControl from '../color-control';
+import ManageHoverTransitions from '../manage-hover-transitions';
 import SettingTabsControl from '../setting-tabs-control';
 import ToggleSwitch from '../toggle-switch';
 import {
@@ -81,7 +82,7 @@ export const SvgColor = props => {
 						'svg-line-palette-status-hover': paletteStatus,
 						content: setSVGContentHover(
 							content,
-							paletteStatus ? lineColorStr : paletteColor,
+							paletteStatus ? lineColorStr : color,
 							'stroke'
 						),
 					});
@@ -92,7 +93,7 @@ export const SvgColor = props => {
 						'svg-line-palette-status': paletteStatus,
 						content: setSVGContent(
 							content,
-							paletteStatus ? lineColorStr : paletteColor,
+							paletteStatus ? lineColorStr : color,
 							'stroke'
 						),
 					});
@@ -150,7 +151,7 @@ export const SvgColor = props => {
 						'svg-fill-palette-status-hover': paletteStatus,
 						content: setSVGContentHover(
 							content,
-							paletteStatus ? fillColorStr : paletteColor,
+							paletteStatus ? fillColorStr : color,
 							'fill'
 						),
 					});
@@ -163,7 +164,7 @@ export const SvgColor = props => {
 							fillColorStr &&
 							setSVGContent(
 								content,
-								paletteStatus ? fillColorStr : paletteColor,
+								paletteStatus ? fillColorStr : color,
 								'fill'
 							),
 					});
@@ -191,12 +192,15 @@ export const SvgColorControl = props => {
 	const onChangeProps = {
 		onChangeFill: obj => {
 			maxiSetAttributes(obj);
-			if (svgType !== 'Line') cleanInlineStyles('[data-fill]');
+
+			if (cleanInlineStyles && svgType !== 'Line')
+				cleanInlineStyles('[data-fill]');
 		},
 		onChangeStroke: obj => {
 			maxiSetAttributes(obj);
 
-			if (svgType !== 'Shape') cleanInlineStyles('[data-stroke]');
+			if (cleanInlineStyles && svgType !== 'Shape')
+				cleanInlineStyles('[data-stroke]');
 		},
 		onChangeHoverFill: obj => {
 			maxiSetAttributes(obj);
@@ -239,6 +243,8 @@ export const SvgColorControl = props => {
 					label: __('Hover state', 'maxi-blocks'),
 					content: (
 						<>
+							<ManageHoverTransitions />
+
 							<ToggleSwitch
 								label={__('Enable hover colour', 'maxi-blocks')}
 								selected={hoverStatus}

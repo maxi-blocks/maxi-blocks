@@ -1,20 +1,17 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	getEditedPostContent,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
 import {
-	modalMock,
-	openSidebarTab,
 	editColorControl,
 	getAttributes,
+	getEditedPostContent,
+	modalMock,
+	openSidebarTab,
 } from '../../utils';
 
 describe('Icon Color', () => {
@@ -52,6 +49,6 @@ describe('Icon Color', () => {
 
 		expect(await getAttributes('svg-line-palette-color')).toStrictEqual(7);
 
-		expect(await getEditedPostContent()).toMatchSnapshot();
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
 	});
 });

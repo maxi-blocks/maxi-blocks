@@ -12,7 +12,6 @@ jest.mock('@wordpress/data', () => {
 
 describe('styleResolver', () => {
 	it('Returns a clean style object', () => {
-		const target = 'test-target';
 		const styles = {
 			'test-target': {
 				'': {
@@ -137,7 +136,7 @@ describe('styleResolver', () => {
 			xs: 480,
 		};
 
-		const result = styleResolver(target, styles, remover, breakpoints);
+		const result = styleResolver(styles, remover, breakpoints);
 
 		expect(result).toMatchSnapshot();
 	});

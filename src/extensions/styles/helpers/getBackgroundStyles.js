@@ -39,9 +39,10 @@ export const getColorBackgroundObject = ({
 	isIconInherit = false,
 	breakpoint = 'general',
 	scValues = {},
+	backgroundColorProperty = 'background-color',
 	...props
 }) => {
-	const hoverStatus = props[`${prefix}background-hover-status`];
+	const hoverStatus = props[`${prefix}background-status-hover`];
 	const {
 		'hover-background-color-global': isActive,
 		'hover-background-color-all': affectAll,
@@ -79,7 +80,7 @@ export const getColorBackgroundObject = ({
 	});
 
 	if (!paletteStatus && !isEmpty(color))
-		response[breakpoint]['background-color'] = color;
+		response[breakpoint][backgroundColorProperty] = color;
 	else if (paletteStatus && (paletteColor || paletteOpacity)) {
 		if (isButton && (!isHover || hoverStatus || globalHoverStatus))
 			response[breakpoint].background = getColorRGBAString({
@@ -89,7 +90,7 @@ export const getColorBackgroundObject = ({
 				blockStyle,
 			});
 		else
-			response[breakpoint]['background-color'] = getColorRGBAString({
+			response[breakpoint][backgroundColorProperty] = getColorRGBAString({
 				firstVar: `color-${paletteColor}`,
 				opacity: paletteOpacity,
 				blockStyle,
@@ -102,7 +103,7 @@ export const getColorBackgroundObject = ({
 			props['background-active-media'] !== 'none';
 
 		if (hasBackground)
-			response[breakpoint]['background-color'] =
+			response[breakpoint][backgroundColorProperty] =
 				props['background-active-media'] !== '' && paletteStatus
 					? getColorRGBAString({
 							firstVar: `button-background-color${
@@ -113,7 +114,7 @@ export const getColorBackgroundObject = ({
 							blockStyle,
 					  })
 					: color;
-		else response[breakpoint]['background-color'] = '';
+		else response[breakpoint][backgroundColorProperty] = '';
 	}
 
 	if (!isIconInherit && isIcon)
@@ -493,18 +494,19 @@ export const getVideoBackgroundObject = ({
 	return response;
 };
 
-const getSVGWrapperBackgroundObject = ({
+const getWrapperObject = ({
 	breakpoint,
 	isHover = false,
+	prefix = '',
 	...props
 }) => {
 	const response = {
-		label: 'SVG Wrapper Background',
+		label: 'Background layer wrapper',
 		[breakpoint]: {},
 	};
 
 	const bgSVGSize = getLastBreakpointAttribute({
-		target: 'background-svg-size',
+		target: `${prefix}size`,
 		breakpoint,
 		attributes: props,
 		isHover,
@@ -512,7 +514,7 @@ const getSVGWrapperBackgroundObject = ({
 
 	if (isNumber(bgSVGSize)) {
 		const bgSVGSizeUnit = getLastBreakpointAttribute({
-			target: 'background-svg-size-unit',
+			target: `${prefix}size-unit`,
 			breakpoint,
 			attributes: props,
 			isHover,
@@ -525,14 +527,14 @@ const getSVGWrapperBackgroundObject = ({
 
 	keyWords.forEach(keyWord => {
 		const positionValue = getLastBreakpointAttribute({
-			target: `background-svg-position-${keyWord}`,
+			target: `${prefix}position-${keyWord}`,
 			breakpoint,
 			attributes: props,
 			isHover,
 		});
 
 		const positionUnit = getLastBreakpointAttribute({
-			target: `background-svg-position-${keyWord}-unit`,
+			target: `${prefix}position-${keyWord}-unit`,
 			breakpoint,
 			attributes: props,
 			isHover,
@@ -546,7 +548,7 @@ const getSVGWrapperBackgroundObject = ({
 		}
 	});
 
-	return response;
+	return !isEmpty(response[breakpoint]) ? response : {};
 };
 
 const getSVGBackgroundObject = ({
@@ -600,6 +602,16 @@ const getBackgroundLayers = ({
 					[type]: {
 						...merge(
 							response?.[layerTarget]?.[type],
+							getWrapperObject({
+								...getGroupAttributes(
+									layer,
+									'backgroundColor',
+									isHover
+								),
+								breakpoint,
+								prefix: 'background-color-wrapper-',
+								isHover,
+							}),
 							getColorBackgroundObject({
 								...getGroupAttributes(
 									layer,
@@ -641,6 +653,16 @@ const getBackgroundLayers = ({
 								prefix,
 								blockStyle,
 								breakpoint,
+							}),
+							getWrapperObject({
+								...getGroupAttributes(
+									layer,
+									'backgroundGradient',
+									isHover
+								),
+								breakpoint,
+								prefix: 'background-gradient-wrapper-',
+								isHover,
 							}),
 							getDisplayStyles(
 								{
@@ -691,6 +713,16 @@ const getBackgroundLayers = ({
 									prefix,
 									breakpoint,
 									isParallax: parallaxStatus,
+								}),
+								getWrapperObject({
+									...getGroupAttributes(
+										layer,
+										'backgroundImage',
+										isHover
+									),
+									breakpoint,
+									prefix: 'background-image-wrapper-',
+									isHover,
 								}),
 								getDisplayStyles(
 									{
@@ -772,6 +804,16 @@ const getBackgroundLayers = ({
 								prefix,
 								breakpoint,
 							}),
+							getWrapperObject({
+								...getGroupAttributes(
+									layer,
+									'backgroundVideo',
+									isHover
+								),
+								breakpoint,
+								prefix: 'background-video-wrapper-',
+								isHover,
+							}),
 							getDisplayStyles(
 								{
 									...getGroupAttributes(
@@ -792,13 +834,14 @@ const getBackgroundLayers = ({
 					[type]: {
 						...merge(
 							response?.[layerTarget]?.[type],
-							getSVGWrapperBackgroundObject({
+							getWrapperObject({
 								...getGroupAttributes(
 									layer,
 									'backgroundSVG',
 									isHover
 								),
 								breakpoint,
+								prefix: 'background-svg-',
 								isHover,
 							}),
 							getDisplayStyles(
@@ -1035,7 +1078,7 @@ export const getBlockBackgroundStyles = ({
 		...props,
 	});
 
-	if (isHover && !props[`${prefix}block-background-hover-status`])
+	if (isHover && !props[`${prefix}block-background-status-hover`])
 		return response;
 
 	const layers = compact([
@@ -1084,6 +1127,7 @@ export const getBackgroundStyles = ({
 	blockStyle,
 	isIconInherit = false,
 	scValues = {},
+	backgroundColorProperty,
 	...props
 }) => {
 	const response = {};
@@ -1114,6 +1158,7 @@ export const getBackgroundStyles = ({
 					prefix,
 					isIconInherit,
 					scValues,
+					backgroundColorProperty,
 				}),
 			}),
 			...(currentActiveMedia === 'gradient' && {

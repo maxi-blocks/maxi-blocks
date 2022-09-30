@@ -43,6 +43,13 @@ body.maxi-blocks--active .maxi-block {
 	&.maxi-button-block .maxi-button-block__button {
 		background-color: transparent;
 	}
+
+	.maxi-components-button {
+		&:after,
+		&:before {
+			content: none;
+		}
+	}
 }
 
 body.maxi-blocks--active .maxi-block[data-align='full'] {
@@ -104,5 +111,14 @@ body.maxi-blocks--active.ast-highlight-wpblock-onhover
 	&.is-highlighted,
 	&:hover {
 		border-radius: 0;
+	}
+}
+/*Overwrites Astra container for the Maxi full width template*/
+body.maxi-blocks--active.page-template-full-width-template .ast-container {
+	max-width: 100%;
+	padding: 0;
+
+	#maxi-main-container {
+		width: 100%;
 	}
 }

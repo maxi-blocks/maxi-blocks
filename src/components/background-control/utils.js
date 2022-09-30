@@ -62,5 +62,7 @@ export const setBreakpointToLayer = ({
 	return response;
 };
 
+export const getDefaultLayerAttrs = layerType => backgroundLayers[layerType];
+
 export const getDefaultLayerAttr = (layerType, target) =>
-	backgroundLayers[layerType][target];
+	getDefaultLayerAttrs(layerType)?.[target];

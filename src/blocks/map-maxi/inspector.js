@@ -12,23 +12,33 @@ import { isEmpty } from 'lodash';
 /**
  * Internal dependencies
  */
+import { AccordionControl, SettingTabsControl } from '../../components';
 import {
-	AccordionControl,
 	MapControl,
-	SettingTabsControl,
-} from '../../components';
+	MapInteracitonControl,
+	MapMarkersControl,
+	MapPopupControl,
+	MapPopupTextControl,
+} from './components';
 import { getGroupAttributes } from '../../extensions/styles';
-import { selectorsMap, categoriesMap } from './custom-css';
+import { customCss } from './data';
 import * as inspectorTabs from '../../components/inspector-tabs';
-import ResponsiveTabsControl from '../../components/responsive-tabs-control';
-import { withMaxiInspector } from '../../extensions/inspector';
 
 /**
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, maxiSetAttributes } = props;
-	const { apiKey } = attributes;
+	const {
+		attributes,
+		deviceType,
+		clientId,
+		apiKey,
+		maxiSetAttributes,
+		insertInlineStyles,
+		cleanInlineStyles,
+	} = props;
+	const { blockStyle } = attributes;
+	const { selectors, categories } = customCss;
 
 	return (
 		<InspectorControls>
@@ -49,22 +59,105 @@ const Inspector = props => {
 								isPrimary
 								items={[
 									{
-										label: __('Map', 'maxi-blocks'),
+										label: __(
+											'Configure map',
+											'maxi-blocks'
+										),
 										content: (
-											<ResponsiveTabsControl
-												breakpoint={deviceType}
-											>
-												<MapControl
-													{...getGroupAttributes(
-														attributes,
-														'map'
-													)}
-													onChange={obj =>
-														maxiSetAttributes(obj)
-													}
-													hasApiKey={!isEmpty(apiKey)}
-												/>
-											</ResponsiveTabsControl>
+											<MapControl
+												{...{
+													'map-provider':
+														attributes[
+															'map-provider'
+														],
+													'map-min-zoom':
+														attributes[
+															'map-min-zoom'
+														],
+													'map-max-zoom':
+														attributes[
+															'map-max-zoom'
+														],
+												}}
+												onChange={obj =>
+													maxiSetAttributes(obj)
+												}
+												hasApiKey={!isEmpty(apiKey)}
+											/>
+										),
+									},
+									{
+										label: __('Map marker', 'maxi-blocks'),
+										content: (
+											<MapMarkersControl
+												{...getGroupAttributes(
+													attributes,
+													'mapMarker'
+												)}
+												onChangeInline={obj =>
+													insertInlineStyles({
+														obj,
+														target: 'path',
+													})
+												}
+												onChange={obj => {
+													maxiSetAttributes(obj);
+													cleanInlineStyles('path');
+												}}
+												blockStyle={blockStyle}
+												deviceType={deviceType}
+											/>
+										),
+										ignoreIndicator: ['map-marker-icon'],
+									},
+									{
+										label: __(
+											'Marker pop-up text',
+											'maxi-blocks'
+										),
+										content: (
+											<MapPopupTextControl
+												{...getGroupAttributes(
+													attributes,
+													'typography'
+												)}
+												{...getGroupAttributes(
+													attributes,
+													'typography',
+													false,
+													'description-'
+												)}
+												{...{
+													'map-marker-heading-level':
+														attributes[
+															'map-marker-heading-level'
+														],
+												}}
+												blockStyle={blockStyle}
+												clientId={clientId}
+												deviceType={deviceType}
+												onChange={maxiSetAttributes}
+											/>
+										),
+									},
+									{
+										label: __(
+											'Marker pop-up',
+											'maxi-blocks'
+										),
+										content: (
+											<MapPopupControl
+												{...getGroupAttributes(
+													attributes,
+													'mapPopup'
+												)}
+												onChange={obj =>
+													maxiSetAttributes(obj)
+												}
+												blockStyle={blockStyle}
+												deviceType={deviceType}
+												clientId={clientId}
+											/>
 										),
 									},
 									...inspectorTabs.border({
@@ -80,6 +173,21 @@ const Inspector = props => {
 									...inspectorTabs.marginPadding({
 										props,
 									}),
+									{
+										label: __(
+											'Map interaction',
+											'maxi-blocks'
+										),
+										content: (
+											<MapInteracitonControl
+												{...getGroupAttributes(
+													attributes,
+													'mapInteraction'
+												)}
+												onChange={maxiSetAttributes}
+											/>
+										),
+									},
 								]}
 							/>
 						),
@@ -103,16 +211,21 @@ const Inspector = props => {
 									...inspectorTabs.customCss({
 										props,
 										breakpoint: deviceType,
-										selectors: selectorsMap,
-										categories: categoriesMap,
+										selectors,
+										categories,
 									}),
 									...inspectorTabs.scrollEffects({
 										props,
 									}),
 									...inspectorTabs.transform({
 										props,
-										selectors: selectorsMap,
-										categories: categoriesMap,
+										selectors,
+										categories,
+									}),
+									...inspectorTabs.transition({
+										props: {
+											...props,
+										},
 									}),
 									...inspectorTabs.display({
 										props,
@@ -150,4 +263,4 @@ const Inspector = props => {
 	);
 };
 
-export default withMaxiInspector(Inspector);
+export default Inspector;

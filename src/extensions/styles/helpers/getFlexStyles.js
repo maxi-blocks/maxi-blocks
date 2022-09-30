@@ -49,11 +49,6 @@ const getFlexStyles = obj => {
 			breakpoint,
 			attributes: obj,
 		});
-		const flexFlow = getLastBreakpointAttribute({
-			target: 'flex-flow',
-			breakpoint,
-			attributes: obj,
-		});
 		const flexOrder = getLastBreakpointAttribute({
 			target: 'order',
 			breakpoint,
@@ -99,9 +94,6 @@ const getFlexStyles = obj => {
 			}),
 			...(!isNil(flexWrap) && {
 				'flex-wrap': flexWrap,
-			}),
-			...(!isNil(flexFlow) && {
-				'flex-flow': flexFlow,
 			}),
 			...(!isNil(flexOrder) && {
 				order: flexOrder,

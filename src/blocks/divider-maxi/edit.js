@@ -19,8 +19,7 @@ import {
 } from '../../extensions/styles';
 import getStyles from './styles';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-
-import copyPasteMapping from './copy-paste-mapping';
+import { copyPasteMapping } from './data';
 
 /**
  * External dependencies
@@ -122,18 +121,6 @@ class edit extends MaxiBlockComponent {
 			});
 		};
 
-		const position = getLastBreakpointAttribute({
-			target: 'position',
-			breakpoint: deviceType,
-			attributes,
-		});
-
-		// BlockResizer component comes with inherit styles where position is 'relative',
-		// so we need to give style prop to change it when positioning is set 👌
-		const style = {
-			...(position && { position }),
-		};
-
 		const inlineStylesTargets = {
 			dividerColor: '.maxi-divider-block__divider',
 		};
@@ -178,7 +165,7 @@ class edit extends MaxiBlockComponent {
 				}}
 				onResizeStart={handleOnResizeStart}
 				onResizeStop={handleOnResizeStop}
-				style={style}
+				cleanStyles
 			>
 				{getLastBreakpointAttribute({
 					target: 'divider-border-style',

@@ -57,12 +57,13 @@ const actions = {
 			type: 'SET_DEVICE_TYPE',
 			deviceType,
 			width,
+			isGutenbergButton,
 		};
 	},
-	setWindowSize(winSize) {
+	setEditorContentSize(editorContentSize) {
 		return {
-			type: 'SET_WINDOW_SIZE',
-			winSize,
+			type: 'SET_EDITOR_CONTENT_SIZE',
+			editorContentSize,
 		};
 	},
 	copyStyles(copiedStyles) {

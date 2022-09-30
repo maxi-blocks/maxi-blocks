@@ -19,8 +19,7 @@ import {
 	getFlexStyles,
 	getBackgroundStyles,
 } from '../../extensions/styles/helpers';
-import { selectorsSvgIcon } from './custom-css';
-import transitionObj from './transitionObj';
+import data from './data';
 
 const getWrapperObject = props => {
 	const response = {
@@ -141,7 +140,7 @@ const getNormalObject = props => {
 			blockStyle: props.blockStyle,
 			prefix: 'svg-',
 		}),
-		...getSVGWidthStyles(getGroupAttributes(props, 'svg')),
+		...getSVGWidthStyles({ obj: getGroupAttributes(props, 'svg') }),
 		...getBackgroundStyles({
 			...getGroupAttributes(
 				props,
@@ -252,9 +251,8 @@ const getStyles = props => {
 					blockStyle,
 				}),
 			},
-			selectorsSvgIcon,
-			props,
-			transitionObj
+			data,
+			props
 		),
 	};
 

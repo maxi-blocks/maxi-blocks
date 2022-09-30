@@ -30,6 +30,24 @@ class MaxiBlocks_Styles
     }
 
     /**
+     * Get block data
+     */
+    public function get_block_data($js_var, $meta)
+    {
+        switch ($js_var) {
+            case 'search':
+                return [$meta, get_search_link()];
+                break;
+            case 'map':
+                return [$meta, get_option('google_api_key_option')];
+                break;
+            default:
+                return [$meta];
+                break;
+        }
+    }
+
+    /**
      * Enqueuing styles
      */
     public function enqueue_styles()
@@ -75,6 +93,7 @@ class MaxiBlocks_Styles
                 'relations',
                 'video',
                 'search',
+                'map',
                 'accordion',
             ];
 
@@ -108,12 +127,7 @@ class MaxiBlocks_Styles
                         plugins_url($jsScriptPath, dirname(__FILE__))
                     );
 
-                    $data =
-                        $jsVar === 'search'
-                            ? [$meta, get_search_link()]
-                            : [$meta];
-
-                    wp_localize_script($jsScriptName, $jsVarToPass, $data);
+                    wp_localize_script($jsScriptName, $jsVarToPass, $this->get_block_data($jsVar, $meta));
                 }
             }
         }

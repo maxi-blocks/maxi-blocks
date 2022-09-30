@@ -48,7 +48,7 @@ const getLastBreakpointAttributeSingle = (
 			breakpoint,
 		});
 
-	const winBreakpoint = select('maxiBlocks')?.receiveWinBreakpoint();
+	const baseBreakpoint = select('maxiBlocks')?.receiveBaseBreakpoint();
 
 	const attrFilter = attr =>
 		!isNil(attr) &&
@@ -61,22 +61,22 @@ const getLastBreakpointAttributeSingle = (
 			}`
 		];
 
-	// In case that breakpoint is general and winBreakpoint attribute exists,
-	// give priority to winBreakpoint attribute
+	// In case that breakpoint is general and baseBreakpoint attribute exists,
+	// give priority to baseBreakpoint attribute
 	if (breakpoint === 'general') {
-		const winBreakpointAttr =
+		const baseBreakpointAttr =
 			attr[
-				`${!isEmpty(target) ? `${target}-` : ''}${winBreakpoint}${
+				`${!isEmpty(target) ? `${target}-` : ''}${baseBreakpoint}${
 					isHover ? '-hover' : ''
 				}`
 			];
 
-		if (attrFilter(winBreakpointAttr)) return winBreakpointAttr;
+		if (attrFilter(baseBreakpointAttr)) return baseBreakpointAttr;
 	}
 
 	if (
 		attrFilter(currentAttr) &&
-		(winBreakpoint !== 'xxl' || breakpoint === 'xxl')
+		(baseBreakpoint !== 'xxl' || breakpoint === 'xxl')
 	)
 		return currentAttr;
 
@@ -109,13 +109,13 @@ const getLastBreakpointAttributeSingle = (
 
 	// Helps responsive API: when breakpoint is general and the attribute is undefined,
 	// check for the win selected breakpoint
-	if (!currentAttr && breakpoint === 'general' && winBreakpoint)
+	if (!currentAttr && breakpoint === 'general' && baseBreakpoint)
 		currentAttr = getLastBreakpointAttributeSingle(
 			target,
-			winBreakpoint,
+			baseBreakpoint,
 			attributes,
 			isHover,
-			winBreakpoint === 'xxl' ? false : avoidXXL
+			baseBreakpoint === 'xxl' ? false : avoidXXL
 		);
 
 	return currentAttr;

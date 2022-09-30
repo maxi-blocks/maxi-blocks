@@ -1,7 +1,7 @@
 /**
- * BLOCK: maxi-blocks/group-maxi
+ * BLOCK: maxi-blocks/map-maxi
  *
- * Insert a map with marker
+ * Create a map with marker and description
  */
 
 /**
@@ -16,7 +16,7 @@ import { registerBlockType } from '@wordpress/blocks';
 import attributes from './attributes';
 import edit from './edit';
 import save from './save';
-import { selectorsMap } from './custom-css';
+import { customCss } from './data';
 
 /**
  * Styles and icons
@@ -37,7 +37,7 @@ import { blockMigrator } from '../../extensions/styles/migrators';
 registerBlockType('maxi-blocks/map-maxi', {
 	title: __('Map Maxi', 'maxi-blocks'),
 	icon: mapIcon,
-	description: __('Insert a map with marker', 'maxi-blocks'),
+	description: __('Create a map with marker and description', 'maxi-blocks'),
 	category: 'maxi-blocks',
 	supports: {
 		align: true,
@@ -55,5 +55,9 @@ registerBlockType('maxi-blocks/map-maxi', {
 	},
 	edit,
 	save,
-	deprecated: blockMigrator({ attributes, save, selectors: selectorsMap }),
+	deprecated: blockMigrator({
+		attributes,
+		save,
+		selectors: customCss.selectors,
+	}),
 });

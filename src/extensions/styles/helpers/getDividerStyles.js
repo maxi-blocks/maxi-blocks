@@ -72,7 +72,7 @@ const getDividerStyles = (
 
 			const dividerLineWeight = isHorizontal
 				? getLastBreakpointAttribute({
-						target: `${prefix}divider-border-${positionHorizontal}-width`,
+						target: `${prefix}divider-border-top-width`,
 						breakpoint,
 						attributes: obj,
 						isHover,
@@ -86,7 +86,7 @@ const getDividerStyles = (
 			const dividerLineWeightUnit =
 				getLastBreakpointAttribute({
 					target: isHorizontal
-						? `${prefix}divider-border-${positionHorizontal}-unit`
+						? `${prefix}divider-border-top-unit`
 						: `${prefix}divider-border-${positionVertical}-unit`,
 					breakpoint,
 					attributes: obj,

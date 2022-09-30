@@ -57,7 +57,7 @@ export function getSelectorsCss(selectors, attributes) {
 	const {
 		'background-layers': bgLayers = [],
 		'background-layers-hover': bgLayersHover = [],
-		'block-background-hover-status': blockBackgroundHoverStatus = false,
+		'block-background-status-hover': blockBackgroundHoverStatus = false,
 	} = attributes;
 
 	const newSelectors = {
@@ -76,7 +76,7 @@ export function getCategoriesCss(categories, attributes) {
 	const {
 		'background-layers': bgLayers = [],
 		'background-layers-hover': bgLayersHover = [],
-		'block-background-hover-status': blockBackgroundHoverStatus = false,
+		'block-background-status-hover': blockBackgroundHoverStatus = false,
 	} = attributes;
 
 	return without(

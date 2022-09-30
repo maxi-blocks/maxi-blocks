@@ -21,9 +21,11 @@ import { isNil, isEqual, isEmpty } from 'lodash';
  */
 const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 	const { transition } = props;
+
 	if (isEmpty(transition)) return null;
 
 	const response = {};
+
 	Object.entries(transitionObj).forEach(([type, obj]) => {
 		Object.entries(obj).forEach(([key, value]) => {
 			const {

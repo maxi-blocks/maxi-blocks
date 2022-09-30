@@ -7,18 +7,17 @@ import { InspectorControls } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
+import { AccordionControl, SettingTabsControl } from '../../components';
+import * as inspectorTabs from '../../components/inspector-tabs';
+import { customCss } from './data';
+import { getGroupAttributes } from '../../extensions/styles';
 import {
-	AccordionControl,
-	SettingTabsControl,
+	PopupSettingsControl,
 	VideoControl,
+	VideoIconControl,
 	VideoOptionsControl,
 	VideoOverlayControl,
-	PopupSettingsControl,
-	VideoIconControl,
-} from '../../components';
-import * as inspectorTabs from '../../components/inspector-tabs';
-import { selectorsVideo, categoriesVideo } from './custom-css';
-import { getGroupAttributes } from '../../extensions/styles';
+} from './components';
 
 /**
  * Inspector
@@ -39,6 +38,7 @@ const Inspector = props => {
 		'overlay-mediaID': overlayMediaId,
 		'overlay-altSelector': overlayAltSelector,
 	} = attributes;
+	const { selectors, categories } = customCss;
 
 	return (
 		<InspectorControls>
@@ -111,16 +111,7 @@ const Inspector = props => {
 												<PopupSettingsControl
 													{...getGroupAttributes(
 														attributes,
-														'video'
-													)}
-													{...getGroupAttributes(
-														attributes,
-														[
-															'background',
-															'backgroundColor',
-														],
-														false,
-														'lightbox-'
+														['video', 'videoPopup']
 													)}
 													breakpoint={deviceType}
 													clientId={clientId}
@@ -173,16 +164,10 @@ const Inspector = props => {
 												<VideoOverlayControl
 													{...getGroupAttributes(
 														attributes,
-														'video'
-													)}
-													{...getGroupAttributes(
-														attributes,
 														[
-															'background',
-															'backgroundColor',
-														],
-														false,
-														'overlay-'
+															'video',
+															'videoOverlay',
+														]
 													)}
 													mediaID={overlayMediaId}
 													altSelector={
@@ -209,6 +194,41 @@ const Inspector = props => {
 									]),
 									...inspectorTabs.border({
 										props,
+										prefix: 'video-',
+									}),
+									...inspectorTabs.boxShadow({
+										props,
+										prefix: 'video-',
+									}),
+									...inspectorTabs.size({
+										props,
+										hideFullWidth: true,
+										prefix: 'video-',
+									}),
+									...inspectorTabs.marginPadding({
+										props,
+										prefix: 'video-',
+										customLabel: __(
+											'Padding',
+											'maxi-blocks'
+										),
+										disableMargin: true,
+									}),
+								]}
+							/>
+						),
+					},
+					{
+						label: __('Canvas', 'maxi-blocks'),
+						content: (
+							<AccordionControl
+								isPrimary
+								items={[
+									...inspectorTabs.blockBackground({
+										props,
+									}),
+									...inspectorTabs.border({
+										props,
 									}),
 									...inspectorTabs.boxShadow({
 										props,
@@ -216,7 +236,6 @@ const Inspector = props => {
 									...inspectorTabs.size({
 										props,
 										block: true,
-										hideWidth: true,
 									}),
 									...inspectorTabs.marginPadding({
 										props,
@@ -244,16 +263,26 @@ const Inspector = props => {
 									...inspectorTabs.customCss({
 										props,
 										breakpoint: deviceType,
-										selectors: selectorsVideo,
-										categories: categoriesVideo,
+										selectors,
+										categories,
 									}),
 									...inspectorTabs.scrollEffects({
 										props,
 									}),
 									...inspectorTabs.transform({
 										props,
+										selectors,
+										categories,
+									}),
+									...inspectorTabs.transition({
+										props: {
+											...props,
+										},
 									}),
 									...inspectorTabs.display({
+										props,
+									}),
+									...inspectorTabs.position({
 										props,
 									}),
 									deviceType !== 'general' && {
@@ -271,6 +300,9 @@ const Inspector = props => {
 										props,
 									}),
 									...inspectorTabs.zindex({
+										props,
+									}),
+									...inspectorTabs.relation({
 										props,
 									}),
 								]}

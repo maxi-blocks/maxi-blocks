@@ -1,20 +1,17 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	getEditedPostContent,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
 import {
-	getBlockStyle,
-	addCustomCSS,
-	openSidebarTab,
 	addBackgroundLayer,
+	addCustomCSS,
+	getBlockStyle,
+	getEditedPostContent,
+	openSidebarTab,
 } from '../../utils';
 
 describe('Container Maxi', () => {
@@ -22,8 +19,7 @@ describe('Container Maxi', () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
 
-		expect(await getEditedPostContent()).toMatchSnapshot();
-
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
@@ -38,14 +34,14 @@ describe('Container Maxi', () => {
 		);
 
 		const customCssSelector = await accordionTab.$(
-			'.maxi-typography-control__text-options-tabs .maxi-custom-css-control__category select'
+			'.maxi-custom-css-control__category select'
 		);
 		await customCssSelector.select('background');
 
 		// check first background
 
 		await accordionTab.$eval(
-			'.maxi-additional__css-background_color_1 textarea',
+			'.maxi-custom-css-control__group--background_color_1 textarea',
 			input => input.focus()
 		);
 
@@ -54,7 +50,7 @@ describe('Container Maxi', () => {
 
 		// check second background
 		await accordionTab.$eval(
-			'.maxi-additional__css-background_color_2 textarea',
+			'.maxi-custom-css-control__group--background_color_2 textarea',
 			input => input.focus()
 		);
 

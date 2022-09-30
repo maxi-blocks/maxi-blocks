@@ -60,17 +60,20 @@ const TransitionControlWrapper = props => {
 		};
 
 		if (transitionChangeAll) {
-			Object.keys(attributes?.transition).forEach(t => {
-				newObj.transition[t] = {};
+			Object.keys(attributes?.transition).forEach(currentType => {
+				newObj.transition[currentType] = {};
 
-				Object.keys(attributes.transition?.[t]).forEach(key => {
-					newObj.transition[t][key] = {
-						...attributes.transition[t][key],
-						...attributes.transition[type][selected],
-						hoverProp: transitionData[t][key].hoverProp,
-						...obj,
-					};
-				});
+				Object.keys(attributes.transition?.[currentType]).forEach(
+					key => {
+						newObj.transition[currentType][key] = {
+							...attributes.transition[currentType][key],
+							...attributes.transition[type][selected],
+							hoverProp:
+								transitionData[currentType][key].hoverProp,
+							...obj,
+						};
+					}
+				);
 			});
 		} else {
 			newObj = {

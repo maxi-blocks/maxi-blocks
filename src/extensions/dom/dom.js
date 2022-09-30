@@ -547,24 +547,39 @@ wp.domReady(() => {
 			} else templatePartResizeObserver.disconnect();
 		});
 	}
+
+	let isNewEditorContentObserver = true;
+
+	const resizeObserver = new ResizeObserver(() => {
+		const { width, height } = document
+			.querySelector('.interface-interface-skeleton__content')
+			.getBoundingClientRect();
+		dispatch('maxiBlocks').setEditorContentSize({ width, height });
+	});
+
 	const editorContentUnsubscribe = subscribe(() => {
 		const targetNode = document.querySelector(
 			'.interface-interface-skeleton__content'
 		);
 
 		if (targetNode) {
-			const { setEditorContentSize } = dispatch('maxiBlocks');
+			if (getIsSiteEditor()) {
+				const isTemplatesListOpened = getIsTemplatesListOpened();
 
-			const resizeObserver = new ResizeObserver(() => {
-				const { width, height } = targetNode.getBoundingClientRect();
-				setEditorContentSize({ width, height });
-			});
+				if (!isTemplatesListOpened && isNewEditorContentObserver) {
+					isNewEditorContentObserver = false;
+					resizeObserver.observe(targetNode);
+				} else if (isTemplatesListOpened) {
+					isNewEditorContentObserver = true;
+					resizeObserver.disconnect();
+				}
+			} else {
+				[targetNode, document.body, getSiteEditorIframeBody()].forEach(
+					element => element && resizeObserver.observe(element)
+				);
 
-			[targetNode, document.body].forEach(element =>
-				resizeObserver.observe(element)
-			);
-
-			editorContentUnsubscribe();
+				editorContentUnsubscribe();
+			}
 		}
 	});
 });

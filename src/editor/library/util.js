@@ -122,17 +122,17 @@ export const imageUploader = async (imageSrc, usePlaceholderImage) => {
 	return null;
 };
 
-export const svgAttributesReplacer = (blockStyle, svgCode, target = 'svg') => {
-	const fillRegExp = new RegExp('fill:[^n]+?(?=})', 'g');
+export const svgAttributesReplacer = (svgCode, target = 'svg') => {
+	const fillRegExp = /fill:[^n]+?(?=})/g;
 	const fillStr = 'fill:#ff4a17';
 
-	const fillRegExp2 = new RegExp('[^-]fill="[^n]+?(?=")', 'g');
+	const fillRegExp2 = /[^-]fill="[^n]+?(?=")/g;
 	const fillStr2 = ' fill="#ff4a17';
 
-	const strokeRegExp = new RegExp('stroke:[^n]+?(?=})', 'g');
+	const strokeRegExp = /stroke:[^n]+?(?=})/g;
 	const strokeStr = 'stroke:#081219';
 
-	const strokeRegExp2 = new RegExp('[^-]stroke="[^n]+?(?=")', 'g');
+	const strokeRegExp2 = /[^-]stroke="[^n]+?(?=")/g;
 	const strokeStr2 = ' stroke="#081219';
 
 	return target === 'svg'
@@ -255,25 +255,23 @@ export const onRequestInsertPattern = (
 		const imagesLinks = [];
 		const imagesIds = [];
 
-		const allImagesRegexp = new RegExp('mediaID":(.*)",', 'g');
+		const allImagesRegexp = /mediaID":(.*)",/g;
 
 		const allImagesLinks = parsedContent.match(allImagesRegexp);
 
-		const allImagesLinksParsed = allImagesLinks?.map(image => {
+		allImagesLinks?.forEach(image => {
 			const parsed = image.replace(/\\/g, '');
 
-			const idRegexp = new RegExp('(?<=":)(.*?)(?=,")', 'g');
+			const idRegexp = /(?<=mediaID":)(.*?)(?=,)/g;
 			const id = parsed.match(idRegexp);
-			imagesIds.push(id);
+			imagesIds.push(...id);
 
-			const urlRegexp = new RegExp('(?<=mediaURL":")(.*?)(?=",)', 'g');
+			const urlRegexp = /(?<=mediaURL":")(.*?)(?=",)/g;
 			const url = parsed.match(urlRegexp);
-			imagesLinks.push(url);
-
-			return null;
+			imagesLinks.push(...url);
 		});
 
-		if (!isEmpty(allImagesLinksParsed)) {
+		if (!isEmpty(imagesLinks) && !isEmpty(imagesIds)) {
 			let tempContent = parsedContent;
 			const imagesLinksUniq = uniq(imagesLinks);
 			const imagesIdsUniq = uniq(imagesIds);

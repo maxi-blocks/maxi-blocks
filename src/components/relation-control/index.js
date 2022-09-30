@@ -22,12 +22,13 @@ import {
 	getGroupAttributes,
 } from '../../extensions/styles';
 import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
+import getHoverStatus from './getHoverStatus';
 import * as blocksData from '../../blocks/data';
 
 /**
  * External dependencies
  */
-import { cloneDeep, isEmpty, merge, isNil } from 'lodash';
+import { cloneDeep, isEmpty, isNil, merge } from 'lodash';
 
 /**
  * Styles
@@ -124,7 +125,9 @@ const RelationControl = props => {
 		const prefix = selectedSettingsObj?.prefix || '';
 		const blockAttributes = cloneDeep(getBlock(clientId)?.attributes);
 
-		const storeBreakpoints = select('maxiBlocks').receiveMaxiBreakpoints();
+		const { receiveMaxiBreakpoints, receiveXXLSize } = select('maxiBlocks');
+
+		const storeBreakpoints = receiveMaxiBreakpoints();
 		const blockBreakpoints = getGroupAttributes(
 			blockAttributes,
 			'breakpoints'
@@ -132,6 +135,7 @@ const RelationControl = props => {
 
 		const breakpoints = {
 			...storeBreakpoints,
+			xxl: receiveXXLSize(),
 			...Object.keys(blockBreakpoints).reduce((acc, key) => {
 				if (blockAttributes[key]) {
 					const newKey = key.replace('breakpoints-', '');
@@ -148,14 +152,23 @@ const RelationControl = props => {
 				'hoverStatus' in item.effects
 			) ||
 			item.effects.hoverStatus !==
-				blockAttributes?.[selectedSettingsObj.hoverProp]
+				getHoverStatus(selectedSettingsObj.hoverProp, blockAttributes)
 		) {
-			const { transitionTarget, hoverProp } = selectedSettingsObj;
+			const { transitionTarget: rawTransitionTarget, hoverProp } =
+				selectedSettingsObj;
+			const transitionTarget =
+				item.settings === 'Transform'
+					? Object.keys(item.css)
+					: rawTransitionTarget;
 
 			let hoverStatus = null;
 
 			if (!('hoverStatus' in item.effects))
-				hoverStatus = blockAttributes?.[hoverProp];
+				hoverStatus = getHoverStatus(
+					hoverProp,
+					blockAttributes,
+					item.attributes
+				);
 
 			if (transitionTarget)
 				onChangeRelation(relations, item.id, {
@@ -273,6 +286,12 @@ const RelationControl = props => {
 				onChangeRelation(relations, item.id, {
 					attributes: newAttributesObj,
 					css: styles,
+					...(item.settings === 'Transform' && {
+						effects: {
+							...item.effects,
+							transitionTarget: Object.keys(styles),
+						},
+					}),
 				});
 			},
 			prefix,
@@ -472,11 +491,16 @@ const RelationControl = props => {
 															item.uniqueID
 														);
 
+													const blockAttributes =
+														getBlock(
+															clientId
+														)?.attributes;
+
 													const hoverStatus =
-														getBlock(clientId)
-															?.attributes?.[
-															hoverProp
-														];
+														getHoverStatus(
+															hoverProp,
+															blockAttributes
+														);
 
 													const getTarget = () => {
 														const clientId =

@@ -264,6 +264,7 @@ class edit extends MaxiBlockComponent {
 								? () => <BlockInserter clientId={clientId} />
 								: false,
 						}}
+						cleanStyles
 					/>,
 				]}
 			</RowContext.Consumer>

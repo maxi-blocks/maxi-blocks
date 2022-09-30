@@ -93,7 +93,7 @@ describe('TypographyControl', () => {
 		expect(typographyInputXs).toStrictEqual('Arial');
 
 		// m
-		await changeResponsive(page, 'm');
+		await changeResponsive(page, 'm', true);
 		await openSidebarTab(page, 'style', 'typography');
 
 		const typographyInputM = await accordionPanel.$$eval(

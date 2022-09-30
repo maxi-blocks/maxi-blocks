@@ -314,7 +314,7 @@ describe('NumberCounterControl', () => {
 		expect(typographyInputXs).toStrictEqual('Arial');
 
 		// m
-		await changeResponsive(page, 'm');
+		await changeResponsive(page, 'm', true);
 
 		const typographyInputM = await page.$eval(
 			'.maxi-typography-control__font-family div div div',

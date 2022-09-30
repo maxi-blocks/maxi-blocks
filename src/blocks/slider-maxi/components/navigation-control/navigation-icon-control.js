@@ -204,23 +204,45 @@ const NavigationIconControl = props => {
 									isHover={isHover}
 								/>
 							)}
-							<SvgStrokeWidthControl
-								{...getGroupAttributes(
-									props,
-									groupLabel,
-									isHover
-								)}
-								onChange={obj => {
-									shortPrefix === arrowShortPrefix &&
-										onChange({
-											...obj,
-											...['first', 'second'].reduce(
-												(prev, current) => ({
-													...prev,
-													[`navigation-arrow-${current}-icon-content`]:
+							{svgType !== 'Shape' && (
+								<SvgStrokeWidthControl
+									{...getGroupAttributes(
+										props,
+										groupLabel,
+										isHover
+									)}
+									onChange={obj => {
+										shortPrefix === arrowShortPrefix &&
+											onChange({
+												...obj,
+												...['first', 'second'].reduce(
+													(prev, current) => ({
+														...prev,
+														[`navigation-arrow-${current}-icon-content`]:
+															setSVGStrokeWidth(
+																props[
+																	`navigation-arrow-${current}-icon-content`
+																],
+																obj[
+																	getAttributeKey(
+																		'stroke',
+																		isHover,
+																		prefix,
+																		breakpoint
+																	)
+																]
+															),
+													})
+												),
+											});
+										shortPrefix === dotsShortPrefix &&
+											onChange({
+												...obj,
+												...(!isActive && {
+													'navigation-dot-icon-content':
 														setSVGStrokeWidth(
 															props[
-																`navigation-arrow-${current}-icon-content`
+																'navigation-dot-icon-content'
 															],
 															obj[
 																getAttributeKey(
@@ -231,37 +253,17 @@ const NavigationIconControl = props => {
 																)
 															]
 														),
-												})
-											),
-										});
-									shortPrefix === dotsShortPrefix &&
-										onChange({
-											...obj,
-											...(!isActive && {
-												'navigation-dot-icon-content':
-													setSVGStrokeWidth(
-														props[
-															'navigation-dot-icon-content'
-														],
-														obj[
-															getAttributeKey(
-																'stroke',
-																isHover,
-																prefix,
-																breakpoint
-															)
-														]
-													),
-											}),
-										});
-								}}
-								prefix={prefix}
-								customLabel={`${capitalize(
-									label
-								)} stroke width`}
-								breakpoint={breakpoint}
-								isHover={isHover}
-							/>
+												}),
+											});
+									}}
+									prefix={prefix}
+									customLabel={`${capitalize(
+										label
+									)} stroke width`}
+									breakpoint={breakpoint}
+									isHover={isHover}
+								/>
+							)}
 							{!isHover && !isActive && (
 								<>
 									<AdvancedNumberControl
@@ -443,7 +445,7 @@ const NavigationIconControl = props => {
 							)}
 						</>
 					</ResponsiveTabsControl>
-					{svgType === 'Filled' && (
+					{getOptions().length > 1 && (
 						<SettingTabsControl
 							label=''
 							className='maxi-icon-styles-control'
@@ -599,7 +601,7 @@ const NavigationIconControl = props => {
 							isHover={isHover}
 						/>
 					)}
-					{iconStyle === 'color' && svgType !== 'Line' && (
+					{iconStyle === 'fill' && svgType !== 'Line' && (
 						<ColorControl
 							label={__(
 								`${capitalize(label)} fill`,

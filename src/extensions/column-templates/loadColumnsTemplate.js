@@ -34,7 +34,7 @@ const updateTemplate = (template, columnsBlockObjects, clientId) => {
 	const newAttributes = template.attributes;
 	const leftoverContent = compact(
 		columnsBlockObjects.map((column, i) => {
-			if (i < templateLength) return null;
+			if (i < templateLength || i > 0) return null;
 
 			return column.innerBlocks;
 		})

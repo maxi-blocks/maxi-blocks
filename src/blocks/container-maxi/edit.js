@@ -21,8 +21,6 @@ import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 import { copyPasteMapping } from './data';
 
-const { removeBlock } = dispatch('core/block-editor');
-
 /**
  * General
  */
@@ -60,6 +58,7 @@ class edit extends MaxiBlockComponent {
 
 	maxiBlockDidUpdate() {
 		if (!this.props.hasInnerBlocks) {
+			const { removeBlock } = dispatch('core/block-editor');
 			removeBlock(this.props.clientId);
 		}
 	}

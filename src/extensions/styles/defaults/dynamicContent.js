@@ -29,6 +29,14 @@ const dynamicContent = {
 	'dc-field': {
 		type: 'string',
 	},
+	'dc-date': {
+		type: 'string',
+		default: 'toLocaleDateString',
+	},
+	'dc-limit': {
+		type: 'number',
+		default: 100,
+	},
 	'dc-content': {
 		type: 'string',
 	},

@@ -34,6 +34,8 @@ import {
 	randomOptions,
 	showOptions,
 	descriptionOfErrors,
+	DateOptions,
+	LimitOptions,
 } from './utils';
 import ToggleSwitch from '../../../toggle-switch';
 
@@ -56,6 +58,8 @@ const DynamicContent = props => {
 		'dc-id': id,
 		'dc-show': show,
 		'dc-field': field,
+		'dc-date': date,
+		'dc-limit': limit,
 		// 'dc-content': content,
 	} = dynamicContent;
 
@@ -67,6 +71,8 @@ const DynamicContent = props => {
 	const idRef = useRef(id);
 	const showRef = useRef(show);
 	const fieldRef = useRef(field);
+	const dateRef = useRef(date);
+	const limitRef = useRef(limit);
 	const alterIdRef = useRef(null);
 
 	const [postIdOptions, setPostIdOptions] = useState(null);
@@ -82,7 +88,7 @@ const DynamicContent = props => {
 				),
 			});
 		}
-	}, [type, id, field, relation, show, author, error]);
+	}, [type, id, field, relation, show, author, error, date, limit]);
 
 	const validationsValues = variableValue => {
 		const result = fieldOptions[variableValue].map(x => x.value);
@@ -91,6 +97,28 @@ const DynamicContent = props => {
 		} else {
 			fieldRef.current = result[0];
 			return { 'dc-field': result[0] };
+		}
+	};
+	const limitFormat = _value => {
+		if (_value.length > limitRef.current && limitRef.current !== 0) {
+			return _value.substr(0, limitRef.current);
+		} else {
+			return _value;
+		}
+	};
+	const dateFormat = _value => {
+		let NewDate = new Date(_value);
+		switch (dateRef.current) {
+			case 'toLocaleDateString':
+				return NewDate.toLocaleDateString();
+			case 'toLocaleDateString("en-ZA")':
+				return NewDate.toLocaleDateString('en-ZA');
+			case 'toLocaleDateString("en-CA")':
+				return NewDate.toLocaleDateString('en-CA');
+			case 'toISOString':
+				return NewDate.toISOString();
+			case 'toUTCString':
+				return NewDate.toUTCString();
 		}
 	};
 
@@ -349,6 +377,7 @@ const DynamicContent = props => {
 				const content = isArray(result) ? result[0] : result;
 
 				if (content) {
+					let content_value;
 					if (content.id) {
 						idRef.current = Number(content.id);
 						onChange({ 'dc-id': Number(content.id) });
@@ -357,16 +386,20 @@ const DynamicContent = props => {
 						renderedFields.includes(_field) &&
 						!isNil(content[_field]?.rendered)
 					) {
-						return content[_field].rendered;
-					}
-
-					// Author conditional !!!
-					if (_field === 'author') {
+						content_value = content[_field].rendered;
+					} else if (_field === 'author') {
 						const authorId = getAuthorByID(content[_field]);
-						return authorId.then(value => value);
+						content_value = authorId.then(value => value);
+					} else {
+						content_value = content[_field];
 					}
 
-					return content[_field];
+					if (fieldRef.current === 'date') {
+						content_value = dateFormat(content_value);
+					} else if (fieldRef.current === 'excerpt') {
+						content_value = limitFormat(content_value);
+					}
+					return content_value;
 				}
 
 				return null; // TODO: needs to handle empty posts(type)
@@ -475,11 +508,6 @@ const DynamicContent = props => {
 				showRef.current = 'current';
 				const dcFieldActual = validationsValues(_value);
 				if (idFields.includes(_value)) {
-					// onChange({
-					// 	'dc-type': _value,
-					// 	'dc-show': 'current',
-					// 	...dcFieldActual,
-					// });
 					getIdOptions(
 						_value,
 						{
@@ -528,6 +556,14 @@ const DynamicContent = props => {
 			case 'field':
 				fieldRef.current = _value;
 				onChange({ 'dc-field': _value });
+				break;
+			case 'limit':
+				limitRef.current = _value;
+				onChange({ 'dc-limit': _value });
+				break;
+			case 'date':
+				dateRef.current = _value;
+				onChange({ 'dc-date': _value });
 				break;
 		}
 	};
@@ -648,6 +684,29 @@ const DynamicContent = props => {
 										options={fieldOptions[typeRef.current]}
 										onChange={value =>
 											switchOnChange('field', value)
+										}
+									/>
+								)}
+								{fieldRef.current == 'excerpt' && (
+									<SelectControl
+										label={__(
+											'Character limit',
+											'maxi-blocks'
+										)}
+										value={limitRef.current}
+										options={LimitOptions}
+										onChange={value =>
+											switchOnChange('limit', value)
+										}
+									/>
+								)}
+								{fieldRef.current == 'date' && (
+									<SelectControl
+										label={__('Date format', 'maxi-blocks')}
+										value={dateRef.current}
+										options={DateOptions}
+										onChange={value =>
+											switchOnChange('date', value)
 										}
 									/>
 								)}

@@ -96,10 +96,13 @@ class Relation {
 				'#maxi-blocks-inline-css'
 			);
 
-		this.inlineStylesEl.parentNode.insertBefore(
-			styleEl,
-			this.inlineStylesEl.nextSibling
-		);
+		if (document.querySelector(`#${styleEl.id}`))
+			document.querySelector(`#${styleEl.id}`).replaceWith(styleEl);
+		else
+			this.inlineStylesEl.parentNode.insertBefore(
+				styleEl,
+				this.inlineStylesEl.nextSibling
+			);
 	}
 
 	getLastUsableBreakpoint(currentBreakpoint, callback) {

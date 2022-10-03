@@ -92,38 +92,43 @@ const getHoverObject = props => {
 const getStyles = props => {
 	const { uniqueID } = props;
 
-	const response = {
-		[uniqueID]: styleProcessor(
-			{
-				'': getNormalObject(props),
-				':hover': getHoverObject(props),
-				...getBlockBackgroundStyles({
-					...getGroupAttributes(props, [
+	const slideStyles = styleProcessor(
+		{
+			'': getNormalObject(props),
+			':hover': getHoverObject(props),
+			...getBlockBackgroundStyles({
+				...getGroupAttributes(props, [
+					'blockBackground',
+					'border',
+					'borderWidth',
+					'borderRadius',
+				]),
+				blockStyle: props.blockStyle,
+			}),
+			...getBlockBackgroundStyles({
+				...getGroupAttributes(
+					props,
+					[
 						'blockBackground',
 						'border',
 						'borderWidth',
 						'borderRadius',
-					]),
-					blockStyle: props.blockStyle,
-				}),
-				...getBlockBackgroundStyles({
-					...getGroupAttributes(
-						props,
-						[
-							'blockBackground',
-							'border',
-							'borderWidth',
-							'borderRadius',
-						],
-						true
-					),
-					isHover: true,
-					blockStyle: props.blockStyle,
-				}),
-			},
-			customCss.selectors,
-			props
-		),
+					],
+					true
+				),
+				isHover: true,
+				blockStyle: props.blockStyle,
+			}),
+		},
+		customCss.selectors,
+		props
+	);
+
+	const response = {
+		[uniqueID]: slideStyles,
+		// On frontend styles are applied by id of the block,
+		// this makes clones of the block have the same style as the block, while having different id
+		[`${uniqueID}-clone`]: slideStyles,
 	};
 
 	return response;

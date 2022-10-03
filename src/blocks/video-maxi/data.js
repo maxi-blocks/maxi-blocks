@@ -13,8 +13,6 @@ const blockClass = ' .maxi-video-block';
 const videoClass = `${blockClass}__video-player`;
 const overlayClass = `${blockClass}__overlay`;
 
-const prefix = 'video-';
-
 /**
  * Data object
  */

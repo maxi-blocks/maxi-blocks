@@ -9,7 +9,6 @@ import transformIBMigrator from './transformIBMigrator';
 import SVGIBTargetsMigrator from './SVGIBTargetsMigrator';
 import transitionTargetIBmigrator from './transitionTargetIBmigrator';
 import hoverStatusMigrator from './hoverStatusMigrator';
-import { getMigratorsCombinations } from './utils';
 
 /**
  * External dependencies
@@ -27,76 +26,63 @@ export const handleBlockMigrator = ({
 	selectors,
 	migrators,
 }) => {
-	const combinedMigrators = getMigratorsCombinations(migrators);
+	const createMigrator = combinedMigrator => {
+		const result = {};
 
-	return combinedMigrators
-		.sort()
-		.reverse()
-		.map(combinedMigrator => {
-			const result = {};
+		const attributesFunctions = compact(
+			combinedMigrator.map(migrator => migrator.attributes)
+		);
+		const migrateFunctions = compact(
+			combinedMigrator.map(migrator => migrator.migrate)
+		);
+		const saveFunctions = compact(
+			combinedMigrator.map(migrator => migrator.saveMigrator)
+		);
 
-			const isEligibleFunctions = compact(
-				combinedMigrator.map(migrator => migrator.isEligible)
-			);
-			const attributesFunctions = compact(
-				combinedMigrator.map(migrator => migrator.attributes)
-			);
-			const migrateFunctions = compact(
-				combinedMigrator.map(migrator => migrator.migrate)
-			);
-			const saveFunctions = compact(
-				combinedMigrator.map(migrator => migrator.saveMigrator)
-			);
-
-			result.isEligible = blockAttributes => {
-				return isEligibleFunctions.every(isEligible =>
-					isEligible(blockAttributes, attributes)
-				);
-			};
-			result.attributes = {
-				...attributes,
-				...attributesFunctions.reduce((acc, attributesFunction) => {
-					return {
-						...acc,
-						...attributesFunction(isContainer),
-					};
-				}, {}),
-			};
-			result.migrate = newAttributes => {
-				return migrateFunctions.reduce(
-					(acc, migrateFunction) => {
-						return migrateFunction({
-							newAttributes: { ...acc },
-							attributes,
-							prefix,
-							selectors,
-						});
-					},
-					{ ...newAttributes }
-				);
-			};
-			if (saveFunctions.length > 0)
-				result.save = props => {
-					// Return corrupted save function
-					if (
-						!isEligibleFunctions.every(isEligible =>
-							isEligible(props.attributes, attributes)
-						)
-					)
-						return false;
-
-					let currentInstance = save(props);
-
-					saveFunctions.forEach((saveMigrator, i) => {
-						currentInstance = saveMigrator(currentInstance, props);
-					});
-
-					return currentInstance;
+		result.isEligible = () => true;
+		result.attributes = {
+			...attributes,
+			...attributesFunctions.reduce((acc, attributesFunction) => {
+				return {
+					...acc,
+					...attributesFunction(isContainer),
 				};
-			else result.save = save;
+			}, {}),
+		};
+		result.migrate = newAttributes => {
+			return migrateFunctions.reduce(
+				(acc, migrateFunction) =>
+					migrateFunction({
+						newAttributes: { ...acc },
+						attributes,
+						prefix,
+						selectors,
+					}),
+				{ ...newAttributes }
+			);
+		};
+		if (saveFunctions.length > 0)
+			result.save = props => {
+				let currentInstance = save(props);
 
-			return result;
-		});
+				saveFunctions.forEach((saveMigrator, i) => {
+					currentInstance = saveMigrator(
+						currentInstance,
+						props,
+						attributes
+					);
+				});
+
+				return currentInstance;
+			};
+		else result.save = save;
+
+		return result;
+	};
+
+	const result = [createMigrator(migrators)];
+
+	return result;
 };
 
 const blockMigrator = blockMigratorProps => {

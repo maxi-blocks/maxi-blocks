@@ -227,7 +227,7 @@ const interactionBuilderSettings = [
 			transition.block['icon background'].target,
 			transition.block['icon border'].target,
 		],
-		hoverProp: 'button-icon-status-hover',
+		hoverProp: 'icon-status-hover',
 		attrGroupName: [
 			'icon',
 			'iconBackground',
@@ -261,11 +261,17 @@ const interactionBuilderSettings = [
 				/>
 			);
 		},
-		helper: props => getButtonIconStyles(props),
+		helper: props =>
+			getButtonIconStyles({
+				...props,
+				target: iconClass,
+				wrapperTarget: buttonClass,
+			}),
 	},
 	{
 		label: __('Button typography', 'maxi-blocks'),
 		transitionTarget: transition.block.typography.target,
+		transitionTrigger: buttonClass,
 		hoverProp: 'typography-status-hover',
 		attrGroupName: 'typography',
 		component: props => (

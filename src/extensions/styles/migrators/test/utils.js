@@ -10,31 +10,11 @@ import { cloneElement, renderToString } from '@wordpress/element';
 import {
 	getBlockNameFromUniqueID,
 	getBlockSelectorsByUniqueID,
-	getMigratorsCombinations,
 	getTransitionSetting,
 } from '../utils';
 import { handleBlockMigrator } from '../blockMigrator';
 
 jest.mock('src/components/index.js', () => jest.fn());
-
-describe.skip('getMigratorsCombinations', () => {
-	it('Should return a one element array', () => {
-		const mainMigrator = {
-			isEligible: null,
-			attributes: {},
-			migrate: null,
-		};
-
-		const migrators = [
-			{ ...mainMigrator, saveMigrator: 1 },
-			{ ...mainMigrator, saveMigrator: 2 },
-			{ ...mainMigrator, saveMigrator: 3 },
-			{ ...mainMigrator, saveMigrator: 4 },
-		];
-
-		expect(getMigratorsCombinations(migrators)).toMatchSnapshot();
-	});
-});
 
 const TestComponent = ({
 	content = 'Testing',

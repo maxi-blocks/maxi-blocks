@@ -61,9 +61,9 @@ class MaxiSlider {
 
 		// States
 		this.currentSlide = 0;
-		this.initPosition;
-		this.dragPosition;
-		this.endPosition;
+		this.initPosition = 0;
+		this.dragPosition = 0;
+		this.endPosition = 0;
 		this.realFirstElOffset = 0;
 
 		this.isInteracting = false;
@@ -111,19 +111,19 @@ class MaxiSlider {
 		if (this._currentSlide < 0)
 			return (
 				this.realFirstElOffset -
-				this._slides
+				(this._slides
 					.slice(this.currentSlide)
 					.map(slide => slide.size.width)
-					?.reduce((acc, cur) => acc + cur)
+					?.reduce((acc, cur) => acc + cur) ?? 0)
 			);
 
 		return this.currentSlide === 0
 			? this.realFirstElOffset
-			: this._slides
+			: (this._slides
 					.slice(0, this.currentSlide)
 					.map(slide => slide.size.width)
-					?.reduce((acc, cur) => acc + cur) +
-					this.realFirstElOffset || this.realFirstElOffset;
+					?.reduce((acc, cur) => acc + cur) ?? 0) +
+					this.realFirstElOffset;
 	}
 
 	get wrapperTranslate() {
@@ -190,8 +190,8 @@ class MaxiSlider {
 		return clone;
 	}
 
-	dragStart(e) {
-		e = e || window.event;
+	dragStart(event) {
+		const e = event || window.event;
 		e.preventDefault();
 
 		this._wrapper.style.transition = '';
@@ -211,8 +211,8 @@ class MaxiSlider {
 		this.dragPosition = this.initPosition;
 	}
 
-	dragAction(e) {
-		e = e || window.event;
+	dragAction(event) {
+		const e = event || window.event;
 
 		let dragMove;
 
@@ -334,7 +334,9 @@ class MaxiSlider {
 
 	sliderAction(withTransition = true) {
 		// Update active slide
-		this._slides.forEach(slide => (slide.isActive = this.currentSlide));
+		this._slides.forEach(slide => {
+			slide.isActive = this.currentSlide;
+		});
 
 		// Move the slider
 		if (withTransition) {

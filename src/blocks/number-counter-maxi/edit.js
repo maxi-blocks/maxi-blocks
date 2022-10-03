@@ -30,6 +30,135 @@ import { copyPasteMapping } from './data';
 import { round } from 'lodash';
 
 /**
+ * Content
+ */
+class edit extends MaxiBlockComponent {
+	constructor(props) {
+		super(props);
+
+		this.resizableObject = createRef();
+	}
+
+	resetNumberHelper;
+
+	maxiBlockDidUpdate() {
+		if (this.resizableObject.current) {
+			const svgWidth = getLastBreakpointAttribute({
+				target: 'number-counter-width',
+				breakpoint: this.props.deviceType || 'general',
+				attributes: this.props.attributes,
+			});
+			const svgWidthUnit = getLastBreakpointAttribute({
+				target: 'number-counter-width-unit',
+				breakpoint: this.props.deviceType || 'general',
+				attributes: this.props.attributes,
+			});
+			const fullWidthValue = `${svgWidth}${svgWidthUnit}`;
+
+			if (this.resizableObject.current.state.width !== fullWidthValue)
+				this.resizableObject.current.updateSize({
+					width: fullWidthValue,
+				});
+		}
+
+		if (!this.resetNumberHelper) this.forceUpdate();
+	}
+
+	get getStylesObject() {
+		return getStyles(this.props.attributes);
+	}
+
+	get getMaxiCustomData() {
+		const { attributes } = this.props;
+		const { uniqueID } = attributes;
+
+		const response = {
+			number_counter: {
+				[uniqueID]: {
+					...getGroupAttributes(attributes, 'numberCounter'),
+					breakpoints: { ...getBreakpoints(attributes) },
+				},
+			},
+		};
+
+		return response;
+	}
+
+	render() {
+		const { attributes, maxiSetAttributes, deviceType, isSelected } =
+			this.props;
+		const { uniqueID } = attributes;
+
+		const classes = 'maxi-number-counter-block';
+
+		const handleOnResizeStop = (event, direction, elt) => {
+			const widthUnit = getLastBreakpointAttribute({
+				target: 'number-counter-width-unit',
+				breakpoint: deviceType,
+				attributes,
+			});
+
+			maxiSetAttributes({
+				[`number-counter-width-${deviceType}`]: getResizerSize(
+					elt,
+					this.blockRef,
+					widthUnit
+				),
+			});
+		};
+
+		const handleReset = () => this.resetNumberHelper();
+
+		return [
+			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
+			<Toolbar
+				key={`toolbar-${uniqueID}`}
+				ref={this.blockRef}
+				prefix='number-counter-'
+				{...this.props}
+				resetNumberHelper={handleReset}
+				copyPasteMapping={copyPasteMapping}
+			/>,
+			<MaxiBlock
+				key={`maxi-number-counter--${uniqueID}`}
+				ref={this.blockRef}
+				className={classes}
+				{...getMaxiBlockAttributes(this.props)}
+			>
+				<NumberCounter
+					{...getGroupAttributes(attributes, 'numberCounter')}
+					{...getGroupAttributes(attributes, 'overflow')}
+					{...getGroupAttributes(
+						attributes,
+						'size',
+						false,
+						'number-counter-'
+					)}
+					resizerProps={{
+						onResizeStop: handleOnResizeStop,
+						resizableObject: this.resizableObject,
+						showHandle:
+							isSelected &&
+							!getLastBreakpointAttribute({
+								target: 'number-counter-width-auto',
+								breakpoint: deviceType,
+								attributes,
+							}),
+					}}
+					deviceType={deviceType}
+					blockRef={this.blockRef}
+					isSelected={isSelected}
+					uniqueID={uniqueID}
+					replayCounter={fn => {
+						this.resetNumberHelper = fn;
+					}}
+				/>
+			</MaxiBlock>,
+		];
+	}
+}
+
+/**
  * NumberCounter
  */
 const NumberCounter = attributes => {
@@ -206,133 +335,5 @@ const NumberCounter = attributes => {
 		</BlockResizer>
 	);
 };
-
-/**
- * Content
- */
-class edit extends MaxiBlockComponent {
-	constructor(props) {
-		super(props);
-
-		this.resizableObject = createRef();
-	}
-
-	resetNumberHelper;
-
-	maxiBlockDidUpdate() {
-		if (this.resizableObject.current) {
-			const svgWidth = getLastBreakpointAttribute({
-				target: 'number-counter-width',
-				breakpoint: this.props.deviceType || 'general',
-				attributes: this.props.attributes,
-			});
-			const svgWidthUnit = getLastBreakpointAttribute({
-				target: 'number-counter-width-unit',
-				breakpoint: this.props.deviceType || 'general',
-				attributes: this.props.attributes,
-			});
-			const fullWidthValue = `${svgWidth}${svgWidthUnit}`;
-
-			if (this.resizableObject.current.state.width !== fullWidthValue)
-				this.resizableObject.current.updateSize({
-					width: fullWidthValue,
-				});
-		}
-
-		if (!this.resetNumberHelper) this.forceUpdate();
-	}
-
-	get getStylesObject() {
-		return getStyles(this.props.attributes);
-	}
-
-	get getMaxiCustomData() {
-		const { attributes } = this.props;
-		const { uniqueID } = attributes;
-
-		const response = {
-			number_counter: {
-				[uniqueID]: {
-					...getGroupAttributes(attributes, 'numberCounter'),
-					breakpoints: { ...getBreakpoints(attributes) },
-				},
-			},
-		};
-
-		return response;
-	}
-
-	render() {
-		const { attributes, maxiSetAttributes, deviceType, isSelected } =
-			this.props;
-		const { uniqueID } = attributes;
-
-		const classes = 'maxi-number-counter-block';
-
-		const handleOnResizeStop = (event, direction, elt) => {
-			const widthUnit = getLastBreakpointAttribute({
-				target: 'number-counter-width-unit',
-				breakpoint: deviceType,
-				attributes,
-			});
-
-			maxiSetAttributes({
-				[`number-counter-width-${deviceType}`]: getResizerSize(
-					elt,
-					this.blockRef,
-					widthUnit
-				),
-			});
-		};
-
-		const handleReset = () => this.resetNumberHelper();
-
-		return [
-			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
-			<Toolbar
-				key={`toolbar-${uniqueID}`}
-				ref={this.blockRef}
-				prefix='number-counter-'
-				{...this.props}
-				resetNumberHelper={handleReset}
-				copyPasteMapping={copyPasteMapping}
-			/>,
-			<MaxiBlock
-				key={`maxi-number-counter--${uniqueID}`}
-				ref={this.blockRef}
-				className={classes}
-				{...getMaxiBlockAttributes(this.props)}
-			>
-				<NumberCounter
-					{...getGroupAttributes(attributes, 'numberCounter')}
-					{...getGroupAttributes(
-						attributes,
-						'size',
-						false,
-						'number-counter-'
-					)}
-					resizerProps={{
-						onResizeStop: handleOnResizeStop,
-						resizableObject: this.resizableObject,
-						showHandle:
-							isSelected &&
-							!getLastBreakpointAttribute({
-								target: 'number-counter-width-auto',
-								breakpoint: deviceType,
-								attributes,
-							}),
-					}}
-					deviceType={deviceType}
-					blockRef={this.blockRef}
-					isSelected={isSelected}
-					uniqueID={uniqueID}
-					replayCounter={fn => {
-						this.resetNumberHelper = fn;
-					}}
-				/>
-			</MaxiBlock>,
-		];
-	}
-}
 
 export default withMaxiProps(edit);

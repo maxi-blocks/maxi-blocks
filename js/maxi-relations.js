@@ -175,9 +175,16 @@ class Relation {
 
 			// Clean values
 			Object.entries(response).forEach(([key, value]) => {
-				[this.breakpoints]
+				[...this.breakpoints]
 					.reverse()
 					.reduce((prevBreakpoint, breakpoint) => {
+						const doesExist = Object.prototype.hasOwnProperty.call(
+							value,
+							prevBreakpoint
+						);
+
+						if (!doesExist) return breakpoint;
+
 						const isEmpty =
 							Object.keys(value[prevBreakpoint]).length === 0;
 						const isEqualThanPrevious =
@@ -429,6 +436,8 @@ class Relation {
 
 	generateTransitions() {
 		const getTransitionLine = (stylesObj, target) => {
+			const isBackground = target.includes('maxi-background-displayer');
+
 			Object.entries(this.breakpointsObj).forEach(
 				([breakpoint, breakpointValue]) => {
 					if (this.effectsObj[breakpoint]) {
@@ -443,7 +452,7 @@ class Relation {
 								' '
 							);
 
-						const currentStyleObj =
+						let currentStyleObj =
 							stylesObj[
 								this.getLastUsableBreakpoint(
 									breakpoint,
@@ -453,6 +462,13 @@ class Relation {
 											.length
 								)
 							];
+
+						if (this.isBorder && isBackground)
+							currentStyleObj = {
+								...currentStyleObj,
+								top: null,
+								left: null,
+							};
 
 						if (currentStyleObj) {
 							const transitionString = this.getTransitionString(

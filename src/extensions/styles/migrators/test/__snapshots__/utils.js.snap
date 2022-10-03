@@ -1592,7 +1592,7 @@ Object {
   ],
   "component": [Function],
   "helper": [Function],
-  "hoverProp": "button-icon-status-hover",
+  "hoverProp": "icon-status-hover",
   "label": "Button icon",
   "transitionTarget": Array [
     "  .maxi-button-block__icon svg *:not(g)",

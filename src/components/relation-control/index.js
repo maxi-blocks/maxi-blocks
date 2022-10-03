@@ -128,7 +128,9 @@ const RelationControl = props => {
 		const prefix = selectedSettingsObj?.prefix || '';
 		const blockAttributes = cloneDeep(getBlock(clientId)?.attributes);
 
-		const storeBreakpoints = select('maxiBlocks').receiveMaxiBreakpoints();
+		const { receiveMaxiBreakpoints, receiveXXLSize } = select('maxiBlocks');
+
+		const storeBreakpoints = receiveMaxiBreakpoints();
 		const blockBreakpoints = getGroupAttributes(
 			blockAttributes,
 			'breakpoints'
@@ -136,6 +138,7 @@ const RelationControl = props => {
 
 		const breakpoints = {
 			...storeBreakpoints,
+			xxl: receiveXXLSize(),
 			...Object.keys(blockBreakpoints).reduce((acc, key) => {
 				if (blockAttributes[key]) {
 					const newKey = key.replace('breakpoints-', '');

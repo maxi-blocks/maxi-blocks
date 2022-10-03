@@ -6,7 +6,7 @@ class Relation {
 		this.uniqueID = item?.uniqueID;
 		this.css = item?.css;
 
-		if (!this.uniqueID || this.css?.length === 0) return;
+		if (!this.uniqueID || Object.keys(this.css).length === 0) return;
 
 		this.trigger = item.trigger;
 		this.triggerEl = document.querySelector(`.${this.trigger}`);

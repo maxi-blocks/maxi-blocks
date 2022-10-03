@@ -20,6 +20,8 @@ const isEligible = blockAttributes =>
 	});
 
 const migrate = ({ newAttributes }) => {
+	if (!isEligible(newAttributes)) return newAttributes;
+
 	const { relations } = newAttributes;
 
 	relations.forEach((relation, i) => {

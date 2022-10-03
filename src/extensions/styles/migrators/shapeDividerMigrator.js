@@ -35,7 +35,16 @@ const deprecatedAttributes = {
 	},
 };
 
+const isEligible = blockAttributes =>
+	Object.keys(blockAttributes).some(
+		key =>
+			key in deprecatedAttributes &&
+			blockAttributes[key] !== deprecatedAttributes[key].default
+	);
+
 const migrate = ({ newAttributes }) => {
+	if (!isEligible(newAttributes)) return newAttributes;
+
 	Object.entries(newAttributes).forEach(([key, attr]) => {
 		if (key in deprecatedAttributes) {
 			newAttributes[`${key}-general`] = attr;
@@ -46,12 +55,5 @@ const migrate = ({ newAttributes }) => {
 
 	return newAttributes;
 };
-
-const isEligible = blockAttributes =>
-	Object.keys(blockAttributes).some(
-		key =>
-			key in deprecatedAttributes &&
-			blockAttributes[key] !== deprecatedAttributes[key].default
-	);
 
 export default { isEligible, attributes: () => deprecatedAttributes, migrate };

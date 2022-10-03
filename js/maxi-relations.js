@@ -6,7 +6,7 @@ class Relation {
 		this.uniqueID = item?.uniqueID;
 		this.css = item?.css;
 
-		if (!this.uniqueID || Object.keys(this.css).length === 0) return;
+		if (!this.uniqueID || this.css?.length === 0) return;
 
 		this.trigger = item.trigger;
 		this.triggerEl = document.querySelector(`.${this.trigger}`);
@@ -96,10 +96,13 @@ class Relation {
 				'#maxi-blocks-inline-css'
 			);
 
-		this.inlineStylesEl.parentNode.insertBefore(
-			styleEl,
-			this.inlineStylesEl.nextSibling
-		);
+		if (document.querySelector(`#${styleEl.id}`))
+			document.querySelector(`#${styleEl.id}`).replaceWith(styleEl);
+		else
+			this.inlineStylesEl.parentNode.insertBefore(
+				styleEl,
+				this.inlineStylesEl.nextSibling
+			);
 	}
 
 	getLastUsableBreakpoint(currentBreakpoint, callback) {

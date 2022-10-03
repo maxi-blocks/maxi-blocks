@@ -50,6 +50,11 @@ body.maxi-blocks--active .maxi-block {
 			content: none;
 		}
 	}
+
+	/*Seedlet*/
+	.maxi-text-block--link {
+		border: none;
+	}
 }
 
 body.maxi-blocks--active .maxi-block[data-align='full'] {
@@ -121,9 +126,4 @@ body.maxi-blocks--active.page-template-full-width-template .ast-container {
 	#maxi-main-container {
 		width: 100%;
 	}
-}
-
-/*Seedlet*/
-body.maxi-blocks--active a.maxi-text-block--link {
-	border: none;
 }

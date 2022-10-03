@@ -43,6 +43,13 @@ body.maxi-blocks--active .maxi-block {
 	&.maxi-button-block .maxi-button-block__button {
 		background-color: transparent;
 	}
+
+	.maxi-components-button {
+		&:after,
+		&:before {
+			content: none;
+		}
+	}
 }
 
 body.maxi-blocks--active .maxi-block[data-align='full'] {

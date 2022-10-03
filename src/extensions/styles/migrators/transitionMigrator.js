@@ -9,6 +9,8 @@ const isEligible = blockAttributes =>
 	!!blockAttributes?.transition?.block?.icon;
 
 const migrate = ({ newAttributes }) => {
+	if (!isEligible(newAttributes)) return newAttributes;
+
 	const { transition } = newAttributes;
 
 	if (transition.block.icon) {

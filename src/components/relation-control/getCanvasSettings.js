@@ -42,7 +42,7 @@ import {
  */
 import { isEmpty, isPlainObject } from 'lodash';
 
-const getTransformControl = ({ categories, selectors }) => ({
+const getTransformControl = (name, { categories, selectors }) => ({
 	label: __('Transform', 'maxi-blocks'),
 	transitionTarget: [],
 	hoverProp: (attributes, relationAttributes) =>
@@ -169,7 +169,7 @@ const getCanvasSettings = ({ name, customCss }) => [
 		component: props => <PositionControl {...props} />,
 		helper: props => getPositionStyles(props.obj),
 	},
-	...getTransformControl(customCss),
+	...getTransformControl(name, customCss),
 ];
 
 export default getCanvasSettings;

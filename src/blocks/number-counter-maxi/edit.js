@@ -281,7 +281,6 @@ const NumberCounter = attributes => {
 			}}
 			{...resizerProps}
 			showHandle={!circleStatus ? resizerProps.showHandle : false}
-			cleanStyles={false}
 		>
 			{!circleStatus && (
 				<svg

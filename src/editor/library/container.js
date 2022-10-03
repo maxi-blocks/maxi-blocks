@@ -429,10 +429,10 @@ const LibraryContainer = props => {
 		const newSvgClass = `${svgClass}__${uniqueId()}`;
 		const replaceIt = `${svgClass}`;
 
-		const finalSvgCode = svgAttributesReplacer(
-			blockStyle,
-			withHoverStyle
-		).replaceAll(replaceIt, newSvgClass);
+		const finalSvgCode = svgAttributesReplacer(withHoverStyle).replaceAll(
+			replaceIt,
+			newSvgClass
+		);
 
 		if (isValidTemplate(finalSvgCode)) {
 			onSelect({ content: finalSvgCode });
@@ -443,7 +443,7 @@ const LibraryContainer = props => {
 
 	/** SVG Icons Results */
 	const svgResults = ({ hit }) => {
-		const newContent = svgAttributesReplacer(blockStyle, hit.svg_code);
+		const newContent = svgAttributesReplacer(hit.svg_code);
 		const svgType = hit.svg_category[0];
 		const shapeType = getShapeType(type);
 
@@ -579,11 +579,7 @@ const LibraryContainer = props => {
 		const shapeType = getShapeType(type);
 		const svgType = hit.svg_category[0];
 
-		const newContent = svgAttributesReplacer(
-			blockStyle,
-			hit.svg_code,
-			shapeType
-		);
+		const newContent = svgAttributesReplacer(hit.svg_code, shapeType);
 
 		return (
 			<MasonryItem

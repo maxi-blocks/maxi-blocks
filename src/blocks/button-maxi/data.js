@@ -271,6 +271,7 @@ const interactionBuilderSettings = [
 	{
 		label: __('Button typography', 'maxi-blocks'),
 		transitionTarget: transition.block.typography.target,
+		transitionTrigger: buttonClass,
 		hoverProp: 'typography-status-hover',
 		attrGroupName: 'typography',
 		component: props => (

@@ -203,6 +203,8 @@ const getAttributesFromStyle = (styles, selector) => {
 };
 
 const migrate = ({ newAttributes }) => {
+	if (!isEligible(newAttributes)) return newAttributes;
+
 	const { relations } = newAttributes;
 
 	const newRelations = [...relations];

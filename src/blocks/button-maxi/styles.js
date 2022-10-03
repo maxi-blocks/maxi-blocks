@@ -256,6 +256,15 @@ const getStyles = (props, scValues) => {
 				':hover': getHoverWrapperObject(props),
 				' .maxi-button-block__button': getNormalObject(props),
 				' .maxi-button-block__content': getContentObject(props),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(props, [
+						'blockBackground',
+						'border',
+						'borderWidth',
+						'borderRadius',
+					]),
+					blockStyle,
+				}),
 				...getButtonIconStyles({
 					obj: props,
 					blockStyle,
@@ -277,6 +286,7 @@ const getStyles = (props, scValues) => {
 						'borderRadius',
 					]),
 					blockStyle,
+					isHover: true,
 				}),
 				...getButtonIconStyles({
 					obj: props,

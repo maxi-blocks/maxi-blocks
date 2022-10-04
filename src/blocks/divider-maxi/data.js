@@ -108,7 +108,7 @@ const transition = {
 			title: 'Box shadow',
 			target: dividerClass,
 			property: 'box-shadow',
-			prefix,
+			hoverProp: `${prefix}box-shadow-status-hover`,
 		},
 	},
 };

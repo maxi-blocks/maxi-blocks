@@ -282,13 +282,13 @@ class Relation {
 
 	// Target for the creation of styles and transition lines needs to be considered
 	// as it can create higher specificity than the default block styles.
-	getTargetForLine(transitionTarget) {
+	getTargetForLine(transitionTarget, mainTarget = this.dataTarget) {
 		if (transitionTarget)
-			if (!this.dataTarget.includes(transitionTarget))
-				return `${this.dataTarget} ${transitionTarget}`;
-			else return this.dataTarget;
+			if (!mainTarget.includes(transitionTarget))
+				return `${mainTarget} ${transitionTarget}`;
+			else return mainTarget;
 
-		return `${this.dataTarget} ${this.target}`;
+		return `${mainTarget} ${this.target}`;
 	}
 
 	getMediaLines(breakpoint, breakpointValue) {
@@ -352,20 +352,30 @@ class Relation {
 			);
 		};
 
+		// On styles (not transitions), we need to keep the styles after run the interaction.
+		// As the same target block can be used by multiple interactions, we can't depend the styles
+		// on the "data-relations" attribute, as it can be changed by other interactions.
+		// To prevent it, in case the interaction is 'click' type, the target don't contains
+		// the "data-relations" attribute, so we can keep the styles after the interaction.
+		const mainTarget =
+			this.action === 'click' ? `#${this.uniqueID}` : this.dataTarget;
+
 		if (this.hasMultipleTargets)
 			Object.entries(this.stylesObj).forEach(
 				([targetSelector, styles]) =>
 					Object.keys(styles).length &&
-					getStylesLine(
-						styles,
-						`${this.dataTarget} ${targetSelector}`
-					)
+					getStylesLine(styles, `${mainTarget} ${targetSelector}`)
 			);
 		else
 			this.transitionTargets.forEach(transitionTarget =>
 				getStylesLine(
 					this.stylesObj,
-					this.getTargetForLine(transitionTarget)
+					this.getTargetForLine(
+						transitionTarget,
+						this.action === 'click'
+							? `#${this.uniqueID}`
+							: this.dataTarget
+					)
 				)
 			);
 	}

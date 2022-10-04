@@ -14,7 +14,6 @@ import { getTransformSelectors } from '../../components/transform-control/utils'
  */
 import {
 	cloneDeep,
-	findKey,
 	isEmpty,
 	isEqual,
 	isNil,

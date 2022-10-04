@@ -151,13 +151,13 @@ const transition = {
 			title: 'Border',
 			target: iconClass,
 			property: 'border',
-			prefix,
+			hoverProp: `${prefix}border-status-hover`,
 		},
 		'box shadow': {
 			title: 'Box shadow',
 			target: iconClass,
 			property: 'box-shadow',
-			prefix,
+			hoverProp: `${prefix}box-shadow-status-hover`,
 		},
 		...createIconTransitions({
 			target: iconClass,
@@ -170,7 +170,7 @@ const transition = {
 			title: 'Background',
 			target: iconClass,
 			property: 'background',
-			hoverProp: 'svg-background-status-hover',
+			hoverProp: `${prefix}background-status-hover`,
 		},
 	},
 };

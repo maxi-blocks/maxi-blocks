@@ -1,3 +1,5 @@
+1;
+
 /* eslint-disable class-methods-use-this */
 
 // Relations (IB)

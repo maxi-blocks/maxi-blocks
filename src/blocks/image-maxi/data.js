@@ -178,13 +178,13 @@ const transition = {
 			title: 'Border',
 			target: `${imageWrapperClass} img`,
 			property: 'border',
-			prefix,
+			hoverProp: `${prefix}border-status-hover`,
 		},
 		'box shadow': {
 			title: 'Box shadow',
 			target: `${imageWrapperClass} img`,
 			property: 'box-shadow',
-			prefix,
+			hoverProp: `${prefix}box-shadow-status-hover`,
 		},
 	},
 };

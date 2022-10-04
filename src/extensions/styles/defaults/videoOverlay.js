@@ -30,7 +30,7 @@ const videoOverlay = {
 			'overlay-background-palette-opacity-general',
 		],
 		newAttr: {
-			'overlay-background-hover-status': {
+			'overlay-background-status-hover': {
 				type: 'boolean',
 				default: false,
 			},

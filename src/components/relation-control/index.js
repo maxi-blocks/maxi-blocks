@@ -23,12 +23,13 @@ import {
 	getGroupAttributes,
 } from '../../extensions/styles';
 import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
-import settings from './settings';
+import getHoverStatus from './getHoverStatus';
+import * as blocksData from '../../blocks/data';
 
 /**
  * External dependencies
  */
-import { cloneDeep, isEmpty, merge, isNil } from 'lodash';
+import { cloneDeep, isEmpty, isNil, merge } from 'lodash';
 
 /**
  * Styles
@@ -54,8 +55,14 @@ const RelationControl = props => {
 	};
 
 	const getOptions = clientId => {
-		const blockName = getBlock(clientId)?.name;
-		const blockOptions = settings[blockName] || [];
+		const blockName = getBlock(clientId)?.name.replace('maxi-blocks/', '');
+
+		// TODO: without this line, the block may break after copy/pasting
+		if (!blockName) return [];
+
+		const blockOptions =
+			Object.values(blocksData).find(data => data.name === blockName)
+				.interactionBuilderSettings || [];
 
 		return blockOptions || [];
 	};
@@ -122,7 +129,9 @@ const RelationControl = props => {
 		const prefix = selectedSettingsObj?.prefix || '';
 		const blockAttributes = cloneDeep(getBlock(clientId)?.attributes);
 
-		const storeBreakpoints = select('maxiBlocks').receiveMaxiBreakpoints();
+		const { receiveMaxiBreakpoints, receiveXXLSize } = select('maxiBlocks');
+
+		const storeBreakpoints = receiveMaxiBreakpoints();
 		const blockBreakpoints = getGroupAttributes(
 			blockAttributes,
 			'breakpoints'
@@ -130,6 +139,7 @@ const RelationControl = props => {
 
 		const breakpoints = {
 			...storeBreakpoints,
+			xxl: receiveXXLSize(),
 			...Object.keys(blockBreakpoints).reduce((acc, key) => {
 				if (blockAttributes[key]) {
 					const newKey = key.replace('breakpoints-', '');
@@ -142,24 +152,38 @@ const RelationControl = props => {
 		// As an alternative to a migrator... Remove after used!
 		if (
 			!(
+				'transitionTrigger' in item.effects &&
 				'transitionTarget' in item.effects &&
 				'hoverStatus' in item.effects
 			) ||
 			item.effects.hoverStatus !==
-				blockAttributes?.[selectedSettingsObj.hoverProp]
+				getHoverStatus(selectedSettingsObj.hoverProp, blockAttributes)
 		) {
-			const { transitionTarget, hoverProp } = selectedSettingsObj;
+			const {
+				transitionTarget: rawTransitionTarget,
+				transitionTrigger,
+				hoverProp,
+			} = selectedSettingsObj;
+			const transitionTarget =
+				item.settings === 'Transform'
+					? Object.keys(item.css)
+					: rawTransitionTarget;
 
 			let hoverStatus = null;
 
 			if (!('hoverStatus' in item.effects))
-				hoverStatus = blockAttributes?.[hoverProp];
+				hoverStatus = getHoverStatus(
+					hoverProp,
+					blockAttributes,
+					item.attributes
+				);
 
-			if (transitionTarget)
+			if (transitionTarget || transitionTrigger)
 				onChangeRelation(relations, item.id, {
 					effects: {
 						...item.effects,
-						transitionTarget,
+						...(transitionTarget && { transitionTarget }),
+						...(transitionTrigger && { transitionTrigger }),
 						...(!isNil(hoverStatus) && { hoverStatus }),
 					},
 				});
@@ -167,16 +191,16 @@ const RelationControl = props => {
 
 		const mergedAttributes = merge(blockAttributes, item.attributes);
 
-		const transformGeneralAttributesToWinBreakpoint = obj => {
+		const transformGeneralAttributesToBaseBreakpoint = obj => {
 			if (deviceType !== 'general') return {};
 
-			const winBreakpoint = select('maxiBlocks').receiveWinBreakpoint();
+			const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 
-			if (!winBreakpoint) return {};
+			if (!baseBreakpoint) return {};
 
 			return Object.keys(obj).reduce((acc, key) => {
 				if (key.includes('-general')) {
-					const newKey = key.replace('general', winBreakpoint);
+					const newKey = key.replace('general', baseBreakpoint);
 
 					acc[newKey] = obj[key];
 				}
@@ -198,7 +222,7 @@ const RelationControl = props => {
 				const newAttributesObj = {
 					...item.attributes,
 					...obj,
-					...transformGeneralAttributesToWinBreakpoint(obj),
+					...transformGeneralAttributesToBaseBreakpoint(obj),
 				};
 
 				const newGroupAttributes = getGroupAttributes(
@@ -271,6 +295,12 @@ const RelationControl = props => {
 				onChangeRelation(relations, item.id, {
 					attributes: newAttributesObj,
 					css: styles,
+					...(item.settings === 'Transform' && {
+						effects: {
+							...item.effects,
+							transitionTarget: Object.keys(styles),
+						},
+					}),
 				});
 			},
 			prefix,
@@ -454,26 +484,32 @@ const RelationControl = props => {
 													const {
 														transitionTarget,
 														hoverProp,
-													} = getOptions(
-														getClientIdFromUniqueId(
-															item.uniqueID
-														)
-													).find(
-														option =>
-															option.label ===
-															value
-													);
+													} =
+														getOptions(
+															getClientIdFromUniqueId(
+																item.uniqueID
+															)
+														).find(
+															option =>
+																option.label ===
+																value
+														) || {};
 
 													const clientId =
 														getClientIdFromUniqueId(
 															item.uniqueID
 														);
 
+													const blockAttributes =
+														getBlock(
+															clientId
+														)?.attributes;
+
 													const hoverStatus =
-														getBlock(clientId)
-															?.attributes?.[
-															hoverProp
-														];
+														getHoverStatus(
+															hoverProp,
+															blockAttributes
+														);
 
 													const getTarget = () => {
 														const clientId =
@@ -521,15 +557,15 @@ const RelationControl = props => {
 														item.id,
 														{
 															attributes: {},
+															css: {},
 															target: getTarget(),
 															settings: value,
-															...(transitionTarget && {
-																effects: {
-																	...item.effects,
-																	transitionTarget,
-																	hoverStatus,
-																},
-															}),
+															effects: {
+																...item.effects,
+																transitionTarget,
+																hoverStatus:
+																	!!hoverStatus,
+															},
 														}
 													);
 												}}

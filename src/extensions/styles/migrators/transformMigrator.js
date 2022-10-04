@@ -3,7 +3,7 @@
  */
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import getBreakpointFromAttribute from '../getBreakpointFromAttribute';
-import getBlockCategoriesAndSelectors from '../getBlockCategoriesAndSelectors';
+import { getBlockSelectorsByUniqueID } from './utils';
 
 /**
  * External dependencies
@@ -68,6 +68,8 @@ const isEligible = blockAttributes =>
 		));
 
 const migrate = ({ newAttributes, selectors }) => {
+	if (!isEligible(newAttributes)) return newAttributes;
+
 	if (isEmpty(selectors)) return false;
 
 	const getAxis = attribute => attribute.match(/[x,y,z](-unit)?/)[0];
@@ -111,9 +113,8 @@ const migrate = ({ newAttributes, selectors }) => {
 			const newRelations = [...attr];
 			attr.forEach((relation, index) => {
 				const newRelationAttributes = { ...relation.attributes };
-				const name = relation.uniqueID.split('-')[0];
-				const { selectors: relationSelectors } =
-					getBlockCategoriesAndSelectors(name);
+				const { uniqueID } = relation;
+				const relationSelectors = getBlockSelectorsByUniqueID(uniqueID);
 
 				migrate({
 					newAttributes: newRelationAttributes,

@@ -133,8 +133,8 @@ function insertPopup(video) {
 
 		popupSlot.appendChild(createPopup());
 
-		const entryContent = document.querySelector('.entry-content');
-		entryContent.appendChild(popupSlot);
+		const body = document.querySelector('body');
+		body.appendChild(popupSlot);
 	} else {
 		popupSlot.appendChild(createPopup());
 	}

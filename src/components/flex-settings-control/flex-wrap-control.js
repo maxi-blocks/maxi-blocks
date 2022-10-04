@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import SelectControl from '../select-control';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
+import getOptions from './utils';
 
 /**
  * Component
@@ -20,25 +21,14 @@ const FlexWrapControl = props => {
 		<SelectControl
 			label={__('Flex wrap', 'maxi-blocks')}
 			className='maxi-flex-wrap-control'
-			value={getLastBreakpointAttribute({
-				target: 'flex-wrap',
-				breakpoint,
-				attributes: props,
-			})}
-			options={[
-				{
-					label: __('Nowrap', 'maxi-blocks'),
-					value: 'nowrap',
-				},
-				{
-					label: __('Wrap', 'maxi-blocks'),
-					value: 'wrap',
-				},
-				{
-					label: __('Wrap-reverse', 'maxi-blocks'),
-					value: 'wrap-reverse',
-				},
-			]}
+			value={
+				getLastBreakpointAttribute({
+					target: 'flex-wrap',
+					breakpoint,
+					attributes: props,
+				}) ?? ''
+			}
+			options={getOptions(['nowrap', 'wrap', 'wrap-reverse'])}
 			onChange={val =>
 				onChange({
 					[`flex-wrap-${breakpoint}`]: val,

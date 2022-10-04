@@ -18,7 +18,7 @@ import { getTemplates } from '../../extensions/column-templates';
 import { getGroupAttributes } from '../../extensions/styles';
 import getRowGapProps from '../../extensions/attributes/getRowGapProps';
 import getStyles from './styles';
-import copyPasteMapping from './copy-paste-mapping';
+import { copyPasteMapping } from './data';
 
 /**
  * External dependencies
@@ -101,7 +101,7 @@ class edit extends MaxiBlockComponent {
 
 		const emptyRowClass = !hasInnerBlocks
 			? 'maxi-row-block__empty'
-			: 'maxi-row-block__has-innerBlock';
+			: 'maxi-row-block__has-inner-block';
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,

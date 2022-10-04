@@ -418,7 +418,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $api = new MaxiBlocks_API();
           
             $breakpoints_html = '';
-            $breakpoints_array = array_reverse(($api->get_maxi_blocks_breakpoints()));
+            $breakpoints_array = $api->get_maxi_blocks_breakpoints();
 
             foreach ($breakpoints_array as $breakpoint => $value) {
                 $value_num = intval($value);

@@ -5,7 +5,7 @@ jest.mock('@wordpress/data', () => {
 		select: jest.fn(() => {
 			return {
 				getSelectedBlockCount: jest.fn(() => 1),
-				receiveWinBreakpoint: jest.fn(() => 'xl'),
+				receiveBaseBreakpoint: jest.fn(() => 'xl'),
 			};
 		}),
 	};
@@ -143,7 +143,7 @@ describe('getLastBreakpointAttribute', () => {
 		expect(result).toBe(70);
 	});
 
-	test('Should return XL value when breakpoint is General but there is not General attribute; winBreakpoint is XL', () => {
+	test('Should return XL value when breakpoint is General but there is not General attribute; baseBreakpoint is XL', () => {
 		const result = getLastBreakpointAttribute({
 			target: 'test',
 			breakpoint: 'general',
@@ -160,10 +160,10 @@ describe('getLastBreakpointAttribute', () => {
 		expect(result).toBe(3);
 	});
 
-	test('Should return XXL value when breakpoint is General but there is not General attribute; winBreakpoint is XXL', () => {
+	test('Should return XXL value when breakpoint is General but there is not General attribute; baseBreakpoint is XXL', () => {
 		select.mockImplementation(() => ({
 			getSelectedBlockCount: jest.fn(() => 1),
-			receiveWinBreakpoint: jest.fn(() => 'xxl'),
+			receiveBaseBreakpoint: jest.fn(() => 'xxl'),
 		}));
 
 		const result = getLastBreakpointAttribute({
@@ -182,10 +182,10 @@ describe('getLastBreakpointAttribute', () => {
 		expect(result).toBe(2);
 	});
 
-	test('Should return XXL value when breakpoint is General and winBreakpoint is XXL', () => {
+	test('Should return XXL value when breakpoint is General and baseBreakpoint is XXL', () => {
 		select.mockImplementation(() => ({
 			getSelectedBlockCount: jest.fn(() => 1),
-			receiveWinBreakpoint: jest.fn(() => 'xxl'),
+			receiveBaseBreakpoint: jest.fn(() => 'xxl'),
 		}));
 
 		const result = getLastBreakpointAttribute({

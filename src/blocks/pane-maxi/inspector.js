@@ -10,13 +10,14 @@ import { InspectorControls } from '@wordpress/block-editor';
 import { SettingTabsControl, AccordionControl } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { withMaxiInspector } from '../../extensions/inspector';
-import { categoriesPane, selectorsPane } from './custom-css';
+import { customCss } from './data';
 
 /**
  * Inspector
  */
 const Inspector = props => {
 	const { deviceType } = props;
+	const { selectors, categories } = customCss;
 
 	const getBaseSettings = (prefix, inlineTarget, label) => [
 		...inspectorTabs.background({
@@ -75,7 +76,6 @@ const Inspector = props => {
 										disablePadding: true,
 										content: (
 											<SettingTabsControl
-												depth={2}
 												disablePadding
 												isNestedAccordion
 												hasBorder
@@ -161,8 +161,8 @@ const Inspector = props => {
 											...props,
 										},
 										breakpoint: deviceType,
-										selectors: selectorsPane,
-										categories: categoriesPane,
+										selectors,
+										categories,
 									}),
 									...inspectorTabs.scrollEffects({
 										props: {
@@ -173,8 +173,8 @@ const Inspector = props => {
 										props: {
 											...props,
 										},
-										selectors: selectorsPane,
-										categories: categoriesPane,
+										selectors,
+										categories,
 									}),
 									...inspectorTabs.transition({
 										props: {

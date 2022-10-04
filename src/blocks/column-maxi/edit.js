@@ -18,7 +18,7 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import getStyles from './styles';
-import copyPasteMapping from './copy-paste-mapping';
+import { copyPasteMapping } from './data';
 import getRowBorderRadius from './utils';
 
 /**
@@ -190,7 +190,7 @@ class edit extends MaxiBlockComponent {
 
 		const emptyColumnClass = !hasInnerBlocks
 			? 'maxi-column-block__empty'
-			: 'maxi-column-block__has-innerBlock';
+			: 'maxi-column-block__has-inner-block';
 
 		return (
 			<RowContext.Consumer>
@@ -264,6 +264,7 @@ class edit extends MaxiBlockComponent {
 								? () => <BlockInserter clientId={clientId} />
 								: false,
 						}}
+						cleanStyles
 					/>,
 				]}
 			</RowContext.Consumer>

@@ -16,8 +16,7 @@ import {
 	getSizeStyles,
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
-import { selectorsPane } from './custom-css';
-import transitionObj from './transitionObj';
+import data from './data';
 
 const getNormalObject = props => {
 	const response = {
@@ -150,7 +149,7 @@ const getNormalStyles = (props, prefix) => {
 
 const getHoverStyles = (props, prefix) => {
 	const response = {
-		...(props[`${prefix}background-hover-status`] &&
+		...(props[`${prefix}background-status-hover`] &&
 			getBackgroundStyles({
 				...getGroupAttributes(
 					props,
@@ -237,9 +236,8 @@ const getStyles = props => {
 					blockStyle: props.blockStyle,
 				}),
 			},
-			selectorsPane,
-			props,
-			transitionObj
+			data,
+			props
 		),
 	};
 	return response;

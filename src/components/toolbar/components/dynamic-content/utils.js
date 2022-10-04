@@ -291,53 +291,50 @@ export const postTypeDic = {
 	post: 'posts',
 	page: 'pages',
 };
-
-export const DateOptions = [
+export const dateTypeDefault = [
 	{
-		label: __('toLocaleDateString', 'maxi-blocks'),
-		value: 'toLocaleDateString',
+		label: __('numeric', 'maxi-blocks'),
+		value: 'numeric',
 	},
 	{
-		label: __('toLocaleDateString("en-ZA")', 'maxi-blocks'),
-		value: 'toLocaleDateString("en-ZA")',
-	},
-	{
-		label: __('toLocaleDateString("en-CA")', 'maxi-blocks'),
-		value: 'toLocaleDateString("en-CA")',
-	},
-	{
-		label: __('toISOString', 'maxi-blocks'),
-		value: 'toISOString',
-	},
-	{
-		label: __('toUTCString', 'maxi-blocks'),
-		value: 'toUTCString',
+		label: __('2-digit', 'maxi-blocks'),
+		value: '2-digit',
 	},
 ];
-
-export const LimitOptions = [
-	{
-		label: __('10', 'maxi-blocks'),
-		value: 10,
-	},
-	{
-		label: __('50', 'maxi-blocks'),
-		value: 50,
-	},
-	{
-		label: __('100', 'maxi-blocks'),
-		value: 100,
-	},
-	{
-		label: __('200', 'maxi-blocks'),
-		value: 200,
-	},
-	{
-		label: __('300', 'maxi-blocks'),
-		value: 300,
-	},
-	{
-		label: __('No limit', 'maxi-blocks'),
-		value: 0,
-	},
-];
+export const DateOptions = {
+	years: dateTypeDefault,
+	month: ['numeric', '2-digit', 'narrow', 'short', 'long'],
+	day: dateTypeDefault,
+	hour: dateTypeDefault,
+	minute: dateTypeDefault,
+	second: dateTypeDefault,
+	params: [
+		{
+			label: __('toLocaleDateString', 'maxi-blocks'),
+			value: 'toLocaleDateString',
+		},
+		{
+			label: __('toLocaleDateString("en-ZA")', 'maxi-blocks'),
+			value: 'toLocaleDateString("en-ZA")',
+		},
+		{
+			label: __('toLocaleDateString("en-CA")', 'maxi-blocks'),
+			value: 'toLocaleDateString("en-CA")',
+		},
+		{
+			label: __('toISOString', 'maxi-blocks'),
+			value: 'toISOString',
+		},
+		{
+			label: __('toUTCString', 'maxi-blocks'),
+			value: 'toUTCString',
+		},
+	],
+};
+export const LimitOptions = {
+	disableReset: false,
+	steps: 1,
+	withInputField: false,
+	min: 0,
+	max: 999,
+};

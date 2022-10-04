@@ -11,7 +11,7 @@ import { useState, useEffect, useRef } from '@wordpress/element';
  */
 import ToolbarPopover from '../toolbar-popover';
 import SelectControl from '../../../select-control';
-
+import AdvancedNumberControl from '../../../advanced-number-control';
 /**
  * External dependencies
  */
@@ -688,27 +688,67 @@ const DynamicContent = props => {
 									/>
 								)}
 								{fieldRef.current == 'excerpt' && (
-									<SelectControl
+									<AdvancedNumberControl
 										label={__(
 											'Character limit',
 											'maxi-blocks'
 										)}
+										defaultValues={limitRef.current}
 										value={limitRef.current}
-										options={LimitOptions}
-										onChange={value =>
+										onChangeValue={value =>
 											switchOnChange('limit', value)
 										}
+										disableReset={LimitOptions.disableReset}
+										step={LimitOptions.steps}
+										withInputField={
+											LimitOptions.withInputField
+										}
+										onReset={() =>
+											switchOnChange('limit', 0)
+										}
+										min={LimitOptions.min}
+										max={LimitOptions.max}
+										initialPosition={limitRef.current || 0}
 									/>
 								)}
 								{fieldRef.current == 'date' && (
-									<SelectControl
-										label={__('Date format', 'maxi-blocks')}
-										value={dateRef.current}
-										options={DateOptions}
-										onChange={value =>
-											switchOnChange('date', value)
-										}
-									/>
+									<>
+										<ToggleSwitch
+											label={__(
+												'Detail setting',
+												'maxi-blocks'
+											)}
+											selected={statusRef.current}
+											onChange={() =>
+												switchOnChange(
+													'date-detail',
+													!statusRef.current
+												)
+											}
+										/>
+										<SelectControl
+											label={__(
+												'Years format',
+												'maxi-blocks'
+											)}
+											value={dateRef.current}
+											options={DateOptions.years}
+											onChange={value =>
+												switchOnChange('date', value)
+											}
+										/>
+										<SelectControl
+											label={__(
+												'Date format',
+												'maxi-blocks'
+											)}
+											value={dateRef.current}
+											options={DateOptions.params}
+											onChange={value =>
+												switchOnChange('date', value)
+											}
+										/>
+									</>
 								)}
 							</>
 						)}

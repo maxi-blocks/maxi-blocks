@@ -42,19 +42,21 @@ Array [
       "transition-delay-general": 0,
       "transition-duration-general": 0.3,
       "transition-status-general": true,
-      "transitionTarget": " hr.maxi-divider-block__divider",
+      "transitionTarget": " .maxi-divider-block__divider",
     },
     "id": 1,
     "isButton": true,
     "settings": "Divider box shadow",
-    "target": " hr.maxi-divider-block__divider",
+    "target": " .maxi-divider-block__divider",
     "title": "Hello World!",
     "uniqueID": "divider-maxi-1",
   },
 ]
 `;
 
-exports[`Divider Maxi hover simple actions Divider shadow 2`] = `"body.maxi-blocks--active #divider-maxi-1 hr.maxi-divider-block__divider[data-maxi-relations=\\"true\\"] { box-shadow: 22px 33px 44px 55px rgba(var(--maxi-light-color-8,150,176,203),0.11); transition: box-shadow 0.3s 0s ease;}"`;
+exports[`Divider Maxi hover simple actions Divider shadow 2`] = `" body.maxi-blocks--active #divider-maxi-1[data-maxi-relations=\\"true\\"] .maxi-divider-block__divider { box-shadow: 22px 33px 44px 55px rgba(var(--maxi-light-color-8,150,176,203),0.11);}"`;
+
+exports[`Divider Maxi hover simple actions Divider shadow 3`] = `"body.maxi-blocks--active #divider-maxi-1[data-maxi-relations=\\"true\\"] .maxi-divider-block__divider { transition: box-shadow 0.3s 0s ease;}"`;
 
 exports[`Divider Maxi hover simple actions Line settings 1`] = `
 Array [
@@ -142,7 +144,7 @@ Array [
         },
       },
       "xxl": Object {
-        "breakpoint": null,
+        "breakpoint": 1921,
         "styles": Object {
           "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
           "border-right-style": "none",
@@ -155,6 +157,7 @@ Array [
     },
     "effects": Object {
       "easing-general": "ease",
+      "hoverStatus": false,
       "transition-delay-general": 0,
       "transition-duration-general": 0.3,
       "transition-status-general": true,
@@ -162,11 +165,13 @@ Array [
     "id": 1,
     "isButton": true,
     "settings": "Line settings",
-    "target": " hr.maxi-divider-block__divider",
+    "target": " .maxi-divider-block__divider",
     "title": "Hello World!",
     "uniqueID": "divider-maxi-1",
   },
 ]
 `;
 
-exports[`Divider Maxi hover simple actions Line settings 2`] = `"body.maxi-blocks--active #divider-maxi-1 hr.maxi-divider-block__divider[data-maxi-relations=\\"true\\"] { width: 11%; height: 22px; border-top-width: 22px; border-right-style: none; border-top-style: dashed; border-color: var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,150,176,203),0.5)); transition: border-color 0.3s 0s ease, border-top-style 0.3s 0s ease, border-right-style 0.3s 0s ease, border-top-width 0.3s 0s ease, height 0.3s 0s ease, width 0.3s 0s ease;}"`;
+exports[`Divider Maxi hover simple actions Line settings 2`] = `" body.maxi-blocks--active #divider-maxi-1[data-maxi-relations=\\"true\\"] .maxi-divider-block__divider { width: 11%; height: 22px; border-top-width: 22px; border-right-style: none; border-top-style: dashed; border-color: var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}@media screen and (min-width: 1921px) { body.maxi-blocks--active #divider-maxi-1[data-maxi-relations=\\"true\\"] .maxi-divider-block__divider { width: 11%; height: 22px; border-top-width: 22px; border-right-style: none; border-top-style: dashed; border-color: var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}}@media screen and (max-width: 1920px) { body.maxi-blocks--active #divider-maxi-1[data-maxi-relations=\\"true\\"] .maxi-divider-block__divider { width: 11%; height: 22px; border-top-width: 22px; border-right-style: none; border-top-style: dashed; border-color: var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}}@media screen and (max-width: 1366px) { body.maxi-blocks--active #divider-maxi-1[data-maxi-relations=\\"true\\"] .maxi-divider-block__divider { width: 11%; height: 22px; border-top-width: 22px; border-right-style: none; border-top-style: dashed; border-color: var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}}@media screen and (max-width: 1024px) { body.maxi-blocks--active #divider-maxi-1[data-maxi-relations=\\"true\\"] .maxi-divider-block__divider { width: 11%; height: 22px; border-top-width: 22px; border-right-style: none; border-top-style: dashed; border-color: var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}}@media screen and (max-width: 767px) { body.maxi-blocks--active #divider-maxi-1[data-maxi-relations=\\"true\\"] .maxi-divider-block__divider { width: 11%; height: 22px; border-top-width: 22px; border-right-style: none; border-top-style: dashed; border-color: var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}}@media screen and (max-width: 480px) { body.maxi-blocks--active #divider-maxi-1[data-maxi-relations=\\"true\\"] .maxi-divider-block__divider { width: 11%; height: 22px; border-top-width: 22px; border-right-style: none; border-top-style: dashed; border-color: var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}}"`;
+
+exports[`Divider Maxi hover simple actions Line settings 3`] = `"body.maxi-blocks--active #divider-maxi-1[data-maxi-relations=\\"true\\"] .maxi-divider-block__divider { transition: border-color 0.3s 0s ease, border-top-style 0.3s 0s ease, border-right-style 0.3s 0s ease, border-top-width 0.3s 0s ease, height 0.3s 0s ease, width 0.3s 0s ease;}@media screen and (min-width: 1921px) {body.maxi-blocks--active #divider-maxi-1[data-maxi-relations=\\"true\\"] .maxi-divider-block__divider { transition: border-color 0.3s 0s ease, border-top-style 0.3s 0s ease, border-right-style 0.3s 0s ease, border-top-width 0.3s 0s ease, height 0.3s 0s ease, width 0.3s 0s ease;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #divider-maxi-1[data-maxi-relations=\\"true\\"] .maxi-divider-block__divider { transition: border-color 0.3s 0s ease, border-top-style 0.3s 0s ease, border-right-style 0.3s 0s ease, border-top-width 0.3s 0s ease, height 0.3s 0s ease, width 0.3s 0s ease;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #divider-maxi-1[data-maxi-relations=\\"true\\"] .maxi-divider-block__divider { transition: border-color 0.3s 0s ease, border-top-style 0.3s 0s ease, border-right-style 0.3s 0s ease, border-top-width 0.3s 0s ease, height 0.3s 0s ease, width 0.3s 0s ease;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #divider-maxi-1[data-maxi-relations=\\"true\\"] .maxi-divider-block__divider { transition: border-color 0.3s 0s ease, border-top-style 0.3s 0s ease, border-right-style 0.3s 0s ease, border-top-width 0.3s 0s ease, height 0.3s 0s ease, width 0.3s 0s ease;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #divider-maxi-1[data-maxi-relations=\\"true\\"] .maxi-divider-block__divider { transition: border-color 0.3s 0s ease, border-top-style 0.3s 0s ease, border-right-style 0.3s 0s ease, border-top-width 0.3s 0s ease, height 0.3s 0s ease, width 0.3s 0s ease;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #divider-maxi-1[data-maxi-relations=\\"true\\"] .maxi-divider-block__divider { transition: border-color 0.3s 0s ease, border-top-style 0.3s 0s ease, border-right-style 0.3s 0s ease, border-top-width 0.3s 0s ease, height 0.3s 0s ease, width 0.3s 0s ease;}}"`;

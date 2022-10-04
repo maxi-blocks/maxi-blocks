@@ -50,7 +50,7 @@ Array [
         },
       },
       "xxl": Object {
-        "breakpoint": null,
+        "breakpoint": 1921,
         "styles": Object {
           "background": "var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
         },
@@ -74,7 +74,9 @@ Array [
 ]
 `;
 
-exports[`Button Maxi hover simple actions Button background 2`] = `"body.maxi-blocks--active #button-maxi-1 .maxi-button-block__button[data-maxi-relations=\\"true\\"] { transition: background 0.3s 0s ease;}body.maxi-blocks--active #button-maxi-1 .maxi-button-block__button[data-maxi-relations=\\"true\\"]:not(:hover) { background: var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}"`;
+exports[`Button Maxi hover simple actions Button background 2`] = `" body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button:not(:hover) { background: var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}@media screen and (min-width: 1921px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button:not(:hover) { background: var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}}@media screen and (max-width: 1920px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button:not(:hover) { background: var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}}@media screen and (max-width: 1366px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button:not(:hover) { background: var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}}@media screen and (max-width: 1024px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button:not(:hover) { background: var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}}@media screen and (max-width: 767px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button:not(:hover) { background: var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}}@media screen and (max-width: 480px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button:not(:hover) { background: var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}}"`;
+
+exports[`Button Maxi hover simple actions Button background 3`] = `"body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { transition: background 0.3s 0s ease;}@media screen and (min-width: 1921px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { transition: background 0.3s 0s ease;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { transition: background 0.3s 0s ease;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { transition: background 0.3s 0s ease;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { transition: background 0.3s 0s ease;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { transition: background 0.3s 0s ease;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { transition: background 0.3s 0s ease;}}"`;
 
 exports[`Button Maxi hover simple actions Button border 1`] = `
 Array [
@@ -107,8 +109,8 @@ Array [
       "button-border-top-right-radius-xl": 11,
       "button-border-top-width-general": 2,
       "button-border-top-width-xl": 2,
-      "button-border-unit-width-general": "em",
-      "button-border-unit-width-xl": "em",
+      "button-border-unit-width-general": "",
+      "button-border-unit-width-xl": "",
     },
     "css": Object {
       "general": Object {
@@ -116,14 +118,14 @@ Array [
         "styles": Object {
           "border-bottom-left-radius": "11px",
           "border-bottom-right-radius": "11px",
-          "border-bottom-width": "2em",
+          "border-bottom-width": "2px",
           "border-color": "rgba(var(--maxi-light-color-8,150,176,203),0.5)",
-          "border-left-width": "2em",
-          "border-right-width": "2em",
+          "border-left-width": "2px",
+          "border-right-width": "2px",
           "border-style": "solid",
           "border-top-left-radius": "11px",
           "border-top-right-radius": "11px",
-          "border-top-width": "2em",
+          "border-top-width": "2px",
         },
       },
       "l": Object {
@@ -149,14 +151,14 @@ Array [
         "styles": Object {
           "border-bottom-left-radius": "11px",
           "border-bottom-right-radius": "11px",
-          "border-bottom-width": "2em",
+          "border-bottom-width": "2px",
           "border-color": "rgba(var(--maxi-light-color-8,150,176,203),0.5)",
-          "border-left-width": "2em",
-          "border-right-width": "2em",
+          "border-left-width": "2px",
+          "border-right-width": "2px",
           "border-style": "solid",
           "border-top-left-radius": "11px",
           "border-top-right-radius": "11px",
-          "border-top-width": "2em",
+          "border-top-width": "2px",
         },
       },
       "xs": Object {
@@ -166,7 +168,7 @@ Array [
         },
       },
       "xxl": Object {
-        "breakpoint": null,
+        "breakpoint": 1921,
         "styles": Object {
           "border-bottom-left-radius": "8px",
           "border-bottom-right-radius": "8px",
@@ -194,7 +196,9 @@ Array [
 ]
 `;
 
-exports[`Button Maxi hover simple actions Button border 2`] = `"body.maxi-blocks--active #button-maxi-1 .maxi-button-block__button[data-maxi-relations=\\"true\\"] { border-bottom-left-radius: 11px; border-bottom-right-radius: 11px; border-top-right-radius: 11px; border-top-left-radius: 11px; border-left-width: 2em; border-bottom-width: 2em; border-right-width: 2em; border-top-width: 2em; border-style: solid; border-color: rgba(var(--maxi-light-color-8,150,176,203),0.5); transition: border-color 0.3s 0s ease, border-style 0.3s 0s ease, border-top-width 0.3s 0s ease, border-right-width 0.3s 0s ease, border-bottom-width 0.3s 0s ease, border-left-width 0.3s 0s ease, border-top-left-radius 0.3s 0s ease, border-top-right-radius 0.3s 0s ease, border-bottom-right-radius 0.3s 0s ease, border-bottom-left-radius 0.3s 0s ease,  border-color 0.3s 0s ease, border-style 0.3s 0s ease, border-top-width 0.3s 0s ease, border-right-width 0.3s 0s ease, border-bottom-width 0.3s 0s ease, border-left-width 0.3s 0s ease, border-top-left-radius 0.3s 0s ease, border-top-right-radius 0.3s 0s ease, border-bottom-right-radius 0.3s 0s ease, border-bottom-left-radius 0.3s 0s ease,  border-color 0.3s 0s ease, border-style 0.3s 0s ease, border-top-width 0.3s 0s ease, border-right-width 0.3s 0s ease, border-bottom-width 0.3s 0s ease, border-left-width 0.3s 0s ease, border-top-left-radius 0.3s 0s ease, border-top-right-radius 0.3s 0s ease, border-bottom-right-radius 0.3s 0s ease, border-bottom-left-radius 0.3s 0s ease,  border-color 0.3s 0s ease, border-style 0.3s 0s ease, border-top-width 0.3s 0s ease, border-right-width 0.3s 0s ease, border-bottom-width 0.3s 0s ease, border-left-width 0.3s 0s ease, border-top-left-radius 0.3s 0s ease, border-top-right-radius 0.3s 0s ease, border-bottom-right-radius 0.3s 0s ease, border-bottom-left-radius 0.3s 0s ease;}"`;
+exports[`Button Maxi hover simple actions Button border 2`] = `" body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { border-bottom-left-radius: 11px; border-bottom-right-radius: 11px; border-top-right-radius: 11px; border-top-left-radius: 11px; border-left-width: 2px; border-bottom-width: 2px; border-right-width: 2px; border-top-width: 2px; border-style: solid; border-color: rgba(var(--maxi-light-color-8,150,176,203),0.5);}@media screen and (min-width: 1921px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; border-top-right-radius: 8px; border-top-left-radius: 8px; border-color: rgba(var(--maxi-light-color-8,150,176,203),0.5);}}@media screen and (max-width: 1920px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { border-bottom-left-radius: 11px; border-bottom-right-radius: 11px; border-top-right-radius: 11px; border-top-left-radius: 11px; border-left-width: 2px; border-bottom-width: 2px; border-right-width: 2px; border-top-width: 2px; border-style: solid; border-color: rgba(var(--maxi-light-color-8,150,176,203),0.5);}}@media screen and (max-width: 1366px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { border-color: rgba(var(--maxi-light-color-8,150,176,203),0.5);}}@media screen and (max-width: 1024px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { border-color: rgba(var(--maxi-light-color-8,150,176,203),0.5);}}@media screen and (max-width: 767px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { border-color: rgba(var(--maxi-light-color-8,150,176,203),0.5);}}@media screen and (max-width: 480px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { border-color: rgba(var(--maxi-light-color-8,150,176,203),0.5);}}"`;
+
+exports[`Button Maxi hover simple actions Button border 3`] = `"body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { transition: border-color 0.3s 0s ease, border-style 0.3s 0s ease, border-top-width 0.3s 0s ease, border-right-width 0.3s 0s ease, border-bottom-width 0.3s 0s ease, border-left-width 0.3s 0s ease, border-top-left-radius 0.3s 0s ease, border-top-right-radius 0.3s 0s ease, border-bottom-right-radius 0.3s 0s ease, border-bottom-left-radius 0.3s 0s ease;}@media screen and (min-width: 1921px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { transition: border-color 0.3s 0s ease, border-top-left-radius 0.3s 0s ease, border-top-right-radius 0.3s 0s ease, border-bottom-right-radius 0.3s 0s ease, border-bottom-left-radius 0.3s 0s ease;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { transition: border-color 0.3s 0s ease, border-style 0.3s 0s ease, border-top-width 0.3s 0s ease, border-right-width 0.3s 0s ease, border-bottom-width 0.3s 0s ease, border-left-width 0.3s 0s ease, border-top-left-radius 0.3s 0s ease, border-top-right-radius 0.3s 0s ease, border-bottom-right-radius 0.3s 0s ease, border-bottom-left-radius 0.3s 0s ease;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { transition: border-color 0.3s 0s ease;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { transition: border-color 0.3s 0s ease;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { transition: border-color 0.3s 0s ease;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { transition: border-color 0.3s 0s ease;}}"`;
 
 exports[`Button Maxi hover simple actions Button icon 1`] = `
 Array [
@@ -207,7 +211,7 @@ Array [
       "icon-background-palette-opacity-xl": 0.43,
       "icon-background-palette-status-general": true,
       "icon-background-palette-status-xl": true,
-      "icon-content": "<svg stroke-miterlimit=\\"10\\" stroke-linejoin=\\"round\\" stroke-linecap=\\"round\\" stroke-width=\\"5\\" data-hover-stroke stroke=\\"var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75))\\" fill=\\"none\\" viewBox=\\"0 0 24 24\\" height=\\"64px\\" width=\\"64px\\" class=\\"arrow-right-6-line-maxi-svg\\"><path d=\\"M14 3.6l8.4 8.4-8.4 8.4m8.4-8.4H1.6\\"></path></svg>",
+      "icon-content": "<svg stroke-miterlimit=\\"10\\" stroke-linejoin=\\"round\\" stroke-linecap=\\"round\\" stroke-width=\\"5\\" data-stroke data-hover-stroke stroke=\\"var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75))\\" fill=\\"none\\" viewBox=\\"0 0 24 24\\" height=\\"64px\\" width=\\"64px\\" class=\\"arrow-right-6-line-maxi-svg\\"><path d=\\"M14 3.6l8.4 8.4-8.4 8.4m8.4-8.4H1.6\\"></path></svg>",
       "icon-padding-bottom-general": "44",
       "icon-padding-bottom-xl": "44",
       "icon-padding-left-general": "44",
@@ -231,7 +235,7 @@ Array [
       "icon-width-xl": "11",
     },
     "css": Object {
-      "  ": Object {
+      "  .maxi-button-block__button  .maxi-button-block__icon": Object {
         "general": Object {
           "breakpoint": null,
           "styles": Object {
@@ -277,7 +281,7 @@ Array [
           "styles": Object {},
         },
         "xxl": Object {
-          "breakpoint": null,
+          "breakpoint": 1921,
           "styles": Object {
             "border-bottom-left-radius": "5px",
             "border-bottom-right-radius": "5px",
@@ -291,7 +295,7 @@ Array [
           },
         },
       },
-      "   svg": Object {
+      "  .maxi-button-block__button  .maxi-button-block__icon svg": Object {
         "general": Object {
           "breakpoint": null,
           "styles": Object {
@@ -307,14 +311,14 @@ Array [
           },
         },
         "xxl": Object {
-          "breakpoint": null,
+          "breakpoint": 1921,
           "styles": Object {
             "height": "18px",
             "width": "18px",
           },
         },
       },
-      "   svg > *": Object {
+      "  .maxi-button-block__button  .maxi-button-block__icon svg > *": Object {
         "general": Object {
           "breakpoint": null,
           "styles": Object {
@@ -346,13 +350,13 @@ Array [
           "styles": Object {},
         },
         "xxl": Object {
-          "breakpoint": null,
+          "breakpoint": 1921,
           "styles": Object {
             "margin-left": "23px",
           },
         },
       },
-      "   svg circle[data-fill]:not([fill^=\\"none\\"])": Object {
+      "  .maxi-button-block__button  .maxi-button-block__icon svg circle[data-fill]:not([fill^=\\"none\\"])": Object {
         "general": Object {
           "breakpoint": null,
           "styles": Object {
@@ -360,7 +364,7 @@ Array [
           },
         },
       },
-      "   svg circle[data-stroke]:not([stroke^=\\"none\\"])": Object {
+      "  .maxi-button-block__button  .maxi-button-block__icon svg circle[data-stroke]:not([stroke^=\\"none\\"])": Object {
         "general": Object {
           "breakpoint": null,
           "styles": Object {
@@ -368,7 +372,7 @@ Array [
           },
         },
       },
-      "   svg g[data-fill]:not([fill^=\\"none\\"])": Object {
+      "  .maxi-button-block__button  .maxi-button-block__icon svg g[data-fill]:not([fill^=\\"none\\"])": Object {
         "general": Object {
           "breakpoint": null,
           "styles": Object {
@@ -376,7 +380,7 @@ Array [
           },
         },
       },
-      "   svg g[data-stroke]:not([stroke^=\\"none\\"])": Object {
+      "  .maxi-button-block__button  .maxi-button-block__icon svg g[data-stroke]:not([stroke^=\\"none\\"])": Object {
         "general": Object {
           "breakpoint": null,
           "styles": Object {
@@ -384,7 +388,7 @@ Array [
           },
         },
       },
-      "   svg path": Object {
+      "  .maxi-button-block__button  .maxi-button-block__icon svg path": Object {
         "general": Object {
           "breakpoint": null,
           "styles": Object {
@@ -398,13 +402,13 @@ Array [
           },
         },
         "xxl": Object {
-          "breakpoint": null,
+          "breakpoint": 1921,
           "styles": Object {
             "stroke-width": "4",
           },
         },
       },
-      "   svg path[data-fill]:not([fill^=\\"none\\"])": Object {
+      "  .maxi-button-block__button  .maxi-button-block__icon svg path[data-fill]:not([fill^=\\"none\\"])": Object {
         "general": Object {
           "breakpoint": null,
           "styles": Object {
@@ -412,7 +416,7 @@ Array [
           },
         },
       },
-      "   svg path[data-stroke]:not([stroke^=\\"none\\"])": Object {
+      "  .maxi-button-block__button  .maxi-button-block__icon svg path[data-stroke]:not([stroke^=\\"none\\"])": Object {
         "general": Object {
           "breakpoint": null,
           "styles": Object {
@@ -420,7 +424,7 @@ Array [
           },
         },
       },
-      "   svg use[data-fill]:not([fill^=\\"none\\"])": Object {
+      "  .maxi-button-block__button  .maxi-button-block__icon svg use[data-fill]:not([fill^=\\"none\\"])": Object {
         "general": Object {
           "breakpoint": null,
           "styles": Object {
@@ -428,7 +432,7 @@ Array [
           },
         },
       },
-      "   svg use[data-stroke]:not([stroke^=\\"none\\"])": Object {
+      "  .maxi-button-block__button  .maxi-button-block__icon svg use[data-stroke]:not([stroke^=\\"none\\"])": Object {
         "general": Object {
           "breakpoint": null,
           "styles": Object {
@@ -436,7 +440,7 @@ Array [
           },
         },
       },
-      "   svg[data-fill]:not([fill^=\\"none\\"])": Object {
+      "  .maxi-button-block__button  .maxi-button-block__icon svg[data-fill]:not([fill^=\\"none\\"])": Object {
         "general": Object {
           "breakpoint": null,
           "styles": Object {
@@ -444,7 +448,7 @@ Array [
           },
         },
       },
-      "   svg[data-fill]:not([fill^=\\"none\\"]) *": Object {
+      "  .maxi-button-block__button  .maxi-button-block__icon svg[data-fill]:not([fill^=\\"none\\"]) *": Object {
         "general": Object {
           "breakpoint": null,
           "styles": Object {
@@ -452,7 +456,7 @@ Array [
           },
         },
       },
-      "   svg[data-stroke]:not([stroke^=\\"none\\"])": Object {
+      "  .maxi-button-block__button  .maxi-button-block__icon svg[data-stroke]:not([stroke^=\\"none\\"])": Object {
         "general": Object {
           "breakpoint": null,
           "styles": Object {
@@ -460,7 +464,7 @@ Array [
           },
         },
       },
-      "   svg[data-stroke]:not([stroke^=\\"none\\"]) *": Object {
+      "  .maxi-button-block__button  .maxi-button-block__icon svg[data-stroke]:not([stroke^=\\"none\\"]) *": Object {
         "general": Object {
           "breakpoint": null,
           "styles": Object {
@@ -494,18 +498,19 @@ Array [
           "styles": Object {},
         },
         "xxl": Object {
-          "breakpoint": null,
+          "breakpoint": 1921,
           "styles": Object {},
         },
       },
     },
     "effects": Object {
       "easing-general": "ease",
+      "hoverStatus": false,
       "transition-delay-general": 0,
       "transition-duration-general": 0.3,
       "transition-status-general": true,
       "transitionTarget": Array [
-        " .maxi-button-block__icon svg > *",
+        "  .maxi-button-block__icon svg *:not(g)",
         " .maxi-button-block__icon svg",
         " .maxi-button-block__icon",
         " .maxi-button-block__icon",
@@ -521,7 +526,9 @@ Array [
 ]
 `;
 
-exports[`Button Maxi hover simple actions Button icon 2`] = `"body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] svg[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] svg[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] svg[data-fill]:not([fill^=\\"none\\"]) * { transition: all 0.3s 0s ease;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] svg[data-stroke]:not([stroke^=\\"none\\"]) * { transition: all 0.3s 0s ease;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] svg path { transition: all 0.3s 0s ease;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] svg path[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] svg path[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] svg g[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] svg g[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] svg use[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] svg use[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] svg circle[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] svg circle[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] { transition: all 0.3s 0s ease;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] svg { transition: all 0.3s 0s ease;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] svg > * { transition: all 0.3s 0s ease;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] > .maxi-background-displayer { transition: all 0.3s 0s ease;}"`;
+exports[`Button Maxi hover simple actions Button icon 2`] = `" body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-fill]:not([fill^=\\"none\\"]) { fill: var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^=\\"none\\"]) { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-fill]:not([fill^=\\"none\\"]) * { fill: var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^=\\"none\\"]) * { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path { stroke-width: 5;}@media screen and (min-width: 1921px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path { stroke-width: 4;}}@media screen and (max-width: 1920px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path { stroke-width: 5;}} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path[data-fill]:not([fill^=\\"none\\"]) { fill: var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^=\\"none\\"]) { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg g[data-fill]:not([fill^=\\"none\\"]) { fill: var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^=\\"none\\"]) { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg use[data-fill]:not([fill^=\\"none\\"]) { fill: var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^=\\"none\\"]) { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-fill]:not([fill^=\\"none\\"]) { fill: var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^=\\"none\\"]) { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon { margin-left: 33px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; border-top-right-radius: 5px; border-top-left-radius: 5px; border-style: none; border-color: 0; padding-left: 44px; padding-bottom: 44px; padding-right: 44px; padding-top: 44px; background: rgba(var(--maxi-undefined-color-5,0,0,0),0.43); background-color: rgba(var(--maxi-undefined-color-5,0,0,0),0.43);}@media screen and (min-width: 1921px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon { margin-left: 23px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; border-top-right-radius: 5px; border-top-left-radius: 5px; padding-left: 22px; padding-bottom: 22px; padding-right: 22px; padding-top: 22px;}}@media screen and (max-width: 1920px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon { margin-left: 33px; padding-left: 44px; padding-bottom: 44px; padding-right: 44px; padding-top: 44px;}} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg { width: 11%; height: 11%;}@media screen and (min-width: 1921px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg { width: 18px; height: 18px;}}@media screen and (max-width: 1920px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg { width: 11%; height: 11%;}} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg > * { margin-left: 33px; background: rgba(var(--maxi-undefined-color-5,0,0,0),0.43); background-color: rgba(var(--maxi-undefined-color-5,0,0,0),0.43);}@media screen and (min-width: 1921px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg > * { margin-left: 23px;}}@media screen and (max-width: 1920px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg > * { margin-left: 33px;}}"`;
+
+exports[`Button Maxi hover simple actions Button icon 3`] = `"body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}@media screen and (min-width: 1921px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}@media screen and (min-width: 1921px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-fill]:not([fill^=\\"none\\"]) * { transition: all 0.3s 0s ease;}@media screen and (min-width: 1921px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-fill]:not([fill^=\\"none\\"]) * { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-fill]:not([fill^=\\"none\\"]) * { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-fill]:not([fill^=\\"none\\"]) * { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-fill]:not([fill^=\\"none\\"]) * { transition: all 0.3s 0s ease;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-fill]:not([fill^=\\"none\\"]) * { transition: all 0.3s 0s ease;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-fill]:not([fill^=\\"none\\"]) * { transition: all 0.3s 0s ease;}}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^=\\"none\\"]) * { transition: all 0.3s 0s ease;}@media screen and (min-width: 1921px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^=\\"none\\"]) * { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^=\\"none\\"]) * { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^=\\"none\\"]) * { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^=\\"none\\"]) * { transition: all 0.3s 0s ease;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^=\\"none\\"]) * { transition: all 0.3s 0s ease;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^=\\"none\\"]) * { transition: all 0.3s 0s ease;}}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s 0s ease;}@media screen and (min-width: 1921px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s 0s ease;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s 0s ease;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s 0s ease;}}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}@media screen and (min-width: 1921px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}@media screen and (min-width: 1921px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg g[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}@media screen and (min-width: 1921px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg g[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg g[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg g[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg g[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg g[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg g[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}@media screen and (min-width: 1921px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg use[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}@media screen and (min-width: 1921px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg use[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg use[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg use[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg use[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg use[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg use[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}@media screen and (min-width: 1921px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}@media screen and (min-width: 1921px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s 0s ease;}}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}@media screen and (min-width: 1921px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s 0s ease;}}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s 0s ease;}@media screen and (min-width: 1921px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s 0s ease;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s 0s ease;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s 0s ease;}}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s 0s ease;}@media screen and (min-width: 1921px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s 0s ease;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s 0s ease;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s 0s ease;}}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg > * { transition: all 0.3s 0s ease;}@media screen and (min-width: 1921px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg > * { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg > * { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg > * { transition: all 0.3s 0s ease;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg > * { transition: all 0.3s 0s ease;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg > * { transition: all 0.3s 0s ease;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg > * { transition: all 0.3s 0s ease;}}"`;
 
 exports[`Button Maxi hover simple actions Button margin/padding 1`] = `
 Array [
@@ -591,7 +598,7 @@ Array [
         "styles": Object {},
       },
       "xxl": Object {
-        "breakpoint": null,
+        "breakpoint": 1921,
         "styles": Object {
           "padding-bottom": "5px",
           "padding-left": "17px",
@@ -602,6 +609,7 @@ Array [
     },
     "effects": Object {
       "easing-general": "ease",
+      "hoverStatus": false,
       "transition-delay-general": 0,
       "transition-duration-general": 0.3,
       "transition-status-general": true,
@@ -616,7 +624,9 @@ Array [
 ]
 `;
 
-exports[`Button Maxi hover simple actions Button margin/padding 2`] = `"body.maxi-blocks--active #button-maxi-1 .maxi-button-block__button[data-maxi-relations=\\"true\\"] { padding-left: 22px; padding-bottom: 22px; padding-right: 22px; padding-top: 22px; margin-left: 11px; margin-bottom: 11px; margin-right: 11px; margin-top: 11px; transition: margin-top 0.3s 0s ease, margin-right 0.3s 0s ease, margin-bottom 0.3s 0s ease, margin-left 0.3s 0s ease, padding-top 0.3s 0s ease, padding-right 0.3s 0s ease, padding-bottom 0.3s 0s ease, padding-left 0.3s 0s ease,  margin-top 0.3s 0s ease, margin-right 0.3s 0s ease, margin-bottom 0.3s 0s ease, margin-left 0.3s 0s ease, padding-top 0.3s 0s ease, padding-right 0.3s 0s ease, padding-bottom 0.3s 0s ease, padding-left 0.3s 0s ease;}"`;
+exports[`Button Maxi hover simple actions Button margin/padding 2`] = `" body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { padding-left: 22px; padding-bottom: 22px; padding-right: 22px; padding-top: 22px; margin-left: 11px; margin-bottom: 11px; margin-right: 11px; margin-top: 11px;}@media screen and (min-width: 1921px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { padding-left: 17px; padding-bottom: 5px; padding-right: 5px; padding-top: 5px;}}@media screen and (max-width: 1920px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { padding-left: 22px; padding-bottom: 22px; padding-right: 22px; padding-top: 22px; margin-left: 11px; margin-bottom: 11px; margin-right: 11px; margin-top: 11px;}}"`;
+
+exports[`Button Maxi hover simple actions Button margin/padding 3`] = `"body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { transition: margin-top 0.3s 0s ease, margin-right 0.3s 0s ease, margin-bottom 0.3s 0s ease, margin-left 0.3s 0s ease, padding-top 0.3s 0s ease, padding-right 0.3s 0s ease, padding-bottom 0.3s 0s ease, padding-left 0.3s 0s ease;}@media screen and (min-width: 1921px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { transition: padding-top 0.3s 0s ease, padding-right 0.3s 0s ease, padding-bottom 0.3s 0s ease, padding-left 0.3s 0s ease;}}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { transition: margin-top 0.3s 0s ease, margin-right 0.3s 0s ease, margin-bottom 0.3s 0s ease, margin-left 0.3s 0s ease, padding-top 0.3s 0s ease, padding-right 0.3s 0s ease, padding-bottom 0.3s 0s ease, padding-left 0.3s 0s ease;}}@media screen and (max-width: 1366px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { transition: margin-top 0.3s 0s ease, margin-right 0.3s 0s ease, margin-bottom 0.3s 0s ease, margin-left 0.3s 0s ease, padding-top 0.3s 0s ease, padding-right 0.3s 0s ease, padding-bottom 0.3s 0s ease, padding-left 0.3s 0s ease;}}@media screen and (max-width: 1024px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { transition: margin-top 0.3s 0s ease, margin-right 0.3s 0s ease, margin-bottom 0.3s 0s ease, margin-left 0.3s 0s ease, padding-top 0.3s 0s ease, padding-right 0.3s 0s ease, padding-bottom 0.3s 0s ease, padding-left 0.3s 0s ease;}}@media screen and (max-width: 767px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { transition: margin-top 0.3s 0s ease, margin-right 0.3s 0s ease, margin-bottom 0.3s 0s ease, margin-left 0.3s 0s ease, padding-top 0.3s 0s ease, padding-right 0.3s 0s ease, padding-bottom 0.3s 0s ease, padding-left 0.3s 0s ease;}}@media screen and (max-width: 480px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { transition: margin-top 0.3s 0s ease, margin-right 0.3s 0s ease, margin-bottom 0.3s 0s ease, margin-left 0.3s 0s ease, padding-top 0.3s 0s ease, padding-right 0.3s 0s ease, padding-bottom 0.3s 0s ease, padding-left 0.3s 0s ease;}}"`;
 
 exports[`Button Maxi hover simple actions Button shadow 1`] = `
 Array [
@@ -672,7 +682,9 @@ Array [
 ]
 `;
 
-exports[`Button Maxi hover simple actions Button shadow 2`] = `"body.maxi-blocks--active #button-maxi-1 .maxi-button-block__button[data-maxi-relations=\\"true\\"] { box-shadow: 22px 33px 44px 55px rgba(var(--maxi-light-color-8,150,176,203),0.11); transition: box-shadow 0.3s 0s ease;}"`;
+exports[`Button Maxi hover simple actions Button shadow 2`] = `" body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { box-shadow: 22px 33px 44px 55px rgba(var(--maxi-light-color-8,150,176,203),0.11);}"`;
+
+exports[`Button Maxi hover simple actions Button shadow 3`] = `"body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { transition: box-shadow 0.3s 0s ease;}"`;
 
 exports[`Button Maxi hover simple actions Button typography 1`] = `
 Array [
@@ -763,6 +775,7 @@ Array [
       "transition-duration-general": 0.3,
       "transition-status-general": true,
       "transitionTarget": " .maxi-button-block__content",
+      "transitionTrigger": " .maxi-button-block__button",
     },
     "id": 1,
     "isButton": true,
@@ -774,4 +787,6 @@ Array [
 ]
 `;
 
-exports[`Button Maxi hover simple actions Button typography 2`] = `"body.maxi-blocks--active #button-maxi-1 .maxi-button-block__content[data-maxi-relations=\\"true\\"] { direction: rtl; text-orientation: sideways; writing-mode: vertical-rl; text-indent: 20px; text-decoration: underline; font-style: italic; text-transform: capitalize; font-weight: ; letter-spacing: 15px; line-height: 60%; font-size: 24px; color: var(--maxi-light-button-color,rgba(var(--maxi-light-color-8,150,176,203),0.5)); transition: color 0.3s 0s ease, font-size 0.3s 0s ease, line-height 0.3s 0s ease, letter-spacing 0.3s 0s ease, font-weight 0.3s 0s ease, text-transform 0.3s 0s ease, font-style 0.3s 0s ease, text-decoration 0.3s 0s ease, text-indent 0.3s 0s ease, writing-mode 0.3s 0s ease, text-orientation 0.3s 0s ease, direction 0.3s 0s ease;}"`;
+exports[`Button Maxi hover simple actions Button typography 2`] = `" body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__content { direction: rtl; text-orientation: sideways; writing-mode: vertical-rl; text-indent: 20px; text-decoration: underline; font-style: italic; text-transform: capitalize; font-weight: ; letter-spacing: 15px; line-height: 60%; font-size: 24px; color: var(--maxi-light-button-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}@media screen and (max-width: 1920px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__content { direction: rtl; text-orientation: sideways; writing-mode: vertical-rl; text-indent: 20px; text-decoration: underline; font-style: italic; text-transform: capitalize; font-weight: ; letter-spacing: 15px; line-height: 60%; font-size: 24px; color: var(--maxi-light-button-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}}"`;
+
+exports[`Button Maxi hover simple actions Button typography 3`] = `"body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__content { transition: color 0.3s 0s ease, font-size 0.3s 0s ease, line-height 0.3s 0s ease, letter-spacing 0.3s 0s ease, font-weight 0.3s 0s ease, text-transform 0.3s 0s ease, font-style 0.3s 0s ease, text-decoration 0.3s 0s ease, text-indent 0.3s 0s ease, writing-mode 0.3s 0s ease, text-orientation 0.3s 0s ease, direction 0.3s 0s ease;}@media screen and (max-width: 1920px) {body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__content { transition: color 0.3s 0s ease, font-size 0.3s 0s ease, line-height 0.3s 0s ease, letter-spacing 0.3s 0s ease, font-weight 0.3s 0s ease, text-transform 0.3s 0s ease, font-style 0.3s 0s ease, text-decoration 0.3s 0s ease, text-indent 0.3s 0s ease, writing-mode 0.3s 0s ease, text-orientation 0.3s 0s ease, direction 0.3s 0s ease;}}"`;

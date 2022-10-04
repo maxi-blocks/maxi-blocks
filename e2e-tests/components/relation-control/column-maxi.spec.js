@@ -62,13 +62,21 @@ describe('Column Maxi hover simple actions', () => {
 		await previewPage.hover('#button-maxi-1 .maxi-button-block__button');
 		await previewPage.waitForTimeout(100);
 
-		await previewPage.waitForSelector('#maxi-blocks-interaction-css');
-		const interactionCSS = await previewPage.$eval(
-			'#maxi-blocks-interaction-css',
+		await previewPage.waitForSelector('#relations--column-maxi-1-styles');
+		const stylesCSS = await previewPage.$eval(
+			'#relations--column-maxi-1-styles',
 			el => el.textContent
 		);
+		expect(stylesCSS).toMatchSnapshot();
 
-		expect(interactionCSS).toMatchSnapshot();
+		await previewPage.waitForSelector(
+			'#relations--column-maxi-1-transitions'
+		);
+		const transitionsCSS = await previewPage.$eval(
+			'#relations--column-maxi-1-transitions',
+			el => el.textContent
+		);
+		expect(transitionsCSS).toMatchSnapshot();
 	};
 
 	it('Column size', async () => {

@@ -24,6 +24,7 @@ Array [
     },
     "effects": Object {
       "easing-general": "ease",
+      "hoverStatus": false,
       "transition-delay-general": 0,
       "transition-duration-general": 0.3,
       "transition-status-general": true,
@@ -38,7 +39,9 @@ Array [
 ]
 `;
 
-exports[`Text Maxi hover simple actions Alignment 2`] = `"body.maxi-blocks--active #text-maxi-1[data-maxi-relations=\\"true\\"] { text-align: right; transition: text-align 0.3s 0s ease;}"`;
+exports[`Text Maxi hover simple actions Alignment 2`] = `" body.maxi-blocks--active #text-maxi-1[data-maxi-relations=\\"true\\"] { text-align: right;}@media screen and (max-width: 1920px) { body.maxi-blocks--active #text-maxi-1[data-maxi-relations=\\"true\\"] { text-align: right;}}"`;
+
+exports[`Text Maxi hover simple actions Alignment 3`] = `"body.maxi-blocks--active #text-maxi-1[data-maxi-relations=\\"true\\"] { transition: text-align 0.3s 0s ease;}@media screen and (max-width: 1920px) {body.maxi-blocks--active #text-maxi-1[data-maxi-relations=\\"true\\"] { transition: text-align 0.3s 0s ease;}}"`;
 
 exports[`Text Maxi hover simple actions Typography 1`] = `
 Array [
@@ -133,7 +136,7 @@ Array [
     "id": 1,
     "isButton": true,
     "settings": "Typography",
-    "target": "p.maxi-text-block__content",
+    "target": "p .maxi-text-block__content",
     "title": "Testmontserrat",
     "uniqueID": "text-maxi-1",
   },

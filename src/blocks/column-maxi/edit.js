@@ -190,7 +190,7 @@ class edit extends MaxiBlockComponent {
 
 		const emptyColumnClass = !hasInnerBlocks
 			? 'maxi-column-block__empty'
-			: 'maxi-column-block__has-innerBlock';
+			: 'maxi-column-block__has-inner-block';
 
 		return (
 			<RowContext.Consumer>

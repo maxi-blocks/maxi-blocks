@@ -8,13 +8,13 @@ function getBgLayersSelectorsCss(bgLayers) {
 		background: {
 			'background-displayer': {
 				label: 'background wrapper',
-				target: ' .maxi-background-displayer',
+				target: ' > .maxi-background-displayer',
 			},
 		},
 		'background hover': {
 			'background-displayer': {
 				label: 'background wrapper on hover',
-				target: ':hover .maxi-background-displayer',
+				target: ':hover > .maxi-background-displayer',
 			},
 		},
 	};
@@ -28,7 +28,7 @@ function getBgLayersSelectorsCss(bgLayers) {
 				...bgLayersSelectors.background,
 				[`_${bgLayer.id}`]: {
 					label: `background ${bgLayer.type} ${bgLayersShowedOrder}`,
-					target: ` .maxi-background-displayer .maxi-background-displayer__${bgLayer.order}`,
+					target: ` > .maxi-background-displayer .maxi-background-displayer__${bgLayer.order}`,
 				},
 			};
 
@@ -36,7 +36,7 @@ function getBgLayersSelectorsCss(bgLayers) {
 				...bgLayersSelectors['background hover'],
 				[`_${bgLayer.id}`]: {
 					label: `background ${bgLayer.type} ${bgHoverLayersShowedOrder} on hover`,
-					target: `:hover .maxi-background-displayer .maxi-background-displayer__${bgLayer.order}`,
+					target: `:hover > .maxi-background-displayer .maxi-background-displayer__${bgLayer.order}`,
 				},
 			};
 

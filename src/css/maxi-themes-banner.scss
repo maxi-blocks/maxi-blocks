@@ -50,6 +50,11 @@ body.maxi-blocks--active .maxi-block {
 			content: none;
 		}
 	}
+
+	/*Seedlet*/
+	.maxi-text-block--link {
+		border: none;
+	}
 }
 
 body.maxi-blocks--active .maxi-block[data-align='full'] {

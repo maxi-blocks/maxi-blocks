@@ -35,6 +35,17 @@ const OverflowControl = props => {
 	const axes = ['x', 'y'];
 	const [sync, changeSync] = useState(true);
 
+	const [AxisVal, setAxisVal] = useState();
+
+	const syncOverflow = () => {
+		if (!sync) {
+			onChange({
+				[`overflow-x-${breakpoint}`]: AxisVal,
+				[`overflow-y-${breakpoint}`]: AxisVal,
+			});
+		}
+	};
+
 	return (
 		<div className={classes}>
 			{axes.map(axis => (
@@ -57,6 +68,8 @@ const OverflowControl = props => {
 					}
 					onChange={val => {
 						if (sync) {
+							setAxisVal(val);
+
 							onChange({
 								[`overflow-x-${breakpoint}`]: !isEmpty(val)
 									? val
@@ -66,6 +79,8 @@ const OverflowControl = props => {
 									: null,
 							});
 						} else {
+							setAxisVal(val);
+
 							onChange({
 								[`overflow-${axis}-${breakpoint}`]: !isEmpty(
 									val
@@ -89,7 +104,10 @@ const OverflowControl = props => {
 						aria-label={__('Sync units', 'maxi-blocks')}
 						isPrimary={sync}
 						aria-pressed={sync}
-						onClick={() => changeSync(!sync)}
+						onClick={() => {
+							changeSync(!sync);
+							syncOverflow();
+						}}
 					>
 						{syncIcon}
 					</Button>

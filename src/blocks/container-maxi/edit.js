@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+import { dispatch } from '@wordpress/data';
+
+/**
  * Internal dependencies
  */
 import Inspector from './inspector';
@@ -49,6 +54,13 @@ class edit extends MaxiBlockComponent {
 				},
 			}),
 		};
+	}
+
+	maxiBlockDidUpdate() {
+		if (!this.props.hasInnerBlocks) {
+			const { removeBlock } = dispatch('core/block-editor');
+			removeBlock(this.props.clientId);
+		}
 	}
 
 	render() {

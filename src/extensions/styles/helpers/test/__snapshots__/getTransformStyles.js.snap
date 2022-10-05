@@ -1,5 +1,74 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`getTransformStyles Get a correct default hover transform styles 1`] = `
+Object {
+  "": Object {
+    "transform": Object {
+      "general": Object {
+        "transform": "scaleY(2) translateX(-20%) translateY(-10%) rotateX(30deg) rotateY(60deg) rotateZ(90deg) ",
+        "transform-origin": "0% 0% ",
+      },
+      "l": Object {
+        "transform": "scaleY(2) translateX(-20%) translateY(-10%) rotateX(30deg) rotateY(60deg) rotateZ(90deg) ",
+        "transform-origin": "0% 0% ",
+      },
+      "m": Object {
+        "transform": "scaleY(2) translateX(-20%) translateY(-10%) rotateX(30deg) rotateY(60deg) rotateZ(90deg) ",
+        "transform-origin": "0% 0% ",
+      },
+      "s": Object {
+        "transform": "scaleY(2) translateX(-20%) translateY(-10%) rotateX(30deg) rotateY(60deg) rotateZ(90deg) ",
+        "transform-origin": "0% 0% ",
+      },
+      "xl": Object {
+        "transform": "scaleY(2) translateX(-20%) translateY(-10%) rotateX(30deg) rotateY(60deg) rotateZ(90deg) ",
+        "transform-origin": "0% 0% ",
+      },
+      "xs": Object {
+        "transform": "scaleY(2) translateX(-20%) translateY(-10%) rotateX(30deg) rotateY(60deg) rotateZ(90deg) ",
+        "transform-origin": "0% 0% ",
+      },
+      "xxl": Object {
+        "transform": "scaleY(2) translateX(-20%) translateY(-10%) rotateX(30deg) rotateY(60deg) rotateZ(90deg) ",
+        "transform-origin": "0% 0% ",
+      },
+    },
+  },
+  ":hover": Object {
+    "transform": Object {
+      "general": Object {
+        "transform": "scale(1) translate(0) rotate(0) ",
+        "transform-origin": "50% 50% ",
+      },
+      "l": Object {
+        "transform": "scale(1) translate(0) rotate(0) ",
+        "transform-origin": "50% 50% ",
+      },
+      "m": Object {
+        "transform": "scale(1) translate(0) rotate(0) ",
+        "transform-origin": "50% 50% ",
+      },
+      "s": Object {
+        "transform": "scale(1) translate(0) rotate(0) ",
+        "transform-origin": "50% 50% ",
+      },
+      "xl": Object {
+        "transform": "scale(1) translate(0) rotate(0) ",
+        "transform-origin": "50% 50% ",
+      },
+      "xs": Object {
+        "transform": "scale(1) translate(0) rotate(0) ",
+        "transform-origin": "50% 50% ",
+      },
+      "xxl": Object {
+        "transform": "scale(1) translate(0) rotate(0) ",
+        "transform-origin": "50% 50% ",
+      },
+    },
+  },
+}
+`;
+
 exports[`getTransformStyles Get a correct transform styles 1`] = `
 Object {
   "": Object {

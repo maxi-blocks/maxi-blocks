@@ -208,7 +208,7 @@ const transition = ({
 						});
 					}}
 				/>
-				{rawTransition.length > 1 &&
+				{Object.values(rawTransition).length > 1 &&
 				Object.values(rawTransition).every(obj => !isEmpty(obj)) &&
 				!transitionChangeAll ? (
 					<SettingTabsControl

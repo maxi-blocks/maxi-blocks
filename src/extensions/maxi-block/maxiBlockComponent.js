@@ -380,9 +380,11 @@ class MaxiBlockComponent extends Component {
 	}
 
 	addNewTransitions() {
-		const { attributes, name: blockName } = this.props;
-		const { transition, 'transition-change-all': transitionChangeAll } =
-			attributes;
+		const { attributes, clientId, name: blockName } = this.props;
+		const {
+			transition: rawTransition,
+			'transition-change-all': transitionChangeAll,
+		} = attributes;
 
 		const blockDataTransition = getTransitionData(blockName);
 
@@ -393,6 +395,8 @@ class MaxiBlockComponent extends Component {
 			const getTransitionAttributes = () =>
 				transitionAttributesCreator(blockDataTransition).transition
 					.default;
+
+			const transition = cloneDeep(rawTransition);
 
 			Object.entries(blockDataTransition).forEach(
 				([type, typeTransitions]) => {
@@ -414,6 +418,11 @@ class MaxiBlockComponent extends Component {
 					});
 				}
 			);
+
+			if (!isEqual(rawTransition, transition))
+				dispatch('core/block-editor').updateBlockAttributes(clientId, {
+					transition,
+				});
 		}
 	}
 

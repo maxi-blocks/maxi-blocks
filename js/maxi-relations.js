@@ -82,10 +82,12 @@ class Relation {
 	generateStylesEls() {
 		this.stylesEl = document.createElement('style');
 		this.stylesEl.id = `relations--${this.uniqueID}-styles`;
+		this.stylesEl.setAttribute('data-type', this.action);
 		this.stylesEl.innerText = this.stylesString;
 
 		this.transitionEl = document.createElement('style');
 		this.transitionEl.id = `relations--${this.uniqueID}-transitions`;
+		this.transitionEl.setAttribute('data-type', this.action);
 		this.transitionEl.innerText = this.transitionString;
 	}
 
@@ -96,10 +98,35 @@ class Relation {
 				'#maxi-blocks-inline-css'
 			);
 
-		this.inlineStylesEl.parentNode.insertBefore(
-			styleEl,
-			this.inlineStylesEl.nextSibling
-		);
+		const currentEl = document.querySelector(`#${styleEl.id}`);
+
+		if (currentEl) {
+			if (currentEl.getAttribute('data-type') === this.action)
+				currentEl.replaceWith(styleEl);
+			else currentEl.insertAdjacentElement('afterend', styleEl);
+		} else
+			this.inlineStylesEl.parentNode.insertBefore(
+				styleEl,
+				this.inlineStylesEl.nextSibling
+			);
+	}
+
+	getCurrentBreakpoint() {
+		const winWidth = window.innerWidth;
+
+		let currentBreakpoint = 'general';
+
+		Object.entries(this.breakpointsObj).forEach(([breakpoint, value]) => {
+			if (!['general', 'xxl'].includes(breakpoint)) {
+				if (breakpoint === 'general') return;
+
+				if (winWidth <= this.breakpointsObj.xl)
+					currentBreakpoint = breakpoint;
+			}
+			if (winWidth <= value) currentBreakpoint = breakpoint;
+		});
+
+		return currentBreakpoint;
 	}
 
 	getLastUsableBreakpoint(currentBreakpoint, callback) {
@@ -107,6 +134,27 @@ class Relation {
 			.splice(0, this.breakpoints.indexOf(currentBreakpoint) + 1)
 			.reverse()
 			.find(breakpoint => callback(breakpoint));
+	}
+
+	getTransitionTimeout() {
+		const currentBreakpoint = this.getCurrentBreakpoint();
+
+		const getTransitionValue = prop =>
+			this.effects[
+				`transition-${prop}-${this.getLastUsableBreakpoint(
+					currentBreakpoint,
+					breakpoint =>
+						Object.prototype.hasOwnProperty.call(
+							this.effects,
+							`transition-${prop}-${breakpoint}`
+						)
+				)}`
+			];
+
+		const transitionDuration = getTransitionValue('duration');
+		const transitionDelay = getTransitionValue('delay');
+
+		return (transitionDuration + transitionDelay) * 1000;
 	}
 
 	/**
@@ -282,13 +330,13 @@ class Relation {
 
 	// Target for the creation of styles and transition lines needs to be considered
 	// as it can create higher specificity than the default block styles.
-	getTargetForLine(transitionTarget) {
+	getTargetForLine(transitionTarget, mainTarget = this.dataTarget) {
 		if (transitionTarget)
-			if (!this.dataTarget.includes(transitionTarget))
-				return `${this.dataTarget} ${transitionTarget}`;
-			else return this.dataTarget;
+			if (!mainTarget.includes(transitionTarget))
+				return `${mainTarget} ${transitionTarget}`;
+			else return mainTarget;
 
-		return `${this.dataTarget} ${this.target}`;
+		return `${mainTarget} ${this.target}`;
 	}
 
 	getMediaLines(breakpoint, breakpointValue) {
@@ -352,20 +400,30 @@ class Relation {
 			);
 		};
 
+		// On styles (not transitions), we need to keep the styles after run the interaction.
+		// As the same target block can be used by multiple interactions, we can't depend the styles
+		// on the "data-relations" attribute, as it can be changed by other interactions.
+		// To prevent it, in case the interaction is 'click' type, the target don't contains
+		// the "data-relations" attribute, so we can keep the styles after the interaction.
+		const mainTarget =
+			this.action === 'click' ? `#${this.uniqueID}` : this.dataTarget;
+
 		if (this.hasMultipleTargets)
 			Object.entries(this.stylesObj).forEach(
 				([targetSelector, styles]) =>
 					Object.keys(styles).length &&
-					getStylesLine(
-						styles,
-						`${this.dataTarget} ${targetSelector}`
-					)
+					getStylesLine(styles, `${mainTarget} ${targetSelector}`)
 			);
 		else
 			this.transitionTargets.forEach(transitionTarget =>
 				getStylesLine(
 					this.stylesObj,
-					this.getTargetForLine(transitionTarget)
+					this.getTargetForLine(
+						transitionTarget,
+						this.action === 'click'
+							? `#${this.uniqueID}`
+							: this.dataTarget
+					)
 				)
 			);
 	}
@@ -551,7 +609,6 @@ class Relation {
 				// Remove transitions to let the original ones be applied
 				this.removeTransition();
 
-				this.isNestedHoverTransition = true;
 				clearTimeout(this.contentTimeout);
 			});
 
@@ -609,10 +666,9 @@ class Relation {
 		this.removeStyles();
 
 		this.transitionTimeout = setTimeout(() => {
-			// Removing transition after transition-duration + 1s to make sure it's done
 			this.removeTransition();
 			this.removeAddAttrToBlock();
-		}, this.effects['transition-duration-general'] * 1000 + 1000);
+		}, this.getTransitionTimeout());
 	}
 
 	addClickEvents() {
@@ -623,6 +679,10 @@ class Relation {
 		this.addDataAttrToBlock();
 		this.addTransition();
 		this.addStyles();
+
+		this.transitionTimeout = setTimeout(() => {
+			this.removeTransition();
+		}, this.getTransitionTimeout());
 	}
 }
 

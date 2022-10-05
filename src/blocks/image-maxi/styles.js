@@ -35,7 +35,11 @@ import data from './data';
  */
 import { isNil } from 'lodash';
 
+const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
 const getWrapperObject = props => {
+	const { useWrapperHeight } = props;
+
 	const response = {
 		border: getBorderStyles({
 			obj: {
@@ -77,6 +81,7 @@ const getWrapperObject = props => {
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
+			useWrapperHeight,
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
@@ -230,8 +235,34 @@ const getImageWrapperObject = props => {
 	return response;
 };
 
+const getImageVerticalPosition = props => {
+	const response = {};
+
+	breakpoints.forEach(breakpoint => {
+		response[breakpoint] = {};
+
+		const verticalPosition = getLastBreakpointAttribute({
+			target: 'object-position-vertical',
+			breakpoint,
+			attributes: props,
+		});
+		const verticalPositionUnit = getLastBreakpointAttribute({
+			target: 'object-position-vertical-unit',
+			breakpoint,
+			attributes: props,
+		});
+
+		response[breakpoint]['object-position'] = `50% ${verticalPosition}${
+			verticalPositionUnit ?? 'px'
+		}`;
+	});
+
+	return response;
+};
+
 const getImageObject = props => {
-	const { imageRatio, imgWidth, useInitSize, mediaWidth } = props;
+	const { imageRatio, imgWidth, useInitSize, mediaWidth, useWrapperHeight } =
+		props;
 
 	return {
 		border: getBorderStyles({
@@ -271,6 +302,9 @@ const getImageObject = props => {
 					width: !useInitSize ? `${imgWidth}%` : `${mediaWidth}px`,
 				},
 			},
+		}),
+		...(useWrapperHeight && {
+			verticalPosition: getImageVerticalPosition(props),
 		}),
 	};
 };
@@ -368,31 +402,29 @@ const getFigcaptionObject = props => {
 			const response = { captionMargin: {} };
 			const { captionPosition } = props;
 
-			['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].forEach(
-				breakpoint => {
-					const num = getLastBreakpointAttribute({
-						target: 'caption-gap',
-						breakpoint,
-						attributes: props,
-					});
-					const unit = getLastBreakpointAttribute({
-						target: 'caption-gap-unit',
-						breakpoint,
-						attributes: props,
-					});
+			breakpoints.forEach(breakpoint => {
+				const num = getLastBreakpointAttribute({
+					target: 'caption-gap',
+					breakpoint,
+					attributes: props,
+				});
+				const unit = getLastBreakpointAttribute({
+					target: 'caption-gap-unit',
+					breakpoint,
+					attributes: props,
+				});
 
-					if (!isNil(num) && !isNil(unit)) {
-						const marginType =
-							captionPosition === 'bottom'
-								? 'margin-top'
-								: 'margin-bottom';
+				if (!isNil(num) && !isNil(unit)) {
+					const marginType =
+						captionPosition === 'bottom'
+							? 'margin-top'
+							: 'margin-bottom';
 
-						response.captionMargin[breakpoint] = {
-							[marginType]: num + unit,
-						};
-					}
+					response.captionMargin[breakpoint] = {
+						[marginType]: num + unit,
+					};
 				}
-			);
+			});
 
 			return response;
 		})(),

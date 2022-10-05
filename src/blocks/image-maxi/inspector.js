@@ -47,6 +47,7 @@ const dimensionTab = props => {
 		maxiSetAttributes,
 		resizableObject,
 		imageData,
+		deviceType,
 	} = props;
 	const {
 		cropOptions,
@@ -56,6 +57,7 @@ const dimensionTab = props => {
 		mediaID,
 		SVGElement,
 		useInitSize,
+		useWrapperHeight,
 	} = attributes;
 
 	const getSizeOptions = () => {
@@ -230,6 +232,82 @@ const dimensionTab = props => {
 						})
 					}
 				/>
+				<ToggleSwitch
+					label={__('Use wrapper height', 'maxi-blocks')}
+					className='maxi-image-inspector__use-wrapper-height'
+					selected={useWrapperHeight}
+					onChange={val =>
+						maxiSetAttributes({
+							useWrapperHeight: val,
+						})
+					}
+				/>
+				{useWrapperHeight && (
+					<AdvancedNumberControl
+						label={__('Image vertical position', 'maxi-blocks')}
+						className='maxi-image-inspector__image-vertical-position'
+						placeholder='50%'
+						value={
+							attributes[`object-position-vertical-${deviceType}`]
+						}
+						onChangeValue={val =>
+							maxiSetAttributes({
+								[`object-position-vertical-${deviceType}`]: val,
+							})
+						}
+						enableUnit
+						allowedUnits={['px', 'em', 'vh', '%']}
+						unit={getLastBreakpointAttribute({
+							target: 'object-position-vertical-unit',
+							breakpoint: deviceType,
+							attributes,
+						})}
+						minMaxSettings={{
+							px: {
+								min: -3999,
+								max: 3999,
+								minRange: -1999,
+								maxRange: 1999,
+							},
+							em: {
+								min: -999,
+								max: 999,
+								minRange: -300,
+								maxRange: 300,
+							},
+							vh: {
+								min: -999,
+								max: 999,
+								minRange: -300,
+								maxRange: 300,
+							},
+							'%': {
+								min: -300,
+								max: 300,
+								minRange: -100,
+								maxRange: 100,
+							},
+						}}
+						onChangeUnit={val =>
+							maxiSetAttributes({
+								[`object-position-vertical-unit-${deviceType}`]:
+									val,
+							})
+						}
+						onReset={() =>
+							maxiSetAttributes({
+								[`object-position-vertical-${deviceType}`]:
+									getDefaultAttribute(
+										`object-position-vertical-${deviceType}`
+									),
+								[`object-position-vertical-unit-${deviceType}`]:
+									getDefaultAttribute(
+										`object-position-vertical-unit-${deviceType}`
+									),
+							})
+						}
+					/>
+				)}
 			</>
 		),
 		extraIndicators: ['imageRatio', 'imgWidth'],
@@ -250,6 +328,7 @@ const Inspector = props => {
 		uniqueID,
 		mediaID,
 		captionPosition,
+		useWrapperHeight,
 	} = attributes;
 	const { selectors, categories } = customCss;
 
@@ -648,6 +727,7 @@ const Inspector = props => {
 									...inspectorTabs.size({
 										props,
 										block: true,
+										hideHeight: useWrapperHeight,
 									}),
 									...inspectorTabs.marginPadding({
 										props,

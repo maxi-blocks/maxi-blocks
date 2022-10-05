@@ -97,6 +97,21 @@ const attributes = {
 	useInitSize: {
 		type: 'boolean',
 	},
+	useWrapperHeight: {
+		type: 'boolean',
+	},
+	...breakpointAttributesCreator({
+		obj: {
+			'object-position-vertical': {
+				type: 'number',
+				default: 50,
+			},
+			'object-position-vertical-unit': {
+				type: 'string',
+				default: '%',
+			},
+		},
+	}),
 	...attributesData.clipPath,
 	...attributesData.link,
 	...attributesData.textAlignment,

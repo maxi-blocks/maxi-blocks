@@ -5,19 +5,19 @@
 				fill: var(--maxi-secondary-color);
 				stroke: transparent;
 			}
-			&[aria-label='color'] {
-				path {
-					&:first-child {
-						fill: #f1f1f1;
-					}
-				}
+		}
+	}
+	.maxi-tabs-control__button-color.maxi-tabs-control__button--selected {
+		path {
+			&:first-child {
+				fill: var(--maxi-white-1-color);
 			}
-			&[aria-label='border'] {
-				path {
-					fill: transparent;
-					stroke: var(--maxi-secondary-color);
-				}
-			}
+		}
+	}
+	.maxi-tabs-control__button-border.maxi-tabs-control__button--selected {
+		path {
+			fill: transparent;
+			stroke: var(--maxi-secondary-color);
 		}
 	}
 }

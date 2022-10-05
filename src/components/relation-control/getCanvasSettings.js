@@ -40,10 +40,22 @@ import {
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import { isEmpty, isPlainObject } from 'lodash';
 
-const getTransformControl = ({ categories, selectors }) => ({
+const getTransformControl = (name, { categories, selectors }) => ({
 	label: __('Transform', 'maxi-blocks'),
+	transitionTarget: [],
+	hoverProp: (attributes, relationAttributes) =>
+		Object.entries(getGroupAttributes(attributes, 'transform')).some(
+			([attributeKey, attribute]) =>
+				relationAttributes?.[attributeKey] &&
+				isPlainObject(attribute) &&
+				Object.entries(attribute).some(
+					([objKey, obj]) =>
+						relationAttributes[attributeKey][objKey] &&
+						obj?.['hover-status']
+				)
+		),
 	attrGroupName: 'transform',
 	component: props => (
 		<TransformControl
@@ -157,7 +169,7 @@ const getCanvasSettings = ({ name, customCss }) => [
 		component: props => <PositionControl {...props} />,
 		helper: props => getPositionStyles(props.obj),
 	},
-	...getTransformControl(customCss),
+	...getTransformControl(name, customCss),
 ];
 
 export default getCanvasSettings;

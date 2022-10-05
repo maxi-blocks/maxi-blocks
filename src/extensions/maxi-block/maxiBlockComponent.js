@@ -27,8 +27,10 @@ import {
 	getHasVideo,
 	getParallaxLayers,
 	getRelations,
+	getTransitionData,
 	styleGenerator,
 	styleResolver,
+	transitionAttributesCreator,
 } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
 import getIsUniqueIDRepeated from './getIsUniqueIDRepeated';
@@ -123,6 +125,8 @@ class MaxiBlockComponent extends Component {
 					attributes['maxi-version-origin'] = maxiVersion;
 			})
 			.catch(() => console.error('Maxi Blocks: Could not load settings'));
+
+		this.addNewTransitions();
 
 		if (this.maxiBlockDidMount) this.maxiBlockDidMount();
 
@@ -373,6 +377,44 @@ class MaxiBlockComponent extends Component {
 		const response = getAllFonts(this.typography, 'custom-formats');
 
 		if (!isEmpty(response)) loadFonts(response);
+	}
+
+	addNewTransitions() {
+		const { attributes, name: blockName } = this.props;
+		const { transition, 'transition-change-all': transitionChangeAll } =
+			attributes;
+
+		const blockDataTransition = getTransitionData(blockName);
+
+		if (blockDataTransition) {
+			const getFirstTransitionAttributes = transitionAttributes =>
+				transitionAttributes[Object.keys(transitionAttributes)[0]];
+
+			const getTransitionAttributes = () =>
+				transitionAttributesCreator(blockDataTransition).transition
+					.default;
+
+			Object.entries(blockDataTransition).forEach(
+				([type, typeTransitions]) => {
+					if (!transition[type])
+						transition[type] = transitionChangeAll
+							? getFirstTransitionAttributes(transition)
+							: getTransitionAttributes()[type];
+
+					Object.keys(typeTransitions).forEach(transitionName => {
+						if (!transition[type][transitionName])
+							transition[type][transitionName] =
+								transitionChangeAll
+									? getFirstTransitionAttributes(
+											transition[type]
+									  )
+									: getTransitionAttributes()[type][
+											transitionName
+									  ];
+					});
+				}
+			);
+		}
 	}
 
 	updateRelationHoverStatus() {

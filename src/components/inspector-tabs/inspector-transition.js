@@ -17,6 +17,8 @@ import {
 	getGroupAttributes,
 	getDefaultAttribute,
 } from '../../extensions/styles';
+import * as blocksData from '../../blocks/data';
+import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
 /**
  * External dependencies
@@ -34,6 +36,7 @@ const TransitionControlWrapper = props => {
 		transition,
 		type,
 		isOneType,
+		transitionData,
 	} = props;
 	const { 'transition-change-all': transitionChangeAll } = attributes;
 
@@ -50,22 +53,27 @@ const TransitionControlWrapper = props => {
 		defaultTransition[`${prop}-${deviceType}`];
 
 	const onChangeTransition = (obj = {}) => {
+		if (!transitionData) return null;
+
 		let newObj = {
 			transition: {},
 		};
 
 		if (transitionChangeAll) {
-			Object.keys(attributes?.transition).forEach(t => {
-				newObj.transition[t] = {};
+			Object.keys(attributes?.transition).forEach(currentType => {
+				newObj.transition[currentType] = {};
 
-				Object.keys(attributes.transition?.[t]).forEach(key => {
-					newObj.transition[t][key] = {
-						...attributes.transition[t][key],
-						...attributes.transition[type][selected],
-						hoverProp: attributes.transition[t][key].hoverProp,
-						...obj,
-					};
-				});
+				Object.keys(attributes.transition?.[currentType]).forEach(
+					key => {
+						newObj.transition[currentType][key] = {
+							...attributes.transition[currentType][key],
+							...attributes.transition[type][selected],
+							hoverProp:
+								transitionData[currentType][key].hoverProp,
+							...obj,
+						};
+					}
+				);
 			});
 		} else {
 			newObj = {
@@ -159,7 +167,7 @@ const transition = ({
 	props,
 	label = __('Hover transition', 'maxi-blocks'),
 }) => {
-	const { attributes, deviceType, maxiSetAttributes } = props;
+	const { attributes, deviceType, maxiSetAttributes, name } = props;
 	const {
 		transition: rawTransition,
 		'transition-change-all': transitionChangeAll,
@@ -167,12 +175,16 @@ const transition = ({
 
 	const transition = cloneDeep(rawTransition);
 
+	const transitionData =
+		Object.values(blocksData).find(
+			({ name: blockName }) =>
+				blockName === name.replace('maxi-blocks/', '')
+		)?.transition || transitionDefault;
+
 	Object.keys(transition).forEach(type => {
 		Object.keys(transition[type]).forEach(key => {
-			if (
-				transition[type][key]?.hoverProp &&
-				!attributes[transition[type][key].hoverProp]
-			)
+			const hoverProp = transitionData?.[type]?.[key]?.hoverProp;
+			if (hoverProp && !attributes[hoverProp])
 				delete transition[type][key];
 		});
 	});
@@ -201,7 +213,8 @@ const transition = ({
 						});
 					}}
 				/>
-				{Object.values(rawTransition).every(obj => !isEmpty(obj)) &&
+				{rawTransition.length > 1 &&
+				Object.values(rawTransition).every(obj => !isEmpty(obj)) &&
 				!transitionChangeAll ? (
 					<SettingTabsControl
 						breakpoint={deviceType}
@@ -211,6 +224,7 @@ const transition = ({
 								<TransitionControlWrapper
 									type={type}
 									transition={transition}
+									transitionData={transitionData}
 									{...props}
 								/>
 							),
@@ -220,6 +234,7 @@ const transition = ({
 					<TransitionControlWrapper
 						type={availableType}
 						transition={transition}
+						transitionData={transitionData}
 						isOneType
 						{...props}
 					/>

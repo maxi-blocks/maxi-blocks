@@ -25,6 +25,7 @@ class Relation {
 
 		this.action = item.action;
 		this.effects = item.effects;
+		this.attributes = item.attributes;
 
 		({ stylesObj: this.stylesObj, effectsObj: this.effectsObj } =
 			this.generateCssResponsiveObj());
@@ -53,6 +54,9 @@ class Relation {
 				this.transitionTargets = [''];
 		}
 
+		this.isBorder = Object.keys(this.attributes).some(attr =>
+			attr.startsWith('border')
+		);
 		this.isIcon =
 			item.settings === 'Icon colour' || item.settings === 'Button icon';
 		this.isSVG = this.fullTarget.includes('svg-icon-maxi');
@@ -219,9 +223,16 @@ class Relation {
 
 			// Clean values
 			Object.entries(response).forEach(([key, value]) => {
-				[this.breakpoints]
+				[...this.breakpoints]
 					.reverse()
 					.reduce((prevBreakpoint, breakpoint) => {
+						const doesExist = Object.prototype.hasOwnProperty.call(
+							value,
+							prevBreakpoint
+						);
+
+						if (!doesExist) return breakpoint;
+
 						const isEmpty =
 							Object.keys(value[prevBreakpoint]).length === 0;
 						const isEqualThanPrevious =
@@ -357,6 +368,8 @@ class Relation {
 
 	generateStyles() {
 		const getStylesLine = (stylesObj, target) => {
+			const isBackground = target.includes('maxi-background-displayer');
+
 			Object.entries(this.breakpointsObj).forEach(
 				([breakpoint, breakpointValue]) => {
 					if (stylesObj[breakpoint]) {
@@ -395,6 +408,49 @@ class Relation {
 								);
 							}
 						);
+
+						if (this.isBorder && isBackground) {
+							const getBorderValue = target =>
+								this.attributes[
+									`border-${target}-width-${breakpoint}`
+								];
+
+							const widthTop = getBorderValue('top');
+							const widthRight = getBorderValue('right');
+							const widthBottom = getBorderValue('bottom');
+							const widthLeft = getBorderValue('left');
+							const widthUnit =
+								this.attributes[`border-unit-${breakpoint}`] ||
+								'px';
+
+							// Rounds to 2 decimals
+							const roundNumber = number =>
+								Math.round(number * 100) / 100;
+
+							const horizontalWidth =
+								roundNumber(widthTop) / 2 +
+								roundNumber(widthBottom) / 2;
+							const verticalWidth =
+								roundNumber(widthRight) / 2 +
+								roundNumber(widthLeft) / 2;
+
+							const selectorRegExp = new RegExp(
+								`(${this.escapeRegExp(selector)})`
+							);
+							if (!this.stylesString.match(selectorRegExp))
+								this.stylesString += `${selector}}${postLine}`;
+
+							if (horizontalWidth)
+								this.stylesString = this.stylesString.replace(
+									selectorRegExp,
+									`$1 top: -${horizontalWidth}${widthUnit};`
+								);
+							if (verticalWidth)
+								this.stylesString = this.stylesString.replace(
+									selectorRegExp,
+									`$1 left: -${verticalWidth}${widthUnit};`
+								);
+						}
 					}
 				}
 			);
@@ -438,6 +494,8 @@ class Relation {
 
 	generateTransitions() {
 		const getTransitionLine = (stylesObj, target) => {
+			const isBackground = target.includes('maxi-background-displayer');
+
 			Object.entries(this.breakpointsObj).forEach(
 				([breakpoint, breakpointValue]) => {
 					if (this.effectsObj[breakpoint]) {
@@ -452,7 +510,7 @@ class Relation {
 								' '
 							);
 
-						const currentStyleObj =
+						let currentStyleObj =
 							stylesObj[
 								this.getLastUsableBreakpoint(
 									breakpoint,
@@ -462,6 +520,13 @@ class Relation {
 											.length
 								)
 							];
+
+						if (this.isBorder && isBackground)
+							currentStyleObj = {
+								...currentStyleObj,
+								top: null,
+								left: null,
+							};
 
 						if (currentStyleObj) {
 							const transitionString = this.getTransitionString(

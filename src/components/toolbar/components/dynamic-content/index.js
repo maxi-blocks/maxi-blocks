@@ -59,6 +59,7 @@ const DynamicContent = props => {
 		'dc-show': show,
 		'dc-field': field,
 		'dc-date': date,
+		'dc-date-status': dateStatus,
 		'dc-limit': limit,
 		// 'dc-content': content,
 	} = dynamicContent;
@@ -73,6 +74,13 @@ const DynamicContent = props => {
 	const fieldRef = useRef(field);
 	const dateRef = useRef(date);
 	const limitRef = useRef(limit);
+	const dateStatusRef = useRef(dateStatus);
+	const dateYearRef = useRef(dateStatus);
+	const dateMonthRef = useRef(dateStatus);
+	const dateDayRef = useRef(dateStatus);
+	const dateHourRef = useRef(dateStatus);
+	const dateMinuteRef = useRef(dateStatus);
+	const dateSecondRef = useRef(dateStatus);
 	const alterIdRef = useRef(null);
 
 	const [postIdOptions, setPostIdOptions] = useState(null);
@@ -88,7 +96,18 @@ const DynamicContent = props => {
 				),
 			});
 		}
-	}, [type, id, field, relation, show, author, error, date, limit]);
+	}, [
+		type,
+		id,
+		field,
+		relation,
+		show,
+		author,
+		error,
+		date,
+		limit,
+		dateStatus,
+	]);
 
 	const validationsValues = variableValue => {
 		const result = fieldOptions[variableValue].map(x => x.value);
@@ -528,7 +547,6 @@ const DynamicContent = props => {
 			case 'relation':
 				relationRef.current = _value;
 				showRef.current = 'current';
-				//onChange({ 'dc-relation': _value, 'dc-show': 'current' });
 				getIdOptions(
 					typeRef.current,
 					{ 'dc-relation': _value, 'dc-show': 'current' },
@@ -537,7 +555,6 @@ const DynamicContent = props => {
 				break;
 			case 'author':
 				authorRef.current = _value;
-				//onChange({ 'dc-author': _value });
 				getIdOptions(
 					typeRef.current,
 					{ 'dc-author': _value },
@@ -560,6 +577,34 @@ const DynamicContent = props => {
 			case 'limit':
 				limitRef.current = _value;
 				onChange({ 'dc-limit': _value });
+				break;
+			case 'date-status':
+				dateStatusRef.current = _value;
+				onChange({ 'dc-date-status': _value });
+				break;
+			case 'date-year':
+				dateYearRef.current = _value;
+				onChange({ 'dc-date-year': _value });
+				break;
+			case 'date-month':
+				dateMonthRef.current = _value;
+				onChange({ 'dc-date-month': _value });
+				break;
+			case 'date-day':
+				dateDayRef.current = _value;
+				onChange({ 'dc-date-day': _value });
+				break;
+			case 'date-hour':
+				dateHourRef.current = _value;
+				onChange({ 'dc-date-hour': _value });
+				break;
+			case 'date-minute':
+				dateMinuteRef.current = _value;
+				onChange({ 'dc-date-minute': _value });
+				break;
+			case 'date-second':
+				dateSecondRef.current = _value;
+				onChange({ 'dc-date-second': _value });
 				break;
 			case 'date':
 				dateRef.current = _value;
@@ -715,26 +760,15 @@ const DynamicContent = props => {
 									<>
 										<ToggleSwitch
 											label={__(
-												'Detail setting',
+												'Date setting',
 												'maxi-blocks'
 											)}
-											selected={statusRef.current}
+											selected={dateStatusRef.current}
 											onChange={() =>
 												switchOnChange(
-													'date-detail',
-													!statusRef.current
+													'date-status',
+													!dateStatusRef.current
 												)
-											}
-										/>
-										<SelectControl
-											label={__(
-												'Years format',
-												'maxi-blocks'
-											)}
-											value={dateRef.current}
-											options={DateOptions.years}
-											onChange={value =>
-												switchOnChange('date', value)
 											}
 										/>
 										<SelectControl
@@ -746,6 +780,76 @@ const DynamicContent = props => {
 											options={DateOptions.params}
 											onChange={value =>
 												switchOnChange('date', value)
+											}
+										/>
+									</>
+								)}
+								{dateStatusRef.current && (
+									<>
+										<SelectControl
+											label={__('Years', 'maxi-blocks')}
+											value={dateYearRef.current}
+											options={DateOptions.year}
+											onChange={value =>
+												switchOnChange(
+													'date-year',
+													value
+												)
+											}
+										/>
+										<SelectControl
+											label={__('Month', 'maxi-blocks')}
+											value={dateMonthRef.current}
+											options={DateOptions.month}
+											onChange={value =>
+												switchOnChange(
+													'date-month',
+													value
+												)
+											}
+										/>
+										<SelectControl
+											label={__('Day', 'maxi-blocks')}
+											value={dateDayRef.current}
+											options={DateOptions.day}
+											onChange={value =>
+												switchOnChange(
+													'date-day',
+													value
+												)
+											}
+										/>
+										<SelectControl
+											label={__('Hour', 'maxi-blocks')}
+											value={dateHourRef.current}
+											options={DateOptions.hour}
+											onChange={value =>
+												switchOnChange(
+													'date-hour',
+													value
+												)
+											}
+										/>
+										<SelectControl
+											label={__('Minute', 'maxi-blocks')}
+											value={dateMinuteRef.current}
+											options={DateOptions.minute}
+											onChange={value =>
+												switchOnChange(
+													'date-minute',
+													value
+												)
+											}
+										/>
+										<SelectControl
+											label={__('Second', 'maxi-blocks')}
+											value={dateSecondRef.current}
+											options={DateOptions.second}
+											onChange={value =>
+												switchOnChange(
+													'date-second',
+													value
+												)
 											}
 										/>
 									</>

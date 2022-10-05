@@ -301,9 +301,31 @@ export const dateTypeDefault = [
 		value: '2-digit',
 	},
 ];
+export const dateTypeMonth = [
+	{
+		label: __('numeric', 'maxi-blocks'),
+		value: 'numeric',
+	},
+	{
+		label: __('2-digit', 'maxi-blocks'),
+		value: '2-digit',
+	},
+	{
+		label: __('narrow', 'maxi-blocks'),
+		value: 'narrow',
+	},
+	{
+		label: __('short', 'maxi-blocks'),
+		value: '2-digit',
+	},
+	{
+		label: __('long', 'maxi-blocks'),
+		value: 'long',
+	},
+];
 export const DateOptions = {
-	years: dateTypeDefault,
-	month: ['numeric', '2-digit', 'narrow', 'short', 'long'],
+	year: dateTypeDefault,
+	month: dateTypeMonth,
 	day: dateTypeDefault,
 	hour: dateTypeDefault,
 	minute: dateTypeDefault,

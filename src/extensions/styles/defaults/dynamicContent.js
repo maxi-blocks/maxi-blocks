@@ -33,6 +33,34 @@ const dynamicContent = {
 		type: 'string',
 		default: 'toLocaleDateString',
 	},
+	'dc-date-status': {
+		type: 'boolean',
+		default: false,
+	},
+	'dc-date-year': {
+		type: 'string',
+		default: 'numeric',
+	},
+	'dc-date-month': {
+		type: 'string',
+		default: 'numeric',
+	},
+	'dc-date-day': {
+		type: 'string',
+		default: 'numeric',
+	},
+	'dc-date-hour': {
+		type: 'string',
+		default: 'numeric',
+	},
+	'dc-date-minute': {
+		type: 'string',
+		default: 'numeric',
+	},
+	'dc-date-second': {
+		type: 'string',
+		default: 'numeric',
+	},
 	'dc-limit': {
 		type: 'number',
 		default: 100,

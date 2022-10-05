@@ -49,14 +49,14 @@ export const icon = {
 		obj: width,
 		prefix,
 		diffValAttr: {
-			'icon-width-general': '32',
+			'icon-width-general': '23',
 		},
 	}),
 	...prefixAttributesCreator({
 		obj: height,
 		prefix,
 		diffValAttr: {
-			'icon-height-general': '32',
+			'icon-height-general': '23',
 		},
 	}),
 	...paletteAttributesCreator({ prefix: `${prefix}stroke-`, palette: 1 }),

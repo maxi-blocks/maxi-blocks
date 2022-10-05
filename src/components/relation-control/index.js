@@ -541,11 +541,20 @@ const RelationControl = props => {
 																textLevel,
 															} = blockAttributes;
 
+															const trimmedTarget =
+																target.startsWith(
+																	' '
+																)
+																	? target.slice(
+																			1
+																	  )
+																	: target;
+
 															return `${
 																isList
 																	? typeOfList
 																	: textLevel
-															}${target}`;
+															}${trimmedTarget}`;
 														}
 
 														return target;

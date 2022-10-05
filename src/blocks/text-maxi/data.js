@@ -164,14 +164,13 @@ const transition = {
 		typography: {
 			title: 'Typography',
 			target: [contentClass, `${contentClass} li`, `${contentClass} ol`],
-			property: 'typography',
-			limitless: true,
+			property: false,
+			hoverProp: 'typography-status-hover',
 		},
 		link: {
 			title: 'Link',
 			target: [linkClass, `${linkClass} span`],
 			property: 'color',
-			ignoreHoverProp: true,
 		},
 	},
 };

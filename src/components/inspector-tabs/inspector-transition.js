@@ -14,11 +14,10 @@ import SettingTabsControl from '../setting-tabs-control';
 import ToggleSwitch from '../toggle-switch';
 import TransitionControl from '../transition-control';
 import {
-	getGroupAttributes,
 	getDefaultAttribute,
+	getGroupAttributes,
+	getTransitionData,
 } from '../../extensions/styles';
-import * as blocksData from '../../blocks/data';
-import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
 /**
  * External dependencies
@@ -175,11 +174,7 @@ const transition = ({
 
 	const transition = cloneDeep(rawTransition);
 
-	const transitionData =
-		Object.values(blocksData).find(
-			({ name: blockName }) =>
-				blockName === name.replace('maxi-blocks/', '')
-		)?.transition || transitionDefault;
+	const transitionData = getTransitionData(name);
 
 	Object.keys(transition).forEach(type => {
 		Object.keys(transition[type]).forEach(key => {

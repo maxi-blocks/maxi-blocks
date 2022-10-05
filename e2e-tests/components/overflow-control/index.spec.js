@@ -40,7 +40,7 @@ describe('OverflowControl', () => {
 			selectorS => selectorS[0].value
 		);
 
-		expect(responsiveSOverflowX).toStrictEqual('hidden');
+		expect(responsiveSOverflowX).toStrictEqual('auto');
 
 		const responsiveSOverflowY = await page.$$eval(
 			'.maxi-overflow-control select',

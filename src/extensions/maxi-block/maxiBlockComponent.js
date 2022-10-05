@@ -389,8 +389,7 @@ class MaxiBlockComponent extends Component {
 		const blockDataTransition = getTransitionData(blockName);
 
 		if (blockDataTransition) {
-			const getFirstTransitionAttributes = transitionAttributes =>
-				transitionAttributes[Object.keys(transitionAttributes)[0]];
+			const getFirstValueFromObject = obj => Object.values(obj)[0];
 
 			const getTransitionAttributes = () =>
 				transitionAttributesCreator(blockDataTransition).transition
@@ -402,16 +401,14 @@ class MaxiBlockComponent extends Component {
 				([type, typeTransitions]) => {
 					if (!transition[type])
 						transition[type] = transitionChangeAll
-							? getFirstTransitionAttributes(transition)
+							? getFirstValueFromObject(transition)
 							: getTransitionAttributes()[type];
 
 					Object.keys(typeTransitions).forEach(transitionName => {
 						if (!transition[type][transitionName])
 							transition[type][transitionName] =
 								transitionChangeAll
-									? getFirstTransitionAttributes(
-											transition[type]
-									  )
+									? getFirstValueFromObject(transition[type])
 									: getTransitionAttributes()[type][
 											transitionName
 									  ];

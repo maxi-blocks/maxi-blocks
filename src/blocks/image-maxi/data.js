@@ -192,7 +192,9 @@ const interactionBuilderSettings = [
 	{
 		label: __('Alignment', 'maxi-blocks'),
 		attrGroupName: 'alignment',
-		component: props => <AlignmentControl {...props} />,
+		component: props => (
+			<AlignmentControl {...props} disableJustify {...props} />
+		),
 		helper: props => getAlignmentFlexStyles(props.obj),
 		target: ' .maxi-image-block-wrapper',
 	},

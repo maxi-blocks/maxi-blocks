@@ -2,12 +2,13 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { Button } from '@wordpress/components';
+// import { Button } from '@wordpress/components';
 import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
+import Button from '../button';
 import InfoBox from '../info-box';
 import ListControl from '../list-control';
 import ListItemControl from '../list-control/list-item-control';
@@ -541,11 +542,20 @@ const RelationControl = props => {
 																textLevel,
 															} = blockAttributes;
 
+															const trimmedTarget =
+																target.startsWith(
+																	' '
+																)
+																	? target.slice(
+																			1
+																	  )
+																	: target;
+
 															return `${
 																isList
 																	? typeOfList
 																	: textLevel
-															}${target}`;
+															}${trimmedTarget}`;
 														}
 
 														return target;

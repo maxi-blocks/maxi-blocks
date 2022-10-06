@@ -93,7 +93,7 @@ const transition = {
 		border: {
 			title: 'Border',
 			target: boxClass,
-			property: 'border',
+			property: ['border', 'border-radius'],
 			hoverProp: `${prefix}border-status-hover`,
 		},
 		'box shadow': {

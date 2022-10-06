@@ -105,9 +105,13 @@ body.maxi-blocks--active .maxi-block__resizer {
 			position: absolute;
 			height: 100%;
 			width: 100%;
-			z-index: 30;
+			z-index: -1;
 			top: 0;
 			left: 0;
+
+			&:has(.maxi-resizable__corner-handle) {
+				z-index: 30;
+			}
 		}
 	}
 	.maxi-resizable__handle--overflow,

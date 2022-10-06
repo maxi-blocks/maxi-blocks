@@ -150,7 +150,7 @@ const transition = {
 		border: {
 			title: 'Border',
 			target: iconClass,
-			property: 'border',
+			property: ['border', 'border-radius'],
 			hoverProp: `${prefix}border-status-hover`,
 		},
 		'box shadow': {

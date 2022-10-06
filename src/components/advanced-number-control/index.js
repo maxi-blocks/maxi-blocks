@@ -249,6 +249,7 @@ const AdvancedNumberControl = props => {
 					)}
 					<RangeControl
 						label={label}
+						className='maxi-advanced-number-control__range'
 						value={
 							+(!isNil(value)
 								? value

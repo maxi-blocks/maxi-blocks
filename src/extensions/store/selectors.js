@@ -82,6 +82,11 @@ const selectors = {
 
 		return getBreakpointRange(breakpoints, editorContentWidth);
 	},
+	receiveDeprecatedBlock(state, uniqueID) {
+		if (state) return state.deprecatedBlocks?.[uniqueID] ?? null;
+
+		return false;
+	},
 };
 
 export default selectors;

@@ -84,5 +84,12 @@ const actions = {
 			inspectorPath,
 		};
 	},
+	saveDeprecatedBlock({ uniqueID, attributes }) {
+		return {
+			type: 'SAVE_DEPRECATED_BLOCK',
+			uniqueID,
+			attributes,
+		};
+	},
 };
 export default actions;

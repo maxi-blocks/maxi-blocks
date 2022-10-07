@@ -139,6 +139,11 @@ const reducer = (
 					},
 				},
 			};
+		case 'REMOVE_DEPRECATED_BLOCK':
+			return {
+				...state,
+				deprecatedBlocks: omit(state.deprecatedBlocks, action.uniqueID),
+			};
 		default:
 			return state;
 	}

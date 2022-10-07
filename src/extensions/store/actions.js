@@ -91,5 +91,11 @@ const actions = {
 			attributes,
 		};
 	},
+	removeDeprecatedBlock(uniqueID) {
+		return {
+			type: 'REMOVE_DEPRECATED_BLOCK',
+			uniqueID,
+		};
+	},
 };
 export default actions;

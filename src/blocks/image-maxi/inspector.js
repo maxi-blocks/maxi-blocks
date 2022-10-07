@@ -284,7 +284,7 @@ const dimensionTab = props => {
 							'%': {
 								min: -300,
 								max: 300,
-								minRange: -100,
+								minRange: 0,
 								maxRange: 100,
 							},
 						}}

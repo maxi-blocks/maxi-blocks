@@ -24,14 +24,12 @@ const SvgStrokeWidthControl = props => {
 	}`;
 	const stroke = props[strokeAttrLabel];
 	const defaultStroke = getDefaultAttribute(strokeAttrLabel);
-	const placeholderStroke = isHover
-		? getLastBreakpointAttribute({
-				target: `${prefix}stroke`,
-				breakpoint,
-				attributes: props,
-				isHover,
-		  })
-		: defaultStroke;
+	const placeholderStroke = getLastBreakpointAttribute({
+		target: `${prefix}stroke`,
+		breakpoint,
+		attributes: props,
+		isHover,
+	});
 
 	return (
 		<AdvancedNumberControl

@@ -30,13 +30,11 @@ const SvgWidthControl = props => {
 	}`;
 	const width = props[widthAttrLabel];
 	const defaultWidth = getDefaultAttribute(widthAttrLabel);
-	const placeholderWidth = isHover
-		? getLastBreakpointAttribute({
-				target: `${prefix}width`,
-				breakpoint,
-				attributes: props,
-		  })
-		: defaultWidth;
+	const placeholderWidth = getLastBreakpointAttribute({
+		target: `${prefix}width`,
+		breakpoint,
+		attributes: props,
+	});
 	const widthUnit = getLastBreakpointAttribute({
 		target: `${prefix}width-unit`,
 		breakpoint,

@@ -46,6 +46,7 @@ const getLayerCardContent = props => {
 		breakpoint,
 		handleOnChangeLayer,
 		isHover,
+		isIB,
 		layer,
 		onChangeInline = null,
 		onChange,
@@ -91,6 +92,7 @@ const getLayerCardContent = props => {
 					}
 					breakpoint={breakpoint}
 					isHover={isHover}
+					disableUpload={isHover || isIB}
 					isLayer
 				/>
 			);
@@ -360,6 +362,7 @@ const BackgroundLayersControl = ({
 	layersOptions,
 	layersHoverOptions,
 	isHover = false,
+	isIB = false,
 	onChangeInline,
 	onChange,
 	clientId,
@@ -512,6 +515,7 @@ const BackgroundLayersControl = ({
 										breakpoint,
 										handleOnChangeLayer,
 										isHover,
+										isIB,
 										layer,
 										onChangeInline,
 										onChange: onChangeLayer,

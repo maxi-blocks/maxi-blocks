@@ -87,7 +87,7 @@ const getCanvasSettings = ({ name, customCss }) => [
 			const { 'background-layers': bgLayers } = attributes;
 
 			return !isEmpty(bgLayers) ? (
-				<BlockBackgroundControl {...props} disableAddLayer />
+				<BlockBackgroundControl {...props} isIB disableAddLayer />
 			) : (
 				<InfoBox
 					message={__('No background layers added', 'maxi-blocks')}

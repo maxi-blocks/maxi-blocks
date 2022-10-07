@@ -30,36 +30,48 @@ const dynamicContent = {
 		type: 'string',
 	},
 	'dc-date': {
-		type: 'string',
-		default: 'toLocaleDateString',
-	},
-	'dc-date-status': {
 		type: 'boolean',
 		default: false,
 	},
-	'dc-date-year': {
+	'dc-year': {
 		type: 'string',
 		default: 'numeric',
 	},
-	'dc-date-month': {
+	'dc-month': {
 		type: 'string',
 		default: 'numeric',
 	},
-	'dc-date-day': {
+	'dc-day': {
 		type: 'string',
 		default: 'numeric',
 	},
-	'dc-date-hour': {
+	'dc-hour': {
 		type: 'string',
 		default: 'numeric',
 	},
-	'dc-date-minute': {
+	'dc-minute': {
 		type: 'string',
 		default: 'numeric',
 	},
-	'dc-date-second': {
+	'dc-second': {
 		type: 'string',
 		default: 'numeric',
+	},
+	'dc-zone': {
+		type: 'string',
+		default: 'en-US',
+	},
+	'dc-timezone': {
+		type: 'string',
+		default: 'GMT',
+	},
+	'dc-timezone-name': {
+		type: 'string',
+		default: 'America/New_York',
+	},
+	'dc-weekday': {
+		type: 'string',
+		default: 'false',
 	},
 	'dc-limit': {
 		type: 'number',

@@ -291,45 +291,296 @@ export const postTypeDic = {
 	post: 'posts',
 	page: 'pages',
 };
-export const dateTypeDefault = [
+
+export const LimitOptions = {
+	disableReset: false,
+	steps: 1,
+	withInputField: false,
+	min: 0,
+	max: 999,
+};
+
+/*export const dateZone = [
 	{
-		label: __('numeric', 'maxi-blocks'),
-		value: 'numeric',
+		label: __('af-ZA', 'maxi-blocks'),
+		value: 'af-ZA',
 	},
 	{
-		label: __('2-digit', 'maxi-blocks'),
-		value: '2-digit',
+		label: __('am-ET', 'maxi-blocks'),
+		value: 'am-ET',
+	},
+	{
+		label: __('ar-AE', 'maxi-blocks'),
+		value: 'ar-AE',
+	},
+	{
+		label: __('ar-BH', 'maxi-blocks'),
+		value: 'ar-BH',
+	},
+	{
+		label: __('ar-DZ', 'maxi-blocks'),
+		value: 'ar-DZ',
+	},
+	{
+		label: __('ar-EG', 'maxi-blocks'),
+		value: 'ar-EG',
+	},
+	{
+		label: __('ar-IQ', 'maxi-blocks'),
+		value: 'ar-IQ',
+	},
+	{
+		label: __('ar-JO', 'maxi-blocks'),
+		value: 'ar-JO',
+	},
+	{
+		label: __('ar-KW', 'maxi-blocks'),
+		value: 'ar-KW',
+	},
+	{
+		label: __('ar-LB', 'maxi-blocks'),
+		value: 'ar-LB',
+	},
+	{
+		label: __('ar-LY', 'maxi-blocks'),
+		value: 'ar-LY',
+	},
+	{
+		label: __('ar-MA', 'maxi-blocks'),
+		value: 'ar-MA',
 	},
 ];
-export const dateTypeMonth = [
-	{
-		label: __('numeric', 'maxi-blocks'),
-		value: 'numeric',
-	},
-	{
-		label: __('2-digit', 'maxi-blocks'),
-		value: '2-digit',
-	},
-	{
-		label: __('narrow', 'maxi-blocks'),
-		value: 'narrow',
-	},
-	{
-		label: __('short', 'maxi-blocks'),
-		value: '2-digit',
-	},
-	{
-		label: __('long', 'maxi-blocks'),
-		value: 'long',
-	},
-];
+*/
+/*
+arn-CL
+ar-OM
+ar-QA
+ar-SA
+ar-SD
+ar-SY
+ar-TN
+ar-YE
+as-IN
+az-az
+az-Cyrl-AZ
+az-Latn-AZ
+ba-RU
+be-BY
+bg-BG
+bn-BD
+bn-IN
+bo-CN
+br-FR
+bs-Cyrl-BA
+bs-Latn-BA
+ca-ES
+co-FR
+cs-CZ
+cy-GB
+da-DK
+de-AT
+de-CH
+de-DE
+de-LI
+de-LU
+dsb-DE
+dv-MV
+el-CY
+el-GR
+en-029
+en-AU
+en-BZ
+en-CA
+en-cb
+en-GB
+en-IE
+en-IN
+en-JM
+en-MT
+en-MY
+en-NZ
+en-PH
+en-SG
+en-TT
+en-US
+en-ZA
+en-ZW
+es-AR
+es-BO
+es-CL
+es-CO
+es-CR
+es-DO
+es-EC
+es-ES
+es-GT
+es-HN
+es-MX
+es-NI
+es-PA
+es-PE
+es-PR
+es-PY
+es-SV
+es-US
+es-UY
+es-VE
+et-EE
+eu-ES
+fa-IR
+fi-FI
+fil-PH
+fo-FO
+fr-BE
+fr-CA
+fr-CH
+fr-FR
+fr-LU
+fr-MC
+fy-NL
+ga-IE
+gd-GB
+gd-ie
+gl-ES
+gsw-FR
+gu-IN
+ha-Latn-NG
+he-IL
+hi-IN
+hr-BA
+hr-HR
+hsb-DE
+hu-HU
+hy-AM
+id-ID
+ig-NG
+ii-CN
+in-ID
+is-IS
+it-CH
+it-IT
+iu-Cans-CA
+iu-Latn-CA
+iw-IL
+ja-JP
+ka-GE
+kk-KZ
+kl-GL
+km-KH
+kn-IN
+kok-IN
+ko-KR
+ky-KG
+lb-LU
+lo-LA
+lt-LT
+lv-LV
+mi-NZ
+mk-MK
+ml-IN
+mn-MN
+mn-Mong-CN
+moh-CA
+mr-IN
+ms-BN
+ms-MY
+mt-MT
+nb-NO
+ne-NP
+nl-BE
+nl-NL
+nn-NO
+no-no
+nso-ZA
+oc-FR
+or-IN
+pa-IN
+pl-PL
+prs-AF
+ps-AF
+pt-BR
+pt-PT
+qut-GT
+quz-BO
+quz-EC
+quz-PE
+rm-CH
+ro-mo
+ro-RO
+ru-mo
+ru-RU
+rw-RW
+sah-RU
+sa-IN
+se-FI
+se-NO
+se-SE
+si-LK
+sk-SK
+sl-SI
+sma-NO
+sma-SE
+smj-NO
+smj-SE
+smn-FI
+sms-FI
+sq-AL
+sr-BA
+sr-CS
+sr-Cyrl-BA
+sr-Cyrl-CS
+sr-Cyrl-ME
+sr-Cyrl-RS
+sr-Latn-BA
+sr-Latn-CS
+sr-Latn-ME
+sr-Latn-RS
+sr-ME
+sr-RS
+sr-sp
+sv-FI
+sv-SE
+sw-KE
+syr-SY
+ta-IN
+te-IN
+tg-Cyrl-TJ
+th-TH
+tk-TM
+tlh-QS
+tn-ZA
+tr-TR
+tt-RU
+tzm-Latn-DZ
+ug-CN
+uk-UA
+ur-PK
+uz-Cyrl-UZ
+uz-Latn-UZ
+uz-uz
+vi-VN
+wo-SN
+xh-ZA
+yo-NG
+zh-CN
+zh-HK
+zh-MO
+zh-SG
+zh-TW
+zu-ZA
+*/
+/*
 export const DateOptions = {
+	weekday: dateTypeWeekday,
 	year: dateTypeDefault,
 	month: dateTypeMonth,
 	day: dateTypeDefault,
 	hour: dateTypeDefault,
 	minute: dateTypeDefault,
 	second: dateTypeDefault,
+	timeZoneName: dateTimeZoneName,
+	timeZone: dateTypeTimeZone,
+	zone: dateZone,
 	params: [
 		{
 			label: __('toLocaleDateString', 'maxi-blocks'),
@@ -352,11 +603,4 @@ export const DateOptions = {
 			value: 'toUTCString',
 		},
 	],
-};
-export const LimitOptions = {
-	disableReset: false,
-	steps: 1,
-	withInputField: false,
-	min: 0,
-	max: 999,
-};
+};*/

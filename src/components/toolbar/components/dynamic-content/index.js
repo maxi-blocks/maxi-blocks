@@ -4,40 +4,41 @@
  */
 import apiFetch from '@wordpress/api-fetch';
 import { __ } from '@wordpress/i18n';
-import { useState, useEffect, useRef } from '@wordpress/element';
+import { useEffect, useRef, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
-import ToolbarPopover from '../toolbar-popover';
-import SelectControl from '../../../select-control';
 import AdvancedNumberControl from '../../../advanced-number-control';
+import DateFormatting from '../date-formatting';
+import SelectControl from '../../../select-control';
+import ToolbarPopover from '../toolbar-popover';
+
 /**
  * External dependencies
  */
-import { find, isEmpty, isFinite, isNil, random, isArray } from 'lodash';
+import { find, isArray, isEmpty, isFinite, isNil, random } from 'lodash';
 
 /**
  * Styles & Icons
  */
 import './editor.scss';
 import { toolbarDynamicContent } from '../../../../icons';
+import ToggleSwitch from '../../../toggle-switch';
 import {
-	renderedFields,
+	descriptionOfErrors,
 	fieldOptions,
-	sanitizeContent,
-	typeOptions,
-	relationTypes,
-	relationOptions,
 	idFields,
 	idOptionByField,
-	randomOptions,
-	showOptions,
-	descriptionOfErrors,
-	DateOptions,
 	LimitOptions,
+	randomOptions,
+	relationOptions,
+	relationTypes,
+	renderedFields,
+	sanitizeContent,
+	showOptions,
+	typeOptions,
 } from './utils';
-import ToggleSwitch from '../../../toggle-switch';
 
 /**
  * Dynamic Content
@@ -50,46 +51,46 @@ const DynamicContent = props => {
 	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
 
 	const {
-		'dc-error': error,
-		'dc-status': status,
-		'dc-type': type,
-		'dc-relation': relation,
 		'dc-author': author,
-		'dc-id': id,
-		'dc-show': show,
-		'dc-field': field,
-		'dc-date': date,
-		'dc-date-status': dateStatus,
-		'dc-limit': limit,
 		// 'dc-content': content,
+		'dc-date': date,
+		'dc-day': day,
+		'dc-error': error,
+		'dc-field': field,
+		'dc-hour': hour,
+		'dc-id': id,
+		'dc-limit': limit,
+		'dc-minute': minute,
+		'dc-month': month,
+		'dc-relation': relation,
+		'dc-second': second,
+		'dc-show': show,
+		'dc-status': status,
+		'dc-timezone': timezone,
+		'dc-timezone-name': timezoneName,
+		'dc-type': type,
+		'dc-weekday': weekday,
+		'dc-year': year,
+		'dc-zone': zone,
 	} = dynamicContent;
 
+	const alterIdRef = useRef(null);
+	const authorRef = useRef(author);
 	const errorRef = useRef(error);
+	const fieldRef = useRef(field);
+	const idRef = useRef(id);
+	const limitRef = useRef(limit);
+	const relationRef = useRef(relation);
+	const showRef = useRef(show);
 	const statusRef = useRef(status);
 	const typeRef = useRef(type);
-	const relationRef = useRef(relation);
-	const authorRef = useRef(author);
-	const idRef = useRef(id);
-	const showRef = useRef(show);
-	const fieldRef = useRef(field);
-	const dateRef = useRef(date);
-	const limitRef = useRef(limit);
-	const dateStatusRef = useRef(dateStatus);
-	const dateYearRef = useRef(dateStatus);
-	const dateMonthRef = useRef(dateStatus);
-	const dateDayRef = useRef(dateStatus);
-	const dateHourRef = useRef(dateStatus);
-	const dateMinuteRef = useRef(dateStatus);
-	const dateSecondRef = useRef(dateStatus);
-	const alterIdRef = useRef(null);
 
-	const [postIdOptions, setPostIdOptions] = useState(null);
-	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
 	const [isEmptyIdOptions, setIsEmptyIdOptions] = useState(true);
+	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
+	const [postIdOptions, setPostIdOptions] = useState(null);
 
 	useEffect(async () => {
 		if (statusRef.current) {
-			//const res = [typeRef.current ? typeRef.current : type, id, field];
 			onChange({
 				'dc-content': sanitizeContent(
 					await getContent({ type, id, field })
@@ -97,16 +98,23 @@ const DynamicContent = props => {
 			});
 		}
 	}, [
-		type,
-		id,
-		field,
-		relation,
-		show,
 		author,
-		error,
 		date,
+		day,
+		error,
+		field,
+		hour,
+		id,
 		limit,
-		dateStatus,
+		minute,
+		month,
+		relation,
+		second,
+		show,
+		type,
+		weekday,
+		year,
+		zone,
 	]);
 
 	const validationsValues = variableValue => {
@@ -125,20 +133,31 @@ const DynamicContent = props => {
 			return _value;
 		}
 	};
-	const dateFormat = _value => {
-		let NewDate = new Date(_value);
-		switch (dateRef.current) {
-			case 'toLocaleDateString':
-				return NewDate.toLocaleDateString();
-			case 'toLocaleDateString("en-ZA")':
-				return NewDate.toLocaleDateString('en-ZA');
-			case 'toLocaleDateString("en-CA")':
-				return NewDate.toLocaleDateString('en-CA');
-			case 'toISOString':
-				return NewDate.toISOString();
-			case 'toUTCString':
-				return NewDate.toUTCString();
-		}
+	const handleDateCallback = childData => {
+		onChange({
+			'dc-date': childData.status,
+			'dc-day': childData.options.day,
+			'dc-hour': childData.options.hour,
+			'dc-minute': childData.options.minute,
+			'dc-month': childData.options.month,
+			'dc-second': childData.options.second,
+			'dc-weekday': childData.options.weekday,
+			'dc-year': childData.options.year,
+			'dc-zone': childData.options.zone,
+		});
+		console.log('test 2', childData);
+	};
+
+	const dateContent = () => {
+		const options = {
+			day: day === 'false' ? false : day,
+			hour: hour === 'false' ? false : hour,
+			minute: minute === 'false' ? false : minute,
+			month: month === 'false' ? false : month,
+			second: second === 'false' ? false : second,
+			weekday: weekday === 'false' ? false : weekday,
+			year: year === 'false' ? false : year,
+		};
 	};
 
 	const disabledType = (valueType, _type = 'type') => {
@@ -225,7 +244,6 @@ const DynamicContent = props => {
 			}
 			setIsEmptyIdOptions(true);
 			if (!isEmpty(defaultValues)) onChange(defaultValues);
-			//disabledType(_type);
 		} else {
 			if (relationRef.current === 'author') {
 				onChange({ 'dc-error': '' });
@@ -316,6 +334,7 @@ const DynamicContent = props => {
 					return _id;
 			}
 		};
+
 		const getForRelation = () => {
 			return getForShow(_type, _id, _field)
 				.then(res => {
@@ -366,9 +385,8 @@ const DynamicContent = props => {
 							}?_fields=${_field}`;
 					}
 				});
-
-			//const id = newId ?? id;
 		};
+
 		const getForType = async () => {
 			switch (_type) {
 				case relationTypes.includes(_type) ? _type : false:
@@ -382,6 +400,7 @@ const DynamicContent = props => {
 					return `/wp/v2/${_type}?_fields=${_field}`;
 			}
 		};
+
 		return getForType();
 	};
 
@@ -414,7 +433,7 @@ const DynamicContent = props => {
 					}
 
 					if (fieldRef.current === 'date') {
-						content_value = dateFormat(content_value);
+						content_value = dateContent(content_value);
 					} else if (fieldRef.current === 'excerpt') {
 						content_value = limitFormat(content_value);
 					}
@@ -578,38 +597,6 @@ const DynamicContent = props => {
 				limitRef.current = _value;
 				onChange({ 'dc-limit': _value });
 				break;
-			case 'date-status':
-				dateStatusRef.current = _value;
-				onChange({ 'dc-date-status': _value });
-				break;
-			case 'date-year':
-				dateYearRef.current = _value;
-				onChange({ 'dc-date-year': _value });
-				break;
-			case 'date-month':
-				dateMonthRef.current = _value;
-				onChange({ 'dc-date-month': _value });
-				break;
-			case 'date-day':
-				dateDayRef.current = _value;
-				onChange({ 'dc-date-day': _value });
-				break;
-			case 'date-hour':
-				dateHourRef.current = _value;
-				onChange({ 'dc-date-hour': _value });
-				break;
-			case 'date-minute':
-				dateMinuteRef.current = _value;
-				onChange({ 'dc-date-minute': _value });
-				break;
-			case 'date-second':
-				dateSecondRef.current = _value;
-				onChange({ 'dc-date-second': _value });
-				break;
-			case 'date':
-				dateRef.current = _value;
-				onChange({ 'dc-date': _value });
-				break;
 		}
 	};
 
@@ -642,29 +629,41 @@ const DynamicContent = props => {
 				/>
 				{statusRef.current && (
 					<>
-						<SelectControl
-							label={__('Type', 'maxi-blocks')}
-							value={typeRef.current}
-							options={typeOptions}
-							onChange={value => switchOnChange('type', value)}
-						/>
+						{!date && (
+							<SelectControl
+								label={__('Type', 'maxi-blocks')}
+								value={typeRef.current}
+								options={typeOptions}
+								onChange={value =>
+									switchOnChange('type', value)
+								}
+							/>
+						)}
 						{!postIdOptions ? (
 							<p>This type is empty</p>
 						) : (
 							<>
-								{relationTypes.includes(typeRef.current) && (
-									<SelectControl
-										label={__('Relation', 'maxi-blocks')}
-										value={relationRef.current}
-										options={
-											relationOptions[typeRef.current]
-										}
-										onChange={value =>
-											switchOnChange('relation', value)
-										}
-									/>
-								)}
-								{relationTypes.includes(typeRef.current) &&
+								{!date &&
+									relationTypes.includes(typeRef.current) && (
+										<SelectControl
+											label={__(
+												'Relation',
+												'maxi-blocks'
+											)}
+											value={relationRef.current}
+											options={
+												relationOptions[typeRef.current]
+											}
+											onChange={value =>
+												switchOnChange(
+													'relation',
+													value
+												)
+											}
+										/>
+									)}
+								{!date &&
+									relationTypes.includes(typeRef.current) &&
 									(typeRef.current === 'users' ||
 										relationRef.current === 'author') && (
 										<SelectControl
@@ -679,7 +678,8 @@ const DynamicContent = props => {
 											}
 										/>
 									)}
-								{relationTypes.includes(typeRef.current) &&
+								{!date &&
+									relationTypes.includes(typeRef.current) &&
 									typeRef.current !== 'users' &&
 									['author', 'by-id'].includes(
 										relationRef.current
@@ -700,7 +700,8 @@ const DynamicContent = props => {
 											}
 										/>
 									)}
-								{relationTypes.includes(typeRef.current) &&
+								{!date &&
+									relationTypes.includes(typeRef.current) &&
 									typeRef.current === 'posts' &&
 									!['author', 'random'].includes(
 										relationRef.current
@@ -715,23 +716,26 @@ const DynamicContent = props => {
 											}
 										/>
 									)}
-								{(['settings'].includes(typeRef.current) ||
-									(relationRef.current === 'by-id' &&
-										isFinite(idRef.current)) ||
-									(relationRef.current === 'author' &&
-										!isEmptyIdOptions) ||
-									['date', 'modified', 'random'].includes(
-										relationRef.current
-									)) && (
-									<SelectControl
-										label={__('Field', 'maxi-blocks')}
-										value={fieldRef.current}
-										options={fieldOptions[typeRef.current]}
-										onChange={value =>
-											switchOnChange('field', value)
-										}
-									/>
-								)}
+								{!date &&
+									(['settings'].includes(typeRef.current) ||
+										(relationRef.current === 'by-id' &&
+											isFinite(idRef.current)) ||
+										(relationRef.current === 'author' &&
+											!isEmptyIdOptions) ||
+										['date', 'modified', 'random'].includes(
+											relationRef.current
+										)) && (
+										<SelectControl
+											label={__('Field', 'maxi-blocks')}
+											value={fieldRef.current}
+											options={
+												fieldOptions[typeRef.current]
+											}
+											onChange={value =>
+												switchOnChange('field', value)
+											}
+										/>
+									)}
 								{fieldRef.current == 'excerpt' && (
 									<AdvancedNumberControl
 										label={__(
@@ -756,103 +760,23 @@ const DynamicContent = props => {
 										initialPosition={limitRef.current || 0}
 									/>
 								)}
+
 								{fieldRef.current == 'date' && (
-									<>
-										<ToggleSwitch
-											label={__(
-												'Date setting',
-												'maxi-blocks'
-											)}
-											selected={dateStatusRef.current}
-											onChange={() =>
-												switchOnChange(
-													'date-status',
-													!dateStatusRef.current
-												)
-											}
-										/>
-										<SelectControl
-											label={__(
-												'Date format',
-												'maxi-blocks'
-											)}
-											value={dateRef.current}
-											options={DateOptions.params}
-											onChange={value =>
-												switchOnChange('date', value)
-											}
-										/>
-									</>
-								)}
-								{dateStatusRef.current && (
-									<>
-										<SelectControl
-											label={__('Years', 'maxi-blocks')}
-											value={dateYearRef.current}
-											options={DateOptions.year}
-											onChange={value =>
-												switchOnChange(
-													'date-year',
-													value
-												)
-											}
-										/>
-										<SelectControl
-											label={__('Month', 'maxi-blocks')}
-											value={dateMonthRef.current}
-											options={DateOptions.month}
-											onChange={value =>
-												switchOnChange(
-													'date-month',
-													value
-												)
-											}
-										/>
-										<SelectControl
-											label={__('Day', 'maxi-blocks')}
-											value={dateDayRef.current}
-											options={DateOptions.day}
-											onChange={value =>
-												switchOnChange(
-													'date-day',
-													value
-												)
-											}
-										/>
-										<SelectControl
-											label={__('Hour', 'maxi-blocks')}
-											value={dateHourRef.current}
-											options={DateOptions.hour}
-											onChange={value =>
-												switchOnChange(
-													'date-hour',
-													value
-												)
-											}
-										/>
-										<SelectControl
-											label={__('Minute', 'maxi-blocks')}
-											value={dateMinuteRef.current}
-											options={DateOptions.minute}
-											onChange={value =>
-												switchOnChange(
-													'date-minute',
-													value
-												)
-											}
-										/>
-										<SelectControl
-											label={__('Second', 'maxi-blocks')}
-											value={dateSecondRef.current}
-											options={DateOptions.second}
-											onChange={value =>
-												switchOnChange(
-													'date-second',
-													value
-												)
-											}
-										/>
-									</>
+									<DateFormatting
+										parentCallback={handleDateCallback}
+										status={date}
+										year={year}
+										month={month}
+										day={day}
+										hour={hour}
+										minute={minute}
+										second={second}
+										weekday={weekday}
+										content={false}
+										zone={zone}
+										timezone={timezone}
+										timezoneName={timezoneName}
+									/>
 								)}
 							</>
 						)}

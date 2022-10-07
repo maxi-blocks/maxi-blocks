@@ -59,7 +59,6 @@ describe('Button Maxi hover simple actions', () => {
 			'#button-maxi-2 .maxi-button-block__button'
 		);
 		await previewPage.hover('#button-maxi-2 .maxi-button-block__button');
-		await previewPage.waitForTimeout(100);
 
 		await previewPage.waitForSelector('#relations--button-maxi-1-styles');
 		const stylesCSS = await previewPage.$eval(

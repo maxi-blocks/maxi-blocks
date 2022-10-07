@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Image Maxi hover simple actions Alignment 1`] = `
+Array [
+  Object {
+    "action": "hover",
+    "attributes": Object {
+      "alignment-general": "right",
+      "alignment-xl": "right",
+    },
+    "css": Object {
+      "general": Object {
+        "breakpoint": null,
+        "styles": Object {
+          "justify-content": "flex-end",
+        },
+      },
+      "xl": Object {
+        "breakpoint": 1920,
+        "styles": Object {
+          "justify-content": "flex-end",
+        },
+      },
+    },
+    "effects": Object {
+      "easing-general": "ease",
+      "hoverStatus": false,
+      "transition-delay-general": 0,
+      "transition-duration-general": 0.3,
+      "transition-status-general": true,
+    },
+    "id": 1,
+    "isButton": true,
+    "settings": "Alignment",
+    "target": " .maxi-image-block-wrapper",
+    "title": "Hello World!",
+    "uniqueID": "image-maxi-1",
+  },
+]
+`;
+
+exports[`Image Maxi hover simple actions Alignment 2`] = `" body.maxi-blocks--active #image-maxi-1[data-maxi-relations=\\"true\\"] .maxi-image-block-wrapper { justify-content: flex-end;}@media screen and (max-width: 1920px) { body.maxi-blocks--active #image-maxi-1[data-maxi-relations=\\"true\\"] .maxi-image-block-wrapper { justify-content: flex-end;}}"`;
+
+exports[`Image Maxi hover simple actions Alignment 3`] = `"body.maxi-blocks--active #image-maxi-1[data-maxi-relations=\\"true\\"] .maxi-image-block-wrapper { transition: justify-content 0.3s 0s ease;}"`;

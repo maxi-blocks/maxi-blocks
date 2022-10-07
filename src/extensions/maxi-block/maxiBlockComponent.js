@@ -27,10 +27,8 @@ import {
 	getHasVideo,
 	getParallaxLayers,
 	getRelations,
-	getTransitionData,
 	styleGenerator,
 	styleResolver,
-	transitionAttributesCreator,
 } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
 import getIsUniqueIDRepeated from './getIsUniqueIDRepeated';
@@ -125,8 +123,6 @@ class MaxiBlockComponent extends Component {
 					attributes['maxi-version-origin'] = maxiVersion;
 			})
 			.catch(() => console.error('Maxi Blocks: Could not load settings'));
-
-		this.addNewTransitions();
 
 		if (this.maxiBlockDidMount) this.maxiBlockDidMount();
 
@@ -377,50 +373,6 @@ class MaxiBlockComponent extends Component {
 		const response = getAllFonts(this.typography, 'custom-formats');
 
 		if (!isEmpty(response)) loadFonts(response);
-	}
-
-	addNewTransitions() {
-		const { attributes, clientId, name: blockName } = this.props;
-		const {
-			transition: rawTransition,
-			'transition-change-all': transitionChangeAll,
-		} = attributes;
-
-		const blockDataTransition = getTransitionData(blockName);
-
-		if (blockDataTransition) {
-			const getFirstValueFromObject = obj => Object.values(obj)[0];
-
-			const getTransitionAttributes = () =>
-				transitionAttributesCreator(blockDataTransition).transition
-					.default;
-
-			const transition = cloneDeep(rawTransition);
-
-			Object.entries(blockDataTransition).forEach(
-				([type, typeTransitions]) => {
-					if (!transition[type])
-						transition[type] = transitionChangeAll
-							? getFirstValueFromObject(transition)
-							: getTransitionAttributes()[type];
-
-					Object.keys(typeTransitions).forEach(transitionName => {
-						if (!transition[type][transitionName])
-							transition[type][transitionName] =
-								transitionChangeAll
-									? getFirstValueFromObject(transition[type])
-									: getTransitionAttributes()[type][
-											transitionName
-									  ];
-					});
-				}
-			);
-
-			if (!isEqual(rawTransition, transition))
-				dispatch('core/block-editor').updateBlockAttributes(clientId, {
-					transition,
-				});
-		}
 	}
 
 	updateRelationHoverStatus() {

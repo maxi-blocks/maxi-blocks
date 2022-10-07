@@ -53,7 +53,6 @@ describe('Svg stroke width control', () => {
 			'icon line width'
 		);
 
-		debugger;
 		const baseStrokeValue = await accordionPanel.$eval(
 			'.maxi-advanced-number-control input',
 			input => input.placeholder

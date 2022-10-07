@@ -29,8 +29,10 @@ import { iconBox } from '../../icons';
 /**
  * Migrators
  */
-import { blockMigrator } from '../../extensions/styles/migrators';
-import SVGTransitionMigrator from '../../extensions/styles/migrators/SVGTransitionMigrator';
+import {
+	blockMigrator,
+	SVGTransitionMigrator,
+} from '../../extensions/styles/migrators';
 
 /**
  * Block

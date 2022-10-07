@@ -38,7 +38,7 @@ describe('IconControl', () => {
 		await pressKeyTimes('Backspace', '1');
 		await page.keyboard.type('40');
 
-		expect(await getAttributes('icon-width-general')).toStrictEqual('240');
+		expect(await getAttributes('icon-width-general')).toStrictEqual('340');
 
 		// stroke width
 		await inputs[2].click();

@@ -6,8 +6,8 @@ export const iconHover = hoverAttributesCreator({
 	diffValAttr: {
 		'icon-stroke-palette-color': 6,
 		'icon-fill-palette-color': 2,
-		'icon-width-general': '',
-		'icon-stroke-general': '',
+		// 'icon-width-general': '',
+		// 'icon-stroke-general': '',
 	},
 	newAttr: {
 		'icon-status-hover': {

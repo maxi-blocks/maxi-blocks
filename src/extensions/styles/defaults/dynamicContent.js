@@ -29,6 +29,10 @@ const dynamicContent = {
 	'dc-field': {
 		type: 'string',
 	},
+	'dc-format': {
+		type: 'string',
+		default: 'DD MMMM YYYY',
+	},
 	'dc-date': {
 		type: 'boolean',
 		default: false,
@@ -46,8 +50,12 @@ const dynamicContent = {
 		default: 'numeric',
 	},
 	'dc-hour': {
-		type: 'string',
+		type: 'boolean',
 		default: 'numeric',
+	},
+	'dc-hour12': {
+		type: 'string',
+		default: false,
 	},
 	'dc-minute': {
 		type: 'string',
@@ -59,19 +67,23 @@ const dynamicContent = {
 	},
 	'dc-zone': {
 		type: 'string',
-		default: 'en-US',
+		default: 'en',
 	},
 	'dc-timezone': {
 		type: 'string',
-		default: 'GMT',
+		default: 'Europe/London',
 	},
 	'dc-timezone-name': {
 		type: 'string',
-		default: 'America/New_York',
+		default: 'undefined',
 	},
 	'dc-weekday': {
 		type: 'string',
-		default: 'false',
+		default: 'undefined',
+	},
+	'dc-era': {
+		type: 'string',
+		default: 'undefined',
 	},
 	'dc-limit': {
 		type: 'number',

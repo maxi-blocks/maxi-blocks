@@ -55,9 +55,12 @@ const DynamicContent = props => {
 		// 'dc-content': content,
 		'dc-date': date,
 		'dc-day': day,
+		'dc-era': era,
 		'dc-error': error,
 		'dc-field': field,
+		'dc-format': format,
 		'dc-hour': hour,
+		'dc-hour12': hour12,
 		'dc-id': id,
 		'dc-limit': limit,
 		'dc-minute': minute,
@@ -66,8 +69,8 @@ const DynamicContent = props => {
 		'dc-second': second,
 		'dc-show': show,
 		'dc-status': status,
-		'dc-timezone': timezone,
-		'dc-timezone-name': timezoneName,
+		'dc-timezone': timeZone,
+		'dc-timezone-name': timeZoneName,
 		'dc-type': type,
 		'dc-weekday': weekday,
 		'dc-year': year,
@@ -101,9 +104,12 @@ const DynamicContent = props => {
 		author,
 		date,
 		day,
+		era,
 		error,
 		field,
+		format,
 		hour,
+		hour12,
 		id,
 		limit,
 		minute,
@@ -111,11 +117,49 @@ const DynamicContent = props => {
 		relation,
 		second,
 		show,
+		timeZone,
+		timeZoneName,
 		type,
 		weekday,
 		year,
 		zone,
 	]);
+
+	const changeProps = params => {
+		for (let key in params) {
+			const value = params[key];
+			switch (key) {
+				case 'dc-author':
+					authorRef.current = value;
+					break;
+				case 'dc-error':
+					errorRef.current = value;
+					break;
+				case 'dc-field':
+					fieldRef.current = value;
+					break;
+				case 'dc-id':
+					idRef.current = value;
+					break;
+				case 'limit-id':
+					limitRef.current = value;
+					break;
+				case 'dc-relation':
+					relationRef.current = value;
+					break;
+				case 'dc-show':
+					showRef.current = value;
+					break;
+				case 'dc-status':
+					statusRef.current = value;
+					break;
+				case 'dc-type':
+					typeRef.current = value;
+					break;
+			}
+		}
+		onchange(params);
+	};
 
 	const validationsValues = variableValue => {
 		const result = fieldOptions[variableValue].map(x => x.value);
@@ -126,6 +170,7 @@ const DynamicContent = props => {
 			return { 'dc-field': result[0] };
 		}
 	};
+
 	const limitFormat = _value => {
 		if (_value.length > limitRef.current && limitRef.current !== 0) {
 			return _value.substr(0, limitRef.current);
@@ -137,27 +182,45 @@ const DynamicContent = props => {
 		onChange({
 			'dc-date': childData.status,
 			'dc-day': childData.options.day,
+			'dc-era': childData.options.era,
+			'dc-format': childData.format,
 			'dc-hour': childData.options.hour,
+			'dc-hour12': childData.options.hour12,
 			'dc-minute': childData.options.minute,
 			'dc-month': childData.options.month,
 			'dc-second': childData.options.second,
+			'dc-timezone': childData.options.timeZone,
+			'dc-timezone-name': childData.options.timeZoneName,
 			'dc-weekday': childData.options.weekday,
 			'dc-year': childData.options.year,
-			'dc-zone': childData.options.zone,
+			'dc-zone': childData.zone,
 		});
-		console.log('test 2', childData);
 	};
 
-	const dateContent = () => {
-		const options = {
-			day: day === 'false' ? false : day,
-			hour: hour === 'false' ? false : hour,
-			minute: minute === 'false' ? false : minute,
-			month: month === 'false' ? false : month,
-			second: second === 'false' ? false : second,
-			weekday: weekday === 'false' ? false : weekday,
-			year: year === 'false' ? false : year,
-		};
+	const dateContent = _value => {
+		const NewDate = new Date(_value);
+		let options, content;
+		if (!date) {
+			content = moment(NewDate).format(format);
+		} else {
+			options = {
+				day: day === 'undefined' ? undefined : day,
+				era: era === 'undefined' ? undefined : era,
+				hour: hour === 'undefined' ? undefined : hour,
+				hour12: hour12,
+				minute: minute === 'undefined' ? undefined : minute,
+				month: month === 'undefined' ? undefined : month,
+				second: second === 'undefined' ? undefined : second,
+				timeZone: timeZone === 'undefined' ? undefined : timeZone,
+				timeZoneName:
+					timeZoneName === 'undefined' ? undefined : timeZoneName,
+				weekday: weekday === 'undefined' ? undefined : weekday,
+				year: year === 'undefined' ? undefined : year,
+			};
+			content = NewDate.toLocaleString(zone, options);
+		}
+
+		return content;
 	};
 
 	const disabledType = (valueType, _type = 'type') => {
@@ -232,13 +295,11 @@ const DynamicContent = props => {
 			}
 			if (typeRef.current === 'media') {
 				defaultValues['dc-error'] = typeRef.current;
-				//defaultValues['dc-id'] = null;
 				errorRef.current = typeRef.current;
 				disabledType(_type);
 			}
 			if (typeRef.current === 'tags') {
 				defaultValues['dc-error'] = typeRef.current;
-				//defaultValues['dc-id'] = null;
 				errorRef.current = typeRef.current;
 				disabledType(_type);
 			}
@@ -268,14 +329,14 @@ const DynamicContent = props => {
 			}
 
 			// Ensures content is selected
-			if (!isEmpty(defaultValues)) {
-				// const newContent = getContent({
-				// 	type: _type,
-				// 	id: defaultValues['dc-id'] ?? idRef.current,
-				// 	field: defaultValues['dc-field'] ?? fieldRef.current,
-				// });
-				//defaultValues['dc-content'] = sanitizeContent(newContent);
-			}
+			/*if (!isEmpty(defaultValues)) {
+				const newContent = getContent({
+					type: _type,
+					id: defaultValues['dc-id'] ?? idRef.current,
+					field: defaultValues['dc-field'] ?? fieldRef.current,
+				});
+				defaultValues['dc-content'] = sanitizeContent(newContent);
+			}*/
 
 			if (!isEmpty(defaultValues)) onChange(defaultValues);
 		}
@@ -289,7 +350,7 @@ const DynamicContent = props => {
 		});
 	};
 
-	const changeContent = async (_type, _show, _id) => {
+	const changeContent = async (_type, _show, _id, _default = {}) => {
 		if (
 			relationTypes.includes(typeRef.current) &&
 			['previous', 'next'].includes(_show)
@@ -305,17 +366,21 @@ const DynamicContent = props => {
 						res[_show] !== null &&
 						'id' in res[_show]
 					) {
-						onChange({ 'dc-error': '' });
+						onChange({ 'dc-error': '', ..._default });
 						errorRef.current = '';
 						if (isFinite(res[_show].id)) {
 							return res[_show].id;
 						}
 					} else {
-						onChange({ 'dc-error': _show });
+						onChange({ 'dc-error': _show, ..._default });
 						errorRef.current = _show;
 						return null;
 					}
 				});
+		} else {
+			if (!isEmpty(_default)) {
+				onChange(_default);
+			}
 		}
 	};
 
@@ -543,6 +608,7 @@ const DynamicContent = props => {
 				break;
 			case 'type':
 				typeRef.current = _value;
+				errorRef.current = '';
 				showRef.current = 'current';
 				const dcFieldActual = validationsValues(_value);
 				if (idFields.includes(_value)) {
@@ -551,6 +617,7 @@ const DynamicContent = props => {
 						{
 							'dc-type': _value,
 							'dc-show': 'current',
+							'dc-error': '',
 							...dcFieldActual,
 						},
 						null
@@ -559,16 +626,22 @@ const DynamicContent = props => {
 					onChange({
 						'dc-type': _value,
 						'dc-show': 'current',
+						'dc-error': '',
 						...dcFieldActual,
 					});
 				}
 				break;
 			case 'relation':
 				relationRef.current = _value;
+				errorRef.current = '';
 				showRef.current = 'current';
 				getIdOptions(
 					typeRef.current,
-					{ 'dc-relation': _value, 'dc-show': 'current' },
+					{
+						'dc-relation': _value,
+						'dc-show': 'current',
+						'dc-error': '',
+					},
 					_value
 				);
 				break;
@@ -582,12 +655,19 @@ const DynamicContent = props => {
 				break;
 			case 'id':
 				idRef.current = Number(_value);
-				onChange({ 'dc-id': Number(_value) });
+				errorRef.current = '';
+				showRef.current = 'current';
+				onChange({
+					'dc-error': '',
+					'dc-show': 'current',
+					'dc-id': Number(_value),
+				});
 				break;
 			case 'show':
 				showRef.current = _value;
-				onChange({ 'dc-show': _value });
-				changeContent(typeRef.current, _value, idRef.current);
+				changeContent(typeRef.current, _value, idRef.current, {
+					'dc-show': _value,
+				});
 				break;
 			case 'field':
 				fieldRef.current = _value;
@@ -763,19 +843,22 @@ const DynamicContent = props => {
 
 								{fieldRef.current == 'date' && (
 									<DateFormatting
-										parentCallback={handleDateCallback}
-										status={date}
-										year={year}
-										month={month}
+										content={false}
 										day={day}
+										era={era}
+										format={format}
+										hour12={hour12}
 										hour={hour}
 										minute={minute}
+										month={month}
+										parentCallback={handleDateCallback}
 										second={second}
+										status={date}
+										timeZone={timeZone}
+										timeZoneName={timeZoneName}
 										weekday={weekday}
-										content={false}
+										year={year}
 										zone={zone}
-										timezone={timezone}
-										timezoneName={timezoneName}
 									/>
 								)}
 							</>

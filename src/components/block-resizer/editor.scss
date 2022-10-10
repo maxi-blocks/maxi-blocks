@@ -1,11 +1,3 @@
-body.maxi-blocks--active {
-	.maxi-block__resizer .is-selected,
-	.maxi-number-counter-block.is-selected,
-	.maxi-svg-icon-block.is-selected {
-		z-index: 10;
-	}
-}
-
 body.maxi-blocks--active .maxi-block__resizer {
 	.maxi-resizable {
 		&__handle {
@@ -103,11 +95,11 @@ body.maxi-blocks--active .maxi-block__resizer {
 		}
 		&__handle-wrapper {
 			position: absolute;
-			height: 100%;
-			width: 100%;
+			height: calc(100% - 30px);
+			width: calc(100% + 40px);
 			z-index: -1;
-			top: 0;
-			left: 0;
+			top: 14px;
+			left: -20px;
 
 			&:has(.maxi-resizable__corner-handle) {
 				z-index: 30;

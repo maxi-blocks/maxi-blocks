@@ -11,6 +11,8 @@ import { isEmpty, findKey, isEqual } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
+const name = 'IB Transform';
+
 const isEligible = blockAttributes => {
 	const { relations } = blockAttributes;
 
@@ -202,9 +204,7 @@ const getAttributesFromStyle = (styles, selector) => {
 	return result;
 };
 
-const migrate = ({ newAttributes }) => {
-	if (!isEligible(newAttributes)) return newAttributes;
-
+const migrate = newAttributes => {
 	const { relations } = newAttributes;
 
 	const newRelations = [...relations];
@@ -231,4 +231,4 @@ const migrate = ({ newAttributes }) => {
 	return { ...newAttributes, relations: transformIBCleaner(newRelations) };
 };
 
-export default { isEligible, migrate };
+export default { name, isEligible, migrate };

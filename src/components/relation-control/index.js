@@ -146,7 +146,9 @@ const RelationControl = props => {
 	};
 
 	const getSelectedSettingsObj = (clientId, settingsLabel) =>
-		getOptions(clientId).find(option => option.label === settingsLabel);
+		Object.values(getOptions(clientId))
+			.flat()
+			.find(option => option.label === settingsLabel);
 
 	const displaySelectedSetting = item => {
 		if (!item) return null;
@@ -506,24 +508,21 @@ const RelationControl = props => {
 													)
 												)}
 												onChange={value => {
-													const {
-														transitionTarget,
-														hoverProp,
-													} =
-														getOptions(
-															getClientIdFromUniqueId(
-																item.uniqueID
-															)
-														).find(
-															option =>
-																option.label ===
-																value
-														) || {};
-
 													const clientId =
 														getClientIdFromUniqueId(
 															item.uniqueID
 														);
+
+													const selectedSettingsObj =
+														getSelectedSettingsObj(
+															clientId,
+															value
+														) || {};
+
+													const {
+														transitionTarget,
+														hoverProp,
+													} = selectedSettingsObj;
 
 													const blockAttributes =
 														getBlock(
@@ -543,10 +542,8 @@ const RelationControl = props => {
 															);
 
 														const target =
-															getSelectedSettingsObj(
-																clientId,
-																value
-															)?.target || '';
+															selectedSettingsObj?.target ||
+															'';
 
 														const textMaxiPrefix =
 															getBlock(clientId)

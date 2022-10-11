@@ -217,7 +217,6 @@ const DynamicContent = props => {
 			};
 			content = NewDate.toLocaleString(zone, options);
 		}
-		console.log(options);
 		return content;
 	};
 

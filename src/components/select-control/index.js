@@ -7,6 +7,7 @@ import { useInstanceId } from '@wordpress/compose';
  * External dependencies
  */
 import { isEmpty } from 'lodash';
+import classnames from 'classnames';
 
 /**
  * Internal dependencies
@@ -42,6 +43,8 @@ export default function SelectControl({
 		onChange(event.target.value);
 	};
 
+	const classes = classnames('maxi-select-control', className);
+
 	return (
 		!isEmpty(options) && (
 			<BaseControl
@@ -49,7 +52,7 @@ export default function SelectControl({
 				hideLabelFromVision={hideLabelFromVision}
 				id={id}
 				help={help}
-				className={className}
+				className={classes}
 			>
 				<select
 					id={id}

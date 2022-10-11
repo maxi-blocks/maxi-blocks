@@ -1,6 +1,8 @@
 import { getSVGStyles } from '../helpers/getSVGStyles';
 import { merge } from 'lodash';
 
+const name = 'IB SVG Icon Target';
+
 // Copied from src/components/relation-control/index.js
 const getStyles = (stylesObj, isFirst = false) => {
 	// Using basic breakpoints as they can't be changed yet
@@ -57,7 +59,7 @@ const isEligible = blockAttributes =>
 			)
 	);
 
-const migrate = ({ newAttributes }) => {
+const migrate = newAttributes => {
 	const { relations } = newAttributes;
 
 	relations.forEach((relation, i) => {
@@ -76,4 +78,4 @@ const migrate = ({ newAttributes }) => {
 	return { ...newAttributes, relations };
 };
 
-export default { isEligible, migrate };
+export default { name, isEligible, migrate };

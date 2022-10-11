@@ -17,18 +17,8 @@ export const typeDefault = [
 		value: '2-digit',
 	},
 ];
-export const typeHour12 = [
-	{
-		label: __('12', 'maxi-blocks'),
-		value: true,
-	},
-	{
-		label: __('24', 'maxi-blocks'),
-		value: false,
-	},
-];
 
-export const typeWeekday = [
+export const typeEra = [
 	{
 		label: __('none', 'maxi-blocks'),
 		value: 'undefined',
@@ -44,6 +34,52 @@ export const typeWeekday = [
 	{
 		label: __('long', 'maxi-blocks'),
 		value: 'long',
+	},
+];
+
+export const typeFormat = [
+	{
+		label: __('DD MMMM YYYY', 'maxi-blocks'),
+		value: 'DD MMMM yyyy',
+	},
+	{
+		label: __('DD/MM/YYYY', 'maxi-blocks'),
+		value: 'DD/MM/YYYY',
+	},
+	{
+		label: __('DD.MM.YYYY', 'maxi-blocks'),
+		value: 'DD.MM.yyyy',
+	},
+	{
+		label: __('DD-MM-YYYY', 'maxi-blocks'),
+		value: 'DD-MM-YYYY',
+	},
+	{
+		label: __('DD/MM/YYYY HH:mm:ss', 'maxi-blocks'),
+		value: 'dd/MM/YYYY HH:mm:ss',
+	},
+	{
+		label: __('DD.MM.yyyy HH:mm:ss', 'maxi-blocks'),
+		value: 'DD.MM.yyyy HH:mm:ss',
+	},
+	{
+		label: __('DD-MM-YYYY HH:mm:ss', 'maxi-blocks'),
+		value: 'DD-MM-YYYY HH:mm:ss',
+	},
+	{
+		label: __('DD MMMM YYYY zzzz', 'maxi-blocks'),
+		value: 'DD MMMM YYYY zzzz',
+	},
+];
+
+export const typeHour12 = [
+	{
+		label: __('12', 'maxi-blocks'),
+		value: true,
+	},
+	{
+		label: __('24', 'maxi-blocks'),
+		value: false,
 	},
 ];
 
@@ -74,538 +110,22 @@ export const typeMonth = [
 	},
 ];
 
-export const typeZone = [
+export const typeWeekday = [
 	{
-		label: __('Afrikaans', 'maxi-blocks'),
-		value: 'af',
+		label: __('none', 'maxi-blocks'),
+		value: 'undefined',
 	},
 	{
-		label: __('Arabic (Algeria)', 'maxi-blocks'),
-		value: 'ar-dz',
+		label: __('narrow', 'maxi-blocks'),
+		value: 'narrow',
 	},
 	{
-		label: __('Arabic (Kuwait)', 'maxi-blocks'),
-		value: 'ar-kw',
+		label: __('short', 'maxi-blocks'),
+		value: 'short',
 	},
 	{
-		label: __('Arabic (Libya)', 'maxi-blocks'),
-		value: 'ar-ly',
-	},
-	{
-		label: __('Arabic (Morocco)', 'maxi-blocks'),
-		value: 'ar-ma',
-	},
-	{
-		label: __('Arabic (Saudi Arabia)', 'maxi-blocks'),
-		value: 'ar-sa',
-	},
-	{
-		label: __('Arabic (Tunisia)', 'maxi-blocks'),
-		value: 'ar-tn',
-	},
-	{
-		label: __('Arabic', 'maxi-blocks'),
-		value: 'ar',
-	},
-	{
-		label: __('Azerbaijani', 'maxi-blocks'),
-		value: 'az',
-	},
-	{
-		label: __('Belarusian', 'maxi-blocks'),
-		value: 'be',
-	},
-	{
-		label: __('Bulgarian', 'maxi-blocks'),
-		value: 'bg',
-	},
-	{
-		label: __('Bambara', 'maxi-blocks'),
-		value: 'bm',
-	},
-	{
-		label: __('Bengali (Bangladesh)', 'maxi-blocks'),
-		value: 'bn-bd',
-	},
-	{
-		label: __('Bengali', 'maxi-blocks'),
-		value: 'bn',
-	},
-	{
-		label: __('Tibetan', 'maxi-blocks'),
-		value: 'bo',
-	},
-	{
-		label: __('Breton', 'maxi-blocks'),
-		value: 'br',
-	},
-	{
-		label: __('Bosnian', 'maxi-blocks'),
-		value: 'bs',
-	},
-	{
-		label: __('Catalan', 'maxi-blocks'),
-		value: 'ca',
-	},
-	{
-		label: __('Czech', 'maxi-blocks'),
-		value: 'cs',
-	},
-	{
-		label: __('Chuvash', 'maxi-blocks'),
-		value: 'cv',
-	},
-	{
-		label: __('Welsh', 'maxi-blocks'),
-		value: 'cy',
-	},
-	{
-		label: __('Danish', 'maxi-blocks'),
-		value: 'da',
-	},
-	{
-		label: __('German (Austria)', 'maxi-blocks'),
-		value: 'de-at',
-	},
-	{
-		label: __('German (Switzerland)', 'maxi-blocks'),
-		value: 'de-ch',
-	},
-	{
-		label: __('German', 'maxi-blocks'),
-		value: 'de',
-	},
-	{
-		label: __('Divehi', 'maxi-blocks'),
-		value: 'dv',
-	},
-	{
-		label: __('Greek', 'maxi-blocks'),
-		value: 'el',
-	},
-	{
-		label: __('English', 'maxi-blocks'),
-		value: 'en',
-	},
-	{
-		label: __('English (Australia)', 'maxi-blocks'),
-		value: 'en-au',
-	},
-	{
-		label: __('English (Canada)', 'maxi-blocks'),
-		value: 'en-ca',
-	},
-	{
-		label: __('English (United Kingdom)', 'maxi-blocks'),
-		value: 'en-gb',
-	},
-	{
-		label: __('English (Ireland)', 'maxi-blocks'),
-		value: 'en-ie',
-	},
-	{
-		label: __('English (Israel)', 'maxi-blocks'),
-		value: 'en-il',
-	},
-	{
-		label: __('English (India)', 'maxi-blocks'),
-		value: 'en-in',
-	},
-	{
-		label: __('English (New Zealand)', 'maxi-blocks'),
-		value: 'en-nz',
-	},
-	{
-		label: __('English (Singapore)', 'maxi-blocks'),
-		value: 'en-sg',
-	},
-	{
-		label: __('Esperanto', 'maxi-blocks'),
-		value: 'eo',
-	},
-	{
-		label: __('Spanish (Dominican Republic)', 'maxi-blocks'),
-		value: 'es-do',
-	},
-	{
-		label: __('Spanish (Mexico)', 'maxi-blocks'),
-		value: 'es-mx',
-	},
-	{
-		label: __('Spanish (United States)', 'maxi-blocks'),
-		value: 'es-us',
-	},
-	{
-		label: __('Spanish', 'maxi-blocks'),
-		value: 'es',
-	},
-	{
-		label: __('Estonian', 'maxi-blocks'),
-		value: 'et',
-	},
-	{
-		label: __('Basque', 'maxi-blocks'),
-		value: 'eu',
-	},
-	{
-		label: __('Persian', 'maxi-blocks'),
-		value: 'fa',
-	},
-	{
-		label: __('Finnish', 'maxi-blocks'),
-		value: 'fi',
-	},
-	{
-		label: __('Filipino', 'maxi-blocks'),
-		value: 'fil',
-	},
-	{
-		label: __('Faroese', 'maxi-blocks'),
-		value: 'fo',
-	},
-	{
-		label: __('French (Canada)', 'maxi-blocks'),
-		value: 'fr-ca',
-	},
-	{
-		label: __('French (Switzerland)', 'maxi-blocks'),
-		value: 'fr-ch',
-	},
-	{
-		label: __('French', 'maxi-blocks'),
-		value: 'fr',
-	},
-	{
-		label: __('Western Frisian', 'maxi-blocks'),
-		value: 'fy',
-	},
-	{
-		label: __('Scottish Gaelic', 'maxi-blocks'),
-		value: 'gd',
-	},
-	{
-		label: __('Galician', 'maxi-blocks'),
-		value: 'gl',
-	},
-	{
-		label: __('gom (Latin)', 'maxi-blocks'),
-		value: 'gom-latn',
-	},
-	{
-		label: __('Gujarati', 'maxi-blocks'),
-		value: 'gu',
-	},
-	{
-		label: __('Hebrew', 'maxi-blocks'),
-		value: 'he',
-	},
-	{
-		label: __('Hindi', 'maxi-blocks'),
-		value: 'hi',
-	},
-	{
-		label: __('Croatian', 'maxi-blocks'),
-		value: 'hr',
-	},
-	{
-		label: __('Hungarian', 'maxi-blocks'),
-		value: 'hu',
-	},
-	{
-		label: __('Armenian (Armenia)', 'maxi-blocks'),
-		value: 'hy-am',
-	},
-	{
-		label: __('Indonesian', 'maxi-blocks'),
-		value: 'id',
-	},
-	{
-		label: __('Icelandic', 'maxi-blocks'),
-		value: 'is',
-	},
-	{
-		label: __('Italian (Switzerland)', 'maxi-blocks'),
-		value: 'it-ch',
-	},
-	{
-		label: __('Italian', 'maxi-blocks'),
-		value: 'it',
-	},
-	{
-		label: __('Japanese', 'maxi-blocks'),
-		value: 'ja',
-	},
-	{
-		label: __('Javanese', 'maxi-blocks'),
-		value: 'jv',
-	},
-	{
-		label: __('Georgian', 'maxi-blocks'),
-		value: 'ka',
-	},
-	{
-		label: __('Kazakh', 'maxi-blocks'),
-		value: 'kk',
-	},
-	{
-		label: __('Khmer', 'maxi-blocks'),
-		value: 'km',
-	},
-	{
-		label: __('Kannada', 'maxi-blocks'),
-		value: 'kn',
-	},
-	{
-		label: __('Korean', 'maxi-blocks'),
-		value: 'ko',
-	},
-	{
-		label: __('Kurdish', 'maxi-blocks'),
-		value: 'ku',
-	},
-	{
-		label: __('Kirghiz', 'maxi-blocks'),
-		value: 'ky',
-	},
-	{
-		label: __('Luxembourgish', 'maxi-blocks'),
-		value: 'lb',
-	},
-	{
-		label: __('Lao', 'maxi-blocks'),
-		value: 'lo',
-	},
-	{
-		label: __('Lithuanian', 'maxi-blocks'),
-		value: 'lt',
-	},
-	{
-		label: __('Latvian', 'maxi-blocks'),
-		value: 'lv',
-	},
-	{
-		label: __('Montenegrin', 'maxi-blocks'),
-		value: 'me',
-	},
-	{
-		label: __('Maori', 'maxi-blocks'),
-		value: 'mi',
-	},
-	{
-		label: __('Macedonian', 'maxi-blocks'),
-		value: 'mk',
-	},
-	{
-		label: __('Malayalam', 'maxi-blocks'),
-		value: 'ml',
-	},
-	{
-		label: __('Mongolian', 'maxi-blocks'),
-		value: 'mn',
-	},
-	{
-		label: __('Marathi', 'maxi-blocks'),
-		value: 'mr',
-	},
-	{
-		label: __('Malay (Malaysia)', 'maxi-blocks'),
-		value: 'ms-my',
-	},
-	{
-		label: __('Malay', 'maxi-blocks'),
-		value: 'ms',
-	},
-	{
-		label: __('Maltese', 'maxi-blocks'),
-		value: 'mt',
-	},
-	{
-		label: __('Burmese', 'maxi-blocks'),
-		value: 'my',
-	},
-	{
-		label: __('Norwegian Bokmål', 'maxi-blocks'),
-		value: 'nb',
-	},
-	{
-		label: __('Nepali', 'maxi-blocks'),
-		value: 'ne',
-	},
-	{
-		label: __('Dutch (Belgium)', 'maxi-blocks'),
-		value: 'nl-be',
-	},
-	{
-		label: __('Dutch', 'maxi-blocks'),
-		value: 'nl',
-	},
-	{
-		label: __('Norwegian Nynorsk', 'maxi-blocks'),
-		value: 'nn',
-	},
-	{
-		label: __('Punjabi (India)', 'maxi-blocks'),
-		value: 'pa-in',
-	},
-	{
-		label: __('Polish', 'maxi-blocks'),
-		value: 'pl',
-	},
-	{
-		label: __('Portuguese (Brazil)', 'maxi-blocks'),
-		value: 'pt-br',
-	},
-	{
-		label: __('Portuguese', 'maxi-blocks'),
-		value: 'pt',
-	},
-	{
-		label: __('Romanian', 'maxi-blocks'),
-		value: 'ro',
-	},
-	{
-		label: __('Russian', 'maxi-blocks'),
-		value: 'ru',
-	},
-	{
-		label: __('Sindhi', 'maxi-blocks'),
-		value: 'sd',
-	},
-	{
-		label: __('Northern Sami', 'maxi-blocks'),
-		value: 'se',
-	},
-	{
-		label: __('Sinhala', 'maxi-blocks'),
-		value: 'si',
-	},
-	{
-		label: __('Slovak', 'maxi-blocks'),
-		value: 'sk',
-	},
-	{
-		label: __('Slovenian', 'maxi-blocks'),
-		value: 'sl',
-	},
-	{
-		label: __('Albanian', 'maxi-blocks'),
-		value: 'sq',
-	},
-	{
-		label: __('Serbian (Cyrillic)', 'maxi-blocks'),
-		value: 'sr-cyrl',
-	},
-	{
-		label: __('Serbian', 'maxi-blocks'),
-		value: 'sr',
-	},
-	{
-		label: __('Swati', 'maxi-blocks'),
-		value: 'ss',
-	},
-	{
-		label: __('Swedish', 'maxi-blocks'),
-		value: 'sv',
-	},
-	{
-		label: __('Swahili', 'maxi-blocks'),
-		value: 'sw',
-	},
-	{
-		label: __('Tamil', 'maxi-blocks'),
-		value: 'ta',
-	},
-	{
-		label: __('Telugu', 'maxi-blocks'),
-		value: 'te',
-	},
-	{
-		label: __('Tetum', 'maxi-blocks'),
-		value: 'tet',
-	},
-	{
-		label: __('Tajik', 'maxi-blocks'),
-		value: 'tg',
-	},
-	{
-		label: __('Thai', 'maxi-blocks'),
-		value: 'th',
-	},
-	{
-		label: __('Turkmen', 'maxi-blocks'),
-		value: 'tk',
-	},
-	{
-		label: __('Tagalog (Philippines)', 'maxi-blocks'),
-		value: 'tl-ph',
-	},
-	{
-		label: __('Klingon', 'maxi-blocks'),
-		value: 'tlh',
-	},
-	{
-		label: __('Turkish', 'maxi-blocks'),
-		value: 'tr',
-	},
-	{
-		label: __('Talossan', 'maxi-blocks'),
-		value: 'tzl',
-	},
-	{
-		label: __('Central Atlas Tamazight (Latin)', 'maxi-blocks'),
-		value: 'tzm-latn',
-	},
-	{
-		label: __('Central Atlas Tamazight', 'maxi-blocks'),
-		value: 'tzm',
-	},
-	{
-		label: __('Uyghur (China)', 'maxi-blocks'),
-		value: 'ug-cn',
-	},
-	{
-		label: __('Ukrainian', 'maxi-blocks'),
-		value: 'uk',
-	},
-	{
-		label: __('Urdu', 'maxi-blocks'),
-		value: 'ur',
-	},
-	{
-		label: __('Uzbek (Latin)', 'maxi-blocks'),
-		value: 'uz-latn',
-	},
-	{
-		label: __('Uzbek', 'maxi-blocks'),
-		value: 'uz',
-	},
-	{
-		label: __('Vietnamese', 'maxi-blocks'),
-		value: 'vi',
-	},
-	{
-		label: __('Pseudo', 'maxi-blocks'),
-		value: 'x-pseudo',
-	},
-	{
-		label: __('Yoruba (Nigeria)', 'maxi-blocks'),
-		value: 'yo',
-	},
-	{
-		label: __('Chinese (China)', 'maxi-blocks'),
-		value: 'zh-cn',
-	},
-	{
-		label: __('Chinese (Hong Kong)', 'maxi-blocks'),
-		value: 'zh-hk',
-	},
-	{
-		label: __('Chinese (Macau)', 'maxi-blocks'),
-		value: 'zh-mo',
-	},
-	{
-		label: __('Chinese (Taiwan)', 'maxi-blocks'),
-		value: 'zh-tw',
+		label: __('long', 'maxi-blocks'),
+		value: 'long',
 	},
 ];
 
@@ -1194,58 +714,542 @@ export const typeTimeZoneName = [
 		value: 'long',
 	},
 ];
-export const typeFormat = [
+
+export const typeZone = [
 	{
-		label: __('DD MMMM YYYY', 'maxi-blocks'),
-		value: 'DD MMMM yyyy',
+		label: __('Afrikaans', 'maxi-blocks'),
+		value: 'af',
 	},
 	{
-		label: __('DD/MM/YYYY', 'maxi-blocks'),
-		value: 'DD/MM/YYYY',
+		label: __('Arabic (Algeria)', 'maxi-blocks'),
+		value: 'ar-dz',
 	},
 	{
-		label: __('DD.MM.YYYY', 'maxi-blocks'),
-		value: 'DD.MM.yyyy',
+		label: __('Arabic (Kuwait)', 'maxi-blocks'),
+		value: 'ar-kw',
 	},
 	{
-		label: __('DD-MM-YYYY', 'maxi-blocks'),
-		value: 'DD-MM-YYYY',
+		label: __('Arabic (Libya)', 'maxi-blocks'),
+		value: 'ar-ly',
 	},
 	{
-		label: __('DD/MM/YYYY HH:mm:ss', 'maxi-blocks'),
-		value: 'dd/MM/YYYY HH:mm:ss',
+		label: __('Arabic (Morocco)', 'maxi-blocks'),
+		value: 'ar-ma',
 	},
 	{
-		label: __('DD.MM.yyyy HH:mm:ss', 'maxi-blocks'),
-		value: 'DD.MM.yyyy HH:mm:ss',
+		label: __('Arabic (Saudi Arabia)', 'maxi-blocks'),
+		value: 'ar-sa',
 	},
 	{
-		label: __('DD-MM-YYYY HH:mm:ss', 'maxi-blocks'),
-		value: 'DD-MM-YYYY HH:mm:ss',
+		label: __('Arabic (Tunisia)', 'maxi-blocks'),
+		value: 'ar-tn',
 	},
 	{
-		label: __('DD MMMM YYYY zzzz', 'maxi-blocks'),
-		value: 'DD MMMM YYYY zzzz',
+		label: __('Arabic', 'maxi-blocks'),
+		value: 'ar',
+	},
+	{
+		label: __('Azerbaijani', 'maxi-blocks'),
+		value: 'az',
+	},
+	{
+		label: __('Belarusian', 'maxi-blocks'),
+		value: 'be',
+	},
+	{
+		label: __('Bulgarian', 'maxi-blocks'),
+		value: 'bg',
+	},
+	{
+		label: __('Bambara', 'maxi-blocks'),
+		value: 'bm',
+	},
+	{
+		label: __('Bengali (Bangladesh)', 'maxi-blocks'),
+		value: 'bn-bd',
+	},
+	{
+		label: __('Bengali', 'maxi-blocks'),
+		value: 'bn',
+	},
+	{
+		label: __('Tibetan', 'maxi-blocks'),
+		value: 'bo',
+	},
+	{
+		label: __('Breton', 'maxi-blocks'),
+		value: 'br',
+	},
+	{
+		label: __('Bosnian', 'maxi-blocks'),
+		value: 'bs',
+	},
+	{
+		label: __('Catalan', 'maxi-blocks'),
+		value: 'ca',
+	},
+	{
+		label: __('Czech', 'maxi-blocks'),
+		value: 'cs',
+	},
+	{
+		label: __('Chuvash', 'maxi-blocks'),
+		value: 'cv',
+	},
+	{
+		label: __('Welsh', 'maxi-blocks'),
+		value: 'cy',
+	},
+	{
+		label: __('Danish', 'maxi-blocks'),
+		value: 'da',
+	},
+	{
+		label: __('German (Austria)', 'maxi-blocks'),
+		value: 'de-at',
+	},
+	{
+		label: __('German (Switzerland)', 'maxi-blocks'),
+		value: 'de-ch',
+	},
+	{
+		label: __('German', 'maxi-blocks'),
+		value: 'de',
+	},
+	{
+		label: __('Divehi', 'maxi-blocks'),
+		value: 'dv',
+	},
+	{
+		label: __('Greek', 'maxi-blocks'),
+		value: 'el',
+	},
+	{
+		label: __('English', 'maxi-blocks'),
+		value: 'en',
+	},
+	{
+		label: __('English (Australia)', 'maxi-blocks'),
+		value: 'en-au',
+	},
+	{
+		label: __('English (Canada)', 'maxi-blocks'),
+		value: 'en-ca',
+	},
+	{
+		label: __('English (United Kingdom)', 'maxi-blocks'),
+		value: 'en-gb',
+	},
+	{
+		label: __('English (Ireland)', 'maxi-blocks'),
+		value: 'en-ie',
+	},
+	{
+		label: __('English (Israel)', 'maxi-blocks'),
+		value: 'en-il',
+	},
+	{
+		label: __('English (India)', 'maxi-blocks'),
+		value: 'en-in',
+	},
+	{
+		label: __('English (New Zealand)', 'maxi-blocks'),
+		value: 'en-nz',
+	},
+	{
+		label: __('English (Singapore)', 'maxi-blocks'),
+		value: 'en-sg',
+	},
+	{
+		label: __('Esperanto', 'maxi-blocks'),
+		value: 'eo',
+	},
+	{
+		label: __('Spanish (Dominican Republic)', 'maxi-blocks'),
+		value: 'es-do',
+	},
+	{
+		label: __('Spanish (Mexico)', 'maxi-blocks'),
+		value: 'es-mx',
+	},
+	{
+		label: __('Spanish (United States)', 'maxi-blocks'),
+		value: 'es-us',
+	},
+	{
+		label: __('Spanish', 'maxi-blocks'),
+		value: 'es',
+	},
+	{
+		label: __('Estonian', 'maxi-blocks'),
+		value: 'et',
+	},
+	{
+		label: __('Basque', 'maxi-blocks'),
+		value: 'eu',
+	},
+	{
+		label: __('Persian', 'maxi-blocks'),
+		value: 'fa',
+	},
+	{
+		label: __('Finnish', 'maxi-blocks'),
+		value: 'fi',
+	},
+	{
+		label: __('Filipino', 'maxi-blocks'),
+		value: 'fil',
+	},
+	{
+		label: __('Faroese', 'maxi-blocks'),
+		value: 'fo',
+	},
+	{
+		label: __('French (Canada)', 'maxi-blocks'),
+		value: 'fr-ca',
+	},
+	{
+		label: __('French (Switzerland)', 'maxi-blocks'),
+		value: 'fr-ch',
+	},
+	{
+		label: __('French', 'maxi-blocks'),
+		value: 'fr',
+	},
+	{
+		label: __('Western Frisian', 'maxi-blocks'),
+		value: 'fy',
+	},
+	{
+		label: __('Scottish Gaelic', 'maxi-blocks'),
+		value: 'gd',
+	},
+	{
+		label: __('Galician', 'maxi-blocks'),
+		value: 'gl',
+	},
+	{
+		label: __('gom (Latin)', 'maxi-blocks'),
+		value: 'gom-latn',
+	},
+	{
+		label: __('Gujarati', 'maxi-blocks'),
+		value: 'gu',
+	},
+	{
+		label: __('Hebrew', 'maxi-blocks'),
+		value: 'he',
+	},
+	{
+		label: __('Hindi', 'maxi-blocks'),
+		value: 'hi',
+	},
+	{
+		label: __('Croatian', 'maxi-blocks'),
+		value: 'hr',
+	},
+	{
+		label: __('Hungarian', 'maxi-blocks'),
+		value: 'hu',
+	},
+	{
+		label: __('Armenian (Armenia)', 'maxi-blocks'),
+		value: 'hy-am',
+	},
+	{
+		label: __('Indonesian', 'maxi-blocks'),
+		value: 'id',
+	},
+	{
+		label: __('Icelandic', 'maxi-blocks'),
+		value: 'is',
+	},
+	{
+		label: __('Italian (Switzerland)', 'maxi-blocks'),
+		value: 'it-ch',
+	},
+	{
+		label: __('Italian', 'maxi-blocks'),
+		value: 'it',
+	},
+	{
+		label: __('Japanese', 'maxi-blocks'),
+		value: 'ja',
+	},
+	{
+		label: __('Javanese', 'maxi-blocks'),
+		value: 'jv',
+	},
+	{
+		label: __('Georgian', 'maxi-blocks'),
+		value: 'ka',
+	},
+	{
+		label: __('Kazakh', 'maxi-blocks'),
+		value: 'kk',
+	},
+	{
+		label: __('Khmer', 'maxi-blocks'),
+		value: 'km',
+	},
+	{
+		label: __('Kannada', 'maxi-blocks'),
+		value: 'kn',
+	},
+	{
+		label: __('Korean', 'maxi-blocks'),
+		value: 'ko',
+	},
+	{
+		label: __('Kurdish', 'maxi-blocks'),
+		value: 'ku',
+	},
+	{
+		label: __('Kirghiz', 'maxi-blocks'),
+		value: 'ky',
+	},
+	{
+		label: __('Luxembourgish', 'maxi-blocks'),
+		value: 'lb',
+	},
+	{
+		label: __('Lao', 'maxi-blocks'),
+		value: 'lo',
+	},
+	{
+		label: __('Lithuanian', 'maxi-blocks'),
+		value: 'lt',
+	},
+	{
+		label: __('Latvian', 'maxi-blocks'),
+		value: 'lv',
+	},
+	{
+		label: __('Montenegrin', 'maxi-blocks'),
+		value: 'me',
+	},
+	{
+		label: __('Maori', 'maxi-blocks'),
+		value: 'mi',
+	},
+	{
+		label: __('Macedonian', 'maxi-blocks'),
+		value: 'mk',
+	},
+	{
+		label: __('Malayalam', 'maxi-blocks'),
+		value: 'ml',
+	},
+	{
+		label: __('Mongolian', 'maxi-blocks'),
+		value: 'mn',
+	},
+	{
+		label: __('Marathi', 'maxi-blocks'),
+		value: 'mr',
+	},
+	{
+		label: __('Malay (Malaysia)', 'maxi-blocks'),
+		value: 'ms-my',
+	},
+	{
+		label: __('Malay', 'maxi-blocks'),
+		value: 'ms',
+	},
+	{
+		label: __('Maltese', 'maxi-blocks'),
+		value: 'mt',
+	},
+	{
+		label: __('Burmese', 'maxi-blocks'),
+		value: 'my',
+	},
+	{
+		label: __('Norwegian Bokmål', 'maxi-blocks'),
+		value: 'nb',
+	},
+	{
+		label: __('Nepali', 'maxi-blocks'),
+		value: 'ne',
+	},
+	{
+		label: __('Dutch (Belgium)', 'maxi-blocks'),
+		value: 'nl-be',
+	},
+	{
+		label: __('Dutch', 'maxi-blocks'),
+		value: 'nl',
+	},
+	{
+		label: __('Norwegian Nynorsk', 'maxi-blocks'),
+		value: 'nn',
+	},
+	{
+		label: __('Punjabi (India)', 'maxi-blocks'),
+		value: 'pa-in',
+	},
+	{
+		label: __('Polish', 'maxi-blocks'),
+		value: 'pl',
+	},
+	{
+		label: __('Portuguese (Brazil)', 'maxi-blocks'),
+		value: 'pt-br',
+	},
+	{
+		label: __('Portuguese', 'maxi-blocks'),
+		value: 'pt',
+	},
+	{
+		label: __('Romanian', 'maxi-blocks'),
+		value: 'ro',
+	},
+	{
+		label: __('Russian', 'maxi-blocks'),
+		value: 'ru',
+	},
+	{
+		label: __('Sindhi', 'maxi-blocks'),
+		value: 'sd',
+	},
+	{
+		label: __('Northern Sami', 'maxi-blocks'),
+		value: 'se',
+	},
+	{
+		label: __('Sinhala', 'maxi-blocks'),
+		value: 'si',
+	},
+	{
+		label: __('Slovak', 'maxi-blocks'),
+		value: 'sk',
+	},
+	{
+		label: __('Slovenian', 'maxi-blocks'),
+		value: 'sl',
+	},
+	{
+		label: __('Albanian', 'maxi-blocks'),
+		value: 'sq',
+	},
+	{
+		label: __('Serbian (Cyrillic)', 'maxi-blocks'),
+		value: 'sr-cyrl',
+	},
+	{
+		label: __('Serbian', 'maxi-blocks'),
+		value: 'sr',
+	},
+	{
+		label: __('Swati', 'maxi-blocks'),
+		value: 'ss',
+	},
+	{
+		label: __('Swedish', 'maxi-blocks'),
+		value: 'sv',
+	},
+	{
+		label: __('Swahili', 'maxi-blocks'),
+		value: 'sw',
+	},
+	{
+		label: __('Tamil', 'maxi-blocks'),
+		value: 'ta',
+	},
+	{
+		label: __('Telugu', 'maxi-blocks'),
+		value: 'te',
+	},
+	{
+		label: __('Tetum', 'maxi-blocks'),
+		value: 'tet',
+	},
+	{
+		label: __('Tajik', 'maxi-blocks'),
+		value: 'tg',
+	},
+	{
+		label: __('Thai', 'maxi-blocks'),
+		value: 'th',
+	},
+	{
+		label: __('Turkmen', 'maxi-blocks'),
+		value: 'tk',
+	},
+	{
+		label: __('Tagalog (Philippines)', 'maxi-blocks'),
+		value: 'tl-ph',
+	},
+	{
+		label: __('Klingon', 'maxi-blocks'),
+		value: 'tlh',
+	},
+	{
+		label: __('Turkish', 'maxi-blocks'),
+		value: 'tr',
+	},
+	{
+		label: __('Talossan', 'maxi-blocks'),
+		value: 'tzl',
+	},
+	{
+		label: __('Central Atlas Tamazight (Latin)', 'maxi-blocks'),
+		value: 'tzm-latn',
+	},
+	{
+		label: __('Central Atlas Tamazight', 'maxi-blocks'),
+		value: 'tzm',
+	},
+	{
+		label: __('Uyghur (China)', 'maxi-blocks'),
+		value: 'ug-cn',
+	},
+	{
+		label: __('Ukrainian', 'maxi-blocks'),
+		value: 'uk',
+	},
+	{
+		label: __('Urdu', 'maxi-blocks'),
+		value: 'ur',
+	},
+	{
+		label: __('Uzbek (Latin)', 'maxi-blocks'),
+		value: 'uz-latn',
+	},
+	{
+		label: __('Uzbek', 'maxi-blocks'),
+		value: 'uz',
+	},
+	{
+		label: __('Vietnamese', 'maxi-blocks'),
+		value: 'vi',
+	},
+	{
+		label: __('Pseudo', 'maxi-blocks'),
+		value: 'x-pseudo',
+	},
+	{
+		label: __('Yoruba (Nigeria)', 'maxi-blocks'),
+		value: 'yo',
+	},
+	{
+		label: __('Chinese (China)', 'maxi-blocks'),
+		value: 'zh-cn',
+	},
+	{
+		label: __('Chinese (Hong Kong)', 'maxi-blocks'),
+		value: 'zh-hk',
+	},
+	{
+		label: __('Chinese (Macau)', 'maxi-blocks'),
+		value: 'zh-mo',
+	},
+	{
+		label: __('Chinese (Taiwan)', 'maxi-blocks'),
+		value: 'zh-tw',
 	},
 ];
-export const typeEra = [
-	{
-		label: __('none', 'maxi-blocks'),
-		value: 'undefined',
-	},
-	{
-		label: __('narrow', 'maxi-blocks'),
-		value: 'narrow',
-	},
-	{
-		label: __('short', 'maxi-blocks'),
-		value: 'short',
-	},
-	{
-		label: __('long', 'maxi-blocks'),
-		value: 'long',
-	},
-];
+
 export const DateOptions = {
 	day: typeDefault,
 	era: typeEra,

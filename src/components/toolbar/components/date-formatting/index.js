@@ -30,7 +30,8 @@ const DateFormatting = props => {
 			day: day === 'undefined' ? undefined : day,
 			era: era === 'undefined' ? undefined : era,
 			hour: hour === 'undefined' ? undefined : hour,
-			hour12: hour12,
+			hour12:
+				hour12 === 'false' ? false : hour12 === 'true' ? true : hour12,
 			minute: minute === 'undefined' ? undefined : minute,
 			month: month === 'undefined' ? undefined : month,
 			second: second === 'undefined' ? undefined : second,
@@ -110,7 +111,7 @@ const DateFormatting = props => {
 								value: 'zone',
 							},
 						]}
-						onChange={val => setLinkStatus(val)}
+						onChange={value => setLinkStatus(value)}
 					/>
 					{linkStatus === 'year' && (
 						<>

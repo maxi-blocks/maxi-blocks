@@ -29,7 +29,7 @@ import * as blocksData from '../../blocks/data';
 /**
  * External dependencies
  */
-import { cloneDeep, isEmpty, isNil, merge } from 'lodash';
+import { capitalize, cloneDeep, isEmpty, isNil, merge } from 'lodash';
 
 /**
  * Styles
@@ -58,13 +58,48 @@ const RelationControl = props => {
 		const blockName = getBlock(clientId)?.name.replace('maxi-blocks/', '');
 
 		// TODO: without this line, the block may break after copy/pasting
-		if (!blockName) return [];
+		if (!blockName) return {};
 
-		const blockOptions =
-			Object.values(blocksData).find(data => data.name === blockName)
-				.interactionBuilderSettings || [];
+		const blockOptions = Object.values(blocksData).find(
+			data => data.name === blockName
+		).interactionBuilderSettings;
 
-		return blockOptions || [];
+		return blockOptions || {};
+	};
+
+	const getParsedOptions = rawOptions => {
+		const parseOptionsArray = options =>
+			options.map(({ label }) => ({
+				label,
+				value: label,
+			}));
+
+		const defaultSetting = {
+			label: __('Choose settings', 'maxi-blocks'),
+			value: '',
+		};
+
+		const parsedOptions =
+			Object.keys(rawOptions).length > 1
+				? {
+						'': [defaultSetting],
+						...Object.entries(rawOptions).reduce(
+							(acc, [groupLabel, groupOptions]) => ({
+								...acc,
+								[capitalize(groupLabel)]:
+									parseOptionsArray(groupOptions),
+							}),
+							{}
+						),
+				  }
+				: [
+						...defaultSetting,
+						...parseOptionsArray(
+							rawOptions[Object.keys(rawOptions)[0]]
+						),
+				  ];
+
+		return parsedOptions;
 	};
 
 	const transitionDefaultAttributes = createTransitionObj();
@@ -463,23 +498,13 @@ const RelationControl = props => {
 													'maxi-blocks'
 												)}
 												value={item.settings}
-												options={[
-													{
-														label: __(
-															'Choose settings',
-															'maxi-blocks'
-														),
-														value: '',
-													},
-													...getOptions(
+												options={getParsedOptions(
+													getOptions(
 														getClientIdFromUniqueId(
 															item.uniqueID
 														)
-													).map(option => ({
-														label: option.label,
-														value: option.label,
-													})),
-												]}
+													)
+												)}
 												onChange={value => {
 													const {
 														transitionTarget,

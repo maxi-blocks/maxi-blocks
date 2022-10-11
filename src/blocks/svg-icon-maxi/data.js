@@ -10,7 +10,6 @@ import { createSelectors } from '../../extensions/styles/custom-css';
 import { createIconTransitions } from '../../extensions/styles';
 import {
 	SvgColorControl,
-	// SvgStrokeWidthControl,
 	BackgroundControl,
 	BorderControl,
 } from '../../components';
@@ -35,6 +34,7 @@ const prefix = 'svg-';
  */
 const name = 'svg-icon-maxi';
 const copyPasteMapping = {
+	_exclude: ['content', 'svgType'],
 	settings: {
 		'Icon content': ['svgType', 'content'],
 		Alignment: {

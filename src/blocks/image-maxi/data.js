@@ -29,6 +29,14 @@ const prefix = 'image-';
  */
 const name = 'image-maxi';
 const copyPasteMapping = {
+	_exclude: [
+		'mediaID',
+		'isImageUrl',
+		'mediaURL',
+		'mediaWidth',
+		'mediaHeight',
+		'mediaAlt',
+	],
 	settings: {
 		Image: [
 			'mediaID',

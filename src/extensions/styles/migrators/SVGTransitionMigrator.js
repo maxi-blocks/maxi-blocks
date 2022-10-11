@@ -1,6 +1,7 @@
 import { getBlockNameFromUniqueID } from './utils';
 import getTransitionData from '../transitions/getTransitionData';
 import transitionAttributesCreator from '../transitions/transitionAttributesCreator';
+import { isEqual } from 'lodash';
 
 const name = 'SVG Transition Migrator';
 
@@ -12,8 +13,9 @@ const isEligible = blockAttributes => {
 
 	if (!blockDataTransition) return true;
 
-	return (
-		Object.keys(blockDataTransition.block) === Object.keys(transition.block)
+	return !isEqual(
+		Object.keys(blockDataTransition.block),
+		Object.keys(transition.block)
 	);
 };
 

@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Column Maxi hover simple actions Column size 1`] = `
+Array [
+  Object {
+    "action": "hover",
+    "attributes": Object {
+      "column-size-general": 50,
+      "column-size-xl": 50,
+      "justify-content-general": "space-between",
+      "justify-content-xl": "space-between",
+    },
+    "css": Object {
+      "general": Object {
+        "breakpoint": null,
+        "styles": Object {
+          "flex-basis": "calc(50% - 0px)",
+          "flex-direction": "column",
+          "justify-content": "space-between",
+          "width": "calc(50% - 0px)",
+        },
+      },
+      "l": Object {
+        "breakpoint": 1366,
+        "styles": Object {
+          "flex-direction": "column",
+          "justify-content": "space-between",
+        },
+      },
+      "m": Object {
+        "breakpoint": 1024,
+        "styles": Object {
+          "flex-basis": "100%",
+          "flex-direction": "column",
+          "justify-content": "space-between",
+          "width": "100%",
+        },
+      },
+      "s": Object {
+        "breakpoint": 767,
+        "styles": Object {
+          "flex-direction": "column",
+          "justify-content": "space-between",
+        },
+      },
+      "xl": Object {
+        "breakpoint": 1920,
+        "styles": Object {
+          "flex-basis": "calc(50% - 0px)",
+          "flex-direction": "column",
+          "justify-content": "space-between",
+          "width": "calc(50% - 0px)",
+        },
+      },
+      "xs": Object {
+        "breakpoint": 480,
+        "styles": Object {
+          "flex-direction": "column",
+          "justify-content": "space-between",
+        },
+      },
+      "xxl": Object {
+        "breakpoint": 1921,
+        "styles": Object {
+          "flex-direction": "column",
+          "justify-content": "space-between",
+        },
+      },
+    },
+    "effects": Object {
+      "easing-general": "ease",
+      "hoverStatus": false,
+      "transition-delay-general": 0,
+      "transition-duration-general": 0.3,
+      "transition-status-general": true,
+    },
+    "id": 1,
+    "isButton": true,
+    "settings": "Column settings",
+    "target": "",
+    "title": "Hello World!",
+    "uniqueID": "column-maxi-1",
+  },
+]
+`;
+
+exports[`Column Maxi hover simple actions Column size 2`] = `" body.maxi-blocks--active #column-maxi-1[data-maxi-relations=\\"true\\"] { flex-direction: column; justify-content: space-between; flex-basis: calc(50% - 0px); width: calc(50% - 0px);}@media screen and (min-width: 1921px) { body.maxi-blocks--active #column-maxi-1[data-maxi-relations=\\"true\\"] { flex-direction: column; justify-content: space-between;}}@media screen and (max-width: 1920px) { body.maxi-blocks--active #column-maxi-1[data-maxi-relations=\\"true\\"] { flex-direction: column; justify-content: space-between; flex-basis: calc(50% - 0px); width: calc(50% - 0px);}}@media screen and (max-width: 1366px) { body.maxi-blocks--active #column-maxi-1[data-maxi-relations=\\"true\\"] { flex-direction: column; justify-content: space-between;}}@media screen and (max-width: 1024px) { body.maxi-blocks--active #column-maxi-1[data-maxi-relations=\\"true\\"] { flex-direction: column; justify-content: space-between; flex-basis: 100%; width: 100%;}}@media screen and (max-width: 767px) { body.maxi-blocks--active #column-maxi-1[data-maxi-relations=\\"true\\"] { flex-direction: column; justify-content: space-between;}}"`;
+
+exports[`Column Maxi hover simple actions Column size 3`] = `"body.maxi-blocks--active #column-maxi-1[data-maxi-relations=\\"true\\"] { transition: width 0.3s 0s ease, flex-basis 0.3s 0s ease, justify-content 0.3s 0s ease, flex-direction 0.3s 0s ease;}"`;

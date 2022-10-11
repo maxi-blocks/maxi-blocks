@@ -102,6 +102,8 @@ class MaxiBlockComponent extends Component {
 		this.blockRef = createRef();
 		this.typography = getGroupAttributes(attributes, 'typography');
 
+		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
+
 		// Init
 		const newUniqueID = this.uniqueIDChecker(uniqueID);
 		if (!isEmpty(this.typography)) this.loadFonts();

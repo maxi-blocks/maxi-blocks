@@ -2,6 +2,8 @@ import { getBlockNameFromUniqueID } from './utils';
 import getTransitionData from '../transitions/getTransitionData';
 import transitionAttributesCreator from '../transitions/transitionAttributesCreator';
 
+const name = 'SVG Transition Migrator';
+
 const isEligible = blockAttributes => {
 	const { uniqueID, transition } = blockAttributes;
 	const blockName = getBlockNameFromUniqueID(uniqueID);
@@ -15,7 +17,7 @@ const isEligible = blockAttributes => {
 	);
 };
 
-const migrate = ({ newAttributes }) => {
+const migrate = newAttributes => {
 	const {
 		uniqueID,
 		transition,
@@ -41,4 +43,4 @@ const migrate = ({ newAttributes }) => {
 	return newAttributes;
 };
 
-export default { isEligible, migrate };
+export default { name, isEligible, migrate };

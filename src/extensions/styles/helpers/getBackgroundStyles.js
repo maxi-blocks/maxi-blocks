@@ -966,15 +966,18 @@ const getGeneralBackgroundStyles = (
 				breakpoint,
 				attributes: props,
 			}) || 'px';
-		const horizontalWidth =
-			round(widthTop / 2, 2) + round(widthBottom / 2, 2);
+		const topWidth = round(widthTop / 2, 2);
+		const bottomWidth = round(widthBottom / 2, 2);
 		const verticalWidth =
 			round(widthLeft / 2, 2) + round(widthRight / 2, 2);
 
 		if (border[breakpoint]['border-style']) {
 			size[breakpoint] = {
-				...((!!horizontalWidth || isHover) && {
-					top: -horizontalWidth + widthUnit,
+				...((!!topWidth || isHover) && {
+					top: -topWidth + widthUnit,
+				}),
+				...((!!bottomWidth || isHover) && {
+					bottom: -bottomWidth + widthUnit,
 				}),
 				...((!!verticalWidth || isHover) && {
 					left: -verticalWidth + widthUnit,

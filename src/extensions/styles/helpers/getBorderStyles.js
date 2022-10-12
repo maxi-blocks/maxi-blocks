@@ -135,7 +135,8 @@ const getBorderStyles = ({
 						(key.includes('color') || key.includes('opacity')) &&
 						(!isBorderNone || (isHover && globalHoverStatus))
 					) {
-						response[breakpoint][borderColorProperty] = getColorString();
+						response[breakpoint][borderColorProperty] =
+							getColorString();
 					} else if (
 						![
 							'border-palette-status',

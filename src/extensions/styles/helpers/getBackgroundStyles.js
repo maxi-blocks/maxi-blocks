@@ -966,8 +966,9 @@ const getGeneralBackgroundStyles = (
 				breakpoint,
 				attributes: props,
 			}) || 'px';
-		const topWidth = round(widthTop / 2, 2);
-		const bottomWidth = round(widthBottom / 2, 2);
+
+		const topWidth = round(widthTop, 2);
+		const bottomWidth = round(widthBottom, 2);
 		const verticalWidth =
 			round(widthLeft / 2, 2) + round(widthRight / 2, 2);
 

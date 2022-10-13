@@ -177,14 +177,14 @@ const transition = {
 		border: {
 			title: 'Border',
 			target: `${imageWrapperClass} img`,
-			property: 'border',
-			prefix,
+			property: ['border', 'border-radius'],
+			hoverProp: `${prefix}border-status-hover`,
 		},
 		'box shadow': {
 			title: 'Box shadow',
 			target: `${imageWrapperClass} img`,
 			property: 'box-shadow',
-			prefix,
+			hoverProp: `${prefix}box-shadow-status-hover`,
 		},
 	},
 };
@@ -192,7 +192,9 @@ const interactionBuilderSettings = [
 	{
 		label: __('Alignment', 'maxi-blocks'),
 		attrGroupName: 'alignment',
-		component: props => <AlignmentControl {...props} />,
+		component: props => (
+			<AlignmentControl {...props} disableJustify {...props} />
+		),
 		helper: props => getAlignmentFlexStyles(props.obj),
 		target: ' .maxi-image-block-wrapper',
 	},

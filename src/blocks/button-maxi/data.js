@@ -190,26 +190,26 @@ const transition = {
 		typography: {
 			title: 'Typography',
 			target: contentClass,
-			property: 'typography',
-			limitless: true,
+			property: false,
+			hoverProp: 'typography-status-hover',
 		},
 		'button background': {
 			title: 'Button background',
 			target: buttonClass,
 			property: 'background',
-			prefix,
+			hoverProp: `${prefix}background-status-hover`,
 		},
 		border: {
 			title: 'Border',
 			target: buttonClass,
-			property: 'border',
-			prefix,
+			property: ['border', 'border-radius'],
+			hoverProp: `${prefix}border-status-hover`,
 		},
 		'box shadow': {
 			title: 'Box shadow',
 			target: buttonClass,
 			property: 'box-shadow',
-			prefix,
+			hoverProp: `${prefix}box-shadow-status-hover`,
 		},
 		...createIconTransitions({
 			target: ' .maxi-button-block__icon',
@@ -271,6 +271,7 @@ const interactionBuilderSettings = [
 	{
 		label: __('Button typography', 'maxi-blocks'),
 		transitionTarget: transition.block.typography.target,
+		transitionTrigger: buttonClass,
 		hoverProp: 'typography-status-hover',
 		attrGroupName: 'typography',
 		component: props => (

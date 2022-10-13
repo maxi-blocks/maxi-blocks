@@ -2,12 +2,13 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { Button } from '@wordpress/components';
+// import { Button } from '@wordpress/components';
 import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
+import Button from '../button';
 import InfoBox from '../info-box';
 import ListControl from '../list-control';
 import ListItemControl from '../list-control/list-item-control';
@@ -55,6 +56,9 @@ const RelationControl = props => {
 
 	const getOptions = clientId => {
 		const blockName = getBlock(clientId)?.name.replace('maxi-blocks/', '');
+
+		// TODO: without this line, the block may break after copy/pasting
+		if (!blockName) return [];
 
 		const blockOptions =
 			Object.values(blocksData).find(data => data.name === blockName)
@@ -148,14 +152,18 @@ const RelationControl = props => {
 		// As an alternative to a migrator... Remove after used!
 		if (
 			!(
+				'transitionTrigger' in item.effects &&
 				'transitionTarget' in item.effects &&
 				'hoverStatus' in item.effects
 			) ||
 			item.effects.hoverStatus !==
 				getHoverStatus(selectedSettingsObj.hoverProp, blockAttributes)
 		) {
-			const { transitionTarget: rawTransitionTarget, hoverProp } =
-				selectedSettingsObj;
+			const {
+				transitionTarget: rawTransitionTarget,
+				transitionTrigger,
+				hoverProp,
+			} = selectedSettingsObj;
 			const transitionTarget =
 				item.settings === 'Transform'
 					? Object.keys(item.css)
@@ -170,11 +178,12 @@ const RelationControl = props => {
 					item.attributes
 				);
 
-			if (transitionTarget)
+			if (transitionTarget || transitionTrigger)
 				onChangeRelation(relations, item.id, {
 					effects: {
 						...item.effects,
-						transitionTarget,
+						...(transitionTarget && { transitionTarget }),
+						...(transitionTrigger && { transitionTrigger }),
 						...(!isNil(hoverStatus) && { hoverStatus }),
 					},
 				});
@@ -531,11 +540,20 @@ const RelationControl = props => {
 																textLevel,
 															} = blockAttributes;
 
+															const trimmedTarget =
+																target.startsWith(
+																	' '
+																)
+																	? target.slice(
+																			1
+																	  )
+																	: target;
+
 															return `${
 																isList
 																	? typeOfList
 																	: textLevel
-															}${target}`;
+															}${trimmedTarget}`;
 														}
 
 														return target;

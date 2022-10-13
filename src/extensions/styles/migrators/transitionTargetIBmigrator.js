@@ -3,6 +3,8 @@
  */
 import { getTransitionSetting } from './utils';
 
+const name = 'IB Transition Target';
+
 const isEligible = blockAttributes =>
 	!!blockAttributes?.relations &&
 	blockAttributes.relations.some(relation => {
@@ -19,7 +21,7 @@ const isEligible = blockAttributes =>
 		return false;
 	});
 
-const migrate = ({ newAttributes }) => {
+const migrate = newAttributes => {
 	const { relations } = newAttributes;
 
 	relations.forEach((relation, i) => {
@@ -38,4 +40,4 @@ const migrate = ({ newAttributes }) => {
 	return { ...newAttributes, relations };
 };
 
-export default { isEligible, migrate };
+export default { name, isEligible, migrate };

@@ -427,28 +427,39 @@ class Relation {
 							const roundNumber = number =>
 								Math.round(number * 100) / 100;
 
-							const horizontalWidth =
-								roundNumber(widthTop) / 2 +
-								roundNumber(widthBottom) / 2;
-							const verticalWidth =
-								roundNumber(widthRight) / 2 +
-								roundNumber(widthLeft) / 2;
-
 							const selectorRegExp = new RegExp(
 								`(${this.escapeRegExp(selector)})`
 							);
 							if (!this.stylesString.match(selectorRegExp))
 								this.stylesString += `${selector}}${postLine}`;
 
-							if (horizontalWidth)
+							if (widthTop)
 								this.stylesString = this.stylesString.replace(
 									selectorRegExp,
-									`$1 top: -${horizontalWidth}${widthUnit};`
+									`$1 top: -${roundNumber(
+										widthTop
+									)}${widthUnit};`
 								);
-							if (verticalWidth)
+							if (widthBottom)
 								this.stylesString = this.stylesString.replace(
 									selectorRegExp,
-									`$1 left: -${verticalWidth}${widthUnit};`
+									`$1 bottom: -${roundNumber(
+										widthBottom
+									)}${widthUnit};`
+								);
+							if (widthLeft)
+								this.stylesString = this.stylesString.replace(
+									selectorRegExp,
+									`$1 left: -${roundNumber(
+										widthLeft
+									)}${widthUnit};`
+								);
+							if (widthRight)
+								this.stylesString = this.stylesString.replace(
+									selectorRegExp,
+									`$1 right: -${roundNumber(
+										widthRight
+									)}${widthUnit};`
 								);
 						}
 					}

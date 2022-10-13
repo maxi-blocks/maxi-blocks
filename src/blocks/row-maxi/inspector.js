@@ -8,11 +8,11 @@ import { InspectorControls } from '@wordpress/block-editor';
  */
 import {
 	AccordionControl,
-	ColumnPattern,
 	FlexGapControl,
 	FlexWrapControl,
 	SettingTabsControl,
 } from '../../components';
+import { ColumnPattern } from './components';
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { customCss } from './data';

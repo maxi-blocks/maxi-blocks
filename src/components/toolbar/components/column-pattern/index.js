@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import ToolbarPopover from '../toolbar-popover';
-import ColumnPattern from '../../../column-pattern';
+import { ColumnPattern } from '../../../../blocks/row-maxi/components';
 import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**

@@ -49,7 +49,6 @@ export { default as ManageHoverTransitions } from './manage-hover-transitions';
 export { default as MarginControl } from './margin-control';
 export { default as MaxiPopoverButton } from './maxi-popover-button';
 export { default as MotionPreview } from './motion-preview';
-export { default as NumberCounterControl } from './number-counter-control';
 export { default as OpacityControl } from './opacity-control';
 export { default as OverflowControl } from './overflow-control';
 export { default as PaddingControl } from './padding-control';

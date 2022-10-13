@@ -967,21 +967,19 @@ const getGeneralBackgroundStyles = (
 				attributes: props,
 			}) || 'px';
 
-		const topWidth = round(widthTop, 2);
-		const bottomWidth = round(widthBottom, 2);
-		const verticalWidth =
-			round(widthLeft / 2, 2) + round(widthRight / 2, 2);
-
 		if (border[breakpoint]['border-style']) {
 			size[breakpoint] = {
-				...((!!topWidth || isHover) && {
-					top: -topWidth + widthUnit,
+				...((!!widthTop || isHover) && {
+					top: -round(widthTop, 2) + widthUnit,
 				}),
-				...((!!bottomWidth || isHover) && {
-					bottom: -bottomWidth + widthUnit,
+				...((!!widthBottom || isHover) && {
+					bottom: -round(widthBottom, 2) + widthUnit,
 				}),
-				...((!!verticalWidth || isHover) && {
-					left: -verticalWidth + widthUnit,
+				...((!!widthLeft || isHover) && {
+					left: -round(widthLeft, 2) + widthUnit,
+				}),
+				...((!!widthRight || isHover) && {
+					right: -round(widthRight, 2) + widthUnit,
 				}),
 			};
 		}

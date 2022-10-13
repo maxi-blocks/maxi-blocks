@@ -71,12 +71,7 @@ const StyleComponent = ({
 
 	const styles = styleResolver(stylesObj, false, getBreakpoints());
 
-	const styleContent = styleGenerator(
-		styles,
-		breakpoints && isEmpty(breakpoints) ? blockBreakpoints : breakpoints,
-		currentBreakpoint,
-		isIframe
-	);
+	const styleContent = styleGenerator(styles, isIframe);
 
 	return <style>{styleContent}</style>;
 };

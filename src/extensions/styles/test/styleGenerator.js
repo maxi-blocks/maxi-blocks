@@ -1,5 +1,15 @@
 import styleGenerator from '../styleGenerator';
 
+jest.mock('@wordpress/data', () => {
+	return {
+		select: jest.fn(() => {
+			return {
+				receiveBaseBreakpoint: jest.fn(() => 'xl'),
+			};
+		}),
+	};
+});
+
 describe('styleGenerator', () => {
 	it('Returns `general` styles', () => {
 		const styles = {
@@ -51,16 +61,8 @@ describe('styleGenerator', () => {
 				},
 			},
 		};
-		const breakpoints = {
-			xxl: 1920,
-			xl: 1920,
-			l: 1366,
-			m: 1024,
-			s: 767,
-			xs: 480,
-		};
 
-		const result = styleGenerator(styles, breakpoints, 'general');
+		const result = styleGenerator(styles);
 
 		expect(result).toMatchSnapshot();
 	});
@@ -114,16 +116,8 @@ describe('styleGenerator', () => {
 				},
 			},
 		};
-		const breakpoints = {
-			xxl: 1920,
-			xl: 1920,
-			l: 1366,
-			m: 1024,
-			s: 767,
-			xs: 480,
-		};
 
-		const result = styleGenerator(styles, breakpoints, 'xl');
+		const result = styleGenerator(styles);
 
 		expect(result).toMatchSnapshot();
 	});
@@ -177,16 +171,8 @@ describe('styleGenerator', () => {
 				},
 			},
 		};
-		const breakpoints = {
-			xxl: 1920,
-			xl: 1920,
-			l: 1366,
-			m: 1024,
-			s: 767,
-			xs: 480,
-		};
 
-		const result = styleGenerator(styles, breakpoints, 's', true);
+		const result = styleGenerator(styles, true);
 
 		expect(result).toMatchSnapshot();
 	});

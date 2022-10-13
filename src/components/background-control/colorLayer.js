@@ -14,6 +14,7 @@ import {
 	getAttributeKey,
 	getLastBreakpointAttribute,
 	getGroupAttributes,
+	getBlockStyle,
 } from '../../extensions/styles';
 import { getDefaultLayerAttr } from './utils';
 
@@ -21,6 +22,9 @@ import { getDefaultLayerAttr } from './utils';
  * External dependencies
  */
 import { cloneDeep } from 'lodash';
+import { getPaletteColor } from '../../extensions/style-cards';
+
+const breakpoints = ['general', 'xl', 'l', 'm', 's', 'xs'];
 
 /**
  * Component
@@ -41,32 +45,104 @@ const ColorLayerContent = props => {
 
 	const colorOptions = cloneDeep(props.colorOptions);
 
+	const onChangeColor = ({
+		color,
+		paletteColor,
+		paletteStatus,
+		paletteOpacity,
+	}) => {
+		const response = {
+			[getAttributeKey(
+				'background-palette-status',
+				isHover,
+				prefix,
+				breakpoint
+			)]: paletteStatus,
+			[getAttributeKey(
+				'background-palette-color',
+				isHover,
+				prefix,
+				breakpoint
+			)]: paletteColor,
+			[getAttributeKey(
+				'background-palette-opacity',
+				isHover,
+				prefix,
+				breakpoint
+			)]: paletteOpacity,
+			[getAttributeKey('background-color', isHover, prefix, breakpoint)]:
+				color,
+		};
+
+		onChange(response);
+	};
+
 	const getDefaultAttr = () => {
 		const prefix = 'background-';
 
 		if (isLayer) {
 			const defaultColor = {};
-			defaultColor.paletteStatus = getDefaultLayerAttr(
-				'colorOptions',
+			const prevBreakpoint =
+				breakpoints[breakpoints.indexOf(breakpoint) - 1];
+
+			const getResetValue = target =>
+				prevBreakpoint
+					? getLastBreakpointAttribute({
+							target,
+							breakpoint: prevBreakpoint,
+							attributes: colorOptions,
+							isHover,
+					  })
+					: getDefaultLayerAttr(
+							'colorOptions',
+							`${prefix}palette-status`
+					  );
+
+			defaultColor.paletteStatus = getResetValue(
 				`${prefix}palette-status`
 			);
-			defaultColor.paletteColor = getDefaultLayerAttr(
-				'colorOptions',
-				`${prefix}palette-color`
-			);
-			defaultColor.paletteOpacity = getDefaultLayerAttr(
-				'colorOptions',
+			defaultColor.paletteColor = getResetValue(`${prefix}palette-color`);
+			defaultColor.paletteOpacity = getResetValue(
 				`${prefix}palette-opacity`
 			);
-			defaultColor.color = getDefaultLayerAttr(
-				'colorOptions',
-				`${prefix}color`
-			);
+			defaultColor.color = getResetValue(`${prefix}color`);
 
 			return defaultColor;
 		}
 
 		return null;
+	};
+
+	const onReset = ({
+		showPalette,
+		paletteStatus,
+		paletteColor,
+		paletteOpacity,
+		color,
+	}) => {
+		const defaultColorAttr = getDefaultAttr();
+
+		if (showPalette)
+			onChangeColor({
+				paletteStatus: defaultColorAttr.paletteStatus,
+				paletteColor: defaultColorAttr.paletteColor,
+				paletteOpacity: paletteOpacity || 1,
+				color,
+			});
+		else {
+			const defaultColor = `rgba(${getPaletteColor({
+				clientId,
+				color: paletteColor || defaultColorAttr.paletteColor,
+				blockStyle: getBlockStyle(clientId),
+			})},${paletteOpacity || 1})`;
+
+			onChangeColor({
+				paletteStatus,
+				paletteColor,
+				paletteOpacity,
+				color: defaultColor,
+			});
+		}
 	};
 
 	return (
@@ -80,7 +156,7 @@ const ColorLayerContent = props => {
 					isHover,
 				})}
 				prefix={`${prefix}background-`}
-				defaultColorAttributes={getDefaultAttr()}
+				onReset={onReset}
 				paletteStatus={getLastBreakpointAttribute({
 					target: `${prefix}background-palette-status`,
 					breakpoint,
@@ -104,39 +180,7 @@ const ColorLayerContent = props => {
 						'background-color': color,
 					});
 				}}
-				onChange={({
-					color,
-					paletteColor,
-					paletteStatus,
-					paletteOpacity,
-				}) => {
-					onChange({
-						[getAttributeKey(
-							'background-palette-status',
-							isHover,
-							prefix,
-							breakpoint
-						)]: paletteStatus,
-						[getAttributeKey(
-							'background-palette-color',
-							isHover,
-							prefix,
-							breakpoint
-						)]: paletteColor,
-						[getAttributeKey(
-							'background-palette-opacity',
-							isHover,
-							prefix,
-							breakpoint
-						)]: paletteOpacity,
-						[getAttributeKey(
-							'background-color',
-							isHover,
-							prefix,
-							breakpoint
-						)]: color,
-					});
-				}}
+				onChange={onChangeColor}
 				globalProps={globalProps}
 				isHover={isHover}
 				clientId={clientId}

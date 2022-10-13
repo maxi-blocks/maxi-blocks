@@ -11,7 +11,9 @@ import { getPageFonts, loadFonts } from '../text/fonts';
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
+import getWinBreakpoint from './getWinBreakpoint';
+import { setScreenSize } from '../styles';
 
 /**
  * General
@@ -416,6 +418,31 @@ wp.domReady(() => {
 			const resizeObserver = new ResizeObserver(() => {
 				const { width, height } = targetNode.getBoundingClientRect();
 				setEditorContentSize({ width, height });
+
+				// On changing the canvas editor size, we must update the winBreakpoint
+				// to add the necessary attributes to display styles. The observer can't
+				// rely on the next element cause it disappears when selecting 's' or 'xs'
+				// due to the appearance of the iframe.
+				const editorWrapper = document.querySelector(
+					'.editor-styles-wrapper'
+				);
+
+				if (editorWrapper) {
+					const { width: winWidth } =
+						editorWrapper.getBoundingClientRect();
+
+					const deviceType = getWinBreakpoint(winWidth);
+					const baseWinBreakpoint =
+						select('maxiBlocks').receiveBaseBreakpoint();
+
+					if (
+						deviceType === baseWinBreakpoint ||
+						isNil(baseWinBreakpoint)
+					)
+						setScreenSize('general', false);
+					else if (!['xs', 's'].includes(deviceType))
+						setScreenSize(deviceType, false);
+				}
 			});
 
 			[targetNode, document.body].forEach(element =>

@@ -3,7 +3,6 @@
  */
 import { round } from 'lodash';
 
-// eslint-disable-next-line import/prefer-default-export
 export const getResizerSize = (elt, blockRef, unit, axis = 'width') => {
 	const pxSize = elt.getBoundingClientRect()[axis];
 

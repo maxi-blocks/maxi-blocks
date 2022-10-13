@@ -1,12 +1,14 @@
 import { omit } from 'lodash';
+import getWinBreakpoint from '../dom/getWinBreakpoint';
 
-const breakpointResizer = (
+const breakpointResizer = ({
 	size,
 	breakpoints,
 	xxlSize = breakpoints.xl + 1,
 	winSize = 0,
-	isGutenbergButton = false
-) => {
+	isGutenbergButton = false,
+	changeSize = true,
+}) => {
 	const editorWrapper = document.querySelector('.edit-post-visual-editor');
 
 	const winHeight = window.outerWidth;
@@ -17,26 +19,29 @@ const breakpointResizer = (
 
 	editorWrapper.setAttribute(
 		'maxi-blocks-responsive',
-		size !== 'general' ? size : ''
+		size !== 'general' ? size : getWinBreakpoint(winSize, breakpoints)
 	);
 	editorWrapper.setAttribute('maxi-blocks-responsive-width', responsiveWidth);
 
 	if (!isGutenbergButton) editorWrapper.setAttribute('is-maxi-preview', true);
 	else editorWrapper.removeAttribute('is-maxi-preview');
 
-	if (size === 'general') {
-		editorWrapper.style.width = '';
-		editorWrapper.style.margin = '';
-	} else {
-		if (winHeight > responsiveWidth) editorWrapper.style.margin = '0 auto';
-		else editorWrapper.style.margin = '';
+	if (changeSize) {
+		if (size === 'general') {
+			editorWrapper.style.width = '';
+			editorWrapper.style.margin = '';
+		} else {
+			if (winHeight > responsiveWidth)
+				editorWrapper.style.margin = '0 auto';
+			else editorWrapper.style.margin = '';
 
-		if (isGutenbergButton) {
-			editorWrapper.style = null;
-		} else if (['s', 'xs'].includes(size)) {
-			editorWrapper.style.width = 'fit-content';
-		} else if (editorWrapper.style.width !== `${responsiveWidth}px`) {
-			editorWrapper.style.width = `${responsiveWidth}px`;
+			if (isGutenbergButton) {
+				editorWrapper.style = null;
+			} else if (['s', 'xs'].includes(size)) {
+				editorWrapper.style.width = 'fit-content';
+			} else if (editorWrapper.style.width !== `${responsiveWidth}px`) {
+				editorWrapper.style.width = `${responsiveWidth}px`;
+			}
 		}
 	}
 };
@@ -74,13 +79,14 @@ const reducer = (
 				deviceType: action.deviceType,
 			};
 		case 'SET_DEVICE_TYPE':
-			breakpointResizer(
-				action.deviceType,
-				state.breakpoints,
-				action.width,
-				state.settings.editorContent.width,
-				action.isGutenbergButton
-			);
+			breakpointResizer({
+				size: action.deviceType,
+				breakpoints: state.breakpoints,
+				xxlSize: action.width,
+				winSize: state.settings.editorContent.width,
+				isGutenbergButton: action.isGutenbergButton,
+				changeSize: action.changeSize,
+			});
 			return {
 				...state,
 				deviceType: action.deviceType,

@@ -13,6 +13,7 @@ import { getDefaultAttribute } from '../styles';
  * External dependencies
  */
 import { isNil } from 'lodash';
+import cleanAttributes from './cleanAttributes';
 
 const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -165,7 +166,14 @@ const handleSetAttributes = ({
 		response[attrLabelOnBaseBreakpoint] = attributes?.[attrLabelOnGeneral];
 	});
 
-	return onChange(response);
+	const cleanedResponse = cleanAttributes({
+		newAttributes: response,
+		attributes,
+		clientId,
+		defaultAttributes,
+	});
+
+	return onChange(cleanedResponse);
 };
 
 export default handleSetAttributes;

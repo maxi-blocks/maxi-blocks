@@ -40,7 +40,9 @@ Object {
     },
     "size": Object {
       "general": Object {
+        "bottom": "-2px",
         "left": "-2px",
+        "right": "-2px",
         "top": "-2px",
       },
     },

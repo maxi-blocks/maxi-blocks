@@ -11,7 +11,7 @@ import { createSelectors } from '../../extensions/styles/custom-css';
 import { getGroupAttributes } from '../../extensions/styles';
 import getParentRowClientId from '../../components/relation-control/getParentRowClientId';
 import getRowGapProps from '../../extensions/attributes/getRowGapProps';
-import { ColumnSizeControl } from '../../components';
+import { ColumnSizeControl } from './components';
 import {
 	getColumnSizeStyles,
 	getFlexStyles,

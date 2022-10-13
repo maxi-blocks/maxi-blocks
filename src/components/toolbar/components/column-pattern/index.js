@@ -19,30 +19,27 @@ import { toolbarColumnPattern } from '../../../../icons';
 const ToolbarColumnPattern = props => {
 	const { clientId, blockName, onChange, breakpoint } = props;
 
-	if (blockName !== 'maxi-blocks/row-maxi') return null;
+	if (blockName !== 'maxi-blocks/row-maxi' || props['row-pattern-general'])
+		return null;
 
 	return (
-		<>
-			{props['row-pattern-general'] && (
-				<ToolbarPopover
-					className='toolbar-item__column-pattern'
-					icon={toolbarColumnPattern}
-					tooltip={__('Column picker', 'maxi-blocks')}
-				>
-					<div className='toolbar-item__column-pattern__popover'>
-						<ColumnPattern
-							clientId={clientId}
-							{...getGroupAttributes(props, 'rowPattern')}
-							onChange={rowPattern => {
-								onChange(rowPattern);
-							}}
-							toolbar
-							breakpoint={breakpoint}
-						/>
-					</div>
-				</ToolbarPopover>
-			)}
-		</>
+		<ToolbarPopover
+			className='toolbar-item__column-pattern'
+			icon={toolbarColumnPattern}
+			tooltip={__('Column picker', 'maxi-blocks')}
+		>
+			<div className='toolbar-item__column-pattern__popover'>
+				<ColumnPattern
+					clientId={clientId}
+					{...getGroupAttributes(props, 'rowPattern')}
+					onChange={rowPattern => {
+						onChange(rowPattern);
+					}}
+					toolbar
+					breakpoint={breakpoint}
+				/>
+			</div>
+		</ToolbarPopover>
 	);
 };
 

@@ -22,6 +22,7 @@ const copyPasteMapping = {
 	settings: {
 		Video: {
 			group: {
+				Url: ['url', 'embedUrl', 'videoType'],
 				'Video type': 'playerType',
 				'Start time': 'startTime',
 				'End time': 'endTime',

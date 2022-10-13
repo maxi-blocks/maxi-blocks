@@ -13,7 +13,6 @@ import {
 	AccordionControl,
 	AdvancedNumberControl,
 	ClipPath,
-	HoverEffectControl,
 	ImageAltControl,
 	ImageCropControl,
 	ImageShape,
@@ -22,6 +21,7 @@ import {
 	ToggleSwitch,
 	TypographyControl,
 } from '../../components';
+import { HoverEffectControl } from './components';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,

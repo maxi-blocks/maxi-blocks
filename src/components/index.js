@@ -34,7 +34,6 @@ export { default as FontFamilySelector } from './font-family-selector';
 export { default as FontLevelControl } from './font-level-control';
 export { default as FontWeightControl } from './font-weight-control';
 export { default as FullSizeControl } from './full-size-control';
-export { default as HoverEffectControl } from './hover-effect-control';
 export { default as HoverPreview } from './hover-preview';
 export { default as Icon } from './icon';
 export { default as IconControl } from './icon-control';

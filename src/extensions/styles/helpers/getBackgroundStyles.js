@@ -960,6 +960,7 @@ const getGeneralBackgroundStyles = (
 		const widthBottom = getBorderValue('bottom', breakpoint);
 		const widthLeft = getBorderValue('left', breakpoint);
 		const widthRight = getBorderValue('right', breakpoint);
+
 		const widthUnit =
 			getLastBreakpointAttribute({
 				target: 'border-unit-width',
@@ -969,16 +970,16 @@ const getGeneralBackgroundStyles = (
 
 		if (border[breakpoint]['border-style']) {
 			size[breakpoint] = {
-				...((!!widthTop || isHover) && {
+				...((widthTop === 0 || !!widthTop || isHover) && {
 					top: -round(widthTop, 2) + widthUnit,
 				}),
-				...((!!widthBottom || isHover) && {
+				...((widthBottom === 0 || !!widthBottom || isHover) && {
 					bottom: -round(widthBottom, 2) + widthUnit,
 				}),
-				...((!!widthLeft || isHover) && {
+				...((widthLeft === 0 || !!widthLeft || isHover) && {
 					left: -round(widthLeft, 2) + widthUnit,
 				}),
-				...((!!widthRight || isHover) && {
+				...((widthRight === 0 || !!widthRight || isHover) && {
 					right: -round(widthRight, 2) + widthUnit,
 				}),
 			};

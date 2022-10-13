@@ -433,28 +433,28 @@ class Relation {
 							if (!this.stylesString.match(selectorRegExp))
 								this.stylesString += `${selector}}${postLine}`;
 
-							if (widthTop)
+							if (widthTop || widthTop === 0)
 								this.stylesString = this.stylesString.replace(
 									selectorRegExp,
 									`$1 top: -${roundNumber(
 										widthTop
 									)}${widthUnit};`
 								);
-							if (widthBottom)
+							if (widthBottom || widthBottom === 0)
 								this.stylesString = this.stylesString.replace(
 									selectorRegExp,
 									`$1 bottom: -${roundNumber(
 										widthBottom
 									)}${widthUnit};`
 								);
-							if (widthLeft)
+							if (widthLeft || widthLeft === 0)
 								this.stylesString = this.stylesString.replace(
 									selectorRegExp,
 									`$1 left: -${roundNumber(
 										widthLeft
 									)}${widthUnit};`
 								);
-							if (widthRight)
+							if (widthRight || widthRight === 0)
 								this.stylesString = this.stylesString.replace(
 									selectorRegExp,
 									`$1 right: -${roundNumber(

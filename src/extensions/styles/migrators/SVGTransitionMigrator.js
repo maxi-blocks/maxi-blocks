@@ -8,10 +8,9 @@ const name = 'SVG Transition Migrator';
 const isEligible = blockAttributes => {
 	const { uniqueID, transition } = blockAttributes;
 	const blockName = getBlockNameFromUniqueID(uniqueID);
-
 	const blockDataTransition = getTransitionData(blockName);
 
-	if (!blockDataTransition) return true;
+	if (!blockDataTransition) return false;
 
 	return !isEqual(
 		Object.keys(blockDataTransition.block),
@@ -27,8 +26,6 @@ const migrate = newAttributes => {
 	} = newAttributes;
 	const blockName = getBlockNameFromUniqueID(uniqueID);
 	const blockDataTransition = getTransitionData(blockName);
-
-	if (!blockDataTransition) return newAttributes;
 
 	const defaultAttributes =
 		transitionAttributesCreator(blockDataTransition).transition.default

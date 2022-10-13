@@ -65,7 +65,6 @@ export { default as ScrollEffectsControl } from './scroll-effects-control';
 export { default as SelectControl } from './select-control';
 export { default as SettingTabsControl } from './setting-tabs-control';
 export { default as ShapeDivider } from './shape-divider';
-export { default as ShapeDividerControl } from './shape-divider-control';
 export { default as Spinner } from './spinner';
 export { default as SvgAltControl } from './svg-alt-control';
 export { default as SVGFillControl } from './svg-fill-control';

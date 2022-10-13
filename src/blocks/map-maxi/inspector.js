@@ -15,7 +15,7 @@ import { isEmpty } from 'lodash';
 import { AccordionControl, SettingTabsControl } from '../../components';
 import {
 	MapControl,
-	MapInteracitonControl,
+	MapInteractionControl,
 	MapMarkersControl,
 	MapPopupControl,
 	MapPopupTextControl,
@@ -179,7 +179,7 @@ const Inspector = props => {
 											'maxi-blocks'
 										),
 										content: (
-											<MapInteracitonControl
+											<MapInteractionControl
 												{...getGroupAttributes(
 													attributes,
 													'mapInteraction'

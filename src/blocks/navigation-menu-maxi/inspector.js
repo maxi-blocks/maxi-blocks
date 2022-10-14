@@ -31,14 +31,13 @@ const Inspector = props => {
 	const { selectedMenuId, blockStyle } = attributes;
 
 	const { navigationMenus, classicMenus } = useSelect(select => {
-		const { getEntityRecords, getMenuItems } = select('core');
-
+		const { getEntityRecords } = select('core');
 		const args = [
 			'postType',
 			'wp_navigation',
 			{ per_page: -1, status: 'publish' },
 		];
-		getMenuItems({ per_page: -1, context: 'view' });
+
 		return {
 			navigationMenus: getEntityRecords(...args),
 			classicMenus: getEntityRecords('root', 'menu', {

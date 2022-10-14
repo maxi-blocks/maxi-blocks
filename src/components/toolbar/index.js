@@ -401,6 +401,7 @@ const MaxiToolbar = memo(
 								)}
 								<SvgWidth
 									{...getGroupAttributes(attributes, 'svg')}
+									content={attributes.content}
 									blockName={name}
 									onChange={obj => {
 										maxiSetAttributes(obj);

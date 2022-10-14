@@ -8,10 +8,14 @@ jest.mock('@wordpress/data', () => {
 		select: jest.fn(() => {
 			return {
 				receiveBaseBreakpoint: jest.fn(() => 'm'),
+				getPrevSavedAttrs: jest.fn(() => []),
 			};
 		}),
 		createReduxStore: jest.fn(),
 		register: jest.fn(),
+		dispatch: jest.fn(() => {
+			return { savePrevSavedAttrs: jest.fn() };
+		}),
 	};
 });
 

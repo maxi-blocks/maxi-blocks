@@ -1,12 +1,12 @@
 /**
  * WordPress dependencies
  */
-import { select } from '@wordpress/data';
+import { dispatch, select } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
-import { getDefaultAttribute } from '../styles';
+import { getDefaultAttribute, getLastBreakpointAttribute } from '../styles';
 import getBreakpointFromAttribute from '../styles/getBreakpointFromAttribute';
 
 /**
@@ -95,8 +95,50 @@ const flatWithGeneral = (
 ) => {
 	const result = {};
 
+	// This is an array of attributes labels used by handleSetAttributes to determine
+	// if the new attributes are containing attributes that were saved just before and are
+	// the same value but with new added content. For example, it happens with numbers coming
+	// from ANC, that they are saved more than once while writing the whole number.
+	const prevSavedAttrs = select('maxiBlocks/styles').getPrevSavedAttrs();
+
 	Object.entries(newAttributes).forEach(([key, value]) => {
 		const breakpoint = getBreakpointFromAttribute(key);
+
+		if (value)
+			prevSavedAttrs.forEach(attr => {
+				const attrBreakpoint = getBreakpointFromAttribute(attr);
+
+				const currentBreakpoint =
+					select('maxiBlocks').receiveMaxiDeviceType();
+
+				if (attrBreakpoint === 'general') {
+					const simpleLabel = getSimpleLabel(attr, attrBreakpoint);
+
+					if (`${simpleLabel}-${currentBreakpoint}` === key) {
+						result[key] = undefined;
+						result[`${simpleLabel}-general`] = value;
+					}
+
+					return;
+				}
+
+				const currentAttr = getLastBreakpointAttribute({
+					target: getSimpleLabel(attr, attrBreakpoint),
+					breakpoint: attrBreakpoint,
+					attributes,
+				});
+
+				if (attr === key && value.toString().startsWith(currentAttr)) {
+					if (currentBreakpoint === 'general') {
+						result[key] = undefined;
+						result[
+							`${getSimpleLabel(key, attrBreakpoint)}-general`
+						] = value;
+					}
+					if (currentBreakpoint === attrBreakpoint)
+						result[key] = value;
+				}
+			});
 
 		if (!breakpoint) {
 			result[key] = value;
@@ -164,6 +206,7 @@ const flatNewAttributes = (newAttributes, clientId, defaultAttributes) => {
 
 		const generalAttr = newAttributes[`${simpleLabel}-general`];
 
+		// if (isEqual(generalAttr, value) && breakpoint !== 'xxl') {
 		if (isEqual(generalAttr, value)) {
 			const defaultAttribute =
 				defaultAttributes?.[key] ??
@@ -177,7 +220,8 @@ const flatNewAttributes = (newAttributes, clientId, defaultAttributes) => {
 };
 
 /**
- * Removes new saved responsive attributes that have the same value than the saved general ones.
+ * Removes new saved responsive attributes on base breakpoint that have the same value
+ * than the saved general ones.
  */
 const removeSameAsGeneral = (newAttributes, attributes) => {
 	const result = {};
@@ -191,6 +235,8 @@ const removeSameAsGeneral = (newAttributes, attributes) => {
 
 		if (!breakpoint || breakpoint !== 'general') {
 			if (key !== baseLabel) result[key] = value;
+			else result[baseLabel] = undefined;
+
 			return;
 		}
 
@@ -276,6 +322,9 @@ const cleanAttributes = ({
 		...flatLowerAttr(result, attributes),
 	};
 
+	dispatch('maxiBlocks/styles').savePrevSavedAttrs(result);
+
+	// console.log(result);
 	return result;
 };
 

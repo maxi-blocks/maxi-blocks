@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { RangeControl } from '@wordpress/components';
 import { useInstanceId } from '@wordpress/compose';
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -93,6 +94,10 @@ const AdvancedNumberControl = props => {
 		optionType = 'number',
 	} = props;
 
+	const [currentValue, setCurrentValue] = useState(
+		value === undefined ? defaultValue : trim(value)
+	);
+
 	const classes = classnames('maxi-advanced-number-control', className);
 
 	const stepValue = unit === '-' || isEmpty(unit) ? 0.01 : step;
@@ -179,7 +184,7 @@ const AdvancedNumberControl = props => {
 								: 'hidden'
 						}
 						className='maxi-advanced-number-control__value'
-						value={value === undefined ? defaultValue : trim(value)}
+						value={currentValue}
 						onChange={e => {
 							let value = getNewValueFromEmpty(e);
 
@@ -198,11 +203,13 @@ const AdvancedNumberControl = props => {
 									value = min;
 							}
 
-							onChangeValue(
+							const result =
 								value === '' || optionType === 'string'
 									? value.toString()
-									: +value
-							);
+									: +value;
+
+							setCurrentValue(result);
+							onChangeValue(result);
 						}}
 						onKeyDown={e => {
 							if (
@@ -241,8 +248,9 @@ const AdvancedNumberControl = props => {
 					)}
 					{!disableReset && (
 						<ResetButton
-							onReset={e => {
+							onReset={() => {
 								onReset();
+								setCurrentValue(defaultValue);
 							}}
 							isSmall
 						/>

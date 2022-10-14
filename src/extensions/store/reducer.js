@@ -1,3 +1,5 @@
+import { dispatch } from '@wordpress/data';
+
 import { omit } from 'lodash';
 import getWinBreakpoint from '../dom/getWinBreakpoint';
 
@@ -44,6 +46,9 @@ const breakpointResizer = ({
 			}
 		}
 	}
+
+	// Clean prevSavedAttrs when changing the responsive stage
+	dispatch('maxiBlocks/styles').savePrevSavedAttrs([]);
 };
 
 const reducer = (

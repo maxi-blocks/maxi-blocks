@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { select } from '@wordpress/data';
+import { resolveSelect } from '@wordpress/data';
 import { useInnerBlocksProps } from '@wordpress/block-editor';
 import { useEntityBlockEditor } from '@wordpress/core-data';
 import { Spinner } from '@wordpress/components';
@@ -86,12 +86,12 @@ class edit extends MaxiBlockComponent {
 
 		if (!selectedMenuId) return;
 
-		const { getEditedEntityRecord } = select('core');
-
 		const args = ['postType', 'wp_navigation', selectedMenuId];
-		const editedNavigationMenu = getEditedEntityRecord(...args);
-
-		this.setState({ editedNavigationMenu });
+		resolveSelect('core')
+			.getEditedEntityRecord(...args)
+			.then(editedNavigationMenu =>
+				this.setState({ editedNavigationMenu })
+			);
 	}
 
 	maxiBlockDidUpdate(prevProps) {
@@ -113,13 +113,12 @@ class edit extends MaxiBlockComponent {
 			);
 		}
 
-		const { getEditedEntityRecord } = select('core');
-
 		const args = ['postType', 'wp_navigation', id];
-
-		const editedNavigationMenu = getEditedEntityRecord(...args);
-
-		this.setState({ editedNavigationMenu });
+		resolveSelect('core')
+			.getEditedEntityRecord(...args)
+			.then(editedNavigationMenu =>
+				this.setState({ editedNavigationMenu })
+			);
 	}
 
 	render() {

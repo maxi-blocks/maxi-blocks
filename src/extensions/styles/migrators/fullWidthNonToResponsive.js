@@ -2,7 +2,10 @@ import { cloneElement } from '@wordpress/element';
 
 import { isNil, isArray } from 'lodash';
 
-const isEligible = blockAttributes => !isNil(blockAttributes.blockFullWidth);
+const name = 'Remove Fullwidth to Responsive';
+
+const isEligible = blockAttributes =>
+	!isNil(blockAttributes.blockFullWidth) && isNil(blockAttributes.fullWidth);
 
 const attributes = isContainer => {
 	return {
@@ -18,6 +21,8 @@ const attributes = isContainer => {
 };
 
 const migrate = ({ newAttributes, prefix }) => {
+	if (!isEligible(newAttributes)) return newAttributes;
+
 	const { blockFullWidth, fullWidth } = newAttributes;
 	delete newAttributes.blockFullWidth;
 
@@ -29,6 +34,7 @@ const migrate = ({ newAttributes, prefix }) => {
 
 const saveMigrator = (saveInstance, props) => {
 	const { attributes } = props;
+
 	const { fullWidth, blockFullWidth } = attributes;
 
 	let newInstance = cloneElement(saveInstance, {
@@ -59,10 +65,11 @@ const saveMigrator = (saveInstance, props) => {
 		});
 	}
 
-	return newInstance;
+	return props => newInstance;
 };
 
 export default {
+	name,
 	isEligible,
 	attributes,
 	migrate,

@@ -102,6 +102,8 @@ class MaxiBlockComponent extends Component {
 		this.blockRef = createRef();
 		this.typography = getGroupAttributes(attributes, 'typography');
 
+		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
+
 		// Init
 		const newUniqueID = this.uniqueIDChecker(uniqueID);
 		if (!isEmpty(this.typography)) this.loadFonts();
@@ -418,10 +420,11 @@ class MaxiBlockComponent extends Component {
 							if (!blockData?.interactionBuilderSettings)
 								return relation;
 
-							const { hoverProp } =
-								blockData.interactionBuilderSettings.find(
-									({ label }) => label === settingName
-								);
+							const { hoverProp } = Object.values(
+								blockData.interactionBuilderSettings
+							)
+								.flat()
+								.find(({ label }) => label === settingName);
 
 							return {
 								...relation,

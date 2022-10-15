@@ -40,7 +40,7 @@ import {
 /**
  * External dependencies
  */
-import { isEmpty, isPlainObject } from 'lodash';
+import { isEmpty, isPlainObject, pickBy } from 'lodash';
 
 const getTransformControl = (name, { categories, selectors }) => ({
 	label: __('Transform', 'maxi-blocks'),
@@ -83,11 +83,31 @@ const getCanvasSettings = ({ name, customCss }) => [
 			'borderRadius',
 		],
 		component: props => {
-			const { attributes } = props;
+			const { attributes, onChange } = props;
 			const { 'background-layers': bgLayers } = attributes;
 
 			return !isEmpty(bgLayers) ? (
-				<BlockBackgroundControl {...props} isIB disableAddLayer />
+				<BlockBackgroundControl
+					{...props}
+					onChange={obj => {
+						const { 'background-layers': bgLayers, ...rest } = obj;
+						const newBgLayers = bgLayers.map(bgLayer =>
+							pickBy(
+								bgLayer,
+								(_value, key) =>
+									!key.includes('mediaID') &&
+									!key.includes('mediaURL')
+							)
+						);
+
+						onChange({
+							...rest,
+							'background-layers': newBgLayers,
+						});
+					}}
+					isIB
+					disableAddLayer
+				/>
 			) : (
 				<InfoBox
 					message={__('No background layers added', 'maxi-blocks')}
@@ -95,7 +115,11 @@ const getCanvasSettings = ({ name, customCss }) => [
 			);
 		},
 		helper: ({ obj, blockStyle }) =>
-			getBlockBackgroundStyles({ ...obj, blockStyle }),
+			getBlockBackgroundStyles({
+				...obj,
+				blockStyle,
+				ignoreMediaAttributes: true,
+			}),
 	},
 	{
 		label: __('Border', 'maxi-blocks'),

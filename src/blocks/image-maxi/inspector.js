@@ -14,6 +14,7 @@ import {
 	ClipPath,
 	ImageAltControl,
 	ImageShape,
+	ResponsiveTabsControl,
 	SelectControl,
 	SettingTabsControl,
 	TypographyControl,
@@ -26,7 +27,6 @@ import {
 } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { customCss } from './data';
-import ResponsiveTabsControl from '../../components/responsive-tabs-control';
 import { withMaxiInspector } from '../../extensions/inspector';
 
 /**

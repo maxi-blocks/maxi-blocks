@@ -7,12 +7,15 @@ import { InspectorControls } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import { AccordionControl, SettingTabsControl } from '../../components';
+import {
+	AccordionControl,
+	ResponsiveTabsControl,
+	SettingTabsControl,
+} from '../../components';
 import { NumberCounterControl } from './components';
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { customCss } from './data';
-import ResponsiveTabsControl from '../../components/responsive-tabs-control';
 import { withMaxiInspector } from '../../extensions/inspector';
 
 /**

@@ -11,6 +11,7 @@ import {
 	AccordionControl,
 	BlockStylesControl,
 	CustomLabel,
+	ResponsiveTabsControl,
 	SettingTabsControl,
 	SvgStrokeWidthControl,
 	SvgWidthControl,
@@ -23,7 +24,6 @@ import {
 import { setSVGContentWithBlockStyle } from '../../extensions/svg';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { customCss } from './data';
-import ResponsiveTabsControl from '../../components/responsive-tabs-control';
 import { withMaxiInspector } from '../../extensions/inspector';
 
 /**

@@ -1,2 +1,2 @@
-// eslint-disable-next-line import/prefer-default-export
+export { default as SvgAltControl } from './svg-alt-control';
 export { default as SvgColorControl } from './svg-color-control';

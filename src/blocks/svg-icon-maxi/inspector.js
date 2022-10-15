@@ -14,9 +14,8 @@ import {
 	SettingTabsControl,
 	SvgStrokeWidthControl,
 	SvgWidthControl,
-	SvgAltControl,
 } from '../../components';
-import { SvgColorControl } from './components';
+import { SvgAltControl, SvgColorControl } from './components';
 import {
 	getColorRGBAString,
 	getGroupAttributes,

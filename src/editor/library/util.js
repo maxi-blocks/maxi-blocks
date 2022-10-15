@@ -12,7 +12,7 @@ import { getBlockStyle, getPaletteAttributes } from '../../extensions/styles';
 /**
  * External dependencies
  */
-import { isNil, uniq, isEmpty } from 'lodash';
+import { isEmpty, isNil, uniq } from 'lodash';
 
 export const rgbToHex = color => {
 	if (isNil(color)) return '';

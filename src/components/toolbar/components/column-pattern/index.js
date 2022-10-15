@@ -19,7 +19,7 @@ import { toolbarColumnPattern } from '../../../../icons';
 const ToolbarColumnPattern = props => {
 	const { clientId, blockName, onChange, breakpoint } = props;
 
-	if (blockName !== 'maxi-blocks/row-maxi' || props['row-pattern-general'])
+	if (blockName !== 'maxi-blocks/row-maxi' || !props['row-pattern-general'])
 		return null;
 
 	return (

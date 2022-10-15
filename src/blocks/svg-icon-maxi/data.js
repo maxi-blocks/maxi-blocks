@@ -9,11 +9,11 @@ import { __ } from '@wordpress/i18n';
 import { createSelectors } from '../../extensions/styles/custom-css';
 import { createIconTransitions } from '../../extensions/styles';
 import {
-	SvgColorControl,
 	// SvgStrokeWidthControl,
 	BackgroundControl,
 	BorderControl,
 } from '../../components';
+import { SvgColorControl } from './components';
 import {
 	getBackgroundStyles,
 	getBorderStyles,

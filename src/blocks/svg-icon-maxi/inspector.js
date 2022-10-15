@@ -12,11 +12,11 @@ import {
 	BlockStylesControl,
 	CustomLabel,
 	SettingTabsControl,
-	SvgColorControl,
 	SvgStrokeWidthControl,
 	SvgWidthControl,
 	SvgAltControl,
 } from '../../components';
+import { SvgColorControl } from './components';
 import {
 	getColorRGBAString,
 	getGroupAttributes,

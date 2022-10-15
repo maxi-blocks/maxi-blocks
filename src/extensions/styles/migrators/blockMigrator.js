@@ -32,11 +32,10 @@ export const handleBlockMigrator = ({
 	migrators.map(migrator => {
 		const newMigrator = { ...migrator };
 
-		if (newMigrator.attributes)
-			newMigrator.attributes = {
-				...attributes,
-				...newMigrator.attributes(isContainer, attributes),
-			};
+		newMigrator.attributes = {
+			...attributes,
+			...(newMigrator.attributes?.(isContainer, attributes) ?? {}),
+		};
 
 		const originalMigrate = newMigrator.migrate;
 

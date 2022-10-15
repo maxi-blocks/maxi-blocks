@@ -963,24 +963,27 @@ const getGeneralBackgroundStyles = (
 		const widthBottom = getBorderValue('bottom', breakpoint);
 		const widthLeft = getBorderValue('left', breakpoint);
 		const widthRight = getBorderValue('right', breakpoint);
+
 		const widthUnit =
 			getLastBreakpointAttribute({
 				target: 'border-unit-width',
 				breakpoint,
 				attributes: props,
 			}) || 'px';
-		const horizontalWidth =
-			round(widthTop / 2, 2) + round(widthBottom / 2, 2);
-		const verticalWidth =
-			round(widthLeft / 2, 2) + round(widthRight / 2, 2);
 
 		if (border[breakpoint]['border-style']) {
 			size[breakpoint] = {
-				...((!!horizontalWidth || isHover) && {
-					top: -horizontalWidth + widthUnit,
+				...((widthTop === 0 || !!widthTop || isHover) && {
+					top: -round(widthTop, 2) + widthUnit,
 				}),
-				...((!!verticalWidth || isHover) && {
-					left: -verticalWidth + widthUnit,
+				...((widthBottom === 0 || !!widthBottom || isHover) && {
+					bottom: -round(widthBottom, 2) + widthUnit,
+				}),
+				...((widthLeft === 0 || !!widthLeft || isHover) && {
+					left: -round(widthLeft, 2) + widthUnit,
+				}),
+				...((widthRight === 0 || !!widthRight || isHover) && {
+					right: -round(widthRight, 2) + widthUnit,
 				}),
 			};
 		}

@@ -37,7 +37,7 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes, maxiSetAttributes } = this.props;
-		const { uniqueID, label, url } = attributes;
+		const { uniqueID, label, url, rel, title } = attributes;
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
@@ -56,6 +56,8 @@ class edit extends MaxiBlockComponent {
 					className='maxi-navigation-link-block__content menu-item__content'
 					href={url}
 					value={label}
+					rel={rel}
+					title={title}
 					identifier='content'
 					onChange={label => {
 						if (this.typingTimeout) {

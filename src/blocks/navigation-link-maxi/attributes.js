@@ -16,13 +16,7 @@ const attributes = {
 	url: {
 		type: 'string',
 	},
-	kind: {
-		type: 'string',
-	},
 	rel: {
-		type: 'string',
-	},
-	description: {
 		type: 'string',
 	},
 	opensInNewTab: {

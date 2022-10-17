@@ -40,51 +40,39 @@ const menuItemToBlockAttributes = ({
 	title: menuItemTitleField,
 	xfn,
 	classes,
-	// eslint-disable-next-line camelcase
-	attr_title,
+	attr_title: attrTitle,
 	object,
-	// eslint-disable-next-line camelcase
-	object_id,
-	description,
+	object_id: objectId,
 	url,
-	type: menuItemTypeField,
 	target,
-}) => {
-	return {
-		label: menuItemTitleField?.rendered || '',
-		...(object?.length && {
-			type: object,
+}) => ({
+	label: menuItemTitleField?.rendered || '',
+	...(object?.length && {
+		type: object,
+	}),
+	url: url || '',
+	...(xfn?.length &&
+		xfn.join(' ').trim() && {
+			rel: xfn.join(' ').trim(),
 		}),
-		kind: menuItemTypeField?.replace('_', '-') || 'custom',
-		url: url || '',
-		...(xfn?.length &&
-			xfn.join(' ').trim() && {
-				rel: xfn.join(' ').trim(),
-			}),
-		...(classes?.length &&
-			classes.join(' ').trim() && {
-				extraClassName: classes.join(' ').trim(),
-			}),
-		/* eslint-disable camelcase */
-		...(attr_title?.length && {
-			title: attr_title,
+	...(classes?.length &&
+		classes.join(' ').trim() && {
+			extraClassName: classes.join(' ').trim(),
 		}),
-		...(object_id &&
-			object !== 'custom' && {
-				id: object_id,
-			}),
-		/* eslint-enable camelcase */
-		...(description?.length && {
-			description,
+	...(attrTitle?.length && {
+		title: attrTitle,
+	}),
+	...(objectId &&
+		object !== 'custom' && {
+			id: objectId,
 		}),
-		...(target === '_blank' && {
-			opensInNewTab: true,
-		}),
-	};
-};
+	...(target === '_blank' && {
+		opensInNewTab: true,
+	}),
+});
 
 const mapMenuItemsToBlocks = menuItems => {
-	// The menu itema should be placed in menu_order sort order.
+	// The menu items should be placed in menu_order sort order.
 	const sortedItems = sortBy(menuItems, 'menu_order');
 
 	const innerBlocks = sortedItems.map(menuItem => {
@@ -138,7 +126,6 @@ const convertClassicMenuToBlocks = async menuId => {
 		context: 'view',
 	};
 	const menuItems = getMenuItems(args);
-	// const itemsLoaded = hasFinishedResolution('getMenuItems', [args]);
 
 	const innerBlocks = menuItemsToBlocks(menuItems);
 	const newMenuId = await createNewMenu(innerBlocks);

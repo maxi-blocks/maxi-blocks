@@ -31,7 +31,7 @@ const dynamicContent = {
 	},
 	'dc-format': {
 		type: 'string',
-		default: 'DD MMMM YYYY',
+		default: 'd.m.Y t',
 	},
 	'dc-date': {
 		type: 'boolean',

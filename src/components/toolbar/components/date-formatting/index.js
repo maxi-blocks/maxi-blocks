@@ -1,7 +1,14 @@
 import { __ } from '@wordpress/i18n';
+
+/**
+ * Styles
+ */
+import './editor.scss';
+
 import { useState, useEffect, useRef } from '@wordpress/element';
 import SelectControl from '../../../select-control';
 import SettingTabsControl from '../../../setting-tabs-control';
+import TextControl from '../../../text-control';
 import ToggleSwitch from '../../../toggle-switch';
 import { DateOptions } from './utils';
 
@@ -24,6 +31,20 @@ const DateFormatting = props => {
 	const [weekday, setWeekday] = useState(props.weekday);
 	const [year, setYear] = useState(props.year);
 	const [zone, setZone] = useState(props.zone);
+
+	const validateAnchor = str => {
+		if (
+			str.split('d').length + str.split('D').length - 2 < 2 &&
+			str.split('m').length + str.split('M').length - 2 < 2 &&
+			str.split('y').length + str.split('Y').length - 2 < 2
+		) {
+			const regex =
+				/^([dDmMyY]{0,1})(\s{0,1})([-,\.\/]{0,1})(\s{0,1})([dDmMyY]{0,1})(\s{0,1})([-,\.\/]{0,1})(\s{0,1})([dDmMyY]{0,1})(\s{0,1})([-,\.\/]{0,1})(\s{0,1})([t]{0,1})$/;
+			if (regex.test(str)) {
+				setFormat(str);
+			}
+		}
+	};
 
 	const dateFormat = _value => {
 		const options = {
@@ -75,18 +96,19 @@ const DateFormatting = props => {
 		]
 	);
 	return (
-		<>
+		<div className='date-formatting'>
 			<ToggleSwitch
 				label={__('Date setting', 'maxi-blocks')}
 				selected={status}
 				onChange={() => setStatus(!status)}
 			/>
 			{!status && (
-				<SelectControl
+				<TextControl
 					label={__('Date format', 'maxi-blocks')}
+					help={false}
+					placeholder={__('d.m.Y t')}
 					value={format}
-					options={DateOptions.format}
-					onChange={value => setFormat(value)}
+					onChange={val => validateAnchor(val)}
 				/>
 			)}
 			{status && (
@@ -199,7 +221,7 @@ const DateFormatting = props => {
 					)}
 				</>
 			)}
-		</>
+		</div>
 	);
 };
 

@@ -37,41 +37,6 @@ export const typeEra = [
 	},
 ];
 
-export const typeFormat = [
-	{
-		label: __('DD MMMM YYYY', 'maxi-blocks'),
-		value: 'DD MMMM yyyy',
-	},
-	{
-		label: __('DD/MM/YYYY', 'maxi-blocks'),
-		value: 'DD/MM/YYYY',
-	},
-	{
-		label: __('DD.MM.YYYY', 'maxi-blocks'),
-		value: 'DD.MM.yyyy',
-	},
-	{
-		label: __('DD-MM-YYYY', 'maxi-blocks'),
-		value: 'DD-MM-YYYY',
-	},
-	{
-		label: __('DD/MM/YYYY HH:mm:ss', 'maxi-blocks'),
-		value: 'dd/MM/YYYY HH:mm:ss',
-	},
-	{
-		label: __('DD.MM.yyyy HH:mm:ss', 'maxi-blocks'),
-		value: 'DD.MM.yyyy HH:mm:ss',
-	},
-	{
-		label: __('DD-MM-YYYY HH:mm:ss', 'maxi-blocks'),
-		value: 'DD-MM-YYYY HH:mm:ss',
-	},
-	{
-		label: __('DD MMMM YYYY zzzz', 'maxi-blocks'),
-		value: 'DD MMMM YYYY zzzz',
-	},
-];
-
 export const typeHour12 = [
 	{
 		label: __('12', 'maxi-blocks'),
@@ -1253,7 +1218,6 @@ export const typeZone = [
 export const DateOptions = {
 	day: typeDefault,
 	era: typeEra,
-	format: typeFormat,
 	hour12: typeHour12,
 	hour: typeDefault,
 	minute: typeDefault,

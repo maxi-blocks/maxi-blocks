@@ -1,0 +1,11 @@
+.date-formatting {
+	.maxi-base-control__field {
+		.maxi-text-control__input {
+			border: 1px solid var(--maxi-grey-1-color);
+			color: var(--maxi-grey-5-color);
+			width: 100%;
+			min-width: 50px;
+			max-width: 25rem;
+		}
+	}
+}

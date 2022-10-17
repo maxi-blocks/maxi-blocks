@@ -194,7 +194,19 @@ const DynamicContent = props => {
 		const NewDate = new Date(_value);
 		let options, content;
 		if (!date) {
-			content = moment(NewDate).format(format);
+			var map = {
+				d: 'D',
+				D: 'dddd',
+				m: 'MM',
+				M: 'MMMM',
+				y: 'YY',
+				Y: 'YYYY',
+				t: 'HH:MM:SS',
+			};
+			let newFormat = format.replace(/[dDmMyYt]/g, function (m) {
+				return map[m];
+			});
+			content = moment(NewDate).format(newFormat);
 		} else {
 			options = {
 				day: day === 'undefined' ? undefined : day,

@@ -264,8 +264,8 @@ const getMenuItemObject = props => {
 		'.maxi-navigation-submenu-block',
 	];
 
-	const response = itemSelectors.reduce((acc, selector) => {
-		return {
+	const response = itemSelectors.reduce(
+		(acc, selector) => ({
 			...acc,
 			[` ${selector} ${selector}__content`]: {
 				typography: getTypographyStyles({
@@ -296,19 +296,22 @@ const getMenuItemObject = props => {
 				}),
 			},
 			...getEffectStyles(props, ` ${selector} ${selector}__content`),
-			...getEffectStyles(
-				props,
-				` ${selector} ${selector}__content`,
-				true
-			),
-			...getEffectStyles(
-				props,
-				` ${selector} ${selector}__content`,
-				false,
-				true
-			),
-		};
-	}, {});
+			...(props['effect-status-hover'] &&
+				getEffectStyles(
+					props,
+					` ${selector} ${selector}__content`,
+					true
+				)),
+			...(props['effect-status-active'] &&
+				getEffectStyles(
+					props,
+					` ${selector} ${selector}__content`,
+					false,
+					true
+				)),
+		}),
+		{}
+	);
 
 	return response;
 };

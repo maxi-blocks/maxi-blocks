@@ -42,6 +42,7 @@ const normalMenuItemEffect = {
 	}),
 	...paletteAttributesCreator({
 		prefix,
+		palette: 5,
 	}),
 };
 

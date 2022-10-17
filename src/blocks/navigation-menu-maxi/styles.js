@@ -20,7 +20,7 @@ import {
 	getSizeStyles,
 	getTypographyStyles,
 } from '../../extensions/styles/helpers';
-import { customCss, transition } from './data';
+import data from './data';
 
 const getNormalObject = props => {
 	const response = {
@@ -323,9 +323,8 @@ const getStyles = props => {
 				':hover': getHoverObject(props),
 				...getMenuItemObject(props),
 			},
-			customCss.selectors,
-			props,
-			transition
+			data,
+			props
 		),
 	};
 

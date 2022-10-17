@@ -14,11 +14,11 @@ import createNewMenu from './create-new-menu';
  */
 import { sortBy } from 'lodash';
 
-const createDataTree = dataset => {
+const createDataTree = menuItems => {
 	const hashTable = {};
 	const dataTree = [];
 
-	for (const data of dataset) {
+	for (const data of menuItems) {
 		hashTable[data.id] = {
 			...data,
 			children: [],

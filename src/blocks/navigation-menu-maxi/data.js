@@ -46,8 +46,6 @@ const transition = {
 			title: 'Typography',
 			target: ' .menu-item__content',
 			hoverProp: 'menu-item-typography-status-hover',
-			property: 'typography',
-			limitless: true,
 		},
 		'menu item effect': {
 			title: 'Menu item effect',
@@ -56,7 +54,6 @@ const transition = {
 				' .menu-item__content::after',
 			],
 			hoverProp: 'effect-status-hover',
-			limitless: true,
 		},
 	},
 };

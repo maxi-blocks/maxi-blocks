@@ -13,7 +13,7 @@ import {
 	getFlexStyles,
 	getSizeStyles,
 } from '../../extensions/styles/helpers';
-import { customCss } from './data';
+import data from './data';
 
 const getNormalObject = props => {
 	const response = {
@@ -100,7 +100,7 @@ const getStyles = props => {
 				'': getNormalObject(props),
 				':hover': getHoverObject(props),
 			},
-			customCss.selectors,
+			data,
 			props
 		),
 	};

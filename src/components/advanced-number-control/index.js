@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { RangeControl } from '@wordpress/components';
 import { useInstanceId } from '@wordpress/compose';
-import { useState } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -98,6 +98,10 @@ const AdvancedNumberControl = props => {
 		value === undefined ? defaultValue : trim(value)
 	);
 
+	useEffect(() => {
+		if (!isNil(value) && value !== '') setCurrentValue(trim(value));
+	}, [value]);
+
 	const classes = classnames('maxi-advanced-number-control', className);
 
 	const stepValue = unit === '-' || isEmpty(unit) ? 0.01 : step;
@@ -143,14 +147,14 @@ const AdvancedNumberControl = props => {
 			target: { value: newValue },
 		} = e;
 
-		if (isNumber(value)) return newValue;
+		if (isNumber(currentValue)) return newValue;
 
 		const typeofEvent = getIsValid(inputType, true) ? 'type' : 'click';
 
 		switch (typeofEvent) {
 			case 'click':
 				return (
-					(isNumber(+placeholder) && isEmpty(value)
+					(isNumber(+placeholder) && isEmpty(currentValue)
 						? +placeholder
 						: 0) + +newValue
 				);

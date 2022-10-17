@@ -15,6 +15,7 @@ import {
 	getLastBreakpointAttribute,
 	getGroupAttributes,
 	getBlockStyle,
+	getDefaultAttribute,
 } from '../../extensions/styles';
 import { getDefaultLayerAttr } from './utils';
 
@@ -78,7 +79,7 @@ const ColorLayerContent = props => {
 	};
 
 	const getDefaultAttr = () => {
-		const prefix = 'background-';
+		const bgPrefix = `${prefix}background-`;
 
 		if (isLayer) {
 			const defaultColor = {};
@@ -95,26 +96,45 @@ const ColorLayerContent = props => {
 					  })
 					: getDefaultLayerAttr(
 							'colorOptions',
-							`${prefix}palette-status`
+							`${bgPrefix}palette-status`
 					  );
 
 			defaultColor.paletteStatus = getResetValue(
-				`${prefix}palette-status`
+				`${bgPrefix}palette-status`
 			);
-			defaultColor.paletteColor = getResetValue(`${prefix}palette-color`);
+			defaultColor.paletteColor = getResetValue(
+				`${bgPrefix}palette-color`
+			);
 			defaultColor.paletteOpacity = getResetValue(
-				`${prefix}palette-opacity`
+				`${bgPrefix}palette-opacity`
 			);
-			defaultColor.color = getResetValue(`${prefix}color`);
+			defaultColor.color = getResetValue(`${bgPrefix}color`);
 
 			return defaultColor;
 		}
 
-		return null;
+		return {
+			paletteStatus: getDefaultAttribute(
+				`${bgPrefix}palette-status-${breakpoint}`,
+				clientId
+			),
+			paletteColor: getDefaultAttribute(
+				`${bgPrefix}palette-color-${breakpoint}`,
+				clientId
+			),
+			paletteOpacity: getDefaultAttribute(
+				`${bgPrefix}palette-opacity-${breakpoint}`,
+				clientId
+			),
+			color: getDefaultAttribute(
+				`${bgPrefix}color-${breakpoint}`,
+				clientId
+			),
+		};
 	};
 
 	const onReset = ({
-		showPalette,
+		showPalette = false,
 		paletteStatus,
 		paletteColor,
 		paletteOpacity,
@@ -132,7 +152,7 @@ const ColorLayerContent = props => {
 		else {
 			const defaultColor = `rgba(${getPaletteColor({
 				clientId,
-				color: paletteColor || defaultColorAttr.paletteColor,
+				color: defaultColorAttr.paletteColor,
 				blockStyle: getBlockStyle(clientId),
 			})},${paletteOpacity || 1})`;
 
@@ -156,7 +176,8 @@ const ColorLayerContent = props => {
 					isHover,
 				})}
 				prefix={`${prefix}background-`}
-				onReset={onReset}
+				defaultColorAttributes={getDefaultAttr()}
+				{...(isLayer && { onReset })}
 				paletteStatus={getLastBreakpointAttribute({
 					target: `${prefix}background-palette-status`,
 					breakpoint,

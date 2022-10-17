@@ -80,6 +80,7 @@ describe('BackgroundControl', () => {
 
 	it('Check Background video layer responsive', async () => {
 		// General
+
 		await changeResponsive(page, 's');
 		const backgroundOpacityBase = await page.$eval(
 			'.maxi-background-control .maxi-opacity-control input',
@@ -128,9 +129,12 @@ describe('BackgroundControl', () => {
 
 		expect(backgroundOpacityM).toStrictEqual('44');
 		expect(await getBlockStyle(page)).toMatchSnapshot();
+		const layerExpect = await getBlockAttributes();
+		expect(layerExpect['background-layers']).toMatchSnapshot();
 	});
 
 	it('Check Background video layer hover', async () => {
+		debugger;
 		await changeResponsive(page, 'base');
 		const accordion = await openSidebarTab(
 			page,
@@ -224,6 +228,7 @@ describe('BackgroundControl', () => {
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
+
 	it('Check Background Shape layer display', async () => {
 		const checkEditor = await page.$eval(
 			'.maxi-background-displayer',

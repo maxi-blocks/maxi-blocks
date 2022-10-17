@@ -242,7 +242,7 @@ const ColorControl = props => {
 					color={getRGBA(color)}
 					onChangeInlineValue={onChangeInlineValue}
 					onChangeValue={onChangeValue}
-					onReset={onReset}
+					onReset={onResetValues}
 					onResetOpacity={onResetOpacity}
 					disableColorDisplay={disableColorDisplay}
 					disableOpacity={disableOpacity}

@@ -40,7 +40,7 @@ const flatSameAsPrev = (
 		}
 
 		const isXXL = breakpoint === 'xxl';
-		const simpleLabel = key.replace(`-${breakpoint}`, '');
+		const simpleLabel = getSimpleLabel(key, breakpoint);
 		const higherBreakpoints = breakpoints.slice(
 			0,
 			breakpoints.indexOf(breakpoint)
@@ -49,7 +49,7 @@ const flatSameAsPrev = (
 		if (isXXL) {
 			const generalAttr = attributes[`${simpleLabel}-general`];
 
-			if (isEqual(generalAttr, value)) {
+			if (!isNil(generalAttr) && isEqual(generalAttr, value)) {
 				// Not sure how it will work with XXL default values on
 				// blocks like Button Maxi. Need to test! :)
 				const defaultAttribute =
@@ -104,8 +104,11 @@ const flatWithGeneral = (
 	Object.entries(newAttributes).forEach(([key, value]) => {
 		const breakpoint = getBreakpointFromAttribute(key);
 
-		if (value)
+		if (!isNil(value))
 			prevSavedAttrs.forEach(attr => {
+				if (Object.prototype.hasOwnProperty.call(newAttributes, attr))
+					return;
+
 				const attrBreakpoint = getBreakpointFromAttribute(attr);
 
 				const currentBreakpoint =
@@ -113,8 +116,12 @@ const flatWithGeneral = (
 
 				if (attrBreakpoint === 'general') {
 					const simpleLabel = getSimpleLabel(attr, attrBreakpoint);
+					const generalAttr = attributes[`${simpleLabel}-general`];
 
-					if (`${simpleLabel}-${currentBreakpoint}` === key) {
+					if (
+						`${simpleLabel}-${currentBreakpoint}` === key &&
+						value.toString().startsWith(generalAttr)
+					) {
 						result[key] = undefined;
 						result[`${simpleLabel}-general`] = value;
 					}
@@ -146,10 +153,10 @@ const flatWithGeneral = (
 		}
 		if (breakpoint !== 'general') return;
 
-		const simpleLabel = key.replace(`-${breakpoint}`, '');
+		const simpleLabel = getSimpleLabel(key, breakpoint);
 		const attrOnXXL = attributes[`${simpleLabel}-xxl`];
 
-		if (isEqual(value, attrOnXXL)) {
+		if (!isNil(attrOnXXL) && isEqual(value, attrOnXXL)) {
 			const defaultAttribute =
 				defaultAttributes?.[key] ??
 				getDefaultAttribute(key, breakpoint, clientId);
@@ -171,7 +178,7 @@ const flatWithGeneral = (
 				defaultAttributes?.[label] ??
 				getDefaultAttribute(label, clientId, true);
 
-			if (isEqual(value, attribute))
+			if (isNil(attribute) && isEqual(value, attribute))
 				if (!isEqual(value, defaultAttribute))
 					result[label] = defaultAttribute;
 				else result[label] = undefined;
@@ -196,7 +203,7 @@ const flatNewAttributes = (newAttributes, clientId, defaultAttributes) => {
 			return;
 		}
 
-		const simpleLabel = key.replace(`-${breakpoint}`, '');
+		const simpleLabel = getSimpleLabel(key, breakpoint);
 		const existsGeneralAttr = Object.prototype.hasOwnProperty.call(
 			newAttributes,
 			`${simpleLabel}-general`
@@ -206,8 +213,7 @@ const flatNewAttributes = (newAttributes, clientId, defaultAttributes) => {
 
 		const generalAttr = newAttributes[`${simpleLabel}-general`];
 
-		// if (isEqual(generalAttr, value) && breakpoint !== 'xxl') {
-		if (isEqual(generalAttr, value)) {
+		if (!isNil(generalAttr) && isEqual(generalAttr, value)) {
 			const defaultAttribute =
 				defaultAttributes?.[key] ??
 				getDefaultAttribute(key, breakpoint, clientId);
@@ -229,11 +235,16 @@ const removeSameAsGeneral = (newAttributes, attributes) => {
 	Object.entries(newAttributes).forEach(([key, value]) => {
 		const breakpoint = getBreakpointFromAttribute(key);
 
+		if (!breakpoint) {
+			result[key] = value;
+			return;
+		}
+
 		const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 		const baseLabel = key.replace(`-${breakpoint}`, `-${baseBreakpoint}`);
 		const baseAttr = attributes?.[baseLabel];
 
-		if (!breakpoint || breakpoint !== 'general') {
+		if (!breakpoint !== 'general') {
 			if (key !== baseLabel) result[key] = value;
 			else result[baseLabel] = undefined;
 

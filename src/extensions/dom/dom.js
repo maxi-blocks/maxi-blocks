@@ -459,7 +459,9 @@ wp.domReady(() => {
 		}
 	});
 
-	if (getIsSiteEditor()) {
+	const isSiteEditor = getIsSiteEditor();
+
+	if (isSiteEditor) {
 		const changeHandlesDisplay = (display, wrapper) =>
 			Array.from(
 				wrapper.querySelectorAll('.resizable-editor__drag-handle')
@@ -575,7 +577,7 @@ wp.domReady(() => {
 		);
 
 		if (targetNode) {
-			if (getIsSiteEditor()) {
+			if (isSiteEditor) {
 				const isTemplatesListOpened = getIsTemplatesListOpened();
 
 				if (!isTemplatesListOpened && isNewEditorContentObserver) {

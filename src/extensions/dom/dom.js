@@ -560,14 +560,14 @@ wp.domReady(() => {
 		});
 	}
 
-	let isNewEditorContentObserver = true;
-
 	const resizeObserver = new ResizeObserver(() => {
 		const { width, height } = document
 			.querySelector('.interface-interface-skeleton__content')
 			.getBoundingClientRect();
 		dispatch('maxiBlocks').setEditorContentSize({ width, height });
 	});
+
+	let isNewEditorContentObserver = true;
 
 	const editorContentUnsubscribe = subscribe(() => {
 		const targetNode = document.querySelector(

@@ -575,25 +575,24 @@ wp.domReady(() => {
 		const targetNode = document.querySelector(
 			'.interface-interface-skeleton__content'
 		);
+		if (!targetNode) return;
 
-		if (targetNode) {
-			if (isSiteEditor) {
-				const isTemplatesListOpened = getIsTemplatesListOpened();
+		if (isSiteEditor) {
+			const isTemplatesListOpened = getIsTemplatesListOpened();
 
-				if (!isTemplatesListOpened && isNewEditorContentObserver) {
-					isNewEditorContentObserver = false;
-					resizeObserver.observe(targetNode);
-				} else if (isTemplatesListOpened) {
-					isNewEditorContentObserver = true;
-					resizeObserver.disconnect();
-				}
-			} else {
-				[targetNode, document.body, getSiteEditorIframeBody()].forEach(
-					element => element && resizeObserver.observe(element)
-				);
-
-				editorContentUnsubscribe();
+			if (!isTemplatesListOpened && isNewEditorContentObserver) {
+				isNewEditorContentObserver = false;
+				resizeObserver.observe(targetNode);
+			} else if (isTemplatesListOpened) {
+				isNewEditorContentObserver = true;
+				resizeObserver.disconnect();
 			}
+		} else {
+			[targetNode, document.body, getSiteEditorIframeBody()].forEach(
+				element => element && resizeObserver.observe(element)
+			);
+
+			editorContentUnsubscribe();
 		}
 	});
 });

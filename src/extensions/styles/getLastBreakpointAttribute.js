@@ -60,7 +60,17 @@ const getLastBreakpointAttributeSingle = (
 				isHover ? '-hover' : ''
 			}`
 		];
-
+	if (
+		(target === 'border-top-width' ||
+			target === 'border-bottom-width' ||
+			target === 'border-right-width' ||
+			target === 'border-left-width') &&
+		!attr[`border-style-${breakpoint}`] &&
+		Number.isFinite(attr[`${target}-${breakpoint}`])
+	) {
+		//console.log(target, breakpoint, attributes, isHover, avoidXXL);
+		//currentAttr = 0;
+	}
 	// In case that breakpoint is general and baseBreakpoint attribute exists,
 	// give priority to baseBreakpoint attribute
 	if (breakpoint === 'general') {
@@ -98,7 +108,7 @@ const getLastBreakpointAttributeSingle = (
 				];
 	}
 
-	if (isHover && !attrFilter(currentAttr))
+	if (isHover && !attrFilter(currentAttr)) {
 		currentAttr = getLastBreakpointAttributeSingle(
 			target,
 			breakpoint,
@@ -106,10 +116,11 @@ const getLastBreakpointAttributeSingle = (
 			false,
 			avoidXXL
 		);
+	}
 
 	// Helps responsive API: when breakpoint is general and the attribute is undefined,
 	// check for the win selected breakpoint
-	if (!currentAttr && breakpoint === 'general' && baseBreakpoint)
+	if (!currentAttr && breakpoint === 'general' && baseBreakpoint) {
 		currentAttr = getLastBreakpointAttributeSingle(
 			target,
 			baseBreakpoint,
@@ -117,6 +128,7 @@ const getLastBreakpointAttributeSingle = (
 			isHover,
 			baseBreakpoint === 'xxl' ? false : avoidXXL
 		);
+	}
 
 	return currentAttr;
 };

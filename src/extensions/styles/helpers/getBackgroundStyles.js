@@ -956,10 +956,38 @@ const getGeneralBackgroundStyles = (
 	});
 
 	breakpoints.forEach(breakpoint => {
-		const widthTop = getBorderValue('top', breakpoint);
-		const widthBottom = getBorderValue('bottom', breakpoint);
-		const widthLeft = getBorderValue('left', breakpoint);
-		const widthRight = getBorderValue('right', breakpoint);
+		/*if (
+			(target === 'border-top-width' ||
+				target === 'border-bottom-width' ||
+				target === 'border-right-width' ||
+				target === 'border-left-width') &&
+			!attr[`border-style-${breakpoint}`] &&
+			Number.isFinite(attr[`${target}-${breakpoint}`])
+		) {
+			console.log(attr);
+		}*/
+		let widthTop, widthBottom, widthLeft, widthRight;
+
+		if (props[`border-style-${breakpoint}`]) {
+			widthTop = getBorderValue('top', breakpoint);
+			widthBottom = getBorderValue('bottom', breakpoint);
+			widthLeft = getBorderValue('left', breakpoint);
+			widthRight = getBorderValue('right', breakpoint);
+			console.log(
+				breakpoint,
+				props[`border-style-${breakpoint}`],
+				widthTop,
+				widthBottom,
+				widthLeft,
+				widthRight,
+				props
+			);
+		} else {
+			widthTop = 0;
+			widthBottom = 0;
+			widthLeft = 0;
+			widthRight = 0;
+		}
 
 		const widthUnit =
 			getLastBreakpointAttribute({
@@ -967,25 +995,47 @@ const getGeneralBackgroundStyles = (
 				breakpoint,
 				attributes: props,
 			}) || 'px';
-		if (!isHover && (widthTop || widthBottom || widthLeft || widthRight)) {
+		if (
+			// !isHover &&
+			Number.isFinite(widthTop) ||
+			Number.isFinite(widthBottom) ||
+			Number.isFinite(widthLeft) ||
+			Number.isFinite(widthRight)
+		) {
 			if (!border[breakpoint]['border-style']) {
 				border[breakpoint]['border-style'] = [];
 			}
 		}
 		if (border[breakpoint]['border-style']) {
+			if (!isEmpty(props))
+				size[breakpoint] = {
+					...((Number.isFinite(widthTop) || isHover) && {
+						top: -round(widthTop, 2) + widthUnit,
+					}),
+					...((Number.isFinite(widthBottom) || isHover) && {
+						bottom: -round(widthBottom, 2) + widthUnit,
+					}),
+					...((Number.isFinite(widthLeft) || isHover) && {
+						left: -round(widthLeft, 2) + widthUnit,
+					}),
+					...((Number.isFinite(widthRight) || isHover) && {
+						right: -round(widthRight, 2) + widthUnit,
+					}),
+				};
+		} else {
 			size[breakpoint] = {
-				...((widthTop === 0 || !!widthTop || isHover) && {
-					top: -round(widthTop, 2) + widthUnit,
-				}),
-				...((widthBottom === 0 || !!widthBottom || isHover) && {
-					bottom: -round(widthBottom, 2) + widthUnit,
-				}),
-				...((widthLeft === 0 || !!widthLeft || isHover) && {
-					left: -round(widthLeft, 2) + widthUnit,
-				}),
-				...((widthRight === 0 || !!widthRight || isHover) && {
-					right: -round(widthRight, 2) + widthUnit,
-				}),
+				...{
+					top: widthTop,
+				},
+				...{
+					bottom: widthBottom,
+				},
+				...{
+					left: widthLeft,
+				},
+				...{
+					right: widthRight,
+				},
 			};
 		}
 	});
@@ -1015,15 +1065,24 @@ const getGeneralBackgroundStyles = (
 		[...breakpoints].reverse().forEach(breakpoint => {
 			if (
 				size[breakpoints[breakpoints.indexOf(breakpoint) - 1]]?.top ===
-					size[breakpoint]?.top ||
+				size[breakpoint]?.top
+			)
+				delete size[breakpoint]?.top;
+			if (
 				size[breakpoints[breakpoints.indexOf(breakpoint) - 1]]?.left ===
-					size[breakpoint]?.left ||
+				size[breakpoint]?.left
+			)
+				delete size[breakpoint]?.left;
+			if (
 				size[breakpoints[breakpoints.indexOf(breakpoint) - 1]]
-					?.bottom === size[breakpoint]?.bottom ||
+					?.bottom === size[breakpoint]?.bottom
+			)
+				delete size[breakpoint]?.bottom;
+			if (
 				size[breakpoints[breakpoints.indexOf(breakpoint) - 1]]
 					?.right === size[breakpoint]?.right
 			)
-				delete size[breakpoint];
+				delete size[breakpoint]?.right;
 		});
 
 	return { border, ...(!isEmpty(size) && { size }) };
@@ -1054,6 +1113,8 @@ const getBasicResponseObject = ({
 			blockStyle,
 			isHover
 		);
+	//if (props['background-layers']) console.log(borderObj);
+
 	const rowBorderRadiusObj = getGeneralBackgroundStyles(
 		rowBorderRadius,
 		{ ...rowBorderRadius },

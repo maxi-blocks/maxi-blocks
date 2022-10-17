@@ -224,9 +224,6 @@ const Inspector = props => {
 							<AccordionControl
 								isPrimary
 								items={[
-									...inspectorTabs.blockBackground({
-										props,
-									}),
 									...inspectorTabs.border({
 										props,
 									}),

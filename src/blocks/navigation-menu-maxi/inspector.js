@@ -113,12 +113,12 @@ const Inspector = props => {
 														)
 													) {
 														const newMenuId =
-															convertClassicMenuToBlocks(
+															await convertClassicMenuToBlocks(
 																val
 															);
 														maxiSetAttributes({
 															selectedMenuId:
-																newMenuId,
+																newMenuId.toString(),
 														});
 														return;
 													}
@@ -128,7 +128,8 @@ const Inspector = props => {
 														);
 
 													maxiSetAttributes({
-														selectedMenuId: `${newId}`,
+														selectedMenuId:
+															newId.toString(),
 													});
 												}}
 											/>

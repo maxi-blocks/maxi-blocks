@@ -15,7 +15,7 @@ import createNewMenu from './create-new-menu';
 import { sortBy } from 'lodash';
 
 const createDataTree = dataset => {
-	const hashTable = Object.create(null);
+	const hashTable = {};
 	const dataTree = [];
 
 	for (const data of dataset) {
@@ -126,11 +126,9 @@ const convertClassicMenuToBlocks = async menuId => {
 		context: 'view',
 	};
 	const menuItems = getMenuItems(args);
-
 	const innerBlocks = menuItemsToBlocks(menuItems);
-	const newMenuId = await createNewMenu(innerBlocks);
 
-	return newMenuId;
+	return createNewMenu(innerBlocks);
 };
 
 export default convertClassicMenuToBlocks;

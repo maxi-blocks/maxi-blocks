@@ -54,7 +54,7 @@ const flatSameAsPrev = (
 				// blocks like Button Maxi. Need to test! :)
 				const defaultAttribute =
 					defaultAttributes?.[key] ??
-					getDefaultAttribute(key, breakpoint, clientId);
+					getDefaultAttribute(key, clientId, true);
 
 				result[key] = defaultAttribute;
 			}
@@ -159,7 +159,7 @@ const flatWithGeneral = (
 		if (!isNil(attrOnXXL) && isEqual(value, attrOnXXL)) {
 			const defaultAttribute =
 				defaultAttributes?.[key] ??
-				getDefaultAttribute(key, breakpoint, clientId);
+				getDefaultAttribute(key, clientId, true);
 
 			result[`${simpleLabel}-xxl`] = defaultAttribute;
 		}
@@ -216,7 +216,7 @@ const flatNewAttributes = (newAttributes, clientId, defaultAttributes) => {
 		if (!isNil(generalAttr) && isEqual(generalAttr, value)) {
 			const defaultAttribute =
 				defaultAttributes?.[key] ??
-				getDefaultAttribute(key, breakpoint, clientId);
+				getDefaultAttribute(key, clientId, true);
 
 			result[key] = defaultAttribute;
 		}
@@ -264,7 +264,12 @@ const removeSameAsGeneral = (newAttributes, attributes) => {
 /**
  * Remove lower responsive saved attributes equal to new attributes (not just general).
  */
-const flatLowerAttr = (newAttributes, attributes) => {
+const flatLowerAttr = (
+	newAttributes,
+	attributes,
+	clientId,
+	defaultAttributes
+) => {
 	const result = {};
 
 	Object.entries(newAttributes).forEach(([key, value]) => {
@@ -282,17 +287,36 @@ const flatLowerAttr = (newAttributes, attributes) => {
 
 		let breakpointLock = false;
 
-		lowerBreakpoints.forEach(breakpoint => {
-			if (breakpointLock) return;
+		if (breakpoint !== 'xxl')
+			lowerBreakpoints.forEach(breakpoint => {
+				if (breakpointLock) return;
 
-			const label = `${simpleLabel}-${breakpoint}`;
-			const attribute = attributes?.[label];
+				const label = `${simpleLabel}-${breakpoint}`;
+				const attribute = attributes?.[label];
 
-			if (isNil(attribute)) return;
+				if (isNil(attribute)) return;
 
-			if (isEqual(value, attribute)) result[label] = undefined;
-			else breakpointLock = true;
-		});
+				const defaultAttribute =
+					defaultAttributes?.[label] ??
+					getDefaultAttribute(label, clientId, true);
+
+				if (isEqual(value, attribute)) {
+					result[label] = defaultAttribute;
+					return;
+				}
+
+				const generalAttribute = {
+					...defaultAttributes,
+					...attributes,
+				}?.[`${simpleLabel}-general`];
+
+				if (isEqual(attribute, generalAttribute)) {
+					result[label] = defaultAttribute;
+					return;
+				}
+
+				if (!isEqual(value, defaultAttribute)) breakpointLock = true;
+			});
 	});
 
 	return result;
@@ -330,7 +354,12 @@ const cleanAttributes = ({
 	};
 	result = {
 		...result,
-		...flatLowerAttr(result, attributes),
+		...flatLowerAttr(
+			newAttributes,
+			attributes,
+			clientId,
+			defaultAttributes
+		),
 	};
 
 	dispatch('maxiBlocks/styles').savePrevSavedAttrs(result);

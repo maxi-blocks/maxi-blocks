@@ -86,7 +86,11 @@ describe('cleanAttributes', () => {
 			'test-general': 100,
 		};
 
-		const result = cleanAttributes({ newAttributes, attributes });
+		const result = cleanAttributes({
+			newAttributes,
+			attributes,
+		});
+
 		const expectedResult = {
 			'test-xxl': undefined,
 		};
@@ -134,44 +138,19 @@ describe('cleanAttributes', () => {
 
 	it('Color layer object with defaultAttributes object', () => {
 		const newAttributes = {
-			'background-palette-status-m': true,
-			'background-palette-color-m': 4,
+			'test-status-m': true,
+			'test-m': 4,
 		};
 		const attributes = {
-			type: 'color',
-			isHover: false,
-			'display-general': 'block',
-			'background-palette-status-general': true,
-			'background-palette-color-general': 4,
-			'background-color-clip-path-status-general': false,
-			'background-color-wrapper-position-sync-general': 'all',
-			'background-color-wrapper-position-top-unit-general': 'px',
-			'background-color-wrapper-position-right-unit-general': 'px',
-			'background-color-wrapper-position-bottom-unit-general': 'px',
-			'background-color-wrapper-position-left-unit-general': 'px',
-			'background-color-wrapper-size-general': 100,
-			'background-color-wrapper-size-unit-general': '%',
-			order: 1,
-			id: 1,
-			'background-palette-color-m': 7,
-			'background-palette-status-m': true,
+			'test-status-general': true,
+			'test-general': 4,
+
+			'test-m': 7,
+			'test-status-m': true,
 		};
 		const defaultAttributes = {
-			type: 'color',
-			isHover: false,
-			'display-general': 'block',
-			'background-palette-status-general': true,
-			'background-palette-color-general': 4,
-			'background-color-clip-path-status-general': false,
-			'background-color-wrapper-position-sync-general': 'all',
-			'background-color-wrapper-position-top-unit-general': 'px',
-			'background-color-wrapper-position-right-unit-general': 'px',
-			'background-color-wrapper-position-bottom-unit-general': 'px',
-			'background-color-wrapper-position-left-unit-general': 'px',
-			'background-color-wrapper-size-general': 100,
-			'background-color-wrapper-size-unit-general': '%',
-			order: 1,
-			id: 1,
+			'test-status-general': true,
+			'test-general': 4,
 		};
 
 		const result = cleanAttributes({
@@ -180,8 +159,8 @@ describe('cleanAttributes', () => {
 			defaultAttributes,
 		});
 		const expectedResult = {
-			'background-palette-status-m': undefined,
-			'background-palette-color-m': undefined,
+			'test-status-m': undefined,
+			'test-m': undefined,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -189,30 +168,18 @@ describe('cleanAttributes', () => {
 
 	it('On changing general attribute, if coincide with winBreakpoint, it should overwrite it', () => {
 		const obj = {
-			'background-palette-status-general': true,
-			'background-palette-color-general': 4,
-			'background-palette-opacity-general': 1,
+			'test-status-general': true,
+			'test-general': 4,
+			'test-opacity-general': 1,
 		};
 		const attributes = {
-			type: 'color',
-			isHover: false,
-			'display-general': 'block',
-			'background-palette-status-general': true,
-			'background-palette-color-general': 4,
-			'background-color-clip-path-status-general': false,
-			'background-color-wrapper-position-sync-general': 'all',
-			'background-color-wrapper-position-top-unit-general': 'px',
-			'background-color-wrapper-position-right-unit-general': 'px',
-			'background-color-wrapper-position-bottom-unit-general': 'px',
-			'background-color-wrapper-position-left-unit-general': 'px',
-			'background-color-wrapper-size-general': 100,
-			'background-color-wrapper-size-unit-general': '%',
-			order: 1,
-			id: 1,
-			'background-palette-status-m': true,
-			'background-palette-opacity-m': 1,
-			'background-palette-color-m': 8,
-			'background-palette-opacity-general': 1,
+			'test-status-general': true,
+			'test-general': 4,
+
+			'test-status-m': true,
+			'test-opacity-m': 1,
+			'test-m': 8,
+			'test-opacity-general': 1,
 		};
 
 		const result = cleanAttributes({
@@ -221,12 +188,11 @@ describe('cleanAttributes', () => {
 		});
 
 		const expectedResult = {
-			'background-palette-status-general': true,
-			'background-palette-color-general': 4,
-			'background-palette-opacity-general': 1,
-			'background-palette-status-m': undefined,
-			'background-palette-color-m': undefined,
-			'background-palette-opacity-m': undefined,
+			'test-status-general': true,
+			'test-general': 4,
+			'test-opacity-general': 1,
+			'test-status-m': undefined,
+			'test-opacity-m': undefined,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -234,43 +200,17 @@ describe('cleanAttributes', () => {
 
 	it('On changing general attribute, if there is a smaller breakpoint with same value, it should be returned to its default', () => {
 		const obj = {
-			'background-palette-color-general': 8,
+			'test-general': 8,
 		};
 		const attributes = {
-			type: 'color',
-			isHover: false,
-			'display-general': 'block',
-			'background-palette-status-general': true,
-			'background-palette-color-general': 5,
-			'background-color-clip-path-status-general': false,
-			'background-color-wrapper-position-sync-general': 'all',
-			'background-color-wrapper-position-top-unit-general': 'px',
-			'background-color-wrapper-position-right-unit-general': 'px',
-			'background-color-wrapper-position-bottom-unit-general': 'px',
-			'background-color-wrapper-position-left-unit-general': 'px',
-			'background-color-wrapper-size-general': 100,
-			'background-color-wrapper-size-unit-general': '%',
-			order: 1,
-			id: 1,
-			'background-palette-color-m': 8,
+			'test-status-general': true,
+			'test-general': 5,
+
+			'test-m': 8,
 		};
 		const defaultAttributes = {
-			type: 'color',
-			isHover: false,
-			'display-general': 'block',
-			'background-palette-status-general': true,
-			'background-palette-color-general': 5,
-			'background-color-clip-path-status-general': false,
-			'background-color-wrapper-position-sync-general': 'all',
-			'background-color-wrapper-position-top-unit-general': 'px',
-			'background-color-wrapper-position-right-unit-general': 'px',
-			'background-color-wrapper-position-bottom-unit-general': 'px',
-			'background-color-wrapper-position-left-unit-general': 'px',
-			'background-color-wrapper-size-general': 100,
-			'background-color-wrapper-size-unit-general': '%',
-			order: 1,
-			id: 1,
-			'background-palette-color-m': 8,
+			'test-status-general': true,
+			'test-general': 5,
 		};
 
 		const result = cleanAttributes({
@@ -280,8 +220,8 @@ describe('cleanAttributes', () => {
 		});
 
 		const expectedResult = {
-			'background-palette-color-general': 8,
-			'background-palette-color-m': undefined,
+			'test-general': 8,
+			'test-m': undefined,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -289,45 +229,21 @@ describe('cleanAttributes', () => {
 
 	it('On changing general attribute, if there is a smaller breakpoint with same value, it should be returned to its default - 2', () => {
 		const newAttributes = {
-			'background-palette-status-general': true,
-			'background-palette-color-general': 7,
-			'background-palette-color-m': 7,
+			'test-status-general': true,
+			'test-general': 7,
+			'test-m': 7,
 		};
 		const attributes = {
-			type: 'color',
-			isHover: false,
-			'display-general': 'block',
-			'background-palette-status-general': true,
-			'background-palette-color-general': 4,
-			'background-color-clip-path-status-general': false,
-			'background-color-wrapper-position-sync-general': 'all',
-			'background-color-wrapper-position-top-unit-general': 'px',
-			'background-color-wrapper-position-right-unit-general': 'px',
-			'background-color-wrapper-position-bottom-unit-general': 'px',
-			'background-color-wrapper-position-left-unit-general': 'px',
-			'background-color-wrapper-size-general': 100,
-			'background-color-wrapper-size-unit-general': '%',
-			order: 1,
-			id: 1,
-			'background-palette-color-m': 8,
+			'test-status-general': true,
+			'test-general': 4,
+
+			'test-m': 8,
 		};
 		const defaultAttributes = {
-			type: 'color',
-			isHover: false,
-			'display-general': 'block',
-			'background-palette-status-general': true,
-			'background-palette-color-general': 4,
-			'background-color-clip-path-status-general': false,
-			'background-color-wrapper-position-sync-general': 'all',
-			'background-color-wrapper-position-top-unit-general': 'px',
-			'background-color-wrapper-position-right-unit-general': 'px',
-			'background-color-wrapper-position-bottom-unit-general': 'px',
-			'background-color-wrapper-position-left-unit-general': 'px',
-			'background-color-wrapper-size-general': 100,
-			'background-color-wrapper-size-unit-general': '%',
-			order: 1,
-			id: 1,
-			'background-palette-color-m': 8,
+			'test-status-general': true,
+			'test-general': 4,
+
+			'test-m': 8,
 		};
 
 		const result = cleanAttributes({
@@ -337,9 +253,9 @@ describe('cleanAttributes', () => {
 		});
 
 		const expectedResult = {
-			'background-palette-color-general': 7,
-			'background-palette-color-m': undefined,
-			'background-palette-status-general': true,
+			'test-general': 7,
+			'test-m': undefined,
+			'test-status-general': true,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -347,49 +263,18 @@ describe('cleanAttributes', () => {
 
 	it('On changing S attribute to the same than XS, having different attributes for general and XS, XS should disappear', () => {
 		const newAttributes = {
-			'background-palette-status-s': true,
-			'background-palette-color-s': 8,
-			'background-palette-opacity-s': 1,
+			'test-status-s': true,
+			'test-s': 8,
 		};
 		const attributes = {
-			type: 'color',
-			isHover: false,
-			'display-general': 'block',
-			'background-palette-status-general': true,
-			'background-palette-color-general': 4,
-			'background-color-clip-path-status-general': false,
-			'background-color-wrapper-position-sync-general': 'all',
-			'background-color-wrapper-position-top-unit-general': 'px',
-			'background-color-wrapper-position-right-unit-general': 'px',
-			'background-color-wrapper-position-bottom-unit-general': 'px',
-			'background-color-wrapper-position-left-unit-general': 'px',
-			'background-color-wrapper-size-general': 100,
-			'background-color-wrapper-size-unit-general': '%',
-			order: 1,
-			id: 1,
-			'background-palette-opacity-m': 1,
-			'background-palette-status-xs': true,
-			'background-palette-color-xs': 8,
+			'test-status-general': true,
+			'test-general': 4,
+			'test-status-xs': true,
+			'test-xs': 8,
 		};
 		const defaultAttributes = {
-			type: 'color',
-			isHover: false,
-			'display-general': 'block',
-			'background-palette-status-general': true,
-			'background-palette-color-general': 4,
-			'background-color-clip-path-status-general': false,
-			'background-color-wrapper-position-sync-general': 'all',
-			'background-color-wrapper-position-top-unit-general': 'px',
-			'background-color-wrapper-position-right-unit-general': 'px',
-			'background-color-wrapper-position-bottom-unit-general': 'px',
-			'background-color-wrapper-position-left-unit-general': 'px',
-			'background-color-wrapper-size-general': 100,
-			'background-color-wrapper-size-unit-general': '%',
-			order: 1,
-			id: 1,
-			'background-palette-opacity-m': 1,
-			'background-palette-status-xs': true,
-			'background-palette-color-xs': 8,
+			'test-status-general': true,
+			'test-general': 4,
 		};
 
 		const result = cleanAttributes({
@@ -399,13 +284,43 @@ describe('cleanAttributes', () => {
 		});
 
 		const expectedResult = {
-			'background-palette-color-s': 8,
-			'background-palette-color-xs': undefined,
-			'background-palette-opacity-s': undefined,
-			'background-palette-status-s': true,
-			'background-palette-status-xs': undefined,
+			'test-s': 8,
+			'test-xs': undefined,
+			'test-status-s': undefined,
+			'test-status-xs': undefined,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
+	});
+
+	it('With a General value equal to M value, and a different value on XL, when resetting XL, M should be replaced with default', () => {
+		const obj = {
+			newAttributes: {
+				'border-color-l': undefined,
+				'border-palette-color-l': undefined,
+				'border-palette-opacity-l': 1,
+				'border-palette-status-l': undefined,
+			},
+			attributes: {
+				'border-palette-color-general': 2,
+				'border-palette-color-l': 4,
+				'border-palette-color-m': 2,
+			},
+			defaultAttributes: {
+				'border-palette-color-general': 2,
+			},
+		};
+
+		const expectedResult = {
+			'border-color-l': undefined,
+			'border-palette-color-l': undefined,
+			'border-palette-color-m': undefined,
+			'border-palette-opacity-l': 1,
+			'border-palette-status-l': undefined,
+		};
+
+		const result = cleanAttributes(obj);
+
+		expect(expectedResult).toStrictEqual(result);
 	});
 });

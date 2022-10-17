@@ -7,6 +7,7 @@ import { select, dispatch, subscribe } from '@wordpress/data';
  * Internal dependencies
  */
 import { getPageFonts, loadFonts } from '../text/fonts';
+import { updateSCOnEditor } from '../style-cards';
 import {
 	getIsSiteEditor,
 	getIsTemplatePart,
@@ -458,21 +459,6 @@ wp.domReady(() => {
 		}
 	});
 
-	const fseIframeObserverUnsubscribe = subscribe(() => {
-		// Need to add 'maxi-blocks--active' class to the FSE iframe body
-		// because gutenberg is filtering the iframe classList
-		// https://github.com/WordPress/gutenberg/blob/trunk/packages/block-editor/src/components/iframe/index.js#L213-L220
-		const targetNode = getSiteEditorIframeBody();
-
-		if (targetNode && !targetNode.classList.contains('maxi-blocks--active'))
-			targetNode.classList.add('maxi-blocks--active');
-
-		if (!targetNode && document.querySelector('.edit-post-visual-editor')) {
-			// Dismantling the second bomb if we aren't in the FSE
-			fseIframeObserverUnsubscribe();
-		}
-	});
-
 	if (getIsSiteEditor()) {
 		const changeHandlesDisplay = (display, wrapper) =>
 			Array.from(
@@ -529,9 +515,35 @@ wp.domReady(() => {
 			}, 150);
 		});
 
+		let isSCLoaded = false;
 		let isNewObserver = true;
 
 		subscribe(() => {
+			// Need to add 'maxi-blocks--active' class to the FSE iframe body
+			// because gutenberg is filtering the iframe classList
+			// https://github.com/WordPress/gutenberg/blob/trunk/packages/block-editor/src/components/iframe/index.js#L213-L220
+			const targetNode = getSiteEditorIframeBody();
+			if (
+				targetNode &&
+				!targetNode.classList.contains('maxi-blocks--active')
+			)
+				targetNode.classList.add('maxi-blocks--active');
+
+			// Adding the SC styles after switching between the templates
+			if (getIsTemplatesListOpened()) isSCLoaded = false;
+
+			if (targetNode && !isSCLoaded) {
+				setTimeout(() => {
+					const SC = select(
+						'maxiBlocks/style-cards'
+					).receiveMaxiActiveStyleCard();
+					if (SC) {
+						updateSCOnEditor(SC.value);
+						isSCLoaded = true;
+					}
+				}, 150);
+			}
+
 			if (getIsTemplatePart()) {
 				if (getIsTemplatesListOpened()) {
 					isNewObserver = true;

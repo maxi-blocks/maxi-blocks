@@ -2,7 +2,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	z-index: unset;
+	z-index: revert;
 
 	&__popup-wrapper {
 		top: 0;
@@ -44,6 +44,7 @@
 	}
 
 	&__overlay {
+		position: relative;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -101,6 +102,12 @@
 	&__video-container &__close-button {
 		transform: translate(100%, -100%);
 	}
+
+	&__placeholder {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
 }
 
 @keyframes popup-zoom-out {
@@ -118,5 +125,10 @@
 	}
 	100% {
 		transform: scale(1);
+	}
+}
+@media all and (max-width: 1024px) {
+	.maxi-video-block__video-container--popup {
+		width: 90%;
 	}
 }

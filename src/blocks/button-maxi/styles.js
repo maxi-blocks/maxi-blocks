@@ -20,8 +20,7 @@ import {
 	getZIndexStyles,
 	getButtonIconStyles,
 } from '../../extensions/styles/helpers';
-import { selectorsButton } from './custom-css';
-import transitionObj from './transitionObj';
+import data from './data';
 
 const getWrapperObject = props => {
 	const response = {
@@ -257,6 +256,15 @@ const getStyles = (props, scValues) => {
 				':hover': getHoverWrapperObject(props),
 				' .maxi-button-block__button': getNormalObject(props),
 				' .maxi-button-block__content': getContentObject(props),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(props, [
+						'blockBackground',
+						'border',
+						'borderWidth',
+						'borderRadius',
+					]),
+					blockStyle,
+				}),
 				...getButtonIconStyles({
 					obj: props,
 					blockStyle,
@@ -278,6 +286,7 @@ const getStyles = (props, scValues) => {
 						'borderRadius',
 					]),
 					blockStyle,
+					isHover: true,
 				}),
 				...getButtonIconStyles({
 					obj: props,
@@ -287,9 +296,8 @@ const getStyles = (props, scValues) => {
 					wrapperTarget: '.maxi-button-block__button',
 				}),
 			},
-			selectorsButton,
-			props,
-			transitionObj
+			data,
+			props
 		),
 	};
 

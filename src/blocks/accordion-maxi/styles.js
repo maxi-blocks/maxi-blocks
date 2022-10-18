@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { isNil, isEmpty } from 'lodash';
+import { isNil } from 'lodash';
 
 /**
  * Internal dependencies
@@ -10,12 +10,12 @@ import {
 	getPaletteAttributes,
 	getColorRGBAString,
 	styleProcessor,
-	getLastBreakpointAttribute,
 	getGroupAttributes,
 } from '../../extensions/styles';
 import {
 	getBorderStyles,
 	getBoxShadowStyles,
+	getButtonIconStyles,
 	getDisplayStyles,
 	getDividerStyles,
 	getFlexStyles,
@@ -24,12 +24,10 @@ import {
 	getOverflowStyles,
 	getPositionStyles,
 	getSizeStyles,
-	getSVGStyles,
+	getTypographyStyles,
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
-import { selectorsAccordion } from './custom-css';
-
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+import data from './data';
 
 const getNormalObject = props => {
 	const response = {
@@ -114,66 +112,34 @@ const getHoverObject = props => {
 	return response;
 };
 
-const getIconSize = (obj, isHover = false) => {
-	const response = {
-		label: 'Icon size',
-		general: {},
-	};
-
-	breakpoints.forEach(breakpoint => {
-		response[breakpoint] = {};
-
-		const iconWidth = obj[`icon-width-${breakpoint}`];
-
-		if (!isNil(iconWidth) && !isEmpty(iconWidth)) {
-			const iconUnit =
-				getLastBreakpointAttribute({
-					target: 'icon-width-unit',
-					breakpoint,
-					attributes: obj,
-					isHover,
-				}) ?? 'px';
-			response[breakpoint].width = `${iconWidth}${iconUnit}`;
-			response[breakpoint].height = `${iconWidth}${iconUnit}`;
-		}
-
-		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')
-			delete response[breakpoint];
-	});
-
-	return { iconSize: response };
-};
-
 const getIconObject = props => {
 	const response = {
-		...getSVGStyles({
+		...getButtonIconStyles({
 			obj: props,
-			target: '.maxi-pane-block[aria-expanded=false] .maxi-pane-block__icon',
-			prefix: 'icon-',
 			blockStyle: props.blockStyle,
+			target: ' .maxi-pane-block__icon',
+			wrapperTarget:
+				' .maxi-pane-block[aria-expanded=false] .maxi-pane-block__header',
 		}),
-		...getSVGStyles({
-			obj: props,
-			target: '.maxi-pane-block[aria-expanded=true] .maxi-pane-block__icon',
-			prefix: 'active-icon-',
-			blockStyle: props.blockStyle,
-		}),
-		...(props['icon-status-hover'] && {
-			...getSVGStyles({
+		...(props['icon-status-hover'] &&
+			getButtonIconStyles({
 				obj: props,
-				target: '.maxi-pane-block[aria-expanded]:hover .maxi-pane-block__icon',
-				prefix: 'icon-',
 				blockStyle: props.blockStyle,
+				target: ' .maxi-pane-block__icon',
+				wrapperTarget:
+					' .maxi-pane-block[aria-expanded] .maxi-pane-block__header',
 				isHover: true,
-			}),
-			' .maxi-pane-block[aria-expanded]:hover .maxi-pane-block__icon svg':
-				getIconSize(props, true),
+			})),
+		...getButtonIconStyles({
+			obj: props,
+			blockStyle: props.blockStyle,
+			target: ' .maxi-pane-block__icon',
+			wrapperTarget:
+				' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__header',
+			prefix: 'active-',
 		}),
-		' .maxi-pane-block[aria-expanded=false] .maxi-pane-block__icon svg':
-			getIconSize(props, false),
-		' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__icon svg':
-			getIconSize(props, false, 'active-'),
 	};
+
 	return response;
 };
 
@@ -197,11 +163,11 @@ const getColor = ({ props, prefix, isHover, breakpoint }) => {
 	return null;
 };
 
-const getPaneContentStyles = props => {
+const getPaneContentWrapperStyles = props => {
 	const { animationDuration } = props;
 
 	const getPaneContentTransition = duration => {
-		return `max-height ${duration}s`;
+		return `max-height ${duration}s, padding-top ${duration}s, padding-bottom ${duration}s`;
 	};
 
 	const response = {
@@ -218,12 +184,20 @@ const getPaneContentStyles = props => {
 
 const getPaneTitleStyles = (props, prefix, isHover = false) => {
 	const response = {
-		paneTitleColor: {
-			label: 'Pane title color',
-			general: {
-				color: getColor({ props, prefix: `${prefix}title-`, isHover }),
+		typography: getTypographyStyles({
+			obj: {
+				...getGroupAttributes(props, 'accordionTitle'),
 			},
-		},
+			...(isHover && {
+				normalTypography: {
+					...getGroupAttributes(props, 'typography', false, prefix),
+				},
+			}),
+			isHover,
+			prefix,
+			blockStyle: props.blockStyle,
+			textLevel: props.titleLevel,
+		}),
 	};
 
 	return response;
@@ -248,9 +222,9 @@ const getPaneHeaderStyles = (props, prefix, isHover = false) => {
 
 const getPaneHeaderObject = props => {
 	const response = {
-		' .maxi-pane-block .maxi-pane-block__header': {
+		' .maxi-pane-block .maxi-pane-block__header-content': {
 			paneHeader: {
-				label: 'Pane header',
+				label: 'Pane header content',
 				general: {
 					...getPaneHeaderStyles(props, '').paneHeader.general,
 					'flex-direction':
@@ -260,20 +234,31 @@ const getPaneHeaderObject = props => {
 				},
 			},
 		},
-		' .maxi-pane-block .maxi-pane-block__header::after': {
+		' .maxi-pane-block .maxi-pane-block__header-line-container': {
+			headerLine: {
+				...getDividerStyles(
+					props,
+					'container',
+					props.blockStyle,
+					false,
+					'header-'
+				),
+			},
+		},
+		' .maxi-pane-block .maxi-pane-block__header-line': {
 			headerLine: {
 				...getDividerStyles(
 					props,
 					'line',
 					props.blockStyle,
 					false,
-					'',
+					'header-',
 					true
 				),
 			},
 		},
-		...(props['line-status-active'] && {
-			' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__header::after':
+		...(props['header-line-status-active'] && {
+			' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__header-line':
 				{
 					headerLine: {
 						...getDividerStyles(
@@ -281,14 +266,14 @@ const getPaneHeaderObject = props => {
 							'line',
 							props.blockStyle,
 							false,
-							'active-',
+							'header-active-',
 							true
 						),
 					},
 				},
 		}),
-		...(props['line-status-hover'] && {
-			' .maxi-pane-block[aria-expanded]:hover .maxi-pane-block__header::after':
+		...(props['header-line-status-hover'] && {
+			' .maxi-pane-block[aria-expanded]:hover .maxi-pane-block__header-line':
 				{
 					headerLine: {
 						...getDividerStyles(
@@ -296,7 +281,7 @@ const getPaneHeaderObject = props => {
 							'line',
 							props.blockStyle,
 							true,
-							'',
+							'header-',
 							true
 						),
 					},
@@ -308,12 +293,16 @@ const getPaneHeaderObject = props => {
 			getPaneHeaderStyles(props, '', true),
 		' .maxi-pane-block .maxi-pane-block__title': getPaneTitleStyles(
 			props,
-			''
+			'title-'
 		),
-		' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__title':
-			getPaneTitleStyles(props, 'active-'),
-		' .maxi-pane-block[aria-expanded]:hover .maxi-pane-block__title':
-			getPaneTitleStyles(props, '', true),
+		...(props['title-typography-status-active'] && {
+			' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__title':
+				getPaneTitleStyles(props, 'active-title-'),
+		}),
+		...(props['title-typography-status-hover'] && {
+			' .maxi-pane-block[aria-expanded]:hover .maxi-pane-block__title':
+				getPaneTitleStyles(props, 'title-', true),
+		}),
 	};
 
 	return response;
@@ -323,23 +312,34 @@ const getPaneContentObject = props => {
 	const { accordionLayout } = props;
 
 	const response = {
-		' .maxi-pane-block .maxi-pane-block__content':
-			getPaneContentStyles(props),
+		' .maxi-pane-block .maxi-pane-block__content-wrapper':
+			getPaneContentWrapperStyles(props),
 		...(accordionLayout === 'simple' && {
-			' .maxi-pane-block .maxi-pane-block__content::after': {
+			' .maxi-pane-block .maxi-pane-block__content-line-container': {
+				paneLine: {
+					...getDividerStyles(
+						props,
+						'container',
+						props.blockStyle,
+						false,
+						'content-'
+					),
+				},
+			},
+			' .maxi-pane-block .maxi-pane-block__content-line': {
 				paneLine: {
 					...getDividerStyles(
 						props,
 						'line',
 						props.blockStyle,
 						false,
-						'',
+						'content-',
 						true
 					),
 				},
 			},
-			...(props['line-status-active'] && {
-				' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__content::after':
+			...(props['content-line-status-active'] && {
+				' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__content-line':
 					{
 						paneLine: {
 							...getDividerStyles(
@@ -347,14 +347,14 @@ const getPaneContentObject = props => {
 								'line',
 								props.blockStyle,
 								false,
-								'active-',
+								'content-active-',
 								true
 							),
 						},
 					},
 			}),
-			...(props['line-status-hover'] && {
-				' .maxi-pane-block[aria-expanded]:hover .maxi-pane-block__content::after':
+			...(props['content-line-status-hover'] && {
+				' .maxi-pane-block[aria-expanded]:hover .maxi-pane-block__content-line':
 					{
 						paneLine: {
 							...getDividerStyles(
@@ -362,7 +362,7 @@ const getPaneContentObject = props => {
 								'line',
 								props.blockStyle,
 								true,
-								'',
+								'content-',
 								true
 							),
 						},
@@ -385,7 +385,7 @@ const getStyles = props => {
 				...getIconObject(props),
 				...getPaneContentObject(props),
 			},
-			selectorsAccordion,
+			data,
 			props
 		),
 	};

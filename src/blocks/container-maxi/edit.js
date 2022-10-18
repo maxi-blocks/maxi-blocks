@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+import { dispatch } from '@wordpress/data';
+
+/**
  * Internal dependencies
  */
 import Inspector from './inspector';
@@ -14,7 +19,7 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
-import copyPasteMapping from './copy-paste-mapping';
+import { copyPasteMapping } from './data';
 
 /**
  * General
@@ -49,6 +54,13 @@ class edit extends MaxiBlockComponent {
 				},
 			}),
 		};
+	}
+
+	maxiBlockDidUpdate() {
+		if (!this.props.hasInnerBlocks) {
+			const { removeBlock } = dispatch('core/block-editor');
+			removeBlock(this.props.clientId);
+		}
 	}
 
 	render() {

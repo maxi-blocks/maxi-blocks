@@ -144,7 +144,11 @@ const AdvancedNumberControl = props => {
 
 		switch (typeofEvent) {
 			case 'click':
-				return (isNumber(placeholder) ? placeholder : 0) + +newValue;
+				return (
+					(isNumber(+placeholder) && isEmpty(value)
+						? +placeholder
+						: 0) + +newValue
+				);
 			case 'type':
 			default:
 				return newValue;
@@ -224,7 +228,11 @@ const AdvancedNumberControl = props => {
 
 								if (value > minMaxSettings[val]?.max) {
 									onChangeValue(
-										minMaxSettings[val]?.max,
+										optionType === 'string'
+											? minMaxSettings[
+													val
+											  ]?.max.toString()
+											: minMaxSettings[val]?.max,
 										val
 									);
 								}
@@ -241,6 +249,7 @@ const AdvancedNumberControl = props => {
 					)}
 					<RangeControl
 						label={label}
+						className='maxi-advanced-number-control__range'
 						value={
 							+(!isNil(value)
 								? value

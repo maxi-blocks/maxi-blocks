@@ -52,7 +52,7 @@ const BlockBackgroundControl = props => {
 	]);
 
 	const hoverStatus = getAttributeValue({
-		target: 'block-background-hover-status',
+		target: 'block-background-status-hover',
 		props,
 		prefix,
 	});

@@ -9,6 +9,7 @@ import { __ } from '@wordpress/i18n';
 import ColorControl from '../color-control';
 import ClipPath from '../clip-path-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
+import SizeAndPositionLayerControl from './sizeAndPositionLayerControl';
 import {
 	getAttributeKey,
 	getLastBreakpointAttribute,
@@ -149,14 +150,22 @@ const ColorLayerContent = props => {
 						props,
 						'clipPath',
 						false,
-						'background-color-'
+						`${prefix}background-color-`
 					)}
 					{...colorOptions}
 					isHover={isHover}
-					prefix='background-color-'
+					prefix={`${prefix}background-color-`}
 					breakpoint={breakpoint}
 				/>
 			)}
+			<SizeAndPositionLayerControl
+				prefix={prefix}
+				options={colorOptions}
+				onChange={onChange}
+				isHover={isHover}
+				isLayer={isLayer}
+				breakpoint={breakpoint}
+			/>
 		</>
 	);
 };

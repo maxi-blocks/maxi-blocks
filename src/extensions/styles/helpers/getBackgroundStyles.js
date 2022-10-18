@@ -42,7 +42,7 @@ export const getColorBackgroundObject = ({
 	backgroundColorProperty = 'background-color',
 	...props
 }) => {
-	const hoverStatus = props[`${prefix}background-hover-status`];
+	const hoverStatus = props[`${prefix}background-status-hover`];
 	const {
 		'hover-background-color-global': isActive,
 		'hover-background-color-all': affectAll,
@@ -494,18 +494,19 @@ export const getVideoBackgroundObject = ({
 	return response;
 };
 
-const getSVGWrapperBackgroundObject = ({
+const getWrapperObject = ({
 	breakpoint,
 	isHover = false,
+	prefix = '',
 	...props
 }) => {
 	const response = {
-		label: 'SVG Wrapper Background',
+		label: 'Background layer wrapper',
 		[breakpoint]: {},
 	};
 
 	const bgSVGSize = getLastBreakpointAttribute({
-		target: 'background-svg-size',
+		target: `${prefix}size`,
 		breakpoint,
 		attributes: props,
 		isHover,
@@ -513,7 +514,7 @@ const getSVGWrapperBackgroundObject = ({
 
 	if (isNumber(bgSVGSize)) {
 		const bgSVGSizeUnit = getLastBreakpointAttribute({
-			target: 'background-svg-size-unit',
+			target: `${prefix}size-unit`,
 			breakpoint,
 			attributes: props,
 			isHover,
@@ -526,14 +527,14 @@ const getSVGWrapperBackgroundObject = ({
 
 	keyWords.forEach(keyWord => {
 		const positionValue = getLastBreakpointAttribute({
-			target: `background-svg-position-${keyWord}`,
+			target: `${prefix}position-${keyWord}`,
 			breakpoint,
 			attributes: props,
 			isHover,
 		});
 
 		const positionUnit = getLastBreakpointAttribute({
-			target: `background-svg-position-${keyWord}-unit`,
+			target: `${prefix}position-${keyWord}-unit`,
 			breakpoint,
 			attributes: props,
 			isHover,
@@ -547,7 +548,7 @@ const getSVGWrapperBackgroundObject = ({
 		}
 	});
 
-	return response;
+	return !isEmpty(response[breakpoint]) ? response : {};
 };
 
 const getSVGBackgroundObject = ({
@@ -601,6 +602,16 @@ const getBackgroundLayers = ({
 					[type]: {
 						...merge(
 							response?.[layerTarget]?.[type],
+							getWrapperObject({
+								...getGroupAttributes(
+									layer,
+									'backgroundColor',
+									isHover
+								),
+								breakpoint,
+								prefix: 'background-color-wrapper-',
+								isHover,
+							}),
 							getColorBackgroundObject({
 								...getGroupAttributes(
 									layer,
@@ -642,6 +653,16 @@ const getBackgroundLayers = ({
 								prefix,
 								blockStyle,
 								breakpoint,
+							}),
+							getWrapperObject({
+								...getGroupAttributes(
+									layer,
+									'backgroundGradient',
+									isHover
+								),
+								breakpoint,
+								prefix: 'background-gradient-wrapper-',
+								isHover,
 							}),
 							getDisplayStyles(
 								{
@@ -692,6 +713,16 @@ const getBackgroundLayers = ({
 									prefix,
 									breakpoint,
 									isParallax: parallaxStatus,
+								}),
+								getWrapperObject({
+									...getGroupAttributes(
+										layer,
+										'backgroundImage',
+										isHover
+									),
+									breakpoint,
+									prefix: 'background-image-wrapper-',
+									isHover,
 								}),
 								getDisplayStyles(
 									{
@@ -773,6 +804,16 @@ const getBackgroundLayers = ({
 								prefix,
 								breakpoint,
 							}),
+							getWrapperObject({
+								...getGroupAttributes(
+									layer,
+									'backgroundVideo',
+									isHover
+								),
+								breakpoint,
+								prefix: 'background-video-wrapper-',
+								isHover,
+							}),
 							getDisplayStyles(
 								{
 									...getGroupAttributes(
@@ -793,13 +834,14 @@ const getBackgroundLayers = ({
 					[type]: {
 						...merge(
 							response?.[layerTarget]?.[type],
-							getSVGWrapperBackgroundObject({
+							getWrapperObject({
 								...getGroupAttributes(
 									layer,
 									'backgroundSVG',
 									isHover
 								),
 								breakpoint,
+								prefix: 'background-svg-',
 								isHover,
 							}),
 							getDisplayStyles(
@@ -918,24 +960,27 @@ const getGeneralBackgroundStyles = (
 		const widthBottom = getBorderValue('bottom', breakpoint);
 		const widthLeft = getBorderValue('left', breakpoint);
 		const widthRight = getBorderValue('right', breakpoint);
+
 		const widthUnit =
 			getLastBreakpointAttribute({
 				target: 'border-unit-width',
 				breakpoint,
 				attributes: props,
 			}) || 'px';
-		const horizontalWidth =
-			round(widthTop / 2, 2) + round(widthBottom / 2, 2);
-		const verticalWidth =
-			round(widthLeft / 2, 2) + round(widthRight / 2, 2);
 
 		if (border[breakpoint]['border-style']) {
 			size[breakpoint] = {
-				...((!!horizontalWidth || isHover) && {
-					top: -horizontalWidth + widthUnit,
+				...((widthTop === 0 || !!widthTop || isHover) && {
+					top: -round(widthTop, 2) + widthUnit,
 				}),
-				...((!!verticalWidth || isHover) && {
-					left: -verticalWidth + widthUnit,
+				...((widthBottom === 0 || !!widthBottom || isHover) && {
+					bottom: -round(widthBottom, 2) + widthUnit,
+				}),
+				...((widthLeft === 0 || !!widthLeft || isHover) && {
+					left: -round(widthLeft, 2) + widthUnit,
+				}),
+				...((widthRight === 0 || !!widthRight || isHover) && {
+					right: -round(widthRight, 2) + widthUnit,
 				}),
 			};
 		}
@@ -1036,7 +1081,7 @@ export const getBlockBackgroundStyles = ({
 		...props,
 	});
 
-	if (isHover && !props[`${prefix}block-background-hover-status`])
+	if (isHover && !props[`${prefix}block-background-status-hover`])
 		return response;
 
 	const layers = compact([

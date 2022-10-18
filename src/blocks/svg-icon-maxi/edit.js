@@ -26,10 +26,9 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-
 import MaxiModal from '../../editor/library/modal';
 import getStyles from './styles';
-import copyPasteMapping from './copy-paste-mapping';
+import { copyPasteMapping } from './data';
 
 /**
  * External dependencies

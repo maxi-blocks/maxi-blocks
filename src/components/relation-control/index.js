@@ -2,12 +2,13 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { Button } from '@wordpress/components';
+// import { Button } from '@wordpress/components';
 import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
+import Button from '../button';
 import InfoBox from '../info-box';
 import ListControl from '../list-control';
 import ListItemControl from '../list-control/list-item-control';
@@ -22,12 +23,13 @@ import {
 	getGroupAttributes,
 } from '../../extensions/styles';
 import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
-import settings from './settings';
+import getHoverStatus from './getHoverStatus';
+import * as blocksData from '../../blocks/data';
 
 /**
  * External dependencies
  */
-import { cloneDeep, isEmpty, merge } from 'lodash';
+import { capitalize, cloneDeep, isEmpty, isNil, merge } from 'lodash';
 
 /**
  * Styles
@@ -53,10 +55,51 @@ const RelationControl = props => {
 	};
 
 	const getOptions = clientId => {
-		const blockName = getBlock(clientId)?.name;
-		const blockOptions = settings[blockName] || [];
+		const blockName = getBlock(clientId)?.name.replace('maxi-blocks/', '');
 
-		return blockOptions || [];
+		// TODO: without this line, the block may break after copy/pasting
+		if (!blockName) return {};
+
+		const blockOptions = Object.values(blocksData).find(
+			data => data.name === blockName
+		).interactionBuilderSettings;
+
+		return blockOptions || {};
+	};
+
+	const getParsedOptions = rawOptions => {
+		const parseOptionsArray = options =>
+			options.map(({ label }) => ({
+				label,
+				value: label,
+			}));
+
+		const defaultSetting = {
+			label: __('Choose settings', 'maxi-blocks'),
+			value: '',
+		};
+
+		const parsedOptions =
+			Object.keys(rawOptions).length > 1
+				? {
+						'': [defaultSetting],
+						...Object.entries(rawOptions).reduce(
+							(acc, [groupLabel, groupOptions]) => ({
+								...acc,
+								[capitalize(groupLabel)]:
+									parseOptionsArray(groupOptions),
+							}),
+							{}
+						),
+				  }
+				: [
+						...defaultSetting,
+						...parseOptionsArray(
+							rawOptions[Object.keys(rawOptions)[0]]
+						),
+				  ];
+
+		return parsedOptions;
 	};
 
 	const transitionDefaultAttributes = createTransitionObj();
@@ -102,13 +145,19 @@ const RelationControl = props => {
 		});
 	};
 
+	const getSelectedSettingsObj = (clientId, settingsLabel) =>
+		Object.values(getOptions(clientId))
+			.flat()
+			.find(option => option.label === settingsLabel);
+
 	const displaySelectedSetting = item => {
 		if (!item) return null;
 
 		const clientId = getClientIdFromUniqueId(item.uniqueID);
 
-		const selectedSettingsObj = getOptions(clientId).find(
-			option => option.label === item.settings
+		const selectedSettingsObj = getSelectedSettingsObj(
+			clientId,
+			item.settings
 		);
 
 		if (!selectedSettingsObj) return null;
@@ -117,7 +166,9 @@ const RelationControl = props => {
 		const prefix = selectedSettingsObj?.prefix || '';
 		const blockAttributes = cloneDeep(getBlock(clientId)?.attributes);
 
-		const storeBreakpoints = select('maxiBlocks').receiveMaxiBreakpoints();
+		const { receiveMaxiBreakpoints, receiveXXLSize } = select('maxiBlocks');
+
+		const storeBreakpoints = receiveMaxiBreakpoints();
 		const blockBreakpoints = getGroupAttributes(
 			blockAttributes,
 			'breakpoints'
@@ -125,6 +176,7 @@ const RelationControl = props => {
 
 		const breakpoints = {
 			...storeBreakpoints,
+			xxl: receiveXXLSize(),
 			...Object.keys(blockBreakpoints).reduce((acc, key) => {
 				if (blockAttributes[key]) {
 					const newKey = key.replace('breakpoints-', '');
@@ -134,37 +186,58 @@ const RelationControl = props => {
 			}, {}),
 		};
 
-		const textMaxiPrefix =
-			getBlock(clientId)?.name === 'maxi-blocks/text-maxi' &&
-			item?.settings === 'Typography';
-
+		// As an alternative to a migrator... Remove after used!
 		if (
-			selectedSettingsObj?.target &&
-			item.target !== selectedSettingsObj?.target
+			!(
+				'transitionTrigger' in item.effects &&
+				'transitionTarget' in item.effects &&
+				'hoverStatus' in item.effects
+			) ||
+			item.effects.hoverStatus !==
+				getHoverStatus(selectedSettingsObj.hoverProp, blockAttributes)
 		) {
-			onChangeRelation(relations, item.id, {
-				target: `${
-					textMaxiPrefix
-						? blockAttributes?.isList
-							? blockAttributes?.typeOfList
-							: blockAttributes?.textLevel
-						: ''
-				}${selectedSettingsObj?.target}`,
-			});
+			const {
+				transitionTarget: rawTransitionTarget,
+				transitionTrigger,
+				hoverProp,
+			} = selectedSettingsObj;
+			const transitionTarget =
+				item.settings === 'Transform'
+					? Object.keys(item.css)
+					: rawTransitionTarget;
+
+			let hoverStatus = null;
+
+			if (!('hoverStatus' in item.effects))
+				hoverStatus = getHoverStatus(
+					hoverProp,
+					blockAttributes,
+					item.attributes
+				);
+
+			if (transitionTarget || transitionTrigger)
+				onChangeRelation(relations, item.id, {
+					effects: {
+						...item.effects,
+						...(transitionTarget && { transitionTarget }),
+						...(transitionTrigger && { transitionTrigger }),
+						...(!isNil(hoverStatus) && { hoverStatus }),
+					},
+				});
 		}
 
 		const mergedAttributes = merge(blockAttributes, item.attributes);
 
-		const transformGeneralAttributesToWinBreakpoint = obj => {
+		const transformGeneralAttributesToBaseBreakpoint = obj => {
 			if (deviceType !== 'general') return {};
 
-			const winBreakpoint = select('maxiBlocks').receiveWinBreakpoint();
+			const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 
-			if (!winBreakpoint) return {};
+			if (!baseBreakpoint) return {};
 
 			return Object.keys(obj).reduce((acc, key) => {
 				if (key.includes('-general')) {
-					const newKey = key.replace('general', winBreakpoint);
+					const newKey = key.replace('general', baseBreakpoint);
 
 					acc[newKey] = obj[key];
 				}
@@ -186,7 +259,7 @@ const RelationControl = props => {
 				const newAttributesObj = {
 					...item.attributes,
 					...obj,
-					...transformGeneralAttributesToWinBreakpoint(obj),
+					...transformGeneralAttributesToBaseBreakpoint(obj),
 				};
 
 				const newGroupAttributes = getGroupAttributes(
@@ -259,6 +332,12 @@ const RelationControl = props => {
 				onChangeRelation(relations, item.id, {
 					attributes: newAttributesObj,
 					css: styles,
+					...(item.settings === 'Transform' && {
+						effects: {
+							...item.effects,
+							transitionTarget: Object.keys(styles),
+						},
+					}),
 				});
 			},
 			prefix,
@@ -421,31 +500,103 @@ const RelationControl = props => {
 													'maxi-blocks'
 												)}
 												value={item.settings}
-												options={[
-													{
-														label: __(
-															'Choose settings',
-															'maxi-blocks'
-														),
-														value: '',
-													},
-													...getOptions(
+												options={getParsedOptions(
+													getOptions(
 														getClientIdFromUniqueId(
 															item.uniqueID
 														)
-													).map(option => ({
-														label: option.label,
-														value: option.label,
-													})),
-												]}
+													)
+												)}
 												onChange={value => {
+													const clientId =
+														getClientIdFromUniqueId(
+															item.uniqueID
+														);
+
+													const selectedSettingsObj =
+														getSelectedSettingsObj(
+															clientId,
+															value
+														) || {};
+
+													const {
+														transitionTarget,
+														hoverProp,
+													} = selectedSettingsObj;
+
+													const blockAttributes =
+														getBlock(
+															clientId
+														)?.attributes;
+
+													const hoverStatus =
+														getHoverStatus(
+															hoverProp,
+															blockAttributes
+														);
+
+													const getTarget = () => {
+														const clientId =
+															getClientIdFromUniqueId(
+																item.uniqueID
+															);
+
+														const target =
+															selectedSettingsObj?.target ||
+															'';
+
+														const textMaxiPrefix =
+															getBlock(clientId)
+																?.name ===
+																'maxi-blocks/text-maxi' &&
+															value ===
+																'Typography';
+
+														if (textMaxiPrefix) {
+															const blockAttributes =
+																getBlock(
+																	clientId
+																)?.attributes;
+
+															const {
+																isList,
+																typeOfList,
+																textLevel,
+															} = blockAttributes;
+
+															const trimmedTarget =
+																target.startsWith(
+																	' '
+																)
+																	? target.slice(
+																			1
+																	  )
+																	: target;
+
+															return `${
+																isList
+																	? typeOfList
+																	: textLevel
+															}${trimmedTarget}`;
+														}
+
+														return target;
+													};
+
 													onChangeRelation(
 														relations,
 														item.id,
 														{
 															attributes: {},
-															target: '',
+															css: {},
+															target: getTarget(),
 															settings: value,
+															effects: {
+																...item.effects,
+																transitionTarget,
+																hoverStatus:
+																	!!hoverStatus,
+															},
 														}
 													);
 												}}

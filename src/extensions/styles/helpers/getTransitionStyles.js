@@ -21,17 +21,17 @@ import { isNil, isEqual, isEmpty } from 'lodash';
  */
 const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 	const { transition } = props;
+
 	if (isEmpty(transition)) return null;
 
 	const response = {};
+
 	Object.entries(transitionObj).forEach(([type, obj]) => {
 		Object.entries(obj).forEach(([key, value]) => {
-			const {
-				target: rawTarget,
-				property: rawProperty,
-				limitless = false,
-			} = value;
+			const { hoverProp } = value;
+			if (hoverProp && !props[hoverProp]) return;
 
+			const { target: rawTarget, property: rawProperty } = value;
 			const targets = Array.isArray(rawTarget) ? rawTarget : [rawTarget];
 			const properties = Array.isArray(rawProperty)
 				? rawProperty
@@ -39,11 +39,6 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 
 			targets.forEach(target => {
 				const transitionContent = transition[type][key];
-				if (
-					transitionContent?.hoverProp &&
-					!props[transitionContent.hoverProp]
-				)
-					return;
 
 				if (isNil(response[target]))
 					response[target] = { transition: {} };
@@ -84,7 +79,7 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 						getTransitionAttribute('transition-status');
 
 					properties.forEach(property => {
-						const transitionProperty = limitless ? 'all' : property;
+						const transitionProperty = property || 'all';
 						const isSomeValue =
 							isEqual(
 								transitionDuration,

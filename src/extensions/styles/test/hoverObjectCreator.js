@@ -16,7 +16,7 @@ describe('hoverAttributesCreator', () => {
 		const result = hoverAttributesCreator({
 			obj: background,
 			newAttr: {
-				'background-hover-status': {
+				'background-status-hover': {
 					type: 'boolean',
 					default: false,
 				},

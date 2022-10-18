@@ -1,2 +1,2 @@
 # maxi-blocks
-Maxi Block Plugin
+Maxi Blocks Plugin

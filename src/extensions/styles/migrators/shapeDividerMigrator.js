@@ -3,6 +3,8 @@
  */
 import paletteAttributesCreator from '../paletteAttributesCreator';
 
+const name = 'Shape Divider';
+
 const deprecatedAttributes = {
 	'shape-divider-top-height': {
 		type: 'number',
@@ -35,7 +37,14 @@ const deprecatedAttributes = {
 	},
 };
 
-const migrate = ({ newAttributes }) => {
+const isEligible = blockAttributes =>
+	Object.keys(blockAttributes).some(
+		key =>
+			key in deprecatedAttributes &&
+			blockAttributes[key] !== deprecatedAttributes[key].default
+	);
+
+const migrate = newAttributes => {
 	Object.entries(newAttributes).forEach(([key, attr]) => {
 		if (key in deprecatedAttributes) {
 			newAttributes[`${key}-general`] = attr;
@@ -47,11 +56,9 @@ const migrate = ({ newAttributes }) => {
 	return newAttributes;
 };
 
-const isEligible = blockAttributes =>
-	Object.keys(blockAttributes).some(
-		key =>
-			key in deprecatedAttributes &&
-			blockAttributes[key] !== deprecatedAttributes[key].default
-	);
-
-export default { isEligible, attributes: () => deprecatedAttributes, migrate };
+export default {
+	name,
+	isEligible,
+	attributes: () => deprecatedAttributes,
+	migrate,
+};

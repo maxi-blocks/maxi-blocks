@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+
 /**
  * Internal dependencies
  */
@@ -25,6 +26,7 @@ describe('CustomLabel', () => {
 		);
 
 		await page.keyboard.type('Column');
+		await page.waitForTimeout(150);
 
 		expect(await getAttributes('extraClassName')).toStrictEqual('Column');
 	});

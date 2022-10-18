@@ -36,7 +36,7 @@ export default function TextInput({
 
 		textTimeOut.current = setTimeout(() => {
 			onChange(newValue);
-		}, 300);
+		}, 100);
 	};
 
 	useEffect(() => {

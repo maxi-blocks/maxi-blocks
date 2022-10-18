@@ -7,8 +7,7 @@ import { select } from '@wordpress/data';
  * Internal dependencies
  */
 import getBreakpointFromAttribute from '../styles/getBreakpointFromAttribute';
-import { getDefaultAttribute } from '../styles';
-
+import getDefaultAttribute from '../styles/getDefaultAttribute';
 /**
  * External dependencies
  */

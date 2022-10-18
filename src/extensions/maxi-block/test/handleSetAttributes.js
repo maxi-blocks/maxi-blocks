@@ -3,11 +3,6 @@ import handleSetAttributes from '../handleSetAttributes';
 jest.mock('src/extensions/styles/getDefaultAttribute.js', () =>
 	jest.fn(() => undefined)
 );
-jest.mock('@wordpress/blocks', () => {
-	return {
-		getBlockAttributes: jest.fn(),
-	};
-});
 jest.mock('@wordpress/data', () => {
 	let i = 0;
 

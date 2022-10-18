@@ -101,7 +101,7 @@ class edit extends MaxiBlockComponent {
 
 		const emptyRowClass = !hasInnerBlocks
 			? 'maxi-row-block__empty'
-			: 'maxi-row-block__has-innerBlock';
+			: 'maxi-row-block__has-inner-block';
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,

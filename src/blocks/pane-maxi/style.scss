@@ -1,4 +1,8 @@
 .maxi-pane-block {
+	&__header {
+		position: relative;
+	}
+
 	&__header-content {
 		display: flex;
 		align-items: center;

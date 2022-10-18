@@ -241,7 +241,6 @@ class edit extends MaxiBlockComponent {
 								topLeft: true,
 							}}
 							onResizeStop={handleOnResizeStop}
-							cleanStyles={false}
 						>
 							<RawHTML>{content}</RawHTML>
 						</BlockResizer>

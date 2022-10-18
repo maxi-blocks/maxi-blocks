@@ -10,6 +10,8 @@ import { getBlockSelectorsByUniqueID } from './utils';
  */
 import { isEmpty, isNil } from 'lodash';
 
+const name = 'Transform';
+
 const types = ['scale', 'translate', 'rotate', 'origin'];
 
 const attributes = breakpointAttributesCreator({
@@ -67,7 +69,21 @@ const isEligible = blockAttributes =>
 			Object.keys(relation.attributes).some(key => key in attributes)
 		));
 
-const migrate = ({ newAttributes, selectors }) => {
+const migrate = props => {
+	let newAttributes;
+	let selectors;
+
+	if (
+		Object.prototype.hasOwnProperty.call(props, 'newAttributes') &&
+		Object.prototype.hasOwnProperty.call(props, 'selectors')
+	) {
+		newAttributes = props.newAttributes;
+		selectors = props.selectors;
+	} else {
+		newAttributes = props;
+		selectors = getBlockSelectorsByUniqueID(newAttributes.uniqueID);
+	}
+
 	if (isEmpty(selectors)) return false;
 
 	const getAxis = attribute => attribute.match(/[x,y,z](-unit)?/)[0];
@@ -132,4 +148,4 @@ const migrate = ({ newAttributes, selectors }) => {
 	return newAttributes;
 };
 
-export default { attributes: () => attributes, migrate, isEligible };
+export default { name, attributes: () => attributes, migrate, isEligible };

@@ -9,6 +9,8 @@ const prefixes = [
 	'video',
 ];
 
+const name = 'Hover status';
+
 const attributes = () =>
 	prefixes.reduce((acc, prefix) => {
 		acc[`${prefix}-background-hover-status`] = {
@@ -22,7 +24,7 @@ const isEligible = blockAttributes =>
 		key.includes('background-hover-status')
 	);
 
-const migrate = ({ newAttributes }) => {
+const migrate = newAttributes => {
 	Object.entries(newAttributes).forEach(([key, attr]) => {
 		if (key.includes('background-hover-status')) {
 			const newKey = key.replace('hover-status', 'status-hover');
@@ -35,4 +37,4 @@ const migrate = ({ newAttributes }) => {
 	return newAttributes;
 };
 
-export default { isEligible, attributes, migrate };
+export default { name, isEligible, attributes, migrate };

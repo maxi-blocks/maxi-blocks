@@ -60,6 +60,7 @@ describe('Video maxi control', () => {
 
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('https://youtu.be/mkggXE5e2yk');
+		await page.waitForTimeout(150);
 
 		expect(await getAttributes('url')).toStrictEqual(
 			'https://youtu.be/mkggXE5e2yk'

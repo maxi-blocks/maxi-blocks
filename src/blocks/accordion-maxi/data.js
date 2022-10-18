@@ -201,9 +201,8 @@ const transition = {
 		'pane title': {
 			title: 'Pane title',
 			target: ' > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__title',
-			property: 'typography',
-			limitless: true,
-			prefix: 'title-',
+			property: false,
+			hoverProp: 'title-typography-status-hover',
 		},
 		...createIconTransitions({
 			target: ' > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__icon',
@@ -212,7 +211,9 @@ const transition = {
 		}),
 	},
 };
-const interactionBuilderSettings = getCanvasSettings({ name, customCss });
+const interactionBuilderSettings = {
+	canvas: getCanvasSettings({ name, customCss }),
+};
 
 const data = {
 	name,

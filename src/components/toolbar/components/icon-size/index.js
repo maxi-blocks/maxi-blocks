@@ -43,6 +43,7 @@ const IconSize = props => {
 				<SvgStrokeWidthControl
 					prefix='icon-'
 					{...props}
+					content={props['icon-content']}
 					onChange={onChange}
 					breakpoint={breakpoint}
 				/>

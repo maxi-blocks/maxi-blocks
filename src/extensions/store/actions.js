@@ -84,5 +84,18 @@ const actions = {
 			inspectorPath,
 		};
 	},
+	saveDeprecatedBlock({ uniqueID, attributes }) {
+		return {
+			type: 'SAVE_DEPRECATED_BLOCK',
+			uniqueID,
+			attributes,
+		};
+	},
+	removeDeprecatedBlock(uniqueID) {
+		return {
+			type: 'REMOVE_DEPRECATED_BLOCK',
+			uniqueID,
+		};
+	},
 };
 export default actions;

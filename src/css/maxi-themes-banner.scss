@@ -43,6 +43,28 @@ body.maxi-blocks--active .maxi-block {
 	&.maxi-button-block .maxi-button-block__button {
 		background-color: transparent;
 	}
+
+	/*Seedlet theme overrides*/
+	.maxi-components-button {
+		&:focus,
+		span {
+			&:focus {
+				outline: none;
+			}
+		}
+	}
+	.maxi-components-button {
+		&:after,
+		&:before {
+			content: none;
+		}
+	}
+
+	.maxi-text-block--link {
+		border: none;
+		outline: none;
+		box-shadow: none;
+	}
 }
 
 body.maxi-blocks--active .maxi-block[data-align='full'] {
@@ -62,10 +84,15 @@ body.maxi-blocks--active
 }
 
 /*Removes focus background for Twenty Twenty One*/
-body.maxi-blocks--active #content .maxi-text-block--link:focus,
-body.maxi-blocks--active #content .maxi-link-wrapper:focus {
-	background: unset;
-	text-decoration: none;
+body.maxi-blocks--active #content {
+	.maxi-button-block__button,
+	.maxi-text-block--link,
+	.maxi-link-wrapper {
+		&:focus {
+			background: unset;
+			text-decoration: none;
+		}
+	}
 }
 
 /*Removes image outline on link focus for Twenty Twenty One*/

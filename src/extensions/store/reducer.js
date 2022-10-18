@@ -50,6 +50,7 @@ const reducer = (
 		copiedStyles: {},
 		copiedBlocks: {},
 		inspectorPath: [{ name: 'Settings', value: 0 }],
+		deprecatedBlocks: {},
 	},
 	action
 ) => {
@@ -127,6 +128,22 @@ const reducer = (
 				inspectorPath: newInspectorPath,
 			};
 		}
+		case 'SAVE_DEPRECATED_BLOCK':
+			return {
+				...state,
+				deprecatedBlocks: {
+					...state.deprecatedBlocks,
+					[action.uniqueID]: {
+						...state.deprecatedBlocks[action.uniqueID],
+						...action.attributes,
+					},
+				},
+			};
+		case 'REMOVE_DEPRECATED_BLOCK':
+			return {
+				...state,
+				deprecatedBlocks: omit(state.deprecatedBlocks, action.uniqueID),
+			};
 		default:
 			return state;
 	}

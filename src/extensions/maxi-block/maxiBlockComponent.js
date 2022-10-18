@@ -34,12 +34,14 @@ import getBreakpoints from '../styles/helpers/getBreakpoints';
 import getIsUniqueIDRepeated from './getIsUniqueIDRepeated';
 import { loadFonts, getAllFonts } from '../text/fonts';
 import uniqueIDGenerator from '../attributes/uniqueIDGenerator';
+import getHoverStatus from '../../components/relation-control/getHoverStatus';
 import * as blocksData from '../../blocks/data';
 
 /**
  * External dependencies
  */
 import { isEmpty, isEqual, cloneDeep, isNil } from 'lodash';
+import { getStylesWrapperId } from './utils';
 
 /**
  * Style Component
@@ -99,6 +101,8 @@ class MaxiBlockComponent extends Component {
 		// eslint-disable-next-line react/no-unused-class-component-methods
 		this.blockRef = createRef();
 		this.typography = getGroupAttributes(attributes, 'typography');
+
+		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
 
 		// Init
 		const newUniqueID = this.uniqueIDChecker(uniqueID);
@@ -245,6 +249,7 @@ class MaxiBlockComponent extends Component {
 		) {
 			const obj = this.getStylesObject;
 			styleResolver(obj, true);
+			this.removeStyles();
 		}
 
 		dispatch('maxiBlocks/customData').removeCustomData(
@@ -394,6 +399,7 @@ class MaxiBlockComponent extends Component {
 					if (uniqueID !== blockUniqueID && !isEmpty(relations)) {
 						const newRelations = relations.map(relation => {
 							const {
+								attributes: relationAttributes,
 								settings: settingName,
 								uniqueID: relationUniqueID,
 							} = relation;
@@ -414,16 +420,21 @@ class MaxiBlockComponent extends Component {
 							if (!blockData?.interactionBuilderSettings)
 								return relation;
 
-							const { hoverProp } =
-								blockData.interactionBuilderSettings.find(
-									({ label }) => label === settingName
-								);
+							const { hoverProp } = Object.values(
+								blockData.interactionBuilderSettings
+							)
+								.flat()
+								.find(({ label }) => label === settingName);
 
 							return {
 								...relation,
 								effects: {
 									...effects,
-									hoverStatus: blockAttributes[hoverProp],
+									hoverStatus: getHoverStatus(
+										hoverProp,
+										blockAttributes,
+										relationAttributes
+									),
 								},
 							};
 						});
@@ -453,6 +464,13 @@ class MaxiBlockComponent extends Component {
 	}
 
 	removeUnmountedBlockFromRelations(uniqueID, blocksToCheck) {
+		if (
+			select('core/edit-post').getEditorMode() !== 'visual' ||
+			select('core/edit-post').__experimentalGetPreviewDeviceType() !==
+				this.currentBreakpoint
+		)
+			return;
+
 		blocksToCheck.forEach(({ clientId, attributes, innerBlocks }) => {
 			const { relations, uniqueID: blockUniqueID } = attributes;
 
@@ -498,12 +516,12 @@ class MaxiBlockComponent extends Component {
 
 		if (document.body.classList.contains('maxi-blocks--active')) {
 			let wrapper = document.querySelector(
-				`#maxi-blocks__styles--${uniqueID}`
+				`#${getStylesWrapperId(uniqueID)}`
 			);
 
 			if (!wrapper) {
 				wrapper = document.createElement('div');
-				wrapper.id = `maxi-blocks__styles--${uniqueID}`;
+				wrapper.id = getStylesWrapperId(uniqueID);
 				wrapper.classList.add('maxi-blocks__styles');
 				document.head.appendChild(wrapper);
 			}
@@ -528,12 +546,12 @@ class MaxiBlockComponent extends Component {
 
 				if (iframeDocument.head) {
 					let iframeWrapper = iframeDocument.querySelector(
-						`#maxi-blocks__styles--${uniqueID}`
+						`#${getStylesWrapperId(uniqueID)}`
 					);
 
 					if (!iframeWrapper) {
 						iframeWrapper = iframeDocument.createElement('div');
-						iframeWrapper.id = `maxi-blocks__styles--${uniqueID}`;
+						iframeWrapper.id = getStylesWrapperId(uniqueID);
 						iframeWrapper.classList.add('maxi-blocks__styles');
 						iframeDocument.head.appendChild(iframeWrapper);
 					}
@@ -551,6 +569,12 @@ class MaxiBlockComponent extends Component {
 				}
 			}
 		}
+	}
+
+	removeStyles() {
+		document
+			.getElementById(getStylesWrapperId(this.props.attributes.uniqueID))
+			.remove();
 	}
 }
 

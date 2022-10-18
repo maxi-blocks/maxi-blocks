@@ -30,7 +30,7 @@ import { blockMigrator } from '../../extensions/styles/migrators';
 registerBlockType('maxi-blocks/video-maxi', {
 	title: __('Video Maxi', 'maxi-blocks'),
 	icon: videoIcon,
-	description: 'Insert a video with conrols or lightbox',
+	description: 'Insert a video with controls or lightbox',
 	category: 'maxi-blocks',
 	supports: {
 		align: true,

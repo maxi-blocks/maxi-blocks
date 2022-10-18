@@ -88,7 +88,7 @@ const icons = {
 		obj: rawIcon,
 		prefix: 'close-',
 		diffValAttr: {
-			'close-icon-spacing-general': 10,
+			'close-icon-spacing-general': 5,
 			'close-icon-position': 'top-screen-right',
 			'close-icon-fill-palette-color': 1,
 			'close-icon-content':

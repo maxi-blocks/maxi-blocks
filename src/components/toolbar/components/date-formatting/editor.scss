@@ -1,4 +1,23 @@
+.date-popover {
+	.components-popover__content {
+		div {
+			width: 220px;
+			padding: 16px;
+		}
+	}
+}
 .date-formatting {
+	.date-status {
+		position: relative;
+		.block-info-icon {
+			top: 0%;
+			bottom: 0%;
+			left: 80px;
+			right: inherit;
+			margin-top: auto;
+			margin-bottom: auto;
+		}
+	}
 	.maxi-base-control__field {
 		.maxi-text-control__input {
 			border: 1px solid var(--maxi-grey-1-color);

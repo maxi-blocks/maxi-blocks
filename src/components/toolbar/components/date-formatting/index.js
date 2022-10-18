@@ -5,6 +5,7 @@ import { __ } from '@wordpress/i18n';
  */
 import './editor.scss';
 
+import { Popover } from '@wordpress/components';
 import { useState, useEffect, useRef } from '@wordpress/element';
 import SelectControl from '../../../select-control';
 import SettingTabsControl from '../../../setting-tabs-control';
@@ -21,6 +22,7 @@ const DateFormatting = props => {
 	const [format, setFormat] = useState(props.format);
 	const [hour, setHour] = useState(props.hour);
 	const [hour12, setHour12] = useState(props.hour12);
+	const [isVisible, setIsVisible] = useState(false);
 	const [linkStatus, setLinkStatus] = useState('year');
 	const [minute, setMinute] = useState(props.minute);
 	const [month, setMonth] = useState(props.month);
@@ -32,6 +34,7 @@ const DateFormatting = props => {
 	const [year, setYear] = useState(props.year);
 	const [zone, setZone] = useState(props.zone);
 
+	const toggleVisible = () => setIsVisible(state => !state);
 	const validateAnchor = str => {
 		if (
 			str.split('d').length + str.split('D').length - 2 < 2 &&
@@ -97,19 +100,49 @@ const DateFormatting = props => {
 	);
 	return (
 		<div className='date-formatting'>
+			{isVisible && (
+				<Popover className='date-popover' position='top right'>
+					<p>
+						<b>d</b> - day in numeric format
+					</p>
+					<p>
+						<b>D</b> - day in text format
+					</p>
+					<p>
+						<b>m</b> - month in numeric format
+					</p>
+					<p>
+						<b>M</b> - month in text format
+					</p>
+					<p>
+						<b>y</b> - year in short format
+					</p>
+					<p>
+						<b>Y</b> - full year
+					</p>
+					<p>
+						<b>t</b> - time
+					</p>
+				</Popover>
+			)}
 			<ToggleSwitch
 				label={__('Date setting', 'maxi-blocks')}
 				selected={status}
 				onChange={() => setStatus(!status)}
 			/>
 			{!status && (
-				<TextControl
-					label={__('Date format', 'maxi-blocks')}
-					help={false}
-					placeholder={__('d.m.Y t')}
-					value={format}
-					onChange={val => validateAnchor(val)}
-				/>
+				<div className='date-status'>
+					<div className='block-info-icon' onClick={toggleVisible}>
+						<span className='block-info-icon-span'>i</span>
+					</div>
+					<TextControl
+						label={__('Date format', 'maxi-blocks')}
+						help={false}
+						placeholder={__('d.m.Y t')}
+						value={format}
+						onChange={val => validateAnchor(val)}
+					/>
+				</div>
 			)}
 			{status && (
 				<>

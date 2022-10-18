@@ -3,6 +3,11 @@ import cleanAttributes from '../cleanAttributes';
 jest.mock('src/extensions/styles/getDefaultAttribute.js', () =>
 	jest.fn(() => undefined)
 );
+jest.mock('@wordpress/blocks', () => {
+	return {
+		getBlockAttributes: jest.fn(),
+	};
+});
 jest.mock('@wordpress/data', () => {
 	return {
 		select: jest.fn(() => {

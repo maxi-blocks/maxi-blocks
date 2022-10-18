@@ -50,8 +50,6 @@ const flatSameAsPrev = (
 			const generalAttr = attributes[`${simpleLabel}-general`];
 
 			if (!isNil(generalAttr) && isEqual(generalAttr, value)) {
-				// Not sure how it will work with XXL default values on
-				// blocks like Button Maxi. Need to test! :)
 				const defaultAttribute =
 					defaultAttributes?.[key] ??
 					getDefaultAttribute(key, clientId, true);
@@ -364,7 +362,6 @@ const cleanAttributes = ({
 
 	dispatch('maxiBlocks/styles').savePrevSavedAttrs(result);
 
-	// console.log(result);
 	return result;
 };
 

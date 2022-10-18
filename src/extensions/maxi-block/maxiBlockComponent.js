@@ -420,10 +420,11 @@ class MaxiBlockComponent extends Component {
 							if (!blockData?.interactionBuilderSettings)
 								return relation;
 
-							const { hoverProp } =
-								blockData.interactionBuilderSettings.find(
-									({ label }) => label === settingName
-								);
+							const { hoverProp } = Object.values(
+								blockData.interactionBuilderSettings
+							)
+								.flat()
+								.find(({ label }) => label === settingName);
 
 							return {
 								...relation,

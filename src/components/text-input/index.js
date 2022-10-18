@@ -1,7 +1,12 @@
 /**
  * WordPress dependencies
  */
-import { useState } from '@wordpress/element';
+import { useState, useRef, useEffect } from '@wordpress/element';
+
+/**
+ * External dependencies
+ */
+import classnames from 'classnames';
 
 /**
  * Styles
@@ -15,19 +20,32 @@ export default function TextInput({
 	className,
 	onChange,
 	type = 'text',
+	value,
 	...props
 }) {
-	const [inputValue, setInputValue] = useState('');
+	const [inputValue, setInputValue] = useState(value);
+	const textTimeOut = useRef(null);
+
+	const classes = classnames('maxi-text-input', className);
+
 	const valueChange = e => {
-		setInputValue(e.target.value);
-		setTimeout(() => {
-			onChange(e.target.value);
+		const newValue = e.target.value;
+		setInputValue(newValue);
+
+		if (textTimeOut.current) clearTimeout(textTimeOut.current);
+
+		textTimeOut.current = setTimeout(() => {
+			onChange(newValue);
 		}, 300);
 	};
 
+	useEffect(() => {
+		if (value !== inputValue) setInputValue(value);
+	}, [value]);
+
 	return (
 		<input
-			className='maxi-text-input'
+			className={classes}
 			type={type}
 			value={inputValue}
 			onChange={valueChange}

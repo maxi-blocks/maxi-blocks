@@ -36,7 +36,6 @@ export default function TextControl({
 }) {
 	const instanceId = useInstanceId(TextControl);
 	const id = `inspector-text-control-${instanceId}`;
-	const onChangeValue = event => onChange(event.target.value);
 
 	const classes = classnames(
 		'maxi-text-control',
@@ -57,7 +56,7 @@ export default function TextControl({
 				type={type}
 				id={id}
 				value={value || ''}
-				onChange={onChangeValue}
+				onChange={onChange}
 				aria-describedby={help ? `${id}__help` : undefined}
 				{...props}
 			/>

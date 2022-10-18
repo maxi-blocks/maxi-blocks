@@ -71,8 +71,9 @@ const flatSameAsPrev = (
 					if (isEqual(value, attribute))
 						if (isEqual(value, defaultAttribute))
 							result[key] = undefined;
-						else result[key] = defaultAttribute;
-					else if (!isNil(attribute)) breakpointLock = true;
+						else if (breakpoint !== 'general')
+							result[key] = defaultAttribute;
+						else if (!isNil(attribute)) breakpointLock = true;
 				}
 			});
 		}

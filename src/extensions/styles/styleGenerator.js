@@ -79,6 +79,7 @@ const styleGenerator = (styles, isIframe = false) => {
 	let response = '';
 
 	const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
+	const currentBreakpoint = select('maxiBlocks').receiveMaxiDeviceType();
 
 	BREAKPOINTS.forEach(breakpoint => {
 		Object.entries(styles).forEach(([key, value]) => {
@@ -86,6 +87,17 @@ const styleGenerator = (styles, isIframe = false) => {
 			const { content } = value;
 			Object.entries(content).forEach(([suffix, props]) => {
 				if (!props[breakpoint]) return;
+
+				const isBaseLowerThanCurrent =
+					BREAKPOINTS.indexOf(breakpoint) <=
+					BREAKPOINTS.indexOf(baseBreakpoint);
+
+				if (
+					breakpoint !== currentBreakpoint &&
+					isBaseLowerThanCurrent &&
+					breakpoint !== 'general'
+				)
+					return;
 
 				const style = getResponsiveStyles(props[breakpoint]);
 
@@ -96,13 +108,20 @@ const styleGenerator = (styles, isIframe = false) => {
 					isIframe
 				);
 
-				if (breakpoint === 'general' && props?.[baseBreakpoint]) {
+				if (breakpoint === 'general') {
 					response += styleStringGenerator(
 						`${target}${suffix}`,
-						getResponsiveStyles(props[baseBreakpoint]),
+						getResponsiveStyles(props.general),
 						baseBreakpoint,
 						isIframe
 					);
+					if (props?.[baseBreakpoint])
+						response += styleStringGenerator(
+							`${target}${suffix}`,
+							getResponsiveStyles(props[baseBreakpoint]),
+							baseBreakpoint,
+							isIframe
+						);
 				}
 			});
 		});

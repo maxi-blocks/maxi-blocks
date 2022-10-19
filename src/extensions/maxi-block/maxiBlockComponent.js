@@ -213,6 +213,10 @@ class MaxiBlockComponent extends Component {
 		)
 			return false;
 
+		// If baseBreakpoint changes, render styles
+		if (this.props.baseBreakpoint !== prevProps.baseBreakpoint)
+			return false;
+
 		return isEqual(prevProps.attributes, this.props.attributes);
 	}
 

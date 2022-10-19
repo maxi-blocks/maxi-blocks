@@ -5,6 +5,7 @@ jest.mock('@wordpress/data', () => {
 		select: jest.fn(() => {
 			return {
 				receiveBaseBreakpoint: jest.fn(() => 'xl'),
+				receiveMaxiDeviceType: jest.fn(() => 'xl'),
 			};
 		}),
 	};

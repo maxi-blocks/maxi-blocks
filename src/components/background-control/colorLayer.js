@@ -94,10 +94,7 @@ const ColorLayerContent = props => {
 							attributes: colorOptions,
 							isHover,
 					  })
-					: getDefaultLayerAttr(
-							'colorOptions',
-							`${bgPrefix}palette-status`
-					  );
+					: getDefaultLayerAttr('colorOptions', target);
 
 			defaultColor.paletteStatus = getResetValue(
 				`${bgPrefix}palette-status`

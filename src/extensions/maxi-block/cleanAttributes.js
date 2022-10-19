@@ -20,6 +20,43 @@ const breakpoints = ['general', 'xl', 'l', 'm', 's', 'xs'];
 const getSimpleLabel = (key, breakpoint) =>
 	key.slice(0, key.length - 1 - breakpoint.length);
 
+const getShouldPreserveAttribute = (
+	attributes,
+	breakpoint,
+	key,
+	value,
+	newAttributes
+) => {
+	const prevAttrsBreakpoints = [...breakpoints]
+		.slice(0, breakpoints.indexOf(breakpoint))
+		.filter(bp =>
+			Object.prototype.hasOwnProperty.call(
+				attributes,
+				`${key.replace(`-${breakpoint}`, `-${bp}`)}`
+			)
+		);
+	const existPrevAttr = prevAttrsBreakpoints.length > 1; // 1 as includes 'general'
+
+	if (existPrevAttr) {
+		// In case we are saving an attribute from winBase === deviceType (general + winBase)
+		// and there's a previous saved attribute on a higher breakpoint with different value,
+		// we save both general and winBase attributes to ensure correct frontend rendering.
+		const preserveAttr = prevAttrsBreakpoints
+			.filter(bp => bp !== 'general')
+			.some(bp => {
+				const prevAttr = { ...attributes, ...newAttributes }[
+					`${key.replace(`-${breakpoint}`, `-${bp}`)}`
+				];
+
+				return !isNil(prevAttr) && !isEqual(prevAttr, value);
+			});
+
+		if (preserveAttr) return true;
+	}
+
+	return false;
+};
+
 /**
  * In case we are saving a breakpoint attribute that has the same value as its
  * previous saved valid attribute, it will be returned to its default value.
@@ -68,12 +105,13 @@ const flatSameAsPrev = (
 						defaultAttributes?.[label] ??
 						getDefaultAttribute(label, clientId, true);
 
-					if (isEqual(value, attribute))
+					if (isEqual(value, attribute)) {
 						if (isEqual(value, defaultAttribute))
 							result[key] = undefined;
 						else if (breakpoint !== 'general')
 							result[key] = defaultAttribute;
 						else if (!isNil(attribute)) breakpointLock = true;
+					} else if (!isNil(attribute)) breakpointLock = true;
 				}
 			});
 		}
@@ -192,7 +230,12 @@ const flatWithGeneral = (
 /**
  * Flat new saving attributes in case they are going to be saved together with same value
  */
-const flatNewAttributes = (newAttributes, clientId, defaultAttributes) => {
+const flatNewAttributes = (
+	newAttributes,
+	attributes,
+	clientId,
+	defaultAttributes
+) => {
 	const result = {};
 
 	Object.entries(newAttributes).forEach(([key, value]) => {
@@ -214,11 +257,23 @@ const flatNewAttributes = (newAttributes, clientId, defaultAttributes) => {
 		const generalAttr = newAttributes[`${simpleLabel}-general`];
 
 		if (!isNil(generalAttr) && isEqual(generalAttr, value)) {
-			const defaultAttribute =
-				defaultAttributes?.[key] ??
-				getDefaultAttribute(key, clientId, true);
+			const shouldPreserveAttribute = getShouldPreserveAttribute(
+				attributes,
+				breakpoint,
+				key,
+				value,
+				newAttributes
+			);
 
-			result[key] = defaultAttribute;
+			if (shouldPreserveAttribute) {
+				result[key] = value;
+			} else {
+				const defaultAttribute =
+					defaultAttributes?.[key] ??
+					getDefaultAttribute(key, clientId, true);
+
+				result[key] = defaultAttribute;
+			}
 		}
 	});
 
@@ -236,6 +291,19 @@ const removeSameAsGeneral = (newAttributes, attributes) => {
 		const breakpoint = getBreakpointFromAttribute(key);
 
 		if (!breakpoint) {
+			result[key] = value;
+			return;
+		}
+
+		const shouldPreserveAttribute = getShouldPreserveAttribute(
+			attributes,
+			breakpoint,
+			key,
+			value,
+			newAttributes
+		);
+
+		if (shouldPreserveAttribute) {
 			result[key] = value;
 			return;
 		}
@@ -280,6 +348,7 @@ const flatLowerAttr = (
 			return;
 		}
 
+		const isGeneral = breakpoint === 'general';
 		const simpleLabel = getSimpleLabel(key, breakpoint);
 		const lowerBreakpoints = breakpoints.slice(
 			breakpoints.indexOf(breakpoint) + 1
@@ -304,6 +373,15 @@ const flatLowerAttr = (
 					result[label] = defaultAttribute;
 					return;
 				}
+				if (isGeneral) {
+					const baseBreakpoint =
+						select('maxiBlocks').receiveBaseBreakpoint();
+
+					if (breakpoint === baseBreakpoint) {
+						result[label] = defaultAttribute;
+						return;
+					}
+				}
 
 				const generalAttribute = {
 					...defaultAttributes,
@@ -311,7 +389,17 @@ const flatLowerAttr = (
 				}?.[`${simpleLabel}-general`];
 
 				if (isEqual(attribute, generalAttribute)) {
-					result[label] = defaultAttribute;
+					const shouldPreserveAttribute = getShouldPreserveAttribute(
+						attributes,
+						breakpoint,
+						label,
+						attribute,
+						newAttributes
+					);
+
+					if (!shouldPreserveAttribute)
+						result[label] = defaultAttribute;
+
 					return;
 				}
 
@@ -350,7 +438,12 @@ const cleanAttributes = ({
 	};
 	result = {
 		...result,
-		...flatNewAttributes(result, clientId, defaultAttributes),
+		...flatNewAttributes(
+			newAttributes,
+			attributes,
+			clientId,
+			defaultAttributes
+		),
 	};
 	result = {
 		...result,

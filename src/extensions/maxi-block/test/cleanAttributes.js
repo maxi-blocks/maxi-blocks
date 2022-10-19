@@ -18,6 +18,7 @@ jest.mock('@wordpress/data', () => {
 		}),
 	};
 });
+import { select } from '@wordpress/data';
 
 describe('cleanAttributes', () => {
 	it('Should flat the entry object with same value for same attribute with different breakpoints, and just return general one', () => {
@@ -168,28 +169,27 @@ describe('cleanAttributes', () => {
 
 	it('On changing general attribute, if coincide with winBreakpoint, it should overwrite it', () => {
 		const obj = {
-			'test-status-general': true,
-			'test-general': 4,
-			'test-opacity-general': 1,
+			newAttributes: {
+				'test-status-general': true,
+				'test-general': 4,
+				'test-opacity-general': 1,
+			},
+			attributes: {
+				'test-status-general': true,
+				'test-general': 4,
+				'test-status-m': true,
+				'test-opacity-m': 1,
+				'test-m': 8,
+				'test-opacity-general': 1,
+			},
 		};
-		const attributes = {
-			'test-status-general': true,
-			'test-general': 4,
 
-			'test-status-m': true,
-			'test-opacity-m': 1,
-			'test-m': 8,
-			'test-opacity-general': 1,
-		};
-
-		const result = cleanAttributes({
-			newAttributes: obj,
-			attributes,
-		});
+		const result = cleanAttributes(obj);
 
 		const expectedResult = {
 			'test-status-general': true,
 			'test-general': 4,
+			'test-m': undefined,
 			'test-opacity-general': 1,
 			'test-status-m': undefined,
 			'test-opacity-m': undefined,
@@ -228,34 +228,25 @@ describe('cleanAttributes', () => {
 	});
 
 	it('On changing general attribute, if there is a smaller breakpoint with same value, it should be returned to its default - 2', () => {
-		const newAttributes = {
-			'test-status-general': true,
-			'test-general': 7,
-			'test-m': 7,
-		};
-		const attributes = {
-			'test-status-general': true,
-			'test-general': 4,
-
-			'test-m': 8,
-		};
-		const defaultAttributes = {
-			'test-status-general': true,
-			'test-general': 4,
-
-			'test-m': 8,
+		const obj = {
+			newAttributes: {
+				'test-general': 7,
+				'test-m': 7,
+			},
+			attributes: {
+				'test-general': 4,
+				'test-m': 8,
+			},
+			defaultAttributes: {
+				'test-general': 4,
+			},
 		};
 
-		const result = cleanAttributes({
-			newAttributes,
-			attributes,
-			defaultAttributes,
-		});
+		const result = cleanAttributes(obj);
 
 		const expectedResult = {
 			'test-general': 7,
 			'test-m': undefined,
-			'test-status-general': true,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -296,31 +287,162 @@ describe('cleanAttributes', () => {
 	it('With a General value equal to M value, and a different value on XL, when resetting XL, M should be replaced with default', () => {
 		const obj = {
 			newAttributes: {
-				'border-color-l': undefined,
-				'border-palette-color-l': undefined,
-				'border-palette-opacity-l': 1,
-				'border-palette-status-l': undefined,
+				'test-l': undefined,
 			},
 			attributes: {
-				'border-palette-color-general': 2,
-				'border-palette-color-l': 4,
-				'border-palette-color-m': 2,
+				'test-general': 2,
+				'test-l': 4,
+				'test-m': 2,
 			},
 			defaultAttributes: {
-				'border-palette-color-general': 2,
+				'test-general': 2,
 			},
 		};
 
 		const expectedResult = {
-			'border-color-l': undefined,
-			'border-palette-color-l': undefined,
-			'border-palette-color-m': undefined,
-			'border-palette-opacity-l': 1,
-			'border-palette-status-l': undefined,
+			'test-l': undefined,
+			'test-m': undefined,
 		};
 
 		const result = cleanAttributes(obj);
 
 		expect(expectedResult).toStrictEqual(result);
+	});
+
+	it('Random test', () => {
+		select.mockImplementation(
+			jest.fn(() => {
+				return {
+					receiveBaseBreakpoint: jest.fn(() => 'l'),
+					getPrevSavedAttrs: jest.fn(() => []),
+				};
+			})
+		);
+
+		const firstRound = {
+			newAttributes: {
+				'test-xl': 3,
+			},
+			attributes: {
+				'test-general': 1,
+			},
+			defaultAttributes: {
+				'test-general': 1,
+			},
+		};
+		const secondRound = {
+			newAttributes: {
+				'test-general': 4,
+				'test-l': 4,
+			},
+			attributes: {
+				'test-xl': 3,
+				'test-general': 1,
+			},
+			defaultAttributes: {
+				'test-general': 1,
+			},
+		};
+
+		const resultFirstRound = cleanAttributes(firstRound);
+		const resultSecondRound = cleanAttributes(secondRound);
+
+		// Change winBreakpoint to M
+		select.mockImplementation(
+			jest.fn(() => {
+				return {
+					receiveBaseBreakpoint: jest.fn(() => 'm'),
+					getPrevSavedAttrs: jest.fn(() => []),
+				};
+			})
+		);
+
+		const thirdRound = {
+			newAttributes: {
+				'test-l': 4,
+			},
+			attributes: {
+				'test-xl': 3,
+				'test-general': 4,
+			},
+			defaultAttributes: {
+				'test-general': 1,
+			},
+		};
+
+		const resultThirdRound = cleanAttributes(thirdRound);
+
+		const expectedFirstRound = {
+			'test-xl': 3,
+		};
+		const expectedSecondRound = {
+			'test-general': 4,
+			'test-l': 4,
+		};
+		const expectedThirdRound = {
+			'test-l': 4,
+		};
+
+		expect(resultFirstRound).toStrictEqual(expectedFirstRound);
+		expect(resultSecondRound).toStrictEqual(expectedSecondRound);
+		expect(resultThirdRound).toStrictEqual(expectedThirdRound);
+	});
+
+	it('Random test 2', () => {
+		// Change winBreakpoint to M
+		select.mockImplementation(
+			jest.fn(() => {
+				return {
+					receiveBaseBreakpoint: jest.fn(() => 'l'),
+					getPrevSavedAttrs: jest.fn(() => []),
+				};
+			})
+		);
+
+		const obj = {
+			newAttributes: {
+				'border-palette-color-general': 2,
+			},
+			attributes: {
+				'border-palette-color-general': 2,
+				'border-palette-color-l': 4,
+				'border-palette-color-m': 5,
+			},
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'border-palette-color-general': 2,
+			'border-palette-color-l': undefined,
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
+
+	it('Random test 3', () => {
+		const obj = {
+			newAttributes: {
+				'background-palette-color-general': 4,
+			},
+			attributes: {
+				'background-palette-color-general': 1,
+				'background-palette-color-l': 4,
+			},
+
+			defaultAttributes: {
+				'background-palette-color-general': 1,
+				// 'background-palette-color-l': 4,
+			},
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'background-palette-color-general': 4,
+			'background-palette-color-l': undefined,
+		};
+
+		expect(result).toStrictEqual(expectedResult);
 	});
 });

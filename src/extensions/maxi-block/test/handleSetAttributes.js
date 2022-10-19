@@ -19,31 +19,23 @@ jest.mock('@wordpress/data', () => {
 							return [];
 						case 2:
 						case 3:
-							return [
-								'margin-top-general',
-								'margin-right-general',
-								'margin-bottom-general',
-								'margin-left-general',
-							];
+							return ['test-general'];
 						case 4:
-							return ['border-style-general', 'border-style-xxl'];
+							return ['test-general', 'test-xxl'];
 						case 5:
-							return ['border-style-xl'];
+							return ['test-xl'];
 						case 6:
-							return ['border-style-general', 'border-style-m'];
+							return ['test-general', 'test-m'];
 						case 7:
 						case 8:
 						case 9:
-							return ['border-top-left-radius-general'];
+							return ['test-general'];
 						case 10:
 							return [];
 						case 11:
-							return ['border-top-left-radius-xl'];
+							return ['test-xl'];
 						case 12:
-							return [
-								'border-top-left-radius-xl',
-								'border-top-left-radius-m',
-							];
+							return ['test-xl', 'test-m'];
 						default:
 							return [];
 					}
@@ -66,45 +58,26 @@ describe('handleSetAttributes', () => {
 	it('On change number attributes from XXL responsive without General attribute, it changes on XXL and General all time', () => {
 		const firstRound = {
 			obj: {
-				'margin-top-xxl': '1',
-				'margin-right-xxl': '1',
-				'margin-bottom-xxl': '1',
-				'margin-left-xxl': '1',
+				'test-xxl': '1',
 			},
-			attributes: {
-				blockStyle: 'light',
-			},
+			attributes: {},
 			onChange,
 		};
 		const secondRound = {
 			obj: {
-				'margin-top-xxl': '12',
-				'margin-right-xxl': '12',
-				'margin-bottom-xxl': '12',
-				'margin-left-xxl': '12',
+				'test-xxl': '12',
 			},
 			attributes: {
-				blockStyle: 'light',
-				'margin-top-general': '1',
-				'margin-right-general': '1',
-				'margin-bottom-general': '1',
-				'margin-left-general': '1',
+				'test-general': '1',
 			},
 			onChange,
 		};
 		const thirdRound = {
 			obj: {
-				'margin-top-xxl': '123',
-				'margin-right-xxl': '123',
-				'margin-bottom-xxl': '123',
-				'margin-left-xxl': '123',
+				'test-xxl': '123',
 			},
 			attributes: {
-				blockStyle: 'light',
-				'margin-top-general': '12',
-				'margin-right-general': '12',
-				'margin-bottom-general': '12',
-				'margin-left-general': '12',
+				'test-general': '12',
 			},
 			onChange,
 		};
@@ -114,68 +87,65 @@ describe('handleSetAttributes', () => {
 		const thirdRoundResult = handleSetAttributes(thirdRound);
 
 		const firstRoundExpected = {
-			'margin-top-xxl': undefined,
-			'margin-right-xxl': undefined,
-			'margin-bottom-xxl': undefined,
-			'margin-left-xxl': undefined,
-			'margin-top-general': '1',
-			'margin-right-general': '1',
-			'margin-bottom-general': '1',
-			'margin-left-general': '1',
+			'test-xxl': undefined,
+			'test-general': '1',
 		};
 		const secondRoundExpected = {
-			'margin-top-xxl': undefined,
-			'margin-right-xxl': undefined,
-			'margin-bottom-xxl': undefined,
-			'margin-left-xxl': undefined,
-			'margin-top-general': '12',
-			'margin-right-general': '12',
-			'margin-bottom-general': '12',
-			'margin-left-general': '12',
+			'test-xxl': undefined,
+			'test-general': '12',
 		};
 		const thirdRoundExpected = {
-			'margin-top-xxl': undefined,
-			'margin-right-xxl': undefined,
-			'margin-bottom-xxl': undefined,
-			'margin-left-xxl': undefined,
-			'margin-top-general': '123',
-			'margin-right-general': '123',
-			'margin-bottom-general': '123',
-			'margin-left-general': '123',
+			'test-xxl': undefined,
+			'test-general': '123',
 		};
 
 		expect(firstRoundResult).toStrictEqual(firstRoundExpected);
 		expect(secondRoundResult).toStrictEqual(secondRoundExpected);
 		expect(thirdRoundResult).toStrictEqual(thirdRoundExpected);
+
+		const resultAttrs = {
+			...firstRound.attributes,
+			...secondRound.attributes,
+			...thirdRound.attributes,
+			...firstRoundExpected,
+			...secondRoundExpected,
+			...thirdRoundExpected,
+		};
+
+		const expectedAttrs = {
+			'test-xxl': undefined,
+			'test-general': '123',
+		};
+
+		expect(resultAttrs).toStrictEqual(expectedAttrs);
 	});
 
 	it('On first change attributes from XXL responsive and some of them have default general attribute value, and then changing from XL and from "M", all values correspond', () => {
 		const firstRound = {
 			obj: {
-				'border-style-xxl': 'solid',
+				'test-xxl': 'solid',
 			},
 			attributes: {},
 			onChange,
 		};
-
 		const secondRound = {
 			obj: {
-				'border-style-xl': 'dashed',
+				'test-xl': 'dashed',
 			},
 			attributes: {
-				'border-style-general': 'solid',
+				'test-general': 'solid',
+				'test-xxl': undefined,
 			},
 			onChange,
 		};
-
 		const thirdRound = {
 			obj: {
-				'border-style-general': 'dotted',
+				'test-general': 'dotted',
 			},
 			attributes: {
-				'border-style-xxl': 'solid',
-				'border-style-general': 'solid',
-				'border-style-xl': 'dashed',
+				'test-xxl': undefined,
+				'test-general': 'solid',
+				'test-xl': 'dashed',
 			},
 			onChange,
 		};
@@ -185,45 +155,63 @@ describe('handleSetAttributes', () => {
 		const thirdRoundResult = handleSetAttributes(thirdRound);
 
 		const firstRoundExpected = {
-			'border-style-general': 'solid',
-			'border-style-xxl': undefined,
+			'test-general': 'solid',
+			'test-xxl': undefined,
 		};
 		const secondRoundExpected = {
-			'border-style-xl': 'dashed',
+			'test-xl': 'dashed',
 		};
 		const thirdRoundExpected = {
-			'border-style-general': 'dotted',
-			'border-style-m': undefined,
+			'test-general': 'dotted',
+			'test-m': 'dotted',
 		};
 
 		expect(firstRoundResult).toStrictEqual(firstRoundExpected);
 		expect(secondRoundResult).toStrictEqual(secondRoundExpected);
 		expect(thirdRoundResult).toStrictEqual(thirdRoundExpected);
+
+		const resultAttrs = {
+			...firstRound.attributes,
+			...firstRoundExpected,
+			...secondRound.attributes,
+			...secondRoundExpected,
+			...thirdRound.attributes,
+			...thirdRoundExpected,
+		};
+
+		const expectedAttrs = {
+			'test-xxl': undefined,
+			'test-general': 'dotted',
+			'test-xl': 'dashed',
+			'test-m': 'dotted',
+		};
+
+		expect(resultAttrs).toStrictEqual(expectedAttrs);
 	});
 
 	it('On change attributes from base responsive, then from XL, reset it and reset from base again, everything come to default', () => {
 		const firstRound = {
 			obj: {
-				'border-top-left-radius-general': 1,
+				'test-general': 1,
 			},
 			attributes: {},
 			onChange,
 		};
 		const secondRound = {
 			obj: {
-				'border-top-left-radius-general': 10,
+				'test-general': 10,
 			},
 			attributes: {
-				'border-top-left-radius-general': 1,
+				'test-general': 1,
 			},
 			onChange,
 		};
 		const thirdRound = {
 			obj: {
-				'border-top-left-radius-general': 100,
+				'test-general': 100,
 			},
 			attributes: {
-				'border-top-left-radius-general': 10,
+				'test-general': 10,
 			},
 			onChange,
 		};
@@ -233,13 +221,13 @@ describe('handleSetAttributes', () => {
 		const thirdRoundResult = handleSetAttributes(thirdRound);
 
 		const firstRoundExpected = {
-			'border-top-left-radius-general': 1,
+			'test-general': 1,
 		};
 		const secondRoundExpected = {
-			'border-top-left-radius-general': 10,
+			'test-general': 10,
 		};
 		const thirdRoundExpected = {
-			'border-top-left-radius-general': 100,
+			'test-general': 100,
 		};
 
 		expect(firstRoundResult).toStrictEqual(firstRoundExpected);
@@ -248,30 +236,31 @@ describe('handleSetAttributes', () => {
 
 		const firstRoundXL = {
 			obj: {
-				'border-top-left-radius-xl': 1,
+				'test-xl': 1,
 			},
 			attributes: {
-				'border-top-left-radius-general': 100,
+				'test-general': 100,
 			},
 			onChange,
 		};
 		const secondRoundXL = {
 			obj: {
-				'border-top-left-radius-xl': 15,
+				'test-xl': 15,
 			},
 			attributes: {
-				'border-top-left-radius-general': 100,
-				'border-top-left-radius-xl': 1,
+				'test-general': 100,
+				'test-xl': 1,
 			},
 			onChange,
 		};
 		const thirdRoundXL = {
 			obj: {
-				'border-top-left-radius-xl': 150,
+				'test-xl': 150,
 			},
 			attributes: {
-				'border-top-left-radius-general': 100,
-				'border-top-left-radius-xl': 15,
+				'test-general': 100,
+				'test-xl': 15,
+				'test-m': 100,
 			},
 			onChange,
 		};
@@ -281,19 +270,41 @@ describe('handleSetAttributes', () => {
 		const thirdRoundResultXL = handleSetAttributes(thirdRoundXL);
 
 		const firstRoundExpectedXL = {
-			'border-top-left-radius-xl': 1,
+			'test-xl': 1,
 		};
 		const secondRoundExpectedXL = {
-			'border-top-left-radius-xl': 15,
-			'border-top-left-radius-m': undefined,
+			'test-xl': 15,
+			'test-m': 100,
 		};
 		const thirdRoundExpectedXL = {
-			'border-top-left-radius-xl': 150,
-			'border-top-left-radius-m': undefined,
+			'test-xl': 150,
 		};
 
 		expect(firstRoundResultXL).toStrictEqual(firstRoundExpectedXL);
 		expect(secondRoundResultXL).toStrictEqual(secondRoundExpectedXL);
 		expect(thirdRoundResultXL).toStrictEqual(thirdRoundExpectedXL);
+
+		const resultAttrs = {
+			...firstRound.attributes,
+			...firstRoundExpected,
+			...secondRound.attributes,
+			...secondRoundExpected,
+			...thirdRound.attributes,
+			...thirdRoundExpected,
+			...firstRoundXL.attributes,
+			...firstRoundExpectedXL,
+			...secondRoundXL.attributes,
+			...secondRoundExpectedXL,
+			...thirdRoundXL.attributes,
+			...thirdRoundExpectedXL,
+		};
+
+		const expectedAttrs = {
+			'test-general': 100,
+			'test-xl': 150,
+			'test-m': 100,
+		};
+
+		expect(resultAttrs).toStrictEqual(expectedAttrs);
 	});
 });

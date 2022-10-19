@@ -443,7 +443,6 @@ const BackgroundLayersControl = ({
 					breakpoint: 'general',
 					isHover,
 				}),
-				...currentLayer,
 			},
 		});
 

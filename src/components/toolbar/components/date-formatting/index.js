@@ -36,13 +36,48 @@ const DateFormatting = props => {
 
 	const toggleVisible = () => setIsVisible(state => !state);
 	const validateAnchor = str => {
+		const length = {
+			d: str.split('d').length - 1,
+			D: str.split('D').length - 1,
+			dd: str.split('dd').length - 1,
+			dD: str.split('dD').length - 1,
+			Dd: str.split('Dd').length - 1,
+			DD: str.split('DD').length - 1,
+			m: str.split('m').length - 1,
+			M: str.split('M').length - 1,
+			mm: str.split('mm').length - 1,
+			mM: str.split('mM').length - 1,
+			Mm: str.split('Mm').length - 1,
+			MM: str.split('MM').length - 1,
+			t: str.split('t').length - 1,
+			y: str.split('y').length - 1,
+			Y: str.split('Y').length - 1,
+			yy: str.split('yy').length - 1,
+			yY: str.split('yY').length - 1,
+			Yy: str.split('Yy').length - 1,
+			YY: str.split('YY').length - 1,
+		};
+
 		if (
-			str.split('d').length + str.split('D').length - 2 < 2 &&
-			str.split('m').length + str.split('M').length - 2 < 2 &&
-			str.split('y').length + str.split('Y').length - 2 < 2
+			length.dd === 0 &&
+			length.dD === 0 &&
+			length.Dd === 0 &&
+			length.DD === 0 &&
+			length.mm === 0 &&
+			length.mM === 0 &&
+			length.Mm === 0 &&
+			length.MM === 0 &&
+			length.yy === 0 &&
+			length.yY === 0 &&
+			length.Yy === 0 &&
+			length.YY === 0 &&
+			length.d + length.D < 4 &&
+			length.m + length.M < 4 &&
+			length.t < 2 &&
+			length.y + length.Y < 4
 		) {
 			const regex =
-				/^([dDmMyY]{0,1})(\s{0,1})([-,\.\/]{0,1})(\s{0,1})([dDmMyY]{0,1})(\s{0,1})([-,\.\/]{0,1})(\s{0,1})([dDmMyY]{0,1})(\s{0,1})([-,\.\/]{0,1})(\s{0,1})([t]{0,1})$/;
+				/^([dDmMyYt]{0,1})(\s{0,1})([-,\.\/]{0,3})(\s{0,1})([dDmMyYt]{0,1})(\s{0,1})([-,\.\/]{0,1})(\s{0,1})([dDmMyYt]{0,1})(\s{0,1})([-,\.\/]{0,1})(\s{0,1})([dDmMyYt]{0,1})(\s{0,1})([-,\.\/]{0,3})(\s{0,1})([dDmMyYt]{0,1})(\s{0,1})([-,\.\/]{0,3})(\s{0,1})([dDmMyYt]{0,1})$/;
 			if (regex.test(str)) {
 				setFormat(str);
 			}

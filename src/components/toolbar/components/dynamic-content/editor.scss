@@ -19,6 +19,14 @@
 			}
 		}
 	}
+	.maxi-base-control {
+		input[type='text'],
+		input[type='number'],
+		select {
+			border: 1px solid var(--maxi-grey-1-color);
+			color: var(--maxi-grey-5-color);
+		}
+	}
 	.maxi-axis-control {
 		color: #fff;
 		&__content {

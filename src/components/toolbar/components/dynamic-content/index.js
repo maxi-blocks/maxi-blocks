@@ -52,7 +52,7 @@ const DynamicContent = props => {
 
 	const {
 		'dc-author': author,
-		// 'dc-content': content,
+		'dc-content': content,
 		'dc-date': date,
 		'dc-day': day,
 		'dc-era': era,
@@ -166,10 +166,21 @@ const DynamicContent = props => {
 		return result.includes(field) ? {} : { 'dc-field': result[0] };
 	};
 
-	const limitFormat = _value =>
-		_value.length > limitRef.current && limitRef.current !== 0
-			? _value.substr(0, limitRef.current)
+	const cutTags = str => {
+		var regex = /( |<([^>]+)>)/gi,
+			result = str.replace(regex, ' ');
+
+		return result;
+	};
+
+	const limitFormat = _value => {
+		const str = cutTags(_value).trim();
+		return str.length > limitRef.current && limitRef.current !== 0
+			? str.substr(0, limitRef.current).trim() + '...'
+			: limitRef.current !== 0
+			? str
 			: _value;
+	};
 
 	const handleDateCallback = childData => {
 		onChange({
@@ -774,7 +785,7 @@ const DynamicContent = props => {
 											switchOnChange('limit', 0)
 										}
 										min={LimitOptions.min}
-										max={LimitOptions.max}
+										max={cutTags(content).trim().length}
 										initialPosition={limitRef.current || 0}
 									/>
 								)}

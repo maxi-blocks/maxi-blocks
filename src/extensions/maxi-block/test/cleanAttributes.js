@@ -374,6 +374,7 @@ describe('cleanAttributes', () => {
 
 		const expectedFirstRound = {
 			'test-xl': 3,
+			'test-l': 1,
 		};
 		const expectedSecondRound = {
 			'test-general': 4,
@@ -381,11 +382,30 @@ describe('cleanAttributes', () => {
 		};
 		const expectedThirdRound = {
 			'test-l': 4,
+			// 'test-m': 4, //! !
 		};
 
 		expect(resultFirstRound).toStrictEqual(expectedFirstRound);
 		expect(resultSecondRound).toStrictEqual(expectedSecondRound);
 		expect(resultThirdRound).toStrictEqual(expectedThirdRound);
+
+		const resultAttrs = {
+			...firstRound.attributes,
+			...resultFirstRound,
+			...secondRound.attributes,
+			...resultSecondRound,
+			...thirdRound.attributes,
+			...resultThirdRound,
+		};
+
+		const expectedResult = {
+			'test-xl': 3,
+			'test-general': 4,
+			'test-l': 4,
+			// 'test-m': 4,
+		};
+
+		expect(resultAttrs).toStrictEqual(expectedResult);
 	});
 
 	it('Random test 2', () => {
@@ -441,6 +461,39 @@ describe('cleanAttributes', () => {
 		const expectedResult = {
 			'background-palette-color-general': 4,
 			'background-palette-color-l': undefined,
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
+
+	it('Saving an attribute higher than winBase, when winBase attribute is default, return the new attribute value and sets general value to winBase attribute', () => {
+		// Change winBreakpoint to M
+		select.mockImplementation(
+			jest.fn(() => {
+				return {
+					receiveBaseBreakpoint: jest.fn(() => 'm'),
+					getPrevSavedAttrs: jest.fn(() => []),
+				};
+			})
+		);
+
+		const obj = {
+			newAttributes: {
+				'test-l': 4,
+			},
+			attributes: {
+				'test-general': 1,
+			},
+			defaultAttributes: {
+				'test-general': 1,
+			},
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'test-l': 4,
+			'test-m': 1,
 		};
 
 		expect(result).toStrictEqual(expectedResult);

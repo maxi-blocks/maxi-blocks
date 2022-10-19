@@ -105,11 +105,11 @@ describe('handleSetAttributes', () => {
 
 		const resultAttrs = {
 			...firstRound.attributes,
+			...firstRoundResult,
 			...secondRound.attributes,
+			...secondRoundResult,
 			...thirdRound.attributes,
-			...firstRoundExpected,
-			...secondRoundExpected,
-			...thirdRoundExpected,
+			...thirdRoundResult,
 		};
 
 		const expectedAttrs = {
@@ -160,6 +160,7 @@ describe('handleSetAttributes', () => {
 		};
 		const secondRoundExpected = {
 			'test-xl': 'dashed',
+			'test-m': 'solid',
 		};
 		const thirdRoundExpected = {
 			'test-general': 'dotted',
@@ -172,11 +173,11 @@ describe('handleSetAttributes', () => {
 
 		const resultAttrs = {
 			...firstRound.attributes,
-			...firstRoundExpected,
+			...firstRoundResult,
 			...secondRound.attributes,
-			...secondRoundExpected,
+			...secondRoundResult,
 			...thirdRound.attributes,
-			...thirdRoundExpected,
+			...thirdRoundResult,
 		};
 
 		const expectedAttrs = {
@@ -271,6 +272,7 @@ describe('handleSetAttributes', () => {
 
 		const firstRoundExpectedXL = {
 			'test-xl': 1,
+			'test-m': 100,
 		};
 		const secondRoundExpectedXL = {
 			'test-xl': 15,
@@ -286,17 +288,17 @@ describe('handleSetAttributes', () => {
 
 		const resultAttrs = {
 			...firstRound.attributes,
-			...firstRoundExpected,
+			...firstRoundResult,
 			...secondRound.attributes,
-			...secondRoundExpected,
+			...secondRoundResult,
 			...thirdRound.attributes,
-			...thirdRoundExpected,
+			...thirdRoundResult,
 			...firstRoundXL.attributes,
-			...firstRoundExpectedXL,
+			...firstRoundResultXL,
 			...secondRoundXL.attributes,
-			...secondRoundExpectedXL,
+			...secondRoundResultXL,
 			...thirdRoundXL.attributes,
-			...thirdRoundExpectedXL,
+			...thirdRoundResultXL,
 		};
 
 		const expectedAttrs = {

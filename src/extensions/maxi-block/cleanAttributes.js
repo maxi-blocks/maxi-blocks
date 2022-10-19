@@ -410,6 +410,57 @@ const flatLowerAttr = (
 	return result;
 };
 
+/**
+ * Ensures a new saved attribute with a breakpoint higher than baseBreakpoint returns
+ * general value for baseBreakpoint attribute in order to avoid a visual bug between
+ * editor and frontend, as in editor, with baseBreakpoint selected it will show the
+ * general value, and in frontend, that value would be overwrite by the higher breakpoint
+ * attribute value and its media query.
+ */
+const preserveBaseBreakpoint = (
+	newAttributes,
+	attributes,
+	clientId,
+	defaultAttributes
+) => {
+	const result = {};
+
+	Object.entries(newAttributes).forEach(([key, value]) => {
+		const breakpoint = getBreakpointFromAttribute(key);
+
+		if (!breakpoint || breakpoint === 'general' || isNil(value)) {
+			result[key] = value;
+			return;
+		}
+
+		const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
+		const isHigherThanBase =
+			breakpoints.indexOf(breakpoint) <
+			breakpoints.indexOf(baseBreakpoint);
+
+		if (!isHigherThanBase) return;
+
+		const simpleLabel = getSimpleLabel(key, breakpoint);
+		const baseLabel = `${simpleLabel}-${baseBreakpoint}`;
+		const baseAttr = { ...attributes, ...newAttributes }?.[baseLabel];
+		const generalAttr = { ...attributes, ...newAttributes }?.[
+			`${simpleLabel}-general`
+		];
+		const defaultAttribute =
+			defaultAttributes?.[baseLabel] ??
+			getDefaultAttribute(baseLabel, clientId, true);
+
+		if (
+			isEqual(baseAttr, defaultAttribute) &&
+			!isEqual(baseAttr, generalAttr) &&
+			!isEqual(generalAttr, value)
+		)
+			result[baseLabel] = generalAttr;
+	});
+
+	return result;
+};
+
 const cleanAttributes = ({
 	newAttributes,
 	attributes,
@@ -438,17 +489,16 @@ const cleanAttributes = ({
 	};
 	result = {
 		...result,
-		...flatNewAttributes(
-			newAttributes,
-			attributes,
-			clientId,
-			defaultAttributes
-		),
+		...flatNewAttributes(result, attributes, clientId, defaultAttributes),
 	};
 	result = {
 		...result,
-		...flatLowerAttr(
-			newAttributes,
+		...flatLowerAttr(result, attributes, clientId, defaultAttributes),
+	};
+	result = {
+		...result,
+		...preserveBaseBreakpoint(
+			result,
 			attributes,
 			clientId,
 			defaultAttributes

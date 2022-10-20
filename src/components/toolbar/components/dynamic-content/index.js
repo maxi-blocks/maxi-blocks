@@ -203,9 +203,17 @@ const DynamicContent = props => {
 
 	const dateContent = _value => {
 		const NewDate = new Date(_value);
-		let options, content;
+		let options, content, newFormat;
 		if (!date) {
-			var map = {
+			newFormat = format
+				.replace(new RegExp('DV', 'g'), 'x')
+				.replace(new RegExp('DS', 'g'), 'z')
+				.replace(new RegExp('MS', 'g'), 'c');
+			console.log('newFormat', newFormat);
+			const map = {
+				z: 'ddd',
+				x: 'dd',
+				c: 'MMM',
 				d: 'D',
 				D: 'dddd',
 				m: 'MM',
@@ -214,9 +222,10 @@ const DynamicContent = props => {
 				Y: 'YYYY',
 				t: 'HH:MM:SS',
 			};
-			let newFormat = format.replace(/[dDmMyYt]/g, function (m) {
+			newFormat = newFormat.replace(/[xzcdDmMyYt]/g, function (m) {
 				return map[m];
 			});
+			//moment.lang('en');
 			content = moment(NewDate).format(newFormat);
 		} else {
 			options = {

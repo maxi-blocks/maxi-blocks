@@ -76,8 +76,21 @@ const DateFormatting = props => {
 			length.t < 2 &&
 			length.y + length.Y < 4
 		) {
-			const regex =
-				/^([dDmMyYt]{0,1})(\s{0,1})([-,\.\/]{0,3})(\s{0,1})([dDmMyYt]{0,1})(\s{0,1})([-,\.\/]{0,1})(\s{0,1})([dDmMyYt]{0,1})(\s{0,1})([-,\.\/]{0,1})(\s{0,1})([dDmMyYt]{0,1})(\s{0,1})([-,\.\/]{0,3})(\s{0,1})([dDmMyYt]{0,1})(\s{0,1})([-,\.\/]{0,3})(\s{0,1})([dDmMyYt]{0,1})$/;
+			const word = '([dDmMyYt]{0,1}|MS{0,1}|DS{0,1}|DV{0,1})';
+			const interWord = '(\\s{0,1})([-,\\.\\/]{0,3})(\\s{0,1})';
+			const regex = new RegExp(
+				'^\\s{0,1}' +
+					word +
+					interWord +
+					word +
+					interWord +
+					word +
+					interWord +
+					word +
+					interWord +
+					word +
+					'$'
+			);
 			if (regex.test(str)) {
 				setFormat(str);
 			}
@@ -144,10 +157,19 @@ const DateFormatting = props => {
 						<b>D</b> - day in text format
 					</p>
 					<p>
+						<b>DS</b> - day in text format, short
+					</p>
+					<p>
+						<b>DV</b> - day in text format, very short
+					</p>
+					<p>
 						<b>m</b> - month in numeric format
 					</p>
 					<p>
 						<b>M</b> - month in text format
+					</p>
+					<p>
+						<b>MS</b> - month in text format, short
 					</p>
 					<p>
 						<b>y</b> - year in short format

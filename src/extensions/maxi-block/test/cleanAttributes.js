@@ -498,4 +498,26 @@ describe('cleanAttributes', () => {
 
 		expect(result).toStrictEqual(expectedResult);
 	});
+
+	it('Random test 4', () => {
+		const obj = {
+			newAttributes: {
+				'border-palette-opacity-s': 0.45,
+			},
+			attributes: {
+				'border-palette-opacity-general': 0.45,
+			},
+			defaultAttributes: {
+				'border-palette-opacity-general': 100,
+			},
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'border-palette-opacity-s': undefined,
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
 });

@@ -31,7 +31,7 @@ import ListItemControl from '../list-control/list-item-control';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, cloneDeep, isEqual, findIndex, omitBy, isNil } from 'lodash';
+import { cloneDeep, findIndex, isEmpty, isEqual, isNil, omitBy } from 'lodash';
 
 /**
  * Icons

@@ -7,13 +7,13 @@ import { select, dispatch, subscribe } from '@wordpress/data';
  * Internal dependencies
  */
 import { getPageFonts, loadFonts } from '../text/fonts';
+import getWinBreakpoint from './getWinBreakpoint';
+import { setScreenSize } from '../styles';
 
 /**
  * External dependencies
  */
 import { isEmpty, isNil } from 'lodash';
-import getWinBreakpoint from './getWinBreakpoint';
-import { setScreenSize } from '../styles';
 
 /**
  * General

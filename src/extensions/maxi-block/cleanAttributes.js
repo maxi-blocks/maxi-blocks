@@ -108,7 +108,17 @@ const flatSameAsPrev = (
 					if (isEqual(value, attribute)) {
 						if (isEqual(value, defaultAttribute))
 							result[key] = undefined;
-						else if (breakpoint !== 'general')
+						else if (breakpoint === 'general') {
+							const generalAttr =
+								attributes[`${simpleLabel}-general`];
+
+							if (
+								!isNil(generalAttr) &&
+								isEqual(generalAttr, value)
+							) {
+								result[key] = undefined;
+							}
+						} else if (breakpoint !== 'general')
 							result[key] = defaultAttribute;
 						else if (!isNil(attribute)) breakpointLock = true;
 					} else if (!isNil(attribute)) breakpointLock = true;
@@ -140,50 +150,49 @@ const flatWithGeneral = (
 	const prevSavedAttrs = select('maxiBlocks/styles').getPrevSavedAttrs();
 
 	Object.entries(newAttributes).forEach(([key, value]) => {
+		if (isNil(value)) return;
+
 		const breakpoint = getBreakpointFromAttribute(key);
 
-		if (!isNil(value))
-			prevSavedAttrs.forEach(attr => {
-				if (Object.prototype.hasOwnProperty.call(newAttributes, attr))
-					return;
+		prevSavedAttrs.forEach(attr => {
+			if (Object.prototype.hasOwnProperty.call(newAttributes, attr))
+				return;
 
-				const attrBreakpoint = getBreakpointFromAttribute(attr);
+			const attrBreakpoint = getBreakpointFromAttribute(attr);
 
-				const currentBreakpoint =
-					select('maxiBlocks').receiveMaxiDeviceType();
+			const currentBreakpoint =
+				select('maxiBlocks').receiveMaxiDeviceType();
 
-				if (attrBreakpoint === 'general') {
-					const simpleLabel = getSimpleLabel(attr, attrBreakpoint);
-					const generalAttr = attributes[`${simpleLabel}-general`];
+			if (attrBreakpoint === 'general') {
+				const simpleLabel = getSimpleLabel(attr, attrBreakpoint);
+				const generalAttr = attributes[`${simpleLabel}-general`];
 
-					if (
-						`${simpleLabel}-${currentBreakpoint}` === key &&
-						value.toString().startsWith(generalAttr)
-					) {
-						result[key] = undefined;
-						result[`${simpleLabel}-general`] = value;
-					}
-
-					return;
+				if (
+					`${simpleLabel}-${currentBreakpoint}` === key &&
+					value.toString().startsWith(generalAttr)
+				) {
+					result[key] = undefined;
+					result[`${simpleLabel}-general`] = value;
 				}
 
-				const currentAttr = getLastBreakpointAttribute({
-					target: getSimpleLabel(attr, attrBreakpoint),
-					breakpoint: attrBreakpoint,
-					attributes,
-				});
+				return;
+			}
 
-				if (attr === key && value.toString().startsWith(currentAttr)) {
-					if (currentBreakpoint === 'general') {
-						result[key] = undefined;
-						result[
-							`${getSimpleLabel(key, attrBreakpoint)}-general`
-						] = value;
-					}
-					if (currentBreakpoint === attrBreakpoint)
-						result[key] = value;
-				}
+			const currentAttr = getLastBreakpointAttribute({
+				target: getSimpleLabel(attr, attrBreakpoint),
+				breakpoint: attrBreakpoint,
+				attributes,
 			});
+
+			if (attr === key && value.toString().startsWith(currentAttr)) {
+				if (currentBreakpoint === 'general') {
+					result[key] = undefined;
+					result[`${getSimpleLabel(key, attrBreakpoint)}-general`] =
+						value;
+				}
+				if (currentBreakpoint === attrBreakpoint) result[key] = value;
+			}
+		});
 
 		if (!breakpoint) {
 			result[key] = value;
@@ -312,7 +321,7 @@ const removeSameAsGeneral = (newAttributes, attributes) => {
 		const baseLabel = key.replace(`-${breakpoint}`, `-${baseBreakpoint}`);
 		const baseAttr = attributes?.[baseLabel];
 
-		if (!breakpoint !== 'general') {
+		if (breakpoint !== 'general') {
 			if (key !== baseLabel) result[key] = value;
 			else result[baseLabel] = undefined;
 
@@ -347,6 +356,7 @@ const flatLowerAttr = (
 			result[key] = value;
 			return;
 		}
+		if (breakpoint === 'xxl') return;
 
 		const isGeneral = breakpoint === 'general';
 		const simpleLabel = getSimpleLabel(key, breakpoint);
@@ -356,55 +366,53 @@ const flatLowerAttr = (
 
 		let breakpointLock = false;
 
-		if (breakpoint !== 'xxl')
-			lowerBreakpoints.forEach(breakpoint => {
-				if (breakpointLock) return;
+		lowerBreakpoints.forEach(breakpoint => {
+			if (breakpointLock) return;
 
-				const label = `${simpleLabel}-${breakpoint}`;
-				const attribute = attributes?.[label];
+			const label = `${simpleLabel}-${breakpoint}`;
+			const attribute = attributes?.[label];
 
-				if (isNil(attribute)) return;
+			if (isNil(attribute)) return;
 
-				const defaultAttribute =
-					defaultAttributes?.[label] ??
-					getDefaultAttribute(label, clientId, true);
+			const defaultAttribute =
+				defaultAttributes?.[label] ??
+				getDefaultAttribute(label, clientId, true);
 
-				if (isEqual(value, attribute)) {
+			if (isEqual(value, attribute)) {
+				result[label] = defaultAttribute;
+				return;
+			}
+			if (isGeneral) {
+				const baseBreakpoint =
+					select('maxiBlocks').receiveBaseBreakpoint();
+
+				if (breakpoint === baseBreakpoint) {
 					result[label] = defaultAttribute;
 					return;
 				}
-				if (isGeneral) {
-					const baseBreakpoint =
-						select('maxiBlocks').receiveBaseBreakpoint();
+			}
 
-					if (breakpoint === baseBreakpoint) {
-						result[label] = defaultAttribute;
-						return;
-					}
-				}
+			const generalAttribute = {
+				...defaultAttributes,
+				...attributes,
+			}?.[`${simpleLabel}-general`];
 
-				const generalAttribute = {
-					...defaultAttributes,
-					...attributes,
-				}?.[`${simpleLabel}-general`];
+			if (isEqual(attribute, generalAttribute)) {
+				const shouldPreserveAttribute = getShouldPreserveAttribute(
+					attributes,
+					breakpoint,
+					label,
+					attribute,
+					newAttributes
+				);
 
-				if (isEqual(attribute, generalAttribute)) {
-					const shouldPreserveAttribute = getShouldPreserveAttribute(
-						attributes,
-						breakpoint,
-						label,
-						attribute,
-						newAttributes
-					);
+				if (!shouldPreserveAttribute) result[label] = defaultAttribute;
 
-					if (!shouldPreserveAttribute)
-						result[label] = defaultAttribute;
+				return;
+			}
 
-					return;
-				}
-
-				if (!isEqual(value, defaultAttribute)) breakpointLock = true;
-			});
+			if (!isEqual(value, defaultAttribute)) breakpointLock = true;
+		});
 	});
 
 	return result;

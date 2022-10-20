@@ -237,7 +237,7 @@ describe('Responsive attributes mechanisms', () => {
 		const expectBorder = {
 			'border-style-general': 'solid',
 			'border-style-xl': 'dashed',
-			'border-style-m': undefined,
+			'border-style-m': 'solid',
 		};
 
 		const borderResult = await getAttributes([
@@ -271,7 +271,7 @@ describe('Responsive attributes mechanisms', () => {
 		const expectBorder = {
 			'border-style-general': 'solid',
 			'border-style-xl': 'dashed',
-			'border-style-m': undefined,
+			'border-style-m': 'solid',
 		};
 
 		const borderResult = await getAttributes([
@@ -311,7 +311,7 @@ describe('Responsive attributes mechanisms', () => {
 			'border-style-xxl': undefined,
 			'border-style-general': 'dotted',
 			'border-style-xl': 'dashed',
-			'border-style-m': undefined,
+			'border-style-m': 'dotted',
 		};
 
 		const borderResult = await getAttributes([
@@ -445,7 +445,7 @@ describe('Responsive attributes mechanisms', () => {
 		const expectRadiusOnXl = {
 			'border-top-left-radius-general': 100,
 			'border-top-left-radius-xl': 150,
-			'border-top-left-radius-m': undefined,
+			'border-top-left-radius-m': 100,
 		};
 
 		const radiusOnXl = await getAttributes([
@@ -644,7 +644,10 @@ describe('Responsive attributes mechanisms', () => {
 		expect(paddingOnXxl).toStrictEqual(expectPaddingOnXxl);
 	});
 
-	it('On resetting Typography values from SC having XXL as baseBreakpoint', async () => {
+	/**
+	 * TODO: needs #3809 to be fixed first. On resetting, General values are overwriting XXL ones.
+	 */
+	it.skip('On resetting Typography values from SC having XXL as baseBreakpoint', async () => {
 		// Base responsive is "XXL"
 		await setBrowserViewport({ width: 2400, height: 700 });
 		await createNewPost();

@@ -5,7 +5,6 @@
  * @param {obj}    breakpoints  Breakpoints object
  * @returns Breakpoint relative to the content width
  */
-
 const getWinBreakpoint = (
 	contentWidth,
 	breakpoints = {

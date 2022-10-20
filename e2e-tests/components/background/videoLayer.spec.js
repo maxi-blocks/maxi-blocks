@@ -134,7 +134,6 @@ describe('BackgroundControl', () => {
 	});
 
 	it('Check Background video layer hover', async () => {
-		debugger;
 		await changeResponsive(page, 'base');
 		const accordion = await openSidebarTab(
 			page,

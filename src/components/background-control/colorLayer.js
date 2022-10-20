@@ -18,12 +18,12 @@ import {
 	getDefaultAttribute,
 } from '../../extensions/styles';
 import { getDefaultLayerAttr } from './utils';
+import { getPaletteColor } from '../../extensions/style-cards';
 
 /**
  * External dependencies
  */
 import { cloneDeep } from 'lodash';
-import { getPaletteColor } from '../../extensions/style-cards';
 
 const breakpoints = ['general', 'xl', 'l', 'm', 's', 'xs'];
 

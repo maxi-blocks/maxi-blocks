@@ -2,6 +2,10 @@
  * WordPress dependencies
  */
 import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+
+/**
+ * Internal dependencies
+ */
 import { changeResponsive } from '../../utils';
 
 describe('InfoBox', () => {

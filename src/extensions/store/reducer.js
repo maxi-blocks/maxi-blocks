@@ -33,17 +33,14 @@ const breakpointResizer = ({
 			editorWrapper.style.width = '';
 			editorWrapper.style.margin = '';
 		} else {
-			if (winHeight > responsiveWidth)
-				editorWrapper.style.margin = '0 auto';
-			else editorWrapper.style.margin = '';
+			editorWrapper.style.margin =
+				winHeight > responsiveWidth ? '0 auto' : '';
 
-			if (isGutenbergButton) {
-				editorWrapper.style = null;
-			} else if (['s', 'xs'].includes(size)) {
+			if (isGutenbergButton) editorWrapper.style = null;
+			else if (['s', 'xs'].includes(size))
 				editorWrapper.style.width = 'fit-content';
-			} else if (editorWrapper.style.width !== `${responsiveWidth}px`) {
+			else if (editorWrapper.style.width !== `${responsiveWidth}px`)
 				editorWrapper.style.width = `${responsiveWidth}px`;
-			}
 		}
 	}
 

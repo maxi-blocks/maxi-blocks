@@ -179,8 +179,18 @@ const transition = ({
 	Object.keys(transition).forEach(type => {
 		Object.keys(transition[type]).forEach(key => {
 			const hoverProp = transitionData?.[type]?.[key]?.hoverProp;
-			if (hoverProp && !attributes[hoverProp])
+			if (hoverProp && typeof hoverProp === 'object') {
+				let status = true;
+				for (let k in hoverProp) {
+					if (attributes[hoverProp[k]]) {
+						status = false;
+						break;
+					}
+				}
+				status && delete transition[type][key];
+			} else if (hoverProp && !attributes[hoverProp]) {
 				delete transition[type][key];
+			}
 		});
 	});
 

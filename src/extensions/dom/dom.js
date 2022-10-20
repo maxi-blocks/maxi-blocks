@@ -479,11 +479,9 @@ wp.domReady(() => {
 
 			setTimeout(async () => {
 				const editorWrapper = entries[0].target;
-
 				if (!editorWrapper) return;
 
 				editorWrapper.style.maxWidth = 'initial';
-
 				const { width } = editorWrapper.getBoundingClientRect();
 
 				const { setMaxiDeviceType } = dispatch('maxiBlocks');
@@ -492,21 +490,21 @@ wp.domReady(() => {
 					ignoreMaxiBlockResponsiveWidth: true,
 				});
 
-				const maxiBlocksResponsiveAttribute =
-					editorWrapper.getAttribute('maxi-blocks-responsive');
-
-				const { receiveBaseBreakpoint } = select('maxiBlocks');
+				const { receiveMaxiDeviceType, receiveBaseBreakpoint } =
+					select('maxiBlocks');
+				const deviceType = receiveMaxiDeviceType();
 				const baseBreakpoint = receiveBaseBreakpoint();
 
 				const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-				// Hiding handles if current breakpoint smaller than winBreakpoint,
+				// Hiding handles if current breakpoint smaller than baseBreakpoint,
 				// because resizing is broken in this case
 				if (
 					baseBreakpoint &&
-					maxiBlocksResponsiveAttribute &&
+					deviceType &&
+					deviceType !== 'general' &&
 					breakpoints.indexOf(baseBreakpoint) >
-						breakpoints.indexOf(maxiBlocksResponsiveAttribute)
+						breakpoints.indexOf(deviceType)
 				) {
 					changeSiteEditorWidth('fit-content');
 					changeHandlesDisplay('none', editorWrapper);
@@ -552,12 +550,14 @@ wp.domReady(() => {
 					return;
 				}
 
-				const targetNode = document.querySelector(
+				const resizableBox = document.querySelector(
 					'.components-resizable-box__container'
 				);
 
-				if (targetNode && isNewObserver)
-					templatePartResizeObserver.observe(targetNode);
+				if (resizableBox && isNewObserver) {
+					isNewObserver = false;
+					templatePartResizeObserver.observe(resizableBox);
+				}
 			} else templatePartResizeObserver.disconnect();
 		});
 	}
@@ -575,7 +575,6 @@ wp.domReady(() => {
 		const targetNode = document.querySelector(
 			'.interface-interface-skeleton__content'
 		);
-		if (!targetNode) return;
 		if (!targetNode) {
 			isNewEditorContentObserver = true;
 			return;

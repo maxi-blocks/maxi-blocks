@@ -64,7 +64,7 @@ const breakpointResizer = (
 
 			if (isGutenbergButton) {
 				editorWrapper.style = null;
-			} else if (['s', 'xs'].includes(size)) {
+			} else if (['s', 'xs'].includes(size) && !getIsSiteEditor()) {
 				editorWrapper.style.width = 'fit-content';
 			} else if (editorWrapper.style.width !== `${responsiveWidth}px`) {
 				editorWrapper.style.width = `${responsiveWidth}px`;

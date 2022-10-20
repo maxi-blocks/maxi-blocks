@@ -576,19 +576,27 @@ wp.domReady(() => {
 			'.interface-interface-skeleton__content'
 		);
 		if (!targetNode) return;
+		if (!targetNode) {
+			isNewEditorContentObserver = true;
+			return;
+		}
 
 		if (isSiteEditor) {
 			const isTemplatesListOpened = getIsTemplatesListOpened();
 
-			if (!isTemplatesListOpened && isNewEditorContentObserver) {
+			if (
+				!isTemplatesListOpened &&
+				isNewEditorContentObserver &&
+				getSiteEditorIframeBody()
+			) {
 				isNewEditorContentObserver = false;
 				resizeObserver.observe(targetNode);
-			} else if (isTemplatesListOpened) {
+			} else if (isTemplatesListOpened && !isNewEditorContentObserver) {
 				isNewEditorContentObserver = true;
 				resizeObserver.disconnect();
 			}
 		} else {
-			[targetNode, document.body, getSiteEditorIframeBody()].forEach(
+			[targetNode, document.body].forEach(
 				element => element && resizeObserver.observe(element)
 			);
 

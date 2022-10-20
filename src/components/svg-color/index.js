@@ -45,7 +45,7 @@ export const SvgColor = props => {
 			: svgType !== 'Line';
 
 		const paletteStr = type === 'line' ? 'stroke' : 'fill';
-		const ColorStr =
+		const colorStr =
 			isNeededType &&
 			getColorRGBAString({
 				firstVar: `icon-${paletteStr}`,
@@ -53,55 +53,23 @@ export const SvgColor = props => {
 				opacity: 1,
 				blockStyle,
 			});
+		const onChangeObject = {
+			[`svg-${type}-color${isHover ? '-hover' : ''}`]: color,
+			[`svg-${type}-palette-color${isHover ? '-hover' : ''}`]:
+				paletteColor,
+			[`svg-${type}-palette-status${isHover ? '-hover' : ''}`]:
+				paletteStatus,
+			content: (isHover ? setSVGContentHover : setSVGContent)(
+				content,
+				paletteStatus ? colorStr : color,
+				paletteStr
+			),
+		};
 
-		if (isHover) {
-			if (type === 'line') {
-				onChangeHoverStroke({
-					'svg-line-color-hover': color,
-					'svg-line-palette-color-hover': paletteColor,
-					'svg-line-palette-status-hover': paletteStatus,
-					content: setSVGContentHover(
-						content,
-						paletteStatus ? ColorStr : color,
-						'stroke'
-					),
-				});
-			} else {
-				onChangeHoverFill({
-					'svg-fill-color-hover': color,
-					'svg-fill-palette-color-hover': paletteColor,
-					'svg-fill-palette-status-hover': paletteStatus,
-					content: setSVGContentHover(
-						content,
-						paletteStatus ? ColorStr : color,
-						'fill'
-					),
-				});
-			}
-		} else if (type === 'line') {
-			onChangeStroke({
-				'svg-line-color': color,
-				'svg-line-palette-color': paletteColor,
-				'svg-line-palette-status': paletteStatus,
-				content: setSVGContent(
-					content,
-					paletteStatus ? ColorStr : color,
-					'stroke'
-				),
-			});
+		if (type === 'line') {
+			(isHover ? onChangeHoverStroke : onChangeStroke)(onChangeObject);
 		} else {
-			onChangeFill({
-				'svg-fill-color': color,
-				'svg-fill-palette-color': paletteColor,
-				'svg-fill-palette-status': paletteStatus,
-				content:
-					ColorStr &&
-					setSVGContent(
-						content,
-						paletteStatus ? ColorStr : color,
-						'fill'
-					),
-			});
+			(isHover ? onChangeHoverFill : onChangeFill)(onChangeObject);
 		}
 	};
 

@@ -37,7 +37,12 @@ const actions = {
 			deviceType,
 		};
 	},
-	setMaxiDeviceType({ deviceType, width, isGutenbergButton = false }) {
+	setMaxiDeviceType({
+		deviceType,
+		width,
+		isGutenbergButton = false,
+		changeSize = true,
+	}) {
 		if (!isGutenbergButton) {
 			const { __experimentalSetPreviewDeviceType: setPreviewDeviceType } =
 				dispatch('core/edit-post');
@@ -58,6 +63,7 @@ const actions = {
 			deviceType,
 			width,
 			isGutenbergButton,
+			changeSize,
 		};
 	},
 	setEditorContentSize(editorContentSize) {

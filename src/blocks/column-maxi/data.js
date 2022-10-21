@@ -69,57 +69,59 @@ const customCss = {
 		'background hover',
 	],
 };
-const interactionBuilderSettings = [
-	{
-		label: __('Column settings', 'maxi-blocks'),
-		attrGroupName: ['columnSize', 'flex'],
-		component: props => {
-			const { getBlockAttributes } = select('core/block-editor');
+const interactionBuilderSettings = {
+	block: [
+		{
+			label: __('Column settings', 'maxi-blocks'),
+			attrGroupName: ['columnSize', 'flex'],
+			component: props => {
+				const { getBlockAttributes } = select('core/block-editor');
 
-			const rowPattern = getGroupAttributes(
-				getBlockAttributes(getParentRowClientId(props.clientId)),
-				'rowPattern'
-			);
+				const rowPattern = getGroupAttributes(
+					getBlockAttributes(getParentRowClientId(props.clientId)),
+					'rowPattern'
+				);
 
-			return <ColumnSizeControl {...props} rowPattern={rowPattern} />;
-		},
-		helper: props => {
-			const { getBlock } = select('core/block-editor');
+				return <ColumnSizeControl {...props} rowPattern={rowPattern} />;
+			},
+			helper: props => {
+				const { getBlock } = select('core/block-editor');
 
-			const parentRowBlock = getBlock(
-				getParentRowClientId(props.clientId)
-			);
+				const parentRowBlock = getBlock(
+					getParentRowClientId(props.clientId)
+				);
 
-			const columnsSize = parentRowBlock.innerBlocks.reduce(
-				(acc, block) => ({
-					...acc,
-					[block.clientId]: getGroupAttributes(
-						block.attributes,
-						'columnSize'
+				const columnsSize = parentRowBlock.innerBlocks.reduce(
+					(acc, block) => ({
+						...acc,
+						[block.clientId]: getGroupAttributes(
+							block.attributes,
+							'columnSize'
+						),
+					}),
+					{}
+				);
+
+				const columnNum = parentRowBlock.innerBlocks.length;
+				const rowGapProps = getRowGapProps(parentRowBlock.attributes);
+
+				return merge(
+					getColumnSizeStyles(
+						props.obj,
+						{
+							...rowGapProps,
+							columnNum,
+							columnsSize,
+						},
+						props.clientId
 					),
-				}),
-				{}
-			);
-
-			const columnNum = parentRowBlock.innerBlocks.length;
-			const rowGapProps = getRowGapProps(parentRowBlock.attributes);
-
-			return merge(
-				getColumnSizeStyles(
-					props.obj,
-					{
-						...rowGapProps,
-						columnNum,
-						columnsSize,
-					},
-					props.clientId
-				),
-				getFlexStyles(props.obj)
-			);
+					getFlexStyles(props.obj)
+				);
+			},
 		},
-	},
-	...getCanvasSettings({ name, customCss }),
-];
+	],
+	canvas: getCanvasSettings({ name, customCss }),
+};
 
 const data = {
 	name,

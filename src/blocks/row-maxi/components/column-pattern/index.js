@@ -20,7 +20,7 @@ import { getLastBreakpointAttribute } from '../../../../extensions/styles';
 /**
  * External dependencies
  */
-import { uniqueId, isEqual } from 'lodash';
+import { uniqueId, isEqual, isNil } from 'lodash';
 import classnames from 'classnames';
 
 /**
@@ -35,7 +35,11 @@ import './editor.scss';
 const ColumnPattern = props => {
 	const { clientId, onChange, breakpoint, toolbar = false } = props;
 
-	const [numCol, setNumCol] = useState(1);
+	const [numCol, setNumCol] = useState(
+		!isNil(props['row-pattern-general'])
+			? getNumCol(props['row-pattern-general'])
+			: 1
+	);
 	const [DISPLAYED_TEMPLATES, setDisplayedTemplates] = useState([]);
 
 	const instanceId = useInstanceId(ColumnPattern);

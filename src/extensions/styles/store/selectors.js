@@ -20,3 +20,9 @@ export const getBlockStyles = (state, target) => {
 
 	return false;
 };
+
+export const getPrevSavedAttrs = state => {
+	if (state.prevSavedAttrs) return state.prevSavedAttrs;
+
+	return false;
+};

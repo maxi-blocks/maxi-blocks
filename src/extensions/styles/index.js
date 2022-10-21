@@ -12,7 +12,6 @@ export { default as getColorRGBAString } from './getColorRGBAString';
 export { default as getDefaultAttribute } from './getDefaultAttribute';
 export { default as getFilteredData } from './getFilteredData';
 export { default as getGroupAttributes } from './getGroupAttributes';
-export { default as getBreakpointFromWidth } from './getBreakpointFromWidth';
 export { default as getIconPositionClass } from './getIconPositionClass';
 export { default as getIconWithColor } from './getIconWithColor';
 export { default as getLastBreakpointAttribute } from './getLastBreakpointAttribute';

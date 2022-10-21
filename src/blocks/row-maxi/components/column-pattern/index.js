@@ -9,15 +9,13 @@ import { useState, useEffect } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import Button from '../button';
-import Icon from '../icon';
-import AdvancedNumberControl from '../advanced-number-control';
+import { AdvancedNumberControl, Button, Icon } from '../../../../components';
 import {
 	getNumCol,
 	getTemplates,
 	loadColumnsTemplate,
-} from '../../extensions/column-templates';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
+} from '../../../../extensions/column-templates';
+import { getLastBreakpointAttribute } from '../../../../extensions/styles';
 
 /**
  * External dependencies
@@ -34,7 +32,7 @@ import './editor.scss';
  * Column patterns
  *
  */
-const ColumnPatternsInspector = props => {
+const ColumnPattern = props => {
 	const { clientId, onChange, breakpoint, toolbar = false } = props;
 
 	const [numCol, setNumCol] = useState(
@@ -44,7 +42,7 @@ const ColumnPatternsInspector = props => {
 	);
 	const [DISPLAYED_TEMPLATES, setDisplayedTemplates] = useState([]);
 
-	const instanceId = useInstanceId(ColumnPatternsInspector);
+	const instanceId = useInstanceId(ColumnPattern);
 
 	useEffect(() => {
 		if (toolbar) {
@@ -204,4 +202,4 @@ const ColumnPatternsInspector = props => {
 	);
 };
 
-export default ColumnPatternsInspector;
+export default ColumnPattern;

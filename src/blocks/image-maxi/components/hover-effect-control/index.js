@@ -6,16 +6,18 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
-import AxisControl from '../axis-control';
-import BackgroundControl from '../background-control';
-import BorderControl from '../border-control';
-import Icon from '../icon';
-import SelectControl from '../select-control';
-import TextareaControl from '../textarea-control';
-import ToggleSwitch from '../toggle-switch';
-import TypographyControl from '../typography-control';
-import SettingTabsControl from '../setting-tabs-control';
+import {
+	AdvancedNumberControl,
+	AxisControl,
+	BackgroundControl,
+	BorderControl,
+	Icon,
+	SelectControl,
+	TextareaControl,
+	ToggleSwitch,
+	TypographyControl,
+	SettingTabsControl,
+} from '../../../../components';
 
 /**
  * External dependencies
@@ -25,7 +27,7 @@ import BezierEditor from 'bezier-easing-editor';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
-} from '../../extensions/styles';
+} from '../../../../extensions/styles';
 
 /**
  * External dependencies
@@ -45,7 +47,7 @@ import {
 	alignLeftBottom,
 	alignRightTop,
 	alignRightBottom,
-} from '../../icons';
+} from '../../../../icons';
 
 /**
  * Component

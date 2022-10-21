@@ -79,17 +79,7 @@ const DateFormatting = props => {
 			const word = '([dDmMyYt]{0,1}|MS{0,1}|DS{0,1}|DV{0,1})';
 			const interWord = '(\\s{0,1})([-,\\.\\/]{0,3})(\\s{0,1})';
 			const regex = new RegExp(
-				'^\\s{0,1}' +
-					word +
-					interWord +
-					word +
-					interWord +
-					word +
-					interWord +
-					word +
-					interWord +
-					word +
-					'$'
+				`^\\s{0,1}${word}${interWord}${word}${interWord}${word}${interWord}${word}${interWord}${word}$`
 			);
 			if (regex.test(str)) {
 				setFormat(str);

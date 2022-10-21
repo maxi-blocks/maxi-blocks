@@ -6,17 +6,18 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
-import ColorControl from '../color-control';
-import ToggleSwitch from '../toggle-switch';
-import FontFamilySelector from '../font-family-selector';
-import SelectControl from '../select-control';
-import FontWeightControl from '../font-weight-control';
-
+import {
+	AdvancedNumberControl,
+	ColorControl,
+	FontFamilySelector,
+	FontWeightControl,
+	SelectControl,
+	ToggleSwitch,
+} from '../../../../components';
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '../../../../extensions/styles';
 
 /**
  * External dependencies

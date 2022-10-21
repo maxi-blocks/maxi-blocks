@@ -1,230 +1,1379 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`getMigratorsCombinations Should return a one element array 1`] = `
-Array [
-  Array [
-    Object {
-      "attributes": Object {},
-      "isEligible": null,
-      "migrate": null,
-      "saveMigrator": 1,
+exports[`getBlockNameFromUniqueID Should return the block name 1`] = `"button-maxi"`;
+
+exports[`getBlockNameFromUniqueID Should return the block name, when uniqueID is big digit 1`] = `"text-maxi"`;
+
+exports[`getBlockSelectorsByUniqueID Should return accordion selectors 1`] = `
+Object {
+  "accordion": Object {
+    "hover": Object {
+      "label": "accordion on hover",
+      "target": ":hover",
     },
+    "normal": Object {
+      "label": "accordion",
+      "target": "",
+    },
+  },
+  "after accordion": Object {
+    "hover": Object {
+      "label": "accordion ::after on hover",
+      "target": ":hover::after",
+    },
+    "normal": Object {
+      "label": "accordion ::after",
+      "target": "::after",
+    },
+  },
+  "before accordion": Object {
+    "hover": Object {
+      "label": "accordion ::before on hover",
+      "target": ":hover::before",
+    },
+    "normal": Object {
+      "label": "accordion ::before",
+      "target": "::before",
+    },
+  },
+  "pane content": Object {
+    "hover": Object {
+      "label": "pane content on hover",
+      "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__content:hover",
+    },
+    "normal": Object {
+      "label": "pane content",
+      "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__content",
+    },
+  },
+  "pane content line": Object {
+    "active": Object {
+      "label": "content line on active state",
+      "target": " .maxi-pane-block[aria-expanded=true] .maxi-pane-block__content-line",
+    },
+    "hover": Object {
+      "label": "content line on hover",
+      "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__content-line:hover",
+    },
+    "normal": Object {
+      "label": "content line",
+      "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__content-line",
+    },
+  },
+  "pane header": Object {
+    "active": Object {
+      "label": "pane header on active state",
+      "target": " .maxi-pane-block[aria-expanded=true] .maxi-pane-block__header",
+    },
+    "hover": Object {
+      "label": "pane header on hover",
+      "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__header:hover",
+    },
+    "normal": Object {
+      "label": "pane header",
+      "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__header",
+    },
+  },
+  "pane header content": Object {
+    "active": Object {
+      "label": "header content on active state",
+      "target": " .maxi-pane-block[aria-expanded=true] .maxi-pane-block__header-content",
+    },
+    "hover": Object {
+      "label": "header content on hover",
+      "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__header-content:hover",
+    },
+    "normal": Object {
+      "label": "header content",
+      "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__header-content",
+    },
+  },
+  "pane header line": Object {
+    "active": Object {
+      "label": "header line on active state",
+      "target": " .maxi-pane-block[aria-expanded=true] .maxi-pane-block__header-line",
+    },
+    "hover": Object {
+      "label": "header line on hover",
+      "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__header-line:hover",
+    },
+    "normal": Object {
+      "label": "header line",
+      "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__header-line",
+    },
+  },
+  "pane icon": Object {
+    "active": Object {
+      "label": "active icon",
+      "target": " .maxi-pane-block[aria-expanded=true] .maxi-pane-block__icon",
+    },
+    "activeInsideSvg": Object {
+      "label": "everything inside active svg (svg > *)",
+      "target": " .maxi-pane-block[aria-expanded=true] .maxi-pane-block__icon svg > *",
+    },
+    "activePath": Object {
+      "label": "active svg's path",
+      "target": " .maxi-pane-block[aria-expanded=true] .maxi-pane-block__icon svg path",
+    },
+    "activeSvg": Object {
+      "label": "active icon's svg",
+      "target": " .maxi-pane-block[aria-expanded=true] .maxi-pane-block__icon svg",
+    },
+    "hover": Object {
+      "label": "icon on hover",
+      "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__icon:hover",
+    },
+    "hoverInsideSvg": Object {
+      "label": "everything inside svg on hover (:hover svg > *)",
+      "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__icon:hover svg > *",
+    },
+    "hoverPath": Object {
+      "label": "svg's path on hover",
+      "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__icon:hover svg path",
+    },
+    "hoverSvg": Object {
+      "label": "icon's svg on hover",
+      "target": " .maxi-pane-block[aria-expanded] .maxi-pane-block__icon:hover svg",
+    },
+    "insideSvg": Object {
+      "label": "everything inside svg (svg > *)",
+      "target": " .maxi-pane-block[aria-expanded=false] .maxi-pane-block__icon svg > *",
+    },
+    "normal": Object {
+      "label": "icon",
+      "target": " .maxi-pane-block[aria-expanded=false] .maxi-pane-block__icon",
+    },
+    "path": Object {
+      "label": "svg's path",
+      "target": " .maxi-pane-block[aria-expanded=false] .maxi-pane-block__icon svg path",
+    },
+    "svg": Object {
+      "label": "icon's svg",
+      "target": " .maxi-pane-block[aria-expanded=false] .maxi-pane-block__icon svg",
+    },
+  },
+}
+`;
+
+exports[`getBlockSelectorsByUniqueID Should return button selectors 1`] = `
+Object {
+  "after button": Object {
+    "hover": Object {
+      "label": "button ::after on hover",
+      "target": " .maxi-button-block__button:hover::after",
+    },
+    "normal": Object {
+      "label": "button ::after",
+      "target": " .maxi-button-block__button::after",
+    },
+  },
+  "after canvas": Object {
+    "hover": Object {
+      "label": "canvas ::after on hover",
+      "target": ":hover::after",
+    },
+    "normal": Object {
+      "label": "canvas ::after",
+      "target": "::after",
+    },
+  },
+  "before button": Object {
+    "hover": Object {
+      "label": "button ::before on hover",
+      "target": " .maxi-button-block__button:hover::before",
+    },
+    "normal": Object {
+      "label": "button ::before",
+      "target": " .maxi-button-block__button::before",
+    },
+  },
+  "before canvas": Object {
+    "hover": Object {
+      "label": "canvas ::before on hover",
+      "target": ":hover::before",
+    },
+    "normal": Object {
+      "label": "canvas ::before",
+      "target": "::before",
+    },
+  },
+  "button": Object {
+    "hover": Object {
+      "label": "button on hover",
+      "target": " .maxi-button-block__button:hover",
+    },
+    "normal": Object {
+      "label": "button",
+      "target": " .maxi-button-block__button",
+    },
+  },
+  "canvas": Object {
+    "hover": Object {
+      "label": "canvas on hover",
+      "target": ":hover",
+    },
+    "normal": Object {
+      "label": "canvas",
+      "target": "",
+    },
+  },
+  "icon": Object {
+    "hover": Object {
+      "label": "icon on hover",
+      "target": " .maxi-button-block__icon:hover",
+    },
+    "hoverInsideSvg": Object {
+      "label": "everything inside svg on hover (:hover svg > *)",
+      "target": " .maxi-button-block__icon:hover svg > *",
+    },
+    "hoverPath": Object {
+      "label": "svg's path on hover",
+      "target": " .maxi-button-block__icon:hover svg path",
+    },
+    "hoverSvg": Object {
+      "label": "icon's svg on hover",
+      "target": " .maxi-button-block__icon:hover svg",
+    },
+    "insideSvg": Object {
+      "label": "everything inside svg (svg > *)",
+      "target": " .maxi-button-block__icon svg > *",
+    },
+    "normal": Object {
+      "label": "icon",
+      "target": " .maxi-button-block__icon",
+    },
+    "path": Object {
+      "label": "svg's path",
+      "target": " .maxi-button-block__icon svg path",
+    },
+    "svg": Object {
+      "label": "icon's svg",
+      "target": " .maxi-button-block__icon svg",
+    },
+  },
+}
+`;
+
+exports[`getBlockSelectorsByUniqueID Should return column selectors 1`] = `
+Object {
+  "after column": Object {
+    "hover": Object {
+      "label": "column ::after on hover",
+      "target": ":hover::after",
+    },
+    "normal": Object {
+      "label": "column ::after",
+      "target": "::after",
+    },
+  },
+  "before column": Object {
+    "hover": Object {
+      "label": "column ::before on hover",
+      "target": ":hover::before",
+    },
+    "normal": Object {
+      "label": "column ::before",
+      "target": "::before",
+    },
+  },
+  "column": Object {
+    "hover": Object {
+      "label": "column on hover",
+      "target": ":hover",
+    },
+    "normal": Object {
+      "label": "column",
+      "target": "",
+    },
+  },
+}
+`;
+
+exports[`getBlockSelectorsByUniqueID Should return container selectors 1`] = `
+Object {
+  "after container": Object {
+    "hover": Object {
+      "label": "container ::after on hover",
+      "target": ":hover::after",
+    },
+    "normal": Object {
+      "label": "container ::after",
+      "target": "::after",
+    },
+  },
+  "before container": Object {
+    "hover": Object {
+      "label": "container ::before on hover",
+      "target": ":hover::before",
+    },
+    "normal": Object {
+      "label": "container ::before",
+      "target": "::before",
+    },
+  },
+  "bottom shape divider": Object {
+    "hover": Object {
+      "label": "bottom shape divider on hover",
+      "target": " .maxi-shape-divider__bottom:hover",
+    },
+    "normal": Object {
+      "label": "bottom shape divider",
+      "target": " .maxi-shape-divider__bottom",
+    },
+  },
+  "container": Object {
+    "hover": Object {
+      "label": "container on hover",
+      "target": ":hover",
+    },
+    "normal": Object {
+      "label": "container",
+      "target": "",
+    },
+  },
+  "top shape divider": Object {
+    "hover": Object {
+      "label": "top shape divider on hover",
+      "target": " .maxi-shape-divider__top:hover",
+    },
+    "normal": Object {
+      "label": "top shape divider",
+      "target": " .maxi-shape-divider__top",
+    },
+  },
+}
+`;
+
+exports[`getBlockSelectorsByUniqueID Should return divider selectors 1`] = `
+Object {
+  "after canvas": Object {
+    "hover": Object {
+      "label": "canvas ::after on hover",
+      "target": ":hover::after",
+    },
+    "normal": Object {
+      "label": "canvas ::after",
+      "target": "::after",
+    },
+  },
+  "after divider": Object {
+    "hover": Object {
+      "label": "divider ::after on hover",
+      "target": " .maxi-divider-block__divider:hover::after",
+    },
+    "normal": Object {
+      "label": "divider ::after",
+      "target": " .maxi-divider-block__divider::after",
+    },
+  },
+  "before canvas": Object {
+    "hover": Object {
+      "label": "canvas ::before on hover",
+      "target": ":hover::before",
+    },
+    "normal": Object {
+      "label": "canvas ::before",
+      "target": "::before",
+    },
+  },
+  "before divider": Object {
+    "hover": Object {
+      "label": "divider ::before on hover",
+      "target": " .maxi-divider-block__divider:hover::before",
+    },
+    "normal": Object {
+      "label": "divider ::before",
+      "target": " .maxi-divider-block__divider::before",
+    },
+  },
+  "canvas": Object {
+    "hover": Object {
+      "label": "canvas on hover",
+      "target": ":hover",
+    },
+    "normal": Object {
+      "label": "canvas",
+      "target": "",
+    },
+  },
+  "divider": Object {
+    "hover": Object {
+      "label": "divider on hover",
+      "target": " .maxi-divider-block__divider:hover",
+    },
+    "normal": Object {
+      "label": "divider",
+      "target": " .maxi-divider-block__divider",
+    },
+  },
+}
+`;
+
+exports[`getBlockSelectorsByUniqueID Should return group selectors 1`] = `
+Object {
+  "after group": Object {
+    "hover": Object {
+      "label": "group ::after on hover",
+      "target": ":hover::after",
+    },
+    "normal": Object {
+      "label": "group ::after",
+      "target": "::after",
+    },
+  },
+  "before group": Object {
+    "hover": Object {
+      "label": "group ::before on hover",
+      "target": ":hover::before",
+    },
+    "normal": Object {
+      "label": "group ::before",
+      "target": "::before",
+    },
+  },
+  "group": Object {
+    "hover": Object {
+      "label": "group on hover",
+      "target": ":hover",
+    },
+    "normal": Object {
+      "label": "group",
+      "target": "",
+    },
+  },
+}
+`;
+
+exports[`getBlockSelectorsByUniqueID Should return image selectors 1`] = `
+Object {
+  "after canvas": Object {
+    "hover": Object {
+      "label": "canvas ::after on hover",
+      "target": ":hover::after",
+    },
+    "normal": Object {
+      "label": "canvas ::after",
+      "target": "::after",
+    },
+  },
+  "after image": Object {
+    "hover": Object {
+      "label": "image ::after on hover",
+      "target": " .maxi-image-block__image:hover::after",
+    },
+    "normal": Object {
+      "label": "image ::after",
+      "target": " .maxi-image-block__image::after",
+    },
+  },
+  "before canvas": Object {
+    "hover": Object {
+      "label": "canvas ::before on hover",
+      "target": ":hover::before",
+    },
+    "normal": Object {
+      "label": "canvas ::before",
+      "target": "::before",
+    },
+  },
+  "before image": Object {
+    "hover": Object {
+      "label": "image ::before on hover",
+      "target": " .maxi-image-block__image:hover::before",
+    },
+    "normal": Object {
+      "label": "image ::before",
+      "target": " .maxi-image-block__image::before",
+    },
+  },
+  "canvas": Object {
+    "hover": Object {
+      "label": "canvas on hover",
+      "target": ":hover",
+    },
+    "normal": Object {
+      "label": "canvas",
+      "target": "",
+    },
+  },
+  "image": Object {
+    "hover": Object {
+      "label": "image on hover",
+      "target": " .maxi-image-block__image:hover",
+    },
+    "normal": Object {
+      "label": "image",
+      "target": " .maxi-image-block__image",
+    },
+  },
+}
+`;
+
+exports[`getBlockSelectorsByUniqueID Should return map selectors 1`] = `
+Object {
+  "after description": Object {
+    "hover": Object {
+      "label": "description ::after on hover",
+      "target": " .maxi-map-block__popup__content__description:hover::after",
+    },
+    "normal": Object {
+      "label": "description ::after",
+      "target": " .maxi-map-block__popup__content__description::after",
+    },
+  },
+  "after map": Object {
+    "hover": Object {
+      "label": "map ::after on hover",
+      "target": ":hover::after",
+    },
+    "normal": Object {
+      "label": "map ::after",
+      "target": "::after",
+    },
+  },
+  "after popup": Object {
+    "hover": Object {
+      "label": "popup ::after on hover",
+      "target": " .maxi-map-block__popup:hover::after",
+    },
+    "normal": Object {
+      "label": "popup ::after",
+      "target": " .maxi-map-block__popup::after",
+    },
+  },
+  "after title": Object {
+    "hover": Object {
+      "label": "title ::after on hover",
+      "target": " .maxi-map-block__popup__content__title:hover::after",
+    },
+    "normal": Object {
+      "label": "title ::after",
+      "target": " .maxi-map-block__popup__content__title::after",
+    },
+  },
+  "before description": Object {
+    "hover": Object {
+      "label": "description ::before on hover",
+      "target": " .maxi-map-block__popup__content__description:hover::before",
+    },
+    "normal": Object {
+      "label": "description ::before",
+      "target": " .maxi-map-block__popup__content__description::before",
+    },
+  },
+  "before map": Object {
+    "hover": Object {
+      "label": "map ::before on hover",
+      "target": ":hover::before",
+    },
+    "normal": Object {
+      "label": "map ::before",
+      "target": "::before",
+    },
+  },
+  "before popup": Object {
+    "hover": Object {
+      "label": "popup ::before on hover",
+      "target": " .maxi-map-block__popup:hover::before",
+    },
+    "normal": Object {
+      "label": "popup ::before",
+      "target": " .maxi-map-block__popup::before",
+    },
+  },
+  "before title": Object {
+    "hover": Object {
+      "label": "title ::before on hover",
+      "target": " .maxi-map-block__popup__content__title:hover::before",
+    },
+    "normal": Object {
+      "label": "title ::before",
+      "target": " .maxi-map-block__popup__content__title::before",
+    },
+  },
+  "description": Object {
+    "hover": Object {
+      "label": "description on hover",
+      "target": " .maxi-map-block__popup__content__description:hover",
+    },
+    "normal": Object {
+      "label": "description",
+      "target": " .maxi-map-block__popup__content__description",
+    },
+  },
+  "map": Object {
+    "hover": Object {
+      "label": "map on hover",
+      "target": ":hover",
+    },
+    "normal": Object {
+      "label": "map",
+      "target": "",
+    },
+  },
+  "popup": Object {
+    "hover": Object {
+      "label": "popup on hover",
+      "target": " .maxi-map-block__popup:hover",
+    },
+    "normal": Object {
+      "label": "popup",
+      "target": " .maxi-map-block__popup",
+    },
+  },
+  "title": Object {
+    "hover": Object {
+      "label": "title on hover",
+      "target": " .maxi-map-block__popup__content__title:hover",
+    },
+    "normal": Object {
+      "label": "title",
+      "target": " .maxi-map-block__popup__content__title",
+    },
+  },
+}
+`;
+
+exports[`getBlockSelectorsByUniqueID Should return number-counter selectors 1`] = `
+Object {
+  "after canvas": Object {
+    "hover": Object {
+      "label": "canvas ::after on hover",
+      "target": ":hover::after",
+    },
+    "normal": Object {
+      "label": "canvas ::after",
+      "target": "::after",
+    },
+  },
+  "after number": Object {
+    "hover": Object {
+      "label": "number ::after on hover",
+      "target": " .maxi-number-counter__box__text:hover::after",
+    },
+    "normal": Object {
+      "label": "number ::after",
+      "target": " .maxi-number-counter__box__text::after",
+    },
+  },
+  "before canvas": Object {
+    "hover": Object {
+      "label": "canvas ::before on hover",
+      "target": ":hover::before",
+    },
+    "normal": Object {
+      "label": "canvas ::before",
+      "target": "::before",
+    },
+  },
+  "before number": Object {
+    "hover": Object {
+      "label": "number ::before on hover",
+      "target": " .maxi-number-counter__box__text:hover::before",
+    },
+    "normal": Object {
+      "label": "number ::before",
+      "target": " .maxi-number-counter__box__text::before",
+    },
+  },
+  "canvas": Object {
+    "hover": Object {
+      "label": "canvas on hover",
+      "target": ":hover",
+    },
+    "normal": Object {
+      "label": "canvas",
+      "target": "",
+    },
+  },
+  "circle": Object {
+    "hover": Object {
+      "label": "circle on hover",
+      "target": " .maxi-number-counter__box__circle:hover",
+    },
+    "normal": Object {
+      "label": "circle",
+      "target": " .maxi-number-counter__box__circle",
+    },
+  },
+  "number": Object {
+    "hover": Object {
+      "label": "number on hover",
+      "target": " .maxi-number-counter__box__text:hover",
+    },
+    "normal": Object {
+      "label": "number",
+      "target": " .maxi-number-counter__box__text",
+    },
+  },
+}
+`;
+
+exports[`getBlockSelectorsByUniqueID Should return pane selectors 1`] = `
+Object {
+  "after pane": Object {
+    "hover": Object {
+      "label": "pane ::after on hover",
+      "target": ":hover::after",
+    },
+    "normal": Object {
+      "label": "pane ::after",
+      "target": "::after",
+    },
+  },
+  "before pane": Object {
+    "hover": Object {
+      "label": "pane ::before on hover",
+      "target": ":hover::before",
+    },
+    "normal": Object {
+      "label": "pane ::before",
+      "target": "::before",
+    },
+  },
+  "content": Object {
+    "hover": Object {
+      "label": "pane content on hover",
+      "target": "[aria-expanded] .maxi-pane-block__content:hover",
+    },
+    "normal": Object {
+      "label": "pane content",
+      "target": "[aria-expanded] .maxi-pane-block__content",
+    },
+  },
+  "content line": Object {
+    "active": Object {
+      "label": "content line on active state",
+      "target": "[aria-expanded=true] .maxi-pane-block__content-line",
+    },
+    "hover": Object {
+      "label": "content line on hover",
+      "target": "[aria-expanded] .maxi-pane-block__content-line:hover",
+    },
+    "normal": Object {
+      "label": "content line",
+      "target": "[aria-expanded] .maxi-pane-block__content-line",
+    },
+  },
+  "header": Object {
+    "active": Object {
+      "label": "pane header on active state",
+      "target": "[aria-expanded=true] .maxi-pane-block__header",
+    },
+    "hover": Object {
+      "label": "pane header on hover",
+      "target": "[aria-expanded] .maxi-pane-block__header:hover",
+    },
+    "normal": Object {
+      "label": "pane header",
+      "target": "[aria-expanded] .maxi-pane-block__header",
+    },
+  },
+  "header content": Object {
+    "active": Object {
+      "label": "header content on active state",
+      "target": "[aria-expanded=true] .maxi-pane-block__header-content",
+    },
+    "hover": Object {
+      "label": "header content on hover",
+      "target": "[aria-expanded] .maxi-pane-block__header-content:hover",
+    },
+    "normal": Object {
+      "label": "header content",
+      "target": "[aria-expanded] .maxi-pane-block__header-content",
+    },
+  },
+  "header line": Object {
+    "active": Object {
+      "label": "header line on active state",
+      "target": "[aria-expanded=true] .maxi-pane-block__header-line",
+    },
+    "hover": Object {
+      "label": "header line on hover",
+      "target": "[aria-expanded] .maxi-pane-block__header-line:hover",
+    },
+    "normal": Object {
+      "label": "header line",
+      "target": "[aria-expanded] .maxi-pane-block__header-line",
+    },
+  },
+  "icon": Object {
+    "active": Object {
+      "label": "active icon",
+      "target": "[aria-expanded=true] .maxi-pane-block__icon",
+    },
+    "activeInsideSvg": Object {
+      "label": "everything inside active svg (svg > *)",
+      "target": "[aria-expanded=true] .maxi-pane-block__icon svg > *",
+    },
+    "activePath": Object {
+      "label": "active svg's path",
+      "target": "[aria-expanded=true] .maxi-pane-block__icon svg path",
+    },
+    "activeSvg": Object {
+      "label": "active icon's svg",
+      "target": "[aria-expanded=true] .maxi-pane-block__icon svg",
+    },
+    "hover": Object {
+      "label": "icon on hover",
+      "target": "[aria-expanded] .maxi-pane-block__icon:hover",
+    },
+    "hoverInsideSvg": Object {
+      "label": "everything inside svg on hover (:hover svg > *)",
+      "target": "[aria-expanded] .maxi-pane-block__icon:hover svg > *",
+    },
+    "hoverPath": Object {
+      "label": "svg's path on hover",
+      "target": "[aria-expanded] .maxi-pane-block__icon:hover svg path",
+    },
+    "hoverSvg": Object {
+      "label": "icon's svg on hover",
+      "target": "[aria-expanded] .maxi-pane-block__icon:hover svg",
+    },
+    "insideSvg": Object {
+      "label": "everything inside svg (svg > *)",
+      "target": "[aria-expanded=false] .maxi-pane-block__icon svg > *",
+    },
+    "normal": Object {
+      "label": "icon",
+      "target": "[aria-expanded=false] .maxi-pane-block__icon",
+    },
+    "path": Object {
+      "label": "svg's path",
+      "target": "[aria-expanded=false] .maxi-pane-block__icon svg path",
+    },
+    "svg": Object {
+      "label": "icon's svg",
+      "target": "[aria-expanded=false] .maxi-pane-block__icon svg",
+    },
+  },
+  "pane": Object {
+    "hover": Object {
+      "label": "pane on hover",
+      "target": ":hover",
+    },
+    "normal": Object {
+      "label": "pane",
+      "target": "",
+    },
+  },
+}
+`;
+
+exports[`getBlockSelectorsByUniqueID Should return row selectors 1`] = `
+Object {
+  "after row": Object {
+    "hover": Object {
+      "label": "row ::after on hover",
+      "target": ":hover::after",
+    },
+    "normal": Object {
+      "label": "row ::after",
+      "target": "::after",
+    },
+  },
+  "before row": Object {
+    "hover": Object {
+      "label": "row ::before on hover",
+      "target": ":hover::before",
+    },
+    "normal": Object {
+      "label": "row ::before",
+      "target": "::before",
+    },
+  },
+  "row": Object {
+    "hover": Object {
+      "label": "row on hover",
+      "target": ":hover",
+    },
+    "normal": Object {
+      "label": "row",
+      "target": "",
+    },
+  },
+}
+`;
+
+exports[`getBlockSelectorsByUniqueID Should return search selectors 1`] = `
+Object {
+  "after block": Object {
+    "hover": Object {
+      "label": "block ::after on hover",
+      "target": ":hover::after",
+    },
+    "normal": Object {
+      "label": "block ::after",
+      "target": "::after",
+    },
+  },
+  "after button": Object {
+    "hover": Object {
+      "label": "button ::after on hover",
+      "target": " .maxi-search-block__button:hover::after",
+    },
+    "normal": Object {
+      "label": "button ::after",
+      "target": " .maxi-search-block__button::after",
+    },
+  },
+  "after input": Object {
+    "hover": Object {
+      "label": "input ::after on hover",
+      "target": " .maxi-search-block__input:hover::after",
+    },
+    "normal": Object {
+      "label": "input ::after",
+      "target": " .maxi-search-block__input::after",
+    },
+  },
+  "before block": Object {
+    "hover": Object {
+      "label": "block ::before on hover",
+      "target": ":hover::before",
+    },
+    "normal": Object {
+      "label": "block ::before",
+      "target": "::before",
+    },
+  },
+  "before button": Object {
+    "hover": Object {
+      "label": "button ::before on hover",
+      "target": " .maxi-search-block__button:hover::before",
+    },
+    "normal": Object {
+      "label": "button ::before",
+      "target": " .maxi-search-block__button::before",
+    },
+  },
+  "before input": Object {
+    "hover": Object {
+      "label": "input ::before on hover",
+      "target": " .maxi-search-block__input:hover::before",
+    },
+    "normal": Object {
+      "label": "input ::before",
+      "target": " .maxi-search-block__input::before",
+    },
+  },
+  "block": Object {
+    "hover": Object {
+      "label": "block on hover",
+      "target": ":hover",
+    },
+    "normal": Object {
+      "label": "block",
+      "target": "",
+    },
+  },
+  "button": Object {
+    "hover": Object {
+      "label": "button on hover",
+      "target": " .maxi-search-block__button:hover",
+    },
+    "normal": Object {
+      "label": "button",
+      "target": " .maxi-search-block__button",
+    },
+  },
+  "close icon": Object {
+    "hover": Object {
+      "label": "icon on hover",
+      "target": " .maxi-search-block__button__close-icon:hover",
+    },
+    "hoverInsideSvg": Object {
+      "label": "everything inside svg on hover (:hover svg > *)",
+      "target": " .maxi-search-block__button__close-icon:hover svg > *",
+    },
+    "hoverPath": Object {
+      "label": "svg's path on hover",
+      "target": " .maxi-search-block__button__close-icon:hover svg path",
+    },
+    "hoverSvg": Object {
+      "label": "icon's svg on hover",
+      "target": " .maxi-search-block__button__close-icon:hover svg",
+    },
+    "insideSvg": Object {
+      "label": "everything inside svg (svg > *)",
+      "target": " .maxi-search-block__button__close-icon svg > *",
+    },
+    "normal": Object {
+      "label": "icon",
+      "target": " .maxi-search-block__button__close-icon",
+    },
+    "path": Object {
+      "label": "svg's path",
+      "target": " .maxi-search-block__button__close-icon svg path",
+    },
+    "svg": Object {
+      "label": "icon's svg",
+      "target": " .maxi-search-block__button__close-icon svg",
+    },
+  },
+  "icon": Object {
+    "hover": Object {
+      "label": "icon on hover",
+      "target": " .maxi-search-block__button__default-icon:hover",
+    },
+    "hoverInsideSvg": Object {
+      "label": "everything inside svg on hover (:hover svg > *)",
+      "target": " .maxi-search-block__button__default-icon:hover svg > *",
+    },
+    "hoverPath": Object {
+      "label": "svg's path on hover",
+      "target": " .maxi-search-block__button__default-icon:hover svg path",
+    },
+    "hoverSvg": Object {
+      "label": "icon's svg on hover",
+      "target": " .maxi-search-block__button__default-icon:hover svg",
+    },
+    "insideSvg": Object {
+      "label": "everything inside svg (svg > *)",
+      "target": " .maxi-search-block__button__default-icon svg > *",
+    },
+    "normal": Object {
+      "label": "icon",
+      "target": " .maxi-search-block__button__default-icon",
+    },
+    "path": Object {
+      "label": "svg's path",
+      "target": " .maxi-search-block__button__default-icon svg path",
+    },
+    "svg": Object {
+      "label": "icon's svg",
+      "target": " .maxi-search-block__button__default-icon svg",
+    },
+  },
+  "input": Object {
+    "hover": Object {
+      "label": "input on hover",
+      "target": " .maxi-search-block__input:hover",
+    },
+    "normal": Object {
+      "label": "input",
+      "target": " .maxi-search-block__input",
+    },
+  },
+  "placeholder input": Object {
+    "hover": Object {
+      "label": "input ::placeholder on hover",
+      "target": " .maxi-search-block__input:hover::placeholder",
+    },
+    "normal": Object {
+      "label": "input ::placeholder",
+      "target": " .maxi-search-block__input::placeholder",
+    },
+  },
+}
+`;
+
+exports[`getBlockSelectorsByUniqueID Should return svg-icon selectors 1`] = `
+Object {
+  "after canvas": Object {
+    "hover": Object {
+      "label": "canvas ::after on hover",
+      "target": ":hover::after",
+    },
+    "normal": Object {
+      "label": "canvas ::after",
+      "target": "::after",
+    },
+  },
+  "before canvas": Object {
+    "hover": Object {
+      "label": "canvas ::before on hover",
+      "target": ":hover::before",
+    },
+    "normal": Object {
+      "label": "canvas ::before",
+      "target": "::before",
+    },
+  },
+  "canvas": Object {
+    "hover": Object {
+      "label": "canvas on hover",
+      "target": ":hover",
+    },
+    "normal": Object {
+      "label": "canvas",
+      "target": "",
+    },
+  },
+  "svg": Object {
+    "hover": Object {
+      "label": "svg on hover",
+      "target": " .maxi-svg-icon-block__icon svg:hover",
+    },
+    "normal": Object {
+      "label": "svg",
+      "target": " .maxi-svg-icon-block__icon svg",
+    },
+  },
+}
+`;
+
+exports[`getBlockSelectorsByUniqueID Should return text selectors 1`] = `
+Object {
+  "after text": Object {
+    "hover": Object {
+      "label": "text ::after on hover",
+      "target": " .maxi-text-block__content:hover::after",
+    },
+    "normal": Object {
+      "label": "text ::after",
+      "target": " .maxi-text-block__content::after",
+    },
+  },
+  "before text": Object {
+    "hover": Object {
+      "label": "text ::before on hover",
+      "target": " .maxi-text-block__content:hover::before",
+    },
+    "normal": Object {
+      "label": "text ::before",
+      "target": " .maxi-text-block__content::before",
+    },
+  },
+  "links": Object {
+    "hover": Object {
+      "label": "links on hover",
+      "target": " .maxi-text-block--link:hover",
+    },
+    "normal": Object {
+      "label": "links",
+      "target": " .maxi-text-block--link",
+    },
+  },
+  "lists": Object {
+    "ordered": Object {
+      "label": "Ordered list",
+      "target": " ol.maxi-text-block__content",
+    },
+    "unordered": Object {
+      "label": "Unordered list",
+      "target": " ul.maxi-text-block__content",
+    },
+  },
+  "text": Object {
+    "hover": Object {
+      "label": "text on hover",
+      "target": " .maxi-text-block__content:hover",
+    },
+    "normal": Object {
+      "label": "text",
+      "target": " .maxi-text-block__content",
+    },
+  },
+  "text wrapper": Object {
+    "hover": Object {
+      "label": "text wrapper on hover",
+      "target": ":hover",
+    },
+    "normal": Object {
+      "label": "text wrapper",
+      "target": "",
+    },
+  },
+}
+`;
+
+exports[`getBlockSelectorsByUniqueID Should return video selectors 1`] = `
+Object {
+  "after canvas": Object {
+    "hover": Object {
+      "label": "canvas ::after on hover",
+      "target": ":hover::after",
+    },
+    "normal": Object {
+      "label": "canvas ::after",
+      "target": "::after",
+    },
+  },
+  "after overlay": Object {
+    "hover": Object {
+      "label": "overlay ::after on hover",
+      "target": " .maxi-video-block__overlay:hover::after",
+    },
+    "normal": Object {
+      "label": "overlay ::after",
+      "target": " .maxi-video-block__overlay::after",
+    },
+  },
+  "after video": Object {
+    "hover": Object {
+      "label": "video ::after on hover",
+      "target": " .maxi-video-block__video-player:hover::after",
+    },
+    "normal": Object {
+      "label": "video ::after",
+      "target": " .maxi-video-block__video-player::after",
+    },
+  },
+  "before canvas": Object {
+    "hover": Object {
+      "label": "canvas ::before on hover",
+      "target": ":hover::before",
+    },
+    "normal": Object {
+      "label": "canvas ::before",
+      "target": "::before",
+    },
+  },
+  "before overlay": Object {
+    "hover": Object {
+      "label": "overlay ::before on hover",
+      "target": " .maxi-video-block__overlay:hover::before",
+    },
+    "normal": Object {
+      "label": "overlay ::before",
+      "target": " .maxi-video-block__overlay::before",
+    },
+  },
+  "before video": Object {
+    "hover": Object {
+      "label": "video ::before on hover",
+      "target": " .maxi-video-block__video-player:hover::before",
+    },
+    "normal": Object {
+      "label": "video ::before",
+      "target": " .maxi-video-block__video-player::before",
+    },
+  },
+  "canvas": Object {
+    "hover": Object {
+      "label": "canvas on hover",
+      "target": ":hover",
+    },
+    "normal": Object {
+      "label": "canvas",
+      "target": "",
+    },
+  },
+  "close icon": Object {
+    "hover": Object {
+      "label": "close icon on hover",
+      "target": " .maxi-video-block__close-button:hover",
+    },
+    "hoverInsideSvg": Object {
+      "label": "everything inside svg on hover (:hover svg > *)",
+      "target": " .maxi-video-block__close-button:hover svg > *",
+    },
+    "hoverPath": Object {
+      "label": "svg's path on hover",
+      "target": " .maxi-video-block__close-button:hover svg path",
+    },
+    "hoverSvg": Object {
+      "label": "close icon's svg on hover",
+      "target": " .maxi-video-block__close-button:hover svg",
+    },
+    "insideSvg": Object {
+      "label": "everything inside svg (svg > *)",
+      "target": " .maxi-video-block__close-button svg > *",
+    },
+    "normal": Object {
+      "label": "close icon",
+      "target": " .maxi-video-block__close-button",
+    },
+    "path": Object {
+      "label": "svg's path",
+      "target": " .maxi-video-block__close-button svg path",
+    },
+    "svg": Object {
+      "label": "close icon's svg",
+      "target": " .maxi-video-block__close-button svg",
+    },
+  },
+  "overlay": Object {
+    "hover": Object {
+      "label": "overlay on hover",
+      "target": " .maxi-video-block__overlay:hover",
+    },
+    "normal": Object {
+      "label": "overlay",
+      "target": " .maxi-video-block__overlay",
+    },
+  },
+  "play icon": Object {
+    "hover": Object {
+      "label": "play icon on hover",
+      "target": " .maxi-video-block__play-button:hover",
+    },
+    "hoverInsideSvg": Object {
+      "label": "everything inside svg on hover (:hover svg > *)",
+      "target": " .maxi-video-block__play-button:hover svg > *",
+    },
+    "hoverPath": Object {
+      "label": "svg's path on hover",
+      "target": " .maxi-video-block__play-button:hover svg path",
+    },
+    "hoverSvg": Object {
+      "label": "play icon's svg on hover",
+      "target": " .maxi-video-block__play-button:hover svg",
+    },
+    "insideSvg": Object {
+      "label": "everything inside svg (svg > *)",
+      "target": " .maxi-video-block__play-button svg > *",
+    },
+    "normal": Object {
+      "label": "play icon",
+      "target": " .maxi-video-block__play-button",
+    },
+    "path": Object {
+      "label": "svg's path",
+      "target": " .maxi-video-block__play-button svg path",
+    },
+    "svg": Object {
+      "label": "play icon's svg",
+      "target": " .maxi-video-block__play-button svg",
+    },
+  },
+  "video": Object {
+    "hover": Object {
+      "label": "video on hover",
+      "target": " .maxi-video-block__video-player:hover",
+    },
+    "normal": Object {
+      "label": "video",
+      "target": " .maxi-video-block__video-player",
+    },
+  },
+}
+`;
+
+exports[`getTransitionSetting Should return the IB setting 1`] = `
+Object {
+  "attrGroupName": "boxShadow",
+  "component": [Function],
+  "helper": [Function],
+  "label": "Box shadow",
+}
+`;
+
+exports[`getTransitionSetting Should return the IB setting, which has transitionTarget 1`] = `
+Object {
+  "attrGroupName": Array [
+    "icon",
+    "iconBackground",
+    "iconBackgroundGradient",
+    "iconBackgroundColor",
+    "iconBorder",
+    "iconBorderWidth",
+    "iconBorderRadius",
+    "iconPadding",
+    "typography",
   ],
-  Array [
-    Object {
-      "attributes": Object {},
-      "isEligible": null,
-      "migrate": null,
-      "saveMigrator": 1,
-    },
-    Object {
-      "attributes": Object {},
-      "isEligible": null,
-      "migrate": null,
-      "saveMigrator": 2,
-    },
+  "component": [Function],
+  "helper": [Function],
+  "hoverProp": "icon-status-hover",
+  "label": "Button icon",
+  "transitionTarget": Array [
+    "  .maxi-button-block__icon svg *:not(g)",
+    " .maxi-button-block__icon svg",
+    " .maxi-button-block__icon",
+    " .maxi-button-block__icon",
   ],
-  Array [
-    Object {
-      "attributes": Object {},
-      "isEligible": null,
-      "migrate": null,
-      "saveMigrator": 1,
-    },
-    Object {
-      "attributes": Object {},
-      "isEligible": null,
-      "migrate": null,
-      "saveMigrator": 2,
-    },
-    Object {
-      "attributes": Object {},
-      "isEligible": null,
-      "migrate": null,
-      "saveMigrator": 3,
-    },
-  ],
-  Array [
-    Object {
-      "attributes": Object {},
-      "isEligible": null,
-      "migrate": null,
-      "saveMigrator": 1,
-    },
-    Object {
-      "attributes": Object {},
-      "isEligible": null,
-      "migrate": null,
-      "saveMigrator": 2,
-    },
-    Object {
-      "attributes": Object {},
-      "isEligible": null,
-      "migrate": null,
-      "saveMigrator": 3,
-    },
-    Object {
-      "attributes": Object {},
-      "isEligible": null,
-      "migrate": null,
-      "saveMigrator": 4,
-    },
-  ],
-  Array [
-    Object {
-      "attributes": Object {},
-      "isEligible": null,
-      "migrate": null,
-      "saveMigrator": 1,
-    },
-    Object {
-      "attributes": Object {},
-      "isEligible": null,
-      "migrate": null,
-      "saveMigrator": 2,
-    },
-    Object {
-      "attributes": Object {},
-      "isEligible": null,
-      "migrate": null,
-      "saveMigrator": 4,
-    },
-  ],
-  Array [
-    Object {
-      "attributes": Object {},
-      "isEligible": null,
-      "migrate": null,
-      "saveMigrator": 1,
-    },
-    Object {
-      "attributes": Object {},
-      "isEligible": null,
-      "migrate": null,
-      "saveMigrator": 3,
-    },
-  ],
-  Array [
-    Object {
-      "attributes": Object {},
-      "isEligible": null,
-      "migrate": null,
-      "saveMigrator": 1,
-    },
-    Object {
-      "attributes": Object {},
-      "isEligible": null,
-      "migrate": null,
-      "saveMigrator": 3,
-    },
-    Object {
-      "attributes": Object {},
-      "isEligible": null,
-      "migrate": null,
-      "saveMigrator": 4,
-    },
-  ],
-  Array [
-    Object {
-      "attributes": Object {},
-      "isEligible": null,
-      "migrate": null,
-      "saveMigrator": 1,
-    },
-    Object {
-      "attributes": Object {},
-      "isEligible": null,
-      "migrate": null,
-      "saveMigrator": 4,
-    },
-  ],
-  Array [
-    Object {
-      "attributes": Object {},
-      "isEligible": null,
-      "migrate": null,
-      "saveMigrator": 2,
-    },
-  ],
-  Array [
-    Object {
-      "attributes": Object {},
-      "isEligible": null,
-      "migrate": null,
-      "saveMigrator": 2,
-    },
-    Object {
-      "attributes": Object {},
-      "isEligible": null,
-      "migrate": null,
-      "saveMigrator": 3,
-    },
-  ],
-  Array [
-    Object {
-      "attributes": Object {},
-      "isEligible": null,
-      "migrate": null,
-      "saveMigrator": 2,
-    },
-    Object {
-      "attributes": Object {},
-      "isEligible": null,
-      "migrate": null,
-      "saveMigrator": 3,
-    },
-    Object {
-      "attributes": Object {},
-      "isEligible": null,
-      "migrate": null,
-      "saveMigrator": 4,
-    },
-  ],
-  Array [
-    Object {
-      "attributes": Object {},
-      "isEligible": null,
-      "migrate": null,
-      "saveMigrator": 2,
-    },
-    Object {
-      "attributes": Object {},
-      "isEligible": null,
-      "migrate": null,
-      "saveMigrator": 4,
-    },
-  ],
-  Array [
-    Object {
-      "attributes": Object {},
-      "isEligible": null,
-      "migrate": null,
-      "saveMigrator": 3,
-    },
-  ],
-  Array [
-    Object {
-      "attributes": Object {},
-      "isEligible": null,
-      "migrate": null,
-      "saveMigrator": 3,
-    },
-    Object {
-      "attributes": Object {},
-      "isEligible": null,
-      "migrate": null,
-      "saveMigrator": 4,
-    },
-  ],
-  Array [
-    Object {
-      "attributes": Object {},
-      "isEligible": null,
-      "migrate": null,
-      "saveMigrator": 4,
-    },
-  ],
-]
+}
 `;
 
 exports[`handleBlockMigrator Should return a one element array 1`] = `

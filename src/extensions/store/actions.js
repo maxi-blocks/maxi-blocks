@@ -37,7 +37,12 @@ const actions = {
 			deviceType,
 		};
 	},
-	setMaxiDeviceType({ deviceType, width, isGutenbergButton = false }) {
+	setMaxiDeviceType({
+		deviceType,
+		width,
+		isGutenbergButton = false,
+		changeSize = true,
+	}) {
 		if (!isGutenbergButton) {
 			const { __experimentalSetPreviewDeviceType: setPreviewDeviceType } =
 				dispatch('core/edit-post');
@@ -57,12 +62,14 @@ const actions = {
 			type: 'SET_DEVICE_TYPE',
 			deviceType,
 			width,
+			isGutenbergButton,
+			changeSize,
 		};
 	},
-	setWindowSize(winSize) {
+	setEditorContentSize(editorContentSize) {
 		return {
-			type: 'SET_WINDOW_SIZE',
-			winSize,
+			type: 'SET_EDITOR_CONTENT_SIZE',
+			editorContentSize,
 		};
 	},
 	copyStyles(copiedStyles) {
@@ -81,6 +88,19 @@ const actions = {
 		return {
 			type: 'UPDATE_INSPECTOR_PATH',
 			inspectorPath,
+		};
+	},
+	saveDeprecatedBlock({ uniqueID, attributes }) {
+		return {
+			type: 'SAVE_DEPRECATED_BLOCK',
+			uniqueID,
+			attributes,
+		};
+	},
+	removeDeprecatedBlock(uniqueID) {
+		return {
+			type: 'REMOVE_DEPRECATED_BLOCK',
+			uniqueID,
 		};
 	},
 };

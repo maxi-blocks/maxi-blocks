@@ -8,15 +8,15 @@ import { InspectorControls } from '@wordpress/block-editor';
  */
 import {
 	AccordionControl,
-	ColumnPattern,
 	FlexGapControl,
 	FlexWrapControl,
+	ResponsiveTabsControl,
 	SettingTabsControl,
 } from '../../components';
+import { ColumnPattern } from './components';
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
-import { selectorsRow, categoriesRow } from './custom-css';
-import ResponsiveTabsControl from '../../components/responsive-tabs-control';
+import { customCss } from './data';
 import { withMaxiInspector } from '../../extensions/inspector';
 
 function ColumnPicker(props) {
@@ -49,6 +49,7 @@ function ColumnPicker(props) {
  */
 const Inspector = props => {
 	const { deviceType } = props;
+	const { selectors, categories } = customCss;
 
 	return (
 		<InspectorControls>
@@ -132,16 +133,16 @@ const Inspector = props => {
 									...inspectorTabs.customCss({
 										props,
 										breakpoint: deviceType,
-										selectors: selectorsRow,
-										categories: categoriesRow,
+										selectors,
+										categories,
 									}),
 									...inspectorTabs.scrollEffects({
 										props,
 									}),
 									...inspectorTabs.transform({
 										props,
-										selectors: selectorsRow,
-										categories: categoriesRow,
+										selectors,
+										categories,
 									}),
 									...inspectorTabs.transition({
 										props: {

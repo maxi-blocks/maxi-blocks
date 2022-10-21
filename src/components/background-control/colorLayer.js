@@ -9,17 +9,23 @@ import { __ } from '@wordpress/i18n';
 import ColorControl from '../color-control';
 import ClipPath from '../clip-path-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
+import SizeAndPositionLayerControl from './sizeAndPositionLayerControl';
 import {
 	getAttributeKey,
 	getLastBreakpointAttribute,
 	getGroupAttributes,
+	getBlockStyle,
+	getDefaultAttribute,
 } from '../../extensions/styles';
 import { getDefaultLayerAttr } from './utils';
+import { getPaletteColor } from '../../extensions/style-cards';
 
 /**
  * External dependencies
  */
 import { cloneDeep } from 'lodash';
+
+const breakpoints = ['general', 'xl', 'l', 'm', 's', 'xs'];
 
 /**
  * Component
@@ -40,32 +46,120 @@ const ColorLayerContent = props => {
 
 	const colorOptions = cloneDeep(props.colorOptions);
 
+	const onChangeColor = ({
+		color,
+		paletteColor,
+		paletteStatus,
+		paletteOpacity,
+	}) => {
+		const response = {
+			[getAttributeKey(
+				'background-palette-status',
+				isHover,
+				prefix,
+				breakpoint
+			)]: paletteStatus,
+			[getAttributeKey(
+				'background-palette-color',
+				isHover,
+				prefix,
+				breakpoint
+			)]: paletteColor,
+			[getAttributeKey(
+				'background-palette-opacity',
+				isHover,
+				prefix,
+				breakpoint
+			)]: paletteOpacity,
+			[getAttributeKey('background-color', isHover, prefix, breakpoint)]:
+				color,
+		};
+
+		onChange(response);
+	};
+
 	const getDefaultAttr = () => {
-		const prefix = 'background-';
+		const bgPrefix = `${prefix}background-`;
 
 		if (isLayer) {
 			const defaultColor = {};
-			defaultColor.paletteStatus = getDefaultLayerAttr(
-				'colorOptions',
-				`${prefix}palette-status`
+			const prevBreakpoint =
+				breakpoints[breakpoints.indexOf(breakpoint) - 1];
+
+			const getResetValue = target =>
+				prevBreakpoint
+					? getLastBreakpointAttribute({
+							target,
+							breakpoint: prevBreakpoint,
+							attributes: colorOptions,
+							isHover,
+					  })
+					: getDefaultLayerAttr('colorOptions', target);
+
+			defaultColor.paletteStatus = getResetValue(
+				`${bgPrefix}palette-status`
 			);
-			defaultColor.paletteColor = getDefaultLayerAttr(
-				'colorOptions',
-				`${prefix}palette-color`
+			defaultColor.paletteColor = getResetValue(
+				`${bgPrefix}palette-color`
 			);
-			defaultColor.paletteOpacity = getDefaultLayerAttr(
-				'colorOptions',
-				`${prefix}palette-opacity`
+			defaultColor.paletteOpacity = getResetValue(
+				`${bgPrefix}palette-opacity`
 			);
-			defaultColor.color = getDefaultLayerAttr(
-				'colorOptions',
-				`${prefix}color`
-			);
+			defaultColor.color = getResetValue(`${bgPrefix}color`);
 
 			return defaultColor;
 		}
 
-		return null;
+		return {
+			paletteStatus: getDefaultAttribute(
+				`${bgPrefix}palette-status-${breakpoint}`,
+				clientId
+			),
+			paletteColor: getDefaultAttribute(
+				`${bgPrefix}palette-color-${breakpoint}`,
+				clientId
+			),
+			paletteOpacity: getDefaultAttribute(
+				`${bgPrefix}palette-opacity-${breakpoint}`,
+				clientId
+			),
+			color: getDefaultAttribute(
+				`${bgPrefix}color-${breakpoint}`,
+				clientId
+			),
+		};
+	};
+
+	const onReset = ({
+		showPalette = false,
+		paletteStatus,
+		paletteColor,
+		paletteOpacity,
+		color,
+	}) => {
+		const defaultColorAttr = getDefaultAttr();
+
+		if (showPalette)
+			onChangeColor({
+				paletteStatus: defaultColorAttr.paletteStatus,
+				paletteColor: defaultColorAttr.paletteColor,
+				paletteOpacity: paletteOpacity || 1,
+				color,
+			});
+		else {
+			const defaultColor = `rgba(${getPaletteColor({
+				clientId,
+				color: defaultColorAttr.paletteColor,
+				blockStyle: getBlockStyle(clientId),
+			})},${paletteOpacity || 1})`;
+
+			onChangeColor({
+				paletteStatus,
+				paletteColor,
+				paletteOpacity,
+				color: defaultColor,
+			});
+		}
 	};
 
 	return (
@@ -80,6 +174,7 @@ const ColorLayerContent = props => {
 				})}
 				prefix={`${prefix}background-`}
 				defaultColorAttributes={getDefaultAttr()}
+				{...(isLayer && { onReset })}
 				paletteStatus={getLastBreakpointAttribute({
 					target: `${prefix}background-palette-status`,
 					breakpoint,
@@ -103,39 +198,7 @@ const ColorLayerContent = props => {
 						'background-color': color,
 					});
 				}}
-				onChange={({
-					color,
-					paletteColor,
-					paletteStatus,
-					paletteOpacity,
-				}) => {
-					onChange({
-						[getAttributeKey(
-							'background-palette-status',
-							isHover,
-							prefix,
-							breakpoint
-						)]: paletteStatus,
-						[getAttributeKey(
-							'background-palette-color',
-							isHover,
-							prefix,
-							breakpoint
-						)]: paletteColor,
-						[getAttributeKey(
-							'background-palette-opacity',
-							isHover,
-							prefix,
-							breakpoint
-						)]: paletteOpacity,
-						[getAttributeKey(
-							'background-color',
-							isHover,
-							prefix,
-							breakpoint
-						)]: color,
-					});
-				}}
+				onChange={onChangeColor}
 				globalProps={globalProps}
 				isHover={isHover}
 				clientId={clientId}
@@ -149,14 +212,22 @@ const ColorLayerContent = props => {
 						props,
 						'clipPath',
 						false,
-						'background-color-'
+						`${prefix}background-color-`
 					)}
 					{...colorOptions}
 					isHover={isHover}
-					prefix='background-color-'
+					prefix={`${prefix}background-color-`}
 					breakpoint={breakpoint}
 				/>
 			)}
+			<SizeAndPositionLayerControl
+				prefix={prefix}
+				options={colorOptions}
+				onChange={onChange}
+				isHover={isHover}
+				isLayer={isLayer}
+				breakpoint={breakpoint}
+			/>
 		</>
 	);
 };

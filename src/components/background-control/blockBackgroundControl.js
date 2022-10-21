@@ -24,6 +24,7 @@ const BlockBackgroundControl = props => {
 		onChangeInline,
 		onChange,
 		isHover = false,
+		isIB = false,
 		prefix = '',
 		clientId,
 		breakpoint = 'general',
@@ -52,7 +53,7 @@ const BlockBackgroundControl = props => {
 	]);
 
 	const hoverStatus = getAttributeValue({
-		target: 'block-background-hover-status',
+		target: 'block-background-status-hover',
 		props,
 		prefix,
 	});
@@ -67,6 +68,7 @@ const BlockBackgroundControl = props => {
 				onChangeInline={onChangeInline}
 				onChange={onChange}
 				isHover={isHover}
+				isIB={isIB}
 				prefix={prefix}
 				disableImage={disableImage}
 				disableVideo={disableVideo}

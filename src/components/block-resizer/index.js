@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { forwardRef, memo } from '@wordpress/element';
+import { forwardRef, memo, useRef } from '@wordpress/element';
 
 /**
  * External dependencies
@@ -27,10 +27,13 @@ const BlockResizer = memo(
 			showHandle = false,
 			resizableObject,
 			isOverflowHidden = false,
+			onResizeStop,
+			cleanStyles = false,
 			...rest
 		} = props;
 		// Needed for memo part only
 		delete rest.deviceType;
+		const hasCleanedStyles = useRef(false);
 
 		const classes = classnames(
 			'maxi-block__resizer',
@@ -58,6 +61,11 @@ const BlockResizer = memo(
 
 		const handleRef = newRef => {
 			if (newRef) {
+				// Needed to clean styles before first onResizeStop, so that blocks don't jump after resizing
+				if (cleanStyles && !hasCleanedStyles.current) {
+					newRef.resizable.style = null;
+					hasCleanedStyles.current = true;
+				}
 				if (resizableObject) resizableObject.current = newRef;
 				if (ref) {
 					if (typeof ref === 'function') ref(newRef.resizable);
@@ -139,6 +147,10 @@ const BlockResizer = memo(
 						),
 				}}
 				handleWrapperClass={handlesWrapperClassName}
+				onResizeStop={(e, direction, refToElement, ...rest) => {
+					onResizeStop?.(e, direction, refToElement, ...rest);
+					if (cleanStyles) refToElement.style = null;
+				}}
 			>
 				{children}
 			</Resizable>

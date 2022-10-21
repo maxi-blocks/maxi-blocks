@@ -6,7 +6,7 @@ describe('getTransitionStyles', () => {
 		const object = {
 			'border-status-hover': true,
 			'box-shadow-status-hover': false,
-			'block-background-hover-status': true,
+			'block-background-status-hover': true,
 			transition: {
 				block: {},
 				canvas: {
@@ -29,7 +29,7 @@ describe('getTransitionStyles', () => {
 						'transition-delay-general': 0,
 						'easing-general': 'ease',
 						'transition-status-general': false,
-						hoverProp: 'block-background-hover-status',
+						hoverProp: 'block-background-status-hover',
 					},
 				},
 			},
@@ -64,7 +64,7 @@ describe('getTransitionStyles', () => {
 		const object = {
 			'border-status-hover': true,
 			'box-shadow-status-hover': true,
-			'block-background-hover-status': false,
+			'block-background-status-hover': false,
 			transition: {
 				block: {},
 				canvas: {
@@ -96,7 +96,7 @@ describe('getTransitionStyles', () => {
 						'transition-status-s': false,
 						'transition-status-xs': true,
 						'transition-status-xxl': false,
-						hoverProp: 'block-background-hover-status',
+						hoverProp: 'block-background-status-hover',
 					},
 				},
 			},
@@ -142,15 +142,14 @@ describe('getTransitionStyles', () => {
 				typography: {
 					title: 'Typography',
 					target: ' .maxi-button-block__content',
-					property: 'typography',
-					limitless: true,
-					prefix,
+					property: false,
+					hoverProp: 'typography-status-hover',
 				},
 				'button background': {
 					title: 'Button background',
 					target: ' .maxi-button-block__button',
 					property: 'background',
-					prefix,
+					hoverProp: `${prefix}background-status-hover`,
 				},
 			},
 		};
@@ -158,33 +157,19 @@ describe('getTransitionStyles', () => {
 		const object = {
 			'border-status-hover': true,
 			'box-shadow-status-hover': true,
-			'block-background-hover-status': false,
+			'block-background-status-hover': false,
 			'typography-status-hover': true,
-			'button-background-hover-status': true,
+			'button-background-status-hover': false,
 			transition: {
 				block: {
-					typography: {
-						...repeatedAttributes,
-						hoverProp: 'typography-status-hover',
-					},
-					'button background': {
-						...repeatedAttributes,
-						hoverProp: 'background-hover-status',
-					},
+					typography: repeatedAttributes,
+
+					'button background': repeatedAttributes,
 				},
 				canvas: {
-					border: {
-						...repeatedAttributes,
-						hoverProp: 'border-status-hover',
-					},
-					'box shadow': {
-						...repeatedAttributes,
-						hoverProp: 'box-shadow-status-hover',
-					},
-					'background / layer': {
-						...repeatedAttributes,
-						hoverProp: 'block-background-hover-status',
-					},
+					border: repeatedAttributes,
+					'box shadow': repeatedAttributes,
+					'background / layer': repeatedAttributes,
 				},
 			},
 		};

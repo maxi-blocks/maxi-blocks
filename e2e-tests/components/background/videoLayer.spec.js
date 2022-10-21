@@ -19,6 +19,7 @@ import {
 	getBlockStyle,
 	openPreviewPage,
 } from '../../utils';
+import sizeAndPositionChecker from './utils/sizeAndPositionChecker';
 
 describe('BackgroundControl', () => {
 	it('Check Background video layer', async () => {
@@ -70,6 +71,8 @@ describe('BackgroundControl', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('44');
 
+		await sizeAndPositionChecker({ page });
+
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
@@ -77,6 +80,7 @@ describe('BackgroundControl', () => {
 
 	it('Check Background video layer responsive', async () => {
 		// General
+
 		await changeResponsive(page, 's');
 		const backgroundOpacityBase = await page.$eval(
 			'.maxi-background-control .maxi-opacity-control input',
@@ -102,6 +106,8 @@ describe('BackgroundControl', () => {
 
 		expect(backgroundOpacityS).toStrictEqual('32');
 
+		await sizeAndPositionChecker({ page, breakpoint: 's' });
+
 		// Expect Xs
 		await changeResponsive(page, 'xs');
 		const backgroundOpacityXs = await page.$eval(
@@ -109,6 +115,9 @@ describe('BackgroundControl', () => {
 			input => input.value
 		);
 		expect(backgroundOpacityXs).toStrictEqual('32');
+
+		await sizeAndPositionChecker({ page, breakpoint: 'xs' });
+
 		// Expect M
 		await changeResponsive(page, 'm');
 		const backgroundOpacityM = await page.$eval(
@@ -116,8 +125,12 @@ describe('BackgroundControl', () => {
 			input => input.value
 		);
 
+		await sizeAndPositionChecker({ page, breakpoint: 'm' });
+
 		expect(backgroundOpacityM).toStrictEqual('44');
 		expect(await getBlockStyle(page)).toMatchSnapshot();
+		const layerExpect = await getBlockAttributes();
+		expect(layerExpect['background-layers']).toMatchSnapshot();
 	});
 
 	it('Check Background video layer hover', async () => {
@@ -154,6 +167,8 @@ describe('BackgroundControl', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('82');
 
+		await sizeAndPositionChecker({ page, isHover: true });
+
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
@@ -187,6 +202,8 @@ describe('BackgroundControl', () => {
 
 		expect(backgroundOpacityS).toStrictEqual('45');
 
+		await sizeAndPositionChecker({ page, breakpoint: 's', isHover: true });
+
 		// Expect Xs
 		await changeResponsive(page, 'xs');
 		const backgroundOpacityXs = await page.$eval(
@@ -194,6 +211,8 @@ describe('BackgroundControl', () => {
 			input => input.value
 		);
 		expect(backgroundOpacityXs).toStrictEqual('45');
+
+		await sizeAndPositionChecker({ page, breakpoint: 'xs', isHover: true });
 
 		// Expect M
 		await changeResponsive(page, 'm');
@@ -203,8 +222,12 @@ describe('BackgroundControl', () => {
 		);
 
 		expect(backgroundOpacityM).toStrictEqual('82');
+
+		await sizeAndPositionChecker({ page, breakpoint: 'm', isHover: true });
+
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
+
 	it('Check Background Shape layer display', async () => {
 		const checkEditor = await page.$eval(
 			'.maxi-background-displayer',

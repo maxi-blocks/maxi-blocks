@@ -235,7 +235,7 @@ describe('styleCleaner', () => {
 						'transition-delay-general': 0,
 						'easing-general': 'ease',
 						'transition-status-general': true,
-						hoverProp: 'block-background-hover-status',
+						hoverProp: 'block-background-status-hover',
 					},
 				},
 			},

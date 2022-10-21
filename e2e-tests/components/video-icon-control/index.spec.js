@@ -24,12 +24,10 @@ describe('Video icon control', () => {
 		const accordionPanel = await openSidebarTab(page, 'style', 'video');
 
 		// Change type
-		const videoType = await accordionPanel.$(
-			'.maxi-accordion-control__item .maxi-video-control__type select'
+		await accordionPanel.$eval(
+			'.maxi-video-control__player-type .maxi-tabs-control__button-popup',
+			button => button.click()
 		);
-
-		await videoType.select('popup');
-
 		expect(await getAttributes('playerType')).toStrictEqual('popup');
 
 		// Change lightbox background colour

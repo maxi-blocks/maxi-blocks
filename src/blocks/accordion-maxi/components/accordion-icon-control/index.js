@@ -7,42 +7,24 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import {
-	SelectControl,
+	AxisPositionControl,
 	SettingTabsControl,
-	AdvancedNumberControl,
 	ToggleSwitch,
+	IconControl,
 } from '../../../../components';
 import MaxiModal from '../../../../editor/library/modal';
-import {
-	getAttributeKey,
-	getDefaultAttribute,
-	getLastBreakpointAttribute,
-} from '../../../../extensions/styles';
-import IconColor from './IconColor';
+import { getIconWithColor } from '../../../../extensions/styles';
 
 const AccordionIconSettings = props => {
-	const { onChange, blockStyle, svgType, svgTypeActive, breakpoint } = props;
-
-	const defaultWidth = getDefaultAttribute(`icon-width-${breakpoint}`);
-	const defaultWidthUnit = getDefaultAttribute(
-		`icon-width-unit-${breakpoint}`
-	);
+	const { onChange, blockStyle, svgTypeActive, breakpoint } = props;
 
 	return (
 		<>
-			<SelectControl
-				label={__('Icon position', 'maxi-blocks')}
-				options={[
-					{
-						label: 'Right',
-						value: 'right',
-					},
-					{
-						label: 'Left',
-						value: 'left',
-					},
-				]}
-				value={props['icon-position']}
+			<AxisPositionControl
+				label={__('Icon', 'maxi-blocks')}
+				disableY
+				selected={props['icon-position']}
+				breakpoint={breakpoint}
 				onChange={val =>
 					onChange({
 						'icon-position': val,
@@ -69,98 +51,13 @@ const AccordionIconSettings = props => {
 				items={[
 					props['icon-content'] !== '' && {
 						label: __('Normal state', 'maxi-blocks'),
-						content: (
-							<>
-								{props['icon-content'] !== '' && (
-									<AdvancedNumberControl
-										label={__('Width', 'maxi-blocks')}
-										value={
-											getLastBreakpointAttribute({
-												target: 'icon-width',
-												breakpoint,
-												attributes: props,
-											}) || defaultWidth
-										}
-										placeholder={getLastBreakpointAttribute(
-											{
-												target: 'icon-width',
-												breakpoint,
-												attributes: props,
-											}
-										)}
-										onChangeValue={val => {
-											const newVal =
-												val !== undefined ? val : '';
-
-											onChange({
-												[getAttributeKey(
-													'width',
-													false,
-													'icon-',
-													breakpoint
-												)]: newVal,
-											});
-										}}
-										enableUnit
-										unit={getLastBreakpointAttribute({
-											target: 'icon-width-unit',
-											breakpoint,
-											attributes: props,
-										})}
-										allowedUnits={['px', 'vw', '%']}
-										onChangeUnit={val => {
-											onChange({
-												[getAttributeKey(
-													'width-unit',
-													false,
-													'icon-',
-													breakpoint
-												)]: val,
-											});
-										}}
-										min={10}
-										max={500}
-										step={1}
-										onReset={() =>
-											onChange({
-												[getAttributeKey(
-													'width',
-													false,
-													'icon-',
-													breakpoint
-												)]: defaultWidth,
-												[getAttributeKey(
-													'width-unit',
-													false,
-													'icon-',
-													breakpoint
-												)]: defaultWidthUnit,
-											})
-										}
-										defaultValue={defaultWidth}
-										initialPosition={defaultWidth}
-										optionType='string'
-									/>
-								)}
-								{props['icon-content'] !== '' && (
-									<>
-										{svgType !== 'Shape' && (
-											<IconColor
-												colorType='stroke'
-												prefix='icon-'
-												{...props}
-											/>
-										)}
-										{svgType !== 'Line' && (
-											<IconColor
-												colorType='fill'
-												prefix='icon-'
-												{...props}
-											/>
-										)}
-									</>
-								)}
-							</>
+						content: props['icon-content'] !== '' && (
+							<IconControl
+								{...props}
+								getIconWithColor={args =>
+									getIconWithColor(props, args, '')
+								}
+							/>
 						),
 					},
 					(props['active-icon-content'] !== '' ||
@@ -180,46 +77,29 @@ const AccordionIconSettings = props => {
 										})
 									}
 								/>
-								{props['icon-status-hover'] &&
-									svgType !== 'Shape' && (
-										<IconColor
-											colorType='stroke'
-											prefix='icon-'
-											isHover
-											{...props}
-										/>
-									)}
-								{props['icon-status-hover'] &&
-									svgType !== 'Line' && (
-										<IconColor
-											colorType='fill'
-											prefix='icon-'
-											isHover
-											{...props}
-										/>
-									)}
+								{props['icon-status-hover'] && (
+									<IconControl
+										{...props}
+										getIconWithColor={args =>
+											getIconWithColor(props, args, '')
+										}
+										isHover
+									/>
+								)}
 							</>
 						),
 					},
 					props['active-icon-content'] !== '' && {
 						label: __('Active state', 'maxi-blocks'),
 						content: (
-							<>
-								{svgTypeActive !== 'Shape' && (
-									<IconColor
-										colorType='stroke'
-										prefix='active-icon-'
-										{...props}
-									/>
-								)}
-								{svgTypeActive !== 'Line' && (
-									<IconColor
-										colorType='fill'
-										prefix='active-icon-'
-										{...props}
-									/>
-								)}
-							</>
+							<IconControl
+								{...props}
+								getIconWithColor={args =>
+									getIconWithColor(props, args, 'active-')
+								}
+								prefix='active-'
+								svgType={svgTypeActive}
+							/>
 						),
 					},
 				]}

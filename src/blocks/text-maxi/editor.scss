@@ -3,6 +3,9 @@
 		border: 1.5px dashed var(--maxi-light-blue-3-color) !important;
 
 		a.maxi-text-block--link {
+			text-decoration-skip-ink: auto;
+
+			&:visited,
 			&:visited span {
 				color: inherit !important;
 			}

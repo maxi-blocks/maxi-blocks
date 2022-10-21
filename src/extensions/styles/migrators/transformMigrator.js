@@ -3,12 +3,14 @@
  */
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import getBreakpointFromAttribute from '../getBreakpointFromAttribute';
-import getBlockCategoriesAndSelectors from '../getBlockCategoriesAndSelectors';
+import { getBlockSelectorsByUniqueID } from './utils';
 
 /**
  * External dependencies
  */
 import { isEmpty, isNil } from 'lodash';
+
+const name = 'Transform';
 
 const types = ['scale', 'translate', 'rotate', 'origin'];
 
@@ -67,7 +69,21 @@ const isEligible = blockAttributes =>
 			Object.keys(relation.attributes).some(key => key in attributes)
 		));
 
-const migrate = ({ newAttributes, selectors }) => {
+const migrate = props => {
+	let newAttributes;
+	let selectors;
+
+	if (
+		Object.prototype.hasOwnProperty.call(props, 'newAttributes') &&
+		Object.prototype.hasOwnProperty.call(props, 'selectors')
+	) {
+		newAttributes = props.newAttributes;
+		selectors = props.selectors;
+	} else {
+		newAttributes = props;
+		selectors = getBlockSelectorsByUniqueID(newAttributes.uniqueID);
+	}
+
 	if (isEmpty(selectors)) return false;
 
 	const getAxis = attribute => attribute.match(/[x,y,z](-unit)?/)[0];
@@ -111,9 +127,8 @@ const migrate = ({ newAttributes, selectors }) => {
 			const newRelations = [...attr];
 			attr.forEach((relation, index) => {
 				const newRelationAttributes = { ...relation.attributes };
-				const name = relation.uniqueID.split('-')[0];
-				const { selectors: relationSelectors } =
-					getBlockCategoriesAndSelectors(name);
+				const { uniqueID } = relation;
+				const relationSelectors = getBlockSelectorsByUniqueID(uniqueID);
 
 				migrate({
 					newAttributes: newRelationAttributes,
@@ -133,4 +148,4 @@ const migrate = ({ newAttributes, selectors }) => {
 	return newAttributes;
 };
 
-export default { attributes: () => attributes, migrate, isEligible };
+export default { name, attributes: () => attributes, migrate, isEligible };

@@ -1,32 +1,20 @@
 /**
  * WordPress dependencies
  */
+import { __ } from '@wordpress/i18n';
 import { cloneElement, renderToString } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
-import { getMigratorsCombinations } from '../utils';
+import {
+	getBlockNameFromUniqueID,
+	getBlockSelectorsByUniqueID,
+	getTransitionSetting,
+} from '../utils';
 import { handleBlockMigrator } from '../blockMigrator';
 
-describe('getMigratorsCombinations', () => {
-	it('Should return a one element array', () => {
-		const mainMigrator = {
-			isEligible: null,
-			attributes: {},
-			migrate: null,
-		};
-
-		const migrators = [
-			{ ...mainMigrator, saveMigrator: 1 },
-			{ ...mainMigrator, saveMigrator: 2 },
-			{ ...mainMigrator, saveMigrator: 3 },
-			{ ...mainMigrator, saveMigrator: 4 },
-		];
-
-		expect(getMigratorsCombinations(migrators)).toMatchSnapshot();
-	});
-});
+jest.mock('src/components/index.js', () => jest.fn());
 
 const TestComponent = ({
 	content = 'Testing',
@@ -39,7 +27,7 @@ const TestComponent = ({
 	</TagName>
 );
 
-describe('handleBlockMigrator', () => {
+describe.skip('handleBlockMigrator', () => {
 	it('Should return a one element array', () => {
 		const mainMigrator = {
 			isEligible: null,
@@ -108,4 +96,63 @@ describe('handleBlockMigrator', () => {
 
 		expect(result).toMatchSnapshot();
 	});
+});
+
+describe('getBlockNameFromUniqueID', () => {
+	it('Should return the block name', () =>
+		expect(getBlockNameFromUniqueID('button-maxi-5')).toMatchSnapshot());
+
+	it('Should return the block name, when uniqueID is big digit', () =>
+		expect(getBlockNameFromUniqueID('text-maxi-123456')).toMatchSnapshot());
+});
+
+describe('getBlockSelectorsByUniqueID', () => {
+	[
+		'accordion',
+		'button',
+		'column',
+		'container',
+		'divider',
+		'group',
+		'image',
+		'map',
+		'number-counter',
+		'pane',
+		'row',
+		'search',
+		'svg-icon',
+		'text',
+		'video',
+	].forEach(blockName => {
+		it(`Should return ${blockName} selectors`, () =>
+			expect(
+				getBlockSelectorsByUniqueID(`${blockName}-maxi-5`)
+			).toMatchSnapshot());
+	});
+});
+
+describe('getTransitionSetting', () => {
+	it('Should return the IB setting', () =>
+		expect(
+			getTransitionSetting({
+				uniqueID: 'button-maxi-5',
+				settings: __('Box shadow', 'maxi-blocks'),
+			})
+		).toMatchSnapshot());
+
+	it('Should return the IB setting, which has transitionTarget', () =>
+		expect(
+			getTransitionSetting({
+				uniqueID: 'button-maxi-5',
+				settings: __('Button icon', 'maxi-blocks'),
+			})
+		).toMatchSnapshot());
+
+	it('Should return null', () =>
+		expect(
+			getTransitionSetting({
+				uniqueID: 'button-maxi-5',
+				settings: __('Divider box shadow', 'maxi-blocks'),
+			})
+		).toBeNull());
 });

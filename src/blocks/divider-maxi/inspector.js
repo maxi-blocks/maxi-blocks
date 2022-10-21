@@ -10,6 +10,7 @@ import { InspectorControls } from '@wordpress/block-editor';
 import {
 	AccordionControl,
 	DividerControl,
+	ResponsiveTabsControl,
 	SelectControl,
 	SettingTabsControl,
 } from '../../components';
@@ -18,8 +19,7 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
-import { selectorsDivider, categoriesDivider } from './custom-css';
-import ResponsiveTabsControl from '../../components/responsive-tabs-control';
+import { customCss } from './data';
 import { withMaxiInspector } from '../../extensions/inspector';
 
 /**
@@ -35,6 +35,7 @@ const Inspector = props => {
 		cleanInlineStyles,
 		inlineStylesTargets,
 	} = props;
+	const { selectors, categories } = customCss;
 
 	return (
 		<InspectorControls>
@@ -287,16 +288,16 @@ const Inspector = props => {
 									...inspectorTabs.customCss({
 										props,
 										breakpoint: deviceType,
-										selectors: selectorsDivider,
-										categories: categoriesDivider,
+										selectors,
+										categories,
 									}),
 									...inspectorTabs.scrollEffects({
 										props,
 									}),
 									...inspectorTabs.transform({
 										props,
-										selectors: selectorsDivider,
-										categories: categoriesDivider,
+										selectors,
+										categories,
 									}),
 									...inspectorTabs.transition({
 										props: {

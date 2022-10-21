@@ -149,118 +149,65 @@ export const getSVGStyles = ({
 	isHover = false,
 	useIconColor = true,
 }) => {
+	const pathFillStyles = getSVGPathFillStyles(
+		obj,
+		blockStyle,
+		prefix,
+		isHover
+	);
+	const pathStrokeStyles = getSVGPathStrokeStyles(
+		obj,
+		blockStyle,
+		prefix,
+		isHover,
+		useIconColor
+	);
+	const pathStyles = getSVGPathStyles(obj, prefix, isHover);
+
 	const response = {
-		[` ${target} svg[data-fill]:not([fill^="none"])`]: getSVGPathFillStyles(
-			obj,
-			blockStyle,
-			prefix,
-			isHover
-		),
-		[` ${target} svg[data-stroke]:not([stroke^="none"])`]:
-			getSVGPathStrokeStyles(
-				obj,
-				blockStyle,
-				prefix,
-				isHover,
-				useIconColor
-			),
-		[` ${target} svg path`]: getSVGPathStyles(obj, prefix, isHover),
-		[` ${target} svg path[data-fill]:not([fill^="none"])`]:
-			getSVGPathFillStyles(obj, blockStyle, prefix, isHover),
+		[` ${target} svg[data-fill]:not([fill^="none"])`]: pathFillStyles,
+		[` ${target} svg[data-stroke]:not([stroke^="none"])`]: pathStrokeStyles,
+		[` ${target} svg[data-fill]:not([fill^="none"]) *`]: pathFillStyles,
+		[` ${target} svg[data-stroke]:not([stroke^="none"]) *`]:
+			pathStrokeStyles,
+		[` ${target} svg path`]: pathStyles,
+		[` ${target} svg path[data-fill]:not([fill^="none"])`]: pathFillStyles,
 		[` ${target} svg path[data-stroke]:not([stroke^="none"])`]:
-			getSVGPathStrokeStyles(
-				obj,
-				blockStyle,
-				prefix,
-				isHover,
-				useIconColor
-			),
-		[` ${target} svg g[data-fill]:not([fill^="none"])`]:
-			getSVGPathFillStyles(obj, blockStyle, prefix, isHover),
+			pathStrokeStyles,
+		[` ${target} svg g[data-fill]:not([fill^="none"])`]: pathFillStyles,
 		[` ${target} svg g[data-stroke]:not([stroke^="none"])`]:
-			getSVGPathStrokeStyles(
-				obj,
-				blockStyle,
-				prefix,
-				isHover,
-				useIconColor
-			),
-		[` ${target} svg use[data-fill]:not([fill^="none"])`]:
-			getSVGPathFillStyles(obj, blockStyle, prefix, isHover),
+			pathStrokeStyles,
+		[` ${target} svg use[data-fill]:not([fill^="none"])`]: pathFillStyles,
 		[` ${target} svg use[data-stroke]:not([stroke^="none"])`]:
-			getSVGPathStrokeStyles(
-				obj,
-				blockStyle,
-				prefix,
-				isHover,
-				useIconColor
-			),
+			pathStrokeStyles,
 		[` ${target} svg circle[data-fill]:not([fill^="none"])`]:
-			getSVGPathFillStyles(obj, blockStyle, prefix, isHover),
+			pathFillStyles,
 		[` ${target} svg circle[data-stroke]:not([stroke^="none"])`]:
-			getSVGPathStrokeStyles(
-				obj,
-				blockStyle,
-				prefix,
-				isHover,
-				useIconColor
-			),
+			pathStrokeStyles,
 	};
 
 	if (isHover) {
 		return {
 			...response,
 			...{
-				[` ${target} svg[data-hover-stroke] path`]: getSVGPathStyles(
-					obj,
-					prefix,
-					isHover
-				),
-				[` ${target} svg path[data-hover-stroke]`]: getSVGPathStyles(
-					obj,
-					prefix,
-					isHover
-				),
+				[` ${target} svg[data-hover-stroke] path`]: pathStyles,
+				[` ${target} svg path[data-hover-stroke]`]: pathStyles,
 				[` ${target} svg[data-hover-fill] path:not([fill^="none"])`]:
-					getSVGPathFillStyles(obj, blockStyle, prefix, isHover),
+					pathFillStyles,
 				[` ${target} svg path[data-hover-fill]:not([fill^="none"])`]:
-					getSVGPathFillStyles(obj, blockStyle, prefix, isHover),
+					pathFillStyles,
 				[` ${target} svg g[data-hover-fill]:not([fill^="none"])`]:
-					getSVGPathFillStyles(obj, blockStyle, prefix, isHover),
+					pathFillStyles,
 				[` ${target} svg[data-hover-stroke] path:not([stroke^="none"])`]:
-					getSVGPathStrokeStyles(
-						obj,
-						blockStyle,
-						prefix,
-						isHover,
-						useIconColor
-					),
+					pathStrokeStyles,
 				[` ${target} svg path[data-hover-stroke]:not([stroke^="none"])`]:
-					getSVGPathStrokeStyles(
-						obj,
-						blockStyle,
-						prefix,
-						isHover,
-						useIconColor
-					),
+					pathStrokeStyles,
 				[` ${target} svg g[data-hover-stroke]:not([stroke^="none"])`]:
-					getSVGPathStrokeStyles(
-						obj,
-						blockStyle,
-						prefix,
-						isHover,
-						useIconColor
-					),
+					pathStrokeStyles,
 				[` ${target} svg use[data-hover-fill]:not([fill^="none"])`]:
-					getSVGPathFillStyles(obj, blockStyle, prefix, isHover),
+					pathFillStyles,
 				[` ${target} svg use[data-hover-stroke]:not([stroke^="none"])`]:
-					getSVGPathStrokeStyles(
-						obj,
-						blockStyle,
-						prefix,
-						isHover,
-						useIconColor
-					),
+					pathStrokeStyles,
 			},
 		};
 	}

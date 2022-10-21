@@ -26,7 +26,7 @@ import getStyles from './styles';
 import onMerge, { onReplaceBlocks } from './utils';
 import { onChangeRichText, textContext } from '../../extensions/text/formats';
 import { setSVGColor } from '../../extensions/svg';
-import copyPasteMapping from './copy-paste-mapping';
+import { copyPasteMapping } from './data';
 /**
  * External dependencies
  */

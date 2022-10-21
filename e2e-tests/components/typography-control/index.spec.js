@@ -173,7 +173,9 @@ describe('TypographyControl', () => {
 			select => select.click()
 		);
 
-		expect(await getAttributes('palette-status-s')).toStrictEqual(false);
+		expect(await getAttributes('palette-status-s')).toStrictEqual(
+			undefined
+		);
 	});
 
 	it('Checking the Weight, Transform, Style, Decoration and Orientation', async () => {
@@ -269,7 +271,7 @@ describe('TypographyControl', () => {
 	});
 
 	it('Check Size, line height and letter spacing', async () => {
-		await changeResponsive(page, 'xl');
+		await changeResponsive(page, 'base');
 
 		await addTypographyOptions({
 			page,

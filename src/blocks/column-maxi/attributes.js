@@ -41,7 +41,13 @@ const attributes = {
 	...attributesData.zIndex,
 	...attributesData.customCss,
 	...attributesData.scroll,
-	...attributesData.flex,
+	...{
+		...attributesData.flex,
+		'flex-direction-general': {
+			type: 'string',
+			default: 'column',
+		},
+	},
 };
 
 export default attributes;

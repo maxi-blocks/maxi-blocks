@@ -7,7 +7,7 @@ import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 /**
  * External dependencies
  */
-import { isEmpty, isNil, isBoolean } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 
 /**
  * General
@@ -47,9 +47,14 @@ const getTypographyStyles = ({
 		}`;
 
 	const getPaletteColorStatus = breakpoint => {
-		const propName = getName('palette-status', breakpoint);
+		const paletteStatus = getLastBreakpointAttribute({
+			target: 'palette-status',
+			breakpoint,
+			attributes: obj,
+			isHover,
+		});
 
-		if (isBoolean(obj[propName])) return obj[propName];
+		if (!isNil(paletteStatus)) return paletteStatus;
 
 		return (
 			isCustomFormat &&
@@ -132,13 +137,13 @@ const getTypographyStyles = ({
 			}),
 			...(!isNil(obj[getName('line-height', breakpoint)]) && {
 				'line-height': `${obj[getName('line-height', breakpoint)]}${
-					getUnitValue(`${prefix}line-height-unit`, breakpoint) || ''
+					getUnitValue('line-height-unit', breakpoint) || ''
 				}`,
 			}),
 			...(!isNil(obj[getName('letter-spacing', breakpoint)]) && {
 				'letter-spacing': `${
 					obj[getName('letter-spacing', breakpoint)]
-				}${getUnitValue(`${prefix}letter-spacing-unit`, breakpoint)}`,
+				}${getUnitValue('letter-spacing-unit', breakpoint)}`,
 			}),
 			...(!isNil(obj[getName('font-weight', breakpoint)]) && {
 				'font-weight': obj[getName('font-weight', breakpoint)],

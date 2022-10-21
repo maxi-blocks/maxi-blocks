@@ -15,13 +15,13 @@ import { isEmpty } from 'lodash';
 import { AccordionControl, SettingTabsControl } from '../../components';
 import {
 	MapControl,
-	MapInteracitonControl,
+	MapInteractionControl,
 	MapMarkersControl,
 	MapPopupControl,
 	MapPopupTextControl,
 } from './components';
 import { getGroupAttributes } from '../../extensions/styles';
-import { selectorsMap, categoriesMap } from './custom-css';
+import { customCss } from './data';
 import * as inspectorTabs from '../../components/inspector-tabs';
 
 /**
@@ -38,6 +38,7 @@ const Inspector = props => {
 		cleanInlineStyles,
 	} = props;
 	const { blockStyle } = attributes;
+	const { selectors, categories } = customCss;
 
 	return (
 		<InspectorControls>
@@ -178,7 +179,7 @@ const Inspector = props => {
 											'maxi-blocks'
 										),
 										content: (
-											<MapInteracitonControl
+											<MapInteractionControl
 												{...getGroupAttributes(
 													attributes,
 													'mapInteraction'
@@ -210,16 +211,16 @@ const Inspector = props => {
 									...inspectorTabs.customCss({
 										props,
 										breakpoint: deviceType,
-										selectors: selectorsMap,
-										categories: categoriesMap,
+										selectors,
+										categories,
 									}),
 									...inspectorTabs.scrollEffects({
 										props,
 									}),
 									...inspectorTabs.transform({
 										props,
-										selectors: selectorsMap,
-										categories: categoriesMap,
+										selectors,
+										categories,
 									}),
 									...inspectorTabs.transition({
 										props: {

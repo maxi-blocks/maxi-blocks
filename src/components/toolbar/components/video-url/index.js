@@ -56,25 +56,6 @@ const VideoUrl = props => {
 					}}
 					validationText={validationText}
 				/>
-				<SettingTabsControl
-					type='buttons'
-					items={[
-						{
-							label: __('Video', 'maxi-blocks'),
-							value: 'video',
-						},
-						{
-							label: __('Popup', 'maxi-blocks'),
-							value: 'popup',
-						},
-					]}
-					onChange={val =>
-						onChange({
-							playerType: val,
-						})
-					}
-					selected={playerType}
-				/>
 			</div>
 		</ToolbarPopover>
 	);

@@ -11,20 +11,19 @@ import {
 	AccordionControl,
 	BlockStylesControl,
 	CustomLabel,
+	ResponsiveTabsControl,
 	SettingTabsControl,
-	SvgColorControl,
 	SvgStrokeWidthControl,
 	SvgWidthControl,
-	SvgAltControl,
 } from '../../components';
+import { SvgAltControl, SvgColorControl } from './components';
 import {
 	getColorRGBAString,
 	getGroupAttributes,
 } from '../../extensions/styles';
 import { setSVGContentWithBlockStyle } from '../../extensions/svg';
 import * as inspectorTabs from '../../components/inspector-tabs';
-import { selectorsSvgIcon, categoriesSvgIcon } from './custom-css';
-import ResponsiveTabsControl from '../../components/responsive-tabs-control';
+import { customCss } from './data';
 import { withMaxiInspector } from '../../extensions/inspector';
 
 /**
@@ -41,6 +40,7 @@ const Inspector = props => {
 		inlineStylesTargets,
 	} = props;
 	const { blockStyle, customLabel, isFirstOnHierarchy, svgType } = attributes;
+	const { selectors, categories } = customCss;
 
 	return (
 		<InspectorControls>
@@ -315,21 +315,19 @@ const Inspector = props => {
 									...inspectorTabs.customCss({
 										props,
 										breakpoint: deviceType,
-										selectors: selectorsSvgIcon,
-										categories: categoriesSvgIcon,
+										selectors,
+										categories,
 									}),
 									...inspectorTabs.scrollEffects({
 										props,
 									}),
 									...inspectorTabs.transform({
 										props,
-										selectors: selectorsSvgIcon,
-										categories: categoriesSvgIcon,
+										selectors,
+										categories,
 									}),
 									...inspectorTabs.transition({
-										props: {
-											...props,
-										},
+										props,
 									}),
 									...inspectorTabs.display({
 										props,

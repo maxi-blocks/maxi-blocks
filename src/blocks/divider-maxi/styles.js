@@ -16,8 +16,7 @@ import {
 	getZIndexStyles,
 	getFlexStyles,
 } from '../../extensions/styles/helpers';
-import { selectorsDivider } from './custom-css';
-import transitionObj from './transitionObj';
+import data from './data';
 
 const getWrapperObject = props => {
 	const { lineAlign, lineVertical, lineHorizontal } = props;
@@ -189,9 +188,8 @@ const getStyles = props => {
 					blockStyle: props.blockStyle,
 				}),
 			},
-			selectorsDivider,
-			props,
-			transitionObj
+			data,
+			props
 		),
 	};
 

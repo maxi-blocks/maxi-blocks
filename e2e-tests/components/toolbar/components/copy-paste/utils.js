@@ -26,7 +26,7 @@ export const block = {
 		fullWidth: 'full',
 		content:
 			'<span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--2">Testing</span> <span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--1">Copy</span> <span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">Paste</span>',
-		'background-hover-status': false,
+		'background-status-hover': false,
 		'border-color-general': '',
 		'border-style-general': 'dashed',
 		'border-status-hover': false,

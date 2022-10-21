@@ -17,6 +17,7 @@ import {
 	openPreviewPage,
 	editAdvancedNumberControl,
 } from '../../utils';
+import sizeAndPositionChecker from './utils/sizeAndPositionChecker';
 
 describe('BackgroundControl', () => {
 	it('Check Background shape layer', async () => {
@@ -49,19 +50,7 @@ describe('BackgroundControl', () => {
 			newNumber: '77',
 		});
 
-		// size
-		await page.$eval(
-			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control__button-size',
-			sizeButton => sizeButton.click()
-		);
-
-		await editAdvancedNumberControl({
-			page,
-			instance: await page.$(
-				'.maxi-background-control__svg-layer--size .maxi-advanced-number-control'
-			),
-			newNumber: '43',
-		});
+		await sizeAndPositionChecker({ page });
 
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
@@ -79,18 +68,6 @@ describe('BackgroundControl', () => {
 
 		expect(baseBackgroundOpacity).toStrictEqual('77');
 
-		await page.$eval(
-			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control__button-size',
-			sizeButton => sizeButton.click()
-		);
-
-		const baseBackgroundShapeSize = await page.$$eval(
-			'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input',
-			selector => selector[0].value
-		);
-
-		expect(baseBackgroundShapeSize).toStrictEqual('43');
-
 		// opacity and size
 		await editAdvancedNumberControl({
 			page,
@@ -98,14 +75,6 @@ describe('BackgroundControl', () => {
 				'.maxi-color-control .maxi-advanced-number-control'
 			),
 			newNumber: '54',
-		});
-
-		await editAdvancedNumberControl({
-			page,
-			instance: await page.$(
-				'.maxi-background-control__svg-layer--size .maxi-advanced-number-control'
-			),
-			newNumber: '23',
 		});
 
 		// expect S responsive
@@ -116,12 +85,7 @@ describe('BackgroundControl', () => {
 
 		expect(sBackgroundOpacity).toStrictEqual('54');
 
-		const sBackgroundShapeSize = await page.$$eval(
-			'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input',
-			selector => selector[0].value
-		);
-
-		expect(sBackgroundShapeSize).toStrictEqual('23');
+		await sizeAndPositionChecker({ page, breakpoint: 's' });
 
 		// expect XS responsive
 		await changeResponsive(page, 'xs');
@@ -133,17 +97,7 @@ describe('BackgroundControl', () => {
 
 		expect(xsBackgroundOpacity).toStrictEqual('54');
 
-		await page.$eval(
-			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control__button-size',
-			sizeButton => sizeButton.click()
-		);
-
-		const xsBackgroundShapeSize = await page.$$eval(
-			'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input',
-			selector => selector[0].value
-		);
-
-		expect(xsBackgroundShapeSize).toStrictEqual('23');
+		await sizeAndPositionChecker({ page, breakpoint: 'xs' });
 
 		// expect M responsive
 		await changeResponsive(page, 'm');
@@ -155,17 +109,8 @@ describe('BackgroundControl', () => {
 
 		expect(mBackgroundOpacity).toStrictEqual('77');
 
-		await page.$eval(
-			'.maxi-background-control__svg-layer--size.maxi-settingstab-control .maxi-tabs-control__button-size',
-			sizeButton => sizeButton.click()
-		);
+		await sizeAndPositionChecker({ page, breakpoint: 'm' });
 
-		const mBackgroundShapeSize = await page.$$eval(
-			'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input',
-			selector => selector[0].value
-		);
-
-		expect(mBackgroundShapeSize).toStrictEqual('43');
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
@@ -195,13 +140,7 @@ describe('BackgroundControl', () => {
 			options => options[0].click()
 		);
 
-		await editAdvancedNumberControl({
-			page,
-			instance: await page.$(
-				'.maxi-background-control__svg-layer--size .maxi-advanced-number-control'
-			),
-			newNumber: '22',
-		});
+		await sizeAndPositionChecker({ page, isHover: true });
 
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
@@ -211,51 +150,23 @@ describe('BackgroundControl', () => {
 	it('Check Background shape layer hover responsive', async () => {
 		await changeResponsive(page, 's');
 
-		const baseBackgroundShapeSize = await page.$$eval(
-			'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input',
-			selector => selector[0].value
-		);
-
-		expect(baseBackgroundShapeSize).toStrictEqual('22');
-
-		// size
-		await editAdvancedNumberControl({
-			page,
-			instance: await page.$(
-				'.maxi-background-control__svg-layer--size .maxi-advanced-number-control'
-			),
-			newNumber: '12',
-		});
-
-		// expect S responsive
-		const sBackgroundShapeSize = await page.$$eval(
-			'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input',
-			selector => selector[0].value
-		);
-
-		expect(sBackgroundShapeSize).toStrictEqual('12');
+		await sizeAndPositionChecker({ page, isHover: true, breakpoint: 's' });
 
 		// expect XS responsive
 		await changeResponsive(page, 'xs');
 
-		const xsBackgroundShapeSize = await page.$$eval(
-			'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input',
-			selector => selector[0].value
-		);
-
-		expect(xsBackgroundShapeSize).toStrictEqual('12');
+		await sizeAndPositionChecker({ page, isHover: true, breakpoint: 'xs' });
 
 		// expect M responsive
 		await changeResponsive(page, 'm');
 
-		const mBackgroundShapeSize = await page.$$eval(
-			'.maxi-background-control__svg-layer--size .maxi-advanced-number-control input',
-			selector => selector[0].value
-		);
+		await sizeAndPositionChecker({ page, isHover: true, breakpoint: 'm' });
 
-		expect(mBackgroundShapeSize).toStrictEqual('22');
+		const layerExpect = await getBlockAttributes();
+		expect(layerExpect['background-layers']).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
+
 	it('Check Background Shape layer display', async () => {
 		const checkEditor = await page.$eval(
 			'.maxi-background-displayer',

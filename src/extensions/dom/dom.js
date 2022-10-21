@@ -7,11 +7,13 @@ import { select, dispatch, subscribe } from '@wordpress/data';
  * Internal dependencies
  */
 import { getPageFonts, loadFonts } from '../text/fonts';
+import getWinBreakpoint from './getWinBreakpoint';
+import { setScreenSize } from '../styles';
 
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 
 /**
  * General
@@ -42,17 +44,6 @@ const allowedBlocks = [
 ];
 
 wp.domReady(() => {
-	// Window size
-	const setWindowSize = e => {
-		const { innerWidth: width, innerHeight: height } = e.target;
-
-		dispatch('maxiBlocks').setWindowSize({ width, height });
-	};
-
-	setWindowSize({ target: window });
-
-	window.addEventListener('resize', e => setWindowSize(e));
-
 	const observerSubscribe = subscribe(() => {
 		const targetNode = document.querySelector('.edit-post-layout');
 
@@ -165,7 +156,6 @@ wp.domReady(() => {
 						}
 					}
 
-					// Responsive editor
 					if (
 						mutation.type === 'attributes' &&
 						mutation.target.classList.contains(
@@ -175,11 +165,21 @@ wp.domReady(() => {
 							'editor-styles-wrapper'
 						)
 					) {
+						// Responsive editor
 						const responsiveWidth = mutation.target.getAttribute(
 							'maxi-blocks-responsive-width'
 						);
+						const isMaxiPreview =
+							mutation.target.getAttribute('is-maxi-preview');
+						const breakpoint = mutation.target.getAttribute(
+							'maxi-blocks-responsive'
+						);
 
-						if (
+						if (!isMaxiPreview) {
+							mutation.target.style = null;
+						} else if (['s', 'xs'].includes(breakpoint)) {
+							mutation.target.style.width = 'fit-content';
+						} else if (
 							mutation.target.style.width !==
 							`${responsiveWidth}px`
 						) {
@@ -200,8 +200,21 @@ wp.domReady(() => {
 							'iframe[name="editor-canvas"]'
 						);
 						const iframeDocument = iframe.contentDocument;
-
 						const editorWrapper = iframeDocument.body;
+
+						const postEditor = mutation.target.closest(
+							'.edit-post-visual-editor'
+						);
+						const responsiveWidth = postEditor.getAttribute(
+							'maxi-blocks-responsive-width'
+						);
+						const isMaxiPreview =
+							postEditor.getAttribute('is-maxi-preview');
+
+						if (isMaxiPreview) {
+							mutation.target.style.width = `${responsiveWidth}px`;
+							mutation.target.style.boxSizing = 'content-box';
+						}
 
 						if (editorWrapper) {
 							editorWrapper.setAttribute(
@@ -233,8 +246,16 @@ wp.domReady(() => {
 										: 'xs'
 								);
 
+								// Hides scrollbar in firefox
+								iframeDocument.documentElement.style.scrollbarWidth =
+									'none';
+
 								// Copy all fonts to iframe
-								loadFonts(getPageFonts(), true, iframeDocument);
+								loadFonts(
+									getPageFonts(true),
+									true,
+									iframeDocument
+								);
 
 								// Get all Maxi blocks <style> from <head>
 								// and move to new iframe
@@ -383,6 +404,52 @@ wp.domReady(() => {
 
 			// Dismantling the bomb
 			observerSubscribe();
+		}
+	});
+
+	const editorContentUnsubscribe = subscribe(() => {
+		const targetNode = document.querySelector(
+			'.interface-interface-skeleton__content'
+		);
+
+		if (targetNode) {
+			const { setEditorContentSize } = dispatch('maxiBlocks');
+
+			const resizeObserver = new ResizeObserver(() => {
+				const { width, height } = targetNode.getBoundingClientRect();
+				setEditorContentSize({ width, height });
+
+				// On changing the canvas editor size, we must update the winBreakpoint
+				// to add the necessary attributes to display styles. The observer can't
+				// rely on the next element cause it disappears when selecting 's' or 'xs'
+				// due to the appearance of the iframe.
+				const editorWrapper = document.querySelector(
+					'.editor-styles-wrapper'
+				);
+
+				if (editorWrapper) {
+					const { width: winWidth } =
+						editorWrapper.getBoundingClientRect();
+
+					const deviceType = getWinBreakpoint(winWidth);
+					const baseWinBreakpoint =
+						select('maxiBlocks').receiveBaseBreakpoint();
+
+					if (
+						deviceType === baseWinBreakpoint ||
+						isNil(baseWinBreakpoint)
+					)
+						setScreenSize('general', false);
+					else if (!['xs', 's'].includes(deviceType))
+						setScreenSize(deviceType, false);
+				}
+			});
+
+			[targetNode, document.body].forEach(element =>
+				resizeObserver.observe(element)
+			);
+
+			editorContentUnsubscribe();
 		}
 	});
 });

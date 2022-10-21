@@ -9,12 +9,12 @@ import { InspectorControls } from '@wordpress/block-editor';
  */
 import {
 	AccordionControl,
-	ColumnSizeControl,
+	ResponsiveTabsControl,
 	SettingTabsControl,
 } from '../../components';
+import { ColumnSizeControl } from './components';
 import * as inspectorTabs from '../../components/inspector-tabs';
-import { selectorsColumn, categoriesColumn } from './custom-css';
-import ResponsiveTabsControl from '../../components/responsive-tabs-control';
+import { customCss } from './data';
 import { getGroupAttributes } from '../../extensions/styles';
 import { withMaxiInspector } from '../../extensions/inspector';
 
@@ -24,6 +24,7 @@ import { withMaxiInspector } from '../../extensions/inspector';
 const Inspector = props => {
 	const { attributes, deviceType, maxiSetAttributes, clientId, rowPattern } =
 		props;
+	const { selectors, categories } = customCss;
 
 	return (
 		<InspectorControls>
@@ -113,16 +114,16 @@ const Inspector = props => {
 									...inspectorTabs.customCss({
 										props,
 										breakpoint: deviceType,
-										selectors: selectorsColumn,
-										categories: categoriesColumn,
+										selectors,
+										categories,
 									}),
 									...inspectorTabs.scrollEffects({
 										props,
 									}),
 									...inspectorTabs.transform({
 										props,
-										selectors: selectorsColumn,
-										categories: categoriesColumn,
+										selectors,
+										categories,
 									}),
 									...inspectorTabs.transition({
 										props: {

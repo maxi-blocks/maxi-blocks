@@ -12,7 +12,7 @@ import {
 	changeResponsive,
 } from '../../utils';
 
-const generalTypographeStyle = {
+const generalTypographyStyle = {
 	decoration: 'overline',
 	weight: '300',
 	transform: 'capitalize',
@@ -27,7 +27,7 @@ const responsiveTypographyStyle = {
 	weight: '400',
 	transform: 'uppercase',
 	style: 'oblique',
-	orientation: 'mixed',
+	orientation: 'upright',
 	direction: 'rtl',
 	indent: '22',
 };
@@ -60,7 +60,7 @@ describe('StyleCards, Buttons', () => {
 			instance: await page.$(
 				'.maxi-typography-control.maxi-style-cards-control__sc__button-typography'
 			),
-			...generalTypographeStyle,
+			...generalTypographyStyle,
 		});
 		await page.waitForTimeout(100);
 
@@ -161,6 +161,6 @@ describe('StyleCards, Buttons', () => {
 			),
 		});
 
-		expect(typographyStylesL).toEqual(generalTypographeStyle);
+		expect(typographyStylesL).toEqual(generalTypographyStyle);
 	});
 });

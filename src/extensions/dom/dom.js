@@ -228,7 +228,10 @@ wp.domReady(() => {
 						mutation.type === 'attributes' &&
 						mutation.target.classList.contains(
 							'edit-site-visual-editor__editor-canvas'
-						)
+						) &&
+						document
+							.querySelector('.edit-site-visual-editor')
+							?.getAttribute('is-maxi-preview')
 					) {
 						// Remove width which gutenberg adds to the iframe
 						mutation.target.style.width = '100%';

@@ -107,8 +107,8 @@ const DateFormatting = props => {
 			minute: minute === 'undefined' ? undefined : minute,
 			month: month === 'undefined' ? undefined : month,
 			second: second === 'undefined' ? undefined : second,
-			timeZone: timeZone,
-			timeZoneName: timeZoneName,
+			timeZone,
+			timeZoneName,
 			weekday: weekday === 'undefined' ? undefined : weekday,
 			year: year === 'undefined' ? undefined : year,
 		};

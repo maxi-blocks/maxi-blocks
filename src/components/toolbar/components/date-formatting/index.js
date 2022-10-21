@@ -36,27 +36,30 @@ const DateFormatting = props => {
 
 	const toggleVisible = () => setIsVisible(state => !state);
 	const validateAnchor = str => {
-		const length = {
-			d: str.split('d').length - 1,
-			D: str.split('D').length - 1,
-			dd: str.split('dd').length - 1,
-			dD: str.split('dD').length - 1,
-			Dd: str.split('Dd').length - 1,
-			DD: str.split('DD').length - 1,
-			m: str.split('m').length - 1,
-			M: str.split('M').length - 1,
-			mm: str.split('mm').length - 1,
-			mM: str.split('mM').length - 1,
-			Mm: str.split('Mm').length - 1,
-			MM: str.split('MM').length - 1,
-			t: str.split('t').length - 1,
-			y: str.split('y').length - 1,
-			Y: str.split('Y').length - 1,
-			yy: str.split('yy').length - 1,
-			yY: str.split('yY').length - 1,
-			Yy: str.split('Yy').length - 1,
-			YY: str.split('YY').length - 1,
-		};
+		const length = [
+			'd',
+			'D',
+			'dd',
+			'dD',
+			'Dd',
+			'DD',
+			'm',
+			'M',
+			'mm',
+			'mM',
+			'Mm',
+			'MM',
+			't',
+			'y',
+			'Y',
+			'yy',
+			'yY',
+			'Yy',
+			'YY',
+		].reduce((acc, cur) => {
+			acc[cur] = str.split(cur).length - 1;
+			return acc;
+		}, {});
 
 		if (
 			length.dd === 0 &&

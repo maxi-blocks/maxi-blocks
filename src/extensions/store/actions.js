@@ -1,13 +1,13 @@
 /**
  * WordPress dependencies
  */
-import { dispatch, select, resolveSelect } from '@wordpress/data';
+import { dispatch, resolveSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import { getIsSiteEditor } from '../fse';
-import { getBreakpointFromWidth } from '../styles';
+import getWinBreakpoint from '../dom/getWinBreakpoint';
 
 const actions = {
 	receiveMaxiSettings() {
@@ -47,14 +47,14 @@ const actions = {
 		deviceType: rawDeviceType,
 		width,
 		isGutenbergButton = false,
-		ignoreMaxiBlockResponsiveWidth = false,
+		changeSize = true,
 	}) {
 		const breakpoints = await resolveSelect(
 			'maxiBlocks'
 		).receiveMaxiBreakpoints();
 
 		const deviceType =
-			rawDeviceType ?? getBreakpointFromWidth(width, breakpoints);
+			rawDeviceType ?? getWinBreakpoint(width, breakpoints);
 
 		if (!isGutenbergButton) {
 			const {
@@ -76,15 +76,11 @@ const actions = {
 			if (gutenbergDeviceType) setPreviewDeviceType(gutenbergDeviceType);
 		}
 
-		const { receiveBaseBreakpoint } = select('maxiBlocks');
-		const baseBreakpoint = receiveBaseBreakpoint();
-
 		return {
 			type: 'SET_DEVICE_TYPE',
 			deviceType,
-			baseBreakpoint,
 			isGutenbergButton,
-			ignoreMaxiBlockResponsiveWidth,
+			changeSize,
 		};
 	},
 	setEditorContentSize(editorContentSize) {

@@ -1,12 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getBreakpointFromWidth } from '../styles';
-
-/**
- * External dependencies
- */
-import { isEmpty } from 'lodash';
+import getWinBreakpoint from '../dom/getWinBreakpoint';
 
 const selectors = {
 	receiveMaxiSettings(state) {
@@ -59,17 +54,7 @@ const selectors = {
 
 		if (!editorContentWidth) return false;
 
-		const breakpoints = !isEmpty(state.breakpoints)
-			? state.breakpoints
-			: {
-					xs: 480,
-					s: 767,
-					m: 1024,
-					l: 1366,
-					xl: 1920,
-			  };
-
-		return getBreakpointFromWidth(editorContentWidth, breakpoints);
+		return getWinBreakpoint(editorContentWidth, state.breakpoints);
 	},
 	receiveDeprecatedBlock(state, uniqueID) {
 		if (state) return state.deprecatedBlocks?.[uniqueID] ?? null;

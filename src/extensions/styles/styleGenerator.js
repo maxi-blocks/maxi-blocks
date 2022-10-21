@@ -1,3 +1,5 @@
+import { select } from '@wordpress/data';
+
 const ALLOWED_BREAKPOINTS = ['xs', 's', 'm', 'l', 'xl'];
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -84,43 +86,11 @@ const styleStringGenerator = (
 	return string;
 };
 
-const mediaStylesGenerator = (
-	target,
-	content,
-	breakpoint,
-	media,
-	isIframe,
-	isSiteEditor
-) => {
-	let string = '';
-	let generalString = '';
-	let finalContent = content;
-
-	if (content.includes('css:')) {
-		finalContent = content.replaceAll('css: ', '').replaceAll(';;', ';');
-	}
-
-	generalString += getTargetString(target, isIframe, isSiteEditor);
-
-	// Media
-	if (breakpoint !== 'general')
-		string += `@media only screen and (${
-			breakpoint !== 'xxl' ? 'max-width' : 'min-width'
-		}: ${
-			breakpoint !== 'xxl' ? media : media + 1 // Ensures XXl doesn't affect XL
-		}px){${generalString}${finalContent}}}`;
-
-	return string;
-};
-
-const styleGenerator = (
-	styles,
-	breakpoints,
-	currentBreakpoint,
-	isIframe = false,
-	isSiteEditor = false
-) => {
+const styleGenerator = (styles, isIframe = false, isSiteEditor = false) => {
 	let response = '';
+
+	const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
+	const currentBreakpoint = select('maxiBlocks').receiveMaxiDeviceType();
 
 	const availableBreakpoints = isSiteEditor
 		? BREAKPOINTS.slice(
@@ -138,33 +108,44 @@ const styleGenerator = (
 			Object.entries(content).forEach(([suffix, props]) => {
 				if (!props[breakpoint]) return;
 
+				const isBaseLowerThanCurrent =
+					BREAKPOINTS.indexOf(breakpoint) <=
+					BREAKPOINTS.indexOf(baseBreakpoint);
+
+				if (
+					breakpoint !== currentBreakpoint &&
+					isBaseLowerThanCurrent &&
+					breakpoint !== 'general'
+				)
+					return;
+
 				const style = getResponsiveStyles(props[breakpoint]);
 
-				if (currentBreakpoint === 'general') {
-					response += mediaStylesGenerator(
+				response += styleStringGenerator(
+					`${target}${suffix}`,
+					style,
+					breakpoint,
+					isIframe,
+					isSiteEditor
+				);
+
+				if (breakpoint === 'general') {
+					response += styleStringGenerator(
 						`${target}${suffix}`,
-						style,
-						breakpoint,
-						breakpoints[breakpoint !== 'xxl' ? breakpoint : 'xl'],
+						getResponsiveStyles(props.general),
+						baseBreakpoint,
 						isIframe,
 						isSiteEditor
 					);
-					if (breakpoint === 'general')
+					if (props?.[baseBreakpoint])
 						response += styleStringGenerator(
 							`${target}${suffix}`,
-							style,
-							breakpoint,
+							getResponsiveStyles(props[baseBreakpoint]),
+							baseBreakpoint,
 							isIframe,
 							isSiteEditor
 						);
-				} else
-					response += styleStringGenerator(
-						`${target}${suffix}`,
-						style,
-						breakpoint,
-						isIframe,
-						isSiteEditor
-					);
+				}
 			});
 		});
 	});

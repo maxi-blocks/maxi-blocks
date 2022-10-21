@@ -6,20 +6,21 @@ import {
 	getIsTemplatePart,
 	getSiteEditorIframeBody,
 } from '../fse';
+import getWinBreakpoint from '../dom/getWinBreakpoint';
 
 /**
  * External dependencies
  */
 import { omit } from 'lodash';
+import { dispatch } from '@wordpress/data';
 
-const breakpointResizer = (
+const breakpointResizer = ({
 	size,
 	breakpoints,
 	winSize = 0,
-	baseBreakpoint,
 	isGutenbergButton = false,
-	ignoreMaxiBlockResponsiveWidth
-) => {
+	changeSize = true,
+}) => {
 	const xxlSize = breakpoints.xl + 1;
 
 	const editorWrapper =
@@ -34,11 +35,11 @@ const breakpointResizer = (
 	[editorWrapper, getSiteEditorIframeBody()].forEach(element => {
 		element?.setAttribute(
 			'maxi-blocks-responsive',
-			size !== 'general' ? size : baseBreakpoint
+			size !== 'general' ? size : getWinBreakpoint(winSize, breakpoints)
 		);
 	});
 
-	if (!ignoreMaxiBlockResponsiveWidth) {
+	if (!changeSize) {
 		const winHeight = window.outerWidth;
 		const responsiveWidth =
 			(size === 'general' && 'none') ||
@@ -58,19 +59,19 @@ const breakpointResizer = (
 			editorWrapper.style.width = '';
 			editorWrapper.style.margin = '';
 		} else {
-			if (winHeight > responsiveWidth)
-				editorWrapper.style.margin = '0 auto';
-			else editorWrapper.style.margin = '';
+			editorWrapper.style.margin =
+				winHeight > responsiveWidth ? '0 auto' : '';
 
-			if (isGutenbergButton) {
-				editorWrapper.style = null;
-			} else if (['s', 'xs'].includes(size) && !getIsSiteEditor()) {
+			if (isGutenbergButton) editorWrapper.style = null;
+			else if (['s', 'xs'].includes(size) && !getIsSiteEditor())
 				editorWrapper.style.width = 'fit-content';
-			} else if (editorWrapper.style.width !== `${responsiveWidth}px`) {
+			else if (editorWrapper.style.width !== `${responsiveWidth}px`)
 				editorWrapper.style.width = `${responsiveWidth}px`;
-			}
 		}
 	}
+
+	// Clean prevSavedAttrs when changing the responsive stage
+	dispatch('maxiBlocks/styles').savePrevSavedAttrs([]);
 };
 
 const reducer = (
@@ -106,14 +107,13 @@ const reducer = (
 				deviceType: action.deviceType,
 			};
 		case 'SET_DEVICE_TYPE':
-			breakpointResizer(
-				action.deviceType,
-				state.breakpoints,
-				state.settings.editorContent.width,
-				action.baseBreakpoint,
-				action.isGutenbergButton,
-				action.ignoreMaxiBlockResponsiveWidth
-			);
+			breakpointResizer({
+				size: action.deviceType,
+				breakpoints: state.breakpoints,
+				winSize: state.settings.editorContent.width,
+				isGutenbergButton: action.isGutenbergButton,
+				changeSize: action.changeSize,
+			});
 			return {
 				...state,
 				deviceType: action.deviceType,

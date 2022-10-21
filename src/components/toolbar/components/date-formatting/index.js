@@ -104,10 +104,10 @@ const DateFormatting = props => {
 		};
 
 		const data = {
-			format: format,
-			options: options,
-			status: status,
-			zone: zone,
+			format,
+			options,
+			status,
+			zone,
 		};
 
 		if (_value) {

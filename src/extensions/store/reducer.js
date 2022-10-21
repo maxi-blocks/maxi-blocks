@@ -39,7 +39,7 @@ const breakpointResizer = ({
 		);
 	});
 
-	if (!changeSize) {
+	if (changeSize) {
 		const winHeight = window.outerWidth;
 		const responsiveWidth =
 			(size === 'general' && 'none') ||

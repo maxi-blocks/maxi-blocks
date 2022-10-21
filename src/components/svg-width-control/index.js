@@ -25,9 +25,16 @@ const SvgWidthControl = props => {
 		resizableObject = false,
 	} = props;
 
-	const width =
-		props[`${prefix}width-${breakpoint}${isHover ? '-hover' : ''}`];
-	const defaultWidth = getDefaultAttribute(`${prefix}width-${breakpoint}`);
+	const widthAttrLabel = `${prefix}width-${breakpoint}${
+		isHover ? '-hover' : ''
+	}`;
+	const width = props[widthAttrLabel];
+	const defaultWidth = getDefaultAttribute(widthAttrLabel);
+	const placeholderWidth = getLastBreakpointAttribute({
+		target: `${prefix}width`,
+		breakpoint,
+		attributes: props,
+	});
 	const widthUnit = getLastBreakpointAttribute({
 		target: `${prefix}width-unit`,
 		breakpoint,
@@ -40,16 +47,8 @@ const SvgWidthControl = props => {
 	return (
 		<AdvancedNumberControl
 			label={__('Width', 'maxi-blocks')}
-			value={width || defaultWidth}
-			placeholder={
-				breakpoint !== 'general'
-					? getLastBreakpointAttribute({
-							target: `${prefix}width`,
-							breakpoint,
-							attributes: props,
-					  })
-					: null
-			}
+			value={width}
+			placeholder={placeholderWidth}
 			onChangeValue={val => {
 				const newVal = val !== undefined && val !== '' ? val : '';
 
@@ -92,7 +91,7 @@ const SvgWidthControl = props => {
 				})
 			}
 			defaultValue={defaultWidth}
-			initialPosition={defaultWidth}
+			initialPosition={placeholderWidth}
 			isHover={isHover}
 			optionType='string'
 		/>

@@ -191,7 +191,7 @@ const transition = {
 		border: {
 			title: 'Border',
 			target: ['', ' > .maxi-background-displayer'],
-			property: ['border', 'top', 'left'],
+			property: ['border', 'border-radius', 'top', 'left'],
 			hoverProp: 'border-status-hover',
 		},
 		'box shadow': {
@@ -248,7 +248,9 @@ const transition = {
 		},
 	},
 };
-const interactionBuilderSettings = getCanvasSettings({ name, customCss });
+const interactionBuilderSettings = {
+	canvas: getCanvasSettings({ name, customCss }),
+};
 
 const data = {
 	name,

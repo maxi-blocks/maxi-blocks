@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import getWinBreakpoint from '../dom/getWinBreakpoint';
 
 const selectors = {
 	receiveMaxiSettings(state) {
@@ -54,33 +54,12 @@ const selectors = {
 
 		if (!editorContentWidth) return false;
 
-		const breakpoints = !isEmpty(state.breakpoints)
-			? state.breakpoints
-			: {
-					xs: 480,
-					s: 767,
-					m: 1024,
-					l: 1366,
-					xl: 1920,
-			  };
+		return getWinBreakpoint(editorContentWidth, state.breakpoints);
+	},
+	receiveDeprecatedBlock(state, uniqueID) {
+		if (state) return state.deprecatedBlocks?.[uniqueID] ?? null;
 
-		if (editorContentWidth > breakpoints.xl) return 'xxl';
-
-		// Objects are unordered collection of properties, so as we can't rely on
-		// its own order, we need to iterate over an ordered array
-		const getBreakpointRange = (obj, minWidth) => {
-			let result;
-
-			['xl', 'l', 'm', 's', 'xs'].forEach(breakpoint => {
-				if (obj[breakpoint] >= minWidth) {
-					result = breakpoint;
-				}
-			});
-
-			return result;
-		};
-
-		return getBreakpointRange(breakpoints, editorContentWidth);
+		return false;
 	},
 };
 

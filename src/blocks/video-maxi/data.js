@@ -186,7 +186,7 @@ const transition = {
 		border: {
 			title: 'Border',
 			target: [overlayClass, videoClass],
-			property: 'border',
+			property: ['border', 'border-radius'],
 			hoverProp: 'border-status-hover',
 		},
 		'box shadow': {
@@ -217,7 +217,9 @@ const transition = {
 		}),
 	},
 };
-const interactionBuilderSettings = getCanvasSettings({ name, customCss });
+const interactionBuilderSettings = {
+	canvas: getCanvasSettings({ name, customCss }),
+};
 
 const data = {
 	name,

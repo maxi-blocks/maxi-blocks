@@ -545,20 +545,24 @@ wp.domReady(() => {
 			}
 
 			if (getIsTemplatePart()) {
-				if (getIsTemplatesListOpened()) {
-					isNewObserver = true;
-					return;
-				}
-
 				const resizableBox = document.querySelector(
 					'.components-resizable-box__container'
 				);
+				const isTemplatesListOpened = getIsTemplatesListOpened();
 
-				if (resizableBox && isNewObserver) {
+				if (
+					!isTemplatesListOpened &&
+					isNewObserver &&
+					getSiteEditorIframeBody() &&
+					resizableBox
+				) {
 					isNewObserver = false;
 					templatePartResizeObserver.observe(resizableBox);
+				} else if (isTemplatesListOpened && !isNewObserver) {
+					isNewObserver = true;
+					templatePartResizeObserver.disconnect();
 				}
-			} else templatePartResizeObserver.disconnect();
+			}
 		});
 	}
 

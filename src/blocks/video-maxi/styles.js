@@ -329,6 +329,11 @@ const getStyles = props => {
 					...getGroupAttributes(props, ['blockBackground']),
 					blockStyle: props.blockStyle,
 				}),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(props, ['blockBackground'], true),
+					isHover: true,
+					blockStyle: props.blockStyle,
+				}),
 				...(playerType === 'video'
 					? {
 							' .maxi-video-block__video-player':

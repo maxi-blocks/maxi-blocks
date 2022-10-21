@@ -13,6 +13,7 @@ import AdvancedNumberControl from '../../../advanced-number-control';
 import DateFormatting from '../date-formatting';
 import SelectControl from '../../../select-control';
 import ToolbarPopover from '../toolbar-popover';
+import ToggleSwitch from '../../../toggle-switch';
 
 /**
  * External dependencies
@@ -24,7 +25,6 @@ import { find, isArray, isEmpty, isFinite, isNil, random } from 'lodash';
  */
 import './editor.scss';
 import { toolbarDynamicContent } from '../../../../icons';
-import ToggleSwitch from '../../../toggle-switch';
 import {
 	descriptionOfErrors,
 	fieldOptions,
@@ -209,7 +209,6 @@ const DynamicContent = props => {
 				.replace(new RegExp('DV', 'g'), 'x')
 				.replace(new RegExp('DS', 'g'), 'z')
 				.replace(new RegExp('MS', 'g'), 'c');
-			console.log('newFormat', newFormat);
 			const map = {
 				z: 'ddd',
 				x: 'dd',
@@ -225,7 +224,6 @@ const DynamicContent = props => {
 			newFormat = newFormat.replace(/[xzcdDmMyYt]/g, function (m) {
 				return map[m];
 			});
-			//moment.lang('en');
 			content = moment(NewDate).format(newFormat);
 		} else {
 			options = {

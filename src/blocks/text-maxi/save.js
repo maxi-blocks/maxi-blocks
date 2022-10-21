@@ -25,9 +25,6 @@ const save = props => {
 
 	const name = 'maxi-blocks/text-maxi';
 	const className = 'maxi-text-block__content';
-
-	const DCTagName = textLevel;
-
 	const value = content?.replace(/\n/g, '<br />');
 
 	return (

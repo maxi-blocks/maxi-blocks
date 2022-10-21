@@ -25,14 +25,11 @@ export const getCTOptions = () => {
 export const typeOptions = [
 	{ label: __('Post', 'maxi-blocks'), value: 'posts' },
 	{ label: __('Page', 'maxi-blocks'), value: 'pages' },
-	// ...getCPTOptions(),
 	{ label: __('Site', 'maxi-blocks'), value: 'settings' },
 	{ label: __('Media', 'maxi-blocks'), value: 'media' },
 	{ label: __('Author', 'maxi-blocks'), value: 'users' },
-	// { label: __('Comments', 'maxi-blocks'), value: 'comments' }, ??
 	{ label: __('Categories', 'maxi-blocks'), value: 'categories' },
 	{ label: __('Tags', 'maxi-blocks'), value: 'tags' },
-	// ...getCTOptions(),
 ];
 export const relationOptionsPosts = [
 	{ label: __('Get by id', 'maxi-blocks'), value: 'by-id' },
@@ -129,7 +126,6 @@ export const fieldOptions = {
 	users: [
 		{ label: __('Name', 'maxi-blocks'), value: 'name' },
 		{ label: __('Description', 'maxi-blocks'), value: 'description' },
-		// { label: __('Avatar', 'maxi-blocks'), value: 'avatar_urls' }, ??
 		{ label: __('Email', 'maxi-blocks'), value: 'email' },
 		{ label: __('Link', 'maxi-blocks'), value: 'link' },
 		{ label: __('Website', 'maxi-blocks'), value: 'url' },
@@ -183,10 +179,8 @@ export const postsRandomOptions = [
 	'author',
 	'date',
 	'id',
-	//'include',
 	'modified',
 	'parent',
-	//'relevance',
 	'slug',
 	'include_slugs',
 	'title',
@@ -195,23 +189,18 @@ export const pagesRandomOptions = [
 	'author',
 	'date',
 	'id',
-	//'include',
 	'modified',
 	'parent',
-	//'relevance',
 	'slug',
 	'include_slugs',
 	'title',
-	//'menu_order',
 ];
 export const mediaRandomOptions = [
 	'author',
 	'date',
 	'id',
-	//'include',
 	'modified',
 	'parent',
-	//'relevance',
 	'slug',
 	'include_slugs',
 	'title',

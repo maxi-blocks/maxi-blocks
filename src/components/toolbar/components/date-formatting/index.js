@@ -14,8 +14,7 @@ import ToggleSwitch from '../../../toggle-switch';
 import { DateOptions } from './utils';
 
 const DateFormatting = props => {
-	const { content } = props;
-	const contentRef = useRef(content);
+	const contentRef = useRef(props.content);
 
 	const [day, setDay] = useState(props.day);
 	const [era, setEra] = useState(props.era);

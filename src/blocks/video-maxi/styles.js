@@ -326,11 +326,25 @@ const getStyles = props => {
 				' .maxi-video-block__video-container':
 					getVideoContainerOject(props),
 				...getBlockBackgroundStyles({
-					...getGroupAttributes(props, ['blockBackground']),
+					...getGroupAttributes(props, [
+						'blockBackground',
+						'border',
+						'borderWidth',
+						'borderRadius',
+					]),
 					blockStyle: props.blockStyle,
 				}),
 				...getBlockBackgroundStyles({
-					...getGroupAttributes(props, ['blockBackground'], true),
+					...getGroupAttributes(
+						props,
+						[
+							'blockBackground',
+							'border',
+							'borderWidth',
+							'borderRadius',
+						],
+						true
+					),
 					isHover: true,
 					blockStyle: props.blockStyle,
 				}),

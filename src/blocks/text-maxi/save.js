@@ -35,22 +35,15 @@ const save = props => {
 			classes={`${isList ? 'maxi-list-block' : ''}`}
 			{...getMaxiBlockAttributes({ ...props, name })}
 		>
-			{!dcStatus && (
-				<RichText.Content
-					className={className}
-					value={value}
-					tagName={isList ? typeOfList : textLevel}
-					reversed={!!listReversed}
-					start={listStart}
-				/>
-			)}
-			{dcStatus && (
-				<RichText.Content
-					className={className}
-					value={dcContent}
-					tagName={textLevel}
-				/>
-			)}
+			<RichText.Content
+				className={className}
+				value={dcStatus ? dcContent : value}
+				tagName={isList && !dcStatus ? typeOfList : textLevel}
+				{...(!dcStatus && {
+					reversed: !!listReversed,
+					start: listStart,
+				})}
+			/>
 		</MaxiBlock.save>
 	);
 };

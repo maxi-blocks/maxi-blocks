@@ -102,7 +102,9 @@ const customCss = {
 		'background hover',
 	],
 };
-const interactionBuilderSettings = getCanvasSettings({ name, customCss });
+const interactionBuilderSettings = {
+	block: getCanvasSettings({ name, customCss }),
+};
 
 const data = {
 	name,

@@ -3,13 +3,12 @@
  */
 import { __ } from '@wordpress/i18n';
 import { RawHTML, useEffect, useState } from '@wordpress/element';
-import { Button } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
 import CloudLibrary from '.';
-import { Icon, BaseControl } from '../../components';
+import { Icon, BaseControl, Button } from '../../components';
 
 /**
  * External dependencies

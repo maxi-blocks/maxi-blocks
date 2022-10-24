@@ -9,20 +9,18 @@ import { useState, useEffect } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import Button from '../button';
-import Icon from '../icon';
-import AdvancedNumberControl from '../advanced-number-control';
+import { AdvancedNumberControl, Button, Icon } from '../../../../components';
 import {
 	getNumCol,
 	getTemplates,
 	loadColumnsTemplate,
-} from '../../extensions/column-templates';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
+} from '../../../../extensions/column-templates';
+import { getLastBreakpointAttribute } from '../../../../extensions/styles';
 
 /**
  * External dependencies
  */
-import { uniqueId, isEqual } from 'lodash';
+import { uniqueId, isEqual, isNil } from 'lodash';
 import classnames from 'classnames';
 
 /**
@@ -34,13 +32,17 @@ import './editor.scss';
  * Column patterns
  *
  */
-const ColumnPatternsInspector = props => {
+const ColumnPattern = props => {
 	const { clientId, onChange, breakpoint, toolbar = false } = props;
 
-	const [numCol, setNumCol] = useState(1);
+	const [numCol, setNumCol] = useState(
+		!isNil(props['row-pattern-general'])
+			? getNumCol(props['row-pattern-general'])
+			: 1
+	);
 	const [DISPLAYED_TEMPLATES, setDisplayedTemplates] = useState([]);
 
-	const instanceId = useInstanceId(ColumnPatternsInspector);
+	const instanceId = useInstanceId(ColumnPattern);
 
 	useEffect(() => {
 		if (toolbar) {
@@ -200,4 +202,4 @@ const ColumnPatternsInspector = props => {
 	);
 };
 
-export default ColumnPatternsInspector;
+export default ColumnPattern;

@@ -248,7 +248,7 @@ const transition = {
 		border: {
 			title: 'Border',
 			target: buttonClass,
-			property: 'border',
+			property: ['border', 'border-radius'],
 			prefix: buttonPrefix,
 		},
 		'button background': {
@@ -268,7 +268,7 @@ const transition = {
 		border: {
 			title: 'Border',
 			target: inputClass,
-			property: 'border',
+			property: ['border', 'border-radius'],
 			hoverProp: `${inputPrefix}border-status-hover`,
 		},
 		'input background': {
@@ -284,7 +284,9 @@ const transition = {
 		},
 	},
 };
-const interactionBuilderSettings = getCanvasSettings({ name, customCss });
+const interactionBuilderSettings = {
+	canvas: getCanvasSettings({ name, customCss }),
+};
 
 const data = {
 	name,

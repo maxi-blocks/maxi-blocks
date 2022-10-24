@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+import { select, dispatch } from '@wordpress/data';
+
+/**
  * Internal dependencies
  */
 import fullWidthNonToResponsiveMigrator from './fullWidthNonToResponsive';
@@ -13,7 +18,7 @@ import hoverStatusMigrator from './hoverStatusMigrator';
 /**
  * External dependencies
  */
-import { compact } from 'lodash';
+import { isNil } from 'lodash';
 
 /**
  * Create a combination of the different migrators, from the most populate ones to the lighter ones.
@@ -21,69 +26,54 @@ import { compact } from 'lodash';
 export const handleBlockMigrator = ({
 	attributes,
 	save,
-	prefix = '',
 	isContainer = false,
-	selectors,
 	migrators,
-}) => {
-	const createMigrator = combinedMigrator => {
-		const result = {};
+}) =>
+	migrators.map(migrator => {
+		const newMigrator = { ...migrator };
 
-		const attributesFunctions = compact(
-			combinedMigrator.map(migrator => migrator.attributes)
-		);
-		const migrateFunctions = compact(
-			combinedMigrator.map(migrator => migrator.migrate)
-		);
-		const saveFunctions = compact(
-			combinedMigrator.map(migrator => migrator.saveMigrator)
-		);
-
-		result.isEligible = () => true;
-		result.attributes = {
+		newMigrator.attributes = {
 			...attributes,
-			...attributesFunctions.reduce((acc, attributesFunction) => {
-				return {
-					...acc,
-					...attributesFunction(isContainer),
-				};
-			}, {}),
+			...(newMigrator.attributes?.(isContainer, attributes) ?? {}),
 		};
-		result.migrate = newAttributes => {
-			return migrateFunctions.reduce(
-				(acc, migrateFunction) =>
-					migrateFunction({
-						newAttributes: { ...acc },
-						attributes,
-						prefix,
-						selectors,
-					}),
-				{ ...newAttributes }
-			);
-		};
-		if (saveFunctions.length > 0)
-			result.save = props => {
-				let currentInstance = save(props);
 
-				saveFunctions.forEach((saveMigrator, i) => {
-					currentInstance = saveMigrator(
-						currentInstance,
-						props,
-						attributes
-					);
+		const originalMigrate = newMigrator.migrate;
+
+		if (originalMigrate)
+			newMigrator.migrate = originalAttributes => {
+				// Here is where we cheat a bit. Gutenberg doesn't support chain updates,
+				// so, to avoid having multiple deprecation versions of each block and considering
+				// our migrators global (affect all blocks), we are saving the previous deprecation
+				// attributes and merging into a new object that will suffer the migration.
+				const { uniqueID } = originalAttributes;
+
+				const prevAttr =
+					select('maxiBlocks').receiveDeprecatedBlock(uniqueID);
+
+				const newAttributes = {
+					...originalAttributes,
+					...(!isNil(prevAttr) && { ...prevAttr }),
+				};
+
+				const result = originalMigrate(newAttributes);
+
+				dispatch('maxiBlocks').saveDeprecatedBlock({
+					uniqueID,
+					attributes: result,
 				});
 
-				return currentInstance;
+				// eslint-disable-next-line no-console
+				console.log(
+					`${newMigrator.name} migrator has been successfully used to update ${newAttributes.customLabel}(${uniqueID})`
+				);
+
+				return result;
 			};
-		else result.save = save;
 
-		return result;
-	};
+		if (!newMigrator.save) newMigrator.save = save;
 
-	const result = [createMigrator(migrators)];
-
-	return result;
-};
+		return newMigrator;
+	});
 
 const blockMigrator = blockMigratorProps => {
 	const migrators = [

@@ -1,0 +1,177 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Divider Maxi hover simple actions Divider shadow 1`] = `
+Array [
+  Object {
+    "action": "hover",
+    "attributes": Object {
+      "divider-box-shadow-blur-general": 44,
+      "divider-box-shadow-blur-unit-general": "px",
+      "divider-box-shadow-blur-unit-xl": "px",
+      "divider-box-shadow-blur-xl": 44,
+      "divider-box-shadow-horizontal-general": 22,
+      "divider-box-shadow-horizontal-unit-general": "px",
+      "divider-box-shadow-horizontal-unit-xl": "px",
+      "divider-box-shadow-horizontal-xl": 22,
+      "divider-box-shadow-palette-color-general": 8,
+      "divider-box-shadow-palette-color-xl": 8,
+      "divider-box-shadow-palette-opacity-general": 0.11,
+      "divider-box-shadow-palette-opacity-xl": 0.11,
+      "divider-box-shadow-palette-status-general": true,
+      "divider-box-shadow-palette-status-xl": true,
+      "divider-box-shadow-spread-general": 55,
+      "divider-box-shadow-spread-unit-general": "px",
+      "divider-box-shadow-spread-unit-xl": "px",
+      "divider-box-shadow-spread-xl": 55,
+      "divider-box-shadow-vertical-general": 33,
+      "divider-box-shadow-vertical-unit-general": "px",
+      "divider-box-shadow-vertical-unit-xl": "px",
+      "divider-box-shadow-vertical-xl": 33,
+    },
+    "css": Object {
+      "general": Object {
+        "breakpoint": null,
+        "styles": Object {
+          "box-shadow": "22px 33px 44px 55px rgba(var(--maxi-light-color-8,150,176,203),0.11)",
+        },
+      },
+    },
+    "effects": Object {
+      "easing-general": "ease",
+      "hoverStatus": false,
+      "transition-delay-general": 0,
+      "transition-duration-general": 0.3,
+      "transition-status-general": true,
+      "transitionTarget": " .maxi-divider-block__divider",
+    },
+    "id": 1,
+    "isButton": true,
+    "settings": "Divider box shadow",
+    "target": " .maxi-divider-block__divider",
+    "title": "Hello World!",
+    "uniqueID": "divider-maxi-1",
+  },
+]
+`;
+
+exports[`Divider Maxi hover simple actions Divider shadow 2`] = `" body.maxi-blocks--active #divider-maxi-1[data-maxi-relations=\\"true\\"] .maxi-divider-block__divider { box-shadow: 22px 33px 44px 55px rgba(var(--maxi-light-color-8,150,176,203),0.11);}"`;
+
+exports[`Divider Maxi hover simple actions Divider shadow 3`] = `"body.maxi-blocks--active #divider-maxi-1[data-maxi-relations=\\"true\\"] .maxi-divider-block__divider { transition: box-shadow 0.3s 0s ease;}"`;
+
+exports[`Divider Maxi hover simple actions Line settings 1`] = `
+Array [
+  Object {
+    "action": "hover",
+    "attributes": Object {
+      "divider-border-palette-color-general": 8,
+      "divider-border-palette-color-xl": 8,
+      "divider-border-palette-opacity-general": 0.5,
+      "divider-border-palette-opacity-xl": 0.5,
+      "divider-border-palette-status-general": true,
+      "divider-border-palette-status-xl": true,
+      "divider-border-style-general": "dashed",
+      "divider-border-style-xl": "dashed",
+      "divider-border-top-width-general": 22,
+      "divider-border-top-width-xl": 22,
+      "divider-width-general": 11,
+      "divider-width-xl": 11,
+    },
+    "css": Object {
+      "general": Object {
+        "breakpoint": null,
+        "styles": Object {
+          "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
+          "border-right-style": "none",
+          "border-top-style": "dashed",
+          "border-top-width": "22px",
+          "height": "22px",
+          "width": "11%",
+        },
+      },
+      "l": Object {
+        "breakpoint": 1366,
+        "styles": Object {
+          "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
+          "border-right-style": "none",
+          "border-top-style": "dashed",
+          "border-top-width": "22px",
+          "height": "22px",
+          "width": "11%",
+        },
+      },
+      "m": Object {
+        "breakpoint": 1024,
+        "styles": Object {
+          "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
+          "border-right-style": "none",
+          "border-top-style": "dashed",
+          "border-top-width": "22px",
+          "height": "22px",
+          "width": "11%",
+        },
+      },
+      "s": Object {
+        "breakpoint": 767,
+        "styles": Object {
+          "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
+          "border-right-style": "none",
+          "border-top-style": "dashed",
+          "border-top-width": "22px",
+          "height": "22px",
+          "width": "11%",
+        },
+      },
+      "xl": Object {
+        "breakpoint": 1920,
+        "styles": Object {
+          "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
+          "border-right-style": "none",
+          "border-top-style": "dashed",
+          "border-top-width": "22px",
+          "height": "22px",
+          "width": "11%",
+        },
+      },
+      "xs": Object {
+        "breakpoint": 480,
+        "styles": Object {
+          "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
+          "border-right-style": "none",
+          "border-top-style": "dashed",
+          "border-top-width": "22px",
+          "height": "22px",
+          "width": "11%",
+        },
+      },
+      "xxl": Object {
+        "breakpoint": 1921,
+        "styles": Object {
+          "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
+          "border-right-style": "none",
+          "border-top-style": "dashed",
+          "border-top-width": "22px",
+          "height": "22px",
+          "width": "11%",
+        },
+      },
+    },
+    "effects": Object {
+      "easing-general": "ease",
+      "hoverStatus": false,
+      "transition-delay-general": 0,
+      "transition-duration-general": 0.3,
+      "transition-status-general": true,
+    },
+    "id": 1,
+    "isButton": true,
+    "settings": "Line settings",
+    "target": " .maxi-divider-block__divider",
+    "title": "Hello World!",
+    "uniqueID": "divider-maxi-1",
+  },
+]
+`;
+
+exports[`Divider Maxi hover simple actions Line settings 2`] = `" body.maxi-blocks--active #divider-maxi-1[data-maxi-relations=\\"true\\"] .maxi-divider-block__divider { width: 11%; height: 22px; border-top-width: 22px; border-right-style: none; border-top-style: dashed; border-color: var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}"`;
+
+exports[`Divider Maxi hover simple actions Line settings 3`] = `"body.maxi-blocks--active #divider-maxi-1[data-maxi-relations=\\"true\\"] .maxi-divider-block__divider { transition: border-color 0.3s 0s ease, border-top-style 0.3s 0s ease, border-right-style 0.3s 0s ease, border-top-width 0.3s 0s ease, height 0.3s 0s ease, width 0.3s 0s ease;}"`;

@@ -1,9 +1,9 @@
 /**
  * WordPress dependencies
  */
-import { useSelect } from '@wordpress/data';
+import { useSelect, dispatch } from '@wordpress/data';
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
-import { useRef, useCallback } from '@wordpress/element';
+import { useRef, useCallback, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -22,7 +22,8 @@ import { isEmpty } from 'lodash';
 const withMaxiProps = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
-			const { setAttributes, attributes, clientId } = ownProps;
+			const { setAttributes, attributes, clientId, isSelected } =
+				ownProps;
 
 			const {
 				deviceType,
@@ -97,6 +98,10 @@ const withMaxiProps = createHigherOrderComponent(
 						ref
 					)
 			);
+
+			useEffect(() => {
+				dispatch('maxiBlocks/styles').savePrevSavedAttrs([]);
+			}, [isSelected]);
 
 			return (
 				<WrappedComponent

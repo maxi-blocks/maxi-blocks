@@ -87,7 +87,7 @@ const BlockBackgroundColor = props => {
 									{
 										...setBreakpointToLayer({
 											layer: colorLayerAttr,
-											breakpoint,
+											breakpoint: 'general',
 										}),
 										order: getNewLayerOrder(),
 									},

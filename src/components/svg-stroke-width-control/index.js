@@ -26,29 +26,28 @@ const SvgStrokeWidthControl = props => {
 		customLabel = 'Stroke width',
 	} = props;
 
-	const stroke =
-		props[`${prefix}stroke-${breakpoint}${isHover ? '-hover' : ''}`];
-	const defaultStroke = getDefaultAttribute(`${prefix}stroke-${breakpoint}`);
+	const strokeAttrLabel = `${prefix}stroke-${breakpoint}${
+		isHover ? '-hover' : ''
+	}`;
+	const stroke = props[strokeAttrLabel];
+	const defaultStroke = getDefaultAttribute(strokeAttrLabel);
+	const placeholderStroke = getLastBreakpointAttribute({
+		target: `${prefix}stroke`,
+		breakpoint,
+		attributes: props,
+		isHover,
+	});
 
 	return (
 		<AdvancedNumberControl
-			label={__(`${customLabel}`, 'maxi-blocks')}
-			value={stroke || defaultStroke}
-			placeholder={
-				breakpoint !== 'general'
-					? getLastBreakpointAttribute({
-							target: `${prefix}stroke`,
-							breakpoint,
-							attributes: props,
-							isHover,
-					  })
-					: null
-			}
+			label={__(customLabel, 'maxi-blocks')}
+			value={stroke}
+			placeholder={placeholderStroke}
 			onChangeValue={rawVal => {
 				const val = rawVal !== undefined && rawVal !== '' ? rawVal : '';
 
 				onChange({
-					[`${prefix}stroke-${breakpoint}${isHover ? '-hover' : ''}`]:
+					[strokeAttrLabel]:
 						val !== undefined && val !== '' ? val : '',
 				});
 
@@ -63,12 +62,11 @@ const SvgStrokeWidthControl = props => {
 			step={0.1}
 			onReset={() =>
 				onChange({
-					[`${prefix}stroke-${breakpoint}${isHover ? '-hover' : ''}`]:
-						defaultStroke,
+					[strokeAttrLabel]: defaultStroke,
 				})
 			}
 			defaultValue={defaultStroke}
-			initialPosition={defaultStroke}
+			initialPosition={placeholderStroke}
 		/>
 	);
 };

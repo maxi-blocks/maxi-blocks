@@ -93,7 +93,7 @@ const transition = {
 		border: {
 			title: 'Border',
 			target: boxClass,
-			property: 'border',
+			property: ['border', 'border-radius'],
 			hoverProp: `${prefix}border-status-hover`,
 		},
 		'box shadow': {
@@ -104,7 +104,9 @@ const transition = {
 		},
 	},
 };
-const interactionBuilderSettings = getCanvasSettings({ name, customCss });
+const interactionBuilderSettings = {
+	canvas: getCanvasSettings({ name, customCss }),
+};
 
 const data = {
 	name,

@@ -13,15 +13,7 @@ const convertBlocks = blocks => {
 	const res = [];
 
 	blocks.forEach(block => {
-		if (block.name === 'core/navigation-link') {
-			res.push(
-				createBlock(
-					'maxi-blocks/navigation-link-maxi',
-					block.attributes,
-					block.innerBlocks
-				)
-			);
-		} else if (block.name === 'core/navigation-submenu') {
+		if (block.name === 'core/navigation-submenu') {
 			res.push(
 				createBlock(
 					'maxi-blocks/navigation-submenu-maxi',
@@ -30,7 +22,12 @@ const convertBlocks = blocks => {
 				)
 			);
 		} else {
-			res.push(block);
+			res.push(
+				createBlock(
+					'maxi-blocks/navigation-link-maxi',
+					block.attributes
+				)
+			);
 		}
 	});
 

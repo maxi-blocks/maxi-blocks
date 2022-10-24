@@ -35,6 +35,7 @@ const prefix = 'svg-';
  */
 const name = 'svg-icon-maxi';
 const copyPasteMapping = {
+	_exclude: ['content', 'svgType'],
 	settings: {
 		'Icon content': ['svgType', 'content'],
 		Alignment: {

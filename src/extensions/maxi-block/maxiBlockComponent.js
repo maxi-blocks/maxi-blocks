@@ -71,12 +71,7 @@ const StyleComponent = ({
 
 	const styles = styleResolver(stylesObj, false, getBreakpoints());
 
-	const styleContent = styleGenerator(
-		styles,
-		breakpoints && isEmpty(breakpoints) ? blockBreakpoints : breakpoints,
-		currentBreakpoint,
-		isIframe
-	);
+	const styleContent = styleGenerator(styles, isIframe);
 
 	return <style>{styleContent}</style>;
 };
@@ -216,6 +211,10 @@ class MaxiBlockComponent extends Component {
 				)
 			)
 		)
+			return false;
+
+		// If baseBreakpoint changes, render styles
+		if (this.props.baseBreakpoint !== prevProps.baseBreakpoint)
 			return false;
 
 		return isEqual(prevProps.attributes, this.props.attributes);
@@ -420,10 +419,11 @@ class MaxiBlockComponent extends Component {
 							if (!blockData?.interactionBuilderSettings)
 								return relation;
 
-							const { hoverProp } =
-								blockData.interactionBuilderSettings.find(
-									({ label }) => label === settingName
-								);
+							const { hoverProp } = Object.values(
+								blockData.interactionBuilderSettings
+							)
+								.flat()
+								.find(({ label }) => label === settingName);
 
 							return {
 								...relation,

@@ -253,6 +253,7 @@ export const getImageBackgroundObject = ({
 	prefix = '',
 	breakpoint,
 	isParallax = false,
+	ignoreMediaAttributes = false,
 	...props
 }) => {
 	const response = {
@@ -266,7 +267,7 @@ export const getImageBackgroundObject = ({
 		prefix,
 	});
 
-	if (isEmpty(bgImageUrl)) return {};
+	if (isEmpty(bgImageUrl) && !ignoreMediaAttributes) return {};
 
 	const getBgImageAttributeValue = (target, isHoverParam = isHover) =>
 		getAttributeValue({
@@ -589,6 +590,7 @@ const getBackgroundLayers = ({
 	blockStyle,
 	prefix,
 	breakpoint,
+	ignoreMediaAttributes,
 }) => {
 	layers.forEach(layer => {
 		const { type } = layer;
@@ -713,6 +715,7 @@ const getBackgroundLayers = ({
 									prefix,
 									breakpoint,
 									isParallax: parallaxStatus,
+									ignoreMediaAttributes,
 								}),
 								getWrapperObject({
 									...getGroupAttributes(
@@ -960,24 +963,27 @@ const getGeneralBackgroundStyles = (
 		const widthBottom = getBorderValue('bottom', breakpoint);
 		const widthLeft = getBorderValue('left', breakpoint);
 		const widthRight = getBorderValue('right', breakpoint);
+
 		const widthUnit =
 			getLastBreakpointAttribute({
 				target: 'border-unit-width',
 				breakpoint,
 				attributes: props,
 			}) || 'px';
-		const horizontalWidth =
-			round(widthTop / 2, 2) + round(widthBottom / 2, 2);
-		const verticalWidth =
-			round(widthLeft / 2, 2) + round(widthRight / 2, 2);
 
 		if (border[breakpoint]['border-style']) {
 			size[breakpoint] = {
-				...((!!horizontalWidth || isHover) && {
-					top: -horizontalWidth + widthUnit,
+				...((widthTop === 0 || !!widthTop || isHover) && {
+					top: -round(widthTop, 2) + widthUnit,
 				}),
-				...((!!verticalWidth || isHover) && {
-					left: -verticalWidth + widthUnit,
+				...((widthBottom === 0 || !!widthBottom || isHover) && {
+					bottom: -round(widthBottom, 2) + widthUnit,
+				}),
+				...((widthLeft === 0 || !!widthLeft || isHover) && {
+					left: -round(widthLeft, 2) + widthUnit,
+				}),
+				...((widthRight === 0 || !!widthRight || isHover) && {
+					right: -round(widthRight, 2) + widthUnit,
 				}),
 			};
 		}
@@ -1065,6 +1071,7 @@ export const getBlockBackgroundStyles = ({
 	prefix = '',
 	blockStyle,
 	rowBorderRadius = {},
+	ignoreMediaAttributes,
 	...props
 }) => {
 	const target = `${rawTarget ?? ''}${isHover ? ':hover' : ''}`;
@@ -1111,6 +1118,7 @@ export const getBlockBackgroundStyles = ({
 							blockStyle,
 							prefix,
 							breakpoint,
+							ignoreMediaAttributes,
 						}),
 					}
 				),

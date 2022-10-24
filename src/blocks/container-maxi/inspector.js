@@ -7,11 +7,8 @@ import { InspectorControls } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import {
-	AccordionControl,
-	SettingTabsControl,
-	ShapeDividerControl,
-} from '../../components';
+import { AccordionControl, SettingTabsControl } from '../../components';
+import { ShapeDividerControl } from './components';
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { customCss } from './data';

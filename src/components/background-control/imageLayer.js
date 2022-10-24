@@ -560,6 +560,7 @@ const ImageLayer = props => {
 		prefix = '',
 		hideSettings = false,
 		isLayer = false,
+		disableUpload = false,
 	} = props;
 
 	const imageOptions = cloneDeep(props.imageOptions);
@@ -585,7 +586,7 @@ const ImageLayer = props => {
 
 	return (
 		<div className='maxi-background-control__image-layer'>
-			{!isHover && (
+			{!disableUpload && (
 				<MediaUploaderControl
 					mediaID={mediaID}
 					onSelectImage={imageData =>

@@ -743,6 +743,18 @@ const LibraryContainer = props => {
 								searchAsYouType
 								showLoadingIndicator
 							/>
+							{type.includes('shape') && (
+								<CustomHierarchicalMenu
+									attributes={[
+										'svg_tag.lvl0',
+										'svg_tag.lvl1',
+									]}
+									limit={20}
+									showMore
+									showLoadingIndicator
+									showMoreLimit={20}
+								/>
+							)}
 							<CustomRefinementList
 								className='hidden'
 								attribute='svg_category'

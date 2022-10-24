@@ -521,7 +521,7 @@ wp.domReady(() => {
 				targetNode.classList.add('maxi-blocks--active');
 
 			// Adding the SC styles after switching between the templates
-			if (getIsTemplatesListOpened()) isSCLoaded = false;
+			if (getIsTemplatesListOpened() && isSCLoaded) isSCLoaded = false;
 
 			if (targetNode && !isSCLoaded) {
 				setTimeout(() => {

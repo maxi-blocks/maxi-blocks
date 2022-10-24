@@ -29,16 +29,17 @@ import {
 	getAspectRatio,
 } from '../../extensions/styles/helpers';
 import data from './data';
+import { getParentAttributes } from '../../extensions/attributes';
 
 /**
  * External dependencies
  */
-import { isNil } from 'lodash';
+import { isNil, round } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const getWrapperObject = props => {
-	const { useWrapperHeight } = props;
+	const { fitParentSize } = props;
 
 	const response = {
 		border: getBorderStyles({
@@ -81,7 +82,7 @@ const getWrapperObject = props => {
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
-			useWrapperHeight,
+			fitParentSize,
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
@@ -230,38 +231,75 @@ const getImageWrapperObject = props => {
 			},
 			prefix: 'image-',
 		}),
+		...(props.fitParentSize && {
+			firParentSize: { general: { overflow: 'hidden' } },
+		}),
 	};
 
 	return response;
 };
 
-const getImageVerticalPosition = props => {
+const getImageVerticalPosition = (props, clientId) => {
 	const response = {};
+
+	const parentSizeAttrs = getParentAttributes(clientId, 'size');
 
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
+		const objectSize = getLastBreakpointAttribute({
+			target: 'object-size',
+			breakpoint,
+			attributes: props,
+		});
+		const horizontalPosition = getLastBreakpointAttribute({
+			target: 'object-position-horizontal',
+			breakpoint,
+			attributes: props,
+		});
 		const verticalPosition = getLastBreakpointAttribute({
 			target: 'object-position-vertical',
 			breakpoint,
 			attributes: props,
 		});
-		const verticalPositionUnit = getLastBreakpointAttribute({
-			target: 'object-position-vertical-unit',
+
+		const parentHeight = +getLastBreakpointAttribute({
+			target: 'height',
 			breakpoint,
-			attributes: props,
+			attributes: parentSizeAttrs,
+		});
+		const parentWidth = +getLastBreakpointAttribute({
+			target: 'width',
+			breakpoint,
+			attributes: parentSizeAttrs,
 		});
 
-		response[breakpoint]['object-position'] = `50% ${verticalPosition}${
-			verticalPositionUnit ?? 'px'
-		}`;
+		const height = (props.mediaHeight + parentHeight) / (6 - objectSize);
+		const width = (props.mediaWidth + parentWidth) / (6 - objectSize);
+
+		response[breakpoint].height = `${height}px`;
+		response[breakpoint].width = `${width}px`;
+
+		const topMarginDisplacement = height - parentHeight;
+		const leftMarginDisplacement = width - parentWidth;
+		const topProportion = verticalPosition - 50;
+		const leftProportion = horizontalPosition - 50;
+
+		response[breakpoint].top = `calc(50% - ${round(
+			(topMarginDisplacement * topProportion) / 100,
+			2
+		)}px)`;
+		response[breakpoint].left = `calc(50% - ${round(
+			(leftMarginDisplacement * leftProportion) / 100,
+			2
+		)}px)`;
 	});
 
 	return response;
 };
 
-const getImageObject = props => {
-	const { imageRatio, imgWidth, useInitSize, mediaWidth, useWrapperHeight } =
+const getImageObject = (props, clientId) => {
+	const { imageRatio, imgWidth, useInitSize, mediaWidth, fitParentSize } =
 		props;
 
 	return {
@@ -303,8 +341,8 @@ const getImageObject = props => {
 				},
 			},
 		}),
-		...(useWrapperHeight && {
-			verticalPosition: getImageVerticalPosition(props),
+		...(fitParentSize && {
+			verticalPosition: getImageVerticalPosition(props, clientId),
 		}),
 	};
 };
@@ -451,7 +489,7 @@ const getImageShapeObject = (target, props) => {
 	return response;
 };
 
-const getStyles = props => {
+const getStyles = (props, clientId) => {
 	const { uniqueID } = props;
 
 	const imgTag = props.SVGElement === '' || !props.SVGElement ? 'img' : 'svg';
@@ -465,7 +503,10 @@ const getStyles = props => {
 					...getImageWrapperObject(props),
 					...getClipPathDropShadowObject(props),
 				},
-				[` .maxi-image-block-wrapper ${imgTag}`]: getImageObject(props),
+				[` .maxi-image-block-wrapper ${imgTag}`]: getImageObject(
+					props,
+					clientId
+				),
 				[`:hover .maxi-image-block-wrapper ${imgTag}`]:
 					getHoverImageObject(props),
 				':hover .maxi-image-block-wrapper': getClipPathDropShadowObject(

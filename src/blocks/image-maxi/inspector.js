@@ -48,7 +48,7 @@ const Inspector = props => {
 		uniqueID,
 		mediaID,
 		captionPosition,
-		useWrapperHeight,
+		fitParentSize,
 	} = attributes;
 	const { selectors, categories } = customCss;
 
@@ -461,7 +461,7 @@ const Inspector = props => {
 									...inspectorTabs.size({
 										props,
 										block: true,
-										hideHeight: useWrapperHeight,
+										hideHeight: fitParentSize,
 									}),
 									...inspectorTabs.marginPadding({
 										props,

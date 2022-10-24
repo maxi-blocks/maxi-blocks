@@ -27,6 +27,20 @@ body.maxi-blocks--active figure.maxi-image-block {
 		flex-grow: 1;
 		box-sizing: border-box;
 
+		&.maxi-image-block-wrapper--fit-parent-size {
+			overflow: hidden;
+
+			.maxi-image-block__image {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				max-width: none;
+				min-width: 100%;
+				min-height: 100%;
+			}
+		}
+
 		> svg:first-child pattern image {
 			transform-origin: 50% 50%;
 		}

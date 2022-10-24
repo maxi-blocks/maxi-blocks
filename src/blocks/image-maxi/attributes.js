@@ -97,18 +97,22 @@ const attributes = {
 	useInitSize: {
 		type: 'boolean',
 	},
-	useWrapperHeight: {
+	fitParentSize: {
 		type: 'boolean',
 	},
 	...breakpointAttributesCreator({
 		obj: {
-			'object-position-vertical': {
+			'object-size': {
+				type: 'number',
+				default: 1,
+			},
+			'object-position-horizontal': {
 				type: 'number',
 				default: 50,
 			},
-			'object-position-vertical-unit': {
-				type: 'string',
-				default: '%',
+			'object-position-vertical': {
+				type: 'number',
+				default: 50,
 			},
 		},
 	}),

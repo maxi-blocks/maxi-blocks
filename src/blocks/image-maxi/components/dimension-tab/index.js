@@ -225,7 +225,11 @@ const DimensionTab = props => {
 					<AdvancedNumberControl
 						label={__('Adjust size', 'maxi-blocks')}
 						className='maxi-image-inspector__image-size'
-						placeholder='50%'
+						placeholder={getLastBreakpointAttribute({
+							target: 'object-size',
+							breakpoint: deviceType,
+							attributes,
+						})}
 						value={attributes[`object-size-${deviceType}`]}
 						onChangeValue={val =>
 							maxiSetAttributes({

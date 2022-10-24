@@ -29,12 +29,11 @@ import {
 	getAspectRatio,
 } from '../../extensions/styles/helpers';
 import data from './data';
-import { getParentAttributes } from '../../extensions/attributes';
 
 /**
  * External dependencies
  */
-import { isNil, round } from 'lodash';
+import { isNil } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -242,8 +241,6 @@ const getImageWrapperObject = props => {
 const getImageVerticalPosition = (props, clientId) => {
 	const response = {};
 
-	const parentSizeAttrs = getParentAttributes(clientId, 'size');
-
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
@@ -263,36 +260,24 @@ const getImageVerticalPosition = (props, clientId) => {
 			attributes: props,
 		});
 
-		const parentHeight = +getLastBreakpointAttribute({
-			target: 'height',
-			breakpoint,
-			attributes: parentSizeAttrs,
-		});
-		const parentWidth = +getLastBreakpointAttribute({
-			target: 'width',
-			breakpoint,
-			attributes: parentSizeAttrs,
-		});
+		const size = objectSize * 100;
 
-		const height = (props.mediaHeight + parentHeight) / (6 - objectSize);
-		const width = (props.mediaWidth + parentWidth) / (6 - objectSize);
+		response[breakpoint].height = `${size}%`;
+		response[breakpoint].width = `${size}%`;
 
-		response[breakpoint].height = `${height}px`;
-		response[breakpoint].width = `${width}px`;
+		const displacementCoefficient = 100 - size;
 
-		const topMarginDisplacement = height - parentHeight;
-		const leftMarginDisplacement = width - parentWidth;
-		const topProportion = verticalPosition - 50;
-		const leftProportion = horizontalPosition - 50;
+		const horizontalDisplacement =
+			(displacementCoefficient * horizontalPosition) / 100;
+		const verticalDisplacement =
+			(displacementCoefficient * verticalPosition) / 100;
 
-		response[breakpoint].top = `calc(50% - ${round(
-			(topMarginDisplacement * topProportion) / 100,
-			2
-		)}px)`;
-		response[breakpoint].left = `calc(50% - ${round(
-			(leftMarginDisplacement * leftProportion) / 100,
-			2
-		)}px)`;
+		response[breakpoint].left = `${horizontalDisplacement}%`;
+		response[breakpoint].top = `${verticalDisplacement}%`;
+
+		response[breakpoint][
+			'object-position'
+		] = `${horizontalPosition}% ${verticalPosition}%`;
 	});
 
 	return response;

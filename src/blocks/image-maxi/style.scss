@@ -32,9 +32,8 @@ body.maxi-blocks--active figure.maxi-image-block {
 
 			.maxi-image-block__image {
 				position: absolute;
-				top: 50%;
-				left: 50%;
-				transform: translate(-50%, -50%);
+				top: 0;
+				left: 0;
 				max-width: none;
 				min-width: 100%;
 				min-height: 100%;

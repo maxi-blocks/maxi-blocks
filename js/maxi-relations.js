@@ -98,9 +98,11 @@ class Relation {
 	// Insert transitions or styles element just after Maxi inline css element
 	addStyleEl(styleEl) {
 		if (!this.inlineStylesEl)
-			this.inlineStylesEl = document.querySelector(
-				'#maxi-blocks-inline-css'
-			);
+			this.inlineStylesEl =
+				document.querySelector('#maxi-blocks-inline-css') ||
+				document.querySelector(
+					'#maxi-blocks-styles-templates-inline-css'
+				);
 
 		const currentEl = document.querySelector(`#${styleEl.id}`);
 

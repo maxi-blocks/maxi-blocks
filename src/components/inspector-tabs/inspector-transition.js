@@ -22,7 +22,7 @@ import {
 /**
  * External dependencies
  */
-import { capitalize, cloneDeep, isEmpty } from 'lodash';
+import { capitalize, cloneDeep, isEmpty, isArray } from 'lodash';
 
 /**
  * Component

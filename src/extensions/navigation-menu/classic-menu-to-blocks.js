@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { createBlock, parse } from '@wordpress/blocks';
-import { select } from '@wordpress/data';
+import { resolveSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -118,14 +118,14 @@ const menuItemsToBlocks = menuItems => {
 };
 
 const convertClassicMenuToBlocks = async menuId => {
-	const { getMenuItems } = select('core');
+	const { getMenuItems } = resolveSelect('core');
 
 	const args = {
 		menus: menuId,
 		per_page: -1,
 		context: 'view',
 	};
-	const menuItems = getMenuItems(args);
+	const menuItems = await getMenuItems(args);
 	const innerBlocks = menuItemsToBlocks(menuItems);
 
 	return createNewMenu(innerBlocks);

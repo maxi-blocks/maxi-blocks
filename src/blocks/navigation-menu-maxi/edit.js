@@ -32,7 +32,10 @@ const Navigation = props => {
 		}
 	);
 
-	const ALLOWED_BLOCKS = ['maxi-blocks/navigation-link-maxi'];
+	const ALLOWED_BLOCKS = [
+		'maxi-blocks/navigation-link-maxi',
+		'maxi-blocks/navigation-submenu-maxi',
+	];
 
 	return (
 		<div
@@ -113,9 +116,8 @@ class edit extends MaxiBlockComponent {
 			);
 		}
 
-		const args = ['postType', 'wp_navigation', id];
 		resolveSelect('core')
-			.getEditedEntityRecord(...args)
+			.getEditedEntityRecord('postType', 'wp_navigation', id)
 			.then(editedNavigationMenu =>
 				this.setState({ editedNavigationMenu })
 			);

@@ -53,7 +53,7 @@ const editColorControl = async ({
 
 		await page.waitForTimeout(150);
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type(opacity);
+		await page.keyboard.type(`${opacity}`);
 	}
 };
 

@@ -37,7 +37,12 @@ const actions = {
 			deviceType,
 		};
 	},
-	setMaxiDeviceType({ deviceType, width, isGutenbergButton = false }) {
+	setMaxiDeviceType({
+		deviceType,
+		width,
+		isGutenbergButton = false,
+		changeSize = true,
+	}) {
 		if (!isGutenbergButton) {
 			const { __experimentalSetPreviewDeviceType: setPreviewDeviceType } =
 				dispatch('core/edit-post');
@@ -58,6 +63,7 @@ const actions = {
 			deviceType,
 			width,
 			isGutenbergButton,
+			changeSize,
 		};
 	},
 	setEditorContentSize(editorContentSize) {
@@ -82,6 +88,19 @@ const actions = {
 		return {
 			type: 'UPDATE_INSPECTOR_PATH',
 			inspectorPath,
+		};
+	},
+	saveDeprecatedBlock({ uniqueID, attributes }) {
+		return {
+			type: 'SAVE_DEPRECATED_BLOCK',
+			uniqueID,
+			attributes,
+		};
+	},
+	removeDeprecatedBlock(uniqueID) {
+		return {
+			type: 'REMOVE_DEPRECATED_BLOCK',
+			uniqueID,
 		};
 	},
 };

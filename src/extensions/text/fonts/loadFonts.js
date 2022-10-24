@@ -5,11 +5,6 @@ import { __ } from '@wordpress/i18n';
 import { dispatch, select } from '@wordpress/data';
 
 /**
- * Internal dependencies
- */
-import { getSiteEditorIframe } from '../../fse';
-
-/**
  * External dependencies
  */
 import { isEmpty, uniq } from 'lodash';
@@ -23,19 +18,7 @@ import { isEmpty, uniq } from 'lodash';
  * @param {boolean}     backendOnly If true, `dispatch('maxiBlocks/text').updateFonts()` isn't called
  * @param {HTMLElement} rawTarget   Element, where the font will be loaded
  */
-const loadFonts = (font, backendOnly = true, rawTarget) => {
-	const getTarget = target => {
-		if (target) return target;
-
-		const siteEditorIframe = getSiteEditorIframe();
-
-		if (siteEditorIframe) return siteEditorIframe;
-
-		return document;
-	};
-
-	const target = getTarget(rawTarget);
-
+const loadFonts = (font, backendOnly = true, target = document) => {
 	if (typeof font === 'object' && font !== null) {
 		Object.entries(font).forEach(([fontName, fontData]) => {
 			if (isEmpty(fontName)) return null;

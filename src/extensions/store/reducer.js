@@ -51,9 +51,14 @@ const breakpointResizer = ({
 			responsiveWidth
 		);
 
-		if (!isGutenbergButton)
+		if (!isGutenbergButton) {
 			editorWrapper.setAttribute('is-maxi-preview', true);
-		else editorWrapper.removeAttribute('is-maxi-preview');
+			if (getIsSiteEditor()) {
+				document.querySelector(
+					'.edit-site-visual-editor__editor-canvas'
+				).style.width = null;
+			}
+		} else editorWrapper.removeAttribute('is-maxi-preview');
 
 		if (size === 'general') {
 			editorWrapper.style.width = '';

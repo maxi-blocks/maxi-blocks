@@ -4,6 +4,7 @@
 import apiFetch from '@wordpress/api-fetch';
 import { __ } from '@wordpress/i18n';
 import { useEffect, useRef, useState } from '@wordpress/element';
+import moment from 'moment';
 
 /**
  * Internal dependencies
@@ -91,41 +92,8 @@ const DynamicContent = props => {
 	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
 	const [postIdOptions, setPostIdOptions] = useState(null);
 
-	useEffect(async () => {
-		if (statusRef.current) {
-			onChange({
-				'dc-content': sanitizeContent(
-					await getContent({ type, id, field })
-				),
-			});
-		}
-	}, [
-		author,
-		date,
-		day,
-		era,
-		error,
-		field,
-		format,
-		hour,
-		hour12,
-		id,
-		limit,
-		minute,
-		month,
-		relation,
-		second,
-		show,
-		timeZone,
-		timeZoneName,
-		type,
-		weekday,
-		year,
-		zone,
-	]);
-
 	const changeProps = params => {
-		for (let key in params) {
+		Object.keys(params).forEach(key => {
 			const value = params[key];
 			switch (key) {
 				case 'dc-author':
@@ -155,8 +123,10 @@ const DynamicContent = props => {
 				case 'dc-type':
 					typeRef.current = value;
 					break;
+				default:
+					break;
 			}
-		}
+		});
 		onChange(params);
 	};
 
@@ -166,8 +136,8 @@ const DynamicContent = props => {
 	};
 
 	const cutTags = str => {
-		var regex = /( |<([^>]+)>)/gi,
-			result = str.replace(regex, ' ');
+		const regex = /( |<([^>]+)>)/gi;
+		const result = str.replace(regex, ' ');
 
 		return result;
 	};
@@ -175,7 +145,7 @@ const DynamicContent = props => {
 	const limitFormat = _value => {
 		const str = cutTags(_value).trim();
 		return str.length > limitRef.current && limitRef.current !== 0
-			? str.substr(0, limitRef.current).trim() + '...'
+			? `${str.substr(0, limitRef.current).trim()}...`
 			: limitRef.current !== 0
 			? str
 			: _value;
@@ -202,12 +172,14 @@ const DynamicContent = props => {
 
 	const dateContent = _value => {
 		const NewDate = new Date(_value);
-		let options, content, newFormat;
+		let options;
+		let content;
+		let newFormat;
 		if (!date) {
 			newFormat = format
-				.replace(new RegExp('DV', 'g'), 'x')
-				.replace(new RegExp('DS', 'g'), 'z')
-				.replace(new RegExp('MS', 'g'), 'c');
+				.replace(/DV/g, 'x')
+				.replace(/DS/g, 'z')
+				.replace(/MS/g, 'c');
 			const map = {
 				z: 'ddd',
 				x: 'dd',
@@ -252,20 +224,22 @@ const DynamicContent = props => {
 	const disabledType = (valueType, _type = 'type') => {
 		const hide = options =>
 			Object.keys(options).forEach(key => {
-				if (options[key]['value'] === valueType) {
+				if (options[key].value === valueType) {
 					options[key].disabled = true;
 				}
 			});
-		hide(_type == 'relation' ? relationOptions : typeOptions);
+		hide(_type === 'relation' ? relationOptions : typeOptions);
 	};
 
-	const setAuthorDefault = async () =>
-		!authorRef.current &&
-		(await apiFetch({
+	const setAuthorDefault = async () => {
+		if (authorRef.current) return false;
+		const result = await apiFetch({
 			path: '/wp/v2/users/me',
 		})
 			.catch(err => console.error(err))
-			.then(res => changeProps({ 'dc-author': res.id })));
+			.then(res => changeProps({ 'dc-author': res.id }));
+		return result;
+	};
 
 	const setAuthorList = async () => {
 		if (!postAuthorOptions) {
@@ -277,8 +251,8 @@ const DynamicContent = props => {
 					const newPostAuthorOptions = result.map(item => {
 						return {
 							label: `${item.id} - ${
-								item[idOptionByField['author']]?.rendered ??
-								item[idOptionByField['author']]
+								item[idOptionByField.author]?.rendered ??
+								item[idOptionByField.author]
 							}`,
 							value: +item.id,
 						};
@@ -338,10 +312,12 @@ const DynamicContent = props => {
 		return newPostIdOptions;
 	};
 
-	const getAuthorByID = async _id =>
-		await apiFetch({ path: '/wp/v2/users/' + _id }).then(
+	const getAuthorByID = async _id => {
+		const result = await apiFetch({ path: `/wp/v2/users/${_id}` }).then(
 			author => author.name ?? 'No name'
 		);
+		return result;
+	};
 
 	const changeContent = async (_type, _show, _id, _default = {}) => {
 		if (
@@ -349,7 +325,7 @@ const DynamicContent = props => {
 			['previous', 'next'].includes(_show)
 		) {
 			const prevNextPath = `/wp/v2/${_type}/${_id}?_fields=${_show}`;
-			return await apiFetch({
+			const result = await apiFetch({
 				path: prevNextPath,
 			})
 				.catch(rej => console.error(rej))
@@ -365,26 +341,29 @@ const DynamicContent = props => {
 						}
 					} else {
 						changeProps({ 'dc-error': _show, ..._default });
-						return null;
 					}
+					return null;
 				});
-		} else {
-			if (!isEmpty(_default)) {
-				changeProps(_default);
-			}
+			return result;
 		}
+		if (!isEmpty(_default)) {
+			changeProps(_default);
+		}
+		return false;
 	};
 
 	const getContentPath = (_type, _id, _field) => {
 		const getForShow = async () => {
+			let result;
 			switch (showRef.current) {
 				case 'next':
 				case 'previous':
-					return await changeContent(
+					result = await changeContent(
 						_type,
 						showRef.current,
 						_id
 					).then(res => res);
+					return result;
 				case 'current':
 				default:
 					return _id;
@@ -416,13 +395,10 @@ const DynamicContent = props => {
 								!alterIdRef.current
 							) {
 								return `/wp/v2/${_type}?orderby=${relationRef.current}&per_page=1&_fields=${_field},id`;
-							} else {
-								return `/wp/v2/${_type}/${
-									alterIdRef.current
-										? alterIdRef.current
-										: _id
-								}?_fields=${_field}`;
 							}
+							return `/wp/v2/${_type}/${
+								alterIdRef.current ? alterIdRef.current : _id
+							}?_fields=${_field}`;
 
 						case 'random':
 							return `/wp/v2/${_type}/?_fields=${_field}&per_page=99&orderby=${
@@ -443,9 +419,11 @@ const DynamicContent = props => {
 		};
 
 		const getForType = async () => {
+			let resultRelation;
 			switch (_type) {
 				case relationTypes.includes(_type) ? _type : false:
-					return await getForRelation();
+					resultRelation = await getForRelation();
+					return resultRelation;
 				case 'users':
 					return `/wp/v2/${_type}/${
 						authorRef.current ? authorRef.current : _id
@@ -461,16 +439,14 @@ const DynamicContent = props => {
 
 	const requestContent = async dataRequest => {
 		const { type: _type, id: _id, field: _field } = dataRequest;
-
-		return await apiFetch({
+		const result = await apiFetch({
 			path: await getContentPath(_type, _id, _field),
 		})
 			.catch(err => console.error(err)) // TODO: need a good error handler
 			.then(result => {
 				const content = isArray(result) ? result[0] : result;
-
 				if (content) {
-					let content_value;
+					let contentValue;
 					if (content.id)
 						changeProps({ 'dc-id': Number(content.id) });
 
@@ -478,24 +454,24 @@ const DynamicContent = props => {
 						renderedFields.includes(_field) &&
 						!isNil(content[_field]?.rendered)
 					) {
-						content_value = content[_field].rendered;
+						contentValue = content[_field].rendered;
 					} else if (_field === 'author') {
 						const authorId = getAuthorByID(content[_field]);
-						content_value = authorId.then(value => value);
+						contentValue = authorId.then(value => value);
 					} else {
-						content_value = content[_field];
+						contentValue = content[_field];
 					}
 
 					if (fieldRef.current === 'date') {
-						content_value = dateContent(content_value);
+						contentValue = dateContent(contentValue);
 					} else if (fieldRef.current === 'excerpt') {
-						content_value = limitFormat(content_value);
+						contentValue = limitFormat(contentValue);
 					}
-					return content_value;
+					return contentValue;
 				}
-
 				return null; // TODO: needs to handle empty posts(type)
 			});
+		return result;
 	};
 
 	const getContent = async dataRequest => {
@@ -530,9 +506,8 @@ const DynamicContent = props => {
 					.then(res => {
 						if (typeof res[0] === 'object' && 'id' in res[0]) {
 							return res;
-						} else {
-							throw new Error(descriptionOfErrors.object);
 						}
+						throw new Error(descriptionOfErrors.object);
 					})
 					.then(
 						res =>
@@ -556,7 +531,7 @@ const DynamicContent = props => {
 	};
 
 	const setIdOptions = async (_type, _default, _relation) => {
-		return await apiFetch({
+		const result = await apiFetch({
 			path: getIdOptionsPath(
 				_type,
 				{},
@@ -565,6 +540,7 @@ const DynamicContent = props => {
 		})
 			.catch(err => console.error(err)) // TODO: need a good error handler
 			.then(result => setIdList(result, _default, _type));
+		return result;
 	};
 
 	const getIdOptions = (
@@ -577,16 +553,19 @@ const DynamicContent = props => {
 				.catch(rej => console.error(rej))
 				.then(res => res);
 		}
+		return [];
 	};
 	const switchOnChange = (_type, _value) => {
+		let dcFieldActual;
+		let changeOptions;
 		switch (_type) {
 			case 'status':
 				changeProps({ 'dc-status': _value });
 				if (_value) getIdOptions();
 				break;
 			case 'type':
-				const dcFieldActual = validationsValues(_value);
-				const changeOptions = {
+				dcFieldActual = validationsValues(_value);
+				changeOptions = {
 					'dc-type': _value,
 					'dc-show': 'current',
 					'dc-error': '',
@@ -632,6 +611,8 @@ const DynamicContent = props => {
 			case 'limit':
 				changeProps({ 'dc-limit': _value });
 				break;
+			default:
+				break;
 		}
 	};
 
@@ -647,7 +628,38 @@ const DynamicContent = props => {
 			.catch(rej => console.error(rej))
 			.then(res => res);
 	}
-
+	useEffect(async () => {
+		if (statusRef.current) {
+			onChange({
+				'dc-content': sanitizeContent(
+					await getContent({ type, id, field })
+				),
+			});
+		}
+	}, [
+		author,
+		date,
+		day,
+		era,
+		error,
+		field,
+		format,
+		hour,
+		hour12,
+		id,
+		limit,
+		minute,
+		month,
+		relation,
+		second,
+		show,
+		timeZone,
+		timeZoneName,
+		type,
+		weekday,
+		year,
+		zone,
+	]);
 	return (
 		<ToolbarPopover
 			className='toolbar-item__dynamic-content'
@@ -721,7 +733,7 @@ const DynamicContent = props => {
 									) && (
 										<SelectControl
 											label={__(
-												typeRef.current + ' id',
+												`${typeRef.current} id`,
 												'maxi-blocks'
 											)}
 											value={idRef.current}
@@ -771,7 +783,7 @@ const DynamicContent = props => {
 											}
 										/>
 									)}
-								{fieldRef.current == 'excerpt' && (
+								{fieldRef.current === 'excerpt' && (
 									<AdvancedNumberControl
 										label={__(
 											'Character limit',
@@ -796,7 +808,7 @@ const DynamicContent = props => {
 									/>
 								)}
 
-								{fieldRef.current == 'date' && (
+								{fieldRef.current === 'date' && (
 									<DateFormatting
 										content={false}
 										day={day}

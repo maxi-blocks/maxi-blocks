@@ -48,8 +48,6 @@ const ALLOWED_BLOCKS = ['maxi-blocks/text-maxi'];
 const DynamicContent = props => {
 	const { blockName, onChange, ...dynamicContent } = props;
 
-	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
-
 	const {
 		'dc-author': author,
 		'dc-content': content,
@@ -616,18 +614,6 @@ const DynamicContent = props => {
 		}
 	};
 
-	setAuthorList();
-	setAuthorDefault();
-	if (
-		statusRef.current &&
-		typeRef.current &&
-		isEmpty(postIdOptions) &&
-		isEmptyIdOptions
-	) {
-		getIdOptions()
-			.catch(rej => console.error(rej))
-			.then(res => res);
-	}
 	useEffect(async () => {
 		if (statusRef.current) {
 			onChange({
@@ -660,6 +646,22 @@ const DynamicContent = props => {
 		year,
 		zone,
 	]);
+
+	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
+
+	setAuthorList();
+	setAuthorDefault();
+	if (
+		statusRef.current &&
+		typeRef.current &&
+		isEmpty(postIdOptions) &&
+		isEmptyIdOptions
+	) {
+		getIdOptions()
+			.catch(rej => console.error(rej))
+			.then(res => res);
+	}
+
 	return (
 		<ToolbarPopover
 			className='toolbar-item__dynamic-content'

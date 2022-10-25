@@ -190,9 +190,7 @@ const DynamicContent = props => {
 				Y: 'YYYY',
 				t: 'HH:MM:SS',
 			};
-			newFormat = newFormat.replace(/[xzcdDmMyYt]/g, function (m) {
-				return map[m];
-			});
+			newFormat = newFormat.replace(/[xzcdDmMyYt]/g, m => map[m]);
 			content = moment(NewDate).format(newFormat);
 		} else {
 			options = {

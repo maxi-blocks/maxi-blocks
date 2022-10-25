@@ -985,18 +985,14 @@ const getGeneralBackgroundStyles = (
 				breakpoint,
 				attributes: props,
 			}) || 'px';
+
 		if (
-			//! isHover &&
+			border[breakpoint]['border-style'] ||
 			Number.isFinite(widthTop) ||
 			Number.isFinite(widthBottom) ||
 			Number.isFinite(widthLeft) ||
 			Number.isFinite(widthRight)
 		) {
-			if (!border[breakpoint]['border-style']) {
-				border[breakpoint]['border-style'] = [];
-			}
-		}
-		if (border[breakpoint]['border-style']) {
 			if (!isEmpty(props))
 				size[breakpoint] = {
 					...((Number.isFinite(widthTop) || isHover) && {
@@ -1012,21 +1008,6 @@ const getGeneralBackgroundStyles = (
 						right: -round(widthRight, 2) + widthUnit,
 					}),
 				};
-		} else {
-			size[breakpoint] = {
-				...{
-					top: widthTop,
-				},
-				...{
-					bottom: widthBottom,
-				},
-				...{
-					left: widthLeft,
-				},
-				...{
-					right: widthRight,
-				},
-			};
 		}
 	});
 

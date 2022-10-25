@@ -527,6 +527,7 @@ const DynamicContent = props => {
 	};
 
 	const setIdOptions = async (_type, _default, _relation) => {
+		if (_relation === 'author' && !authorRef.current) return false;
 		const result = await apiFetch({
 			path: getIdOptionsPath(
 				_type,
@@ -572,7 +573,7 @@ const DynamicContent = props => {
 					...dcFieldActual,
 				};
 				idFields.includes(_value)
-					? getIdOptions(_value, changeOptions, null)
+					? getIdOptions(_value, changeOptions, relationRef.current)
 					: changeProps(changeOptions);
 				break;
 			case 'relation':
@@ -659,7 +660,7 @@ const DynamicContent = props => {
 		isEmpty(postIdOptions) &&
 		isEmptyIdOptions
 	) {
-		getIdOptions()
+		getIdOptions(typeRef.current, {}, relationRef.current)
 			.catch(rej => console.error(rej))
 			.then(res => res);
 	}

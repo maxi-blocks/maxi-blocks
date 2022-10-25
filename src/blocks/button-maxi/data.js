@@ -47,6 +47,7 @@ const prefix = 'button-';
  */
 const name = 'button-maxi';
 const copyPasteMapping = {
+	_exclude: ['buttonContent'],
 	settings: {
 		'Button text': 'buttonContent',
 		Icon: {
@@ -218,130 +219,140 @@ const transition = {
 		}),
 	},
 };
-const interactionBuilderSettings = [
-	{
-		label: __('Button icon', 'maxi-blocks'),
-		transitionTarget: [
-			transition.block['icon colour'].target,
-			transition.block['icon width'].target,
-			transition.block['icon background'].target,
-			transition.block['icon border'].target,
-		],
-		hoverProp: 'icon-status-hover',
-		attrGroupName: [
-			'icon',
-			'iconBackground',
-			'iconBackgroundGradient',
-			'iconBackgroundColor',
-			'iconBorder',
-			'iconBorderWidth',
-			'iconBorderRadius',
-			'iconPadding',
-			'typography',
-		],
-		component: props => {
-			const { attributes, blockAttributes } = props;
-			const { svgType, 'icon-content': iconContent } = attributes;
-			const { 'icon-inherit': iconInherit } = blockAttributes;
-			return iconContent ? (
-				<IconControl
-					{...props}
-					svgType={svgType}
-					isInteractionBuilder
-					getIconWithColor={args =>
-						getIconWithColor(attributes, args)
-					}
-					disableIconInherit={!iconInherit}
-				/>
-			) : (
-				<InfoBox
-					message={__(
-						'Add button icon to be able to use this control'
-					)}
-				/>
-			);
+const interactionBuilderSettings = {
+	block: [
+		{
+			label: __('Button icon', 'maxi-blocks'),
+			transitionTarget: [
+				transition.block['icon colour'].target,
+				transition.block['icon width'].target,
+				transition.block['icon background'].target,
+				transition.block['icon border'].target,
+			],
+			hoverProp: 'icon-status-hover',
+			attrGroupName: [
+				'icon',
+				'iconBackground',
+				'iconBackgroundGradient',
+				'iconBackgroundColor',
+				'iconBorder',
+				'iconBorderWidth',
+				'iconBorderRadius',
+				'iconPadding',
+				'typography',
+			],
+			component: props => {
+				const { attributes, blockAttributes } = props;
+				const { svgType, 'icon-content': iconContent } = attributes;
+				const { 'icon-inherit': iconInherit } = blockAttributes;
+				return iconContent ? (
+					<IconControl
+						{...props}
+						svgType={svgType}
+						isInteractionBuilder
+						getIconWithColor={args =>
+							getIconWithColor(attributes, args)
+						}
+						disableIconInherit={!iconInherit}
+					/>
+				) : (
+					<InfoBox
+						message={__(
+							'Add button icon to be able to use this control'
+						)}
+					/>
+				);
+			},
+			helper: props =>
+				getButtonIconStyles({
+					...props,
+					target: iconClass,
+					wrapperTarget: buttonClass,
+				}),
 		},
-		helper: props =>
-			getButtonIconStyles({
-				...props,
-				target: iconClass,
-				wrapperTarget: buttonClass,
-			}),
-	},
-	{
-		label: __('Button typography', 'maxi-blocks'),
-		transitionTarget: transition.block.typography.target,
-		transitionTrigger: buttonClass,
-		hoverProp: 'typography-status-hover',
-		attrGroupName: 'typography',
-		component: props => (
-			<TypographyControl {...props} hideAlignment disableCustomFormats />
-		),
-		helper: props =>
-			getTypographyStyles({
-				...props,
-				textLevel: 'button',
-			}),
-		target: '.maxi-button-block__content',
-	},
-	{
-		label: __('Button border', 'maxi-blocks'),
-		transitionTarget: transition.block.border.target,
-		hoverProp: 'button-border-status-hover',
-		attrGroupName: ['border', 'borderWidth', 'borderRadius'],
-		prefix: 'button-',
-		component: props => <BorderControl {...props} />,
-		helper: props => getBorderStyles(props),
-		target: '.maxi-button-block__button',
-	},
-	{
-		label: __('Button background', 'maxi-blocks'),
-		transitionTarget: transition.block['button background'].target,
-		hoverProp: 'button-background-status-hover',
-		attrGroupName: ['background', 'backgroundColor', 'backgroundGradient'],
-		prefix: 'button-',
-		component: props => (
-			<BackgroundControl
-				{...props}
-				disableImage
-				disableVideo
-				disableSVG
-				disableClipPath
-			/>
-		),
-		helper: props =>
-			getBackgroundStyles({
-				...props,
-				...props.obj,
-				isButton: true,
-			}).background,
-		target: '.maxi-button-block__button',
-	},
-	{
-		label: __('Button box shadow', 'maxi-blocks'),
-		transitionTarget: transition.block['box shadow'].target,
-		hoverProp: 'button-box-shadow-status-hover',
-		attrGroupName: 'boxShadow',
-		prefix: 'button-',
-		component: props => <BoxShadowControl {...props} />,
-		helper: props => getBoxShadowStyles(props),
-		target: '.maxi-button-block__button',
-	},
-	{
-		label: __('Button margin/padding', 'maxi-blocks'),
-		attrGroupName: ['margin', 'padding'],
-		prefix: 'button-',
-		component: props => (
-			<>
-				<MarginControl {...props} />
-				<PaddingControl {...props} />
-			</>
-		),
-		helper: props => getMarginPaddingStyles(props),
-		target: '.maxi-button-block__button',
-	},
-	...getCanvasSettings({ name, customCss }),
-];
+		{
+			label: __('Button typography', 'maxi-blocks'),
+			transitionTarget: transition.block.typography.target,
+			transitionTrigger: buttonClass,
+			hoverProp: 'typography-status-hover',
+			attrGroupName: 'typography',
+			component: props => (
+				<TypographyControl
+					{...props}
+					hideAlignment
+					disableCustomFormats
+				/>
+			),
+			helper: props =>
+				getTypographyStyles({
+					...props,
+					textLevel: 'button',
+				}),
+			target: '.maxi-button-block__content',
+		},
+		{
+			label: __('Button border', 'maxi-blocks'),
+			transitionTarget: transition.block.border.target,
+			hoverProp: 'button-border-status-hover',
+			attrGroupName: ['border', 'borderWidth', 'borderRadius'],
+			prefix: 'button-',
+			component: props => <BorderControl {...props} />,
+			helper: props => getBorderStyles(props),
+			target: '.maxi-button-block__button',
+		},
+		{
+			label: __('Button background', 'maxi-blocks'),
+			transitionTarget: transition.block['button background'].target,
+			hoverProp: 'button-background-status-hover',
+			attrGroupName: [
+				'background',
+				'backgroundColor',
+				'backgroundGradient',
+			],
+			prefix: 'button-',
+			component: props => (
+				<BackgroundControl
+					{...props}
+					disableImage
+					disableVideo
+					disableSVG
+					disableClipPath
+				/>
+			),
+			helper: props =>
+				getBackgroundStyles({
+					...props,
+					...props.obj,
+					isButton: true,
+				}).background,
+			target: '.maxi-button-block__button',
+		},
+		{
+			label: __('Button box shadow', 'maxi-blocks'),
+			transitionTarget: transition.block['box shadow'].target,
+			hoverProp: 'button-box-shadow-status-hover',
+			attrGroupName: 'boxShadow',
+			prefix: 'button-',
+			component: props => <BoxShadowControl {...props} />,
+			helper: props => getBoxShadowStyles(props),
+			target: '.maxi-button-block__button',
+		},
+		{
+			label: __('Button margin/padding', 'maxi-blocks'),
+			attrGroupName: ['margin', 'padding'],
+			prefix: 'button-',
+			component: props => (
+				<>
+					<MarginControl {...props} />
+					<PaddingControl {...props} />
+				</>
+			),
+			helper: props => getMarginPaddingStyles(props),
+			target: '.maxi-button-block__button',
+		},
+	],
+	canvas: getCanvasSettings({ name, customCss }),
+};
 
 const data = {
 	name,

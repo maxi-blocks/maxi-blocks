@@ -322,7 +322,7 @@ describe('Button Maxi hover simple actions', () => {
 			ANCs => ANCs[0].focus()
 		);
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('11');
+		await page.keyboard.type('1');
 
 		// Padding
 		await page.$$eval('.maxi-tabs-control', tabs =>
@@ -338,7 +338,7 @@ describe('Button Maxi hover simple actions', () => {
 			ANCs => ANCs[1].focus()
 		);
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('22');
+		await page.keyboard.type('2');
 
 		expect(await getAttributes('relations')).toMatchSnapshot();
 

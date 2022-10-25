@@ -238,7 +238,7 @@ const getImageWrapperObject = props => {
 	return response;
 };
 
-const getImageVerticalPosition = (props, clientId) => {
+const getImageFitWrapper = props => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
@@ -283,9 +283,15 @@ const getImageVerticalPosition = (props, clientId) => {
 	return response;
 };
 
-const getImageObject = (props, clientId) => {
-	const { imageRatio, imgWidth, useInitSize, mediaWidth, fitParentSize } =
-		props;
+const getImageObject = props => {
+	const {
+		imageRatio,
+		imgWidth,
+		useInitSize,
+		mediaWidth,
+		fitParentSize,
+		isFirstOnHierarchy,
+	} = props;
 
 	return {
 		border: getBorderStyles({
@@ -326,9 +332,10 @@ const getImageObject = (props, clientId) => {
 				},
 			},
 		}),
-		...(fitParentSize && {
-			verticalPosition: getImageVerticalPosition(props, clientId),
-		}),
+		...(fitParentSize &&
+			!isFirstOnHierarchy && {
+				fitParentSize: getImageFitWrapper(props),
+			}),
 	};
 };
 
@@ -474,7 +481,7 @@ const getImageShapeObject = (target, props) => {
 	return response;
 };
 
-const getStyles = (props, clientId) => {
+const getStyles = props => {
 	const { uniqueID } = props;
 
 	const imgTag = props.SVGElement === '' || !props.SVGElement ? 'img' : 'svg';
@@ -488,10 +495,7 @@ const getStyles = (props, clientId) => {
 					...getImageWrapperObject(props),
 					...getClipPathDropShadowObject(props),
 				},
-				[` .maxi-image-block-wrapper ${imgTag}`]: getImageObject(
-					props,
-					clientId
-				),
+				[` .maxi-image-block-wrapper ${imgTag}`]: getImageObject(props),
 				[`:hover .maxi-image-block-wrapper ${imgTag}`]:
 					getHoverImageObject(props),
 				':hover .maxi-image-block-wrapper': getClipPathDropShadowObject(

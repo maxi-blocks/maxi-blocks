@@ -959,32 +959,19 @@ const getGeneralBackgroundStyles = (
 	});
 
 	breakpoints.forEach(breakpoint => {
-		/*if (
-			(target === 'border-top-width' ||
-				target === 'border-bottom-width' ||
-				target === 'border-right-width' ||
-				target === 'border-left-width') &&
-			!attr[`border-style-${breakpoint}`] &&
-			Number.isFinite(attr[`${target}-${breakpoint}`])
-		) {
-			console.log(attr);
-		}*/
-		let widthTop, widthBottom, widthLeft, widthRight;
+		let widthTop;
+		let widthBottom;
+		let widthLeft;
+		let widthRight;
 
-		if (props[`border-style-${breakpoint}`]) {
+		if (
+			props[`border-style-${breakpoint}`] !== 'none' &&
+			props['border-style-general']
+		) {
 			widthTop = getBorderValue('top', breakpoint);
 			widthBottom = getBorderValue('bottom', breakpoint);
 			widthLeft = getBorderValue('left', breakpoint);
 			widthRight = getBorderValue('right', breakpoint);
-			console.log(
-				breakpoint,
-				props[`border-style-${breakpoint}`],
-				widthTop,
-				widthBottom,
-				widthLeft,
-				widthRight,
-				props
-			);
 		} else {
 			widthTop = 0;
 			widthBottom = 0;
@@ -999,7 +986,7 @@ const getGeneralBackgroundStyles = (
 				attributes: props,
 			}) || 'px';
 		if (
-			// !isHover &&
+			//! isHover &&
 			Number.isFinite(widthTop) ||
 			Number.isFinite(widthBottom) ||
 			Number.isFinite(widthLeft) ||
@@ -1116,7 +1103,6 @@ const getBasicResponseObject = ({
 			blockStyle,
 			isHover
 		);
-	//if (props['background-layers']) console.log(borderObj);
 
 	const rowBorderRadiusObj = getGeneralBackgroundStyles(
 		rowBorderRadius,

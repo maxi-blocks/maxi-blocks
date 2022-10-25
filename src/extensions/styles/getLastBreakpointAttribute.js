@@ -60,17 +60,7 @@ const getLastBreakpointAttributeSingle = (
 				isHover ? '-hover' : ''
 			}`
 		];
-	if (
-		(target === 'border-top-width' ||
-			target === 'border-bottom-width' ||
-			target === 'border-right-width' ||
-			target === 'border-left-width') &&
-		!attr[`border-style-${breakpoint}`] &&
-		Number.isFinite(attr[`${target}-${breakpoint}`])
-	) {
-		//console.log(target, breakpoint, attributes, isHover, avoidXXL);
-		//currentAttr = 0;
-	}
+
 	// In case that breakpoint is general and baseBreakpoint attribute exists,
 	// give priority to baseBreakpoint attribute
 	if (breakpoint === 'general') {

@@ -531,7 +531,11 @@ const DynamicContent = props => {
 			path: getIdOptionsPath(
 				_type,
 				{},
-				_relation === 'author' ? authorRef.current : null
+				_default['dc-author']
+					? _default['dc-author']
+					: _relation === 'author'
+					? authorRef.current
+					: null
 			),
 		})
 			.catch(err => console.error(err)) // TODO: need a good error handler

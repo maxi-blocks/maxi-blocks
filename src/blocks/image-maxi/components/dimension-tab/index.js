@@ -8,11 +8,15 @@ import { RangeControl } from '@wordpress/components';
  * Internal dependencies
  */
 import {
+	AdvancedNumberControl,
 	ImageCropControl,
 	SelectControl,
 	ToggleSwitch,
 } from '../../../../components';
-import { getDefaultAttribute } from '../../../../extensions/styles';
+import {
+	getDefaultAttribute,
+	getLastBreakpointAttribute,
+} from '../../../../extensions/styles';
 
 /**
  * External dependencies
@@ -26,6 +30,7 @@ const DimensionTab = props => {
 		maxiSetAttributes,
 		resizableObject,
 		imageData,
+		deviceType,
 	} = props;
 	const {
 		cropOptions,
@@ -35,6 +40,8 @@ const DimensionTab = props => {
 		mediaID,
 		SVGElement,
 		useInitSize,
+		fitParentSize,
+		isFirstOnHierarchy,
 	} = attributes;
 
 	const getSizeOptions = () => {
@@ -204,6 +211,116 @@ const DimensionTab = props => {
 					})
 				}
 			/>
+			{!isFirstOnHierarchy && (
+				<>
+					<ToggleSwitch
+						label={__('Fit on wrapper', 'maxi-blocks')}
+						className='maxi-image-inspector__use-wrapper-height'
+						selected={fitParentSize}
+						onChange={val =>
+							maxiSetAttributes({
+								fitParentSize: val,
+							})
+						}
+					/>
+					{fitParentSize && (
+						<>
+							<AdvancedNumberControl
+								label={__('Adjust size', 'maxi-blocks')}
+								className='maxi-image-inspector__image-size'
+								placeholder={getLastBreakpointAttribute({
+									target: 'object-size',
+									breakpoint: deviceType,
+									attributes,
+								})}
+								value={attributes[`object-size-${deviceType}`]}
+								onChangeValue={val =>
+									maxiSetAttributes({
+										[`object-size-${deviceType}`]: val,
+									})
+								}
+								onReset={() =>
+									maxiSetAttributes({
+										[`object-size-${deviceType}`]:
+											getDefaultAttribute(
+												`object-size-${deviceType}`
+											),
+									})
+								}
+								min={1}
+								max={5}
+								step={0.1}
+							/>
+							<AdvancedNumberControl
+								label={__(
+									'Image horizontal position',
+									'maxi-blocks'
+								)}
+								className='maxi-image-inspector__image-horizontal-position'
+								placeholder={getLastBreakpointAttribute({
+									target: 'object-position-horizontal',
+									breakpoint: deviceType,
+									attributes,
+								})}
+								value={
+									attributes[
+										`object-position-horizontal-${deviceType}`
+									]
+								}
+								onChangeValue={val =>
+									maxiSetAttributes({
+										[`object-position-horizontal-${deviceType}`]:
+											val,
+									})
+								}
+								onReset={() =>
+									maxiSetAttributes({
+										[`object-position-horizontal-${deviceType}`]:
+											getDefaultAttribute(
+												`object-position-horizontal-${deviceType}`
+											),
+									})
+								}
+								min={0}
+								max={100}
+							/>
+							<AdvancedNumberControl
+								label={__(
+									'Image vertical position',
+									'maxi-blocks'
+								)}
+								className='maxi-image-inspector__image-vertical-position'
+								placeholder={getLastBreakpointAttribute({
+									target: 'object-position-vertical',
+									breakpoint: deviceType,
+									attributes,
+								})}
+								value={
+									attributes[
+										`object-position-vertical-${deviceType}`
+									]
+								}
+								onChangeValue={val =>
+									maxiSetAttributes({
+										[`object-position-vertical-${deviceType}`]:
+											val,
+									})
+								}
+								onReset={() =>
+									maxiSetAttributes({
+										[`object-position-vertical-${deviceType}`]:
+											getDefaultAttribute(
+												`object-position-vertical-${deviceType}`
+											),
+									})
+								}
+								min={0}
+								max={100}
+							/>
+						</>
+					)}
+				</>
+			)}
 		</>
 	);
 };

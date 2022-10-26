@@ -267,7 +267,7 @@ const AdvancedNumberControl = props => {
 								? value
 								: Number.isFinite(defaultValue)
 								? defaultValue
-								: placeholder || initial || 0)
+								: initial || placeholder || 0)
 						}
 						onChange={val => {
 							onChangeValue(

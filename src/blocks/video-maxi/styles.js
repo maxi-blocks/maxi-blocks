@@ -7,16 +7,17 @@ import {
 	styleProcessor,
 } from '../../extensions/styles';
 import {
+	getBlockBackgroundStyles,
 	getBoxShadowStyles,
 	getZIndexStyles,
 	getDisplayStyles,
 	getMarginPaddingStyles,
+	getBackgroundStyles,
 	getBorderStyles,
 	getOpacityStyles,
 	getOverflowStyles,
 	getFlexStyles,
 	getSizeStyles,
-	getBackgroundStyles,
 	getIconPathStyles,
 	getIconStyles,
 	getAspectRatio,
@@ -324,6 +325,29 @@ const getStyles = props => {
 				' .maxi-video-block__popup-wrapper': getLightBoxObject(props),
 				' .maxi-video-block__video-container':
 					getVideoContainerOject(props),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(props, [
+						'blockBackground',
+						'border',
+						'borderWidth',
+						'borderRadius',
+					]),
+					blockStyle: props.blockStyle,
+				}),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(
+						props,
+						[
+							'blockBackground',
+							'border',
+							'borderWidth',
+							'borderRadius',
+						],
+						true
+					),
+					isHover: true,
+					blockStyle: props.blockStyle,
+				}),
 				...(playerType === 'video'
 					? {
 							' .maxi-video-block__video-player':

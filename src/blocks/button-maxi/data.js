@@ -47,6 +47,7 @@ const prefix = 'button-';
  */
 const name = 'button-maxi';
 const copyPasteMapping = {
+	_exclude: ['buttonContent'],
 	settings: {
 		'Button text': 'buttonContent',
 		Icon: {

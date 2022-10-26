@@ -263,7 +263,7 @@ const RelationControl = props => {
 				};
 
 				const newGroupAttributes = getGroupAttributes(
-					{ ...blockAttributes, ...newAttributesObj },
+					merge(blockAttributes, newAttributesObj),
 					selectedSettingsObj.attrGroupName,
 					false,
 					prefix

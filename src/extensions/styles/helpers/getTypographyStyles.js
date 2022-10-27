@@ -48,7 +48,7 @@ const getTypographyStyles = ({
 
 	const getPaletteColorStatus = breakpoint => {
 		const paletteStatus = getLastBreakpointAttribute({
-			target: 'palette-status',
+			target: `${prefix}palette-status`,
 			breakpoint,
 			attributes: obj,
 			isHover,
@@ -59,7 +59,7 @@ const getTypographyStyles = ({
 		return (
 			isCustomFormat &&
 			getLastBreakpointAttribute({
-				target: 'palette-status',
+				target: `${prefix}palette-status`,
 				breakpoint,
 				attributes: customFormatTypography,
 				isHover,

@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from '@wordpress/element';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../../../advanced-number-control';
-import DateFormatting from '../date-formatting';
+import DateFormatting, { formatOptions } from '../date-formatting';
 import SelectControl from '../../../select-control';
 import ToolbarPopover from '../toolbar-popover';
 import ToggleSwitch from '../../../toggle-switch';
@@ -193,25 +193,20 @@ const DynamicContent = props => {
 			newFormat = newFormat.replace(/[xzcdDmMyYt]/g, m => map[m]);
 			content = moment(NewDate).format(newFormat);
 		} else {
-			options = {
-				day: day === 'undefined' ? undefined : day,
-				era: era === 'undefined' ? undefined : era,
-				hour: hour === 'undefined' ? undefined : hour,
-				hour12:
-					hour12 === 'false'
-						? false
-						: hour12 === 'true'
-						? true
-						: hour12,
-				minute: minute === 'undefined' ? undefined : minute,
-				month: month === 'undefined' ? undefined : month,
-				second: second === 'undefined' ? undefined : second,
-				timeZone: timeZone === 'undefined' ? undefined : timeZone,
-				timeZoneName:
-					timeZoneName === 'undefined' ? undefined : timeZoneName,
-				weekday: weekday === 'undefined' ? undefined : weekday,
-				year: year === 'undefined' ? undefined : year,
-			};
+			options = formatOptions({
+				day,
+				era,
+				hour,
+				hour12,
+				minute,
+				month,
+				second,
+				timeZone,
+				timeZoneName,
+				weekday,
+				year,
+			});
+
 			content = NewDate.toLocaleString(zone, options);
 		}
 		return content;

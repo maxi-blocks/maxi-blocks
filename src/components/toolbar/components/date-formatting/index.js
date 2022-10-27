@@ -23,6 +23,36 @@ import { DateOptions } from './utils';
  */
 import './editor.scss';
 
+export const formatOptions = props => {
+	const {
+		day,
+		era,
+		hour,
+		hour12,
+		minute,
+		month,
+		second,
+		timeZone,
+		timeZoneName,
+		weekday,
+		year,
+	} = props;
+
+	return {
+		day: day === 'undefined' ? undefined : day,
+		era: era === 'undefined' ? undefined : era,
+		hour: hour === 'undefined' ? undefined : hour,
+		hour12: hour12 === 'false' ? false : hour12 === 'true' ? true : hour12,
+		minute: minute === 'undefined' ? undefined : minute,
+		month: month === 'undefined' ? undefined : month,
+		second: second === 'undefined' ? undefined : second,
+		timeZone: timeZone === 'undefined' ? undefined : timeZone,
+		timeZoneName: timeZoneName === 'undefined' ? undefined : timeZoneName,
+		weekday: weekday === 'undefined' ? undefined : weekday,
+		year: year === 'undefined' ? undefined : year,
+	};
+};
+
 const DateFormatting = props => {
 	const contentRef = useRef(props.content);
 
@@ -100,20 +130,19 @@ const DateFormatting = props => {
 	};
 
 	const dateFormat = _value => {
-		const options = {
-			day: day === 'undefined' ? undefined : day,
-			era: era === 'undefined' ? undefined : era,
-			hour: hour === 'undefined' ? undefined : hour,
-			hour12:
-				hour12 === 'false' ? false : hour12 === 'true' ? true : hour12,
-			minute: minute === 'undefined' ? undefined : minute,
-			month: month === 'undefined' ? undefined : month,
-			second: second === 'undefined' ? undefined : second,
+		const options = formatOptions({
+			day,
+			era,
+			hour,
+			hour12,
+			minute,
+			month,
+			second,
 			timeZone,
 			timeZoneName,
-			weekday: weekday === 'undefined' ? undefined : weekday,
-			year: year === 'undefined' ? undefined : year,
-		};
+			weekday,
+			year,
+		});
 
 		const data = {
 			format,

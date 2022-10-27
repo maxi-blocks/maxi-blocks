@@ -223,12 +223,12 @@ const DynamicContent = props => {
 	};
 
 	const setAuthorDefault = async () => {
-		if (authorRef.current) return false;
+		if (author) return false;
 		const result = await apiFetch({
 			path: '/wp/v2/users/me',
 		})
 			.catch(err => console.error(err))
-			.then(res => changeProps({ 'dc-author': res.id }));
+			.then(res => changeProps({ 'dc-author': Number(res.id) }));
 		return result;
 	};
 
@@ -289,7 +289,7 @@ const DynamicContent = props => {
 
 			// Ensures first post id is selected
 			if (isEmpty(find(newPostIdOptions, { value: id }))) {
-				defaultValues['dc-id'] = result[0].id;
+				defaultValues['dc-id'] = Number(result[0].id);
 				idFields.current = result[0].id;
 			}
 
@@ -601,7 +601,7 @@ const DynamicContent = props => {
 			case 'author':
 				getIdOptions(
 					typeRef.current,
-					{ 'dc-author': _value },
+					{ 'dc-author': Number(_value) },
 					relationRef.current
 				);
 				break;
@@ -621,7 +621,7 @@ const DynamicContent = props => {
 				changeProps({ 'dc-field': _value });
 				break;
 			case 'limit':
-				changeProps({ 'dc-limit': _value });
+				changeProps({ 'dc-limit': Number(_value) });
 				break;
 			default:
 				break;

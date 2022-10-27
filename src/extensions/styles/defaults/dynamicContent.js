@@ -20,7 +20,6 @@ const dynamicContent = {
 	},
 	'dc-author': {
 		type: 'number',
-		default: '',
 	},
 	'dc-show': {
 		type: 'string',

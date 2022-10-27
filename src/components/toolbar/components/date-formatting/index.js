@@ -1,17 +1,27 @@
+/**
+ * WordPress dependencies
+ */
 import { __ } from '@wordpress/i18n';
+import { useState, useEffect, useRef } from '@wordpress/element';
+import { Popover } from '@wordpress/components';
 
 /**
- * Styles
+ * Internal dependencies
  */
-import './editor.scss';
-
-import { Popover } from '@wordpress/components';
-import { useState, useEffect, useRef } from '@wordpress/element';
 import SelectControl from '../../../select-control';
 import SettingTabsControl from '../../../setting-tabs-control';
 import TextControl from '../../../text-control';
 import ToggleSwitch from '../../../toggle-switch';
 import { DateOptions } from './utils';
+
+/**
+ * External dependencies
+ */
+
+/**
+ * Styles & Icons
+ */
+import './editor.scss';
 
 const DateFormatting = props => {
 	const contentRef = useRef(props.content);
@@ -175,7 +185,10 @@ const DateFormatting = props => {
 				</Popover>
 			)}
 			<ToggleSwitch
-				label={__('Date setting', 'maxi-blocks')}
+				label={__(
+					`Date ${!status ? 'custom' : 'standart'}`,
+					'maxi-blocks'
+				)}
 				selected={status}
 				onChange={() => setStatus(!status)}
 			/>
@@ -198,7 +211,6 @@ const DateFormatting = props => {
 					<SettingTabsControl
 						type='buttons'
 						fullWidthMode
-						className='maxi-typography-control__link-options'
 						selected={linkStatus}
 						hasBorder
 						items={[

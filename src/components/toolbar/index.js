@@ -85,7 +85,6 @@ const MaxiToolbar = memo(
 			attributes,
 			backgroundAdvancedOptions,
 			backgroundPrefix,
-			blockStyle,
 			clientId,
 			content,
 			disableCustomFormats = false,
@@ -106,6 +105,7 @@ const MaxiToolbar = memo(
 			dropShadow,
 		} = props;
 		const {
+			blockStyle,
 			customLabel,
 			isFirstOnHierarchy,
 			isList,

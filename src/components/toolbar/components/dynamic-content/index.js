@@ -4,7 +4,6 @@
 import apiFetch from '@wordpress/api-fetch';
 import { __ } from '@wordpress/i18n';
 import { useEffect, useRef, useState } from '@wordpress/element';
-import moment from 'moment';
 
 /**
  * Internal dependencies
@@ -14,17 +13,6 @@ import DateFormatting from '../date-formatting';
 import SelectControl from '../../../select-control';
 import ToolbarPopover from '../toolbar-popover';
 import ToggleSwitch from '../../../toggle-switch';
-
-/**
- * External dependencies
- */
-import { find, isArray, isEmpty, isFinite, isNil, random } from 'lodash';
-
-/**
- * Styles & Icons
- */
-import './editor.scss';
-import { toolbarDynamicContent } from '../../../../icons';
 import {
 	descriptionOfErrors,
 	fieldOptions,
@@ -39,6 +27,18 @@ import {
 	showOptions,
 	typeOptions,
 } from './utils';
+
+/**
+ * External dependencies
+ */
+import { find, isArray, isEmpty, isFinite, isNil, random } from 'lodash';
+import moment from 'moment';
+
+/**
+ * Styles & Icons
+ */
+import './editor.scss';
+import { toolbarDynamicContent } from '../../../../icons';
 
 /**
  * Dynamic Content
@@ -140,13 +140,13 @@ const DynamicContent = props => {
 		return result;
 	};
 
-	const limitFormat = _value => {
-		const str = cutTags(_value).trim();
+	const limitFormat = value => {
+		const str = cutTags(value).trim();
 		return str.length > limitRef.current && limitRef.current !== 0
 			? `${str.substr(0, limitRef.current).trim()}...`
 			: limitRef.current !== 0
 			? str
-			: _value;
+			: value;
 	};
 
 	const handleDateCallback = childData => {
@@ -260,13 +260,12 @@ const DynamicContent = props => {
 		}
 	};
 
-	const setIdList = (result, _default, _type) => {
+	const setIdList = (result, defaultValues = {}, _type) => {
 		// Set default values in case they are not defined
-		const defaultValues = _default ?? {};
 
-		const relation = _default['dc-relation'] ?? relationRef.current;
-		const type = _default['dc-type'] ?? typeRef.current;
-		const id = _default['dc-id'] ?? idRef.current;
+		const relation = defaultValues['dc-relation'] ?? relationRef.current;
+		const type = defaultValues['dc-type'] ?? typeRef.current;
+		const id = defaultValues['dc-id'] ?? idRef.current;
 
 		const newPostIdOptions = result.map(item => {
 			return {
@@ -476,44 +475,56 @@ const DynamicContent = props => {
 			dataRequest.id = authorRef.current ?? id;
 		}
 
-		return type === 'posts' &&
+		if (
+			type === 'posts' &&
 			error === 'next' &&
 			showRef.current === 'next'
-			? descriptionOfErrors.next
-			: type === 'posts' &&
-			  error === 'previous' &&
-			  relationRef.current === 'previous'
-			? descriptionOfErrors.previous
-			: error === 'author' && relationRef.current === 'author'
-			? descriptionOfErrors.author
-			: type === 'media' && error === 'media'
-			? descriptionOfErrors.media
-			: type === 'tags' && error === 'tags'
-			? descriptionOfErrors.tags
-			: relationTypes.includes(typeRef.current) &&
-			  relationRef.current === 'random'
-			? apiFetch({
-					path: `/wp/v2/${type}/?_fields=id&per_page=99&orderby=${
-						randomOptions[typeRef.current][
-							random(randomOptions[typeRef.current].length - 1)
-						]
-					}`,
-			  })
-					.then(res => {
-						if (typeof res[0] === 'object' && 'id' in res[0]) {
-							return res;
-						}
-						throw new Error(descriptionOfErrors.object);
-					})
-					.then(
-						res =>
-							requestContent({
-								...dataRequest,
-								id: res[random(res.length - 1)].id,
-							}),
-						error => console.error(error)
-					)
-			: requestContent(dataRequest);
+		) {
+			return descriptionOfErrors.next;
+		}
+		if (
+			type === 'posts' &&
+			error === 'previous' &&
+			relationRef.current === 'previous'
+		) {
+			return descriptionOfErrors.previous;
+		}
+		if (error === 'author' && relationRef.current === 'author') {
+			return descriptionOfErrors.author;
+		}
+		if (type === 'media' && error === 'media') {
+			return descriptionOfErrors.media;
+		}
+		if (type === 'tags' && error === 'tags') {
+			return descriptionOfErrors.tags;
+		}
+		if (
+			relationTypes.includes(typeRef.current) &&
+			relationRef.current === 'random'
+		) {
+			return apiFetch({
+				path: `/wp/v2/${type}/?_fields=id&per_page=99&orderby=${
+					randomOptions[typeRef.current][
+						random(randomOptions[typeRef.current].length - 1)
+					]
+				}`,
+			})
+				.then(res => {
+					if (typeof res[0] === 'object' && 'id' in res[0]) {
+						return res;
+					}
+					throw new Error(descriptionOfErrors.object);
+				})
+				.then(
+					res =>
+						requestContent({
+							...dataRequest,
+							id: res[random(res.length - 1)].id,
+						}),
+					error => console.error(error)
+				);
+		}
+		return requestContent(dataRequest);
 	};
 
 	const getIdOptionsPath = (_type, _relation = null, _users = null) => {

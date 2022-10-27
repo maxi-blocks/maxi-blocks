@@ -263,7 +263,7 @@ const LinkContent = props => {
 
 const Link = props => {
 	const { blockName, isCaptionToolbar = false } = props;
-
+	console.log(props);
 	if (blockName !== 'maxi-blocks/text-maxi' && !isCaptionToolbar) return null;
 
 	return (

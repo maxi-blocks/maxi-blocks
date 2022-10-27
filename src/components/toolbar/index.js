@@ -592,6 +592,35 @@ const MaxiToolbar = memo(
 							clientId={clientId}
 							textLevel={textLevel}
 						/>
+						{/* {console.log(
+							'\n getGroupAttributes',
+							{
+								...getGroupAttributes(attributes, [
+									'typography',
+									'dynamicContent',
+								]),
+							},
+							'\n blockName',
+							name,
+							'\n isList',
+							isList,
+							'\n linkSettings',
+							linkSettings,
+							'\n breakpoint',
+							breakpoint,
+							'\n textLevel',
+							textLevel,
+							'\n blockStyle',
+							blockStyle,
+							'\n styleCard',
+							styleCard,
+							'\n disableCustomFormats',
+							disableCustomFormats,
+							'\n clientId',
+							clientId,
+							'\n attributes',
+							attributes
+						)} */}
 						<TextLink
 							{...getGroupAttributes(attributes, [
 								'typography',

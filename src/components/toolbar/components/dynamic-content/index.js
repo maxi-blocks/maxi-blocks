@@ -224,17 +224,16 @@ const DynamicContent = props => {
 
 	const setAuthorDefault = async () => {
 		if (author) return false;
-		const result = await apiFetch({
+		return apiFetch({
 			path: '/wp/v2/users/me',
 		})
 			.catch(err => console.error(err))
 			.then(res => changeProps({ 'dc-author': Number(res.id) }));
-		return result;
 	};
 
 	const setAuthorList = async () => {
 		if (!postAuthorOptions) {
-			await apiFetch({
+			apiFetch({
 				path: '/wp/v2/users?per_page=99&_fields=id, name',
 			})
 				.catch(err => console.error(err))
@@ -302,12 +301,10 @@ const DynamicContent = props => {
 		return newPostIdOptions;
 	};
 
-	const getAuthorByID = async _id => {
-		const result = await apiFetch({ path: `/wp/v2/users/${_id}` }).then(
+	const getAuthorByID = async _id =>
+		apiFetch({ path: `/wp/v2/users/${_id}` }).then(
 			author => author.name ?? 'No name'
 		);
-		return result;
-	};
 
 	const changeContent = async (_type, _show, _id, _default = {}) => {
 		if (
@@ -315,7 +312,7 @@ const DynamicContent = props => {
 			['previous', 'next'].includes(_show)
 		) {
 			const prevNextPath = `/wp/v2/${_type}/${_id}?_fields=${_show}`;
-			const result = await apiFetch({
+			return apiFetch({
 				path: prevNextPath,
 			})
 				.catch(rej => console.error(rej))
@@ -334,7 +331,6 @@ const DynamicContent = props => {
 					}
 					return null;
 				});
-			return result;
 		}
 		if (!isEmpty(_default)) {
 			changeProps(_default);
@@ -429,7 +425,7 @@ const DynamicContent = props => {
 
 	const requestContent = async dataRequest => {
 		const { type: _type, id: _id, field: _field } = dataRequest;
-		const result = await apiFetch({
+		return apiFetch({
 			path: await getContentPath(_type, _id, _field),
 		})
 			.catch(err => console.error(err)) // TODO: need a good error handler
@@ -461,7 +457,6 @@ const DynamicContent = props => {
 				}
 				return null; // TODO: needs to handle empty posts(type)
 			});
-		return result;
 	};
 
 	const getContent = async dataRequest => {
@@ -539,7 +534,7 @@ const DynamicContent = props => {
 
 	const setIdOptions = async (_type, _default, _relation) => {
 		if (_relation === 'author' && !authorRef.current) return false;
-		const result = await apiFetch({
+		return apiFetch({
 			path: getIdOptionsPath(
 				_type,
 				{},
@@ -552,7 +547,6 @@ const DynamicContent = props => {
 		})
 			.catch(err => console.error(err)) // TODO: need a good error handler
 			.then(result => setIdList(result, _default, _type));
-		return result;
 	};
 
 	const getIdOptions = (

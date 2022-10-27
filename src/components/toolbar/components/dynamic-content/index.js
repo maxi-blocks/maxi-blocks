@@ -482,6 +482,7 @@ const DynamicContent = props => {
 		) {
 			return descriptionOfErrors.next;
 		}
+
 		if (
 			type === 'posts' &&
 			error === 'previous' &&
@@ -489,15 +490,19 @@ const DynamicContent = props => {
 		) {
 			return descriptionOfErrors.previous;
 		}
+
 		if (error === 'author' && relationRef.current === 'author') {
 			return descriptionOfErrors.author;
 		}
+
 		if (type === 'media' && error === 'media') {
 			return descriptionOfErrors.media;
 		}
+
 		if (type === 'tags' && error === 'tags') {
 			return descriptionOfErrors.tags;
 		}
+
 		if (
 			relationTypes.includes(typeRef.current) &&
 			relationRef.current === 'random'

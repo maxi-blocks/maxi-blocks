@@ -248,8 +248,8 @@ export const randomOptions = {
 
 // In case content is empty, show this text
 export const sanitizeContent = content =>
-	content && !isEmpty(content)
-		? content
+	!isEmpty(content) || typeof content === 'number'
+		? __(content, 'maxi-blocks')
 		: __('No content found', 'maxi-blocks');
 
 export const descriptionOfErrors = {

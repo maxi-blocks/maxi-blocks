@@ -229,7 +229,7 @@ const DateFormatting = props => {
 					<TextControl
 						label={__('Date format', 'maxi-blocks')}
 						help={false}
-						placeholder={__('d.m.Y t')}
+						placeholder={__('d.m.Y t', 'maxi-blocks')}
 						value={format}
 						onChange={val => validateAnchor(val)}
 					/>

@@ -40,20 +40,11 @@ registerBlockType('maxi-blocks/search-maxi', {
 	icon: searchIcon,
 	description: 'Add a search bar with icon',
 	category: 'maxi-blocks',
-	supports: {
-		align: true,
-		lightBlockWrapper: true,
-	},
-	attributes: {
-		...attributes,
-	},
-	getEditWrapperProps(attributes) {
-		const { uniqueID } = attributes;
+	apiVersion: 2,
+	variations: [],
 
-		return {
-			uniqueid: uniqueID,
-		};
-	},
+	attributes,
+
 	edit: props => (
 		<Suspense fallback={<Spinner />}>
 			<Edit {...props} />

@@ -41,21 +41,12 @@ registerBlockType('maxi-blocks/row-maxi', {
 	icon: rowIcon,
 	description: 'Configure columns inside a row',
 	category: 'maxi-blocks',
+	apiVersion: 2,
+	variations: [],
 	parent: ['maxi-blocks/container-maxi'],
-	supports: {
-		align: true,
-		lightBlockWrapper: true,
-	},
-	attributes: {
-		...attributes,
-	},
-	getEditWrapperProps(attributes) {
-		const { uniqueID } = attributes;
 
-		return {
-			uniqueid: uniqueID,
-		};
-	},
+	attributes,
+
 	edit: props => (
 		<Suspense fallback={<Spinner />}>
 			<Edit {...props} />

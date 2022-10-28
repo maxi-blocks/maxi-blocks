@@ -26,26 +26,14 @@ import { accordionIcon } from '../../icons';
 /**
  * Block
  */
-
 registerBlockType('maxi-blocks/accordion-maxi', {
 	title: __('Accordion Maxi', 'maxi-blocks'),
 	icon: accordionIcon,
 	description: 'Expand or collapse content inside of a panel',
 	category: 'maxi-blocks',
-	supports: {
-		align: true,
-		lightBlockWrapper: true,
-	},
-	attributes: {
-		...attributes,
-	},
-	getEditWrapperProps(attributes) {
-		const { uniqueID } = attributes;
-
-		return {
-			uniqueid: uniqueID,
-		};
-	},
+	apiVersion: 2,
+	variations: [],
+	attributes,
 	edit: props => (
 		<Suspense fallback={<Spinner />}>
 			<Edit {...props} />

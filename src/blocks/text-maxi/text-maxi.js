@@ -42,20 +42,14 @@ registerBlockType('maxi-blocks/text-maxi', {
 	icon: textIcon,
 	description: 'Insert, modify or style text',
 	category: 'maxi-blocks',
+	apiVersion: 2,
+	variations: [],
 	supports: {
 		align: false,
 		lightBlockWrapper: true,
 	},
-	attributes: {
-		...attributes,
-	},
-	getEditWrapperProps(attributes) {
-		const { uniqueID } = attributes;
+	attributes,
 
-		return {
-			uniqueid: uniqueID,
-		};
-	},
 	edit: props => (
 		<Suspense fallback={<Spinner />}>
 			<Edit {...props} />

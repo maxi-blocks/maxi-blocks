@@ -44,20 +44,9 @@ registerBlockType('maxi-blocks/button-maxi', {
 	icon: buttonIcon,
 	description: 'Insert, modify or style a button',
 	category: 'maxi-blocks',
-	supports: {
-		align: true,
-		lightBlockWrapper: true,
-	},
-	attributes: {
-		...attributes,
-	},
-	getEditWrapperProps(attributes) {
-		const { uniqueID } = attributes;
-
-		return {
-			uniqueid: uniqueID,
-		};
-	},
+	apiVersion: 2,
+	variations: [],
+	attributes,
 	edit: props => (
 		<Suspense fallback={<Spinner />}>
 			<Edit {...props} />

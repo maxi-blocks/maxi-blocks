@@ -44,20 +44,11 @@ registerBlockType('maxi-blocks/svg-icon-maxi', {
 	icon: iconBox,
 	description: 'Add icon or shape and style it',
 	category: 'maxi-blocks',
-	supports: {
-		align: true,
-		lightBlockWrapper: true,
-	},
-	attributes: {
-		...attributes,
-	},
-	getEditWrapperProps(attributes) {
-		const { uniqueID } = attributes;
+	apiVersion: 2,
+	variations: [],
 
-		return {
-			uniqueid: uniqueID,
-		};
-	},
+	attributes,
+
 	edit: props => (
 		<Suspense fallback={<Spinner />}>
 			<Edit {...props} />

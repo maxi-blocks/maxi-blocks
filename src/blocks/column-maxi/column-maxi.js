@@ -41,21 +41,12 @@ registerBlockType('maxi-blocks/column-maxi', {
 	icon: columnIcon,
 	description: 'Stack blocks vertically inside a column',
 	category: 'maxi-blocks',
-	supports: {
-		align: true,
-		lightBlockWrapper: true,
-	},
-	attributes: {
-		...attributes,
-	},
-	parent: ['maxi-blocks/row-maxi'],
-	getEditWrapperProps(attributes) {
-		const { uniqueID } = attributes;
+	apiVersion: 2,
+	variations: [],
 
-		return {
-			uniqueid: uniqueID,
-		};
-	},
+	attributes,
+	parent: ['maxi-blocks/row-maxi'],
+
 	edit: props => (
 		<Suspense fallback={<Spinner />}>
 			<Edit {...props} />

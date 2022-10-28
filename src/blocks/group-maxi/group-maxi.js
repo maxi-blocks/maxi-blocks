@@ -42,20 +42,11 @@ registerBlockType('maxi-blocks/group-maxi', {
 	icon: groupIcon,
 	description: 'Combine a set of blocks in a group',
 	category: 'maxi-blocks',
-	supports: {
-		align: true,
-		lightBlockWrapper: true,
-	},
-	attributes: {
-		...attributes,
-	},
-	getEditWrapperProps(attributes) {
-		const { uniqueID } = attributes;
+	apiVersion: 2,
+	variations: [],
 
-		return {
-			uniqueid: uniqueID,
-		};
-	},
+	attributes,
+
 	edit: props => (
 		<Suspense fallback={<Spinner />}>
 			<Edit {...props} />

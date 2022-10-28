@@ -34,20 +34,11 @@ registerBlockType('maxi-blocks/video-maxi', {
 	icon: videoIcon,
 	description: 'Insert a video with controls or lightbox',
 	category: 'maxi-blocks',
-	supports: {
-		align: true,
-		lightBlockWrapper: true,
-	},
-	attributes: {
-		...attributes,
-	},
-	getEditWrapperProps(attributes) {
-		const { uniqueID } = attributes;
+	apiVersion: 2,
+	variations: [],
 
-		return {
-			uniqueid: uniqueID,
-		};
-	},
+	attributes,
+
 	edit: props => (
 		<Suspense fallback={<Spinner />}>
 			<Edit {...props} />

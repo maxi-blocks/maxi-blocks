@@ -38,21 +38,12 @@ registerBlockType('maxi-blocks/pane-maxi', {
 	description: __('Hide some content inside of it', 'maxi-blocks'),
 	icon: groupIcon,
 	category: 'maxi-blocks',
-	supports: {
-		align: true,
-		lightBlockWrapper: true,
-	},
-	attributes: {
-		...attributes,
-	},
-	parent: ['maxi-blocks/accordion-maxi'],
-	getEditWrapperProps(attributes) {
-		const { uniqueID } = attributes;
+	apiVersion: 2,
+	variations: [],
 
-		return {
-			uniqueid: uniqueID,
-		};
-	},
+	attributes,
+	parent: ['maxi-blocks/accordion-maxi'],
+
 	edit: props => (
 		<Suspense fallback={<Spinner />}>
 			<Edit {...props} />

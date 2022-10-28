@@ -41,18 +41,9 @@ registerBlockType('maxi-blocks/container-maxi', {
 	icon: containerIcon,
 	description: 'Wrap blocks within a container',
 	category: 'maxi-blocks',
-	supports: {
-		align: true,
-		lightBlockWrapper: true,
-	},
+	apiVersion: 2,
+	variations: [],
 	attributes,
-	getEditWrapperProps(attributes) {
-		const { uniqueID } = attributes;
-
-		return {
-			uniqueid: uniqueID,
-		};
-	},
 	edit: props => (
 		<Suspense fallback={<Spinner />}>
 			<Edit {...props} />

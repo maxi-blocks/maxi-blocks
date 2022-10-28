@@ -25,6 +25,8 @@ registerBlockType('maxi-blocks/maxi-cloud', {
 	description: __('Find templates or patterns'),
 	icon: library,
 	category: 'maxi-blocks',
+	apiVersion: 2,
+	variations: [],
 	keywords: [__('layout', 'maxi-blocks'), __('block', 'maxi-blocks')],
 	attributes: {
 		className: {

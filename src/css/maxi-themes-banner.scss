@@ -31,6 +31,7 @@ body.maxi-blocks--active .maxi-block {
 	text-shadow: inherit;
 	transition: none;
 	line-height: 1;
+	box-sizing: border-box;
 
 	*:not(.maxi-background-displayer) {
 		box-sizing: border-box;

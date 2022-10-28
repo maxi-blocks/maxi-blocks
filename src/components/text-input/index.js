@@ -26,6 +26,10 @@ export default function TextInput({
 	const [inputValue, setInputValue] = useState(value);
 	const textTimeOut = useRef(null);
 
+	useEffect(() => {
+		if (value !== inputValue) setInputValue(value);
+	}, [value]);
+
 	const classes = classnames('maxi-text-input', className);
 
 	const valueChange = e => {
@@ -38,10 +42,6 @@ export default function TextInput({
 			onChange(newValue);
 		}, 100);
 	};
-
-	useEffect(() => {
-		if (value !== inputValue) setInputValue(value);
-	}, [value]);
 
 	return (
 		<input

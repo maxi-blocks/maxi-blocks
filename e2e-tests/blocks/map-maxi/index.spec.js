@@ -31,6 +31,7 @@ const popupTest = async map => {
 
 	await popupTitle.focus();
 	await popupTitle.type('Title test');
+	await page.waitForTimeout(150);
 
 	// Testing popup description typing
 	const popupDescription = await popupContent.$(
@@ -39,6 +40,7 @@ const popupTest = async map => {
 
 	await popupDescription.focus();
 	await popupDescription.type('Description test');
+	await page.waitForTimeout(150);
 
 	expect(
 		roundMarkersCoords(await getAttributes('map-markers'))
@@ -109,6 +111,7 @@ describe('Map Maxi', () => {
 		// Typing London in the search box
 		await searchBox.focus();
 		await searchBox.type('London');
+		await page.waitForTimeout(150);
 
 		// Starting search
 		await searchBox.$eval('.maxi-map-block__search-box__button', button =>

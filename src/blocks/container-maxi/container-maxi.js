@@ -9,12 +9,14 @@
  */
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
+import { lazy, Suspense } from '@wordpress/element';
+import { Spinner } from '@wordpress/components';
 
 /**
  * Block dependencies
  */
+const Edit = lazy(() => import('./edit'));
 import attributes from './attributes';
-import edit from './edit';
 import save from './save';
 import { customCss } from './data';
 
@@ -34,7 +36,6 @@ import shapeDividerMigrator from '../../extensions/styles/migrators/shapeDivider
 /**
  * Block
  */
-
 registerBlockType('maxi-blocks/container-maxi', {
 	title: __('Container Maxi', 'maxi-blocks'),
 	icon: containerIcon,
@@ -44,9 +45,7 @@ registerBlockType('maxi-blocks/container-maxi', {
 		align: true,
 		lightBlockWrapper: true,
 	},
-	attributes: {
-		...attributes,
-	},
+	attributes,
 	getEditWrapperProps(attributes) {
 		const { uniqueID } = attributes;
 
@@ -54,7 +53,11 @@ registerBlockType('maxi-blocks/container-maxi', {
 			uniqueid: uniqueID,
 		};
 	},
-	edit,
+	edit: props => (
+		<Suspense fallback={<Spinner />}>
+			<Edit {...props} />
+		</Suspense>
+	),
 	save,
 	deprecated: blockMigrator({
 		attributes,

@@ -7,12 +7,14 @@
  */
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
+import { lazy, Suspense } from '@wordpress/element';
+import { Spinner } from '@wordpress/components';
 
 /**
  * Block dependencies
  */
+const Edit = lazy(() => import('./edit'));
 import attributes from './attributes';
-import edit from './edit';
 import save from './save';
 
 /**
@@ -44,6 +46,10 @@ registerBlockType('maxi-blocks/accordion-maxi', {
 			uniqueid: uniqueID,
 		};
 	},
-	edit,
+	edit: props => (
+		<Suspense fallback={<Spinner />}>
+			<Edit {...props} />
+		</Suspense>
+	),
 	save,
 });

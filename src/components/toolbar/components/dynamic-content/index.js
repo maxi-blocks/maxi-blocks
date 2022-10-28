@@ -793,7 +793,7 @@ const DynamicContent = props => {
 											}
 										/>
 									)}
-								{fieldRef.current === 'excerpt' && (
+								{fieldRef.current === 'excerpt' && !error && (
 									<AdvancedNumberControl
 										label={__(
 											'Character limit',
@@ -818,7 +818,7 @@ const DynamicContent = props => {
 									/>
 								)}
 
-								{fieldRef.current === 'date' && (
+								{fieldRef.current === 'date' && !error && (
 									<DateFormatting
 										content={false}
 										day={day}

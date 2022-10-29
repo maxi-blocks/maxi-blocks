@@ -263,11 +263,9 @@ const AdvancedNumberControl = props => {
 						label={label}
 						className='maxi-advanced-number-control__range'
 						value={
-							+(!isNil(value) && Number.isFinite(value)
+							+(!isNil(value)
 								? value
-								: Number.isFinite(defaultValue)
-								? defaultValue
-								: initial || placeholder || 0)
+								: defaultValue || initial || placeholder || 0)
 						}
 						onChange={val => {
 							onChangeValue(

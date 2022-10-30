@@ -41,8 +41,6 @@ const getGroupAttributes = (
 				});
 		});
 
-	if (target === 'padding') console.log(response);
-
 	return response;
 };
 

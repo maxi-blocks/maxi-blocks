@@ -55,7 +55,6 @@ const AxisInput = props => {
 		label,
 		target,
 		singleTarget = null,
-		getValue,
 		getLastBreakpointValue,
 		breakpoint,
 		disableAuto,
@@ -67,7 +66,6 @@ const AxisInput = props => {
 		onReset,
 	} = props;
 
-	const value = getValue(target, breakpoint);
 	const lastValue = getLastBreakpointValue(target);
 	const unit = getLastBreakpointValue(`${target}-unit`, breakpoint);
 	return (
@@ -78,7 +76,7 @@ const AxisInput = props => {
 				`maxi-axis-control__content__item__${kebabCase(label)}`
 			)}
 			placeholder={lastValue}
-			value={value}
+			value={lastValue}
 			onChangeValue={val => onChangeValue(val, singleTarget, breakpoint)}
 			minMaxSettings={minMaxSettings}
 			enableAuto={!disableAuto}

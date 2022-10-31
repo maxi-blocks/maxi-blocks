@@ -155,21 +155,21 @@ class Relation {
 	getTransitionTimeout() {
 		const currentBreakpoint = this.getCurrentBreakpoint();
 
-		const getTransitionValue = (index, prop) =>
-			this.effects[index][
+		const getTransitionValue = (effects, prop) =>
+			effects[
 				`transition-${prop}-${this.getLastUsableBreakpoint(
 					currentBreakpoint,
 					breakpoint =>
 						Object.prototype.hasOwnProperty.call(
-							this.effects[index],
+							effects,
 							`transition-${prop}-${breakpoint}`
 						)
 				)}`
 			];
 
-		return this.effects.reduce((promise, _, index) => {
-			const transitionDuration = getTransitionValue(index, 'duration');
-			const transitionDelay = getTransitionValue(index, 'delay');
+		return this.effects.reduce((promise, effects) => {
+			const transitionDuration = getTransitionValue(effects, 'duration');
+			const transitionDelay = getTransitionValue(effects, 'delay');
 			const transitionTimeout =
 				(transitionDuration + transitionDelay) * 1000;
 

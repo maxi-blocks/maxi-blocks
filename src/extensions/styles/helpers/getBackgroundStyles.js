@@ -1008,6 +1008,21 @@ const getGeneralBackgroundStyles = (
 						right: -round(widthRight, 2) + widthUnit,
 					}),
 				};
+		} else {
+			size[breakpoint] = {
+				...{
+					top: widthTop,
+				},
+				...{
+					bottom: widthBottom,
+				},
+				...{
+					left: widthLeft,
+				},
+				...{
+					right: widthRight,
+				},
+			};
 		}
 	});
 

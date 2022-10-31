@@ -80,6 +80,7 @@ const MaxiModal = props => {
 						onClick={onClick}
 					>
 						<Icon icon={SCaddMore} />
+						<span>Browse style cards</span>
 					</Button>
 				)}
 				{type === 'svg' && !forceHide && (

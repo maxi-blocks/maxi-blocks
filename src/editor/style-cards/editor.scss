@@ -14,6 +14,28 @@ body {
 		margin: 134px 0 0 184px;
 	}
 }
+.active-style-card {
+	display: flex;
+	background-color: #fff;
+	padding: 10px;
+
+	.active-style-card_icon {
+		width: 50px;
+	}
+
+	h2 {
+		padding: 0 !important;
+	}
+}
+.maxi-style-cards__sc__ie--import {
+	width: 50%;
+}
+.maxi-style-cards__active-edit-options {
+	display: flex;
+}
+.maxi-style-cards__settings {
+	background-color: #fff;
+}
 
 .maxi-responsive-selector {
 	.maxi-style-cards__popover {
@@ -198,7 +220,6 @@ body {
 					display: flex;
 					justify-content: center;
 					align-items: center;
-					width: 40px;
 					border: 2px solid #dddfe1;
 					border-radius: 5px;
 					margin-right: 5px;

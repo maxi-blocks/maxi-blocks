@@ -49,20 +49,16 @@ class Relation {
 					: this.targetEl
 		);
 
-		this.transitionTargets = Array.from(
-			new Set(
-				this.effects.flatMap(item => {
-					switch (typeof item.transitionTarget) {
-						case 'string':
-							return [item.transitionTarget];
-						case 'object':
-							return item.transitionTarget;
-						default:
-							return [''];
-					}
-				})
-			)
-		);
+		this.transitionTargetsArray = this.effects.map(item => {
+			switch (typeof item.transitionTarget) {
+				case 'string':
+					return [item.transitionTarget];
+				case 'object' && item.transitionTarget?.length > 0:
+					return item.transitionTarget;
+				default:
+					return [''];
+			}
+		});
 
 		this.isBorders = this.attributes.map(attributes =>
 			Object.keys(attributes).some(attr => attr.startsWith('border'))
@@ -71,7 +67,7 @@ class Relation {
 			setting => setting === 'Icon colour' || setting === 'Button icon'
 		);
 		this.isSVG = this.fullTarget.includes('svg-icon-maxi');
-		this.avoidHover = null;
+		this.avoidHoverArray = [];
 		this.getAvoidHover();
 
 		this.transitionString = '';
@@ -355,19 +351,25 @@ class Relation {
 	getAvoidHover() {
 		if (!this.hoverStatus || !this.targetEl) return;
 
-		this.avoidHover = this.transitionTargets.some(transitionTarget =>
-			Array.from(
-				document.querySelectorAll(
-					`${this.fullTarget} ${
-						this.fullTarget.includes(transitionTarget)
-							? ''
-							: transitionTarget
-					}`
+		this.transitionTargetsArray.forEach(transitionTargets =>
+			this.avoidHoverArray.push(
+				transitionTargets.some(transitionTarget =>
+					Array.from(
+						document.querySelectorAll(
+							`${this.fullTarget} ${
+								this.fullTarget.includes(transitionTarget)
+									? ''
+									: transitionTarget
+							}`
+						)
+					).some(
+						element =>
+							this.targetEl
+								.closest('.maxi-block')
+								.contains(element) &&
+							this.targetEl.contains(element)
+					)
 				)
-			).some(
-				element =>
-					this.targetEl.closest('.maxi-block').contains(element) &&
-					this.targetEl.contains(element)
 			)
 		);
 	}
@@ -419,7 +421,7 @@ class Relation {
 				([breakpoint, breakpointValue]) => {
 					if (stylesObj[breakpoint]) {
 						// Checks if the element needs special CSS to be avoided in case the element is hovered
-						const avoidHoverString = this.avoidHover
+						const avoidHoverString = this.avoidHoverArray[index]
 							? ':not(:hover)'
 							: '';
 
@@ -532,7 +534,7 @@ class Relation {
 						)
 				);
 			else
-				this.transitionTargets.forEach(transitionTarget =>
+				this.transitionTargetsArray[index].forEach(transitionTarget =>
 					getStylesLine(
 						stylesObj,
 						this.getTargetForLine(
@@ -649,27 +651,29 @@ class Relation {
 						);
 					});
 				else
-					this.transitionTargets.forEach(transitionTarget => {
-						// Checks if the element needs special CSS to be avoided in case the element is hovered
-						const svgTarget = `${this.dataTarget} ${
-							this.avoidHover
-								? transitionTarget.replace(
-										'maxi-svg-icon-block__icon',
-										match => `${match}:not(:hover)`
-								  )
-								: transitionTarget
-						}`;
+					this.transitionTargetsArray[index].forEach(
+						transitionTarget => {
+							// Checks if the element needs special CSS to be avoided in case the element is hovered
+							const svgTarget = `${this.dataTarget} ${
+								this.avoidHoverArray[index]
+									? transitionTarget.replace(
+											'maxi-svg-icon-block__icon',
+											match => `${match}:not(:hover)`
+									  )
+									: transitionTarget
+							}`;
 
-						Object.keys(stylesObj).forEach(targetSelector =>
-							getTransitionLine(
-								stylesObj[targetSelector],
-								svgTarget,
-								index
-							)
-						);
-					});
+							Object.keys(stylesObj).forEach(targetSelector =>
+								getTransitionLine(
+									stylesObj[targetSelector],
+									svgTarget,
+									index
+								)
+							);
+						}
+					);
 			} else
-				this.transitionTargets.forEach(transitionTarget =>
+				this.transitionTargetsArray[index].forEach(transitionTarget =>
 					getTransitionLine(
 						stylesObj,
 						this.getTargetForLine(transitionTarget),
@@ -747,34 +751,31 @@ class Relation {
 				});
 
 				transitionTriggerEl.addEventListener('mouseleave', () => {
-					const transitionDuration = this.transitionTargets.reduce(
-						(promise, transitionTarget) => {
-							const transitionTargetEl = document.querySelector(
-								`${this.dataTarget} ${transitionTarget ?? ''}`
-							);
+					const transitionDuration = Array.from(
+						new Set(this.transitionTargetsArray.flat())
+					).reduce((promise, transitionTarget) => {
+						const transitionTargetEl = document.querySelector(
+							`${this.dataTarget} ${transitionTarget ?? ''}`
+						);
 
-							const transitionDuration = transitionTargetEl
-								? [
-										'transition-duration',
-										'transition-delay',
-								  ].reduce(
-										(sum, prop) =>
-											sum +
-											parseFloat(
-												getComputedStyle(
-													transitionTargetEl
-												)
-													.getPropertyValue(prop)
-													.replace('s', '')
-											),
-										0
-								  ) * 1000
-								: 0;
+						const transitionDuration = transitionTargetEl
+							? [
+									'transition-duration',
+									'transition-delay',
+							  ].reduce(
+									(sum, prop) =>
+										sum +
+										parseFloat(
+											getComputedStyle(transitionTargetEl)
+												.getPropertyValue(prop)
+												.replace('s', '')
+										),
+									0
+							  ) * 1000
+							: 0;
 
-							return Math.max(promise, transitionDuration);
-						},
-						0
-					);
+						return Math.max(promise, transitionDuration);
+					}, 0);
 
 					// console.log('Leaving hover target'); // 🔥
 

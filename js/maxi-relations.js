@@ -268,7 +268,7 @@ class Relation {
 		const stylesObjs = [];
 		const effectsObjs = [];
 
-		const pushStylesAndEffects = (stylesObj, effectsObj) => {
+		const pushStylesAndEffects = ({ stylesObj, effectsObj }) => {
 			const isEmptyObject = obj => Object.keys(obj).length === 0;
 
 			if (!isEmptyObject(stylesObj)) stylesObjs.push(stylesObj);
@@ -294,12 +294,13 @@ class Relation {
 					effectsObj = rawEffects;
 				});
 
-				pushStylesAndEffects(stylesObj, effectsObj);
+				pushStylesAndEffects({ stylesObj, effectsObj });
 			} else {
-				const { stylesObj, effectsObj } = cleanValues(
-					getCssObjForEachTarget(css, this.effects[index])
+				pushStylesAndEffects(
+					cleanValues(
+						getCssObjForEachTarget(css, this.effects[index])
+					)
 				);
-				pushStylesAndEffects(stylesObj, effectsObj);
 			}
 		});
 

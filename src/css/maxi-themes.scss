@@ -279,6 +279,7 @@ body.maxi-blocks--active {
 							@each $level in $levels {
 								#{$level} {
 									&.maxi-text-block__content {
+										// dev
 										font-family: var(
 											--maxi-#{$style}-#{$level}-font-family-#{$responsive_size}
 										);

@@ -557,6 +557,7 @@ const TypographyControl = props => {
 					)}
 					defaultValue={getDefault(`${prefix}font-size`)}
 					onChangeValue={(val, unit) => {
+						// console.log(val, unit);
 						onChangeFormat({
 							[`${prefix}font-size`]: val,
 							...(unit && { [`${prefix}font-size-unit`]: unit }),

@@ -21,7 +21,8 @@ import {
 	convertClassicMenuToBlocks,
 	convertGutenbergMenuToMaxi,
 } from '../../extensions/navigation-menu';
-import { customCss } from './data';
+import { customCss, submenuIndicatorPrefix } from './data';
+import { SubMenuIndicatorControl } from './components';
 
 /**
  * Inspector
@@ -183,6 +184,24 @@ const Inspector = props => {
 												}
 												clientId={clientId}
 												breakpoint={deviceType}
+											/>
+										),
+									},
+									{
+										label: 'Submenu indicator arrow',
+										content: (
+											<SubMenuIndicatorControl
+												{...getGroupAttributes(
+													attributes,
+													'icon',
+													false,
+													submenuIndicatorPrefix
+												)}
+												onChange={obj => {
+													maxiSetAttributes(obj);
+												}}
+												breakpoint={deviceType}
+												blockStyle={blockStyle}
 											/>
 										),
 									},

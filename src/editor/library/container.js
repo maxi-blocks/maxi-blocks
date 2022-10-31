@@ -140,6 +140,7 @@ const MasonryItem = props => {
 					<div className='maxi-cloud-masonry-card__svg-container__title'>
 						{target === 'button-icon' ||
 						target === 'search-icon' ||
+						target === 'navigation-item-indicator-icon' ||
 						target.includes('Line')
 							? serial.replace(' Line', '').replace(' line', '')
 							: [
@@ -374,6 +375,7 @@ const LibraryContainer = props => {
 			case 'accordion-icon':
 			case 'accordion-icon-active':
 			case 'search-icon':
+			case 'navigation-item-indicator-icon':
 				return 'icon';
 			case 'video-icon':
 			case 'sidebar-block-shape':
@@ -553,6 +555,7 @@ const LibraryContainer = props => {
 					'video-icon',
 					'accordion-icon',
 					'search-icon',
+					'navigation-item-indicator-icon',
 				].includes(type)
 			) {
 				onSelect({
@@ -760,7 +763,9 @@ const LibraryContainer = props => {
 				</InstantSearch>
 			)}
 
-			{(type === 'button-icon' || type === 'search-icon') && (
+			{(type === 'button-icon' ||
+				type === 'search-icon' ||
+				type === 'navigation-item-indicator-icon') && (
 				<InstantSearch
 					indexName='svg_icon'
 					searchClient={searchClientSvg}

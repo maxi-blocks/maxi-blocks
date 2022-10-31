@@ -2,6 +2,8 @@ import getCanvasSettings from '../../components/relation-control/getCanvasSettin
 import { createSelectors } from '../../extensions/styles/custom-css';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
+const submenuIndicatorPrefix = 'submenu-indicator-';
+
 /**
  * Data object
  */
@@ -67,5 +69,11 @@ const data = {
 	interactionBuilderSettings,
 };
 
-export { copyPasteMapping, customCss, transition, interactionBuilderSettings };
+export {
+	copyPasteMapping,
+	customCss,
+	transition,
+	interactionBuilderSettings,
+	submenuIndicatorPrefix,
+};
 export default data;

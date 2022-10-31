@@ -100,7 +100,9 @@ const MaxiModal = props => {
 						{__('Load shape library', 'maxi-blocks')}
 					</Button>
 				)}
-				{(type === 'button-icon' || type === 'search-icon') && (
+				{(type === 'button-icon' ||
+					type === 'search-icon' ||
+					type === 'navigation-item-indicator-icon') && (
 					<Button
 						className='maxi-library-modal__action-section__buttons__load-library'
 						onClick={onClick}
@@ -178,22 +180,24 @@ const MaxiModal = props => {
 					</RawHTML>
 				</div>
 			)}
-			{type === 'search-icon' && !isEmpty(icon) && (
-				<div className='maxi-library-modal__action-section__preview'>
-					<Icon
-						className='maxi-library-modal__action-section__preview--remove'
-						icon={remove}
-						onClick={() =>
-							onRemove({
-								[`${prefix}icon-content`]: '',
-							})
-						}
-					/>
-					<RawHTML className='maxi-library-modal__action-section__preview__icon'>
-						{icon}
-					</RawHTML>
-				</div>
-			)}
+			{(type === 'search-icon' ||
+				type === 'navigation-item-indicator-icon') &&
+				!isEmpty(icon) && (
+					<div className='maxi-library-modal__action-section__preview'>
+						<Icon
+							className='maxi-library-modal__action-section__preview--remove'
+							icon={remove}
+							onClick={() =>
+								onRemove({
+									[`${prefix}icon-content`]: '',
+								})
+							}
+						/>
+						<RawHTML className='maxi-library-modal__action-section__preview__icon'>
+							{icon}
+						</RawHTML>
+					</div>
+				)}
 			{type === 'bg-shape' && !isEmpty(icon) && (
 				<div className='maxi-library-modal__action-section__preview'>
 					<Icon

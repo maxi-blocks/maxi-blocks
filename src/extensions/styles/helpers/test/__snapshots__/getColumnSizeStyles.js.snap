@@ -44,12 +44,12 @@ Object {
     "width": "fit-content",
   },
   "m": Object {
-    "flex-basis": "100%",
-    "width": "100%",
+    "flex-basis": "fit-content",
+    "width": "fit-content",
   },
   "s": Object {
-    "flex-basis": "calc(2% - 0px)",
-    "width": "calc(2% - 0px)",
+    "flex-basis": "fit-content",
+    "width": "fit-content",
   },
   "xl": Object {
     "flex-basis": "calc(3% - 1.6667%)",
@@ -76,9 +76,13 @@ Object {
     "flex-basis": "fit-content",
     "width": "fit-content",
   },
+  "m": Object {
+    "flex-basis": "fit-content",
+    "width": "fit-content",
+  },
   "s": Object {
-    "flex-basis": "calc(2% - 0px)",
-    "width": "calc(2% - 0px)",
+    "flex-basis": "fit-content",
+    "width": "fit-content",
   },
   "xl": Object {
     "flex-basis": "calc(3% - 0px)",
@@ -105,9 +109,13 @@ Object {
     "flex-basis": "fit-content",
     "width": "fit-content",
   },
+  "m": Object {
+    "flex-basis": "fit-content",
+    "width": "fit-content",
+  },
   "s": Object {
-    "flex-basis": "100%",
-    "width": "100%",
+    "flex-basis": "fit-content",
+    "width": "fit-content",
   },
   "xl": Object {
     "flex-basis": "calc(3% - 0px)",

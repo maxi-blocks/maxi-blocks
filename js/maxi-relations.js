@@ -19,7 +19,7 @@ class Relation {
 		if (!this.triggerEl || !this.targetEl) return;
 
 		this.breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-		this.hasMultipleTargets = this.css.map(item =>
+		this.hasMultipleTargetsArray = this.css.map(item =>
 			Object.keys(item).some(key => !this.breakpoints.includes(key))
 		);
 
@@ -280,7 +280,7 @@ class Relation {
 		};
 
 		this.css.forEach((css, index) => {
-			if (this.hasMultipleTargets[index]) {
+			if (this.hasMultipleTargetsArray[index]) {
 				const stylesObj = {};
 				// effectsObj is the same for all targets
 				let effectsObj = {};
@@ -338,7 +338,7 @@ class Relation {
 		};
 
 		this.css.forEach((css, index) => {
-			if (this.hasMultipleTargets[index]) {
+			if (this.hasMultipleTargetsArray[index]) {
 				Object.keys(css).forEach(target => {
 					getBreakpointValues(css[target]);
 				});
@@ -521,7 +521,7 @@ class Relation {
 			this.action === 'click' ? `#${this.uniqueID}` : this.dataTarget;
 
 		this.stylesObjs.forEach((stylesObj, index) => {
-			if (this.hasMultipleTargets[index])
+			if (this.hasMultipleTargetsArray[index])
 				Object.entries(stylesObj).forEach(
 					([targetSelector, styles]) =>
 						Object.keys(styles).length &&
@@ -639,7 +639,7 @@ class Relation {
 		};
 
 		this.stylesObjs.forEach((stylesObj, index) => {
-			if (this.hasMultipleTargets[index]) {
+			if (this.hasMultipleTargetsArray[index]) {
 				if (!this.isSVG)
 					Object.keys(stylesObj).forEach(targetSelector => {
 						getTransitionLine(

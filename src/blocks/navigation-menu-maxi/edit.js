@@ -5,6 +5,7 @@ import { resolveSelect } from '@wordpress/data';
 import { useInnerBlocksProps } from '@wordpress/block-editor';
 import { useEntityBlockEditor } from '@wordpress/core-data';
 import { Spinner } from '@wordpress/components';
+import { useMemo } from '@wordpress/element';
 
 /**
  * External dependencies
@@ -19,10 +20,18 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
 import createNewMenu from '../../extensions/navigation-menu/create-new-menu';
-import { copyPasteMapping } from './data';
+import { copyPasteMapping, submenuIndicatorPrefix } from './data';
+import NavigationContext from './context';
 
 const Navigation = props => {
-	const { selectedMenuId } = props.attributes;
+	const {
+		selectedMenuId,
+		[`${submenuIndicatorPrefix}icon-content`]: submenuIcon,
+	} = props.attributes;
+	const ALLOWED_BLOCKS = [
+		'maxi-blocks/navigation-link-maxi',
+		'maxi-blocks/navigation-submenu-maxi',
+	];
 
 	const [blocks, onInput, onChange] = useEntityBlockEditor(
 		'postType',
@@ -32,26 +41,30 @@ const Navigation = props => {
 		}
 	);
 
-	const ALLOWED_BLOCKS = [
-		'maxi-blocks/navigation-link-maxi',
-		'maxi-blocks/navigation-submenu-maxi',
-	];
+	const contextValue = useMemo(
+		() => ({
+			submenuIcon,
+		}),
+		[submenuIcon]
+	);
 
 	return (
-		<div
-			{...useInnerBlocksProps(
-				{
-					className: 'maxi-navigation-menu-block__container',
-				},
-				{
-					value: blocks,
-					onInput,
-					onChange,
-					allowedBlocks: ALLOWED_BLOCKS,
-					direction: 'horizontal',
-				}
-			)}
-		/>
+		<NavigationContext.Provider value={contextValue}>
+			<div
+				{...useInnerBlocksProps(
+					{
+						className: 'maxi-navigation-menu-block__container',
+					},
+					{
+						value: blocks,
+						onInput,
+						onChange,
+						allowedBlocks: ALLOWED_BLOCKS,
+						direction: 'horizontal',
+					}
+				)}
+			/>
+		</NavigationContext.Provider>
 	);
 };
 

@@ -3,6 +3,7 @@
  */
 import { RichText, useInnerBlocksProps } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
+import { RawHTML } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -13,6 +14,7 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
 import { copyPasteMapping } from './data';
+import NavigationContext from '../navigation-menu-maxi/context';
 
 const DropDown = () => {
 	const ALLOWED_BLOCKS = [
@@ -38,6 +40,8 @@ const DropDown = () => {
  * Content
  */
 class edit extends MaxiBlockComponent {
+	static contextType = NavigationContext;
+
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
@@ -72,24 +76,27 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				{...getMaxiBlockAttributes(this.props)}
 			>
-				<RichText
-					className='maxi-navigation-submenu-block__content menu-item__content'
-					href={url}
-					value={label}
-					identifier='content'
-					onChange={label => {
-						if (this.typingTimeout) {
-							clearTimeout(this.typingTimeout);
-						}
+				<div className='maxi-navigation-submenu-block__content-wrapper'>
+					<RichText
+						className='maxi-navigation-submenu-block__content menu-item__content'
+						href={url}
+						value={label}
+						identifier='content'
+						onChange={label => {
+							if (this.typingTimeout) {
+								clearTimeout(this.typingTimeout);
+							}
 
-						this.typingTimeout = setTimeout(() => {
-							maxiSetAttributes({ label });
-						}, 100);
-					}}
-					placeholder={__('Add link', 'maxi-blocks')}
-					withoutInteractiveFormatting
-					tagName='a'
-				/>
+							this.typingTimeout = setTimeout(() => {
+								maxiSetAttributes({ label });
+							}, 100);
+						}}
+						placeholder={__('Add link', 'maxi-blocks')}
+						withoutInteractiveFormatting
+						tagName='a'
+					/>
+					<RawHTML>{this.context.submenuIcon}</RawHTML>
+				</div>
 				<DropDown />
 			</MaxiBlock>,
 		];

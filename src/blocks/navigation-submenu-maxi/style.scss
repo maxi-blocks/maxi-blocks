@@ -4,6 +4,11 @@ body.maxi-blocks--active .maxi-navigation-submenu-block {
 	position: relative;
 	margin: 0;
 
+	&__content-wrapper {
+		display: flex;
+		flex-direction: row;
+	}
+
 	&__content {
 		display: inline-block;
 		text-decoration: none;

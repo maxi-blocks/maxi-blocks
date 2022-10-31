@@ -832,6 +832,7 @@ window.addEventListener('load', () => {
 				uniqueRelation =>
 					uniqueRelation.action === action &&
 					uniqueRelation.trigger === trigger &&
+					uniqueRelation.uniqueID === uniqueID &&
 					uniqueRelation.target === target
 			);
 

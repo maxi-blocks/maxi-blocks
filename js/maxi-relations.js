@@ -39,29 +39,30 @@ class Relation {
 
 		// transitionTrigger is an alternative trigger to target; not always used
 		// Check its eventListeners to understand better about its responsibility
-		this.transitionTriggers = this.effects.map(
-			item => item.transitionTrigger
+		this.transitionTriggers = Array.from(
+			new Set(this.effects.map(item => item.transitionTrigger))
 		);
-		this.transitionTriggerEls = Array.from(
-			new Set(
-				this.transitionTriggers.map(transitionTrigger =>
-					transitionTrigger
-						? this.blockTargetEl.querySelector(transitionTrigger)
-						: this.targetEl
-				)
-			)
+		this.transitionTriggerEls = this.transitionTriggers.map(
+			transitionTrigger =>
+				transitionTrigger
+					? this.blockTargetEl.querySelector(transitionTrigger)
+					: this.targetEl
 		);
 
-		this.transitionTargets = this.effects.flatMap(item => {
-			switch (typeof item.transitionTarget) {
-				case 'string':
-					return [item.transitionTarget];
-				case 'object':
-					return item.transitionTarget;
-				default:
-					return [''];
-			}
-		});
+		this.transitionTargets = Array.from(
+			new Set(
+				this.effects.flatMap(item => {
+					switch (typeof item.transitionTarget) {
+						case 'string':
+							return [item.transitionTarget];
+						case 'object':
+							return item.transitionTarget;
+						default:
+							return [''];
+					}
+				})
+			)
+		);
 
 		this.isBorders = this.attributes.map(attributes =>
 			Object.keys(attributes).some(attr => attr.startsWith('border'))

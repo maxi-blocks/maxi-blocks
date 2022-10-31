@@ -272,6 +272,13 @@ class Relation {
 		const stylesObjs = [];
 		const effectsObjs = [];
 
+		const pushStylesAndEffects = (stylesObj, effectsObj) => {
+			const isEmptyObject = obj => Object.keys(obj).length === 0;
+
+			if (!isEmptyObject(stylesObj)) stylesObjs.push(stylesObj);
+			if (!isEmptyObject(effectsObj)) effectsObjs.push(effectsObj);
+		};
+
 		this.css.forEach((css, index) => {
 			if (this.hasMultipleTargets[index]) {
 				const stylesObj = {};
@@ -291,18 +298,13 @@ class Relation {
 					effectsObj = rawEffects;
 				});
 
-				stylesObjs.push(stylesObj);
-				effectsObjs.push(effectsObj);
+				pushStylesAndEffects(stylesObj, effectsObj);
+			} else {
+				const { stylesObj, effectsObj } = cleanValues(
+					getCssObjForEachTarget(css, this.effects[index])
+				);
+				pushStylesAndEffects(stylesObj, effectsObj);
 			}
-
-			const { stylesObj, effectsObj } = cleanValues(
-				getCssObjForEachTarget(css, this.effects[index])
-			);
-
-			const isEmptyObject = obj => Object.keys(obj).length === 0;
-
-			if (!isEmptyObject(stylesObj)) stylesObjs.push(stylesObj);
-			if (!isEmptyObject(effectsObj)) effectsObjs.push(effectsObj);
 		});
 
 		return {

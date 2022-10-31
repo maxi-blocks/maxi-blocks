@@ -90,7 +90,6 @@ body.maxi-blocks--active #content {
 	.maxi-text-block--link,
 	.maxi-link-wrapper {
 		&:focus {
-			background: unset;
 			text-decoration: none;
 		}
 	}

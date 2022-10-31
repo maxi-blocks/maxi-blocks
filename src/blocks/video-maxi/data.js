@@ -18,9 +18,11 @@ const overlayClass = `${blockClass}__overlay`;
  */
 const name = 'video-maxi';
 const copyPasteMapping = {
+	_exclude: ['url', 'embedUrl', 'videoType'],
 	settings: {
 		Video: {
 			group: {
+				Url: ['url', 'embedUrl', 'videoType'],
 				'Video type': 'playerType',
 				'Start time': 'startTime',
 				'End time': 'endTime',

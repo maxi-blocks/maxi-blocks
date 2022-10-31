@@ -7,11 +7,10 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
+import { ColumnSizeControl } from './components';
 import { createSelectors } from '../../extensions/styles/custom-css';
 import { getGroupAttributes } from '../../extensions/styles';
-import getParentRowClientId from '../../components/relation-control/getParentRowClientId';
 import getRowGapProps from '../../extensions/attributes/getRowGapProps';
-import { ColumnSizeControl } from '../../components';
 import {
 	getColumnSizeStyles,
 	getFlexStyles,
@@ -78,7 +77,11 @@ const interactionBuilderSettings = {
 				const { getBlockAttributes } = select('core/block-editor');
 
 				const rowPattern = getGroupAttributes(
-					getBlockAttributes(getParentRowClientId(props.clientId)),
+					getBlockAttributes(
+						wp.data
+							.select('core/block-editor')
+							.getBlockRootClientId(props.clientId)
+					),
 					'rowPattern'
 				);
 
@@ -88,7 +91,9 @@ const interactionBuilderSettings = {
 				const { getBlock } = select('core/block-editor');
 
 				const parentRowBlock = getBlock(
-					getParentRowClientId(props.clientId)
+					wp.data
+						.select('core/block-editor')
+						.getBlockRootClientId(props.clientId)
 				);
 
 				const columnsSize = parentRowBlock.innerBlocks.reduce(

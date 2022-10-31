@@ -10,6 +10,7 @@ import { InspectorControls } from '@wordpress/block-editor';
 import {
 	AccordionControl,
 	DividerControl,
+	ResponsiveTabsControl,
 	SelectControl,
 	SettingTabsControl,
 } from '../../components';
@@ -19,7 +20,6 @@ import {
 } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { customCss } from './data';
-import ResponsiveTabsControl from '../../components/responsive-tabs-control';
 import { withMaxiInspector } from '../../extensions/inspector';
 
 /**

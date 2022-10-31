@@ -4,7 +4,6 @@
 import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
-import { RangeControl } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -13,15 +12,14 @@ import {
 	AccordionControl,
 	AdvancedNumberControl,
 	ClipPath,
-	HoverEffectControl,
 	ImageAltControl,
-	ImageCropControl,
 	ImageShape,
+	ResponsiveTabsControl,
 	SelectControl,
 	SettingTabsControl,
-	ToggleSwitch,
 	TypographyControl,
 } from '../../components';
+import { DimensionTab, HoverEffectControl } from './components';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
@@ -29,212 +27,12 @@ import {
 } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { customCss } from './data';
-import ResponsiveTabsControl from '../../components/responsive-tabs-control';
 import { withMaxiInspector } from '../../extensions/inspector';
 
 /**
  * External dependencies
  */
-import { capitalize, isEmpty, isNil } from 'lodash';
-
-/**
- * Dimension tab
- */
-const dimensionTab = props => {
-	const {
-		attributes,
-		clientId,
-		maxiSetAttributes,
-		resizableObject,
-		imageData,
-	} = props;
-	const {
-		cropOptions,
-		imageRatio,
-		imageSize,
-		isImageUrl,
-		mediaID,
-		SVGElement,
-		useInitSize,
-	} = attributes;
-
-	const getSizeOptions = () => {
-		const response = [];
-
-		if (imageData) {
-			let { sizes } = imageData.media_details;
-			sizes = Object.entries(sizes).sort((a, b) => {
-				return a[1].width - b[1].width;
-			});
-			sizes.forEach(size => {
-				const name = capitalize(size[0]);
-				const val = size[1];
-				response.push({
-					label: `${name} - ${val.width}x${val.height}`,
-					value: size[0],
-				});
-			});
-		}
-		response.push({
-			label: 'Custom',
-			value: 'custom',
-		});
-
-		return response;
-	};
-
-	const getSizeResponse = imageSize => {
-		if (cropOptions && imageSize === 'custom') {
-			const {
-				source_url: mediaURL,
-				width: mediaWidth,
-				height: mediaHeight,
-			} = cropOptions;
-			return { mediaURL, mediaWidth, mediaHeight };
-		}
-		if (imageData && imageSize !== 'custom') {
-			const {
-				source_url: mediaURL,
-				width: mediaWidth,
-				height: mediaHeight,
-			} = imageData.media_details.sizes[imageSize];
-
-			return { mediaURL, mediaWidth, mediaHeight };
-		}
-		return { mediaURL: null, mediaWidth: null, mediaHeight: null };
-	};
-
-	return {
-		label: __('Dimension', 'maxi-blocks'),
-		content: (
-			<>
-				{(!isImageUrl || !SVGElement) && getSizeOptions().length > 1 && (
-					<>
-						<SelectControl
-							label={__('Image size', 'maxi-blocks')}
-							value={
-								imageSize || imageSize === 'custom'
-									? imageSize
-									: 'full'
-							} // is still necessary?
-							options={getSizeOptions()}
-							onChange={imageSize => {
-								const { mediaURL, mediaWidth, mediaHeight } =
-									getSizeResponse(imageSize);
-								maxiSetAttributes({
-									imageSize,
-									mediaURL,
-									mediaWidth,
-									mediaHeight,
-								});
-							}}
-						/>
-						{imageSize === 'custom' && (
-							<ImageCropControl
-								mediaID={mediaID}
-								cropOptions={cropOptions}
-								onChange={cropOptions => {
-									maxiSetAttributes({
-										cropOptions,
-										mediaURL: cropOptions.image.source_url,
-										mediaHeight: cropOptions.image.height,
-										mediaWidth: cropOptions.image.width,
-									});
-								}}
-							/>
-						)}
-					</>
-				)}
-				<ToggleSwitch
-					label={__('Use original size', 'maxi-blocks')}
-					className='maxi-image-inspector__initial-size'
-					selected={useInitSize}
-					onChange={val =>
-						maxiSetAttributes({
-							useInitSize: val,
-						})
-					}
-				/>
-				{!useInitSize && (
-					<RangeControl
-						className='maxi-image-inspector__dimension-width'
-						label={__('Width', 'maxi-blocks')}
-						value={attributes.imgWidth}
-						onChange={val => {
-							if (!isNil(val)) {
-								maxiSetAttributes({
-									imgWidth: val,
-								});
-
-								resizableObject &&
-									resizableObject.updateSize({
-										width: `${val}%`,
-									});
-							} else {
-								const defaultAttribute = getDefaultAttribute(
-									'imgWidth',
-									clientId
-								);
-
-								maxiSetAttributes({
-									imgWidth: defaultAttribute,
-								});
-
-								resizableObject &&
-									resizableObject.updateSize({
-										width: `${defaultAttribute}%`,
-									});
-							}
-						}}
-						max={100}
-						allowReset
-						initialPosition={getDefaultAttribute(
-							'imgWidth',
-							clientId
-						)}
-					/>
-				)}
-				<SelectControl
-					className='maxi-image-inspector__ratio'
-					label={__('Image ratio', 'maxi-blocks')}
-					value={imageRatio}
-					options={[
-						{
-							label: __('Original size', 'maxi-blocks'),
-							value: 'original',
-						},
-						{
-							label: __('1:1 Aspect ratio', 'maxi-blocks'),
-							value: 'ar11',
-						},
-						{
-							label: __('2:3 Aspect ratio', 'maxi-blocks'),
-							value: 'ar23',
-						},
-						{
-							label: __('3:2 Aspect ratio', 'maxi-blocks'),
-							value: 'ar32',
-						},
-						{
-							label: __('4:3 Aspect ratio', 'maxi-blocks'),
-							value: 'ar43',
-						},
-						{
-							label: __('16:9 Aspect ratio', 'maxi-blocks'),
-							value: 'ar169',
-						},
-					]}
-					onChange={imageRatio =>
-						maxiSetAttributes({
-							imageRatio,
-						})
-					}
-				/>
-			</>
-		),
-		extraIndicators: ['imageRatio', 'imgWidth'],
-	};
-};
+import { isEmpty } from 'lodash';
 
 /**
  * Inspector
@@ -250,6 +48,7 @@ const Inspector = props => {
 		uniqueID,
 		mediaID,
 		captionPosition,
+		fitParentSize,
 	} = attributes;
 	const { selectors, categories } = customCss;
 
@@ -307,8 +106,22 @@ const Inspector = props => {
 									deviceType === 'general' &&
 										attributes[
 											'image-full-width-general'
-										] !== 'full' &&
-										dimensionTab({ ...props, imageData }),
+										] !== 'full' && {
+											label: __(
+												'Dimension',
+												'maxi-blocks'
+											),
+											content: (
+												<DimensionTab
+													{...props}
+													imageData={imageData}
+												/>
+											),
+											extraIndicators: [
+												'imageRatio',
+												'imgWidth',
+											],
+										},
 									...inspectorTabs.alignment({
 										props,
 										isAlignment: true,
@@ -648,6 +461,7 @@ const Inspector = props => {
 									...inspectorTabs.size({
 										props,
 										block: true,
+										hideHeight: fitParentSize,
 									}),
 									...inspectorTabs.marginPadding({
 										props,

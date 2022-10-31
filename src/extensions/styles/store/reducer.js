@@ -10,7 +10,10 @@ import controls from './controls';
  * @param {Object} action Dispatched action.
  * @return {Object} Updated state.
  */
-function reducer(state = { styles: {}, isUpdate: null }, action) {
+function reducer(
+	state = { styles: {}, isUpdate: null, prevSavedAttrs: [] },
+	action
+) {
 	switch (action.type) {
 		case 'UPDATE_STYLES':
 			return {
@@ -33,6 +36,11 @@ function reducer(state = { styles: {}, isUpdate: null }, action) {
 			action.targets.forEach(target => delete state.styles[target]);
 			return {
 				...state,
+			};
+		case 'SAVE_PREV_SAVED_ATTRS':
+			return {
+				...state,
+				prevSavedAttrs: action.prevSavedAttrs,
 			};
 		default:
 			return state;

@@ -50,7 +50,11 @@ const getColumnSizeStyles = (obj, rowGapProps, clientId) => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
-		const fitContent = obj[`column-fit-content-${breakpoint}`];
+		const fitContent = getLastBreakpointAttribute({
+			target: 'column-fit-content',
+			breakpoint,
+			attributes: obj,
+		});
 		let columnSize = obj[`column-size-${breakpoint}`];
 
 		if (fitContent) {

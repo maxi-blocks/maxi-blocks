@@ -55,8 +55,8 @@ const ButtonInserter = props => {
 	const { onToggle } = props;
 
 	return (
-		<Button
-			className='maxi-wrapper-block-inserter__button maxi-block-inserter__button'
+		<ButtonBlockAppender
+			className='maxi-components-button maxi-block-inserter__button'
 			onClick={onToggle}
 		>
 			<svg
@@ -70,7 +70,7 @@ const ButtonInserter = props => {
 			>
 				<path d='M18 11.2h-5.2V6h-1.6v5.2H6v1.6h5.2V18h1.6v-5.2H18z' />
 			</svg>
-		</Button>
+		</ButtonBlockAppender>
 	);
 };
 

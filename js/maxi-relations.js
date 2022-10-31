@@ -167,14 +167,14 @@ class Relation {
 				)}`
 			];
 
-		return Math.max(
-			...this.effects.map(
-				(_, index) =>
-					(getTransitionValue(index, 'duration') +
-						getTransitionValue(index, 'delay')) *
-					1000
-			)
-		);
+		return this.effects.reduce((promise, _, index) => {
+			const transitionDuration = getTransitionValue(index, 'duration');
+			const transitionDelay = getTransitionValue(index, 'delay');
+			const transitionTimeout =
+				(transitionDuration + transitionDelay) * 1000;
+
+			return Math.max(promise, transitionTimeout);
+		}, 0);
 	}
 
 	/**

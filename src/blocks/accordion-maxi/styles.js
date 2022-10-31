@@ -273,7 +273,7 @@ const getPaneHeaderObject = props => {
 				},
 		}),
 		...(props['header-line-status-hover'] && {
-			' .maxi-pane-block[aria-expanded]:hover .maxi-pane-block__header-line':
+			' .maxi-pane-block[aria-expanded] .maxi-pane-block__header:hover .maxi-pane-block__header-line':
 				{
 					headerLine: {
 						...getDividerStyles(
@@ -289,7 +289,7 @@ const getPaneHeaderObject = props => {
 		}),
 		' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__header':
 			getPaneHeaderStyles(props, 'active-'),
-		' .maxi-pane-block[aria-expanded]:hover .maxi-pane-block__header':
+		' .maxi-pane-block[aria-expanded] .maxi-pane-block__header:hover .maxi-pane-block__header':
 			getPaneHeaderStyles(props, '', true),
 		' .maxi-pane-block .maxi-pane-block__title': getPaneTitleStyles(
 			props,
@@ -300,7 +300,7 @@ const getPaneHeaderObject = props => {
 				getPaneTitleStyles(props, 'active-title-'),
 		}),
 		...(props['title-typography-status-hover'] && {
-			' .maxi-pane-block[aria-expanded]:hover .maxi-pane-block__title':
+			' .maxi-pane-block[aria-expanded] .maxi-pane-block__header:hover .maxi-pane-block__title':
 				getPaneTitleStyles(props, 'title-', true),
 		}),
 	};
@@ -354,7 +354,7 @@ const getPaneContentObject = props => {
 					},
 			}),
 			...(props['content-line-status-hover'] && {
-				' .maxi-pane-block[aria-expanded]:hover .maxi-pane-block__content-line':
+				' .maxi-pane-block[aria-expanded] .maxi-pane-block__header:hover .maxi-pane-block__content-line':
 					{
 						paneLine: {
 							...getDividerStyles(

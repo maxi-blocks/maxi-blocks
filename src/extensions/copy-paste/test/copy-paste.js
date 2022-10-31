@@ -216,6 +216,47 @@ describe('getOrganizedAttributes', () => {
 		expect(result).toMatchSnapshot();
 	});
 
+	it('Should ignore groups, which have names that start with underscore', () => {
+		const copyPasteMapping = {
+			settings: {
+				Width: {
+					props: 'width',
+					hasBreakpoints: true,
+				},
+				_Height: {
+					props: 'height',
+					hasBreakpoints: true,
+				},
+			},
+			_exclude: [
+				'some attribute (they are excluded by another function, so dont care)',
+			],
+			_notSettings: {
+				Height: {
+					props: 'height',
+					hasBreakpoints: true,
+				},
+			},
+		};
+		const attributes = {
+			'width-general': '80%',
+			'width-l': undefined,
+			'width-m': '100%',
+			'width-s': '50%',
+			'width-xs': '60%',
+			'width-xxl': '95%',
+			'height-general': '80%',
+			'height-l': undefined,
+			'height-m': '100%',
+			'height-s': '50%',
+			'height-xs': '60%',
+			'height-xxl': '95%',
+		};
+
+		const result = getOrganizedAttributes(attributes, copyPasteMapping);
+		expect(result).toMatchSnapshot();
+	});
+
 	it('Ensure it works with multiply conditions', () => {
 		const copyPasteMapping = {
 			settings: {

@@ -94,7 +94,7 @@ describe('Divider Maxi', () => {
 		expect(alignmentMHorizontal).toBe('flex-end');
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
-	// divider line orientation responsive
+
 	it('Check responsive line orientation', async () => {
 		await createNewPost();
 		await insertBlock('Divider Maxi');
@@ -119,7 +119,7 @@ describe('Divider Maxi', () => {
 		);
 
 		await alignmentSelectors.select('horizontal');
-		expect(await getAttributes('line-orientation-l')).toStrictEqual(
+		expect(await getAttributes('line-orientation-general')).toStrictEqual(
 			'horizontal'
 		);
 

@@ -60,10 +60,10 @@ class Relation {
 			}
 		});
 
-		this.isBorders = this.attributes.map(attributes =>
+		this.isBorderArray = this.attributes.map(attributes =>
 			Object.keys(attributes).some(attr => attr.startsWith('border'))
 		);
-		this.isIcons = item.settings.map(
+		this.isIconArray = item.settings.map(
 			setting => setting === 'Icon colour' || setting === 'Button icon'
 		);
 		this.isSVG = this.fullTarget.includes('svg-icon-maxi');
@@ -456,7 +456,7 @@ class Relation {
 							}
 						);
 
-						if (this.isBorders[index] && isBackground) {
+						if (this.isBorderArray[index] && isBackground) {
 							const getBorderValue = target =>
 								this.attributes[
 									`border-${target}-width-${breakpoint}`
@@ -597,7 +597,7 @@ class Relation {
 							const transitionString = this.getTransitionString(
 								currentStyleObj,
 								this.effectsObjs[index][breakpoint],
-								this.isIcons[index]
+								this.isIconArray[index]
 							);
 
 							const selectorRegExp = new RegExp(
@@ -618,7 +618,7 @@ class Relation {
 									transitionExistsRegExp
 								)
 							) {
-								if (!this.isIcons[index])
+								if (!this.isIconArray[index])
 									this.transitionString =
 										this.transitionString.replace(
 											transitionExistsRegExp,

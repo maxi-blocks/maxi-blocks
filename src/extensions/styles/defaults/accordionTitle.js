@@ -1,20 +1,35 @@
+import hoverAttributesCreator from '../hoverAttributesCreator';
 import paletteAttributesCreator from '../paletteAttributesCreator';
 import prefixAttributesCreator from '../prefixAttributesCreator';
 import { typography } from './typography';
 import typographyHover from './typographyHover';
 
+const prefix = 'title-';
+
+const titleBackground = {
+	...paletteAttributesCreator({
+		prefix: `${prefix}background-`,
+		palette: 4,
+	}),
+};
+
 const accordionTitle = {
 	titleLevel: { type: 'string', default: 'h6' },
-	...paletteAttributesCreator({
-		prefix: 'title-background-',
+	...titleBackground,
+	...prefixAttributesCreator({
+		obj: titleBackground,
+		prefix: 'active-',
 	}),
-	...prefixAttributesCreator({ obj: typography, prefix: 'title-' }),
-	...prefixAttributesCreator({ obj: typographyHover, prefix: 'title-' }),
+	...hoverAttributesCreator({
+		obj: titleBackground,
+	}),
+	...prefixAttributesCreator({ obj: typography, prefix }),
+	...prefixAttributesCreator({ obj: typographyHover, prefix }),
 	...prefixAttributesCreator({
 		obj: typography,
-		prefix: 'active-title-',
+		prefix: `active-${prefix}`,
 		newAttr: {
-			'title-typography-status-active': {
+			[`${prefix}typography-status-active`]: {
 				type: 'boolean',
 				default: false,
 			},

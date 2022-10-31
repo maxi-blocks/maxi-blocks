@@ -31,7 +31,7 @@ class Relation {
 		({ stylesObjs: this.stylesObjs, effectsObjs: this.effectsObjs } =
 			this.generateCssResponsiveObj());
 
-		this.breakpointsObjs = this.generateBreakpointsObjs();
+		this.breakpointsObj = this.generateBreakpointsObj();
 
 		this.hoverStatus = this.effects.some(item => item.hoverStatus);
 		this.isContained = this.triggerEl.contains(this.targetEl);
@@ -130,22 +130,20 @@ class Relation {
 			);
 	}
 
-	getCurrentBreakpoint(index) {
+	getCurrentBreakpoint() {
 		const winWidth = window.innerWidth;
 
 		let currentBreakpoint = 'general';
 
-		Object.entries(this.breakpointsObjs[index]).forEach(
-			([breakpoint, value]) => {
-				if (!['general', 'xxl'].includes(breakpoint)) {
-					if (breakpoint === 'general') return;
+		Object.entries(this.breakpointsObj).forEach(([breakpoint, value]) => {
+			if (!['general', 'xxl'].includes(breakpoint)) {
+				if (breakpoint === 'general') return;
 
-					if (winWidth <= this.breakpointsObjs[index].xl)
-						currentBreakpoint = breakpoint;
-				}
-				if (winWidth <= value) currentBreakpoint = breakpoint;
+				if (winWidth <= this.breakpointsObj.xl)
+					currentBreakpoint = breakpoint;
 			}
-		);
+			if (winWidth <= value) currentBreakpoint = breakpoint;
+		});
 
 		return currentBreakpoint;
 	}
@@ -158,10 +156,12 @@ class Relation {
 	}
 
 	getTransitionTimeout() {
+		const currentBreakpoint = this.getCurrentBreakpoint();
+
 		const getTransitionValue = (index, prop) =>
 			this.effects[index][
 				`transition-${prop}-${this.getLastUsableBreakpoint(
-					this.getCurrentBreakpoint(index),
+					currentBreakpoint,
 					breakpoint =>
 						Object.prototype.hasOwnProperty.call(
 							this.effects[index],
@@ -310,10 +310,10 @@ class Relation {
 		};
 	}
 
-	generateBreakpointsObjs() {
-		const breakpointsObjs = [];
+	generateBreakpointsObj() {
+		const breakpointsObj = {};
 
-		const getBreakpointValues = (css, index) => {
+		const getBreakpointValues = css => {
 			this.breakpoints.forEach(breakpoint => {
 				if (
 					Object.prototype.hasOwnProperty.call(css, breakpoint) &&
@@ -329,8 +329,7 @@ class Relation {
 							? css.xl.breakpoint
 							: breakpointValue;
 
-					if (!breakpointsObjs[index]) breakpointsObjs[index] = {};
-					breakpointsObjs[index][breakpoint] = breakpointValue;
+					breakpointsObj[breakpoint] = breakpointValue;
 				}
 			});
 		};
@@ -338,12 +337,12 @@ class Relation {
 		this.css.forEach((css, index) => {
 			if (this.hasMultipleTargets[index]) {
 				Object.keys(css).forEach(target => {
-					getBreakpointValues(css[target], index);
+					getBreakpointValues(css[target]);
 				});
-			} else getBreakpointValues(css, index);
+			} else getBreakpointValues(css);
 		});
 
-		return breakpointsObjs;
+		return breakpointsObj;
 	}
 
 	escapeRegExp(string) {
@@ -413,7 +412,7 @@ class Relation {
 		const getStylesLine = (stylesObj, target, index) => {
 			const isBackground = target.includes('maxi-background-displayer');
 
-			Object.entries(this.breakpointsObjs[index]).forEach(
+			Object.entries(this.breakpointsObj).forEach(
 				([breakpoint, breakpointValue]) => {
 					if (stylesObj[breakpoint]) {
 						// Checks if the element needs special CSS to be avoided in case the element is hovered
@@ -557,7 +556,7 @@ class Relation {
 		const getTransitionLine = (stylesObj, target, index) => {
 			const isBackground = target.includes('maxi-background-displayer');
 
-			Object.entries(this.breakpointsObjs[index]).forEach(
+			Object.entries(this.breakpointsObj).forEach(
 				([breakpoint, breakpointValue]) => {
 					if (this.effectsObjs[index][breakpoint]) {
 						const { prevLine, postLine } = this.getMediaLines(

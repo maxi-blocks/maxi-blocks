@@ -75,19 +75,21 @@ const TitleSettings = props => {
 };
 
 const AccordionTitleSettings = props => {
-	const { titleLevel, onChange } = props;
+	const { titleLevel, onChange, breakpoint } = props;
 
 	const prefix = 'title-';
 	const bgPrefix = 'title-background-';
 
 	return (
 		<>
-			<FontLevelControl
-				value={titleLevel}
-				onChange={obj => {
-					onChange({ titleLevel: obj.textLevel });
-				}}
-			/>
+			{breakpoint === 'general' && (
+				<FontLevelControl
+					value={titleLevel}
+					onChange={obj => {
+						onChange({ titleLevel: obj.textLevel });
+					}}
+				/>
+			)}
 			<SettingTabsControl
 				depth={2}
 				items={[

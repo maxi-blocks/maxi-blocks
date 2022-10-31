@@ -831,24 +831,20 @@ window.addEventListener('load', () => {
 	if (!relations) return;
 
 	const uniqueRelations = relations.reduce(
-		(unique, { action, trigger, uniqueID, target }) => {
-			const isUnique = !unique.find(
-				uniqueRelation =>
-					uniqueRelation.action === action &&
-					uniqueRelation.trigger === trigger &&
-					uniqueRelation.uniqueID === uniqueID &&
-					uniqueRelation.target === target
+		(uniqueArray, { action, trigger, uniqueID, target }) => {
+			const getIsUnique = relation =>
+				relation.action === action &&
+				relation.trigger === trigger &&
+				relation.uniqueID === uniqueID &&
+				relation.target === target;
+
+			const isUnique = !uniqueArray.find(uniqueRelation =>
+				getIsUnique(uniqueRelation)
 			);
-
 			if (isUnique) {
-				const sameRelations = relations.filter(
-					sameRelation =>
-						sameRelation.action === action &&
-						sameRelation.trigger === trigger &&
-						sameRelation.uniqueID === uniqueID &&
-						sameRelation.target === target
+				const sameRelations = relations.filter(sameRelation =>
+					getIsUnique(sameRelation)
 				);
-
 				const mergedSameRelations = sameRelations.reduce(
 					(obj, relation) => {
 						Object.keys(relation).forEach(key => {
@@ -868,11 +864,10 @@ window.addEventListener('load', () => {
 					},
 					{}
 				);
-
-				unique.push(mergedSameRelations);
+				uniqueArray.push(mergedSameRelations);
 			}
 
-			return unique;
+			return uniqueArray;
 		},
 		[]
 	);

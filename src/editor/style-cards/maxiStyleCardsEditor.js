@@ -333,7 +333,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 										window.confirm(
 											sprintf(
 												__(
-													'Are you sure you want to delete "%s" style card? You cannot undo it',
+													'Deleting "%s" style card. This action is permanent. ',
 													'maxi-blocks'
 												),
 												styleCards[selectedSCKey].name
@@ -383,7 +383,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 										window.confirm(
 											sprintf(
 												__(
-													'Are you sure you want to apply "%s" style card? It will apply the styles to the whole site',
+													'Activate new style. Customized blocks will not change. All other Maxi blocks will get new "%s" styles.',
 													'maxi-blocks'
 												),
 												getCurrentSCName

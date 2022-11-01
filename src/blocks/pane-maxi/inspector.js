@@ -186,6 +186,9 @@ const Inspector = props => {
 											...props,
 										},
 									}),
+									...inspectorTabs.opacity({
+										props,
+									}),
 									...inspectorTabs.position({
 										props: {
 											...props,

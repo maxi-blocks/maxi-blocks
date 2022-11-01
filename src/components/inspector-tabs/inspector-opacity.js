@@ -16,6 +16,7 @@ import { opacity as opacityAttr } from '../../extensions/styles/defaults';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import SettingTabsControl from '../setting-tabs-control';
 import ToggleSwitch from '../toggle-switch';
+import ManageHoverTransitions from '../manage-hover-transitions';
 
 /**
  * Component
@@ -60,6 +61,7 @@ const opacity = ({ props, depth = 2 }) => {
 							label: __('Hover state', 'maxi-blocks'),
 							content: (
 								<>
+									<ManageHoverTransitions />
 									<ToggleSwitch
 										label={__(
 											'Enable opacity hover',

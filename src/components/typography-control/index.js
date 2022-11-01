@@ -338,7 +338,7 @@ const TypographyControl = props => {
 		const { receiveBaseBreakpoint } = select('maxiBlocks');
 
 		const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
-		// console.log(styleCard);
+
 		const baseBreakpoint = receiveBaseBreakpoint();
 
 		return {
@@ -557,7 +557,6 @@ const TypographyControl = props => {
 					)}
 					defaultValue={getDefault(`${prefix}font-size`)}
 					onChangeValue={(val, unit) => {
-						// console.log(val, unit);
 						onChangeFormat({
 							[`${prefix}font-size`]: val,
 							...(unit && { [`${prefix}font-size-unit`]: unit }),

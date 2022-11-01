@@ -249,6 +249,14 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 		setSettings(false);
 	};
 
+	const [showCreate, setShowCreate] = useState(false);
+	const toggleCreate = () => {
+		setShowCreate(true);
+	};
+	const closeCreate = () => {
+		setShowCreate(false);
+	};
+
 	return (
 		!isEmpty(styleCards) && (
 			<Popover
@@ -398,49 +406,61 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 				{settings && (
 					<div className='maxi-style-cards__sc maxi-style-cards__settings'>
 						<div className='maxi-style-cards__sc-custom-name'>
-							<h3>Custom style card name</h3>
 							<div className='maxi-style-cards__sc__save'>
-								<input
-									type='text'
-									placeholder={__(
-										'Add your Style Card Name here',
-										'maxi-blocks'
-									)}
-									value={styleCardName}
-									onChange={e =>
-										setStyleCardName(e.target.value)
-									}
-								/>
-								<Button
-									disabled={isEmpty(styleCardName)}
-									onClick={() => {
-										const newStyleCard = {
-											name: styleCardName,
-											status: '',
-											dark: {
-												defaultStyleCard: {
-													...selectedSCValue.dark
-														.defaultStyleCard,
-													...selectedSCValue.dark
-														.styleCard,
-												},
-												styleCard: {},
-											},
-											light: {
-												defaultStyleCard: {
-													...selectedSCValue.light
-														.defaultStyleCard,
-													...selectedSCValue.light
-														.styleCard,
-												},
-												styleCard: {},
-											},
-										};
-										saveImportedStyleCard(newStyleCard);
-									}}
-								>
-									{__('Add', 'maxi-blocks')}
-								</Button>
+								{!showCreate && (
+									<Button onClick={toggleCreate}>+</Button>
+								)}
+								{showCreate && (
+									<>
+										<input
+											type='text'
+											placeholder={__(
+												'Add your Style Card Name here',
+												'maxi-blocks'
+											)}
+											value={styleCardName}
+											onChange={e =>
+												setStyleCardName(e.target.value)
+											}
+										/>
+										<Button
+											disabled={isEmpty(styleCardName)}
+											onClick={() => {
+												const newStyleCard = {
+													name: styleCardName,
+													status: '',
+													dark: {
+														defaultStyleCard: {
+															...selectedSCValue
+																.dark
+																.defaultStyleCard,
+															...selectedSCValue
+																.dark.styleCard,
+														},
+														styleCard: {},
+													},
+													light: {
+														defaultStyleCard: {
+															...selectedSCValue
+																.light
+																.defaultStyleCard,
+															...selectedSCValue
+																.light
+																.styleCard,
+														},
+														styleCard: {},
+													},
+												};
+												saveImportedStyleCard(
+													newStyleCard
+												);
+												closeCreate();
+											}}
+										>
+											{__('Create', 'maxi-blocks')}
+										</Button>
+									</>
+								)}
 							</div>
 						</div>
 						<div className='maxi-style-cards__sc-cancel-save'>

@@ -83,10 +83,11 @@ const getCanvasSettings = ({ name, customCss }) => [
 			'borderRadius',
 		],
 		component: props => {
-			const { attributes, onChange } = props;
-			const { 'background-layers': blockBgLayers } = attributes;
+			const { attributes, onChange, blockAttributes } = props;
+			const { 'background-layers': currentBgLayers } = attributes;
+			const { 'background-layers': blockBgLayers } = blockAttributes;
 
-			return !isEmpty(blockBgLayers) ? (
+			return !isEmpty(currentBgLayers) ? (
 				<BlockBackgroundControl
 					{...props}
 					onChange={obj => {
@@ -98,6 +99,7 @@ const getCanvasSettings = ({ name, customCss }) => [
 									!key.includes('mediaID') &&
 									!key.includes('mediaURL')
 							);
+
 							return Object.fromEntries(
 								Object.entries(newBgLayer).filter(
 									([key, attr]) =>

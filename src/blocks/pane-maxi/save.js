@@ -13,7 +13,7 @@ import { getMaxiBlockAttributes, MaxiBlock } from '../../components/maxi-block';
  */
 const save = props => {
 	const { attributes } = props;
-	const { title, titleLevel } = attributes;
+	const { title, titleLevel, accordionUniqueId } = attributes;
 	const name = 'maxi-blocks/pane-maxi';
 
 	const { children, ...restInnerBlocksProps } = useInnerBlocksProps.save({
@@ -26,6 +26,7 @@ const save = props => {
 			// https://github.com/yeahcan/maxi-blocks/issues/3555 sometimes causes validation error,
 			// remove next line once it is fixed.
 			className='wp-block-maxi-blocks-pane-maxi'
+			data-accordion={accordionUniqueId}
 			aria-expanded={false}
 		>
 			<div className='maxi-pane-block__header'>

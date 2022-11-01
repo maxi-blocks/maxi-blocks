@@ -92,6 +92,7 @@ class edit extends MaxiBlockComponent {
 			<AccordionContext.Provider
 				key={`accordion-content-${uniqueID}`}
 				value={{
+					accordionUniqueId: uniqueID,
 					paneIcon: attributes['icon-content'],
 					paneIconActive: attributes['active-icon-content'],
 					accordionLayout,

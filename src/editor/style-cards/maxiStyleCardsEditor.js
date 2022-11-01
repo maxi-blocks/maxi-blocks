@@ -37,7 +37,7 @@ import { isEmpty, isNil, isEqual } from 'lodash';
 /**
  * Icons
  */
-import { styleCardBoat, reset, SCDelete, closeIcon } from '../../icons';
+import { styleCardBoat, SCDelete, closeIcon } from '../../icons';
 
 const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 	const {
@@ -95,17 +95,6 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 	useEffect(() => {
 		if (selectedSCValue) updateSCOnEditor(selectedSCValue);
 	}, [selectedSCKey]);
-
-	const canBeReset = keySC => {
-		if (
-			!isNil(styleCards[keySC]) &&
-			(!isEmpty(styleCards[keySC].light.styleCard) ||
-				!isEmpty(styleCards[keySC].dark.styleCard))
-		)
-			return true;
-
-		return false;
-	};
 
 	const canBeSaved = keySC => {
 		const currentSC = {
@@ -210,7 +199,15 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 		saveSCStyles(true);
 	};
 
-	const saveCurrentSC = () => {
+	const [postDate, setPostDate] = useState();
+
+	const saveChanges = () => {
+		const current = new Date();
+		const date = `${current.getDate()}/${
+			current.getMonth() + 1
+		}/${current.getFullYear()}`;
+		setPostDate(date);
+
 		const newStyleCards = {
 			...styleCards,
 			[selectedSCKey]: { ...selectedSCValue },
@@ -220,28 +217,15 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 		saveSCStyles(true);
 	};
 
-	const resetCurrentSC = () => {
-		const resetStyleCards = {
-			...styleCards,
-			[selectedSCKey]: {
-				...styleCards[selectedSCKey],
-				dark: {
-					styleCard: {},
-					defaultStyleCard: {
-						...styleCards[selectedSCKey].dark.defaultStyleCard,
-					},
-				},
-				light: {
-					styleCard: {},
-					defaultStyleCard: {
-						...styleCards[selectedSCKey].light.defaultStyleCard,
-					},
-				},
-			},
-		};
-		saveMaxiStyleCards(resetStyleCards);
-		updateSCOnEditor(resetStyleCards[selectedSCKey]);
-	};
+	// const saveCurrentSC = () => {
+	// 	const newStyleCards = {
+	// 		...styleCards,
+	// 		[selectedSCKey]: { ...selectedSCValue },
+	// 	};
+
+	// 	saveMaxiStyleCards(newStyleCards, true);
+	// 	saveSCStyles(true);
+	// };
 
 	const saveImportedStyleCard = card => {
 		const newId = `sc_${new Date().getTime()}`;
@@ -281,15 +265,15 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 						<span>{__('Active style card', 'maxi-blocks')}</span>
 						<h2 className='maxi-style-cards__popover__title'>
 							{__(`${selectedSCValue.name}`, 'maxi-blocks')}
-							<span>| date</span>
+							{postDate && <span>| {postDate}</span>}
 						</h2>
-						<span
-							className='maxi-responsive-selector__close'
-							onClick={() => setIsVisible(false)}
-						>
-							<Icon icon={closeIcon} />
-						</span>
 					</div>
+					<span
+						className='maxi-responsive-selector__close'
+						onClick={() => setIsVisible(false)}
+					>
+						<Icon icon={closeIcon} />
+					</span>
 				</div>
 
 				<div className='maxi-style-cards__sc'>
@@ -375,27 +359,6 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 									{__('Export', 'maxi-blocks')}
 								</Button>
 							</div>
-							<Button
-								disabled={!canBeReset(selectedSCKey)}
-								className='maxi-style-cards__sc__more-sc--reset'
-								onClick={() => {
-									if (
-										window.confirm(
-											sprintf(
-												__(
-													'Are you sure to reset "%s" style card\'s styles to defaults? Don\'t forget to apply the changes after',
-													'maxi-blocks'
-												),
-												getCurrentSCName
-											)
-										)
-									) {
-										resetCurrentSC();
-									}
-								}}
-							>
-								<Icon icon={reset} />
-							</Button>
 						</div>
 					</div>
 					{!settings && (
@@ -437,56 +400,63 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 				</div>
 
 				{settings && (
-					<div className='maxi-style-cards__settings'>
-						<Button onClick={cancelSettings}>
-							{__('Cancel', 'maxi-blocks')}
-						</Button>
-						<Button
-							className='maxi-style-cards__sc__actions--save'
-							disabled={!canBeSaved(selectedSCKey)}
-							onClick={saveCurrentSC()}
-						>
-							{__('Save', 'maxi-blocks')}
-						</Button>
-						<div className='maxi-style-cards__sc__save'>
-							<input
-								type='text'
-								placeholder={__(
-									'Add your Style Card Name here',
-									'maxi-blocks'
-								)}
-								value={styleCardName}
-								onChange={e => setStyleCardName(e.target.value)}
-							/>
+					<div className='maxi-style-cards__sc maxi-style-cards__settings'>
+						<div className='maxi-style-cards__sc-custom-name'>
+							<h3>Custom style card name</h3>
+							<div className='maxi-style-cards__sc__save'>
+								<input
+									type='text'
+									placeholder={__(
+										'Add your Style Card Name here',
+										'maxi-blocks'
+									)}
+									value={styleCardName}
+									onChange={e =>
+										setStyleCardName(e.target.value)
+									}
+								/>
+								<Button
+									disabled={isEmpty(styleCardName)}
+									onClick={() => {
+										const newStyleCard = {
+											name: styleCardName,
+											status: '',
+											dark: {
+												defaultStyleCard: {
+													...selectedSCValue.dark
+														.defaultStyleCard,
+													...selectedSCValue.dark
+														.styleCard,
+												},
+												styleCard: {},
+											},
+											light: {
+												defaultStyleCard: {
+													...selectedSCValue.light
+														.defaultStyleCard,
+													...selectedSCValue.light
+														.styleCard,
+												},
+												styleCard: {},
+											},
+										};
+										saveImportedStyleCard(newStyleCard);
+									}}
+								>
+									{__('Add', 'maxi-blocks')}
+								</Button>
+							</div>
+						</div>
+						<div className='maxi-style-cards__sc-cancel-save'>
+							<Button onClick={cancelSettings}>
+								{__('Cancel', 'maxi-blocks')}
+							</Button>
 							<Button
-								disabled={isEmpty(styleCardName)}
-								onClick={() => {
-									const newStyleCard = {
-										name: styleCardName,
-										status: '',
-										dark: {
-											defaultStyleCard: {
-												...selectedSCValue.dark
-													.defaultStyleCard,
-												...selectedSCValue.dark
-													.styleCard,
-											},
-											styleCard: {},
-										},
-										light: {
-											defaultStyleCard: {
-												...selectedSCValue.light
-													.defaultStyleCard,
-												...selectedSCValue.light
-													.styleCard,
-											},
-											styleCard: {},
-										},
-									};
-									saveImportedStyleCard(newStyleCard);
-								}}
+								className='maxi-style-cards__sc__actions--save'
+								disabled={!canBeSaved(selectedSCKey)}
+								onClick={saveChanges}
 							>
-								{__('Add', 'maxi-blocks')}
+								{__('Save', 'maxi-blocks')}
 							</Button>
 						</div>
 						<SettingTabsControl

@@ -1,10 +1,7 @@
 const setSVGContent = (content, color, type) => {
-	const typeRegexString = ` ${type}=[^-]([^none])([^\\"]+)`;
+	const typeRegexString = `( data-hover-${type}|) ${type}=[^-]([^none])([^\\"]+)`;
 
-	const svgRegExp = new RegExp(
-		`data-${type}( data-hover-${type}|)${typeRegexString}`,
-		'g'
-	);
+	const svgRegExp = new RegExp(`data-${type}${typeRegexString}`, 'g');
 	const svgStr = ` data-${type}$&`;
 
 	const fillRegExp = new RegExp(`${type}:([^none])([^\\}]+)`, 'g');
@@ -14,7 +11,7 @@ const setSVGContent = (content, color, type) => {
 	const fillStr2 = `${type}="${color}`;
 
 	const newContent = (
-		!content.match(svgRegExp) && (type === 'fill' || type === 'stroke')
+		!content.match(svgRegExp)
 			? content.replace(new RegExp(typeRegexString, 'g'), svgStr)
 			: content
 	)

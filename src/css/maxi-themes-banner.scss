@@ -90,7 +90,6 @@ body.maxi-blocks--active #content {
 	.maxi-text-block--link,
 	.maxi-link-wrapper {
 		&:focus {
-			background: unset;
 			text-decoration: none;
 		}
 	}
@@ -111,7 +110,7 @@ body.maxi-blocks--active #wpcontent .is-root-container {
 	padding: 0;
 }
 body.maxi-blocks--active #wpcontent .editor-styles-wrapper {
-	padding: 5px;
+	padding: 0px;
 }
 
 /*Removes anchor border for Twenty Twenty One and Twenty*/

@@ -162,6 +162,7 @@ const attributes = {
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
 	...attributesData.opacity,
+	...attributesData.opacityHover,
 	...attributesData.size,
 	...attributesData.margin,
 	...attributesData.padding,

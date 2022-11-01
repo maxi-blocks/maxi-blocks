@@ -1,3 +1,4 @@
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import hoverAttributesCreator from '../hoverAttributesCreator';
 import paletteAttributesCreator from '../paletteAttributesCreator';
 import prefixAttributesCreator from '../prefixAttributesCreator';
@@ -6,12 +7,19 @@ import typographyHover from './typographyHover';
 
 const prefix = 'title-';
 
-const titleBackground = {
-	...paletteAttributesCreator({
-		prefix: `${prefix}background-`,
-		palette: 4,
-	}),
-};
+const titleBackground = breakpointAttributesCreator({
+	obj: {
+		[`${prefix}background-status`]: {
+			type: 'boolean',
+			default: false,
+		},
+		...paletteAttributesCreator({
+			prefix: `${prefix}background-`,
+			palette: 4,
+		}),
+	},
+	noBreakpointAttr: [`${prefix}background-status`],
+});
 
 const accordionTitle = {
 	titleLevel: { type: 'string', default: 'h6' },

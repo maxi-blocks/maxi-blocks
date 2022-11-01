@@ -194,6 +194,12 @@ const getHoverObject = props => {
 			isHover: true,
 			prefix: 'svg-',
 		}),
+		opacity:
+			props['opacity-status-hover'] &&
+			getOpacityStyles(
+				{ ...getGroupAttributes(props, 'opacity', true) },
+				true
+			),
 	};
 
 	return response;

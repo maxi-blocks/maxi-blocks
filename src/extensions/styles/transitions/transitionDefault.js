@@ -18,6 +18,12 @@ const transitionDefault = {
 			property: false,
 			hoverProp: 'block-background-status-hover',
 		},
+		opacity: {
+			title: 'Opacity',
+			target: '',
+			property: 'opacity',
+			hoverProp: 'opacity-status-hover',
+		},
 	},
 };
 

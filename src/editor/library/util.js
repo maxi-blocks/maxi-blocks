@@ -264,13 +264,13 @@ export const onRequestInsertPattern = (
 
 			const idRegexp = /(mediaID|imageID)":(\d+),/g;
 			const id = parsed.match(idRegexp).map(item => item.match(/\d+/)[0]);
-			imagesIds.push(...id.filter(Boolean));
+			imagesIds.push(...id);
 
 			const urlRegexp = /(mediaURL|imageURL)":"([^"]+)"/g;
 			const url = parsed
 				.match(urlRegexp)
 				.map(item => item.split(/:(.+)/, 2)[1].replace(/"/g, ''));
-			imagesLinks.push(...url.filter(Boolean));
+			imagesLinks.push(...url);
 		});
 
 		if (!isEmpty(imagesLinks) && !isEmpty(imagesIds)) {

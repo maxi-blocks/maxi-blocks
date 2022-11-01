@@ -4,6 +4,11 @@
 import { useState } from '@wordpress/element';
 
 /**
+ * Internal dependencies
+ */
+import CopyPasteChildGroup from './CopyPastChildGroup';
+
+/**
  * External dependencies
  */
 import { isEmpty, isEqual, kebabCase, omit } from 'lodash';
@@ -18,6 +23,7 @@ const CopyPasteGroup = props => {
 		handleSpecialPaste,
 	} = props;
 	const [isOpen, setIsOpen] = useState(false);
+	const [isOpenChild, setIsOpenChild] = useState({});
 
 	const normalizedLabel = kebabCase(label);
 
@@ -42,6 +48,17 @@ const CopyPasteGroup = props => {
 			Object.keys(item).includes(label)
 		).length;
 		return currentCount === count;
+	};
+
+	const handleChangeCallback = params => {
+		const { name, attr, tab, checked, group } = params;
+		handleSpecialPaste({
+			name,
+			attr: kebabCase(attr),
+			tab,
+			checked,
+			group,
+		});
 	};
 
 	return (
@@ -87,42 +104,89 @@ const CopyPasteGroup = props => {
 							organizedAttributes[tab][label][attr]
 						) && (
 							<div
-								className='toolbar-item__copy-paste__popover__item'
 								key={`copy-paste-${tab}-${uniqueAttr}`}
-								data-copy_paste_group={kebabCase(label)}
+								className='toolbar-item__copy-paste__wrapper'
 							>
-								<label
-									htmlFor={uniqueAttr}
-									className='maxi-axis-control__content__item__checkbox'
+								<div
+									className='toolbar-item__copy-paste__popover__item'
+									data-copy_paste_group={kebabCase(label)}
 								>
-									<input
-										type='checkbox'
-										name={uniqueAttr}
-										id={uniqueAttr}
-										checked={
-											!isEmpty(
-												specialPaste[tab].filter(sp => {
-													return (
-														typeof sp ===
-															'object' &&
-														Object.values(
-															sp
-														).includes(attr)
-													);
+									<label
+										htmlFor={uniqueAttr}
+										className='maxi-axis-control__content__item__checkbox'
+									>
+										<input
+											type='checkbox'
+											name={uniqueAttr}
+											id={uniqueAttr}
+											checked={
+												!isEmpty(
+													specialPaste[tab].filter(
+														sp => {
+															return (
+																typeof sp ===
+																	'object' &&
+																Object.values(
+																	sp
+																).includes(attr)
+															);
+														}
+													)
+												)
+											}
+											onChange={e =>
+												handleSpecialPaste({
+													attr,
+													tab,
+													checked: e.target.checked,
+													group: label,
 												})
-											)
+											}
+										/>
+										<span>{attr}</span>
+									</label>
+									<span
+										onClick={e => {
+											const newIsOpenChild = isOpenChild;
+											const val =
+												typeof isOpenChild[
+													`copy-paste-${tab}-${uniqueAttr}`
+												] !== 'undefined'
+													? !isOpenChild[
+															`copy-paste-${tab}-${uniqueAttr}`
+													  ]
+													: true;
+											newIsOpenChild[
+												`copy-paste-${tab}-${uniqueAttr}`
+											] = val;
+											setIsOpenChild(newIsOpenChild);
+										}}
+										aria-expanded={
+											typeof isOpenChild[
+												`copy-paste-${tab}-${uniqueAttr}`
+											] !== 'undefined'
+												? isOpenChild[
+														`copy-paste-${tab}-${uniqueAttr}`
+												  ]
+												: false
 										}
-										onChange={e =>
-											handleSpecialPaste({
-												attr,
-												tab,
-												checked: e.target.checked,
-												group: label,
-											})
+										className='copy-paste__group-icon'
+									/>
+								</div>
+								{isOpenChild[
+									`copy-paste-${tab}-${uniqueAttr}`
+								] && (
+									<CopyPasteChildGroup
+										parentCallback={handleChangeCallback}
+										attr={attr}
+										label={label}
+										tab={tab}
+										specialPaste={specialPaste}
+										organizedAttributes={
+											organizedAttributes
 										}
 									/>
-									<span>{attr}</span>
-								</label>
+								)}
 							</div>
 						)
 					);

@@ -157,10 +157,20 @@ const CopyPaste = props => {
 		closeMoreSettings();
 	};
 
-	const handleSpecialPaste = ({ attr, tab, checked, group }) => {
+	const handleSpecialPaste = ({
+		name = false,
+		attr,
+		tab,
+		checked,
+		group,
+	}) => {
 		const specPaste = { ...specialPaste };
 
-		if (!isArray(attr)) {
+		if (name) {
+			// console.log(name, attr, tab, checked, group);
+			specPaste.separate[tab][group][name] = checked;
+			// console.log(specPaste);
+		} else if (!isArray(attr)) {
 			if (group) {
 				if (!checked)
 					specPaste[tab] = specPaste[tab].filter(sp => {
@@ -276,6 +286,16 @@ const CopyPaste = props => {
 								</div>
 							);
 
+						// console.log('specialPaste', specialPaste);
+						// console.log(
+						// 	'organizedAttributes',
+						// 	organizedAttributes.settings.Typography
+						// );
+						// console.log(
+						// 	'currentOrganizedAttributes',
+						// 	currentOrganizedAttributes.settings.Typography
+						// );
+
 						return (
 							!isEqual(
 								currentOrganizedAttributes[tab][label],
@@ -339,6 +359,7 @@ const CopyPaste = props => {
 									disablePadding
 									items={getTabItems()}
 								/>
+
 								<Button
 									className='toolbar-item__copy-paste__popover__button toolbar-item__copy-paste__popover__button--special'
 									onClick={onSpecialPaste}

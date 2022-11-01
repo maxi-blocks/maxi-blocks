@@ -210,6 +210,6 @@ const data = {
 	transition,
 	interactionBuilderSettings,
 };
-
+//
 export { copyPasteMapping, customCss, transition, interactionBuilderSettings };
 export default data;

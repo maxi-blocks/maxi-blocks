@@ -338,7 +338,7 @@ const TypographyControl = props => {
 		const { receiveBaseBreakpoint } = select('maxiBlocks');
 
 		const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
-
+		// console.log(styleCard);
 		const baseBreakpoint = receiveBaseBreakpoint();
 
 		return {

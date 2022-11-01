@@ -109,7 +109,6 @@ const styleGenerator = (styles, isIframe = false) => {
 				);
 
 				if (breakpoint === 'general') {
-					// dev
 					response += styleStringGenerator(
 						`${target}${suffix}`,
 						getResponsiveStyles(props.general),

@@ -204,6 +204,12 @@ const transition = {
 			property: false,
 			hoverProp: 'title-typography-status-hover',
 		},
+		'pane title background': {
+			title: 'Pane title background',
+			target: ' > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__header-content',
+			property: 'background-color',
+			hoverProp: 'title-background-status-hover',
+		},
 		...createIconTransitions({
 			target: ' > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__icon',
 			prefix: 'icon-',

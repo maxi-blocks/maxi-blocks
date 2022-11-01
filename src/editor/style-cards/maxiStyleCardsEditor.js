@@ -362,11 +362,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 						</div>
 					</div>
 					{!settings && (
-						<div className='maxi-style-cards__sc__actions'>
-							{/* <PostPreviewButton
-							className='maxi-style-cards__sc__actions--preview'
-							textContent={__('Preview', 'maxi-blocks')}
-						/> */}
+						<div className='maxi-style-cards__sc__actions edit-activate'>
 							<Button onClick={enableSettings}>Edit</Button>
 
 							<Button

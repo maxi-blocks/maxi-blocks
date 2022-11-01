@@ -83,7 +83,15 @@ body {
 		font-weight: 700;
 	}
 }
-
+.maxi-style-cards__sc__actions--save,
+.maxi-style-cards__sc__more-sc--select select {
+	border: 2px solid rgb(var(--maxi-light-color-4)) !important;
+}
+.edit-activate {
+	button {
+		border: 2px solid rgb(var(--maxi-light-color-4)) !important;
+	}
+}
 .maxi-responsive-selector {
 	.maxi-style-cards__popover {
 		position: fixed;
@@ -278,6 +286,7 @@ body {
 
 					.maxi-select-control__input {
 						height: 36px !important;
+						border-color: rgb(var(--maxi-light-color-1));
 					}
 				}
 				&--reset,

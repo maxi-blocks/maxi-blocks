@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { without, isEmpty } from 'lodash';
+import { isEmpty, pickBy, uniq, without } from 'lodash';
 
 /**
  * Internal dependencies
@@ -9,24 +9,20 @@ import { without, isEmpty } from 'lodash';
 import { getBgLayersSelectorsCss } from '../custom-css-control/utils';
 
 const getBgLayersSelectorsKeys = bgLayersSelectors =>
-	Array.from(
-		new Set(
-			Object.keys({
-				...bgLayersSelectors.background,
-				...bgLayersSelectors['background hover'],
-			})
-		)
+	uniq(
+		Object.keys({
+			...bgLayersSelectors['background hover'],
+			...bgLayersSelectors.background,
+		})
 	);
 
-const getLabel = (key, bgLayersSelectors) => {
-	const rawLabel = (bgLayersSelectors.background ||
-		bgLayersSelectors['background hover'])[key].label;
-	switch (rawLabel) {
-		// Exception for background wrapper, as it existed before with the label 'background'
-		case 'background wrapper':
+const getKey = key => {
+	switch (key) {
+		case 'background-displayer':
+			// Exception for background wrapper, as it existed before with the label 'background'
 			return 'background';
 		default:
-			return rawLabel;
+			return key;
 	}
 };
 
@@ -36,13 +32,25 @@ export const getTransformSelectors = (selectors, attributes) => {
 		'background-layers-hover': bgLayersHover = [],
 	} = attributes;
 
-	const bgLayersSelectors = getBgLayersSelectorsCss([
-		...bgLayers,
-		...bgLayersHover,
-	]);
+	const bgLayersSelectors = getBgLayersSelectorsCss(
+		[...bgLayers, ...bgLayersHover],
+		false
+	);
 
 	return {
-		...selectors,
+		...Object.entries(selectors).reduce((acc, [key, obj]) => ({
+			...acc,
+			[key]: ['normal', 'hover'].reduce(
+				(acc, type) => ({
+					...acc,
+					[type]: {
+						...obj[key],
+						label: key,
+					},
+				}),
+				{}
+			),
+		})),
 		...getBgLayersSelectorsKeys(bgLayersSelectors).reduce((acc, key) => {
 			const bgLayerSelectors = bgLayersSelectors.background[key];
 			const bgLayerHoverSelectors =
@@ -52,17 +60,14 @@ export const getTransformSelectors = (selectors, attributes) => {
 				[bgLayerSelectors, bgLayerHoverSelectors].some(
 					item => !isEmpty(item)
 				)
-			) {
-				const label = getLabel(key, bgLayersSelectors);
-
-				acc[label] = {};
-				if (!isEmpty(bgLayerSelectors)) {
-					acc[label].normal = bgLayerSelectors;
-				}
-				if (!isEmpty(bgLayerHoverSelectors)) {
-					acc[label].hover = bgLayerHoverSelectors;
-				}
-			}
+			)
+				acc[getKey(key)] = pickBy(
+					{
+						normal: bgLayerSelectors,
+						hover: bgLayerHoverSelectors,
+					},
+					value => !isEmpty(value)
+				);
 
 			return acc;
 		}, {}),
@@ -75,16 +80,16 @@ export const getTransformCategories = (categories, attributes) => {
 		'background-layers-hover': bgLayersHover = [],
 	} = attributes;
 
-	const bgLayersSelectors = getBgLayersSelectorsCss([
-		...bgLayers,
-		...bgLayersHover,
-	]);
+	const bgLayersSelectors = getBgLayersSelectorsCss(
+		[...bgLayers, ...bgLayersHover],
+		false
+	);
 
 	return without(
 		[
 			...without(categories, 'background', 'background hover'),
 			...getBgLayersSelectorsKeys(bgLayersSelectors).map(key =>
-				getLabel(key, bgLayersSelectors)
+				getKey(key)
 			),
 		],
 		isEmpty(bgLayers) && isEmpty(bgLayersHover) && 'background'

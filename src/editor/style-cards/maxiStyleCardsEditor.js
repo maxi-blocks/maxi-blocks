@@ -242,19 +242,21 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 
 	const [settings, setSettings] = useState(false);
 
-	const enableSettings = () => {
+	const showSettings = () => {
 		setSettings(true);
 	};
 	const cancelSettings = () => {
 		setSettings(false);
 	};
 
-	const [showCreate, setShowCreate] = useState(false);
-	const toggleCreate = () => {
-		setShowCreate(true);
+	const [settingsDisabled, setsettingsDisabled] = useState(true);
+
+	const enableSettings = () => {
+		setsettingsDisabled(false);
 	};
-	const closeCreate = () => {
-		setShowCreate(false);
+
+	const disableSettings = () => {
+		setsettingsDisabled(true);
 	};
 
 	return (
@@ -272,7 +274,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 					<div className='active-style-card_title'>
 						<span>{__('Active style card', 'maxi-blocks')}</span>
 						<h2 className='maxi-style-cards__popover__title'>
-							{__(`${selectedSCValue.name}`, 'maxi-blocks')}
+							{selectedSCValue.name}
 							{postDate && <span>| {postDate}</span>}
 						</h2>
 					</div>
@@ -323,6 +325,8 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 								options={SCList}
 								onChange={val => {
 									setSelectedStyleCard(val);
+									disableSettings();
+									cancelSettings();
 								}}
 							/>
 							<Button
@@ -341,7 +345,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 										)
 									) {
 										removeStyleCard(selectedSCKey);
-
+										disableSettings();
 										if (activeSCKey === selectedSCKey)
 											setActiveStyleCard('sc_maxi');
 									}
@@ -371,7 +375,9 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 					</div>
 					{!settings && (
 						<div className='maxi-style-cards__sc__actions edit-activate'>
-							<Button onClick={enableSettings}>Edit</Button>
+							<Button onClick={showSettings}>
+								{__('Edit card', 'maxi-blocks')}
+							</Button>
 
 							<Button
 								className='maxi-style-cards__sc__actions--apply'
@@ -406,62 +412,102 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 				{settings && (
 					<div className='maxi-style-cards__sc maxi-style-cards__settings'>
 						<div className='maxi-style-cards__sc-custom-name'>
+							<h3>
+								Create new from
+								<b> {selectedSCValue.name}</b>
+							</h3>
 							<div className='maxi-style-cards__sc__save'>
-								{!showCreate && (
-									<Button onClick={toggleCreate}>+</Button>
-								)}
-								{showCreate && (
-									<>
-										<input
-											type='text'
-											placeholder={__(
-												'Add your Style Card Name here',
-												'maxi-blocks'
-											)}
-											value={styleCardName}
-											onChange={e =>
-												setStyleCardName(e.target.value)
-											}
-										/>
-										<Button
-											disabled={isEmpty(styleCardName)}
-											onClick={() => {
-												const newStyleCard = {
-													name: styleCardName,
-													status: '',
-													dark: {
-														defaultStyleCard: {
-															...selectedSCValue
-																.dark
-																.defaultStyleCard,
-															...selectedSCValue
-																.dark.styleCard,
-														},
-														styleCard: {},
-													},
-													light: {
-														defaultStyleCard: {
-															...selectedSCValue
-																.light
-																.defaultStyleCard,
-															...selectedSCValue
-																.light
-																.styleCard,
-														},
-														styleCard: {},
-													},
-												};
-												saveImportedStyleCard(
-													newStyleCard
-												);
-												closeCreate();
-											}}
-										>
-											{__('Create', 'maxi-blocks')}
-										</Button>
-									</>
-								)}
+								<input
+									type='text'
+									placeholder={__(
+										'Give a short memorable name (required)',
+										'maxi-blocks'
+									)}
+									value={styleCardName}
+									onChange={e =>
+										setStyleCardName(e.target.value)
+									}
+								/>
+								<Button
+									disabled={isEmpty(styleCardName)}
+									onClick={() => {
+										const newStyleCard = {
+											name: styleCardName,
+											status: '',
+											dark: {
+												defaultStyleCard: {
+													...selectedSCValue.dark
+														.defaultStyleCard,
+													...selectedSCValue.dark
+														.styleCard,
+												},
+												styleCard: {},
+											},
+											light: {
+												defaultStyleCard: {
+													...selectedSCValue.light
+														.defaultStyleCard,
+													...selectedSCValue.light
+														.styleCard,
+												},
+												styleCard: {},
+											},
+										};
+										saveImportedStyleCard(newStyleCard);
+										enableSettings();
+									}}
+								>
+									{__('Create', 'maxi-blocks')}
+								</Button>
 							</div>
+						</div>
+						<div
+							className={
+								settingsDisabled
+									? 'maxi-style-card-setings-disabled'
+									: 'maxi-style-card-setings'
+							}
+						>
+							<SettingTabsControl
+								disablePadding
+								returnValue={({ key }) =>
+									setCurrentSCStyle(key)
+								}
+								items={[
+									{
+										label: __(
+											'Light tone globals',
+											'maxi-blocks'
+										),
+										key: 'light',
+										content: (
+											<MaxiStyleCardsTab
+												SC={selectedSCValue.light}
+												SCStyle='light'
+												onChangeValue={onChangeValue}
+												breakpoint={breakpoint}
+												currentKey={selectedSCKey}
+											/>
+										),
+									},
+									{
+										label: __(
+											'Dark tone globals',
+											'maxi-blocks'
+										),
+										key: 'dark',
+										content: (
+											<MaxiStyleCardsTab
+												SC={selectedSCValue.dark}
+												SCStyle='dark'
+												onChangeValue={onChangeValue}
+												breakpoint={breakpoint}
+												currentKey={selectedSCKey}
+											/>
+										),
+									},
+								]}
+							/>
 						</div>
 						<div className='maxi-style-cards__sc-cancel-save'>
 							<Button onClick={cancelSettings}>
@@ -475,44 +521,6 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 								{__('Save', 'maxi-blocks')}
 							</Button>
 						</div>
-						<SettingTabsControl
-							disablePadding
-							returnValue={({ key }) => setCurrentSCStyle(key)}
-							items={[
-								{
-									label: __(
-										'Light tone globals',
-										'maxi-blocks'
-									),
-									key: 'light',
-									content: (
-										<MaxiStyleCardsTab
-											SC={selectedSCValue.light}
-											SCStyle='light'
-											onChangeValue={onChangeValue}
-											breakpoint={breakpoint}
-											currentKey={selectedSCKey}
-										/>
-									),
-								},
-								{
-									label: __(
-										'Dark tone globals',
-										'maxi-blocks'
-									),
-									key: 'dark',
-									content: (
-										<MaxiStyleCardsTab
-											SC={selectedSCValue.dark}
-											SCStyle='dark'
-											onChangeValue={onChangeValue}
-											breakpoint={breakpoint}
-											currentKey={selectedSCKey}
-										/>
-									),
-								},
-							]}
-						/>
 					</div>
 				)}
 			</Popover>

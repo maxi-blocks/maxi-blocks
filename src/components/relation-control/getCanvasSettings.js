@@ -40,7 +40,7 @@ import {
 /**
  * External dependencies
  */
-import { isEmpty, isPlainObject, pickBy } from 'lodash';
+import { isEmpty, isEqual, isPlainObject, pickBy } from 'lodash';
 
 const getTransformControl = (name, { categories, selectors }) => ({
 	label: __('Transform', 'maxi-blocks'),
@@ -83,22 +83,33 @@ const getCanvasSettings = ({ name, customCss }) => [
 			'borderRadius',
 		],
 		component: props => {
-			const { attributes, onChange } = props;
-			const { 'background-layers': bgLayers } = attributes;
+			const { attributes, onChange, blockAttributes } = props;
+			const { 'background-layers': currentBgLayers } = attributes;
+			const { 'background-layers': blockBgLayers } = blockAttributes;
 
-			return !isEmpty(bgLayers) ? (
+			return !isEmpty(currentBgLayers) ? (
 				<BlockBackgroundControl
 					{...props}
 					onChange={obj => {
 						const { 'background-layers': bgLayers, ...rest } = obj;
-						const newBgLayers = bgLayers.map(bgLayer =>
-							pickBy(
+						const newBgLayers = bgLayers.map((bgLayer, index) => {
+							const newBgLayer = pickBy(
 								bgLayer,
 								(_value, key) =>
 									!key.includes('mediaID') &&
 									!key.includes('mediaURL')
-							)
-						);
+							);
+
+							return Object.fromEntries(
+								Object.entries(newBgLayer).filter(
+									([key, attr]) =>
+										!isEqual(
+											attr,
+											blockBgLayers[index][key]
+										)
+								)
+							);
+						});
 
 						onChange({
 							...rest,

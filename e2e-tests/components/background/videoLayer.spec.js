@@ -40,6 +40,7 @@ describe('BackgroundControl', () => {
 		);
 
 		await page.keyboard.type(video);
+		await page.waitForTimeout(150);
 
 		// Edit start time
 		await page.$eval('.maxi-background-video-start-time input', input =>

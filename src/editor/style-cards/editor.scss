@@ -38,6 +38,7 @@ body {
 		width: 20px;
 		text-align: center;
 		padding: 0 !important;
+		right: 10px;
 	}
 }
 .maxi-library-modal__action-section {
@@ -70,23 +71,31 @@ body {
 
 	h3 {
 		font-weight: 700 !important;
+		margin: 15px 0 0 0;
 	}
 }
 .maxi-components-button.components-button.maxi-style-cards__sc__actions--save {
 	margin-left: 10px;
 }
 .maxi-style-cards__sc-custom-name {
-	.maxi-style-cards__sc-custom-name {
-		display: flex;
-	}
+	margin-bottom: 15px;
 	h3 {
-		font-weight: 700;
+		margin: 0 0 5px 0;
+
+		b {
+			font-weight: 700 !important;
+		}
 	}
 }
 .maxi-style-cards__sc__actions--save,
 .maxi-style-cards__sc__more-sc--select select {
 	border: 2px solid rgb(var(--maxi-light-color-4)) !important;
 }
+.maxi-style-card-setings-disabled {
+	opacity: 0.6;
+	pointer-events: none;
+}
+
 .edit-activate {
 	button {
 		border: 2px solid rgb(var(--maxi-light-color-4)) !important;

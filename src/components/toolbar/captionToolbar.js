@@ -38,7 +38,6 @@ import {
 	setFormat,
 	textContext,
 } from '../../extensions/text/formats';
-import { getBoundaryElement } from '../../extensions/dom';
 
 /**
  * Component
@@ -146,10 +145,6 @@ const CaptionToolbar = memo(
 					className={classnames('maxi-toolbar__popover')}
 					uniqueid={uniqueID}
 					__unstableSlotName='block-toolbar'
-					shouldAnchorIncludePadding
-					__unstableStickyBoundaryElement={getBoundaryElement(
-						anchorRef
-					)}
 				>
 					<div className='toolbar-wrapper caption-toolbar'>
 						<TextOptions

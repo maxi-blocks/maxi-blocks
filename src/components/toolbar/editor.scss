@@ -19,6 +19,8 @@
 		background-color: transparent;
 		border: none;
 		box-shadow: none;
+		outline: none;
+		overflow: unset !important;
 
 		.toolbar-wrapper {
 			display: flex;

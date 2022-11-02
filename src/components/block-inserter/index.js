@@ -21,7 +21,6 @@ import classnames from 'classnames';
  * Styles
  */
 import './editor.scss';
-import { getBoundaryElement } from '../../extensions/dom';
 
 /**
  * Component
@@ -105,11 +104,6 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 				style={{ zIndex: Object.keys(blockHierarchy).length + 1 }}
 				anchorRef={ref.current}
 				__unstableSlotName='block-toolbar'
-				__unstableStickyBoundaryElement={getBoundaryElement(
-					ref.current,
-					'.edit-post-visual-editor'
-				)}
-				shouldAnchorIncludePadding
 			>
 				{Object.keys(blockHierarchy).length > 1 && (
 					<Dropdown

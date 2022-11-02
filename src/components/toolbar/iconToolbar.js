@@ -19,7 +19,6 @@ import IconColor from './components/icon-color';
 import IconBackground from './components/icon-background';
 import Border from './components/border';
 import PaddingMargin from './components/padding-margin';
-import { getBoundaryElement } from '../../extensions/dom';
 import { getGroupAttributes } from '../../extensions/styles';
 
 /**
@@ -82,10 +81,6 @@ const IconToolbar = memo(
 					className='maxi-toolbar__popover'
 					uniqueid={uniqueID}
 					__unstableSlotName='block-toolbar'
-					shouldAnchorIncludePadding
-					__unstableStickyBoundaryElement={getBoundaryElement(
-						ref.current
-					)}
 				>
 					<div className='toolbar-wrapper icon-toolbar'>
 						<IconPosition

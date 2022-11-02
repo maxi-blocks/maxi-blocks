@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+import { select, useSelect } from '@wordpress/data';
 import { Popover } from '@wordpress/components';
 import {
 	memo,
@@ -9,7 +10,6 @@ import {
 	useState,
 	useRef,
 } from '@wordpress/element';
-import { select, useSelect } from '@wordpress/data';
 
 /**
  * External dependencies
@@ -65,7 +65,6 @@ import {
  */
 import './editor.scss';
 import SvgColorToolbar from './components/svg-color';
-import { getBoundaryElement } from '../../extensions/dom';
 import VideoUrl from './components/video-url';
 
 /**
@@ -143,9 +142,67 @@ const MaxiToolbar = memo(
 		const popoverRef = useRef(null);
 
 		const [anchorRef, setAnchorRef] = useState(ref.current);
+		const [anchor, setAnchor] = useState(null);
+		const [pinActive, setPinActive] = useState(false);
+
+		const getAnchor = popoverRef => {
+			const popoverRect = popoverRef
+				?.querySelector('.components-popover__content')
+				?.getBoundingClientRect();
+
+			if (!popoverRect) return null;
+
+			const rect = anchorRef.getBoundingClientRect();
+
+			const { width, x } = rect;
+			const { width: popoverWidth } = popoverRect;
+
+			const expectedContentX = x + width / 2 - popoverWidth / 2;
+
+			const container = document
+				.querySelector('.editor-styles-wrapper')
+				?.getBoundingClientRect();
+
+			if (container) {
+				const { x: containerX, width: containerWidth } = container;
+
+				// Left cut off check
+				if (expectedContentX < containerX)
+					rect.x += containerX - expectedContentX;
+
+				// Right cut off check
+				if (
+					expectedContentX + popoverWidth >
+					containerX + containerWidth
+				)
+					rect.x -=
+						expectedContentX +
+						popoverWidth -
+						(containerX + containerWidth);
+			}
+
+			return {
+				getBoundingClientRect: () => rect,
+				ownerDocument: anchorRef.ownerDocument,
+			};
+		};
 
 		useEffect(() => {
 			setAnchorRef(ref.current);
+
+			if (popoverRef.current) {
+				const newAnchor = getAnchor(popoverRef.current);
+
+				if (
+					!anchor ||
+					(anchor &&
+						!isEqual(
+							JSON.stringify(anchor.getBoundingClientRect()),
+							JSON.stringify(newAnchor.getBoundingClientRect())
+						))
+				)
+					setAnchor(newAnchor);
+			}
 		});
 
 		const breadcrumbStatus = () => {
@@ -169,71 +226,23 @@ const MaxiToolbar = memo(
 			attributes
 		);
 
-		const [pinActive, setPinActive] = useState(false);
-
-		const togglePin = () => {
-			setPinActive(!pinActive);
-		};
-
 		return (
+			// false &&
 			isSelected &&
 			anchorRef && (
 				<Popover
 					ref={popoverRef}
 					noArrow
 					animate={false}
-					position='top center right'
+					position='top center'
 					focusOnMount={false}
-					getAnchorRect={spanEl => {
-						// span element needs to be hidden to don't break the grid
-						spanEl.style.display = 'none';
-
-						const rect = anchorRef.getBoundingClientRect();
-						const popoverRect = popoverRef.current
-							?.querySelector('.components-popover__content')
-							?.getBoundingClientRect();
-
-						const { width, x } = rect;
-						const { width: popoverWidth } = popoverRect;
-
-						const expectedContentX =
-							x + width / 2 - popoverWidth / 2;
-
-						const container = document
-							.querySelector('.editor-styles-wrapper')
-							?.getBoundingClientRect();
-
-						if (container) {
-							const { x: containerX, width: containerWidth } =
-								container;
-
-							// Left cut off check
-							if (expectedContentX < containerX)
-								rect.x += containerX - expectedContentX;
-
-							// Right cut off check
-							if (
-								expectedContentX + popoverWidth >
-								containerX + containerWidth
-							)
-								rect.x -=
-									expectedContentX +
-									popoverWidth -
-									(containerX + containerWidth);
-						}
-
-						return rect;
-					}}
+					anchor={anchor}
 					className={classnames(
 						'maxi-toolbar__popover',
 						!!breadcrumbStatus() &&
 							'maxi-toolbar__popover--has-breadcrumb'
 					)}
 					__unstableSlotName='block-toolbar'
-					shouldAnchorIncludePadding
-					__unstableStickyBoundaryElement={getBoundaryElement(
-						anchorRef
-					)}
 				>
 					<div className={`toolbar-wrapper pinned--${pinActive}`}>
 						{!isTyping && (
@@ -242,7 +251,7 @@ const MaxiToolbar = memo(
 									<span
 										className='breadcrumbs-pin'
 										onClick={() => {
-											togglePin();
+											setPinActive(!pinActive);
 										}}
 									>
 										<span className='breadcrumbs-pin-toltip'>

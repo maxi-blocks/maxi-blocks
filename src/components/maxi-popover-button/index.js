@@ -2,13 +2,13 @@
  * WordPress dependencies
  */
 import { Popover } from '@wordpress/components';
-import { forwardRef, useRef } from '@wordpress/element';
-import { getScrollContainer } from '@wordpress/dom';
+import { forwardRef, useRef, useState, useEffect } from '@wordpress/element';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
+import { isEqual } from 'lodash';
 
 /**
  * Styles
@@ -21,6 +21,52 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 
 	const popoverRef = useRef(null);
 
+	const [anchor, setAnchor] = useState(null);
+
+	const getAnchor = () => {
+		// Return default anchor rect if no ref is available.
+		if (!ref.current)
+			return {
+				getBoundingClientRect: () => DOMRect.fromRect(),
+				ownerDocument: document,
+			};
+
+		const { x, y, width, height } = ref.current.getBoundingClientRect();
+
+		const { width: popoverWidth, height: popoverHeight } =
+			popoverRef.current
+				.querySelector('.components-popover__content')
+				.getBoundingClientRect();
+
+		const newRect = DOMRect.fromRect({
+			x: x + width / 2 - popoverWidth / 2,
+			y: y + popoverHeight,
+			width,
+			height,
+		});
+
+		return {
+			getBoundingClientRect: () => newRect,
+			ownerDocument: ref.current.ownerDocument,
+		};
+	};
+
+	useEffect(() => {
+		if (popoverRef.current) {
+			const newAnchor = getAnchor(popoverRef.current);
+
+			if (
+				!anchor ||
+				(anchor &&
+					!isEqual(
+						JSON.stringify(anchor.getBoundingClientRect()),
+						JSON.stringify(newAnchor.getBoundingClientRect())
+					))
+			)
+				setAnchor(newAnchor);
+		}
+	});
+
 	if (!isSelected || !ref.current) return null;
 
 	const classes = classnames(
@@ -28,11 +74,6 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 		isOpen && 'maxi-popover-button--open',
 		className
 	);
-
-	const boundaryElement =
-		document.defaultView.frameElement ||
-		getScrollContainer(ref.current) ||
-		document.body;
 
 	return (
 		<Popover
@@ -42,30 +83,10 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 			animate={false}
 			focusOnMount={false}
 			__unstableSlotName='block-toolbar'
-			shouldAnchorIncludePadding
-			__unstableStickyBoundaryElement={boundaryElement}
-			getAnchorRect={() => {
-				// Return default anchor rect if no ref is available.
-				if (!ref.current) return DOMRect.fromRect();
-
-				const { x, y, width, height } =
-					ref.current.getBoundingClientRect();
-
-				const { width: popoverWidth, height: popoverHeight } =
-					popoverRef.current
-						.querySelector('.components-popover__content')
-						.getBoundingClientRect();
-
-				const newRect = DOMRect.fromRect({
-					x: x + width / 2 - popoverWidth / 2,
-					y: y + popoverHeight,
-					width,
-					height,
-				});
-
-				return newRect;
-			}}
-			position='top right'
+			// anchor={anchor}
+			anchor={ref.current}
+			// position='top right'
+			placement='top-end'
 			uniqueid={uniqueID}
 		>
 			{props.children}

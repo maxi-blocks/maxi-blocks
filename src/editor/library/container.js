@@ -772,38 +772,9 @@ const LibraryContainer = props => {
 				</InstantSearch>
 			)}
 
-			{(type === 'button-icon' || type === 'search-icon') && (
-				<InstantSearch
-					indexName='svg_icon'
-					searchClient={searchClientSvg}
-				>
-					<Configure hitsPerPage={49} />
-					<div className='maxi-cloud-container__svg-shape'>
-						<div className='maxi-cloud-container__svg-shape__sidebar'>
-							<SearchBox
-								submit={__('Find', 'maxi-blocks')}
-								autoFocus
-								searchAsYouType
-								showLoadingIndicator
-							/>
-							<CustomRefinementList
-								className='hidden'
-								attribute='svg_category'
-								defaultRefinement={['Line']}
-								showLoadingIndicator
-							/>
-						</div>
-						<div className='maxi-cloud-container__content-svg-shape'>
-							<div className='maxi-cloud-container__sc__content-sc'>
-								<Stats translations={resultsCount} />
-								<InfiniteHits hitComponent={svgShapeResults} />
-							</div>
-						</div>
-					</div>
-				</InstantSearch>
-			)}
-
-			{(type === 'accordion-icon' ||
+			{(type === 'button-icon' ||
+				type === 'search-icon' ||
+				type === 'accordion-icon' ||
 				type === 'accordion-icon-active') && (
 				<InstantSearch
 					indexName='svg_icon'
@@ -818,14 +789,28 @@ const LibraryContainer = props => {
 								searchAsYouType
 								showLoadingIndicator
 							/>
-							<CustomRefinementList
-								className='hidden'
-								attribute='svg_category'
-								defaultRefinement={['Line']}
+							<CustomHierarchicalMenu
+								attributes={['svg_tag.lvl0', 'svg_tag.lvl1']}
+								limit={20}
+								showMore
 								showLoadingIndicator
+								showMoreLimit={20}
 							/>
 						</div>
 						<div className='maxi-cloud-container__content-svg-shape'>
+							<div className='maxi-cloud-container__content-svg-shape__search-bar'>
+								<CustomMenuSelect
+									className='maxi-cloud-container__content-svg-shape__categories'
+									attribute='svg_category'
+									defaultRefinement='Line'
+									translations={{
+										seeAllOption: __(
+											'All icons',
+											'maxi-blocks'
+										),
+									}}
+								/>
+							</div>
 							<div className='maxi-cloud-container__sc__content-sc'>
 								<Stats translations={resultsCount} />
 								<InfiniteHits hitComponent={svgShapeResults} />

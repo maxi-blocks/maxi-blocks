@@ -223,6 +223,12 @@ const transition = {
 			property: 'box-shadow',
 			hoverProp: 'box-shadow-status-hover',
 		},
+		opacity: {
+			title: 'Opacity',
+			target: '',
+			property: 'opacity',
+			hoverProp: 'opacity-status-hover',
+		},
 	},
 	button: {
 		...createIconTransitions({

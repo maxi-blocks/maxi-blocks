@@ -38,19 +38,20 @@ export const getTransformSelectors = (selectors, attributes) => {
 	);
 
 	return {
-		...Object.entries(selectors).reduce((acc, [key, obj]) => ({
-			...acc,
-			[key]: ['normal', 'hover'].reduce(
-				(acc, type) => ({
-					...acc,
-					[type]: {
-						...obj[key],
-						label: key,
-					},
-				}),
-				{}
-			),
-		})),
+		...(!isEmpty(selectors) &&
+			Object.entries(selectors).reduce((acc, [key, obj]) => ({
+				...acc,
+				[key]: ['normal', 'hover'].reduce(
+					(acc, type) => ({
+						...acc,
+						[type]: {
+							...obj[key],
+							label: key,
+						},
+					}),
+					{}
+				),
+			}))),
 		...getBgLayersSelectorsKeys(bgLayersSelectors).reduce((acc, key) => {
 			const bgLayerSelectors = bgLayersSelectors.background[key];
 			const bgLayerHoverSelectors =

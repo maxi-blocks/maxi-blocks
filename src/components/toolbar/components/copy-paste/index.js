@@ -165,10 +165,18 @@ const CopyPaste = props => {
 		group,
 	}) => {
 		const specPaste = { ...specialPaste };
-
+		console.log(specPaste);
 		if (name) {
+			console.log(
+				'organizedAttributes',
+				organizedAttributes[tab][group][attr][name]
+			);
+			if (!checked) {
+				organizedAttributes[tab][group][attr][name] = undefined;
+			}
+			// console.log(specPaste);
 			// console.log(name, attr, tab, checked, group);
-			specPaste.separate[tab][group][name] = checked;
+			// specPaste.separate.tab.group.name = checked;
 			// console.log(specPaste);
 		} else if (!isArray(attr)) {
 			if (group) {
@@ -201,9 +209,11 @@ const CopyPaste = props => {
 
 	const onSpecialPaste = () => {
 		let res = {};
+		// dev
 
 		Object.entries(specialPaste).forEach(([tab, keys]) => {
 			keys.forEach(key => {
+				console.log('key', key, Object.keys(key));
 				res = {
 					...res,
 					...(isString(key)

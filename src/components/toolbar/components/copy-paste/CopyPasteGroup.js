@@ -50,11 +50,17 @@ const CopyPasteGroup = props => {
 		return currentCount === count;
 	};
 
-	const handleChangeCallback = params => {
-		const { name, attr, tab, checked, group } = params;
+	const openChildMenu = ({ id, isOpenMenu }) => {
+		const newIsOpenChild = isOpenChild;
+		newIsOpenChild[id] = !isOpenMenu;
+		setIsOpenChild(newIsOpenChild);
+	};
+
+	const handleChangeCallback = ({ name, attr, tab, checked, group }) => {
+		console.log(name, attr, tab, checked, group);
 		handleSpecialPaste({
 			name,
-			attr: kebabCase(attr),
+			attr,
 			tab,
 			checked,
 			group,
@@ -97,6 +103,11 @@ const CopyPasteGroup = props => {
 					const uniqueAttr = kebabCase(
 						attr === label ? `${label}-nested` : attr
 					);
+					const id = `${tab}-${uniqueAttr}`;
+					const isOpenMenu =
+						typeof isOpenChild[id] !== 'undefined'
+							? isOpenChild[id]
+							: false;
 
 					return (
 						!isEqual(
@@ -104,7 +115,7 @@ const CopyPasteGroup = props => {
 							organizedAttributes[tab][label][attr]
 						) && (
 							<div
-								key={`copy-paste-${tab}-${uniqueAttr}`}
+								key={`copy-paste-${id}`}
 								className='toolbar-item__copy-paste__wrapper'
 							>
 								<div
@@ -146,36 +157,14 @@ const CopyPasteGroup = props => {
 										<span>{attr}</span>
 									</label>
 									<span
-										onClick={e => {
-											const newIsOpenChild = isOpenChild;
-											const val =
-												typeof isOpenChild[
-													`copy-paste-${tab}-${uniqueAttr}`
-												] !== 'undefined'
-													? !isOpenChild[
-															`copy-paste-${tab}-${uniqueAttr}`
-													  ]
-													: true;
-											newIsOpenChild[
-												`copy-paste-${tab}-${uniqueAttr}`
-											] = val;
-											setIsOpenChild(newIsOpenChild);
-										}}
-										aria-expanded={
-											typeof isOpenChild[
-												`copy-paste-${tab}-${uniqueAttr}`
-											] !== 'undefined'
-												? isOpenChild[
-														`copy-paste-${tab}-${uniqueAttr}`
-												  ]
-												: false
+										onClick={e =>
+											openChildMenu({ id, isOpenMenu })
 										}
+										aria-expanded={isOpenMenu}
 										className='copy-paste__group-icon'
 									/>
 								</div>
-								{isOpenChild[
-									`copy-paste-${tab}-${uniqueAttr}`
-								] && (
+								{isOpenChild[id] && (
 									<CopyPasteChildGroup
 										parentCallback={handleChangeCallback}
 										attr={attr}

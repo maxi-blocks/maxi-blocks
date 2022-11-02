@@ -53,7 +53,7 @@ const transform = ({ props, depth = 2, categories, selectors }) => {
 					breakpoint={deviceType}
 					depth={depth}
 					categories={getTransformCategories(categories, attributes)}
-					selectors={getTransformSelectors(selectors)}
+					selectors={getTransformSelectors(selectors, attributes)}
 				/>
 			</ResponsiveTabsControl>
 		),

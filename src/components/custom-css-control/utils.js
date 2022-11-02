@@ -3,7 +3,7 @@
  */
 import { isNil, isEmpty, without } from 'lodash';
 
-function getBgLayersSelectorsCss(bgLayers) {
+export function getBgLayersSelectorsCss(bgLayers) {
 	const bgLayersSelectors = {
 		background: {
 			'background-displayer': {

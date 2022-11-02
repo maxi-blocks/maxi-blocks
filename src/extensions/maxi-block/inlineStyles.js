@@ -11,9 +11,12 @@ const modifyStyleElement = (styleElement, modifiedTarget, styleObj) => {
 	)} transition: none !important; }`;
 };
 
+const normalizeTarget = target =>
+	target.replaceAll('>', match => `:scope ${match}`);
+
 const handleInsertInlineStyles = ({
 	styleObj,
-	target,
+	target: rawTarget,
 	isMultiplySelector,
 	pseudoElement,
 	styleObjKeys,
@@ -22,6 +25,7 @@ const handleInsertInlineStyles = ({
 	if (isEmpty(styleObj)) return;
 
 	const parentElement = ref?.current.blockRef.current;
+	const target = normalizeTarget(rawTarget);
 	const targetElements =
 		target !== '' && target !== ':hover'
 			? isMultiplySelector
@@ -67,11 +71,12 @@ const handleInsertInlineStyles = ({
 };
 
 const handleCleanInlineStyles = (
-	target = '',
+	rawTarget,
 	pseudoElement = '',
 	styleObjKeys,
 	ref
 ) => {
+	const target = normalizeTarget(rawTarget);
 	const parentElement = ref?.current.blockRef.current;
 	const targetElements =
 		target !== ''

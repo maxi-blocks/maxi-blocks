@@ -78,7 +78,7 @@ const loadColumnsTemplate = (templateName, clientId, breakpoint) => {
 	const isRowEmpty = !columnsBlockObjects.length;
 
 	if (isRowEmpty) {
-		// When inserting column, template should be loaded on general as well as on breakpoint the user is on
+		// When inserting column, template should be loaded for general as well as for breakpoint the user is on
 		if (breakpoint !== 'general') {
 			loadColumnsTemplate(templateName, clientId, 'general');
 			const columnsBlockObjects = wp.data

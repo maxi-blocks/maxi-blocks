@@ -77,9 +77,16 @@ const loadColumnsTemplate = (templateName, clientId, breakpoint) => {
 		.getBlock(clientId).innerBlocks;
 	const isRowEmpty = !columnsBlockObjects.length;
 
-	isRowEmpty
-		? loadTemplate(template, clientId)
-		: updateTemplate(template, columnsBlockObjects, clientId);
+	if (isRowEmpty) {
+		// When inserting column, template should be loaded on general as well as on breakpoint the user is on
+		if (breakpoint !== 'general') {
+			loadColumnsTemplate(templateName, clientId, 'general');
+			const columnsBlockObjects = wp.data
+				.select('core/block-editor')
+				.getBlock(clientId).innerBlocks;
+			updateTemplate(template, columnsBlockObjects, clientId);
+		} else loadTemplate(template, clientId);
+	} else updateTemplate(template, columnsBlockObjects, clientId);
 };
 
 export default loadColumnsTemplate;

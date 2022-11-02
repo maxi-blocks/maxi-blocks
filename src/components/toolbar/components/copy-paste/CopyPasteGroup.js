@@ -19,6 +19,7 @@ const CopyPasteGroup = props => {
 		label,
 		organizedAttributes,
 		currentOrganizedAttributes,
+		selectedAttributes,
 		specialPaste,
 		handleSpecialPaste,
 	} = props;
@@ -170,6 +171,7 @@ const CopyPasteGroup = props => {
 										attr={attr}
 										label={label}
 										tab={tab}
+										selectedAttributes={selectedAttributes}
 										specialPaste={specialPaste}
 										organizedAttributes={
 											organizedAttributes

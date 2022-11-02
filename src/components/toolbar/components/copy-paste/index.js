@@ -103,6 +103,7 @@ const CopyPaste = props => {
 		getDefaultSpecialPaste(organizedAttributes)
 	);
 
+	const [selectedAttributes, setSelectedAttributes] = useState({});
 	const cleanInnerBlocks = innerBlocks =>
 		innerBlocks.map(block => {
 			block.innerBlocks = cleanInnerBlocks(block.innerBlocks);
@@ -165,14 +166,18 @@ const CopyPaste = props => {
 		group,
 	}) => {
 		const specPaste = { ...specialPaste };
-		console.log(specPaste);
 		if (name) {
-			console.log(
-				'organizedAttributes',
-				organizedAttributes[tab][group][attr][name]
-			);
+			const attributes = selectedAttributes;
+			if (tab && !attributes[tab]) attributes[tab] = {};
+			if (group && !attributes[tab][group]) attributes[tab][group] = {};
+			if (attr && !attributes[tab][group][attr])
+				attributes[tab][group][attr] = {};
+			if (name && attributes[tab][group][attr])
+				attributes[tab][group][attr][name] = checked;
+			// attributes.tab.group.attr[name] = checked;
+			setSelectedAttributes(attributes);
 			if (!checked) {
-				organizedAttributes[tab][group][attr][name] = undefined;
+				// organizedAttributes[tab][group][attr][name] = undefined;
 			}
 			// console.log(specPaste);
 			// console.log(name, attr, tab, checked, group);
@@ -213,7 +218,7 @@ const CopyPaste = props => {
 
 		Object.entries(specialPaste).forEach(([tab, keys]) => {
 			keys.forEach(key => {
-				console.log('key', key, Object.keys(key));
+				// dev
 				res = {
 					...res,
 					...(isString(key)
@@ -319,6 +324,7 @@ const CopyPaste = props => {
 									currentOrganizedAttributes={
 										currentOrganizedAttributes
 									}
+									selectedAttributes={selectedAttributes}
 									specialPaste={specialPaste}
 									handleSpecialPaste={handleSpecialPaste}
 								/>

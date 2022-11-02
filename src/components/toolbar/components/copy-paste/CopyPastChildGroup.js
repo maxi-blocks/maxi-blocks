@@ -9,7 +9,14 @@
 import { kebabCase, isEmpty } from 'lodash';
 
 const CopyPasteChildGroup = props => {
-	const { attr, tab, label, specialPaste, organizedAttributes } = props;
+	const {
+		attr,
+		tab,
+		label,
+		selectedAttributes,
+		specialPaste,
+		organizedAttributes,
+	} = props;
 
 	const asArray = Object.entries(organizedAttributes[tab][label][attr]);
 	const filtered = asArray.filter(([key, value]) => value);
@@ -24,6 +31,24 @@ const CopyPasteChildGroup = props => {
 		<div className='child-content'>
 			{Object.keys(organizedAttributesOptimize).map(value => {
 				const uniqueValue = kebabCase(value);
+				let checked;
+				if (
+					selectedAttributes[tab] &&
+					selectedAttributes[tab][label] &&
+					selectedAttributes[tab][label][attr] &&
+					selectedAttributes[tab][label][attr][uniqueValue]
+				) {
+					checked = selectedAttributes[tab][label][attr][uniqueValue];
+				} else {
+					checked = !isEmpty(
+						specialPaste[tab].filter(sp => {
+							return (
+								typeof sp === 'object' &&
+								Object.values(sp).includes(attr)
+							);
+						})
+					);
+				}
 				return (
 					<div
 						className='toolbar-item__copy-paste__popover__item'
@@ -34,16 +59,7 @@ const CopyPasteChildGroup = props => {
 								type='checkbox'
 								name={uniqueValue}
 								id={uniqueValue}
-								checked={
-									!isEmpty(
-										specialPaste[tab].filter(sp => {
-											return (
-												typeof sp === 'object' &&
-												Object.values(sp).includes(attr)
-											);
-										})
-									)
-								}
+								checked={checked}
 								onChange={e =>
 									paramsCallback({
 										name: uniqueValue,

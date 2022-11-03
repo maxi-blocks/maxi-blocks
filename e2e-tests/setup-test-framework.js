@@ -124,6 +124,11 @@ function observeConsoleLogging() {
 			return;
 		}
 
+		// Sometimes, while loading video URLS, we've got CORS errors.
+		if (text.includes('has been blocked by CORS policy')) {
+			return;
+		}
+
 		// Since 6.1 multiline on RichText is deprecated. Need to be update on #3877
 		if (
 			text.includes(

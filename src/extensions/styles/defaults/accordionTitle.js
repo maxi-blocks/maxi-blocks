@@ -30,6 +30,10 @@ const accordionTitle = {
 	}),
 	...hoverAttributesCreator({
 		obj: titleBackground,
+		sameValAttr: [`${prefix}-background-palette-status-general`],
+		diffValAttr: {
+			[`${prefix}-background-palette-color-general`]: 6,
+		},
 	}),
 	...prefixAttributesCreator({ obj: typography, prefix }),
 	...prefixAttributesCreator({ obj: typographyHover, prefix }),

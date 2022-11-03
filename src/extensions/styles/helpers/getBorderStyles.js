@@ -62,7 +62,7 @@ const getBorderStyles = ({
 			attributes: obj,
 			isHover,
 		});
-		const isBorderNone = isUndefined(borderStyle) || borderStyle === 'none';
+		const isBorderNone = borderStyle === 'none';
 
 		const getColorString = () => {
 			const { paletteStatus, paletteColor, paletteOpacity, color } =

@@ -140,14 +140,13 @@ const MasonryItem = props => {
 					<div className='maxi-cloud-masonry-card__svg-container__title'>
 						{target === 'button-icon' ||
 						target === 'search-icon' ||
-						target.includes('Line')
+						target.includes('Line') ||
+						target.includes('video-icon')
 							? serial.replace(' Line', '').replace(' line', '')
 							: [
 									'image-shape',
 									'bg-shape',
 									'sidebar-block-shape',
-									'video-icon-play',
-									'video-icon-close',
 							  ].includes(target) || target.includes('Shape')
 							? serial.replace(' shape', '')
 							: serial}
@@ -740,12 +739,32 @@ const LibraryContainer = props => {
 					<Configure hitsPerPage={49} />
 					<div className='maxi-cloud-container__svg-shape'>
 						<div className='maxi-cloud-container__svg-shape__sidebar maxi-cloud-container__hide-categories'>
-							<SearchBox
-								submit={__('Find', 'maxi-blocks')}
-								autoFocus
-								searchAsYouType
-								showLoadingIndicator
-							/>
+							{type === 'shape' && (
+								<SearchBox
+									submit={__('Find', 'maxi-blocks')}
+									autoFocus
+									searchAsYouType
+									showLoadingIndicator
+								/>
+							)}
+							{type === 'video-icon-play' && (
+								<SearchBox
+									submit={__('Find', 'maxi-blocks')}
+									defaultRefinement='play'
+									autoFocus
+									searchAsYouType
+									showLoadingIndicator
+								/>
+							)}
+							{type === 'video-icon-close' && (
+								<SearchBox
+									submit={__('Find', 'maxi-blocks')}
+									defaultRefinement='cross'
+									autoFocus
+									searchAsYouType
+									showLoadingIndicator
+								/>
+							)}
 							<CustomHierarchicalMenu
 								attributes={['svg_tag.lvl0', 'svg_tag.lvl1']}
 								limit={20}

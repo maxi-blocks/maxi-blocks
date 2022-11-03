@@ -208,7 +208,8 @@ export const getSCVariablesObject = styleCards => {
 						SC[style].color[n + 1];
 				}
 			});
-			response['--maxi-active-sc-color'] = SC[style].color[0 + 4];
+			const color = (response['--maxi-active-sc-color'] =
+				SC[style].color[0 + 4]);
 		}
 	});
 

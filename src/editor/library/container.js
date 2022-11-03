@@ -374,8 +374,8 @@ const LibraryContainer = props => {
 			case 'accordion-icon':
 			case 'accordion-icon-active':
 			case 'search-icon':
-				return 'icon';
 			case 'video-icon':
+				return 'icon';
 			case 'sidebar-block-shape':
 			case 'bg-shape':
 				return 'shape';

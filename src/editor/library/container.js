@@ -48,6 +48,7 @@ const MasonryItem = props => {
 		target,
 		svgCode,
 		isPro,
+		isSaved,
 		serial,
 		onRequestInsert,
 		previewIMG,
@@ -100,8 +101,12 @@ const MasonryItem = props => {
 						</>
 					)}
 					{type === 'sc' && (
-						<span className='maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-load'>
-							{__('Insert', 'maxi-block')}
+						<span
+							className={`${isSaved} maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-load`}
+						>
+							{isSaved === 'not-saved'
+								? __('Insert', 'maxi-block')
+								: __('Saved', 'maxi-block')}
 						</span>
 					)}
 					<div className='maxi-cloud-masonry-card__tags'>
@@ -299,6 +304,7 @@ const LibraryContainer = props => {
 
 	const {
 		styleCards,
+		SCList,
 		selectedSCKey,
 		selectedSCValue,
 		clientId,
@@ -308,14 +314,17 @@ const LibraryContainer = props => {
 			select('core/block-editor');
 		const clientId = getSelectedBlockClientId();
 
-		const { receiveMaxiStyleCards, receiveMaxiSelectedStyleCard } = select(
-			'maxiBlocks/style-cards'
-		);
+		const {
+			receiveStyleCardsList,
+			receiveMaxiStyleCards,
+			receiveMaxiSelectedStyleCard,
+		} = select('maxiBlocks/style-cards');
+		const SCList = receiveStyleCardsList();
 		const styleCards = receiveMaxiStyleCards();
 		const { key: selectedSCKey, value: selectedSCValue } =
 			receiveMaxiSelectedStyleCard();
-
 		return {
+			SCList,
 			styleCards,
 			selectedSCKey,
 			selectedSCValue,
@@ -629,11 +638,23 @@ const LibraryContainer = props => {
 				previewIMG={hit.post_thumbnail}
 				isPro={hit.cost === 'pro'}
 				serial={hit.post_title}
-				onRequestInsert={() => onRequestInsertSC(hit.sc_code)}
+				onRequestInsert={
+					SCList.map(function (item) {
+						return item.label;
+					}).includes(hit.post_title)
+						? () => {}
+						: () => onRequestInsertSC(hit.sc_code)
+				}
+				isSaved={
+					SCList.map(function (item) {
+						return item.label;
+					}).includes(hit.post_title)
+						? 'saved'
+						: 'not-saved'
+				}
 			/>
 		);
 	};
-
 	const PlaceholderCheckboxControl = () => {
 		return (
 			<CheckboxControl

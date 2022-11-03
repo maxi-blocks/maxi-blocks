@@ -1096,6 +1096,9 @@
 						background-color: #007cba;
 						color: #fff !important;
 					}
+					&.saved {
+						opacity: 0.4;
+					}
 				}
 
 				&__tags {

@@ -45,10 +45,10 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 		breakpoint,
 		SCList,
 		activeSCKey,
+		activeStyleCard,
 		savedStyleCards,
 		selectedSCKey,
 		selectedSCValue,
-		activeStyleCard,
 	} = useSelect(select => {
 		const { getEditorSettings } = select('core/editor');
 		const { isRTL } = getEditorSettings();
@@ -76,10 +76,10 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 			breakpoint,
 			SCList,
 			activeSCKey,
+			activeStyleCard,
 			savedStyleCards,
 			selectedSCKey,
 			selectedSCValue,
-			activeStyleCard,
 		};
 	});
 
@@ -239,7 +239,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 
 		saveMaxiStyleCards(newAllSCs);
 		updateSCOnEditor(card);
-		// setSelectedStyleCard(newId);
+		setSelectedStyleCard(newId);
 	};
 
 	const [settings, setSettings] = useState(false);
@@ -432,7 +432,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 								/>
 								<Button
 									disabled={isEmpty(styleCardName)}
-									onClick={val => {
+									onClick={() => {
 										const newStyleCard = {
 											name: styleCardName,
 											status: '',
@@ -456,7 +456,6 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 											},
 										};
 										saveImportedStyleCard(newStyleCard);
-										setSelectedStyleCard(val);
 										enableSettings();
 									}}
 								>

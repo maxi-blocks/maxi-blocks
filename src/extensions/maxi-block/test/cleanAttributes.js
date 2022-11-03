@@ -520,4 +520,77 @@ describe('cleanAttributes', () => {
 
 		expect(result).toStrictEqual(expectedResult);
 	});
+
+	it('On change general attribute, if default base breakpoint attribute exist', () => {
+		select.mockImplementation(
+			jest.fn(() => {
+				return {
+					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					getPrevSavedAttrs: jest.fn(() => []),
+				};
+			})
+		);
+
+		const obj = {
+			newAttributes: {
+				'test-general': 'em',
+				'test-xl': 'em',
+			},
+			attributes: {
+				'test-general': undefined,
+				'test-xl': 'px',
+			},
+			defaultAttributes: {
+				'test-general': undefined,
+				'test-xl': 'px',
+			},
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'test-general': 'em',
+			'test-xl': undefined,
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
+
+	it('Random test 6', () => {
+		select.mockImplementation(
+			jest.fn(() => {
+				return {
+					receiveBaseBreakpoint: jest.fn(() => 'l'),
+					getPrevSavedAttrs: jest.fn(() => []),
+				};
+			})
+		);
+
+		const obj = {
+			newAttributes: {
+				'test-general': 'em',
+				'test-l': 'em',
+			},
+			attributes: {
+				'text-xxl': 'vw',
+				'test-general': undefined,
+				'test-xl': 'px',
+				'test-l': '%',
+			},
+			defaultAttributes: {
+				'test-general': undefined,
+				'test-xl': 'px',
+				'text-l': '%',
+			},
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'test-general': 'em',
+			'test-l': 'em',
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
 });

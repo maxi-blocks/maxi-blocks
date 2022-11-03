@@ -387,7 +387,9 @@ const flatLowerAttr = (
 					select('maxiBlocks').receiveBaseBreakpoint();
 
 				if (breakpoint === baseBreakpoint) {
-					result[label] = defaultAttribute;
+					if (label in newAttributes)
+						result[label] = newAttributes[label];
+					else result[label] = defaultAttribute;
 					return;
 				}
 			}

@@ -124,10 +124,19 @@ function observeConsoleLogging() {
 			return;
 		}
 
-		// Since 6.1 multiline on RichText is deprecated. Need to be update on #????
+		// Since 6.1 multiline on RichText is deprecated. Need to be update on #3877
 		if (
 			text.includes(
 				'wp.blockEditor.RichText multiline prop is deprecated'
+			)
+		) {
+			return;
+		}
+
+		// Since 6.1 GradientPicker is deprecated. Need to be update on #3880
+		if (
+			text.includes(
+				'Outer margin styles for wp.components.GradientPicker is deprecated'
 			)
 		) {
 			return;

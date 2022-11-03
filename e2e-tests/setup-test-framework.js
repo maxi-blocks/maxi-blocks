@@ -124,6 +124,15 @@ function observeConsoleLogging() {
 			return;
 		}
 
+		// Since 6.1 multiline on RichText is deprecated. Need to be update on #????
+		if (
+			text.includes(
+				'wp.blockEditor.RichText multiline prop is deprecated'
+			)
+		) {
+			return;
+		}
+
 		// Sometimes favicon is not found
 		if (message?._stackTraceLocations?.[0]?.url.includes('favicon.ico'))
 			return;

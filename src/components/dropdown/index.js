@@ -98,9 +98,7 @@ const Dropdown = forwardRef(
 						headerTitle={headerTitle}
 						focusOnMount={focusOnMount}
 						{...popoverProps}
-						anchorRef={
-							popoverProps?.anchorRef ?? containerRef.current
-						}
+						anchor={popoverProps?.anchorRef ?? containerRef.current}
 						className={classnames(
 							'maxi-dropdown__content',
 							popoverProps ? popoverProps.className : undefined,

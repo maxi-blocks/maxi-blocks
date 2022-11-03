@@ -376,7 +376,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 					{!settings && (
 						<div className='maxi-style-cards__sc__actions edit-activate'>
 							<Button onClick={showSettings}>
-								{__('Edit card', 'maxi-blocks')}
+								{__('Customise card', 'maxi-blocks')}
 							</Button>
 
 							<Button
@@ -420,7 +420,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 								<input
 									type='text'
 									placeholder={__(
-										'Give a short memorable name (required)',
+										'Give a short memorable name*',
 										'maxi-blocks'
 									)}
 									value={styleCardName}
@@ -518,7 +518,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 								disabled={!canBeSaved(selectedSCKey)}
 								onClick={saveChanges}
 							>
-								{__('Save', 'maxi-blocks')}
+								{__('Save & Activate', 'maxi-blocks')}
 							</Button>
 						</div>
 					</div>

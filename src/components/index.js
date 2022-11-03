@@ -69,6 +69,7 @@ export { default as SvgStrokeWidthControl } from './svg-stroke-width-control';
 export { default as SvgWidthControl } from './svg-width-control';
 export { default as TextareaControl } from './textarea-control';
 export { default as TextControl } from './text-control';
+export { default as TextInput } from './text-input';
 export { default as TextShadowControl } from './text-shadow-control';
 export { default as ToggleSwitch } from './toggle-switch';
 export { default as Toolbar } from './toolbar';

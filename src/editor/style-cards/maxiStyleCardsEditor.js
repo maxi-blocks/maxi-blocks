@@ -48,6 +48,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 		savedStyleCards,
 		selectedSCKey,
 		selectedSCValue,
+		activeStyleCard,
 	} = useSelect(select => {
 		const { getEditorSettings } = select('core/editor');
 		const { isRTL } = getEditorSettings();
@@ -78,6 +79,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 			savedStyleCards,
 			selectedSCKey,
 			selectedSCValue,
+			activeStyleCard,
 		};
 	});
 
@@ -237,7 +239,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 
 		saveMaxiStyleCards(newAllSCs);
 		updateSCOnEditor(card);
-		setSelectedStyleCard(newId);
+		// setSelectedStyleCard(newId);
 	};
 
 	const [settings, setSettings] = useState(false);
@@ -274,7 +276,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 					<div className='active-style-card_title'>
 						<span>{__('Active style card', 'maxi-blocks')}</span>
 						<h2 className='maxi-style-cards__popover__title'>
-							{selectedSCValue.name}
+							{activeStyleCard.value.name.substr(0, 20)}
 							{postDate && <span>| {postDate}</span>}
 						</h2>
 					</div>
@@ -430,7 +432,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 								/>
 								<Button
 									disabled={isEmpty(styleCardName)}
-									onClick={() => {
+									onClick={val => {
 										const newStyleCard = {
 											name: styleCardName,
 											status: '',
@@ -454,6 +456,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 											},
 										};
 										saveImportedStyleCard(newStyleCard);
+										setSelectedStyleCard(val);
 										enableSettings();
 									}}
 								>

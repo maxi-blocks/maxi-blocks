@@ -200,6 +200,7 @@ export const getSCVariablesObject = styleCards => {
 					break;
 			}
 		});
+
 		if (SC[style].color) {
 			times(8, n => {
 				if (SC[style].color[n + 1]) {
@@ -207,6 +208,7 @@ export const getSCVariablesObject = styleCards => {
 						SC[style].color[n + 1];
 				}
 			});
+			response['--maxi-active-sc-color'] = SC[style].color[0 + 4];
 		}
 	});
 

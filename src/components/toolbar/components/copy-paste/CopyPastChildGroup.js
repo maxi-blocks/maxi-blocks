@@ -1,7 +1,6 @@
 /**
  * WordPress dependencies
  */
-// import { useState } from '@wordpress/element';
 
 /**
  * External dependencies
@@ -16,19 +15,23 @@ const CopyPasteChildGroup = props => {
 		selectedAttributes,
 		specialPaste,
 		organizedAttributes,
+		currentOrganizedAttributes,
 	} = props;
 
 	const asArray = Object.entries(organizedAttributes[tab][label][attr]);
-	const filtered = asArray.filter(([key, value]) => value);
+	const filtered = asArray.filter(
+		([key, value]) =>
+			value !== currentOrganizedAttributes[tab][label][attr][key]
+	);
 	// Convert the key/value array back to an object:
 	const organizedAttributesOptimize = Object.fromEntries(filtered);
 
 	const paramsCallback = params => {
 		props.parentCallback(params);
 	};
-	// console.log('attr', attr);
+
 	return (
-		<div className='child-content'>
+		<div className='toolbar-item__copy-paste__content'>
 			{Object.keys(organizedAttributesOptimize).map(value => {
 				const uniqueValue = kebabCase(value);
 				let checked;
@@ -36,7 +39,8 @@ const CopyPasteChildGroup = props => {
 					selectedAttributes[tab] &&
 					selectedAttributes[tab][label] &&
 					selectedAttributes[tab][label][attr] &&
-					selectedAttributes[tab][label][attr][uniqueValue]
+					typeof selectedAttributes[tab][label][attr][uniqueValue] ===
+						'boolean'
 				) {
 					checked = selectedAttributes[tab][label][attr][uniqueValue];
 				} else {

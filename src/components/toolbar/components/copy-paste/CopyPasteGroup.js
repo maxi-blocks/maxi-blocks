@@ -25,6 +25,7 @@ const CopyPasteGroup = props => {
 	} = props;
 	const [isOpen, setIsOpen] = useState(false);
 	const [isOpenChild, setIsOpenChild] = useState({});
+	const [isUpdate, setIsUpdate] = useState(false);
 
 	const normalizedLabel = kebabCase(label);
 
@@ -55,10 +56,10 @@ const CopyPasteGroup = props => {
 		const newIsOpenChild = isOpenChild;
 		newIsOpenChild[id] = !isOpenMenu;
 		setIsOpenChild(newIsOpenChild);
+		setIsUpdate(!isUpdate);
 	};
 
 	const handleChangeCallback = ({ name, attr, tab, checked, group }) => {
-		console.log(name, attr, tab, checked, group);
 		handleSpecialPaste({
 			name,
 			attr,
@@ -117,46 +118,43 @@ const CopyPasteGroup = props => {
 						) && (
 							<div
 								key={`copy-paste-${id}`}
-								className='toolbar-item__copy-paste__wrapper'
+								className='toolbar-item__copy-paste__wrapper toolbar-item__copy-paste__popover__item'
 							>
 								<div
-									className='toolbar-item__copy-paste__popover__item'
+									className='toolbar-item__copy-paste__item'
 									data-copy_paste_group={kebabCase(label)}
+									onClick={e => {
+										if (e.target.nodeName !== 'INPUT')
+											openChildMenu({ id, isOpenMenu });
+									}}
 								>
-									<label
-										htmlFor={uniqueAttr}
-										className='maxi-axis-control__content__item__checkbox'
-									>
-										<input
-											type='checkbox'
-											name={uniqueAttr}
-											id={uniqueAttr}
-											checked={
-												!isEmpty(
-													specialPaste[tab].filter(
-														sp => {
-															return (
-																typeof sp ===
-																	'object' &&
-																Object.values(
-																	sp
-																).includes(attr)
-															);
-														}
-													)
-												)
-											}
-											onChange={e =>
-												handleSpecialPaste({
-													attr,
-													tab,
-													checked: e.target.checked,
-													group: label,
+									<input
+										type='checkbox'
+										name={uniqueAttr}
+										id={uniqueAttr}
+										checked={
+											!isEmpty(
+												specialPaste[tab].filter(sp => {
+													return (
+														typeof sp ===
+															'object' &&
+														Object.values(
+															sp
+														).includes(attr)
+													);
 												})
-											}
-										/>
-										<span>{attr}</span>
-									</label>
+											)
+										}
+										onChange={e =>
+											handleSpecialPaste({
+												attr,
+												tab,
+												checked: e.target.checked,
+												group: label,
+											})
+										}
+									/>
+									<span>{attr}</span>
 									<span
 										onClick={e =>
 											openChildMenu({ id, isOpenMenu })
@@ -165,7 +163,7 @@ const CopyPasteGroup = props => {
 										className='copy-paste__group-icon'
 									/>
 								</div>
-								{isOpenChild[id] && (
+								{isOpenMenu && (
 									<CopyPasteChildGroup
 										parentCallback={handleChangeCallback}
 										attr={attr}
@@ -175,6 +173,9 @@ const CopyPasteGroup = props => {
 										specialPaste={specialPaste}
 										organizedAttributes={
 											organizedAttributes
+										}
+										currentOrganizedAttributes={
+											currentOrganizedAttributes
 										}
 									/>
 								)}

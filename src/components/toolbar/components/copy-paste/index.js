@@ -174,15 +174,11 @@ const CopyPaste = props => {
 				attributes[tab][group][attr] = {};
 			if (name && attributes[tab][group][attr])
 				attributes[tab][group][attr][name] = checked;
-			// attributes.tab.group.attr[name] = checked;
+
+			if (!attributes['checked-settings'])
+				attributes['checked-settings'] = {};
+
 			setSelectedAttributes(attributes);
-			if (!checked) {
-				// organizedAttributes[tab][group][attr][name] = undefined;
-			}
-			// console.log(specPaste);
-			// console.log(name, attr, tab, checked, group);
-			// specPaste.separate.tab.group.name = checked;
-			// console.log(specPaste);
 		} else if (!isArray(attr)) {
 			if (group) {
 				if (!checked)
@@ -209,6 +205,19 @@ const CopyPaste = props => {
 					specPaste[tab] = [...specPaste[tab], { [group]: attrType }];
 			});
 		}
+		console.log('selectedAttributes', selectedAttributes);
+		if (
+			selectedAttributes[tab] &&
+			selectedAttributes[tab][group] &&
+			selectedAttributes[tab][group][attr]
+		) {
+			if (tab && !specialPaste[tab]) specialPaste[tab] = {};
+			if (group && !specialPaste[tab][group])
+				specialPaste[tab][group] = {};
+			if (attr && !specialPaste[tab][group][attr])
+				specialPaste[tab][group][attr] = true;
+		}
+		console.log('specPaste-art', specPaste);
 		setSpecialPaste(specPaste);
 	};
 
@@ -217,8 +226,36 @@ const CopyPaste = props => {
 		// dev
 
 		Object.entries(specialPaste).forEach(([tab, keys]) => {
+			if (isArray(specialPaste[tab])) {
+				console.log(tab, isEmpty(keys));
+			}
+			if (keys && specialPaste[tab][0]) {
+				console.log(tab, isEmpty(keys));
+			}
 			keys.forEach(key => {
-				// dev
+				if (
+					selectedAttributes[tab] &&
+					selectedAttributes[tab][Object.keys(key)[0]] &&
+					selectedAttributes[tab][Object.keys(key)[0]][
+						Object.values(key)[0]
+					]
+				) {
+					const customAttributes =
+						selectedAttributes[tab][Object.keys(key)[0]][
+							Object.values(key)[0]
+						];
+					// console.log(customAttributes);
+					Object.keys(customAttributes).forEach(k => {
+						if (!customAttributes[k]) {
+							organizedAttributes[tab][Object.keys(key)[0]][
+								Object.values(key)[0]
+							][k] =
+								currentOrganizedAttributes[tab][
+									Object.keys(key)[0]
+								][Object.values(key)[0]][k];
+						}
+					});
+				}
 				res = {
 					...res,
 					...(isString(key)
@@ -229,6 +266,8 @@ const CopyPaste = props => {
 				};
 			});
 		});
+		// console.log('selectedAttributes', selectedAttributes);
+		// console.log('organizedAttributes', organizedAttributes);
 
 		setSpecialPaste(getDefaultSpecialPaste(organizedAttributes));
 

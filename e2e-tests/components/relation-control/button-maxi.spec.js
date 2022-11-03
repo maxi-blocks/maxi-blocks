@@ -20,19 +20,7 @@ import {
 } from '../../utils';
 
 describe('Button Maxi hover simple actions', () => {
-	beforeEach(async () => {
-		await createNewPost();
-		await insertBlock('Button Maxi');
-
-		// Add icon
-		await openSidebarTab(page, 'style', 'quick styles');
-		await page.$$eval('.maxi-default-styles-control__button', buttons =>
-			buttons[3].click()
-		);
-
-		await insertBlock('Button Maxi');
-		await openSidebarTab(page, 'advanced', 'interaction builder');
-
+	const addInteraction = async () => {
 		// Add interaction
 		await page.waitForSelector('.maxi-relation-control__button');
 		await page.$eval('.maxi-relation-control__button', el => el.click());
@@ -50,6 +38,22 @@ describe('Button Maxi hover simple actions', () => {
 		// Add action
 		selectControls = await page.$$('.maxi-select-control__input');
 		await selectControls[2].select('hover');
+	};
+
+	beforeEach(async () => {
+		await createNewPost();
+		await insertBlock('Button Maxi');
+
+		// Add icon
+		await openSidebarTab(page, 'style', 'quick styles');
+		await page.$$eval('.maxi-default-styles-control__button', buttons =>
+			buttons[3].click()
+		);
+
+		await insertBlock('Button Maxi');
+		await openSidebarTab(page, 'advanced', 'interaction builder');
+
+		await addInteraction();
 	});
 
 	const checkFrontend = async () => {
@@ -341,6 +345,40 @@ describe('Button Maxi hover simple actions', () => {
 		);
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('2');
+
+		expect(await getAttributes('relations')).toMatchSnapshot();
+
+		await checkFrontend();
+	});
+
+	it('Button background and shadow', async () => {
+		// Select setting
+		const backgroundSelectControls = await page.$$(
+			'.maxi-select-control__input'
+		);
+		await backgroundSelectControls[3].select('Button background');
+
+		// Background color
+		await editColorControl({
+			page,
+			instance: await page.$('.maxi-color-control'),
+			paletteStatus: true,
+			colorPalette: 8,
+			opacity: 50,
+		});
+
+		await addInteraction();
+
+		// Select setting
+		const shadowSelectControls = await page.$$(
+			'.maxi-select-control__input'
+		);
+		await shadowSelectControls[3].select('Button box shadow');
+
+		// Select first default
+		await page.$$eval('.maxi-default-styles-control__button', buttons =>
+			buttons[1].click()
+		);
 
 		expect(await getAttributes('relations')).toMatchSnapshot();
 

@@ -130,6 +130,7 @@ const Inspector = props => {
 											content: (
 												<VideoIconControl
 													prefix='play-'
+													type='video-icon-play'
 													label={__(
 														'Play icon',
 														'maxi-blocks'

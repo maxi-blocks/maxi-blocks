@@ -146,7 +146,8 @@ const MasonryItem = props => {
 									'image-shape',
 									'bg-shape',
 									'sidebar-block-shape',
-									'video-icon',
+									'video-icon-play',
+									'video-icon-close',
 							  ].includes(target) || target.includes('Shape')
 							? serial.replace(' shape', '')
 							: serial}
@@ -374,7 +375,8 @@ const LibraryContainer = props => {
 			case 'accordion-icon':
 			case 'accordion-icon-active':
 			case 'search-icon':
-			case 'video-icon':
+			case 'video-icon-play':
+			case 'video-icon-close':
 				return 'icon';
 			case 'sidebar-block-shape':
 			case 'bg-shape':
@@ -550,7 +552,8 @@ const LibraryContainer = props => {
 			if (
 				[
 					'button-icon',
-					'video-icon',
+					'video-icon-play',
+					'video-icon-close',
 					'accordion-icon',
 					'search-icon',
 				].includes(type)
@@ -729,7 +732,7 @@ const LibraryContainer = props => {
 				</div>
 			)}
 
-			{(type.includes('shape') || type === 'video-icon') && (
+			{(type.includes('shape') || type.includes('video-icon')) && (
 				<InstantSearch
 					indexName='svg_icon'
 					searchClient={searchClientSvg}
@@ -743,26 +746,37 @@ const LibraryContainer = props => {
 								searchAsYouType
 								showLoadingIndicator
 							/>
+							<CustomHierarchicalMenu
+								attributes={['svg_tag.lvl0', 'svg_tag.lvl1']}
+								limit={20}
+								showMore
+								showLoadingIndicator
+								showMoreLimit={20}
+							/>
 							{type.includes('shape') && (
-								<CustomHierarchicalMenu
-									attributes={[
-										'svg_tag.lvl0',
-										'svg_tag.lvl1',
-									]}
-									limit={20}
-									showMore
+								<CustomRefinementList
+									className='hidden'
+									attribute='svg_category'
+									defaultRefinement={['Shape']}
 									showLoadingIndicator
-									showMoreLimit={20}
 								/>
 							)}
-							<CustomRefinementList
-								className='hidden'
-								attribute='svg_category'
-								defaultRefinement={['Shape']}
-								showLoadingIndicator
-							/>
 						</div>
 						<div className='maxi-cloud-container__content-svg-shape'>
+							{type.includes('video-icon') && (
+								<div className='maxi-cloud-container__content-svg-shape__search-bar'>
+									<CustomMenuSelect
+										className='maxi-cloud-container__content-svg-shape__categories'
+										attribute='svg_category'
+										translations={{
+											seeAllOption: __(
+												'All icons',
+												'maxi-blocks'
+											),
+										}}
+									/>
+								</div>
+							)}
 							<div className='maxi-cloud-container__sc__content-sc'>
 								<Stats translations={resultsCount} />
 								<InfiniteHits hitComponent={svgShapeResults} />

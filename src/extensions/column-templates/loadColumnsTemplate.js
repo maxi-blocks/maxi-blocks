@@ -71,22 +71,18 @@ const updateTemplate = (template, columnsBlockObjects, clientId) => {
 };
 
 const loadColumnsTemplate = (templateName, clientId, breakpoint) => {
-	const template = cloneDeep(getColumnTemplate(templateName, breakpoint));
 	const columnsBlockObjects = wp.data
 		.select('core/block-editor')
 		.getBlock(clientId).innerBlocks;
 	const isRowEmpty = !columnsBlockObjects.length;
+	// When inserting column, template should be loaded for general
+	const template = cloneDeep(
+		getColumnTemplate(templateName, isRowEmpty ? 'general' : breakpoint)
+	);
 
-	if (isRowEmpty) {
-		// When inserting column, template should be loaded for general as well as for breakpoint the user is on
-		if (breakpoint !== 'general') {
-			loadColumnsTemplate(templateName, clientId, 'general');
-			const columnsBlockObjects = wp.data
-				.select('core/block-editor')
-				.getBlock(clientId).innerBlocks;
-			updateTemplate(template, columnsBlockObjects, clientId);
-		} else loadTemplate(template, clientId);
-	} else updateTemplate(template, columnsBlockObjects, clientId);
+	isRowEmpty
+		? loadTemplate(template, clientId)
+		: updateTemplate(template, columnsBlockObjects, clientId);
 };
 
 export default loadColumnsTemplate;

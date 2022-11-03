@@ -121,7 +121,8 @@ const interactionBuilderSettings = {
 			attrGroupName: 'boxShadow',
 			prefix: 'divider-',
 			component: props => <BoxShadowControl {...props} />,
-			helper: props => getBoxShadowStyles(props),
+			helper: props =>
+				getBoxShadowStyles({ ...props, includeDefault: true }),
 			target: dividerClass,
 		},
 		{

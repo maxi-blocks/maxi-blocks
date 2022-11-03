@@ -334,7 +334,8 @@ const interactionBuilderSettings = {
 			attrGroupName: 'boxShadow',
 			prefix: 'button-',
 			component: props => <BoxShadowControl {...props} />,
-			helper: props => getBoxShadowStyles(props),
+			helper: props =>
+				getBoxShadowStyles({ ...props, includeDefault: true }),
 			target: '.maxi-button-block__button',
 		},
 		{

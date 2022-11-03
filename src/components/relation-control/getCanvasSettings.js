@@ -144,7 +144,7 @@ const getCanvasSettings = ({ name, customCss }) => [
 		label: __('Box shadow', 'maxi-blocks'),
 		attrGroupName: 'boxShadow',
 		component: props => <BoxShadowControl {...props} />,
-		helper: props => getBoxShadowStyles(props),
+		helper: props => getBoxShadowStyles({ ...props, includeDefault: true }),
 	},
 	{
 		label: __('Opacity', 'maxi-blocks'),

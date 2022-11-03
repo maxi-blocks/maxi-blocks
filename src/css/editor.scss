@@ -375,6 +375,23 @@ svg path#styleCardBoat_b {
 			box-shadow: none;
 		}
 	}
+
+	&.maxi-container-block {
+		&::after {
+			top: 0px !important;
+			right: 0px !important;
+			bottom: 0px !important;
+			left: 0px !important;
+		}
+		.maxi-indicators__padding--left {
+			position: absolute;
+			left: 4px;
+		}
+		.maxi-indicators__padding--right {
+			position: absolute;
+			right: 4px;
+		}
+	}
 }
 
 /*******************************

@@ -3,6 +3,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -69,6 +70,7 @@ const AxisInput = props => {
 
 	const value = getValue(target, breakpoint);
 	const lastValue = getLastBreakpointValue(target);
+
 	const unit = getLastBreakpointValue(`${target}-unit`, breakpoint);
 	return (
 		<AdvancedNumberControl
@@ -513,15 +515,12 @@ const AxisControl = props => {
 	};
 
 	const getValue = (key, customBreakpoint) => {
-		const value =
-			props[
-				getAttributeKey(
-					getKey(key),
-					isHover,
-					false,
-					customBreakpoint ?? breakpoint
-				)
-			];
+		const value = getLastBreakpointAttribute({
+			target: getKey(key),
+			breakpoint: customBreakpoint ?? breakpoint,
+			attributes: props,
+			isHover,
+		});
 
 		if (isNumber(value) || value) return value;
 
@@ -565,23 +564,36 @@ const AxisControl = props => {
 			? attributesKeysFilter(cases[reset])
 			: [...inputsArray];
 
+		// In case that breakpoint is general and baseBreakpoint attribute exists,
+		// give priority to baseBreakpoint attribute
+
 		attributesKeys.forEach(key => {
-			response[
-				getAttributeKey(
-					getKey(key),
-					isHover,
-					false,
-					customBreakpoint ?? breakpoint
-				)
-			] = getDefaultAttribute(
-				getAttributeKey(
-					getKey(key),
-					isHover,
-					false,
-					customBreakpoint ?? breakpoint
-				)
+			const baseBreakpoint =
+				select('maxiBlocks')?.receiveBaseBreakpoint();
+
+			const attrKey = getAttributeKey(
+				getKey(key),
+				isHover,
+				false,
+				customBreakpoint ?? breakpoint
 			);
+
+			const defaultValue = getDefaultAttribute(attrKey);
+			// In case that breakpoint is general and baseBreakpoint attribute exists,
+			// give priority to baseBreakpoint attribute
+			if (breakpoint === 'general' && !customBreakpoint) {
+				const baseAttrKey = getAttributeKey(
+					getKey(key),
+					isHover,
+					false,
+					baseBreakpoint
+				);
+				const baseDefaultValue = getDefaultAttribute(baseAttrKey);
+				if (baseDefaultValue) response[attrKey] = baseDefaultValue;
+				else response[attrKey] = defaultValue;
+			} else response[attrKey] = defaultValue;
 		});
+		console.log(response);
 		onChange(response);
 	};
 

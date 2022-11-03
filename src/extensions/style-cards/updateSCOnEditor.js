@@ -108,6 +108,8 @@ export const getSCVariablesObject = styleCards => {
 	};
 	const elementsForColor = ['divider', 'icon', 'link'];
 
+	console.log(SC.light.color[4]);
+
 	styles.forEach(style => {
 		elements.forEach(element => {
 			const obj = getParsedObj(SC[style][element]);
@@ -200,7 +202,6 @@ export const getSCVariablesObject = styleCards => {
 					break;
 			}
 		});
-
 		if (SC[style].color) {
 			times(8, n => {
 				if (SC[style].color[n + 1]) {
@@ -208,8 +209,8 @@ export const getSCVariablesObject = styleCards => {
 						SC[style].color[n + 1];
 				}
 			});
-			const color = (response['--maxi-active-sc-color'] =
-				SC[style].color[0 + 4]);
+
+			response['--maxi-active-sc-color'] = SC[style].color[0 + 4];
 		}
 	});
 

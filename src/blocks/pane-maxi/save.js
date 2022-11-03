@@ -7,13 +7,14 @@ import { RichText, useInnerBlocksProps } from '@wordpress/block-editor';
  * Internal dependencies
  */
 import { getMaxiBlockAttributes, MaxiBlock } from '../../components/maxi-block';
+import { WithLink } from '../../extensions/save/utils';
 
 /**
  * Save
  */
 const save = props => {
 	const { attributes } = props;
-	const { title, titleLevel, accordionUniqueId } = attributes;
+	const { title, titleLevel, accordionUniqueId, linkSettings } = attributes;
 	const name = 'maxi-blocks/pane-maxi';
 
 	const { children, ...restInnerBlocksProps } = useInnerBlocksProps.save({
@@ -31,11 +32,13 @@ const save = props => {
 		>
 			<div className='maxi-pane-block__header'>
 				<div className='maxi-pane-block__header-content'>
-					<RichText.Content
-						className='maxi-pane-block__title'
-						value={title}
-						tagName={titleLevel}
-					/>
+					<WithLink linkSettings={linkSettings}>
+						<RichText.Content
+							className='maxi-pane-block__title'
+							value={title}
+							tagName={titleLevel}
+						/>
+					</WithLink>
 					<div className='maxi-pane-block__icon' />
 				</div>
 				<div className='maxi-pane-block__header-line-container maxi-pane-block__line-container'>

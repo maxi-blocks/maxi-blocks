@@ -59,14 +59,50 @@ const CopyPasteGroup = props => {
 		setIsUpdate(!isUpdate);
 	};
 
-	const handleChangeCallback = ({ name, attr, tab, checked, group }) => {
+	const handleChangeCallback = ({
+		name,
+		empty,
+		attr,
+		tab,
+		checked,
+		checkedParent,
+		group,
+	}) => {
 		handleSpecialPaste({
 			name,
+			empty,
 			attr,
 			tab,
-			checked,
+			checkedAttribute: checked,
+			checked: checkedParent,
 			group,
 		});
+	};
+
+	const emptyAttributes = attr => {
+		const asArray = Object.entries(organizedAttributes[tab][label][attr]);
+		const filtered = asArray.filter(
+			([key, value]) =>
+				value !== currentOrganizedAttributes[tab][label][attr][key]
+		);
+		const organizedAttributesOptimize = Object.fromEntries(filtered);
+
+		let empty;
+		if (
+			selectedAttributes[tab] &&
+			selectedAttributes[tab][label] &&
+			selectedAttributes[tab][label][attr]
+		) {
+			empty = Object.keys(organizedAttributesOptimize).filter(
+				value => !selectedAttributes[tab][label][attr][kebabCase(value)]
+			);
+		} else {
+			empty = Object.keys(organizedAttributesOptimize).filter(value =>
+				kebabCase(value)
+			);
+		}
+
+		return empty;
 	};
 
 	return (
@@ -111,6 +147,14 @@ const CopyPasteGroup = props => {
 							? isOpenChild[id]
 							: false;
 
+					const checked = !isEmpty(
+						specialPaste[tab].filter(sp => {
+							return (
+								typeof sp === 'object' &&
+								Object.values(sp).includes(attr)
+							);
+						})
+					);
 					return (
 						!isEqual(
 							currentOrganizedAttributes[tab][label][attr],
@@ -132,21 +176,10 @@ const CopyPasteGroup = props => {
 										type='checkbox'
 										name={uniqueAttr}
 										id={uniqueAttr}
-										checked={
-											!isEmpty(
-												specialPaste[tab].filter(sp => {
-													return (
-														typeof sp ===
-															'object' &&
-														Object.values(
-															sp
-														).includes(attr)
-													);
-												})
-											)
-										}
+										checked={checked}
 										onChange={e =>
 											handleSpecialPaste({
+												empty: emptyAttributes(attr),
 												attr,
 												tab,
 												checked: e.target.checked,
@@ -167,6 +200,7 @@ const CopyPasteGroup = props => {
 									<CopyPasteChildGroup
 										parentCallback={handleChangeCallback}
 										attr={attr}
+										checkedParent={checked}
 										label={label}
 										tab={tab}
 										selectedAttributes={selectedAttributes}

@@ -160,35 +160,67 @@ const CopyPaste = props => {
 
 	const handleSpecialPaste = ({
 		name = false,
+		checkedAttribute = false,
+		empty = false,
 		attr,
 		tab,
 		checked,
 		group,
 	}) => {
 		const specPaste = { ...specialPaste };
-		if (name) {
-			const attributes = selectedAttributes;
+		const attributes = selectedAttributes;
+		if (name || empty) {
 			if (tab && !attributes[tab]) attributes[tab] = {};
 			if (group && !attributes[tab][group]) attributes[tab][group] = {};
 			if (attr && !attributes[tab][group][attr])
 				attributes[tab][group][attr] = {};
-			if (name && attributes[tab][group][attr])
-				attributes[tab][group][attr][name] = checked;
+		}
+		if (name) {
+			if (name && attributes[tab][group][attr]) {
+				attributes[tab][group][attr][name] = checkedAttribute;
+			}
 
-			if (!attributes['checked-settings'])
-				attributes['checked-settings'] = {};
-
+			if (empty) {
+				empty.forEach(name => {
+					attributes[tab][group][attr][name] = false;
+				});
+			}
 			setSelectedAttributes(attributes);
-		} else if (!isArray(attr)) {
+		}
+
+		if (empty && !name && checked) {
+			empty.forEach(name => {
+				attributes[tab][group][attr][name] = true;
+				setSelectedAttributes(attributes);
+			});
+		}
+
+		if (!isArray(attr)) {
 			if (group) {
-				if (!checked)
-					specPaste[tab] = specPaste[tab].filter(sp => {
-						return (
-							!isObject(sp) ||
-							(isObject(sp) && !Object.values(sp).includes(attr))
-						);
-					});
-				else specPaste[tab] = [...specPaste[tab], { [group]: attr }];
+				if (
+					!name &&
+					!checked &&
+					typeof checked !== 'undefined' &&
+					selectedAttributes[tab] &&
+					selectedAttributes[tab][group] &&
+					selectedAttributes[tab][group][attr]
+				) {
+					const attributes = selectedAttributes;
+					attributes[tab][group][attr] = {};
+					setSelectedAttributes(attributes);
+				}
+				if (!checked) {
+					if (typeof checked !== 'undefined')
+						specPaste[tab] = specPaste[tab].filter(sp => {
+							return (
+								!isObject(sp) ||
+								(isObject(sp) &&
+									!Object.values(sp).includes(attr))
+							);
+						});
+				} else {
+					specPaste[tab] = [...specPaste[tab], { [group]: attr }];
+				}
 			} else
 				specPaste[tab] = specialPaste[tab].includes(attr)
 					? specPaste[tab].filter(val => val !== attr)
@@ -205,33 +237,13 @@ const CopyPaste = props => {
 					specPaste[tab] = [...specPaste[tab], { [group]: attrType }];
 			});
 		}
-		console.log('selectedAttributes', selectedAttributes);
-		if (
-			selectedAttributes[tab] &&
-			selectedAttributes[tab][group] &&
-			selectedAttributes[tab][group][attr]
-		) {
-			if (tab && !specialPaste[tab]) specialPaste[tab] = {};
-			if (group && !specialPaste[tab][group])
-				specialPaste[tab][group] = {};
-			if (attr && !specialPaste[tab][group][attr])
-				specialPaste[tab][group][attr] = true;
-		}
-		console.log('specPaste-art', specPaste);
 		setSpecialPaste(specPaste);
 	};
 
 	const onSpecialPaste = () => {
 		let res = {};
-		// dev
 
 		Object.entries(specialPaste).forEach(([tab, keys]) => {
-			if (isArray(specialPaste[tab])) {
-				console.log(tab, isEmpty(keys));
-			}
-			if (keys && specialPaste[tab][0]) {
-				console.log(tab, isEmpty(keys));
-			}
 			keys.forEach(key => {
 				if (
 					selectedAttributes[tab] &&
@@ -244,7 +256,7 @@ const CopyPaste = props => {
 						selectedAttributes[tab][Object.keys(key)[0]][
 							Object.values(key)[0]
 						];
-					// console.log(customAttributes);
+
 					Object.keys(customAttributes).forEach(k => {
 						if (!customAttributes[k]) {
 							organizedAttributes[tab][Object.keys(key)[0]][
@@ -266,9 +278,6 @@ const CopyPaste = props => {
 				};
 			});
 		});
-		// console.log('selectedAttributes', selectedAttributes);
-		// console.log('organizedAttributes', organizedAttributes);
-
 		setSpecialPaste(getDefaultSpecialPaste(organizedAttributes));
 
 		closeMoreSettings();
@@ -339,16 +348,6 @@ const CopyPaste = props => {
 									</label>
 								</div>
 							);
-
-						// console.log('specialPaste', specialPaste);
-						// console.log(
-						// 	'organizedAttributes',
-						// 	organizedAttributes.settings.Typography
-						// );
-						// console.log(
-						// 	'currentOrganizedAttributes',
-						// 	currentOrganizedAttributes.settings.Typography
-						// );
 
 						return (
 							!isEqual(

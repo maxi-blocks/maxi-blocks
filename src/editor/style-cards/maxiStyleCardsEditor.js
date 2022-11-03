@@ -141,7 +141,10 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 
 		const newObj = handleSetAttributes({
 			obj: isTypography ? obj.typography : obj,
-			attributes: selectedSCValue[currentSCStyle].styleCard[type],
+			attributes: {
+				...selectedSCValue[currentSCStyle].defaultStyleCard[type],
+				...selectedSCValue[currentSCStyle].styleCard[type],
+			},
 			defaultAttributes:
 				selectedSCValue[currentSCStyle].defaultStyleCard[type],
 			onChange: response => response,

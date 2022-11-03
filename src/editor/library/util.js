@@ -12,7 +12,7 @@ import { getBlockStyle, getPaletteAttributes } from '../../extensions/styles';
 /**
  * External dependencies
  */
-import { isNil, uniq, isEmpty } from 'lodash';
+import { isEmpty, isNil, uniq } from 'lodash';
 
 export const rgbToHex = color => {
 	if (isNil(color)) return '';
@@ -255,19 +255,21 @@ export const onRequestInsertPattern = (
 		const imagesLinks = [];
 		const imagesIds = [];
 
-		const allImagesRegexp = /mediaID":(.*)",/g;
+		const allImagesRegexp = /(mediaID|imageID)":(.*)",/g;
 
 		const allImagesLinks = parsedContent.match(allImagesRegexp);
 
 		allImagesLinks?.forEach(image => {
 			const parsed = image.replace(/\\/g, '');
 
-			const idRegexp = /(?<=mediaID":)(.*?)(?=,)/g;
-			const id = parsed.match(idRegexp);
+			const idRegexp = /(mediaID|imageID)":(\d+),/g;
+			const id = parsed.match(idRegexp).map(item => item.match(/\d+/)[0]);
 			imagesIds.push(...id);
 
-			const urlRegexp = /(?<=mediaURL":")(.*?)(?=",)/g;
-			const url = parsed.match(urlRegexp);
+			const urlRegexp = /(mediaURL|imageURL)":"([^"]+)"/g;
+			const url = parsed
+				.match(urlRegexp)
+				.map(item => item.split(/:(.+)/, 2)[1].replace(/"/g, ''));
 			imagesLinks.push(...url);
 		});
 

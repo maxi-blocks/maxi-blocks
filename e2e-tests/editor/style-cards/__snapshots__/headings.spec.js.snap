@@ -108,7 +108,7 @@ Object {
     "text-indent-general": 44,
     "text-indent-m": 22,
     "text-orientation-general": "mixed",
-    "text-orientation-m": "mixed",
+    "text-orientation-m": "upright",
     "text-transform-general": "capitalize",
     "text-transform-m": "uppercase",
   },

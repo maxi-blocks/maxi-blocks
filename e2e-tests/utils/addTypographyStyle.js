@@ -51,6 +51,7 @@ const addTypographyStyle = async ({
 		'.maxi-typography-control__orientation .maxi-base-control__field select'
 	);
 	if (orientation) await orientationSelector.select(orientation);
+	debugger;
 	response.orientation = await getElementAttribute(
 		orientationSelector,
 		'value'

@@ -31,7 +31,7 @@ import ListItemControl from '../list-control/list-item-control';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, cloneDeep, isEqual, findIndex } from 'lodash';
+import { cloneDeep, findIndex, isEmpty, isEqual, isNil, omitBy } from 'lodash';
 
 /**
  * Icons
@@ -409,7 +409,7 @@ const BackgroundLayersControl = ({
 		return {
 			...setBreakpointToLayer({
 				layer: backgroundLayers[getLayerLabel(type)],
-				breakpoint,
+				breakpoint: 'general',
 				isHover,
 			}),
 			order: getLayerUniqueParameter('order'),
@@ -440,14 +440,17 @@ const BackgroundLayersControl = ({
 			obj: layer,
 			attributes: currentLayer,
 			onChange: result => result,
-			defaultAttributes: setBreakpointToLayer({
-				layer: backgroundLayers[getLayerLabel(currentLayer.type)],
-				breakpoint,
-				isHover,
-			}),
+			defaultAttributes: {
+				...setBreakpointToLayer({
+					layer: backgroundLayers[getLayerLabel(currentLayer.type)],
+					breakpoint: 'general',
+					isHover,
+				}),
+			},
 		});
 
-	const onChangeLayer = (layer, target = false) => {
+	const onChangeLayer = (rawLayer, target = false) => {
+		const layer = omitBy(rawLayer, isNil);
 		const isHoverLayer = layer.isHover;
 		const newLayers = cloneDeep(isHoverLayer ? layersHover : layers);
 

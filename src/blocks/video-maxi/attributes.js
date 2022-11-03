@@ -40,6 +40,7 @@ const attributes = {
 	/**
 	 * Canvas styles
 	 */
+	...attributesData.blockBackground,
 	...attributesData.border,
 	...attributesData.borderHover,
 	...attributesData.borderRadius,

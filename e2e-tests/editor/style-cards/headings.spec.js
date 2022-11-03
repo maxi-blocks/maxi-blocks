@@ -11,7 +11,7 @@ import {
 	changeResponsive,
 } from '../../utils';
 
-const generalTypographeStyle = {
+const generalTypographyStyle = {
 	decoration: 'overline',
 	weight: '300',
 	transform: 'capitalize',
@@ -26,7 +26,7 @@ const responsiveTypographyStyle = {
 	weight: '400',
 	transform: 'uppercase',
 	style: 'oblique',
-	orientation: 'mixed',
+	orientation: 'upright',
 	direction: 'rtl',
 	indent: '22',
 };
@@ -57,7 +57,7 @@ describe('StyleCards headings', () => {
 			instance: await page.$(
 				'.maxi-blocks-sc__type--heading .maxi-style-cards-control__sc__h1-typography'
 			),
-			...generalTypographeStyle,
+			...generalTypographyStyle,
 		});
 
 		// Check paragraph global styles
@@ -113,6 +113,6 @@ describe('StyleCards headings', () => {
 			),
 		});
 
-		expect(typographyStylesL).toEqual(generalTypographeStyle);
+		expect(typographyStylesL).toEqual(generalTypographyStyle);
 	});
 });

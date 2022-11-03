@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import ToolbarPopover from '../toolbar-popover';
-import { SvgColor } from '../../../svg-color';
+import SvgColor from '../../../svg-color';
 import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**

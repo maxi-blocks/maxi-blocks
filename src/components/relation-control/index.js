@@ -226,7 +226,8 @@ const RelationControl = props => {
 				});
 		}
 
-		const mergedAttributes = merge(blockAttributes, item.attributes);
+		// Merging into empty object because lodash `merge` mutates first argument
+		const mergedAttributes = merge({}, blockAttributes, item.attributes);
 
 		const transformGeneralAttributesToBaseBreakpoint = obj => {
 			if (deviceType !== 'general') return {};
@@ -263,7 +264,7 @@ const RelationControl = props => {
 				};
 
 				const newGroupAttributes = getGroupAttributes(
-					{ ...blockAttributes, ...newAttributesObj },
+					merge(blockAttributes, newAttributesObj),
 					selectedSettingsObj.attrGroupName,
 					false,
 					prefix

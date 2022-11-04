@@ -117,8 +117,8 @@ class ToolbarPopover extends Component {
 
 		const { receiveMaxiSettings } = select('maxiBlocks');
 
-		const { hide_tooltips: hideTooltops, version } = receiveMaxiSettings();
-		const tooltipsHide = !isEmpty(hideTooltops) ? hideTooltops : false;
+		const { hide_tooltips: hideTooltips, editor } = receiveMaxiSettings();
+		const tooltipsHide = !isEmpty(hideTooltips) ? hideTooltips : false;
 
 		const buttonContent = () => {
 			return (
@@ -136,13 +136,14 @@ class ToolbarPopover extends Component {
 		};
 
 		const popoverProps = {
-			...((parseFloat(version) <= 13.0 && {
+			...((parseFloat(editor?.version) <= 13.0 && {
 				noArrow: false,
 				anchorRef: this.ref?.current?.closest('.toolbar-wrapper'),
+				shouldAnchorIncludePadding: true,
 			}) ||
-				(!isNaN(parseFloat(version)) && {
+				(!isNaN(parseFloat(editor?.version)) && {
 					noArrow: false,
-					anchorRef: this.ref?.current?.closest('.toolbar-wrapper'),
+					anchor: this.ref?.current?.closest('.toolbar-wrapper'),
 					flip: false,
 					resize: false,
 					variant: 'unstyled',
@@ -164,7 +165,6 @@ class ToolbarPopover extends Component {
 							onClose={onClose}
 							position={position}
 							isAlternate
-							shouldAnchorIncludePadding
 							{...popoverProps}
 						>
 							<div>{children}</div>

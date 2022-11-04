@@ -18,12 +18,18 @@ describe('Divider line from Toolbar', () => {
 		await insertBlock('Divider Maxi');
 
 		// edit divider line
+		await page.waitForSelector(
+			'.toolbar-wrapper .toolbar-item__button.toolbar-item__divider-line'
+		);
 		await page.$eval(
 			'.toolbar-wrapper .toolbar-item__button.toolbar-item__divider-line',
 			button => button.click()
 		);
 
 		// select divider line style
+		await page.waitForSelector(
+			'.toolbar-item__divider-line__popover .maxi-default-styles-control button'
+		);
 		await page.$$eval(
 			'.toolbar-item__divider-line__popover .maxi-default-styles-control button',
 			button => button[2].click()

@@ -4,7 +4,7 @@
 import { isNil, isEmpty, without } from 'lodash';
 
 export function getBgLayersSelectorsCss(bgLayers, addOnHoverToLabel = true) {
-	const onHoverString = addOnHoverToLabel ? 'on hover' : '';
+	const onHoverString = addOnHoverToLabel ? ' on hover' : '';
 
 	const bgLayersSelectors = {
 		background: {

@@ -25,7 +25,10 @@ const Indicators = props => {
 		className,
 		deviceType,
 		onChange,
+		isSelected,
 	} = props;
+
+	if (!isSelected) return null;
 
 	const classes = classnames('maxi-indicators', className);
 
@@ -249,7 +252,7 @@ const Indicators = props => {
 							margin[dir] > 19) ||
 							(margin[`${[dir]}Unit`] !== 'px' &&
 								margin[dir] > 2)) && (
-							<span>{`${margin[dir]}${
+							<span>{`Margin: ${margin[dir]}${
 								margin[`${[dir]}Unit`]
 							}`}</span>
 						)}
@@ -310,7 +313,7 @@ const Indicators = props => {
 					{((padding[`${[dir]}Unit`] === 'px' && padding[dir] > 19) ||
 						(padding[`${[dir]}Unit`] !== 'px' &&
 							padding[dir] > 2)) && (
-						<span>{`${padding[dir]}${
+						<span>{`Padding: ${padding[dir]}${
 							padding[`${[dir]}Unit`]
 						}`}</span>
 					)}

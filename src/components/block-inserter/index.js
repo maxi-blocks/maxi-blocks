@@ -1,10 +1,11 @@
 /**
  * WordPress dependencies
  */
+import { __ } from '@wordpress/i18n';
 import { ButtonBlockAppender, Inserter } from '@wordpress/block-editor';
 import { select, useDispatch } from '@wordpress/data';
 import { useRef, forwardRef } from '@wordpress/element';
-import { Popover } from '@wordpress/components';
+import { Popover, Tooltip } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -55,22 +56,24 @@ const ButtonInserter = props => {
 	const { onToggle } = props;
 
 	return (
-		<Button
-			className='maxi-wrapper-block-inserter__button maxi-block-inserter__button'
-			onClick={onToggle}
-		>
-			<svg
-				xmlns='http://www.w3.org/2000/svg'
-				viewBox='0 0 24 24'
-				width='24'
-				height='24'
-				role='img'
-				aria-hidden='true'
-				focusable='false'
+		<Tooltip text={__('Add block', 'maxi-blocks')} position='top center'>
+			<Button
+				className='maxi-wrapper-block-inserter__button maxi-block-inserter__button'
+				onClick={onToggle}
 			>
-				<path d='M18 11.2h-5.2V6h-1.6v5.2H6v1.6h5.2V18h1.6v-5.2H18z' />
-			</svg>
-		</Button>
+				<svg
+					xmlns='http://www.w3.org/2000/svg'
+					viewBox='0 0 24 24'
+					width='24'
+					height='24'
+					role='img'
+					aria-hidden='true'
+					focusable='false'
+				>
+					<path d='M18 11.2h-5.2V6h-1.6v5.2H6v1.6h5.2V18h1.6v-5.2H18z' />
+				</svg>
+			</Button>
+		</Tooltip>
 	);
 };
 

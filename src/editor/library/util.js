@@ -263,14 +263,16 @@ export const onRequestInsertPattern = (
 			const parsed = image.replace(/\\/g, '');
 
 			const idRegexp = /(mediaID|imageID)":(\d+),/g;
-			const id = parsed.match(idRegexp).map(item => item.match(/\d+/)[0]);
-			imagesIds.push(...id);
+			const id = parsed
+				?.match(idRegexp)
+				?.map(item => item.match(/\d+/)[0]);
+			if (!isEmpty(id)) imagesIds.push(...id);
 
 			const urlRegexp = /(mediaURL|imageURL)":"([^"]+)"/g;
 			const url = parsed
-				.match(urlRegexp)
-				.map(item => item.split(/:(.+)/, 2)[1].replace(/"/g, ''));
-			imagesLinks.push(...url);
+				?.match(urlRegexp)
+				?.map(item => item.split(/:(.+)/, 2)[1].replace(/"/g, ''));
+			if (!isEmpty(url)) imagesLinks.push(...url);
 		});
 
 		if (!isEmpty(imagesLinks) && !isEmpty(imagesIds)) {

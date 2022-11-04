@@ -1099,7 +1099,6 @@ const getBasicResponseObject = ({
 			blockStyle,
 			isHover
 		);
-
 	const rowBorderRadiusObj = getGeneralBackgroundStyles(
 		rowBorderRadius,
 		{ ...rowBorderRadius },

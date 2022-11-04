@@ -29,6 +29,7 @@ jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 describe('getBorderStyles', () => {
 	it('Test simple and default border attributes', async () => {
 		const object = {
+			'border-style-general': 'none',
 			'border-palette-status-general': true,
 			'border-palette-color-general': 2,
 			'border-status-hover': false,

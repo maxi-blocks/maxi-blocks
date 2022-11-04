@@ -53,6 +53,7 @@ const getBorderStyles = ({
 		'left',
 	];
 
+	let omitBorderStyle = true;
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
@@ -62,7 +63,8 @@ const getBorderStyles = ({
 			attributes: obj,
 			isHover,
 		});
-		const isBorderNone = borderStyle === 'none';
+		const isBorderNone = isUndefined(borderStyle) || borderStyle === 'none';
+		omitBorderStyle = omitBorderStyle ? isBorderNone : false;
 
 		const getColorString = () => {
 			const { paletteStatus, paletteColor, paletteOpacity, color } =
@@ -127,9 +129,11 @@ const getBorderStyles = ({
 					}) || 'px';
 
 				if (key.includes('style')) {
-					if (isHover && isBorderNone) {
-						response[breakpoint].border = 'none';
-					} else response[breakpoint]['border-style'] = borderStyle;
+					if (!omitBorderStyle)
+						if (isHover && isBorderNone) {
+							response[breakpoint].border = 'none';
+						} else
+							response[breakpoint]['border-style'] = borderStyle;
 				} else if (!keyWords.some(key => newKey.includes(key))) {
 					if (
 						(key.includes('color') || key.includes('opacity')) &&

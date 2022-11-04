@@ -639,14 +639,14 @@ const LibraryContainer = props => {
 				isPro={hit.cost === 'pro'}
 				serial={hit.post_title}
 				onRequestInsert={
-					SCList.map(function (item) {
+					SCList.map(item => {
 						return item.label;
 					}).includes(hit.post_title)
 						? () => {}
 						: () => onRequestInsertSC(hit.sc_code)
 				}
 				isSaved={
-					SCList.map(function (item) {
+					SCList.map(item => {
 						return item.label;
 					}).includes(hit.post_title)
 						? 'saved'

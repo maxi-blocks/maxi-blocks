@@ -65,7 +65,7 @@ const getParsedObj = obj => {
 	return newObj;
 };
 
-export const getSCVariablesObject = styleCards => {
+export const getSCVariablesObject = (styleCards, SCList) => {
 	const response = {};
 	const styles = ['light', 'dark'];
 	const elements = [
@@ -108,7 +108,7 @@ export const getSCVariablesObject = styleCards => {
 	};
 	const elementsForColor = ['divider', 'icon', 'link'];
 
-	console.log(SC.light.color[4]);
+	console.log(SCList);
 
 	styles.forEach(style => {
 		elements.forEach(element => {

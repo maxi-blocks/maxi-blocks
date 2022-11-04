@@ -11,6 +11,7 @@ import {
 	getColorRGBAString,
 	styleProcessor,
 	getGroupAttributes,
+	getAttributeValue,
 } from '../../extensions/styles';
 import {
 	getBorderStyles,
@@ -28,6 +29,8 @@ import {
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
 import data from './data';
+
+const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const getNormalObject = props => {
 	const response = {
@@ -204,18 +207,25 @@ const getPaneTitleStyles = (props, prefix, isHover = false) => {
 };
 
 const getPaneHeaderStyles = (props, prefix, isHover = false) => {
-	const response = {
-		paneHeader: {
-			label: 'Pane header',
-			general: {
+	const response = {};
+
+	breakpoints.forEach(breakpoint => {
+		const bgStatus = getAttributeValue({
+			target: 'title-background-status',
+			props,
+			isHover,
+			prefix,
+		});
+		if (bgStatus)
+			response[breakpoint] = {
 				'background-color': getColor({
 					props,
 					prefix: `${prefix}title-background-`,
 					isHover,
+					breakpoint,
 				}),
-			},
-		},
-	};
+			};
+	});
 
 	return response;
 };
@@ -223,10 +233,9 @@ const getPaneHeaderStyles = (props, prefix, isHover = false) => {
 const getPaneHeaderObject = props => {
 	const response = {
 		' .maxi-pane-block .maxi-pane-block__header-content': {
-			paneHeader: {
-				label: 'Pane header content',
+			paneHeader: getPaneHeaderStyles(props, ''),
+			paneHeaderIconPosition: {
 				general: {
-					...getPaneHeaderStyles(props, '').paneHeader.general,
 					'flex-direction':
 						props['icon-position'] === 'right'
 							? 'row'
@@ -287,10 +296,14 @@ const getPaneHeaderObject = props => {
 					},
 				},
 		}),
-		' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__header':
-			getPaneHeaderStyles(props, 'active-'),
-		' .maxi-pane-block[aria-expanded] .maxi-pane-block__header:hover .maxi-pane-block__header':
-			getPaneHeaderStyles(props, '', true),
+		' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__header-content':
+			{
+				paneHeaderActive: getPaneHeaderStyles(props, 'active-'),
+			},
+		' .maxi-pane-block[aria-expanded] .maxi-pane-block__header:hover .maxi-pane-block__header-content':
+			{
+				paneHeaderHover: getPaneHeaderStyles(props, '', true),
+			},
 		' .maxi-pane-block .maxi-pane-block__title': getPaneTitleStyles(
 			props,
 			'title-'

@@ -24,7 +24,10 @@ const customClasses = ({ props }) => {
 					'Input CSS classes to target this block',
 					'maxi-blocks'
 				)}
-				placeholder={__('Separate multiple classes with spaces')}
+				placeholder={__(
+					'Separate multiple classes with spaces',
+					'maxi-blocks'
+				)}
 				className='maxi-additional__css-classes'
 				value={extraClassName}
 				onChange={extraClassName =>

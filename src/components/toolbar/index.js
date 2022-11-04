@@ -14,13 +14,15 @@ import {
 /**
  * External dependencies
  */
-import { isEmpty, cloneDeep, isEqual, merge } from 'lodash';
+import { isEmpty, cloneDeep, isEqual, merge, isNaN } from 'lodash';
 import classnames from 'classnames';
 
 /**
  * Internal dependencies
  */
-import { toolbarPin, toolbarPinLocked } from '../../icons';
+import { getBoundaryElement } from '../../extensions/dom';
+import SvgColorToolbar from './components/svg-color';
+import VideoUrl from './components/video-url';
 
 /**
  * Utils
@@ -61,11 +63,10 @@ import {
 } from '../../extensions/styles';
 
 /**
- * Styles
+ * Styles & icons
  */
 import './editor.scss';
-import SvgColorToolbar from './components/svg-color';
-import VideoUrl from './components/video-url';
+import { toolbarPin, toolbarPinLocked } from '../../icons';
 
 /**
  * Component
@@ -112,8 +113,8 @@ const MaxiToolbar = memo(
 			svgType,
 		} = attributes;
 
-		const { breakpoint, styleCard, isTyping, tooltipsHide } = useSelect(
-			select => {
+		const { breakpoint, styleCard, isTyping, tooltipsHide, version } =
+			useSelect(select => {
 				const { receiveMaxiDeviceType, receiveMaxiSettings } =
 					select('maxiBlocks');
 				const { receiveMaxiSelectedStyleCard } = select(
@@ -126,8 +127,10 @@ const MaxiToolbar = memo(
 				const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
 
 				const maxiSettings = receiveMaxiSettings();
-				const tooltipsHide = !isEmpty(maxiSettings.hide_tooltips)
-					? maxiSettings.hide_tooltips
+				const { hide_tooltips: hideTooltips, editor } = maxiSettings;
+
+				const tooltipsHide = !isEmpty(hideTooltips)
+					? hideTooltips
 					: false;
 
 				return {
@@ -135,9 +138,9 @@ const MaxiToolbar = memo(
 					styleCard,
 					isTyping: isTyping(),
 					tooltipsHide,
+					version: editor?.version,
 				};
-			}
-		);
+			});
 
 		const popoverRef = useRef(null);
 
@@ -190,7 +193,7 @@ const MaxiToolbar = memo(
 		useEffect(() => {
 			setAnchorRef(ref.current);
 
-			if (popoverRef.current) {
+			if (version > 13.0 && popoverRef.current) {
 				const newAnchor = getAnchor(popoverRef.current);
 
 				if (
@@ -226,23 +229,43 @@ const MaxiToolbar = memo(
 			attributes
 		);
 
+		const popoverPropsByVersion = {
+			...((parseFloat(version) <= 13.0 && {
+				getAnchorRect: spanEl => {
+					// span element needs to be hidden to don't break the grid
+					spanEl.style.display = 'none';
+
+					return getAnchor(
+						popoverRef.current
+					).getBoundingClientRect();
+				},
+				position: 'top center right',
+				shouldAnchorIncludePadding: true,
+				__unstableStickyBoundaryElement: getBoundaryElement(anchorRef),
+			}) ||
+				(!isNaN(parseFloat(version)) && {
+					anchor,
+					position: 'top center',
+					flip: false,
+					resize: false,
+				})),
+		};
+
 		return (
-			// false &&
 			isSelected &&
 			anchorRef && (
 				<Popover
 					ref={popoverRef}
 					noArrow
 					animate={false}
-					position='top center'
 					focusOnMount={false}
-					anchor={anchor}
 					className={classnames(
 						'maxi-toolbar__popover',
 						!!breadcrumbStatus() &&
 							'maxi-toolbar__popover--has-breadcrumb'
 					)}
 					__unstableSlotName='block-toolbar'
+					{...popoverPropsByVersion}
 				>
 					<div className={`toolbar-wrapper pinned--${pinActive}`}>
 						{!isTyping && (

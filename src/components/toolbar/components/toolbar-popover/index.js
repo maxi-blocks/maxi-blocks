@@ -18,7 +18,7 @@ import ToolbarContext from './toolbarContext';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
+import { isEmpty, isNaN } from 'lodash';
 
 /**
  * Styles
@@ -117,10 +117,8 @@ class ToolbarPopover extends Component {
 
 		const { receiveMaxiSettings } = select('maxiBlocks');
 
-		const maxiSettings = receiveMaxiSettings();
-		const tooltipsHide = !isEmpty(maxiSettings.hide_tooltips)
-			? maxiSettings.hide_tooltips
-			: false;
+		const { hide_tooltips: hideTooltops, version } = receiveMaxiSettings();
+		const tooltipsHide = !isEmpty(hideTooltops) ? hideTooltops : false;
 
 		const buttonContent = () => {
 			return (
@@ -137,6 +135,20 @@ class ToolbarPopover extends Component {
 			);
 		};
 
+		const popoverProps = {
+			...((parseFloat(version) <= 13.0 && {
+				noArrow: false,
+				anchorRef: this.ref?.current?.closest('.toolbar-wrapper'),
+			}) ||
+				(!isNaN(parseFloat(version)) && {
+					noArrow: false,
+					anchorRef: this.ref?.current?.closest('.toolbar-wrapper'),
+					flip: false,
+					resize: false,
+					variant: 'unstyled',
+				})),
+		};
+
 		return (
 			<div ref={this.ref}>
 				<ToolbarContext.Provider value={{ isOpen, onClose }}>
@@ -149,15 +161,11 @@ class ToolbarPopover extends Component {
 					{isOpen && children && (
 						<Popover
 							className='toolbar-item__popover'
-							noArrow
-							// Toolbar node
-							anchor={this.ref?.current?.closest(
-								'.toolbar-wrapper'
-							)}
 							onClose={onClose}
 							position={position}
 							isAlternate
 							shouldAnchorIncludePadding
+							{...popoverProps}
 						>
 							<div>{children}</div>
 							{!!advancedOptions && (

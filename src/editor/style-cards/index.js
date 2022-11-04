@@ -26,6 +26,14 @@ const MaxiStyleCardsEditorPopUp = () => {
 		return { styleCards };
 	});
 
+	const { activeSC } = useSelect(select => {
+		const { receiveMaxiActiveStyleCard } = select('maxiBlocks/style-cards');
+
+		const activeSC = receiveMaxiActiveStyleCard() || {};
+
+		return { activeSC };
+	});
+
 	const [isVisible, setIsVisible] = useState(false);
 
 	return (
@@ -42,6 +50,7 @@ const MaxiStyleCardsEditorPopUp = () => {
 			{isVisible && (
 				<MaxiStyleCardsEditor
 					styleCards={styleCards}
+					activeSC={activeSC}
 					setIsVisible={setIsVisible}
 				/>
 			)}

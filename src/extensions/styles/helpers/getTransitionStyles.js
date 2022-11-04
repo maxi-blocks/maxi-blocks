@@ -36,8 +36,8 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 			if (hoverProp && hoverProp.every(prop => !props[prop])) return;
 
 			const { target: rawTarget, property: rawProperty } = value;
-			const targets = Array.isArray(rawTarget) ? rawTarget : [rawTarget];
-			const properties = Array.isArray(rawProperty)
+			const targets = isArray(rawTarget) ? rawTarget : [rawTarget];
+			const properties = isArray(rawProperty)
 				? rawProperty
 				: [rawProperty];
 

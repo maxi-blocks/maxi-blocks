@@ -229,9 +229,8 @@ const getButtonIconStyles = ({
 	const {
 		[`${prefix}icon-inherit`]: iconInherit,
 		[`${prefix}icon-status-hover`]: iconHoverStatus,
-		// [`${prefix}icon-content`]: iconActiveContent,
 	} = obj;
-	// const iconActiveStatus = iconActiveContent !== '';
+
 	const useIconColor = !iconInherit;
 	const normalTarget = `${wrapperTarget} ${target}`;
 	const hoverTarget = `${wrapperTarget}:hover ${target}`;

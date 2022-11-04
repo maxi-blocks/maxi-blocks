@@ -121,7 +121,7 @@ const getIconObject = props => {
 			wrapperTarget:
 				' .maxi-pane-block[aria-expanded=false] .maxi-pane-block__header',
 		}),
-		...(props['icon-status-hover'] /* || props['active-icon-content'] */ &&
+		...(props['icon-status-hover'] &&
 			getButtonIconStyles({
 				obj: props,
 				blockStyle: props.blockStyle,

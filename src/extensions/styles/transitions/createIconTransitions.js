@@ -11,7 +11,6 @@ const createIconTransitions = ({
 	disableBorder = false,
 	disableWidth = false,
 }) => {
-	// dev
 	const iconStatusHover = `${prefix}status-hover`;
 
 	const getKey = key => (titlePrefix ? `${titlePrefix} ${key}` : key);

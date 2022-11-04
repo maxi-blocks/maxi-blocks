@@ -438,7 +438,6 @@ const preserveBaseBreakpoint = (
 		const breakpoint = getBreakpointFromAttribute(key);
 
 		if (!breakpoint || breakpoint === 'general' || isNil(value)) {
-			result[key] = value;
 			return;
 		}
 
@@ -455,15 +454,7 @@ const preserveBaseBreakpoint = (
 		const generalAttr = { ...attributes, ...newAttributes }?.[
 			`${simpleLabel}-general`
 		];
-		const defaultAttribute =
-			defaultAttributes?.[baseLabel] ??
-			getDefaultAttribute(baseLabel, clientId, true);
-
-		if (
-			isEqual(baseAttr, defaultAttribute) &&
-			!isEqual(baseAttr, generalAttr) &&
-			!isEqual(generalAttr, value)
-		)
+		if (!isEqual(baseAttr, generalAttr) && !isEqual(generalAttr, value))
 			result[baseLabel] = generalAttr;
 	});
 

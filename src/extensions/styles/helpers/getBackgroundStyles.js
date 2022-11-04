@@ -1069,6 +1069,15 @@ const getGeneralBackgroundStyles = (
 					?.right === size[breakpoint]?.right
 			)
 				delete size[breakpoint]?.right;
+
+			if (
+				isEmpty(size[breakpoints[breakpoints.indexOf(breakpoint) - 1]])
+			) {
+				delete size[breakpoints[breakpoints.indexOf(breakpoint) - 1]];
+			}
+			if (isEmpty(size[breakpoint])) {
+				delete size[breakpoint];
+			}
 		});
 
 	return { border, ...(!isEmpty(size) && { size }) };

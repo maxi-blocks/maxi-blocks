@@ -33,6 +33,7 @@ describe('Text Maxi hover simple actions', () => {
 		await textControls[1].focus();
 
 		await page.keyboard.type('Test');
+		await page.waitForTimeout(150);
 
 		let selectControls = await page.$$('.maxi-select-control__input');
 		await selectControls[1].select('text-maxi-1');

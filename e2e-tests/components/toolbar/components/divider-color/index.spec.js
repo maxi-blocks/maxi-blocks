@@ -17,10 +17,10 @@ describe('Divider color from Toolbar', () => {
 		await createNewPost();
 		await insertBlock('Divider Maxi');
 
+		// Wait for toolbar to be visible
+		await page.waitForSelector('.toolbar-wrapper');
+
 		// edit divider color
-		await page.waitForSelector(
-			'.toolbar-wrapper .toolbar-item__button.toolbar-item__divider'
-		);
 		await page.$eval(
 			'.toolbar-wrapper .toolbar-item__button.toolbar-item__divider',
 			button => button.click()

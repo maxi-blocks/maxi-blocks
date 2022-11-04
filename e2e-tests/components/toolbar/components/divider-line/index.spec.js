@@ -17,10 +17,10 @@ describe('Divider line from Toolbar', () => {
 		await createNewPost();
 		await insertBlock('Divider Maxi');
 
+		// Wait for toolbar to be visible
+		await page.waitForSelector('.toolbar-wrapper');
+
 		// edit divider line
-		await page.waitForSelector(
-			'.toolbar-wrapper .toolbar-item__button.toolbar-item__divider-line'
-		);
 		await page.$eval(
 			'.toolbar-wrapper .toolbar-item__button.toolbar-item__divider-line',
 			button => button.click()

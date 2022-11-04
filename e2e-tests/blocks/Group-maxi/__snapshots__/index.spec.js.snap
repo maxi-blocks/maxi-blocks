@@ -4,7 +4,7 @@ exports[`Group Maxi Group Maxi Custom CSS 1`] = `"<style>body.maxi-blocks--activ
 
 exports[`Group Maxi Group Maxi does not break 1`] = `
 "<!-- wp:maxi-blocks/group-maxi {\\"maxi-version-current\\":\\"0.0.1-SC2\\",\\"maxi-version-origin\\":\\"0.0.1-SC2\\",\\"blockStyle\\":\\"light\\",\\"isFirstOnHierarchy\\":true,\\"uniqueID\\":\\"group-maxi-1\\",\\"customLabel\\":\\"Group_1\\"} -->
-<div class=\\"wp-block-maxi-blocks-group-maxi maxi-block maxi-group-block maxi-light group-maxi-1\\" id=\\"group-maxi-1\\"></div>
+<div class=\\"wp-block-maxi-blocks-group-maxi maxi-block maxi-group-block maxi-light group-maxi-1\\" id=\\"group-maxi-1\\" style=\\"margin-top:calc(0px + 50px);margin-bottom:calc(0px + 50px)\\"></div>
 <!-- /wp:maxi-blocks/group-maxi -->"
 `;
 

@@ -21,6 +21,7 @@ const size = ({
 	props,
 	prefix = '',
 	block = false,
+	hideHeight = false,
 	hideWidth = false,
 	hideMaxWidth = false,
 	hideFullWidth = false,
@@ -95,6 +96,7 @@ const size = ({
 						prefix={prefix}
 						onChange={obj => maxiSetAttributes(obj)}
 						breakpoint={deviceType}
+						hideHeight={hideHeight}
 						hideWidth={hideWidth || isBlockFullWidth}
 						hideMaxWidth={hideMaxWidth || isBlockFullWidth}
 						isBlockFullWidth={isBlockFullWidth}

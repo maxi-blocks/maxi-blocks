@@ -59,11 +59,18 @@ const BlockResizer = memo(
 			...props.enable,
 		};
 
+		const stylesCleaner = el =>
+			['position', 'user-select', 'box-sizing', 'flex-shrink'].forEach(
+				style => {
+					el.style.setProperty(style, '');
+				}
+			);
+
 		const handleRef = newRef => {
 			if (newRef) {
 				// Needed to clean styles before first onResizeStop, so that blocks don't jump after resizing
 				if (cleanStyles && !hasCleanedStyles.current) {
-					newRef.resizable.style = null;
+					stylesCleaner(newRef.resizable);
 					hasCleanedStyles.current = true;
 				}
 				if (resizableObject) resizableObject.current = newRef;
@@ -149,7 +156,7 @@ const BlockResizer = memo(
 				handleWrapperClass={handlesWrapperClassName}
 				onResizeStop={(e, direction, refToElement, ...rest) => {
 					onResizeStop?.(e, direction, refToElement, ...rest);
-					if (cleanStyles) refToElement.style = null;
+					if (cleanStyles) stylesCleaner(refToElement);
 				}}
 			>
 				{children}

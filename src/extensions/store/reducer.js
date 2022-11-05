@@ -29,6 +29,10 @@ const breakpointResizer = ({
 		(size === 'xxl' && (xxlSize > winSize ? xxlSize : winSize)) ||
 		breakpoints[size];
 
+	console.log('getWinBreakpoint');
+	console.log(getWinBreakpoint(winSize, breakpoints));
+	console.log(breakpoints);
+
 	editorWrapper.setAttribute(
 		'maxi-blocks-responsive',
 		size !== 'general' ? size : getWinBreakpoint(winSize, breakpoints)
@@ -69,7 +73,13 @@ const breakpointResizer = ({
 const reducer = (
 	state = {
 		settings: {},
-		breakpoints: {},
+		breakpoints: {
+			xs: 480,
+			s: 767,
+			m: 1024,
+			l: 1366,
+			xl: 1920,
+		},
 		deviceType: 'general',
 		presets: '',
 		copiedStyles: {},

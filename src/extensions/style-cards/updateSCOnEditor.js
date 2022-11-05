@@ -65,7 +65,7 @@ const getParsedObj = obj => {
 	return newObj;
 };
 
-export const getSCVariablesObject = (styleCards, activeSC) => {
+export const getSCVariablesObject = (styleCards, activeSCColour) => {
 	const response = {};
 	const styles = ['light', 'dark'];
 	const elements = [
@@ -107,8 +107,6 @@ export const getSCVariablesObject = (styleCards, activeSC) => {
 		},
 	};
 	const elementsForColor = ['divider', 'icon', 'link'];
-
-	console.log(activeSC);
 
 	styles.forEach(style => {
 		elements.forEach(element => {
@@ -209,11 +207,9 @@ export const getSCVariablesObject = (styleCards, activeSC) => {
 						SC[style].color[n + 1];
 				}
 			});
-
-			response['--maxi-active-sc-color'] = SC[style].color[0 + 4];
 		}
 	});
-
+	response['--maxi-active-sc-color'] = activeSCColour;
 	return response;
 };
 
@@ -259,8 +255,11 @@ const getSCFontsData = obj => {
 	return response;
 };
 
-const updateSCOnEditor = styleCards => {
-	const SCObject = getSCVariablesObject({ ...cloneDeep(styleCards) });
+const updateSCOnEditor = (styleCards, activeSCColour) => {
+	const SCObject = getSCVariablesObject(
+		{ ...cloneDeep(styleCards) },
+		activeSCColour
+	);
 	let SCStyle = document.getElementById('maxi-blocks-sc-vars-inline-css');
 	if (!SCStyle) {
 		SCStyle = document.createElement('style');

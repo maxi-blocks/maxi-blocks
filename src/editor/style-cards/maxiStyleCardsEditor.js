@@ -95,7 +95,9 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 	const [currentSCStyle, setCurrentSCStyle] = useState('light');
 
 	useEffect(() => {
-		if (selectedSCValue) updateSCOnEditor(selectedSCValue);
+		const activeSCColour =
+			activeStyleCard.value.light.defaultStyleCard.color[4];
+		if (selectedSCValue) updateSCOnEditor(selectedSCValue, activeSCColour);
 	}, [selectedSCKey]);
 
 	const canBeSaved = keySC => {

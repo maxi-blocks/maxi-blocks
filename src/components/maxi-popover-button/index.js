@@ -56,8 +56,14 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 						.querySelector('.components-popover__content')
 						.getBoundingClientRect();
 
+				const videoWidth = props.attributes['video-width-general']
+					? props.attributes['video-width-general']
+					: 0;
 				const newRect = DOMRect.fromRect({
-					x: x + width / 2 - popoverWidth / 2,
+					x:
+						props.name === 'maxi-blocks/video-maxi'
+							? width / 2 + videoWidth / 2 - 15
+							: x + width / 2 - popoverWidth / 2,
 					y: y + popoverHeight,
 					width,
 					height,

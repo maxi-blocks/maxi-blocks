@@ -383,14 +383,14 @@ const CopyPaste = props => {
 				className='toolbar-item__copy-paste__popover__button'
 				onClick={onCopyStyles}
 			>
-				{__('Copy styles - all', 'maxi-blocks')}
+				{__('Copy all styles', 'maxi-blocks')}
 			</Button>
 			<Button
 				className='toolbar-item__copy-paste__popover__button'
 				onClick={onPasteStyles}
 				disabled={isEmpty(copiedStyles)}
 			>
-				{__('Paste styles - all', 'maxi-blocks')}
+				{__('Paste all styles', 'maxi-blocks')}
 			</Button>
 			{!isEmpty(copiedStyles) &&
 				!isEqual(currentOrganizedAttributes, organizedAttributes) && (
@@ -403,7 +403,7 @@ const CopyPaste = props => {
 								className='toolbar-item__copy-paste__popover__button'
 								onClick={onToggle}
 							>
-								{__('Paste special - select', 'maxi-blocks')}
+								{__('Paste special - choose', 'maxi-blocks')}
 							</Button>
 						)}
 						renderContent={() => (

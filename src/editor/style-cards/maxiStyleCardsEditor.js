@@ -23,6 +23,7 @@ import {
 	SelectControl,
 	Button,
 	Icon,
+	DialogBox,
 } from '../../components';
 import MaxiStyleCardsTab from './maxiStyleCardsTab';
 import { updateSCOnEditor } from '../../extensions/style-cards';
@@ -477,6 +478,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 							>
 								{__('Save & Activate', 'maxi-blocks')}
 							</Button>
+							<DialogBox />
 						</div>
 						<div
 							className={

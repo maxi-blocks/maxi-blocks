@@ -1,0 +1,36 @@
+.maxi-dialog-box {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 999999;
+	display: flex;
+	align-items: center;
+}
+.maxi-dialog-box-overlay {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.7);
+}
+
+.maxi-dialog-box-content {
+	width: 400px;
+	height: 300px;
+	background: #fff;
+	margin: auto;
+	z-index: 2;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 20px;
+	box-sizing: border-box;
+}
+.maxi-dialog-box-message {
+	height: calc(100% - 50px);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}

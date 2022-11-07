@@ -129,7 +129,7 @@ const DateFormatting = props => {
 		}
 	};
 
-	const dateFormat = _value => {
+	const dateFormat = value => {
 		const options = formatOptions({
 			day,
 			era,
@@ -151,8 +151,8 @@ const DateFormatting = props => {
 			zone,
 		};
 
-		if (_value) {
-			const NewDate = new Date(_value);
+		if (value) {
+			const NewDate = new Date(value);
 			contentRef.current = NewDate.toLocaleString(zone, options);
 			data.content = contentRef.current;
 		}
@@ -182,40 +182,50 @@ const DateFormatting = props => {
 			{isVisible && (
 				<Popover className='date-popover' position='top right'>
 					<p>
-						<b>d</b> - day in numeric format
+						<b>{__('d', 'maxi-blocks')}</b> -
+						{__('day in numeric format', 'maxi-blocks')}
 					</p>
 					<p>
-						<b>D</b> - day in text format
+						<b>{__('D', 'maxi-blocks')}</b> -
+						{__('day in text format', 'maxi-blocks')}
 					</p>
 					<p>
-						<b>DS</b> - day in text format, short
+						<b>{__('DS', 'maxi-blocks')}</b> -
+						{__('day in text format, short', 'maxi-blocks')}
 					</p>
 					<p>
-						<b>DV</b> - day in text format, very short
+						<b>{__('DV', 'maxi-blocks')}</b> -
+						{__('day in text format, very short', 'maxi-blocks')}
 					</p>
 					<p>
-						<b>m</b> - month in numeric format
+						<b>{__('m', 'maxi-blocks')}</b> -
+						{__('month in numeric format', 'maxi-blocks')}
 					</p>
 					<p>
-						<b>M</b> - month in text format
+						<b>{__('M', 'maxi-blocks')}</b> -
+						{__('month in text format', 'maxi-blocks')}
 					</p>
 					<p>
-						<b>MS</b> - month in text format, short
+						<b>{__('MS', 'maxi-blocks')}</b> -
+						{__('month in text format, short', 'maxi-blocks')}
 					</p>
 					<p>
-						<b>y</b> - year in short format
+						<b>{__('y', 'maxi-blocks')}</b> -
+						{__('year in short format', 'maxi-blocks')}
 					</p>
 					<p>
-						<b>Y</b> - full year
+						<b>{__('Y', 'maxi-blocks')}</b> -
+						{__('full year', 'maxi-blocks')}
 					</p>
 					<p>
-						<b>t</b> - time
+						<b>{__('t', 'maxi-blocks')}</b> -
+						{__('time', 'maxi-blocks')}
 					</p>
 				</Popover>
 			)}
 			<ToggleSwitch
 				label={__(
-					`Date ${!status ? 'custom' : 'standart'}`,
+					`${!status ? 'Custom' : 'default'} date`,
 					'maxi-blocks'
 				)}
 				selected={status}
@@ -295,7 +305,7 @@ const DateFormatting = props => {
 					{linkStatus === 'time' && (
 						<>
 							<SelectControl
-								label={__('hour12', 'maxi-blocks')}
+								label={__('Format', 'maxi-blocks')}
 								value={hour12}
 								options={DateOptions.hour12}
 								onChange={value => setHour12(value)}
@@ -335,7 +345,7 @@ const DateFormatting = props => {
 								onChange={value => setTimeZone(value)}
 							/>
 							<SelectControl
-								label={__('Timezone Name', 'maxi-blocks')}
+								label={__('Timezone name', 'maxi-blocks')}
 								value={timeZoneName}
 								options={DateOptions.timeZoneName}
 								onChange={value => setTimeZoneName(value)}

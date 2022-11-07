@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { dispatch } from '@wordpress/data';
+import { select, dispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -65,7 +65,10 @@ const getParsedObj = obj => {
 	return newObj;
 };
 
-export const getSCVariablesObject = (styleCards, activeSCColour) => {
+export const getSCVariablesObject = (
+	styleCards,
+	activeSCColour = styleCards.light.defaultStyleCard.color[4]
+) => {
 	const response = {};
 	const styles = ['light', 'dark'];
 	const elements = [

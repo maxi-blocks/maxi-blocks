@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+
+/**
  * External dependencies
  */
 import { kebabCase, isEmpty } from 'lodash';
@@ -113,7 +118,7 @@ const CopyPasteChildGroup = props => {
 									});
 								}}
 							/>
-							<span>{value}</span>
+							<span>{__(value, 'maxi-blocks')}</span>
 						</label>
 					</div>
 				);

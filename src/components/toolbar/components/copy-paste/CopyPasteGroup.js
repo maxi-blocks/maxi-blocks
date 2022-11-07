@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
 
 /**
@@ -127,7 +128,9 @@ const CopyPasteGroup = props => {
 					}
 				/>
 				<span onClick={e => e.preventDefault()}>
-					<label htmlFor={normalizedLabel}>{label}</label>
+					<label htmlFor={normalizedLabel}>
+						{__(label, 'maxi-blocks')}
+					</label>
 				</span>
 				<span
 					onClick={e => setIsOpen(!isOpen)}
@@ -187,7 +190,7 @@ const CopyPasteGroup = props => {
 											})
 										}
 									/>
-									<span>{attr}</span>
+									<span>{__(attr, 'maxi-blocks')}</span>
 									<span
 										onClick={e =>
 											openChildMenu({ id, isOpenMenu })

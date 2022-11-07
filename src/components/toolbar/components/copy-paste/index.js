@@ -15,6 +15,7 @@ import CopyPasteGroup from './CopyPasteGroup';
 import Dropdown from '../../../dropdown';
 import { getOrganizedAttributes } from '../../../../extensions/copy-paste';
 import { loadColumnsTemplate } from '../../../../extensions/column-templates';
+import labelOptions from './utils';
 
 /**
  * External dependencies
@@ -344,7 +345,7 @@ const CopyPaste = props => {
 												})
 											}
 										/>
-										<span>{label}</span>
+										<span>{__(label, 'maxi-blocks')}</span>
 									</label>
 								</div>
 							);
@@ -412,6 +413,7 @@ const CopyPaste = props => {
 									target='sidebar-settings-tabs'
 									disablePadding
 									items={getTabItems()}
+									labelOptions={labelOptions}
 								/>
 
 								<Button

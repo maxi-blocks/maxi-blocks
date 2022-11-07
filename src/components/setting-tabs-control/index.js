@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+import { __ } from '@wordpress/i18n';
 import { useState, useEffect, cloneElement } from '@wordpress/element';
 import { select, useDispatch, useSelect } from '@wordpress/data';
 
@@ -32,6 +33,7 @@ import './editor.scss';
 const SettingTabsControl = props => {
 	const {
 		items,
+		labelOptions = false,
 		disablePadding = false,
 		isNestedAccordion = false,
 		className,
@@ -158,7 +160,12 @@ const SettingTabsControl = props => {
 										: selected === item.value
 								}
 							>
-								{!isEmpty(item.label) && item.label}
+								{!isEmpty(item.label) &&
+									(__(
+										labelOptions[item.label],
+										'maxi-blocks'
+									) ??
+										__(item.label, 'maxi-blocks'))}
 								{!isEmpty(item.icon) && item.icon}
 								{item.showNotification && (
 									<svg

@@ -29,10 +29,6 @@ const breakpointResizer = ({
 		(size === 'xxl' && (xxlSize > winSize ? xxlSize : winSize)) ||
 		breakpoints[size];
 
-	console.log('getWinBreakpoint');
-	console.log(getWinBreakpoint(winSize, breakpoints));
-	console.log(breakpoints);
-
 	editorWrapper.setAttribute(
 		'maxi-blocks-responsive',
 		size !== 'general' ? size : getWinBreakpoint(winSize, breakpoints)

@@ -593,7 +593,6 @@ const AxisControl = props => {
 				else response[attrKey] = defaultValue;
 			} else response[attrKey] = defaultValue;
 		});
-		console.log(response);
 		onChange(response);
 	};
 

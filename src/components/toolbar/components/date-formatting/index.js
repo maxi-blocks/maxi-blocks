@@ -180,7 +180,10 @@ const DateFormatting = props => {
 	return (
 		<div className='date-formatting'>
 			{isVisible && (
-				<Popover className='date-popover' position='top right'>
+				<Popover
+					className='date-popover maxi-popover-button'
+					position='top right'
+				>
 					<p>
 						<b>{__('d', 'maxi-blocks')}</b> -
 						{__('day in numeric format', 'maxi-blocks')}
@@ -225,7 +228,7 @@ const DateFormatting = props => {
 			)}
 			<ToggleSwitch
 				label={__(
-					`${!status ? 'Custom' : 'default'} date`,
+					`${!status ? 'Default' : 'Custom'} date`,
 					'maxi-blocks'
 				)}
 				selected={status}

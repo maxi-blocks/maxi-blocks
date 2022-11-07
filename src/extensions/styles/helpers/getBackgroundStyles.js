@@ -972,11 +972,6 @@ const getGeneralBackgroundStyles = (
 			widthBottom = getBorderValue('bottom', breakpoint);
 			widthLeft = getBorderValue('left', breakpoint);
 			widthRight = getBorderValue('right', breakpoint);
-		} else {
-			widthTop = 0;
-			widthBottom = 0;
-			widthLeft = 0;
-			widthRight = 0;
 		}
 
 		const widthUnit =

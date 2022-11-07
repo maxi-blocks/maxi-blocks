@@ -101,14 +101,6 @@ Object {
       "xs": Object {},
       "xxl": Object {},
     },
-    "size": Object {
-      "general": Object {
-        "bottom": "0px",
-        "left": "0px",
-        "right": "0px",
-        "top": "0px",
-      },
-    },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "color": Object {
@@ -151,14 +143,6 @@ Object {
       "xl": Object {},
       "xs": Object {},
       "xxl": Object {},
-    },
-    "size": Object {
-      "general": Object {
-        "bottom": "0px",
-        "left": "0px",
-        "right": "0px",
-        "top": "0px",
-      },
     },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
@@ -237,14 +221,6 @@ Object {
       "xl": Object {},
       "xs": Object {},
       "xxl": Object {},
-    },
-    "size": Object {
-      "general": Object {
-        "bottom": "0px",
-        "left": "0px",
-        "right": "0px",
-        "top": "0px",
-      },
     },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
@@ -401,14 +377,6 @@ Object {
       "xs": Object {},
       "xxl": Object {},
     },
-    "size": Object {
-      "general": Object {
-        "bottom": "0px",
-        "left": "0px",
-        "right": "0px",
-        "top": "0px",
-      },
-    },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "color": Object {
@@ -451,14 +419,6 @@ Object {
       "xl": Object {},
       "xs": Object {},
       "xxl": Object {},
-    },
-    "size": Object {
-      "general": Object {
-        "bottom": "0px",
-        "left": "0px",
-        "right": "0px",
-        "top": "0px",
-      },
     },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__2": Object {
@@ -616,14 +576,6 @@ Object {
       "xl": Object {},
       "xs": Object {},
       "xxl": Object {},
-    },
-    "size": Object {
-      "general": Object {
-        "bottom": "0px",
-        "left": "0px",
-        "right": "0px",
-        "top": "0px",
-      },
     },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
@@ -824,14 +776,6 @@ Object {
       "xs": Object {},
       "xxl": Object {},
     },
-    "size": Object {
-      "general": Object {
-        "bottom": "0px",
-        "left": "0px",
-        "right": "0px",
-        "top": "0px",
-      },
-    },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "gradient": Object {
@@ -879,14 +823,6 @@ Object {
       "xl": Object {},
       "xs": Object {},
       "xxl": Object {},
-    },
-    "size": Object {
-      "general": Object {
-        "bottom": "0px",
-        "left": "0px",
-        "right": "0px",
-        "top": "0px",
-      },
     },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
@@ -1061,14 +997,6 @@ Object {
       "xs": Object {},
       "xxl": Object {},
     },
-    "size": Object {
-      "general": Object {
-        "bottom": "0px",
-        "left": "0px",
-        "right": "0px",
-        "top": "0px",
-      },
-    },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "image": Object {
@@ -1137,14 +1065,6 @@ Object {
       "xl": Object {},
       "xs": Object {},
       "xxl": Object {},
-    },
-    "size": Object {
-      "general": Object {
-        "bottom": "0px",
-        "left": "0px",
-        "right": "0px",
-        "top": "0px",
-      },
     },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
@@ -1281,14 +1201,6 @@ Object {
       "xs": Object {},
       "xxl": Object {},
     },
-    "size": Object {
-      "general": Object {
-        "bottom": "0px",
-        "left": "0px",
-        "right": "0px",
-        "top": "0px",
-      },
-    },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "image": Object {
@@ -1349,14 +1261,6 @@ Object {
       "xl": Object {},
       "xs": Object {},
       "xxl": Object {},
-    },
-    "size": Object {
-      "general": Object {
-        "bottom": "0px",
-        "left": "0px",
-        "right": "0px",
-        "top": "0px",
-      },
     },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
@@ -1504,14 +1408,6 @@ Object {
       "xl": Object {},
       "xs": Object {},
       "xxl": Object {},
-    },
-    "size": Object {
-      "general": Object {
-        "bottom": "0px",
-        "left": "0px",
-        "right": "0px",
-        "top": "0px",
-      },
     },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
@@ -1713,14 +1609,6 @@ Object {
       "xs": Object {},
       "xxl": Object {},
     },
-    "size": Object {
-      "general": Object {
-        "bottom": "0px",
-        "left": "0px",
-        "right": "0px",
-        "top": "0px",
-      },
-    },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "video": Object {
@@ -1812,14 +1700,6 @@ Object {
       "xl": Object {},
       "xs": Object {},
       "xxl": Object {},
-    },
-    "size": Object {
-      "general": Object {
-        "bottom": "0px",
-        "left": "0px",
-        "right": "0px",
-        "top": "0px",
-      },
     },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
@@ -1998,14 +1878,6 @@ Object {
       "xl": Object {},
       "xs": Object {},
       "xxl": Object {},
-    },
-    "size": Object {
-      "general": Object {
-        "bottom": "0px",
-        "left": "0px",
-        "right": "0px",
-        "top": "0px",
-      },
     },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {

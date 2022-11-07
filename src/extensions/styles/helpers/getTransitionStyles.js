@@ -12,7 +12,7 @@ import transitionDefault from '../transitions/transitionDefault';
 /**
  * External dependencies
  */
-import { isNil, isEqual, isEmpty } from 'lodash';
+import { isNil, isEqual, isEmpty, isArray } from 'lodash';
 
 /**
  * Generates size styles object
@@ -28,12 +28,16 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 
 	Object.entries(transitionObj).forEach(([type, obj]) => {
 		Object.entries(obj).forEach(([key, value]) => {
-			const { hoverProp } = value;
-			if (hoverProp && !props[hoverProp]) return;
+			const { hoverProp: rawHoverProp } = value;
+			const hoverProp =
+				!rawHoverProp || isArray(rawHoverProp)
+					? rawHoverProp
+					: [rawHoverProp];
+			if (hoverProp && hoverProp.every(prop => !props[prop])) return;
 
 			const { target: rawTarget, property: rawProperty } = value;
-			const targets = Array.isArray(rawTarget) ? rawTarget : [rawTarget];
-			const properties = Array.isArray(rawProperty)
+			const targets = isArray(rawTarget) ? rawTarget : [rawTarget];
+			const properties = isArray(rawProperty)
 				? rawProperty
 				: [rawProperty];
 

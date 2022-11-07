@@ -19,57 +19,96 @@ import {
 } from '../../../../extensions/styles';
 
 const TitleSettings = props => {
-	const { onChange, clientId, bgPrefix, isHover = false } = props;
+	const { onChange, clientId, bgPrefix, isHover = false, breakpoint } = props;
+
+	const bgStatus = getAttributeValue({
+		target: 'status',
+		props,
+		isHover,
+		prefix: bgPrefix,
+	});
 
 	return (
 		<>
 			<TypographyControl {...props} isHover={isHover} />
-			<ColorControl
-				label={__('Title background', 'maxi-blocks')}
-				color={getAttributeValue({
-					target: 'color',
-					props,
-					isHover,
-					prefix: bgPrefix,
-				})}
-				prefix={bgPrefix}
-				paletteColor={getAttributeValue({
-					target: 'palette-color',
-					props,
-					isHover,
-					prefix: bgPrefix,
-				})}
-				paletteOpacity={getAttributeValue({
-					target: 'palette-opacity',
-					props,
-					isHover,
-					prefix: bgPrefix,
-				})}
-				paletteStatus={getAttributeValue({
-					target: 'palette-status',
-					props,
-					isHover,
-					prefix: bgPrefix,
-				})}
-				onChange={({
-					color,
-					paletteColor,
-					paletteStatus,
-					paletteOpacity,
-				}) =>
+			<ToggleSwitch
+				label={__('Enable title background', 'maxi-blocks')}
+				selected={bgStatus}
+				onChange={value =>
 					onChange({
-						[getAttributeKey('palette-status', isHover, bgPrefix)]:
-							paletteStatus,
-						[getAttributeKey('palette-color', isHover, bgPrefix)]:
-							paletteColor,
-						[getAttributeKey('palette-opacity', isHover, bgPrefix)]:
-							paletteOpacity,
-						[getAttributeKey('color', isHover, bgPrefix)]: color,
+						[getAttributeKey('status', isHover, bgPrefix)]: value,
 					})
 				}
-				clientId={clientId}
-				disableGradient
 			/>
+			{bgStatus && (
+				<ColorControl
+					label={__('Title background', 'maxi-blocks')}
+					color={getAttributeValue({
+						target: 'color',
+						props,
+						isHover,
+						prefix: bgPrefix,
+						breakpoint,
+					})}
+					prefix={bgPrefix}
+					paletteColor={getAttributeValue({
+						target: 'palette-color',
+						props,
+						isHover,
+						prefix: bgPrefix,
+						breakpoint,
+					})}
+					paletteOpacity={getAttributeValue({
+						target: 'palette-opacity',
+						props,
+						isHover,
+						prefix: bgPrefix,
+						breakpoint,
+					})}
+					paletteStatus={getAttributeValue({
+						target: 'palette-status',
+						props,
+						isHover,
+						prefix: bgPrefix,
+						breakpoint,
+					})}
+					onChange={({
+						color,
+						paletteColor,
+						paletteStatus,
+						paletteOpacity,
+					}) =>
+						onChange({
+							[getAttributeKey(
+								'palette-status',
+								isHover,
+								bgPrefix,
+								breakpoint
+							)]: paletteStatus,
+							[getAttributeKey(
+								'palette-color',
+								isHover,
+								bgPrefix,
+								breakpoint
+							)]: paletteColor,
+							[getAttributeKey(
+								'palette-opacity',
+								isHover,
+								bgPrefix,
+								breakpoint
+							)]: paletteOpacity,
+							[getAttributeKey(
+								'color',
+								isHover,
+								bgPrefix,
+								breakpoint
+							)]: color,
+						})
+					}
+					clientId={clientId}
+					disableGradient
+				/>
+			)}
 		</>
 	);
 };

@@ -17,6 +17,9 @@ describe('Text generator', () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 
+		// Wait for toolbar to be visible
+		await page.waitForSelector('.toolbar-wrapper');
+
 		// open more settings
 		await page.$eval(
 			'.toolbar-wrapper .toolbar-item__more-settings button',

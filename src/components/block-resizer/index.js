@@ -60,11 +60,16 @@ const BlockResizer = memo(
 		};
 
 		const stylesCleaner = el =>
-			['position', 'user-select', 'box-sizing', 'flex-shrink'].forEach(
-				style => {
-					el.style.setProperty(style, '');
-				}
-			);
+			[
+				'position',
+				'user-select',
+				'box-sizing',
+				'flex-shrink',
+				'min-width',
+				'max-width',
+			].forEach(style => {
+				el.style.setProperty(style, '');
+			});
 
 		const handleRef = newRef => {
 			if (newRef) {

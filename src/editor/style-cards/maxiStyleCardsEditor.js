@@ -206,22 +206,6 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 
 	const [postDate, setPostDate] = useState();
 
-	const saveChanges = () => {
-		const current = new Date();
-		const date = `${current.getDate()}/${
-			current.getMonth() + 1
-		}/${current.getFullYear()}`;
-		setPostDate(date);
-
-		const newStyleCards = {
-			...styleCards,
-			[selectedSCKey]: { ...selectedSCValue },
-		};
-
-		saveMaxiStyleCards(newStyleCards, true);
-		saveSCStyles(true);
-	};
-
 	// const saveCurrentSC = () => {
 	// 	const newStyleCards = {
 	// 		...styleCards,
@@ -262,6 +246,31 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 
 	const disableSettings = () => {
 		setsettingsDisabled(true);
+	};
+
+	const [isDisabled, setIsDisabled] = useState(true);
+	const openDialog = () => {
+		setIsDisabled(false);
+	};
+	const removeDialog = () => {
+		setIsDisabled(true);
+	};
+	const saveChanges = () => {
+		const current = new Date();
+		const date = `${current.getDate()}/${
+			current.getMonth() + 1
+		}/${current.getFullYear()}`;
+		setPostDate(date);
+
+		const newStyleCards = {
+			...styleCards,
+			[selectedSCKey]: { ...selectedSCValue },
+		};
+
+		saveMaxiStyleCards(newStyleCards, true);
+		saveSCStyles(true);
+
+		setIsDisabled(true);
 	};
 
 	return (
@@ -337,24 +346,25 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 							<Button
 								disabled={!canBeRemoved(selectedSCKey)}
 								className='maxi-style-cards__sc__more-sc--delete'
-								onClick={() => {
-									if (
-										window.confirm(
-											sprintf(
-												__(
-													'Deleting "%s" style card. This action is permanent. ',
-													'maxi-blocks'
-												),
-												styleCards[selectedSCKey].name
-											)
-										)
-									) {
-										removeStyleCard(selectedSCKey);
-										disableSettings();
-										if (activeSCKey === selectedSCKey)
-											setActiveStyleCard('sc_maxi');
-									}
-								}}
+								onClick={openDialog}
+								// onClick={() => {
+								// 	if (
+								// 		window.confirm(
+								// 			sprintf(
+								// 				__(
+								// 					'Deleting "%s" style card. This action is permanent. ',
+								// 					'maxi-blocks'
+								// 				),
+								// 				styleCards[selectedSCKey].name
+								// 			)
+								// 		)
+								// 	) {
+								// 		removeStyleCard(selectedSCKey);
+								// 		disableSettings();
+								// 		if (activeSCKey === selectedSCKey)
+								// 			setActiveStyleCard('sc_maxi');
+								// 	}
+								// }}
 							>
 								<Icon icon={SCDelete} />
 							</Button>
@@ -389,24 +399,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 								disabled={
 									!canBeApplied(selectedSCKey, activeSCKey)
 								}
-								onClick={() => {
-									if (
-										window.confirm(
-											sprintf(
-												__(
-													'Activate new style. Customized blocks will not change. All other Maxi blocks will get new "%s" styles.',
-													'maxi-blocks'
-												),
-												getCurrentSCName
-											)
-										)
-									) {
-										applyCurrentSCGlobally();
-										showMaxiSCAppliedActiveSnackbar(
-											selectedSCValue.name
-										);
-									}
-								}}
+								onClick={openDialog}
 							>
 								{__('Activate now', 'maxi-blocks')}
 							</Button>
@@ -418,7 +411,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 					<div className='maxi-style-cards__sc maxi-style-cards__settings'>
 						<div className='maxi-style-cards__sc-custom-name'>
 							<h3>
-								{__('Create new from')}
+								{__('Create new from', 'maxi-blocks')}
 								<b> {selectedSCValue.name}</b>
 							</h3>
 
@@ -471,14 +464,26 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 							<Button onClick={cancelSettings}>
 								{__('Cancel', 'maxi-blocks')}
 							</Button>
-							<Button
-								className='maxi-style-cards__sc__actions--save'
-								disabled={!canBeSaved(selectedSCKey)}
-								onClick={saveChanges}
+
+							<DialogBox
+								isDisabled={isDisabled}
+								message={__(
+									'Are you sure you want to save & activate this style card?',
+									'maxi-blocks'
+								)}
+								cancel={__('Cancel', 'maxi-blocks')}
+								confirm={__('Confirm', 'maxi-blocks')}
+								onCancel={removeDialog}
+								onConfirm={saveChanges}
 							>
-								{__('Save & Activate', 'maxi-blocks')}
-							</Button>
-							<DialogBox />
+								<Button
+									className='maxi-style-cards__sc__actions--save'
+									disabled={!canBeSaved(selectedSCKey)}
+									onClick={openDialog}
+								>
+									{__('Save & Activate', 'maxi-blocks')}
+								</Button>
+							</DialogBox>
 						</div>
 						<div
 							className={

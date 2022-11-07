@@ -124,6 +124,29 @@ function observeConsoleLogging() {
 			return;
 		}
 
+		// Sometimes, while loading video URLS, we've got CORS errors.
+		if (text.includes('has been blocked by CORS policy')) {
+			return;
+		}
+
+		// Since 6.1 multiline on RichText is deprecated. Need to be update on #3877
+		if (
+			text.includes(
+				'wp.blockEditor.RichText multiline prop is deprecated'
+			)
+		) {
+			return;
+		}
+
+		// Since 6.1 GradientPicker is deprecated. Need to be update on #3880
+		if (
+			text.includes(
+				'Outer margin styles for wp.components.GradientPicker is deprecated'
+			)
+		) {
+			return;
+		}
+
 		// Sometimes favicon is not found
 		if (message?._stackTraceLocations?.[0]?.url.includes('favicon.ico'))
 			return;

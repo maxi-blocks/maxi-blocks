@@ -102,8 +102,9 @@ describe('FlexSettings', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
 		// flex-child
+
 		await page.$$eval('.block-editor-inserter button', addBlock =>
-			addBlock[1].click()
+			addBlock[0].click()
 		);
 
 		await page.keyboard.type('Text Maxi');
@@ -117,6 +118,7 @@ describe('FlexSettings', () => {
 			'.maxi-settingstab-control_has-border-left-right .maxi-tabs-control__button-flex-child',
 			button => button.click()
 		);
+
 		await editAdvancedNumberControl({
 			page,
 			instance: await page.$('.maxi-typography-control__order'),

@@ -369,7 +369,7 @@ const TypographyControl = props => {
 		},
 	};
 
-	const getValue = target =>
+	const getValue = (target, avoidSC = false) =>
 		getTypographyValue({
 			disableFormats,
 			prop: `${prefix}${target}`,
@@ -381,6 +381,7 @@ const TypographyControl = props => {
 			styleCard,
 			styleCardPrefix,
 			prefix,
+			avoidSC,
 		});
 
 	const getDefault = target => {
@@ -531,7 +532,7 @@ const TypographyControl = props => {
 						});
 					}}
 					placeholder={getValue('font-size')}
-					value={getValue('font-size', true)}
+					value={getValue('font-size', !isStyleCards)}
 					defaultValue={getDefault('font-size')}
 					onChangeValue={(val, unit) => {
 						onChangeFormat({
@@ -561,7 +562,7 @@ const TypographyControl = props => {
 						});
 					}}
 					placeholder={getValue('line-height')}
-					value={getValue('line-height')}
+					value={getValue('line-height', !isStyleCards)}
 					defaultValue={getDefault('line-height')}
 					onChangeValue={(val, unit) => {
 						onChangeFormat({
@@ -601,7 +602,7 @@ const TypographyControl = props => {
 						});
 					}}
 					placeholder={getValue('letter-spacing')}
-					value={getValue('letter-spacing')}
+					value={getValue('letter-spacing', !isStyleCards)}
 					defaultValue={getDefault('letter-spacing')}
 					onChangeValue={val => {
 						onChangeFormat({
@@ -784,14 +785,8 @@ const TypographyControl = props => {
 						);
 					}}
 					placeholder={getValue('text-indent')}
-					value={getValue(
-						// ???
-						'text-indent',
-						breakpoint,
-						false,
-						true
-					)}
-					defaultValue={getDefault('text-indent')}
+					value={getValue('text-indent')}
+					defaultValue={getDefault('text-indent', !isStyleCards)}
 					onChangeValue={val => {
 						onChangeFormat(
 							{

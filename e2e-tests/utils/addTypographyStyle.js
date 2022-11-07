@@ -74,7 +74,8 @@ const addTypographyStyle = async ({
 	}
 	response.indent = await getElementAttribute(textIndentInput, 'value');
 
-	await instance._frame.waitForTimeout(150);
+	if ('_frame' in instance) await instance._frame.waitForTimeout(150);
+	else await instance.waitForTimeout(150);
 
 	return response;
 };

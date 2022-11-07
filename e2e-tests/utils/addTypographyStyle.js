@@ -51,7 +51,7 @@ const addTypographyStyle = async ({
 		'.maxi-typography-control__orientation .maxi-base-control__field select'
 	);
 	if (orientation) await orientationSelector.select(orientation);
-	debugger;
+
 	response.orientation = await getElementAttribute(
 		orientationSelector,
 		'value'
@@ -73,6 +73,8 @@ const addTypographyStyle = async ({
 		await textIndentInput.type(`${indent}`);
 	}
 	response.indent = await getElementAttribute(textIndentInput, 'value');
+
+	await instance._frame.waitForTimeout(150);
 
 	return response;
 };

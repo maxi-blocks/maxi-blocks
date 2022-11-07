@@ -593,4 +593,125 @@ describe('cleanAttributes', () => {
 
 		expect(result).toStrictEqual(expectedResult);
 	});
+
+	it('Random test 7', () => {
+		select.mockImplementation(
+			jest.fn(() => {
+				return {
+					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					getPrevSavedAttrs: jest.fn(() => []),
+				};
+			})
+		);
+
+		const obj = {
+			newAttributes: {
+				'test-general': 'em',
+				'test-xl': 'em',
+			},
+			attributes: {
+				'text-xxl': 'px',
+				'test-general': undefined,
+				'test-xl': 'px',
+				'test-l': '%',
+			},
+			defaultAttributes: {
+				'test-xxl': 'px',
+				'test-general': undefined,
+				'test-xl': 'px',
+				'text-l': '%',
+			},
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'test-general': 'em',
+			'test-xl': undefined,
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
+
+	it('Random test 8', () => {
+		select.mockImplementation(
+			jest.fn(() => {
+				return {
+					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					getPrevSavedAttrs: jest.fn(() => []),
+				};
+			})
+		);
+
+		const obj = {
+			newAttributes: {
+				'test-general': '15',
+				'test-xxl': '23',
+			},
+			attributes: {
+				'test-general': '15',
+				'test-xxl': '23',
+			},
+			defaultAttributes: {
+				'test-general': '15',
+				'test-xxl': '23',
+			},
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'test-general': '15',
+			'test-xxl': '23',
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
+
+	it('Random test 9 (typical SC typography case)', () => {
+		select.mockImplementation(
+			jest.fn(() => {
+				return {
+					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					getPrevSavedAttrs: jest.fn(() => [
+						'test-general',
+						'test-m',
+						'test-xxl',
+						'test-xl',
+					]),
+				};
+			})
+		);
+
+		const obj = {
+			newAttributes: {
+				'test-general': 20,
+				'test-m': 20,
+				'test-xxl': 24,
+				'test-xl': 16,
+			},
+			attributes: {
+				'test-general': 20,
+				'test-xxl': 24,
+				'test-m': 2,
+				'test-xl': undefined,
+			},
+			defaultAttributes: {
+				'test-general': 16,
+				'test-xxl': 24,
+				'test-xl': 16,
+			},
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'test-general': 20,
+			'test-xxl': 24,
+			'test-xl': undefined,
+			'test-m': undefined,
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
 });

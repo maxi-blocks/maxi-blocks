@@ -29,11 +29,8 @@ const getShouldPreserveAttribute = (
 ) => {
 	const prevAttrsBreakpoints = [...breakpoints]
 		.slice(0, breakpoints.indexOf(breakpoint))
-		.filter(bp =>
-			Object.prototype.hasOwnProperty.call(
-				attributes,
-				`${key.replace(`-${breakpoint}`, `-${bp}`)}`
-			)
+		.filter(
+			bp => `${key.replace(`-${breakpoint}`, `-${bp}`)}` in attributes
 		);
 	const existPrevAttr = prevAttrsBreakpoints.length > 1; // 1 as includes 'general'
 
@@ -155,8 +152,7 @@ const flatWithGeneral = (
 		const breakpoint = getBreakpointFromAttribute(key);
 
 		prevSavedAttrs.forEach(attr => {
-			if (Object.prototype.hasOwnProperty.call(newAttributes, attr))
-				return;
+			if (attr in newAttributes) return;
 
 			const attrBreakpoint = getBreakpointFromAttribute(attr);
 
@@ -256,10 +252,7 @@ const flatNewAttributes = (
 		}
 
 		const simpleLabel = getSimpleLabel(key, breakpoint);
-		const existsGeneralAttr = Object.prototype.hasOwnProperty.call(
-			newAttributes,
-			`${simpleLabel}-general`
-		);
+		const existsGeneralAttr = `${simpleLabel}-general` in newAttributes;
 
 		if (!existsGeneralAttr) return;
 
@@ -329,8 +322,7 @@ const removeSameAsGeneral = (newAttributes, attributes) => {
 		}
 
 		if (!isNil(baseAttr)) result[baseLabel] = undefined;
-		if (Object.prototype.hasOwnProperty.call(newAttributes, baseLabel))
-			result[baseLabel] = undefined;
+		if (baseLabel in newAttributes) result[baseLabel] = undefined;
 
 		result[key] = value;
 	});
@@ -426,25 +418,18 @@ const flatLowerAttr = (
  * general value, and in frontend, that value would be overwrite by the higher breakpoint
  * attribute value and its media query.
  */
-const preserveBaseBreakpoint = (
-	newAttributes,
-	attributes,
-	clientId,
-	defaultAttributes
-) => {
+const preserveBaseBreakpoint = (newAttributes, attributes) => {
 	const result = {};
 
 	Object.entries(newAttributes).forEach(([key, value]) => {
 		const breakpoint = getBreakpointFromAttribute(key);
 
-		if (!breakpoint || breakpoint === 'general' || isNil(value)) {
-			return;
-		}
+		if (!breakpoint || breakpoint === 'general' || isNil(value)) return;
 
 		const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 		const isHigherThanBase =
 			breakpoints.indexOf(breakpoint) <
-			breakpoints.indexOf(baseBreakpoint);
+				breakpoints.indexOf(baseBreakpoint) && breakpoint !== 'xxl';
 
 		if (!isHigherThanBase) return;
 
@@ -454,6 +439,7 @@ const preserveBaseBreakpoint = (
 		const generalAttr = { ...attributes, ...newAttributes }?.[
 			`${simpleLabel}-general`
 		];
+
 		if (!isEqual(baseAttr, generalAttr) && !isEqual(generalAttr, value))
 			result[baseLabel] = generalAttr;
 	});
@@ -497,12 +483,7 @@ const cleanAttributes = ({
 	};
 	result = {
 		...result,
-		...preserveBaseBreakpoint(
-			result,
-			attributes,
-			clientId,
-			defaultAttributes
-		),
+		...preserveBaseBreakpoint(result, attributes),
 	};
 
 	dispatch('maxiBlocks/styles').savePrevSavedAttrs(result);

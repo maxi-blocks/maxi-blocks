@@ -417,9 +417,10 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 					<div className='maxi-style-cards__sc maxi-style-cards__settings'>
 						<div className='maxi-style-cards__sc-custom-name'>
 							<h3>
-								Create new from
+								{__('Create new from')}
 								<b> {selectedSCValue.name}</b>
 							</h3>
+
 							<div className='maxi-style-cards__sc__save'>
 								<input
 									type='text'
@@ -464,6 +465,18 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 									{__('Create', 'maxi-blocks')}
 								</Button>
 							</div>
+						</div>
+						<div className='maxi-style-cards__sc-cancel-save'>
+							<Button onClick={cancelSettings}>
+								{__('Cancel', 'maxi-blocks')}
+							</Button>
+							<Button
+								className='maxi-style-cards__sc__actions--save'
+								disabled={!canBeSaved(selectedSCKey)}
+								onClick={saveChanges}
+							>
+								{__('Save & Activate', 'maxi-blocks')}
+							</Button>
 						</div>
 						<div
 							className={
@@ -512,18 +525,6 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 									},
 								]}
 							/>
-						</div>
-						<div className='maxi-style-cards__sc-cancel-save'>
-							<Button onClick={cancelSettings}>
-								{__('Cancel', 'maxi-blocks')}
-							</Button>
-							<Button
-								className='maxi-style-cards__sc__actions--save'
-								disabled={!canBeSaved(selectedSCKey)}
-								onClick={saveChanges}
-							>
-								{__('Save & Activate', 'maxi-blocks')}
-							</Button>
 						</div>
 					</div>
 				)}

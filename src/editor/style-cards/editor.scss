@@ -61,15 +61,10 @@ body {
 .maxi-style-cards__settings {
 	background-color: #fff;
 }
-.maxi-style-cards__sc.maxi-style-cards__settings {
-	max-height: 400px;
-}
 .maxi-style-cards__sc-cancel-save {
 	display: flex;
 	justify-content: flex-end;
 	padding: 10px 0 10px 0;
-	position: sticky;
-	bottom: 0;
 	background-color: #fff;
 	z-index: 5;
 }

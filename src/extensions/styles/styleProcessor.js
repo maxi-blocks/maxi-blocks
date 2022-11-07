@@ -183,7 +183,7 @@ const styleProcessor = (obj, data, props) => {
 
 	// Process custom styles if they exist
 	const newCssSelectors = getSelectorsCss(selectors, props);
-	const newTransformSelectors = getTransformSelectors(selectors);
+	const newTransformSelectors = getTransformSelectors(selectors, props);
 
 	if (!isEmpty(newCssSelectors)) {
 		const customCssObject = getCustomCssObject(newCssSelectors, props);

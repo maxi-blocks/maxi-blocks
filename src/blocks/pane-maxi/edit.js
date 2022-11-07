@@ -97,11 +97,22 @@ class edit extends MaxiBlockComponent {
 	}
 
 	maxiBlockDidUpdate() {
-		if (this.context.titleLevel !== this.props.attributes.titleLevel) {
-			const { maxiSetAttributes } = this.props;
+		// Attributes from context that need to be saved for frontend
+		const accordionAttributes = ['accordionUniqueId', 'titleLevel'];
 
-			maxiSetAttributes({ titleLevel: this.context.titleLevel });
-		}
+		accordionAttributes.forEach(attributeName => {
+			if (
+				this.context[attributeName] !==
+				this.props.attributes[attributeName]
+			) {
+				const { maxiSetAttributes } = this.props;
+
+				maxiSetAttributes({
+					[attributeName]: this.context[attributeName],
+				});
+			}
+		});
+
 		if (
 			this.context.accordionLayout !==
 			this.props.attributes.accordionLayout
@@ -169,6 +180,7 @@ class edit extends MaxiBlockComponent {
 			titleLevel,
 			openPanes,
 			accordionLayout,
+			accordionUniqueId,
 		} = this.context;
 
 		const isOpen = openPanes.includes(clientId);
@@ -186,6 +198,7 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				className={`maxi-pane-block--${accordionLayout}-layout`}
 				context={this.context}
+				data-accordion={accordionUniqueId}
 				{...getMaxiBlockAttributes(this.props)}
 				aria-expanded={isOpen}
 			>

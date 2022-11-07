@@ -17,6 +17,9 @@ describe('Padding from Toolbar', () => {
 		await createNewPost();
 		await insertBlock('Button Maxi');
 
+		// Wait for toolbar to be visible
+		await page.waitForSelector('.toolbar-wrapper');
+
 		await openSidebarTab(page, 'style', 'quick styles');
 
 		// add icon

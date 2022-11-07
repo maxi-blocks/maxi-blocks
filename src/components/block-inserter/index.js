@@ -12,17 +12,18 @@ import { Popover, Tooltip } from '@wordpress/components';
  */
 import Button from '../button';
 import Dropdown from '../dropdown';
+import { getBoundaryElement } from '../../extensions/dom';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
+import { isEmpty, isNaN } from 'lodash';
 
 /**
  * Styles
  */
 import './editor.scss';
-import { getBoundaryElement } from '../../extensions/dom';
 
 /**
  * Component
@@ -81,6 +82,12 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 	const { clientId, isSelected, hasSelectedChild } = props;
 
 	const { getBlockName, getBlockParents } = select('core/block-editor');
+	const { receiveMaxiSettings } = select('maxiBlocks');
+
+	const maxiSettings = receiveMaxiSettings();
+	const version = !isEmpty(maxiSettings.editor)
+		? maxiSettings.editor.version
+		: null;
 
 	const blockHierarchy = {};
 	const blockOrder = [...getBlockParents(clientId), clientId];
@@ -96,6 +103,24 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 
 	if (!ref?.current) return null;
 
+	const popoverProps = {
+		...((parseFloat(version) <= 13.0 && {
+			__unstableStickyBoundaryElement: getBoundaryElement(
+				ref.current,
+				'.edit-post-visual-editor'
+			),
+			shouldAnchorIncludePadding: true,
+			anchorRef: ref.current,
+		}) ||
+			(!isNaN(parseFloat(version)) && {
+				anchor: ref.current,
+				placement: 'bottom',
+				flip: false,
+				resize: false,
+				variant: 'unstyled',
+			})),
+	};
+
 	if (isSelected || hasSelectedChild || shouldRemain.current)
 		return (
 			<Popover
@@ -106,13 +131,8 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 				position='bottom center'
 				focusOnMount={false}
 				style={{ zIndex: Object.keys(blockHierarchy).length + 1 }}
-				anchorRef={ref.current}
 				__unstableSlotName='block-toolbar'
-				__unstableStickyBoundaryElement={getBoundaryElement(
-					ref.current,
-					'.edit-post-visual-editor'
-				)}
-				shouldAnchorIncludePadding
+				{...popoverProps}
 			>
 				{Object.keys(blockHierarchy).length > 1 && (
 					<Dropdown

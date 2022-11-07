@@ -22,6 +22,9 @@ describe('CopyPaste from Toolbar', () => {
 		await page.waitForTimeout(1000);
 		await insertBlock('Text Maxi');
 
+		// Wait for toolbar to be visible
+		await page.waitForSelector('.toolbar-wrapper');
+
 		// edit text maxi
 		const accordionPanel = await openSidebarTab(
 			page,

@@ -714,4 +714,114 @@ describe('cleanAttributes', () => {
 
 		expect(result).toStrictEqual(expectedResult);
 	});
+
+	it('Random test 10', () => {
+		select.mockImplementation(
+			jest.fn(() => {
+				return {
+					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					getPrevSavedAttrs: jest.fn(() => []),
+				};
+			})
+		);
+
+		const obj = {
+			newAttributes: {
+				'test-general': '%',
+				'test-xl': '%',
+			},
+			attributes: {
+				'test-general': undefined,
+				'test-l': '%',
+				'test-xl': 'px',
+				'test-xxl': 'px',
+			},
+			defaultAttributes: {
+				'test-general': undefined,
+				'test-l': '%',
+				'test-xl': 'px',
+				'test-xxl': 'px',
+			},
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'test-general': '%',
+			'test-xl': undefined,
+			'test-l': undefined,
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
+
+	it('Random test 11', () => {
+		select.mockImplementation(
+			jest.fn(() => {
+				return {
+					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					getPrevSavedAttrs: jest.fn(() => []),
+				};
+			})
+		);
+
+		const obj = {
+			newAttributes: {
+				'test-xxl': '%',
+				'test-xl': '%',
+			},
+			attributes: {
+				'test-general': '%',
+				'test-xxl': 'px',
+				'test-xl': undefined,
+				'test-l': undefined,
+			},
+			defaultAttributes: {
+				'test-general': undefined,
+				'test-l': '%',
+				'test-xl': 'px',
+				'test-xxl': 'px',
+			},
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'test-xxl': undefined,
+			'test-xl': undefined,
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
+
+	it('Random test 12', () => {
+		select.mockImplementation(
+			jest.fn(() => {
+				return {
+					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					getPrevSavedAttrs: jest.fn(() => []),
+				};
+			})
+		);
+
+		const obj = {
+			newAttributes: { 'test-general': 'full' },
+			attributes: {
+				'test-general': 'normal',
+				'test-xxl': 'full',
+			},
+			defaultAttributes: {
+				'test-general': 'normal',
+			},
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'test-general': 'full',
+			'test-xxl': undefined,
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
 });

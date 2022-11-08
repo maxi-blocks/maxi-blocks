@@ -76,15 +76,28 @@ const flatSameAsPrev = (
 
 		const isXXL = breakpoint === 'xxl';
 		const simpleLabel = getSimpleLabel(key, breakpoint);
-		const higherBreakpoints = breakpoints.slice(
-			0,
-			breakpoints.indexOf(breakpoint)
-		);
 
 		if (isXXL) {
 			const generalAttr = attributes[`${simpleLabel}-general`];
 
 			if (!isNil(generalAttr) && isEqual(generalAttr, value)) {
+				const generalDefaultValue =
+					defaultAttributes?.[`${simpleLabel}-general`] ??
+					getDefaultAttribute(
+						`${simpleLabel}-general`,
+						clientId,
+						true
+					);
+
+				// Covers a concrete situation where we've got XXL and XL
+				// values by default, but General is undefined. An example
+				// is Row Maxi `max-width-unit` attribute.
+				if (key in newAttributes && isNil(generalDefaultValue)) {
+					result[key] = undefined;
+
+					return;
+				}
+
 				const defaultAttribute =
 					defaultAttributes?.[key] ??
 					getDefaultAttribute(key, clientId, true);
@@ -93,6 +106,11 @@ const flatSameAsPrev = (
 			}
 		} else {
 			let breakpointLock = false;
+
+			const higherBreakpoints = breakpoints.slice(
+				0,
+				breakpoints.indexOf(breakpoint)
+			);
 
 			higherBreakpoints.reverse().forEach(breakpoint => {
 				if (!breakpointLock) {
@@ -199,13 +217,8 @@ const flatWithGeneral = (
 		const simpleLabel = getSimpleLabel(key, breakpoint);
 		const attrOnXXL = attributes[`${simpleLabel}-xxl`];
 
-		if (!isNil(attrOnXXL) && isEqual(value, attrOnXXL)) {
-			const defaultAttribute =
-				defaultAttributes?.[key] ??
-				getDefaultAttribute(key, clientId, true);
-
-			result[`${simpleLabel}-xxl`] = defaultAttribute;
-		}
+		if (!isNil(attrOnXXL) && isEqual(value, attrOnXXL))
+			result[`${simpleLabel}-xxl`] = undefined;
 
 		let breakpointLock = false;
 
@@ -213,7 +226,7 @@ const flatWithGeneral = (
 			if (breakpointLock || breakpoint === 'general') return;
 
 			const label = `${simpleLabel}-${breakpoint}`;
-			const attribute = attributes?.[label];
+			const attribute = { ...attributes, ...newAttributes }?.[label];
 
 			if (isNil(attribute)) return;
 
@@ -225,6 +238,7 @@ const flatWithGeneral = (
 				if (!isEqual(value, defaultAttribute))
 					result[label] = defaultAttribute;
 				else result[label] = undefined;
+			else if (isEqual(value, attribute)) result[label] = undefined;
 			else if (!isNil(attribute)) breakpointLock = true;
 		});
 	});
@@ -267,9 +281,8 @@ const flatNewAttributes = (
 				newAttributes
 			);
 
-			if (shouldPreserveAttribute) {
-				result[key] = value;
-			} else {
+			if (shouldPreserveAttribute) result[key] = value;
+			else {
 				const defaultAttribute =
 					defaultAttributes?.[key] ??
 					getDefaultAttribute(key, clientId, true);
@@ -371,7 +384,25 @@ const flatLowerAttr = (
 				getDefaultAttribute(label, clientId, true);
 
 			if (isEqual(value, attribute)) {
-				result[label] = defaultAttribute;
+				// Covers a concrete situation where we've got XXL and XL
+				// values by default, but General is undefined. An example
+				// is Row Maxi `max-width-unit` attribute.
+				if (label in newAttributes && isGeneral) {
+					const generalDefaultValue =
+						defaultAttributes?.[`${simpleLabel}-general`] ??
+						getDefaultAttribute(
+							`${simpleLabel}-general`,
+							clientId,
+							true
+						);
+
+					if (isNil(generalDefaultValue)) {
+						result[label] = generalDefaultValue;
+
+						return;
+					}
+				} else result[label] = defaultAttribute;
+
 				return;
 			}
 			if (isGeneral) {
@@ -487,6 +518,8 @@ const cleanAttributes = ({
 	};
 
 	dispatch('maxiBlocks/styles').savePrevSavedAttrs(result);
+
+	// console.log(result);
 
 	return result;
 };

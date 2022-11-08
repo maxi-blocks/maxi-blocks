@@ -98,7 +98,14 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 	useEffect(() => {
 		const activeSCColour =
 			activeStyleCard.value.light.defaultStyleCard.color[4];
-		if (selectedSCValue) updateSCOnEditor(selectedSCValue, activeSCColour);
+		const activeSCColourTwo =
+			activeStyleCard.value.light.defaultStyleCard.color[5];
+		if (selectedSCValue)
+			updateSCOnEditor(
+				selectedSCValue,
+				activeSCColour,
+				activeSCColourTwo
+			);
 	}, [selectedSCKey]);
 
 	const canBeSaved = keySC => {
@@ -360,6 +367,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 								<Button
 									disabled={!canBeRemoved(selectedSCKey)}
 									className='maxi-style-cards__sc__more-sc--delete'
+									onClick={deleteSC}
 								>
 									<Icon icon={SCDelete} />
 								</Button>

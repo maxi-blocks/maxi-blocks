@@ -58,11 +58,21 @@ const getDefaultAttribute = (
 	// Check default value on block
 	if (blockName && blockName.includes('maxi-blocks'))
 		response = getBlockAttributes(blockName)[prop];
-	if (
-		getIsValid(response, true) ||
-		getBreakpointFromAttribute(prop) === 'general'
-	)
-		return response;
+
+	const isGeneral = getBreakpointFromAttribute(prop) === 'general';
+
+	if (getIsValid(response, true)) return response;
+	if (isGeneral) {
+		if (avoidBaseBreakpoint) return response;
+
+		const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
+		const baseAttribute =
+			getBlockAttributes(blockName)[
+				prop.replace('general', baseBreakpoint)
+			];
+
+		if (getIsValid(baseAttribute)) return baseAttribute;
+	}
 
 	// Check default value
 	Object.values(defaults).forEach(defaultAttrs => {

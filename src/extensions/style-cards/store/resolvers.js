@@ -13,7 +13,8 @@ const resolvers = {
 
 			updateSCOnEditor(
 				currentSC.value,
-				currentSC.value.light.defaultStyleCard.color[4]
+				currentSC.value.light.defaultStyleCard.color[4],
+				currentSC.value.light.defaultStyleCard.color[5]
 			);
 		}
 

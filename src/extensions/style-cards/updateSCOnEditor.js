@@ -67,7 +67,8 @@ const getParsedObj = obj => {
 
 export const getSCVariablesObject = (
 	styleCards,
-	activeSCColour = styleCards.light.defaultStyleCard.color[4]
+	activeSCColour = styleCards.light.defaultStyleCard.color[4],
+	activeSCColourTwo = styleCards.light.defaultStyleCard.color[1]
 ) => {
 	const response = {};
 	const styles = ['light', 'dark'];
@@ -213,6 +214,7 @@ export const getSCVariablesObject = (
 		}
 	});
 	response['--maxi-active-sc-color'] = activeSCColour;
+	response['--maxi-active-sc-color-two'] = activeSCColourTwo;
 	return response;
 };
 
@@ -258,10 +260,11 @@ const getSCFontsData = obj => {
 	return response;
 };
 
-const updateSCOnEditor = (styleCards, activeSCColour) => {
+const updateSCOnEditor = (styleCards, activeSCColour, activeSCColourTwo) => {
 	const SCObject = getSCVariablesObject(
 		{ ...cloneDeep(styleCards) },
-		activeSCColour
+		activeSCColour,
+		activeSCColourTwo
 	);
 	let SCStyle = document.getElementById('maxi-blocks-sc-vars-inline-css');
 	if (!SCStyle) {

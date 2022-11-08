@@ -989,19 +989,36 @@ const getGeneralBackgroundStyles = (
 				Number.isFinite(widthLeft) ||
 				Number.isFinite(widthRight))
 		) {
+			//
 			size[breakpoint] = {
-				...((Number.isFinite(widthTop) || isHover) && {
+				...(Number.isFinite(widthTop) && {
 					top: -round(widthTop, 2) + widthUnit,
 				}),
-				...((Number.isFinite(widthBottom) || isHover) && {
+				...(!Number.isFinite(widthTop) &&
+					isHover && {
+						top: 'auto',
+					}),
+				...(Number.isFinite(widthBottom) && {
 					bottom: -round(widthBottom, 2) + widthUnit,
 				}),
-				...((Number.isFinite(widthLeft) || isHover) && {
+				...(!Number.isFinite(widthBottom) &&
+					isHover && {
+						bottom: 'auto',
+					}),
+				...(Number.isFinite(widthLeft) && {
 					left: -round(widthLeft, 2) + widthUnit,
 				}),
-				...((Number.isFinite(widthRight) || isHover) && {
+				...(!Number.isFinite(widthLeft) &&
+					isHover && {
+						left: 'auto',
+					}),
+				...(Number.isFinite(widthRight) && {
 					right: -round(widthRight, 2) + widthUnit,
 				}),
+				...(!Number.isFinite(widthRight) &&
+					isHover && {
+						right: 'auto',
+					}),
 			};
 		}
 	});

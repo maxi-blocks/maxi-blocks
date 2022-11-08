@@ -5,6 +5,7 @@ import {
 	createNewPost,
 	insertBlock,
 	setBrowserViewport,
+	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
 import {
 	getBlockStyle,
@@ -440,6 +441,15 @@ describe('Responsive attributes mechanisms', () => {
 			'.maxi-axis-control__content__item__border-radius input',
 			input => input.focus()
 		);
+		await page.waitForTimeout(150);
+		await pressKeyWithModifier('shift', 'ArrowLeft');
+		await pressKeyWithModifier('shift', 'ArrowLeft');
+		await pressKeyWithModifier('shift', 'ArrowLeft');
+
+		await page.waitForTimeout(150);
+		await page.keyboard.press('Backspace');
+
+		await page.waitForTimeout(150);
 		await page.keyboard.type('150', { delay: 100 });
 
 		const expectRadiusOnXl = {

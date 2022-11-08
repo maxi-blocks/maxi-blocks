@@ -62,7 +62,7 @@ const getDefaultAttribute = (
 	const isGeneral = getBreakpointFromAttribute(prop) === 'general';
 
 	if (getIsValid(response, true)) return response;
-	if (isGeneral) {
+	if (isGeneral && blockName && blockName.includes('maxi-blocks')) {
 		if (avoidBaseBreakpoint) return response;
 
 		const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();

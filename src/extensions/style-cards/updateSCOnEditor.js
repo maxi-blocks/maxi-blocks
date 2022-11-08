@@ -68,7 +68,7 @@ const getParsedObj = obj => {
 export const getSCVariablesObject = (
 	styleCards,
 	activeSCColour = styleCards.light.defaultStyleCard.color[4],
-	activeSCColourTwo = styleCards.light.defaultStyleCard.color[1]
+	activeSCColourTwo = styleCards.light.defaultStyleCard.color[5]
 ) => {
 	const response = {};
 	const styles = ['light', 'dark'];

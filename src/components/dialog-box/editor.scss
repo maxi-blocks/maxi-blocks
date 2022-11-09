@@ -17,7 +17,7 @@
 
 .maxi-dialog-box-content {
 	width: 400px;
-	height: 300px;
+	height: auto;
 	background: #fff;
 	margin: auto;
 	z-index: 2;
@@ -25,9 +25,10 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	padding: 20px;
+	padding: 30px;
 	box-sizing: border-box;
 	animation: scale 0.2s ease-in-out;
+	border-radius: 3px;
 }
 @keyframes scale {
 	0% {
@@ -39,22 +40,31 @@
 		transform: scale(1);
 	}
 }
-
+.maxi-dialog-box-title h4 {
+	font-size: 20px;
+	margin: 0;
+}
 .maxi-dialog-box-message {
 	height: calc(100% - 50px);
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	text-align: center;
+	font-size: 18px;
+	line-height: 23px;
+	padding: 30px 0;
 }
 
 .maxi-dialog-box-buttons {
 	display: flex;
-	column-gap: 10px;
+	column-gap: 40px;
 
 	button {
 		border: 2px solid #dddfe1;
 		transition: all 0.2s;
 		color: #333 !important;
+		font-size: 20px;
+		height: auto !important;
 
 		&:hover {
 			border: 2px solid #777;

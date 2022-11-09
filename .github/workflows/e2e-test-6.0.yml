@@ -1,0 +1,44 @@
+name: E2E Tests
+
+on:
+    pull_request:
+        branches: [master]
+
+jobs:
+    e2e-js:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+              with:
+                  fetch-depth: 2
+            - name: Cache node modules
+              uses: actions/cache@v2
+              env:
+                  cache-name: cache-node-modules
+              with:
+                  # npm cache files are stored in `~/.npm` on Linux/macOS
+                  # to clear the cache, change `v1.2` for any other random number, github will destroy
+                  # the old cache within 7 days 👌
+                  # Note: don't change the `actions/setup-node@v1` or any other dependency version by error
+                  path: ~/.npm
+                  key: ${{ runner.os }}-build-v1.2-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+                  restore-keys: |
+                      ${{ runner.os }}-build-v1.2-${{ env.cache-name }}-
+                      ${{ runner.os }}-build-v1.2-
+                      ${{ runner.os }}-
+            - name: Use Node.js 16.x
+              uses: actions/setup-node@v1
+              with:
+                  node-version: 16.x
+            - name: Install dependencies
+              run: npm install --legacy-peer-deps
+            - name: Build
+              run: npm run build
+            - name: reset package-lock.json
+              run: git checkout package-lock.json
+            - name: Install WordPress
+              run: |
+                  chmod -R 767 ./
+                  WP_ENV_CORE="WordPress/WordPress#6.0" npm run wp-env start
+            - name: Running the tests
+              run: npm run test:e2e

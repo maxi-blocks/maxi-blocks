@@ -187,16 +187,6 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 
 	const [postDate, setPostDate] = useState();
 
-	// const saveCurrentSC = () => {
-	// 	const newStyleCards = {
-	// 		...styleCards,
-	// 		[selectedSCKey]: { ...selectedSCValue },
-	// 	};
-
-	// 	saveMaxiStyleCards(newStyleCards, true);
-	// 	saveSCStyles(true);
-	// };
-
 	const saveImportedStyleCard = card => {
 		const newId = `sc_${new Date().getTime()}`;
 
@@ -303,9 +293,10 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 						</h2>
 					</div>
 					<span
-						className='maxi-responsive-selector__close'
+						className='maxi-responsive-selector__close has-tooltip'
 						onClick={() => setIsVisible(false)}
 					>
+						<span className='tooltip'>Close</span>
 						<Icon icon={closeIcon} />
 					</span>
 				</div>
@@ -356,7 +347,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 							<DialogBox
 								isDisabled={isDisabled}
 								message={__(
-									'Are you sure you want to delete this style card?',
+									`Deleting <span>${selectedSCValue.name}</span> style card. This action is permanent.`,
 									'maxi-blocks'
 								)}
 								cancel={__('Cancel', 'maxi-blocks')}
@@ -367,12 +358,11 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 							>
 								<Button
 									disabled={!canBeRemoved(selectedSCKey)}
-									className='maxi-style-cards__sc__more-sc--delete'
-									onClick={() => {
-										setIsDisabled(false);
-									}}
+									className='maxi-style-cards__sc__more-sc--delete has-tooltip'
+									onClick={openDialog}
 									refid='delete'
 								>
+									<span className='tooltip'>Delete</span>
 									<Icon icon={SCDelete} />
 								</Button>
 							</DialogBox>
@@ -398,13 +388,16 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 					</div>
 					{!settings && (
 						<div className='maxi-style-cards__sc__actions edit-activate'>
-							<Button onClick={showSettings}>
+							<Button
+								className='maxi-style-cards-customise-card-button'
+								onClick={showSettings}
+							>
 								{__('Customise card', 'maxi-blocks')}
 							</Button>
 							<DialogBox
 								isDisabled={isDisabled}
 								message={__(
-									'Are you sure you want to activate this style card?',
+									`Activate new style. Customized blocks will not change. All other Maxi blocks will get new,${selectedSCValue.name} styles.`,
 									'maxi-blocks'
 								)}
 								cancel={__('Cancel', 'maxi-blocks')}
@@ -421,6 +414,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 										)
 									}
 									onClick={openDialog}
+									refid='activate'
 								>
 									{__('Activate now', 'maxi-blocks')}
 								</Button>
@@ -429,11 +423,11 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 					)}
 				</div>
 
-				{settings && (
+				{!settings && (
 					<div className='maxi-style-cards__sc maxi-style-cards__settings'>
 						<div className='maxi-style-cards__sc-custom-name'>
 							<h3>
-								{__('Create new from', 'maxi-blocks')}
+								{__('Create new style from', 'maxi-blocks')}
 								<b> {selectedSCValue.name}</b>
 							</h3>
 
@@ -441,7 +435,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 								<input
 									type='text'
 									placeholder={__(
-										'Give a short memorable name*',
+										'Short memorable name*',
 										'maxi-blocks'
 									)}
 									value={styleCardName}
@@ -497,11 +491,13 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 								confirm={__('Save & Activate', 'maxi-blocks')}
 								onCancel={removeDialog}
 								onConfirm={saveChanges}
+								refid='delete'
 							>
 								<Button
 									className='maxi-style-cards__sc__actions--save'
 									disabled={!canBeSaved(selectedSCKey)}
 									onClick={openDialog}
+									refid='save'
 								>
 									{__('Save & Activate', 'maxi-blocks')}
 								</Button>

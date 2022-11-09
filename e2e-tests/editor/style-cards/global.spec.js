@@ -7,6 +7,10 @@ import {
 	setBrowserViewport,
 	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
+
+/**
+ * Internal dependencies
+ */
 import {
 	checkSCResult,
 	getStyleCardEditor,

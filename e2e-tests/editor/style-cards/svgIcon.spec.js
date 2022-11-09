@@ -3,6 +3,9 @@
  */
 import { createNewPost, setBrowserViewport } from '@wordpress/e2e-test-utils';
 
+/**
+ * Internal dependencies
+ */
 import { getStyleCardEditor, checkSCResult } from '../../utils';
 
 describe('SC svg icon', () => {

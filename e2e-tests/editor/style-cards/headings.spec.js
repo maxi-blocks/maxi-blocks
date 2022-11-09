@@ -2,6 +2,10 @@
  * WordPress dependencies
  */
 import { createNewPost } from '@wordpress/e2e-test-utils';
+
+/**
+ * Internal dependencies
+ */
 import {
 	addTypographyOptions,
 	addTypographyStyle,
@@ -10,26 +14,12 @@ import {
 	checkSCResult,
 	changeResponsive,
 } from '../../utils';
-
-const generalTypographyStyle = {
-	decoration: 'overline',
-	weight: '300',
-	transform: 'capitalize',
-	style: 'italic',
-	orientation: 'mixed',
-	direction: 'ltr',
-	indent: '44',
-};
-
-const responsiveTypographyStyle = {
-	decoration: 'underline',
-	weight: '400',
-	transform: 'uppercase',
-	style: 'oblique',
-	orientation: 'upright',
-	direction: 'rtl',
-	indent: '22',
-};
+import {
+	generalTypographyOptions,
+	responsiveTypographyOptions,
+	generalTypographyStyle,
+	responsiveTypographyStyle,
+} from './constants';
 
 describe('StyleCards headings', () => {
 	it('Check Headings', async () => {
@@ -40,18 +30,15 @@ describe('StyleCards headings', () => {
 			accordion: 'heading',
 		});
 
-		// size, line-height, letter-spacing
+		// Size, line-height, letter-spacing
 		await addTypographyOptions({
 			page,
 			instance: await page.$(
 				'.maxi-blocks-sc__type--heading .maxi-style-cards-control__sc__h1-typography'
 			),
-			size: '20',
-			lineHeight: '0',
-			letterSpacing: '5',
+			...generalTypographyOptions,
 		});
 
-		// Selectors
 		// Weight, Transform, Style, Decoration
 		await addTypographyStyle({
 			instance: await page.$(
@@ -73,18 +60,15 @@ describe('StyleCards headings', () => {
 	it('Works on responsive', async () => {
 		await changeResponsive(page, 'm');
 
-		// size, line-height, letter-spacing
+		// Size, line-height, letter-spacing
 		await addTypographyOptions({
 			page,
 			instance: await page.$(
 				'.maxi-blocks-sc__type--heading .maxi-style-cards-control__sc__h1-typography'
 			),
-			size: '15',
-			lineHeight: '0',
-			letterSpacing: '5',
+			...responsiveTypographyOptions,
 		});
 
-		// Selectors
 		// Weight, Transform, Style, Decoration
 		await addTypographyStyle({
 			instance: await page.$(

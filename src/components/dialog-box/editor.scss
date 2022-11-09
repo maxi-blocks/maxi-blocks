@@ -27,7 +27,19 @@
 	align-items: center;
 	padding: 20px;
 	box-sizing: border-box;
+	animation: scale 0.2s ease-in-out;
 }
+@keyframes scale {
+	0% {
+		opacity: 0;
+		transform: scale(0.9);
+	}
+	100% {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
 .maxi-dialog-box-message {
 	height: calc(100% - 50px);
 	display: flex;

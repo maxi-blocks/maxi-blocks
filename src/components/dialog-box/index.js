@@ -13,7 +13,7 @@ const DialogBox = props => {
 		<div className='maxi-dialog-box-disabled'>{props.children}</div>
 	) : (
 		createPortal(
-			<div className='maxi-dialog-box'>
+			<div className={`maxi-dialog-box ${props.refid}`}>
 				<div className='maxi-dialog-box-overlay' />
 				<div className='maxi-dialog-box-content'>
 					<div className='maxi-dialog-box-message'>

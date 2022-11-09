@@ -274,13 +274,14 @@ const HierarchicalMenu = ({ items, refine }) =>
 						onClick={event => {
 							event.preventDefault();
 							refine(item.value);
+							console.log(items);
 						}}
 					>
 						{unescape(item.label)} ({item.count})
 					</a>
 					<ToggleSwitch
 						selected={item.isRefined}
-						onChange={val => refine(item.value)}
+						onChange={() => refine(item.value)}
 					/>
 					{item.items && (
 						<HierarchicalMenu items={item.items} refine={refine} />
@@ -363,7 +364,7 @@ const LibraryContainer = props => {
 	).searchClient;
 
 	const searchClientSvg = typesenseInstantsearchAdapter(
-		'post_title, svg_tag, svg_category'
+		'post_title, svg_tag.lvl1, svg_tag.lvl1, svg_tag.lvl2, svg_category'
 	).searchClient;
 
 	const [isChecked, setChecked] = useState(false);
@@ -705,7 +706,7 @@ const LibraryContainer = props => {
 								limit={20}
 								showMore
 								showLoadingIndicator
-								showMoreLimit={20}
+								showMoreLimit={40}
 							/>
 							<ClearRefinements />
 						</div>

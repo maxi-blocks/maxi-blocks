@@ -95,7 +95,7 @@ const BlockResizer = memo(
 				handleClassName,
 				showHandlesClassName,
 				!isCorner ? sideHandleClassName : cornerHandleClassName,
-				`maxi-resizable__handle--${axis}`
+				`maxi-resizable__handle-${axis}`
 			);
 
 		const handleClasses = {

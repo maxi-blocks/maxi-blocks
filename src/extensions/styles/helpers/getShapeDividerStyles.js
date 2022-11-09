@@ -46,9 +46,8 @@ export const getShapeDividerStyles = (obj, location) => {
 		const result = {};
 
 		Object.entries(value).forEach(([pos, val]) => {
-			result[pos.replace('padding-', '')] = `${
-				location === 'top' ? '-' : ''
-			}${val}`;
+			if (pos.replace('padding-', '') === location)
+				result[pos.replace('padding-', '')] = `-${val}`;
 		});
 
 		response[breakpoint] = { ...response[breakpoint], ...result };

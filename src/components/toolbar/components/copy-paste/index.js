@@ -202,6 +202,7 @@ const CopyPaste = props => {
 					!name &&
 					!checked &&
 					typeof checked !== 'undefined' &&
+					selectedAttributes &&
 					selectedAttributes[tab] &&
 					selectedAttributes[tab][group] &&
 					selectedAttributes[tab][group][attr]

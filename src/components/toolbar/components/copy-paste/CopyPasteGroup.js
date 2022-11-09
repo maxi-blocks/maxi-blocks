@@ -7,7 +7,7 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import CopyPasteChildGroup from './CopyPastChildGroup';
+import CopyPasteChildGroup from './CopyPasteChildGroup';
 
 /**
  * External dependencies

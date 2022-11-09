@@ -658,7 +658,7 @@ const DynamicContent = props => {
 	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
 
 	setAuthorList();
-	setAuthorDefault();
+	statusRef.current && setAuthorDefault();
 	if (
 		statusRef.current &&
 		typeRef.current &&

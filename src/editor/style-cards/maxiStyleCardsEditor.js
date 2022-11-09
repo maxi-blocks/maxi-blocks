@@ -293,7 +293,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 						</h2>
 					</div>
 					<span
-						className='maxi-responsive-selector__close has-tooltip'
+						className='maxi-responsive-close has-tooltip'
 						onClick={() => setIsVisible(false)}
 					>
 						<span className='tooltip'>Close</span>
@@ -423,7 +423,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 					)}
 				</div>
 
-				{!settings && (
+				{settings && (
 					<div className='maxi-style-cards__sc maxi-style-cards__settings'>
 						<div className='maxi-style-cards__sc-custom-name'>
 							<h3>

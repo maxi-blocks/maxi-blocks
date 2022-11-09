@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-// import { useState } from '@wordpress/element';
 import { createPortal } from 'react-dom';
 /**
  * Internal dependencies
@@ -10,8 +9,6 @@ import Button from '../button';
 import './editor.scss';
 
 const DialogBox = props => {
-	// console.log(props.children.props.refid);
-
 	return props.isDisabled
 		? props.children
 		: createPortal(

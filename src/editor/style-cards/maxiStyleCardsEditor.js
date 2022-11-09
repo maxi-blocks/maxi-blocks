@@ -231,7 +231,8 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 
 	const [isDisabled, setIsDisabled] = useState(true);
 
-	const openDialog = () => {
+	const openDialog = props => {
+		console.log(props);
 		setIsDisabled(false);
 	};
 	const removeDialog = () => {
@@ -367,7 +368,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 								<Button
 									disabled={!canBeRemoved(selectedSCKey)}
 									className='maxi-style-cards__sc__more-sc--delete'
-									onClick={deleteSC}
+									onClick={openDialog}
 								>
 									<Icon icon={SCDelete} />
 								</Button>

@@ -32,13 +32,15 @@ body {
 	}
 
 	.maxi-responsive-selector__close {
-		height: 20px;
+		height: 20px !important;
 		border-radius: 50%;
-		background-color: rgba(var(--maxi-active-sc-color), 1);
 		width: 20px;
 		text-align: center;
 		padding: 0 !important;
 		right: 10px;
+		&::after {
+			display: none !important;
+		}
 	}
 }
 .maxi-library-modal__action-section {

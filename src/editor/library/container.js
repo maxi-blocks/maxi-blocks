@@ -739,7 +739,7 @@ const LibraryContainer = props => {
 					<Configure hitsPerPage={49} />
 					<div className='maxi-cloud-container__svg-shape'>
 						<div className='maxi-cloud-container__svg-shape__sidebar maxi-cloud-container__hide-categories'>
-							{type === 'shape' && (
+							{type.includes('shape') && (
 								<SearchBox
 									submit={__('Find', 'maxi-blocks')}
 									autoFocus

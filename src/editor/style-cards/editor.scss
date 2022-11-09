@@ -52,14 +52,18 @@ body {
 			margin-left: 8px;
 		}
 	}
-	.maxi-responsive-selector__close {
+	.maxi-responsive-close {
 		height: 30px !important;
 		width: 30px !important;
 		border-radius: 50%;
-		width: 20px;
 		text-align: center;
 		padding: 0 !important;
 		right: 10px;
+		position: absolute;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
 
 		&::after {
 			display: none !important;
@@ -339,6 +343,11 @@ body {
 				}
 				&--reset,
 				&--delete {
+					&:disabled {
+						.tooltip {
+							display: none;
+						}
+					}
 					svg {
 						width: 20px;
 					}

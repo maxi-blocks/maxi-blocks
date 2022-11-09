@@ -13,26 +13,6 @@
 	padding: 0 25px 0 0;
 	box-shadow: 0 5px 15px 0 rgba(119, 119, 119, 0.1);
 
-	.maxi-responsive-selector__close {
-		height: 100%;
-		&::after {
-			content: '';
-			position: absolute;
-			display: block;
-			background-color: transparent;
-			transition: 0.3s;
-			bottom: -1px;
-			left: 0;
-			width: 100%;
-			height: 2px;
-		}
-		&:hover {
-			&::after {
-				background-color: #081219;
-			}
-		}
-	}
-
 	.action-buttons {
 		display: inline-block;
 		&__button {
@@ -103,14 +83,10 @@
 				height: 2px;
 			}
 			&:hover {
-				color: #007cba;
+				background-color: #f9f9f9;
+
 				&::after {
 					background-color: #081219;
-				}
-				svg {
-					g {
-						stroke: #007cba;
-					}
 				}
 			}
 			svg {
@@ -130,16 +106,28 @@
 		z-index: 99;
 		padding: 0 7px 0 9px;
 		right: 0;
+		height: 100%;
+
+		&::after {
+			content: '';
+			position: absolute;
+			display: block;
+			background-color: transparent;
+			transition: 0.3s;
+			bottom: -1px;
+			left: 0;
+			width: 100%;
+			height: 2px;
+		}
 		svg {
 			g {
 				transition: 0.3s;
 			}
 		}
 		&:hover {
-			svg {
-				g {
-					stroke: #007cba;
-				}
+			background-color: #f9f9f9;
+			&::after {
+				background-color: #081219;
 			}
 		}
 	}

@@ -3,6 +3,9 @@
  */
 import { createNewPost } from '@wordpress/e2e-test-utils';
 
+/**
+ * Internal dependencies
+ */
 import {
 	addTypographyOptions,
 	addTypographyStyle,
@@ -11,26 +14,12 @@ import {
 	checkSCResult,
 	changeResponsive,
 } from '../../utils';
-
-const generalTypographyStyle = {
-	decoration: 'overline',
-	weight: '300',
-	transform: 'capitalize',
-	style: 'italic',
-	orientation: 'mixed',
-	direction: 'ltr',
-	indent: '44',
-};
-
-const responsiveTypographyStyle = {
-	decoration: 'underline',
-	weight: '400',
-	transform: 'uppercase',
-	style: 'oblique',
-	orientation: 'upright',
-	direction: 'rtl',
-	indent: '22',
-};
+import {
+	generalTypographyOptions,
+	responsiveTypographyOptions,
+	generalTypographyStyle,
+	responsiveTypographyStyle,
+} from './constants';
 
 describe('StyleCards, Buttons', () => {
 	it('Check Button', async () => {
@@ -41,18 +30,15 @@ describe('StyleCards, Buttons', () => {
 			accordion: 'button',
 		});
 
-		// size, line-height, letter-spacing
+		// Size, line-height, letter-spacing
 		await addTypographyOptions({
 			page,
 			instance: await page.$(
 				'.maxi-typography-control.maxi-style-cards-control__sc__button-typography'
 			),
-			size: '20',
-			lineHeight: '10',
-			letterSpacing: '5',
+			...generalTypographyOptions,
 		});
 
-		// Selectors
 		// Weight, Transform, Style, Decoration
 		await page.waitForTimeout(100);
 
@@ -62,16 +48,13 @@ describe('StyleCards, Buttons', () => {
 			),
 			...generalTypographyStyle,
 		});
-		await page.waitForTimeout(100);
 
 		// Check Button global styles
-
 		// text color
 		await editGlobalStyles({
 			page,
 			block: 'button',
 		});
-		await page.waitForTimeout(100);
 
 		// background color
 		await editGlobalStyles({
@@ -79,7 +62,6 @@ describe('StyleCards, Buttons', () => {
 			block: 'button',
 			type: 'background',
 		});
-		await page.waitForTimeout(100);
 
 		// background hover color
 		await editGlobalStyles({
@@ -87,7 +69,6 @@ describe('StyleCards, Buttons', () => {
 			block: 'button',
 			type: 'hover-background',
 		});
-		await page.waitForTimeout(100);
 
 		// text hover color
 		await editGlobalStyles({
@@ -95,7 +76,6 @@ describe('StyleCards, Buttons', () => {
 			block: 'button',
 			type: 'hover',
 		});
-		await page.waitForTimeout(100);
 
 		// border color
 		await editGlobalStyles({
@@ -103,7 +83,6 @@ describe('StyleCards, Buttons', () => {
 			block: 'button',
 			type: 'border',
 		});
-		await page.waitForTimeout(100);
 
 		// border hover color
 		await editGlobalStyles({
@@ -118,28 +97,22 @@ describe('StyleCards, Buttons', () => {
 	it('Should work on responsive', async () => {
 		await changeResponsive(page, 'm');
 
-		// size, line-height, letter-spacing
+		// Size, line-height, letter-spacing
 		await addTypographyOptions({
 			page,
 			instance: await page.$(
 				'.maxi-typography-control.maxi-style-cards-control__sc__button-typography'
 			),
-			size: '20',
-			lineHeight: '10',
-			letterSpacing: '5',
+			...responsiveTypographyOptions,
 		});
 
-		// Selectors
 		// Weight, Transform, Style, Decoration
-		await page.waitForTimeout(100);
-
 		await addTypographyStyle({
 			instance: await page.$(
 				'.maxi-typography-control.maxi-style-cards-control__sc__button-typography'
 			),
 			...responsiveTypographyStyle,
 		});
-		await page.waitForTimeout(100);
 
 		expect(await checkSCResult(page)).toMatchSnapshot();
 
@@ -151,7 +124,7 @@ describe('StyleCards, Buttons', () => {
 			),
 		});
 
-		expect(typographyStylesS).toEqual(responsiveTypographyStyle);
+		expect(typographyStylesS).toStrictEqual(responsiveTypographyStyle);
 
 		// Check values on L to be the same as on general breakpoint
 		await changeResponsive(page, 'l');
@@ -161,6 +134,6 @@ describe('StyleCards, Buttons', () => {
 			),
 		});
 
-		expect(typographyStylesL).toEqual(generalTypographyStyle);
+		expect(typographyStylesL).toStrictEqual(generalTypographyStyle);
 	});
 });

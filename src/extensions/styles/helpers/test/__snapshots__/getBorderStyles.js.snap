@@ -185,6 +185,20 @@ Object {
 }
 `;
 
+exports[`getBorderStyles Return an IB border styles(border-style: none on general) 1`] = `
+Object {
+  "general": Object {
+    "border-style": "none",
+  },
+  "l": Object {},
+  "m": Object {},
+  "s": Object {},
+  "xl": Object {},
+  "xs": Object {},
+  "xxl": Object {},
+}
+`;
+
 exports[`getBorderStyles Return border styles object with all the settings 1`] = `
 Object {
   "general": Object {

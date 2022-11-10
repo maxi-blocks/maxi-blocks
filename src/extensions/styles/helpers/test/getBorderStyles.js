@@ -27,23 +27,22 @@ jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 });
 
 describe('getBorderStyles', () => {
+	const defaultAttributes = {
+		'border-style-general': 'none',
+		'border-palette-status-general': true,
+		'border-palette-color-general': 2,
+		'border-status-hover': false,
+		'border-palette-status-general-hover': true,
+		'border-palette-color-general-hover': 6,
+		'border-sync-radius-general': 'all',
+		'border-unit-radius-general': 'px',
+		'border-unit-radius-general-hover': 'px',
+		'border-sync-width-general': 'all',
+		'border-unit-width-general': 'px',
+	};
 	it('Test simple and default border attributes', async () => {
-		const object = {
-			'border-style-general': 'none',
-			'border-palette-status-general': true,
-			'border-palette-color-general': 2,
-			'border-status-hover': false,
-			'border-palette-status-general-hover': true,
-			'border-palette-color-general-hover': 6,
-			'border-sync-radius-general': 'all',
-			'border-unit-radius-general': 'px',
-			'border-unit-radius-general-hover': 'px',
-			'border-sync-width-general': 'all',
-			'border-unit-width-general': 'px',
-		};
-
 		const result = getBorderStyles({
-			obj: object,
+			obj: defaultAttributes,
 			blockStyle: 'light',
 		});
 		expect(result).toMatchSnapshot();
@@ -418,6 +417,15 @@ describe('getBorderStyles', () => {
 			},
 		});
 		// The snapshot of this test should be equal than the snapshot of the previous test
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Return an IB border styles(border-style: none on general)', async () => {
+		const result = getBorderStyles({
+			obj: defaultAttributes,
+			blockStyle: 'light',
+			isIB: true,
+		});
 		expect(result).toMatchSnapshot();
 	});
 });

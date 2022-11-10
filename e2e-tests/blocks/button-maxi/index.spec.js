@@ -13,6 +13,7 @@ import {
  */
 import {
 	addCustomCSS,
+	editAdvancedNumberControl,
 	editColorControl,
 	getAttributes,
 	getBlockStyle,
@@ -56,38 +57,43 @@ describe('Button Maxi', () => {
 	});
 
 	it('Check Button Icon', async () => {
+		await createNewPost();
+		await insertBlock('Button Maxi');
+
+		await page.keyboard.type('Hello', { delay: 100 });
+		await page.waitForTimeout(150);
+
+		await openSidebarTab(page, 'style', 'quick styles');
+
 		const buttons = await page.$$('.maxi-button-default-styles button');
 		buttons[4].click();
+
 		await openSidebarTab(page, 'style', 'icon');
 
 		// Icon Width
-		await page.$$eval(
-			'.maxi-tabs-content .maxi-icon-control .maxi-advanced-number-control input',
-			select => select[0].focus()
-		);
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('343');
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-icon-control__width'),
+			newNumber: '343',
+		});
 
 		//  stroke Width
-		await page.$$eval(
-			'.maxi-tabs-content .maxi-icon-control .maxi-advanced-number-control input',
-			select => select[2].focus()
-		);
-
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('2');
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-icon-control__stroke-width'),
+			newNumber: '2',
+		});
 
 		// spacing
-		await page.$$eval(
-			'.maxi-tabs-content .maxi-icon-control .maxi-advanced-number-control input',
-			select => select[4].focus()
-		);
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('20');
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-icon-control__spacing'),
+			newNumber: '20',
+		});
 
 		// icon position
 		await page.$eval(
-			'.maxi-icon-position-control button.maxi-tabs-control__button-bottom',
+			'.maxi-icon-control__position button.maxi-tabs-control__button-bottom',
 			bottomButton => bottomButton.click()
 		);
 

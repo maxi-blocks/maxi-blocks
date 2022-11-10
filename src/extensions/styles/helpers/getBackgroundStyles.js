@@ -958,70 +958,71 @@ const getGeneralBackgroundStyles = (
 		isHover,
 	});
 
-	breakpoints.forEach(breakpoint => {
-		let widthTop;
-		let widthBottom;
-		let widthLeft;
-		let widthRight;
+	!isEmpty(props) &&
+		breakpoints.forEach(breakpoint => {
+			let widthTop;
+			let widthBottom;
+			let widthLeft;
+			let widthRight;
 
-		if (
-			props[`border-style-${breakpoint}`] !== 'none' &&
-			props['border-style-general']
-		) {
-			widthTop = getBorderValue('top', breakpoint);
-			widthBottom = getBorderValue('bottom', breakpoint);
-			widthLeft = getBorderValue('left', breakpoint);
-			widthRight = getBorderValue('right', breakpoint);
-		}
+			if (
+				props[`border-style-${breakpoint}`] &&
+				props[`border-style-${breakpoint}`] !== 'none' &&
+				props['border-style-general'] &&
+				props['border-style-general'] !== 'none'
+			) {
+				widthTop = getBorderValue('top', breakpoint);
+				widthBottom = getBorderValue('bottom', breakpoint);
+				widthLeft = getBorderValue('left', breakpoint);
+				widthRight = getBorderValue('right', breakpoint);
+			}
 
-		const widthUnit =
-			getLastBreakpointAttribute({
-				target: 'border-unit-width',
-				breakpoint,
-				attributes: props,
-			}) || 'px';
+			const widthUnit =
+				getLastBreakpointAttribute({
+					target: 'border-unit-width',
+					breakpoint,
+					attributes: props,
+				}) || 'px';
 
-		if (
-			!isEmpty(props) &&
-			(border[breakpoint]['border-style'] ||
+			if (
+				border[breakpoint]['border-style'] ||
 				Number.isFinite(widthTop) ||
 				Number.isFinite(widthBottom) ||
 				Number.isFinite(widthLeft) ||
-				Number.isFinite(widthRight))
-		) {
-			//
-			size[breakpoint] = {
-				...(Number.isFinite(widthTop) && {
-					top: -round(widthTop, 2) + widthUnit,
-				}),
-				...(!Number.isFinite(widthTop) &&
-					isHover && {
-						top: 'auto',
+				Number.isFinite(widthRight)
+			) {
+				size[breakpoint] = {
+					...(Number.isFinite(widthTop) && {
+						top: -round(widthTop, 2) + widthUnit,
 					}),
-				...(Number.isFinite(widthBottom) && {
-					bottom: -round(widthBottom, 2) + widthUnit,
-				}),
-				...(!Number.isFinite(widthBottom) &&
-					isHover && {
-						bottom: 'auto',
+					...(!Number.isFinite(widthTop) &&
+						isHover && {
+							top: 'auto',
+						}),
+					...(Number.isFinite(widthBottom) && {
+						bottom: -round(widthBottom, 2) + widthUnit,
 					}),
-				...(Number.isFinite(widthLeft) && {
-					left: -round(widthLeft, 2) + widthUnit,
-				}),
-				...(!Number.isFinite(widthLeft) &&
-					isHover && {
-						left: 'auto',
+					...(!Number.isFinite(widthBottom) &&
+						isHover && {
+							bottom: 'auto',
+						}),
+					...(Number.isFinite(widthLeft) && {
+						left: -round(widthLeft, 2) + widthUnit,
 					}),
-				...(Number.isFinite(widthRight) && {
-					right: -round(widthRight, 2) + widthUnit,
-				}),
-				...(!Number.isFinite(widthRight) &&
-					isHover && {
-						right: 'auto',
+					...(!Number.isFinite(widthLeft) &&
+						isHover && {
+							left: 'auto',
+						}),
+					...(Number.isFinite(widthRight) && {
+						right: -round(widthRight, 2) + widthUnit,
 					}),
-			};
-		}
-	});
+					...(!Number.isFinite(widthRight) &&
+						isHover && {
+							right: 'auto',
+						}),
+				};
+			}
+		});
 
 	breakpoints.forEach(breakpoint => {
 		if (border[breakpoint]['border-top-width'])

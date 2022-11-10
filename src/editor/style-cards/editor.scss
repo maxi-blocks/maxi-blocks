@@ -105,14 +105,6 @@ body {
 		background-color: #fff;
 		z-index: 5;
 	}
-	.maxi-style-cards__active-edit-title {
-		padding-bottom: 10px;
-
-		h3 {
-			font-weight: 700 !important;
-			margin: 15px 0 0 0;
-		}
-	}
 	.maxi-components-button.components-button.maxi-style-cards__sc__actions--save {
 		margin-left: 10px;
 	}
@@ -135,7 +127,14 @@ body {
 	opacity: 0.6;
 	pointer-events: none;
 }
+.maxi-style-cards__active-edit-title {
+	padding-bottom: 10px;
 
+	h3 {
+		font-weight: 700 !important;
+		margin: 15px 0 0 0;
+	}
+}
 .edit-activate {
 	button {
 		border: 2px solid rgb(var(--maxi-light-color-4)) !important;

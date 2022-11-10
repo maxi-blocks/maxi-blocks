@@ -113,7 +113,7 @@ describe('List in Text-maxi', () => {
 		);
 	});
 
-	it.only('Use list options with list style position outside', async () => {
+	it('Use list options with list style position outside', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi List', { delay: 100 });
@@ -211,7 +211,7 @@ describe('List in Text-maxi', () => {
 		);
 	});
 
-	it.only('Check text position, style, start from in organized', async () => {
+	it('Check text position, style, start from in organized', async () => {
 		// Start From input negative numbers
 		await editAdvancedNumberControl({
 			page,
@@ -269,7 +269,7 @@ describe('List in Text-maxi', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it.only('Check text position, style, Unorganized Custom', async () => {
+	it('Check text position, style, Unorganized Custom', async () => {
 		// Select
 		// Type of list
 		const listType = await page.$('.maxi-text-inspector__list-type select');

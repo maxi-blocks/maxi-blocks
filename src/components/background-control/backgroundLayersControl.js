@@ -417,7 +417,11 @@ const BackgroundLayersControl = ({
 		};
 	};
 
-	const onLayersDrag = (fromIndex, toIndex) => {
+	const onLayersDrag = (localFromIndex, localToIndex) => {
+		const indexedLayers = !isHover ? layers : allLayers;
+		const fromIndex = allLayers.indexOf(indexedLayers[localFromIndex]);
+		const toIndex = allLayers.indexOf(indexedLayers[localToIndex]);
+
 		const layer = allLayers.splice(fromIndex, 1)[0];
 
 		allLayers.splice(toIndex, 0, layer);

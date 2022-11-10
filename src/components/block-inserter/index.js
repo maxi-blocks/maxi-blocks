@@ -1,27 +1,29 @@
 /**
  * WordPress dependencies
  */
+import { __ } from '@wordpress/i18n';
 import { ButtonBlockAppender, Inserter } from '@wordpress/block-editor';
 import { select, useDispatch } from '@wordpress/data';
 import { useRef, forwardRef } from '@wordpress/element';
-import { Popover } from '@wordpress/components';
+import { Popover, Tooltip } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
 import Button from '../button';
 import Dropdown from '../dropdown';
+import { getBoundaryElement } from '../../extensions/dom';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
+import { isEmpty, isNaN } from 'lodash';
 
 /**
  * Styles
  */
 import './editor.scss';
-import { getBoundaryElement } from '../../extensions/dom';
 
 /**
  * Component
@@ -55,22 +57,24 @@ const ButtonInserter = props => {
 	const { onToggle } = props;
 
 	return (
-		<Button
-			className='maxi-wrapper-block-inserter__button maxi-block-inserter__button'
-			onClick={onToggle}
-		>
-			<svg
-				xmlns='http://www.w3.org/2000/svg'
-				viewBox='0 0 24 24'
-				width='24'
-				height='24'
-				role='img'
-				aria-hidden='true'
-				focusable='false'
+		<Tooltip text={__('Add block', 'maxi-blocks')} position='top center'>
+			<Button
+				className='maxi-wrapper-block-inserter__button maxi-block-inserter__button'
+				onClick={onToggle}
 			>
-				<path d='M18 11.2h-5.2V6h-1.6v5.2H6v1.6h5.2V18h1.6v-5.2H18z' />
-			</svg>
-		</Button>
+				<svg
+					xmlns='http://www.w3.org/2000/svg'
+					viewBox='0 0 24 24'
+					width='24'
+					height='24'
+					role='img'
+					aria-hidden='true'
+					focusable='false'
+				>
+					<path d='M18 11.2h-5.2V6h-1.6v5.2H6v1.6h5.2V18h1.6v-5.2H18z' />
+				</svg>
+			</Button>
+		</Tooltip>
 	);
 };
 
@@ -78,6 +82,12 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 	const { clientId, isSelected, hasSelectedChild } = props;
 
 	const { getBlockName, getBlockParents } = select('core/block-editor');
+	const { receiveMaxiSettings } = select('maxiBlocks');
+
+	const maxiSettings = receiveMaxiSettings();
+	const version = !isEmpty(maxiSettings.editor)
+		? maxiSettings.editor.version
+		: null;
 
 	const blockHierarchy = {};
 	const blockOrder = [...getBlockParents(clientId), clientId];
@@ -93,6 +103,24 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 
 	if (!ref?.current) return null;
 
+	const popoverProps = {
+		...((parseFloat(version) <= 13.0 && {
+			__unstableStickyBoundaryElement: getBoundaryElement(
+				ref.current,
+				'.edit-post-visual-editor'
+			),
+			shouldAnchorIncludePadding: true,
+			anchorRef: ref.current,
+		}) ||
+			(!isNaN(parseFloat(version)) && {
+				anchor: ref.current,
+				placement: 'bottom',
+				flip: false,
+				resize: false,
+				variant: 'unstyled',
+			})),
+	};
+
 	if (isSelected || hasSelectedChild || shouldRemain.current)
 		return (
 			<Popover
@@ -103,13 +131,8 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 				position='bottom center'
 				focusOnMount={false}
 				style={{ zIndex: Object.keys(blockHierarchy).length + 1 }}
-				anchorRef={ref.current}
 				__unstableSlotName='block-toolbar'
-				__unstableStickyBoundaryElement={getBoundaryElement(
-					ref.current,
-					'.edit-post-visual-editor'
-				)}
-				shouldAnchorIncludePadding
+				{...popoverProps}
 			>
 				{Object.keys(blockHierarchy).length > 1 && (
 					<Dropdown

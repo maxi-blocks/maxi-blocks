@@ -122,7 +122,7 @@ const interactionBuilderSettings = {
 			prefix: 'divider-',
 			component: props => <BoxShadowControl {...props} />,
 			helper: props =>
-				getBoxShadowStyles({ ...props, includeDefault: true }),
+				getBoxShadowStyles({ ...props, isIB: true }),
 			target: dividerClass,
 		},
 		{

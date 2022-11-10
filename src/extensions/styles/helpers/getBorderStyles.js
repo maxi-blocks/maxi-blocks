@@ -24,6 +24,7 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 const getBorderStyles = ({
 	obj,
 	isHover = false,
+	isIB = false,
 	prefix = '',
 	blockStyle,
 	isButton = false,
@@ -53,7 +54,7 @@ const getBorderStyles = ({
 		'left',
 	];
 
-	let omitBorderStyle = true;
+	let omitBorderStyle = !isIB;
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 

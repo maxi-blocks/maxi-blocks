@@ -268,6 +268,7 @@ const interactionBuilderSettings = {
 					...props,
 					target: iconClass,
 					wrapperTarget: buttonClass,
+					isIB: true,
 				}),
 		},
 		{
@@ -297,7 +298,7 @@ const interactionBuilderSettings = {
 			attrGroupName: ['border', 'borderWidth', 'borderRadius'],
 			prefix: 'button-',
 			component: props => <BorderControl {...props} />,
-			helper: props => getBorderStyles(props),
+			helper: props => getBorderStyles({ ...props, isIB: true }),
 			target: '.maxi-button-block__button',
 		},
 		{
@@ -335,7 +336,7 @@ const interactionBuilderSettings = {
 			prefix: 'button-',
 			component: props => <BoxShadowControl {...props} />,
 			helper: props =>
-				getBoxShadowStyles({ ...props, includeDefault: true }),
+				getBoxShadowStyles({ ...props, isIB: true }),
 			target: '.maxi-button-block__button',
 		},
 		{

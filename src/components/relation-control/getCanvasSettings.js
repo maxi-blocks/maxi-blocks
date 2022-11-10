@@ -138,13 +138,13 @@ const getCanvasSettings = ({ name, customCss }) => [
 		hoverProp: 'border-status-hover',
 		attrGroupName: ['border', 'borderWidth', 'borderRadius'],
 		component: props => <BorderControl {...props} />,
-		helper: props => getBorderStyles(props),
+		helper: props => getBorderStyles({ ...props, isIB: true }),
 	},
 	{
 		label: __('Box shadow', 'maxi-blocks'),
 		attrGroupName: 'boxShadow',
 		component: props => <BoxShadowControl {...props} />,
-		helper: props => getBoxShadowStyles({ ...props, includeDefault: true }),
+		helper: props => getBoxShadowStyles({ ...props, isIB: true }),
 	},
 	{
 		label: __('Opacity', 'maxi-blocks'),

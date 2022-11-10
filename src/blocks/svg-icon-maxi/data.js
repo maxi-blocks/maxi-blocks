@@ -261,7 +261,7 @@ const interactionBuilderSettings = {
 			attrGroupName: ['border', 'borderWidth', 'borderRadius'],
 			prefix: 'svg-',
 			component: props => <BorderControl {...props} />,
-			helper: props => getBorderStyles(props),
+			helper: props => getBorderStyles({ ...props, isIB: true }),
 			target: ' .maxi-svg-icon-block__icon',
 		},
 	],

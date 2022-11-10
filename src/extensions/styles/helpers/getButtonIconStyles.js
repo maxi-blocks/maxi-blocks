@@ -22,7 +22,7 @@ import getIconSize from './getIconSize';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-const getIconObject = (props, target, prefix = '') => {
+const getIconObject = (props, target, prefix = '', isIB) => {
 	const response = {
 		background: props[`${prefix}icon-background-active-media-general`] ===
 			'color' && {
@@ -79,6 +79,7 @@ const getIconObject = (props, target, prefix = '') => {
 				},
 				prefix: `${prefix}icon-`,
 				blockStyle: props.blockStyle,
+				isIB,
 			}),
 	};
 
@@ -221,6 +222,7 @@ const getButtonIconStyles = ({
 	obj,
 	blockStyle,
 	isHover = false,
+	isIB = false,
 	target = '',
 	wrapperTarget = '',
 	prefix = '',
@@ -247,7 +249,8 @@ const getButtonIconStyles = ({
 					[` ${wrapperTarget} ${target}`]: getIconObject(
 						obj,
 						'icon',
-						prefix
+						prefix,
+						isIB
 					),
 					[` ${wrapperTarget} ${target} svg`]: getIconSize(
 						obj,

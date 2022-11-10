@@ -62,13 +62,16 @@ const getTransformControl = (name, { categories, selectors }) => ({
 			{...props}
 			uniqueID={props.attributes.uniqueID}
 			depth={2}
-			selectors={getTransformSelectors(selectors)}
+			selectors={getTransformSelectors(selectors, props.attributes)}
 			categories={getTransformCategories(categories, props.attributes)}
 			disableHover
 		/>
 	),
 	helper: props =>
-		getTransformStyles(props.obj, getTransformSelectors(selectors)),
+		getTransformStyles(
+			props.obj,
+			getTransformSelectors(selectors, props.attributes)
+		),
 });
 
 const getCanvasSettings = ({ name, customCss }) => [

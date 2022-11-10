@@ -966,9 +966,10 @@ const getGeneralBackgroundStyles = (
 			let widthRight;
 
 			if (
-				props[`border-style-${breakpoint}`] !== 'none' &&
-				props['border-style-general'] &&
-				props['border-style-general'] !== 'none'
+				(props['border-style-general'] &&
+					props['border-style-general'] !== 'none') ||
+				(props[`border-style-${breakpoint}`] !== 'none' &&
+					props[`border-style-${breakpoint}`])
 			) {
 				widthTop = getBorderValue('top', breakpoint);
 				widthBottom = getBorderValue('bottom', breakpoint);

@@ -4,7 +4,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useSelect, useDispatch } from '@wordpress/data';
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, useRef } from '@wordpress/element';
 import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 // import { PostPreviewButton } from '@wordpress/editor';
 import { Popover } from '@wordpress/components';
@@ -202,14 +202,20 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 
 	const [settings, setSettings] = useState(false);
 
+	const [settingsDisabled, setsettingsDisabled] = useState(true);
+
+	const customiseInputRef = useRef();
+
+	useEffect(() => {
+		customiseInputRef?.current?.focus?.();
+	}, [settings]);
+
 	const showSettings = () => {
 		setSettings(true);
 	};
 	const cancelSettings = () => {
 		setSettings(false);
 	};
-
-	const [settingsDisabled, setsettingsDisabled] = useState(true);
 
 	const enableSettings = () => {
 		setsettingsDisabled(false);
@@ -221,7 +227,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 
 	const [isDisabled, setIsDisabled] = useState(true);
 
-	const openDialog = props => {
+	const openDialog = () => {
 		setIsDisabled(false);
 	};
 	const removeDialog = () => {
@@ -442,6 +448,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 									onChange={e =>
 										setStyleCardName(e.target.value)
 									}
+									ref={customiseInputRef}
 								/>
 								<Button
 									disabled={isEmpty(styleCardName)}

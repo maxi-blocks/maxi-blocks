@@ -95,27 +95,30 @@ body {
 }
 .maxi-style-cards__settings {
 	background-color: #fff;
-}
-.maxi-style-cards__sc-cancel-save {
-	display: flex;
-	justify-content: flex-end;
-	padding: 10px 0 10px 0;
-	background-color: #fff;
-	z-index: 5;
-}
-.maxi-style-cards__active-edit-title {
-	padding-bottom: 10px;
+	.maxi-style-cards__card-already-exists {
+		margin-left: 8px;
+	}
+	.maxi-style-cards__sc-cancel-save {
+		display: flex;
+		justify-content: flex-end;
+		padding: 10px 0 10px 0;
+		background-color: #fff;
+		z-index: 5;
+	}
+	.maxi-style-cards__active-edit-title {
+		padding-bottom: 10px;
 
-	h3 {
-		font-weight: 700 !important;
-		margin: 15px 0 0 0;
+		h3 {
+			font-weight: 700 !important;
+			margin: 15px 0 0 0;
+		}
+	}
+	.maxi-components-button.components-button.maxi-style-cards__sc__actions--save {
+		margin-left: 10px;
 	}
 }
-.maxi-components-button.components-button.maxi-style-cards__sc__actions--save {
-	margin-left: 10px;
-}
+
 .maxi-style-cards__sc-custom-name {
-	margin-bottom: 15px;
 	h3 {
 		margin: 0 0 5px 8px;
 

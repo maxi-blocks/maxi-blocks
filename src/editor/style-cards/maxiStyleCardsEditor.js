@@ -279,6 +279,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 		setIsDisabled(true);
 	};
 
+	const [cardAlreadyExists, setCardAlreadyExists] = useState(false);
 	return (
 		!isEmpty(styleCards) && (
 			<Popover
@@ -450,38 +451,56 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 									}
 									ref={customiseInputRef}
 								/>
+
 								<Button
 									disabled={isEmpty(styleCardName)}
 									onClick={() => {
-										const newStyleCard = {
-											name: styleCardName,
-											status: '',
-											dark: {
-												defaultStyleCard: {
-													...selectedSCValue.dark
-														.defaultStyleCard,
-													...selectedSCValue.dark
-														.styleCard,
+										if (
+											SCList.map(
+												listItem => listItem.label
+											).filter(cardname =>
+												cardname.includes(styleCardName)
+											).length > 1
+										) {
+											setCardAlreadyExists(true);
+										} else {
+											const newStyleCard = {
+												name: styleCardName,
+												status: '',
+												dark: {
+													defaultStyleCard: {
+														...selectedSCValue.dark
+															.defaultStyleCard,
+														...selectedSCValue.dark
+															.styleCard,
+													},
+													styleCard: {},
 												},
-												styleCard: {},
-											},
-											light: {
-												defaultStyleCard: {
-													...selectedSCValue.light
-														.defaultStyleCard,
-													...selectedSCValue.light
-														.styleCard,
+												light: {
+													defaultStyleCard: {
+														...selectedSCValue.light
+															.defaultStyleCard,
+														...selectedSCValue.light
+															.styleCard,
+													},
+													styleCard: {},
 												},
-												styleCard: {},
-											},
-										};
-										saveImportedStyleCard(newStyleCard);
-										enableSettings();
+											};
+											saveImportedStyleCard(newStyleCard);
+											enableSettings();
+										}
 									}}
 								>
 									{__('Create', 'maxi-blocks')}
 								</Button>
 							</div>
+							{cardAlreadyExists && (
+								<div className='maxi-style-cards__card-already-exists'>
+									<span>
+										A card with this name already exists.
+									</span>
+								</div>
+							)}
 						</div>
 						<div className='maxi-style-cards__sc-cancel-save'>
 							<Button onClick={cancelSettings}>

@@ -363,7 +363,7 @@ const LibraryContainer = props => {
 	).searchClient;
 
 	const searchClientSvg = typesenseInstantsearchAdapter(
-		'post_title, svg_tag.lvl1, svg_tag.lvl1, svg_tag.lvl2, svg_category'
+		'post_title, svg_tag.lvl0, svg_tag.lvl1, svg_tag.lvl2, svg_category'
 	).searchClient;
 
 	const [isChecked, setChecked] = useState(false);
@@ -684,6 +684,10 @@ const LibraryContainer = props => {
 		);
 	};
 
+	const onStateChange = ({ uiState, setUiState }) => {
+		setUiState(uiState);
+	};
+
 	return (
 		<div className='maxi-cloud-container'>
 			{type === 'svg' && (
@@ -691,6 +695,7 @@ const LibraryContainer = props => {
 					<InstantSearch
 						indexName='svg_icon'
 						searchClient={searchClientSvg}
+						onStateChange={onStateChange}
 					>
 						<Configure hitsPerPage={49} />
 						<div className='maxi-cloud-container__svg-icon__sidebar'>
@@ -702,10 +707,10 @@ const LibraryContainer = props => {
 							/>
 							<CustomHierarchicalMenu
 								attributes={['svg_tag.lvl0', 'svg_tag.lvl1']}
-								limit={20}
-								showMore
+								// limit={20}
+								// showMore
 								showLoadingIndicator
-								showMoreLimit={40}
+								// showMoreLimit={40}
 							/>
 							<ClearRefinements />
 						</div>

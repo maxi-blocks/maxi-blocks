@@ -75,11 +75,10 @@ const LibraryToolbar = props => {
 				{type === 'sc' && __('Style cards', 'maxi-blocks')}
 				{type.includes('shape') && __('Shape library', 'maxi-blocks')}
 				{(type.includes('button') || type.includes('search')) &&
-					__('Button icon library', 'maxi-blocks')}
+					__('Button icon', 'maxi-blocks')}
 				{type.includes('accordion') &&
-					__('Maxi accordion icon library', 'maxi-blocks')}
-				{type.includes('video') &&
-					__('Video icon library', 'maxi-blocks')}
+					__('Accordion icon', 'maxi-blocks')}
+				{type.includes('video') && __('Video icon', 'maxi-blocks')}
 			</a>
 			{type === 'preview' && (
 				<>

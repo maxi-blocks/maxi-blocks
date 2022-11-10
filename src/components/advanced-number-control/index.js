@@ -18,7 +18,7 @@ import ResetButton from '../reset-control';
  * External dependencies
  */
 import classnames from 'classnames';
-import { trim, isEmpty, isNumber, isNil, merge } from 'lodash';
+import { isEmpty, isNil, isNumber, merge, trim } from 'lodash';
 
 /**
  * Styles
@@ -263,11 +263,9 @@ const AdvancedNumberControl = props => {
 						label={label}
 						className='maxi-advanced-number-control__range'
 						value={
-							+(!isNil(value) && Number.isFinite(value)
-								? value
-								: Number.isFinite(defaultValue)
-								? defaultValue
-								: initial || placeholder || 0)
+							+[value, defaultValue, initial, placeholder].find(
+								val => /\d/.test(val) && +val !== 0
+							) || 0
 						}
 						onChange={val => {
 							onChangeValue(

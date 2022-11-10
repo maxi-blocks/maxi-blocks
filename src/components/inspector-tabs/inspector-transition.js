@@ -22,7 +22,7 @@ import {
 /**
  * External dependencies
  */
-import { capitalize, cloneDeep, isEmpty } from 'lodash';
+import { capitalize, cloneDeep, isEmpty, isArray } from 'lodash';
 
 /**
  * Component
@@ -179,8 +179,12 @@ const transition = ({
 	Object.keys(transition).forEach(type => {
 		Object.keys(transition[type]).forEach(key => {
 			const hoverProp = transitionData?.[type]?.[key]?.hoverProp;
-			if (hoverProp && !attributes[hoverProp])
-				delete transition[type][key];
+			if (!hoverProp) return;
+
+			if (isArray(hoverProp))
+				hoverProp.every(prop => !attributes[prop]) &&
+					delete transition[type][key];
+			else !attributes[hoverProp] && delete transition[type][key];
 		});
 	});
 

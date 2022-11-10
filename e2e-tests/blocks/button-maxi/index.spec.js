@@ -52,8 +52,7 @@ describe('Button Maxi', () => {
 			await page.waitForTimeout(500);
 		}
 
-		// Need to end the test
-		expect(true).toBeTruthy();
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
 	});
 
 	it('Check Button Icon', async () => {

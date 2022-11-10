@@ -70,7 +70,7 @@ const getTransformControl = (name, { categories, selectors }) => ({
 	helper: props =>
 		getTransformStyles(
 			props.obj,
-			getTransformSelectors(selectors, props.attributes)
+			getTransformSelectors(selectors, props.blockAttributes)
 		),
 });
 

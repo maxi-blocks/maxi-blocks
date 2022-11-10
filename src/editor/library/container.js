@@ -274,7 +274,6 @@ const HierarchicalMenu = ({ items, refine }) =>
 						onClick={event => {
 							event.preventDefault();
 							refine(item.value);
-							console.log(items);
 						}}
 					>
 						{unescape(item.label)} ({item.count})

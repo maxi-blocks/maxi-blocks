@@ -268,7 +268,6 @@ const interactionBuilderSettings = {
 					...props,
 					target: iconClass,
 					wrapperTarget: buttonClass,
-					isIB: true,
 				}),
 		},
 		{

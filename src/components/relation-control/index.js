@@ -272,6 +272,7 @@ const RelationControl = props => {
 
 				const stylesObj = selectedSettingsObj?.helper({
 					obj: newGroupAttributes,
+					isIB: true,
 					prefix,
 					blockStyle: blockAttributes.blockStyle,
 					deviceType,

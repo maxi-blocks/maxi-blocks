@@ -298,7 +298,7 @@ const interactionBuilderSettings = {
 			attrGroupName: ['border', 'borderWidth', 'borderRadius'],
 			prefix: 'button-',
 			component: props => <BorderControl {...props} />,
-			helper: props => getBorderStyles({ ...props, isIB: true }),
+			helper: props => getBorderStyles(props),
 			target: '.maxi-button-block__button',
 		},
 		{
@@ -335,8 +335,7 @@ const interactionBuilderSettings = {
 			attrGroupName: 'boxShadow',
 			prefix: 'button-',
 			component: props => <BoxShadowControl {...props} />,
-			helper: props =>
-				getBoxShadowStyles({ ...props, isIB: true }),
+			helper: props => getBoxShadowStyles(props),
 			target: '.maxi-button-block__button',
 		},
 		{

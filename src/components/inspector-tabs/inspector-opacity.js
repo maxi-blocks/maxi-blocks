@@ -98,6 +98,27 @@ const opacity = ({ props, depth = 2 }) => {
 													)]: val,
 												})
 											}
+											onReset={() => {
+												maxiSetAttributes({
+													[getAttributeKey(
+														'opacity',
+														true,
+														'',
+														deviceType
+													)]: getLastBreakpointAttribute(
+														{
+															target: 'opacity',
+															breakpoint:
+																deviceType,
+															attributes:
+																getGroupAttributes(
+																	attributes,
+																	'opacity'
+																),
+														}
+													),
+												});
+											}}
 										/>
 									)}
 								</>

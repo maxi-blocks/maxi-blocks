@@ -53,7 +53,8 @@ describe('Button Maxi', () => {
 			await page.waitForTimeout(500);
 		}
 
-		expect(await getEditedPostContent(page)).toMatchSnapshot();
+		// Need to end the test
+		expect(true).toBeTruthy();
 	});
 
 	it('Check Button Icon', async () => {
@@ -63,31 +64,40 @@ describe('Button Maxi', () => {
 		await page.keyboard.type('Hello', { delay: 100 });
 		await page.waitForTimeout(150);
 
-		await openSidebarTab(page, 'style', 'quick styles');
+		const quickStylesAccordion = await openSidebarTab(
+			page,
+			'style',
+			'quick styles'
+		);
 
-		const buttons = await page.$$('.maxi-button-default-styles button');
-		buttons[4].click();
+		await quickStylesAccordion.waitForSelector(
+			'	.maxi-button-default-styles button[aria-label="Button shortcut 5"]'
+		);
+		await quickStylesAccordion.$eval(
+			'.maxi-button-default-styles button[aria-label="Button shortcut 5"]',
+			buttons => buttons.click()
+		);
 
-		await openSidebarTab(page, 'style', 'icon');
+		const iconAccordion = await openSidebarTab(page, 'style', 'icon');
 
 		// Icon Width
 		await editAdvancedNumberControl({
 			page,
-			instance: await page.$('.maxi-icon-control__width'),
+			instance: await iconAccordion.$('.maxi-icon-control__width'),
 			newNumber: '343',
 		});
 
 		//  stroke Width
 		await editAdvancedNumberControl({
 			page,
-			instance: await page.$('.maxi-icon-control__stroke-width'),
+			instance: await iconAccordion.$('.maxi-icon-control__stroke-width'),
 			newNumber: '2',
 		});
 
 		// spacing
 		await editAdvancedNumberControl({
 			page,
-			instance: await page.$('.maxi-icon-control__spacing'),
+			instance: await iconAccordion.$('.maxi-icon-control__spacing'),
 			newNumber: '20',
 		});
 
@@ -128,7 +138,6 @@ describe('Button Maxi', () => {
 		);
 
 		// Icon inherit color
-
 		await page.$eval('button.maxi-tabs-control__button-border', button =>
 			button.click()
 		);
@@ -206,6 +215,9 @@ describe('Button Maxi', () => {
 		expect(
 			await getAttributes('icon-padding-bottom-general')
 		).toStrictEqual('33');
+
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Check Button Icon Hover', async () => {
@@ -279,6 +291,9 @@ describe('Button Maxi', () => {
 		expect(
 			await getAttributes('icon-border-bottom-width-general-hover')
 		).toStrictEqual(70);
+
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Button Maxi Custom CSS', async () => {

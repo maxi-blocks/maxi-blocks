@@ -195,7 +195,7 @@ const IconControl = props => {
 										'Icon only (remove text)',
 										'maxi-blocks'
 									)}
-									className='maxi-color-control__palette__custom'
+									className='maxi-icon-control__icon-only'
 									selected={iconOnly}
 									onChange={val => {
 										const icon = getIconWithColor({
@@ -213,6 +213,7 @@ const IconControl = props => {
 						)}
 					<SvgWidthControl
 						{...getGroupAttributes(props, 'icon', isHover, prefix)}
+						className='maxi-icon-control__width'
 						onChange={onChange}
 						prefix={`${prefix}icon-`}
 						breakpoint={breakpoint}
@@ -236,6 +237,7 @@ const IconControl = props => {
 									),
 								},
 							})}
+							className='maxi-icon-control__stroke-width'
 							onChange={obj => onChange(obj)}
 							prefix={`${prefix}icon-`}
 							breakpoint={breakpoint}
@@ -247,6 +249,7 @@ const IconControl = props => {
 						<>
 							<AdvancedNumberControl
 								label={__('Spacing', 'maxi-blocks')}
+								className='maxi-icon-control__spacing'
 								min={0}
 								max={999}
 								initial={1}
@@ -275,7 +278,7 @@ const IconControl = props => {
 							{!disablePosition && (
 								<AxisPositionControl
 									label='Icon'
-									className='maxi-icon-position-control'
+									className='maxi-icon-control__position'
 									selected={props[`${prefix}icon-position`]}
 									onChange={val => {
 										onChange({
@@ -295,6 +298,7 @@ const IconControl = props => {
 									'Inherit colour/background from button',
 									'maxi-block'
 								)}
+								className='maxi-icon-control__inherit'
 								selected={iconInherit}
 								onChange={val => {
 									const icon = getIconWithColor({

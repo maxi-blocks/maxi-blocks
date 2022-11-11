@@ -324,10 +324,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 													listItem => listItem.label
 												).filter(cardname =>
 													cardname.includes(
-														styleCardName.substring(
-															0,
-															20
-														)
+														styleCardName
 													)
 												).length > 1
 											) {
@@ -359,7 +356,9 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 						</div>
 						{importedCardExists && (
 							<div className='maxi-style-cards__card-already-exists'>
-								<span>Imported card already exists.</span>
+								<span>
+									{__('Imported card already exists.')}
+								</span>
 							</div>
 						)}
 						<div className='maxi-style-cards__active-edit-options'>
@@ -474,25 +473,22 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 								<Button
 									disabled={isEmpty(styleCardName)}
 									onClick={() => {
+										console.log(
+											SCList.map(
+												listItem => listItem.label
+											)
+										);
 										if (
 											SCList.map(
 												listItem => listItem.label
 											).filter(cardname =>
-												cardname.includes(
-													styleCardName.substring(
-														0,
-														20
-													)
-												)
-											).length > 1
+												cardname.includes(styleCardName)
+											).length > 0
 										) {
 											setCardAlreadyExists(true);
 										} else {
 											const newStyleCard = {
-												name: styleCardName.substring(
-													0,
-													20
-												),
+												name: styleCardName,
 												status: '',
 												dark: {
 													defaultStyleCard: {
@@ -524,7 +520,9 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 							{cardAlreadyExists && (
 								<div className='maxi-style-cards__card-already-exists create-new-section'>
 									<span>
-										A card with this name already exists.
+										{__(
+											'A card with this name already exists.'
+										)}
 									</span>
 								</div>
 							)}

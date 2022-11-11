@@ -234,178 +234,54 @@ const SquareControl = props => {
 				)}
 				{type === 'origin' && (
 					<div className='maxi-transform-control__square-control__canvas__origin'>
-						<Button
-							aria-pressed={
-								xAxis === 'left' && yAxis === 'top'
-									? 'active'
-									: ''
-							}
-							className={classnames(
-								'maxi-transform-control__square-control__canvas__origin',
-								'maxi-transform-control__square-control__canvas__origin__button',
-								'maxi-transform-control__square-control__canvas__origin__left',
-								'maxi-transform-control__square-control__canvas__origin__top'
-							)}
-							onClick={() => {
-								changeXAxis('left');
-								changeYAxis('top');
-								onChange('left', 'top', xUnit, yUnit);
-								onSave('left', 'top', xUnit, yUnit);
-							}}
-						/>
-						<Button
-							aria-pressed={
-								xAxis === 'center' && yAxis === 'top'
-									? 'active'
-									: ''
-							}
-							className={classnames(
-								'maxi-transform-control__square-control__canvas__origin',
-								'maxi-transform-control__square-control__canvas__origin__button',
-								'maxi-transform-control__square-control__canvas__origin__middle',
-								'maxi-transform-control__square-control__canvas__origin__top'
-							)}
-							onClick={() => {
-								changeXAxis('middle');
-								changeYAxis('top');
-								onChange('center', 'top', xUnit, yUnit);
-								onSave('center', 'top', xUnit, yUnit);
-							}}
-						/>
-						<Button
-							aria-pressed={
-								xAxis === 'right' && yAxis === 'top'
-									? 'active'
-									: ''
-							}
-							className={classnames(
-								'maxi-transform-control__square-control__canvas__origin',
-								'maxi-transform-control__square-control__canvas__origin__button',
-								'maxi-transform-control__square-control__canvas__origin__right',
-								'maxi-transform-control__square-control__canvas__origin__top'
-							)}
-							onClick={() => {
-								changeXAxis('right');
-								changeYAxis('top');
-								onChange('right', 'top', xUnit, yUnit);
-								onSave('right', 'top', xUnit, yUnit);
-							}}
-						/>
-						<Button
-							aria-pressed={
-								xAxis === 'left' && yAxis === 'center'
-									? 'active'
-									: ''
-							}
-							className={classnames(
-								'maxi-transform-control__square-control__canvas__origin',
-								'maxi-transform-control__square-control__canvas__origin__button',
-								'maxi-transform-control__square-control__canvas__origin__left',
-								'maxi-transform-control__square-control__canvas__origin__center'
-							)}
-							onClick={() => {
-								changeXAxis('left');
-								changeYAxis('center');
-								onChange('left', 'center', xUnit, yUnit);
-								onSave('left', 'center', xUnit, yUnit);
-							}}
-						/>
-						<Button
-							aria-pressed={
-								(xAxis === 'middle' && yAxis === 'center') ||
-								(!xAxis && !yAxis)
-									? 'active'
-									: ''
-							}
-							className={classnames(
-								'maxi-transform-control__square-control__canvas__origin',
-								'maxi-transform-control__square-control__canvas__origin__button',
-								'maxi-transform-control__square-control__canvas__origin__middle',
-								'maxi-transform-control__square-control__canvas__origin__center'
-							)}
-							onClick={() => {
-								changeXAxis('middle');
-								changeYAxis('center');
-								onChange('middle', 'center', xUnit, yUnit);
-								onSave('middle', 'center', xUnit, yUnit);
-							}}
-						/>
-						<Button
-							aria-pressed={
-								xAxis === 'right' && yAxis === 'center'
-									? 'active'
-									: ''
-							}
-							className={classnames(
-								'maxi-transform-control__square-control__canvas__origin',
-								'maxi-transform-control__square-control__canvas__origin__button',
-								'maxi-transform-control__square-control__canvas__origin__right',
-								'maxi-transform-control__square-control__canvas__origin__center'
-							)}
-							onClick={() => {
-								changeXAxis('right');
-								changeYAxis('center');
-								onChange('right', 'center', xUnit, yUnit);
-								onSave('right', 'center', xUnit, yUnit);
-							}}
-						/>
-						<Button
-							aria-pressed={
-								xAxis === 'left' && yAxis === 'bottom'
-									? 'active'
-									: ''
-							}
-							className={classnames(
-								'maxi-transform-control__square-control__canvas__origin',
-								'maxi-transform-control__square-control__canvas__origin__button',
-								'maxi-transform-control__square-control__canvas__origin__left',
-								'maxi-transform-control__square-control__canvas__origin__bottom'
-							)}
-							onClick={() => {
-								changeXAxis('left');
-								changeYAxis('bottom');
-								onChange('left', 'bottom', xUnit, yUnit);
-								onSave('left', 'bottom', xUnit, yUnit);
-							}}
-						/>
-						<Button
-							aria-pressed={
-								xAxis === 'center' && yAxis === 'bottom'
-									? 'active'
-									: ''
-							}
-							className={classnames(
-								'maxi-transform-control__square-control__canvas__origin',
-								'maxi-transform-control__square-control__canvas__origin__button',
-								'maxi-transform-control__square-control__canvas__origin__middle',
-								'maxi-transform-control__square-control__canvas__origin__bottom'
-							)}
-							onClick={() => {
-								changeXAxis('middle');
-								changeYAxis('bottom');
-								onChange('center', 'bottom', xUnit, yUnit);
-								onSave('center', 'bottom', xUnit, yUnit);
-							}}
-						/>
-						<Button
-							aria-pressed={
-								xAxis === 'right' && yAxis === 'bottom'
-									? 'active'
-									: ''
-							}
-							className={classnames(
-								'maxi-transform-control__square-control__canvas__origin',
-								'maxi-transform-control__square-control__canvas__origin__button',
-								'maxi-transform-control__square-control__canvas__origin__right',
-								'maxi-transform-control__square-control__canvas__origin__bottom'
-							)}
-							onClick={() => {
-								changeXAxis('right');
-								changeYAxis('bottom');
-								onChange('right', 'bottom', xUnit, yUnit);
-								onSave('right', 'bottom', xUnit, yUnit);
-							}}
-						/>
+						{[
+							{
+								xAxis: 'left',
+								yAxis: 'top',
+							},
+							{
+								xAxis: 'center',
+								yAxis: 'top',
+							},
+							{
+								xAxis: 'right',
+								yAxis: 'top',
+							},
+							{
+								xAxis: 'left',
+								yAxis: 'center',
+							},
+							{ xAxis: 'middle', yAxis: 'center' },
+							{ xAxis: 'right', yAxis: 'center' },
+							{ xAxis: 'left', yAxis: 'bottom' },
+							{ xAxis: 'center', yAxis: 'bottom' },
+							{ xAxis: 'right', yAxis: 'bottom' },
+						].map(({ xAxis: itemXAxis, yAxis: itemYAxis }) => (
+							<Button
+								aria-pressed={
+									xAxis === itemXAxis && yAxis === itemYAxis
+										? 'active'
+										: ''
+								}
+								className={classnames(
+									'maxi-transform-control__square-control__canvas__origin',
+									'maxi-transform-control__square-control__canvas__origin__button',
+									`maxi-transform-control__square-control__canvas__origin__${itemXAxis}`,
+									`maxi-transform-control__square-control__canvas__origin__${itemYAxis}`
+								)}
+								onClick={() => {
+									changeXAxis(itemXAxis);
+									changeYAxis(itemYAxis);
+									onChange(
+										itemXAxis,
+										itemYAxis,
+										xUnit,
+										yUnit
+									);
+									onSave(itemXAxis, itemYAxis, xUnit, yUnit);
+								}}
+							/>
+						))}
 					</div>
 				)}
 				<span className='maxi-transform-control__square-control__canvas__placeholder' />

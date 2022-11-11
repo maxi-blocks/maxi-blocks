@@ -280,6 +280,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 	};
 
 	const [cardAlreadyExists, setCardAlreadyExists] = useState(false);
+
 	return (
 		!isEmpty(styleCards) && (
 			<Popover
@@ -354,7 +355,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 							<DialogBox
 								isDisabled={isDisabled}
 								message={__(
-									`Deleting <span>${selectedSCValue.name}</span> style card. This action is permanent.`,
+									`Deleting${` ${selectedSCValue.name} `}style card. This action is permanent.`,
 									'maxi-blocks'
 								)}
 								cancel={__('Cancel', 'maxi-blocks')}
@@ -366,7 +367,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 								<Button
 									disabled={!canBeRemoved(selectedSCKey)}
 									className='maxi-style-cards__sc__more-sc--delete has-tooltip'
-									onClick={openDialog}
+									onClick={deleteSC}
 									refid='delete'
 								>
 									<span className='tooltip'>Delete</span>
@@ -404,7 +405,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 							<DialogBox
 								isDisabled={isDisabled}
 								message={__(
-									`Activate new style. Customized blocks will not change. All other Maxi blocks will get new,${selectedSCValue.name} styles.`,
+									`Activate new style. Customized blocks will not change. All other Maxi blocks will get new,${` ${selectedSCValue.name} `}styles.`,
 									'maxi-blocks'
 								)}
 								cancel={__('Cancel', 'maxi-blocks')}
@@ -450,6 +451,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 										setStyleCardName(e.target.value)
 									}
 									ref={customiseInputRef}
+									maxLength='20'
 								/>
 
 								<Button

@@ -141,13 +141,13 @@ const MasonryItem = props => {
 						{target === 'button-icon' ||
 						target === 'navigation-icon' ||
 						target === 'search-icon' ||
-						target.includes('Line')
+						target.includes('Line') ||
+						target.includes('video-icon')
 							? serial.replace(' Line', '').replace(' line', '')
 							: [
 									'image-shape',
 									'bg-shape',
 									'sidebar-block-shape',
-									'video-icon',
 							  ].includes(target) || target.includes('Shape')
 							? serial.replace(' shape', '')
 							: serial}
@@ -382,8 +382,9 @@ const LibraryContainer = props => {
 			case 'accordion-icon':
 			case 'accordion-icon-active':
 			case 'search-icon':
+			case 'video-icon-play':
+			case 'video-icon-close':
 				return 'icon';
-			case 'video-icon':
 			case 'sidebar-block-shape':
 			case 'bg-shape':
 				return 'shape';
@@ -560,7 +561,8 @@ const LibraryContainer = props => {
 			if (
 				[
 					'button-icon',
-					'video-icon',
+					'video-icon-play',
+					'video-icon-close',
 					'accordion-icon',
 					'search-icon',
 					'navigation-icon',
@@ -740,7 +742,7 @@ const LibraryContainer = props => {
 				</div>
 			)}
 
-			{(type.includes('shape') || type === 'video-icon') && (
+			{(type.includes('shape') || type.includes('video-icon')) && (
 				<InstantSearch
 					indexName='svg_icon'
 					searchClient={searchClientSvg}
@@ -748,20 +750,63 @@ const LibraryContainer = props => {
 					<Configure hitsPerPage={49} />
 					<div className='maxi-cloud-container__svg-shape'>
 						<div className='maxi-cloud-container__svg-shape__sidebar maxi-cloud-container__hide-categories'>
-							<SearchBox
-								submit={__('Find', 'maxi-blocks')}
-								autoFocus
-								searchAsYouType
+							{type === 'shape' && (
+								<SearchBox
+									submit={__('Find', 'maxi-blocks')}
+									autoFocus
+									searchAsYouType
+									showLoadingIndicator
+								/>
+							)}
+							{type === 'video-icon-play' && (
+								<SearchBox
+									submit={__('Find', 'maxi-blocks')}
+									defaultRefinement='play'
+									autoFocus
+									searchAsYouType
+									showLoadingIndicator
+								/>
+							)}
+							{type === 'video-icon-close' && (
+								<SearchBox
+									submit={__('Find', 'maxi-blocks')}
+									defaultRefinement='cross'
+									autoFocus
+									searchAsYouType
+									showLoadingIndicator
+								/>
+							)}
+							<CustomHierarchicalMenu
+								attributes={['svg_tag.lvl0', 'svg_tag.lvl1']}
+								limit={20}
+								showMore
 								showLoadingIndicator
+								showMoreLimit={20}
 							/>
-							<CustomRefinementList
-								className='hidden'
-								attribute='svg_category'
-								defaultRefinement={['Shape']}
-								showLoadingIndicator
-							/>
+							{type.includes('shape') && (
+								<CustomRefinementList
+									className='hidden'
+									attribute='svg_category'
+									defaultRefinement={['Shape']}
+									showLoadingIndicator
+								/>
+							)}
 						</div>
 						<div className='maxi-cloud-container__content-svg-shape'>
+							{type.includes('video-icon') && (
+								<div className='maxi-cloud-container__content-svg-shape__search-bar'>
+									<CustomMenuSelect
+										className='maxi-cloud-container__content-svg-shape__categories'
+										attribute='svg_category'
+										translations={{
+											seeAllOption: __(
+												'All icons',
+												'maxi-blocks'
+											),
+										}}
+									/>
+								</div>
+							)}
 							<div className='maxi-cloud-container__sc__content-sc'>
 								<Stats translations={resultsCount} />
 								<InfiniteHits hitComponent={svgShapeResults} />
@@ -773,38 +818,8 @@ const LibraryContainer = props => {
 
 			{(type === 'button-icon' ||
 				type === 'navigation-icon' ||
-				type === 'search-icon') && (
-				<InstantSearch
-					indexName='svg_icon'
-					searchClient={searchClientSvg}
-				>
-					<Configure hitsPerPage={49} />
-					<div className='maxi-cloud-container__svg-shape'>
-						<div className='maxi-cloud-container__svg-shape__sidebar'>
-							<SearchBox
-								submit={__('Find', 'maxi-blocks')}
-								autoFocus
-								searchAsYouType
-								showLoadingIndicator
-							/>
-							<CustomRefinementList
-								className='hidden'
-								attribute='svg_category'
-								defaultRefinement={['Line']}
-								showLoadingIndicator
-							/>
-						</div>
-						<div className='maxi-cloud-container__content-svg-shape'>
-							<div className='maxi-cloud-container__sc__content-sc'>
-								<Stats translations={resultsCount} />
-								<InfiniteHits hitComponent={svgShapeResults} />
-							</div>
-						</div>
-					</div>
-				</InstantSearch>
-			)}
-
-			{(type === 'accordion-icon' ||
+				type === 'search-icon' ||
+				type === 'accordion-icon' ||
 				type === 'accordion-icon-active') && (
 				<InstantSearch
 					indexName='svg_icon'
@@ -819,14 +834,28 @@ const LibraryContainer = props => {
 								searchAsYouType
 								showLoadingIndicator
 							/>
-							<CustomRefinementList
-								className='hidden'
-								attribute='svg_category'
-								defaultRefinement={['Line']}
+							<CustomHierarchicalMenu
+								attributes={['svg_tag.lvl0', 'svg_tag.lvl1']}
+								limit={20}
+								showMore
 								showLoadingIndicator
+								showMoreLimit={20}
 							/>
 						</div>
 						<div className='maxi-cloud-container__content-svg-shape'>
+							<div className='maxi-cloud-container__content-svg-shape__search-bar'>
+								<CustomMenuSelect
+									className='maxi-cloud-container__content-svg-shape__categories'
+									attribute='svg_category'
+									defaultRefinement='Line'
+									translations={{
+										seeAllOption: __(
+											'All icons',
+											'maxi-blocks'
+										),
+									}}
+								/>
+							</div>
 							<div className='maxi-cloud-container__sc__content-sc'>
 								<Stats translations={resultsCount} />
 								<InfiniteHits hitComponent={svgShapeResults} />

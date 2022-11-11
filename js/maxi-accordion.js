@@ -9,9 +9,12 @@ class Accordion {
 			accordionLayout: this.accordionLayout,
 			autoPaneClose: this.autoPaneClose,
 			isCollapsible: this.isCollapsible,
+			// eslint-disable-next-line no-undef
 		} = maxiAccordion[0][this.uniqueID]);
 		this.panes = Array.from(
-			el.querySelectorAll(':scope > .maxi-pane-block')
+			el.querySelectorAll(
+				`.maxi-pane-block[data-accordion="${this.uniqueID}"]`
+			)
 		);
 
 		this.init();

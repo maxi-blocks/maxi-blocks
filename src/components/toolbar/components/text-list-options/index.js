@@ -5,13 +5,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useContext } from '@wordpress/element';
-import {
-	__unstableIndentListItems,
-	__unstableCanIndentListItems,
-	__unstableOutdentListItems,
-	__unstableCanOutdentListItems,
-	toHTMLString,
-} from '@wordpress/rich-text';
+import { toHTMLString } from '@wordpress/rich-text';
 
 /**
  * Internal dependencies
@@ -24,6 +18,12 @@ import {
 	getFormattedString,
 	textContext,
 } from '../../../../extensions/text/formats';
+import {
+	canIndentListItems,
+	canOutdentListItems,
+	indentListItems,
+	outdentListItems,
+} from '../../../../extensions/text/lists';
 
 /**
  * External dependencies
@@ -60,12 +60,12 @@ const TextListOptions = props => {
 		let newFormat = '';
 
 		if (type === 'indent')
-			newFormat = __unstableIndentListItems(formatValue, {
+			newFormat = indentListItems(formatValue, {
 				type: typeOfList,
 			});
 
 		if (type === 'outdent')
-			newFormat = __unstableOutdentListItems(formatValue, {
+			newFormat = outdentListItems(formatValue, {
 				type: typeOfList,
 			});
 
@@ -133,14 +133,14 @@ const TextListOptions = props => {
 				/>
 				{!isEmpty(formatValue) && formatValue.formats && (
 					<>
-						{__unstableCanOutdentListItems(formatValue) && (
+						{canOutdentListItems(formatValue) && (
 							<Button
 								className='toolbar-item__popover__list-options__button'
 								icon={toolbarOutdentList}
 								onClick={() => onChangeIndent('outdent')}
 							/>
 						)}
-						{__unstableCanIndentListItems(formatValue) && (
+						{canIndentListItems(formatValue) && (
 							<Button
 								className='toolbar-item__popover__list-options__button'
 								icon={toolbarIndentList}

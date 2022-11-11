@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { dispatch, select } from '@wordpress/data';
+import { dispatch } from '@wordpress/data';
 
 const actions = {
 	receiveMaxiSettings() {
@@ -47,15 +47,7 @@ const actions = {
 			const { __experimentalSetPreviewDeviceType: setPreviewDeviceType } =
 				dispatch('core/edit-post');
 
-			const breakpoints = select('maxiBlocks').receiveMaxiBreakpoints();
-
-			const gutenbergDeviceType =
-				(deviceType === 'general' && 'Desktop') ||
-				(width >= breakpoints.m && 'Desktop') ||
-				(width >= breakpoints.s && 'Tablet') ||
-				(width < breakpoints.s && 'Mobile');
-
-			if (gutenbergDeviceType) setPreviewDeviceType(gutenbergDeviceType);
+			setPreviewDeviceType('Desktop');
 		}
 
 		return {

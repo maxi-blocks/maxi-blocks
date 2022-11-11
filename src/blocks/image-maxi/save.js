@@ -34,11 +34,15 @@ const save = props => {
 		'hover-type': hoverType,
 		isImageUrl,
 		captionPosition,
+		fitParentSize,
 	} = attributes;
 
 	const name = 'maxi-blocks/image-maxi';
 
-	const wrapperClassName = classnames('maxi-image-block-wrapper');
+	const wrapperClassName = classnames(
+		'maxi-image-block-wrapper',
+		fitParentSize && 'maxi-image-block-wrapper--fit-parent-size'
+	);
 
 	const hoverClasses = classnames(
 		hoverType === 'basic' &&

@@ -33,26 +33,20 @@ import {
 import getBreakpoints from '../styles/helpers/getBreakpoints';
 import getIsUniqueIDRepeated from './getIsUniqueIDRepeated';
 import { loadFonts, getAllFonts } from '../text/fonts';
-import uniqueIDGenerator from '../attributes/uniqueIDGenerator';
+import { uniqueIDGenerator } from '../attributes';
 import getHoverStatus from '../../components/relation-control/getHoverStatus';
 import * as blocksData from '../../blocks/data';
+import { getStylesWrapperId } from './utils';
 
 /**
  * External dependencies
  */
 import { isEmpty, isEqual, cloneDeep, isNil } from 'lodash';
-import { getStylesWrapperId } from './utils';
 
 /**
  * Style Component
  */
-const StyleComponent = ({
-	uniqueID,
-	stylesObj,
-	currentBreakpoint,
-	blockBreakpoints,
-	isIframe = false,
-}) => {
+const StyleComponent = ({ stylesObj, blockBreakpoints, isIframe = false }) => {
 	const { breakpoints } = useSelect(select => {
 		const { receiveMaxiBreakpoints } = select('maxiBlocks');
 
@@ -463,12 +457,7 @@ class MaxiBlockComponent extends Component {
 	}
 
 	removeUnmountedBlockFromRelations(uniqueID, blocksToCheck) {
-		if (
-			select('core/edit-post').getEditorMode() !== 'visual' ||
-			select('core/edit-post').__experimentalGetPreviewDeviceType() !==
-				this.currentBreakpoint
-		)
-			return;
+		if (getIsUniqueIDRepeated(uniqueID, 0)) return;
 
 		blocksToCheck.forEach(({ clientId, attributes, innerBlocks }) => {
 			const { relations, uniqueID: blockUniqueID } = attributes;

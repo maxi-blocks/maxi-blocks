@@ -97,6 +97,7 @@ const PopupSettingsControl = props => {
 			/>
 			<VideoIconControl
 				prefix='close-'
+				type='video-icon-close'
 				label={__('Lightbox close button', 'maxi-blocks')}
 				blockStyle={blockStyle}
 				breakpoint={breakpoint}

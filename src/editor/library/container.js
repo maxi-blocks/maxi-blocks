@@ -264,35 +264,45 @@ const MenuSelect = ({ items, currentRefinement, refine }) => {
 	);
 };
 
-const HierarchicalMenu = ({ items, refine }) =>
-	!isEmpty(items) && (
-		<ul>
-			{items.map(item => (
-				<li key={item.label} className='ais-HierarchicalMenu-item'>
-					<a
-						href='#'
-						onClick={event => {
-							event.preventDefault();
-							refine(item.value);
-							console.log(items);
-						}}
-					>
-						{unescape(item.label)} ({item.count})
-					</a>
-					<ToggleSwitch
-						selected={item.isRefined}
-						onChange={() => {
-							refine(item.value);
-							console.log(items);
-						}}
-					/>
-					{item.items && (
-						<HierarchicalMenu items={item.items} refine={refine} />
-					)}
-				</li>
-			))}
-		</ul>
+const HierarchicalMenu = ({ items, refine }) => {
+	console.log('items before');
+	console.log(items);
+	return (
+		!isEmpty(items) && (
+			<ul>
+				{items.map(item => (
+					<li key={item.label} className='ais-HierarchicalMenu-item'>
+						<a
+							href='#'
+							onClick={event => {
+								event.preventDefault();
+								refine(item.value);
+								console.log('items onClick');
+								console.log(items);
+							}}
+						>
+							{unescape(item.label)} ({item.count})
+						</a>
+						<ToggleSwitch
+							selected={item.isRefined}
+							onChange={() => {
+								refine(item.value);
+								console.log('items on Toggle');
+								console.log(items);
+							}}
+						/>
+						{item.items && (
+							<HierarchicalMenu
+								items={item.items}
+								refine={refine}
+							/>
+						)}
+					</li>
+				))}
+			</ul>
+		)
 	);
+};
 
 /**
  * Component

@@ -21,18 +21,19 @@ body {
 		position: absolute;
 		font-size: 11px;
 		color: #fff;
-		left: -35px;
-		top: 0;
+		left: -45px;
+		top: -5px;
 		padding: 4px 8px;
 		border-radius: 2px;
 		background-color: rgba(30, 30, 30, 0.95);
 		opacity: 0;
-		transition: all 0.2s;
-		transition-delay: 0.2s;
+		transition: all 0.1s ease-in;
+		transition-delay: 0s;
 	}
 	&:hover {
 		.tooltip {
 			opacity: 1;
+			transition-delay: 1s;
 		}
 	}
 }
@@ -70,7 +71,8 @@ body {
 		}
 
 		svg {
-			font-size: 18px;
+			height: 12px;
+			width: 12px;
 		}
 	}
 }
@@ -89,15 +91,23 @@ body {
 		}
 	}
 }
+.maxi-style-cards__card-already-exists {
+	&.create-new-section {
+		margin-left: 8px;
+	}
 
+	span {
+		color: red !important;
+		padding-bottom: 5px;
+		display: block;
+	}
+}
 .maxi-style-cards__active-edit-options {
 	display: flex;
 }
 .maxi-style-cards__settings {
 	background-color: #fff;
-	.maxi-style-cards__card-already-exists {
-		margin-left: 8px;
-	}
+
 	.maxi-style-cards__sc-cancel-save {
 		display: flex;
 		justify-content: flex-end;
@@ -140,6 +150,7 @@ body {
 		border: 2px solid rgb(var(--maxi-light-color-4)) !important;
 	}
 }
+
 .maxi-responsive-selector {
 	.maxi-style-cards__popover {
 		position: fixed;

@@ -280,6 +280,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 	};
 
 	const [cardAlreadyExists, setCardAlreadyExists] = useState(false);
+	const [importedCardExists, setImportedCardExists] = useState(false);
 
 	return (
 		!isEmpty(styleCards) && (
@@ -296,7 +297,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 					<div className='active-style-card_title'>
 						<span>{__('Active style card', 'maxi-blocks')}</span>
 						<h2 className='maxi-style-cards__popover__title'>
-							{activeStyleCard.value.name.substr(0, 20)}
+							{activeStyleCard.value.name}
 							{postDate && <span>| {postDate}</span>}
 						</h2>
 					</div>
@@ -318,7 +319,22 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 									fetch(media.url)
 										.then(response => response.json())
 										.then(jsonData => {
-											saveImportedStyleCard(jsonData);
+											if (
+												SCList.map(
+													listItem => listItem.label
+												).filter(cardname =>
+													cardname.includes(
+														styleCardName.substring(
+															0,
+															20
+														)
+													)
+												).length > 1
+											) {
+												setImportedCardExists(true);
+											} else {
+												saveImportedStyleCard(jsonData);
+											}
 										})
 										.catch(error => {
 											console.error(error);
@@ -341,6 +357,11 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 							<h3>Style card editor</h3>
 							<span>Preview, edit or activate style card</span>
 						</div>
+						{importedCardExists && (
+							<div className='maxi-style-cards__card-already-exists'>
+								<span>Imported card already exists.</span>
+							</div>
+						)}
 						<div className='maxi-style-cards__active-edit-options'>
 							<SelectControl
 								className='maxi-style-cards__sc__more-sc--select'
@@ -403,7 +424,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 							<DialogBox
 								isDisabled={isDisabled}
 								message={__(
-									`Activate new style. Customized blocks will not change. All other Maxi blocks will get new,${` ${selectedSCValue.name} `}styles.`,
+									`Activate new style. Customized blocks will not change. All other Maxi blocks will get new,${` "${selectedSCValue.name}" `}styles.`,
 									'maxi-blocks'
 								)}
 								cancel={__('Cancel', 'maxi-blocks')}
@@ -448,7 +469,6 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 										setStyleCardName(e.target.value)
 									}
 									ref={customiseInputRef}
-									maxLength='20'
 								/>
 
 								<Button
@@ -458,13 +478,21 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 											SCList.map(
 												listItem => listItem.label
 											).filter(cardname =>
-												cardname.includes(styleCardName)
+												cardname.includes(
+													styleCardName.substring(
+														0,
+														20
+													)
+												)
 											).length > 1
 										) {
 											setCardAlreadyExists(true);
 										} else {
 											const newStyleCard = {
-												name: styleCardName,
+												name: styleCardName.substring(
+													0,
+													20
+												),
 												status: '',
 												dark: {
 													defaultStyleCard: {
@@ -494,7 +522,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 								</Button>
 							</div>
 							{cardAlreadyExists && (
-								<div className='maxi-style-cards__card-already-exists'>
+								<div className='maxi-style-cards__card-already-exists create-new-section'>
 									<span>
 										A card with this name already exists.
 									</span>

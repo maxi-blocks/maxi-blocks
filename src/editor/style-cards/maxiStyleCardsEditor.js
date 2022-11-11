@@ -362,13 +362,11 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 								confirm={__('Delete', 'maxi-blocks')}
 								onCancel={removeDialog}
 								onConfirm={deleteSC}
-								refid='delete'
 							>
 								<Button
 									disabled={!canBeRemoved(selectedSCKey)}
 									className='maxi-style-cards__sc__more-sc--delete has-tooltip'
 									onClick={deleteSC}
-									refid='delete'
 								>
 									<span className='tooltip'>Delete</span>
 									<Icon icon={SCDelete} />
@@ -422,7 +420,6 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 										)
 									}
 									onClick={openDialog}
-									refid='activate'
 								>
 									{__('Activate now', 'maxi-blocks')}
 								</Button>
@@ -519,13 +516,11 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 								confirm={__('Save & Activate', 'maxi-blocks')}
 								onCancel={removeDialog}
 								onConfirm={saveChanges}
-								refid='delete'
 							>
 								<Button
 									className='maxi-style-cards__sc__actions--save'
 									disabled={!canBeSaved(selectedSCKey)}
 									onClick={openDialog}
-									refid='save'
 								>
 									{__('Save & Activate', 'maxi-blocks')}
 								</Button>

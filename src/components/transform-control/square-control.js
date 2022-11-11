@@ -31,13 +31,9 @@ import { sync as syncIcon } from '../../icons';
 const SquareControl = props => {
 	const {
 		x,
-		defaultX,
 		xUnit = null,
-		defaultXUnit,
 		y,
-		defaultY,
 		yUnit = null,
-		defaultYUnit,
 		onChange,
 		onSave,
 		type = 'resize',
@@ -110,19 +106,9 @@ const SquareControl = props => {
 	const onReset = () => {
 		switch (type) {
 			case 'resize':
-				changeXAxis(defaultX);
-				changeYAxis(defaultY);
-				onSave(defaultX, defaultY);
-				break;
 			case 'drag':
-				changeXAxis(0);
-				changeYAxis(0);
-				onSave(0, 0, defaultXUnit, defaultYUnit);
-				break;
 			case 'origin':
-				changeXAxis(defaultX);
-				changeYAxis(defaultY);
-				onSave(defaultX, defaultY, defaultXUnit, defaultYUnit);
+				onSave();
 				break;
 			default:
 				return false;

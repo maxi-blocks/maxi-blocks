@@ -1,4 +1,9 @@
+/**
+ * Internal dependencies
+ */
+import getTransitionData from '../transitions/getTransitionData';
 import transitionAttributesCreator from '../transitions/transitionAttributesCreator';
+import { getBlockNameFromUniqueID } from './utils';
 
 const name = 'Opacity Transition Migrator';
 
@@ -11,16 +16,23 @@ const isEligible = blockAttributes => {
 	);
 };
 
-const migrate = newAttributes => ({
-	...newAttributes,
-	transition: {
-		...newAttributes.transition,
-		canvas: {
-			...newAttributes.transition?.canvas,
-			opacity:
-				transitionAttributesCreator().transition.default.canvas.opacity,
-		},
-	},
-});
+const migrate = newAttributes => {
+	const { uniqueID, transition } = newAttributes;
+	const blockName = getBlockNameFromUniqueID(uniqueID);
+	const blockDataTransition = getTransitionData(blockName);
+
+	const opacityAttributes =
+		transitionAttributesCreator().transition.default.canvas.opacity;
+
+	Object.entries(blockDataTransition).forEach(([category, properties]) => {
+		Object.keys(properties).forEach(name => {
+			if (name === 'opacity') {
+				transition[category][name] = opacityAttributes;
+			}
+		});
+	});
+
+	return newAttributes;
+};
 
 export default { name, isEligible, migrate };

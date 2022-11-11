@@ -25,6 +25,12 @@ const opacity = ({ props, depth = 2 }) => {
 	const { attributes, deviceType, maxiSetAttributes } = props;
 	const hoverStatus = attributes['opacity-status-hover'];
 
+	const normalOpacity = getLastBreakpointAttribute({
+		target: 'opacity',
+		breakpoint: deviceType,
+		attributes: getGroupAttributes(attributes, 'opacity'),
+	});
+
 	return {
 		label: __('Opacity', 'maxi-blocks'),
 		content: (
@@ -36,14 +42,7 @@ const opacity = ({ props, depth = 2 }) => {
 							label: __('Normal state', 'maxi-blocks'),
 							content: (
 								<OpacityControl
-									opacity={getLastBreakpointAttribute({
-										target: 'opacity',
-										breakpoint: deviceType,
-										attributes: getGroupAttributes(
-											attributes,
-											'opacity'
-										),
-									})}
+									opacity={normalOpacity}
 									onChange={val =>
 										maxiSetAttributes({
 											[getAttributeKey(
@@ -76,8 +75,8 @@ const opacity = ({ props, depth = 2 }) => {
 									/>
 									{hoverStatus && (
 										<OpacityControl
-											opacity={getLastBreakpointAttribute(
-												{
+											opacity={
+												getLastBreakpointAttribute({
 													target: 'opacity',
 													breakpoint: deviceType,
 													attributes:
@@ -86,8 +85,8 @@ const opacity = ({ props, depth = 2 }) => {
 															'opacityHover'
 														),
 													isHover: true,
-												}
-											)}
+												}) ?? normalOpacity
+											}
 											onChange={val =>
 												maxiSetAttributes({
 													[getAttributeKey(

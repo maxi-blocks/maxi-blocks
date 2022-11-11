@@ -6,7 +6,7 @@
  * Description: MaxiBlocks
  * Author: Gutenberg Den
  * Author URI:
- * Version: 0.0.1-SC2
+ * Version: 0.0.1-SC3
  * License: GPL2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  */

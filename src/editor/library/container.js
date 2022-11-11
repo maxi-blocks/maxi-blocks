@@ -274,13 +274,17 @@ const HierarchicalMenu = ({ items, refine }) =>
 						onClick={event => {
 							event.preventDefault();
 							refine(item.value);
+							console.log(items);
 						}}
 					>
 						{unescape(item.label)} ({item.count})
 					</a>
 					<ToggleSwitch
 						selected={item.isRefined}
-						onChange={() => refine(item.value)}
+						onChange={() => {
+							refine(item.value);
+							console.log(items);
+						}}
 					/>
 					{item.items && (
 						<HierarchicalMenu items={item.items} refine={refine} />
@@ -702,6 +706,8 @@ const LibraryContainer = props => {
 							/>
 							<CustomHierarchicalMenu
 								attributes={['svg_tag.lvl0', 'svg_tag.lvl1']}
+								limit={100}
+								facetOrdering={false}
 							/>
 							<ClearRefinements />
 						</div>
@@ -763,6 +769,7 @@ const LibraryContainer = props => {
 							)}
 							<CustomHierarchicalMenu
 								attributes={['svg_tag.lvl0', 'svg_tag.lvl1']}
+								limit={100}
 							/>
 							{type.includes('shape') && (
 								<CustomRefinementList
@@ -816,6 +823,7 @@ const LibraryContainer = props => {
 							/>
 							<CustomHierarchicalMenu
 								attributes={['svg_tag.lvl0', 'svg_tag.lvl1']}
+								limit={100}
 							/>
 						</div>
 						<div className='maxi-cloud-container__content-svg-shape'>
@@ -883,6 +891,7 @@ const LibraryContainer = props => {
 							<PlaceholderCheckboxControl />
 							<CustomHierarchicalMenu
 								attributes={['category.lvl0', 'category.lvl1']}
+								limit={100}
 							/>
 							<ClearRefinements />
 						</div>

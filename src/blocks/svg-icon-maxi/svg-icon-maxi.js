@@ -29,7 +29,10 @@ import { iconBox } from '../../icons';
 /**
  * Migrators
  */
-import { blockMigrator } from '../../extensions/styles/migrators';
+import {
+	blockMigrator,
+	SVGTransitionMigrator,
+} from '../../extensions/styles/migrators';
 
 /**
  * Block
@@ -59,5 +62,6 @@ registerBlockType('maxi-blocks/svg-icon-maxi', {
 		attributes,
 		save,
 		selectors: customCss.selectors,
+		migrators: [SVGTransitionMigrator],
 	}),
 });

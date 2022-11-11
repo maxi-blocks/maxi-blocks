@@ -38,7 +38,7 @@ describe('IconControl', () => {
 		await pressKeyTimes('Backspace', '1');
 		await page.keyboard.type('40');
 
-		expect(await getAttributes('icon-width-general')).toStrictEqual('240');
+		expect(await getAttributes('icon-width-general')).toStrictEqual('340');
 
 		// stroke width
 		await inputs[2].click();
@@ -55,7 +55,7 @@ describe('IconControl', () => {
 
 		// icon position
 		const iconPosition = await page.$$(
-			'.maxi-settingstab-control.maxi-icon-position-control button'
+			'.maxi-settingstab-control.maxi-icon-control__position button'
 		);
 
 		await iconPosition[2].click();

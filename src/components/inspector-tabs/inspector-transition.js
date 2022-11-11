@@ -14,16 +14,15 @@ import SettingTabsControl from '../setting-tabs-control';
 import ToggleSwitch from '../toggle-switch';
 import TransitionControl from '../transition-control';
 import {
-	getGroupAttributes,
 	getDefaultAttribute,
+	getGroupAttributes,
+	getTransitionData,
 } from '../../extensions/styles';
-import * as blocksData from '../../blocks/data';
-import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
 /**
  * External dependencies
  */
-import { capitalize, cloneDeep, isEmpty } from 'lodash';
+import { capitalize, cloneDeep, isEmpty, isArray } from 'lodash';
 
 /**
  * Component
@@ -175,17 +174,17 @@ const transition = ({
 
 	const transition = cloneDeep(rawTransition);
 
-	const transitionData =
-		Object.values(blocksData).find(
-			({ name: blockName }) =>
-				blockName === name.replace('maxi-blocks/', '')
-		)?.transition || transitionDefault;
+	const transitionData = getTransitionData(name);
 
 	Object.keys(transition).forEach(type => {
 		Object.keys(transition[type]).forEach(key => {
 			const hoverProp = transitionData?.[type]?.[key]?.hoverProp;
-			if (hoverProp && !attributes[hoverProp])
-				delete transition[type][key];
+			if (!hoverProp) return;
+
+			if (isArray(hoverProp))
+				hoverProp.every(prop => !attributes[prop]) &&
+					delete transition[type][key];
+			else !attributes[hoverProp] && delete transition[type][key];
 		});
 	});
 
@@ -213,7 +212,7 @@ const transition = ({
 						});
 					}}
 				/>
-				{rawTransition.length > 1 &&
+				{Object.values(rawTransition).length > 1 &&
 				Object.values(rawTransition).every(obj => !isEmpty(obj)) &&
 				!transitionChangeAll ? (
 					<SettingTabsControl

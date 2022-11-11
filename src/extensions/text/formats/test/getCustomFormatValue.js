@@ -6,6 +6,7 @@ jest.mock('@wordpress/blocks', () => {
 		getActiveFormat: jest.fn(),
 	};
 });
+jest.mock('../../../styles/transitions/getTransitionData.js', () => jest.fn());
 
 describe('getCustomFormatValue', () => {
 	it('Returns SC value', () => {

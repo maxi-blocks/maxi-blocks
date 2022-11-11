@@ -12,6 +12,8 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 const targets = ['position', 'blockBackground'];
 const keyWords = ['top', 'right', 'bottom', 'left'];
 
+const name = 'Position to number';
+
 const getOldUnits = attributes =>
 	breakpoints.map(bp => ({
 		[`position-unit-${bp}`]: attributes[`position-unit-${bp}`],
@@ -77,9 +79,7 @@ const attributes = () =>
 		},
 	});
 
-const migrate = ({ newAttributes, attributes }) => {
-	if (!isEligible(newAttributes)) return newAttributes;
-
+const migrate = newAttributes => {
 	const attrsToChange = getAttrsToChange(newAttributes);
 
 	Object.entries(attrsToChange).forEach(([key, val]) => {
@@ -98,6 +98,7 @@ const migrate = ({ newAttributes, attributes }) => {
 };
 
 export default {
+	name,
 	isEligible,
 	attributes,
 	migrate,

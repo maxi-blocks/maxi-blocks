@@ -7,7 +7,6 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import ToolbarPopover from '../toolbar-popover';
-import { setSVGStrokeWidth } from '../../../../extensions/svg';
 
 /**
  * Styles & Icons
@@ -43,15 +42,8 @@ const SvgWidth = props => {
 				{type !== 'Shape' && (
 					<SvgStrokeWidthControl
 						{...props}
-						onChange={obj => {
-							onChange({
-								...obj,
-								content: setSVGStrokeWidth(
-									props.content,
-									obj[`svg-stroke-${breakpoint}`]
-								),
-							});
-						}}
+						content={props.content}
+						onChange={onChange}
 						breakpoint={breakpoint}
 						prefix='svg-'
 					/>

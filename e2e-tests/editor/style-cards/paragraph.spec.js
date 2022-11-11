@@ -3,6 +3,9 @@
  */
 import { createNewPost } from '@wordpress/e2e-test-utils';
 
+/**
+ * Internal dependencies
+ */
 import {
 	getStyleCardEditor,
 	editGlobalStyles,
@@ -11,26 +14,12 @@ import {
 	addTypographyStyle,
 	changeResponsive,
 } from '../../utils';
-
-const generalTypographeStyle = {
-	decoration: 'overline',
-	weight: '300',
-	transform: 'capitalize',
-	style: 'italic',
-	orientation: 'mixed',
-	direction: 'ltr',
-	indent: '44',
-};
-
-const responsiveTypographyStyle = {
-	decoration: 'underline',
-	weight: '400',
-	transform: 'uppercase',
-	style: 'oblique',
-	orientation: 'mixed',
-	direction: 'rtl',
-	indent: '22',
-};
+import {
+	generalTypographyOptions,
+	responsiveTypographyOptions,
+	generalTypographyStyle,
+	responsiveTypographyStyle,
+} from './constants';
 
 describe('StyleCards Paragraph', () => {
 	it('Check Paragraph', async () => {
@@ -48,9 +37,7 @@ describe('StyleCards Paragraph', () => {
 			instance: await page.$(
 				'.maxi-blocks-sc__type--paragraph .maxi-style-cards-control__sc__p-typography'
 			),
-			size: '20',
-			lineHeight: '0',
-			letterSpacing: '5',
+			...generalTypographyOptions,
 		});
 
 		// Selectors
@@ -59,12 +46,11 @@ describe('StyleCards Paragraph', () => {
 			instance: await page.$(
 				'.maxi-blocks-sc__type--paragraph .maxi-style-cards-control__sc__p-typography'
 			),
-			...generalTypographeStyle,
+			...generalTypographyStyle,
 		});
 
 		// Check paragraph global styles
 		// Paragraph Colour
-		await page.waitForTimeout(150);
 		await editGlobalStyles({
 			page,
 			block: 'paragraph',
@@ -81,9 +67,7 @@ describe('StyleCards Paragraph', () => {
 			instance: await page.$(
 				'.maxi-blocks-sc__type--paragraph .maxi-style-cards-control__sc__p-typography'
 			),
-			size: '15',
-			lineHeight: '0',
-			letterSpacing: '5',
+			...responsiveTypographyOptions,
 		});
 
 		// Selectors
@@ -115,6 +99,6 @@ describe('StyleCards Paragraph', () => {
 			),
 		});
 
-		expect(typographyStylesL).toEqual(generalTypographeStyle);
+		expect(typographyStylesL).toEqual(generalTypographyStyle);
 	});
 });

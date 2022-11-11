@@ -17,6 +17,7 @@ jest.mock('../../../styles/getBlockStyle', () => {
 		return 'light';
 	});
 });
+jest.mock('../../../styles/transitions/getTransitionData.js', () => jest.fn());
 
 const styleCard = {
 	name: 'Maxi (Default)',

@@ -20,6 +20,26 @@ import {
 } from '../../utils';
 
 describe('Button Maxi hover simple actions', () => {
+	const addInteraction = async () => {
+		// Add interaction
+		await page.waitForSelector('.maxi-relation-control__button');
+		await page.$eval('.maxi-relation-control__button', el => el.click());
+
+		// Add title
+		const textControls = await page.$$('.maxi-text-control__input');
+		await textControls[1].focus();
+		await page.keyboard.type('Hello World!');
+		await page.waitForTimeout(150);
+
+		// Add target
+		let selectControls = await page.$$('.maxi-select-control__input');
+		await selectControls[1].select('button-maxi-1');
+
+		// Add action
+		selectControls = await page.$$('.maxi-select-control__input');
+		await selectControls[2].select('hover');
+	};
+
 	beforeEach(async () => {
 		await createNewPost();
 		await insertBlock('Button Maxi');
@@ -33,22 +53,7 @@ describe('Button Maxi hover simple actions', () => {
 		await insertBlock('Button Maxi');
 		await openSidebarTab(page, 'advanced', 'interaction builder');
 
-		// Add interaction
-		await page.waitForSelector('.maxi-relation-control__button');
-		await page.$eval('.maxi-relation-control__button', el => el.click());
-
-		// Add title
-		const textControls = await page.$$('.maxi-text-control__input');
-		await textControls[1].focus();
-		await page.keyboard.type('Hello World!');
-
-		// Add target
-		let selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[1].select('button-maxi-1');
-
-		// Add action
-		selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[2].select('hover');
+		await addInteraction();
 	});
 
 	const checkFrontend = async () => {
@@ -59,7 +64,6 @@ describe('Button Maxi hover simple actions', () => {
 			'#button-maxi-2 .maxi-button-block__button'
 		);
 		await previewPage.hover('#button-maxi-2 .maxi-button-block__button');
-		await previewPage.waitForTimeout(100);
 
 		await previewPage.waitForSelector('#relations--button-maxi-1-styles');
 		const stylesCSS = await previewPage.$eval(
@@ -166,6 +170,7 @@ describe('Button Maxi hover simple actions', () => {
 		);
 		await page.keyboard.type('Montserrat');
 		await page.keyboard.press('Enter');
+		await page.waitForTimeout(150);
 
 		// Change font color
 		await editColorControl({
@@ -323,7 +328,7 @@ describe('Button Maxi hover simple actions', () => {
 			ANCs => ANCs[0].focus()
 		);
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('11');
+		await page.keyboard.type('1');
 
 		// Padding
 		await page.$$eval('.maxi-tabs-control', tabs =>
@@ -339,7 +344,41 @@ describe('Button Maxi hover simple actions', () => {
 			ANCs => ANCs[1].focus()
 		);
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('22');
+		await page.keyboard.type('2');
+
+		expect(await getAttributes('relations')).toMatchSnapshot();
+
+		await checkFrontend();
+	});
+
+	it('Button background and shadow', async () => {
+		// Select setting
+		const backgroundSelectControls = await page.$$(
+			'.maxi-select-control__input'
+		);
+		await backgroundSelectControls[3].select('Button background');
+
+		// Background color
+		await editColorControl({
+			page,
+			instance: await page.$('.maxi-color-control'),
+			paletteStatus: true,
+			colorPalette: 8,
+			opacity: 50,
+		});
+
+		await addInteraction();
+
+		// Select setting
+		const shadowSelectControls = await page.$$(
+			'.maxi-select-control__input'
+		);
+		await shadowSelectControls[3].select('Button box shadow');
+
+		// Select first default
+		await page.$$eval('.maxi-default-styles-control__button', buttons =>
+			buttons[1].click()
+		);
 
 		expect(await getAttributes('relations')).toMatchSnapshot();
 

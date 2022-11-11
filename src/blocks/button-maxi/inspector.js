@@ -25,6 +25,7 @@ import {
 import { customCss } from './data';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { withMaxiInspector } from '../../extensions/inspector';
+
 /**
  * External dependencies
  */

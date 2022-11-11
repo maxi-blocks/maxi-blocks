@@ -13,6 +13,9 @@ describe('Column pattern from Toolbar', () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
 
+		// Wait for toolbar to be visible
+		await page.waitForSelector('.toolbar-wrapper');
+
 		await page.$$eval('.maxi-row-block__template button', button =>
 			button[0].click()
 		);

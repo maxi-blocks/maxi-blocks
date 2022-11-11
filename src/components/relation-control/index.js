@@ -29,7 +29,7 @@ import * as blocksData from '../../blocks/data';
 /**
  * External dependencies
  */
-import { cloneDeep, isEmpty, isNil, merge } from 'lodash';
+import { capitalize, cloneDeep, isEmpty, isNil, merge } from 'lodash';
 
 /**
  * Styles
@@ -58,13 +58,48 @@ const RelationControl = props => {
 		const blockName = getBlock(clientId)?.name.replace('maxi-blocks/', '');
 
 		// TODO: without this line, the block may break after copy/pasting
-		if (!blockName) return [];
+		if (!blockName) return {};
 
-		const blockOptions =
-			Object.values(blocksData).find(data => data.name === blockName)
-				.interactionBuilderSettings || [];
+		const blockOptions = Object.values(blocksData).find(
+			data => data.name === blockName
+		).interactionBuilderSettings;
 
-		return blockOptions || [];
+		return blockOptions || {};
+	};
+
+	const getParsedOptions = rawOptions => {
+		const parseOptionsArray = options =>
+			options.map(({ label }) => ({
+				label,
+				value: label,
+			}));
+
+		const defaultSetting = {
+			label: __('Choose settings', 'maxi-blocks'),
+			value: '',
+		};
+
+		const parsedOptions =
+			Object.keys(rawOptions).length > 1
+				? {
+						'': [defaultSetting],
+						...Object.entries(rawOptions).reduce(
+							(acc, [groupLabel, groupOptions]) => ({
+								...acc,
+								[capitalize(groupLabel)]:
+									parseOptionsArray(groupOptions),
+							}),
+							{}
+						),
+				  }
+				: [
+						...defaultSetting,
+						...parseOptionsArray(
+							rawOptions[Object.keys(rawOptions)[0]]
+						),
+				  ];
+
+		return parsedOptions;
 	};
 
 	const transitionDefaultAttributes = createTransitionObj();
@@ -111,7 +146,9 @@ const RelationControl = props => {
 	};
 
 	const getSelectedSettingsObj = (clientId, settingsLabel) =>
-		getOptions(clientId).find(option => option.label === settingsLabel);
+		Object.values(getOptions(clientId))
+			.flat()
+			.find(option => option.label === settingsLabel);
 
 	const displaySelectedSetting = item => {
 		if (!item) return null;
@@ -189,7 +226,8 @@ const RelationControl = props => {
 				});
 		}
 
-		const mergedAttributes = merge(blockAttributes, item.attributes);
+		// Merging into empty object because lodash `merge` mutates first argument
+		const mergedAttributes = merge({}, blockAttributes, item.attributes);
 
 		const transformGeneralAttributesToBaseBreakpoint = obj => {
 			if (deviceType !== 'general') return {};
@@ -226,7 +264,7 @@ const RelationControl = props => {
 				};
 
 				const newGroupAttributes = getGroupAttributes(
-					{ ...blockAttributes, ...newAttributesObj },
+					merge(blockAttributes, newAttributesObj),
 					selectedSettingsObj.attrGroupName,
 					false,
 					prefix
@@ -463,42 +501,29 @@ const RelationControl = props => {
 													'maxi-blocks'
 												)}
 												value={item.settings}
-												options={[
-													{
-														label: __(
-															'Choose settings',
-															'maxi-blocks'
-														),
-														value: '',
-													},
-													...getOptions(
+												options={getParsedOptions(
+													getOptions(
 														getClientIdFromUniqueId(
 															item.uniqueID
 														)
-													).map(option => ({
-														label: option.label,
-														value: option.label,
-													})),
-												]}
+													)
+												)}
 												onChange={value => {
-													const {
-														transitionTarget,
-														hoverProp,
-													} =
-														getOptions(
-															getClientIdFromUniqueId(
-																item.uniqueID
-															)
-														).find(
-															option =>
-																option.label ===
-																value
-														) || {};
-
 													const clientId =
 														getClientIdFromUniqueId(
 															item.uniqueID
 														);
+
+													const selectedSettingsObj =
+														getSelectedSettingsObj(
+															clientId,
+															value
+														) || {};
+
+													const {
+														transitionTarget,
+														hoverProp,
+													} = selectedSettingsObj;
 
 													const blockAttributes =
 														getBlock(
@@ -518,10 +543,8 @@ const RelationControl = props => {
 															);
 
 														const target =
-															getSelectedSettingsObj(
-																clientId,
-																value
-															)?.target || '';
+															selectedSettingsObj?.target ||
+															'';
 
 														const textMaxiPrefix =
 															getBlock(clientId)

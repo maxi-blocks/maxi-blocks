@@ -27,6 +27,7 @@ const linkClass = `${blockClass}--link`;
  */
 const name = 'text-maxi';
 const copyPasteMapping = {
+	_exclude: ['content'],
 	settings: {
 		'Text content': 'content',
 		'Heading / Paragraph tag': 'textLevel',
@@ -174,31 +175,33 @@ const transition = {
 		},
 	},
 };
-const interactionBuilderSettings = [
-	{
-		label: __('Alignment', 'maxi-blocks'),
-		attrGroupName: 'textAlignment',
-		component: props => <AlignmentControl {...props} type='text' />,
-		helper: props => getAlignmentTextStyles(props.obj),
-	},
-	{
-		label: __('Typography', 'maxi-blocks'),
-		transitionTarget: transition.canvas.typography.target,
-		hoverProp: 'typography-status-hover',
-		attrGroupName: 'typography',
-		component: props => (
-			<TypographyControl
-				{...props}
-				styleCardPrefix=''
-				hideAlignment
-				disableCustomFormats
-			/>
-		),
-		helper: props => getTypographyStyles({ ...props }),
-		target: contentClass,
-	},
-	...getCanvasSettings({ name, customCss }),
-];
+const interactionBuilderSettings = {
+	block: [
+		{
+			label: __('Alignment', 'maxi-blocks'),
+			attrGroupName: 'textAlignment',
+			component: props => <AlignmentControl {...props} type='text' />,
+			helper: props => getAlignmentTextStyles(props.obj),
+		},
+		{
+			label: __('Typography', 'maxi-blocks'),
+			transitionTarget: transition.canvas.typography.target,
+			hoverProp: 'typography-status-hover',
+			attrGroupName: 'typography',
+			component: props => (
+				<TypographyControl
+					{...props}
+					styleCardPrefix=''
+					hideAlignment
+					disableCustomFormats
+				/>
+			),
+			helper: props => getTypographyStyles({ ...props }),
+			target: contentClass,
+		},
+	],
+	canvas: getCanvasSettings({ name, customCss }),
+};
 
 const data = {
 	name,

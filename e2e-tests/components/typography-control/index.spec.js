@@ -173,7 +173,9 @@ describe('TypographyControl', () => {
 			select => select.click()
 		);
 
-		expect(await getAttributes('palette-status-s')).toStrictEqual(false);
+		expect(await getAttributes('palette-status-s')).toStrictEqual(
+			undefined
+		);
 	});
 
 	it('Checking the Weight, Transform, Style, Decoration and Orientation', async () => {

@@ -67,7 +67,7 @@ describe('Column Maxi', () => {
 			select => select.value
 		);
 
-		expect(columnSizeInput).toStrictEqual('100');
+		expect(columnSizeInput).toStrictEqual('50');
 
 		await page.$eval(
 			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
@@ -82,9 +82,9 @@ describe('Column Maxi', () => {
 			select => select.value
 		);
 
-		expect(responsiveSOption).toStrictEqual('19');
+		expect(responsiveSOption).toStrictEqual('9');
 
-		expect(await getAttributes('column-size-s')).toStrictEqual(19);
+		expect(await getAttributes('column-size-s')).toStrictEqual(9);
 
 		// responsive xs
 		await changeResponsive(page, 'xs');
@@ -94,7 +94,7 @@ describe('Column Maxi', () => {
 			select => select.value
 		);
 
-		expect(responsiveXsOption).toStrictEqual('19');
+		expect(responsiveXsOption).toStrictEqual('9');
 
 		// responsive m
 		await changeResponsive(page, 'm');
@@ -104,7 +104,7 @@ describe('Column Maxi', () => {
 			select => select.value
 		);
 
-		expect(responsiveMOption).toStrictEqual('100');
+		expect(responsiveMOption).toStrictEqual('50');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

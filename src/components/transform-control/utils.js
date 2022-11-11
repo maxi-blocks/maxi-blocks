@@ -1,21 +1,81 @@
 /**
  * External dependencies
  */
-import { without, isEmpty } from 'lodash';
+import { isEmpty, pickBy, uniq, without } from 'lodash';
 
-const bgDisplayerSelector = {
-	normal: {
-		label: 'background wrapper',
-		target: ' .maxi-background-displayer',
-	},
-	hover: {
-		label: 'background wrapper on hover',
-		target: ':hover .maxi-background-displayer',
-	},
+/**
+ * Internal dependencies
+ */
+import { getBgLayersSelectorsCss } from '../custom-css-control/utils';
+
+const getBgLayersSelectorsKeys = bgLayersSelectors =>
+	uniq(
+		Object.keys({
+			...bgLayersSelectors['background hover'],
+			...bgLayersSelectors.background,
+		})
+	);
+
+const getKey = key => {
+	switch (key) {
+		case 'background-displayer':
+			// Exception for background wrapper, as it existed before with the label 'background'
+			return 'background';
+		default:
+			return key;
+	}
 };
 
-export const getTransformSelectors = selectors => {
-	return { ...selectors, background: bgDisplayerSelector };
+export const getTransformSelectors = (selectors, attributes) => {
+	const {
+		'background-layers': bgLayers = [],
+		'background-layers-hover': bgLayersHover = [],
+	} = attributes;
+
+	const bgLayersSelectors = getBgLayersSelectorsCss(
+		[...bgLayers, ...bgLayersHover],
+		false
+	);
+
+	return {
+		...(!isEmpty(selectors) &&
+			Object.entries(selectors).reduce(
+				(acc, [key, obj]) => ({
+					...acc,
+					[key]: ['normal', 'hover'].reduce(
+						(acc, type) => ({
+							...acc,
+							[type]: {
+								...obj[type],
+								label: key,
+							},
+						}),
+						{}
+					),
+				}),
+				{}
+			)),
+		...getBgLayersSelectorsKeys(bgLayersSelectors).reduce((acc, key) => {
+			const bgLayerSelectors = bgLayersSelectors.background[key];
+			const bgLayerHoverSelectors =
+				bgLayersSelectors['background hover'][key];
+
+			if (
+				[bgLayerSelectors, bgLayerHoverSelectors].some(
+					item => !isEmpty(item)
+				)
+			)
+				acc[getKey(key)] = pickBy(
+					{
+						normal: bgLayerSelectors,
+						hover: bgLayerHoverSelectors,
+					},
+					value => !isEmpty(value)
+				);
+
+			return acc;
+		}, {}),
+	};
 };
 
 export const getTransformCategories = (categories, attributes) => {
@@ -24,9 +84,18 @@ export const getTransformCategories = (categories, attributes) => {
 		'background-layers-hover': bgLayersHover = [],
 	} = attributes;
 
+	const bgLayersSelectors = getBgLayersSelectorsCss(
+		[...bgLayers, ...bgLayersHover],
+		false
+	);
+
 	return without(
-		categories,
-		'background hover',
+		[
+			...without(categories, 'background', 'background hover'),
+			...getBgLayersSelectorsKeys(bgLayersSelectors).map(key =>
+				getKey(key)
+			),
+		],
 		isEmpty(bgLayers) && isEmpty(bgLayersHover) && 'background'
 	);
 };

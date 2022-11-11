@@ -6,6 +6,7 @@ const getStyleCardEditor = async ({ page, accordion }) => {
 	await page.waitForTimeout(250);
 
 	// select SC
+	await page.waitForSelector('.maxi-responsive-selector .style-card-button');
 	await page.$eval('.maxi-responsive-selector .style-card-button', button =>
 		button.click()
 	);

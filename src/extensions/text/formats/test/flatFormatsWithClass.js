@@ -194,6 +194,7 @@ jest.mock('../../../style-cards/getActiveStyleCard', () => {
 		};
 	});
 });
+jest.mock('../../../styles/transitions/getTransitionData.js', () => jest.fn());
 
 describe('getRepeatedClassNames', () => {
 	it('Should return no repeated classNames', () => {

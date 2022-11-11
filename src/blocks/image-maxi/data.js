@@ -29,6 +29,14 @@ const prefix = 'image-';
  */
 const name = 'image-maxi';
 const copyPasteMapping = {
+	_exclude: [
+		'mediaID',
+		'isImageUrl',
+		'mediaURL',
+		'mediaWidth',
+		'mediaHeight',
+		'mediaAlt',
+	],
 	settings: {
 		Image: [
 			'mediaID',
@@ -188,52 +196,59 @@ const transition = {
 		},
 	},
 };
-const interactionBuilderSettings = [
-	{
-		label: __('Alignment', 'maxi-blocks'),
-		attrGroupName: 'alignment',
-		component: props => (
-			<AlignmentControl {...props} disableJustify {...props} />
-		),
-		helper: props => getAlignmentFlexStyles(props.obj),
-		target: ' .maxi-image-block-wrapper',
-	},
-	{
-		label: __('Shape mask', 'maxi-blocks'),
-		attrGroupName: 'imageShape',
-		component: props => {
-			const { SVGElement } = props.blockAttributes;
-
-			return SVGElement ? (
-				<ImageShape
-					{...props}
-					icon={SVGElement}
-					disableModal
-					disableImagePosition
-					disableImageRatio
-				/>
-			) : (
-				<InfoBox
-					message={__(
-						'Add shape icon to be able to use this control'
-					)}
-				/>
-			);
+const interactionBuilderSettings = {
+	block: [
+		{
+			label: __('Alignment', 'maxi-blocks'),
+			attrGroupName: 'alignment',
+			component: props => (
+				<AlignmentControl {...props} disableJustify {...props} />
+			),
+			helper: props => getAlignmentFlexStyles(props.obj),
+			target: ' .maxi-image-block-wrapper',
 		},
-		helper: props =>
-			Object.entries({
-				' .maxi-image-block-wrapper > svg:first-child': 'svg',
-				' .maxi-image-block-wrapper > svg:first-child pattern image':
-					'image',
-			}).reduce((acc, [key, type]) => {
-				acc[key] = {
-					transform: getImageShapeStyles(type, props.obj, '', true),
-				};
-				return acc;
-			}, {}),
-	},
-	...getCanvasSettings({ name, customCss }),
-];
+		{
+			label: __('Shape mask', 'maxi-blocks'),
+			attrGroupName: 'imageShape',
+			component: props => {
+				const { SVGElement } = props.blockAttributes;
+
+				return SVGElement ? (
+					<ImageShape
+						{...props}
+						icon={SVGElement}
+						disableModal
+						disableImagePosition
+						disableImageRatio
+					/>
+				) : (
+					<InfoBox
+						message={__(
+							'Add shape icon to be able to use this control'
+						)}
+					/>
+				);
+			},
+			helper: props =>
+				Object.entries({
+					' .maxi-image-block-wrapper > svg:first-child': 'svg',
+					' .maxi-image-block-wrapper > svg:first-child pattern image':
+						'image',
+				}).reduce((acc, [key, type]) => {
+					acc[key] = {
+						transform: getImageShapeStyles(
+							type,
+							props.obj,
+							'',
+							true
+						),
+					};
+					return acc;
+				}, {}),
+		},
+	],
+	canvas: getCanvasSettings({ name, customCss }),
+};
 
 const data = {
 	name,

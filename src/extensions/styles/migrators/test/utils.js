@@ -148,11 +148,11 @@ describe('getTransitionSetting', () => {
 			})
 		).toMatchSnapshot());
 
-	it('Should return undefined', () =>
+	it('Should return null', () =>
 		expect(
 			getTransitionSetting({
 				uniqueID: 'button-maxi-5',
 				settings: __('Divider box shadow', 'maxi-blocks'),
 			})
-		).toBeUndefined());
+		).toBeNull());
 });

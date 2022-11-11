@@ -75,7 +75,7 @@ const SquareControl = props => {
 			case 'drag':
 				return '0%';
 			case 'origin':
-				return isYAxis ? 'middle' : 'center';
+				return validateOriginValue(isYAxis ? yAxis : xAxis);
 			default:
 				return false;
 		}

@@ -358,7 +358,7 @@ const getStyles = props => {
 					props,
 					true
 				),
-				' .maxi-search-block__button__content:hover':
+				' .maxi-search-block__button:hover .maxi-search-block__button__content':
 					getSearchButtonContentStyles(props, true),
 			},
 			data,

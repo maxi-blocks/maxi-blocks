@@ -283,6 +283,10 @@
 		justify-content: space-between;
 		margin: 0;
 
+		&__hide-categories .maxi-cloud-container__content__svg-categories {
+			display: none !important;
+		}
+
 		.ais-ClearRefinements {
 			margin: 0 8px;
 		}
@@ -837,11 +841,6 @@
 								margin-bottom: 0;
 							}
 						}
-					}
-				}
-				&.maxi-cloud-container__hide-categories {
-					.maxi-cloud-container__content__svg-categories {
-						display: none;
 					}
 				}
 			}

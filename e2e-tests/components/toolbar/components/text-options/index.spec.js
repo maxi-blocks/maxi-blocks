@@ -17,6 +17,9 @@ describe('Text options', () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 
+		// Wait for toolbar to be visible
+		await page.waitForSelector('.toolbar-wrapper');
+
 		// open editor
 		await page.$eval(
 			'.toolbar-item__typography-control .toolbar-item__button',

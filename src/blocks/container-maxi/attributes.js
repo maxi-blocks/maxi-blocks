@@ -67,6 +67,10 @@ const attributes = {
 			type: 'string',
 			default: '90',
 		},
+		'max-width-unit-general': {
+			type: 'string',
+			default: undefined,
+		},
 		'max-width-unit-xxl': {
 			type: 'string',
 			default: 'px',

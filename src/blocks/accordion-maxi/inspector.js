@@ -104,7 +104,7 @@ const Inspector = props => {
 											/>
 										),
 									},
-									deviceType === 'general' && {
+									{
 										label: __('Title', 'maxi-blocks'),
 										content: (
 											<AccordionTitleSettings

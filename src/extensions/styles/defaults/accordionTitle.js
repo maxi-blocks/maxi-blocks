@@ -1,20 +1,47 @@
+import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import hoverAttributesCreator from '../hoverAttributesCreator';
 import paletteAttributesCreator from '../paletteAttributesCreator';
 import prefixAttributesCreator from '../prefixAttributesCreator';
 import { typography } from './typography';
 import typographyHover from './typographyHover';
 
+const prefix = 'title-';
+
+const titleBackground = breakpointAttributesCreator({
+	obj: {
+		[`${prefix}background-status`]: {
+			type: 'boolean',
+			default: false,
+		},
+		...paletteAttributesCreator({
+			prefix: `${prefix}background-`,
+			palette: 4,
+		}),
+	},
+	noBreakpointAttr: [`${prefix}background-status`],
+});
+
 const accordionTitle = {
 	titleLevel: { type: 'string', default: 'h6' },
-	...paletteAttributesCreator({
-		prefix: 'title-background-',
+	...titleBackground,
+	...prefixAttributesCreator({
+		obj: titleBackground,
+		prefix: 'active-',
 	}),
-	...prefixAttributesCreator({ obj: typography, prefix: 'title-' }),
-	...prefixAttributesCreator({ obj: typographyHover, prefix: 'title-' }),
+	...hoverAttributesCreator({
+		obj: titleBackground,
+		sameValAttr: [`${prefix}-background-palette-status-general`],
+		diffValAttr: {
+			[`${prefix}-background-palette-color-general`]: 6,
+		},
+	}),
+	...prefixAttributesCreator({ obj: typography, prefix }),
+	...prefixAttributesCreator({ obj: typographyHover, prefix }),
 	...prefixAttributesCreator({
 		obj: typography,
-		prefix: 'active-title-',
+		prefix: `active-${prefix}`,
 		newAttr: {
-			'title-typography-status-active': {
+			[`${prefix}typography-status-active`]: {
 				type: 'boolean',
 				default: false,
 			},

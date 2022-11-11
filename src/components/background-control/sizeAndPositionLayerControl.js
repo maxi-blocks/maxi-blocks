@@ -82,9 +82,9 @@ const Size = ({
 	return (
 		<div className='maxi-background-control__size'>
 			<AdvancedNumberControl
-				label={__('Size', 'maxi-blocks')}
+				label={__('Width', 'maxi-blocks')}
 				value={getLastBreakpointAttribute({
-					target: `${prefix}size`,
+					target: `${prefix}width`,
 					breakpoint,
 					attributes: options,
 					isHover,
@@ -92,21 +92,21 @@ const Size = ({
 				allowedUnits={['px', 'em', 'vw', '%']}
 				enableUnit
 				unit={getLastBreakpointAttribute({
-					target: `${prefix}size-unit`,
+					target: `${prefix}width-unit`,
 					breakpoint,
 					attributes: options,
 					isHover,
 				})}
 				onChangeValue={val => {
 					onChange({
-						[getAttributeKey('size', isHover, prefix, breakpoint)]:
+						[getAttributeKey('width', isHover, prefix, breakpoint)]:
 							val,
 					});
 				}}
 				onChangeUnit={val =>
 					onChange({
 						[getAttributeKey(
-							'size-unit',
+							'width-unit',
 							isHover,
 							prefix,
 							breakpoint
@@ -115,14 +115,68 @@ const Size = ({
 				}
 				onReset={() =>
 					onChange({
-						[getAttributeKey('size', isHover, prefix, breakpoint)]:
-							getDefaultAttr('size'),
+						[getAttributeKey('width', isHover, prefix, breakpoint)]:
+							getDefaultAttr('width'),
 						[getAttributeKey(
-							'size-unit',
+							'width-unit',
 							isHover,
 							prefix,
 							breakpoint
-						)]: getDefaultAttr('size-unit'),
+						)]: getDefaultAttr('width-unit'),
+					})
+				}
+				minMaxSettings={minMaxSettings}
+			/>
+			<AdvancedNumberControl
+				label={__('Height', 'maxi-blocks')}
+				value={getLastBreakpointAttribute({
+					target: `${prefix}height`,
+					breakpoint,
+					attributes: options,
+					isHover,
+				})}
+				allowedUnits={['px', 'em', 'vw', '%']}
+				enableUnit
+				unit={getLastBreakpointAttribute({
+					target: `${prefix}height-unit`,
+					breakpoint,
+					attributes: options,
+					isHover,
+				})}
+				onChangeValue={val => {
+					onChange({
+						[getAttributeKey(
+							'height',
+							isHover,
+							prefix,
+							breakpoint
+						)]: val,
+					});
+				}}
+				onChangeUnit={val =>
+					onChange({
+						[getAttributeKey(
+							'height-unit',
+							isHover,
+							prefix,
+							breakpoint
+						)]: val,
+					})
+				}
+				onReset={() =>
+					onChange({
+						[getAttributeKey(
+							'height',
+							isHover,
+							prefix,
+							breakpoint
+						)]: getDefaultAttr('height'),
+						[getAttributeKey(
+							'height-unit',
+							isHover,
+							prefix,
+							breakpoint
+						)]: getDefaultAttr('height-unit'),
 					})
 				}
 				minMaxSettings={minMaxSettings}

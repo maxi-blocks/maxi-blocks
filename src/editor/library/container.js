@@ -264,7 +264,7 @@ const MenuSelect = ({ items, currentRefinement, refine }) => {
 	);
 };
 
-const HierarchicalMenu = ({ items, refine }) => {
+const HierarchicalMenu = ({ items, refine, facetOrdering }) => {
 	console.log('items before');
 	console.log(items);
 	return (
@@ -295,6 +295,7 @@ const HierarchicalMenu = ({ items, refine }) => {
 							<HierarchicalMenu
 								items={item.items}
 								refine={refine}
+								facetOrdering={facetOrdering}
 							/>
 						)}
 					</li>
@@ -717,7 +718,8 @@ const LibraryContainer = props => {
 							<CustomHierarchicalMenu
 								attributes={['svg_tag.lvl0', 'svg_tag.lvl1']}
 								limit={100}
-								facetOrdering={false}
+								defaultRefinement='Basic Shapes > Circle'
+								facetOrdering
 							/>
 							<ClearRefinements />
 						</div>

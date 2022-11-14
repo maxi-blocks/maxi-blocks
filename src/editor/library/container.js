@@ -884,6 +884,7 @@ const LibraryContainer = props => {
 								attributes={['svg_tag.lvl0', 'svg_tag.lvl1']}
 								limit={100}
 							/>
+							<CustomClearRefinements />
 						</div>
 						<div className='maxi-cloud-container__content-svg-shape'>
 							<div className='maxi-cloud-container__content-svg-shape__search-bar'>

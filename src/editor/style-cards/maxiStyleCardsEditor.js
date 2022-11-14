@@ -202,7 +202,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 
 	const [settings, setSettings] = useState(false);
 
-	const [settingsDisabled, setsettingsDisabled] = useState(true);
+	const [settingsDisabled, setSettingsDisabled] = useState(true);
 
 	const customiseInputRef = useRef();
 
@@ -218,11 +218,11 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 	};
 
 	const enableSettings = () => {
-		setsettingsDisabled(false);
+		setSettingsDisabled(false);
 	};
 
 	const disableSettings = () => {
-		setsettingsDisabled(true);
+		setSettingsDisabled(true);
 	};
 
 	const [isDisabled, setIsDisabled] = useState(true);
@@ -322,15 +322,17 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 											if (
 												SCList.map(
 													listItem => listItem.label
-												).filter(cardname =>
-													cardname.includes(
-														styleCardName
+												)
+													.filter(
+														cardname => cardname
 													)
-												).length > 1
+													.indexOf(jsonData.name) < 0
 											) {
-												setImportedCardExists(true);
-											} else {
 												saveImportedStyleCard(jsonData);
+												setImportedCardExists(false);
+												setCardAlreadyExists(false);
+											} else {
+												setImportedCardExists(true);
 											}
 										})
 										.catch(error => {
@@ -473,20 +475,17 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 								<Button
 									disabled={isEmpty(styleCardName)}
 									onClick={() => {
-										console.log(
-											SCList.map(
-												listItem => listItem.label
-											)
-										);
 										if (
 											SCList.map(
 												listItem => listItem.label
-											).filter(cardname =>
-												cardname.includes(styleCardName)
-											).length > 0
+											)
+												.filter(cardname => cardname)
+												.indexOf(styleCardName) >= 0
 										) {
 											setCardAlreadyExists(true);
 										} else {
+											setCardAlreadyExists(false);
+											setImportedCardExists(false);
 											const newStyleCard = {
 												name: styleCardName,
 												status: '',
@@ -543,13 +542,24 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 								onCancel={removeDialog}
 								onConfirm={saveChanges}
 							>
-								<Button
-									className='maxi-style-cards__sc__actions--save'
-									disabled={!canBeSaved(selectedSCKey)}
-									onClick={openDialog}
-								>
-									{__('Save & Activate', 'maxi-blocks')}
-								</Button>
+								{canBeSaved(selectedSCKey) &&
+								!settingsDisabled ? (
+									<Button
+										className='maxi-style-cards__sc__actions--save'
+										disabled={!canBeSaved(selectedSCKey)}
+										onClick={openDialog}
+									>
+										{__('Save & Activate', 'maxi-blocks')}
+									</Button>
+								) : (
+									<Button
+										className='maxi-style-cards__sc__actions--save'
+										disabled={!!settingsDisabled}
+										onClick={openDialog}
+									>
+										{__('Activate', 'maxi-blocks')}
+									</Button>
+								)}
 							</DialogBox>
 						</div>
 						<div

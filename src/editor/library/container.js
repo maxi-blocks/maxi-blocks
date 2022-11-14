@@ -280,7 +280,7 @@ const HierarchicalMenu = ({ items, refine }) =>
 					</a>
 					<ToggleSwitch
 						selected={item.isRefined}
-						onChange={val => refine(item.value)}
+						onChange={() => refine(item.value)}
 					/>
 					{item.items && (
 						<HierarchicalMenu items={item.items} refine={refine} />
@@ -363,7 +363,7 @@ const LibraryContainer = props => {
 	).searchClient;
 
 	const searchClientSvg = typesenseInstantsearchAdapter(
-		'post_title, svg_tag, svg_category'
+		'post_title, svg_tag.lvl0, svg_tag.lvl1, svg_tag.lvl2, svg_category'
 	).searchClient;
 
 	const [isChecked, setChecked] = useState(false);
@@ -702,10 +702,6 @@ const LibraryContainer = props => {
 							/>
 							<CustomHierarchicalMenu
 								attributes={['svg_tag.lvl0', 'svg_tag.lvl1']}
-								limit={20}
-								showMore
-								showLoadingIndicator
-								showMoreLimit={20}
 							/>
 							<ClearRefinements />
 						</div>
@@ -739,7 +735,7 @@ const LibraryContainer = props => {
 					<Configure hitsPerPage={49} />
 					<div className='maxi-cloud-container__svg-shape'>
 						<div className='maxi-cloud-container__svg-shape__sidebar maxi-cloud-container__hide-categories'>
-							{type === 'shape' && (
+							{type.includes('shape') && (
 								<SearchBox
 									submit={__('Find', 'maxi-blocks')}
 									autoFocus
@@ -767,10 +763,6 @@ const LibraryContainer = props => {
 							)}
 							<CustomHierarchicalMenu
 								attributes={['svg_tag.lvl0', 'svg_tag.lvl1']}
-								limit={20}
-								showMore
-								showLoadingIndicator
-								showMoreLimit={20}
 							/>
 							{type.includes('shape') && (
 								<CustomRefinementList
@@ -824,10 +816,6 @@ const LibraryContainer = props => {
 							/>
 							<CustomHierarchicalMenu
 								attributes={['svg_tag.lvl0', 'svg_tag.lvl1']}
-								limit={20}
-								showMore
-								showLoadingIndicator
-								showMoreLimit={20}
 							/>
 						</div>
 						<div className='maxi-cloud-container__content-svg-shape'>

@@ -843,6 +843,10 @@
 						}
 					}
 				}
+				ul.maxi__hide-top-tags
+					li.ais-HierarchicalMenu-item__firstLevel:not(.maxi__show-top-tag) {
+					display: none;
+				}
 			}
 			&__search-bar,
 			.ais-Menu {

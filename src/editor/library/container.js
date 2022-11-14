@@ -32,7 +32,7 @@ import {
 	connectRefinementList,
 	connectMenu,
 	connectHierarchicalMenu,
-	ClearRefinements,
+	connectCurrentRefinements,
 	Menu,
 	Stats,
 	Configure,
@@ -264,44 +264,94 @@ const MenuSelect = ({ items, currentRefinement, refine }) => {
 	);
 };
 
-const HierarchicalMenu = ({ items, refine, facetOrdering }) => {
-	console.log('items before');
-	console.log(items);
+const HierarchicalMenu = ({ items, refine, type = 'firstLevel' }) => {
+	const fixMenuBug = e => {
+		const topLevelParent =
+			e?.currentTarget?.parentNode?.parentNode?.parentNode?.parentNode;
+
+		if (
+			isEmpty(topLevelParent) ||
+			topLevelParent.classList.contains('maxi__hide-top-tags')
+		)
+			return;
+
+		const topLevelElements = topLevelParent?.childNodes;
+
+		if (!isEmpty(topLevelElements)) {
+			topLevelParent.classList.add('maxi__hide-top-tags');
+			topLevelElements.forEach(element =>
+				element.classList.add('maxi__show-top-tag')
+			);
+		}
+	};
 	return (
 		!isEmpty(items) && (
 			<ul>
 				{items.map(item => (
-					<li key={item.label} className='ais-HierarchicalMenu-item'>
+					<li
+						key={item.label}
+						className={`ais-HierarchicalMenu-item ais-HierarchicalMenu-item__${type}`}
+					>
 						<a
 							href='#'
 							onClick={event => {
+								console.log('onClick');
+								type === 'secondLevel' && fixMenuBug(event);
 								event.preventDefault();
 								refine(item.value);
-								console.log('items onClick');
-								console.log(items);
 							}}
 						>
 							{unescape(item.label)} ({item.count})
 						</a>
 						<ToggleSwitch
 							selected={item.isRefined}
-							onChange={() => {
+							onChange={event => {
+								console.log('on Toggle');
+								type === 'secondLevel' && fixMenuBug(event);
 								refine(item.value);
-								console.log('items on Toggle');
-								console.log(items);
 							}}
 						/>
 						{item.items && (
 							<HierarchicalMenu
 								items={item.items}
 								refine={refine}
-								facetOrdering={facetOrdering}
+								type='secondLevel'
 							/>
 						)}
 					</li>
 				))}
 			</ul>
 		)
+	);
+};
+
+const ClearRefinements = ({ items, refine }) => {
+	const removeMenuBugFix = () => {
+		const lists = document.querySelectorAll('.maxi__hide-top-tags');
+
+		for (const list of lists) {
+			list.classList.remove('maxi__hide-top-tags');
+			const listElements = list.childNodes;
+			for (const element of listElements) {
+				element.classList.remove('maxi__show-top-tag');
+			}
+		}
+	};
+
+	return (
+		<button
+			type='button'
+			className={`ais-ClearRefinements-button ais-ClearRefinements-button${
+				!items.length ? '--disabled' : ''
+			}`}
+			onClick={() => {
+				refine(items);
+				removeMenuBugFix();
+			}}
+			disabled={!items.length}
+		>
+			{__('Clear all filters', 'maxi-blocks')}
+		</button>
 	);
 };
 
@@ -666,10 +716,9 @@ const LibraryContainer = props => {
 	};
 
 	const CustomRefinementList = connectRefinementList(RefinementList);
-
 	const CustomMenuSelect = connectMenu(MenuSelect);
-
 	const CustomHierarchicalMenu = connectHierarchicalMenu(HierarchicalMenu);
+	const CustomClearRefinements = connectCurrentRefinements(ClearRefinements);
 
 	const masonryGenerator = () => {
 		const elem = document.querySelector(
@@ -718,10 +767,8 @@ const LibraryContainer = props => {
 							<CustomHierarchicalMenu
 								attributes={['svg_tag.lvl0', 'svg_tag.lvl1']}
 								limit={100}
-								defaultRefinement='Basic Shapes > Circle'
-								facetOrdering
 							/>
-							<ClearRefinements />
+							<CustomClearRefinements />
 						</div>
 						<div className='maxi-cloud-container__content-svg-shape'>
 							<div className='maxi-cloud-container__content-svg-shape__search-bar'>
@@ -905,7 +952,7 @@ const LibraryContainer = props => {
 								attributes={['category.lvl0', 'category.lvl1']}
 								limit={100}
 							/>
-							<ClearRefinements />
+							<CustomClearRefinements />
 						</div>
 						<div className='maxi-cloud-container__patterns__content-patterns'>
 							<Stats translations={resultsCount} />
@@ -939,7 +986,7 @@ const LibraryContainer = props => {
 									}
 								/>
 							</Accordion>
-							<ClearRefinements />
+							<CustomClearRefinements />
 						</div>
 						<div className='maxi-cloud-container__sc__content-sc'>
 							<Stats translations={resultsCount} />

@@ -3,7 +3,7 @@
  */
 import { useSelect, dispatch } from '@wordpress/data';
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
-import { useRef, useCallback, useEffect } from '@wordpress/element';
+import { useRef, useCallback, useEffect, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -18,12 +18,16 @@ import {
  * External dependencies
  */
 import { isEmpty } from 'lodash';
+import { BlockInserter } from '../../components';
 
 const withMaxiProps = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
 			const { setAttributes, attributes, clientId, isSelected } =
 				ownProps;
+
+			const [hasInterBlocksAppender, setHasInterBlocksAppender] =
+				useState(false);
 
 			const {
 				deviceType,
@@ -104,18 +108,27 @@ const withMaxiProps = createHigherOrderComponent(
 			}, [isSelected]);
 
 			return (
-				<WrappedComponent
-					{...ownProps}
-					ref={ref}
-					maxiSetAttributes={maxiSetAttributes}
-					insertInlineStyles={insertInlineStyles}
-					cleanInlineStyles={cleanInlineStyles}
-					deviceType={deviceType}
-					baseBreakpoint={baseBreakpoint}
-					hasInnerBlocks={hasInnerBlocks}
-					isChild={isChild}
-					hasSelectedChild={hasSelectedChild}
-				/>
+				<>
+					<WrappedComponent
+						{...ownProps}
+						ref={ref}
+						maxiSetAttributes={maxiSetAttributes}
+						insertInlineStyles={insertInlineStyles}
+						cleanInlineStyles={cleanInlineStyles}
+						deviceType={deviceType}
+						baseBreakpoint={baseBreakpoint}
+						hasInnerBlocks={hasInnerBlocks}
+						isChild={isChild}
+						hasSelectedChild={hasSelectedChild}
+						hasInterBlocksAppender={hasInterBlocksAppender}
+					/>
+
+					<BlockInserter.InterBlockInserter
+						ref={ref}
+						setHasInterBlocksAppender={setHasInterBlocksAppender}
+						{...ownProps}
+					/>
+				</>
 			);
 		}),
 	'withMaxiProps'

@@ -25,13 +25,13 @@ const getInnerBlocksChild = ({
 	anchorLink,
 	isSave = false,
 	uniqueID,
-	blockName,
 	ref,
 	clientId,
 	hasInnerBlocks,
 	isSelected,
 	hasSelectedChild,
 	renderWrapperInserter = true,
+	hasInterBlocksAppender,
 }) => {
 	const needToSplit =
 		isArray(children) &&
@@ -57,15 +57,18 @@ const getInnerBlocksChild = ({
 			cloneElement(innerBlocksChildren, {
 				key: `maxi-inner-content__${uniqueID}`,
 			}),
-			...(!isSave && hasInnerBlocks && renderWrapperInserter && (
-				<BlockInserter.WrapperInserter
-					key={`maxi-block-wrapper-inserter__${clientId}`}
-					ref={ref}
-					clientId={clientId}
-					isSelected={isSelected}
-					hasSelectedChild={hasSelectedChild}
-				/>
-			)),
+			...(!isSave &&
+				hasInnerBlocks &&
+				renderWrapperInserter &&
+				!hasInterBlocksAppender && (
+					<BlockInserter.WrapperInserter
+						key={`maxi-block-wrapper-inserter__${clientId}`}
+						ref={ref}
+						clientId={clientId}
+						isSelected={isSelected}
+						hasSelectedChild={hasSelectedChild}
+					/>
+				)),
 		];
 
 	const firstGroup = children.filter(child => !child?.props?.afterInnerProps);
@@ -95,15 +98,18 @@ const getInnerBlocksChild = ({
 			key: `maxi-inner-content__${uniqueID}`,
 		}),
 		...secondGroup,
-		...(!isSave && hasInnerBlocks && renderWrapperInserter && (
-			<BlockInserter.WrapperInserter
-				key={`maxi-block-wrapper-inserter__${clientId}`}
-				ref={ref}
-				clientId={clientId}
-				isSelected={isSelected}
-				hasSelectedChild={hasSelectedChild}
-			/>
-		)),
+		...(!isSave &&
+			hasInnerBlocks &&
+			renderWrapperInserter &&
+			!hasInterBlocksAppender && (
+				<BlockInserter.WrapperInserter
+					key={`maxi-block-wrapper-inserter__${clientId}`}
+					ref={ref}
+					clientId={clientId}
+					isSelected={isSelected}
+					hasSelectedChild={hasSelectedChild}
+				/>
+			)),
 	];
 };
 
@@ -124,6 +130,7 @@ const MainInnerBlocksBlock = forwardRef(
 			isSelected,
 			hasSelectedChild,
 			renderWrapperInserter,
+			hasInterBlocksAppender,
 			...props
 		},
 		ref
@@ -158,6 +165,7 @@ const MainInnerBlocksBlock = forwardRef(
 				isSelected,
 				hasSelectedChild,
 				renderWrapperInserter,
+				hasInterBlocksAppender,
 			})
 		);
 

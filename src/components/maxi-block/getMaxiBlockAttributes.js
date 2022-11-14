@@ -21,6 +21,7 @@ const getMaxiBlockAttributes = props => {
 		isChild,
 		isSelected,
 		hasSelectedChild,
+		hasInterBlocksAppender,
 	} = props;
 	const { blockStyle, extraClassName, anchorLink, uniqueID, linkSettings } =
 		attributes;
@@ -172,6 +173,7 @@ const getMaxiBlockAttributes = props => {
 		isChild,
 		isSelected,
 		hasSelectedChild,
+		hasInterBlocksAppender,
 		// Necessary for the memo() of MaxiBlocks component
 		attributes,
 		...scroll,

@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-/* eslint-disable @wordpress/no-unsafe-wp-apis */
 /**
  * WordPress dependencies
  */
@@ -16,10 +15,7 @@ import { dispatch, select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import {
-	getHasParallax,
-	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+import { getHasParallax } from '../../extensions/styles';
 import InnerBlocksBlock from './innerBlocksBlock';
 import MainMaxiBlock from './mainMaxiBlock';
 
@@ -40,38 +36,6 @@ const getBlockClassName = blockName => {
 	return `maxi-${blockName
 		.replace('maxi-blocks/', '')
 		.replace('-maxi', '')}-block`;
-};
-
-const getMarginStyles = (attributes, breakpoint) => {
-	const marginTop =
-		getLastBreakpointAttribute({
-			target: 'margin-top',
-			breakpoint,
-			attributes,
-		}) || 0;
-	const marginTopUnit =
-		getLastBreakpointAttribute({
-			target: 'margin-top-unit',
-			breakpoint,
-			attributes,
-		}) || 'px';
-	const marginBottom =
-		getLastBreakpointAttribute({
-			target: 'margin-bottom',
-			breakpoint,
-			attributes,
-		}) || 0;
-	const marginBottomUnit =
-		getLastBreakpointAttribute({
-			target: 'margin-bottom-unit',
-			breakpoint,
-			attributes,
-		}) || 'px';
-
-	return {
-		marginTop: `calc(${marginTop}${marginTopUnit} + 50px)`,
-		marginBottom: `calc(${marginBottom}${marginBottomUnit} + 50px)`,
-	};
 };
 
 const MaxiBlockContent = forwardRef((props, ref) => {
@@ -98,6 +62,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		isSelected,
 		hasSelectedChild,
 		isHovered,
+		hasInterBlocksAppender,
 		...extraProps
 	} = props;
 
@@ -138,14 +103,6 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 			});
 		}
 	}
-
-	// To preserve some space between first hierarchy blocks, we allow introducing inline styles on the block;
-	// that way, blue button for adding new blocks appears in the right place.
-	const { isFirstOnHierarchy } = extraProps.attributes;
-	const marginStyles = getMarginStyles(
-		extraProps.attributes,
-		extraProps.deviceType
-	);
 
 	// Are just necessary for the memo() part
 	delete extraProps.attributes;
@@ -255,7 +212,6 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		background,
 		disableBackground: !disableBackground,
 		isSave,
-		...(isFirstOnHierarchy && { style: marginStyles }),
 		...(!isSave &&
 			INNER_BLOCKS.includes(blockName) && {
 				onDragLeave,
@@ -275,6 +231,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 			hasInnerBlocks={hasInnerBlocks}
 			isSelected={isSelected}
 			hasSelectedChild={hasSelectedChild}
+			hasInterBlocksAppender={hasInterBlocksAppender}
 		>
 			{children}
 		</InnerBlocksBlock>

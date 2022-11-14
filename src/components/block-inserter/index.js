@@ -3,8 +3,8 @@
  */
 import { __ } from '@wordpress/i18n';
 import { ButtonBlockAppender, Inserter } from '@wordpress/block-editor';
-import { select, useDispatch } from '@wordpress/data';
-import { useRef, forwardRef } from '@wordpress/element';
+import { select, useDispatch, useSelect } from '@wordpress/data';
+import { useRef, forwardRef, useState } from '@wordpress/element';
 import { Popover, Tooltip } from '@wordpress/components';
 
 /**
@@ -203,6 +203,141 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 	return null;
 });
 
+const InterBlockToggle = props => {
+	const { clientId, onToggleInserter, blockRef, setHasInterBlocksAppender } =
+		props;
+
+	const [isVisible, setIsVisible] = useState(false);
+	const [isHovered, setHovered] = useState(false);
+	const hoverTimeout = useRef(null);
+
+	const classes = classnames(
+		'maxi-inter-blocks-inserter__toggle',
+		isHovered && 'maxi-inter-blocks-inserter__toggle--is-hovered'
+	);
+
+	const { width } = blockRef.getBoundingClientRect();
+
+	const style = {
+		width: `${width}px`,
+	};
+
+	const onMouseOver = () => {
+		setHovered(true);
+
+		if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
+
+		hoverTimeout.current = setTimeout(() => {
+			setHasInterBlocksAppender(true);
+			setIsVisible(true);
+		}, 500);
+	};
+
+	const onMouseOut = () => {
+		setHovered(false);
+
+		if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
+
+		hoverTimeout.current = setTimeout(() => {
+			setHasInterBlocksAppender(false);
+			setIsVisible(false);
+		}, 500);
+	};
+
+	return (
+		<div
+			className={classes}
+			style={style}
+			onMouseOver={onMouseOver}
+			onMouseOut={onMouseOut}
+		>
+			{isVisible && (
+				<Button
+					key={`maxi-inter-blocks-inserter__content-item-${clientId}`}
+					className='maxi-inter-blocks-inserter__content-item'
+					onClick={() => {
+						onToggleInserter();
+					}}
+				>
+					<svg
+						xmlns='http://www.w3.org/2000/svg'
+						viewBox='0 0 24 24'
+						width='24'
+						height='24'
+						role='img'
+						aria-hidden='true'
+						focusable='false'
+					>
+						<path d='M18 11.2h-5.2V6h-1.6v5.2H6v1.6h5.2V18h1.6v-5.2H18z' />
+					</svg>
+				</Button>
+			)}
+		</div>
+	);
+};
+
+const InterBlockInserter = forwardRef((props, ref) => {
+	const { clientId, setHasInterBlocksAppender } = props;
+	const blockRef = ref?.current?.blockRef?.current;
+
+	const { nextClientId, isNextMaxiBlock } = useSelect(select => {
+		const { getBlockOrder, getBlockRootClientId, getBlockName } =
+			select('core/block-editor');
+
+		const rootClientId = getBlockRootClientId(clientId);
+		const blockOrder = getBlockOrder(rootClientId);
+
+		const index = blockOrder.indexOf(clientId);
+
+		const nextClientId = blockOrder[index + 1];
+
+		const isNextMaxiBlock =
+			nextClientId && getBlockName(nextClientId).includes('maxi-blocks/');
+
+		return {
+			nextClientId,
+			isNextMaxiBlock,
+		};
+	}, []);
+
+	if (!blockRef || !nextClientId || !isNextMaxiBlock) return null;
+
+	return (
+		<Popover
+			key={`maxi-inter-blocks-inserter__${clientId}`}
+			className='maxi-inter-blocks-inserter'
+			noArrow
+			animate={false}
+			position='bottom center'
+			focusOnMount={false}
+			__unstableSlotName='block-toolbar'
+			flip={false}
+			resize={false}
+			anchor={blockRef}
+			dataclientid={clientId}
+			// {...popoverProps}
+		>
+			<Inserter
+				key={`maxi-inter-blocks-inserter__content-${clientId}`}
+				clientId={nextClientId}
+				position='bottom center'
+				// isAppender
+				__experimentalIsQuick
+				// onSelectOrClose={() => setShouldRemain(false)}
+				renderToggle={({ onToggle: onToggleInserter }) => (
+					<InterBlockToggle
+						onToggleInserter={onToggleInserter}
+						setHasInterBlocksAppender={setHasInterBlocksAppender}
+						clientId={clientId}
+						blockRef={blockRef}
+					/>
+				)}
+			/>
+		</Popover>
+	);
+});
+
 BlockInserter.WrapperInserter = WrapperBlockInserter;
+BlockInserter.InterBlockInserter = InterBlockInserter;
 
 export default BlockInserter;

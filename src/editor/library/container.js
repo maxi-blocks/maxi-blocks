@@ -265,9 +265,13 @@ const MenuSelect = ({ items, currentRefinement, refine }) => {
 };
 
 const HierarchicalMenu = ({ items, refine, type = 'firstLevel' }) => {
-	const fixMenuBug = e => {
+	// hack to fix issue #3930: top level tags resetting when we choose a second-level tag
+	const fixMenuBug = el => {
 		const topLevelParent =
-			e?.currentTarget?.parentNode?.parentNode?.parentNode?.parentNode;
+			el.target === 'a'
+				? el?.currentTarget?.parentNode?.parentNode?.parentNode
+						?.parentNode
+				: el?.parentNode?.parentNode?.parentNode;
 
 		if (
 			isEmpty(topLevelParent) ||
@@ -290,12 +294,13 @@ const HierarchicalMenu = ({ items, refine, type = 'firstLevel' }) => {
 				{items.map(item => (
 					<li
 						key={item.label}
-						className={`ais-HierarchicalMenu-item ais-HierarchicalMenu-item__${type}`}
+						className={`ais-HierarchicalMenu-item ais-HierarchicalMenu-item__${type} ais-HierarchicalMenu-item__${item.label
+							.replace(/\s+/g, '-')
+							.toLowerCase()}`}
 					>
 						<a
 							href='#'
 							onClick={event => {
-								console.log('onClick');
 								type === 'secondLevel' && fixMenuBug(event);
 								event.preventDefault();
 								refine(item.value);
@@ -305,9 +310,15 @@ const HierarchicalMenu = ({ items, refine, type = 'firstLevel' }) => {
 						</a>
 						<ToggleSwitch
 							selected={item.isRefined}
-							onChange={event => {
-								console.log('on Toggle');
-								type === 'secondLevel' && fixMenuBug(event);
+							onChange={() => {
+								type === 'secondLevel' &&
+									fixMenuBug(
+										document.getElementsByClassName(
+											`ais-HierarchicalMenu-item__${item.label
+												.replace(/\s+/g, '-')
+												.toLowerCase()}`
+										)[0]
+									);
 								refine(item.value);
 							}}
 						/>
@@ -326,6 +337,7 @@ const HierarchicalMenu = ({ items, refine, type = 'firstLevel' }) => {
 };
 
 const ClearRefinements = ({ items, refine }) => {
+	// hack to fix issue #3930: top level tags resetting when we choose a second-level tag
 	const removeMenuBugFix = () => {
 		const lists = document.querySelectorAll('.maxi__hide-top-tags');
 

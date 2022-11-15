@@ -18,7 +18,7 @@ import ResetButton from '../reset-control';
  * External dependencies
  */
 import classnames from 'classnames';
-import { trim, isEmpty, isNumber, isNil, merge } from 'lodash';
+import { isEmpty, isNil, isNumber, merge, trim } from 'lodash';
 
 /**
  * Styles
@@ -260,6 +260,7 @@ const AdvancedNumberControl = props => {
 							isSmall
 						/>
 					)}
+
 					{!disableRange && (
 						<RangeControl
 							label={label}
@@ -285,6 +286,7 @@ const AdvancedNumberControl = props => {
 							initialPosition={value || initial}
 						/>
 					)}
+
 				</BaseControl>
 			)}
 		</>

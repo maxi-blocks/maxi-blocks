@@ -47,7 +47,7 @@ function SvgColorToolbar(props) {
 						: toolbarShapeLineColor}
 				</div>
 			}
-			advancedOptions='colour'
+			advancedOptions='icon colour'
 		>
 			<div className='toolbar-item__svg-color__popover'>
 				<SvgColor

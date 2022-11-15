@@ -487,7 +487,10 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 											setCardAlreadyExists(false);
 											setImportedCardExists(false);
 											const newStyleCard = {
-												name: styleCardName,
+												name: styleCardName.substring(
+													0,
+													20
+												),
 												status: '',
 												dark: {
 													defaultStyleCard: {

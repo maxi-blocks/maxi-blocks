@@ -20,6 +20,7 @@ import {
 import { injectImgSVG } from '../../extensions/svg';
 import MaxiModal from './modal';
 import DOMPurify from 'dompurify';
+import Icon from '../../components/icon';
 
 /**
  * External dependencies
@@ -41,6 +42,11 @@ import classnames from 'classnames';
 import { isEmpty, uniqueId, orderBy, capitalize, unescape } from 'lodash';
 import Masonry from 'masonry-layout';
 import useInterval from '../../extensions/dom/useInterval';
+
+/**
+ * Icons
+ */
+ import { ribbonFree, ribbonPro } from '../../icons';
 
 const MasonryItem = props => {
 	const {
@@ -97,6 +103,20 @@ const MasonryItem = props => {
 							>
 								{__('Insert', 'maxi-blocks')}
 							</Button>
+							<div className='maxi-cloud-masonry-card__tags'>
+						{!isPro && (
+							<span className='maxi-cloud-masonry-card__tags__tag maxi-cloud-masonry-card__tags__tag-free'>
+								{__('Free', 'maxi-blocks')}
+								<Icon icon={ribbonFree} />
+							</span>
+						)}
+						{isPro && (
+							<span className='maxi-cloud-masonry-card__tags__tag maxi-cloud-masonry-card__tags__tag-pro'>
+								{__('Pro', 'maxi-blocks')}
+								<Icon icon={ribbonPro} />
+							</span>
+						)}
+					</div>
 						</>
 					)}
 					{type === 'sc' && (
@@ -104,13 +124,6 @@ const MasonryItem = props => {
 							{__('Insert', 'maxi-block')}
 						</span>
 					)}
-					<div className='maxi-cloud-masonry-card__tags'>
-						{isPro && (
-							<span className='maxi-cloud-masonry-card__tags__pro-tag'>
-								{__('PRO', 'maxi-blocks')}
-							</span>
-						)}
-					</div>
 				</div>
 			</>
 		);
@@ -396,6 +409,7 @@ const LibraryContainer = props => {
 				demoUrl={hit.demo_url}
 				previewIMG={hit.preview_image_url}
 				isPro={hit.cost?.[0] === 'pro'}
+				className={hit.cost?.[0]}
 				taxonomies={hit.category?.[0]}
 				serial={hit.post_number}
 				onRequestInsert={() =>

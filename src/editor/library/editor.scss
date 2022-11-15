@@ -906,7 +906,7 @@
 							width: 100%;
 						}
 						&__patterns {
-							padding: 6px;
+							padding: 8px;
 							.maxi-cloud-masonry-card__button {
 								margin-right: 0;
 							}
@@ -1059,7 +1059,7 @@
 						display: flex;
 						justify-content: space-between;
 						align-items: center;
-						margin-bottom: 2px;
+						margin-bottom: 8px;
 						.maxi-cloud-masonry__serial-tag {
 							color: #232533;
 							font-weight: 500;
@@ -1076,7 +1076,7 @@
 				&__buttons {
 					display: flex;
 					align-items: center;
-					margin-top: 12px;
+					margin-top: 8px;
 				}
 				&__button {
 					display: inline-flex;
@@ -1101,30 +1101,31 @@
 					display: flex;
 					justify-content: space-between;
 					position: absolute;
-					top: 55px;
-					right: 8px;
+				    top: 1px;
+    				right: 22px;
 
 					&__tag {
 						position: relative;
 						display: inline-block;
-						padding: 4px 15px 4px 25px;
+						padding: 4px 0 10px 0;
 						color: #fff;
 						font-size: 13px;
 						font-weight: bold;
-						text-transform: uppercase;
-						background-color: #ff4a17;
+						text-transform: capitalize;
+						text-align: center;
+						z-index: 1;
+						min-width: 26px;
 
-						&:before {
-							content: '';
+						&-free{
+							color: #007CBA;
+						}
+
+						svg{
 							position: absolute;
+							left: 50%;
 							top: 50%;
-							left: -1px;
-							transform: translateY(-50%);
-							width: 0;
-							height: 0;
-							border-top: 19px solid transparent;
-							border-bottom: 19px solid transparent;
-							border-left: 10px solid #fff;
+							transform: translate(-50%, -50%);
+							z-index: -1;
 						}
 					}
 				}

@@ -122,7 +122,6 @@ const withMaxiProps = createHigherOrderComponent(
 						hasSelectedChild={hasSelectedChild}
 						hasInterBlocksAppender={hasInterBlocksAppender}
 					/>
-
 					<BlockInserter.InterBlockInserter
 						ref={ref}
 						setHasInterBlocksAppender={setHasInterBlocksAppender}

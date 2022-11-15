@@ -114,13 +114,11 @@ const LinkOptions = props => {
 				<ColorControl
 					label={__('Font', 'maxi-blocks')}
 					className='maxi-typography-link-color'
-					color={getValue(`${prefix}link-color`)}
+					color={getValue('link-color')}
 					prefix={`${prefix}link-`}
-					paletteStatus={getValue(`${prefix}link-palette-status`)}
-					paletteColor={getValue(`${prefix}link-palette-color`)}
-					paletteOpacity={
-						getValue(`${prefix}link-palette-opacity`) || 1
-					}
+					paletteStatus={getValue('link-palette-status')}
+					paletteColor={getValue('link-palette-color')}
+					paletteOpacity={getValue('link-palette-opacity')}
 					onChangeInline={({ color }) =>
 						onChangeInline({ color }, 'a')
 					}
@@ -154,15 +152,11 @@ const LinkOptions = props => {
 				<ColorControl
 					label={__('Font', 'maxi-blocks')}
 					className='maxi-typography-link-hover-color'
-					color={getValue(`${prefix}link-hover-color`)}
+					color={getValue('link-hover-color')}
 					prefix={`${prefix}link-hover-`}
-					paletteStatus={getValue(
-						`${prefix}link-hover-palette-status`
-					)}
-					paletteColor={getValue(`${prefix}link-hover-palette-color`)}
-					paletteOpacity={
-						getValue(`${prefix}link-hover-palette-opacity`) || 1
-					}
+					paletteStatus={getValue('link-hover-palette-status')}
+					paletteColor={getValue('link-hover-palette-color')}
+					paletteOpacity={getValue('link-hover-palette-opacity')}
 					onChangeInline={({ color }) =>
 						onChangeInline({ color }, 'a:hover')
 					}
@@ -198,17 +192,11 @@ const LinkOptions = props => {
 				<ColorControl
 					label={__('Font', 'maxi-blocks')}
 					className='maxi-typography-link-active-color'
-					color={getValue(`${prefix}link-active-color`)}
+					color={getValue('link-active-color')}
 					prefix={`${prefix}link-active-`}
-					paletteStatus={getValue(
-						`${prefix}link-active-palette-status`
-					)}
-					paletteColor={getValue(
-						`${prefix}link-active-palette-color`
-					)}
-					paletteOpacity={
-						getValue(`${prefix}link-active-palette-opacity`) || 1
-					}
+					paletteStatus={getValue('link-active-palette-status')}
+					paletteColor={getValue('link-active-palette-color')}
+					paletteOpacity={getValue('link-active-palette-opacity')}
 					onChangeInline={({ color }) =>
 						onChangeInline({ color }, 'a:active')
 					}
@@ -244,17 +232,11 @@ const LinkOptions = props => {
 				<ColorControl
 					label={__('Font', 'maxi-blocks')}
 					className='maxi-typography-link-visited-color'
-					color={getValue(`${prefix}link-visited-color`)}
+					color={getValue('link-visited-color')}
 					prefix={`${prefix}link-visited-`}
-					paletteStatus={getValue(
-						`${prefix}link-visited-palette-status`
-					)}
-					paletteColor={getValue(
-						`${prefix}link-visited-palette-color`
-					)}
-					paletteOpacity={
-						getValue(`${prefix}link-visited-palette-opacity`) || 1
-					}
+					paletteStatus={getValue('link-visited-palette-status')}
+					paletteColor={getValue('link-visited-palette-color')}
+					paletteOpacity={getValue('link-visited-palette-opacity')}
 					onChangeInline={({ color }) =>
 						onChangeInline({ color }, 'a:visited')
 					}
@@ -387,23 +369,24 @@ const TypographyControl = props => {
 		},
 	};
 
-	const getValue = (prop, avoidXXL, avoidSC = false) =>
+	const getValue = (target, avoidSC = false) =>
 		getTypographyValue({
 			disableFormats,
-			prop,
+			prop: `${prefix}${target}`,
 			breakpoint,
 			typography,
 			isHover,
-			avoidXXL,
 			formatValue,
 			textLevel,
 			styleCard,
 			styleCardPrefix,
-			avoidSC,
 			prefix,
+			avoidSC,
 		});
 
-	const getDefault = prop => {
+	const getDefault = target => {
+		const prop = `${prefix}${target}`;
+
 		const currentBreakpoint =
 			(isStyleCards && breakpoint === 'general' && baseBreakpoint) ||
 			breakpoint;
@@ -479,15 +462,15 @@ const TypographyControl = props => {
 				{!disableFontFamily && (
 					<FontFamilySelector
 						className='maxi-typography-control__font-family'
-						font={getValue(`${prefix}font-family`)}
+						font={getValue('font-family')}
 						onChange={font => {
 							onChangeFormat({
 								[`${prefix}font-family`]: font.value,
 								[`${prefix}font-options`]: font.files,
 							});
 						}}
-						fontWeight={getValue(`${prefix}font-weight`)}
-						fontStyle={getValue(`${prefix}font-style`)}
+						fontWeight={getValue('font-weight')}
+						fontStyle={getValue('font-style')}
 						breakpoint={breakpoint}
 					/>
 				)}
@@ -495,13 +478,13 @@ const TypographyControl = props => {
 					<ColorControl
 						label={__('Font', 'maxi-blocks')}
 						className='maxi-typography-control__color'
-						color={getValue(`${prefix}color`)}
+						color={getValue('color')}
 						prefix={prefix}
-						paletteColor={getValue(`${prefix}palette-color`)}
+						paletteColor={getValue('palette-color')}
 						paletteOpacity={getOpacityValue(
 							`${prefix}palette-opacity`
 						)}
-						paletteStatus={getValue(`${prefix}palette-status`)}
+						paletteStatus={getValue('palette-status')}
 						onChangeInline={({ color }) =>
 							onChangeInlineValue({ color })
 						}
@@ -541,21 +524,16 @@ const TypographyControl = props => {
 					className='maxi-typography-control__size'
 					label={__('Font size', 'maxi-blocks')}
 					enableUnit
-					unit={getValue(`${prefix}font-size-unit`, !isStyleCards)}
-					defaultUnit={getDefault(`${prefix}font-size-unit`)}
+					unit={getValue('font-size-unit')}
+					defaultUnit={getDefault('font-size-unit')}
 					onChangeUnit={val => {
 						onChangeFormat({
 							[`${prefix}font-size-unit`]: val,
 						});
 					}}
-					placeholder={getValue(`${prefix}font-size`, !isStyleCards)}
-					value={getValue(
-						`${prefix}font-size`,
-						null,
-						!isStyleCards,
-						true
-					)}
-					defaultValue={getDefault(`${prefix}font-size`)}
+					placeholder={getValue('font-size')}
+					value={getValue('font-size', !isStyleCards)}
+					defaultValue={getDefault('font-size')}
 					onChangeValue={(val, unit) => {
 						onChangeFormat({
 							[`${prefix}font-size`]: val,
@@ -564,12 +542,9 @@ const TypographyControl = props => {
 					}}
 					onReset={() =>
 						onChangeFormat({
-							[`${prefix}font-size-unit`]: getDefault(
-								`${prefix}font-size-unit`
-							),
-							[`${prefix}font-size`]: getDefault(
-								`${prefix}font-size`
-							),
+							[`${prefix}font-size-unit`]:
+								getDefault('font-size-unit'),
+							[`${prefix}font-size`]: getDefault('font-size'),
 						})
 					}
 					minMaxSettings={minMaxSettings}
@@ -579,26 +554,16 @@ const TypographyControl = props => {
 					className='maxi-typography-control__line-height'
 					label={__('Line height', 'maxi-blocks')}
 					enableUnit
-					unit={
-						getValue(`${prefix}line-height-unit`, !isStyleCards) ||
-						''
-					}
-					defaultUnit={getDefault(`${prefix}line-height-unit`)}
+					unit={getValue('line-height-unit') || ''}
+					defaultUnit={getDefault('line-height-unit')}
 					onChangeUnit={val => {
 						onChangeFormat({
 							[`${prefix}line-height-unit`]: val,
 						});
 					}}
-					placeholder={getValue(
-						`${prefix}line-height`,
-						!isStyleCards
-					)}
-					value={getValue(
-						`${prefix}line-height`,
-						!isStyleCards,
-						true
-					)}
-					defaultValue={getDefault(`${prefix}line-height`)}
+					placeholder={getValue('line-height')}
+					value={getValue('line-height', !isStyleCards)}
+					defaultValue={getDefault('line-height')}
 					onChangeValue={(val, unit) => {
 						onChangeFormat({
 							[`${prefix}line-height`]: val,
@@ -609,12 +574,9 @@ const TypographyControl = props => {
 					}}
 					onReset={() =>
 						onChangeFormat({
-							[`${prefix}line-height-unit`]: getDefault(
-								`${prefix}line-height-unit`
-							),
-							[`${prefix}line-height`]: getDefault(
-								`${prefix}line-height`
-							),
+							[`${prefix}line-height-unit`]:
+								getDefault('line-height-unit'),
+							[`${prefix}line-height`]: getDefault('line-height'),
 						})
 					}
 					minMaxSettings={{
@@ -632,26 +594,16 @@ const TypographyControl = props => {
 					label={__('Letter spacing', 'maxi-blocks')}
 					enableUnit
 					allowedUnits={['px', 'em', 'vw']}
-					unit={getValue(
-						`${prefix}letter-spacing-unit`,
-						!isStyleCards
-					)}
-					defaultUnit={getDefault(`${prefix}letter-spacing-unit`)}
+					unit={getValue('letter-spacing-unit')}
+					defaultUnit={getDefault('letter-spacing-unit')}
 					onChangeUnit={val => {
 						onChangeFormat({
 							[`${prefix}letter-spacing-unit`]: val,
 						});
 					}}
-					placeholder={getValue(
-						`${prefix}letter-spacing`,
-						!isStyleCards
-					)}
-					value={getValue(
-						`${prefix}letter-spacing`,
-						!isStyleCards,
-						true
-					)}
-					defaultValue={getDefault(`${prefix}letter-spacing`)}
+					placeholder={getValue('letter-spacing')}
+					value={getValue('letter-spacing', !isStyleCards)}
+					defaultValue={getDefault('letter-spacing')}
 					onChangeValue={val => {
 						onChangeFormat({
 							[`${prefix}letter-spacing`]: val,
@@ -660,11 +612,10 @@ const TypographyControl = props => {
 					onReset={() =>
 						onChangeFormat({
 							[`${prefix}letter-spacing-unit`]: getDefault(
-								`${prefix}letter-spacing-unit`
+								'letter-spacing-unit'
 							),
-							[`${prefix}letter-spacing`]: getDefault(
-								`${prefix}letter-spacing`
-							),
+							[`${prefix}letter-spacing`]:
+								getDefault('letter-spacing'),
 						})
 					}
 					minMaxSettings={minMaxSettingsLetterSpacing}
@@ -679,15 +630,15 @@ const TypographyControl = props => {
 					onChange={val => {
 						onChangeFormat({ [`${prefix}font-weight`]: val });
 					}}
-					fontWeight={getValue(`${prefix}font-weight`)}
-					fontName={getValue(`${prefix}font-family`)}
-					fontStyle={getValue(`${prefix}font-style`)}
+					fontWeight={getValue('font-weight')}
+					fontName={getValue('font-family')}
+					fontStyle={getValue('font-style')}
 					breakpoint={breakpoint}
 				/>
 				<SelectControl
 					label={__('Text transform', 'maxi-blocks')}
 					className='maxi-typography-control__transform'
-					value={getValue(`${prefix}text-transform`)}
+					value={getValue('text-transform')}
 					options={[
 						{
 							label: __('Default', 'maxi-blocks'),
@@ -715,7 +666,7 @@ const TypographyControl = props => {
 				<SelectControl
 					label={__('Style', 'maxi-blocks')}
 					className='maxi-typography-control__font-style'
-					value={getValue(`${prefix}font-style`)}
+					value={getValue('font-style')}
 					options={[
 						{
 							label: __('Default', 'maxi-blocks'),
@@ -739,7 +690,7 @@ const TypographyControl = props => {
 				<SelectControl
 					label={__('Text decoration', 'maxi-blocks')}
 					className='maxi-typography-control__decoration'
-					value={getValue(`${prefix}text-decoration`)}
+					value={getValue('text-decoration')}
 					options={[
 						{
 							label: __('Default', 'maxi-blocks'),
@@ -771,7 +722,7 @@ const TypographyControl = props => {
 				<SelectControl
 					label={__('Text orientation', 'maxi-blocks')}
 					className='maxi-typography-control__orientation'
-					value={getValue(`${prefix}text-orientation`)}
+					value={getValue('text-orientation')}
 					options={[
 						{
 							label: __('None', 'maxi-blocks'),
@@ -802,7 +753,7 @@ const TypographyControl = props => {
 				<SelectControl
 					label={__('Text direction', 'maxi-blocks')}
 					className='maxi-typography-control__direction'
-					value={getValue(`${prefix}text-direction`)}
+					value={getValue('text-direction')}
 					options={[
 						{
 							label: __('Left to right', 'maxi-blocks'),
@@ -823,8 +774,8 @@ const TypographyControl = props => {
 					className='maxi-typography-control__text-indent'
 					label={__('Text indent', 'maxi-blocks')}
 					enableUnit
-					unit={getValue(`${prefix}text-indent-unit`)}
-					defaultUnit={getDefault(`${prefix}text-indent-unit`)}
+					unit={getValue('text-indent-unit')}
+					defaultUnit={getDefault('text-indent-unit')}
 					onChangeUnit={val => {
 						onChangeFormat(
 							{
@@ -833,14 +784,9 @@ const TypographyControl = props => {
 							true
 						);
 					}}
-					placeholder={getValue(`${prefix}text-indent`)}
-					value={getValue(
-						`${prefix}text-indent`,
-						breakpoint,
-						false,
-						true
-					)}
-					defaultValue={getDefault(`${prefix}text-indent`)}
+					placeholder={getValue('text-indent')}
+					value={getValue('text-indent')}
+					defaultValue={getDefault('text-indent', !isStyleCards)}
 					onChangeValue={val => {
 						onChangeFormat(
 							{
@@ -852,12 +798,10 @@ const TypographyControl = props => {
 					onReset={() =>
 						onChangeFormat(
 							{
-								[`${prefix}text-indent-unit`]: getDefault(
-									`${prefix}text-indent-unit`
-								),
-								[`${prefix}text-indent`]: getDefault(
-									`${prefix}text-indent`
-								),
+								[`${prefix}text-indent-unit`]:
+									getDefault('text-indent-unit'),
+								[`${prefix}text-indent`]:
+									getDefault('text-indent'),
 							},
 							true
 						)
@@ -887,7 +831,7 @@ const TypographyControl = props => {
 						<hr />
 						<TextShadowControl
 							className='maxi-typography-control__text-shadow'
-							textShadow={getValue(`${prefix}text-shadow`)}
+							textShadow={getValue('text-shadow')}
 							onChangeInline={val =>
 								onChangeInlineValue({ 'text-shadow': val })
 							}

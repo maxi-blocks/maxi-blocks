@@ -11,7 +11,7 @@ import { useContext, useState } from '@wordpress/element';
  */
 
 import Button from '../../../button';
-import TextControl from '../../../text-control';
+import AdvancedNumberControl from '../../../advanced-number-control';
 import Dropdown from '../../../dropdown';
 import { textContext } from '../../../../extensions/text/formats';
 
@@ -81,31 +81,39 @@ const TextGenerator = props => {
 			)}
 			renderContent={() => (
 				<div className='toolbar-item__text-generator-blocks__popover'>
-					<TextControl
+					<AdvancedNumberControl
+						disableRange
+						disableReset
 						label={__('Words per sentence', 'maxi-blocks')}
 						value={averageWordsLength}
-						onChange={val => setAverageWordsLength(val)}
-						type='number'
-						min='1'
+						onChangeValue={val => {
+							setAverageWordsLength(val);
+						}}
+						min={0}
+						max={500}
 					/>
-					<TextControl
+					<AdvancedNumberControl
+						disableRange
+						disableReset
 						label={__('Sentences', 'maxi-blocks')}
 						value={averageSentencesLength}
-						onChange={val => setAverageSentencesLength(val)}
-						type='number'
-						min='1'
+						onChangeValue={val => {
+							setAverageSentencesLength(val);
+						}}
+						min={0}
+						max={500}
 					/>
 					<Button
 						type='button'
-						onClick={obj =>
-							addText(averageSentencesLength, averageWordsLength)
-						}
+						onClick={() => {
+							addText(averageSentencesLength, averageWordsLength);
+						}}
 					>
 						{__('Add', 'maxi-blocks')}
 					</Button>
 					<Button
 						type='button'
-						onClick={obj =>
+						onClick={() =>
 							replaceText(
 								averageSentencesLength,
 								averageWordsLength

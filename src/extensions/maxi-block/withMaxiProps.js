@@ -13,12 +13,12 @@ import {
 	handleInsertInlineStyles,
 	handleCleanInlineStyles,
 } from './inlineStyles';
+import { BlockInserter } from '../../components';
 
 /**
  * External dependencies
  */
 import { isEmpty } from 'lodash';
-import { BlockInserter } from '../../components';
 
 const withMaxiProps = createHigherOrderComponent(
 	WrappedComponent =>

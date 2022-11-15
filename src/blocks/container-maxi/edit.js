@@ -70,7 +70,6 @@ class edit extends MaxiBlockComponent {
 			hasInnerBlocks,
 			maxiSetAttributes,
 			clientId,
-			isSelected,
 		} = this.props;
 		const { uniqueID, isFirstOnHierarchy } = attributes;
 
@@ -124,7 +123,6 @@ class edit extends MaxiBlockComponent {
 							])}
 							onChange={obj => maxiSetAttributes(obj)}
 							breakpoint={deviceType}
-							isSelected={isSelected}
 						/>
 					</>
 				)}

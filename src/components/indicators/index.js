@@ -25,10 +25,7 @@ const Indicators = props => {
 		className,
 		deviceType,
 		onChange,
-		isSelected,
 	} = props;
-
-	if (!isSelected) return null;
 
 	const classes = classnames('maxi-indicators', className);
 

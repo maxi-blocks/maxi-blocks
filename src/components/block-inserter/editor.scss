@@ -137,14 +137,13 @@
 		border-radius: 0;
 		box-shadow: none;
 		outline: none;
-		// transform: translate(-50%, -50%) !important;
 
 		> div:first-of-type {
 			display: flex;
 		}
 
 		.maxi-inter-blocks-inserter__toggle {
-			height: 2px;
+			height: 10px;
 			transition: height 0.3s;
 
 			&::before {

@@ -39,6 +39,8 @@ const addTypographyOptions = async ({
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type(`${letterSpacing}`, { delay: 150 });
 	}
+
+	await page.waitForTimeout(150);
 };
 
 export default addTypographyOptions;

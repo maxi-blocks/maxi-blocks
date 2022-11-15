@@ -90,7 +90,7 @@ const TextGenerator = props => {
 							setAverageWordsLength(val);
 						}}
 						min={0}
-						max={500}
+						max={100}
 					/>
 					<AdvancedNumberControl
 						disableRange
@@ -101,7 +101,7 @@ const TextGenerator = props => {
 							setAverageSentencesLength(val);
 						}}
 						min={0}
-						max={500}
+						max={20}
 					/>
 					<Button
 						type='button'

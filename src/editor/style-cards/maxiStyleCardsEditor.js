@@ -388,7 +388,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 								<Button
 									disabled={!canBeRemoved(selectedSCKey)}
 									className='maxi-style-cards__sc__more-sc--delete has-tooltip'
-									onClick={deleteSC}
+									onClick={openDialog}
 								>
 									<span className='tooltip'>Delete</span>
 									<Icon icon={SCDelete} />

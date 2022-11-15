@@ -86,6 +86,7 @@ const AdvancedNumberControl = props => {
 		value,
 		onChangeValue,
 		disableReset = false,
+		disableRange = false,
 		enableAuto = false,
 		autoLabel,
 		onReset,
@@ -259,27 +260,31 @@ const AdvancedNumberControl = props => {
 							isSmall
 						/>
 					)}
-					<RangeControl
-						label={label}
-						className='maxi-advanced-number-control__range'
-						value={
-							+(!isNil(value) && Number.isFinite(value)
-								? value
-								: Number.isFinite(defaultValue)
-								? defaultValue
-								: initial || placeholder || 0)
-						}
-						onChange={val => {
-							onChangeValue(
-								optionType === 'string' ? val.toString() : +val
-							);
-						}}
-						min={enableUnit ? minValueRange : min}
-						max={enableUnit ? maxValueRange : max}
-						step={stepValue}
-						withInputField={false}
-						initialPosition={value || initial}
-					/>
+					{!disableRange && (
+						<RangeControl
+							label={label}
+							className='maxi-advanced-number-control__range'
+							value={
+								+(!isNil(value) && Number.isFinite(value)
+									? value
+									: Number.isFinite(defaultValue)
+									? defaultValue
+									: initial || placeholder || 0)
+							}
+							onChange={val => {
+								onChangeValue(
+									optionType === 'string'
+										? val.toString()
+										: +val
+								);
+							}}
+							min={enableUnit ? minValueRange : min}
+							max={enableUnit ? maxValueRange : max}
+							step={stepValue}
+							withInputField={false}
+							initialPosition={value || initial}
+						/>
+					)}
 				</BaseControl>
 			)}
 		</>

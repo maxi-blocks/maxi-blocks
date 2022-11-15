@@ -55,7 +55,7 @@ describe('IconControl', () => {
 
 		// icon position
 		const iconPosition = await page.$$(
-			'.maxi-settingstab-control.maxi-icon-position-control button'
+			'.maxi-settingstab-control.maxi-icon-control__position button'
 		);
 
 		await iconPosition[2].click();

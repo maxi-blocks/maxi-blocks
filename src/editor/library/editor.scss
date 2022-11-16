@@ -972,6 +972,9 @@
 							border-color: #007cba;
 							box-shadow: 0 0 0 1px #007cba;
 							color: #007cba;
+							&-go-pro{
+								color: #fff;
+							}
 						}
 					}
 				}
@@ -1097,8 +1100,16 @@
 					font-weight: 400;
 					border-radius: 0;
 					&:hover {
-						background-color: #007cba;
 						color: #fff !important;
+						background-color: #007cba;
+					}
+					&-go-pro{
+						color: #fff;
+						background-color: #007CBA;
+						&:hover{
+							color: #007cba !important;
+							background-color: #edf6fa !important;
+						}
 					}
 				}
 

@@ -119,7 +119,6 @@ const BlockResizer = memo(
 				enable={enable}
 				handleClasses={handleClasses}
 				handleWrapperClass={handlesWrapperClassName}
-				// handleStyles={handleStyles}
 				onResizeStop={(e, direction, refToElement, ...rest) => {
 					onResizeStop?.(e, direction, refToElement, ...rest);
 					if (cleanStyles) stylesCleaner(refToElement);

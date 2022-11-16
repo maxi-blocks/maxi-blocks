@@ -54,6 +54,8 @@ const getBlockStyle = (attributes, breakpoint) => {
 
 	if (!isFullWidth) return {};
 
+	const marginValue = 8;
+
 	// Margin
 	const marginRight = getValue('margin-right') || 0;
 	const marginRightUnit = getValue('margin-right-unit') || 'px';
@@ -67,16 +69,16 @@ const getBlockStyle = (attributes, breakpoint) => {
 	const maxWidthUnit = getValue('max-width-unit');
 
 	return {
-		marginRight: `calc(${marginRight}${marginRightUnit} - 8px)`,
-		marginLeft: `calc(${marginLeft}${marginLeftUnit} - 8px)`,
+		marginRight: `calc(${marginRight}${marginRightUnit} - ${marginValue}px)`,
+		marginLeft: `calc(${marginLeft}${marginLeftUnit} - ${marginValue}px)`,
 		width: `calc(${
 			isFullWidth && isNil(width) ? '100%' : `${width}${widthUnit}`
-		} + 16px)`,
+		} + ${marginValue * 2}px)`,
 		maxWidth: `calc(${
 			isFullWidth && isNil(maxWidth)
 				? '100%'
 				: `${maxWidth}${maxWidthUnit}`
-		} + 16px)`,
+		} + ${marginValue * 2}px)`,
 	};
 };
 

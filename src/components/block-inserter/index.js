@@ -207,9 +207,7 @@ const InterBlockToggle = props => {
 	const { clientId, onToggleInserter, blockRef, setHasInterBlocksAppender } =
 		props;
 
-	const [isVisible, setIsVisible] = useState(false);
 	const [isHovered, setHovered] = useState(false);
-	const hoverTimeout = useRef(null);
 
 	const classes = classnames(
 		'maxi-inter-blocks-inserter__toggle',
@@ -225,23 +223,15 @@ const InterBlockToggle = props => {
 	const onMouseOver = () => {
 		setHovered(true);
 
-		if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
-
-		hoverTimeout.current = setTimeout(() => {
-			setHasInterBlocksAppender(true);
-			setIsVisible(true);
-		}, 500);
+		setHasInterBlocksAppender(true);
 	};
 
-	const onMouseOut = () => {
-		setHovered(false);
+	const onMouseOut = e => {
+		if (!e.target?.contains(e.relatedTarget)) {
+			setHovered(false);
 
-		if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
-
-		hoverTimeout.current = setTimeout(() => {
 			setHasInterBlocksAppender(false);
-			setIsVisible(false);
-		}, 500);
+		}
 	};
 
 	return (
@@ -251,26 +241,32 @@ const InterBlockToggle = props => {
 			onMouseOver={onMouseOver}
 			onMouseOut={onMouseOut}
 		>
-			{isVisible && (
-				<Button
-					key={`maxi-inter-blocks-inserter__content-item-${clientId}`}
-					className='maxi-inter-blocks-inserter__content-item'
-					onClick={() => {
-						onToggleInserter();
-					}}
-				>
-					<svg
-						xmlns='http://www.w3.org/2000/svg'
-						viewBox='0 0 24 24'
-						width='24'
-						height='24'
-						role='img'
-						aria-hidden='true'
-						focusable='false'
+			{isHovered && (
+				<>
+					<Button
+						key={`maxi-inter-blocks-inserter__content-item-${clientId}`}
+						className='maxi-inter-blocks-inserter__content-item'
+						onClick={onToggleInserter}
 					>
-						<path d='M18 11.2h-5.2V6h-1.6v5.2H6v1.6h5.2V18h1.6v-5.2H18z' />
-					</svg>
-				</Button>
+						<svg
+							xmlns='http://www.w3.org/2000/svg'
+							viewBox='0 0 24 24'
+							width='24'
+							height='24'
+							role='img'
+							aria-hidden='true'
+							focusable='false'
+						>
+							<path d='M18 11.2h-5.2V6h-1.6v5.2H6v1.6h5.2V18h1.6v-5.2H18z' />
+						</svg>
+					</Button>
+					{/** Removes original WP inserter, so avoids both inserters at same time */}
+					<style>
+						{
+							'.block-editor-block-list__insertion-point: {display: none}'
+						}
+					</style>
+				</>
 			)}
 		</div>
 	);

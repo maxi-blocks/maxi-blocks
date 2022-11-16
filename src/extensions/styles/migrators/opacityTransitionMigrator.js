@@ -17,7 +17,7 @@ const isEligible = blockAttributes => {
 };
 
 const migrate = newAttributes => {
-	const { uniqueID, transition } = newAttributes;
+	const { uniqueID } = newAttributes;
 	const blockName = getBlockNameFromUniqueID(uniqueID);
 	const blockDataTransition = getTransitionData(blockName);
 
@@ -27,7 +27,7 @@ const migrate = newAttributes => {
 	Object.entries(blockDataTransition).forEach(([category, properties]) => {
 		Object.keys(properties).forEach(name => {
 			if (name === 'opacity') {
-				transition[category][name] = opacityAttributes;
+				newAttributes.transition[category][name] = opacityAttributes;
 			}
 		});
 	});

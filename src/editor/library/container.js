@@ -485,7 +485,7 @@ const LibraryContainer = props => {
 				title={hit.post_title}
 				demoUrl={hit.demo_url}
 				previewIMG={hit.preview_image_url}
-				isPro={hit.cost?.[0] === 'pro'}
+				isPro={hit.cost?.[0] === 'Pro'}
 				className={hit.cost?.[0]}
 				taxonomies={hit.category?.[0]}
 				serial={hit.post_number}

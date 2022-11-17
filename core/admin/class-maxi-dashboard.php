@@ -73,12 +73,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     MAXI_PLUGIN_URL_PATH.'build/admin.js'
                 );
                 wp_enqueue_script('maxi-admin');
-
-                // wp_register_script(
-                //     'maxi-support-chat',
-                //     'https://client.crisp.chat/l.js'
-                // );
-                // wp_enqueue_script('maxi-support-chat');
             }
         }
 
@@ -176,6 +170,13 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .='</div>'; // maxi-dashboard_main-content
             
             $content .= '<div class="maxi-dashboard_main-sidebar">';
+
+            $content .= '<div class="maxi-dashboard_main-sidebar-item">';
+            $content .= '<svg stroke-miterlimit="10" stroke-linejoin="round" stroke-width="2" stroke="#081219" data-stroke="" viewBox="0 0 64 64" height="64px" width="64px" class="support-8-maxi-svg__1"><path fill="none" d="M55.105 34.05c1.368 0 2.578.628 3.397 1.596h.028v-6.183C58.53 14.834 46.629 2.932 32 2.932S5.47 14.834 5.47 29.463v6.183h.028c.82-.968 2.029-1.596 3.397-1.596v-.184c0-.072.015-.14.021-.211v-4.192C8.916 16.734 19.272 6.379 32 6.379s23.083 10.355 23.083 23.084v4.193c.007.07.021.138.021.21v.184z"></path><path fill="#ff4a17" data-fill="" d="M8.895 35.646v13.661a2.3 2.3 0 0 0 2.298 2.298h4.596a2.3 2.3 0 0 0 2.298-2.298V33.866a2.3 2.3 0 0 0-2.298-2.298h-4.596a2.29 2.29 0 0 0-2.277 2.087v1.991h-.021z"></path><g fill="none"><path d="M8.895 34.05v1.596h.021v-1.991c-.007.071-.021.139-.021.211v.184z"></path><path d="M5.498 35.646c-.659.779-1.072 1.773-1.072 2.873v6.71a4.47 4.47 0 0 0 4.469 4.469v-.391-13.661-1.596c-1.368 0-2.577.628-3.397 1.596z"></path></g><path fill="#ff4a17" data-fill="" d="M55.084 35.646v-1.99a2.29 2.29 0 0 0-2.277-2.088h-4.596a2.3 2.3 0 0 0-2.298 2.298v15.441a2.3 2.3 0 0 0 2.298 2.298h4.596a2.3 2.3 0 0 0 2.298-2.298V35.646h-.021z"></path><g fill="none"><path d="M55.105 35.646V34.05v-.184c0-.072-.015-.14-.021-.21v1.99h.021z"></path><path d="M58.502 35.646c-.82-.968-2.029-1.596-3.397-1.596v1.596 13.661.391a4.47 4.47 0 0 0 4.469-4.469v-6.71c0-1.1-.413-2.094-1.072-2.873z"></path><path stroke-linecap="round" d="M36.768 54.634c.28.586.45 1.234.45 1.927 0 .536-.109 1.043-.28 1.52h8.82c3.57 0 6.475-2.904 6.475-6.474h-3.447"></path></g><path fill="#ff4a17" data-fill="" d="M36.768 54.634c-.723-1.512-2.255-2.566-4.043-2.566a4.5 4.5 0 1 0 0 9c1.947 0 3.59-1.248 4.213-2.987a4.48 4.48 0 0 0 .28-1.52 4.45 4.45 0 0 0-.45-1.927zm-3.554-15.026c3.194-1.96 11.727-7.882 13.144-15.646 1.001-5.455-2.777-10.859-8.332-11.084a8.87 8.87 0 0 0-6.03 2.01c-1.635-1.343-3.736-2.102-6.022-2.01-5.555.225-9.333 5.63-8.332 11.084 1.418 7.765 9.95 13.686 13.144 15.647a2.31 2.31 0 0 0 2.427 0z"></path></svg>';
+            $content .= '<p>'.__('Need help?', self::$maxi_text_domain).'</p>';
+            $content .= '<p><a href="#" id="chat-with-maxi-support">'.__('Chat with Maxi support', self::$maxi_text_domain).'</a></p>';
+            $content .='</div>'; // maxi-dashboard_main-sidebar-item
+            
 
             $content .= '<div class="maxi-dashboard_main-sidebar-item">';
             $content .= '<svg class="news-maxi-svg" width="64px" height="64px" viewBox="0 0 64 64" data-stroke="" stroke="var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-7,8,18,25),1))" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"><path d="M55.8 16.2V9.9H15.6v6.3h40.2m-39 9.3v12.4h10.3V25.5H16.8M56 29.7H45.7v25.8H56V29.7z" data-fill="" fill="var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1))"></path><g fill="none"><path d="M62.1 5.6l-2.3-3.1L57.3 5l-2.6-2.5L52.1 5l-2.6-2.5L47 5l-2.5-2.5L41.8 5l-2.5-2.5L36.7 5l-2.6-2.5L31.5 5 29 2.5 26.4 5l-2.6-2.5L21.2 5l-2.6-2.5L16.1 5l-2.6-2.5-2.9 3.1v8.7 40.6c-.4 4.9-2.4 6.5-4.3 6.5.5.2 1.1.3 1.8.3h54V5.6"></path><path d="M44.7 21.5H57m-12.3 4H57M10.6 14.3H2v41.3c0 2.6 1.9 5 4.3 5.7m9.5-39.8h12.3M15.8 42.7h12.3m-12.3 4.1h12.3M15.8 51h12.3m-12.3 4.5h12.3m3.2-34H41m-9.7 4.1H41m-9.7 4.3H41m-9.7 4.2H41m-9.7 4.2H41m-9.7 4.2H41m-9.7 13H41m-9.7-8.7H41"></path><path d="M31.3 51H41"></path></g></svg>';

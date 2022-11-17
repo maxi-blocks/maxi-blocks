@@ -37,6 +37,24 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		version.value = value;
 	});
 
-	window.$crisp = [];
-	window.CRISP_WEBSITE_ID = '8434178e-1d60-45d5-b112-14a32ee6903c';
+	const chatLink = document.getElementById('chat-with-maxi-support');
+
+	chatLink?.addEventListener('click', function openChatSupport(e) {
+		e.preventDefault();
+
+		const chat = document.getElementById('crisp-chatbox');
+
+		if (chat) {
+			window.$crisp.push(['do', 'chat:open']);
+		} else {
+			window.$crisp = [];
+			window.CRISP_WEBSITE_ID = '8434178e-1d60-45d5-b112-14a32ee6903c';
+			const crispScript = document.createElement('script');
+			crispScript.type = 'text/javascript';
+			crispScript.src = 'https://client.crisp.chat/l.js';
+			crispScript.async = 1;
+			document.getElementsByTagName('head')[0].appendChild(crispScript);
+			window.$crisp.push(['do', 'chat:open']);
+		}
+	});
 });

@@ -209,6 +209,7 @@ class edit extends MaxiBlockComponent {
 				<MaxiPopoverButton
 					key={`popover-${uniqueID}`}
 					ref={this.blockRef}
+					refWidth={this.blockRef}
 					isOpen={isUploaderOpen}
 					{...this.props}
 				>

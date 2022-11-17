@@ -36,4 +36,7 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		const { value } = select;
 		version.value = value;
 	});
+
+	window.$crisp = [];
+	window.CRISP_WEBSITE_ID = '8434178e-1d60-45d5-b112-14a32ee6903c';
 });

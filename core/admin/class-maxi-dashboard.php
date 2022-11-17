@@ -6,7 +6,6 @@ if (!defined('ABSPATH')) {
 if (!class_exists('MaxiBlocks_Dashboard')):
     class MaxiBlocks_Dashboard
     {
-        
         /**
         * Plugin's dashboard instance.
         *
@@ -74,6 +73,12 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     MAXI_PLUGIN_URL_PATH.'build/admin.js'
                 );
                 wp_enqueue_script('maxi-admin');
+
+                // wp_register_script(
+                //     'maxi-support-chat',
+                //     'https://client.crisp.chat/l.js'
+                // );
+                // wp_enqueue_script('maxi-support-chat');
             }
         }
 

@@ -105,8 +105,12 @@ const SquareControl = props => {
 
 	const onReset = () => {
 		switch (type) {
-			case 'resize':
 			case 'drag':
+				changeXAxis(0);
+				changeYAxis(0);
+				onSave();
+				break;
+			case 'resize':
 			case 'origin':
 				onSave();
 				break;

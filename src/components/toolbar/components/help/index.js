@@ -33,12 +33,7 @@ const Help = props => {
 	const helpContent = () => {
 		return (
 			<div className='toolbar-item toolbar-item__help'>
-				<Button
-					href='#'
-					onClick={() =>
-						crispChat('8434178e-1d60-45d5-b112-14a32ee6903c')
-					}
-				>
+				<Button href='#' onClick={() => crispChat()}>
 					<Icon className='toolbar-item__icon' icon={toolbarHelp} />
 				</Button>
 			</div>

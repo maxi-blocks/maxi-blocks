@@ -2,8 +2,7 @@
  * WordPress dependencies
  */
 
-const crispChat = (id = null) => {
-	console.log('crisp chat');
+const crispChat = (id = '8434178e-1d60-45d5-b112-14a32ee6903c') => {
 	const crispChat = () => {
 		window.$crisp = [];
 		window.CRISP_WEBSITE_ID = id;
@@ -15,16 +14,13 @@ const crispChat = (id = null) => {
 	};
 
 	const chat = document.getElementById('crisp-chatbox');
-	console.log(chat);
 
 	if (chat) {
-		console.log('chat exists');
 		window.$crisp.push(['do', 'chat:open']);
 		return;
 	}
 
 	if (id) {
-		console.log('id is here');
 		if (document.readyState === 'complete') crispChat();
 		else {
 			window.attachEvent

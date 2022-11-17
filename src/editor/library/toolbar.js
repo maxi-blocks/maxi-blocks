@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import { library, help, fullScreen } from '../../icons';
 import Button from '../../components/button';
+import crispChat from '../../components/toolbar/components/crisp-chat';
 
 /**
  * External dependencies
@@ -108,7 +109,13 @@ const LibraryToolbar = props => {
 					))}
 				</div>
 			)}
-			<a className='maxi-cloud-toolbar__help-button'>
+			<a
+				className='maxi-cloud-toolbar__help-button'
+				onClick={e => {
+					e.preventDefault();
+					crispChat();
+				}}
+			>
 				{help}
 				{__('Help', 'maxi-blocks')}
 			</a>

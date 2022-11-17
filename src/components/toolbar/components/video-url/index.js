@@ -27,7 +27,7 @@ const VideoUrl = props => {
 	return (
 		<ToolbarPopover
 			className='toolbar-item__video-url'
-			tooltip={__('Video url', 'maxi-blocks')}
+			tooltip={__('Video URL', 'maxi-blocks')}
 			advancedOptions='video'
 			icon={toolbarVideo}
 		>

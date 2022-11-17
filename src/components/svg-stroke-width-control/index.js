@@ -14,10 +14,24 @@ import AdvancedNumberControl from '../advanced-number-control';
 import { setSVGStrokeWidth } from '../../extensions/svg';
 
 /**
+ * External dependencies
+ */
+import classnames from 'classnames';
+
+/**
  * Component
  */
 const SvgStrokeWidthControl = props => {
-	const { onChange, breakpoint, prefix, content, isHover = false } = props;
+	const {
+		onChange,
+		breakpoint,
+		prefix,
+		content,
+		isHover = false,
+		className,
+	} = props;
+
+	const classes = classnames('maxi-svg-stroke-width-control', className);
 
 	const strokeAttrLabel = `${prefix}stroke-${breakpoint}${
 		isHover ? '-hover' : ''
@@ -34,6 +48,7 @@ const SvgStrokeWidthControl = props => {
 	return (
 		<AdvancedNumberControl
 			label={__('Stroke width', 'maxi-blocks')}
+			className={classes}
 			value={stroke}
 			placeholder={placeholderStroke}
 			onChangeValue={rawVal => {

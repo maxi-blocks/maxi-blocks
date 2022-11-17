@@ -142,11 +142,14 @@ const TransformControl = props => {
 		insertInlineStyles(obj);
 	};
 
-	const getLastBreakpointTransformAttribute = prop =>
+	const getLastBreakpointTransformAttribute = (
+		prop,
+		attributeHoverSelected = hoverSelected
+	) =>
 		getCurrentAndHigherBreakpoints().reduce((acc, currentBreakpoint) => {
 			const attribute =
 				props?.[`${prop}-${currentBreakpoint}`]?.[transformTarget]?.[
-					hoverSelected
+					attributeHoverSelected
 				];
 			if (
 				isEmpty(acc) &&
@@ -154,8 +157,11 @@ const TransformControl = props => {
 				Object.values(attribute).some(value => !isNil(value))
 			)
 				return attribute;
+
 			return acc;
-		}, {});
+		}, null) ||
+		(attributeHoverSelected !== 'normal' &&
+			getLastBreakpointTransformAttribute(prop, 'normal'));
 
 	const getOptions = () => {
 		const options = [

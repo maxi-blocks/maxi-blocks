@@ -47,22 +47,22 @@ describe('Indicators', () => {
 		});
 
 		const paddingTop = await page.$eval(
-			'.maxi-indicators__padding.maxi-indicators__padding--top',
+			'.maxi-block-indicators__padding.maxi-block-indicators__padding--top',
 			div => div.outerHTML
 		);
 
 		const paddingRight = await page.$eval(
-			'.maxi-indicators__padding.maxi-indicators__padding--right',
+			'.maxi-block-indicators__padding.maxi-block-indicators__padding--right',
 			div => div.outerHTML
 		);
 
 		const paddingBottom = await page.$eval(
-			'.maxi-indicators__padding.maxi-indicators__padding--bottom',
+			'.maxi-block-indicators__padding.maxi-block-indicators__padding--bottom',
 			div => div.outerHTML
 		);
 
 		const paddingLeft = await page.$eval(
-			'.maxi-indicators__padding.maxi-indicators__padding--left',
+			'.maxi-block-indicators__padding.maxi-block-indicators__padding--left',
 			div => div.outerHTML
 		);
 
@@ -72,22 +72,22 @@ describe('Indicators', () => {
 		expect(paddingLeft).toMatchSnapshot();
 
 		const marginTop = await page.$eval(
-			'.maxi-indicators__margin.maxi-indicators__margin--top',
+			'.maxi-block-indicators__margin.maxi-block-indicators__margin--top',
 			div => div.outerHTML
 		);
 
 		const marginRight = await page.$eval(
-			'.maxi-indicators__margin.maxi-indicators__margin--right',
+			'.maxi-block-indicators__margin.maxi-block-indicators__margin--right',
 			div => div.outerHTML
 		);
 
 		const marginBottom = await page.$eval(
-			'.maxi-indicators__margin.maxi-indicators__margin--bottom',
+			'.maxi-block-indicators__margin.maxi-block-indicators__margin--bottom',
 			div => div.outerHTML
 		);
 
 		const marginLeft = await page.$eval(
-			'.maxi-indicators__margin.maxi-indicators__margin--left',
+			'.maxi-block-indicators__margin.maxi-block-indicators__margin--left',
 			div => div.outerHTML
 		);
 		expect(marginTop).toMatchSnapshot();
@@ -125,22 +125,22 @@ describe('Indicators', () => {
 		await changeResponsive(page, 'xs');
 
 		const paddingTopXs = await page.$eval(
-			'.maxi-indicators__padding.maxi-indicators__padding--top',
+			'.maxi-block-indicators__padding.maxi-block-indicators__padding--top',
 			div => div.outerHTML
 		);
 
 		const paddingRightXs = await page.$eval(
-			'.maxi-indicators__padding.maxi-indicators__padding--right',
+			'.maxi-block-indicators__padding.maxi-block-indicators__padding--right',
 			div => div.outerHTML
 		);
 
 		const paddingBottomXs = await page.$eval(
-			'.maxi-indicators__padding.maxi-indicators__padding--bottom',
+			'.maxi-block-indicators__padding.maxi-block-indicators__padding--bottom',
 			div => div.outerHTML
 		);
 
 		const paddingLeftXs = await page.$eval(
-			'.maxi-indicators__padding.maxi-indicators__padding--left',
+			'.maxi-block-indicators__padding.maxi-block-indicators__padding--left',
 			div => div.outerHTML
 		);
 
@@ -150,22 +150,22 @@ describe('Indicators', () => {
 		expect(paddingLeftXs).toMatchSnapshot();
 
 		const marginTopXs = await page.$eval(
-			'.maxi-indicators__margin.maxi-indicators__margin--top',
+			'.maxi-block-indicators__margin.maxi-block-indicators__margin--top',
 			div => div.outerHTML
 		);
 
 		const marginRightXs = await page.$eval(
-			'.maxi-indicators__margin.maxi-indicators__margin--right',
+			'.maxi-block-indicators__margin.maxi-block-indicators__margin--right',
 			div => div.outerHTML
 		);
 
 		const marginBottomXs = await page.$eval(
-			'.maxi-indicators__margin.maxi-indicators__margin--bottom',
+			'.maxi-block-indicators__margin.maxi-block-indicators__margin--bottom',
 			div => div.outerHTML
 		);
 
 		const marginLeftXs = await page.$eval(
-			'.maxi-indicators__margin.maxi-indicators__margin--left',
+			'.maxi-block-indicators__margin.maxi-block-indicators__margin--left',
 			div => div.outerHTML
 		);
 		expect(marginTopXs).toMatchSnapshot();
@@ -176,22 +176,22 @@ describe('Indicators', () => {
 		await changeResponsive(page, 'm');
 
 		const paddingTopM = await page.$eval(
-			'.maxi-indicators__padding.maxi-indicators__padding--top',
+			'.maxi-block-indicators__padding.maxi-block-indicators__padding--top',
 			div => div.outerHTML
 		);
 
 		const paddingRightM = await page.$eval(
-			'.maxi-indicators__padding.maxi-indicators__padding--right',
+			'.maxi-block-indicators__padding.maxi-block-indicators__padding--right',
 			div => div.outerHTML
 		);
 
 		const paddingBottomM = await page.$eval(
-			'.maxi-indicators__padding.maxi-indicators__padding--bottom',
+			'.maxi-block-indicators__padding.maxi-block-indicators__padding--bottom',
 			div => div.outerHTML
 		);
 
 		const paddingLeftM = await page.$eval(
-			'.maxi-indicators__padding.maxi-indicators__padding--left',
+			'.maxi-block-indicators__padding.maxi-block-indicators__padding--left',
 			div => div.outerHTML
 		);
 
@@ -201,22 +201,22 @@ describe('Indicators', () => {
 		expect(paddingLeftM).toMatchSnapshot();
 
 		const marginTopM = await page.$eval(
-			'.maxi-indicators__margin.maxi-indicators__margin--top',
+			'.maxi-block-indicators__margin.maxi-block-indicators__margin--top',
 			div => div.outerHTML
 		);
 
 		const marginRightM = await page.$eval(
-			'.maxi-indicators__margin.maxi-indicators__margin--right',
+			'.maxi-block-indicators__margin.maxi-block-indicators__margin--right',
 			div => div.outerHTML
 		);
 
 		const marginBottomM = await page.$eval(
-			'.maxi-indicators__margin.maxi-indicators__margin--bottom',
+			'.maxi-block-indicators__margin.maxi-block-indicators__margin--bottom',
 			div => div.outerHTML
 		);
 
 		const marginLeftM = await page.$eval(
-			'.maxi-indicators__margin.maxi-indicators__margin--left',
+			'.maxi-block-indicators__margin.maxi-block-indicators__margin--left',
 			div => div.outerHTML
 		);
 		expect(marginTopM).toMatchSnapshot();

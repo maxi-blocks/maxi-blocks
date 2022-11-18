@@ -75,7 +75,7 @@ const getBlockStyle = (attributes, breakpoint) => {
 			isFullWidth && isNil(width) ? '100%' : `${width}${widthUnit}`
 		} + ${marginValue * 2}px)`,
 		maxWidth: `calc(${
-			isFullWidth && isNil(maxWidth)
+			isFullWidth || isNil(maxWidth)
 				? '100%'
 				: `${maxWidth}${maxWidthUnit}`
 		} + ${marginValue * 2}px)`,

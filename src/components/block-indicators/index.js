@@ -1,0 +1,221 @@
+/**
+ * WordPress dependencies
+ */
+import { useState } from '@wordpress/element';
+
+/**
+ * Internal dependencies
+ */
+import { getLastBreakpointAttribute } from '../../extensions/styles';
+
+/**
+ * External dependencies
+ */
+import classnames from 'classnames';
+import { round, isNil, capitalize } from 'lodash';
+import { Resizable } from 're-resizable';
+
+/**
+ * Styles
+ */
+import './editor.scss';
+
+/**
+ * Component
+ */
+
+const minSizeValue = 10;
+const minSize = `var(--maxi-block-indicators-min-size, ${minSizeValue}px)`;
+
+const Indicator = props => {
+	const {
+		value: val,
+		unit,
+		dir,
+		type,
+		breakpoint,
+		insertInlineStyles,
+		onChange,
+		cleanInlineStyles,
+	} = props;
+
+	const classes = classnames(
+		'maxi-block-indicator',
+		`maxi-block-indicator--${dir}`,
+		`maxi-block-indicators__${type}`
+	);
+
+	const [value, setValue] = useState(val);
+
+	const getDirection = dir => {
+		if (type === 'margin') return dir;
+
+		// Need to do inverse for padding to allow good UX on dragging
+		switch (dir) {
+			case 'top':
+				return 'bottom';
+			case 'bottom':
+				return 'top';
+			case 'left':
+				return 'right';
+			case 'right':
+			default:
+				return 'left';
+		}
+	};
+
+	const isVertical = dir === 'top' || dir === 'bottom';
+
+	const style = {
+		[isVertical ? 'height' : 'width']: `${value}${unit}`,
+		[isVertical ? 'minHeight' : 'minWidth']: minSize,
+		...(type === 'margin' && {
+			[dir]: `${
+				value <= 0 ? `calc(${minSize} * -1)` : `${-value}${unit}`
+			}`,
+		}),
+		...(type === 'padding' &&
+			!isVertical && {
+				[dir]: 0,
+			}),
+	};
+
+	const size = {
+		height: '100%',
+		width: '100%',
+		[isVertical ? 'minHeight' : 'minWidth']: minSize,
+	};
+
+	const handleStyles = {
+		[getDirection(dir)]: {
+			[getDirection(dir)]: 0,
+			[isVertical ? 'height' : 'width']: `${value}${unit}`,
+			[isVertical ? 'minHeight' : 'minWidth']: minSize,
+		},
+	};
+
+	const handleChanges = (e, ref) => {
+		e.preventDefault();
+
+		const newValue =
+			dir === 'top' || dir === 'bottom'
+				? round(ref.getBoundingClientRect().height)
+				: round(ref.getBoundingClientRect().width);
+
+		setValue(newValue);
+
+		return newValue;
+	};
+
+	const handleOnResize = (type, e, dir, ref) => {
+		const newValue = handleChanges(e, ref);
+
+		insertInlineStyles({
+			obj: {
+				[`${type}-${getDirection(dir)}`]: `${newValue}px`,
+				transition: 'none',
+			},
+		});
+	};
+
+	const handleOnResizeStop = (type, e, dir, ref) => {
+		const newValue = handleChanges(e, ref);
+
+		onChange({
+			[`${type}-${getDirection(dir)}-${breakpoint}`]: newValue,
+		});
+		cleanInlineStyles();
+	};
+
+	const showContent =
+		(unit === 'px' && value > 19) || (unit !== 'px' && value > 2);
+
+	const content = showContent ? (
+		<span>{`${capitalize(type)}: ${value}${unit}`}</span>
+	) : null;
+
+	return (
+		<div key={`${type}-indicator-${dir}`} className={classes} style={style}>
+			<Resizable
+				className='maxi-block-indicator__content'
+				handleClasses={{
+					[getDirection(dir)]: classnames(
+						`maxi-block-indicators__${dir}-handle`,
+						'maxi-block-indicators__handle'
+					),
+				}}
+				minWidth={0}
+				minHeight={0}
+				enable={{
+					top: dir === getDirection('top'),
+					right: dir === getDirection('right'),
+					bottom: dir === getDirection('bottom'),
+					left: dir === getDirection('left'),
+				}}
+				defaultSize={size}
+				size={size}
+				handleWrapperStyle={handleStyles}
+				handleStyles={handleStyles}
+				onResize={(e, dir, ref) => handleOnResize(type, e, dir, ref)}
+				onResizeStop={(e, dir, ref) =>
+					handleOnResizeStop(type, e, dir, ref)
+				}
+			>
+				{content}
+			</Resizable>
+		</div>
+	);
+};
+
+const MainIndicator = props => {
+	const { type, breakpoint, avoidIndicators } = props;
+
+	return ['top', 'right', 'bottom', 'left'].map(dir => {
+		if (avoidIndicators[type] && avoidIndicators[type].includes(dir))
+			return null;
+
+		const value =
+			getLastBreakpointAttribute({
+				target: `${type}-${dir}`,
+				breakpoint,
+				attributes: props,
+			}) || 0;
+
+		// In case it has value, we might think a way to show it 🤔
+		if (isNil(value) && value === 'auto') return null;
+
+		const unit =
+			getLastBreakpointAttribute({
+				target: `${type}-${dir}-unit`,
+				breakpoint,
+				attributes: props,
+			}) || 'px';
+
+		return (
+			<Indicator
+				value={value}
+				unit={unit}
+				dir={dir}
+				type={type}
+				breakpoint={breakpoint}
+				{...props}
+			/>
+		);
+	});
+};
+
+const BlockIndicators = props => {
+	const { children, className } = props;
+
+	const classes = classnames('maxi-block-indicators', className);
+
+	return (
+		<div className={classes}>
+			<MainIndicator type='margin' {...props} />
+			{children}
+			<MainIndicator type='padding' {...props} />
+		</div>
+	);
+};
+
+export default BlockIndicators;

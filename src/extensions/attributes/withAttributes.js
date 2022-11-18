@@ -34,6 +34,9 @@ const allowedBlocks = [
 	'maxi-blocks/accordion-maxi',
 	'maxi-blocks/video-maxi',
 	'maxi-blocks/search-maxi',
+	'maxi-blocks/navigation-menu-maxi',
+	'maxi-blocks/navigation-link-maxi',
+	'maxi-blocks/navigation-submenu-maxi',
 ];
 
 /**

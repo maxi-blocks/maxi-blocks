@@ -68,6 +68,11 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 						props.name === 'maxi-blocks/video-maxi'
 							? props.attributes['overlay-mediaID']
 								? x + videoWidth / 2 - popoverWidth / 2
+								: !props.attributes['video-width-general'] &&
+								  !props.attributes['video-max-width-general']
+								? x + width / 2 - popoverWidth / 2
+								: props.attributes['video-max-width-general']
+								? x + videoWidth / 2 - popoverWidth / 2
 								: props.attributes['video-width-general'] >
 								  width
 								? x + width / 2 - popoverWidth / 2

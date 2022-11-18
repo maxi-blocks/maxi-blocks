@@ -39,6 +39,7 @@ const ColorControl = props => {
 		paletteOpacity,
 		color,
 		defaultColorAttributes,
+		onReset,
 		globalProps,
 		onChangeInline,
 		onChange,
@@ -98,66 +99,76 @@ const ColorControl = props => {
 			  })
 			: onChangeValue(obj);
 
-	const onReset = () => {
-		let defaultColorAttr = defaultColorAttributes;
-
-		if (!defaultColorAttr) {
-			defaultColorAttr = {};
-
-			defaultColorAttr.paletteStatus = getDefaultAttribute(
-				getAttributeKey(
-					'palette-status',
-					isHover,
-					prefix,
-					avoidBreakpointForDefault ? '' : deviceType
-				)
-			);
-			defaultColorAttr.paletteColor = getDefaultAttribute(
-				getAttributeKey(
-					'palette-color',
-					isHover,
-					prefix,
-					avoidBreakpointForDefault ? '' : deviceType
-				)
-			);
-			defaultColorAttr.paletteOpacity = getDefaultAttribute(
-				getAttributeKey(
-					'palette-opacity',
-					isHover,
-					prefix,
-					avoidBreakpointForDefault ? '' : deviceType
-				)
-			);
-			defaultColorAttr.color = getDefaultAttribute(
-				getAttributeKey(
-					'color',
-					isHover,
-					prefix,
-					avoidBreakpointForDefault ? '' : deviceType
-				)
-			);
-		}
-
-		if (showPalette)
-			onChange({
-				paletteStatus: defaultColorAttr.paletteStatus,
-				paletteColor: defaultColorAttr.paletteColor,
-				paletteOpacity: paletteOpacity || 1,
-				color,
-			});
-		else {
-			const defaultColor = `rgba(${getPaletteColor({
-				clientId,
-				color: paletteColor || defaultColorAttr.paletteColor,
-				blockStyle,
-			})},${paletteOpacity || 1})`;
-
-			onChange({
+	const onResetValues = () => {
+		if (onReset)
+			onReset({
+				showPalette,
 				paletteStatus,
 				paletteColor,
 				paletteOpacity,
-				color: defaultColor,
+				color,
 			});
+		else {
+			let defaultColorAttr = defaultColorAttributes;
+
+			if (!defaultColorAttr) {
+				defaultColorAttr = {};
+
+				defaultColorAttr.paletteStatus = getDefaultAttribute(
+					getAttributeKey(
+						'palette-status',
+						isHover,
+						prefix,
+						avoidBreakpointForDefault ? '' : deviceType
+					)
+				);
+				defaultColorAttr.paletteColor = getDefaultAttribute(
+					getAttributeKey(
+						'palette-color',
+						isHover,
+						prefix,
+						avoidBreakpointForDefault ? '' : deviceType
+					)
+				);
+				defaultColorAttr.paletteOpacity = getDefaultAttribute(
+					getAttributeKey(
+						'palette-opacity',
+						isHover,
+						prefix,
+						avoidBreakpointForDefault ? '' : deviceType
+					)
+				);
+				defaultColorAttr.color = getDefaultAttribute(
+					getAttributeKey(
+						'color',
+						isHover,
+						prefix,
+						avoidBreakpointForDefault ? '' : deviceType
+					)
+				);
+			}
+
+			if (showPalette)
+				onChange({
+					paletteStatus: defaultColorAttr.paletteStatus,
+					paletteColor: defaultColorAttr.paletteColor,
+					paletteOpacity: paletteOpacity || 1,
+					color,
+				});
+			else {
+				const defaultColor = `rgba(${getPaletteColor({
+					clientId,
+					color: paletteColor || defaultColorAttr.paletteColor,
+					blockStyle,
+				})},${paletteOpacity || 1})`;
+
+				onChange({
+					paletteStatus,
+					paletteColor,
+					paletteOpacity,
+					color: defaultColor,
+				});
+			}
 		}
 	};
 
@@ -194,7 +205,7 @@ const ColorControl = props => {
 					disableOpacity={disableOpacity}
 					opacity={paletteOpacity}
 					className={className}
-					onReset={onReset}
+					onReset={onResetValues}
 					onResetOpacity={onResetOpacity}
 					noColorPrefix={noColorPrefix}
 				/>
@@ -231,7 +242,7 @@ const ColorControl = props => {
 					color={getRGBA(color)}
 					onChangeInlineValue={onChangeInlineValue}
 					onChangeValue={onChangeValue}
-					onReset={onReset}
+					onReset={onResetValues}
 					onResetOpacity={onResetOpacity}
 					disableColorDisplay={disableColorDisplay}
 					disableOpacity={disableOpacity}

@@ -17,6 +17,9 @@ describe('Text generator', () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 
+		// Wait for toolbar to be visible
+		await page.waitForSelector('.toolbar-wrapper');
+
 		// open more settings
 		await page.$eval(
 			'.toolbar-wrapper .toolbar-item__more-settings button',
@@ -35,6 +38,7 @@ describe('Text generator', () => {
 
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('1');
+		await page.waitForTimeout(150);
 
 		// sentences
 		await page.$$eval(
@@ -44,6 +48,7 @@ describe('Text generator', () => {
 
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('1');
+		await page.waitForTimeout(150);
 
 		await page.$eval(
 			'.components-popover__content .toolbar-item__text-generator-blocks__popover button',

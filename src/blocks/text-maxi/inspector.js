@@ -12,10 +12,10 @@ import {
 	FontLevelControl,
 	SettingTabsControl,
 } from '../../components';
+import { ListOptionsControl } from './components';
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { customCss } from './data';
-import listTab from './list-tab';
 import { withMaxiInspector } from '../../extensions/inspector';
 
 /**
@@ -65,7 +65,15 @@ const Inspector = props => {
 											),
 											indicatorProps: ['textLevel'],
 										},
-									...(isList && listTab(props)),
+									...(isList && {
+										label: __(
+											'List options',
+											'maxi-blocks'
+										),
+										content: (
+											<ListOptionsControl {...props} />
+										),
+									}),
 									...inspectorTabs.alignment({
 										props,
 										isTextAlignment: true,

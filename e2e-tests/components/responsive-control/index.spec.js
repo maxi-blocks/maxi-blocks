@@ -15,8 +15,8 @@ import {
 describe('ResponsiveControl', () => {
 	it('Test the responsive control', async () => {
 		await createNewPost();
-		await changeResponsive(page, 'xs');
 		await insertBlock('Button Maxi');
+		await changeResponsive(page, 'xs');
 		await openSidebarTab(page, 'advanced', 'breakpoint');
 
 		await editAdvancedNumberControl({

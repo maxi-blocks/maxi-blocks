@@ -4,6 +4,11 @@
 import { addFilter } from '@wordpress/hooks';
 
 /**
+ * Internal dependencies
+ */
+import { WithLink } from './utils';
+
+/**
  * General
  */
 const allowedBlocks = [
@@ -21,7 +26,6 @@ const allowedBlocks = [
 	'maxi-blocks/navigation-link-maxi',
 	'maxi-blocks/navigation-submenu-maxi',
 	'maxi-blocks/accordion-maxi',
-	'maxi-blocks/pane-maxi',
 	'maxi-blocks/search-maxi',
 ];
 
@@ -35,28 +39,8 @@ const allowedBlocks = [
 const withSave = (element, blockType, attributes) => {
 	const linkSettings = { ...attributes.linkSettings };
 
-	if (
-		allowedBlocks.includes(blockType.name) &&
-		!!linkSettings &&
-		!!linkSettings.url &&
-		!linkSettings?.disabled
-	) {
-		let rel = '';
-		if (linkSettings.nofollow) rel += ' nofollow';
-		if (linkSettings.sponsored) rel += ' sponsored';
-		if (linkSettings.ugc) rel += ' ugc';
-
-		return (
-			// eslint-disable-next-line react/jsx-no-target-blank
-			<a
-				className='maxi-link-wrapper'
-				href={linkSettings.url}
-				target={linkSettings.opensInNewTab ? '_blank' : '_self'}
-				rel={rel}
-			>
-				{element}
-			</a>
-		);
+	if (allowedBlocks.includes(blockType.name)) {
+		return <WithLink linkSettings={linkSettings}>{element}</WithLink>;
 	}
 
 	return element;

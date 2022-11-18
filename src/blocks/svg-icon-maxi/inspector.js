@@ -11,12 +11,12 @@ import {
 	AccordionControl,
 	BlockStylesControl,
 	CustomLabel,
+	ResponsiveTabsControl,
 	SettingTabsControl,
-	SvgColorControl,
 	SvgStrokeWidthControl,
 	SvgWidthControl,
-	SvgAltControl,
 } from '../../components';
+import { SvgAltControl, SvgColorControl } from './components';
 import {
 	getColorRGBAString,
 	getGroupAttributes,
@@ -24,7 +24,6 @@ import {
 import { setSVGContentWithBlockStyle } from '../../extensions/svg';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { customCss } from './data';
-import ResponsiveTabsControl from '../../components/responsive-tabs-control';
 import { withMaxiInspector } from '../../extensions/inspector';
 
 /**

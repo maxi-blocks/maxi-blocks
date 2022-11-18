@@ -253,6 +253,7 @@ export const getImageBackgroundObject = ({
 	prefix = '',
 	breakpoint,
 	isParallax = false,
+	ignoreMediaAttributes = false,
 	...props
 }) => {
 	const response = {
@@ -266,7 +267,7 @@ export const getImageBackgroundObject = ({
 		prefix,
 	});
 
-	if (isEmpty(bgImageUrl)) return {};
+	if (isEmpty(bgImageUrl) && !ignoreMediaAttributes) return {};
 
 	const getBgImageAttributeValue = (target, isHoverParam = isHover) =>
 		getAttributeValue({
@@ -589,6 +590,7 @@ const getBackgroundLayers = ({
 	blockStyle,
 	prefix,
 	breakpoint,
+	ignoreMediaAttributes,
 }) => {
 	layers.forEach(layer => {
 		const { type } = layer;
@@ -713,6 +715,7 @@ const getBackgroundLayers = ({
 									prefix,
 									breakpoint,
 									isParallax: parallaxStatus,
+									ignoreMediaAttributes,
 								}),
 								getWrapperObject({
 									...getGroupAttributes(
@@ -1068,6 +1071,7 @@ export const getBlockBackgroundStyles = ({
 	prefix = '',
 	blockStyle,
 	rowBorderRadius = {},
+	ignoreMediaAttributes,
 	...props
 }) => {
 	const target = `${rawTarget ?? ''}${isHover ? ':hover' : ''}`;
@@ -1114,6 +1118,7 @@ export const getBlockBackgroundStyles = ({
 							blockStyle,
 							prefix,
 							breakpoint,
+							ignoreMediaAttributes,
 						}),
 					}
 				),

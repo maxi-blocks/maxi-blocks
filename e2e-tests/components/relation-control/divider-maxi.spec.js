@@ -42,6 +42,7 @@ describe('Divider Maxi hover simple actions', () => {
 		const textControls = await page.$$('.maxi-text-control__input');
 		await textControls[1].focus();
 		await page.keyboard.type('Hello World!');
+		await page.waitForTimeout(150);
 
 		// Add target
 		let selectControls = await page.$$('.maxi-select-control__input');

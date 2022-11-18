@@ -7,16 +7,17 @@ import {
 	styleProcessor,
 } from '../../extensions/styles';
 import {
+	getBlockBackgroundStyles,
 	getBoxShadowStyles,
 	getZIndexStyles,
 	getDisplayStyles,
 	getMarginPaddingStyles,
+	getBackgroundStyles,
 	getBorderStyles,
 	getOpacityStyles,
 	getOverflowStyles,
 	getFlexStyles,
 	getSizeStyles,
-	getBackgroundStyles,
 	getIconPathStyles,
 	getIconStyles,
 	getAspectRatio,
@@ -99,6 +100,12 @@ const getHoverObject = props => {
 				isHover: true,
 				blockStyle: props.blockStyle,
 			}),
+		opacity:
+			props['opacity-status-hover'] &&
+			getOpacityStyles(
+				{ ...getGroupAttributes(props, 'opacity', true) },
+				true
+			),
 	};
 
 	return response;
@@ -324,6 +331,29 @@ const getStyles = props => {
 				' .maxi-video-block__popup-wrapper': getLightBoxObject(props),
 				' .maxi-video-block__video-container':
 					getVideoContainerOject(props),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(props, [
+						'blockBackground',
+						'border',
+						'borderWidth',
+						'borderRadius',
+					]),
+					blockStyle: props.blockStyle,
+				}),
+				...getBlockBackgroundStyles({
+					...getGroupAttributes(
+						props,
+						[
+							'blockBackground',
+							'border',
+							'borderWidth',
+							'borderRadius',
+						],
+						true
+					),
+					isHover: true,
+					blockStyle: props.blockStyle,
+				}),
 				...(playerType === 'video'
 					? {
 							' .maxi-video-block__video-player':

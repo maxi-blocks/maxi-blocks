@@ -6,15 +6,17 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { getColumnDefaultValue } from '../../extensions/column-templates';
+import {
+	AdvancedNumberControl,
+	SelectControl,
+	ToggleSwitch,
+} from '../../../../components';
+import { getColumnDefaultValue } from '../../../../extensions/column-templates';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
-import AdvancedNumberControl from '../advanced-number-control';
-import SelectControl from '../select-control';
-import { ToggleSwitch } from '../../components';
+} from '../../../../extensions/styles';
 
 /**
  * Component

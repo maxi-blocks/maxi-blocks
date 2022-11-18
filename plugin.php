@@ -3,10 +3,10 @@
 /**
  * Plugin Name: Maxi Blocks - Last Github version
  * Plugin URI:
- * Description: MaxiBlocks — Last update: some moment of May 2022 lol
+ * Description: MaxiBlocks
  * Author: Gutenberg Den
  * Author URI:
- * Version: 0.1
+ * Version: 0.0.1-SC3
  * License: GPL2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  */

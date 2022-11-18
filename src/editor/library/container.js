@@ -32,7 +32,7 @@ import {
 	connectRefinementList,
 	connectMenu,
 	connectHierarchicalMenu,
-	ClearRefinements,
+	connectCurrentRefinements,
 	Menu,
 	Stats,
 	Configure,
@@ -141,13 +141,13 @@ const MasonryItem = props => {
 						{target === 'button-icon' ||
 						target === 'search-icon' ||
 						target === 'navigation-item-indicator-icon' ||
-						target.includes('Line')
+						target.includes('Line') ||
+						target.includes('video-icon')
 							? serial.replace(' Line', '').replace(' line', '')
 							: [
 									'image-shape',
 									'bg-shape',
 									'sidebar-block-shape',
-									'video-icon',
 							  ].includes(target) || target.includes('Shape')
 							? serial.replace(' shape', '')
 							: serial}
@@ -265,31 +265,108 @@ const MenuSelect = ({ items, currentRefinement, refine }) => {
 	);
 };
 
-const HierarchicalMenu = ({ items, refine }) =>
-	!isEmpty(items) && (
-		<ul>
-			{items.map(item => (
-				<li key={item.label} className='ais-HierarchicalMenu-item'>
-					<a
-						href='#'
-						onClick={event => {
-							event.preventDefault();
-							refine(item.value);
-						}}
+const HierarchicalMenu = ({ items, refine, type = 'firstLevel' }) => {
+	// hack to fix issue #3930: top level tags resetting when we choose a second-level tag
+	const fixMenuBug = el => {
+		const topLevelParent =
+			el.target === 'a'
+				? el?.currentTarget?.parentNode?.parentNode?.parentNode
+						?.parentNode
+				: el?.parentNode?.parentNode?.parentNode;
+
+		if (
+			isEmpty(topLevelParent) ||
+			topLevelParent.classList.contains('maxi__hide-top-tags')
+		)
+			return;
+
+		const topLevelElements = topLevelParent?.childNodes;
+
+		if (!isEmpty(topLevelElements)) {
+			topLevelParent.classList.add('maxi__hide-top-tags');
+			topLevelElements.forEach(element =>
+				element.classList.add('maxi__show-top-tag')
+			);
+		}
+	};
+	return (
+		!isEmpty(items) && (
+			<ul>
+				{items.map(item => (
+					<li
+						key={item.label}
+						className={`ais-HierarchicalMenu-item ais-HierarchicalMenu-item__${type} ais-HierarchicalMenu-item__${item.label
+							.replace(/\s+/g, '-')
+							.toLowerCase()}`}
 					>
-						{unescape(item.label)} ({item.count})
-					</a>
-					<ToggleSwitch
-						selected={item.isRefined}
-						onChange={val => refine(item.value)}
-					/>
-					{item.items && (
-						<HierarchicalMenu items={item.items} refine={refine} />
-					)}
-				</li>
-			))}
-		</ul>
+						<a
+							href='#'
+							onClick={event => {
+								type === 'secondLevel' && fixMenuBug(event);
+								event.preventDefault();
+								refine(item.value);
+							}}
+						>
+							{unescape(item.label)} ({item.count})
+						</a>
+						<ToggleSwitch
+							selected={item.isRefined}
+							onChange={() => {
+								type === 'secondLevel' &&
+									fixMenuBug(
+										document.getElementsByClassName(
+											`ais-HierarchicalMenu-item__${item.label
+												.replace(/\s+/g, '-')
+												.toLowerCase()}`
+										)[0]
+									);
+								refine(item.value);
+							}}
+						/>
+						{item.items && (
+							<HierarchicalMenu
+								items={item.items}
+								refine={refine}
+								type='secondLevel'
+							/>
+						)}
+					</li>
+				))}
+			</ul>
+		)
 	);
+};
+
+const ClearRefinements = ({ items, refine }) => {
+	// hack to fix issue #3930: top level tags resetting when we choose a second-level tag
+	const removeMenuBugFix = () => {
+		const lists = document.querySelectorAll('.maxi__hide-top-tags');
+
+		for (const list of lists) {
+			list.classList.remove('maxi__hide-top-tags');
+			const listElements = list.childNodes;
+			for (const element of listElements) {
+				element.classList.remove('maxi__show-top-tag');
+			}
+		}
+	};
+
+	return (
+		<button
+			type='button'
+			className={`ais-ClearRefinements-button ais-ClearRefinements-button${
+				!items.length ? '--disabled' : ''
+			}`}
+			onClick={() => {
+				refine(items);
+				removeMenuBugFix();
+			}}
+			disabled={!items.length}
+		>
+			{__('Clear all filters', 'maxi-blocks')}
+		</button>
+	);
+};
 
 /**
  * Component
@@ -364,7 +441,7 @@ const LibraryContainer = props => {
 	).searchClient;
 
 	const searchClientSvg = typesenseInstantsearchAdapter(
-		'post_title, svg_tag, svg_category'
+		'post_title, svg_tag.lvl0, svg_tag.lvl1, svg_tag.lvl2, svg_category'
 	).searchClient;
 
 	const [isChecked, setChecked] = useState(false);
@@ -376,8 +453,9 @@ const LibraryContainer = props => {
 			case 'accordion-icon-active':
 			case 'search-icon':
 			case 'navigation-item-indicator-icon':
+			case 'video-icon-play':
+			case 'video-icon-close':
 				return 'icon';
-			case 'video-icon':
 			case 'sidebar-block-shape':
 			case 'bg-shape':
 				return 'shape';
@@ -552,7 +630,8 @@ const LibraryContainer = props => {
 			if (
 				[
 					'button-icon',
-					'video-icon',
+					'video-icon-play',
+					'video-icon-close',
 					'accordion-icon',
 					'search-icon',
 					'navigation-item-indicator-icon',
@@ -652,10 +731,9 @@ const LibraryContainer = props => {
 	};
 
 	const CustomRefinementList = connectRefinementList(RefinementList);
-
 	const CustomMenuSelect = connectMenu(MenuSelect);
-
 	const CustomHierarchicalMenu = connectHierarchicalMenu(HierarchicalMenu);
+	const CustomClearRefinements = connectCurrentRefinements(ClearRefinements);
 
 	const masonryGenerator = () => {
 		const elem = document.querySelector(
@@ -703,12 +781,9 @@ const LibraryContainer = props => {
 							/>
 							<CustomHierarchicalMenu
 								attributes={['svg_tag.lvl0', 'svg_tag.lvl1']}
-								limit={20}
-								showMore
-								showLoadingIndicator
-								showMoreLimit={20}
+								limit={100}
 							/>
-							<ClearRefinements />
+							<CustomClearRefinements />
 						</div>
 						<div className='maxi-cloud-container__content-svg-shape'>
 							<div className='maxi-cloud-container__content-svg-shape__search-bar'>
@@ -732,7 +807,7 @@ const LibraryContainer = props => {
 				</div>
 			)}
 
-			{(type.includes('shape') || type === 'video-icon') && (
+			{(type.includes('shape') || type.includes('video-icon')) && (
 				<InstantSearch
 					indexName='svg_icon'
 					searchClient={searchClientSvg}
@@ -740,20 +815,60 @@ const LibraryContainer = props => {
 					<Configure hitsPerPage={49} />
 					<div className='maxi-cloud-container__svg-shape'>
 						<div className='maxi-cloud-container__svg-shape__sidebar maxi-cloud-container__hide-categories'>
-							<SearchBox
-								submit={__('Find', 'maxi-blocks')}
-								autoFocus
-								searchAsYouType
-								showLoadingIndicator
+							{type.includes('shape') && (
+								<SearchBox
+									submit={__('Find', 'maxi-blocks')}
+									autoFocus
+									searchAsYouType
+									showLoadingIndicator
+								/>
+							)}
+							{type === 'video-icon-play' && (
+								<SearchBox
+									submit={__('Find', 'maxi-blocks')}
+									defaultRefinement='play'
+									autoFocus
+									searchAsYouType
+									showLoadingIndicator
+								/>
+							)}
+							{type === 'video-icon-close' && (
+								<SearchBox
+									submit={__('Find', 'maxi-blocks')}
+									defaultRefinement='cross'
+									autoFocus
+									searchAsYouType
+									showLoadingIndicator
+								/>
+							)}
+							<CustomHierarchicalMenu
+								attributes={['svg_tag.lvl0', 'svg_tag.lvl1']}
+								limit={100}
 							/>
-							<CustomRefinementList
-								className='hidden'
-								attribute='svg_category'
-								defaultRefinement={['Shape']}
-								showLoadingIndicator
-							/>
+							{type.includes('shape') && (
+								<CustomRefinementList
+									className='hidden'
+									attribute='svg_category'
+									defaultRefinement={['Shape']}
+									showLoadingIndicator
+								/>
+							)}
 						</div>
 						<div className='maxi-cloud-container__content-svg-shape'>
+							{type.includes('video-icon') && (
+								<div className='maxi-cloud-container__content-svg-shape__search-bar'>
+									<CustomMenuSelect
+										className='maxi-cloud-container__content-svg-shape__categories'
+										attribute='svg_category'
+										translations={{
+											seeAllOption: __(
+												'All icons',
+												'maxi-blocks'
+											),
+										}}
+									/>
+								</div>
+							)}
 							<div className='maxi-cloud-container__sc__content-sc'>
 								<Stats translations={resultsCount} />
 								<InfiniteHits hitComponent={svgShapeResults} />
@@ -811,14 +926,26 @@ const LibraryContainer = props => {
 								searchAsYouType
 								showLoadingIndicator
 							/>
-							<CustomRefinementList
-								className='hidden'
-								attribute='svg_category'
-								defaultRefinement={['Line']}
-								showLoadingIndicator
+							<CustomHierarchicalMenu
+								attributes={['svg_tag.lvl0', 'svg_tag.lvl1']}
+								limit={100}
 							/>
+							<CustomClearRefinements />
 						</div>
 						<div className='maxi-cloud-container__content-svg-shape'>
+							<div className='maxi-cloud-container__content-svg-shape__search-bar'>
+								<CustomMenuSelect
+									className='maxi-cloud-container__content-svg-shape__categories'
+									attribute='svg_category'
+									defaultRefinement='Line'
+									translations={{
+										seeAllOption: __(
+											'All icons',
+											'maxi-blocks'
+										),
+									}}
+								/>
+							</div>
 							<div className='maxi-cloud-container__sc__content-sc'>
 								<Stats translations={resultsCount} />
 								<InfiniteHits hitComponent={svgShapeResults} />
@@ -870,8 +997,9 @@ const LibraryContainer = props => {
 							<PlaceholderCheckboxControl />
 							<CustomHierarchicalMenu
 								attributes={['category.lvl0', 'category.lvl1']}
+								limit={100}
 							/>
-							<ClearRefinements />
+							<CustomClearRefinements />
 						</div>
 						<div className='maxi-cloud-container__patterns__content-patterns'>
 							<Stats translations={resultsCount} />
@@ -905,7 +1033,7 @@ const LibraryContainer = props => {
 									}
 								/>
 							</Accordion>
-							<ClearRefinements />
+							<CustomClearRefinements />
 						</div>
 						<div className='maxi-cloud-container__sc__content-sc'>
 							<Stats translations={resultsCount} />

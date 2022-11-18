@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import ToolbarPopover from '../toolbar-popover';
-import { SvgColor } from '../../../svg-color';
+import SvgColor from '../../../svg-color';
 import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
@@ -47,7 +47,7 @@ function SvgColorToolbar(props) {
 						: toolbarShapeLineColor}
 				</div>
 			}
-			advancedOptions='colour'
+			advancedOptions='icon colour'
 		>
 			<div className='toolbar-item__svg-color__popover'>
 				<SvgColor

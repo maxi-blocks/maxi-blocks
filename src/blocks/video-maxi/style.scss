@@ -109,6 +109,29 @@
 		justify-content: center;
 	}
 }
+.toolbar-item__video-url__popover {
+	display: flex;
+	column-gap: 10px;
+	align-items: center;
+	padding-bottom: 8px;
+
+	.maxi-base-control__field {
+		margin-bottom: 0;
+	}
+}
+.toolbar-item__video-url__popover input,
+.maxi-video-sidebar-url {
+	label {
+		margin-right: 8px;
+	}
+	input {
+		min-width: 200px;
+		border: 1px solid var(--maxi-grey-1-color) !important;
+		padding: 2px 10px !important;
+		color: var(--maxi-grey-7-color) !important;
+		font-size: 12px;
+	}
+}
 
 @keyframes popup-zoom-out {
 	0% {

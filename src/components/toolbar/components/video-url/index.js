@@ -9,7 +9,7 @@ import { useState } from '@wordpress/element';
  */
 
 import ToolbarPopover from '../toolbar-popover';
-import { SettingTabsControl, TextControl } from '../../../';
+import { TextInput } from '../../../';
 import {
 	videoUrlRegex,
 	getParsedVideoUrl,
@@ -20,7 +20,7 @@ import {
 import { toolbarVideo } from '../../../../icons';
 
 const VideoUrl = props => {
-	const { url, onChange, playerType } = props;
+	const { url, onChange } = props;
 
 	const [validationText, setValidationText] = useState(null);
 
@@ -32,7 +32,10 @@ const VideoUrl = props => {
 			icon={toolbarVideo}
 		>
 			<div className='toolbar-item__video-url__popover'>
-				<TextControl
+				<label className='maxi-base-control__label' htmlFor='URL'>
+					{__('URL', 'maxi-blocks')}
+				</label>
+				<TextInput
 					type='url'
 					value={url}
 					placeholder='Youtube, Vimeo, or Direct Link'

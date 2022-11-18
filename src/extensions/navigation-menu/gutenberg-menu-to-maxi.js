@@ -34,6 +34,7 @@ const convertBlocks = blocks => {
 	return res;
 };
 
+// Some of the menus are saved as gutenberg menu blocks (the ones that are created in block editor), we need to convert them to maxi
 const convertGutenbergMenuToMaxi = async menuId => {
 	const menu = select('core').getEntityRecord(
 		'postType',

@@ -52,6 +52,7 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				{...getMaxiBlockAttributes(this.props)}
 			>
+				{/* TODO: Right now the link is selected from toolbar link settings. I think that its fine, but those settings should open on click of link */}
 				<RichText
 					className='maxi-navigation-link-block__content menu-item__content'
 					href={url}

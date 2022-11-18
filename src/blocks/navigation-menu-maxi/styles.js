@@ -256,6 +256,10 @@ const getEffectStyles = (
 	}
 };
 
+const getSubmenuIconStyles = props => {
+	// TODO: the icon is there, the styles are not yet :(
+};
+
 const getMenuItemObject = props => {
 	const prefix = 'menu-item-';
 

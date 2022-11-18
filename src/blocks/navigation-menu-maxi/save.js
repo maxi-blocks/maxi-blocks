@@ -9,6 +9,7 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 const save = props => {
 	const name = 'maxi-blocks/navigation-menu-maxi';
 
+	// TODO: frontend needs to be generated on server side (we can't get selected menu here).
 	return (
 		<MaxiBlock.save
 			tagName='nav'

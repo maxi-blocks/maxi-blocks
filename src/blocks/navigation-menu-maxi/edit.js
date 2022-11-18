@@ -98,6 +98,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	maxiBlockDidMount() {
+		// TODO: if there is no `selectedMenuId` try to select menu from existing on mount
 		const { selectedMenuId } = this.props.attributes;
 
 		if (!selectedMenuId) return;

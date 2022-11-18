@@ -14,6 +14,7 @@ import createNewMenu from './create-new-menu';
  */
 import { sortBy } from 'lodash';
 
+// Taken from https://github.com/WordPress/gutenberg/blob/trunk/packages/block-library/src/navigation/menu-items-to-blocks.js
 const createDataTree = menuItems => {
 	const hashTable = {};
 	const dataTree = [];

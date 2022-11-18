@@ -8,7 +8,7 @@ const isEligible = blockAttributes =>
 const migrate = newAttributes => {
 	newAttributes['background-layers'].forEach((layer, index) =>
 		Object.entries(layer).forEach(([key, value]) => {
-			if (key.includes('size')) {
+			if (key.includes('wrapper-size') || key.includes('svg-size')) {
 				newAttributes['background-layers'][index][
 					key.replace('size', 'width')
 				] = value;

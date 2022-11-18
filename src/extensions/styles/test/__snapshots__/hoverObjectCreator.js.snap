@@ -56,6 +56,48 @@ Object {
   "background-color-s-hover": Object {
     "type": "string",
   },
+  "background-color-wrapper-height-general-hover": Object {
+    "type": "number",
+  },
+  "background-color-wrapper-height-l-hover": Object {
+    "type": "number",
+  },
+  "background-color-wrapper-height-m-hover": Object {
+    "type": "number",
+  },
+  "background-color-wrapper-height-s-hover": Object {
+    "type": "number",
+  },
+  "background-color-wrapper-height-unit-general-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-height-unit-l-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-height-unit-m-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-height-unit-s-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-height-unit-xl-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-height-unit-xs-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-height-unit-xxl-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-height-xl-hover": Object {
+    "type": "number",
+  },
+  "background-color-wrapper-height-xs-hover": Object {
+    "type": "number",
+  },
+  "background-color-wrapper-height-xxl-hover": Object {
+    "type": "number",
+  },
   "background-color-wrapper-position-bottom-general-hover": Object {
     "type": "string",
   },
@@ -245,46 +287,46 @@ Object {
   "background-color-wrapper-position-top-xxl-hover": Object {
     "type": "string",
   },
-  "background-color-wrapper-size-general-hover": Object {
+  "background-color-wrapper-width-general-hover": Object {
     "type": "number",
   },
-  "background-color-wrapper-size-l-hover": Object {
+  "background-color-wrapper-width-l-hover": Object {
     "type": "number",
   },
-  "background-color-wrapper-size-m-hover": Object {
+  "background-color-wrapper-width-m-hover": Object {
     "type": "number",
   },
-  "background-color-wrapper-size-s-hover": Object {
+  "background-color-wrapper-width-s-hover": Object {
     "type": "number",
   },
-  "background-color-wrapper-size-unit-general-hover": Object {
+  "background-color-wrapper-width-unit-general-hover": Object {
     "type": "string",
   },
-  "background-color-wrapper-size-unit-l-hover": Object {
+  "background-color-wrapper-width-unit-l-hover": Object {
     "type": "string",
   },
-  "background-color-wrapper-size-unit-m-hover": Object {
+  "background-color-wrapper-width-unit-m-hover": Object {
     "type": "string",
   },
-  "background-color-wrapper-size-unit-s-hover": Object {
+  "background-color-wrapper-width-unit-s-hover": Object {
     "type": "string",
   },
-  "background-color-wrapper-size-unit-xl-hover": Object {
+  "background-color-wrapper-width-unit-xl-hover": Object {
     "type": "string",
   },
-  "background-color-wrapper-size-unit-xs-hover": Object {
+  "background-color-wrapper-width-unit-xs-hover": Object {
     "type": "string",
   },
-  "background-color-wrapper-size-unit-xxl-hover": Object {
+  "background-color-wrapper-width-unit-xxl-hover": Object {
     "type": "string",
   },
-  "background-color-wrapper-size-xl-hover": Object {
+  "background-color-wrapper-width-xl-hover": Object {
     "type": "number",
   },
-  "background-color-wrapper-size-xs-hover": Object {
+  "background-color-wrapper-width-xs-hover": Object {
     "type": "number",
   },
-  "background-color-wrapper-size-xxl-hover": Object {
+  "background-color-wrapper-width-xxl-hover": Object {
     "type": "number",
   },
   "background-color-xl-hover": Object {

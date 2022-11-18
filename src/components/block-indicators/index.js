@@ -122,7 +122,7 @@ const Indicator = props => {
 		const newValue = handleChanges(e, ref);
 
 		onChange({
-			[`${type}-${getDirection(dir)}-${breakpoint}`]: newValue,
+			[`${type}-${getDirection(dir)}-${breakpoint}`]: `${newValue}`,
 		});
 		cleanInlineStyles();
 	};

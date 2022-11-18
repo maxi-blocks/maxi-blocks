@@ -53,10 +53,8 @@ class Relation {
 			switch (typeof item.transitionTarget) {
 				case 'string':
 					return [item.transitionTarget];
-				case 'object':
-					if (item.transitionTarget?.length > 0)
-						return item.transitionTarget;
-					return [''];
+				case 'object' && item.transitionTarget?.length > 0:
+					return item.transitionTarget;
 				default:
 					return [''];
 			}

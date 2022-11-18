@@ -79,6 +79,28 @@ const Size = ({
 		);
 	};
 
+	const onReset = target => {
+		onChange({
+			[getAttributeKey(target, isHover, prefix, breakpoint)]: isHover
+				? getLastBreakpointAttribute({
+						target: `${prefix}${target}`,
+						breakpoint,
+						attributes: options,
+						isHover: false,
+				  })
+				: getDefaultAttr(target),
+			[getAttributeKey(`${target}-unit`, isHover, prefix, breakpoint)]:
+				isHover
+					? getLastBreakpointAttribute({
+							target: `${prefix}${target}-unit`,
+							breakpoint,
+							attributes: options,
+							isHover: false,
+					  })
+					: getDefaultAttr(`${target}-unit`),
+		});
+	};
+
 	return (
 		<div className='maxi-background-control__size'>
 			<AdvancedNumberControl
@@ -113,18 +135,7 @@ const Size = ({
 						)]: val,
 					})
 				}
-				onReset={() =>
-					onChange({
-						[getAttributeKey('width', isHover, prefix, breakpoint)]:
-							getDefaultAttr('width'),
-						[getAttributeKey(
-							'width-unit',
-							isHover,
-							prefix,
-							breakpoint
-						)]: getDefaultAttr('width-unit'),
-					})
-				}
+				onReset={() => onReset('width')}
 				minMaxSettings={minMaxSettings}
 			/>
 			<AdvancedNumberControl
@@ -163,22 +174,7 @@ const Size = ({
 						)]: val,
 					})
 				}
-				onReset={() =>
-					onChange({
-						[getAttributeKey(
-							'height',
-							isHover,
-							prefix,
-							breakpoint
-						)]: getDefaultAttr('height'),
-						[getAttributeKey(
-							'height-unit',
-							isHover,
-							prefix,
-							breakpoint
-						)]: getDefaultAttr('height-unit'),
-					})
-				}
+				onReset={() => onReset('height')}
 				minMaxSettings={minMaxSettings}
 			/>
 		</div>

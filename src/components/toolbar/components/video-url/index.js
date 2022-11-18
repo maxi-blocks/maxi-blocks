@@ -37,7 +37,6 @@ const VideoUrl = props => {
 				</label>
 				<TextInput
 					type='url'
-					value={url}
 					placeholder='Youtube, Vimeo, or Direct Link'
 					onChange={val => {
 						if (val && !videoUrlRegex.test(val)) {

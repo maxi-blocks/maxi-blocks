@@ -31,32 +31,32 @@ const Size = ({
 		px: {
 			min: 0,
 			max: 1999,
-			minRange: -1999,
+			minRange: 0,
 			maxRange: 1999,
 		},
 		em: {
 			min: 0,
 			max: 1999,
-			minRange: -1999,
+			minRange: 0,
 			maxRange: 1999,
 		},
 		vw: {
 			min: 0,
 			max: 1999,
-			minRange: -1999,
+			minRange: 0,
 			maxRange: 1999,
 		},
 		vh: {
 			min: 0,
 			max: 1999,
-			minRange: -1999,
+			minRange: 0,
 			maxRange: 1999,
 		},
 		'%': {
 			min: 0,
-			max: 1999,
-			minRange: -1999,
-			maxRange: 1999,
+			max: 300,
+			minRange: 0,
+			maxRange: 300,
 		},
 	};
 

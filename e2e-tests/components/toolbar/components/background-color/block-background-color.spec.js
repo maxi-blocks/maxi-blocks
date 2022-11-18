@@ -17,6 +17,9 @@ describe('Background color from Toolbar', () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
 
+		// Wait for toolbar to be visible
+		await page.waitForSelector('.toolbar-wrapper');
+
 		// edit background color maxi
 		await page.$eval(
 			'.toolbar-wrapper .toolbar-item__button.toolbar-item__background',

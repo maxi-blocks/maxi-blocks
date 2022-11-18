@@ -16,7 +16,10 @@ import { dispatch, select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { getHasParallax } from '../../extensions/styles';
+import {
+	getHasParallax,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import InnerBlocksBlock from './innerBlocksBlock';
 import MainMaxiBlock from './mainMaxiBlock';
 
@@ -24,7 +27,7 @@ import MainMaxiBlock from './mainMaxiBlock';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isEqual } from 'lodash';
+import { isEmpty, isEqual, isNil } from 'lodash';
 
 /**
  * Styles
@@ -37,6 +40,46 @@ const getBlockClassName = blockName => {
 	return `maxi-${blockName
 		.replace('maxi-blocks/', '')
 		.replace('-maxi', '')}-block`;
+};
+
+const getBlockStyle = (attributes, breakpoint) => {
+	const getValue = target =>
+		getLastBreakpointAttribute({
+			target,
+			breakpoint,
+			attributes,
+		});
+
+	const isFullWidth = getValue('full-width') === 'full';
+
+	if (!isFullWidth) return {};
+
+	const marginValue = 8;
+
+	// Margin
+	const marginRight = getValue('margin-right') || 0;
+	const marginRightUnit = getValue('margin-right-unit') || 'px';
+	const marginLeft = getValue('margin-left') || 0;
+	const marginLeftUnit = getValue('margin-left-unit') || 'px';
+
+	// Width
+	const width = getValue('width');
+	const widthUnit = getValue('width-unit');
+	const maxWidth = getValue('max-width');
+	const maxWidthUnit = getValue('max-width-unit');
+
+	return {
+		marginRight: `calc(${marginRight}${marginRightUnit} - ${marginValue}px)`,
+		marginLeft: `calc(${marginLeft}${marginLeftUnit} - ${marginValue}px)`,
+		width: `calc(${
+			isFullWidth && isNil(width) ? '100%' : `${width}${widthUnit}`
+		} + ${marginValue * 2}px)`,
+		maxWidth: `calc(${
+			isFullWidth && isNil(maxWidth)
+				? '100%'
+				: `${maxWidth}${maxWidthUnit}`
+		} + ${marginValue * 2}px)`,
+	};
 };
 
 const MaxiBlockContent = forwardRef((props, ref) => {
@@ -103,6 +146,20 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 			});
 		}
 	}
+
+	// In order to keep the structure that Gutenberg uses for the block,
+	// is necessary to add some inline styles to the first hierarchy blocks.
+	const { isFirstOnHierarchy } = extraProps.attributes;
+	const style = getBlockStyle(extraProps.attributes, extraProps.deviceType);
+
+	// Gets if the block is full-width
+	const isFullWidth =
+		getLastBreakpointAttribute({
+			target: 'full-width',
+			breakpoint: extraProps.deviceType,
+			attributes: extraProps.attributes,
+		}) === 'full';
+
 	// Are just necessary for the memo() part
 	delete extraProps.attributes;
 	delete extraProps.isChild;
@@ -160,7 +217,8 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		paletteClasses,
 		hasLink && 'maxi-block--has-link',
 		isDragging && isDragOverBlock && 'maxi-block--is-drag-over',
-		isHovered && 'maxi-block--is-hovered'
+		isHovered && 'maxi-block--is-hovered',
+		!isSave && isFullWidth && 'maxi-block--full-width'
 	);
 
 	const onDragLeave = isSave
@@ -211,6 +269,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		background,
 		disableBackground: !disableBackground,
 		isSave,
+		...(!isSave && isFirstOnHierarchy && { style }),
 		...(!isSave &&
 			INNER_BLOCKS.includes(blockName) && {
 				onDragLeave,

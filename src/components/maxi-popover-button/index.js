@@ -80,9 +80,7 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 								: props.attributes['video-width-general'] >
 								  width
 								? x + width / 2 - popoverWidth / 2
-								: x +
-								  props.attributes['video-width-general'] / 2 -
-								  popoverWidth / 2
+								: x + videoWidth / 2 - popoverWidth / 2
 							: x + width / 2 - popoverWidth / 2,
 					y: y + popoverHeight,
 					width,

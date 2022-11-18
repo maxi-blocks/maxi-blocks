@@ -130,6 +130,10 @@
 		padding: 2px 10px !important;
 		color: var(--maxi-grey-5-color) !important;
 		font-size: 12px;
+
+		&::placeholder {
+			color: var(--maxi-gray-7-color) !important;
+		}
 	}
 }
 

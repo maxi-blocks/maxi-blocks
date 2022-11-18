@@ -116,6 +116,7 @@ const Size = props => {
 							<AdvancedNumberControl
 								label={__('Max width', 'maxi-blocks')}
 								enableUnit
+								allowedUnits={['px', 'em', 'vw', '%']}
 								unit={getLastBreakpointAttribute({
 									target: 'max-width-unit',
 									breakpoint,

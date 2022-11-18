@@ -19,6 +19,7 @@ body.maxi-blocks--active .maxi-navigation-submenu-block {
 			box-shadow: none !important;
 		}
 
+		&::before,
 		&::after {
 			content: ' ';
 			position: absolute;

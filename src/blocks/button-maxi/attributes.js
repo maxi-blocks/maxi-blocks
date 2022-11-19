@@ -177,6 +177,7 @@ const attributes = {
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
 	...attributesData.opacity,
+	...attributesData.opacityHover,
 
 	/**
 	 * Advanced

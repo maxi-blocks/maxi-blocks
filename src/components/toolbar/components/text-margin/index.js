@@ -34,28 +34,46 @@ const TextMargin = props => {
 			advancedOptions='margin padding'
 		>
 			<div className='toolbar-item__text-margin__popover toolbar-item__padding-margin__popover'>
-				<AxisControl
-					{...getGroupAttributes(props, 'margin')}
-					label={__('Margin above', 'maxi-blocks')}
-					onChange={onChange}
-					target='margin'
-					noResponsiveTabs
-					breakpoint={breakpoint}
-					optionType='string'
-					disableSync
-					disableAuto
-				/>
-				<AxisControl
-					{...getGroupAttributes(props, 'margin')}
-					label={__('Margin below', 'maxi-blocks')}
-					onChange={onChange}
-					target='bottom-margin'
-					noResponsiveTabs
-					breakpoint={breakpoint}
-					optionType='string'
-					disableSync
-					disableAuto
-				/>
+				{props['margin-sync-general'] === 'none' ? (
+					<>
+						<AxisControl
+							{...getGroupAttributes(props, 'margin')}
+							label={__('Margin above', 'maxi-blocks')}
+							onChange={onChange}
+							target='margin'
+							inputsArray={['top', 'unit']}
+							noResponsiveTabs
+							breakpoint={breakpoint}
+							optionType='string'
+							disableSync
+							disableAuto
+						/>
+						<AxisControl
+							{...getGroupAttributes(props, 'margin')}
+							label={__('Margin below', 'maxi-blocks')}
+							onChange={onChange}
+							target='margin'
+							inputsArray={['bottom', 'unit']}
+							noResponsiveTabs
+							breakpoint={breakpoint}
+							optionType='string'
+							disableSync
+							disableAuto
+						/>
+					</>
+				) : (
+					<AxisControl
+						{...getGroupAttributes(props, 'margin')}
+						label={__('Margin', 'maxi-blocks')}
+						onChange={onChange}
+						target='margin'
+						noResponsiveTabs
+						breakpoint={breakpoint}
+						optionType='string'
+						disableSync
+						disableAuto
+					/>
+				)}
 			</div>
 		</ToolbarPopover>
 	);

@@ -13,5 +13,9 @@ body.maxi-blocks--active {
 			outline: none;
 			box-shadow: none;
 		}
+
+		&::placeholder {
+			color: var(--maxi-grey-7-color);
+		}
 	}
 }

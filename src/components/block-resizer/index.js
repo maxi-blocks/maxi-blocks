@@ -11,10 +11,14 @@ import classnames from 'classnames';
 import { isEqual } from 'lodash';
 
 /**
+ * Internal dependencies
+ */
+import { memoChildrenComparator } from '../../extensions/maxi-block';
+
+/**
  * Styles and icons
  */
 import './editor.scss';
-import { memoChildrenComparator } from '../../extensions/maxi-block';
 
 /**
  * Component
@@ -59,11 +63,23 @@ const BlockResizer = memo(
 			...props.enable,
 		};
 
+		const stylesCleaner = el =>
+			[
+				'position',
+				'user-select',
+				'box-sizing',
+				'flex-shrink',
+				'min-width',
+				'max-width',
+			].forEach(style => {
+				el.style.setProperty(style, '');
+			});
+
 		const handleRef = newRef => {
 			if (newRef) {
 				// Needed to clean styles before first onResizeStop, so that blocks don't jump after resizing
 				if (cleanStyles && !hasCleanedStyles.current) {
-					newRef.resizable.style = null;
+					stylesCleaner(newRef.resizable);
 					hasCleanedStyles.current = true;
 				}
 				if (resizableObject) resizableObject.current = newRef;
@@ -74,82 +90,38 @@ const BlockResizer = memo(
 			}
 		};
 
+		const getHandleClasses = (axis, isCorner = false) =>
+			classnames(
+				handleClassName,
+				showHandlesClassName,
+				!isCorner ? sideHandleClassName : cornerHandleClassName,
+				`maxi-resizable__handle-${axis}`
+			);
+
+		const handleClasses = {
+			top: enable.top && getHandleClasses('top'),
+			right: enable.right && getHandleClasses('right'),
+			bottom: enable.bottom && getHandleClasses('bottom'),
+			left: enable.left && getHandleClasses('left'),
+			topLeft: enable.topLeft && getHandleClasses('topleft', true),
+			topRight: enable.topRight && getHandleClasses('topright', true),
+			bottomRight:
+				enable.bottomRight && getHandleClasses('bottomright', true),
+			bottomLeft:
+				enable.bottomLeft && getHandleClasses('bottomleft', true),
+		};
+
 		return (
 			<Resizable
 				{...rest}
 				ref={handleRef}
 				className={classes}
 				enable={enable}
-				handleClasses={{
-					top:
-						enable.top &&
-						classnames(
-							handleClassName,
-							showHandlesClassName,
-							sideHandleClassName,
-							'maxi-resizable__handle-top'
-						),
-					right:
-						enable.right &&
-						classnames(
-							handleClassName,
-							showHandlesClassName,
-							sideHandleClassName,
-							'maxi-resizable__handle-right'
-						),
-					bottom:
-						enable.bottom &&
-						classnames(
-							handleClassName,
-							showHandlesClassName,
-							sideHandleClassName,
-							'maxi-resizable__handle-bottom'
-						),
-					left:
-						enable.left &&
-						classnames(
-							handleClassName,
-							showHandlesClassName,
-							sideHandleClassName,
-							'maxi-resizable__handle-left'
-						),
-					topLeft:
-						enable.topLeft &&
-						classnames(
-							handleClassName,
-							showHandlesClassName,
-							cornerHandleClassName,
-							'maxi-resizable__handle-topleft'
-						),
-					topRight:
-						enable.topRight &&
-						classnames(
-							handleClassName,
-							showHandlesClassName,
-							cornerHandleClassName,
-							'maxi-resizable__handle-topright'
-						),
-					bottomRight:
-						enable.bottomRight &&
-						classnames(
-							handleClassName,
-							showHandlesClassName,
-							cornerHandleClassName,
-							'maxi-resizable__handle-bottomright'
-						),
-					bottomLeft:
-						enable.bottomLeft &&
-						classnames(
-							handleClassName,
-							showHandlesClassName,
-							cornerHandleClassName,
-							'maxi-resizable__handle-bottomleft'
-						),
-				}}
+				handleClasses={handleClasses}
 				handleWrapperClass={handlesWrapperClassName}
 				onResizeStop={(e, direction, refToElement, ...rest) => {
 					onResizeStop?.(e, direction, refToElement, ...rest);
-					if (cleanStyles) refToElement.style = null;
+					if (cleanStyles) stylesCleaner(refToElement);
 				}}
 			>
 				{children}

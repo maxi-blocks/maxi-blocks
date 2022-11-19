@@ -14,6 +14,7 @@ import transformIBMigrator from './transformIBMigrator';
 import SVGIBTargetsMigrator from './SVGIBTargetsMigrator';
 import transitionTargetIBmigrator from './transitionTargetIBmigrator';
 import hoverStatusMigrator from './hoverStatusMigrator';
+import opacityTransitionMigrator from './opacityTransitionMigrator';
 
 /**
  * External dependencies
@@ -85,6 +86,7 @@ const blockMigrator = blockMigratorProps => {
 		SVGIBTargetsMigrator,
 		transitionTargetIBmigrator,
 		hoverStatusMigrator,
+		opacityTransitionMigrator,
 		...(blockMigratorProps.migrators ?? []),
 	];
 

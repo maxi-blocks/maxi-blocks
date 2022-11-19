@@ -69,7 +69,7 @@ const attributes = {
 		},
 		'max-width-unit-general': {
 			type: 'string',
-			default: undefined,
+			default: '',
 		},
 		'max-width-unit-xxl': {
 			type: 'string',

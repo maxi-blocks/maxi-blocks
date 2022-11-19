@@ -93,7 +93,7 @@ const flatSameAsPrev = (
 				// values by default, but General is undefined. An example
 				// is Row Maxi `max-width-unit` attribute.
 				if (key in newAttributes && isNil(generalDefaultValue)) {
-					result[key] = undefined;
+					result[key] = typeof value === 'string' ? '' : undefined;
 
 					return;
 				}
@@ -122,7 +122,8 @@ const flatSameAsPrev = (
 
 					if (isEqual(value, attribute)) {
 						if (isEqual(value, defaultAttribute))
-							result[key] = undefined;
+							result[key] =
+								typeof value === 'string' ? '' : undefined;
 						else if (breakpoint === 'general') {
 							const generalAttr =
 								attributes[`${simpleLabel}-general`];
@@ -131,7 +132,8 @@ const flatSameAsPrev = (
 								!isNil(generalAttr) &&
 								isEqual(generalAttr, value)
 							) {
-								result[key] = undefined;
+								result[key] =
+									typeof value === 'string' ? '' : undefined;
 							}
 						} else if (breakpoint !== 'general')
 							result[key] = defaultAttribute;
@@ -185,7 +187,7 @@ const flatWithGeneral = (
 					`${simpleLabel}-${currentBreakpoint}` === key &&
 					value.toString().startsWith(generalAttr)
 				) {
-					result[key] = undefined;
+					result[key] = typeof value === 'string' ? '' : undefined;
 					result[`${simpleLabel}-general`] = value;
 				}
 
@@ -200,7 +202,7 @@ const flatWithGeneral = (
 
 			if (attr === key && value.toString().startsWith(currentAttr)) {
 				if (currentBreakpoint === 'general') {
-					result[key] = undefined;
+					result[key] = typeof value === 'string' ? '' : undefined;
 					result[`${getSimpleLabel(key, attrBreakpoint)}-general`] =
 						value;
 				}
@@ -218,7 +220,8 @@ const flatWithGeneral = (
 		const attrOnXXL = attributes[`${simpleLabel}-xxl`];
 
 		if (!isNil(attrOnXXL) && isEqual(value, attrOnXXL))
-			result[`${simpleLabel}-xxl`] = undefined;
+			result[`${simpleLabel}-xxl`] =
+				typeof value === 'string' ? '' : undefined;
 
 		let breakpointLock = false;
 
@@ -237,8 +240,9 @@ const flatWithGeneral = (
 			if (isNil(attribute) && isEqual(value, attribute))
 				if (!isEqual(value, defaultAttribute))
 					result[label] = defaultAttribute;
-				else result[label] = undefined;
-			else if (isEqual(value, attribute)) result[label] = undefined;
+				else result[label] = typeof value === 'string' ? '' : undefined;
+			else if (isEqual(value, attribute))
+				result[label] = typeof value === 'string' ? '' : undefined;
 			else if (!isNil(attribute)) breakpointLock = true;
 		});
 	});
@@ -329,7 +333,8 @@ const removeSameAsGeneral = (newAttributes, attributes) => {
 
 		if (breakpoint !== 'general') {
 			if (key !== baseLabel) result[key] = value;
-			else result[baseLabel] = undefined;
+			else result[baseLabel] = typeof value === 'string' ? '' : undefined;
+			console.log(result[baseLabel]);
 
 			return;
 		}
@@ -519,7 +524,7 @@ const cleanAttributes = ({
 
 	dispatch('maxiBlocks/styles').savePrevSavedAttrs(result);
 
-	// console.log(result);
+	console.log(result);
 
 	return result;
 };

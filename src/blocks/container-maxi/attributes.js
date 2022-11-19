@@ -55,6 +55,10 @@ const attributes = {
 			type: 'boolean',
 			default: true,
 		},
+		'max-width-general': {
+			type: 'string',
+			default: undefined,
+		},
 		'max-width-xxl': {
 			type: 'string',
 			default: '1690',
@@ -82,6 +86,10 @@ const attributes = {
 		'max-width-unit-l': {
 			type: 'string',
 			default: '%',
+		},
+		'width-general': {
+			type: 'string',
+			default: undefined,
 		},
 		'width-l': {
 			type: 'string',

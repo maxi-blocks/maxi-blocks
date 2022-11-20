@@ -37,6 +37,7 @@ const attributes = {
 	},
 	...attributesData.display,
 	...attributesData.opacity,
+	...attributesData.opacityHover,
 	...attributesData.overflow,
 	...attributesData.zIndex,
 	...attributesData.customCss,

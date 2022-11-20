@@ -129,6 +129,11 @@ function observeConsoleLogging() {
 			return;
 		}
 
+		// Youtube API returns random errors sometimes
+		if (text.includes('The YouTube player is not attached to the DOM')) {
+			return;
+		}
+
 		// Since 6.1 multiline on RichText is deprecated. Need to be update on #3877
 		if (
 			text.includes(

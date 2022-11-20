@@ -110,6 +110,8 @@ const attributes = {
 		...transitionAttributesCreator(transition),
 	},
 	...attributesData.display,
+	...attributesData.opacity,
+	...attributesData.opacityHover,
 	...attributesData.position,
 	...attributesData.overflow,
 	...attributesData.zIndex,

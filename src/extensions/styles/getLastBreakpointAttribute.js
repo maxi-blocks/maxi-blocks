@@ -52,6 +52,7 @@ const getLastBreakpointAttributeSingle = (
 
 	const attrFilter = attr =>
 		!isNil(attr) &&
+		attr !== '' &&
 		(isNumber(attr) || isBoolean(attr) || isString(attr) || !isEmpty(attr));
 
 	let currentAttr =

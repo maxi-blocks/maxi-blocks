@@ -334,7 +334,6 @@ const removeSameAsGeneral = (newAttributes, attributes) => {
 		if (breakpoint !== 'general') {
 			if (key !== baseLabel) result[key] = value;
 			else result[baseLabel] = typeof value === 'string' ? '' : undefined;
-			console.log(result[baseLabel]);
 
 			return;
 		}
@@ -523,8 +522,6 @@ const cleanAttributes = ({
 	};
 
 	dispatch('maxiBlocks/styles').savePrevSavedAttrs(result);
-
-	console.log(result);
 
 	return result;
 };

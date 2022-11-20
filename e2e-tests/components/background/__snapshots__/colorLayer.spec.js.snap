@@ -53,6 +53,7 @@ Array [
     "background-color-wrapper-position-right-xs": "13",
     "background-color-wrapper-position-sync-general": "none",
     "background-color-wrapper-position-sync-general-hover": "none",
+    "background-color-wrapper-position-sync-m": "",
     "background-color-wrapper-position-top-general": "1",
     "background-color-wrapper-position-top-general-hover": "2",
     "background-color-wrapper-position-top-m": "55",

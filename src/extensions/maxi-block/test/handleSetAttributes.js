@@ -91,11 +91,11 @@ describe('handleSetAttributes', () => {
 			'test-general': '1',
 		};
 		const secondRoundExpected = {
-			'test-xxl': undefined,
+			'test-xxl': '',
 			'test-general': '12',
 		};
 		const thirdRoundExpected = {
-			'test-xxl': undefined,
+			'test-xxl': '',
 			'test-general': '123',
 		};
 
@@ -113,7 +113,7 @@ describe('handleSetAttributes', () => {
 		};
 
 		const expectedAttrs = {
-			'test-xxl': undefined,
+			'test-xxl': '',
 			'test-general': '123',
 		};
 

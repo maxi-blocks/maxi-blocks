@@ -550,7 +550,7 @@ describe('cleanAttributes', () => {
 
 		const expectedResult = {
 			'test-general': 'em',
-			'test-xl': undefined,
+			'test-xl': '',
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -627,7 +627,7 @@ describe('cleanAttributes', () => {
 
 		const expectedResult = {
 			'test-general': 'em',
-			'test-xl': undefined,
+			'test-xl': '',
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -748,8 +748,8 @@ describe('cleanAttributes', () => {
 
 		const expectedResult = {
 			'test-general': '%',
-			'test-xl': undefined,
-			'test-l': undefined,
+			'test-xl': '',
+			'test-l': '%',
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -787,8 +787,8 @@ describe('cleanAttributes', () => {
 		const result = cleanAttributes(obj);
 
 		const expectedResult = {
-			'test-xxl': undefined,
-			'test-xl': undefined,
+			'test-xxl': '',
+			'test-xl': '',
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -819,7 +819,7 @@ describe('cleanAttributes', () => {
 
 		const expectedResult = {
 			'test-general': 'full',
-			'test-xxl': undefined,
+			'test-xxl': '',
 		};
 
 		expect(result).toStrictEqual(expectedResult);

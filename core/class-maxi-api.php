@@ -221,7 +221,7 @@ if (!class_exists('MaxiBlocks_API')):
                 ) {
                     $version = '13.0';
                 } elseif (
-                    version_compare($wp_version, '6.1') <= 0
+                    version_compare($wp_version, '6.1.1') <= 0
                 ) {
                     $version = '14.1';
                 }

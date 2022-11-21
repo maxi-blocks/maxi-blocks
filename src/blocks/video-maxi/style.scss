@@ -131,11 +131,11 @@
 		color: var(--maxi-grey-5-color) !important;
 		font-size: 12px;
 	}
-	.default-video {
-		color: var(--maxi-grey-7-color) !important;
-	}
 }
-
+.maxi-text-input[value="https://www.youtube.com/watch?v=ScMzIvxBSi4"]
+{
+	color: var(--maxi-grey-7-color) !important;
+}
 @keyframes popup-zoom-out {
 	0% {
 		transform: scale(1.2);

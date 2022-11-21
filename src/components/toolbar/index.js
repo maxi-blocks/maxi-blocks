@@ -243,7 +243,7 @@ const MaxiToolbar = memo(
 				shouldAnchorIncludePadding: true,
 				__unstableStickyBoundaryElement: getBoundaryElement(anchorRef),
 			}) ||
-				(!isNaN(parseFloat(version)) && {
+				(isNaN(parseFloat(version)) && {
 					anchor,
 					position: 'top center',
 					flip: false,

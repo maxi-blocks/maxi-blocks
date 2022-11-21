@@ -204,14 +204,20 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 });
 
 const InterBlockToggle = props => {
-	const { clientId, onToggleInserter, blockRef, setHasInterBlocksAppender } =
-		props;
+	const {
+		clientId,
+		onToggleInserter,
+		blockRef,
+		setHasInterBlocksAppender,
+		isOpen,
+	} = props;
 
 	const [isHovered, setHovered] = useState(false);
 
 	const classes = classnames(
 		'maxi-inter-blocks-inserter__toggle',
-		isHovered && 'maxi-inter-blocks-inserter__toggle--is-hovered'
+		(isHovered || isOpen) &&
+			'maxi-inter-blocks-inserter__toggle--is-hovered'
 	);
 
 	const { width } = blockRef.getBoundingClientRect();
@@ -240,13 +246,13 @@ const InterBlockToggle = props => {
 			style={style}
 			onMouseOver={onMouseOver}
 			onMouseOut={onMouseOut}
+			onClick={onToggleInserter}
 		>
-			{isHovered && (
+			{(isHovered || isOpen) && (
 				<>
 					<Button
 						key={`maxi-inter-blocks-inserter__content-item-${clientId}`}
 						className='maxi-inter-blocks-inserter__content-item'
-						onClick={onToggleInserter}
 					>
 						<svg
 							xmlns='http://www.w3.org/2000/svg'
@@ -382,9 +388,10 @@ const InterBlockInserter = forwardRef((props, ref) => {
 				clientId={nextClientId}
 				position='bottom center'
 				__experimentalIsQuick
-				renderToggle={({ onToggle: onToggleInserter }) => (
+				renderToggle={({ onToggle: onToggleInserter, isOpen }) => (
 					<InterBlockToggle
 						onToggleInserter={onToggleInserter}
+						isOpen={isOpen}
 						setHasInterBlocksAppender={setHasInterBlocksAppender}
 						clientId={clientId}
 						blockRef={blockRef}

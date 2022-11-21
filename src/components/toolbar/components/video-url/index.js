@@ -24,8 +24,6 @@ const VideoUrl = props => {
 
 	const [validationText, setValidationText] = useState(null);
 
-	const [defaultVideo, setDefaultVideo] = useState(true);
-
 	return (
 		<ToolbarPopover
 			className='toolbar-item__video-url'
@@ -38,7 +36,6 @@ const VideoUrl = props => {
 					{__('URL', 'maxi-blocks')}
 				</label>
 				<TextInput
-					className={defaultVideo && 'default-video'}
 					type='url'
 					placeholder='Youtube, Vimeo, or Direct Link'
 					value={url}
@@ -49,13 +46,6 @@ const VideoUrl = props => {
 							);
 						} else {
 							setValidationText(null);
-						}
-
-						if (
-							val !==
-							'https://www.youtube.com/watch?v=ScMzIvxBSi4'
-						) {
-							setDefaultVideo(false);
 						}
 
 						onChange({

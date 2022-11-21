@@ -249,7 +249,7 @@ const Indicators = props => {
 							margin[dir] > 19) ||
 							(margin[`${[dir]}Unit`] !== 'px' &&
 								margin[dir] > 2)) && (
-							<span>{`Margin: ${margin[dir]}${
+							<span>{`${margin[dir]}${
 								margin[`${[dir]}Unit`]
 							}`}</span>
 						)}
@@ -310,7 +310,7 @@ const Indicators = props => {
 					{((padding[`${[dir]}Unit`] === 'px' && padding[dir] > 19) ||
 						(padding[`${[dir]}Unit`] !== 'px' &&
 							padding[dir] > 2)) && (
-						<span>{`Padding: ${padding[dir]}${
+						<span>{`${padding[dir]}${
 							padding[`${[dir]}Unit`]
 						}`}</span>
 					)}

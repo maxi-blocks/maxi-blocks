@@ -276,9 +276,12 @@ const InterBlockInserter = forwardRef((props, ref) => {
 	const { clientId, setHasInterBlocksAppender } = props;
 	const blockRef = ref?.current?.blockRef?.current;
 
-	const { nextClientId, isNextMaxiBlock } = useSelect(select => {
+	const popoverRef = useRef(null);
+
+	const { nextClientId, isNextMaxiBlock, version } = useSelect(select => {
 		const { getBlockOrder, getBlockRootClientId, getBlockName } =
 			select('core/block-editor');
+		const { receiveMaxiSettings } = select('maxiBlocks');
 
 		const rootClientId = getBlockRootClientId(clientId);
 		const blockOrder = getBlockOrder(rootClientId);
@@ -290,16 +293,80 @@ const InterBlockInserter = forwardRef((props, ref) => {
 		const isNextMaxiBlock =
 			nextClientId && getBlockName(nextClientId).includes('maxi-blocks/');
 
+		const maxiSettings = receiveMaxiSettings();
+		const { editor } = maxiSettings;
+
 		return {
 			nextClientId,
 			isNextMaxiBlock,
+			version: editor?.version,
 		};
 	}, []);
 
 	if (!blockRef || !nextClientId || !isNextMaxiBlock) return null;
 
+	const getAnchor = popoverRef => {
+		const popoverRect = popoverRef
+			?.querySelector('.components-popover__content')
+			?.getBoundingClientRect();
+
+		if (!popoverRect) return null;
+
+		const rect = blockRef.getBoundingClientRect();
+
+		const { width, x } = rect;
+		const { width: popoverWidth } = popoverRect;
+
+		const expectedContentX = x + width / 2 - popoverWidth / 2;
+
+		const container = document
+			.querySelector('.editor-styles-wrapper')
+			?.getBoundingClientRect();
+
+		if (container) {
+			const { x: containerX, width: containerWidth } = container;
+
+			// Left cut off check
+			if (expectedContentX < containerX)
+				rect.x += containerX - expectedContentX;
+
+			// Right cut off check
+			if (expectedContentX + popoverWidth > containerX + containerWidth)
+				rect.x -=
+					expectedContentX +
+					popoverWidth -
+					(containerX + containerWidth);
+		}
+
+		return {
+			getBoundingClientRect: () => rect,
+			ownerDocument: blockRef.ownerDocument,
+		};
+	};
+
+	const popoverProps = {
+		...((parseFloat(version) <= 13.0 && {
+			getAnchorRect: spanEl => {
+				// span element needs to be hidden to don't break the grid
+				spanEl.style.display = 'none';
+
+				return getAnchor(popoverRef.current).getBoundingClientRect();
+			},
+			shouldAnchorIncludePadding: true,
+			__unstableStickyBoundaryElement: getBoundaryElement(blockRef),
+			className:
+				'maxi-inter-blocks-inserter maxi-inter-blocks-inserter--old',
+		}) ||
+			(!isNaN(parseFloat(version)) && {
+				anchor: blockRef,
+				flip: false,
+				resize: false,
+			})),
+	};
+
 	return (
 		<Popover
+			ref={popoverRef}
 			key={`maxi-inter-blocks-inserter__${clientId}`}
 			className='maxi-inter-blocks-inserter'
 			noArrow
@@ -307,19 +374,14 @@ const InterBlockInserter = forwardRef((props, ref) => {
 			position='bottom center'
 			focusOnMount={false}
 			__unstableSlotName='block-toolbar'
-			flip={false}
-			resize={false}
-			anchor={blockRef}
 			dataclientid={clientId}
-			// {...popoverProps}
+			{...popoverProps}
 		>
 			<Inserter
 				key={`maxi-inter-blocks-inserter__content-${clientId}`}
 				clientId={nextClientId}
 				position='bottom center'
-				// isAppender
 				__experimentalIsQuick
-				// onSelectOrClose={() => setShouldRemain(false)}
 				renderToggle={({ onToggle: onToggleInserter }) => (
 					<InterBlockToggle
 						onToggleInserter={onToggleInserter}

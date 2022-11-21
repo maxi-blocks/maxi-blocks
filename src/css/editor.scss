@@ -358,6 +358,10 @@ svg path#styleCardBoat_b {
 		opacity: 0;
 	}
 
+	&.maxi-block--full-width::after {
+		width: calc(100% - 4px);
+	}
+
 	&:not(.is-selected) {
 		&:hover {
 			&::after {

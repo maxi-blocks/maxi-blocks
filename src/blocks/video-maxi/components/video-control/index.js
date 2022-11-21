@@ -30,6 +30,7 @@ const VideoControl = props => {
 	} = props;
 
 	const [validationText, setValidationText] = useState(null);
+	const [defaultVideo, setDefaultVideo] = useState(true);
 
 	return (
 		<>
@@ -60,7 +61,11 @@ const VideoControl = props => {
 				</label>
 				<TextInput
 					id='url'
-					className='maxi-sidebar-input'
+					className={
+						defaultVideo
+							? 'maxi-sidebar-input default-video'
+							: 'maxi-sidebar-input'
+					}
 					label={__('URL', 'maxi-blocks')}
 					type='url'
 					value={videoUrl}
@@ -73,7 +78,12 @@ const VideoControl = props => {
 						} else {
 							setValidationText(null);
 						}
-
+						if (
+							val !==
+							'https://www.youtube.com/watch?v=ScMzIvxBSi4'
+						) {
+							setDefaultVideo(false);
+						}
 						onChange({
 							url: val,
 							embedUrl: getParsedVideoUrl({ ...props, url: val }),

@@ -13,6 +13,8 @@ import RotateControl from './rotate-control';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
+	getCurrentAndHigherBreakpoints,
+	getLastBreakpointTransformAttribute as getLastBreakpointTransformAttributeRaw,
 } from '../../extensions/styles';
 import { getTransformStyles } from '../../extensions/styles/helpers';
 import { getActiveTabName } from '../../extensions/inspector';
@@ -89,13 +91,6 @@ const TransformControl = props => {
 
 	const getInlineTargetAndPseudoElement = target => target.split('::');
 
-	const getCurrentAndHigherBreakpoints = () => {
-		const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-		return breakpoints
-			.slice(0, breakpoints.indexOf(breakpoint) + 1)
-			.reverse();
-	};
-
 	const insertInlineStyles = () => {
 		if (!onChangeInline) return;
 
@@ -112,11 +107,13 @@ const TransformControl = props => {
 
 		const targetTransformObj = transformObj[targetSelector].transform;
 
-		const breakpointToUse = getCurrentAndHigherBreakpoints().find(
-			currentBreakpoint =>
-				currentBreakpoint in targetTransformObj &&
-				!isEmpty(targetTransformObj[currentBreakpoint])
-		);
+		const breakpointToUse = getCurrentAndHigherBreakpoints(breakpoint)
+			.reverse()
+			.find(
+				currentBreakpoint =>
+					currentBreakpoint in targetTransformObj &&
+					!isEmpty(targetTransformObj[currentBreakpoint])
+			);
 		const {
 			[breakpointToUse]: {
 				transform,
@@ -142,26 +139,15 @@ const TransformControl = props => {
 		insertInlineStyles(obj);
 	};
 
-	const getLastBreakpointTransformAttribute = (
-		prop,
-		attributeHoverSelected = hoverSelected
-	) =>
-		getCurrentAndHigherBreakpoints().reduce((acc, currentBreakpoint) => {
-			const attribute =
-				props?.[`${prop}-${currentBreakpoint}`]?.[transformTarget]?.[
-					attributeHoverSelected
-				];
-			if (
-				isEmpty(acc) &&
-				!isEmpty(attribute) &&
-				Object.values(attribute).some(value => !isNil(value))
-			)
-				return attribute;
-
-			return acc;
-		}, null) ||
-		(attributeHoverSelected !== 'normal' &&
-			getLastBreakpointTransformAttribute(prop, 'normal'));
+	const getLastBreakpointTransformAttribute = (attributeName, prop) =>
+		getLastBreakpointTransformAttributeRaw({
+			attributeName,
+			prop,
+			transformTarget,
+			breakpoint,
+			attributes: props,
+			hoverSelected,
+		});
 
 	const getOptions = () => {
 		const options = [
@@ -321,16 +307,14 @@ const TransformControl = props => {
 						<>
 							{transformStatus === 'scale' && (
 								<SquareControl
-									x={
-										getLastBreakpointTransformAttribute(
-											'transform-scale'
-										)?.x
-									}
-									y={
-										getLastBreakpointTransformAttribute(
-											'transform-scale'
-										)?.y
-									}
+									x={getLastBreakpointTransformAttribute(
+										'transform-scale',
+										'x'
+									)}
+									y={getLastBreakpointTransformAttribute(
+										'transform-scale',
+										'y'
+									)}
 									onChange={(x, y) => {
 										onChangeTransform({
 											'transform-scale': {
@@ -378,25 +362,25 @@ const TransformControl = props => {
 							{transformStatus === 'translate' && (
 								<SquareControl
 									type='drag'
-									x={
-										getLastBreakpointTransformAttribute(
-											'transform-translate'
-										)?.x
-									}
-									y={
-										getLastBreakpointTransformAttribute(
-											'transform-translate'
-										)?.y
-									}
+									x={getLastBreakpointTransformAttribute(
+										'transform-translate',
+										'x'
+									)}
+									y={getLastBreakpointTransformAttribute(
+										'transform-translate',
+										'y'
+									)}
 									xUnit={
 										getLastBreakpointTransformAttribute(
-											'transform-translate'
-										)?.['x-unit'] ?? '%'
+											'transform-translate',
+											'x-unit'
+										) ?? '%'
 									}
 									yUnit={
 										getLastBreakpointTransformAttribute(
-											'transform-translate'
-										)?.['y-unit'] ?? '%'
+											'transform-translate',
+											'y-unit'
+										) ?? '%'
 									}
 									onChange={(x, y, xUnit, yUnit) => {
 										onChangeTransform({
@@ -448,21 +432,18 @@ const TransformControl = props => {
 							)}
 							{transformStatus === 'rotate' && (
 								<RotateControl
-									x={
-										getLastBreakpointTransformAttribute(
-											'transform-rotate'
-										)?.x
-									}
-									y={
-										getLastBreakpointTransformAttribute(
-											'transform-rotate'
-										)?.y
-									}
-									z={
-										getLastBreakpointTransformAttribute(
-											'transform-rotate'
-										)?.z
-									}
+									x={getLastBreakpointTransformAttribute(
+										'transform-rotate',
+										'x'
+									)}
+									y={getLastBreakpointTransformAttribute(
+										'transform-rotate',
+										'y'
+									)}
+									z={getLastBreakpointTransformAttribute(
+										'transform-rotate',
+										'z'
+									)}
 									onChange={(x, y, z) => {
 										onChangeTransform({
 											'transform-rotate': {
@@ -499,23 +480,27 @@ const TransformControl = props => {
 									type='origin'
 									x={
 										getLastBreakpointTransformAttribute(
-											'transform-origin'
-										)?.x || 'middle'
+											'transform-origin',
+											'x'
+										) || 'middle'
 									}
 									y={
 										getLastBreakpointTransformAttribute(
-											'transform-origin'
-										)?.y || 'center'
+											'transform-origin',
+											'y'
+										) || 'center'
 									}
 									xUnit={
 										getLastBreakpointTransformAttribute(
-											'transform-origin'
-										)?.['x-unit'] ?? '%'
+											'transform-origin',
+											'x-unit'
+										) ?? '%'
 									}
 									yUnit={
 										getLastBreakpointTransformAttribute(
-											'transform-origin'
-										)?.['y-unit'] ?? '%'
+											'transform-origin',
+											'y-unit'
+										) ?? '%'
 									}
 									onChange={(x, y, xUnit, yUnit) => {
 										onChangeTransform({

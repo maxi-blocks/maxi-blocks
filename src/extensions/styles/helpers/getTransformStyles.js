@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+import getLastBreakpointTransformAttributeRaw from '../getLastBreakpointTransformAttribute';
 import { validateOriginValue } from '../utils';
 
 /**
@@ -15,6 +16,21 @@ import { isNumber, isString, isEmpty } from 'lodash';
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const getTransformStrings = (category, breakpoint, index, obj) => {
+	const getLastBreakpointTransformAttribute = (
+		attributeName,
+		prop,
+		hoverSelected
+	) =>
+		getLastBreakpointTransformAttributeRaw({
+			attributeName,
+			prop,
+			transformTarget: category,
+			breakpoint,
+			attributes: obj,
+			hoverSelected,
+			ignoreNormal: true,
+		});
+
 	const scaleObj = getLastBreakpointAttribute({
 		target: 'transform-scale',
 		breakpoint,
@@ -58,18 +74,12 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 		if (index === 'hover' && !scaleObj?.[category]?.['hover-status'])
 			return getScaleString(scaleObj, category, 'normal');
 
-		if (isNumber(scaleObj?.[category]?.[index]?.x))
-			scaleString += `scaleX(${scaleObj[category][index].x / 100}) `;
-		if (isNumber(scaleObj?.[category]?.[index]?.y))
-			scaleString += `scaleY(${scaleObj[category][index].y / 100}) `;
+		const [x, y] = ['x', 'y'].map(prop =>
+			getLastBreakpointTransformAttribute('transform-scale', prop, index)
+		);
+		if (isNumber(x)) scaleString += `scaleX(${x / 100}) `;
+		if (isNumber(y)) scaleString += `scaleY(${y / 100}) `;
 
-		if (
-			!scaleString &&
-			index === 'hover' &&
-			(isNumber(scaleObj?.[category]?.normal?.x) ||
-				isNumber(scaleObj?.[category]?.normal?.y))
-		)
-			scaleString += 'scale(1) ';
 		return scaleString;
 	};
 
@@ -79,22 +89,15 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 		if (index === 'hover' && !translateObj?.[category]?.['hover-status'])
 			return getTranslateString(translateObj, category, 'normal');
 
-		if (isNumber(translateObj?.[category]?.[index]?.x))
-			translateString += `translateX(${translateObj[category][index].x}${
-				translateObj[category][index]['x-unit'] ?? '%'
-			}) `;
-		if (isNumber(translateObj?.[category]?.[index]?.y))
-			translateString += `translateY(${translateObj[category][index].y}${
-				translateObj[category][index]['y-unit'] ?? '%'
-			}) `;
-
-		if (
-			!translateString &&
-			index === 'hover' &&
-			(isNumber(translateObj?.[category]?.normal?.x) ||
-				isNumber(translateObj?.[category]?.normal?.y))
-		)
-			translateString += 'translate(0) ';
+		const [x, y, xUnit, yUnit] = ['x', 'y', 'x-unit', 'y-unit'].map(prop =>
+			getLastBreakpointTransformAttribute(
+				'transform-translate',
+				prop,
+				index
+			)
+		);
+		if (isNumber(x)) translateString += `translateX(${x}${xUnit ?? '%'}) `;
+		if (isNumber(y)) translateString += `translateY(${y}${yUnit ?? '%'}) `;
 
 		return translateString;
 	};
@@ -105,21 +108,13 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 		if (index === 'hover' && !rotateObj?.[category]?.['hover-status'])
 			return getRotateString(rotateObj, category, 'normal');
 
-		if (isNumber(rotateObj?.[category]?.[index]?.x))
-			rotateString += `rotateX(${rotateObj[category][index].x}deg) `;
-		if (isNumber(rotateObj?.[category]?.[index]?.y))
-			rotateString += `rotateY(${rotateObj[category][index].y}deg) `;
-		if (isNumber(rotateObj?.[category]?.[index]?.z))
-			rotateString += `rotateZ(${rotateObj[category][index].z}deg) `;
+		const [x, y, z] = ['x', 'y', 'z'].map(prop =>
+			getLastBreakpointTransformAttribute('transform-rotate', prop, index)
+		);
 
-		if (
-			!rotateString &&
-			index === 'hover' &&
-			(isNumber(rotateObj?.[category]?.normal?.x) ||
-				isNumber(rotateObj?.[category]?.normal?.y) ||
-				isNumber(rotateObj?.[category]?.normal?.z))
-		)
-			rotateString += 'rotate(0) ';
+		if (isNumber(x)) rotateString += `rotateX(${x}deg) `;
+		if (isNumber(y)) rotateString += `rotateY(${y}deg) `;
+		if (isNumber(z)) rotateString += `rotateZ(${z}deg) `;
 
 		return rotateString;
 	};
@@ -133,31 +128,19 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 		)
 			return originString;
 
-		if (isString(validateOriginValue(originObj?.[category]?.[index]?.x)))
-			originString += `${originValueToNumber(
-				originObj[category][index].x
-			)}% `;
-		if (isString(validateOriginValue(originObj?.[category]?.[index]?.y)))
-			originString += `${originValueToNumber(
-				originObj[category][index].y
-			)}% `;
+		const [x, y, xUnit, yUnit] = ['x', 'y', 'x-unit', 'y-unit'].map(prop =>
+			getLastBreakpointTransformAttribute('transform-origin', prop, index)
+		);
 
-		if (isNumber(validateOriginValue(originObj?.[category]?.[index]?.x)))
-			originString += `${originObj[category][index].x}${
-				originObj[category][index]['x-unit'] ?? '%'
-			} `;
-		if (isNumber(validateOriginValue(originObj?.[category]?.[index]?.y)))
-			originString += `${originObj[category][index].y}${
-				originObj[category][index]['y-unit'] ?? '%'
-			} `;
+		if (isString(validateOriginValue(x)))
+			originString += `${originValueToNumber(x)}% `;
+		if (isString(validateOriginValue(y)))
+			originString += `${originValueToNumber(y)}% `;
 
-		if (
-			!originString &&
-			index === 'hover' &&
-			(validateOriginValue(originObj?.[category]?.normal?.x) ||
-				validateOriginValue(originObj?.[category]?.normal?.y))
-		)
-			originString += '50% 50% ';
+		if (isNumber(validateOriginValue(x)))
+			originString += `${x}${xUnit ?? '%'} `;
+		if (isNumber(validateOriginValue(y)))
+			originString += `${y}${yUnit ?? '%'} `;
 
 		return originString;
 	};

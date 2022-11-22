@@ -36,13 +36,27 @@ export const openSidebarAccordion = (tab, accordionName) => {
 };
 
 export const openTransitions = () => {
+	const tabNumber = () => {
+		const { name } = select('core/block-editor').getSelectedBlock();
+		if (
+			[
+				'maxi-blocks/button-maxi',
+				'maxi-blocks/svg-icon-maxi',
+				'maxi-blocks/image-maxi',
+				'maxi-blocks/number-counter-maxi',
+				'maxi-blocks/video-maxi',
+			].includes(name)
+		)
+			return 2;
+		return 1;
+	};
 	const { openGeneralSidebar } = dispatch('core/edit-post');
 	openGeneralSidebar('edit-post/block')
 		.then(() =>
 			dispatch('maxiBlocks').updateInspectorPath({
 				depth: 0,
 				name: 'Advanced',
-				value: 2,
+				value: tabNumber,
 			})
 		)
 		.then(() => openSidebar('hover transition'));

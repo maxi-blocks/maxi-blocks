@@ -181,6 +181,19 @@ const Accordion = ({ children, title, openByDefault = false }) => {
 	);
 };
 
+// hack to fix issue #3930: top level tags resetting when we choose a second-level tag
+const removeMenuBugFix = () => {
+	const lists = document.querySelectorAll('.maxi__hide-top-tags');
+
+	for (const list of lists) {
+		list.classList.remove('maxi__hide-top-tags');
+		const listElements = list.childNodes;
+		for (const element of listElements) {
+			element.classList.remove('maxi__show-top-tag');
+		}
+	}
+};
+
 const resultsCount = {
 	stats(nbHits) {
 		const resultsString = nbHits.toLocaleString();
@@ -253,6 +266,7 @@ const MenuSelect = ({ items, currentRefinement, refine }) => {
 					value={item.value}
 					onClick={event => {
 						event.preventDefault();
+						removeMenuBugFix();
 						refine(item.value);
 						item.isRefined = true;
 					}}
@@ -337,19 +351,6 @@ const HierarchicalMenu = ({ items, refine, type = 'firstLevel' }) => {
 };
 
 const ClearRefinements = ({ items, refine }) => {
-	// hack to fix issue #3930: top level tags resetting when we choose a second-level tag
-	const removeMenuBugFix = () => {
-		const lists = document.querySelectorAll('.maxi__hide-top-tags');
-
-		for (const list of lists) {
-			list.classList.remove('maxi__hide-top-tags');
-			const listElements = list.childNodes;
-			for (const element of listElements) {
-				element.classList.remove('maxi__show-top-tag');
-			}
-		}
-	};
-
 	return (
 		<button
 			type='button'

@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { useState } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -47,6 +47,10 @@ const Indicator = props => {
 
 	const [value, setValue] = useState(val);
 
+	useEffect(() => {
+		if (+value !== +val) setValue(val);
+	}, [val]);
+
 	const getDirection = dir => {
 		if (type === 'margin') return dir;
 
@@ -55,7 +59,7 @@ const Indicator = props => {
 			case 'top':
 				return 'bottom';
 			case 'bottom':
-				return 'top';
+				return 'bottom';
 			case 'left':
 				return 'right';
 			case 'right':
@@ -97,32 +101,31 @@ const Indicator = props => {
 	const handleChanges = (e, ref) => {
 		e.preventDefault();
 
-		const newValue =
-			dir === 'top' || dir === 'bottom'
-				? round(ref.getBoundingClientRect().height)
-				: round(ref.getBoundingClientRect().width);
+		const newValue = isVertical
+			? round(ref.getBoundingClientRect().height)
+			: round(ref.getBoundingClientRect().width);
 
 		setValue(newValue);
 
 		return newValue;
 	};
 
-	const handleOnResize = (type, e, dir, ref) => {
+	const handleOnResize = (type, e, ref) => {
 		const newValue = handleChanges(e, ref);
 
 		insertInlineStyles({
 			obj: {
-				[`${type}-${getDirection(dir)}`]: `${newValue}px`,
+				[`${type}-${dir}`]: `${newValue}px`,
 				transition: 'none',
 			},
 		});
 	};
 
-	const handleOnResizeStop = (type, e, dir, ref) => {
+	const handleOnResizeStop = (type, e, ref) => {
 		const newValue = handleChanges(e, ref);
 
 		onChange({
-			[`${type}-${getDirection(dir)}-${breakpoint}`]: `${newValue}`,
+			[`${type}-${dir}-${breakpoint}`]: `${newValue}`,
 		});
 		cleanInlineStyles();
 	};
@@ -144,22 +147,21 @@ const Indicator = props => {
 						'maxi-block-indicators__handle'
 					),
 				}}
+				direction={dir}
 				minWidth={0}
 				minHeight={0}
 				enable={{
-					top: dir === getDirection('top'),
+					top: dir !== 'bottom' && dir === getDirection('top'),
 					right: dir === getDirection('right'),
-					bottom: dir === getDirection('bottom'),
+					bottom: dir === 'top' || dir === 'bottom',
 					left: dir === getDirection('left'),
 				}}
 				defaultSize={size}
 				size={size}
 				handleWrapperStyle={handleStyles}
 				handleStyles={handleStyles}
-				onResize={(e, dir, ref) => handleOnResize(type, e, dir, ref)}
-				onResizeStop={(e, dir, ref) =>
-					handleOnResizeStop(type, e, dir, ref)
-				}
+				onResize={(e, dir, ref) => handleOnResize(type, e, ref)}
+				onResizeStop={(e, dir, ref) => handleOnResizeStop(type, e, ref)}
 			>
 				{content}
 			</Resizable>
@@ -171,6 +173,7 @@ const MainIndicator = props => {
 	const { type, breakpoint, avoidIndicators } = props;
 
 	return ['top', 'right', 'bottom', 'left'].map(dir => {
+		// return ['bottom'].map(dir => {
 		if (avoidIndicators[type] && avoidIndicators[type].includes(dir))
 			return null;
 
@@ -193,6 +196,7 @@ const MainIndicator = props => {
 
 		return (
 			<Indicator
+				key={`maxi-blocks-indicators--${type}-${dir}`}
 				value={value}
 				unit={unit}
 				dir={dir}

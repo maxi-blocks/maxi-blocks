@@ -35,30 +35,40 @@ const TextMargin = props => {
 		>
 			<div className='toolbar-item__text-margin__popover toolbar-item__padding-margin__popover'>
 				{props['margin-sync-general'] === 'none' ? (
+					<AxisControl
+						{...getGroupAttributes(props, 'margin')}
+						label={__('Margin', 'maxi-blocks')}
+						onChange={onChange}
+						target='margin'
+						inputsArray={['bottom', 'top', 'left', 'right', 'unit']}
+						noResponsiveTabs
+						breakpoint={breakpoint}
+						optionType='string'
+						disableSync
+					/>
+				) : props['margin-sync-general'] === 'axis' ? (
 					<>
 						<AxisControl
 							{...getGroupAttributes(props, 'margin')}
-							label={__('Margin above', 'maxi-blocks')}
+							label={__('Top/bottom margin', 'maxi-blocks')}
 							onChange={onChange}
 							target='margin'
-							inputsArray={['top', 'unit']}
+							inputsArray={['top', 'bottom', 'unit']}
 							noResponsiveTabs
 							breakpoint={breakpoint}
 							optionType='string'
 							disableSync
-							disableAuto
 						/>
 						<AxisControl
 							{...getGroupAttributes(props, 'margin')}
-							label={__('Margin below', 'maxi-blocks')}
+							label={__('Right/left margin', 'maxi-blocks')}
 							onChange={onChange}
 							target='margin'
-							inputsArray={['bottom', 'unit']}
+							inputsArray={['left', 'right', 'unit']}
 							noResponsiveTabs
 							breakpoint={breakpoint}
 							optionType='string'
 							disableSync
-							disableAuto
 						/>
 					</>
 				) : (
@@ -71,7 +81,6 @@ const TextMargin = props => {
 						breakpoint={breakpoint}
 						optionType='string'
 						disableSync
-						disableAuto
 					/>
 				)}
 			</div>

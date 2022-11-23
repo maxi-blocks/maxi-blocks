@@ -18,3 +18,7 @@
 		}
 	}
 }
+.toolbar-item__text-margin__popover .maxi-axis-control__margin > div {
+	flex-direction: column-reverse !important;
+	row-gap: 8px;
+}

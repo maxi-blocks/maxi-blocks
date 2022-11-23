@@ -22,6 +22,7 @@ import { dispatch, resolveSelect, select, useSelect } from '@wordpress/data';
  */
 import {
 	getBlockStyle,
+	getDefaultAttribute,
 	getGroupAttributes,
 	getHasScrollEffects,
 	getHasVideo,
@@ -98,6 +99,10 @@ class MaxiBlockComponent extends Component {
 		if (!isEmpty(this.typography)) this.loadFonts();
 		this.getCurrentBlockStyle();
 		this.displayStyles(newUniqueID);
+
+		this.maxiAttributes = this.getMaxiAttributes();
+
+		this.setMaxiAttributes();
 	}
 
 	componentDidMount() {
@@ -255,6 +260,30 @@ class MaxiBlockComponent extends Component {
 		);
 
 		if (this.maxiBlockWillUnmount) this.maxiBlockWillUnmount();
+	}
+
+	getMaxiAttributes() {
+		return null;
+	}
+
+	setMaxiAttributes() {
+		if (!this.maxiAttributes) return;
+
+		Object.entries(this.maxiAttributes).forEach(([key, value]) => {
+			const currentValue = this.props.attributes[key];
+			const defaultValue = getDefaultAttribute(key, this.props.clientId);
+
+			if (
+				(!isEqual(currentValue, defaultValue) ||
+					!isEqual(currentValue, value)) &&
+				// Using `maxi-version-current` as is an attribute that set on componentDidMount
+				// so it ensures we add these attributes the first time we add the block
+				'maxi-version-current' in this.props.attributes
+			)
+				return;
+
+			this.props.attributes[key] = value;
+		});
 	}
 
 	get getBreakpoints() {

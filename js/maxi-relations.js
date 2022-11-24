@@ -53,8 +53,10 @@ class Relation {
 			switch (typeof item.transitionTarget) {
 				case 'string':
 					return [item.transitionTarget];
-				case 'object' && item.transitionTarget?.length > 0:
-					return item.transitionTarget;
+				case 'object':
+					if (item.transitionTarget?.length > 0)
+						return item.transitionTarget;
+					return [''];
 				default:
 					return [''];
 			}
@@ -376,7 +378,22 @@ class Relation {
 	}
 
 	setDataAttrToBlock(value) {
-		this.blockTargetEl.setAttribute('data-maxi-relations', value);
+		// On setting the 'false' value, is necessary to check the 'data-maxi-relations-trigger'
+		// to ensure the last trigger is not removed. It happens when moving from some trigger to
+		// other really fast between while `transitionTimeout` is still running.
+		if (value === 'false') {
+			const currentTrigger = this.blockTargetEl.getAttribute(
+				'data-maxi-relations-trigger'
+			);
+
+			if (currentTrigger === this.trigger || !currentTrigger)
+				this.blockTargetEl.setAttribute('data-maxi-relations', value);
+		} else this.blockTargetEl.setAttribute('data-maxi-relations', value);
+
+		this.blockTargetEl.setAttribute(
+			'data-maxi-relations-trigger',
+			this.trigger
+		);
 	}
 
 	addDataAttrToBlock() {

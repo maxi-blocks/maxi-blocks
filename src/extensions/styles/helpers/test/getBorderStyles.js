@@ -26,6 +26,10 @@ jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 	});
 });
 
+jest.mock('src/extensions/attributes/goThroughMaxiBlocks.js', () => {
+	return jest.fn(() => undefined);
+});
+
 describe('getBorderStyles', () => {
 	const defaultAttributes = {
 		'border-style-general': 'none',
@@ -420,7 +424,7 @@ describe('getBorderStyles', () => {
 		expect(result).toMatchSnapshot();
 	});
 
-	it('Return an IB border styles(border-style: none on general)', async () => {
+	it('Return an IB border styles(border-width: 0 on general)', async () => {
 		const result = getBorderStyles({
 			obj: defaultAttributes,
 			blockStyle: 'light',

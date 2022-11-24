@@ -31,6 +31,10 @@ jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 	});
 });
 
+jest.mock('src/extensions/attributes/goThroughMaxiBlocks.js', () => {
+	return jest.fn(() => undefined);
+});
+
 const getGeneralSizeAndPositionAttributes = ({
 	type,
 	isHover = false,

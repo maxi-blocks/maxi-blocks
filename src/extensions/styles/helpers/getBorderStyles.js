@@ -4,6 +4,7 @@
 import getColorRGBAString from '../getColorRGBAString';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 import getPaletteAttributes from '../getPaletteAttributes';
+import goThroughMaxiBlocks from '../../attributes/goThroughMaxiBlocks';
 import { getIsValid } from '../utils';
 
 /**
@@ -30,6 +31,7 @@ const getBorderStyles = ({
 	isButton = false,
 	scValues = {},
 	borderColorProperty = 'border-color',
+	uniqueID,
 }) => {
 	const response = {};
 
@@ -43,6 +45,20 @@ const getBorderStyles = ({
 	if (isHover && !isNil(hoverStatus) && !hoverStatus && !globalHoverStatus)
 		return response;
 
+	let IBStatus = false;
+	goThroughMaxiBlocks(({ attributes }) => {
+		if (IBStatus || !('relations' in attributes)) return;
+
+		if (
+			attributes.relations.some(
+				({ uniqueID: relationUniqueID, settings }) =>
+					uniqueID === relationUniqueID &&
+					settings.toLowerCase().includes('border')
+			)
+		)
+			IBStatus = true;
+	});
+
 	const keyWords = [
 		'top-left',
 		'top-right',
@@ -54,7 +70,8 @@ const getBorderStyles = ({
 		'left',
 	];
 
-	let omitBorderStyle = !isIB;
+	let omitBorderStyle =
+		!isIB && !hoverStatus && !globalHoverStatus && !IBStatus;
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
@@ -131,8 +148,15 @@ const getBorderStyles = ({
 
 				if (key.includes('style')) {
 					if (!omitBorderStyle)
-						if (isHover && isBorderNone) {
-							response[breakpoint].border = 'none';
+						if (isBorderNone) {
+							if (isIB || isHover) {
+								response[breakpoint]['border-width'] = '0';
+							} else if (!isHover && (hoverStatus || IBStatus)) {
+								// To have transition in case when border is none in normal state
+								// and border is not none in hover state or in IB
+								response[breakpoint]['border-style'] = 'solid';
+								response[breakpoint]['border-width'] = '0';
+							}
 						} else
 							response[breakpoint]['border-style'] = borderStyle;
 				} else if (!keyWords.some(key => newKey.includes(key))) {

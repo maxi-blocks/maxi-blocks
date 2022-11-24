@@ -170,6 +170,22 @@ const reducer = (
 				...state,
 				deprecatedBlocks: omit(state.deprecatedBlocks, action.uniqueID),
 			};
+		case 'UPDATE_RELATION_RERENDER_VALUE':
+			return {
+				...state,
+				relationRerenderValues: {
+					...state.relationRerenderValues,
+					[action.uniqueID]: action.value,
+				},
+			};
+		case 'REMOVE_RELATION_RERENDER_VALUE':
+			return {
+				...state,
+				relationRerenderValues: omit(
+					state.relationRerenderValues,
+					action.uniqueID
+				),
+			};
 		default:
 			return state;
 	}

@@ -254,6 +254,7 @@ describe('BorderControl', () => {
 			await getAttributes('border-bottom-left-radius-general')
 		).toStrictEqual(undefined);
 	});
+
 	it('Checking the responsive border control', async () => {
 		const borderAccordion = await openSidebarTab(page, 'style', 'border');
 

@@ -25,7 +25,7 @@ const CustomLabel = props => {
 		<div className={classes}>
 			<TextControl
 				label={__('Block name', 'maxi-blocks')}
-				placeholder={__('Give a name...')}
+				placeholder={__('Give a name…', 'maxi-blocks')}
 				value={customLabel}
 				onChange={value => onChange(value)}
 			/>

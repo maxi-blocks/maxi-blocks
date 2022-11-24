@@ -108,30 +108,33 @@ const transition = {
 			title: 'Box shadow',
 			target: dividerClass,
 			property: 'box-shadow',
-			prefix,
+			hoverProp: `${prefix}box-shadow-status-hover`,
 		},
 	},
 };
-const interactionBuilderSettings = [
-	{
-		label: __('Divider box shadow', 'maxi-blocks'),
-		transitionTarget: transition.block['box shadow'].target,
-		hoverProp: 'divider-box-shadow-status-hover',
-		attrGroupName: 'boxShadow',
-		prefix: 'divider-',
-		component: props => <BoxShadowControl {...props} />,
-		helper: props => getBoxShadowStyles(props),
-		target: dividerClass,
-	},
-	{
-		label: __('Line settings', 'maxi-blocks'),
-		attrGroupName: ['divider', 'size'],
-		component: props => <DividerControl {...props} />,
-		helper: props => getDividerStyles(props.obj, 'line', props.blockStyle),
-		target: dividerClass,
-	},
-	...getCanvasSettings({ name, customCss }),
-];
+const interactionBuilderSettings = {
+	block: [
+		{
+			label: __('Divider box shadow', 'maxi-blocks'),
+			transitionTarget: transition.block['box shadow'].target,
+			hoverProp: 'divider-box-shadow-status-hover',
+			attrGroupName: 'boxShadow',
+			prefix: 'divider-',
+			component: props => <BoxShadowControl {...props} />,
+			helper: props => getBoxShadowStyles(props),
+			target: dividerClass,
+		},
+		{
+			label: __('Line settings', 'maxi-blocks'),
+			attrGroupName: ['divider', 'size'],
+			component: props => <DividerControl {...props} />,
+			helper: props =>
+				getDividerStyles(props.obj, 'line', props.blockStyle),
+			target: dividerClass,
+		},
+	],
+	canvas: getCanvasSettings({ name, customCss }),
+};
 
 const data = {
 	name,

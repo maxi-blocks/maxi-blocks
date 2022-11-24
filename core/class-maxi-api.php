@@ -207,7 +207,7 @@ if (!class_exists('MaxiBlocks_API')):
         {
             global $wp_version;
 
-            $version = '';
+            $version = gettype($wp_version);
             $is_core = true;
 
             // In case Gutenberg plugin has been installed
@@ -217,30 +217,18 @@ if (!class_exists('MaxiBlocks_API')):
             } else {
                 // Versions based on initial compatibility with WP 5.5.3
                 if (
-                    version_compare($wp_version, '5.5') >= 0 &&
-                    version_compare($wp_version, '5.5.3') <= 0
+                    version_compare($wp_version, '6.0.3') <= 0
                 ) {
-                    $version = '8.5';
+                    $version = '13.0';
                 } elseif (
-                    version_compare($wp_version, '5.6') >= 0 &&
-                    version_compare($wp_version, '5.6.1') <= 0
+                    version_compare($wp_version, '6.1.1') <= 0
                 ) {
-                    $version = '9.2';
-                } elseif (
-                    version_compare($wp_version, '5.7') >= 0 &&
-                    version_compare($wp_version, '5.7.1') >= 0
-                ) {
-                    $version = '9.9';
-                } elseif (
-                    version_compare($wp_version, '5.8') >= 0 &&
-                    floatval($wp_version) >= floatval('5.8')
-                ) {
-                    $version = '10.7';
+                    $version = '14.1';
                 }
             }
 
             $response = [
-				'maxi_version' => MAXI_PLUGIN_VERSION,
+                'maxi_version' => MAXI_PLUGIN_VERSION,
                 'google_api_key' => get_option('google_api_key_option'),
                 'core' => [
                     'version' => $wp_version,

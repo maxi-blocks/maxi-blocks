@@ -142,15 +142,14 @@ describe('getTransitionStyles', () => {
 				typography: {
 					title: 'Typography',
 					target: ' .maxi-button-block__content',
-					property: 'typography',
-					limitless: true,
-					prefix,
+					property: false,
+					hoverProp: 'typography-status-hover',
 				},
 				'button background': {
 					title: 'Button background',
 					target: ' .maxi-button-block__button',
 					property: 'background',
-					prefix,
+					hoverProp: `${prefix}background-status-hover`,
 				},
 			},
 		};
@@ -160,31 +159,17 @@ describe('getTransitionStyles', () => {
 			'box-shadow-status-hover': true,
 			'block-background-status-hover': false,
 			'typography-status-hover': true,
-			'button-background-status-hover': true,
+			'button-background-status-hover': false,
 			transition: {
 				block: {
-					typography: {
-						...repeatedAttributes,
-						hoverProp: 'typography-status-hover',
-					},
-					'button background': {
-						...repeatedAttributes,
-						hoverProp: 'background-status-hover',
-					},
+					typography: repeatedAttributes,
+
+					'button background': repeatedAttributes,
 				},
 				canvas: {
-					border: {
-						...repeatedAttributes,
-						hoverProp: 'border-status-hover',
-					},
-					'box shadow': {
-						...repeatedAttributes,
-						hoverProp: 'box-shadow-status-hover',
-					},
-					'background / layer': {
-						...repeatedAttributes,
-						hoverProp: 'block-background-status-hover',
-					},
+					border: repeatedAttributes,
+					'box shadow': repeatedAttributes,
+					'background / layer': repeatedAttributes,
 				},
 			},
 		};

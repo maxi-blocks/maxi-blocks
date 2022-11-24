@@ -242,121 +242,115 @@ const BoxShadowControl = props => {
 					<BoxShadowValueControl type='spread' isToolbar {...props} />
 				</>
 			)}
-			{(isToolbar || !isNone) && (
+			<ColorControl
+				label={__('Box shadow', 'maxi-blocks')}
+				className='maxi-shadow-control__color'
+				color={getLastBreakpointAttribute({
+					target: `${prefix}box-shadow-color`,
+					breakpoint,
+					attributes: props,
+					isHover,
+				})}
+				prefix={`${prefix}box-shadow-`}
+				paletteStatus={getLastBreakpointAttribute({
+					target: `${prefix}box-shadow-palette-status`,
+					breakpoint,
+					attributes: props,
+					isHover,
+				})}
+				paletteColor={getLastBreakpointAttribute({
+					target: `${prefix}box-shadow-palette-color`,
+					breakpoint,
+					attributes: props,
+					isHover,
+				})}
+				paletteOpacity={getLastBreakpointAttribute({
+					target: `${prefix}box-shadow-palette-opacity`,
+					breakpoint,
+					attributes: props,
+					isHover,
+				})}
+				onChangeInline={({ color }) => {
+					onChangeInline &&
+						onChangeInline({
+							'box-shadow': `${getLastBreakpointAttribute({
+								target: `${prefix}box-shadow-horizontal`,
+								breakpoint,
+								attributes: props,
+								isHover,
+							})}px ${getLastBreakpointAttribute({
+								target: `${prefix}box-shadow-vertical`,
+								breakpoint,
+								attributes: props,
+								isHover,
+							})}px ${getLastBreakpointAttribute({
+								target: `${prefix}box-shadow-blur`,
+								breakpoint,
+								attributes: props,
+								isHover,
+							})}px ${getLastBreakpointAttribute({
+								target: `${prefix}box-shadow-spread`,
+								breakpoint,
+								attributes: props,
+								isHover,
+							})}px ${color}`,
+						});
+				}}
+				onChange={({
+					color,
+					paletteColor,
+					paletteStatus,
+					paletteOpacity,
+				}) => {
+					onChange({
+						[`${prefix}box-shadow-palette-status-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`]: paletteStatus,
+						[`${prefix}box-shadow-palette-color-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`]: paletteColor,
+						[`${prefix}box-shadow-palette-opacity-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`]: paletteOpacity,
+						[`${prefix}box-shadow-color-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`]: color,
+					});
+				}}
+				disableGradient
+				disableImage
+				disableVideo
+				isHover={isHover}
+				deviceType={breakpoint}
+				clientId={clientId}
+			/>
+			{!isToolbar && (
 				<>
-					<ColorControl
-						label={__('Box shadow', 'maxi-blocks')}
-						className='maxi-shadow-control__color'
-						color={getLastBreakpointAttribute({
-							target: `${prefix}box-shadow-color`,
-							breakpoint,
-							attributes: props,
-							isHover,
-						})}
-						prefix={`${prefix}box-shadow-`}
-						paletteStatus={getLastBreakpointAttribute({
-							target: `${prefix}box-shadow-palette-status`,
-							breakpoint,
-							attributes: props,
-							isHover,
-						})}
-						paletteColor={getLastBreakpointAttribute({
-							target: `${prefix}box-shadow-palette-color`,
-							breakpoint,
-							attributes: props,
-							isHover,
-						})}
-						paletteOpacity={getLastBreakpointAttribute({
-							target: `${prefix}box-shadow-palette-opacity`,
-							breakpoint,
-							attributes: props,
-							isHover,
-						})}
-						onChangeInline={({ color }) => {
-							onChangeInline &&
-								onChangeInline({
-									'box-shadow': `${getLastBreakpointAttribute(
-										{
-											target: `${prefix}box-shadow-horizontal`,
-											breakpoint,
-											attributes: props,
-											isHover,
-										}
-									)}px ${getLastBreakpointAttribute({
-										target: `${prefix}box-shadow-vertical`,
-										breakpoint,
-										attributes: props,
-										isHover,
-									})}px ${getLastBreakpointAttribute({
-										target: `${prefix}box-shadow-blur`,
-										breakpoint,
-										attributes: props,
-										isHover,
-									})}px ${getLastBreakpointAttribute({
-										target: `${prefix}box-shadow-spread`,
-										breakpoint,
-										attributes: props,
-										isHover,
-									})}px ${color}`,
-								});
-						}}
-						onChange={({
-							color,
-							paletteColor,
-							paletteStatus,
-							paletteOpacity,
-						}) => {
-							onChange({
-								[`${prefix}box-shadow-palette-status-${breakpoint}${
-									isHover ? '-hover' : ''
-								}`]: paletteStatus,
-								[`${prefix}box-shadow-palette-color-${breakpoint}${
-									isHover ? '-hover' : ''
-								}`]: paletteColor,
-								[`${prefix}box-shadow-palette-opacity-${breakpoint}${
-									isHover ? '-hover' : ''
-								}`]: paletteOpacity,
-								[`${prefix}box-shadow-color-${breakpoint}${
-									isHover ? '-hover' : ''
-								}`]: color,
-							});
-						}}
-						disableGradient
-						disableImage
-						disableVideo
-						isHover={isHover}
-						deviceType={breakpoint}
-						clientId={clientId}
-					/>
-					{!isToolbar && (
-						<>
-							{!dropShadow && (
-								<ToggleSwitch
-									label={__('Inset', 'maxi-block')}
-									selected={getLastBreakpointAttribute({
-										target: `${prefix}box-shadow-inset`,
-										breakpoint,
-										attributes: props,
-										isHover,
-									})}
-									onChange={val =>
-										onChange({
-											[`${prefix}box-shadow-inset-${breakpoint}${
-												isHover ? '-hover' : ''
-											}`]: val,
-										})
-									}
-								/>
-							)}
-							{boxShadowItems.map(type => (
-								<BoxShadowValueControl
-									type={type}
-									key={type}
-									{...props}
-								/>
-							))}
-						</>
+					{!dropShadow && (
+						<ToggleSwitch
+							label={__('Inset', 'maxi-block')}
+							selected={getLastBreakpointAttribute({
+								target: `${prefix}box-shadow-inset`,
+								breakpoint,
+								attributes: props,
+								isHover,
+							})}
+							onChange={val =>
+								onChange({
+									[`${prefix}box-shadow-inset-${breakpoint}${
+										isHover ? '-hover' : ''
+									}`]: val,
+								})
+							}
+						/>
 					)}
+					{boxShadowItems.map(type => (
+						<BoxShadowValueControl
+							type={type}
+							key={type}
+							{...props}
+						/>
+					))}
 				</>
 			)}
 		</div>

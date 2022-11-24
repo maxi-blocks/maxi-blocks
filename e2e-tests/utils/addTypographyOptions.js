@@ -16,7 +16,7 @@ const addTypographyOptions = async ({
 			select[0].focus()
 		);
 		await pressKeyTimes('Backspace', '4');
-		await page.keyboard.type(size, { delay: 150 });
+		await page.keyboard.type(`${size}`, { delay: 150 });
 	}
 
 	// line-height
@@ -27,7 +27,7 @@ const addTypographyOptions = async ({
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type(lineHeight, { delay: 150 });
+		await page.keyboard.type(`${lineHeight}`, { delay: 150 });
 	}
 
 	// letter-spacing
@@ -37,8 +37,10 @@ const addTypographyOptions = async ({
 			select => select[0].focus()
 		);
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type(letterSpacing, { delay: 150 });
+		await page.keyboard.type(`${letterSpacing}`, { delay: 150 });
 	}
+
+	await page.waitForTimeout(150);
 };
 
 export default addTypographyOptions;

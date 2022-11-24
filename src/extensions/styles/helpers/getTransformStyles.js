@@ -116,7 +116,8 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 			!rotateString &&
 			index === 'hover' &&
 			(isNumber(rotateObj?.[category]?.normal?.x) ||
-				isNumber(rotateObj?.[category]?.normal?.y))
+				isNumber(rotateObj?.[category]?.normal?.y) ||
+				isNumber(rotateObj?.[category]?.normal?.z))
 		)
 			rotateString += 'rotate(0) ';
 

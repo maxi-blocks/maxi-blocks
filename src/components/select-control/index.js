@@ -6,7 +6,8 @@ import { useInstanceId } from '@wordpress/compose';
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import { isEmpty, isPlainObject } from 'lodash';
+import classnames from 'classnames';
 
 /**
  * Internal dependencies
@@ -42,6 +43,21 @@ export default function SelectControl({
 		onChange(event.target.value);
 	};
 
+	const getOptions = options =>
+		options.map((option, index) => (
+			<option
+				// eslint-disable-next-line react/no-array-index-key
+				key={`${option.label}-${option.value}-${index}`}
+				value={option.value}
+				disabled={option.disabled}
+				className={option.className}
+			>
+				{option.label}
+			</option>
+		));
+
+	const classes = classnames('maxi-select-control', className);
+
 	return (
 		!isEmpty(options) && (
 			<BaseControl
@@ -49,7 +65,7 @@ export default function SelectControl({
 				hideLabelFromVision={hideLabelFromVision}
 				id={id}
 				help={help}
-				className={className}
+				className={classes}
 			>
 				<select
 					id={id}
@@ -59,17 +75,22 @@ export default function SelectControl({
 					multiple={multiple}
 					{...props}
 				>
-					{options.map((option, index) => (
-						<option
-							// eslint-disable-next-line react/no-array-index-key
-							key={`${option.label}-${option.value}-${index}`}
-							value={option.value}
-							disabled={option.disabled}
-							className={option.className}
-						>
-							{option.label}
-						</option>
-					))}
+					{isPlainObject(options)
+						? Object.entries(options).map(
+								([groupLabel, groupOptions]) =>
+									groupLabel !== '' ? (
+										<optgroup
+											key={groupLabel}
+											label={groupLabel}
+											className='maxi-select-control__optgroup'
+										>
+											{getOptions(groupOptions)}
+										</optgroup>
+									) : (
+										getOptions(groupOptions)
+									)
+						  )
+						: getOptions(options)}
 				</select>
 			</BaseControl>
 		)

@@ -2,12 +2,13 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { Button } from '@wordpress/components';
+// import { Button } from '@wordpress/components';
 import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
+import Button from '../button';
 import InfoBox from '../info-box';
 import ListControl from '../list-control';
 import ListItemControl from '../list-control/list-item-control';
@@ -28,7 +29,7 @@ import * as blocksData from '../../blocks/data';
 /**
  * External dependencies
  */
-import { cloneDeep, isEmpty, isNil, merge } from 'lodash';
+import { capitalize, cloneDeep, isEmpty, isNil, merge } from 'lodash';
 
 /**
  * Styles
@@ -56,11 +57,49 @@ const RelationControl = props => {
 	const getOptions = clientId => {
 		const blockName = getBlock(clientId)?.name.replace('maxi-blocks/', '');
 
-		const blockOptions =
-			Object.values(blocksData).find(data => data.name === blockName)
-				.interactionBuilderSettings || [];
+		// TODO: without this line, the block may break after copy/pasting
+		if (!blockName) return {};
 
-		return blockOptions || [];
+		const blockOptions = Object.values(blocksData).find(
+			data => data.name === blockName
+		).interactionBuilderSettings;
+
+		return blockOptions || {};
+	};
+
+	const getParsedOptions = rawOptions => {
+		const parseOptionsArray = options =>
+			options.map(({ label }) => ({
+				label,
+				value: label,
+			}));
+
+		const defaultSetting = {
+			label: __('Choose settings', 'maxi-blocks'),
+			value: '',
+		};
+
+		const parsedOptions =
+			Object.keys(rawOptions).length > 1
+				? {
+						'': [defaultSetting],
+						...Object.entries(rawOptions).reduce(
+							(acc, [groupLabel, groupOptions]) => ({
+								...acc,
+								[capitalize(groupLabel)]:
+									parseOptionsArray(groupOptions),
+							}),
+							{}
+						),
+				  }
+				: [
+						...defaultSetting,
+						...parseOptionsArray(
+							rawOptions[Object.keys(rawOptions)[0]]
+						),
+				  ];
+
+		return parsedOptions;
 	};
 
 	const transitionDefaultAttributes = createTransitionObj();
@@ -107,7 +146,9 @@ const RelationControl = props => {
 	};
 
 	const getSelectedSettingsObj = (clientId, settingsLabel) =>
-		getOptions(clientId).find(option => option.label === settingsLabel);
+		Object.values(getOptions(clientId))
+			.flat()
+			.find(option => option.label === settingsLabel);
 
 	const displaySelectedSetting = item => {
 		if (!item) return null;
@@ -125,7 +166,9 @@ const RelationControl = props => {
 		const prefix = selectedSettingsObj?.prefix || '';
 		const blockAttributes = cloneDeep(getBlock(clientId)?.attributes);
 
-		const storeBreakpoints = select('maxiBlocks').receiveMaxiBreakpoints();
+		const { receiveMaxiBreakpoints, receiveXXLSize } = select('maxiBlocks');
+
+		const storeBreakpoints = receiveMaxiBreakpoints();
 		const blockBreakpoints = getGroupAttributes(
 			blockAttributes,
 			'breakpoints'
@@ -133,6 +176,7 @@ const RelationControl = props => {
 
 		const breakpoints = {
 			...storeBreakpoints,
+			xxl: receiveXXLSize(),
 			...Object.keys(blockBreakpoints).reduce((acc, key) => {
 				if (blockAttributes[key]) {
 					const newKey = key.replace('breakpoints-', '');
@@ -145,14 +189,18 @@ const RelationControl = props => {
 		// As an alternative to a migrator... Remove after used!
 		if (
 			!(
+				'transitionTrigger' in item.effects &&
 				'transitionTarget' in item.effects &&
 				'hoverStatus' in item.effects
 			) ||
 			item.effects.hoverStatus !==
 				getHoverStatus(selectedSettingsObj.hoverProp, blockAttributes)
 		) {
-			const { transitionTarget: rawTransitionTarget, hoverProp } =
-				selectedSettingsObj;
+			const {
+				transitionTarget: rawTransitionTarget,
+				transitionTrigger,
+				hoverProp,
+			} = selectedSettingsObj;
 			const transitionTarget =
 				item.settings === 'Transform'
 					? Object.keys(item.css)
@@ -167,17 +215,19 @@ const RelationControl = props => {
 					item.attributes
 				);
 
-			if (transitionTarget)
+			if (transitionTarget || transitionTrigger)
 				onChangeRelation(relations, item.id, {
 					effects: {
 						...item.effects,
-						transitionTarget,
+						...(transitionTarget && { transitionTarget }),
+						...(transitionTrigger && { transitionTrigger }),
 						...(!isNil(hoverStatus) && { hoverStatus }),
 					},
 				});
 		}
 
-		const mergedAttributes = merge(blockAttributes, item.attributes);
+		// Merging into empty object because lodash `merge` mutates first argument
+		const mergedAttributes = merge({}, blockAttributes, item.attributes);
 
 		const transformGeneralAttributesToBaseBreakpoint = obj => {
 			if (deviceType !== 'general') return {};
@@ -214,7 +264,7 @@ const RelationControl = props => {
 				};
 
 				const newGroupAttributes = getGroupAttributes(
-					{ ...blockAttributes, ...newAttributesObj },
+					merge(blockAttributes, newAttributesObj),
 					selectedSettingsObj.attrGroupName,
 					false,
 					prefix
@@ -451,42 +501,29 @@ const RelationControl = props => {
 													'maxi-blocks'
 												)}
 												value={item.settings}
-												options={[
-													{
-														label: __(
-															'Choose settings',
-															'maxi-blocks'
-														),
-														value: '',
-													},
-													...getOptions(
+												options={getParsedOptions(
+													getOptions(
 														getClientIdFromUniqueId(
 															item.uniqueID
 														)
-													).map(option => ({
-														label: option.label,
-														value: option.label,
-													})),
-												]}
+													)
+												)}
 												onChange={value => {
-													const {
-														transitionTarget,
-														hoverProp,
-													} =
-														getOptions(
-															getClientIdFromUniqueId(
-																item.uniqueID
-															)
-														).find(
-															option =>
-																option.label ===
-																value
-														) || {};
-
 													const clientId =
 														getClientIdFromUniqueId(
 															item.uniqueID
 														);
+
+													const selectedSettingsObj =
+														getSelectedSettingsObj(
+															clientId,
+															value
+														) || {};
+
+													const {
+														transitionTarget,
+														hoverProp,
+													} = selectedSettingsObj;
 
 													const blockAttributes =
 														getBlock(
@@ -506,10 +543,8 @@ const RelationControl = props => {
 															);
 
 														const target =
-															getSelectedSettingsObj(
-																clientId,
-																value
-															)?.target || '';
+															selectedSettingsObj?.target ||
+															'';
 
 														const textMaxiPrefix =
 															getBlock(clientId)
@@ -530,11 +565,20 @@ const RelationControl = props => {
 																textLevel,
 															} = blockAttributes;
 
+															const trimmedTarget =
+																target.startsWith(
+																	' '
+																)
+																	? target.slice(
+																			1
+																	  )
+																	: target;
+
 															return `${
 																isList
 																	? typeOfList
 																	: textLevel
-															}${target}`;
+															}${trimmedTarget}`;
 														}
 
 														return target;

@@ -17,10 +17,13 @@ describe('Video maxi control', () => {
 		await createNewPost();
 		await insertBlock('Video Maxi');
 
+		// Needs time to load the YT/Vimeo API
+		await page.waitForTimeout(1000);
+
 		const accordionPanel = await openSidebarTab(page, 'style', 'video');
 
 		// Change start time
-		await page.$eval('.maxi-video-start-time input', input =>
+		await accordionPanel.$eval('.maxi-video-start-time input', input =>
 			input.focus()
 		);
 
@@ -57,6 +60,7 @@ describe('Video maxi control', () => {
 
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('https://youtu.be/mkggXE5e2yk');
+		await page.waitForTimeout(150);
 
 		expect(await getAttributes('url')).toStrictEqual(
 			'https://youtu.be/mkggXE5e2yk'

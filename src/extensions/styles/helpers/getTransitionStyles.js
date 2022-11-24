@@ -12,7 +12,7 @@ import transitionDefault from '../transitions/transitionDefault';
 /**
  * External dependencies
  */
-import { isNil, isEqual, isEmpty } from 'lodash';
+import { isNil, isEqual, isEmpty, isArray } from 'lodash';
 
 /**
  * Generates size styles object
@@ -28,24 +28,21 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 
 	Object.entries(transitionObj).forEach(([type, obj]) => {
 		Object.entries(obj).forEach(([key, value]) => {
-			const {
-				target: rawTarget,
-				property: rawProperty,
-				limitless = false,
-			} = value;
+			const { hoverProp: rawHoverProp } = value;
+			const hoverProp =
+				!rawHoverProp || isArray(rawHoverProp)
+					? rawHoverProp
+					: [rawHoverProp];
+			if (hoverProp && hoverProp.every(prop => !props[prop])) return;
 
-			const targets = Array.isArray(rawTarget) ? rawTarget : [rawTarget];
-			const properties = Array.isArray(rawProperty)
+			const { target: rawTarget, property: rawProperty } = value;
+			const targets = isArray(rawTarget) ? rawTarget : [rawTarget];
+			const properties = isArray(rawProperty)
 				? rawProperty
 				: [rawProperty];
 
 			targets.forEach(target => {
 				const transitionContent = transition[type][key];
-				if (
-					transitionContent?.hoverProp &&
-					!props[transitionContent.hoverProp]
-				)
-					return;
 
 				if (isNil(response[target]))
 					response[target] = { transition: {} };
@@ -86,7 +83,7 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 						getTransitionAttribute('transition-status');
 
 					properties.forEach(property => {
-						const transitionProperty = limitless ? 'all' : property;
+						const transitionProperty = property || 'all';
 						const isSomeValue =
 							isEqual(
 								transitionDuration,

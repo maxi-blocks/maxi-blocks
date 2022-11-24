@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+import { select, dispatch } from '@wordpress/data';
+
+/**
  * Internal dependencies
  */
 import fullWidthNonToResponsiveMigrator from './fullWidthNonToResponsive';
@@ -9,12 +14,12 @@ import transformIBMigrator from './transformIBMigrator';
 import SVGIBTargetsMigrator from './SVGIBTargetsMigrator';
 import transitionTargetIBmigrator from './transitionTargetIBmigrator';
 import hoverStatusMigrator from './hoverStatusMigrator';
-import { getMigratorsCombinations } from './utils';
+import opacityTransitionMigrator from './opacityTransitionMigrator';
 
 /**
  * External dependencies
  */
-import { compact } from 'lodash';
+import { isNil } from 'lodash';
 
 /**
  * Create a combination of the different migrators, from the most populate ones to the lighter ones.
@@ -22,82 +27,54 @@ import { compact } from 'lodash';
 export const handleBlockMigrator = ({
 	attributes,
 	save,
-	prefix = '',
 	isContainer = false,
-	selectors,
 	migrators,
-}) => {
-	const combinedMigrators = getMigratorsCombinations(migrators);
+}) =>
+	migrators.map(migrator => {
+		const newMigrator = { ...migrator };
 
-	return combinedMigrators
-		.sort()
-		.reverse()
-		.map(combinedMigrator => {
-			const result = {};
+		newMigrator.attributes = {
+			...attributes,
+			...(newMigrator.attributes?.(isContainer, attributes) ?? {}),
+		};
 
-			const isEligibleFunctions = compact(
-				combinedMigrator.map(migrator => migrator.isEligible)
-			);
-			const attributesFunctions = compact(
-				combinedMigrator.map(migrator => migrator.attributes)
-			);
-			const migrateFunctions = compact(
-				combinedMigrator.map(migrator => migrator.migrate)
-			);
-			const saveFunctions = compact(
-				combinedMigrator.map(migrator => migrator.saveMigrator)
-			);
+		const originalMigrate = newMigrator.migrate;
 
-			result.isEligible = blockAttributes => {
-				return isEligibleFunctions.every(isEligible =>
-					isEligible(blockAttributes, attributes)
-				);
-			};
-			result.attributes = {
-				...attributes,
-				...attributesFunctions.reduce((acc, attributesFunction) => {
-					return {
-						...acc,
-						...attributesFunction(isContainer),
-					};
-				}, {}),
-			};
-			result.migrate = newAttributes => {
-				return migrateFunctions.reduce(
-					(acc, migrateFunction) => {
-						return migrateFunction({
-							newAttributes: { ...acc },
-							attributes,
-							prefix,
-							selectors,
-						});
-					},
-					{ ...newAttributes }
-				);
-			};
-			if (saveFunctions.length > 0)
-				result.save = props => {
-					// Return corrupted save function
-					if (
-						!isEligibleFunctions.every(isEligible =>
-							isEligible(props.attributes, attributes)
-						)
-					)
-						return false;
+		if (originalMigrate)
+			newMigrator.migrate = originalAttributes => {
+				// Here is where we cheat a bit. Gutenberg doesn't support chain updates,
+				// so, to avoid having multiple deprecation versions of each block and considering
+				// our migrators global (affect all blocks), we are saving the previous deprecation
+				// attributes and merging into a new object that will suffer the migration.
+				const { uniqueID } = originalAttributes;
 
-					let currentInstance = save(props);
+				const prevAttr =
+					select('maxiBlocks').receiveDeprecatedBlock(uniqueID);
 
-					saveFunctions.forEach((saveMigrator, i) => {
-						currentInstance = saveMigrator(currentInstance, props);
-					});
-
-					return currentInstance;
+				const newAttributes = {
+					...originalAttributes,
+					...(!isNil(prevAttr) && { ...prevAttr }),
 				};
-			else result.save = save;
 
-			return result;
-		});
-};
+				const result = originalMigrate(newAttributes);
+
+				dispatch('maxiBlocks').saveDeprecatedBlock({
+					uniqueID,
+					attributes: result,
+				});
+
+				// eslint-disable-next-line no-console
+				console.log(
+					`${newMigrator.name} migrator has been successfully used to update ${newAttributes.customLabel}(${uniqueID})`
+				);
+
+				return result;
+			};
+
+		if (!newMigrator.save) newMigrator.save = save;
+
+		return newMigrator;
+	});
 
 const blockMigrator = blockMigratorProps => {
 	const migrators = [
@@ -109,6 +86,7 @@ const blockMigrator = blockMigratorProps => {
 		SVGIBTargetsMigrator,
 		transitionTargetIBmigrator,
 		hoverStatusMigrator,
+		opacityTransitionMigrator,
 		...(blockMigratorProps.migrators ?? []),
 	];
 

@@ -130,6 +130,7 @@ const Inspector = props => {
 											content: (
 												<VideoIconControl
 													prefix='play-'
+													type='video-icon-play'
 													label={__(
 														'Play icon',
 														'maxi-blocks'
@@ -231,6 +232,9 @@ const Inspector = props => {
 										props,
 									}),
 									...inspectorTabs.boxShadow({
+										props,
+									}),
+									...inspectorTabs.opacity({
 										props,
 									}),
 									...inspectorTabs.size({

@@ -7,10 +7,12 @@ import { renderToString } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { SvgColor } from '../../../../components/svg-color';
-import AdvancedNumberControl from '../../../../components/advanced-number-control';
-import DefaultStylesControl from '../../../../components/default-styles-control';
-import ResponsiveTabsControl from '../../../../components/responsive-tabs-control';
+import {
+	AdvancedNumberControl,
+	DefaultStylesControl,
+	ResponsiveTabsControl,
+	SvgColor,
+} from '../../../../components';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,

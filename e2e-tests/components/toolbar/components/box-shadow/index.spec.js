@@ -17,6 +17,9 @@ describe('Box shadow from Toolbar', () => {
 		await createNewPost();
 		await insertBlock('Button Maxi');
 
+		// Wait for toolbar to be visible
+		await page.waitForSelector('.toolbar-wrapper');
+
 		// edit box-shadow maxi
 		await page.$eval(
 			'.toolbar-wrapper .toolbar-item__button.toolbar-item__box-shadow',

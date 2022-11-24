@@ -387,7 +387,7 @@ const DividerControl = props => {
 										`divider-border-top-width-${breakpoint}`
 									),
 									[getAttributeKey(
-										'divider-width-unit',
+										'divider-border-top-unit',
 										isHover,
 										prefix,
 										breakpoint

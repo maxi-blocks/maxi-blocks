@@ -24,8 +24,8 @@ const createIconTransitions = ({
 		[colorKey]: {
 			title: capitalize(colorKey),
 			target: ` ${target} svg *:not(g)`,
+			property: false,
 			hoverProp: iconStatusHover,
-			limitless: true,
 		},
 		...(!disableBackground && {
 			[backgroundKey]: {

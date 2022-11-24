@@ -16,6 +16,11 @@ import {
 import { DefaultDividersControl } from '../../../divider-control';
 
 /**
+ * External dependencies
+ */
+import classnames from 'classnames';
+
+/**
  * Styles & Icons
  */
 import './editor.scss';
@@ -83,10 +88,10 @@ const Divider = props => {
 					<>
 						<div className='divider-border__weight-wrap'>
 							<div
-								className={
+								className={classnames(
 									dividerBorderStyle === 'none' &&
-									'divider-border__weight-disable'
-								}
+										'divider-border__weight-disable'
+								)}
 							>
 								<Icon icon={borderWidth} />
 								<AdvancedNumberControl

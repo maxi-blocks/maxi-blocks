@@ -13,16 +13,16 @@ const blockClass = ' .maxi-video-block';
 const videoClass = `${blockClass}__video-player`;
 const overlayClass = `${blockClass}__overlay`;
 
-const prefix = 'video-';
-
 /**
  * Data object
  */
 const name = 'video-maxi';
 const copyPasteMapping = {
+	_exclude: ['url', 'embedUrl', 'videoType'],
 	settings: {
 		Video: {
 			group: {
+				Url: ['url', 'embedUrl', 'videoType'],
 				'Video type': 'playerType',
 				'Start time': 'startTime',
 				'End time': 'endTime',
@@ -188,20 +188,20 @@ const transition = {
 		border: {
 			title: 'Border',
 			target: [overlayClass, videoClass],
-			property: 'border',
-			prefix,
+			property: ['border', 'border-radius'],
+			hoverProp: 'border-status-hover',
 		},
 		'box shadow': {
 			title: 'Box shadow',
 			target: [overlayClass, videoClass],
 			property: 'box-shadow',
-			prefix,
+			hoverProp: 'box-shadow-status-hover',
 		},
 		'overlay colour': {
 			title: 'Overlay colour',
 			target: `${overlayClass}-background`,
-			hoverProp: 'overlay-background-status-hover',
 			property: 'background-color',
+			hoverProp: 'overlay-background-status-hover',
 		},
 		...createIconTransitions({
 			target: ' .maxi-video-block__play-button',
@@ -219,7 +219,9 @@ const transition = {
 		}),
 	},
 };
-const interactionBuilderSettings = getCanvasSettings({ name, customCss });
+const interactionBuilderSettings = {
+	canvas: getCanvasSettings({ name, customCss }),
+};
 
 const data = {
 	name,

@@ -40,7 +40,7 @@ describe('OverflowControl', () => {
 			selectorS => selectorS[0].value
 		);
 
-		expect(responsiveSOverflowX).toStrictEqual('hidden');
+		expect(responsiveSOverflowX).toStrictEqual('auto');
 
 		const responsiveSOverflowY = await page.$$eval(
 			'.maxi-overflow-control select',
@@ -60,9 +60,9 @@ describe('OverflowControl', () => {
 		expect(sYOverflow).toStrictEqual('clip');
 
 		const selectorY = await page.$$('.maxi-overflow-control select');
-		await selectorY[1].select('visible');
+		await selectorY[1].select('clip');
 
-		expect(await getAttributes('overflow-y-s')).toStrictEqual('visible');
+		expect(await getAttributes('overflow-y-s')).toStrictEqual('clip');
 
 		// responsive xs
 		await changeResponsive(page, 'xs');
@@ -78,7 +78,7 @@ describe('OverflowControl', () => {
 			selectorS => selectorS[1].value
 		);
 
-		expect(responsiveXsOverflowY).toStrictEqual('visible');
+		expect(responsiveXsOverflowY).toStrictEqual('clip');
 
 		// responsive m
 		await changeResponsive(page, 'm');
@@ -88,7 +88,7 @@ describe('OverflowControl', () => {
 			selectorM => selectorM[0].value
 		);
 
-		expect(responsiveMOverflowX).toStrictEqual('hidden');
+		expect(responsiveMOverflowX).toStrictEqual('auto');
 
 		const responsiveMOverflowY = await page.$$eval(
 			'.maxi-overflow-control select',

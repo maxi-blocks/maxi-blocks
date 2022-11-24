@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { RangeControl } from '@wordpress/components';
 import { useInstanceId } from '@wordpress/compose';
+import { useEffect, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -17,7 +18,7 @@ import ResetButton from '../reset-control';
  * External dependencies
  */
 import classnames from 'classnames';
-import { trim, isEmpty, isNumber, isNil, merge } from 'lodash';
+import { isEmpty, isNil, isNumber, merge, trim } from 'lodash';
 
 /**
  * Styles
@@ -93,6 +94,14 @@ const AdvancedNumberControl = props => {
 		optionType = 'number',
 	} = props;
 
+	const [currentValue, setCurrentValue] = useState(
+		value === undefined ? defaultValue : trim(value)
+	);
+
+	useEffect(() => {
+		if (!isNil(value) && value !== '') setCurrentValue(trim(value));
+	}, [value]);
+
 	const classes = classnames('maxi-advanced-number-control', className);
 
 	const stepValue = unit === '-' || isEmpty(unit) ? 0.01 : step;
@@ -138,14 +147,14 @@ const AdvancedNumberControl = props => {
 			target: { value: newValue },
 		} = e;
 
-		if (isNumber(value)) return newValue;
+		if (isNumber(currentValue)) return newValue;
 
 		const typeofEvent = getIsValid(inputType, true) ? 'type' : 'click';
 
 		switch (typeofEvent) {
 			case 'click':
 				return (
-					(isNumber(+placeholder) && isEmpty(value)
+					(isNumber(+placeholder) && isEmpty(currentValue)
 						? +placeholder
 						: 0) + +newValue
 				);
@@ -179,7 +188,7 @@ const AdvancedNumberControl = props => {
 								: 'hidden'
 						}
 						className='maxi-advanced-number-control__value'
-						value={value === undefined ? defaultValue : trim(value)}
+						value={currentValue}
 						onChange={e => {
 							let value = getNewValueFromEmpty(e);
 
@@ -198,11 +207,13 @@ const AdvancedNumberControl = props => {
 									value = min;
 							}
 
-							onChangeValue(
+							const result =
 								value === '' || optionType === 'string'
 									? value.toString()
-									: +value
-							);
+									: +value;
+
+							setCurrentValue(result);
+							onChangeValue(result);
 						}}
 						onKeyDown={e => {
 							if (
@@ -241,18 +252,20 @@ const AdvancedNumberControl = props => {
 					)}
 					{!disableReset && (
 						<ResetButton
-							onReset={e => {
+							onReset={() => {
 								onReset();
+								setCurrentValue(defaultValue);
 							}}
 							isSmall
 						/>
 					)}
 					<RangeControl
 						label={label}
+						className='maxi-advanced-number-control__range'
 						value={
-							+(!isNil(value)
-								? value
-								: defaultValue || initial || placeholder || 0)
+							+[value, defaultValue, initial, placeholder].find(
+								val => /\d/.test(val) && +val !== 0
+							) || 0
 						}
 						onChange={val => {
 							onChangeValue(

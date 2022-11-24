@@ -14,6 +14,11 @@ import {
 import AdvancedNumberControl from '../advanced-number-control';
 
 /**
+ * External dependencies
+ */
+import classnames from 'classnames';
+
+/**
  * Component
  */
 const SvgWidthControl = props => {
@@ -23,11 +28,21 @@ const SvgWidthControl = props => {
 		prefix,
 		isHover,
 		resizableObject = false,
+		className,
 	} = props;
 
-	const width =
-		props[`${prefix}width-${breakpoint}${isHover ? '-hover' : ''}`];
-	const defaultWidth = getDefaultAttribute(`${prefix}width-${breakpoint}`);
+	const classes = classnames('maxi-svg-width-control', className);
+
+	const widthAttrLabel = `${prefix}width-${breakpoint}${
+		isHover ? '-hover' : ''
+	}`;
+	const width = props[widthAttrLabel];
+	const defaultWidth = getDefaultAttribute(widthAttrLabel);
+	const placeholderWidth = getLastBreakpointAttribute({
+		target: `${prefix}width`,
+		breakpoint,
+		attributes: props,
+	});
 	const widthUnit = getLastBreakpointAttribute({
 		target: `${prefix}width-unit`,
 		breakpoint,
@@ -40,16 +55,9 @@ const SvgWidthControl = props => {
 	return (
 		<AdvancedNumberControl
 			label={__('Width', 'maxi-blocks')}
-			value={width || defaultWidth}
-			placeholder={
-				breakpoint !== 'general'
-					? getLastBreakpointAttribute({
-							target: `${prefix}width`,
-							breakpoint,
-							attributes: props,
-					  })
-					: null
-			}
+			className={classes}
+			value={width}
+			placeholder={placeholderWidth}
 			onChangeValue={val => {
 				const newVal = val !== undefined && val !== '' ? val : '';
 
@@ -92,7 +100,7 @@ const SvgWidthControl = props => {
 				})
 			}
 			defaultValue={defaultWidth}
-			initialPosition={defaultWidth}
+			initialPosition={placeholderWidth}
 			isHover={isHover}
 			optionType='string'
 		/>

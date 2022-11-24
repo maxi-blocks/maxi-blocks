@@ -31,7 +31,7 @@ import ListItemControl from '../list-control/list-item-control';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, cloneDeep, isEqual, findIndex } from 'lodash';
+import { cloneDeep, findIndex, isEmpty, isEqual, isNil, omitBy } from 'lodash';
 
 /**
  * Icons
@@ -46,6 +46,7 @@ const getLayerCardContent = props => {
 		breakpoint,
 		handleOnChangeLayer,
 		isHover,
+		isIB,
 		layer,
 		onChangeInline = null,
 		onChange,
@@ -91,6 +92,7 @@ const getLayerCardContent = props => {
 					}
 					breakpoint={breakpoint}
 					isHover={isHover}
+					disableUpload={isHover || isIB}
 					isLayer
 				/>
 			);
@@ -360,6 +362,7 @@ const BackgroundLayersControl = ({
 	layersOptions,
 	layersHoverOptions,
 	isHover = false,
+	isIB = false,
 	onChangeInline,
 	onChange,
 	clientId,
@@ -406,7 +409,7 @@ const BackgroundLayersControl = ({
 		return {
 			...setBreakpointToLayer({
 				layer: backgroundLayers[getLayerLabel(type)],
-				breakpoint,
+				breakpoint: 'general',
 				isHover,
 			}),
 			order: getLayerUniqueParameter('order'),
@@ -414,7 +417,11 @@ const BackgroundLayersControl = ({
 		};
 	};
 
-	const onLayersDrag = (fromIndex, toIndex) => {
+	const onLayersDrag = (localFromIndex, localToIndex) => {
+		const indexedLayers = !isHover ? layers : allLayers;
+		const fromIndex = allLayers.indexOf(indexedLayers[localFromIndex]);
+		const toIndex = allLayers.indexOf(indexedLayers[localToIndex]);
+
 		const layer = allLayers.splice(fromIndex, 1)[0];
 
 		allLayers.splice(toIndex, 0, layer);
@@ -437,14 +444,17 @@ const BackgroundLayersControl = ({
 			obj: layer,
 			attributes: currentLayer,
 			onChange: result => result,
-			defaultAttributes: setBreakpointToLayer({
-				layer: backgroundLayers[getLayerLabel(currentLayer.type)],
-				breakpoint,
-				isHover,
-			}),
+			defaultAttributes: {
+				...setBreakpointToLayer({
+					layer: backgroundLayers[getLayerLabel(currentLayer.type)],
+					breakpoint: 'general',
+					isHover,
+				}),
+			},
 		});
 
-	const onChangeLayer = (layer, target = false) => {
+	const onChangeLayer = (rawLayer, target = false) => {
+		const layer = omitBy(rawLayer, isNil);
 		const isHoverLayer = layer.isHover;
 		const newLayers = cloneDeep(isHoverLayer ? layersHover : layers);
 
@@ -512,6 +522,7 @@ const BackgroundLayersControl = ({
 										breakpoint,
 										handleOnChangeLayer,
 										isHover,
+										isIB,
 										layer,
 										onChangeInline,
 										onChange: onChangeLayer,

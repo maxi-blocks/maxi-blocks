@@ -153,11 +153,13 @@ const TransformControl = props => {
 				? 'maxi-option__in-use'
 				: 'maxi-option__not-in-use';
 
-			options.push({
-				label: capitalize(category),
-				value: category,
-				className: optionClass,
-			});
+			const selector = selectors[category]?.[hoverSelected];
+			if (selector)
+				options.push({
+					label: capitalize(selector.label),
+					value: category,
+					className: optionClass,
+				});
 		});
 		return options;
 	};

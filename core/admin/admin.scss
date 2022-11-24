@@ -165,8 +165,6 @@ body.toplevel_page_maxi-blocks-dashboard {
 							font-weight: bold;
 							cursor: pointer;
 
-							&:hover {
-							}
 							&::after {
 								content: '\276F';
 								width: auto;
@@ -215,6 +213,12 @@ body.toplevel_page_maxi-blocks-dashboard {
 									input {
 										border-radius: 0;
 										border-color: #dbdde6;
+									}
+
+									label:not(label[for='maxi-breakpoint-maxi-versions']) {
+										text-transform: uppercase;
+										width: 20px;
+										display: inline-block;
 									}
 								}
 								&__toggle {

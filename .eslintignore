@@ -9,6 +9,6 @@ API
 css
 img
 src/includes
-js
+# js
 src/extensions/text/fonts/font.js
 

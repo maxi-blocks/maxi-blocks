@@ -127,3 +127,8 @@
 		transform: scale(1);
 	}
 }
+@media all and (max-width: 1024px) {
+	.maxi-video-block__video-container--popup {
+		width: 90%;
+	}
+}

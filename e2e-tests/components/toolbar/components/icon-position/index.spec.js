@@ -13,6 +13,9 @@ describe('Icon position', () => {
 		await createNewPost();
 		await insertBlock('Button Maxi');
 
+		// Wait for toolbar to be visible
+		await page.waitForSelector('.toolbar-wrapper');
+
 		await openSidebarTab(page, 'style', 'quick styles');
 
 		// select icon button
@@ -40,7 +43,7 @@ describe('Icon position', () => {
 		await openSidebarTab(page, 'style', 'icon');
 
 		const positionSelected = await page.$eval(
-			'.maxi-tabs-content .maxi-icon-control .maxi-icon-position-control .maxi-tabs-control__button--selected',
+			'.maxi-tabs-content .maxi-icon-control .maxi-icon-control__position .maxi-tabs-control__button--selected',
 			button => button.outerText
 		);
 

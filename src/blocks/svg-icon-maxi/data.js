@@ -9,11 +9,11 @@ import { __ } from '@wordpress/i18n';
 import { createSelectors } from '../../extensions/styles/custom-css';
 import { createIconTransitions } from '../../extensions/styles';
 import {
-	SvgColorControl,
 	// SvgStrokeWidthControl,
 	BackgroundControl,
 	BorderControl,
 } from '../../components';
+import { SvgColorControl } from './components';
 import {
 	getBackgroundStyles,
 	getBorderStyles,
@@ -35,6 +35,7 @@ const prefix = 'svg-';
  */
 const name = 'svg-icon-maxi';
 const copyPasteMapping = {
+	_exclude: ['content', 'svgType'],
 	settings: {
 		'Icon content': ['svgType', 'content'],
 		Alignment: {
@@ -150,14 +151,14 @@ const transition = {
 		border: {
 			title: 'Border',
 			target: iconClass,
-			property: 'border',
-			prefix,
+			property: ['border', 'border-radius'],
+			hoverProp: `${prefix}border-status-hover`,
 		},
 		'box shadow': {
 			title: 'Box shadow',
 			target: iconClass,
 			property: 'box-shadow',
-			prefix,
+			hoverProp: `${prefix}box-shadow-status-hover`,
 		},
 		...createIconTransitions({
 			target: iconClass,
@@ -170,95 +171,102 @@ const transition = {
 			title: 'Background',
 			target: iconClass,
 			property: 'background',
-			hoverProp: 'svg-background-status-hover',
+			hoverProp: `${prefix}background-status-hover`,
 		},
 	},
 };
-const interactionBuilderSettings = [
-	{
-		label: __('Icon colour'),
-		transitionTarget: transition.block.colour.target,
-		hoverProp: 'svg-status-hover',
-		attrGroupName: 'svg',
-		component: props => {
-			const { attributes, onChange } = props;
-			const { blockStyle, content, svgType } = attributes;
+const interactionBuilderSettings = {
+	block: [
+		{
+			label: __('Icon colour'),
+			transitionTarget: transition.block.colour.target,
+			transitionTrigger: `${iconClass} svg`,
+			hoverProp: 'svg-status-hover',
+			attrGroupName: 'svg',
+			component: props => {
+				const { attributes, onChange } = props;
+				const { blockStyle, content, svgType } = attributes;
 
-			return (
-				<SvgColorControl
-					{...props}
-					onChangeFill={onChange}
-					onChangeStroke={onChange}
-					blockStyle={blockStyle}
-					content={content}
-					svgType={svgType}
-					// Needs a bit of a hack to get the correct value ⬇
-					maxiSetAttributes={onChange}
-					disableHover
-				/>
-			);
+				return (
+					<SvgColorControl
+						{...props}
+						onChangeFill={onChange}
+						onChangeStroke={onChange}
+						blockStyle={blockStyle}
+						content={content}
+						svgType={svgType}
+						// Needs a bit of a hack to get the correct value ⬇
+						maxiSetAttributes={onChange}
+						disableHover
+					/>
+				);
+			},
+			helper: props =>
+				getSVGStyles({
+					...props,
+					target: ' .maxi-svg-icon-block__icon',
+					prefix: 'svg-',
+				}),
 		},
-		helper: props =>
-			getSVGStyles({
-				...props,
-				target: ' .maxi-svg-icon-block__icon',
-				prefix: 'svg-',
-			}),
-	},
-	// TODO: fix #3619
-	// {
-	// 	label: __('Icon line width', 'maxi-blocks'),
-	// 	attrGroupName: 'svg',
-	// 	component: props => {
-	// 		const { attributes } = props;
-	// 		const { content } = attributes;
+		// TODO: fix #3619
+		// {
+		// 	label: __('Icon line width', 'maxi-blocks'),
+		// 	attrGroupName: 'svg',
+		// 	component: props => {
+		// 		const { attributes } = props;
+		// 		const { content } = attributes;
 
-	// 		return (
-	// 			<SvgStrokeWidthControl
-	// 				{...props}
-	// 				content={content}
-	// 				prefix='svg-'
-	// 			/>
-	// 		);
-	// 	},
-	// 	helper: props =>
-	// 		getSVGStyles({
-	// 			...props,
-	// 			target: ' .maxi-svg-icon-block__icon',
-	// 			prefix: 'svg-',
-	// 		}),
-	// },
-	{
-		label: __('Icon background', 'maxi-blocks'),
-		transitionTarget: transition.block.background.target,
-		hoverProp: 'svg-background-status-hover',
-		attrGroupName: ['background', 'backgroundColor', 'backgroundGradient'],
-		prefix: 'svg-',
-		component: props => (
-			<BackgroundControl
-				{...props}
-				disableImage
-				disableVideo
-				disableClipPath
-				disableSVG
-			/>
-		),
-		helper: props =>
-			getBackgroundStyles({ ...props, ...props.obj }).background,
-		target: ' .maxi-svg-icon-block__icon',
-	},
-	{
-		label: __('Icon border', 'maxi-blocks'),
-		transitionTarget: transition.block.border.target,
-		hoverProp: 'svg-border-status-hover',
-		attrGroupName: ['border', 'borderWidth', 'borderRadius'],
-		prefix: 'svg-',
-		component: props => <BorderControl {...props} />,
-		helper: props => getBorderStyles(props),
-		target: ' .maxi-svg-icon-block__icon',
-	},
-	...getCanvasSettings({ name, customCss }),
-];
+		// 		return (
+		// 			<SvgStrokeWidthControl
+		// 				{...props}
+		// 				content={content}
+		// 				prefix='svg-'
+		// 			/>
+		// 		);
+		// 	},
+		// 	helper: props =>
+		// 		getSVGStyles({
+		// 			...props,
+		// 			target: ' .maxi-svg-icon-block__icon',
+		// 			prefix: 'svg-',
+		// 		}),
+		// },
+		{
+			label: __('Icon background', 'maxi-blocks'),
+			transitionTarget: transition.block.background.target,
+			hoverProp: 'svg-background-status-hover',
+			attrGroupName: [
+				'background',
+				'backgroundColor',
+				'backgroundGradient',
+			],
+			prefix: 'svg-',
+			component: props => (
+				<BackgroundControl
+					{...props}
+					disableImage
+					disableVideo
+					disableClipPath
+					disableSVG
+				/>
+			),
+			helper: props =>
+				getBackgroundStyles({ ...props, ...props.obj }).background,
+			target: ' .maxi-svg-icon-block__icon',
+		},
+		{
+			label: __('Icon border', 'maxi-blocks'),
+			transitionTarget: transition.block.border.target,
+			hoverProp: 'svg-border-status-hover',
+			attrGroupName: ['border', 'borderWidth', 'borderRadius'],
+			prefix: 'svg-',
+			component: props => <BorderControl {...props} />,
+			helper: props => getBorderStyles(props),
+			target: ' .maxi-svg-icon-block__icon',
+		},
+	],
+	canvas: getCanvasSettings({ name, customCss }),
+};
 
 const data = {
 	name,

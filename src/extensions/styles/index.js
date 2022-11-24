@@ -15,6 +15,7 @@ export { default as getIconWithColor } from './getIconWithColor';
 export { default as getLastBreakpointAttribute } from './getLastBreakpointAttribute';
 export { default as getIsOverflowHidden } from './getIsOverflowHidden';
 export { default as getPaletteAttributes } from './getPaletteAttributes';
+export { default as getTransitionData } from './transitions/getTransitionData';
 export { default as hoverAttributesCreator } from './hoverAttributesCreator';
 export { default as paletteAttributesCreator } from './paletteAttributesCreator';
 export { default as prefixAttributesCreator } from './prefixAttributesCreator';

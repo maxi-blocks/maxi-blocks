@@ -215,23 +215,31 @@ const transition = {
 			title: 'Border',
 			target: ['', ' > .maxi-background-displayer'],
 			property: ['border', 'top', 'left'],
+			hoverProp: 'border-status-hover',
 		},
 		'box shadow': {
 			title: 'Box shadow',
 			target: '',
 			property: 'box-shadow',
+			hoverProp: 'box-shadow-status-hover',
+		},
+		opacity: {
+			title: 'Opacity',
+			target: '',
+			property: 'opacity',
+			hoverProp: 'opacity-status-hover',
 		},
 	},
 	button: {
 		...createIconTransitions({
-			target: ' .maxi-search-block__button__default-icon',
+			target: defaultIconClass,
 			prefix: 'icon-',
 			titlePrefix: 'icon',
 			disableBackground: true,
 			disableBorder: true,
 		}),
 		...createIconTransitions({
-			target: ' .maxi-search-block__button__close-icon',
+			target: closeIconClass,
 			prefix: `${closeIconPrefix}icon-`,
 			titlePrefix: 'close icon',
 			disableBackground: true,
@@ -240,53 +248,51 @@ const transition = {
 		typography: {
 			title: 'Typography',
 			target: `${buttonClass}__content`,
-			property: 'typography',
-			limitless: true,
-			prefix: buttonPrefix,
+			property: false,
+			hoverProp: `${buttonPrefix}typography-status-hover`,
 		},
 		border: {
 			title: 'Border',
 			target: buttonClass,
-			property: 'border',
+			property: ['border', 'border-radius'],
 			prefix: buttonPrefix,
 		},
 		'button background': {
 			title: 'button background',
 			target: buttonClass,
 			property: 'background',
-			prefix: buttonPrefix,
+			hoverProp: `${buttonPrefix}background-status-hover`,
 		},
 	},
 	input: {
 		typography: {
 			title: 'Typography',
 			target: inputClass,
-			property: 'typography',
-			limitless: true,
-			prefix: inputPrefix,
+			property: false,
+			hoverProp: `${inputPrefix}typography-status-hover`,
 		},
 		border: {
 			title: 'Border',
 			target: inputClass,
-			property: 'border',
-			prefix: inputPrefix,
+			property: ['border', 'border-radius'],
+			hoverProp: `${inputPrefix}border-status-hover`,
 		},
 		'input background': {
 			title: 'Input background',
 			target: inputClass,
 			property: 'background',
-			prefix: inputPrefix,
+			hoverProp: `${inputPrefix}background-status-hover`,
 		},
 		'icon reveal appear': {
 			title: 'Icon reveal appear',
 			target: inputClass,
 			property: ['opacity', 'visibility', 'width'],
-			prefix: inputPrefix,
-			ignoreHoverProp: true,
 		},
 	},
 };
-const interactionBuilderSettings = getCanvasSettings({ name, customCss });
+const interactionBuilderSettings = {
+	canvas: getCanvasSettings({ name, customCss }),
+};
 
 const data = {
 	name,

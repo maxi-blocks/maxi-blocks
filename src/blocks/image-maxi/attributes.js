@@ -97,6 +97,25 @@ const attributes = {
 	useInitSize: {
 		type: 'boolean',
 	},
+	fitParentSize: {
+		type: 'boolean',
+	},
+	...breakpointAttributesCreator({
+		obj: {
+			'object-size': {
+				type: 'number',
+				default: 1,
+			},
+			'object-position-horizontal': {
+				type: 'number',
+				default: 50,
+			},
+			'object-position-vertical': {
+				type: 'number',
+				default: 50,
+			},
+		},
+	}),
 	...attributesData.clipPath,
 	...attributesData.link,
 	...attributesData.textAlignment,
@@ -143,6 +162,7 @@ const attributes = {
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
 	...attributesData.opacity,
+	...attributesData.opacityHover,
 	...attributesData.size,
 	...attributesData.margin,
 	...attributesData.padding,

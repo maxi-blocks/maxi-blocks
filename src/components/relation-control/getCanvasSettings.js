@@ -40,9 +40,9 @@ import {
 /**
  * External dependencies
  */
-import { isEmpty, isPlainObject } from 'lodash';
+import { isEmpty, isEqual, isPlainObject, pickBy } from 'lodash';
 
-const getTransformControl = ({ categories, selectors }) => ({
+const getTransformControl = (name, { categories, selectors }) => ({
 	label: __('Transform', 'maxi-blocks'),
 	transitionTarget: [],
 	hoverProp: (attributes, relationAttributes) =>
@@ -62,13 +62,16 @@ const getTransformControl = ({ categories, selectors }) => ({
 			{...props}
 			uniqueID={props.attributes.uniqueID}
 			depth={2}
-			selectors={getTransformSelectors(selectors)}
+			selectors={getTransformSelectors(selectors, props.attributes)}
 			categories={getTransformCategories(categories, props.attributes)}
 			disableHover
 		/>
 	),
 	helper: props =>
-		getTransformStyles(props.obj, getTransformSelectors(selectors)),
+		getTransformStyles(
+			props.obj,
+			getTransformSelectors(selectors, props.blockAttributes)
+		),
 });
 
 const getCanvasSettings = ({ name, customCss }) => [
@@ -83,11 +86,42 @@ const getCanvasSettings = ({ name, customCss }) => [
 			'borderRadius',
 		],
 		component: props => {
-			const { attributes } = props;
-			const { 'background-layers': bgLayers } = attributes;
+			const { attributes, onChange, blockAttributes } = props;
+			const { 'background-layers': currentBgLayers } = attributes;
+			const { 'background-layers': blockBgLayers } = blockAttributes;
 
-			return !isEmpty(bgLayers) ? (
-				<BlockBackgroundControl {...props} disableAddLayer />
+			return !isEmpty(currentBgLayers) ? (
+				<BlockBackgroundControl
+					{...props}
+					onChange={obj => {
+						const { 'background-layers': bgLayers, ...rest } = obj;
+						const newBgLayers = bgLayers.map((bgLayer, index) => {
+							const newBgLayer = pickBy(
+								bgLayer,
+								(_value, key) =>
+									!key.includes('mediaID') &&
+									!key.includes('mediaURL')
+							);
+
+							return Object.fromEntries(
+								Object.entries(newBgLayer).filter(
+									([key, attr]) =>
+										!isEqual(
+											attr,
+											blockBgLayers[index][key]
+										)
+								)
+							);
+						});
+
+						onChange({
+							...rest,
+							'background-layers': newBgLayers,
+						});
+					}}
+					isIB
+					disableAddLayer
+				/>
 			) : (
 				<InfoBox
 					message={__('No background layers added', 'maxi-blocks')}
@@ -95,7 +129,11 @@ const getCanvasSettings = ({ name, customCss }) => [
 			);
 		},
 		helper: ({ obj, blockStyle }) =>
-			getBlockBackgroundStyles({ ...obj, blockStyle }),
+			getBlockBackgroundStyles({
+				...obj,
+				blockStyle,
+				ignoreMediaAttributes: true,
+			}),
 	},
 	{
 		label: __('Border', 'maxi-blocks'),
@@ -169,7 +207,7 @@ const getCanvasSettings = ({ name, customCss }) => [
 		component: props => <PositionControl {...props} />,
 		helper: props => getPositionStyles(props.obj),
 	},
-	...getTransformControl(customCss),
+	...getTransformControl(name, customCss),
 ];
 
 export default getCanvasSettings;

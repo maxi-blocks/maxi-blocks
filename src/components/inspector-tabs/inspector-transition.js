@@ -14,14 +14,15 @@ import SettingTabsControl from '../setting-tabs-control';
 import ToggleSwitch from '../toggle-switch';
 import TransitionControl from '../transition-control';
 import {
-	getGroupAttributes,
 	getDefaultAttribute,
+	getGroupAttributes,
+	getTransitionData,
 } from '../../extensions/styles';
 
 /**
  * External dependencies
  */
-import { capitalize, cloneDeep, isEmpty } from 'lodash';
+import { capitalize, cloneDeep, isEmpty, isArray } from 'lodash';
 
 /**
  * Component
@@ -34,6 +35,7 @@ const TransitionControlWrapper = props => {
 		transition,
 		type,
 		isOneType,
+		transitionData,
 	} = props;
 	const { 'transition-change-all': transitionChangeAll } = attributes;
 
@@ -50,22 +52,27 @@ const TransitionControlWrapper = props => {
 		defaultTransition[`${prop}-${deviceType}`];
 
 	const onChangeTransition = (obj = {}) => {
+		if (!transitionData) return null;
+
 		let newObj = {
 			transition: {},
 		};
 
 		if (transitionChangeAll) {
-			Object.keys(attributes?.transition).forEach(t => {
-				newObj.transition[t] = {};
+			Object.keys(attributes?.transition).forEach(currentType => {
+				newObj.transition[currentType] = {};
 
-				Object.keys(attributes.transition?.[t]).forEach(key => {
-					newObj.transition[t][key] = {
-						...attributes.transition[t][key],
-						...attributes.transition[type][selected],
-						hoverProp: attributes.transition[t][key].hoverProp,
-						...obj,
-					};
-				});
+				Object.keys(attributes.transition?.[currentType]).forEach(
+					key => {
+						newObj.transition[currentType][key] = {
+							...attributes.transition[currentType][key],
+							...attributes.transition[type][selected],
+							hoverProp:
+								transitionData[currentType][key].hoverProp,
+							...obj,
+						};
+					}
+				);
 			});
 		} else {
 			newObj = {
@@ -159,7 +166,7 @@ const transition = ({
 	props,
 	label = __('Hover transition', 'maxi-blocks'),
 }) => {
-	const { attributes, deviceType, maxiSetAttributes } = props;
+	const { attributes, deviceType, maxiSetAttributes, name } = props;
 	const {
 		transition: rawTransition,
 		'transition-change-all': transitionChangeAll,
@@ -167,13 +174,17 @@ const transition = ({
 
 	const transition = cloneDeep(rawTransition);
 
+	const transitionData = getTransitionData(name);
+
 	Object.keys(transition).forEach(type => {
 		Object.keys(transition[type]).forEach(key => {
-			if (
-				transition[type][key]?.hoverProp &&
-				!attributes[transition[type][key].hoverProp]
-			)
-				delete transition[type][key];
+			const hoverProp = transitionData?.[type]?.[key]?.hoverProp;
+			if (!hoverProp) return;
+
+			if (isArray(hoverProp))
+				hoverProp.every(prop => !attributes[prop]) &&
+					delete transition[type][key];
+			else !attributes[hoverProp] && delete transition[type][key];
 		});
 	});
 
@@ -201,7 +212,8 @@ const transition = ({
 						});
 					}}
 				/>
-				{Object.values(rawTransition).every(obj => !isEmpty(obj)) &&
+				{Object.values(rawTransition).length > 1 &&
+				Object.values(rawTransition).every(obj => !isEmpty(obj)) &&
 				!transitionChangeAll ? (
 					<SettingTabsControl
 						breakpoint={deviceType}
@@ -211,6 +223,7 @@ const transition = ({
 								<TransitionControlWrapper
 									type={type}
 									transition={transition}
+									transitionData={transitionData}
 									{...props}
 								/>
 							),
@@ -220,6 +233,7 @@ const transition = ({
 					<TransitionControlWrapper
 						type={availableType}
 						transition={transition}
+						transitionData={transitionData}
 						isOneType
 						{...props}
 					/>

@@ -35,7 +35,11 @@ import data from './data';
  */
 import { isNil } from 'lodash';
 
+const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
 const getWrapperObject = props => {
+	const { fitParentSize } = props;
+
 	const response = {
 		border: getBorderStyles({
 			obj: {
@@ -77,6 +81,7 @@ const getWrapperObject = props => {
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
+			fitParentSize,
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
@@ -112,6 +117,12 @@ const getHoverWrapperObject = props => {
 				blockStyle: props.blockStyle,
 				isHover: true,
 			}),
+		}),
+		...(props['opacity-status-hover'] && {
+			opacity: getOpacityStyles(
+				{ ...getGroupAttributes(props, 'opacity', true) },
+				true
+			),
 		}),
 	};
 
@@ -225,13 +236,68 @@ const getImageWrapperObject = props => {
 			},
 			prefix: 'image-',
 		}),
+		...(props.fitParentSize && {
+			firParentSize: { general: { overflow: 'hidden' } },
+		}),
 	};
 
 	return response;
 };
 
+const getImageFitWrapper = props => {
+	const response = {};
+
+	breakpoints.forEach(breakpoint => {
+		response[breakpoint] = {};
+
+		const objectSize = getLastBreakpointAttribute({
+			target: 'object-size',
+			breakpoint,
+			attributes: props,
+		});
+		const horizontalPosition = getLastBreakpointAttribute({
+			target: 'object-position-horizontal',
+			breakpoint,
+			attributes: props,
+		});
+		const verticalPosition = getLastBreakpointAttribute({
+			target: 'object-position-vertical',
+			breakpoint,
+			attributes: props,
+		});
+
+		const size = objectSize * 100;
+
+		response[breakpoint].height = `${size}%`;
+		response[breakpoint].width = `${size}%`;
+
+		const displacementCoefficient = 100 - size;
+
+		const horizontalDisplacement =
+			(displacementCoefficient * horizontalPosition) / 100;
+		const verticalDisplacement =
+			(displacementCoefficient * verticalPosition) / 100;
+
+		response[breakpoint].left = `${horizontalDisplacement}%`;
+		response[breakpoint].top = `${verticalDisplacement}%`;
+
+		response[breakpoint][
+			'object-position'
+		] = `${horizontalPosition}% ${verticalPosition}%`;
+	});
+
+	return response;
+};
+
 const getImageObject = props => {
-	const { imageRatio, imgWidth, useInitSize, mediaWidth } = props;
+	const {
+		imageRatio,
+		imgWidth,
+		useInitSize,
+		mediaWidth,
+		fitParentSize,
+		isFirstOnHierarchy,
+	} = props;
 
 	return {
 		border: getBorderStyles({
@@ -272,6 +338,10 @@ const getImageObject = props => {
 				},
 			},
 		}),
+		...(fitParentSize &&
+			!isFirstOnHierarchy && {
+				fitParentSize: getImageFitWrapper(props),
+			}),
 	};
 };
 
@@ -368,31 +438,29 @@ const getFigcaptionObject = props => {
 			const response = { captionMargin: {} };
 			const { captionPosition } = props;
 
-			['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].forEach(
-				breakpoint => {
-					const num = getLastBreakpointAttribute({
-						target: 'caption-gap',
-						breakpoint,
-						attributes: props,
-					});
-					const unit = getLastBreakpointAttribute({
-						target: 'caption-gap-unit',
-						breakpoint,
-						attributes: props,
-					});
+			breakpoints.forEach(breakpoint => {
+				const num = getLastBreakpointAttribute({
+					target: 'caption-gap',
+					breakpoint,
+					attributes: props,
+				});
+				const unit = getLastBreakpointAttribute({
+					target: 'caption-gap-unit',
+					breakpoint,
+					attributes: props,
+				});
 
-					if (!isNil(num) && !isNil(unit)) {
-						const marginType =
-							captionPosition === 'bottom'
-								? 'margin-top'
-								: 'margin-bottom';
+				if (!isNil(num) && !isNil(unit)) {
+					const marginType =
+						captionPosition === 'bottom'
+							? 'margin-top'
+							: 'margin-bottom';
 
-						response.captionMargin[breakpoint] = {
-							[marginType]: num + unit,
-						};
-					}
+					response.captionMargin[breakpoint] = {
+						[marginType]: num + unit,
+					};
 				}
-			);
+			});
 
 			return response;
 		})(),

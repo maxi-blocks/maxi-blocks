@@ -7,11 +7,10 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
+import { ColumnSizeControl } from './components';
 import { createSelectors } from '../../extensions/styles/custom-css';
 import { getGroupAttributes } from '../../extensions/styles';
-import getParentRowClientId from '../../components/relation-control/getParentRowClientId';
 import getRowGapProps from '../../extensions/attributes/getRowGapProps';
-import { ColumnSizeControl } from '../../components';
 import {
 	getColumnSizeStyles,
 	getFlexStyles,
@@ -69,57 +68,65 @@ const customCss = {
 		'background hover',
 	],
 };
-const interactionBuilderSettings = [
-	{
-		label: __('Column settings', 'maxi-blocks'),
-		attrGroupName: ['columnSize', 'flex'],
-		component: props => {
-			const { getBlockAttributes } = select('core/block-editor');
+const interactionBuilderSettings = {
+	block: [
+		{
+			label: __('Column settings', 'maxi-blocks'),
+			attrGroupName: ['columnSize', 'flex'],
+			component: props => {
+				const { getBlockAttributes } = select('core/block-editor');
 
-			const rowPattern = getGroupAttributes(
-				getBlockAttributes(getParentRowClientId(props.clientId)),
-				'rowPattern'
-			);
-
-			return <ColumnSizeControl {...props} rowPattern={rowPattern} />;
-		},
-		helper: props => {
-			const { getBlock } = select('core/block-editor');
-
-			const parentRowBlock = getBlock(
-				getParentRowClientId(props.clientId)
-			);
-
-			const columnsSize = parentRowBlock.innerBlocks.reduce(
-				(acc, block) => ({
-					...acc,
-					[block.clientId]: getGroupAttributes(
-						block.attributes,
-						'columnSize'
+				const rowPattern = getGroupAttributes(
+					getBlockAttributes(
+						wp.data
+							.select('core/block-editor')
+							.getBlockRootClientId(props.clientId)
 					),
-				}),
-				{}
-			);
+					'rowPattern'
+				);
 
-			const columnNum = parentRowBlock.innerBlocks.length;
-			const rowGapProps = getRowGapProps(parentRowBlock.attributes);
+				return <ColumnSizeControl {...props} rowPattern={rowPattern} />;
+			},
+			helper: props => {
+				const { getBlock } = select('core/block-editor');
 
-			return merge(
-				getColumnSizeStyles(
-					props.obj,
-					{
-						...rowGapProps,
-						columnNum,
-						columnsSize,
-					},
-					props.clientId
-				),
-				getFlexStyles(props.obj)
-			);
+				const parentRowBlock = getBlock(
+					wp.data
+						.select('core/block-editor')
+						.getBlockRootClientId(props.clientId)
+				);
+
+				const columnsSize = parentRowBlock.innerBlocks.reduce(
+					(acc, block) => ({
+						...acc,
+						[block.clientId]: getGroupAttributes(
+							block.attributes,
+							'columnSize'
+						),
+					}),
+					{}
+				);
+
+				const columnNum = parentRowBlock.innerBlocks.length;
+				const rowGapProps = getRowGapProps(parentRowBlock.attributes);
+
+				return merge(
+					getColumnSizeStyles(
+						props.obj,
+						{
+							...rowGapProps,
+							columnNum,
+							columnsSize,
+						},
+						props.clientId
+					),
+					getFlexStyles(props.obj)
+				);
+			},
 		},
-	},
-	...getCanvasSettings({ name, customCss }),
-];
+	],
+	canvas: getCanvasSettings({ name, customCss }),
+};
 
 const data = {
 	name,

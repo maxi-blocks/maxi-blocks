@@ -39,6 +39,7 @@ const attributes = {
 	title: { type: 'string' },
 	accordionLayout: { type: 'string' },
 	titleLevel: { type: 'string', default: 'h6' },
+	accordionUniqueId: { type: 'string' },
 
 	...attributesData.blockBackground,
 	...attributesData.border,
@@ -109,6 +110,8 @@ const attributes = {
 		...transitionAttributesCreator(transition),
 	},
 	...attributesData.display,
+	...attributesData.opacity,
+	...attributesData.opacityHover,
 	...attributesData.position,
 	...attributesData.overflow,
 	...attributesData.zIndex,

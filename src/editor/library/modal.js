@@ -3,13 +3,12 @@
  */
 import { __ } from '@wordpress/i18n';
 import { RawHTML, useEffect, useState } from '@wordpress/element';
-import { Button } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
 import CloudLibrary from '.';
-import { Icon, BaseControl } from '../../components';
+import { Icon, BaseControl, Button } from '../../components';
 
 /**
  * External dependencies
@@ -92,8 +91,7 @@ const MaxiModal = props => {
 				)}
 				{(type === 'bg-shape' ||
 					type === 'image-shape' ||
-					type === 'sidebar-block-shape' ||
-					type === 'video-icon') && (
+					type === 'sidebar-block-shape') && (
 					<Button
 						className='maxi-library-modal__action-section__buttons__load-library'
 						onClick={onClick}
@@ -101,7 +99,9 @@ const MaxiModal = props => {
 						{__('Load shape library', 'maxi-blocks')}
 					</Button>
 				)}
-				{(type === 'button-icon' || type === 'search-icon') && (
+				{(type === 'button-icon' ||
+					type === 'search-icon' ||
+					type.includes('video-icon')) && (
 					<Button
 						className='maxi-library-modal__action-section__buttons__load-library'
 						onClick={onClick}
@@ -228,7 +228,7 @@ const MaxiModal = props => {
 					</RawHTML>
 				</div>
 			)}
-			{type === 'video-icon' && !isEmpty(icon) && (
+			{type.includes('video-icon') && !isEmpty(icon) && (
 				<div className='maxi-library-modal__action-section__preview'>
 					<Icon
 						className='maxi-library-modal__action-section__preview--remove'

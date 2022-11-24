@@ -3,6 +3,7 @@
  */
 import { createSelectors } from '../../extensions/styles/custom-css';
 import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
+import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
 const headerPrefix = 'header-';
 const contentPrefix = 'content-';
@@ -188,41 +189,26 @@ const customCss = {
 };
 const transition = {
 	pane: {
-		border: {
-			title: 'Border',
-			target: ['', ' > .maxi-background-displayer'],
-			property: ['border', 'top', 'left'],
-		},
-		'box shadow': {
-			title: 'Box shadow',
-			target: '',
-			property: 'box-shadow',
-		},
-		'background / layer': {
-			title: 'Background / Layer',
-			target: ' > .maxi-background-displayer > div',
-			property: 'background',
-			limitless: true,
-		},
+		...transitionDefault.canvas,
 	},
 	header: {
 		border: {
 			title: 'Border',
 			target: ' .maxi-pane-block__header',
 			property: 'border',
-			prefix: headerPrefix,
+			hoverProp: `${headerPrefix}border-status-hover`,
 		},
 		'box shadow': {
 			title: 'Box shadow',
 			target: ' .maxi-pane-block__header',
 			property: 'box-shadow',
-			prefix: headerPrefix,
+			hoverProp: `${headerPrefix}box-shadow-status-hover`,
 		},
 		background: {
 			title: 'Background',
 			target: ' .maxi-pane-block__header',
 			property: 'background',
-			prefix: headerPrefix,
+			hoverProp: `${headerPrefix}background-status-hover`,
 		},
 	},
 	content: {
@@ -230,23 +216,25 @@ const transition = {
 			title: 'Border',
 			target: ' .maxi-pane-block__content',
 			property: 'border',
-			prefix: contentPrefix,
+			hoverProp: `${contentPrefix}border-status-hover`,
 		},
 		'box shadow': {
 			title: 'Box shadow',
 			target: ' .maxi-pane-block__content',
 			property: 'box-shadow',
-			prefix: contentPrefix,
+			hoverProp: `${contentPrefix}box-shadow-status-hover`,
 		},
 		background: {
 			title: 'Background',
 			target: ' .maxi-pane-block__content',
 			property: 'background',
-			prefix: contentPrefix,
+			hoverProp: `${contentPrefix}background-status-hover`,
 		},
 	},
 };
-const interactionBuilderSettings = getCanvasSettings({ name, customCss });
+const interactionBuilderSettings = {
+	canvas: getCanvasSettings({ name, customCss }),
+};
 
 const data = {
 	name,

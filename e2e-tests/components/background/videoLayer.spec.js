@@ -40,6 +40,7 @@ describe('BackgroundControl', () => {
 		);
 
 		await page.keyboard.type(video);
+		await page.waitForTimeout(150);
 
 		// Edit start time
 		await page.$eval('.maxi-background-video-start-time input', input =>
@@ -80,6 +81,7 @@ describe('BackgroundControl', () => {
 
 	it('Check Background video layer responsive', async () => {
 		// General
+
 		await changeResponsive(page, 's');
 		const backgroundOpacityBase = await page.$eval(
 			'.maxi-background-control .maxi-opacity-control input',
@@ -128,6 +130,8 @@ describe('BackgroundControl', () => {
 
 		expect(backgroundOpacityM).toStrictEqual('44');
 		expect(await getBlockStyle(page)).toMatchSnapshot();
+		const layerExpect = await getBlockAttributes();
+		expect(layerExpect['background-layers']).toMatchSnapshot();
 	});
 
 	it('Check Background video layer hover', async () => {
@@ -224,6 +228,7 @@ describe('BackgroundControl', () => {
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
+
 	it('Check Background Shape layer display', async () => {
 		const checkEditor = await page.$eval(
 			'.maxi-background-displayer',

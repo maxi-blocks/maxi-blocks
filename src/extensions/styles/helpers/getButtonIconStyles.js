@@ -134,7 +134,7 @@ const getIconObject = (props, target, prefix = '') => {
 	return response;
 };
 
-const getIconHoverObject = (props, target, prefix = '') => {
+const getIconHoverObject = (props, target, prefix = '', iconType = '') => {
 	const iconHoverStatus = props[`${prefix}icon-status-hover`];
 	const iconHoverActiveMedia =
 		props[`${prefix}icon-background-active-media-general-hover`];
@@ -153,7 +153,8 @@ const getIconHoverObject = (props, target, prefix = '') => {
 				},
 				props.blockStyle,
 				props[`${prefix}icon-inherit`],
-				true
+				true,
+				iconType
 			),
 		background: iconHoverStatus &&
 			iconHoverActiveMedia === 'color' &&
@@ -234,6 +235,14 @@ const getButtonIconStyles = ({
 	const normalTarget = `${wrapperTarget} ${target}`;
 	const hoverTarget = `${wrapperTarget}:hover ${target}`;
 
+	const getIconType = () => {
+		if (obj[`${prefix}icon-content`].includes('-shape-')) return 'shape';
+		if (obj[`${prefix}icon-content`].includes('-line-')) return 'line';
+		return 'filled';
+	};
+
+	const iconType = getIconType();
+
 	const response = {
 		...(hasIcon && !isHover
 			? {
@@ -243,6 +252,7 @@ const getButtonIconStyles = ({
 						blockStyle,
 						prefix: `${prefix}icon-`,
 						useIconColor,
+						iconType,
 					}),
 					[` ${wrapperTarget} ${target}`]: getIconObject(
 						obj,
@@ -270,7 +280,8 @@ const getButtonIconStyles = ({
 					const iconHoverObj = getIconHoverObject(
 						obj,
 						'iconHover',
-						prefix
+						prefix,
+						iconType
 					);
 
 					return {
@@ -288,6 +299,7 @@ const getButtonIconStyles = ({
 							prefix: `${prefix}icon-`,
 							useIconColor,
 							isHover: true,
+							iconType,
 						}),
 					};
 			  })()),

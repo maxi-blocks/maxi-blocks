@@ -14,7 +14,8 @@ const getIconStyles = (
 	blockStyle,
 	isIconInherit = true,
 	isHover = false,
-	prefix = ''
+	prefix = '',
+	iconType = ''
 ) => {
 	const response = {
 		label: 'Icon',
@@ -33,9 +34,9 @@ const getIconStyles = (
 			});
 		response.general.fill = 'none';
 
-		if (!paletteStatus && color) {
+		if (iconType !== 'shape' && !paletteStatus && color) {
 			response.general.stroke = color;
-		} else if (paletteStatus && paletteColor) {
+		} else if (iconType !== 'shape' && paletteStatus && paletteColor) {
 			response.general.stroke = getColorRGBAString({
 				firstVar: `color-${paletteColor}`,
 				opacity: paletteOpacity,
@@ -46,9 +47,9 @@ const getIconStyles = (
 		const { paletteStatus, paletteColor, paletteOpacity, color } =
 			getPaletteAttributes({ obj, prefix: `${prefix}icon-`, isHover });
 
-		if (!paletteStatus && !isNil(color)) {
+		if (iconType !== 'shape' && !paletteStatus && !isNil(color)) {
 			response.general.stroke = color;
-		} else if (paletteStatus && paletteColor) {
+		} else if (iconType !== 'shape' && paletteStatus && paletteColor) {
 			response.general.stroke = getColorRGBAString({
 				firstVar: `color-${paletteColor}`,
 				opacity: obj[paletteOpacity],

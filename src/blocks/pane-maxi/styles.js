@@ -26,9 +26,11 @@ const getNormalObject = props => {
 					'border',
 					'borderWidth',
 					'borderRadius',
+					'borderHover',
 				]),
 			},
 			blockStyle: props.blockStyle,
+			uniqueID: props.uniqueID,
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
@@ -117,12 +119,13 @@ const getNormalStyles = (props, prefix) => {
 			obj: {
 				...getGroupAttributes(
 					props,
-					['border', 'borderWidth', 'borderRadius'],
+					['border', 'borderWidth', 'borderRadius', 'borderHover'],
 					false,
 					prefix
 				),
 			},
 			blockStyle: props.blockStyle,
+			uniqueID: props.uniqueID,
 			prefix,
 		}),
 		size: getSizeStyles({

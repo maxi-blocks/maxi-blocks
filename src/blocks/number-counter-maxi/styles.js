@@ -55,9 +55,11 @@ const getWrapperObject = props => {
 					'border',
 					'borderWidth',
 					'borderRadius',
+					'borderHover',
 				]),
 			},
 			blockStyle: props.blockStyle,
+			uniqueID: props.uniqueID,
 		}),
 		boxShadow: getBoxShadowStyles({
 			obj: {
@@ -161,12 +163,13 @@ const getBoxObject = props => {
 			obj: {
 				...getGroupAttributes(
 					props,
-					['border', 'borderWidth', 'borderRadius'],
+					['border', 'borderWidth', 'borderRadius', 'borderHover'],
 					false,
 					'number-counter-'
 				),
 			},
 			blockStyle: props.blockStyle,
+			uniqueID: props.uniqueID,
 			prefix: 'number-counter-',
 		}),
 	};

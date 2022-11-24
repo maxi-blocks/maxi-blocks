@@ -29,9 +29,11 @@ const getWrapperObject = props => {
 					'border',
 					'borderWidth',
 					'borderRadius',
+					'borderHover',
 				]),
 			},
 			blockStyle: props.blockStyle,
+			uniqueID: props.uniqueID,
 		}),
 		boxShadow: getBoxShadowStyles({
 			obj: {
@@ -132,12 +134,13 @@ const getNormalObject = props => {
 			obj: {
 				...getGroupAttributes(
 					props,
-					['border', 'borderWidth', 'borderRadius'],
+					['border', 'borderWidth', 'borderRadius', 'borderHover'],
 					false,
 					'svg-'
 				),
 			},
 			blockStyle: props.blockStyle,
+			uniqueID: props.uniqueID,
 			prefix: 'svg-',
 		}),
 		...getSVGWidthStyles({ obj: getGroupAttributes(props, 'svg') }),

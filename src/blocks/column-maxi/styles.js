@@ -31,9 +31,11 @@ const getNormalObject = (props, rowGapProps, clientId) => {
 					'border',
 					'borderWidth',
 					'borderRadius',
+					'borderHover',
 				]),
 			},
 			blockStyle: props.blockStyle,
+			uniqueID: props.uniqueID,
 		}),
 		padding: getMarginPaddingStyles({
 			obj: { ...getGroupAttributes(props, 'padding') },

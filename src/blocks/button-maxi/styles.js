@@ -33,10 +33,12 @@ const getWrapperObject = props => {
 					'border',
 					'borderWidth',
 					'borderRadius',
+					'borderHover',
 				]),
 			},
 			blockStyle: props.blockStyle,
 			isButton: true,
+			uniqueID: props.uniqueID,
 		}),
 		boxShadow: getBoxShadowStyles({
 			obj: {
@@ -120,7 +122,7 @@ const getNormalObject = props => {
 			obj: {
 				...getGroupAttributes(
 					props,
-					['border', 'borderWidth', 'borderRadius'],
+					['border', 'borderWidth', 'borderRadius', 'borderHover'],
 					false,
 					'button-'
 				),
@@ -129,6 +131,7 @@ const getNormalObject = props => {
 			isButton: true,
 			prefix: 'button-',
 			scValues: props.scValues,
+			uniqueID: props.uniqueID,
 		}),
 		boxShadow: getBoxShadowStyles({
 			obj: {

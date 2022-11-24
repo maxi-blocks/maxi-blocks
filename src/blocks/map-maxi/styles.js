@@ -110,6 +110,12 @@ const getHoverNormalObject = props => {
 				isHover: true,
 				blockStyle,
 			}),
+		opacity:
+			props['opacity-status-hover'] &&
+			getOpacityStyles(
+				{ ...getGroupAttributes(props, 'opacity', true) },
+				true
+			),
 	};
 
 	return response;

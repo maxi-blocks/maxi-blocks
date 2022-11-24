@@ -43,7 +43,7 @@ describe('Icon position', () => {
 		await openSidebarTab(page, 'style', 'icon');
 
 		const positionSelected = await page.$eval(
-			'.maxi-tabs-content .maxi-icon-control .maxi-icon-position-control .maxi-tabs-control__button--selected',
+			'.maxi-tabs-content .maxi-icon-control .maxi-icon-control__position .maxi-tabs-control__button--selected',
 			button => button.outerText
 		);
 

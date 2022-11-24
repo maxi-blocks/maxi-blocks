@@ -67,9 +67,11 @@ const ResponsiveButton = ({
 				aria-pressed={getIsPressed()}
 			>
 				<div>
-					<div className='responsive-button-tooltip'>
-						{tooltipValue}
-					</div>
+					{tooltipValue && (
+						<div className='responsive-button-tooltip'>
+							{tooltipValue}
+						</div>
+					)}
 					{icon}
 					{isBaseBreakpoint && (
 						<>

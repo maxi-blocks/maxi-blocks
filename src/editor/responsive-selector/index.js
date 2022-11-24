@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useSelect, useDispatch } from '@wordpress/data';
+import { select, useSelect, useDispatch } from '@wordpress/data';
 import { createBlock } from '@wordpress/blocks';
 
 /**
@@ -37,7 +37,13 @@ import {
 /**
  * Components
  */
-const ResponsiveButton = ({ baseBreakpoint, icon, breakpoint, target }) => {
+const ResponsiveButton = ({
+	baseBreakpoint,
+	icon,
+	tooltipValue,
+	breakpoint,
+	target,
+}) => {
 	const isBaseBreakpoint = baseBreakpoint === target;
 
 	const classes = classnames(
@@ -61,6 +67,9 @@ const ResponsiveButton = ({ baseBreakpoint, icon, breakpoint, target }) => {
 				aria-pressed={getIsPressed()}
 			>
 				<div>
+					<div className='responsive-button-tooltip'>
+						{tooltipValue}
+					</div>
 					{icon}
 					{isBaseBreakpoint && (
 						<>
@@ -111,7 +120,7 @@ const ResponsiveSelector = props => {
 	};
 
 	const classes = classnames('maxi-responsive-selector', className);
-
+	const SizeXXL = select('maxiBlocks').receiveXXLSize();
 	return (
 		<div className={classes} style={{ display: isOpen ? 'flex' : 'none' }}>
 			<span className='maxi-responsive-selector__close' onClick={onClose}>
@@ -123,6 +132,7 @@ const ResponsiveSelector = props => {
 				breakpoint={deviceType}
 				baseBreakpoint={baseBreakpoint}
 				breakpoints={breakpoints}
+				tooltipValue={SizeXXL}
 			/>
 			<ResponsiveButton
 				icon={xlMode}
@@ -130,6 +140,7 @@ const ResponsiveSelector = props => {
 				breakpoint={deviceType}
 				baseBreakpoint={baseBreakpoint}
 				breakpoints={breakpoints}
+				tooltipValue={breakpoints.xl}
 			/>
 			<ResponsiveButton
 				icon={largeMode}
@@ -137,6 +148,7 @@ const ResponsiveSelector = props => {
 				breakpoint={deviceType}
 				baseBreakpoint={baseBreakpoint}
 				breakpoints={breakpoints}
+				tooltipValue={breakpoints.l}
 			/>
 			<ResponsiveButton
 				icon={mediumMode}
@@ -144,6 +156,7 @@ const ResponsiveSelector = props => {
 				breakpoint={deviceType}
 				baseBreakpoint={baseBreakpoint}
 				breakpoints={breakpoints}
+				tooltipValue={breakpoints.m}
 			/>
 			<ResponsiveButton
 				icon={smallMode}
@@ -151,6 +164,7 @@ const ResponsiveSelector = props => {
 				breakpoint={deviceType}
 				baseBreakpoint={baseBreakpoint}
 				breakpoints={breakpoints}
+				tooltipValue={breakpoints.s}
 			/>
 			<ResponsiveButton
 				icon={xsMode}
@@ -158,6 +172,7 @@ const ResponsiveSelector = props => {
 				breakpoint={deviceType}
 				baseBreakpoint={baseBreakpoint}
 				breakpoints={breakpoints}
+				tooltipValue={breakpoints.xs}
 			/>
 			<div className='action-buttons'>
 				<Button

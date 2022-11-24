@@ -136,12 +136,34 @@
 			justify-content: center;
 			align-items: center;
 
+			.responsive-button-tooltip {
+				opacity: 0;
+				transition: all 0.2s;
+				position: absolute;
+				height: 100%;
+				width: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				left: 0;
+				top: 0;
+			}
+
 			svg {
 				display: block;
 				margin: 0 auto;
+				transition: all 0.2s;
 			}
 			&:hover {
 				color: #000;
+
+				.maxi-responsive-selector__button-current-size,
+				svg {
+					opacity: 0;
+				}
+				.responsive-button-tooltip {
+					opacity: 1;
+				}
 			}
 			&:first-of-type {
 				margin-left: 0;

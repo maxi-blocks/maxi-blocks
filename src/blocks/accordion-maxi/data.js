@@ -202,7 +202,16 @@ const transition = {
 			title: 'Pane title',
 			target: ' > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__title',
 			property: false,
-			hoverProp: 'title-typography-status-hover',
+			hoverProp: [
+				'title-typography-status-hover',
+				'title-typography-status-active',
+			],
+		},
+		'pane title background': {
+			title: 'Pane title background',
+			target: ' > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__header-content',
+			property: 'background-color',
+			hoverProp: 'title-background-status-hover',
 		},
 		...createIconTransitions({
 			target: ' > .maxi-pane-block > .maxi-pane-block__header .maxi-pane-block__icon',

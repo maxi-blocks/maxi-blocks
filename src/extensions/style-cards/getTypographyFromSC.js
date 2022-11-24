@@ -11,7 +11,7 @@ import getLastBreakpointAttribute from '../styles/getLastBreakpointAttribute';
 /**
  * External dependencies
  */
-import { isEmpty, isNil, merge } from 'lodash';
+import { isEmpty, isNil, merge, omit } from 'lodash';
 
 const getTypographyFromSC = (styleCard, type) => {
 	const { receiveMaxiSelectedStyleCard } = select('maxiBlocks/style-cards');
@@ -22,7 +22,22 @@ const getTypographyFromSC = (styleCard, type) => {
 
 	const SC = {
 		...merge(
-			{ ...selectedSC.defaultStyleCard[type] },
+			{
+				// Ensure `undefined` valued entries on styleCard are not merged/overwritten from defaultStyleCard
+				...omit(
+					selectedSC.defaultStyleCard[type],
+					selectedSC.styleCard?.[type]
+						? Object.keys(selectedSC.styleCard?.[type]).filter(
+								key => {
+									if (!isNil(selectedSC.styleCard[type][key]))
+										return false;
+
+									return true;
+								}
+						  )
+						: []
+				),
+			},
 			{ ...selectedSC.styleCard[type] }
 		),
 	};

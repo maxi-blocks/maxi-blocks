@@ -13,6 +13,9 @@ describe('Divider alignment from Toolbar', () => {
 		await createNewPost();
 		await insertBlock('Divider Maxi');
 
+		// Wait for toolbar to be visible
+		await page.waitForSelector('.toolbar-wrapper');
+
 		// edit divider alignment
 		await page.$eval(
 			'.toolbar-wrapper .toolbar-item__button.toolbar-item__divider-alignment',
@@ -20,6 +23,9 @@ describe('Divider alignment from Toolbar', () => {
 		);
 
 		// select divider alignment style
+		await page.waitForSelector(
+			'.toolbar-item__divider-alignment__popover .maxi-base-control select'
+		);
 		const selector = await page.$(
 			'.toolbar-item__divider-alignment__popover .maxi-base-control select'
 		);

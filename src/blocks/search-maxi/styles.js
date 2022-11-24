@@ -99,6 +99,12 @@ const getHoverObject = props => {
 				isHover: true,
 				blockStyle: props.blockStyle,
 			}),
+		opacity:
+			props['opacity-status-hover'] &&
+			getOpacityStyles(
+				{ ...getGroupAttributes(props, 'opacity', true) },
+				true
+			),
 	};
 
 	return response;
@@ -352,7 +358,7 @@ const getStyles = props => {
 					props,
 					true
 				),
-				' .maxi-search-block__button__content:hover':
+				' .maxi-search-block__button:hover .maxi-search-block__button__content':
 					getSearchButtonContentStyles(props, true),
 			},
 			data,

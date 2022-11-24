@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+import { select } from '@wordpress/data';
 import { Popover } from '@wordpress/components';
 import { forwardRef, useRef } from '@wordpress/element';
 import { getScrollContainer } from '@wordpress/dom';
@@ -9,6 +10,7 @@ import { getScrollContainer } from '@wordpress/dom';
  * External dependencies
  */
 import classnames from 'classnames';
+import { isEmpty, isNaN } from 'lodash';
 
 /**
  * Styles
@@ -21,11 +23,18 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 
 	const popoverRef = useRef(null);
 
+	const { receiveMaxiSettings } = select('maxiBlocks');
+	const maxiSettings = receiveMaxiSettings();
+	const version = !isEmpty(maxiSettings.editor)
+		? maxiSettings.editor.version
+		: null;
+
 	if (!isSelected || !ref.current) return null;
 
 	const classes = classnames(
 		'maxi-popover-button',
 		isOpen && 'maxi-popover-button--open',
+		version <= 13.0 && 'maxi-popover-button--old',
 		className
 	);
 
@@ -34,17 +43,11 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 		getScrollContainer(ref.current) ||
 		document.body;
 
-	return (
-		<Popover
-			ref={popoverRef}
-			className={classes}
-			noArrow
-			animate={false}
-			focusOnMount={false}
-			__unstableSlotName='block-toolbar'
-			shouldAnchorIncludePadding
-			__unstableStickyBoundaryElement={boundaryElement}
-			getAnchorRect={() => {
+	const popoverPropsByVersion = {
+		...((parseFloat(version) <= 13.0 && {
+			shouldAnchorIncludePadding: true,
+			__unstableStickyBoundaryElement: boundaryElement,
+			getAnchorRect: () => {
 				// Return default anchor rect if no ref is available.
 				if (!ref.current) return DOMRect.fromRect();
 
@@ -64,9 +67,28 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 				});
 
 				return newRect;
-			}}
-			position='top right'
+			},
+			position: 'top right',
+		}) ||
+			(!isNaN(parseFloat(version)) && {
+				anchor: ref.current,
+				placement: 'top-end',
+				flip: false,
+				resize: false,
+				variant: 'unstyled',
+			})),
+	};
+
+	return (
+		<Popover
+			ref={popoverRef}
+			className={classes}
+			noArrow
+			animate={false}
+			focusOnMount={false}
+			__unstableSlotName='block-toolbar'
 			uniqueid={uniqueID}
+			{...popoverPropsByVersion}
 		>
 			{props.children}
 		</Popover>

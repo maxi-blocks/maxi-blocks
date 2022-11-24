@@ -12,10 +12,13 @@ import {
  */
 import { getAttributes, openSidebarTab } from '../../../../utils';
 
-describe('column size', () => {
-	it('Check column size', async () => {
+describe('Toolbar size', () => {
+	it('Check toolbar size', async () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
+
+		// Wait for toolbar to be visible
+		await page.waitForSelector('.toolbar-wrapper');
 
 		// edit color
 		await page.$eval('.toolbar-wrapper .toolbar-item__size', button =>

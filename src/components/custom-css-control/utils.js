@@ -3,7 +3,9 @@
  */
 import { isNil, isEmpty, without } from 'lodash';
 
-function getBgLayersSelectorsCss(bgLayers) {
+export function getBgLayersSelectorsCss(bgLayers, addOnHoverToLabel = true) {
+	const onHoverString = addOnHoverToLabel ? ' on hover' : '';
+
 	const bgLayersSelectors = {
 		background: {
 			'background-displayer': {
@@ -13,7 +15,7 @@ function getBgLayersSelectorsCss(bgLayers) {
 		},
 		'background hover': {
 			'background-displayer': {
-				label: 'background wrapper on hover',
+				label: `background wrapper${onHoverString}`,
 				target: ':hover > .maxi-background-displayer',
 			},
 		},
@@ -35,7 +37,7 @@ function getBgLayersSelectorsCss(bgLayers) {
 			const newBgHoverSelectors = {
 				...bgLayersSelectors['background hover'],
 				[`_${bgLayer.id}`]: {
-					label: `background ${bgLayer.type} ${bgHoverLayersShowedOrder} on hover`,
+					label: `background ${bgLayer.type} ${bgHoverLayersShowedOrder}${onHoverString}`,
 					target: `:hover > .maxi-background-displayer .maxi-background-displayer__${bgLayer.order}`,
 				},
 			};

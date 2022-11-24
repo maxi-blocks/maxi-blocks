@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Button } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
 
 /**
@@ -11,6 +10,11 @@ import { RichText } from '@wordpress/block-editor';
 import { isEmpty } from 'lodash';
 import { Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
+
+/**
+ * Internal dependencies
+ */
+import { Button } from '../../../../components';
 
 const Markers = props => {
 	const { attributes, maxiSetAttributes, setIsDraggingMarker } = props;

@@ -139,6 +139,7 @@ const getCanvasSettings = ({ name, customCss }) => [
 		attrGroupName: ['border', 'borderWidth', 'borderRadius'],
 		component: props => <BorderControl {...props} />,
 		helper: props => getBorderStyles(props),
+		shouldTargetBlockUpdate: true,
 	},
 	{
 		label: __('Box shadow', 'maxi-blocks'),

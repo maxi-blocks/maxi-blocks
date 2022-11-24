@@ -263,6 +263,7 @@ const interactionBuilderSettings = {
 			component: props => <BorderControl {...props} />,
 			helper: props => getBorderStyles(props),
 			target: ' .maxi-svg-icon-block__icon',
+			shouldTargetBlockUpdate: true,
 		},
 	],
 	canvas: getCanvasSettings({ name, customCss }),

@@ -254,6 +254,10 @@ class MaxiBlockComponent extends Component {
 			select('core/block-editor').getBlocks()
 		);
 
+		dispatch('maxiBlocks').removeRelationRerenderValue(
+			this.props.attributes.uniqueID
+		);
+
 		if (this.maxiBlockWillUnmount) this.maxiBlockWillUnmount();
 	}
 

@@ -299,6 +299,7 @@ const interactionBuilderSettings = {
 			component: props => <BorderControl {...props} />,
 			helper: props => getBorderStyles(props),
 			target: '.maxi-button-block__button',
+			shouldTargetBlockUpdate: true,
 		},
 		{
 			label: __('Button background', 'maxi-blocks'),

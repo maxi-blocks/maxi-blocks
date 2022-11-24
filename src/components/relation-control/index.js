@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 // import { Button } from '@wordpress/components';
-import { select } from '@wordpress/data';
+import { dispatch, select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -164,6 +164,8 @@ const RelationControl = props => {
 
 		const settingsComponent = selectedSettingsObj.component;
 		const prefix = selectedSettingsObj?.prefix || '';
+		const shouldTargetBlockUpdate =
+			selectedSettingsObj?.shouldTargetBlockUpdate || false;
 		const blockAttributes = cloneDeep(getBlock(clientId)?.attributes);
 
 		const { receiveMaxiBreakpoints, receiveXXLSize } = select('maxiBlocks');
@@ -341,6 +343,28 @@ const RelationControl = props => {
 						},
 					}),
 				});
+
+				if (shouldTargetBlockUpdate) {
+					const targetBlockClientId = getClientIdFromUniqueId(
+						item.uniqueID
+					);
+					const previousRerenderValue = select(
+						'maxiBlocks'
+					).receiveRelationRerenderValue(item.uniqueID);
+					const newRerenderValue =
+						previousRerenderValue === 1 ? 2 : 1;
+
+					dispatch('core/block-editor').updateBlockAttributes(
+						targetBlockClientId,
+						{
+							're-render': newRerenderValue,
+						}
+					);
+					dispatch('maxiBlocks').updateRelationRerenderValue(
+						item.uniqueID,
+						newRerenderValue
+					);
+				}
 			},
 			prefix,
 			blockStyle: blockAttributes.blockStyle,

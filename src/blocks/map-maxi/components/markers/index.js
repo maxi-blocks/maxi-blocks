@@ -5,16 +5,16 @@ import { __ } from '@wordpress/i18n';
 import { RichText } from '@wordpress/block-editor';
 
 /**
+ * Internal dependencies
+ */
+import { Button } from '../../../../components';
+
+/**
  * External dependencies
  */
 import { isEmpty } from 'lodash';
 import { Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
-
-/**
- * Internal dependencies
- */
-import { Button } from '../../../../components';
 
 const Markers = props => {
 	const { attributes, maxiSetAttributes, setIsDraggingMarker } = props;

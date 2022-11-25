@@ -16,7 +16,7 @@ import {
 	AdvancedNumberControl,
 	SelectControl,
 	SettingTabsControl,
-	TextInput,
+	TextControl,
 } from '../../../../components';
 
 const VideoControl = props => {
@@ -53,38 +53,35 @@ const VideoControl = props => {
 				selected={playerType}
 				fullWidthMode
 			/>
-			<div className='maxi-base-control__field maxi-video-sidebar-url'>
-				<label className='maxi-base-control__label' htmlFor='url'>
-					{__('URL', 'maxi-blocks')}
-				</label>
-				<TextInput
-					id='url'
-					className='maxi-sidebar-input'
-					label={__('URL', 'maxi-blocks')}
-					type='url'
-					value={videoUrl}
-					placeholder='Youtube, Vimeo, or Direct Link'
-					onChange={val => {
-						if (val && !videoUrlRegex.test(val)) {
-							setValidationText(
-								__('Invalid video URL', 'maxi-blocks')
-							);
-						} else {
-							setValidationText(null);
-						}
 
-						onChange({
+			<TextControl
+				id='url'
+				className='maxi-sidebar-input maxi-video-sidebar-url'
+				label={__('URL', 'maxi-blocks')}
+				type='url'
+				value={videoUrl}
+				placeholder='Youtube, Vimeo, or Direct Link'
+				onChange={val => {
+					if (val && !videoUrlRegex.test(val)) {
+						setValidationText(
+							__('Invalid video URL', 'maxi-blocks')
+						);
+					} else {
+						setValidationText(null);
+					}
+
+					onChange({
+						url: val,
+						embedUrl: getParsedVideoUrl({
+							...props,
 							url: val,
-							embedUrl: getParsedVideoUrl({
-								...props,
-								url: val,
-							}),
-							videoType: parseVideo(val).type,
-						});
-					}}
-					validationText={validationText}
-				/>
-			</div>
+						}),
+						videoType: parseVideo(val).type,
+					});
+				}}
+				validationText={validationText}
+			/>
+
 			<AdvancedNumberControl
 				className='maxi-video-start-time'
 				label={__('Start time (s)', 'maxi-blocks')}

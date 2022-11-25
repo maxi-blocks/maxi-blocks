@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { select, useSelect, useDispatch } from '@wordpress/data';
+import { useSelect, useDispatch } from '@wordpress/data';
 import { createBlock } from '@wordpress/blocks';
 
 /**
@@ -122,7 +122,7 @@ const ResponsiveSelector = props => {
 	};
 
 	const classes = classnames('maxi-responsive-selector', className);
-	const SizeXXL = select('maxiBlocks').receiveXXLSize();
+
 	return (
 		<div className={classes} style={{ display: isOpen ? 'flex' : 'none' }}>
 			<span className='maxi-responsive-selector__close' onClick={onClose}>
@@ -134,7 +134,7 @@ const ResponsiveSelector = props => {
 				breakpoint={deviceType}
 				baseBreakpoint={baseBreakpoint}
 				breakpoints={breakpoints}
-				tooltipValue={SizeXXL}
+				tooltipValue={`>${breakpoints.xl}`}
 			/>
 			<ResponsiveButton
 				icon={xlMode}

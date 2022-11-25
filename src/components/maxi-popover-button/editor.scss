@@ -13,3 +13,6 @@ body.maxi-blocks--active .components-popover.maxi-popover-button {
 		z-index: -1;
 	}
 }
+body.maxi-blocks--active .small-block {
+	transform: translateX(36px);
+}

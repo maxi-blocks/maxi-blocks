@@ -79,10 +79,16 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 			})),
 	};
 
+	const smallBlock =
+		props.name === 'maxi-blocks/svg-icon-maxi' &&
+		props.attributes['width-fit-content-general']
+			? 'small-block'
+			: '';
+
 	return (
 		<Popover
 			ref={popoverRef}
-			className={classes}
+			className={(classes, smallBlock)}
 			noArrow
 			animate={false}
 			focusOnMount={false}

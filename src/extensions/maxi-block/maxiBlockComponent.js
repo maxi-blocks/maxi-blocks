@@ -32,6 +32,7 @@ import {
 } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
 import getIsUniqueIDRepeated from './getIsUniqueIDRepeated';
+import getCustomLabel from './getCustomLabel';
 import { loadFonts, getAllFonts } from '../text/fonts';
 import { uniqueIDGenerator } from '../attributes';
 import getHoverStatus from '../../components/relation-control/getHoverStatus';
@@ -344,26 +345,21 @@ class MaxiBlockComponent extends Component {
 	uniqueIDChecker(idToCheck) {
 		if (getIsUniqueIDRepeated(idToCheck)) {
 			const newUniqueID = uniqueIDGenerator(this.props.name);
-
 			this.props.attributes.uniqueID = newUniqueID;
 
-			const newCustomLabel =
-				this.props.attributes.customLabel.split('_')[0];
-			this.props.attributes.customLabel = `${newCustomLabel}_${
-				this.props.attributes.uniqueID.split('-maxi-')[1]
-			}`;
+			this.props.attributes.customLabel = getCustomLabel(
+				this.props.attributes.customLabel,
+				this.props.attributes.uniqueID
+			);
 
 			return newUniqueID;
 		}
 
 		// This code can be removed after migrating #3474
 		if (isEmpty(this.props.attributes.customLabel)) {
-			const label = this.props.attributes.uniqueID.split('-maxi-')[0];
-			const prefixCustomLabel =
+			const label = idToCheck.replace('-maxi-', '_');
+			this.props.attributes.customLabel =
 				label.charAt(0).toUpperCase() + label.slice(1);
-			this.props.attributes.customLabel = `${prefixCustomLabel}_${
-				this.props.attributes.uniqueID.split('-maxi-')[1]
-			}`;
 		}
 
 		return idToCheck;

@@ -9,6 +9,7 @@ import { select } from '@wordpress/data';
  * Internal dependencies
  */
 import uniqueIDGenerator from './uniqueIDGenerator';
+import { getCustomLabel } from '../maxi-block';
 
 /**
  * External Dependencies
@@ -54,10 +55,10 @@ const withAttributes = createHigherOrderComponent(
 				document.getElementsByClassName(uniqueID).length > 1
 			) {
 				attributes.uniqueID = uniqueIDGenerator(blockName);
-
-				const label = attributes.uniqueID.replace('-maxi-', '_');
-				attributes.customLabel =
-					label.charAt(0).toUpperCase() + label.slice(1);
+				attributes.customLabel = getCustomLabel(
+					attributes.customLabel,
+					attributes.uniqueID
+				);
 			}
 			// isFirstOnHierarchy
 			const parentBlocks = select('core/block-editor')

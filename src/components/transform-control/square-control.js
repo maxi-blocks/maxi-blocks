@@ -135,18 +135,17 @@ const SquareControl = props => {
 			nativeEvent: { inputType },
 		} = e;
 
-		const newValue = !isEmpty(e.target.value)
-			? validateOriginValue(e.target.value)
-			: '';
+		const newValue = !isEmpty(e.target.value) ? Number(e.target.value) : '';
 
-		if (isNumber(currentValue)) return newValue;
+		if (isNumber(currentValue) && Number.isFinite(currentValue))
+			return newValue;
 
 		const typeofEvent = getIsValid(inputType, true) ? 'type' : 'click';
 
 		switch (typeofEvent) {
 			case 'click':
 				return (
-					(isNumber(+placeholder) && isEmpty(currentValue)
+					(!isNaN(Number(placeholder)) && isEmpty(currentValue)
 						? +placeholder
 						: 0) + +newValue
 				);

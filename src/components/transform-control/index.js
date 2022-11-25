@@ -114,6 +114,9 @@ const TransformControl = props => {
 					currentBreakpoint in targetTransformObj &&
 					!isEmpty(targetTransformObj[currentBreakpoint])
 			);
+
+		if (isNil(breakpointToUse)) return;
+
 		const {
 			[breakpointToUse]: {
 				transform,

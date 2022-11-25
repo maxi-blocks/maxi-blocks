@@ -22,6 +22,8 @@ const getIconStyles = (
 		general: {},
 	};
 
+	const isShape = iconType !== 'shape';
+
 	if (isIconInherit && !obj['typography-status-hover']) return response;
 
 	if (isIconInherit) {
@@ -34,9 +36,9 @@ const getIconStyles = (
 			});
 		response.general.fill = 'none';
 
-		if (iconType !== 'shape' && !paletteStatus && color) {
+		if (!isShape && !paletteStatus && color) {
 			response.general.stroke = color;
-		} else if (iconType !== 'shape' && paletteStatus && paletteColor) {
+		} else if (!isShape && paletteStatus && paletteColor) {
 			response.general.stroke = getColorRGBAString({
 				firstVar: `color-${paletteColor}`,
 				opacity: paletteOpacity,
@@ -47,9 +49,9 @@ const getIconStyles = (
 		const { paletteStatus, paletteColor, paletteOpacity, color } =
 			getPaletteAttributes({ obj, prefix: `${prefix}icon-`, isHover });
 
-		if (iconType !== 'shape' && !paletteStatus && !isNil(color)) {
+		if (!isShape && !paletteStatus && !isNil(color)) {
 			response.general.stroke = color;
-		} else if (iconType !== 'shape' && paletteStatus && paletteColor) {
+		} else if (!isShape && paletteStatus && paletteColor) {
 			response.general.stroke = getColorRGBAString({
 				firstVar: `color-${paletteColor}`,
 				opacity: obj[paletteOpacity],

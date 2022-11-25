@@ -260,7 +260,6 @@ const AdvancedNumberControl = props => {
 							isSmall
 						/>
 					)}
-
 					{!disableRange && (
 						<RangeControl
 							label={label}
@@ -286,7 +285,6 @@ const AdvancedNumberControl = props => {
 							initialPosition={value || initial}
 						/>
 					)}
-
 				</BaseControl>
 			)}
 		</>

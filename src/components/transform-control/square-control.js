@@ -11,7 +11,7 @@ import { Tooltip } from '@wordpress/components';
 import Button from '../button';
 import SelectControl from '../select-control';
 import BlockResizer from '../block-resizer';
-import { validateOriginValue } from '../../extensions/styles';
+import { validateOriginValue, getIsValid } from '../../extensions/styles';
 import ResetButton from '../reset-control';
 
 /**
@@ -129,6 +129,33 @@ const SquareControl = props => {
 		}
 		return false;
 	};
+
+	const getNewValueFromEmpty = (e, currentValue, placeholder) => {
+		const {
+			nativeEvent: { inputType },
+		} = e;
+
+		const newValue = !isEmpty(e.target.value)
+			? validateOriginValue(e.target.value)
+			: '';
+
+		if (isNumber(currentValue)) return newValue;
+
+		const typeofEvent = getIsValid(inputType, true) ? 'type' : 'click';
+
+		switch (typeofEvent) {
+			case 'click':
+				return (
+					(isNumber(+placeholder) && isEmpty(currentValue)
+						? +placeholder
+						: 0) + +newValue
+				);
+			case 'type':
+			default:
+				return newValue;
+		}
+	};
+
 	const transformStr = useCallback(() => {
 		return `translateX(${xAxis}${xUnit}) translateY(${yAxis}${yUnit})`;
 	}, [xAxis, xUnit, yAxis, yUnit]);
@@ -476,13 +503,15 @@ const SquareControl = props => {
 								className='maxi-transform-control__square-control__y-control__value__input'
 								value={
 									!isNumber(validateOriginValue(yAxis))
-										? defaultY
+										? ''
 										: validateOriginValue(yAxis)
 								}
 								onChange={e => {
-									const newValue = !isEmpty(e.target.value)
-										? validateOriginValue(e.target.value)
-										: '';
+									const newValue = getNewValueFromEmpty(
+										e,
+										validateOriginValue(yAxis),
+										getPlaceholder(yAxis)
+									);
 
 									if (!sync) {
 										changeYAxis(newValue);
@@ -586,13 +615,15 @@ const SquareControl = props => {
 								className='maxi-transform-control__square-control__x-control__value__input'
 								value={
 									!isNumber(validateOriginValue(xAxis))
-										? defaultX
+										? ''
 										: validateOriginValue(xAxis)
 								}
 								onChange={e => {
-									const newValue = !isEmpty(e.target.value)
-										? validateOriginValue(e.target.value)
-										: '';
+									const newValue = getNewValueFromEmpty(
+										e,
+										validateOriginValue(xAxis),
+										getPlaceholder(xAxis)
+									);
 
 									if (!sync) {
 										changeXAxis(newValue);
@@ -678,11 +709,13 @@ const SquareControl = props => {
 								type='number'
 								placeholder={getPlaceholder(yAxis)}
 								className='maxi-transform-control__square-control__y-control__value__input'
-								value={!isNumber(yAxis) ? defaultY : yAxis}
+								value={!isNumber(yAxis) ? '' : yAxis}
 								onChange={e => {
-									const newValue = !isEmpty(e.target.value)
-										? Number(e.target.value)
-										: '';
+									const newValue = getNewValueFromEmpty(
+										e,
+										yAxis,
+										getPlaceholder(yAxis)
+									);
 
 									if (!sync) {
 										changeYAxis(newValue);
@@ -754,11 +787,13 @@ const SquareControl = props => {
 								type='number'
 								placeholder={getPlaceholder(xAxis)}
 								className='maxi-transform-control__square-control__x-control__value__input'
-								value={!isNumber(xAxis) ? defaultX : xAxis}
+								value={!isNumber(xAxis) ? '' : xAxis}
 								onChange={e => {
-									const newValue = !isEmpty(e.target.value)
-										? Number(e.target.value)
-										: '';
+									const newValue = getNewValueFromEmpty(
+										e,
+										xAxis,
+										getPlaceholder(xAxis)
+									);
 
 									if (!sync) {
 										changeXAxis(newValue);

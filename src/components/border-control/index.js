@@ -10,6 +10,7 @@ import AxisControl from '../axis-control';
 import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
 import Icon from '../icon';
+import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
 import {
 	borderNone,
@@ -254,157 +255,159 @@ const BorderControl = props => {
 	};
 
 	return (
-		<div className={classes}>
-			<DefaultStylesControl
-				items={[
-					{
-						activeItem: getIsActive() === 'none',
-						content: (
-							<Icon
-								className='maxi-default-styles-control__button__icon'
-								icon={styleNone}
-							/>
-						),
-						onChange: () =>
-							onChangeDefault(
-								borderNone(
-									prefix,
-									getLastBreakpointAttribute({
-										target: `${prefix}border-style`,
-										breakpoint,
-										attributes: props,
-										isHover,
-									}) && breakpoint !== 'general'
-								)
+		<ResponsiveTabsControl breakpoint={breakpoint}>
+			<div className={classes}>
+				<DefaultStylesControl
+					items={[
+						{
+							activeItem: getIsActive() === 'none',
+							content: (
+								<Icon
+									className='maxi-default-styles-control__button__icon'
+									icon={styleNone}
+								/>
 							),
-					},
-					{
-						activeItem: getIsActive() === 'solid',
-						content: (
-							<Icon
-								className='maxi-default-styles-control__button__icon'
-								icon={solid}
-							/>
-						),
-						onChange: () =>
-							onChangeDefault(
-								borderSolid(prefix, borderWidthLastValue())
+							onChange: () =>
+								onChangeDefault(
+									borderNone(
+										prefix,
+										getLastBreakpointAttribute({
+											target: `${prefix}border-style`,
+											breakpoint,
+											attributes: props,
+											isHover,
+										}) && breakpoint !== 'general'
+									)
+								),
+						},
+						{
+							activeItem: getIsActive() === 'solid',
+							content: (
+								<Icon
+									className='maxi-default-styles-control__button__icon'
+									icon={solid}
+								/>
 							),
-					},
-					{
-						activeItem: getIsActive() === 'dashed',
-						content: (
-							<Icon
-								className='maxi-default-styles-control__button__icon'
-								icon={dashed}
-							/>
-						),
-						onChange: () =>
-							onChangeDefault(
-								borderDashed(prefix, borderWidthLastValue())
+							onChange: () =>
+								onChangeDefault(
+									borderSolid(prefix, borderWidthLastValue())
+								),
+						},
+						{
+							activeItem: getIsActive() === 'dashed',
+							content: (
+								<Icon
+									className='maxi-default-styles-control__button__icon'
+									icon={dashed}
+								/>
 							),
-					},
-					{
-						activeItem: getIsActive() === 'dotted',
-						content: (
-							<Icon
-								className='maxi-default-styles-control__button__icon'
-								icon={dotted}
-							/>
-						),
-						onChange: () =>
-							onChangeDefault(
-								borderDotted(prefix, borderWidthLastValue())
+							onChange: () =>
+								onChangeDefault(
+									borderDashed(prefix, borderWidthLastValue())
+								),
+						},
+						{
+							activeItem: getIsActive() === 'dotted',
+							content: (
+								<Icon
+									className='maxi-default-styles-control__button__icon'
+									icon={dotted}
+								/>
 							),
-					},
-				]}
-			/>
-			{!isToolbar && (
-				<SelectControl
-					label={__('Add border line', 'maxi-blocks')}
-					className='maxi-border-control__type'
-					value={borderStyleValue || 'none'}
-					options={[
-						{ label: 'None', value: 'none' },
-						{ label: 'Dotted', value: 'dotted' },
-						{ label: 'Dashed', value: 'dashed' },
-						{ label: 'Solid', value: 'solid' },
-						{ label: 'Double', value: 'double' },
-						{ label: 'Groove', value: 'groove' },
-						{ label: 'Ridge', value: 'ridge' },
-						{ label: 'Inset', value: 'inset' },
-						{ label: 'Outset', value: 'outset' },
+							onChange: () =>
+								onChangeDefault(
+									borderDotted(prefix, borderWidthLastValue())
+								),
+						},
 					]}
-					onChange={val => {
-						onChange({
-							[`${prefix}border-style-${breakpoint}${
-								isHover ? '-hover' : ''
-							}`]: val,
-							...getValuesOnChangeType(),
-						});
-					}}
 				/>
-			)}
-			{isToolbar && (
-				<div className='maxi-border-control__icon'>
-					<Icon icon={borderWidth} />
-				</div>
-			)}
-			{isToolbar && (
-				<BorderWidthControl isToolbar={isToolbar} {...props} />
-			)}
-			{(isToolbar || (!disableColor && isBorderEnable)) && (
-				<BorderColorControl {...props} />
-			)}
-			{!isToolbar && isBorderEnable && (
-				<BorderWidthControl isToolbar={isToolbar} {...props} />
-			)}
-			{!isToolbar && (
-				<>
-					<hr />
-					<AxisControl
-						{...getGroupAttributes(
-							props,
-							'borderRadius',
-							isHover,
-							prefix
-						)}
-						target={`${prefix}border`}
-						auxTarget='radius'
-						label={__('Border radius', 'maxi-blocks')}
-						onChange={onChange}
-						breakpoint={breakpoint}
-						minMaxSettings={{
-							px: {
-								min: 0,
-								max: 999,
-							},
-							em: {
-								min: 0,
-								max: 999,
-							},
-							vw: {
-								min: 0,
-								max: 999,
-							},
-							'%': {
-								min: 0,
-								max: 100,
-							},
-						}}
-						disableAuto
-						isHover={isHover}
-						inputsArray={[
-							'top-left',
-							'top-right',
-							'bottom-right',
-							'bottom-left',
-							'unit',
+				{!isToolbar && (
+					<SelectControl
+						label={__('Add border line', 'maxi-blocks')}
+						className='maxi-border-control__type'
+						value={borderStyleValue || 'none'}
+						options={[
+							{ label: 'None', value: 'none' },
+							{ label: 'Dotted', value: 'dotted' },
+							{ label: 'Dashed', value: 'dashed' },
+							{ label: 'Solid', value: 'solid' },
+							{ label: 'Double', value: 'double' },
+							{ label: 'Groove', value: 'groove' },
+							{ label: 'Ridge', value: 'ridge' },
+							{ label: 'Inset', value: 'inset' },
+							{ label: 'Outset', value: 'outset' },
 						]}
+						onChange={val => {
+							onChange({
+								[`${prefix}border-style-${breakpoint}${
+									isHover ? '-hover' : ''
+								}`]: val,
+								...getValuesOnChangeType(),
+							});
+						}}
 					/>
-				</>
-			)}
-		</div>
+				)}
+				{isToolbar && (
+					<div className='maxi-border-control__icon'>
+						<Icon icon={borderWidth} />
+					</div>
+				)}
+				{isToolbar && (
+					<BorderWidthControl isToolbar={isToolbar} {...props} />
+				)}
+				{(isToolbar || (!disableColor && isBorderEnable)) && (
+					<BorderColorControl {...props} />
+				)}
+				{!isToolbar && isBorderEnable && (
+					<BorderWidthControl isToolbar={isToolbar} {...props} />
+				)}
+				{!isToolbar && (
+					<>
+						<hr />
+						<AxisControl
+							{...getGroupAttributes(
+								props,
+								'borderRadius',
+								isHover,
+								prefix
+							)}
+							target={`${prefix}border`}
+							auxTarget='radius'
+							label={__('Border radius', 'maxi-blocks')}
+							onChange={onChange}
+							breakpoint={breakpoint}
+							minMaxSettings={{
+								px: {
+									min: 0,
+									max: 999,
+								},
+								em: {
+									min: 0,
+									max: 999,
+								},
+								vw: {
+									min: 0,
+									max: 999,
+								},
+								'%': {
+									min: 0,
+									max: 100,
+								},
+							}}
+							disableAuto
+							isHover={isHover}
+							inputsArray={[
+								'top-left',
+								'top-right',
+								'bottom-right',
+								'bottom-left',
+								'unit',
+							]}
+						/>
+					</>
+				)}
+			</div>
+		</ResponsiveTabsControl>
 	);
 };
 

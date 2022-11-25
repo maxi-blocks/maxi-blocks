@@ -6,10 +6,11 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
+import AdvancedNumberControl from '../advanced-number-control';
 import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
 import Icon from '../icon';
-import AdvancedNumberControl from '../advanced-number-control';
+import ResponsiveTabsControl from '../responsive-tabs-control';
 import {
 	boxShadowNone,
 	boxShadowTotal,
@@ -197,163 +198,180 @@ const BoxShadowControl = props => {
 	);
 
 	return (
-		<div className={classes}>
-			<DefaultStylesControl
-				items={[
-					{
-						activeItem: getIsActive({ ...boxShadowNone(prefix) }),
-						content: (
-							<Icon
-								className='maxi-default-styles-control__button__icon'
-								icon={styleNone}
-							/>
-						),
-						onChange: () => onChangeDefault(boxShadowNone(prefix)),
-					},
-					{
-						activeItem: getIsActive({ ...boxShadowTotal(prefix) }),
-						content: (
-							<div className='maxi-shadow-control__default maxi-shadow-control__default__total' />
-						),
-						onChange: () => onChangeDefault(boxShadowTotal(prefix)),
-					},
-					{
-						activeItem: getIsActive({ ...boxShadowBottom(prefix) }),
-						content: (
-							<div className='maxi-shadow-control__default maxi-shadow-control__default__bottom' />
-						),
-						onChange: () =>
-							onChangeDefault(boxShadowBottom(prefix)),
-					},
-					{
-						activeItem: getIsActive({ ...boxShadowSolid(prefix) }),
-						content: (
-							<div className='maxi-shadow-control__default maxi-shadow-control__default__solid' />
-						),
-						onChange: () => onChangeDefault(boxShadowSolid(prefix)),
-					},
-				]}
-			/>
-			{isToolbar && !dropShadow && (
-				<>
-					<div className='maxi-shadow-control__icon'>
-						<Icon icon={boxShadow} />
-					</div>
-					<BoxShadowValueControl type='spread' isToolbar {...props} />
-				</>
-			)}
-			<ColorControl
-				label={__('Box shadow', 'maxi-blocks')}
-				className='maxi-shadow-control__color'
-				color={getLastBreakpointAttribute({
-					target: `${prefix}box-shadow-color`,
-					breakpoint,
-					attributes: props,
-					isHover,
-				})}
-				prefix={`${prefix}box-shadow-`}
-				paletteStatus={getLastBreakpointAttribute({
-					target: `${prefix}box-shadow-palette-status`,
-					breakpoint,
-					attributes: props,
-					isHover,
-				})}
-				paletteColor={getLastBreakpointAttribute({
-					target: `${prefix}box-shadow-palette-color`,
-					breakpoint,
-					attributes: props,
-					isHover,
-				})}
-				paletteOpacity={getLastBreakpointAttribute({
-					target: `${prefix}box-shadow-palette-opacity`,
-					breakpoint,
-					attributes: props,
-					isHover,
-				})}
-				onChangeInline={({ color }) => {
-					onChangeInline &&
-						onChangeInline({
-							'box-shadow': `${getLastBreakpointAttribute({
-								target: `${prefix}box-shadow-horizontal`,
-								breakpoint,
-								attributes: props,
-								isHover,
-							})}px ${getLastBreakpointAttribute({
-								target: `${prefix}box-shadow-vertical`,
-								breakpoint,
-								attributes: props,
-								isHover,
-							})}px ${getLastBreakpointAttribute({
-								target: `${prefix}box-shadow-blur`,
-								breakpoint,
-								attributes: props,
-								isHover,
-							})}px ${getLastBreakpointAttribute({
-								target: `${prefix}box-shadow-spread`,
-								breakpoint,
-								attributes: props,
-								isHover,
-							})}px ${color}`,
-						});
-				}}
-				onChange={({
-					color,
-					paletteColor,
-					paletteStatus,
-					paletteOpacity,
-				}) => {
-					onChange({
-						[`${prefix}box-shadow-palette-status-${breakpoint}${
-							isHover ? '-hover' : ''
-						}`]: paletteStatus,
-						[`${prefix}box-shadow-palette-color-${breakpoint}${
-							isHover ? '-hover' : ''
-						}`]: paletteColor,
-						[`${prefix}box-shadow-palette-opacity-${breakpoint}${
-							isHover ? '-hover' : ''
-						}`]: paletteOpacity,
-						[`${prefix}box-shadow-color-${breakpoint}${
-							isHover ? '-hover' : ''
-						}`]: color,
-					});
-				}}
-				disableGradient
-				disableImage
-				disableVideo
-				isHover={isHover}
-				deviceType={breakpoint}
-				clientId={clientId}
-			/>
-			{!isToolbar && (
-				<>
-					{!dropShadow && (
-						<ToggleSwitch
-							label={__('Inset', 'maxi-block')}
-							selected={getLastBreakpointAttribute({
-								target: `${prefix}box-shadow-inset`,
-								breakpoint,
-								attributes: props,
-								isHover,
-							})}
-							onChange={val =>
-								onChange({
-									[`${prefix}box-shadow-inset-${breakpoint}${
-										isHover ? '-hover' : ''
-									}`]: val,
-								})
-							}
-						/>
-					)}
-					{boxShadowItems.map(type => (
+		<ResponsiveTabsControl breakpoint={breakpoint}>
+			<div className={classes}>
+				<DefaultStylesControl
+					items={[
+						{
+							activeItem: getIsActive({
+								...boxShadowNone(prefix),
+							}),
+							content: (
+								<Icon
+									className='maxi-default-styles-control__button__icon'
+									icon={styleNone}
+								/>
+							),
+							onChange: () =>
+								onChangeDefault(boxShadowNone(prefix)),
+						},
+						{
+							activeItem: getIsActive({
+								...boxShadowTotal(prefix),
+							}),
+							content: (
+								<div className='maxi-shadow-control__default maxi-shadow-control__default__total' />
+							),
+							onChange: () =>
+								onChangeDefault(boxShadowTotal(prefix)),
+						},
+						{
+							activeItem: getIsActive({
+								...boxShadowBottom(prefix),
+							}),
+							content: (
+								<div className='maxi-shadow-control__default maxi-shadow-control__default__bottom' />
+							),
+							onChange: () =>
+								onChangeDefault(boxShadowBottom(prefix)),
+						},
+						{
+							activeItem: getIsActive({
+								...boxShadowSolid(prefix),
+							}),
+							content: (
+								<div className='maxi-shadow-control__default maxi-shadow-control__default__solid' />
+							),
+							onChange: () =>
+								onChangeDefault(boxShadowSolid(prefix)),
+						},
+					]}
+				/>
+				{isToolbar && !dropShadow && (
+					<>
+						<div className='maxi-shadow-control__icon'>
+							<Icon icon={boxShadow} />
+						</div>
 						<BoxShadowValueControl
-							type={type}
-							key={type}
+							type='spread'
+							isToolbar
 							{...props}
 						/>
-					))}
-				</>
-			)}
-		</div>
+					</>
+				)}
+				<ColorControl
+					label={__('Box shadow', 'maxi-blocks')}
+					className='maxi-shadow-control__color'
+					color={getLastBreakpointAttribute({
+						target: `${prefix}box-shadow-color`,
+						breakpoint,
+						attributes: props,
+						isHover,
+					})}
+					prefix={`${prefix}box-shadow-`}
+					paletteStatus={getLastBreakpointAttribute({
+						target: `${prefix}box-shadow-palette-status`,
+						breakpoint,
+						attributes: props,
+						isHover,
+					})}
+					paletteColor={getLastBreakpointAttribute({
+						target: `${prefix}box-shadow-palette-color`,
+						breakpoint,
+						attributes: props,
+						isHover,
+					})}
+					paletteOpacity={getLastBreakpointAttribute({
+						target: `${prefix}box-shadow-palette-opacity`,
+						breakpoint,
+						attributes: props,
+						isHover,
+					})}
+					onChangeInline={({ color }) => {
+						onChangeInline &&
+							onChangeInline({
+								'box-shadow': `${getLastBreakpointAttribute({
+									target: `${prefix}box-shadow-horizontal`,
+									breakpoint,
+									attributes: props,
+									isHover,
+								})}px ${getLastBreakpointAttribute({
+									target: `${prefix}box-shadow-vertical`,
+									breakpoint,
+									attributes: props,
+									isHover,
+								})}px ${getLastBreakpointAttribute({
+									target: `${prefix}box-shadow-blur`,
+									breakpoint,
+									attributes: props,
+									isHover,
+								})}px ${getLastBreakpointAttribute({
+									target: `${prefix}box-shadow-spread`,
+									breakpoint,
+									attributes: props,
+									isHover,
+								})}px ${color}`,
+							});
+					}}
+					onChange={({
+						color,
+						paletteColor,
+						paletteStatus,
+						paletteOpacity,
+					}) => {
+						onChange({
+							[`${prefix}box-shadow-palette-status-${breakpoint}${
+								isHover ? '-hover' : ''
+							}`]: paletteStatus,
+							[`${prefix}box-shadow-palette-color-${breakpoint}${
+								isHover ? '-hover' : ''
+							}`]: paletteColor,
+							[`${prefix}box-shadow-palette-opacity-${breakpoint}${
+								isHover ? '-hover' : ''
+							}`]: paletteOpacity,
+							[`${prefix}box-shadow-color-${breakpoint}${
+								isHover ? '-hover' : ''
+							}`]: color,
+						});
+					}}
+					disableGradient
+					disableImage
+					disableVideo
+					isHover={isHover}
+					deviceType={breakpoint}
+					clientId={clientId}
+				/>
+				{!isToolbar && (
+					<>
+						{!dropShadow && (
+							<ToggleSwitch
+								label={__('Inset', 'maxi-block')}
+								selected={getLastBreakpointAttribute({
+									target: `${prefix}box-shadow-inset`,
+									breakpoint,
+									attributes: props,
+									isHover,
+								})}
+								onChange={val =>
+									onChange({
+										[`${prefix}box-shadow-inset-${breakpoint}${
+											isHover ? '-hover' : ''
+										}`]: val,
+									})
+								}
+							/>
+						)}
+						{boxShadowItems.map(type => (
+							<BoxShadowValueControl
+								type={type}
+								key={type}
+								{...props}
+							/>
+						))}
+					</>
+				)}
+			</div>
+		</ResponsiveTabsControl>
 	);
 };
 

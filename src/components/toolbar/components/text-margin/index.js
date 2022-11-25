@@ -28,6 +28,7 @@ const TextMargin = props => {
 
 	return (
 		<ToolbarPopover
+			position='bottom center'
 			className='toolbar-item__text-margin'
 			tooltip={__('Margin', 'maxi-blocks')}
 			icon={toolbarTextMargin}
@@ -35,22 +36,57 @@ const TextMargin = props => {
 		>
 			<div className='toolbar-item__text-margin__popover toolbar-item__padding-margin__popover'>
 				{props['margin-sync-general'] === 'none' ? (
-					<AxisControl
-						{...getGroupAttributes(props, 'margin')}
-						label={__('Margin', 'maxi-blocks')}
-						onChange={onChange}
-						target='margin'
-						inputsArray={['bottom', 'top', 'left', 'right', 'unit']}
-						noResponsiveTabs
-						breakpoint={breakpoint}
-						optionType='string'
-						disableSync
-					/>
+					<>
+						<AxisControl
+							{...getGroupAttributes(props, 'margin')}
+							label={__('Top', 'maxi-blocks')}
+							onChange={onChange}
+							target='margin'
+							inputsArray={['top', 'unit']}
+							noResponsiveTabs
+							breakpoint={breakpoint}
+							optionType='string'
+							disableSync
+						/>
+						<AxisControl
+							{...getGroupAttributes(props, 'margin')}
+							label={__('Bottom', 'maxi-blocks')}
+							onChange={onChange}
+							target='margin'
+							inputsArray={['bottom', 'unit']}
+							noResponsiveTabs
+							breakpoint={breakpoint}
+							optionType='string'
+							disableSync
+						/>
+						<AxisControl
+							{...getGroupAttributes(props, 'margin')}
+							label={__('Left', 'maxi-blocks')}
+							onChange={onChange}
+							target='margin'
+							inputsArray={['left', 'unit']}
+							noResponsiveTabs
+							breakpoint={breakpoint}
+							optionType='string'
+							disableSync
+						/>
+						<AxisControl
+							{...getGroupAttributes(props, 'margin')}
+							label={__('Right', 'maxi-blocks')}
+							onChange={onChange}
+							target='margin'
+							inputsArray={['right', 'unit']}
+							noResponsiveTabs
+							breakpoint={breakpoint}
+							optionType='string'
+							disableSync
+						/>
+					</>
 				) : props['margin-sync-general'] === 'axis' ? (
 					<>
 						<AxisControl
 							{...getGroupAttributes(props, 'margin')}
-							label={__('Top/bottom margin', 'maxi-blocks')}
+							label={__('Top/bottom', 'maxi-blocks')}
 							onChange={onChange}
 							target='margin'
 							inputsArray={['top', 'bottom', 'unit']}
@@ -61,7 +97,7 @@ const TextMargin = props => {
 						/>
 						<AxisControl
 							{...getGroupAttributes(props, 'margin')}
-							label={__('Right/left margin', 'maxi-blocks')}
+							label={__('Left/right margin', 'maxi-blocks')}
 							onChange={onChange}
 							target='margin'
 							inputsArray={['left', 'right', 'unit']}

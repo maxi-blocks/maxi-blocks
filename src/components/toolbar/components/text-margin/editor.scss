@@ -18,7 +18,13 @@
 		}
 	}
 }
-.toolbar-item__text-margin__popover .maxi-axis-control__margin > div {
-	flex-direction: column-reverse !important;
-	row-gap: 8px;
+.toolbar-item__text-margin__popover .maxi-axis-control__margin {
+	> div {
+		flex-direction: column-reverse !important;
+		row-gap: 8px;
+	}
+	border-bottom: 1px solid var(--maxi-grey-4-color);
+	&:last-child {
+		border-bottom: none;
+	}
 }

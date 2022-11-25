@@ -148,15 +148,17 @@ const getBorderStyles = ({
 
 				if (key.includes('style')) {
 					if (!omitBorderStyle)
-						if (isBorderNone) {
-							if (isIB || isHover) {
-								response[breakpoint]['border-width'] = '0';
-							} else if (!isHover && (hoverStatus || IBStatus)) {
-								// To have transition in case when border is none in normal state
-								// and border is not none in hover state or in IB
-								response[breakpoint]['border-style'] = 'solid';
-								response[breakpoint]['border-width'] = '0';
-							}
+						if (isBorderNone && (isIB || isHover)) {
+							response[breakpoint]['border-width'] = '0';
+						} else if (
+							isBorderNone &&
+							!isHover &&
+							(hoverStatus || IBStatus)
+						) {
+							// To have transition in case when border is none in normal state
+							// and border is not none in hover state or in IB
+							response[breakpoint]['border-style'] = 'solid';
+							response[breakpoint]['border-width'] = '0';
 						} else
 							response[breakpoint]['border-style'] = borderStyle;
 				} else if (!keyWords.some(key => newKey.includes(key))) {

@@ -150,6 +150,8 @@ const getBorderStyles = ({
 					if (!omitBorderStyle)
 						if (isBorderNone && (isIB || isHover)) {
 							response[breakpoint]['border-width'] = '0';
+							response[breakpoint]['border-color'] =
+								'transparent';
 						} else if (
 							isBorderNone &&
 							!isHover &&

@@ -46,7 +46,6 @@ import useInterval from '../../extensions/dom/useInterval';
 /**
  * Icons
  */
- import { ribbonFree, ribbonPro } from '../../icons';
 
 const MasonryItem = props => {
 	const {
@@ -107,13 +106,11 @@ const MasonryItem = props => {
 						{!isPro && (
 							<span className='maxi-cloud-masonry-card__tags__tag maxi-cloud-masonry-card__tags__tag-free'>
 								{__('Free', 'maxi-blocks')}
-								<Icon icon={ribbonFree} />
 							</span>
 						)}
 						{isPro && (
 							<span className='maxi-cloud-masonry-card__tags__tag maxi-cloud-masonry-card__tags__tag-pro'>
 								{__('Pro', 'maxi-blocks')}
-								<Icon icon={ribbonPro} />
 							</span>
 						)}
 					</div>

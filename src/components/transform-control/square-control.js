@@ -68,14 +68,14 @@ const SquareControl = props => {
 		};
 	};
 
-	const getPlaceholder = (value, isYAxis = false) => {
+	const getPlaceholder = value => {
 		switch (type) {
 			case 'resize':
 				return '100';
 			case 'drag':
 				return '0';
 			case 'origin':
-				return validateOriginValue(isYAxis ? yAxis : xAxis);
+				return validateOriginValue(value);
 			default:
 				return false;
 		}
@@ -338,7 +338,7 @@ const SquareControl = props => {
 						<div className='maxi-transform-control__square-control__y-control__value'>
 							<input
 								type='number'
-								placeholder={getPlaceholder(yAxis, true)}
+								placeholder={getPlaceholder(yAxis)}
 								className='maxi-transform-control__square-control__y-control__value__input'
 								value={
 									!isNumber(validateOriginValue(yAxis))

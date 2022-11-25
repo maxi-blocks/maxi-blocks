@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
+import ResponsiveTabsControl from '../responsive-tabs-control';
 
 /**
  * External dependencies
@@ -31,21 +32,25 @@ const OpacityControl = props => {
 	const classes = classnames('maxi-opacity-control', className);
 
 	return (
-		<AdvancedNumberControl
-			className={classes}
-			label={`${
-				!isEmpty(label) || disableLabel
-					? label
-					: __('Opacity', 'maxi-blocks')
-			}`}
-			value={getIsValid(opacity, true) ? round(opacity * 100, 2) : 100}
-			onChangeValue={val => {
-				onChange(!isNil(val) ? round(val / 100, 2) : 0);
-			}}
-			min={0}
-			max={100}
-			onReset={() => (onReset ? onReset() : onChange(1))}
-		/>
+		<ResponsiveTabsControl>
+			<AdvancedNumberControl
+				className={classes}
+				label={`${
+					!isEmpty(label) || disableLabel
+						? label
+						: __('Opacity', 'maxi-blocks')
+				}`}
+				value={
+					getIsValid(opacity, true) ? round(opacity * 100, 2) : 100
+				}
+				onChangeValue={val => {
+					onChange(!isNil(val) ? round(val / 100, 2) : 0);
+				}}
+				min={0}
+				max={100}
+				onReset={() => (onReset ? onReset() : onChange(1))}
+			/>
+		</ResponsiveTabsControl>
 	);
 };
 

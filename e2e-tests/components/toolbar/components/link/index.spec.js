@@ -6,12 +6,15 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getAttributes, openPreviewPage } from '../../../../utils';
+import { getAttributes } from '../../../../utils';
 
 describe('Button link', () => {
 	it('Check button link', async () => {
 		await createNewPost();
 		await insertBlock('Button Maxi');
+
+		// Wait for toolbar to be visible
+		await page.waitForSelector('.toolbar-wrapper');
 
 		// open editor
 		await page.$eval(

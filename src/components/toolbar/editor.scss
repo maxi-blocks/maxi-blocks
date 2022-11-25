@@ -1,5 +1,5 @@
 .maxi-toolbar__popover {
-	z-index: 29;
+	z-index: 9999999;
 
 	.toolbar-more-indicator {
 		margin-left: 10px;
@@ -19,6 +19,8 @@
 		background-color: transparent;
 		border: none;
 		box-shadow: none;
+		outline: none;
+		overflow: unset !important;
 
 		.toolbar-wrapper {
 			display: flex;
@@ -403,6 +405,8 @@ body .toolbar-item__popover {
 		overflow: visible;
 		box-shadow: 0 -2px 6px 0px rgb(0, 0, 0, 0.1);
 		margin-left: -2px;
+		outline: none;
+
 		& * {
 			font-family: 'Roboto', sans-serif !important;
 		}

@@ -73,7 +73,7 @@ const SquareControl = props => {
 			case 'resize':
 				return '100';
 			case 'drag':
-				return '0%';
+				return '0';
 			case 'origin':
 				return validateOriginValue(isYAxis ? yAxis : xAxis);
 			default:

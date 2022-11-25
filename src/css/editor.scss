@@ -365,6 +365,9 @@ svg path#styleCardBoat_b {
 	&:not(.is-selected) {
 		&:hover {
 			&::after {
+				content: "";
+				position: absolute;
+				pointer-events: none;
 				opacity: 1;
 			}
 		}

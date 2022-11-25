@@ -13,6 +13,7 @@ import AxisPositionControl from '../axis-position-control';
 import BorderControl from '../border-control';
 import ColorControl from '../color-control';
 import GradientControl from '../gradient-control';
+import Icon from '../icon';
 import InfoBox from '../info-box';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import SettingTabsControl from '../setting-tabs-control';
@@ -26,7 +27,6 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import MaxiModal from '../../editor/library/modal';
-import Icon from '../icon';
 
 /**
  * External dependencies

@@ -169,47 +169,27 @@ export const getSVGStyles = ({
 	const response = {
 		...(iconType !== 'line' && {
 			[` ${target} svg[data-fill]:not([fill^="none"])`]: pathFillStyles,
-		}),
-		...(iconType !== 'shape' && {
-			[` ${target} svg[data-stroke]:not([stroke^="none"])`]:
-				pathStrokeStyles,
-		}),
-		...(iconType !== 'line' && {
 			[` ${target} svg[data-fill]:not([fill^="none"]) *`]: pathFillStyles,
-		}),
-		...(iconType !== 'shape' && {
-			[` ${target} svg[data-stroke]:not([stroke^="none"]) *`]:
-				pathStrokeStyles,
-		}),
-		[` ${target} svg path`]: pathStyles,
-		...(iconType !== 'line' && {
+			[` ${target} svg g[data-fill]:not([fill^="none"])`]: pathFillStyles,
+			[` ${target} svg use[data-fill]:not([fill^="none"])`]:
+				pathFillStyles,
+			[` ${target} svg circle[data-fill]:not([fill^="none"])`]:
+				pathFillStyles,
 			[` ${target} svg path[data-fill]:not([fill^="none"])`]:
 				pathFillStyles,
 		}),
+		[` ${target} svg path`]: pathStyles,
 		...(iconType !== 'shape' && {
+			[` ${target} svg[data-stroke]:not([stroke^="none"]) *`]:
+				pathStrokeStyles,
 			[` ${target} svg path[data-stroke]:not([stroke^="none"])`]:
 				pathStrokeStyles,
-		}),
-		...(iconType !== 'line' && {
-			[` ${target} svg g[data-fill]:not([fill^="none"])`]: pathFillStyles,
-		}),
-		...(iconType !== 'shape' && {
+			[` ${target} svg[data-stroke]:not([stroke^="none"])`]:
+				pathStrokeStyles,
 			[` ${target} svg g[data-stroke]:not([stroke^="none"])`]:
 				pathStrokeStyles,
-		}),
-		...(iconType !== 'line' && {
-			[` ${target} svg use[data-fill]:not([fill^="none"])`]:
-				pathFillStyles,
-		}),
-		...(iconType !== 'shape' && {
 			[` ${target} svg use[data-stroke]:not([stroke^="none"])`]:
 				pathStrokeStyles,
-		}),
-		...(iconType !== 'line' && {
-			[` ${target} svg circle[data-fill]:not([fill^="none"])`]:
-				pathFillStyles,
-		}),
-		...(iconType !== 'shape' && {
 			[` ${target} svg circle[data-stroke]:not([stroke^="none"])`]:
 				pathStrokeStyles,
 		}),
@@ -224,32 +204,20 @@ export const getSVGStyles = ({
 				...(iconType !== 'line' && {
 					[` ${target} svg[data-hover-fill] path:not([fill^="none"])`]:
 						pathFillStyles,
-				}),
-				...(iconType !== 'line' && {
 					[` ${target} svg path[data-hover-fill]:not([fill^="none"])`]:
 						pathFillStyles,
-				}),
-				...(iconType !== 'line' && {
 					[` ${target} svg g[data-hover-fill]:not([fill^="none"])`]:
+						pathFillStyles,
+					[` ${target} svg use[data-hover-fill]:not([fill^="none"])`]:
 						pathFillStyles,
 				}),
 				...(iconType !== 'shape' && {
 					[` ${target} svg[data-hover-stroke] path:not([stroke^="none"])`]:
 						pathStrokeStyles,
-				}),
-				...(iconType !== 'shape' && {
 					[` ${target} svg path[data-hover-stroke]:not([stroke^="none"])`]:
 						pathStrokeStyles,
-				}),
-				...(iconType !== 'shape' && {
 					[` ${target} svg g[data-hover-stroke]:not([stroke^="none"])`]:
 						pathStrokeStyles,
-				}),
-				...(iconType !== 'line' && {
-					[` ${target} svg use[data-hover-fill]:not([fill^="none"])`]:
-						pathFillStyles,
-				}),
-				...(iconType !== 'shape' && {
 					[` ${target} svg use[data-hover-stroke]:not([stroke^="none"])`]:
 						pathStrokeStyles,
 				}),

@@ -3,6 +3,10 @@ body.maxi-blocks--active .components-popover.maxi-popover-button {
 		margin: auto;
 		overflow: hidden;
 		transform: translateY(100%);
+		border-radius: 0;
+		outline: none;
+		border: 1px solid #ccc;
+		box-shadow: none !important;
 	}
 
 	&--old .components-popover__content {

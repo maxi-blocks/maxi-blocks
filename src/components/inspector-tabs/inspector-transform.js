@@ -8,7 +8,6 @@ import { __ } from '@wordpress/i18n';
  */
 import TransformControl from '../transform-control';
 import { getGroupAttributes } from '../../extensions/styles';
-import ResponsiveTabsControl from '../responsive-tabs-control';
 import {
 	getTransformSelectors,
 	getTransformCategories,

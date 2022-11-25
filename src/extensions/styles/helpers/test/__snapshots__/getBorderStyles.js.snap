@@ -185,9 +185,10 @@ Object {
 }
 `;
 
-exports[`getBorderStyles Return an IB border styles(border-width: 0 on general) 1`] = `
+exports[`getBorderStyles Return an IB border styles when border-style - none 1`] = `
 Object {
   "general": Object {
+    "border-color": "transparent",
     "border-width": "0",
   },
   "l": Object {},

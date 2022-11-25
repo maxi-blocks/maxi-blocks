@@ -285,8 +285,6 @@ const TransformControl = props => {
 						<>
 							{transformStatus === 'scale' && (
 								<SquareControl
-									defaultX='100'
-									defaultY='100'
 									x={
 										getLastBreakpointAttribute({
 											target: 'transform-scale',

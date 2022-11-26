@@ -235,7 +235,7 @@ const getButtonIconStyles = ({
 	const normalTarget = `${wrapperTarget} ${target}`;
 	const hoverTarget = `${wrapperTarget}:hover ${target}`;
 
-	const iconType = obj.svgType.toLowerCase();
+	const iconType = obj?.svgType?.toLowerCase();
 
 	const response = {
 		...(hasIcon && !isHover

@@ -34,9 +34,8 @@ import {
 import getBreakpoints from '../styles/helpers/getBreakpoints';
 import getIsUniqueIDRepeated from './getIsUniqueIDRepeated';
 import { loadFonts, getAllFonts } from '../text/fonts';
-import { uniqueIDGenerator } from '../attributes';
+import { getBlockData, uniqueIDGenerator } from '../attributes';
 import getHoverStatus from '../../components/relation-control/getHoverStatus';
-import * as blocksData from '../../blocks/data';
 import { getStylesWrapperId } from './utils';
 
 /**
@@ -433,11 +432,7 @@ class MaxiBlockComponent extends Component {
 
 							if (!('hoverStatus' in effects)) return relation;
 
-							const blockData = Object.values(blocksData).find(
-								({ name }) =>
-									name ===
-									blockName.replace('maxi-blocks/', '')
-							);
+							const blockData = getBlockData(blockName);
 
 							if (!blockData?.interactionBuilderSettings)
 								return relation;

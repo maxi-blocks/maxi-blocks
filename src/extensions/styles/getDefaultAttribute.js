@@ -10,12 +10,12 @@ import { getBlockAttributes } from '@wordpress/blocks';
 import * as defaults from './defaults/index';
 import { getIsValid } from './utils';
 import getBreakpointFromAttribute from './getBreakpointFromAttribute';
-import * as blocksData from '../../blocks/data';
 
 /**
  * External dependencies
  */
 import { isString, isArray, isNil } from 'lodash';
+import { getBlockData } from '../attributes';
 
 /**
  * Returns the block name if they are all the same
@@ -56,16 +56,19 @@ const getDefaultAttribute = (
 	else if (isNil(clientIds))
 		blockName = getBlocksName(getSelectedBlockClientIds());
 
+	const isMaxiBlock = blockName && blockName.includes('maxi-blocks');
+
+	if (!isMaxiBlock) return response;
+
 	// Check default value on block
-	if (blockName && blockName.includes('maxi-blocks'))
-		response = getBlockAttributes(blockName)[prop];
-	if (blocksData.rowData?.maxiAttributes?.[prop])
-		response = blocksData.rowData.maxiAttributes[prop];
+	response = getBlockAttributes(blockName)[prop];
+	if (getBlockData(blockName)?.maxiAttributes?.[prop])
+		response = getBlockData(blockName).maxiAttributes[prop];
 
 	const isGeneral = getBreakpointFromAttribute(prop) === 'general';
 
 	if (getIsValid(response, true)) return response;
-	if (isGeneral && blockName && blockName.includes('maxi-blocks')) {
+	if (isGeneral) {
 		if (avoidBaseBreakpoint) return response;
 
 		const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();

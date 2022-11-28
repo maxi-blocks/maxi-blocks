@@ -24,7 +24,6 @@ import {
 } from '../../extensions/styles';
 import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
 import getHoverStatus from './getHoverStatus';
-import * as blocksData from '../../blocks/data';
 
 /**
  * External dependencies
@@ -35,6 +34,7 @@ import { capitalize, cloneDeep, isEmpty, isNil, merge } from 'lodash';
  * Styles
  */
 import './editor.scss';
+import { getBlockData } from '../../extensions/attributes';
 
 const RelationControl = props => {
 	const { getBlock } = select('core/block-editor');
@@ -60,9 +60,7 @@ const RelationControl = props => {
 		// TODO: without this line, the block may break after copy/pasting
 		if (!blockName) return {};
 
-		const blockOptions = Object.values(blocksData).find(
-			data => data.name === blockName
-		).interactionBuilderSettings;
+		const blockOptions = getBlockData(blockName).interactionBuilderSettings;
 
 		return blockOptions || {};
 	};

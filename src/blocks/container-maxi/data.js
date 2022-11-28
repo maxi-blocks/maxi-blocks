@@ -128,5 +128,10 @@ const data = {
 	maxiAttributes,
 };
 
-export { copyPasteMapping, customCss, interactionBuilderSettings };
+export {
+	copyPasteMapping,
+	customCss,
+	interactionBuilderSettings,
+	maxiAttributes,
+};
 export default data;

@@ -112,7 +112,7 @@ const FullSizeControl = props => {
 						breakpoint,
 						attributes: props,
 					})}
-					onChange={val =>
+					onChangeValue={val =>
 						onChange({ [`${prefix}width-${breakpoint}`]: val })
 					}
 					onReset={() => {
@@ -178,7 +178,7 @@ const FullSizeControl = props => {
 							breakpoint,
 							attributes: props,
 						})}
-						onChange={val =>
+						onChangeValue={val =>
 							onChange({ [`${prefix}height-${breakpoint}`]: val })
 						}
 						onReset={() => {
@@ -230,7 +230,8 @@ const FullSizeControl = props => {
 								})}
 								onChangeUnit={val =>
 									onChange({
-										[`${prefix}max-width-unit`]: val,
+										[`${prefix}max-width-unit-${breakpoint}`]:
+											val,
 									})
 								}
 								value={getLastBreakpointAttribute({
@@ -238,7 +239,7 @@ const FullSizeControl = props => {
 									breakpoint,
 									attributes: props,
 								})}
-								onChange={val =>
+								onChangeValue={val =>
 									onChange({
 										[`${prefix}max-width-${breakpoint}`]:
 											val,
@@ -288,7 +289,7 @@ const FullSizeControl = props => {
 								breakpoint,
 								attributes: props,
 							})}
-							onChange={val =>
+							onChangeValue={val =>
 								onChange(
 									`${prefix}min-width-${breakpoint}`,
 									val
@@ -332,7 +333,7 @@ const FullSizeControl = props => {
 							breakpoint,
 							attributes: props,
 						})}
-						onChange={val =>
+						onChangeValue={val =>
 							onChange({
 								[`${prefix}max-height-${breakpoint}`]: val,
 							})
@@ -340,11 +341,11 @@ const FullSizeControl = props => {
 						onReset={() => {
 							onChange(
 								handleOnReset({
-									[`${prefix}max-height`]:
+									[`${prefix}max-height-${breakpoint}`]:
 										getDefaultAttribute(
 											`${prefix}max-height-${breakpoint}`
 										),
-									[`${prefix}max-height-unit`]:
+									[`${prefix}max-height-unit-${breakpoint}`]:
 										getDefaultAttribute(
 											`${prefix}max-height-unit-${breakpoint}`
 										),
@@ -374,7 +375,7 @@ const FullSizeControl = props => {
 							breakpoint,
 							attributes: props,
 						})}
-						onChange={val =>
+						onChangeValue={val =>
 							onChange({
 								[`${prefix}min-height-${breakpoint}`]: val,
 							})

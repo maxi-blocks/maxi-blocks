@@ -60,7 +60,6 @@ const getDefaultAttribute = (
 	if (blockName && blockName.includes('maxi-blocks'))
 		response = getBlockAttributes(blockName)[prop];
 	if (blocksData.rowData?.maxiAttributes?.[prop])
-		// response = blocksData.rowData[prop];
 		response = blocksData.rowData.maxiAttributes[prop];
 
 	const isGeneral = getBreakpointFromAttribute(prop) === 'general';

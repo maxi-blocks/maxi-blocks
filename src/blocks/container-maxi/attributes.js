@@ -55,54 +55,6 @@ const attributes = {
 			type: 'boolean',
 			default: true,
 		},
-		'max-width-xxl': {
-			type: 'string',
-			default: '1690',
-		},
-		'max-width-xl': {
-			type: 'string',
-			default: '1170',
-		},
-		'max-width-l': {
-			type: 'string',
-			default: '90',
-		},
-		'max-width-unit-general': {
-			type: 'string',
-			default: undefined,
-		},
-		'max-width-unit-xxl': {
-			type: 'string',
-			default: 'px',
-		},
-		'max-width-unit-xl': {
-			type: 'string',
-			default: 'px',
-		},
-		'max-width-unit-l': {
-			type: 'string',
-			default: '%',
-		},
-		'width-l': {
-			type: 'string',
-			default: '1170',
-		},
-		'width-m': {
-			type: 'string',
-			default: '1000',
-		},
-		'width-s': {
-			type: 'string',
-			default: '700',
-		},
-		'width-xs': {
-			type: 'string',
-			default: '460',
-		},
-		'width-unit-l': {
-			type: 'string',
-			default: 'px',
-		},
 	},
 	...attributesData.margin,
 	...{

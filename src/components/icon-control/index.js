@@ -2,7 +2,7 @@
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -81,22 +81,30 @@ const IconControl = props => {
 
 	const [iconStyle, setIconStyle] = useState('color');
 
+	useEffect(() => {
+		if (breakpoint !== 'general') {
+			setIconStyle('border');
+		}
+	}, [breakpoint]);
+
 	const getOptions = () => {
 		const options = [];
 
-		if (svgType !== 'Shape')
-			options.push({
-				icon: <Icon icon={iconBorder} />,
-				value: 'color',
-			});
-		else if (iconStyle === 'color') setIconStyle('fill');
+		if (breakpoint === 'general') {
+			if (svgType !== 'Shape')
+				options.push({
+					icon: <Icon icon={iconBorder} />,
+					value: 'color',
+				});
+			else if (iconStyle === 'color') setIconStyle('fill');
 
-		if (svgType !== 'Line')
-			options.push({
-				icon: <Icon icon={iconFill} />,
-				value: 'fill',
-			});
-		else if (iconStyle === 'fill') setIconStyle('color');
+			if (svgType !== 'Line')
+				options.push({
+					icon: <Icon icon={iconFill} />,
+					value: 'fill',
+				});
+			else if (iconStyle === 'fill') setIconStyle('color');
+		}
 
 		if (!disableBorder) {
 			options.push({
@@ -457,6 +465,7 @@ const IconControl = props => {
 								breakpoint={breakpoint}
 								clientId={clientId}
 								isHover={isHover}
+								disableRTC
 							/>
 						)}
 						{iconStyle === 'fill' && svgType !== 'Line' && (

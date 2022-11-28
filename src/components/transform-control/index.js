@@ -72,10 +72,39 @@ const TransformControl = props => {
 
 	const [transformStatus, setTransformStatus] = useState('scale');
 
+	const getLastBreakpointTransformAttribute = (
+		attributeName,
+		prop,
+		attributeTransformTarget = transformTarget,
+		attributeHoverSelected = hoverSelected
+	) =>
+		getLastBreakpointTransformAttributeRaw({
+			attributeName,
+			prop,
+			transformTarget: attributeTransformTarget,
+			breakpoint,
+			attributes: props,
+			hoverSelected: attributeHoverSelected,
+		});
+
 	const updateTransformOptions = obj => {
 		Object.entries(obj).forEach(([type, diffTypeObj]) => {
 			const typeObj = { ...transformOptions[`${type}-${breakpoint}`] };
 			Object.entries(diffTypeObj).forEach(([target, targetObj]) => {
+				// Hover attributes inherit normal state attribute when they undefined or null
+				if (Object.keys(targetObj).includes('hover')) {
+					Object.entries(targetObj.hover).forEach(([key, value]) => {
+						if (isNil(value)) {
+							targetObj.hover[key] =
+								getLastBreakpointTransformAttribute(
+									type,
+									key,
+									target,
+									'normal'
+								);
+						}
+					});
+				}
 				// save both hover and normal state
 				typeObj[target] = { ...typeObj?.[target], ...targetObj };
 			});
@@ -141,16 +170,6 @@ const TransformControl = props => {
 		updateTransformOptions(obj);
 		insertInlineStyles(obj);
 	};
-
-	const getLastBreakpointTransformAttribute = (attributeName, prop) =>
-		getLastBreakpointTransformAttributeRaw({
-			attributeName,
-			prop,
-			transformTarget,
-			breakpoint,
-			attributes: props,
-			hoverSelected,
-		});
 
 	const getOptions = () => {
 		const options = [

@@ -19,3 +19,9 @@
 		}
 	}
 }
+
+.maxi-column-block{
+	& > .wp-block-column{
+		width: 100%;
+	}
+}

@@ -3,13 +3,14 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Component, createRef } from '@wordpress/element';
-import { Icon, Popover, Tooltip } from '@wordpress/components';
+import { Popover, Tooltip } from '@wordpress/components';
 import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import Button from '../../../button';
+import Icon from '../../../icon';
 import { openSidebarAccordion } from '../../../../extensions/inspector';
 import { toolbarAdvancedSettings } from '../../../../icons';
 import ToolbarContext from './toolbarContext';

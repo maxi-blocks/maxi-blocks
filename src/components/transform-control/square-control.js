@@ -456,7 +456,11 @@ const SquareControl = props => {
 						<input
 							type='range'
 							className='maxi-transform-control__square-control__y-control__range'
-							value={yAxis || ''}
+							value={
+								!isNumber(validateOriginValue(yAxis))
+									? getPlaceholder(yAxis, true)
+									: validateOriginValue(yAxis)
+							}
 							onChange={e => {
 								const value = Number(e.target.value);
 
@@ -543,6 +547,8 @@ const SquareControl = props => {
 										);
 									}
 								}}
+								min={getMinMax()?.min}
+								max={getMinMax()?.max}
 							/>
 							{isShowUnit(y) && (
 								<SelectControl
@@ -568,7 +574,12 @@ const SquareControl = props => {
 						<input
 							type='range'
 							className='maxi-transform-control__square-control__x-control__range'
-							value={xAxis || ''}
+							value={
+								!isNumber(validateOriginValue(xAxis))
+									? getPlaceholder(xAxis)
+									: validateOriginValue(xAxis)
+							}
+							placeholder={getPlaceholder(xAxis)}
 							onChange={e => {
 								const value = Number(e.target.value);
 
@@ -655,6 +666,8 @@ const SquareControl = props => {
 										);
 									}
 								}}
+								min={getMinMax()?.min}
+								max={getMinMax()?.max}
 							/>
 							{isShowUnit(x) && (
 								<SelectControl
@@ -684,7 +697,11 @@ const SquareControl = props => {
 						<input
 							type='range'
 							className='maxi-transform-control__square-control__y-control__range'
-							value={yAxis || ''}
+							value={
+								!isNumber(yAxis)
+									? getPlaceholder(yAxis, true)
+									: yAxis
+							}
 							onChange={e => {
 								const value = Number(e.target.value);
 
@@ -737,6 +754,8 @@ const SquareControl = props => {
 										);
 									}
 								}}
+								min={getMinMax()?.min}
+								max={getMinMax()?.max}
 							/>
 							{!!yUnit && (
 								<SelectControl
@@ -762,7 +781,9 @@ const SquareControl = props => {
 						<input
 							type='range'
 							className='maxi-transform-control__square-control__x-control__range'
-							value={xAxis || ''}
+							value={
+								!isNumber(xAxis) ? getPlaceholder(xAxis) : xAxis
+							}
 							onChange={e => {
 								const value = Number(e.target.value);
 
@@ -815,6 +836,8 @@ const SquareControl = props => {
 										);
 									}
 								}}
+								min={getMinMax()?.min}
+								max={getMinMax()?.max}
 							/>
 							{!!xUnit && (
 								<SelectControl

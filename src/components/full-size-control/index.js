@@ -290,10 +290,9 @@ const FullSizeControl = props => {
 								attributes: props,
 							})}
 							onChangeValue={val =>
-								onChange(
-									`${prefix}min-width-${breakpoint}`,
-									val
-								)
+								onChange({
+									[`${prefix}min-width-${breakpoint}`]: val,
+								})
 							}
 							onReset={() => {
 								onChange(

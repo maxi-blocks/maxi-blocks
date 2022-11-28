@@ -4,6 +4,7 @@ jest.mock('@wordpress/blocks', () => {
 	};
 });
 jest.mock('../../styles/transitions/getTransitionData.js', () => jest.fn());
+jest.mock('../../attributes/getBlockData.js', () => jest.fn());
 
 /**
  * Internal dependencies

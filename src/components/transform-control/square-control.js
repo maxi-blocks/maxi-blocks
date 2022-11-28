@@ -502,10 +502,15 @@ const SquareControl = props => {
 						<div className='maxi-transform-control__square-control__y-control__value'>
 							<input
 								type='number'
-								placeholder={getPlaceholder(yAxis, true)}
+								placeholder={
+									!isNumber(validateOriginValue(yAxis)) &&
+									!isEmpty(validateOriginValue(yAxis))
+										? validateOriginValue(yAxis)
+										: getPlaceholder(yAxis, true)
+								}
 								className='maxi-transform-control__square-control__y-control__value__input'
 								value={
-									!isNumber(validateOriginValue(yAxis))
+									validateOriginValue(yAxis) === false
 										? ''
 										: validateOriginValue(yAxis)
 								}
@@ -621,10 +626,15 @@ const SquareControl = props => {
 						<div className='maxi-transform-control__square-control__x-control__value'>
 							<input
 								type='number'
-								placeholder={getPlaceholder(xAxis)}
+								placeholder={
+									!isNumber(validateOriginValue(xAxis)) &&
+									!isEmpty(validateOriginValue(xAxis))
+										? validateOriginValue(xAxis)
+										: getPlaceholder(xAxis, true)
+								}
 								className='maxi-transform-control__square-control__x-control__value__input'
 								value={
-									!isNumber(validateOriginValue(xAxis))
+									validateOriginValue(xAxis) === false
 										? ''
 										: validateOriginValue(xAxis)
 								}

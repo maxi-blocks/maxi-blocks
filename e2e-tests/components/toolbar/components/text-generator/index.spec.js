@@ -32,7 +32,7 @@ describe('Text generator', () => {
 
 		// Words per sentence
 		await page.$eval(
-			'.components-popover__content .toolbar-item__text-generator-blocks__popover .maxi-text-control input',
+			'.components-popover__content .toolbar-item__text-generator-blocks__popover .maxi-text-control',
 			input => input.focus()
 		);
 

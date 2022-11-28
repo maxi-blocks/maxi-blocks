@@ -244,7 +244,7 @@ const SquareControl = props => {
 								yAxis: 'top',
 							},
 							{
-								xAxis: 'center',
+								xAxis: 'middle',
 								yAxis: 'top',
 							},
 							{

@@ -15,6 +15,7 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { getDefaultLayerAttr, getDefaultLayerAttrs } from './utils';
+import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * Component
@@ -114,16 +115,22 @@ const Size = ({
 					})
 				}
 				onReset={() =>
-					onChange({
-						[getAttributeKey('size', isHover, prefix, breakpoint)]:
-							getDefaultAttr('size'),
-						[getAttributeKey(
-							'size-unit',
-							isHover,
-							prefix,
-							breakpoint
-						)]: getDefaultAttr('size-unit'),
-					})
+					onChange(
+						handleOnReset({
+							[getAttributeKey(
+								'size',
+								isHover,
+								prefix,
+								breakpoint
+							)]: getDefaultAttr('size'),
+							[getAttributeKey(
+								'size-unit',
+								isHover,
+								prefix,
+								breakpoint
+							)]: getDefaultAttr('size-unit'),
+						})
+					)
 				}
 				minMaxSettings={minMaxSettings}
 			/>

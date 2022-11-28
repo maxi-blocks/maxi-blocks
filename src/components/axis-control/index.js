@@ -33,6 +33,7 @@ import {
 	isNil,
 	kebabCase,
 } from 'lodash';
+import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * Styles and icons
@@ -582,7 +583,8 @@ const AxisControl = props => {
 				)
 			);
 		});
-		onChange(response);
+
+		onChange(handleOnReset(response));
 	};
 
 	const onChangeSync = (value, customBreakpoint) => {

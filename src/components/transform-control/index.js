@@ -277,11 +277,28 @@ const TransformControl = props => {
 								})?.[transformTarget]?.['hover-status']
 							}
 							onChange={val => {
+								const transformTargetOptions =
+									transformOptions[
+										`transform-${transformStatus}-${breakpoint}`
+									]?.[transformTarget];
 								onChangeTransform({
 									[`transform-${transformStatus}`]: {
 										[`${latestTarget.current.transformTarget}`]:
 											{
 												'hover-status': val,
+												...(transformTargetOptions &&
+												isEmpty(
+													transformTargetOptions.hover
+												) &&
+												!isEmpty(
+													transformTargetOptions.normal
+												)
+													? {
+															hover: {
+																...transformTargetOptions.normal,
+															},
+													  }
+													: {}),
 											},
 									},
 								});

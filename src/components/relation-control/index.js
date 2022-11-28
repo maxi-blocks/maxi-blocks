@@ -2,7 +2,6 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-// import { Button } from '@wordpress/components';
 import { dispatch, select } from '@wordpress/data';
 
 /**

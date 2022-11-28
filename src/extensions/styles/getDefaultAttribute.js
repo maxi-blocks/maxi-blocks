@@ -10,6 +10,7 @@ import { getBlockAttributes } from '@wordpress/blocks';
 import * as defaults from './defaults/index';
 import { getIsValid } from './utils';
 import getBreakpointFromAttribute from './getBreakpointFromAttribute';
+import * as blocksData from '../../blocks/data';
 
 /**
  * External dependencies
@@ -58,6 +59,8 @@ const getDefaultAttribute = (
 	// Check default value on block
 	if (blockName && blockName.includes('maxi-blocks'))
 		response = getBlockAttributes(blockName)[prop];
+	if (blocksData.rowData?.maxiAttributes?.[prop])
+		response = blocksData.rowData.maxiAttributes[prop];
 
 	const isGeneral = getBreakpointFromAttribute(prop) === 'general';
 

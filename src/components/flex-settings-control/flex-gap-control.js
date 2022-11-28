@@ -11,6 +11,7 @@ import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * External dependencies
@@ -64,14 +65,16 @@ const GapAxisControl = props => {
 			}}
 			allowedUnits={['px', 'em', 'vw', '%']}
 			onReset={() =>
-				onChange({
-					[`${target}-${breakpoint}`]: getDefaultAttribute(
-						`${target}-${breakpoint}`
-					),
-					[`${target}-unit-${breakpoint}`]: getDefaultAttribute(
-						`${target}-unit-${breakpoint}`
-					),
-				})
+				onChange(
+					handleOnReset({
+						[`${target}-${breakpoint}`]: getDefaultAttribute(
+							`${target}-${breakpoint}`
+						),
+						[`${target}-unit-${breakpoint}`]: getDefaultAttribute(
+							`${target}-unit-${breakpoint}`
+						),
+					})
+				)
 			}
 		/>
 	);

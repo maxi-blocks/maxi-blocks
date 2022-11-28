@@ -18,13 +18,13 @@ import { getTemplates } from '../../extensions/column-templates';
 import { getGroupAttributes } from '../../extensions/styles';
 import getRowGapProps from '../../extensions/attributes/getRowGapProps';
 import getStyles from './styles';
-import { copyPasteMapping } from './data';
+import { copyPasteMapping, maxiAttributes } from './data';
+import loadColumnsTemplate from '../../extensions/column-templates/loadColumnsTemplate';
 
 /**
  * External dependencies
  */
 import { uniqueId } from 'lodash';
-import loadColumnsTemplate from '../../extensions/column-templates/loadColumnsTemplate';
 
 /**
  * Edit
@@ -85,6 +85,11 @@ class edit extends MaxiBlockComponent {
 				displayHandlers: false,
 			});
 		}
+	}
+
+	// eslint-disable-next-line class-methods-use-this
+	getMaxiAttributes() {
+		return maxiAttributes;
 	}
 
 	render() {

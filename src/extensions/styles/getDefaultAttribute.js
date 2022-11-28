@@ -10,12 +10,12 @@ import { getBlockAttributes } from '@wordpress/blocks';
 import * as defaults from './defaults/index';
 import { getIsValid } from './utils';
 import getBreakpointFromAttribute from './getBreakpointFromAttribute';
+import { getBlockData } from '../attributes';
 
 /**
  * External dependencies
  */
 import { isString, isArray, isNil } from 'lodash';
-import { getBlockData } from '../attributes';
 
 /**
  * Returns the block name if they are all the same

@@ -7,19 +7,19 @@ import { useEffect, useState, useRef } from '@wordpress/element';
 /**
  * Internal dependencies
  */
+import RotateControl from './rotate-control';
+import SelectControl from '../select-control';
 import SettingTabsControl from '../setting-tabs-control';
 import SquareControl from './square-control';
-import RotateControl from './rotate-control';
+import ToggleSwitch from '../toggle-switch';
 import {
+	getCurrentAndHigherBreakpoints,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-	getCurrentAndHigherBreakpoints,
 	getLastBreakpointTransformAttribute as getLastBreakpointTransformAttributeRaw,
 } from '../../extensions/styles';
 import { getTransformStyles } from '../../extensions/styles/helpers';
 import { getActiveTabName } from '../../extensions/inspector';
-import SelectControl from '../select-control';
-import ToggleSwitch from '../toggle-switch';
 
 /**
  * External dependencies

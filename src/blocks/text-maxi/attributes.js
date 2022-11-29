@@ -143,6 +143,7 @@ const attributes = {
 	...attributesData.zIndex,
 	...attributesData.customCss,
 	...attributesData.flex,
+	...attributesData.backgroundColor,
 };
 
 export default attributes;

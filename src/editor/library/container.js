@@ -232,8 +232,8 @@ const RefinementList = ({ items, refine }) => (
 
 const MenuSelect = ({ items, currentRefinement, refine }) => {
 	return (
-		<div>
-			{items.length > 2 && (
+		<div className='top-Menu'>
+			{items.length > 1 && (
 				<button
 					type='button'
 					value=''
@@ -945,16 +945,16 @@ const LibraryContainer = props => {
 					>
 						<Configure hitsPerPage={20} />
 						<div className='maxi-cloud-container__patterns__top-menu'>
-							<CustomMenuSelect
-								className='maxi-cloud-container__content-patterns__cost'
-								attribute='cost'
-							/>
 							<Menu
 								attribute='gutenberg_type'
 								defaultRefinement='Patterns'
 							/>
 						</div>
 						<div className='maxi-cloud-container__patterns__sidebar'>
+							<CustomMenuSelect
+								className='maxi-cloud-container__content-patterns__cost'
+								attribute='cost'
+							/>
 							<Menu
 								attribute='light_or_dark'
 								defaultRefinement='Light'

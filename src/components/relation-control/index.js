@@ -163,8 +163,6 @@ const RelationControl = props => {
 
 		const settingsComponent = selectedSettingsObj.component;
 		const prefix = selectedSettingsObj?.prefix || '';
-		const shouldTargetBlockUpdate =
-			selectedSettingsObj?.shouldTargetBlockUpdate || false;
 		const blockAttributes = cloneDeep(getBlock(clientId)?.attributes);
 
 		const { receiveMaxiBreakpoints, receiveXXLSize } = select('maxiBlocks');
@@ -342,28 +340,6 @@ const RelationControl = props => {
 						},
 					}),
 				});
-
-				if (shouldTargetBlockUpdate) {
-					const targetBlockClientId = getClientIdFromUniqueId(
-						item.uniqueID
-					);
-					const previousRerenderValue = select(
-						'maxiBlocks'
-					).receiveRelationRerenderValue(item.uniqueID);
-					const newRerenderValue =
-						previousRerenderValue === 1 ? 2 : 1;
-
-					dispatch('core/block-editor').updateBlockAttributes(
-						targetBlockClientId,
-						{
-							're-render': newRerenderValue,
-						}
-					);
-					dispatch('maxiBlocks').updateRelationRerenderValue(
-						item.uniqueID,
-						newRerenderValue
-					);
-				}
 			},
 			prefix,
 			blockStyle: blockAttributes.blockStyle,
@@ -543,7 +519,6 @@ const RelationControl = props => {
 															clientId,
 															value
 														) || {};
-
 													const {
 														transitionTarget,
 														hoverProp,
@@ -624,6 +599,80 @@ const RelationControl = props => {
 															},
 														}
 													);
+
+													const getShouldTargetBlockUpdate =
+														() => {
+															const {
+																prefix,
+																shouldTargetBlockUpdate,
+															} = selectedSettingsObj;
+
+															if (
+																shouldTargetBlockUpdate?.(
+																	{
+																		blockAttributes,
+																		prefix,
+																	}
+																)
+															)
+																return true;
+
+															const previousSelectedSettingsObj =
+																getSelectedSettingsObj(
+																	clientId,
+																	item.settings
+																) || {};
+															const {
+																prefix: previousPrefix,
+																shouldTargetBlockUpdate:
+																	previousShouldTargetBlockUpdate,
+															} = previousSelectedSettingsObj;
+
+															return (
+																previousShouldTargetBlockUpdate?.(
+																	{
+																		blockAttributes,
+																		prefix: previousPrefix,
+																	}
+																) ?? false
+															);
+														};
+
+													if (
+														getShouldTargetBlockUpdate()
+													) {
+														const targetBlockClientId =
+															getClientIdFromUniqueId(
+																item.uniqueID
+															);
+														const previousRerenderValue =
+															select(
+																'maxiBlocks'
+															).receiveRelationRerenderValue(
+																item.uniqueID
+															);
+														const newRerenderValue =
+															previousRerenderValue ===
+															1
+																? 2
+																: 1;
+
+														dispatch(
+															'core/block-editor'
+														).updateBlockAttributes(
+															targetBlockClientId,
+															{
+																're-render':
+																	newRerenderValue,
+															}
+														);
+														dispatch(
+															'maxiBlocks'
+														).updateRelationRerenderValue(
+															item.uniqueID,
+															newRerenderValue
+														);
+													}
 												}}
 											/>
 										</>

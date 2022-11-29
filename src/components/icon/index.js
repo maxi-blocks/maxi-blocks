@@ -8,8 +8,19 @@ import {
 	Component,
 	isValidElement,
 } from '@wordpress/element';
+import { Dashicon } from '@wordpress/components';
 
 function Icon({ icon = null, size, ...additionalProps }) {
+	if (typeof icon === 'string') {
+		return <Dashicon icon={icon} size={size} {...additionalProps} />;
+	}
+
+	if (isValidElement(icon) && Dashicon === icon.type) {
+		return cloneElement(icon, {
+			...additionalProps,
+		});
+	}
+
 	// Icons should be 24x24 by default.
 	const iconSize = size || 24;
 	if (typeof icon === 'function') {

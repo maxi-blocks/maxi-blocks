@@ -292,7 +292,7 @@ const MaxiToolbar = memo(
 									: customLabel}
 
 								<span className='toolbar-block-custom-label__block-style'>
-									{` | ${blockStyle}`}
+									{blockStyle ? ` | ${blockStyle}` : ''}
 								</span>
 								{!isFirstOnHierarchy && (
 									<span className='toolbar-more-indicator'>

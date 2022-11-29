@@ -22,7 +22,7 @@ import {
 	getGroupAttributes,
 } from '../../extensions/styles';
 import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
-import getHoverStatus from './getHoverStatus';
+import { getHoverStatus } from '../../extensions/relations';
 import * as blocksData from '../../blocks/data';
 
 /**

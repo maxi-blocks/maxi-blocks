@@ -19,7 +19,10 @@ import {
 	getBorderStyles,
 	getSVGStyles,
 } from '../../extensions/styles/helpers';
-import { getCanvasSettings } from '../../extensions/relations';
+import {
+	getCanvasSettings,
+	shouldBorderTargetBlockUpdate,
+} from '../../extensions/relations';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
 /**
@@ -263,7 +266,7 @@ const interactionBuilderSettings = {
 			component: props => <BorderControl {...props} />,
 			helper: props => getBorderStyles(props),
 			target: ' .maxi-svg-icon-block__icon',
-			shouldTargetBlockUpdate: true,
+			shouldTargetBlockUpdate: shouldBorderTargetBlockUpdate,
 		},
 	],
 	canvas: getCanvasSettings({ name, customCss }),

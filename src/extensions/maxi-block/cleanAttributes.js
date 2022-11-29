@@ -98,6 +98,12 @@ const flatSameAsPrev = (
 					return;
 				}
 
+				if (isEqual(generalAttr, value)) {
+					result[key] = undefined;
+
+					return;
+				}
+
 				const defaultAttribute =
 					defaultAttributes?.[key] ??
 					getDefaultAttribute(key, clientId, true);

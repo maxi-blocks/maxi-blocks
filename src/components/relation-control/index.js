@@ -600,6 +600,10 @@ const RelationControl = props => {
 														}
 													);
 
+													/**
+													 * Checks if target block should be re-rendered by checking
+													 * `shouldTargetBlockUpdate` from previous and new setting
+													 */
 													const getShouldTargetBlockUpdate =
 														() => {
 															const {

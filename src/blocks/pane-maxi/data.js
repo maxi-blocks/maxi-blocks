@@ -1,7 +1,6 @@
 /**
  * Internal dependencies
  */
-import { createSelectors } from '../../extensions/styles/custom-css';
 import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
@@ -53,9 +52,48 @@ const copyPasteMapping = {
 };
 const customCss = {
 	selectors: {
-		...createSelectors({
-			pane: '',
-		}),
+		pane: {
+			normal: {
+				label: 'pane',
+				target: '',
+			},
+			hover: {
+				label: 'pane on hover',
+				target: ':hover',
+			},
+			active: {
+				label: 'pane on active state',
+				target: '[aria-expanded="true"]',
+			},
+		},
+		'before pane': {
+			normal: {
+				label: 'pane ::before',
+				target: '::before',
+			},
+			hover: {
+				label: 'pane ::before on hover',
+				target: ':hover::before',
+			},
+			active: {
+				label: 'pane ::before on active state',
+				target: '[aria-expanded="true"]::before',
+			},
+		},
+		'after pane': {
+			normal: {
+				label: 'pane ::after',
+				target: '::after',
+			},
+			hover: {
+				label: 'pane ::after on hover',
+				target: ':hover::after',
+			},
+			active: {
+				label: 'pane ::after on active state',
+				target: '[aria-expanded="true"]::after',
+			},
+		},
 		header: {
 			normal: {
 				label: 'pane header',

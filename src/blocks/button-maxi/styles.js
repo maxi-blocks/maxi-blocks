@@ -103,6 +103,12 @@ const getHoverWrapperObject = props => {
 				blockStyle: props.blockStyle,
 				isHover: true,
 			}),
+		opacity:
+			props['opacity-status-hover'] &&
+			getOpacityStyles(
+				{ ...getGroupAttributes(props, 'opacity', true) },
+				true
+			),
 	};
 
 	return response;

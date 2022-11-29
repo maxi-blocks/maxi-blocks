@@ -3,7 +3,6 @@
  * WordPress dependencies
  */
 import { useDispatch } from '@wordpress/data';
-import { Button, Icon } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -11,7 +10,7 @@ import { Button, Icon } from '@wordpress/components';
 import Inspector from './inspector';
 import RowContext from './context';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import { Toolbar } from '../../components';
+import { Toolbar, Button, Icon } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 
 import { getTemplates } from '../../extensions/column-templates';

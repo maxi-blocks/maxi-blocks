@@ -79,14 +79,8 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 			})),
 	};
 
-	const smallBlock =
-		(props.name === 'maxi-blocks/svg-icon-maxi' &&
-			props.attributes['width-fit-content-general']) ||
-		props.isChild
-			? 'small-block'
-			: '';
+	const smallBlock = props.isSmall ? 'maxi-popover-button--small-block' : '';
 
-	console.log(props);
 	return (
 		<Popover
 			ref={popoverRef}

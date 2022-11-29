@@ -45,19 +45,24 @@ const getBorderStyles = ({
 	if (isHover && !isNil(hoverStatus) && !hoverStatus && !globalHoverStatus)
 		return response;
 
+	// IBStatus variable checks if the current block is a target for some interaction or not
+	// To minimize resource consumption and because `IBStatus` is used for the same purposes
+	// as `hoverStatus` and only when `isHover` and `isIB` false,
+	// ! calculate `IBStatus` only when these values are false
 	let IBStatus = false;
-	goThroughMaxiBlocks(({ attributes }) => {
-		if (IBStatus || !('relations' in attributes)) return;
+	if (!isHover && !isIB && !hoverStatus)
+		goThroughMaxiBlocks(({ attributes }) => {
+			if (IBStatus || !('relations' in attributes)) return;
 
-		if (
-			attributes.relations.some(
-				({ uniqueID: relationUniqueID, settings }) =>
-					uniqueID === relationUniqueID &&
-					settings.toLowerCase().includes('border')
+			if (
+				attributes.relations.some(
+					({ uniqueID: relationUniqueID, settings }) =>
+						uniqueID === relationUniqueID &&
+						settings.toLowerCase().includes('border')
+				)
 			)
-		)
-			IBStatus = true;
-	});
+				IBStatus = true;
+		});
 
 	const keyWords = [
 		'top-left',

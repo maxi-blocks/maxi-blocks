@@ -16,6 +16,9 @@ const mutualAttributes = {
 	...attributesData.backgroundHover,
 	...attributesData.backgroundColorHover,
 	...attributesData.backgroundGradientHover,
+	...attributesData.backgroundActive,
+	...attributesData.backgroundColorActive,
+	...attributesData.backgroundGradientActive,
 
 	...attributesData.border,
 	...attributesData.borderHover,

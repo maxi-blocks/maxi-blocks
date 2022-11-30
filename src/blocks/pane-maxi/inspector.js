@@ -28,6 +28,7 @@ const Inspector = props => {
 			disableImage: true,
 			disableVideo: true,
 			disableSVG: true,
+			enableActiveState: true,
 		}),
 		...inspectorTabs.border({
 			props,

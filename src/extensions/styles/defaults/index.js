@@ -46,6 +46,7 @@ export { default as videoPopup } from './videoPopup';
 export { default as zIndex } from './zIndex';
 export * from './background';
 export * from './backgroundHover';
+export * from './backgroundActive';
 export * from './border';
 export * from './borderHover';
 export * from './hover';

@@ -31,11 +31,14 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 
 	if (!isSelected || !ref.current) return null;
 
+	const smallBlock = props.isSmall ? 'maxi-popover-button--small-block' : '';
+
 	const classes = classnames(
 		'maxi-popover-button',
 		isOpen && 'maxi-popover-button--open',
 		version <= 13.0 && 'maxi-popover-button--old',
-		className
+		className,
+		smallBlock
 	);
 
 	const boundaryElement =
@@ -79,12 +82,10 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 			})),
 	};
 
-	const smallBlock = props.isSmall ? 'maxi-popover-button--small-block' : '';
-
 	return (
 		<Popover
 			ref={popoverRef}
-			className={(classes, smallBlock)}
+			className={classes}
 			noArrow
 			animate={false}
 			focusOnMount={false}

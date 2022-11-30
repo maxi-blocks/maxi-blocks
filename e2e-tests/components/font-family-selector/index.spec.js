@@ -50,7 +50,7 @@ describe('FontFamilySelector', () => {
 	});
 
 	it('Works on responsive', async () => {
-		await changeResponsive(page, 's', true);
+		await changeResponsive(page, 's');
 		const accordionPanel = await openSidebarTab(
 			page,
 			'style',

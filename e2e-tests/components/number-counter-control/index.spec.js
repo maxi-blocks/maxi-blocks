@@ -286,7 +286,7 @@ describe('NumberCounterControl', () => {
 		expect(typographyInput).toStrictEqual('Montserrat');
 
 		// s
-		await changeResponsive(page, 's', true);
+		await changeResponsive(page, 's');
 
 		await page.$eval('.maxi-typography-control__font-family input', input =>
 			input.focus()
@@ -314,7 +314,7 @@ describe('NumberCounterControl', () => {
 		expect(typographyInputXs).toStrictEqual('Arial');
 
 		// m
-		await changeResponsive(page, 'm', true);
+		await changeResponsive(page, 'm');
 
 		const typographyInputM = await page.$eval(
 			'.maxi-typography-control__font-family div div div',

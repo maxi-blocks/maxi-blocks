@@ -62,7 +62,7 @@ describe('TypographyControl', () => {
 		expect(typographyInput).toStrictEqual('Montserrat');
 
 		// s
-		await changeResponsive(page, 's', true);
+		await changeResponsive(page, 's');
 		accordionPanel = await openSidebarTab(page, 'style', 'typography');
 
 		await accordionPanel.$eval(
@@ -93,7 +93,7 @@ describe('TypographyControl', () => {
 		expect(typographyInputXs).toStrictEqual('Arial');
 
 		// m
-		await changeResponsive(page, 'm', true);
+		await changeResponsive(page, 'm');
 		await openSidebarTab(page, 'style', 'typography');
 
 		const typographyInputM = await accordionPanel.$$eval(

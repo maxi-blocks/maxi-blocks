@@ -197,6 +197,24 @@ const getHoverStyles = (props, prefix) => {
 	return response;
 };
 
+const getActiveStyles = (props, rawPrefix) => {
+	const prefix = `${rawPrefix}active-`;
+
+	return {
+		...(props[`${rawPrefix}background-status-active`] &&
+			getBackgroundStyles({
+				...getGroupAttributes(
+					props,
+					['background', 'backgroundColor', 'backgroundGradient'],
+					false,
+					prefix
+				),
+				blockStyle: props.blockStyle,
+				prefix,
+			})),
+	};
+};
+
 const getStyles = props => {
 	const { uniqueID } = props;
 
@@ -210,14 +228,14 @@ const getStyles = props => {
 					props,
 					'content-'
 				),
-				' .maxi-pane-block__header:hover': getHoverStyles(
-					props,
-					'header-'
-				),
-				' .maxi-pane-block__content:hover': getHoverStyles(
-					props,
-					'content-'
-				),
+				'[aria-expanded] .maxi-pane-block__header:hover':
+					getHoverStyles(props, 'header-'),
+				'[aria-expanded] .maxi-pane-block__content:hover':
+					getHoverStyles(props, 'content-'),
+				'[aria-expanded="true"] .maxi-pane-block__header':
+					getActiveStyles(props, 'header-'),
+				'[aria-expanded="true"] .maxi-pane-block__content':
+					getActiveStyles(props, 'content-'),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [
 						'blockBackground',

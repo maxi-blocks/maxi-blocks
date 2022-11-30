@@ -167,6 +167,7 @@ class ToolbarPopover extends Component {
 							position={position}
 							isAlternate
 							{...popoverProps}
+							noArrow
 						>
 							<div>{children}</div>
 							{!!advancedOptions && (

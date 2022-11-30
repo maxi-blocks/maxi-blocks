@@ -1,7 +1,6 @@
 /**
  * Internal dependencies
  */
-import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 import getLastBreakpointTransformAttributeRaw from '../getLastBreakpointTransformAttribute';
 import { validateOriginValue } from '../utils';
 
@@ -31,27 +30,6 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 			ignoreNormal: true,
 		});
 
-	const scaleObj = getLastBreakpointAttribute({
-		target: 'transform-scale',
-		breakpoint,
-		attributes: obj,
-	});
-	const translateObj = getLastBreakpointAttribute({
-		target: 'transform-translate',
-		breakpoint,
-		attributes: obj,
-	});
-	const rotateObj = getLastBreakpointAttribute({
-		target: 'transform-rotate',
-		breakpoint,
-		attributes: obj,
-	});
-	const originObj = getLastBreakpointAttribute({
-		target: 'transform-origin',
-		breakpoint,
-		attributes: obj,
-	});
-
 	const originValueToNumber = value => {
 		switch (validateOriginValue(value)) {
 			case 'top':
@@ -68,11 +46,17 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 		}
 	};
 
-	const getScaleString = (scaleObj, category, index) => {
+	const getScaleString = index => {
 		let scaleString = '';
-		if (isEmpty(scaleObj)) return scaleString;
-		if (index === 'hover' && !scaleObj?.[category]?.['hover-status'])
-			return getScaleString(scaleObj, category, 'normal');
+		if (
+			index === 'hover' &&
+			!getLastBreakpointTransformAttribute(
+				'transform-scale',
+				null,
+				'hover-status'
+			)
+		)
+			return getScaleString('normal');
 
 		const [x, y] = ['x', 'y'].map(prop =>
 			getLastBreakpointTransformAttribute('transform-scale', prop, index)
@@ -83,11 +67,17 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 		return scaleString;
 	};
 
-	const getTranslateString = (translateObj, category, index) => {
+	const getTranslateString = index => {
 		let translateString = '';
-		if (isEmpty(translateObj)) return translateString;
-		if (index === 'hover' && !translateObj?.[category]?.['hover-status'])
-			return getTranslateString(translateObj, category, 'normal');
+		if (
+			index === 'hover' &&
+			!getLastBreakpointTransformAttribute(
+				'transform-translate',
+				null,
+				'hover-status'
+			)
+		)
+			return getTranslateString('normal');
 
 		const [x, y, xUnit, yUnit] = ['x', 'y', 'x-unit', 'y-unit'].map(prop =>
 			getLastBreakpointTransformAttribute(
@@ -102,11 +92,17 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 		return translateString;
 	};
 
-	const getRotateString = (rotateObj, category, index) => {
+	const getRotateString = index => {
 		let rotateString = '';
-		if (isEmpty(rotateObj)) return rotateString;
-		if (index === 'hover' && !rotateObj?.[category]?.['hover-status'])
-			return getRotateString(rotateObj, category, 'normal');
+		if (
+			index === 'hover' &&
+			!getLastBreakpointTransformAttribute(
+				'transform-rotate',
+				null,
+				'hover-status'
+			)
+		)
+			return getRotateString('normal');
 
 		const [x, y, z] = ['x', 'y', 'z'].map(prop =>
 			getLastBreakpointTransformAttribute('transform-rotate', prop, index)
@@ -119,12 +115,16 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 		return rotateString;
 	};
 
-	const getOriginString = (originObj, category, index) => {
+	const getOriginString = index => {
 		let originString = '';
 
 		if (
-			isEmpty(originObj) ||
-			(index === 'hover' && !originObj?.[category]?.['hover-status'])
+			index === 'hover' &&
+			!getLastBreakpointTransformAttribute(
+				'transform-origin',
+				null,
+				'hover-status'
+			)
 		)
 			return originString;
 
@@ -146,10 +146,10 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 	};
 
 	const transformString =
-		getScaleString(scaleObj, category, index) +
-		getTranslateString(translateObj, category, index) +
-		getRotateString(rotateObj, category, index);
-	const transformOriginString = getOriginString(originObj, category, index);
+		getScaleString(index) +
+		getTranslateString(index) +
+		getRotateString(index);
+	const transformOriginString = getOriginString(index);
 
 	return [transformString, transformOriginString];
 };

@@ -19,24 +19,28 @@ const getLastBreakpointTransformAttribute = props => {
 		ignoreNormal = false,
 	} = props;
 
-	return (
-		getCurrentAndHigherBreakpoints(breakpoint)
-			.reverse()
-			.reduce((acc, currentBreakpoint) => {
-				const attribute =
-					attributes?.[`${attributeName}-${currentBreakpoint}`]?.[
-						transformTarget
-					]?.[hoverSelected]?.[prop];
-				if (isNil(acc) && !isNil(attribute)) return attribute;
-				return acc;
-			}, undefined) ||
-		(!ignoreNormal && hoverSelected !== 'normal'
-			? getLastBreakpointTransformAttribute({
-					...props,
-					hoverSelected: 'normal',
-			  })
-			: undefined)
-	);
+	const result = getCurrentAndHigherBreakpoints(breakpoint)
+		.reverse()
+		.reduce((acc, currentBreakpoint) => {
+			const hoverSelectedObject =
+				attributes?.[`${attributeName}-${currentBreakpoint}`]?.[
+					transformTarget
+				]?.[hoverSelected];
+			const attribute = !isNil(prop)
+				? hoverSelectedObject?.[prop]
+				: hoverSelectedObject;
+			if (isNil(acc) && !isNil(attribute)) return attribute;
+			return acc;
+		}, undefined);
+
+	if (!isNil(result)) return result;
+
+	return !ignoreNormal && hoverSelected === 'hover'
+		? getLastBreakpointTransformAttribute({
+				...props,
+				hoverSelected: 'normal',
+		  })
+		: undefined;
 };
 
 export default getLastBreakpointTransformAttribute;

@@ -15,7 +15,6 @@ import ToggleSwitch from '../toggle-switch';
 import {
 	getCurrentAndHigherBreakpoints,
 	getGroupAttributes,
-	getLastBreakpointAttribute,
 	getLastBreakpointTransformAttribute as getLastBreakpointTransformAttributeRaw,
 } from '../../extensions/styles';
 import { getTransformStyles } from '../../extensions/styles/helpers';
@@ -25,7 +24,7 @@ import { getActiveTabName } from '../../extensions/inspector';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, toLower, capitalize, isEmpty } from 'lodash';
+import { capitalize, isEmpty, isNil, isPlainObject, toLower } from 'lodash';
 
 /**
  * Styles and icons
@@ -76,14 +75,15 @@ const TransformControl = props => {
 		attributeName,
 		prop,
 		attributeTransformTarget = transformTarget,
-		attributeHoverSelected = hoverSelected
+		attributeHoverSelected = hoverSelected,
+		attributes = props
 	) =>
 		getLastBreakpointTransformAttributeRaw({
 			attributeName,
 			prop,
 			transformTarget: attributeTransformTarget,
 			breakpoint,
-			attributes: props,
+			attributes,
 			hoverSelected: attributeHoverSelected,
 		});
 
@@ -91,22 +91,36 @@ const TransformControl = props => {
 		Object.entries(obj).forEach(([type, diffTypeObj]) => {
 			const typeObj = { ...transformOptions[`${type}-${breakpoint}`] };
 			Object.entries(diffTypeObj).forEach(([target, targetObj]) => {
-				// Hover attributes inherit normal state attribute when they undefined or null
-				if (Object.keys(targetObj).includes('hover')) {
-					Object.entries(targetObj.hover).forEach(([key, value]) => {
-						if (isNil(value)) {
-							targetObj.hover[key] =
+				// save both hover and normal state
+				typeObj[target] = { ...typeObj?.[target], ...targetObj };
+				// hover attributes inherit normal state attributes when they undefined or null
+				if (isPlainObject(typeObj[target].hover)) {
+					Object.keys(typeObj[target].hover).forEach(key => {
+						if (
+							isNil(
+								getLastBreakpointTransformAttribute(
+									type,
+									key,
+									target,
+									'hover',
+									{
+										...transformOptions,
+										[`${type}-${breakpoint}`]: {
+											...typeObj,
+										},
+									}
+								)
+							)
+						)
+							typeObj[target].hover[key] =
 								getLastBreakpointTransformAttribute(
 									type,
 									key,
 									target,
 									'normal'
 								);
-						}
 					});
 				}
-				// save both hover and normal state
-				typeObj[target] = { ...typeObj?.[target], ...targetObj };
 			});
 			// save each type of transform(scale, translate, etc...)
 			transformOptions[`${type}-${breakpoint}`] = {
@@ -288,13 +302,12 @@ const TransformControl = props => {
 					{!disableHover && hoverSelected === 'hover' && (
 						<ToggleSwitch
 							label={__('Enable hover', 'maxi-blocks')}
-							selected={
-								getLastBreakpointAttribute({
-									target: `transform-${transformStatus}`,
-									breakpoint,
-									attributes: props,
-								})?.[transformTarget]?.['hover-status']
-							}
+							selected={getLastBreakpointTransformAttribute(
+								`transform-${transformStatus}`,
+								null,
+								transformTarget,
+								'hover-status'
+							)}
 							onChange={val => {
 								const transformTargetOptions =
 									transformOptions[
@@ -338,11 +351,12 @@ const TransformControl = props => {
 						/>
 					)}
 					{(hoverSelected === 'normal' ||
-						getLastBreakpointAttribute({
-							target: `transform-${transformStatus}`,
-							breakpoint,
-							attributes: props,
-						})?.[transformTarget]?.['hover-status']) && (
+						getLastBreakpointTransformAttribute(
+							`transform-${transformStatus}`,
+							null,
+							transformTarget,
+							'hover-status'
+						)) && (
 						<>
 							{transformStatus === 'scale' && (
 								<SquareControl

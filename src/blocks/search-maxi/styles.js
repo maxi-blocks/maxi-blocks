@@ -232,7 +232,7 @@ const getSearchButtonContentStyles = (props, isHover = false) => {
 };
 
 const getSearchInputStyles = (props, isHover = false) => {
-	const { blockStyle, uniqueID } = props;
+	const { blockStyle } = props;
 
 	const response = {
 		...getBackgroundStyles({

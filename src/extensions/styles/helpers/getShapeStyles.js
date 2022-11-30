@@ -32,7 +32,7 @@ const getShapeStyles = (obj, target, blockStyle) => {
 			response.general.fill = getColorRGBAString({
 				firstVar: `color-${paletteColor}`,
 				opacity: paletteOpacity,
-				blockStyle: blockStyle,
+				blockStyle,
 			});
 		else if (!paletteStatus && !isNil(color)) response.general.fill = color;
 	}

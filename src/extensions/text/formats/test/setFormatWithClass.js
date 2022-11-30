@@ -236,9 +236,9 @@ const styleCard = {
 				'hover-background-color-hover': '',
 			},
 			icon: {
-				'line-global': false,
+				'line-color-global': false,
 				line: '',
-				'fill-global': false,
+				'fill-color-global': false,
 				fill: '',
 			},
 			divider: {
@@ -463,9 +463,9 @@ const styleCard = {
 				'hover-background-color-hover': '',
 			},
 			icon: {
-				'line-global': false,
+				'line-color-global': false,
 				line: '',
-				'fill-global': false,
+				'fill-color-global': false,
 				fill: '',
 			},
 			divider: {

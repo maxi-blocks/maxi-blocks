@@ -285,9 +285,9 @@ describe('getSCVariablesObject', () => {
 						'visited-color': '',
 					},
 					icon: {
-						'line-global': false,
+						'line-color-global': false,
 						line: '',
-						'fill-global': false,
+						'fill-color-global': false,
 						fill: '',
 					},
 					divider: {
@@ -566,9 +566,9 @@ describe('getSCVariablesObject', () => {
 						'visited-color': '',
 					},
 					icon: {
-						'line-global': false,
+						'line-color-global': false,
 						line: '',
-						'fill-global': false,
+						'fill-color-global': false,
 						fill: '',
 					},
 					divider: {

@@ -98,6 +98,12 @@ const flatSameAsPrev = (
 					return;
 				}
 
+				if (isEqual(generalAttr, value)) {
+					result[key] = undefined;
+
+					return;
+				}
+
 				const defaultAttribute =
 					defaultAttributes?.[key] ??
 					getDefaultAttribute(key, clientId, true);
@@ -532,8 +538,6 @@ const cleanAttributes = ({
 	};
 
 	dispatch('maxiBlocks/styles').savePrevSavedAttrs(result);
-
-	// console.log(result);
 
 	return result;
 };

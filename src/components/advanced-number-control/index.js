@@ -99,7 +99,7 @@ const AdvancedNumberControl = props => {
 	);
 
 	useEffect(() => {
-		if (!isNil(value) && value !== '') setCurrentValue(trim(value));
+		setCurrentValue(trim(value));
 	}, [value]);
 
 	const classes = classnames('maxi-advanced-number-control', className);

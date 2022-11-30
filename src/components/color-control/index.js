@@ -54,7 +54,6 @@ const ColorControl = props => {
 		isToolbar = false,
 		prefix = '',
 		avoidBreakpointForDefault = false,
-		noColorPrefix,
 	} = props;
 
 	const blockStyle = rawBlockStyle
@@ -215,7 +214,6 @@ const ColorControl = props => {
 					className={className}
 					onReset={onResetValues}
 					onResetOpacity={onResetOpacity}
-					noColorPrefix={noColorPrefix}
 				/>
 			)}
 			{!disablePalette && (

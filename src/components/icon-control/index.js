@@ -407,7 +407,6 @@ const IconControl = props => {
 										}`,
 										type: 'icon',
 									}}
-									noColorPrefix
 								/>
 							)
 						) : (
@@ -523,7 +522,6 @@ const IconControl = props => {
 								target: `${isHover ? 'hover-fill' : 'fill'}`,
 								type: 'icon',
 							}}
-							noColorPrefix
 							avoidBreakpointForDefault
 						/>
 					)}

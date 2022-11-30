@@ -129,7 +129,7 @@ class edit extends MaxiBlockComponent {
 									maxiSetAttributes({ buttonContent });
 								}, 100);
 							}}
-							placeholder={__('Set some text…', 'maxi-blocks')}
+							placeholder={__('Button text', 'maxi-blocks')}
 							withoutInteractiveFormatting
 						/>
 					)}

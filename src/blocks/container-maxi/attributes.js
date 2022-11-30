@@ -29,8 +29,16 @@ const attributes = {
 					'background-color-general': '',
 					'background-color-clip-path-general': '',
 					'background-color-wrapper-position-sync-general': 'all',
-					'background-color-wrapper-size-general': 100,
-					'background-color-wrapper-size-unit-general': '%',
+					'background-color-wrapper-width-general': 100,
+					'background-color-wrapper-width-unit-general': '%',
+					'background-color-wrapper-height-general': 100,
+					'background-color-wrapper-height-unit-general': '%',
+					'background-color-wrapper-position-bottom-unit-general':
+						'px',
+					'background-color-wrapper-position-top-unit-general': 'px',
+					'background-color-wrapper-position-left-unit-general': 'px',
+					'background-color-wrapper-position-right-unit-general':
+						'px',
 					order: 1,
 					id: 1,
 				},

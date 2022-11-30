@@ -106,10 +106,6 @@ const SquareControl = props => {
 	const onReset = () => {
 		switch (type) {
 			case 'drag':
-				changeXAxis(0);
-				changeYAxis(0);
-				onSave();
-				break;
 			case 'resize':
 			case 'origin':
 				onSave();
@@ -258,7 +254,7 @@ const SquareControl = props => {
 							{ xAxis: 'middle', yAxis: 'center' },
 							{ xAxis: 'right', yAxis: 'center' },
 							{ xAxis: 'left', yAxis: 'bottom' },
-							{ xAxis: 'center', yAxis: 'bottom' },
+							{ xAxis: 'middle', yAxis: 'bottom' },
 							{ xAxis: 'right', yAxis: 'bottom' },
 						].map(({ xAxis: itemXAxis, yAxis: itemYAxis }) => (
 							<Button

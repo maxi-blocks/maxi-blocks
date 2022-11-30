@@ -401,14 +401,18 @@ const TransformControl = props => {
 							{transformStatus === 'translate' && (
 								<SquareControl
 									type='drag'
-									x={getLastBreakpointTransformAttribute(
-										'transform-translate',
-										'x'
-									)}
-									y={getLastBreakpointTransformAttribute(
-										'transform-translate',
-										'y'
-									)}
+									x={
+										getLastBreakpointTransformAttribute(
+											'transform-translate',
+											'x'
+										) ?? 0
+									}
+									y={
+										getLastBreakpointTransformAttribute(
+											'transform-translate',
+											'y'
+										) ?? 0
+									}
 									xUnit={
 										getLastBreakpointTransformAttribute(
 											'transform-translate',

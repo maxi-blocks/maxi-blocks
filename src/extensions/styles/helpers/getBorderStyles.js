@@ -55,7 +55,7 @@ const getBorderStyles = ({
 			if (IBStatus || !('relations' in attributes)) return;
 
 			if (
-				attributes.relations.some(
+				attributes.relations?.some(
 					({ uniqueID: relationUniqueID, settings }) =>
 						uniqueID === relationUniqueID &&
 						settings.toLowerCase().includes('border')

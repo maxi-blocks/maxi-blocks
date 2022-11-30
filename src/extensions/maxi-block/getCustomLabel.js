@@ -9,7 +9,7 @@ import { select } from '@wordpress/data';
 import { capitalize, isEmpty } from 'lodash';
 
 const removeCustomLabelNumber = customLabelToReplace =>
-	customLabelToReplace.replace(/_\d+$/, '');
+	customLabelToReplace.replace(/_(\d+)\s*$/, '').trim();
 
 const getCustomLabelCount = customLabel => {
 	const { getBlocks } = select('core/block-editor');
@@ -55,9 +55,7 @@ const getCustomLabel = (previousCustomLabel, uniqueID) => {
 
 	const customLabelCount = getCustomLabelCount(previousCustomLabel);
 	return customLabelCount > 1
-		? `${removeCustomLabelNumber(
-				previousCustomLabel
-		  ).trim()}_${customLabelCount}`
+		? `${removeCustomLabelNumber(previousCustomLabel)}_${customLabelCount}`
 		: previousCustomLabel;
 };
 

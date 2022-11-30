@@ -4,6 +4,11 @@
 import { getBlockData } from '../../attributes';
 import { getBlockNameFromUniqueID } from './utils';
 
+/**
+ * External dependencies
+ */
+import { isNil } from 'lodash';
+
 const name = 'maxiAttributes Migrator';
 
 const maxiVersions = ['0.0.1 SC1', '0.0.1 SC2', '0.0.1 SC3'];
@@ -31,7 +36,13 @@ const migrate = newAttributes => {
 	const blockData = getBlockData(blockName);
 	const { maxiAttributes } = blockData;
 
-	return { ...newAttributes, ...maxiAttributes };
+	const newMaxiAttributes = {};
+
+	Object.entries(maxiAttributes).forEach(([key, value]) => {
+		if (isNil(newAttributes[key])) newMaxiAttributes[key] = value;
+	});
+
+	return { ...newAttributes, ...newMaxiAttributes };
 };
 
 export default { name, isEligible, migrate };

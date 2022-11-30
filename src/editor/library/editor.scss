@@ -306,12 +306,15 @@
 			border: 1px solid #dbdde6;
 			font-size: 14px;
 			font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif !important;
-			transition: 0.3s;
-			&:hover{
-				border-color:  var(--maxi-primary-color);
-				background-color: var(--maxi-primary-color);
-				color: #fff;
+			transition: 0.1s;
+			&:not(&--disabled){
+				&:hover{
+					border-color:  var(--maxi-primary-color);
+					background-color: var(--maxi-primary-color);
+					color: #fff;
+				}
 			}
+
 			&--disabled {
 				background-color: #e7e7e7;
 				color: #b8b8b8;
@@ -472,9 +475,9 @@
 					bottom: -1px;
 					background-color: var(--maxi-primary-color);
 					z-index: -1;
-					-webkit-transition: 0.3s;
-					-o-transition: 0.3s;
-					transition: 0.3s;
+					-webkit-transition: 0.1s;
+					-o-transition: 0.1s;
+					transition: 0.1s;
 					opacity: 0;
 				}
 				&:hover,
@@ -636,7 +639,7 @@
 									position: absolute;
 									display: block;
 									background-color: #007cba;
-									transition: 0.3s;
+									transition: 0.1s;
 									opacity: 0;
 									top: 0;
 									left: 0;
@@ -766,9 +769,9 @@
 							bottom: -1px;
 							background-color: #007CBA;
 							z-index: -1;
-							-webkit-transition: 0.3s;
-							-o-transition: 0.3s;
-							transition: 0.3s;
+							-webkit-transition: 0.1s;
+							-o-transition: 0.1s;
+							transition: 0.1s;
 							opacity: 0;
 						}
 						&___pressed {
@@ -1022,7 +1025,7 @@
 								bottom: -1px;
 								background-color: var(--maxi-primary-color);
 								z-index: -1;
-								transition: 0.3s;
+								transition: 0.1s;
 								opacity: 0;
 							}
 							&:hover{
@@ -1231,7 +1234,7 @@
 					color: #081219;
 					border: 1px solid #dbdde6;
 					background-color: #edf6fa;
-					transition: all 0.3s;
+					transition: all 0.1s;
 					height: 30px;
 					line-height: 28px;
 					font-weight: 400;

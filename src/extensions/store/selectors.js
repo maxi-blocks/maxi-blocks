@@ -61,11 +61,6 @@ const selectors = {
 
 		return false;
 	},
-	receiveRelationRerenderValue(state, uniqueID) {
-		if (state) return state.relationRerenderValues?.[uniqueID] ?? null;
-
-		return false;
-	},
 };
 
 export default selectors;

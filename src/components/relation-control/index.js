@@ -2,7 +2,7 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { dispatch, select } from '@wordpress/data';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -599,84 +599,6 @@ const RelationControl = props => {
 															},
 														}
 													);
-
-													/**
-													 * Checks if target block should be re-rendered by checking
-													 * `shouldTargetBlockUpdate` from previous and new setting
-													 */
-													const getShouldTargetBlockUpdate =
-														() => {
-															const {
-																prefix,
-																shouldTargetBlockUpdate,
-															} = selectedSettingsObj;
-
-															if (
-																shouldTargetBlockUpdate?.(
-																	{
-																		blockAttributes,
-																		prefix,
-																	}
-																)
-															)
-																return true;
-
-															const previousSelectedSettingsObj =
-																getSelectedSettingsObj(
-																	clientId,
-																	item.settings
-																) || {};
-															const {
-																prefix: previousPrefix,
-																shouldTargetBlockUpdate:
-																	previousShouldTargetBlockUpdate,
-															} = previousSelectedSettingsObj;
-
-															return (
-																previousShouldTargetBlockUpdate?.(
-																	{
-																		blockAttributes,
-																		prefix: previousPrefix,
-																	}
-																) ?? false
-															);
-														};
-
-													if (
-														getShouldTargetBlockUpdate()
-													) {
-														const targetBlockClientId =
-															getClientIdFromUniqueId(
-																item.uniqueID
-															);
-														const previousRerenderValue =
-															select(
-																'maxiBlocks'
-															).receiveRelationRerenderValue(
-																item.uniqueID
-															);
-														const newRerenderValue =
-															previousRerenderValue ===
-															1
-																? 2
-																: 1;
-
-														dispatch(
-															'core/block-editor'
-														).updateBlockAttributes(
-															targetBlockClientId,
-															{
-																're-render':
-																	newRerenderValue,
-															}
-														);
-														dispatch(
-															'maxiBlocks'
-														).updateRelationRerenderValue(
-															item.uniqueID,
-															newRerenderValue
-														);
-													}
 												}}
 											/>
 										</>

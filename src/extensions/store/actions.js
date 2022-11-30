@@ -95,18 +95,5 @@ const actions = {
 			uniqueID,
 		};
 	},
-	updateRelationRerenderValue(uniqueID, value) {
-		return {
-			type: 'UPDATE_RELATION_RERENDER_VALUE',
-			uniqueID,
-			value,
-		};
-	},
-	removeRelationRerenderValue(uniqueID) {
-		return {
-			type: 'REMOVE_RELATION_RERENDER_VALUE',
-			uniqueID,
-		};
-	},
 };
 export default actions;

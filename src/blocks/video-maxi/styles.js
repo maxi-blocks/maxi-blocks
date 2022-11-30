@@ -43,11 +43,9 @@ const getNormalObject = props => {
 					'border',
 					'borderWidth',
 					'borderRadius',
-					'borderHover',
 				]),
 			},
 			blockStyle: props.blockStyle,
-			uniqueID: props.uniqueID,
 		}),
 		padding: getMarginPaddingStyles({
 			obj: { ...getGroupAttributes(props, 'padding') },
@@ -280,18 +278,12 @@ const getVideoStyles = (props, isHover = false) => {
 				obj: {
 					...getGroupAttributes(
 						props,
-						[
-							'border',
-							'borderWidth',
-							'borderRadius',
-							'borderHover',
-						],
+						['border', 'borderWidth', 'borderRadius'],
 						isHover,
 						videoPrefix
 					),
 				},
 				blockStyle: props.blockStyle,
-				uniqueID: props.uniqueID,
 				prefix: videoPrefix,
 				isHover,
 			}),

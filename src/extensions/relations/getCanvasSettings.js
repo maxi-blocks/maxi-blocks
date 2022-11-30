@@ -32,7 +32,6 @@ import {
 	getTransformCategories,
 	getTransformSelectors,
 } from '../../components/transform-control/utils';
-import shouldBorderTargetBlockUpdate from './shouldBorderTargetBlockUpdate';
 import { getGroupAttributes, getLastBreakpointAttribute } from '../styles';
 
 /**
@@ -140,7 +139,6 @@ const getCanvasSettings = ({ name, customCss }) => [
 		attrGroupName: ['border', 'borderWidth', 'borderRadius'],
 		component: props => <BorderControl {...props} />,
 		helper: props => getBorderStyles(props),
-		shouldTargetBlockUpdate: shouldBorderTargetBlockUpdate,
 	},
 	{
 		label: __('Box shadow', 'maxi-blocks'),

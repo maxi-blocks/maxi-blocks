@@ -28,11 +28,9 @@ const getWrapperObject = props => {
 					'border',
 					'borderWidth',
 					'borderRadius',
-					'borderHover',
 				]),
 			},
 			blockStyle: props.blockStyle,
-			uniqueID: props.uniqueID,
 		}),
 		boxShadow: getBoxShadowStyles({
 			obj: {

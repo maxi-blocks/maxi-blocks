@@ -4,7 +4,6 @@
 import getColorRGBAString from '../getColorRGBAString';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 import getPaletteAttributes from '../getPaletteAttributes';
-import goThroughMaxiBlocks from '../../attributes/goThroughMaxiBlocks';
 import { getIsValid } from '../utils';
 
 /**
@@ -45,25 +44,6 @@ const getBorderStyles = ({
 	if (isHover && !isNil(hoverStatus) && !hoverStatus && !globalHoverStatus)
 		return response;
 
-	// IBStatus variable checks if the current block is a target for some interaction or not
-	// To minimize resource consumption and because `IBStatus` is used for the same purposes
-	// as `hoverStatus` and only when `isHover` and `isIB` false,
-	// ! calculate `IBStatus` only when these values are false
-	let IBStatus = false;
-	if (!isHover && !isIB && !hoverStatus)
-		goThroughMaxiBlocks(({ attributes }) => {
-			if (IBStatus || !('relations' in attributes)) return;
-
-			if (
-				attributes.relations?.some(
-					({ uniqueID: relationUniqueID, settings }) =>
-						uniqueID === relationUniqueID &&
-						settings.toLowerCase().includes('border')
-				)
-			)
-				IBStatus = true;
-		});
-
 	const keyWords = [
 		'top-left',
 		'top-right',
@@ -75,8 +55,7 @@ const getBorderStyles = ({
 		'left',
 	];
 
-	let omitBorderStyle =
-		!isIB && !hoverStatus && !globalHoverStatus && !IBStatus;
+	let omitBorderStyle = !isIB && !hoverStatus && !globalHoverStatus;
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
@@ -153,19 +132,8 @@ const getBorderStyles = ({
 
 				if (key.includes('style')) {
 					if (!omitBorderStyle)
-						if (isBorderNone && (isIB || isHover)) {
-							response[breakpoint]['border-width'] = '0';
-							response[breakpoint]['border-color'] =
-								'transparent';
-						} else if (
-							isBorderNone &&
-							!isHover &&
-							(hoverStatus || IBStatus)
-						) {
-							// To have transition in case when border is none in normal state
-							// and border is not none in hover state or in IB
-							response[breakpoint]['border-style'] = 'solid';
-							response[breakpoint]['border-width'] = '0';
+						if ((isHover || isIB) && isBorderNone) {
+							response[breakpoint].border = 'none';
 						} else
 							response[breakpoint]['border-style'] = borderStyle;
 				} else if (!keyWords.some(key => newKey.includes(key))) {

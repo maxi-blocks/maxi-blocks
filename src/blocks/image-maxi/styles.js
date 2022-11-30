@@ -47,11 +47,9 @@ const getWrapperObject = props => {
 					'border',
 					'borderWidth',
 					'borderRadius',
-					'borderHover',
 				]),
 			},
 			blockStyle: props.blockStyle,
-			uniqueID: props.uniqueID,
 		}),
 		boxShadow: getBoxShadowStyles({
 			obj: {
@@ -306,13 +304,12 @@ const getImageObject = props => {
 			obj: {
 				...getGroupAttributes(
 					props,
-					['border', 'borderWidth', 'borderRadius', 'borderHover'],
+					['border', 'borderWidth', 'borderRadius'],
 					false,
 					'image-'
 				),
 			},
 			blockStyle: props.blockStyle,
-			uniqueID: props.uniqueID,
 			prefix: 'image-',
 		}),
 		boxShadow: getBoxShadowStyles({

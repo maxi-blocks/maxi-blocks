@@ -36,11 +36,9 @@ const getNormalObject = props => {
 					'border',
 					'borderWidth',
 					'borderRadius',
-					'borderHover',
 				]),
 			},
 			blockStyle,
-			uniqueID: props.uniqueID,
 		}),
 		boxShadow: getBoxShadowStyles({
 			obj: {

@@ -188,8 +188,7 @@ Object {
 exports[`getBorderStyles Return an IB border styles when border-style - none 1`] = `
 Object {
   "general": Object {
-    "border-color": "transparent",
-    "border-width": "0",
+    "border": "none",
   },
   "l": Object {},
   "m": Object {},

@@ -27,7 +27,7 @@ import data, { prefixes } from './data';
 const { buttonPrefix, closeIconPrefix, inputPrefix } = prefixes;
 
 const getNormalObject = props => {
-	const { blockStyle, uniqueID } = props;
+	const { blockStyle } = props;
 
 	const response = {
 		border: getBorderStyles({
@@ -36,11 +36,9 @@ const getNormalObject = props => {
 					'border',
 					'borderWidth',
 					'borderRadius',
-					'borderHover',
 				]),
 			},
 			blockStyle,
-			uniqueID,
 		}),
 		margin: getMarginPaddingStyles({
 			obj: { ...getGroupAttributes(props, 'margin') },
@@ -116,7 +114,7 @@ const getHoverObject = props => {
 };
 
 const getSearchButtonStyles = (props, isHover = false) => {
-	const { blockStyle, uniqueID } = props;
+	const { blockStyle } = props;
 
 	const response = {
 		...getBackgroundStyles({
@@ -134,7 +132,7 @@ const getSearchButtonStyles = (props, isHover = false) => {
 			obj: {
 				...getGroupAttributes(
 					props,
-					['border', 'borderWidth', 'borderRadius', 'borderHover'],
+					['border', 'borderWidth', 'borderRadius'],
 					isHover,
 					buttonPrefix
 				),
@@ -142,7 +140,6 @@ const getSearchButtonStyles = (props, isHover = false) => {
 			isHover,
 			prefix: buttonPrefix,
 			blockStyle,
-			uniqueID,
 		}),
 		...(!isHover && {
 			margin: getMarginPaddingStyles({
@@ -253,7 +250,7 @@ const getSearchInputStyles = (props, isHover = false) => {
 			obj: {
 				...getGroupAttributes(
 					props,
-					['border', 'borderWidth', 'borderRadius', 'borderHover'],
+					['border', 'borderWidth', 'borderRadius'],
 					isHover,
 					inputPrefix
 				),
@@ -261,7 +258,6 @@ const getSearchInputStyles = (props, isHover = false) => {
 			isHover,
 			prefix: inputPrefix,
 			blockStyle,
-			uniqueID,
 		}),
 		...(!isHover && {
 			padding: getMarginPaddingStyles({

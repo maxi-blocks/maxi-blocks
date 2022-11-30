@@ -29,10 +29,7 @@ import {
 	getMarginPaddingStyles,
 	getTypographyStyles,
 } from '../../extensions/styles/helpers';
-import {
-	getCanvasSettings,
-	shouldBorderTargetBlockUpdate,
-} from '../../extensions/relations';
+import { getCanvasSettings } from '../../extensions/relations';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
 /**
@@ -302,7 +299,6 @@ const interactionBuilderSettings = {
 			component: props => <BorderControl {...props} />,
 			helper: props => getBorderStyles(props),
 			target: '.maxi-button-block__button',
-			shouldTargetBlockUpdate: shouldBorderTargetBlockUpdate,
 		},
 		{
 			label: __('Button background', 'maxi-blocks'),

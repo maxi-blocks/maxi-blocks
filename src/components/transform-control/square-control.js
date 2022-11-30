@@ -515,6 +515,8 @@ const SquareControl = props => {
 										);
 									}
 								}}
+								min={getMinMax()?.min}
+								max={getMinMax()?.max}
 							/>
 							{isShowUnit(y) && (
 								<SelectControl
@@ -625,6 +627,8 @@ const SquareControl = props => {
 										);
 									}
 								}}
+								min={getMinMax()?.min}
+								max={getMinMax()?.max}
 							/>
 							{isShowUnit(x) && (
 								<SelectControl
@@ -705,6 +709,8 @@ const SquareControl = props => {
 										);
 									}
 								}}
+								min={getMinMax()?.min}
+								max={getMinMax()?.max}
 							/>
 							{!!yUnit && (
 								<SelectControl
@@ -781,6 +787,8 @@ const SquareControl = props => {
 										);
 									}
 								}}
+								min={getMinMax()?.min}
+								max={getMinMax()?.max}
 							/>
 							{!!xUnit && (
 								<SelectControl

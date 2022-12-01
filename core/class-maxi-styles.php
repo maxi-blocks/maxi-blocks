@@ -391,7 +391,7 @@ class MaxiBlocks_Styles
                 $colors[] = $color_str;
             }
 
-            $last_pos = $last_Pos + strlen($needle);
+            $last_pos = $last_pos + strlen($needle);
         }
 
         // Get color values from the SC considering the used on post style

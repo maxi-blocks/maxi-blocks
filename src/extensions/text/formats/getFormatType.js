@@ -1,7 +1,7 @@
 /**
  * Generates custom format name
  *
- * @param {boolean} isHover 			Is the requested typography under hover state
+ * @param {boolean} isHover Is the requested typography under hover state
  *
  * @returns {string} Custom format name
  */

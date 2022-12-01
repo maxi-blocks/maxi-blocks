@@ -137,7 +137,7 @@
 			border-right: 1px solid #dbdde6;
 			border-radius: 0;
 			transition: border-color 0.5s;
-			margin: 0 0 0 0;
+			margin: 0;
 			height: 40px;
 			width: 56px;
 			padding: 2px !important;
@@ -259,7 +259,7 @@
 			}
 		}
 		&__button {
-			margin: 0 0 8px 0;
+			margin: 0 0 8px;
 			display: block;
 		}
 	}
@@ -299,7 +299,7 @@
 			width: 31px;
 		}
 		&__close {
-			padding: 0 5px 0 5px;
+			padding: 0 5px;
 		}
 	}
 }

@@ -70,8 +70,7 @@ const getImageShapeStyles = (
 			if (target === 'image')
 				if ((flipX && !flipY) || (!flipX && flipY))
 					transformString += `rotate(${rotate}deg) `;
-				else
-					transformString += `rotate(${-rotate}deg) `;
+				else transformString += `rotate(${-rotate}deg) `;
 		}
 
 		if (flipX) {

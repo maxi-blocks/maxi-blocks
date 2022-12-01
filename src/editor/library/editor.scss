@@ -72,7 +72,7 @@
 			margin-right: 5px;
 			height: 66px;
 
-			&__icon {
+			&__icon:not(.maxi-library-modal__button-icon-sidebar) {
 				svg {
 					stroke-width: 1;
 					stroke: #000;
@@ -80,6 +80,12 @@
 						stroke-width: 1;
 						stroke: #000;
 					}
+				}
+			}
+			.maxi-library-modal__button-icon-sidebar {
+				stroke-width: 1;
+				svg {
+					stroke-width: 1;
 				}
 			}
 			&__shape {

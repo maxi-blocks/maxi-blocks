@@ -174,7 +174,7 @@ const MaxiModal = props => {
 							})
 						}
 					/>
-					<RawHTML className='maxi-library-modal__action-section__preview__icon'>
+					<RawHTML className='maxi-library-modal__action-section__preview__icon maxi-library-modal__button-icon-sidebar'>
 						{icon}
 					</RawHTML>
 				</div>

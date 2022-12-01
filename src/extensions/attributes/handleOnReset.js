@@ -20,7 +20,7 @@ const handleOnReset = props => {
 
 	const baseBreakpoint = receiveBaseBreakpoint();
 
-	Object.entries(result).forEach(([attr, value]) => {
+	Object.keys(result).forEach(attr => {
 		if (attr.includes('general')) {
 			const baseAttr = attr.replace('general', baseBreakpoint);
 			const baseDefaultAttr = getDefaultAttribute(baseAttr);

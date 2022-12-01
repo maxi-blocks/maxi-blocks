@@ -139,9 +139,15 @@ const flatSameAsPrev = (
 							) {
 								result[key] = undefined;
 							}
-						} else if (breakpoint !== 'general')
-							result[key] = defaultAttribute;
-						else if (!isNil(attribute)) breakpointLock = true;
+						} else if (breakpoint !== 'general') {
+							const currentDefaultAttribute =
+								defaultAttributes?.[key] ??
+								getDefaultAttribute(key, clientId, true);
+
+							if (!isEqual(value, currentDefaultAttribute))
+								result[key] = defaultAttribute;
+							else result[key] = currentDefaultAttribute;
+						} else if (!isNil(attribute)) breakpointLock = true;
 					} else if (!isNil(attribute)) breakpointLock = true;
 				}
 			});

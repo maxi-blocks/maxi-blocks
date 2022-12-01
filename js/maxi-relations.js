@@ -88,6 +88,10 @@ class Relation {
 		// leave the hover transition trigger
 		this.contentTimeout = null;
 
+		this.defaultTransition = window
+			.getComputedStyle(this.targetEl)
+			.getPropertyValue('transition');
+
 		this.init();
 	}
 
@@ -821,10 +825,19 @@ class Relation {
 
 		this.removeStyles();
 
-		this.transitionTimeout = setTimeout(() => {
+		// If the targeted element is hovered and the element has a transition set, remove transitions immediately
+		if (
+			this.targetEl.matches(':hover') &&
+			this.defaultTransition !== 'none 0s ease 0s'
+		) {
 			this.removeTransition();
 			this.removeAddAttrToBlock();
-		}, this.getTransitionTimeout());
+		} else {
+			this.transitionTimeout = setTimeout(() => {
+				this.removeTransition();
+				this.removeAddAttrToBlock();
+			}, this.getTransitionTimeout());
+		}
 	}
 
 	addClickEvents() {

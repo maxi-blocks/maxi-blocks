@@ -187,6 +187,10 @@ class edit extends MaxiBlockComponent {
 						key={`popover-${uniqueID}`}
 						ref={this.blockRef}
 						isOpen={isOpen}
+						isSmall={
+							this.props.isChild ||
+							this.props.attributes['width-fit-content-general']
+						}
 						{...this.props}
 					>
 						<MaxiModal {...maxiModalProps} />

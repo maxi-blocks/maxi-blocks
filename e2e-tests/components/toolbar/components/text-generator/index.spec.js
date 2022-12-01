@@ -32,7 +32,7 @@ describe('Text generator', () => {
 
 		// Words per sentence
 		await page.$eval(
-			'.components-popover__content .toolbar-item__text-generator-blocks__popover .maxi-text-control .maxi-text-input',
+			'.components-popover__content .toolbar-item__text-generator-blocks__popover .maxi-advanced-number-control .maxi-advanced-number-control__value',
 			input => input.focus()
 		);
 
@@ -42,7 +42,7 @@ describe('Text generator', () => {
 
 		// sentences
 		await page.$$eval(
-			'.components-popover__content .toolbar-item__text-generator-blocks__popover .maxi-text-control .maxi-text-input',
+			'.components-popover__content .toolbar-item__text-generator-blocks__popover .maxi-advanced-number-control .maxi-advanced-number-control__value',
 			input => input[1].focus()
 		);
 
@@ -51,7 +51,7 @@ describe('Text generator', () => {
 		await page.waitForTimeout(150);
 
 		await page.$eval(
-			'.components-popover__content .toolbar-item__text-generator-blocks__popover button',
+			'.components-popover__content .toolbar-item__text-generator-blocks__popover .maxi-components-button',
 			button => button.click()
 		);
 		expect(await getAttributes('content')).toStrictEqual('Lorem.');

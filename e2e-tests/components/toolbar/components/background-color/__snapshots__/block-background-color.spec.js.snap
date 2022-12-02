@@ -14,7 +14,7 @@ Array [
     "background-color-wrapper-width-general": 100,
     "background-color-wrapper-width-unit-general": "%",
     "background-palette-color-general": 5,
-		"background-palette-opacity-general": 0.66,
+    "background-palette-opacity-general": 0.66,
     "background-palette-status-general": true,
     "display-general": "block",
     "isHover": false,

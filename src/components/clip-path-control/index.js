@@ -140,7 +140,7 @@ const ClipPathOption = props => {
 };
 
 const ClipPath = props => {
-	const { className, onChange, prefix, breakpoint, isHover } = props;
+	const { className, onChange, prefix = '', breakpoint, isHover } = props;
 
 	const classes = classnames('maxi-clip-path-control', className);
 
@@ -259,6 +259,12 @@ const ClipPath = props => {
 			changeClipPathOptions(deconstructCP());
 	}, [clipPath, clipPathOptions]);
 
+	const onChangeValue = val => {
+		onChange({
+			[getAttributeKey('clip-path', isHover, prefix, breakpoint)]: val,
+		});
+	};
+
 	const generateCP = clipPath => {
 		const { type, content } = clipPath;
 		const arrayContent = Object.values(content);
@@ -290,12 +296,6 @@ const ClipPath = props => {
 		onChangeValue(newCP);
 
 		changeClipPathOptions(clipPath);
-	};
-
-	const onChangeValue = val => {
-		onChange({
-			[getAttributeKey('clip-path', isHover, prefix, breakpoint)]: val,
-		});
 	};
 
 	const onChangeType = newType => {

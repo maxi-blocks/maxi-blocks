@@ -76,7 +76,7 @@ Array [
 
 exports[`Button Maxi hover simple actions Button background 2`] = `" body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button:not(:hover) { background: var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}"`;
 
-exports[`Button Maxi hover simple actions Button background 3`] = `"body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { transition: background 0.3s 0s ease;}"`;
+exports[`Button Maxi hover simple actions Button background 3`] = `"body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { transition: background 0.3s ease 0s, background 0.3s 0s ease;}"`;
 
 exports[`Button Maxi hover simple actions Button background and shadow 1`] = `
 Array [
@@ -201,7 +201,7 @@ Array [
 
 exports[`Button Maxi hover simple actions Button background and shadow 2`] = `" body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button:not(:hover) { box-shadow: 0px 30px 50px 0px rgba(var(--maxi-light-color-4,255,74,23),0.23); background: var(--maxi-light-button-background-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}"`;
 
-exports[`Button Maxi hover simple actions Button background and shadow 3`] = `"body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { transition: box-shadow 0.3s 0s ease,  background 0.3s 0s ease;}"`;
+exports[`Button Maxi hover simple actions Button background and shadow 3`] = `"body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { transition: background 0.3s ease 0s, box-shadow 0.3s 0s ease,  background 0.3s ease 0s, background 0.3s 0s ease;}"`;
 
 exports[`Button Maxi hover simple actions Button border 1`] = `
 Array [
@@ -319,7 +319,7 @@ Array [
 
 exports[`Button Maxi hover simple actions Button border 2`] = `" body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { border-bottom-left-radius: 11px; border-bottom-right-radius: 11px; border-top-right-radius: 11px; border-top-left-radius: 11px; border-left-width: 2px; border-bottom-width: 2px; border-right-width: 2px; border-top-width: 2px; border-style: solid; border-color: rgba(var(--maxi-light-color-8,150,176,203),0.5);}@media screen and (min-width: 1921px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { border-color: rgba(var(--maxi-light-color-8,150,176,203),0.5);}}@media screen and (max-width: 1920px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { border-bottom-left-radius: 11px; border-bottom-right-radius: 11px; border-top-right-radius: 11px; border-top-left-radius: 11px; border-left-width: 2px; border-bottom-width: 2px; border-right-width: 2px; border-top-width: 2px; border-style: solid; border-color: rgba(var(--maxi-light-color-8,150,176,203),0.5);}}@media screen and (max-width: 1366px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { border-color: rgba(var(--maxi-light-color-8,150,176,203),0.5);}}"`;
 
-exports[`Button Maxi hover simple actions Button border 3`] = `"body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { transition: border-color 0.3s 0s ease, border-style 0.3s 0s ease, border-top-width 0.3s 0s ease, border-right-width 0.3s 0s ease, border-bottom-width 0.3s 0s ease, border-left-width 0.3s 0s ease, border-top-left-radius 0.3s 0s ease, border-top-right-radius 0.3s 0s ease, border-bottom-right-radius 0.3s 0s ease, border-bottom-left-radius 0.3s 0s ease;}"`;
+exports[`Button Maxi hover simple actions Button border 3`] = `"body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { transition: background 0.3s ease 0s, border-color 0.3s 0s ease, border-style 0.3s 0s ease, border-top-width 0.3s 0s ease, border-right-width 0.3s 0s ease, border-bottom-width 0.3s 0s ease, border-left-width 0.3s 0s ease, border-top-left-radius 0.3s 0s ease, border-top-right-radius 0.3s 0s ease, border-bottom-right-radius 0.3s 0s ease, border-bottom-left-radius 0.3s 0s ease;}"`;
 
 exports[`Button Maxi hover simple actions Button icon 1`] = `
 Array [
@@ -743,7 +743,7 @@ Array [
 
 exports[`Button Maxi hover simple actions Button margin/padding 2`] = `" body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { padding-left: 2px; padding-bottom: 2px; padding-right: 2px; padding-top: 2px; margin-left: 1px; margin-bottom: 1px; margin-right: 1px; margin-top: 1px;}@media screen and (min-width: 1921px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { padding-left: 17px; padding-bottom: 5px; padding-right: 5px; padding-top: 5px;}}@media screen and (max-width: 1920px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { padding-left: 2px; padding-bottom: 2px; padding-right: 2px; padding-top: 2px; margin-left: 1px; margin-bottom: 1px; margin-right: 1px; margin-top: 1px;}}"`;
 
-exports[`Button Maxi hover simple actions Button margin/padding 3`] = `"body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { transition: margin-top 0.3s 0s ease, margin-right 0.3s 0s ease, margin-bottom 0.3s 0s ease, margin-left 0.3s 0s ease, padding-top 0.3s 0s ease, padding-right 0.3s 0s ease, padding-bottom 0.3s 0s ease, padding-left 0.3s 0s ease;}"`;
+exports[`Button Maxi hover simple actions Button margin/padding 3`] = `"body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { transition: background 0.3s ease 0s, margin-top 0.3s 0s ease, margin-right 0.3s 0s ease, margin-bottom 0.3s 0s ease, margin-left 0.3s 0s ease, padding-top 0.3s 0s ease, padding-right 0.3s 0s ease, padding-bottom 0.3s 0s ease, padding-left 0.3s 0s ease;}"`;
 
 exports[`Button Maxi hover simple actions Button shadow 1`] = `
 Array [
@@ -801,7 +801,7 @@ Array [
 
 exports[`Button Maxi hover simple actions Button shadow 2`] = `" body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { box-shadow: 22px 33px 44px 55px rgba(var(--maxi-light-color-8,150,176,203),0.11);}"`;
 
-exports[`Button Maxi hover simple actions Button shadow 3`] = `"body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { transition: box-shadow 0.3s 0s ease;}"`;
+exports[`Button Maxi hover simple actions Button shadow 3`] = `"body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { transition: background 0.3s ease 0s, box-shadow 0.3s 0s ease;}"`;
 
 exports[`Button Maxi hover simple actions Button typography 1`] = `
 Array [
@@ -906,4 +906,4 @@ Array [
 
 exports[`Button Maxi hover simple actions Button typography 2`] = `" body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__content { direction: rtl; text-orientation: sideways; writing-mode: vertical-rl; text-indent: 20px; text-decoration: underline; font-style: italic; text-transform: capitalize; font-weight: ; letter-spacing: 15px; line-height: 60%; font-size: 24px; color: var(--maxi-light-button-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}@media screen and (max-width: 1920px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__content { direction: rtl; text-orientation: sideways; writing-mode: vertical-rl; text-indent: 20px; text-decoration: underline; font-style: italic; text-transform: capitalize; font-weight: ; letter-spacing: 15px; line-height: 60%; font-size: 24px; color: var(--maxi-light-button-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}}"`;
 
-exports[`Button Maxi hover simple actions Button typography 3`] = `"body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__content { transition: color 0.3s 0s ease, font-size 0.3s 0s ease, line-height 0.3s 0s ease, letter-spacing 0.3s 0s ease, font-weight 0.3s 0s ease, text-transform 0.3s 0s ease, font-style 0.3s 0s ease, text-decoration 0.3s 0s ease, text-indent 0.3s 0s ease, writing-mode 0.3s 0s ease, text-orientation 0.3s 0s ease, direction 0.3s 0s ease;}"`;
+exports[`Button Maxi hover simple actions Button typography 3`] = `"body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__content { transition: all 0s ease 0s, color 0.3s 0s ease, font-size 0.3s 0s ease, line-height 0.3s 0s ease, letter-spacing 0.3s 0s ease, font-weight 0.3s 0s ease, text-transform 0.3s 0s ease, font-style 0.3s 0s ease, text-decoration 0.3s 0s ease, text-indent 0.3s 0s ease, writing-mode 0.3s 0s ease, text-orientation 0.3s 0s ease, direction 0.3s 0s ease;}"`;

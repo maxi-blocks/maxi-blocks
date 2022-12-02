@@ -26,10 +26,6 @@ jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 	});
 });
 
-jest.mock('src/extensions/attributes/goThroughMaxiBlocks.js', () => {
-	return jest.fn(() => undefined);
-});
-
 describe('getBorderStyles', () => {
 	const defaultAttributes = {
 		'border-style-general': 'none',

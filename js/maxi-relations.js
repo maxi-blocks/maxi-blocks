@@ -16,6 +16,10 @@ class Relation {
 		this.targetEl = document.querySelector(this.fullTarget);
 		this.dataTarget = `#${item.uniqueID}[data-maxi-relations="true"]`;
 
+		this.defaultTransition = window
+			.getComputedStyle(this.targetEl)
+			.getPropertyValue('transition');
+
 		if (!this.triggerEl || !this.targetEl) return;
 
 		this.breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -725,13 +729,18 @@ class Relation {
 			status ? `${duration}s ${delay}s ${easing}` : '0s 0s'
 		}, `;
 
-		return isIcon
+		const transitionString = isIcon
 			? `all ${transitionPropertiesString}`
 			: Object.keys(styleObj).reduce(
 					(transitionString, style) =>
 						`${transitionString}${style} ${transitionPropertiesString}`,
 					''
 			  );
+
+		if (this.defaultTransition !== 'none 0s ease 0s') {
+			return `${transitionString} ${this.defaultTransition}`;
+		}
+		return transitionString;
 	}
 
 	init() {

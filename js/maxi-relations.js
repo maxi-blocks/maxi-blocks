@@ -734,7 +734,7 @@ class Relation {
 			  );
 
 		if (this.defaultTransition !== 'none 0s ease 0s') {
-			return `${transitionString} ${this.defaultTransition}`;
+			return `${this.defaultTransition}, ${transitionString}`;
 		}
 		return transitionString;
 	}

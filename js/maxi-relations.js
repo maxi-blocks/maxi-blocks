@@ -92,10 +92,6 @@ class Relation {
 		// leave the hover transition trigger
 		this.contentTimeout = null;
 
-		this.defaultTransition = window
-			.getComputedStyle(this.targetEl)
-			.getPropertyValue('transition');
-
 		this.init();
 	}
 

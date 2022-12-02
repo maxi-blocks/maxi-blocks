@@ -35,7 +35,8 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 		'maxi-popover-button',
 		isOpen && 'maxi-popover-button--open',
 		version <= 13.0 && 'maxi-popover-button--old',
-		className
+		className,
+		props.isSmall && 'maxi-popover-button--small-block'
 	);
 
 	const boundaryElement =

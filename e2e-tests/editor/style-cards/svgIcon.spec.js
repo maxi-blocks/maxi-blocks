@@ -20,7 +20,7 @@ describe('SC svg icon', () => {
 
 		// Global Line Colour
 		await page.$eval(
-			'.maxi-blocks-sc__type--SVG .maxi-style-cards-control__toggle-line-global input',
+			'.maxi-blocks-sc__type--SVG .maxi-style-cards-control__toggle-line-color-global input',
 			button => button.click()
 		);
 
@@ -31,7 +31,7 @@ describe('SC svg icon', () => {
 
 		// Global Fill Colour
 		await page.$eval(
-			'.maxi-blocks-sc__type--SVG .maxi-style-cards-control__toggle-fill-global input',
+			'.maxi-blocks-sc__type--SVG .maxi-style-cards-control__toggle-fill-color-global input',
 			button => button.click()
 		);
 

@@ -3,13 +3,12 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
-import { Button, TextControl } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
-
 import { getNewMarker, getUpdatedMarkers } from '../../utils';
+import { Button, TextControl } from '../../../../components';
 
 /**
  * External dependencies

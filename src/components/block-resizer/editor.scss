@@ -1,8 +1,3 @@
-body.maxi-blocks--active .maxi-block__resizer .is-selected,
-.maxi-svg-icon-block.is-selected {
-	z-index: 10;
-}
-
 body.maxi-blocks--active .maxi-block__resizer {
 	.maxi-resizable {
 		&__handle {

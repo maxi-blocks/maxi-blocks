@@ -8,7 +8,8 @@
 		"plugin:react/recommended",
 		"airbnb",
 		"plugin:prettier/recommended",
-		"prettier"
+		"prettier",
+		"plugin:jest/recommended"
 	],
 	"parserOptions": {
 		"ecmaFeatures": {

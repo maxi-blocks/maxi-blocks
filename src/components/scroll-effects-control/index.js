@@ -507,7 +507,7 @@ const ScrollEffectsControl = props => {
 			onChange({
 				...newDefaultShortcuts?.[type]?.[`shortcut${number}`],
 				shortcutEffectType: {
-					...props['shortcutEffectType'],
+					...props.shortcutEffectType,
 					[type]: number,
 				},
 			});
@@ -529,7 +529,7 @@ const ScrollEffectsControl = props => {
 			<SelectControl
 				label={__('Scroll combinations', 'maxi-blocks')}
 				onChange={val => onChangeShortcut(val)}
-				value={props['shortcutEffect']}
+				value={props.shortcutEffect}
 				options={globalShortcutsOptions}
 			/>
 			<SettingTabsControl
@@ -587,9 +587,7 @@ const ScrollEffectsControl = props => {
 											'Direction preset',
 											'maxi-blocks'
 										)}
-										value={
-											props['shortcutEffectType']?.[type]
-										}
+										value={props.shortcutEffectType?.[type]}
 										onChange={val =>
 											onChangeShortcut(val, type)
 										}

@@ -19,8 +19,8 @@ import getIsFullFormat from './getIsFullFormat';
  * Get the classes from custom formats that shares the same
  * typography object on the Maxi typography object
  *
- * @param {Object} customFormats 	Custom formats from typography object
- * @param {Object} formatValue 		RichText format value
+ * @param {Object} customFormats Custom formats from typography object
+ * @param {Object} formatValue   RichText format value
  *
  * @returns {Array} Repeated classNames
  */
@@ -68,9 +68,9 @@ export const getRepeatedClassNames = (customFormats, formatValue) => {
  * In case some custom format classes shares the same format, this function
  * reduces to just one class
  *
- * @param {Array} repeatedClasses 		Repeated classes
- * @param {Object} formatValue 			RichText format value
- * @param {Object} typography 			Maxi typography object
+ * @param {Array}  repeatedClasses Repeated classes
+ * @param {Object} formatValue     RichText format value
+ * @param {Object} typography      Maxi typography object
  *
  * @returns {Object} Cleaned RichText format value and Maxi typography
  */
@@ -116,11 +116,11 @@ export const flatRepeatedClassNames = (
 /**
  * Removes custom formats when are equal to the default typography object
  *
- * @param {Object} 	[$0]					Optional named arguments.
- * @param {Object} 	[$0.formatValue]		RichText format value
- * @param {Object} 	[$0.typography]			MaxiBlocks typography
- * @param {Object} 	[$0.content]			Text Maxi block content
- * @param {boolean} [$0.isList]				Text Maxi block has list mode active
+ * @param {Object}  [$0]             Optional named arguments.
+ * @param {Object}  [$0.formatValue] RichText format value
+ * @param {Object}  [$0.typography]  MaxiBlocks typography
+ * @param {Object}  [$0.content]     Text Maxi block content
+ * @param {boolean} [$0.isList]      Text Maxi block has list mode active
  *
  * @returns {Object} Cleaned RichText format value, content and Maxi typography
  */
@@ -217,11 +217,11 @@ export const removeUnnecessaryFormats = ({
 /**
  * Clean and flat the custom formats
  *
- * @param {Object} 	[$0]					Optional named arguments.
- * @param {Object} 	[$0.formatValue]		RichText format value
- * @param {Object} 	[$0.typography]			MaxiBlocks typography
- * @param {Object} 	[$0.content]			Text Maxi block content
- * @param {boolean} [$0.isList]				Text Maxi block has list mode active
+ * @param {Object}  [$0]             Optional named arguments.
+ * @param {Object}  [$0.formatValue] RichText format value
+ * @param {Object}  [$0.typography]  MaxiBlocks typography
+ * @param {Object}  [$0.content]     Text Maxi block content
+ * @param {boolean} [$0.isList]      Text Maxi block has list mode active
  *
  * @returns {Object} Cleaned RichText format value, content and Maxi typography
  */

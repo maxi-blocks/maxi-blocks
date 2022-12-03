@@ -13,6 +13,12 @@
 	padding: 0 25px 0 0;
 	box-shadow: 0 5px 15px 0 rgba(119, 119, 119, 0.1);
 
+	.maxi-responsive-selector__base:hover {
+		.maxi-tabs-control__notification {
+			opacity: 1 !important;
+		}
+	}
+
 	.action-buttons {
 		display: inline-block;
 		&__button {
@@ -139,19 +145,41 @@
 			border-right: 1px solid #dbdde6;
 			border-radius: 0;
 			transition: border-color 0.5s;
-			margin: 0 0 0 0;
+			margin: 0;
 			height: 40px;
 			width: 56px;
 			padding: 2px !important;
 			justify-content: center;
 			align-items: center;
 
+			.responsive-button-tooltip {
+				opacity: 0;
+				transition: all 0.2s;
+				position: absolute;
+				height: 100%;
+				width: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				left: 0;
+				top: 0;
+			}
+
 			svg {
 				display: block;
 				margin: 0 auto;
+				transition: all 0.2s;
 			}
 			&:hover {
 				color: #000;
+
+				.maxi-responsive-selector__button-current-size,
+				svg {
+					opacity: 0;
+				}
+				.responsive-button-tooltip {
+					opacity: 1;
+				}
 			}
 			&:first-of-type {
 				margin-left: 0;
@@ -237,7 +265,7 @@
 			}
 		}
 		&__button {
-			margin: 0 0 8px 0;
+			margin: 0 0 8px;
 			display: block;
 		}
 	}
@@ -277,7 +305,7 @@
 			width: 31px;
 		}
 		&__close {
-			padding: 0 5px 0 5px;
+			padding: 0 5px;
 		}
 	}
 }

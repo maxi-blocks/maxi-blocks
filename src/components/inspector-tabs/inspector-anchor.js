@@ -28,7 +28,10 @@ const anchor = ({ props }) => {
 		content: (
 			<TextControl
 				isFullwidth
-				label={__('Create anchor link ID for this block', 'maxi-blocks')}
+				label={__(
+					'Create anchor link ID for this block',
+					'maxi-blocks'
+				)}
 				className='maxi-anchor-link'
 				placeholder={__('Allowed chars: 0-9, A-Z, a-z, _ , -')}
 				value={anchorLink}

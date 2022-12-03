@@ -3,13 +3,13 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
-import { Button, Icon } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import MaxiStyleCardsEditor from './maxiStyleCardsEditor';
+import { Button, Icon } from '../../components';
 
 /**
  * Styles and icons

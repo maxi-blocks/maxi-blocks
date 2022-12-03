@@ -37,7 +37,13 @@ import {
 /**
  * Components
  */
-const ResponsiveButton = ({ baseBreakpoint, icon, breakpoint, target }) => {
+const ResponsiveButton = ({
+	baseBreakpoint,
+	icon,
+	tooltipValue,
+	breakpoint,
+	target,
+}) => {
 	const isBaseBreakpoint = baseBreakpoint === target;
 
 	const classes = classnames(
@@ -61,6 +67,11 @@ const ResponsiveButton = ({ baseBreakpoint, icon, breakpoint, target }) => {
 				aria-pressed={getIsPressed()}
 			>
 				<div>
+					{tooltipValue && (
+						<div className='responsive-button-tooltip'>
+							{tooltipValue}
+						</div>
+					)}
 					{icon}
 					{isBaseBreakpoint && (
 						<>
@@ -123,6 +134,7 @@ const ResponsiveSelector = props => {
 				breakpoint={deviceType}
 				baseBreakpoint={baseBreakpoint}
 				breakpoints={breakpoints}
+				tooltipValue={`>${breakpoints.xl}`}
 			/>
 			<ResponsiveButton
 				icon={xlMode}
@@ -130,6 +142,7 @@ const ResponsiveSelector = props => {
 				breakpoint={deviceType}
 				baseBreakpoint={baseBreakpoint}
 				breakpoints={breakpoints}
+				tooltipValue={breakpoints.xl}
 			/>
 			<ResponsiveButton
 				icon={largeMode}
@@ -137,6 +150,7 @@ const ResponsiveSelector = props => {
 				breakpoint={deviceType}
 				baseBreakpoint={baseBreakpoint}
 				breakpoints={breakpoints}
+				tooltipValue={breakpoints.l}
 			/>
 			<ResponsiveButton
 				icon={mediumMode}
@@ -144,6 +158,7 @@ const ResponsiveSelector = props => {
 				breakpoint={deviceType}
 				baseBreakpoint={baseBreakpoint}
 				breakpoints={breakpoints}
+				tooltipValue={breakpoints.m}
 			/>
 			<ResponsiveButton
 				icon={smallMode}
@@ -151,6 +166,7 @@ const ResponsiveSelector = props => {
 				breakpoint={deviceType}
 				baseBreakpoint={baseBreakpoint}
 				breakpoints={breakpoints}
+				tooltipValue={breakpoints.s}
 			/>
 			<ResponsiveButton
 				icon={xsMode}
@@ -158,6 +174,7 @@ const ResponsiveSelector = props => {
 				breakpoint={deviceType}
 				baseBreakpoint={baseBreakpoint}
 				breakpoints={breakpoints}
+				tooltipValue={breakpoints.xs}
 			/>
 			<div className='action-buttons'>
 				<Button

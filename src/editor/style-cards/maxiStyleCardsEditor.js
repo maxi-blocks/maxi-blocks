@@ -92,7 +92,9 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 		saveSCStyles,
 	} = useDispatch('maxiBlocks/style-cards');
 
-	const [styleCardName, setStyleCardName] = useState('');
+	const [styleCardName, setStyleCardName] = useState(
+		`${selectedSCValue?.name} - `
+	);
 	const [currentSCStyle, setCurrentSCStyle] = useState('light');
 
 	useEffect(() => {

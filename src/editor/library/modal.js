@@ -18,7 +18,7 @@ import { isEmpty } from 'lodash';
 /**
  * Icons
  */
-import { SCaddMore, toolbarReplaceImage, remove } from '../../icons';
+import { toolbarReplaceImage, remove } from '../../icons';
 
 /**
  * Layout modal window with tab panel.
@@ -79,7 +79,6 @@ const MaxiModal = props => {
 						className='maxi-style-cards__sc__more-sc--add-more'
 						onClick={onClick}
 					>
-						<Icon icon={SCaddMore} />
 						<span>Browse style cards</span>
 					</Button>
 				)}

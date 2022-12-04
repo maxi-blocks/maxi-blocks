@@ -105,7 +105,7 @@ const MasonryItem = props => {
 							className={`${isSaved} maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-load`}
 						>
 							{isSaved === 'not-saved'
-								? __('Insert', 'maxi-block')
+								? __('Save', 'maxi-block')
 								: __('Saved', 'maxi-block')}
 						</span>
 					)}

@@ -234,19 +234,28 @@ const transition = {
 			title: 'Border',
 			target: ' .maxi-pane-block__header',
 			property: 'border',
-			hoverProp: `${headerPrefix}border-status-hover`,
+			hoverProp: [
+				`${headerPrefix}border-status-hover`,
+				`${headerPrefix}border-status-active`,
+			],
 		},
 		'box shadow': {
 			title: 'Box shadow',
 			target: ' .maxi-pane-block__header',
 			property: 'box-shadow',
-			hoverProp: `${headerPrefix}box-shadow-status-hover`,
+			hoverProp: [
+				`${headerPrefix}box-shadow-status-hover`,
+				`${headerPrefix}box-shadow-status-active`,
+			],
 		},
 		background: {
 			title: 'Background',
 			target: ' .maxi-pane-block__header',
 			property: 'background',
-			hoverProp: `${headerPrefix}background-status-hover`,
+			hoverProp: [
+				`${headerPrefix}background-status-hover`,
+				`${headerPrefix}background-status-active`,
+			],
 		},
 	},
 	content: {
@@ -254,19 +263,28 @@ const transition = {
 			title: 'Border',
 			target: ' .maxi-pane-block__content',
 			property: 'border',
-			hoverProp: `${contentPrefix}border-status-hover`,
+			hoverProp: [
+				`${contentPrefix}border-status-hover`,
+				`${contentPrefix}border-status-active`,
+			],
 		},
 		'box shadow': {
 			title: 'Box shadow',
 			target: ' .maxi-pane-block__content',
 			property: 'box-shadow',
-			hoverProp: `${contentPrefix}box-shadow-status-hover`,
+			hoverProp: [
+				`${contentPrefix}box-shadow-status-hover`,
+				`${contentPrefix}box-shadow-status-active`,
+			],
 		},
 		background: {
 			title: 'Background',
 			target: ' .maxi-pane-block__content',
 			property: 'background',
-			hoverProp: `${contentPrefix}background-status-hover`,
+			hoverProp: [
+				`${contentPrefix}background-status-hover`,
+				`${contentPrefix}background-status-active`,
+			],
 		},
 	},
 };

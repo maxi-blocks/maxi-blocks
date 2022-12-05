@@ -12,12 +12,7 @@ import { Popover } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import {
-	// showMaxiSCSavedActiveSnackbar,
-	// showMaxiSCSavedSnackbar,
-	// showMaxiSCAppliedActiveSnackbar,
-	exportStyleCard,
-} from './utils';
+import { exportStyleCard } from './utils';
 import {
 	SettingTabsControl,
 	SelectControl,
@@ -233,37 +228,6 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 	const [isHiddenSave, setIsHiddenSave] = useState(true);
 	const [isHiddenRemove, setIsHiddenRemove] = useState(true);
 
-	const openDialog = type => {
-		switch (type) {
-			case 'activate':
-				setIsHiddenActivate(false);
-				break;
-			case 'save':
-				setIsHiddenSave(false);
-				break;
-			case 'remove':
-				setIsHiddenRemove(false);
-				break;
-			default:
-				break;
-		}
-	};
-	const removeDialog = type => {
-		switch (type) {
-			case 'activate':
-				setIsHiddenActivate(true);
-				break;
-			case 'save':
-				setIsHiddenSave(true);
-				break;
-			case 'remove':
-				setIsHiddenRemove(true);
-				break;
-			default:
-				break;
-		}
-	};
-
 	const applyCurrentSCGlobally = () => {
 		setActiveStyleCard(selectedSCKey);
 
@@ -312,6 +276,30 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 	const [importedCardExists, setImportedCardExists] = useState(false);
 
 	const currentDate = date(getSettings()?.formats?.date);
+
+	const optionsSCList = () => {
+		const response = [];
+		!isEmpty(styleCards) &&
+			Object.entries(styleCards).map(([key, val], i) => {
+				if (val?.type !== 'user')
+					response.push({
+						label: `Template: ${val.name}`,
+						value: key,
+					});
+				else if (!isEmpty(val?.updated))
+					response.push({
+						label: `${val.name} - ${val.updated}`,
+						value: key,
+					});
+				else
+					response.push({
+						label: `${val.name}`,
+						value: key,
+					});
+				return null;
+			});
+		return response;
+	};
 
 	return (
 		!isEmpty(styleCards) && (
@@ -398,7 +386,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 							<SelectControl
 								className='maxi-style-cards__sc__more-sc--select'
 								value={selectedSCKey}
-								options={SCList}
+								options={optionsSCList()}
 								onChange={val => {
 									setSelectedStyleCard(val);
 									disableSettings();

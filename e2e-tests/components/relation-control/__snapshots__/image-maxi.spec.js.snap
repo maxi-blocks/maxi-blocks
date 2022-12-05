@@ -41,4 +41,4 @@ Array [
 
 exports[`Image Maxi hover simple actions Alignment 2`] = `" body.maxi-blocks--active #image-maxi-1[data-maxi-relations=\\"true\\"] .maxi-image-block-wrapper { justify-content: flex-end;}@media screen and (max-width: 1920px) { body.maxi-blocks--active #image-maxi-1[data-maxi-relations=\\"true\\"] .maxi-image-block-wrapper { justify-content: flex-end;}}"`;
 
-exports[`Image Maxi hover simple actions Alignment 3`] = `"body.maxi-blocks--active #image-maxi-1[data-maxi-relations=\\"true\\"] .maxi-image-block-wrapper { transition: all 0s ease 0s, justify-content 0.3s 0s ease;}"`;
+exports[`Image Maxi hover simple actions Alignment 3`] = `"body.maxi-blocks--active #image-maxi-1[data-maxi-relations=\\"true\\"] .maxi-image-block-wrapper { transition: all 0s ease 0s, justify-content 0.3s ease 0s;}"`;

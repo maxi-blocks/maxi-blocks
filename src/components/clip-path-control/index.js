@@ -122,7 +122,7 @@ const ClipPathOption = props => {
 
 								values[1] = value;
 
-								onChangeValue(values);
+								onChange(values);
 							}}
 							min={0}
 							max={100}
@@ -263,6 +263,13 @@ const ClipPath = props => {
 		const { type, content } = clipPath;
 		const arrayContent = Object.values(content);
 
+		const onChangeValue = val => {
+			onChange({
+				[getAttributeKey('clip-path', isHover, prefix, breakpoint)]:
+					val,
+			});
+		};
+
 		let newContent = '';
 
 		switch (type) {
@@ -290,12 +297,6 @@ const ClipPath = props => {
 		onChangeValue(newCP);
 
 		changeClipPathOptions(clipPath);
-	};
-
-	const onChangeValue = val => {
-		onChange({
-			[getAttributeKey('clip-path', isHover, prefix, breakpoint)]: val,
-		});
 	};
 
 	const onChangeType = newType => {
@@ -335,6 +336,12 @@ const ClipPath = props => {
 		onChange({
 			[getAttributeKey('clip-path-status', isHover, prefix, breakpoint)]:
 				val,
+		});
+	};
+
+	const onChangeValue = val => {
+		onChange({
+			[getAttributeKey('clip-path', isHover, prefix, breakpoint)]: val,
 		});
 	};
 

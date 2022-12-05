@@ -212,6 +212,20 @@ const getActiveStyles = (props, rawPrefix) => {
 				blockStyle: props.blockStyle,
 				prefix,
 			})),
+		border:
+			props[`${rawPrefix}border-status-active`] &&
+			getBorderStyles({
+				obj: {
+					...getGroupAttributes(
+						props,
+						['border', 'borderWidth', 'borderRadius'],
+						false,
+						prefix
+					),
+				},
+				blockStyle: props.blockStyle,
+				prefix,
+			}),
 	};
 };
 

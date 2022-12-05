@@ -69,5 +69,10 @@ describe('FontFamilySelector', () => {
 		expect(await getAttributes('font-family-s')).toStrictEqual(
 			'Montserrat'
 		);
+
+		const hasBeenLoaded = await page.evaluate(() =>
+			document.fonts.check('12px Montserrat')
+		);
+		expect(hasBeenLoaded).toBeTruthy();
 	});
 });

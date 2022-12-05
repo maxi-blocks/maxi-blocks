@@ -57,7 +57,7 @@ describe('BorderControl', () => {
 			'.maxi-tabs-content .maxi-default-styles-control button'
 		);
 
-		const expectAttributes = [undefined, 'solid', 'dashed', 'dotted'];
+		const expectAttributes = ['none', 'solid', 'dashed', 'dotted'];
 
 		for (let i = 0; i < expectAttributes.length; i += 1) {
 			await page.$$eval(
@@ -152,7 +152,7 @@ describe('BorderControl', () => {
 		const expectBorder = {
 			'border-color-general': undefined,
 			'border-color-general-hover': undefined,
-			'border-style-general': undefined,
+			'border-style-general': 'none',
 			'border-style-general-hover': 'solid',
 			'border-top-width-general': 2,
 			'border-top-width-general-hover': 2,

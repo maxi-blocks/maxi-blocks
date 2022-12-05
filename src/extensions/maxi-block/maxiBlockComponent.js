@@ -34,7 +34,7 @@ import getBreakpoints from '../styles/helpers/getBreakpoints';
 import getIsUniqueIDRepeated from './getIsUniqueIDRepeated';
 import { loadFonts, getAllFonts } from '../text/fonts';
 import { uniqueIDGenerator } from '../attributes';
-import getHoverStatus from '../../components/relation-control/getHoverStatus';
+import { getHoverStatus } from '../relations';
 import * as blocksData from '../../blocks/data';
 import { getStylesWrapperId } from './utils';
 

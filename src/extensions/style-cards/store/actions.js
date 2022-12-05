@@ -12,6 +12,7 @@ export function receiveMaxiStyleCards() {
 }
 
 export function saveMaxiStyleCards(styleCards, isUpdate = false) {
+	console.log(styleCards);
 	return {
 		type: 'SAVE_STYLE_CARDS',
 		styleCards,

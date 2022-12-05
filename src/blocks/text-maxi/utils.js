@@ -126,6 +126,7 @@ export const onReplaceBlocks = (blocks, clientId) => {
 	if (firstBlockEmpty) rawBlocks.shift();
 
 	const cleanBlocks = [];
+
 	if (rawBlocks.length > 1)
 		rawBlocks.reduce((currentBlock, nextBlock, i) => {
 			const {
@@ -140,10 +141,9 @@ export const onReplaceBlocks = (blocks, clientId) => {
 				textLevel === currentTextLevel ||
 				(currentIsList && isList && currentTypeOfList === typeOfList)
 			) {
-				currentBlock.attributes.content += content;
+				currentBlock.attributes.content += `<br>${content}`;
 
-				if (rawBlocks.length === i + 1)
-					cleanBlocks.push(currentBlock, nextBlock);
+				if (rawBlocks.length === i + 1) cleanBlocks.push(currentBlock);
 
 				return currentBlock;
 			}

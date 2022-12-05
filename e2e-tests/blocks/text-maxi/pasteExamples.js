@@ -10,6 +10,8 @@ const pasteHTML = `
 <h5>This is heading 5</h5>
 <h6>This is heading 6</h6>
 
+<p>This is a<br>line break</p>
+
 <h2>An Unordered HTML List</h2>
 <ul>
     <li>Coffee</li>

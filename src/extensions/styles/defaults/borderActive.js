@@ -5,7 +5,7 @@ const prefix = 'active-';
 
 export const borderActive = prefixAttributesCreator({
 	obj: border,
-	diffValAttr: { 'border-palette-color-general': 6 },
+	diffValAttr: { [`${prefix}border-palette-color-general`]: 6 },
 	newAttr: {
 		'border-status-active': {
 			type: 'boolean',

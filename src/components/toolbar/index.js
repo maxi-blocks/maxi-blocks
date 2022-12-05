@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { select, useSelect } from '@wordpress/data';
-import { Popover } from '@wordpress/components';
+
 import {
 	memo,
 	forwardRef,
@@ -23,6 +23,7 @@ import classnames from 'classnames';
 import { getBoundaryElement } from '../../extensions/dom';
 import SvgColorToolbar from './components/svg-color';
 import VideoUrl from './components/video-url';
+import Popover from '../popover';
 
 /**
  * Utils

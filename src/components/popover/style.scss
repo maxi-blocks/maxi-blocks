@@ -1,0 +1,93 @@
+$arrow-size: 8px;
+
+/*!rtl:begin:ignore*/
+.components-popover {
+	position: fixed;
+	z-index: z-index('.components-popover');
+	top: 0;
+	left: 0;
+
+	// Hide the popover element until the position has been calculated. The position
+	// cannot be calculated until the popover element is rendered because the
+	// position depends on the size of the popover.
+	opacity: 0;
+
+	&.is-expanded,
+	&[data-x-axis][data-y-axis] {
+		opacity: 1;
+	}
+
+	&.is-expanded {
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: z-index('.components-popover') !important;
+	}
+
+	&[data-y-axis='top'] {
+		bottom: 100%;
+	}
+
+	&[data-y-axis='bottom'] {
+		top: 100%;
+	}
+
+	&[data-y-axis='middle'] {
+		align-items: center;
+		display: flex;
+	}
+}
+
+.components-popover__content {
+	height: 100%;
+
+	// Alternate treatment for popovers that put them at elevation zero with high contrast.
+	.is-alternate & {
+		box-shadow: none;
+	}
+
+	.components-popover & {
+		position: absolute;
+		height: auto;
+		overflow-y: auto;
+	}
+
+	.components-popover.is-expanded & {
+		position: static;
+		overflow-y: visible;
+		min-width: auto;
+		border: none;
+	}
+
+	.components-popover[data-y-axis='top'] & {
+		bottom: 100%;
+	}
+
+	.components-popover[data-x-axis='center'] & {
+		left: 50%;
+		transform: translateX(-50%);
+	}
+
+	.components-popover[data-x-axis='right'] & {
+		position: absolute;
+		left: 100%;
+	}
+
+	.components-popover[data-x-axis='left'] & {
+		position: absolute;
+		right: 100%;
+	}
+}
+
+.components-popover__header-title {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 100%;
+}
+
+.components-popover__close.components-button {
+	z-index: z-index('.components-popover__close');
+}
+/*!rtl:end:ignore*/

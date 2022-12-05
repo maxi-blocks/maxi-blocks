@@ -256,32 +256,42 @@ const SquareControl = props => {
 							{ xAxis: 'left', yAxis: 'bottom' },
 							{ xAxis: 'middle', yAxis: 'bottom' },
 							{ xAxis: 'right', yAxis: 'bottom' },
-						].map(({ xAxis: itemXAxis, yAxis: itemYAxis }) => (
-							<Button
-								aria-pressed={
-									xAxis === itemXAxis && yAxis === itemYAxis
-										? 'active'
-										: ''
-								}
-								className={classnames(
-									'maxi-transform-control__square-control__canvas__origin',
-									'maxi-transform-control__square-control__canvas__origin__button',
-									`maxi-transform-control__square-control__canvas__origin__${itemXAxis}`,
-									`maxi-transform-control__square-control__canvas__origin__${itemYAxis}`
-								)}
-								onClick={() => {
-									changeXAxis(itemXAxis);
-									changeYAxis(itemYAxis);
-									onChange(
-										itemXAxis,
-										itemYAxis,
-										xUnit,
-										yUnit
-									);
-									onSave(itemXAxis, itemYAxis, xUnit, yUnit);
-								}}
-							/>
-						))}
+						].map(
+							({ xAxis: itemXAxis, yAxis: itemYAxis }, index) => (
+								<Button
+									// eslint-disable-next-line react/no-array-index-key
+									key={index}
+									aria-pressed={
+										xAxis === itemXAxis &&
+										yAxis === itemYAxis
+											? 'active'
+											: ''
+									}
+									className={classnames(
+										'maxi-transform-control__square-control__canvas__origin',
+										'maxi-transform-control__square-control__canvas__origin__button',
+										`maxi-transform-control__square-control__canvas__origin__${itemXAxis}`,
+										`maxi-transform-control__square-control__canvas__origin__${itemYAxis}`
+									)}
+									onClick={() => {
+										changeXAxis(itemXAxis);
+										changeYAxis(itemYAxis);
+										onChange(
+											itemXAxis,
+											itemYAxis,
+											xUnit,
+											yUnit
+										);
+										onSave(
+											itemXAxis,
+											itemYAxis,
+											xUnit,
+											yUnit
+										);
+									}}
+								/>
+							)
+						)}
 					</div>
 				)}
 				<span className='maxi-transform-control__square-control__canvas__placeholder' />

@@ -31,6 +31,7 @@ const getBoxShadowStyles = ({
 	prefix = '',
 	blockStyle,
 	forClipPath = false,
+	isIB = false,
 }) => {
 	const response = {};
 
@@ -153,6 +154,7 @@ const getBoxShadowStyles = ({
 				: paletteColor;
 
 		const isNotDefault =
+			(breakpoint === 'general' && isIB) ||
 			(breakpoint !== 'general' &&
 				clipPathExists !== defaultClipPathExists &&
 				prefix === 'image-' &&

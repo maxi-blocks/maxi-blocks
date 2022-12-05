@@ -7,8 +7,8 @@ import { inRange, compact, cloneDeep } from 'lodash';
  * Generates an object with the Maxi Custom formats and its different classes
  * and the positions for every one of each
  *
- * @param {Object} formatValue 			RichText format value
- * @param {boolean} isHover 			Is the requested typography under hover state
+ * @param {Object}  formatValue RichText format value
+ * @param {boolean} isHover     Is the requested typography under hover state
  *
  * @returns {Object} Classes with its positions
  */

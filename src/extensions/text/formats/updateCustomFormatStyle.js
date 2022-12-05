@@ -24,11 +24,11 @@ const cleanCustomFormats = (typography, isHover) => {
 /**
  * Merges a cleaned style object comparing with the default typography properties
  *
- * @param {Object} 	typography				MaxiBlocks typography
- * @param {Object} 	value 					Requested values to implement
- * 											on typography object
- * @param {string} 	breakpoint				Device type breakpoint
- * @param {Object}  currentStyle			Current style properties
+ * @param {Object} typography   MaxiBlocks typography
+ * @param {Object} value        Requested values to implement
+ *                              on typography object
+ * @param {string} breakpoint   Device type breakpoint
+ * @param {Object} currentStyle Current style properties
  *
  * @returns {Object} Cleaned styles properties
  */
@@ -96,13 +96,13 @@ export const styleObjectManipulator = ({
 /**
  * Updates the existent custom format
  *
- * @param {Object} 	[$0]						Optional named arguments.
- * @param {Object} 	[$0.typography]				MaxiBlocks typography
- * @param {string} 	[$0.currentClassName]		Maxi Custom format className
- * @param {string} 	[$0.breakpoint]				Device type breakpoint
- * @param {Object}	[$0.value]					Requested values to implement
- * 												on typography object
- * @param {Object} 	[$0.isHover]				Is the requested typography under hover state
+ * @param {Object} [$0]                  Optional named arguments.
+ * @param {Object} [$0.typography]       MaxiBlocks typography
+ * @param {string} [$0.currentClassName] Maxi Custom format className
+ * @param {string} [$0.breakpoint]       Device type breakpoint
+ * @param {Object} [$0.value]            Requested values to implement
+ *                                       on typography object
+ * @param {Object} [$0.isHover]          Is the requested typography under hover state
  *
  * @returns {Object} Updated Maxi typography object
  */

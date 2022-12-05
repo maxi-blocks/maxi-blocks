@@ -124,6 +124,7 @@ const Dropdown = forwardRef(
 							popoverProps ? popoverProps.className : undefined,
 							contentClassName
 						)}
+						noArrow
 					>
 						{renderContent(args)}
 					</Popover>

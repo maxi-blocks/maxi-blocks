@@ -2,8 +2,12 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Button } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
+
+/**
+ * Internal dependencies
+ */
+import { Button } from '../../../../components';
 
 /**
  * External dependencies

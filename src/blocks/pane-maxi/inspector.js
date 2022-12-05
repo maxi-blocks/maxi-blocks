@@ -33,6 +33,7 @@ const Inspector = props => {
 		...inspectorTabs.border({
 			props,
 			prefix,
+			enableActiveState: true,
 		}),
 		...inspectorTabs.boxShadow({
 			props,

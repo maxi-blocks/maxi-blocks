@@ -24,6 +24,7 @@ const border = ({
 	globalProps,
 	hoverGlobalProps,
 	inlineTarget = '',
+	enableActiveState = false,
 }) => {
 	const {
 		attributes,
@@ -44,6 +45,7 @@ const border = ({
 
 	const hoverStatus =
 		attributes[`${prefix}border-status-hover`] || globalHoverStatus;
+	const activeStatus = attributes[`${prefix}border-status-active`];
 
 	const finalInlineTarget =
 		inlineTarget === ''
@@ -163,6 +165,48 @@ const border = ({
 								</>
 							),
 							extraIndicators: [`${prefix}border-status-hover`],
+						},
+						enableActiveState && {
+							label: __('Active state', 'maxi-blocks'),
+							content: (
+								<>
+									<ToggleSwitch
+										label={__(
+											'Enable border active',
+											'maxi-blocks'
+										)}
+										selected={activeStatus}
+										className='maxi-border-status-active'
+										onChange={val =>
+											maxiSetAttributes({
+												[`${prefix}border-status-active`]:
+													val,
+											})
+										}
+									/>
+									{activeStatus && (
+										<BorderControl
+											{...getGroupAttributes(
+												attributes,
+												[
+													'border',
+													'borderWidth',
+													'borderRadius',
+												],
+												false,
+												`${prefix}active-`
+											)}
+											prefix={`${prefix}active-`}
+											onChange={obj =>
+												maxiSetAttributes(obj)
+											}
+											breakpoint={deviceType}
+											clientId={clientId}
+										/>
+									)}
+								</>
+							),
+							extraIndicators: [`${prefix}border-status-active`],
 						},
 					]}
 					depth={depth}

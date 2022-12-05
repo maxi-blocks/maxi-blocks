@@ -22,6 +22,7 @@ const mutualAttributes = {
 
 	...attributesData.border,
 	...attributesData.borderHover,
+	...attributesData.borderActive,
 	...attributesData.borderRadius,
 	...attributesData.borderWidth,
 	...attributesData.boxShadow,

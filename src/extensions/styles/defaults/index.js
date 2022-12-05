@@ -6,6 +6,7 @@ export { default as alignment } from './alignment';
 export { default as arrow } from './arrow';
 export { default as boxShadow } from './boxShadow';
 export { default as boxShadowHover } from './boxShadowHover';
+export { default as boxShadowActive } from './boxShadowActive';
 export { default as breakpoints } from './breakpoints';
 export { default as clipPath } from './clipPath';
 export { default as columnSize } from './columnSize';

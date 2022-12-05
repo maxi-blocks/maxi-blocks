@@ -38,6 +38,7 @@ const Inspector = props => {
 		...inspectorTabs.boxShadow({
 			props,
 			prefix,
+			enableActiveState: true,
 		}),
 		...inspectorTabs.size({
 			props,

@@ -27,6 +27,7 @@ const mutualAttributes = {
 	...attributesData.borderWidth,
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
+	...attributesData.boxShadowActive,
 	...attributesData.size,
 	...attributesData.padding,
 };

@@ -226,6 +226,15 @@ const getActiveStyles = (props, rawPrefix) => {
 				blockStyle: props.blockStyle,
 				prefix,
 			}),
+		boxShadow:
+			props[`${rawPrefix}box-shadow-status-active`] &&
+			getBoxShadowStyles({
+				obj: {
+					...getGroupAttributes(props, 'boxShadow', false, prefix),
+				},
+				blockStyle: props.blockStyle,
+				prefix,
+			}),
 	};
 };
 

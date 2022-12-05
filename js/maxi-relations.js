@@ -722,7 +722,7 @@ class Relation {
 		} = effectsObj;
 
 		const transitionPropertiesString = `${
-			status ? `${duration}s ${delay}s ${easing}` : '0s 0s'
+			status ? `${duration}s ${easing} ${delay}s` : '0s 0s'
 		}, `;
 
 		const transitionString = isIcon
@@ -733,7 +733,10 @@ class Relation {
 					''
 			  );
 
-		if (this.defaultTransition !== 'none 0s ease 0s') {
+		if (
+			this.defaultTransition !== 'none 0s ease 0s' &&
+			transitionString.includes(this.defaultTransition) === false
+		) {
 			return `${this.defaultTransition}, ${transitionString}`;
 		}
 		return transitionString;

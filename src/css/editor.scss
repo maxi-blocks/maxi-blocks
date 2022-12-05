@@ -280,7 +280,6 @@ body .toolbar-item__popover {
 	input[type='number'],
 	textarea,
 	select {
-		color: #fff;
 		border-color: #80828a;
 	}
 	input[type='number'] {
@@ -365,7 +364,7 @@ svg path#styleCardBoat_b {
 	&:not(.is-selected) {
 		&:hover {
 			&::after {
-				content: "";
+				content: '';
 				position: absolute;
 				pointer-events: none;
 				opacity: 1;

@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import { createRef } from '@wordpress/element';
 import { dispatch } from '@wordpress/data';
-import { Button } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -20,6 +19,7 @@ import {
 	BlockResizer,
 	RawHTML,
 	MaxiPopoverButton,
+	Button,
 } from '../../components';
 import {
 	getIsOverflowHidden,
@@ -187,6 +187,10 @@ class edit extends MaxiBlockComponent {
 						key={`popover-${uniqueID}`}
 						ref={this.blockRef}
 						isOpen={isOpen}
+						isSmall={
+							this.props.isChild ||
+							this.props.attributes['width-fit-content-general']
+						}
 						{...this.props}
 					>
 						<MaxiModal {...maxiModalProps} />

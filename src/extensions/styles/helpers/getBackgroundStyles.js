@@ -506,23 +506,25 @@ const getWrapperObject = ({
 		[breakpoint]: {},
 	};
 
-	const bgSVGSize = getLastBreakpointAttribute({
-		target: `${prefix}size`,
-		breakpoint,
-		attributes: props,
-		isHover,
-	});
-
-	if (isNumber(bgSVGSize)) {
-		const bgSVGSizeUnit = getLastBreakpointAttribute({
-			target: `${prefix}size-unit`,
+	['width', 'height'].forEach(size => {
+		const bgSize = getLastBreakpointAttribute({
+			target: `${prefix}${size}`,
 			breakpoint,
 			attributes: props,
 			isHover,
 		});
 
-		response[breakpoint].width = `${bgSVGSize}${bgSVGSizeUnit}`;
-	}
+		if (isNumber(bgSize)) {
+			const bgSVGSizeUnit = getLastBreakpointAttribute({
+				target: `${prefix}${size}-unit`,
+				breakpoint,
+				attributes: props,
+				isHover,
+			});
+
+			response[breakpoint][size] = `${bgSize}${bgSVGSizeUnit}`;
+		}
+	});
 
 	const keyWords = ['top', 'right', 'bottom', 'left'];
 

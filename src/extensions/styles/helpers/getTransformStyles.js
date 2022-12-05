@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import getLastBreakpointTransformAttributeRaw from '../getLastBreakpointTransformAttribute';
+import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 import { validateOriginValue } from '../utils';
 
 /**
@@ -15,19 +15,17 @@ import { isNumber, isString, isEmpty } from 'lodash';
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const getTransformStrings = (category, breakpoint, index, obj) => {
-	const getLastBreakpointTransformAttribute = (
-		attributeName,
-		prop,
-		hoverSelected
-	) =>
-		getLastBreakpointTransformAttributeRaw({
-			attributeName,
-			prop,
-			transformTarget: category,
+	const getLastBreakpointTransformAttribute = ({
+		target,
+		key,
+		hoverSelected,
+		keys,
+	}) =>
+		getLastBreakpointAttribute({
+			target,
 			breakpoint,
 			attributes: obj,
-			hoverSelected,
-			ignoreNormal: true,
+			keys: keys ?? [category, hoverSelected, key],
 		});
 
 	const originValueToNumber = value => {
@@ -50,16 +48,19 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 		let scaleString = '';
 		if (
 			index === 'hover' &&
-			!getLastBreakpointTransformAttribute(
-				'transform-scale',
-				null,
-				'hover-status'
-			)
+			!getLastBreakpointTransformAttribute({
+				target: 'transform-scale',
+				keys: [category, 'hover-status'],
+			})
 		)
 			return getScaleString('normal');
 
-		const [x, y] = ['x', 'y'].map(prop =>
-			getLastBreakpointTransformAttribute('transform-scale', prop, index)
+		const [x, y] = ['x', 'y'].map(key =>
+			getLastBreakpointTransformAttribute({
+				target: 'transform-scale',
+				key,
+				hoverSelected: index,
+			})
 		);
 		if (isNumber(x)) scaleString += `scaleX(${x / 100}) `;
 		if (isNumber(y)) scaleString += `scaleY(${y / 100}) `;
@@ -71,20 +72,19 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 		let translateString = '';
 		if (
 			index === 'hover' &&
-			!getLastBreakpointTransformAttribute(
-				'transform-translate',
-				null,
-				'hover-status'
-			)
+			!getLastBreakpointTransformAttribute({
+				target: 'transform-translate',
+				keys: [category, 'hover-status'],
+			})
 		)
 			return getTranslateString('normal');
 
-		const [x, y, xUnit, yUnit] = ['x', 'y', 'x-unit', 'y-unit'].map(prop =>
-			getLastBreakpointTransformAttribute(
-				'transform-translate',
-				prop,
-				index
-			)
+		const [x, y, xUnit, yUnit] = ['x', 'y', 'x-unit', 'y-unit'].map(key =>
+			getLastBreakpointTransformAttribute({
+				target: 'transform-translate',
+				key,
+				hoverSelected: index,
+			})
 		);
 		if (isNumber(x)) translateString += `translateX(${x}${xUnit ?? '%'}) `;
 		if (isNumber(y)) translateString += `translateY(${y}${yUnit ?? '%'}) `;
@@ -96,16 +96,19 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 		let rotateString = '';
 		if (
 			index === 'hover' &&
-			!getLastBreakpointTransformAttribute(
-				'transform-rotate',
-				null,
-				'hover-status'
-			)
+			!getLastBreakpointTransformAttribute({
+				target: 'transform-rotate',
+				keys: [category, 'hover-status'],
+			})
 		)
 			return getRotateString('normal');
 
-		const [x, y, z] = ['x', 'y', 'z'].map(prop =>
-			getLastBreakpointTransformAttribute('transform-rotate', prop, index)
+		const [x, y, z] = ['x', 'y', 'z'].map(key =>
+			getLastBreakpointTransformAttribute({
+				target: 'transform-rotate',
+				key,
+				hoverSelected: index,
+			})
 		);
 
 		if (isNumber(x)) rotateString += `rotateX(${x}deg) `;
@@ -120,16 +123,19 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 
 		if (
 			index === 'hover' &&
-			!getLastBreakpointTransformAttribute(
-				'transform-origin',
-				null,
-				'hover-status'
-			)
+			!getLastBreakpointTransformAttribute({
+				target: 'transform-origin',
+				keys: [category, 'hover-status'],
+			})
 		)
 			return originString;
 
-		const [x, y, xUnit, yUnit] = ['x', 'y', 'x-unit', 'y-unit'].map(prop =>
-			getLastBreakpointTransformAttribute('transform-origin', prop, index)
+		const [x, y, xUnit, yUnit] = ['x', 'y', 'x-unit', 'y-unit'].map(key =>
+			getLastBreakpointTransformAttribute({
+				target: 'transform-origin',
+				key,
+				hoverSelected: index,
+			})
 		);
 
 		if (isString(validateOriginValue(x)))

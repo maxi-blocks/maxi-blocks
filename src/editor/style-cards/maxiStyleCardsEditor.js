@@ -7,7 +7,6 @@ import { useSelect, useDispatch } from '@wordpress/data';
 import { useState, useEffect } from '@wordpress/element';
 import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 import { PostPreviewButton } from '@wordpress/editor';
-import { Popover } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -23,6 +22,7 @@ import {
 	SelectControl,
 	Button,
 	Icon,
+	Popover,
 } from '../../components';
 import MaxiStyleCardsTab from './maxiStyleCardsTab';
 import { updateSCOnEditor } from '../../extensions/style-cards';

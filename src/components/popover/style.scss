@@ -25,6 +25,101 @@ $arrow-size: 8px;
 		z-index: z-index('.components-popover') !important;
 	}
 
+	&:not(.is-without-arrow) {
+		margin-left: 2px;
+
+		&::before,
+		&::after {
+			content: '';
+			position: absolute;
+			height: 0;
+			width: 0;
+			line-height: 0;
+		}
+
+		&[data-y-axis='top'] {
+			margin-top: -$arrow-size;
+
+			&::before {
+				bottom: -$arrow-size;
+			}
+
+			&::after {
+				bottom: -6px;
+			}
+
+			&::before,
+			&::after {
+				border-bottom: none;
+				border-left-color: transparent;
+				border-right-color: transparent;
+				border-top-style: solid;
+				margin-left: -10px;
+			}
+		}
+
+		&[data-y-axis='bottom'] {
+			margin-top: $arrow-size;
+
+			&::before {
+				top: -$arrow-size;
+			}
+
+			&::after {
+				top: -6px;
+			}
+
+			&::before,
+			&::after {
+				border-bottom-style: solid;
+				border-left-color: transparent;
+				border-right-color: transparent;
+				border-top: none;
+				margin-left: -10px;
+			}
+		}
+
+		&[data-y-axis='middle'][data-x-axis='left'] {
+			margin-left: -$arrow-size;
+
+			&::before {
+				right: -$arrow-size;
+			}
+
+			&::after {
+				right: -6px;
+			}
+
+			&::before,
+			&::after {
+				border-bottom-color: transparent;
+				border-left-style: solid;
+				border-right: none;
+				border-top-color: transparent;
+			}
+		}
+
+		&[data-y-axis='middle'][data-x-axis='right'] {
+			margin-left: $arrow-size;
+
+			&::before {
+				left: -$arrow-size;
+			}
+
+			&::after {
+				left: -6px;
+			}
+
+			&::before,
+			&::after {
+				border-bottom-color: transparent;
+				border-left: none;
+				border-right-style: solid;
+				border-top-color: transparent;
+			}
+		}
+	}
+
 	&[data-y-axis='top'] {
 		bottom: 100%;
 	}
@@ -55,6 +150,7 @@ $arrow-size: 8px;
 
 	.components-popover.is-expanded & {
 		position: static;
+
 		overflow-y: visible;
 		min-width: auto;
 		border: none;
@@ -78,6 +174,14 @@ $arrow-size: 8px;
 		position: absolute;
 		right: 100%;
 	}
+}
+
+.components-popover__header {
+	align-items: center;
+
+	display: flex;
+
+	justify-content: space-between;
 }
 
 .components-popover__header-title {

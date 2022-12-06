@@ -3,13 +3,17 @@
  */
 import { select } from '@wordpress/data';
 import { useRef, useEffect, useState, forwardRef } from '@wordpress/element';
-import { Popover } from '@wordpress/components';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
 import { isEmpty, isNaN } from 'lodash';
+
+/**
+ * Internal dependencies
+ */
+import Popover from '../popover';
 
 function useObservableState(initialState, onStateChange) {
 	const [state, setState] = useState(initialState);
@@ -92,15 +96,8 @@ const Dropdown = forwardRef(
 		const args = { isOpen, onToggle: toggle, onClose: close };
 
 		const popoverPropsByVersion = {
-			...((parseFloat(version) <= 13.0 && {
-				anchorRef: popoverProps?.anchorRef ?? containerRef.current,
-			}) ||
-				(!isNaN(parseFloat(version)) && {
-					anchor: popoverProps?.anchorRef ?? containerRef.current,
-					flip: false,
-					resize: false,
-					variant: 'unstyled',
-				})),
+			anchorRef: popoverProps?.anchorRef ?? containerRef.current,
+			variant: 'unstyled',
 		};
 
 		return (

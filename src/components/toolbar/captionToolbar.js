@@ -1,7 +1,6 @@
 /**
  * WordPress dependencies
  */
-import { Popover } from '@wordpress/components';
 import {
 	memo,
 	forwardRef,
@@ -28,6 +27,11 @@ import {
 	TextOptions,
 } from './components';
 import { getBoundaryElement } from '../../extensions/dom';
+
+/**
+ * Internal dependencies
+ */
+import Popover from '../popover';
 
 /**
  * Styles
@@ -137,17 +141,8 @@ const CaptionToolbar = memo(
 		};
 
 		const popoverProps = {
-			...((parseFloat(editorVersion) <= 13.0 && {
-				shouldAnchorIncludePadding: true,
-				__unstableStickyBoundaryElement: getBoundaryElement(anchorRef),
-				position: 'bottom center right',
-			}) ||
-				(!isNaN(parseFloat(editorVersion)) && {
-					anchor: anchorRef,
-					position: 'bottom center',
-					flip: false,
-					resize: false,
-				})),
+			anchorRef,
+			position: 'bottom center',
 		};
 
 		if (isSelected && anchorRef)

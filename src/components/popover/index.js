@@ -1,49 +1,47 @@
-// Abstracted from https://github.com/WordPress/gutenberg/blob/release/6.1/packages/components/src/popover/index.js
+// Abstracted from https://github.com/WordPress/gutenberg/blob/release/13.9/packages/components/src/popover/index.js
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
+import {
+	useFloating,
+	flip,
+	shift,
+	autoUpdate,
+	arrow,
+	offset as offsetMiddleware,
+	limitShift,
+	size,
+} from '@floating-ui/react-dom';
 
 /**
  * WordPress dependencies
  */
 import {
 	useRef,
-	useState,
 	useLayoutEffect,
 	forwardRef,
 	createContext,
 	useContext,
+	useMemo,
 } from '@wordpress/element';
-import { getRectangleFromRange } from '@wordpress/dom';
 import {
 	useViewportMatch,
-	useResizeObserver,
 	useMergeRefs,
 	__experimentalUseDialog as useDialog,
 } from '@wordpress/compose';
 import { close } from '@wordpress/icons';
+import deprecated from '@wordpress/deprecated';
+import { Path, SVG } from '@wordpress/primitives';
 
 /**
  * Internal dependencies
  */
-import { computePopoverPosition, offsetIframe } from './utils';
-
-import {
-	Button,
-	ScrollLock,
-	Slot,
-	Fill,
-	getAnimateClassName,
-} from '@wordpress/components';
-
+import { Button, ScrollLock, Slot, Fill } from '@wordpress/components';
 import useSlot from './use-slot';
+import getAnimateClassName from './animate';
 
-/**
- * Styles
- */
-import './style.scss';
 /**
  * Name of slot in which popover should fill.
  *
@@ -51,454 +49,230 @@ import './style.scss';
  */
 const SLOT_NAME = 'Popover';
 
+// An SVG displaying a triangle facing down, filled with a solid
+// color and bordered in such a way to create an arrow-like effect.
+// Keeping the SVG's viewbox squared simplify the arrow positioning
+// calculations.
+const ArrowTriangle = props => (
+	<SVG
+		{...props}
+		xmlns='http://www.w3.org/2000/svg'
+		viewBox='0 0 100 100'
+		className='components-popover__triangle'
+		role='presentation'
+	>
+		<Path
+			className='components-popover__triangle-bg'
+			d='M 0 0 L 50 50 L 100 0'
+		/>
+		<Path
+			className='components-popover__triangle-border'
+			d='M 0 0 L 50 50 L 100 0'
+			vectorEffect='non-scaling-stroke'
+		/>
+	</SVG>
+);
+
 const slotNameContext = createContext();
 
-function computeAnchorRect(
-	anchorRefFallback,
-	anchorRect,
-	getAnchorRect,
-	anchorRef = false,
-	shouldAnchorIncludePadding,
-	container
-) {
-	if (anchorRect) {
-		return anchorRect;
-	}
+const positionToPlacement = position => {
+	const [x, y, z] = position.split(' ');
 
-	if (getAnchorRect) {
-		if (!anchorRefFallback.current) {
-			return;
+	if (['top', 'bottom'].includes(x)) {
+		let suffix = '';
+		if ((!!z && z === 'left') || y === 'right') {
+			suffix = '-start';
+		} else if ((!!z && z === 'right') || y === 'left') {
+			suffix = '-end';
 		}
-
-		const rect = getAnchorRect(anchorRefFallback.current);
-		return offsetIframe(
-			rect,
-			rect.ownerDocument || anchorRefFallback.current.ownerDocument,
-			container
-		);
+		return x + suffix;
 	}
 
-	if (anchorRef !== false) {
-		if (!anchorRef || !window.Range || !window.Element || !window.DOMRect) {
-			return;
+	return y;
+};
+
+const placementToAnimationOrigin = placement => {
+	const [a, b] = placement.split('-');
+
+	let x;
+	let y;
+	if (a === 'top' || a === 'bottom') {
+		x = a === 'top' ? 'bottom' : 'top';
+		y = 'middle';
+		if (b === 'start') {
+			y = 'left';
+		} else if (b === 'end') {
+			y = 'right';
 		}
+	}
 
-		// Duck-type to check if `anchorRef` is an instance of Range
-		// `anchorRef instanceof window.Range` checks will break across document boundaries
-		// such as in an iframe.
-		if (typeof anchorRef?.cloneRange === 'function') {
-			return offsetIframe(
-				getRectangleFromRange(anchorRef),
-				anchorRef.endContainer.ownerDocument,
-				container
-			);
+	if (a === 'left' || a === 'right') {
+		x = 'center';
+		y = a === 'left' ? 'right' : 'left';
+		if (b === 'start') {
+			x = 'top';
+		} else if (b === 'end') {
+			x = 'bottom';
 		}
-
-		// Duck-type to check if `anchorRef` is an instance of Element
-		// `anchorRef instanceof window.Element` checks will break across document boundaries
-		// such as in an iframe.
-		if (typeof anchorRef?.getBoundingClientRect === 'function') {
-			const rect = offsetIframe(
-				anchorRef.getBoundingClientRect(),
-				anchorRef.ownerDocument,
-				container
-			);
-
-			if (shouldAnchorIncludePadding) {
-				return rect;
-			}
-
-			return withoutPadding(rect, anchorRef);
-		}
-
-		const { top, bottom } = anchorRef;
-		const topRect = top.getBoundingClientRect();
-		const bottomRect = bottom.getBoundingClientRect();
-		const rect = offsetIframe(
-			new window.DOMRect(
-				topRect.left,
-				topRect.top,
-				topRect.width,
-				bottomRect.bottom - topRect.top
-			),
-			top.ownerDocument,
-			container
-		);
-
-		if (shouldAnchorIncludePadding) {
-			return rect;
-		}
-
-		return withoutPadding(rect, anchorRef);
 	}
 
-	if (!anchorRefFallback.current) {
-		return;
-	}
-
-	const { parentNode } = anchorRefFallback.current;
-	const rect = offsetIframe(
-		parentNode.getBoundingClientRect(),
-		parentNode.ownerDocument,
-		container
-	);
-
-	if (shouldAnchorIncludePadding) {
-		return rect;
-	}
-
-	return withoutPadding(rect, parentNode);
-}
-
-function getComputedStyle(node) {
-	return node.ownerDocument.defaultView.getComputedStyle(node);
-}
-
-function withoutPadding(rect, element) {
-	const { paddingTop, paddingBottom, paddingLeft, paddingRight } =
-		getComputedStyle(element);
-	const top = paddingTop ? parseInt(paddingTop, 10) : 0;
-	const bottom = paddingBottom ? parseInt(paddingBottom, 10) : 0;
-	const left = paddingLeft ? parseInt(paddingLeft, 10) : 0;
-	const right = paddingRight ? parseInt(paddingRight, 10) : 0;
-
-	return {
-		x: rect.left + left,
-		y: rect.top + top,
-		width: rect.width - left - right,
-		height: rect.height - top - bottom,
-		left: rect.left + left,
-		right: rect.right - right,
-		top: rect.top + top,
-		bottom: rect.bottom - bottom,
-	};
-}
-
-/**
- * Sets or removes an element attribute.
- *
- * @param {Element} element The element to modify.
- * @param {string}  name    The attribute name to set or remove.
- * @param {?string} value   The value to set. A falsy value will remove the
- *                          attribute.
- */
-function setAttribute(element, name, value) {
-	if (!value) {
-		if (element.hasAttribute(name)) {
-			element.removeAttribute(name);
-		}
-	} else if (element.getAttribute(name) !== value) {
-		element.setAttribute(name, value);
-	}
-}
-
-/**
- * Sets or removes an element style property.
- *
- * @param {Element} element  The element to modify.
- * @param {string}  property The property to set or remove.
- * @param {?string} value    The value to set. A falsy value will remove the
- *                           property.
- */
-function setStyle(element, property, value = '') {
-	if (element.style[property] !== value) {
-		element.style[property] = value;
-	}
-}
-
-/**
- * Sets or removes an element class.
- *
- * @param {Element} element The element to modify.
- * @param {string}  name    The class to set or remove.
- * @param {boolean} toggle  True to set the class, false to remove.
- */
-function setClass(element, name, toggle) {
-	if (toggle) {
-		if (!element.classList.contains(name)) {
-			element.classList.add(name);
-		}
-	} else if (element.classList.contains(name)) {
-		element.classList.remove(name);
-	}
-}
-
-function getAnchorDocument(anchor) {
-	if (!anchor) {
-		return;
-	}
-
-	if (anchor.endContainer) {
-		return anchor.endContainer.ownerDocument;
-	}
-
-	if (anchor.top) {
-		return anchor.top.ownerDocument;
-	}
-
-	return anchor.ownerDocument;
-}
+	return `${x} ${y}`;
+};
 
 const Popover = (
 	{
+		range,
+		animate = true,
 		headerTitle,
 		onClose,
 		children,
 		className,
 		noArrow = true,
 		isAlternate,
-		// Disable reason: We generate the `...contentProps` rest as remainder
-		// of props which aren't explicitly handled by this component.
-		/* eslint-disable no-unused-vars */
-		position = 'bottom right',
-		range,
+		position,
+		placement: placementProp = 'bottom-start',
+		offset,
 		focusOnMount = 'firstElement',
 		anchorRef,
-		shouldAnchorIncludePadding,
 		anchorRect,
 		getAnchorRect,
 		expandOnMobile,
-		animate = true,
 		onFocusOutside,
-		__unstableStickyBoundaryElement,
 		__unstableSlotName = SLOT_NAME,
 		__unstableObserveElement,
-		__unstableBoundaryParent,
-		__unstableForcePosition,
-		__unstableForceXAlignment,
-		__unstableEditorCanvasWrapper,
-		/* eslint-enable no-unused-vars */
+		__unstableForcePosition = false,
+		__unstableShift = false,
 		...contentProps
 	},
-	ref
+	forwardedRef
 ) => {
+	if (range) {
+		deprecated('range prop in Popover component', {
+			since: '6.1',
+			version: '6.3',
+		});
+	}
+
+	const arrowRef = useRef(null);
 	const anchorRefFallback = useRef(null);
-	const contentRef = useRef(null);
-	const containerRef = useRef();
+
 	const isMobileViewport = useViewportMatch('medium', '<');
-	const [animateOrigin, setAnimateOrigin] = useState();
+	const isExpanded = expandOnMobile && isMobileViewport;
+	const hasArrow = !isExpanded && !noArrow;
+	const normalizedPlacementFromProps = position
+		? positionToPlacement(position)
+		: placementProp;
+
+	const ownerDocument = useMemo(() => {
+		let documentToReturn;
+
+		if (anchorRef?.top) {
+			documentToReturn = anchorRef?.top.ownerDocument;
+		} else if (anchorRef?.startContainer) {
+			documentToReturn = anchorRef.startContainer.ownerDocument;
+		} else if (anchorRef?.current) {
+			documentToReturn = anchorRef.current.ownerDocument;
+		} else if (anchorRef) {
+			// This one should be deprecated.
+			documentToReturn = anchorRef.ownerDocument;
+		} else if (anchorRect && anchorRect?.ownerDocument) {
+			documentToReturn = anchorRect.ownerDocument;
+		} else if (getAnchorRect) {
+			documentToReturn = getAnchorRect(
+				anchorRefFallback.current
+			)?.ownerDocument;
+		}
+
+		return documentToReturn ?? document;
+	}, [anchorRef, anchorRect, getAnchorRect]);
+
+	/**
+	 * Offsets the position of the popover when the anchor is inside an iframe.
+	 */
+	const frameOffset = useMemo(() => {
+		const { defaultView } = ownerDocument;
+		const { frameElement } = defaultView;
+
+		if (!frameElement || ownerDocument === document) {
+			return undefined;
+		}
+
+		const iframeRect = frameElement.getBoundingClientRect();
+		return { x: iframeRect.left, y: iframeRect.top };
+	}, [ownerDocument]);
+
+	const middleware = [
+		frameOffset || offset
+			? offsetMiddleware(({ placement: currentPlacement }) => {
+					if (!frameOffset) {
+						return offset;
+					}
+
+					const isTopBottomPlacement =
+						currentPlacement.includes('top') ||
+						currentPlacement.includes('bottom');
+
+					// The main axis should represent the gap between the
+					// floating element and the reference element. The cross
+					// axis is always perpendicular to the main axis.
+					const mainAxis = isTopBottomPlacement ? 'y' : 'x';
+					const crossAxis = mainAxis === 'x' ? 'y' : 'x';
+
+					// When the popover is before the reference, subtract the offset,
+					// of the main axis else add it.
+					const hasBeforePlacement =
+						currentPlacement.includes('top') ||
+						currentPlacement.includes('left');
+					const mainAxisModifier = hasBeforePlacement ? -1 : 1;
+					const normalizedOffset = offset || 0;
+
+					return {
+						mainAxis:
+							normalizedOffset +
+							frameOffset[mainAxis] * mainAxisModifier,
+						crossAxis: frameOffset[crossAxis],
+					};
+			  })
+			: undefined,
+		__unstableForcePosition ? undefined : flip(),
+		__unstableForcePosition
+			? undefined
+			: size({
+					apply(sizeProps) {
+						const { height } = sizeProps;
+						if (!refs.floating.current) return;
+						// Reduce the height of the popover to the available space.
+						Object.assign(refs.floating.current.firstChild.style, {
+							maxHeight: `${height}px`,
+							overflow: 'auto',
+						});
+					},
+			  }),
+		__unstableShift
+			? shift({
+					crossAxis: true,
+					limiter: limitShift(),
+					padding: 1, // Necessary to avoid flickering at the edge of the viewport.
+			  })
+			: undefined,
+		hasArrow ? arrow({ element: arrowRef }) : undefined,
+	].filter(m => !!m);
 	const slotName = useContext(slotNameContext) || __unstableSlotName;
 	const slot = useSlot(slotName);
-	const isExpanded = expandOnMobile && isMobileViewport;
-	const [containerResizeListener, contentSize] = useResizeObserver();
-	noArrow = isExpanded || noArrow;
 
-	useLayoutEffect(() => {
-		if (isExpanded) {
-			setClass(containerRef.current, 'is-without-arrow', noArrow);
-			setClass(containerRef.current, 'is-alternate', isAlternate);
-			setAttribute(containerRef.current, 'data-x-axis');
-			setAttribute(containerRef.current, 'data-y-axis');
-			setStyle(containerRef.current, 'top');
-			setStyle(containerRef.current, 'left');
-			setStyle(contentRef.current, 'maxHeight');
-			setStyle(contentRef.current, 'maxWidth');
-			return;
-		}
+	let onDialogClose;
 
-		const refresh = () => {
-			if (!containerRef.current || !contentRef.current) {
-				return;
-			}
-
-			let anchor = computeAnchorRect(
-				anchorRefFallback,
-				anchorRect,
-				getAnchorRect,
-				anchorRef,
-				shouldAnchorIncludePadding,
-				containerRef.current
-			);
-
-			if (!anchor) {
-				return;
-			}
-
-			const { offsetParent, ownerDocument } = containerRef.current;
-
-			let relativeOffsetTop = 0;
-
-			// If there is a positioned ancestor element that is not the body,
-			// subtract the position from the anchor rect. If the position of
-			// the popover is fixed, the offset parent is null or the body
-			// element, in which case the position is relative to the viewport.
-			// See https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent
-			if (offsetParent && offsetParent !== ownerDocument.body) {
-				const offsetParentRect = offsetParent.getBoundingClientRect();
-
-				relativeOffsetTop = offsetParentRect.top;
-				anchor = new window.DOMRect(
-					anchor.left - offsetParentRect.left,
-					anchor.top - offsetParentRect.top,
-					anchor.width,
-					anchor.height
-				);
-			}
-
-			let boundaryElement;
-			if (__unstableBoundaryParent) {
-				boundaryElement = containerRef.current.parentElement;
-			}
-
-			const usedContentSize = !contentSize.height
-				? contentRef.current.getBoundingClientRect()
-				: contentSize;
-
-			const {
-				popoverTop,
-				popoverLeft,
-				xAxis,
-				yAxis,
-				contentHeight,
-				contentWidth,
-			} = computePopoverPosition(
-				anchor,
-				usedContentSize,
-				position,
-				__unstableStickyBoundaryElement,
-				containerRef.current,
-				relativeOffsetTop,
-				boundaryElement,
-				__unstableForcePosition,
-				__unstableForceXAlignment,
-				__unstableEditorCanvasWrapper
-			);
-
-			if (
-				typeof popoverTop === 'number' &&
-				typeof popoverLeft === 'number'
-			) {
-				setStyle(containerRef.current, 'top', popoverTop + 'px');
-				setStyle(containerRef.current, 'left', popoverLeft + 'px');
-			}
-
-			setClass(
-				containerRef.current,
-				'is-without-arrow',
-				noArrow || (xAxis === 'center' && yAxis === 'middle')
-			);
-			setClass(containerRef.current, 'is-alternate', isAlternate);
-			setAttribute(containerRef.current, 'data-x-axis', xAxis);
-			setAttribute(containerRef.current, 'data-y-axis', yAxis);
-			setStyle(
-				contentRef.current,
-				'maxHeight',
-				typeof contentHeight === 'number' ? contentHeight + 'px' : ''
-			);
-			setStyle(
-				contentRef.current,
-				'maxWidth',
-				typeof contentWidth === 'number' ? contentWidth + 'px' : ''
-			);
-
-			// Compute the animation position.
-			const yAxisMapping = {
-				top: 'bottom',
-				bottom: 'top',
-			};
-			const xAxisMapping = {
-				left: 'right',
-				right: 'left',
-			};
-			const animateYAxis = yAxisMapping[yAxis] || 'middle';
-			const animateXAxis = xAxisMapping[xAxis] || 'center';
-
-			setAnimateOrigin(animateXAxis + ' ' + animateYAxis);
-		};
-
-		refresh();
-
-		const { ownerDocument } = containerRef.current;
-		const { defaultView } = ownerDocument;
-
-		/*
-		 * There are sometimes we need to reposition or resize the popover that
-		 * are not handled by the resize/scroll window events (i.e. CSS changes
-		 * in the layout that changes the position of the anchor).
-		 *
-		 * For these situations, we refresh the popover every 0.5s
-		 */
-		const intervalHandle = defaultView.setInterval(refresh, 500);
-
-		let rafId;
-
-		const refreshOnAnimationFrame = () => {
-			defaultView.cancelAnimationFrame(rafId);
-			rafId = defaultView.requestAnimationFrame(refresh);
-		};
-
-		// Sometimes a click trigger a layout change that affects the popover
-		// position. This is an opportunity to immediately refresh rather than
-		// at the interval.
-		defaultView.addEventListener('click', refreshOnAnimationFrame);
-		defaultView.addEventListener('resize', refresh);
-		defaultView.addEventListener('scroll', refresh, true);
-
-		const anchorDocument = getAnchorDocument(anchorRef);
-
-		// If the anchor is within an iframe, the popover position also needs
-		// to refrest when the iframe content is scrolled or resized.
-		if (anchorDocument && anchorDocument !== ownerDocument) {
-			anchorDocument.defaultView.addEventListener('resize', refresh);
-			anchorDocument.defaultView.addEventListener(
-				'scroll',
-				refresh,
-				true
-			);
-		}
-
-		let observer;
-
-		if (__unstableObserveElement) {
-			observer = new defaultView.MutationObserver(refresh);
-			observer.observe(__unstableObserveElement, { attributes: true });
-		}
-
-		return () => {
-			defaultView.clearInterval(intervalHandle);
-			defaultView.removeEventListener('resize', refresh);
-			defaultView.removeEventListener('scroll', refresh, true);
-			defaultView.removeEventListener('click', refreshOnAnimationFrame);
-			defaultView.cancelAnimationFrame(rafId);
-
-			if (anchorDocument && anchorDocument !== ownerDocument) {
-				anchorDocument.defaultView?.removeEventListener(
-					'resize',
-					refresh
-				);
-				anchorDocument.defaultView?.removeEventListener(
-					'scroll',
-					refresh,
-					true
-				);
-			}
-
-			if (observer) {
-				observer.disconnect();
+	if (onClose || onFocusOutside) {
+		onDialogClose = (type, event) => {
+			// Ideally the popover should have just a single onClose prop and
+			// not three props that potentially do the same thing.
+			if (type === 'focus-outside' && onFocusOutside) {
+				onFocusOutside(event);
+			} else if (onClose) {
+				onClose();
 			}
 		};
-	}, [
-		isExpanded,
-		anchorRect,
-		getAnchorRect,
-		anchorRef,
-		shouldAnchorIncludePadding,
-		position,
-		contentSize,
-		__unstableStickyBoundaryElement,
-		__unstableObserveElement,
-		__unstableBoundaryParent,
-	]);
-
-	const onDialogClose = (type, event) => {
-		// Ideally the popover should have just a single onClose prop and
-		// not three props that potentially do the same thing.
-		if (type === 'focus-outside' && onFocusOutside) {
-			onFocusOutside(event);
-		} else if (onClose) {
-			onClose();
-		}
-	};
+	}
 
 	const [dialogRef, dialogProps] = useDialog({
 		focusOnMount,
@@ -506,15 +280,130 @@ const Popover = (
 		onClose: onDialogClose,
 	});
 
-	const mergedRefs = useMergeRefs([containerRef, dialogRef, ref]);
+	const {
+		// Positioning coordinates
+		x,
+		y,
+		// Callback refs (not regular refs). This allows the position to be updated.
+		// when either elements change.
+		reference,
+		floating,
+		// Object with "regular" refs to both "reference" and "floating"
+		refs,
+		// Type of CSS position property to use (absolute or fixed)
+		strategy,
+		update,
+		placement: computedPlacement,
+		middlewareData: { arrow: arrowData = {} },
+	} = useFloating({ placement: normalizedPlacementFromProps, middleware });
+
+	// Update the `reference`'s ref.
+	//
+	// In floating-ui's terms:
+	// - "reference" refers to the popover's anchor element.
+	// - "floating" refers the floating popover's element.
+	// A floating element can also be positioned relative to a virtual element,
+	// instead of a real one. A virtual element is represented by an object
+	// with the `getBoundingClientRect()` function (like real elements).
+	// See https://floating-ui.com/docs/virtual-elements for more info.
+	useLayoutEffect(() => {
+		let resultingReferenceRef;
+
+		if (anchorRef?.top) {
+			// Create a virtual element for the ref. The expectation is that
+			// if anchorRef.top is defined, then anchorRef.bottom is defined too.
+			resultingReferenceRef = {
+				getBoundingClientRect() {
+					const topRect = anchorRef.top.getBoundingClientRect();
+					const bottomRect = anchorRef.bottom.getBoundingClientRect();
+					return new window.DOMRect(
+						topRect.x,
+						topRect.y,
+						topRect.width,
+						bottomRect.bottom - topRect.top
+					);
+				},
+			};
+		} else if (anchorRef?.current) {
+			// Standard React ref.
+			resultingReferenceRef = anchorRef.current;
+		} else if (anchorRef) {
+			// If `anchorRef` holds directly the element's value (no `current` key)
+			// This is a weird scenario and should be deprecated.
+			resultingReferenceRef = anchorRef;
+		} else if (anchorRect) {
+			// Create a virtual element for the ref.
+			resultingReferenceRef = {
+				getBoundingClientRect() {
+					return anchorRect;
+				},
+			};
+		} else if (getAnchorRect) {
+			// Create a virtual element for the ref.
+			resultingReferenceRef = {
+				getBoundingClientRect() {
+					const rect = getAnchorRect(anchorRefFallback.current);
+					return new window.DOMRect(
+						rect.x ?? rect.left,
+						rect.y ?? rect.top,
+						rect.width ?? rect.right - rect.left,
+						rect.height ?? rect.bottom - rect.top
+					);
+				},
+			};
+		} else if (anchorRefFallback.current) {
+			// If no explicit ref is passed via props, fall back to
+			// anchoring to the popover's parent node.
+			resultingReferenceRef = anchorRefFallback.current.parentNode;
+		}
+
+		if (!resultingReferenceRef) {
+			return;
+		}
+
+		reference(resultingReferenceRef);
+
+		if (!refs.floating.current) {
+			return;
+		}
+
+		return autoUpdate(resultingReferenceRef, refs.floating.current, update);
+	}, [anchorRef, anchorRect, getAnchorRect]);
+
+	// This is only needed for a smooth transition when moving blocks.
+	useLayoutEffect(() => {
+		if (!__unstableObserveElement) {
+			return;
+		}
+		const observer = new window.MutationObserver(update);
+		observer.observe(__unstableObserveElement, { attributes: true });
+
+		return () => {
+			observer.disconnect();
+		};
+	}, [__unstableObserveElement]);
+
+	// If the reference element is in a different ownerDocument (e.g. iFrame),
+	// we need to manually update the floating's position as the reference's owner
+	// document scrolls.
+	useLayoutEffect(() => {
+		if (ownerDocument === document) {
+			return;
+		}
+
+		ownerDocument.addEventListener('scroll', update);
+		return () => ownerDocument.removeEventListener('scroll', update);
+	}, [ownerDocument]);
 
 	/** @type {false | string} */
 	const animateClassName =
-		Boolean(animate && animateOrigin) &&
+		!!animate &&
 		getAnimateClassName({
 			type: 'appear',
-			origin: animateOrigin,
+			origin: placementToAnimationOrigin(computedPlacement),
 		});
+
+	const mergedFloatingRef = useMergeRefs([floating, dialogRef, forwardedRef]);
 
 	// Disable reason: We care to capture the _bubbled_ events from inputs
 	// within popover as inferring close intent.
@@ -529,15 +418,24 @@ const Popover = (
 				animateClassName,
 				{
 					'is-expanded': isExpanded,
-					'is-without-arrow': noArrow,
 					'is-alternate': isAlternate,
 				}
 			)}
 			{...contentProps}
-			ref={mergedRefs}
+			ref={mergedFloatingRef}
 			{...dialogProps}
 			tabIndex='-1'
+			style={
+				isExpanded
+					? undefined
+					: {
+							position: strategy,
+							left: Number.isNaN(x) ? 0 : x,
+							top: Number.isNaN(y) ? 0 : y,
+					  }
+			}
 		>
+			{/* Prevents scroll on the document */}
 			{isExpanded && <ScrollLock />}
 			{isExpanded && (
 				<div className='components-popover__header'>
@@ -551,12 +449,26 @@ const Popover = (
 					/>
 				</div>
 			)}
-			<div ref={contentRef} className='components-popover__content'>
-				<div style={{ position: 'relative' }}>
-					{containerResizeListener}
-					{children}
+			<div className='components-popover__content'>{children}</div>
+			{hasArrow && (
+				<div
+					ref={arrowRef}
+					className={[
+						'components-popover__arrow',
+						`is-${computedPlacement.split('-')[0]}`,
+					].join(' ')}
+					style={{
+						left: Number.isFinite(arrowData?.x)
+							? `${arrowData.x}px`
+							: '',
+						top: Number.isFinite(arrowData?.y)
+							? `${arrowData.y}px`
+							: '',
+					}}
+				>
+					<ArrowTriangle />
 				</div>
-			</div>
+			)}
 		</div>
 	);
 

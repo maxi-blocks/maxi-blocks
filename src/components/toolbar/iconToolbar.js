@@ -1,7 +1,6 @@
 /**
  * WordPress dependencies
  */
-import { Popover } from '@wordpress/components';
 import { useEffect, useState, memo, forwardRef } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 
@@ -21,6 +20,7 @@ import Border from './components/border';
 import PaddingMargin from './components/padding-margin';
 import { getGroupAttributes } from '../../extensions/styles';
 import { getBoundaryElement } from '../../extensions/dom';
+import Popover from '../popover';
 
 /**
  * Styles
@@ -76,19 +76,8 @@ const IconToolbar = memo(
 		};
 
 		const popoverPropsByVersion = {
-			...((parseFloat(version) <= 13.0 && {
-				shouldAnchorIncludePadding: true,
-				__unstableStickyBoundaryElement: getBoundaryElement(
-					ref.current
-				),
-				anchorRef,
-			}) ||
-				(!isNaN(parseFloat(version)) && {
-					anchor: anchorRef,
-					flip: false,
-					resize: false,
-					variant: 'unstyled',
-				})),
+			anchorRef,
+			variant: 'unstyled',
 		};
 
 		return (

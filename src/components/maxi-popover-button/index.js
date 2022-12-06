@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { select } from '@wordpress/data';
-import { Popover } from '@wordpress/components';
 import { forwardRef, useRef } from '@wordpress/element';
 import { getScrollContainer } from '@wordpress/dom';
 
@@ -11,6 +10,11 @@ import { getScrollContainer } from '@wordpress/dom';
  */
 import classnames from 'classnames';
 import { isEmpty, isNaN } from 'lodash';
+
+/**
+ * Internal dependencies
+ */
+import Popover from '../popover';
 
 /**
  * Styles
@@ -45,39 +49,9 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 		document.body;
 
 	const popoverPropsByVersion = {
-		...((parseFloat(version) <= 13.0 && {
-			shouldAnchorIncludePadding: true,
-			__unstableStickyBoundaryElement: boundaryElement,
-			getAnchorRect: () => {
-				// Return default anchor rect if no ref is available.
-				if (!ref.current) return DOMRect.fromRect();
-
-				const { x, y, width, height } =
-					ref.current.getBoundingClientRect();
-
-				const { width: popoverWidth, height: popoverHeight } =
-					popoverRef.current
-						.querySelector('.components-popover__content')
-						.getBoundingClientRect();
-
-				const newRect = DOMRect.fromRect({
-					x: x + width / 2 - popoverWidth / 2,
-					y: y + popoverHeight,
-					width,
-					height,
-				});
-
-				return newRect;
-			},
-			position: 'top right',
-		}) ||
-			(!isNaN(parseFloat(version)) && {
-				anchor: ref.current,
-				placement: 'top-end',
-				flip: false,
-				resize: false,
-				variant: 'unstyled',
-			})),
+		anchorRef: ref.current,
+		placement: 'top-end',
+		variant: 'unstyled',
 	};
 
 	return (

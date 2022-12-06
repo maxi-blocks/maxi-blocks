@@ -20,7 +20,6 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import { getBoundaryElement } from '../../extensions/dom';
 import SvgColorToolbar from './components/svg-color';
 import VideoUrl from './components/video-url';
 import Popover from '../popover';
@@ -194,7 +193,7 @@ const MaxiToolbar = memo(
 		useEffect(() => {
 			setAnchorRef(ref.current);
 
-			if (version > 13.0 && popoverRef.current) {
+			if (popoverRef.current) {
 				const newAnchor = getAnchor(popoverRef.current);
 
 				if (
@@ -231,25 +230,8 @@ const MaxiToolbar = memo(
 		);
 
 		const popoverPropsByVersion = {
-			...((parseFloat(version) <= 13.0 && {
-				getAnchorRect: spanEl => {
-					// span element needs to be hidden to don't break the grid
-					spanEl.style.display = 'none';
-
-					return getAnchor(
-						popoverRef.current
-					).getBoundingClientRect();
-				},
-				position: 'top center right',
-				shouldAnchorIncludePadding: true,
-				__unstableStickyBoundaryElement: getBoundaryElement(anchorRef),
-			}) ||
-				(!isNaN(parseFloat(version)) && {
-					anchor,
-					position: 'top center',
-					flip: false,
-					resize: false,
-				})),
+			anchorRef: anchor,
+			position: 'top center',
 		};
 
 		return (

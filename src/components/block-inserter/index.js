@@ -5,20 +5,20 @@ import { __ } from '@wordpress/i18n';
 import { ButtonBlockAppender, Inserter } from '@wordpress/block-editor';
 import { select, useDispatch } from '@wordpress/data';
 import { useRef, forwardRef } from '@wordpress/element';
-import { Popover, Tooltip } from '@wordpress/components';
+import { Tooltip } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
 import Button from '../button';
 import Dropdown from '../dropdown';
-import { getBoundaryElement } from '../../extensions/dom';
+import Popover from '../popover';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNaN } from 'lodash';
+import { isEmpty } from 'lodash';
 
 /**
  * Styles
@@ -104,21 +104,9 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 	if (!ref?.current) return null;
 
 	const popoverProps = {
-		...((parseFloat(version) <= 13.0 && {
-			__unstableStickyBoundaryElement: getBoundaryElement(
-				ref.current,
-				'.edit-post-visual-editor'
-			),
-			shouldAnchorIncludePadding: true,
-			anchorRef: ref.current,
-		}) ||
-			(!isNaN(parseFloat(version)) && {
-				anchor: ref.current,
-				placement: 'bottom',
-				flip: false,
-				resize: false,
-				variant: 'unstyled',
-			})),
+		anchor: ref.current,
+		placement: 'bottom',
+		variant: 'unstyled',
 	};
 
 	if (isSelected || hasSelectedChild || shouldRemain.current)

@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Component, createRef } from '@wordpress/element';
-import { Popover, Tooltip } from '@wordpress/components';
+import { Tooltip } from '@wordpress/components';
 import { select } from '@wordpress/data';
 
 /**
@@ -14,6 +14,7 @@ import Icon from '../../../icon';
 import { openSidebarAccordion } from '../../../../extensions/inspector';
 import { toolbarAdvancedSettings } from '../../../../icons';
 import ToolbarContext from './toolbarContext';
+import Popover from '../../../popover';
 
 /**
  * External dependencies
@@ -137,18 +138,9 @@ class ToolbarPopover extends Component {
 		};
 
 		const popoverProps = {
-			...((parseFloat(editor?.version) <= 13.0 && {
-				noArrow: false,
-				anchorRef: this.ref?.current?.closest('.toolbar-wrapper'),
-				shouldAnchorIncludePadding: true,
-			}) ||
-				(!isNaN(parseFloat(editor?.version)) && {
-					noArrow: false,
-					anchor: this.ref?.current?.closest('.toolbar-wrapper'),
-					flip: false,
-					resize: false,
-					variant: 'unstyled',
-				})),
+			noArrow: false,
+			anchorRef: this.ref?.current?.closest('.toolbar-wrapper'),
+			variant: 'unstyled',
 		};
 
 		return (

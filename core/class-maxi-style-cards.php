@@ -105,11 +105,11 @@ class MaxiBlocks_StyleCards
         ) {
             return $maxi_blocks_style_cards_current;
         } else {
-            $defaultStyleCard = self::getDefaultStyleCard();
+            $default_style_card = self::getDefaultStyleCard();
 
             $wpdb->replace($table_name, [
                 'id' => 'style_cards_current',
-                'object' => $defaultStyleCard
+                'object' => $default_style_card
             ]);
             
             $maxi_blocks_style_cards_current = $wpdb->get_var(

@@ -574,7 +574,12 @@ const AxisControl = props => {
 					customBreakpoint ?? breakpoint
 				)
 			] = getDefaultAttribute(
-				getAttributeKey(getKey(key), isHover, false)
+				getAttributeKey(
+					getKey(key),
+					isHover,
+					false,
+					customBreakpoint ?? breakpoint
+				)
 			);
 		});
 		onChange(response);

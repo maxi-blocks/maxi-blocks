@@ -25,24 +25,31 @@ const getIsUniqueIDRepeated = (uniqueIDToCompare, repeatCount = 1) => {
 			}
 
 			if (block.innerBlocks.length) {
-				const foundRepeated = goThroughBlocks(
-					block.innerBlocks,
-					uniqueIDToCompare,
-					repeatCount,
-					currentRepeatCount
-				);
+				const { repeated: foundRepeated, repeatCount: newRepeatCount } =
+					goThroughBlocks(
+						block.innerBlocks,
+						uniqueIDToCompare,
+						repeatCount,
+						currentRepeatCount
+					);
 
 				if (foundRepeated) {
 					repeated = true;
 				}
+
+				currentRepeatCount = newRepeatCount;
 			}
 		});
 
-		return repeated;
+		return { repeated, repeatCount: currentRepeatCount };
 	};
 
 	const blocks = getBlocks();
-	const repeated = goThroughBlocks(blocks, uniqueIDToCompare, repeatCount);
+	const { repeated } = goThroughBlocks(
+		blocks,
+		uniqueIDToCompare,
+		repeatCount
+	);
 
 	return repeated;
 };

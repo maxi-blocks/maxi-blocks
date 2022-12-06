@@ -41,6 +41,8 @@ const getIsUniqueIDRepeated = (uniqueIDToCompare, repeatCount = 1) => {
 
 					currentRepeatCount = newRepeatCount;
 				}
+
+				return false;
 			}),
 			repeatCount: currentRepeatCount,
 		};

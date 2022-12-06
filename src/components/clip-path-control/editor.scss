@@ -130,7 +130,7 @@
 
 				.maxi-base-control__label {
 					margin-right: 10px;
-					min-width: 70px !important;
+					min-width: 80px !important;
 				}
 				input {
 					width: 100%;
@@ -171,7 +171,6 @@
 
 		&--radius {
 			clip-path: circle(50% at 50% 50%);
-			border: 0.5rem solid;
 
 			&__hidden {
 				position: absolute;

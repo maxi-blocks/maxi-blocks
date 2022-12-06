@@ -39,17 +39,17 @@ const Indicator = props => {
 		cleanInlineStyles,
 	} = props;
 
-	const classes = classnames(
-		'maxi-block-indicator',
-		`maxi-block-indicator--${dir}`,
-		`maxi-block-indicators__${type}`
-	);
-
 	const [value, setValue] = useState(val);
 
 	useEffect(() => {
 		if (+value !== +val) setValue(val);
 	}, [val]);
+
+	const classes = classnames(
+		'maxi-block-indicator',
+		`maxi-block-indicator--${dir}`,
+		`maxi-block-indicators__${type}`
+	);
 
 	const getDirection = dir => {
 		if (type === 'margin') return dir;
@@ -133,9 +133,9 @@ const Indicator = props => {
 	const showContent =
 		(unit === 'px' && value > 19) || (unit !== 'px' && value > 2);
 
-	const content = showContent ? (
+	const content = showContent && (
 		<span>{`${capitalize(type)}: ${value}${unit}`}</span>
-	) : null;
+	);
 
 	return (
 		<div key={`${type}-indicator-${dir}`} className={classes} style={style}>
@@ -173,7 +173,6 @@ const MainIndicator = props => {
 	const { type, breakpoint, avoidIndicators } = props;
 
 	return ['top', 'right', 'bottom', 'left'].map(dir => {
-		// return ['bottom'].map(dir => {
 		if (avoidIndicators[type] && avoidIndicators[type].includes(dir))
 			return null;
 

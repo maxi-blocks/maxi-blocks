@@ -50,14 +50,12 @@ const withAttributes = createHigherOrderComponent(
 
 		if (allowedBlocks.includes(blockName)) {
 			// uniqueID
-			if (
-				isNil(uniqueID) ||
-				document.getElementsByClassName(uniqueID).length > 1
-			) {
-				attributes.uniqueID = uniqueIDGenerator(blockName);
+			if (isNil(uniqueID)) {
+				const newUniqueID = uniqueIDGenerator(blockName);
+				attributes.uniqueID = newUniqueID;
 				attributes.customLabel = getCustomLabel(
 					attributes.customLabel,
-					attributes.uniqueID
+					newUniqueID
 				);
 			}
 			// isFirstOnHierarchy

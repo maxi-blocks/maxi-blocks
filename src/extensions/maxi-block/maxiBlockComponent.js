@@ -346,7 +346,6 @@ class MaxiBlockComponent extends Component {
 		if (getIsUniqueIDRepeated(idToCheck)) {
 			const newUniqueID = uniqueIDGenerator(this.props.name);
 			this.props.attributes.uniqueID = newUniqueID;
-
 			this.props.attributes.customLabel = getCustomLabel(
 				this.props.attributes.customLabel,
 				this.props.attributes.uniqueID

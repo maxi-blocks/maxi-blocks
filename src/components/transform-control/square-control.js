@@ -458,7 +458,7 @@ const SquareControl = props => {
 							className='maxi-transform-control__square-control__y-control__range'
 							value={
 								!isNumber(validateOriginValue(yAxis))
-									? getPlaceholder(yAxis, true)
+									? ''
 									: validateOriginValue(yAxis)
 							}
 							onChange={e => {
@@ -503,16 +503,15 @@ const SquareControl = props => {
 							<input
 								type='number'
 								placeholder={
-									!isNumber(validateOriginValue(yAxis)) &&
-									!isEmpty(validateOriginValue(yAxis))
-										? validateOriginValue(yAxis)
-										: getPlaceholder(yAxis, true)
+									validateOriginValue(yAxis) === false
+										? getPlaceholder(yAxis, true)
+										: validateOriginValue(yAxis)
 								}
 								className='maxi-transform-control__square-control__y-control__value__input'
 								value={
-									validateOriginValue(yAxis) === false
-										? ''
-										: validateOriginValue(yAxis)
+									isNumber(validateOriginValue(yAxis))
+										? validateOriginValue(yAxis)
+										: ''
 								}
 								onChange={e => {
 									const newValue = getNewValueFromEmpty(
@@ -581,7 +580,7 @@ const SquareControl = props => {
 							className='maxi-transform-control__square-control__x-control__range'
 							value={
 								!isNumber(validateOriginValue(xAxis))
-									? getPlaceholder(xAxis)
+									? ''
 									: validateOriginValue(xAxis)
 							}
 							placeholder={getPlaceholder(xAxis)}
@@ -627,16 +626,15 @@ const SquareControl = props => {
 							<input
 								type='number'
 								placeholder={
-									!isNumber(validateOriginValue(xAxis)) &&
-									!isEmpty(validateOriginValue(xAxis))
-										? validateOriginValue(xAxis)
-										: getPlaceholder(xAxis, true)
+									validateOriginValue(xAxis) === false
+										? getPlaceholder(xAxis, true)
+										: validateOriginValue(xAxis)
 								}
 								className='maxi-transform-control__square-control__x-control__value__input'
 								value={
-									validateOriginValue(xAxis) === false
-										? ''
-										: validateOriginValue(xAxis)
+									isNumber(validateOriginValue(xAxis))
+										? validateOriginValue(xAxis)
+										: ''
 								}
 								onChange={e => {
 									const newValue = getNewValueFromEmpty(

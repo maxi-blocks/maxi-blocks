@@ -5,15 +5,6 @@ jest.mock('@wordpress/data', () => {
 		select: jest.fn(() => ({
 			getBlocks: jest.fn(() => [
 				{
-					clientId: '87601a8a-cee9-451e-a6ae-702c91c5e343',
-					name: 'maxi-blocks/button-maxi',
-					innerBlocks: [],
-					attributes: {
-						uniqueID: 'button-maxi-1',
-						customLabel: 'Unique custom button name',
-					},
-				},
-				{
 					clientId: '89293228-0e7b-4176-a6fd-87ad56f72be2',
 					name: 'maxi-blocks/button-maxi',
 					innerBlocks: [],
@@ -72,15 +63,9 @@ describe('getCustomLabel', () => {
 		expect(getCustomLabel('Button_5', 'button-maxi-6')).toBe('Button_6');
 	});
 
-	it('Should return custom customLabel without number', () => {
-		expect(
-			getCustomLabel('Unique custom button name', 'button-maxi-1')
-		).toBe('Unique custom button name');
-	});
-
 	it('Should return custom customLabel with corrected number', () => {
 		expect(getCustomLabel('Custom button name 2_2', 'button-maxi-6')).toBe(
-			'Custom button name 2_3'
+			'Custom button name 2_6'
 		);
 	});
 });

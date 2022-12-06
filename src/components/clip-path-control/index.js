@@ -259,16 +259,15 @@ const ClipPath = props => {
 			changeClipPathOptions(deconstructCP());
 	}, [clipPath, clipPathOptions]);
 
+	const onChangeValue = val => {
+		onChange({
+			[getAttributeKey('clip-path', isHover, prefix, breakpoint)]: val,
+		});
+	};
+
 	const generateCP = clipPath => {
 		const { type, content } = clipPath;
 		const arrayContent = Object.values(content);
-
-		const onChangeValue = val => {
-			onChange({
-				[getAttributeKey('clip-path', isHover, prefix, breakpoint)]:
-					val,
-			});
-		};
 
 		let newContent = '';
 
@@ -336,12 +335,6 @@ const ClipPath = props => {
 		onChange({
 			[getAttributeKey('clip-path-status', isHover, prefix, breakpoint)]:
 				val,
-		});
-	};
-
-	const onChangeValue = val => {
-		onChange({
-			[getAttributeKey('clip-path', isHover, prefix, breakpoint)]: val,
 		});
 	};
 

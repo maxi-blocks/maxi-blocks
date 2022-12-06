@@ -13,35 +13,37 @@ const getIsUniqueIDRepeated = (uniqueIDToCompare, repeatCount = 1) => {
 		rawCurrentRepeatCount = 0
 	) => {
 		let currentRepeatCount = rawCurrentRepeatCount;
-		let repeated = false;
 
-		blocks.forEach(block => {
-			if (block.attributes.uniqueID === uniqueIDToCompare) {
-				currentRepeatCount += 1;
+		return {
+			repeated: blocks.some(block => {
+				if (block.attributes.uniqueID === uniqueIDToCompare) {
+					currentRepeatCount += 1;
 
-				if (currentRepeatCount > repeatCount) {
-					repeated = true;
+					if (currentRepeatCount > repeatCount) {
+						return true;
+					}
 				}
-			}
 
-			if (block.innerBlocks.length) {
-				const { repeated: foundRepeated, repeatCount: newRepeatCount } =
-					goThroughBlocks(
+				if (block.innerBlocks.length) {
+					const {
+						repeated: foundRepeated,
+						repeatCount: newRepeatCount,
+					} = goThroughBlocks(
 						block.innerBlocks,
 						uniqueIDToCompare,
 						repeatCount,
 						currentRepeatCount
 					);
 
-				if (foundRepeated) {
-					repeated = true;
+					if (foundRepeated) {
+						return true;
+					}
+
+					currentRepeatCount = newRepeatCount;
 				}
-
-				currentRepeatCount = newRepeatCount;
-			}
-		});
-
-		return { repeated, repeatCount: currentRepeatCount };
+			}),
+			repeatCount: currentRepeatCount,
+		};
 	};
 
 	const blocks = getBlocks();

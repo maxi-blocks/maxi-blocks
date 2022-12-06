@@ -1,48 +1,10 @@
 /**
- * WordPress dependencies
- */
-import { select } from '@wordpress/data';
-
-/**
  * External dependencies
  */
 import { capitalize, isEmpty } from 'lodash';
 
 const removeCustomLabelNumber = customLabelToReplace =>
 	customLabelToReplace.replace(/_(\d+)\s*$/, '').trim();
-
-const getCustomLabelCount = customLabel => {
-	const { getBlocks } = select('core/block-editor');
-
-	// TODO: replace with goThroughMaxiBlocks helper which was created in #3887
-	const goThroughBlocks = (blocks, customLabelToCompare) => {
-		let currentCount = 0;
-
-		blocks.forEach(block => {
-			if (
-				removeCustomLabelNumber(block.attributes.customLabel) ===
-				customLabelToCompare
-			)
-				currentCount += 1;
-
-			if (block.innerBlocks.length)
-				currentCount += goThroughBlocks(
-					block.innerBlocks,
-					customLabelToCompare
-				);
-		});
-
-		return currentCount;
-	};
-
-	const blocks = getBlocks();
-	const repeatCount = goThroughBlocks(
-		blocks,
-		removeCustomLabelNumber(customLabel)
-	);
-
-	return repeatCount;
-};
 
 const getCustomLabel = (previousCustomLabel, uniqueID) => {
 	const customLabelFromUniqueID = capitalize(uniqueID.replace('-maxi-', '_'));
@@ -53,10 +15,8 @@ const getCustomLabel = (previousCustomLabel, uniqueID) => {
 	)
 		return customLabelFromUniqueID;
 
-	const customLabelCount = getCustomLabelCount(previousCustomLabel);
-	return customLabelCount > 1
-		? `${removeCustomLabelNumber(previousCustomLabel)}_${customLabelCount}`
-		: previousCustomLabel;
+	const number = uniqueID.match(/-(\d+)$/)[1];
+	return `${removeCustomLabelNumber(previousCustomLabel)}_${number}`;
 };
 
 export default getCustomLabel;

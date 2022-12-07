@@ -109,7 +109,6 @@ const maxiAttributes = {
 	'max-width-xxl': '1690',
 	'max-width-xl': '1170',
 	'max-width-l': '90',
-	'max-width-unit-general': undefined,
 	'max-width-unit-xxl': 'px',
 	'max-width-unit-xl': 'px',
 	'max-width-unit-l': '%',

@@ -11,18 +11,21 @@ import { isNil } from 'lodash';
 
 const name = 'maxiAttributes Migrator';
 
-const maxiVersions = ['0.0.1 SC1', '0.0.1 SC2', '0.0.1 SC3'];
+const maxiVersions = ['0.0.1 SC1', '0.0.1 SC2', '0.0.1-SC3'];
 
 const isEligible = blockAttributes => {
-	const { uniqueID, 'maxi-version-origin': maxiVersionOrigin } =
-		blockAttributes;
+	const {
+		uniqueID,
+		'maxi-version-origin': maxiVersionOrigin,
+		'maxi-version-current': maxiVersionCurrent,
+	} = blockAttributes;
 
 	const blockName = getBlockNameFromUniqueID(uniqueID);
 	const blockData = getBlockData(blockName);
 
 	if (
 		'maxiAttributes' in blockData &&
-		(maxiVersions.includes(maxiVersionOrigin) || !maxiVersionOrigin)
+		(maxiVersions.includes(maxiVersionCurrent) || !maxiVersionOrigin)
 	)
 		return true;
 

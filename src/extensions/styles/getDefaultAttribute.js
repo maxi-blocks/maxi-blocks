@@ -8,7 +8,6 @@ import { getBlockAttributes } from '@wordpress/blocks';
  * Internal dependencies
  */
 import * as defaults from './defaults/index';
-import * as backgroundDefaults from '../../components/background-control/layers';
 import { getIsValid } from './utils';
 import getBreakpointFromAttribute from './getBreakpointFromAttribute';
 

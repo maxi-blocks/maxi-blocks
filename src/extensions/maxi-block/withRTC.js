@@ -20,7 +20,7 @@ const withRTC = createHigherOrderComponent(
 				<ResponsiveTabsControl>{component}</ResponsiveTabsControl>
 			);
 		}),
-	'withMaxiProps'
+	'withRTC'
 );
 
 export default withRTC;

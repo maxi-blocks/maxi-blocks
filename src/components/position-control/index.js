@@ -7,8 +7,8 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import AxisControl from '../axis-control';
-import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
+import { withRTC } from '../../extensions/maxi-block';
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
@@ -103,46 +103,44 @@ const PositionControl = props => {
 	);
 
 	return (
-		<ResponsiveTabsControl breakpoint={breakpoint}>
-			<div className={classes}>
-				{!disablePosition ? (
-					<>
-						<SelectControl
-							label={__('Position', 'maxi-blocks')}
-							options={[
-								{ label: 'Default', value: 'inherit' },
-								{ label: 'Relative', value: 'relative' },
-								{ label: 'Absolute', value: 'absolute' },
-								{ label: 'Fixed', value: 'fixed' },
-								{ label: 'Static', value: 'static' },
-								{ label: 'Sticky', value: 'sticky' },
-							]}
-							value={
-								getLastBreakpointAttribute({
-									target: `${prefix}position`,
-									breakpoint,
-									attributes: props,
-								}) || ''
-							}
-							onChange={val =>
-								onChange({
-									[`${prefix}position-${breakpoint}`]: val,
-									...(isEmpty(val) && getCleanOptions()),
-								})
-							}
-						/>
-						{getLastBreakpointAttribute({
-							target: `${prefix}position`,
-							breakpoint,
-							attributes: props,
-						}) !== 'inherit' && PositionAxisControl}
-					</>
-				) : (
-					PositionAxisControl
-				)}
-			</div>
-		</ResponsiveTabsControl>
+		<div className={classes}>
+			{!disablePosition ? (
+				<>
+					<SelectControl
+						label={__('Position', 'maxi-blocks')}
+						options={[
+							{ label: 'Default', value: 'inherit' },
+							{ label: 'Relative', value: 'relative' },
+							{ label: 'Absolute', value: 'absolute' },
+							{ label: 'Fixed', value: 'fixed' },
+							{ label: 'Static', value: 'static' },
+							{ label: 'Sticky', value: 'sticky' },
+						]}
+						value={
+							getLastBreakpointAttribute({
+								target: `${prefix}position`,
+								breakpoint,
+								attributes: props,
+							}) || ''
+						}
+						onChange={val =>
+							onChange({
+								[`${prefix}position-${breakpoint}`]: val,
+								...(isEmpty(val) && getCleanOptions()),
+							})
+						}
+					/>
+					{getLastBreakpointAttribute({
+						target: `${prefix}position`,
+						breakpoint,
+						attributes: props,
+					}) !== 'inherit' && PositionAxisControl}
+				</>
+			) : (
+				PositionAxisControl
+			)}
+		</div>
 	);
 };
 
-export default PositionControl;
+export default withRTC(PositionControl);

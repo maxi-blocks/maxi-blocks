@@ -22,7 +22,7 @@ import {
 	getGroupAttributes,
 } from '../../extensions/styles';
 import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
-import getHoverStatus from './getHoverStatus';
+import { getHoverStatus } from '../../extensions/relations';
 
 /**
  * External dependencies
@@ -269,6 +269,7 @@ const RelationControl = props => {
 
 				const stylesObj = selectedSettingsObj?.helper({
 					obj: newGroupAttributes,
+					isIB: true,
 					prefix,
 					blockStyle: blockAttributes.blockStyle,
 					deviceType,
@@ -516,7 +517,6 @@ const RelationControl = props => {
 															clientId,
 															value
 														) || {};
-
 													const {
 														transitionTarget,
 														hoverProp,

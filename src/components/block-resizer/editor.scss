@@ -94,16 +94,7 @@ body.maxi-blocks--active .maxi-block__resizer {
 			}
 		}
 		&__handle-wrapper {
-			position: absolute;
-			height: 100%;
-			width: 100%;
-			z-index: -1;
-			top: 0;
-			left: 0;
-
-			&:has(.maxi-resizable__corner-handle) {
-				z-index: 30;
-			}
+			display: contents;
 		}
 	}
 	.maxi-resizable__handle--overflow,

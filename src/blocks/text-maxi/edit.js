@@ -9,6 +9,7 @@ import {
 	__unstableIndentListItems,
 	__unstableOutdentListItems,
 } from '@wordpress/rich-text';
+import { createBlock } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -194,10 +195,26 @@ class edit extends MaxiBlockComponent {
 							value={content}
 							onChange={processContent}
 							tagName={textLevel}
-							onSplit={() => {
-								this.state.onChangeFormat(
-									insert(this.state.formatValue, '\n')
+							onSplit={(value, isOriginal) => {
+								let newAttributes;
+
+								if (isOriginal || value) {
+									newAttributes = {
+										...attributes,
+										content: value,
+									};
+								}
+
+								const block = createBlock(
+									'maxi-blocks/text-maxi',
+									newAttributes
 								);
+
+								if (isOriginal) {
+									block.clientId = clientId;
+								}
+
+								return block;
 							}}
 							onReplace={(
 								blocks,
@@ -233,6 +250,7 @@ class edit extends MaxiBlockComponent {
 							__unstableEmbedURLOnPaste
 							withoutInteractiveFormatting
 							preserveWhiteSpace
+							multiline={false}
 						>
 							{richTextValues =>
 								onChangeRichText({

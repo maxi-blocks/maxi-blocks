@@ -742,6 +742,35 @@ class Relation {
 		return transitionString;
 	}
 
+	// Ensures the data-maxi-relations attributes keeps 'true' while the main element is hovered.
+	// This situation prevents the attribute set to false when the target element is triggered by 2
+	// or more elements that are nested one inside the other
+	addRelationSubscriber() {
+		const observer = new MutationObserver(mutations => {
+			mutations.forEach(mutation => {
+				if (
+					mutation.type === 'attributes' &&
+					mutation.attributeName === 'data-maxi-relations'
+				) {
+					if (mutation.target.dataset.maxiRelations !== 'true')
+						mutation.target.dataset.maxiRelations = 'true';
+				}
+			});
+		});
+
+		observer.observe(this.blockTargetEl, {
+			attributes: true,
+			attributeFilter: ['data-maxi-relations'],
+		});
+
+		this.observer = observer;
+	}
+
+	// Removes the observer added by the addRelationSubscriber method
+	removeRelationSubscriber() {
+		this.observer.disconnect();
+	}
+
 	init() {
 		switch (this.action) {
 			case 'hover':
@@ -822,6 +851,8 @@ class Relation {
 		// console.log('IB is active'); // 🔥
 		clearTimeout(this.transitionTimeout);
 
+		this.addRelationSubscriber();
+
 		this.addDataAttrToBlock();
 		this.addTransition();
 		this.addStyles();
@@ -844,6 +875,7 @@ class Relation {
 			this.transitionTimeout = setTimeout(() => {
 				this.removeTransition();
 				this.removeAddAttrToBlock();
+				this.removeRelationSubscriber();
 			}, this.getTransitionTimeout());
 		}
 	}

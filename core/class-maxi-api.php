@@ -221,7 +221,7 @@ if (!class_exists('MaxiBlocks_API')):
                 ) {
                     $version = '13.0';
                 } elseif (
-                    version_compare($wp_version, '6.1') <= 0
+                    version_compare($wp_version, '6.1.1') <= 0
                 ) {
                     $version = '14.1';
                 }
@@ -279,11 +279,11 @@ if (!class_exists('MaxiBlocks_API')):
             $meta = json_decode($data['meta'], true);
             $styles = $meta['styles'];
 
-            $fontsArr = $meta['fonts'];
-            foreach ($fontsArr as $key => $font) {
-                $fontsArr[$key] = json_decode($font, true);
+            $fonts_arr = $meta['fonts'];
+            foreach ($fonts_arr as $key => $font) {
+                $fonts_arr[$key] = json_decode($font, true);
             }
-            $fonts = json_encode(array_merge_recursive(...$fontsArr));
+            $fonts = json_encode(array_merge_recursive(...$fonts_arr));
 
             $table =  $wpdb->prefix . 'maxi_blocks_styles';
 
@@ -477,14 +477,14 @@ if (!class_exists('MaxiBlocks_API')):
                 return $style_cards;
             } else {
                 if (class_exists('MaxiBlocks_StyleCards')) {
-                    $defaultStyleCard = MaxiBlocks_StyleCards::getDefaultStyleCard();
+                    $default_style_card = MaxiBlocks_StyleCards::getDefaultStyleCard();
                 } else {
                     return false;
                 } // Should return an error
 
                 $wpdb->replace($table_name, [
                     'id' => 'style_cards_current',
-                    'object' => $defaultStyleCard,
+                    'object' => $default_style_card,
                 ]);
 
                 $style_cards = $wpdb->get_var(
@@ -503,14 +503,14 @@ if (!class_exists('MaxiBlocks_API')):
             $table_name = $wpdb->prefix . 'maxi_blocks_general'; // table name
 
             if (class_exists('MaxiBlocks_StyleCards')) {
-                $defaultStyleCard = MaxiBlocks_StyleCards::getDefaultStyleCard();
+                $default_style_card = MaxiBlocks_StyleCards::getDefaultStyleCard();
             } else {
                 return false;
             } // Should return an error
 
             $response = $wpdb->replace($table_name, [
                 'id' => 'style_cards_current',
-                'object' => $defaultStyleCard,
+                'object' => $default_style_card,
             ]);
 
             return $this->get_api_response($response);
@@ -557,11 +557,11 @@ if (!class_exists('MaxiBlocks_API')):
         {
             $id = $data['id'];
             $update = $data['update'];
-            $dataVal = $data['data'];
+            $data_val = $data['data'];
 
             global $wpdb;
 
-            if (empty($dataVal) || $dataVal === '{}') {
+            if (empty($data_val) || $data_val === '{}') {
                 $wpdb->update("{$wpdb->prefix}maxi_blocks_styles", array(
                     'prev_active_custom_data' =>  null,
                     'active_custom_data' =>  null,
@@ -573,8 +573,8 @@ if (!class_exists('MaxiBlocks_API')):
             }
 
             if ($update) {
-                $arrayNewData = json_decode($dataVal, true);
-                $new_custom_data = serialize(array_merge_recursive(...array_values($arrayNewData)));
+                $array_new_data = json_decode($data_val, true);
+                $new_custom_data = serialize(array_merge_recursive(...array_values($array_new_data)));
 
                 $wpdb->update("{$wpdb->prefix}maxi_blocks_styles", array(
                     'prev_active_custom_data' =>  1,

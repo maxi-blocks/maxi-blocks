@@ -4,13 +4,15 @@ exports[`Background color from Toolbar Test background color from toolbar 1`] = 
 Array [
   Object {
     "background-color-clip-path-status-general": false,
+    "background-color-wrapper-height-general": 100,
+    "background-color-wrapper-height-unit-general": "%",
     "background-color-wrapper-position-bottom-unit-general": "px",
     "background-color-wrapper-position-left-unit-general": "px",
     "background-color-wrapper-position-right-unit-general": "px",
     "background-color-wrapper-position-sync-general": "all",
     "background-color-wrapper-position-top-unit-general": "px",
-    "background-color-wrapper-size-general": 100,
-    "background-color-wrapper-size-unit-general": "%",
+    "background-color-wrapper-width-general": 100,
+    "background-color-wrapper-width-unit-general": "%",
     "background-palette-color-general": 5,
     "background-palette-opacity-general": 0.66,
     "background-palette-status-general": true,

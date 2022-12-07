@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import { createSelectors } from '../../extensions/styles/custom-css';
-import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
+import { getCanvasSettings } from '../../extensions/relations';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
 const headerPrefix = 'header-';

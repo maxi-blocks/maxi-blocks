@@ -27,15 +27,12 @@ import {
 	getPositionStyles,
 	getSizeStyles,
 	getTransformStyles,
-} from '../../extensions/styles/helpers';
+} from '../styles/helpers';
 import {
 	getTransformCategories,
 	getTransformSelectors,
-} from '../transform-control/utils';
-import {
-	getGroupAttributes,
-	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '../../components/transform-control/utils';
+import { getGroupAttributes, getLastBreakpointAttribute } from '../styles';
 
 /**
  * External dependencies

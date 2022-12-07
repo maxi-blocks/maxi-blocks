@@ -196,8 +196,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
         public function maxi_blocks_settings()
         {
-            $fontUploadsDir = wp_upload_dir()['basedir'] . '/maxi/fonts/';
-            $fontUploadsDirSize = round($this->get_folder_size($fontUploadsDir)/1048576, 2);
+            $font_uploads_dir = wp_upload_dir()['basedir'] . '/maxi/fonts/';
+            $font_uploads_dir_size = round($this->get_folder_size($font_uploads_dir)/1048576, 2);
 
             $content = '<div class="maxi-dashboard_main-content">';
             $content .= '<div class="maxi-dashboard_main-content_accordion">';
@@ -253,8 +253,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             privacy (GDPR) if a web visitor’s IP address is revealed to Google.', self::$maxi_text_domain);
             $description .= '<i> '.__('(Default)', self::$maxi_text_domain).'</i></p>';
             $content .= $this->generate_setting($description, 'local_fonts', $this->local_fonts_upload());
-            if ($fontUploadsDirSize > 0) {
-                $content .= '<p>'.__('Size of the local fonts:', 'maxi-blocks').' '.$fontUploadsDirSize.__(
+            if ($font_uploads_dir_size > 0) {
+                $content .= '<p>'.__('Size of the local fonts:', 'maxi-blocks').' '.$font_uploads_dir_size.__(
                     'MB',
                     'maxi-blocks'
                 ).'</p>';
@@ -488,7 +488,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'default' => false,
             );
 
-            $argsRollback = array(
+            $args_rollback = array(
                 'type' => 'string',
                 'default' => 'current',
             );
@@ -501,7 +501,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             register_setting('maxi-blocks-settings-group', 'hide_tooltips', $args);
             register_setting('maxi-blocks-settings-group', 'google_api_key_option');
             register_setting('maxi-blocks-settings-group', 'maxi_breakpoints');
-            register_setting('maxi-blocks-settings-group', 'maxi_rollback_version', $argsRollback);
+            register_setting('maxi-blocks-settings-group', 'maxi_rollback_version', $args_rollback);
         }
 
         public function get_folder_size($folder)

@@ -10,8 +10,8 @@ const videoEvents = () => {
 		const videoData =
 			maxiVideo[0][videoID] !== undefined ? maxiVideo[0][videoID] : null;
 
-		const videoType = videoData['videoType'];
-		const videoEnd = videoData['endTime'];
+		const { videoType } = videoData;
+		const videoEnd = videoData.endTime;
 
 		if (videoType === 'vimeo' && videoEnd) {
 			if (!isScriptMounted('maxi-vimeo-sdk')) {
@@ -30,9 +30,9 @@ const videoEvents = () => {
 			return;
 		}
 
-		const embedUrl = videoData['embedUrl'];
+		const { embedUrl } = videoData;
 
-		if (videoData['playerType'] === 'popup') {
+		if (videoData.playerType === 'popup') {
 			const popupContent = insertPopup(video);
 			popupEvents(video, popupContent, embedUrl);
 		}
@@ -51,12 +51,12 @@ const handleYoutubeVideos = () => {
 
 		const popupContent = insertPopup(video);
 		const iframe =
-			videoData['playerType'] === 'popup'
+			videoData.playerType === 'popup'
 				? popupContent.querySelector('iframe')
 				: video.querySelector('iframe');
 
 		iframe.id = `${videoID}-iframe`;
-		iframe.src = videoData['embedUrl'];
+		iframe.src = videoData.embedUrl;
 
 		const player = new YT.Player(iframe, {
 			events: {
@@ -72,7 +72,7 @@ const handleYoutubeVideos = () => {
 			}
 		}
 
-		if (videoData['playerType'] === 'popup') {
+		if (videoData.playerType === 'popup') {
 			popupEvents(video, popupContent, '', () => player.pauseVideo());
 		}
 	});
@@ -88,15 +88,15 @@ function handleVimeoVideos() {
 
 		const popupContent = insertPopup(video);
 		const player =
-			videoData['playerType'] === 'popup'
+			videoData.playerType === 'popup'
 				? popupContent.querySelector('iframe')
 				: video.querySelector('iframe');
 
-		player.src = videoData['embedUrl'];
+		player.src = videoData.embedUrl;
 		const vimeoPlayer = new Vimeo.Player(player);
-		const endTime = videoData['endTime'];
-		const startTime = videoData['startTime'];
-		const isLoop = videoData['isLoop'];
+		const { endTime } = videoData;
+		const { startTime } = videoData;
+		const { isLoop } = videoData;
 
 		vimeoPlayer.on('timeupdate', function (data) {
 			if (data.seconds > +endTime) {
@@ -105,7 +105,7 @@ function handleVimeoVideos() {
 			}
 		});
 
-		if (videoData['playerType'] === 'popup') {
+		if (videoData.playerType === 'popup') {
 			popupEvents(video, popupContent, '', () => vimeoPlayer.pause());
 		}
 	});

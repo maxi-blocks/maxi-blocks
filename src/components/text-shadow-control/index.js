@@ -12,7 +12,6 @@ import DefaultStylesControl from '../default-styles-control';
 import ToggleSwitch from '../toggle-switch';
 import AdvancedNumberControl from '../advanced-number-control';
 import Icon from '../icon';
-import { handleOnReset } from '../../extensions/attributes';
 import { getColorRGBAString, getColorRGBAParts } from '../../extensions/styles';
 
 /**
@@ -313,9 +312,7 @@ const TextShadow = props => {
 							}}
 							min={0}
 							max={100}
-							onReset={() =>
-								onChange(handleOnReset(getValue(index, 0)))
-							}
+							onReset={() => onChange(getValue(index, 0))}
 						/>
 					))}
 				</>

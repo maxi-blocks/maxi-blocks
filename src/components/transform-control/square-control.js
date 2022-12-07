@@ -53,6 +53,8 @@ const SquareControl = props => {
 	const [isMoving, changeIsMoving] = useState(false);
 	const [clientX, changeClientX] = useState(0);
 	const [clientY, changeClientY] = useState(0);
+	const [tempX, changeTempX] = useState(0);
+	const [tempY, changeTempY] = useState(0);
 
 	const percentToPx = value => {
 		return round((value / 100) * 40, 1);
@@ -60,6 +62,20 @@ const SquareControl = props => {
 
 	const pxToPercent = value => {
 		return round((value / 40) * 100, 1);
+	};
+
+	const percentToUnit = (value, unit) => {
+		// converts a percentage value to the equivalent value in that unit
+		switch (unit) {
+			case 'em':
+				return percentToPx(value / 12);
+			case 'px':
+				return percentToPx(value);
+			case 'vw':
+				return value / (window.innerWidth / 40);
+			default:
+				return value;
+		}
 	};
 
 	const getDefaultSize = () => {
@@ -156,10 +172,16 @@ const SquareControl = props => {
 	};
 
 	const transformStr = useCallback(() => {
-		return `translateX(${xAxis}${xUnit}) translateY(${yAxis}${yUnit})`;
-	}, [xAxis, xUnit, yAxis, yUnit]);
+		return `translateX(${tempX}${xUnit}) translateY(${tempY}${yUnit})`;
+	}, [tempX, xAxis, xUnit, tempY, yAxis, yUnit]);
 
 	const isShowUnit = axis => !isNaN(toNumber(axis));
+
+	useEffect(() => {
+		if (isMoving) return;
+		if (Math.round(tempX) !== xAxis) changeTempX(xAxis);
+		if (Math.round(tempY) !== yAxis) changeTempY(yAxis);
+	}, [xAxis, yAxis, xUnit, yUnit]);
 
 	useEffect(() => {
 		changeXAxis(x);
@@ -182,6 +204,8 @@ const SquareControl = props => {
 		changeYUnit(yUnit);
 	}, [xUnit, yUnit]);
 
+	let mouseOutDelay = null;
+
 	return (
 		<div className='maxi-transform-control__square-control'>
 			<div
@@ -191,15 +215,22 @@ const SquareControl = props => {
 					e.preventDefault();
 
 					if (isMoving) {
-						changeXAxis(
-							Number(xAxis || 0) -
-								(Number(clientX) - Number(e.clientX)) * 2
+						// Change the tempX and tempY with floating point values and set x and y to the rounded values
+						// The temp values should only change by 2 pixels at a time (convert the mouseX and mouseY according to unit)
+						const xChange = percentToUnit(
+							(Number(clientX) - Number(e.clientX)) * 2,
+							xUnit
 						);
+						changeTempX(Number(tempX || 0) - xChange);
+						changeXAxis(Math.round(tempX));
 						changeClientX(Number(e.clientX));
-						changeYAxis(
-							Number(yAxis || 0) -
-								(Number(clientY) - Number(e.clientY)) * 2
+
+						const yChange = percentToUnit(
+							(Number(clientY) - Number(e.clientY)) * 2,
+							yUnit
 						);
+						changeTempY(Number(tempY || 0) - yChange);
+						changeYAxis(Math.round(tempY));
 						changeClientY(Number(e.clientY));
 						onChange(xAxis, yAxis, xUnit, yUnit);
 					}
@@ -263,9 +294,14 @@ const SquareControl = props => {
 							changeIsMoving(false);
 							onSave(xAxis, yAxis, xUnit, yUnit);
 						}}
-						onMouseOut={() => {
-							changeIsMoving(false);
-							onSave(xAxis, yAxis, xUnit, yUnit);
+						onMouseOut={e => {
+							mouseOutDelay = setTimeout(() => {
+								changeIsMoving(false);
+								onSave(xAxis, yAxis, xUnit, yUnit);
+							}, 500);
+						}}
+						onMouseOver={() => {
+							clearTimeout(mouseOutDelay);
 						}}
 						style={{
 							transform: transformStr(),

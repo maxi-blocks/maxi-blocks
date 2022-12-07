@@ -518,6 +518,7 @@ const TypographyControl = props => {
 						onChange={onChange}
 						breakpoint={breakpoint}
 						type='text'
+						disableRTC
 					/>
 				)}
 				<AdvancedNumberControl

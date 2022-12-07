@@ -8,6 +8,14 @@
 			}
 		}
 		&__popover {
+			.maxi-axis-control__margin .maxi-responsive-tabs-control {
+				flex-direction: column;
+			}
+			.maxi-axis-control__header
+				.maxi-base-control__field
+				> .maxi-base-control__label {
+				display: none !important;
+			}
 			.maxi-axis-control {
 				& > div {
 					& > .maxi-axis-control__unit-header {
@@ -15,16 +23,16 @@
 					}
 				}
 			}
+			.maxi-axis-control__content__item {
+				border-bottom: 1px solid var(--maxi-grey-4-color);
+				margin-bottom: 5px;
+				padding-bottom: 5px;
+				&:last-child {
+					border-bottom: none;
+					margin-bottom: 0;
+					padding-bottom: 0;
+				}
+			}
 		}
-	}
-}
-.toolbar-item__text-margin__popover .maxi-axis-control__margin {
-	> div {
-		flex-direction: column-reverse !important;
-		row-gap: 8px;
-	}
-	border-bottom: 1px solid var(--maxi-grey-4-color);
-	&:last-child {
-		border-bottom: none;
 	}
 }

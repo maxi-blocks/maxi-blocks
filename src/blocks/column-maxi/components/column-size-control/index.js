@@ -62,22 +62,21 @@ const ColumnSizeControl = props => {
 					min={0}
 					max={100}
 					step={0.1}
-					onReset={() =>
+					onReset={() => {
+						const val = getColumnDefaultValue(
+							rowPattern,
+							{
+								...getGroupAttributes(props, 'columnSize'),
+							},
+							clientId,
+							breakpoint
+						);
+
 						onChange({
 							[`column-size-${breakpoint}`]:
-								getColumnDefaultValue(
-									rowPattern,
-									{
-										...getGroupAttributes(
-											props,
-											'columnSize'
-										),
-									},
-									clientId,
-									breakpoint
-								),
-						})
-					}
+								val !== undefined && val !== '' ? val : '',
+						});
+					}}
 					initialPosition={getDefaultAttribute(
 						`column-size-${breakpoint}`,
 						clientId

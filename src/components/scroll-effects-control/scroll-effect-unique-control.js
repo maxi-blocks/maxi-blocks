@@ -96,48 +96,46 @@ const ScrollEffectsUniqueControl = props => {
 					return {
 						label: __(`${label} zone`, 'maxi-blocks'),
 						content: (
-							<>
-								<AdvancedNumberControl
-									label={__(special?.label, 'maxi-blocks')}
-									value={getLastBreakpointAttribute({
-										target: `scroll-${type}-${special?.attr}`,
-										breakpoint,
-										attributes: values,
-									})}
-									onChangeValue={val => {
-										onChange({
-											[`scroll-${type}-${special?.attr}-${breakpoint}`]:
-												val !== undefined && val !== ''
-													? val
-													: '',
-										});
-										isPreviewEnabled &&
-											applyEffect(type, uniqueID, val);
-									}}
-									min={special?.min}
-									step={1}
-									max={special?.max}
-									onReset={() => {
-										onChange({
-											[`scroll-${type}-${special?.attr}-${breakpoint}`]:
-												getDefaultAttribute(
-													`scroll-${type}-${special?.attr}-general`
-												),
-										});
-										isPreviewEnabled &&
-											applyEffect(
-												type,
-												uniqueID,
-												getDefaultAttribute(
-													`scroll-${type}-${special?.attr}-general`
-												)
-											);
-									}}
-									initialPosition={getDefaultAttribute(
-										`scroll-${type}-${special?.attr}-general`
-									)}
-								/>
-							</>
+							<AdvancedNumberControl
+								label={__(special?.label, 'maxi-blocks')}
+								value={getLastBreakpointAttribute({
+									target: `scroll-${type}-${special?.attr}`,
+									breakpoint,
+									attributes: values,
+								})}
+								onChangeValue={val => {
+									onChange({
+										[`scroll-${type}-${special?.attr}-${breakpoint}`]:
+											val !== undefined && val !== ''
+												? val
+												: '',
+									});
+									isPreviewEnabled &&
+										applyEffect(type, uniqueID, val);
+								}}
+								min={special?.min}
+								step={1}
+								max={special?.max}
+								onReset={() => {
+									onChange({
+										[`scroll-${type}-${special?.attr}-${breakpoint}`]:
+											getDefaultAttribute(
+												`scroll-${type}-${special?.attr}-general`
+											),
+									});
+									isPreviewEnabled &&
+										applyEffect(
+											type,
+											uniqueID,
+											getDefaultAttribute(
+												`scroll-${type}-${special?.attr}-general`
+											)
+										);
+								}}
+								initialPosition={getDefaultAttribute(
+									`scroll-${type}-${special?.attr}-general`
+								)}
+							/>
 						),
 					};
 				})}

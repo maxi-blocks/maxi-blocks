@@ -14,6 +14,7 @@ import transformIBMigrator from './transformIBMigrator';
 import SVGIBTargetsMigrator from './SVGIBTargetsMigrator';
 import transitionTargetIBmigrator from './transitionTargetIBmigrator';
 import hoverStatusMigrator from './hoverStatusMigrator';
+import backgroundSizeMigrator from './backgroundSizeMigrator';
 import opacityTransitionMigrator from './opacityTransitionMigrator';
 
 /**
@@ -86,6 +87,7 @@ const blockMigrator = blockMigratorProps => {
 		SVGIBTargetsMigrator,
 		transitionTargetIBmigrator,
 		hoverStatusMigrator,
+		backgroundSizeMigrator,
 		opacityTransitionMigrator,
 		...(blockMigratorProps.migrators ?? []),
 	];

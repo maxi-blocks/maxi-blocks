@@ -182,6 +182,8 @@ const SizeAndPositionLayerControl = ({
 				{...equivalentProps}
 				className='maxi-background-control__position'
 				disablePosition
+				isLayer={isLayer}
+				layerType={type}
 			/>
 		</>
 	);

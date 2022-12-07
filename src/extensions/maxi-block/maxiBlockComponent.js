@@ -36,7 +36,7 @@ import getIsUniqueIDRepeated from './getIsUniqueIDRepeated';
 import getCustomLabel from './getCustomLabel';
 import { loadFonts, getAllFonts } from '../text/fonts';
 import { uniqueIDGenerator, getBlockData } from '../attributes';
-import { getHoverStatus } from '../relations';
+import getHoverStatus from '../relations/getHoverStatus';
 import { getStylesWrapperId } from './utils';
 
 /**

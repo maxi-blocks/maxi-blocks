@@ -10,7 +10,6 @@ import AxisControl from '../axis-control';
 import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
 import Icon from '../icon';
-import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
 import {
 	borderNone,
@@ -18,6 +17,7 @@ import {
 	borderDashed,
 	borderDotted,
 } from './defaults';
+import { withRTC } from '../../extensions/maxi-block';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -409,13 +409,4 @@ const BorderControl = props => {
 	);
 };
 
-const BorderControlWrapper = ({ disableRTC = false, ...props }) =>
-	!disableRTC ? (
-		<ResponsiveTabsControl>
-			<BorderControl {...props} />
-		</ResponsiveTabsControl>
-	) : (
-		<BorderControl {...props} />
-	);
-
-export default BorderControlWrapper;
+export default withRTC(BorderControl);

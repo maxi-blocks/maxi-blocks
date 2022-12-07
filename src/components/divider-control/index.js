@@ -10,9 +10,9 @@ import AdvancedNumberControl from '../advanced-number-control';
 import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
 import Icon from '../icon';
-import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
 import ToggleSwitch from '../toggle-switch';
+import { withRTC } from '../../extensions/maxi-block';
 import {
 	getAttributeKey,
 	getDefaultAttribute,
@@ -501,13 +501,4 @@ const DividerControl = props => {
 	);
 };
 
-const DividerControlWrapper = ({ disableRTC = false, ...props }) =>
-	!disableRTC ? (
-		<ResponsiveTabsControl breakpoint={props.breakpoint}>
-			<DividerControl {...props} />
-		</ResponsiveTabsControl>
-	) : (
-		<DividerControl {...props} />
-	);
-
-export default DividerControlWrapper;
+export default withRTC(DividerControl);

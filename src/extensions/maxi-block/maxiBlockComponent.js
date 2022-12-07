@@ -32,6 +32,7 @@ import {
 } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
 import getIsUniqueIDRepeated from './getIsUniqueIDRepeated';
+import getCustomLabel from './getCustomLabel';
 import { loadFonts, getAllFonts } from '../text/fonts';
 import { uniqueIDGenerator } from '../attributes';
 import { getHoverStatus } from '../relations';
@@ -344,12 +345,11 @@ class MaxiBlockComponent extends Component {
 	uniqueIDChecker(idToCheck) {
 		if (getIsUniqueIDRepeated(idToCheck)) {
 			const newUniqueID = uniqueIDGenerator(this.props.name);
-
 			this.props.attributes.uniqueID = newUniqueID;
-
-			const label = this.props.attributes.uniqueID.replace('-maxi-', '_');
-			this.props.attributes.customLabel =
-				label.charAt(0).toUpperCase() + label.slice(1);
+			this.props.attributes.customLabel = getCustomLabel(
+				this.props.attributes.customLabel,
+				this.props.attributes.uniqueID
+			);
 
 			return newUniqueID;
 		}

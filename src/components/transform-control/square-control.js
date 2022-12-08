@@ -64,17 +64,17 @@ const SquareControl = props => {
 		return round((value / 40) * 100, 1);
 	};
 
-	const percentToUnit = (value, unit) => {
+	const pxToUnit = (value, unit) => {
 		// converts a percentage value to the equivalent value in that unit
 		switch (unit) {
 			case 'em':
-				return percentToPx(value / 12);
+				return value / 12;
 			case 'px':
-				return percentToPx(value);
-			case 'vw':
-				return value / (window.innerWidth / 40);
-			default:
 				return value;
+			case 'vw':
+				return value / (window.innerWidth / 100);
+			default:
+				return percentToPx(value);
 		}
 	};
 
@@ -217,16 +217,16 @@ const SquareControl = props => {
 					if (isMoving) {
 						// Change the tempX and tempY with floating point values and set x and y to the rounded values
 						// The temp values should only change by 2 pixels at a time (convert the mouseX and mouseY according to unit)
-						const xChange = percentToUnit(
-							(Number(clientX) - Number(e.clientX)) * 2,
+						const xChange = pxToUnit(
+							Number(clientX) - Number(e.clientX),
 							xUnit
 						);
 						changeTempX(Number(tempX || 0) - xChange);
 						changeXAxis(Math.round(tempX));
 						changeClientX(Number(e.clientX));
 
-						const yChange = percentToUnit(
-							(Number(clientY) - Number(e.clientY)) * 2,
+						const yChange = pxToUnit(
+							Number(clientY) - Number(e.clientY),
 							yUnit
 						);
 						changeTempY(Number(tempY || 0) - yChange);
@@ -297,7 +297,6 @@ const SquareControl = props => {
 						onMouseOut={e => {
 							mouseOutDelay = setTimeout(() => {
 								changeIsMoving(false);
-								onSave(xAxis, yAxis, xUnit, yUnit);
 							}, 500);
 						}}
 						onMouseOver={() => {

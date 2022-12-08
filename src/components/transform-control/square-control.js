@@ -74,7 +74,7 @@ const SquareControl = props => {
 			case 'vw':
 				return value / (window.innerWidth / 100);
 			default:
-				return percentToPx(value);
+				return (value / 40) * 100;
 		}
 	};
 

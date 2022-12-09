@@ -18,6 +18,7 @@ import BaseControl from '../base-control';
  * Styles
  */
 import './editor.scss';
+import ResetButton from '../reset-control';
 
 export default function SelectControl({
 	help,
@@ -27,6 +28,7 @@ export default function SelectControl({
 	options = [],
 	className,
 	hideLabelFromVision,
+	defaultValue = null,
 	...props
 }) {
 	const instanceId = useInstanceId(SelectControl);
@@ -92,6 +94,9 @@ export default function SelectControl({
 						  )
 						: getOptions(options)}
 				</select>
+				<ResetButton
+					onReset={() => onChange(defaultValue ?? options[0].value)}
+				/>
 			</BaseControl>
 		)
 	);

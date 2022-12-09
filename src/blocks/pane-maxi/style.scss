@@ -22,12 +22,6 @@
 		display: flex;
 	}
 
-	&__content-line-container {
-		position: absolute;
-		bottom: 0;
-		left: 0;
-	}
-
 	&__line {
 		border: none;
 	}
@@ -42,7 +36,6 @@
 	}
 
 	&__content-wrapper {
-		position: relative;
 		padding: 0;
 	}
 

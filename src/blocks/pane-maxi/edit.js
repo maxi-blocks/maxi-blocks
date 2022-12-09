@@ -252,9 +252,9 @@ class edit extends MaxiBlockComponent {
 						hasInnerBlocks={hasInnerBlocks}
 						isOpen={isOpen}
 					/>
-					<div className='maxi-pane-block__content-line-container maxi-pane-block__line-container'>
-						<hr className='maxi-pane-block__content-line maxi-pane-block__line' />
-					</div>
+				</div>
+				<div className='maxi-pane-block__content-line-container maxi-pane-block__line-container'>
+					<hr className='maxi-pane-block__content-line maxi-pane-block__line' />
 				</div>
 			</MaxiBlock>,
 		];

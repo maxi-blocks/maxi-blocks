@@ -2,17 +2,17 @@ body {
 	.maxi-current-option {
 		background-color: #ff4a16;
 	}
-	&.folded .maxi-responsive-selector .maxi-style-cards__popover {
-		margin: 153px 0 0 60px;
-	}
-	&.is-fullscreen-mode .maxi-responsive-selector .maxi-style-cards__popover {
-		margin: 121px 0 0 25px;
-	}
-	&:not(.is-fullscreen-mode, .folded)
-		.maxi-responsive-selector
-		.maxi-style-cards__popover {
-		margin: 134px 0 0 184px;
-	}
+	// &.folded .maxi-responsive-selector .maxi-style-cards__popover {
+	// 	margin: 153px 0 0 60px;
+	// }
+	// &.is-fullscreen-mode .maxi-responsive-selector .maxi-style-cards__popover {
+	// 	margin: 121px 0 0 25px;
+	// }
+	// &:not(.is-fullscreen-mode, .folded)
+	// 	.maxi-responsive-selector
+	// 	.maxi-style-cards__popover {
+	// 	margin: 134px 0 0 184px;
+	// }
 }
 
 .has-tooltip {
@@ -156,7 +156,6 @@ body {
 .maxi-responsive-selector {
 	.maxi-style-cards__popover {
 		position: fixed !important;
-		top: 0 !important;
 		left: 0 !important;
 		z-index: 98;
 

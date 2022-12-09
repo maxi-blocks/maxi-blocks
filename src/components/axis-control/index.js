@@ -367,6 +367,7 @@ const AxisControlContent = props => {
 								options={getOptions()}
 								value={currentUnit}
 								onChange={onChangeUnit}
+								hideResetButton
 							/>
 							<ResetButton
 								onReset={() =>

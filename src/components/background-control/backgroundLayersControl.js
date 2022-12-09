@@ -572,6 +572,7 @@ const BackgroundLayersControl = ({
 							const newLayer = getObject(val);
 							onAddLayer(newLayer);
 						}}
+						hideResetButton
 					/>
 				)}
 			</div>

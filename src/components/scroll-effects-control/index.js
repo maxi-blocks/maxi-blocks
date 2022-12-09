@@ -531,6 +531,7 @@ const ScrollEffectsControl = props => {
 				onChange={val => onChangeShortcut(val)}
 				value={props.shortcutEffect}
 				options={globalShortcutsOptions}
+				hideResetButton
 			/>
 			<SettingTabsControl
 				type='buttons'
@@ -690,11 +691,11 @@ const ScrollEffectsControl = props => {
 											})
 										}
 										options={viewportOptions}
+										defaultValue='mid'
 									/>
 									<ToggleSwitch
-										// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
 										label={__(
-											`Simulate scroll effect live (test)`,
+											'Simulate scroll effect live (test)',
 											'maxi-block'
 										)}
 										selected={isPreviewEnabled}

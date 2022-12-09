@@ -218,6 +218,7 @@ const TransformControl = props => {
 					onChange({ 'transform-target': val });
 				}}
 				options={getOptions()}
+				hideResetButton
 			/>
 			{transformTarget && transformTarget !== 'none' && (
 				<>

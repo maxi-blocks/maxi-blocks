@@ -117,7 +117,11 @@ const MasonryItem = props => {
 	};
 
 	return (
-		<div className={masonryCardClasses} id={masonryCardId}>
+		<div
+			key={masonryCardId}
+			className={masonryCardClasses}
+			id={masonryCardId}
+		>
 			{type === 'sc' && (
 				<Button onClick={onRequestInsert}>{patternsScContent()}</Button>
 			)}

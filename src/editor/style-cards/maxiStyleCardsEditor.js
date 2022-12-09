@@ -148,6 +148,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 			defaultAttributes:
 				selectedSCValue[currentSCStyle].defaultStyleCard[type],
 			onChange: response => response,
+			isStyleCard: true,
 		});
 
 		Object.entries(newObj).forEach(([prop, value]) => {

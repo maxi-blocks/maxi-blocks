@@ -16,6 +16,10 @@ class Relation {
 		this.targetEl = document.querySelector(this.fullTarget);
 		this.dataTarget = `#${item.uniqueID}[data-maxi-relations="true"]`;
 
+		this.defaultTransition = window
+			.getComputedStyle(this.targetEl)
+			.getPropertyValue('transition');
+
 		if (!this.triggerEl || !this.targetEl) return;
 
 		this.breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -718,16 +722,53 @@ class Relation {
 		} = effectsObj;
 
 		const transitionPropertiesString = `${
-			status ? `${duration}s ${delay}s ${easing}` : '0s 0s'
+			status ? `${duration}s ${easing} ${delay}s` : '0s 0s'
 		}, `;
 
-		return isIcon
+		const transitionString = isIcon
 			? `all ${transitionPropertiesString}`
 			: Object.keys(styleObj).reduce(
 					(transitionString, style) =>
 						`${transitionString}${style} ${transitionPropertiesString}`,
 					''
 			  );
+
+		if (
+			this.defaultTransition !== 'none 0s ease 0s' &&
+			!transitionString.includes(this.defaultTransition)
+		) {
+			return `${this.defaultTransition}, ${transitionString}`;
+		}
+		return transitionString;
+	}
+
+	// Ensures the data-maxi-relations attributes keeps 'true' while the main element is hovered.
+	// This situation prevents the attribute set to false when the target element is triggered by 2
+	// or more elements that are nested one inside the other
+	addRelationSubscriber() {
+		const observer = new MutationObserver(mutations => {
+			mutations.forEach(mutation => {
+				if (
+					mutation.type === 'attributes' &&
+					mutation.attributeName === 'data-maxi-relations'
+				) {
+					if (mutation.target.dataset.maxiRelations !== 'true')
+						mutation.target.dataset.maxiRelations = 'true';
+				}
+			});
+		});
+
+		observer.observe(this.blockTargetEl, {
+			attributes: true,
+			attributeFilter: ['data-maxi-relations'],
+		});
+
+		this.observer = observer;
+	}
+
+	// Removes the observer added by the addRelationSubscriber method
+	removeRelationSubscriber() {
+		this.observer.disconnect();
 	}
 
 	init() {
@@ -810,6 +851,8 @@ class Relation {
 		// console.log('IB is active'); // 🔥
 		clearTimeout(this.transitionTimeout);
 
+		this.addRelationSubscriber();
+
 		this.addDataAttrToBlock();
 		this.addTransition();
 		this.addStyles();
@@ -821,10 +864,20 @@ class Relation {
 
 		this.removeStyles();
 
-		this.transitionTimeout = setTimeout(() => {
+		// If the targeted element is hovered and the element has a transition set, remove transitions immediately
+		if (
+			this.targetEl.matches(':hover') &&
+			this.defaultTransition !== 'none 0s ease 0s'
+		) {
 			this.removeTransition();
 			this.removeAddAttrToBlock();
-		}, this.getTransitionTimeout());
+		} else {
+			this.transitionTimeout = setTimeout(() => {
+				this.removeTransition();
+				this.removeAddAttrToBlock();
+				this.removeRelationSubscriber();
+			}, this.getTransitionTimeout());
+		}
 	}
 
 	addClickEvents() {

@@ -284,7 +284,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 			Object.entries(styleCards).map(([key, val], i) => {
 				if (val?.type !== 'user')
 					response.push({
-						label: `Template: ${val.name}`,
+						label: `${__('Template', 'maxi-blocks')}: ${val.name}`,
 						value: key,
 					});
 				else if (!isEmpty(val?.updated))
@@ -325,7 +325,9 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 						className='maxi-responsive-close has-tooltip'
 						onClick={() => setIsVisible(false)}
 					>
-						<span className='tooltip'>Close</span>
+						<span className='tooltip'>
+							{__('Close', 'maxi-blocks')}
+						</span>
 						<Icon icon={closeIcon} />
 					</span>
 				</div>
@@ -424,7 +426,9 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 									className='maxi-style-cards__sc__more-sc--delete has-tooltip'
 									onClick={() => setIsHiddenRemove(false)}
 								>
-									<span className='tooltip'>Delete</span>
+									<span className='tooltip'>
+										{__('Delete', 'maxi-blocks')}
+									</span>
 									<Icon icon={SCDelete} />
 								</Button>
 							</DialogBox>

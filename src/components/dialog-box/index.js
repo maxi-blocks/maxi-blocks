@@ -6,8 +6,8 @@ import { __ } from '@wordpress/i18n';
 /**
  * External dependencies
  */
-
 import { createPortal } from 'react-dom';
+
 /**
  * Internal dependencies
  */

@@ -289,6 +289,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 
 	const optionsSCList = () => {
 		const response = [];
+
 		!isEmpty(styleCards) &&
 			Object.entries(styleCards).map(([key, val], i) => {
 				if (val?.type !== 'user')
@@ -308,7 +309,34 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 					});
 				return null;
 			});
-		return response;
+
+		const sortedTemplates = response.sort((a, b) => {
+			if (a?.label?.includes('Template:')) {
+				return 1;
+			}
+
+			if (b?.label?.includes('Template:')) {
+				return -1;
+			}
+
+			return a < b ? -1 : 1;
+		});
+
+		const sortedByDate = sortedTemplates.sort((a, b) => {
+			if (
+				a?.label?.includes('Template:') ||
+				b?.label?.includes('Template:')
+			)
+				return null;
+			const aDate = a?.label?.split('- ').pop();
+			const bDate = b?.label?.split('- ').pop();
+
+			if (Date.parse(aDate) && Date.parse(bDate))
+				return new Date(bDate) - new Date(aDate);
+			return null;
+		});
+
+		return sortedByDate;
 	};
 
 	return (

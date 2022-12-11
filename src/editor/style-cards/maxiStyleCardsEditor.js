@@ -92,6 +92,15 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 	);
 	const [currentSCStyle, setCurrentSCStyle] = useState('light');
 
+	const getIsUserCreatedStyleCard = (card = selectedSCValue) => {
+		return card?.type === 'user';
+	};
+
+	const [settings, setSettings] = useState(getIsUserCreatedStyleCard());
+	const [settingsDisabled, setSettingsDisabled] = useState(
+		!getIsUserCreatedStyleCard()
+	);
+
 	useEffect(() => {
 		const activeSCColour =
 			activeStyleCard.value.light.defaultStyleCard.color[4];
@@ -104,6 +113,10 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 				activeSCColourTwo
 			);
 			setStyleCardName(`${selectedSCValue?.name} - `);
+
+			const isUserCreatedSC = getIsUserCreatedStyleCard();
+			setSettings(isUserCreatedSC);
+			setSettingsDisabled(!isUserCreatedSC);
 		}
 	}, [selectedSCKey]);
 
@@ -199,10 +212,6 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 		updateSCOnEditor(card);
 		setSelectedStyleCard(newId);
 	};
-
-	const [settings, setSettings] = useState(false);
-
-	const [settingsDisabled, setSettingsDisabled] = useState(true);
 
 	const customiseInputRef = useRef();
 
@@ -406,8 +415,8 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 								options={optionsSCList()}
 								onChange={val => {
 									setSelectedStyleCard(val);
-									disableSettings();
-									cancelSettings();
+									// disableSettings();
+									// cancelSettings();
 								}}
 							/>
 							<DialogBox

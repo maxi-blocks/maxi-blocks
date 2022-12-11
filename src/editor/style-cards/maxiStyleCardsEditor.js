@@ -370,12 +370,26 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 								)}
 							/>
 						</MediaUploadCheck>
+						<div className='maxi-style-cards__sc__ie'>
+							<Button
+								className='maxi-style-cards__sc__ie--export'
+								disabled={false}
+								onClick={() => {
+									const fileName = `${selectedSCValue.name}.txt`;
+									exportStyleCard(
+										{
+											...selectedSCValue,
+											status: '',
+										},
+										fileName
+									);
+								}}
+							>
+								{__('Export', 'maxi-blocks')}
+							</Button>
+						</div>
 					</div>
 					<div className='maxi-style-cards__active-edit'>
-						<div className='maxi-style-cards__active-edit-title'>
-							<h3>Style card editor</h3>
-							<span>Preview, edit or activate style card</span>
-						</div>
 						{importedCardExists && (
 							<div className='maxi-style-cards__card-already-exists'>
 								<span>
@@ -414,25 +428,6 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 									<Icon icon={SCDelete} />
 								</Button>
 							</DialogBox>
-
-							<div className='maxi-style-cards__sc__ie'>
-								<Button
-									className='maxi-style-cards__sc__ie--export'
-									disabled={false}
-									onClick={() => {
-										const fileName = `${selectedSCValue.name}.txt`;
-										exportStyleCard(
-											{
-												...selectedSCValue,
-												status: '',
-											},
-											fileName
-										);
-									}}
-								>
-									{__('Export', 'maxi-blocks')}
-								</Button>
-							</div>
 						</div>
 					</div>
 					{!settings && (

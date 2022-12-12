@@ -26,6 +26,7 @@ import SvgWidthControl from '../svg-width-control';
 import SvgStrokeWidthControl from '../svg-stroke-width-control';
 import MaxiModal from '../../editor/library/modal';
 import Icon from '../icon';
+import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * External dependencies
@@ -267,12 +268,14 @@ const IconControl = props => {
 									});
 								}}
 								onReset={() =>
-									onChange({
-										[`${prefix}icon-spacing-${breakpoint}`]:
-											getDefaultAttribute(
-												`${prefix}icon-spacing-${breakpoint}`
-											),
-									})
+									onChange(
+										handleOnReset({
+											[`${prefix}icon-spacing-${breakpoint}`]:
+												getDefaultAttribute(
+													`${prefix}icon-spacing-${breakpoint}`
+												),
+										})
+									)
 								}
 							/>
 							{!disablePosition && (

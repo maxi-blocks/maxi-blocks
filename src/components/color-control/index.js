@@ -16,6 +16,7 @@ import {
 	getDefaultAttribute,
 } from '../../extensions/styles';
 import { getPaletteColor } from '../../extensions/style-cards';
+import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * External dependencies
@@ -161,12 +162,14 @@ const ColorControl = props => {
 					blockStyle,
 				})},${paletteOpacity || 1})`;
 
-				onChange({
-					paletteStatus,
-					paletteColor,
-					paletteOpacity,
-					color: defaultColor,
-				});
+				onChange(
+					handleOnReset({
+						paletteStatus,
+						paletteColor,
+						paletteOpacity,
+						color: defaultColor,
+					})
+				);
 			}
 		}
 	};
@@ -182,12 +185,17 @@ const ColorControl = props => {
 					!avoidBreakpointForDefault ? deviceType : null
 				)
 			);
-		onChange({
-			paletteStatus,
-			paletteColor,
-			paletteOpacity: opacity,
-			color: `rgba(${getColorRGBAParts(color).color},${opacity || 1})`,
-		});
+
+		onChange(
+			handleOnReset({
+				paletteStatus,
+				paletteColor,
+				paletteOpacity: opacity,
+				color: `rgba(${getColorRGBAParts(color).color},${
+					opacity || 1
+				})`,
+			})
+		);
 	};
 
 	return (

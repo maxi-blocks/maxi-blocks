@@ -18,6 +18,7 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
+import { handleOnReset } from '../../../../extensions/attributes';
 
 /**
  * Icons
@@ -43,9 +44,12 @@ const MarkerSize = ({ deviceType, onChange, ...props }) => (
 		}}
 		onReset={() => {
 			const defaultAttr = getDefaultAttribute(`svg-width-${deviceType}`);
-			onChange({
-				[`svg-width-${deviceType}`]: defaultAttr,
-			});
+
+			onChange(
+				handleOnReset({
+					[`svg-width-${deviceType}`]: defaultAttr,
+				})
+			);
 		}}
 		optionType='string'
 	/>

@@ -265,18 +265,7 @@ const BorderControl = props => {
 								icon={styleNone}
 							/>
 						),
-						onChange: () =>
-							onChangeDefault(
-								borderNone(
-									prefix,
-									getLastBreakpointAttribute({
-										target: `${prefix}border-style`,
-										breakpoint,
-										attributes: props,
-										isHover,
-									}) && breakpoint !== 'general'
-								)
-							),
+						onChange: () => onChangeDefault(borderNone(prefix)),
 					},
 					{
 						activeItem: getIsActive() === 'solid',

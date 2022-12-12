@@ -1,6 +1,6 @@
 const checkMediaQuery = numberID => {
 	if (!maxiNumberCounter[0][numberID]) return;
-	const breakpoints = maxiNumberCounter[0][numberID].breakpoints;
+	const { breakpoints } = maxiNumberCounter[0][numberID];
 	const brkArray = ['xs', 's', 'm', 'l', 'xl', 'xxl'];
 	let breakpoint = 'xl';
 	const winWIdth = window.innerWidth;
@@ -74,9 +74,8 @@ const numberCounterEffect = () => {
 					if (newCount === count) {
 						requestAnimationFrame(animate);
 						return;
-					} else
-						count =
-							newCount > endCountValue ? endCountValue : newCount;
+					}
+					count = newCount > endCountValue ? endCountValue : newCount;
 
 					let newInnerHTML = `${count}`;
 
@@ -155,10 +154,9 @@ const getTitleFontSize = (numberData, breakpoint) => {
 	const breakpoints = ['xs', 's', 'm', 'l', 'general', 'xxl'];
 	if (numberData[`number-counter-title-font-size-${breakpoint}`]) {
 		return numberData[`number-counter-title-font-size-${breakpoint}`];
-	} else {
-		const winIndex = breakpoints.indexOf(breakpoint);
-		return getTitleFontSize(numberData, breakpoints[winIndex + 1]);
 	}
+	const winIndex = breakpoints.indexOf(breakpoint);
+	return getTitleFontSize(numberData, breakpoints[winIndex + 1]);
 };
 
 window.addEventListener('load', numberCounterEffect);

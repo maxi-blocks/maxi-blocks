@@ -258,6 +258,16 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 		setIsHiddenSave(true);
 	};
 
+	const saveCurrentSC = () => {
+		const newStyleCards = {
+			...styleCards,
+			[selectedSCKey]: { ...selectedSCValue },
+		};
+
+		saveMaxiStyleCards(newStyleCards, true);
+		saveSCStyles(true);
+	};
+
 	const deleteSC = () => {
 		removeStyleCard(selectedSCKey);
 
@@ -455,7 +465,9 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 					<div className='maxi-style-cards__sc__actions edit-activate'>
 						<Button
 							className='maxi-style-cards-customise-card-button'
-							onClick={() => setShowCopyCardDialog(true)}
+							onClick={() =>
+								setShowCopyCardDialog(!showCopyCardDialog)
+							}
 						>
 							{isTemplate && __('Customise card', 'maxi-blocks')}
 							{!isTemplate && __('Copy card', 'maxi-blocks')}
@@ -464,7 +476,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 							<Button
 								className='maxi-style-cards__sc__actions--save'
 								disabled={!canBeSaved(selectedSCKey)}
-								onClick={onChangeValue}
+								onClick={saveCurrentSC}
 							>
 								{__('Save changes', 'maxi-blocks')}
 							</Button>
@@ -487,7 +499,11 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 								}
 								onClick={() => setIsHiddenActivate(false)}
 							>
-								{__('Activate now', 'maxi-blocks')}
+								{(isTemplate || !canBeSaved(selectedSCKey)) &&
+									__('Activate now', 'maxi-blocks')}
+								{!isTemplate &&
+									canBeSaved(selectedSCKey) &&
+									__('Save and activate now', 'maxi-blocks')}
 							</Button>
 						</DialogBox>
 					</div>
@@ -495,140 +511,88 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 
 				<div className='maxi-style-cards__sc maxi-style-cards__settings'>
 					{showCopyCardDialog && (
-						<>
-							<div className='maxi-style-cards__sc-custom-name'>
-								<h3>
-									{__('Create new style from', 'maxi-blocks')}
-									<b> {selectedSCValue.name}</b>
-								</h3>
+						<div className='maxi-style-cards__sc-custom-name'>
+							<h3>
+								{__('Create new style from', 'maxi-blocks')}
+								<b> {selectedSCValue.name}</b>
+							</h3>
 
-								<div className='maxi-style-cards__sc__save'>
-									<input
-										type='text'
-										maxLength='40'
-										placeholder={__(
-											'Short memorable name*',
-											'maxi-blocks'
-										)}
-										value={styleCardName}
-										onChange={e => {
-											setStyleCardName(e.target.value);
+							<div className='maxi-style-cards__sc__save'>
+								<input
+									type='text'
+									maxLength='35'
+									placeholder={__(
+										'Short memorable name*',
+										'maxi-blocks'
+									)}
+									value={styleCardName}
+									onChange={e => {
+										setStyleCardName(e.target.value);
+										setCardAlreadyExists(false);
+									}}
+									ref={customiseInputRef}
+								/>
+								<Button
+									disabled={isEmpty(styleCardName)}
+									onClick={() => {
+										if (
+											SCList.map(
+												listItem => listItem.label
+											)
+												.filter(cardname => cardname)
+												.indexOf(styleCardName) >= 0
+										) {
+											setCardAlreadyExists(true);
+										} else {
 											setCardAlreadyExists(false);
-										}}
-										ref={customiseInputRef}
-									/>
-
-									<Button
-										disabled={isEmpty(styleCardName)}
-										onClick={() => {
-											if (
-												SCList.map(
-													listItem => listItem.label
-												)
-													.filter(
-														cardname => cardname
-													)
-													.indexOf(styleCardName) >= 0
-											) {
-												setCardAlreadyExists(true);
-											} else {
-												setCardAlreadyExists(false);
-												setImportedCardExists(false);
-												const newStyleCard = {
-													name: styleCardName,
-													status: '',
-													dark: {
-														defaultStyleCard: {
-															...selectedSCValue
-																.dark
-																.defaultStyleCard,
-															...selectedSCValue
-																.dark.styleCard,
-														},
-														styleCard: {},
+											setImportedCardExists(false);
+											const newStyleCard = {
+												name: styleCardName,
+												status: '',
+												dark: {
+													defaultStyleCard: {
+														...selectedSCValue.dark
+															.defaultStyleCard,
+														...selectedSCValue.dark
+															.styleCard,
 													},
-													light: {
-														defaultStyleCard: {
-															...selectedSCValue
-																.light
-																.defaultStyleCard,
-															...selectedSCValue
-																.light
-																.styleCard,
-														},
-														styleCard: {},
+													styleCard: {},
+												},
+												light: {
+													defaultStyleCard: {
+														...selectedSCValue.light
+															.defaultStyleCard,
+														...selectedSCValue.light
+															.styleCard,
 													},
-													type: 'user',
-													updated: currentDate,
-												};
-												saveImportedStyleCard(
-													newStyleCard
-												);
-												setShowCopyCardDialog(false);
-												// show global setting here
-											}
-										}}
-									>
-										{__('Create', 'maxi-blocks')}
-									</Button>
-								</div>
-								{cardAlreadyExists && (
-									<div className='maxi-style-cards__card-already-exists create-new-section'>
-										<span>
-											{__(
-												'A card with this name already exists.'
-											)}
-										</span>
-									</div>
-								)}
-							</div>
-							<div className='maxi-style-cards__sc-cancel-save'>
+													styleCard: {},
+												},
+												type: 'user',
+												updated: currentDate,
+											};
+											saveImportedStyleCard(newStyleCard);
+											setShowCopyCardDialog(false);
+										}
+									}}
+								>
+									{__('Create', 'maxi-blocks')}
+								</Button>
 								<Button
 									onClick={() => setShowCopyCardDialog(false)}
 								>
 									{__('Cancel', 'maxi-blocks')}
 								</Button>
-								<DialogBox
-									isDisabled={isHiddenSave}
-									message={__(
-										'Are you sure you want to activate this style card?',
-										'maxi-blocks'
-									)}
-									cancel={__('Cancel', 'maxi-blocks')}
-									confirm={__('Activate', 'maxi-blocks')}
-									onCancel={() => setIsHiddenSave(true)}
-									onConfirm={activateSC}
-								>
-									{canBeSaved(selectedSCKey) &&
-									!isTemplate ? (
-										<Button
-											className='maxi-style-cards__sc__actions--save'
-											disabled={
-												!canBeSaved(selectedSCKey)
-											}
-											onClick={() =>
-												setIsHiddenSave(false)
-											}
-										>
-											{__(
-												'Save & Activate',
-												'maxi-blocks'
-											)}
-										</Button>
-									) : (
-										<Button
-											className='maxi-style-cards__sc__actions--save'
-											disabled={!!showCopyCardDialog}
-											onClick={() =>
-												setIsHiddenSave(false)
-											}
-										>
-											{__('Activate', 'maxi-blocks')}
-										</Button>
-									)}
-								</DialogBox>
 							</div>
-						</>
+							{cardAlreadyExists && (
+								<div className='maxi-style-cards__card-already-exists create-new-section'>
+									<span>
+										{__(
+											'A card with this name already exists.'
+										)}
+									</span>
+								</div>
+							)}
+						</div>
 					)}
 
 					<div

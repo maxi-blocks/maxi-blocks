@@ -46,7 +46,6 @@ import {
 	paddingSyncAll as paddingSyncAllIcon,
 	paddingSyncDirection as paddingSyncDirectionIcon,
 } from '../../icons';
-import { getDefaultLayerAttr } from '../background-control/utils';
 
 /**
  * Component
@@ -585,16 +584,14 @@ const AxisControl = props => {
 					false,
 					customBreakpoint ?? breakpoint
 				)
-			] = isLayer
-				? getDefaultLayerAttr(`${layerType}Options`, getKey(key))
-				: getDefaultAttribute(
-						getAttributeKey(
-							getKey(key),
-							isHover,
-							false,
-							customBreakpoint ?? breakpoint
-						)
-				  );
+			] = getDefaultAttribute(
+				getAttributeKey(
+					getKey(key),
+					isHover,
+					false,
+					customBreakpoint ?? breakpoint
+				)
+			);
 		});
 		onChange(response);
 	};

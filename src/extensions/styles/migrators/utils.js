@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import * as blocksData from '../../../blocks/data';
+import { getBlockData } from '../../attributes';
 
 /**
  * Returns block name from uniqueID
@@ -13,9 +13,7 @@ export const getBlockNameFromUniqueID = uniqueID =>
  * Returns block data from uniqueID
  */
 export const getBlockDataByUniqueID = uniqueID =>
-	Object.values(blocksData).find(
-		data => data?.name === getBlockNameFromUniqueID(uniqueID)
-	);
+	getBlockData(getBlockNameFromUniqueID(uniqueID));
 
 /**
  * Returns blocks customCss selectors

@@ -11,6 +11,7 @@ import {
 	SelectControl,
 	ToggleSwitch,
 } from '../../../../components';
+import { handleOnReset } from '../../../../extensions/attributes';
 import { getColumnDefaultValue } from '../../../../extensions/column-templates';
 import {
 	getDefaultAttribute,
@@ -61,22 +62,23 @@ const ColumnSizeControl = props => {
 					min={0}
 					max={100}
 					step={0.1}
-					onReset={() =>
-						onChange({
-							[`column-size-${breakpoint}`]:
-								getColumnDefaultValue(
-									rowPattern,
-									{
-										...getGroupAttributes(
-											props,
-											'columnSize'
-										),
-									},
-									clientId,
-									breakpoint
-								),
-						})
-					}
+					onReset={() => {
+						const val = getColumnDefaultValue(
+							rowPattern,
+							{
+								...getGroupAttributes(props, 'columnSize'),
+							},
+							clientId,
+							breakpoint
+						);
+
+						onChange(
+							handleOnReset({
+								[`column-size-${breakpoint}`]:
+									val !== undefined && val !== '' ? val : '',
+							})
+						);
+					}}
 					initialPosition={getDefaultAttribute(
 						`column-size-${breakpoint}`,
 						clientId

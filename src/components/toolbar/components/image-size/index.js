@@ -12,6 +12,9 @@ import AdvancedNumberControl from '../../../advanced-number-control';
 import SelectControl from '../../../select-control';
 import SettingTabsControl from '../../../setting-tabs-control';
 import ToolbarPopover from '../toolbar-popover';
+import { handleOnReset } from '../../../../extensions/attributes';
+import { getDefaultAttribute } from '../../../../extensions/styles';
+import { openSidebarAccordion } from '../../../../extensions/inspector';
 
 /**
  * External dependencies
@@ -23,8 +26,6 @@ import { capitalize } from 'lodash';
  */
 import './editor.scss';
 import { toolbarSizing } from '../../../../icons';
-import { getDefaultAttribute } from '../../../../extensions/styles';
-import { openSidebarAccordion } from '../../../../extensions/inspector';
 
 /**
  * ImageSize
@@ -119,9 +120,11 @@ const ImageSize = props => {
 					min={0}
 					max={100}
 					onReset={() =>
-						onChangeSize({
-							imgWidth: getDefaultAttribute('imgWidth'),
-						})
+						onChangeSize(
+							handleOnReset({
+								imgWidth: getDefaultAttribute('imgWidth'),
+							})
+						)
 					}
 					initialPosition={getDefaultAttribute('imgWidth')}
 				/>

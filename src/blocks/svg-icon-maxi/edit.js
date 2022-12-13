@@ -20,6 +20,7 @@ import {
 	RawHTML,
 	MaxiPopoverButton,
 	Button,
+	Icon,
 } from '../../components';
 import {
 	getIsOverflowHidden,
@@ -34,6 +35,11 @@ import { copyPasteMapping } from './data';
  * External dependencies
  */
 import { isEmpty, uniqueId } from 'lodash';
+
+/**
+ * Icons
+ */
+import { iconBox } from '../../icons';
 
 /**
  * Content
@@ -223,6 +229,10 @@ class edit extends MaxiBlockComponent {
 								className='maxi-block-library__modal-button'
 								onClick={() => this.setState({ isOpen: true })}
 							>
+								<Icon
+									className='maxi-icon-block__select__icon'
+									icon={iconBox}
+								/>
 								{__('Select icon', 'maxi-blocks')}
 							</Button>
 						</div>

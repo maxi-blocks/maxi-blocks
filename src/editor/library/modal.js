@@ -18,7 +18,8 @@ import { isEmpty } from 'lodash';
 /**
  * Icons
  */
-import { SCaddMore, toolbarReplaceImage, remove } from '../../icons';
+import { SCaddMore, toolbarReplaceImage, remove, cloudLib } from '../../icons';
+
 
 /**
  * Layout modal window with tab panel.
@@ -71,7 +72,11 @@ const MaxiModal = props => {
 						className='maxi-block-library__modal-button'
 						onClick={onClick}
 					>
-						{__('Launch template library', 'maxi-blocks')}
+						<Icon
+							className='maxi-library-block__select__icon'
+							icon={cloudLib}
+						/>
+						{__('Template library', 'maxi-blocks')}
 					</Button>
 				)}
 				{type === 'sc' && (

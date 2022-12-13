@@ -29,18 +29,11 @@ class edit extends Component {
 
 		/* Placeholder with layout modal */
 		return [
-			<div key={this.props.clientId}>
+			<div key={this.props.clientId} className='test'>
 				{isEmpty(content) && (
-					<Placeholder
-						key='placeholder'
-						label={__('Template library', 'maxi-blocks')}
-						instructions={__(
-							'Find templates and patterns to build your page',
-							'maxi-blocks'
-						)}
-						className='maxi-block-library__placeholder'
-						icon={library}
-					>
+					<div
+							className='maxi-block-library__placeholder'
+						>
 						<MaxiModal
 							clientId={clientId}
 							type='patterns'
@@ -50,7 +43,7 @@ class edit extends Component {
 							onRemove={obj => maxiSetAttributes(obj)}
 							{...this.props}
 						/>
-					</Placeholder>
+					</div>
 				)}
 				{!isEmpty(content) && <RawHTML>{content}</RawHTML>}
 			</div>,

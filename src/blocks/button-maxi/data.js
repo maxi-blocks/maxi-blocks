@@ -359,11 +359,6 @@ const maxiAttributes = {
 	'button-padding-right-xxl': '55',
 	'button-padding-bottom-xxl': '23',
 	'button-padding-left-xxl': '55',
-	'button-padding-sync-xl': 'axis',
-	'button-padding-top-xl': '15',
-	'button-padding-right-xl': '36',
-	'button-padding-bottom-xl': '15',
-	'button-padding-left-xl': '36',
 };
 
 const data = {

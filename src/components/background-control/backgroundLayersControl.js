@@ -13,16 +13,16 @@ import {
 	getBlockStyle,
 	getColorRGBAString,
 	getLastBreakpointAttribute,
-	setBreakpointToLayer,
 } from '../../extensions/styles';
 import { handleSetAttributes } from '../../extensions/maxi-block';
-import * as backgroundLayers from '../../extensions/styles/defaults/layers';
+import * as backgroundLayers from './layers';
 import ColorLayer from './colorLayer';
 import GradientLayer from './gradientLayer';
 import Icon from '../icon';
 import ImageLayer from './imageLayer';
 import SVGLayer from './svgLayer';
 import VideoLayer from './videoLayer';
+import { setBreakpointToLayer } from './utils';
 import SelectControl from '../select-control';
 import ListControl from '../list-control';
 import ListItemControl from '../list-control/list-item-control';

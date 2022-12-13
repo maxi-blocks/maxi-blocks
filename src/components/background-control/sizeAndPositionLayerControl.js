@@ -13,9 +13,9 @@ import {
 	getAttributeKey,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-	getDefaultLayerAttr,
-	getDefaultLayerAttrs,
 } from '../../extensions/styles';
+import { getDefaultLayerAttr, getDefaultLayerAttrs } from './utils';
+
 /**
  * Component
  */
@@ -232,7 +232,6 @@ const SizeAndPositionLayerControl = ({
 				{...equivalentProps}
 				className='maxi-background-control__position'
 				disablePosition
-				layerAttribute={`${type}Options`}
 			/>
 		</>
 	);

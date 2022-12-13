@@ -15,8 +15,8 @@ import {
 	getAttributeKey,
 	getLastBreakpointAttribute,
 	getGroupAttributes,
-	getDefaultLayerAttr,
 } from '../../extensions/styles';
+import { getDefaultLayerAttr } from './utils';
 
 /**
  * External dependencies

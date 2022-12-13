@@ -27,5 +27,5 @@ export { default as transitionAttributesCreator } from './transitions/transition
 export * from './styleGenerator';
 export { default as styleResolver } from './styleResolver';
 export { default as styleProcessor } from './styleProcessor';
-export * from './getDefaultLayerAttributes';
+
 export * from './utils';

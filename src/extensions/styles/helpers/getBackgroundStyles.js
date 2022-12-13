@@ -993,11 +993,11 @@ const getGeneralBackgroundStyles = (
 				}) || 'px';
 
 			if (
-				border[breakpoint]['border-style'] ||
-				Number.isFinite(widthTop) ||
-				Number.isFinite(widthBottom) ||
-				Number.isFinite(widthLeft) ||
-				Number.isFinite(widthRight)
+				border[breakpoint]['border-style'] &&
+				(Number.isFinite(widthTop) ||
+					Number.isFinite(widthBottom) ||
+					Number.isFinite(widthLeft) ||
+					Number.isFinite(widthRight))
 			) {
 				size[breakpoint] = {
 					...(Number.isFinite(widthTop) && {

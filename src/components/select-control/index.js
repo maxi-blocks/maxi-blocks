@@ -25,10 +25,10 @@ export default function SelectControl({
 	label,
 	multiple = false,
 	onChange,
+	onReset,
 	options = [],
 	className,
 	hideLabelFromVision,
-	defaultValue = null,
 	hideResetButton = false,
 	...props
 }) {
@@ -98,7 +98,7 @@ export default function SelectControl({
 				{!hideResetButton && (
 					<ResetButton
 						onReset={() =>
-							onChange(defaultValue ?? options[0].value)
+							onReset ? onReset() : onChange(options[0].value)
 						}
 					/>
 				)}

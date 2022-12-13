@@ -469,6 +469,7 @@ const AxisControl = props => {
 		disableSync = false,
 		fullWidth,
 		enableAxisUnits,
+		layerAttribute = false,
 	} = props;
 
 	const classes = classnames(
@@ -579,7 +580,8 @@ const AxisControl = props => {
 					isHover,
 					false,
 					customBreakpoint ?? breakpoint
-				)
+				),
+				layerAttribute
 			);
 		});
 		onChange(response);

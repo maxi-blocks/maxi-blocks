@@ -407,10 +407,11 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 								className='maxi-style-cards__sc__ie--export'
 								disabled={false}
 								onClick={() => {
-									const fileName = `${selectedSCValue.name}.txt`;
+									const fileName = `${selectedSCValue.name}_exported.txt`;
 									exportStyleCard(
 										{
 											...selectedSCValue,
+											name: `${selectedSCValue.name} exported`,
 											status: '',
 										},
 										fileName

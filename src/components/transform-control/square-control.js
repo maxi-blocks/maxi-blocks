@@ -179,8 +179,9 @@ const SquareControl = props => {
 
 	useEffect(() => {
 		if (isMoving) return;
-		if (Math.round(tempX) !== xAxis) changeTempX(xAxis);
-		if (Math.round(tempY) !== yAxis) changeTempY(yAxis);
+
+		if (Math.round(tempX) !== xAxis && isNumber(xAxis)) changeTempX(xAxis);
+		if (Math.round(tempY) !== yAxis && isNumber(yAxis)) changeTempY(yAxis);
 	}, [xAxis, yAxis, xUnit, yUnit]);
 
 	useEffect(() => {
@@ -221,7 +222,9 @@ const SquareControl = props => {
 							Number(clientX) - Number(e.clientX),
 							xUnit
 						);
+
 						changeTempX(Number(tempX || 0) - xChange);
+
 						changeXAxis(Math.round(tempX));
 						changeClientX(Number(e.clientX));
 
@@ -231,6 +234,7 @@ const SquareControl = props => {
 						);
 						changeTempY(Number(tempY || 0) - yChange);
 						changeYAxis(Math.round(tempY));
+
 						changeClientY(Number(e.clientY));
 						onChange(xAxis, yAxis, xUnit, yUnit);
 					}

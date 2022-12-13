@@ -30,7 +30,7 @@ const PositionControl = props => {
 		breakpoint = 'general',
 		prefix = '',
 		isHover = false,
-		onResetCustom,
+		layerAttribute = false,
 	} = props;
 
 	const classes = classnames('maxi-position-control', className);
@@ -99,7 +99,7 @@ const PositionControl = props => {
 			enableAxisUnits
 			allowedUnits={['px', 'em', 'vw', '%', '-']}
 			isHover={isHover}
-			onResetCustom={onResetCustom}
+			layerAttribute={layerAttribute}
 		/>
 	);
 

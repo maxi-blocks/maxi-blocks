@@ -10,6 +10,7 @@ import { getBlockAttributes } from '@wordpress/blocks';
 import * as defaults from './defaults/index';
 import { getIsValid } from './utils';
 import getBreakpointFromAttribute from './getBreakpointFromAttribute';
+import { getDefaultLayerAttr } from './getDefaultLayerAttributes';
 
 /**
  * External dependencies
@@ -42,8 +43,10 @@ const getBlocksName = clientIds => {
 const getDefaultAttribute = (
 	prop,
 	clientIds = null,
-	avoidBaseBreakpoint = false
+	avoidBaseBreakpoint = false,
+	layerAttribute = false
 ) => {
+	if (layerAttribute) return getDefaultLayerAttr(layerAttribute, prop);
 	const { getBlockName, getSelectedBlockClientIds } =
 		select('core/block-editor');
 

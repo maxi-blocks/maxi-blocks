@@ -469,7 +469,7 @@ const AxisControl = props => {
 		disableSync = false,
 		fullWidth,
 		enableAxisUnits,
-		onResetCustom = null,
+		layerAttribute = false,
 	} = props;
 
 	const classes = classnames(
@@ -530,16 +530,6 @@ const AxisControl = props => {
 	};
 
 	const onReset = ({ customBreakpoint, reset }) => {
-		if (onResetCustom) {
-			onResetCustom(
-				customBreakpoint,
-				reset,
-				inputsArray,
-				getKey,
-				onChange
-			);
-			return;
-		}
 		const response = {};
 
 		const attributesKeysFilter = rawKeys => {
@@ -590,7 +580,8 @@ const AxisControl = props => {
 					isHover,
 					false,
 					customBreakpoint ?? breakpoint
-				)
+				),
+				layerAttribute
 			);
 		});
 		onChange(response);

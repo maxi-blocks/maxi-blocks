@@ -5,11 +5,6 @@ import { __ } from '@wordpress/i18n';
 import { useEffect } from '@wordpress/element';
 
 /**
- * External dependencies
- */
-import { isArray } from 'lodash';
-
-/**
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
@@ -18,9 +13,9 @@ import {
 	getAttributeKey,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
+	getDefaultLayerAttr,
+	getDefaultLayerAttrs,
 } from '../../extensions/styles';
-import { getDefaultLayerAttr, getDefaultLayerAttrs } from './utils';
-
 /**
  * Component
  */
@@ -187,62 +182,7 @@ const SizeAndPositionLayerControl = ({
 				{...equivalentProps}
 				className='maxi-background-control__position'
 				disablePosition
-				onResetCustom={(
-					customBreakpoint,
-					reset,
-					inputsArray,
-					getKey,
-					onChange
-				) => {
-					const response = {};
-
-					const attributesKeysFilter = rawKeys => {
-						const keys = isArray(rawKeys) ? rawKeys : [rawKeys];
-
-						const filteredResult = inputsArray.filter(input =>
-							keys.some(
-								key =>
-									input === key ||
-									(input.includes(key) &&
-										input.includes('-unit'))
-							)
-						);
-
-						return filteredResult;
-					};
-
-					const top = inputsArray[0];
-					const right = inputsArray[1];
-					const bottom = inputsArray[2];
-					const left = inputsArray[3];
-
-					const cases = {
-						all: [top, bottom, left, right],
-						vertical: [top, bottom],
-						horizontal: [left, right],
-						top,
-						right,
-						bottom,
-						left,
-						unit: ['unit'],
-					};
-
-					const attributesKeys = cases[reset]
-						? attributesKeysFilter(cases[reset])
-						: [...inputsArray];
-
-					attributesKeys.forEach(key => {
-						response[
-							getAttributeKey(
-								getKey(key),
-								isHover,
-								false,
-								customBreakpoint ?? breakpoint
-							)
-						] = getDefaultLayerAttr(`${type}Options`, getKey(key));
-					});
-					onChange(response);
-				}}
+				layerAttribute={`${type}Options`}
 			/>
 		</>
 	);

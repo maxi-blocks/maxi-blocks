@@ -81,9 +81,16 @@ const FlexSettingsControl = props => {
 											attributes: props,
 										}) ?? ''
 									}
-									defaultValue={getDefaultAttribute(
-										`flex-direction-${breakpoint}`
-									)}
+									onReset={() =>
+										onChange(
+											handleOnReset({
+												[`flex-direction-${breakpoint}`]:
+													getDefaultAttribute(
+														`flex-direction-${breakpoint}`
+													),
+											})
+										)
+									}
 									options={getOptions([
 										'row',
 										'row-reverse',
@@ -113,9 +120,16 @@ const FlexSettingsControl = props => {
 											attributes: props,
 										}) ?? ''
 									}
-									defaultValue={getDefaultAttribute(
-										`align-content-${breakpoint}`
-									)}
+									onReset={() =>
+										onChange(
+											handleOnReset({
+												[`align-content-${breakpoint}`]:
+													getDefaultAttribute(
+														`align-content-${breakpoint}`
+													),
+											})
+										)
+									}
 									options={getOptions([
 										'flex-start',
 										'flex-end',
@@ -242,9 +256,16 @@ const FlexSettingsControl = props => {
 													attributes: props,
 											  }) ?? ''
 									}
-									defaultValue={getDefaultAttribute(
-										`flex-basis-${breakpoint}`
-									)}
+									onReset={() =>
+										onChange(
+											handleOnReset({
+												[`flex-basis-${breakpoint}`]:
+													getDefaultAttribute(
+														`flex-basis-${breakpoint}`
+													),
+											})
+										)
+									}
 									options={getOptions([
 										'content',
 										'max-content',

@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import { SelectControl, SettingTabsControl } from '../../../../components';
+import { handleOnReset } from '../../../../extensions/attributes';
 import { getDefaultAttribute } from '../../../../extensions/styles';
 import { prefixes } from '../../data';
 
@@ -39,7 +40,11 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 			<SelectControl
 				label={__('Skin', 'maxi-blocks')}
 				value={skin}
-				defaultValue={getDefaultAttribute('skin')}
+				onReset={() =>
+					onChange(
+						handleOnReset({ skin: getDefaultAttribute('skin') })
+					)
+				}
 				options={[
 					{
 						label: __('Boxed', 'maxi-blocks'),

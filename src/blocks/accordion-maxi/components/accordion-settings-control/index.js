@@ -56,12 +56,19 @@ const AccordionSettings = props => {
 					<SelectControl
 						label={__('Accordion layout', 'maxi-blocks')}
 						value={accordionLayout}
-						defaultValue={getDefaultAttribute('accordionLayout')}
 						options={[
 							{ label: 'Simple', value: 'simple' },
 							{ label: 'Boxed', value: 'boxed' },
 						]}
 						onChange={val => onChange({ accordionLayout: val })}
+						onReset={() => {
+							onChange(
+								handleOnReset({
+									accordionLayout:
+										getDefaultAttribute('accordionLayout'),
+								})
+							);
+						}}
 					/>
 					<ToggleSwitch
 						label={__('Collapsible', 'maxi-block')}

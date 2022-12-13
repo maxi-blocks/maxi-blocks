@@ -189,9 +189,16 @@ const IconSettings = props => {
 							label={__('Icon position', 'maxi-blocks')}
 							className='maxi-video-icon-control__icon-position'
 							value={props[`${prefix}icon-position`]}
-							defaultValue={getDefaultAttribute(
-								`${prefix}icon-position`
-							)}
+							onReset={() =>
+								onChange(
+									handleOnReset({
+										[`${prefix}icon-position`]:
+											getDefaultAttribute(
+												`${prefix}icon-position`
+											),
+									})
+								)
+							}
 							options={[
 								{
 									label: __(

@@ -199,9 +199,18 @@ const Inspector = props => {
 																		value: 'bottom',
 																	},
 																]}
-																defaultValue={getDefaultAttribute(
-																	'captionPosition'
-																)}
+																onReset={() =>
+																	maxiSetAttributes(
+																		handleOnReset(
+																			{
+																				captionPosition:
+																					getDefaultAttribute(
+																						'captionPosition'
+																					),
+																			}
+																		)
+																	)
+																}
 																onChange={captionPosition =>
 																	maxiSetAttributes(
 																		{

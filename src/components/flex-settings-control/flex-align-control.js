@@ -12,6 +12,7 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import getOptions from './utils';
+import { handleOnReset } from '../../extensions/attributes';
 
 const FlexAlignControl = props => {
 	const { breakpoint, onChange } = props;
@@ -28,9 +29,16 @@ const FlexAlignControl = props => {
 						attributes: props,
 					}) ?? ''
 				}
-				defaultValue={getDefaultAttribute(
-					`justify-content-${breakpoint}`
-				)}
+				onReset={() =>
+					onChange(
+						handleOnReset({
+							[`justify-content-${breakpoint}`]:
+								getDefaultAttribute(
+									`justify-content-${breakpoint}`
+								),
+						})
+					)
+				}
 				options={getOptions([
 					'flex-start',
 					'flex-end',
@@ -55,7 +63,15 @@ const FlexAlignControl = props => {
 						attributes: props,
 					}) ?? ''
 				}
-				defaultValue={getDefaultAttribute(`align-items-${breakpoint}`)}
+				onReset={() =>
+					onChange(
+						handleOnReset({
+							[`align-items-${breakpoint}`]: getDefaultAttribute(
+								`align-items-${breakpoint}`
+							),
+						})
+					)
+				}
 				options={getOptions([
 					'flex-start',
 					'flex-end',

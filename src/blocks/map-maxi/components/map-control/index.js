@@ -43,7 +43,13 @@ const MapControl = props => {
 				className='maxi-map-control__provider'
 				label={__('Map service provider', 'maxi-blocks')}
 				value={mapProvider}
-				defaultValue={getDefaultAttribute('map-provider')}
+				onReset={() =>
+					onChange(
+						handleOnReset({
+							'map-provider': getDefaultAttribute('map-provider'),
+						})
+					)
+				}
 				options={[
 					{
 						label: __('Open Street Map', 'maxi-blocks'),

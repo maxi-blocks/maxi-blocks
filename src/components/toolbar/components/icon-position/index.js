@@ -15,6 +15,7 @@ import { getDefaultAttribute } from '../../../../extensions/styles';
  */
 import './editor.scss';
 import { toolbarIconAlign } from '../../../../icons';
+import { handleOnReset } from '../../../../extensions/attributes';
 
 /**
  * Size
@@ -36,7 +37,14 @@ const IconPosition = props => {
 					label={__('Icon position', 'maxi-block')}
 					className='maxi-icon__position'
 					value={props['icon-position']}
-					defaultValue={getDefaultAttribute('icon-position')}
+					onReset={() =>
+						onChange(
+							handleOnReset({
+								'icon-position':
+									getDefaultAttribute('icon-position'),
+							})
+						)
+					}
 					options={[
 						{
 							label: __('Top', 'maxi-blocks'),

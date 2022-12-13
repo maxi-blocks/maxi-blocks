@@ -132,9 +132,16 @@ const NumberCounterControl = props => {
 				label={__('Start animation', 'maxi-blocks')}
 				className='maxi-number-counter-control__start-animation'
 				value={props['number-counter-start-animation']}
-				defaultValue={getDefaultAttribute(
-					'number-counter-start-animation'
-				)}
+				onReset={() =>
+					onChange(
+						handleOnReset({
+							'number-counter-start-animation':
+								getDefaultAttribute(
+									'number-counter-start-animation'
+								),
+						})
+					)
+				}
 				options={[
 					{
 						label: __('Page Load', 'maxi-blocks'),

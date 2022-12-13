@@ -142,9 +142,16 @@ const ListOptionsControl = props => {
 					breakpoint: deviceType,
 					attributes,
 				})}
-				defaultValue={getDefaultAttribute(
-					`list-style-position-${deviceType}`
-				)}
+				onReset={() =>
+					maxiSetAttributes(
+						handleOnReset({
+							[`list-style-position-${deviceType}`]:
+								getDefaultAttribute(
+									`list-style-position-${deviceType}`
+								),
+						})
+					)
+				}
 				options={[
 					{
 						label: __('Inside', 'maxi-blocks'),
@@ -592,9 +599,16 @@ const ListOptionsControl = props => {
 					breakpoint: deviceType,
 					attributes,
 				})}
-				defaultValue={getDefaultAttribute(
-					`list-text-position-${deviceType}`
-				)}
+				onReset={() =>
+					maxiSetAttributes(
+						handleOnReset({
+							[`list-text-position-${deviceType}`]:
+								getDefaultAttribute(
+									`list-text-position-${deviceType}`
+								),
+						})
+					)
+				}
 				options={[
 					{
 						label: __('Baseline', 'maxi-blocks'),
@@ -634,7 +648,13 @@ const ListOptionsControl = props => {
 					label={__('Type of list', 'maxi-blocks')}
 					className='maxi-text-inspector__list-type'
 					value={typeOfList}
-					defaultValue={getDefaultAttribute('typeOfList')}
+					onReset={() =>
+						maxiSetAttributes(
+							handleOnReset({
+								typeOfList: getDefaultAttribute('typeOfList'),
+							})
+						)
+					}
 					options={[
 						{
 							label: __('Unordered', 'maxi-blocks'),
@@ -659,7 +679,13 @@ const ListOptionsControl = props => {
 						label={__('Style', 'maxi-blocks')}
 						className='maxi-text-inspector__list-style'
 						value={listStyle || 'disc'}
-						defaultValue={getDefaultAttribute('listStyle')}
+						onReset={() =>
+							maxiSetAttributes(
+								handleOnReset({
+									listStyle: getDefaultAttribute('listStyle'),
+								})
+							)
+						}
 						options={getListStyleOptions(typeOfList)}
 						onChange={listStyle => {
 							maxiSetAttributes({
@@ -725,7 +751,13 @@ const ListOptionsControl = props => {
 								label={__('Source', 'maxi-blocks')}
 								className='maxi-text-inspector__list-source-selector'
 								value={listStyleSource}
-								defaultValue={defaultListStyleSource}
+								onReset={() =>
+									maxiSetAttributes(
+										handleOnReset({
+											defaultListStyleSource,
+										})
+									)
+								}
 								options={[
 									{
 										label: __('Text', 'maxi-blocks'),

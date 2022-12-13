@@ -22,6 +22,7 @@ import {
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { customCss } from './data';
 import { withMaxiInspector } from '../../extensions/inspector';
+import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * Inspector
@@ -93,15 +94,22 @@ const Inspector = props => {
 																value: 'vertical',
 															},
 														]}
-														defaultValue={getDefaultAttribute(
-															`line-orientation-${deviceType}`
-														)}
 														onChange={val =>
 															maxiSetAttributes({
 																[`line-orientation-${deviceType}`]:
 																	val,
 															})
 														}
+														onReset={() => {
+															maxiSetAttributes(
+																handleOnReset({
+																	[`line-orientation-${deviceType}`]:
+																		getDefaultAttribute(
+																			`line-orientation-${deviceType}`
+																		),
+																})
+															);
+														}}
 													/>
 													<SelectControl
 														label={__(
@@ -139,15 +147,22 @@ const Inspector = props => {
 																value: 'flex-end',
 															},
 														]}
-														defaultValue={getDefaultAttribute(
-															`line-vertical-${deviceType}`
-														)}
 														onChange={val =>
 															maxiSetAttributes({
 																[`line-vertical-${deviceType}`]:
 																	val,
 															})
 														}
+														onReset={() => {
+															maxiSetAttributes(
+																handleOnReset({
+																	[`line-vertical-${deviceType}`]:
+																		getDefaultAttribute(
+																			`line-vertical-${deviceType}`
+																		),
+																})
+															);
+														}}
 													/>
 													<SelectControl
 														label={__(
@@ -185,14 +200,21 @@ const Inspector = props => {
 																value: 'flex-end',
 															},
 														]}
-														defaultValue={getDefaultAttribute(
-															`line-horizontal-${deviceType}`
-														)}
 														onChange={val =>
 															maxiSetAttributes({
 																[`line-horizontal-${deviceType}`]:
 																	val,
 															})
+														}
+														onReset={() =>
+															maxiSetAttributes(
+																handleOnReset({
+																	[`line-horizontal-${deviceType}`]:
+																		getDefaultAttribute(
+																			`line-horizontal-${deviceType}`
+																		),
+																})
+															)
 														}
 													/>
 												</>

@@ -93,9 +93,6 @@ const ColumnSizeControl = props => {
 					breakpoint,
 					attributes: props,
 				})}
-				defaultValue={getDefaultAttribute(
-					getAttributeKey('justify-content', false, '', breakpoint)
-				)}
 				options={[
 					{
 						label: __('Top', 'maxi-blocks'),
@@ -123,6 +120,25 @@ const ColumnSizeControl = props => {
 						[`justify-content-${breakpoint}`]: verticalAlign,
 					})
 				}
+				onReset={() => {
+					onChange(
+						handleOnReset({
+							[getAttributeKey(
+								'justify-content',
+								false,
+								'',
+								breakpoint
+							)]: getDefaultAttribute(
+								getAttributeKey(
+									'justify-content',
+									false,
+									'',
+									breakpoint
+								)
+							),
+						})
+					);
+				}}
 			/>
 		</>
 	);

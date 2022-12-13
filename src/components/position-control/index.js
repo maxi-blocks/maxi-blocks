@@ -19,6 +19,7 @@ import {
  */
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
+import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * Component
@@ -123,14 +124,25 @@ const PositionControl = props => {
 								attributes: props,
 							}) || ''
 						}
-						defaultValue={getDefaultAttribute(
-							getAttributeKey(
-								'position',
-								isHover,
-								prefix,
-								breakpoint
+						onReset={() =>
+							onChange(
+								handleOnReset({
+									[getAttributeKey(
+										'position',
+										isHover,
+										prefix,
+										breakpoint
+									)]: getDefaultAttribute(
+										getAttributeKey(
+											'position',
+											isHover,
+											prefix,
+											breakpoint
+										)
+									),
+								})
 							)
-						)}
+						}
 						onChange={val =>
 							onChange({
 								[`${prefix}position-${breakpoint}`]: val,

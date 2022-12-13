@@ -18,13 +18,14 @@ import {
 	getAttributeValue,
 	getDefaultAttribute,
 } from '../../extensions/styles';
+import { handleOnReset } from '../../extensions/attributes';
+import getOptions from './utils';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
 import { toString } from 'lodash';
-import getOptions from './utils';
 
 /**
  * Component
@@ -170,9 +171,11 @@ const FlexSettingsControl = props => {
 									max={12}
 									step={1}
 									onReset={() =>
-										onChange({
-											[`order-${breakpoint}`]: null,
-										})
+										onChange(
+											handleOnReset({
+												[`order-${breakpoint}`]: null,
+											})
+										)
 									}
 								/>
 								<AdvancedNumberControl
@@ -193,9 +196,12 @@ const FlexSettingsControl = props => {
 									max={10}
 									step={0.1}
 									onReset={() =>
-										onChange({
-											[`flex-grow-${breakpoint}`]: null,
-										})
+										onChange(
+											handleOnReset({
+												[`flex-grow-${breakpoint}`]:
+													null,
+											})
+										)
 									}
 								/>
 								<AdvancedNumberControl
@@ -216,9 +222,12 @@ const FlexSettingsControl = props => {
 									max={10}
 									step={0.1}
 									onReset={() =>
-										onChange({
-											[`flex-shrink-${breakpoint}`]: null,
-										})
+										onChange(
+											handleOnReset({
+												[`flex-shrink-${breakpoint}`]:
+													null,
+											})
+										)
 									}
 								/>
 								<SelectControl
@@ -306,10 +315,12 @@ const FlexSettingsControl = props => {
 										}}
 										allowedUnits={['px', 'em', 'vw', '%']}
 										onReset={() =>
-											onChange({
-												[`flex-basis-${breakpoint}`]:
-													null,
-											})
+											onChange(
+												handleOnReset({
+													[`flex-basis-${breakpoint}`]:
+														null,
+												})
+											)
 										}
 									/>
 								)}

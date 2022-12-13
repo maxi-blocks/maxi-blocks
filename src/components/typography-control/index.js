@@ -30,6 +30,7 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { getDefaultSCValue } from '../../extensions/style-cards';
+import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * External dependencies
@@ -136,9 +137,7 @@ const LinkOptions = props => {
 									paletteOpacity,
 								[`${prefix}link-color`]: color,
 							},
-							false,
-							true,
-							'a'
+							{ forceDisableCustomFormats: false, tag: 'a' }
 						)
 					}
 					textLevel={textLevel}
@@ -176,9 +175,7 @@ const LinkOptions = props => {
 									paletteOpacity,
 								[`${prefix}link-hover-color`]: color,
 							},
-							false,
-							true,
-							'a:hover'
+							{ forceDisableCustomFormats: false, tag: 'a:hover' }
 						)
 					}
 					textLevel={textLevel}
@@ -216,9 +213,10 @@ const LinkOptions = props => {
 									paletteOpacity,
 								[`${prefix}link-active-color`]: color,
 							},
-							false,
-							true,
-							'a:active'
+							{
+								forceDisableCustomFormats: false,
+								tag: 'a:active',
+							}
 						)
 					}
 					textLevel={textLevel}
@@ -256,9 +254,10 @@ const LinkOptions = props => {
 									paletteOpacity,
 								[`${prefix}link-visited-color`]: color,
 							},
-							false,
-							true,
-							'a:visited'
+							{
+								forceDisableCustomFormats: false,
+								tag: 'a:visited',
+							}
 						)
 					}
 					textLevel={textLevel}
@@ -415,8 +414,7 @@ const TypographyControl = props => {
 
 	const onChangeFormat = (
 		value,
-		forceDisableCustomFormats = false,
-		tag = ''
+		{ forceDisableCustomFormats = false, tag = '', isReset = false } = {}
 	) => {
 		const obj = setFormat({
 			formatValue,
@@ -443,7 +441,8 @@ const TypographyControl = props => {
 			onChangeTextFormat(newFormatValue);
 		}
 
-		onChange(obj, getInlineTarget(tag));
+		if (!isReset) onChange(obj, getInlineTarget(tag));
+		else onChange(handleOnReset(obj), getInlineTarget(tag));
 	};
 
 	const onChangeInlineValue = (obj, tag = '') => {
@@ -541,11 +540,14 @@ const TypographyControl = props => {
 						});
 					}}
 					onReset={() =>
-						onChangeFormat({
-							[`${prefix}font-size-unit`]:
-								getDefault('font-size-unit'),
-							[`${prefix}font-size`]: getDefault('font-size'),
-						})
+						onChangeFormat(
+							{
+								[`${prefix}font-size-unit`]:
+									getDefault('font-size-unit'),
+								[`${prefix}font-size`]: getDefault('font-size'),
+							},
+							{ isReset: true }
+						)
 					}
 					minMaxSettings={minMaxSettings}
 					allowedUnits={['px', 'em', 'vw', '%']}
@@ -573,11 +575,15 @@ const TypographyControl = props => {
 						});
 					}}
 					onReset={() =>
-						onChangeFormat({
-							[`${prefix}line-height-unit`]:
-								getDefault('line-height-unit'),
-							[`${prefix}line-height`]: getDefault('line-height'),
-						})
+						onChangeFormat(
+							{
+								[`${prefix}line-height-unit`]:
+									getDefault('line-height-unit'),
+								[`${prefix}line-height`]:
+									getDefault('line-height'),
+							},
+							{ isReset: true }
+						)
 					}
 					minMaxSettings={{
 						...minMaxSettings,
@@ -610,13 +616,16 @@ const TypographyControl = props => {
 						});
 					}}
 					onReset={() =>
-						onChangeFormat({
-							[`${prefix}letter-spacing-unit`]: getDefault(
-								'letter-spacing-unit'
-							),
-							[`${prefix}letter-spacing`]:
-								getDefault('letter-spacing'),
-						})
+						onChangeFormat(
+							{
+								[`${prefix}letter-spacing-unit`]: getDefault(
+									'letter-spacing-unit'
+								),
+								[`${prefix}letter-spacing`]:
+									getDefault('letter-spacing'),
+							},
+							{ isReset: true }
+						)
 					}
 					minMaxSettings={minMaxSettingsLetterSpacing}
 					step={0.1}
@@ -750,7 +759,7 @@ const TypographyControl = props => {
 							{
 								[`${prefix}text-orientation`]: val,
 							},
-							true
+							{ forceDisableCustomFormats: true }
 						);
 					}}
 				/>
@@ -786,7 +795,7 @@ const TypographyControl = props => {
 							{
 								[`${prefix}text-indent-unit`]: val,
 							},
-							true
+							{ forceDisableCustomFormats: true }
 						);
 					}}
 					placeholder={getValue('text-indent')}
@@ -797,7 +806,7 @@ const TypographyControl = props => {
 							{
 								[`${prefix}text-indent`]: val,
 							},
-							true
+							{ forceDisableCustomFormats: true }
 						);
 					}}
 					onReset={() =>
@@ -808,7 +817,7 @@ const TypographyControl = props => {
 								[`${prefix}text-indent`]:
 									getDefault('text-indent'),
 							},
-							true
+							{ forceDisableCustomFormats: true, isReset: true }
 						)
 					}
 					minMaxSettings={{

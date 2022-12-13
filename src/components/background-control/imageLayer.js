@@ -26,6 +26,7 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { getDefaultLayerAttr } from './utils';
+import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * External dependencies
@@ -331,24 +332,26 @@ const ImageLayerSettings = props => {
 							})
 						}
 						onReset={() =>
-							onChange({
-								[getAttributeKey(
-									'background-image-position-width',
-									isHover,
-									prefix,
-									breakpoint
-								)]: getDefaultAttr(
-									'background-image-position-width'
-								),
-								[getAttributeKey(
-									'background-image-position-width-unit',
-									isHover,
-									prefix,
-									breakpoint
-								)]: getDefaultAttr(
-									'background-image-position-width-unit'
-								),
-							})
+							onChange(
+								handleOnReset({
+									[getAttributeKey(
+										'background-image-position-width',
+										isHover,
+										prefix,
+										breakpoint
+									)]: getDefaultAttr(
+										'background-image-position-width'
+									),
+									[getAttributeKey(
+										'background-image-position-width-unit',
+										isHover,
+										prefix,
+										breakpoint
+									)]: getDefaultAttr(
+										'background-image-position-width-unit'
+									),
+								})
+							)
 						}
 					/>
 					<AdvancedNumberControl
@@ -387,24 +390,26 @@ const ImageLayerSettings = props => {
 							})
 						}
 						onReset={() =>
-							onChange({
-								[getAttributeKey(
-									'background-image-position-height',
-									isHover,
-									prefix,
-									breakpoint
-								)]: getDefaultAttr(
-									'background-image-position-height'
-								),
-								[getAttributeKey(
-									'background-image-position-height-unit',
-									isHover,
-									prefix,
-									breakpoint
-								)]: getDefaultAttr(
-									'background-image-position-height-unit'
-								),
-							})
+							onChange(
+								handleOnReset({
+									[getAttributeKey(
+										'background-image-position-height',
+										isHover,
+										prefix,
+										breakpoint
+									)]: getDefaultAttr(
+										'background-image-position-height'
+									),
+									[getAttributeKey(
+										'background-image-position-height-unit',
+										isHover,
+										prefix,
+										breakpoint
+									)]: getDefaultAttr(
+										'background-image-position-height-unit'
+									),
+								})
+							)
 						}
 					/>
 				</>
@@ -750,12 +755,14 @@ const ImageLayer = props => {
 												max={10}
 												step={0.1}
 												onReset={() =>
-													onChange({
-														'background-image-parallax-speed':
-															getDefaultAttr(
-																'background-image-parallax-speed'
-															),
-													})
+													onChange(
+														handleOnReset({
+															'background-image-parallax-speed':
+																getDefaultAttr(
+																	'background-image-parallax-speed'
+																),
+														})
+													)
 												}
 												initialPosition={getDefaultAttr(
 													'background-image-parallax-speed'

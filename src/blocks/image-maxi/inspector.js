@@ -28,6 +28,7 @@ import {
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { customCss } from './data';
 import { withMaxiInspector } from '../../extensions/inspector';
+import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * External dependencies
@@ -265,16 +266,18 @@ const Inspector = props => {
 																}
 																onReset={() =>
 																	maxiSetAttributes(
-																		{
-																			[`caption-gap-${deviceType}`]:
-																				getDefaultAttribute(
-																					`caption-gap-${deviceType}`
-																				),
-																			[`caption-gap-unit-${deviceType}`]:
-																				getDefaultAttribute(
-																					`caption-gap-unit-${deviceType}`
-																				),
-																		}
+																		handleOnReset(
+																			{
+																				[`caption-gap-${deviceType}`]:
+																					getDefaultAttribute(
+																						`caption-gap-${deviceType}`
+																					),
+																				[`caption-gap-unit-${deviceType}`]:
+																					getDefaultAttribute(
+																						`caption-gap-unit-${deviceType}`
+																					),
+																			}
+																		)
 																	)
 																}
 															/>

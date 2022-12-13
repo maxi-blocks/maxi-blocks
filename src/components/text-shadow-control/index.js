@@ -12,6 +12,7 @@ import DefaultStylesControl from '../default-styles-control';
 import ToggleSwitch from '../toggle-switch';
 import AdvancedNumberControl from '../advanced-number-control';
 import Icon from '../icon';
+import { getColorRGBAString, getColorRGBAParts } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -24,7 +25,6 @@ import { isNil, isEmpty, trim } from 'lodash';
  */
 import './editor.scss';
 import { styleNone } from '../../icons';
-import { getColorRGBAString, getColorRGBAParts } from '../../extensions/styles';
 
 /**
  * Component
@@ -312,7 +312,7 @@ const TextShadow = props => {
 							}}
 							min={0}
 							max={100}
-							onReset={() => onChangeValue(index, 0)}
+							onReset={() => onChange(getValue(index, 0))}
 						/>
 					))}
 				</>

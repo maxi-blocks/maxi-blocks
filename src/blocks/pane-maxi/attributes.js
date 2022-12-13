@@ -16,13 +16,18 @@ const mutualAttributes = {
 	...attributesData.backgroundHover,
 	...attributesData.backgroundColorHover,
 	...attributesData.backgroundGradientHover,
+	...attributesData.backgroundActive,
+	...attributesData.backgroundColorActive,
+	...attributesData.backgroundGradientActive,
 
 	...attributesData.border,
 	...attributesData.borderHover,
+	...attributesData.borderActive,
 	...attributesData.borderRadius,
 	...attributesData.borderWidth,
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
+	...attributesData.boxShadowActive,
 	...attributesData.size,
 	...attributesData.padding,
 };

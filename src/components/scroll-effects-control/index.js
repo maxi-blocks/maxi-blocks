@@ -20,6 +20,7 @@ import ToggleSwitch from '../toggle-switch';
 import * as defaultShortcuts from './shortcuts';
 import { applyEffect, removeEffect } from './scroll-effect-preview';
 import { getActiveTabName } from '../../extensions/inspector';
+import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * External dependencies
@@ -632,12 +633,14 @@ const ScrollEffectsControl = props => {
 										step={10}
 										max={10000}
 										onReset={() =>
-											onChange({
-												[`scroll-${type}-speed-${breakpoint}`]:
-													getDefaultAttribute(
-														`scroll-${type}-speed-general`
-													),
-											})
+											onChange(
+												handleOnReset({
+													[`scroll-${type}-speed-${breakpoint}`]:
+														getDefaultAttribute(
+															`scroll-${type}-speed-general`
+														),
+												})
+											)
 										}
 										initialPosition={getDefaultAttribute(
 											`scroll-${type}-speed-general`
@@ -663,12 +666,14 @@ const ScrollEffectsControl = props => {
 										step={10}
 										max={10000}
 										onReset={() =>
-											onChange({
-												[`scroll-${type}-delay-${breakpoint}`]:
-													getDefaultAttribute(
-														`scroll-${type}-delay-general`
-													),
-											})
+											onChange(
+												handleOnReset({
+													[`scroll-${type}-delay-${breakpoint}`]:
+														getDefaultAttribute(
+															`scroll-${type}-delay-general`
+														),
+												})
+											)
 										}
 										initialPosition={getDefaultAttribute(
 											`scroll-${type}-delay-general`

@@ -16,6 +16,7 @@ import SettingTabsControl from '../setting-tabs-control';
 import {
 	getLastBreakpointAttribute,
 	getAttributeValue,
+	getDefaultAttribute,
 } from '../../extensions/styles';
 
 /**
@@ -79,6 +80,9 @@ const FlexSettingsControl = props => {
 											attributes: props,
 										}) ?? ''
 									}
+									defaultValue={getDefaultAttribute(
+										`flex-direction-${breakpoint}`
+									)}
 									options={getOptions([
 										'row',
 										'row-reverse',
@@ -108,6 +112,9 @@ const FlexSettingsControl = props => {
 											attributes: props,
 										}) ?? ''
 									}
+									defaultValue={getDefaultAttribute(
+										`align-content-${breakpoint}`
+									)}
 									options={getOptions([
 										'flex-start',
 										'flex-end',
@@ -226,6 +233,9 @@ const FlexSettingsControl = props => {
 													attributes: props,
 											  }) ?? ''
 									}
+									defaultValue={getDefaultAttribute(
+										`flex-basis-${breakpoint}`
+									)}
 									options={getOptions([
 										'content',
 										'max-content',

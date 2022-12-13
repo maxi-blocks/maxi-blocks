@@ -9,6 +9,7 @@ import { __ } from '@wordpress/i18n';
 import SelectControl from '../select-control';
 import AxisControl from '../axis-control';
 import {
+	getAttributeKey,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
@@ -122,6 +123,14 @@ const PositionControl = props => {
 								attributes: props,
 							}) || ''
 						}
+						defaultValue={getDefaultAttribute(
+							getAttributeKey(
+								'position',
+								isHover,
+								prefix,
+								breakpoint
+							)
+						)}
 						onChange={val =>
 							onChange({
 								[`${prefix}position-${breakpoint}`]: val,

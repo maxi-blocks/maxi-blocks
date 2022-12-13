@@ -119,6 +119,7 @@ const TransitionControl = props => {
 							breakpoint,
 							attributes: transition,
 						})}
+						defaultValue={getDefaultTransitionAttribute('easing')}
 						options={[
 							{ label: __('Ease', 'maxi-blocks'), value: 'ease' },
 							{
@@ -144,12 +145,6 @@ const TransitionControl = props => {
 									val !== undefined && val !== '' ? val : '',
 							});
 						}}
-						onReset={() =>
-							onChange({
-								[`easing-${breakpoint}`]:
-									getDefaultTransitionAttribute('easing'),
-							})
-						}
 					/>
 				</>
 			)}

@@ -7,7 +7,10 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import SelectControl from '../select-control';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
+import {
+	getDefaultAttribute,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import getOptions from './utils';
 
 const FlexAlignControl = props => {
@@ -25,6 +28,9 @@ const FlexAlignControl = props => {
 						attributes: props,
 					}) ?? ''
 				}
+				defaultValue={getDefaultAttribute(
+					`justify-content-${breakpoint}`
+				)}
 				options={getOptions([
 					'flex-start',
 					'flex-end',
@@ -49,6 +55,7 @@ const FlexAlignControl = props => {
 						attributes: props,
 					}) ?? ''
 				}
+				defaultValue={getDefaultAttribute(`align-items-${breakpoint}`)}
 				options={getOptions([
 					'flex-start',
 					'flex-end',

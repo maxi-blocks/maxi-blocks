@@ -55,6 +55,7 @@ const AccordionSettings = props => {
 					<SelectControl
 						label={__('Accordion layout', 'maxi-blocks')}
 						value={accordionLayout}
+						defaultValue={getDefaultAttribute('accordionLayout')}
 						options={[
 							{ label: 'Simple', value: 'simple' },
 							{ label: 'Boxed', value: 'boxed' },

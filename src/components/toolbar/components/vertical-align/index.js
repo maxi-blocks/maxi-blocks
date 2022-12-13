@@ -14,6 +14,7 @@ import ToolbarPopover from '../toolbar-popover';
  */
 import './editor.scss';
 import { toolbarVerticalAlign } from '../../../../icons';
+import { getDefaultAttribute } from '../../../../extensions/styles';
 
 /**
  * ColumnSize
@@ -34,6 +35,9 @@ const VerticalAlign = props => {
 				<SelectControl
 					label={__('Vertical align', 'maxi-blocks')}
 					value={verticalAlign}
+					defaultValue={getDefaultAttribute(
+						`justify-content-${breakpoint}`
+					)}
 					options={[
 						{
 							label: __('Top', 'maxi-blocks'),

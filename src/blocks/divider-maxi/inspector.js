@@ -15,6 +15,7 @@ import {
 	SettingTabsControl,
 } from '../../components';
 import {
+	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
@@ -92,6 +93,9 @@ const Inspector = props => {
 																value: 'vertical',
 															},
 														]}
+														defaultValue={getDefaultAttribute(
+															`line-orientation-${deviceType}`
+														)}
 														onChange={val =>
 															maxiSetAttributes({
 																[`line-orientation-${deviceType}`]:
@@ -135,6 +139,9 @@ const Inspector = props => {
 																value: 'flex-end',
 															},
 														]}
+														defaultValue={getDefaultAttribute(
+															`line-vertical-${deviceType}`
+														)}
 														onChange={val =>
 															maxiSetAttributes({
 																[`line-vertical-${deviceType}`]:
@@ -178,6 +185,9 @@ const Inspector = props => {
 																value: 'flex-end',
 															},
 														]}
+														defaultValue={getDefaultAttribute(
+															`line-horizontal-${deviceType}`
+														)}
 														onChange={val =>
 															maxiSetAttributes({
 																[`line-horizontal-${deviceType}`]:

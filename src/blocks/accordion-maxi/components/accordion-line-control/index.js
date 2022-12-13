@@ -12,7 +12,10 @@ import {
 	ToggleSwitch,
 	SelectControl,
 } from '../../../../components';
-import { getLastBreakpointAttribute } from '../../../../extensions/styles';
+import {
+	getDefaultAttribute,
+	getLastBreakpointAttribute,
+} from '../../../../extensions/styles';
 
 const AccordionLineControl = props => {
 	const { onChange, breakpoint, prefix } = props;
@@ -40,6 +43,9 @@ const AccordionLineControl = props => {
 						value: 'flex-end',
 					},
 				]}
+				defaultValue={getDefaultAttribute(
+					`${prefix}line-horizontal-${breakpoint}`
+				)}
 				onChange={val =>
 					onChange({
 						[`${prefix}line-horizontal-${breakpoint}`]: val,

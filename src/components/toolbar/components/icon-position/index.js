@@ -14,6 +14,7 @@ import ToolbarPopover from '../toolbar-popover';
  */
 import './editor.scss';
 import { toolbarIconAlign } from '../../../../icons';
+import { getDefaultAttribute } from '../../../../extensions/styles';
 
 /**
  * Size
@@ -35,6 +36,7 @@ const IconPosition = props => {
 					label={__('Icon position', 'maxi-block')}
 					className='maxi-icon__position'
 					value={props['icon-position']}
+					defaultValue={getDefaultAttribute('icon-position')}
 					options={[
 						{
 							label: __('Top', 'maxi-blocks'),

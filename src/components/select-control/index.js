@@ -13,12 +13,12 @@ import classnames from 'classnames';
  * Internal dependencies
  */
 import BaseControl from '../base-control';
+import ResetButton from '../reset-control';
 
 /**
  * Styles
  */
 import './editor.scss';
-import ResetButton from '../reset-control';
 
 export default function SelectControl({
 	help,

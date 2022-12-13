@@ -8,13 +8,13 @@ import { __ } from '@wordpress/i18n';
  */
 import SelectControl from '../../../select-control';
 import ToolbarPopover from '../toolbar-popover';
+import { getDefaultAttribute } from '../../../../extensions/styles';
 
 /**
  * Styles & Icons
  */
 import './editor.scss';
 import { toolbarVerticalAlign } from '../../../../icons';
-import { getDefaultAttribute } from '../../../../extensions/styles';
 
 /**
  * ColumnSize

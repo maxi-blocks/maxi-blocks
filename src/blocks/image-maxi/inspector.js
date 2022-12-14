@@ -171,6 +171,7 @@ const Inspector = props => {
 																	}
 																);
 														}}
+														hideResetButton
 													/>
 													{captionType !== 'none' && (
 														<>

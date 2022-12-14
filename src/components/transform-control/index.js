@@ -12,7 +12,7 @@ import SelectControl from '../select-control';
 import SettingTabsControl from '../setting-tabs-control';
 import SquareControl from './square-control';
 import ToggleSwitch from '../toggle-switch';
-import { withRTC } from '../../extensions/maxi-block';
+import withRTC from '../../extensions/maxi-block/withRTC';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,

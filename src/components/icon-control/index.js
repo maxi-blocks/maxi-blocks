@@ -19,7 +19,7 @@ import SettingTabsControl from '../setting-tabs-control';
 import SvgStrokeWidthControl from '../svg-stroke-width-control';
 import SvgWidthControl from '../svg-width-control';
 import ToggleSwitch from '../toggle-switch';
-import { withRTC } from '../../extensions/maxi-block';
+import withRTC from '../../extensions/maxi-block/withRTC';
 import {
 	getAttributeKey,
 	getDefaultAttribute,

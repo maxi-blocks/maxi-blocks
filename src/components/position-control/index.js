@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import AxisControl from '../axis-control';
 import SelectControl from '../select-control';
-import { withRTC } from '../../extensions/maxi-block';
+import withRTC from '../../extensions/maxi-block/withRTC';
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,

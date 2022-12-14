@@ -13,7 +13,6 @@ import {
 	getGroupAttributes,
 	setHoverAttributes,
 } from '../../extensions/styles';
-import ResponsiveTabsControl from '../responsive-tabs-control';
 import ManageHoverTransitions from '../manage-hover-transitions';
 /**
  * Component

@@ -12,7 +12,7 @@ import DefaultStylesControl from '../default-styles-control';
 import Icon from '../icon';
 import SelectControl from '../select-control';
 import ToggleSwitch from '../toggle-switch';
-import { withRTC } from '../../extensions/maxi-block';
+import withRTC from '../../extensions/maxi-block/withRTC';
 import {
 	getAttributeKey,
 	getDefaultAttribute,

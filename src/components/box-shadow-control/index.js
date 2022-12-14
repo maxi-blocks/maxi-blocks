@@ -16,7 +16,7 @@ import {
 	boxShadowBottom,
 	boxShadowSolid,
 } from './defaults';
-import { withRTC } from '../../extensions/maxi-block';
+import withRTC from '../../extensions/maxi-block/withRTC';
 import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,

@@ -4,7 +4,7 @@
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 import SettingTabsControl from '../setting-tabs-control';
 import Icon from '../icon';
-import { withRTC } from '../../extensions/maxi-block';
+import withRTC from '../../extensions/maxi-block/withRTC';
 
 /**
  * External dependencies

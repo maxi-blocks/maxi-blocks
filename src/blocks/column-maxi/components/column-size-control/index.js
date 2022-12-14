@@ -12,7 +12,7 @@ import {
 	ToggleSwitch,
 } from '../../../../components';
 import { getColumnDefaultValue } from '../../../../extensions/column-templates';
-import { withRTC } from '../../../../extensions/maxi-block';
+import withRTC from '../../../../extensions/maxi-block/withRTC';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,

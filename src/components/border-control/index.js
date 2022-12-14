@@ -17,7 +17,7 @@ import {
 	borderDashed,
 	borderDotted,
 } from './defaults';
-import { withRTC } from '../../extensions/maxi-block';
+import withRTC from '../../extensions/maxi-block/withRTC';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,

@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import AdvancedNumberControl from '../advanced-number-control';
 import ToggleSwitch from '../toggle-switch';
-import { withRTC } from '../../extensions/maxi-block';
+import withRTC from '../../extensions/maxi-block/withRTC';
 import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,

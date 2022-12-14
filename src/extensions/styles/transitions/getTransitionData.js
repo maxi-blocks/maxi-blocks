@@ -1,9 +1,7 @@
-import * as blocksData from '../../../blocks/data';
+import { getBlockData } from '../../attributes';
 import transitionDefault from './transitionDefault';
 
 const getTransitionData = name =>
-	Object.values(blocksData).find(
-		({ name: blockName }) => blockName === name.replace('maxi-blocks/', '')
-	)?.transition || transitionDefault;
+	getBlockData(name)?.transition || transitionDefault;
 
 export default getTransitionData;

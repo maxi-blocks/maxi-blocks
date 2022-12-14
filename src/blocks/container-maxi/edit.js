@@ -19,7 +19,7 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
-import { copyPasteMapping } from './data';
+import { copyPasteMapping, maxiAttributes } from './data';
 
 /**
  * General
@@ -33,6 +33,11 @@ const ROW_TEMPLATE = [['maxi-blocks/row-maxi']];
 class edit extends MaxiBlockComponent {
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
+	}
+
+	// eslint-disable-next-line class-methods-use-this
+	getMaxiAttributes() {
+		return maxiAttributes;
 	}
 
 	get getMaxiCustomData() {

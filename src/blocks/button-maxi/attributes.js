@@ -146,18 +146,6 @@ const attributes = {
 	...prefixAttributesCreator({
 		obj: attributesData.padding,
 		prefix,
-		diffValAttr: {
-			[`${prefix}padding-sync-xxl`]: 'axis',
-			[`${prefix}padding-top-xxl`]: '23',
-			[`${prefix}padding-right-xxl`]: '55',
-			[`${prefix}padding-bottom-xxl`]: '23',
-			[`${prefix}padding-left-xxl`]: '55',
-			[`${prefix}padding-sync-general`]: 'axis',
-			[`${prefix}padding-top-general`]: '15',
-			[`${prefix}padding-right-general`]: '36',
-			[`${prefix}padding-bottom-general`]: '15',
-			[`${prefix}padding-left-general`]: '36',
-		},
 	}),
 
 	/**

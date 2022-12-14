@@ -56,6 +56,8 @@ const GradientControl = props => {
 					onChange={gradient => {
 						onChange(gradient);
 					}}
+					// Should be removed after deprecation period will end, approximately in WP 6.4
+					__nextHasNoMargin
 				/>
 			</div>
 		</div>

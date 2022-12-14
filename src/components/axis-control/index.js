@@ -576,9 +576,10 @@ const AxisControl = props => {
 					baseBreakpoint
 				);
 
-				value =
-					defaultAttributes[attrLabel] ||
-					getDefaultAttribute(attrLabel);
+				value = defaultAttributes
+					? defaultAttributes[attrLabel] ||
+					  getDefaultAttribute(attrLabel)
+					: getDefaultAttribute(attrLabel);
 			}
 			if (isNil(value)) {
 				const attrLabel = getAttributeKey(
@@ -588,9 +589,10 @@ const AxisControl = props => {
 					customBreakpoint ?? breakpoint
 				);
 
-				value =
-					defaultAttributes[attrLabel] ||
-					getDefaultAttribute(attrLabel);
+				value = defaultAttributes
+					? defaultAttributes[attrLabel] ||
+					  getDefaultAttribute(attrLabel)
+					: getDefaultAttribute(attrLabel);
 			}
 
 			return value;

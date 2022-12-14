@@ -29,7 +29,7 @@ class edit extends Component {
 
 		/* Placeholder with layout modal */
 		return [
-			<div key={this.props.clientId} className='test'>
+			<div key={this.props.clientId}>
 				{isEmpty(content) && (
 					<div
 							className='maxi-block-library__placeholder'

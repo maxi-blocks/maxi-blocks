@@ -8,6 +8,7 @@ import { Tooltip } from '@wordpress/components';
 /**
  * Internal dependencies
  */
+import AdvancedNumberControl from '../advanced-number-control';
 import Button from '../button';
 import SelectControl from '../select-control';
 import BaseControl from '../base-control';
@@ -24,7 +25,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isArray, isEmpty, isNil, trim } from 'lodash';
+import { isArray, isEmpty, isNil } from 'lodash';
 
 /**
  * Styles
@@ -49,7 +50,7 @@ const optionColors = [
 ];
 
 const ClipPathOption = props => {
-	const { values, onRemove, onChange, number, type } = props;
+	const { values, onRemove, onReset, onChange, number, type } = props;
 
 	const getLabel = () => {
 		if (type === 'circle' && number === 0)
@@ -94,38 +95,28 @@ const ClipPathOption = props => {
 				className='maxi-clip-path-controller__item'
 			>
 				<div className='maxi-clip-path-controller__settings'>
-					<input
-						type='number'
-						value={trim(Number(values[0]))}
-						onChange={e => {
-							let value = +e.target.value;
-
-							if (value > 100) value = 100;
-							if (value < 0) value = 0;
-
+					<AdvancedNumberControl
+						value={values[0]}
+						onChangeValue={value => {
 							values[0] = value;
-
 							onChange(values);
 						}}
+						onReset={() => onReset(0)}
 						min={0}
 						max={100}
+						disableRange
 					/>
 					{!isNil(values[1]) && (
-						<input
-							type='number'
-							value={trim(Number(values[1]))}
-							onChange={e => {
-								let value = +e.target.value;
-
-								if (value > 100) value = 100;
-								if (value < 0) value = 0;
-
+						<AdvancedNumberControl
+							value={values[1]}
+							onChangeValue={value => {
 								values[1] = value;
-
 								onChange(values);
 							}}
+							onReset={() => onReset(1)}
 							min={0}
 							max={100}
+							disableRange
 						/>
 					)}
 				</div>
@@ -185,7 +176,7 @@ const ClipPath = props => {
 				});
 				break;
 			case 'circle':
-				cpContent = clipPath
+				cpContent = clipPathToDeconstruct
 					.replace(cpType, '')
 					.replace('(', '')
 					.replace(')', '');
@@ -461,6 +452,52 @@ const ClipPath = props => {
 												onChange={value => {
 													clipPathOptions.content[i] =
 														value;
+													generateCP(clipPathOptions);
+												}}
+												onReset={coordIndex => {
+													const breakpoints = [
+														'general',
+														'xxl',
+														'xl',
+														'l',
+														'm',
+														's',
+														'xs',
+													];
+													const oneBreakpointHigherClipPath =
+														deconstructCP(
+															getLastBreakpointAttribute(
+																{
+																	target: `${prefix}clip-path`,
+																	breakpoint:
+																		breakpoints[
+																			breakpoints.indexOf(
+																				breakpoint
+																			) -
+																				1
+																		],
+																	attributes:
+																		props,
+																	isHover,
+																}
+															)
+														);
+
+													const newValue =
+														oneBreakpointHigherClipPath
+															?.content?.[i]?.[
+															coordIndex
+														];
+
+													if (newValue)
+														clipPathOptions.content[
+															i
+														][coordIndex] =
+															newValue;
+													else
+														clipPathOptions.content[
+															i
+														] = [0, 0];
 													generateCP(clipPathOptions);
 												}}
 												onRemove={number => {

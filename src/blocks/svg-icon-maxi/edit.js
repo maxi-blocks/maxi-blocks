@@ -39,7 +39,7 @@ import { isEmpty, uniqueId } from 'lodash';
 /**
  * Icons
  */
-import { iconBox } from '../../icons';
+import { selectIcon } from '../../icons';
 
 /**
  * Content
@@ -231,7 +231,7 @@ class edit extends MaxiBlockComponent {
 							>
 								<Icon
 									className='maxi-icon-block__select__icon'
-									icon={iconBox}
+									icon={selectIcon}
 								/>
 								{__('Select icon', 'maxi-blocks')}
 							</Button>

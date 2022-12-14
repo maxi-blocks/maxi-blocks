@@ -43,13 +43,7 @@ const MapControl = props => {
 				className='maxi-map-control__provider'
 				label={__('Map service provider', 'maxi-blocks')}
 				value={mapProvider}
-				onReset={() =>
-					onChange(
-						handleOnReset({
-							'map-provider': getDefaultAttribute('map-provider'),
-						})
-					)
-				}
+				hideResetButton
 				options={[
 					{
 						label: __('Open Street Map', 'maxi-blocks'),

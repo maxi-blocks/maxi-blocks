@@ -199,18 +199,6 @@ const Inspector = props => {
 																		value: 'bottom',
 																	},
 																]}
-																onReset={() =>
-																	maxiSetAttributes(
-																		handleOnReset(
-																			{
-																				captionPosition:
-																					getDefaultAttribute(
-																						'captionPosition'
-																					),
-																			}
-																		)
-																	)
-																}
 																onChange={captionPosition =>
 																	maxiSetAttributes(
 																		{
@@ -218,6 +206,7 @@ const Inspector = props => {
 																		}
 																	)
 																}
+																hideResetButton
 															/>
 															<AdvancedNumberControl
 																label={__(

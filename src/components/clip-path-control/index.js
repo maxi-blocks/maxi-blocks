@@ -421,6 +421,7 @@ const ClipPath = props => {
 									},
 								]}
 								onChange={value => onChangeType(value)}
+								hideResetButton
 							/>
 							<SettingTabsControl
 								fullWidthMode

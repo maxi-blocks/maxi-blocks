@@ -36,6 +36,7 @@ const ButtonControl = ({
 						buttonSkin,
 					})
 				}
+				hideResetButton
 			/>
 			{buttonSkin === 'text' && (
 				<>

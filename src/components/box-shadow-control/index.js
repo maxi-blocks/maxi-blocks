@@ -27,6 +27,7 @@ import {
  */
 import classnames from 'classnames';
 import { capitalize } from 'lodash';
+import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * Styles and icons
@@ -89,11 +90,13 @@ const BoxShadowValueControl = props => {
 			max={100}
 			minMaxSettings={minMaxSettings}
 			onReset={() =>
-				onChange({
-					[`${prefix}box-shadow-${type}-${breakpoint}${
-						isHover ? '-hover' : ''
-					}`]: 0,
-				})
+				onChange(
+					handleOnReset({
+						[`${prefix}box-shadow-${type}-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`]: 0,
+					})
+				)
 			}
 			initialPosition={getDefaultAttribute(
 				`${prefix}box-shadow-${type}-${breakpoint}${

@@ -24,6 +24,7 @@ const boxShadow = ({
 	depth = 2,
 	inlineTarget = '',
 	dropShadow,
+	enableActiveState = false,
 }) => {
 	const {
 		attributes,
@@ -35,6 +36,7 @@ const boxShadow = ({
 	} = props;
 
 	const hoverStatus = attributes[`${prefix}box-shadow-status-hover`];
+	const activeStatus = attributes[`${prefix}box-shadow-status-active`];
 
 	return {
 		label: __('Box shadow', 'maxi-blocks'),
@@ -106,6 +108,7 @@ const boxShadow = ({
 										})
 									}
 								/>
+
 								{hoverStatus && (
 									<BoxShadowControl
 										{...getGroupAttributes(
@@ -125,6 +128,43 @@ const boxShadow = ({
 							</>
 						),
 						extraIndicators: [`${prefix}box-shadow-status-hover`],
+					},
+					enableActiveState && {
+						label: __('Active state', 'maxi-blocks'),
+						content: (
+							<>
+								<ToggleSwitch
+									label={__(
+										'Enable box shadow active',
+										'maxi-blocks'
+									)}
+									selected={activeStatus}
+									className='maxi-box-shadow-status-active'
+									onChange={val =>
+										maxiSetAttributes({
+											[`${prefix}box-shadow-status-active`]:
+												val,
+										})
+									}
+								/>
+								{activeStatus && (
+									<BoxShadowControl
+										{...getGroupAttributes(
+											attributes,
+											'boxShadow',
+											false,
+											`${prefix}active-`
+										)}
+										prefix={`${prefix}active-`}
+										onChange={obj => maxiSetAttributes(obj)}
+										breakpoint={deviceType}
+										clientId={clientId}
+										dropShadow={dropShadow}
+									/>
+								)}
+							</>
+						),
+						extraIndicators: [`${prefix}box-shadow-status-active`],
 					},
 				]}
 				depth={depth}

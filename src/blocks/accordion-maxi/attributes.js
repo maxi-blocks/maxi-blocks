@@ -15,10 +15,12 @@ const attributes = {
 	 * Block styles
 	 */
 	...attributesData.accordion,
+	animationDuration: {
+		default: 0.3,
+	},
 	...attributesData.accordionIcon,
 	...attributesData.accordionTitle,
 	...attributesData.accordionLine,
-
 	...attributesData.border,
 	...attributesData.borderHover,
 	...attributesData.borderRadius,

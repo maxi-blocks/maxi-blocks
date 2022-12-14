@@ -2,7 +2,7 @@ body.maxi-blocks--active .maxi-image-block {
 	height: inherit;
 
 	&__resizer {
-		height: inherit !important;
+		height: auto !important;
 		max-height: 100%;
 	}
 

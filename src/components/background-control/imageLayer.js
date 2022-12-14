@@ -87,7 +87,6 @@ const ImageLayerSettings = props => {
 					attributes: imageOptions,
 					isHover,
 				})}
-				defaultValue={getDefaultAttr('background-image-size')}
 				options={[
 					{
 						label: __('Auto', 'maxi-blocks'),
@@ -140,6 +139,16 @@ const ImageLayerSettings = props => {
 						)]: val,
 					})
 				}
+				onReset={() =>
+					onChange({
+						[getAttributeKey(
+							'background-image-size',
+							isHover,
+							prefix,
+							breakpoint
+						)]: getDefaultAttr('background-image-size'),
+					})
+				}
 			/>
 			{getLastBreakpointAttribute({
 				target: `${prefix}background-image-size`,
@@ -187,7 +196,6 @@ const ImageLayerSettings = props => {
 						attributes: imageOptions,
 						isHover,
 					})}
-					defaultValue={getDefaultAttr('background-image-repeat')}
 					options={[
 						{
 							label: __('Repeat', 'maxi-blocks'),
@@ -224,6 +232,16 @@ const ImageLayerSettings = props => {
 							)]: val,
 						})
 					}
+					onReset={() =>
+						onChange({
+							[getAttributeKey(
+								'background-image-repeat',
+								isHover,
+								prefix,
+								breakpoint
+							)]: getDefaultAttr('background-image-repeat'),
+						})
+					}
 				/>
 			)}
 			<SelectControl
@@ -235,7 +253,6 @@ const ImageLayerSettings = props => {
 					attributes: imageOptions,
 					isHover,
 				})}
-				defaultValue={getDefaultAttr('background-image-position')}
 				options={[
 					{
 						label: __('Left top', 'maxi-blocks'),
@@ -286,6 +303,16 @@ const ImageLayerSettings = props => {
 							prefix,
 							breakpoint
 						)]: val,
+					})
+				}
+				onReset={() =>
+					onChange({
+						[getAttributeKey(
+							'background-image-position',
+							isHover,
+							prefix,
+							breakpoint
+						)]: getDefaultAttr('background-image-position'),
 					})
 				}
 			/>
@@ -425,9 +452,6 @@ const ImageLayerSettings = props => {
 							attributes: imageOptions,
 							isHover,
 						})}
-						defaultValue={getDefaultAttr(
-							'background-image-attachment'
-						)}
 						options={[
 							{
 								label: __('Scroll', 'maxi-blocks'),
@@ -452,6 +476,18 @@ const ImageLayerSettings = props => {
 								)]: val,
 							})
 						}
+						onReset={() =>
+							onChange({
+								[getAttributeKey(
+									'background-image-attachment',
+									isHover,
+									prefix,
+									breakpoint
+								)]: getDefaultAttr(
+									'background-image-attachment'
+								),
+							})
+						}
 					/>
 					<ToggleSwitch
 						className='maxi-background-image-more-settings--toggle'
@@ -472,9 +508,6 @@ const ImageLayerSettings = props => {
 									attributes: imageOptions,
 									isHover,
 								})}
-								defaultValue={getDefaultAttr(
-									'background-image-origin'
-								)}
 								options={[
 									{
 										label: __('Padding', 'maxi-blocks'),
@@ -499,6 +532,18 @@ const ImageLayerSettings = props => {
 										)]: val,
 									})
 								}
+								onReset={() =>
+									onChange({
+										[getAttributeKey(
+											'background-image-origin',
+											isHover,
+											prefix,
+											breakpoint
+										)]: getDefaultAttr(
+											'background-image-origin'
+										),
+									})
+								}
 							/>
 							<SelectControl
 								label={__('Background clip', 'maxi-blocks')}
@@ -509,9 +554,6 @@ const ImageLayerSettings = props => {
 									attributes: imageOptions,
 									isHover,
 								})}
-								defaultValue={getDefaultAttr(
-									'background-image-clip'
-								)}
 								options={[
 									{
 										label: __('Border', 'maxi-blocks'),
@@ -534,6 +576,18 @@ const ImageLayerSettings = props => {
 											prefix,
 											breakpoint
 										)]: val,
+									})
+								}
+								onReset={() =>
+									onChange({
+										[getAttributeKey(
+											'background-image-clip',
+											isHover,
+											prefix,
+											breakpoint
+										)]: getDefaultAttr(
+											'background-image-clip'
+										),
 									})
 								}
 							/>

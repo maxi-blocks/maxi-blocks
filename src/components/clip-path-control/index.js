@@ -149,20 +149,20 @@ const ClipPath = props => {
 		isHover,
 	});
 
-	const deconstructCP = () => {
-		if (isEmpty(clipPath))
+	const deconstructCP = (clipPathToDeconstruct = clipPath) => {
+		if (isEmpty(clipPathToDeconstruct))
 			return {
 				type: 'polygon',
-				content: [],
+				content: {},
 			};
 
-		const cpType = clipPath.match(/^[^(]+/gi)[0];
+		const cpType = clipPathToDeconstruct.match(/^[^(]+/gi)[0];
 		const cpValues = [];
 		let cpContent = [];
 
 		switch (cpType) {
 			case 'polygon':
-				cpContent = clipPath
+				cpContent = clipPathToDeconstruct
 					.replace(cpType, '')
 					.replace('(', '')
 					.replace(')', '');
@@ -194,7 +194,7 @@ const ClipPath = props => {
 				});
 				break;
 			case 'ellipse':
-				cpContent = clipPath
+				cpContent = clipPathToDeconstruct
 					.replace(cpType, '')
 					.replace('(', '')
 					.replace(')', '');
@@ -214,7 +214,7 @@ const ClipPath = props => {
 				});
 				break;
 			case 'inset':
-				cpContent = clipPath
+				cpContent = clipPathToDeconstruct
 					.replace(cpType, '')
 					.replace('(', '')
 					.replace(')', '')
@@ -230,7 +230,7 @@ const ClipPath = props => {
 
 		return {
 			type: cpType,
-			content: cpValues,
+			content: { ...cpValues },
 		};
 	};
 
@@ -258,25 +258,26 @@ const ClipPath = props => {
 
 	const generateCP = clipPath => {
 		const { type, content } = clipPath;
+		const arrayContent = Object.values(content);
 
 		let newContent = '';
 
 		switch (type) {
 			case 'polygon':
-				newContent = content.reduce((a, b) => {
+				newContent = arrayContent.reduce((a, b) => {
 					if (isArray(a))
 						return `${a[0]}% ${a[1]}%, ${b[0]}% ${b[1]}%`;
 					return `${!isEmpty(a) ? `${a}, ` : ''}${b[0]}% ${b[1]}%`;
 				}, '');
 				break;
 			case 'circle':
-				newContent = `${content[0][0]}% at ${content[1][0]}% ${content[1][1]}%`;
+				newContent = `${arrayContent[0][0]}% at ${arrayContent[1][0]}% ${arrayContent[1][1]}%`;
 				break;
 			case 'ellipse':
-				newContent = `${content[0][0]}% ${content[1][0]}% at ${content[2][0]}% ${content[2][1]}%`;
+				newContent = `${arrayContent[0][0]}% ${arrayContent[1][0]}% at ${arrayContent[2][0]}% ${arrayContent[2][1]}%`;
 				break;
 			case 'inset':
-				newContent = `${content[0][0]}% ${content[1][0]}% ${content[2][0]}% ${content[3][0]}%`;
+				newContent = `${arrayContent[0][0]}% ${arrayContent[1][0]}% ${arrayContent[2][0]}% ${arrayContent[3][0]}%`;
 				break;
 			default:
 				break;
@@ -511,13 +512,17 @@ const ClipPath = props => {
 										);
 									})}
 									{clipPathOptions.type === 'polygon' &&
-										clipPathOptions.content.length < 10 && (
+										Object.keys(clipPathOptions.content)
+											.length < 10 && (
 											<Button
 												className='maxi-clip-path-control__handles'
 												onClick={() => {
-													clipPathOptions.content.push(
-														[0, 0]
-													);
+													clipPathOptions.content = {
+														...clipPathOptions.content,
+														[Object.keys(
+															clipPathOptions.content
+														).length]: [0, 0],
+													};
 													generateCP(clipPathOptions);
 												}}
 											>

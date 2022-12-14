@@ -239,7 +239,7 @@ const ClipPath = props => {
 
 		return {
 			type: cpType,
-			content: { ...cpValues },
+			content: cpValues,
 		};
 	};
 
@@ -267,26 +267,25 @@ const ClipPath = props => {
 
 	const generateCP = clipPath => {
 		const { type, content } = clipPath;
-		const arrayContent = Object.values(content);
 
 		let newContent = '';
 
 		switch (type) {
 			case 'polygon':
-				newContent = arrayContent.reduce((a, b) => {
+				newContent = content.reduce((a, b) => {
 					if (isArray(a))
 						return `${a[0]}% ${a[1]}%, ${b[0]}% ${b[1]}%`;
-					return `${a}, ${b[0]}% ${b[1]}%`;
-				});
+					return `${!isEmpty(a) ? `${a}, ` : ''}${b[0]}% ${b[1]}%`;
+				}, '');
 				break;
 			case 'circle':
-				newContent = `${arrayContent[0][0]}% at ${arrayContent[1][0]}% ${arrayContent[1][1]}%`;
+				newContent = `${content[0][0]}% at ${content[1][0]}% ${content[1][1]}%`;
 				break;
 			case 'ellipse':
-				newContent = `${arrayContent[0][0]}% ${arrayContent[1][0]}% at ${arrayContent[2][0]}% ${arrayContent[2][1]}%`;
+				newContent = `${content[0][0]}% ${content[1][0]}% at ${content[2][0]}% ${content[2][1]}%`;
 				break;
 			case 'inset':
-				newContent = `${arrayContent[0][0]}% ${arrayContent[1][0]}% ${arrayContent[2][0]}% ${arrayContent[3][0]}%`;
+				newContent = `${content[0][0]}% ${content[1][0]}% ${content[2][0]}% ${content[3][0]}%`;
 				break;
 			default:
 				break;

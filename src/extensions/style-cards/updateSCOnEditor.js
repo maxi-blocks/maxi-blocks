@@ -85,6 +85,9 @@ export const getSCVariablesObject = styleCards => {
 		'text-decoration',
 		'text-transform',
 		'letter-spacing',
+		'text-indent',
+		'text-orientation',
+		'direction',
 	];
 	const SC = {
 		dark: {
@@ -215,6 +218,8 @@ export const createSCStyleString = SCObject => {
 	});
 
 	response += '}';
+
+	console.log(response);
 
 	return response;
 };

@@ -786,6 +786,7 @@ const TypographyControl = props => {
 					unit={getValue('text-indent-unit')}
 					defaultUnit={getDefault('text-indent-unit')}
 					onChangeUnit={val => {
+						console.log(val);
 						onChangeFormat(
 							{
 								[`${prefix}text-indent-unit`]: val,
@@ -794,9 +795,10 @@ const TypographyControl = props => {
 						);
 					}}
 					placeholder={getValue('text-indent')}
-					value={getValue('text-indent')}
-					defaultValue={getDefault('text-indent', !isStyleCards)}
+					value={getValue('text-indent', !isStyleCards)}
+					defaultValue={getDefault('text-indent')}
 					onChangeValue={val => {
+						console.log(val);
 						onChangeFormat(
 							{
 								[`${prefix}text-indent`]: val,

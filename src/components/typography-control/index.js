@@ -639,6 +639,15 @@ const TypographyControl = props => {
 					onChange={val => {
 						onChangeFormat({ [`${prefix}font-weight`]: val });
 					}}
+					onReset={() => {
+						onChangeFormat(
+							{
+								[`${prefix}font-weight`]:
+									getDefault('font-weight'),
+							},
+							{ isReset: true }
+						);
+					}}
 					fontWeight={getValue('font-weight')}
 					fontName={getValue('font-family')}
 					fontStyle={getValue('font-style')}

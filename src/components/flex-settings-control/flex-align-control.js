@@ -22,6 +22,11 @@ import {
     flexJustifySpaceBetween,
 	flexJustifySpaceArround,
 	flexJustifySpaceEvenly,
+	flexAlignVerticalityStart,
+	flexAlignVerticalityEnd,
+	flexAlignVerticalityCenter,
+	flexAlignVerticalityStretch,
+	flexAlignVerticalityBaseline,
 } from '../../icons';
 
 const FlexAlignControl = props => {
@@ -73,6 +78,45 @@ const FlexAlignControl = props => {
 		return options;
 	};
 
+	const getOptionsVertical = () => {
+		const options = [];
+
+			options.push({
+				icon: <Icon icon={flexAlignVerticalityStart} />,
+				value: 'flex-start',
+			});
+
+			options.push({
+				icon: (
+					<Icon icon={flexAlignVerticalityEnd} />
+				),
+				value: 'flex-end',
+			});
+
+			options.push({
+				icon: (
+					<Icon icon={flexAlignVerticalityCenter} />
+				),
+				value: 'center',
+			});
+
+			options.push({
+				icon: (
+					<Icon icon={flexAlignVerticalityStretch} />
+				),
+				value: 'stretch',
+			});
+
+			options.push({
+				icon: (
+					<Icon icon={flexAlignVerticalityBaseline} />
+				),
+				value: 'baseline',
+			});
+
+		return options;
+	};
+
 	return (
 		<>
 		<SettingTabsControl
@@ -99,6 +143,33 @@ const FlexAlignControl = props => {
 			onChange={val =>
 				onChange({
 					[`justify-content-${breakpoint}`]: val,
+				})
+			}
+		/>
+		<SettingTabsControl
+			label={__('Align items vertically', 'maxi-blocks')}
+			type='buttons'
+			fullWidthMode
+			className='maxi-flex-align-control__align-items'
+			hasBorder
+			items={getOptionsVertical()}
+			value={
+				getLastBreakpointAttribute({
+					target: 'align-items',
+					breakpoint,
+					attributes: props,
+				}) ?? ''
+			}
+			selected={
+				getLastBreakpointAttribute({
+					target: 'align-items',
+					breakpoint,
+					attributes: props,
+				}) || getOptions()[0].value
+			}
+			onChange={val =>
+				onChange({
+					[`align-items-${breakpoint}`]: val,
 				})
 			}
 		/>

@@ -6,7 +6,6 @@ if (!defined('ABSPATH')) {
 if (!class_exists('MaxiBlocks_Dashboard')):
     class MaxiBlocks_Dashboard
     {
-        
         /**
         * Plugin's dashboard instance.
         *
@@ -149,7 +148,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '<p>'.__('Anything you create with Maxi Blocks builder is yours to keep. There’s no lock in, no domain restrictions or license keys to keep track of. Start with 700 free templates and build as many sites as you want. All you need is time and effort.', self::$maxi_text_domain);
             $content .= '<h3>'.__('Work smarter with pro patterns', self::$maxi_text_domain).'</h3>';
             $content .= '<p>'.__('Building beautiful web pages from scratch takes time and effort. Our pro template library offers 600+ professional patterns to help you work faster and more efficiently. With 1,579 additional designs in development, our collection is constantly growing. Your support helps us improve the library and add new features.', self::$maxi_text_domain);
-            $content .= '<p><a href="https://maxiblocks.com/go/pro-subscription" target="_blank"> '.__('Visit Maxi Blocks Pro to learn more', self::$maxi_text_domain).'</a>.</p>';         
+            $content .= '<p><a href="https://maxiblocks.com/go/pro-subscription" target="_blank"> '.__('Visit Maxi Blocks Pro to learn more', self::$maxi_text_domain).'</a>.</p>';
 
             $content .= '<h3>'.__('Template library and style cards', self::$maxi_text_domain).'</h3>';
             $content .= '<p>'.__('Combine page templates with style cards to save time. Here’s how it works;', self::$maxi_text_domain).'</p>';
@@ -238,7 +237,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '<li>'.__('Enable Google Maps Platform APIs.', self::$maxi_text_domain).'</li>';
             $content .= '<li>'.__('Generate an API key.', self::$maxi_text_domain).'</li>';
             $content .= '</ol>';
-            $content .= '<p>'.__('To make this process easy, launch <a href="https://maxiblocks.com/go/google-maps-api-quickstart" target="_blank" rel="noreferrer">'.__('Google Maps API Quickstart', self::$maxi_text_domain).'</a> which will handle the setup of your account and generate the API key that you can insert below.', self::$maxi_text_domain).'</p>';          
+            $content .= '<p>'.__('To make this process easy, launch <a href="https://maxiblocks.com/go/google-maps-api-quickstart" target="_blank" rel="noreferrer">'.__('Google Maps API Quickstart', self::$maxi_text_domain).'</a> which will handle the setup of your account and generate the API key that you can insert below.', self::$maxi_text_domain).'</p>';
      
             $description = '<h4>'.__('Insert Google Maps API Key here', self::$maxi_text_domain).'</h4>';
             $content .= $this->generate_setting($description, 'google_api_key_option');

@@ -1,5 +1,9 @@
 @import './src/css/backend-variables.scss';
 
+body.toplevel_page_maxi-blocks-dashboard #wpfooter {
+	position: static;
+}
+
 body.toplevel_page_maxi-blocks-dashboard {
 	background-color: #fff;
 

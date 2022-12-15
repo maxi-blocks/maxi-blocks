@@ -38,9 +38,6 @@ const getColorString = (obj, target, style) => {
 const getParsedObj = obj => {
 	const newObj = { ...cloneDeep(obj) };
 
-	// console.log('newObj');
-	// console.log(newObj);
-
 	const typographyObj = getGroupAttributes(
 		newObj,
 		'typography',
@@ -48,9 +45,6 @@ const getParsedObj = obj => {
 		'',
 		true
 	);
-
-	// console.log('typographyObj');
-	// console.log(typographyObj);
 
 	Object.keys(typographyObj).forEach(key => delete newObj[key]);
 
@@ -61,8 +55,6 @@ const getParsedObj = obj => {
 			newObj[`${key}-${breakpoint}`] = val;
 		});
 	});
-
-	// console.log(newObj);
 
 	return newObj;
 };

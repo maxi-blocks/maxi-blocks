@@ -62,3 +62,10 @@ export { default as width } from './width';
 export { default as iconStroke } from './icon-stroke';
 export { default as iconFill } from './icon-fill';
 export { default as iconBorder } from './icon-border';
+export { default as flexWrapNowrap } from './flex-wrap-nowrap';
+export { default as flexWrapReverse } from './flex-wrap-reverse';
+export { default as flexWrap } from './flex-wrap';
+export { default as flexDirectionRow } from './flex-direction-row';
+export { default as flexDirectionRowReverse } from './flex-direction-row-reverse';
+export { default as flexDirectionColumn } from './flex-direction-column';
+export { default as flexDirectionColumnReverse } from './flex-direction-column-reverse'

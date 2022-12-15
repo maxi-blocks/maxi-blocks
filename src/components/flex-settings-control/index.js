@@ -10,6 +10,7 @@ import { useState } from '@wordpress/element';
 import FlexGapControl from './flex-gap-control';
 import FlexAlignControl from './flex-align-control';
 import FlexWrapControl from './flex-wrap-control';
+import FlexDirectionControl from './flex-direction-control';
 import AdvancedNumberControl from '../advanced-number-control';
 import SelectControl from '../select-control';
 import SettingTabsControl from '../setting-tabs-control';
@@ -25,6 +26,11 @@ import getOptions from './utils';
  */
 import classnames from 'classnames';
 import { toString } from 'lodash';
+
+/**
+ * Styles
+ */
+import './editor.scss';
 
 /**
  * Component
@@ -70,7 +76,8 @@ const FlexSettingsControl = props => {
 						content: wrapperBlocks.includes(name) ? (
 							<>
 								<FlexWrapControl {...props} />
-								<SelectControl
+								<FlexDirectionControl {...props} />
+								{/* <SelectControl
 									label={__('Flex direction', 'maxi-blocks')}
 									className='maxi-flex__direction'
 									value={
@@ -92,7 +99,7 @@ const FlexSettingsControl = props => {
 												val,
 										})
 									}
-								/>
+								/> */}
 								<FlexAlignControl
 									{...props}
 									onChange={onChange}

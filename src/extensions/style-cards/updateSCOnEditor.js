@@ -113,10 +113,8 @@ export const getSCVariablesObject = styleCards => {
 	};
 	const elementsForColor = ['divider', 'icon', 'link'];
 
-	const fixTextIntend = obj => {
-		const textIntend = key => key.includes('text-indent');
-		const textIntendUnit = key => key.includes('text-indent-unit');
-		if (!obj.some(textIntend) || obj.some(textIntendUnit)) return obj;
+	const fixTextIndent = obj => {
+		if (obj['text-indent-unit-general']) return obj;
 
 		const response = { ...cloneDeep(obj) };
 		Object.keys(response).forEach(key => {
@@ -128,14 +126,12 @@ export const getSCVariablesObject = styleCards => {
 				}
 			}
 		});
-		console.log(response);
 		return response;
 	};
 
 	styles.forEach(style => {
 		elements.forEach(element => {
-			// console.log(fixTextIntend(SC[style][element]));
-			const obj = getParsedObj(SC[style][element]);
+			const obj = getParsedObj(fixTextIndent(SC[style][element]));
 			if (!elementsForColor.includes(element))
 				settings.forEach(setting => {
 					breakpoints.forEach(breakpoint => {

@@ -75,3 +75,8 @@ export { default as flexJustifyEnd } from './flex-justify-end';
 export { default as flexJustifySpaceBetween } from './flex-justify-space-between';
 export { default as flexJustifySpaceArround } from './flex-justify-space-arround';
 export { default as flexJustifySpaceEvenly } from './flex-justify-space-evenly';
+export { default as flexAlignVerticalityStart } from './flex-align-verticality-start';
+export { default as flexAlignVerticalityEnd } from './flex-align-verticality-end';
+export { default as flexAlignVerticalityCenter } from './flex-align-verticality-center';
+export { default as flexAlignVerticalityStretch } from './flex-align-verticality-stretch';
+export { default as flexAlignVerticalityBaseline } from './flex-align-verticality-baseline';

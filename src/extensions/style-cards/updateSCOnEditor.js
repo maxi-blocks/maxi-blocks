@@ -38,6 +38,9 @@ const getColorString = (obj, target, style) => {
 const getParsedObj = obj => {
 	const newObj = { ...cloneDeep(obj) };
 
+	// console.log('newObj');
+	// console.log(newObj);
+
 	const typographyObj = getGroupAttributes(
 		newObj,
 		'typography',
@@ -45,6 +48,9 @@ const getParsedObj = obj => {
 		'',
 		true
 	);
+
+	// console.log('typographyObj');
+	// console.log(typographyObj);
 
 	Object.keys(typographyObj).forEach(key => delete newObj[key]);
 
@@ -55,6 +61,8 @@ const getParsedObj = obj => {
 			newObj[`${key}-${breakpoint}`] = val;
 		});
 	});
+
+	// console.log(newObj);
 
 	return newObj;
 };
@@ -105,8 +113,28 @@ export const getSCVariablesObject = styleCards => {
 	};
 	const elementsForColor = ['divider', 'icon', 'link'];
 
+	const fixTextIntend = obj => {
+		const textIntend = key => key.includes('text-indent');
+		const textIntendUnit = key => key.includes('text-indent-unit');
+		if (!obj.some(textIntend) || obj.some(textIntendUnit)) return obj;
+
+		const response = { ...cloneDeep(obj) };
+		Object.keys(response).forEach(key => {
+			if (key.includes('text-indent')) {
+				const breakpoint = key.split('-').pop();
+				const unitKey = `text-indent-unit-${breakpoint}`;
+				if (!response[unitKey]) {
+					response[unitKey] = 'px';
+				}
+			}
+		});
+		console.log(response);
+		return response;
+	};
+
 	styles.forEach(style => {
 		elements.forEach(element => {
+			// console.log(fixTextIntend(SC[style][element]));
 			const obj = getParsedObj(SC[style][element]);
 			if (!elementsForColor.includes(element))
 				settings.forEach(setting => {
@@ -218,8 +246,6 @@ export const createSCStyleString = SCObject => {
 	});
 
 	response += '}';
-
-	console.log(response);
 
 	return response;
 };

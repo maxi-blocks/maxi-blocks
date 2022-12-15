@@ -7,15 +7,102 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import SelectControl from '../select-control';
+import SettingTabsControl from '../setting-tabs-control';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 import getOptions from './utils';
+import Icon from '../icon';
+
+/**
+ * Icons
+ */
+import {
+	flexJustifyStart,
+	flexJustifyEnd,
+	flexJustifyCenter,
+    flexJustifySpaceBetween,
+	flexJustifySpaceArround,
+	flexJustifySpaceEvenly,
+} from '../../icons';
 
 const FlexAlignControl = props => {
 	const { breakpoint, onChange } = props;
 
+	const getOptions = () => {
+		const options = [];
+
+			options.push({
+				icon: <Icon icon={flexJustifyStart} />,
+				value: 'flex-start',
+			});
+
+			options.push({
+				icon: (
+					<Icon icon={flexJustifyEnd} />
+				),
+				value: 'flex-end',
+			});
+
+			options.push({
+				icon: (
+					<Icon icon={flexJustifyCenter} />
+				),
+                value: 'center',
+			});
+
+			options.push({
+				icon: (
+					<Icon icon={flexJustifySpaceBetween} />
+				),
+				value: 'space-between',
+			});
+
+			options.push({
+				icon: (
+					<Icon icon={flexJustifySpaceArround} />
+				),
+				value: 'space-around',
+			});
+
+			options.push({
+				icon: (
+					<Icon icon={flexJustifySpaceEvenly} />
+				),
+				value: 'space-evenly',
+			});
+
+		return options;
+	};
+
 	return (
 		<>
-			<SelectControl
+		<SettingTabsControl
+			label={__('Justify content horizontally', 'maxi-blocks')}
+			type='buttons'
+			fullWidthMode
+			className='maxi-flex-align-control__justify-content'
+			hasBorder
+			items={getOptions()}
+			value={
+				getLastBreakpointAttribute({
+					target: 'justify-content',
+					breakpoint,
+					attributes: props,
+				}) ?? ''
+			}
+			selected={
+				getLastBreakpointAttribute({
+					target: 'justify-content',
+					breakpoint,
+					attributes: props,
+				}) || getOptions()[0].value
+			}
+			onChange={val =>
+				onChange({
+					[`justify-content-${breakpoint}`]: val,
+				})
+			}
+		/>
+			{/* <SelectControl
 				label={__('Justify content horizontally', 'maxi-blocks')}
 				className='maxi-flex-align-control__justify-content'
 				value={
@@ -38,8 +125,8 @@ const FlexAlignControl = props => {
 						[`justify-content-${breakpoint}`]: val,
 					})
 				}
-			/>
-			<SelectControl
+			/> */}
+			{/* <SelectControl
 				label={__('Align items vertically', 'maxi-blocks')}
 				className='maxi-flex-align-control__align-items'
 				value={
@@ -61,7 +148,7 @@ const FlexAlignControl = props => {
 						[`align-items-${breakpoint}`]: val,
 					})
 				}
-			/>
+			/> */}
 		</>
 	);
 };

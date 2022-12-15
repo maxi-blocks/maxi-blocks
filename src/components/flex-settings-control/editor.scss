@@ -1,0 +1,7 @@
+.maxi-accordion-control__item {
+    &[data-name="flexbox"]{
+        .maxi-tabs-control__button--selected svg path {
+            fill: var(--maxi-secondary-color);
+        }
+    }
+}

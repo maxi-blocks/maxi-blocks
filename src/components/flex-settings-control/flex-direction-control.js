@@ -16,9 +16,10 @@ import Icon from '../icon';
  * Icons
  */
 import {
-	flexWrapNowrap,
-	flexWrap,
-	flexWrapReverse,
+	flexDirectionRow,
+	flexDirectionColumn,
+	flexDirectionRowReverse,
+    flexDirectionColumnReverse,
 } from '../../icons';
 
 
@@ -26,29 +27,36 @@ import {
  * Component
  */
 
-const FlexWrapControl = props => {
+const FlexDirectionControl = props => {
 	const { breakpoint, onChange } = props;
 
 	const getOptions = () => {
 		const options = [];
 
 			options.push({
-				icon: <Icon icon={flexWrapNowrap} />,
-				value: 'nowrap',
+				icon: <Icon icon={flexDirectionRow} />,
+				value: 'row',
 			});
 
 			options.push({
 				icon: (
-					<Icon icon={flexWrap} />
+					<Icon icon={flexDirectionColumn} />
 				),
-				value: 'wrap',
+				value: 'column',
 			});
 
 			options.push({
 				icon: (
-					<Icon icon={flexWrapReverse} />
+					<Icon icon={flexDirectionRowReverse} />
 				),
-				value: 'wrap-reverse',
+                value: 'row-reverse',
+			});
+
+			options.push({
+				icon: (
+					<Icon icon={flexDirectionColumnReverse} />
+				),
+				value: 'column-reverse',
 			});
 
 		return options;
@@ -56,33 +64,33 @@ const FlexWrapControl = props => {
 
 	return (
 		<SettingTabsControl
-			label={__('Flex wrap', 'maxi-blocks')}
+			label={__('Flex direction', 'maxi-blocks')}
 			type='buttons'
 			fullWidthMode
-			className='maxi-flex-wrap-control'
+			className='maxi-flex__direction'
 			hasBorder
 			items={getOptions()}
 			value={
 				getLastBreakpointAttribute({
-					target: 'flex-wrap',
+					target: 'flex-direction',
 					breakpoint,
 					attributes: props,
 				}) ?? ''
 			}
 			selected={
 				getLastBreakpointAttribute({
-					target: 'flex-wrap',
+					target: 'flex-direction',
 					breakpoint,
 					attributes: props,
 				}) || getOptions()[0].value
 			}
 			onChange={val =>
 				onChange({
-					[`flex-wrap-${breakpoint}`]: val,
+					[`flex-direction-${breakpoint}`]: val,
 				})
 			}
 		/>
 	);
 };
 
-export default FlexWrapControl;
+export default FlexDirectionControl;

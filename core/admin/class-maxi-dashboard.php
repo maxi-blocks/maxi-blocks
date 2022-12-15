@@ -227,8 +227,9 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             // $description = '<h4>'.__('Use post excerpts, if defined by your theme', self::$maxi_text_domain).'</h4>';
             // $description .= '<p>'.__('Let your active theme control the length and display of post excerpts.', self::$maxi_text_domain).'</p>';
             // $content .= $this->generate_setting($description, 'post_excerpts');
-            //$description = '<h4>'.__('Create Google Maps API key', self::$maxi_text_domain).'</h4>';
             
+            
+            $content .= '<h4>'.__('Create Google Maps API key', self::$maxi_text_domain).'</h4>';
             $content .= '<p>'.__('To use Google Maps features, Google requires you to provide an API key that the plugin can use to make these requests on your behalf.', self::$maxi_text_domain).'</p>';
             $content .= '<p>'.__('To create an API key, you will need to do the following:', self::$maxi_text_domain).'</p>';
             $content .= '<ol>';

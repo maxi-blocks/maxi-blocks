@@ -1,7 +1,21 @@
 .maxi-accordion-control__item {
     &[data-name="flexbox"]{
-        .maxi-tabs-control__button--selected svg path {
-            fill: var(--maxi-secondary-color);
+        .maxi-tabs-control__button{
+            padding: 6px 3px;
+            svg{
+                width: 18px;
+            }
+            &--selected svg {
+                path {
+                    fill: var(--maxi-secondary-color);
+                }
+            }
         }
+        .maxi-flex-options__wrap{
+            .maxi-base-control__label{
+                margin-bottom: 3px !important;
+            }
+        }
+
     }
 }

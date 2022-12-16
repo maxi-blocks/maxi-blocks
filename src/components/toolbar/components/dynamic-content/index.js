@@ -31,7 +31,15 @@ import {
 /**
  * External dependencies
  */
-import { find, isArray, isEmpty, isFinite, isNil, random } from 'lodash';
+import {
+	find,
+	isArray,
+	isEmpty,
+	isFinite,
+	isNil,
+	random,
+	capitalize,
+} from 'lodash';
 import moment from 'moment';
 
 /**
@@ -697,7 +705,7 @@ const DynamicContent = props => {
 							/>
 						)}
 						{!postIdOptions ? (
-							<p>This type is empty</p>
+							<p>{__('This type is empty', 'maxi-blocks')}</p>
 						) : (
 							<>
 								{!date &&
@@ -743,7 +751,9 @@ const DynamicContent = props => {
 									) && (
 										<SelectControl
 											label={__(
-												`${typeRef.current} id`,
+												`${capitalize(
+													typeRef.current
+												)} id`,
 												'maxi-blocks'
 											)}
 											value={idRef.current}

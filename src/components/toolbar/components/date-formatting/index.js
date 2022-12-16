@@ -227,10 +227,7 @@ const DateFormatting = props => {
 				</Popover>
 			)}
 			<ToggleSwitch
-				label={__(
-					`${!status ? 'Default' : 'Custom'} date`,
-					'maxi-blocks'
-				)}
+				label={__('Custom date', 'maxi-blocks')}
 				selected={status}
 				onChange={() => setStatus(!status)}
 			/>

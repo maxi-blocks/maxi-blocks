@@ -14,6 +14,7 @@ import FlexDirectionControl from './flex-direction-control';
 import AdvancedNumberControl from '../advanced-number-control';
 import SelectControl from '../select-control';
 import SettingTabsControl from '../setting-tabs-control';
+import FlexContentAlignControl from './flex-content-align-control';
 import {
 	getLastBreakpointAttribute,
 	getAttributeValue,
@@ -75,64 +76,16 @@ const FlexSettingsControl = props => {
 						value: 'flex-parent',
 						content: wrapperBlocks.includes(name) ? (
 							<>
-								<FlexWrapControl {...props} />
-								<FlexDirectionControl {...props} />
-								{/* <SelectControl
-									label={__('Flex direction', 'maxi-blocks')}
-									className='maxi-flex__direction'
-									value={
-										getLastBreakpointAttribute({
-											target: 'flex-direction',
-											breakpoint,
-											attributes: props,
-										}) ?? ''
-									}
-									options={getOptions([
-										'row',
-										'row-reverse',
-										'column',
-										'column-reverse',
-									])}
-									onChange={val =>
-										onChange({
-											[`flex-direction-${breakpoint}`]:
-												val,
-										})
-									}
-								/> */}
-								<FlexAlignControl
-									{...props}
-									onChange={onChange}
-									breakpoint={breakpoint}
-								/>
-
-								<SelectControl
-									label={__('Align content', 'maxi-blocks')}
-									className='maxi-flex__align-content'
-									value={
-										getLastBreakpointAttribute({
-											target: 'align-content',
-											breakpoint,
-											attributes: props,
-										}) ?? ''
-									}
-									options={getOptions([
-										'flex-start',
-										'flex-end',
-										'center',
-										'space-between',
-										'space-around',
-										'space-evenly',
-										'stretch',
-										'baseline',
-									])}
-									onChange={val =>
-										onChange({
-											[`align-content-${breakpoint}`]:
-												val,
-										})
-									}
-								/>
+								<div className='maxi-flex-options__wrap'>
+									<FlexWrapControl {...props} />
+									<FlexDirectionControl {...props} />
+									<FlexAlignControl
+										{...props}
+										onChange={onChange}
+										breakpoint={breakpoint}
+									/>
+									<FlexContentAlignControl {...props} />
+								</div>
 								<FlexGapControl
 									{...props}
 									onChange={onChange}

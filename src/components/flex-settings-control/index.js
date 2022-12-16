@@ -69,6 +69,7 @@ const FlexSettingsControl = props => {
 	return (
 		<div className={classes}>
 			<SettingTabsControl
+				className='maxi-accordion-control__item__flexbox'
 				fullWidthMode
 				showTooltip
 				items={[

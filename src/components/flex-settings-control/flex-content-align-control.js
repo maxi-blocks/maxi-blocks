@@ -22,6 +22,7 @@ import {
 	flexAlignAround,
 	flexAlignStretch,
 	flexAlignBaseline,
+    styleNone 
 } from '../../icons';
 
 const FlexContentAlignControl = props => {
@@ -30,59 +31,64 @@ const FlexContentAlignControl = props => {
 	const getOptions = () => {
 		const options = [];
 
-			options.push({
-				icon: <Icon icon={flexAlignStart} />,
-				value: 'flex-start',
-			});
+        options.push({
+            icon: <Icon icon={styleNone} />,
+            value: 'unset',
+        });
 
-			options.push({
-				icon: (
-					<Icon icon={flexAlignEnd} />
-				),
-				value: 'flex-end',
-			});
+		options.push({
+			icon: <Icon icon={flexAlignStart} />,
+			value: 'flex-start',
+		});
 
-			options.push({
-				icon: (
-					<Icon icon={flexAlignCenter} />
-				),
-                value: 'center',
-			});
+		options.push({
+			icon: (
+				<Icon icon={flexAlignEnd} />
+			),
+			value: 'flex-end',
+		});
 
-			options.push({
-				icon: (
-					<Icon icon={flexAlignBetween} />
-				),
-				value: 'space-between',
-			});
+		options.push({
+			icon: (
+				<Icon icon={flexAlignCenter} />
+			),
+            value: 'center',
+		});
 
-			options.push({
-				icon: (
-					<Icon icon={flexAlignAround} />
-				),
-				value: 'space-around',
-			});
+		options.push({
+			icon: (
+				<Icon icon={flexAlignBetween} />
+			),
+			value: 'space-between',
+		});
 
-			options.push({
-				icon: (
-					<Icon icon={flexAlignEvenly} />
-				),
-				value: 'space-evenly',
-			});
+		options.push({
+			icon: (
+				<Icon icon={flexAlignAround} />
+			),
+			value: 'space-around',
+		});
 
-			options.push({
-				icon: (
-					<Icon icon={flexAlignStretch} />
-				),
-				value: 'stretch',
-			});
+		options.push({
+			icon: (
+				<Icon icon={flexAlignEvenly} />
+			),
+			value: 'space-evenly',
+		});
 
-			options.push({
-				icon: (
-					<Icon icon={flexAlignBaseline} />
-				),
-				value: 'baseline',
-			});
+		options.push({
+			icon: (
+				<Icon icon={flexAlignStretch} />
+			),
+			value: 'stretch',
+		});
+
+		options.push({
+			icon: (
+				<Icon icon={flexAlignBaseline} />
+			),
+			value: 'baseline',
+		});
 
 		return options;
 	};

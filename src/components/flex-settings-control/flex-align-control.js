@@ -25,6 +25,7 @@ import {
 	flexAlignVerticallyCenter,
 	flexAlignVerticallyStretch,
 	flexAlignVerticallyBaseline,
+	styleNone,
 } from '../../icons';
 
 const FlexAlignControl = props => {
@@ -32,6 +33,11 @@ const FlexAlignControl = props => {
 
 	const getOptions = () => {
 		const options = [];
+
+		options.push({
+            icon: <Icon icon={styleNone} />,
+            value: 'unset',
+        });
 
 		options.push({
 			icon: <Icon icon={flexJustifyStart} />,
@@ -68,6 +74,11 @@ const FlexAlignControl = props => {
 
 	const getOptionsVertical = () => {
 		const options = [];
+
+		options.push({
+            icon: <Icon icon={styleNone} />,
+            value: 'unset',
+        });
 
 		options.push({
 			icon: <Icon icon={flexAlignVerticallyStart} />,

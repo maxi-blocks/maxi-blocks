@@ -288,7 +288,7 @@ $white: #fff;
 	}
 
 	button.maxi-block-library__modal-button {
-		background: #007CBA;
+		background: var(--maxi-secondary-color);
 		color: #fff;
 		font-family: Roboto, sans-serif;
 		font-size: 12px;
@@ -308,7 +308,7 @@ $white: #fff;
 			border-right: 1px solid #DBDDE6;
 			path{
 				fill: none !important;
-				stroke: #007CBA;
+				stroke: var(--maxi-secondary-color);
 				&:first-child{
 					display: none;
 				}
@@ -317,7 +317,7 @@ $white: #fff;
 
 		&:hover {
 			background: #fff !important;
-			color: #007cba !important;
+			color: var(--maxi-secondary-color) !important;
 		}
 	}
 

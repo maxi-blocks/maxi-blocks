@@ -2,7 +2,6 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-// import { Button } from '@wordpress/components';
 import { select } from '@wordpress/data';
 
 /**
@@ -23,8 +22,7 @@ import {
 	getGroupAttributes,
 } from '../../extensions/styles';
 import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
-import getHoverStatus from './getHoverStatus';
-import * as blocksData from '../../blocks/data';
+import { getHoverStatus } from '../../extensions/relations';
 
 /**
  * External dependencies
@@ -35,6 +33,7 @@ import { capitalize, cloneDeep, isEmpty, isNil, merge } from 'lodash';
  * Styles
  */
 import './editor.scss';
+import { getBlockData } from '../../extensions/attributes';
 
 const RelationControl = props => {
 	const { getBlock } = select('core/block-editor');
@@ -60,9 +59,7 @@ const RelationControl = props => {
 		// TODO: without this line, the block may break after copy/pasting
 		if (!blockName) return {};
 
-		const blockOptions = Object.values(blocksData).find(
-			data => data.name === blockName
-		).interactionBuilderSettings;
+		const blockOptions = getBlockData(blockName).interactionBuilderSettings;
 
 		return blockOptions || {};
 	};
@@ -272,6 +269,7 @@ const RelationControl = props => {
 
 				const stylesObj = selectedSettingsObj?.helper({
 					obj: newGroupAttributes,
+					isIB: true,
 					prefix,
 					blockStyle: blockAttributes.blockStyle,
 					deviceType,
@@ -519,7 +517,6 @@ const RelationControl = props => {
 															clientId,
 															value
 														) || {};
-
 													const {
 														transitionTarget,
 														hoverProp,

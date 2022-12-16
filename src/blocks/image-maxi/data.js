@@ -7,12 +7,18 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import { createSelectors } from '../../extensions/styles/custom-css';
-import { AlignmentControl, ImageShape, InfoBox } from '../../components';
+import {
+	AlignmentControl,
+	ImageShape,
+	InfoBox,
+	ClipPath,
+} from '../../components';
 import {
 	getAlignmentFlexStyles,
+	getClipPathStyles,
 	getImageShapeStyles,
 } from '../../extensions/styles/helpers';
-import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
+import { getCanvasSettings } from '../../extensions/relations';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
 /**
@@ -201,9 +207,7 @@ const interactionBuilderSettings = {
 		{
 			label: __('Alignment', 'maxi-blocks'),
 			attrGroupName: 'alignment',
-			component: props => (
-				<AlignmentControl {...props} disableJustify {...props} />
-			),
+			component: props => <AlignmentControl disableJustify {...props} />,
 			helper: props => getAlignmentFlexStyles(props.obj),
 			target: ' .maxi-image-block-wrapper',
 		},
@@ -245,6 +249,16 @@ const interactionBuilderSettings = {
 					};
 					return acc;
 				}, {}),
+		},
+		{
+			label: __('Clip-path', 'maxi-blocks'),
+			attrGroupName: 'clipPath',
+			component: props => <ClipPath {...props} />,
+			helper: props => getClipPathStyles(props.obj),
+			target: [
+				'.maxi-image-block-wrapper img',
+				'.maxi-image-block-wrapper svg',
+			],
 		},
 	],
 	canvas: getCanvasSettings({ name, customCss }),

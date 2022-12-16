@@ -4,6 +4,7 @@ jest.mock('@wordpress/blocks', () => {
 	};
 });
 jest.mock('../../styles/transitions/getTransitionData.js', () => jest.fn());
+jest.mock('../../attributes/getBlockData.js', () => jest.fn());
 
 /**
  * Internal dependencies
@@ -284,9 +285,9 @@ describe('getSCVariablesObject', () => {
 						'visited-color': '',
 					},
 					icon: {
-						'line-global': false,
+						'line-color-global': false,
 						line: '',
-						'fill-global': false,
+						'fill-color-global': false,
 						fill: '',
 					},
 					divider: {
@@ -565,9 +566,9 @@ describe('getSCVariablesObject', () => {
 						'visited-color': '',
 					},
 					icon: {
-						'line-global': false,
+						'line-color-global': false,
 						line: '',
-						'fill-global': false,
+						'fill-color-global': false,
 						fill: '',
 					},
 					divider: {

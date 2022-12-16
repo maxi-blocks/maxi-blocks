@@ -30,6 +30,7 @@ import {
 	getGroupAttributes,
 	getDefaultAttribute,
 } from '../../../../extensions/styles';
+import { handleOnReset } from '../../../../extensions/attributes';
 
 /**
  * External dependencies
@@ -72,12 +73,9 @@ const TextOptionsContent = props => {
 				value={getValue(`${prefix}font-size`, breakpoint, avoidXXL)}
 				defaultValue={getDefault(`${prefix}font-size`, breakpoint)}
 				onChangeValue={val => {
-					onChangeFormat(
-						{
-							[`${prefix}font-size`]: val,
-						},
-						breakpoint
-					);
+					onChangeFormat({
+						[`${prefix}font-size`]: val,
+					});
 				}}
 				onReset={() =>
 					onChangeFormat(
@@ -86,7 +84,7 @@ const TextOptionsContent = props => {
 								`${prefix}font-size`
 							),
 						},
-						breakpoint
+						true
 					)
 				}
 				min={minMaxSettings[getValue(`${prefix}font-size-unit`)].min}
@@ -101,12 +99,9 @@ const TextOptionsContent = props => {
 				value={getValue(`${prefix}line-height`, breakpoint, avoidXXL)}
 				defaultValue={getDefault(`${prefix}line-height`, breakpoint)}
 				onChangeValue={val => {
-					onChangeFormat(
-						{
-							[`${prefix}line-height`]: val,
-						},
-						breakpoint
-					);
+					onChangeFormat({
+						[`${prefix}line-height`]: val,
+					});
 				}}
 				onReset={() =>
 					onChangeFormat(
@@ -115,7 +110,7 @@ const TextOptionsContent = props => {
 								`${prefix}line-height`
 							),
 						},
-						breakpoint
+						true
 					)
 				}
 				min={minMaxSettings[getValue(`${prefix}line-height-unit`)].min}
@@ -134,19 +129,16 @@ const TextOptionsContent = props => {
 				)}
 				defaultValue={getDefault(`${prefix}letter-spacing`, breakpoint)}
 				onChangeValue={val => {
-					onChangeFormat(
-						{
-							[`${prefix}letter-spacing`]: val,
-						},
-						breakpoint
-					);
+					onChangeFormat({
+						[`${prefix}letter-spacing`]: val,
+					});
 				}}
 				onReset={() =>
 					onChangeFormat(
 						{
 							[`${prefix}letter-spacing`]: '',
 						},
-						breakpoint
+						true
 					)
 				}
 				min={
@@ -219,7 +211,7 @@ const TextOptions = props => {
 			styleCardPrefix,
 		});
 
-	const onChangeFormat = value => {
+	const onChangeFormat = (value, isReset = false) => {
 		const obj = setFormat({
 			formatValue,
 			isList,
@@ -237,7 +229,8 @@ const TextOptions = props => {
 
 		onChangeTextFormat(newFormatValue);
 
-		onChange(obj);
+		if (!isReset) onChange(obj);
+		else onChange(handleOnReset(obj));
 	};
 
 	const getDefault = (prop, customBreakpoint) => {

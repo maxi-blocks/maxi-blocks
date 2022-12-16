@@ -1,4 +1,11 @@
 {
-	"core": "WordPress/WordPress#6.1",
-	"plugins": ["."]
+	"core": "WordPress/WordPress#6.1.1",
+	"plugins": ["."],
+	"env": {
+		"tests": {
+			"config": {
+				"ALLOW_UNFILTERED_UPLOADS": true
+			}
+		}
+	}
 }

@@ -8,6 +8,7 @@ import { useSelect } from '@wordpress/data';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
+import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * External dependencies
@@ -49,14 +50,16 @@ const ResponsiveControl = props => {
 				min={0}
 				max={9999}
 				onReset={() =>
-					onChange({
-						[`breakpoints-${
-							breakpoint === 'xxl' ? 'xl' : breakpoint
-						}`]:
-							defaultBreakpoints[
+					onChange(
+						handleOnReset({
+							[`breakpoints-${
 								breakpoint === 'xxl' ? 'xl' : breakpoint
-							],
-					})
+							}`]:
+								defaultBreakpoints[
+									breakpoint === 'xxl' ? 'xl' : breakpoint
+								],
+						})
+					)
 				}
 				initialPosition={
 					defaultBreakpoints[breakpoint === 'xxl' ? 'xl' : breakpoint]

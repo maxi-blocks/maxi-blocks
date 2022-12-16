@@ -17,6 +17,7 @@ import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
+import { handleOnReset } from '../../../../extensions/attributes';
 
 /**
  * External dependencies
@@ -240,12 +241,14 @@ const DimensionTab = props => {
 									})
 								}
 								onReset={() =>
-									maxiSetAttributes({
-										[`object-size-${deviceType}`]:
-											getDefaultAttribute(
-												`object-size-${deviceType}`
-											),
-									})
+									maxiSetAttributes(
+										handleOnReset({
+											[`object-size-${deviceType}`]:
+												getDefaultAttribute(
+													`object-size-${deviceType}`
+												),
+										})
+									)
 								}
 								min={1}
 								max={5}
@@ -274,12 +277,14 @@ const DimensionTab = props => {
 									})
 								}
 								onReset={() =>
-									maxiSetAttributes({
-										[`object-position-horizontal-${deviceType}`]:
-											getDefaultAttribute(
-												`object-position-horizontal-${deviceType}`
-											),
-									})
+									maxiSetAttributes(
+										handleOnReset({
+											[`object-position-horizontal-${deviceType}`]:
+												getDefaultAttribute(
+													`object-position-horizontal-${deviceType}`
+												),
+										})
+									)
 								}
 								min={0}
 								max={100}
@@ -307,12 +312,14 @@ const DimensionTab = props => {
 									})
 								}
 								onReset={() =>
-									maxiSetAttributes({
-										[`object-position-vertical-${deviceType}`]:
-											getDefaultAttribute(
-												`object-position-vertical-${deviceType}`
-											),
-									})
+									maxiSetAttributes(
+										handleOnReset({
+											[`object-position-vertical-${deviceType}`]:
+												getDefaultAttribute(
+													`object-position-vertical-${deviceType}`
+												),
+										})
+									)
 								}
 								min={0}
 								max={100}

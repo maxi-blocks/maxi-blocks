@@ -15,9 +15,10 @@ import {
 import {
 	AdvancedNumberControl,
 	SelectControl,
-	TextControl,
 	SettingTabsControl,
+	TextControl,
 } from '../../../../components';
+import { handleOnReset } from '../../../../extensions/attributes';
 
 const VideoControl = props => {
 	const {
@@ -30,7 +31,6 @@ const VideoControl = props => {
 	} = props;
 
 	const [validationText, setValidationText] = useState(null);
-
 	return (
 		<>
 			<SettingTabsControl
@@ -54,7 +54,10 @@ const VideoControl = props => {
 				selected={playerType}
 				fullWidthMode
 			/>
+
 			<TextControl
+				id='url'
+				className='maxi-sidebar-input maxi-video-sidebar-url'
 				label={__('URL', 'maxi-blocks')}
 				type='url'
 				value={videoUrl}
@@ -70,12 +73,16 @@ const VideoControl = props => {
 
 					onChange({
 						url: val,
-						embedUrl: getParsedVideoUrl({ ...props, url: val }),
+						embedUrl: getParsedVideoUrl({
+							...props,
+							url: val,
+						}),
 						videoType: parseVideo(val).type,
 					});
 				}}
 				validationText={validationText}
 			/>
+
 			<AdvancedNumberControl
 				className='maxi-video-start-time'
 				label={__('Start time (s)', 'maxi-blocks')}
@@ -93,9 +100,11 @@ const VideoControl = props => {
 				min={0}
 				max={999}
 				onReset={() =>
-					onChange({
-						startTime: '',
-					})
+					onChange(
+						handleOnReset({
+							startTime: '',
+						})
+					)
 				}
 				optionType='string'
 			/>
@@ -116,9 +125,11 @@ const VideoControl = props => {
 				min={0}
 				max={999}
 				onReset={() =>
-					onChange({
-						endTime: '',
-					})
+					onChange(
+						handleOnReset({
+							endTime: '',
+						})
+					)
 				}
 				optionType='string'
 			/>

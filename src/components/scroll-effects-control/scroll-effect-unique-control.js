@@ -14,6 +14,7 @@ import {
 import SettingTabsControl from '../setting-tabs-control';
 import AdvancedNumberControl from '../advanced-number-control';
 import { applyEffect } from './scroll-effect-preview';
+import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * External dependencies
@@ -96,48 +97,48 @@ const ScrollEffectsUniqueControl = props => {
 					return {
 						label: __(`${label} zone`, 'maxi-blocks'),
 						content: (
-							<>
-								<AdvancedNumberControl
-									label={__(special?.label, 'maxi-blocks')}
-									value={getLastBreakpointAttribute({
-										target: `scroll-${type}-${special?.attr}`,
-										breakpoint,
-										attributes: values,
-									})}
-									onChangeValue={val => {
-										onChange({
-											[`scroll-${type}-${special?.attr}-${breakpoint}`]:
-												val !== undefined && val !== ''
-													? val
-													: '',
-										});
-										isPreviewEnabled &&
-											applyEffect(type, uniqueID, val);
-									}}
-									min={special?.min}
-									step={1}
-									max={special?.max}
-									onReset={() => {
-										onChange({
+							<AdvancedNumberControl
+								label={__(special?.label, 'maxi-blocks')}
+								value={getLastBreakpointAttribute({
+									target: `scroll-${type}-${special?.attr}`,
+									breakpoint,
+									attributes: values,
+								})}
+								onChangeValue={val => {
+									onChange({
+										[`scroll-${type}-${special?.attr}-${breakpoint}`]:
+											val !== undefined && val !== ''
+												? val
+												: '',
+									});
+									isPreviewEnabled &&
+										applyEffect(type, uniqueID, val);
+								}}
+								min={special?.min}
+								step={1}
+								max={special?.max}
+								onReset={() => {
+									onChange(
+										handleOnReset({
 											[`scroll-${type}-${special?.attr}-${breakpoint}`]:
 												getDefaultAttribute(
 													`scroll-${type}-${special?.attr}-general`
 												),
-										});
-										isPreviewEnabled &&
-											applyEffect(
-												type,
-												uniqueID,
-												getDefaultAttribute(
-													`scroll-${type}-${special?.attr}-general`
-												)
-											);
-									}}
-									initialPosition={getDefaultAttribute(
-										`scroll-${type}-${special?.attr}-general`
-									)}
-								/>
-							</>
+										})
+									);
+									isPreviewEnabled &&
+										applyEffect(
+											type,
+											uniqueID,
+											getDefaultAttribute(
+												`scroll-${type}-${special?.attr}-general`
+											)
+										);
+								}}
+								initialPosition={getDefaultAttribute(
+									`scroll-${type}-${special?.attr}-general`
+								)}
+							/>
 						),
 					};
 				})}

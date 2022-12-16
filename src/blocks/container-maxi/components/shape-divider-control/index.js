@@ -19,6 +19,7 @@ import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
+import { handleOnReset } from '../../../../extensions/attributes';
 
 /**
  * Styles and icons
@@ -379,20 +380,22 @@ const ShapeDividerControl = props => {
 														})
 													}
 													onReset={() =>
-														onChange({
-															[`shape-divider-top-height-${breakpoint}`]:
-																getDefaultAttribute(
-																	[
-																		`shape-divider-top-height-${breakpoint}`,
-																	]
-																),
-															[`shape-divider-top-height-unit-${breakpoint}`]:
-																getDefaultAttribute(
-																	[
-																		`shape-divider-top-height-unit-${breakpoint}`,
-																	]
-																),
-														})
+														onChange(
+															handleOnReset({
+																[`shape-divider-top-height-${breakpoint}`]:
+																	getDefaultAttribute(
+																		[
+																			`shape-divider-top-height-${breakpoint}`,
+																		]
+																	),
+																[`shape-divider-top-height-unit-${breakpoint}`]:
+																	getDefaultAttribute(
+																		[
+																			`shape-divider-top-height-unit-${breakpoint}`,
+																		]
+																	),
+															})
+														)
 													}
 												/>
 												<ToggleSwitch
@@ -586,20 +589,22 @@ const ShapeDividerControl = props => {
 														})
 													}
 													onReset={() =>
-														onChange({
-															[`shape-divider-bottom-height-${breakpoint}`]:
-																getDefaultAttribute(
-																	[
-																		`shape-divider-bottom-height-${breakpoint}`,
-																	]
-																),
-															[`shape-divider-bottom-height-unit-${breakpoint}`]:
-																getDefaultAttribute(
-																	[
-																		`shape-divider-bottom-height-unit-${breakpoint}`,
-																	]
-																),
-														})
+														onChange(
+															handleOnReset({
+																[`shape-divider-bottom-height-${breakpoint}`]:
+																	getDefaultAttribute(
+																		[
+																			`shape-divider-bottom-height-${breakpoint}`,
+																		]
+																	),
+																[`shape-divider-bottom-height-unit-${breakpoint}`]:
+																	getDefaultAttribute(
+																		[
+																			`shape-divider-bottom-height-unit-${breakpoint}`,
+																		]
+																	),
+															})
+														)
 													}
 												/>
 												<ToggleSwitch

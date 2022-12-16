@@ -95,6 +95,7 @@ const FlexContentAlignControl = props => {
 			className='maxi-flex__align-content'
 			hasBorder
 			items={getOptions()}
+            showTooltip
 			value={
 				getLastBreakpointAttribute({
 					target: 'align-content',

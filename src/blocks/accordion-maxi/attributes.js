@@ -15,9 +15,6 @@ const attributes = {
 	 * Block styles
 	 */
 	...attributesData.accordion,
-	animationDuration: {
-		default: 0.3,
-	},
 	...attributesData.accordionIcon,
 	...attributesData.accordionTitle,
 	...attributesData.accordionLine,

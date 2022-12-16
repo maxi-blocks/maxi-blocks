@@ -3,7 +3,7 @@
  */
 import { SVG, Path, G } from '@wordpress/primitives';
 
-const flexAlignVerticalityStart = (
+const flexAlignVerticallyStart = (
     <SVG
     width={20}
     height={20}
@@ -20,4 +20,4 @@ const flexAlignVerticalityStart = (
   </SVG>
 );
 
-export default flexAlignVerticalityStart;
+export default flexAlignVerticallyStart;

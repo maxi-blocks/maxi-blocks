@@ -69,6 +69,7 @@ const FlexSettingsControl = props => {
 		<div className={classes}>
 			<SettingTabsControl
 				fullWidthMode
+				showTooltip
 				items={[
 					{
 						label: __('Flex-parent', 'maxi-blocks'),

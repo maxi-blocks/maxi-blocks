@@ -11,16 +11,10 @@ import { getLastBreakpointAttribute } from '../../extensions/styles';
 import SettingTabsControl from '../setting-tabs-control';
 import Icon from '../icon';
 
-
 /**
  * Icons
  */
-import {
-	flexWrapNowrap,
-	flexWrap,
-	flexWrapReverse,
-} from '../../icons';
-
+import { flexWrapNowrap, flexWrap, flexWrapReverse } from '../../icons';
 
 /**
  * Component
@@ -32,24 +26,20 @@ const FlexWrapControl = props => {
 	const getOptions = () => {
 		const options = [];
 
-			options.push({
-				icon: <Icon icon={flexWrapNowrap} />,
-				value: 'nowrap',
-			});
+		options.push({
+			icon: <Icon icon={flexWrapNowrap} />,
+			value: 'nowrap',
+		});
 
-			options.push({
-				icon: (
-					<Icon icon={flexWrap} />
-				),
-				value: 'wrap',
-			});
+		options.push({
+			icon: <Icon icon={flexWrap} />,
+			value: 'wrap',
+		});
 
-			options.push({
-				icon: (
-					<Icon icon={flexWrapReverse} />
-				),
-				value: 'wrap-reverse',
-			});
+		options.push({
+			icon: <Icon icon={flexWrapReverse} />,
+			value: 'wrap-reverse',
+		});
 
 		return options;
 	};
@@ -59,6 +49,7 @@ const FlexWrapControl = props => {
 			label={__('Flex wrap', 'maxi-blocks')}
 			type='buttons'
 			fullWidthMode
+			showTooltip
 			className='maxi-flex-wrap-control'
 			hasBorder
 			items={getOptions()}

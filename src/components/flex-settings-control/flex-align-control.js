@@ -22,11 +22,11 @@ import {
     flexJustifySpaceBetween,
 	flexJustifySpaceArround,
 	flexJustifySpaceEvenly,
-	flexAlignVerticalityStart,
-	flexAlignVerticalityEnd,
-	flexAlignVerticalityCenter,
-	flexAlignVerticalityStretch,
-	flexAlignVerticalityBaseline,
+	flexAlignVerticallyStart,
+	flexAlignVerticallyEnd,
+	flexAlignVerticallyCenter,
+	flexAlignVerticallyStretch,
+	flexAlignVerticallyBaseline,
 } from '../../icons';
 
 const FlexAlignControl = props => {
@@ -82,34 +82,34 @@ const FlexAlignControl = props => {
 		const options = [];
 
 			options.push({
-				icon: <Icon icon={flexAlignVerticalityStart} />,
+				icon: <Icon icon={flexAlignVerticallyStart} />,
 				value: 'flex-start',
 			});
 
 			options.push({
 				icon: (
-					<Icon icon={flexAlignVerticalityEnd} />
+					<Icon icon={flexAlignVerticallyEnd} />
 				),
 				value: 'flex-end',
 			});
 
 			options.push({
 				icon: (
-					<Icon icon={flexAlignVerticalityCenter} />
+					<Icon icon={flexAlignVerticallyCenter} />
 				),
 				value: 'center',
 			});
 
 			options.push({
 				icon: (
-					<Icon icon={flexAlignVerticalityStretch} />
+					<Icon icon={flexAlignVerticallyStretch} />
 				),
 				value: 'stretch',
 			});
 
 			options.push({
 				icon: (
-					<Icon icon={flexAlignVerticalityBaseline} />
+					<Icon icon={flexAlignVerticallyBaseline} />
 				),
 				value: 'baseline',
 			});

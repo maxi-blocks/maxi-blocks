@@ -17,6 +17,7 @@ const addTypographyStyle = async ({
 	orientation,
 	direction,
 	indent,
+	isStyleCards = false,
 }) => {
 	const response = {};
 	// Weight, Transform, Style, Decoration
@@ -50,12 +51,14 @@ const addTypographyStyle = async ({
 	const orientationSelector = await instance.$(
 		'.maxi-typography-control__orientation .maxi-base-control__field select'
 	);
-	if (orientation) await orientationSelector.select(orientation);
+	if (!isStyleCards && orientation)
+		await orientationSelector.select(orientation);
 
-	response.orientation = await getElementAttribute(
-		orientationSelector,
-		'value'
-	);
+	if (!isStyleCards)
+		response.orientation = await getElementAttribute(
+			orientationSelector,
+			'value'
+		);
 
 	const directionSelector = await instance.$(
 		'.maxi-typography-control__direction .maxi-base-control__field select'

@@ -107,6 +107,8 @@ export const getSCVariablesObject = styleCards => {
 	const elementsForColor = ['divider', 'icon', 'link'];
 
 	const addMissingTextProperties = obj => {
+		if (obj['text-indent-unit-general']) return obj;
+
 		const response = { ...cloneDeep(obj) };
 		Object.keys(response).forEach(key => {
 			if (key.includes('text-indent')) {
@@ -114,13 +116,6 @@ export const getSCVariablesObject = styleCards => {
 				const unitKey = `text-indent-unit-${breakpoint}`;
 				if (!response[unitKey]) {
 					response[unitKey] = 'px';
-				}
-			}
-			if (key.includes('text-orientation')) {
-				const breakpoint = key.split('-').pop();
-				const writingModeKey = `writing-mode-${breakpoint}`;
-				if (!response[writingModeKey]) {
-					response[writingModeKey] = 'vertical-rl';
 				}
 			}
 		});

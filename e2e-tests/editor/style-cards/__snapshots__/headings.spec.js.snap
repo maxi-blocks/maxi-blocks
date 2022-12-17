@@ -48,7 +48,7 @@ Object {
     "text-decoration-general": "overline",
     "text-direction-general": "ltr",
     "text-indent-general": 44,
-    "text-orientation-general": "mixed",
+    "text-orientation-general": "unset",
     "text-transform-general": "capitalize",
   },
 }
@@ -108,8 +108,7 @@ Object {
     "text-direction-m": "rtl",
     "text-indent-general": 44,
     "text-indent-m": 22,
-    "text-orientation-general": "mixed",
-    "text-orientation-m": "upright",
+    "text-orientation-general": "unset",
     "text-transform-general": "capitalize",
     "text-transform-m": "uppercase",
   },

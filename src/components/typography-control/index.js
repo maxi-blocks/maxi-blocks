@@ -728,37 +728,39 @@ const TypographyControl = props => {
 						});
 					}}
 				/>
-				<SelectControl
-					label={__('Text orientation', 'maxi-blocks')}
-					className='maxi-typography-control__orientation'
-					value={getValue('text-orientation')}
-					options={[
-						{
-							label: __('None', 'maxi-blocks'),
-							value: 'unset',
-						},
-						{
-							label: __('Mixed', 'maxi-blocks'),
-							value: 'mixed',
-						},
-						{
-							label: __('Upright', 'maxi-blocks'),
-							value: 'upright',
-						},
-						{
-							label: __('Sideways', 'maxi-blocks'),
-							value: 'sideways',
-						},
-					]}
-					onChange={val => {
-						onChangeFormat(
+				{!isStyleCards && (
+					<SelectControl
+						label={__('Text orientation', 'maxi-blocks')}
+						className='maxi-typography-control__orientation'
+						value={getValue('text-orientation')}
+						options={[
 							{
-								[`${prefix}text-orientation`]: val,
+								label: __('None', 'maxi-blocks'),
+								value: 'unset',
 							},
-							{ forceDisableCustomFormats: true }
-						);
-					}}
-				/>
+							{
+								label: __('Mixed', 'maxi-blocks'),
+								value: 'mixed',
+							},
+							{
+								label: __('Upright', 'maxi-blocks'),
+								value: 'upright',
+							},
+							{
+								label: __('Sideways', 'maxi-blocks'),
+								value: 'sideways',
+							},
+						]}
+						onChange={val => {
+							onChangeFormat(
+								{
+									[`${prefix}text-orientation`]: val,
+								},
+								{ forceDisableCustomFormats: true }
+							);
+						}}
+					/>
+				)}
 				<SelectControl
 					label={__('Text direction', 'maxi-blocks')}
 					className='maxi-typography-control__direction'

@@ -103,12 +103,6 @@ body.maxi-blocks--active .edit-post-visual-editor {
 						text-indent: var(
 							--maxi-#{$style}-#{$level}-text-indent-general
 						);
-						text-orientation: var(
-							--maxi-#{$style}-#{$level}-text-orientation-general
-						);
-						writing-mode: var(
-							--maxi-#{$style}-#{$level}-writing-mode-general
-						);
 						direction: var(
 							--maxi-#{$style}-#{$level}-direction-general
 						);
@@ -142,12 +136,6 @@ body.maxi-blocks--active .edit-post-visual-editor {
 						text-indent: var(
 							--maxi-#{$style}-#{$level}-text-indent-general
 						);
-						text-orientation: var(
-							--maxi-#{$style}-#{$level}-text-orientation-general
-						);
-						writing-mode: var(
-							--maxi-#{$style}-#{$level}-writing-mode-general
-						);
 						direction: var(
 							--maxi-#{$style}-#{$level}-direction-general
 						);
@@ -165,10 +153,6 @@ body.maxi-blocks--active .edit-post-visual-editor {
 					--maxi-#{$style}-p-text-decoration-general
 				);
 				text-indent: var(--maxi-#{$style}-p-text-indent-general);
-				text-orientation: var(
-					--maxi-#{$style}-p-text-orientation-general
-				);
-				writing-mode: var(--maxi-#{$style}-p-writing-mode-general);
 				direction: var(--maxi-#{$style}-p-direction-general);
 			}
 
@@ -225,10 +209,6 @@ body.maxi-blocks--active .edit-post-visual-editor {
 					--maxi-#{$style}-button-text-decoration-general
 				);
 				text-indent: var(--maxi-#{$style}-button-text-indent-general);
-				text-orientation: var(
-					--maxi-#{$style}-button-text-orientation-general
-				);
-				writing-mode: var(--maxi-#{$style}-button-writing-mode-general);
 				direction: var(--maxi-#{$style}-button-direction-general);
 			}
 
@@ -245,10 +225,6 @@ body.maxi-blocks--active .edit-post-visual-editor {
 						--maxi-#{$style}-h4-text-decoration-general
 					);
 					text-indent: var(--maxi-#{$style}-h4-text-indent-general);
-					text-orientation: var(
-						--maxi-#{$style}-h4-text-orientation-general
-					);
-					writing-mode: var(--maxi-#{$style}-h4-writing-mode-general);
 					direction: var(--maxi-#{$style}-h4-direction-general);
 				}
 
@@ -263,10 +239,6 @@ body.maxi-blocks--active .edit-post-visual-editor {
 						--maxi-#{$style}-p-text-decoration-general
 					);
 					text-indent: var(--maxi-#{$style}-p-text-indent-general);
-					text-orientation: var(
-						--maxi-#{$style}-p-text-orientation-general
-					);
-					writing-mode: var(--maxi-#{$style}-p-writing-mode-general);
 					direction: var(--maxi-#{$style}-p-direction-general);
 				}
 			}
@@ -287,10 +259,6 @@ body.maxi-blocks--active .edit-post-visual-editor {
 						--maxi-#{$style}-p-text-decoration-general
 					);
 					text-indent: var(--maxi-#{$style}-p-text-indent-general);
-					text-orientation: var(
-						--maxi-#{$style}-p-text-orientation-general
-					);
-					writing-mode: var(--maxi-#{$style}-p-writing-mode-general);
 					direction: var(--maxi-#{$style}-p-direction-general);
 				}
 			}
@@ -360,12 +328,6 @@ body.maxi-blocks--active {
 										text-indent: var(
 											--maxi-#{$style}-#{$level}-text-indent-#{$responsive_size}
 										);
-										text-orientation: var(
-											--maxi-#{$style}-#{$level}-text-orientation-#{$responsive_size}
-										);
-										writing-mode: var(
-											--maxi-#{$style}-#{$level}-writing-mode-#{$responsive_size}
-										);
 										direction: var(
 											--maxi-#{$style}-#{$level}-direction-#{$responsive_size}
 										);
@@ -424,12 +386,6 @@ body.maxi-blocks--active {
 							text-indent: var(
 								--maxi-#{$style}-button-text-indent-#{$responsive_size}
 							);
-							text-orientation: var(
-								--maxi-#{$style}-button-text-orientation-#{$responsive_size}
-							);
-							writing-mode: var(
-								--maxi-#{$style}-button-writing-mode-#{$responsive_size}
-							);
 							direction: var(
 								--maxi-#{$style}-button-direction-#{$responsive_size}
 							);
@@ -464,12 +420,6 @@ body.maxi-blocks--active {
 								);
 								text-indent: var(
 									--maxi-#{$style}-p-text-indent-#{$responsive_size}
-								);
-								text-orientation: var(
-									--maxi-#{$style}-p-text-orientation-#{$responsive_size}
-								);
-								writing-mode: var(
-									--maxi-#{$style}-p-writing-mode-#{$responsive_size}
 								);
 								direction: var(
 									--maxi-#{$style}-p-direction-#{$responsive_size}
@@ -506,12 +456,6 @@ body.maxi-blocks--active {
 								text-indent: var(
 									--maxi-#{$style}-h4-text-indent-#{$responsive_size}
 								);
-								text-orientation: var(
-									--maxi-#{$style}-h4-text-orientation-#{$responsive_size}
-								);
-								writing-mode: var(
-									--maxi-#{$style}-h4-writing-mode-#{$responsive_size}
-								);
 								direction: var(
 									--maxi-#{$style}-h4-direction-#{$responsive_size}
 								);
@@ -544,12 +488,6 @@ body.maxi-blocks--active {
 								);
 								text-indent: var(
 									--maxi-#{$style}-p-text-indent-#{$responsive_size}
-								);
-								text-orientation: var(
-									--maxi-#{$style}-p-text-orientation-#{$responsive_size}
-								);
-								writing-mode: var(
-									--maxi-#{$style}-p-writing-mode-#{$responsive_size}
 								);
 								direction: var(
 									--maxi-#{$style}-p-direction-#{$responsive_size}
@@ -587,12 +525,6 @@ body.maxi-blocks--active {
 								);
 								text-indent: var(
 									--maxi-#{$style}-p-text-indent-#{$responsive_size}
-								);
-								text-orientation: var(
-									--maxi-#{$style}-p-text-orientation-#{$responsive_size}
-								);
-								writing-mode: var(
-									--maxi-#{$style}-p-writing-mode-#{$responsive_size}
 								);
 								direction: var(
 									--maxi-#{$style}-p-direction-#{$responsive_size}
@@ -669,12 +601,6 @@ body.maxi-blocks--active {
 								text-indent: var(
 									--maxi-#{$style}-#{$level}-text-indent-#{$current_responsive_stage}
 								);
-								text-orientation: var(
-									--maxi-#{$style}-#{$level}-text-orientation-#{$current_responsive_stage}
-								);
-								writing-mode: var(
-									--maxi-#{$style}-#{$level}-writing-mode-#{$current_responsive_stage}
-								);
 								direction: var(
 									--maxi-#{$style}-#{$level}-direction-#{$current_responsive_stage}
 								);
@@ -729,12 +655,6 @@ body.maxi-blocks--active {
 						text-indent: var(
 							--maxi-#{$style}-button-text-indent-#{$current_responsive_stage}
 						);
-						text-orientation: var(
-							--maxi-#{$style}-button-text-orientation-#{$current_responsive_stage}
-						);
-						writing-mode: var(
-							--maxi-#{$style}-button-writing-mode-#{$current_responsive_stage}
-						);
 						direction: var(
 							--maxi-#{$style}-button-direction-#{$current_responsive_stage}
 						);
@@ -770,12 +690,6 @@ body.maxi-blocks--active {
 							text-indent: var(
 								--maxi-#{$style}-p-text-indent-#{$current_responsive_stage}
 							);
-							text-orientation: var(
-								--maxi-#{$style}-p-text-orientation-#{$current_responsive_stage}
-							);
-							writing-mode: var(
-								--maxi-#{$style}-p-writing-mode-#{$current_responsive_stage}
-							);
 							direction: var(
 								--maxi-#{$style}-p-direction-#{$current_responsive_stage}
 							);
@@ -810,12 +724,6 @@ body.maxi-blocks--active {
 								text-indent: var(
 									--maxi-#{$style}-h4-text-indent-#{$current_responsive_stage}
 								);
-								text-orientation: var(
-									--maxi-#{$style}-h4-text-orientation-#{$current_responsive_stage}
-								);
-								writing-mode: var(
-									--maxi-#{$style}-h4-writing-mode-#{$current_responsive_stage}
-								);
 								direction: var(
 									--maxi-#{$style}-h4-direction-#{$current_responsive_stage}
 								);
@@ -848,12 +756,6 @@ body.maxi-blocks--active {
 								);
 								text-indent: var(
 									--maxi-#{$style}-p-text-indent-#{$current_responsive_stage}
-								);
-								text-orientation: var(
-									--maxi-#{$style}-p-text-orientation-#{$current_responsive_stage}
-								);
-								writing-mode: var(
-									--maxi-#{$style}-p-writing-mode-#{$current_responsive_stage}
 								);
 								direction: var(
 									--maxi-#{$style}-p-direction-#{$current_responsive_stage}
@@ -892,12 +794,6 @@ body.maxi-blocks--active {
 							);
 							text-indent: var(
 								--maxi-#{$style}-p-text-indent-#{$current_responsive_stage}
-							);
-							text-orientation: var(
-								--maxi-#{$style}-p-text-orientation-#{$current_responsive_stage}
-							);
-							writing-mode: var(
-								--maxi-#{$style}-p-writing-mode-#{$current_responsive_stage}
 							);
 							direction: var(
 								--maxi-#{$style}-p-direction-#{$current_responsive_stage}

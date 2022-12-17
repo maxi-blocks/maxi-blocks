@@ -57,30 +57,30 @@ const DynamicContent = props => {
 	const { blockName, onChange, ...dynamicContent } = props;
 
 	const {
-		'dc-author': author,
-		'dc-content': content,
-		'dc-date': date,
-		'dc-day': day,
-		'dc-era': era,
-		'dc-error': error,
-		'dc-field': field,
-		'dc-format': format,
-		'dc-hour': hour,
-		'dc-hour12': hour12,
-		'dc-id': id,
-		'dc-limit': limit,
-		'dc-minute': minute,
-		'dc-month': month,
-		'dc-relation': relation,
-		'dc-second': second,
-		'dc-show': show,
-		'dc-status': status,
-		'dc-timezone': timeZone,
-		'dc-timezone-name': timeZoneName,
-		'dc-type': type,
-		'dc-weekday': weekday,
-		'dc-year': year,
-		'dc-zone': zone,
+		author,
+		content,
+		date,
+		day,
+		era,
+		error,
+		field,
+		format,
+		hour,
+		hour12,
+		id,
+		limit,
+		minute,
+		month,
+		relation,
+		second,
+		show,
+		status,
+		timeZone,
+		timeZoneName,
+		type,
+		weekday,
+		year,
+		zone,
 	} = dynamicContent;
 
 	const alterIdRef = useRef(null);
@@ -101,44 +101,15 @@ const DynamicContent = props => {
 	const changeProps = params => {
 		Object.keys(params).forEach(key => {
 			const value = params[key];
-			switch (key) {
-				case 'dc-author':
-					authorRef.current = value;
-					break;
-				case 'dc-error':
-					errorRef.current = value;
-					break;
-				case 'dc-field':
-					fieldRef.current = value;
-					break;
-				case 'dc-id':
-					idRef.current = value;
-					break;
-				case 'dc-limit':
-					limitRef.current = value;
-					break;
-				case 'dc-relation':
-					relationRef.current = value;
-					break;
-				case 'dc-show':
-					showRef.current = value;
-					break;
-				case 'dc-status':
-					statusRef.current = value;
-					break;
-				case 'dc-type':
-					typeRef.current = value;
-					break;
-				default:
-					break;
-			}
+			// eslint-disable-next-line no-eval
+			eval(`${key}Ref`).current = value;
 		});
 		onChange(params);
 	};
 
 	const validationsValues = variableValue => {
 		const result = fieldOptions[variableValue].map(x => x.value);
-		return result.includes(field) ? {} : { 'dc-field': result[0] };
+		return result.includes(field) ? {} : { field: result[0] };
 	};
 
 	const cutTags = str => {
@@ -159,20 +130,20 @@ const DynamicContent = props => {
 
 	const handleDateCallback = childData => {
 		onChange({
-			'dc-date': childData.status,
-			'dc-day': childData.options.day,
-			'dc-era': childData.options.era,
-			'dc-format': childData.format,
-			'dc-hour': childData.options.hour,
-			'dc-hour12': childData.options.hour12,
-			'dc-minute': childData.options.minute,
-			'dc-month': childData.options.month,
-			'dc-second': childData.options.second,
-			'dc-timezone': childData.options.timeZone,
-			'dc-timezone-name': childData.options.timeZoneName,
-			'dc-weekday': childData.options.weekday,
-			'dc-year': childData.options.year,
-			'dc-zone': childData.zone,
+			date: childData.status,
+			day: childData.options.day,
+			era: childData.options.era,
+			format: childData.format,
+			hour: childData.options.hour,
+			hour12: childData.options.hour12,
+			minute: childData.options.minute,
+			month: childData.options.month,
+			second: childData.options.second,
+			timezone: childData.options.timeZone,
+			timeZoneName: childData.options.timeZoneName,
+			weekday: childData.options.weekday,
+			year: childData.options.year,
+			zone: childData.zone,
 		});
 	};
 
@@ -236,7 +207,7 @@ const DynamicContent = props => {
 			path: '/wp/v2/users/me',
 		})
 			.catch(err => console.error(err))
-			.then(res => changeProps({ 'dc-author': Number(res.id) }));
+			.then(res => changeProps({ author: Number(res.id) }));
 	};
 
 	const setAuthorList = async () => {
@@ -265,9 +236,9 @@ const DynamicContent = props => {
 	const setIdList = (result, defaultValues = {}, _type) => {
 		// Set default values in case they are not defined
 
-		const relation = defaultValues['dc-relation'] ?? relationRef.current;
-		const type = defaultValues['dc-type'] ?? typeRef.current;
-		const id = defaultValues['dc-id'] ?? idRef.current;
+		const relation = defaultValues.relation ?? relationRef.current;
+		const type = defaultValues.type ?? typeRef.current;
+		const id = defaultValues.id ?? idRef.current;
 
 		const newPostIdOptions = result.map(item => {
 			return {
@@ -279,30 +250,30 @@ const DynamicContent = props => {
 			};
 		});
 		if (isEmpty(newPostIdOptions)) {
-			if (relation === 'author') defaultValues['dc-error'] = relation;
+			if (relation === 'author') defaultValues.error = relation;
 
 			if (['tags', 'media'].includes(type)) {
-				defaultValues['dc-error'] = type;
+				defaultValues.error = type;
 				disabledType(_type);
 			}
 
 			setIsEmptyIdOptions(true);
 			if (!isEmpty(defaultValues)) changeProps(defaultValues);
 		} else {
-			if (relation === 'author') changeProps({ 'dc-error': '' });
+			if (relation === 'author') changeProps({ error: '' });
 
 			setIsEmptyIdOptions(false);
 			setPostIdOptions(newPostIdOptions);
 
 			// Ensures first post id is selected
 			if (isEmpty(find(newPostIdOptions, { value: id }))) {
-				defaultValues['dc-id'] = Number(result[0].id);
+				defaultValues.id = Number(result[0].id);
 				idFields.current = result[0].id;
 			}
 
 			// Ensures first field is selected
 			if (!fieldRef.current)
-				defaultValues['dc-field'] = fieldOptions[type][0].value;
+				defaultValues.field = fieldOptions[type][0].value;
 
 			if (!isEmpty(defaultValues)) changeProps(defaultValues);
 		}
@@ -330,12 +301,12 @@ const DynamicContent = props => {
 						res[_show] !== null &&
 						'id' in res[_show]
 					) {
-						changeProps({ 'dc-error': '', ..._default });
+						changeProps({ error: '', ..._default });
 						if (isFinite(res[_show].id)) {
 							return res[_show].id;
 						}
 					} else {
-						changeProps({ 'dc-error': _show, ..._default });
+						changeProps({ error: _show, ..._default });
 					}
 					return null;
 				});
@@ -370,7 +341,7 @@ const DynamicContent = props => {
 					if (typeof res === 'number') {
 						alterIdRef.current = res;
 					} else {
-						changeProps({ 'dc-error': showRef.current });
+						changeProps({ error: showRef.current });
 						alterIdRef.current = null;
 					}
 				})
@@ -441,8 +412,7 @@ const DynamicContent = props => {
 				const content = isArray(result) ? result[0] : result;
 				if (content) {
 					let contentValue;
-					if (content.id)
-						changeProps({ 'dc-id': Number(content.id) });
+					if (content.id) changeProps({ id: Number(content.id) });
 
 					if (
 						renderedFields.includes(_field) &&
@@ -546,8 +516,8 @@ const DynamicContent = props => {
 			path: getIdOptionsPath(
 				_type,
 				{},
-				_default['dc-author']
-					? _default['dc-author']
+				_default.author
+					? _default.author
 					: _relation === 'author'
 					? authorRef.current
 					: null
@@ -574,15 +544,15 @@ const DynamicContent = props => {
 		let changeOptions;
 		switch (_type) {
 			case 'status':
-				changeProps({ 'dc-status': _value });
+				changeProps({ status: _value });
 				if (_value) getIdOptions();
 				break;
 			case 'type':
 				dcFieldActual = validationsValues(_value);
 				changeOptions = {
-					'dc-type': _value,
-					'dc-show': 'current',
-					'dc-error': '',
+					type: _value,
+					show: 'current',
+					error: '',
 					...dcFieldActual,
 				};
 				idFields.includes(_value)
@@ -593,9 +563,9 @@ const DynamicContent = props => {
 				getIdOptions(
 					typeRef.current,
 					{
-						'dc-relation': _value,
-						'dc-show': 'current',
-						'dc-error': '',
+						relation: _value,
+						show: 'current',
+						error: '',
 					},
 					_value
 				);
@@ -603,27 +573,27 @@ const DynamicContent = props => {
 			case 'author':
 				getIdOptions(
 					typeRef.current,
-					{ 'dc-author': Number(_value) },
+					{ author: Number(_value) },
 					relationRef.current
 				);
 				break;
 			case 'id':
 				changeProps({
-					'dc-error': '',
-					'dc-show': 'current',
-					'dc-id': Number(_value),
+					error: '',
+					show: 'current',
+					id: Number(_value),
 				});
 				break;
 			case 'show':
 				changeContent(typeRef.current, _value, idRef.current, {
-					'dc-show': _value,
+					show: _value,
 				});
 				break;
 			case 'field':
-				changeProps({ 'dc-field': _value });
+				changeProps({ field: _value });
 				break;
 			case 'limit':
-				changeProps({ 'dc-limit': Number(_value) });
+				changeProps({ limit: Number(_value) });
 				break;
 			default:
 				break;
@@ -633,9 +603,7 @@ const DynamicContent = props => {
 	useEffect(async () => {
 		if (statusRef.current) {
 			onChange({
-				'dc-content': sanitizeContent(
-					await getContent({ type, id, field })
-				),
+				content: sanitizeContent(await getContent({ type, id, field })),
 			});
 		}
 	}, [

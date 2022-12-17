@@ -1,94 +1,94 @@
 const dynamicContent = {
-	'dc-error': {
+	error: {
 		type: 'string',
 		default: '',
 	},
-	'dc-status': {
+	status: {
 		type: 'boolean',
 		default: false,
 	},
-	'dc-type': {
+	type: {
 		type: 'string',
 		default: 'posts',
 	},
-	'dc-relation': {
+	relation: {
 		type: 'string',
 		default: 'by-id',
 	},
-	'dc-id': {
+	id: {
 		type: 'number',
 	},
-	'dc-author': {
+	author: {
 		type: 'number',
 	},
-	'dc-show': {
+	show: {
 		type: 'string',
 		default: 'current',
 	},
-	'dc-field': {
+	field: {
 		type: 'string',
 	},
-	'dc-format': {
+	format: {
 		type: 'string',
 		default: 'd.m.Y t',
 	},
-	'dc-date': {
+	date: {
 		type: 'boolean',
 		default: false,
 	},
-	'dc-year': {
+	year: {
 		type: 'string',
 		default: 'numeric',
 	},
-	'dc-month': {
+	month: {
 		type: 'string',
 		default: 'numeric',
 	},
-	'dc-day': {
+	day: {
 		type: 'string',
 		default: 'numeric',
 	},
-	'dc-hour': {
+	hour: {
 		type: 'boolean',
 		default: 'numeric',
 	},
-	'dc-hour12': {
+	hour12: {
 		type: 'string',
 		default: false,
 	},
-	'dc-minute': {
+	minute: {
 		type: 'string',
 		default: 'numeric',
 	},
-	'dc-second': {
+	second: {
 		type: 'string',
 		default: 'numeric',
 	},
-	'dc-zone': {
+	zone: {
 		type: 'string',
 		default: 'en',
 	},
-	'dc-timezone': {
+	timeZone: {
 		type: 'string',
 		default: 'Europe/London',
 	},
-	'dc-timezone-name': {
+	timeZoneName: {
 		type: 'string',
 		default: 'undefined',
 	},
-	'dc-weekday': {
+	weekday: {
 		type: 'string',
 		default: 'undefined',
 	},
-	'dc-era': {
+	era: {
 		type: 'string',
 		default: 'undefined',
 	},
-	'dc-limit': {
+	limit: {
 		type: 'number',
 		default: 100,
 	},
-	'dc-content': {
+	content: {
 		type: 'string',
 	},
 };

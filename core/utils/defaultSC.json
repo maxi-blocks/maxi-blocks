@@ -44,7 +44,7 @@
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
 					"text-decoration-general": "unset",
-					"text-orientation-general": "unset",
+
 					"text-direction-general": "ltr"
 				},
 				"h1": {
@@ -92,7 +92,6 @@
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
 					"text-decoration-general": "unset",
-					"text-orientation-general": "unset",
 					"text-direction-general": "ltr"
 				},
 				"h2": {
@@ -140,7 +139,7 @@
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
 					"text-decoration-general": "unset",
-					"text-orientation-general": "unset",
+
 					"text-direction-general": "ltr"
 				},
 				"h3": {
@@ -180,7 +179,6 @@
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
 					"text-decoration-general": "unset",
-					"text-orientation-general": "unset",
 					"text-direction-general": "ltr"
 				},
 				"h4": {
@@ -220,7 +218,6 @@
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
 					"text-decoration-general": "unset",
-					"text-orientation-general": "unset",
 					"text-direction-general": "ltr"
 				},
 				"h5": {
@@ -256,7 +253,6 @@
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
 					"text-decoration-general": "unset",
-					"text-orientation-general": "unset",
 					"text-direction-general": "ltr"
 				},
 				"h6": {
@@ -293,7 +289,6 @@
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
 					"text-decoration-general": "unset",
-					"text-orientation-general": "unset",
 					"text-direction-general": "ltr"
 				},
 				"button": {
@@ -340,7 +335,6 @@
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
 					"text-decoration-general": "unset",
-					"text-orientation-general": "unset",
 					"text-direction-general": "ltr",
 					"background-color-global": false,
 					"background-palette-status": true,
@@ -451,7 +445,6 @@
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
 					"text-decoration-general": "unset",
-					"text-orientation-general": "unset",
 					"text-direction-general": "ltr"
 				},
 				"h1": {
@@ -499,7 +492,6 @@
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
 					"text-decoration-general": "unset",
-					"text-orientation-general": "unset",
 					"text-direction-general": "ltr"
 				},
 				"h2": {
@@ -547,7 +539,6 @@
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
 					"text-decoration-general": "unset",
-					"text-orientation-general": "unset",
 					"text-direction-general": "ltr"
 				},
 				"h3": {
@@ -587,7 +578,6 @@
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
 					"text-decoration-general": "unset",
-					"text-orientation-general": "unset",
 					"text-direction-general": "ltr"
 				},
 				"h4": {
@@ -627,7 +617,6 @@
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
 					"text-decoration-general": "unset",
-					"text-orientation-general": "unset",
 					"text-direction-general": "ltr"
 				},
 				"h5": {
@@ -663,7 +652,6 @@
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
 					"text-decoration-general": "unset",
-					"text-orientation-general": "unset",
 					"text-direction-general": "ltr"
 				},
 				"h6": {
@@ -700,7 +688,6 @@
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
 					"text-decoration-general": "unset",
-					"text-orientation-general": "unset",
 					"text-direction-general": "ltr"
 				},
 				"button": {
@@ -747,7 +734,6 @@
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
 					"text-decoration-general": "unset",
-					"text-orientation-general": "unset",
 					"text-direction-general": "ltr",
 					"background-color-global": false,
 					"background-palette-status": true,

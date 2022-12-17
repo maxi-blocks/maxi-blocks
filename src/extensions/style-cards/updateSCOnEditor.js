@@ -49,7 +49,11 @@ const getParsedObj = obj => {
 	Object.keys(typographyObj).forEach(key => delete newObj[key]);
 
 	Object.entries(
-		getTypographyStyles({ obj: typographyObj, disableGlobals: true })
+		getTypographyStyles({
+			obj: typographyObj,
+			disableGlobals: true,
+			isStyleCards: true,
+		})
 	).forEach(([breakpoint, value]) => {
 		Object.entries(value).forEach(([key, val]) => {
 			newObj[`${key}-${breakpoint}`] = val;
@@ -86,9 +90,7 @@ export const getSCVariablesObject = styleCards => {
 		'text-transform',
 		'letter-spacing',
 		'text-indent',
-		'text-orientation',
 		'direction',
-		'writing-mode',
 	];
 	const SC = {
 		dark: {
@@ -107,8 +109,6 @@ export const getSCVariablesObject = styleCards => {
 	const elementsForColor = ['divider', 'icon', 'link'];
 
 	const addMissingTextProperties = obj => {
-		if (obj['text-indent-unit-general']) return obj;
-
 		const response = { ...cloneDeep(obj) };
 		Object.keys(response).forEach(key => {
 			if (key.includes('text-indent')) {
@@ -117,6 +117,9 @@ export const getSCVariablesObject = styleCards => {
 				if (!response[unitKey]) {
 					response[unitKey] = 'px';
 				}
+			}
+			if (key.includes('text-orientation')) {
+				delete response[key];
 			}
 		});
 		return response;

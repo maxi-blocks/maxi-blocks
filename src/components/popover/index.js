@@ -478,10 +478,7 @@ const Popover = (
 		</div>
 	);
 
-	// console.log(slot.ref);
-	// if (slot.ref) {
 	content = <Fill name={slotName}>{content}</Fill>;
-	// }
 
 	if (anchorRef || anchorRect) {
 		return content;

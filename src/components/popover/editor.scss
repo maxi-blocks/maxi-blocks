@@ -36,6 +36,8 @@ $grid-unit-20: 20px;
 	box-sizing: border-box;
 	width: min-content;
 
+	position: relative !important;
+
 	// Alternate treatment for popovers that put them at elevation zero with high contrast.
 	.is-alternate & {
 		outline: $border-width solid $gray-900;

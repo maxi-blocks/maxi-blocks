@@ -479,13 +479,13 @@ describe('FlexSettings', () => {
 		await changeResponsive(page, 'm');
 
 		const wrapSelectorM = await accordionPanel.$eval(
-			'.maxi-flex-wrap-control select',
+			'.maxi-flex-wrap-control .maxi-tabs-control',
 			selector => selector.value
 		);
 		expect(wrapSelectorM).toStrictEqual('wrap');
 
 		const directionSelectorM = await accordionPanel.$eval(
-			'.maxi-flex__direction select',
+			'.maxi-flex__direction .maxi-tabs-control',
 			selector => selector.value
 		);
 		expect(directionSelectorM).toStrictEqual('row');

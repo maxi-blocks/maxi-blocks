@@ -108,14 +108,15 @@ export const getSCVariablesObject = styleCards => {
 	};
 	const elementsForColor = ['divider', 'icon', 'link'];
 
-	const addMissingTextProperties = obj => {
+	const fixTypographyProperties = obj => {
 		const response = { ...cloneDeep(obj) };
 		Object.keys(response).forEach(key => {
 			if (key.includes('text-indent')) {
 				const breakpoint = key.split('-').pop();
 				const unitKey = `text-indent-unit-${breakpoint}`;
 				if (!response[unitKey]) {
-					response[unitKey] = 'px';
+					response[unitKey] =
+						response['text-indent-unit-general'] ?? 'px';
 				}
 			}
 			if (key.includes('text-orientation')) {
@@ -128,7 +129,7 @@ export const getSCVariablesObject = styleCards => {
 	styles.forEach(style => {
 		elements.forEach(element => {
 			const obj = getParsedObj(
-				addMissingTextProperties(SC[style][element])
+				fixTypographyProperties(SC[style][element])
 			);
 			if (!elementsForColor.includes(element))
 				settings.forEach(setting => {

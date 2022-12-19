@@ -977,6 +977,7 @@ const getGeneralBackgroundStyles = (
 				widthBottom = getBorderValue('bottom', breakpoint);
 				widthLeft = getBorderValue('left', breakpoint);
 				widthRight = getBorderValue('right', breakpoint);
+
 				// if (breakpoint !== 'general') {
 				// 	if (widthTop === 0) widthTop = 2;
 				// 	if (widthBottom === 0) widthBottom = 2;
@@ -993,11 +994,11 @@ const getGeneralBackgroundStyles = (
 				}) || 'px';
 
 			if (
-				border[breakpoint]['border-style'] &&
-				(Number.isFinite(widthTop) ||
-					Number.isFinite(widthBottom) ||
-					Number.isFinite(widthLeft) ||
-					Number.isFinite(widthRight))
+				border[breakpoint]['border-style'] ||
+				Number.isFinite(widthTop) ||
+				Number.isFinite(widthBottom) ||
+				Number.isFinite(widthLeft) ||
+				Number.isFinite(widthRight)
 			) {
 				size[breakpoint] = {
 					...(Number.isFinite(widthTop) && {

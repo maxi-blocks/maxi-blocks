@@ -7,7 +7,7 @@ import { useSelect } from '@wordpress/data';
 /**
  * External dependencies
  */
-import { isEmpty, cloneDeep, isEqual, isNaN } from 'lodash';
+import { isEmpty, cloneDeep, isEqual } from 'lodash';
 
 /**
  * Internal dependencies
@@ -19,7 +19,6 @@ import IconBackground from './components/icon-background';
 import Border from './components/border';
 import PaddingMargin from './components/padding-margin';
 import { getGroupAttributes } from '../../extensions/styles';
-import { getBoundaryElement } from '../../extensions/dom';
 import Popover from '../popover';
 
 /**
@@ -43,18 +42,13 @@ const IconToolbar = memo(
 		} = props;
 		const { uniqueID, svgType, blockStyle } = attributes;
 
-		const { breakpoint, version } = useSelect(select => {
-			const { receiveMaxiDeviceType, receiveMaxiSettings } =
-				select('maxiBlocks');
+		const { breakpoint } = useSelect(select => {
+			const { receiveMaxiDeviceType } = select('maxiBlocks');
 
 			const breakpoint = receiveMaxiDeviceType();
 
-			const maxiSettings = receiveMaxiSettings();
-			const { version } = maxiSettings;
-
 			return {
 				breakpoint,
-				version,
 			};
 		});
 

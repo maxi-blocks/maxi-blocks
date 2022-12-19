@@ -8,7 +8,6 @@ import { useRef, useEffect, useState, forwardRef } from '@wordpress/element';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNaN } from 'lodash';
 
 /**
  * Internal dependencies
@@ -49,12 +48,6 @@ const Dropdown = forwardRef(
 		const containerRef = ref ?? useRef();
 
 		const [isOpen, setIsOpen] = useObservableState(false, onToggle);
-
-		const { receiveMaxiSettings } = select('maxiBlocks');
-		const maxiSettings = receiveMaxiSettings();
-		const version = !isEmpty(maxiSettings.editor)
-			? maxiSettings.editor.version
-			: null;
 
 		useEffect(
 			() => () => {

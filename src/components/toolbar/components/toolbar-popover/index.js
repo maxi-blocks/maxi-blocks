@@ -20,7 +20,7 @@ import Popover from '../../../popover';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNaN } from 'lodash';
+import { isEmpty } from 'lodash';
 
 /**
  * Styles
@@ -119,7 +119,7 @@ class ToolbarPopover extends Component {
 
 		const { receiveMaxiSettings } = select('maxiBlocks');
 
-		const { hide_tooltips: hideTooltips, editor } = receiveMaxiSettings();
+		const { hide_tooltips: hideTooltips } = receiveMaxiSettings();
 		const tooltipsHide = !isEmpty(hideTooltips) ? hideTooltips : false;
 
 		const buttonContent = () => {

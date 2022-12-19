@@ -43,6 +43,12 @@ import useSlot from './use-slot';
 import getAnimateClassName from './animate';
 
 /**
+ * Styles
+ *
+ */
+import './editor.scss';
+
+/**
  * Name of slot in which popover should fill.
  *
  * @type {string}

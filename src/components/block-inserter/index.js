@@ -18,7 +18,6 @@ import Popover from '../popover';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
 
 /**
  * Styles
@@ -82,12 +81,6 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 	const { clientId, isSelected, hasSelectedChild } = props;
 
 	const { getBlockName, getBlockParents } = select('core/block-editor');
-	const { receiveMaxiSettings } = select('maxiBlocks');
-
-	const maxiSettings = receiveMaxiSettings();
-	const version = !isEmpty(maxiSettings.editor)
-		? maxiSettings.editor.version
-		: null;
 
 	const blockHierarchy = {};
 	const blockOrder = [...getBlockParents(clientId), clientId];

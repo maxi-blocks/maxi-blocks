@@ -14,7 +14,7 @@ import {
 /**
  * External dependencies
  */
-import { isEmpty, cloneDeep, isEqual, merge, isNaN } from 'lodash';
+import { isEmpty, cloneDeep, isEqual, merge } from 'lodash';
 import classnames from 'classnames';
 
 /**
@@ -113,8 +113,8 @@ const MaxiToolbar = memo(
 			svgType,
 		} = attributes;
 
-		const { breakpoint, styleCard, isTyping, tooltipsHide, version } =
-			useSelect(select => {
+		const { breakpoint, styleCard, isTyping, tooltipsHide } = useSelect(
+			select => {
 				const { receiveMaxiDeviceType, receiveMaxiSettings } =
 					select('maxiBlocks');
 				const { receiveMaxiSelectedStyleCard } = select(
@@ -127,7 +127,7 @@ const MaxiToolbar = memo(
 				const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
 
 				const maxiSettings = receiveMaxiSettings();
-				const { hide_tooltips: hideTooltips, editor } = maxiSettings;
+				const { hide_tooltips: hideTooltips } = maxiSettings;
 
 				const tooltipsHide = !isEmpty(hideTooltips)
 					? hideTooltips
@@ -138,9 +138,9 @@ const MaxiToolbar = memo(
 					styleCard,
 					isTyping: isTyping(),
 					tooltipsHide,
-					version: editor?.version,
 				};
-			});
+			}
+		);
 
 		const popoverRef = useRef(null);
 

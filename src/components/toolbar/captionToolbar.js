@@ -14,7 +14,7 @@ import { useSelect } from '@wordpress/data';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, cloneDeep, isEqual, isNaN } from 'lodash';
+import { isEmpty, cloneDeep, isEqual } from 'lodash';
 
 /**
  * Utils
@@ -26,7 +26,6 @@ import {
 	TextItalic,
 	TextOptions,
 } from './components';
-import { getBoundaryElement } from '../../extensions/dom';
 
 /**
  * Internal dependencies

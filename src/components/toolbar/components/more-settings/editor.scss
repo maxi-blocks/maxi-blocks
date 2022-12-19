@@ -21,6 +21,8 @@
 		margin-left: 0 !important;
 		transform: translate(3px, -13px);
 		font-family: 'Roboto', sans-serif !important;
+		background-color: white;
+		margin-top: 15px;
 
 		.maxi-reusableblocks__blocks-selector,
 		.maxi-text-generator__generator,
@@ -56,6 +58,7 @@
 			position: relative;
 			transition: 0.3s;
 			height: 30px !important;
+			padding: 6px 12px !important;
 			span {
 				float: right;
 			}

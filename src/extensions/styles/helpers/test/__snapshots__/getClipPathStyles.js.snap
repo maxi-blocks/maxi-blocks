@@ -9,11 +9,9 @@ Object {
     "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
   },
   "m": Object {
-    "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+    "clip-path": "none",
   },
-  "s": Object {
-    "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
-  },
+  "s": Object {},
   "xl": Object {
     "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
   },
@@ -29,7 +27,7 @@ Object {
 exports[`getClipPathStyles Get a correct hover clipPath styles 1`] = `
 Object {
   "general": Object {
-    "clip-path": "polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)",
+    "clip-path": "none",
   },
   "l": Object {
     "clip-path": "circle(50% at 50% 50%)",
@@ -51,6 +49,34 @@ Object {
   },
 }
 `;
+
+exports[`getClipPathStyles Get a none hover clipPath styles, when clipPath - none 1`] = `
+Object {
+  "general": Object {
+    "clip-path": "none",
+  },
+  "l": Object {
+    "clip-path": "none",
+  },
+  "m": Object {
+    "clip-path": "none",
+  },
+  "s": Object {
+    "clip-path": "none",
+  },
+  "xl": Object {
+    "clip-path": "none",
+  },
+  "xs": Object {
+    "clip-path": "none",
+  },
+  "xxl": Object {
+    "clip-path": "none",
+  },
+}
+`;
+
+exports[`getClipPathStyles Get an empty clipPath styles, when clipPath - none 1`] = `Object {}`;
 
 exports[`getClipPathStyles Get an empty hover clipPath styles, when hover-status is false 1`] = `
 Object {

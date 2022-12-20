@@ -253,8 +253,8 @@ const interactionBuilderSettings = {
 		{
 			label: __('Clip-path', 'maxi-blocks'),
 			attrGroupName: 'clipPath',
-			helper: props => getClipPathStyles(props.obj),
 			component: props => <ClipPathControl {...props} />,
+			helper: props => getClipPathStyles(props),
 			target: [
 				'.maxi-image-block-wrapper img',
 				'.maxi-image-block-wrapper svg',

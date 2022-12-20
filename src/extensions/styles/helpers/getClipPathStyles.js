@@ -8,7 +8,7 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  *
  * @param {Object} obj Block clip-path properties
  */
-const getClipPathStyles = obj => {
+const getClipPathStyles = ({ obj, isHover = false }) => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
@@ -17,16 +17,20 @@ const getClipPathStyles = obj => {
 				target: 'clip-path',
 				breakpoint,
 				attributes: obj,
+				isHover,
 			}) &&
-				getLastBreakpointAttribute({
-					target: 'clip-path-status',
-					breakpoint,
-					attributes: obj,
-				}) && {
+				(isHover ||
+					getLastBreakpointAttribute({
+						target: 'clip-path-status',
+						breakpoint,
+						attributes: obj,
+						isHover,
+					})) && {
 					'clip-path': getLastBreakpointAttribute({
 						target: 'clip-path',
 						breakpoint,
 						attributes: obj,
+						isHover,
 					}),
 				}),
 		};

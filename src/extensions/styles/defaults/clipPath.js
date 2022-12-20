@@ -10,8 +10,14 @@ export const clipPathRaw = {
 	},
 };
 
-const clipPath = breakpointAttributesCreator({
-	obj: clipPathRaw,
-});
+const clipPath = {
+	...breakpointAttributesCreator({
+		obj: clipPathRaw,
+	}),
+	'clip-path-status-hover': {
+		type: 'boolean',
+		default: false,
+	},
+};
 
 export default clipPath;

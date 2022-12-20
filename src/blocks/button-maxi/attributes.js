@@ -64,11 +64,9 @@ const attributes = {
 		...attributesData.typography,
 		'line-height-unit-general': {
 			type: 'string',
-			default: '%',
 		},
 		'line-height-general': {
 			type: 'number',
-			default: '100',
 		},
 		'palette-color-general': {
 			type: 'number',

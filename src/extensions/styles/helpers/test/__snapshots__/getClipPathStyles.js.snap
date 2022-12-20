@@ -25,3 +25,41 @@ Object {
   },
 }
 `;
+
+exports[`getClipPathStyles Get a correct hover clipPath styles 1`] = `
+Object {
+  "general": Object {
+    "clip-path": "polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)",
+  },
+  "l": Object {
+    "clip-path": "circle(50% at 50% 50%)",
+  },
+  "m": Object {
+    "clip-path": "circle(50% at 50% 50%)",
+  },
+  "s": Object {
+    "clip-path": "polygon(40% 0%, 40% 20%, 100% 20%, 100% 80%, 40% 80%, 40% 100%, 0% 50%)",
+  },
+  "xl": Object {
+    "clip-path": "polygon(0% 75%, 100% 25%, 62.5% 75%)",
+  },
+  "xs": Object {
+    "clip-path": "polygon(40% 0%, 40% 20%, 100% 20%, 100% 80%, 40% 80%, 40% 100%, 0% 50%)",
+  },
+  "xxl": Object {
+    "clip-path": "polygon(0% 0%, 100% 0%, 100% 75%, 75% 75%, 75% 100%, 50% 75%, 0% 75%)",
+  },
+}
+`;
+
+exports[`getClipPathStyles Get an empty hover clipPath styles, when hover-status is false 1`] = `
+Object {
+  "general": Object {},
+  "l": Object {},
+  "m": Object {},
+  "s": Object {},
+  "xl": Object {},
+  "xs": Object {},
+  "xxl": Object {},
+}
+`;

@@ -19,13 +19,14 @@ const getClipPathStyles = ({ obj, isHover = false }) => {
 				attributes: obj,
 				isHover,
 			}) &&
-				(isHover ||
-					getLastBreakpointAttribute({
-						target: 'clip-path-status',
-						breakpoint,
-						attributes: obj,
-						isHover,
-					})) && {
+				(isHover
+					? obj['clip-path-status-hover']
+					: getLastBreakpointAttribute({
+							target: 'clip-path-status',
+							breakpoint,
+							attributes: obj,
+							isHover,
+					  })) && {
 					'clip-path': getLastBreakpointAttribute({
 						target: 'clip-path',
 						breakpoint,

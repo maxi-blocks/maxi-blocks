@@ -200,6 +200,12 @@ const transition = {
 			property: 'box-shadow',
 			hoverProp: `${prefix}box-shadow-status-hover`,
 		},
+		'clip path': {
+			title: 'Clip path',
+			target: `${imageWrapperClass} img`,
+			property: 'clip-path',
+			hoverProp: 'clip-path-status-hover',
+		},
 	},
 };
 const interactionBuilderSettings = {

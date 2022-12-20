@@ -7,11 +7,7 @@ import { InspectorControls } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import {
-	AccordionControl,
-	ResponsiveTabsControl,
-	SettingTabsControl,
-} from '../../components';
+import { AccordionControl, SettingTabsControl } from '../../components';
 import { ColumnSizeControl } from './components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { customCss } from './data';
@@ -50,22 +46,18 @@ const Inspector = props => {
 											'maxi-blocks'
 										),
 										content: (
-											<ResponsiveTabsControl
+											<ColumnSizeControl
+												{...getGroupAttributes(
+													attributes,
+													['columnSize', 'flex']
+												)}
+												rowPattern={rowPattern}
+												clientId={clientId}
+												onChange={obj =>
+													maxiSetAttributes(obj)
+												}
 												breakpoint={deviceType}
-											>
-												<ColumnSizeControl
-													{...getGroupAttributes(
-														attributes,
-														['columnSize', 'flex']
-													)}
-													rowPattern={rowPattern}
-													clientId={clientId}
-													onChange={obj =>
-														maxiSetAttributes(obj)
-													}
-													breakpoint={deviceType}
-												/>
-											</ResponsiveTabsControl>
+											/>
 										),
 										extraIndicators: [
 											`column-fit-content-${deviceType}`,

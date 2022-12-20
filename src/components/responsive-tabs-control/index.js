@@ -27,20 +27,25 @@ const ResponsiveTabsControl = props => {
 	const {
 		className,
 		children,
-		breakpoint,
+		breakpoint: rawBreakpoint,
 		disableCallback = false,
 		target,
 	} = props;
+	const { baseBreakpoint, breakpoint: storeBreakpoint } = useSelect(
+		select => {
+			const { receiveBaseBreakpoint, receiveMaxiDeviceType } =
+				select('maxiBlocks');
 
-	const { baseBreakpoint } = useSelect(select => {
-		const { receiveBaseBreakpoint } = select('maxiBlocks');
+			const baseBreakpoint = receiveBaseBreakpoint();
+			const breakpoint = receiveMaxiDeviceType();
 
-		const baseBreakpoint = receiveBaseBreakpoint();
-
-		return {
-			baseBreakpoint,
-		};
-	});
+			return {
+				baseBreakpoint,
+				breakpoint,
+			};
+		}
+	);
+	const breakpoint = rawBreakpoint || storeBreakpoint;
 
 	const breakpoints = ['XXL', 'XL', 'L', 'M', 'S', 'XS'];
 

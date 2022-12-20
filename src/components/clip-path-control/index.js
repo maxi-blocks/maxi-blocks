@@ -17,6 +17,7 @@ import ClipPathVisualEditor from './visualEditor';
 import Icon from '../icon';
 import ToggleSwitch from '../toggle-switch';
 import SettingTabsControl from '../setting-tabs-control';
+import withRTC from '../../extensions/maxi-block/withRTC';
 import {
 	getAttributeKey,
 	getLastBreakpointAttribute,
@@ -556,4 +557,4 @@ const ClipPathControl = props => {
 	);
 };
 
-export default ClipPathControl;
+export default withRTC(ClipPathControl);

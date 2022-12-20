@@ -140,6 +140,7 @@ const ColorPaletteControl = props => {
 						})
 					}
 					onReset={onResetOpacity}
+					disableRTC
 				/>
 			)}
 		</div>

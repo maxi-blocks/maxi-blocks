@@ -8,7 +8,11 @@ import { __ } from '@wordpress/i18n';
  */
 import AlignmentControl from '../alignment-control';
 import { getGroupAttributes } from '../../extensions/styles';
-import ResponsiveTabsControl from '../responsive-tabs-control';
+
+/**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
 
 /**
  * Component
@@ -22,32 +26,35 @@ const alignment = ({
 	disableJustify = false,
 }) => {
 	const { attributes, deviceType, maxiSetAttributes } = props;
+	const showLabel =
+		!isEmpty(alignmentLabel) && isAlignment && isTextAlignment;
 
 	return {
 		label: __('Alignment', 'maxi-blocks'),
 		content: (
-			<ResponsiveTabsControl breakpoint={deviceType}>
-				<>
-					{isAlignment && (
-						<AlignmentControl
-							label={alignmentLabel}
-							{...getGroupAttributes(attributes, 'alignment')}
-							onChange={obj => maxiSetAttributes(obj)}
-							breakpoint={deviceType}
-							disableJustify={disableJustify}
-						/>
-					)}
-					{isTextAlignment && (
-						<AlignmentControl
-							label={textAlignmentLabel}
-							{...getGroupAttributes(attributes, 'textAlignment')}
-							onChange={obj => maxiSetAttributes(obj)}
-							breakpoint={deviceType}
-							type='text'
-						/>
-					)}
-				</>
-			</ResponsiveTabsControl>
+			<>
+				{isAlignment && (
+					<AlignmentControl
+						label={alignmentLabel}
+						{...getGroupAttributes(attributes, 'alignment')}
+						onChange={obj => maxiSetAttributes(obj)}
+						breakpoint={deviceType}
+						disableJustify={disableJustify}
+						showLabel={showLabel}
+					/>
+				)}
+				{isTextAlignment && (
+					<AlignmentControl
+						label={textAlignmentLabel}
+						{...getGroupAttributes(attributes, 'textAlignment')}
+						onChange={obj => maxiSetAttributes(obj)}
+						breakpoint={deviceType}
+						type='text'
+						disableRTC={isAlignment}
+						showLabel={showLabel}
+					/>
+				)}
+			</>
 		),
 	};
 };

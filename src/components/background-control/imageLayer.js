@@ -77,6 +77,7 @@ const ImageLayerSettings = props => {
 						)]: val,
 					})
 				}
+				disableRTC
 			/>
 			<SelectControl
 				label={__('Background size', 'maxi-blocks')}

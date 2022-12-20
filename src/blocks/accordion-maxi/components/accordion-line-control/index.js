@@ -51,7 +51,7 @@ const AccordionLineControl = props => {
 				items={[
 					{
 						label: __('Normal state', 'maxi-blocks'),
-						content: <DividerControl {...props} />,
+						content: <DividerControl {...props} disableRTC />,
 					},
 					{
 						label: __('Hover state', 'maxi-blocks'),
@@ -69,7 +69,11 @@ const AccordionLineControl = props => {
 									}
 								/>
 								{props[`${prefix}line-status-hover`] && (
-									<DividerControl {...props} isHover />
+									<DividerControl
+										{...props}
+										isHover
+										disableRTC
+									/>
 								)}
 							</>
 						),

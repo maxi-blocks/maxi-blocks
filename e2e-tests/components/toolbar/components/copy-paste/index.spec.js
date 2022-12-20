@@ -151,12 +151,12 @@ describe('CopyPaste from Toolbar', () => {
 		);
 
 		const wrapSelector = await accordionPanel.$(
-			'.maxi-flex-wrap-control select'
+			'.maxi-flex-wrap-control .maxi-tabs-control'
 		);
 		await wrapSelector.select('wrap');
 
 		const directionSelector = await accordionPanel.$(
-			'.maxi-flex__direction select'
+			'.maxi-flex__direction .maxi-tabs-control'
 		);
 		await directionSelector.select('row');
 

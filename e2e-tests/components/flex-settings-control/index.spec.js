@@ -24,27 +24,27 @@ describe('FlexSettings', () => {
 		);
 
 		const wrapSelector = await accordionPanel.$(
-			'.maxi-flex-wrap-control select'
+			'.maxi-flex-wrap-control .maxi-tabs-control'
 		);
 		await wrapSelector.select('wrap');
 
 		const directionSelector = await accordionPanel.$(
-			'.maxi-flex__direction select'
+			'.maxi-flex__direction .maxi-tabs-control'
 		);
 		await directionSelector.select('row');
 
 		const justifyContentSelector = await accordionPanel.$(
-			'.maxi-flex-align-control__justify-content select'
+			'.maxi-flex-align-control__justify-content .maxi-tabs-control'
 		);
 		await justifyContentSelector.select('flex-end');
 
 		const alignItemSelector = await accordionPanel.$(
-			'.maxi-flex-align-control__align-items select'
+			'.maxi-flex-align-control__align-items .maxi-tabs-control'
 		);
 		await alignItemSelector.select('flex-end');
 
 		const alignContentSelector = await accordionPanel.$(
-			'.maxi-flex__align-content select'
+			'.maxi-flex__align-content .maxi-tabs-control'
 		);
 		await alignContentSelector.select('flex-start');
 
@@ -139,7 +139,7 @@ describe('FlexSettings', () => {
 		await page.waitForTimeout(100);
 
 		const flexBasisSelector = await page.$(
-			'.maxi-typography-control__flex-basis select'
+			'.maxi-typography-control__flex-basis .maxi-tabs-control'
 		);
 		await page.waitForTimeout(100);
 
@@ -164,7 +164,7 @@ describe('FlexSettings', () => {
 
 		// expect custom flex-basis
 		const flexBasisCustomSelector = await page.$(
-			'.maxi-typography-control__flex-basis select'
+			'.maxi-typography-control__flex-basis .maxi-tabs-control'
 		);
 		await flexBasisCustomSelector.select('custom');
 
@@ -207,7 +207,7 @@ describe('FlexSettings', () => {
 		await page.waitForTimeout(100);
 
 		const flexBasisSelectorS = await page.$(
-			'.maxi-typography-control__flex-basis select'
+			'.maxi-typography-control__flex-basis .maxi-tabs-control'
 		);
 		await page.waitForTimeout(100);
 
@@ -252,7 +252,7 @@ describe('FlexSettings', () => {
 		expect(orderXS).toStrictEqual('2');
 
 		const flexBasisXS = await page.$eval(
-			'.maxi-typography-control__flex-basis select',
+			'.maxi-typography-control__flex-basis .maxi-tabs-control',
 			input => input.value
 		);
 
@@ -285,7 +285,7 @@ describe('FlexSettings', () => {
 		await page.waitForTimeout(100);
 
 		const flexBasisM = await page.$eval(
-			'.maxi-typography-control__flex-basis select',
+			'.maxi-typography-control__flex-basis .maxi-tabs-control',
 			input => input.value
 		);
 
@@ -313,27 +313,27 @@ describe('FlexSettings', () => {
 
 		// base
 		const wrapSelector = await accordionPanel.$(
-			'.maxi-flex-wrap-control select'
+			'.maxi-flex-wrap-control .maxi-tabs-control'
 		);
 		await wrapSelector.select('wrap');
 
 		const directionSelector = await accordionPanel.$(
-			'.maxi-flex__direction select'
+			'.maxi-flex__direction .maxi-tabs-control'
 		);
 		await directionSelector.select('row');
 
 		const justifyContentSelector = await accordionPanel.$(
-			'.maxi-flex-align-control__justify-content select'
+			'.maxi-flex-align-control__justify-content .maxi-tabs-control'
 		);
 		await justifyContentSelector.select('flex-end');
 
 		const alignItemSelector = await accordionPanel.$(
-			'.maxi-flex-align-control__align-items select'
+			'.maxi-flex-align-control__align-items .maxi-tabs-control'
 		);
 		await alignItemSelector.select('flex-end');
 
 		const alignContentSelector = await accordionPanel.$(
-			'.maxi-flex__align-content select'
+			'.maxi-flex__align-content .maxi-tabs-control'
 		);
 		await alignContentSelector.select('flex-start');
 
@@ -355,27 +355,27 @@ describe('FlexSettings', () => {
 		await changeResponsive(page, 's');
 
 		const wrapSelectorS = await accordionPanel.$(
-			'.maxi-flex-wrap-control select'
+			'.maxi-flex-wrap-control .maxi-tabs-control'
 		);
 		await wrapSelectorS.select('nowrap');
 
 		const directionSelectorS = await accordionPanel.$(
-			'.maxi-flex__direction select'
+			'.maxi-flex__direction .maxi-tabs-control'
 		);
 		await directionSelectorS.select('column');
 
 		const justifyContentSelectorS = await accordionPanel.$(
-			'.maxi-flex-align-control__justify-content select'
+			'.maxi-flex-align-control__justify-content .maxi-tabs-control'
 		);
 		await justifyContentSelectorS.select('flex-start');
 
 		const alignItemSelectorS = await accordionPanel.$(
-			'.maxi-flex-align-control__align-items select'
+			'.maxi-flex-align-control__align-items .maxi-tabs-control'
 		);
 		await alignItemSelectorS.select('flex-start');
 
 		const alignContentSelectorS = await accordionPanel.$(
-			'.maxi-flex__align-content select'
+			'.maxi-flex__align-content .maxi-tabs-control'
 		);
 		await alignContentSelectorS.select('flex-end');
 
@@ -422,31 +422,31 @@ describe('FlexSettings', () => {
 		await changeResponsive(page, 'xs');
 
 		const wrapSelectorXS = await accordionPanel.$eval(
-			'.maxi-flex-wrap-control select',
+			'.maxi-flex-wrap-control .maxi-tabs-control',
 			selector => selector.value
 		);
 		expect(wrapSelectorXS).toStrictEqual('nowrap');
 
 		const directionSelectorXS = await accordionPanel.$eval(
-			'.maxi-flex__direction select',
+			'.maxi-flex__direction .maxi-tabs-control',
 			selector => selector.value
 		);
 		expect(directionSelectorXS).toStrictEqual('column');
 
 		const justifyContentSelectorXS = await accordionPanel.$eval(
-			'.maxi-flex-align-control__justify-content select',
+			'.maxi-flex-align-control__justify-content .maxi-tabs-control',
 			selector => selector.value
 		);
 		expect(justifyContentSelectorXS).toStrictEqual('flex-start');
 
 		const alignItemSelectorXS = await accordionPanel.$eval(
-			'.maxi-flex-align-control__align-items select',
+			'.maxi-flex-align-control__align-items .maxi-tabs-control',
 			selector => selector.value
 		);
 		expect(alignItemSelectorXS).toStrictEqual('flex-start');
 
 		const alignContentSelectorXS = await accordionPanel.$eval(
-			'.maxi-flex__align-content select',
+			'.maxi-flex__align-content .maxi-tabs-control',
 			selector => selector.value
 		);
 		expect(alignContentSelectorXS).toStrictEqual('flex-end');
@@ -491,19 +491,19 @@ describe('FlexSettings', () => {
 		expect(directionSelectorM).toStrictEqual('row');
 
 		const justifyContentSelectorM = await accordionPanel.$eval(
-			'.maxi-flex-align-control__justify-content select',
+			'.maxi-flex-align-control__justify-content .maxi-tabs-control',
 			selector => selector.value
 		);
 		expect(justifyContentSelectorM).toStrictEqual('flex-end');
 
 		const alignItemSelectorM = await accordionPanel.$eval(
-			'.maxi-flex-align-control__align-items select',
+			'.maxi-flex-align-control__align-items .maxi-tabs-control',
 			selector => selector.value
 		);
 		expect(alignItemSelectorM).toStrictEqual('flex-end');
 
 		const alignContentSelectorM = await accordionPanel.$eval(
-			'.maxi-flex__align-content select',
+			'.maxi-flex__align-content .maxi-tabs-control',
 			selector => selector.value
 		);
 		expect(alignContentSelectorM).toStrictEqual('flex-start');

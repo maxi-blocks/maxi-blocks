@@ -233,6 +233,8 @@ const ClipPathControl = props => {
 					cpValues.push([Number(value.trim().replace(/%/g, ''))]);
 				});
 				break;
+			case 'none':
+				break;
 			default:
 				return false;
 		}
@@ -250,7 +252,8 @@ const ClipPathControl = props => {
 	const [isCustom, changeIsCustom] = useState(
 		!(
 			Object.values(clipPathDefaults).includes(clipPath) ||
-			isEmpty(clipPath)
+			isEmpty(clipPath) ||
+			clipPath === 'none'
 		)
 	);
 
@@ -291,7 +294,7 @@ const ClipPathControl = props => {
 			default:
 				break;
 		}
-		const newCP = `${type}(${newContent})`;
+		const newCP = `${type}${type !== 'none' ? `(${newContent})` : ''}`;
 
 		onChangeValue(newCP);
 
@@ -358,9 +361,11 @@ const ClipPathControl = props => {
 								position='top center'
 							>
 								<Button
-									aria-pressed={clipPath === ''}
+									aria-pressed={['', 'none'].includes(
+										clipPath
+									)}
 									className='clip-path-defaults__items clip-path-defaults__items__none'
-									onClick={() => onChangeValue('')}
+									onClick={() => onChangeValue('none')}
 								>
 									<Icon icon={styleNone} />
 								</Button>

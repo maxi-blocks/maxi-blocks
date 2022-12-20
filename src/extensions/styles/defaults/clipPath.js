@@ -3,6 +3,7 @@ import breakpointAttributesCreator from '../breakpointAttributesCreator';
 export const clipPathRaw = {
 	'clip-path': {
 		type: 'string',
+		default: 'none',
 	},
 	'clip-path-status': {
 		type: 'boolean',

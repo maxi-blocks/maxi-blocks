@@ -486,21 +486,30 @@ const ClipPath = props => {
 															)
 														);
 
+													if (
+														oneBreakpointHigherClipPath.type !==
+														clipPathOptions.type
+													)
+														return;
+
 													const newValue =
 														oneBreakpointHigherClipPath
 															?.content?.[i]?.[
 															coordIndex
 														];
 
-													if (newValue)
+													if (
+														newValue ===
 														clipPathOptions.content[
 															i
-														][coordIndex] =
-															newValue;
-													else
-														clipPathOptions.content[
-															i
-														] = [0, 0];
+														][coordIndex]
+													)
+														return;
+
+													clipPathOptions.content[i][
+														coordIndex
+													] = newValue;
+
 													generateCP(clipPathOptions);
 												}}
 												onRemove={number => {

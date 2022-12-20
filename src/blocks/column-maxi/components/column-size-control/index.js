@@ -13,6 +13,7 @@ import {
 } from '../../../../components';
 import { handleOnReset } from '../../../../extensions/attributes';
 import { getColumnDefaultValue } from '../../../../extensions/column-templates';
+import withRTC from '../../../../extensions/maxi-block/withRTC';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
@@ -124,4 +125,4 @@ const ColumnSizeControl = props => {
 	);
 };
 
-export default ColumnSizeControl;
+export default withRTC(ColumnSizeControl);

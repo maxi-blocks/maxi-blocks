@@ -17,6 +17,7 @@ import {
 	borderDashed,
 	borderDotted,
 } from './defaults';
+import withRTC from '../../extensions/maxi-block/withRTC';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -397,4 +398,4 @@ const BorderControl = props => {
 	);
 };
 
-export default BorderControl;
+export default withRTC(BorderControl);

@@ -49,6 +49,13 @@ const optionColors = [
 	'violet',
 ];
 
+const defaultPolygonContent = {
+	0: [0, 0],
+	1: [100, 0],
+	2: [100, 100],
+	3: [0, 100],
+};
+
 const ClipPathOption = props => {
 	const { values, onRemove, onReset, onChange, number, type } = props;
 
@@ -153,7 +160,7 @@ const ClipPath = props => {
 		if (isEmpty(clipPathToDeconstruct))
 			return {
 				type: 'polygon',
-				content: {},
+				content: defaultPolygonContent,
 			};
 
 		const cpType = clipPathToDeconstruct.match(/^[^(]+/gi)[0];
@@ -295,12 +302,7 @@ const ClipPath = props => {
 		switch (newType) {
 			case 'polygon':
 				newCP.type = 'polygon';
-				newCP.content = {
-					0: [0, 0],
-					1: [100, 0],
-					2: [100, 100],
-					3: [0, 100],
-				};
+				newCP.content = defaultPolygonContent;
 				break;
 			case 'circle':
 				newCP.type = 'circle';

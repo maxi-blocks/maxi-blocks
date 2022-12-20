@@ -3,8 +3,8 @@
         .maxi-tabs-content{
             &:not(:first-child){
                 .maxi-tabs-control__button{
-                    padding: 6px 3px;
                     border-bottom: 1px solid var(--maxi-grey-1-color);
+                    padding: 6px 3px;
                     &:first-child{
                         max-width: 30px;
                     }
@@ -14,13 +14,13 @@
                     }
                     &::after{
                         content: "";
-                        display: block;
-                        background-color: var(--maxi-secondary-color);
-                        height: 2px;
                         position: absolute;
                         bottom: -1px;
                         left: -1px;
                         right: -1px;
+                        display: block;
+                        height: 2px;
+                        background-color: var(--maxi-secondary-color);
                         opacity: 0;
                     }
                     &--selected {

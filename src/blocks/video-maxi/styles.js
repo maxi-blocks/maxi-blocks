@@ -141,11 +141,13 @@ const getOverlayBackgroundObject = (props, isHover = false) => {
 	return response;
 };
 
-const getVideoContainerOject = props => {
-	const { videoRatio } = props;
+const getAspectRatioStyles = (props, isPopup = false) => {
+	const { videoRatio, popupRatio } = props;
 
 	const response = {
-		...(videoRatio && getAspectRatio(videoRatio)),
+		...(isPopup
+			? { ...(popupRatio && getAspectRatio(popupRatio)) }
+			: { ...(videoRatio && getAspectRatio(videoRatio)) }),
 	};
 
 	return response;
@@ -329,8 +331,6 @@ const getStyles = props => {
 				'': getNormalObject(props),
 				':hover': getHoverObject(props),
 				' .maxi-video-block__popup-wrapper': getLightBoxObject(props),
-				' .maxi-video-block__video-container':
-					getVideoContainerOject(props),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [
 						'blockBackground',
@@ -360,10 +360,14 @@ const getStyles = props => {
 								getVideoStyles(props),
 							' .maxi-video-block__video-player:hover':
 								getVideoStyles(props, true),
+							' .maxi-video-block__video-container':
+								getAspectRatioStyles(props),
 					  }
 					: {
-							' .maxi-video-block__overlay':
-								getVideoStyles(props),
+							' .maxi-video-block__overlay': {
+								...getVideoStyles(props),
+								...getAspectRatioStyles(props),
+							},
 							' .maxi-video-block__overlay:hover': getVideoStyles(
 								props,
 								true
@@ -384,8 +388,10 @@ const getStyles = props => {
 		[`popup-${uniqueID}`]: styleProcessor(
 			{
 				' .maxi-video-block__popup-wrapper': getLightBoxObject(props),
-				' .maxi-video-block__video-container':
-					getVideoContainerOject(props),
+				' .maxi-video-block__video-container': getAspectRatioStyles(
+					props,
+					true
+				),
 				...getIconObject('close-', props),
 			},
 			data,

@@ -98,6 +98,7 @@ const GradientLayerContent = props => {
 					isHover={isHover}
 					prefix='background-gradient-'
 					breakpoint={breakpoint}
+					isLayer
 					disableRTC
 				/>
 			)}

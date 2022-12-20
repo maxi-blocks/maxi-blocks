@@ -138,6 +138,7 @@ const ClipPathControl = props => {
 		prefix = '',
 		breakpoint,
 		isHover = false,
+		isLayer = false,
 	} = props;
 
 	const classes = classnames('maxi-clip-path-control', className);
@@ -149,14 +150,15 @@ const ClipPathControl = props => {
 		isHover,
 	});
 
-	const hasClipPath = !isHover
-		? getLastBreakpointAttribute({
-				target: `${prefix}clip-path-status`,
-				breakpoint,
-				attributes: props,
-				isHover,
-		  })
-		: props[getAttributeKey('clip-path-status', true)];
+	const hasClipPath =
+		isLayer || !isHover
+			? getLastBreakpointAttribute({
+					target: `${prefix}clip-path-status`,
+					breakpoint,
+					attributes: props,
+					isHover,
+			  })
+			: props[getAttributeKey('clip-path-status', true)];
 
 	const deconstructCP = (clipPathToDeconstruct = clipPath) => {
 		if (isEmpty(clipPathToDeconstruct))
@@ -338,7 +340,7 @@ const ClipPathControl = props => {
 
 	return (
 		<div className={classes}>
-			{!isHover && (
+			{(isLayer || !isHover) && (
 				<ToggleSwitch
 					label={__('Use clip-path', 'maxi-blocks')}
 					selected={hasClipPath}

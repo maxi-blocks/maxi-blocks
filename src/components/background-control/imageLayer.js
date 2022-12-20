@@ -544,6 +544,7 @@ const ImageLayerSettings = props => {
 					isHover={isHover}
 					prefix='background-image-'
 					breakpoint={breakpoint}
+					isLayer
 					disableRTC
 				/>
 			)}

@@ -218,6 +218,7 @@ const ColorLayerContent = props => {
 					isHover={isHover}
 					prefix={`${prefix}background-color-`}
 					breakpoint={breakpoint}
+					isLayer
 					disableRTC
 				/>
 			)}

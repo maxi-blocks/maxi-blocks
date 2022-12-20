@@ -163,10 +163,10 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
 
             $content .= '<h3>'.__('Roadmap', self::$maxi_text_domain).'</h3>';
-            $content .= '<p>'.__('There’s a grand plan and we need your help. Share your suggestions or vote on what to build next.', self::$maxi_text_domain).' <a href="https://maxiblocks.com/go/roadmap" target="_blank">'.__('See what’s planned in the roadmap', self::$maxi_text_domain).'</a></p>';
+            $content .= '<p>'.__('There’s a grand plan, and we need your help. Share your suggestions or vote on what to build next.', self::$maxi_text_domain).' <a href="https://maxiblocks.com/go/roadmap" target="_blank">'.__('See what’s planned in the roadmap', self::$maxi_text_domain).'</a></p>';
 
             $content .= '<h3>'.__('About Beta 1.0', self::$maxi_text_domain).'</h3>';
-            $content .= '<p>'.__('The Maxi Blocks builder will improve with your valuable feedback. And because we’re open source, everyone can benefit. Even so, your setup might be different. It’s recommended to build in a staging environment while we’re still in Beta. If you find an issue, please let us know via our support channels or GitHub. Every bit of feedback helps. Thank you!', self::$maxi_text_domain).'</p>';
+            $content .= '<p>'.__('The Maxi Blocks builder will improve with your valuable feedback. And because we’re open source, everyone can benefit. Even so, your setup might be different. It’s recommended to build in a staging environment while we’re still in Beta. If you find an issue, please let us know via our support channels. Every bit of feedback helps. Thank you!', self::$maxi_text_domain).'</p>';
             
             $content .='</div>'; // maxi-dashboard_main-content
             
@@ -299,24 +299,24 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
-            $content .= $this->generate_item_header('Rollback to previous version', false);
+            // $content .= $this->generate_item_header('Rollback to previous version', false);
 
-            $content .= '<p>'.__('If you want to restore a previous version of Maxi Blocks, you can do it here. For extra precaution we always recommended running a backup of your website and database before performing a rollback. Alternatively, clone your site to a staging site, then test the rollback function there.', self::$maxi_text_domain).'</p>';
+            // $content .= '<p>'.__('If you want to restore a previous version of Maxi Blocks, you can do it here. For extra precaution we always recommended running a backup of your website and database before performing a rollback. Alternatively, clone your site to a staging site, then test the rollback function there.', self::$maxi_text_domain).'</p>';
 
-            if (MAXI_PLUGIN_VERSION) {
-                $content .= '<p>'.__('Your current version is <strong>', self::$maxi_text_domain).MAXI_PLUGIN_VERSION.'</strong></p>';
-            }
-            $content .= '<h4>'.__('Choose a version to rollback to', self::$maxi_text_domain).'</h4>';
-            $content .= $this->generate_dropdown();
-            $content .= '<input type="hidden" name="maxi_rollback_version" id="maxi-rollback-version" value="current">';
-            $version_to_roll = get_option('maxi_rollback_version');
-            if ($version_to_roll !== 'current') {
-                $this->rollback_zip($version_to_roll);
-            }
-            $content .= get_submit_button(__('Rollback', self::$maxi_text_domain), 'primary', 'maxi-rollback-submit');
+            // if (MAXI_PLUGIN_VERSION) {
+            //     $content .= '<p>'.__('Your current version is <strong>', self::$maxi_text_domain).MAXI_PLUGIN_VERSION.'</strong></p>';
+            // }
+            // $content .= '<h4>'.__('Choose a version to rollback to', self::$maxi_text_domain).'</h4>';
+            // $content .= $this->generate_dropdown();
+            // $content .= '<input type="hidden" name="maxi_rollback_version" id="maxi-rollback-version" value="current">';
+            // $version_to_roll = get_option('maxi_rollback_version');
+            // if ($version_to_roll !== 'current') {
+            //     $this->rollback_zip($version_to_roll);
+            // }
+            // $content .= get_submit_button(__('Rollback', self::$maxi_text_domain), 'primary', 'maxi-rollback-submit');
 
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
+            // $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
+            // $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
             // $content .= $this->generate_item_header('Advanced', false);
 

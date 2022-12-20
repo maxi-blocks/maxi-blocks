@@ -113,7 +113,7 @@ const ClipPathOption = props => {
 										values[index] = value;
 										onChange(values);
 									}}
-									onReset={() => onReset(0)}
+									onReset={() => onReset(index)}
 									min={0}
 									max={100}
 									disableRange

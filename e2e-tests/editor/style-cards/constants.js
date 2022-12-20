@@ -3,7 +3,6 @@ export const generalTypographyStyle = {
 	weight: '300',
 	transform: 'capitalize',
 	style: 'italic',
-	direction: 'ltr',
 	indent: '44',
 };
 
@@ -12,7 +11,6 @@ export const responsiveTypographyStyle = {
 	weight: '400',
 	transform: 'uppercase',
 	style: 'oblique',
-	direction: 'rtl',
 	indent: '22',
 };
 

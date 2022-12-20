@@ -63,8 +63,12 @@ const addTypographyStyle = async ({
 	const directionSelector = await instance.$(
 		'.maxi-typography-control__direction .maxi-base-control__field select'
 	);
-	if (direction) await directionSelector.select(direction);
-	response.direction = await getElementAttribute(directionSelector, 'value');
+	if (!isStyleCards && direction) await directionSelector.select(direction);
+	if (!isStyleCards)
+		response.direction = await getElementAttribute(
+			directionSelector,
+			'value'
+		);
 
 	const textIndentInput = await instance.$(
 		'.maxi-typography-control__text-indent input'

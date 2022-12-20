@@ -87,9 +87,11 @@ const ImageSize = props => {
 					value={
 						imageSize || imageSize === 'custom' ? imageSize : 'full'
 					} // is still necessary?
-					defaultValue={getDefaultAttribute('imageSize')}
 					options={getImageSizeOptions()}
 					onChange={imageSize => onChangeImageSize(imageSize)}
+					onReset={() =>
+						onChangeImageSize(getDefaultAttribute('imageSize'))
+					}
 				/>
 				{isFirstOnHierarchy && (
 					<SettingTabsControl

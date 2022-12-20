@@ -29,7 +29,6 @@ export default function SelectControl({
 	options = [],
 	className,
 	hideLabelFromVision,
-	defaultValue = null,
 	hideResetButton = false,
 	...props
 }) {
@@ -96,15 +95,7 @@ export default function SelectControl({
 						  )
 						: getOptions(options)}
 				</select>
-				{!hideResetButton && (
-					<ResetButton
-						onReset={() =>
-							onReset
-								? onReset()
-								: onChange(defaultValue ?? options[0].value)
-						}
-					/>
-				)}
+				{onReset && <ResetButton onReset={() => onReset()} />}
 			</BaseControl>
 		)
 	);

@@ -140,7 +140,7 @@ const ClipPathOption = props => {
 };
 
 const ClipPath = props => {
-	const { className, onChange, prefix, breakpoint, isHover } = props;
+	const { className, onChange, prefix = '', breakpoint, isHover } = props;
 
 	const classes = classnames('maxi-clip-path-control', className);
 

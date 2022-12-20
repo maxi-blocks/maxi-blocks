@@ -25,7 +25,7 @@ jobs:
               uses: SamKirkland/FTP-Deploy-Action@4.1.0
               with:
                   server: staging.maximaster.git.maxiblocks.com
-                  server-dir: .wp-content/plugins/maxi-blocks/
+                  server-dir: ./wp-content/plugins/maxi-blocks/
                   username: ftp_staging_maximaster_git
                   password: ${{ secrets.FTP_PASSWORD }}
                   protocol: ftp

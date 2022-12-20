@@ -14,6 +14,7 @@ import {
 import SettingTabsControl from '../setting-tabs-control';
 import AdvancedNumberControl from '../advanced-number-control';
 import { applyEffect } from './scroll-effect-preview';
+import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * External dependencies
@@ -117,12 +118,14 @@ const ScrollEffectsUniqueControl = props => {
 								step={1}
 								max={special?.max}
 								onReset={() => {
-									onChange({
-										[`scroll-${type}-${special?.attr}-${breakpoint}`]:
-											getDefaultAttribute(
-												`scroll-${type}-${special?.attr}-general`
-											),
-									});
+									onChange(
+										handleOnReset({
+											[`scroll-${type}-${special?.attr}-${breakpoint}`]:
+												getDefaultAttribute(
+													`scroll-${type}-${special?.attr}-general`
+												),
+										})
+									);
 									isPreviewEnabled &&
 										applyEffect(
 											type,

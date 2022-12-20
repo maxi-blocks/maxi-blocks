@@ -17,6 +17,7 @@ import ResponsiveTabsControl from '../responsive-tabs-control';
 import SettingTabsControl from '../setting-tabs-control';
 import ToggleSwitch from '../toggle-switch';
 import ManageHoverTransitions from '../manage-hover-transitions';
+import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * Component
@@ -98,25 +99,27 @@ const opacity = ({ props, depth = 2 }) => {
 												})
 											}
 											onReset={() => {
-												maxiSetAttributes({
-													[getAttributeKey(
-														'opacity',
-														true,
-														'',
-														deviceType
-													)]: getLastBreakpointAttribute(
-														{
-															target: 'opacity',
-															breakpoint:
-																deviceType,
-															attributes:
-																getGroupAttributes(
-																	attributes,
-																	'opacity'
-																),
-														}
-													),
-												});
+												maxiSetAttributes(
+													handleOnReset({
+														[getAttributeKey(
+															'opacity',
+															true,
+															'',
+															deviceType
+														)]: getLastBreakpointAttribute(
+															{
+																target: 'opacity',
+																breakpoint:
+																	deviceType,
+																attributes:
+																	getGroupAttributes(
+																		attributes,
+																		'opacity'
+																	),
+															}
+														),
+													})
+												);
 											}}
 										/>
 									)}

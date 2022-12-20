@@ -18,8 +18,8 @@ import Icon from '../icon';
 import ToggleSwitch from '../toggle-switch';
 import SettingTabsControl from '../setting-tabs-control';
 import {
-	getLastBreakpointAttribute,
 	getAttributeKey,
+	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 /**
  * External dependencies
@@ -130,8 +130,14 @@ const ClipPathOption = props => {
 	);
 };
 
-const ClipPath = props => {
-	const { className, onChange, prefix = '', breakpoint, isHover } = props;
+const ClipPathControl = props => {
+	const {
+		className,
+		onChange,
+		prefix = '',
+		breakpoint,
+		isHover = false,
+	} = props;
 
 	const classes = classnames('maxi-clip-path-control', className);
 
@@ -142,12 +148,14 @@ const ClipPath = props => {
 		isHover,
 	});
 
-	const hasClipPath = getLastBreakpointAttribute({
-		target: `${prefix}clip-path-status`,
-		breakpoint,
-		attributes: props,
-		isHover,
-	});
+	const hasClipPath = !isHover
+		? getLastBreakpointAttribute({
+				target: `${prefix}clip-path-status`,
+				breakpoint,
+				attributes: props,
+				isHover,
+		  })
+		: props[getAttributeKey('clip-path-status', true)];
 
 	const deconstructCP = (clipPathToDeconstruct = clipPath) => {
 		if (isEmpty(clipPathToDeconstruct))
@@ -326,11 +334,13 @@ const ClipPath = props => {
 
 	return (
 		<div className={classes}>
-			<ToggleSwitch
-				label={__('Use clip-path', 'maxi-blocks')}
-				selected={hasClipPath}
-				onChange={val => onToggleClipPath(val)}
-			/>
+			{!isHover && (
+				<ToggleSwitch
+					label={__('Use clip-path', 'maxi-blocks')}
+					selected={hasClipPath}
+					onChange={val => onToggleClipPath(val)}
+				/>
+			)}
 			{hasClipPath && (
 				<>
 					<ToggleSwitch
@@ -546,4 +556,4 @@ const ClipPath = props => {
 	);
 };
 
-export default ClipPath;
+export default ClipPathControl;

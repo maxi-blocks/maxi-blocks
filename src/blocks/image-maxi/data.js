@@ -11,7 +11,7 @@ import {
 	AlignmentControl,
 	ImageShape,
 	InfoBox,
-	ClipPath,
+	ClipPathControl,
 } from '../../components';
 import {
 	getAlignmentFlexStyles,
@@ -253,8 +253,8 @@ const interactionBuilderSettings = {
 		{
 			label: __('Clip-path', 'maxi-blocks'),
 			attrGroupName: 'clipPath',
-			component: props => <ClipPath {...props} />,
 			helper: props => getClipPathStyles(props.obj),
+			component: props => <ClipPathControl {...props} />,
 			target: [
 				'.maxi-image-block-wrapper img',
 				'.maxi-image-block-wrapper svg',

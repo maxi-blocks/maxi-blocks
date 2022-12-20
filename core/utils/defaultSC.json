@@ -43,9 +43,7 @@
 					"letter-spacing-unit-xxl": "px",
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
-					"text-decoration-general": "unset",
-
-					"text-direction-general": "ltr"
+					"text-decoration-general": "unset"
 				},
 				"h1": {
 					"color-global": false,
@@ -91,8 +89,7 @@
 					"letter-spacing-unit-xxl": "px",
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
-					"text-decoration-general": "unset",
-					"text-direction-general": "ltr"
+					"text-decoration-general": "unset"
 				},
 				"h2": {
 					"color-global": false,
@@ -138,9 +135,7 @@
 					"letter-spacing-unit-xxl": "px",
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
-					"text-decoration-general": "unset",
-
-					"text-direction-general": "ltr"
+					"text-decoration-general": "unset"
 				},
 				"h3": {
 					"color-global": false,
@@ -178,8 +173,7 @@
 					"letter-spacing-unit-xxl": "px",
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
-					"text-decoration-general": "unset",
-					"text-direction-general": "ltr"
+					"text-decoration-general": "unset"
 				},
 				"h4": {
 					"color-global": false,
@@ -217,8 +211,7 @@
 					"letter-spacing-unit-xxl": "px",
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
-					"text-decoration-general": "unset",
-					"text-direction-general": "ltr"
+					"text-decoration-general": "unset"
 				},
 				"h5": {
 					"color-global": false,
@@ -252,8 +245,7 @@
 					"letter-spacing-unit-xxl": "px",
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
-					"text-decoration-general": "unset",
-					"text-direction-general": "ltr"
+					"text-decoration-general": "unset"
 				},
 				"h6": {
 					"color-global": false,
@@ -288,8 +280,7 @@
 					"letter-spacing-unit-xxl": "px",
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
-					"text-decoration-general": "unset",
-					"text-direction-general": "ltr"
+					"text-decoration-general": "unset"
 				},
 				"button": {
 					"border-color-global": false,
@@ -335,7 +326,6 @@
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
 					"text-decoration-general": "unset",
-					"text-direction-general": "ltr",
 					"background-color-global": false,
 					"background-palette-status": true,
 					"background-palette-color": 4,
@@ -444,8 +434,7 @@
 					"letter-spacing-unit-xxl": "px",
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
-					"text-decoration-general": "unset",
-					"text-direction-general": "ltr"
+					"text-decoration-general": "unset"
 				},
 				"h1": {
 					"color-global": false,
@@ -491,8 +480,7 @@
 					"letter-spacing-unit-xxl": "px",
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
-					"text-decoration-general": "unset",
-					"text-direction-general": "ltr"
+					"text-decoration-general": "unset"
 				},
 				"h2": {
 					"color-global": false,
@@ -538,8 +526,7 @@
 					"letter-spacing-unit-xxl": "px",
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
-					"text-decoration-general": "unset",
-					"text-direction-general": "ltr"
+					"text-decoration-general": "unset"
 				},
 				"h3": {
 					"color-global": false,
@@ -577,8 +564,7 @@
 					"letter-spacing-unit-xxl": "px",
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
-					"text-decoration-general": "unset",
-					"text-direction-general": "ltr"
+					"text-decoration-general": "unset"
 				},
 				"h4": {
 					"color-global": false,
@@ -616,8 +602,7 @@
 					"letter-spacing-unit-xxl": "px",
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
-					"text-decoration-general": "unset",
-					"text-direction-general": "ltr"
+					"text-decoration-general": "unset"
 				},
 				"h5": {
 					"color-global": false,
@@ -651,8 +636,7 @@
 					"letter-spacing-unit-xxl": "px",
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
-					"text-decoration-general": "unset",
-					"text-direction-general": "ltr"
+					"text-decoration-general": "unset"
 				},
 				"h6": {
 					"color-global": false,
@@ -687,8 +671,7 @@
 					"letter-spacing-unit-xxl": "px",
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
-					"text-decoration-general": "unset",
-					"text-direction-general": "ltr"
+					"text-decoration-general": "unset"
 				},
 				"button": {
 					"border-color-global": false,
@@ -734,7 +717,6 @@
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
 					"text-decoration-general": "unset",
-					"text-direction-general": "ltr",
 					"background-color-global": false,
 					"background-palette-status": true,
 					"background-palette-color": 4,

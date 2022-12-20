@@ -178,9 +178,10 @@ const getTypographyStyles = ({
 					'text-orientation':
 						obj[getName('text-orientation', breakpoint)],
 				}),
-			...(!isNil(obj[getName('text-direction', breakpoint)]) && {
-				direction: obj[getName('text-direction', breakpoint)],
-			}),
+			...(!isStyleCards &&
+				!isNil(obj[getName('text-direction', breakpoint)]) && {
+					direction: obj[getName('text-direction', breakpoint)],
+				}),
 		};
 
 		if (!isEmpty(typography)) response[breakpoint] = typography;

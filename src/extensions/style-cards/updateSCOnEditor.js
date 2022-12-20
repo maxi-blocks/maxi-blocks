@@ -119,7 +119,10 @@ export const getSCVariablesObject = styleCards => {
 						response['text-indent-unit-general'] ?? 'px';
 				}
 			}
-			if (key.includes('text-orientation')) {
+			if (
+				key.includes('text-orientation') ||
+				key.includes('text-direction')
+			) {
 				delete response[key];
 			}
 		});

@@ -96,15 +96,17 @@ const clipPath = ({ props, prefix = '' }) => {
 										})
 									}
 								/>
-								<ClipPathControl
-									{...getGroupAttributes(
-										attributes,
-										'clipPath',
-										true
-									)}
-									{...clipPathControlProps}
-									isHover
-								/>
+								{attributes['clip-path-status-hover'] && (
+									<ClipPathControl
+										{...getGroupAttributes(
+											attributes,
+											'clipPath',
+											true
+										)}
+										{...clipPathControlProps}
+										isHover
+									/>
+								)}
 							</>
 						),
 					},

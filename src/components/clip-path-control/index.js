@@ -56,6 +56,20 @@ const defaultPolygonContent = {
 	3: [0, 100],
 };
 
+const ClipPathOptionNumberControl = ({ values, index, onChange, onReset }) => (
+	<AdvancedNumberControl
+		value={values[index]}
+		onChangeValue={value => {
+			values[index] = value;
+			onChange(values);
+		}}
+		onReset={() => onReset(0)}
+		min={0}
+		max={100}
+		disableRange
+	/>
+);
+
 const ClipPathOption = props => {
 	const { values, onRemove, onReset, onChange, number, type } = props;
 
@@ -102,28 +116,18 @@ const ClipPathOption = props => {
 				className='maxi-clip-path-controller__item'
 			>
 				<div className='maxi-clip-path-controller__settings'>
-					<AdvancedNumberControl
-						value={values[0]}
-						onChangeValue={value => {
-							values[0] = value;
-							onChange(values);
-						}}
-						onReset={() => onReset(0)}
-						min={0}
-						max={100}
-						disableRange
+					<ClipPathOptionNumberControl
+						values={values}
+						index={0}
+						onChange={onChange}
+						onReset={onReset}
 					/>
 					{!isNil(values[1]) && (
-						<AdvancedNumberControl
-							value={values[1]}
-							onChangeValue={value => {
-								values[1] = value;
-								onChange(values);
-							}}
-							onReset={() => onReset(1)}
-							min={0}
-							max={100}
-							disableRange
+						<ClipPathOptionNumberControl
+							values={values}
+							index={1}
+							onChange={onChange}
+							onReset={onReset}
 						/>
 					)}
 				</div>

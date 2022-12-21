@@ -210,6 +210,7 @@ const interactionBuilderSettings = {
 			component: props => <AlignmentControl disableJustify {...props} />,
 			helper: props => getAlignmentFlexStyles(props.obj),
 			target: ' .maxi-image-block-wrapper',
+			disableTransition: true,
 		},
 		{
 			label: __('Shape mask', 'maxi-blocks'),

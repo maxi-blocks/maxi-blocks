@@ -43,28 +43,33 @@ class Relation {
 
 		// transitionTrigger is an alternative trigger to target; not always used
 		// Check its eventListeners to understand better about its responsibility
-		this.transitionTriggers = Array.from(
-			new Set(this.effects.map(item => item.transitionTrigger))
-		);
-		this.transitionTriggerEls = this.transitionTriggers.map(
-			transitionTrigger =>
-				transitionTrigger
-					? this.blockTargetEl.querySelector(transitionTrigger)
-					: this.targetEl
-		);
+		this.transitionTriggers = null;
+		this.transitionTriggerEls = null;
+		this.transitionTargetsArray = null;
+		if (!this.effects.disableTransition) {
+			this.transitionTriggers = Array.from(
+				new Set(this.effects.map(item => item.transitionTrigger))
+			);
+			this.transitionTriggerEls = this.transitionTriggers.map(
+				transitionTrigger =>
+					transitionTrigger
+						? this.blockTargetEl.querySelector(transitionTrigger)
+						: this.targetEl
+			);
 
-		this.transitionTargetsArray = this.effects.map(item => {
-			switch (typeof item.transitionTarget) {
-				case 'string':
-					return [item.transitionTarget];
-				case 'object':
-					if (item.transitionTarget?.length > 0)
-						return item.transitionTarget;
-					return [''];
-				default:
-					return [''];
-			}
-		});
+			this.transitionTargetsArray = this.effects.map(item => {
+				switch (typeof item.transitionTarget) {
+					case 'string':
+						return [item.transitionTarget];
+					case 'object':
+						if (item.transitionTarget?.length > 0)
+							return item.transitionTarget;
+						return [''];
+					default:
+						return [''];
+				}
+			});
+		}
 
 		this.isBorderArray = this.attributes.map(attributes =>
 			Object.keys(attributes).some(attr => attr.startsWith('border'))
@@ -77,7 +82,7 @@ class Relation {
 		this.getAvoidHover();
 
 		this.transitionString = '';
-		this.generateTransitions();
+		if (!this.effects.disableTransition) this.generateTransitions();
 
 		this.stylesString = '';
 		this.generateStyles();
@@ -103,11 +108,13 @@ class Relation {
 		this.stylesEl.setAttribute('data-settings', this.settings);
 		this.stylesEl.innerText = this.stylesString;
 
-		this.transitionEl = document.createElement('style');
-		this.transitionEl.id = `relations--${this.uniqueID}-transitions`;
-		this.transitionEl.setAttribute('data-type', this.action);
-		this.transitionEl.setAttribute('data-settings', this.settings);
-		this.transitionEl.innerText = this.transitionString;
+		if (!this.effects.disableTransition) {
+			this.transitionEl = document.createElement('style');
+			this.transitionEl.id = `relations--${this.uniqueID}-transitions`;
+			this.transitionEl.setAttribute('data-type', this.action);
+			this.transitionEl.setAttribute('data-settings', this.settings);
+			this.transitionEl.innerText = this.transitionString;
+		}
 	}
 
 	// Insert transitions or styles element just after Maxi inline css element
@@ -220,21 +227,25 @@ class Relation {
 				if (hasCSS)
 					stylesObj[breakpoint] = { ...css[breakpoint].styles };
 
-				effectsObj[breakpoint] = {
-					...getLastEffectsBreakpointAttribute(
-						'transition-status',
-						breakpoint
-					),
-					...getLastEffectsBreakpointAttribute(
-						'transition-duration',
-						breakpoint
-					),
-					...getLastEffectsBreakpointAttribute(
-						'transition-delay',
-						breakpoint
-					),
-					...getLastEffectsBreakpointAttribute('easing', breakpoint),
-				};
+				if (!this.effects.disableTransition)
+					effectsObj[breakpoint] = {
+						...getLastEffectsBreakpointAttribute(
+							'transition-status',
+							breakpoint
+						),
+						...getLastEffectsBreakpointAttribute(
+							'transition-duration',
+							breakpoint
+						),
+						...getLastEffectsBreakpointAttribute(
+							'transition-delay',
+							breakpoint
+						),
+						...getLastEffectsBreakpointAttribute(
+							'easing',
+							breakpoint
+						),
+					};
 			});
 
 			return { stylesObj, effectsObj };
@@ -358,7 +369,7 @@ class Relation {
 	getAvoidHover() {
 		if (!this.hoverStatus || !this.targetEl) return;
 
-		this.transitionTargetsArray.forEach(transitionTargets =>
+		this.transitionTargetsArray?.forEach(transitionTargets =>
 			this.avoidHoverArray.push(
 				transitionTargets.some(transitionTarget =>
 					Array.from(
@@ -556,7 +567,7 @@ class Relation {
 						)
 				);
 			else
-				this.transitionTargetsArray[index].forEach(transitionTarget =>
+				this.transitionTargetsArray?.[index].forEach(transitionTarget =>
 					getStylesLine(
 						stylesObj,
 						this.getTargetForLine(
@@ -673,7 +684,7 @@ class Relation {
 						);
 					});
 				else
-					this.transitionTargetsArray[index].forEach(
+					this.transitionTargetsArray?.[index].forEach(
 						transitionTarget => {
 							// Checks if the element needs special CSS to be avoided in case the element is hovered
 							const svgTarget = `${this.dataTarget} ${
@@ -695,7 +706,7 @@ class Relation {
 						}
 					);
 			} else
-				this.transitionTargetsArray[index].forEach(transitionTarget =>
+				this.transitionTargetsArray?.[index].forEach(transitionTarget =>
 					getTransitionLine(
 						stylesObj,
 						this.getTargetForLine(transitionTarget),
@@ -706,11 +717,11 @@ class Relation {
 	}
 
 	addTransition() {
-		this.addStyleEl(this.transitionEl);
+		if (!this.effects.disableTransition) this.addStyleEl(this.transitionEl);
 	}
 
 	removeTransition() {
-		this.transitionEl.remove();
+		if (!this.effects.disableTransition) this.transitionEl.remove();
 	}
 
 	getTransitionString(styleObj, effectsObj, isIcon) {
@@ -799,7 +810,7 @@ class Relation {
 		 * to ensure it has the selected effects
 		 */
 		if (this.isHoveredContained) {
-			this.transitionTriggerEls.forEach(transitionTriggerEl => {
+			this.transitionTriggerEls?.forEach(transitionTriggerEl => {
 				transitionTriggerEl.addEventListener('mouseenter', () => {
 					// console.log('Entering hover target'); // 🔥
 
@@ -811,7 +822,7 @@ class Relation {
 
 				transitionTriggerEl.addEventListener('mouseleave', () => {
 					const transitionDuration = Array.from(
-						new Set(this.transitionTargetsArray.flat())
+						new Set(this.transitionTargetsArray?.flat())
 					).reduce((promise, transitionTarget) => {
 						const transitionTargetEl = document.querySelector(
 							`${this.dataTarget} ${transitionTarget ?? ''}`

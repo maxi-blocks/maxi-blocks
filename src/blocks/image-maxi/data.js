@@ -192,13 +192,13 @@ const transition = {
 	block: {
 		border: {
 			title: 'Border',
-			target: `${imageWrapperClass} img`,
+			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
 			property: ['border', 'border-radius'],
 			hoverProp: `${prefix}border-status-hover`,
 		},
 		'box shadow': {
 			title: 'Box shadow',
-			target: `${imageWrapperClass} img`,
+			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
 			property: 'box-shadow',
 			hoverProp: `${prefix}box-shadow-status-hover`,
 		},

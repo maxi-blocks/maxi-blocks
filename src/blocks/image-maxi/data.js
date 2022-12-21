@@ -257,10 +257,7 @@ const interactionBuilderSettings = {
 			attrGroupName: 'clipPath',
 			component: props => <ClipPath {...props} />,
 			helper: props => getClipPathStyles(props.obj),
-			target: [
-				'.maxi-image-block-wrapper img',
-				'.maxi-image-block-wrapper svg',
-			],
+			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
 		},
 		{
 			label: __('Border', 'maxi-blocks'),
@@ -270,10 +267,7 @@ const interactionBuilderSettings = {
 			prefix,
 			component: props => <BorderControl {...props} />,
 			helper: props => getBorderStyles(props),
-			target: [
-				'.maxi-image-block-wrapper img',
-				'.maxi-image-block-wrapper svg',
-			],
+			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
 		},
 	],
 	canvas: getCanvasSettings({ name, customCss }),

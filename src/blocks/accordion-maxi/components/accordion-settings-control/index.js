@@ -61,7 +61,6 @@ const AccordionSettings = props => {
 							{ label: 'Boxed', value: 'boxed' },
 						]}
 						onChange={val => onChange({ accordionLayout: val })}
-						hideResetButton
 					/>
 					<ToggleSwitch
 						label={__('Collapsible', 'maxi-block')}

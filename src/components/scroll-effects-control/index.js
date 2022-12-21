@@ -532,7 +532,6 @@ const ScrollEffectsControl = props => {
 				onChange={val => onChangeShortcut(val)}
 				value={props.shortcutEffect}
 				options={globalShortcutsOptions}
-				hideResetButton
 			/>
 			<SettingTabsControl
 				type='buttons'

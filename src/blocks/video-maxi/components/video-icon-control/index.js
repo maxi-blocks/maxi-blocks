@@ -220,7 +220,6 @@ const IconSettings = props => {
 									[`${prefix}icon-position`]: val,
 								})
 							}
-							hideResetButton
 						/>
 					)}
 					<ResponsiveTabsControl breakpoint={breakpoint}>

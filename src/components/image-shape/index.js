@@ -166,7 +166,6 @@ const ImageShape = props => {
 											SVGElement: setSVGRatio(icon, val),
 										})
 									}
-									hideResetButton
 								/>
 							)}
 							{!disableImagePosition && (
@@ -246,7 +245,6 @@ const ImageShape = props => {
 											),
 										})
 									}
-									hideResetButton
 								/>
 							)}
 						</>

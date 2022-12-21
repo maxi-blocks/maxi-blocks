@@ -289,7 +289,6 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 							onChange={val => {
 								setSelectedStyleCard(val);
 							}}
-							hideResetButton
 						/>
 						<Button
 							disabled={!canBeReset(selectedSCKey)}

@@ -171,7 +171,6 @@ const Inspector = props => {
 																	}
 																);
 														}}
-														hideResetButton
 													/>
 													{captionType !== 'none' && (
 														<>
@@ -207,7 +206,6 @@ const Inspector = props => {
 																		}
 																	)
 																}
-																hideResetButton
 															/>
 															<AdvancedNumberControl
 																label={__(

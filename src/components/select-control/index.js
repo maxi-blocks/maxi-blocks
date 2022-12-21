@@ -29,7 +29,6 @@ export default function SelectControl({
 	options = [],
 	className,
 	hideLabelFromVision,
-	hideResetButton = false,
 	...props
 }) {
 	const instanceId = useInstanceId(SelectControl);

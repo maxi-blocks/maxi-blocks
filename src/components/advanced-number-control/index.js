@@ -249,7 +249,6 @@ const AdvancedNumberControl = props => {
 									);
 								}
 							}}
-							hideResetButton
 						/>
 					)}
 					{!disableReset && (

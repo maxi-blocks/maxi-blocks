@@ -132,7 +132,6 @@ const TransitionControlWrapper = props => {
 							[`transition-${type}-selected`]: val,
 						});
 					}}
-					hideResetButton
 				/>
 			)}
 			{selected && selected !== 'none' && (

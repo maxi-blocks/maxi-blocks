@@ -451,7 +451,6 @@ const RelationControl = props => {
 												}
 											)
 										}
-										hideResetButton
 									/>
 									{item.uniqueID && (
 										<>
@@ -493,7 +492,6 @@ const RelationControl = props => {
 														}
 													)
 												}
-												hideResetButton
 											/>
 											<SelectControl
 												label={__(
@@ -508,7 +506,6 @@ const RelationControl = props => {
 														)
 													)
 												)}
-												hideResetButton
 												onChange={value => {
 													const clientId =
 														getClientIdFromUniqueId(

@@ -145,7 +145,6 @@ const NumberCounterControl = props => {
 				onChange={val =>
 					onChange({ 'number-counter-start-animation': val })
 				}
-				hideResetButton
 			/>
 			{props['number-counter-start-animation'] === 'view-scroll' && (
 				<AdvancedNumberControl

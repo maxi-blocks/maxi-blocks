@@ -88,7 +88,6 @@ const BlockStylesControl = props => {
 							...{ blockStyle },
 						});
 					}}
-					hideResetButton
 				/>
 			) : (
 				<div className='maxi-block-style-preview'>

@@ -81,7 +81,6 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 						skin,
 					});
 				}}
-				hideResetButton
 			/>
 			{skin === 'icon-reveal' && (
 				<SettingTabsControl

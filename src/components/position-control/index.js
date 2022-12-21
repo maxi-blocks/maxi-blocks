@@ -6,8 +6,9 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import SelectControl from '../select-control';
 import AxisControl from '../axis-control';
+import SelectControl from '../select-control';
+import withRTC from '../../extensions/maxi-block/withRTC';
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
@@ -144,4 +145,4 @@ const PositionControl = props => {
 	);
 };
 
-export default PositionControl;
+export default withRTC(PositionControl);

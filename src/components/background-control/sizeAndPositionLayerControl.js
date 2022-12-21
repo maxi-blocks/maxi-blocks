@@ -248,6 +248,7 @@ const SizeAndPositionLayerControl = ({
 					'general',
 					isHover
 				)}
+				disableRTC
 			/>
 		</>
 	);

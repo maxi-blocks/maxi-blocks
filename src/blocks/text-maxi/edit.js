@@ -198,140 +198,149 @@ class edit extends MaxiBlockComponent {
 			}),
 		};
 
-		return [
-			<textContext.Provider
-				key={`maxi-text-block__context-${uniqueID}`}
-				value={{
-					content,
-					formatValue: {
-						...this.state.formatValue,
-					},
-					onChangeTextFormat: newFormatValue => {
-						this.state.onChangeFormat(newFormatValue);
-						onChangeRichText({
-							attributes,
-							maxiSetAttributes,
-							oldFormatValue: this.state.formatValue,
-							onChange: newState => this.setState(newState),
-							richTextValues: { value: newFormatValue },
-						});
-					},
-				}}
-			>
-				<Inspector
-					key={`block-settings-${uniqueID}`}
-					disableCustomFormats={dcStatus}
-					{...this.props}
-				/>
-				<Toolbar
-					key={`toolbar-${uniqueID}`}
-					ref={this.blockRef}
-					{...this.props}
-					copyPasteMapping={copyPasteMapping}
-					disableCustomFormats={dcStatus}
-				/>
-				<MaxiBlock
-					key={`maxi-text--${uniqueID}`}
-					classes={`${
-						content === ''
-							? 'maxi-text-block__empty'
-							: 'maxi-text-block__has-text'
-					} ${isList ? 'maxi-list-block' : ''}`}
-					ref={this.blockRef}
-					{...getMaxiBlockAttributes(this.props)}
-				>
-					{!dcStatus && (
-						<RichText {...richTextProps}>
-							{richTextValues => {
-								const { value: formatValue, onChange } =
-									richTextValues;
+		const { serverSideRender: ServerSideRender } = wp;
 
-								onChangeRichText({
-									attributes,
-									maxiSetAttributes,
-									oldFormatValue: this.state.formatValue,
-									onChange: (newState, newContent = null) => {
-										if (this.typingTimeoutFormatValue) {
-											clearTimeout(
-												this.typingTimeoutFormatValue
-											);
-										}
+		return (
+			<>
+				<p>serverSideRender should appear here:</p>
+				<ServerSideRender block='maxi-blocks/dynamic-maxi' />,
+			</>
+		);
 
-										this.typingTimeoutFormatValue =
-											setTimeout(() => {
-												this.setState(newState);
-											}, 10);
+		// return [
+		// 	<textContext.Provider
+		// 		key={`maxi-text-block__context-${uniqueID}`}
+		// 		value={{
+		// 			content,
+		// 			formatValue: {
+		// 				...this.state.formatValue,
+		// 			},
+		// 			onChangeTextFormat: newFormatValue => {
+		// 				this.state.onChangeFormat(newFormatValue);
+		// 				onChangeRichText({
+		// 					attributes,
+		// 					maxiSetAttributes,
+		// 					oldFormatValue: this.state.formatValue,
+		// 					onChange: newState => this.setState(newState),
+		// 					richTextValues: { value: newFormatValue },
+		// 				});
+		// 			},
+		// 		}}
+		// 	>
+		// 		<Inspector
+		// 			key={`block-settings-${uniqueID}`}
+		// 			disableCustomFormats={dcStatus}
+		// 			{...this.props}
+		// 		/>
+		// 		<Toolbar
+		// 			key={`toolbar-${uniqueID}`}
+		// 			ref={this.blockRef}
+		// 			{...this.props}
+		// 			copyPasteMapping={copyPasteMapping}
+		// 			disableCustomFormats={dcStatus}
+		// 		/>
+		// 		<MaxiBlock
+		// 			key={`maxi-text--${uniqueID}`}
+		// 			classes={`${
+		// 				content === ''
+		// 					? 'maxi-text-block__empty'
+		// 					: 'maxi-text-block__has-text'
+		// 			} ${isList ? 'maxi-list-block' : ''}`}
+		// 			ref={this.blockRef}
+		// 			{...getMaxiBlockAttributes(this.props)}
+		// 		>
+		// 			{!dcStatus && (
+		// 				<RichText {...richTextProps}>
+		// 					{richTextValues => {
+		// 						const { value: formatValue, onChange } =
+		// 							richTextValues;
 
-										if (!isList && newContent) {
-											maxiSetAttributes({
-												content: newContent,
-											});
-										}
-									},
-									richTextValues,
-								});
-								if (isList && isSelected)
-									return (
-										<>
-											<RichTextShortcut
-												type='primary'
-												character='['
-												onUse={() => {
-													onChange(
-														__unstableOutdentListItems(
-															formatValue
-														)
-													);
-												}}
-											/>
-											<RichTextShortcut
-												type='primary'
-												character=']'
-												onUse={() => {
-													onChange(
-														__unstableIndentListItems(
-															formatValue,
-															{ type: typeOfList }
-														)
-													);
-												}}
-											/>
-											<RichTextShortcut
-												type='primary'
-												character='m'
-												onUse={() => {
-													onChange(
-														__unstableIndentListItems(
-															formatValue,
-															{ type: typeOfList }
-														)
-													);
-												}}
-											/>
-											<RichTextShortcut
-												type='primaryShift'
-												character='m'
-												onUse={() => {
-													onChange(
-														__unstableOutdentListItems(
-															formatValue
-														)
-													);
-												}}
-											/>
-										</>
-									);
+		// 						onChangeRichText({
+		// 							attributes,
+		// 							maxiSetAttributes,
+		// 							oldFormatValue: this.state.formatValue,
+		// 							onChange: (newState, newContent = null) => {
+		// 								if (this.typingTimeoutFormatValue) {
+		// 									clearTimeout(
+		// 										this.typingTimeoutFormatValue
+		// 									);
+		// 								}
 
-								return null;
-							}}
-						</RichText>
-					)}
-					{dcStatus && (
-						<DCTagName className={className}>{dcContent}</DCTagName>
-					)}
-				</MaxiBlock>
-			</textContext.Provider>,
-		];
+		// 								this.typingTimeoutFormatValue =
+		// 									setTimeout(() => {
+		// 										this.setState(newState);
+		// 									}, 10);
+
+		// 								if (!isList && newContent) {
+		// 									maxiSetAttributes({
+		// 										content: newContent,
+		// 									});
+		// 								}
+		// 							},
+		// 							richTextValues,
+		// 						});
+		// 						if (isList && isSelected)
+		// 							return (
+		// 								<>
+		// 									<RichTextShortcut
+		// 										type='primary'
+		// 										character='['
+		// 										onUse={() => {
+		// 											onChange(
+		// 												__unstableOutdentListItems(
+		// 													formatValue
+		// 												)
+		// 											);
+		// 										}}
+		// 									/>
+		// 									<RichTextShortcut
+		// 										type='primary'
+		// 										character=']'
+		// 										onUse={() => {
+		// 											onChange(
+		// 												__unstableIndentListItems(
+		// 													formatValue,
+		// 													{ type: typeOfList }
+		// 												)
+		// 											);
+		// 										}}
+		// 									/>
+		// 									<RichTextShortcut
+		// 										type='primary'
+		// 										character='m'
+		// 										onUse={() => {
+		// 											onChange(
+		// 												__unstableIndentListItems(
+		// 													formatValue,
+		// 													{ type: typeOfList }
+		// 												)
+		// 											);
+		// 										}}
+		// 									/>
+		// 									<RichTextShortcut
+		// 										type='primaryShift'
+		// 										character='m'
+		// 										onUse={() => {
+		// 											onChange(
+		// 												__unstableOutdentListItems(
+		// 													formatValue
+		// 												)
+		// 											);
+		// 										}}
+		// 									/>
+		// 								</>
+		// 							);
+
+		// 						return null;
+		// 					}}
+		// 				</RichText>
+		// 			)}
+		// 			{dcStatus && (
+		// 				<DCTagName className={className}>{dcContent}</DCTagName>
+		// 			)}
+		// 		</MaxiBlock>
+		// 	</textContext.Provider>,
+		// ];
 	}
 }
 

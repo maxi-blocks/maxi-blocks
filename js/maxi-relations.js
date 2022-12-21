@@ -41,12 +41,9 @@ class Relation {
 		this.isContained = this.triggerEl.contains(this.targetEl);
 		this.isHoveredContained = this.hoverStatus && this.isContained;
 
-		// transitionTrigger is an alternative trigger to target; not always used
-		// Check its eventListeners to understand better about its responsibility
-		this.transitionTriggers = null;
-		this.transitionTriggerEls = null;
-		this.transitionTargetsArray = null;
 		if (!this.effects.disableTransition) {
+			// transitionTrigger is an alternative trigger to target; not always used
+			// Check its eventListeners to understand better about its responsibility
 			this.transitionTriggers = Array.from(
 				new Set(this.effects.map(item => item.transitionTrigger))
 			);

@@ -7,7 +7,7 @@ import { getWeightOptions } from '../typography-control/utils';
 import { loadFontsInEditor } from '../../extensions/text/fonts';
 
 const FontWeightControl = props => {
-	const { onChange, fontName, fontStyle, fontWeight } = props;
+	const { onChange, fontName, fontStyle, fontWeight, onReset } = props;
 
 	return (
 		<SelectControl
@@ -24,6 +24,7 @@ const FontWeightControl = props => {
 
 				loadFontsInEditor(objFont);
 			}}
+			onReset={() => onReset()}
 		/>
 	);
 };

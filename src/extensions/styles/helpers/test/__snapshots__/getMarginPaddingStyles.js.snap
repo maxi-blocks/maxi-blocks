@@ -93,3 +93,29 @@ Object {
   },
 }
 `;
+
+exports[`getMarginPaddingStyles Get a correct margin and padding styles, when only unit on some breakpoint was changed 1`] = `
+Object {
+  "general": Object {
+    "margin-top": "11em",
+  },
+  "l": Object {
+    "margin-top": "11em",
+  },
+  "m": Object {
+    "margin-top": "11%",
+  },
+  "s": Object {
+    "margin-top": "11%",
+  },
+  "xl": Object {
+    "margin-top": "11em",
+  },
+  "xs": Object {
+    "margin-top": "11%",
+  },
+  "xxl": Object {
+    "margin-top": "11px",
+  },
+}
+`;

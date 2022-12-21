@@ -146,4 +146,17 @@ describe('getMarginPaddingStyles', () => {
 		});
 		expect(result).toMatchSnapshot();
 	});
+
+	it('Get a correct margin and padding styles, when only unit on some breakpoint was changed', () => {
+		const obj = {
+			'margin-top-general': '11',
+			'margin-top-unit-general': 'em',
+			'margin-top-unit-xxl': 'px',
+			'margin-top-unit-m': '%',
+		};
+		const result = getMarginPaddingStyles({
+			obj,
+		});
+		expect(result).toMatchSnapshot();
+	});
 });

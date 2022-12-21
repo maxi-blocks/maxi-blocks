@@ -90,7 +90,6 @@ export const getSCVariablesObject = styleCards => {
 		'text-transform',
 		'letter-spacing',
 		'text-indent',
-		'direction',
 	];
 	const SC = {
 		dark: {
@@ -118,12 +117,6 @@ export const getSCVariablesObject = styleCards => {
 					response[unitKey] =
 						response['text-indent-unit-general'] ?? 'px';
 				}
-			}
-			if (
-				key.includes('text-orientation') ||
-				key.includes('text-direction')
-			) {
-				delete response[key];
 			}
 		});
 		return response;

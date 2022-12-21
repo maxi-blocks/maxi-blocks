@@ -9,12 +9,14 @@ import { __ } from '@wordpress/i18n';
 import { createSelectors } from '../../extensions/styles/custom-css';
 import {
 	AlignmentControl,
+	BorderControl,
+	ClipPath,
 	ImageShape,
 	InfoBox,
-	ClipPath,
 } from '../../components';
 import {
 	getAlignmentFlexStyles,
+	getBorderStyles,
 	getClipPathStyles,
 	getImageShapeStyles,
 } from '../../extensions/styles/helpers';
@@ -255,6 +257,19 @@ const interactionBuilderSettings = {
 			attrGroupName: 'clipPath',
 			component: props => <ClipPath {...props} />,
 			helper: props => getClipPathStyles(props.obj),
+			target: [
+				'.maxi-image-block-wrapper img',
+				'.maxi-image-block-wrapper svg',
+			],
+		},
+		{
+			label: __('Border', 'maxi-blocks'),
+			transitionTarget: transition.block.border.target,
+			hoverProp: 'image-border-status-hover',
+			attrGroupName: ['border', 'borderWidth', 'borderRadius'],
+			prefix,
+			component: props => <BorderControl {...props} />,
+			helper: props => getBorderStyles(props),
 			target: [
 				'.maxi-image-block-wrapper img',
 				'.maxi-image-block-wrapper svg',

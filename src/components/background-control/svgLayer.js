@@ -58,16 +58,14 @@ const SVGLayer = props => {
 						isHover={isHover}
 						breakpoint={breakpoint}
 					/>
-					<ResponsiveTabsControl breakpoint={breakpoint}>
-						<SizeAndPositionLayerControl
-							prefix={prefix}
-							options={SVGOptions}
-							onChange={onChange}
-							isHover={isHover}
-							isLayer={isLayer}
-							breakpoint={breakpoint}
-						/>
-					</ResponsiveTabsControl>
+					<SizeAndPositionLayerControl
+						prefix={prefix}
+						options={SVGOptions}
+						onChange={onChange}
+						isHover={isHover}
+						isLayer={isLayer}
+						breakpoint={breakpoint}
+					/>
 				</>
 			)}
 		</>

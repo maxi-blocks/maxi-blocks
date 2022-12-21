@@ -2,7 +2,9 @@ const name = 'Background Size';
 
 const isEligible = blockAttributes =>
 	blockAttributes['background-layers']?.some(layer =>
-		Object.keys(layer).some(key => key.includes('size'))
+		Object.keys(layer).some(
+			key => key.includes('wrapper-size') || key.includes('svg-size')
+		)
 	);
 
 const migrate = newAttributes => {

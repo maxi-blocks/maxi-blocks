@@ -200,30 +200,26 @@ const Inspector = props => {
 											'maxi-blocks'
 										),
 										content: (
-											<ResponsiveTabsControl
+											<DividerControl
+												{...getGroupAttributes(
+													attributes,
+													['divider', 'size']
+												)}
+												onChangeInline={obj =>
+													insertInlineStyles({
+														obj,
+														target: inlineStylesTargets.dividerColor,
+													})
+												}
+												onChange={obj => {
+													maxiSetAttributes(obj);
+													cleanInlineStyles(
+														inlineStylesTargets.dividerColor
+													);
+												}}
 												breakpoint={deviceType}
-											>
-												<DividerControl
-													{...getGroupAttributes(
-														attributes,
-														['divider', 'size']
-													)}
-													onChangeInline={obj =>
-														insertInlineStyles({
-															obj,
-															target: inlineStylesTargets.dividerColor,
-														})
-													}
-													onChange={obj => {
-														maxiSetAttributes(obj);
-														cleanInlineStyles(
-															inlineStylesTargets.dividerColor
-														);
-													}}
-													breakpoint={deviceType}
-													clientId={clientId}
-												/>
-											</ResponsiveTabsControl>
+												clientId={clientId}
+											/>
 										),
 										ignoreIndicator: [
 											`line-horizontal-${deviceType}`,

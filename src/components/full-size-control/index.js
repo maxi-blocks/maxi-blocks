@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import AdvancedNumberControl from '../advanced-number-control';
 import ToggleSwitch from '../toggle-switch';
+import withRTC from '../../extensions/maxi-block/withRTC';
 import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
@@ -38,6 +39,9 @@ const FullSizeControl = props => {
 		prefix = '',
 		isBlockFullWidth,
 		allowForceAspectRatio = false,
+		showFullWidth = false,
+		block = false,
+		isImage = false,
 	} = props;
 
 	const classes = classnames('maxi-full-size-control', className);
@@ -78,6 +82,40 @@ const FullSizeControl = props => {
 
 	return (
 		<div className={classes}>
+			{showFullWidth &&
+				(block ? (
+					<ToggleSwitch
+						label={__('Set block full-width', 'maxi-blocks')}
+						className='maxi-full-width-toggle'
+						selected={isBlockFullWidth}
+						onChange={val =>
+							onChange({
+								[`full-width-${breakpoint}`]: val
+									? 'full'
+									: 'normal',
+							})
+						}
+					/>
+				) : (
+					<ToggleSwitch
+						label={__('Set block full-width', 'maxi-blocks')}
+						selected={isBlockFullWidth}
+						onChange={val =>
+							isImage
+								? onChange({
+										imageRatio: 'original',
+										imageSize: 'full',
+										imgWidth: 100,
+										[`${prefix}full-width-${breakpoint}`]:
+											val ? 'full' : 'normal',
+								  })
+								: onChange({
+										[`${prefix}full-width-${breakpoint}`]:
+											val ? 'full' : 'normal',
+								  })
+						}
+					/>
+				))}
 			{!isBlockFullWidth && (
 				<ToggleSwitch
 					label={__('Set width to fit content', 'maxi-blocks')}
@@ -403,4 +441,4 @@ const FullSizeControl = props => {
 	);
 };
 
-export default FullSizeControl;
+export default withRTC(FullSizeControl);

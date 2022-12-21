@@ -244,7 +244,7 @@ const SizeAndPositionLayerControl = ({
 				className='maxi-background-control__position'
 				disablePosition
 				defaultAttributes={getDefaultLayerWithBreakpoint(
-					`${type}Options`,
+					`${type === 'shape' ? 'SVG' : type}Options`,
 					'general',
 					isHover
 				)}

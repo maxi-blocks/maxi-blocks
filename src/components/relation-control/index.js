@@ -244,6 +244,14 @@ const RelationControl = props => {
 			}, {});
 		};
 
+		const generalToBaseBreakpoint = attributeKeys => {
+			const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
+
+			return attributeKeys.map(key =>
+				key.replace('general', baseBreakpoint)
+			);
+		};
+
 		const getStylesObj = attributes => {
 			const newGroupAttributes = getGroupAttributes(
 				attributes,
@@ -320,6 +328,33 @@ const RelationControl = props => {
 					...obj,
 					...transformGeneralAttributesToBaseBreakpoint(obj),
 				};
+
+				const styles = getStyles(
+					getStylesObj(merge({}, blockAttributes, newAttributesObj)),
+					true
+				);
+
+				onChangeRelation(relations, item.id, {
+					attributes: newAttributesObj,
+					css: styles,
+					...(item.settings === 'Transform' && {
+						effects: {
+							...item.effects,
+							transitionTarget: Object.keys(styles),
+						},
+					}),
+				});
+			},
+			onReset: targets => {
+				const newAttributesObj = {
+					...item.attributes,
+				};
+
+				[...targets, ...generalToBaseBreakpoint(targets)].forEach(
+					target => {
+						delete newAttributesObj[target];
+					}
+				);
 
 				const styles = getStyles(
 					getStylesObj(merge({}, blockAttributes, newAttributesObj)),

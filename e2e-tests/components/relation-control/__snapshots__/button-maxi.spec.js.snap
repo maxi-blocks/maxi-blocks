@@ -57,6 +57,7 @@ Array [
       },
     },
     "effects": Object {
+      "disableTransition": false,
       "easing-general": "ease",
       "hoverStatus": true,
       "transition-delay-general": 0,
@@ -135,6 +136,7 @@ Array [
       },
     },
     "effects": Object {
+      "disableTransition": false,
       "easing-general": "ease",
       "hoverStatus": true,
       "transition-delay-general": 0,
@@ -182,6 +184,7 @@ Array [
       },
     },
     "effects": Object {
+      "disableTransition": false,
       "easing-general": "ease",
       "hoverStatus": false,
       "transition-delay-general": 0,
@@ -300,6 +303,7 @@ Array [
       },
     },
     "effects": Object {
+      "disableTransition": false,
       "easing-general": "ease",
       "hoverStatus": false,
       "transition-delay-general": 0,
@@ -621,6 +625,7 @@ Array [
       },
     },
     "effects": Object {
+      "disableTransition": false,
       "easing-general": "ease",
       "hoverStatus": false,
       "transition-delay-general": 0,
@@ -725,6 +730,7 @@ Array [
       },
     },
     "effects": Object {
+      "disableTransition": false,
       "easing-general": "ease",
       "hoverStatus": false,
       "transition-delay-general": 0,
@@ -782,6 +788,7 @@ Array [
       },
     },
     "effects": Object {
+      "disableTransition": false,
       "easing-general": "ease",
       "hoverStatus": false,
       "transition-delay-general": 0,
@@ -886,6 +893,7 @@ Array [
       },
     },
     "effects": Object {
+      "disableTransition": false,
       "easing-general": "ease",
       "hoverStatus": false,
       "transition-delay-general": 0,

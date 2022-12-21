@@ -23,6 +23,7 @@ Array [
       },
     },
     "effects": Object {
+      "disableTransition": true,
       "easing-general": "ease",
       "hoverStatus": false,
       "transition-delay-general": 0,

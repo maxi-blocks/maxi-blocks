@@ -4,32 +4,33 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		box-shadow: none !important;
-		border: 1px solid #DBDDE6;
-		border-radius: 3px;
-		color: #464a53;
 		width: 100%;
 		min-height: 120px;
+		color: #464a53;
 		background-color: rgba(229,242,248,0.7);
 		font-size: 13px;
+		border: 1px solid #DBDDE6;
+		border-radius: 3px;
+		box-shadow: none !important;
+
 
 		.maxi-block-library__modal-button {
-			background: var(--maxi-secondary-color);
+			padding: 0 10px 0 0;
+			overflow: hidden;
 			color: #fff;
+			background: var(--maxi-secondary-color);
 			font-family: Roboto, sans-serif;
 			font-size: 12px;
 			font-weight: 500;
-			transition: all 0.3s;
-			padding: 0 10px 0 0;
 			border: 1px solid #DBDDE6;
-			overflow: hidden;
+			transition: all 0.3s;
 
 			svg{
-				background-color: #fff;
-				padding: 8px;
 				width: 36px;
 				height: 36px;
+				padding: 8px;
 				margin-right: 10px;
+				background-color: #fff;
 				border-right: 1px solid #DBDDE6;
 				path{
 					fill: var(--maxi-secondary-color);
@@ -43,10 +44,10 @@
 		}
 	}
 	&__replace-icon {
-		background: #fff;
-		box-shadow: -3px 3px 6px 0px rgb(0 0 0 / 16%) !important;
 		width: 30px;
 		height: 30px;
+		background: #fff;
+		box-shadow: -3px 3px 6px 0px rgb(0 0 0 / 16%) !important;
 		visibility: visible;
 		transition: 0.3s;
 

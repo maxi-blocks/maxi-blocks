@@ -4,6 +4,11 @@
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 
 /**
+ * External dependencies
+ */
+import { isNil } from 'lodash';
+
+/**
  * General
  */
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -14,43 +19,24 @@ const getMarginPaddingStyles = ({ obj, prefix = '' }) => {
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
-		Object.entries(obj).forEach(([key, value]) => {
-			const newKey = key.replace(prefix, '');
+		['margin', 'padding'].forEach(type => {
+			keyWords.forEach(key => {
+				const value = getLastBreakpointAttribute({
+					target: `${prefix}${type}-${key}`,
+					breakpoint,
+					attributes: obj,
+				});
+				const unit =
+					getLastBreakpointAttribute({
+						target: `${prefix}${type}-${key}-unit`,
+						breakpoint,
+						attributes: obj,
+					}) || 'px';
 
-			const includesBreakpoint =
-				newKey.lastIndexOf(`-${breakpoint}`) +
-					`-${breakpoint}`.length ===
-				newKey.length;
-
-			if (
-				value !== undefined &&
-				`${value}` !== '' &&
-				includesBreakpoint &&
-				!newKey.includes('sync') &&
-				!newKey.includes('unit')
-			) {
-				const replacer = new RegExp(
-					`\\b-${breakpoint}\\b(?!.*\\b-${breakpoint}\\b)`,
-					'gm'
-				);
-				const newLabel = newKey.replace(replacer, '');
-
-				if (
-					!keyWords.some(key => newLabel.includes(key)) ||
-					value === 0
-				)
-					response[breakpoint][newLabel] = `${value}`;
-				else {
-					const unit =
-						getLastBreakpointAttribute({
-							target: `${prefix}${newLabel}-unit`,
-							breakpoint,
-							attributes: obj,
-						}) || 'px';
-					response[breakpoint][newLabel] =
+				if (!isNil(value))
+					response[breakpoint][`${type}-${key}`] =
 						value === 'auto' ? 'auto' : `${value}${unit}`;
-				}
-			}
+			});
 		});
 	});
 

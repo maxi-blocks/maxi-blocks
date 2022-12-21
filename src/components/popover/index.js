@@ -478,7 +478,9 @@ const Popover = (
 		</div>
 	);
 
-	content = <Fill name={slotName}>{content}</Fill>;
+	if (slotName !== 'Popover') {
+		content = <Fill name={slotName}>{content}</Fill>;
+	}
 
 	if (anchorRef || anchorRect) {
 		return content;

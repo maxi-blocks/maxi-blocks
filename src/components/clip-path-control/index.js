@@ -161,7 +161,7 @@ const ClipPathControl = props => {
 			: props[getAttributeKey('clip-path-status', true)];
 
 	const deconstructCP = (clipPathToDeconstruct = clipPath) => {
-		if (isEmpty(clipPathToDeconstruct))
+		if (isEmpty(clipPathToDeconstruct) || clipPath === 'none')
 			return {
 				type: 'polygon',
 				content: defaultPolygonContent,

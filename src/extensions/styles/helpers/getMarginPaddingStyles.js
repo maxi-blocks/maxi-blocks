@@ -16,28 +16,48 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 const getMarginPaddingStyles = ({ obj, prefix = '' }) => {
 	const keyWords = ['top', 'right', 'bottom', 'left'];
 	const response = {};
+
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
-		['margin', 'padding'].forEach(type => {
+		['margin', 'padding'].forEach(type =>
 			keyWords.forEach(key => {
-				const value = getLastBreakpointAttribute({
-					target: `${prefix}${type}-${key}`,
-					breakpoint,
-					attributes: obj,
-				});
-				const unit =
-					getLastBreakpointAttribute({
-						target: `${prefix}${type}-${key}-unit`,
-						breakpoint,
-						attributes: obj,
-					}) || 'px';
+				const attributeName = `${prefix}${type}-${key}`;
 
-				if (!isNil(value))
+				const [
+					lastValue,
+					lastUnit,
+					value,
+					unit,
+					generalValue,
+					generalUnit,
+				] = [
+					target =>
+						getLastBreakpointAttribute({
+							target,
+							breakpoint,
+							attributes: obj,
+						}),
+					target => obj[`${target}-${breakpoint}`],
+					target => obj[`${target}-general`],
+				].flatMap(callback =>
+					['', '-unit'].map(suffix =>
+						callback(`${attributeName}${suffix}`)
+					)
+				);
+
+				if (
+					!isNil(lastValue) &&
+					((generalValue === value && generalUnit === unit) ||
+						lastValue === value ||
+						lastUnit === unit)
+				)
 					response[breakpoint][`${type}-${key}`] =
-						value === 'auto' ? 'auto' : `${value}${unit}`;
-			});
-		});
+						lastValue === 'auto'
+							? 'auto'
+							: `${lastValue}${lastUnit}`;
+			})
+		);
 	});
 
 	return response;

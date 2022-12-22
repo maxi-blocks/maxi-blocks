@@ -57,6 +57,7 @@ Object {
     "palette-status": true,
     "text-decoration-general": "overline",
     "text-indent-general": 44,
+    "text-indent-unit-general": "px",
     "text-transform-general": "capitalize",
   },
 }
@@ -127,6 +128,7 @@ Object {
     "text-decoration-m": "underline",
     "text-indent-general": 44,
     "text-indent-m": 22,
+    "text-indent-unit-general": "px",
     "text-transform-general": "capitalize",
     "text-transform-m": "uppercase",
   },

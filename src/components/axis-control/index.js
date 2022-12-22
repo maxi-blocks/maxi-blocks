@@ -562,38 +562,35 @@ const AxisControl = props => {
 			return filteredResult;
 		};
 
+		const getValueByBreakpoint = (key, breakpoint) => {
+			const attrLabel = getAttributeKey(
+				getKey(key),
+				isHover,
+				false,
+				breakpoint
+			);
+
+			const value =
+				attrLabel in defaultAttributes
+					? defaultAttributes[attrLabel]
+					: getDefaultAttribute(attrLabel);
+
+			return value;
+		};
+
 		const getDefaultValue = key => {
 			let value;
 
 			if (breakpoint === 'general' || customBreakpoint === 'general') {
 				const baseBreakpoint =
 					select('maxiBlocks').receiveBaseBreakpoint();
-
-				const attrLabel = getAttributeKey(
-					getKey(key),
-					isHover,
-					false,
-					baseBreakpoint
-				);
-
-				value = defaultAttributes
-					? defaultAttributes[attrLabel] ||
-					  getDefaultAttribute(attrLabel)
-					: getDefaultAttribute(attrLabel);
+				value = getValueByBreakpoint(key, baseBreakpoint);
 			}
-			if (isNil(value)) {
-				const attrLabel = getAttributeKey(
-					getKey(key),
-					isHover,
-					false,
+			if (isNil(value))
+				value = getValueByBreakpoint(
+					key,
 					customBreakpoint ?? breakpoint
 				);
-
-				value = defaultAttributes
-					? defaultAttributes[attrLabel] ||
-					  getDefaultAttribute(attrLabel)
-					: getDefaultAttribute(attrLabel);
-			}
 
 			return value;
 		};

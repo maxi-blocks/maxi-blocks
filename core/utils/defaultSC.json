@@ -45,7 +45,12 @@
 					"letter-spacing-unit-xl": "px",
 					"text-decoration-general": "unset",
 					"text-orientation-general": "unset",
-					"text-direction-general": "ltr"
+					"text-direction-general": "ltr",
+					"white-space-general": "normal",
+					"word-spacing-general": 0,
+					"word-spacing-unit-general": "px",
+					"bottom-gap-general": 20,
+					"bottom-gap-unit-general": "px"
 				},
 				"h1": {
 					"color-global": false,
@@ -93,7 +98,12 @@
 					"letter-spacing-unit-xl": "px",
 					"text-decoration-general": "unset",
 					"text-orientation-general": "unset",
-					"text-direction-general": "ltr"
+					"text-direction-general": "ltr",
+					"white-space-general": "normal",
+					"word-spacing-general": 0,
+					"word-spacing-unit-general": "px",
+					"bottom-gap-general": 20,
+					"bottom-gap-unit-general": "px"
 				},
 				"h2": {
 					"color-global": false,
@@ -141,7 +151,12 @@
 					"letter-spacing-unit-xl": "px",
 					"text-decoration-general": "unset",
 					"text-orientation-general": "unset",
-					"text-direction-general": "ltr"
+					"text-direction-general": "ltr",
+					"white-space-general": "normal",
+					"word-spacing-general": 0,
+					"word-spacing-unit-general": "px",
+					"bottom-gap-general": 20,
+					"bottom-gap-unit-general": "px"
 				},
 				"h3": {
 					"color-global": false,
@@ -181,7 +196,12 @@
 					"letter-spacing-unit-xl": "px",
 					"text-decoration-general": "unset",
 					"text-orientation-general": "unset",
-					"text-direction-general": "ltr"
+					"text-direction-general": "ltr",
+					"white-space-general": "normal",
+					"word-spacing-general": 0,
+					"word-spacing-unit-general": "px",
+					"bottom-gap-general": 20,
+					"bottom-gap-unit-general": "px"
 				},
 				"h4": {
 					"color-global": false,
@@ -221,7 +241,12 @@
 					"letter-spacing-unit-xl": "px",
 					"text-decoration-general": "unset",
 					"text-orientation-general": "unset",
-					"text-direction-general": "ltr"
+					"text-direction-general": "ltr",
+					"white-space-general": "normal",
+					"word-spacing-general": 0,
+					"word-spacing-unit-general": "px",
+					"bottom-gap-general": 20,
+					"bottom-gap-unit-general": "px"
 				},
 				"h5": {
 					"color-global": false,
@@ -257,7 +282,12 @@
 					"letter-spacing-unit-xl": "px",
 					"text-decoration-general": "unset",
 					"text-orientation-general": "unset",
-					"text-direction-general": "ltr"
+					"text-direction-general": "ltr",
+					"white-space-general": "normal",
+					"word-spacing-general": 0,
+					"word-spacing-unit-general": "px",
+					"bottom-gap-general": 20,
+					"bottom-gap-unit-general": "px"
 				},
 				"h6": {
 					"color-global": false,
@@ -294,7 +324,12 @@
 					"letter-spacing-unit-xl": "px",
 					"text-decoration-general": "unset",
 					"text-orientation-general": "unset",
-					"text-direction-general": "ltr"
+					"text-direction-general": "ltr",
+					"white-space-general": "normal",
+					"word-spacing-general": 0,
+					"word-spacing-unit-general": "px",
+					"bottom-gap-general": 20,
+					"bottom-gap-unit-general": "px"
 				},
 				"button": {
 					"border-color-global": false,
@@ -342,6 +377,11 @@
 					"text-decoration-general": "unset",
 					"text-orientation-general": "unset",
 					"text-direction-general": "ltr",
+					"white-space-general": "normal",
+					"word-spacing-general": 0,
+					"word-spacing-unit-general": "px",
+					"bottom-gap-general": 20,
+					"bottom-gap-unit-general": "px",
 					"background-color-global": false,
 					"background-palette-status": true,
 					"background-palette-color": 4,
@@ -452,7 +492,12 @@
 					"letter-spacing-unit-xl": "px",
 					"text-decoration-general": "unset",
 					"text-orientation-general": "unset",
-					"text-direction-general": "ltr"
+					"text-direction-general": "ltr",
+					"white-space-general": "normal",
+					"word-spacing-general": 0,
+					"word-spacing-unit-general": "px",
+					"bottom-gap-general": 20,
+					"bottom-gap-unit-general": "px"
 				},
 				"h1": {
 					"color-global": false,
@@ -500,7 +545,12 @@
 					"letter-spacing-unit-xl": "px",
 					"text-decoration-general": "unset",
 					"text-orientation-general": "unset",
-					"text-direction-general": "ltr"
+					"text-direction-general": "ltr",
+					"white-space-general": "normal",
+					"word-spacing-general": 0,
+					"word-spacing-unit-general": "px",
+					"bottom-gap-general": 20,
+					"bottom-gap-unit-general": "px"
 				},
 				"h2": {
 					"color-global": false,
@@ -548,7 +598,12 @@
 					"letter-spacing-unit-xl": "px",
 					"text-decoration-general": "unset",
 					"text-orientation-general": "unset",
-					"text-direction-general": "ltr"
+					"text-direction-general": "ltr",
+					"white-space-general": "normal",
+					"word-spacing-general": 0,
+					"word-spacing-unit-general": "px",
+					"bottom-gap-general": 20,
+					"bottom-gap-unit-general": "px"
 				},
 				"h3": {
 					"color-global": false,
@@ -588,7 +643,12 @@
 					"letter-spacing-unit-xl": "px",
 					"text-decoration-general": "unset",
 					"text-orientation-general": "unset",
-					"text-direction-general": "ltr"
+					"text-direction-general": "ltr",
+					"white-space-general": "normal",
+					"word-spacing-general": 0,
+					"word-spacing-unit-general": "px",
+					"bottom-gap-general": 20,
+					"bottom-gap-unit-general": "px"
 				},
 				"h4": {
 					"color-global": false,
@@ -628,7 +688,12 @@
 					"letter-spacing-unit-xl": "px",
 					"text-decoration-general": "unset",
 					"text-orientation-general": "unset",
-					"text-direction-general": "ltr"
+					"text-direction-general": "ltr",
+					"white-space-general": "normal",
+					"word-spacing-general": 0,
+					"word-spacing-unit-general": "px",
+					"bottom-gap-general": 20,
+					"bottom-gap-unit-general": "px"
 				},
 				"h5": {
 					"color-global": false,
@@ -664,7 +729,12 @@
 					"letter-spacing-unit-xl": "px",
 					"text-decoration-general": "unset",
 					"text-orientation-general": "unset",
-					"text-direction-general": "ltr"
+					"text-direction-general": "ltr",
+					"white-space-general": "normal",
+					"word-spacing-general": 0,
+					"word-spacing-unit-general": "px",
+					"bottom-gap-general": 20,
+					"bottom-gap-unit-general": "px"
 				},
 				"h6": {
 					"color-global": false,
@@ -701,7 +771,12 @@
 					"letter-spacing-unit-xl": "px",
 					"text-decoration-general": "unset",
 					"text-orientation-general": "unset",
-					"text-direction-general": "ltr"
+					"text-direction-general": "ltr",
+					"white-space-general": "normal",
+					"word-spacing-general": 0,
+					"word-spacing-unit-general": "px",
+					"bottom-gap-general": 20,
+					"bottom-gap-unit-general": "px"
 				},
 				"button": {
 					"border-color-global": false,
@@ -749,6 +824,11 @@
 					"text-decoration-general": "unset",
 					"text-orientation-general": "unset",
 					"text-direction-general": "ltr",
+					"white-space-general": "normal",
+					"word-spacing-general": 0,
+					"word-spacing-unit-general": "px",
+					"bottom-gap-general": 20,
+					"bottom-gap-unit-general": "px",
 					"background-color-global": false,
 					"background-palette-status": true,
 					"background-palette-color": 4,

@@ -98,7 +98,7 @@ const attributes = {
 			},
 			'list-style-position': {
 				type: 'string',
-				default: 'inside',
+				default: 'outside',
 			},
 		},
 	}),

@@ -22,6 +22,8 @@ import {
 	getAttributeKey,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import optionColors from './optionColors';
+
 /**
  * External dependencies
  */
@@ -37,19 +39,6 @@ import { styleNone } from '../../icons';
 /**
  * Component
  */
-const optionColors = [
-	'red',
-	'blue',
-	'pink',
-	'green',
-	'yellow',
-	'grey',
-	'brown',
-	'orange',
-	'black',
-	'violet',
-];
-
 const defaultPolygonContent = {
 	0: [0, 0],
 	1: [100, 0],
@@ -535,7 +524,7 @@ const ClipPathControl = props => {
 									})}
 									{clipPathOptions.type === 'polygon' &&
 										Object.keys(clipPathOptions.content)
-											.length < 10 && (
+											.length < 100 && (
 											<Button
 												className='maxi-clip-path-control__handles'
 												onClick={() => {

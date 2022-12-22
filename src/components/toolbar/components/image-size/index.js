@@ -89,6 +89,9 @@ const ImageSize = props => {
 					} // is still necessary?
 					options={getImageSizeOptions()}
 					onChange={imageSize => onChangeImageSize(imageSize)}
+					onReset={() =>
+						onChangeImageSize(getDefaultAttribute('imageSize'))
+					}
 				/>
 				{isFirstOnHierarchy && (
 					<SettingTabsControl

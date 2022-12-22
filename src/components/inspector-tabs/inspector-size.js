@@ -22,6 +22,7 @@ const size = ({
 	hideHeight = false,
 	hideWidth = false,
 	hideMaxWidth = false,
+	hideFit,
 	hideFullWidth = false,
 	isImage = false,
 }) => {
@@ -50,6 +51,7 @@ const size = ({
 				hideHeight={hideHeight}
 				hideWidth={hideWidth || isBlockFullWidth}
 				hideMaxWidth={hideMaxWidth || isBlockFullWidth}
+				hideFit={hideFit}
 				isBlockFullWidth={isBlockFullWidth}
 				allowForceAspectRatio={block}
 				showFullWidth={showFullWidth}

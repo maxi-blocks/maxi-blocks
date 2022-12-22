@@ -6,6 +6,9 @@ export const generalTypographyStyle = {
 	orientation: 'mixed',
 	direction: 'ltr',
 	indent: '44',
+	whiteSpace: 'pre',
+	wordSpacing: '10',
+	bottomGap: '20',
 };
 
 export const responsiveTypographyStyle = {
@@ -16,6 +19,9 @@ export const responsiveTypographyStyle = {
 	orientation: 'upright',
 	direction: 'rtl',
 	indent: '22',
+	whiteSpace: 'pre-wrap',
+	wordSpacing: '20',
+	bottomGap: '10',
 };
 
 export const generalTypographyOptions = {

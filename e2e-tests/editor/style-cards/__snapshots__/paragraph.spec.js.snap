@@ -3,6 +3,7 @@
 exports[`StyleCards Paragraph Check Paragraph 1`] = `
 Object {
   "p": Object {
+    "bottom-gap-general": 20,
     "color": "",
     "color-global": true,
     "font-family-general": "Roboto",
@@ -34,6 +35,8 @@ Object {
     "text-indent-general": 44,
     "text-orientation-general": "mixed",
     "text-transform-general": "capitalize",
+    "white-space-general": "pre",
+    "word-spacing-general": 10,
   },
 }
 `;
@@ -41,6 +44,8 @@ Object {
 exports[`StyleCards Paragraph Works on responsive 1`] = `
 Object {
   "p": Object {
+    "bottom-gap-general": 20,
+    "bottom-gap-m": 10,
     "color": "",
     "color-global": true,
     "font-family-general": "Roboto",
@@ -82,6 +87,10 @@ Object {
     "text-orientation-m": "upright",
     "text-transform-general": "capitalize",
     "text-transform-m": "uppercase",
+    "white-space-general": "pre",
+    "white-space-m": "pre-wrap",
+    "word-spacing-general": 10,
+    "word-spacing-m": 20,
   },
 }
 `;

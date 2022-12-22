@@ -4,6 +4,7 @@ exports[`StyleCards headings Check Headings 1`] = `
 Object {
   "h1": Object {
     "bottom-gap-general": 20,
+    "bottom-gap-unit-general": "px",
     "color": "",
     "color-global": true,
     "font-family-general": "Roboto",
@@ -53,6 +54,7 @@ Object {
     "text-transform-general": "capitalize",
     "white-space-general": "pre",
     "word-spacing-general": 10,
+    "word-spacing-unit-general": "px",
   },
 }
 `;
@@ -62,6 +64,7 @@ Object {
   "h1": Object {
     "bottom-gap-general": 20,
     "bottom-gap-m": 10,
+    "bottom-gap-unit-general": "px",
     "color": "",
     "color-global": true,
     "font-family-general": "Roboto",
@@ -121,6 +124,7 @@ Object {
     "white-space-m": "pre-wrap",
     "word-spacing-general": 10,
     "word-spacing-m": 20,
+    "word-spacing-unit-general": "px",
   },
 }
 `;

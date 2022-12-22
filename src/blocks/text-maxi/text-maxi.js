@@ -32,6 +32,8 @@ import { textIcon } from '../../icons';
  */
 import { blockMigrator } from '../../extensions/styles/migrators';
 
+const { serverSideRender: ServerSideRender } = wp;
+
 /**
  * Block
  */
@@ -54,7 +56,14 @@ registerBlockType('maxi-blocks/text-maxi', {
 			uniqueid: uniqueID,
 		};
 	},
-	edit,
+	edit: props => {
+		return (
+			<>
+				<p>serverSideRender should appear here:</p>
+				<ServerSideRender block='dynamic-content-maxi' />
+			</>
+		);
+	},
 	save,
 	transforms,
 	deprecated: blockMigrator({

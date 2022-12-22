@@ -203,7 +203,7 @@ class edit extends MaxiBlockComponent {
 		return (
 			<>
 				<p>serverSideRender should appear here:</p>
-				<ServerSideRender block='maxi-blocks/dynamic-maxi' />,
+				<ServerSideRender block='dynamic-content-maxi' />
 			</>
 		);
 

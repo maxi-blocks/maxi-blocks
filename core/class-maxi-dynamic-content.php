@@ -37,12 +37,12 @@ class MaxiBlocks_DynamicContent
 
     public function register_blocks()
     {
-        register_block_type('maxi-blocks/dynamic-maxi', array(
+        register_block_type('dynamic-content-maxi', array(
             'render_callback' => 'text_maxi_renderer',
         ));
     }
 
-    public function text_maxi_renderer($block_attributes, $content)
+    public function text_maxi_renderer()
     {
         return 'OMG SUCCESS!';
     }

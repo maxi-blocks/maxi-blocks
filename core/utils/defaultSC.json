@@ -43,7 +43,9 @@
 					"letter-spacing-unit-xxl": "px",
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
-					"text-decoration-general": "unset"
+					"text-decoration-general": "unset",
+					"text-indent-general": 0,
+					"text-indent-unit-general": "px"
 				},
 				"h1": {
 					"color-global": false,
@@ -89,7 +91,9 @@
 					"letter-spacing-unit-xxl": "px",
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
-					"text-decoration-general": "unset"
+					"text-decoration-general": "unset",
+					"text-indent-general": 0,
+					"text-indent-unit-general": "px"
 				},
 				"h2": {
 					"color-global": false,
@@ -135,7 +139,9 @@
 					"letter-spacing-unit-xxl": "px",
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
-					"text-decoration-general": "unset"
+					"text-decoration-general": "unset",
+					"text-indent-general": 0,
+					"text-indent-unit-general": "px"
 				},
 				"h3": {
 					"color-global": false,
@@ -173,7 +179,9 @@
 					"letter-spacing-unit-xxl": "px",
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
-					"text-decoration-general": "unset"
+					"text-decoration-general": "unset",
+					"text-indent-general": 0,
+					"text-indent-unit-general": "px"
 				},
 				"h4": {
 					"color-global": false,
@@ -211,7 +219,9 @@
 					"letter-spacing-unit-xxl": "px",
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
-					"text-decoration-general": "unset"
+					"text-decoration-general": "unset",
+					"text-indent-general": 0,
+					"text-indent-unit-general": "px"
 				},
 				"h5": {
 					"color-global": false,
@@ -245,7 +255,9 @@
 					"letter-spacing-unit-xxl": "px",
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
-					"text-decoration-general": "unset"
+					"text-decoration-general": "unset",
+					"text-indent-general": 0,
+					"text-indent-unit-general": "px"
 				},
 				"h6": {
 					"color-global": false,
@@ -280,7 +292,9 @@
 					"letter-spacing-unit-xxl": "px",
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
-					"text-decoration-general": "unset"
+					"text-decoration-general": "unset",
+					"text-indent-general": 0,
+					"text-indent-unit-general": "px"
 				},
 				"button": {
 					"border-color-global": false,
@@ -336,7 +350,9 @@
 					"hover-background-palette-status": true,
 					"hover-background-palette-color": 6,
 					"hover-background-palette-opacity": 1,
-					"hover-background-color": ""
+					"hover-background-color": "",
+					"text-indent-general": 0,
+					"text-indent-unit-general": "px"
 				},
 				"link": {
 					"link-color-global": false,
@@ -434,7 +450,9 @@
 					"letter-spacing-unit-xxl": "px",
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
-					"text-decoration-general": "unset"
+					"text-decoration-general": "unset",
+					"text-indent-general": 0,
+					"text-indent-unit-general": "px"
 				},
 				"h1": {
 					"color-global": false,
@@ -480,7 +498,9 @@
 					"letter-spacing-unit-xxl": "px",
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
-					"text-decoration-general": "unset"
+					"text-decoration-general": "unset",
+					"text-indent-general": 0,
+					"text-indent-unit-general": "px"
 				},
 				"h2": {
 					"color-global": false,
@@ -526,7 +546,9 @@
 					"letter-spacing-unit-xxl": "px",
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
-					"text-decoration-general": "unset"
+					"text-decoration-general": "unset",
+					"text-indent-general": 0,
+					"text-indent-unit-general": "px"
 				},
 				"h3": {
 					"color-global": false,
@@ -564,7 +586,9 @@
 					"letter-spacing-unit-xxl": "px",
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
-					"text-decoration-general": "unset"
+					"text-decoration-general": "unset",
+					"text-indent-general": 0,
+					"text-indent-unit-general": "px"
 				},
 				"h4": {
 					"color-global": false,
@@ -602,7 +626,9 @@
 					"letter-spacing-unit-xxl": "px",
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
-					"text-decoration-general": "unset"
+					"text-decoration-general": "unset",
+					"text-indent-general": 0,
+					"text-indent-unit-general": "px"
 				},
 				"h5": {
 					"color-global": false,
@@ -636,7 +662,9 @@
 					"letter-spacing-unit-xxl": "px",
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
-					"text-decoration-general": "unset"
+					"text-decoration-general": "unset",
+					"text-indent-general": 0,
+					"text-indent-unit-general": "px"
 				},
 				"h6": {
 					"color-global": false,
@@ -671,7 +699,9 @@
 					"letter-spacing-unit-xxl": "px",
 					"letter-spacing-xl": 0,
 					"letter-spacing-unit-xl": "px",
-					"text-decoration-general": "unset"
+					"text-decoration-general": "unset",
+					"text-indent-general": 0,
+					"text-indent-unit-general": "px"
 				},
 				"button": {
 					"border-color-global": false,
@@ -727,7 +757,9 @@
 					"hover-background-palette-status": true,
 					"hover-background-palette-color": 6,
 					"hover-background-palette-opacity": 1,
-					"hover-background-color": ""
+					"hover-background-color": "",
+					"text-indent-general": 0,
+					"text-indent-unit-general": "px"
 				},
 				"link": {
 					"link-color-global": false,

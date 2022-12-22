@@ -151,6 +151,8 @@ describe('getMarginPaddingStyles', () => {
 		const obj = {
 			'margin-top-general': '11',
 			'margin-top-unit-general': 'em',
+			'margin-top-xl': '11',
+			'margin-top-unit-xl': 'em',
 			'margin-top-unit-xxl': 'px',
 			'margin-top-unit-m': '%',
 		};

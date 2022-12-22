@@ -99,21 +99,15 @@ Object {
   "general": Object {
     "margin-top": "11em",
   },
-  "l": Object {
-    "margin-top": "11em",
-  },
+  "l": Object {},
   "m": Object {
     "margin-top": "11%",
   },
-  "s": Object {
-    "margin-top": "11%",
-  },
+  "s": Object {},
   "xl": Object {
     "margin-top": "11em",
   },
-  "xs": Object {
-    "margin-top": "11%",
-  },
+  "xs": Object {},
   "xxl": Object {
     "margin-top": "11px",
   },

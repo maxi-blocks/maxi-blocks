@@ -10,7 +10,6 @@ import { createSelectors } from '../../extensions/styles/custom-css';
 import {
 	AlignmentControl,
 	BorderControl,
-	ClipPath,
 	ImageShape,
 	InfoBox,
 	ClipPathControl,

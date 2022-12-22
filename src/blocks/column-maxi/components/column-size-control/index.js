@@ -13,7 +13,9 @@ import {
 } from '../../../../components';
 import { handleOnReset } from '../../../../extensions/attributes';
 import { getColumnDefaultValue } from '../../../../extensions/column-templates';
+import withRTC from '../../../../extensions/maxi-block/withRTC';
 import {
+	getAttributeKey,
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -119,9 +121,28 @@ const ColumnSizeControl = props => {
 						[`justify-content-${breakpoint}`]: verticalAlign,
 					})
 				}
+				onReset={() => {
+					onChange(
+						handleOnReset({
+							[getAttributeKey(
+								'justify-content',
+								false,
+								'',
+								breakpoint
+							)]: getDefaultAttribute(
+								getAttributeKey(
+									'justify-content',
+									false,
+									'',
+									breakpoint
+								)
+							),
+						})
+					);
+				}}
 			/>
 		</>
 	);
 };
 
-export default ColumnSizeControl;
+export default withRTC(ColumnSizeControl);

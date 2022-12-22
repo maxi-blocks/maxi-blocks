@@ -10,7 +10,10 @@ import { Tooltip } from '@wordpress/components';
  */
 import Button from '../button';
 import SelectControl from '../select-control';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
+import {
+	getDefaultAttribute,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import './editor.scss';
 
 /**
@@ -46,6 +49,23 @@ const OverflowControl = props => {
 		}
 	};
 
+	const onChangeValue = (val, axis) => {
+		if (sync) {
+			setAxisVal(val);
+
+			onChange({
+				[`overflow-x-${breakpoint}`]: !isEmpty(val) ? val : null,
+				[`overflow-y-${breakpoint}`]: !isEmpty(val) ? val : null,
+			});
+		} else {
+			setAxisVal(val);
+
+			onChange({
+				[`overflow-${axis}-${breakpoint}`]: !isEmpty(val) ? val : null,
+			});
+		}
+	};
+
 	return (
 		<div className={classes}>
 			{axes.map(axis => (
@@ -66,30 +86,15 @@ const OverflowControl = props => {
 							attributes: props,
 						}) || ''
 					}
-					onChange={val => {
-						if (sync) {
-							setAxisVal(val);
-
-							onChange({
-								[`overflow-x-${breakpoint}`]: !isEmpty(val)
-									? val
-									: null,
-								[`overflow-y-${breakpoint}`]: !isEmpty(val)
-									? val
-									: null,
-							});
-						} else {
-							setAxisVal(val);
-
-							onChange({
-								[`overflow-${axis}-${breakpoint}`]: !isEmpty(
-									val
-								)
-									? val
-									: null,
-							});
-						}
-					}}
+					onChange={val => onChangeValue(val, axis)}
+					onReset={() =>
+						onChangeValue(
+							getDefaultAttribute(
+								`overflow-${axis}-${breakpoint}`
+							),
+							axis
+						)
+					}
 				/>
 			))}
 			<div className='sync-wrapper'>

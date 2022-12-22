@@ -19,6 +19,7 @@ import {
 	TextControl,
 } from '../../../../components';
 import { handleOnReset } from '../../../../extensions/attributes';
+import { getDefaultAttribute } from '../../../../extensions/styles';
 
 const VideoControl = props => {
 	const {
@@ -167,6 +168,13 @@ const VideoControl = props => {
 					onChange({
 						videoRatio: newRatio,
 					})
+				}
+				onReset={() =>
+					onChange(
+						handleOnReset({
+							videoRatio: getDefaultAttribute('videoRatio'),
+						})
+					)
 				}
 			/>
 		</>

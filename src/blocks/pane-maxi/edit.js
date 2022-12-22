@@ -135,14 +135,12 @@ class edit extends MaxiBlockComponent {
 
 	openPane() {
 		const { clientId } = this.props;
-		const { onOpen, animationDuration } = this.context;
+		const { onOpen } = this.context;
 
 		this.contentWrapper.current.style.overflow = 'hidden';
 		// The css doesn't run transition if set to 100% so need to set exact value, for transition to happen
 		this.contentWrapper.current.style.maxHeight = `${this.contentWrapper.current.scrollHeight}px`;
-		setTimeout(() => {
-			this.contentWrapper.current.style = null;
-		}, animationDuration);
+
 		onOpen(clientId);
 	}
 

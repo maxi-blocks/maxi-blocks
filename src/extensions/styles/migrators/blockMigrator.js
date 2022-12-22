@@ -16,6 +16,9 @@ import transitionTargetIBmigrator from './transitionTargetIBmigrator';
 import hoverStatusMigrator from './hoverStatusMigrator';
 import backgroundSizeMigrator from './backgroundSizeMigrator';
 import opacityTransitionMigrator from './opacityTransitionMigrator';
+import maxiAttributesMigrator from './maxiAttributesMigrator';
+import transformIBTargetMigrator from './transformIBTargetMigrator';
+import backgroundPositionMigrator from './backgroundPositionMigrator';
 
 /**
  * External dependencies
@@ -89,6 +92,9 @@ const blockMigrator = blockMigratorProps => {
 		hoverStatusMigrator,
 		backgroundSizeMigrator,
 		opacityTransitionMigrator,
+		maxiAttributesMigrator,
+		transformIBTargetMigrator,
+		backgroundPositionMigrator,
 		...(blockMigratorProps.migrators ?? []),
 	];
 

@@ -121,34 +121,30 @@ const getHoverObject = props => {
 	return response;
 };
 
-const getIconObject = props => {
+const getIconObject = (props, uniqueID) => {
 	const response = {
 		...getButtonIconStyles({
 			obj: props,
 			blockStyle: props.blockStyle,
 			target: ' .maxi-pane-block__icon',
-			wrapperTarget:
-				' .maxi-pane-block[aria-expanded=false] .maxi-pane-block__header',
+			wrapperTarget: `.maxi-pane-block[data-accordion="${uniqueID}"][aria-expanded=false] .maxi-pane-block__header`,
 		}),
 		...(props['icon-status-hover'] &&
 			getButtonIconStyles({
 				obj: props,
 				blockStyle: props.blockStyle,
 				target: ' .maxi-pane-block__icon',
-				wrapperTarget:
-					' .maxi-pane-block[aria-expanded] .maxi-pane-block__header',
+				wrapperTarget: `.maxi-pane-block[data-accordion="${uniqueID}"][aria-expanded] .maxi-pane-block__header`,
 				isHover: true,
 			})),
 		...getButtonIconStyles({
 			obj: props,
 			blockStyle: props.blockStyle,
 			target: ' .maxi-pane-block__icon',
-			wrapperTarget:
-				' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__header',
+			wrapperTarget: `.maxi-pane-block[data-accordion="${uniqueID}"][aria-expanded=true] .maxi-pane-block__header`,
 			prefix: 'active-',
 		}),
 	};
-
 	return response;
 };
 
@@ -238,7 +234,7 @@ const getPaneHeaderStyles = (props, prefix, isHover = false) => {
 
 const getPaneHeaderObject = props => {
 	const response = {
-		' .maxi-pane-block .maxi-pane-block__header-content': {
+		' .maxi-pane-block__header-content': {
 			paneHeader: getPaneHeaderStyles(props, ''),
 			paneHeaderIconPosition: {
 				general: {
@@ -249,7 +245,7 @@ const getPaneHeaderObject = props => {
 				},
 			},
 		},
-		' .maxi-pane-block .maxi-pane-block__header-line-container': {
+		' .maxi-pane-block__header-line-container': {
 			headerLine: {
 				...getDividerStyles(
 					props,
@@ -260,7 +256,7 @@ const getPaneHeaderObject = props => {
 				),
 			},
 		},
-		' .maxi-pane-block .maxi-pane-block__header-line': {
+		' .maxi-pane-block__header-line': {
 			headerLine: {
 				...getDividerStyles(
 					props,
@@ -273,22 +269,21 @@ const getPaneHeaderObject = props => {
 			},
 		},
 		...(props['header-line-status-active'] && {
-			' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__header-line':
-				{
-					headerLine: {
-						...getDividerStyles(
-							props,
-							'line',
-							props.blockStyle,
-							false,
-							'header-active-',
-							true
-						),
-					},
+			'[aria-expanded=true] .maxi-pane-block__header-line': {
+				headerLine: {
+					...getDividerStyles(
+						props,
+						'line',
+						props.blockStyle,
+						false,
+						'header-active-',
+						true
+					),
 				},
+			},
 		}),
 		...(props['header-line-status-hover'] && {
-			' .maxi-pane-block[aria-expanded] .maxi-pane-block__header:hover .maxi-pane-block__header-line':
+			'[aria-expanded] .maxi-pane-block__header:hover .maxi-pane-block__header-line':
 				{
 					headerLine: {
 						...getDividerStyles(
@@ -302,24 +297,22 @@ const getPaneHeaderObject = props => {
 					},
 				},
 		}),
-		' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__header-content':
-			{
-				paneHeaderActive: getPaneHeaderStyles(props, 'active-'),
-			},
-		' .maxi-pane-block[aria-expanded] .maxi-pane-block__header:hover .maxi-pane-block__header-content':
+		'[aria-expanded=true] .maxi-pane-block__header-content': {
+			paneHeaderActive: getPaneHeaderStyles(props, 'active-'),
+		},
+		'[aria-expanded] .maxi-pane-block__header:hover .maxi-pane-block__header-content':
 			{
 				paneHeaderHover: getPaneHeaderStyles(props, '', true),
 			},
-		' .maxi-pane-block .maxi-pane-block__title': getPaneTitleStyles(
-			props,
-			'title-'
-		),
+		' .maxi-pane-block__title': getPaneTitleStyles(props, 'title-'),
 		...(props['title-typography-status-active'] && {
-			' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__title':
-				getPaneTitleStyles(props, 'active-title-'),
+			'[aria-expanded=true] .maxi-pane-block__title': getPaneTitleStyles(
+				props,
+				'active-title-'
+			),
 		}),
 		...(props['title-typography-status-hover'] && {
-			' .maxi-pane-block[aria-expanded] .maxi-pane-block__header:hover .maxi-pane-block__title':
+			'[aria-expanded] .maxi-pane-block__header:hover .maxi-pane-block__title':
 				getPaneTitleStyles(props, 'title-', true),
 		}),
 	};
@@ -331,10 +324,10 @@ const getPaneContentObject = props => {
 	const { accordionLayout } = props;
 
 	const response = {
-		' .maxi-pane-block .maxi-pane-block__content-wrapper':
+		' .maxi-pane-block__content-wrapper':
 			getPaneContentWrapperStyles(props),
 		...(accordionLayout === 'simple' && {
-			' .maxi-pane-block .maxi-pane-block__content-line-container': {
+			' .maxi-pane-block__content-line-container': {
 				paneLine: {
 					...getDividerStyles(
 						props,
@@ -345,7 +338,7 @@ const getPaneContentObject = props => {
 					),
 				},
 			},
-			' .maxi-pane-block .maxi-pane-block__content-line': {
+			' .maxi-pane-block__content-line': {
 				paneLine: {
 					...getDividerStyles(
 						props,
@@ -358,22 +351,21 @@ const getPaneContentObject = props => {
 				},
 			},
 			...(props['content-line-status-active'] && {
-				' .maxi-pane-block[aria-expanded=true] .maxi-pane-block__content-line':
-					{
-						paneLine: {
-							...getDividerStyles(
-								props,
-								'line',
-								props.blockStyle,
-								false,
-								'content-active-',
-								true
-							),
-						},
+				'[aria-expanded=true] .maxi-pane-block__content-line': {
+					paneLine: {
+						...getDividerStyles(
+							props,
+							'line',
+							props.blockStyle,
+							false,
+							'content-active-',
+							true
+						),
 					},
+				},
 			}),
 			...(props['content-line-status-hover'] && {
-				' .maxi-pane-block[aria-expanded] .maxi-pane-block__header:hover .maxi-pane-block__content-line':
+				'[aria-expanded] .maxi-pane-block__header:hover .maxi-pane-block__content-line':
 					{
 						paneLine: {
 							...getDividerStyles(
@@ -400,13 +392,20 @@ const getStyles = props => {
 			{
 				'': getNormalObject(props),
 				':hover': getHoverObject(props),
-				...getPaneHeaderObject(props),
-				...getIconObject(props),
-				...getPaneContentObject(props),
+				...getIconObject(props, uniqueID),
 			},
 			data,
 			props
 		),
+		[`${uniqueID} .maxi-pane-block[data-accordion="${uniqueID}"]`]:
+			styleProcessor(
+				{
+					...getPaneHeaderObject(props),
+					...getPaneContentObject(props),
+				},
+				data,
+				props
+			),
 	};
 	return response;
 };

@@ -23,6 +23,7 @@ import {
 } from '../../../../extensions/styles';
 import { setSVGColor, setSVGSize } from '../../../../extensions/svg';
 import MaxiModal from '../../../../editor/library/modal';
+import { handleOnReset } from '../../../../extensions/attributes';
 
 /**
  * External dependencies
@@ -46,10 +47,12 @@ const ListOptionsControl = props => {
 		listStyleCustom,
 	} = attributes;
 
-	const [listStyleSource, setListStyleSource] = useState(
+	const defaultListStyleSource =
 		(isURL(listStyleCustom) && 'url') ||
-			(listStyleCustom?.includes('<svg ') && 'icon') ||
-			'text'
+		(listStyleCustom?.includes('<svg ') && 'icon') ||
+		'text';
+	const [listStyleSource, setListStyleSource] = useState(
+		defaultListStyleSource
 	);
 	const [listStyleCustoms, setListStyleCustoms] = useState({
 		[listStyleSource]: listStyleCustom,
@@ -139,6 +142,16 @@ const ListOptionsControl = props => {
 					breakpoint: deviceType,
 					attributes,
 				})}
+				onReset={() =>
+					maxiSetAttributes(
+						handleOnReset({
+							[`list-style-position-${deviceType}`]:
+								getDefaultAttribute(
+									`list-style-position-${deviceType}`
+								),
+						})
+					)
+				}
 				options={[
 					{
 						label: __('Inside', 'maxi-blocks'),
@@ -199,14 +212,17 @@ const ListOptionsControl = props => {
 					})
 				}
 				onReset={() => {
-					maxiSetAttributes({
-						[`list-indent-${deviceType}`]: getDefaultAttribute(
-							`list-indent-${deviceType}`
-						),
-						[`list-indent-unit-${deviceType}`]: getDefaultAttribute(
-							`list-indent-unit-${deviceType}`
-						),
-					});
+					maxiSetAttributes(
+						handleOnReset({
+							[`list-indent-${deviceType}`]: getDefaultAttribute(
+								`list-indent-${deviceType}`
+							),
+							[`list-indent-unit-${deviceType}`]:
+								getDefaultAttribute(
+									`list-indent-unit-${deviceType}`
+								),
+						})
+					);
 				}}
 			/>
 			<AdvancedNumberControl
@@ -257,14 +273,17 @@ const ListOptionsControl = props => {
 					})
 				}
 				onReset={() => {
-					maxiSetAttributes({
-						[`list-gap-${deviceType}`]: getDefaultAttribute(
-							`list-gap-${deviceType}`
-						),
-						[`list-gap-unit-${deviceType}`]: getDefaultAttribute(
-							`list-gap-unit-${deviceType}`
-						),
-					});
+					maxiSetAttributes(
+						handleOnReset({
+							[`list-gap-${deviceType}`]: getDefaultAttribute(
+								`list-gap-${deviceType}`
+							),
+							[`list-gap-unit-${deviceType}`]:
+								getDefaultAttribute(
+									`list-gap-unit-${deviceType}`
+								),
+						})
+					);
 				}}
 			/>
 			<AdvancedNumberControl
@@ -315,16 +334,18 @@ const ListOptionsControl = props => {
 					})
 				}
 				onReset={() => {
-					maxiSetAttributes({
-						[`list-paragraph-spacing-${deviceType}`]:
-							getDefaultAttribute(
-								`list-paragraph-spacing-${deviceType}`
-							),
-						[`list-paragraph-spacing-unit-${deviceType}`]:
-							getDefaultAttribute(
-								`list-paragraph-spacing-unit-${deviceType}`
-							),
-					});
+					maxiSetAttributes(
+						handleOnReset({
+							[`list-paragraph-spacing-${deviceType}`]:
+								getDefaultAttribute(
+									`list-paragraph-spacing-${deviceType}`
+								),
+							[`list-paragraph-spacing-unit-${deviceType}`]:
+								getDefaultAttribute(
+									`list-paragraph-spacing-unit-${deviceType}`
+								),
+						})
+					);
 				}}
 			/>
 			<AdvancedNumberControl
@@ -408,15 +429,18 @@ const ListOptionsControl = props => {
 					},
 				}}
 				onReset={() =>
-					maxiSetAttributes({
-						[`list-marker-size-${deviceType}`]: getDefaultAttribute(
-							`list-marker-size-${deviceType}`
-						),
-						[`list-marker-size-unit-${deviceType}`]:
-							getDefaultAttribute(
-								`list-marker-size-unit-${deviceType}`
-							),
-					})
+					maxiSetAttributes(
+						handleOnReset({
+							[`list-marker-size-${deviceType}`]:
+								getDefaultAttribute(
+									`list-marker-size-${deviceType}`
+								),
+							[`list-marker-size-unit-${deviceType}`]:
+								getDefaultAttribute(
+									`list-marker-size-unit-${deviceType}`
+								),
+						})
+					)
 				}
 			/>
 			<AdvancedNumberControl
@@ -445,16 +469,18 @@ const ListOptionsControl = props => {
 					})
 				}
 				onReset={() => {
-					maxiSetAttributes({
-						[`list-marker-line-height-${deviceType}`]:
-							getDefaultAttribute(
-								`list-marker-line-height-${deviceType}`
-							),
-						[`list-marker-line-height-unit-${deviceType}`]:
-							getDefaultAttribute(
-								`list-marker-line-height-unit-${deviceType}`
-							),
-					});
+					maxiSetAttributes(
+						handleOnReset({
+							[`list-marker-line-height-${deviceType}`]:
+								getDefaultAttribute(
+									`list-marker-line-height-${deviceType}`
+								),
+							[`list-marker-line-height-unit-${deviceType}`]:
+								getDefaultAttribute(
+									`list-marker-line-height-unit-${deviceType}`
+								),
+						})
+					);
 				}}
 				allowedUnits={['px', 'em', 'vw', '%', '-']}
 			/>
@@ -503,16 +529,18 @@ const ListOptionsControl = props => {
 					},
 				}}
 				onReset={() => {
-					maxiSetAttributes({
-						[`list-marker-indent-${deviceType}`]:
-							getDefaultAttribute(
-								`list-marker-indent-${deviceType}`
-							),
-						[`list-marker-indent-unit-${deviceType}`]:
-							getDefaultAttribute(
-								`list-marker-indent-unit-${deviceType}`
-							),
-					});
+					maxiSetAttributes(
+						handleOnReset({
+							[`list-marker-indent-${deviceType}`]:
+								getDefaultAttribute(
+									`list-marker-indent-${deviceType}`
+								),
+							[`list-marker-indent-unit-${deviceType}`]:
+								getDefaultAttribute(
+									`list-marker-indent-unit-${deviceType}`
+								),
+						})
+					);
 				}}
 			/>
 			{deviceType === 'general' && (
@@ -571,6 +599,16 @@ const ListOptionsControl = props => {
 					breakpoint: deviceType,
 					attributes,
 				})}
+				onReset={() =>
+					maxiSetAttributes(
+						handleOnReset({
+							[`list-text-position-${deviceType}`]:
+								getDefaultAttribute(
+									`list-text-position-${deviceType}`
+								),
+						})
+					)
+				}
 				options={[
 					{
 						label: __('Baseline', 'maxi-blocks'),
@@ -610,6 +648,13 @@ const ListOptionsControl = props => {
 					label={__('Type of list', 'maxi-blocks')}
 					className='maxi-text-inspector__list-type'
 					value={typeOfList}
+					onReset={() =>
+						maxiSetAttributes(
+							handleOnReset({
+								typeOfList: getDefaultAttribute('typeOfList'),
+							})
+						)
+					}
 					options={[
 						{
 							label: __('Unordered', 'maxi-blocks'),
@@ -634,6 +679,13 @@ const ListOptionsControl = props => {
 						label={__('Style', 'maxi-blocks')}
 						className='maxi-text-inspector__list-style'
 						value={listStyle || 'disc'}
+						onReset={() =>
+							maxiSetAttributes(
+								handleOnReset({
+									listStyle: getDefaultAttribute('listStyle'),
+								})
+							)
+						}
 						options={getListStyleOptions(typeOfList)}
 						onChange={listStyle => {
 							maxiSetAttributes({
@@ -674,9 +726,11 @@ const ListOptionsControl = props => {
 								}
 								max={99}
 								onReset={() =>
-									maxiSetAttributes({
-										listStart: '',
-									})
+									maxiSetAttributes(
+										handleOnReset({
+											listStart: '',
+										})
+									)
 								}
 							/>
 							<ToggleSwitch
@@ -697,6 +751,13 @@ const ListOptionsControl = props => {
 								label={__('Source', 'maxi-blocks')}
 								className='maxi-text-inspector__list-source-selector'
 								value={listStyleSource}
+								onReset={() =>
+									maxiSetAttributes(
+										handleOnReset({
+											defaultListStyleSource,
+										})
+									)
+								}
 								options={[
 									{
 										label: __('Text', 'maxi-blocks'),

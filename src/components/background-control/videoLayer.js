@@ -20,6 +20,7 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { videoUrlRegex } from '../../extensions/video';
+import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * External dependencies
@@ -56,6 +57,7 @@ const VideoLayerContent = props => {
 
 					onChange(videoOptions);
 				}}
+				disableRTC
 			/>
 			<MediaUploaderControl
 				className='maxi-mediauploader-control__video-fallback'
@@ -163,13 +165,15 @@ const VideoLayer = props => {
 						min={0}
 						max={999}
 						onReset={() =>
-							onChange({
-								[getAttributeKey(
-									'background-video-startTime',
-									false,
-									prefix
-								)]: '',
-							})
+							onChange(
+								handleOnReset({
+									[getAttributeKey(
+										'background-video-startTime',
+										false,
+										prefix
+									)]: '',
+								})
+							)
 						}
 					/>
 					<AdvancedNumberControl
@@ -192,13 +196,15 @@ const VideoLayer = props => {
 						min={0}
 						max={999}
 						onReset={() =>
-							onChange({
-								[getAttributeKey(
-									'background-video-endTime',
-									false,
-									prefix
-								)]: '',
-							})
+							onChange(
+								handleOnReset({
+									[getAttributeKey(
+										'background-video-endTime',
+										false,
+										prefix
+									)]: '',
+								})
+							)
 						}
 					/>
 					<ToggleSwitch

@@ -1,5 +1,107 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`getBackgroundStyles Get correct block background styles for color layer different values for border on different responsive stages and hovers 1`] = `
+Object {
+  "maxi-test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {
+        "border-bottom-style": "solid",
+        "border-bottom-width": "15px",
+        "border-color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
+        "border-left-style": "solid",
+        "border-left-width": "20px",
+        "border-right-style": "solid",
+        "border-right-width": "10px",
+        "border-top-style": "solid",
+        "border-top-width": "5px",
+      },
+      "l": Object {
+        "border-bottom-style": undefined,
+        "border-bottom-width": "20px",
+        "border-color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
+        "border-left-style": undefined,
+        "border-left-width": "5px",
+        "border-right-style": undefined,
+        "border-right-width": "15px",
+        "border-top-style": undefined,
+        "border-top-width": "10px",
+      },
+      "m": Object {
+        "border-color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
+        "border-left-style": undefined,
+        "border-left-width": "0px",
+        "border-top-style": undefined,
+        "border-top-width": "0px",
+      },
+      "s": Object {
+        "border-color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
+      },
+      "xl": Object {
+        "border-color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
+      },
+      "xs": Object {
+        "border-color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
+      },
+      "xxl": Object {
+        "border-color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
+      },
+    },
+    "size": Object {
+      "general": Object {
+        "bottom": "-15px",
+        "left": "-20px",
+        "right": "-10px",
+        "top": "-5px",
+      },
+      "l": Object {
+        "bottom": "-20px",
+        "left": "-5px",
+        "right": "-15px",
+        "top": "-10px",
+      },
+      "m": Object {
+        "left": "0px",
+        "top": "0px",
+      },
+    },
+  },
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": Object {
+    "color": Object {
+      "general": Object {
+        "background-color": "rgba(var(--maxi-light-color-4,255,74,23),1)",
+        "display": "block",
+        "width": "100%",
+      },
+      "l": Object {
+        "background-color": "rgba(var(--maxi-light-color-4,255,74,23),1)",
+        "width": "100%",
+      },
+      "label": "Background Color",
+      "m": Object {
+        "background-color": "rgba(var(--maxi-light-color-4,255,74,23),1)",
+        "width": "100%",
+      },
+      "s": Object {
+        "background-color": "rgba(var(--maxi-light-color-4,255,74,23),1)",
+        "width": "100%",
+      },
+      "xl": Object {
+        "background-color": "rgba(var(--maxi-light-color-4,255,74,23),1)",
+        "width": "100%",
+      },
+      "xs": Object {
+        "background-color": "rgba(var(--maxi-light-color-4,255,74,23),1)",
+        "width": "100%",
+      },
+      "xxl": Object {
+        "background-color": "rgba(var(--maxi-light-color-4,255,74,23),1)",
+        "width": "100%",
+      },
+    },
+  },
+}
+`;
+
 exports[`getBackgroundStyles Get correct block background styles for color layer with border 1`] = `
 Object {
   "maxi-test > .maxi-background-displayer": Object {

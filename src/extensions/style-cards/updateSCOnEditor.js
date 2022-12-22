@@ -12,21 +12,12 @@ import {
 	getLastBreakpointAttribute,
 } from '../styles';
 import { loadFonts } from '../text/fonts';
-import standardSC from '../../../core/utils/defaultSC.json';
 
 /**
  * External dependencies
  */
 import { times, isEmpty, merge, cloneDeep, uniq } from 'lodash';
 import { getTypographyStyles } from '../styles/helpers';
-
-const mergeWithStandard = (sc = {}) => {
-	console.log(standardSC);
-
-	return sc;
-};
-
-mergeWithStandard();
 
 const getColorString = (obj, target, style) => {
 	const prefix = target ? `${target}-` : '';

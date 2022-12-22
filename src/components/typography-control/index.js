@@ -641,6 +641,15 @@ const TypographyControl = props => {
 					onChange={val => {
 						onChangeFormat({ [`${prefix}font-weight`]: val });
 					}}
+					onReset={() => {
+						onChangeFormat(
+							{
+								[`${prefix}font-weight`]:
+									getDefault('font-weight'),
+							},
+							{ isReset: true }
+						);
+					}}
 					fontWeight={getValue('font-weight')}
 					fontName={getValue('font-family')}
 					fontStyle={getValue('font-style')}
@@ -673,6 +682,15 @@ const TypographyControl = props => {
 							[`${prefix}text-transform`]: val,
 						});
 					}}
+					onReset={() =>
+						onChangeFormat(
+							{
+								[`${prefix}text-transform`]:
+									getDefault('text-transform'),
+							},
+							{ isReset: true }
+						)
+					}
 				/>
 				<SelectControl
 					label={__('Style', 'maxi-blocks')}
@@ -697,6 +715,15 @@ const TypographyControl = props => {
 							[`${prefix}font-style`]: val,
 						});
 					}}
+					onReset={() =>
+						onChangeFormat(
+							{
+								[`${prefix}font-style`]:
+									getDefault('font-style'),
+							},
+							{ isReset: true }
+						)
+					}
 				/>
 				<SelectControl
 					label={__('Text decoration', 'maxi-blocks')}
@@ -729,6 +756,15 @@ const TypographyControl = props => {
 							[`${prefix}text-decoration`]: val,
 						});
 					}}
+					onReset={() =>
+						onChangeFormat(
+							{
+								[`${prefix}text-decoration`]:
+									getDefault('text-decoration'),
+							},
+							{ isReset: true }
+						)
+					}
 				/>
 				<SelectControl
 					label={__('Text orientation', 'maxi-blocks')}
@@ -760,6 +796,15 @@ const TypographyControl = props => {
 							{ forceDisableCustomFormats: true }
 						);
 					}}
+					onReset={() =>
+						onChangeFormat(
+							{
+								[`${prefix}text-orientation`]:
+									getDefault('text-orientation'),
+							},
+							{ isReset: true }
+						)
+					}
 				/>
 				<SelectControl
 					label={__('Text direction', 'maxi-blocks')}
@@ -780,6 +825,15 @@ const TypographyControl = props => {
 							[`${prefix}text-direction`]: val,
 						});
 					}}
+					onReset={() =>
+						onChangeFormat(
+							{
+								[`${prefix}text-direction`]:
+									getDefault('text-direction'),
+							},
+							{ isReset: true }
+						)
+					}
 				/>
 				<AdvancedNumberControl
 					className='maxi-typography-control__text-indent'
@@ -797,7 +851,7 @@ const TypographyControl = props => {
 					}}
 					placeholder={getValue('text-indent')}
 					value={getValue('text-indent')}
-					defaultValue={getDefault('text-indent', !isStyleCards)}
+					defaultValue={getDefault('text-indent')}
 					onChangeValue={val => {
 						onChangeFormat(
 							{

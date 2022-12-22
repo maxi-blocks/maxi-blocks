@@ -140,19 +140,24 @@ class edit extends MaxiBlockComponent {
 		this.contentWrapper.current.style.overflow = 'hidden';
 		// The css doesn't run transition if set to 100% so need to set exact value, for transition to happen
 		this.contentWrapper.current.style.maxHeight = `${this.contentWrapper.current.scrollHeight}px`;
+
 		onOpen(clientId);
 	}
 
 	closePane() {
 		const { clientId } = this.props;
-		const { onClose, isCollapsible, openPanes } = this.context;
+		const { onClose, animationDuration, isCollapsible, openPanes } =
+			this.context;
 
 		if (!isCollapsible && openPanes.length <= 1) return;
 		this.contentWrapper.current.style.overflow = 'hidden';
-		// Transition doesn't run if max-height is not set to exact value
+		// Same here, transition doesn't run if max-height is not set to exact value
 		this.contentWrapper.current.style.maxHeight = `${this.contentWrapper.current.scrollHeight}px`;
 		setTimeout(() => {
 			this.contentWrapper.current.style.maxHeight = 0;
+			setTimeout(() => {
+				this.contentWrapper.current.style = null;
+			}, animationDuration);
 		}, 1);
 		onClose(clientId);
 	}
@@ -240,9 +245,6 @@ class edit extends MaxiBlockComponent {
 				<div
 					className='maxi-pane-block__content-wrapper'
 					ref={this.contentWrapper}
-					onTransitionEnd={() => {
-						this.contentWrapper.current.style = null;
-					}}
 				>
 					<Content
 						ref={this.blockRef}
@@ -252,9 +254,9 @@ class edit extends MaxiBlockComponent {
 						hasInnerBlocks={hasInnerBlocks}
 						isOpen={isOpen}
 					/>
-				</div>
-				<div className='maxi-pane-block__content-line-container maxi-pane-block__line-container'>
-					<hr className='maxi-pane-block__content-line maxi-pane-block__line' />
+					<div className='maxi-pane-block__content-line-container maxi-pane-block__line-container'>
+						<hr className='maxi-pane-block__content-line maxi-pane-block__line' />
+					</div>
 				</div>
 			</MaxiBlock>,
 		];

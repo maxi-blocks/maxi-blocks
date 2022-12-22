@@ -480,9 +480,6 @@ const Popover = (
 
 	if (slotName !== 'Popover') {
 		content = <Fill name={slotName}>{content}</Fill>;
-	}
-
-	if (anchorRef || anchorRect) {
 		return content;
 	}
 

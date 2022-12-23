@@ -28,6 +28,7 @@ const getTypographyStyles = ({
 	textLevel = 'p',
 	normalTypography, // Just in case is hover,
 	scValues = {},
+	isStyleCards = false,
 }) => {
 	const response = {};
 
@@ -191,6 +192,19 @@ const getTypographyStyles = ({
 				'margin-bottom': `${
 					obj[getName('bottom-gap', breakpoint)]
 				}${getUnitValue('bottom-gap-unit', breakpoint)}`,
+			}),
+			...(!isStyleCards && {
+				...(!isNil(obj[getName('text-orientation', breakpoint)]) && {
+					'writing-mode':
+						obj[getName('text-orientation', breakpoint)] !== 'unset'
+							? 'vertical-rl'
+							: 'unset',
+					'text-orientation':
+						obj[getName('text-orientation', breakpoint)],
+				}),
+				...(!isNil(obj[getName('text-direction', breakpoint)]) && {
+					direction: obj[getName('text-direction', breakpoint)],
+				}),
 			}),
 		};
 

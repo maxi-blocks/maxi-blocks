@@ -14,7 +14,12 @@ import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-import { getDefaultLayerAttr, getDefaultLayerAttrs } from './utils';
+import {
+	getDefaultLayerAttr,
+	getDefaultLayerAttrs,
+	getDefaultLayerWithBreakpoint,
+} from './utils';
+import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * Component
@@ -31,32 +36,32 @@ const Size = ({
 		px: {
 			min: 0,
 			max: 1999,
-			minRange: -1999,
+			minRange: 0,
 			maxRange: 1999,
 		},
 		em: {
 			min: 0,
 			max: 1999,
-			minRange: -1999,
+			minRange: 0,
 			maxRange: 1999,
 		},
 		vw: {
 			min: 0,
 			max: 1999,
-			minRange: -1999,
+			minRange: 0,
 			maxRange: 1999,
 		},
 		vh: {
 			min: 0,
 			max: 1999,
-			minRange: -1999,
+			minRange: 0,
 			maxRange: 1999,
 		},
 		'%': {
 			min: 0,
-			max: 1999,
-			minRange: -1999,
-			maxRange: 1999,
+			max: 300,
+			minRange: 0,
+			maxRange: 300,
 		},
 	};
 
@@ -79,12 +84,40 @@ const Size = ({
 		);
 	};
 
+	const onReset = target => {
+		onChange(
+			handleOnReset({
+				[getAttributeKey(target, isHover, prefix, breakpoint)]: isHover
+					? getLastBreakpointAttribute({
+							target: `${prefix}${target}`,
+							breakpoint,
+							attributes: options,
+							isHover: false,
+					  })
+					: getDefaultAttr(target),
+				[getAttributeKey(
+					`${target}-unit`,
+					isHover,
+					prefix,
+					breakpoint
+				)]: isHover
+					? getLastBreakpointAttribute({
+							target: `${prefix}${target}-unit`,
+							breakpoint,
+							attributes: options,
+							isHover: false,
+					  })
+					: getDefaultAttr(`${target}-unit`),
+			})
+		);
+	};
+
 	return (
 		<div className='maxi-background-control__size'>
 			<AdvancedNumberControl
-				label={__('Size', 'maxi-blocks')}
+				label={__('Width', 'maxi-blocks')}
 				value={getLastBreakpointAttribute({
-					target: `${prefix}size`,
+					target: `${prefix}width`,
 					breakpoint,
 					attributes: options,
 					isHover,
@@ -92,39 +125,67 @@ const Size = ({
 				allowedUnits={['px', 'em', 'vw', '%']}
 				enableUnit
 				unit={getLastBreakpointAttribute({
-					target: `${prefix}size-unit`,
+					target: `${prefix}width-unit`,
 					breakpoint,
 					attributes: options,
 					isHover,
 				})}
 				onChangeValue={val => {
 					onChange({
-						[getAttributeKey('size', isHover, prefix, breakpoint)]:
+						[getAttributeKey('width', isHover, prefix, breakpoint)]:
 							val,
 					});
 				}}
 				onChangeUnit={val =>
 					onChange({
 						[getAttributeKey(
-							'size-unit',
+							'width-unit',
 							isHover,
 							prefix,
 							breakpoint
 						)]: val,
 					})
 				}
-				onReset={() =>
+				onReset={() => onReset('width')}
+				minMaxSettings={minMaxSettings}
+			/>
+			<AdvancedNumberControl
+				label={__('Height', 'maxi-blocks')}
+				value={getLastBreakpointAttribute({
+					target: `${prefix}height`,
+					breakpoint,
+					attributes: options,
+					isHover,
+				})}
+				allowedUnits={['px', 'em', 'vw', '%']}
+				enableUnit
+				unit={getLastBreakpointAttribute({
+					target: `${prefix}height-unit`,
+					breakpoint,
+					attributes: options,
+					isHover,
+				})}
+				onChangeValue={val => {
 					onChange({
-						[getAttributeKey('size', isHover, prefix, breakpoint)]:
-							getDefaultAttr('size'),
 						[getAttributeKey(
-							'size-unit',
+							'height',
 							isHover,
 							prefix,
 							breakpoint
-						)]: getDefaultAttr('size-unit'),
+						)]: val,
+					});
+				}}
+				onChangeUnit={val =>
+					onChange({
+						[getAttributeKey(
+							'height-unit',
+							isHover,
+							prefix,
+							breakpoint
+						)]: val,
 					})
 				}
+				onReset={() => onReset('height')}
 				minMaxSettings={minMaxSettings}
 			/>
 		</div>
@@ -182,6 +243,12 @@ const SizeAndPositionLayerControl = ({
 				{...equivalentProps}
 				className='maxi-background-control__position'
 				disablePosition
+				defaultAttributes={getDefaultLayerWithBreakpoint(
+					`${type === 'shape' ? 'SVG' : type}Options`,
+					'general',
+					isHover
+				)}
+				disableRTC
 			/>
 		</>
 	);

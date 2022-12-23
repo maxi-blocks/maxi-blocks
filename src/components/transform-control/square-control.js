@@ -11,7 +11,7 @@ import { Tooltip } from '@wordpress/components';
 import Button from '../button';
 import SelectControl from '../select-control';
 import BlockResizer from '../block-resizer';
-import { validateOriginValue } from '../../extensions/styles';
+import { validateOriginValue, getIsValid } from '../../extensions/styles';
 import ResetButton from '../reset-control';
 
 /**
@@ -31,13 +31,9 @@ import { sync as syncIcon } from '../../icons';
 const SquareControl = props => {
 	const {
 		x,
-		defaultX,
 		xUnit = null,
-		defaultXUnit,
 		y,
-		defaultY,
 		yUnit = null,
-		defaultYUnit,
 		onChange,
 		onSave,
 		type = 'resize',
@@ -53,6 +49,8 @@ const SquareControl = props => {
 	const [isMoving, changeIsMoving] = useState(false);
 	const [clientX, changeClientX] = useState(0);
 	const [clientY, changeClientY] = useState(0);
+	const [tempX, changeTempX] = useState(0);
+	const [tempY, changeTempY] = useState(0);
 
 	const percentToPx = value => {
 		return round((value / 100) * 40, 1);
@@ -60,6 +58,20 @@ const SquareControl = props => {
 
 	const pxToPercent = value => {
 		return round((value / 40) * 100, 1);
+	};
+
+	const pxToUnit = (value, unit) => {
+		// converts a percentage value to the equivalent value in that unit
+		switch (unit) {
+			case 'em':
+				return value / 12;
+			case 'px':
+				return value;
+			case 'vw':
+				return value / (window.innerWidth / 100);
+			default:
+				return (value / 40) * 100;
+		}
 	};
 
 	const getDefaultSize = () => {
@@ -72,14 +84,14 @@ const SquareControl = props => {
 		};
 	};
 
-	const getPlaceholder = (value, isYAxis = false) => {
+	const getPlaceholder = value => {
 		switch (type) {
 			case 'resize':
 				return '100';
 			case 'drag':
-				return '0%';
+				return '0';
 			case 'origin':
-				return isYAxis ? 'middle' : 'center';
+				return validateOriginValue(value);
 			default:
 				return false;
 		}
@@ -89,7 +101,7 @@ const SquareControl = props => {
 		switch (type) {
 			case 'resize':
 				return {
-					min: '0',
+					min: '-100',
 					max: '300',
 				};
 			case 'drag':
@@ -109,31 +121,54 @@ const SquareControl = props => {
 
 	const onReset = () => {
 		switch (type) {
-			case 'resize':
-				changeXAxis(defaultX);
-				changeYAxis(defaultY);
-				onSave(defaultX, defaultY);
-				break;
 			case 'drag':
-				changeXAxis(0);
-				changeYAxis(0);
-				onSave(0, 0, defaultXUnit, defaultYUnit);
-				break;
+			case 'resize':
 			case 'origin':
-				changeXAxis(defaultX);
-				changeYAxis(defaultY);
-				onSave(defaultX, defaultY, defaultXUnit, defaultYUnit);
+				onSave();
 				break;
 			default:
 				return false;
 		}
 		return false;
 	};
+
+	const getNewValueFromEmpty = (e, currentValue, placeholder) => {
+		const {
+			nativeEvent: { inputType },
+		} = e;
+
+		const newValue = !isEmpty(e.target.value) ? Number(e.target.value) : '';
+
+		if (isNumber(currentValue) && Number.isFinite(currentValue))
+			return newValue;
+
+		const typeofEvent = getIsValid(inputType, true) ? 'type' : 'click';
+
+		switch (typeofEvent) {
+			case 'click':
+				return (
+					(!isNaN(Number(placeholder)) && isEmpty(currentValue)
+						? +placeholder
+						: 0) + +newValue
+				);
+			case 'type':
+			default:
+				return newValue;
+		}
+	};
+
 	const transformStr = useCallback(() => {
-		return `translateX(${xAxis}${xUnit}) translateY(${yAxis}${yUnit})`;
-	}, [xAxis, xUnit, yAxis, yUnit]);
+		return `translateX(${tempX}${xUnit}) translateY(${tempY}${yUnit})`;
+	}, [tempX, xAxis, xUnit, tempY, yAxis, yUnit]);
 
 	const isShowUnit = axis => !isNaN(toNumber(axis));
+
+	useEffect(() => {
+		if (isMoving) return;
+
+		if (Math.round(tempX) !== xAxis && isNumber(xAxis)) changeTempX(xAxis);
+		if (Math.round(tempY) !== yAxis && isNumber(yAxis)) changeTempY(yAxis);
+	}, [xAxis, yAxis, xUnit, yUnit]);
 
 	useEffect(() => {
 		changeXAxis(x);
@@ -156,6 +191,8 @@ const SquareControl = props => {
 		changeYUnit(yUnit);
 	}, [xUnit, yUnit]);
 
+	let mouseOutDelay = null;
+
 	return (
 		<div className='maxi-transform-control__square-control'>
 			<div
@@ -165,15 +202,25 @@ const SquareControl = props => {
 					e.preventDefault();
 
 					if (isMoving) {
-						changeXAxis(
-							Number(xAxis || 0) -
-								(Number(clientX) - Number(e.clientX)) * 2
+						// Change the tempX and tempY with floating point values and set x and y to the rounded values
+						// The temp values should only change by 2 pixels at a time (convert the mouseX and mouseY according to unit)
+						const xChange = pxToUnit(
+							Number(clientX) - Number(e.clientX),
+							xUnit
 						);
+
+						changeTempX(Number(tempX || 0) - xChange);
+
+						changeXAxis(Math.round(tempX));
 						changeClientX(Number(e.clientX));
-						changeYAxis(
-							Number(yAxis || 0) -
-								(Number(clientY) - Number(e.clientY)) * 2
+
+						const yChange = pxToUnit(
+							Number(clientY) - Number(e.clientY),
+							yUnit
 						);
+						changeTempY(Number(tempY || 0) - yChange);
+						changeYAxis(Math.round(tempY));
+
 						changeClientY(Number(e.clientY));
 						onChange(xAxis, yAxis, xUnit, yUnit);
 					}
@@ -237,9 +284,13 @@ const SquareControl = props => {
 							changeIsMoving(false);
 							onSave(xAxis, yAxis, xUnit, yUnit);
 						}}
-						onMouseOut={() => {
-							changeIsMoving(false);
-							onSave(xAxis, yAxis, xUnit, yUnit);
+						onMouseOut={e => {
+							mouseOutDelay = setTimeout(() => {
+								changeIsMoving(false);
+							}, 500);
+						}}
+						onMouseOver={() => {
+							clearTimeout(mouseOutDelay);
 						}}
 						style={{
 							transform: transformStr(),
@@ -248,178 +299,64 @@ const SquareControl = props => {
 				)}
 				{type === 'origin' && (
 					<div className='maxi-transform-control__square-control__canvas__origin'>
-						<Button
-							aria-pressed={
-								xAxis === 'left' && yAxis === 'top'
-									? 'active'
-									: ''
-							}
-							className={classnames(
-								'maxi-transform-control__square-control__canvas__origin',
-								'maxi-transform-control__square-control__canvas__origin__button',
-								'maxi-transform-control__square-control__canvas__origin__left',
-								'maxi-transform-control__square-control__canvas__origin__top'
-							)}
-							onClick={() => {
-								changeXAxis('left');
-								changeYAxis('top');
-								onChange('left', 'top', xUnit, yUnit);
-								onSave('left', 'top', xUnit, yUnit);
-							}}
-						/>
-						<Button
-							aria-pressed={
-								xAxis === 'center' && yAxis === 'top'
-									? 'active'
-									: ''
-							}
-							className={classnames(
-								'maxi-transform-control__square-control__canvas__origin',
-								'maxi-transform-control__square-control__canvas__origin__button',
-								'maxi-transform-control__square-control__canvas__origin__middle',
-								'maxi-transform-control__square-control__canvas__origin__top'
-							)}
-							onClick={() => {
-								changeXAxis('middle');
-								changeYAxis('top');
-								onChange('center', 'top', xUnit, yUnit);
-								onSave('center', 'top', xUnit, yUnit);
-							}}
-						/>
-						<Button
-							aria-pressed={
-								xAxis === 'right' && yAxis === 'top'
-									? 'active'
-									: ''
-							}
-							className={classnames(
-								'maxi-transform-control__square-control__canvas__origin',
-								'maxi-transform-control__square-control__canvas__origin__button',
-								'maxi-transform-control__square-control__canvas__origin__right',
-								'maxi-transform-control__square-control__canvas__origin__top'
-							)}
-							onClick={() => {
-								changeXAxis('right');
-								changeYAxis('top');
-								onChange('right', 'top', xUnit, yUnit);
-								onSave('right', 'top', xUnit, yUnit);
-							}}
-						/>
-						<Button
-							aria-pressed={
-								xAxis === 'left' && yAxis === 'center'
-									? 'active'
-									: ''
-							}
-							className={classnames(
-								'maxi-transform-control__square-control__canvas__origin',
-								'maxi-transform-control__square-control__canvas__origin__button',
-								'maxi-transform-control__square-control__canvas__origin__left',
-								'maxi-transform-control__square-control__canvas__origin__center'
-							)}
-							onClick={() => {
-								changeXAxis('left');
-								changeYAxis('center');
-								onChange('left', 'center', xUnit, yUnit);
-								onSave('left', 'center', xUnit, yUnit);
-							}}
-						/>
-						<Button
-							aria-pressed={
-								(xAxis === 'middle' && yAxis === 'center') ||
-								(!xAxis && !yAxis)
-									? 'active'
-									: ''
-							}
-							className={classnames(
-								'maxi-transform-control__square-control__canvas__origin',
-								'maxi-transform-control__square-control__canvas__origin__button',
-								'maxi-transform-control__square-control__canvas__origin__middle',
-								'maxi-transform-control__square-control__canvas__origin__center'
-							)}
-							onClick={() => {
-								changeXAxis('middle');
-								changeYAxis('center');
-								onChange('middle', 'center', xUnit, yUnit);
-								onSave('middle', 'center', xUnit, yUnit);
-							}}
-						/>
-						<Button
-							aria-pressed={
-								xAxis === 'right' && yAxis === 'center'
-									? 'active'
-									: ''
-							}
-							className={classnames(
-								'maxi-transform-control__square-control__canvas__origin',
-								'maxi-transform-control__square-control__canvas__origin__button',
-								'maxi-transform-control__square-control__canvas__origin__right',
-								'maxi-transform-control__square-control__canvas__origin__center'
-							)}
-							onClick={() => {
-								changeXAxis('right');
-								changeYAxis('center');
-								onChange('right', 'center', xUnit, yUnit);
-								onSave('right', 'center', xUnit, yUnit);
-							}}
-						/>
-						<Button
-							aria-pressed={
-								xAxis === 'left' && yAxis === 'bottom'
-									? 'active'
-									: ''
-							}
-							className={classnames(
-								'maxi-transform-control__square-control__canvas__origin',
-								'maxi-transform-control__square-control__canvas__origin__button',
-								'maxi-transform-control__square-control__canvas__origin__left',
-								'maxi-transform-control__square-control__canvas__origin__bottom'
-							)}
-							onClick={() => {
-								changeXAxis('left');
-								changeYAxis('bottom');
-								onChange('left', 'bottom', xUnit, yUnit);
-								onSave('left', 'bottom', xUnit, yUnit);
-							}}
-						/>
-						<Button
-							aria-pressed={
-								xAxis === 'center' && yAxis === 'bottom'
-									? 'active'
-									: ''
-							}
-							className={classnames(
-								'maxi-transform-control__square-control__canvas__origin',
-								'maxi-transform-control__square-control__canvas__origin__button',
-								'maxi-transform-control__square-control__canvas__origin__middle',
-								'maxi-transform-control__square-control__canvas__origin__bottom'
-							)}
-							onClick={() => {
-								changeXAxis('middle');
-								changeYAxis('bottom');
-								onChange('center', 'bottom', xUnit, yUnit);
-								onSave('center', 'bottom', xUnit, yUnit);
-							}}
-						/>
-						<Button
-							aria-pressed={
-								xAxis === 'right' && yAxis === 'bottom'
-									? 'active'
-									: ''
-							}
-							className={classnames(
-								'maxi-transform-control__square-control__canvas__origin',
-								'maxi-transform-control__square-control__canvas__origin__button',
-								'maxi-transform-control__square-control__canvas__origin__right',
-								'maxi-transform-control__square-control__canvas__origin__bottom'
-							)}
-							onClick={() => {
-								changeXAxis('right');
-								changeYAxis('bottom');
-								onChange('right', 'bottom', xUnit, yUnit);
-								onSave('right', 'bottom', xUnit, yUnit);
-							}}
-						/>
+						{[
+							{
+								xAxis: 'left',
+								yAxis: 'top',
+							},
+							{
+								xAxis: 'middle',
+								yAxis: 'top',
+							},
+							{
+								xAxis: 'right',
+								yAxis: 'top',
+							},
+							{
+								xAxis: 'left',
+								yAxis: 'center',
+							},
+							{ xAxis: 'middle', yAxis: 'center' },
+							{ xAxis: 'right', yAxis: 'center' },
+							{ xAxis: 'left', yAxis: 'bottom' },
+							{ xAxis: 'middle', yAxis: 'bottom' },
+							{ xAxis: 'right', yAxis: 'bottom' },
+						].map(
+							({ xAxis: itemXAxis, yAxis: itemYAxis }, index) => (
+								<Button
+									// eslint-disable-next-line react/no-array-index-key
+									key={index}
+									aria-pressed={
+										xAxis === itemXAxis &&
+										yAxis === itemYAxis
+											? 'active'
+											: ''
+									}
+									className={classnames(
+										'maxi-transform-control__square-control__canvas__origin',
+										'maxi-transform-control__square-control__canvas__origin__button',
+										`maxi-transform-control__square-control__canvas__origin__${itemXAxis}`,
+										`maxi-transform-control__square-control__canvas__origin__${itemYAxis}`
+									)}
+									onClick={() => {
+										changeXAxis(itemXAxis);
+										changeYAxis(itemYAxis);
+										onChange(
+											itemXAxis,
+											itemYAxis,
+											xUnit,
+											yUnit
+										);
+										onSave(
+											itemXAxis,
+											itemYAxis,
+											xUnit,
+											yUnit
+										);
+									}}
+								/>
+							)
+						)}
 					</div>
 				)}
 				<span className='maxi-transform-control__square-control__canvas__placeholder' />
@@ -430,7 +367,11 @@ const SquareControl = props => {
 						<input
 							type='range'
 							className='maxi-transform-control__square-control__y-control__range'
-							value={yAxis || ''}
+							value={
+								!isNumber(validateOriginValue(yAxis))
+									? ''
+									: validateOriginValue(yAxis)
+							}
 							onChange={e => {
 								const value = Number(e.target.value);
 
@@ -472,17 +413,23 @@ const SquareControl = props => {
 						<div className='maxi-transform-control__square-control__y-control__value'>
 							<input
 								type='number'
-								placeholder={getPlaceholder(yAxis, true)}
-								className='maxi-transform-control__square-control__y-control__value__input'
-								value={
-									!isNumber(validateOriginValue(yAxis))
-										? ''
+								placeholder={
+									validateOriginValue(yAxis) === false
+										? getPlaceholder(yAxis)
 										: validateOriginValue(yAxis)
 								}
+								className='maxi-transform-control__square-control__y-control__value__input'
+								value={
+									isNumber(validateOriginValue(yAxis))
+										? validateOriginValue(yAxis)
+										: ''
+								}
 								onChange={e => {
-									const newValue = !isEmpty(e.target.value)
-										? validateOriginValue(e.target.value)
-										: '';
+									const newValue = getNewValueFromEmpty(
+										e,
+										validateOriginValue(yAxis),
+										getPlaceholder(yAxis)
+									);
 
 									if (!sync) {
 										changeYAxis(newValue);
@@ -515,6 +462,8 @@ const SquareControl = props => {
 										);
 									}
 								}}
+								min={getMinMax()?.min}
+								max={getMinMax()?.max}
 							/>
 							{isShowUnit(y) && (
 								<SelectControl
@@ -540,7 +489,12 @@ const SquareControl = props => {
 						<input
 							type='range'
 							className='maxi-transform-control__square-control__x-control__range'
-							value={xAxis || ''}
+							value={
+								!isNumber(validateOriginValue(xAxis))
+									? ''
+									: validateOriginValue(xAxis)
+							}
+							placeholder={getPlaceholder(xAxis)}
 							onChange={e => {
 								const value = Number(e.target.value);
 
@@ -582,17 +536,23 @@ const SquareControl = props => {
 						<div className='maxi-transform-control__square-control__x-control__value'>
 							<input
 								type='number'
-								placeholder={getPlaceholder(xAxis)}
-								className='maxi-transform-control__square-control__x-control__value__input'
-								value={
-									!isNumber(validateOriginValue(xAxis))
-										? ''
+								placeholder={
+									validateOriginValue(xAxis) === false
+										? getPlaceholder(xAxis, true)
 										: validateOriginValue(xAxis)
 								}
+								className='maxi-transform-control__square-control__x-control__value__input'
+								value={
+									isNumber(validateOriginValue(xAxis))
+										? validateOriginValue(xAxis)
+										: ''
+								}
 								onChange={e => {
-									const newValue = !isEmpty(e.target.value)
-										? validateOriginValue(e.target.value)
-										: '';
+									const newValue = getNewValueFromEmpty(
+										e,
+										validateOriginValue(xAxis),
+										getPlaceholder(xAxis)
+									);
 
 									if (!sync) {
 										changeXAxis(newValue);
@@ -625,6 +585,8 @@ const SquareControl = props => {
 										);
 									}
 								}}
+								min={getMinMax()?.min}
+								max={getMinMax()?.max}
 							/>
 							{isShowUnit(x) && (
 								<SelectControl
@@ -654,7 +616,11 @@ const SquareControl = props => {
 						<input
 							type='range'
 							className='maxi-transform-control__square-control__y-control__range'
-							value={yAxis || ''}
+							value={
+								!isNumber(yAxis)
+									? getPlaceholder(yAxis, true)
+									: yAxis
+							}
 							onChange={e => {
 								const value = Number(e.target.value);
 
@@ -680,9 +646,11 @@ const SquareControl = props => {
 								className='maxi-transform-control__square-control__y-control__value__input'
 								value={!isNumber(yAxis) ? '' : yAxis}
 								onChange={e => {
-									const newValue = !isEmpty(e.target.value)
-										? Number(e.target.value)
-										: '';
+									const newValue = getNewValueFromEmpty(
+										e,
+										yAxis,
+										getPlaceholder(yAxis)
+									);
 
 									if (!sync) {
 										changeYAxis(newValue);
@@ -705,6 +673,8 @@ const SquareControl = props => {
 										);
 									}
 								}}
+								min={getMinMax()?.min}
+								max={getMinMax()?.max}
 							/>
 							{!!yUnit && (
 								<SelectControl
@@ -730,7 +700,9 @@ const SquareControl = props => {
 						<input
 							type='range'
 							className='maxi-transform-control__square-control__x-control__range'
-							value={xAxis || ''}
+							value={
+								!isNumber(xAxis) ? getPlaceholder(xAxis) : xAxis
+							}
 							onChange={e => {
 								const value = Number(e.target.value);
 
@@ -756,9 +728,11 @@ const SquareControl = props => {
 								className='maxi-transform-control__square-control__x-control__value__input'
 								value={!isNumber(xAxis) ? '' : xAxis}
 								onChange={e => {
-									const newValue = !isEmpty(e.target.value)
-										? Number(e.target.value)
-										: '';
+									const newValue = getNewValueFromEmpty(
+										e,
+										xAxis,
+										getPlaceholder(xAxis)
+									);
 
 									if (!sync) {
 										changeXAxis(newValue);
@@ -781,6 +755,8 @@ const SquareControl = props => {
 										);
 									}
 								}}
+								min={getMinMax()?.min}
+								max={getMinMax()?.max}
 							/>
 							{!!xUnit && (
 								<SelectControl

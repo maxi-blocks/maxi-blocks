@@ -7,6 +7,7 @@ import { select, dispatch } from '@wordpress/data';
  * Internal dependencies
  */
 import { openSidebar } from '../dom';
+import { getBlockDataByUniqueID } from '../styles/migrators/utils';
 
 const { receiveInspectorPath } = select('maxiBlocks');
 
@@ -36,13 +37,23 @@ export const openSidebarAccordion = (tab, accordionName) => {
 };
 
 export const openTransitions = () => {
+	const tabNumber = () => {
+		const { uniqueID } =
+			select('core/block-editor').getSelectedBlock().attributes;
+		const checkForCanvas =
+			getBlockDataByUniqueID(uniqueID)?.customCss?.categories;
+		if (Array.isArray(checkForCanvas) && checkForCanvas.includes('canvas'))
+			return 2;
+		return 1;
+	};
+
 	const { openGeneralSidebar } = dispatch('core/edit-post');
 	openGeneralSidebar('edit-post/block')
 		.then(() =>
 			dispatch('maxiBlocks').updateInspectorPath({
 				depth: 0,
 				name: 'Advanced',
-				value: 2,
+				value: tabNumber,
 			})
 		)
 		.then(() => openSidebar('hover transition'));

@@ -13,10 +13,10 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { opacity as opacityAttr } from '../../extensions/styles/defaults';
-import ResponsiveTabsControl from '../responsive-tabs-control';
 import SettingTabsControl from '../setting-tabs-control';
 import ToggleSwitch from '../toggle-switch';
 import ManageHoverTransitions from '../manage-hover-transitions';
+import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * Component
@@ -34,71 +34,70 @@ const opacity = ({ props, depth = 2 }) => {
 	return {
 		label: __('Opacity', 'maxi-blocks'),
 		content: (
-			<ResponsiveTabsControl breakpoint={deviceType}>
-				<SettingTabsControl
-					depth={depth}
-					items={[
-						{
-							label: __('Normal state', 'maxi-blocks'),
-							content: (
-								<OpacityControl
-									opacity={normalOpacity}
-									onChange={val =>
+			<SettingTabsControl
+				depth={depth}
+				items={[
+					{
+						label: __('Normal state', 'maxi-blocks'),
+						content: (
+							<OpacityControl
+								opacity={normalOpacity}
+								onChange={val =>
+									maxiSetAttributes({
+										[getAttributeKey(
+											'opacity',
+											false,
+											'',
+											deviceType
+										)]: val,
+									})
+								}
+							/>
+						),
+					},
+					{
+						label: __('Hover state', 'maxi-blocks'),
+						content: (
+							<>
+								<ManageHoverTransitions />
+								<ToggleSwitch
+									label={__(
+										'Enable opacity hover',
+										'maxi-blocks'
+									)}
+									selected={hoverStatus}
+									onChange={value =>
 										maxiSetAttributes({
-											[getAttributeKey(
-												'opacity',
-												false,
-												'',
-												deviceType
-											)]: val,
+											'opacity-status-hover': value,
 										})
 									}
 								/>
-							),
-						},
-						{
-							label: __('Hover state', 'maxi-blocks'),
-							content: (
-								<>
-									<ManageHoverTransitions />
-									<ToggleSwitch
-										label={__(
-											'Enable opacity hover',
-											'maxi-blocks'
-										)}
-										selected={hoverStatus}
-										onChange={value =>
+								{hoverStatus && (
+									<OpacityControl
+										opacity={
+											getLastBreakpointAttribute({
+												target: 'opacity',
+												breakpoint: deviceType,
+												attributes: getGroupAttributes(
+													attributes,
+													'opacityHover'
+												),
+												isHover: true,
+											}) ?? normalOpacity
+										}
+										onChange={val =>
 											maxiSetAttributes({
-												'opacity-status-hover': value,
+												[getAttributeKey(
+													'opacity',
+													true,
+													'',
+													deviceType
+												)]: val,
 											})
 										}
-									/>
-									{hoverStatus && (
-										<OpacityControl
-											opacity={
-												getLastBreakpointAttribute({
-													target: 'opacity',
-													breakpoint: deviceType,
-													attributes:
-														getGroupAttributes(
-															attributes,
-															'opacityHover'
-														),
-													isHover: true,
-												}) ?? normalOpacity
-											}
-											onChange={val =>
-												maxiSetAttributes({
-													[getAttributeKey(
-														'opacity',
-														true,
-														'',
-														deviceType
-													)]: val,
-												})
-											}
-											onReset={() => {
-												maxiSetAttributes({
+										onReset={() => {
+											maxiSetAttributes(
+												handleOnReset({
 													[getAttributeKey(
 														'opacity',
 														true,
@@ -116,16 +115,16 @@ const opacity = ({ props, depth = 2 }) => {
 																),
 														}
 													),
-												});
-											}}
-										/>
-									)}
-								</>
-							),
-						},
-					]}
-				/>
-			</ResponsiveTabsControl>
+												})
+											);
+										}}
+									/>
+								)}
+							</>
+						),
+					},
+				]}
+			/>
 		),
 		extraIndicators: Object.keys(opacityAttr),
 	};

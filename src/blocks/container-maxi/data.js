@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import { createSelectors } from '../../extensions/styles/custom-css';
-import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
+import { getCanvasSettings } from '../../extensions/relations';
 
 /**
  * External dependencies
@@ -105,13 +105,32 @@ const customCss = {
 const interactionBuilderSettings = {
 	block: getCanvasSettings({ name, customCss }),
 };
+const maxiAttributes = {
+	'max-width-xxl': '1690',
+	'max-width-xl': '1170',
+	'max-width-l': '90',
+	'max-width-unit-xxl': 'px',
+	'max-width-unit-xl': 'px',
+	'max-width-unit-l': '%',
+	'width-l': '1170',
+	'width-m': '1000',
+	'width-s': '700',
+	'width-xs': '460',
+	'width-unit-l': 'px',
+};
 
 const data = {
 	name,
 	copyPasteMapping,
 	customCss,
 	interactionBuilderSettings,
+	maxiAttributes,
 };
 
-export { copyPasteMapping, customCss, interactionBuilderSettings };
+export {
+	copyPasteMapping,
+	customCss,
+	interactionBuilderSettings,
+	maxiAttributes,
+};
 export default data;

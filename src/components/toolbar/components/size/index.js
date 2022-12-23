@@ -13,6 +13,7 @@ import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
 } from '../../../../extensions/styles';
+import { handleOnReset } from '../../../../extensions/attributes';
 
 /**
  * Styles & Icons
@@ -93,22 +94,25 @@ const Size = props => {
 								breakpoint,
 								attributes: props,
 							})}
+							allowedUnits={['px', 'em', 'vw', '%']}
 							onChangeValue={val =>
 								onChange({
 									[`width-${breakpoint}`]: val,
 								})
 							}
 							onReset={() =>
-								onChange({
-									[`width-${breakpoint}`]:
-										getDefaultAttribute(
-											`width-${breakpoint}`
-										),
-									[`width-unit-${breakpoint}`]:
-										getDefaultAttribute(
-											`width-unit-${breakpoint}`
-										),
-								})
+								onChange(
+									handleOnReset({
+										[`width-${breakpoint}`]:
+											getDefaultAttribute(
+												`width-${breakpoint}`
+											),
+										[`width-unit-${breakpoint}`]:
+											getDefaultAttribute(
+												`width-unit-${breakpoint}`
+											),
+									})
+								)
 							}
 						/>
 						{BLOCKS_MAX_WIDTH.includes(blockName) &&
@@ -128,16 +132,18 @@ const Size = props => {
 										})
 									}
 									onReset={() =>
-										onChange({
-											[`max-width-${breakpoint}`]:
-												getDefaultAttribute(
-													`max-width-${breakpoint}`
-												),
-											[`max-width-unit-${breakpoint}`]:
-												getDefaultAttribute(
-													`max-width-unit-${breakpoint}`
-												),
-										})
+										onChange(
+											handleOnReset({
+												[`max-width-${breakpoint}`]:
+													getDefaultAttribute(
+														`max-width-${breakpoint}`
+													),
+												[`max-width-unit-${breakpoint}`]:
+													getDefaultAttribute(
+														`max-width-unit-${breakpoint}`
+													),
+											})
+										)
 									}
 									value={getLastBreakpointAttribute({
 										target: 'max-width',

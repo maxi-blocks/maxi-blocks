@@ -18,6 +18,7 @@ import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
+import { handleOnReset } from '../../../../extensions/attributes';
 
 /**
  * External dependencies
@@ -99,16 +100,18 @@ const NumberCounterControl = props => {
 								})
 							}
 							onReset={() =>
-								onChange({
-									[`number-counter-width-${breakpoint}`]:
-										getDefaultAttribute(
-											`number-counter-width-${breakpoint}`
-										),
-									[`number-counter-width-unit-${breakpoint}`]:
-										getDefaultAttribute(
-											`number-counter-width-unit-${breakpoint}`
-										),
-								})
+								onChange(
+									handleOnReset({
+										[`number-counter-width-${breakpoint}`]:
+											getDefaultAttribute(
+												`number-counter-width-${breakpoint}`
+											),
+										[`number-counter-width-unit-${breakpoint}`]:
+											getDefaultAttribute(
+												`number-counter-width-unit-${breakpoint}`
+											),
+									})
+								)
 							}
 							minMaxSettings={minMaxSettings}
 							optionType='string'
@@ -157,12 +160,14 @@ const NumberCounterControl = props => {
 						})
 					}
 					onReset={() =>
-						onChange({
-							'number-counter-start-animation-offset':
-								getDefaultAttribute(
-									'number-counter-start-animation-offset'
-								),
-						})
+						onChange(
+							handleOnReset({
+								'number-counter-start-animation-offset':
+									getDefaultAttribute(
+										'number-counter-start-animation-offset'
+									),
+							})
+						)
 					}
 				/>
 			)}
@@ -182,11 +187,13 @@ const NumberCounterControl = props => {
 				value={props['number-counter-start']}
 				onChangeValue={val => onChange({ 'number-counter-start': val })}
 				onReset={() =>
-					onChange({
-						'number-counter-start': getDefaultAttribute(
-							'number-counter-start'
-						),
-					})
+					onChange(
+						handleOnReset({
+							'number-counter-start': getDefaultAttribute(
+								'number-counter-start'
+							),
+						})
+					)
 				}
 			/>
 			<AdvancedNumberControl
@@ -198,10 +205,12 @@ const NumberCounterControl = props => {
 				value={props['number-counter-end']}
 				onChangeValue={val => onChange({ 'number-counter-end': val })}
 				onReset={() =>
-					onChange({
-						'number-counter-end':
-							getDefaultAttribute('number-counter-end'),
-					})
+					onChange(
+						handleOnReset({
+							'number-counter-end':
+								getDefaultAttribute('number-counter-end'),
+						})
+					)
 				}
 			/>
 			{!props['number-counter-circle-status'] &&
@@ -226,11 +235,13 @@ const NumberCounterControl = props => {
 					onChange({ 'number-counter-duration': val })
 				}
 				onReset={() =>
-					onChange({
-						'number-counter-duration': getDefaultAttribute(
-							'number-counter-duration'
-						),
-					})
+					onChange(
+						handleOnReset({
+							'number-counter-duration': getDefaultAttribute(
+								'number-counter-duration'
+							),
+						})
+					)
 				}
 			/>
 			{!props['number-counter-circle-status'] && (
@@ -245,11 +256,13 @@ const NumberCounterControl = props => {
 						onChange({ 'number-counter-stroke': val })
 					}
 					onReset={() =>
-						onChange({
-							'number-counter-stroke': getDefaultAttribute(
-								'number-counter-stroke'
-							),
-						})
+						onChange(
+							handleOnReset({
+								'number-counter-stroke': getDefaultAttribute(
+									'number-counter-stroke'
+								),
+							})
+						)
 					}
 				/>
 			)}
@@ -271,6 +284,15 @@ const NumberCounterControl = props => {
 			<FontWeightControl
 				onChange={val => {
 					onChange({ [`font-weight-${breakpoint}`]: val });
+				}}
+				onReset={() => {
+					onChange(
+						handleOnReset({
+							[`font-weight-${breakpoint}`]: getDefaultAttribute(
+								`font-weight-${breakpoint}`
+							),
+						})
+					);
 				}}
 				fontWeight={
 					getLastBreakpointAttribute({
@@ -304,12 +326,14 @@ const NumberCounterControl = props => {
 					})
 				}
 				onReset={() =>
-					onChange({
-						[`number-counter-title-font-size-${breakpoint}`]:
-							getDefaultAttribute(
-								`number-counter-title-font-size-${breakpoint}`
-							),
-					})
+					onChange(
+						handleOnReset({
+							[`number-counter-title-font-size-${breakpoint}`]:
+								getDefaultAttribute(
+									`number-counter-title-font-size-${breakpoint}`
+								),
+						})
+					)
 				}
 			/>
 			<ToggleSwitch

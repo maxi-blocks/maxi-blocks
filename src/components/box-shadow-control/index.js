@@ -6,16 +6,17 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
+import AdvancedNumberControl from '../advanced-number-control';
 import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
 import Icon from '../icon';
-import AdvancedNumberControl from '../advanced-number-control';
 import {
 	boxShadowNone,
 	boxShadowTotal,
 	boxShadowBottom,
 	boxShadowSolid,
 } from './defaults';
+import withRTC from '../../extensions/maxi-block/withRTC';
 import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
@@ -26,6 +27,7 @@ import {
  */
 import classnames from 'classnames';
 import { capitalize } from 'lodash';
+import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * Styles and icons
@@ -88,11 +90,13 @@ const BoxShadowValueControl = props => {
 			max={100}
 			minMaxSettings={minMaxSettings}
 			onReset={() =>
-				onChange({
-					[`${prefix}box-shadow-${type}-${breakpoint}${
-						isHover ? '-hover' : ''
-					}`]: 0,
-				})
+				onChange(
+					handleOnReset({
+						[`${prefix}box-shadow-${type}-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`]: 0,
+					})
+				)
 			}
 			initialPosition={getDefaultAttribute(
 				`${prefix}box-shadow-${type}-${breakpoint}${
@@ -201,7 +205,9 @@ const BoxShadowControl = props => {
 			<DefaultStylesControl
 				items={[
 					{
-						activeItem: getIsActive({ ...boxShadowNone(prefix) }),
+						activeItem: getIsActive({
+							...boxShadowNone(prefix),
+						}),
 						content: (
 							<Icon
 								className='maxi-default-styles-control__button__icon'
@@ -211,14 +217,18 @@ const BoxShadowControl = props => {
 						onChange: () => onChangeDefault(boxShadowNone(prefix)),
 					},
 					{
-						activeItem: getIsActive({ ...boxShadowTotal(prefix) }),
+						activeItem: getIsActive({
+							...boxShadowTotal(prefix),
+						}),
 						content: (
 							<div className='maxi-shadow-control__default maxi-shadow-control__default__total' />
 						),
 						onChange: () => onChangeDefault(boxShadowTotal(prefix)),
 					},
 					{
-						activeItem: getIsActive({ ...boxShadowBottom(prefix) }),
+						activeItem: getIsActive({
+							...boxShadowBottom(prefix),
+						}),
 						content: (
 							<div className='maxi-shadow-control__default maxi-shadow-control__default__bottom' />
 						),
@@ -226,7 +236,9 @@ const BoxShadowControl = props => {
 							onChangeDefault(boxShadowBottom(prefix)),
 					},
 					{
-						activeItem: getIsActive({ ...boxShadowSolid(prefix) }),
+						activeItem: getIsActive({
+							...boxShadowSolid(prefix),
+						}),
 						content: (
 							<div className='maxi-shadow-control__default maxi-shadow-control__default__solid' />
 						),
@@ -357,4 +369,4 @@ const BoxShadowControl = props => {
 	);
 };
 
-export default BoxShadowControl;
+export default withRTC(BoxShadowControl);

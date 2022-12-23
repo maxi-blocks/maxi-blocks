@@ -68,7 +68,7 @@
 			.maxi-alignment-control {
 				.maxi-tabs-control {
 					&__button {
-						border-width: 0 0 0 0;
+						border-width: 0;
 						height: 36px;
 
 						&:last-child {
@@ -127,7 +127,7 @@
 
 			.components-maxi-control__reset-button {
 				height: 36px;
-				margin: 0 0;
+				margin: 0;
 				border: none;
 
 				svg {

@@ -36,6 +36,7 @@ const FullSizeControl = props => {
 		hideHeight,
 		hideWidth,
 		hideMaxWidth,
+		hideFit,
 		prefix = '',
 		isBlockFullWidth,
 		allowForceAspectRatio = false,
@@ -116,7 +117,7 @@ const FullSizeControl = props => {
 						}
 					/>
 				))}
-			{!isBlockFullWidth && (
+			{!isBlockFullWidth && !hideFit && (
 				<ToggleSwitch
 					label={__('Set width to fit content', 'maxi-blocks')}
 					className='maxi-full-size-control__width-fit-content'

@@ -37,12 +37,9 @@ const TextMargin = props => {
 			<div className='toolbar-item__text-margin__popover toolbar-item__padding-margin__popover'>
 				<MarginControl
 					{...getGroupAttributes(props, 'margin')}
-					label={__('Top', 'maxi-blocks')}
 					onChange={onChange}
-					target='margin'
-					noResponsiveTabs
 					breakpoint={breakpoint}
-					optionType='string'
+					noResponsiveTabs
 				/>
 			</div>
 		</ToolbarPopover>

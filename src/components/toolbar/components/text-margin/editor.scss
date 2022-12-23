@@ -18,6 +18,7 @@
 			}
 			.maxi-axis-control {
 				& > div {
+					flex-direction: column;
 					& > .maxi-axis-control__unit-header {
 						display: none;
 					}

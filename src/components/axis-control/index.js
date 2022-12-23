@@ -783,6 +783,7 @@ const AxisControl = props => {
 			{!useResponsiveTabs && (
 				<AxisControlContent
 					{...props}
+					breakpoint={breakpoint}
 					key='AxisControlContent__non-responsive'
 					label={label}
 					getOptions={getOptions}

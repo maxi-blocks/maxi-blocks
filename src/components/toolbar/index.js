@@ -593,6 +593,7 @@ const MaxiToolbar = memo(
 						/>
 						<TextMargin
 							blockName={name}
+							breakpoint={breakpoint}
 							{...getGroupAttributes(
 								attributes,
 								'margin',

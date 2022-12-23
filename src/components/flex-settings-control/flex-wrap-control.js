@@ -7,8 +7,12 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import SelectControl from '../select-control';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
+import {
+	getDefaultAttribute,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import getOptions from './utils';
+import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * Component
@@ -27,6 +31,15 @@ const FlexWrapControl = props => {
 					breakpoint,
 					attributes: props,
 				}) ?? ''
+			}
+			onReset={() =>
+				onChange(
+					handleOnReset({
+						[`flex-wrap-${breakpoint}`]: getDefaultAttribute(
+							`flex-wrap-${breakpoint}`
+						),
+					})
+				)
 			}
 			options={getOptions(['nowrap', 'wrap', 'wrap-reverse'])}
 			onChange={val =>

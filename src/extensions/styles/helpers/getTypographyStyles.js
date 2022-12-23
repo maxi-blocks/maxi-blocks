@@ -28,6 +28,7 @@ const getTypographyStyles = ({
 	textLevel = 'p',
 	normalTypography, // Just in case is hover,
 	scValues = {},
+	isStyleCards = false,
 }) => {
 	const response = {};
 
@@ -168,17 +169,19 @@ const getTypographyStyles = ({
 			...(!isNil(obj[getName('vertical-align', breakpoint)]) && {
 				'vertical-align': obj[getName('vertical-align', breakpoint)],
 			}),
-			...(!isNil(obj[getName('text-orientation', breakpoint)]) && {
-				'writing-mode':
-					obj[getName('text-orientation', breakpoint)] !== 'unset'
-						? 'vertical-rl'
-						: 'unset',
-				'text-orientation':
-					obj[getName('text-orientation', breakpoint)],
-			}),
-			...(!isNil(obj[getName('text-direction', breakpoint)]) && {
-				direction: obj[getName('text-direction', breakpoint)],
-			}),
+			...(!isStyleCards &&
+				!isNil(obj[getName('text-orientation', breakpoint)]) && {
+					'writing-mode':
+						obj[getName('text-orientation', breakpoint)] !== 'unset'
+							? 'vertical-rl'
+							: 'unset',
+					'text-orientation':
+						obj[getName('text-orientation', breakpoint)],
+				}),
+			...(!isStyleCards &&
+				!isNil(obj[getName('text-direction', breakpoint)]) && {
+					direction: obj[getName('text-direction', breakpoint)],
+				}),
 		};
 
 		if (!isEmpty(typography)) response[breakpoint] = typography;

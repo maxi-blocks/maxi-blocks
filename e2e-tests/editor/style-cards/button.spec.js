@@ -47,6 +47,7 @@ describe('StyleCards, Buttons', () => {
 				'.maxi-typography-control.maxi-style-cards-control__sc__button-typography'
 			),
 			...generalTypographyStyle,
+			isStyleCards: true,
 		});
 
 		// Check Button global styles
@@ -112,6 +113,7 @@ describe('StyleCards, Buttons', () => {
 				'.maxi-typography-control.maxi-style-cards-control__sc__button-typography'
 			),
 			...responsiveTypographyStyle,
+			isStyleCards: true,
 		});
 
 		expect(await checkSCResult(page)).toMatchSnapshot();
@@ -122,6 +124,7 @@ describe('StyleCards, Buttons', () => {
 			instance: await page.$(
 				'.maxi-typography-control.maxi-style-cards-control__sc__button-typography'
 			),
+			isStyleCards: true,
 		});
 
 		expect(typographyStylesS).toStrictEqual(responsiveTypographyStyle);
@@ -132,6 +135,7 @@ describe('StyleCards, Buttons', () => {
 			instance: await page.$(
 				'.maxi-typography-control.maxi-style-cards-control__sc__button-typography'
 			),
+			isStyleCards: true,
 		});
 
 		expect(typographyStylesL).toStrictEqual(generalTypographyStyle);

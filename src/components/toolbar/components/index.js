@@ -15,6 +15,7 @@ export { default as Duplicate } from './duplicate';
 export { default as IconBackground } from './icon-background';
 export { default as IconPosition } from './icon-position';
 export { default as IconSize } from './icon-size';
+export { default as ImageSize } from './image-size';
 export { default as Link } from './link';
 export { default as Mover } from './mover';
 export { default as NumberCounterReplay } from './number-counter-replay';

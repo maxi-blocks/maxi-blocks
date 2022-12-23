@@ -82,14 +82,13 @@ const FlexSettingsControl = props => {
 										}) ?? ''
 									}
 									onReset={() =>
-										onChange(
-											handleOnReset({
-												[`flex-direction-${breakpoint}`]:
-													getDefaultAttribute(
-														`flex-direction-${breakpoint}`
-													),
-											})
-										)
+										onChange({
+											[`flex-direction-${breakpoint}`]:
+												getDefaultAttribute(
+													`flex-direction-${breakpoint}`
+												),
+											isReset: true,
+										})
 									}
 									options={getOptions([
 										'row',
@@ -121,14 +120,13 @@ const FlexSettingsControl = props => {
 										}) ?? ''
 									}
 									onReset={() =>
-										onChange(
-											handleOnReset({
-												[`align-content-${breakpoint}`]:
-													getDefaultAttribute(
-														`align-content-${breakpoint}`
-													),
-											})
-										)
+										onChange({
+											[`align-content-${breakpoint}`]:
+												getDefaultAttribute(
+													`align-content-${breakpoint}`
+												),
+											isReset: true,
+										})
 									}
 									options={getOptions([
 										'flex-start',
@@ -252,14 +250,13 @@ const FlexSettingsControl = props => {
 											  }) ?? ''
 									}
 									onReset={() =>
-										onChange(
-											handleOnReset({
-												[`flex-basis-${breakpoint}`]:
-													getDefaultAttribute(
-														`flex-basis-${breakpoint}`
-													),
-											})
-										)
+										onChange({
+											[`flex-basis-${breakpoint}`]:
+												getDefaultAttribute(
+													`flex-basis-${breakpoint}`
+												),
+											isReset: true,
+										})
 									}
 									options={getOptions([
 										'content',

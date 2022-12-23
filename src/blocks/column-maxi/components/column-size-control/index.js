@@ -120,23 +120,22 @@ const ColumnSizeControl = props => {
 					})
 				}
 				onReset={() => {
-					onChange(
-						handleOnReset({
-							[getAttributeKey(
+					onChange({
+						[getAttributeKey(
+							'justify-content',
+							false,
+							'',
+							breakpoint
+						)]: getDefaultAttribute(
+							getAttributeKey(
 								'justify-content',
 								false,
 								'',
 								breakpoint
-							)]: getDefaultAttribute(
-								getAttributeKey(
-									'justify-content',
-									false,
-									'',
-									breakpoint
-								)
-							),
-						})
-					);
+							)
+						),
+						isReset: true,
+					});
 				}}
 			/>
 		</>

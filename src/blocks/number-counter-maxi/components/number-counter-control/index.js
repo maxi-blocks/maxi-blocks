@@ -279,13 +279,12 @@ const NumberCounterControl = props => {
 					onChange({ [`font-weight-${breakpoint}`]: val });
 				}}
 				onReset={() => {
-					onChange(
-						handleOnReset({
-							[`font-weight-${breakpoint}`]: getDefaultAttribute(
-								`font-weight-${breakpoint}`
-							),
-						})
-					);
+					onChange({
+						[`font-weight-${breakpoint}`]: getDefaultAttribute(
+							`font-weight-${breakpoint}`
+						),
+						isReset: true,
+					});
 				}}
 				fontWeight={
 					getLastBreakpointAttribute({

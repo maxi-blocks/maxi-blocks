@@ -182,14 +182,13 @@ const DividerControl = props => {
 						}) || 'none'
 					}
 					onReset={() =>
-						onChange(
-							handleOnReset({
-								[`${prefix}divider-border-style-${breakpoint}`]:
-									getDefaultAttribute(
-										`${prefix}divider-border-style-${breakpoint}`
-									),
-							})
-						)
+						onChange({
+							[`${prefix}divider-border-style-${breakpoint}`]:
+								getDefaultAttribute(
+									`${prefix}divider-border-style-${breakpoint}`
+								),
+							isReset: true,
+						})
 					}
 					onChange={val =>
 						onChange({

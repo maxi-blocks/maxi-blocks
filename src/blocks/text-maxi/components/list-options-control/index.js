@@ -142,14 +142,13 @@ const ListOptionsControl = props => {
 					attributes,
 				})}
 				onReset={() =>
-					maxiSetAttributes(
-						handleOnReset({
-							[`list-style-position-${deviceType}`]:
-								getDefaultAttribute(
-									`list-style-position-${deviceType}`
-								),
-						})
-					)
+					maxiSetAttributes({
+						[`list-style-position-${deviceType}`]:
+							getDefaultAttribute(
+								`list-style-position-${deviceType}`
+							),
+						isReset: true,
+					})
 				}
 				options={[
 					{
@@ -590,14 +589,13 @@ const ListOptionsControl = props => {
 					attributes,
 				})}
 				onReset={() =>
-					maxiSetAttributes(
-						handleOnReset({
-							[`list-text-position-${deviceType}`]:
-								getDefaultAttribute(
-									`list-text-position-${deviceType}`
-								),
-						})
-					)
+					maxiSetAttributes({
+						[`list-text-position-${deviceType}`]:
+							getDefaultAttribute(
+								`list-text-position-${deviceType}`
+							),
+						isReset: true,
+					})
 				}
 				options={[
 					{
@@ -639,11 +637,10 @@ const ListOptionsControl = props => {
 					className='maxi-text-inspector__list-type'
 					value={typeOfList}
 					onReset={() =>
-						maxiSetAttributes(
-							handleOnReset({
-								typeOfList: getDefaultAttribute('typeOfList'),
-							})
-						)
+						maxiSetAttributes({
+							typeOfList: getDefaultAttribute('typeOfList'),
+							isReset: true,
+						})
 					}
 					options={[
 						{
@@ -670,11 +667,10 @@ const ListOptionsControl = props => {
 						className='maxi-text-inspector__list-style'
 						value={listStyle || 'disc'}
 						onReset={() =>
-							maxiSetAttributes(
-								handleOnReset({
-									listStyle: getDefaultAttribute('listStyle'),
-								})
-							)
+							maxiSetAttributes({
+								listStyle: getDefaultAttribute('listStyle'),
+								isReset: true,
+							})
 						}
 						options={getListStyleOptions(typeOfList)}
 						onChange={listStyle => {
@@ -741,11 +737,10 @@ const ListOptionsControl = props => {
 								className='maxi-text-inspector__list-source-selector'
 								value={listStyleSource}
 								onReset={() =>
-									maxiSetAttributes(
-										handleOnReset({
-											defaultListStyleSource,
-										})
-									)
+									maxiSetAttributes({
+										defaultListStyleSource,
+										isReset: true,
+									})
 								}
 								options={[
 									{

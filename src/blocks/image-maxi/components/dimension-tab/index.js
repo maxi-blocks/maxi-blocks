@@ -102,11 +102,10 @@ const DimensionTab = props => {
 								: 'full'
 						} // is still necessary?
 						onReset={() =>
-							maxiSetAttributes(
-								handleOnReset({
-									imageSize: getDefaultAttribute('imageSize'),
-								})
-							)
+							maxiSetAttributes({
+								imageSize: getDefaultAttribute('imageSize'),
+								isReset: true,
+							})
 						}
 						options={getSizeOptions()}
 						onChange={imageSize => {
@@ -187,11 +186,10 @@ const DimensionTab = props => {
 				label={__('Image ratio', 'maxi-blocks')}
 				value={imageRatio}
 				onReset={() =>
-					maxiSetAttributes(
-						handleOnReset({
-							imageRatio: getDefaultAttribute('imageRatio'),
-						})
-					)
+					maxiSetAttributes({
+						imageRatio: getDefaultAttribute('imageRatio'),
+						isReset: true,
+					})
 				}
 				options={[
 					{

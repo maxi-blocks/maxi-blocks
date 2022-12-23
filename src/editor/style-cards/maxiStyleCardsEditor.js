@@ -28,12 +28,11 @@ import MaxiStyleCardsTab from './maxiStyleCardsTab';
 import { updateSCOnEditor } from '../../extensions/style-cards';
 import MaxiModal from '../library/modal';
 import { handleSetAttributes } from '../../extensions/maxi-block';
-import standardSC from '../../../core/utils/defaultSC.json';
 
 /**
  * External dependencies
  */
-import { isEmpty, isNil, isEqual, merge } from 'lodash';
+import { isEmpty, isNil, isEqual } from 'lodash';
 
 /**
  * Icons
@@ -96,20 +95,6 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 	useEffect(() => {
 		if (selectedSCValue) updateSCOnEditor(selectedSCValue);
 	}, [selectedSCKey]);
-
-	const mergeWithStandard = (sc = selectedSCValue) => {
-		console.log(standardSC.sc_maxi);
-		console.log(selectedSCValue);
-
-		const mergedSC = merge(standardSC.sc_maxi, selectedSCValue);
-
-		console.log(mergedSC);
-		console.log('===================');
-
-		return sc;
-	};
-
-	mergeWithStandard();
 
 	const canBeReset = keySC => {
 		if (

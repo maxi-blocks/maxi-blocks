@@ -18,10 +18,8 @@ import { isNil, isEmpty, isBoolean, isNumber, isString, uniq } from 'lodash';
  */
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-const getValueFromKeys = (value, keys) => {
-	if (!keys) console.log(keys);
-	return keys.reduce((acc, key) => acc?.[key], value);
-};
+const getValueFromKeys = (value, keys) =>
+	keys.reduce((acc, key) => acc?.[key], value);
 
 /**
  * Gets an object base on Maxi Blocks breakpoints schema and looks for the last set value

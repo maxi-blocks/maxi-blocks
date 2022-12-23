@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 import { Tooltip } from '@wordpress/components';
 
 /**
@@ -38,13 +38,17 @@ const OverflowControl = props => {
 	const axes = ['x', 'y'];
 	const [sync, changeSync] = useState(true);
 
-	const [AxisVal, setAxisVal] = useState();
+	const [axisVal, setAxisVal] = useState();
 
-	const syncOverflow = () => {
-		if (!sync) {
+	useEffect(() => {
+		setAxisVal(props[`overflow-x-${breakpoint}`]);
+	}, [breakpoint]);
+
+	const syncOverflow = newSync => {
+		if (newSync) {
 			onChange({
-				[`overflow-x-${breakpoint}`]: AxisVal,
-				[`overflow-y-${breakpoint}`]: AxisVal,
+				[`overflow-x-${breakpoint}`]: axisVal,
+				[`overflow-y-${breakpoint}`]: axisVal,
 			});
 		}
 	};
@@ -110,8 +114,9 @@ const OverflowControl = props => {
 						isPrimary={sync}
 						aria-pressed={sync}
 						onClick={() => {
-							changeSync(!sync);
-							syncOverflow();
+							const newSync = !sync;
+							changeSync(newSync);
+							syncOverflow(newSync);
 						}}
 					>
 						{syncIcon}

@@ -160,6 +160,12 @@ const getCanvasSettings = ({ name, customCss }) => [
 				onChange={val =>
 					props.onChange({ [`opacity-${props.breakpoint}`]: val })
 				}
+				onReset={() =>
+					props.onChange({
+						[`opacity-${props.breakpoint}`]: null,
+						isReset: true,
+					})
+				}
 			/>
 		),
 		helper: props => getOpacityStyles(props.obj),

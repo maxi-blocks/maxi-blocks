@@ -40,12 +40,41 @@ const OverflowControl = props => {
 
 	const [axisVal, setAxisVal] = useState();
 
+	const updateSync = (changedAttributes = null) => {
+		const [x, y] = axes.map(axis =>
+			getLastBreakpointAttribute({
+				target: `overflow-${axis}`,
+				breakpoint,
+				attributes: changedAttributes
+					? { ...props, ...changedAttributes }
+					: props,
+			})
+		);
+		changeSync(x === y);
+	};
+
+	const updateAxisVal = (val, changedAttributes = null) => {
+		if (!isEmpty(val)) return setAxisVal(val);
+		return setAxisVal(
+			getLastBreakpointAttribute({
+				target: 'overflow-x',
+				breakpoint,
+				attributes: changedAttributes
+					? { ...props, ...changedAttributes }
+					: props,
+			})
+		);
+	};
+
 	useEffect(() => {
-		setAxisVal(props[`overflow-x-${breakpoint}`]);
+		updateSync();
+		updateAxisVal();
 	}, [breakpoint]);
 
-	const syncOverflow = newSync => {
-		if (newSync) {
+	const onChangeSync = val => {
+		changeSync(val);
+
+		if (val) {
 			onChange({
 				[`overflow-x-${breakpoint}`]: axisVal,
 				[`overflow-y-${breakpoint}`]: axisVal,
@@ -53,21 +82,19 @@ const OverflowControl = props => {
 		}
 	};
 
-	const onChangeValue = (val, axis) => {
-		if (sync) {
-			setAxisVal(val);
+	const onChangeValue = (rawValue, axis) => {
+		const isValEmpty = isEmpty(rawValue);
+		const val = !isValEmpty ? rawValue : null;
 
-			onChange({
-				[`overflow-x-${breakpoint}`]: !isEmpty(val) ? val : null,
-				[`overflow-y-${breakpoint}`]: !isEmpty(val) ? val : null,
-			});
-		} else {
-			setAxisVal(val);
+		const changedAttributes = (sync ? axes : [axis]).reduce((acc, axis) => {
+			acc[`overflow-${axis}-${breakpoint}`] = val;
+			return acc;
+		}, {});
 
-			onChange({
-				[`overflow-${axis}-${breakpoint}`]: !isEmpty(val) ? val : null,
-			});
-		}
+		onChange(changedAttributes);
+
+		updateAxisVal(val, changedAttributes);
+		if (isValEmpty && sync) updateSync(changedAttributes);
 	};
 
 	return (
@@ -113,11 +140,7 @@ const OverflowControl = props => {
 						aria-label={__('Sync units', 'maxi-blocks')}
 						isPrimary={sync}
 						aria-pressed={sync}
-						onClick={() => {
-							const newSync = !sync;
-							changeSync(newSync);
-							syncOverflow(newSync);
-						}}
+						onClick={() => onChangeSync(!sync)}
 					>
 						{syncIcon}
 					</Button>

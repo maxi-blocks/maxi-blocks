@@ -244,12 +244,18 @@ const RelationControl = props => {
 			}, {});
 		};
 
-		const generalToBaseBreakpoint = attributeKeys => {
-			const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
+		const getNewAttributesOnReset = obj => {
+			const newAttributes = { ...item.attributes };
+			const resetTargets = Object.keys({
+				...obj,
+				...transformGeneralAttributesToBaseBreakpoint(obj),
+			});
 
-			return attributeKeys.map(key =>
-				key.replace('general', baseBreakpoint)
-			);
+			resetTargets.forEach(target => {
+				delete newAttributes[target];
+			});
+
+			return newAttributes;
 		};
 
 		const getStylesObj = attributes => {
@@ -322,39 +328,14 @@ const RelationControl = props => {
 			),
 			attributes: mergedAttributes,
 			blockAttributes,
-			onChange: obj => {
-				const newAttributesObj = {
-					...item.attributes,
-					...obj,
-					...transformGeneralAttributesToBaseBreakpoint(obj),
-				};
-
-				const styles = getStyles(
-					getStylesObj(merge({}, blockAttributes, newAttributesObj)),
-					true
-				);
-
-				onChangeRelation(relations, item.id, {
-					attributes: newAttributesObj,
-					css: styles,
-					...(item.settings === 'Transform' && {
-						effects: {
-							...item.effects,
-							transitionTarget: Object.keys(styles),
-						},
-					}),
-				});
-			},
-			onReset: targets => {
-				const newAttributesObj = {
-					...item.attributes,
-				};
-
-				[...targets, ...generalToBaseBreakpoint(targets)].forEach(
-					target => {
-						delete newAttributesObj[target];
-					}
-				);
+			onChange: ({ isReset, ...obj }) => {
+				const newAttributesObj = isReset
+					? getNewAttributesOnReset(obj)
+					: {
+							...item.attributes,
+							...obj,
+							...transformGeneralAttributesToBaseBreakpoint(obj),
+					  };
 
 				const styles = getStyles(
 					getStylesObj(merge({}, blockAttributes, newAttributesObj)),

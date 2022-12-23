@@ -13,7 +13,6 @@ import {
 	DefaultStylesControl,
 	Icon,
 	SettingTabsControl,
-	ResponsiveTabsControl,
 	AlignmentControl,
 } from '../../components';
 import * as defaultPresets from './defaults';
@@ -217,61 +216,13 @@ const Inspector = props => {
 									...inspectorTabs.icon({
 										props,
 									}),
-									{
-										label: __('Alignment', 'maxi-blocks'),
-										content: (
-											<ResponsiveTabsControl
-												breakpoint={deviceType}
-											>
-												<>
-													<label
-														className='maxi-base-control__label'
-														htmlFor={`${alignmentLabel}-alignment`}
-													>
-														{`${alignmentLabel} alignment`}
-													</label>
-													<AlignmentControl
-														id={`${alignmentLabel}-alignment`}
-														label={alignmentLabel}
-														{...getGroupAttributes(
-															attributes,
-															'alignment'
-														)}
-														onChange={obj =>
-															maxiSetAttributes(
-																obj
-															)
-														}
-														breakpoint={deviceType}
-														disableJustify
-													/>
-													<label
-														className='maxi-base-control__label'
-														htmlFor={`${textAlignmentLabel}-alignment`}
-													>
-														{`${textAlignmentLabel} alignment`}
-													</label>
-													<AlignmentControl
-														id={`${textAlignmentLabel}-alignment`}
-														label={
-															textAlignmentLabel
-														}
-														{...getGroupAttributes(
-															attributes,
-															'textAlignment'
-														)}
-														onChange={obj =>
-															maxiSetAttributes(
-																obj
-															)
-														}
-														breakpoint={deviceType}
-														type='text'
-													/>
-												</>
-											</ResponsiveTabsControl>
-										),
-									},
+									...inspectorTabs.alignment({
+										props,
+										isAlignment: true,
+										isTextAlignment: true,
+										alignmentLabel,
+										textAlignmentLabel,
+									}),
 									...(!iconOnly && {
 										...inspectorTabs.typography({
 											props: {

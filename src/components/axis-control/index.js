@@ -472,6 +472,7 @@ const AxisControl = props => {
 		disableSync = false,
 		fullWidth,
 		enableAxisUnits,
+		defaultAttributes = null,
 	} = props;
 
 	const classes = classnames(
@@ -562,25 +563,34 @@ const AxisControl = props => {
 			return filteredResult;
 		};
 
+		const getValueByBreakpoint = (key, breakpoint) => {
+			const attrLabel = getAttributeKey(
+				getKey(key),
+				isHover,
+				false,
+				breakpoint
+			);
+
+			const value =
+				defaultAttributes && attrLabel in defaultAttributes
+					? defaultAttributes[attrLabel]
+					: getDefaultAttribute(attrLabel);
+
+			return value;
+		};
+
 		const getDefaultValue = key => {
 			let value;
 
 			if (breakpoint === 'general' || customBreakpoint === 'general') {
 				const baseBreakpoint =
 					select('maxiBlocks').receiveBaseBreakpoint();
-
-				value = getDefaultAttribute(
-					getAttributeKey(getKey(key), isHover, false, baseBreakpoint)
-				);
+				value = getValueByBreakpoint(key, baseBreakpoint);
 			}
 			if (isNil(value))
-				value = getDefaultAttribute(
-					getAttributeKey(
-						getKey(key),
-						isHover,
-						false,
-						customBreakpoint ?? breakpoint
-					)
+				value = getValueByBreakpoint(
+					key,
+					customBreakpoint ?? breakpoint
 				);
 
 			return value;

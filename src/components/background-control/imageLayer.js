@@ -76,6 +76,7 @@ const ImageLayerSettings = props => {
 						)]: val,
 					})
 				}
+				disableRTC
 			/>
 			<SelectControl
 				label={__('Background size', 'maxi-blocks')}
@@ -136,6 +137,16 @@ const ImageLayerSettings = props => {
 							prefix,
 							breakpoint
 						)]: val,
+					})
+				}
+				onReset={() =>
+					onChange({
+						[getAttributeKey(
+							'background-image-size',
+							isHover,
+							prefix,
+							breakpoint
+						)]: getDefaultAttr('background-image-size'),
 					})
 				}
 			/>
@@ -221,6 +232,16 @@ const ImageLayerSettings = props => {
 							)]: val,
 						})
 					}
+					onReset={() =>
+						onChange({
+							[getAttributeKey(
+								'background-image-repeat',
+								isHover,
+								prefix,
+								breakpoint
+							)]: getDefaultAttr('background-image-repeat'),
+						})
+					}
 				/>
 			)}
 			<SelectControl
@@ -282,6 +303,16 @@ const ImageLayerSettings = props => {
 							prefix,
 							breakpoint
 						)]: val,
+					})
+				}
+				onReset={() =>
+					onChange({
+						[getAttributeKey(
+							'background-image-position',
+							isHover,
+							prefix,
+							breakpoint
+						)]: getDefaultAttr('background-image-position'),
 					})
 				}
 			/>
@@ -443,6 +474,18 @@ const ImageLayerSettings = props => {
 								)]: val,
 							})
 						}
+						onReset={() =>
+							onChange({
+								[getAttributeKey(
+									'background-image-attachment',
+									isHover,
+									prefix,
+									breakpoint
+								)]: getDefaultAttr(
+									'background-image-attachment'
+								),
+							})
+						}
 					/>
 					<ToggleSwitch
 						className='maxi-background-image-more-settings--toggle'
@@ -487,6 +530,18 @@ const ImageLayerSettings = props => {
 										)]: val,
 									})
 								}
+								onReset={() =>
+									onChange({
+										[getAttributeKey(
+											'background-image-origin',
+											isHover,
+											prefix,
+											breakpoint
+										)]: getDefaultAttr(
+											'background-image-origin'
+										),
+									})
+								}
 							/>
 							<SelectControl
 								label={__('Background clip', 'maxi-blocks')}
@@ -519,6 +574,18 @@ const ImageLayerSettings = props => {
 											prefix,
 											breakpoint
 										)]: val,
+									})
+								}
+								onReset={() =>
+									onChange({
+										[getAttributeKey(
+											'background-image-clip',
+											isHover,
+											prefix,
+											breakpoint
+										)]: getDefaultAttr(
+											'background-image-clip'
+										),
 									})
 								}
 							/>

@@ -141,6 +141,16 @@ const HoverEffectControl = props => {
 					<SelectControl
 						label={__('Easing', 'maxi-blocks')}
 						value={props['hover-transition-easing']}
+						onReset={() =>
+							onChange(
+								handleOnReset({
+									'hover-transition-easing':
+										getDefaultAttribute(
+											'hover-transition-easing'
+										),
+								})
+							)
+						}
 						onChange={val =>
 							onChange({ 'hover-transition-easing': val })
 						}
@@ -187,6 +197,16 @@ const HoverEffectControl = props => {
 					<SelectControl
 						label={__('Effect type', 'maxi-blocks')}
 						value={props['hover-basic-effect-type']}
+						onReset={() =>
+							onChange(
+								handleOnReset({
+									'hover-basic-effect-type':
+										getDefaultAttribute(
+											'hover-basic-effect-type'
+										),
+								})
+							)
+						}
 						onChange={val =>
 							onChange({ 'hover-basic-effect-type': val })
 						}
@@ -283,6 +303,16 @@ const HoverEffectControl = props => {
 					<SelectControl
 						label={__('Animation type', 'maxi-blocks')}
 						value={props['hover-text-effect-type']}
+						onReset={() =>
+							onChange(
+								handleOnReset({
+									'hover-text-effect-type':
+										getDefaultAttribute(
+											'hover-text-effect-type'
+										),
+								})
+							)
+						}
 						options={[
 							{ label: __('Fade', 'maxi-blocks'), value: 'fade' },
 							{

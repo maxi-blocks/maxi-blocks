@@ -56,6 +56,7 @@ const VideoLayerContent = props => {
 
 					onChange(videoOptions);
 				}}
+				disableRTC
 			/>
 			<MediaUploaderControl
 				className='maxi-mediauploader-control__video-fallback'

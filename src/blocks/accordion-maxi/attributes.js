@@ -18,7 +18,6 @@ const attributes = {
 	...attributesData.accordionIcon,
 	...attributesData.accordionTitle,
 	...attributesData.accordionLine,
-
 	...attributesData.border,
 	...attributesData.borderHover,
 	...attributesData.borderRadius,

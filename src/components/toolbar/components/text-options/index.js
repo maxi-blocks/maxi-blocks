@@ -320,6 +320,7 @@ const TextOptions = props => {
 										breakpoint={breakpoint}
 										type='text'
 										isToolbar
+										disableRTC
 									/>
 									<TextBold
 										onChangeFormat={onChangeFormat}

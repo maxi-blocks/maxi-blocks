@@ -692,9 +692,9 @@ const ScrollEffectsControl = props => {
 											})
 										}
 										options={viewportOptions}
+										defaultValue='mid'
 									/>
 									<ToggleSwitch
-										// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
 										label={__(
 											'Simulate scroll effect live (test)',
 											'maxi-block'

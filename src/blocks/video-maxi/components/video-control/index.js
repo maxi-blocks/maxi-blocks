@@ -18,6 +18,7 @@ import {
 	SettingTabsControl,
 	TextControl,
 } from '../../../../components';
+import { getDefaultAttribute } from '../../../../extensions/styles';
 
 const VideoControl = props => {
 	const {
@@ -163,6 +164,12 @@ const VideoControl = props => {
 				onChange={newRatio =>
 					onChange({
 						videoRatio: newRatio,
+					})
+				}
+				onReset={() =>
+					onChange({
+						videoRatio: getDefaultAttribute('videoRatio'),
+						isReset: true,
 					})
 				}
 			/>

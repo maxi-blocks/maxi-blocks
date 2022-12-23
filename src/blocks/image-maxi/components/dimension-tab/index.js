@@ -101,6 +101,13 @@ const DimensionTab = props => {
 								? imageSize
 								: 'full'
 						} // is still necessary?
+						onReset={() =>
+							maxiSetAttributes(
+								handleOnReset({
+									imageSize: getDefaultAttribute('imageSize'),
+								})
+							)
+						}
 						options={getSizeOptions()}
 						onChange={imageSize => {
 							const { mediaURL, mediaWidth, mediaHeight } =
@@ -179,6 +186,13 @@ const DimensionTab = props => {
 				className='maxi-image-inspector__ratio'
 				label={__('Image ratio', 'maxi-blocks')}
 				value={imageRatio}
+				onReset={() =>
+					maxiSetAttributes(
+						handleOnReset({
+							imageRatio: getDefaultAttribute('imageRatio'),
+						})
+					)
+				}
 				options={[
 					{
 						label: __('Original size', 'maxi-blocks'),

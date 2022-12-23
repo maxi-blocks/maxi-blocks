@@ -59,48 +59,50 @@ const VideoLayerContent = props => {
 				}}
 				disableRTC
 			/>
-			<MediaUploaderControl
-				className='maxi-mediauploader-control__video-fallback'
-				placeholder={__('Background fallback')}
-				mediaID={getLastBreakpointAttribute({
-					target: `${prefix}background-video-fallbackID`,
-					breakpoint,
-					attributes: videoOptions,
-					isHover,
-				})}
-				onSelectImage={val =>
-					onChange({
-						[getAttributeKey(
-							'background-video-fallbackID',
-							isHover,
-							prefix,
-							breakpoint
-						)]: val.order,
-						[getAttributeKey(
-							'background-video-fallbackURL',
-							isHover,
-							prefix,
-							breakpoint
-						)]: val.url,
-					})
-				}
-				onRemoveImage={() =>
-					onChange({
-						[getAttributeKey(
-							'background-video-fallbackID',
-							isHover,
-							prefix,
-							breakpoint
-						)]: '',
-						[getAttributeKey(
-							'background-video-fallbackURL',
-							isHover,
-							prefix,
-							breakpoint
-						)]: '',
-					})
-				}
-			/>
+			{!isHover && (
+				<MediaUploaderControl
+					className='maxi-mediauploader-control__video-fallback'
+					placeholder={__('Background fallback')}
+					mediaID={getLastBreakpointAttribute({
+						target: `${prefix}background-video-fallbackID`,
+						breakpoint,
+						attributes: videoOptions,
+						isHover,
+					})}
+					onSelectImage={val =>
+						onChange({
+							[getAttributeKey(
+								'background-video-fallbackID',
+								isHover,
+								prefix,
+								breakpoint
+							)]: val.order,
+							[getAttributeKey(
+								'background-video-fallbackURL',
+								isHover,
+								prefix,
+								breakpoint
+							)]: val.url,
+						})
+					}
+					onRemoveImage={() =>
+						onChange({
+							[getAttributeKey(
+								'background-video-fallbackID',
+								isHover,
+								prefix,
+								breakpoint
+							)]: '',
+							[getAttributeKey(
+								'background-video-fallbackURL',
+								isHover,
+								prefix,
+								breakpoint
+							)]: '',
+						})
+					}
+				/>
+			)}
 		</>
 	);
 };

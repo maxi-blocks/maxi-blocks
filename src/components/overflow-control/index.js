@@ -53,18 +53,18 @@ const OverflowControl = props => {
 		changeSync(x === y);
 	};
 
-	const updateAxisVal = (val, changedAttributes = null) => {
-		if (!isEmpty(val)) return setAxisVal(val);
-		return setAxisVal(
-			getLastBreakpointAttribute({
-				target: 'overflow-x',
-				breakpoint,
-				attributes: changedAttributes
-					? { ...props, ...changedAttributes }
-					: props,
-			})
+	const updateAxisVal = (val, changedAttributes = null) =>
+		setAxisVal(
+			!isEmpty(val)
+				? val
+				: getLastBreakpointAttribute({
+						target: 'overflow-x',
+						breakpoint,
+						attributes: changedAttributes
+							? { ...props, ...changedAttributes }
+							: props,
+				  })
 		);
-	};
 
 	useEffect(() => {
 		updateSync();

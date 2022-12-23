@@ -3,6 +3,8 @@
 exports[`StyleCards headings Check Headings 1`] = `
 Object {
   "h1": Object {
+    "bottom-gap-general": 20,
+    "bottom-gap-unit-general": "px",
     "color": "",
     "color-global": true,
     "font-family-general": "Roboto",
@@ -46,9 +48,14 @@ Object {
     "palette-opacity": 1,
     "palette-status": true,
     "text-decoration-general": "overline",
+    "text-direction-general": "ltr",
     "text-indent-general": 44,
     "text-indent-unit-general": "px",
+    "text-orientation-general": "unset",
     "text-transform-general": "capitalize",
+    "white-space-general": "normal",
+    "word-spacing-general": 0,
+    "word-spacing-unit-general": "px",
   },
 }
 `;
@@ -56,6 +63,8 @@ Object {
 exports[`StyleCards headings Works on responsive 1`] = `
 Object {
   "h1": Object {
+    "bottom-gap-general": 20,
+    "bottom-gap-unit-general": "px",
     "color": "",
     "color-global": true,
     "font-family-general": "Roboto",
@@ -103,11 +112,16 @@ Object {
     "palette-status": true,
     "text-decoration-general": "overline",
     "text-decoration-m": "underline",
+    "text-direction-general": "ltr",
     "text-indent-general": 44,
     "text-indent-m": 22,
     "text-indent-unit-general": "px",
+    "text-orientation-general": "unset",
     "text-transform-general": "capitalize",
     "text-transform-m": "uppercase",
+    "white-space-general": "normal",
+    "word-spacing-general": 0,
+    "word-spacing-unit-general": "px",
   },
 }
 `;

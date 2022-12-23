@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -14,7 +15,7 @@ import withRTC from '../../extensions/maxi-block/withRTC';
  */
 import classnames from 'classnames';
 import { isEmpty, round, isNil } from 'lodash';
-import { getIsValid } from '../../extensions/styles';
+import { getDefaultAttribute, getIsValid } from '../../extensions/styles';
 
 /**
  * Component
@@ -28,6 +29,10 @@ const OpacityControl = props => {
 		onReset,
 		disableLabel = false,
 	} = props;
+
+	const { breakpoint } = useSelect(select => ({
+		breakpoint: select('maxiBlocks').receiveMaxiDeviceType(),
+	}));
 
 	const classes = classnames('maxi-opacity-control', className);
 
@@ -45,7 +50,11 @@ const OpacityControl = props => {
 			}}
 			min={0}
 			max={100}
-			onReset={() => (onReset ? onReset() : onChange(1))}
+			onReset={() =>
+				onReset
+					? onReset()
+					: onChange(getDefaultAttribute(`opacity-${breakpoint}`))
+			}
 		/>
 	);
 };

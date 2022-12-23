@@ -75,28 +75,29 @@ const OverflowControl = props => {
 		updateAxisVal();
 	}, [breakpoint]);
 
+	const getChangedAttributes = ({
+		val,
+		axis = null,
+		sync: currentSync = sync,
+	}) =>
+		(currentSync ? axes : [axis]).reduce((acc, axis) => {
+			acc[`overflow-${axis}-${breakpoint}`] = val;
+			return acc;
+		}, {});
+
 	const onChangeSync = val => {
 		changeSync(val);
 
-		if (val) {
-			onChange({
-				[`overflow-x-${breakpoint}`]: axisVal,
-				[`overflow-y-${breakpoint}`]: axisVal,
-			});
-		}
+		if (val) onChange(getChangedAttributes({ val: axisVal, sync: true }));
 	};
 
 	const onChangeValue = (rawValue, axis) => {
 		const isValEmpty = isEmpty(rawValue);
 		const val = !isValEmpty ? rawValue : null;
 
-		const changedAttributes = (sync ? axes : [axis]).reduce((acc, axis) => {
-			acc[`overflow-${axis}-${breakpoint}`] = val;
-			return acc;
-		}, {});
+		const changedAttributes = getChangedAttributes({ val, axis });
 
 		onChange(changedAttributes);
-
 		updateAxisVal(val, changedAttributes);
 		if (isValEmpty && sync) updateSync(changedAttributes);
 	};

@@ -17,7 +17,6 @@ import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * Icons
@@ -310,26 +309,25 @@ const DividerControl = props => {
 								})
 							}
 							onReset={() =>
-								onChange(
-									handleOnReset({
-										[getAttributeKey(
-											'divider-width',
-											isHover,
-											prefix,
-											breakpoint
-										)]: getDefaultAttribute(
-											`divider-width-${breakpoint}`
-										),
-										[getAttributeKey(
-											'divider-width-unit',
-											isHover,
-											prefix,
-											breakpoint
-										)]: getDefaultAttribute(
-											`divider-width-unit-${breakpoint}`
-										),
-									})
-								)
+								onChange({
+									[getAttributeKey(
+										'divider-width',
+										isHover,
+										prefix,
+										breakpoint
+									)]: getDefaultAttribute(
+										`divider-width-${breakpoint}`
+									),
+									[getAttributeKey(
+										'divider-width-unit',
+										isHover,
+										prefix,
+										breakpoint
+									)]: getDefaultAttribute(
+										`divider-width-unit-${breakpoint}`
+									),
+									isReset: true,
+								})
 							}
 							minMaxSettings={minMaxSettings}
 						/>
@@ -380,26 +378,25 @@ const DividerControl = props => {
 								})
 							}
 							onReset={() =>
-								onChange(
-									handleOnReset({
-										[getAttributeKey(
-											'divider-border-top-width',
-											isHover,
-											prefix,
-											breakpoint
-										)]: getDefaultAttribute(
-											`divider-border-top-width-${breakpoint}`
-										),
-										[getAttributeKey(
-											'divider-border-top-unit',
-											isHover,
-											prefix,
-											breakpoint
-										)]: getDefaultAttribute(
-											`divider-border-top-unit-${breakpoint}`
-										),
-									})
-								)
+								onChange({
+									[getAttributeKey(
+										'divider-border-top-width',
+										isHover,
+										prefix,
+										breakpoint
+									)]: getDefaultAttribute(
+										`divider-border-top-width-${breakpoint}`
+									),
+									[getAttributeKey(
+										'divider-border-top-unit',
+										isHover,
+										prefix,
+										breakpoint
+									)]: getDefaultAttribute(
+										`divider-border-top-unit-${breakpoint}`
+									),
+									isReset: true,
+								})
 							}
 							minMaxSettings={minMaxSettings}
 						/>
@@ -433,18 +430,17 @@ const DividerControl = props => {
 							min={0}
 							max={100}
 							onReset={() =>
-								onChange(
-									handleOnReset({
-										[getAttributeKey(
-											'divider-height',
-											isHover,
-											prefix,
-											breakpoint
-										)]: getDefaultAttribute(
-											`divider-height-${breakpoint}`
-										),
-									})
-								)
+								onChange({
+									[getAttributeKey(
+										'divider-height',
+										isHover,
+										prefix,
+										breakpoint
+									)]: getDefaultAttribute(
+										`divider-height-${breakpoint}`
+									),
+									isReset: true,
+								})
 							}
 							initialPosition={getDefaultAttribute(
 								`divider-height-${breakpoint}`
@@ -474,18 +470,17 @@ const DividerControl = props => {
 							min={0}
 							max={100}
 							onReset={() =>
-								onChange(
-									handleOnReset({
-										[getAttributeKey(
-											'divider-border-right-width',
-											isHover,
-											prefix,
-											breakpoint
-										)]: getDefaultAttribute(
-											`divider-border-right-width-${breakpoint}`
-										),
-									})
-								)
+								onChange({
+									[getAttributeKey(
+										'divider-border-right-width',
+										isHover,
+										prefix,
+										breakpoint
+									)]: getDefaultAttribute(
+										`divider-border-right-width-${breakpoint}`
+									),
+									isReset: true,
+								})
 							}
 							initialPosition={getDefaultAttribute(
 								`divider-border-right-width-${breakpoint}`

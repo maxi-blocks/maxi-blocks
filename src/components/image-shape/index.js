@@ -13,7 +13,7 @@ import {
 	ToggleSwitch,
 } from '../../components';
 import MaxiModal from '../../editor/library/modal';
-import { handleOnReset } from '../../extensions/attributes';
+
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
@@ -64,12 +64,11 @@ const ImageShapeResponsiveSettings = ({
 				}),
 			...(component === 'AdvancedNumberControl' && {
 				onReset: () =>
-					onChange(
-						handleOnReset({
-							[targetWithBreakpoint]:
-								getDefaultAttribute(targetWithBreakpoint),
-						})
-					),
+					onChange({
+						[targetWithBreakpoint]:
+							getDefaultAttribute(targetWithBreakpoint),
+						isReset: true,
+					}),
 			}),
 		};
 	};

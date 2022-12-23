@@ -22,7 +22,6 @@ import classnames from 'classnames';
  * Styles
  */
 import './editor.scss';
-import handleOnReset from '../../extensions/attributes/handleOnReset';
 
 /**
  * Component
@@ -116,18 +115,17 @@ const FullSizeControl = props => {
 						onChange({ [`${prefix}width-${breakpoint}`]: val })
 					}
 					onReset={() => {
-						onChange(
-							handleOnReset({
-								[`${prefix}width-${breakpoint}`]:
-									getDefaultAttribute(
-										`${prefix}width-${breakpoint}`
-									),
-								[`${prefix}width-unit-${breakpoint}`]:
-									getDefaultAttribute(
-										`${prefix}width-unit-${breakpoint}`
-									),
-							})
-						);
+						onChange({
+							[`${prefix}width-${breakpoint}`]:
+								getDefaultAttribute(
+									`${prefix}width-${breakpoint}`
+								),
+							[`${prefix}width-unit-${breakpoint}`]:
+								getDefaultAttribute(
+									`${prefix}width-unit-${breakpoint}`
+								),
+							isReset: true,
+						});
 					}}
 					minMaxSettings={minMaxSettings}
 					allowedUnits={['px', 'em', 'vw', '%']}
@@ -182,19 +180,18 @@ const FullSizeControl = props => {
 							onChange({ [`${prefix}height-${breakpoint}`]: val })
 						}
 						onReset={() => {
-							onChange(
-								handleOnReset({
-									[`${prefix}height-${breakpoint}`]:
-										getDefaultAttribute(
-											`${prefix}height-${breakpoint}`
-										),
+							onChange({
+								[`${prefix}height-${breakpoint}`]:
+									getDefaultAttribute(
+										`${prefix}height-${breakpoint}`
+									),
 
-									[`${prefix}height-unit-${breakpoint}`]:
-										getDefaultAttribute(
-											`${prefix}height-unit-${breakpoint}`
-										),
-								})
-							);
+								[`${prefix}height-unit-${breakpoint}`]:
+									getDefaultAttribute(
+										`${prefix}height-unit-${breakpoint}`
+									),
+								isReset: true,
+							});
 						}}
 						minMaxSettings={minMaxSettings}
 						allowedUnits={['px', '%', 'em', 'vw', 'vh']}
@@ -246,18 +243,17 @@ const FullSizeControl = props => {
 									})
 								}
 								onReset={() => {
-									onChange(
-										handleOnReset({
-											[`${prefix}max-width-${breakpoint}`]:
-												getDefaultAttribute(
-													`${prefix}max-width-${breakpoint}`
-												),
-											[`${prefix}max-width-unit-${breakpoint}`]:
-												getDefaultAttribute(
-													`${prefix}max-width-unit-${breakpoint}`
-												),
-										})
-									);
+									onChange({
+										[`${prefix}max-width-${breakpoint}`]:
+											getDefaultAttribute(
+												`${prefix}max-width-${breakpoint}`
+											),
+										[`${prefix}max-width-unit-${breakpoint}`]:
+											getDefaultAttribute(
+												`${prefix}max-width-unit-${breakpoint}`
+											),
+										isReset: true,
+									});
 								}}
 								minMaxSettings={minMaxSettings}
 								allowedUnits={['px', 'em', 'vw', '%']}
@@ -295,18 +291,17 @@ const FullSizeControl = props => {
 								})
 							}
 							onReset={() => {
-								onChange(
-									handleOnReset({
-										[`${prefix}min-width-${breakpoint}`]:
-											getDefaultAttribute(
-												`${prefix}min-width-${breakpoint}`
-											),
-										[`${prefix}min-width-unit-${breakpoint}`]:
-											getDefaultAttribute(
-												`${prefix}min-width-unit-${breakpoint}`
-											),
-									})
-								);
+								onChange({
+									[`${prefix}min-width-${breakpoint}`]:
+										getDefaultAttribute(
+											`${prefix}min-width-${breakpoint}`
+										),
+									[`${prefix}min-width-unit-${breakpoint}`]:
+										getDefaultAttribute(
+											`${prefix}min-width-unit-${breakpoint}`
+										),
+									isReset: true,
+								});
 							}}
 							minMaxSettings={minMaxSettings}
 							allowedUnits={['px', 'em', 'vw', '%']}
@@ -338,18 +333,17 @@ const FullSizeControl = props => {
 							})
 						}
 						onReset={() => {
-							onChange(
-								handleOnReset({
-									[`${prefix}max-height-${breakpoint}`]:
-										getDefaultAttribute(
-											`${prefix}max-height-${breakpoint}`
-										),
-									[`${prefix}max-height-unit-${breakpoint}`]:
-										getDefaultAttribute(
-											`${prefix}max-height-unit-${breakpoint}`
-										),
-								})
-							);
+							onChange({
+								[`${prefix}max-height-${breakpoint}`]:
+									getDefaultAttribute(
+										`${prefix}max-height-${breakpoint}`
+									),
+								[`${prefix}max-height-unit-${breakpoint}`]:
+									getDefaultAttribute(
+										`${prefix}max-height-unit-${breakpoint}`
+									),
+								isReset: true,
+							});
 						}}
 						minMaxSettings={minMaxSettings}
 						allowedUnits={['px', 'em', 'vw', 'vh']}
@@ -380,18 +374,17 @@ const FullSizeControl = props => {
 							})
 						}
 						onReset={() => {
-							onChange(
-								handleOnReset({
-									[`${prefix}min-height-${breakpoint}`]:
-										getDefaultAttribute(
-											`${prefix}min-height-${breakpoint}`
-										),
-									[`${prefix}min-height-unit-${breakpoint}`]:
-										getDefaultAttribute(
-											`${prefix}min-height-unit-${breakpoint}`
-										),
-								})
-							);
+							onChange({
+								[`${prefix}min-height-${breakpoint}`]:
+									getDefaultAttribute(
+										`${prefix}min-height-${breakpoint}`
+									),
+								[`${prefix}min-height-unit-${breakpoint}`]:
+									getDefaultAttribute(
+										`${prefix}min-height-unit-${breakpoint}`
+									),
+								isReset: true,
+							});
 						}}
 						minMaxSettings={minMaxSettings}
 						allowedUnits={['px', 'em', 'vw', 'vh']}

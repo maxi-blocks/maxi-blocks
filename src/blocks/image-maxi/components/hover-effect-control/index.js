@@ -34,7 +34,6 @@ import {
  */
 import { isNil } from 'lodash';
 import classnames from 'classnames';
-import { handleOnReset } from '../../../../extensions/attributes';
 
 /**
  * Styles and icons
@@ -114,14 +113,13 @@ const HoverEffectControl = props => {
 						step={0.1}
 						max={10}
 						onReset={() =>
-							onChange(
-								handleOnReset({
-									'hover-transition-duration':
-										getDefaultAttribute(
-											'hover-transition-duration'
-										),
-								})
-							)
+							onChange({
+								'hover-transition-duration':
+									getDefaultAttribute(
+										'hover-transition-duration'
+									),
+								isReset: true,
+							})
 						}
 						initialPosition={getDefaultAttribute(
 							'hover-transition-duration'
@@ -265,14 +263,13 @@ const HoverEffectControl = props => {
 								step={0.1}
 								max={100}
 								onReset={() =>
-									onChange(
-										handleOnReset({
-											[`hover-basic-${props['hover-basic-effect-type']}-value`]:
-												getDefaultAttribute([
-													`hover-basic-${props['hover-basic-effect-type']}-value`,
-												]),
-										})
-									)
+									onChange({
+										[`hover-basic-${props['hover-basic-effect-type']}-value`]:
+											getDefaultAttribute([
+												`hover-basic-${props['hover-basic-effect-type']}-value`,
+											]),
+										isReset: true,
+									})
 								}
 								initialPosition={getDefaultAttribute([
 									`hover-basic-${props['hover-basic-effect-type']}-value`,

@@ -12,7 +12,7 @@ import AdvancedNumberControl from '../../../advanced-number-control';
 import SelectControl from '../../../select-control';
 import SettingTabsControl from '../../../setting-tabs-control';
 import ToolbarPopover from '../toolbar-popover';
-import { handleOnReset } from '../../../../extensions/attributes';
+
 import { getDefaultAttribute } from '../../../../extensions/styles';
 import { openSidebarAccordion } from '../../../../extensions/inspector';
 
@@ -120,11 +120,10 @@ const ImageSize = props => {
 					min={0}
 					max={100}
 					onReset={() =>
-						onChangeSize(
-							handleOnReset({
-								imgWidth: getDefaultAttribute('imgWidth'),
-							})
-						)
+						onChangeSize({
+							imgWidth: getDefaultAttribute('imgWidth'),
+							isReset: true,
+						})
 					}
 					initialPosition={getDefaultAttribute('imgWidth')}
 				/>

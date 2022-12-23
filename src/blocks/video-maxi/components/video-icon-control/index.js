@@ -22,7 +22,6 @@ import {
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
 import { setSVGContent, setSVGContentHover } from '../../../../extensions/svg';
-import { handleOnReset } from '../../../../extensions/attributes';
 
 /**
  * External dependencies
@@ -261,26 +260,25 @@ const IconSettings = props => {
 									})
 								}
 								onReset={() =>
-									onChange(
-										handleOnReset({
-											[getAttributeKey(
-												'icon-height',
-												isHover,
-												prefix,
-												breakpoint
-											)]: getDefaultAttribute(
-												`${prefix}icon-height`
-											),
-											[getAttributeKey(
-												'icon-height-unit',
-												isHover,
-												prefix,
-												breakpoint
-											)]: getDefaultAttribute(
-												`${prefix}icon-height-unit`
-											),
-										})
-									)
+									onChange({
+										[getAttributeKey(
+											'icon-height',
+											isHover,
+											prefix,
+											breakpoint
+										)]: getDefaultAttribute(
+											`${prefix}icon-height`
+										),
+										[getAttributeKey(
+											'icon-height-unit',
+											isHover,
+											prefix,
+											breakpoint
+										)]: getDefaultAttribute(
+											`${prefix}icon-height-unit`
+										),
+										isReset: true,
+									})
 								}
 								minMaxSettings={minMaxSettings}
 								allowedUnits={['px', 'em', 'vw', '%']}
@@ -332,18 +330,17 @@ const IconSettings = props => {
 										})
 									}
 									onReset={() => {
-										onChange(
-											handleOnReset({
-												[`${prefix}icon-spacing-${breakpoint}`]:
-													getDefaultAttribute(
-														`${prefix}icon-spacing-${breakpoint}`
-													),
-												[`${prefix}icon-spacing-unit-${breakpoint}`]:
-													getDefaultAttribute(
-														`${prefix}icon-spacing-unit-${breakpoint}`
-													),
-											})
-										);
+										onChange({
+											[`${prefix}icon-spacing-${breakpoint}`]:
+												getDefaultAttribute(
+													`${prefix}icon-spacing-${breakpoint}`
+												),
+											[`${prefix}icon-spacing-unit-${breakpoint}`]:
+												getDefaultAttribute(
+													`${prefix}icon-spacing-unit-${breakpoint}`
+												),
+											isReset: true,
+										});
 									}}
 								/>
 							)}

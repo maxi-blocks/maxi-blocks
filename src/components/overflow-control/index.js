@@ -53,6 +53,10 @@ const OverflowControl = props => {
 		changeSync(x === y);
 	};
 
+	/**
+	 * If `val` is `null`(has been reset), get the last breakpoint attribute
+	 * from last version of `attributes`.
+	 */
 	const updateAxisVal = (val, changedAttributes = null) =>
 		setAxisVal(
 			!isEmpty(val)

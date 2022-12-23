@@ -571,7 +571,7 @@ const AxisControl = props => {
 			);
 
 			const value =
-				attrLabel in defaultAttributes
+				defaultAttributes && attrLabel in defaultAttributes
 					? defaultAttributes[attrLabel]
 					: getDefaultAttribute(attrLabel);
 

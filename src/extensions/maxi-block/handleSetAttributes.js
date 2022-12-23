@@ -8,7 +8,7 @@ import { select } from '@wordpress/data';
  */
 import getBreakpointFromAttribute from '../styles/getBreakpointFromAttribute';
 import getDefaultAttribute from '../styles/getDefaultAttribute';
-import { handleOnReset } from '../attributes';
+import handleOnReset from '../attributes/handleOnReset';
 
 /**
  * External dependencies

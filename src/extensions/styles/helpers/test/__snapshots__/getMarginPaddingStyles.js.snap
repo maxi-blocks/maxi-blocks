@@ -94,6 +94,36 @@ Object {
 }
 `;
 
+exports[`getMarginPaddingStyles Get a correct margin and padding simple styles 1`] = `
+Object {
+  "general": Object {
+    "margin-bottom": "3px",
+    "margin-left": "4px",
+    "margin-right": "2px",
+    "margin-top": "1px",
+    "padding-bottom": "3px",
+    "padding-left": "4px",
+    "padding-right": "2px",
+    "padding-top": "1px",
+  },
+  "l": Object {},
+  "m": Object {},
+  "s": Object {},
+  "xl": Object {
+    "margin-bottom": "3px",
+    "margin-left": "4px",
+    "margin-right": "2px",
+    "margin-top": "1px",
+    "padding-bottom": "3px",
+    "padding-left": "4px",
+    "padding-right": "2px",
+    "padding-top": "1px",
+  },
+  "xs": Object {},
+  "xxl": Object {},
+}
+`;
+
 exports[`getMarginPaddingStyles Get a correct margin and padding styles, when only unit on some breakpoint was changed 1`] = `
 Object {
   "general": Object {

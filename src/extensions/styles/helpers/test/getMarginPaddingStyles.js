@@ -1,6 +1,46 @@
 import getMarginPaddingStyles from '../getMarginPaddingStyles';
 
 describe('getMarginPaddingStyles', () => {
+	it('Get a correct margin and padding simple styles', () => {
+		const obj = {
+			'margin-top-general': '1',
+			'margin-top-unit-general': 'px',
+			'margin-right-general': '2',
+			'margin-right-unit-general': 'px',
+			'margin-bottom-general': '3',
+			'margin-bottom-unit-general': 'px',
+			'margin-left-general': '4',
+			'margin-left-unit-general': 'px',
+			'margin-top-xl': '1',
+			'margin-top-unit-xl': 'px',
+			'margin-right-xl': '2',
+			'margin-right-unit-xl': 'px',
+			'margin-bottom-xl': '3',
+			'margin-bottom-unit-xl': 'px',
+			'margin-left-xl': '4',
+			'margin-left-unit-xl': 'px',
+			'padding-top-general': '1',
+			'padding-top-unit-general': 'px',
+			'padding-right-general': '2',
+			'padding-right-unit-general': 'px',
+			'padding-bottom-general': '3',
+			'padding-bottom-unit-general': 'px',
+			'padding-left-general': '4',
+			'padding-left-unit-general': 'px',
+			'padding-top-xl': '1',
+			'padding-top-unit-xl': 'px',
+			'padding-right-xl': '2',
+			'padding-right-unit-xl': 'px',
+			'padding-bottom-xl': '3',
+			'padding-bottom-unit-xl': 'px',
+			'padding-left-xl': '4',
+			'padding-left-unit-xl': 'px',
+		};
+
+		const result = getMarginPaddingStyles({ obj });
+		expect(result).toMatchSnapshot();
+	});
+
 	it('Get a correct margin and padding', () => {
 		const obj = {
 			'margin-top-general': '1',

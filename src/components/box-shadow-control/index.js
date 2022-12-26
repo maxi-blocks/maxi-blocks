@@ -105,6 +105,13 @@ const BoxShadowValueControl = props => {
 								isHover ? '-hover' : ''
 							}`
 						),
+						[`${prefix}box-shadow-${type}-unit-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`]: getDefaultAttribute(
+							`${prefix}box-shadow-${type}-unit-${breakpoint}${
+								isHover ? '-hover' : ''
+							}`
+						),
 					})
 				)
 			}

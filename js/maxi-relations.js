@@ -41,32 +41,36 @@ class Relation {
 		this.isContained = this.triggerEl.contains(this.targetEl);
 		this.isHoveredContained = this.hoverStatus && this.isContained;
 
-		if (!this.effects.disableTransition) {
-			// transitionTrigger is an alternative trigger to target; not always used
-			// Check its eventListeners to understand better about its responsibility
-			this.transitionTriggers = Array.from(
-				new Set(this.effects.map(item => item.transitionTrigger))
-			);
-			this.transitionTriggerEls = this.transitionTriggers.map(
-				transitionTrigger =>
-					transitionTrigger
-						? this.blockTargetEl.querySelector(transitionTrigger)
-						: this.targetEl
-			);
+		// transitionTrigger is an alternative trigger to target; not always used
+		// Check its eventListeners to understand better about its responsibility
+		this.transitionTriggers = Array.from(
+			new Set(
+				this.effects.map(
+					item => item.transitionTrigger && !item.disableTransition
+				)
+			)
+		).filter(Boolean);
+		this.transitionTriggerEls = this.transitionTriggers.map(
+			transitionTrigger =>
+				transitionTrigger
+					? this.blockTargetEl.querySelector(transitionTrigger)
+					: this.targetEl
+		);
 
-			this.transitionTargetsArray = this.effects.map(item => {
-				switch (typeof item.transitionTarget) {
-					case 'string':
-						return [item.transitionTarget];
-					case 'object':
-						if (item.transitionTarget?.length > 0)
-							return item.transitionTarget;
-						return [''];
-					default:
-						return [''];
-				}
-			});
-		}
+		this.transitionTargetsArray = this.effects.map(item => {
+			if (item.disableTransition) return [''];
+
+			switch (typeof item.transitionTarget) {
+				case 'string':
+					return [item.transitionTarget];
+				case 'object':
+					if (item.transitionTarget?.length > 0)
+						return item.transitionTarget;
+					return [''];
+				default:
+					return [''];
+			}
+		});
 
 		this.isBorderArray = this.attributes.map(attributes =>
 			Object.keys(attributes).some(attr => attr.startsWith('border'))
@@ -79,7 +83,7 @@ class Relation {
 		this.getAvoidHover();
 
 		this.transitionString = '';
-		if (!this.effects.disableTransition) this.generateTransitions();
+		this.generateTransitions();
 
 		this.stylesString = '';
 		this.generateStyles();
@@ -105,7 +109,7 @@ class Relation {
 		this.stylesEl.setAttribute('data-settings', this.settings);
 		this.stylesEl.innerText = this.stylesString;
 
-		if (!this.effects.disableTransition) {
+		if (this.transitionString.length > 0) {
 			this.transitionEl = document.createElement('style');
 			this.transitionEl.id = `relations--${this.uniqueID}-transitions`;
 			this.transitionEl.setAttribute('data-type', this.action);
@@ -116,6 +120,8 @@ class Relation {
 
 	// Insert transitions or styles element just after Maxi inline css element
 	addStyleEl(styleEl) {
+		if (!styleEl) return;
+
 		if (!this.inlineStylesEl)
 			this.inlineStylesEl = document.querySelector(
 				'#maxi-blocks-inline-css'
@@ -178,6 +184,8 @@ class Relation {
 			];
 
 		return this.effects.reduce((promise, effects) => {
+			if (effects.disableTransition) return promise;
+
 			const transitionDuration = getTransitionValue(effects, 'duration');
 			const transitionDelay = getTransitionValue(effects, 'delay');
 			const transitionTimeout =
@@ -224,7 +232,7 @@ class Relation {
 				if (hasCSS)
 					stylesObj[breakpoint] = { ...css[breakpoint].styles };
 
-				if (!this.effects.disableTransition)
+				if (!effects.disableTransition)
 					effectsObj[breakpoint] = {
 						...getLastEffectsBreakpointAttribute(
 							'transition-status',
@@ -282,11 +290,14 @@ class Relation {
 		const stylesObjs = [];
 		const effectsObjs = [];
 
-		const pushStylesAndEffects = ({ stylesObj, effectsObj }) => {
+		const pushStylesAndEffects = obj => {
 			const isEmptyObject = obj => Object.keys(obj).length === 0;
 
-			if (!isEmptyObject(stylesObj)) stylesObjs.push(stylesObj);
-			if (!isEmptyObject(effectsObj)) effectsObjs.push(effectsObj);
+			Object.entries(obj).forEach(([key, value]) => {
+				const arrayToPush =
+					key === 'stylesObj' ? stylesObjs : effectsObjs;
+				arrayToPush.push(!isEmptyObject(value) ? value : null);
+			});
 		};
 
 		this.css.forEach((css, index) => {
@@ -366,7 +377,7 @@ class Relation {
 	getAvoidHover() {
 		if (!this.hoverStatus || !this.targetEl) return;
 
-		this.transitionTargetsArray?.forEach(transitionTargets =>
+		this.transitionTargetsArray.forEach(transitionTargets =>
 			this.avoidHoverArray.push(
 				transitionTargets.some(transitionTarget =>
 					Array.from(
@@ -564,7 +575,7 @@ class Relation {
 						)
 				);
 			else
-				this.transitionTargetsArray?.[index].forEach(transitionTarget =>
+				this.transitionTargetsArray[index].forEach(transitionTarget =>
 					getStylesLine(
 						stylesObj,
 						this.getTargetForLine(
@@ -671,6 +682,8 @@ class Relation {
 		};
 
 		this.stylesObjs.forEach((stylesObj, index) => {
+			if (this.effects[index].disableTransition) return;
+
 			if (this.hasMultipleTargetsArray[index]) {
 				if (!this.isSVG)
 					Object.keys(stylesObj).forEach(targetSelector => {
@@ -681,7 +694,7 @@ class Relation {
 						);
 					});
 				else
-					this.transitionTargetsArray?.[index].forEach(
+					this.transitionTargetsArray[index].forEach(
 						transitionTarget => {
 							// Checks if the element needs special CSS to be avoided in case the element is hovered
 							const svgTarget = `${this.dataTarget} ${
@@ -703,7 +716,7 @@ class Relation {
 						}
 					);
 			} else
-				this.transitionTargetsArray?.[index].forEach(transitionTarget =>
+				this.transitionTargetsArray[index].forEach(transitionTarget =>
 					getTransitionLine(
 						stylesObj,
 						this.getTargetForLine(transitionTarget),
@@ -714,11 +727,11 @@ class Relation {
 	}
 
 	addTransition() {
-		if (!this.effects.disableTransition) this.addStyleEl(this.transitionEl);
+		this.addStyleEl(this.transitionEl);
 	}
 
 	removeTransition() {
-		if (!this.effects.disableTransition) this.transitionEl.remove();
+		this.transitionEl?.remove();
 	}
 
 	getTransitionString(styleObj, effectsObj, isIcon) {
@@ -819,30 +832,34 @@ class Relation {
 
 				transitionTriggerEl.addEventListener('mouseleave', () => {
 					const transitionDuration = Array.from(
-						new Set(this.transitionTargetsArray?.flat())
-					).reduce((promise, transitionTarget) => {
-						const transitionTargetEl = document.querySelector(
-							`${this.dataTarget} ${transitionTarget ?? ''}`
-						);
+						new Set(this.transitionTargetsArray.flat())
+					)
+						.filter(Boolean)
+						.reduce((promise, transitionTarget) => {
+							const transitionTargetEl = document.querySelector(
+								`${this.dataTarget} ${transitionTarget ?? ''}`
+							);
 
-						const transitionDuration = transitionTargetEl
-							? [
-									'transition-duration',
-									'transition-delay',
-							  ].reduce(
-									(sum, prop) =>
-										sum +
-										parseFloat(
-											getComputedStyle(transitionTargetEl)
-												.getPropertyValue(prop)
-												.replace('s', '')
-										),
-									0
-							  ) * 1000
-							: 0;
+							const transitionDuration = transitionTargetEl
+								? [
+										'transition-duration',
+										'transition-delay',
+								  ].reduce(
+										(sum, prop) =>
+											sum +
+											parseFloat(
+												getComputedStyle(
+													transitionTargetEl
+												)
+													.getPropertyValue(prop)
+													.replace('s', '')
+											),
+										0
+								  ) * 1000
+								: 0;
 
-						return Math.max(promise, transitionDuration);
-					}, 0);
+							return Math.max(promise, transitionDuration);
+						}, 0);
 
 					// console.log('Leaving hover target'); // 🔥
 
@@ -880,11 +897,22 @@ class Relation {
 			this.removeTransition();
 			this.removeAddAttrToBlock();
 		} else {
-			this.transitionTimeout = setTimeout(() => {
+			const transitionTimeout = this.getTransitionTimeout();
+
+			const removeTransitionAction = () => {
 				this.removeTransition();
 				this.removeAddAttrToBlock();
 				this.removeRelationSubscriber();
-			}, this.getTransitionTimeout());
+			};
+
+			if (transitionTimeout === 0) {
+				removeTransitionAction();
+			} else {
+				this.transitionTimeout = setTimeout(
+					removeTransitionAction,
+					transitionTimeout
+				);
+			}
 		}
 	}
 

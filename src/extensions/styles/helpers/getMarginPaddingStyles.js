@@ -24,14 +24,7 @@ const getMarginPaddingStyles = ({ obj, prefix = '' }) => {
 			keyWords.forEach(key => {
 				const attributeName = `${prefix}${type}-${key}`;
 
-				const [
-					lastValue,
-					lastUnit,
-					value,
-					unit,
-					generalValue,
-					generalUnit,
-				] = [
+				const [lastValue, lastUnit, value, unit] = [
 					target =>
 						getLastBreakpointAttribute({
 							target,
@@ -39,7 +32,6 @@ const getMarginPaddingStyles = ({ obj, prefix = '' }) => {
 							attributes: obj,
 						}),
 					target => obj[`${target}-${breakpoint}`],
-					target => obj[`${target}-general`],
 				].flatMap(callback =>
 					['', '-unit'].map(suffix =>
 						callback(`${attributeName}${suffix}`)

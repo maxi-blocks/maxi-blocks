@@ -48,9 +48,7 @@ const getMarginPaddingStyles = ({ obj, prefix = '' }) => {
 
 				if (
 					!isNil(lastValue) &&
-					((generalValue === value && generalUnit === unit) ||
-						lastValue === value ||
-						lastUnit === unit)
+					(lastValue === value || lastUnit === unit)
 				)
 					response[breakpoint][`${type}-${key}`] =
 						lastValue === 'auto'

@@ -31,7 +31,7 @@ import { cloneDeep } from 'lodash';
  * Component
  */
 const VideoLayerContent = props => {
-	const { onChange, isHover = false, prefix = '', breakpoint } = props;
+	const { isIB, onChange, isHover = false, prefix = '', breakpoint } = props;
 
 	const videoOptions = cloneDeep(props.videoOptions);
 
@@ -59,7 +59,7 @@ const VideoLayerContent = props => {
 				}}
 				disableRTC
 			/>
-			{!isHover && (
+			{!isHover && !isIB && (
 				<MediaUploaderControl
 					className='maxi-mediauploader-control__video-fallback'
 					placeholder={__('Background fallback')}
@@ -108,7 +108,7 @@ const VideoLayerContent = props => {
 };
 
 const VideoLayer = props => {
-	const { onChange, isHover = false, prefix = '', breakpoint } = props;
+	const { isIB, onChange, isHover = false, prefix = '', breakpoint } = props;
 
 	const videoOptions = cloneDeep(props.videoOptions);
 	const isLayerHover = videoOptions.isHover;
@@ -261,6 +261,7 @@ const VideoLayer = props => {
 						onChange={onChange}
 						isHover={isHover}
 						prefix={prefix}
+						isIB={isIB}
 						breakpoint={breakpoint}
 					/>
 					<SizeAndPositionLayerControl

@@ -663,53 +663,20 @@ const IconControl = props => {
 								))}
 							{iconBgActive === 'gradient' && (
 								<GradientControl
+									{...getGroupAttributes(
+										props,
+										'iconBackgroundGradient',
+										isHover,
+										prefix
+									)}
 									label={__(
 										'Icon Background gradient',
 										'maxi-blocks'
 									)}
-									gradient={getLastBreakpointAttribute({
-										target: `${prefix}icon-background-gradient`,
-										breakpoint,
-										attributes: props,
-										isHover,
-									})}
-									gradientOpacity={getLastBreakpointAttribute(
-										{
-											target: `${prefix}icon-background-gradient-opacity`,
-											breakpoint,
-											attributes: props,
-											isHover,
-										}
-									)}
-									defaultGradient={getDefaultAttribute(
-										getAttributeKey(
-											'background-gradient',
-											isHover,
-											`${prefix}icon-`,
-											breakpoint
-										)
-									)}
-									onChange={val =>
-										onChange({
-											[getAttributeKey(
-												'background-gradient',
-												isHover,
-												`${prefix}icon-`,
-												breakpoint
-											)]: val,
-										})
-									}
-									onChangeOpacity={val =>
-										onChange({
-											[getAttributeKey(
-												'background-gradient-opacity',
-												isHover,
-												`${prefix}icon-`,
-												breakpoint
-											)]: val,
-										})
-									}
+									breakpoint={breakpoint}
+									prefix={`${prefix}icon-background-`}
 									isHover={isHover}
+									onChange={onChange}
 								/>
 							)}
 						</>

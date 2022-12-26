@@ -168,6 +168,7 @@ export const rawBackgroundVideo = {
 	},
 	'background-video-mediaURL': {
 		type: 'string',
+		default: 'https://www.youtube.com/watch?v=ScMzIvxBSi4',
 	},
 	'background-video-startTime': {
 		type: 'string',

@@ -64,9 +64,10 @@ const OpacityControl = props => {
 			onReset={() => {
 				if (isFunction(onReset)) return onReset();
 
-				if (isNil(breakpoint)) return onChange(getDefaultAttribute());
-
 				const opacityAttributeKey = getOpacityAttributeKey();
+
+				if (isNil(breakpoint))
+					return onChange(getDefaultAttribute(opacityAttributeKey));
 				return onChange(
 					handleOnReset({
 						[opacityAttributeKey]:

@@ -45,18 +45,10 @@ const VideoLayerContent = props => {
 					attributes: videoOptions,
 					isHover,
 				})}
-				onChange={opacity => {
-					videoOptions[
-						getAttributeKey(
-							'background-video-opacity',
-							isHover,
-							prefix,
-							breakpoint
-						)
-					] = opacity;
-
-					onChange(videoOptions);
-				}}
+				breakpoint={breakpoint}
+				prefix={`${prefix}background-video-`}
+				isHover={isHover}
+				onChange={onChange}
 				disableRTC
 			/>
 			<MediaUploaderControl

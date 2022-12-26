@@ -2,20 +2,24 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
 import withRTC from '../../extensions/maxi-block/withRTC';
+import {
+	getDefaultAttribute,
+	getIsValid,
+	getAttributeKey,
+} from '../../extensions/styles';
+import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, round, isNil } from 'lodash';
-import { getDefaultAttribute, getIsValid } from '../../extensions/styles';
+import { isEmpty, isFunction, isNil, round } from 'lodash';
 
 /**
  * Component
@@ -23,16 +27,18 @@ import { getDefaultAttribute, getIsValid } from '../../extensions/styles';
 const OpacityControl = props => {
 	const {
 		className,
-		onChange,
 		label = '',
 		opacity,
+		breakpoint,
+		prefix = '',
+		isHover = false,
+		onChange,
 		onReset,
 		disableLabel = false,
 	} = props;
 
-	const { breakpoint } = useSelect(select => ({
-		breakpoint: select('maxiBlocks').receiveMaxiDeviceType(),
-	}));
+	const getOpacityAttributeKey = () =>
+		getAttributeKey('opacity', isHover, prefix, breakpoint);
 
 	const classes = classnames('maxi-opacity-control', className);
 
@@ -45,16 +51,29 @@ const OpacityControl = props => {
 					: __('Opacity', 'maxi-blocks')
 			}`}
 			value={getIsValid(opacity, true) ? round(opacity * 100, 2) : 100}
-			onChangeValue={val => {
-				onChange(!isNil(val) ? round(val / 100, 2) : 0);
+			onChangeValue={rawVal => {
+				const val = !isNil(rawVal) ? round(rawVal / 100, 2) : 0;
+				onChange(
+					!isNil(breakpoint)
+						? { [getOpacityAttributeKey()]: val }
+						: val
+				);
 			}}
 			min={0}
 			max={100}
-			onReset={() =>
-				onReset
-					? onReset()
-					: onChange(getDefaultAttribute(`opacity-${breakpoint}`))
-			}
+			onReset={() => {
+				if (isFunction(onReset)) return onReset();
+
+				if (isNil(breakpoint)) return onChange(getDefaultAttribute());
+
+				const opacityAttributeKey = getOpacityAttributeKey();
+				return onChange(
+					handleOnReset({
+						[opacityAttributeKey]:
+							getDefaultAttribute(opacityAttributeKey),
+					})
+				);
+			}}
 		/>
 	);
 };

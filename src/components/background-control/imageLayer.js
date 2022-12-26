@@ -67,16 +67,9 @@ const ImageLayerSettings = props => {
 					attributes: imageOptions,
 					isHover,
 				})}
-				onChange={val =>
-					onChange({
-						[getAttributeKey(
-							'background-image-opacity',
-							isHover,
-							prefix,
-							breakpoint
-						)]: val,
-					})
-				}
+				prefix={`${prefix}background-image-`}
+				isHover={isHover}
+				onChange={onChange}
 				disableRTC
 			/>
 			<SelectControl

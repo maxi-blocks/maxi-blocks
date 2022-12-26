@@ -67,6 +67,7 @@ const ImageLayerSettings = props => {
 					attributes: imageOptions,
 					isHover,
 				})}
+				breakpoint={breakpoint}
 				prefix={`${prefix}background-image-`}
 				isHover={isHover}
 				onChange={onChange}

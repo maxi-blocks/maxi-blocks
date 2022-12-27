@@ -153,19 +153,19 @@ const customCss = {
 		icon: {
 			normal: {
 				label: 'icon',
-				target: '[aria-expanded=false] .maxi-pane-block__icon',
+				target: '[aria-expanded] .maxi-pane-block__icon',
 			},
 			svg: {
 				label: "icon's svg",
-				target: '[aria-expanded=false] .maxi-pane-block__icon svg',
+				target: '[aria-expanded] .maxi-pane-block__icon svg',
 			},
 			insideSvg: {
 				label: 'everything inside svg (svg > *)',
-				target: '[aria-expanded=false] .maxi-pane-block__icon svg > *',
+				target: '[aria-expanded] .maxi-pane-block__icon svg > *',
 			},
 			path: {
 				label: "svg's path",
-				target: '[aria-expanded=false] .maxi-pane-block__icon svg path',
+				target: '[aria-expanded] .maxi-pane-block__icon svg path',
 			},
 			hover: {
 				label: 'icon on hover',

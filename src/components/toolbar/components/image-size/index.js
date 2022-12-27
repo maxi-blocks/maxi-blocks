@@ -12,7 +12,6 @@ import AdvancedNumberControl from '../../../advanced-number-control';
 import SelectControl from '../../../select-control';
 import SettingTabsControl from '../../../setting-tabs-control';
 import ToolbarPopover from '../toolbar-popover';
-
 import { getDefaultAttribute } from '../../../../extensions/styles';
 import { openSidebarAccordion } from '../../../../extensions/inspector';
 

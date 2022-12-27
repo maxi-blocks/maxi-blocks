@@ -18,7 +18,6 @@ import {
 	getAttributeValue,
 	getDefaultAttribute,
 } from '../../extensions/styles';
-
 import getOptions from './utils';
 
 /**

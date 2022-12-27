@@ -13,7 +13,6 @@ import {
 	ToggleSwitch,
 } from '../../components';
 import MaxiModal from '../../editor/library/modal';
-
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,

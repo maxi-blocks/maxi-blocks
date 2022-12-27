@@ -9,6 +9,7 @@ export { default as boxShadowHover } from './boxShadowHover';
 export { default as boxShadowActive } from './boxShadowActive';
 export { default as breakpoints } from './breakpoints';
 export { default as clipPath } from './clipPath';
+export { default as clipPathHover } from './clipPathHover';
 export { default as columnSize } from './columnSize';
 export { default as customCss } from './customCss';
 export { default as display } from './display';

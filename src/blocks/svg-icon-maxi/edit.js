@@ -181,6 +181,7 @@ class edit extends MaxiBlockComponent {
 						copyPasteMapping={copyPasteMapping}
 						prefix='svg-'
 						inlineStylesTargets={inlineStylesTargets}
+						onModalOpen={() => this.setState({ isOpen: true })}
 						{...this.props}
 					/>,
 					<MaxiPopoverButton

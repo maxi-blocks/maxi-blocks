@@ -195,6 +195,9 @@ const Inspector = props => {
 											</ResponsiveTabsControl>
 										),
 									},
+									...inspectorTabs.blockBackground({
+										props,
+									}),
 									...inspectorTabs.border({
 										props,
 									}),

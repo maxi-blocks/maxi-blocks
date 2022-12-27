@@ -373,7 +373,12 @@ const Popover = (
 			return;
 		}
 
-		return autoUpdate(resultingReferenceRef, refs.floating.current, update);
+		return autoUpdate(
+			resultingReferenceRef,
+			refs.floating.current,
+			update,
+			{ ancestorScroll: false }
+		);
 	}, [anchorRef, anchorRect, getAnchorRect]);
 
 	// This is only needed for a smooth transition when moving blocks.

@@ -9,12 +9,14 @@ import { __ } from '@wordpress/i18n';
 import { createSelectors } from '../../extensions/styles/custom-css';
 import {
 	AlignmentControl,
+	BorderControl,
+	ClipPath,
 	ImageShape,
 	InfoBox,
-	ClipPath,
 } from '../../components';
 import {
 	getAlignmentFlexStyles,
+	getBorderStyles,
 	getClipPathStyles,
 	getImageShapeStyles,
 } from '../../extensions/styles/helpers';
@@ -190,13 +192,13 @@ const transition = {
 	block: {
 		border: {
 			title: 'Border',
-			target: `${imageWrapperClass} img`,
+			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
 			property: ['border', 'border-radius'],
 			hoverProp: `${prefix}border-status-hover`,
 		},
 		'box shadow': {
 			title: 'Box shadow',
-			target: `${imageWrapperClass} img`,
+			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
 			property: 'box-shadow',
 			hoverProp: `${prefix}box-shadow-status-hover`,
 		},
@@ -256,10 +258,17 @@ const interactionBuilderSettings = {
 			attrGroupName: 'clipPath',
 			component: props => <ClipPath {...props} />,
 			helper: props => getClipPathStyles(props.obj),
-			target: [
-				'.maxi-image-block-wrapper img',
-				'.maxi-image-block-wrapper svg',
-			],
+			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
+		},
+		{
+			label: __('Border', 'maxi-blocks'),
+			transitionTarget: transition.block.border.target,
+			hoverProp: 'image-border-status-hover',
+			attrGroupName: ['border', 'borderWidth', 'borderRadius'],
+			prefix,
+			component: props => <BorderControl {...props} />,
+			helper: props => getBorderStyles(props),
+			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
 		},
 	],
 	canvas: getCanvasSettings({ name, customCss }),

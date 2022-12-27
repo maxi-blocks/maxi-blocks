@@ -14,7 +14,11 @@ import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-import { getDefaultLayerAttr, getDefaultLayerAttrs } from './utils';
+import {
+	getDefaultLayerAttr,
+	getDefaultLayerAttrs,
+	getDefaultLayerWithBreakpoint,
+} from './utils';
 import { handleOnReset } from '../../extensions/attributes';
 
 /**
@@ -239,6 +243,11 @@ const SizeAndPositionLayerControl = ({
 				{...equivalentProps}
 				className='maxi-background-control__position'
 				disablePosition
+				defaultAttributes={getDefaultLayerWithBreakpoint(
+					`${type === 'shape' ? 'SVG' : type}Options`,
+					'general',
+					isHover
+				)}
 				disableRTC
 			/>
 		</>

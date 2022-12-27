@@ -33,6 +33,7 @@ const OpacityControl = props => {
 		prefix = '',
 		isHover = false,
 		onChange,
+		onChangeOpacity,
 		onReset,
 		disableLabel = false,
 	} = props;
@@ -53,11 +54,9 @@ const OpacityControl = props => {
 			value={getIsValid(opacity, true) ? round(opacity * 100, 2) : 100}
 			onChangeValue={rawVal => {
 				const val = !isNil(rawVal) ? round(rawVal / 100, 2) : 0;
-				onChange(
-					!isNil(breakpoint)
-						? { [getOpacityAttributeKey()]: val }
-						: val
-				);
+
+				if (isFunction(onChangeOpacity)) return onChangeOpacity(val);
+				return onChange({ [getOpacityAttributeKey()]: val });
 			}}
 			min={0}
 			max={100}
@@ -66,8 +65,10 @@ const OpacityControl = props => {
 
 				const opacityAttributeKey = getOpacityAttributeKey();
 
-				if (isNil(breakpoint))
-					return onChange(getDefaultAttribute(opacityAttributeKey));
+				if (isFunction(onChangeOpacity))
+					return onChangeOpacity(
+						getDefaultAttribute(opacityAttributeKey)
+					);
 				return onChange(
 					handleOnReset({
 						[opacityAttributeKey]:

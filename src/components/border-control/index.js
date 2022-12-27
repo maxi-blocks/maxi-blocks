@@ -383,7 +383,13 @@ const BorderControl = props => {
 						target={`${prefix}border`}
 						auxTarget='radius'
 						label={__('Border radius', 'maxi-blocks')}
-						onChange={onChange}
+						onChange={obj => {
+							onChange(obj);
+							onChange({
+								[`${prefix}border-unit-radius-${breakpoint}-hover`]:
+									obj[`border-unit-radius-${breakpoint}`],
+							});
+						}}
 						breakpoint={breakpoint}
 						minMaxSettings={{
 							px: {

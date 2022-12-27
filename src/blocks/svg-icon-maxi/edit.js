@@ -33,7 +33,7 @@ import { copyPasteMapping } from './data';
 /**
  * External dependencies
  */
-import { isEmpty, uniqueId } from 'lodash';
+import { isEmpty, toNumber, uniqueId } from 'lodash';
 
 /**
  * Content
@@ -189,8 +189,23 @@ class edit extends MaxiBlockComponent {
 						ref={this.blockRef}
 						isOpen={isOpen}
 						isSmall={
-							this.props.isChild ||
-							this.props.attributes['width-fit-content-general']
+							getLastBreakpointAttribute({
+								target: 'width-fit-content',
+								breakpoint: deviceType,
+								attributes,
+							}) ||
+							(this.blockRef.current &&
+								(this.blockRef.current.getBoundingClientRect()
+									.width -
+									toNumber(
+										getLastBreakpointAttribute({
+											target: 'svg-width',
+											breakpoint: deviceType,
+											attributes,
+										})
+									)) /
+									2 <
+									50)
 						}
 						{...this.props}
 					>

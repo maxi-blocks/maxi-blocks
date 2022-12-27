@@ -17,12 +17,12 @@ import {
 	flexAlignStart,
 	flexAlignEnd,
 	flexAlignCenter,
-    flexAlignBetween,
+	flexAlignBetween,
 	flexAlignEvenly,
 	flexAlignAround,
 	flexAlignStretch,
 	flexAlignBaseline,
-    styleNone 
+	styleNone,
 } from '../../icons';
 
 const FlexContentAlignControl = props => {
@@ -31,10 +31,10 @@ const FlexContentAlignControl = props => {
 	const getOptions = () => {
 		const options = [];
 
-        options.push({
-            icon: <Icon icon={styleNone} />,
-            value: 'unset',
-        });
+		options.push({
+			icon: <Icon icon={styleNone} />,
+			value: 'unset',
+		});
 
 		options.push({
 			icon: <Icon icon={flexAlignStart} />,
@@ -42,51 +42,37 @@ const FlexContentAlignControl = props => {
 		});
 
 		options.push({
-			icon: (
-				<Icon icon={flexAlignEnd} />
-			),
+			icon: <Icon icon={flexAlignEnd} />,
 			value: 'flex-end',
 		});
 
 		options.push({
-			icon: (
-				<Icon icon={flexAlignCenter} />
-			),
-            value: 'center',
+			icon: <Icon icon={flexAlignCenter} />,
+			value: 'center',
 		});
 
 		options.push({
-			icon: (
-				<Icon icon={flexAlignBetween} />
-			),
+			icon: <Icon icon={flexAlignBetween} />,
 			value: 'space-between',
 		});
 
 		options.push({
-			icon: (
-				<Icon icon={flexAlignAround} />
-			),
+			icon: <Icon icon={flexAlignAround} />,
 			value: 'space-around',
 		});
 
 		options.push({
-			icon: (
-				<Icon icon={flexAlignEvenly} />
-			),
+			icon: <Icon icon={flexAlignEvenly} />,
 			value: 'space-evenly',
 		});
 
 		options.push({
-			icon: (
-				<Icon icon={flexAlignStretch} />
-			),
+			icon: <Icon icon={flexAlignStretch} />,
 			value: 'stretch',
 		});
 
 		options.push({
-			icon: (
-				<Icon icon={flexAlignBaseline} />
-			),
+			icon: <Icon icon={flexAlignBaseline} />,
 			value: 'baseline',
 		});
 
@@ -101,7 +87,7 @@ const FlexContentAlignControl = props => {
 			className='maxi-flex__align-content'
 			hasBorder
 			items={getOptions()}
-            showTooltip
+			showTooltip
 			value={
 				getLastBreakpointAttribute({
 					target: 'align-content',

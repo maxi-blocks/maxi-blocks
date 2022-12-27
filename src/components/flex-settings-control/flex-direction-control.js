@@ -33,9 +33,9 @@ const FlexDirectionControl = props => {
 		const options = [];
 
 		options.push({
-            icon: <Icon icon={styleNone} />,
-            value: 'unset',
-        });
+			icon: <Icon icon={styleNone} />,
+			value: 'unset',
+		});
 
 		options.push({
 			icon: <Icon icon={flexDirectionRow} />,

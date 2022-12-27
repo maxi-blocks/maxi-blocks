@@ -49,6 +49,7 @@ const GradientControl = props => {
 				label={__('Gradient opacity', 'maxi-blocks')}
 				opacity={gradientOpacity}
 				onChange={val => onChangeOpacity(val)}
+				disableRTC
 			/>
 			<div className='maxi-gradient-control__gradient'>
 				<GradientPicker

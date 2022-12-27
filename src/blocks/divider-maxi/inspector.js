@@ -15,12 +15,14 @@ import {
 	SettingTabsControl,
 } from '../../components';
 import {
+	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { customCss } from './data';
 import { withMaxiInspector } from '../../extensions/inspector';
+import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * Inspector
@@ -98,6 +100,16 @@ const Inspector = props => {
 																	val,
 															})
 														}
+														onReset={() => {
+															maxiSetAttributes(
+																handleOnReset({
+																	[`line-orientation-${deviceType}`]:
+																		getDefaultAttribute(
+																			`line-orientation-${deviceType}`
+																		),
+																})
+															);
+														}}
 													/>
 													<SelectControl
 														label={__(
@@ -141,6 +153,16 @@ const Inspector = props => {
 																	val,
 															})
 														}
+														onReset={() => {
+															maxiSetAttributes(
+																handleOnReset({
+																	[`line-vertical-${deviceType}`]:
+																		getDefaultAttribute(
+																			`line-vertical-${deviceType}`
+																		),
+																})
+															);
+														}}
 													/>
 													<SelectControl
 														label={__(
@@ -184,6 +206,16 @@ const Inspector = props => {
 																	val,
 															})
 														}
+														onReset={() =>
+															maxiSetAttributes(
+																handleOnReset({
+																	[`line-horizontal-${deviceType}`]:
+																		getDefaultAttribute(
+																			`line-horizontal-${deviceType}`
+																		),
+																})
+															)
+														}
 													/>
 												</>
 											</ResponsiveTabsControl>
@@ -200,30 +232,26 @@ const Inspector = props => {
 											'maxi-blocks'
 										),
 										content: (
-											<ResponsiveTabsControl
+											<DividerControl
+												{...getGroupAttributes(
+													attributes,
+													['divider', 'size']
+												)}
+												onChangeInline={obj =>
+													insertInlineStyles({
+														obj,
+														target: inlineStylesTargets.dividerColor,
+													})
+												}
+												onChange={obj => {
+													maxiSetAttributes(obj);
+													cleanInlineStyles(
+														inlineStylesTargets.dividerColor
+													);
+												}}
 												breakpoint={deviceType}
-											>
-												<DividerControl
-													{...getGroupAttributes(
-														attributes,
-														['divider', 'size']
-													)}
-													onChangeInline={obj =>
-														insertInlineStyles({
-															obj,
-															target: inlineStylesTargets.dividerColor,
-														})
-													}
-													onChange={obj => {
-														maxiSetAttributes(obj);
-														cleanInlineStyles(
-															inlineStylesTargets.dividerColor
-														);
-													}}
-													breakpoint={deviceType}
-													clientId={clientId}
-												/>
-											</ResponsiveTabsControl>
+												clientId={clientId}
+											/>
 										),
 										ignoreIndicator: [
 											`line-horizontal-${deviceType}`,

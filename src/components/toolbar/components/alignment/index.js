@@ -62,6 +62,7 @@ const Alignment = props => {
 					onChange={onChange}
 					disableJustify={!isText}
 					disableIcon
+					disableRTC
 					breakpoint={breakpoint}
 					type={isText && 'text'}
 				/>

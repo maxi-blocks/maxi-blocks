@@ -2,30 +2,31 @@
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
-import AxisPositionControl from '../axis-position-control';
-import SettingTabsControl from '../setting-tabs-control';
-import ToggleSwitch from '../toggle-switch';
-import ColorControl from '../color-control';
 import AxisControl from '../axis-control';
-import GradientControl from '../gradient-control';
+import AxisPositionControl from '../axis-position-control';
 import BorderControl from '../border-control';
+import ColorControl from '../color-control';
+import GradientControl from '../gradient-control';
+import Icon from '../icon';
 import InfoBox from '../info-box';
+import SettingTabsControl from '../setting-tabs-control';
+import SvgStrokeWidthControl from '../svg-stroke-width-control';
+import SvgWidthControl from '../svg-width-control';
+import ToggleSwitch from '../toggle-switch';
+import withRTC from '../../extensions/maxi-block/withRTC';
 import {
 	getAttributeKey,
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-import SvgWidthControl from '../svg-width-control';
-import SvgStrokeWidthControl from '../svg-stroke-width-control';
 import MaxiModal from '../../editor/library/modal';
-import Icon from '../icon';
 import { handleOnReset } from '../../extensions/attributes';
 
 /**
@@ -81,22 +82,30 @@ const IconControl = props => {
 
 	const [iconStyle, setIconStyle] = useState('color');
 
+	useEffect(() => {
+		if (breakpoint !== 'general') {
+			setIconStyle('border');
+		}
+	}, [breakpoint]);
+
 	const getOptions = () => {
 		const options = [];
 
-		if (svgType !== 'Shape')
-			options.push({
-				icon: <Icon icon={iconBorder} />,
-				value: 'color',
-			});
-		else if (iconStyle === 'color') setIconStyle('fill');
+		if (breakpoint === 'general') {
+			if (svgType !== 'Shape')
+				options.push({
+					icon: <Icon icon={iconBorder} />,
+					value: 'color',
+				});
+			else if (iconStyle === 'color') setIconStyle('fill');
 
-		if (svgType !== 'Line')
-			options.push({
-				icon: <Icon icon={iconFill} />,
-				value: 'fill',
-			});
-		else if (iconStyle === 'fill') setIconStyle('color');
+			if (svgType !== 'Line')
+				options.push({
+					icon: <Icon icon={iconFill} />,
+					value: 'fill',
+				});
+			else if (iconStyle === 'fill') setIconStyle('color');
+		}
 
 		if (!disableBorder) {
 			options.push({
@@ -444,6 +453,7 @@ const IconControl = props => {
 							breakpoint={breakpoint}
 							clientId={clientId}
 							isHover={isHover}
+							disableRTC
 						/>
 					)}
 					{iconStyle === 'fill' && svgType !== 'Line' && (
@@ -728,4 +738,4 @@ const IconControl = props => {
 	);
 };
 
-export default IconControl;
+export default withRTC(IconControl);

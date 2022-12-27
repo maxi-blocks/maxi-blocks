@@ -13,6 +13,7 @@ import classnames from 'classnames';
  * Internal dependencies
  */
 import BaseControl from '../base-control';
+import ResetButton from '../reset-control';
 
 /**
  * Styles
@@ -24,6 +25,7 @@ export default function SelectControl({
 	label,
 	multiple = false,
 	onChange,
+	onReset,
 	options = [],
 	className,
 	hideLabelFromVision,
@@ -92,6 +94,7 @@ export default function SelectControl({
 						  )
 						: getOptions(options)}
 				</select>
+				{onReset && <ResetButton onReset={() => onReset()} />}
 			</BaseControl>
 		)
 	);

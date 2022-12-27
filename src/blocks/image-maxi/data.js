@@ -10,9 +10,9 @@ import { createSelectors } from '../../extensions/styles/custom-css';
 import {
 	AlignmentControl,
 	BorderControl,
-	ClipPath,
 	ImageShape,
 	InfoBox,
+	ClipPathControl,
 } from '../../components';
 import {
 	getAlignmentFlexStyles,
@@ -202,6 +202,12 @@ const transition = {
 			property: 'box-shadow',
 			hoverProp: `${prefix}box-shadow-status-hover`,
 		},
+		'clip path': {
+			title: 'Clip path',
+			target: `${imageWrapperClass} img`,
+			property: 'clip-path',
+			hoverProp: 'clip-path-status-hover',
+		},
 	},
 };
 const interactionBuilderSettings = {
@@ -255,8 +261,8 @@ const interactionBuilderSettings = {
 		{
 			label: __('Clip-path', 'maxi-blocks'),
 			attrGroupName: 'clipPath',
-			component: props => <ClipPath {...props} />,
-			helper: props => getClipPathStyles(props.obj),
+			component: props => <ClipPathControl {...props} />,
+			helper: props => getClipPathStyles(props),
 			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
 		},
 		{

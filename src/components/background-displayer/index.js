@@ -7,6 +7,7 @@ import { RawHTML, useRef } from '@wordpress/element';
  * Internal Dependencies
  */
 import VideoLayer from './videoLayer';
+import { getAttributeValue } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -19,7 +20,6 @@ import { compact, isEmpty } from 'lodash';
  */
 import './editor.scss';
 import './style.scss';
-import { getAttributeValue } from '../../extensions/styles';
 
 /**
  * Component
@@ -35,117 +35,115 @@ const BackgroundContent = props => {
 	if (layers) layers.sort((a, b) => a.order - b.order);
 
 	return (
-		<>
-			{layers &&
-				layers.length > 0 &&
-				layers.map(layer => {
-					const { type, order, isHover = false } = layer;
+		layers &&
+		layers.length > 0 &&
+		layers.map(layer => {
+			const { type, order, isHover = false } = layer;
 
-					switch (type) {
-						case 'color':
-						case 'gradient':
-							return (
-								<div
-									key={`maxi-background-displayer__${type}-${order}${
-										isHover ? '--hover' : ''
-									}`}
-									className={classnames(
-										'maxi-background-displayer__layer',
-										`maxi-background-displayer__${order}`
-									)}
-								/>
-							);
-						case 'image': {
-							const parallaxStatus = getAttributeValue({
-								target: 'background-image-parallax-status',
-								props: layer,
-								prefix,
-							});
+			switch (type) {
+				case 'color':
+				case 'gradient':
+					return (
+						<div
+							key={`maxi-background-displayer__${type}-${order}${
+								isHover ? '--hover' : ''
+							}`}
+							className={classnames(
+								'maxi-background-displayer__layer',
+								`maxi-background-displayer__${order}`
+							)}
+						/>
+					);
+				case 'image': {
+					const parallaxStatus = getAttributeValue({
+						target: 'background-image-parallax-status',
+						props: layer,
+						prefix,
+					});
 
-							if (!parallaxStatus)
-								return (
-									<div
-										key={`maxi-background-displayer__${type}-${order}${
-											isHover ? '--hover' : ''
-										}`}
-										className={classnames(
-											'maxi-background-displayer__layer',
-											`maxi-background-displayer__${order}`
-										)}
-									/>
-								);
+					if (!parallaxStatus)
+						return (
+							<div
+								key={`maxi-background-displayer__${type}-${order}${
+									isHover ? '--hover' : ''
+								}`}
+								className={classnames(
+									'maxi-background-displayer__layer',
+									`maxi-background-displayer__${order}`
+								)}
+							/>
+						);
 
-							const mediaURL = getAttributeValue({
-								target: 'background-image-mediaURL',
-								props: layer,
-								prefix,
-							});
-							const mediaID = getAttributeValue({
-								target: 'background-image-mediaID',
-								props: layer,
-								prefix,
-							});
-							const alt = getAttributeValue({
-								target: 'background-image-parallax-alt',
-								props: layer,
-								prefix,
-							});
+					const mediaURL = getAttributeValue({
+						target: 'background-image-mediaURL',
+						props: layer,
+						prefix,
+					});
+					const mediaID = getAttributeValue({
+						target: 'background-image-mediaID',
+						props: layer,
+						prefix,
+					});
+					const alt = getAttributeValue({
+						target: 'background-image-parallax-alt',
+						props: layer,
+						prefix,
+					});
 
-							if (!mediaURL) return null;
+					if (!mediaURL) return null;
 
-							return (
-								<div
-									key={`maxi-background-displayer__${type}-${order}${
-										isHover ? '--hover' : ''
-									}`}
-									className={classnames(
-										'maxi-background-displayer__layer',
-										'maxi-background-displayer__parallax',
-										`maxi-background-displayer__${order}`
-									)}
-								>
-									<img
-										className={`wp-image-${mediaID}`}
-										src={mediaURL}
-										alt={alt}
-									/>
-								</div>
-							);
-						}
-						case 'video':
-							return (
-								<VideoLayer
-									key={`maxi-background-displayer__${type}-${order}${
-										isHover ? '--hover' : ''
-									}`}
-									wrapperRef={wrapperRef}
-									videoOptions={layer}
-									className={`maxi-background-displayer__${order}`}
-								/>
-							);
-						case 'shape': {
-							const svg = layer['background-svg-SVGElement'];
+					return (
+						<div
+							key={`maxi-background-displayer__${type}-${order}${
+								isHover ? '--hover' : ''
+							}`}
+							className={classnames(
+								'maxi-background-displayer__layer',
+								'maxi-background-displayer__parallax',
+								`maxi-background-displayer__${order}`
+							)}
+						>
+							<img
+								className={`wp-image-${mediaID}`}
+								src={mediaURL}
+								alt={alt}
+							/>
+						</div>
+					);
+				}
+				case 'video':
+					return (
+						<VideoLayer
+							key={`maxi-background-displayer__${type}-${order}${
+								isHover ? '--hover' : ''
+							}`}
+							wrapperRef={wrapperRef}
+							videoOptions={layer}
+							className={`maxi-background-displayer__${order}`}
+						/>
+					);
+				case 'shape': {
+					const svg = layer['background-svg-SVGElement'];
 
-							return (
-								<RawHTML
-									key={`maxi-background-displayer__${type}-${order}${
-										isHover ? '--hover' : ''
-									}`}
-									className={classnames(
-										'maxi-background-displayer__layer',
-										'maxi-background-displayer__svg',
-										`maxi-background-displayer__${order}`
-									)}
-								>
-									{svg}
-								</RawHTML>
-							);
-						}
-						default:
-							return null;
-					}
-				})}
-		</>
+					return (
+						<RawHTML
+							key={`maxi-background-displayer__${type}-${order}${
+								isHover ? '--hover' : ''
+							}`}
+							className={classnames(
+								'maxi-background-displayer__layer',
+								'maxi-background-displayer__svg',
+								`maxi-background-displayer__${order}`
+							)}
+						>
+							{svg}
+						</RawHTML>
+					);
+				}
+				default:
+					return null;
+			}
+		})
 	);
 };
 

@@ -62,6 +62,12 @@ class edit extends MaxiBlockComponent {
 				attributes: this.props.attributes,
 			})}`;
 
+			const forceAspectRatio = getLastBreakpointAttribute({
+				target: 'force-aspect-ratio',
+				breakpoint: this.props.deviceType,
+				attributes: this.props.attributes,
+			});
+
 			const { width: resizerWidth, height: resizerHeight } =
 				this.resizableObject.current.state;
 
@@ -71,7 +77,7 @@ class edit extends MaxiBlockComponent {
 			) {
 				this.resizableObject.current.updateSize({
 					width: width ? `${width}${widthUnit}` : '100%',
-					height,
+					height: forceAspectRatio ? 'auto' : height,
 				});
 			}
 		}
@@ -81,6 +87,12 @@ class edit extends MaxiBlockComponent {
 		const { attributes, deviceType, isSelected, maxiSetAttributes } =
 			this.props;
 		const { uniqueID, lineOrientation } = attributes;
+
+		const forceAspectRatio = getLastBreakpointAttribute({
+			target: 'force-aspect-ratio',
+			breakpoint: deviceType,
+			attributes,
+		});
 
 		const classes = classnames(
 			lineOrientation === 'vertical'
@@ -161,7 +173,7 @@ class edit extends MaxiBlockComponent {
 				}}
 				showHandle={isSelected}
 				enable={{
-					bottom: true,
+					bottom: !forceAspectRatio,
 				}}
 				onResizeStart={handleOnResizeStart}
 				onResizeStop={handleOnResizeStop}

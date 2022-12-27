@@ -18,6 +18,7 @@ import FlexContentAlignControl from './flex-content-align-control';
 import {
 	getLastBreakpointAttribute,
 	getAttributeValue,
+	getDefaultAttribute,
 } from '../../extensions/styles';
 import { handleOnReset } from '../../extensions/attributes';
 import getOptions from './utils';
@@ -196,6 +197,16 @@ const FlexSettingsControl = props => {
 													breakpoint,
 													attributes: props,
 											  }) ?? ''
+									}
+									onReset={() =>
+										onChange(
+											handleOnReset({
+												[`flex-basis-${breakpoint}`]:
+													getDefaultAttribute(
+														`flex-basis-${breakpoint}`
+													),
+											})
+										)
 									}
 									options={getOptions([
 										'content',

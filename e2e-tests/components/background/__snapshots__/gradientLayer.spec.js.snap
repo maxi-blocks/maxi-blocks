@@ -3,6 +3,7 @@
 exports[`BackgroundControl Check Background gradient layer 1`] = `
 Array [
   Object {
+    "background-gradient-clip-path-general": "none",
     "background-gradient-clip-path-status-general": false,
     "background-gradient-general": "radial-gradient(rgba(6,147,227,1) 0%,rgb(155,81,224) 100%)",
     "background-gradient-opacity-general": 0.5,
@@ -29,6 +30,7 @@ exports[`BackgroundControl Check Background gradient layer 2`] = `"<style>body.m
 exports[`BackgroundControl Check Background gradient layer hover 1`] = `
 Array [
   Object {
+    "background-gradient-clip-path-general": "none",
     "background-gradient-clip-path-status-general": false,
     "background-gradient-general": "radial-gradient(rgba(6,147,227,1) 0%,rgb(155,81,224) 100%)",
     "background-gradient-opacity-general": 0.5,
@@ -60,6 +62,7 @@ Array [
     "type": "gradient",
   },
   Object {
+    "background-gradient-clip-path-general": "none",
     "background-gradient-clip-path-status-general": false,
     "background-gradient-general": "radial-gradient(rgba(6,147,227,1) 0%,rgb(155,81,224) 100%)",
     "background-gradient-opacity-general": 0.5,

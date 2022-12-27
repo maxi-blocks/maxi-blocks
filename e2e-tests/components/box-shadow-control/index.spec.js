@@ -110,7 +110,7 @@ describe('BoxShadowControl', () => {
 		);
 
 		await accordionPanel.$$eval(
-			'[data-name="box shadow"] .maxi-tabs-content .maxi-tabs-control__button',
+			'[data-name="box shadow"] .maxi-tabs-control .maxi-tabs-control__button',
 			buttons => buttons[1].click()
 		);
 
@@ -120,7 +120,7 @@ describe('BoxShadowControl', () => {
 		);
 
 		await accordionPanel.$$eval(
-			'[data-name="box shadow"] .maxi-tabs-content .maxi-tabs-control__button',
+			'[data-name="box shadow"] .maxi-tabs-control .maxi-tabs-control__button',
 			buttons => buttons[0].click()
 		);
 
@@ -164,7 +164,7 @@ describe('BoxShadowControl', () => {
 		);
 
 		await accordionPanel.$$eval(
-			'[data-name="box shadow"] .maxi-tabs-content .maxi-tabs-control__button',
+			'[data-name="box shadow"] .maxi-tabs-control .maxi-tabs-control__button',
 			buttons => buttons[0].click()
 		);
 

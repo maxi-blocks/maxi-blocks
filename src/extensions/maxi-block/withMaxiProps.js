@@ -13,7 +13,7 @@ import {
 	handleInsertInlineStyles,
 	handleCleanInlineStyles,
 } from './inlineStyles';
-import { BlockInserter } from '../../components';
+import BlockInserter from '../../components/block-inserter';
 
 /**
  * External dependencies

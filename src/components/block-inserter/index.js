@@ -12,7 +12,7 @@ import { Popover, Tooltip } from '@wordpress/components';
  */
 import Button from '../button';
 import Dropdown from '../dropdown';
-import { getBoundaryElement } from '../../extensions/dom';
+import getBoundaryElement from '../../extensions/dom/getBoundaryElement';
 
 /**
  * External dependencies

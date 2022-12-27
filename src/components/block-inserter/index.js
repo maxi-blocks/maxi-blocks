@@ -54,26 +54,31 @@ const BlockInserter = props => {
 };
 
 const ButtonInserter = props => {
-	const { onToggle } = props;
+	const { onToggle, style = {} } = props;
 
 	return (
 		<Tooltip text={__('Add block', 'maxi-blocks')} position='top center'>
-			<Button
-				className='maxi-wrapper-block-inserter__button maxi-block-inserter__button'
-				onClick={onToggle}
+			<div
+				className='maxi-wrapper-block-inserter__button-wrapper'
+				style={style}
 			>
-				<svg
-					xmlns='http://www.w3.org/2000/svg'
-					viewBox='0 0 24 24'
-					width='24'
-					height='24'
-					role='img'
-					aria-hidden='true'
-					focusable='false'
+				<Button
+					className='maxi-wrapper-block-inserter__button maxi-block-inserter__button'
+					onClick={onToggle}
 				>
-					<path d='M18 11.2h-5.2V6h-1.6v5.2H6v1.6h5.2V18h1.6v-5.2H18z' />
-				</svg>
-			</Button>
+					<svg
+						xmlns='http://www.w3.org/2000/svg'
+						viewBox='0 0 24 24'
+						width='24'
+						height='24'
+						role='img'
+						aria-hidden='true'
+						focusable='false'
+					>
+						<path d='M18 11.2h-5.2V6h-1.6v5.2H6v1.6h5.2V18h1.6v-5.2H18z' />
+					</svg>
+				</Button>
+			</div>
 		</Tooltip>
 	);
 };
@@ -102,6 +107,12 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 	};
 
 	if (!ref?.current) return null;
+
+	const { width } = ref.current.getBoundingClientRect();
+
+	const style = {
+		width: `${width}px`,
+	};
 
 	const popoverProps = {
 		...((parseFloat(version) <= 13.0 && {
@@ -143,6 +154,7 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 							<ButtonInserter
 								onToggle={onToggle}
 								setShouldRemain={setShouldRemain}
+								style={style}
 							/>
 						)}
 						renderContent={({ onToggle }) => (
@@ -193,7 +205,7 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 						__experimentalIsQuick
 						onSelectOrClose={() => setShouldRemain(false)}
 						renderToggle={({ onToggle }) => (
-							<ButtonInserter onToggle={onToggle} />
+							<ButtonInserter onToggle={onToggle} style={style} />
 						)}
 					/>
 				)}

@@ -113,17 +113,30 @@
 }
 
 .maxi-wrapper-block-inserter {
+	transform: translateY(-50%);
 	animation: none;
 
 	.components-popover__content {
-		height: 20px;
-		transform: translate(-50%, -50%) !important;
+		height: auto;
 		overflow: hidden;
 		background: transparent;
 		border: none;
 		border-radius: 0;
 		box-shadow: none;
 		outline: none;
+	}
+
+	&__button-wrapper {
+		&:before {
+			content: '';
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			width: 100%;
+			height: 5px;
+			background-color: var(--maxi-primary-color);
+		}
 	}
 }
 
@@ -167,7 +180,7 @@
 				&::before {
 					width: 100%;
 					height: 5px;
-					background-color: #D2F6CB;
+					background-color: #d2f6cb;
 					margin-top: 5px;
 				}
 			}
@@ -182,7 +195,7 @@
 		width: 20px;
 		height: 20px;
 		padding: 0 !important;
-		background: #1FBA00;
+		background: #1fba00;
 		border-radius: 100%;
 		color: #fff;
 

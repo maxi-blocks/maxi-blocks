@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ClipPath from '../clip-path-control';
+import ClipPathControl from '../clip-path-control';
 import GradientControl from '../gradient-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import SizeAndPositionLayerControl from './sizeAndPositionLayerControl';
@@ -86,7 +86,7 @@ const GradientLayerContent = props => {
 				}
 			/>
 			{!disableClipPath && (
-				<ClipPath
+				<ClipPathControl
 					onChange={onChange}
 					{...getGroupAttributes(
 						props,
@@ -98,6 +98,8 @@ const GradientLayerContent = props => {
 					isHover={isHover}
 					prefix='background-gradient-'
 					breakpoint={breakpoint}
+					isLayer
+					disableRTC
 				/>
 			)}
 			<SizeAndPositionLayerControl

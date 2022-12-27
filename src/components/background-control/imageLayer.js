@@ -8,7 +8,7 @@ import { useState } from '@wordpress/element';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
-import ClipPath from '../clip-path-control';
+import ClipPathControl from '../clip-path-control';
 import ImageAltControl from '../image-alt-control';
 import ImageCropControl from '../image-crop-control';
 import MediaUploaderControl from '../media-uploader-control';
@@ -598,7 +598,7 @@ const ImageLayerSettings = props => {
 			)}
 			<hr />
 			{!disableClipPath && (
-				<ClipPath
+				<ClipPathControl
 					onChange={onChange}
 					{...getGroupAttributes(
 						imageOptions,
@@ -610,6 +610,8 @@ const ImageLayerSettings = props => {
 					isHover={isHover}
 					prefix='background-image-'
 					breakpoint={breakpoint}
+					isLayer
+					disableRTC
 				/>
 			)}
 			<SizeAndPositionLayerControl

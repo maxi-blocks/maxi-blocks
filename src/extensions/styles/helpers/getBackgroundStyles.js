@@ -977,13 +977,6 @@ const getGeneralBackgroundStyles = (
 				widthBottom = getBorderValue('bottom', breakpoint);
 				widthLeft = getBorderValue('left', breakpoint);
 				widthRight = getBorderValue('right', breakpoint);
-
-				// if (breakpoint !== 'general') {
-				// 	if (widthTop === 0) widthTop = 2;
-				// 	if (widthBottom === 0) widthBottom = 2;
-				// 	if (widthLeft === 0) widthLeft = 2;
-				// 	if (widthRight === 0) widthRight = 2;
-				// }
 			}
 
 			const widthUnit =
@@ -1000,35 +993,17 @@ const getGeneralBackgroundStyles = (
 				Number.isFinite(widthLeft) ||
 				Number.isFinite(widthRight)
 			) {
+				const getSize = width => {
+					if (!Number.isFinite(width)) return;
+
+					return isHover ? 'auto' : -round(width, 2) + widthUnit;
+				};
+
 				size[breakpoint] = {
-					...(Number.isFinite(widthTop) && {
-						top: -round(widthTop, 2) + widthUnit,
-					}),
-					...(!Number.isFinite(widthTop) &&
-						isHover && {
-							top: 'auto',
-						}),
-					...(Number.isFinite(widthBottom) && {
-						bottom: -round(widthBottom, 2) + widthUnit,
-					}),
-					...(!Number.isFinite(widthBottom) &&
-						isHover && {
-							bottom: 'auto',
-						}),
-					...(Number.isFinite(widthLeft) && {
-						left: -round(widthLeft, 2) + widthUnit,
-					}),
-					...(!Number.isFinite(widthLeft) &&
-						isHover && {
-							left: 'auto',
-						}),
-					...(Number.isFinite(widthRight) && {
-						right: -round(widthRight, 2) + widthUnit,
-					}),
-					...(!Number.isFinite(widthRight) &&
-						isHover && {
-							right: 'auto',
-						}),
+					top: getSize(widthTop),
+					bottom: getSize(widthBottom),
+					left: getSize(widthLeft),
+					right: getSize(widthRight),
 				};
 			}
 		});

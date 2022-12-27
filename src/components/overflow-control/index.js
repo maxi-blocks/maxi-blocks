@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 import { Tooltip } from '@wordpress/components';
 
 /**
@@ -38,32 +38,68 @@ const OverflowControl = props => {
 	const axes = ['x', 'y'];
 	const [sync, changeSync] = useState(true);
 
-	const [AxisVal, setAxisVal] = useState();
+	const [axisVal, setAxisVal] = useState();
 
-	const syncOverflow = () => {
-		if (!sync) {
-			onChange({
-				[`overflow-x-${breakpoint}`]: AxisVal,
-				[`overflow-y-${breakpoint}`]: AxisVal,
-			});
-		}
+	const updateSync = (changedAttributes = null) => {
+		const [x, y] = axes.map(axis =>
+			getLastBreakpointAttribute({
+				target: `overflow-${axis}`,
+				breakpoint,
+				attributes: changedAttributes
+					? { ...props, ...changedAttributes }
+					: props,
+			})
+		);
+		changeSync(x === y);
 	};
 
-	const onChangeValue = (val, axis) => {
-		if (sync) {
-			setAxisVal(val);
+	/**
+	 * If `val` is `null`(has been reset), get the last breakpoint attribute
+	 * from last version of `attributes`.
+	 */
+	const updateAxisVal = (val, changedAttributes = null) =>
+		setAxisVal(
+			!isEmpty(val)
+				? val
+				: getLastBreakpointAttribute({
+						target: 'overflow-x',
+						breakpoint,
+						attributes: changedAttributes
+							? { ...props, ...changedAttributes }
+							: props,
+				  })
+		);
 
-			onChange({
-				[`overflow-x-${breakpoint}`]: !isEmpty(val) ? val : null,
-				[`overflow-y-${breakpoint}`]: !isEmpty(val) ? val : null,
-			});
-		} else {
-			setAxisVal(val);
+	useEffect(() => {
+		updateSync();
+		updateAxisVal();
+	}, [breakpoint]);
 
-			onChange({
-				[`overflow-${axis}-${breakpoint}`]: !isEmpty(val) ? val : null,
-			});
-		}
+	const getChangedAttributes = ({
+		val,
+		axis = null,
+		sync: currentSync = sync,
+	}) =>
+		(currentSync ? axes : [axis]).reduce((acc, axis) => {
+			acc[`overflow-${axis}-${breakpoint}`] = val;
+			return acc;
+		}, {});
+
+	const onChangeSync = val => {
+		changeSync(val);
+
+		if (val) onChange(getChangedAttributes({ val: axisVal, sync: true }));
+	};
+
+	const onChangeValue = (rawValue, axis) => {
+		const isValEmpty = isEmpty(rawValue);
+		const val = !isValEmpty ? rawValue : null;
+
+		const changedAttributes = getChangedAttributes({ val, axis });
+
+		onChange(changedAttributes);
+		updateAxisVal(val, changedAttributes);
+		if (isValEmpty && sync) updateSync(changedAttributes);
 	};
 
 	return (
@@ -109,10 +145,7 @@ const OverflowControl = props => {
 						aria-label={__('Sync units', 'maxi-blocks')}
 						isPrimary={sync}
 						aria-pressed={sync}
-						onClick={() => {
-							changeSync(!sync);
-							syncOverflow();
-						}}
+						onClick={() => onChangeSync(!sync)}
 					>
 						{syncIcon}
 					</Button>

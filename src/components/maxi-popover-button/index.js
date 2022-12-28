@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { select } from '@wordpress/data';
+import { useSelect } from '@wordpress/data';
 import { Popover } from '@wordpress/components';
 import { forwardRef, useRef } from '@wordpress/element';
 import { getScrollContainer } from '@wordpress/dom';
@@ -22,12 +22,16 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 	const { uniqueID } = attributes;
 
 	const popoverRef = useRef(null);
+	const { version } = useSelect(select => {
+		const { receiveMaxiSettings } = select('maxiBlocks');
+		const maxiSettings = receiveMaxiSettings();
+		return {
+			version: !isEmpty(maxiSettings.editor)
+				? maxiSettings.editor.version
+				: null,
+		};
+	}, []);
 
-	const { receiveMaxiSettings } = select('maxiBlocks');
-	const maxiSettings = receiveMaxiSettings();
-	const version = !isEmpty(maxiSettings.editor)
-		? maxiSettings.editor.version
-		: null;
 
 	if (!isSelected || !ref.current) return null;
 

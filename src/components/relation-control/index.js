@@ -27,7 +27,7 @@ import { getHoverStatus } from '../../extensions/relations';
 /**
  * External dependencies
  */
-import { capitalize, cloneDeep, isEmpty, isNil, merge } from 'lodash';
+import { capitalize, cloneDeep, isEmpty, merge } from 'lodash';
 
 /**
  * Styles
@@ -182,46 +182,6 @@ const RelationControl = props => {
 				return acc;
 			}, {}),
 		};
-
-		// As an alternative to a migrator... Remove after used!
-		if (
-			!(
-				'transitionTrigger' in item.effects &&
-				'transitionTarget' in item.effects &&
-				'hoverStatus' in item.effects
-			) ||
-			item.effects.hoverStatus !==
-				getHoverStatus(selectedSettingsObj.hoverProp, blockAttributes)
-		) {
-			const {
-				transitionTarget: rawTransitionTarget,
-				transitionTrigger,
-				hoverProp,
-			} = selectedSettingsObj;
-			const transitionTarget =
-				item.settings === 'Transform'
-					? Object.keys(item.css)
-					: rawTransitionTarget;
-
-			let hoverStatus = null;
-
-			if (!('hoverStatus' in item.effects))
-				hoverStatus = getHoverStatus(
-					hoverProp,
-					blockAttributes,
-					item.attributes
-				);
-
-			if (transitionTarget || transitionTrigger)
-				onChangeRelation(relations, item.id, {
-					effects: {
-						...item.effects,
-						...(transitionTarget && { transitionTarget }),
-						...(transitionTrigger && { transitionTrigger }),
-						...(!isNil(hoverStatus) && { hoverStatus }),
-					},
-				});
-		}
 
 		// Merging into empty object because lodash `merge` mutates first argument
 		const mergedAttributes = merge({}, blockAttributes, item.attributes);

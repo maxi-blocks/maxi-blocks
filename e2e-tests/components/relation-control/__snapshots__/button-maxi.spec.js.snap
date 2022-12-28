@@ -808,6 +808,8 @@ Array [
   Object {
     "action": "hover",
     "attributes": Object {
+      "bottom-gap-unit-general": "px",
+      "bottom-gap-unit-xl": "px",
       "color-general": null,
       "color-xl": null,
       "font-size-general": 24,
@@ -848,6 +850,8 @@ Array [
       "text-orientation-xl": "sideways",
       "text-transform-general": "capitalize",
       "text-transform-xl": "capitalize",
+      "word-spacing-unit-general": "px",
+      "word-spacing-unit-xl": "px",
     },
     "css": Object {
       "general": Object {

@@ -5,32 +5,36 @@ import { getTransitionSetting } from './utils';
 
 const name = 'IB effects';
 
-const keysOfSettingsToMigrate = [
-	'transitionTarget',
-	'transitionTrigger',
-	'hoverProp',
+const settingsToMigrate = [
+	{
+		key: 'transitionTarget',
+		get isEligible() {
+			return (transitionSetting, relation) =>
+				transitionSetting[this.key] &&
+				// `transitionTarget` generates dynamically for transform
+				transitionSetting.label !== 'Transform' &&
+				relation.effects[this.key] !== transitionSetting[this.key];
+		},
+	},
+	{
+		key: 'transitionTrigger',
+		get isEligible() {
+			return (transitionSetting, relation) =>
+				transitionSetting[this.key] &&
+				relation.effects[this.key] !== transitionSetting[this.key];
+		},
+	},
+	{
+		key: 'hoverProp',
+		attributeKey: 'hoverStatus',
+		attributeValue: null,
+		get isEligible() {
+			return (transitionSetting, relation) =>
+				transitionSetting[this.key] &&
+				!(this.attributeKey in relation.effects);
+		},
+	},
 ];
-
-const getAttributeKey = key => {
-	switch (key) {
-		case 'hoverProp':
-			return 'hoverStatus';
-		default:
-			return key;
-	}
-};
-
-const getAttributeValue = (key, transitionSetting) => {
-	switch (key) {
-		case 'hoverProp':
-			return null;
-		default:
-			return transitionSetting[key];
-	}
-};
-
-const isEligibleKey = (key, transitionSetting, relation) =>
-	key in transitionSetting && !(getAttributeKey(key) in relation.effects);
 
 const isEligible = blockAttributes =>
 	!!blockAttributes?.relations &&
@@ -38,8 +42,8 @@ const isEligible = blockAttributes =>
 		const transitionSetting = getTransitionSetting(relation);
 		return (
 			transitionSetting &&
-			keysOfSettingsToMigrate.some(key =>
-				isEligibleKey(key, transitionSetting, relation)
+			settingsToMigrate.some(({ isEligible }) =>
+				isEligible(transitionSetting, relation)
 			)
 		);
 	});
@@ -51,13 +55,13 @@ const migrate = newAttributes => {
 		const transitionSetting = getTransitionSetting(relation);
 
 		if (!transitionSetting) return;
-		keysOfSettingsToMigrate.forEach(key => {
-			if (isEligibleKey(key, transitionSetting, relation))
-				relations[i].effects[getAttributeKey(key)] = getAttributeValue(
-					key,
-					transitionSetting
-				);
-		});
+		settingsToMigrate.forEach(
+			({ key, attributeKey, attributeValue, isEligible }) => {
+				if (isEligible(transitionSetting, relation))
+					relations[i].effects[attributeKey ?? key] =
+						attributeValue ?? transitionSetting[key];
+			}
+		);
 	});
 
 	return { ...newAttributes, relations };

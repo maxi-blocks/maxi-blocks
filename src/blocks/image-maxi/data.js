@@ -204,7 +204,7 @@ const transition = {
 		},
 		'clip path': {
 			title: 'Clip path',
-			target: `${imageWrapperClass} img`,
+			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
 			property: 'clip-path',
 			hoverProp: 'clip-path-status-hover',
 		},

@@ -10,7 +10,9 @@ import {
 	ColorControl,
 	ToggleSwitch,
 	SettingTabsControl,
+	AdvancedNumberControl,
 } from '../../../../components';
+import MediaUploaderControl from '../../../../components/media-uploader-control';
 import {
 	getAttributeKey,
 	getDefaultAttribute,
@@ -127,7 +129,10 @@ const VideoOverlayControl = props => {
 		onChange,
 		hideImage,
 		disableHideImage = false,
+		disableUploadImage = false,
 		disableHover = false,
+		'overlay-mediaID': mediaID,
+		'overlay-altSelector': altSelector,
 	} = props;
 
 	return (
@@ -139,6 +144,40 @@ const VideoOverlayControl = props => {
 					selected={hideImage}
 					onChange={val => onChange({ hideImage: val })}
 				/>
+			)}
+			{!hideImage && (
+				<>
+					{!disableUploadImage && (
+						<MediaUploaderControl
+							className='maxi-video-overlay-control__cover-image'
+							placeholder={__('Image overlay')}
+							mediaID={mediaID}
+							onSelectImage={val => {
+								const alt =
+									(altSelector === 'wordpress' && val?.alt) ||
+									(altSelector === 'title' && val?.title) ||
+									null;
+
+								onChange({
+									'overlay-mediaID': val.id,
+									'overlay-mediaURL': val.url,
+									'overlay-mediaAlt':
+										altSelector === 'wordpress' && !alt
+											? val.title
+											: alt,
+								});
+							}}
+							onRemoveImage={() =>
+								onChange({
+									'overlay-mediaID': null,
+									'overlay-mediaURL': '',
+									'overlay-mediaAlt': '',
+								})
+							}
+						/>
+					)}
+					<AdvancedNumberControl />
+				</>
 			)}
 			{disableHover && <OverlayColor {...props} />}
 			{!disableHover && (

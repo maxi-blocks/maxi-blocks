@@ -142,12 +142,14 @@ const getCanvasSettings = ({ name, customCss }) => [
 	},
 	{
 		label: __('Box shadow', 'maxi-blocks'),
+		hoverProp: 'box-shadow-status-hover',
 		attrGroupName: 'boxShadow',
 		component: props => <BoxShadowControl {...props} />,
 		helper: props => getBoxShadowStyles(props),
 	},
 	{
 		label: __('Opacity', 'maxi-blocks'),
+		hoverProp: 'opacity-status-hover',
 		attrGroupName: 'opacity',
 		component: props => (
 			<OpacityControl

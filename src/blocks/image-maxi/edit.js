@@ -264,8 +264,6 @@ class edit extends MaxiBlockComponent {
 					isOpen={isUploaderOpen}
 					isEmptyContent={!mediaID}
 					prefix='image-'
-					resizerWidth={attributes.imgWidth}
-					isImage
 					{...this.props}
 				>
 					<MediaUpload

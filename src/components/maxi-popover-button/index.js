@@ -27,10 +27,9 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 		isSelected,
 		attributes,
 		deviceType,
-		resizerWidth,
 		isOpen = false,
-		isImage = false,
 		isEmptyContent = false,
+		prefix = '',
 		className,
 	} = props;
 	const { uniqueID } = attributes;
@@ -95,12 +94,18 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 
 		if (isNaN(containerWidth)) return true;
 
-		const resizerWidthNumber = toNumber(resizerWidth);
-		const resizerWidthInPixels = isImage
-			? (resizerWidthNumber / 100) * containerWidth
-			: resizerWidthNumber;
+		const resizerWidth =
+			prefix === 'image-'
+				? (attributes.imgWidth / 100) * containerWidth
+				: toNumber(
+						getLastBreakpointAttribute({
+							target: `${prefix}width`,
+							breakpoint: deviceType,
+							attributes,
+						})
+				  );
 
-		return (containerWidth - resizerWidthInPixels) / 2 > 50;
+		return (containerWidth - resizerWidth) / 2 > 50;
 	};
 
 	if (!shouldDisplayComponent()) return null;

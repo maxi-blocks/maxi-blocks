@@ -1,3 +1,8 @@
+/**
+ * WordPress dependencies
+ */
+import { dispatch } from '@wordpress/data';
+
 /* eslint-disable react/jsx-no-constructed-context-values */
 /**
  * Internal dependencies
@@ -56,6 +61,13 @@ class edit extends MaxiBlockComponent {
 				...this.state.openPanes.filter(pane => pane !== paneId),
 			],
 		});
+	}
+	
+	maxiBlockDidUpdate() {
+		if (!this.props.hasInnerBlocks) {
+			const { removeBlock } = dispatch('core/block-editor');
+			removeBlock(this.props.clientId);
+		}
 	}
 
 	render() {

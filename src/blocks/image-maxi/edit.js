@@ -262,6 +262,7 @@ class edit extends MaxiBlockComponent {
 					key={`popover-${uniqueID}`}
 					ref={this.blockRef}
 					isOpen={isUploaderOpen}
+					isEmptyContent={!mediaID}
 					prefix='image-'
 					resizerWidth={attributes.imgWidth}
 					isImage

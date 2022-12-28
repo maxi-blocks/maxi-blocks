@@ -220,6 +220,7 @@ class edit extends MaxiBlockComponent {
 						breakpoint: deviceType,
 						attributes,
 					})}
+					isEmptyContent={!overlayMediaId}
 					{...this.props}
 				>
 					<MediaUpload

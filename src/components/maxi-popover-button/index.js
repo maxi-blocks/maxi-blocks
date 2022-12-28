@@ -30,6 +30,7 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 		resizerWidth,
 		isOpen = false,
 		isImage = false,
+		isEmptyContent = false,
 		className,
 	} = props;
 	const { uniqueID } = attributes;
@@ -59,6 +60,8 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 
 	const shouldDisplayComponent = () => {
 		if (!isSelected || !ref.current) return false;
+
+		if (isEmptyContent) return true;
 
 		if (
 			getLastBreakpointAttribute({

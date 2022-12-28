@@ -191,11 +191,6 @@ class edit extends MaxiBlockComponent {
 						ref={this.blockRef}
 						isOpen={isOpen}
 						prefix='svg-'
-						resizerWidth={getLastBreakpointAttribute({
-							target: 'svg-width',
-							breakpoint: deviceType,
-							attributes,
-						})}
 						{...this.props}
 					>
 						<MaxiModal {...maxiModalProps} />

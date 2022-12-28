@@ -39,6 +39,7 @@ describe('BackgroundControl', () => {
 			input => input.focus()
 		);
 
+		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type(video);
 		await page.waitForTimeout(150);
 

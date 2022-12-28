@@ -15,7 +15,7 @@ const getTypographyValue = ({
 	breakpoint,
 	typography,
 	isHover,
-	avoidXXL,
+	avoidXXL = true,
 	formatValue,
 	textLevel,
 	styleCard,

@@ -18,7 +18,10 @@ import {
 	MaxiPopoverButton,
 	Button,
 } from '../../components';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import { videoValidation } from '../../extensions/video';
 import { copyPasteMapping } from './data';
 import { placeholderImage, toolbarReplaceImage } from '../../icons';
@@ -167,7 +170,8 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, isSelected, maxiSetAttributes } = this.props;
+		const { attributes, deviceType, isSelected, maxiSetAttributes } =
+			this.props;
 		const {
 			uniqueID,
 			embedUrl,
@@ -210,6 +214,12 @@ class edit extends MaxiBlockComponent {
 					key={`popover-${uniqueID}`}
 					ref={this.blockRef}
 					isOpen={isUploaderOpen}
+					prefix='video-'
+					resizerWidth={getLastBreakpointAttribute({
+						target: 'video-width',
+						breakpoint: deviceType,
+						attributes,
+					})}
 					{...this.props}
 				>
 					<MediaUpload

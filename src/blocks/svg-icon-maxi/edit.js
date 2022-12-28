@@ -33,7 +33,7 @@ import { copyPasteMapping } from './data';
 /**
  * External dependencies
  */
-import { isEmpty, isEqual, isNaN, toNumber, uniqueId } from 'lodash';
+import { isEmpty, uniqueId } from 'lodash';
 
 /**
  * Content
@@ -43,7 +43,6 @@ class edit extends MaxiBlockComponent {
 		super(props);
 
 		this.resizableObject = createRef();
-		this.previousWidthAttribute = createRef();
 
 		this.state = {
 			isOpen: this.props.attributes.openFirstTime,
@@ -139,56 +138,6 @@ class edit extends MaxiBlockComponent {
 			});
 		};
 
-		const getIsSmall = () => {
-			if (
-				getLastBreakpointAttribute({
-					target: 'width-fit-content',
-					breakpoint: deviceType,
-					attributes,
-				})
-			)
-				return true;
-
-			if (this.blockRef.current) {
-				const getContainerWidth = () => {
-					const blockRefWidth =
-						this.blockRef.current.getBoundingClientRect().width;
-					const widthAttribute = toNumber(
-						getLastBreakpointAttribute({
-							target: 'width',
-							breakpoint: deviceType,
-							attributes,
-						})
-					);
-
-					const result = isEqual(
-						this.previousWidthAttribute.current,
-						widthAttribute
-					)
-						? blockRefWidth
-						: widthAttribute;
-					this.previousWidthAttribute.current = widthAttribute;
-
-					return result;
-				};
-				const containerWidth = getContainerWidth();
-
-				if (isNaN(containerWidth)) return false;
-
-				const iconWidth = toNumber(
-					getLastBreakpointAttribute({
-						target: 'svg-width',
-						breakpoint: deviceType,
-						attributes,
-					})
-				);
-
-				return (containerWidth - iconWidth) / 2 < 50;
-			}
-
-			return false;
-		};
-
 		const maxiModalProps = {
 			clientId,
 			type: 'svg',
@@ -241,7 +190,12 @@ class edit extends MaxiBlockComponent {
 						key={`popover-${uniqueID}`}
 						ref={this.blockRef}
 						isOpen={isOpen}
-						isSmall={getIsSmall()}
+						prefix='svg-'
+						resizerWidth={getLastBreakpointAttribute({
+							target: 'svg-width',
+							breakpoint: deviceType,
+							attributes,
+						})}
 						{...this.props}
 					>
 						<MaxiModal {...maxiModalProps} />

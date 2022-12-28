@@ -3,14 +3,19 @@
  */
 import { useSelect } from '@wordpress/data';
 import { Popover } from '@wordpress/components';
-import { forwardRef, useRef } from '@wordpress/element';
+import { forwardRef, useEffect, useRef } from '@wordpress/element';
 import { getScrollContainer } from '@wordpress/dom';
+
+/**
+ * Internal dependencies
+ */
+import { getLastBreakpointAttribute } from '../../extensions/styles';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNaN } from 'lodash';
+import { isEmpty, isEqual, isNaN, toNumber } from 'lodash';
 
 /**
  * Styles
@@ -18,10 +23,30 @@ import { isEmpty, isNaN } from 'lodash';
 import './editor.scss';
 
 const MaxiPopoverButton = forwardRef((props, ref) => {
-	const { isSelected, attributes, isOpen = false, className } = props;
+	const {
+		isSelected,
+		attributes,
+		deviceType,
+		resizerWidth,
+		isOpen = false,
+		isImage = false,
+		className,
+	} = props;
 	const { uniqueID } = attributes;
 
 	const popoverRef = useRef(null);
+	const previousWidthAttribute = useRef();
+
+	useEffect(() => {
+		previousWidthAttribute.current = toNumber(
+			getLastBreakpointAttribute({
+				target: 'width',
+				breakpoint: deviceType,
+				attributes,
+			})
+		);
+	}, [attributes, deviceType]);
+
 	const { version } = useSelect(select => {
 		const { receiveMaxiSettings } = select('maxiBlocks');
 		const maxiSettings = receiveMaxiSettings();
@@ -32,15 +57,56 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 		};
 	}, []);
 
+	const shouldDisplayComponent = () => {
+		if (!isSelected || !ref.current) return false;
 
-	if (!isSelected || !ref.current) return null;
+		if (
+			getLastBreakpointAttribute({
+				target: 'width-fit-content',
+				breakpoint: deviceType,
+				attributes,
+			})
+		)
+			return false;
+
+		const getContainerWidth = () => {
+			const blockRefWidth = ref.current.getBoundingClientRect().width;
+			const widthAttribute = toNumber(
+				getLastBreakpointAttribute({
+					target: 'width',
+					breakpoint: deviceType,
+					attributes,
+				})
+			);
+
+			const result = isEqual(
+				previousWidthAttribute.current,
+				widthAttribute
+			)
+				? blockRefWidth
+				: widthAttribute;
+
+			return result;
+		};
+		const containerWidth = getContainerWidth();
+
+		if (isNaN(containerWidth)) return true;
+
+		const resizerWidthNumber = toNumber(resizerWidth);
+		const resizerWidthInPixels = isImage
+			? (resizerWidthNumber / 100) * containerWidth
+			: resizerWidthNumber;
+
+		return (containerWidth - resizerWidthInPixels) / 2 > 50;
+	};
+
+	if (!shouldDisplayComponent()) return null;
 
 	const classes = classnames(
 		'maxi-popover-button',
 		isOpen && 'maxi-popover-button--open',
 		version <= 13.0 && 'maxi-popover-button--old',
-		className,
-		props.isSmall && 'maxi-popover-button--small-block'
+		className
 	);
 
 	const boundaryElement =

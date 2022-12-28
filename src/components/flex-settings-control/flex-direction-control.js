@@ -6,10 +6,9 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-
-import { getLastBreakpointAttribute } from '../../extensions/styles';
 import SettingTabsControl from '../setting-tabs-control';
 import Icon from '../icon';
+import { getLastBreakpointAttribute } from '../../extensions/styles';
 
 /**
  * Icons

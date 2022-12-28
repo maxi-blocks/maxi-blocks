@@ -7,8 +7,8 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import SettingTabsControl from '../setting-tabs-control';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
 import Icon from '../icon';
+import { getLastBreakpointAttribute } from '../../extensions/styles';
 
 /**
  * Icons

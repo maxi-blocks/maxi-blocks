@@ -54,6 +54,11 @@ const copyPasteMapping = {
 const normalPaneTarget = '.maxi-pane-block[aria-expanded]';
 const activePaneTarget = '.maxi-pane-block[aria-expanded=true]';
 
+const targets = {
+	normalPaneTarget,
+	activePaneTarget,
+};
+
 const customCss = {
 	selectors: {
 		pane: {
@@ -304,5 +309,11 @@ const data = {
 	interactionBuilderSettings,
 };
 
-export { copyPasteMapping, customCss, transition, interactionBuilderSettings };
+export {
+	copyPasteMapping,
+	customCss,
+	transition,
+	interactionBuilderSettings,
+	targets,
+};
 export default data;

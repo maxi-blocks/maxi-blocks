@@ -5,6 +5,7 @@ import { createSelectors } from '../../extensions/styles/custom-css';
 import { createIconTransitions } from '../../extensions/styles';
 import { getCanvasSettings } from '../../extensions/relations';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
+import { targets as paneTargets } from '../pane-maxi/data';
 
 /**
  * Data object
@@ -48,8 +49,7 @@ const copyPasteMapping = {
 	},
 };
 
-const normalPaneTarget = '.maxi-pane-block[aria-expanded]';
-const activePaneTarget = '.maxi-pane-block[aria-expanded=true]';
+const { normalPaneTarget, activePaneTarget } = paneTargets;
 
 const customCss = {
 	selectors: {

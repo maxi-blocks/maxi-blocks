@@ -1,9 +1,17 @@
 /**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+
+/**
  * Internal dependencies
  */
-import { createSelectors } from '../../extensions/styles/custom-css';
-import { createIconTransitions } from '../../extensions/styles';
+import { InfoBox } from '../../components';
+import { VideoOverlayControl } from './components';
 import { getCanvasSettings } from '../../extensions/relations';
+import { createIconTransitions } from '../../extensions/styles';
+import { createSelectors } from '../../extensions/styles/custom-css';
+import { getBackgroundStyles } from '../../extensions/styles/helpers';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
 /**
@@ -220,6 +228,38 @@ const transition = {
 	},
 };
 const interactionBuilderSettings = {
+	block: [
+		{
+			label: __('Overlay', 'maxi-blocks'),
+			attrGroupName: ['video', 'videoOverlay'],
+			component: props => {
+				const { playerType } = props.blockAttributes;
+
+				return playerType === 'popup' ? (
+					<VideoOverlayControl
+						{...props}
+						disableHideImage
+						disableHover
+						disableUploadImage
+					/>
+				) : (
+					<InfoBox
+						message={__(
+							'Video must be in popup to have overlay settings',
+							'maxi-blocks'
+						)}
+					/>
+				);
+			},
+			helper: props =>
+				getBackgroundStyles({
+					...props,
+					...props.obj,
+					prefix: 'overlay-',
+				}).background,
+			target: ' .maxi-video-block__overlay-background',
+		},
+	],
 	canvas: getCanvasSettings({ name, customCss }),
 };
 

@@ -1,5 +1,10 @@
 import hoverAttributesCreator from '../hoverAttributesCreator';
-import { icon, iconBackground, iconBackgroundColor } from './icon';
+import {
+	icon,
+	iconBackground,
+	iconBackgroundColor,
+	iconBackgroundGradient,
+} from './icon';
 
 export const iconHover = hoverAttributesCreator({
 	obj: icon,
@@ -38,7 +43,7 @@ export const iconBackgroundColorHover = hoverAttributesCreator({
 });
 
 export const iconBackgroundGradientHover = hoverAttributesCreator({
-	obj: iconBackgroundColor,
+	obj: iconBackgroundGradient,
 	diffValAttr: {
 		'icon-background-gradient-opacity-general-hover': 1,
 	},

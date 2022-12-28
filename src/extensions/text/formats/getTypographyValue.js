@@ -69,6 +69,8 @@ const getTypographyValue = ({
 		textLevel,
 		styleCard,
 		styleCardPrefix,
+		avoidXXL,
+		avoidSC,
 	});
 
 	if (hoverValue || isBoolean(hoverValue) || isNumber(hoverValue))

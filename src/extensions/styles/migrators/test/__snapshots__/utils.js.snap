@@ -1358,6 +1358,7 @@ Object {
   "attrGroupName": "boxShadow",
   "component": [Function],
   "helper": [Function],
+  "hoverProp": "box-shadow-status-hover",
   "label": "Box shadow",
 }
 `;

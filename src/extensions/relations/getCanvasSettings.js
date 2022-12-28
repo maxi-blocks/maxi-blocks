@@ -157,15 +157,6 @@ const getCanvasSettings = ({ name, customCss }) => [
 					breakpoint: props.breakpoint,
 					attributes: getGroupAttributes(props, 'opacity'),
 				})}
-				onChange={val =>
-					props.onChange({ [`opacity-${props.breakpoint}`]: val })
-				}
-				onReset={() =>
-					props.onChange({
-						[`opacity-${props.breakpoint}`]: null,
-						isReset: true,
-					})
-				}
 			/>
 		),
 		helper: props => getOpacityStyles(props.obj),

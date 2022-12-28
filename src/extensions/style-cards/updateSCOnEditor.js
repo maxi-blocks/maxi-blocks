@@ -89,6 +89,9 @@ export const getSCVariablesObject = styleCards => {
 		'text-decoration',
 		'text-transform',
 		'letter-spacing',
+		'white-space',
+		'word-spacing',
+		'margin-bottom',
 		'text-indent',
 	];
 	const SC = {

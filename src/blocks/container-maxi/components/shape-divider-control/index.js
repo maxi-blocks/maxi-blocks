@@ -287,12 +287,10 @@ const ShapeDividerControl = props => {
 															attributes: props,
 														}
 													)}
-													onChange={opacity =>
-														onChange({
-															[`shape-divider-top-opacity-${breakpoint}`]:
-																opacity,
-														})
-													}
+													breakpoint={breakpoint}
+													prefix='shape-divider-top-'
+													onChange={onChange}
+													disableRTC
 												/>
 												<ColorControl
 													label={__(
@@ -495,12 +493,10 @@ const ShapeDividerControl = props => {
 															attributes: props,
 														}
 													)}
-													onChange={opacity =>
-														onChange({
-															[`shape-divider-bottom-opacity-${breakpoint}`]:
-																opacity,
-														})
-													}
+													breakpoint={breakpoint}
+													prefix='shape-divider-bottom-'
+													onChange={onChange}
+													disableRTC
 												/>
 												<ColorControl
 													label={__(

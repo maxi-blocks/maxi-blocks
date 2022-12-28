@@ -78,6 +78,12 @@ const BoxShadowValueControl = props => {
 				attributes: props,
 				isHover,
 			})}
+			defaultValue={getLastBreakpointAttribute({
+				target: `${prefix}box-shadow-${type}`,
+				breakpoint,
+				attributes: props,
+				isHover,
+			})}
 			onChangeValue={val => {
 				onChange({
 					[`${prefix}box-shadow-${type}-${breakpoint}${
@@ -92,7 +98,18 @@ const BoxShadowValueControl = props => {
 				onChange({
 					[`${prefix}box-shadow-${type}-${breakpoint}${
 						isHover ? '-hover' : ''
-					}`]: 0,
+					}`]: getDefaultAttribute(
+						`${prefix}box-shadow-${type}-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`
+					),
+					[`${prefix}box-shadow-${type}-unit-${breakpoint}${
+						isHover ? '-hover' : ''
+					}`]: getDefaultAttribute(
+						`${prefix}box-shadow-${type}-unit-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`
+					),
 					isReset: true,
 				})
 			}

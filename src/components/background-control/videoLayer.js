@@ -76,7 +76,7 @@ const VideoLayerContent = props => {
 								isHover,
 								prefix,
 								breakpoint
-							)]: val.order,
+							)]: val.id,
 							[getAttributeKey(
 								'background-video-fallbackURL',
 								isHover,

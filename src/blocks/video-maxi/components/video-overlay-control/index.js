@@ -13,6 +13,7 @@ import {
 	AdvancedNumberControl,
 } from '../../../../components';
 import MediaUploaderControl from '../../../../components/media-uploader-control';
+import { handleOnReset } from '../../../../extensions/attributes';
 import {
 	getAttributeKey,
 	getDefaultAttribute,
@@ -133,7 +134,33 @@ const VideoOverlayControl = props => {
 		disableHover = false,
 		'overlay-mediaID': mediaID,
 		'overlay-altSelector': altSelector,
+		breakpoint,
 	} = props;
+
+	const minMaxSettings = {
+		px: {
+			min: 0,
+			max: 3999,
+		},
+		em: {
+			min: 0,
+			max: 999,
+		},
+		vw: {
+			min: 0,
+			max: 999,
+		},
+		vh: {
+			min: 0,
+			max: 999,
+		},
+		'%': {
+			min: 0,
+			max: 300,
+			minRange: 0,
+			maxRange: 300,
+		},
+	};
 
 	return (
 		<>
@@ -176,7 +203,97 @@ const VideoOverlayControl = props => {
 							}
 						/>
 					)}
-					<AdvancedNumberControl />
+					<AdvancedNumberControl
+						label={__('Width', 'maxi-blocks')}
+						className='maxi-video-overlay-control__width'
+						enableUnit
+						unit={getLastBreakpointAttribute({
+							target: 'overlay-media-width-unit',
+							breakpoint,
+							attributes: props,
+						})}
+						onChangeUnit={val =>
+							onChange({
+								[`overlay-media-width-unit-${breakpoint}`]: val,
+							})
+						}
+						value={getLastBreakpointAttribute({
+							target: 'overlay-media-width',
+							breakpoint,
+							attributes: props,
+						})}
+						onChangeValue={val =>
+							onChange({
+								[`overlay-media-width-${breakpoint}`]: val,
+							})
+						}
+						defaultValue={getDefaultAttribute(
+							`overlay-media-width-${breakpoint}`
+						)}
+						onReset={() => {
+							onChange(
+								handleOnReset({
+									[`overlay-media-width-${breakpoint}`]:
+										getDefaultAttribute(
+											`overlay-media-width-${breakpoint}`
+										),
+									[`overlay-media-width-unit-${breakpoint}`]:
+										getDefaultAttribute(
+											`overlay-media-width-unit-${breakpoint}`
+										),
+								})
+							);
+						}}
+						minMaxSettings={minMaxSettings}
+						allowedUnits={['px', 'em', 'vw', '%']}
+						optionType='string'
+					/>
+					<AdvancedNumberControl
+						label={__('Height', 'maxi-blocks')}
+						className='maxi-video-overlay-control__height'
+						enableUnit
+						unit={getLastBreakpointAttribute({
+							target: 'overlay-media-height-unit',
+							breakpoint,
+							attributes: props,
+						})}
+						onChangeUnit={val =>
+							onChange({
+								[`overlay-media-height-unit-${breakpoint}`]:
+									val,
+							})
+						}
+						value={getLastBreakpointAttribute({
+							target: 'overlay-media-height',
+							breakpoint,
+							attributes: props,
+						})}
+						onChangeValue={val =>
+							onChange({
+								[`overlay-media-height-${breakpoint}`]: val,
+							})
+						}
+						defaultValue={getDefaultAttribute(
+							`overlay-media-height-${breakpoint}`
+						)}
+						onReset={() => {
+							onChange(
+								handleOnReset({
+									[`overlay-media-height-${breakpoint}`]:
+										getDefaultAttribute(
+											`overlay-media-height-${breakpoint}`
+										),
+									[`overlay-media-height-unit-${breakpoint}`]:
+										getDefaultAttribute(
+											`overlay-media-height-unit-${breakpoint}`
+										),
+								})
+							);
+						}}
+						minMaxSettings={minMaxSettings}
+						allowedUnits={['px', 'em', 'vw', '%']}
+						optionType='string'
+					/>
 				</>
 			)}
 			{disableHover && <OverlayColor {...props} />}

@@ -14,7 +14,12 @@ import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-import { getDefaultLayerAttr, getDefaultLayerAttrs } from './utils';
+import {
+	getDefaultLayerAttr,
+	getDefaultLayerAttrs,
+	getDefaultLayerWithBreakpoint,
+} from './utils';
+import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * Component
@@ -80,17 +85,22 @@ const Size = ({
 	};
 
 	const onReset = target => {
-		onChange({
-			[getAttributeKey(target, isHover, prefix, breakpoint)]: isHover
-				? getLastBreakpointAttribute({
-						target: `${prefix}${target}`,
-						breakpoint,
-						attributes: options,
-						isHover: false,
-				  })
-				: getDefaultAttr(target),
-			[getAttributeKey(`${target}-unit`, isHover, prefix, breakpoint)]:
-				isHover
+		onChange(
+			handleOnReset({
+				[getAttributeKey(target, isHover, prefix, breakpoint)]: isHover
+					? getLastBreakpointAttribute({
+							target: `${prefix}${target}`,
+							breakpoint,
+							attributes: options,
+							isHover: false,
+					  })
+					: getDefaultAttr(target),
+				[getAttributeKey(
+					`${target}-unit`,
+					isHover,
+					prefix,
+					breakpoint
+				)]: isHover
 					? getLastBreakpointAttribute({
 							target: `${prefix}${target}-unit`,
 							breakpoint,
@@ -98,7 +108,8 @@ const Size = ({
 							isHover: false,
 					  })
 					: getDefaultAttr(`${target}-unit`),
-		});
+			})
+		);
 	};
 
 	return (
@@ -232,6 +243,12 @@ const SizeAndPositionLayerControl = ({
 				{...equivalentProps}
 				className='maxi-background-control__position'
 				disablePosition
+				defaultAttributes={getDefaultLayerWithBreakpoint(
+					`${type === 'shape' ? 'SVG' : type}Options`,
+					'general',
+					isHover
+				)}
+				disableRTC
 			/>
 		</>
 	);

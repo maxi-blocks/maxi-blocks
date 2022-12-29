@@ -34,6 +34,7 @@ import {
  */
 import { isNil } from 'lodash';
 import classnames from 'classnames';
+import { handleOnReset } from '../../../../extensions/attributes';
 
 /**
  * Styles and icons
@@ -113,12 +114,14 @@ const HoverEffectControl = props => {
 						step={0.1}
 						max={10}
 						onReset={() =>
-							onChange({
-								'hover-transition-duration':
-									getDefaultAttribute(
-										'hover-transition-duration'
-									),
-							})
+							onChange(
+								handleOnReset({
+									'hover-transition-duration':
+										getDefaultAttribute(
+											'hover-transition-duration'
+										),
+								})
+							)
 						}
 						initialPosition={getDefaultAttribute(
 							'hover-transition-duration'
@@ -140,6 +143,16 @@ const HoverEffectControl = props => {
 					<SelectControl
 						label={__('Easing', 'maxi-blocks')}
 						value={props['hover-transition-easing']}
+						onReset={() =>
+							onChange(
+								handleOnReset({
+									'hover-transition-easing':
+										getDefaultAttribute(
+											'hover-transition-easing'
+										),
+								})
+							)
+						}
 						onChange={val =>
 							onChange({ 'hover-transition-easing': val })
 						}
@@ -186,6 +199,16 @@ const HoverEffectControl = props => {
 					<SelectControl
 						label={__('Effect type', 'maxi-blocks')}
 						value={props['hover-basic-effect-type']}
+						onReset={() =>
+							onChange(
+								handleOnReset({
+									'hover-basic-effect-type':
+										getDefaultAttribute(
+											'hover-basic-effect-type'
+										),
+								})
+							)
+						}
 						onChange={val =>
 							onChange({ 'hover-basic-effect-type': val })
 						}
@@ -262,12 +285,14 @@ const HoverEffectControl = props => {
 								step={0.1}
 								max={100}
 								onReset={() =>
-									onChange({
-										[`hover-basic-${props['hover-basic-effect-type']}-value`]:
-											getDefaultAttribute([
-												`hover-basic-${props['hover-basic-effect-type']}-value`,
-											]),
-									})
+									onChange(
+										handleOnReset({
+											[`hover-basic-${props['hover-basic-effect-type']}-value`]:
+												getDefaultAttribute([
+													`hover-basic-${props['hover-basic-effect-type']}-value`,
+												]),
+										})
+									)
 								}
 								initialPosition={getDefaultAttribute([
 									`hover-basic-${props['hover-basic-effect-type']}-value`,
@@ -281,6 +306,16 @@ const HoverEffectControl = props => {
 					<SelectControl
 						label={__('Animation type', 'maxi-blocks')}
 						value={props['hover-text-effect-type']}
+						onReset={() =>
+							onChange(
+								handleOnReset({
+									'hover-text-effect-type':
+										getDefaultAttribute(
+											'hover-text-effect-type'
+										),
+								})
+							)
+						}
 						options={[
 							{ label: __('Fade', 'maxi-blocks'), value: 'fade' },
 							{

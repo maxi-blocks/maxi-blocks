@@ -4,11 +4,7 @@
  * WordPress dependencies
  */
 import { RichText, RichTextShortcut } from '@wordpress/block-editor';
-import {
-	insert,
-	__unstableIndentListItems,
-	__unstableOutdentListItems,
-} from '@wordpress/rich-text';
+import { createBlock } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -19,18 +15,14 @@ import { Toolbar } from '../../components';
 import {
 	getColorRGBAString,
 	getPaletteAttributes,
-	createTransitionObj,
 } from '../../extensions/styles';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import getStyles from './styles';
-import onMerge, { onReplaceBlocks } from './utils';
+import onMerge from './utils';
 import { onChangeRichText, textContext } from '../../extensions/text/formats';
 import { setSVGColor } from '../../extensions/svg';
 import { copyPasteMapping } from './data';
-/**
- * External dependencies
- */
-import { isEmpty, compact, flatten } from 'lodash';
+import { indentListItems, outdentListItems } from '../../extensions/text/lists';
 
 /**
  * Content
@@ -89,6 +81,11 @@ class edit extends MaxiBlockComponent {
 					});
 			}
 		}
+
+		// Ensures white-space is applied from Maxi and not with inline styles
+		Array.from(this.blockRef.current.children).forEach(el => {
+			if (el.style.whiteSpace) el.style.whiteSpace = null;
+		});
 	}
 
 	render() {
@@ -105,24 +102,9 @@ class edit extends MaxiBlockComponent {
 			listReversed,
 			listStart,
 			textLevel,
-			transition,
 			typeOfList,
 			uniqueID,
 		} = attributes;
-
-		// Temporary code to ensure that all text-maxi transitions objects has link transitions
-		// Need to be removed
-		if (!transition.canvas?.link)
-			maxiSetAttributes({
-				transition: {
-					...transition,
-					canvas: {
-						...transition.canvas,
-						link: createTransitionObj(),
-					},
-				},
-			});
-		// End of temporary code
 
 		/**
 		 * Prevents losing general link format when the link is affecting whole content
@@ -148,6 +130,39 @@ class edit extends MaxiBlockComponent {
 					maxiSetAttributes({ content });
 				}, 100);
 			}
+		};
+
+		const commonProps = {
+			className: 'maxi-text-block__content',
+			identifier: 'content',
+			value: content,
+			onChange: processContent,
+			onSplit: (value, isOriginal) => {
+				let newAttributes;
+
+				if (isOriginal || value) {
+					newAttributes = {
+						...attributes,
+						content: value,
+					};
+				}
+
+				const block = createBlock(
+					'maxi-blocks/text-maxi',
+					newAttributes
+				);
+
+				if (isOriginal) {
+					block.clientId = clientId;
+				}
+
+				return block;
+			},
+			onReplace,
+			onMerge: forward => onMerge(this.props, forward),
+			// onRemove needs to be commented to avoid removing the block
+			// on pressing backspace with the content empty 👍
+			// onRemove={onRemove}
 		};
 
 		return [
@@ -189,50 +204,12 @@ class edit extends MaxiBlockComponent {
 				>
 					{!isList && (
 						<RichText
-							className='maxi-text-block__content'
-							identifier='content'
-							value={content}
-							onChange={processContent}
 							tagName={textLevel}
-							onSplit={() => {
-								this.state.onChangeFormat(
-									insert(this.state.formatValue, '\n')
-								);
-							}}
-							onReplace={(
-								blocks,
-								indexToSelect,
-								initialPosition
-							) => {
-								if (
-									!blocks ||
-									isEmpty(compact(blocks)) ||
-									flatten(blocks).every(block =>
-										isEmpty(block)
-									)
-								)
-									return;
-
-								const { blocks: cleanBlocks } = onReplaceBlocks(
-									blocks,
-									clientId,
-									content
-								);
-
-								if (!isEmpty(compact(cleanBlocks)))
-									onReplace(
-										cleanBlocks,
-										indexToSelect,
-										initialPosition
-									);
-							}}
-							onMerge={forward => onMerge(this.props, forward)}
-							// onRemove needs to be commented to avoid removing the block
-							// on pressing backspace with the content empty 👍
-							// onRemove={onRemove}
 							__unstableEmbedURLOnPaste
 							withoutInteractiveFormatting
 							preserveWhiteSpace
+							multiline={false}
+							{...commonProps}
 						>
 							{richTextValues =>
 								onChangeRichText({
@@ -264,51 +241,12 @@ class edit extends MaxiBlockComponent {
 					)}
 					{isList && (
 						<RichText
-							className='maxi-text-block__content'
-							identifier='content'
 							multiline='li'
-							value={content}
-							onChange={processContent}
 							tagName={typeOfList}
-							onSplit={() => {
-								this.state.onChangeFormat(
-									insert(this.state.formatValue, '\n')
-								);
-							}}
-							onReplace={(
-								blocks,
-								indexToSelect,
-								initialPosition
-							) => {
-								if (
-									!blocks ||
-									isEmpty(compact(blocks)) ||
-									flatten(blocks).every(block =>
-										isEmpty(block)
-									)
-								)
-									return;
-
-								const { blocks: cleanBlocks } = onReplaceBlocks(
-									blocks,
-									clientId,
-									content
-								);
-
-								if (!isEmpty(compact(cleanBlocks)))
-									onReplace(
-										cleanBlocks,
-										indexToSelect,
-										initialPosition
-									);
-							}}
-							onMerge={forward => onMerge(this.props, forward)}
-							// onRemove needs to be commented to avoid removing the block
-							// on pressing backspace with the content empty 👍
-							// onRemove={onRemove}
 							start={listStart}
 							reversed={listReversed}
 							type={typeOfList}
+							{...commonProps}
 						>
 							{richTextValues => {
 								const { value: formatValue, onChange } =
@@ -341,7 +279,7 @@ class edit extends MaxiBlockComponent {
 												character='['
 												onUse={() => {
 													onChange(
-														__unstableOutdentListItems(
+														outdentListItems(
 															formatValue
 														)
 													);
@@ -352,7 +290,7 @@ class edit extends MaxiBlockComponent {
 												character=']'
 												onUse={() => {
 													onChange(
-														__unstableIndentListItems(
+														indentListItems(
 															formatValue,
 															{ type: typeOfList }
 														)
@@ -364,7 +302,7 @@ class edit extends MaxiBlockComponent {
 												character='m'
 												onUse={() => {
 													onChange(
-														__unstableIndentListItems(
+														indentListItems(
 															formatValue,
 															{ type: typeOfList }
 														)
@@ -376,7 +314,7 @@ class edit extends MaxiBlockComponent {
 												character='m'
 												onUse={() => {
 													onChange(
-														__unstableOutdentListItems(
+														outdentListItems(
 															formatValue
 														)
 													);

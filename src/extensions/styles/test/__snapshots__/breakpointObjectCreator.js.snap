@@ -35,6 +35,7 @@ Object {
     "type": "string",
   },
   "background-image-clip-path-general": Object {
+    "default": "none",
     "type": "string",
   },
   "background-image-clip-path-l": Object {

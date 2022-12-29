@@ -18,6 +18,8 @@ import {
 	SettingTabsControl,
 	TextControl,
 } from '../../../../components';
+import { handleOnReset } from '../../../../extensions/attributes';
+import { getDefaultAttribute } from '../../../../extensions/styles';
 
 const VideoControl = props => {
 	const {
@@ -99,9 +101,11 @@ const VideoControl = props => {
 				min={0}
 				max={999}
 				onReset={() =>
-					onChange({
-						startTime: '',
-					})
+					onChange(
+						handleOnReset({
+							startTime: '',
+						})
+					)
 				}
 				optionType='string'
 			/>
@@ -122,9 +126,11 @@ const VideoControl = props => {
 				min={0}
 				max={999}
 				onReset={() =>
-					onChange({
-						endTime: '',
-					})
+					onChange(
+						handleOnReset({
+							endTime: '',
+						})
+					)
 				}
 				optionType='string'
 			/>
@@ -162,6 +168,13 @@ const VideoControl = props => {
 					onChange({
 						videoRatio: newRatio,
 					})
+				}
+				onReset={() =>
+					onChange(
+						handleOnReset({
+							videoRatio: getDefaultAttribute('videoRatio'),
+						})
+					)
 				}
 			/>
 		</>

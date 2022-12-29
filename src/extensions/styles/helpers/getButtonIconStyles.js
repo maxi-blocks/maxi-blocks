@@ -55,6 +55,7 @@ const getIconObject = (props, target, prefix = '', isIB) => {
 					prefix
 				),
 				prefix: `${prefix}icon-`,
+				blockStyle: props.blockStyle,
 				isIcon: true,
 			}),
 		},
@@ -185,12 +186,13 @@ const getIconHoverObject = (props, target, prefix = '', iconType = '') => {
 				...getGradientBackgroundObject({
 					...getGroupAttributes(
 						props,
-						['icon', 'iconBackgroundGradient'],
+						['icon', 'iconBackground', 'iconBackgroundGradient'],
 						true,
 						prefix
 					),
 					prefix: `${prefix}icon-`,
 					isHover: true,
+					blockStyle: props.blockStyle,
 					isIcon: true,
 				}),
 			},

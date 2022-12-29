@@ -49,7 +49,11 @@ const getParsedObj = obj => {
 	Object.keys(typographyObj).forEach(key => delete newObj[key]);
 
 	Object.entries(
-		getTypographyStyles({ obj: typographyObj, disableGlobals: true })
+		getTypographyStyles({
+			obj: typographyObj,
+			disableGlobals: true,
+			isStyleCards: true,
+		})
 	).forEach(([breakpoint, value]) => {
 		Object.entries(value).forEach(([key, val]) => {
 			newObj[`${key}-${breakpoint}`] = val;
@@ -85,6 +89,10 @@ export const getSCVariablesObject = styleCards => {
 		'text-decoration',
 		'text-transform',
 		'letter-spacing',
+		'white-space',
+		'word-spacing',
+		'margin-bottom',
+		'text-indent',
 	];
 	const SC = {
 		dark: {

@@ -23,7 +23,6 @@ import {
 } from '../../extensions/styles';
 import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
 import { getHoverStatus } from '../../extensions/relations';
-import * as blocksData from '../../blocks/data';
 
 /**
  * External dependencies
@@ -34,6 +33,7 @@ import { capitalize, cloneDeep, isEmpty, isNil, merge } from 'lodash';
  * Styles
  */
 import './editor.scss';
+import { getBlockData } from '../../extensions/attributes';
 
 const RelationControl = props => {
 	const { getBlock } = select('core/block-editor');
@@ -59,9 +59,7 @@ const RelationControl = props => {
 		// TODO: without this line, the block may break after copy/pasting
 		if (!blockName) return {};
 
-		const blockOptions = Object.values(blocksData).find(
-			data => data.name === blockName
-		).interactionBuilderSettings;
+		const blockOptions = getBlockData(blockName).interactionBuilderSettings;
 
 		return blockOptions || {};
 	};
@@ -596,6 +594,8 @@ const RelationControl = props => {
 																transitionTarget,
 																hoverStatus:
 																	!!hoverStatus,
+																disableTransition:
+																	!!selectedSettingsObj?.disableTransition,
 															},
 														}
 													);
@@ -603,62 +603,66 @@ const RelationControl = props => {
 											/>
 										</>
 									)}
-									{item.uniqueID && item.settings && (
-										<SettingTabsControl
-											deviceType={deviceType}
-											items={[
-												{
-													label: __(
-														'Settings',
-														'maxi-blocks'
-													),
-													content:
-														displaySelectedSetting(
-															item
+									{item.uniqueID &&
+										item.settings &&
+										(item.effects.disableTransition ? (
+											displaySelectedSetting(item)
+										) : (
+											<SettingTabsControl
+												deviceType={deviceType}
+												items={[
+													{
+														label: __(
+															'Settings',
+															'maxi-blocks'
 														),
-												},
-												{
-													label: __(
-														'Effects',
-														'maxi-blocks'
-													),
-													content: (
-														<ResponsiveTabsControl
-															breakpoint={
-																deviceType
-															}
-														>
-															<TransitionControl
-																className='maxi-relation-control__item__effects'
-																onChange={obj =>
-																	onChangeRelation(
-																		relations,
-																		item.id,
-																		{
-																			effects:
-																				{
-																					...item.effects,
-																					...obj,
-																				},
-																		}
-																	)
-																}
-																transition={
-																	item.effects
-																}
-																getDefaultTransitionAttribute={
-																	getDefaultTransitionAttribute
-																}
+														content:
+															displaySelectedSetting(
+																item
+															),
+													},
+													{
+														label: __(
+															'Effects',
+															'maxi-blocks'
+														),
+														content: (
+															<ResponsiveTabsControl
 																breakpoint={
 																	deviceType
 																}
-															/>
-														</ResponsiveTabsControl>
-													),
-												},
-											]}
-										/>
-									)}
+															>
+																<TransitionControl
+																	className='maxi-relation-control__item__effects'
+																	onChange={obj =>
+																		onChangeRelation(
+																			relations,
+																			item.id,
+																			{
+																				effects:
+																					{
+																						...item.effects,
+																						...obj,
+																					},
+																			}
+																		)
+																	}
+																	transition={
+																		item.effects
+																	}
+																	getDefaultTransitionAttribute={
+																		getDefaultTransitionAttribute
+																	}
+																	breakpoint={
+																		deviceType
+																	}
+																/>
+															</ResponsiveTabsControl>
+														),
+													},
+												]}
+											/>
+										))}
 								</div>
 							}
 							id={item.id}

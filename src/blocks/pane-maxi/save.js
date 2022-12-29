@@ -17,10 +17,6 @@ const save = props => {
 	const { title, titleLevel, accordionUniqueId, linkSettings } = attributes;
 	const name = 'maxi-blocks/pane-maxi';
 
-	const { children, ...restInnerBlocksProps } = useInnerBlocksProps.save({
-		className: 'maxi-pane-block__content',
-	});
-
 	return (
 		<MaxiBlock.save
 			{...getMaxiBlockAttributes({ ...props, name })}
@@ -46,12 +42,14 @@ const save = props => {
 				</div>
 			</div>
 			<div className='maxi-pane-block__content-wrapper'>
-				<div {...restInnerBlocksProps}>
-					{children}
-					<div className='maxi-pane-block__content-line-container maxi-pane-block__line-container'>
-						<hr className='maxi-pane-block__content-line maxi-pane-block__line' />
-					</div>
-				</div>
+				<div
+					{...useInnerBlocksProps.save({
+						className: 'maxi-pane-block__content',
+					})}
+				/>
+			</div>
+			<div className='maxi-pane-block__content-line-container maxi-pane-block__line-container'>
+				<hr className='maxi-pane-block__content-line maxi-pane-block__line' />
 			</div>
 		</MaxiBlock.save>
 	);

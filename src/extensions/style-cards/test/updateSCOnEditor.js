@@ -4,6 +4,7 @@ jest.mock('@wordpress/blocks', () => {
 	};
 });
 jest.mock('../../styles/transitions/getTransitionData.js', () => jest.fn());
+jest.mock('../../attributes/getBlockData.js', () => jest.fn());
 
 /**
  * Internal dependencies
@@ -52,6 +53,8 @@ describe('getSCVariablesObject', () => {
 						'letter-spacing-xl': 0,
 						'letter-spacing-unit-xl': 'px',
 						'text-decoration-general': 'unset',
+						'text-indent-general': 0,
+						'text-indent-unit-general': 'px',
 					},
 					h1: {
 						'color-global': false,
@@ -86,6 +89,8 @@ describe('getSCVariablesObject', () => {
 						'letter-spacing-xl': 0,
 						'letter-spacing-unit-xl': 'px',
 						'text-decoration-general': 'unset',
+						'text-indent-general': 0,
+						'text-indent-unit-general': 'px',
 					},
 					h2: {
 						'color-global': false,
@@ -120,6 +125,8 @@ describe('getSCVariablesObject', () => {
 						'letter-spacing-xl': 0,
 						'letter-spacing-unit-xl': 'px',
 						'text-decoration-general': 'unset',
+						'text-indent-general': 0,
+						'text-indent-unit-general': 'px',
 					},
 					h3: {
 						'color-global': false,
@@ -150,6 +157,8 @@ describe('getSCVariablesObject', () => {
 						'letter-spacing-xl': 0,
 						'letter-spacing-unit-xl': 'px',
 						'text-decoration-general': 'unset',
+						'text-indent-general': 0,
+						'text-indent-unit-general': 'px',
 					},
 					h4: {
 						'color-global': false,
@@ -180,6 +189,8 @@ describe('getSCVariablesObject', () => {
 						'letter-spacing-xl': 0,
 						'letter-spacing-unit-xl': 'px',
 						'text-decoration-general': 'unset',
+						'text-indent-general': 0,
+						'text-indent-unit-general': 'px',
 					},
 					h5: {
 						'color-global': false,
@@ -208,6 +219,8 @@ describe('getSCVariablesObject', () => {
 						'letter-spacing-xl': 0,
 						'letter-spacing-unit-xl': 'px',
 						'text-decoration-general': 'unset',
+						'text-indent-general': 0,
+						'text-indent-unit-general': 'px',
 					},
 					h6: {
 						'color-global': false,
@@ -236,6 +249,8 @@ describe('getSCVariablesObject', () => {
 						'letter-spacing-xl': 0,
 						'letter-spacing-unit-xl': 'px',
 						'text-decoration-general': 'unset',
+						'text-indent-general': 0,
+						'text-indent-unit-general': 'px',
 					},
 					button: {
 						'border-color-global': false,
@@ -272,6 +287,8 @@ describe('getSCVariablesObject', () => {
 						'background-color': '',
 						'hover-background-color-global': false,
 						'hover-background-color': '',
+						'text-indent-general': 0,
+						'text-indent-unit-general': 'px',
 					},
 					link: {
 						'link-color-global': false,
@@ -331,6 +348,8 @@ describe('getSCVariablesObject', () => {
 						'letter-spacing-xl': 0,
 						'letter-spacing-unit-xl': 'px',
 						'text-decoration-general': 'unset',
+						'text-indent-general': 0,
+						'text-indent-unit-general': 'px',
 					},
 					h1: {
 						'color-global': false,
@@ -365,6 +384,8 @@ describe('getSCVariablesObject', () => {
 						'letter-spacing-xl': 0,
 						'letter-spacing-unit-xl': 'px',
 						'text-decoration-general': 'unset',
+						'text-indent-general': 0,
+						'text-indent-unit-general': 'px',
 					},
 					h2: {
 						'color-global': false,
@@ -399,6 +420,8 @@ describe('getSCVariablesObject', () => {
 						'letter-spacing-xl': 0,
 						'letter-spacing-unit-xl': 'px',
 						'text-decoration-general': 'unset',
+						'text-indent-general': 0,
+						'text-indent-unit-general': 'px',
 					},
 					h3: {
 						'color-global': false,
@@ -431,6 +454,8 @@ describe('getSCVariablesObject', () => {
 						'letter-spacing-xl': 0,
 						'letter-spacing-unit-xl': 'px',
 						'text-decoration-general': 'unset',
+						'text-indent-general': 0,
+						'text-indent-unit-general': 'px',
 					},
 					h4: {
 						'color-global': false,
@@ -461,6 +486,8 @@ describe('getSCVariablesObject', () => {
 						'letter-spacing-xl': 0,
 						'letter-spacing-unit-xl': 'px',
 						'text-decoration-general': 'unset',
+						'text-indent-general': 0,
+						'text-indent-unit-general': 'px',
 					},
 					h5: {
 						'color-global': false,
@@ -489,6 +516,8 @@ describe('getSCVariablesObject', () => {
 						'letter-spacing-xl': 0,
 						'letter-spacing-unit-xl': 'px',
 						'text-decoration-general': 'unset',
+						'text-indent-general': 0,
+						'text-indent-unit-general': 'px',
 					},
 					h6: {
 						'color-global': false,
@@ -517,6 +546,8 @@ describe('getSCVariablesObject', () => {
 						'letter-spacing-xl': 0,
 						'letter-spacing-unit-xl': 'px',
 						'text-decoration-general': 'unset',
+						'text-indent-general': 0,
+						'text-indent-unit-general': 'px',
 					},
 					button: {
 						'border-color-global': false,
@@ -553,6 +584,8 @@ describe('getSCVariablesObject', () => {
 						'background-color': '',
 						'hover-background-color-global': false,
 						'hover-background-color': '',
+						'text-indent-general': 0,
+						'text-indent-unit-general': 'px',
 					},
 					link: {
 						'link-color-global': false,

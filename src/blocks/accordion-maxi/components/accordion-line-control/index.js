@@ -12,7 +12,11 @@ import {
 	ToggleSwitch,
 	SelectControl,
 } from '../../../../components';
-import { getLastBreakpointAttribute } from '../../../../extensions/styles';
+import { handleOnReset } from '../../../../extensions/attributes';
+import {
+	getDefaultAttribute,
+	getLastBreakpointAttribute,
+} from '../../../../extensions/styles';
 
 const AccordionLineControl = props => {
 	const { onChange, breakpoint, prefix } = props;
@@ -45,13 +49,23 @@ const AccordionLineControl = props => {
 						[`${prefix}line-horizontal-${breakpoint}`]: val,
 					})
 				}
+				onReset={() => {
+					onChange(
+						handleOnReset({
+							[`${prefix}line-horizontal-${breakpoint}`]:
+								getDefaultAttribute(
+									`${prefix}line-horizontal-${breakpoint}`
+								),
+						})
+					);
+				}}
 			/>
 			<SettingTabsControl
 				depth={3}
 				items={[
 					{
 						label: __('Normal state', 'maxi-blocks'),
-						content: <DividerControl {...props} />,
+						content: <DividerControl {...props} disableRTC />,
 					},
 					{
 						label: __('Hover state', 'maxi-blocks'),
@@ -69,7 +83,11 @@ const AccordionLineControl = props => {
 									}
 								/>
 								{props[`${prefix}line-status-hover`] && (
-									<DividerControl {...props} isHover />
+									<DividerControl
+										{...props}
+										isHover
+										disableRTC
+									/>
 								)}
 							</>
 						),

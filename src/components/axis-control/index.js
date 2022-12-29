@@ -3,6 +3,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -33,6 +34,7 @@ import {
 	isNil,
 	kebabCase,
 } from 'lodash';
+import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * Styles and icons
@@ -69,7 +71,9 @@ const AxisInput = props => {
 
 	const value = getValue(target, breakpoint);
 	const lastValue = getLastBreakpointValue(target);
+
 	const unit = getLastBreakpointValue(`${target}-unit`, breakpoint);
+
 	return (
 		<AdvancedNumberControl
 			label={__(capitalize(label), 'maxi-blocks')}
@@ -469,6 +473,7 @@ const AxisControl = props => {
 		disableSync = false,
 		fullWidth,
 		enableAxisUnits,
+		defaultAttributes = null,
 	} = props;
 
 	const classes = classnames(
@@ -513,15 +518,27 @@ const AxisControl = props => {
 	};
 
 	const getValue = (key, customBreakpoint) => {
-		const value =
-			props[
-				getAttributeKey(
-					getKey(key),
-					isHover,
-					false,
-					customBreakpoint ?? breakpoint
-				)
-			];
+		let value;
+
+		if (breakpoint === 'general' || customBreakpoint === 'general') {
+			const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
+
+			value =
+				props[
+					getAttributeKey(getKey(key), isHover, false, baseBreakpoint)
+				];
+		}
+		if (isNil(value)) {
+			value =
+				props[
+					getAttributeKey(
+						getKey(key),
+						isHover,
+						false,
+						customBreakpoint ?? breakpoint
+					)
+				];
+		}
 
 		if (isNumber(value) || value) return value;
 
@@ -543,6 +560,39 @@ const AxisControl = props => {
 			);
 
 			return filteredResult;
+		};
+
+		const getValueByBreakpoint = (key, breakpoint) => {
+			const attrLabel = getAttributeKey(
+				getKey(key),
+				isHover,
+				false,
+				breakpoint
+			);
+
+			const value =
+				defaultAttributes && attrLabel in defaultAttributes
+					? defaultAttributes[attrLabel]
+					: getDefaultAttribute(attrLabel);
+
+			return value;
+		};
+
+		const getDefaultValue = key => {
+			let value;
+
+			if (breakpoint === 'general' || customBreakpoint === 'general') {
+				const baseBreakpoint =
+					select('maxiBlocks').receiveBaseBreakpoint();
+				value = getValueByBreakpoint(key, baseBreakpoint);
+			}
+			if (isNil(value))
+				value = getValueByBreakpoint(
+					key,
+					customBreakpoint ?? breakpoint
+				);
+
+			return value;
 		};
 
 		const top = inputsArray[0];
@@ -573,16 +623,10 @@ const AxisControl = props => {
 					false,
 					customBreakpoint ?? breakpoint
 				)
-			] = getDefaultAttribute(
-				getAttributeKey(
-					getKey(key),
-					isHover,
-					false,
-					customBreakpoint ?? breakpoint
-				)
-			);
+			] = getDefaultValue(key);
 		});
-		onChange(response);
+
+		onChange(handleOnReset(response));
 	};
 
 	const onChangeSync = (value, customBreakpoint) => {

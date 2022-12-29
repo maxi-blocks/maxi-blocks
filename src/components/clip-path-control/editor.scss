@@ -76,6 +76,7 @@
 
 	.maxi-clip-path-controller {
 		display: flex;
+		position: relative;
 		&__handle {
 			display: flex;
 			align-items: center;
@@ -96,7 +97,9 @@
 			}
 
 			&.maxi-clip-path-delete-handle {
-				margin-left: 0.5rem;
+				position: absolute;
+				left: 0;
+				bottom: 0;
 
 				span {
 					position: relative;
@@ -120,6 +123,20 @@
 		}
 		&__item {
 			width: 100%;
+
+			.maxi-base-control__field {
+				width: 100%;
+				display: flex;
+
+				.maxi-base-control__label {
+					margin-right: 10px;
+					min-width: 80px !important;
+				}
+				input {
+					width: 100%;
+					margin-bottom: 5px;
+				}
+			}
 		}
 	}
 
@@ -132,6 +149,7 @@
 		width: 100%;
 		margin: 5px 0px;
 		min-height: 291px;
+		overflow: hidden;
 
 		&__preview {
 			position: absolute;
@@ -154,7 +172,6 @@
 
 		&--radius {
 			clip-path: circle(50% at 50% 50%);
-			border: 0.5rem solid;
 
 			&__hidden {
 				position: absolute;

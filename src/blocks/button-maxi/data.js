@@ -353,6 +353,13 @@ const interactionBuilderSettings = {
 	],
 	canvas: getCanvasSettings({ name, customCss }),
 };
+const maxiAttributes = {
+	'button-padding-sync-xxl': 'axis',
+	'button-padding-top-xxl': '23',
+	'button-padding-right-xxl': '55',
+	'button-padding-bottom-xxl': '23',
+	'button-padding-left-xxl': '55',
+};
 
 const data = {
 	name,
@@ -360,7 +367,14 @@ const data = {
 	customCss,
 	transition,
 	interactionBuilderSettings,
+	maxiAttributes,
 };
 
-export { copyPasteMapping, customCss, transition, interactionBuilderSettings };
+export {
+	copyPasteMapping,
+	customCss,
+	transition,
+	interactionBuilderSettings,
+	maxiAttributes,
+};
 export default data;

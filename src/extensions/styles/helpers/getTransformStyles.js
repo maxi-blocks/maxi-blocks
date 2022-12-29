@@ -15,26 +15,18 @@ import { isNumber, isString, isEmpty } from 'lodash';
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const getTransformStrings = (category, breakpoint, index, obj) => {
-	const scaleObj = getLastBreakpointAttribute({
-		target: 'transform-scale',
-		breakpoint,
-		attributes: obj,
-	});
-	const translateObj = getLastBreakpointAttribute({
-		target: 'transform-translate',
-		breakpoint,
-		attributes: obj,
-	});
-	const rotateObj = getLastBreakpointAttribute({
-		target: 'transform-rotate',
-		breakpoint,
-		attributes: obj,
-	});
-	const originObj = getLastBreakpointAttribute({
-		target: 'transform-origin',
-		breakpoint,
-		attributes: obj,
-	});
+	const getLastBreakpointTransformAttribute = ({
+		target,
+		key,
+		hoverSelected,
+		keys,
+	}) =>
+		getLastBreakpointAttribute({
+			target,
+			breakpoint,
+			attributes: obj,
+			keys: keys ?? [category, hoverSelected, key],
+		});
 
 	const originValueToNumber = value => {
 		switch (validateOriginValue(value)) {
@@ -52,121 +44,118 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 		}
 	};
 
-	const getScaleString = (scaleObj, category, index) => {
+	const getScaleString = index => {
 		let scaleString = '';
-		if (isEmpty(scaleObj)) return scaleString;
-		if (index === 'hover' && !scaleObj?.[category]?.['hover-status'])
-			return getScaleString(scaleObj, category, 'normal');
-
-		if (isNumber(scaleObj?.[category]?.[index]?.x))
-			scaleString += `scaleX(${scaleObj[category][index].x / 100}) `;
-		if (isNumber(scaleObj?.[category]?.[index]?.y))
-			scaleString += `scaleY(${scaleObj[category][index].y / 100}) `;
-
 		if (
-			!scaleString &&
 			index === 'hover' &&
-			(isNumber(scaleObj?.[category]?.normal?.x) ||
-				isNumber(scaleObj?.[category]?.normal?.y))
+			!getLastBreakpointTransformAttribute({
+				target: 'transform-scale',
+				keys: [category, 'hover-status'],
+			})
 		)
-			scaleString += 'scale(1) ';
+			return getScaleString('normal');
+
+		const [x, y] = ['x', 'y'].map(key =>
+			getLastBreakpointTransformAttribute({
+				target: 'transform-scale',
+				key,
+				hoverSelected: index,
+			})
+		);
+		if (isNumber(x)) scaleString += `scaleX(${x / 100}) `;
+		if (isNumber(y)) scaleString += `scaleY(${y / 100}) `;
+
 		return scaleString;
 	};
 
-	const getTranslateString = (translateObj, category, index) => {
+	const getTranslateString = index => {
 		let translateString = '';
-		if (isEmpty(translateObj)) return translateString;
-		if (index === 'hover' && !translateObj?.[category]?.['hover-status'])
-			return getTranslateString(translateObj, category, 'normal');
-
-		if (isNumber(translateObj?.[category]?.[index]?.x))
-			translateString += `translateX(${translateObj[category][index].x}${
-				translateObj[category][index]['x-unit'] ?? '%'
-			}) `;
-		if (isNumber(translateObj?.[category]?.[index]?.y))
-			translateString += `translateY(${translateObj[category][index].y}${
-				translateObj[category][index]['y-unit'] ?? '%'
-			}) `;
-
 		if (
-			!translateString &&
 			index === 'hover' &&
-			(isNumber(translateObj?.[category]?.normal?.x) ||
-				isNumber(translateObj?.[category]?.normal?.y))
+			!getLastBreakpointTransformAttribute({
+				target: 'transform-translate',
+				keys: [category, 'hover-status'],
+			})
 		)
-			translateString += 'translate(0) ';
+			return getTranslateString('normal');
+
+		const [x, y, xUnit, yUnit] = ['x', 'y', 'x-unit', 'y-unit'].map(key =>
+			getLastBreakpointTransformAttribute({
+				target: 'transform-translate',
+				key,
+				hoverSelected: index,
+			})
+		);
+		if (isNumber(x)) translateString += `translateX(${x}${xUnit ?? '%'}) `;
+		if (isNumber(y)) translateString += `translateY(${y}${yUnit ?? '%'}) `;
 
 		return translateString;
 	};
 
-	const getRotateString = (rotateObj, category, index) => {
+	const getRotateString = index => {
 		let rotateString = '';
-		if (isEmpty(rotateObj)) return rotateString;
-		if (index === 'hover' && !rotateObj?.[category]?.['hover-status'])
-			return getRotateString(rotateObj, category, 'normal');
-
-		if (isNumber(rotateObj?.[category]?.[index]?.x))
-			rotateString += `rotateX(${rotateObj[category][index].x}deg) `;
-		if (isNumber(rotateObj?.[category]?.[index]?.y))
-			rotateString += `rotateY(${rotateObj[category][index].y}deg) `;
-		if (isNumber(rotateObj?.[category]?.[index]?.z))
-			rotateString += `rotateZ(${rotateObj[category][index].z}deg) `;
-
 		if (
-			!rotateString &&
 			index === 'hover' &&
-			(isNumber(rotateObj?.[category]?.normal?.x) ||
-				isNumber(rotateObj?.[category]?.normal?.y) ||
-				isNumber(rotateObj?.[category]?.normal?.z))
+			!getLastBreakpointTransformAttribute({
+				target: 'transform-rotate',
+				keys: [category, 'hover-status'],
+			})
 		)
-			rotateString += 'rotate(0) ';
+			return getRotateString('normal');
+
+		const [x, y, z] = ['x', 'y', 'z'].map(key =>
+			getLastBreakpointTransformAttribute({
+				target: 'transform-rotate',
+				key,
+				hoverSelected: index,
+			})
+		);
+
+		if (isNumber(x)) rotateString += `rotateX(${x}deg) `;
+		if (isNumber(y)) rotateString += `rotateY(${y}deg) `;
+		if (isNumber(z)) rotateString += `rotateZ(${z}deg) `;
 
 		return rotateString;
 	};
 
-	const getOriginString = (originObj, category, index) => {
+	const getOriginString = index => {
 		let originString = '';
 
 		if (
-			isEmpty(originObj) ||
-			(index === 'hover' && !originObj?.[category]?.['hover-status'])
+			index === 'hover' &&
+			!getLastBreakpointTransformAttribute({
+				target: 'transform-origin',
+				keys: [category, 'hover-status'],
+			})
 		)
 			return originString;
 
-		if (isString(validateOriginValue(originObj?.[category]?.[index]?.x)))
-			originString += `${originValueToNumber(
-				originObj[category][index].x
-			)}% `;
-		if (isString(validateOriginValue(originObj?.[category]?.[index]?.y)))
-			originString += `${originValueToNumber(
-				originObj[category][index].y
-			)}% `;
+		const [x, y, xUnit, yUnit] = ['x', 'y', 'x-unit', 'y-unit'].map(key =>
+			getLastBreakpointTransformAttribute({
+				target: 'transform-origin',
+				key,
+				hoverSelected: index,
+			})
+		);
 
-		if (isNumber(validateOriginValue(originObj?.[category]?.[index]?.x)))
-			originString += `${originObj[category][index].x}${
-				originObj[category][index]['x-unit'] ?? '%'
-			} `;
-		if (isNumber(validateOriginValue(originObj?.[category]?.[index]?.y)))
-			originString += `${originObj[category][index].y}${
-				originObj[category][index]['y-unit'] ?? '%'
-			} `;
+		if (isString(validateOriginValue(x)))
+			originString += `${originValueToNumber(x)}% `;
+		if (isString(validateOriginValue(y)))
+			originString += `${originValueToNumber(y)}% `;
 
-		if (
-			!originString &&
-			index === 'hover' &&
-			(validateOriginValue(originObj?.[category]?.normal?.x) ||
-				validateOriginValue(originObj?.[category]?.normal?.y))
-		)
-			originString += '50% 50% ';
+		if (isNumber(validateOriginValue(x)))
+			originString += `${x}${xUnit ?? '%'} `;
+		if (isNumber(validateOriginValue(y)))
+			originString += `${y}${yUnit ?? '%'} `;
 
 		return originString;
 	};
 
 	const transformString =
-		getScaleString(scaleObj, category, index) +
-		getTranslateString(translateObj, category, index) +
-		getRotateString(rotateObj, category, index);
-	const transformOriginString = getOriginString(originObj, category, index);
+		getScaleString(index) +
+		getTranslateString(index) +
+		getRotateString(index);
+	const transformOriginString = getOriginString(index);
 
 	return [transformString, transformOriginString];
 };

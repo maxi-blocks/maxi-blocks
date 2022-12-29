@@ -53,6 +53,9 @@ body.maxi-blocks--active .maxi-search-block {
 		align-items: center;
 		z-index: 1;
 		cursor: pointer;
+		height: 100%;
+		aspect-ratio: 1 / 1;
+		justify-content: center;
 
 		&__icon {
 			box-sizing: content-box;

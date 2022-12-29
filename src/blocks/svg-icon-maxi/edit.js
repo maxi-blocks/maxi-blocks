@@ -197,7 +197,15 @@ class edit extends MaxiBlockComponent {
 					</MaxiPopoverButton>,
 				],
 			],
-			...[isEmptyContent && <MaxiModal {...maxiModalProps} forceHide />],
+			...[
+				isEmptyContent && (
+					<MaxiModal
+						{...maxiModalProps}
+						forceHide
+						key={`maxi-modal--${uniqueID}`}
+					/>
+				),
+			],
 			<MaxiBlock
 				key={`maxi-svg-icon--${uniqueID}`}
 				ref={this.blockRef}
@@ -205,7 +213,10 @@ class edit extends MaxiBlockComponent {
 			>
 				<>
 					{isEmptyContent && (
-						<div className='maxi-svg-icon-block__placeholder'>
+						<div
+							className='maxi-svg-icon-block__placeholder'
+							key={`maxi-svg-icon-block__placeholder--${uniqueID}`}
+						>
 							<Button
 								isPrimary
 								key={`maxi-block-library__modal-button--${clientId}`}
@@ -219,6 +230,7 @@ class edit extends MaxiBlockComponent {
 					{!isEmptyContent && (
 						<BlockResizer
 							className='maxi-svg-icon-block__icon'
+							key={`maxi-svg-icon-block__icon--${clientId}`}
 							resizableObject={this.resizableObject}
 							isOverflowHidden={getIsOverflowHidden(
 								attributes,

@@ -41,7 +41,7 @@ describe('Image Maxi hover simple actions', () => {
 		await selectControls[2].select('hover');
 	});
 
-	const checkFrontend = async () => {
+	const checkFrontend = async (disableTransition = false) => {
 		const previewPage = await openPreviewPage(page);
 		await previewPage.waitForSelector('.entry-content');
 
@@ -58,14 +58,16 @@ describe('Image Maxi hover simple actions', () => {
 		);
 		expect(stylesCSS).toMatchSnapshot();
 
-		await previewPage.waitForSelector(
-			'#relations--image-maxi-1-transitions'
-		);
-		const transitionsCSS = await previewPage.$eval(
-			'#relations--image-maxi-1-transitions',
-			el => el.textContent
-		);
-		expect(transitionsCSS).toMatchSnapshot();
+		if (!disableTransition) {
+			await previewPage.waitForSelector(
+				'#relations--image-maxi-1-transitions'
+			);
+			const transitionsCSS = await previewPage.$eval(
+				'#relations--image-maxi-1-transitions',
+				el => el.textContent
+			);
+			expect(transitionsCSS).toMatchSnapshot();
+		}
 	};
 
 	it('Alignment', async () => {
@@ -78,7 +80,7 @@ describe('Image Maxi hover simple actions', () => {
 		);
 		expect(await getAttributes('relations')).toMatchSnapshot();
 
-		await checkFrontend();
+		await checkFrontend(true);
 	});
 
 	// TODO: shape mask (need)

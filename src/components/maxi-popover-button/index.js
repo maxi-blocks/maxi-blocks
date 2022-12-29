@@ -57,9 +57,11 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 		};
 	}, []);
 
-	const shouldDisplayComponent = () => {
-		if (!isSelected || !ref.current) return false;
+	const shouldDisplayComponent = () => !(!isSelected || !ref.current);
 
+	if (!shouldDisplayComponent()) return null;
+
+	const shouldHideComponent = () => {
 		if (isEmptyContent) return true;
 
 		if (
@@ -108,12 +110,11 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 		return (containerWidth - resizerWidth) / 2 > 50;
 	};
 
-	if (!shouldDisplayComponent()) return null;
-
 	const classes = classnames(
 		'maxi-popover-button',
 		isOpen && 'maxi-popover-button--open',
 		version <= 13.0 && 'maxi-popover-button--old',
+		!shouldHideComponent() && 'maxi-popover-button--hidden',
 		className
 	);
 

@@ -1,6 +1,7 @@
 import hoverAttributesCreator from '../hoverAttributesCreator';
 import prefixAttributesCreator from '../prefixAttributesCreator';
 import { background, backgroundColor } from './background';
+import { width, height } from './size';
 
 const overlayColor = {
 	...prefixAttributesCreator({
@@ -34,6 +35,17 @@ const videoOverlay = {
 				type: 'boolean',
 				default: false,
 			},
+		},
+	}),
+
+	...prefixAttributesCreator({
+		obj: { ...width, ...height },
+		prefix: 'overlay-media-',
+		diffValAttr: {
+			'overlay-media-width-general': '100',
+			'overlay-media-width-unit-general': '%',
+			'overlay-media-height-general': '100',
+			'overlay-media-height-unit-general': '%',
 		},
 	}),
 	'overlay-mediaID': {

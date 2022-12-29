@@ -128,6 +128,19 @@ const getLightBoxObject = props => {
 	return response;
 };
 
+const getOverlayImageStyles = props => {
+	const response = {
+		size: getSizeStyles(
+			{
+				...getGroupAttributes(props, 'size', false, 'overlay-media-'),
+			},
+			'overlay-media-'
+		),
+	};
+
+	return response;
+};
+
 const getOverlayBackgroundObject = (props, isHover = false) => {
 	const response = {
 		...getBackgroundStyles({
@@ -372,6 +385,8 @@ const getStyles = props => {
 								props,
 								true
 							),
+							' .maxi-video-block__overlay-image':
+								getOverlayImageStyles(props),
 					  }),
 				' .maxi-video-block__overlay-background':
 					getOverlayBackgroundObject(props),

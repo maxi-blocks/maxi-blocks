@@ -7,7 +7,7 @@ const accordion = {
 	},
 	animationDuration: {
 		type: 'number',
-		default: 0,
+		default: 0.3,
 	},
 };
 

@@ -42,7 +42,7 @@ describe('Text Maxi hover simple actions', () => {
 		await selectControls[2].select('hover');
 	});
 
-	const checkFrontend = async () => {
+	const checkFrontend = async (disableTransition = false) => {
 		const previewPage = await openPreviewPage(page);
 		await previewPage.waitForSelector('.entry-content');
 
@@ -62,14 +62,16 @@ describe('Text Maxi hover simple actions', () => {
 		);
 		expect(stylesCSS).toMatchSnapshot();
 
-		await previewPage.waitForSelector(
-			'#relations--text-maxi-1-transitions'
-		);
-		const transitionsCSS = await previewPage.$eval(
-			'#relations--text-maxi-1-transitions',
-			el => el.textContent
-		);
-		expect(transitionsCSS).toMatchSnapshot();
+		if (!disableTransition) {
+			await previewPage.waitForSelector(
+				'#relations--text-maxi-1-transitions'
+			);
+			const transitionsCSS = await previewPage.$eval(
+				'#relations--text-maxi-1-transitions',
+				el => el.textContent
+			);
+			expect(transitionsCSS).toMatchSnapshot();
+		}
 	};
 
 	it('Alignment', async () => {
@@ -85,7 +87,7 @@ describe('Text Maxi hover simple actions', () => {
 
 		expect(await getAttributes('relations')).toMatchSnapshot();
 
-		await checkFrontend();
+		await checkFrontend(true);
 	});
 
 	// Needs #3767 to be fixed

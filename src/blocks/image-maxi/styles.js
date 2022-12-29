@@ -329,7 +329,9 @@ const getImageObject = props => {
 			'image-'
 		),
 		clipPath: getClipPathStyles({
-			...getGroupAttributes(props, 'clipPath'),
+			obj: {
+				...getGroupAttributes(props, 'clipPath'),
+			},
 		}),
 		...(imgWidth && {
 			imgWidth: {
@@ -372,6 +374,14 @@ const getHoverImageObject = props => {
 				isHover: true,
 				blockStyle: props.blockStyle,
 				prefix: 'image-',
+			}),
+		}),
+		...(props['clip-path-status-hover'] && {
+			clipPath: getClipPathStyles({
+				obj: {
+					...getGroupAttributes(props, 'clipPath', true),
+				},
+				isHover: true,
 			}),
 		}),
 	};

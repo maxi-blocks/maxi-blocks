@@ -10,6 +10,7 @@ import AxisControl from '../axis-control';
 import SelectControl from '../select-control';
 import withRTC from '../../extensions/maxi-block/withRTC';
 import {
+	getAttributeKey,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
@@ -19,6 +20,7 @@ import {
  */
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
+import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * Component
@@ -31,6 +33,7 @@ const PositionControl = props => {
 		breakpoint = 'general',
 		prefix = '',
 		isHover = false,
+		defaultAttributes,
 	} = props;
 
 	const classes = classnames('maxi-position-control', className);
@@ -99,6 +102,7 @@ const PositionControl = props => {
 			enableAxisUnits
 			allowedUnits={['px', 'em', 'vw', '%', '-']}
 			isHover={isHover}
+			defaultAttributes={defaultAttributes}
 		/>
 	);
 
@@ -122,6 +126,25 @@ const PositionControl = props => {
 								breakpoint,
 								attributes: props,
 							}) || ''
+						}
+						onReset={() =>
+							onChange(
+								handleOnReset({
+									[getAttributeKey(
+										'position',
+										isHover,
+										prefix,
+										breakpoint
+									)]: getDefaultAttribute(
+										getAttributeKey(
+											'position',
+											isHover,
+											prefix,
+											breakpoint
+										)
+									),
+								})
+							)
 						}
 						onChange={val =>
 							onChange({

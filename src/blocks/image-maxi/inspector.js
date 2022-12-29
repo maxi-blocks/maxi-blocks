@@ -11,7 +11,6 @@ import { InspectorControls } from '@wordpress/block-editor';
 import {
 	AccordionControl,
 	AdvancedNumberControl,
-	ClipPath,
 	ImageAltControl,
 	ImageShape,
 	ResponsiveTabsControl,
@@ -390,31 +389,9 @@ const Inspector = props => {
 											`image-shape-flip-y-${deviceType}`,
 										],
 									},
-									{
-										label: __('Clip-path', 'maxi-blocks'),
-										content: (
-											<ResponsiveTabsControl
-												breakpoint={deviceType}
-											>
-												<ClipPath
-													onChange={obj => {
-														maxiSetAttributes(obj);
-													}}
-													{...getGroupAttributes(
-														attributes,
-														'clipPath',
-														false,
-														''
-													)}
-													breakpoint={deviceType}
-													prefix=''
-												/>
-											</ResponsiveTabsControl>
-										),
-										ignoreIndicator: [
-											`clip-path-${deviceType}`,
-										],
-									},
+									...inspectorTabs.clipPath({
+										props,
+									}),
 									...inspectorTabs.border({
 										props,
 										prefix: 'image-',

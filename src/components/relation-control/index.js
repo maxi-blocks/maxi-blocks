@@ -479,6 +479,7 @@ const RelationControl = props => {
 														) || {};
 													const {
 														transitionTarget,
+														transitionTrigger,
 														hoverProp,
 													} = selectedSettingsObj;
 
@@ -552,6 +553,7 @@ const RelationControl = props => {
 															effects: {
 																...item.effects,
 																transitionTarget,
+																transitionTrigger,
 																hoverStatus:
 																	!!hoverStatus,
 															},

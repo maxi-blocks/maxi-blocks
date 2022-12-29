@@ -62,7 +62,7 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 	if (!shouldDisplayComponent()) return null;
 
 	const shouldHideComponent = () => {
-		if (isEmptyContent) return true;
+		if (isEmptyContent) return false;
 
 		if (
 			getLastBreakpointAttribute({
@@ -71,7 +71,7 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 				attributes,
 			})
 		)
-			return false;
+			return true;
 
 		const getContainerWidth = () => {
 			const blockRefWidth = ref.current.getBoundingClientRect().width;
@@ -94,7 +94,7 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 		};
 		const containerWidth = getContainerWidth();
 
-		if (isNaN(containerWidth)) return true;
+		if (isNaN(containerWidth)) return false;
 
 		const resizerWidth =
 			prefix === 'image-'
@@ -107,14 +107,14 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 						})
 				  );
 
-		return (containerWidth - resizerWidth) / 2 > 50;
+		return (containerWidth - resizerWidth) / 2 < 50;
 	};
 
 	const classes = classnames(
 		'maxi-popover-button',
 		isOpen && 'maxi-popover-button--open',
 		version <= 13.0 && 'maxi-popover-button--old',
-		!shouldHideComponent() && 'maxi-popover-button--hidden',
+		shouldHideComponent() && 'maxi-popover-button--hidden',
 		className
 	);
 

@@ -3,6 +3,11 @@
  */
 import { getTransitionSetting } from './utils';
 
+/**
+ * External dependencies
+ */
+import { isEqual } from 'lodash';
+
 const name = 'IB effects';
 
 const settingsToMigrate = [
@@ -13,7 +18,10 @@ const settingsToMigrate = [
 				transitionSetting[this.key] &&
 				// `transitionTarget` generates dynamically for transform
 				transitionSetting.label !== 'Transform' &&
-				relation.effects[this.key] !== transitionSetting[this.key];
+				!isEqual(
+					relation.effects[this.key],
+					transitionSetting[this.key]
+				);
 		},
 	},
 	{
@@ -21,7 +29,10 @@ const settingsToMigrate = [
 		get isEligible() {
 			return (transitionSetting, relation) =>
 				transitionSetting[this.key] &&
-				relation.effects[this.key] !== transitionSetting[this.key];
+				!isEqual(
+					relation.effects[this.key],
+					transitionSetting[this.key]
+				);
 		},
 	},
 	{

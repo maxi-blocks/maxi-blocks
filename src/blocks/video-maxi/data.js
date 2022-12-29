@@ -230,7 +230,7 @@ const transition = {
 const interactionBuilderSettings = {
 	block: [
 		{
-			label: __('Overlay', 'maxi-blocks'),
+			label: __('Image', 'maxi-blocks'),
 			attrGroupName: ['video', 'videoOverlay'],
 			component: props => {
 				const { playerType } = props.blockAttributes;

@@ -204,7 +204,7 @@ const VideoOverlayControl = props => {
 						/>
 					)}
 					<AdvancedNumberControl
-						label={__('Width', 'maxi-blocks')}
+						label={__('Image width', 'maxi-blocks')}
 						className='maxi-video-overlay-control__width'
 						enableUnit
 						unit={getLastBreakpointAttribute({
@@ -249,7 +249,7 @@ const VideoOverlayControl = props => {
 						optionType='string'
 					/>
 					<AdvancedNumberControl
-						label={__('Height', 'maxi-blocks')}
+						label={__('Image height', 'maxi-blocks')}
 						className='maxi-video-overlay-control__height'
 						enableUnit
 						unit={getLastBreakpointAttribute({

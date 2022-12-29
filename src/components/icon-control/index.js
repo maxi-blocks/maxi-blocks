@@ -178,8 +178,14 @@ const IconControl = props => {
 						type={type}
 						style={blockStyle}
 						onSelect={obj => {
+							const newSvgType = obj[`${prefix}svgType`];
+
 							const icon = getIconWithColor({
 								rawIcon: obj[`${prefix}icon-content`],
+								type: [
+									newSvgType !== 'Shape' && 'stroke',
+									newSvgType !== 'Line' && 'fill',
+								].filter(Boolean),
 							});
 
 							onChange({

@@ -556,6 +556,8 @@ const RelationControl = props => {
 																transitionTrigger,
 																hoverStatus:
 																	!!hoverStatus,
+																disableTransition:
+																	!!selectedSettingsObj?.disableTransition,
 															},
 														}
 													);
@@ -563,62 +565,66 @@ const RelationControl = props => {
 											/>
 										</>
 									)}
-									{item.uniqueID && item.settings && (
-										<SettingTabsControl
-											deviceType={deviceType}
-											items={[
-												{
-													label: __(
-														'Settings',
-														'maxi-blocks'
-													),
-													content:
-														displaySelectedSetting(
-															item
+									{item.uniqueID &&
+										item.settings &&
+										(item.effects.disableTransition ? (
+											displaySelectedSetting(item)
+										) : (
+											<SettingTabsControl
+												deviceType={deviceType}
+												items={[
+													{
+														label: __(
+															'Settings',
+															'maxi-blocks'
 														),
-												},
-												{
-													label: __(
-														'Effects',
-														'maxi-blocks'
-													),
-													content: (
-														<ResponsiveTabsControl
-															breakpoint={
-																deviceType
-															}
-														>
-															<TransitionControl
-																className='maxi-relation-control__item__effects'
-																onChange={obj =>
-																	onChangeRelation(
-																		relations,
-																		item.id,
-																		{
-																			effects:
-																				{
-																					...item.effects,
-																					...obj,
-																				},
-																		}
-																	)
-																}
-																transition={
-																	item.effects
-																}
-																getDefaultTransitionAttribute={
-																	getDefaultTransitionAttribute
-																}
+														content:
+															displaySelectedSetting(
+																item
+															),
+													},
+													{
+														label: __(
+															'Effects',
+															'maxi-blocks'
+														),
+														content: (
+															<ResponsiveTabsControl
 																breakpoint={
 																	deviceType
 																}
-															/>
-														</ResponsiveTabsControl>
-													),
-												},
-											]}
-										/>
-									)}
+															>
+																<TransitionControl
+																	className='maxi-relation-control__item__effects'
+																	onChange={obj =>
+																		onChangeRelation(
+																			relations,
+																			item.id,
+																			{
+																				effects:
+																					{
+																						...item.effects,
+																						...obj,
+																					},
+																			}
+																		)
+																	}
+																	transition={
+																		item.effects
+																	}
+																	getDefaultTransitionAttribute={
+																		getDefaultTransitionAttribute
+																	}
+																	breakpoint={
+																		deviceType
+																	}
+																/>
+															</ResponsiveTabsControl>
+														),
+													},
+												]}
+											/>
+										))}
 								</div>
 							}
 							id={item.id}

@@ -3,7 +3,7 @@
  */
 import { useSelect } from '@wordpress/data';
 import { Popover } from '@wordpress/components';
-import { forwardRef, useEffect, useRef } from '@wordpress/element';
+import { forwardRef, useRef } from '@wordpress/element';
 import { getScrollContainer } from '@wordpress/dom';
 
 /**
@@ -37,15 +37,13 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 	const popoverRef = useRef(null);
 	const previousWidthAttribute = useRef();
 
-	useEffect(() => {
-		previousWidthAttribute.current = toNumber(
-			getLastBreakpointAttribute({
-				target: 'width',
-				breakpoint: deviceType,
-				attributes,
-			})
-		);
-	}, [attributes, deviceType]);
+	previousWidthAttribute.current = toNumber(
+		getLastBreakpointAttribute({
+			target: 'width',
+			breakpoint: deviceType,
+			attributes,
+		})
+	);
 
 	const { version } = useSelect(select => {
 		const { receiveMaxiSettings } = select('maxiBlocks');

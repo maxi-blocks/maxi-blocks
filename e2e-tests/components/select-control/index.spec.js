@@ -21,5 +21,15 @@ describe('SelectControl', () => {
 		expect(await getAttributes('border-style-general')).toStrictEqual(
 			'dotted'
 		);
+
+		// Reset
+		await page.$eval(
+			'.maxi-tabs-content .maxi-border-control .maxi-select-control .maxi-reset-button',
+			button => button.click()
+		);
+
+		expect(await getAttributes('border-style-general')).toStrictEqual(
+			'none'
+		);
 	});
 });

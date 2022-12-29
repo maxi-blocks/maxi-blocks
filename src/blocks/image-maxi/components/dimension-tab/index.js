@@ -103,6 +103,13 @@ const DimensionTab = props => {
 								? imageSize
 								: 'full'
 						} // is still necessary?
+						onReset={() =>
+							maxiSetAttributes(
+								handleOnReset({
+									imageSize: getDefaultAttribute('imageSize'),
+								})
+							)
+						}
 						options={getSizeOptions()}
 						onChange={imageSize => {
 							const { mediaURL, mediaWidth, mediaHeight } =
@@ -191,6 +198,13 @@ const DimensionTab = props => {
 					maxiSetAttributes({
 						imageRatio,
 					})
+				}
+				onReset={() =>
+					maxiSetAttributes(
+						handleOnReset({
+							imageRatio: getDefaultAttribute('imageRatio'),
+						})
+					)
 				}
 			/>
 			{!isFirstOnHierarchy && (

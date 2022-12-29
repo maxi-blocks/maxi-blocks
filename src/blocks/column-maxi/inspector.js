@@ -79,6 +79,7 @@ const Inspector = props => {
 										block: true,
 										hideWidth: true,
 										hideMaxWidth: true,
+										hideFit: true,
 									}),
 									...inspectorTabs.marginPadding({
 										props,

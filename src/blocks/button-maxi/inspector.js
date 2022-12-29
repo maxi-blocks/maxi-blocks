@@ -212,9 +212,19 @@ const Inspector = props => {
 											/>
 										),
 									},
-									...inspectorTabs.icon({
-										props,
-									}),
+
+									deviceType !== 'general'
+										? props.attributes['icon-content'] !==
+												'' && {
+												...inspectorTabs.icon({
+													props,
+												}),
+										  }
+										: {
+												...inspectorTabs.icon({
+													props,
+												}),
+										  },
 									...inspectorTabs.alignment({
 										props,
 										isAlignment: true,
@@ -319,11 +329,6 @@ const Inspector = props => {
 											...props,
 										},
 									}),
-									...inspectorTabs.opacity({
-										props: {
-											...props,
-										},
-									}),
 									...inspectorTabs.size({
 										props: {
 											...props,
@@ -385,6 +390,11 @@ const Inspector = props => {
 										},
 									}),
 									...inspectorTabs.display({
+										props: {
+											...props,
+										},
+									}),
+									...inspectorTabs.opacity({
 										props: {
 											...props,
 										},

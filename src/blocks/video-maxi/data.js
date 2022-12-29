@@ -228,38 +228,6 @@ const transition = {
 	},
 };
 const interactionBuilderSettings = {
-	block: [
-		{
-			label: __('Image', 'maxi-blocks'),
-			attrGroupName: ['video', 'videoOverlay'],
-			component: props => {
-				const { playerType } = props.blockAttributes;
-
-				return playerType === 'popup' ? (
-					<VideoOverlayControl
-						{...props}
-						disableHideImage
-						disableHover
-						disableUploadImage
-					/>
-				) : (
-					<InfoBox
-						message={__(
-							'Video must be in popup to have overlay settings',
-							'maxi-blocks'
-						)}
-					/>
-				);
-			},
-			helper: props =>
-				getBackgroundStyles({
-					...props,
-					...props.obj,
-					prefix: 'overlay-',
-				}).background,
-			target: ' .maxi-video-block__overlay-background',
-		},
-	],
 	canvas: getCanvasSettings({ name, customCss }),
 };
 

@@ -14,7 +14,6 @@ import {
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
 import { DefaultDividersControl } from '../../../divider-control';
-import { handleOnReset } from '../../../../extensions/attributes';
 
 /**
  * External dependencies
@@ -108,18 +107,17 @@ const Divider = props => {
 										})
 									}
 									onReset={() =>
-										onChange(
-											handleOnReset({
-												[`divider-border-top-width-${breakpoint}`]:
-													getDefaultAttribute(
-														`divider-border-top-width-${breakpoint}`
-													),
-												[`divider-border-top-unit-${breakpoint}`]:
-													getDefaultAttribute(
-														`divider-border-top-unit-${breakpoint}`
-													),
-											})
-										)
+										onChange({
+											[`divider-border-top-width-${breakpoint}`]:
+												getDefaultAttribute(
+													`divider-border-top-width-${breakpoint}`
+												),
+											[`divider-border-top-unit-${breakpoint}`]:
+												getDefaultAttribute(
+													`divider-border-top-unit-${breakpoint}`
+												),
+											isReset: true,
+										})
 									}
 									minMaxSettings={minMaxSettings}
 								/>
@@ -142,18 +140,17 @@ const Divider = props => {
 								})
 							}
 							onReset={() =>
-								onChange(
-									handleOnReset({
-										[`divider-width-${breakpoint}`]:
-											getDefaultAttribute(
-												`divider-width-${breakpoint}`
-											),
-										[`divider-width-unit-${breakpoint}`]:
-											getDefaultAttribute(
-												`divider-width-unit-${breakpoint}`
-											),
-									})
-								)
+								onChange({
+									[`divider-width-${breakpoint}`]:
+										getDefaultAttribute(
+											`divider-width-${breakpoint}`
+										),
+									[`divider-width-unit-${breakpoint}`]:
+										getDefaultAttribute(
+											`divider-width-unit-${breakpoint}`
+										),
+									isReset: true,
+								})
 							}
 							minMaxSettings={minMaxSettings}
 						/>
@@ -186,14 +183,13 @@ const Divider = props => {
 									min={0}
 									max={100}
 									onReset={() =>
-										onChange(
-											handleOnReset({
-												[`divider-border-right-width-${breakpoint}`]:
-													getDefaultAttribute(
-														`divider-border-right-width-${breakpoint}`
-													),
-											})
-										)
+										onChange({
+											[`divider-border-right-width-${breakpoint}`]:
+												getDefaultAttribute(
+													`divider-border-right-width-${breakpoint}`
+												),
+											isReset: true,
+										})
 									}
 									initialPosition={getDefaultAttribute(
 										`divider-border-right-width-${breakpoint}`
@@ -223,14 +219,13 @@ const Divider = props => {
 							min={0}
 							max={100}
 							onReset={() =>
-								onChange(
-									handleOnReset({
-										[`divider-height-${breakpoint}`]:
-											getDefaultAttribute(
-												`divider-height-${breakpoint}`
-											),
-									})
-								)
+								onChange({
+									[`divider-height-${breakpoint}`]:
+										getDefaultAttribute(
+											`divider-height-${breakpoint}`
+										),
+									isReset: true,
+								})
 							}
 							initialPosition={getDefaultAttribute(
 								`divider-height-${breakpoint}`

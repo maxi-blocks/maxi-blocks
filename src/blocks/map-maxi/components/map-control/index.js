@@ -9,7 +9,6 @@ import { __ } from '@wordpress/i18n';
 import AdvancedNumberControl from '../../../../components/advanced-number-control';
 import InfoBox from '../../../../components/info-box';
 import SelectControl from '../../../../components/select-control';
-import { handleOnReset } from '../../../../extensions/attributes';
 import { getDefaultAttribute } from '../../../../extensions/styles';
 
 /**
@@ -65,11 +64,10 @@ const MapControl = props => {
 				value={mapMinZoom}
 				onChangeValue={val => onChange({ 'map-min-zoom': val })}
 				onReset={() =>
-					onChange(
-						handleOnReset({
-							'map-min-zoom': getDefaultAttribute('map-min-zoom'),
-						})
-					)
+					onChange({
+						'map-min-zoom': getDefaultAttribute('map-min-zoom'),
+						isReset: true,
+					})
 				}
 			/>
 			<AdvancedNumberControl
@@ -82,11 +80,10 @@ const MapControl = props => {
 				value={mapMaxZoom}
 				onChangeValue={val => onChange({ 'map-max-zoom': val })}
 				onReset={() =>
-					onChange(
-						handleOnReset({
-							'map-max-zoom': getDefaultAttribute('map-max-zoom'),
-						})
-					)
+					onChange({
+						'map-max-zoom': getDefaultAttribute('map-max-zoom'),
+						isReset: true,
+					})
 				}
 			/>
 		</div>

@@ -12,4 +12,8 @@ body.maxi-blocks--active .components-popover.maxi-popover-button {
 	&--open {
 		z-index: -1;
 	}
+
+	&--hidden {
+		display: none;
+	}
 }

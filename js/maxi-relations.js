@@ -472,6 +472,8 @@ class Relation {
 						);
 
 						let finalTarget;
+						// For background layers styles, avoidHoverString needs to be added to the parent element
+						// to make sure hover styles will override the IB styles.
 						if (target.includes('.maxi-background-displayer')) {
 							finalTarget = target
 								.replace(

@@ -108,7 +108,9 @@ const Inspector = props => {
 											/>
 										),
 									},
-									{
+									(deviceType === 'general' ||
+										props.attributes['icon-content'] !==
+											'') && {
 										label: __(
 											'Search settings',
 											'maxi-blocks'

@@ -34,27 +34,26 @@ exports[`getHoverEffectsBackgroundStyles Get a correct hover effects gradient ba
 Object {
   "background": Object {
     "general": Object {
-      "background": "linear-gradient(135deg,rgba(6,147,200,0.5) 0%,rgba(224,82,100,1) 100%)",
-      "opacity": 0.8,
+      "background": "linear-gradient(135deg,rgba(6,147,200,0.4) 0%,rgba(224,82,100,0.8) 100%)",
     },
     "l": Object {
-      "background": "linear-gradient(135deg,rgba(6,147,200,0.5) 0%,rgba(224,82,100,1) 100%)",
+      "background": "linear-gradient(135deg,rgba(6,147,200,0.4) 0%,rgba(224,82,100,0.8) 100%)",
     },
     "label": "Background gradient",
     "m": Object {
-      "background": "linear-gradient(135deg,rgba(6,147,200,0.5) 0%,rgba(224,82,100,1) 100%)",
+      "background": "linear-gradient(135deg,rgba(6,147,200,0.4) 0%,rgba(224,82,100,0.8) 100%)",
     },
     "s": Object {
-      "background": "linear-gradient(135deg,rgba(6,147,200,0.5) 0%,rgba(224,82,100,1) 100%)",
+      "background": "linear-gradient(135deg,rgba(6,147,200,0.4) 0%,rgba(224,82,100,0.8) 100%)",
     },
     "xl": Object {
-      "background": "linear-gradient(135deg,rgba(6,147,200,0.5) 0%,rgba(224,82,100,1) 100%)",
+      "background": "linear-gradient(135deg,rgba(6,147,200,0.4) 0%,rgba(224,82,100,0.8) 100%)",
     },
     "xs": Object {
-      "background": "linear-gradient(135deg,rgba(6,147,200,0.5) 0%,rgba(224,82,100,1) 100%)",
+      "background": "linear-gradient(135deg,rgba(6,147,200,0.4) 0%,rgba(224,82,100,0.8) 100%)",
     },
     "xxl": Object {
-      "background": "linear-gradient(135deg,rgba(6,147,200,0.5) 0%,rgba(224,82,100,1) 100%)",
+      "background": "linear-gradient(135deg,rgba(6,147,200,0.4) 0%,rgba(224,82,100,0.8) 100%)",
     },
   },
   "general": Object {},

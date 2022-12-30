@@ -93,6 +93,12 @@ const PopupSettingsControl = props => {
 					},
 				]}
 				onChange={popupRatio => onChange({ popupRatio })}
+				onReset={() =>
+					onChange({
+						popupRatio: getDefaultAttribute('popupRatio'),
+						isReset: true,
+					})
+				}
 			/>
 			<SelectControl
 				label={__('Pop animation', 'maxi-blocks')}

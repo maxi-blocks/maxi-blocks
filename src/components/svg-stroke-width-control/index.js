@@ -12,7 +12,6 @@ import {
  */
 import AdvancedNumberControl from '../advanced-number-control';
 import { setSVGStrokeWidth } from '../../extensions/svg';
-import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * External dependencies
@@ -66,11 +65,10 @@ const SvgStrokeWidthControl = props => {
 			max={5}
 			step={0.1}
 			onReset={() =>
-				onChange(
-					handleOnReset({
-						[strokeAttrLabel]: defaultStroke,
-					})
-				)
+				onChange({
+					[strokeAttrLabel]: defaultStroke,
+					isReset: true,
+				})
 			}
 			defaultValue={defaultStroke}
 			initialPosition={placeholderStroke}

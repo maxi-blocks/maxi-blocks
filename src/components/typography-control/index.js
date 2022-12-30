@@ -30,7 +30,6 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { getDefaultSCValue } from '../../extensions/style-cards';
-import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * External dependencies
@@ -443,7 +442,7 @@ const TypographyControl = props => {
 		}
 
 		if (!isReset) onChange(obj, getInlineTarget(tag));
-		else onChange(handleOnReset(obj), getInlineTarget(tag));
+		else onChange({ ...obj, isReset: true }, getInlineTarget(tag));
 	};
 
 	const onChangeInlineValue = (obj, tag = '') => {

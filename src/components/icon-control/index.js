@@ -27,7 +27,6 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import MaxiModal from '../../editor/library/modal';
-import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * External dependencies
@@ -277,14 +276,13 @@ const IconControl = props => {
 									});
 								}}
 								onReset={() =>
-									onChange(
-										handleOnReset({
-											[`${prefix}icon-spacing-${breakpoint}`]:
-												getDefaultAttribute(
-													`${prefix}icon-spacing-${breakpoint}`
-												),
-										})
-									)
+									onChange({
+										[`${prefix}icon-spacing-${breakpoint}`]:
+											getDefaultAttribute(
+												`${prefix}icon-spacing-${breakpoint}`
+											),
+										isReset: true,
+									})
 								}
 							/>
 							{!disablePosition && (

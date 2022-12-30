@@ -2,6 +2,7 @@
  * Wordpress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -217,6 +218,11 @@ const BoxShadowControl = props => {
 		className
 	);
 
+	const { getSelectedBlockClientId, getBlockName } =
+		select('core/block-editor');
+
+	const currentBlockName = getBlockName(getSelectedBlockClientId());
+
 	return (
 		<div className={classes}>
 			<DefaultStylesControl
@@ -355,24 +361,25 @@ const BoxShadowControl = props => {
 			/>
 			{!isToolbar && (
 				<>
-					{!dropShadow && (
-						<ToggleSwitch
-							label={__('Inset', 'maxi-block')}
-							selected={getLastBreakpointAttribute({
-								target: `${prefix}box-shadow-inset`,
-								breakpoint,
-								attributes: props,
-								isHover,
-							})}
-							onChange={val =>
-								onChange({
-									[`${prefix}box-shadow-inset-${breakpoint}${
-										isHover ? '-hover' : ''
-									}`]: val,
-								})
-							}
-						/>
-					)}
+					{!dropShadow &&
+						currentBlockName !== 'maxi-blocks/divider-maxi' && (
+							<ToggleSwitch
+								label={__('Inset', 'maxi-block')}
+								selected={getLastBreakpointAttribute({
+									target: `${prefix}box-shadow-inset`,
+									breakpoint,
+									attributes: props,
+									isHover,
+								})}
+								onChange={val =>
+									onChange({
+										[`${prefix}box-shadow-inset-${breakpoint}${
+											isHover ? '-hover' : ''
+										}`]: val,
+									})
+								}
+							/>
+						)}
 					{boxShadowItems.map(type => (
 						<BoxShadowValueControl
 							type={type}

@@ -17,7 +17,6 @@ import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
-import { handleOnReset } from '../../../../extensions/attributes';
 
 /**
  * External dependencies
@@ -103,11 +102,10 @@ const DimensionTab = props => {
 								: 'full'
 						} // is still necessary?
 						onReset={() =>
-							maxiSetAttributes(
-								handleOnReset({
-									imageSize: getDefaultAttribute('imageSize'),
-								})
-							)
+							maxiSetAttributes({
+								imageSize: getDefaultAttribute('imageSize'),
+								isReset: true,
+							})
 						}
 						options={getSizeOptions()}
 						onChange={imageSize => {
@@ -188,11 +186,10 @@ const DimensionTab = props => {
 				label={__('Image ratio', 'maxi-blocks')}
 				value={imageRatio}
 				onReset={() =>
-					maxiSetAttributes(
-						handleOnReset({
-							imageRatio: getDefaultAttribute('imageRatio'),
-						})
-					)
+					maxiSetAttributes({
+						imageRatio: getDefaultAttribute('imageRatio'),
+						isReset: true,
+					})
 				}
 				options={[
 					{
@@ -255,14 +252,13 @@ const DimensionTab = props => {
 									})
 								}
 								onReset={() =>
-									maxiSetAttributes(
-										handleOnReset({
-											[`object-size-${deviceType}`]:
-												getDefaultAttribute(
-													`object-size-${deviceType}`
-												),
-										})
-									)
+									maxiSetAttributes({
+										[`object-size-${deviceType}`]:
+											getDefaultAttribute(
+												`object-size-${deviceType}`
+											),
+										isReset: true,
+									})
 								}
 								min={1}
 								max={5}
@@ -291,14 +287,13 @@ const DimensionTab = props => {
 									})
 								}
 								onReset={() =>
-									maxiSetAttributes(
-										handleOnReset({
-											[`object-position-horizontal-${deviceType}`]:
-												getDefaultAttribute(
-													`object-position-horizontal-${deviceType}`
-												),
-										})
-									)
+									maxiSetAttributes({
+										[`object-position-horizontal-${deviceType}`]:
+											getDefaultAttribute(
+												`object-position-horizontal-${deviceType}`
+											),
+										isReset: true,
+									})
 								}
 								min={0}
 								max={100}
@@ -326,14 +321,13 @@ const DimensionTab = props => {
 									})
 								}
 								onReset={() =>
-									maxiSetAttributes(
-										handleOnReset({
-											[`object-position-vertical-${deviceType}`]:
-												getDefaultAttribute(
-													`object-position-vertical-${deviceType}`
-												),
-										})
-									)
+									maxiSetAttributes({
+										[`object-position-vertical-${deviceType}`]:
+											getDefaultAttribute(
+												`object-position-vertical-${deviceType}`
+											),
+										isReset: true,
+									})
 								}
 								min={0}
 								max={100}

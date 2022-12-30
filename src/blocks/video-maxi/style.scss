@@ -45,8 +45,9 @@
 
 	&__overlay {
 		position: relative;
-		display: flex;
-		justify-content: center;
+		display: grid;
+		grid-template-areas: 'video-overlay';
+		justify-items: center;
 		align-items: center;
 
 		width: 100%;
@@ -63,6 +64,8 @@
 
 	&__overlay-image {
 		display: block;
+		grid-area: video-overlay;
+
 		max-height: 100%;
 		margin: auto;
 		object-fit: cover;
@@ -83,12 +86,9 @@
 	}
 
 	&__play-button {
-		position: absolute;
-		left: 50%;
-		top: 50%;
+		position: relative;
 		z-index: 2;
-
-		transform: translate(-50%, -50%);
+		grid-area: video-overlay;
 	}
 
 	&__close-button {

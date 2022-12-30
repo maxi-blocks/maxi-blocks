@@ -12,7 +12,6 @@ import {
 	ToggleSwitch,
 	SelectControl,
 } from '../../../../components';
-import { handleOnReset } from '../../../../extensions/attributes';
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
@@ -50,14 +49,13 @@ const AccordionLineControl = props => {
 					})
 				}
 				onReset={() => {
-					onChange(
-						handleOnReset({
-							[`${prefix}line-horizontal-${breakpoint}`]:
-								getDefaultAttribute(
-									`${prefix}line-horizontal-${breakpoint}`
-								),
-						})
-					);
+					onChange({
+						[`${prefix}line-horizontal-${breakpoint}`]:
+							getDefaultAttribute(
+								`${prefix}line-horizontal-${breakpoint}`
+							),
+						isReset: true,
+					});
 				}}
 			/>
 			<SettingTabsControl

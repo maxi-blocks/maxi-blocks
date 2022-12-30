@@ -6,14 +6,15 @@ import { dispatch, select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import getLastBreakpointAttribute from '../styles/getLastBreakpointAttribute';
-import getDefaultAttribute from '../styles/getDefaultAttribute';
+import { getHoverAttribute, getNormalAttribute } from '../styles';
 import getBreakpointFromAttribute from '../styles/getBreakpointFromAttribute';
+import getDefaultAttribute from '../styles/getDefaultAttribute';
+import getLastBreakpointAttribute from '../styles/getLastBreakpointAttribute';
 
 /**
  * External dependencies
  */
-import { isNil, isEqual } from 'lodash';
+import { isEqual, isNil } from 'lodash';
 
 const breakpoints = ['general', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -311,9 +312,6 @@ const flatNewAttributes = (
  * Removes hover attributes that coincide with normal ones.
  */
 const removeHoverSameAsNormal = (newAttributes, attributes) => {
-	const getHoverAttribute = key =>
-		key.includes('-hover') ? key : `${key}-hover`;
-	const getNormalAttribute = key => key.replace(/-hover/, '');
 	const getValue = key => newAttributes[key] ?? attributes[key];
 
 	const result = { ...newAttributes };

@@ -217,7 +217,8 @@ const interactionBuilderSettings = {
 			attrGroupName: 'alignment',
 			component: props => <AlignmentControl disableJustify {...props} />,
 			helper: props => getAlignmentFlexStyles(props.obj),
-			target: ' .maxi-image-block-wrapper',
+			target: imageWrapperClass,
+			disableTransition: true,
 		},
 		{
 			label: __('Shape mask', 'maxi-blocks'),

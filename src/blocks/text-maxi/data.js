@@ -182,6 +182,7 @@ const interactionBuilderSettings = {
 			attrGroupName: 'textAlignment',
 			component: props => <AlignmentControl {...props} type='text' />,
 			helper: props => getAlignmentTextStyles(props.obj),
+			disableTransition: true,
 		},
 		{
 			label: __('Typography', 'maxi-blocks'),

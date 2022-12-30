@@ -129,12 +129,21 @@ const getLightBoxObject = props => {
 };
 
 const getOverlayImageStyles = props => {
+	const prefix = 'overlay-media-';
+
 	const response = {
 		size: getSizeStyles(
 			{
-				...getGroupAttributes(props, 'size', false, 'overlay-media-'),
+				...getGroupAttributes(props, 'size', false, prefix),
 			},
-			'overlay-media-'
+			prefix
+		),
+		opacity: getOpacityStyles(
+			{
+				...getGroupAttributes(props, 'opacity', false, prefix),
+			},
+			false,
+			prefix
 		),
 	};
 

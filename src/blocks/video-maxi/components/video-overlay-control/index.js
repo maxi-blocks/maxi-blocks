@@ -13,7 +13,7 @@ import {
 	AdvancedNumberControl,
 } from '../../../../components';
 import MediaUploaderControl from '../../../../components/media-uploader-control';
-import { handleOnReset } from '../../../../extensions/attributes';
+import OpacityControl from '../../../../components/opacity-control';
 import {
 	getAttributeKey,
 	getDefaultAttribute,
@@ -137,6 +137,7 @@ const VideoOverlayControl = props => {
 		breakpoint,
 	} = props;
 
+	const mediaPrefix = 'overlay-media-';
 	const minMaxSettings = {
 		px: {
 			min: 0,
@@ -208,41 +209,40 @@ const VideoOverlayControl = props => {
 						className='maxi-video-overlay-control__width'
 						enableUnit
 						unit={getLastBreakpointAttribute({
-							target: 'overlay-media-width-unit',
+							target: `${mediaPrefix}width-unit`,
 							breakpoint,
 							attributes: props,
 						})}
 						onChangeUnit={val =>
 							onChange({
-								[`overlay-media-width-unit-${breakpoint}`]: val,
+								[`${mediaPrefix}width-unit-${breakpoint}`]: val,
 							})
 						}
 						value={getLastBreakpointAttribute({
-							target: 'overlay-media-width',
+							target: `${mediaPrefix}width`,
 							breakpoint,
 							attributes: props,
 						})}
 						onChangeValue={val =>
 							onChange({
-								[`overlay-media-width-${breakpoint}`]: val,
+								[`${mediaPrefix}width-${breakpoint}`]: val,
 							})
 						}
 						defaultValue={getDefaultAttribute(
-							`overlay-media-width-${breakpoint}`
+							`${mediaPrefix}width-${breakpoint}`
 						)}
 						onReset={() => {
-							onChange(
-								handleOnReset({
-									[`overlay-media-width-${breakpoint}`]:
-										getDefaultAttribute(
-											`overlay-media-width-${breakpoint}`
-										),
-									[`overlay-media-width-unit-${breakpoint}`]:
-										getDefaultAttribute(
-											`overlay-media-width-unit-${breakpoint}`
-										),
-								})
-							);
+							onChange({
+								[`${mediaPrefix}width-${breakpoint}`]:
+									getDefaultAttribute(
+										`${mediaPrefix}width-${breakpoint}`
+									),
+								[`${mediaPrefix}width-unit-${breakpoint}`]:
+									getDefaultAttribute(
+										`${mediaPrefix}width-unit-${breakpoint}`
+									),
+								isReset: true,
+							});
 						}}
 						minMaxSettings={minMaxSettings}
 						allowedUnits={['px', 'em', 'vw', '%']}
@@ -253,46 +253,57 @@ const VideoOverlayControl = props => {
 						className='maxi-video-overlay-control__height'
 						enableUnit
 						unit={getLastBreakpointAttribute({
-							target: 'overlay-media-height-unit',
+							target: `${mediaPrefix}height-unit`,
 							breakpoint,
 							attributes: props,
 						})}
 						onChangeUnit={val =>
 							onChange({
-								[`overlay-media-height-unit-${breakpoint}`]:
+								[`${mediaPrefix}height-unit-${breakpoint}`]:
 									val,
 							})
 						}
 						value={getLastBreakpointAttribute({
-							target: 'overlay-media-height',
+							target: `${mediaPrefix}height`,
 							breakpoint,
 							attributes: props,
 						})}
 						onChangeValue={val =>
 							onChange({
-								[`overlay-media-height-${breakpoint}`]: val,
+								[`${mediaPrefix}height-${breakpoint}`]: val,
 							})
 						}
 						defaultValue={getDefaultAttribute(
-							`overlay-media-height-${breakpoint}`
+							`${mediaPrefix}height-${breakpoint}`
 						)}
 						onReset={() => {
-							onChange(
-								handleOnReset({
-									[`overlay-media-height-${breakpoint}`]:
-										getDefaultAttribute(
-											`overlay-media-height-${breakpoint}`
-										),
-									[`overlay-media-height-unit-${breakpoint}`]:
-										getDefaultAttribute(
-											`overlay-media-height-unit-${breakpoint}`
-										),
-								})
-							);
+							onChange({
+								[`${mediaPrefix}height-${breakpoint}`]:
+									getDefaultAttribute(
+										`${mediaPrefix}height-${breakpoint}`
+									),
+								[`${mediaPrefix}height-unit-${breakpoint}`]:
+									getDefaultAttribute(
+										`${mediaPrefix}height-unit-${breakpoint}`
+									),
+								isReset: true,
+							});
 						}}
 						minMaxSettings={minMaxSettings}
 						allowedUnits={['px', 'em', 'vw', '%']}
 						optionType='string'
+					/>
+					<OpacityControl
+						label={__('Image opacity', 'maxi-blocks')}
+						opacity={getLastBreakpointAttribute({
+							target: `${mediaPrefix}opacity`,
+							breakpoint,
+							attributes: props,
+						})}
+						breakpoint={breakpoint}
+						prefix={mediaPrefix}
+						onChange={onChange}
+						disableRTC
 					/>
 				</>
 			)}

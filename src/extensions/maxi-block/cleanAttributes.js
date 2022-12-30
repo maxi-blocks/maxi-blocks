@@ -6,7 +6,7 @@ import { dispatch, select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { getHoverAttribute, getNormalAttribute } from '../styles';
+import { getHoverAttributeKey, getNormalAttributeKey } from '../styles';
 import getBreakpointFromAttribute from '../styles/getBreakpointFromAttribute';
 import getDefaultAttribute from '../styles/getDefaultAttribute';
 import getLastBreakpointAttribute from '../styles/getLastBreakpointAttribute';
@@ -317,9 +317,9 @@ const removeHoverSameAsNormal = (newAttributes, attributes) => {
 	const result = { ...newAttributes };
 
 	Object.entries(newAttributes).forEach(([key]) => {
-		const hoverKey = getHoverAttribute(key);
+		const hoverKey = getHoverAttributeKey(key);
 		const hoverValue = getValue(hoverKey);
-		const normalValue = getValue(getNormalAttribute(key));
+		const normalValue = getValue(getNormalAttributeKey(key));
 
 		if (hoverValue === normalValue) {
 			result[hoverKey] = undefined;

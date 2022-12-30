@@ -308,6 +308,30 @@ const flatNewAttributes = (
 };
 
 /**
+ * Removes hover attributes that coincide with normal ones.
+ */
+const removeHoverSameAsNormal = (newAttributes, attributes) => {
+	const getHoverAttribute = key =>
+		key.includes('-hover') ? key : `${key}-hover`;
+	const getNormalAttribute = key => key.replace(/-hover/, '');
+	const getValue = key => newAttributes[key] ?? attributes[key];
+
+	const result = { ...newAttributes };
+
+	Object.entries(newAttributes).forEach(([key]) => {
+		const hoverKey = getHoverAttribute(key);
+		const hoverValue = getValue(hoverKey);
+		const normalValue = getValue(getNormalAttribute(key));
+
+		if (hoverValue === normalValue) {
+			result[hoverKey] = undefined;
+		}
+	});
+
+	return result;
+};
+
+/**
  * Removes new saved responsive attributes on base breakpoint that have the same value
  * than the saved general ones.
  */
@@ -514,9 +538,14 @@ const cleanAttributes = ({
 		key => !!getBreakpointFromAttribute(key)
 	);
 
-	if (!containsBreakpoint) return newAttributes;
-
 	let result = { ...newAttributes };
+
+	result = {
+		...result,
+		...removeHoverSameAsNormal(result, attributes),
+	};
+
+	if (!containsBreakpoint) return result;
 
 	result = {
 		...result,

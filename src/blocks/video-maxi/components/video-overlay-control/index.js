@@ -14,6 +14,7 @@ import {
 } from '../../../../components';
 import MediaUploaderControl from '../../../../components/media-uploader-control';
 import OpacityControl from '../../../../components/opacity-control';
+import withRTC from '../../../../extensions/maxi-block/withRTC';
 import {
 	getAttributeKey,
 	getDefaultAttribute,
@@ -124,6 +125,8 @@ const OverlayColor = props => {
 		/>
 	);
 };
+
+const OverlayColorControl = withRTC(OverlayColor);
 
 const VideoOverlayControl = props => {
 	const {
@@ -307,14 +310,14 @@ const VideoOverlayControl = props => {
 					/>
 				</>
 			)}
-			{disableHover && <OverlayColor {...props} />}
+			{disableHover && <OverlayColorControl {...props} />}
 			{!disableHover && (
 				<SettingTabsControl
 					depth={2}
 					items={[
 						{
 							label: __('Normal state', 'maxi-blocks'),
-							content: <OverlayColor {...props} />,
+							content: <OverlayColorControl {...props} />,
 						},
 						{
 							label: __('Hover state', 'maxi-blocks'),
@@ -339,7 +342,12 @@ const VideoOverlayControl = props => {
 									/>
 									{props[
 										'overlay-background-status-hover'
-									] && <OverlayColor {...props} isHover />}
+									] && (
+										<OverlayColorControl
+											{...props}
+											isHover
+										/>
+									)}
 								</>
 							),
 						},

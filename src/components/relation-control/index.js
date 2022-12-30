@@ -23,6 +23,7 @@ import {
 } from '../../extensions/styles';
 import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
 import { getHoverStatus } from '../../extensions/relations';
+import { getBlockData } from '../../extensions/attributes';
 
 /**
  * External dependencies
@@ -33,7 +34,6 @@ import { capitalize, cloneDeep, isEmpty, isNil, merge } from 'lodash';
  * Styles
  */
 import './editor.scss';
-import { getBlockData } from '../../extensions/attributes';
 
 const RelationControl = props => {
 	const { getBlock } = select('core/block-editor');
@@ -244,6 +244,81 @@ const RelationControl = props => {
 			}, {});
 		};
 
+		const getNewAttributesOnReset = obj => {
+			const newAttributes = { ...item.attributes };
+			const resetTargets = Object.keys({
+				...obj,
+				...transformGeneralAttributesToBaseBreakpoint(obj),
+			});
+
+			resetTargets.forEach(target => {
+				delete newAttributes[target];
+			});
+
+			return newAttributes;
+		};
+
+		const getStylesObj = attributes => {
+			const newGroupAttributes = getGroupAttributes(
+				attributes,
+				selectedSettingsObj.attrGroupName,
+				false,
+				prefix
+			);
+
+			return selectedSettingsObj?.helper({
+				obj: newGroupAttributes,
+				isIB: true,
+				prefix,
+				blockStyle: blockAttributes.blockStyle,
+				deviceType,
+				blockAttributes: {
+					...blockAttributes,
+					...attributes,
+				},
+				target: selectedSettingsObj?.target,
+				clientId,
+			});
+		};
+
+		const getStyles = (stylesObj, isFirst = false) => {
+			if (Object.keys(stylesObj).some(key => key.includes('general'))) {
+				const styles = Object.keys(stylesObj).reduce((acc, key) => {
+					if (
+						breakpoints[key] ||
+						key === 'xxl' ||
+						key === 'general'
+					) {
+						acc[key] = {
+							styles: stylesObj[key],
+							breakpoint: breakpoints[key] || null,
+						};
+
+						return acc;
+					}
+
+					return acc;
+				}, {});
+
+				return styles;
+			}
+
+			const styles = Object.keys(stylesObj).reduce((acc, key) => {
+				if (isFirst) {
+					if (!key.includes(':hover'))
+						acc[key] = getStyles(stylesObj[key]);
+
+					return acc;
+				}
+
+				const newAcc = merge(acc, getStyles(stylesObj[key]));
+
+				return newAcc;
+			}, {});
+
+			return styles;
+		};
+
 		return settingsComponent({
 			...getGroupAttributes(
 				mergedAttributes,
@@ -253,80 +328,19 @@ const RelationControl = props => {
 			),
 			attributes: mergedAttributes,
 			blockAttributes,
-			onChange: obj => {
-				const newAttributesObj = {
-					...item.attributes,
-					...obj,
-					...transformGeneralAttributesToBaseBreakpoint(obj),
-				};
+			onChange: ({ isReset, ...obj }) => {
+				const newAttributesObj = isReset
+					? getNewAttributesOnReset(obj)
+					: {
+							...item.attributes,
+							...obj,
+							...transformGeneralAttributesToBaseBreakpoint(obj),
+					  };
 
-				const newGroupAttributes = getGroupAttributes(
-					merge(blockAttributes, newAttributesObj),
-					selectedSettingsObj.attrGroupName,
-					false,
-					prefix
+				const styles = getStyles(
+					getStylesObj(merge({}, blockAttributes, newAttributesObj)),
+					true
 				);
-
-				const stylesObj = selectedSettingsObj?.helper({
-					obj: newGroupAttributes,
-					isIB: true,
-					prefix,
-					blockStyle: blockAttributes.blockStyle,
-					deviceType,
-					blockAttributes: {
-						...blockAttributes,
-						...newAttributesObj,
-					},
-					target: selectedSettingsObj?.target,
-					clientId,
-				});
-
-				const getStyles = (stylesObj, isFirst = false) => {
-					if (
-						Object.keys(stylesObj).some(key =>
-							key.includes('general')
-						)
-					) {
-						const styles = Object.keys(stylesObj).reduce(
-							(acc, key) => {
-								if (
-									breakpoints[key] ||
-									key === 'xxl' ||
-									key === 'general'
-								) {
-									acc[key] = {
-										styles: stylesObj[key],
-										breakpoint: breakpoints[key] || null,
-									};
-
-									return acc;
-								}
-
-								return acc;
-							},
-							{}
-						);
-
-						return styles;
-					}
-
-					const styles = Object.keys(stylesObj).reduce((acc, key) => {
-						if (isFirst) {
-							if (!key.includes(':hover'))
-								acc[key] = getStyles(stylesObj[key]);
-
-							return acc;
-						}
-
-						const newAcc = merge(acc, getStyles(stylesObj[key]));
-
-						return newAcc;
-					}, {});
-
-					return styles;
-				};
-
-				const styles = getStyles(stylesObj, true);
 
 				onChangeRelation(relations, item.id, {
 					attributes: newAttributesObj,

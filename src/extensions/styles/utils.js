@@ -85,7 +85,8 @@ export const getRelations = (uniqueID, relations) => {
 	return newRelations;
 };
 
-export const getHoverAttribute = key =>
+export const getHoverAttributeKey = key =>
 	key.includes('-hover') ? key : `${key}-hover`;
 
-export const getNormalAttribute = key => key.replace(/-hover/, '');
+// Accepts (possibly) hover attribute key and returns normal key.
+export const getNormalAttributeKey = hoverKey => hoverKey.replace(/-hover/, '');

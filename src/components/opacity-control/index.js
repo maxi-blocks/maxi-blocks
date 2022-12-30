@@ -13,7 +13,6 @@ import {
 	getIsValid,
 	getAttributeKey,
 } from '../../extensions/styles';
-import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * External dependencies
@@ -69,12 +68,11 @@ const OpacityControl = props => {
 					return onChangeOpacity(
 						getDefaultAttribute(opacityAttributeKey)
 					);
-				return onChange(
-					handleOnReset({
-						[opacityAttributeKey]:
-							getDefaultAttribute(opacityAttributeKey),
-					})
-				);
+				return onChange({
+					[opacityAttributeKey]:
+						getDefaultAttribute(opacityAttributeKey),
+					isReset: true,
+				});
 			}}
 		/>
 	);

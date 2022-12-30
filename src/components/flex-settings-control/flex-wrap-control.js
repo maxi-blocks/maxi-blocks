@@ -12,7 +12,6 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import getOptions from './utils';
-import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * Component
@@ -33,13 +32,12 @@ const FlexWrapControl = props => {
 				}) ?? ''
 			}
 			onReset={() =>
-				onChange(
-					handleOnReset({
-						[`flex-wrap-${breakpoint}`]: getDefaultAttribute(
-							`flex-wrap-${breakpoint}`
-						),
-					})
-				)
+				onChange({
+					[`flex-wrap-${breakpoint}`]: getDefaultAttribute(
+						`flex-wrap-${breakpoint}`
+					),
+					isReset: true,
+				})
 			}
 			options={getOptions(['nowrap', 'wrap', 'wrap-reverse'])}
 			onChange={val =>

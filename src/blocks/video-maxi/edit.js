@@ -209,6 +209,8 @@ class edit extends MaxiBlockComponent {
 					key={`popover-${uniqueID}`}
 					ref={this.blockRef}
 					isOpen={isUploaderOpen}
+					prefix='video-'
+					isEmptyContent={!overlayMediaId}
 					{...this.props}
 				>
 					<MediaUpload

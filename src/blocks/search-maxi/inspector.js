@@ -108,9 +108,7 @@ const Inspector = props => {
 											/>
 										),
 									},
-									(deviceType === 'general' ||
-										props.attributes['icon-content'] !==
-											'') && {
+									{
 										label: __(
 											'Search settings',
 											'maxi-blocks'
@@ -152,46 +150,54 @@ const Inspector = props => {
 																				/>
 																			),
 																	},
-																	...(buttonSkin ===
-																	'icon'
-																		? inspectorTabs.icon(
+																	(deviceType ===
+																		'general' ||
+																		props
+																			.attributes[
+																			'icon-content'
+																		] !==
+																			'') && {
+																		...(buttonSkin ===
+																		'icon'
+																			? inspectorTabs.icon(
+																					{
+																						props,
+																						type: 'search-icon',
+																						ignoreIndicator:
+																							[
+																								'icon-position',
+																							],
+																						...iconControlsDisabledProps,
+																					}
+																			  )
+																			: inspectorTabs.typography(
+																					{
+																						props,
+																						disableCustomFormats: true,
+																						hideAlignment: true,
+																						hideBottomGap: true,
+																						prefix: buttonPrefix,
+																						inlineTarget:
+																							' .maxi-search-block__button__content',
+																					}
+																			  )),
+																		...(buttonSkin ===
+																			'icon' &&
+																			skin ===
+																				'icon-reveal' &&
+																			inspectorTabs.icon(
 																				{
 																					props,
+																					label: __(
+																						'Close icon',
+																						'maxi-blocks'
+																					),
 																					type: 'search-icon',
-																					ignoreIndicator:
-																						[
-																							'icon-position',
-																						],
 																					...iconControlsDisabledProps,
+																					prefix: closeIconPrefix,
 																				}
-																		  )
-																		: inspectorTabs.typography(
-																				{
-																					props,
-																					disableCustomFormats: true,
-																					hideAlignment: true,
-																					hideBottomGap: true,
-																					prefix: buttonPrefix,
-																					inlineTarget:
-																						' .maxi-search-block__button__content',
-																				}
-																		  )),
-																	...(buttonSkin ===
-																		'icon' &&
-																		skin ===
-																			'icon-reveal' &&
-																		inspectorTabs.icon(
-																			{
-																				props,
-																				label: __(
-																					'Close icon',
-																					'maxi-blocks'
-																				),
-																				type: 'search-icon',
-																				...iconControlsDisabledProps,
-																				prefix: closeIconPrefix,
-																			}
-																		)),
+																			)),
+																	},
 																	...(deviceType ===
 																		'general' && {
 																		label: __(

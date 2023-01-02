@@ -3,22 +3,18 @@
  */
 import { isEmpty } from 'lodash';
 
-const name = 'IB Transform Target';
+const name = 'IB disable transition for alignment';
 
 const isEligible = blockAttributes => {
 	const { relations } = blockAttributes;
 
 	if (!relations || isEmpty(relations)) return false;
 
-	const isBrokenTarget = relations.some(relation => {
-		if (relation.settings !== 'Transform') return false;
-
-		if (relation.css?.['']?.['']) return true;
-
-		return false;
-	});
-
-	return isBrokenTarget;
+	return relations.some(
+		relation =>
+			relation.settings === 'Alignment' &&
+			!relation.effects.disableTransition
+	);
 };
 
 const migrate = newAttributes => {
@@ -26,12 +22,9 @@ const migrate = newAttributes => {
 
 	const newRelations = [...relations];
 
-	newRelations.forEach((relation, i) => {
-		if (relation.settings !== 'Transform') return;
-
-		const { css } = relation;
-
-		if (css['']['']) newRelations[i].css = { '': { ...css[''][''] } };
+	newRelations.forEach(relation => {
+		if (relation.settings === 'Alignment')
+			relation.effects.disableTransition = true;
 	});
 
 	return { ...newAttributes, relations: newRelations };

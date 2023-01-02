@@ -12,7 +12,6 @@ import {
 	ToggleSwitch,
 	SelectControl,
 } from '../../../../components';
-import { handleOnReset } from '../../../../extensions/attributes';
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
@@ -113,13 +112,12 @@ const AccordionSettings = props => {
 						});
 					}}
 					onReset={() =>
-						onChange(
-							handleOnReset({
-								[`row-gap-${breakpoint}`]: getDefaultAttribute(
-									`row-gap-${breakpoint}`
-								),
-							})
-						)
+						onChange({
+							[`row-gap-${breakpoint}`]: getDefaultAttribute(
+								`row-gap-${breakpoint}`
+							),
+							isReset: true,
+						})
 					}
 				/>
 			)}
@@ -135,12 +133,11 @@ const AccordionSettings = props => {
 					});
 				}}
 				onReset={() =>
-					onChange(
-						handleOnReset({
-							animationDuration:
-								getDefaultAttribute('animationDuration'),
-						})
-					)
+					onChange({
+						animationDuration:
+							getDefaultAttribute('animationDuration'),
+						isReset: true,
+					})
 				}
 			/>
 		</>

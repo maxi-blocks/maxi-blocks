@@ -27,7 +27,6 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import MaxiModal from '../../editor/library/modal';
-import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * External dependencies
@@ -178,8 +177,14 @@ const IconControl = props => {
 						type={type}
 						style={blockStyle}
 						onSelect={obj => {
+							const newSvgType = obj[`${prefix}svgType`];
+
 							const icon = getIconWithColor({
 								rawIcon: obj[`${prefix}icon-content`],
+								type: [
+									newSvgType !== 'Shape' && 'stroke',
+									newSvgType !== 'Line' && 'fill',
+								].filter(Boolean),
 							});
 
 							onChange({
@@ -277,14 +282,13 @@ const IconControl = props => {
 									});
 								}}
 								onReset={() =>
-									onChange(
-										handleOnReset({
-											[`${prefix}icon-spacing-${breakpoint}`]:
-												getDefaultAttribute(
-													`${prefix}icon-spacing-${breakpoint}`
-												),
-										})
-									)
+									onChange({
+										[`${prefix}icon-spacing-${breakpoint}`]:
+											getDefaultAttribute(
+												`${prefix}icon-spacing-${breakpoint}`
+											),
+										isReset: true,
+									})
 								}
 							/>
 							{!disablePosition && (
@@ -307,7 +311,7 @@ const IconControl = props => {
 						breakpoint === 'general' && (
 							<ToggleSwitch
 								label={__(
-									'Inherit colour/background from button',
+									'Inherit stroke colour/background from button',
 									'maxi-block'
 								)}
 								className='maxi-icon-control__inherit'
@@ -422,7 +426,7 @@ const IconControl = props => {
 							<InfoBox
 								key='maxi-warning-box__icon-color'
 								message={__(
-									'Icon colour is inheriting from button.',
+									'Icon stroke colour is inheriting from button.',
 									'maxi-blocks'
 								)}
 								links={[
@@ -663,53 +667,20 @@ const IconControl = props => {
 								))}
 							{iconBgActive === 'gradient' && (
 								<GradientControl
+									{...getGroupAttributes(
+										props,
+										'iconBackgroundGradient',
+										isHover,
+										prefix
+									)}
 									label={__(
 										'Icon Background gradient',
 										'maxi-blocks'
 									)}
-									gradient={getLastBreakpointAttribute({
-										target: `${prefix}icon-background-gradient`,
-										breakpoint,
-										attributes: props,
-										isHover,
-									})}
-									gradientOpacity={getLastBreakpointAttribute(
-										{
-											target: `${prefix}icon-background-gradient-opacity`,
-											breakpoint,
-											attributes: props,
-											isHover,
-										}
-									)}
-									defaultGradient={getDefaultAttribute(
-										getAttributeKey(
-											'background-gradient',
-											isHover,
-											`${prefix}icon-`,
-											breakpoint
-										)
-									)}
-									onChange={val =>
-										onChange({
-											[getAttributeKey(
-												'background-gradient',
-												isHover,
-												`${prefix}icon-`,
-												breakpoint
-											)]: val,
-										})
-									}
-									onChangeOpacity={val =>
-										onChange({
-											[getAttributeKey(
-												'background-gradient-opacity',
-												isHover,
-												`${prefix}icon-`,
-												breakpoint
-											)]: val,
-										})
-									}
+									breakpoint={breakpoint}
+									prefix={`${prefix}icon-background-`}
 									isHover={isHover}
+									onChange={onChange}
 								/>
 							)}
 						</>

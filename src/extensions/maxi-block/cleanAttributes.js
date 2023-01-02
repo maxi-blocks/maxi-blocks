@@ -20,10 +20,7 @@ import { isEqual, isNil } from 'lodash';
 const breakpoints = ['general', 'xl', 'l', 'm', 's', 'xs'];
 
 const getSimpleLabel = (key, breakpoint) =>
-	getNormalAttributeKey(key).slice(
-		0,
-		getNormalAttributeKey(key).length - 1 - breakpoint.length
-	);
+	getNormalAttributeKey(key).slice(0, -(breakpoint.length + 1));
 
 const getIsHover = key => key.includes('-hover');
 

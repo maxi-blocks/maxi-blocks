@@ -471,16 +471,30 @@ class Relation {
 							breakpointValue
 						);
 
+						let finalTarget;
+						// For background layers styles, avoidHoverString needs to be added to the parent element
+						// to make sure hover styles will override the IB styles.
+						if (target.includes('.maxi-background-displayer')) {
+							finalTarget = target
+								.replace(
+									/(\s*)> .maxi-background-displayer/,
+									match => `${avoidHoverString}${match}`
+								)
+								.trim();
+						} else if (this.isSVG) {
+							finalTarget = target.replace(
+								'maxi-svg-icon-block__icon',
+								match => `${match}${avoidHoverString}`
+							);
+						} else {
+							finalTarget = `${target.trim()}${avoidHoverString}`;
+						}
+
 						const selector =
-							`${prevLine} body.maxi-blocks--active ${
-								this.isSVG
-									? target.replace(
-											'maxi-svg-icon-block__icon',
-											match =>
-												`${match}${avoidHoverString}`
-									  )
-									: `${target.trim()}${avoidHoverString}`
-							} {`.replace(/\s{2,}/g, ' ');
+							`${prevLine} body.maxi-blocks--active ${finalTarget} {`.replace(
+								/\s{2,}/g,
+								' '
+							);
 
 						Object.entries(stylesObj[breakpoint]).forEach(
 							([key, value]) => {

@@ -204,7 +204,7 @@ const transition = {
 		},
 		'clip path': {
 			title: 'Clip path',
-			target: `${imageWrapperClass} img`,
+			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
 			property: 'clip-path',
 			hoverProp: 'clip-path-status-hover',
 		},
@@ -262,6 +262,8 @@ const interactionBuilderSettings = {
 		{
 			label: __('Clip-path', 'maxi-blocks'),
 			attrGroupName: 'clipPath',
+			transitionTarget: transition.block['clip path'].target,
+			hoverProp: 'clip-path-status-hover',
 			component: props => <ClipPathControl {...props} />,
 			helper: props => getClipPathStyles(props),
 			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],

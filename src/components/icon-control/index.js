@@ -177,8 +177,14 @@ const IconControl = props => {
 						type={type}
 						style={blockStyle}
 						onSelect={obj => {
+							const newSvgType = obj[`${prefix}svgType`];
+
 							const icon = getIconWithColor({
 								rawIcon: obj[`${prefix}icon-content`],
+								type: [
+									newSvgType !== 'Shape' && 'stroke',
+									newSvgType !== 'Line' && 'fill',
+								].filter(Boolean),
 							});
 
 							onChange({
@@ -305,7 +311,7 @@ const IconControl = props => {
 						breakpoint === 'general' && (
 							<ToggleSwitch
 								label={__(
-									'Inherit colour/background from button',
+									'Inherit stroke colour/background from button',
 									'maxi-block'
 								)}
 								className='maxi-icon-control__inherit'
@@ -420,7 +426,7 @@ const IconControl = props => {
 							<InfoBox
 								key='maxi-warning-box__icon-color'
 								message={__(
-									'Icon colour is inheriting from button.',
+									'Icon stroke colour is inheriting from button.',
 									'maxi-blocks'
 								)}
 								links={[

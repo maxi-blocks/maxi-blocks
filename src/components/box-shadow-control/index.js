@@ -22,6 +22,7 @@ import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
 } from '../../extensions/styles';
+import { getActiveTabName } from '../../extensions/inspector';
 
 /**
  * External dependencies
@@ -361,25 +362,27 @@ const BoxShadowControl = props => {
 			/>
 			{!isToolbar && (
 				<>
-					{!dropShadow &&
-						currentBlockName !== 'maxi-blocks/divider-maxi' && (
-							<ToggleSwitch
-								label={__('Inset', 'maxi-block')}
-								selected={getLastBreakpointAttribute({
-									target: `${prefix}box-shadow-inset`,
-									breakpoint,
-									attributes: props,
-									isHover,
-								})}
-								onChange={val =>
-									onChange({
-										[`${prefix}box-shadow-inset-${breakpoint}${
-											isHover ? '-hover' : ''
-										}`]: val,
-									})
-								}
-							/>
-						)}
+					{((!dropShadow &&
+						currentBlockName !== 'maxi-blocks/divider-maxi') ||
+						(currentBlockName === 'maxi-blocks/divider-maxi' &&
+							getActiveTabName(0) !== 'Settings')) && (
+						<ToggleSwitch
+							label={__('Inset', 'maxi-block')}
+							selected={getLastBreakpointAttribute({
+								target: `${prefix}box-shadow-inset`,
+								breakpoint,
+								attributes: props,
+								isHover,
+							})}
+							onChange={val =>
+								onChange({
+									[`${prefix}box-shadow-inset-${breakpoint}${
+										isHover ? '-hover' : ''
+									}`]: val,
+								})
+							}
+						/>
+					)}
 					{boxShadowItems.map(type => (
 						<BoxShadowValueControl
 							type={type}

@@ -358,7 +358,7 @@ const removeHoverSameAsNormal = (newAttributes, attributes) => {
 		const hoverValue = getValue(hoverKey);
 		const normalValue = getValue(getNormalAttributeKey(key));
 
-		if (hoverValue === normalValue) {
+		if (hoverValue === normalValue && !isNil(hoverValue)) {
 			result[hoverKey] = undefined;
 		}
 	});

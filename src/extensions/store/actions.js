@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { dispatch, resolveSelect } from '@wordpress/data';
+import { dispatch, select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -43,18 +43,28 @@ const actions = {
 			deviceType,
 		};
 	},
-	async setMaxiDeviceType({
+	setMaxiDeviceType({
 		deviceType: rawDeviceType,
 		width,
 		isGutenbergButton = false,
 		changeSize = true,
 	}) {
-		const breakpoints = await resolveSelect(
-			'maxiBlocks'
-		).receiveMaxiBreakpoints();
+		const { receiveBaseBreakpoint, receiveMaxiBreakpoints } =
+			select('maxiBlocks');
+		const breakpoints = receiveMaxiBreakpoints();
 
-		const deviceType =
-			rawDeviceType ?? getWinBreakpoint(width, breakpoints);
+		const getDeviceType = () => {
+			if (rawDeviceType) {
+				return rawDeviceType;
+			}
+			const winBreakpoint = getWinBreakpoint(width, breakpoints);
+			const baseBreakpoint = receiveBaseBreakpoint();
+			if (winBreakpoint === baseBreakpoint) {
+				return 'general';
+			}
+			return winBreakpoint;
+		};
+		const deviceType = getDeviceType();
 
 		if (!isGutenbergButton) {
 			const {

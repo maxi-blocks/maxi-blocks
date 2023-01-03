@@ -331,11 +331,25 @@ describe('cleanAttributes', () => {
 	});
 
 	it('On changing general value by one and on crossing the same values on smaller breakpoints, if general value change stopped not on the same values as smaller breakpoints, smaller breakpoints should be returned to previous value', () => {
+		let i = 0;
 		select.mockImplementation(
 			jest.fn(() => {
 				return {
+					receiveMaxiDeviceType: jest.fn(() => 'xl'),
+					getSelectedBlockCount: jest.fn(() => 1),
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
-					getPrevSavedAttrs: jest.fn(() => []),
+					getPrevSavedAttrs: jest.fn(() => {
+						i += 1;
+						switch (i) {
+							case 2:
+								return ['test-general'];
+							case 3:
+								return ['test-general', 'test-l'];
+							case 1:
+							default:
+								return [];
+						}
+					}),
 				};
 			})
 		);
@@ -369,19 +383,6 @@ describe('cleanAttributes', () => {
 		};
 
 		const resultFirstRound = cleanAttributes(firstRound);
-		select.mockImplementation(
-			jest.fn(() => {
-				return {
-					receiveMaxiDeviceType: jest.fn(() => 'xl'),
-					getSelectedBlockCount: jest.fn(() => 1),
-					receiveBaseBreakpoint: jest.fn(() => 'xl'),
-					getPrevSavedAttrs: jest.fn(() => [
-						'test-general',
-						'test-l',
-					]),
-				};
-			})
-		);
 		const resultSecondRound = cleanAttributes(secondRound);
 		const resultThirdRound = cleanAttributes(thirdRound);
 
@@ -555,6 +556,84 @@ describe('cleanAttributes', () => {
 					numberWhichIsNotChanging: 1,
 				},
 			},
+		};
+
+		expect(resultFirstRound).toStrictEqual(expectedFirstRound);
+		expect(resultSecondRound).toStrictEqual(expectedSecondRound);
+		expect(resultThirdRound).toStrictEqual(expectedThirdRound);
+	});
+
+	it('On changing general value by one and on crossing the same values on smaller and higher breakpoints, if general value change stopped not on the same values as other breakpoints, they breakpoints should be returned to previous value', () => {
+		let i = 0;
+		select.mockImplementation(
+			jest.fn(() => {
+				return {
+					receiveMaxiDeviceType: jest.fn(() => 'xl'),
+					getSelectedBlockCount: jest.fn(() => 1),
+					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					getPrevSavedAttrs: jest.fn(() => {
+						i += 1;
+						switch (i) {
+							case 2:
+								return ['test-general'];
+							case 3:
+								return ['test-general', 'test-l', 'test-xxl'];
+							case 1:
+							default:
+								return [];
+						}
+					}),
+				};
+			})
+		);
+
+		const firstRound = {
+			newAttributes: {
+				'test-general': 3,
+			},
+			attributes: {
+				'test-general': undefined,
+				'test-xxl': 4,
+				'test-l': 4,
+			},
+		};
+		const secondRound = {
+			newAttributes: {
+				'test-general': 4,
+			},
+			attributes: {
+				'test-general': 3,
+				'test-xxl': 4,
+				'test-l': 4,
+			},
+		};
+		const thirdRound = {
+			newAttributes: {
+				'test-general': 5,
+			},
+			attributes: {
+				'test-general': 4,
+				'test-xxl': undefined,
+				'test-l': undefined,
+			},
+		};
+
+		const resultFirstRound = cleanAttributes(firstRound);
+		const resultSecondRound = cleanAttributes(secondRound);
+		const resultThirdRound = cleanAttributes(thirdRound);
+
+		const expectedFirstRound = {
+			'test-general': 3,
+		};
+		const expectedSecondRound = {
+			'test-general': 4,
+			'test-xxl': undefined,
+			'test-l': undefined,
+		};
+		const expectedThirdRound = {
+			'test-general': 5,
+			'test-xxl': 4,
+			'test-l': 4,
 		};
 
 		expect(resultFirstRound).toStrictEqual(expectedFirstRound);

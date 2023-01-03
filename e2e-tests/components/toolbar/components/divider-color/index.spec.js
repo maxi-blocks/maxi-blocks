@@ -17,6 +17,9 @@ describe('Divider color from Toolbar', () => {
 		await createNewPost();
 		await insertBlock('Divider Maxi');
 
+		// Wait for toolbar to be visible
+		await page.waitForSelector('.toolbar-wrapper');
+
 		// edit divider color
 		await page.$eval(
 			'.toolbar-wrapper .toolbar-item__button.toolbar-item__divider',
@@ -24,6 +27,9 @@ describe('Divider color from Toolbar', () => {
 		);
 
 		// select background color
+		await page.waitForSelector(
+			'.components-popover__content .maxi-color-palette-control button[data-item="6"]'
+		);
 		await page.$eval(
 			'.components-popover__content .maxi-color-palette-control button[data-item="6"]',
 			button => button.click()

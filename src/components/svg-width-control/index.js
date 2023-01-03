@@ -14,6 +14,11 @@ import {
 import AdvancedNumberControl from '../advanced-number-control';
 
 /**
+ * External dependencies
+ */
+import classnames from 'classnames';
+
+/**
  * Component
  */
 const SvgWidthControl = props => {
@@ -23,7 +28,10 @@ const SvgWidthControl = props => {
 		prefix,
 		isHover,
 		resizableObject = false,
+		className,
 	} = props;
+
+	const classes = classnames('maxi-svg-width-control', className);
 
 	const widthAttrLabel = `${prefix}width-${breakpoint}${
 		isHover ? '-hover' : ''
@@ -47,6 +55,7 @@ const SvgWidthControl = props => {
 	return (
 		<AdvancedNumberControl
 			label={__('Width', 'maxi-blocks')}
+			className={classes}
 			value={width}
 			placeholder={placeholderWidth}
 			onChangeValue={val => {
@@ -88,6 +97,7 @@ const SvgWidthControl = props => {
 						prefix,
 						breakpoint
 					)]: defaultWidthUnit,
+					isReset: true,
 				})
 			}
 			defaultValue={defaultWidth}

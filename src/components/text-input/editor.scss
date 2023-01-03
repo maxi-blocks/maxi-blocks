@@ -1,0 +1,21 @@
+body.maxi-blocks--active {
+	.maxi-text-input {
+		border: none;
+		border-radius: 0;
+		outline: none;
+		padding: 0;
+		margin: 0;
+		width: 100%;
+		background-color: transparent;
+
+		&:focus {
+			border: none;
+			outline: none;
+			box-shadow: none;
+		}
+
+		&::placeholder {
+			color: var(--maxi-grey-7-color);
+		}
+	}
+}

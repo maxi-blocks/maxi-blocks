@@ -17,6 +17,9 @@ describe('Text margin', () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 
+		// Wait for toolbar to be visible
+		await page.waitForSelector('.toolbar-wrapper');
+
 		// open editor
 		await page.$eval(
 			'.toolbar-wrapper .toolbar-item__text-margin',
@@ -25,7 +28,7 @@ describe('Text margin', () => {
 
 		// edit margin
 		await page.$eval(
-			'.components-popover__content .toolbar-item__padding-margin__popover input',
+			'.components-popover__content .maxi-axis-control__content__item__margin .maxi-advanced-number-control__value',
 			button => button.focus()
 		);
 

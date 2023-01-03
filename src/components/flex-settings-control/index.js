@@ -16,14 +16,15 @@ import SettingTabsControl from '../setting-tabs-control';
 import {
 	getLastBreakpointAttribute,
 	getAttributeValue,
+	getDefaultAttribute,
 } from '../../extensions/styles';
+import getOptions from './utils';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
 import { toString } from 'lodash';
-import getOptions from './utils';
 
 /**
  * Component
@@ -79,6 +80,15 @@ const FlexSettingsControl = props => {
 											attributes: props,
 										}) ?? ''
 									}
+									onReset={() =>
+										onChange({
+											[`flex-direction-${breakpoint}`]:
+												getDefaultAttribute(
+													`flex-direction-${breakpoint}`
+												),
+											isReset: true,
+										})
+									}
 									options={getOptions([
 										'row',
 										'row-reverse',
@@ -107,6 +117,15 @@ const FlexSettingsControl = props => {
 											breakpoint,
 											attributes: props,
 										}) ?? ''
+									}
+									onReset={() =>
+										onChange({
+											[`align-content-${breakpoint}`]:
+												getDefaultAttribute(
+													`align-content-${breakpoint}`
+												),
+											isReset: true,
+										})
 									}
 									options={getOptions([
 										'flex-start',
@@ -165,6 +184,7 @@ const FlexSettingsControl = props => {
 									onReset={() =>
 										onChange({
 											[`order-${breakpoint}`]: null,
+											isReset: true,
 										})
 									}
 								/>
@@ -188,6 +208,7 @@ const FlexSettingsControl = props => {
 									onReset={() =>
 										onChange({
 											[`flex-grow-${breakpoint}`]: null,
+											isReset: true,
 										})
 									}
 								/>
@@ -211,6 +232,7 @@ const FlexSettingsControl = props => {
 									onReset={() =>
 										onChange({
 											[`flex-shrink-${breakpoint}`]: null,
+											isReset: true,
 										})
 									}
 								/>
@@ -225,6 +247,15 @@ const FlexSettingsControl = props => {
 													breakpoint,
 													attributes: props,
 											  }) ?? ''
+									}
+									onReset={() =>
+										onChange({
+											[`flex-basis-${breakpoint}`]:
+												getDefaultAttribute(
+													`flex-basis-${breakpoint}`
+												),
+											isReset: true,
+										})
 									}
 									options={getOptions([
 										'content',
@@ -299,6 +330,7 @@ const FlexSettingsControl = props => {
 											onChange({
 												[`flex-basis-${breakpoint}`]:
 													null,
+												isReset: true,
 											})
 										}
 									/>

@@ -139,10 +139,14 @@ class edit extends MaxiBlockComponent {
 			SVGElement,
 			uniqueID,
 			captionPosition,
+			fitParentSize,
 		} = attributes;
 		const { isExternalClass, isUploaderOpen } = this.state;
 
-		const wrapperClassName = classnames('maxi-image-block-wrapper');
+		const wrapperClassName = classnames(
+			'maxi-image-block-wrapper',
+			fitParentSize && 'maxi-image-block-wrapper--fit-parent-size'
+		);
 
 		const hoverClasses = classnames(
 			hoverType === 'basic' &&
@@ -258,6 +262,8 @@ class edit extends MaxiBlockComponent {
 					key={`popover-${uniqueID}`}
 					ref={this.blockRef}
 					isOpen={isUploaderOpen}
+					isEmptyContent={!mediaID}
+					prefix='image-'
 					{...this.props}
 				>
 					<MediaUpload

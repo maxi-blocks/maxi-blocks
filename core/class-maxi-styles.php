@@ -76,16 +76,16 @@ class MaxiBlocks_Styles
             ];
 
             foreach ($scripts as &$script) {
-                $jsVar = str_replace('-', '_', $script);
-                $jsVarToPass =
+                $js_var = str_replace('-', '_', $script);
+                $js_var_to_pass =
                     'maxi' .
                     str_replace(
                         ' ',
                         '',
                         ucwords(str_replace('-', ' ', $script))
                     );
-                $jsScriptName = 'maxi-' . $script;
-                $jsScriptPath = '//js//min//' . $jsScriptName . '.min.js';
+                $js_script_name = 'maxi-' . $script;
+                $js_script_path = '//js//min//' . $js_script_name . '.min.js';
 
 				$post_meta = $this->custom_meta($jsVar, false);
 				$template_meta = $this->custom_meta($jsVar, true);
@@ -113,11 +113,11 @@ class MaxiBlocks_Styles
                     }
 
                     wp_enqueue_script(
-                        $jsScriptName,
-                        plugins_url($jsScriptPath, dirname(__FILE__))
+                        $js_script_name,
+                        plugins_url($js_script_path, dirname(__FILE__))
                     );
 
-                    wp_localize_script($jsScriptName, $jsVarToPass, $this->get_block_data($jsVar, $meta));
+                    wp_localize_script($js_script_name, $js_var_to_pass, $this->get_block_data($js_var, $meta));
                 }
             }
         }
@@ -363,9 +363,9 @@ class MaxiBlocks_Styles
             return;
         }
 
-        $useLocalFonts = (bool) get_option('local_fonts');
+        $use_local_fonts = (bool) get_option('local_fonts');
 
-        foreach ($fonts as $font => $fontData) {
+        foreach ($fonts as $font => $font_data) {
             if (strpos($font, 'sc_font') !== false) {
                 $split_font = explode('_', str_replace('sc_font_', '', $font));
                 $block_style = $split_font[0];
@@ -377,36 +377,36 @@ class MaxiBlocks_Styles
             }
 
             if ($font) {
-                if ($useLocalFonts) {
-                    $fontNameSanitized = str_replace(
+                if ($use_local_fonts) {
+                    $font_name_sanitized = str_replace(
                         ' ',
                         '',
                         strtolower($font)
                     );
-                    $fontUrl =
+                    $font_url =
                         wp_upload_dir()['baseurl'] .
                         '/maxi/fonts/' .
-                        $fontNameSanitized .
+                        $font_name_sanitized .
                         '/style.css';
                 } else {
-                    $fontUrl = "https://fonts.googleapis.com/css2?family=$font:";
+                    $font_url = "https://fonts.googleapis.com/css2?family=$font:";
                 }
-                if (!$useLocalFonts) {
-                    $localFonts = new MaxiBlocks_Local_Fonts();
-                    $fontUrl = $localFonts->generateFontURL(
-                        $fontUrl,
-                        $fontData
+                if (!$use_local_fonts) {
+                    $local_fonts = new MaxiBlocks_Local_Fonts();
+                    $font_url = $local_fonts->generateFontURL(
+                        $font_url,
+                        $font_data
                     );
                 }
 
                 wp_enqueue_style(
                     'maxi-font-' . sanitize_title_with_dashes($font),
-                    $fontUrl
+                    $font_url
                 );
             }
         }
 
-        if ($useLocalFonts) {
+        if ($use_local_fonts) {
             add_filter('style_loader_tag', 'local_fonts_preload', 10, 2);
             function local_fonts_preload($html, $handle)
             {
@@ -447,9 +447,9 @@ class MaxiBlocks_Styles
             return [];
         }
 
-        $resultArr = (array) $custom_data[0];
-        $resultString = $resultArr['custom_data_value'];
-        $result = maybe_unserialize($resultString);
+        $result_arr = (array) $custom_data[0];
+        $result_string = $result_arr['custom_data_value'];
+        $result = maybe_unserialize($result_string);
 
         if (!$result || empty($result)) {
             return [];
@@ -459,13 +459,13 @@ class MaxiBlocks_Styles
             return [];
         }
 
-        $resultDecoded = $result[$metaJs];
+        $result_decoded = $result[$metaJs];
 
-        if (empty($resultDecoded)) {
+        if (empty($result_decoded)) {
             return [];
         }
 
-        return $resultDecoded;
+        return $result_decoded;
     }
 
     public function update_color_palette_backups($style)
@@ -487,36 +487,36 @@ class MaxiBlocks_Styles
 
         // Get used colors on the post style
         $needle = 'rgba(var(--maxi-';
-        $lastPos = 0;
+        $last_pos = 0;
         $colors = [];
 
-        while (($lastPos = strpos($style, $needle, $lastPos)) !== false) {
-            $endPos = strpos($style, ')', $lastPos);
-            $colorStr = substr($style, $lastPos, $endPos - $lastPos + 1);
+        while (($last_pos = strpos($style, $needle, $last_pos)) !== false) {
+            $end_pos = strpos($style, ')', $last_pos);
+            $color_str = substr($style, $last_pos, $end_pos - $last_pos + 1);
 
-            if (!in_array($colorStr, $colors)) {
-                $colors[] = $colorStr;
+            if (!in_array($color_str, $colors)) {
+                $colors[] = $color_str;
             }
 
-            $lastPos = $lastPos + strlen($needle);
+            $last_pos = $last_pos + strlen($needle);
         }
 
         // Get color values from the SC considering the used on post style
-        $colorVars = [];
+        $color_vars = [];
 
         foreach ($colors as $color) {
             $color = str_replace('rgba(var(', '', $color);
-            $colorVar = explode(',', $color)[0];
-            $colorContent = str_replace($colorVar, '', $color);
-            $colorContent = str_replace(')', '', $colorContent);
-            $colorContent = ltrim($colorContent, ',');
+            $color_var = explode(',', $color)[0];
+            $color_content = str_replace($color_var, '', $color);
+            $color_content = str_replace(')', '', $color_content);
+            $color_content = ltrim($color_content, ',');
 
-            if (!in_array($colorVar, $colorVars)) {
-                $colorVars[$colorVar] = $colorContent;
+            if (!in_array($color_var, $color_vars)) {
+                $color_vars[$color_var] = $color_content;
             }
         }
 
-        $changedSCColors = [];
+        $changed_sc_colors = [];
 
         if (!array_key_exists('_maxi_blocks_style_card', $style_card)) {
             $style_card['_maxi_blocks_style_card'] =
@@ -528,30 +528,30 @@ class MaxiBlocks_Styles
                 ? $style_card['_maxi_blocks_style_card_preview']
                 : $style_card['_maxi_blocks_style_card'];
 
-        foreach ($colorVars as $colorKey => $colorValue) {
-            $startPos = strpos($style_card, $colorKey);
-            $endPos = strpos($style_card, ';--', $startPos);
-            $colorSCValue = substr(
+        foreach ($color_vars as $color_key => $color_value) {
+            $start_pos = strpos($style_card, $color_key);
+            $end_pos = strpos($style_card, ';--', $start_pos);
+            $color_sc_value = substr(
                 $style_card,
-                $startPos + strlen($colorKey) + 1,
-                $endPos - $startPos - strlen($colorKey) - 1
+                $start_pos + strlen($color_key) + 1,
+                $end_pos - $start_pos - strlen($color_key) - 1
             );
 
-            if ($colorSCValue !== $colorValue) {
-                $changedSCColors[$colorKey] = $colorSCValue;
+            if ($color_sc_value !== $color_value) {
+                $changed_sc_colors[$color_key] = $color_sc_value;
             }
         }
 
         // In case there are changes, fix them
-        if (empty($changedSCColors)) {
+        if (empty($changed_sc_colors)) {
             return $style;
         } else {
             $new_style = $style;
 
-            foreach ($changedSCColors as $colorKey => $colorValue) {
+            foreach ($changed_sc_colors as $color_key => $color_value) {
                 $old_color_str =
-                    "rgba(var($colorKey," . $colorVars[$colorKey] . ')';
-                $new_color_str = "rgba(var($colorKey," . $colorValue . ')';
+                    "rgba(var($color_key," . $color_vars[$color_key] . ')';
+                $new_color_str = "rgba(var($color_key," . $color_value . ')';
 
                 $new_style = str_replace(
                     $old_color_str,

@@ -16,6 +16,11 @@ import {
 import { DefaultDividersControl } from '../../../divider-control';
 
 /**
+ * External dependencies
+ */
+import classnames from 'classnames';
+
+/**
  * Styles & Icons
  */
 import './editor.scss';
@@ -83,10 +88,10 @@ const Divider = props => {
 					<>
 						<div className='divider-border__weight-wrap'>
 							<div
-								className={
+								className={classnames(
 									dividerBorderStyle === 'none' &&
-									'divider-border__weight-disable'
-								}
+										'divider-border__weight-disable'
+								)}
 							>
 								<Icon icon={borderWidth} />
 								<AdvancedNumberControl
@@ -111,6 +116,7 @@ const Divider = props => {
 												getDefaultAttribute(
 													`divider-border-top-unit-${breakpoint}`
 												),
+											isReset: true,
 										})
 									}
 									minMaxSettings={minMaxSettings}
@@ -143,6 +149,7 @@ const Divider = props => {
 										getDefaultAttribute(
 											`divider-width-unit-${breakpoint}`
 										),
+									isReset: true,
 								})
 							}
 							minMaxSettings={minMaxSettings}
@@ -181,6 +188,7 @@ const Divider = props => {
 												getDefaultAttribute(
 													`divider-border-right-width-${breakpoint}`
 												),
+											isReset: true,
 										})
 									}
 									initialPosition={getDefaultAttribute(
@@ -216,6 +224,7 @@ const Divider = props => {
 										getDefaultAttribute(
 											`divider-height-${breakpoint}`
 										),
+									isReset: true,
 								})
 							}
 							initialPosition={getDefaultAttribute(

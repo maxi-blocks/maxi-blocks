@@ -177,12 +177,12 @@ export const svgCurrentColorStatus = (blockStyle, target = 'svg') => {
 	const { receiveStyleCardValue } = select('maxiBlocks/style-cards');
 
 	const lineColorGlobal = receiveStyleCardValue(
-		'line',
+		'line-color',
 		getBlockStyle(clientId),
 		'icon'
 	);
 	const lineColorGlobalStatus = receiveStyleCardValue(
-		'line-global',
+		'line-color-global',
 		getBlockStyle(clientId),
 		'icon'
 	);
@@ -262,13 +262,17 @@ export const onRequestInsertPattern = (
 		allImagesLinks?.forEach(image => {
 			const parsed = image.replace(/\\/g, '');
 
-			const idRegexp = /(?<=(mediaID|imageID)":)(\d+)(?=)/g;
-			const id = parsed.match(idRegexp);
-			imagesIds.push(...id);
+			const idRegexp = /(mediaID|imageID)":(\d+),/g;
+			const id = parsed
+				?.match(idRegexp)
+				?.map(item => item.match(/\d+/)[0]);
+			if (!isEmpty(id)) imagesIds.push(...id);
 
-			const urlRegexp = /(?<=(mediaURL|imageURL)":")([^"]+)(?=")/g;
-			const url = parsed.match(urlRegexp);
-			imagesLinks.push(...url);
+			const urlRegexp = /(mediaURL|imageURL)":"([^"]+)"/g;
+			const url = parsed
+				?.match(urlRegexp)
+				?.map(item => item.split(/:(.+)/, 2)[1].replace(/"/g, ''));
+			if (!isEmpty(url)) imagesLinks.push(...url);
 		});
 
 		if (!isEmpty(imagesLinks) && !isEmpty(imagesIds)) {

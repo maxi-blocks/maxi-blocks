@@ -20,6 +20,7 @@ import {
 	merge,
 	pickBy,
 	round,
+	toNumber,
 } from 'lodash';
 import getPaletteAttributes from '../getPaletteAttributes';
 
@@ -172,12 +173,11 @@ export const getGradientBackgroundObject = ({
 		[breakpoint]: {},
 	};
 
-	const bgGradientOpacity = getAttributeValue({
-		target: 'background-gradient-opacity',
-		props,
-		prefix,
-		isHover,
+	const bgGradientOpacity = getLastBreakpointAttribute({
+		target: `${prefix}background-gradient-opacity`,
 		breakpoint,
+		attributes: props,
+		isHover,
 	});
 	const bgGradient = getLastBreakpointAttribute({
 		target: `${prefix}background-gradient`,
@@ -200,23 +200,51 @@ export const getGradientBackgroundObject = ({
 	});
 
 	if (
-		isIcon &&
-		getLastBreakpointAttribute({
-			target: `${prefix}background-active-media`,
-			breakpoint,
-			attributes: props,
-			isHover,
-		}) === 'gradient'
+		(isIcon &&
+			getLastBreakpointAttribute({
+				target: `${prefix}background-active-media`,
+				breakpoint,
+				attributes: props,
+				isHover,
+			}) === 'gradient') ||
+		!isIcon
 	) {
-		if (isNumber(bgGradientOpacity))
-			response[breakpoint].opacity = bgGradientOpacity;
-		if (!isEmpty(bgGradient)) response[breakpoint].background = bgGradient;
-	} else if (!isIcon) {
-		if (isNumber(bgGradientOpacity))
-			response[breakpoint].opacity = bgGradientOpacity;
-		if (!isEmpty(bgGradient) && bgGradient !== 'undefined') {
+		if (
+			isNumber(bgGradientOpacity) &&
+			!isEmpty(bgGradient) &&
+			bgGradient !== 'undefined'
+		) {
 			response[breakpoint].background = bgGradient;
-		} else {
+
+			if (bgGradientOpacity < 1) {
+				const colorRegex =
+					/rgba?\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})(?:,\s*(\d(?:\.\d+)?))?\)/g;
+
+				const matches = bgGradient.match(colorRegex);
+				if (matches) {
+					matches.forEach(match => {
+						let colorOpacity = 1;
+
+						const isRgba = match.includes('rgba');
+						if (isRgba)
+							colorOpacity = toNumber(
+								match.split(',')[3].replace(')', '')
+							);
+
+						const newMatch = match.replace(
+							colorRegex,
+							`rgba($1,$2,$3,${round(
+								colorOpacity * bgGradientOpacity,
+								2
+							)})`
+						);
+						response[breakpoint].background = response[
+							breakpoint
+						].background.replace(match, newMatch);
+					});
+				}
+			}
+		} else if (!isIcon) {
 			const colorBackground = getColorBackgroundObject({
 				...getGroupAttributes(
 					props,
@@ -239,6 +267,7 @@ export const getGradientBackgroundObject = ({
 
 			if (background) response[breakpoint].background = background;
 		}
+
 		if (isbgGradientClipPathActive)
 			response[breakpoint]['clip-path'] = isEmpty(bgGradientClipPath)
 				? 'none'
@@ -506,23 +535,25 @@ const getWrapperObject = ({
 		[breakpoint]: {},
 	};
 
-	const bgSVGSize = getLastBreakpointAttribute({
-		target: `${prefix}size`,
-		breakpoint,
-		attributes: props,
-		isHover,
-	});
-
-	if (isNumber(bgSVGSize)) {
-		const bgSVGSizeUnit = getLastBreakpointAttribute({
-			target: `${prefix}size-unit`,
+	['width', 'height'].forEach(size => {
+		const bgSize = getLastBreakpointAttribute({
+			target: `${prefix}${size}`,
 			breakpoint,
 			attributes: props,
 			isHover,
 		});
 
-		response[breakpoint].width = `${bgSVGSize}${bgSVGSizeUnit}`;
-	}
+		if (isNumber(bgSize)) {
+			const bgSVGSizeUnit = getLastBreakpointAttribute({
+				target: `${prefix}${size}-unit`,
+				breakpoint,
+				attributes: props,
+				isHover,
+			});
+
+			response[breakpoint][size] = `${bgSize}${bgSVGSizeUnit}`;
+		}
+	});
 
 	const keyWords = ['top', 'right', 'bottom', 'left'];
 

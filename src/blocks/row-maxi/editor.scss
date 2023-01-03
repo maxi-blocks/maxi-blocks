@@ -6,6 +6,16 @@
 	z-index: 2;
 	flex-wrap: wrap;
 
+	&__title {
+		display: block;
+		text-align: center;
+
+		span {
+			font-size: 18px;
+			margin: 0;
+		}
+	}
+
 	&__template {
 		display: flex;
 		flex-wrap: wrap;

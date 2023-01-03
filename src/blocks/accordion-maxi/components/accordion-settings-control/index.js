@@ -116,6 +116,7 @@ const AccordionSettings = props => {
 							[`row-gap-${breakpoint}`]: getDefaultAttribute(
 								`row-gap-${breakpoint}`
 							),
+							isReset: true,
 						})
 					}
 				/>
@@ -135,6 +136,7 @@ const AccordionSettings = props => {
 					onChange({
 						animationDuration:
 							getDefaultAttribute('animationDuration'),
+						isReset: true,
 					})
 				}
 			/>

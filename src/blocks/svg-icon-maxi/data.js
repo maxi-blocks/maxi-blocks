@@ -19,7 +19,7 @@ import {
 	getBorderStyles,
 	getSVGStyles,
 } from '../../extensions/styles/helpers';
-import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
+import { getCanvasSettings } from '../../extensions/relations';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
 /**
@@ -35,6 +35,7 @@ const prefix = 'svg-';
  */
 const name = 'svg-icon-maxi';
 const copyPasteMapping = {
+	_exclude: ['content', 'svgType'],
 	settings: {
 		'Icon content': ['svgType', 'content'],
 		Alignment: {

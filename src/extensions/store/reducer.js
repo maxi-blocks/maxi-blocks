@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+import { dispatch, select } from '@wordpress/data';
+
+/**
  * Internal dependencies
  */
 import {
@@ -12,7 +17,6 @@ import getWinBreakpoint from '../dom/getWinBreakpoint';
  * External dependencies
  */
 import { omit } from 'lodash';
-import { dispatch } from '@wordpress/data';
 
 const breakpointResizer = ({
 	size,
@@ -68,9 +72,17 @@ const breakpointResizer = ({
 				winHeight > responsiveWidth ? '0 auto' : '';
 
 			if (isGutenbergButton) editorWrapper.style = null;
-			else if (['s', 'xs'].includes(size) && !getIsSiteEditor())
-				editorWrapper.style.width = 'fit-content';
-			else if (editorWrapper.style.width !== `${responsiveWidth}px`)
+			else if (['s', 'xs'].includes(size) && !getIsSiteEditor()) {
+				const {
+					__experimentalGetPreviewDeviceType: getPreviewDeviceType,
+				} = select('core/edit-post');
+
+				const gutenbergDeviceType = getPreviewDeviceType();
+
+				if (gutenbergDeviceType !== 'Desktop')
+					editorWrapper.style.width = 'fit-content';
+				else editorWrapper.style.width = `${responsiveWidth}px`;
+			} else if (editorWrapper.style.width !== `${responsiveWidth}px`)
 				editorWrapper.style.width = `${responsiveWidth}px`;
 		}
 	}

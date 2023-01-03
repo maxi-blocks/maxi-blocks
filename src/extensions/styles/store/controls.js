@@ -20,7 +20,11 @@ import entityRecordsWrapper from '../entityRecordsWrapper';
 import getFilteredData from '../getFilteredData';
 
 async function processCss(code) {
+	if (!code) return null;
+
 	const { css } = postcss([autoprefixer]).process(code);
+	if (!css) return null;
+
 	const minifiedCss = minifyCssString(css);
 
 	return minifiedCss;

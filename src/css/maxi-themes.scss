@@ -100,6 +100,18 @@ body.maxi-blocks--active {
 						text-decoration: var(
 							--maxi-#{$style}-#{$level}-text-decoration-general
 						);
+						white-space: var(
+							--maxi-#{$style}-#{$level}-white-space-general
+						);
+						word-spacing: var(
+							--maxi-#{$style}-#{$level}-word-spacing-general
+						);
+						margin-bottom: var(
+							--maxi-#{$style}-#{$level}-margin-bottom-general
+						);
+						text-indent: var(
+							--maxi-#{$style}-#{$level}-text-indent-general
+						);
 					}
 				}
 			}
@@ -127,8 +139,24 @@ body.maxi-blocks--active {
 						text-decoration: var(
 							--maxi-#{$style}-#{$level}-text-decoration-general
 						);
+						white-space: var(
+							--maxi-#{$style}-#{$level}-white-space-general
+						);
+						word-spacing: var(
+							--maxi-#{$style}-#{$level}-word-spacing-general
+						);
+						text-indent: var(
+							--maxi-#{$style}-#{$level}-text-indent-general
+						);
 					}
 				}
+			}
+
+			&.maxi-list-block ul,
+			.maxi-list-block ul,
+			&.maxi-list-block ol,
+			.maxi-list-block ol {
+				margin-bottom: var(--maxi-#{$style}-p-margin-bottom-general);
 			}
 
 			&.maxi-text-block li,
@@ -140,6 +168,9 @@ body.maxi-blocks--active {
 				text-decoration: var(
 					--maxi-#{$style}-p-text-decoration-general
 				);
+				white-space: var(--maxi-#{$style}-p-white-space-general);
+				word-spacing: var(--maxi-#{$style}-p-word-spacing-general);
+				text-indent: var(--maxi-#{$style}-p-text-indent-general);
 			}
 
 			&.maxi-block--has-link .maxi-text-block__content {
@@ -194,6 +225,9 @@ body.maxi-blocks--active {
 				text-decoration: var(
 					--maxi-#{$style}-button-text-decoration-general
 				);
+				white-space: var(--maxi-#{$style}-button-white-space-general);
+				word-spacing: var(--maxi-#{$style}-button-word-spacing-general);
+				text-indent: var(--maxi-#{$style}-button-text-indent-general);
 			}
 
 			&.maxi-image-block .maxi-hover-details,
@@ -208,6 +242,12 @@ body.maxi-blocks--active {
 					text-decoration: var(
 						--maxi-#{$style}-h4-text-decoration-general
 					);
+					white-space: var(--maxi-#{$style}-h4-white-space-general);
+					word-spacing: var(--maxi-#{$style}-h4-word-spacing-general);
+					margin-bottom: var(
+						--maxi-#{$style}-h4-margin-bottom-general
+					);
+					text-indent: var(--maxi-#{$style}-h4-text-indent-general);
 				}
 
 				p {
@@ -220,6 +260,12 @@ body.maxi-blocks--active {
 					text-decoration: var(
 						--maxi-#{$style}-p-text-decoration-general
 					);
+					white-space: var(--maxi-#{$style}-p-white-space-general);
+					word-spacing: var(--maxi-#{$style}-p-word-spacing-general);
+					margin-bottom: var(
+						--maxi-#{$style}-p-margin-bottom-general
+					);
+					text-indent: var(--maxi-#{$style}-p-text-indent-general);
 				}
 			}
 		}
@@ -237,6 +283,9 @@ body.maxi-blocks--active {
 				text-decoration: var(
 					--maxi-#{$style}-p-text-decoration-general
 				);
+				white-space: var(--maxi-#{$style}-p-white-space-general);
+				word-spacing: var(--maxi-#{$style}-p-word-spacing-general);
+				text-indent: var(--maxi-#{$style}-p-text-indent-general);
 			}
 		}
 	}
@@ -306,14 +355,36 @@ body.maxi-blocks--active {
 								text-decoration: var(
 									--maxi-#{$style}-#{$level}-text-decoration-#{$responsive_size}
 								);
+								white-space: var(
+									--maxi-#{$style}-#{$level}-white-space-#{$responsive_size}
+								);
+								word-spacing: var(
+									--maxi-#{$style}-#{$level}-word-spacing-#{$responsive_size}
+								);
+								margin-bottom: var(
+									--maxi-#{$style}-#{$level}-margin-bottom-#{$responsive_size}
+								);
+								text-indent: var(
+									--maxi-#{$style}-#{$level}-text-indent-#{$responsive_size}
+								);
 							}
 						}
 					}
 				}
 
+				&.maxi-list-block ul,
+				.maxi-list-block ul,
+				&.maxi-list-block ol,
+				.maxi-list-block ol {
+					margin-bottom: var(
+						--maxi-#{$style}-p-margin-bottom-#{$responsive_size}
+					);
+				}
+
 				&.maxi-text-block li,
 				.maxi-text-block li {
-					&.maxi-text-block__content {
+					&.maxi-text-block__content,
+					& {
 						font-family: var(
 							--maxi-#{$style}-p-font-family-#{$responsive_size}
 						);
@@ -325,6 +396,12 @@ body.maxi-blocks--active {
 						);
 						letter-spacing: var(
 							--maxi-#{$style}-p-letter-spacing-#{$responsive_size}
+						);
+						white-space: var(
+							--maxi-#{$style}-p-white-space-#{$responsive_size}
+						);
+						word-spacing: var(
+							--maxi-#{$style}-p-word-spacing-#{$responsive_size}
 						);
 					}
 				}
@@ -355,6 +432,15 @@ body.maxi-blocks--active {
 					text-decoration: var(
 						--maxi-#{$style}-button-text-decoration-#{$responsive_size}
 					);
+					white-space: var(
+						--maxi-#{$style}-button-white-space-#{$responsive_size}
+					);
+					word-spacing: var(
+						--maxi-#{$style}-button-word-spacing-#{$responsive_size}
+					);
+					text-indent: var(
+						--maxi-#{$style}-button-text-indent-#{$responsive_size}
+					);
 				}
 
 				&.maxi-image-block,
@@ -383,6 +469,18 @@ body.maxi-blocks--active {
 						);
 						text-decoration: var(
 							--maxi-#{$style}-p-text-decoration-#{$responsive_size}
+						);
+						white-space: var(
+							--maxi-#{$style}-p-white-space-#{$responsive_size}
+						);
+						word-spacing: var(
+							--maxi-#{$style}-p-word-spacing-#{$responsive_size}
+						);
+						margin-bottom: var(
+							--maxi-#{$style}-p-margin-bottom-#{$responsive_size}
+						);
+						text-indent: var(
+							--maxi-#{$style}-p-text-indent-#{$responsive_size}
 						);
 					}
 				}
@@ -413,6 +511,18 @@ body.maxi-blocks--active {
 						text-decoration: var(
 							--maxi-#{$style}-h4-text-decoration-#{$responsive_size}
 						);
+						white-space: var(
+							--maxi-#{$style}-h4-white-space-#{$responsive_size}
+						);
+						word-spacing: var(
+							--maxi-#{$style}-h4-word-spacing-#{$responsive_size}
+						);
+						margin-bottom: var(
+							--maxi-#{$style}-h4-margin-bottom-#{$responsive_size}
+						);
+						text-indent: var(
+							--maxi-#{$style}-h4-text-indent-#{$responsive_size}
+						);
 					}
 
 					p {
@@ -439,6 +549,18 @@ body.maxi-blocks--active {
 						);
 						text-decoration: var(
 							--maxi-#{$style}-p-text-decoration-#{$responsive_size}
+						);
+						white-space: var(
+							--maxi-#{$style}-p-white-space-#{$responsive_size}
+						);
+						word-spacing: var(
+							--maxi-#{$style}-p-word-spacing-#{$responsive_size}
+						);
+						margin-bottom: var(
+							--maxi-#{$style}-p-margin-bottom-#{$responsive_size}
+						);
+						text-indent: var(
+							--maxi-#{$style}-p-text-indent-#{$responsive_size}
 						);
 					}
 				}
@@ -470,6 +592,15 @@ body.maxi-blocks--active {
 						);
 						text-decoration: var(
 							--maxi-#{$style}-p-text-decoration-#{$responsive_size}
+						);
+						white-space: var(
+							--maxi-#{$style}-p-white-space-#{$responsive_size}
+						);
+						word-spacing: var(
+							--maxi-#{$style}-p-word-spacing-#{$responsive_size}
+						);
+						text-indent: var(
+							--maxi-#{$style}-p-text-indent-#{$responsive_size}
 						);
 					}
 				}

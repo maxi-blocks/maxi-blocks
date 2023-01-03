@@ -2,6 +2,7 @@ body.maxi-blocks--active figure.maxi-image-block {
 	display: flex;
 	justify-content: center;
 	flex-wrap: wrap;
+	flex: 0;
 
 	img {
 		box-sizing: border-box;
@@ -26,6 +27,19 @@ body.maxi-blocks--active figure.maxi-image-block {
 		max-height: 100%;
 		flex-grow: 1;
 		box-sizing: border-box;
+
+		&.maxi-image-block-wrapper--fit-parent-size {
+			overflow: hidden;
+
+			.maxi-image-block__image {
+				position: absolute;
+				top: 0;
+				left: 0;
+				max-width: none;
+				min-width: 100%;
+				min-height: 100%;
+			}
+		}
 
 		> svg:first-child pattern image {
 			transform-origin: 50% 50%;

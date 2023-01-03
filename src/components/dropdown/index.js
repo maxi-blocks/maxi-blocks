@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+import { select } from '@wordpress/data';
 import { useRef, useEffect, useState, forwardRef } from '@wordpress/element';
 import { Popover } from '@wordpress/components';
 
@@ -8,6 +9,7 @@ import { Popover } from '@wordpress/components';
  * External dependencies
  */
 import classnames from 'classnames';
+import { isEmpty, isNaN } from 'lodash';
 
 function useObservableState(initialState, onStateChange) {
 	const [state, setState] = useState(initialState);
@@ -43,6 +45,12 @@ const Dropdown = forwardRef(
 		const containerRef = ref ?? useRef();
 
 		const [isOpen, setIsOpen] = useObservableState(false, onToggle);
+
+		const { receiveMaxiSettings } = select('maxiBlocks');
+		const maxiSettings = receiveMaxiSettings();
+		const version = !isEmpty(maxiSettings.editor)
+			? maxiSettings.editor.version
+			: null;
 
 		useEffect(
 			() => () => {
@@ -83,6 +91,18 @@ const Dropdown = forwardRef(
 
 		const args = { isOpen, onToggle: toggle, onClose: close };
 
+		const popoverPropsByVersion = {
+			...((parseFloat(version) <= 13.0 && {
+				anchorRef: popoverProps?.anchorRef ?? containerRef.current,
+			}) ||
+				(!isNaN(parseFloat(version)) && {
+					anchor: popoverProps?.anchorRef ?? containerRef.current,
+					flip: false,
+					resize: false,
+					variant: 'unstyled',
+				})),
+		};
+
 		return (
 			<div
 				className={classnames('maxi-dropdown', className)}
@@ -98,14 +118,13 @@ const Dropdown = forwardRef(
 						headerTitle={headerTitle}
 						focusOnMount={focusOnMount}
 						{...popoverProps}
-						anchorRef={
-							popoverProps?.anchorRef ?? containerRef.current
-						}
+						{...popoverPropsByVersion}
 						className={classnames(
 							'maxi-dropdown__content',
 							popoverProps ? popoverProps.className : undefined,
 							contentClassName
 						)}
+						noArrow
 					>
 						{renderContent(args)}
 					</Popover>

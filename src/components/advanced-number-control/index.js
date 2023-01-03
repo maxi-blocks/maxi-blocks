@@ -18,7 +18,7 @@ import ResetButton from '../reset-control';
  * External dependencies
  */
 import classnames from 'classnames';
-import { trim, isEmpty, isNumber, isNil, merge } from 'lodash';
+import { isEmpty, isNumber, merge, trim } from 'lodash';
 
 /**
  * Styles
@@ -86,6 +86,7 @@ const AdvancedNumberControl = props => {
 		value,
 		onChangeValue,
 		disableReset = false,
+		disableRange = false,
 		enableAuto = false,
 		autoLabel,
 		onReset,
@@ -99,7 +100,7 @@ const AdvancedNumberControl = props => {
 	);
 
 	useEffect(() => {
-		if (!isNil(value) && value !== '') setCurrentValue(trim(value));
+		setCurrentValue(trim(value));
 	}, [value]);
 
 	const classes = classnames('maxi-advanced-number-control', className);
@@ -171,7 +172,7 @@ const AdvancedNumberControl = props => {
 					label={autoLabel || __('Auto', 'maxi-blocks')}
 					className={classNameAutoInput}
 					selected={value === 'auto'}
-					onChange={val => onChangeValue(val ? 'auto' : '')}
+					onChange={val => (val ? onChangeValue('auto') : onReset())}
 				/>
 			)}
 			{value !== 'auto' && (
@@ -259,25 +260,32 @@ const AdvancedNumberControl = props => {
 							isSmall
 						/>
 					)}
-					<RangeControl
-						label={label}
-						className='maxi-advanced-number-control__range'
-						value={
-							+(!isNil(value)
-								? value
-								: defaultValue || initial || placeholder || 0)
-						}
-						onChange={val => {
-							onChangeValue(
-								optionType === 'string' ? val.toString() : +val
-							);
-						}}
-						min={enableUnit ? minValueRange : min}
-						max={enableUnit ? maxValueRange : max}
-						step={stepValue}
-						withInputField={false}
-						initialPosition={value || initial}
-					/>
+					{!disableRange && (
+						<RangeControl
+							label={label}
+							className='maxi-advanced-number-control__range'
+							value={
+								+[
+									value,
+									defaultValue,
+									initial,
+									placeholder,
+								].find(val => /\d/.test(val) && +val !== 0) || 0
+							}
+							onChange={val => {
+								onChangeValue(
+									optionType === 'string'
+										? val.toString()
+										: +val
+								);
+							}}
+							min={enableUnit ? minValueRange : min}
+							max={enableUnit ? maxValueRange : max}
+							step={stepValue}
+							withInputField={false}
+							initialPosition={value || initial}
+						/>
+					)}
 				</BaseControl>
 			)}
 		</>

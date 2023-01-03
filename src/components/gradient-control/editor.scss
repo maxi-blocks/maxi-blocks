@@ -1,11 +1,25 @@
 .maxi-gradient-control {
 	position: relative;
 
+	.components-custom-gradient-picker__control-point-button {
+		border: 1px solid var(--maxi-grey-6-color);
+	}
+
 	.components-angle-picker-control {
 		&__angle-circle {
 			border-width: 2px !important;
 		}
+		.components-spacer {
+			font-size: 20px;
+			margin: 0;
+			padding: 0 8px;
+			line-height: 20px;
+			position: relative;
+			top: 5px;
+			left: -1px;
+		}
 	}
+
 	.components-input-control {
 		&__input {
 			line-height: 2 !important;

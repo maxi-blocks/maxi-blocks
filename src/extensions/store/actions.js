@@ -77,13 +77,7 @@ const actions = {
 				? dispatch('core/edit-site').__experimentalSetPreviewDeviceType
 				: setPostPreviewDeviceType;
 
-			const gutenbergDeviceType =
-				(deviceType === 'general' && 'Desktop') ||
-				(width >= breakpoints.m && 'Desktop') ||
-				(width >= breakpoints.s && 'Tablet') ||
-				(width < breakpoints.s && 'Mobile');
-
-			if (gutenbergDeviceType) setPreviewDeviceType(gutenbergDeviceType);
+			setPreviewDeviceType('Desktop');
 		}
 
 		return {

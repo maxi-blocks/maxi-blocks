@@ -90,6 +90,7 @@ class edit extends MaxiBlockComponent {
 		super(...args);
 
 		this.contentWrapper = createRef();
+		this.state = { isOpen: false };
 	}
 
 	get getStylesObject() {
@@ -97,11 +98,22 @@ class edit extends MaxiBlockComponent {
 	}
 
 	maxiBlockDidUpdate() {
-		if (this.context.titleLevel !== this.props.attributes.titleLevel) {
-			const { maxiSetAttributes } = this.props;
+		// Attributes from context that need to be saved for frontend
+		const accordionAttributes = ['accordionUniqueId', 'titleLevel'];
 
-			maxiSetAttributes({ titleLevel: this.context.titleLevel });
-		}
+		accordionAttributes.forEach(attributeName => {
+			if (
+				this.context[attributeName] !==
+				this.props.attributes[attributeName]
+			) {
+				const { maxiSetAttributes } = this.props;
+
+				maxiSetAttributes({
+					[attributeName]: this.context[attributeName],
+				});
+			}
+		});
+
 		if (
 			this.context.accordionLayout !==
 			this.props.attributes.accordionLayout
@@ -120,37 +132,33 @@ class edit extends MaxiBlockComponent {
 				});
 			}
 		}
+
+		const newIsOpen = this.context.openPanes.includes(this.props.clientId);
+		if (newIsOpen !== this.state.isOpen) {
+			newIsOpen ? this.openPane() : this.closePane();
+		}
 	}
 
 	openPane() {
-		const { clientId } = this.props;
-		const { onOpen, animationDuration } = this.context;
-
 		this.contentWrapper.current.style.overflow = 'hidden';
 		// The css doesn't run transition if set to 100% so need to set exact value, for transition to happen
 		this.contentWrapper.current.style.maxHeight = `${this.contentWrapper.current.scrollHeight}px`;
-		setTimeout(() => {
-			this.contentWrapper.current.style = null;
-		}, animationDuration);
-		onOpen(clientId);
+
+		this.setState({ isOpen: true });
 	}
 
 	closePane() {
-		const { clientId } = this.props;
-		const { onClose, animationDuration, isCollapsible, openPanes } =
-			this.context;
+		const { isCollapsible, openPanes } = this.context;
 
 		if (!isCollapsible && openPanes.length <= 1) return;
 		this.contentWrapper.current.style.overflow = 'hidden';
-		// Same here, transition doesn't run if max-height is not set to exact value
+		// Transition doesn't run if max-height is not set to exact value
 		this.contentWrapper.current.style.maxHeight = `${this.contentWrapper.current.scrollHeight}px`;
 		setTimeout(() => {
 			this.contentWrapper.current.style.maxHeight = 0;
-			setTimeout(() => {
-				this.contentWrapper.current.style = null;
-			}, animationDuration);
 		}, 1);
-		onClose(clientId);
+
+		this.setState({ isOpen: false });
 	}
 
 	render() {
@@ -167,11 +175,11 @@ class edit extends MaxiBlockComponent {
 			paneIcon,
 			paneIconActive,
 			titleLevel,
-			openPanes,
 			accordionLayout,
+			accordionUniqueId,
+			onOpen,
+			onClose,
 		} = this.context;
-
-		const isOpen = openPanes.includes(clientId);
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
@@ -186,8 +194,9 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				className={`maxi-pane-block--${accordionLayout}-layout`}
 				context={this.context}
+				data-accordion={accordionUniqueId}
 				{...getMaxiBlockAttributes(this.props)}
-				aria-expanded={isOpen}
+				aria-expanded={this.state.isOpen}
 			>
 				<div
 					className='maxi-pane-block__header'
@@ -199,7 +208,9 @@ class edit extends MaxiBlockComponent {
 						)
 							return;
 
-						!isOpen ? this.openPane() : this.closePane();
+						!this.state.isOpen
+							? onOpen(clientId)
+							: onClose(clientId);
 					}}
 				>
 					<div className='maxi-pane-block__header-content'>
@@ -222,7 +233,7 @@ class edit extends MaxiBlockComponent {
 						/>
 						<div className='maxi-pane-block__icon'>
 							<RawHTML>
-								{isOpen ? paneIconActive : paneIcon}
+								{this.state.isOpen ? paneIconActive : paneIcon}
 							</RawHTML>
 						</div>
 					</div>
@@ -234,6 +245,9 @@ class edit extends MaxiBlockComponent {
 				<div
 					className='maxi-pane-block__content-wrapper'
 					ref={this.contentWrapper}
+					onTransitionEnd={() => {
+						this.contentWrapper.current.style = null;
+					}}
 				>
 					<Content
 						ref={this.blockRef}
@@ -241,11 +255,11 @@ class edit extends MaxiBlockComponent {
 						isSelected={isSelected}
 						hasSelectedChild={hasSelectedChild}
 						hasInnerBlocks={hasInnerBlocks}
-						isOpen={isOpen}
+						isOpen={this.state.isOpen}
 					/>
-					<div className='maxi-pane-block__content-line-container maxi-pane-block__line-container'>
-						<hr className='maxi-pane-block__content-line maxi-pane-block__line' />
-					</div>
+				</div>
+				<div className='maxi-pane-block__content-line-container maxi-pane-block__line-container'>
+					<hr className='maxi-pane-block__content-line maxi-pane-block__line' />
 				</div>
 			</MaxiBlock>,
 		];

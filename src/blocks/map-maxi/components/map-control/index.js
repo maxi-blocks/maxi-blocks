@@ -66,6 +66,7 @@ const MapControl = props => {
 				onReset={() =>
 					onChange({
 						'map-min-zoom': getDefaultAttribute('map-min-zoom'),
+						isReset: true,
 					})
 				}
 			/>
@@ -81,6 +82,7 @@ const MapControl = props => {
 				onReset={() =>
 					onChange({
 						'map-max-zoom': getDefaultAttribute('map-max-zoom'),
+						isReset: true,
 					})
 				}
 			/>

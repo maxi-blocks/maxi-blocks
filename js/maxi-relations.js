@@ -6,7 +6,7 @@ class Relation {
 		this.uniqueID = item?.uniqueID;
 		this.css = item?.css;
 
-		if (!this.uniqueID || Object.keys(this.css).length === 0) return;
+		if (!this.uniqueID || this.css.length === 0) return;
 
 		this.trigger = item.trigger;
 		this.triggerEl = document.querySelector(`.${this.trigger}`);
@@ -16,51 +16,70 @@ class Relation {
 		this.targetEl = document.querySelector(this.fullTarget);
 		this.dataTarget = `#${item.uniqueID}[data-maxi-relations="true"]`;
 
+		this.defaultTransition = window
+			.getComputedStyle(this.targetEl)
+			.getPropertyValue('transition');
+
 		if (!this.triggerEl || !this.targetEl) return;
 
 		this.breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-		this.hasMultipleTargets = Object.keys(this.css).some(
-			key => !this.breakpoints.includes(key)
+		this.hasMultipleTargetsArray = this.css.map(item =>
+			Object.keys(item).some(key => !this.breakpoints.includes(key))
 		);
 
 		this.action = item.action;
+		this.settings = item.settings;
 		this.effects = item.effects;
 		this.attributes = item.attributes;
 
-		({ stylesObj: this.stylesObj, effectsObj: this.effectsObj } =
+		({ stylesObjs: this.stylesObjs, effectsObjs: this.effectsObjs } =
 			this.generateCssResponsiveObj());
 
 		this.breakpointsObj = this.generateBreakpointsObj();
 
-		this.hoverStatus = this.effects.hoverStatus;
+		this.hoverStatus = this.effects.some(item => item.hoverStatus);
 		this.isContained = this.triggerEl.contains(this.targetEl);
 		this.isHoveredContained = this.hoverStatus && this.isContained;
 
 		// transitionTrigger is an alternative trigger to target; not always used
 		// Check its eventListeners to understand better about its responsibility
-		this.transitionTrigger = this.effects.transitionTrigger;
-		this.transitionTriggerEl = this.transitionTrigger
-			? this.blockTargetEl.querySelector(this.transitionTrigger)
-			: this.targetEl;
-
-		switch (typeof this.effects.transitionTarget) {
-			case 'string':
-				this.transitionTargets = [this.effects.transitionTarget];
-				break;
-			case 'object':
-				this.transitionTargets = this.effects.transitionTarget;
-				break;
-			default:
-				this.transitionTargets = [''];
-		}
-
-		this.isBorder = Object.keys(this.attributes).some(attr =>
-			attr.startsWith('border')
+		this.transitionTriggers = Array.from(
+			new Set(
+				this.effects.map(
+					item => item.transitionTrigger && !item.disableTransition
+				)
+			)
+		).filter(Boolean);
+		this.transitionTriggerEls = this.transitionTriggers.map(
+			transitionTrigger =>
+				transitionTrigger
+					? this.blockTargetEl.querySelector(transitionTrigger)
+					: this.targetEl
 		);
-		this.isIcon =
-			item.settings === 'Icon colour' || item.settings === 'Button icon';
+
+		this.transitionTargetsArray = this.effects.map(item => {
+			if (item.disableTransition) return [''];
+
+			switch (typeof item.transitionTarget) {
+				case 'string':
+					return [item.transitionTarget];
+				case 'object':
+					if (item.transitionTarget?.length > 0)
+						return item.transitionTarget;
+					return [''];
+				default:
+					return [''];
+			}
+		});
+
+		this.isBorderArray = this.attributes.map(attributes =>
+			Object.keys(attributes).some(attr => attr.startsWith('border'))
+		);
+		this.isIconArray = item.settings.map(
+			setting => setting === 'Icon colour' || setting === 'Button icon'
+		);
 		this.isSVG = this.fullTarget.includes('svg-icon-maxi');
-		this.avoidHover = null;
+		this.avoidHoverArray = [];
 		this.getAvoidHover();
 
 		this.transitionString = '';
@@ -87,16 +106,22 @@ class Relation {
 		this.stylesEl = document.createElement('style');
 		this.stylesEl.id = `relations--${this.uniqueID}-styles`;
 		this.stylesEl.setAttribute('data-type', this.action);
+		this.stylesEl.setAttribute('data-settings', this.settings);
 		this.stylesEl.innerText = this.stylesString;
 
-		this.transitionEl = document.createElement('style');
-		this.transitionEl.id = `relations--${this.uniqueID}-transitions`;
-		this.transitionEl.setAttribute('data-type', this.action);
-		this.transitionEl.innerText = this.transitionString;
+		if (this.transitionString.length > 0) {
+			this.transitionEl = document.createElement('style');
+			this.transitionEl.id = `relations--${this.uniqueID}-transitions`;
+			this.transitionEl.setAttribute('data-type', this.action);
+			this.transitionEl.setAttribute('data-settings', this.settings);
+			this.transitionEl.innerText = this.transitionString;
+		}
 	}
 
 	// Insert transitions or styles element just after Maxi inline css element
 	addStyleEl(styleEl) {
+		if (!styleEl) return;
+
 		if (!this.inlineStylesEl)
 			this.inlineStylesEl =
 				document.querySelector('#maxi-blocks-inline-css') ||
@@ -107,7 +132,10 @@ class Relation {
 		const currentEl = document.querySelector(`#${styleEl.id}`);
 
 		if (currentEl) {
-			if (currentEl.getAttribute('data-type') === this.action)
+			if (
+				currentEl.getAttribute('data-type') === this.action &&
+				currentEl.getAttribute('data-settings') === this.settings
+			)
 				currentEl.replaceWith(styleEl);
 			else currentEl.insertAdjacentElement('afterend', styleEl);
 		} else
@@ -145,22 +173,28 @@ class Relation {
 	getTransitionTimeout() {
 		const currentBreakpoint = this.getCurrentBreakpoint();
 
-		const getTransitionValue = prop =>
-			this.effects[
+		const getTransitionValue = (effects, prop) =>
+			effects[
 				`transition-${prop}-${this.getLastUsableBreakpoint(
 					currentBreakpoint,
 					breakpoint =>
 						Object.prototype.hasOwnProperty.call(
-							this.effects,
+							effects,
 							`transition-${prop}-${breakpoint}`
 						)
 				)}`
 			];
 
-		const transitionDuration = getTransitionValue('duration');
-		const transitionDelay = getTransitionValue('delay');
+		return this.effects.reduce((promise, effects) => {
+			if (effects.disableTransition) return promise;
 
-		return (transitionDuration + transitionDelay) * 1000;
+			const transitionDuration = getTransitionValue(effects, 'duration');
+			const transitionDelay = getTransitionValue(effects, 'delay');
+			const transitionTimeout =
+				(transitionDuration + transitionDelay) * 1000;
+
+			return Math.max(promise, transitionTimeout);
+		}, 0);
 	}
 
 	/**
@@ -200,21 +234,25 @@ class Relation {
 				if (hasCSS)
 					stylesObj[breakpoint] = { ...css[breakpoint].styles };
 
-				effectsObj[breakpoint] = {
-					...getLastEffectsBreakpointAttribute(
-						'transition-status',
-						breakpoint
-					),
-					...getLastEffectsBreakpointAttribute(
-						'transition-duration',
-						breakpoint
-					),
-					...getLastEffectsBreakpointAttribute(
-						'transition-delay',
-						breakpoint
-					),
-					...getLastEffectsBreakpointAttribute('easing', breakpoint),
-				};
+				if (!effects.disableTransition)
+					effectsObj[breakpoint] = {
+						...getLastEffectsBreakpointAttribute(
+							'transition-status',
+							breakpoint
+						),
+						...getLastEffectsBreakpointAttribute(
+							'transition-duration',
+							breakpoint
+						),
+						...getLastEffectsBreakpointAttribute(
+							'transition-delay',
+							breakpoint
+						),
+						...getLastEffectsBreakpointAttribute(
+							'easing',
+							breakpoint
+						),
+					};
 			});
 
 			return { stylesObj, effectsObj };
@@ -251,25 +289,52 @@ class Relation {
 			return response;
 		};
 
-		if (this.hasMultipleTargets) {
-			const stylesObj = {};
-			// effectsObj is the same for all targets
-			let effectsObj = {};
+		const stylesObjs = [];
+		const effectsObjs = [];
 
-			Object.keys(this.css).forEach(target => {
-				const { stylesObj: rawStylesObj, effectsObj: rawEffects } =
-					cleanValues(
-						getCssObjForEachTarget(this.css[target], this.effects)
-					);
+		const pushStylesAndEffects = obj => {
+			const isEmptyObject = obj => Object.keys(obj).length === 0;
 
-				stylesObj[target] = rawStylesObj;
-				effectsObj = rawEffects;
+			Object.entries(obj).forEach(([key, value]) => {
+				const arrayToPush =
+					key === 'stylesObj' ? stylesObjs : effectsObjs;
+				arrayToPush.push(!isEmptyObject(value) ? value : null);
 			});
+		};
 
-			return { stylesObj, effectsObj };
-		}
+		this.css.forEach((css, index) => {
+			if (this.hasMultipleTargetsArray[index]) {
+				const stylesObj = {};
+				// effectsObj is the same for all targets
+				let effectsObj = {};
 
-		return cleanValues(getCssObjForEachTarget(this.css, this.effects));
+				Object.keys(css).forEach(target => {
+					const { stylesObj: rawStylesObj, effectsObj: rawEffects } =
+						cleanValues(
+							getCssObjForEachTarget(
+								css[target],
+								this.effects[index]
+							)
+						);
+
+					stylesObj[target] = rawStylesObj;
+					effectsObj = rawEffects;
+				});
+
+				pushStylesAndEffects({ stylesObj, effectsObj });
+			} else {
+				pushStylesAndEffects(
+					cleanValues(
+						getCssObjForEachTarget(css, this.effects[index])
+					)
+				);
+			}
+		});
+
+		return {
+			stylesObjs,
+			effectsObjs,
+		};
 	}
 
 	generateBreakpointsObj() {
@@ -296,11 +361,13 @@ class Relation {
 			});
 		};
 
-		if (this.hasMultipleTargets) {
-			Object.keys(this.css).forEach(target => {
-				getBreakpointValues(this.css[target]);
-			});
-		} else getBreakpointValues(this.css);
+		this.css.forEach((css, index) => {
+			if (this.hasMultipleTargetsArray[index]) {
+				Object.keys(css).forEach(target => {
+					getBreakpointValues(css[target]);
+				});
+			} else getBreakpointValues(css);
+		});
 
 		return breakpointsObj;
 	}
@@ -312,25 +379,46 @@ class Relation {
 	getAvoidHover() {
 		if (!this.hoverStatus || !this.targetEl) return;
 
-		this.avoidHover = this.transitionTargets.some(transitionTarget =>
-			Array.from(
-				document.querySelectorAll(
-					`${this.fullTarget} ${
-						this.fullTarget.includes(transitionTarget)
-							? ''
-							: transitionTarget
-					}`
+		this.transitionTargetsArray.forEach(transitionTargets =>
+			this.avoidHoverArray.push(
+				transitionTargets.some(transitionTarget =>
+					Array.from(
+						document.querySelectorAll(
+							`${this.fullTarget} ${
+								this.fullTarget.includes(transitionTarget)
+									? ''
+									: transitionTarget
+							}`
+						)
+					).some(
+						element =>
+							this.targetEl
+								.closest('.maxi-block')
+								.contains(element) &&
+							this.targetEl.contains(element)
+					)
 				)
-			).some(
-				element =>
-					this.targetEl.closest('.maxi-block').contains(element) &&
-					this.targetEl.contains(element)
 			)
 		);
 	}
 
 	setDataAttrToBlock(value) {
-		this.blockTargetEl.setAttribute('data-maxi-relations', value);
+		// On setting the 'false' value, is necessary to check the 'data-maxi-relations-trigger'
+		// to ensure the last trigger is not removed. It happens when moving from some trigger to
+		// other really fast between while `transitionTimeout` is still running.
+		if (value === 'false') {
+			const currentTrigger = this.blockTargetEl.getAttribute(
+				'data-maxi-relations-trigger'
+			);
+
+			if (currentTrigger === this.trigger || !currentTrigger)
+				this.blockTargetEl.setAttribute('data-maxi-relations', value);
+		} else this.blockTargetEl.setAttribute('data-maxi-relations', value);
+
+		this.blockTargetEl.setAttribute(
+			'data-maxi-relations-trigger',
+			this.trigger
+		);
 	}
 
 	addDataAttrToBlock() {
@@ -369,14 +457,14 @@ class Relation {
 	}
 
 	generateStyles() {
-		const getStylesLine = (stylesObj, target) => {
+		const getStylesLine = (stylesObj, target, index) => {
 			const isBackground = target.includes('maxi-background-displayer');
 
 			Object.entries(this.breakpointsObj).forEach(
 				([breakpoint, breakpointValue]) => {
 					if (stylesObj[breakpoint]) {
 						// Checks if the element needs special CSS to be avoided in case the element is hovered
-						const avoidHoverString = this.avoidHover
+						const avoidHoverString = this.avoidHoverArray[index]
 							? ':not(:hover)'
 							: '';
 
@@ -385,16 +473,30 @@ class Relation {
 							breakpointValue
 						);
 
+						let finalTarget;
+						// For background layers styles, avoidHoverString needs to be added to the parent element
+						// to make sure hover styles will override the IB styles.
+						if (target.includes('.maxi-background-displayer')) {
+							finalTarget = target
+								.replace(
+									/(\s*)> .maxi-background-displayer/,
+									match => `${avoidHoverString}${match}`
+								)
+								.trim();
+						} else if (this.isSVG) {
+							finalTarget = target.replace(
+								'maxi-svg-icon-block__icon',
+								match => `${match}${avoidHoverString}`
+							);
+						} else {
+							finalTarget = `${target.trim()}${avoidHoverString}`;
+						}
+
 						const selector =
-							`${prevLine} body.maxi-blocks--active ${
-								this.isSVG
-									? target.replace(
-											'maxi-svg-icon-block__icon',
-											match =>
-												`${match}${avoidHoverString}`
-									  )
-									: `${target.trim()}${avoidHoverString}`
-							} {`.replace(/\s{2,}/g, ' ');
+							`${prevLine} body.maxi-blocks--active ${finalTarget} {`.replace(
+								/\s{2,}/g,
+								' '
+							);
 
 						Object.entries(stylesObj[breakpoint]).forEach(
 							([key, value]) => {
@@ -411,7 +513,7 @@ class Relation {
 							}
 						);
 
-						if (this.isBorder && isBackground) {
+						if (this.isBorderArray[index] && isBackground) {
 							const getBorderValue = target =>
 								this.attributes[
 									`border-${target}-width-${breakpoint}`
@@ -477,24 +579,31 @@ class Relation {
 		const mainTarget =
 			this.action === 'click' ? `#${this.uniqueID}` : this.dataTarget;
 
-		if (this.hasMultipleTargets)
-			Object.entries(this.stylesObj).forEach(
-				([targetSelector, styles]) =>
-					Object.keys(styles).length &&
-					getStylesLine(styles, `${mainTarget} ${targetSelector}`)
-			);
-		else
-			this.transitionTargets.forEach(transitionTarget =>
-				getStylesLine(
-					this.stylesObj,
-					this.getTargetForLine(
-						transitionTarget,
-						this.action === 'click'
-							? `#${this.uniqueID}`
-							: this.dataTarget
+		this.stylesObjs.forEach((stylesObj, index) => {
+			if (this.hasMultipleTargetsArray[index])
+				Object.entries(stylesObj).forEach(
+					([targetSelector, styles]) =>
+						Object.keys(styles).length &&
+						getStylesLine(
+							styles,
+							`${mainTarget} ${targetSelector}`,
+							index
+						)
+				);
+			else
+				this.transitionTargetsArray[index].forEach(transitionTarget =>
+					getStylesLine(
+						stylesObj,
+						this.getTargetForLine(
+							transitionTarget,
+							this.action === 'click'
+								? `#${this.uniqueID}`
+								: this.dataTarget
+						),
+						index
 					)
-				)
-			);
+				);
+		});
 	}
 
 	addStyles() {
@@ -506,12 +615,12 @@ class Relation {
 	}
 
 	generateTransitions() {
-		const getTransitionLine = (stylesObj, target) => {
+		const getTransitionLine = (stylesObj, target, index) => {
 			const isBackground = target.includes('maxi-background-displayer');
 
 			Object.entries(this.breakpointsObj).forEach(
 				([breakpoint, breakpointValue]) => {
-					if (this.effectsObj[breakpoint]) {
+					if (this.effectsObjs[index][breakpoint]) {
 						const { prevLine, postLine } = this.getMediaLines(
 							breakpoint,
 							breakpointValue
@@ -544,8 +653,8 @@ class Relation {
 						if (currentStyleObj) {
 							const transitionString = this.getTransitionString(
 								currentStyleObj,
-								this.effectsObj[breakpoint],
-								this.isIcon
+								this.effectsObjs[index][breakpoint],
+								this.isIconArray[index]
 							);
 
 							const selectorRegExp = new RegExp(
@@ -566,7 +675,7 @@ class Relation {
 									transitionExistsRegExp
 								)
 							) {
-								if (!this.isIcon)
+								if (!this.isIconArray[index])
 									this.transitionString =
 										this.transitionString.replace(
 											transitionExistsRegExp,
@@ -588,40 +697,49 @@ class Relation {
 			);
 		};
 
-		if (this.hasMultipleTargets) {
-			if (!this.isSVG)
-				Object.keys(this.stylesObj).forEach(targetSelector => {
-					getTransitionLine(
-						this.stylesObj[targetSelector],
-						`${this.dataTarget} ${targetSelector}`
-					);
-				});
-			else
-				this.transitionTargets.forEach(transitionTarget => {
-					// Checks if the element needs special CSS to be avoided in case the element is hovered
-					const svgTarget = `${this.dataTarget} ${
-						this.avoidHover
-							? transitionTarget.replace(
-									'maxi-svg-icon-block__icon',
-									match => `${match}:not(:hover)`
-							  )
-							: transitionTarget
-					}`;
+		this.stylesObjs.forEach((stylesObj, index) => {
+			if (this.effects[index].disableTransition) return;
 
-					Object.keys(this.stylesObj).forEach(targetSelector =>
+			if (this.hasMultipleTargetsArray[index]) {
+				if (!this.isSVG)
+					Object.keys(stylesObj).forEach(targetSelector => {
 						getTransitionLine(
-							this.stylesObj[targetSelector],
-							svgTarget
-						)
+							stylesObj[targetSelector],
+							`${this.dataTarget} ${targetSelector}`,
+							index
+						);
+					});
+				else
+					this.transitionTargetsArray[index].forEach(
+						transitionTarget => {
+							// Checks if the element needs special CSS to be avoided in case the element is hovered
+							const svgTarget = `${this.dataTarget} ${
+								this.avoidHoverArray[index]
+									? transitionTarget.replace(
+											'maxi-svg-icon-block__icon',
+											match => `${match}:not(:hover)`
+									  )
+									: transitionTarget
+							}`;
+
+							Object.keys(stylesObj).forEach(targetSelector =>
+								getTransitionLine(
+									stylesObj[targetSelector],
+									svgTarget,
+									index
+								)
+							);
+						}
 					);
-				});
-		} else
-			this.transitionTargets.forEach(transitionTarget =>
-				getTransitionLine(
-					this.stylesObj,
-					this.getTargetForLine(transitionTarget)
-				)
-			);
+			} else
+				this.transitionTargetsArray[index].forEach(transitionTarget =>
+					getTransitionLine(
+						stylesObj,
+						this.getTargetForLine(transitionTarget),
+						index
+					)
+				);
+		});
 	}
 
 	addTransition() {
@@ -629,7 +747,7 @@ class Relation {
 	}
 
 	removeTransition() {
-		this.transitionEl.remove();
+		this.transitionEl?.remove();
 	}
 
 	getTransitionString(styleObj, effectsObj, isIcon) {
@@ -641,16 +759,53 @@ class Relation {
 		} = effectsObj;
 
 		const transitionPropertiesString = `${
-			status ? `${duration}s ${delay}s ${easing}` : '0s 0s'
+			status ? `${duration}s ${easing} ${delay}s` : '0s 0s'
 		}, `;
 
-		return isIcon
+		const transitionString = isIcon
 			? `all ${transitionPropertiesString}`
 			: Object.keys(styleObj).reduce(
 					(transitionString, style) =>
 						`${transitionString}${style} ${transitionPropertiesString}`,
 					''
 			  );
+
+		if (
+			this.defaultTransition !== 'none 0s ease 0s' &&
+			!transitionString.includes(this.defaultTransition)
+		) {
+			return `${this.defaultTransition}, ${transitionString}`;
+		}
+		return transitionString;
+	}
+
+	// Ensures the data-maxi-relations attributes keeps 'true' while the main element is hovered.
+	// This situation prevents the attribute set to false when the target element is triggered by 2
+	// or more elements that are nested one inside the other
+	addRelationSubscriber() {
+		const observer = new MutationObserver(mutations => {
+			mutations.forEach(mutation => {
+				if (
+					mutation.type === 'attributes' &&
+					mutation.attributeName === 'data-maxi-relations'
+				) {
+					if (mutation.target.dataset.maxiRelations !== 'true')
+						mutation.target.dataset.maxiRelations = 'true';
+				}
+			});
+		});
+
+		observer.observe(this.blockTargetEl, {
+			attributes: true,
+			attributeFilter: ['data-maxi-relations'],
+		});
+
+		this.observer = observer;
+	}
+
+	// Removes the observer added by the addRelationSubscriber method
+	removeRelationSubscriber() {
+		this.observer.disconnect();
 	}
 
 	init() {
@@ -681,49 +836,54 @@ class Relation {
 		 * to ensure it has the selected effects
 		 */
 		if (this.isHoveredContained) {
-			this.transitionTriggerEl.addEventListener('mouseenter', () => {
-				// console.log('Entering hover target'); // 🔥
+			this.transitionTriggerEls?.forEach(transitionTriggerEl => {
+				transitionTriggerEl.addEventListener('mouseenter', () => {
+					// console.log('Entering hover target'); // 🔥
 
-				// Remove transitions to let the original ones be applied
-				this.removeTransition();
+					// Remove transitions to let the original ones be applied
+					this.removeTransition();
 
-				clearTimeout(this.contentTimeout);
-			});
+					clearTimeout(this.contentTimeout);
+				});
 
-			this.transitionTriggerEl.addEventListener('mouseleave', () => {
-				const transitionDuration = this.transitionTargets.reduce(
-					(promise, transitionTarget) => {
-						const transitionTargetEl = document.querySelector(
-							`${this.dataTarget} ${transitionTarget ?? ''}`
-						);
+				transitionTriggerEl.addEventListener('mouseleave', () => {
+					const transitionDuration = Array.from(
+						new Set(this.transitionTargetsArray.flat())
+					)
+						.filter(Boolean)
+						.reduce((promise, transitionTarget) => {
+							const transitionTargetEl = document.querySelector(
+								`${this.dataTarget} ${transitionTarget ?? ''}`
+							);
 
-						const transitionDuration = transitionTargetEl
-							? [
-									'transition-duration',
-									'transition-delay',
-							  ].reduce(
-									(sum, prop) =>
-										sum +
-										parseFloat(
-											getComputedStyle(transitionTargetEl)
-												.getPropertyValue(prop)
-												.replace('s', '')
-										),
-									0
-							  ) * 1000
-							: 0;
+							const transitionDuration = transitionTargetEl
+								? [
+										'transition-duration',
+										'transition-delay',
+								  ].reduce(
+										(sum, prop) =>
+											sum +
+											parseFloat(
+												getComputedStyle(
+													transitionTargetEl
+												)
+													.getPropertyValue(prop)
+													.replace('s', '')
+											),
+										0
+								  ) * 1000
+								: 0;
 
-						return Math.max(promise, transitionDuration);
-					},
-					0
-				);
+							return Math.max(promise, transitionDuration);
+						}, 0);
 
-				// console.log('Leaving hover target'); // 🔥
+					// console.log('Leaving hover target'); // 🔥
 
-				this.contentTimeout = setTimeout(() => {
-					// Set the transitions back waiting the original to be done
-					this.addTransition();
-				}, transitionDuration);
+					this.contentTimeout = setTimeout(() => {
+						// Set the transitions back waiting the original to be done
+						this.addTransition();
+					}, transitionDuration);
+				});
 			});
 		}
 	}
@@ -731,6 +891,8 @@ class Relation {
 	onMouseEnter() {
 		// console.log('IB is active'); // 🔥
 		clearTimeout(this.transitionTimeout);
+
+		this.addRelationSubscriber();
 
 		this.addDataAttrToBlock();
 		this.addTransition();
@@ -743,10 +905,31 @@ class Relation {
 
 		this.removeStyles();
 
-		this.transitionTimeout = setTimeout(() => {
+		// If the targeted element is hovered and the element has a transition set, remove transitions immediately
+		if (
+			this.targetEl.matches(':hover') &&
+			this.defaultTransition !== 'none 0s ease 0s'
+		) {
 			this.removeTransition();
 			this.removeAddAttrToBlock();
-		}, this.getTransitionTimeout());
+		} else {
+			const transitionTimeout = this.getTransitionTimeout();
+
+			const removeTransitionAction = () => {
+				this.removeTransition();
+				this.removeAddAttrToBlock();
+				this.removeRelationSubscriber();
+			};
+
+			if (transitionTimeout === 0) {
+				removeTransitionAction();
+			} else {
+				this.transitionTimeout = setTimeout(
+					removeTransitionAction,
+					transitionTimeout
+				);
+			}
+		}
 	}
 
 	addClickEvents() {
@@ -766,8 +949,50 @@ class Relation {
 
 window.addEventListener('load', () => {
 	// eslint-disable-next-line no-undef
-	if (maxiRelations && maxiRelations[0]) {
-		// eslint-disable-next-line no-undef
-		maxiRelations[0].forEach(relation => new Relation(relation));
-	}
+	const relations = maxiRelations?.[0];
+	if (!relations) return;
+
+	const uniqueRelations = relations.reduce(
+		(uniqueArray, { action, trigger, uniqueID, target }) => {
+			const getIsUnique = relation =>
+				relation.action === action &&
+				relation.trigger === trigger &&
+				relation.uniqueID === uniqueID &&
+				relation.target === target;
+
+			const isUnique = !uniqueArray.find(uniqueRelation =>
+				getIsUnique(uniqueRelation)
+			);
+			if (isUnique) {
+				const sameRelations = relations.filter(sameRelation =>
+					getIsUnique(sameRelation)
+				);
+				const mergedSameRelations = sameRelations.reduce(
+					(obj, relation) => {
+						Object.keys(relation).forEach(key => {
+							if (
+								key !== 'action' &&
+								key !== 'trigger' &&
+								key !== 'uniqueID' &&
+								key !== 'target'
+							) {
+								if (!obj[key]) obj[key] = [];
+								obj[key].push(relation[key]);
+							} else {
+								obj[key] = relation[key];
+							}
+						});
+						return obj;
+					},
+					{}
+				);
+				uniqueArray.push(mergedSameRelations);
+			}
+
+			return uniqueArray;
+		},
+		[]
+	);
+
+	uniqueRelations.forEach(relation => new Relation(relation));
 });

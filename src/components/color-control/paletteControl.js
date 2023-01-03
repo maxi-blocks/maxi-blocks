@@ -30,7 +30,6 @@ const ColorPaletteControl = props => {
 		value,
 		onChange,
 		globalProps,
-		noColorPrefix = false,
 		disableOpacity,
 		opacity = 1,
 		clientId,
@@ -47,7 +46,7 @@ const ColorPaletteControl = props => {
 
 			const globalStatus = globalProps
 				? receiveStyleCardValue(
-						`${prefix}${noColorPrefix ? '' : 'color-'}global`,
+						`${prefix}color-global`,
 						globalProps ? getBlockStyle(clientId) : null,
 						globalProps?.type
 				  )
@@ -135,12 +134,13 @@ const ColorPaletteControl = props => {
 				<OpacityControl
 					label={__('Colour opacity', 'maxi-blocks')}
 					opacity={globalStatus ? globalPaletteOpacity : opacity}
-					onChange={val =>
+					onChangeOpacity={val =>
 						onChange({
 							paletteOpacity: val,
 						})
 					}
 					onReset={onResetOpacity}
+					disableRTC
 				/>
 			)}
 		</div>

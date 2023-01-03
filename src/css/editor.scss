@@ -291,7 +291,6 @@ body .toolbar-item__popover {
 	input[type='number'],
 	textarea,
 	select {
-		color: #fff;
 		border-color: #80828a;
 	}
 	input[type='number'] {
@@ -359,19 +358,26 @@ svg path#styleCardBoat_b {
 
 .maxi-block {
 	&::after {
-		border: 2px solid var(--maxi-light-blue-3-color);
-		border-radius: 0;
-		box-shadow: none !important;
-		opacity: 0;
 		top: -1px !important;
 		right: -1px !important;
 		bottom: -1px !important;
 		left: -1px !important;
+		border: 2px solid var(--maxi-light-blue-3-color);
+		border-radius: 0;
+		box-shadow: none !important;
+		opacity: 0;
+	}
+
+	&.maxi-block--full-width::after {
+		width: calc(100% - 4px);
 	}
 
 	&:not(.is-selected) {
 		&:hover {
 			&::after {
+				content: '';
+				position: absolute;
+				pointer-events: none;
 				opacity: 1;
 			}
 		}
@@ -384,6 +390,23 @@ svg path#styleCardBoat_b {
 		}
 		&:focus {
 			box-shadow: none;
+		}
+	}
+
+	&.maxi-container-block {
+		&::after {
+			top: 0px !important;
+			right: 0px !important;
+			bottom: 0px !important;
+			left: 0px !important;
+		}
+		.maxi-indicators__padding--left {
+			position: absolute;
+			left: 4px;
+		}
+		.maxi-indicators__padding--right {
+			position: absolute;
+			right: 4px;
 		}
 	}
 }

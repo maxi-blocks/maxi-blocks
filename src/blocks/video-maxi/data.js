@@ -1,9 +1,9 @@
 /**
  * Internal dependencies
  */
-import { createSelectors } from '../../extensions/styles/custom-css';
+import { getCanvasSettings } from '../../extensions/relations';
 import { createIconTransitions } from '../../extensions/styles';
-import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
+import { createSelectors } from '../../extensions/styles/custom-css';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
 /**
@@ -18,9 +18,11 @@ const overlayClass = `${blockClass}__overlay`;
  */
 const name = 'video-maxi';
 const copyPasteMapping = {
+	_exclude: ['url', 'embedUrl', 'videoType'],
 	settings: {
 		Video: {
 			group: {
+				Url: ['url', 'embedUrl', 'videoType'],
 				'Video type': 'playerType',
 				'Start time': 'startTime',
 				'End time': 'endTime',

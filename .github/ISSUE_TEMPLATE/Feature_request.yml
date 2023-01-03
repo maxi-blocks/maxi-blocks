@@ -1,0 +1,36 @@
+name: Feature request
+description: Request a new feature for MaxiBlocks
+labels: ['enhance']
+body:
+    - type: textarea
+      attributes:
+          label: Description
+          description: Please write a brief description of the enhancement, including the situation in which it would be useful.
+          placeholder: |
+              I would like to have a feature '...' because '...', and will cover the following use cases: '...'
+      validations:
+          required: true
+
+    - type: textarea
+      attributes:
+          label: Other plugins or websites examples
+          description: |
+              If possible, please share other plugins or websites that have a similar feature.
+      validations:
+          required: false
+
+    - type: textarea
+      attributes:
+          label: How to implement it
+          description: |
+              Please, if you have an idea or suggestion about how to implement the bug, write it here.
+      validations:
+          required: false
+
+    - type: textarea
+      attributes:
+          label: Other information
+          description: |
+              Please, use this space to share additional information related with the bug.
+      validations:
+          required: false

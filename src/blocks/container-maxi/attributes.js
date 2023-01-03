@@ -29,8 +29,16 @@ const attributes = {
 					'background-color-general': '',
 					'background-color-clip-path-general': '',
 					'background-color-wrapper-position-sync-general': 'all',
-					'background-color-wrapper-size-general': 100,
-					'background-color-wrapper-size-unit-general': '%',
+					'background-color-wrapper-width-general': 100,
+					'background-color-wrapper-width-unit-general': '%',
+					'background-color-wrapper-height-general': 100,
+					'background-color-wrapper-height-unit-general': '%',
+					'background-color-wrapper-position-bottom-unit-general':
+						'px',
+					'background-color-wrapper-position-top-unit-general': 'px',
+					'background-color-wrapper-position-left-unit-general': 'px',
+					'background-color-wrapper-position-right-unit-general':
+						'px',
 					order: 1,
 					id: 1,
 				},
@@ -54,50 +62,6 @@ const attributes = {
 		'size-advanced-options': {
 			type: 'boolean',
 			default: true,
-		},
-		'max-width-xxl': {
-			type: 'string',
-			default: '1690',
-		},
-		'max-width-xl': {
-			type: 'string',
-			default: '1170',
-		},
-		'max-width-l': {
-			type: 'string',
-			default: '90',
-		},
-		'max-width-unit-xxl': {
-			type: 'string',
-			default: 'px',
-		},
-		'max-width-unit-xl': {
-			type: 'string',
-			default: 'px',
-		},
-		'max-width-unit-l': {
-			type: 'string',
-			default: '%',
-		},
-		'width-l': {
-			type: 'string',
-			default: '1170',
-		},
-		'width-m': {
-			type: 'string',
-			default: '1000',
-		},
-		'width-s': {
-			type: 'string',
-			default: '700',
-		},
-		'width-xs': {
-			type: 'string',
-			default: '460',
-		},
-		'width-unit-l': {
-			type: 'string',
-			default: 'px',
 		},
 	},
 	...attributesData.margin,
@@ -124,6 +88,7 @@ const attributes = {
 	},
 	...attributesData.display,
 	...attributesData.opacity,
+	...attributesData.opacityHover,
 	...attributesData.position,
 	...attributesData.overflow,
 	...attributesData.zIndex,

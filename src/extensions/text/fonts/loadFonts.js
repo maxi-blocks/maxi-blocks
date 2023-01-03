@@ -132,11 +132,9 @@ const loadFonts = (font, backendOnly = true, target = document) => {
 	return null;
 };
 
-const loadFontsInEditor = (breakpoint, objFont) => {
-	if (breakpoint === 's' || breakpoint === 'xs') {
-		const iframeEditor = document.querySelector(
-			'iframe[name="editor-canvas"]'
-		);
+const loadFontsInEditor = objFont => {
+	const iframeEditor = document.querySelector('iframe[name="editor-canvas"]');
+	if (iframeEditor) {
 		loadFonts(objFont, true, iframeEditor.contentDocument);
 	} else loadFonts(objFont);
 };

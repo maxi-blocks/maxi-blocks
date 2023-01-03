@@ -23,6 +23,7 @@ Array [
       },
     },
     "effects": Object {
+      "disableTransition": true,
       "easing-general": "ease",
       "hoverStatus": false,
       "transition-delay-general": 0,
@@ -40,5 +41,3 @@ Array [
 `;
 
 exports[`Image Maxi hover simple actions Alignment 2`] = `" body.maxi-blocks--active #image-maxi-1[data-maxi-relations=\\"true\\"] .maxi-image-block-wrapper { justify-content: flex-end;}@media screen and (max-width: 1920px) { body.maxi-blocks--active #image-maxi-1[data-maxi-relations=\\"true\\"] .maxi-image-block-wrapper { justify-content: flex-end;}}"`;
-
-exports[`Image Maxi hover simple actions Alignment 3`] = `"body.maxi-blocks--active #image-maxi-1[data-maxi-relations=\\"true\\"] .maxi-image-block-wrapper { transition: justify-content 0.3s 0s ease;}"`;

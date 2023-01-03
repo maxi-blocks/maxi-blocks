@@ -29,7 +29,7 @@ import {
 	getMarginPaddingStyles,
 	getTypographyStyles,
 } from '../../extensions/styles/helpers';
-import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
+import { getCanvasSettings } from '../../extensions/relations';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
 /**
@@ -47,6 +47,7 @@ const prefix = 'button-';
  */
 const name = 'button-maxi';
 const copyPasteMapping = {
+	_exclude: ['buttonContent'],
 	settings: {
 		'Button text': 'buttonContent',
 		Icon: {
@@ -352,6 +353,13 @@ const interactionBuilderSettings = {
 	],
 	canvas: getCanvasSettings({ name, customCss }),
 };
+const maxiAttributes = {
+	'button-padding-sync-xxl': 'axis',
+	'button-padding-top-xxl': '23',
+	'button-padding-right-xxl': '55',
+	'button-padding-bottom-xxl': '23',
+	'button-padding-left-xxl': '55',
+};
 
 const data = {
 	name,
@@ -359,7 +367,14 @@ const data = {
 	customCss,
 	transition,
 	interactionBuilderSettings,
+	maxiAttributes,
 };
 
-export { copyPasteMapping, customCss, transition, interactionBuilderSettings };
+export {
+	copyPasteMapping,
+	customCss,
+	transition,
+	interactionBuilderSettings,
+	maxiAttributes,
+};
 export default data;

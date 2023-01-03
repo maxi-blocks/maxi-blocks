@@ -3,10 +3,6 @@
  */
 import { pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 
-/**
- * External dependencies
- */
-
 const editAdvancedNumberControl = async ({
 	page,
 	instance,

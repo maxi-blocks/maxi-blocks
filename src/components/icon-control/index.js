@@ -2,30 +2,31 @@
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
-import AxisPositionControl from '../axis-position-control';
-import SettingTabsControl from '../setting-tabs-control';
-import ToggleSwitch from '../toggle-switch';
-import ColorControl from '../color-control';
 import AxisControl from '../axis-control';
-import GradientControl from '../gradient-control';
+import AxisPositionControl from '../axis-position-control';
 import BorderControl from '../border-control';
+import ColorControl from '../color-control';
+import GradientControl from '../gradient-control';
+import Icon from '../icon';
 import InfoBox from '../info-box';
+import SettingTabsControl from '../setting-tabs-control';
+import SvgStrokeWidthControl from '../svg-stroke-width-control';
+import SvgWidthControl from '../svg-width-control';
+import ToggleSwitch from '../toggle-switch';
+import withRTC from '../../extensions/maxi-block/withRTC';
 import {
 	getAttributeKey,
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-import SvgWidthControl from '../svg-width-control';
-import SvgStrokeWidthControl from '../svg-stroke-width-control';
 import MaxiModal from '../../editor/library/modal';
-import Icon from '../icon';
 
 /**
  * External dependencies
@@ -80,22 +81,30 @@ const IconControl = props => {
 
 	const [iconStyle, setIconStyle] = useState('color');
 
+	useEffect(() => {
+		if (breakpoint !== 'general') {
+			setIconStyle('border');
+		}
+	}, [breakpoint]);
+
 	const getOptions = () => {
 		const options = [];
 
-		if (svgType !== 'Shape')
-			options.push({
-				icon: <Icon icon={iconBorder} />,
-				value: 'color',
-			});
-		else if (iconStyle === 'color') setIconStyle('fill');
+		if (breakpoint === 'general') {
+			if (svgType !== 'Shape')
+				options.push({
+					icon: <Icon icon={iconBorder} />,
+					value: 'color',
+				});
+			else if (iconStyle === 'color') setIconStyle('fill');
 
-		if (svgType !== 'Line')
-			options.push({
-				icon: <Icon icon={iconFill} />,
-				value: 'fill',
-			});
-		else if (iconStyle === 'fill') setIconStyle('color');
+			if (svgType !== 'Line')
+				options.push({
+					icon: <Icon icon={iconFill} />,
+					value: 'fill',
+				});
+			else if (iconStyle === 'fill') setIconStyle('color');
+		}
 
 		if (!disableBorder) {
 			options.push({
@@ -168,8 +177,14 @@ const IconControl = props => {
 						type={type}
 						style={blockStyle}
 						onSelect={obj => {
+							const newSvgType = obj[`${prefix}svgType`];
+
 							const icon = getIconWithColor({
 								rawIcon: obj[`${prefix}icon-content`],
+								type: [
+									newSvgType !== 'Shape' && 'stroke',
+									newSvgType !== 'Line' && 'fill',
+								].filter(Boolean),
 							});
 
 							onChange({
@@ -195,7 +210,7 @@ const IconControl = props => {
 										'Icon only (remove text)',
 										'maxi-blocks'
 									)}
-									className='maxi-color-control__palette__custom'
+									className='maxi-icon-control__icon-only'
 									selected={iconOnly}
 									onChange={val => {
 										const icon = getIconWithColor({
@@ -213,6 +228,7 @@ const IconControl = props => {
 						)}
 					<SvgWidthControl
 						{...getGroupAttributes(props, 'icon', isHover, prefix)}
+						className='maxi-icon-control__width'
 						onChange={onChange}
 						prefix={`${prefix}icon-`}
 						breakpoint={breakpoint}
@@ -236,6 +252,7 @@ const IconControl = props => {
 									),
 								},
 							})}
+							className='maxi-icon-control__stroke-width'
 							onChange={obj => onChange(obj)}
 							prefix={`${prefix}icon-`}
 							breakpoint={breakpoint}
@@ -247,6 +264,7 @@ const IconControl = props => {
 						<>
 							<AdvancedNumberControl
 								label={__('Spacing', 'maxi-blocks')}
+								className='maxi-icon-control__spacing'
 								min={0}
 								max={999}
 								initial={1}
@@ -269,13 +287,14 @@ const IconControl = props => {
 											getDefaultAttribute(
 												`${prefix}icon-spacing-${breakpoint}`
 											),
+										isReset: true,
 									})
 								}
 							/>
 							{!disablePosition && (
 								<AxisPositionControl
 									label='Icon'
-									className='maxi-icon-position-control'
+									className='maxi-icon-control__position'
 									selected={props[`${prefix}icon-position`]}
 									onChange={val => {
 										onChange({
@@ -292,9 +311,10 @@ const IconControl = props => {
 						breakpoint === 'general' && (
 							<ToggleSwitch
 								label={__(
-									'Inherit colour/background from button',
+									'Inherit stroke colour/background from button',
 									'maxi-block'
 								)}
+								className='maxi-icon-control__inherit'
 								selected={iconInherit}
 								onChange={val => {
 									const icon = getIconWithColor({
@@ -400,14 +420,13 @@ const IconControl = props => {
 										}`,
 										type: 'icon',
 									}}
-									noColorPrefix
 								/>
 							)
 						) : (
 							<InfoBox
 								key='maxi-warning-box__icon-color'
 								message={__(
-									'Icon colour is inheriting from button.',
+									'Icon stroke colour is inheriting from button.',
 									'maxi-blocks'
 								)}
 								links={[
@@ -438,6 +457,7 @@ const IconControl = props => {
 							breakpoint={breakpoint}
 							clientId={clientId}
 							isHover={isHover}
+							disableRTC
 						/>
 					)}
 					{iconStyle === 'fill' && svgType !== 'Line' && (
@@ -516,7 +536,6 @@ const IconControl = props => {
 								target: `${isHover ? 'hover-fill' : 'fill'}`,
 								type: 'icon',
 							}}
-							noColorPrefix
 							avoidBreakpointForDefault
 						/>
 					)}
@@ -648,53 +667,20 @@ const IconControl = props => {
 								))}
 							{iconBgActive === 'gradient' && (
 								<GradientControl
+									{...getGroupAttributes(
+										props,
+										'iconBackgroundGradient',
+										isHover,
+										prefix
+									)}
 									label={__(
 										'Icon Background gradient',
 										'maxi-blocks'
 									)}
-									gradient={getLastBreakpointAttribute({
-										target: `${prefix}icon-background-gradient`,
-										breakpoint,
-										attributes: props,
-										isHover,
-									})}
-									gradientOpacity={getLastBreakpointAttribute(
-										{
-											target: `${prefix}icon-background-gradient-opacity`,
-											breakpoint,
-											attributes: props,
-											isHover,
-										}
-									)}
-									defaultGradient={getDefaultAttribute(
-										getAttributeKey(
-											'background-gradient',
-											isHover,
-											`${prefix}icon-`,
-											breakpoint
-										)
-									)}
-									onChange={val =>
-										onChange({
-											[getAttributeKey(
-												'background-gradient',
-												isHover,
-												`${prefix}icon-`,
-												breakpoint
-											)]: val,
-										})
-									}
-									onChangeOpacity={val =>
-										onChange({
-											[getAttributeKey(
-												'background-gradient-opacity',
-												isHover,
-												`${prefix}icon-`,
-												breakpoint
-											)]: val,
-										})
-									}
+									breakpoint={breakpoint}
+									prefix={`${prefix}icon-background-`}
 									isHover={isHover}
+									onChange={onChange}
 								/>
 							)}
 						</>
@@ -723,4 +709,4 @@ const IconControl = props => {
 	);
 };
 
-export default IconControl;
+export default withRTC(IconControl);

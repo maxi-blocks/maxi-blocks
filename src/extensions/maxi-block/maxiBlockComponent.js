@@ -22,6 +22,7 @@ import { dispatch, resolveSelect, select, useSelect } from '@wordpress/data';
  */
 import {
 	getBlockStyle,
+	getDefaultAttribute,
 	getGroupAttributes,
 	getHasScrollEffects,
 	getHasVideo,
@@ -32,8 +33,8 @@ import {
 } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
 import getIsUniqueIDRepeated from './getIsUniqueIDRepeated';
+import getCustomLabel from './getCustomLabel';
 import { loadFonts, getAllFonts } from '../text/fonts';
-import uniqueIDGenerator from '../attributes/uniqueIDGenerator';
 import uniqueIDStructureChecker from './uniqueIDStructureChecker';
 import {
 	getIsSiteEditor,
@@ -42,22 +43,20 @@ import {
 } from '../fse';
 import { updateSCOnEditor } from '../style-cards';
 import getWinBreakpoint from '../dom/getWinBreakpoint';
-import getHoverStatus from '../../components/relation-control/getHoverStatus';
-import * as blocksData from '../../blocks/data';
+import { uniqueIDGenerator, getBlockData } from '../attributes';
+import getHoverStatus from '../relations/getHoverStatus';
+import { getStylesWrapperId } from './utils';
 
 /**
  * External dependencies
  */
 import { isEmpty, isEqual, cloneDeep, isNil } from 'lodash';
-import { getStylesWrapperId } from './utils';
 
 /**
  * Style Component
  */
 const StyleComponent = ({
-	uniqueID,
 	stylesObj,
-	currentBreakpoint,
 	blockBreakpoints,
 	isIframe = false,
 	isSiteEditor = false,
@@ -113,6 +112,10 @@ class MaxiBlockComponent extends Component {
 		if (!isEmpty(this.typography)) this.loadFonts();
 		this.getCurrentBlockStyle();
 		this.displayStyles(newUniqueID);
+
+		this.maxiAttributes = this.getMaxiAttributes();
+
+		this.setMaxiAttributes();
 	}
 
 	componentDidMount() {
@@ -272,6 +275,30 @@ class MaxiBlockComponent extends Component {
 		if (this.maxiBlockWillUnmount) this.maxiBlockWillUnmount();
 	}
 
+	getMaxiAttributes() {
+		return null;
+	}
+
+	setMaxiAttributes() {
+		if (!this.maxiAttributes) return;
+
+		Object.entries(this.maxiAttributes).forEach(([key, value]) => {
+			const currentValue = this.props.attributes[key];
+			const defaultValue = getDefaultAttribute(key, this.props.clientId);
+
+			if (
+				(!isEqual(currentValue, defaultValue) ||
+					!isEqual(currentValue, value)) &&
+				// Using `maxi-version-current` as is an attribute that set on componentDidMount
+				// so it ensures we add these attributes the first time we add the block
+				'maxi-version-current' in this.props.attributes
+			)
+				return;
+
+			this.props.attributes[key] = value;
+		});
+	}
+
 	get getBreakpoints() {
 		return getBreakpoints(this.props.attributes);
 	}
@@ -370,10 +397,10 @@ class MaxiBlockComponent extends Component {
 			});
 
 			this.props.attributes.uniqueID = newUniqueID;
-
-			const label = this.props.attributes.uniqueID.replace('-maxi-', '_');
-			this.props.attributes.customLabel =
-				label.charAt(0).toUpperCase() + label.slice(1);
+			this.props.attributes.customLabel = getCustomLabel(
+				this.props.attributes.customLabel,
+				this.props.attributes.uniqueID
+			);
 
 			return newUniqueID;
 		}
@@ -428,11 +455,7 @@ class MaxiBlockComponent extends Component {
 
 							if (!('hoverStatus' in effects)) return relation;
 
-							const blockData = Object.values(blocksData).find(
-								({ name }) =>
-									name ===
-									blockName.replace('maxi-blocks/', '')
-							);
+							const blockData = getBlockData(blockName);
 
 							if (!blockData?.interactionBuilderSettings)
 								return relation;
@@ -481,12 +504,7 @@ class MaxiBlockComponent extends Component {
 	}
 
 	removeUnmountedBlockFromRelations(uniqueID, blocksToCheck) {
-		if (
-			select('core/edit-post').getEditorMode() !== 'visual' ||
-			select('core/edit-post').__experimentalGetPreviewDeviceType() !==
-				this.currentBreakpoint
-		)
-			return;
+		if (getIsUniqueIDRepeated(uniqueID, 0)) return;
 
 		blocksToCheck.forEach(({ clientId, attributes, innerBlocks }) => {
 			const { relations, uniqueID: blockUniqueID } = attributes;

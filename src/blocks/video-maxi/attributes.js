@@ -40,6 +40,7 @@ const attributes = {
 	/**
 	 * Canvas styles
 	 */
+	...attributesData.blockBackground,
 	...attributesData.border,
 	...attributesData.borderHover,
 	...attributesData.borderRadius,
@@ -47,6 +48,7 @@ const attributes = {
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
 	...attributesData.opacity,
+	...attributesData.opacityHover,
 	...attributesData.size,
 	...attributesData.margin,
 	...attributesData.padding,

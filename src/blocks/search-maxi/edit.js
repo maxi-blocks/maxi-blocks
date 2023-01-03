@@ -60,7 +60,9 @@ const SearchBlock = props => {
 
 	const inputClasses = classnames(
 		'maxi-search-block__input',
-		!isInputOpen && 'maxi-search-block__input--hidden'
+		skin === 'icon-reveal' &&
+			!isInputOpen &&
+			'maxi-search-block__input--hidden'
 	);
 
 	const buttonIconClasses = classnames(

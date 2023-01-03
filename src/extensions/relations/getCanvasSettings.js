@@ -27,22 +27,19 @@ import {
 	getPositionStyles,
 	getSizeStyles,
 	getTransformStyles,
-} from '../../extensions/styles/helpers';
+} from '../styles/helpers';
 import {
 	getTransformCategories,
 	getTransformSelectors,
-} from '../transform-control/utils';
-import {
-	getGroupAttributes,
-	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '../../components/transform-control/utils';
+import { getGroupAttributes, getLastBreakpointAttribute } from '../styles';
 
 /**
  * External dependencies
  */
-import { isEmpty, isPlainObject, pickBy } from 'lodash';
+import { isEmpty, isEqual, isPlainObject, pickBy } from 'lodash';
 
-const getTransformControl = (name, { categories, selectors }) => ({
+const getTransformControl = ({ categories, selectors }) => ({
 	label: __('Transform', 'maxi-blocks'),
 	transitionTarget: [],
 	hoverProp: (attributes, relationAttributes) =>
@@ -62,13 +59,16 @@ const getTransformControl = (name, { categories, selectors }) => ({
 			{...props}
 			uniqueID={props.attributes.uniqueID}
 			depth={2}
-			selectors={getTransformSelectors(selectors)}
+			selectors={getTransformSelectors(selectors, props.attributes)}
 			categories={getTransformCategories(categories, props.attributes)}
 			disableHover
 		/>
 	),
 	helper: props =>
-		getTransformStyles(props.obj, getTransformSelectors(selectors)),
+		getTransformStyles(
+			props.obj,
+			getTransformSelectors(selectors, props.blockAttributes)
+		),
 });
 
 const getCanvasSettings = ({ name, customCss }) => [
@@ -83,22 +83,33 @@ const getCanvasSettings = ({ name, customCss }) => [
 			'borderRadius',
 		],
 		component: props => {
-			const { attributes, onChange } = props;
-			const { 'background-layers': bgLayers } = attributes;
+			const { attributes, onChange, blockAttributes } = props;
+			const { 'background-layers': currentBgLayers } = attributes;
+			const { 'background-layers': blockBgLayers } = blockAttributes;
 
-			return !isEmpty(bgLayers) ? (
+			return !isEmpty(currentBgLayers) ? (
 				<BlockBackgroundControl
 					{...props}
 					onChange={obj => {
 						const { 'background-layers': bgLayers, ...rest } = obj;
-						const newBgLayers = bgLayers.map(bgLayer =>
-							pickBy(
+						const newBgLayers = bgLayers.map((bgLayer, index) => {
+							const newBgLayer = pickBy(
 								bgLayer,
 								(_value, key) =>
 									!key.includes('mediaID') &&
 									!key.includes('mediaURL')
-							)
-						);
+							);
+
+							return Object.fromEntries(
+								Object.entries(newBgLayer).filter(
+									([key, attr]) =>
+										!isEqual(
+											attr,
+											blockBgLayers[index][key]
+										)
+								)
+							);
+						});
 
 						onChange({
 							...rest,
@@ -131,12 +142,14 @@ const getCanvasSettings = ({ name, customCss }) => [
 	},
 	{
 		label: __('Box shadow', 'maxi-blocks'),
+		hoverProp: 'box-shadow-status-hover',
 		attrGroupName: 'boxShadow',
 		component: props => <BoxShadowControl {...props} />,
 		helper: props => getBoxShadowStyles(props),
 	},
 	{
 		label: __('Opacity', 'maxi-blocks'),
+		hoverProp: 'opacity-status-hover',
 		attrGroupName: 'opacity',
 		component: props => (
 			<OpacityControl
@@ -146,9 +159,6 @@ const getCanvasSettings = ({ name, customCss }) => [
 					breakpoint: props.breakpoint,
 					attributes: getGroupAttributes(props, 'opacity'),
 				})}
-				onChange={val =>
-					props.onChange({ [`opacity-${props.breakpoint}`]: val })
-				}
 			/>
 		),
 		helper: props => getOpacityStyles(props.obj),
@@ -193,7 +203,7 @@ const getCanvasSettings = ({ name, customCss }) => [
 		component: props => <PositionControl {...props} />,
 		helper: props => getPositionStyles(props.obj),
 	},
-	...getTransformControl(name, customCss),
+	...getTransformControl(customCss),
 ];
 
 export default getCanvasSettings;

@@ -10,7 +10,7 @@
 .maxi-popover,
 .toolbar-item__popover {
 	hr {
-		margin: 0 0 8px 0;
+		margin: 0 0 8px;
 		border-bottom: 2px solid var(--maxi-grey-1-color);
 	}
 	.block-editor-link-control {
@@ -244,6 +244,7 @@
 		min-width: 373px !important;
 		padding: 20px;
 		box-shadow: 0 46px 133px rgba(150, 176, 203, 0.23) !important;
+		outline: none;
 
 		@at-root .rtl #{&} {
 			min-width: 0px !important;

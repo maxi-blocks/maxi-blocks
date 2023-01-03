@@ -3,13 +3,14 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Component, createRef } from '@wordpress/element';
-import { Icon, Popover, Tooltip } from '@wordpress/components';
+import { Popover, Tooltip } from '@wordpress/components';
 import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import Button from '../../../button';
+import Icon from '../../../icon';
 import { openSidebarAccordion } from '../../../../extensions/inspector';
 import { toolbarAdvancedSettings } from '../../../../icons';
 import ToolbarContext from './toolbarContext';
@@ -18,7 +19,7 @@ import ToolbarContext from './toolbarContext';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
+import { isEmpty, isNaN } from 'lodash';
 
 /**
  * Styles
@@ -117,10 +118,8 @@ class ToolbarPopover extends Component {
 
 		const { receiveMaxiSettings } = select('maxiBlocks');
 
-		const maxiSettings = receiveMaxiSettings();
-		const tooltipsHide = !isEmpty(maxiSettings.hide_tooltips)
-			? maxiSettings.hide_tooltips
-			: false;
+		const { hide_tooltips: hideTooltips, editor } = receiveMaxiSettings();
+		const tooltipsHide = !isEmpty(hideTooltips) ? hideTooltips : false;
 
 		const buttonContent = () => {
 			return (
@@ -137,6 +136,21 @@ class ToolbarPopover extends Component {
 			);
 		};
 
+		const popoverProps = {
+			...((parseFloat(editor?.version) <= 13.0 && {
+				noArrow: false,
+				anchorRef: this.ref?.current?.closest('.toolbar-wrapper'),
+				shouldAnchorIncludePadding: true,
+			}) ||
+				(!isNaN(parseFloat(editor?.version)) && {
+					noArrow: false,
+					anchor: this.ref?.current?.closest('.toolbar-wrapper'),
+					flip: false,
+					resize: false,
+					variant: 'unstyled',
+				})),
+		};
+
 		return (
 			<div ref={this.ref}>
 				<ToolbarContext.Provider value={{ isOpen, onClose }}>
@@ -149,15 +163,11 @@ class ToolbarPopover extends Component {
 					{isOpen && children && (
 						<Popover
 							className='toolbar-item__popover'
-							noArrow={false}
-							// Toolbar node
-							anchorRef={this.ref?.current?.closest(
-								'.toolbar-wrapper'
-							)}
 							onClose={onClose}
 							position={position}
 							isAlternate
-							shouldAnchorIncludePadding
+							{...popoverProps}
+							noArrow
 						>
 							<div>{children}</div>
 							{!!advancedOptions && (

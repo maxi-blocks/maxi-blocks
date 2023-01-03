@@ -8,7 +8,6 @@ import { __ } from '@wordpress/i18n';
  */
 import TransformControl from '../transform-control';
 import { getGroupAttributes } from '../../extensions/styles';
-import ResponsiveTabsControl from '../responsive-tabs-control';
 import {
 	getTransformSelectors,
 	getTransformCategories,
@@ -30,32 +29,30 @@ const transform = ({ props, depth = 2, categories, selectors }) => {
 	return {
 		label: __('Transform', 'maxi-blocks'),
 		content: (
-			<ResponsiveTabsControl breakpoint={deviceType}>
-				<TransformControl
-					{...getGroupAttributes(attributes, 'transform')}
-					onChangeInline={(obj, target, pseudoElement) => {
-						insertInlineStyles({
-							obj,
-							target,
-							...(pseudoElement && {
-								pseudoElement: `::${pseudoElement}`,
-							}),
-						});
-					}}
-					onChange={(obj, inlineStylesTargets, pseudoElement) => {
-						maxiSetAttributes(obj);
-						cleanInlineStyles(
-							inlineStylesTargets,
-							pseudoElement && `::${pseudoElement}`
-						);
-					}}
-					uniqueID={uniqueID}
-					breakpoint={deviceType}
-					depth={depth}
-					categories={getTransformCategories(categories, attributes)}
-					selectors={getTransformSelectors(selectors)}
-				/>
-			</ResponsiveTabsControl>
+			<TransformControl
+				{...getGroupAttributes(attributes, 'transform')}
+				onChangeInline={(obj, target, pseudoElement) => {
+					insertInlineStyles({
+						obj,
+						target,
+						...(pseudoElement && {
+							pseudoElement: `::${pseudoElement}`,
+						}),
+					});
+				}}
+				onChange={(obj, inlineStylesTargets, pseudoElement) => {
+					maxiSetAttributes(obj);
+					cleanInlineStyles(
+						inlineStylesTargets,
+						pseudoElement && `::${pseudoElement}`
+					);
+				}}
+				uniqueID={uniqueID}
+				breakpoint={deviceType}
+				depth={depth}
+				categories={getTransformCategories(categories, attributes)}
+				selectors={getTransformSelectors(selectors, attributes)}
+			/>
 		),
 	};
 };

@@ -12,7 +12,7 @@ import {
 	getAlignmentTextStyles,
 	getTypographyStyles,
 } from '../../extensions/styles/helpers';
-import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
+import { getCanvasSettings } from '../../extensions/relations';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
 /**
@@ -27,6 +27,7 @@ const linkClass = `${blockClass}--link`;
  */
 const name = 'text-maxi';
 const copyPasteMapping = {
+	_exclude: ['content'],
 	settings: {
 		'Text content': 'content',
 		'Heading / Paragraph tag': 'textLevel',
@@ -181,6 +182,7 @@ const interactionBuilderSettings = {
 			attrGroupName: 'textAlignment',
 			component: props => <AlignmentControl {...props} type='text' />,
 			helper: props => getAlignmentTextStyles(props.obj),
+			disableTransition: true,
 		},
 		{
 			label: __('Typography', 'maxi-blocks'),

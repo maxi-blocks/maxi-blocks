@@ -1,3 +1,8 @@
+/**
+ * WordPress dependencies
+ */
+import { dispatch } from '@wordpress/data';
+
 /* eslint-disable react/jsx-no-constructed-context-values */
 /**
  * Internal dependencies
@@ -58,6 +63,13 @@ class edit extends MaxiBlockComponent {
 		});
 	}
 
+	maxiBlockDidUpdate() {
+		if (!this.props.hasInnerBlocks) {
+			const { removeBlock } = dispatch('core/block-editor');
+			removeBlock(this.props.clientId);
+		}
+	}
+
 	render() {
 		const { attributes } = this.props;
 		const {
@@ -92,6 +104,7 @@ class edit extends MaxiBlockComponent {
 			<AccordionContext.Provider
 				key={`accordion-content-${uniqueID}`}
 				value={{
+					accordionUniqueId: uniqueID,
 					paneIcon: attributes['icon-content'],
 					paneIconActive: attributes['active-icon-content'],
 					accordionLayout,

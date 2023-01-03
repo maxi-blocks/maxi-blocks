@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import { createRef } from '@wordpress/element';
 import { dispatch } from '@wordpress/data';
-import { Button } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -20,6 +19,7 @@ import {
 	BlockResizer,
 	RawHTML,
 	MaxiPopoverButton,
+	Button,
 } from '../../components';
 import {
 	getIsOverflowHidden,
@@ -44,7 +44,9 @@ class edit extends MaxiBlockComponent {
 
 		this.resizableObject = createRef();
 
-		this.state = { isOpen: this.props.attributes.openFirstTime };
+		this.state = {
+			isOpen: this.props.attributes.openFirstTime,
+		};
 	}
 
 	maxiBlockDidUpdate(prevProps) {
@@ -181,19 +183,29 @@ class edit extends MaxiBlockComponent {
 						copyPasteMapping={copyPasteMapping}
 						prefix='svg-'
 						inlineStylesTargets={inlineStylesTargets}
+						onModalOpen={() => this.setState({ isOpen: true })}
 						{...this.props}
 					/>,
 					<MaxiPopoverButton
 						key={`popover-${uniqueID}`}
 						ref={this.blockRef}
 						isOpen={isOpen}
+						prefix='svg-'
 						{...this.props}
 					>
 						<MaxiModal {...maxiModalProps} />
 					</MaxiPopoverButton>,
 				],
 			],
-			...[isEmptyContent && <MaxiModal {...maxiModalProps} forceHide />],
+			...[
+				isEmptyContent && (
+					<MaxiModal
+						{...maxiModalProps}
+						forceHide
+						key={`maxi-modal--${uniqueID}`}
+					/>
+				),
+			],
 			<MaxiBlock
 				key={`maxi-svg-icon--${uniqueID}`}
 				ref={this.blockRef}
@@ -201,7 +213,10 @@ class edit extends MaxiBlockComponent {
 			>
 				<>
 					{isEmptyContent && (
-						<div className='maxi-svg-icon-block__placeholder'>
+						<div
+							className='maxi-svg-icon-block__placeholder'
+							key={`maxi-svg-icon-block__placeholder--${uniqueID}`}
+						>
 							<Button
 								isPrimary
 								key={`maxi-block-library__modal-button--${clientId}`}
@@ -215,6 +230,7 @@ class edit extends MaxiBlockComponent {
 					{!isEmptyContent && (
 						<BlockResizer
 							className='maxi-svg-icon-block__icon'
+							key={`maxi-svg-icon-block__icon--${clientId}`}
 							resizableObject={this.resizableObject}
 							isOverflowHidden={getIsOverflowHidden(
 								attributes,

@@ -96,6 +96,12 @@ const getHoverObject = props => {
 				isHover: true,
 				blockStyle: props.blockStyle,
 			}),
+		opacity:
+			props['opacity-status-hover'] &&
+			getOpacityStyles(
+				{ ...getGroupAttributes(props, 'opacity', true) },
+				true
+			),
 	};
 
 	return response;
@@ -191,6 +197,47 @@ const getHoverStyles = (props, prefix) => {
 	return response;
 };
 
+const getActiveStyles = (props, rawPrefix) => {
+	const prefix = `${rawPrefix}active-`;
+
+	return {
+		...(props[`${rawPrefix}background-status-active`] &&
+			getBackgroundStyles({
+				...getGroupAttributes(
+					props,
+					['background', 'backgroundColor', 'backgroundGradient'],
+					false,
+					prefix
+				),
+				blockStyle: props.blockStyle,
+				prefix,
+			})),
+		border:
+			props[`${rawPrefix}border-status-active`] &&
+			getBorderStyles({
+				obj: {
+					...getGroupAttributes(
+						props,
+						['border', 'borderWidth', 'borderRadius'],
+						false,
+						prefix
+					),
+				},
+				blockStyle: props.blockStyle,
+				prefix,
+			}),
+		boxShadow:
+			props[`${rawPrefix}box-shadow-status-active`] &&
+			getBoxShadowStyles({
+				obj: {
+					...getGroupAttributes(props, 'boxShadow', false, prefix),
+				},
+				blockStyle: props.blockStyle,
+				prefix,
+			}),
+	};
+};
+
 const getStyles = props => {
 	const { uniqueID } = props;
 
@@ -204,14 +251,14 @@ const getStyles = props => {
 					props,
 					'content-'
 				),
-				' .maxi-pane-block__header:hover': getHoverStyles(
-					props,
-					'header-'
-				),
-				' .maxi-pane-block__content:hover': getHoverStyles(
-					props,
-					'content-'
-				),
+				'[aria-expanded] .maxi-pane-block__header:hover':
+					getHoverStyles(props, 'header-'),
+				'[aria-expanded] .maxi-pane-block__content:hover':
+					getHoverStyles(props, 'content-'),
+				'[aria-expanded="true"] .maxi-pane-block__header':
+					getActiveStyles(props, 'header-'),
+				'[aria-expanded="true"] .maxi-pane-block__content':
+					getActiveStyles(props, 'content-'),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(props, [
 						'blockBackground',

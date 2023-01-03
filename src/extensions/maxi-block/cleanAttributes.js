@@ -185,6 +185,12 @@ const flatWithGeneral = (
 			const prevValue = attributes[attr];
 			const attrBreakpoint = getBreakpointFromAttribute(attr);
 
+			/**
+			 * In case if after cleaning lower breakpoint attributes,
+			 * because they were the same with higher, on the next iteration
+			 * if higher attribute different from the previous one by number of digits(1 less or more) or
+			 * by value(1 less or more), cleaned lower breakpoint attribute will be restored.
+			 */
 			if (attr === key && !isNil(prevValue)) {
 				const recursiveSum = attrValue => {
 					if (isNil(attrValue)) return 0;

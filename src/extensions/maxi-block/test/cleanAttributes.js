@@ -417,6 +417,7 @@ describe('cleanAttributes', () => {
 				'test-general': {
 					normal: {
 						numberWhichIsChanging: 3,
+						keyOfUndefined: undefined,
 					},
 					hover: {
 						numberWhichIsNotChanging: 1,
@@ -426,13 +427,12 @@ describe('cleanAttributes', () => {
 			attributes: {
 				'test-general': undefined,
 				'test-l': {
-					'test-general': {
-						normal: {
-							numberWhichIsChanging: 4,
-						},
-						hover: {
-							numberWhichIsNotChanging: 1,
-						},
+					normal: {
+						numberWhichIsChanging: 4,
+						keyOfUndefined: undefined,
+					},
+					hover: {
+						numberWhichIsNotChanging: 1,
 					},
 				},
 			},
@@ -442,6 +442,7 @@ describe('cleanAttributes', () => {
 				'test-general': {
 					normal: {
 						numberWhichIsChanging: 4,
+						keyOfUndefined: undefined,
 					},
 					hover: {
 						numberWhichIsNotChanging: 1,
@@ -452,6 +453,7 @@ describe('cleanAttributes', () => {
 				'test-general': {
 					normal: {
 						numberWhichIsChanging: 3,
+						keyOfUndefined: undefined,
 					},
 					hover: {
 						numberWhichIsNotChanging: 1,
@@ -460,6 +462,7 @@ describe('cleanAttributes', () => {
 				'test-l': {
 					normal: {
 						numberWhichIsChanging: 4,
+						keyOfUndefined: undefined,
 					},
 					hover: {
 						numberWhichIsNotChanging: 1,
@@ -472,6 +475,7 @@ describe('cleanAttributes', () => {
 				'test-general': {
 					normal: {
 						numberWhichIsChanging: 5,
+						keyOfUndefined: undefined,
 					},
 					hover: {
 						numberWhichIsNotChanging: 1,
@@ -482,6 +486,7 @@ describe('cleanAttributes', () => {
 				'test-general': {
 					normal: {
 						numberWhichIsChanging: 4,
+						keyOfUndefined: undefined,
 					},
 					hover: {
 						numberWhichIsNotChanging: 1,
@@ -512,6 +517,7 @@ describe('cleanAttributes', () => {
 			'test-general': {
 				normal: {
 					numberWhichIsChanging: 3,
+					keyOfUndefined: undefined,
 				},
 				hover: {
 					numberWhichIsNotChanging: 1,
@@ -522,6 +528,7 @@ describe('cleanAttributes', () => {
 			'test-general': {
 				normal: {
 					numberWhichIsChanging: 4,
+					keyOfUndefined: undefined,
 				},
 				hover: {
 					numberWhichIsNotChanging: 1,
@@ -533,6 +540,7 @@ describe('cleanAttributes', () => {
 			'test-general': {
 				normal: {
 					numberWhichIsChanging: 5,
+					keyOfUndefined: undefined,
 				},
 				hover: {
 					numberWhichIsNotChanging: 1,
@@ -541,6 +549,7 @@ describe('cleanAttributes', () => {
 			'test-l': {
 				normal: {
 					numberWhichIsChanging: 4,
+					keyOfUndefined: undefined,
 				},
 				hover: {
 					numberWhichIsNotChanging: 1,

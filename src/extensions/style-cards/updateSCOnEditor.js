@@ -17,7 +17,7 @@ import { getSiteEditorIframe } from '../fse';
 /**
  * External dependencies
  */
-import { times, isEmpty, merge, cloneDeep, uniq } from 'lodash';
+import { times, isArray, isEmpty, merge, cloneDeep, uniq } from 'lodash';
 import { getTypographyStyles } from '../styles/helpers';
 
 const getColorString = (obj, target, style) => {
@@ -256,12 +256,14 @@ const getSCFontsData = obj => {
 	return response;
 };
 
-const updateSCOnEditor = styleCards => {
+const updateSCOnEditor = (
+	styleCards,
+	rawElements = [document, getSiteEditorIframe()]
+) => {
 	const SCObject = getSCVariablesObject({ ...cloneDeep(styleCards) });
 	const allSCFonts = getSCFontsData(SCObject);
 
-	const siteEditorIFrame = getSiteEditorIframe();
-	const elements = [document, siteEditorIFrame];
+	const elements = isArray(rawElements) ? rawElements : [rawElements];
 
 	elements.forEach(element => {
 		if (!element) return;

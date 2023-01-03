@@ -1381,7 +1381,7 @@ Object {
   "hoverProp": "icon-status-hover",
   "label": "Button icon",
   "transitionTarget": Array [
-    "  .maxi-button-block__icon svg *:not(g)",
+    "  .maxi-button-block__icon svg > *:not(g)",
     " .maxi-button-block__icon svg",
     " .maxi-button-block__icon",
     " .maxi-button-block__icon",

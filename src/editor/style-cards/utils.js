@@ -1,4 +1,9 @@
 /**
+ * Internal dependencies
+ */
+import standardSC from '../../../core/utils/defaultSC.json';
+
+/**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
@@ -8,6 +13,7 @@ import { dispatch, select } from '@wordpress/data';
  * External dependencies
  */
 import { isEmpty, isNil, isString } from 'lodash';
+import { updatedDiff } from 'deep-object-diff';
 
 /**
  * Utils
@@ -70,7 +76,8 @@ export const exportStyleCard = (data, fileName) => {
 	document.body.appendChild(a);
 	a.style = 'display: none';
 
-	const json = JSON.stringify(data);
+	const reducedSC = updatedDiff(standardSC?.sc_maxi, data);
+	const json = JSON.stringify(reducedSC);
 	const blob = new Blob([json], { type: 'text/plain' });
 	const url = window.URL.createObjectURL(blob);
 

@@ -2,7 +2,7 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { select } from '@wordpress/data';
+import { select, useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -60,6 +60,7 @@ const RelationControl = props => {
 		if (!blockName) return {};
 
 		const blockOptions = getBlockData(blockName).interactionBuilderSettings;
+		console.log(blockOptions);
 
 		return blockOptions || {};
 	};
@@ -381,6 +382,8 @@ const RelationControl = props => {
 	const getDefaultTransitionAttribute = target =>
 		transitionDefaultAttributes[`${target}-${deviceType}`];
 
+	const { selectBlock } = useDispatch('core/block-editor');
+
 	return (
 		<div className='maxi-relation-control'>
 			<Button
@@ -426,6 +429,7 @@ const RelationControl = props => {
 											)}
 										/>
 									)}
+
 									<SelectControl
 										label={__(
 											'Block to affect',
@@ -601,6 +605,22 @@ const RelationControl = props => {
 													);
 												}}
 											/>
+											<div className='maxi-relation-control__block-access maxi-warning-box__links'>
+												<a
+													onClick={() =>
+														selectBlock(
+															getClientIdFromUniqueId(
+																item.uniqueID
+															)
+														)
+													}
+												>
+													{__(
+														'Open block settings',
+														'maxi-blocks'
+													)}
+												</a>
+											</div>
 										</>
 									)}
 									{item.uniqueID &&

@@ -186,15 +186,17 @@ const flatWithGeneral = (
 			const attrBreakpoint = getBreakpointFromAttribute(attr);
 
 			if (attr === key && !isNil(prevValue)) {
-				const recursiveSum = obj => {
-					if (isPlainObject(obj)) {
-						return Object.values(obj).reduce(
+				const recursiveSum = attrValue => {
+					if (isNil(attrValue)) return 0;
+
+					if (isPlainObject(attrValue)) {
+						return Object.values(attrValue).reduce(
 							(acc, val) => acc + recursiveSum(val),
 							0
 						);
 					}
 
-					return toNumber(obj) || 0;
+					return toNumber(attrValue) || 0;
 				};
 
 				const prevValueSum = recursiveSum(prevValue);

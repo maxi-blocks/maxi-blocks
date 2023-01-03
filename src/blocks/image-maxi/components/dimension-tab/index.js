@@ -9,6 +9,7 @@ import { RangeControl } from '@wordpress/components';
  */
 import {
 	AdvancedNumberControl,
+	AspectRatioControl,
 	ImageCropControl,
 	SelectControl,
 	ToggleSwitch,
@@ -181,45 +182,25 @@ const DimensionTab = props => {
 					initialPosition={getDefaultAttribute('imgWidth', clientId)}
 				/>
 			)}
-			<SelectControl
+			<AspectRatioControl
 				className='maxi-image-inspector__ratio'
 				label={__('Image ratio', 'maxi-blocks')}
 				value={imageRatio}
-				onReset={() =>
-					maxiSetAttributes({
-						imageRatio: getDefaultAttribute('imageRatio'),
-						isReset: true,
-					})
-				}
-				options={[
+				additionalOptions={[
 					{
 						label: __('Original size', 'maxi-blocks'),
 						value: 'original',
-					},
-					{
-						label: __('1:1 Aspect ratio', 'maxi-blocks'),
-						value: 'ar11',
-					},
-					{
-						label: __('2:3 Aspect ratio', 'maxi-blocks'),
-						value: 'ar23',
-					},
-					{
-						label: __('3:2 Aspect ratio', 'maxi-blocks'),
-						value: 'ar32',
-					},
-					{
-						label: __('4:3 Aspect ratio', 'maxi-blocks'),
-						value: 'ar43',
-					},
-					{
-						label: __('16:9 Aspect ratio', 'maxi-blocks'),
-						value: 'ar169',
 					},
 				]}
 				onChange={imageRatio =>
 					maxiSetAttributes({
 						imageRatio,
+					})
+				}
+				onReset={() =>
+					maxiSetAttributes({
+						imageRatio: getDefaultAttribute('imageRatio'),
+						isReset: true,
 					})
 				}
 			/>

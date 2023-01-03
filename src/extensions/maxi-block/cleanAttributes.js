@@ -216,23 +216,16 @@ const flatWithGeneral = (
 					isChangingDigitsNumber(valueSum, prevValueSum)
 				) {
 					const simpleLabel = getSimpleLabel(attr, attrBreakpoint);
-					const lowerBreakpoints = breakpoints.slice(
-						breakpoints.indexOf(attrBreakpoint) + 1
-					);
 
-					lowerBreakpoints.some(breakpoint => {
+					['xxl', ...breakpoints].forEach(breakpoint => {
 						const label = `${simpleLabel}-${breakpoint}`;
 
 						if (
 							prevSavedAttrs.includes(label) &&
 							isNil(prevSavedAttrs[label]) &&
 							isNil(attributes[label])
-						) {
+						)
 							result[label] = prevValue;
-							return true;
-						}
-
-						return false;
 					});
 				}
 			}

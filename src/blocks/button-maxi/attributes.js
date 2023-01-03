@@ -66,10 +66,6 @@ const attributes = {
 			type: 'string',
 			default: '%',
 		},
-		'line-height-general': {
-			type: 'number',
-			default: '100',
-		},
 		'palette-color-general': {
 			type: 'number',
 			default: 1,

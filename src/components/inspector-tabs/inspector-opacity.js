@@ -8,7 +8,6 @@ import { __ } from '@wordpress/i18n';
  */
 import OpacityControl from '../opacity-control';
 import {
-	getAttributeKey,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
@@ -16,7 +15,6 @@ import { opacity as opacityAttr } from '../../extensions/styles/defaults';
 import SettingTabsControl from '../setting-tabs-control';
 import ToggleSwitch from '../toggle-switch';
 import ManageHoverTransitions from '../manage-hover-transitions';
-import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * Component
@@ -42,16 +40,8 @@ const opacity = ({ props, depth = 2 }) => {
 						content: (
 							<OpacityControl
 								opacity={normalOpacity}
-								onChange={val =>
-									maxiSetAttributes({
-										[getAttributeKey(
-											'opacity',
-											false,
-											'',
-											deviceType
-										)]: val,
-									})
-								}
+								onChange={maxiSetAttributes}
+								breakpoint={deviceType}
 							/>
 						),
 					},
@@ -85,39 +75,9 @@ const opacity = ({ props, depth = 2 }) => {
 												isHover: true,
 											}) ?? normalOpacity
 										}
-										onChange={val =>
-											maxiSetAttributes({
-												[getAttributeKey(
-													'opacity',
-													true,
-													'',
-													deviceType
-												)]: val,
-											})
-										}
-										onReset={() => {
-											maxiSetAttributes(
-												handleOnReset({
-													[getAttributeKey(
-														'opacity',
-														true,
-														'',
-														deviceType
-													)]: getLastBreakpointAttribute(
-														{
-															target: 'opacity',
-															breakpoint:
-																deviceType,
-															attributes:
-																getGroupAttributes(
-																	attributes,
-																	'opacity'
-																),
-														}
-													),
-												})
-											);
-										}}
+										onChange={maxiSetAttributes}
+										breakpoint={deviceType}
+										isHover
 									/>
 								)}
 							</>

@@ -81,7 +81,7 @@ const CustomColorControl = props => {
 						<OpacityControl
 							label={__('Colour opacity', 'maxi-blocks')}
 							opacity={color.a}
-							onChange={val => {
+							onChangeOpacity={val => {
 								if (!isEmpty(color)) {
 									color.a = val;
 
@@ -113,7 +113,7 @@ const CustomColorControl = props => {
 					<Icon icon={colorOpacity} />
 					<OpacityControl
 						opacity={color.a}
-						onChange={val => {
+						onChangeOpacity={val => {
 							if (!isEmpty(color)) {
 								color.a = val;
 

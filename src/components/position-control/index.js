@@ -20,7 +20,6 @@ import {
  */
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
-import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * Component
@@ -33,6 +32,7 @@ const PositionControl = props => {
 		breakpoint = 'general',
 		prefix = '',
 		isHover = false,
+		defaultAttributes,
 	} = props;
 
 	const classes = classnames('maxi-position-control', className);
@@ -101,6 +101,7 @@ const PositionControl = props => {
 			enableAxisUnits
 			allowedUnits={['px', 'em', 'vw', '%', '-']}
 			isHover={isHover}
+			defaultAttributes={defaultAttributes}
 		/>
 	);
 
@@ -126,23 +127,22 @@ const PositionControl = props => {
 							}) || ''
 						}
 						onReset={() =>
-							onChange(
-								handleOnReset({
-									[getAttributeKey(
+							onChange({
+								[getAttributeKey(
+									'position',
+									isHover,
+									prefix,
+									breakpoint
+								)]: getDefaultAttribute(
+									getAttributeKey(
 										'position',
 										isHover,
 										prefix,
 										breakpoint
-									)]: getDefaultAttribute(
-										getAttributeKey(
-											'position',
-											isHover,
-											prefix,
-											breakpoint
-										)
-									),
-								})
-							)
+									)
+								),
+								isReset: true,
+							})
 						}
 						onChange={val =>
 							onChange({

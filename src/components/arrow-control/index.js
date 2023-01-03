@@ -14,7 +14,6 @@ import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
 } from '../../extensions/styles';
-import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * External dependencies
@@ -155,14 +154,13 @@ const ArrowControl = props => {
 						min={0}
 						max={100}
 						onReset={() =>
-							onChange(
-								handleOnReset({
-									[`arrow-position-${breakpoint}`]:
-										getDefaultAttribute(
-											`arrow-position-${breakpoint}`
-										),
-								})
-							)
+							onChange({
+								[`arrow-position-${breakpoint}`]:
+									getDefaultAttribute(
+										`arrow-position-${breakpoint}`
+									),
+								isReset: true,
+							})
 						}
 						initialPosition={getDefaultAttribute(
 							`arrow-position-${breakpoint}`
@@ -185,14 +183,13 @@ const ArrowControl = props => {
 							onChangeValue('arrow-width', value);
 						}}
 						onReset={() =>
-							onChange(
-								handleOnReset({
-									[`arrow-width-${breakpoint}`]:
-										getDefaultAttribute(
-											`arrow-width-${breakpoint}`
-										),
-								})
-							)
+							onChange({
+								[`arrow-width-${breakpoint}`]:
+									getDefaultAttribute(
+										`arrow-width-${breakpoint}`
+									),
+								isReset: true,
+							})
 						}
 						minMaxSettings={minMaxSettings}
 					/>

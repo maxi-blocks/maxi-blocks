@@ -9,7 +9,6 @@ import { __ } from '@wordpress/i18n';
 import SelectControl from '../../../select-control';
 import ToolbarPopover from '../toolbar-popover';
 import { getDefaultAttribute } from '../../../../extensions/styles';
-import { handleOnReset } from '../../../../extensions/attributes';
 
 /**
  * Styles & Icons
@@ -37,14 +36,13 @@ const VerticalAlign = props => {
 					label={__('Vertical align', 'maxi-blocks')}
 					value={verticalAlign}
 					onReset={() =>
-						onChange(
-							handleOnReset({
-								[`justify-content-${breakpoint}`]:
-									getDefaultAttribute(
-										`justify-content-${breakpoint}`
-									),
-							})
-						)
+						onChange({
+							[`justify-content-${breakpoint}`]:
+								getDefaultAttribute(
+									`justify-content-${breakpoint}`
+								),
+							isReset: true,
+						})
 					}
 					options={[
 						{

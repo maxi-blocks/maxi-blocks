@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import ColorControl from '../color-control';
-import ClipPath from '../clip-path-control';
+import ClipPathControl from '../clip-path-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import SizeAndPositionLayerControl from './sizeAndPositionLayerControl';
 import {
@@ -206,7 +206,7 @@ const ColorLayerContent = props => {
 				isToolbar={isToolbar}
 			/>
 			{!disableClipPath && (
-				<ClipPath
+				<ClipPathControl
 					onChange={onChange}
 					{...getGroupAttributes(
 						props,
@@ -218,6 +218,8 @@ const ColorLayerContent = props => {
 					isHover={isHover}
 					prefix={`${prefix}background-color-`}
 					breakpoint={breakpoint}
+					isLayer
+					disableRTC
 				/>
 			)}
 			<SizeAndPositionLayerControl

@@ -22,7 +22,7 @@ export const getBlockSelectorsByUniqueID = uniqueID =>
 	getBlockDataByUniqueID(uniqueID)?.customCss.selectors;
 
 /**
- * Returns blocks interactionBuilderSettings
+ * Returns blocks `interactionBuilderSettings`
  */
 export const getTransitionSetting = ({ uniqueID, settings }) => {
 	const interactionBuilderSettings =

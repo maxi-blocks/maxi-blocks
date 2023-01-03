@@ -8,7 +8,7 @@ import { useState } from '@wordpress/element';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
-import ClipPath from '../clip-path-control';
+import ClipPathControl from '../clip-path-control';
 import ImageAltControl from '../image-alt-control';
 import ImageCropControl from '../image-crop-control';
 import MediaUploaderControl from '../media-uploader-control';
@@ -26,7 +26,6 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { getDefaultLayerAttr } from './utils';
-import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * External dependencies
@@ -67,16 +66,10 @@ const ImageLayerSettings = props => {
 					attributes: imageOptions,
 					isHover,
 				})}
-				onChange={val =>
-					onChange({
-						[getAttributeKey(
-							'background-image-opacity',
-							isHover,
-							prefix,
-							breakpoint
-						)]: val,
-					})
-				}
+				breakpoint={breakpoint}
+				prefix={`${prefix}background-image-`}
+				isHover={isHover}
+				onChange={onChange}
 				disableRTC
 			/>
 			<SelectControl
@@ -360,26 +353,25 @@ const ImageLayerSettings = props => {
 							})
 						}
 						onReset={() =>
-							onChange(
-								handleOnReset({
-									[getAttributeKey(
-										'background-image-position-width',
-										isHover,
-										prefix,
-										breakpoint
-									)]: getDefaultAttr(
-										'background-image-position-width'
-									),
-									[getAttributeKey(
-										'background-image-position-width-unit',
-										isHover,
-										prefix,
-										breakpoint
-									)]: getDefaultAttr(
-										'background-image-position-width-unit'
-									),
-								})
-							)
+							onChange({
+								[getAttributeKey(
+									'background-image-position-width',
+									isHover,
+									prefix,
+									breakpoint
+								)]: getDefaultAttr(
+									'background-image-position-width'
+								),
+								[getAttributeKey(
+									'background-image-position-width-unit',
+									isHover,
+									prefix,
+									breakpoint
+								)]: getDefaultAttr(
+									'background-image-position-width-unit'
+								),
+								isReset: true,
+							})
 						}
 					/>
 					<AdvancedNumberControl
@@ -418,26 +410,25 @@ const ImageLayerSettings = props => {
 							})
 						}
 						onReset={() =>
-							onChange(
-								handleOnReset({
-									[getAttributeKey(
-										'background-image-position-height',
-										isHover,
-										prefix,
-										breakpoint
-									)]: getDefaultAttr(
-										'background-image-position-height'
-									),
-									[getAttributeKey(
-										'background-image-position-height-unit',
-										isHover,
-										prefix,
-										breakpoint
-									)]: getDefaultAttr(
-										'background-image-position-height-unit'
-									),
-								})
-							)
+							onChange({
+								[getAttributeKey(
+									'background-image-position-height',
+									isHover,
+									prefix,
+									breakpoint
+								)]: getDefaultAttr(
+									'background-image-position-height'
+								),
+								[getAttributeKey(
+									'background-image-position-height-unit',
+									isHover,
+									prefix,
+									breakpoint
+								)]: getDefaultAttr(
+									'background-image-position-height-unit'
+								),
+								isReset: true,
+							})
 						}
 					/>
 				</>
@@ -598,7 +589,7 @@ const ImageLayerSettings = props => {
 			)}
 			<hr />
 			{!disableClipPath && (
-				<ClipPath
+				<ClipPathControl
 					onChange={onChange}
 					{...getGroupAttributes(
 						imageOptions,
@@ -610,6 +601,8 @@ const ImageLayerSettings = props => {
 					isHover={isHover}
 					prefix='background-image-'
 					breakpoint={breakpoint}
+					isLayer
+					disableRTC
 				/>
 			)}
 			<SizeAndPositionLayerControl
@@ -810,14 +803,13 @@ const ImageLayer = props => {
 												max={10}
 												step={0.1}
 												onReset={() =>
-													onChange(
-														handleOnReset({
-															'background-image-parallax-speed':
-																getDefaultAttr(
-																	'background-image-parallax-speed'
-																),
-														})
-													)
+													onChange({
+														'background-image-parallax-speed':
+															getDefaultAttr(
+																'background-image-parallax-speed'
+															),
+														isReset: true,
+													})
 												}
 												initialPosition={getDefaultAttr(
 													'background-image-parallax-speed'

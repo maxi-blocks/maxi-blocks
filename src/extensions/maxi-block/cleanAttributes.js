@@ -13,7 +13,7 @@ import getBreakpointFromAttribute from '../styles/getBreakpointFromAttribute';
 /**
  * External dependencies
  */
-import { isNil, isEqual } from 'lodash';
+import { isEqual, isNil, isPlainObject, toNumber } from 'lodash';
 
 const breakpoints = ['general', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -182,9 +182,60 @@ const flatWithGeneral = (
 		const breakpoint = getBreakpointFromAttribute(key);
 
 		prevSavedAttrs.forEach(attr => {
-			if (attr in newAttributes) return;
-
+			const prevValue = attributes[attr];
 			const attrBreakpoint = getBreakpointFromAttribute(attr);
+
+			if (attr === key && !isNil(prevValue)) {
+				const recursiveSum = obj => {
+					if (isPlainObject(obj)) {
+						return Object.values(obj).reduce(
+							(acc, val) => acc + recursiveSum(val),
+							0
+						);
+					}
+
+					return toNumber(obj) || 0;
+				};
+
+				const prevValueSum = recursiveSum(prevValue);
+				const valueSum = recursiveSum(value);
+
+				const isChangingDigitsNumber = (firstValue, secondValue) =>
+					firstValue.toString().length + 1 ===
+						secondValue.toString().length &&
+					secondValue.toString().startsWith(firstValue);
+
+				const isAdjustingNumber = (firstValue, secondValue) =>
+					Math.abs(firstValue - secondValue) === 1;
+
+				if (
+					isAdjustingNumber(prevValueSum, valueSum) ||
+					isChangingDigitsNumber(prevValueSum, valueSum) ||
+					isChangingDigitsNumber(valueSum, prevValueSum)
+				) {
+					const simpleLabel = getSimpleLabel(attr, attrBreakpoint);
+					const lowerBreakpoints = breakpoints.slice(
+						breakpoints.indexOf(attrBreakpoint) + 1
+					);
+
+					lowerBreakpoints.some(breakpoint => {
+						const label = `${simpleLabel}-${breakpoint}`;
+
+						if (
+							prevSavedAttrs.includes(label) &&
+							isNil(prevSavedAttrs[label]) &&
+							isNil(attributes[label])
+						) {
+							result[label] = prevValue;
+							return true;
+						}
+
+						return false;
+					});
+				}
+			}
+
+			if (attr in newAttributes) return;
 
 			const currentBreakpoint =
 				select('maxiBlocks').receiveMaxiDeviceType();

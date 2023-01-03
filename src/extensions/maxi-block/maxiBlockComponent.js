@@ -40,6 +40,8 @@ import {
 	getSiteEditorIframe,
 	getTemplateViewIframe,
 } from '../fse';
+import { updateSCOnEditor } from '../style-cards';
+import getWinBreakpoint from '../dom/getWinBreakpoint';
 import getHoverStatus from '../../components/relation-control/getHoverStatus';
 import * as blocksData from '../../blocks/data';
 
@@ -545,7 +547,10 @@ class MaxiBlockComponent extends Component {
 					).pop();
 
 					iframeBody.classList.add('maxi-blocks--active');
-					iframeBody.setAttribute('maxi-blocks-responsive', 'xl');
+					iframeBody.setAttribute(
+						'maxi-blocks-responsive',
+						getWinBreakpoint(iframeBody.offsetWidth)
+					);
 
 					let wrapper = iframeHead.querySelector(
 						`#${getStylesWrapperId(uniqueID)}`
@@ -556,6 +561,13 @@ class MaxiBlockComponent extends Component {
 						wrapper.id = `maxi-blocks__styles--${uniqueID}`;
 						wrapper.classList.add('maxi-blocks__styles');
 						iframeHead.appendChild(wrapper);
+
+						const SC = select(
+							'maxiBlocks/style-cards'
+						).receiveMaxiActiveStyleCard();
+						if (SC) {
+							updateSCOnEditor(SC.value, templateViewIframe);
+						}
 					}
 
 					render(

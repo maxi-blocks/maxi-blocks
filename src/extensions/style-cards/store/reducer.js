@@ -14,8 +14,15 @@ const getNewActiveStyleCards = (styleCards, cardKey) => {
 	const newStyleCards = { ...styleCards };
 	const currentSC = getActiveStyleCard(newStyleCards).key;
 
+	console.log('***************************');
+	console.log(`current: ${currentSC}`);
+	console.log(`cardKey: ${cardKey}`);
+
 	Object.entries(newStyleCards).forEach(([key, value]) => {
+		console.log(`===========${key}============`);
+		console.log(value);
 		const newSCvalue = merge(standardSC?.sc_maxi, value);
+		console.log(newSCvalue);
 		if (key === currentSC)
 			newStyleCards[key] = { ...newSCvalue, status: '' };
 		if (key === cardKey) {
@@ -25,6 +32,8 @@ const getNewActiveStyleCards = (styleCards, cardKey) => {
 			};
 		}
 	});
+	console.log('newStyleCards:');
+	console.log(newStyleCards);
 	return newStyleCards;
 };
 

@@ -8,21 +8,17 @@ import standardSC from '../../../../core/utils/defaultSC.json';
 /**
  * External dependencies
  */
-import { merge } from 'lodash';
+import { cloneDeep, merge } from 'lodash';
 
 const getNewActiveStyleCards = (styleCards, cardKey) => {
-	const newStyleCards = { ...styleCards };
+	const newStyleCards = cloneDeep(styleCards);
 	const currentSC = getActiveStyleCard(newStyleCards).key;
 
-	console.log('***************************');
-	console.log(`current: ${currentSC}`);
-	console.log(`cardKey: ${cardKey}`);
-
 	Object.entries(newStyleCards).forEach(([key, value]) => {
-		console.log(`===========${key}============`);
-		console.log(value);
-		const newSCvalue = merge(standardSC?.sc_maxi, value);
-		console.log(newSCvalue);
+		const standardMerge = cloneDeep(standardSC?.sc_maxi);
+		const mergeWith = cloneDeep(value);
+		const newSCvalue = merge(standardMerge, mergeWith);
+
 		if (key === currentSC)
 			newStyleCards[key] = { ...newSCvalue, status: '' };
 		if (key === cardKey) {
@@ -32,8 +28,7 @@ const getNewActiveStyleCards = (styleCards, cardKey) => {
 			};
 		}
 	});
-	console.log('newStyleCards:');
-	console.log(newStyleCards);
+
 	return newStyleCards;
 };
 

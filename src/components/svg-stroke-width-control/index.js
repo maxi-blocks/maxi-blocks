@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import {
+	getAttributeValue,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
@@ -37,7 +38,13 @@ const SvgStrokeWidthControl = props => {
 	const strokeAttrLabel = `${prefix}stroke-${breakpoint}${
 		isHover ? '-hover' : ''
 	}`;
-	const stroke = props[strokeAttrLabel];
+	const stroke = getAttributeValue({
+		target: 'stroke',
+		prefix,
+		isHover,
+		breakpoint,
+		props,
+	});
 	const defaultStroke = getDefaultAttribute(strokeAttrLabel);
 	const placeholderStroke = getLastBreakpointAttribute({
 		target: `${prefix}stroke`,

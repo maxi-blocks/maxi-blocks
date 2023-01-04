@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import ColorControl from '../color-control';
-import { getColorRGBAString } from '../../extensions/styles';
+import { getAttributeValue, getColorRGBAString } from '../../extensions/styles';
 import { setSVGContent, setSVGContentHover } from '../../extensions/svg';
 
 /**
@@ -66,23 +66,23 @@ const SvgColor = props => {
 			label={label}
 			isHover={isHover}
 			className='maxi-color-control__SVG-line-color'
-			color={
-				isHover
-					? props['svg-line-color-hover']
-					: props['svg-line-color']
-			}
+			color={getAttributeValue({
+				target: 'svg-line-color',
+				props,
+				isHover,
+			})}
 			prefix='svg-line-'
 			avoidBreakpointForDefault
-			paletteColor={
-				isHover
-					? props['svg-line-palette-color-hover']
-					: props['svg-line-palette-color']
-			}
-			paletteStatus={
-				isHover
-					? props['svg-line-palette-status-hover']
-					: props['svg-line-palette-status']
-			}
+			paletteColor={getAttributeValue({
+				target: 'svg-line-palette-color',
+				props,
+				isHover,
+			})}
+			paletteStatus={getAttributeValue({
+				target: 'svg-line-palette-status',
+				props,
+				isHover,
+			})}
 			onChangeInline={({ color }) =>
 				onChangeInline &&
 				onChangeInline({ stroke: color }, '[data-stroke]')
@@ -99,23 +99,23 @@ const SvgColor = props => {
 			label={label}
 			isHover={isHover}
 			className='maxi-color-control__SVG-fill-color'
-			color={
-				isHover
-					? props['svg-fill-color-hover']
-					: props['svg-fill-color']
-			}
+			color={getAttributeValue({
+				target: 'svg-fill-color',
+				props,
+				isHover,
+			})}
 			prefix='svg-fill-'
 			avoidBreakpointForDefault
-			paletteColor={
-				isHover
-					? props['svg-fill-palette-color-hover']
-					: props['svg-fill-palette-color']
-			}
-			paletteStatus={
-				isHover
-					? props['svg-fill-palette-status-hover']
-					: props['svg-fill-palette-status']
-			}
+			paletteColor={getAttributeValue({
+				target: 'svg-fill-palette-color',
+				props,
+				isHover,
+			})}
+			paletteStatus={getAttributeValue({
+				target: 'svg-fill-palette-status',
+				props,
+				isHover,
+			})}
 			onChangeInline={({ color }) =>
 				onChangeInline && onChangeInline({ fill: color }, '[data-fill]')
 			}

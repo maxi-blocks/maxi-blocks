@@ -51,7 +51,7 @@ const getSVGPathStyles = (obj, prefix = 'svg-', isHover) => {
 		response[breakpoint] = {};
 
 		const iconStroke = getAttributeValue({
-			target: 'icon-stroke',
+			target: 'stroke',
 			prefix,
 			isHover,
 			breakpoint,

@@ -52,7 +52,11 @@ wp.domReady(() => {
 
 	subscribe(() => {
 		// Resetting isMaxiToolbar if we are switching to a different template
-		if (getIsTemplatesListOpened()) isMaxiToolbar = false;
+		if (
+			getIsTemplatesListOpened() ||
+			!document.querySelector('#maxi-blocks__toolbar-buttons')
+		)
+			isMaxiToolbar = false;
 
 		if (isMaxiToolbar) return;
 

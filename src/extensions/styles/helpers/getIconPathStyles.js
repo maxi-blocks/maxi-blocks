@@ -1,4 +1,9 @@
 /**
+ * Internal dependencies
+ */
+import getAttributeValue from '../getAttributeValue';
+
+/**
  * External dependencies
  */
 import { isNil, isEmpty } from 'lodash';
@@ -14,22 +19,16 @@ const getIconPathStyles = (obj, isHover = false, prefix = '') => {
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
-		if (
-			!isNil(
-				obj[
-					`${prefix}icon-stroke-${breakpoint}${
-						isHover ? '-hover' : ''
-					}`
-				]
-			)
-		) {
-			response[breakpoint]['stroke-width'] = `${
-				obj[
-					`${prefix}icon-stroke-${breakpoint}${
-						isHover ? '-hover' : ''
-					}`
-				]
-			}`;
+		const iconStroke = getAttributeValue({
+			target: 'icon-stroke',
+			prefix,
+			isHover,
+			breakpoint,
+			props: obj,
+		});
+
+		if (!isNil(iconStroke)) {
+			response[breakpoint]['stroke-width'] = iconStroke;
 		}
 
 		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')

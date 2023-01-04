@@ -8,6 +8,8 @@ import getDisplayStyles from './getDisplayStyles';
 import getGroupAttributes from '../getGroupAttributes';
 import getImageShapeStyles from './getImageShapeStyles';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+import getPaletteAttributes from '../getPaletteAttributes';
+import getAttributeKey from '../getAttributeKey';
 
 /**
  * External dependencies
@@ -22,7 +24,6 @@ import {
 	round,
 	toNumber,
 } from 'lodash';
-import getPaletteAttributes from '../getPaletteAttributes';
 
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -456,10 +457,15 @@ export const getImageBackgroundObject = ({
 
 		// To avoid image blinking on opacity hover
 		if (!isHover) {
-			const bgImageOpacity = getBgImageAttributeValue(
-				'background-image-opacity',
-				true
-			);
+			const bgImageOpacity =
+				props[
+					getAttributeKey(
+						'background-image-opacity',
+						true,
+						prefix,
+						breakpoint
+					)
+				];
 
 			if (bgImageOpacity)
 				response[breakpoint]['-webkit-transform'] =

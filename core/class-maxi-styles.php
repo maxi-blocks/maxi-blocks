@@ -87,15 +87,15 @@ class MaxiBlocks_Styles
                 $js_script_name = 'maxi-' . $script;
                 $js_script_path = '//js//min//' . $js_script_name . '.min.js';
 
-				$post_meta = $this->custom_meta($jsVar, false);
-				$template_meta = $this->custom_meta($jsVar, true);
+				$post_meta = $this->custom_meta($js_var, false);
+				$template_meta = $this->custom_meta($js_var, true);
 				$template_parts_meta = [];
 
 				$template_parts = $template_content ? json_decode($template_content['template_parts'], true) : false;
 
 				if($template_parts && !empty($template_parts)) {
 					foreach ($template_parts as $template_part_id) {
-						$template_parts_meta = array_merge($template_parts_meta, $this->custom_meta($jsVar, true, $template_part_id));
+						$template_parts_meta = array_merge($template_parts_meta, $this->custom_meta($js_var, true, $template_part_id));
 					}
 				}
 

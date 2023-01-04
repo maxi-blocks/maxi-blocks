@@ -51,7 +51,7 @@ const withAttributes = createHigherOrderComponent(
 		if (allowedBlocks.includes(blockName)) {
 			// uniqueID
 			if (isNil(uniqueID)) {
-				const newUniqueID = uniqueIDGenerator(blockName);
+				const newUniqueID = uniqueIDGenerator({ blockName, clientId });
 				attributes.uniqueID = newUniqueID;
 				attributes.customLabel = getCustomLabel(
 					attributes.customLabel,
@@ -60,7 +60,7 @@ const withAttributes = createHigherOrderComponent(
 			}
 			// isFirstOnHierarchy
 			const parentBlocks = select('core/block-editor')
-				.getBlockParents(clientId)
+				.getBlockParentsByBlockName(clientId, allowedBlocks)
 				.filter(el => {
 					return el !== clientId;
 				});

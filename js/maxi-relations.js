@@ -123,11 +123,9 @@ class Relation {
 		if (!styleEl) return;
 
 		if (!this.inlineStylesEl)
-			this.inlineStylesEl =
-				document.querySelector('#maxi-blocks-inline-css') ||
-				document.querySelector(
-					'#maxi-blocks-styles-templates-inline-css'
-				);
+			this.inlineStylesEl = document.querySelector(
+				'style[id*=maxi-blocks]'
+			);
 
 		const currentEl = document.querySelector(`#${styleEl.id}`);
 

@@ -54,13 +54,15 @@ class MaxiBlocks_Styles
     {
 		global $post;
 
-        $post_content = $this->get_content();
-		$template_content = $this->get_content(true);
+		$post_id = $this->get_id();
+		$post_content = $this->get_content(false, $post_id);
+        $this->apply_content('maxi-blocks-styles', $post_content, $post_id);
 
-        $this->apply_content('maxi-blocks-styles', $post_content);
-		$this->apply_content('maxi-blocks-styles-templates', $template_content);
+		$template_id = $this->get_id(true);
+		$template_content = $this->get_content(true, $template_id);
+		$this->apply_content('maxi-blocks-styles-templates', $template_content, $template_id);
 
-        if ($this->need_custom_meta([$post_content, $template_content])) {
+		if($this->need_custom_meta([['content' => $post_content], ['content' => $template_content, 'is_template' => true]])) {
             $scripts = [
                 'hover-effects',
                 'bg-video',
@@ -74,6 +76,8 @@ class MaxiBlocks_Styles
                 'map',
                 'accordion',
             ];
+
+			$template_parts = $this->get_template_parts($template_content);
 
             foreach ($scripts as &$script) {
                 $js_var = str_replace('-', '_', $script);
@@ -90,8 +94,6 @@ class MaxiBlocks_Styles
 				$post_meta = $this->custom_meta($js_var, false);
 				$template_meta = $this->custom_meta($js_var, true);
 				$template_parts_meta = [];
-
-				$template_parts = $template_content ? json_decode($template_content['template_parts'], true) : false;
 
 				if($template_parts && !empty($template_parts)) {
 					foreach ($template_parts as $template_part_id) {
@@ -123,34 +125,62 @@ class MaxiBlocks_Styles
         }
     }
 
+	public function get_template_parts($content) {
+		if($content && array_key_exists('template_parts', $content)) {
+			$template_parts = json_decode($content['template_parts'], true);
+			if (!empty($template_parts)) {
+				return $template_parts;
+			}
+		}
+
+		/**
+		 * In case, when template has never been opened in FSE, it hadn't been saved in DB,
+		 * so it doesn't have template parts. In this case, we need to get default
+		 * template parts (header and footer).
+		 */
+		$theme_name = get_template();
+		return [
+			$theme_name . '//header',
+			$theme_name . '//footer',
+		];
+	}
+
 	/**
 	 * Apply content
 	 */
-	public function apply_content($name, $content)
+	public function apply_content($name, $content, $id)
 	{
-		if (!$content || empty($content)) {
-            return false;
-        }
+		$is_content = $content && !empty($content);
 
-		$styles = $this->get_styles($content);
-        $fonts = $this->get_fonts($content);
-		$template_parts = array_key_exists('template_parts', $content) ? json_decode($content['template_parts'], true) : null;
+		if($is_content) {
+			$styles = $this->get_styles($content);
+			$fonts = $this->get_fonts($content);
 
-		if ($styles) {
-            // Inline styles
-            wp_register_style($name, false);
-            wp_enqueue_style($name);
-            wp_add_inline_style($name, $styles);
-        }
+			if ($styles) {
+				// Inline styles
+				wp_register_style($name, false);
+				wp_enqueue_style($name);
+				wp_add_inline_style($name, $styles);
+			}
 
-        if ($fonts) {
-            $this->enqueue_fonts($fonts);
-        }
+			if ($fonts) {
+				$this->enqueue_fonts($fonts);
+			}
+		}
 
-		if($template_parts && !empty($template_parts)) {
-			foreach($template_parts as $template_part) {
-				$template_part_name = 'maxi-blocks-style-templates-' . @end( explode('//', $template_part, 2));
-				$this->apply_content($template_part_name, $this->get_content(true, $template_part));
+		$is_template =
+			is_string($name) &&
+			strpos($name, '-templates') &&
+			str_ends_with($name, '-templates');
+
+		if($is_template) {
+			$template_parts = $this->get_template_parts($content);
+
+			if($template_parts && !empty($template_parts)) {
+				foreach($template_parts as $template_part) {
+					$template_part_name = 'maxi-blocks-style-templates-' . @end(explode('//', $template_part, 2));
+					$this->apply_content($template_part_name, $this->get_content(true, $template_part), $template_part);
+				}
 			}
 		}
 	}
@@ -200,7 +230,11 @@ class MaxiBlocks_Styles
 		$need_custom_meta = false;
 
 		if ($contents) {
-			foreach ($contents as $content) {
+			foreach ($contents as $contentData) {
+				$content = $contentData['content'] ?? null;
+				$is_template = $contentData['is_template'] ?? false;
+				$is_template_part = $contentData['is_template_part'] ?? false;
+
 				if($content) {
 					if (
 						((int) $content['prev_active_custom_data'] === 1 ||
@@ -209,12 +243,16 @@ class MaxiBlocks_Styles
 						$need_custom_meta = true;
 						break;
 					}
+				}
 
-					if(array_key_exists('template_parts', $content)) {
+				if($is_template && !$is_template_part) {
+					$template_parts = $this->get_template_parts($content);
+
+					if($template_parts) {
 						$template_parts = json_decode($content['template_parts'], true);
 						foreach($template_parts as $template_part) {
 							$template_part_content = $this->get_content(true, $template_part);
-							if($template_part_content && $this->need_custom_meta([$template_part_content])) {
+							if($template_part_content && $this->need_custom_meta([['content' => $template_part_content, 'is_template_part' => true]])) {
 								$need_custom_meta = true;
 								break;
 							}
@@ -237,10 +275,6 @@ class MaxiBlocks_Styles
         if (!$is_template && (!$post || !isset($post->ID))) {
             return false;
         }
-
-        if(!$id) {
-			$id = $this->get_id($is_template);
-		}
 
         if (!$id) {
             return false;

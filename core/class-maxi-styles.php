@@ -249,7 +249,6 @@ class MaxiBlocks_Styles
 					$template_parts = $this->get_template_parts($content);
 
 					if($template_parts) {
-						$template_parts = json_decode($content['template_parts'], true);
 						foreach($template_parts as $template_part) {
 							$template_part_content = $this->get_content(true, $template_part);
 							if($template_part_content && $this->need_custom_meta([['content' => $template_part_content, 'is_template_part' => true]])) {

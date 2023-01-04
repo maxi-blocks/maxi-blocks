@@ -34,7 +34,6 @@ import {
  */
 import { isNil } from 'lodash';
 import classnames from 'classnames';
-import { handleOnReset } from '../../../../extensions/attributes';
 
 /**
  * Styles and icons
@@ -114,14 +113,13 @@ const HoverEffectControl = props => {
 						step={0.1}
 						max={10}
 						onReset={() =>
-							onChange(
-								handleOnReset({
-									'hover-transition-duration':
-										getDefaultAttribute(
-											'hover-transition-duration'
-										),
-								})
-							)
+							onChange({
+								'hover-transition-duration':
+									getDefaultAttribute(
+										'hover-transition-duration'
+									),
+								isReset: true,
+							})
 						}
 						initialPosition={getDefaultAttribute(
 							'hover-transition-duration'
@@ -144,14 +142,12 @@ const HoverEffectControl = props => {
 						label={__('Easing', 'maxi-blocks')}
 						value={props['hover-transition-easing']}
 						onReset={() =>
-							onChange(
-								handleOnReset({
-									'hover-transition-easing':
-										getDefaultAttribute(
-											'hover-transition-easing'
-										),
-								})
-							)
+							onChange({
+								'hover-transition-easing': getDefaultAttribute(
+									'hover-transition-easing'
+								),
+								isReset: true,
+							})
 						}
 						onChange={val =>
 							onChange({ 'hover-transition-easing': val })
@@ -200,14 +196,12 @@ const HoverEffectControl = props => {
 						label={__('Effect type', 'maxi-blocks')}
 						value={props['hover-basic-effect-type']}
 						onReset={() =>
-							onChange(
-								handleOnReset({
-									'hover-basic-effect-type':
-										getDefaultAttribute(
-											'hover-basic-effect-type'
-										),
-								})
-							)
+							onChange({
+								'hover-basic-effect-type': getDefaultAttribute(
+									'hover-basic-effect-type'
+								),
+								isReset: true,
+							})
 						}
 						onChange={val =>
 							onChange({ 'hover-basic-effect-type': val })
@@ -285,14 +279,13 @@ const HoverEffectControl = props => {
 								step={0.1}
 								max={100}
 								onReset={() =>
-									onChange(
-										handleOnReset({
-											[`hover-basic-${props['hover-basic-effect-type']}-value`]:
-												getDefaultAttribute([
-													`hover-basic-${props['hover-basic-effect-type']}-value`,
-												]),
-										})
-									)
+									onChange({
+										[`hover-basic-${props['hover-basic-effect-type']}-value`]:
+											getDefaultAttribute([
+												`hover-basic-${props['hover-basic-effect-type']}-value`,
+											]),
+										isReset: true,
+									})
 								}
 								initialPosition={getDefaultAttribute([
 									`hover-basic-${props['hover-basic-effect-type']}-value`,
@@ -307,14 +300,12 @@ const HoverEffectControl = props => {
 						label={__('Animation type', 'maxi-blocks')}
 						value={props['hover-text-effect-type']}
 						onReset={() =>
-							onChange(
-								handleOnReset({
-									'hover-text-effect-type':
-										getDefaultAttribute(
-											'hover-text-effect-type'
-										),
-								})
-							)
+							onChange({
+								'hover-text-effect-type': getDefaultAttribute(
+									'hover-text-effect-type'
+								),
+								isReset: true,
+							})
 						}
 						options={[
 							{ label: __('Fade', 'maxi-blocks'), value: 'fade' },

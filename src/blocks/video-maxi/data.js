@@ -1,9 +1,9 @@
 /**
  * Internal dependencies
  */
-import { createSelectors } from '../../extensions/styles/custom-css';
-import { createIconTransitions } from '../../extensions/styles';
 import { getCanvasSettings } from '../../extensions/relations';
+import { createIconTransitions } from '../../extensions/styles';
+import { createSelectors } from '../../extensions/styles/custom-css';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
 /**

@@ -30,19 +30,6 @@ describe('BackgroundControl', () => {
 
 		await page.waitForTimeout(150);
 
-		const video =
-			'https://www.youtube.com/watch?v=C0DPdy98e4c&ab_channel=SimonYapp';
-
-		// Add VideoURL
-		await page.$eval(
-			'.maxi-background-control__video .maxi-text-control input',
-			input => input.focus()
-		);
-
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type(video);
-		await page.waitForTimeout(150);
-
 		// Edit start time
 		await page.$eval('.maxi-background-video-start-time input', input =>
 			input.focus()

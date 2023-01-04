@@ -13,7 +13,7 @@ import getBreakpointFromAttribute from '../styles/getBreakpointFromAttribute';
 /**
  * External dependencies
  */
-import { isEqual, isNil, isPlainObject, toNumber } from 'lodash';
+import { isEqual, isNil, isPlainObject, pickBy, toNumber } from 'lodash';
 
 const breakpoints = ['general', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -595,7 +595,9 @@ const cleanAttributes = ({
 		...preserveBaseBreakpoint(result, attributes),
 	};
 
-	dispatch('maxiBlocks/styles').savePrevSavedAttrs(result);
+	dispatch('maxiBlocks/styles').savePrevSavedAttrs(
+		pickBy(result, value => !isNil(value) || !isNil(newAttributes[value]))
+	);
 
 	return result;
 };

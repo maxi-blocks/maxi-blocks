@@ -213,6 +213,15 @@ const getHoverEffectContentTextObject = props => {
 	return response;
 };
 
+const getImageOverflow = props => {
+	const response = {
+		overflow: getOverflowStyles({
+			...getGroupAttributes(props, 'overflow'),
+		}),
+	};
+
+	return response;
+};
 const getImageWrapperObject = props => {
 	const response = {
 		alignment: getAlignmentFlexStyles({
@@ -505,7 +514,7 @@ const getStyles = props => {
 	const response = {
 		[uniqueID]: styleProcessor(
 			{
-				'': getWrapperObject(props),
+				'': { ...getWrapperObject(props), ...getImageOverflow(props) },
 				':hover': getHoverWrapperObject(props),
 				' .maxi-image-block-wrapper': {
 					...getImageWrapperObject(props),

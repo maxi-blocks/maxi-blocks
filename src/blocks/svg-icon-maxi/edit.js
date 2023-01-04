@@ -33,7 +33,7 @@ import { copyPasteMapping } from './data';
 /**
  * External dependencies
  */
-import { isEmpty, uniqueId } from 'lodash';
+import { isEmpty, uniqueId, uniqBy, isArray } from 'lodash';
 
 /**
  * Content
@@ -52,18 +52,33 @@ class edit extends MaxiBlockComponent {
 	maxiBlockDidUpdate(prevProps) {
 		const { updateBlockAttributes } = dispatch('core/block-editor');
 		const svgCode = this.props.attributes.content;
+		const blockId = this.props.attributes.uniqueID;
 
-		const id = this.props.attributes.uniqueID;
+		if (svgCode) {
+			const svgInsideIds = uniqBy(
+				Array.from(svgCode.matchAll(/ xlink:href="#(.+?(?=))"/g)).map(
+					match => match[1]
+				)
+			);
 
-		const svgInsideId = svgCode.match(/ xlink:href="#(.+?(?=))"/)?.[1];
+			if (isArray(svgInsideIds) && svgInsideIds.length > 0) {
+				svgInsideIds.map(insideId => {
+					if (!insideId.includes(blockId)) {
+						const newInsideId = `${
+							insideId.split('__')[0] // let's check for another 'svg-icon-max-X' part in case the block was duplicated, and remove the part
+						}__${blockId}`;
 
-		if (svgInsideId && !svgInsideId.includes(id)) {
-			const newInsideId = `${svgInsideId}__${id}`;
-
-			const newSvgCode = svgCode.replaceAll(svgInsideId, newInsideId);
-			updateBlockAttributes(this.props.clientId, {
-				content: newSvgCode,
-			});
+						const newSvgCode = svgCode.replaceAll(
+							insideId,
+							newInsideId
+						);
+						updateBlockAttributes(this.props.clientId, {
+							content: newSvgCode,
+						});
+					}
+					return null;
+				});
+			}
 		}
 
 		if (prevProps.attributes.uniqueID !== this.props.attributes.uniqueID) {

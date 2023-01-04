@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`BackgroundControl Check Background Shape layer display 1`] = `"<div class=\\"maxi-background-displayer__layer maxi-background-displayer__video-player maxi-background-displayer__video-player--no-border maxi-background-displayer__1\\" data-type=\\"youtube\\" data-start=\\"55\\" data-end=\\"77\\"><div class=\\"maxi-background-displayer__iframe-wrapper\\"><iframe title=\\"youtube video\\" src=\\"https://www.youtube.com/embed/C0DPdy98e4c?controls=0&amp;showinfo=0&amp;rel=0&amp;autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=C0DPdy98e4c&amp;start=55&amp;end=77\\" frameborder=\\"0\\" allow=\\"autoplay\\" allowfullscreen=\\"\\" style=\\"height: 344.633px;\\"></iframe></div></div>"`;
+exports[`BackgroundControl Check Background Shape layer display 1`] = `"<div class=\\"maxi-background-displayer__layer maxi-background-displayer__video-player maxi-background-displayer__video-player--no-border maxi-background-displayer__1\\" data-type=\\"youtube\\" data-start=\\"55\\" data-end=\\"77\\"><div class=\\"maxi-background-displayer__iframe-wrapper\\"><iframe title=\\"youtube video\\" src=\\"https://www.youtube.com/embed/ScMzIvxBSi4?controls=0&amp;showinfo=0&amp;rel=0&amp;autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=ScMzIvxBSi4&amp;start=55&amp;end=77\\" frameborder=\\"0\\" allow=\\"autoplay\\" allowfullscreen=\\"\\" style=\\"height: 344.633px;\\"></iframe></div></div>"`;
 
-exports[`BackgroundControl Check Background Shape layer display 2`] = `"<div class=\\"maxi-background-displayer__layer maxi-background-displayer__video-player maxi-background-displayer__video-player--no-border maxi-background-displayer__1\\" data-start=\\"55\\" data-end=\\"77\\" data-type=\\"youtube\\"><div class=\\"maxi-background-displayer__iframe-wrapper\\"><iframe title=\\"youtube video\\" src=\\"https://www.youtube.com/embed/C0DPdy98e4c?controls=0&amp;showinfo=0&amp;rel=0&amp;autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=C0DPdy98e4c&amp;start=55&amp;end=77\\" frameborder=\\"0\\" allow=\\"autoplay\\" allowfullscreen=\\"\\" style=\\"height:100%\\"></iframe></div></div>"`;
+exports[`BackgroundControl Check Background Shape layer display 2`] = `"<div class=\\"maxi-background-displayer__layer maxi-background-displayer__video-player maxi-background-displayer__video-player--no-border maxi-background-displayer__1\\" data-start=\\"55\\" data-end=\\"77\\" data-type=\\"youtube\\"><div class=\\"maxi-background-displayer__iframe-wrapper\\"><iframe title=\\"youtube video\\" src=\\"https://www.youtube.com/embed/ScMzIvxBSi4?controls=0&amp;showinfo=0&amp;rel=0&amp;autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=ScMzIvxBSi4&amp;start=55&amp;end=77\\" frameborder=\\"0\\" allow=\\"autoplay\\" allowfullscreen=\\"\\" style=\\"height:100%\\"></iframe></div></div>"`;
 
 exports[`BackgroundControl Check Background video layer 1`] = `
 Array [
@@ -10,7 +10,7 @@ Array [
     "background-video-clip-path-status-general": false,
     "background-video-endTime": 77,
     "background-video-loop": true,
-    "background-video-mediaURL": "https://www.youtube.com/watch?v=C0DPdy98e4c&ab_channel=SimonYapp",
+    "background-video-mediaURL": "https://www.youtube.com/watch?v=ScMzIvxBSi4",
     "background-video-opacity-general": 0.44,
     "background-video-playOnMobile-general": false,
     "background-video-reduce-border": true,
@@ -46,7 +46,7 @@ Array [
     "background-video-clip-path-status-general": false,
     "background-video-endTime": 77,
     "background-video-loop": true,
-    "background-video-mediaURL": "https://www.youtube.com/watch?v=C0DPdy98e4c&ab_channel=SimonYapp",
+    "background-video-mediaURL": "https://www.youtube.com/watch?v=ScMzIvxBSi4",
     "background-video-opacity-general": 0.44,
     "background-video-opacity-general-hover": 0.82,
     "background-video-opacity-s": 0.32,
@@ -75,7 +75,6 @@ Array [
     "background-video-wrapper-position-right-unit-general": "px",
     "background-video-wrapper-position-right-xs": "13",
     "background-video-wrapper-position-sync-general": "none",
-    "background-video-wrapper-position-sync-general-hover": "none",
     "background-video-wrapper-position-top-general": "1",
     "background-video-wrapper-position-top-general-hover": "2",
     "background-video-wrapper-position-top-m": "55",
@@ -116,7 +115,7 @@ Array [
     "background-video-clip-path-status-general": false,
     "background-video-endTime": 77,
     "background-video-loop": true,
-    "background-video-mediaURL": "https://www.youtube.com/watch?v=C0DPdy98e4c&ab_channel=SimonYapp",
+    "background-video-mediaURL": "https://www.youtube.com/watch?v=ScMzIvxBSi4",
     "background-video-opacity-general": 0.44,
     "background-video-opacity-s": 0.32,
     "background-video-playOnMobile-general": false,

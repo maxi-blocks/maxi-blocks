@@ -212,13 +212,9 @@ const Inspector = props => {
 											/>
 										),
 									},
-									(deviceType === 'general' ||
-										props.attributes['icon-content'] !==
-											'') && {
-										...inspectorTabs.icon({
-											props,
-										}),
-									},
+									...inspectorTabs.icon({
+										props,
+									}),
 									...inspectorTabs.alignment({
 										props,
 										isAlignment: true,

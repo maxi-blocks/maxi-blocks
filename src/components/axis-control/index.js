@@ -35,7 +35,6 @@ import {
 	isNil,
 	kebabCase,
 } from 'lodash';
-import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * Styles and icons
@@ -546,7 +545,9 @@ const AxisControl = props => {
 	};
 
 	const onReset = ({ customBreakpoint, reset }) => {
-		const response = {};
+		const response = {
+			isReset: true,
+		};
 
 		const attributesKeysFilter = rawKeys => {
 			const keys = isArray(rawKeys) ? rawKeys : [rawKeys];
@@ -626,7 +627,7 @@ const AxisControl = props => {
 			] = getDefaultValue(key);
 		});
 
-		onChange(handleOnReset(response));
+		onChange(response);
 	};
 
 	const onChangeSync = (value, customBreakpoint) => {

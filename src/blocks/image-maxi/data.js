@@ -204,7 +204,7 @@ const transition = {
 		},
 		'clip path': {
 			title: 'Clip path',
-			target: `${imageWrapperClass} img`,
+			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
 			property: 'clip-path',
 			hoverProp: 'clip-path-status-hover',
 		},
@@ -217,7 +217,8 @@ const interactionBuilderSettings = {
 			attrGroupName: 'alignment',
 			component: props => <AlignmentControl disableJustify {...props} />,
 			helper: props => getAlignmentFlexStyles(props.obj),
-			target: ' .maxi-image-block-wrapper',
+			target: imageWrapperClass,
+			disableTransition: true,
 		},
 		{
 			label: __('Shape mask', 'maxi-blocks'),
@@ -261,6 +262,8 @@ const interactionBuilderSettings = {
 		{
 			label: __('Clip-path', 'maxi-blocks'),
 			attrGroupName: 'clipPath',
+			transitionTarget: transition.block['clip path'].target,
+			hoverProp: 'clip-path-status-hover',
 			component: props => <ClipPathControl {...props} />,
 			helper: props => getClipPathStyles(props),
 			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],

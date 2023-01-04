@@ -22,6 +22,10 @@ import {
 import sizeAndPositionChecker from './utils/sizeAndPositionChecker';
 
 describe('BackgroundControl', () => {
+	afterEach(async () => {
+		await page.waitForTimeout(1000);
+	});
+
 	it('Check Background video layer', async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
@@ -217,7 +221,7 @@ describe('BackgroundControl', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it('Check Background Shape layer display', async () => {
+	it('Check Background video layer display', async () => {
 		const checkEditor = await page.$eval(
 			'.maxi-background-displayer',
 			el => el.innerHTML
@@ -228,6 +232,7 @@ describe('BackgroundControl', () => {
 		const previewPage = await openPreviewPage(page);
 		await previewPage.waitForSelector('.entry-content');
 
+		await page.waitForSelector('.maxi-background-displayer');
 		const backgroundPreviewPage = await previewPage.$eval(
 			'.maxi-background-displayer',
 			el => el.innerHTML

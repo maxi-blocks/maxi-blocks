@@ -23,17 +23,17 @@ import {
 } from '../../extensions/styles';
 import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
 import { getHoverStatus } from '../../extensions/relations';
+import { getBlockData } from '../../extensions/attributes';
 
 /**
  * External dependencies
  */
-import { capitalize, cloneDeep, isEmpty, isNil, merge } from 'lodash';
+import { capitalize, cloneDeep, isEmpty, merge } from 'lodash';
 
 /**
  * Styles
  */
 import './editor.scss';
-import { getBlockData } from '../../extensions/attributes';
 
 const RelationControl = props => {
 	const { getBlock } = select('core/block-editor');
@@ -183,46 +183,6 @@ const RelationControl = props => {
 			}, {}),
 		};
 
-		// As an alternative to a migrator... Remove after used!
-		if (
-			!(
-				'transitionTrigger' in item.effects &&
-				'transitionTarget' in item.effects &&
-				'hoverStatus' in item.effects
-			) ||
-			item.effects.hoverStatus !==
-				getHoverStatus(selectedSettingsObj.hoverProp, blockAttributes)
-		) {
-			const {
-				transitionTarget: rawTransitionTarget,
-				transitionTrigger,
-				hoverProp,
-			} = selectedSettingsObj;
-			const transitionTarget =
-				item.settings === 'Transform'
-					? Object.keys(item.css)
-					: rawTransitionTarget;
-
-			let hoverStatus = null;
-
-			if (!('hoverStatus' in item.effects))
-				hoverStatus = getHoverStatus(
-					hoverProp,
-					blockAttributes,
-					item.attributes
-				);
-
-			if (transitionTarget || transitionTrigger)
-				onChangeRelation(relations, item.id, {
-					effects: {
-						...item.effects,
-						...(transitionTarget && { transitionTarget }),
-						...(transitionTrigger && { transitionTrigger }),
-						...(!isNil(hoverStatus) && { hoverStatus }),
-					},
-				});
-		}
-
 		// Merging into empty object because lodash `merge` mutates first argument
 		const mergedAttributes = merge({}, blockAttributes, item.attributes);
 
@@ -244,6 +204,81 @@ const RelationControl = props => {
 			}, {});
 		};
 
+		const getNewAttributesOnReset = obj => {
+			const newAttributes = { ...item.attributes };
+			const resetTargets = Object.keys({
+				...obj,
+				...transformGeneralAttributesToBaseBreakpoint(obj),
+			});
+
+			resetTargets.forEach(target => {
+				delete newAttributes[target];
+			});
+
+			return newAttributes;
+		};
+
+		const getStylesObj = attributes => {
+			const newGroupAttributes = getGroupAttributes(
+				attributes,
+				selectedSettingsObj.attrGroupName,
+				false,
+				prefix
+			);
+
+			return selectedSettingsObj?.helper({
+				obj: newGroupAttributes,
+				isIB: true,
+				prefix,
+				blockStyle: blockAttributes.blockStyle,
+				deviceType,
+				blockAttributes: {
+					...blockAttributes,
+					...attributes,
+				},
+				target: selectedSettingsObj?.target,
+				clientId,
+			});
+		};
+
+		const getStyles = (stylesObj, isFirst = false) => {
+			if (Object.keys(stylesObj).some(key => key.includes('general'))) {
+				const styles = Object.keys(stylesObj).reduce((acc, key) => {
+					if (
+						breakpoints[key] ||
+						key === 'xxl' ||
+						key === 'general'
+					) {
+						acc[key] = {
+							styles: stylesObj[key],
+							breakpoint: breakpoints[key] || null,
+						};
+
+						return acc;
+					}
+
+					return acc;
+				}, {});
+
+				return styles;
+			}
+
+			const styles = Object.keys(stylesObj).reduce((acc, key) => {
+				if (isFirst) {
+					if (!key.includes(':hover'))
+						acc[key] = getStyles(stylesObj[key]);
+
+					return acc;
+				}
+
+				const newAcc = merge(acc, getStyles(stylesObj[key]));
+
+				return newAcc;
+			}, {});
+
+			return styles;
+		};
+
 		return settingsComponent({
 			...getGroupAttributes(
 				mergedAttributes,
@@ -253,80 +288,19 @@ const RelationControl = props => {
 			),
 			attributes: mergedAttributes,
 			blockAttributes,
-			onChange: obj => {
-				const newAttributesObj = {
-					...item.attributes,
-					...obj,
-					...transformGeneralAttributesToBaseBreakpoint(obj),
-				};
+			onChange: ({ isReset, ...obj }) => {
+				const newAttributesObj = isReset
+					? getNewAttributesOnReset(obj)
+					: {
+							...item.attributes,
+							...obj,
+							...transformGeneralAttributesToBaseBreakpoint(obj),
+					  };
 
-				const newGroupAttributes = getGroupAttributes(
-					merge(blockAttributes, newAttributesObj),
-					selectedSettingsObj.attrGroupName,
-					false,
-					prefix
+				const styles = getStyles(
+					getStylesObj(merge({}, blockAttributes, newAttributesObj)),
+					true
 				);
-
-				const stylesObj = selectedSettingsObj?.helper({
-					obj: newGroupAttributes,
-					isIB: true,
-					prefix,
-					blockStyle: blockAttributes.blockStyle,
-					deviceType,
-					blockAttributes: {
-						...blockAttributes,
-						...newAttributesObj,
-					},
-					target: selectedSettingsObj?.target,
-					clientId,
-				});
-
-				const getStyles = (stylesObj, isFirst = false) => {
-					if (
-						Object.keys(stylesObj).some(key =>
-							key.includes('general')
-						)
-					) {
-						const styles = Object.keys(stylesObj).reduce(
-							(acc, key) => {
-								if (
-									breakpoints[key] ||
-									key === 'xxl' ||
-									key === 'general'
-								) {
-									acc[key] = {
-										styles: stylesObj[key],
-										breakpoint: breakpoints[key] || null,
-									};
-
-									return acc;
-								}
-
-								return acc;
-							},
-							{}
-						);
-
-						return styles;
-					}
-
-					const styles = Object.keys(stylesObj).reduce((acc, key) => {
-						if (isFirst) {
-							if (!key.includes(':hover'))
-								acc[key] = getStyles(stylesObj[key]);
-
-							return acc;
-						}
-
-						const newAcc = merge(acc, getStyles(stylesObj[key]));
-
-						return newAcc;
-					}, {});
-
-					return styles;
-				};
-
-				const styles = getStyles(stylesObj, true);
 
 				onChangeRelation(relations, item.id, {
 					attributes: newAttributesObj,
@@ -519,6 +493,7 @@ const RelationControl = props => {
 														) || {};
 													const {
 														transitionTarget,
+														transitionTrigger,
 														hoverProp,
 													} = selectedSettingsObj;
 
@@ -592,8 +567,11 @@ const RelationControl = props => {
 															effects: {
 																...item.effects,
 																transitionTarget,
+																transitionTrigger,
 																hoverStatus:
 																	!!hoverStatus,
+																disableTransition:
+																	!!selectedSettingsObj?.disableTransition,
 															},
 														}
 													);
@@ -601,62 +579,66 @@ const RelationControl = props => {
 											/>
 										</>
 									)}
-									{item.uniqueID && item.settings && (
-										<SettingTabsControl
-											deviceType={deviceType}
-											items={[
-												{
-													label: __(
-														'Settings',
-														'maxi-blocks'
-													),
-													content:
-														displaySelectedSetting(
-															item
+									{item.uniqueID &&
+										item.settings &&
+										(item.effects.disableTransition ? (
+											displaySelectedSetting(item)
+										) : (
+											<SettingTabsControl
+												deviceType={deviceType}
+												items={[
+													{
+														label: __(
+															'Settings',
+															'maxi-blocks'
 														),
-												},
-												{
-													label: __(
-														'Effects',
-														'maxi-blocks'
-													),
-													content: (
-														<ResponsiveTabsControl
-															breakpoint={
-																deviceType
-															}
-														>
-															<TransitionControl
-																className='maxi-relation-control__item__effects'
-																onChange={obj =>
-																	onChangeRelation(
-																		relations,
-																		item.id,
-																		{
-																			effects:
-																				{
-																					...item.effects,
-																					...obj,
-																				},
-																		}
-																	)
-																}
-																transition={
-																	item.effects
-																}
-																getDefaultTransitionAttribute={
-																	getDefaultTransitionAttribute
-																}
+														content:
+															displaySelectedSetting(
+																item
+															),
+													},
+													{
+														label: __(
+															'Effects',
+															'maxi-blocks'
+														),
+														content: (
+															<ResponsiveTabsControl
 																breakpoint={
 																	deviceType
 																}
-															/>
-														</ResponsiveTabsControl>
-													),
-												},
-											]}
-										/>
-									)}
+															>
+																<TransitionControl
+																	className='maxi-relation-control__item__effects'
+																	onChange={obj =>
+																		onChangeRelation(
+																			relations,
+																			item.id,
+																			{
+																				effects:
+																					{
+																						...item.effects,
+																						...obj,
+																					},
+																			}
+																		)
+																	}
+																	transition={
+																		item.effects
+																	}
+																	getDefaultTransitionAttribute={
+																		getDefaultTransitionAttribute
+																	}
+																	breakpoint={
+																		deviceType
+																	}
+																/>
+															</ResponsiveTabsControl>
+														),
+													},
+												]}
+											/>
+										))}
 								</div>
 							}
 							id={item.id}

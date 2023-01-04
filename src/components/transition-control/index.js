@@ -10,7 +10,6 @@ import AdvancedNumberControl from '../advanced-number-control';
 import SelectControl from '../select-control';
 import ToggleSwitch from '../toggle-switch';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
-import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * External dependencies
@@ -74,14 +73,13 @@ const TransitionControl = props => {
 						step={0.1}
 						initial={0.3}
 						onReset={() =>
-							onChange(
-								handleOnReset({
-									[`transition-duration-${breakpoint}`]:
-										getDefaultTransitionAttribute(
-											'transition-duration'
-										),
-								})
-							)
+							onChange({
+								[`transition-duration-${breakpoint}`]:
+									getDefaultTransitionAttribute(
+										'transition-duration'
+									),
+								isReset: true,
+							})
 						}
 					/>
 					<AdvancedNumberControl
@@ -106,14 +104,13 @@ const TransitionControl = props => {
 						step={0.1}
 						initial={0}
 						onReset={() =>
-							onChange(
-								handleOnReset({
-									[`transition-delay-${breakpoint}`]:
-										getDefaultTransitionAttribute(
-											'transition-delay'
-										),
-								})
-							)
+							onChange({
+								[`transition-delay-${breakpoint}`]:
+									getDefaultTransitionAttribute(
+										'transition-delay'
+									),
+								isReset: true,
+							})
 						}
 					/>
 					<SelectControl
@@ -124,14 +121,6 @@ const TransitionControl = props => {
 							breakpoint,
 							attributes: transition,
 						})}
-						onReset={() =>
-							onChange(
-								handleOnReset({
-									[`easing-${breakpoint}`]:
-										getDefaultTransitionAttribute('easing'),
-								})
-							)
-						}
 						options={[
 							{ label: __('Ease', 'maxi-blocks'), value: 'ease' },
 							{
@@ -157,6 +146,13 @@ const TransitionControl = props => {
 									val !== undefined && val !== '' ? val : '',
 							});
 						}}
+						onReset={() =>
+							onChange({
+								[`easing-${breakpoint}`]:
+									getDefaultTransitionAttribute('easing'),
+								isReset: true,
+							})
+						}
 					/>
 				</>
 			)}

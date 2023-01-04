@@ -53,6 +53,19 @@ class edit extends MaxiBlockComponent {
 		const { updateBlockAttributes } = dispatch('core/block-editor');
 		const svgCode = this.props.attributes.content;
 
+		const id = this.props.attributes.uniqueID;
+
+		const svgInsideId = svgCode.match(/ xlink:href="#(.+?(?=))"/)[1];
+
+		if (svgInsideId && !svgInsideId.includes(id)) {
+			const newInsideId = `${svgInsideId}__${id}`;
+
+			const newSvgCode = svgCode.replaceAll(svgInsideId, newInsideId);
+			updateBlockAttributes(this.props.clientId, {
+				content: newSvgCode,
+			});
+		}
+
 		if (prevProps.attributes.uniqueID !== this.props.attributes.uniqueID) {
 			const svgClass = svgCode.match(/ class="(.+?(?=))"/)[1];
 			const newSvgClass = `${svgClass}__${uniqueId()}`;

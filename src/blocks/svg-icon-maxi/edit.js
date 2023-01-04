@@ -55,7 +55,7 @@ class edit extends MaxiBlockComponent {
 
 		const id = this.props.attributes.uniqueID;
 
-		const svgInsideId = svgCode.match(/ xlink:href="#(.+?(?=))"/)[1];
+		const svgInsideId = svgCode.match(/ xlink:href="#(.+?(?=))"/)?.[1];
 
 		if (svgInsideId && !svgInsideId.includes(id)) {
 			const newInsideId = `${svgInsideId}__${id}`;

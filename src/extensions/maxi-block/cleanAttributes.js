@@ -346,7 +346,8 @@ const flatNewAttributes = (
  * Removes hover attributes that coincide with normal ones.
  */
 const removeHoverSameAsNormal = (newAttributes, attributes) => {
-	const getValue = key => newAttributes[key] ?? attributes[key];
+	const getValue = key =>
+		key in newAttributes ? newAttributes[key] : attributes[key];
 
 	const result = { ...newAttributes };
 
@@ -355,7 +356,7 @@ const removeHoverSameAsNormal = (newAttributes, attributes) => {
 		const hoverValue = getValue(hoverKey);
 		const normalValue = getValue(getNormalAttributeKey(key));
 
-		if (hoverValue === normalValue && !isNil(hoverValue)) {
+		if (isEqual(hoverValue, normalValue) && !isNil(hoverValue)) {
 			result[hoverKey] = undefined;
 		}
 	});

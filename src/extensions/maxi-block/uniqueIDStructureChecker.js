@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getTemplatePartSlug } from '../fse';
+import { getIsSiteEditor, getTemplatePartSlug } from '../fse';
 
 /**
  * @param {string} uniqueID
@@ -14,6 +14,7 @@ const uniqueIDStructureChecker = (uniqueID, clientId) => {
 	const templatePartUniqueIDSuffix = 'template-part';
 
 	if (
+		(getIsSiteEditor() && !uniqueID.includes('template-')) ||
 		(templatePartSlug && !uniqueID.includes(templatePartUniqueIDSuffix)) ||
 		(!templatePartSlug && uniqueID.includes(templatePartUniqueIDSuffix))
 	)

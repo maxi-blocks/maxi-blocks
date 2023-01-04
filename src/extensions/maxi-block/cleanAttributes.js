@@ -224,6 +224,12 @@ const flatWithGeneral = (
 					const simpleLabel = getSimpleLabel(attr, attrBreakpoint);
 
 					['xxl', ...breakpoints].forEach(breakpoint => {
+						if (
+							breakpoint === attrBreakpoint ||
+							breakpoint === 'general'
+						)
+							return;
+
 						const label = `${simpleLabel}-${breakpoint}`;
 
 						if (

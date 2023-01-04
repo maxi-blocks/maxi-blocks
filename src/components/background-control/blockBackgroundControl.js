@@ -45,10 +45,9 @@ const BlockBackgroundControl = props => {
 	]);
 	const layersHoverOptions = compact([
 		...getAttributeValue({
-			target: 'background-layers',
+			target: 'background-layers-hover',
 			props,
 			prefix,
-			isHover: true,
 		}),
 	]);
 

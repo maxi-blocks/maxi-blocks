@@ -22,6 +22,7 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 	getAttributeKey,
+	getDefaultAttribute,
 } from '../../extensions/styles';
 
 /**
@@ -314,6 +315,24 @@ const BorderControl = props => {
 					label={__('Add border line', 'maxi-blocks')}
 					className='maxi-border-control__type'
 					value={borderStyleValue || 'none'}
+					onReset={() =>
+						onChange({
+							[getAttributeKey(
+								'border-style',
+								isHover,
+								prefix,
+								breakpoint
+							)]: getDefaultAttribute(
+								getAttributeKey(
+									'border-style',
+									isHover,
+									prefix,
+									breakpoint
+								)
+							),
+							isReset: true,
+						})
+					}
 					options={[
 						{ label: 'None', value: 'none' },
 						{ label: 'Dotted', value: 'dotted' },

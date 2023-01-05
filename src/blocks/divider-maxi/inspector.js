@@ -15,6 +15,7 @@ import {
 	SettingTabsControl,
 } from '../../components';
 import {
+	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
@@ -98,6 +99,15 @@ const Inspector = props => {
 																	val,
 															})
 														}
+														onReset={() => {
+															maxiSetAttributes({
+																[`line-orientation-${deviceType}`]:
+																	getDefaultAttribute(
+																		`line-orientation-${deviceType}`
+																	),
+																isReset: true,
+															});
+														}}
 													/>
 													<SelectControl
 														label={__(
@@ -141,6 +151,15 @@ const Inspector = props => {
 																	val,
 															})
 														}
+														onReset={() => {
+															maxiSetAttributes({
+																[`line-vertical-${deviceType}`]:
+																	getDefaultAttribute(
+																		`line-vertical-${deviceType}`
+																	),
+																isReset: true,
+															});
+														}}
 													/>
 													<SelectControl
 														label={__(
@@ -182,6 +201,15 @@ const Inspector = props => {
 															maxiSetAttributes({
 																[`line-horizontal-${deviceType}`]:
 																	val,
+															})
+														}
+														onReset={() =>
+															maxiSetAttributes({
+																[`line-horizontal-${deviceType}`]:
+																	getDefaultAttribute(
+																		`line-horizontal-${deviceType}`
+																	),
+																isReset: true,
 															})
 														}
 													/>

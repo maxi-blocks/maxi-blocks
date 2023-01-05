@@ -4,11 +4,7 @@
  * WordPress dependencies
  */
 import { RichText, RichTextShortcut } from '@wordpress/block-editor';
-import {
-	insert,
-	__unstableIndentListItems,
-	__unstableOutdentListItems,
-} from '@wordpress/rich-text';
+import { createBlock } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -19,18 +15,14 @@ import { Toolbar } from '../../components';
 import {
 	getColorRGBAString,
 	getPaletteAttributes,
-	createTransitionObj,
 } from '../../extensions/styles';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import getStyles from './styles';
-import onMerge, { onReplaceBlocks } from './utils';
+import onMerge from './utils';
 import { onChangeRichText, textContext } from '../../extensions/text/formats';
 import { setSVGColor } from '../../extensions/svg';
 import { copyPasteMapping } from './data';
-/**
- * External dependencies
- */
-import { isEmpty, compact, flatten } from 'lodash';
+import { indentListItems, outdentListItems } from '../../extensions/text/lists';
 
 /**
  * Content
@@ -89,6 +81,11 @@ class edit extends MaxiBlockComponent {
 					});
 			}
 		}
+
+		// Ensures white-space is applied from Maxi and not with inline styles
+		Array.from(this.blockRef.current.children).forEach(el => {
+			if (el.style.whiteSpace) el.style.whiteSpace = null;
+		});
 	}
 
 	render() {
@@ -105,7 +102,6 @@ class edit extends MaxiBlockComponent {
 			listReversed,
 			listStart,
 			textLevel,
-			transition,
 			typeOfList,
 			uniqueID,
 			'dc-status': dcStatus,
@@ -114,20 +110,6 @@ class edit extends MaxiBlockComponent {
 
 		const className = 'maxi-text-block__content';
 		const DCTagName = textLevel;
-
-		// Temporary code to ensure that all text-maxi transitions objects has link transitions
-		// Need to be removed
-		if (!transition.canvas?.link)
-			maxiSetAttributes({
-				transition: {
-					...transition,
-					canvas: {
-						...transition.canvas,
-						link: createTransitionObj(),
-					},
-				},
-			});
-		// End of temporary code
 
 		/**
 		 * Prevents losing general link format when the link is affecting whole content
@@ -155,192 +137,221 @@ class edit extends MaxiBlockComponent {
 			}
 		};
 
-		const richTextProps = {
-			className,
+		const commonProps = {
+			className: 'maxi-text-block__content',
 			identifier: 'content',
 			value: content,
 			onChange: processContent,
-			multiline: isList ? 'li' : false,
-			tagName: isList ? typeOfList : textLevel,
-			onSplit: () => {
-				this.state.onChangeFormat(insert(this.state.formatValue, '\n'));
-			},
-			onReplace: (blocks, indexToSelect, initialPosition) => {
-				if (
-					!blocks ||
-					isEmpty(compact(blocks)) ||
-					flatten(blocks).every(block => isEmpty(block))
-				)
-					return;
+			onSplit: (value, isOriginal) => {
+				let newAttributes;
 
-				const { blocks: cleanBlocks } = onReplaceBlocks(
-					blocks,
-					clientId,
-					content
+				if (isOriginal || value) {
+					newAttributes = {
+						...attributes,
+						content: value,
+					};
+				}
+
+				const block = createBlock(
+					'maxi-blocks/text-maxi',
+					newAttributes
 				);
 
-				if (!isEmpty(compact(cleanBlocks)))
-					onReplace(cleanBlocks, indexToSelect, initialPosition);
+				if (isOriginal) {
+					block.clientId = clientId;
+				}
+
+				return block;
 			},
+			onReplace,
 			onMerge: forward => onMerge(this.props, forward),
 			// onRemove needs to be commented to avoid removing the block
 			// on pressing backspace with the content empty 👍
-			// onRemove,
-			...(!isList && {
-				__unstableEmbedURLOnPaste: true,
-				withoutInteractiveFormatting: true,
-				preserveWhiteSpace: true,
-			}),
-			...(isList && {
-				start: listStart,
-				reversed: listReversed,
-				type: typeOfList,
-			}),
+			// onRemove={onRemove}
 		};
 
 		const { serverSideRender: ServerSideRender } = wp;
 
-		return (
-			<>
-				<p>serverSideRender should appear here:</p>
-				<ServerSideRender block='dynamic-content-maxi' />
-			</>
-		);
+		// return (
+		// 	<>
+		// 		<p>serverSideRender should appear here:</p>
+		// 		<ServerSideRender block='dynamic-content-maxi' />
+		// 	</>
+		// );
 
-		// return [
-		// 	<textContext.Provider
-		// 		key={`maxi-text-block__context-${uniqueID}`}
-		// 		value={{
-		// 			content,
-		// 			formatValue: {
-		// 				...this.state.formatValue,
-		// 			},
-		// 			onChangeTextFormat: newFormatValue => {
-		// 				this.state.onChangeFormat(newFormatValue);
-		// 				onChangeRichText({
-		// 					attributes,
-		// 					maxiSetAttributes,
-		// 					oldFormatValue: this.state.formatValue,
-		// 					onChange: newState => this.setState(newState),
-		// 					richTextValues: { value: newFormatValue },
-		// 				});
-		// 			},
-		// 		}}
-		// 	>
-		// 		<Inspector
-		// 			key={`block-settings-${uniqueID}`}
-		// 			disableCustomFormats={dcStatus}
-		// 			{...this.props}
-		// 		/>
-		// 		<Toolbar
-		// 			key={`toolbar-${uniqueID}`}
-		// 			ref={this.blockRef}
-		// 			{...this.props}
-		// 			copyPasteMapping={copyPasteMapping}
-		// 			disableCustomFormats={dcStatus}
-		// 		/>
-		// 		<MaxiBlock
-		// 			key={`maxi-text--${uniqueID}`}
-		// 			classes={`${
-		// 				content === ''
-		// 					? 'maxi-text-block__empty'
-		// 					: 'maxi-text-block__has-text'
-		// 			} ${isList ? 'maxi-list-block' : ''}`}
-		// 			ref={this.blockRef}
-		// 			{...getMaxiBlockAttributes(this.props)}
-		// 		>
-		// 			{!dcStatus && (
-		// 				<RichText {...richTextProps}>
-		// 					{richTextValues => {
-		// 						const { value: formatValue, onChange } =
-		// 							richTextValues;
+		return [
+			<textContext.Provider
+				key={`maxi-text-block__context-${uniqueID}`}
+				value={{
+					content,
+					formatValue: {
+						...this.state.formatValue,
+					},
+					onChangeTextFormat: newFormatValue => {
+						this.state.onChangeFormat(newFormatValue);
+						onChangeRichText({
+							attributes,
+							maxiSetAttributes,
+							oldFormatValue: this.state.formatValue,
+							onChange: newState => this.setState(newState),
+							richTextValues: { value: newFormatValue },
+						});
+					},
+				}}
+			>
+				<Inspector
+					key={`block-settings-${uniqueID}`}
+					disableCustomFormats={dcStatus}
+					{...this.props}
+				/>
+				<Toolbar
+					key={`toolbar-${uniqueID}`}
+					ref={this.blockRef}
+					{...this.props}
+					copyPasteMapping={copyPasteMapping}
+					disableCustomFormats={dcStatus}
+				/>
+				<MaxiBlock
+					key={`maxi-text--${uniqueID}`}
+					classes={`${
+						content === ''
+							? 'maxi-text-block__empty'
+							: 'maxi-text-block__has-text'
+					} ${isList ? 'maxi-list-block' : ''}`}
+					ref={this.blockRef}
+					{...getMaxiBlockAttributes(this.props)}
+				>
+					{!dcStatus && !isList && (
+						<RichText
+							tagName={textLevel}
+							__unstableEmbedURLOnPaste
+							withoutInteractiveFormatting
+							preserveWhiteSpace
+							multiline={false}
+							{...commonProps}
+						>
+							{richTextValues =>
+								onChangeRichText({
+									attributes,
+									maxiSetAttributes,
+									oldFormatValue: this.state.formatValue,
+									onChange: (newState, newContent) => {
+										if (this.typingTimeoutFormatValue) {
+											clearTimeout(
+												this.typingTimeoutFormatValue
+											);
+										}
 
-		// 						onChangeRichText({
-		// 							attributes,
-		// 							maxiSetAttributes,
-		// 							oldFormatValue: this.state.formatValue,
-		// 							onChange: (newState, newContent = null) => {
-		// 								if (this.typingTimeoutFormatValue) {
-		// 									clearTimeout(
-		// 										this.typingTimeoutFormatValue
-		// 									);
-		// 								}
+										this.typingTimeoutFormatValue =
+											setTimeout(() => {
+												this.setState(newState);
+											}, 10);
 
-		// 								this.typingTimeoutFormatValue =
-		// 									setTimeout(() => {
-		// 										this.setState(newState);
-		// 									}, 10);
+										if (newContent) {
+											maxiSetAttributes({
+												content: newContent,
+											});
+										}
+									},
+									richTextValues,
+								})
+							}
+						</RichText>
+					)}
+					{!dcStatus && isList && (
+						<RichText
+							multiline='li'
+							tagName={typeOfList}
+							start={listStart}
+							reversed={listReversed}
+							type={typeOfList}
+							{...commonProps}
+						>
+							{richTextValues => {
+								const { value: formatValue, onChange } =
+									richTextValues;
 
-		// 								if (!isList && newContent) {
-		// 									maxiSetAttributes({
-		// 										content: newContent,
-		// 									});
-		// 								}
-		// 							},
-		// 							richTextValues,
-		// 						});
-		// 						if (isList && isSelected)
-		// 							return (
-		// 								<>
-		// 									<RichTextShortcut
-		// 										type='primary'
-		// 										character='['
-		// 										onUse={() => {
-		// 											onChange(
-		// 												__unstableOutdentListItems(
-		// 													formatValue
-		// 												)
-		// 											);
-		// 										}}
-		// 									/>
-		// 									<RichTextShortcut
-		// 										type='primary'
-		// 										character=']'
-		// 										onUse={() => {
-		// 											onChange(
-		// 												__unstableIndentListItems(
-		// 													formatValue,
-		// 													{ type: typeOfList }
-		// 												)
-		// 											);
-		// 										}}
-		// 									/>
-		// 									<RichTextShortcut
-		// 										type='primary'
-		// 										character='m'
-		// 										onUse={() => {
-		// 											onChange(
-		// 												__unstableIndentListItems(
-		// 													formatValue,
-		// 													{ type: typeOfList }
-		// 												)
-		// 											);
-		// 										}}
-		// 									/>
-		// 									<RichTextShortcut
-		// 										type='primaryShift'
-		// 										character='m'
-		// 										onUse={() => {
-		// 											onChange(
-		// 												__unstableOutdentListItems(
-		// 													formatValue
-		// 												)
-		// 											);
-		// 										}}
-		// 									/>
-		// 								</>
-		// 							);
+								onChangeRichText({
+									attributes,
+									maxiSetAttributes,
+									oldFormatValue: this.state.formatValue,
+									onChange: newState => {
+										if (this.typingTimeoutFormatValue) {
+											clearTimeout(
+												this.typingTimeoutFormatValue
+											);
+										}
 
-		// 						return null;
-		// 					}}
-		// 				</RichText>
-		// 			)}
-		// 			{dcStatus && (
-		// 				<DCTagName className={className}>{dcContent}</DCTagName>
-		// 			)}
-		// 		</MaxiBlock>
-		// 	</textContext.Provider>,
-		// ];
+										this.typingTimeoutFormatValue =
+											setTimeout(() => {
+												this.setState(newState);
+											}, 10);
+									},
+									richTextValues,
+								});
+
+								if (isSelected)
+									return (
+										<>
+											<RichTextShortcut
+												type='primary'
+												character='['
+												onUse={() => {
+													onChange(
+														outdentListItems(
+															formatValue
+														)
+													);
+												}}
+											/>
+											<RichTextShortcut
+												type='primary'
+												character=']'
+												onUse={() => {
+													onChange(
+														indentListItems(
+															formatValue,
+															{ type: typeOfList }
+														)
+													);
+												}}
+											/>
+											<RichTextShortcut
+												type='primary'
+												character='m'
+												onUse={() => {
+													onChange(
+														indentListItems(
+															formatValue,
+															{ type: typeOfList }
+														)
+													);
+												}}
+											/>
+											<RichTextShortcut
+												type='primaryShift'
+												character='m'
+												onUse={() => {
+													onChange(
+														outdentListItems(
+															formatValue
+														)
+													);
+												}}
+											/>
+										</>
+									);
+
+								return null;
+							}}
+						</RichText>
+					)}
+					{dcStatus && (
+						<DCTagName className={className}>{dcContent}</DCTagName>
+					)}
+				</MaxiBlock>
+			</textContext.Provider>,
+		];
 	}
 }
 

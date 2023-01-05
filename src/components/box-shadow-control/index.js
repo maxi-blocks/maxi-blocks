@@ -27,7 +27,6 @@ import {
  */
 import classnames from 'classnames';
 import { capitalize } from 'lodash';
-import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * Styles and icons
@@ -79,6 +78,12 @@ const BoxShadowValueControl = props => {
 				attributes: props,
 				isHover,
 			})}
+			defaultValue={getLastBreakpointAttribute({
+				target: `${prefix}box-shadow-${type}`,
+				breakpoint,
+				attributes: props,
+				isHover,
+			})}
 			onChangeValue={val => {
 				onChange({
 					[`${prefix}box-shadow-${type}-${breakpoint}${
@@ -90,13 +95,23 @@ const BoxShadowValueControl = props => {
 			max={100}
 			minMaxSettings={minMaxSettings}
 			onReset={() =>
-				onChange(
-					handleOnReset({
-						[`${prefix}box-shadow-${type}-${breakpoint}${
+				onChange({
+					[`${prefix}box-shadow-${type}-${breakpoint}${
+						isHover ? '-hover' : ''
+					}`]: getDefaultAttribute(
+						`${prefix}box-shadow-${type}-${breakpoint}${
 							isHover ? '-hover' : ''
-						}`]: 0,
-					})
-				)
+						}`
+					),
+					[`${prefix}box-shadow-${type}-unit-${breakpoint}${
+						isHover ? '-hover' : ''
+					}`]: getDefaultAttribute(
+						`${prefix}box-shadow-${type}-unit-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`
+					),
+					isReset: true,
+				})
 			}
 			initialPosition={getDefaultAttribute(
 				`${prefix}box-shadow-${type}-${breakpoint}${

@@ -56,14 +56,15 @@ registerBlockType('maxi-blocks/text-maxi', {
 			uniqueid: uniqueID,
 		};
 	},
-	edit: props => {
-		return (
-			<>
-				<p>serverSideRender should appear here:</p>
-				<ServerSideRender block='dynamic-content-maxi' />
-			</>
-		);
-	},
+	edit,
+	// edit: props => {
+	// 	return (
+	// 		<>
+	// 			<p>serverSideRender should appear here:</p>
+	// 			<ServerSideRender block='dynamic-content-maxi' />
+	// 		</>
+	// 	);
+	// },
 	save,
 	transforms,
 	deprecated: blockMigrator({

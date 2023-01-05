@@ -11,7 +11,6 @@ import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
 } from '../../extensions/styles';
-import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * External dependencies
@@ -45,13 +44,12 @@ const ZIndexControl = props => {
 			min={-9999}
 			max={9999}
 			onReset={() =>
-				onChange(
-					handleOnReset({
-						[`z-index-${breakpoint}`]: getDefaultAttribute(
-							`z-index-${breakpoint}`
-						),
-					})
-				)
+				onChange({
+					[`z-index-${breakpoint}`]: getDefaultAttribute(
+						`z-index-${breakpoint}`
+					),
+					isReset: true,
+				})
 			}
 			initialPosition={getDefaultAttribute(`z-index-${breakpoint}`)}
 		/>

@@ -64,6 +64,23 @@ export const rawTypography = {
 	'text-direction': {
 		type: 'string',
 	},
+	'white-space': {
+		type: 'string',
+	},
+	'word-spacing': {
+		type: 'number',
+	},
+	'word-spacing-unit': {
+		type: 'string',
+		default: 'px',
+	},
+	'bottom-gap': {
+		type: 'number',
+	},
+	'bottom-gap-unit': {
+		type: 'string',
+		default: 'px',
+	},
 };
 
 export const typography = breakpointAttributesCreator({

@@ -89,22 +89,23 @@ const IconSettings = props => {
 						defaultColor={getDefaultAttribute(
 							getAttributeKey('icon-fill-color', isHover, prefix)
 						)}
-						paletteStatus={getAttributeKey({
+						paletteStatus={getAttributeValue({
 							target: 'icon-fill-palette-status',
 							isHover,
 							prefix,
 							props,
 						})}
-						paletteColor={getAttributeKey({
+						paletteColor={getAttributeValue({
 							target: 'icon-fill-palette-color',
 							isHover,
 							prefix,
 							props,
 						})}
-						paletteOpacity={getAttributeKey({
+						paletteOpacity={getAttributeValue({
 							target: 'icon-fill-palette-opacity',
 							isHover,
 							prefix,
+							props,
 						})}
 						onChangeInline={({ color }) => {
 							onChangeInline &&

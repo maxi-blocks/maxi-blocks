@@ -52,17 +52,17 @@ class MaxiBlocks_Styles
      */
     public function enqueue_styles()
     {
-		global $post;
+        global $post;
 
-		$post_id = $this->get_id();
-		$post_content = $this->get_content(false, $post_id);
+        $post_id = $this->get_id();
+        $post_content = $this->get_content(false, $post_id);
         $this->apply_content('maxi-blocks-styles', $post_content, $post_id);
 
-		$template_id = $this->get_id(true);
-		$template_content = $this->get_content(true, $template_id);
-		$this->apply_content('maxi-blocks-styles-templates', $template_content, $template_id);
+        $template_id = $this->get_id(true);
+        $template_content = $this->get_content(true, $template_id);
+        $this->apply_content('maxi-blocks-styles-templates', $template_content, $template_id);
 
-		if($this->need_custom_meta([['content' => $post_content], ['content' => $template_content, 'is_template' => true]])) {
+        if ($this->need_custom_meta([['content' => $post_content], ['content' => $template_content, 'is_template' => true]])) {
             $scripts = [
                 'hover-effects',
                 'bg-video',
@@ -77,7 +77,7 @@ class MaxiBlocks_Styles
                 'accordion',
             ];
 
-			$template_parts = $this->get_template_parts($template_content);
+            $template_parts = $this->get_template_parts($template_content);
 
             foreach ($scripts as &$script) {
                 $js_var = str_replace('-', '_', $script);
@@ -91,17 +91,17 @@ class MaxiBlocks_Styles
                 $js_script_name = 'maxi-' . $script;
                 $js_script_path = '//js//min//' . $js_script_name . '.min.js';
 
-				$post_meta = $this->custom_meta($js_var, false);
-				$template_meta = $this->custom_meta($js_var, true);
-				$template_parts_meta = [];
+                $post_meta = $this->custom_meta($js_var, false);
+                $template_meta = $this->custom_meta($js_var, true);
+                $template_parts_meta = [];
 
-				if($template_parts && !empty($template_parts)) {
-					foreach ($template_parts as $template_part_id) {
-						$template_parts_meta = array_merge($template_parts_meta, $this->custom_meta($js_var, true, $template_part_id));
-					}
-				}
+                if ($template_parts && !empty($template_parts)) {
+                    foreach ($template_parts as $template_part_id) {
+                        $template_parts_meta = array_merge($template_parts_meta, $this->custom_meta($js_var, true, $template_part_id));
+                    }
+                }
 
-				$meta = array_merge($post_meta, $template_meta, $template_parts_meta);
+                $meta = array_merge($post_meta, $template_meta, $template_parts_meta);
 
                 if (!empty($meta)) {
                     if ($script === 'number-counter') {
@@ -125,144 +125,140 @@ class MaxiBlocks_Styles
         }
     }
 
-	public function get_template_parts($content) {
-		if($content && array_key_exists('template_parts', $content)) {
-			$template_parts = json_decode($content['template_parts'], true);
-			if (!empty($template_parts)) {
-				return $template_parts;
-			}
-		}
+    public function get_template_parts($content)
+    {
+        if ($content && array_key_exists('template_parts', $content)) {
+            $template_parts = json_decode($content['template_parts'], true);
+            if (!empty($template_parts)) {
+                return $template_parts;
+            }
+        }
 
-		/**
-		 * In case, when template has never been opened in FSE, it hadn't been saved in DB,
-		 * so it doesn't have template parts. In this case, we need to get default
-		 * template parts (header and footer).
-		 */
-		$theme_name = get_template();
-		return [
-			$theme_name . '//header',
-			$theme_name . '//footer',
-		];
-	}
+        /**
+         * In case, when template has never been opened in FSE, it hadn't been saved in DB,
+         * so it doesn't have template parts. In this case, we need to get default
+         * template parts (header and footer).
+         */
+        $theme_name = get_template();
+        return [
+            $theme_name . '//header',
+            $theme_name . '//footer',
+        ];
+    }
 
-	/**
-	 * Apply content
-	 */
-	public function apply_content($name, $content, $id)
-	{
-		$is_content = $content && !empty($content);
+    /**
+     * Apply content
+     */
+    public function apply_content($name, $content, $id)
+    {
+        $is_content = $content && !empty($content);
 
-		if($is_content) {
-			$styles = $this->get_styles($content);
-			$fonts = $this->get_fonts($content);
+        if ($is_content) {
+            $styles = $this->get_styles($content);
+            $fonts = $this->get_fonts($content);
 
-			if ($styles) {
-				// Inline styles
-				wp_register_style($name, false);
-				wp_enqueue_style($name);
-				wp_add_inline_style($name, $styles);
-			}
+            if ($styles) {
+                // Inline styles
+                wp_register_style($name, false);
+                wp_enqueue_style($name);
+                wp_add_inline_style($name, $styles);
+            }
 
-			if ($fonts) {
-				$this->enqueue_fonts($fonts);
-			}
-		}
+            if ($fonts) {
+                $this->enqueue_fonts($fonts);
+            }
+        }
 
-		$is_template =
-			is_string($name) &&
-			strpos($name, '-templates') &&
-			str_ends_with($name, '-templates');
+        $is_template =
+            is_string($name) &&
+            strpos($name, '-templates') &&
+            str_ends_with($name, '-templates');
 
-		if($is_template) {
-			$template_parts = $this->get_template_parts($content);
+        if ($is_template) {
+            $template_parts = $this->get_template_parts($content);
 
-			if($template_parts && !empty($template_parts)) {
-				foreach($template_parts as $template_part) {
-					$template_part_name = 'maxi-blocks-style-templates-' . @end(explode('//', $template_part, 2));
-					$this->apply_content($template_part_name, $this->get_content(true, $template_part), $template_part);
-				}
-			}
-		}
-	}
+            if ($template_parts && !empty($template_parts)) {
+                foreach ($template_parts as $template_part) {
+                    $template_part_name = 'maxi-blocks-style-templates-' . @end(explode('//', $template_part, 2));
+                    $this->apply_content($template_part_name, $this->get_content(true, $template_part), $template_part);
+                }
+            }
+        }
+    }
 
-	/**
+    /**
      * Get id
      */
-	public function get_id($is_template = false)
-	{
-		if(!$is_template) {
-			global $post;
-			return $post->ID;
-		}
+    public function get_id($is_template = false)
+    {
+        if (!$is_template) {
+            global $post;
+            return $post->ID;
+        }
 
-		$template_slug = get_page_template_slug();
-		$template_id = get_template() . '//';
+        $template_slug = get_page_template_slug();
+        $template_id = get_template() . '//';
 
-		if($template_slug != '' && $template_slug !== false) {
-			$template_id .= $template_slug;
-		}
-		else if(is_home()) {
-			$template_id .= resolve_block_template('home', array('front-page', 'home'), '')->slug;
-		}
-		else if(is_search()) {
-			$template_id .= 'search';
-		}
-		else if(is_404()) {
-			$template_id .= '404';
-		}
-		else if(is_archive()) {
-			$template_id .= 'archive';
-		}
-		else if(is_page()) {
-			$template_id .= 'page';
-		}
-        else {
-			$template_id .= 'single';
-		}
+        if ($template_slug != '' && $template_slug !== false) {
+            $template_id .= $template_slug;
+        } elseif (is_home()) {
+            $template_id .= resolve_block_template('home', array('front-page', 'home'), '')->slug;
+        } elseif (is_search()) {
+            $template_id .= 'search';
+        } elseif (is_404()) {
+            $template_id .= '404';
+        } elseif (is_archive()) {
+            $template_id .= 'archive';
+        } elseif (is_page()) {
+            $template_id .= 'page';
+        } else {
+            $template_id .= 'single';
+        }
 
-		return $template_id;
-	}
+        return $template_id;
+    }
 
-	/**
-	 * Get need custom meta
-	 */
-	public function need_custom_meta($contents) {
-		$need_custom_meta = false;
+    /**
+     * Get need custom meta
+     */
+    public function need_custom_meta($contents)
+    {
+        $need_custom_meta = false;
 
-		if ($contents) {
-			foreach ($contents as $contentData) {
-				$content = $contentData['content'] ?? null;
-				$is_template = $contentData['is_template'] ?? false;
-				$is_template_part = $contentData['is_template_part'] ?? false;
+        if ($contents) {
+            foreach ($contents as $contentData) {
+                $content = $contentData['content'] ?? null;
+                $is_template = $contentData['is_template'] ?? false;
+                $is_template_part = $contentData['is_template_part'] ?? false;
 
-				if($content) {
-					if (
-						((int) $content['prev_active_custom_data'] === 1 ||
-						(int) $content['active_custom_data'] === 1)
-					) {
-						$need_custom_meta = true;
-						break;
-					}
-				}
+                if ($content) {
+                    if (
+                        ((int) $content['prev_active_custom_data'] === 1 ||
+                        (int) $content['active_custom_data'] === 1)
+                    ) {
+                        $need_custom_meta = true;
+                        break;
+                    }
+                }
 
-				if($is_template && !$is_template_part) {
-					$template_parts = $this->get_template_parts($content);
+                if ($is_template && !$is_template_part) {
+                    $template_parts = $this->get_template_parts($content);
 
-					if($template_parts) {
-						foreach($template_parts as $template_part) {
-							$template_part_content = $this->get_content(true, $template_part);
-							if($template_part_content && $this->need_custom_meta([['content' => $template_part_content, 'is_template_part' => true]])) {
-								$need_custom_meta = true;
-								break;
-							}
-						}
-					}
-				}
-			}
-		}
+                    if ($template_parts) {
+                        foreach ($template_parts as $template_part) {
+                            $template_part_content = $this->get_content(true, $template_part);
+                            if ($template_part_content && $this->need_custom_meta([['content' => $template_part_content, 'is_template_part' => true]])) {
+                                $need_custom_meta = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
-		return $need_custom_meta;
-	}
+        return $need_custom_meta;
+    }
 
     /**
      * Gets content
@@ -282,7 +278,7 @@ class MaxiBlocks_Styles
         global $wpdb;
         $content_array = (array) $wpdb->get_results(
             $wpdb->prepare(
-				"SELECT * FROM {$wpdb->prefix}maxi_blocks_styles" . ($is_template ? "_templates" : "") . " WHERE " . ($is_template ? "template_id = %s" : "post_id = %d"),
+                "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles" . ($is_template ? "_templates" : "") . " WHERE " . ($is_template ? "template_id = %s" : "post_id = %d"),
                 $id
             ),
             OBJECT
@@ -308,15 +304,14 @@ class MaxiBlocks_Styles
     {
         global $post;
 
-        if (!$is_template && (!$post || !isset($post->ID)))
-		{
+        if (!$is_template && (!$post || !isset($post->ID))) {
             return false;
         }
 
         global $wpdb;
         $response = $wpdb->get_results(
             $wpdb->prepare(
-				"SELECT custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data" . ($is_template ? "_templates" : "") . " WHERE " . ($is_template ? "template_id = %s" : "post_id = %d"),
+                "SELECT custom_data_value FROM {$wpdb->prefix}maxi_blocks_custom_data" . ($is_template ? "_templates" : "") . " WHERE " . ($is_template ? "template_id = %s" : "post_id = %d"),
                 $id
             ),
             OBJECT
@@ -470,9 +465,9 @@ class MaxiBlocks_Styles
             return [];
         }
 
-		if(!$id) {
-			$id = $this->get_id($is_template);
-		}
+        if (!$id) {
+            $id = $this->get_id($is_template);
+        }
 
         $custom_data = $this->get_meta($id, $is_template);
 

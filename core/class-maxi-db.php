@@ -53,9 +53,9 @@ if (!class_exists('MaxiBlocks_DB')):
             $db_custom_prefix = 'maxi_blocks_';
             $db_general_table_name = $wpdb->prefix . $db_custom_prefix . 'general';
             $db_css_table_name = $wpdb->prefix . $db_custom_prefix . 'styles';
-			$db_css_templates_table_name = $db_css_table_name . '_templates';
+            $db_css_templates_table_name = $db_css_table_name . '_templates';
             $db_custom_data_table_name = $wpdb->prefix . $db_custom_prefix . 'custom_data';
-			$db_custom_data_templates_table_name = $db_custom_data_table_name . '_templates';
+            $db_custom_data_templates_table_name = $db_custom_data_table_name . '_templates';
 
             $charset_collate = $wpdb->get_charset_collate();
 
@@ -95,8 +95,8 @@ if (!class_exists('MaxiBlocks_DB')):
                 dbDelta($sql);
             }
 
-			//add css templates table
-			if (
+            //add css templates table
+            if (
                 $wpdb->get_var($wpdb->prepare("show tables like %s", $db_css_templates_table_name)) !=
                 $db_css_templates_table_name
             ) {
@@ -134,7 +134,7 @@ if (!class_exists('MaxiBlocks_DB')):
                 dbDelta($sql);
             }
 
-			//add custom data templates table
+            //add custom data templates table
             if (
                 $wpdb->get_var($wpdb->prepare("show tables like %s", $db_custom_data_templates_table_name)) !=
                 $db_custom_data_templates_table_name

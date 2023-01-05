@@ -16,7 +16,7 @@ import { isEmpty, uniq } from 'lodash';
  *
  * @param {string}      font        Name of the selected font
  * @param {boolean}     backendOnly If true, `dispatch('maxiBlocks/text').updateFonts()` isn't called
- * @param {HTMLElement} rawTarget   Element, where the font will be loaded
+ * @param {HTMLElement} target      Element, where the font will be loaded
  */
 const loadFonts = (font, backendOnly = true, target = document) => {
 	if (typeof font === 'object' && font !== null) {

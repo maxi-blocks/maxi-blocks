@@ -30,11 +30,8 @@ export const getResponsiveStyles = styles => {
 };
 
 const getTargetString = (target, isIframe, isSiteEditor) => {
-	if (isIframe)
+	if (isIframe || isSiteEditor)
 		return `body.maxi-blocks--active.editor-styles-wrapper .maxi-block.maxi-block--backend.${target},body.maxi-blocks--active.editor-styles-wrapper[maxi-blocks-responsive] .maxi-block.maxi-block--backend.${target}{`;
-
-	if (isSiteEditor)
-		return `body.maxi-blocks--active.editor-styles-wrapper .is-root-container .maxi-block.maxi-block--backend.${target},body.maxi-blocks--active.editor-styles-wrapper[maxi-blocks-responsive] .is-root-container .maxi-block.maxi-block--backend.${target}{`;
 
 	return `body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.${target},body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.${target}{`;
 };

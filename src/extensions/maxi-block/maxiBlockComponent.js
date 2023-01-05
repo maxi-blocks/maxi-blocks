@@ -39,6 +39,7 @@ import uniqueIDStructureChecker from './uniqueIDStructureChecker';
 import {
 	getIsSiteEditor,
 	getSiteEditorIframe,
+	getTemplatePartChooseList,
 	getTemplateViewIframe,
 } from '../fse';
 import { updateSCOnEditor } from '../style-cards';
@@ -106,6 +107,8 @@ class MaxiBlockComponent extends Component {
 		// eslint-disable-next-line react/no-unused-class-component-methods
 		this.blockRef = createRef();
 		this.typography = getGroupAttributes(attributes, 'typography');
+		// eslint-disable-next-line react/no-unused-class-component-methods
+		this.isPreviewBlock = !!getTemplatePartChooseList();
 
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
 

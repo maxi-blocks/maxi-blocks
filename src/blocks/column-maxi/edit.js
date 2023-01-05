@@ -11,7 +11,7 @@ import RowContext from '../row-maxi/context';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { BlockInserter, BlockResizer, Toolbar } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-
+import { getTemplatePartChooseList } from '../../extensions/fse';
 import {
 	getGroupAttributes,
 	getIsOverflowHidden,
@@ -99,7 +99,10 @@ class edit extends MaxiBlockComponent {
 	}
 
 	maxiBlockDidUpdate(prevProps) {
-		if (this.resizableObject.current) {
+		if (
+			this.resizableObject.current &&
+			(!getTemplatePartChooseList() || this.isPreviewBlock)
+		) {
 			const columnWidth = getLastBreakpointAttribute({
 				target: 'column-size',
 				breakpoint: this.props.deviceType || 'general',

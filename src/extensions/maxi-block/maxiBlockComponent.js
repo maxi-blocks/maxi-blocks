@@ -698,17 +698,17 @@ class MaxiBlockComponent extends Component {
 	}
 
 	removeStyles() {
-		const siteEditorIframe = getSiteEditorIframe();
 		const templateViewIframe = getTemplateViewIframe(
 			this.props.attributes.uniqueID
 		);
+		const siteEditorIframe = getSiteEditorIframe();
 
 		const getEditorWrapper = () => {
 			switch (true) {
-				case !!siteEditorIframe:
-					return siteEditorIframe;
 				case !!templateViewIframe:
 					return templateViewIframe;
+				case !!siteEditorIframe:
+					return siteEditorIframe;
 				default:
 					return document;
 			}

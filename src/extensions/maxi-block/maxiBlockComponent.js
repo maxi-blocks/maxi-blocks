@@ -610,7 +610,7 @@ class MaxiBlockComponent extends Component {
 					);
 				} else if (siteEditorIframe) {
 					// Iframe on creation generates head, then gutenberg generates their own head
-					// and in some moment we have two heads, so we need to add styles only to head which isn't empty(gutenberg one)
+					// and in some moment we have two heads, so we need to add styles only to second head(gutenberg one)
 					const iframeHead = Array.from(
 						siteEditorIframe.querySelectorAll('head')
 					).pop();

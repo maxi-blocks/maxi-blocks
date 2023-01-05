@@ -275,7 +275,12 @@ const updateSCOnEditor = (
 			SCStyle = element.createElement('style');
 			SCStyle.id = 'maxi-blocks-sc-vars-inline-css';
 			SCStyle.innerHTML = createSCStyleString(SCObject);
-			element.head.appendChild(SCStyle);
+			// Iframe on creation generates head, then gutenberg generates their own head
+			// and in some moment we have two heads, so we need to add SC only to head which is second(gutenberg one)
+			const elementHead = Array.from(
+				element.querySelectorAll('head')
+			).pop();
+			elementHead.appendChild(SCStyle);
 			const { saveSCStyles } = dispatch('maxiBlocks/style-cards');
 
 			// Needs a delay, if not Redux returns error 3

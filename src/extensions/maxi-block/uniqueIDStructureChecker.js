@@ -1,7 +1,11 @@
 /**
  * Internal dependencies
  */
-import { getIsSiteEditor, getTemplatePartSlug } from '../fse';
+import {
+	getIsSiteEditor,
+	getTemplatePartChooseList,
+	getTemplatePartSlug,
+} from '../fse';
 
 /**
  * @param {string} uniqueID
@@ -15,8 +19,11 @@ const uniqueIDStructureChecker = (uniqueID, clientId) => {
 
 	if (
 		(getIsSiteEditor() && !uniqueID.includes('template-')) ||
-		(templatePartSlug && !uniqueID.includes(templatePartUniqueIDSuffix)) ||
-		(!templatePartSlug && uniqueID.includes(templatePartUniqueIDSuffix))
+		(!getTemplatePartChooseList() &&
+			((templatePartSlug &&
+				!uniqueID.includes(templatePartUniqueIDSuffix)) ||
+				(!templatePartSlug &&
+					uniqueID.includes(templatePartUniqueIDSuffix))))
 	)
 		return false;
 

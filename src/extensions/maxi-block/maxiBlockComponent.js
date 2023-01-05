@@ -96,6 +96,8 @@ class MaxiBlockComponent extends Component {
 			scValues: {},
 		};
 
+		this.areFontsLoaded = createRef(false);
+
 		const { attributes } = this.props;
 		const { uniqueID } = attributes;
 
@@ -109,7 +111,7 @@ class MaxiBlockComponent extends Component {
 
 		// Init
 		const newUniqueID = this.uniqueIDChecker(uniqueID);
-		if (!isEmpty(this.typography)) this.loadFonts();
+		this.loadFonts();
 		this.getCurrentBlockStyle();
 		this.displayStyles(newUniqueID);
 
@@ -135,6 +137,7 @@ class MaxiBlockComponent extends Component {
 
 		if (this.maxiBlockDidMount) this.maxiBlockDidMount();
 
+		this.loadFonts();
 		this.displayStyles();
 
 		if (!this.getBreakpoints.xxl) this.forceUpdate();
@@ -416,9 +419,16 @@ class MaxiBlockComponent extends Component {
 	}
 
 	loadFonts() {
-		const response = getAllFonts(this.typography, 'custom-formats');
+		if (this.areFontsLoaded.current || isEmpty(this.typography)) return;
 
-		if (!isEmpty(response)) loadFonts(response);
+		const target = getIsSiteEditor() ? getSiteEditorIframe() : document;
+		if (!target) return;
+
+		const response = getAllFonts(this.typography, 'custom-formats');
+		if (isEmpty(response)) return;
+
+		loadFonts(response, true, target);
+		this.areFontsLoaded.current = true;
 	}
 
 	updateRelationHoverStatus() {

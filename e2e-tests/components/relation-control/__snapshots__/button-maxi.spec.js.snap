@@ -513,19 +513,19 @@ Array [
         "general": Object {
           "breakpoint": null,
           "styles": Object {
-            "stroke-width": "5",
+            "stroke-width": 5,
           },
         },
         "xl": Object {
           "breakpoint": 1920,
           "styles": Object {
-            "stroke-width": "5",
+            "stroke-width": 5,
           },
         },
         "xxl": Object {
           "breakpoint": 1921,
           "styles": Object {
-            "stroke-width": "4",
+            "stroke-width": 4,
           },
         },
       },

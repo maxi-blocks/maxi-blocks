@@ -161,7 +161,7 @@ const getTypographyHoverObject = props => {
 };
 
 const getListObject = props => {
-	const { listStyle, listStart, listReversed, content, isRTL } = props;
+	const { listStyle, listStart, listReversed, content } = props;
 
 	let counterReset;
 	if (isNumber(listStart)) {
@@ -190,6 +190,14 @@ const getListObject = props => {
 
 			['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].forEach(
 				breakpoint => {
+					const isRTL =
+						props.isRTL ||
+						getLastBreakpointAttribute({
+							target: 'text-direction',
+							breakpoint,
+							attributes: props,
+						}) === 'rtl';
+
 					// List gap
 					const gapNum = getLastBreakpointAttribute({
 						target: 'list-gap',
@@ -332,7 +340,7 @@ const getListParagraphObject = props => {
 };
 
 const getMarkerObject = props => {
-	const { typeOfList, listStyle, listStyleCustom, blockStyle, isRTL } = props;
+	const { typeOfList, listStyle, listStyleCustom, blockStyle } = props;
 
 	const { paletteStatus, paletteColor, paletteOpacity, color } =
 		getPaletteAttributes({
@@ -407,6 +415,14 @@ const getMarkerObject = props => {
 
 			['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].forEach(
 				breakpoint => {
+					const isRTL =
+						props.isRTL ||
+						getLastBreakpointAttribute({
+							target: 'text-direction',
+							breakpoint,
+							attributes: props,
+						}) === 'rtl';
+
 					// List indent
 					const indentNum =
 						getLastBreakpointAttribute({
@@ -492,7 +508,7 @@ const getMarkerObject = props => {
 						listStyleCustom &&
 						listStyleCustom.includes('</svg>')
 							? {
-									width: sizeNum + sizeUnit,
+									height: sizeNum + sizeUnit,
 							  }
 							: { 'font-size': sizeNum + sizeUnit }),
 						'line-height':
@@ -500,8 +516,8 @@ const getMarkerObject = props => {
 							(lineHeightMarkerUnit !== '-'
 								? lineHeightMarkerUnit
 								: ''),
-						'margin-right': isRTL ? indentSum : indentMarkerSum,
-						'margin-left': isRTL ? indentMarkerSum : indentSum,
+						[isRTL ? 'right' : 'left']: indentSum,
+						width: listStylePosition === 'outside' ? 0 : 'initial',
 						...(listStyle === 'none' && {
 							'padding-right': '1em',
 						}),

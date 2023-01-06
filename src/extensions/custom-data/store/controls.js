@@ -29,8 +29,6 @@ const controls = {
 				name,
 			});
 
-			console.log(customData, filteredCustomData);
-
 			await apiFetch({
 				path: '/maxi-blocks/v1.0/custom-data',
 				method: 'POST',

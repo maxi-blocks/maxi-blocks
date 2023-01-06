@@ -15,15 +15,14 @@ const generateUniqueID = (blockName, diff = 1) => {
 
 const uniqueIDGenerator = ({ blockName, diff = 1, clientId }) => {
 	const isSiteEditor = getIsSiteEditor();
-	const templatePartSlug = getTemplatePartSlug(clientId);
 
 	let modifiedBlockName = blockName;
 
 	if (isSiteEditor) {
-		if (templatePartSlug) {
-			const id = templatePartSlug;
+		const templatePartSlug = getTemplatePartSlug(clientId);
 
-			modifiedBlockName += `-${id}`;
+		if (templatePartSlug) {
+			modifiedBlockName += `-${templatePartSlug}`;
 		}
 
 		modifiedBlockName += '-template';

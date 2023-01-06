@@ -10,7 +10,10 @@ import { useState, render } from '@wordpress/element';
 import Button from '../../components/button';
 import Icon from '../../components/icon';
 import ResponsiveSelector from '../responsive-selector';
-import { getIsTemplatesListOpened } from '../../extensions/fse';
+import {
+	getIsSiteEditor,
+	getIsTemplatesListOpened,
+} from '../../extensions/fse';
 /**
  * Styles
  */
@@ -50,9 +53,9 @@ wp.domReady(() => {
 	 */
 	let isMaxiToolbar = false;
 
-	subscribe(() => {
-		// Resetting isMaxiToolbar if we are switching to a different template
+	const unsubscribe = subscribe(() => {
 		if (
+			// Resetting isMaxiToolbar if we are switching to a different template
 			getIsTemplatesListOpened() ||
 			!document.querySelector('#maxi-blocks__toolbar-buttons')
 		)
@@ -77,6 +80,10 @@ wp.domReady(() => {
 			parentNode.appendChild(toolbarButtonsWrapper);
 
 			render(<ToolbarButtons />, toolbarButtonsWrapper);
+
+			if (!getIsSiteEditor()) {
+				unsubscribe();
+			}
 		}
 	});
 });

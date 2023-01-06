@@ -13,7 +13,6 @@ import { isEmpty } from 'lodash';
  *
  * @param {void} callback Callback to execute for each of dirty entity records.
  */
-
 const entityRecordsWrapper = callback => {
 	const { __experimentalGetDirtyEntityRecords } = select('core');
 	const dirtyEntityRecords = __experimentalGetDirtyEntityRecords();

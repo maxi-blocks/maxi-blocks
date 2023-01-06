@@ -268,24 +268,26 @@ body.maxi-blocks--active {
 					text-indent: var(--maxi-#{$style}-p-text-indent-general);
 				}
 			}
-		}
 
-		&.maxi-search-block,
-		.maxi-search-block {
-			&__input,
-			&__button__content {
-				font-family: var(--maxi-#{$style}-p-font-family-general);
-				font-size: var(--maxi-#{$style}-p-font-size-general);
-				line-height: var(--maxi-#{$style}-p-line-height-general);
-				font-weight: var(--maxi-#{$style}-p-font-weight-general);
-				font-style: var(--maxi-#{$style}-p-font-style-general);
-				text-transform: var(--maxi-#{$style}-p-text-transform-general);
-				text-decoration: var(
-					--maxi-#{$style}-p-text-decoration-general
-				);
-				white-space: var(--maxi-#{$style}-p-white-space-general);
-				word-spacing: var(--maxi-#{$style}-p-word-spacing-general);
-				text-indent: var(--maxi-#{$style}-p-text-indent-general);
+			&.maxi-search-block,
+			.maxi-search-block {
+				&__input,
+				&__button__content {
+					font-family: var(--maxi-#{$style}-p-font-family-general);
+					font-size: var(--maxi-#{$style}-p-font-size-general);
+					line-height: var(--maxi-#{$style}-p-line-height-general);
+					font-weight: var(--maxi-#{$style}-p-font-weight-general);
+					font-style: var(--maxi-#{$style}-p-font-style-general);
+					text-transform: var(
+						--maxi-#{$style}-p-text-transform-general
+					);
+					text-decoration: var(
+						--maxi-#{$style}-p-text-decoration-general
+					);
+					white-space: var(--maxi-#{$style}-p-white-space-general);
+					word-spacing: var(--maxi-#{$style}-p-word-spacing-general);
+					text-indent: var(--maxi-#{$style}-p-text-indent-general);
+				}
 			}
 		}
 	}

@@ -22,8 +22,6 @@ const controls = {
 	},
 	async SAVE_CUSTOM_DATA({ isUpdate, customData }) {
 		entityRecordsWrapper(async ({ key: id, name }) => {
-			const isSiteEditor = getIsSiteEditor();
-
 			const filteredCustomData = getFilteredData(customData, {
 				id,
 				name,
@@ -36,7 +34,7 @@ const controls = {
 					id,
 					data: JSON.stringify(filteredCustomData),
 					update: isUpdate,
-					isTemplate: isSiteEditor,
+					isTemplate: getIsSiteEditor(),
 				},
 			}).catch(err => {
 				console.error('Error saving Custom Data. Code error: ', err);

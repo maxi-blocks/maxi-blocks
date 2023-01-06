@@ -622,8 +622,10 @@ wp.domReady(() => {
 
 			type = currentType;
 		} else {
-			[resizeObserverTarget, document.body].forEach(element =>
-				resizeObserver.observe(element)
+			if (!resizeObserverTarget) return;
+
+			[resizeObserverTarget, document.body].forEach(
+				element => element && resizeObserver.observe(element)
 			);
 
 			editorContentUnsubscribe();

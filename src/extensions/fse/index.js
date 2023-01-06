@@ -1,3 +1,4 @@
+export { default as createTemplatePartId } from './createTemplatePartId';
 export { default as getIsSiteEditor } from './getIsSiteEditor';
 export { default as getIsTemplatePart } from './getIsTemplatePart';
 export { default as getIsTemplatesListOpened } from './getIsTemplatesListOpened';

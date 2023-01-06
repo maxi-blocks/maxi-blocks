@@ -32,19 +32,16 @@ import {
 	__experimentalUseDialog as useDialog,
 } from '@wordpress/compose';
 import { close } from '@wordpress/icons';
-import deprecated from '@wordpress/deprecated';
 import { Path, SVG } from '@wordpress/primitives';
 
 /**
  * Internal dependencies
  */
 import { Button, ScrollLock, Slot, Fill } from '@wordpress/components';
-import useSlot from './use-slot';
 import getAnimateClassName from './animate';
 
 /**
  * Styles
- *
  */
 import './editor.scss';
 
@@ -127,7 +124,6 @@ const placementToAnimationOrigin = placement => {
 
 const Popover = (
 	{
-		range,
 		animate = true,
 		headerTitle,
 		onClose,
@@ -152,13 +148,6 @@ const Popover = (
 	},
 	forwardedRef
 ) => {
-	if (range) {
-		deprecated('range prop in Popover component', {
-			since: '6.1',
-			version: '6.3',
-		});
-	}
-
 	const arrowRef = useRef(null);
 	const anchorRefFallback = useRef(null);
 
@@ -264,7 +253,6 @@ const Popover = (
 		hasArrow ? arrow({ element: arrowRef }) : undefined,
 	].filter(m => !!m);
 	const slotName = useContext(slotNameContext) || __unstableSlotName;
-	const slot = useSlot(slotName);
 
 	let onDialogClose;
 
@@ -420,8 +408,6 @@ const Popover = (
 	// within popover as inferring close intent.
 
 	let content = (
-		// eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
-		// eslint-disable-next-line jsx-a11y/no-static-element-interactions
 		<div
 			className={classnames(
 				'components-popover',

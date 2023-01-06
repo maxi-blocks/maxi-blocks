@@ -11,8 +11,8 @@ import { updateSCOnEditor } from '../style-cards';
 import {
 	getIsSiteEditor,
 	getIsTemplatePart,
-	getSiteEditorIframeBody,
 	getIsTemplatesListOpened,
+	getSiteEditorIframeBody,
 } from '../fse';
 import getWinBreakpoint from './getWinBreakpoint';
 import { setScreenSize } from '../styles';
@@ -468,7 +468,7 @@ wp.domReady(() => {
 		const templatePartResizeObserver = new ResizeObserver(entries => {
 			if (getIsTemplatesListOpened()) return;
 
-			setTimeout(async () => {
+			setTimeout(() => {
 				const editorWrapper = entries[0].target;
 				if (!editorWrapper) return;
 
@@ -476,7 +476,7 @@ wp.domReady(() => {
 				const { width } = editorWrapper.getBoundingClientRect();
 
 				const { setMaxiDeviceType } = dispatch('maxiBlocks');
-				await setMaxiDeviceType({
+				setMaxiDeviceType({
 					width,
 					changeSize: false,
 				});

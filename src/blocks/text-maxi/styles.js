@@ -423,20 +423,6 @@ const getMarkerObject = props => {
 							attributes: props,
 						}) === 'rtl';
 
-					// List indent
-					const indentNum =
-						getLastBreakpointAttribute({
-							target: 'list-indent',
-							breakpoint,
-							attributes: props,
-						}) || 0;
-					const indentUnit =
-						getLastBreakpointAttribute({
-							target: 'list-indent-unit',
-							breakpoint,
-							attributes: props,
-						}) || 'px';
-
 					// List style position
 					const listStylePosition = getLastBreakpointAttribute({
 						target: 'list-style-position',
@@ -481,10 +467,10 @@ const getMarkerObject = props => {
 						}) || 'px';
 
 					const indentMarkerSum = indentMarkerNum + indentMarkerUnit;
-					const indentSum =
+					const markerPosition =
 						listStylePosition === 'inside'
-							? indentNum + indentUnit
-							: `calc(${indentNum}${indentUnit} - ${
+							? 0
+							: `calc(-${
 									sizeNum + sizeUnit
 							  } - ${indentMarkerSum})`;
 
@@ -516,8 +502,13 @@ const getMarkerObject = props => {
 							(lineHeightMarkerUnit !== '-'
 								? lineHeightMarkerUnit
 								: ''),
-						[isRTL ? 'right' : 'left']: indentSum,
-						width: listStylePosition === 'outside' ? 0 : 'initial',
+						[isRTL ? 'right' : 'left']: markerPosition,
+						...(listStylePosition === 'outside' && {
+							width: 0,
+						}),
+						...(listStylePosition === 'inside' && {
+							'margin-right': indentMarkerSum,
+						}),
 						...(listStyle === 'none' && {
 							'padding-right': '1em',
 						}),

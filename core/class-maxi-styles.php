@@ -95,6 +95,7 @@ class MaxiBlocks_Styles
                 'search',
                 'map',
                 'accordion',
+                'dynamic-content',
             ];
 
             foreach ($scripts as &$script) {

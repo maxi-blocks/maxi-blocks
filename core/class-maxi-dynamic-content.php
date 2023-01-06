@@ -31,18 +31,22 @@ class MaxiBlocks_DynamicContent
     {
         add_action('init', [
             $this,
-            'register_blocks',
+            'register_dynamic_blocks',
         ]);
     }
 
-    public function register_blocks()
+    public function register_dynamic_blocks()
     {
-        register_block_type('dynamic-content-maxi', array(
-            'render_callback' => 'text_maxi_renderer',
-        ));
+        // register_block_type('maxi-blocks/text-maxi', array(
+        //     'render_callback' => [
+        //         $this,
+        //         'dynamic_maxi_renderer',
+        //     ],
+
+        // ));
     }
 
-    public function text_maxi_renderer()
+    public function dynamic_maxi_renderer()
     {
         return 'OMG SUCCESS!';
     }

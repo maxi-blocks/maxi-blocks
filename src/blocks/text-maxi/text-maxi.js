@@ -57,11 +57,12 @@ registerBlockType('maxi-blocks/text-maxi', {
 		};
 	},
 	edit,
-	// edit: props => {
+	// edit: attributes => {
+	// 	console.log(attributes);
 	// 	return (
 	// 		<>
 	// 			<p>serverSideRender should appear here:</p>
-	// 			<ServerSideRender block='dynamic-content-maxi' />
+	// 			<ServerSideRender block='maxi-blocks/text-maxi' />
 	// 		</>
 	// 	);
 	// },
@@ -73,3 +74,13 @@ registerBlockType('maxi-blocks/text-maxi', {
 		selectors: customCss.selectors,
 	}),
 });
+
+// registerBlockType('maxi-blocks/dynamic-content-maxi', {
+// 	title: 'Dynamic Content Maxi',
+// 	edit: () => {
+// 		// return <ServerSideRender block='maxi-blocks/dynamic-content-maxi' />;
+// 	},
+// 	save() {
+// 		return null; // Nothing to save here..
+// 	},
+// });

@@ -15,6 +15,7 @@ import { Toolbar } from '../../components';
 import {
 	getColorRGBAString,
 	getPaletteAttributes,
+	getGroupAttributes,
 } from '../../extensions/styles';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import getStyles from './styles';
@@ -44,6 +45,22 @@ class edit extends MaxiBlockComponent {
 
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
+	}
+
+	get getMaxiCustomData() {
+		const { attributes } = this.props;
+		const { uniqueID } = attributes;
+		const { 'dc-status': dcStatus } = attributes;
+
+		return {
+			...(dcStatus && {
+				dynamic_content: {
+					[uniqueID]: {
+						...getGroupAttributes(attributes, 'dc'),
+					},
+				},
+			}),
+		};
 	}
 
 	maxiBlockDidUpdate() {
@@ -83,9 +100,10 @@ class edit extends MaxiBlockComponent {
 		}
 
 		// Ensures white-space is applied from Maxi and not with inline styles
-		Array.from(this.blockRef.current.children).forEach(el => {
-			if (el.style.whiteSpace) el.style.whiteSpace = null;
-		});
+		if (this.blockRef?.current?.children)
+			Array.from(this.blockRef.current.children).forEach(el => {
+				if (el.style.whiteSpace) el.style.whiteSpace = null;
+			});
 	}
 
 	render() {
@@ -106,6 +124,10 @@ class edit extends MaxiBlockComponent {
 			uniqueID,
 			'dc-status': dcStatus,
 			'dc-content': dcContent,
+			'dc-type': dsType,
+			'dc-author': dsAuthor,
+			'dc-relation': dsRelation,
+			'dc-id': dsId,
 		} = attributes;
 
 		const className = 'maxi-text-block__content';
@@ -170,15 +192,6 @@ class edit extends MaxiBlockComponent {
 			// onRemove={onRemove}
 		};
 
-		const { serverSideRender: ServerSideRender } = wp;
-
-		// return (
-		// 	<>
-		// 		<p>serverSideRender should appear here:</p>
-		// 		<ServerSideRender block='dynamic-content-maxi' />
-		// 	</>
-		// );
-
 		return [
 			<textContext.Provider
 				key={`maxi-text-block__context-${uniqueID}`}
@@ -228,6 +241,7 @@ class edit extends MaxiBlockComponent {
 							withoutInteractiveFormatting
 							preserveWhiteSpace
 							multiline={false}
+							data-dynamic-content={`${dsType} ${dsAuthor} ${dsRelation} ${dsId}`}
 							{...commonProps}
 						>
 							{richTextValues =>

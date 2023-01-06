@@ -107,7 +107,6 @@ class MaxiBlockComponent extends Component {
 		// eslint-disable-next-line react/no-unused-class-component-methods
 		this.blockRef = createRef();
 		this.typography = getGroupAttributes(attributes, 'typography');
-		// eslint-disable-next-line react/no-unused-class-component-methods
 		this.isPreviewBlock = !!getTemplatePartChooseList();
 
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
@@ -566,51 +565,53 @@ class MaxiBlockComponent extends Component {
 			if (getIsSiteEditor()) {
 				// for full site editor (FSE)
 				const siteEditorIframe = getSiteEditorIframe();
-				const templateViewIframe = getTemplateViewIframe(uniqueID);
 
-				if (templateViewIframe) {
-					const iframeHead = Array.from(
-						templateViewIframe.querySelectorAll('head')
-					).pop();
+				if (this.isPreviewBlock) {
+					const templateViewIframe = getTemplateViewIframe(uniqueID);
+					if (templateViewIframe) {
+						const iframeHead = Array.from(
+							templateViewIframe.querySelectorAll('head')
+						).pop();
 
-					const iframeBody = Array.from(
-						templateViewIframe.querySelectorAll('body')
-					).pop();
+						const iframeBody = Array.from(
+							templateViewIframe.querySelectorAll('body')
+						).pop();
 
-					iframeBody.classList.add('maxi-blocks--active');
-					iframeBody.setAttribute(
-						'maxi-blocks-responsive',
-						getWinBreakpoint(iframeBody.offsetWidth)
-					);
+						iframeBody.classList.add('maxi-blocks--active');
+						iframeBody.setAttribute(
+							'maxi-blocks-responsive',
+							getWinBreakpoint(iframeBody.offsetWidth)
+						);
 
-					let wrapper = iframeHead.querySelector(
-						`#${getStylesWrapperId(uniqueID)}`
-					);
+						let wrapper = iframeHead.querySelector(
+							`#${getStylesWrapperId(uniqueID)}`
+						);
 
-					if (!wrapper) {
-						wrapper = document.createElement('div');
-						wrapper.id = `maxi-blocks__styles--${uniqueID}`;
-						wrapper.classList.add('maxi-blocks__styles');
-						iframeHead.appendChild(wrapper);
+						if (!wrapper) {
+							wrapper = document.createElement('div');
+							wrapper.id = `maxi-blocks__styles--${uniqueID}`;
+							wrapper.classList.add('maxi-blocks__styles');
+							iframeHead.appendChild(wrapper);
 
-						const SC = select(
-							'maxiBlocks/style-cards'
-						).receiveMaxiActiveStyleCard();
-						if (SC) {
-							updateSCOnEditor(SC.value, templateViewIframe);
+							const SC = select(
+								'maxiBlocks/style-cards'
+							).receiveMaxiActiveStyleCard();
+							if (SC) {
+								updateSCOnEditor(SC.value, templateViewIframe);
+							}
 						}
-					}
 
-					render(
-						<StyleComponent
-							uniqueID={uniqueID}
-							stylesObj={obj}
-							currentBreakpoint={this.currentBreakpoint}
-							blockBreakpoints={breakpoints}
-							isSiteEditor
-						/>,
-						wrapper
-					);
+						render(
+							<StyleComponent
+								uniqueID={uniqueID}
+								stylesObj={obj}
+								currentBreakpoint={this.currentBreakpoint}
+								blockBreakpoints={breakpoints}
+								isSiteEditor
+							/>,
+							wrapper
+						);
+					}
 				} else if (siteEditorIframe) {
 					// Iframe on creation generates head, then gutenberg generates their own head
 					// and in some moment we have two heads, so we need to add styles only to second head(gutenberg one)

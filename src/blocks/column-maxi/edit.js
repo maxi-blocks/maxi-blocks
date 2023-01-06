@@ -99,10 +99,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	maxiBlockDidUpdate(prevProps) {
-		if (
-			this.resizableObject.current &&
-			(!getTemplatePartChooseList() || this.isPreviewBlock)
-		) {
+		if (this.resizableObject.current) {
 			const columnWidth = getLastBreakpointAttribute({
 				target: 'column-size',
 				breakpoint: this.props.deviceType || 'general',

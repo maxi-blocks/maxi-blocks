@@ -593,11 +593,20 @@ class MaxiBlockComponent extends Component {
 							wrapper.classList.add('maxi-blocks__styles');
 							iframeHead.appendChild(wrapper);
 
-							const SC = select(
-								'maxiBlocks/style-cards'
-							).receiveMaxiActiveStyleCard();
-							if (SC) {
-								updateSCOnEditor(SC.value, templateViewIframe);
+							if (
+								!templateViewIframe.getElementById(
+									'maxi-blocks-sc-vars-inline-css'
+								)
+							) {
+								const SC = select(
+									'maxiBlocks/style-cards'
+								).receiveMaxiActiveStyleCard();
+								if (SC) {
+									updateSCOnEditor(
+										SC.value,
+										templateViewIframe
+									);
+								}
 							}
 						}
 

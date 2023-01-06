@@ -15,7 +15,6 @@ import getIsTemplatePart from './getIsTemplatePart';
  * @param {string} clientId The clientId of the block in template part from which we want to get the slug.
  * @returns {string|false} The slug of the template part or false if we are not on the FSE editor.
  */
-
 const getTemplatePartSlug = clientId => {
 	if (!getIsSiteEditor()) return false;
 

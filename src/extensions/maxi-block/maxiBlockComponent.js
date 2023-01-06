@@ -51,7 +51,7 @@ import { getStylesWrapperId } from './utils';
 /**
  * External dependencies
  */
-import { isEmpty, isEqual, cloneDeep, isNil } from 'lodash';
+import { cloneDeep, isEmpty, isEqual, isFunction, isNil } from 'lodash';
 
 /**
  * Style Component
@@ -562,7 +562,27 @@ class MaxiBlockComponent extends Component {
 		dispatch('maxiBlocks/customData').updateCustomData(customData);
 
 		if (document.body.classList.contains('maxi-blocks--active')) {
-			if (getIsSiteEditor()) {
+			const getStylesWrapper = (element, onCreateWrapper) => {
+				const wrapperId = getStylesWrapperId(uniqueID);
+
+				let wrapper = element.querySelector(`#${wrapperId}`);
+
+				if (!wrapper) {
+					wrapper = document.createElement('div');
+					wrapper.id = wrapperId;
+					wrapper.classList.add('maxi-blocks__styles');
+					element.appendChild(wrapper);
+
+					if (isFunction(onCreateWrapper)) onCreateWrapper(wrapper);
+				}
+
+				return wrapper;
+			};
+
+			let wrapper;
+
+			const isSiteEditor = getIsSiteEditor();
+			if (isSiteEditor) {
 				// for full site editor (FSE)
 				const siteEditorIframe = getSiteEditorIframe();
 
@@ -583,16 +603,7 @@ class MaxiBlockComponent extends Component {
 							getWinBreakpoint(iframeBody.offsetWidth)
 						);
 
-						let wrapper = iframeHead.querySelector(
-							`#${getStylesWrapperId(uniqueID)}`
-						);
-
-						if (!wrapper) {
-							wrapper = document.createElement('div');
-							wrapper.id = `maxi-blocks__styles--${uniqueID}`;
-							wrapper.classList.add('maxi-blocks__styles');
-							iframeHead.appendChild(wrapper);
-
+						wrapper = getStylesWrapper(iframeHead, () => {
 							if (
 								!templateViewIframe.getElementById(
 									'maxi-blocks-sc-vars-inline-css'
@@ -608,18 +619,7 @@ class MaxiBlockComponent extends Component {
 									);
 								}
 							}
-						}
-
-						render(
-							<StyleComponent
-								uniqueID={uniqueID}
-								stylesObj={obj}
-								currentBreakpoint={this.currentBreakpoint}
-								blockBreakpoints={breakpoints}
-								isSiteEditor
-							/>,
-							wrapper
-						);
+						});
 					}
 				} else if (siteEditorIframe) {
 					// Iframe on creation generates head, then gutenberg generates their own head
@@ -630,50 +630,23 @@ class MaxiBlockComponent extends Component {
 
 					if (isEmpty(iframeHead.childNodes)) return;
 
-					let iframeWrapper = iframeHead.querySelector(
-						`#${getStylesWrapperId(uniqueID)}`
-					);
-
-					if (!iframeWrapper) {
-						iframeWrapper = document.createElement('div');
-						iframeWrapper.id = `maxi-blocks__styles--${uniqueID}`;
-						iframeWrapper.classList.add('maxi-blocks__styles');
-						iframeHead.appendChild(iframeWrapper);
-					}
-
-					render(
-						<StyleComponent
-							uniqueID={uniqueID}
-							stylesObj={obj}
-							currentBreakpoint={this.currentBreakpoint}
-							blockBreakpoints={breakpoints}
-							isSiteEditor
-						/>,
-						iframeWrapper
-					);
+					wrapper = getStylesWrapper(iframeHead);
 				}
 			} else {
-				let wrapper = document.querySelector(
-					`#${getStylesWrapperId(uniqueID)}`
-				);
+				wrapper = getStylesWrapper(document.head);
+			}
 
-				if (!wrapper) {
-					wrapper = document.createElement('div');
-					wrapper.id = `maxi-blocks__styles--${uniqueID}`;
-					wrapper.classList.add('maxi-blocks__styles');
-					document.head.appendChild(wrapper);
-				}
-
+			if (wrapper)
 				render(
 					<StyleComponent
 						uniqueID={uniqueID}
 						stylesObj={obj}
 						currentBreakpoint={this.currentBreakpoint}
 						blockBreakpoints={breakpoints}
+						isSiteEditor={isSiteEditor}
 					/>,
 					wrapper
 				);
-			}
 
 			// Since WP 5.9 Gutenberg includes the responsive into iframes, so need to add the styles there also
 			const iframe = document.querySelector(
@@ -684,16 +657,7 @@ class MaxiBlockComponent extends Component {
 				const iframeDocument = iframe.contentDocument;
 
 				if (iframeDocument.head) {
-					let iframeWrapper = iframeDocument.querySelector(
-						`#${getStylesWrapperId(uniqueID)}`
-					);
-
-					if (!iframeWrapper) {
-						iframeWrapper = iframeDocument.createElement('div');
-						iframeWrapper.id = getStylesWrapperId(uniqueID);
-						iframeWrapper.classList.add('maxi-blocks__styles');
-						iframeDocument.head.appendChild(iframeWrapper);
-					}
+					const iframeWrapper = getStylesWrapper(iframeDocument.head);
 
 					render(
 						<StyleComponent

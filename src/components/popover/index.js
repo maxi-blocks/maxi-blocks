@@ -6,13 +6,11 @@
 import classnames from 'classnames';
 import {
 	useFloating,
-	flip,
 	shift,
 	autoUpdate,
 	arrow,
 	offset as offsetMiddleware,
 	limitShift,
-	size,
 } from '@floating-ui/react-dom';
 
 /**
@@ -29,6 +27,7 @@ import {
 import {
 	useViewportMatch,
 	useMergeRefs,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUseDialog as useDialog,
 } from '@wordpress/compose';
 import { close } from '@wordpress/icons';
@@ -142,7 +141,6 @@ const Popover = (
 		onFocusOutside,
 		__unstableSlotName = SLOT_NAME,
 		__unstableObserveElement,
-		__unstableForcePosition = false,
 		__unstableShift = false,
 		...contentProps
 	},
@@ -188,12 +186,15 @@ const Popover = (
 		const { defaultView } = ownerDocument;
 		const { frameElement } = defaultView;
 
-		if (!frameElement || ownerDocument === document) {
-			return undefined;
-		}
+		const iframeRect = frameElement?.getBoundingClientRect();
 
-		const iframeRect = frameElement.getBoundingClientRect();
-		return { x: iframeRect.left, y: iframeRect.top };
+		return (
+			frameElement &&
+			ownerDocument !== document && {
+				x: iframeRect.left,
+				y: iframeRect.top,
+			}
+		);
 	}, [ownerDocument]);
 
 	const middleware = [
@@ -229,20 +230,6 @@ const Popover = (
 					};
 			  })
 			: undefined,
-		__unstableForcePosition ? undefined : flip(),
-		__unstableForcePosition
-			? undefined
-			: size({
-					apply(sizeProps) {
-						const { height } = sizeProps;
-						if (!refs.floating.current) return;
-						// Reduce the height of the popover to the available space.
-						Object.assign(refs.floating.current.firstChild.style, {
-							maxHeight: `${height}px`,
-							overflow: 'auto',
-						});
-					},
-			  }),
 		__unstableShift
 			? shift({
 					crossAxis: true,
@@ -352,13 +339,13 @@ const Popover = (
 		}
 
 		if (!resultingReferenceRef) {
-			return;
+			return () => null;
 		}
 
 		reference(resultingReferenceRef);
 
 		if (!refs.floating.current) {
-			return;
+			return () => null;
 		}
 
 		return autoUpdate(
@@ -372,7 +359,7 @@ const Popover = (
 	// This is only needed for a smooth transition when moving blocks.
 	useLayoutEffect(() => {
 		if (!__unstableObserveElement) {
-			return;
+			return () => null;
 		}
 		const observer = new window.MutationObserver(update);
 		observer.observe(__unstableObserveElement, { attributes: true });
@@ -387,7 +374,7 @@ const Popover = (
 	// document scrolls.
 	useLayoutEffect(() => {
 		if (ownerDocument === document) {
-			return;
+			return () => null;
 		}
 
 		ownerDocument.addEventListener('scroll', update);

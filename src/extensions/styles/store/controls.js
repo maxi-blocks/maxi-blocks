@@ -36,8 +36,6 @@ async function processCss(code) {
 const controls = {
 	SAVE_STYLES({ isUpdate, styles }) {
 		entityRecordsWrapper(async ({ key: id, name }) => {
-			const isSiteEditor = getIsSiteEditor();
-
 			const filteredStyles = getFilteredData(styles, { id, name });
 			const parsedStyles = await processCss(
 				frontendStyleGenerator(filteredStyles)
@@ -54,7 +52,7 @@ const controls = {
 						fonts,
 					}),
 					update: isUpdate,
-					isTemplate: isSiteEditor,
+					isTemplate: getIsSiteEditor(),
 					templateParts: JSON.stringify(
 						name === 'wp_template' ? getTemplatePartsIds() : null
 					),

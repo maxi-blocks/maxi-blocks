@@ -17,7 +17,7 @@ import { getSiteEditorIframe } from '../fse';
 /**
  * External dependencies
  */
-import { times, isArray, isEmpty, merge, cloneDeep, uniq } from 'lodash';
+import { cloneDeep, isArray, isEmpty, merge, times, uniq } from 'lodash';
 import { getTypographyStyles } from '../styles/helpers';
 
 const getColorString = (obj, target, style) => {

@@ -27,14 +27,18 @@ const breakpointResizer = ({
 }) => {
 	const xxlSize = breakpoints.xl + 1;
 
-	const editorWrapper =
-		document.querySelector('.edit-post-visual-editor') ||
-		(getIsSiteEditor() &&
-			((getIsTemplatePart() &&
-				document.querySelector(
+	const getEditorWrapper = () => {
+		if (getIsSiteEditor()) {
+			if (getIsTemplatePart()) {
+				return document.querySelector(
 					'.components-resizable-box__container'
-				)) ||
-				document.querySelector('.edit-site-visual-editor')));
+				);
+			}
+			return document.querySelector('.edit-site-visual-editor');
+		}
+		return document.querySelector('.edit-post-visual-editor');
+	};
+	const editorWrapper = getEditorWrapper();
 
 	[editorWrapper, getSiteEditorIframeBody()].forEach(element => {
 		element?.setAttribute(

@@ -134,9 +134,7 @@ const Popover = (
 		placement: placementProp = 'bottom-start',
 		offset,
 		focusOnMount = 'firstElement',
-		anchorRef,
-		anchorRect,
-		getAnchorRect,
+		anchor,
 		expandOnMobile,
 		onFocusOutside,
 		__unstableSlotName = SLOT_NAME,
@@ -156,28 +154,7 @@ const Popover = (
 		? positionToPlacement(position)
 		: placementProp;
 
-	const ownerDocument = useMemo(() => {
-		let documentToReturn;
-
-		if (anchorRef?.top) {
-			documentToReturn = anchorRef?.top.ownerDocument;
-		} else if (anchorRef?.startContainer) {
-			documentToReturn = anchorRef.startContainer.ownerDocument;
-		} else if (anchorRef?.current) {
-			documentToReturn = anchorRef.current.ownerDocument;
-		} else if (anchorRef) {
-			// This one should be deprecated.
-			documentToReturn = anchorRef.ownerDocument;
-		} else if (anchorRect && anchorRect?.ownerDocument) {
-			documentToReturn = anchorRect.ownerDocument;
-		} else if (getAnchorRect) {
-			documentToReturn = getAnchorRect(
-				anchorRefFallback.current
-			)?.ownerDocument;
-		}
-
-		return documentToReturn ?? document;
-	}, [anchorRef, anchorRect, getAnchorRect]);
+	const ownerDocument = anchor?.ownerDocument ?? document;
 
 	/**
 	 * Offsets the position of the popover when the anchor is inside an iframe.
@@ -290,48 +267,8 @@ const Popover = (
 	useLayoutEffect(() => {
 		let resultingReferenceRef;
 
-		if (anchorRef?.top) {
-			// Create a virtual element for the ref. The expectation is that
-			// if anchorRef.top is defined, then anchorRef.bottom is defined too.
-			resultingReferenceRef = {
-				getBoundingClientRect() {
-					const topRect = anchorRef.top.getBoundingClientRect();
-					const bottomRect = anchorRef.bottom.getBoundingClientRect();
-					return new window.DOMRect(
-						topRect.x,
-						topRect.y,
-						topRect.width,
-						bottomRect.bottom - topRect.top
-					);
-				},
-			};
-		} else if (anchorRef?.current) {
-			// Standard React ref.
-			resultingReferenceRef = anchorRef.current;
-		} else if (anchorRef) {
-			// If `anchorRef` holds directly the element's value (no `current` key)
-			// This is a weird scenario and should be deprecated.
-			resultingReferenceRef = anchorRef;
-		} else if (anchorRect) {
-			// Create a virtual element for the ref.
-			resultingReferenceRef = {
-				getBoundingClientRect() {
-					return anchorRect;
-				},
-			};
-		} else if (getAnchorRect) {
-			// Create a virtual element for the ref.
-			resultingReferenceRef = {
-				getBoundingClientRect() {
-					const rect = getAnchorRect(anchorRefFallback.current);
-					return new window.DOMRect(
-						rect.x ?? rect.left,
-						rect.y ?? rect.top,
-						rect.width ?? rect.right - rect.left,
-						rect.height ?? rect.bottom - rect.top
-					);
-				},
-			};
+		if (anchor) {
+			resultingReferenceRef = anchor;
 		} else if (anchorRefFallback.current) {
 			// If no explicit ref is passed via props, fall back to
 			// anchoring to the popover's parent node.
@@ -354,7 +291,7 @@ const Popover = (
 			update,
 			{ ancestorScroll: false }
 		);
-	}, [anchorRef, anchorRect, getAnchorRect]);
+	}, [anchor]);
 
 	// This is only needed for a smooth transition when moving blocks.
 	useLayoutEffect(() => {

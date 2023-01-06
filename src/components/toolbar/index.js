@@ -230,7 +230,7 @@ const MaxiToolbar = memo(
 		);
 
 		const popoverPropsByVersion = {
-			anchorRef: anchor,
+			anchor,
 			position: 'top center',
 		};
 

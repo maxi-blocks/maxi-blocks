@@ -1,7 +1,6 @@
 /**
  * WordPress dependencies
  */
-import { select } from '@wordpress/data';
 import { useRef, useEffect, useState, forwardRef } from '@wordpress/element';
 
 /**
@@ -89,7 +88,7 @@ const Dropdown = forwardRef(
 		const args = { isOpen, onToggle: toggle, onClose: close };
 
 		const popoverPropsByVersion = {
-			anchorRef: popoverProps?.anchorRef ?? containerRef.current,
+			anchor: popoverProps?.anchorRef ?? containerRef.current,
 			variant: 'unstyled',
 		};
 

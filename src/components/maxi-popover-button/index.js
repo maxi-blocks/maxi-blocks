@@ -1,7 +1,6 @@
 /**
  * WordPress dependencies
  */
-import { select } from '@wordpress/data';
 import { forwardRef, useRef } from '@wordpress/element';
 
 /**
@@ -35,7 +34,7 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 	);
 
 	const popoverPropsByVersion = {
-		anchorRef: ref.current,
+		anchor: ref.current,
 		placement: 'top-end',
 		variant: 'unstyled',
 	};

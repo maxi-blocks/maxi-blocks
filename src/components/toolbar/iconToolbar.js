@@ -70,7 +70,7 @@ const IconToolbar = memo(
 		};
 
 		const popoverPropsByVersion = {
-			anchorRef,
+			anchor: anchorRef,
 			variant: 'unstyled',
 		};
 

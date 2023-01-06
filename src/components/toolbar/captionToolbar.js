@@ -140,7 +140,7 @@ const CaptionToolbar = memo(
 		};
 
 		const popoverProps = {
-			anchorRef,
+			anchor: anchorRef,
 			position: 'bottom center',
 		};
 

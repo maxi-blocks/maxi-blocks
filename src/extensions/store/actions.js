@@ -67,15 +67,11 @@ const actions = {
 		const deviceType = getDeviceType();
 
 		if (!isGutenbergButton) {
-			const {
-				__experimentalSetPreviewDeviceType: setPostPreviewDeviceType,
-			} = dispatch('core/edit-post');
-
 			const isSiteEditor = getIsSiteEditor();
 
-			const setPreviewDeviceType = isSiteEditor
-				? dispatch('core/edit-site').__experimentalSetPreviewDeviceType
-				: setPostPreviewDeviceType;
+			const setPreviewDeviceType = dispatch(
+				`core/edit-${isSiteEditor ? 'site' : 'post'}`
+			).__experimentalSetPreviewDeviceType;
 
 			setPreviewDeviceType('Desktop');
 		}

@@ -11,7 +11,6 @@ import RowContext from '../row-maxi/context';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { BlockInserter, BlockResizer, Toolbar } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-import { getTemplatePartChooseList } from '../../extensions/fse';
 import {
 	getGroupAttributes,
 	getIsOverflowHidden,

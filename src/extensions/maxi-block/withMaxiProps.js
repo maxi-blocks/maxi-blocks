@@ -3,7 +3,7 @@
  */
 import { useSelect, dispatch } from '@wordpress/data';
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
-import { useRef, useCallback, useEffect, useState } from '@wordpress/element';
+import { useRef, useCallback, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -25,9 +25,6 @@ const withMaxiProps = createHigherOrderComponent(
 		pure(ownProps => {
 			const { setAttributes, attributes, clientId, isSelected } =
 				ownProps;
-
-			const [hasInterBlocksAppender, setHasInterBlocksAppender] =
-				useState(false);
 
 			const {
 				deviceType,
@@ -120,13 +117,8 @@ const withMaxiProps = createHigherOrderComponent(
 						hasInnerBlocks={hasInnerBlocks}
 						isChild={isChild}
 						hasSelectedChild={hasSelectedChild}
-						hasInterBlocksAppender={hasInterBlocksAppender}
 					/>
-					<BlockInserter.InterBlockInserter
-						ref={ref}
-						setHasInterBlocksAppender={setHasInterBlocksAppender}
-						{...ownProps}
-					/>
+					<BlockInserter.InterBlockInserter ref={ref} {...ownProps} />
 				</>
 			);
 		}),

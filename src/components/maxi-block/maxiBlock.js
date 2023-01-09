@@ -105,7 +105,6 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		isSelected,
 		hasSelectedChild,
 		isHovered,
-		hasInterBlocksAppender,
 		...extraProps
 	} = props;
 
@@ -289,7 +288,6 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 			hasInnerBlocks={hasInnerBlocks}
 			isSelected={isSelected}
 			hasSelectedChild={hasSelectedChild}
-			hasInterBlocksAppender={hasInterBlocksAppender}
 		>
 			{children}
 		</InnerBlocksBlock>

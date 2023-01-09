@@ -121,7 +121,6 @@
 
 	.components-popover__content {
 		height: auto;
-		overflow: hidden;
 		background: transparent;
 		border: none;
 		border-radius: 0;
@@ -136,9 +135,14 @@
 			top: 50%;
 			left: 50%;
 			transform: translate(-50%, -50%);
-			width: 100%;
+			width: 0;
 			height: 5px;
 			background-color: var(--maxi-primary-color);
+			transition: all 0.3s ease;
+		}
+
+		&:hover:before {
+			width: var(--maxi-inter-blocks-inserter-width);
 		}
 	}
 }
@@ -193,7 +197,7 @@
 	&__content-item {
 		position: absolute;
 		top: 50%;
-		left: 50%;
+		left: 66%;
 		transform: translate(-50%, -50%);
 		width: 20px;
 		height: 20px;

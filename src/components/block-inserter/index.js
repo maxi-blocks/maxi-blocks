@@ -111,7 +111,7 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 	const { width } = ref.current.getBoundingClientRect();
 
 	const style = {
-		width: `${width}px`,
+		'--maxi-inter-blocks-inserter-width': `${width}px`,
 	};
 
 	const popoverProps = {
@@ -216,15 +216,17 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 });
 
 const InterBlockToggle = props => {
-	const {
-		clientId,
-		onToggleInserter,
-		blockRef,
-		setHasInterBlocksAppender,
-		isOpen,
-	} = props;
+	const { clientId, onToggleInserter, blockRef, isOpen } = props;
 
 	const [isHovered, setHovered] = useState(false);
+
+	const { nextBlockClientId } = useSelect(select => {
+		const { getAdjacentBlockClientId } = select('core/block-editor');
+
+		return {
+			nextBlockClientId: getAdjacentBlockClientId(clientId, 1),
+		};
+	});
 
 	const classes = classnames(
 		'maxi-inter-blocks-inserter__toggle',
@@ -238,26 +240,14 @@ const InterBlockToggle = props => {
 		width: `${width}px`,
 	};
 
-	const onMouseOver = () => {
-		setHovered(true);
-
-		setHasInterBlocksAppender(true);
-	};
-
-	const onMouseOut = e => {
-		if (!e.target?.contains(e.relatedTarget)) {
-			setHovered(false);
-
-			setHasInterBlocksAppender(false);
-		}
-	};
-
 	return (
 		<div
 			className={classes}
 			style={style}
-			onMouseOver={onMouseOver}
-			onMouseOut={onMouseOut}
+			onMouseOver={() => setHovered(true)}
+			onMouseOut={e => {
+				if (!e.target?.contains(e.relatedTarget)) setHovered(false);
+			}}
 			onClick={onToggleInserter}
 		>
 			{(isHovered || isOpen) && (
@@ -278,11 +268,27 @@ const InterBlockToggle = props => {
 							<path d='M18 11.2h-5.2V6h-1.6v5.2H6v1.6h5.2V18h1.6v-5.2H18z' />
 						</svg>
 					</Button>
-					{/** Removes original WP inserter, so avoids both inserters at same time */}
 					<style>
 						{
+							/** Removes original WP inserter, so avoids both inserters at same time */
 							'.block-editor-block-list__insertion-point: {display: none}'
 						}
+						{clientId &&
+							/** Adds blue boundary outline on the current block */
+							`.maxi-block[data-block="${clientId}"]::after {
+								content: '';
+								position: absolute;
+								pointer-events: none;
+								opacity: 1;
+							} `}
+						{nextBlockClientId &&
+							/** Adds blue boundary outline on the next block */
+							`.maxi-block[data-block="${nextBlockClientId}"]::after {
+								content: '';
+								position: absolute;
+								pointer-events: none;
+								opacity: 1;
+							} `}
 					</style>
 				</>
 			)}
@@ -291,7 +297,7 @@ const InterBlockToggle = props => {
 };
 
 const InterBlockInserter = forwardRef((props, ref) => {
-	const { clientId, setHasInterBlocksAppender } = props;
+	const { clientId } = props;
 	const blockRef = ref?.current?.blockRef?.current;
 
 	const popoverRef = useRef(null);
@@ -404,7 +410,6 @@ const InterBlockInserter = forwardRef((props, ref) => {
 					<InterBlockToggle
 						onToggleInserter={onToggleInserter}
 						isOpen={isOpen}
-						setHasInterBlocksAppender={setHasInterBlocksAppender}
 						clientId={clientId}
 						blockRef={blockRef}
 					/>

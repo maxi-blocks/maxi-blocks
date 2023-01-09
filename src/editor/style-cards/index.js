@@ -16,8 +16,9 @@ import { Button, Icon } from '../../components';
  */
 import './editor.scss';
 import { styleCardMenu } from '../../icons';
+import { forwardRef } from 'react';
 
-const MaxiStyleCardsEditorPopUp = () => {
+const MaxiStyleCardsEditorPopUp = forwardRef((props, settingsRef) => {
 	const { styleCards } = useSelect(select => {
 		const { receiveMaxiStyleCards } = select('maxiBlocks/style-cards');
 
@@ -43,10 +44,11 @@ const MaxiStyleCardsEditorPopUp = () => {
 				<MaxiStyleCardsEditor
 					styleCards={styleCards}
 					setIsVisible={setIsVisible}
+					ref={settingsRef}
 				/>
 			)}
 		</>
 	);
-};
+});
 
 export default MaxiStyleCardsEditorPopUp;

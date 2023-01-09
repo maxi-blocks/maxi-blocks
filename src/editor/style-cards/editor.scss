@@ -2,22 +2,10 @@ body {
 	.maxi-current-option {
 		background-color: #ff4a16;
 	}
-	&.folded .maxi-responsive-selector .maxi-style-cards__popover,
-	&.is-fullscreen-mode .maxi-responsive-selector .maxi-style-cards__popover {
-		margin-top: 103px;
-	}
-	&:not(.is-fullscreen-mode, .folded)
-		.maxi-responsive-selector
-		.maxi-style-cards__popover {
-		margin: 134px 0 0 184px;
-	}
 }
 
 .maxi-responsive-selector {
 	.maxi-style-cards__popover {
-		position: fixed !important;
-		top: 0 !important;
-		left: 0 !important;
 		z-index: 98;
 
 		.maxi-accordion-control__item {

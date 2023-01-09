@@ -8,7 +8,7 @@ $radius-block-ui: 3px;
 $panel-header-height: 32px;
 $grid-unit-20: 20px;
 
-.components-popover {
+.maxi-components-popover {
 	z-index: z-index('.components-popover');
 	opacity: 1;
 
@@ -26,7 +26,7 @@ $grid-unit-20: 20px;
 	}
 }
 
-.components-popover__content {
+.maxi-components-popover__content {
 	background: $white;
 	// Using outline instead of border to avoid impacting
 	// popover computations.
@@ -55,7 +55,7 @@ $grid-unit-20: 20px;
 	}
 }
 
-.components-popover__header {
+.maxi-components-popover__header {
 	align-items: center;
 	background: $white;
 	display: flex;
@@ -64,18 +64,18 @@ $grid-unit-20: 20px;
 	padding: 0 8px 0 $grid-unit-20;
 }
 
-.components-popover__header-title {
+.maxi-components-popover__header-title {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	width: 100%;
 }
 
-.components-popover__close.components-button {
+.maxi-components-popover__close.components-button {
 	z-index: z-index('.components-popover__close');
 }
 
-.components-popover__arrow {
+.maxi-components-popover__arrow {
 	position: absolute;
 	width: $arrow-triangle-base-size;
 	height: $arrow-triangle-base-size;
@@ -118,17 +118,17 @@ $grid-unit-20: 20px;
 	}
 }
 
-.components-popover__triangle {
+.maxi-components-popover__triangle {
 	display: block;
 	flex: 1;
 }
 
-.components-popover__triangle-bg {
+.maxi-components-popover__triangle-bg {
 	// Fill color is the same as the .components-popover__content's background
 	fill: $white;
 }
 
-.components-popover__triangle-border {
+.maxi-components-popover__triangle-border {
 	// Stroke colors are the same as the .components-popover__content's outline
 	fill: transparent;
 	stroke-width: $border-width;

@@ -60,15 +60,15 @@ const ArrowTriangle = props => (
 		{...props}
 		xmlns='http://www.w3.org/2000/svg'
 		viewBox='0 0 100 100'
-		className='components-popover__triangle'
+		className='maxi-components-popover__triangle components-popover__triangle'
 		role='presentation'
 	>
 		<Path
-			className='components-popover__triangle-bg'
+			className='maxi-components-popover__triangle-bg components-popover__triangle-bg'
 			d='M 0 0 L 50 50 L 100 0'
 		/>
 		<Path
-			className='components-popover__triangle-border'
+			className='maxi-components-popover__triangle-border components-popover__triangle-border'
 			d='M 0 0 L 50 50 L 100 0'
 			vectorEffect='non-scaling-stroke'
 		/>
@@ -318,7 +318,6 @@ const Popover = (
 		return () => ownerDocument.removeEventListener('scroll', update);
 	}, [ownerDocument]);
 
-	/** @type {false | string} */
 	const animateClassName =
 		!!animate &&
 		getAnimateClassName({
@@ -328,13 +327,11 @@ const Popover = (
 
 	const mergedFloatingRef = useMergeRefs([floating, dialogRef, forwardedRef]);
 
-	// Disable reason: We care to capture the _bubbled_ events from inputs
-	// within popover as inferring close intent.
-
 	let content = (
 		<div
 			className={classnames(
 				'components-popover',
+				'maxi-components-popover',
 				className,
 				animateClassName,
 				{
@@ -359,23 +356,25 @@ const Popover = (
 			{/* Prevents scroll on the document */}
 			{isExpanded && <ScrollLock />}
 			{isExpanded && (
-				<div className='components-popover__header'>
-					<span className='components-popover__header-title'>
+				<div className='maxi-components-popover__header components-popover__header'>
+					<span className='maxi-components-popover__header-title components-popover__header-title'>
 						{headerTitle}
 					</span>
 					<Button
-						className='components-popover__close'
+						className='maxi-components-popover__close components-popover__close'
 						icon={close}
 						onClick={onClose}
 					/>
 				</div>
 			)}
-			<div className='components-popover__content'>{children}</div>
+			<div className='maxi-components-popover__content components-popover__content'>
+				{children}
+			</div>
 			{hasArrow && (
 				<div
 					ref={arrowRef}
 					className={[
-						'components-popover__arrow',
+						'maxi-components-popover__arrow components-popover__arrow',
 						`is-${computedPlacement.split('-')[0]}`,
 					].join(' ')}
 					style={{
@@ -393,7 +392,7 @@ const Popover = (
 		</div>
 	);
 
-	if (slotName !== 'Popover') {
+	if (slotName !== SLOT_NAME) {
 		content = <Fill name={slotName}>{content}</Fill>;
 		return content;
 	}

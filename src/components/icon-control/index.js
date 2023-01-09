@@ -67,7 +67,6 @@ const IconControlResponsiveSettings = withRTC(props => {
 		prefix = '',
 		[`${prefix}icon-only`]: iconOnly,
 		[`${prefix}icon-inherit`]: iconInherit,
-		[`${prefix}icon-content`]: iconContent,
 	} = props;
 
 	const [iconStyle, setIconStyle] = useState('color');

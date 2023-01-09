@@ -16,8 +16,8 @@ import SettingTabsControl from '../setting-tabs-control';
 import {
 	getLastBreakpointAttribute,
 	getAttributeValue,
+	getDefaultAttribute,
 } from '../../extensions/styles';
-import { handleOnReset } from '../../extensions/attributes';
 import getOptions from './utils';
 
 /**
@@ -80,6 +80,15 @@ const FlexSettingsControl = props => {
 											attributes: props,
 										}) ?? ''
 									}
+									onReset={() =>
+										onChange({
+											[`flex-direction-${breakpoint}`]:
+												getDefaultAttribute(
+													`flex-direction-${breakpoint}`
+												),
+											isReset: true,
+										})
+									}
 									options={getOptions([
 										'row',
 										'row-reverse',
@@ -108,6 +117,15 @@ const FlexSettingsControl = props => {
 											breakpoint,
 											attributes: props,
 										}) ?? ''
+									}
+									onReset={() =>
+										onChange({
+											[`align-content-${breakpoint}`]:
+												getDefaultAttribute(
+													`align-content-${breakpoint}`
+												),
+											isReset: true,
+										})
 									}
 									options={getOptions([
 										'flex-start',
@@ -164,11 +182,10 @@ const FlexSettingsControl = props => {
 									max={12}
 									step={1}
 									onReset={() =>
-										onChange(
-											handleOnReset({
-												[`order-${breakpoint}`]: null,
-											})
-										)
+										onChange({
+											[`order-${breakpoint}`]: null,
+											isReset: true,
+										})
 									}
 								/>
 								<AdvancedNumberControl
@@ -189,12 +206,10 @@ const FlexSettingsControl = props => {
 									max={10}
 									step={0.1}
 									onReset={() =>
-										onChange(
-											handleOnReset({
-												[`flex-grow-${breakpoint}`]:
-													null,
-											})
-										)
+										onChange({
+											[`flex-grow-${breakpoint}`]: null,
+											isReset: true,
+										})
 									}
 								/>
 								<AdvancedNumberControl
@@ -215,12 +230,10 @@ const FlexSettingsControl = props => {
 									max={10}
 									step={0.1}
 									onReset={() =>
-										onChange(
-											handleOnReset({
-												[`flex-shrink-${breakpoint}`]:
-													null,
-											})
-										)
+										onChange({
+											[`flex-shrink-${breakpoint}`]: null,
+											isReset: true,
+										})
 									}
 								/>
 								<SelectControl
@@ -234,6 +247,15 @@ const FlexSettingsControl = props => {
 													breakpoint,
 													attributes: props,
 											  }) ?? ''
+									}
+									onReset={() =>
+										onChange({
+											[`flex-basis-${breakpoint}`]:
+												getDefaultAttribute(
+													`flex-basis-${breakpoint}`
+												),
+											isReset: true,
+										})
 									}
 									options={getOptions([
 										'content',
@@ -305,12 +327,11 @@ const FlexSettingsControl = props => {
 										}}
 										allowedUnits={['px', 'em', 'vw', '%']}
 										onReset={() =>
-											onChange(
-												handleOnReset({
-													[`flex-basis-${breakpoint}`]:
-														null,
-												})
-											)
+											onChange({
+												[`flex-basis-${breakpoint}`]:
+													null,
+												isReset: true,
+											})
 										}
 									/>
 								)}

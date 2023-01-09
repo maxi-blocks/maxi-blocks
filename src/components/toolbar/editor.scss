@@ -477,7 +477,8 @@ body .toolbar-item__popover {
 		color: var(--maxi-grey-5-color) !important;
 		flex: 2;
 		&::placeholder {
-			color: #fff;
+			color: var(--maxi-grey-5-color);
+			opacity: 0.8;
 		}
 	}
 

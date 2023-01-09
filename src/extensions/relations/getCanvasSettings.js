@@ -39,7 +39,7 @@ import { getGroupAttributes, getLastBreakpointAttribute } from '../styles';
  */
 import { isEmpty, isEqual, isPlainObject, pickBy } from 'lodash';
 
-const getTransformControl = (name, { categories, selectors }) => ({
+const getTransformControl = ({ categories, selectors }) => ({
 	label: __('Transform', 'maxi-blocks'),
 	transitionTarget: [],
 	hoverProp: (attributes, relationAttributes) =>
@@ -142,12 +142,14 @@ const getCanvasSettings = ({ name, customCss }) => [
 	},
 	{
 		label: __('Box shadow', 'maxi-blocks'),
+		hoverProp: 'box-shadow-status-hover',
 		attrGroupName: 'boxShadow',
 		component: props => <BoxShadowControl {...props} />,
 		helper: props => getBoxShadowStyles(props),
 	},
 	{
 		label: __('Opacity', 'maxi-blocks'),
+		hoverProp: 'opacity-status-hover',
 		attrGroupName: 'opacity',
 		component: props => (
 			<OpacityControl
@@ -157,9 +159,6 @@ const getCanvasSettings = ({ name, customCss }) => [
 					breakpoint: props.breakpoint,
 					attributes: getGroupAttributes(props, 'opacity'),
 				})}
-				onChange={val =>
-					props.onChange({ [`opacity-${props.breakpoint}`]: val })
-				}
 			/>
 		),
 		helper: props => getOpacityStyles(props.obj),
@@ -204,7 +203,7 @@ const getCanvasSettings = ({ name, customCss }) => [
 		component: props => <PositionControl {...props} />,
 		helper: props => getPositionStyles(props.obj),
 	},
-	...getTransformControl(name, customCss),
+	...getTransformControl(customCss),
 ];
 
 export default getCanvasSettings;

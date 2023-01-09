@@ -1222,6 +1222,79 @@ describe('getBackgroundStyles', () => {
 		expect(result).toMatchSnapshot();
 	});
 
+	it('Get correct block background styles for color layer different values for border on different responsive stages and hovers', () => {
+		const result = getBlockBackgroundStyles({
+			target,
+			isHover: false,
+			blockStyle: 'light',
+
+			'background-layers': [
+				{
+					type: 'color',
+					isHover: false,
+					'display-general': 'block',
+					'background-palette-status-general': true,
+					'background-palette-color-general': 4,
+					'background-color-clip-path-status-general': false,
+					'background-color-wrapper-position-sync-general': 'all',
+					'background-color-wrapper-position-top-unit-general': 'px',
+					'background-color-wrapper-position-right-unit-general':
+						'px',
+					'background-color-wrapper-position-bottom-unit-general':
+						'px',
+					'background-color-wrapper-position-left-unit-general': 'px',
+					order: 1,
+					id: 1,
+					'background-color-wrapper-width-general': 100,
+					'background-color-wrapper-width-unit-general': '%',
+				},
+			],
+			'block-background-status-hover': false,
+			'border-palette-status-general': true,
+			'border-palette-color-general': 5,
+			'border-style-general': 'solid',
+			'border-top-width-general': 5,
+			'border-top-width-l': 10,
+			'border-top-width-m': 0,
+			'border-right-width-general': 10,
+			'border-right-width-l': 15,
+			'border-bottom-width-general': 15,
+			'border-bottom-width-l': 20,
+			'border-left-width-general': 20,
+			'border-left-width-l': 5,
+			'border-left-width-m': 0,
+			'border-sync-width-general': 'none',
+			'border-unit-width-general': 'px',
+			'border-sync-radius-general': 'all',
+			'border-unit-radius-general': 'px',
+			'border-palette-status-general-hover': true,
+			'border-palette-color-general-hover': 3,
+			'border-style-general-hover': 'solid',
+			'border-style-m-hover': 'solid',
+			'border-status-hover': true,
+			'border-top-width-general-hover': 5,
+			'border-top-width-l-hover': 10,
+			'border-top-width-m-hover': 2,
+			'border-right-width-general-hover': 10,
+			'border-right-width-l-hover': 15,
+			'border-right-width-m-hover': 15,
+			'border-bottom-width-general-hover': 15,
+			'border-bottom-width-l-hover': 20,
+			'border-bottom-width-m-hover': 20,
+			'border-left-width-general-hover': 20,
+			'border-left-width-l-hover': 5,
+			'border-left-width-m-hover': 2,
+			'border-sync-width-general-hover': 'none',
+			'border-sync-width-m-hover': 'all',
+			'border-unit-width-general-hover': 'px',
+			'border-unit-width-m-hover': 'px',
+			'border-sync-radius-general-hover': 'all',
+			'border-unit-radius-general-hover': 'px',
+		});
+
+		expect(result).toMatchSnapshot();
+	});
+
 	it('Get correct block background styles for color layer with row border radius', () => {
 		const result = getBlockBackgroundStyles({
 			target,

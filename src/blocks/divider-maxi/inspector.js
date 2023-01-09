@@ -22,7 +22,6 @@ import {
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { customCss } from './data';
 import { withMaxiInspector } from '../../extensions/inspector';
-import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * Inspector
@@ -101,14 +100,13 @@ const Inspector = props => {
 															})
 														}
 														onReset={() => {
-															maxiSetAttributes(
-																handleOnReset({
-																	[`line-orientation-${deviceType}`]:
-																		getDefaultAttribute(
-																			`line-orientation-${deviceType}`
-																		),
-																})
-															);
+															maxiSetAttributes({
+																[`line-orientation-${deviceType}`]:
+																	getDefaultAttribute(
+																		`line-orientation-${deviceType}`
+																	),
+																isReset: true,
+															});
 														}}
 													/>
 													<SelectControl
@@ -154,14 +152,13 @@ const Inspector = props => {
 															})
 														}
 														onReset={() => {
-															maxiSetAttributes(
-																handleOnReset({
-																	[`line-vertical-${deviceType}`]:
-																		getDefaultAttribute(
-																			`line-vertical-${deviceType}`
-																		),
-																})
-															);
+															maxiSetAttributes({
+																[`line-vertical-${deviceType}`]:
+																	getDefaultAttribute(
+																		`line-vertical-${deviceType}`
+																	),
+																isReset: true,
+															});
 														}}
 													/>
 													<SelectControl
@@ -207,14 +204,13 @@ const Inspector = props => {
 															})
 														}
 														onReset={() =>
-															maxiSetAttributes(
-																handleOnReset({
-																	[`line-horizontal-${deviceType}`]:
-																		getDefaultAttribute(
-																			`line-horizontal-${deviceType}`
-																		),
-																})
-															)
+															maxiSetAttributes({
+																[`line-horizontal-${deviceType}`]:
+																	getDefaultAttribute(
+																		`line-horizontal-${deviceType}`
+																	),
+																isReset: true,
+															})
 														}
 													/>
 												</>
@@ -282,9 +278,6 @@ const Inspector = props => {
 									...inspectorTabs.boxShadow({
 										props,
 									}),
-									...inspectorTabs.opacity({
-										props,
-									}),
 									...inspectorTabs.size({
 										props,
 										block: true,
@@ -333,6 +326,9 @@ const Inspector = props => {
 										},
 									}),
 									...inspectorTabs.display({
+										props,
+									}),
+									...inspectorTabs.opacity({
 										props,
 									}),
 									...inspectorTabs.position({

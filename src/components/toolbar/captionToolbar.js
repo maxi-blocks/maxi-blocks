@@ -62,34 +62,33 @@ const CaptionToolbar = memo(
 
 		const { formatValue, onChangeTextFormat } = useContext(textContext);
 
-		const { editorVersion, breakpoint, styleCard, tooltipsHide } =
-			useSelect(select => {
-				const { receiveMaxiSettings, receiveMaxiDeviceType } =
-					select('maxiBlocks');
-				const { receiveMaxiSelectedStyleCard } = select(
-					'maxiBlocks/style-cards'
-				);
+		const { breakpoint, styleCard, tooltipsHide } = useSelect(select => {
+			const { receiveMaxiSettings, receiveMaxiDeviceType } =
+				select('maxiBlocks');
+			const { receiveMaxiSelectedStyleCard } = select(
+				'maxiBlocks/style-cards'
+			);
 
-				const maxiSettings = receiveMaxiSettings();
-				const version = !isEmpty(maxiSettings.editor)
-					? maxiSettings.editor.version
-					: null;
+			const maxiSettings = receiveMaxiSettings();
+			const version = !isEmpty(maxiSettings.editor)
+				? maxiSettings.editor.version
+				: null;
 
-				const breakpoint = receiveMaxiDeviceType();
+			const breakpoint = receiveMaxiDeviceType();
 
-				const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
+			const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
 
-				const tooltipsHide = !isEmpty(maxiSettings.hide_tooltips)
-					? maxiSettings.hide_tooltips
-					: false;
+			const tooltipsHide = !isEmpty(maxiSettings.hide_tooltips)
+				? maxiSettings.hide_tooltips
+				: false;
 
-				return {
-					editorVersion: version,
-					breakpoint,
-					styleCard,
-					tooltipsHide,
-				};
-			});
+			return {
+				editorVersion: version,
+				breakpoint,
+				styleCard,
+				tooltipsHide,
+			};
+		});
 
 		const [anchorRef, setAnchorRef] = useState(ref.current);
 

@@ -8,7 +8,7 @@ import { useState } from '@wordpress/element';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
-import ClipPath from '../clip-path-control';
+import ClipPathControl from '../clip-path-control';
 import ImageAltControl from '../image-alt-control';
 import ImageCropControl from '../image-crop-control';
 import MediaUploaderControl from '../media-uploader-control';
@@ -66,16 +66,11 @@ const ImageLayerSettings = props => {
 					attributes: imageOptions,
 					isHover,
 				})}
-				onChange={val =>
-					onChange({
-						[getAttributeKey(
-							'background-image-opacity',
-							isHover,
-							prefix,
-							breakpoint
-						)]: val,
-					})
-				}
+				breakpoint={breakpoint}
+				prefix={`${prefix}background-image-`}
+				isHover={isHover}
+				onChange={onChange}
+				disableRTC
 			/>
 			<SelectControl
 				label={__('Background size', 'maxi-blocks')}
@@ -136,6 +131,16 @@ const ImageLayerSettings = props => {
 							prefix,
 							breakpoint
 						)]: val,
+					})
+				}
+				onReset={() =>
+					onChange({
+						[getAttributeKey(
+							'background-image-size',
+							isHover,
+							prefix,
+							breakpoint
+						)]: getDefaultAttr('background-image-size'),
 					})
 				}
 			/>
@@ -221,6 +226,16 @@ const ImageLayerSettings = props => {
 							)]: val,
 						})
 					}
+					onReset={() =>
+						onChange({
+							[getAttributeKey(
+								'background-image-repeat',
+								isHover,
+								prefix,
+								breakpoint
+							)]: getDefaultAttr('background-image-repeat'),
+						})
+					}
 				/>
 			)}
 			<SelectControl
@@ -284,6 +299,16 @@ const ImageLayerSettings = props => {
 						)]: val,
 					})
 				}
+				onReset={() =>
+					onChange({
+						[getAttributeKey(
+							'background-image-position',
+							isHover,
+							prefix,
+							breakpoint
+						)]: getDefaultAttr('background-image-position'),
+					})
+				}
 			/>
 			{getLastBreakpointAttribute({
 				target: `${prefix}background-image-position`,
@@ -345,6 +370,7 @@ const ImageLayerSettings = props => {
 								)]: getDefaultAttr(
 									'background-image-position-width-unit'
 								),
+								isReset: true,
 							})
 						}
 					/>
@@ -401,6 +427,7 @@ const ImageLayerSettings = props => {
 								)]: getDefaultAttr(
 									'background-image-position-height-unit'
 								),
+								isReset: true,
 							})
 						}
 					/>
@@ -439,6 +466,18 @@ const ImageLayerSettings = props => {
 									prefix,
 									breakpoint
 								)]: val,
+							})
+						}
+						onReset={() =>
+							onChange({
+								[getAttributeKey(
+									'background-image-attachment',
+									isHover,
+									prefix,
+									breakpoint
+								)]: getDefaultAttr(
+									'background-image-attachment'
+								),
 							})
 						}
 					/>
@@ -485,6 +524,18 @@ const ImageLayerSettings = props => {
 										)]: val,
 									})
 								}
+								onReset={() =>
+									onChange({
+										[getAttributeKey(
+											'background-image-origin',
+											isHover,
+											prefix,
+											breakpoint
+										)]: getDefaultAttr(
+											'background-image-origin'
+										),
+									})
+								}
 							/>
 							<SelectControl
 								label={__('Background clip', 'maxi-blocks')}
@@ -519,6 +570,18 @@ const ImageLayerSettings = props => {
 										)]: val,
 									})
 								}
+								onReset={() =>
+									onChange({
+										[getAttributeKey(
+											'background-image-clip',
+											isHover,
+											prefix,
+											breakpoint
+										)]: getDefaultAttr(
+											'background-image-clip'
+										),
+									})
+								}
 							/>
 						</div>
 					)}
@@ -526,7 +589,7 @@ const ImageLayerSettings = props => {
 			)}
 			<hr />
 			{!disableClipPath && (
-				<ClipPath
+				<ClipPathControl
 					onChange={onChange}
 					{...getGroupAttributes(
 						imageOptions,
@@ -538,6 +601,8 @@ const ImageLayerSettings = props => {
 					isHover={isHover}
 					prefix='background-image-'
 					breakpoint={breakpoint}
+					isLayer
+					disableRTC
 				/>
 			)}
 			<SizeAndPositionLayerControl
@@ -743,6 +808,7 @@ const ImageLayer = props => {
 															getDefaultAttr(
 																'background-image-parallax-speed'
 															),
+														isReset: true,
 													})
 												}
 												initialPosition={getDefaultAttr(

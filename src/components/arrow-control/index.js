@@ -154,12 +154,13 @@ const ArrowControl = props => {
 						min={0}
 						max={100}
 						onReset={() =>
-							onChangeValue(
-								'arrow-position',
-								getDefaultAttribute(
-									`arrow-position-${breakpoint}`
-								)
-							)
+							onChange({
+								[`arrow-position-${breakpoint}`]:
+									getDefaultAttribute(
+										`arrow-position-${breakpoint}`
+									),
+								isReset: true,
+							})
 						}
 						initialPosition={getDefaultAttribute(
 							`arrow-position-${breakpoint}`
@@ -182,10 +183,13 @@ const ArrowControl = props => {
 							onChangeValue('arrow-width', value);
 						}}
 						onReset={() =>
-							onChangeValue(
-								'arrow-width',
-								getDefaultAttribute(`arrow-width-${breakpoint}`)
-							)
+							onChange({
+								[`arrow-width-${breakpoint}`]:
+									getDefaultAttribute(
+										`arrow-width-${breakpoint}`
+									),
+								isReset: true,
+							})
 						}
 						minMaxSettings={minMaxSettings}
 					/>

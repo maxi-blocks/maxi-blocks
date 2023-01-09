@@ -78,6 +78,7 @@ const TransitionControl = props => {
 									getDefaultTransitionAttribute(
 										'transition-duration'
 									),
+								isReset: true,
 							})
 						}
 					/>
@@ -108,6 +109,7 @@ const TransitionControl = props => {
 									getDefaultTransitionAttribute(
 										'transition-delay'
 									),
+								isReset: true,
 							})
 						}
 					/>
@@ -148,6 +150,7 @@ const TransitionControl = props => {
 							onChange({
 								[`easing-${breakpoint}`]:
 									getDefaultTransitionAttribute('easing'),
+								isReset: true,
 							})
 						}
 					/>

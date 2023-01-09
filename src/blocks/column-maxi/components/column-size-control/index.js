@@ -12,7 +12,9 @@ import {
 	ToggleSwitch,
 } from '../../../../components';
 import { getColumnDefaultValue } from '../../../../extensions/column-templates';
+import withRTC from '../../../../extensions/maxi-block/withRTC';
 import {
+	getAttributeKey,
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -61,22 +63,22 @@ const ColumnSizeControl = props => {
 					min={0}
 					max={100}
 					step={0.1}
-					onReset={() =>
+					onReset={() => {
+						const val = getColumnDefaultValue(
+							rowPattern,
+							{
+								...getGroupAttributes(props, 'columnSize'),
+							},
+							clientId,
+							breakpoint
+						);
+
 						onChange({
 							[`column-size-${breakpoint}`]:
-								getColumnDefaultValue(
-									rowPattern,
-									{
-										...getGroupAttributes(
-											props,
-											'columnSize'
-										),
-									},
-									clientId,
-									breakpoint
-								),
-						})
-					}
+								val !== undefined && val !== '' ? val : '',
+							isReset: true,
+						});
+					}}
 					initialPosition={getDefaultAttribute(
 						`column-size-${breakpoint}`,
 						clientId
@@ -117,9 +119,27 @@ const ColumnSizeControl = props => {
 						[`justify-content-${breakpoint}`]: verticalAlign,
 					})
 				}
+				onReset={() => {
+					onChange({
+						[getAttributeKey(
+							'justify-content',
+							false,
+							'',
+							breakpoint
+						)]: getDefaultAttribute(
+							getAttributeKey(
+								'justify-content',
+								false,
+								'',
+								breakpoint
+							)
+						),
+						isReset: true,
+					});
+				}}
 			/>
 		</>
 	);
 };
 
-export default ColumnSizeControl;
+export default withRTC(ColumnSizeControl);

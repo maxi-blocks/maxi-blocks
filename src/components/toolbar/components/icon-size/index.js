@@ -65,6 +65,7 @@ const IconSize = props => {
 							[`icon-spacing-${breakpoint}`]: getDefaultAttribute(
 								`icon-spacing-${breakpoint}`
 							),
+							isReset: true,
 						})
 					}
 				/>

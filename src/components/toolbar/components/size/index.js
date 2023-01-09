@@ -93,6 +93,7 @@ const Size = props => {
 								breakpoint,
 								attributes: props,
 							})}
+							allowedUnits={['px', 'em', 'vw', '%']}
 							onChangeValue={val =>
 								onChange({
 									[`width-${breakpoint}`]: val,
@@ -108,6 +109,7 @@ const Size = props => {
 										getDefaultAttribute(
 											`width-unit-${breakpoint}`
 										),
+									isReset: true,
 								})
 							}
 						/>
@@ -137,6 +139,7 @@ const Size = props => {
 												getDefaultAttribute(
 													`max-width-unit-${breakpoint}`
 												),
+											isReset: true,
 										})
 									}
 									value={getLastBreakpointAttribute({

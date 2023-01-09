@@ -166,6 +166,7 @@ const ColorControl = props => {
 					paletteColor,
 					paletteOpacity,
 					color: defaultColor,
+					isReset: true,
 				});
 			}
 		}
@@ -182,11 +183,13 @@ const ColorControl = props => {
 					!avoidBreakpointForDefault ? deviceType : null
 				)
 			);
+
 		onChange({
 			paletteStatus,
 			paletteColor,
 			paletteOpacity: opacity,
 			color: `rgba(${getColorRGBAParts(color).color},${opacity || 1})`,
+			isReset: true,
 		});
 	};
 

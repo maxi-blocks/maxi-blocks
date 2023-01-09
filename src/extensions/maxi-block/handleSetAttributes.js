@@ -8,6 +8,8 @@ import { select } from '@wordpress/data';
  */
 import getBreakpointFromAttribute from '../styles/getBreakpointFromAttribute';
 import getDefaultAttribute from '../styles/getDefaultAttribute';
+import handleOnReset from '../attributes/handleOnReset';
+
 /**
  * External dependencies
  */
@@ -17,13 +19,14 @@ import cleanAttributes from './cleanAttributes';
 const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const handleSetAttributes = ({
-	obj,
+	obj: { isReset, ...obj },
 	attributes,
 	onChange,
 	clientId = null,
 	defaultAttributes,
+	isStyleCard = false,
 }) => {
-	const response = { ...obj };
+	const response = isReset ? { ...handleOnReset(obj) } : { ...obj };
 
 	const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 
@@ -164,6 +167,8 @@ const handleSetAttributes = ({
 
 		response[attrLabelOnBaseBreakpoint] = attributes?.[attrLabelOnGeneral];
 	});
+
+	if (isStyleCard) return onChange(response);
 
 	const cleanedResponse = cleanAttributes({
 		newAttributes: response,

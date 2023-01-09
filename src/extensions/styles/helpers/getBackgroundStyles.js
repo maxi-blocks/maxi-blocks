@@ -20,6 +20,7 @@ import {
 	merge,
 	pickBy,
 	round,
+	toNumber,
 } from 'lodash';
 import getPaletteAttributes from '../getPaletteAttributes';
 
@@ -172,12 +173,11 @@ export const getGradientBackgroundObject = ({
 		[breakpoint]: {},
 	};
 
-	const bgGradientOpacity = getAttributeValue({
-		target: 'background-gradient-opacity',
-		props,
-		prefix,
-		isHover,
+	const bgGradientOpacity = getLastBreakpointAttribute({
+		target: `${prefix}background-gradient-opacity`,
 		breakpoint,
+		attributes: props,
+		isHover,
 	});
 	const bgGradient = getLastBreakpointAttribute({
 		target: `${prefix}background-gradient`,
@@ -200,23 +200,51 @@ export const getGradientBackgroundObject = ({
 	});
 
 	if (
-		isIcon &&
-		getLastBreakpointAttribute({
-			target: `${prefix}background-active-media`,
-			breakpoint,
-			attributes: props,
-			isHover,
-		}) === 'gradient'
+		(isIcon &&
+			getLastBreakpointAttribute({
+				target: `${prefix}background-active-media`,
+				breakpoint,
+				attributes: props,
+				isHover,
+			}) === 'gradient') ||
+		!isIcon
 	) {
-		if (isNumber(bgGradientOpacity))
-			response[breakpoint].opacity = bgGradientOpacity;
-		if (!isEmpty(bgGradient)) response[breakpoint].background = bgGradient;
-	} else if (!isIcon) {
-		if (isNumber(bgGradientOpacity))
-			response[breakpoint].opacity = bgGradientOpacity;
-		if (!isEmpty(bgGradient) && bgGradient !== 'undefined') {
+		if (
+			isNumber(bgGradientOpacity) &&
+			!isEmpty(bgGradient) &&
+			bgGradient !== 'undefined'
+		) {
 			response[breakpoint].background = bgGradient;
-		} else {
+
+			if (bgGradientOpacity < 1) {
+				const colorRegex =
+					/rgba?\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})(?:,\s*(\d(?:\.\d+)?))?\)/g;
+
+				const matches = bgGradient.match(colorRegex);
+				if (matches) {
+					matches.forEach(match => {
+						let colorOpacity = 1;
+
+						const isRgba = match.includes('rgba');
+						if (isRgba)
+							colorOpacity = toNumber(
+								match.split(',')[3].replace(')', '')
+							);
+
+						const newMatch = match.replace(
+							colorRegex,
+							`rgba($1,$2,$3,${round(
+								colorOpacity * bgGradientOpacity,
+								2
+							)})`
+						);
+						response[breakpoint].background = response[
+							breakpoint
+						].background.replace(match, newMatch);
+					});
+				}
+			}
+		} else if (!isIcon) {
 			const colorBackground = getColorBackgroundObject({
 				...getGroupAttributes(
 					props,
@@ -239,6 +267,7 @@ export const getGradientBackgroundObject = ({
 
 			if (background) response[breakpoint].background = background;
 		}
+
 		if (isbgGradientClipPathActive)
 			response[breakpoint]['clip-path'] = isEmpty(bgGradientClipPath)
 				? 'none'
@@ -960,36 +989,53 @@ const getGeneralBackgroundStyles = (
 		isHover,
 	});
 
-	breakpoints.forEach(breakpoint => {
-		const widthTop = getBorderValue('top', breakpoint);
-		const widthBottom = getBorderValue('bottom', breakpoint);
-		const widthLeft = getBorderValue('left', breakpoint);
-		const widthRight = getBorderValue('right', breakpoint);
+	!isEmpty(props) &&
+		breakpoints.forEach(breakpoint => {
+			let widthTop;
+			let widthBottom;
+			let widthLeft;
+			let widthRight;
 
-		const widthUnit =
-			getLastBreakpointAttribute({
-				target: 'border-unit-width',
-				breakpoint,
-				attributes: props,
-			}) || 'px';
+			if (
+				props[`border-style-${breakpoint}`] !== 'none' &&
+				((props['border-style-general'] &&
+					props['border-style-general'] !== 'none') ||
+					props[`border-style-${breakpoint}`])
+			) {
+				widthTop = getBorderValue('top', breakpoint);
+				widthBottom = getBorderValue('bottom', breakpoint);
+				widthLeft = getBorderValue('left', breakpoint);
+				widthRight = getBorderValue('right', breakpoint);
+			}
 
-		if (border[breakpoint]['border-style']) {
-			size[breakpoint] = {
-				...((widthTop === 0 || !!widthTop || isHover) && {
-					top: -round(widthTop, 2) + widthUnit,
-				}),
-				...((widthBottom === 0 || !!widthBottom || isHover) && {
-					bottom: -round(widthBottom, 2) + widthUnit,
-				}),
-				...((widthLeft === 0 || !!widthLeft || isHover) && {
-					left: -round(widthLeft, 2) + widthUnit,
-				}),
-				...((widthRight === 0 || !!widthRight || isHover) && {
-					right: -round(widthRight, 2) + widthUnit,
-				}),
-			};
-		}
-	});
+			const widthUnit =
+				getLastBreakpointAttribute({
+					target: 'border-unit-width',
+					breakpoint,
+					attributes: props,
+				}) || 'px';
+
+			if (
+				border[breakpoint]['border-style'] ||
+				Number.isFinite(widthTop) ||
+				Number.isFinite(widthBottom) ||
+				Number.isFinite(widthLeft) ||
+				Number.isFinite(widthRight)
+			) {
+				const getSize = width => {
+					if (!Number.isFinite(width)) return;
+
+					return isHover ? 'auto' : -round(width, 2) + widthUnit;
+				};
+
+				size[breakpoint] = {
+					top: getSize(widthTop),
+					bottom: getSize(widthBottom),
+					left: getSize(widthLeft),
+					right: getSize(widthRight),
+				};
+			}
+		});
 
 	breakpoints.forEach(breakpoint => {
 		if (border[breakpoint]['border-top-width'])
@@ -1016,11 +1062,33 @@ const getGeneralBackgroundStyles = (
 		[...breakpoints].reverse().forEach(breakpoint => {
 			if (
 				size[breakpoints[breakpoints.indexOf(breakpoint) - 1]]?.top ===
-					size[breakpoint]?.top ||
-				size[breakpoints[breakpoints.indexOf(breakpoint) - 1]]?.left ===
-					size[breakpoint]?.left
+				size[breakpoint]?.top
 			)
+				delete size[breakpoint]?.top;
+			if (
+				size[breakpoints[breakpoints.indexOf(breakpoint) - 1]]?.left ===
+				size[breakpoint]?.left
+			)
+				delete size[breakpoint]?.left;
+			if (
+				size[breakpoints[breakpoints.indexOf(breakpoint) - 1]]
+					?.bottom === size[breakpoint]?.bottom
+			)
+				delete size[breakpoint]?.bottom;
+			if (
+				size[breakpoints[breakpoints.indexOf(breakpoint) - 1]]
+					?.right === size[breakpoint]?.right
+			)
+				delete size[breakpoint]?.right;
+
+			if (
+				isEmpty(size[breakpoints[breakpoints.indexOf(breakpoint) - 1]])
+			) {
+				delete size[breakpoints[breakpoints.indexOf(breakpoint) - 1]];
+			}
+			if (isEmpty(size[breakpoint])) {
 				delete size[breakpoint];
+			}
 		});
 
 	return { border, ...(!isEmpty(size) && { size }) };

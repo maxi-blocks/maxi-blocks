@@ -707,6 +707,7 @@ const MaxiToolbar = memo(
 			isSelected: wasSelected,
 			deviceType: oldBreakpoint,
 			scValues: oldSCValues,
+			blockIndex: oldBlockIndex,
 		} = oldProps;
 
 		const {
@@ -714,12 +715,15 @@ const MaxiToolbar = memo(
 			isSelected,
 			deviceType: breakpoint,
 			scValues,
+			blockIndex,
 		} = newProps;
 
 		// If is not selected, don't render
 		if (!isSelected && wasSelected === isSelected) return true;
 
 		if (select('core/block-editor').isDraggingBlocks()) return true;
+
+		if (blockIndex !== oldBlockIndex) return false;
 
 		if (
 			wasSelected !== isSelected ||

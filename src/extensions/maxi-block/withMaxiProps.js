@@ -31,6 +31,7 @@ const withMaxiProps = createHigherOrderComponent(
 				hasInnerBlocks,
 				isChild,
 				hasSelectedChild,
+				blockIndex,
 			} = useSelect(select => {
 				const { receiveMaxiDeviceType, receiveBaseBreakpoint } =
 					select('maxiBlocks');
@@ -38,6 +39,7 @@ const withMaxiProps = createHigherOrderComponent(
 					getBlockOrder,
 					getBlockParents,
 					hasSelectedInnerBlock,
+					getBlockIndex,
 				} = select('core/block-editor');
 
 				const deviceType = receiveMaxiDeviceType();
@@ -51,12 +53,15 @@ const withMaxiProps = createHigherOrderComponent(
 
 				const hasSelectedChild = hasSelectedInnerBlock(clientId, true);
 
+				const blockIndex = getBlockIndex(clientId);
+
 				return {
 					deviceType,
 					baseBreakpoint,
 					hasInnerBlocks,
 					isChild,
 					hasSelectedChild,
+					blockIndex,
 				};
 			});
 
@@ -115,6 +120,7 @@ const withMaxiProps = createHigherOrderComponent(
 					hasInnerBlocks={hasInnerBlocks}
 					isChild={isChild}
 					hasSelectedChild={hasSelectedChild}
+					blockIndex={blockIndex}
 				/>
 			);
 		}),

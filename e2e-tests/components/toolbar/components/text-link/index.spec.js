@@ -51,8 +51,6 @@ describe('Text link', () => {
 		await page.keyboard.type('test.com', { delay: 100 });
 		await page.keyboard.press('Enter');
 
-		expect(await getAttributes('content')).toStrictEqual(
-			'<a href="test.com" rel="noreferrer noopener nofollow sponsored ugc" target="_blank" title="" class="maxi-text-block--link">Testing Text Maxi</a>'
-		);
+		expect(await getAttributes('content')).toMatchSnapshot();
 	});
 });

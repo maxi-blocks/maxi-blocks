@@ -131,7 +131,7 @@ const TextListOptions = props => {
 					onClick={() => onChangeList('ul')}
 					aria-pressed={isList && typeOfList === 'ul'}
 				/>
-				{!isEmpty(formatValue) && formatValue.formats && (
+				{isList && !isEmpty(formatValue) && formatValue.formats && (
 					<>
 						{canOutdentListItems(formatValue) && (
 							<Button

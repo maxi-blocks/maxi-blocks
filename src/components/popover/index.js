@@ -246,14 +246,16 @@ const Popover = (
 		// when either elements change.
 		reference,
 		floating,
-		// Object with "regular" refs to both "reference" and "floating"
-		refs,
 		// Type of CSS position property to use (absolute or fixed)
 		strategy,
 		update,
 		placement: computedPlacement,
 		middlewareData: { arrow: arrowData = {} },
-	} = useFloating({ placement: normalizedPlacementFromProps, middleware });
+	} = useFloating({
+		placement: normalizedPlacementFromProps,
+		middleware,
+		whileElementsMounted: autoUpdate,
+	});
 
 	// Update the `reference`'s ref.
 	//
@@ -276,22 +278,11 @@ const Popover = (
 		}
 
 		if (!resultingReferenceRef) {
-			return () => null;
+			return;
 		}
 
 		reference(resultingReferenceRef);
-
-		if (!refs.floating.current) {
-			return () => null;
-		}
-
-		return autoUpdate(
-			resultingReferenceRef,
-			refs.floating.current,
-			update,
-			{ ancestorScroll: false }
-		);
-	}, [anchor]);
+	}, [anchor, reference]);
 
 	// This is only needed for a smooth transition when moving blocks.
 	useLayoutEffect(() => {
@@ -348,8 +339,11 @@ const Popover = (
 					? undefined
 					: {
 							position: strategy,
-							left: Number.isNaN(x) ? 0 : x,
-							top: Number.isNaN(y) ? 0 : y,
+							left: 0,
+							top: 0,
+							transform: `translate(
+								${Number.isNaN(x) ? 0 : x}px,
+								${Number.isNaN(y) ? 0 : y}px)`,
 					  }
 			}
 		>

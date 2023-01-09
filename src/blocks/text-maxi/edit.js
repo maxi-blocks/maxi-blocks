@@ -56,7 +56,7 @@ class edit extends MaxiBlockComponent {
 			...(dcStatus && {
 				dynamic_content: {
 					[uniqueID]: {
-						...getGroupAttributes(attributes, 'dc'),
+						...getGroupAttributes(attributes, 'dynamicContent'),
 					},
 				},
 			}),

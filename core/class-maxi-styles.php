@@ -41,6 +41,8 @@ class MaxiBlocks_Styles
             case 'map':
                 return [$meta, get_option('google_api_key_option')];
                 break;
+            case 'dynamic_content':
+                return [$meta, get_rest_url()];
             default:
                 return [$meta];
                 break;

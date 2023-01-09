@@ -117,6 +117,7 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 			animate={false}
 			focusOnMount={false}
 			__unstableSlotName='block-toolbar'
+			__unstableObserveElement={ref.current}
 			uniqueid={uniqueID}
 			{...popoverPropsByVersion}
 		>

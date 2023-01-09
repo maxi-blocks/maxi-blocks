@@ -149,44 +149,47 @@ const MaxiToolbar = memo(
 		const [pinActive, setPinActive] = useState(false);
 
 		const getAnchor = popoverRef => {
-			const popoverRect = popoverRef
-				?.querySelector('.components-popover__content')
-				?.getBoundingClientRect();
-
-			if (!popoverRect) return null;
-
-			const rect = anchorRef.getBoundingClientRect();
-
-			const { width, x } = rect;
-			const { width: popoverWidth } = popoverRect;
-
-			const expectedContentX = x + width / 2 - popoverWidth / 2;
-
-			const container = document
-				.querySelector('.editor-styles-wrapper')
-				?.getBoundingClientRect();
-
-			if (container) {
-				const { x: containerX, width: containerWidth } = container;
-
-				// Left cut off check
-				if (expectedContentX < containerX)
-					rect.x += containerX - expectedContentX;
-
-				// Right cut off check
-				if (
-					expectedContentX + popoverWidth >
-					containerX + containerWidth
-				)
-					rect.x -=
-						expectedContentX +
-						popoverWidth -
-						(containerX + containerWidth);
-			}
-
 			return {
-				getBoundingClientRect: () => rect,
+				getBoundingClientRect: () => {
+					const popoverRect = popoverRef
+						?.querySelector('.components-popover__content')
+						?.getBoundingClientRect();
+
+					if (!popoverRect) return null;
+
+					const rect = anchorRef.getBoundingClientRect();
+
+					const { width, x } = rect;
+					const { width: popoverWidth } = popoverRect;
+
+					const expectedContentX = x + width / 2 - popoverWidth / 2;
+
+					const container = document
+						.querySelector('.editor-styles-wrapper')
+						?.getBoundingClientRect();
+
+					if (container) {
+						const { x: containerX, width: containerWidth } =
+							container;
+
+						// Left cut off check
+						if (expectedContentX < containerX)
+							rect.x += containerX - expectedContentX;
+
+						// Right cut off check
+						if (
+							expectedContentX + popoverWidth >
+							containerX + containerWidth
+						)
+							rect.x -=
+								expectedContentX +
+								popoverWidth -
+								(containerX + containerWidth);
+					}
+					return rect;
+				},
 				ownerDocument: anchorRef.ownerDocument,
+				// contextElement: anchorRef,
 			};
 		};
 
@@ -248,6 +251,7 @@ const MaxiToolbar = memo(
 							'maxi-toolbar__popover--has-breadcrumb'
 					)}
 					__unstableSlotName='block-toolbar'
+					__unstableObserveElement={ref.current}
 					{...popoverPropsByVersion}
 				>
 					<div className={`toolbar-wrapper pinned--${pinActive}`}>
@@ -707,7 +711,6 @@ const MaxiToolbar = memo(
 			isSelected: wasSelected,
 			deviceType: oldBreakpoint,
 			scValues: oldSCValues,
-			blockIndex: oldBlockIndex,
 		} = oldProps;
 
 		const {
@@ -715,15 +718,12 @@ const MaxiToolbar = memo(
 			isSelected,
 			deviceType: breakpoint,
 			scValues,
-			blockIndex,
 		} = newProps;
 
 		// If is not selected, don't render
 		if (!isSelected && wasSelected === isSelected) return true;
 
 		if (select('core/block-editor').isDraggingBlocks()) return true;
-
-		if (blockIndex !== oldBlockIndex) return false;
 
 		if (
 			wasSelected !== isSelected ||

@@ -137,6 +137,7 @@ const Popover = (
 		anchor,
 		expandOnMobile,
 		onFocusOutside,
+		strategy = 'absolute',
 		__unstableSlotName = SLOT_NAME,
 		__unstableObserveElement,
 		__unstableShift = false,
@@ -246,12 +247,11 @@ const Popover = (
 		// when either elements change.
 		reference,
 		floating,
-		// Type of CSS position property to use (absolute or fixed)
-		strategy,
 		update,
 		placement: computedPlacement,
 		middlewareData: { arrow: arrowData = {} },
 	} = useFloating({
+		strategy,
 		placement: normalizedPlacementFromProps,
 		middleware,
 		whileElementsMounted: autoUpdate,
@@ -339,11 +339,8 @@ const Popover = (
 					? undefined
 					: {
 							position: strategy,
-							left: 0,
-							top: 0,
-							transform: `translate(
-								${Number.isNaN(x) ? 0 : x}px,
-								${Number.isNaN(y) ? 0 : y}px)`,
+							left: Number.isNaN(x) ? 0 : x,
+							top: Number.isNaN(y) ? 0 : y,
 					  }
 			}
 		>

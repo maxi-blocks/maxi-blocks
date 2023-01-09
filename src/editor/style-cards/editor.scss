@@ -2,11 +2,9 @@ body {
 	.maxi-current-option {
 		background-color: #ff4a16;
 	}
-	&.folded .maxi-responsive-selector .maxi-style-cards__popover {
-		margin: 153px 0 0 60px;
-	}
+	&.folded .maxi-responsive-selector .maxi-style-cards__popover,
 	&.is-fullscreen-mode .maxi-responsive-selector .maxi-style-cards__popover {
-		margin: 121px 0 0 25px;
+		margin-top: 103px;
 	}
 	&:not(.is-fullscreen-mode, .folded)
 		.maxi-responsive-selector

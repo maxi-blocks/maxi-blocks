@@ -32,6 +32,7 @@ const withMaxiProps = createHigherOrderComponent(
 				hasInnerBlocks,
 				isChild,
 				hasSelectedChild,
+				isTyping,
 			} = useSelect(select => {
 				const { receiveMaxiDeviceType, receiveBaseBreakpoint } =
 					select('maxiBlocks');
@@ -39,6 +40,7 @@ const withMaxiProps = createHigherOrderComponent(
 					getBlockOrder,
 					getBlockParents,
 					hasSelectedInnerBlock,
+					isTyping,
 				} = select('core/block-editor');
 
 				const deviceType = receiveMaxiDeviceType();
@@ -58,6 +60,7 @@ const withMaxiProps = createHigherOrderComponent(
 					hasInnerBlocks,
 					isChild,
 					hasSelectedChild,
+					isTyping: isTyping(),
 				};
 			});
 
@@ -118,7 +121,16 @@ const withMaxiProps = createHigherOrderComponent(
 						isChild={isChild}
 						hasSelectedChild={hasSelectedChild}
 					/>
-					<BlockInserter.InterBlockInserter ref={ref} {...ownProps} />
+					{/* 
+						Need to check if it's typing to avoid an error on Text Maxi when moving the caret selector doing a keyDown event.
+						It happens when, for example, you are typing and you move the caret selector to another block using the arrows.
+					*/}
+					{!isTyping && (
+						<BlockInserter.InterBlockInserter
+							ref={ref}
+							{...ownProps}
+						/>
+					)}
 				</>
 			);
 		}),

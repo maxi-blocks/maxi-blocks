@@ -85,7 +85,7 @@ class DynamicContent {
 			const limit = dc['dc-limit'];
 			const show = dc['dc-show'];
 
-			if (type === 'settings') return;
+			if (type === 'settings') return null;
 
 			const options = formatOptions({
 				dayType,
@@ -151,17 +151,17 @@ class DynamicContent {
 			})
 				.catch(err => console.error(err))
 				.then(result => {
+					console.log(result);
 					if (!result) return null;
 					if (relation === 'random')
-						if (field !== 'date')
-							response = result?.[0]?.[field]?.rendered;
-						else response = result?.[0]?.[field];
-					else if (relation !== 'random' && field === 'date')
-						response = result?.[field];
-					else response = result?.[field]?.rendered;
+						response =
+							result?.[0]?.[field]?.rendered ??
+							result?.[0]?.[field];
+					else
+						response = result?.[field]?.rendered ?? result?.[field];
 				});
-			// console.log('final response');
-			// console.log(response);
+			console.log('final response');
+			console.log(response);
 			return response;
 		};
 

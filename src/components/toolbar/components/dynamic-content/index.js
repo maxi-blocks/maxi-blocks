@@ -648,8 +648,8 @@ const DynamicContent = props => {
 		isEmptyIdOptions
 	) {
 		getIdOptions(typeRef.current, {}, relationRef.current)
-			.catch(rej => console.error(rej))
-			.then(res => res);
+			?.catch(rej => console.error(rej))
+			?.then(res => res);
 	}
 
 	return (

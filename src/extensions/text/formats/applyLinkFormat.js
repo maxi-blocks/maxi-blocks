@@ -30,6 +30,7 @@ const applyLinkFormat = ({
 	returnFormatValue = false,
 	saveFormatValue = false,
 	onChangeTextFormat,
+	isWholeContent,
 }) => {
 	const linkCustomFormatValue = applyFormat(formatValue, {
 		type: 'maxi-blocks/text-link',
@@ -42,6 +43,7 @@ const applyLinkFormat = ({
 		isList,
 		value: {
 			'text-decoration': 'underline',
+			'is-whole-link': isWholeContent,
 		},
 		breakpoint,
 		isHover,

@@ -81,6 +81,10 @@ export const rawTypography = {
 		type: 'string',
 		default: 'px',
 	},
+	'is-whole-link': {
+		type: 'boolean',
+		default: false,
+	},
 };
 
 export const typography = breakpointAttributesCreator({

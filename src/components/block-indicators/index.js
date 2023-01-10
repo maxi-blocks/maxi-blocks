@@ -73,11 +73,10 @@ const Indicator = props => {
 	const style = {
 		[isVertical ? 'height' : 'width']: `${value}${unit}`,
 		[isVertical ? 'minHeight' : 'minWidth']: minSize,
-		...(type === 'margin' && {
-			[dir]: `${
-				value <= 0 ? `calc(${minSize} * -1)` : `${-value}${unit}`
-			}`,
-		}),
+		...(type === 'margin' &&
+			value > 0 && {
+				[dir]: `${-value}${unit}`,
+			}),
 		...(type === 'padding' &&
 			!isVertical && {
 				[dir]: 0,

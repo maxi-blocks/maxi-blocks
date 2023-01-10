@@ -1,8 +1,3 @@
-// Fixes overlapping of block indicators commented on https://github.com/maxi-blocks/maxi-blocks/pull/3955#discussion_r1043205659
-body.maxi-blocks--active .maxi-container-block:hover {
-	z-index: 99999999;
-}
-
 .maxi-block-indicators {
 	position: absolute;
 	top: 0;
@@ -16,11 +11,16 @@ body.maxi-blocks--active .maxi-container-block:hover {
 	&__padding {
 		background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23007CBA' fill-opacity='0.2' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
 		border: 1px solid #c7e6f7;
+		background-color: #f9fcfd;
+		color: #9b9b9b;
 	}
 
 	&__margin {
+		z-index: 3;
 		background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%231FBA00' fill-opacity='0.2' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
 		border: 1px solid #d2f6cb;
+		background-color: #f7faf6;
+		color: #9b9b9b;
 	}
 
 	.maxi-block-indicator {
@@ -72,18 +72,6 @@ body.maxi-blocks--active .maxi-container-block:hover {
 			height: 100%;
 			width: auto;
 		}
-	}
-
-	.maxi-block-indicators__margin {
-		background-color: #f7faf6;
-		color: #9b9b9b;
-		z-index: 1;
-	}
-
-	.maxi-block-indicators__padding {
-		background-color: #f9fcfd;
-		color: #9b9b9b;
-		z-index: 2;
 	}
 
 	&__handle {

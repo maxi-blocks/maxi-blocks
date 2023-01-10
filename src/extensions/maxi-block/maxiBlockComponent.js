@@ -396,6 +396,7 @@ class MaxiBlockComponent extends Component {
 					this.props.attributes.content = newContent;
 				}
 			}
+
 			return newUniqueID;
 		}
 

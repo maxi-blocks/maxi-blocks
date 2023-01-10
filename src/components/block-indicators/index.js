@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, useRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -40,6 +40,7 @@ const Indicator = props => {
 	} = props;
 
 	const [value, setValue] = useState(val);
+	const dragTime = useRef(null);
 
 	useEffect(() => {
 		if (+value !== +val) setValue(val);
@@ -121,8 +122,10 @@ const Indicator = props => {
 	};
 
 	const handleOnResizeStop = (type, e, ref) => {
-		const newValue = handleChanges(e, ref);
+		// Avoids triggering on click
+		if (Date.now() - dragTime.current < 500) return;
 
+		const newValue = handleChanges(e, ref);
 		onChange({
 			[`${type}-${dir}-${breakpoint}`]: `${newValue}`,
 		});
@@ -159,6 +162,9 @@ const Indicator = props => {
 				size={size}
 				handleWrapperStyle={handleStyles}
 				handleStyles={handleStyles}
+				onResizeStart={() => {
+					dragTime.current = Date.now();
+				}}
 				onResize={(e, dir, ref) => handleOnResize(type, e, ref)}
 				onResizeStop={(e, dir, ref) => handleOnResizeStop(type, e, ref)}
 			>

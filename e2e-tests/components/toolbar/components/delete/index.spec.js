@@ -14,7 +14,7 @@ describe('Delete block', () => {
 			content => content.outerText
 		);
 
-		expect(textContent).toStrictEqual('Block 1');
+		expect(textContent).toStrictEqual('Block 1');
 
 		// delete block
 		await page.$eval(

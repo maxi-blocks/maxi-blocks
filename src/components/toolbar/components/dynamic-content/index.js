@@ -75,8 +75,8 @@ const DynamicContent = props => {
 		'dc-second': second,
 		'dc-show': show,
 		'dc-status': status,
-		'dc-time-zone': timeZone,
-		'dc-time-zone-name': timeZoneName,
+		'dc-timezone': timeZone,
+		'dc-timezone-name': timeZoneName,
 		'dc-type': type,
 		'dc-weekday': weekday,
 		'dc-year': year,
@@ -187,6 +187,9 @@ const DynamicContent = props => {
 			});
 
 			content = NewDate.toLocaleString(zone, options);
+
+			console.log('content');
+			console.log(content);
 		}
 		return content;
 	};

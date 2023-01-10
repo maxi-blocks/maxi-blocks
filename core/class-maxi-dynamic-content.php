@@ -37,13 +37,13 @@ class MaxiBlocks_DynamicContent
 
     public function register_dynamic_blocks()
     {
-        // register_block_type('maxi-blocks/text-maxi', array(
-        //     'render_callback' => [
-        //         $this,
-        //         'dynamic_maxi_renderer',
-        //     ],
-
-        // ));
+        function maxi_add_rand_orderby_rest_api($query_params)
+        {
+            $query_params['orderby']['enum'][] = 'rand';
+            return $query_params;
+        }
+        add_filter('rest_post_collection_params', 'maxi_add_rand_orderby_rest_api');
+        add_filter('rest_page_collection_params', 'maxi_add_rand_orderby_rest_api');
     }
 
     public function dynamic_maxi_renderer()

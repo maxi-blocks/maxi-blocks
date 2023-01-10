@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 export const typeDefault = [
 	{
 		label: __('none', 'maxi-blocks'),
-		value: 'undefined',
+		value: 'none',
 	},
 	{
 		label: __('numeric', 'maxi-blocks'),
@@ -21,7 +21,7 @@ export const typeDefault = [
 export const typeEra = [
 	{
 		label: __('none', 'maxi-blocks'),
-		value: 'undefined',
+		value: 'none',
 	},
 	{
 		label: __('narrow', 'maxi-blocks'),
@@ -51,7 +51,7 @@ export const typeHour12 = [
 export const typeMonth = [
 	{
 		label: __('none', 'maxi-blocks'),
-		value: 'undefined',
+		value: 'none',
 	},
 	{
 		label: __('numeric', 'maxi-blocks'),
@@ -78,7 +78,7 @@ export const typeMonth = [
 export const typeWeekday = [
 	{
 		label: __('none', 'maxi-blocks'),
-		value: 'undefined',
+		value: 'none',
 	},
 	{
 		label: __('narrow', 'maxi-blocks'),
@@ -668,7 +668,7 @@ export const typeTimeZone = [
 export const typeTimeZoneName = [
 	{
 		label: __('none', 'maxi-blocks'),
-		value: 'undefined',
+		value: 'none',
 	},
 	{
 		label: __('short', 'maxi-blocks'),

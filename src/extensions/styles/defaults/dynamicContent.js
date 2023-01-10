@@ -68,21 +68,20 @@ const dynamicContent = {
 		type: 'string',
 		default: 'en',
 	},
-	'dc-time-zone': {
+	'dc-timezone': {
 		type: 'string',
 		default: 'Europe/London',
 	},
-	'dc-time-zone-name': {
+	'dc-timezone-name': {
+		// short or long
 		type: 'string',
-		default: 'undefined',
+		default: 'none',
 	},
 	'dc-weekday': {
 		type: 'string',
-		default: 'undefined',
 	},
 	'dc-era': {
 		type: 'string',
-		default: 'undefined',
 	},
 	'dc-limit': {
 		type: 'number',

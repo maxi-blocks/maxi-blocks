@@ -15,9 +15,6 @@ class DynamicContent {
 	getElements = () => {
 		// eslint-disable-next-line no-undef
 		if (!maxiDynamicContent) return null;
-
-		console.log(maxiDynamicContent);
-
 		// eslint-disable-next-line no-undef
 		const elements = maxiDynamicContent[0];
 		// eslint-disable-next-line no-undef
@@ -143,23 +140,39 @@ class DynamicContent {
 				}
 			};
 
+			const getAuthorByID = async id => {
+				let response = '';
+				await apiFetch({ path: `${restUrl}wp/v2/users/${id}` })
+					.catch(err => console.error(err))
+					.then(author => {
+						response = author.name ?? author.slug;
+						return response;
+					});
+			};
+
 			let response = '';
 			const path = getForType();
 			console.log(path);
+			console.log('field');
+			console.log(field);
 			await apiFetch({
 				path,
 			})
 				.catch(err => console.error(err))
 				.then(result => {
-					console.log(result);
-					if (!result) return null;
-					if (relation === 'random')
+					if (field === 'author') {
+						getAuthorByID(result?.[field]).then(name => {
+							response = name;
+							return response;
+						});
+					} else if (relation === 'random') {
 						response =
 							result?.[0]?.[field]?.rendered ??
 							result?.[0]?.[field];
-					else
+					} else
 						response = result?.[field]?.rendered ?? result?.[field];
 				});
+
 			console.log('final response');
 			console.log(response);
 			return response;
@@ -170,6 +183,8 @@ class DynamicContent {
 				.catch(err => console.error(err))
 				.then(result => {
 					if (result) {
+						console.log('result!');
+						console.log(result);
 						const element = document.querySelector(
 							`#${elementId} .maxi-text-block__content`
 						);

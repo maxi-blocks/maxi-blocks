@@ -5,7 +5,7 @@ import getAttributeValue from '../getAttributeValue';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 
 // Sets text decoration to the link if the whole text is a link, otherwise sets it to the text.
-// See issue #3832 for context.
+// See issue #3832 for reasoning.
 const getTextDecorationStyles = ({
 	obj,
 	prefix = '',

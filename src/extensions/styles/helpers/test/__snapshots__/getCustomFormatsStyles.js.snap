@@ -9,6 +9,12 @@ Object {
         "font-style": "italic",
         "font-weight": 800,
       },
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
     },
   },
   "test .maxi-text-block__custom-format--1": Object {
@@ -16,6 +22,12 @@ Object {
       "general": Object {
         "text-decoration": "underline",
       },
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
     },
   },
 }

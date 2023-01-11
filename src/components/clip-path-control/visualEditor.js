@@ -1,7 +1,12 @@
 /**
  * WordPress dependencies
  */
-import { useState, useEffect } from '@wordpress/element';
+import {
+	forwardRef,
+	useLayoutEffect,
+	useRef,
+	useState,
+} from '@wordpress/element';
 import { withFallbackStyles } from '@wordpress/components';
 
 /**
@@ -10,71 +15,133 @@ import { withFallbackStyles } from '@wordpress/components';
 import ClipPathRadiusPoint from './radiusPoint';
 import ClipPathSinglePoint from './singlePoint';
 import ClipPathDoublePoint from './doublePoint';
+import getClipPath from './utils';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { round, isArray, isEmpty } from 'lodash';
+import { cloneDeep, round } from 'lodash';
 
 /**
  * Component
  */
 const ClipPathVisualEditor = props => {
-	const { clipPathOptions, colors, onChange, className, wrapperHeight } =
-		props;
+	const {
+		visualEditorRef,
+		block,
+		clipPathOptions,
+		colors,
+		onChange,
+		className,
+		wrapperHeight,
+	} = props;
 
 	const classes = classnames('maxi-clip-path-visual-editor', className);
 
-	const getClipPath = clipPathOptions => {
-		const { type, content } = clipPathOptions;
-
-		let newContent = '';
-
-		if (!isEmpty(content)) {
-			const arrayContent = Object.values(content);
-
-			switch (type) {
-				case 'polygon':
-					newContent = arrayContent.reduce((a, b) => {
-						if (isArray(a))
-							return `${a[0]}% ${a[1]}%, ${b[0]}% ${b[1]}%`;
-						return `${a}, ${b[0]}% ${b[1]}%`;
-					});
-					break;
-				case 'circle':
-					newContent = `${arrayContent[0][0]}% at ${arrayContent[1][0]}% ${arrayContent[1][1]}%`;
-					break;
-				case 'ellipse':
-					newContent = `${arrayContent[0]}% ${arrayContent[1]}% at ${arrayContent[2][0]}% ${arrayContent[2][1]}%`;
-					break;
-				case 'inset':
-					newContent = `${arrayContent[0]}% ${arrayContent[1]}% ${arrayContent[2]}% ${arrayContent[3]}%`;
-					break;
-				default:
-					return false;
+	const transformValuesToBlockEditor = () => {
+		const transformBlockValueToEditor = (value, unit, direction) => {
+			if (unit === '%' || !visualEditorRef.current) {
+				return value;
 			}
-		}
 
-		const newCP = `${type}(${newContent})`;
+			const { width: blockWidth, height: blockHeight } =
+				block.getBoundingClientRect();
+			const blockSize = direction === 'x' ? blockWidth : blockHeight;
 
-		return newCP;
+			const { width: editorWidth, height: editorHeight } =
+				visualEditorRef.current.getBoundingClientRect();
+			const editorSize = direction === 'x' ? editorWidth : editorHeight;
+
+			return round((value * editorSize) / blockSize);
+		};
+
+		const newClipPath = cloneDeep(clipPathOptions);
+		Object.values(newClipPath.content).forEach((handles, handlesIndex) => {
+			handles.forEach(({ value, unit }, index) => {
+				const direction =
+					(newClipPath.type === 'inset' && handlesIndex % 2 === 1) ||
+					(handles.length === 1 && handlesIndex % 2 === 0) ||
+					(handles.length !== 1 && index % 2 === 0)
+						? 'x'
+						: 'y';
+
+				handles[index].value = transformBlockValueToEditor(
+					value,
+					unit,
+					direction
+				);
+			});
+		});
+
+		return newClipPath;
 	};
 
-	const [clipPath, changeClipPath] = useState(getClipPath(clipPathOptions));
-	const [selectedItem, changeSelectedItem] = useState(null);
-	const [isMoving, changeIsMoving] = useState(false);
-	const [isOpposite, changeIsOpposite] = useState(false);
-
-	useEffect(() => {
-		changeClipPath(getClipPath(clipPathOptions));
+	const clipPathEditorOptions = useRef(transformValuesToBlockEditor());
+	const [clipPath, changeClipPath] = useState(
+		getClipPath(transformValuesToBlockEditor())
+	);
+	useLayoutEffect(() => {
+		clipPathEditorOptions.current = transformValuesToBlockEditor();
+		changeClipPath(getClipPath(clipPathEditorOptions.current));
 	});
 
-	const setAxisLimits = value => {
-		if (value <= 0) return 0;
-		if (value >= 100) return 100;
+	const [selectedItem, changeSelectedItem] = useState(null);
+	const [isMoving, changeIsMoving] = useState(false);
 
-		return value;
+	const transformValue = (value, unit, direction, fromUnit = '%') => {
+		const setAxisLimits = (value, unit, direction) => {
+			const getAxisMaxLimits = (unit, direction) => {
+				const { width: blockWidth, height: blockHeight } =
+					block.getBoundingClientRect();
+				const absSize = direction === 'x' ? blockWidth : blockHeight;
+
+				switch (unit) {
+					case 'px':
+						return absSize;
+					case '%':
+						return 100;
+					default:
+						return value;
+				}
+			};
+
+			return Math.min(
+				Math.max(value, 0),
+				getAxisMaxLimits(unit, direction)
+			);
+		};
+
+		const valueTransformation = () => {
+			if (fromUnit === unit) {
+				return value;
+			}
+
+			const { width: blockWidth, height: blockHeight } =
+				block.getBoundingClientRect();
+			const getSize = direction => {
+				switch (direction) {
+					case 'x':
+						return blockWidth;
+					case 'y':
+						return blockHeight;
+					default:
+						return Math.max(blockWidth, blockHeight);
+				}
+			};
+			const absSize = getSize(direction);
+
+			switch (unit) {
+				case 'px':
+					return (value * absSize) / 100;
+				case '%':
+					return (value * 100) / absSize;
+				default:
+					return value;
+			}
+		};
+
+		return setAxisLimits(round(valueTransformation()), unit, direction);
 	};
 
 	const onMouseMove = e => {
@@ -83,72 +150,123 @@ const ClipPathVisualEditor = props => {
 			y: absYAxis,
 			width: absWidth,
 			height: absHeight,
-		} = e.target.parentElement.getBoundingClientRect();
-		const newTop = round(((e.clientY - absYAxis) / absHeight) * 100);
-		const newLeft = round(((e.clientX - absXAxis) / absWidth) * 100);
+		} = visualEditorRef.current.getBoundingClientRect();
+
+		const getValueByDirection = direction => {
+			const client = e[`client${direction.toUpperCase()}`];
+			const abs = direction === 'x' ? absXAxis : absYAxis;
+			const absSize = direction === 'x' ? absWidth : absHeight;
+
+			return round(((client - abs) / absSize) * 100);
+		};
+
+		const newLeft = getValueByDirection('x');
+		const newTop = getValueByDirection('y');
 
 		if (clipPathOptions.type === 'circle' && selectedItem === 0) {
-			const posTop = clipPathOptions.content[1][1];
-			const posLeft = clipPathOptions.content[1][0];
+			const posTop = transformValue(
+				clipPathOptions.content[1][1].value,
+				'%',
+				'y',
+				clipPathOptions.content[1][1].unit
+			);
+			const posLeft = transformValue(
+				clipPathOptions.content[1][0].value,
+				'%',
+				'x',
+				clipPathOptions.content[1][0].unit
+			);
 
-			clipPathOptions.content[0] = [
-				Math.min(
-					round(
-						Math.sqrt(
-							(newTop - posTop) ** 2 + (newLeft - posLeft) ** 2
-						)
-					),
-					50
-				),
-			];
+			clipPathOptions.content[0][0].value = transformValue(
+				Math.sqrt((newTop - posTop) ** 2 + (newLeft - posLeft) ** 2),
+				clipPathOptions.content[0][0].unit,
+				'xy'
+			);
 		} else if (
 			clipPathOptions.type === 'ellipse' &&
 			(selectedItem === 0 || selectedItem === 1)
 		) {
+			// TODO: ellipse y working weird
 			if (selectedItem === 0) {
-				clipPathOptions.content[0] = [
-					isOpposite
-						? Math.abs(
-								100 -
-									setAxisLimits(newLeft) -
-									(100 - clipPathOptions.content[2][0])
-						  )
-						: setAxisLimits(newLeft) -
-						  clipPathOptions.content[2][0],
-				];
+				clipPathOptions.content[0][0].value = transformValue(
+					Math.abs(
+						transformValue(
+							clipPathOptions.content[2][0].value,
+							'%',
+							'x',
+							clipPathOptions.content[2][0].unit
+						) - newLeft
+					),
+					clipPathOptions.content[0][0].unit,
+					'x'
+				);
 			}
 			if (selectedItem === 1) {
-				clipPathOptions.content[1] = [
-					isOpposite
-						? Math.abs(
-								100 -
-									setAxisLimits(newTop) -
-									(100 - clipPathOptions.content[2][1])
-						  )
-						: setAxisLimits(newTop) - clipPathOptions.content[2][1],
-				];
+				clipPathOptions.content[1][0].value = transformValue(
+					Math.abs(
+						transformValue(
+							clipPathOptions.content[2][1].value,
+							'%',
+							'y',
+							clipPathOptions.content[2][1].unit
+						) - newTop
+					),
+					clipPathOptions.content[1][0].unit,
+					'y'
+				);
 			}
 		} else if (clipPathOptions.type === 'inset') {
 			switch (selectedItem) {
 				case 0:
-					clipPathOptions.content[0] = [setAxisLimits(newTop)];
+					clipPathOptions.content[0][0].value = transformValue(
+						newTop,
+						clipPathOptions.content[0][0].unit,
+						'y'
+					);
 					break;
 				case 1:
-					clipPathOptions.content[1] = [100 - setAxisLimits(newLeft)];
+					clipPathOptions.content[1][0].value = transformValue(
+						100 - newLeft,
+						clipPathOptions.content[1][0].unit,
+						'x'
+					);
 					break;
 				case 2:
-					clipPathOptions.content[2] = [100 - setAxisLimits(newTop)];
+					clipPathOptions.content[2][0].value = transformValue(
+						// todo:
+						100 - newTop,
+						clipPathOptions.content[2][0].unit,
+						'y'
+					);
 					break;
 				case 3:
-					clipPathOptions.content[3] = [setAxisLimits(newLeft)];
+					clipPathOptions.content[3][0].value = transformValue(
+						newLeft,
+						clipPathOptions.content[3][0].unit,
+						'x'
+					);
 					break;
 				default:
 					break;
 			}
 		} else {
 			clipPathOptions.content[selectedItem] = [
-				setAxisLimits(newLeft),
-				setAxisLimits(newTop),
+				{
+					value: transformValue(
+						newLeft,
+						clipPathOptions.content[selectedItem][0].unit,
+						'x'
+					),
+					unit: clipPathOptions.content[selectedItem][0].unit,
+				},
+				{
+					value: transformValue(
+						newTop,
+						clipPathOptions.content[selectedItem][1].unit,
+						'y'
+					),
+					unit: clipPathOptions.content[selectedItem][1].unit,
+				},
 			];
 		}
 
@@ -181,6 +299,7 @@ const ClipPathVisualEditor = props => {
 
 	return (
 		<div
+			ref={visualEditorRef}
 			className={classes}
 			onMouseMove={e => {
 				if (isMoving) onMouseMove(e);
@@ -191,93 +310,109 @@ const ClipPathVisualEditor = props => {
 			}}
 			style={{ height: `${wrapperHeight}px` }}
 		>
-			{Object.entries(clipPathOptions.content).map(([key, handle]) => {
-				const i = Number(key);
+			{Object.entries(clipPathEditorOptions.current.content).map(
+				([key, handle]) => {
+					const i = Number(key);
 
-				if (clipPathOptions.type === 'circle' && i === 0)
-					return (
-						<ClipPathRadiusPoint
-							key={`maxi-clip-path-button--radius--${i}`}
-							radius={handle[0]}
-							color={colors[i]}
-							onMouseOut={onMouseOut}
-							onChangeMoving={(isMoving, item) => {
-								changeIsMoving(isMoving);
-								changeSelectedItem(item);
+					if (
+						clipPathEditorOptions.current.type === 'circle' &&
+						i === 0
+					)
+						return (
+							<ClipPathRadiusPoint
+								key={`maxi-clip-path-button--radius--${i}`}
+								radius={handle[0]}
+								color={colors[i]}
+								onMouseOut={onMouseOut}
+								onChangeMoving={(isMoving, item) => {
+									changeIsMoving(isMoving);
+									changeSelectedItem(item);
 
-								if (!isMoving) onChange(clipPathOptions);
-							}}
-							number={i}
-							position={clipPathOptions.content[i + 1]}
-						/>
-					);
+									if (!isMoving) onChange(clipPathOptions);
+								}}
+								number={i}
+								position={
+									clipPathEditorOptions.current.content[i + 1]
+								}
+							/>
+						);
 
-				if (clipPathOptions.type === 'ellipse' && (i === 0 || i === 1))
-					return (
-						<ClipPathSinglePoint
-							key={`maxi-clip-path-button--single--${i}`}
-							top={
-								i === 1
-									? clipPathOptions.content[2][1] + handle[0]
-									: clipPathOptions.content[2][1]
+					if (
+						clipPathEditorOptions.current.type === 'ellipse' &&
+						(i === 0 || i === 1)
+					)
+						return (
+							<ClipPathSinglePoint
+								key={`maxi-clip-path-button--${i}`}
+								top={
+									i === 1
+										? `calc(${clipPathEditorOptions.current.content[2][1].value}${clipPathEditorOptions.current.content[2][1].unit} + ${handle[0].value}${handle[0].unit})`
+										: `${clipPathEditorOptions.current.content[2][1].value}${clipPathEditorOptions.current.content[2][1].unit}`
+								}
+								left={
+									i === 0
+										? `calc(${clipPathEditorOptions.current.content[2][0].value}${clipPathEditorOptions.current.content[2][0].unit} + ${handle[0].value}${handle[0].unit})`
+										: `${clipPathEditorOptions.current.content[2][0].value}${clipPathEditorOptions.current.content[2][0].unit}`
+								}
+								color={colors[i]}
+								isMoving={isMoving}
+								addOppositePoint
+								onMouseOut={onMouseOut}
+								onChangeMoving={(isMoving, item) => {
+									changeIsMoving(isMoving);
+									changeSelectedItem(item);
+
+									if (!isMoving) onChange(clipPathOptions);
+								}}
+								number={i}
+								position={
+									clipPathEditorOptions.current.content[2]
+								}
+							/>
+						);
+					if (clipPathEditorOptions.current.type === 'inset') {
+						const getInsetTop = num => {
+							if (num === 0) {
+								return `${handle[0].value}${handle[0].unit}`;
 							}
-							left={
-								i === 0
-									? clipPathOptions.content[2][0] + handle[0]
-									: clipPathOptions.content[2][0]
-							}
-							color={colors[i]}
-							isMoving={isMoving}
-							onMouseOut={onMouseOut}
-							onChangeMoving={(isMoving, item) => {
-								changeIsMoving(isMoving);
-								changeSelectedItem(item);
+							if (num === 2)
+								return `calc(100% - ${handle[0].value}${handle[0].unit})`;
 
-								if (!isMoving) onChange(clipPathOptions);
-							}}
-							number={i}
-							position={clipPathOptions.content[2]}
-							setOpposite={isOpposite => {
-								changeIsOpposite(isOpposite);
-							}}
-						/>
-					);
-				if (clipPathOptions.type === 'inset') {
-					const getInsetTop = num => {
-						if (num === 0) return handle[0];
-						if (num === 2) return 100 - handle[0];
+							return `calc((100% - ${clipPathEditorOptions.current.content[2][0].value}${clipPathEditorOptions.current.content[2][0].unit} + ${clipPathEditorOptions.current.content[0][0].value}${clipPathEditorOptions.current.content[0][0].unit}) / 2)`;
+						};
+
+						const getInsetLeft = num => {
+							if (num === 1)
+								return `calc(100% - ${handle[0].value}${handle[0].unit})`;
+							if (num === 3)
+								return `${handle[0].value}${handle[0].unit}`;
+
+							return `calc((100% - ${clipPathEditorOptions.current.content[1][0].value}${clipPathEditorOptions.current.content[1][0].unit} + ${clipPathEditorOptions.current.content[3][0].value}${clipPathEditorOptions.current.content[3][0].unit}) / 2)`;
+						};
 
 						return (
-							Math.abs(
-								clipPathOptions.content[2][0] +
-									clipPathOptions.content[0][0] -
-									100
-							) /
-								2 +
-							clipPathOptions.content[0][0]
-						);
-					};
+							<ClipPathSinglePoint
+								key={`maxi-clip-path-button--single--${i}`}
+								top={getInsetTop(i)}
+								left={getInsetLeft(i)}
+								color={colors[i]}
+								isMoving={isMoving}
+								onMouseOut={onMouseOut}
+								onChangeMoving={(isMoving, item) => {
+									changeIsMoving(isMoving);
+									changeSelectedItem(item);
 
-					const getInsetLeft = num => {
-						if (num === 1) return 100 - handle[0];
-						if (num === 3) return handle[0];
-
-						return (
-							Math.abs(
-								clipPathOptions.content[1][0] +
-									clipPathOptions.content[3][0] -
-									100
-							) /
-								2 +
-							clipPathOptions.content[3][0]
+									if (!isMoving) onChange(clipPathOptions);
+								}}
+								number={i}
+							/>
 						);
-					};
+					}
 
 					return (
-						<ClipPathSinglePoint
-							key={`maxi-clip-path-button--single--${i}`}
-							top={getInsetTop(i)}
-							left={getInsetLeft(i)}
+						<ClipPathDoublePoint
+							key={`maxi-clip-path-button--double--${i}`}
+							handle={handle}
 							color={colors[i]}
 							isMoving={isMoving}
 							onMouseOut={onMouseOut}
@@ -291,24 +426,7 @@ const ClipPathVisualEditor = props => {
 						/>
 					);
 				}
-
-				return (
-					<ClipPathDoublePoint
-						key={`maxi-clip-path-button--double--${i}`}
-						handle={handle}
-						color={colors[i]}
-						isMoving={isMoving}
-						onMouseOut={onMouseOut}
-						onChangeMoving={(isMoving, item) => {
-							changeIsMoving(isMoving);
-							changeSelectedItem(item);
-
-							if (!isMoving) onChange(clipPathOptions);
-						}}
-						number={i}
-					/>
-				);
-			})}
+			)}
 			<div
 				className='maxi-clip-path-visual-editor__preview'
 				style={{ clipPath }}
@@ -317,11 +435,16 @@ const ClipPathVisualEditor = props => {
 	);
 };
 
-export default withFallbackStyles(node => {
+const VisualEditorWithHOC = withFallbackStyles(node => {
 	const visualEditorNode = node.querySelector(
 		'.maxi-clip-path-visual-editor'
 	);
 	return {
+		// TODO something wit height, it's not representing a real one.
 		wrapperHeight: visualEditorNode.offsetHeight,
 	};
 })(ClipPathVisualEditor);
+
+export default forwardRef((props, ref) => (
+	<VisualEditorWithHOC {...props} visualEditorRef={ref} />
+));

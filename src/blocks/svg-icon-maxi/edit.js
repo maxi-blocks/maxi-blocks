@@ -170,6 +170,18 @@ class edit extends MaxiBlockComponent {
 			background: '.maxi-svg-icon-block__icon',
 		};
 
+		// const buttonWidth = getLastBreakpointAttribute({
+		// 	target: 'button-width',
+		// 	breakpoint: this.props.deviceType || 'general',
+		// 	attributes: this.props.attributes,
+		// });
+		// const buttonWidthUnit = getLastBreakpointAttribute({
+		// 	target: 'button-width-unit',
+		// 	breakpoint: this.props.deviceType || 'general',
+		// 	attributes: this.props.attributes,
+		// });
+		// const fullWidthValue = `${buttonWidth}${buttonWidthUnit}`;
+
 		return [
 			...[
 				!isEmptyContent && [
@@ -233,6 +245,14 @@ class edit extends MaxiBlockComponent {
 									className='maxi-icon-block__select__icon'
 									icon={selectIcon}
 								/>
+								{console.log(
+									getLastBreakpointAttribute({
+										target: 'button-width',
+										breakpoint:
+											this.props.deviceType || 'general',
+										attributes: this.props.attributes,
+									})
+								)}
 								{__('Select icon', 'maxi-blocks')}
 							</Button>
 						</div>

@@ -154,7 +154,7 @@ const removeLinkFormat = ({
 				typography,
 				value: {
 					'text-decoration': '',
-					'is-whole-link': false,
+					'is-whole-link': undefined,
 				},
 				textLevel,
 			}),
@@ -168,6 +168,7 @@ const removeLinkFormat = ({
 		typography,
 		value: {
 			'text-decoration': '',
+			'is-whole-link': undefined,
 		},
 		textLevel,
 	});

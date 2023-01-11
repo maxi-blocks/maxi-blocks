@@ -132,7 +132,7 @@ const getTypographyObject = props => {
 	const response = {
 		typography: getTypographyStyles({
 			obj: {
-				...getGroupAttributes(props, 'typography'),
+				...getGroupAttributes(props, ['typography', 'link']),
 			},
 			blockStyle: props.blockStyle,
 			textLevel: props.textLevel,
@@ -146,7 +146,7 @@ const getTypographyHoverObject = props => {
 	const response = {
 		typography: getTypographyStyles({
 			obj: {
-				...getGroupAttributes(props, 'typographyHover'),
+				...getGroupAttributes(props, ['typographyHover', 'link']),
 			},
 			isHover: true,
 			blockStyle: props.blockStyle,

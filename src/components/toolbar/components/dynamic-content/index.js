@@ -531,7 +531,7 @@ const DynamicContent = props => {
 			.then(result => setIdList(result, _default, _type));
 	};
 
-	const getIdOptions = (
+	const getIdOptions = async (
 		_type = typeRef.current,
 		_default = {},
 		_relation = relationRef.current

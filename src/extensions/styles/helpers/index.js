@@ -22,6 +22,7 @@ export { default as getOverflowStyles } from './getOverflowStyles';
 export { default as getPositionStyles } from './getPositionStyles';
 export { default as getShapeStyles } from './getShapeStyles';
 export { default as getSizeStyles } from './getSizeStyles';
+export { default as getTextDecorationStyles } from './getTextDecorationStyles';
 export { default as getButtonIconStyles } from './getButtonIconStyles';
 export { default as getTransformStyles } from './getTransformStyles';
 export { default as getTransitionStyles } from './getTransitionStyles';

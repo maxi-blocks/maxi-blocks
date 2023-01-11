@@ -2,18 +2,31 @@
  * Internal dependencies
  */
 import getColorRGBAString from '../getColorRGBAString';
+import getPaletteAttributes from '../getPaletteAttributes';
+import getTextDecorationStyles from './getTextDecorationStyles';
 
 /**
  * External dependencies
  */
 import { isBoolean } from 'lodash';
-import getPaletteAttributes from '../getPaletteAttributes';
 
 const getLinkStyles = (obj, target, blockStyle) => {
 	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 	const response = {
-		[target]: { link: {} },
-		[`${target}:hover`]: { link: {} },
+		[target]: {
+			link: {
+				...getTextDecorationStyles({ obj, isLink: true }),
+			},
+		},
+		[`${target}:hover`]: {
+			link: {
+				...getTextDecorationStyles({
+					obj,
+					isLink: true,
+					isHover: true,
+				}),
+			},
+		},
 		[`${target}:active`]: { link: {} },
 		[`${target}:active span`]: { link: {} },
 		[`${target}:visited`]: { link: {} },
@@ -40,7 +53,6 @@ const getLinkStyles = (obj, target, blockStyle) => {
 		});
 
 		if (isBoolean(linkPaletteStatus) && !linkPaletteStatus) {
-			response[target].link[breakpoint] = {};
 			response[
 				[`.block-editor-block-list__block ${target}:visited`]
 			].link[breakpoint] = {};
@@ -50,7 +62,6 @@ const getLinkStyles = (obj, target, blockStyle) => {
 				[`.block-editor-block-list__block ${target}:visited`]
 			].link[breakpoint].color = linkColor;
 		} else if (linkPaletteColor) {
-			response[target].link[breakpoint] = {};
 			response[
 				[`.block-editor-block-list__block ${target}:visited`]
 			].link[breakpoint] = {};
@@ -83,8 +94,6 @@ const getLinkStyles = (obj, target, blockStyle) => {
 		});
 
 		if (isBoolean(linkHoverPaletteStatus) && !linkHoverPaletteStatus) {
-			response[`${target}:hover`].link[breakpoint] = {};
-
 			response[[`${target}:visited:hover`]].link[breakpoint] = {};
 
 			response[`${target}:hover`].link[breakpoint].color = linkHoverColor;
@@ -99,7 +108,7 @@ const getLinkStyles = (obj, target, blockStyle) => {
 				blockStyle,
 			});
 
-			response[`${target}:hover`].link[breakpoint] = { color };
+			response[`${target}:hover`].link[breakpoint].color = color;
 
 			response[[`${target}:visited:hover`]].link[breakpoint] = { color };
 		}

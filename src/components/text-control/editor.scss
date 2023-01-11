@@ -1,18 +1,23 @@
-.maxi-text-control {
+body.maxi-blocks--active .maxi-text-control {
 	.maxi-base-control__field {
 		flex-wrap: wrap;
 	}
 
-	&__input {
+	input.maxi-text-control__input {
 		min-height: unset;
 		max-height: unset !important;
+		padding: 2px 8px;
 		border-radius: 5px;
 		background-color: rgba(33, 141, 250, 0);
-		border: 2px solid #dddfe1;
+		border: 2px solid var(--maxi-grey-1-color);
 		font-size: 13px;
 		color: #464a53;
 		font-weight: 500;
-		flex: 1;
+		flex: 2;
+
+		&:focus {
+			border-color: var(--maxi-grey-6-color);
+		}
 	}
 
 	&__validation-text {

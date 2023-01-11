@@ -172,17 +172,11 @@ class edit extends MaxiBlockComponent {
 			background: '.maxi-svg-icon-block__icon',
 		};
 
-		// const buttonWidth = getLastBreakpointAttribute({
-		// 	target: 'button-width',
-		// 	breakpoint: this.props.deviceType || 'general',
-		// 	attributes: this.props.attributes,
-		// });
-		// const buttonWidthUnit = getLastBreakpointAttribute({
-		// 	target: 'button-width-unit',
-		// 	breakpoint: this.props.deviceType || 'general',
-		// 	attributes: this.props.attributes,
-		// });
-		// const fullWidthValue = `${buttonWidth}${buttonWidthUnit}`;
+		// Returns true if the block is smaller than decided,
+		// and is used to determine if the text next to the placeholder
+		// button is going to appear or not
+		const getIsBlockSmall = () =>
+			this.blockRef?.current?.getBoundingClientRect().width < 100;
 
 		return [
 			...[
@@ -245,15 +239,8 @@ class edit extends MaxiBlockComponent {
 									className='maxi-icon-block__select__icon'
 									icon={selectIcon}
 								/>
-								{console.log(
-									getLastBreakpointAttribute({
-										target: 'button-width',
-										breakpoint:
-											this.props.deviceType || 'general',
-										attributes: this.props.attributes,
-									})
-								)}
-								{__('Select icon', 'maxi-blocks')}
+								{getIsBlockSmall() &&
+									__('Select icon', 'maxi-blocks')}
 							</Button>
 						</div>
 					)}

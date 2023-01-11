@@ -66,10 +66,6 @@ const attributes = {
 			type: 'string',
 			default: '%',
 		},
-		'line-height-general': {
-			type: 'number',
-			default: '100',
-		},
 		'palette-color-general': {
 			type: 'number',
 			default: 1,
@@ -146,6 +142,13 @@ const attributes = {
 	...prefixAttributesCreator({
 		obj: attributesData.padding,
 		prefix,
+		diffValAttr: {
+			'button-padding-sync-general': 'axis',
+			'button-padding-top-general': '15',
+			'button-padding-right-general': '36',
+			'button-padding-bottom-general': '15',
+			'button-padding-left-general': '36',
+		},
 	}),
 
 	/**

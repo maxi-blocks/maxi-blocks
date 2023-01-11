@@ -195,6 +195,9 @@ const Inspector = props => {
 											</ResponsiveTabsControl>
 										),
 									},
+									...inspectorTabs.blockBackground({
+										props,
+									}),
 									...inspectorTabs.border({
 										props,
 									}),
@@ -294,7 +297,6 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.relation({
 										props,
-										isButton: true,
 									}),
 								]}
 							/>

@@ -11,9 +11,10 @@ import {
 	SelectControl,
 	ToggleSwitch,
 } from '../../../../components';
-import { handleOnReset } from '../../../../extensions/attributes';
 import { getColumnDefaultValue } from '../../../../extensions/column-templates';
+import withRTC from '../../../../extensions/maxi-block/withRTC';
 import {
+	getAttributeKey,
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -72,12 +73,11 @@ const ColumnSizeControl = props => {
 							breakpoint
 						);
 
-						onChange(
-							handleOnReset({
-								[`column-size-${breakpoint}`]:
-									val !== undefined && val !== '' ? val : '',
-							})
-						);
+						onChange({
+							[`column-size-${breakpoint}`]:
+								val !== undefined && val !== '' ? val : '',
+							isReset: true,
+						});
 					}}
 					initialPosition={getDefaultAttribute(
 						`column-size-${breakpoint}`,
@@ -119,9 +119,27 @@ const ColumnSizeControl = props => {
 						[`justify-content-${breakpoint}`]: verticalAlign,
 					})
 				}
+				onReset={() => {
+					onChange({
+						[getAttributeKey(
+							'justify-content',
+							false,
+							'',
+							breakpoint
+						)]: getDefaultAttribute(
+							getAttributeKey(
+								'justify-content',
+								false,
+								'',
+								breakpoint
+							)
+						),
+						isReset: true,
+					});
+				}}
 			/>
 		</>
 	);
 };
 
-export default ColumnSizeControl;
+export default withRTC(ColumnSizeControl);

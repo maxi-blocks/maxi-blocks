@@ -191,6 +191,9 @@ describe('TypographyControl', () => {
 			orientation: 'mixed',
 			direction: 'ltr',
 			indent: '44',
+			whiteSpace: 'pre',
+			wordSpacing: '20',
+			bottomGap: '15',
 		});
 
 		const typographyResult = await getAttributes([
@@ -199,6 +202,11 @@ describe('TypographyControl', () => {
 			'text-decoration-general',
 			'text-transform-general',
 			'text-orientation-general',
+			'text-direction-general',
+			'text-indent-general',
+			'white-space-general',
+			'word-spacing-general',
+			'bottom-gap-general',
 		]);
 
 		const expectedAttributesTwo = {
@@ -207,6 +215,11 @@ describe('TypographyControl', () => {
 			'text-decoration-general': 'overline',
 			'text-transform-general': 'capitalize',
 			'text-orientation-general': 'mixed',
+			'text-direction-general': 'ltr',
+			'text-indent-general': 44,
+			'white-space-general': 'pre',
+			'word-spacing-general': 20,
+			'bottom-gap-general': 15,
 		};
 
 		expect(typographyResult).toStrictEqual(expectedAttributesTwo);
@@ -266,6 +279,56 @@ describe('TypographyControl', () => {
 			newValue: 'underline',
 		});
 		expect(responsiveTextDecoration).toBeTruthy();
+
+		// check responsive text-indent
+		const responsiveTextIndent = await addResponsiveTest({
+			page,
+			instance:
+				'.maxi-typography-control .maxi-typography-control__text-indent .maxi-advanced-number-control__value',
+			needFocus: true,
+			baseExpect: '44',
+			xsExpect: '88',
+			newValue: '88',
+		});
+		expect(responsiveTextIndent).toBeTruthy();
+
+		// check responsive white-space
+		const responsiveWhiteSpace = await addResponsiveTest({
+			page,
+			instance:
+				'.maxi-typography-control .maxi-typography-control__white-space select',
+			selectInstance:
+				'.maxi-typography-control .maxi-typography-control__white-space select',
+			needSelectIndex: true,
+			baseExpect: 'pre',
+			xsExpect: 'pre-wrap',
+			newValue: 'pre-wrap',
+		});
+		expect(responsiveWhiteSpace).toBeTruthy();
+
+		// check responsive word-spacing
+		const responsiveWordSpacing = await addResponsiveTest({
+			page,
+			instance:
+				'.maxi-typography-control .maxi-typography-control__word-spacing .maxi-advanced-number-control__value',
+			needFocus: true,
+			baseExpect: '20',
+			xsExpect: '40',
+			newValue: '40',
+		});
+		expect(responsiveWordSpacing).toBeTruthy();
+
+		// check responsive bottom-gap
+		const responsiveBottomGap = await addResponsiveTest({
+			page,
+			instance:
+				'.maxi-typography-control .maxi-typography-control__bottom-gap .maxi-advanced-number-control__value',
+			needFocus: true,
+			baseExpect: '15',
+			xsExpect: '30',
+			newValue: '30',
+		});
+		expect(responsiveBottomGap).toBeTruthy();
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

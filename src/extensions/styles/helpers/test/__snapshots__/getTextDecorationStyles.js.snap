@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getTextDecorationStyles Should not return styles for link when the whole text is not a link 1`] = `
+Object {
+  "general": Object {},
+  "l": Object {},
+  "m": Object {},
+  "s": Object {},
+  "xl": Object {},
+  "xs": Object {},
+  "xxl": Object {},
+}
+`;
+
+exports[`getTextDecorationStyles Should not return styles for paragraph when the whole text is a link 1`] = `
+Object {
+  "general": Object {},
+  "l": Object {},
+  "m": Object {},
+  "s": Object {},
+  "xl": Object {},
+  "xs": Object {},
+  "xxl": Object {},
+}
+`;
+
+exports[`getTextDecorationStyles Should return styles for link when the whole text is a link 1`] = `
+Object {
+  "general": Object {
+    "text-decoration": "underline",
+  },
+  "l": Object {},
+  "m": Object {},
+  "s": Object {},
+  "xl": Object {},
+  "xs": Object {},
+  "xxl": Object {},
+}
+`;

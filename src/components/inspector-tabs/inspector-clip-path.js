@@ -26,6 +26,7 @@ const clipPath = ({ props, prefix = '' }) => {
 		prefix,
 		breakpoint: deviceType,
 	};
+
 	return {
 		label: __('Clip-path', 'maxi-blocks'),
 		content: (
@@ -37,6 +38,7 @@ const clipPath = ({ props, prefix = '' }) => {
 							<ClipPathControl
 								{...getGroupAttributes(attributes, 'clipPath')}
 								{...clipPathControlProps}
+								block={props.resizableObject?.resizable}
 							/>
 						),
 					},

@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState, useEffect } from '@wordpress/element';
+import { useEffect, useRef, useState } from '@wordpress/element';
 import { Tooltip } from '@wordpress/components';
 
 /**
@@ -22,13 +22,15 @@ import {
 	getAttributeKey,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import getClipPath from './utils';
 import optionColors from './optionColors';
+import typeDefaults from './typeDefaults';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isArray, isEmpty, isNil } from 'lodash';
+import { isEmpty, isEqual, isNil, cloneDeep } from 'lodash';
 
 /**
  * Styles
@@ -39,15 +41,27 @@ import { styleNone } from '../../icons';
 /**
  * Component
  */
-const defaultPolygonContent = {
-	0: [0, 0],
-	1: [100, 0],
-	2: [100, 100],
-	3: [0, 100],
-};
-
 const ClipPathOption = props => {
-	const { values, onRemove, onReset, onChange, number, type } = props;
+	const {
+		values,
+		number,
+		type,
+		visualEditorBounds: rawVisualEditorBounds,
+		onChange,
+		onReset,
+		onRemove,
+	} = props;
+
+	const [visualEditorBounds, setVisualEditorBounds] = useState(null);
+	useEffect(() => {
+		if (
+			!rawVisualEditorBounds ||
+			isEqual(rawVisualEditorBounds && visualEditorBounds)
+		)
+			return;
+
+		setVisualEditorBounds(rawVisualEditorBounds);
+	}, [rawVisualEditorBounds]);
 
 	const getLabel = () => {
 		if (type === 'circle' && number === 0)
@@ -78,6 +92,27 @@ const ClipPathOption = props => {
 		return `${__('Point', 'maxi-blocks')} ${number + 1}`;
 	};
 
+	const getMinMaxSettings = direction =>
+		['%', 'px'].reduce((acc, unit) => {
+			const getMax = () => {
+				switch (unit) {
+					case 'px':
+						return visualEditorBounds?.[
+							direction === 'x' ? 'width' : 'height'
+						];
+					case '%':
+					default:
+						return 100;
+				}
+			};
+
+			acc[unit] = {
+				min: 0,
+				max: getMax(),
+			};
+			return acc;
+		}, {});
+
 	return (
 		<div className='maxi-clip-path-controller'>
 			<div className='maxi-clip-path-controller__handle maxi-clip-path-color-handle'>
@@ -97,15 +132,22 @@ const ClipPathOption = props => {
 							!isNil(values[index]) && (
 								<AdvancedNumberControl
 									key={index}
-									value={values[index]}
+									value={values[index].value}
+									unit={values[index].unit}
 									onChangeValue={value => {
-										values[index] = value;
+										values[index].value = value;
+										onChange(values);
+									}}
+									onChangeUnit={unit => {
+										values[index].unit = unit;
 										onChange(values);
 									}}
 									onReset={() => onReset(index)}
-									min={0}
-									max={100}
+									minMaxSettings={getMinMaxSettings(
+										index === 0 ? 'x' : 'y'
+									)}
 									disableRange
+									enableUnit
 								/>
 							)
 					)}
@@ -121,6 +163,8 @@ const ClipPathOption = props => {
 };
 
 const ClipPathControl = props => {
+	const visualEditorRef = useRef(null);
+
 	const {
 		className,
 		onChange,
@@ -128,6 +172,7 @@ const ClipPathControl = props => {
 		breakpoint,
 		isHover = false,
 		isLayer = false,
+		block,
 	} = props;
 
 	const classes = classnames('maxi-clip-path-control', className);
@@ -153,7 +198,7 @@ const ClipPathControl = props => {
 		if (isEmpty(clipPathToDeconstruct) || clipPath === 'none')
 			return {
 				type: 'polygon',
-				content: defaultPolygonContent,
+				content: cloneDeep(typeDefaults.polygon),
 			};
 
 		const cpType = clipPathToDeconstruct.match(/^[^(]+/gi)[0];
@@ -168,27 +213,34 @@ const ClipPathControl = props => {
 					.replace(')', '');
 
 				cpContent.split(', ').forEach(value => {
-					const newItem = value.trim().replace(/%/g, '').split(' ');
-					newItem.forEach((item, i) => {
-						newItem[i] = Number(item);
+					const newItem = [];
+					value.split(' ').forEach(item => {
+						const match = item.match(/^([\d.]+)(\D+)$/);
+						if (!match) return;
+						newItem.push({
+							value: Number(match?.[1]),
+							unit: match?.[2],
+						});
 					});
 					cpValues.push(newItem);
 				});
 				break;
 			case 'circle':
+				// TODO:
 				cpContent = clipPathToDeconstruct
 					.replace(cpType, '')
 					.replace('(', '')
 					.replace(')', '');
 
 				cpContent.split('at ').forEach(value => {
-					const newItem = value.trim().replace(/%/g, '').split(' ');
-					newItem.forEach((item, i) => {
-						if (!isEmpty(item)) newItem[i] = Number(item);
-						else {
-							delete newItem[i];
-							newItem.length -= 1;
-						}
+					const newItem = [];
+					value.split(' ').forEach(item => {
+						const match = item.match(/^([\d.]+)(\D+)$/);
+						if (!match) return;
+						newItem.push({
+							value: Number(match?.[1]),
+							unit: match?.[2],
+						});
 					});
 					cpValues.push(newItem);
 				});
@@ -199,18 +251,24 @@ const ClipPathControl = props => {
 					.replace('(', '')
 					.replace(')', '');
 
-				cpContent.split('at ').forEach((value, i) => {
-					const newItem = value.trim().replace(/%/g, '').split(' ');
-					newItem.forEach((item, j) => {
-						if (i === 0) {
-							cpValues.push([Number(item)]);
-						} else if (!isEmpty(item)) newItem[j] = Number(item);
-						else {
-							delete newItem[j];
-							newItem.length -= 1;
-						}
-					});
-					if (i !== 0) cpValues.push(newItem);
+				// eslint-disable-next-line no-case-declarations
+				const result = cpContent.split(' at ');
+
+				[...result[0].split(' '), result[1]].forEach((value, i) => {
+					const newItem = [];
+					value
+						.trim()
+						.split(' ')
+						.forEach(item => {
+							const match = item.match(/^([\d.]+)(\D+)$/);
+							if (!match) return;
+							newItem.push({
+								value: Number(match?.[1]),
+								unit: match?.[2],
+							});
+						});
+
+					cpValues.push(newItem);
 				});
 				break;
 			case 'inset':
@@ -221,7 +279,14 @@ const ClipPathControl = props => {
 					.replace('at ', '');
 
 				cpContent.split(' ').forEach(value => {
-					cpValues.push([Number(value.trim().replace(/%/g, ''))]);
+					const match = value.match(/^([\d.]+)(\D+)$/);
+					if (!match) return;
+					cpValues.push([
+						{
+							value: Number(match?.[1]),
+							unit: match?.[2],
+						},
+					]);
 				});
 				break;
 			case 'none':
@@ -260,61 +325,18 @@ const ClipPathControl = props => {
 	};
 
 	const generateCP = clipPath => {
-		const { type, content } = clipPath;
-		const arrayContent = Object.values(content);
-
-		let newContent = '';
-
-		switch (type) {
-			case 'polygon':
-				newContent = arrayContent.reduce((a, b) => {
-					if (isArray(a))
-						return `${a[0]}% ${a[1]}%, ${b[0]}% ${b[1]}%`;
-					return `${!isEmpty(a) ? `${a}, ` : ''}${b[0]}% ${b[1]}%`;
-				}, '');
-				break;
-			case 'circle':
-				newContent = `${arrayContent[0][0]}% at ${arrayContent[1][0]}% ${arrayContent[1][1]}%`;
-				break;
-			case 'ellipse':
-				newContent = `${arrayContent[0][0]}% ${arrayContent[1][0]}% at ${arrayContent[2][0]}% ${arrayContent[2][1]}%`;
-				break;
-			case 'inset':
-				newContent = `${arrayContent[0][0]}% ${arrayContent[1][0]}% ${arrayContent[2][0]}% ${arrayContent[3][0]}%`;
-				break;
-			default:
-				break;
-		}
-		const newCP = `${type}${type !== 'none' ? `(${newContent})` : ''}`;
+		const newCP = getClipPath(clipPath);
 
 		onChangeValue(newCP);
-
 		changeClipPathOptions(clipPath);
 	};
 
 	const onChangeType = newType => {
-		const newCP = clipPathOptions;
-
-		switch (newType) {
-			case 'polygon':
-				newCP.type = 'polygon';
-				newCP.content = defaultPolygonContent;
-				break;
-			case 'circle':
-				newCP.type = 'circle';
-				newCP.content = { 0: [50], 1: [50, 50] };
-				break;
-			case 'ellipse':
-				newCP.type = 'ellipse';
-				newCP.content = { 0: [25], 1: [50], 2: [50, 50] };
-				break;
-			case 'inset':
-				newCP.type = 'inset';
-				newCP.content = { 0: [15], 1: [5], 2: [15], 3: [5] };
-				break;
-			default:
-				break;
-		}
+		const newCP = {
+			...clipPathOptions,
+			type: newType,
+			content: cloneDeep(typeDefaults[newType]),
+		};
 
 		changeClipPathOptions(newCP);
 		generateCP(newCP);
@@ -433,6 +455,8 @@ const ClipPathControl = props => {
 							/>
 							{customMode === 'visual' && (
 								<ClipPathVisualEditor
+									ref={visualEditorRef}
+									block={block}
 									clipPathOptions={clipPathOptions}
 									clipPath={clipPath}
 									colors={optionColors}
@@ -452,6 +476,9 @@ const ClipPathControl = props => {
 											<ClipPathOption
 												key={`maxi-clip-path-control-${i}`}
 												values={handle}
+												number={i}
+												type={clipPathOptions.type}
+												visualEditorBounds={visualEditorRef.current?.getBoundingClientRect()}
 												onChange={value => {
 													clipPathOptions.content[i] =
 														value;
@@ -467,42 +494,57 @@ const ClipPathControl = props => {
 														's',
 														'xs',
 													];
-													const oneBreakpointHigherClipPath =
-														deconstructCP(
-															getLastBreakpointAttribute(
-																{
-																	target: `${prefix}clip-path`,
-																	breakpoint:
-																		breakpoints[
-																			breakpoints.indexOf(
-																				breakpoint
-																			) -
-																				1
-																		],
-																	attributes:
-																		props,
-																	isHover,
-																}
-															)
-														);
-
-													if (
-														oneBreakpointHigherClipPath.type !==
-														clipPathOptions.type
-													)
-														return;
-
-													const newValue =
-														oneBreakpointHigherClipPath
-															?.content?.[i]?.[
-															coordIndex
+													const higherBreakpoint =
+														breakpoints[
+															breakpoints.indexOf(
+																breakpoint
+															) - 1
 														];
 
+													let newValue;
+													if (higherBreakpoint) {
+														const oneBreakpointHigherClipPath =
+															deconstructCP(
+																getLastBreakpointAttribute(
+																	{
+																		target: `${prefix}clip-path`,
+																		breakpoint:
+																			higherBreakpoint,
+																		attributes:
+																			props,
+																		isHover,
+																	}
+																)
+															);
+
+														if (
+															oneBreakpointHigherClipPath.type !==
+															clipPathOptions.type
+														)
+															return;
+
+														newValue =
+															oneBreakpointHigherClipPath
+																?.content?.[
+																i
+															]?.[coordIndex];
+													} else {
+														newValue = cloneDeep(
+															typeDefaults[
+																clipPathOptions
+																	.type
+															]?.[i]?.[coordIndex]
+														);
+													}
+
 													if (
-														newValue ===
-														clipPathOptions.content[
-															i
-														][coordIndex]
+														isEqual(
+															newValue,
+															clipPathOptions
+																.content[i][
+																coordIndex
+															]
+														)
 													)
 														return;
 
@@ -517,8 +559,6 @@ const ClipPathControl = props => {
 														.content[number];
 													generateCP(clipPathOptions);
 												}}
-												number={i}
-												type={clipPathOptions.type}
 											/>
 										);
 									})}

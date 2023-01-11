@@ -139,15 +139,23 @@ const ClipPathControl = props => {
 		isHover,
 	});
 
+	const gradientPrefix =
+		props.prefix === 'background-gradient-' ? 'header-' : '';
+
 	const hasClipPath =
 		isLayer || !isHover
 			? getLastBreakpointAttribute({
-					target: `${prefix}clip-path-status`,
+					target: `${gradientPrefix}${prefix}clip-path-status`,
 					breakpoint,
 					attributes: props,
 					isHover,
 			  })
-			: props[getAttributeKey('clip-path-status', true)];
+			: props[
+					`${gradientPrefix}${getAttributeKey(
+						'clip-path-status',
+						true
+					)}`
+			  ];
 
 	const deconstructCP = (clipPathToDeconstruct = clipPath) => {
 		if (isEmpty(clipPathToDeconstruct) || clipPath === 'none')
@@ -255,7 +263,12 @@ const ClipPathControl = props => {
 
 	const onChangeValue = val => {
 		onChange({
-			[getAttributeKey('clip-path', isHover, prefix, breakpoint)]: val,
+			[`${gradientPrefix}${getAttributeKey(
+				'clip-path',
+				isHover,
+				prefix,
+				breakpoint
+			)}`]: val,
 		});
 	};
 
@@ -322,8 +335,12 @@ const ClipPathControl = props => {
 
 	const onToggleClipPath = val => {
 		onChange({
-			[getAttributeKey('clip-path-status', isHover, prefix, breakpoint)]:
-				val,
+			[`${gradientPrefix}${getAttributeKey(
+				'clip-path-status',
+				isHover,
+				prefix,
+				breakpoint
+			)}`]: val,
 		});
 	};
 

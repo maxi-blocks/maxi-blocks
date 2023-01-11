@@ -611,11 +611,11 @@ const MaxiToolbar = memo(
 							textLevel={textLevel}
 						/>
 						<DynamicContent
+							blockName={name}
 							{...getGroupAttributes(
 								attributes,
 								'dynamicContent'
 							)}
-							blockName={name}
 							onChange={obj => maxiSetAttributes(obj)}
 						/>
 						<Link

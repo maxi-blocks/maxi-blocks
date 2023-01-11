@@ -169,10 +169,15 @@ class DynamicContent {
 			await getRESTContent(elementSettings)
 				.catch(err => console.error(err))
 				.then(result => {
-					if (result)
-						document.querySelector(
+					if (result) {
+						const element = document.querySelector(
 							`#${elementId} .maxi-text-block__content`
-						).innerHTML = result;
+						);
+
+						const currentHTML = element.innerHTML;
+
+						if (currentHTML !== result) element.innerHTML = result;
+					}
 				});
 		}
 

@@ -30,7 +30,10 @@ import { textIcon } from '../../icons';
 /**
  * Migrators
  */
-import { blockMigrator } from '../../extensions/styles/migrators';
+import {
+	blockMigrator,
+	textLinkMigrator,
+} from '../../extensions/styles/migrators';
 
 /**
  * Block
@@ -61,5 +64,6 @@ registerBlockType('maxi-blocks/text-maxi', {
 		attributes,
 		save,
 		selectors: customCss.selectors,
+		migrators: [textLinkMigrator],
 	}),
 });

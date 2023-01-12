@@ -93,6 +93,9 @@ class DynamicContent {
 			console.log('relation');
 			console.log(relation);
 
+			console.log('type');
+			console.log(type);
+
 			const relationTypes = [
 				'posts',
 				'pages',
@@ -118,8 +121,6 @@ class DynamicContent {
 
 			const getForRelation = () => {
 				switch (relation) {
-					case 'author':
-						return `${restUrl}wp/v2/${type}/${id}?_fields=${field}`;
 					case 'date':
 					case 'modified':
 						if (!['previous', 'next'].includes(show)) {
@@ -134,6 +135,8 @@ class DynamicContent {
 			};
 
 			const getForType = () => {
+				if (field === 'author')
+					return `${restUrl}maxi-blocks/v1.0/dc?type=author&field=${id}`;
 				switch (type) {
 					case relationTypes.includes(type) ? type : false:
 						return getForRelation();
@@ -146,16 +149,6 @@ class DynamicContent {
 					default:
 						return `${restUrl}wp/v2/${type}?_fields=${field}`;
 				}
-			};
-
-			const getAuthorByID = async id => {
-				let response = '';
-				await apiFetch({ path: `${restUrl}wp/v2/users/${id}` })
-					.catch(err => console.error(err))
-					.then(author => {
-						response = author.name ?? author.slug;
-						return response;
-					});
 			};
 
 			const processDate = dateValue => {
@@ -203,12 +196,7 @@ class DynamicContent {
 			})
 				.catch(err => console.error(err))
 				.then(result => {
-					if (field === 'author') {
-						getAuthorByID(result?.[field]).then(name => {
-							response = name;
-							return response;
-						});
-					} else if (field === 'date') {
+					if (field === 'date') {
 						response = processDate(result?.[field]);
 					} else if (relation === 'random') {
 						response =

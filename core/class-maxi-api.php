@@ -659,6 +659,11 @@ if (!class_exists('MaxiBlocks_API')):
                         break;
                 }
             }
+            if($type === 'author') {
+                $author_id = get_post_field('post_author', $field);
+                $display_name = get_the_author_meta('display_name', $author_id);
+                $response = (object)['author' => $display_name];
+            }
 
             if (!$response) {
                 $response = '';

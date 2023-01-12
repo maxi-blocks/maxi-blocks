@@ -122,14 +122,10 @@ Object {
     "text-decoration": "underline",
     "text-transform": "lowercase",
   },
-  "m": Object {},
-  "s": Object {},
   "xl": Object {
     "font-size": "22px",
     "letter-spacing": "24.2px",
     "line-height": "4px",
   },
-  "xs": Object {},
-  "xxl": Object {},
 }
 `;

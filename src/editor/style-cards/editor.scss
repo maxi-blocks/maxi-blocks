@@ -380,13 +380,20 @@ body {
 
 					.maxi-select-control__input {
 						height: 36px !important;
-						line-height: 36px;
-						border-color: rgb(var(--maxi-light-color-1));
-						text-align: center;
 						padding: 0 25px;
+						border-color: rgb(var(--maxi-light-color-1));
+						line-height: 36px;
+						text-align: center;
+						overflow-wrap: break-word;
+    					text-overflow: ellipsis;
+    					white-space: nowrap;
 
 						option {
 							text-align: center;
+							overflow-wrap: break-word;
+							text-overflow: ellipsis;
+							white-space: nowrap;
+							width: 50px;
 						}
 					}
 				}

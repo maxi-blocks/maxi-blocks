@@ -256,6 +256,8 @@ const DynamicContent = props => {
 				value: +item.id,
 			};
 		});
+		console.log('newPostIdOptions');
+		console.log(newPostIdOptions);
 		if (isEmpty(newPostIdOptions)) {
 			if (relation === 'author') defaultValues['dc-error'] = relation;
 
@@ -550,6 +552,9 @@ const DynamicContent = props => {
 	const switchOnChange = (_type, _value) => {
 		let dcFieldActual;
 		let changeOptions;
+		console.log('switchOnChange type');
+		console.log(_type);
+
 		switch (_type) {
 			case 'status':
 				changeProps({ 'dc-status': _value });
@@ -643,6 +648,12 @@ const DynamicContent = props => {
 
 	setAuthorList();
 	statusRef.current && setAuthorDefault();
+
+	console.log(statusRef.current);
+	console.log(typeRef.current);
+	console.log(isEmpty(postIdOptions));
+	console.log(isEmptyIdOptions);
+	console.log('=======================');
 	if (
 		statusRef.current &&
 		typeRef.current &&
@@ -680,7 +691,7 @@ const DynamicContent = props => {
 								}
 							/>
 						)}
-						{!postIdOptions ? (
+						{!postIdOptions && type !== 'settings' ? (
 							<p>{__('This type is empty', 'maxi-blocks')}</p>
 						) : (
 							<>

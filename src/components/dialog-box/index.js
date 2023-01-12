@@ -12,11 +12,12 @@ import { createPortal } from 'react-dom';
  * Internal dependencies
  */
 import Button from '../button';
+import Icon from '../icon';
 
 /**
  * Styles and icons
  */
-import { closeIcon } from '../../icons';
+import { closeIcon, dialogIcon } from '../../icons';
 import './editor.scss';
 
 const DialogBox = props => {
@@ -27,7 +28,8 @@ const DialogBox = props => {
 					<div className='maxi-dialog-box-overlay' />
 					<div className='maxi-dialog-box-content'>
 						<div className='maxi-dialog-box-title'>
-							<h4>{__('Confirm', 'maxi-blocks')}</h4>
+							{/* <h4>{__('Confirm', 'maxi-blocks')}</h4> */}
+							<Icon icon={dialogIcon} />
 						</div>
 						<div className='maxi-dialog-box-message'>
 							{props.message}

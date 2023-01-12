@@ -60,8 +60,9 @@ class DynamicContent {
 				minute: minuteType === 'undefined' ? undefined : minuteType,
 				month: monthType === 'undefined' ? undefined : monthType,
 				second: secondType === 'undefined' ? undefined : secondType,
-				// timeZoneName:
-				// timeZoneName === 'undefined' ? undefined : timeZoneName,
+				timeZone: timeZone === 'undefined' ? undefined : timeZone,
+				timeZoneName:
+					timeZoneName === 'undefined' ? undefined : timeZoneName,
 				weekday: weekdayType === 'undefined' ? undefined : weekdayType,
 				year: yearType === 'undefined' ? undefined : yearType,
 			};
@@ -73,7 +74,7 @@ class DynamicContent {
 			const relation = dc['dc-relation'];
 			const field = dc['dc-field'];
 			const id = dc['dc-id'];
-			const isCustomDate = dc['dc-date'];
+			const isCustomDate = dc['dc-custom-date'];
 			const eraType = dc['dc-era'];
 			const yearType = dc['dc-year'];
 			const monthType = dc['dc-month'];
@@ -84,12 +85,10 @@ class DynamicContent {
 			const secondType = dc['dc-second'];
 			const isHour12 = dc['dc-hour12'];
 			const dateFormat = dc['dc-format'];
-			const timeZoneName = dc['dc-timezone'];
-			const timeZone = dc['dc-zone'];
+			const timeZoneName = dc['dc-timezone-name'];
+			const timeZone = dc['dc-timezone'];
 			const limit = dc['dc-limit'];
 			const show = dc['dc-show'];
-
-			if (type === 'settings') return null;
 
 			console.log('relation');
 			console.log(relation);
@@ -142,6 +141,8 @@ class DynamicContent {
 						return `${restUrl}wp/v2/${type}/${
 							author.current ? author.current : id
 						}/?_fields=${field}`;
+					case 'settings':
+						return `${restUrl}maxi-blocks/v1.0/dc?type=${type}&field=${field}`;
 					default:
 						return `${restUrl}wp/v2/${type}?_fields=${field}`;
 				}
@@ -227,8 +228,6 @@ class DynamicContent {
 				.catch(err => console.error(err))
 				.then(result => {
 					if (result) {
-						console.log('result!');
-						console.log(result);
 						const element = document.querySelector(
 							`#${elementId} .maxi-text-block__content`
 						);

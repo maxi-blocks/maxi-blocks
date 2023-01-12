@@ -51,15 +51,14 @@ import { toolbarDynamicContent } from '../../../../icons';
 /**
  * Dynamic Content
  */
-const ALLOWED_BLOCKS = ['maxi-blocks/text-maxi'];
 
 const DynamicContent = props => {
-	const { blockName, onChange, ...dynamicContent } = props;
+	const { onChange, ...dynamicContent } = props;
 
 	const {
 		'dc-author': author,
 		'dc-content': content,
-		'dc-date': date,
+		'dc-custom-date': isCustomDate,
 		'dc-day': day,
 		'dc-era': era,
 		'dc-error': error,
@@ -77,10 +76,11 @@ const DynamicContent = props => {
 		'dc-status': status,
 		'dc-timezone': timeZone,
 		'dc-timezone-name': timeZoneName,
+		'dc-timezone-name-length': timeZoneNameLength,
 		'dc-type': type,
 		'dc-weekday': weekday,
 		'dc-year': year,
-		'dc-zone': zone,
+		'dc-timezone': zone,
 	} = dynamicContent;
 
 	const alterIdRef = useRef(null);
@@ -130,7 +130,7 @@ const DynamicContent = props => {
 
 	const handleDateCallback = childData => {
 		onChange({
-			'dc-date': childData.status,
+			'dc-custom-date': childData.isCustomDate,
 			'dc-day': childData.options.day,
 			'dc-era': childData.options.era,
 			'dc-format': childData.format,
@@ -141,9 +141,9 @@ const DynamicContent = props => {
 			'dc-second': childData.options.second,
 			'dc-timezone': childData.options.timeZone,
 			'dc-timezone-name': childData.options.timeZoneName,
+			'dc-timezone-name-length': childData.options.timeZoneNameLength,
 			'dc-weekday': childData.options.weekday,
 			'dc-year': childData.options.year,
-			'dc-zone': childData.zone,
 		});
 	};
 
@@ -152,7 +152,7 @@ const DynamicContent = props => {
 		let options;
 		let content;
 		let newFormat;
-		if (!date) {
+		if (!isCustomDate) {
 			newFormat = format
 				.replace(/DV/g, 'x')
 				.replace(/DS/g, 'z')
@@ -180,16 +180,19 @@ const DynamicContent = props => {
 				minute,
 				month,
 				second,
-				timeZone,
 				timeZoneName,
 				weekday,
 				year,
 			});
 
-			content = NewDate.toLocaleString(
-				document.getElementsByTagName('html')[0].getAttribute('lang'),
-				options
-			);
+			const pageTZ =
+				document.getElementsByTagName('html')[0].getAttribute('lang') ||
+				'en-GB';
+
+			console.log('pageTZ');
+			console.log(pageTZ);
+
+			content = NewDate.toLocaleString(pageTZ, options);
 		}
 		console.log(content);
 		return content;
@@ -615,7 +618,7 @@ const DynamicContent = props => {
 		}
 	}, [
 		author,
-		date,
+		isCustomDate,
 		day,
 		era,
 		error,
@@ -637,8 +640,6 @@ const DynamicContent = props => {
 		year,
 		zone,
 	]);
-
-	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
 
 	setAuthorList();
 	statusRef.current && setAuthorDefault();
@@ -669,7 +670,7 @@ const DynamicContent = props => {
 				/>
 				{statusRef.current && (
 					<>
-						{!date && (
+						{!isCustomDate && (
 							<SelectControl
 								label={__('Type', 'maxi-blocks')}
 								value={typeRef.current}
@@ -683,7 +684,7 @@ const DynamicContent = props => {
 							<p>{__('This type is empty', 'maxi-blocks')}</p>
 						) : (
 							<>
-								{!date &&
+								{!isCustomDate &&
 									relationTypes.includes(typeRef.current) && (
 										<SelectControl
 											label={__(
@@ -702,7 +703,7 @@ const DynamicContent = props => {
 											}
 										/>
 									)}
-								{!date &&
+								{!isCustomDate &&
 									relationTypes.includes(typeRef.current) &&
 									(typeRef.current === 'users' ||
 										relationRef.current === 'author') && (
@@ -718,7 +719,7 @@ const DynamicContent = props => {
 											}
 										/>
 									)}
-								{!date &&
+								{!isCustomDate &&
 									relationTypes.includes(typeRef.current) &&
 									typeRef.current !== 'users' &&
 									['author', 'by-id'].includes(
@@ -742,7 +743,7 @@ const DynamicContent = props => {
 											}
 										/>
 									)}
-								{!date &&
+								{!isCustomDate &&
 									relationTypes.includes(typeRef.current) &&
 									typeRef.current === 'posts' &&
 									!['author', 'random'].includes(
@@ -758,7 +759,7 @@ const DynamicContent = props => {
 											}
 										/>
 									)}
-								{!date &&
+								{!isCustomDate &&
 									(['settings'].includes(typeRef.current) ||
 										(relationRef.current === 'by-id' &&
 											isFinite(idRef.current)) ||
@@ -815,7 +816,7 @@ const DynamicContent = props => {
 										month={month}
 										parentCallback={handleDateCallback}
 										second={second}
-										status={date}
+										status={isCustomDate}
 										timeZone={timeZone}
 										timeZoneName={timeZoneName}
 										weekday={weekday}

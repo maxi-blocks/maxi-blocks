@@ -32,7 +32,7 @@ const dynamicContent = {
 		type: 'string',
 		default: 'd.m.Y t',
 	},
-	'dc-date': {
+	'dc-custom-date': {
 		type: 'boolean',
 		default: false,
 	},
@@ -64,16 +64,15 @@ const dynamicContent = {
 		type: 'string',
 		default: 'numeric',
 	},
-	'dc-zone': {
+	'dc-timezone': {
 		type: 'string',
 		default: 'en',
 	},
-	'dc-timezone': {
+	'dc-timezone-name': {
 		type: 'string',
 		default: 'Europe/London',
 	},
-	'dc-timezone-name': {
-		// short or long
+	'dc-timezone-name-length': {
 		type: 'string',
 		default: 'none',
 	},

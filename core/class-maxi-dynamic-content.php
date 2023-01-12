@@ -31,11 +31,11 @@ class MaxiBlocks_DynamicContent
     {
         add_action('init', [
             $this,
-            'register_dynamic_blocks',
+            'dynamic_blocks',
         ]);
     }
 
-    public function register_dynamic_blocks()
+    public function dynamic_blocks()
     {
         function maxi_add_rand_orderby_rest_api($query_params)
         {
@@ -44,10 +44,5 @@ class MaxiBlocks_DynamicContent
         }
         add_filter('rest_post_collection_params', 'maxi_add_rand_orderby_rest_api');
         add_filter('rest_page_collection_params', 'maxi_add_rand_orderby_rest_api');
-    }
-
-    public function dynamic_maxi_renderer()
-    {
-        return 'OMG SUCCESS!';
     }
 }

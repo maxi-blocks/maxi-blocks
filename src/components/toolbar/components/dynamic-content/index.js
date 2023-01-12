@@ -129,8 +129,9 @@ const DynamicContent = props => {
 	};
 
 	const handleDateCallback = childData => {
+		console.log(childData);
 		onChange({
-			'dc-custom-date': childData.isCustomDate,
+			'dc-custom-date': childData.status,
 			'dc-day': childData.options.day,
 			'dc-era': childData.options.era,
 			'dc-format': childData.format,
@@ -172,6 +173,7 @@ const DynamicContent = props => {
 			newFormat = newFormat.replace(/[xzcdDmMyYt]/g, m => map[m]);
 			content = moment(NewDate).format(newFormat);
 		} else {
+			console.log('Custom DATE');
 			options = formatOptions({
 				day,
 				era,
@@ -180,7 +182,6 @@ const DynamicContent = props => {
 				minute,
 				month,
 				second,
-				timeZoneName,
 				weekday,
 				year,
 			});
@@ -256,8 +257,7 @@ const DynamicContent = props => {
 				value: +item.id,
 			};
 		});
-		console.log('newPostIdOptions');
-		console.log(newPostIdOptions);
+
 		if (isEmpty(newPostIdOptions)) {
 			if (relation === 'author') defaultValues['dc-error'] = relation;
 
@@ -437,6 +437,8 @@ const DynamicContent = props => {
 					}
 
 					if (fieldRef.current === 'date') {
+						console.log('contentValue');
+						console.log(contentValue);
 						contentValue = dateContent(contentValue);
 					} else if (fieldRef.current === 'excerpt') {
 						contentValue = limitFormat(contentValue);
@@ -552,8 +554,6 @@ const DynamicContent = props => {
 	const switchOnChange = (_type, _value) => {
 		let dcFieldActual;
 		let changeOptions;
-		console.log('switchOnChange type');
-		console.log(_type);
 
 		switch (_type) {
 			case 'status':
@@ -648,12 +648,6 @@ const DynamicContent = props => {
 
 	setAuthorList();
 	statusRef.current && setAuthorDefault();
-
-	console.log(statusRef.current);
-	console.log(typeRef.current);
-	console.log(isEmpty(postIdOptions));
-	console.log(isEmptyIdOptions);
-	console.log('=======================');
 	if (
 		statusRef.current &&
 		typeRef.current &&

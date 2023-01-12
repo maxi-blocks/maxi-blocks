@@ -74,6 +74,10 @@ body {
 			display: none !important;
 		}
 
+		&:hover{
+			background-color: #232533;
+		}
+
 		svg {
 		    height: 9.11px;
     		width: 9.11px;
@@ -241,25 +245,28 @@ body {
 			}
 			&__box {
 				display: flex;
-				width: 13%;
-				height: 35px;
+				width: 32px;
+				height: 32px;
 				padding: 0;
 				border: 1px solid var(--maxi-grey-1-color);
 				margin: 0;
 				background-color: #fff;
 				cursor: pointer;
-				transition: all 0.5s;
+				transition: all 0.2s;
 				align-items: center;
 				justify-content: center;
 				cursor: pointer;
 
-				&--active,
 				&:hover {
-					border: 1px solid #bdbdbd;
+					background: var(--maxi-white-1-color);
+    				border-color: var(--maxi-grey-6-color);
+				}
+				&--active{
+					border: 2px solid var(--maxi-primary-color);
 				}
 				&__item {
-					width: 23px;
-					height: 23px;
+					width: 20px;
+					height: 20px;
 					border: 1px solid #dfe2e4;
 					border-radius: 0;
 				}
@@ -376,7 +383,7 @@ body {
 						line-height: 36px;
 						border-color: rgb(var(--maxi-light-color-1));
 						text-align: center;
-						padding: 0 20px;
+						padding: 0 25px;
 
 						option {
 							text-align: center;
@@ -406,7 +413,7 @@ body {
 					// margin-right: 8px !important;
 					width: 15%;
 					position: relative;
-					&:hover{
+					&:not(:disabled):hover{
 						border-color: rgb(var(--maxi-light-color-4)) !important;
 					}
 				}

@@ -41,6 +41,9 @@
     		padding: 0 0 1px;
 			background-color: rgba(var(--maxi-active-sc-color), 1);
 			border-radius: 50%;
+			&:hover{
+				background-color: #232533;
+			}
 			path{
 				stroke: #fff;
 			}

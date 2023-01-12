@@ -6,10 +6,6 @@ const rawLink = {
 	...paletteAttributesCreator({ prefix: 'link-hover-', palette: 6 }),
 	...paletteAttributesCreator({ prefix: 'link-active-', palette: 6 }),
 	...paletteAttributesCreator({ prefix: 'link-visited-', palette: 6 }),
-	'is-whole-link': {
-		type: 'boolean',
-		default: false,
-	},
 };
 
 const link = breakpointAttributesCreator({

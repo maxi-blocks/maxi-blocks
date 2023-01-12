@@ -3,30 +3,18 @@
  */
 import getColorRGBAString from '../getColorRGBAString';
 import getPaletteAttributes from '../getPaletteAttributes';
-import getTextDecorationStyles from './getTextDecorationStyles';
+import getAttributeValue from '../getAttributeValue';
 
 /**
  * External dependencies
  */
-import { isBoolean } from 'lodash';
+import { isBoolean, isNil } from 'lodash';
 
 const getLinkStyles = (obj, target, blockStyle) => {
 	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 	const response = {
-		[target]: {
-			link: {
-				...getTextDecorationStyles({ obj, isLink: true }),
-			},
-		},
-		[`${target}:hover`]: {
-			link: {
-				...getTextDecorationStyles({
-					obj,
-					isLink: true,
-					isHover: true,
-				}),
-			},
-		},
+		[target]: { link: {} },
+		[`${target}:hover`]: { link: {} },
 		[`${target}:active`]: { link: {} },
 		[`${target}:active span`]: { link: {} },
 		[`${target}:visited`]: { link: {} },
@@ -40,7 +28,28 @@ const getLinkStyles = (obj, target, blockStyle) => {
 		},
 	};
 
+	const getTextDecoration = (breakpoint, isHover = false) => {
+		const hoverStatus = getAttributeValue({
+			target: 'typography-status-hover',
+			props: obj,
+		});
+		const value = getAttributeValue({
+			target: 'text-decoration',
+			breakpoint,
+			isHover,
+			props: obj,
+		});
+		return !isNil(value) && (hoverStatus || !isHover) && value;
+	};
+
 	breakpoints.forEach(breakpoint => {
+		response[target].link[breakpoint] = {};
+
+		const decoration = getTextDecoration(breakpoint);
+		if (decoration) {
+			response[target].link[breakpoint]['text-decoration'] = decoration;
+		}
+
 		const {
 			paletteStatus: linkPaletteStatus,
 			paletteColor: linkPaletteColor,
@@ -80,6 +89,13 @@ const getLinkStyles = (obj, target, blockStyle) => {
 				opacity: linkPaletteOpacity,
 				blockStyle,
 			});
+		}
+
+		response[`${target}:hover`].link[breakpoint] = {};
+		const hoverDecoration = getTextDecoration(breakpoint);
+		if (hoverDecoration) {
+			response[target].link[breakpoint]['text-decoration'] =
+				hoverDecoration;
 		}
 
 		const {

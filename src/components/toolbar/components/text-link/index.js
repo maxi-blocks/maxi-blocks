@@ -148,7 +148,6 @@ const LinkContent = props => {
 			saveFormatValue: true,
 			onChangeTextFormat,
 			returnFormatValue: true,
-			isWholeContent,
 		});
 
 		onChangeTextFormat({

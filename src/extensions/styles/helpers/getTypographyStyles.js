@@ -3,12 +3,11 @@
  */
 import getColorRGBAString from '../getColorRGBAString';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
-import getTextDecorationStyles from './getTextDecorationStyles';
 
 /**
  * External dependencies
  */
-import { isEmpty, isNil, merge } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 
 /**
  * General
@@ -156,6 +155,9 @@ const getTypographyStyles = ({
 			...(!isNil(obj[getName('font-style', breakpoint)]) && {
 				'font-style': obj[getName('font-style', breakpoint)],
 			}),
+			...(!isNil(obj[getName('text-decoration', breakpoint)]) && {
+				'text-decoration': obj[getName('text-decoration', breakpoint)],
+			}),
 			...(!isNil(obj[getName('text-indent', breakpoint)]) && {
 				'text-indent': `${
 					obj[getName('text-indent', breakpoint)]
@@ -209,14 +211,7 @@ const getTypographyStyles = ({
 		if (!isEmpty(typography)) response[breakpoint] = typography;
 	});
 
-	return merge(
-		response,
-		getTextDecorationStyles({
-			obj: { ...obj, ...normalTypography },
-			isHover: isHover && !isCustomFormat,
-			prefix,
-		})
-	);
+	return response;
 };
 
 export default getTypographyStyles;

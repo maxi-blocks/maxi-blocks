@@ -186,11 +186,12 @@ const DynamicContent = props => {
 				year,
 			});
 
-			content = NewDate.toLocaleString(zone, options);
-
-			console.log('content');
-			console.log(content);
+			content = NewDate.toLocaleString(
+				document.getElementsByTagName('html')[0].getAttribute('lang'),
+				options
+			);
 		}
+		console.log(content);
 		return content;
 	};
 

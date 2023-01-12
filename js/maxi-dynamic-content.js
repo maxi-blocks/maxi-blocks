@@ -1,4 +1,12 @@
+/**
+ * WordPress dependencies
+ */
 import apiFetch from '@wordpress/api-fetch';
+
+/**
+ * External dependencies
+ */
+import moment from 'moment';
 
 class DynamicContent {
 	constructor() {
@@ -52,9 +60,8 @@ class DynamicContent {
 				minute: minuteType === 'undefined' ? undefined : minuteType,
 				month: monthType === 'undefined' ? undefined : monthType,
 				second: secondType === 'undefined' ? undefined : secondType,
-				timeZone: timeZone === 'undefined' ? undefined : timeZone,
-				timeZoneName:
-					timeZoneName === 'undefined' ? undefined : timeZoneName,
+				// timeZoneName:
+				// timeZoneName === 'undefined' ? undefined : timeZoneName,
 				weekday: weekdayType === 'undefined' ? undefined : weekdayType,
 				year: yearType === 'undefined' ? undefined : yearType,
 			};
@@ -84,6 +91,18 @@ class DynamicContent {
 
 			if (type === 'settings') return null;
 
+			console.log('relation');
+			console.log(relation);
+
+			const relationTypes = [
+				'posts',
+				'pages',
+				'media',
+				'categories',
+				'tags',
+				'users',
+			];
+
 			const options = formatOptions({
 				dayType,
 				eraType,
@@ -97,18 +116,6 @@ class DynamicContent {
 				weekdayType,
 				yearType,
 			});
-
-			console.log('relation');
-			console.log(relation);
-
-			const relationTypes = [
-				'posts',
-				'pages',
-				'media',
-				'categories',
-				'tags',
-				'users',
-			];
 
 			const getForRelation = () => {
 				switch (relation) {
@@ -150,6 +157,41 @@ class DynamicContent {
 					});
 			};
 
+			const processDate = dateValue => {
+				const NewDate = new Date(dateValue);
+				let content;
+				let newFormat;
+				if (!isCustomDate) {
+					newFormat = dateFormat
+						.replace(/DV/g, 'x')
+						.replace(/DS/g, 'z')
+						.replace(/MS/g, 'c');
+					const map = {
+						z: 'ddd',
+						x: 'dd',
+						c: 'MMM',
+						d: 'D',
+						D: 'dddd',
+						m: 'MM',
+						M: 'MMMM',
+						y: 'YY',
+						Y: 'YYYY',
+						t: 'HH:MM:SS',
+					};
+					newFormat = newFormat.replace(/[xzcdDmMyYt]/g, m => map[m]);
+					content = moment(NewDate).format(newFormat);
+				} else {
+					content = NewDate.toLocaleString(
+						document
+							.getElementsByTagName('html')[0]
+							.getAttribute('lang'),
+						options
+					);
+				}
+				console.log(content);
+				return content;
+			};
+
 			let response = '';
 			const path = getForType();
 			console.log(path);
@@ -165,6 +207,8 @@ class DynamicContent {
 							response = name;
 							return response;
 						});
+					} else if (field === 'date') {
+						response = processDate(result?.[field]);
 					} else if (relation === 'random') {
 						response =
 							result?.[0]?.[field]?.rendered ??

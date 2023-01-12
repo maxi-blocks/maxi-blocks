@@ -180,10 +180,7 @@ const DateFormatting = props => {
 	return (
 		<div className='date-formatting'>
 			{isVisible && (
-				<Popover
-					className='date-popover maxi-popover-button'
-					position='top right'
-				>
+				<Popover className='date-popover maxi-popover-button'>
 					<p>
 						<b>{__('d', 'maxi-blocks')}</b> -
 						{__('day in numeric format', 'maxi-blocks')}

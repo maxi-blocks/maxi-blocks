@@ -1,9 +1,8 @@
 .date-popover {
 	.components-popover__content {
-		div {
-			width: 220px;
-			padding: 0px 16px;
-		}
+		width: 220px;
+		padding: 0px 16px;
+		transform: translateY(0%) !important;
 	}
 }
 .date-formatting {

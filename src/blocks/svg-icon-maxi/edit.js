@@ -128,6 +128,22 @@ class edit extends MaxiBlockComponent {
 		}
 	}
 
+	maxiBlockDidChangeUniqueID(newUniqueID) {
+		/**
+		 * Each svg icon content svg tag has unique class name, which should be changed
+		 * when the block is duplicated.
+		 */
+		const svgClass =
+			this.props.attributes.content.match(/ class="(.+?(?=))"/)?.[1];
+		if (!svgClass) return;
+
+		const newContent = this.props.attributes.content.replaceAll(
+			svgClass.match(/__(\d)/)[0],
+			`__${newUniqueID.match(/-(\d+)$/).pop()}`
+		);
+		this.props.attributes.content = newContent;
+	}
+
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}

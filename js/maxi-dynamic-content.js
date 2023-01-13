@@ -169,21 +169,14 @@ class DynamicContent {
 					newFormat = newFormat.replace(/[xzcdDmMyYt]/g, m => map[m]);
 					content = moment(NewDate).format(newFormat);
 				} else {
-					content = NewDate.toLocaleString(
-						document
-							.getElementsByTagName('html')[0]
-							.getAttribute('lang'),
-						options
-					);
+					content = NewDate.toLocaleString(timeZone, options);
 				}
 				return content;
 			};
 
 			let response = '';
 			const path = getUrlByRelation();
-			console.log(path);
-			console.log('field');
-			console.log(field);
+
 			await apiFetch({
 				path,
 			})
@@ -199,8 +192,6 @@ class DynamicContent {
 						response = result?.[field]?.rendered ?? result?.[field];
 				});
 
-			console.log('final response');
-			console.log(response);
 			return response;
 		};
 
@@ -232,7 +223,6 @@ class DynamicContent {
 	};
 }
 
-// eslint-disable-next-line @wordpress/no-global-event-listener
 window.addEventListener('DOMContentLoaded', () => {
 	// eslint-disable-next-line no-new
 	new DynamicContent();

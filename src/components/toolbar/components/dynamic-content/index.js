@@ -185,10 +185,7 @@ const DynamicContent = props => {
 			newFormat = newFormat.replace(/[xzcdDmMyYt]/g, m => map[m]);
 			content = moment(NewDate).format(newFormat);
 		} else {
-			content = NewDate.toLocaleString(
-				document.getElementsByTagName('html')[0].getAttribute('lang'),
-				options
-			);
+			content = NewDate.toLocaleString(timeZone, options);
 		}
 		return content;
 	};

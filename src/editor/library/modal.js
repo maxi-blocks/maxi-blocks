@@ -2,7 +2,13 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { RawHTML, useEffect, useState, forwardRef } from '@wordpress/element';
+import {
+	RawHTML,
+	useEffect,
+	useState,
+	forwardRef,
+	useRef,
+} from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -40,18 +46,21 @@ const CloudPlaceholder = forwardRef((props, ref) => {
 	});
 
 	useEffect(() => {
-		resizeObserver.observe(ref.current);
+		resizeObserver.observe(
+			ref.current?.closest('.maxi-block-library__placeholder')
+		);
 
 		return () => {
 			resizeObserver.disconnect();
 		};
 	}, []);
 
+	console.log(ref, isBlockSmall, isBlockSmaller);
+
 	return (
 		<Button
 			key={`maxi-block-library__modal-button--${clientId}`}
 			isPrimary
-			// className='maxi-block-library__modal-button'
 			className={classNames(
 				'maxi-block-library__modal-button__placeholder',
 				isBlockSmall &&
@@ -93,6 +102,7 @@ const MaxiModal = props => {
 		label = '',
 	} = props;
 
+	const ref = useRef(null);
 	const [isOpen, changeIsOpen] = useState(openFirstTime || forceIsOpen);
 
 	const onClick = () => {
@@ -107,7 +117,7 @@ const MaxiModal = props => {
 	}, [isOpen, forceIsOpen]);
 
 	return (
-		<div className='maxi-library-modal__action-section'>
+		<div ref={ref} className='maxi-library-modal__action-section'>
 			{!isEmpty(label) && (
 				<BaseControl.VisualLabel className='maxi-library-modal__action-section__label'>
 					{label}
@@ -116,7 +126,7 @@ const MaxiModal = props => {
 			<div className='maxi-library-modal__action-section__buttons'>
 				{type === 'patterns' && (
 					<>
-						<Button
+						{/* <Button
 							key={`maxi-block-library__modal-button--${clientId}`}
 							isPrimary
 							className='maxi-block-library__modal-button'
@@ -127,8 +137,12 @@ const MaxiModal = props => {
 								icon={cloudLib}
 							/>
 							{__('Template library', 'maxi-blocks')}
-						</Button>
-						{/* <CloudPlaceholder clientId={clientId} onClick={onClick} /> */}
+						</Button> */}
+						<CloudPlaceholder
+							ref={ref}
+							clientId={clientId}
+							onClick={onClick}
+						/>
 					</>
 				)}
 				{type === 'sc' && (

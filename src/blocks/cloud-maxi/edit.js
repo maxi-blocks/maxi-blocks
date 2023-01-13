@@ -1,8 +1,4 @@
 /**
- * Edit component.
- */
-
-/**
  * Internal dependencies.
  */
 import MaxiModal from '../../editor/library/modal';
@@ -21,7 +17,6 @@ import { isEmpty } from 'lodash';
 class edit extends Component {
 	render() {
 		const { attributes, clientId, maxiSetAttributes } = this.props;
-
 		const { content, openFirstTime } = attributes;
 
 		/* Placeholder with layout modal */

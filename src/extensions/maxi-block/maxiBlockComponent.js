@@ -379,23 +379,8 @@ class MaxiBlockComponent extends Component {
 				this.props.attributes.uniqueID
 			);
 
-			/**
-			 * Each svg icon content svg tag has unique class name, which should be changed
-			 * when the block is duplicated.
-			 */
-			if (this.props.name === 'maxi-blocks/svg-icon-maxi') {
-				const svgClass =
-					this.props.attributes.content.match(
-						/ class="(.+?(?=))"/
-					)?.[1];
-				if (svgClass) {
-					const newContent = this.props.attributes.content.replaceAll(
-						svgClass.match(/__(\d)/)[0],
-						`__${newUniqueID.match(/-(\d+)$/).pop()}`
-					);
-					this.props.attributes.content = newContent;
-				}
-			}
+			if (this.maxiBlockDidChangeUniqueID)
+				this.maxiBlockDidChangeUniqueID(newUniqueID);
 
 			return newUniqueID;
 		}

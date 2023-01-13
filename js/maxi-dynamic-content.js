@@ -10,17 +10,18 @@ import moment from 'moment';
 
 class DynamicContent {
 	constructor() {
-		this.dynamicContent = this.getElements();
+		this.dynamicContent = this.processDynamicContent();
 		this.init();
 	}
 
 	init() {
 		document.addEventListener('DOMContentLoaded', [
-			this.getElements.bind(this),
+			this.processDynamicContent.bind(this),
 		]);
 	}
 
-	getElements = () => {
+	// eslint-disable-next-line class-methods-use-this
+	processDynamicContent = () => {
 		// eslint-disable-next-line no-undef
 		if (!maxiDynamicContent) return null;
 		// eslint-disable-next-line no-undef
@@ -87,14 +88,7 @@ class DynamicContent {
 			const dateFormat = dc['dc-format'];
 			const timeZoneName = dc['dc-timezone-name'];
 			const timeZone = dc['dc-timezone'];
-			const limit = dc['dc-limit'];
 			const show = dc['dc-show'];
-
-			console.log('relation');
-			console.log(relation);
-
-			console.log('type');
-			console.log(type);
 
 			const relationTypes = [
 				'posts',
@@ -134,7 +128,7 @@ class DynamicContent {
 				}
 			};
 
-			const getForType = () => {
+			const getUrlByRelation = () => {
 				if (field === 'author')
 					return `${restUrl}maxi-blocks/v1.0/dc?type=author&field=${id}`;
 				switch (type) {
@@ -182,12 +176,11 @@ class DynamicContent {
 						options
 					);
 				}
-				console.log(content);
 				return content;
 			};
 
 			let response = '';
-			const path = getForType();
+			const path = getUrlByRelation();
 			console.log(path);
 			console.log('field');
 			console.log(field);
@@ -211,7 +204,7 @@ class DynamicContent {
 			return response;
 		};
 
-		async function getContent(elementId, elementSettings) {
+		async function getDynamicContentPerBlock(elementId, elementSettings) {
 			await getRESTContent(elementSettings)
 				.catch(err => console.error(err))
 				.then(result => {
@@ -228,7 +221,7 @@ class DynamicContent {
 		}
 
 		Object.keys(elements).forEach(key => {
-			getContent(key, elements[key]);
+			getDynamicContentPerBlock(key, elements[key]);
 		});
 
 		return response;

@@ -281,7 +281,7 @@ const MaxiToolbar = memo(
 											setPinActive(!pinActive);
 										}}
 									>
-										<span className='breadcrumbs-pin-toltip'>
+										<span className='breadcrumbs-pin-tooltip'>
 											{pinActive ? 'Unlock' : 'Lock'}
 										</span>
 										<span className='breadcrumbs-pin-icon'>

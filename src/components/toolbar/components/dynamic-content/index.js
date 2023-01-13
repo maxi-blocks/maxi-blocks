@@ -76,7 +76,6 @@ const DynamicContent = props => {
 		'dc-status': status,
 		'dc-timezone': timeZone,
 		'dc-timezone-name': timeZoneName,
-		'dc-timezone-name-length': timeZoneNameLength,
 		'dc-type': type,
 		'dc-weekday': weekday,
 		'dc-year': year,
@@ -85,7 +84,6 @@ const DynamicContent = props => {
 
 	const alterIdRef = useRef(null);
 	const authorRef = useRef(author);
-	const errorRef = useRef(error);
 	const fieldRef = useRef(field);
 	const idRef = useRef(id);
 	const limitRef = useRef(limit);
@@ -129,7 +127,6 @@ const DynamicContent = props => {
 	};
 
 	const handleDateCallback = childData => {
-		console.log(childData);
 		onChange({
 			'dc-custom-date': childData.status,
 			'dc-day': childData.options.day,
@@ -148,9 +145,22 @@ const DynamicContent = props => {
 		});
 	};
 
-	const dateContent = _value => {
-		const NewDate = new Date(_value);
-		let options;
+	const options = formatOptions({
+		day,
+		era,
+		hour,
+		hour12,
+		minute,
+		month,
+		second,
+		timeZone,
+		timeZoneName,
+		weekday,
+		year,
+	});
+
+	const processDate = dateValue => {
+		const NewDate = new Date(dateValue);
 		let content;
 		let newFormat;
 		if (!isCustomDate) {
@@ -173,40 +183,22 @@ const DynamicContent = props => {
 			newFormat = newFormat.replace(/[xzcdDmMyYt]/g, m => map[m]);
 			content = moment(NewDate).format(newFormat);
 		} else {
-			console.log('Custom DATE');
-			options = formatOptions({
-				day,
-				era,
-				hour,
-				hour12,
-				minute,
-				month,
-				second,
-				weekday,
-				year,
-			});
-
-			const pageTZ =
-				document.getElementsByTagName('html')[0].getAttribute('lang') ||
-				'en-GB';
-
-			console.log('pageTZ');
-			console.log(pageTZ);
-
-			content = NewDate.toLocaleString(pageTZ, options);
+			content = NewDate.toLocaleString(
+				document.getElementsByTagName('html')[0].getAttribute('lang'),
+				options
+			);
 		}
-		console.log(content);
 		return content;
 	};
 
-	const disabledType = (valueType, _type = 'type') => {
+	const disabledType = (valueType, thisType = 'type') => {
 		const hide = options =>
 			Object.keys(options).forEach(key => {
 				if (options[key].value === valueType) {
 					options[key].disabled = true;
 				}
 			});
-		hide(_type === 'relation' ? relationOptions : typeOptions);
+		hide(thisType === 'relation' ? relationOptions : typeOptions);
 	};
 
 	const setAuthorDefault = async () => {
@@ -221,7 +213,7 @@ const DynamicContent = props => {
 	const setAuthorList = async () => {
 		if (!postAuthorOptions) {
 			apiFetch({
-				path: '/wp/v2/users?per_page=99&_fields=id, name',
+				path: '/wp/v2/users?per_page=99&thisFields=id, name',
 			})
 				.catch(err => console.error(err))
 				.then(result => {
@@ -241,7 +233,7 @@ const DynamicContent = props => {
 		}
 	};
 
-	const setIdList = (result, defaultValues = {}, _type) => {
+	const setIdList = (result, defaultValues = {}, thisType) => {
 		// Set default values in case they are not defined
 
 		const relation = defaultValues['dc-relation'] ?? relationRef.current;
@@ -251,8 +243,8 @@ const DynamicContent = props => {
 		const newPostIdOptions = result.map(item => {
 			return {
 				label: `${item.id} - ${
-					item[idOptionByField[_type]]?.rendered ??
-					item[idOptionByField[_type]]
+					item[idOptionByField[thisType]]?.rendered ??
+					item[idOptionByField[thisType]]
 				}`,
 				value: +item.id,
 			};
@@ -263,7 +255,7 @@ const DynamicContent = props => {
 
 			if (['tags', 'media'].includes(type)) {
 				defaultValues['dc-error'] = type;
-				disabledType(_type);
+				disabledType(thisType);
 			}
 
 			setIsEmptyIdOptions(true);
@@ -289,122 +281,118 @@ const DynamicContent = props => {
 		return newPostIdOptions;
 	};
 
-	const getAuthorByID = async _id =>
-		apiFetch({ path: `/wp/v2/users/${_id}` }).then(
+	const getAuthorByID = async thisId =>
+		apiFetch({ path: `/wp/v2/users/${thisId}` }).then(
 			author => author.name ?? 'No name'
 		);
 
-	const changeContent = async (_type, _show, _id, _default = {}) => {
+	const changeContent = async (
+		thisType,
+		thisShow,
+		thisId,
+		thisDefault = {}
+	) => {
 		if (
 			relationTypes.includes(typeRef.current) &&
-			['previous', 'next'].includes(_show)
+			['previous', 'next'].includes(thisShow)
 		) {
-			const prevNextPath = `/wp/v2/${_type}/${_id}?_fields=${_show}`;
+			const prevNextPath = `/wp/v2/${thisType}/${thisId}?thisFields=${thisShow}`;
 			return apiFetch({
 				path: prevNextPath,
 			})
 				.catch(rej => console.error(rej))
 				.then(res => {
 					if (
-						typeof res[_show] === 'object' &&
-						res[_show] !== null &&
-						'id' in res[_show]
+						typeof res[thisShow] === 'object' &&
+						res[thisShow] !== null &&
+						'id' in res[thisShow]
 					) {
-						changeProps({ 'dc-error': '', ..._default });
-						if (isFinite(res[_show].id)) {
-							return res[_show].id;
+						changeProps({ 'dc-error': '', ...thisDefault });
+						if (isFinite(res[thisShow].id)) {
+							return res[thisShow].id;
 						}
 					} else {
-						changeProps({ 'dc-error': _show, ..._default });
+						changeProps({ 'dc-error': thisShow, ...thisDefault });
 					}
 					return null;
 				});
 		}
-		if (!isEmpty(_default)) {
-			changeProps(_default);
+		if (!isEmpty(thisDefault)) {
+			changeProps(thisDefault);
 		}
 		return false;
 	};
 
-	const getContentPath = (_type, _id, _field) => {
+	const getContentPath = (thisType, thisId, thisField) => {
 		const getForShow = async () => {
 			let result;
 			switch (showRef.current) {
 				case 'next':
 				case 'previous':
 					result = await changeContent(
-						_type,
+						thisType,
 						showRef.current,
-						_id
+						thisId
 					).then(res => res);
 					return result;
 				case 'current':
 				default:
-					return _id;
+					return thisId;
 			}
 		};
 
-		const getForRelation = () => {
-			return getForShow(_type, _id, _field)
-				.then(res => {
-					if (typeof res === 'number') {
-						alterIdRef.current = res;
-					} else {
-						changeProps({ 'dc-error': showRef.current });
-						alterIdRef.current = null;
+		const getForRelation = async () => {
+			const res = await getForShow(thisType, thisId, thisField);
+			if (typeof res === 'number') {
+				alterIdRef.current = res;
+			} else {
+				changeProps({ 'dc-error': showRef.current });
+				alterIdRef.current = null;
+			}
+			switch (relationRef.current) {
+				case 'author':
+					return `/wp/v2/${thisType}/${
+						alterIdRef.current ? alterIdRef.current : thisId
+					}?thisFields=${thisField}`;
+				case 'date':
+				case 'modified':
+					if (
+						!['previous', 'next'].includes(showRef.current) ||
+						!alterIdRef.current
+					) {
+						return `/wp/v2/${thisType}?orderby=${relationRef.current}&per_page=1&thisFields=${thisField},id`;
 					}
-				})
-				.then(res => {
-					switch (relationRef.current) {
-						case 'author':
-							return `/wp/v2/${_type}/${
-								alterIdRef.current ? alterIdRef.current : _id
-							}?_fields=${_field}`;
-						case 'date':
-						case 'modified':
-							if (
-								!['previous', 'next'].includes(
-									showRef.current
-								) ||
-								!alterIdRef.current
-							) {
-								return `/wp/v2/${_type}?orderby=${relationRef.current}&per_page=1&_fields=${_field},id`;
-							}
-							return `/wp/v2/${_type}/${
-								alterIdRef.current ? alterIdRef.current : _id
-							}?_fields=${_field}`;
+					return `/wp/v2/${thisType}/${
+						alterIdRef.current ? alterIdRef.current : thisId
+					}?thisFields=${thisField}`;
 
-						case 'random':
-							return `/wp/v2/${_type}/?_fields=${_field}&per_page=99&orderby=${
-								randomOptions[_type][
-									random(
-										randomOptions[typeRef.current].length -
-											1
-									)
-								]
-							}`;
-						case 'by-id':
-						default:
-							return `/wp/v2/${_type}/${
-								alterIdRef.current ? alterIdRef.current : _id
-							}?_fields=${_field}`;
-					}
-				});
+				case 'random':
+					return `/wp/v2/${thisType}/?thisFields=${thisField}&per_page=99&orderby=${
+						randomOptions[thisType][
+							random(randomOptions[typeRef.current].length - 1)
+						]
+					}`;
+				case 'by-id':
+				default:
+					return `/wp/v2/${thisType}/${
+						alterIdRef.current ? alterIdRef.current : thisId
+					}?thisFields=${thisField}`;
+			}
 		};
 
 		const getForType = async () => {
 			let resultRelation;
-			switch (_type) {
-				case relationTypes.includes(_type) ? _type : false:
+			switch (thisType) {
+				case relationTypes.includes(thisType) ? thisType : false:
 					resultRelation = await getForRelation();
 					return resultRelation;
 				case 'users':
-					return `/wp/v2/${_type}/${
-						authorRef.current ? authorRef.current : _id
-					}/?_fields=${_field}`;
+					return `/wp/v2/${thisType}/${
+						authorRef.current ? authorRef.current : thisId
+					}/?thisFields=${thisField}`;
 				case 'settings':
 				default:
-					return `/wp/v2/${_type}?_fields=${_field}`;
+					return `/wp/v2/${thisType}?thisFields=${thisField}`;
 			}
 		};
 
@@ -412,9 +400,9 @@ const DynamicContent = props => {
 	};
 
 	const requestContent = async dataRequest => {
-		const { type: _type, id: _id, field: _field } = dataRequest;
+		const { type: thisType, id: thisId, field: thisField } = dataRequest;
 		return apiFetch({
-			path: await getContentPath(_type, _id, _field),
+			path: await getContentPath(thisType, thisId, thisField),
 		})
 			.catch(err => console.error(err)) // TODO: need a good error handler
 			.then(result => {
@@ -425,21 +413,19 @@ const DynamicContent = props => {
 						changeProps({ 'dc-id': Number(content.id) });
 
 					if (
-						renderedFields.includes(_field) &&
-						!isNil(content[_field]?.rendered)
+						renderedFields.includes(thisField) &&
+						!isNil(content[thisField]?.rendered)
 					) {
-						contentValue = content[_field].rendered;
-					} else if (_field === 'author') {
-						const authorId = getAuthorByID(content[_field]);
+						contentValue = content[thisField].rendered;
+					} else if (thisField === 'author') {
+						const authorId = getAuthorByID(content[thisField]);
 						contentValue = authorId.then(value => value);
 					} else {
-						contentValue = content[_field];
+						contentValue = content[thisField];
 					}
 
 					if (fieldRef.current === 'date') {
-						console.log('contentValue');
-						console.log(contentValue);
-						contentValue = dateContent(contentValue);
+						contentValue = processDate(contentValue);
 					} else if (fieldRef.current === 'excerpt') {
 						contentValue = limitFormat(contentValue);
 					}
@@ -488,7 +474,7 @@ const DynamicContent = props => {
 			relationRef.current === 'random'
 		) {
 			return apiFetch({
-				path: `/wp/v2/${type}/?_fields=id&per_page=99&orderby=${
+				path: `/wp/v2/${type}/?thisFields=id&per_page=99&orderby=${
 					randomOptions[typeRef.current][
 						random(randomOptions[typeRef.current].length - 1)
 					]
@@ -512,81 +498,84 @@ const DynamicContent = props => {
 		return requestContent(dataRequest);
 	};
 
-	const getIdOptionsPath = (_type, _relation = null, _users = null) => {
+	const getIdOptionsPath = (thisType, thisUsers = null) => {
 		const path =
-			_type === 'users'
-				? '/wp/v2/users?per_page=99&_fields=id, name'
-				: _users
-				? `/wp/v2/${_type}/?author=${_users}&_fields=id, ${idOptionByField[_type]}`
-				: `/wp/v2/${_type}?_fields=id, ${idOptionByField[_type]}`;
+			thisType === 'users'
+				? '/wp/v2/users?per_page=99&thisFields=id, name'
+				: thisUsers
+				? `/wp/v2/${thisType}/?author=${thisUsers}&thisFields=id, ${idOptionByField[thisType]}`
+				: `/wp/v2/${thisType}?thisFields=id, ${idOptionByField[thisType]}`;
 		return path;
 	};
 
-	const setIdOptions = async (_type, _default, _relation) => {
-		if (_relation === 'author' && !authorRef.current) return false;
+	const setIdOptions = async (thisType, thisDefault, thisRelation) => {
+		if (thisRelation === 'author' && !authorRef.current) return false;
 		return apiFetch({
 			path: getIdOptionsPath(
-				_type,
-				{},
-				_default.author
-					? _default['dc-author']
-					: _relation === 'author'
+				thisType,
+				thisDefault.author
+					? thisDefault['dc-author']
+					: thisRelation === 'author'
 					? authorRef.current
 					: null
 			),
 		})
 			.catch(err => console.error(err)) // TODO: need a good error handler
-			.then(result => setIdList(result, _default, _type));
+			.then(result => setIdList(result, thisDefault, thisType));
 	};
 
 	const getIdOptions = async (
-		_type = typeRef.current,
-		_default = {},
-		_relation = relationRef.current
+		thisType = typeRef.current,
+		thisDefault = {},
+		thisRelation = relationRef.current
 	) => {
-		if (idFields.includes(_type)) {
-			return setIdOptions(_type, _default, _relation)
+		if (idFields.includes(thisType)) {
+			return setIdOptions(thisType, thisDefault, thisRelation)
 				.catch(rej => console.error(rej))
 				.then(res => res);
 		}
 		return [];
 	};
-	const switchOnChange = (_type, _value) => {
+	const switchOnChange = (thisType, thisValue) => {
 		let dcFieldActual;
 		let changeOptions;
 
-		switch (_type) {
+		switch (thisType) {
 			case 'status':
-				changeProps({ 'dc-status': _value });
-				if (_value) getIdOptions();
+				changeProps({ 'dc-status': thisValue });
+				if (thisValue) getIdOptions();
 				break;
 			case 'type':
-				dcFieldActual = validationsValues(_value);
+				dcFieldActual = validationsValues(thisValue);
 				changeOptions = {
-					'dc-type': _value,
+					'dc-type': thisValue,
 					'dc-show': 'current',
 					'dc-error': '',
 					...dcFieldActual,
 				};
-				idFields.includes(_value)
-					? getIdOptions(_value, changeOptions, relationRef.current)
+				idFields.includes(thisValue)
+					? getIdOptions(
+							thisValue,
+							changeOptions,
+							relationRef.current
+					  )
 					: changeProps(changeOptions);
 				break;
 			case 'relation':
 				getIdOptions(
 					typeRef.current,
 					{
-						'dc-relation': _value,
+						'dc-relation': thisValue,
 						'dc-show': 'current',
 						'dc-error': '',
 					},
-					_value
+					thisValue
 				);
 				break;
 			case 'author':
 				getIdOptions(
 					typeRef.current,
-					{ 'dc-author': Number(_value) },
+					{ 'dc-author': Number(thisValue) },
 					relationRef.current
 				);
 				break;
@@ -594,19 +583,19 @@ const DynamicContent = props => {
 				changeProps({
 					'dc-error': '',
 					'dc-show': 'current',
-					'dc-id': Number(_value),
+					'dc-id': Number(thisValue),
 				});
 				break;
 			case 'show':
-				changeContent(typeRef.current, _value, idRef.current, {
-					'dc-show': _value,
+				changeContent(typeRef.current, thisValue, idRef.current, {
+					'dc-show': thisValue,
 				});
 				break;
 			case 'field':
-				changeProps({ 'dc-field': _value });
+				changeProps({ 'dc-field': thisValue });
 				break;
 			case 'limit':
-				changeProps({ 'dc-limit': Number(_value) });
+				changeProps({ 'dc-limit': Number(thisValue) });
 				break;
 			default:
 				break;

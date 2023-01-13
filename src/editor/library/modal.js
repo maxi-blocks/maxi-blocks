@@ -2,7 +2,7 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { RawHTML, useEffect, useState } from '@wordpress/element';
+import { RawHTML, useEffect, useState, forwardRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -14,12 +14,61 @@ import { Icon, BaseControl, Button } from '../../components';
  * External dependencies
  */
 import { isEmpty } from 'lodash';
+import classNames from 'classnames';
 
 /**
  * Icons
  */
 import { SCaddMore, toolbarReplaceImage, remove, cloudLib } from '../../icons';
 
+/**
+ * Content
+ */
+const CloudPlaceholder = forwardRef((props, ref) => {
+	const { clientId, onClick } = props;
+
+	const [isBlockSmall, setIsBlockSmall] = useState(null);
+	const [isBlockSmaller, setIsBlockSmaller] = useState(null);
+
+	const resizeObserver = new ResizeObserver(entries => {
+		const newIsSmallBlock = entries[0].contentRect.width < 120;
+		const newIsSmallerBlock = entries[0].contentRect.width < 38;
+
+		if (newIsSmallBlock !== isBlockSmall) setIsBlockSmall(newIsSmallBlock);
+		if (newIsSmallerBlock !== isBlockSmaller)
+			setIsBlockSmaller(newIsSmallerBlock);
+	});
+
+	useEffect(() => {
+		resizeObserver.observe(ref.current);
+
+		return () => {
+			resizeObserver.disconnect();
+		};
+	}, []);
+
+	return (
+		<Button
+			key={`maxi-block-library__modal-button--${clientId}`}
+			isPrimary
+			// className='maxi-block-library__modal-button'
+			className={classNames(
+				'maxi-block-library__modal-button__placeholder',
+				isBlockSmall &&
+					'maxi-block-library__modal-button__placeholder--small',
+				isBlockSmaller &&
+					'maxi-block-library__modal-button__placeholder--smaller'
+			)}
+			onClick={onClick}
+		>
+			<Icon
+				className='maxi-library-block__select__icon'
+				icon={cloudLib}
+			/>
+			{!isBlockSmall && __('Template library', 'maxi-blocks')}
+		</Button>
+	);
+});
 
 /**
  * Layout modal window with tab panel.
@@ -66,18 +115,21 @@ const MaxiModal = props => {
 			)}
 			<div className='maxi-library-modal__action-section__buttons'>
 				{type === 'patterns' && (
-					<Button
-						key={`maxi-block-library__modal-button--${clientId}`}
-						isPrimary
-						className='maxi-block-library__modal-button'
-						onClick={onClick}
-					>
-						<Icon
-							className='maxi-library-block__select__icon'
-							icon={cloudLib}
-						/>
-						{__('Template library', 'maxi-blocks')}
-					</Button>
+					<>
+						<Button
+							key={`maxi-block-library__modal-button--${clientId}`}
+							isPrimary
+							className='maxi-block-library__modal-button'
+							onClick={onClick}
+						>
+							<Icon
+								className='maxi-library-block__select__icon'
+								icon={cloudLib}
+							/>
+							{__('Template library', 'maxi-blocks')}
+						</Button>
+						{/* <CloudPlaceholder clientId={clientId} onClick={onClick} /> */}
+					</>
 				)}
 				{type === 'sc' && (
 					<Button

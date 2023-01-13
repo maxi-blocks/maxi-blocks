@@ -49,11 +49,15 @@ const SVGIconPlaceholder = forwardRef((props, ref) => {
 	const { uniqueID, clientId, onClick } = props;
 
 	const [isBlockSmall, setIsBlockSmall] = useState(null);
+	const [isBlockSmaller, setIsBlockSmaller] = useState(null);
 
 	const resizeObserver = new ResizeObserver(entries => {
-		const newIsSmallBlock = entries[0].contentRect.width < 100;
+		const newIsSmallBlock = entries[0].contentRect.width < 120;
+		const newIsSmallerBlock = entries[0].contentRect.width < 38;
 
 		if (newIsSmallBlock !== isBlockSmall) setIsBlockSmall(newIsSmallBlock);
+		if (newIsSmallerBlock !== isBlockSmaller)
+			setIsBlockSmaller(newIsSmallerBlock);
 	});
 
 	useEffect(() => {
@@ -68,7 +72,8 @@ const SVGIconPlaceholder = forwardRef((props, ref) => {
 		<div
 			className={classNames(
 				'maxi-svg-icon-block__placeholder',
-				isBlockSmall && 'maxi-svg-icon-block__placeholder--small'
+				isBlockSmall && 'maxi-svg-icon-block__placeholder--small',
+				isBlockSmaller && 'maxi-svg-icon-block__placeholder--smaller'
 			)}
 			key={`maxi-svg-icon-block__placeholder--${uniqueID}`}
 		>

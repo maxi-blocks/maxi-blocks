@@ -6,15 +6,12 @@
  * Internal dependencies.
  */
 import MaxiModal from '../../editor/library/modal';
-import { library } from '../../icons';
 import { withMaxiProps } from '../../extensions/maxi-block';
 
 /**
  * WordPress dependencies.
  */
-import { __ } from '@wordpress/i18n';
 import { Component, RawHTML } from '@wordpress/element';
-import { Placeholder } from '../../components';
 
 /**
  * External dependencies
@@ -31,9 +28,7 @@ class edit extends Component {
 		return [
 			<div key={this.props.clientId}>
 				{isEmpty(content) && (
-					<div
-							className='maxi-block-library__placeholder'
-						>
+					<div className='maxi-block-library__placeholder'>
 						<MaxiModal
 							clientId={clientId}
 							type='patterns'

@@ -296,16 +296,17 @@ $white: #fff;
 		font-weight: 500;
 		padding: 0 10px 0 0;
 		border: 1px solid #DBDDE6;
-		transition: all 0.3s;
+		transition: all 0.1s;
 		svg{
 			-webkit-box-sizing: border-box;
 			box-sizing: border-box;
-			background-color: #fff;
-			padding: 8px;
 			width: 36px;
 			height: 36px;
-			margin-right: 10px;
+			padding: 8px;
 			border-right: 1px solid #DBDDE6;
+			margin-right: 10px;
+			background-color: #fff;
+			transition: all 0.1s;
 			path{
 				fill: none !important;
 				stroke: var(--maxi-secondary-color);
@@ -318,6 +319,11 @@ $white: #fff;
 		&:hover {
 			background: #fff !important;
 			color: var(--maxi-secondary-color) !important;
+			border-color: var(--maxi-secondary-color);
+				svg{
+					border-color: var(--maxi-secondary-color);
+					transform: scale(1.1);
+				}
 		}
 	}
 

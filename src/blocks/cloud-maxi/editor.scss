@@ -287,7 +287,7 @@ $white: #fff;
 		width: auto;
 	}
 
-	button.maxi-block-library__modal-button {
+	button.maxi-block-library__modal-button__placeholder {
 		overflow: hidden;
 		color: #fff;
 		background: var(--maxi-secondary-color);
@@ -324,6 +324,22 @@ $white: #fff;
 					border-color: var(--maxi-secondary-color);
 					transform: scale(1.1);
 				}
+		}
+
+		&--small {
+			padding: 0;
+			transition: none;
+			svg {
+				margin: auto;
+				border-right: none;
+			}
+		}
+		&--smaller {
+			height: 30px;
+			svg {
+				width: 30px;
+				height: 30px;
+			}
 		}
 	}
 

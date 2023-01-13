@@ -9,6 +9,11 @@ import { RichText } from '@wordpress/block-editor';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 
 /**
+ * External dependencies
+ */
+import classnames from 'classnames';
+
+/**
  * Save
  */
 const save = props => {
@@ -25,6 +30,7 @@ const save = props => {
 
 	const name = 'maxi-blocks/text-maxi';
 	const className = 'maxi-text-block__content';
+	const dcRenderClassName = 'maxi-text-block__dynamic_content__is-rendering';
 	const value = content?.replace(/\n/g, '<br />');
 
 	return (
@@ -33,7 +39,11 @@ const save = props => {
 			{...getMaxiBlockAttributes({ ...props, name })}
 		>
 			<RichText.Content
-				className={className}
+				className={
+					dcStatus
+						? classnames(className, dcRenderClassName)
+						: className
+				}
 				value={dcStatus ? dcContent : value}
 				tagName={isList && !dcStatus ? typeOfList : textLevel}
 				{...(!dcStatus && {

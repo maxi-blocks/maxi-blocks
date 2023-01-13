@@ -32,8 +32,6 @@ import { textIcon } from '../../icons';
  */
 import { blockMigrator } from '../../extensions/styles/migrators';
 
-const { serverSideRender: ServerSideRender } = wp;
-
 /**
  * Block
  */

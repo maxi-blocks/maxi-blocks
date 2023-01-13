@@ -70,6 +70,9 @@ body.maxi-blocks--active .maxi-text-block {
 		display: block;
 		margin: 0;
 		border: 2px dotted var(--maxi-grey-7-color);
+		&.maxi-text-block__dynamic_content__is-rendering {
+			visibility: hidden !important;
+		}
 	}
 	p:not(&__content):not(.maxi-pane-block__title) {
 		margin-left: auto;

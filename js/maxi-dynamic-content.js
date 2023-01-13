@@ -216,6 +216,10 @@ class DynamicContent {
 						const currentHTML = element.innerHTML;
 
 						if (currentHTML !== result) element.innerHTML = result;
+
+						element.classList.remove(
+							'maxi-text-block__dynamic_content__is-rendering'
+						);
 					}
 				});
 		}

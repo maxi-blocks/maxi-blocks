@@ -91,6 +91,8 @@ const DynamicContent = props => {
 	const showRef = useRef(show);
 	const statusRef = useRef(status);
 	const typeRef = useRef(type);
+	// eslint-disable-next-line no-unused-vars
+	const errorRef = useRef(error);
 
 	const [isEmptyIdOptions, setIsEmptyIdOptions] = useState(true);
 	const [postAuthorOptions, setPostAuthorOptions] = useState(null);

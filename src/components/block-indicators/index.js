@@ -12,7 +12,7 @@ import { getLastBreakpointAttribute } from '../../extensions/styles';
  * External dependencies
  */
 import classnames from 'classnames';
-import { round, isNil, capitalize } from 'lodash';
+import { round, isNil, capitalize, isNumber } from 'lodash';
 import { Resizable } from 're-resizable';
 
 /**
@@ -37,6 +37,7 @@ const Indicator = props => {
 		insertInlineStyles,
 		onChange,
 		cleanInlineStyles,
+		isBlockSelected,
 	} = props;
 
 	const [value, setValue] = useState(val);
@@ -110,7 +111,13 @@ const Indicator = props => {
 		return newValue;
 	};
 
+	const avoidResizing = () =>
+		!isNumber(dragTime.current) || Date.now() - dragTime.current < 150;
+
 	const handleOnResize = (type, e, ref) => {
+		// Avoids triggering on click
+		if (avoidResizing()) return;
+
 		const newValue = handleChanges(e, ref);
 
 		insertInlineStyles({
@@ -123,7 +130,7 @@ const Indicator = props => {
 
 	const handleOnResizeStop = (type, e, ref) => {
 		// Avoids triggering on click
-		if (Date.now() - dragTime.current < 500) return;
+		if (avoidResizing()) return;
 
 		const newValue = handleChanges(e, ref);
 		onChange({
@@ -163,7 +170,7 @@ const Indicator = props => {
 				handleWrapperStyle={handleStyles}
 				handleStyles={handleStyles}
 				onResizeStart={() => {
-					dragTime.current = Date.now();
+					dragTime.current = isBlockSelected ? Date.now() : null;
 				}}
 				onResize={(e, dir, ref) => handleOnResize(type, e, ref)}
 				onResizeStop={(e, dir, ref) => handleOnResizeStop(type, e, ref)}

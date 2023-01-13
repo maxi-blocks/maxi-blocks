@@ -77,6 +77,7 @@ class edit extends MaxiBlockComponent {
 			clientId,
 			insertInlineStyles,
 			cleanInlineStyles,
+			isSelected,
 		} = this.props;
 		const { uniqueID, isFirstOnHierarchy } = attributes;
 
@@ -132,6 +133,7 @@ class edit extends MaxiBlockComponent {
 							avoidIndicators={{ margin: ['right', 'left'] }}
 							insertInlineStyles={insertInlineStyles}
 							cleanInlineStyles={cleanInlineStyles}
+							isBlockSelected={isSelected}
 						/>
 					</>
 				)}

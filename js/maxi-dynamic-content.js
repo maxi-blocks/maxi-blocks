@@ -49,23 +49,23 @@ class DynamicContent {
 			} = props;
 
 			return {
-				day: dayType === 'undefined' ? undefined : dayType,
-				era: eraType === 'undefined' ? undefined : eraType,
-				hour: hourType === 'undefined' ? undefined : hourType,
+				day: dayType === 'none' ? undefined : dayType,
+				era: eraType === 'noe' ? undefined : eraType,
+				hour: hourType === 'noe' ? undefined : hourType,
 				hour12:
 					isHour12 === 'false'
 						? false
 						: isHour12 === 'true'
 						? true
 						: isHour12,
-				minute: minuteType === 'undefined' ? undefined : minuteType,
-				month: monthType === 'undefined' ? undefined : monthType,
-				second: secondType === 'undefined' ? undefined : secondType,
-				timeZone: timeZone === 'undefined' ? undefined : timeZone,
+				minute: minuteType === 'none' ? undefined : minuteType,
+				month: monthType === 'none' ? undefined : monthType,
+				second: secondType === 'none' ? undefined : secondType,
+				timeZone: timeZone === 'none' ? 'UTC' : timeZone,
 				timeZoneName:
-					timeZoneName === 'undefined' ? undefined : timeZoneName,
-				weekday: weekdayType === 'undefined' ? undefined : weekdayType,
-				year: yearType === 'undefined' ? undefined : yearType,
+					timeZoneName === 'none' ? undefined : timeZoneName,
+				weekday: weekdayType === 'none' ? undefined : weekdayType,
+				year: yearType === 'none' ? undefined : yearType,
 			};
 		};
 
@@ -86,6 +86,7 @@ class DynamicContent {
 			const secondType = dc['dc-second'];
 			const isHour12 = dc['dc-hour12'];
 			const dateFormat = dc['dc-format'];
+			const locale = dc['dc-locale'];
 			const timeZoneName = dc['dc-timezone-name'];
 			const timeZone = dc['dc-timezone'];
 			const show = dc['dc-show'];
@@ -169,10 +170,7 @@ class DynamicContent {
 					newFormat = newFormat.replace(/[xzcdDmMyYt]/g, m => map[m]);
 					content = moment(NewDate).format(newFormat);
 				} else {
-					console.log(NewDate.toLocaleString('en'));
-					console.log(NewDate.toLocaleString('en-US'));
-					console.log(NewDate.toLocaleString('en-GB'));
-					content = NewDate.toLocaleString(timeZone, options);
+					content = NewDate.toLocaleString(locale, options);
 				}
 				return content;
 			};

@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
  * External dependencies
  */
 import { isEmpty } from 'lodash';
+import moment from 'moment';
 
 /**
  * Returns an array of CPT options for a SelectControl
@@ -20,6 +21,41 @@ export const getCPTOptions = () => {
  */
 export const getCTOptions = () => {
 	return [{}];
+};
+
+export const processDate = (
+	dateValue,
+	isCustomDate,
+	format,
+	locale,
+	options
+) => {
+	const NewDate = new Date(dateValue);
+	let content;
+	let newFormat;
+	if (!isCustomDate) {
+		newFormat = format
+			.replace(/DV/g, 'x')
+			.replace(/DS/g, 'z')
+			.replace(/MS/g, 'c');
+		const map = {
+			z: 'ddd',
+			x: 'dd',
+			c: 'MMM',
+			d: 'D',
+			D: 'dddd',
+			m: 'MM',
+			M: 'MMMM',
+			y: 'YY',
+			Y: 'YYYY',
+			t: 'HH:MM:SS',
+		};
+		newFormat = newFormat.replace(/[xzcdDmMyYt]/g, m => map[m]);
+		content = moment(NewDate).format(newFormat);
+	} else {
+		content = NewDate.toLocaleString(locale, options);
+	}
+	return content;
 };
 
 export const cutTags = str => {

@@ -9,7 +9,8 @@ import { useEffect, useRef, useState } from '@wordpress/element';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../../../advanced-number-control';
-import DateFormatting, { formatOptions } from '../date-formatting';
+import DateFormatting from '../date-formatting';
+import { formatDateOptions } from '../date-formatting/utils';
 import SelectControl from '../../../select-control';
 import ToolbarPopover from '../toolbar-popover';
 import ToggleSwitch from '../../../toggle-switch';
@@ -28,6 +29,7 @@ import {
 	typeOptions,
 	limitFormat,
 	cutTags,
+	processDate,
 } from './utils';
 
 /**
@@ -42,7 +44,6 @@ import {
 	random,
 	capitalize,
 } from 'lodash';
-import moment from 'moment';
 
 /**
  * Styles & Icons
@@ -134,7 +135,7 @@ const DynamicContent = props => {
 		});
 	};
 
-	const options = formatOptions({
+	const options = formatDateOptions({
 		day,
 		era,
 		hour,
@@ -147,35 +148,6 @@ const DynamicContent = props => {
 		weekday,
 		year,
 	});
-
-	const processDate = dateValue => {
-		const NewDate = new Date(dateValue);
-		let content;
-		let newFormat;
-		if (!isCustomDate) {
-			newFormat = format
-				.replace(/DV/g, 'x')
-				.replace(/DS/g, 'z')
-				.replace(/MS/g, 'c');
-			const map = {
-				z: 'ddd',
-				x: 'dd',
-				c: 'MMM',
-				d: 'D',
-				D: 'dddd',
-				m: 'MM',
-				M: 'MMMM',
-				y: 'YY',
-				Y: 'YYYY',
-				t: 'HH:MM:SS',
-			};
-			newFormat = newFormat.replace(/[xzcdDmMyYt]/g, m => map[m]);
-			content = moment(NewDate).format(newFormat);
-		} else {
-			content = NewDate.toLocaleString(locale, options);
-		}
-		return content;
-	};
 
 	const disabledType = (valueType, thisType = 'type') => {
 		const hide = options =>
@@ -411,7 +383,13 @@ const DynamicContent = props => {
 					}
 
 					if (fieldRef.current === 'date') {
-						contentValue = processDate(contentValue);
+						contentValue = processDate(
+							contentValue,
+							isCustomDate,
+							format,
+							locale,
+							options
+						);
 					} else if (fieldRef.current === 'excerpt') {
 						contentValue = limitFormat(
 							contentValue,

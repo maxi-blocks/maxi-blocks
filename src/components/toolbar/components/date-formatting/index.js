@@ -12,7 +12,7 @@ import SelectControl from '../../../select-control';
 import SettingTabsControl from '../../../setting-tabs-control';
 import TextControl from '../../../text-control';
 import ToggleSwitch from '../../../toggle-switch';
-import { DateOptions } from './utils';
+import { DateOptions, formatDateOptions } from './utils';
 
 /**
  * External dependencies
@@ -22,36 +22,6 @@ import { DateOptions } from './utils';
  * Styles & Icons
  */
 import './editor.scss';
-
-export const formatOptions = props => {
-	const {
-		day,
-		era,
-		hour,
-		hour12,
-		minute,
-		month,
-		second,
-		timeZone,
-		timeZoneName,
-		weekday,
-		year,
-	} = props;
-
-	return {
-		day: day === 'none' ? undefined : day,
-		era: era === 'none' ? undefined : era,
-		hour: hour === 'none' ? undefined : hour,
-		hour12: hour12 === 'false' ? false : hour12 === 'true' ? true : hour12,
-		minute: minute === 'none' ? undefined : minute,
-		month: month === 'none' ? undefined : month,
-		second: second === 'none' ? undefined : second,
-		timeZone: timeZone === 'none' ? 'UTC' : timeZone,
-		timeZoneName: timeZoneName === 'none' ? undefined : timeZoneName,
-		weekday: weekday === 'none' ? undefined : weekday,
-		year: year === 'none' ? undefined : year,
-	};
-};
 
 const DateFormatting = props => {
 	const contentRef = useRef(props.content);
@@ -130,7 +100,7 @@ const DateFormatting = props => {
 	};
 
 	const dateFormat = value => {
-		const options = formatOptions({
+		const options = formatDateOptions({
 			day,
 			era,
 			hour,

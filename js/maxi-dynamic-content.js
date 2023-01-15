@@ -6,12 +6,12 @@ import apiFetch from '@wordpress/api-fetch';
 /**
  * Internal dependencies
  */
-import { limitFormat } from '../src/components/toolbar/components/dynamic-content/utils';
-
-/**
- * External dependencies
- */
-import moment from 'moment';
+import {
+	limitFormat,
+	processDate,
+	relationTypes,
+} from '../src/components/toolbar/components/dynamic-content/utils';
+import { formatDateOptions } from '../src/components/toolbar/components/date-formatting/utils';
 
 class DynamicContent {
 	constructor() {
@@ -36,44 +36,6 @@ class DynamicContent {
 
 		if (!elements || !restUrl) return null;
 
-		const response = {};
-
-		const formatOptions = props => {
-			const {
-				dayType,
-				eraType,
-				hourType,
-				isHour12,
-				minuteType,
-				monthType,
-				secondType,
-				timeZone,
-				timeZoneName,
-				weekdayType,
-				yearType,
-			} = props;
-
-			return {
-				day: dayType === 'none' ? undefined : dayType,
-				era: eraType === 'noe' ? undefined : eraType,
-				hour: hourType === 'noe' ? undefined : hourType,
-				hour12:
-					isHour12 === 'false'
-						? false
-						: isHour12 === 'true'
-						? true
-						: isHour12,
-				minute: minuteType === 'none' ? undefined : minuteType,
-				month: monthType === 'none' ? undefined : monthType,
-				second: secondType === 'none' ? undefined : secondType,
-				timeZone: timeZone === 'none' ? 'UTC' : timeZone,
-				timeZoneName:
-					timeZoneName === 'none' ? undefined : timeZoneName,
-				weekday: weekdayType === 'none' ? undefined : weekdayType,
-				year: yearType === 'none' ? undefined : yearType,
-			};
-		};
-
 		const getRESTContent = async dc => {
 			const type = dc['dc-type'];
 			const author = dc['dc-author'];
@@ -81,15 +43,15 @@ class DynamicContent {
 			const field = dc['dc-field'];
 			const id = dc['dc-id'];
 			const isCustomDate = dc['dc-custom-date'];
-			const eraType = dc['dc-era'];
-			const yearType = dc['dc-year'];
-			const monthType = dc['dc-month'];
-			const weekdayType = dc['dc-weekday'];
-			const dayType = dc['dc-day'];
-			const hourType = dc['dc-hour'];
-			const minuteType = dc['dc-minute'];
-			const secondType = dc['dc-second'];
-			const isHour12 = dc['dc-hour12'];
+			const era = dc['dc-era'];
+			const year = dc['dc-year'];
+			const month = dc['dc-month'];
+			const weekday = dc['dc-weekday'];
+			const day = dc['dc-day'];
+			const hour = dc['dc-hour'];
+			const minute = dc['dc-minute'];
+			const second = dc['dc-second'];
+			const hour12 = dc['dc-hour12'];
 			const dateFormat = dc['dc-format'];
 			const locale = dc['dc-locale'];
 			const timeZoneName = dc['dc-timezone-name'];
@@ -97,28 +59,7 @@ class DynamicContent {
 			const show = dc['dc-show'];
 			const limit = dc['dc-limit'];
 
-			const relationTypes = [
-				'posts',
-				'pages',
-				'media',
-				'categories',
-				'tags',
-				'users',
-			];
-
-			const options = formatOptions({
-				dayType,
-				eraType,
-				hourType,
-				isHour12,
-				minuteType,
-				monthType,
-				secondType,
-				timeZone,
-				timeZoneName,
-				weekdayType,
-				yearType,
-			});
+			let response = '';
 
 			const getUrlByRelation = () => {
 				switch (relation) {
@@ -151,37 +92,34 @@ class DynamicContent {
 						return `${restUrl}wp/v2/${type}?_fields=${field}`;
 				}
 			};
+			// 	const NewDate = new Date(dateValue);
+			// 	let content;
+			// 	let newFormat;
+			// 	if (!isCustomDate) {
+			// 		newFormat = dateFormat
+			// 			.replace(/DV/g, 'x')
+			// 			.replace(/DS/g, 'z')
+			// 			.replace(/MS/g, 'c');
+			// 		const map = {
+			// 			z: 'ddd',
+			// 			x: 'dd',
+			// 			c: 'MMM',
+			// 			d: 'D',
+			// 			D: 'dddd',
+			// 			m: 'MM',
+			// 			M: 'MMMM',
+			// 			y: 'YY',
+			// 			Y: 'YYYY',
+			// 			t: 'HH:MM:SS',
+			// 		};
+			// 		newFormat = newFormat.replace(/[xzcdDmMyYt]/g, m => map[m]);
+			// 		content = moment(NewDate).format(newFormat);
+			// 	} else {
+			// 		content = NewDate.toLocaleString(locale, options);
+			// 	}
+			// 	return content;
+			// };
 
-			const processDate = dateValue => {
-				const NewDate = new Date(dateValue);
-				let content;
-				let newFormat;
-				if (!isCustomDate) {
-					newFormat = dateFormat
-						.replace(/DV/g, 'x')
-						.replace(/DS/g, 'z')
-						.replace(/MS/g, 'c');
-					const map = {
-						z: 'ddd',
-						x: 'dd',
-						c: 'MMM',
-						d: 'D',
-						D: 'dddd',
-						m: 'MM',
-						M: 'MMMM',
-						y: 'YY',
-						Y: 'YYYY',
-						t: 'HH:MM:SS',
-					};
-					newFormat = newFormat.replace(/[xzcdDmMyYt]/g, m => map[m]);
-					content = moment(NewDate).format(newFormat);
-				} else {
-					content = NewDate.toLocaleString(locale, options);
-				}
-				return content;
-			};
-
-			let response = '';
 			const path = getUrlByType();
 
 			await apiFetch({
@@ -189,12 +127,29 @@ class DynamicContent {
 			})
 				.catch(err => console.error(err))
 				.then(result => {
-					const value =
-						relation === 'random'
-							? result?.[0]?.[field]
-							: result?.[field];
+					const value = result?.[field] || result?.[0]?.[field];
+
 					if (field === 'date') {
-						response = processDate(value);
+						const options = formatDateOptions({
+							day,
+							era,
+							hour,
+							hour12,
+							minute,
+							month,
+							second,
+							timeZone,
+							timeZoneName,
+							weekday,
+							year,
+						});
+						response = processDate(
+							value,
+							isCustomDate,
+							dateFormat,
+							locale,
+							options
+						);
 					} else if (field === 'excerpt') {
 						response = limitFormat(value?.rendered, limit);
 					} else response = value?.rendered ?? value;
@@ -225,8 +180,6 @@ class DynamicContent {
 		Object.keys(elements).forEach(key => {
 			getDynamicContentPerBlock(key, elements[key]);
 		});
-
-		return response;
 	};
 }
 

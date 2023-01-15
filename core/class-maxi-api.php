@@ -633,7 +633,7 @@ if (!class_exists('MaxiBlocks_API')):
             return $response;
         }
 
-        // Dynamic content for Site Settings
+        // Dynamic content for Site Settings and Author field
         public function get_maxi_blocks_dynamic_content($data)
         {
             $type = $_GET['type'];

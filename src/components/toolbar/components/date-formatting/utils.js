@@ -680,7 +680,7 @@ export const typeTimeZoneName = [
 	},
 ];
 
-export const typeZone = [
+export const typeLocale = [
 	{
 		label: __('Afrikaans', 'maxi-blocks'),
 		value: 'af',
@@ -1227,5 +1227,5 @@ export const DateOptions = {
 	timeZoneName: typeTimeZoneName,
 	weekday: typeWeekday,
 	year: typeDefault,
-	zone: typeZone,
+	locale: typeLocale,
 };

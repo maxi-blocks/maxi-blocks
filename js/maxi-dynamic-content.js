@@ -169,6 +169,9 @@ class DynamicContent {
 					newFormat = newFormat.replace(/[xzcdDmMyYt]/g, m => map[m]);
 					content = moment(NewDate).format(newFormat);
 				} else {
+					console.log(NewDate.toLocaleString('en'));
+					console.log(NewDate.toLocaleString('en-US'));
+					console.log(NewDate.toLocaleString('en-GB'));
 					content = NewDate.toLocaleString(timeZone, options);
 				}
 				return content;

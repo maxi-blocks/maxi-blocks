@@ -74,6 +74,7 @@ const DynamicContent = props => {
 		'dc-second': second,
 		'dc-show': show,
 		'dc-status': status,
+		'dc-locale': locale,
 		'dc-timezone': timeZone,
 		'dc-timezone-name': timeZoneName,
 		'dc-type': type,
@@ -131,6 +132,7 @@ const DynamicContent = props => {
 	const handleDateCallback = childData => {
 		onChange({
 			'dc-custom-date': childData.status,
+			'dc-locale': childData.locale,
 			'dc-day': childData.options.day,
 			'dc-era': childData.options.era,
 			'dc-format': childData.format,
@@ -141,7 +143,6 @@ const DynamicContent = props => {
 			'dc-second': childData.options.second,
 			'dc-timezone': childData.options.timeZone,
 			'dc-timezone-name': childData.options.timeZoneName,
-			'dc-timezone-name-length': childData.options.timeZoneNameLength,
 			'dc-weekday': childData.options.weekday,
 			'dc-year': childData.options.year,
 		});
@@ -185,7 +186,7 @@ const DynamicContent = props => {
 			newFormat = newFormat.replace(/[xzcdDmMyYt]/g, m => map[m]);
 			content = moment(NewDate).format(newFormat);
 		} else {
-			content = NewDate.toLocaleString(timeZone, options);
+			content = NewDate.toLocaleString(locale, options);
 		}
 		return content;
 	};
@@ -626,12 +627,12 @@ const DynamicContent = props => {
 		relation,
 		second,
 		show,
+		locale,
 		timeZone,
 		timeZoneName,
 		type,
 		weekday,
 		year,
-		zone,
 	]);
 
 	setAuthorList();
@@ -810,6 +811,7 @@ const DynamicContent = props => {
 										parentCallback={handleDateCallback}
 										second={second}
 										status={isCustomDate}
+										locale={locale}
 										timeZone={timeZone}
 										timeZoneName={timeZoneName}
 										weekday={weekday}

@@ -64,15 +64,15 @@ const dynamicContent = {
 		type: 'string',
 		default: 'numeric',
 	},
-	'dc-timezone': {
+	'dc-locale': {
 		type: 'string',
 		default: 'en',
 	},
-	'dc-timezone-name': {
+	'dc-timezone': {
 		type: 'string',
 		default: 'Europe/London',
 	},
-	'dc-timezone-name-length': {
+	'dc-timezone-name': {
 		type: 'string',
 		default: 'none',
 	},

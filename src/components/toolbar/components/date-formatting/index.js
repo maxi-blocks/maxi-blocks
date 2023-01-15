@@ -39,17 +39,17 @@ export const formatOptions = props => {
 	} = props;
 
 	return {
-		day: day === 'undefined' ? undefined : day,
-		era: era === 'undefined' ? undefined : era,
-		hour: hour === 'undefined' ? undefined : hour,
+		day: day === 'none' ? undefined : day,
+		era: era === 'none' ? undefined : era,
+		hour: hour === 'none' ? undefined : hour,
 		hour12: hour12 === 'false' ? false : hour12 === 'true' ? true : hour12,
-		minute: minute === 'undefined' ? undefined : minute,
-		month: month === 'undefined' ? undefined : month,
-		second: second === 'undefined' ? undefined : second,
-		timeZone: timeZone === 'undefined' ? undefined : timeZone,
-		timeZoneName: timeZoneName === 'undefined' ? undefined : timeZoneName,
-		weekday: weekday === 'undefined' ? undefined : weekday,
-		year: year === 'undefined' ? undefined : year,
+		minute: minute === 'none' ? undefined : minute,
+		month: month === 'none' ? undefined : month,
+		second: second === 'none' ? undefined : second,
+		timeZone: timeZone === 'none' ? 'UTC' : timeZone,
+		timeZoneName: timeZoneName === 'none' ? undefined : timeZoneName,
+		weekday: weekday === 'none' ? undefined : weekday,
+		year: year === 'none' ? undefined : year,
 	};
 };
 
@@ -67,11 +67,11 @@ const DateFormatting = props => {
 	const [month, setMonth] = useState(props.month);
 	const [second, setSecond] = useState(props.second);
 	const [status, setStatus] = useState(props.status);
+	const [locale, setLocale] = useState(props.locale);
 	const [timeZone, setTimeZone] = useState(props.timeZone);
 	const [timeZoneName, setTimeZoneName] = useState(props.timeZoneName);
 	const [weekday, setWeekday] = useState(props.weekday);
 	const [year, setYear] = useState(props.year);
-	const [zone, setZone] = useState(props.zone);
 
 	const toggleVisible = () => setIsVisible(state => !state);
 	const validateAnchor = str => {
@@ -148,12 +148,12 @@ const DateFormatting = props => {
 			format,
 			options,
 			status,
-			zone,
+			locale,
 		};
 
 		if (value) {
 			const NewDate = new Date(value);
-			contentRef.current = NewDate.toLocaleString(zone, options);
+			contentRef.current = NewDate.toLocaleString(locale, options);
 			data.content = contentRef.current;
 		}
 		props.parentCallback(data);
@@ -174,7 +174,7 @@ const DateFormatting = props => {
 			timeZoneName,
 			weekday,
 			year,
-			zone,
+			locale,
 		]
 	);
 	return (
@@ -330,10 +330,10 @@ const DateFormatting = props => {
 					{linkStatus === 'zone' && (
 						<>
 							<SelectControl
-								label={__('Zone', 'maxi-blocks')}
-								value={zone}
-								options={DateOptions.zone}
-								onChange={value => setZone(value)}
+								label={__('Locale', 'maxi-blocks')}
+								value={locale}
+								options={DateOptions.locale}
+								onChange={value => setLocale(value)}
 							/>
 							<SelectControl
 								label={__('Timezone', 'maxi-blocks')}

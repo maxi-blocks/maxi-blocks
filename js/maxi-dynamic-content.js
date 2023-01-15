@@ -90,6 +90,7 @@ class DynamicContent {
 			const timeZoneName = dc['dc-timezone-name'];
 			const timeZone = dc['dc-timezone'];
 			const show = dc['dc-show'];
+			const limit = dc['dc-limit'];
 
 			const relationTypes = [
 				'posts',
@@ -114,7 +115,23 @@ class DynamicContent {
 				yearType,
 			});
 
-			const getForRelation = () => {
+			const cutTags = str => {
+				const regex = /( |<([^>]+)>)/gi;
+				const result = str.replace(regex, ' ');
+
+				return result;
+			};
+
+			const limitFormat = value => {
+				const str = cutTags(value).trim();
+				return str.length > limit && limit !== 0
+					? `${str.substr(0, limit).trim()}...`
+					: limit !== 0
+					? str
+					: value;
+			};
+
+			const getUrlByRelation = () => {
 				switch (relation) {
 					case 'date':
 					case 'modified':
@@ -129,12 +146,12 @@ class DynamicContent {
 				}
 			};
 
-			const getUrlByRelation = () => {
+			const getUrlByType = () => {
 				if (field === 'author')
 					return `${restUrl}maxi-blocks/v1.0/dc?type=author&field=${id}`;
 				switch (type) {
 					case relationTypes.includes(type) ? type : false:
-						return getForRelation();
+						return getUrlByRelation();
 					case 'users':
 						return `${restUrl}wp/v2/${type}/${
 							author.current ? author.current : id
@@ -176,21 +193,22 @@ class DynamicContent {
 			};
 
 			let response = '';
-			const path = getUrlByRelation();
+			const path = getUrlByType();
 
 			await apiFetch({
 				path,
 			})
 				.catch(err => console.error(err))
 				.then(result => {
+					const value =
+						relation === 'random'
+							? result?.[0]?.[field]
+							: result?.[field];
 					if (field === 'date') {
-						response = processDate(result?.[field]);
-					} else if (relation === 'random') {
-						response =
-							result?.[0]?.[field]?.rendered ??
-							result?.[0]?.[field];
-					} else
-						response = result?.[field]?.rendered ?? result?.[field];
+						response = processDate(value);
+					} else if (field === 'excerpt') {
+						response = limitFormat(value?.rendered);
+					} else response = value?.rendered ?? value;
 				});
 
 			return response;
@@ -206,7 +224,6 @@ class DynamicContent {
 						);
 
 						const currentHTML = element.innerHTML;
-
 						if (currentHTML !== result) element.innerHTML = result;
 
 						element.classList.remove(

@@ -26,6 +26,8 @@ import {
 	sanitizeContent,
 	showOptions,
 	typeOptions,
+	limitFormat,
+	cutTags,
 } from './utils';
 
 /**
@@ -111,22 +113,6 @@ const DynamicContent = props => {
 	const validationsValues = variableValue => {
 		const result = fieldOptions[variableValue].map(x => x.value);
 		return result.includes(field) ? {} : { 'dc-field': result[0] };
-	};
-
-	const cutTags = str => {
-		const regex = /( |<([^>]+)>)/gi;
-		const result = str.replace(regex, ' ');
-
-		return result;
-	};
-
-	const limitFormat = value => {
-		const str = cutTags(value).trim();
-		return str.length > limitRef.current && limitRef.current !== 0
-			? `${str.substr(0, limitRef.current).trim()}...`
-			: limitRef.current !== 0
-			? str
-			: value;
 	};
 
 	const handleDateCallback = childData => {
@@ -404,7 +390,7 @@ const DynamicContent = props => {
 		return apiFetch({
 			path: await getContentPath(thisType, thisId, thisField),
 		})
-			.catch(err => console.error(err)) // TODO: need a good error handler
+			.catch(err => console.error(err))
 			.then(result => {
 				const content = isArray(result) ? result[0] : result;
 				if (content) {
@@ -427,7 +413,10 @@ const DynamicContent = props => {
 					if (fieldRef.current === 'date') {
 						contentValue = processDate(contentValue);
 					} else if (fieldRef.current === 'excerpt') {
-						contentValue = limitFormat(contentValue);
+						contentValue = limitFormat(
+							contentValue,
+							limitRef.current
+						);
 					}
 					return contentValue;
 				}

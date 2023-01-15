@@ -4,6 +4,11 @@
 import apiFetch from '@wordpress/api-fetch';
 
 /**
+ * Internal dependencies
+ */
+import { limitFormat } from '../src/components/toolbar/components/dynamic-content/utils';
+
+/**
  * External dependencies
  */
 import moment from 'moment';
@@ -115,22 +120,6 @@ class DynamicContent {
 				yearType,
 			});
 
-			const cutTags = str => {
-				const regex = /( |<([^>]+)>)/gi;
-				const result = str.replace(regex, ' ');
-
-				return result;
-			};
-
-			const limitFormat = value => {
-				const str = cutTags(value).trim();
-				return str.length > limit && limit !== 0
-					? `${str.substr(0, limit).trim()}...`
-					: limit !== 0
-					? str
-					: value;
-			};
-
 			const getUrlByRelation = () => {
 				switch (relation) {
 					case 'date':
@@ -207,7 +196,7 @@ class DynamicContent {
 					if (field === 'date') {
 						response = processDate(value);
 					} else if (field === 'excerpt') {
-						response = limitFormat(value?.rendered);
+						response = limitFormat(value?.rendered, limit);
 					} else response = value?.rendered ?? value;
 				});
 

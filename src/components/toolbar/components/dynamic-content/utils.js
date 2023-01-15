@@ -22,6 +22,22 @@ export const getCTOptions = () => {
 	return [{}];
 };
 
+export const cutTags = str => {
+	const regex = /( |<([^>]+)>)/gi;
+	const result = str.replace(regex, ' ');
+
+	return result;
+};
+
+export const limitFormat = (value, limit) => {
+	const str = cutTags(value).trim();
+	return str.length > limit && limit !== 0
+		? `${str.substr(0, limit).trim()}...`
+		: limit !== 0
+		? str
+		: value;
+};
+
 export const typeOptions = [
 	{ label: __('Post', 'maxi-blocks'), value: 'posts' },
 	{ label: __('Page', 'maxi-blocks'), value: 'pages' },

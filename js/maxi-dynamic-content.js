@@ -92,33 +92,6 @@ class DynamicContent {
 						return `${restUrl}wp/v2/${type}?_fields=${field}`;
 				}
 			};
-			// 	const NewDate = new Date(dateValue);
-			// 	let content;
-			// 	let newFormat;
-			// 	if (!isCustomDate) {
-			// 		newFormat = dateFormat
-			// 			.replace(/DV/g, 'x')
-			// 			.replace(/DS/g, 'z')
-			// 			.replace(/MS/g, 'c');
-			// 		const map = {
-			// 			z: 'ddd',
-			// 			x: 'dd',
-			// 			c: 'MMM',
-			// 			d: 'D',
-			// 			D: 'dddd',
-			// 			m: 'MM',
-			// 			M: 'MMMM',
-			// 			y: 'YY',
-			// 			Y: 'YYYY',
-			// 			t: 'HH:MM:SS',
-			// 		};
-			// 		newFormat = newFormat.replace(/[xzcdDmMyYt]/g, m => map[m]);
-			// 		content = moment(NewDate).format(newFormat);
-			// 	} else {
-			// 		content = NewDate.toLocaleString(locale, options);
-			// 	}
-			// 	return content;
-			// };
 
 			const path = getUrlByType();
 
@@ -180,6 +153,8 @@ class DynamicContent {
 		Object.keys(elements).forEach(key => {
 			getDynamicContentPerBlock(key, elements[key]);
 		});
+
+		return true;
 	};
 }
 

@@ -1,19 +1,6 @@
 // Abstracted from https://github.com/WordPress/gutenberg/blob/release/13.9/packages/components/src/popover/index.js
 
 /**
- * External dependencies
- */
-import classnames from 'classnames';
-import {
-	useFloating,
-	shift,
-	autoUpdate,
-	arrow,
-	offset as offsetMiddleware,
-	limitShift,
-} from '@floating-ui/react-dom';
-
-/**
  * WordPress dependencies
  */
 import {
@@ -33,12 +20,25 @@ import {
 import { close } from '@wordpress/icons';
 import { Path, SVG } from '@wordpress/primitives';
 import { useSelect } from '@wordpress/data';
+import { Button, ScrollLock, Slot, Fill } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
-import { Button, ScrollLock, Slot, Fill } from '@wordpress/components';
 import getAnimateClassName from './animate';
+
+/**
+ * External dependencies
+ */
+import classnames from 'classnames';
+import {
+	useFloating,
+	shift,
+	autoUpdate,
+	arrow,
+	offset as offsetMiddleware,
+	limitShift,
+} from '@floating-ui/react-dom';
 
 /**
  * Styles

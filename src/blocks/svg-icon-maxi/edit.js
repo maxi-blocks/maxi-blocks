@@ -34,7 +34,7 @@ import { copyPasteMapping } from './data';
 /**
  * External dependencies
  */
-import { isEmpty, uniqueId } from 'lodash';
+import { isEmpty, uniqueId, uniq, isArray } from 'lodash';
 import classNames from 'classnames';
 
 /**
@@ -106,6 +106,33 @@ class edit extends MaxiBlockComponent {
 	maxiBlockDidUpdate(prevProps) {
 		const { updateBlockAttributes } = dispatch('core/block-editor');
 		const svgCode = this.props.attributes.content;
+		const blockId = this.props.attributes.uniqueID;
+
+		if (svgCode) {
+			const svgInsideIds = uniq(
+				Array.from(svgCode.matchAll(/ xlink:href="#(.+?(?=))"/g)).map(
+					match => match[1]
+				)
+			);
+
+			if (isArray(svgInsideIds) && svgInsideIds.length > 0) {
+				svgInsideIds.forEach(insideId => {
+					if (!insideId.includes(blockId)) {
+						const newInsideId = `${
+							insideId.split('__')[0] // let's check for another 'svg-icon-max-X' part in case the block was duplicated, and remove the part
+						}__${blockId}`;
+
+						const newSvgCode = svgCode.replaceAll(
+							insideId,
+							newInsideId
+						);
+						this.props.maxiSetAttributes({
+							content: newSvgCode,
+						});
+					}
+				});
+			}
+		}
 
 		if (prevProps.attributes.uniqueID !== this.props.attributes.uniqueID) {
 			const svgClass = svgCode.match(/ class="(.+?(?=))"/)[1];
@@ -152,6 +179,22 @@ class edit extends MaxiBlockComponent {
 					});
 			}
 		}
+	}
+
+	maxiBlockDidChangeUniqueID(newUniqueID) {
+		/**
+		 * Each svg icon content svg tag has unique class name, which should be changed
+		 * when the block is duplicated.
+		 */
+		const svgClass =
+			this.props.attributes.content.match(/ class="(.+?(?=))"/)?.[1];
+		if (!svgClass) return;
+
+		const newContent = this.props.attributes.content.replaceAll(
+			svgClass.match(/__(\d)/)[0],
+			`__${newUniqueID.match(/-(\d+)$/).pop()}`
+		);
+		this.props.attributes.content = newContent;
 	}
 
 	get getStylesObject() {

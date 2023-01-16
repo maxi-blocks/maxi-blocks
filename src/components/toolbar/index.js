@@ -190,7 +190,6 @@ const MaxiToolbar = memo(
 					return rect;
 				},
 				ownerDocument: anchorRef.ownerDocument,
-				// contextElement: anchorRef,
 			};
 		};
 
@@ -253,6 +252,7 @@ const MaxiToolbar = memo(
 					)}
 					__unstableSlotName='block-toolbar'
 					__unstableObserveElement={ref.current}
+					observeBlockPosition={clientId}
 					{...popoverPropsByVersion}
 				>
 					<div className={`toolbar-wrapper pinned--${pinActive}`}>

@@ -29,6 +29,7 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 		isEmptyContent = false,
 		prefix = '',
 		className,
+		clientId,
 	} = props;
 	const { uniqueID } = attributes;
 
@@ -118,6 +119,7 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 			focusOnMount={false}
 			__unstableSlotName='block-toolbar'
 			__unstableObserveElement={ref.current}
+			observeBlockPosition={clientId}
 			uniqueid={uniqueID}
 			{...popoverPropsByVersion}
 		>

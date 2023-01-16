@@ -113,6 +113,8 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 				focusOnMount={false}
 				style={{ zIndex: Object.keys(blockHierarchy).length + 1 }}
 				__unstableSlotName='block-toolbar'
+				__unstableObserveElement={ref.current}
+				observeBlockPosition={clientId}
 				{...popoverProps}
 			>
 				{Object.keys(blockHierarchy).length > 1 && (

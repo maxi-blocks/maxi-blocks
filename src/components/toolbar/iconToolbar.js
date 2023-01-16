@@ -85,6 +85,7 @@ const IconToolbar = memo(
 					className='maxi-toolbar__popover'
 					uniqueid={uniqueID}
 					__unstableSlotName='block-toolbar'
+					observeBlockPosition={clientId}
 					{...popoverPropsByVersion}
 				>
 					<div className='toolbar-wrapper icon-toolbar'>

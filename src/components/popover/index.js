@@ -32,6 +32,7 @@ import {
 } from '@wordpress/compose';
 import { close } from '@wordpress/icons';
 import { Path, SVG } from '@wordpress/primitives';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -138,6 +139,7 @@ const Popover = (
 		expandOnMobile,
 		onFocusOutside,
 		strategy = 'absolute',
+		observeBlockPosition,
 		__unstableSlotName = SLOT_NAME,
 		__unstableObserveElement,
 		__unstableShift = false,
@@ -154,6 +156,17 @@ const Popover = (
 	const normalizedPlacementFromProps = position
 		? positionToPlacement(position)
 		: placementProp;
+
+	const { blockIndex } = useSelect(
+		select => {
+			const blockIndex =
+				observeBlockPosition &&
+				select('core/block-editor').getBlockIndex(observeBlockPosition);
+
+			return { blockIndex };
+		},
+		[observeBlockPosition]
+	);
 
 	const ownerDocument = anchor?.ownerDocument ?? document;
 
@@ -296,6 +309,12 @@ const Popover = (
 			observer.disconnect();
 		};
 	}, [__unstableObserveElement]);
+
+	useLayoutEffect(() => {
+		if (Number.isFinite(blockIndex)) {
+			update();
+		}
+	}, [blockIndex]);
 
 	// If the reference element is in a different ownerDocument (e.g. iFrame),
 	// we need to manually update the floating's position as the reference's owner

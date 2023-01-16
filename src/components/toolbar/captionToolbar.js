@@ -152,6 +152,7 @@ const CaptionToolbar = memo(
 					className={classnames('maxi-toolbar__popover')}
 					uniqueid={uniqueID}
 					__unstableSlotName='block-toolbar'
+					observeBlockPosition={clientId}
 					{...popoverProps}
 				>
 					<div className='toolbar-wrapper caption-toolbar'>

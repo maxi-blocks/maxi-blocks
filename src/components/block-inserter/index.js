@@ -3,8 +3,8 @@
  */
 import { __ } from '@wordpress/i18n';
 import { ButtonBlockAppender, Inserter } from '@wordpress/block-editor';
-import { select, useDispatch } from '@wordpress/data';
-import { useRef, forwardRef } from '@wordpress/element';
+import { select, useDispatch, useSelect } from '@wordpress/data';
+import { useRef, forwardRef, useState } from '@wordpress/element';
 import { Tooltip } from '@wordpress/components';
 
 /**
@@ -13,6 +13,7 @@ import { Tooltip } from '@wordpress/components';
 import Button from '../button';
 import Dropdown from '../dropdown';
 import Popover from '../popover';
+import getBoundaryElement from '../../extensions/dom/getBoundaryElement';
 
 /**
  * External dependencies
@@ -53,26 +54,31 @@ const BlockInserter = props => {
 };
 
 const ButtonInserter = props => {
-	const { onToggle } = props;
+	const { onToggle, style = {} } = props;
 
 	return (
 		<Tooltip text={__('Add block', 'maxi-blocks')} position='top center'>
-			<Button
-				className='maxi-wrapper-block-inserter__button maxi-block-inserter__button'
-				onClick={onToggle}
+			<div
+				className='maxi-wrapper-block-inserter__button-wrapper'
+				style={style}
 			>
-				<svg
-					xmlns='http://www.w3.org/2000/svg'
-					viewBox='0 0 24 24'
-					width='24'
-					height='24'
-					role='img'
-					aria-hidden='true'
-					focusable='false'
+				<Button
+					className='maxi-wrapper-block-inserter__button maxi-block-inserter__button'
+					onClick={onToggle}
 				>
-					<path d='M18 11.2h-5.2V6h-1.6v5.2H6v1.6h5.2V18h1.6v-5.2H18z' />
-				</svg>
-			</Button>
+					<svg
+						xmlns='http://www.w3.org/2000/svg'
+						viewBox='0 0 24 24'
+						width='24'
+						height='24'
+						role='img'
+						aria-hidden='true'
+						focusable='false'
+					>
+						<path d='M18 11.2h-5.2V6h-1.6v5.2H6v1.6h5.2V18h1.6v-5.2H18z' />
+					</svg>
+				</Button>
+			</div>
 		</Tooltip>
 	);
 };
@@ -95,6 +101,12 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 	};
 
 	if (!ref?.current) return null;
+
+	const { width } = ref.current.getBoundingClientRect();
+
+	const style = {
+		'--maxi-inter-blocks-inserter-width': `${width}px`,
+	};
 
 	const popoverProps = {
 		anchor: ref.current,
@@ -126,6 +138,7 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 							<ButtonInserter
 								onToggle={onToggle}
 								setShouldRemain={setShouldRemain}
+								style={style}
 							/>
 						)}
 						renderContent={({ onToggle }) => (
@@ -176,7 +189,7 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 						__experimentalIsQuick
 						onSelectOrClose={() => setShouldRemain(false)}
 						renderToggle={({ onToggle }) => (
-							<ButtonInserter onToggle={onToggle} />
+							<ButtonInserter onToggle={onToggle} style={style} />
 						)}
 					/>
 				)}
@@ -186,6 +199,211 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 	return null;
 });
 
+const InterBlockToggle = props => {
+	const { clientId, onToggleInserter, blockRef, isOpen } = props;
+
+	const [isHovered, setHovered] = useState(false);
+
+	const { nextBlockClientId } = useSelect(select => {
+		const { getAdjacentBlockClientId } = select('core/block-editor');
+
+		return {
+			nextBlockClientId: getAdjacentBlockClientId(clientId, 1),
+		};
+	});
+
+	const classes = classnames(
+		'maxi-inter-blocks-inserter__toggle',
+		(isHovered || isOpen) &&
+			'maxi-inter-blocks-inserter__toggle--is-hovered'
+	);
+
+	const { width } = blockRef.getBoundingClientRect();
+
+	const style = {
+		width: `${width}px`,
+	};
+
+	return (
+		<div
+			className={classes}
+			style={style}
+			onMouseOver={() => setHovered(true)}
+			onMouseOut={e => {
+				if (!e.target?.contains(e.relatedTarget)) setHovered(false);
+			}}
+			onClick={onToggleInserter}
+		>
+			{(isHovered || isOpen) && (
+				<>
+					<Button
+						key={`maxi-inter-blocks-inserter__content-item-${clientId}`}
+						className='maxi-inter-blocks-inserter__content-item'
+					>
+						<svg
+							xmlns='http://www.w3.org/2000/svg'
+							viewBox='0 0 24 24'
+							width='24'
+							height='24'
+							role='img'
+							aria-hidden='true'
+							focusable='false'
+						>
+							<path d='M18 11.2h-5.2V6h-1.6v5.2H6v1.6h5.2V18h1.6v-5.2H18z' />
+						</svg>
+					</Button>
+					<style>
+						{
+							/** Removes original WP inserter, so avoids both inserters at same time */
+							'.block-editor-block-list__insertion-point: {display: none}'
+						}
+						{clientId &&
+							/** Adds blue boundary outline on the current block */
+							`.maxi-block[data-block="${clientId}"]::after {
+								content: '';
+								position: absolute;
+								pointer-events: none;
+								opacity: 1;
+							} `}
+						{nextBlockClientId &&
+							/** Adds blue boundary outline on the next block */
+							`.maxi-block[data-block="${nextBlockClientId}"]::after {
+								content: '';
+								position: absolute;
+								pointer-events: none;
+								opacity: 1;
+							} `}
+					</style>
+				</>
+			)}
+		</div>
+	);
+};
+
+const InterBlockInserter = forwardRef((props, ref) => {
+	const { clientId } = props;
+	const blockRef = ref?.current?.blockRef?.current;
+
+	const popoverRef = useRef(null);
+
+	const { nextClientId, isNextMaxiBlock, version } = useSelect(select => {
+		const { getBlockOrder, getBlockRootClientId, getBlockName } =
+			select('core/block-editor');
+		const { receiveMaxiSettings } = select('maxiBlocks');
+
+		const rootClientId = getBlockRootClientId(clientId);
+		const blockOrder = getBlockOrder(rootClientId);
+
+		const index = blockOrder.indexOf(clientId);
+
+		const nextClientId = blockOrder[index + 1];
+
+		const isNextMaxiBlock =
+			nextClientId && getBlockName(nextClientId).includes('maxi-blocks/');
+
+		const maxiSettings = receiveMaxiSettings();
+		const { editor } = maxiSettings;
+
+		return {
+			nextClientId,
+			isNextMaxiBlock,
+			version: editor?.version,
+		};
+	}, []);
+
+	if (!blockRef || !nextClientId || !isNextMaxiBlock) return null;
+
+	const getAnchor = popoverRef => {
+		const popoverRect = popoverRef
+			?.querySelector('.components-popover__content')
+			?.getBoundingClientRect();
+
+		if (!popoverRect) return null;
+
+		const rect = blockRef.getBoundingClientRect();
+
+		const { width, x } = rect;
+		const { width: popoverWidth } = popoverRect;
+
+		const expectedContentX = x + width / 2 - popoverWidth / 2;
+
+		const container = document
+			.querySelector('.editor-styles-wrapper')
+			?.getBoundingClientRect();
+
+		if (container) {
+			const { x: containerX, width: containerWidth } = container;
+
+			// Left cut off check
+			if (expectedContentX < containerX)
+				rect.x += containerX - expectedContentX;
+
+			// Right cut off check
+			if (expectedContentX + popoverWidth > containerX + containerWidth)
+				rect.x -=
+					expectedContentX +
+					popoverWidth -
+					(containerX + containerWidth);
+		}
+
+		return {
+			getBoundingClientRect: () => rect,
+			ownerDocument: blockRef.ownerDocument,
+		};
+	};
+
+	const popoverProps = {
+		...((parseFloat(version) <= 13.0 && {
+			getAnchorRect: spanEl => {
+				// span element needs to be hidden to don't break the grid
+				spanEl.style.display = 'none';
+
+				return getAnchor(popoverRef.current).getBoundingClientRect();
+			},
+			shouldAnchorIncludePadding: true,
+			__unstableStickyBoundaryElement: getBoundaryElement(blockRef),
+			className:
+				'maxi-inter-blocks-inserter maxi-inter-blocks-inserter--old',
+		}) ||
+			(!isNaN(parseFloat(version)) && {
+				anchor: blockRef,
+				flip: false,
+				resize: false,
+			})),
+	};
+
+	return (
+		<Popover
+			ref={popoverRef}
+			key={`maxi-inter-blocks-inserter__${clientId}`}
+			className='maxi-inter-blocks-inserter'
+			noArrow
+			animate={false}
+			position='bottom center'
+			focusOnMount={false}
+			__unstableSlotName='block-toolbar'
+			dataclientid={clientId}
+			{...popoverProps}
+		>
+			<Inserter
+				key={`maxi-inter-blocks-inserter__content-${clientId}`}
+				clientId={nextClientId}
+				position='bottom center'
+				__experimentalIsQuick
+				renderToggle={({ onToggle: onToggleInserter, isOpen }) => (
+					<InterBlockToggle
+						onToggleInserter={onToggleInserter}
+						isOpen={isOpen}
+						clientId={clientId}
+						blockRef={blockRef}
+					/>
+				)}
+			/>
+		</Popover>
+	);
+});
+
 BlockInserter.WrapperInserter = WrapperBlockInserter;
+BlockInserter.InterBlockInserter = InterBlockInserter;
 
 export default BlockInserter;

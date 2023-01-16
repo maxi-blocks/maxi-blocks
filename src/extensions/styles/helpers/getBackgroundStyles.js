@@ -8,6 +8,7 @@ import getDisplayStyles from './getDisplayStyles';
 import getGroupAttributes from '../getGroupAttributes';
 import getImageShapeStyles from './getImageShapeStyles';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+import getPaletteAttributes from '../getPaletteAttributes';
 
 /**
  * External dependencies
@@ -22,7 +23,6 @@ import {
 	round,
 	toNumber,
 } from 'lodash';
-import getPaletteAttributes from '../getPaletteAttributes';
 
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 

@@ -2,7 +2,10 @@
  * Internal dependencies
  */
 import { createSelectors } from '../../extensions/styles/custom-css';
-import { getCanvasSettings } from '../../extensions/relations';
+import {
+	getCanvasSettings,
+	getAdvancedSettings,
+} from '../../extensions/relations';
 
 /**
  * External dependencies
@@ -103,7 +106,8 @@ const customCss = {
 	],
 };
 const interactionBuilderSettings = {
-	block: getCanvasSettings({ name, customCss }),
+	canvas: getCanvasSettings({ name }),
+	advanced: getAdvancedSettings({ customCss }),
 };
 const maxiAttributes = {
 	'max-width-xxl': '1690',

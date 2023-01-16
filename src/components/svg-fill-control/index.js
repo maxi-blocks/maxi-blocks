@@ -255,30 +255,25 @@ const SVGFillControl = props => {
 							/>
 						)}
 						{getSVGHasImage(SVGElement) && (
-							<ResponsiveTabsControl breakpoint={breakpoint}>
-								<ImageShape
-									{...SVGOptions}
-									onChange={obj => {
-										['SVGElement', 'SVGData'].forEach(
-											el => {
-												if (el in obj) {
-													obj[
-														`background-svg-${el}`
-													] = obj[el];
+							<ImageShape
+								{...SVGOptions}
+								onChange={obj => {
+									['SVGElement', 'SVGData'].forEach(el => {
+										if (el in obj) {
+											obj[`background-svg-${el}`] =
+												obj[el];
 
-													delete obj[el];
-												}
-											}
-										);
+											delete obj[el];
+										}
+									});
 
-										onChange(obj);
-									}}
-									icon={SVGElement}
-									breakpoint={breakpoint}
-									prefix='background-svg-'
-									disableModal
-								/>
-							</ResponsiveTabsControl>
+									onChange(obj);
+								}}
+								icon={SVGElement}
+								breakpoint={breakpoint}
+								prefix='background-svg-'
+								disableModal
+							/>
 						)}
 					</>
 				)}

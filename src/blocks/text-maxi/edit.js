@@ -118,7 +118,7 @@ class edit extends MaxiBlockComponent {
 			 * Does not replace spaces, which inside of HTML tags
 			 */
 			const replaceSpaces = content =>
-				content.replace(/(?![^<]*>|[^<>]*<\/)\s$/, '&nbsp;');
+				content.replace(/(?![^<]*>|[^<>]*<\/) $/, '&nbsp;');
 
 			const content = replaceSpaces(rawContent);
 

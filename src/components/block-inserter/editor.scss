@@ -15,6 +15,7 @@
 		display: flex;
 		width: 100%;
 		min-height: 40px;
+		pointer-events: auto !important;
 	}
 	&__text {
 		&:empty {

@@ -1,4 +1,4 @@
-import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
+import { getCanvasSettings } from '../../extensions/relations';
 import { createSelectors } from '../../extensions/styles/custom-css';
 
 /**

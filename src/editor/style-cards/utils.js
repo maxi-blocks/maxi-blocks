@@ -1,13 +1,13 @@
 /**
- * Internal dependencies
- */
-import standardSC from '../../../core/utils/defaultSC.json';
-
-/**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
 import { dispatch, select } from '@wordpress/data';
+
+/**
+ * Internal dependencies
+ */
+import standardSC from '../../../core/utils/defaultSC.json';
 
 /**
  * External dependencies

@@ -69,14 +69,12 @@ const withAttributes = createHigherOrderComponent(
 
 			attributes.isFirstOnHierarchy = isEmpty(parentBlocks);
 			if (!attributes.isFirstOnHierarchy) {
-				const { getBlockHierarchyRootClientId } =
-					select('core/block-editor');
+				const firstMaxiParentBlock = select(
+					'core/block-editor'
+				).getBlock(parentBlocks[0]);
 
-				const firstParentBlock = select('core/block-editor').getBlock(
-					getBlockHierarchyRootClientId(clientId)
-				);
-
-				attributes.blockStyle = firstParentBlock.attributes.blockStyle;
+				attributes.blockStyle =
+					firstMaxiParentBlock.attributes.blockStyle;
 			}
 
 			// RTL

@@ -33,7 +33,7 @@ import { copyPasteMapping } from './data';
 /**
  * External dependencies
  */
-import { isEmpty, uniqueId, uniqBy, isArray } from 'lodash';
+import { isEmpty, uniqueId, uniq, isArray } from 'lodash';
 
 /**
  * Content
@@ -55,14 +55,14 @@ class edit extends MaxiBlockComponent {
 		const blockId = this.props.attributes.uniqueID;
 
 		if (svgCode) {
-			const svgInsideIds = uniqBy(
+			const svgInsideIds = uniq(
 				Array.from(svgCode.matchAll(/ xlink:href="#(.+?(?=))"/g)).map(
 					match => match[1]
 				)
 			);
 
 			if (isArray(svgInsideIds) && svgInsideIds.length > 0) {
-				svgInsideIds.map(insideId => {
+				svgInsideIds.forEach(insideId => {
 					if (!insideId.includes(blockId)) {
 						const newInsideId = `${
 							insideId.split('__')[0] // let's check for another 'svg-icon-max-X' part in case the block was duplicated, and remove the part
@@ -72,11 +72,10 @@ class edit extends MaxiBlockComponent {
 							insideId,
 							newInsideId
 						);
-						updateBlockAttributes(this.props.clientId, {
+						this.props.maxiSetAttributes({
 							content: newSvgCode,
 						});
 					}
-					return null;
 				});
 			}
 		}

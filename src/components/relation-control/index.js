@@ -34,6 +34,7 @@ import { capitalize, cloneDeep, isEmpty, merge } from 'lodash';
  * Styles
  */
 import './editor.scss';
+import { goThroughMaxiBlocks } from '../../extensions/maxi-block';
 
 const RelationControl = props => {
 	const { getBlock } = select('core/block-editor');
@@ -321,31 +322,21 @@ const RelationControl = props => {
 	};
 
 	const getBlocksToAffect = () => {
-		const { getBlocks } = select('core/block-editor');
-
-		const blocksToAffect = (blocks, arr = []) => {
-			blocks.forEach(block => {
-				if (
-					block.name.includes('maxi-blocks') &&
-					block.attributes.customLabel !==
-						getDefaultAttribute('customLabel', block.clientId) &&
-					block.attributes.uniqueID !== uniqueID
-				) {
-					arr.push({
-						label: block.attributes.customLabel,
-						value: block.attributes.uniqueID,
-					});
-				}
-
-				if (block.innerBlocks.length) {
-					blocksToAffect(block.innerBlocks, arr);
-				}
-			});
-
-			return arr;
-		};
-
-		return blocksToAffect(getBlocks());
+		const arr = [];
+		goThroughMaxiBlocks(block => {
+			if (
+				block.name.includes('maxi-blocks') &&
+				block.attributes.customLabel !==
+					getDefaultAttribute('customLabel', block.clientId) &&
+				block.attributes.uniqueID !== uniqueID
+			) {
+				arr.push({
+					label: block.attributes.customLabel,
+					value: block.attributes.uniqueID,
+				});
+			}
+		});
+		return arr;
 	};
 
 	const blocksToAffect = getBlocksToAffect();

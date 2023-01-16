@@ -596,12 +596,24 @@ const getStyles = props => {
 					props.blockStyle
 				),
 				...getLinkStyles(
-					{ ...getGroupAttributes(props, 'link') },
+					{
+						...getGroupAttributes(props, [
+							'link',
+							'typography',
+							'typographyHover',
+						]),
+					},
 					[` a ${element}.maxi-text-block__content`],
 					props.blockStyle
 				),
 				...getLinkStyles(
-					{ ...getGroupAttributes(props, 'link') },
+					{
+						...getGroupAttributes(props, [
+							'link',
+							'typography',
+							'typographyHover',
+						]),
+					},
 					[` ${element}.maxi-text-block__content a`],
 					props.blockStyle
 				),

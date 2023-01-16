@@ -16,6 +16,7 @@ const createIconTransitions = ({
 	const getKey = key => (titlePrefix ? `${titlePrefix} ${key}` : key);
 
 	const colorKey = getKey('colour');
+	const colorKeyTwo = `${colorKey} two`;
 	const backgroundKey = getKey('background');
 	const widthKey = getKey('width');
 	const borderKey = getKey('border');
@@ -23,7 +24,13 @@ const createIconTransitions = ({
 	return {
 		[colorKey]: {
 			title: capitalize(colorKey),
-			target: ` ${target} svg *:not(g)`,
+			target: ` ${target} svg > *:not(g)`,
+			property: false,
+			hoverProp: iconStatusHover,
+		},
+		[colorKeyTwo]: {
+			title: capitalize(colorKeyTwo),
+			target: ` ${target} svg g *:not(g)`,
 			property: false,
 			hoverProp: iconStatusHover,
 		},

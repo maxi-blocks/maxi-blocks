@@ -319,11 +319,6 @@ const Inspector = props => {
 											...props,
 										},
 									}),
-									...inspectorTabs.opacity({
-										props: {
-											...props,
-										},
-									}),
 									...inspectorTabs.size({
 										props: {
 											...props,
@@ -385,6 +380,11 @@ const Inspector = props => {
 										},
 									}),
 									...inspectorTabs.display({
+										props: {
+											...props,
+										},
+									}),
+									...inspectorTabs.opacity({
 										props: {
 											...props,
 										},

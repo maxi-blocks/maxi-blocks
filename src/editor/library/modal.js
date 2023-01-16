@@ -55,8 +55,6 @@ const CloudPlaceholder = forwardRef((props, ref) => {
 		};
 	}, []);
 
-	console.log(ref, isBlockSmall, isBlockSmaller);
-
 	return (
 		<Button
 			key={`maxi-block-library__modal-button--${clientId}`}
@@ -125,25 +123,11 @@ const MaxiModal = props => {
 			)}
 			<div className='maxi-library-modal__action-section__buttons'>
 				{type === 'patterns' && (
-					<>
-						{/* <Button
-							key={`maxi-block-library__modal-button--${clientId}`}
-							isPrimary
-							className='maxi-block-library__modal-button'
-							onClick={onClick}
-						>
-							<Icon
-								className='maxi-library-block__select__icon'
-								icon={cloudLib}
-							/>
-							{__('Template library', 'maxi-blocks')}
-						</Button> */}
-						<CloudPlaceholder
-							ref={ref}
-							clientId={clientId}
-							onClick={onClick}
-						/>
-					</>
+					<CloudPlaceholder
+						ref={ref}
+						clientId={clientId}
+						onClick={onClick}
+					/>
 				)}
 				{type === 'sc' && (
 					<Button

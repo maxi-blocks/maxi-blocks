@@ -5,7 +5,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useContext } from '@wordpress/element';
-import { toHTMLString } from '@wordpress/rich-text';
 
 /**
  * Internal dependencies
@@ -23,6 +22,7 @@ import {
 	canOutdentListItems,
 	indentListItems,
 	outdentListItems,
+	toHTMLString,
 } from '../../../../extensions/text/lists';
 
 /**

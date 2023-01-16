@@ -101,6 +101,7 @@ const MaxiToolbar = memo(
 			copyPasteMapping,
 			mediaPrefix,
 			dropShadow,
+			disableInset,
 		} = props;
 		const {
 			customLabel,
@@ -554,6 +555,7 @@ const MaxiToolbar = memo(
 							breakpoint={breakpoint}
 							prefix={prefix}
 							dropShadow={dropShadow}
+							disableInset={disableInset}
 						/>
 						<ToolbarColumnPattern
 							clientId={clientId}

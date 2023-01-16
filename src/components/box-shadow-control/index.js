@@ -2,7 +2,6 @@
  * Wordpress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -22,7 +21,6 @@ import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
 } from '../../extensions/styles';
-import { getActiveTabName } from '../../extensions/inspector';
 
 /**
  * External dependencies
@@ -152,6 +150,7 @@ const BoxShadowControl = props => {
 		prefix = '',
 		clientId,
 		dropShadow = false,
+		disableInset = false,
 	} = props;
 
 	const boxShadowItems = ['horizontal', 'vertical', 'blur'];
@@ -218,11 +217,6 @@ const BoxShadowControl = props => {
 		isNone && 'maxi-shadow-control--disable',
 		className
 	);
-
-	const { getSelectedBlockClientId, getBlockName } =
-		select('core/block-editor');
-
-	const currentBlockName = getBlockName(getSelectedBlockClientId());
 
 	return (
 		<div className={classes}>
@@ -362,10 +356,7 @@ const BoxShadowControl = props => {
 			/>
 			{!isToolbar && (
 				<>
-					{((!dropShadow &&
-						currentBlockName !== 'maxi-blocks/divider-maxi') ||
-						(currentBlockName === 'maxi-blocks/divider-maxi' &&
-							getActiveTabName(0) !== 'Settings')) && (
+					{!dropShadow && !disableInset && (
 						<ToggleSwitch
 							label={__('Inset', 'maxi-block')}
 							selected={getLastBreakpointAttribute({

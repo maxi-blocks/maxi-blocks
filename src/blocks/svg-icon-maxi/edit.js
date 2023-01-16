@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { createRef } from '@wordpress/element';
+import { createRef, forwardRef, useEffect, useState } from '@wordpress/element';
 import { dispatch } from '@wordpress/data';
 
 /**
@@ -20,6 +20,7 @@ import {
 	RawHTML,
 	MaxiPopoverButton,
 	Button,
+	Icon,
 } from '../../components';
 import {
 	getIsOverflowHidden,
@@ -34,10 +35,63 @@ import { copyPasteMapping } from './data';
  * External dependencies
  */
 import { isEmpty, uniqueId, uniq, isArray } from 'lodash';
+import classNames from 'classnames';
+
+/**
+ * Icons
+ */
+import { selectIcon } from '../../icons';
 
 /**
  * Content
  */
+const SVGIconPlaceholder = forwardRef((props, ref) => {
+	const { uniqueID, clientId, onClick } = props;
+
+	const [isBlockSmall, setIsBlockSmall] = useState(null);
+	const [isBlockSmaller, setIsBlockSmaller] = useState(null);
+
+	const resizeObserver = new ResizeObserver(entries => {
+		const newIsSmallBlock = entries[0].contentRect.width < 120;
+		const newIsSmallerBlock = entries[0].contentRect.width < 38;
+
+		if (newIsSmallBlock !== isBlockSmall) setIsBlockSmall(newIsSmallBlock);
+		if (newIsSmallerBlock !== isBlockSmaller)
+			setIsBlockSmaller(newIsSmallerBlock);
+	});
+
+	useEffect(() => {
+		resizeObserver.observe(ref.current);
+
+		return () => {
+			resizeObserver.disconnect();
+		};
+	}, []);
+
+	return (
+		<div
+			className={classNames(
+				'maxi-svg-icon-block__placeholder',
+				isBlockSmall && 'maxi-svg-icon-block__placeholder--small',
+				isBlockSmaller && 'maxi-svg-icon-block__placeholder--smaller'
+			)}
+			key={`maxi-svg-icon-block__placeholder--${uniqueID}`}
+		>
+			<Button
+				isPrimary
+				key={`maxi-block-library__modal-button--${clientId}`}
+				className='maxi-block-library__modal-button'
+				onClick={onClick}
+			>
+				<Icon
+					className='maxi-icon-block__select__icon'
+					icon={selectIcon}
+				/>
+				{!isBlockSmall && __('Select icon', 'maxi-blocks')}
+			</Button>
+		</div>
+	);
+});
 class edit extends MaxiBlockComponent {
 	constructor(props) {
 		super(props);
@@ -256,19 +310,12 @@ class edit extends MaxiBlockComponent {
 			>
 				<>
 					{isEmptyContent && (
-						<div
-							className='maxi-svg-icon-block__placeholder'
-							key={`maxi-svg-icon-block__placeholder--${uniqueID}`}
-						>
-							<Button
-								isPrimary
-								key={`maxi-block-library__modal-button--${clientId}`}
-								className='maxi-block-library__modal-button'
-								onClick={() => this.setState({ isOpen: true })}
-							>
-								{__('Select icon', 'maxi-blocks')}
-							</Button>
-						</div>
+						<SVGIconPlaceholder
+							ref={this.blockRef}
+							uniqueID={uniqueID}
+							clientId={clientId}
+							onClick={() => this.setState({ isOpen: true })}
+						/>
 					)}
 					{!isEmptyContent && (
 						<BlockResizer

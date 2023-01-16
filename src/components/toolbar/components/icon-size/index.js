@@ -11,7 +11,6 @@ import ToolbarPopover from '../toolbar-popover';
 import { getDefaultAttribute } from '../../../../extensions/styles';
 import SvgWidthControl from '../../../svg-width-control';
 import SvgStrokeWidthControl from '../../../svg-stroke-width-control';
-import { handleOnReset } from '../../../../extensions/attributes';
 
 /**
  * Styles & Icons
@@ -62,14 +61,12 @@ const IconSize = props => {
 						});
 					}}
 					onReset={() =>
-						onChange(
-							handleOnReset({
-								[`icon-spacing-${breakpoint}`]:
-									getDefaultAttribute(
-										`icon-spacing-${breakpoint}`
-									),
-							})
-						)
+						onChange({
+							[`icon-spacing-${breakpoint}`]: getDefaultAttribute(
+								`icon-spacing-${breakpoint}`
+							),
+							isReset: true,
+						})
 					}
 				/>
 			</div>

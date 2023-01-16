@@ -4,6 +4,9 @@ export const generalTypographyStyle = {
 	transform: 'capitalize',
 	style: 'italic',
 	indent: '44',
+	whiteSpace: 'pre',
+	wordSpacing: '10',
+	bottomGap: '20',
 };
 
 export const responsiveTypographyStyle = {
@@ -12,6 +15,9 @@ export const responsiveTypographyStyle = {
 	transform: 'uppercase',
 	style: 'oblique',
 	indent: '22',
+	whiteSpace: 'pre-wrap',
+	wordSpacing: '20',
+	bottomGap: '10',
 };
 
 export const generalTypographyOptions = {

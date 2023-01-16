@@ -62,7 +62,7 @@ class edit extends MaxiBlockComponent {
 			],
 		});
 	}
-	
+
 	maxiBlockDidUpdate() {
 		if (!this.props.hasInnerBlocks) {
 			const { removeBlock } = dispatch('core/block-editor');

@@ -44,7 +44,9 @@ class edit extends MaxiBlockComponent {
 
 		this.resizableObject = createRef();
 
-		this.state = { isOpen: this.props.attributes.openFirstTime };
+		this.state = {
+			isOpen: this.props.attributes.openFirstTime,
+		};
 	}
 
 	maxiBlockDidUpdate(prevProps) {
@@ -181,16 +183,14 @@ class edit extends MaxiBlockComponent {
 						copyPasteMapping={copyPasteMapping}
 						prefix='svg-'
 						inlineStylesTargets={inlineStylesTargets}
+						onModalOpen={() => this.setState({ isOpen: true })}
 						{...this.props}
 					/>,
 					<MaxiPopoverButton
 						key={`popover-${uniqueID}`}
 						ref={this.blockRef}
 						isOpen={isOpen}
-						isSmall={
-							this.props.isChild ||
-							this.props.attributes['width-fit-content-general']
-						}
+						prefix='svg-'
 						{...this.props}
 					>
 						<MaxiModal {...maxiModalProps} />

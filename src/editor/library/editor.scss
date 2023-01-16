@@ -72,16 +72,6 @@
 			margin-right: 5px;
 			height: 66px;
 
-			&__icon {
-				svg {
-					stroke-width: 1;
-					stroke: #000;
-					* {
-						stroke-width: 1;
-						stroke: #000;
-					}
-				}
-			}
 			&__shape {
 				svg {
 					max-height: 100%;
@@ -294,11 +284,7 @@
 		.ais-ClearRefinements-button {
 			color: #081219;
 			background-color: #eaf3f7;
-			font-size: 14px;
-			font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif !important;
 			font-weight: 400;
-			border: none;
-			border: 1px solid #dbdde6;
 			border-radius: 0;
 			padding: 7px;
 			margin-top: 8px;
@@ -331,7 +317,6 @@
 			&__title {
 				position: relative;
 				background: #fff;
-				font-size: 12px;
 				font-weight: 400;
 				border-bottom: 1px solid #dbdde6;
 				border-radius: 0;
@@ -686,7 +671,7 @@
 		&__sc {
 			display: grid;
 			grid-column-gap: 0;
-			grid-template-columns: 194px 1fr;
+			grid-template-columns: 230px 1fr;
 			width: 100%;
 
 			.maxi-cloud-container__patterns__top-menu {
@@ -695,7 +680,7 @@
 				border-bottom: 1px solid #dbdde6;
 				& > div {
 					&:not(.ais-Menu) {
-						width: 194px;
+						width: 230px;
 						padding: 9px 0 8px 24px;
 					}
 				}
@@ -792,7 +777,6 @@
 						}
 					}
 					a {
-						color: #151617;
 						font-family: 'Roboto', Helvetica, Arial, Lucida,
 							sans-serif !important;
 						font-weight: 400;
@@ -842,6 +826,11 @@
 							}
 						}
 					}
+				}
+				//hack to fix issue #3930: top level tags resetting when we choose a second-level tag
+				ul.maxi__hide-top-tags
+					li.ais-HierarchicalMenu-item__firstLevel:not(.maxi__show-top-tag) {
+					display: none;
 				}
 			}
 			&__search-bar,
@@ -914,7 +903,6 @@
 					}
 
 					.maxi-cloud-masonry-card__image {
-						background: #f0f2f4;
 						border: none;
 						padding: 0;
 						background: #fff;
@@ -1008,8 +996,8 @@
 			.ais-Menu {
 				display: block;
 				position: absolute;
-				left: 194px;
-				width: calc(100% - 194px);
+				left: 230px;
+				width: calc(100% - 230px);
 				margin-top: -13px;
 				margin-left: 13px;
 				&-item {
@@ -1039,7 +1027,7 @@
 		margin-top: 1rem;
 
 		.ais-InfiniteHits-item {
-			margin: 0 0 1rem 0;
+			margin: 0 0 1rem;
 			background-color: #fff;
 			position: relative;
 
@@ -1313,8 +1301,6 @@
 			&__content-svg-shape {
 				&__search-bar {
 					display: flex;
-					align-items: center;
-					display: flex;
 					align-items: flex-start;
 					position: static;
 					top: 0;
@@ -1380,7 +1366,7 @@ html[dir='rtl'] {
 	}
 	.maxi-library-modal .maxi-cloud-container__patterns__top-menu .ais-Menu {
 		left: unset;
-		right: 194px;
+		right: 230px;
 	}
 	.maxi-library-modal
 		.components-modal__content

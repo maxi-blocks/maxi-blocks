@@ -17,10 +17,12 @@ import {
 	borderDashed,
 	borderDotted,
 } from './defaults';
+import withRTC from '../../extensions/maxi-block/withRTC';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 	getAttributeKey,
+	getDefaultAttribute,
 } from '../../extensions/styles';
 
 /**
@@ -265,18 +267,7 @@ const BorderControl = props => {
 								icon={styleNone}
 							/>
 						),
-						onChange: () =>
-							onChangeDefault(
-								borderNone(
-									prefix,
-									getLastBreakpointAttribute({
-										target: `${prefix}border-style`,
-										breakpoint,
-										attributes: props,
-										isHover,
-									}) && breakpoint !== 'general'
-								)
-							),
+						onChange: () => onChangeDefault(borderNone(prefix)),
 					},
 					{
 						activeItem: getIsActive() === 'solid',
@@ -324,6 +315,24 @@ const BorderControl = props => {
 					label={__('Add border line', 'maxi-blocks')}
 					className='maxi-border-control__type'
 					value={borderStyleValue || 'none'}
+					onReset={() =>
+						onChange({
+							[getAttributeKey(
+								'border-style',
+								isHover,
+								prefix,
+								breakpoint
+							)]: getDefaultAttribute(
+								getAttributeKey(
+									'border-style',
+									isHover,
+									prefix,
+									breakpoint
+								)
+							),
+							isReset: true,
+						})
+					}
 					options={[
 						{ label: 'None', value: 'none' },
 						{ label: 'Dotted', value: 'dotted' },
@@ -408,4 +417,4 @@ const BorderControl = props => {
 	);
 };
 
-export default BorderControl;
+export default withRTC(BorderControl);

@@ -18,7 +18,7 @@ const attributes = {
 	...attributesData.accordionIcon,
 	...attributesData.accordionTitle,
 	...attributesData.accordionLine,
-
+	...attributesData.blockBackground,
 	...attributesData.border,
 	...attributesData.borderHover,
 	...attributesData.borderRadius,
@@ -39,6 +39,8 @@ const attributes = {
 		...transitionAttributesCreator(transition),
 	},
 	...attributesData.display,
+	...attributesData.opacity,
+	...attributesData.opacityHover,
 	...attributesData.position,
 	...attributesData.overflow,
 	...attributesData.zIndex,

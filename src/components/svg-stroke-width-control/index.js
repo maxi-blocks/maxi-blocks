@@ -69,11 +69,14 @@ const SvgStrokeWidthControl = props => {
 			min={0.1}
 			max={5}
 			step={0.1}
-			onReset={() =>
+			onReset={() => {
 				onChange({
 					[strokeAttrLabel]: defaultStroke,
-				})
-			}
+					[`${prefix === 'svg-' ? '' : prefix}content`]:
+						setSVGStrokeWidth(content, defaultStroke),
+					isReset: true,
+				});
+			}}
 			defaultValue={defaultStroke}
 			initialPosition={placeholderStroke}
 		/>

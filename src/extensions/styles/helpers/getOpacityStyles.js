@@ -1,4 +1,9 @@
 /**
+ * Internal dependencies
+ */
+import getAttributeKey from '../getAttributeKey';
+
+/**
  * General
  */
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -8,14 +13,15 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  *
  * @param {Object} obj Block size properties
  */
-const getOpacityStyles = obj => {
+const getOpacityStyles = (obj, isHover = false, prefix = '') => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
+		const attrKey = getAttributeKey('opacity', isHover, prefix, breakpoint);
 		response[breakpoint] = {
-			...(obj[`opacity-${breakpoint}`] !== undefined &&
-				obj[`opacity-${breakpoint}`] !== '' && {
-					opacity: obj[`opacity-${breakpoint}`],
+			...(obj[attrKey] !== undefined &&
+				obj[attrKey] !== '' && {
+					opacity: obj[attrKey],
 				}),
 		};
 	});

@@ -35,6 +35,7 @@ Object {
     "type": "string",
   },
   "background-image-clip-path-general": Object {
+    "default": "none",
     "type": "string",
   },
   "background-image-clip-path-l": Object {
@@ -474,6 +475,50 @@ Object {
   "background-image-width-xxl": Object {
     "type": "number",
   },
+  "background-image-wrapper-height-general": Object {
+    "default": 100,
+    "type": "number",
+  },
+  "background-image-wrapper-height-l": Object {
+    "type": "number",
+  },
+  "background-image-wrapper-height-m": Object {
+    "type": "number",
+  },
+  "background-image-wrapper-height-s": Object {
+    "type": "number",
+  },
+  "background-image-wrapper-height-unit-general": Object {
+    "default": "%",
+    "type": "string",
+  },
+  "background-image-wrapper-height-unit-l": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-height-unit-m": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-height-unit-s": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-height-unit-xl": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-height-unit-xs": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-height-unit-xxl": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-height-xl": Object {
+    "type": "number",
+  },
+  "background-image-wrapper-height-xs": Object {
+    "type": "number",
+  },
+  "background-image-wrapper-height-xxl": Object {
+    "type": "number",
+  },
   "background-image-wrapper-position-bottom-general": Object {
     "type": "string",
   },
@@ -668,48 +713,48 @@ Object {
   "background-image-wrapper-position-top-xxl": Object {
     "type": "string",
   },
-  "background-image-wrapper-size-general": Object {
+  "background-image-wrapper-width-general": Object {
     "default": 100,
     "type": "number",
   },
-  "background-image-wrapper-size-l": Object {
+  "background-image-wrapper-width-l": Object {
     "type": "number",
   },
-  "background-image-wrapper-size-m": Object {
+  "background-image-wrapper-width-m": Object {
     "type": "number",
   },
-  "background-image-wrapper-size-s": Object {
+  "background-image-wrapper-width-s": Object {
     "type": "number",
   },
-  "background-image-wrapper-size-unit-general": Object {
+  "background-image-wrapper-width-unit-general": Object {
     "default": "%",
     "type": "string",
   },
-  "background-image-wrapper-size-unit-l": Object {
+  "background-image-wrapper-width-unit-l": Object {
     "type": "string",
   },
-  "background-image-wrapper-size-unit-m": Object {
+  "background-image-wrapper-width-unit-m": Object {
     "type": "string",
   },
-  "background-image-wrapper-size-unit-s": Object {
+  "background-image-wrapper-width-unit-s": Object {
     "type": "string",
   },
-  "background-image-wrapper-size-unit-xl": Object {
+  "background-image-wrapper-width-unit-xl": Object {
     "type": "string",
   },
-  "background-image-wrapper-size-unit-xs": Object {
+  "background-image-wrapper-width-unit-xs": Object {
     "type": "string",
   },
-  "background-image-wrapper-size-unit-xxl": Object {
+  "background-image-wrapper-width-unit-xxl": Object {
     "type": "string",
   },
-  "background-image-wrapper-size-xl": Object {
+  "background-image-wrapper-width-xl": Object {
     "type": "number",
   },
-  "background-image-wrapper-size-xs": Object {
+  "background-image-wrapper-width-xs": Object {
     "type": "number",
   },
-  "background-image-wrapper-size-xxl": Object {
+  "background-image-wrapper-width-xxl": Object {
     "type": "number",
   },
 }

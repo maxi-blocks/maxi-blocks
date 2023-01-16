@@ -15,7 +15,7 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import { getIconPositionClass } from '../../extensions/styles';
 import getStyles from './styles';
 import IconToolbar from '../../components/toolbar/iconToolbar';
-import { copyPasteMapping } from './data';
+import { copyPasteMapping, maxiAttributes } from './data';
 
 /**
  * External dependencies
@@ -54,6 +54,11 @@ class edit extends MaxiBlockComponent {
 	};
 
 	typingTimeout = 0;
+
+	// eslint-disable-next-line class-methods-use-this
+	getMaxiAttributes() {
+		return maxiAttributes;
+	}
 
 	get getStylesObject() {
 		const { attributes } = this.props;
@@ -124,7 +129,7 @@ class edit extends MaxiBlockComponent {
 									maxiSetAttributes({ buttonContent });
 								}, 100);
 							}}
-							placeholder={__('Set some text…', 'maxi-blocks')}
+							placeholder={__('Button text', 'maxi-blocks')}
 							withoutInteractiveFormatting
 						/>
 					)}

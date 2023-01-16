@@ -16,6 +16,10 @@ class Relation {
 		this.targetEl = document.querySelector(this.fullTarget);
 		this.dataTarget = `#${item.uniqueID}[data-maxi-relations="true"]`;
 
+		this.defaultTransition = window
+			.getComputedStyle(this.targetEl)
+			.getPropertyValue('transition');
+
 		if (!this.triggerEl || !this.targetEl) return;
 
 		this.breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -40,8 +44,12 @@ class Relation {
 		// transitionTrigger is an alternative trigger to target; not always used
 		// Check its eventListeners to understand better about its responsibility
 		this.transitionTriggers = Array.from(
-			new Set(this.effects.map(item => item.transitionTrigger))
-		);
+			new Set(
+				this.effects.map(
+					item => item.transitionTrigger && !item.disableTransition
+				)
+			)
+		).filter(Boolean);
 		this.transitionTriggerEls = this.transitionTriggers.map(
 			transitionTrigger =>
 				transitionTrigger
@@ -50,11 +58,15 @@ class Relation {
 		);
 
 		this.transitionTargetsArray = this.effects.map(item => {
+			if (item.disableTransition) return [''];
+
 			switch (typeof item.transitionTarget) {
 				case 'string':
 					return [item.transitionTarget];
-				case 'object' && item.transitionTarget?.length > 0:
-					return item.transitionTarget;
+				case 'object':
+					if (item.transitionTarget?.length > 0)
+						return item.transitionTarget;
+					return [''];
 				default:
 					return [''];
 			}
@@ -97,15 +109,19 @@ class Relation {
 		this.stylesEl.setAttribute('data-settings', this.settings);
 		this.stylesEl.innerText = this.stylesString;
 
-		this.transitionEl = document.createElement('style');
-		this.transitionEl.id = `relations--${this.uniqueID}-transitions`;
-		this.transitionEl.setAttribute('data-type', this.action);
-		this.transitionEl.setAttribute('data-settings', this.settings);
-		this.transitionEl.innerText = this.transitionString;
+		if (this.transitionString.length > 0) {
+			this.transitionEl = document.createElement('style');
+			this.transitionEl.id = `relations--${this.uniqueID}-transitions`;
+			this.transitionEl.setAttribute('data-type', this.action);
+			this.transitionEl.setAttribute('data-settings', this.settings);
+			this.transitionEl.innerText = this.transitionString;
+		}
 	}
 
 	// Insert transitions or styles element just after Maxi inline css element
 	addStyleEl(styleEl) {
+		if (!styleEl) return;
+
 		if (!this.inlineStylesEl)
 			this.inlineStylesEl = document.querySelector(
 				'#maxi-blocks-inline-css'
@@ -168,6 +184,8 @@ class Relation {
 			];
 
 		return this.effects.reduce((promise, effects) => {
+			if (effects.disableTransition) return promise;
+
 			const transitionDuration = getTransitionValue(effects, 'duration');
 			const transitionDelay = getTransitionValue(effects, 'delay');
 			const transitionTimeout =
@@ -214,21 +232,25 @@ class Relation {
 				if (hasCSS)
 					stylesObj[breakpoint] = { ...css[breakpoint].styles };
 
-				effectsObj[breakpoint] = {
-					...getLastEffectsBreakpointAttribute(
-						'transition-status',
-						breakpoint
-					),
-					...getLastEffectsBreakpointAttribute(
-						'transition-duration',
-						breakpoint
-					),
-					...getLastEffectsBreakpointAttribute(
-						'transition-delay',
-						breakpoint
-					),
-					...getLastEffectsBreakpointAttribute('easing', breakpoint),
-				};
+				if (!effects.disableTransition)
+					effectsObj[breakpoint] = {
+						...getLastEffectsBreakpointAttribute(
+							'transition-status',
+							breakpoint
+						),
+						...getLastEffectsBreakpointAttribute(
+							'transition-duration',
+							breakpoint
+						),
+						...getLastEffectsBreakpointAttribute(
+							'transition-delay',
+							breakpoint
+						),
+						...getLastEffectsBreakpointAttribute(
+							'easing',
+							breakpoint
+						),
+					};
 			});
 
 			return { stylesObj, effectsObj };
@@ -268,11 +290,14 @@ class Relation {
 		const stylesObjs = [];
 		const effectsObjs = [];
 
-		const pushStylesAndEffects = ({ stylesObj, effectsObj }) => {
+		const pushStylesAndEffects = obj => {
 			const isEmptyObject = obj => Object.keys(obj).length === 0;
 
-			if (!isEmptyObject(stylesObj)) stylesObjs.push(stylesObj);
-			if (!isEmptyObject(effectsObj)) effectsObjs.push(effectsObj);
+			Object.entries(obj).forEach(([key, value]) => {
+				const arrayToPush =
+					key === 'stylesObj' ? stylesObjs : effectsObjs;
+				arrayToPush.push(!isEmptyObject(value) ? value : null);
+			});
 		};
 
 		this.css.forEach((css, index) => {
@@ -376,7 +401,22 @@ class Relation {
 	}
 
 	setDataAttrToBlock(value) {
-		this.blockTargetEl.setAttribute('data-maxi-relations', value);
+		// On setting the 'false' value, is necessary to check the 'data-maxi-relations-trigger'
+		// to ensure the last trigger is not removed. It happens when moving from some trigger to
+		// other really fast between while `transitionTimeout` is still running.
+		if (value === 'false') {
+			const currentTrigger = this.blockTargetEl.getAttribute(
+				'data-maxi-relations-trigger'
+			);
+
+			if (currentTrigger === this.trigger || !currentTrigger)
+				this.blockTargetEl.setAttribute('data-maxi-relations', value);
+		} else this.blockTargetEl.setAttribute('data-maxi-relations', value);
+
+		this.blockTargetEl.setAttribute(
+			'data-maxi-relations-trigger',
+			this.trigger
+		);
 	}
 
 	addDataAttrToBlock() {
@@ -431,16 +471,30 @@ class Relation {
 							breakpointValue
 						);
 
+						let finalTarget;
+						// For background layers styles, avoidHoverString needs to be added to the parent element
+						// to make sure hover styles will override the IB styles.
+						if (target.includes('.maxi-background-displayer')) {
+							finalTarget = target
+								.replace(
+									/(\s*)> .maxi-background-displayer/,
+									match => `${avoidHoverString}${match}`
+								)
+								.trim();
+						} else if (this.isSVG) {
+							finalTarget = target.replace(
+								'maxi-svg-icon-block__icon',
+								match => `${match}${avoidHoverString}`
+							);
+						} else {
+							finalTarget = `${target.trim()}${avoidHoverString}`;
+						}
+
 						const selector =
-							`${prevLine} body.maxi-blocks--active ${
-								this.isSVG
-									? target.replace(
-											'maxi-svg-icon-block__icon',
-											match =>
-												`${match}${avoidHoverString}`
-									  )
-									: `${target.trim()}${avoidHoverString}`
-							} {`.replace(/\s{2,}/g, ' ');
+							`${prevLine} body.maxi-blocks--active ${finalTarget} {`.replace(
+								/\s{2,}/g,
+								' '
+							);
 
 						Object.entries(stylesObj[breakpoint]).forEach(
 							([key, value]) => {
@@ -642,6 +696,8 @@ class Relation {
 		};
 
 		this.stylesObjs.forEach((stylesObj, index) => {
+			if (this.effects[index].disableTransition) return;
+
 			if (this.hasMultipleTargetsArray[index]) {
 				if (!this.isSVG)
 					Object.keys(stylesObj).forEach(targetSelector => {
@@ -689,7 +745,7 @@ class Relation {
 	}
 
 	removeTransition() {
-		this.transitionEl.remove();
+		this.transitionEl?.remove();
 	}
 
 	getTransitionString(styleObj, effectsObj, isIcon) {
@@ -701,16 +757,53 @@ class Relation {
 		} = effectsObj;
 
 		const transitionPropertiesString = `${
-			status ? `${duration}s ${delay}s ${easing}` : '0s 0s'
+			status ? `${duration}s ${easing} ${delay}s` : '0s 0s'
 		}, `;
 
-		return isIcon
+		const transitionString = isIcon
 			? `all ${transitionPropertiesString}`
 			: Object.keys(styleObj).reduce(
 					(transitionString, style) =>
 						`${transitionString}${style} ${transitionPropertiesString}`,
 					''
 			  );
+
+		if (
+			this.defaultTransition !== 'none 0s ease 0s' &&
+			!transitionString.includes(this.defaultTransition)
+		) {
+			return `${this.defaultTransition}, ${transitionString}`;
+		}
+		return transitionString;
+	}
+
+	// Ensures the data-maxi-relations attributes keeps 'true' while the main element is hovered.
+	// This situation prevents the attribute set to false when the target element is triggered by 2
+	// or more elements that are nested one inside the other
+	addRelationSubscriber() {
+		const observer = new MutationObserver(mutations => {
+			mutations.forEach(mutation => {
+				if (
+					mutation.type === 'attributes' &&
+					mutation.attributeName === 'data-maxi-relations'
+				) {
+					if (mutation.target.dataset.maxiRelations !== 'true')
+						mutation.target.dataset.maxiRelations = 'true';
+				}
+			});
+		});
+
+		observer.observe(this.blockTargetEl, {
+			attributes: true,
+			attributeFilter: ['data-maxi-relations'],
+		});
+
+		this.observer = observer;
+	}
+
+	// Removes the observer added by the addRelationSubscriber method
+	removeRelationSubscriber() {
+		this.observer.disconnect();
 	}
 
 	init() {
@@ -741,7 +834,7 @@ class Relation {
 		 * to ensure it has the selected effects
 		 */
 		if (this.isHoveredContained) {
-			this.transitionTriggerEls.forEach(transitionTriggerEl => {
+			this.transitionTriggerEls?.forEach(transitionTriggerEl => {
 				transitionTriggerEl.addEventListener('mouseenter', () => {
 					// console.log('Entering hover target'); // 🔥
 
@@ -754,29 +847,33 @@ class Relation {
 				transitionTriggerEl.addEventListener('mouseleave', () => {
 					const transitionDuration = Array.from(
 						new Set(this.transitionTargetsArray.flat())
-					).reduce((promise, transitionTarget) => {
-						const transitionTargetEl = document.querySelector(
-							`${this.dataTarget} ${transitionTarget ?? ''}`
-						);
+					)
+						.filter(Boolean)
+						.reduce((promise, transitionTarget) => {
+							const transitionTargetEl = document.querySelector(
+								`${this.dataTarget} ${transitionTarget ?? ''}`
+							);
 
-						const transitionDuration = transitionTargetEl
-							? [
-									'transition-duration',
-									'transition-delay',
-							  ].reduce(
-									(sum, prop) =>
-										sum +
-										parseFloat(
-											getComputedStyle(transitionTargetEl)
-												.getPropertyValue(prop)
-												.replace('s', '')
-										),
-									0
-							  ) * 1000
-							: 0;
+							const transitionDuration = transitionTargetEl
+								? [
+										'transition-duration',
+										'transition-delay',
+								  ].reduce(
+										(sum, prop) =>
+											sum +
+											parseFloat(
+												getComputedStyle(
+													transitionTargetEl
+												)
+													.getPropertyValue(prop)
+													.replace('s', '')
+											),
+										0
+								  ) * 1000
+								: 0;
 
-						return Math.max(promise, transitionDuration);
-					}, 0);
+							return Math.max(promise, transitionDuration);
+						}, 0);
 
 					// console.log('Leaving hover target'); // 🔥
 
@@ -793,6 +890,8 @@ class Relation {
 		// console.log('IB is active'); // 🔥
 		clearTimeout(this.transitionTimeout);
 
+		this.addRelationSubscriber();
+
 		this.addDataAttrToBlock();
 		this.addTransition();
 		this.addStyles();
@@ -804,10 +903,31 @@ class Relation {
 
 		this.removeStyles();
 
-		this.transitionTimeout = setTimeout(() => {
+		// If the targeted element is hovered and the element has a transition set, remove transitions immediately
+		if (
+			this.targetEl.matches(':hover') &&
+			this.defaultTransition !== 'none 0s ease 0s'
+		) {
 			this.removeTransition();
 			this.removeAddAttrToBlock();
-		}, this.getTransitionTimeout());
+		} else {
+			const transitionTimeout = this.getTransitionTimeout();
+
+			const removeTransitionAction = () => {
+				this.removeTransition();
+				this.removeAddAttrToBlock();
+				this.removeRelationSubscriber();
+			};
+
+			if (transitionTimeout === 0) {
+				removeTransitionAction();
+			} else {
+				this.transitionTimeout = setTimeout(
+					removeTransitionAction,
+					transitionTimeout
+				);
+			}
+		}
 	}
 
 	addClickEvents() {

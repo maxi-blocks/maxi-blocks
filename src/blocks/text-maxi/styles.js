@@ -117,6 +117,12 @@ const getHoverObject = props => {
 				isHover: true,
 				blockStyle: props.blockStyle,
 			}),
+		opacity:
+			props['opacity-status-hover'] &&
+			getOpacityStyles(
+				{ ...getGroupAttributes(props, 'opacity', true) },
+				true
+			),
 	};
 
 	return response;
@@ -590,12 +596,24 @@ const getStyles = props => {
 					props.blockStyle
 				),
 				...getLinkStyles(
-					{ ...getGroupAttributes(props, 'link') },
+					{
+						...getGroupAttributes(props, [
+							'link',
+							'typography',
+							'typographyHover',
+						]),
+					},
 					[` a ${element}.maxi-text-block__content`],
 					props.blockStyle
 				),
 				...getLinkStyles(
-					{ ...getGroupAttributes(props, 'link') },
+					{
+						...getGroupAttributes(props, [
+							'link',
+							'typography',
+							'typographyHover',
+						]),
+					},
 					[` ${element}.maxi-text-block__content a`],
 					props.blockStyle
 				),

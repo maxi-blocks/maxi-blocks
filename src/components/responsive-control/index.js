@@ -56,6 +56,7 @@ const ResponsiveControl = props => {
 							defaultBreakpoints[
 								breakpoint === 'xxl' ? 'xl' : breakpoint
 							],
+						isReset: true,
 					})
 				}
 				initialPosition={

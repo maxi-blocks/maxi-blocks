@@ -43,7 +43,7 @@ const BoxShadow = props => {
 	return (
 		<ToolbarPopover
 			className='toolbar-item__box-shadow'
-			tooltip={__('Drop shadow', 'maxi-blocks')}
+			tooltip={__('Box shadow', 'maxi-blocks')}
 			icon={toolbarDropShadow}
 			advancedOptions='box shadow'
 		>

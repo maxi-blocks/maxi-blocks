@@ -66,3 +66,17 @@ export const getDefaultLayerAttrs = layerType => backgroundLayers[layerType];
 
 export const getDefaultLayerAttr = (layerType, target) =>
 	getDefaultLayerAttrs(layerType)?.[target];
+
+export const getDefaultLayerWithBreakpoint = (
+	layerType,
+	breakpoint,
+	isHover = false
+) => {
+	const layer = getDefaultLayerAttrs(layerType);
+
+	return setBreakpointToLayer({
+		layer,
+		breakpoint,
+		isHover,
+	});
+};

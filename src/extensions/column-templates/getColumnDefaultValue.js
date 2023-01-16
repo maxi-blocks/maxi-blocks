@@ -26,9 +26,9 @@ const getColumnDefaultValue = (
 			attributes: rowPattern,
 			forceSingle: true,
 		}),
-		false,
 		breakpoint
 	);
+
 	const defaultColumnSizes = template.content[colPosition][1];
 	const cleanColumnSizes = { ...columnSizes };
 	delete cleanColumnSizes[`column-size-${breakpoint}`];

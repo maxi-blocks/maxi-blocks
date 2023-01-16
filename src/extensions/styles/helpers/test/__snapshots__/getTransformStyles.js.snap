@@ -34,38 +34,6 @@ Object {
       },
     },
   },
-  ":hover": Object {
-    "transform": Object {
-      "general": Object {
-        "transform": "scale(1) translate(0) rotate(0) ",
-        "transform-origin": "50% 50% ",
-      },
-      "l": Object {
-        "transform": "scale(1) translate(0) rotate(0) ",
-        "transform-origin": "50% 50% ",
-      },
-      "m": Object {
-        "transform": "scale(1) translate(0) rotate(0) ",
-        "transform-origin": "50% 50% ",
-      },
-      "s": Object {
-        "transform": "scale(1) translate(0) rotate(0) ",
-        "transform-origin": "50% 50% ",
-      },
-      "xl": Object {
-        "transform": "scale(1) translate(0) rotate(0) ",
-        "transform-origin": "50% 50% ",
-      },
-      "xs": Object {
-        "transform": "scale(1) translate(0) rotate(0) ",
-        "transform-origin": "50% 50% ",
-      },
-      "xxl": Object {
-        "transform": "scale(1) translate(0) rotate(0) ",
-        "transform-origin": "50% 50% ",
-      },
-    },
-  },
 }
 `;
 

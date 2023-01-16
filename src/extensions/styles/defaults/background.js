@@ -29,11 +29,19 @@ export const rawBackground = {
 };
 
 const layerSize = {
-	size: {
+	width: {
 		type: 'number',
 		default: 100,
 	},
-	'size-unit': {
+	'width-unit': {
+		type: 'string',
+		default: '%',
+	},
+	height: {
+		type: 'number',
+		default: 100,
+	},
+	'height-unit': {
 		type: 'string',
 		default: '%',
 	},
@@ -160,6 +168,7 @@ export const rawBackgroundVideo = {
 	},
 	'background-video-mediaURL': {
 		type: 'string',
+		default: 'https://www.youtube.com/watch?v=ScMzIvxBSi4',
 	},
 	'background-video-startTime': {
 		type: 'string',

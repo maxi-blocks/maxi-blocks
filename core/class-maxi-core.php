@@ -56,14 +56,14 @@ if (!class_exists('MaxiBlocks_Core')):
 
         public function maxi_blocks_body_class($classes)
         {
-            $MBClassAccessibilityClass = get_option('accessibility_option') ? ' maxi-blocks--accessibility ' : '';
-            $MBClass = " maxi-blocks--active $MBClassAccessibilityClass";
+            $mb_class_accessibility_class = get_option('accessibility_option') ? ' maxi-blocks--accessibility ' : '';
+            $mb_class = " maxi-blocks--active $mb_class_accessibility_class";
 
             if (gettype($classes) === 'string') {
-                $classes .= $MBClass;
+                $classes .= $mb_class;
             }
             if (gettype($classes) === 'array') {
-                array_push($classes, $MBClass);
+                array_push($classes, $mb_class);
             }
 
             return $classes;

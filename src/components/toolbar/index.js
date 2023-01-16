@@ -90,6 +90,7 @@ const MaxiToolbar = memo(
 			isSelected,
 			name,
 			maxiSetAttributes,
+			onModalOpen,
 			toggleHandlers,
 			rowPattern,
 			prefix = '',
@@ -294,7 +295,7 @@ const MaxiToolbar = memo(
 									: customLabel}
 
 								<span className='toolbar-block-custom-label__block-style'>
-									{` | ${blockStyle}`}
+									{blockStyle ? ` | ${blockStyle}` : ''}
 								</span>
 								{!isFirstOnHierarchy && (
 									<span className='toolbar-more-indicator'>
@@ -309,6 +310,7 @@ const MaxiToolbar = memo(
 							maxiSetAttributes={maxiSetAttributes}
 							{...getGroupAttributes(attributes, 'typography')}
 							onChange={obj => maxiSetAttributes(obj)}
+							onModalOpen={onModalOpen}
 							breakpoint={breakpoint}
 							clientId={clientId}
 							attributes={attributes}
@@ -595,6 +597,7 @@ const MaxiToolbar = memo(
 						/>
 						<TextMargin
 							blockName={name}
+							breakpoint={breakpoint}
 							{...getGroupAttributes(
 								attributes,
 								'margin',

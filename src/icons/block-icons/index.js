@@ -20,6 +20,7 @@ export { default as headings } from './headings';
 export { default as help } from './help';
 export { default as hero } from './hero';
 export { default as iconBox } from './icon-box';
+export { default as selectIcon } from './select-icon';
 export { default as iconList } from './icon-list';
 export { default as imageBox } from './image-box';
 export { default as library } from './library';

@@ -143,15 +143,6 @@ function observeConsoleLogging() {
 			return;
 		}
 
-		// Since 6.1 GradientPicker is deprecated. Need to be update on #3880
-		if (
-			text.includes(
-				'Outer margin styles for wp.components.GradientPicker is deprecated'
-			)
-		) {
-			return;
-		}
-
 		// Sometimes favicon is not found
 		if (message?._stackTraceLocations?.[0]?.url.includes('favicon.ico'))
 			return;

@@ -165,8 +165,6 @@ class edit extends MaxiBlockComponent {
 			// onRemove={onRemove}
 		};
 
-		// if (content.includes('e')) console.log(this.state.formatValue);
-
 		return [
 			<textContext.Provider
 				key={`maxi-text-block__context-${uniqueID}`}

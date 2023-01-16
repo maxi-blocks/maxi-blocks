@@ -28,7 +28,7 @@ describe('Text margin', () => {
 
 		// edit margin
 		await page.$eval(
-			'.components-popover__content .toolbar-item__padding-margin__popover input',
+			'.components-popover__content .maxi-axis-control__content__item__margin .maxi-advanced-number-control__value',
 			button => button.focus()
 		);
 

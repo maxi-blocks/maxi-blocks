@@ -62,6 +62,12 @@ class edit extends MaxiBlockComponent {
 				attributes: this.props.attributes,
 			})}`;
 
+			const forceAspectRatio = getLastBreakpointAttribute({
+				target: 'force-aspect-ratio',
+				breakpoint: this.props.deviceType,
+				attributes: this.props.attributes,
+			});
+
 			const { width: resizerWidth, height: resizerHeight } =
 				this.resizableObject.current.state;
 
@@ -71,9 +77,44 @@ class edit extends MaxiBlockComponent {
 			) {
 				this.resizableObject.current.updateSize({
 					width: width ? `${width}${widthUnit}` : '100%',
-					height,
+					height: forceAspectRatio ? 'auto' : height,
 				});
 			}
+		}
+	}
+
+	maxiBlockDidMount() {
+		if (this.resizableObject.current) {
+			const width = getLastBreakpointAttribute({
+				target: 'width',
+				breakpoint: this.props.deviceType,
+				attributes: this.props.attributes,
+			});
+			const widthUnit = getLastBreakpointAttribute({
+				target: 'width-unit',
+				breakpoint: this.props.deviceType,
+				attributes: this.props.attributes,
+			});
+			const height = `${getLastBreakpointAttribute({
+				target: 'height',
+				breakpoint: this.props.deviceType,
+				attributes: this.props.attributes,
+			})}${getLastBreakpointAttribute({
+				target: 'height-unit',
+				breakpoint: this.props.deviceType,
+				attributes: this.props.attributes,
+			})}`;
+
+			const forceAspectRatio = getLastBreakpointAttribute({
+				target: 'force-aspect-ratio',
+				breakpoint: this.props.deviceType,
+				attributes: this.props.attributes,
+			});
+
+			this.resizableObject.current.updateSize({
+				width: width ? `${width}${widthUnit}` : '100%',
+				height: forceAspectRatio ? 'auto' : height,
+			});
 		}
 	}
 

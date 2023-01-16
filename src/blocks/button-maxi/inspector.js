@@ -13,7 +13,6 @@ import {
 	DefaultStylesControl,
 	Icon,
 	SettingTabsControl,
-	AlignmentControl,
 } from '../../components';
 import * as defaultPresets from './defaults';
 import {
@@ -230,6 +229,7 @@ const Inspector = props => {
 											},
 											styleCardPrefix: 'button',
 											hideAlignment: true,
+											hideBottomGap: true,
 											disableCustomFormats: true,
 											globalProps: {
 												target: '',
@@ -319,11 +319,6 @@ const Inspector = props => {
 											...props,
 										},
 									}),
-									...inspectorTabs.opacity({
-										props: {
-											...props,
-										},
-									}),
 									...inspectorTabs.size({
 										props: {
 											...props,
@@ -385,6 +380,11 @@ const Inspector = props => {
 										},
 									}),
 									...inspectorTabs.display({
+										props: {
+											...props,
+										},
+									}),
+									...inspectorTabs.opacity({
 										props: {
 											...props,
 										},

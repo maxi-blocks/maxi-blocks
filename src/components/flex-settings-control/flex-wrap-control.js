@@ -8,7 +8,10 @@ import { __ } from '@wordpress/i18n';
  */
 import SettingTabsControl from '../setting-tabs-control';
 import Icon from '../icon';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
+import {
+	getDefaultAttribute,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 
 /**
  * Icons
@@ -75,6 +78,14 @@ const FlexWrapControl = props => {
 					breakpoint,
 					attributes: props,
 				}) || getOptions()[0].value
+			}
+			onReset={() =>
+				onChange({
+					[`flex-wrap-${breakpoint}`]: getDefaultAttribute(
+						`flex-wrap-${breakpoint}`
+					),
+					isReset: true,
+				})
 			}
 			onChange={val =>
 				onChange({

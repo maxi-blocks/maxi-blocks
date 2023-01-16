@@ -20,7 +20,6 @@ import {
  */
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
-import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * Component
@@ -128,23 +127,22 @@ const PositionControl = props => {
 							}) || ''
 						}
 						onReset={() =>
-							onChange(
-								handleOnReset({
-									[getAttributeKey(
+							onChange({
+								[getAttributeKey(
+									'position',
+									isHover,
+									prefix,
+									breakpoint
+								)]: getDefaultAttribute(
+									getAttributeKey(
 										'position',
 										isHover,
 										prefix,
 										breakpoint
-									)]: getDefaultAttribute(
-										getAttributeKey(
-											'position',
-											isHover,
-											prefix,
-											breakpoint
-										)
-									),
-								})
-							)
+									)
+								),
+								isReset: true,
+							})
 						}
 						onChange={val =>
 							onChange({

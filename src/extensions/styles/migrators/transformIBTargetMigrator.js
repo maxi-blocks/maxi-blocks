@@ -13,7 +13,7 @@ const isEligible = blockAttributes => {
 	const isBrokenTarget = relations.some(relation => {
 		if (relation.settings !== 'Transform') return false;
 
-		if (relation.css['']['']) return true;
+		if (relation.css?.['']?.['']) return true;
 
 		return false;
 	});

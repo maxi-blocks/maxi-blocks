@@ -10,7 +10,11 @@ import {
 	ColorControl,
 	ToggleSwitch,
 	SettingTabsControl,
+	AdvancedNumberControl,
 } from '../../../../components';
+import MediaUploaderControl from '../../../../components/media-uploader-control';
+import OpacityControl from '../../../../components/opacity-control';
+import withRTC from '../../../../extensions/maxi-block/withRTC';
 import {
 	getAttributeKey,
 	getDefaultAttribute,
@@ -122,13 +126,45 @@ const OverlayColor = props => {
 	);
 };
 
+const OverlayColorControl = withRTC(OverlayColor);
+
 const VideoOverlayControl = props => {
 	const {
 		onChange,
 		hideImage,
 		disableHideImage = false,
+		disableUploadImage = false,
 		disableHover = false,
+		'overlay-mediaID': mediaID,
+		'overlay-altSelector': altSelector,
+		breakpoint,
 	} = props;
+
+	const mediaPrefix = 'overlay-media-';
+	const minMaxSettings = {
+		px: {
+			min: 0,
+			max: 3999,
+		},
+		em: {
+			min: 0,
+			max: 999,
+		},
+		vw: {
+			min: 0,
+			max: 999,
+		},
+		vh: {
+			min: 0,
+			max: 999,
+		},
+		'%': {
+			min: 0,
+			max: 300,
+			minRange: 0,
+			maxRange: 300,
+		},
+	};
 
 	return (
 		<>
@@ -140,14 +176,148 @@ const VideoOverlayControl = props => {
 					onChange={val => onChange({ hideImage: val })}
 				/>
 			)}
-			{disableHover && <OverlayColor {...props} />}
+			{!hideImage && (
+				<>
+					{!disableUploadImage && (
+						<MediaUploaderControl
+							className='maxi-video-overlay-control__cover-image'
+							placeholder={__('Image overlay')}
+							mediaID={mediaID}
+							onSelectImage={val => {
+								const alt =
+									(altSelector === 'wordpress' && val?.alt) ||
+									(altSelector === 'title' && val?.title) ||
+									null;
+
+								onChange({
+									'overlay-mediaID': val.id,
+									'overlay-mediaURL': val.url,
+									'overlay-mediaAlt':
+										altSelector === 'wordpress' && !alt
+											? val.title
+											: alt,
+								});
+							}}
+							onRemoveImage={() =>
+								onChange({
+									'overlay-mediaID': null,
+									'overlay-mediaURL': '',
+									'overlay-mediaAlt': '',
+								})
+							}
+						/>
+					)}
+					<AdvancedNumberControl
+						label={__('Image width', 'maxi-blocks')}
+						className='maxi-video-overlay-control__width'
+						enableUnit
+						unit={getLastBreakpointAttribute({
+							target: `${mediaPrefix}width-unit`,
+							breakpoint,
+							attributes: props,
+						})}
+						onChangeUnit={val =>
+							onChange({
+								[`${mediaPrefix}width-unit-${breakpoint}`]: val,
+							})
+						}
+						value={getLastBreakpointAttribute({
+							target: `${mediaPrefix}width`,
+							breakpoint,
+							attributes: props,
+						})}
+						onChangeValue={val =>
+							onChange({
+								[`${mediaPrefix}width-${breakpoint}`]: val,
+							})
+						}
+						defaultValue={getDefaultAttribute(
+							`${mediaPrefix}width-${breakpoint}`
+						)}
+						onReset={() => {
+							onChange({
+								[`${mediaPrefix}width-${breakpoint}`]:
+									getDefaultAttribute(
+										`${mediaPrefix}width-${breakpoint}`
+									),
+								[`${mediaPrefix}width-unit-${breakpoint}`]:
+									getDefaultAttribute(
+										`${mediaPrefix}width-unit-${breakpoint}`
+									),
+								isReset: true,
+							});
+						}}
+						minMaxSettings={minMaxSettings}
+						allowedUnits={['px', 'em', 'vw', '%']}
+						optionType='string'
+					/>
+					<AdvancedNumberControl
+						label={__('Image height', 'maxi-blocks')}
+						className='maxi-video-overlay-control__height'
+						enableUnit
+						unit={getLastBreakpointAttribute({
+							target: `${mediaPrefix}height-unit`,
+							breakpoint,
+							attributes: props,
+						})}
+						onChangeUnit={val =>
+							onChange({
+								[`${mediaPrefix}height-unit-${breakpoint}`]:
+									val,
+							})
+						}
+						value={getLastBreakpointAttribute({
+							target: `${mediaPrefix}height`,
+							breakpoint,
+							attributes: props,
+						})}
+						onChangeValue={val =>
+							onChange({
+								[`${mediaPrefix}height-${breakpoint}`]: val,
+							})
+						}
+						defaultValue={getDefaultAttribute(
+							`${mediaPrefix}height-${breakpoint}`
+						)}
+						onReset={() => {
+							onChange({
+								[`${mediaPrefix}height-${breakpoint}`]:
+									getDefaultAttribute(
+										`${mediaPrefix}height-${breakpoint}`
+									),
+								[`${mediaPrefix}height-unit-${breakpoint}`]:
+									getDefaultAttribute(
+										`${mediaPrefix}height-unit-${breakpoint}`
+									),
+								isReset: true,
+							});
+						}}
+						minMaxSettings={minMaxSettings}
+						allowedUnits={['px', 'em', 'vw', '%']}
+						optionType='string'
+					/>
+					<OpacityControl
+						label={__('Image opacity', 'maxi-blocks')}
+						opacity={getLastBreakpointAttribute({
+							target: `${mediaPrefix}opacity`,
+							breakpoint,
+							attributes: props,
+						})}
+						breakpoint={breakpoint}
+						prefix={mediaPrefix}
+						onChange={onChange}
+						disableRTC
+					/>
+				</>
+			)}
+			{disableHover && <OverlayColorControl {...props} />}
 			{!disableHover && (
 				<SettingTabsControl
 					depth={2}
 					items={[
 						{
 							label: __('Normal state', 'maxi-blocks'),
-							content: <OverlayColor {...props} />,
+							content: <OverlayColorControl {...props} />,
 						},
 						{
 							label: __('Hover state', 'maxi-blocks'),
@@ -172,7 +342,12 @@ const VideoOverlayControl = props => {
 									/>
 									{props[
 										'overlay-background-status-hover'
-									] && <OverlayColor {...props} isHover />}
+									] && (
+										<OverlayColorControl
+											{...props}
+											isHover
+										/>
+									)}
 								</>
 							),
 						},

@@ -93,7 +93,7 @@ describe('TextMaxi', () => {
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(150);
 		await page.keyboard.type('...OnMerge', { delay: 100 });
-		await pressKeyWithTimeout('ArrowLeft', 11);
+		await pressKeyWithTimeout('ArrowLeft', 12);
 		await page.waitForTimeout(150);
 		await page.keyboard.press('Delete');
 		await page.waitForTimeout(150);
@@ -145,7 +145,9 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 		await clickTextStyle(page, 'italic');
 		await page.waitForTimeout(150);
-		await pressKeyWithTimeout('ArrowLeft', 5);
+		await page.keyboard.press('ArrowLeft');
+		await page.waitForTimeout(150);
+		await pressKeyWithTimeout('ArrowRight', 20);
 		await page.waitForTimeout(150);
 		await page.keyboard.press('Delete');
 		await page.waitForTimeout(150);
@@ -182,7 +184,11 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 		await clickTextStyle(page, 'italic');
 		await page.waitForTimeout(150);
-		await pressKeyWithTimeout('ArrowLeft', 4);
+		await page.keyboard.press('ArrowDown');
+		await page.waitForTimeout(150);
+		await page.keyboard.press('ArrowRight');
+		await page.waitForTimeout(150);
+		await page.keyboard.press('ArrowRight');
 		await page.waitForTimeout(150);
 		await page.keyboard.press('Backspace');
 		await page.waitForTimeout(150);

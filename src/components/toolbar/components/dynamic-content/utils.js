@@ -23,6 +23,13 @@ export const getCTOptions = () => {
 	return [{}];
 };
 
+// if case if the REST API is on /index.php?rest_route=
+// we need to use & for the parameters
+export const getParametersFirstSeparator = url => {
+	if (url.includes('?')) return '&';
+	return '?';
+};
+
 export const processDate = (
 	dateValue,
 	isCustomDate,

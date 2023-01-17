@@ -10,6 +10,7 @@ import {
 	limitFormat,
 	processDate,
 	relationTypes,
+	getParametersFirstSeparator,
 } from '../src/components/toolbar/components/dynamic-content/utils';
 import { formatDateOptions } from '../src/components/toolbar/components/date-formatting/utils';
 
@@ -61,35 +62,37 @@ class DynamicContent {
 
 			let response = '';
 
+			const firstSeparator = getParametersFirstSeparator(restUrl);
+
 			const getUrlByRelation = () => {
 				switch (relation) {
 					case 'date':
 					case 'modified':
 						if (!['previous', 'next'].includes(show)) {
-							return `${restUrl}wp/v2/${type}?orderby=${relation}&per_page=1&_fields=${field},id`;
+							return `${restUrl}wp/v2/${type}${firstSeparator}orderby=${relation}&per_page=1&_fields=${field},id`;
 						}
-						return `${restUrl}wp/v2/${type}/${id}?_fields=${field}`;
+						return `${restUrl}wp/v2/${type}/${id}${firstSeparator}_fields=${field}`;
 					case 'random':
-						return `${restUrl}wp/v2/${type}?orderby=rand&per_page=1&_fields=${field}`;
+						return `${restUrl}wp/v2/${type}${firstSeparator}orderby=rand&per_page=1&_fields=${field}`;
 					default:
-						return `${restUrl}wp/v2/${type}/${id}?_fields=${field}`;
+						return `${restUrl}wp/v2/${type}/${id}${firstSeparator}_fields=${field}`;
 				}
 			};
 
 			const getUrlByType = () => {
 				if (field === 'author')
-					return `${restUrl}maxi-blocks/v1.0/dc?type=author&field=${id}`;
+					return `${restUrl}maxi-blocks/v1.0/dc${firstSeparator}type=author&field=${id}`;
 				switch (type) {
 					case relationTypes.includes(type) ? type : false:
 						return getUrlByRelation();
 					case 'users':
 						return `${restUrl}wp/v2/${type}/${
 							author.current ? author.current : id
-						}/?_fields=${field}`;
+						}/${firstSeparator}_fields=${field}`;
 					case 'settings':
-						return `${restUrl}maxi-blocks/v1.0/dc?type=${type}&field=${field}`;
+						return `${restUrl}maxi-blocks/v1.0/dc${firstSeparator}type=${type}&field=${field}`;
 					default:
-						return `${restUrl}wp/v2/${type}?_fields=${field}`;
+						return `${restUrl}wp/v2/${type}${firstSeparator}_fields=${field}`;
 				}
 			};
 

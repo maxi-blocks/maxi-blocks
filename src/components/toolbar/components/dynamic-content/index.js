@@ -30,6 +30,7 @@ import {
 	limitFormat,
 	cutTags,
 	processDate,
+	getParametersFirstSeparator,
 } from './utils';
 
 /**
@@ -101,6 +102,7 @@ const DynamicContent = props => {
 	const [isEmptyIdOptions, setIsEmptyIdOptions] = useState(true);
 	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
 	const [postIdOptions, setPostIdOptions] = useState(null);
+	const [firstSeparator, setFirstSeparator] = useState('?');
 
 	const changeProps = params => {
 		Object.keys(params).forEach(key => {
@@ -168,10 +170,21 @@ const DynamicContent = props => {
 			.then(res => changeProps({ 'dc-author': Number(res.id) }));
 	};
 
+	const getFirstSeparator = async () => {
+		await apiFetch({
+			path: 'maxi-blocks/v1.0/rest-url',
+		})
+			.catch(err => console.error(err))
+			.then(url => {
+				const separator = getParametersFirstSeparator(url);
+				setFirstSeparator(separator);
+			});
+	};
+
 	const setAuthorList = async () => {
 		if (!postAuthorOptions) {
 			apiFetch({
-				path: '/wp/v2/users?per_page=99&thisFields=id, name',
+				path: `/wp/v2/users${firstSeparator}per_page=99&thisFields=id, name`,
 			})
 				.catch(err => console.error(err))
 				.then(result => {
@@ -254,7 +267,7 @@ const DynamicContent = props => {
 			relationTypes.includes(typeRef.current) &&
 			['previous', 'next'].includes(thisShow)
 		) {
-			const prevNextPath = `/wp/v2/${thisType}/${thisId}?thisFields=${thisShow}`;
+			const prevNextPath = `/wp/v2/${thisType}/${thisId}${firstSeparator}thisFields=${thisShow}`;
 			return apiFetch({
 				path: prevNextPath,
 			})
@@ -311,21 +324,21 @@ const DynamicContent = props => {
 				case 'author':
 					return `/wp/v2/${thisType}/${
 						alterIdRef.current ? alterIdRef.current : thisId
-					}?thisFields=${thisField}`;
+					}${firstSeparator}thisFields=${thisField}`;
 				case 'date':
 				case 'modified':
 					if (
 						!['previous', 'next'].includes(showRef.current) ||
 						!alterIdRef.current
 					) {
-						return `/wp/v2/${thisType}?orderby=${relationRef.current}&per_page=1&thisFields=${thisField},id`;
+						return `/wp/v2/${thisType}${firstSeparator}orderby=${relationRef.current}&per_page=1&thisFields=${thisField},id`;
 					}
 					return `/wp/v2/${thisType}/${
 						alterIdRef.current ? alterIdRef.current : thisId
-					}?thisFields=${thisField}`;
+					}${firstSeparator}thisFields=${thisField}`;
 
 				case 'random':
-					return `/wp/v2/${thisType}/?thisFields=${thisField}&per_page=99&orderby=${
+					return `/wp/v2/${thisType}/${firstSeparator}thisFields=${thisField}&per_page=99&orderby=${
 						randomOptions[thisType][
 							random(randomOptions[typeRef.current].length - 1)
 						]
@@ -334,7 +347,7 @@ const DynamicContent = props => {
 				default:
 					return `/wp/v2/${thisType}/${
 						alterIdRef.current ? alterIdRef.current : thisId
-					}?thisFields=${thisField}`;
+					}${firstSeparator}thisFields=${thisField}`;
 			}
 		};
 
@@ -347,10 +360,10 @@ const DynamicContent = props => {
 				case 'users':
 					return `/wp/v2/${thisType}/${
 						authorRef.current ? authorRef.current : thisId
-					}/?thisFields=${thisField}`;
+					}/${firstSeparator}thisFields=${thisField}`;
 				case 'settings':
 				default:
-					return `/wp/v2/${thisType}?thisFields=${thisField}`;
+					return `/wp/v2/${thisType}${firstSeparator}thisFields=${thisField}`;
 			}
 		};
 
@@ -441,7 +454,7 @@ const DynamicContent = props => {
 			relationRef.current === 'random'
 		) {
 			return apiFetch({
-				path: `/wp/v2/${type}/?thisFields=id&per_page=99&orderby=${
+				path: `/wp/v2/${type}/${firstSeparator}thisFields=id&per_page=99&orderby=${
 					randomOptions[typeRef.current][
 						random(randomOptions[typeRef.current].length - 1)
 					]
@@ -468,10 +481,10 @@ const DynamicContent = props => {
 	const getIdOptionsPath = (thisType, thisUsers = null) => {
 		const path =
 			thisType === 'users'
-				? '/wp/v2/users?per_page=99&thisFields=id, name'
+				? `/wp/v2/users${firstSeparator}per_page=99&thisFields=id, name`
 				: thisUsers
-				? `/wp/v2/${thisType}/?author=${thisUsers}&thisFields=id, ${idOptionByField[thisType]}`
-				: `/wp/v2/${thisType}?thisFields=id, ${idOptionByField[thisType]}`;
+				? `/wp/v2/${thisType}/${firstSeparator}author=${thisUsers}&thisFields=id, ${idOptionByField[thisType]}`
+				: `/wp/v2/${thisType}${firstSeparator}thisFields=id, ${idOptionByField[thisType]}`;
 		return path;
 	};
 
@@ -602,6 +615,7 @@ const DynamicContent = props => {
 		year,
 	]);
 
+	getFirstSeparator();
 	setAuthorList();
 	statusRef.current && setAuthorDefault();
 	if (

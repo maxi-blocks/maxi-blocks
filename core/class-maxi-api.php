@@ -220,6 +220,15 @@ if (!class_exists('MaxiBlocks_API')):
                     return true;
                 },
             ]);
+            register_rest_route($this->namespace, '/rest-url', [
+                'methods' => 'GET',
+                'callback' => [$this, 'get_maxi_blocks_wp_rest_api_url'],
+                
+                'permission_callback' => function () {
+                    return current_user_can('edit_posts');
+                },
+                
+            ]);
         }
 
         /**
@@ -670,6 +679,11 @@ if (!class_exists('MaxiBlocks_API')):
             }
 
             return $response;
+        }
+
+        public function get_maxi_blocks_wp_rest_api_url()
+        {
+            return get_rest_url();
         }
     }
 endif;

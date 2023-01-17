@@ -602,7 +602,7 @@ const cleanAttributes = ({
 	};
 
 	dispatch('maxiBlocks/styles').savePrevSavedAttrs(
-		pickBy(result, value => !isNil(value) || !isNil(newAttributes[value]))
+		pickBy(result, (_, key) => attributes[key] !== result[key])
 	);
 
 	return result;

@@ -16,6 +16,7 @@ import SelectControl from '../select-control';
 import SettingTabsControl from '../setting-tabs-control';
 import TextControl from '../text-control';
 import TransitionControl from '../transition-control';
+import { openSidebarAccordion } from '../../extensions/inspector';
 import {
 	createTransitionObj,
 	getDefaultAttribute,
@@ -37,6 +38,8 @@ import { getBlockData } from '../../extensions/attributes';
 
 const RelationControl = props => {
 	const { getBlock } = select('core/block-editor');
+
+	const { selectBlock } = useDispatch('core/block-editor');
 
 	const { deviceType, isButton, onChange, relations, uniqueID } = props;
 
@@ -60,7 +63,6 @@ const RelationControl = props => {
 		if (!blockName) return {};
 
 		const blockOptions = getBlockData(blockName).interactionBuilderSettings;
-		console.log(blockOptions);
 
 		return blockOptions || {};
 	};
@@ -382,8 +384,6 @@ const RelationControl = props => {
 	const getDefaultTransitionAttribute = target =>
 		transitionDefaultAttributes[`${target}-${deviceType}`];
 
-	const { selectBlock } = useDispatch('core/block-editor');
-
 	return (
 		<div className='maxi-relation-control'>
 			<Button
@@ -429,7 +429,6 @@ const RelationControl = props => {
 											)}
 										/>
 									)}
-
 									<SelectControl
 										label={__(
 											'Block to affect',
@@ -611,6 +610,9 @@ const RelationControl = props => {
 														selectBlock(
 															getClientIdFromUniqueId(
 																item.uniqueID
+															),
+															openSidebarAccordion(
+																0
 															)
 														)
 													}

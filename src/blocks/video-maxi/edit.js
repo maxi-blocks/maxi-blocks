@@ -176,9 +176,8 @@ class edit extends MaxiBlockComponent {
 			'overlay-mediaID': overlayMediaId,
 			'overlay-mediaURL': overlayMediaUrl,
 			'overlay-mediaAlt': overlayMediaAlt,
+			'overlay-altSelector': altSelector,
 			hideImage,
-			mediaID,
-			altSelector,
 		} = attributes;
 
 		const { isUploaderOpen } = this.state;
@@ -231,7 +230,6 @@ class edit extends MaxiBlockComponent {
 							});
 						}}
 						allowedTypes='image'
-						value={mediaID}
 						render={({ open }) =>
 							!hideImage && (
 								<div className='maxi-video-block__settings maxi-settings-media-upload'>

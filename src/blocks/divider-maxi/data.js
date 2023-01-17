@@ -12,7 +12,10 @@ import {
 	getBoxShadowStyles,
 	getDividerStyles,
 } from '../../extensions/styles/helpers';
-import { getCanvasSettings } from '../../extensions/relations';
+import {
+	getCanvasSettings,
+	getAdvancedSettings,
+} from '../../extensions/relations';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
 /**
@@ -133,7 +136,8 @@ const interactionBuilderSettings = {
 			target: dividerClass,
 		},
 	],
-	canvas: getCanvasSettings({ name, customCss }),
+	canvas: getCanvasSettings({ name }),
+	advanced: getAdvancedSettings({ customCss }),
 };
 
 const data = {

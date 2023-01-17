@@ -514,7 +514,16 @@ const getStyles = props => {
 	const response = {
 		[uniqueID]: styleProcessor(
 			{
-				'': { ...getWrapperObject(props), ...getImageOverflow(props) },
+				'': { ...getWrapperObject(props) },
+				' .maxi-block__resizer--overflow': {
+					...getImageOverflow(props),
+					border: getBorderStyles({
+						obj: {
+							...getGroupAttributes(props, ['borderRadius']),
+						},
+						blockStyle: props.blockStyle,
+					}),
+				},
 				':hover': getHoverWrapperObject(props),
 				' .maxi-image-block-wrapper': {
 					...getImageWrapperObject(props),

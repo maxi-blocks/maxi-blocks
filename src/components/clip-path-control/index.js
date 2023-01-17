@@ -132,15 +132,15 @@ const ClipPathControl = props => {
 
 	const classes = classnames('maxi-clip-path-control', className);
 
+	const gradientPrefix =
+		props.prefix === 'background-gradient-' ? 'header-' : '';
+
 	const clipPath = getLastBreakpointAttribute({
-		target: `${prefix}clip-path`,
+		target: `${gradientPrefix}${prefix}clip-path`,
 		breakpoint,
 		attributes: props,
 		isHover,
 	});
-
-	const gradientPrefix =
-		props.prefix === 'background-gradient-' ? 'header-' : '';
 
 	const hasClipPath =
 		isLayer || !isHover

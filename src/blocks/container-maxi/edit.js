@@ -11,9 +11,9 @@ import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import {
 	ArrowDisplayer,
 	BlockInserter,
-	Indicators,
 	ShapeDivider,
 	Toolbar,
+	BlockIndicators,
 } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 
@@ -75,6 +75,9 @@ class edit extends MaxiBlockComponent {
 			hasInnerBlocks,
 			maxiSetAttributes,
 			clientId,
+			insertInlineStyles,
+			cleanInlineStyles,
+			isSelected,
 		} = this.props;
 		const { uniqueID, isFirstOnHierarchy } = attributes;
 
@@ -119,15 +122,18 @@ class edit extends MaxiBlockComponent {
 							)}
 							breakpoint={deviceType}
 						/>
-						<Indicators
+						<BlockIndicators
 							key={`indicators-${uniqueID}`}
-							deviceType={deviceType}
 							{...getGroupAttributes(attributes, [
 								'padding',
 								'margin',
 							])}
 							onChange={obj => maxiSetAttributes(obj)}
 							breakpoint={deviceType}
+							avoidIndicators={{ margin: ['right', 'left'] }}
+							insertInlineStyles={insertInlineStyles}
+							cleanInlineStyles={cleanInlineStyles}
+							isBlockSelected={isSelected}
 						/>
 					</>
 				)}

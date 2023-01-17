@@ -25,7 +25,6 @@ const getInnerBlocksChild = ({
 	anchorLink,
 	isSave = false,
 	uniqueID,
-	blockName,
 	ref,
 	clientId,
 	hasInnerBlocks,
@@ -36,6 +35,9 @@ const getInnerBlocksChild = ({
 	const needToSplit =
 		isArray(children) &&
 		children.some(child => child?.props?.afterInnerProps);
+
+	const showWrapperInserter =
+		!isSave && hasInnerBlocks && renderWrapperInserter;
 
 	if (!needToSplit)
 		return [
@@ -57,7 +59,7 @@ const getInnerBlocksChild = ({
 			cloneElement(innerBlocksChildren, {
 				key: `maxi-inner-content__${uniqueID}`,
 			}),
-			...(!isSave && hasInnerBlocks && renderWrapperInserter && (
+			...(showWrapperInserter && (
 				<BlockInserter.WrapperInserter
 					key={`maxi-block-wrapper-inserter__${clientId}`}
 					ref={ref}
@@ -95,7 +97,7 @@ const getInnerBlocksChild = ({
 			key: `maxi-inner-content__${uniqueID}`,
 		}),
 		...secondGroup,
-		...(!isSave && hasInnerBlocks && renderWrapperInserter && (
+		...(showWrapperInserter && (
 			<BlockInserter.WrapperInserter
 				key={`maxi-block-wrapper-inserter__${clientId}`}
 				ref={ref}

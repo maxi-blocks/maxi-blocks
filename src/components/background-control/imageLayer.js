@@ -193,12 +193,12 @@ const ImageLayerSettings = props => {
 					})}
 					options={[
 						{
-							label: __('Repeat', 'maxi-blocks'),
-							value: 'repeat',
-						},
-						{
 							label: __('No repeat', 'maxi-blocks'),
 							value: 'no-repeat',
+						},
+						{
+							label: __('Repeat', 'maxi-blocks'),
+							value: 'repeat',
 						},
 						{
 							label: __('Repeat X', 'maxi-blocks'),

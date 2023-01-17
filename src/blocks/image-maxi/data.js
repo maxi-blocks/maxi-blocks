@@ -20,7 +20,10 @@ import {
 	getClipPathStyles,
 	getImageShapeStyles,
 } from '../../extensions/styles/helpers';
-import { getCanvasSettings } from '../../extensions/relations';
+import {
+	getCanvasSettings,
+	getAdvancedSettings,
+} from '../../extensions/relations';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 import { getEditorWrapper } from '../../extensions/dom';
 
@@ -291,7 +294,8 @@ const interactionBuilderSettings = {
 			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
 		},
 	],
-	canvas: getCanvasSettings({ name, customCss }),
+	canvas: getCanvasSettings({ name }),
+	advanced: getAdvancedSettings({ customCss }),
 };
 
 const data = {

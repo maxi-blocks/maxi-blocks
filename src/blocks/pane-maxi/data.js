@@ -1,7 +1,10 @@
 /**
  * Internal dependencies
  */
-import { getCanvasSettings } from '../../extensions/relations';
+import {
+	getCanvasSettings,
+	getAdvancedSettings,
+} from '../../extensions/relations';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
 const headerPrefix = 'header-';
@@ -298,7 +301,8 @@ const transition = {
 	},
 };
 const interactionBuilderSettings = {
-	canvas: getCanvasSettings({ name, customCss }),
+	canvas: getCanvasSettings({ name }),
+	advanced: getAdvancedSettings({ customCss }),
 };
 
 const data = {

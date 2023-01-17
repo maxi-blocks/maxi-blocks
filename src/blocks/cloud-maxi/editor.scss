@@ -244,17 +244,17 @@ $white: #fff;
 	}
 
 	.maxi-block-library__modal__loading_message {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		width: 100%;
 		background: rgba(0, 0, 0, 0.7);
 		height: 100%;
-		position: absolute;
-		top: 0;
-		bottom: 0;
-		left: 0;
-		right: 0;
 
 		p {
 			font-size: 42px;
@@ -267,14 +267,80 @@ $white: #fff;
 }
 
 .maxi-block-library__placeholder {
+	z-index: 100;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	min-height: 120px;
+	color: #464a53;
+	background-color: rgba(229,242,248,0.7);
+	font-size: 13px;
+	border: 1px solid #DBDDE6;
+	border-radius: 3px;
+	box-shadow: none !important;
 	.components-placeholder__instructions {
 		margin-bottom: 1.4em;
 	}
 
-	button.maxi-block-library__modal-button {
-		font-size: 16px;
-		height: auto;
-		padding: 6px 18px;
+	.maxi-library-modal__action-section{
+		width: auto;
+	}
+
+	button.maxi-block-library__modal-button__placeholder {
+		overflow: hidden;
+		color: #fff;
+		background: var(--maxi-secondary-color);
+		font-family: Roboto, sans-serif;
+		font-size: 12px;
+		font-weight: 500;
+		padding: 0 10px 0 0;
+		border: 1px solid #DBDDE6;
+		transition: all 0.1s;
+		svg{
+			-webkit-box-sizing: border-box;
+			box-sizing: border-box;
+			width: 36px;
+			height: 36px;
+			padding: 8px;
+			border-right: 1px solid #DBDDE6;
+			margin-right: 10px;
+			background-color: #fff;
+			transition: all 0.1s;
+			path{
+				fill: none !important;
+				stroke: var(--maxi-secondary-color);
+				&:first-child{
+					display: none;
+				}
+			}
+		}
+
+		&:hover {
+			background: #fff !important;
+			color: var(--maxi-secondary-color) !important;
+			border-color: var(--maxi-secondary-color);
+				svg{
+					border-color: var(--maxi-secondary-color);
+					transform: scale(1.1);
+				}
+		}
+
+		&--small {
+			padding: 0;
+			transition: none;
+			svg {
+				margin: auto;
+				border-right: none;
+			}
+		}
+		&--smaller {
+			height: 30px;
+			svg {
+				width: 30px;
+				height: 30px;
+			}
+		}
 	}
 
 	.maxi-placeholder__instructions {

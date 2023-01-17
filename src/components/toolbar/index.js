@@ -104,6 +104,7 @@ const MaxiToolbar = memo(
 			copyPasteMapping,
 			mediaPrefix,
 			dropShadow,
+			disableInset,
 		} = props;
 		const {
 			blockStyle,
@@ -559,6 +560,7 @@ const MaxiToolbar = memo(
 							breakpoint={breakpoint}
 							prefix={prefix}
 							dropShadow={dropShadow}
+							disableInset={disableInset}
 						/>
 						<ToolbarColumnPattern
 							clientId={clientId}

@@ -379,6 +379,9 @@ class MaxiBlockComponent extends Component {
 				this.props.attributes.uniqueID
 			);
 
+			if (this.maxiBlockDidChangeUniqueID)
+				this.maxiBlockDidChangeUniqueID(newUniqueID);
+
 			return newUniqueID;
 		}
 

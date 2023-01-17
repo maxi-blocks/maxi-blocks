@@ -139,7 +139,16 @@ class edit extends MaxiBlockComponent {
 		 * In case we add a whole link format, Gutenberg doesn't keep it when creators write new content.
 		 * This method fixes it
 		 */
-		const processContent = content => {
+		const processContent = rawContent => {
+			/**
+			 * Replace last space with &nbsp; to prevent losing him in Firefox #4194
+			 * Does not replace spaces, which inside of HTML tags
+			 */
+			const replaceSpaces = content =>
+				content.replace(/(?![^<]*>|[^<>]*<\/) $/, '&nbsp;');
+
+			const content = replaceSpaces(rawContent);
+
 			const isWholeLink =
 				content.split('</a>').length === 2 &&
 				content.startsWith('<a') &&

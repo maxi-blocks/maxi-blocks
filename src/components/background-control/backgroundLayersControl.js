@@ -51,7 +51,13 @@ const getLayerCardContent = props => {
 		onChangeInline = null,
 		onChange,
 		previewRef,
+		getBounds,
 	} = props;
+
+	const handleGetBounds = () =>
+		getBounds(
+			`.maxi-background-displayer .maxi-background-displayer__${layer.order}`
+		);
 
 	switch (layer.type) {
 		case 'color':
@@ -77,6 +83,7 @@ const getLayerCardContent = props => {
 					breakpoint={breakpoint}
 					isHover={isHover}
 					isLayer
+					getBounds={handleGetBounds}
 				/>
 			);
 		case 'image':
@@ -94,6 +101,7 @@ const getLayerCardContent = props => {
 					isHover={isHover}
 					disableUpload={isHover || isIB}
 					isLayer
+					getBounds={handleGetBounds}
 				/>
 			);
 		case 'video':
@@ -127,6 +135,7 @@ const getLayerCardContent = props => {
 					breakpoint={breakpoint}
 					isHover={isHover}
 					isLayer
+					getBounds={handleGetBounds}
 				/>
 			);
 		case 'shape':
@@ -369,6 +378,7 @@ const BackgroundLayersControl = ({
 	clientId,
 	breakpoint,
 	disableAddLayer,
+	getBounds,
 }) => {
 	const previewRef = useRef(null);
 
@@ -528,6 +538,7 @@ const BackgroundLayersControl = ({
 										onChangeInline,
 										onChange: onChangeLayer,
 										previewRef,
+										getBounds,
 									})}
 									id={layer.order}
 									onRemove={() => onRemoveLayer(layer)}

@@ -46,6 +46,7 @@ const ImageLayerSettings = props => {
 		moreSettings,
 		setMoreSettings,
 		isLayer,
+		getBounds,
 	} = props;
 
 	const imageOptions = cloneDeep(props.imageOptions);
@@ -601,6 +602,7 @@ const ImageLayerSettings = props => {
 					isHover={isHover}
 					prefix='background-image-'
 					breakpoint={breakpoint}
+					getBounds={getBounds}
 					isLayer
 					disableRTC
 				/>

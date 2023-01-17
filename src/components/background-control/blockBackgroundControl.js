@@ -34,6 +34,7 @@ const BlockBackgroundControl = props => {
 		disableColor = false,
 		disableSVG = false,
 		disableAddLayer = false,
+		getBounds,
 	} = props;
 
 	const layersOptions = compact([
@@ -79,6 +80,7 @@ const BlockBackgroundControl = props => {
 				clientId={clientId}
 				breakpoint={breakpoint}
 				hoverStatus={hoverStatus}
+				getBounds={getBounds}
 			/>
 		</div>
 	);

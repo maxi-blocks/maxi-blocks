@@ -28,6 +28,7 @@ const GradientLayerContent = props => {
 		prefix = '',
 		breakpoint,
 		isLayer = false,
+		getBounds,
 	} = props;
 
 	const gradientOptions = cloneDeep(props.gradientOptions);
@@ -57,6 +58,7 @@ const GradientLayerContent = props => {
 					breakpoint={breakpoint}
 					isLayer
 					disableRTC
+					getBounds={getBounds}
 				/>
 			)}
 			<SizeAndPositionLayerControl

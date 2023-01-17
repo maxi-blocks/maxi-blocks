@@ -42,6 +42,7 @@ const ColorLayerContent = props => {
 		isLayer = false,
 		globalProps,
 		isToolbar = false,
+		getBounds,
 	} = props;
 
 	const colorOptions = cloneDeep(props.colorOptions);
@@ -220,6 +221,7 @@ const ColorLayerContent = props => {
 					breakpoint={breakpoint}
 					isLayer
 					disableRTC
+					getBounds={getBounds}
 				/>
 			)}
 			<SizeAndPositionLayerControl

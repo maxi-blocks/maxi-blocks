@@ -9,6 +9,7 @@ jest.mock('@wordpress/data', () => {
 			return {
 				receiveBaseBreakpoint: jest.fn(() => 'm'),
 				getPrevSavedAttrs: jest.fn(() => []),
+				getSelectedBlockCount: jest.fn(() => 1),
 			};
 		}),
 		createReduxStore: jest.fn(),
@@ -409,6 +410,7 @@ describe('cleanAttributes', () => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
 					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
 		);
@@ -647,6 +649,7 @@ describe('cleanAttributes', () => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'm'),
 					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
 		);
@@ -870,6 +873,7 @@ describe('cleanAttributes', () => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'l'),
 					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
 		);
@@ -908,6 +912,7 @@ describe('cleanAttributes', () => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'm'),
 					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
 		);
@@ -970,6 +975,7 @@ describe('cleanAttributes', () => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'l'),
 					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
 		);
@@ -1029,6 +1035,7 @@ describe('cleanAttributes', () => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'm'),
 					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
 		);
@@ -1083,6 +1090,7 @@ describe('cleanAttributes', () => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
 					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
 		);
@@ -1118,6 +1126,7 @@ describe('cleanAttributes', () => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'l'),
 					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
 		);
@@ -1156,6 +1165,7 @@ describe('cleanAttributes', () => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
 					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
 		);
@@ -1195,6 +1205,7 @@ describe('cleanAttributes', () => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
 					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
 		);
@@ -1235,6 +1246,7 @@ describe('cleanAttributes', () => {
 						'test-xxl',
 						'test-xl',
 					]),
+					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
 		);
@@ -1277,6 +1289,7 @@ describe('cleanAttributes', () => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
 					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
 		);
@@ -1317,6 +1330,7 @@ describe('cleanAttributes', () => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
 					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
 		);
@@ -1356,6 +1370,7 @@ describe('cleanAttributes', () => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
 					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
 		);
@@ -1387,6 +1402,7 @@ describe('cleanAttributes', () => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
 					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
 		);
@@ -1422,6 +1438,7 @@ describe('cleanAttributes', () => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
 					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
 		);
@@ -1457,6 +1474,7 @@ describe('cleanAttributes', () => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
 					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
 		);
@@ -1492,6 +1510,7 @@ describe('cleanAttributes', () => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
 					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
 		);

@@ -602,7 +602,12 @@ const cleanAttributes = ({
 	};
 
 	dispatch('maxiBlocks/styles').savePrevSavedAttrs(
-		pickBy(result, (_, key) => attributes[key] !== result[key])
+		pickBy(result, (_, key) => {
+			const defaultAttribute = getDefaultAttribute(key, clientId);
+			return [attributes[key], defaultAttribute].every(
+				value => value !== result[key]
+			);
+		})
 	);
 
 	return result;

@@ -53,7 +53,7 @@ const ClipPathVisualEditor = props => {
 				visualEditorRef.current.getBoundingClientRect();
 			const editorSize = direction === 'x' ? editorWidth : editorHeight;
 
-			return round((value * editorSize) / blockSize);
+			return round((value * editorSize) / blockSize, 2);
 		};
 
 		const newClipPath = cloneDeep(clipPathOptions);
@@ -142,7 +142,7 @@ const ClipPathVisualEditor = props => {
 			}
 		};
 
-		return setAxisLimits(round(valueTransformation()), unit, direction);
+		return setAxisLimits(round(valueTransformation(), 2), unit, direction);
 	};
 
 	const onMouseMove = e => {
@@ -158,7 +158,7 @@ const ClipPathVisualEditor = props => {
 			const abs = direction === 'x' ? absXAxis : absYAxis;
 			const absSize = direction === 'x' ? absWidth : absHeight;
 
-			return round(((client - abs) / absSize) * 100);
+			return round(((client - abs) / absSize) * 100, 2);
 		};
 
 		const newLeft = getValueByDirection('x');

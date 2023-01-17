@@ -47,18 +47,13 @@ import {
 	iconFill,
 } from '../../icons';
 
-/**
- * Component
- */
-const IconControl = props => {
+const IconControlResponsiveSettings = withRTC(props => {
 	const {
-		className,
 		onChangeInline = null,
 		onChange,
 		clientId,
 		svgType,
 		breakpoint,
-		blockStyle,
 		isHover = false,
 		isInteractionBuilder = false,
 		disableBackground = false,
@@ -68,17 +63,12 @@ const IconControl = props => {
 		disablePadding = false,
 		disablePosition = false,
 		disableSpacing = false,
-		disableModal = false,
 		getIconWithColor,
-		type = 'button-icon',
 		inlineTarget,
 		prefix = '',
 		[`${prefix}icon-only`]: iconOnly,
 		[`${prefix}icon-inherit`]: iconInherit,
-		[`${prefix}icon-content`]: iconContent,
 	} = props;
-
-	const classes = classnames('maxi-icon-control', className);
 
 	const [iconStyle, setIconStyle] = useState('color');
 
@@ -169,6 +159,497 @@ const IconControl = props => {
 	);
 
 	return (
+		<>
+			{!isInteractionBuilder &&
+				!disableIconOnly &&
+				!isHover &&
+				breakpoint === 'general' && (
+					<>
+						<hr />
+						<ToggleSwitch
+							label={__('Icon only (remove text)', 'maxi-blocks')}
+							className='maxi-icon-control__icon-only'
+							selected={iconOnly}
+							onChange={val => {
+								const icon = getIconWithColor({
+									isIconOnly: val,
+									isHover,
+								});
+
+								onChange({
+									[`${prefix}icon-only`]: val,
+									[`${prefix}icon-content`]: icon,
+								});
+							}}
+						/>
+					</>
+				)}
+			<SvgWidthControl
+				{...getGroupAttributes(props, 'icon', isHover, prefix)}
+				className='maxi-icon-control__width'
+				onChange={onChange}
+				prefix={`${prefix}icon-`}
+				breakpoint={breakpoint}
+				isHover={isHover}
+			/>
+			{svgType !== 'Shape' && (
+				<SvgStrokeWidthControl
+					{...getGroupAttributes(props, 'icon', isHover, prefix)}
+					{...(isHover && {
+						...{
+							...getGroupAttributes(
+								props,
+								'icon',
+								isHover,
+								prefix
+							),
+						},
+					})}
+					className='maxi-icon-control__stroke-width'
+					onChange={obj => onChange(obj)}
+					prefix={`${prefix}icon-`}
+					breakpoint={breakpoint}
+					isHover={isHover}
+					content={props[`${prefix}icon-content`]}
+				/>
+			)}
+			{!disableSpacing && !isHover && !iconOnly && (
+				<>
+					<AdvancedNumberControl
+						label={__('Spacing', 'maxi-blocks')}
+						className='maxi-icon-control__spacing'
+						min={0}
+						max={999}
+						initial={1}
+						step={1}
+						breakpoint={breakpoint}
+						value={props[`${prefix}icon-spacing-${breakpoint}`]}
+						onChangeValue={val => {
+							onChange({
+								[`${prefix}icon-spacing-${breakpoint}`]:
+									val !== undefined && val !== '' ? val : '',
+							});
+						}}
+						onReset={() =>
+							onChange({
+								[`${prefix}icon-spacing-${breakpoint}`]:
+									getDefaultAttribute(
+										`${prefix}icon-spacing-${breakpoint}`
+									),
+								isReset: true,
+							})
+						}
+					/>
+					{!disablePosition && (
+						<AxisPositionControl
+							label='Icon'
+							className='maxi-icon-control__position'
+							selected={props[`${prefix}icon-position`]}
+							onChange={val => {
+								onChange({
+									[`${prefix}icon-position`]: val,
+								});
+							}}
+							breakpoint={breakpoint}
+						/>
+					)}
+				</>
+			)}
+			{!disableIconInherit && !isHover && breakpoint === 'general' && (
+				<ToggleSwitch
+					label={__(
+						'Inherit stroke colour/background from button',
+						'maxi-block'
+					)}
+					className='maxi-icon-control__inherit'
+					selected={iconInherit}
+					onChange={val => {
+						const icon = getIconWithColor({
+							isInherit: val,
+							isHover,
+						});
+
+						onChange({
+							[`${prefix}icon-inherit`]: val,
+							[`${prefix}icon-content`]: icon,
+						});
+					}}
+				/>
+			)}
+			{getOptions().length > 1 && (
+				<SettingTabsControl
+					className='maxi-icon-styles-control'
+					type='buttons'
+					fullWidthMode
+					selected={iconStyle}
+					items={getOptions()}
+					onChange={val => setIconStyle(val)}
+				/>
+			)}
+			{iconStyle === 'color' &&
+				(!iconInherit || iconOnly || disableIconInherit ? (
+					svgType !== 'Shape' && (
+						<ColorControl
+							label={__('Icon stroke', 'maxi-blocks')}
+							className='maxi-icon-styles-control--color'
+							avoidBreakpointForDefault
+							color={
+								props[
+									`${prefix}icon-stroke-color${
+										isHover ? '-hover' : ''
+									}`
+								]
+							}
+							prefix={`${prefix}icon-stroke-`}
+							paletteColor={
+								props[
+									`${prefix}icon-stroke-palette-color${
+										isHover ? '-hover' : ''
+									}`
+								]
+							}
+							paletteOpacity={
+								props[
+									`${prefix}icon-stroke-palette-opacity${
+										isHover ? '-hover' : ''
+									}`
+								]
+							}
+							paletteStatus={
+								props[
+									`${prefix}icon-stroke-palette-status${
+										isHover ? '-hover' : ''
+									}`
+								]
+							}
+							onChangeInline={({ color }) =>
+								onChangeInline &&
+								onChangeInline(
+									{ stroke: color },
+									'[data-stroke]',
+									true
+								)
+							}
+							onChange={({
+								color,
+								paletteColor,
+								paletteStatus,
+								paletteOpacity,
+							}) => {
+								const icon = getIconWithColor({
+									color,
+									paletteColor,
+									paletteStatus,
+									paletteOpacity,
+									isHover,
+								});
+
+								onChange({
+									[`${prefix}icon-stroke-color${
+										isHover ? '-hover' : ''
+									}`]: color,
+									[`${prefix}icon-stroke-palette-color${
+										isHover ? '-hover' : ''
+									}`]: paletteColor,
+									[`${prefix}icon-stroke-palette-status${
+										isHover ? '-hover' : ''
+									}`]: paletteStatus,
+									[`${prefix}icon-stroke-palette-opacity${
+										isHover ? '-hover' : ''
+									}`]: paletteOpacity,
+									[`${prefix}icon-content`]: icon,
+								});
+							}}
+							isHover={isHover}
+							globalProps={{
+								target: `${isHover ? 'hover-line' : 'line'}`,
+								type: 'icon',
+							}}
+						/>
+					)
+				) : (
+					<InfoBox
+						key='maxi-warning-box__icon-color'
+						message={__(
+							'Icon stroke colour is inheriting from button.',
+							'maxi-blocks'
+						)}
+						links={[
+							{
+								title: __('Button colour', 'maxi-blocks'),
+								panel: 'typography',
+							},
+						]}
+					/>
+				))}
+			{iconStyle === 'border' && (
+				<BorderControl
+					{...getGroupAttributes(
+						props,
+						[
+							`iconBorder${isHover ? 'Hover' : ''}`,
+							`iconBorderWidth${isHover ? 'Hover' : ''}`,
+							`iconBorderRadius${isHover ? 'Hover' : ''}`,
+						],
+						isHover,
+						prefix
+					)}
+					prefix={`${prefix}icon-`}
+					onChange={onChange}
+					breakpoint={breakpoint}
+					clientId={clientId}
+					isHover={isHover}
+					disableRTC
+				/>
+			)}
+			{iconStyle === 'fill' && svgType !== 'Line' && (
+				<ColorControl
+					label={__('Icon fill', 'maxi-blocks')}
+					color={
+						props[
+							`${prefix}icon-fill-color${isHover ? '-hover' : ''}`
+						]
+					}
+					prefix={`${prefix}icon-fill`}
+					paletteColor={
+						props[
+							`${prefix}icon-fill-palette-color${
+								isHover ? '-hover' : ''
+							}`
+						]
+					}
+					paletteOpacity={
+						props[
+							`${prefix}icon-fill-palette-opacity${
+								isHover ? '-hover' : ''
+							}`
+						]
+					}
+					paletteStatus={
+						props[
+							`${prefix}icon-fill-palette-status${
+								isHover ? '-hover' : ''
+							}`
+						]
+					}
+					onChangeInline={({ color }) =>
+						onChangeInline &&
+						onChangeInline({ fill: color }, '[data-fill]', true)
+					}
+					onChange={({
+						color,
+						paletteColor,
+						paletteStatus,
+						paletteOpacity,
+					}) => {
+						const icon = getIconWithColor({
+							color,
+							paletteColor,
+							paletteStatus,
+							paletteOpacity,
+							type: 'fill',
+							isHover,
+						});
+
+						onChange({
+							[`${prefix}icon-fill-color${
+								isHover ? '-hover' : ''
+							}`]: color,
+							[`${prefix}icon-fill-palette-color${
+								isHover ? '-hover' : ''
+							}`]: paletteColor,
+							[`${prefix}icon-fill-palette-status${
+								isHover ? '-hover' : ''
+							}`]: paletteStatus,
+							[`${prefix}icon-fill-palette-opacity${
+								isHover ? '-hover' : ''
+							}`]: paletteOpacity,
+							[`${prefix}icon-content`]: icon,
+						});
+					}}
+					isHover={isHover}
+					globalProps={{
+						target: `${isHover ? 'hover-fill' : 'fill'}`,
+						type: 'icon',
+					}}
+					avoidBreakpointForDefault
+				/>
+			)}
+			{!disableBackground && (
+				<>
+					<SettingTabsControl
+						type='buttons'
+						fullWidthMode
+						selected={iconBgActive}
+						items={getBackgroundOptions()}
+						onChange={val => {
+							setIconBgActive(val);
+							onChange({
+								[getAttributeKey(
+									'background-active-media',
+									isHover,
+									`${prefix}icon-`,
+									breakpoint
+								)]: val,
+							});
+						}}
+					/>
+					{iconBgActive === 'color' &&
+						(!iconInherit || disableIconInherit ? (
+							<ColorControl
+								label={__('Icon background', 'maxi-blocks')}
+								paletteStatus={getLastBreakpointAttribute({
+									target: `${prefix}icon-background-palette-status`,
+									breakpoint,
+									attributes: props,
+									isHover,
+								})}
+								paletteColor={getLastBreakpointAttribute({
+									target: `${prefix}icon-background-palette-color`,
+									breakpoint,
+									attributes: props,
+									isHover,
+									prefix,
+								})}
+								paletteOpacity={getLastBreakpointAttribute({
+									target: `${prefix}icon-background-palette-opacity`,
+									breakpoint,
+									attributes: props,
+									isHover,
+									prefix,
+								})}
+								color={getLastBreakpointAttribute({
+									target: `${prefix}icon-background-color`,
+									breakpoint,
+									attributes: props,
+									isHover,
+									prefix,
+								})}
+								prefix={`${prefix}icon-background-`}
+								avoidBreakpointForDefault
+								onChangeInline={({ color }) =>
+									onChangeInline &&
+									onChangeInline(
+										{
+											background: color,
+										},
+										inlineTarget
+									)
+								}
+								onChange={({
+									paletteStatus,
+									paletteColor,
+									paletteOpacity,
+									color,
+								}) => {
+									onChange(
+										{
+											[getAttributeKey(
+												'background-palette-status',
+												isHover,
+												`${prefix}icon-`,
+												breakpoint
+											)]: paletteStatus,
+											[getAttributeKey(
+												'background-palette-color',
+												isHover,
+												`${prefix}icon-`,
+												breakpoint
+											)]: paletteColor,
+											[getAttributeKey(
+												'background-palette-opacity',
+												isHover,
+												`${prefix}icon-`,
+												breakpoint
+											)]: paletteOpacity,
+											[getAttributeKey(
+												'background-color',
+												isHover,
+												`${prefix}icon-`,
+												breakpoint
+											)]: color,
+										},
+										inlineTarget
+									);
+								}}
+								isHover={isHover}
+							/>
+						) : (
+							<InfoBox
+								key='maxi-warning-box__icon-background'
+								message={__(
+									'Icon background is inheriting from button.',
+									'maxi-blocks'
+								)}
+								links={[
+									{
+										title: __(
+											'Button Background colour',
+											'maxi-blocks'
+										),
+										panel: 'button background',
+									},
+								]}
+							/>
+						))}
+					{iconBgActive === 'gradient' && (
+						<GradientControl
+							{...getGroupAttributes(
+								props,
+								'iconBackgroundGradient',
+								isHover,
+								prefix
+							)}
+							label={__(
+								'Icon Background gradient',
+								'maxi-blocks'
+							)}
+							breakpoint={breakpoint}
+							prefix={`${prefix}icon-background-`}
+							isHover={isHover}
+							onChange={onChange}
+						/>
+					)}
+				</>
+			)}
+			{!disablePadding && !isHover && (
+				<AxisControl
+					{...getGroupAttributes(props, 'iconPadding', false, prefix)}
+					prefix={prefix}
+					label={__('Icon padding', 'maxi-blocks')}
+					onChange={onChange}
+					breakpoint={breakpoint}
+					target='icon-padding'
+					disableAuto
+					optionType='string'
+					minMaxSettings={minMaxSettings}
+				/>
+			)}
+		</>
+	);
+});
+
+/**
+ * Component
+ */
+const IconControl = props => {
+	const {
+		className,
+		onChange,
+		breakpoint,
+		blockStyle,
+		isHover = false,
+		isInteractionBuilder = false,
+		disableModal = false,
+		getIconWithColor,
+		type = 'button-icon',
+		prefix = '',
+		[`${prefix}icon-content`]: iconContent,
+	} = props;
+
+	const classes = classnames('maxi-icon-control', className);
+
+	return (
 		<div className={classes}>
 			{!isInteractionBuilder &&
 				!disableModal &&
@@ -198,508 +679,9 @@ const IconControl = props => {
 						prefix={prefix}
 					/>
 				)}
-			{iconContent && (
-				<>
-					{!isInteractionBuilder &&
-						!disableIconOnly &&
-						!isHover &&
-						breakpoint === 'general' && (
-							<>
-								<hr />
-								<ToggleSwitch
-									label={__(
-										'Icon only (remove text)',
-										'maxi-blocks'
-									)}
-									className='maxi-icon-control__icon-only'
-									selected={iconOnly}
-									onChange={val => {
-										const icon = getIconWithColor({
-											isIconOnly: val,
-											isHover,
-										});
-
-										onChange({
-											[`${prefix}icon-only`]: val,
-											[`${prefix}icon-content`]: icon,
-										});
-									}}
-								/>
-							</>
-						)}
-					<SvgWidthControl
-						{...getGroupAttributes(props, 'icon', isHover, prefix)}
-						className='maxi-icon-control__width'
-						onChange={onChange}
-						prefix={`${prefix}icon-`}
-						breakpoint={breakpoint}
-						isHover={isHover}
-					/>
-					{svgType !== 'Shape' && (
-						<SvgStrokeWidthControl
-							{...getGroupAttributes(
-								props,
-								'icon',
-								isHover,
-								prefix
-							)}
-							{...(isHover && {
-								...{
-									...getGroupAttributes(
-										props,
-										'icon',
-										isHover,
-										prefix
-									),
-								},
-							})}
-							className='maxi-icon-control__stroke-width'
-							onChange={obj => onChange(obj)}
-							prefix={`${prefix}icon-`}
-							breakpoint={breakpoint}
-							isHover={isHover}
-							content={props[`${prefix}icon-content`]}
-						/>
-					)}
-					{!disableSpacing && !isHover && !iconOnly && (
-						<>
-							<AdvancedNumberControl
-								label={__('Spacing', 'maxi-blocks')}
-								className='maxi-icon-control__spacing'
-								min={0}
-								max={999}
-								initial={1}
-								step={1}
-								breakpoint={breakpoint}
-								value={
-									props[`${prefix}icon-spacing-${breakpoint}`]
-								}
-								onChangeValue={val => {
-									onChange({
-										[`${prefix}icon-spacing-${breakpoint}`]:
-											val !== undefined && val !== ''
-												? val
-												: '',
-									});
-								}}
-								onReset={() =>
-									onChange({
-										[`${prefix}icon-spacing-${breakpoint}`]:
-											getDefaultAttribute(
-												`${prefix}icon-spacing-${breakpoint}`
-											),
-										isReset: true,
-									})
-								}
-							/>
-							{!disablePosition && (
-								<AxisPositionControl
-									label='Icon'
-									className='maxi-icon-control__position'
-									selected={props[`${prefix}icon-position`]}
-									onChange={val => {
-										onChange({
-											[`${prefix}icon-position`]: val,
-										});
-									}}
-									breakpoint={breakpoint}
-								/>
-							)}
-						</>
-					)}
-					{!disableIconInherit &&
-						!isHover &&
-						breakpoint === 'general' && (
-							<ToggleSwitch
-								label={__(
-									'Inherit stroke colour/background from button',
-									'maxi-block'
-								)}
-								className='maxi-icon-control__inherit'
-								selected={iconInherit}
-								onChange={val => {
-									const icon = getIconWithColor({
-										isInherit: val,
-										isHover,
-									});
-
-									onChange({
-										[`${prefix}icon-inherit`]: val,
-										[`${prefix}icon-content`]: icon,
-									});
-								}}
-							/>
-						)}
-					{getOptions().length > 1 && (
-						<SettingTabsControl
-							className='maxi-icon-styles-control'
-							type='buttons'
-							fullWidthMode
-							selected={iconStyle}
-							items={getOptions()}
-							onChange={val => setIconStyle(val)}
-						/>
-					)}
-					{iconStyle === 'color' &&
-						(!iconInherit || iconOnly || disableIconInherit ? (
-							svgType !== 'Shape' && (
-								<ColorControl
-									label={__('Icon stroke', 'maxi-blocks')}
-									className='maxi-icon-styles-control--color'
-									avoidBreakpointForDefault
-									color={getAttributeValue({
-										target: 'icon-stroke-color',
-										props,
-										isHover,
-										prefix,
-									})}
-									prefix={`${prefix}icon-stroke-`}
-									paletteColor={getAttributeValue({
-										target: 'icon-stroke-palette-color',
-										props,
-										isHover,
-										prefix,
-									})}
-									paletteOpacity={getAttributeValue({
-										target: 'icon-stroke-palette-opacity',
-										props,
-										isHover,
-										prefix,
-									})}
-									paletteStatus={getAttributeValue({
-										target: 'icon-stroke-palette-status',
-										props,
-										isHover,
-										prefix,
-									})}
-									onChangeInline={({ color }) =>
-										onChangeInline &&
-										onChangeInline(
-											{ stroke: color },
-											'[data-stroke]',
-											true
-										)
-									}
-									onChange={({
-										color,
-										paletteColor,
-										paletteStatus,
-										paletteOpacity,
-									}) => {
-										const icon = getIconWithColor({
-											color,
-											paletteColor,
-											paletteStatus,
-											paletteOpacity,
-											isHover,
-										});
-
-										onChange({
-											[`${prefix}icon-stroke-color${
-												isHover ? '-hover' : ''
-											}`]: color,
-											[`${prefix}icon-stroke-palette-color${
-												isHover ? '-hover' : ''
-											}`]: paletteColor,
-											[`${prefix}icon-stroke-palette-status${
-												isHover ? '-hover' : ''
-											}`]: paletteStatus,
-											[`${prefix}icon-stroke-palette-opacity${
-												isHover ? '-hover' : ''
-											}`]: paletteOpacity,
-											[`${prefix}icon-content`]: icon,
-										});
-									}}
-									isHover={isHover}
-									globalProps={{
-										target: `${
-											isHover ? 'hover-line' : 'line'
-										}`,
-										type: 'icon',
-									}}
-								/>
-							)
-						) : (
-							<InfoBox
-								key='maxi-warning-box__icon-color'
-								message={__(
-									'Icon stroke colour is inheriting from button.',
-									'maxi-blocks'
-								)}
-								links={[
-									{
-										title: __(
-											'Button colour',
-											'maxi-blocks'
-										),
-										panel: 'typography',
-									},
-								]}
-							/>
-						))}
-					{iconStyle === 'border' && (
-						<BorderControl
-							{...getGroupAttributes(
-								props,
-								[
-									'iconBorder',
-									'iconBorderWidth',
-									'iconBorderRadius',
-								],
-								isHover,
-								prefix
-							)}
-							prefix={`${prefix}icon-`}
-							onChange={onChange}
-							breakpoint={breakpoint}
-							clientId={clientId}
-							isHover={isHover}
-							disableRTC
-						/>
-					)}
-					{iconStyle === 'fill' && svgType !== 'Line' && (
-						<ColorControl
-							label={__('Icon fill', 'maxi-blocks')}
-							color={getAttributeValue({
-								target: 'icon-fill-color',
-								props,
-								isHover,
-								prefix,
-							})}
-							prefix={`${prefix}icon-fill`}
-							paletteColor={getAttributeValue({
-								target: 'icon-fill-palette-color',
-								props,
-								isHover,
-								prefix,
-							})}
-							paletteOpacity={getAttributeValue({
-								target: 'icon-fill-palette-opacity',
-								props,
-								isHover,
-								prefix,
-							})}
-							paletteStatus={getAttributeValue({
-								target: 'icon-fill-palette-status',
-								props,
-								isHover,
-								prefix,
-							})}
-							onChangeInline={({ color }) =>
-								onChangeInline &&
-								onChangeInline(
-									{ fill: color },
-									'[data-fill]',
-									true
-								)
-							}
-							onChange={({
-								color,
-								paletteColor,
-								paletteStatus,
-								paletteOpacity,
-							}) => {
-								const icon = getIconWithColor({
-									color,
-									paletteColor,
-									paletteStatus,
-									paletteOpacity,
-									type: 'fill',
-									isHover,
-								});
-
-								onChange({
-									[`${prefix}icon-fill-color${
-										isHover ? '-hover' : ''
-									}`]: color,
-									[`${prefix}icon-fill-palette-color${
-										isHover ? '-hover' : ''
-									}`]: paletteColor,
-									[`${prefix}icon-fill-palette-status${
-										isHover ? '-hover' : ''
-									}`]: paletteStatus,
-									[`${prefix}icon-fill-palette-opacity${
-										isHover ? '-hover' : ''
-									}`]: paletteOpacity,
-									[`${prefix}icon-content`]: icon,
-								});
-							}}
-							isHover={isHover}
-							globalProps={{
-								target: `${isHover ? 'hover-fill' : 'fill'}`,
-								type: 'icon',
-							}}
-							avoidBreakpointForDefault
-						/>
-					)}
-					{!disableBackground && (
-						<>
-							<SettingTabsControl
-								type='buttons'
-								fullWidthMode
-								selected={iconBgActive}
-								items={getBackgroundOptions()}
-								onChange={val => {
-									setIconBgActive(val);
-									onChange({
-										[getAttributeKey(
-											'background-active-media',
-											isHover,
-											`${prefix}icon-`,
-											breakpoint
-										)]: val,
-									});
-								}}
-							/>
-							{iconBgActive === 'color' &&
-								(!iconInherit || disableIconInherit ? (
-									<ColorControl
-										label={__(
-											'Icon background',
-											'maxi-blocks'
-										)}
-										paletteStatus={getLastBreakpointAttribute(
-											{
-												target: `${prefix}icon-background-palette-status`,
-												breakpoint,
-												attributes: props,
-												isHover,
-											}
-										)}
-										paletteColor={getLastBreakpointAttribute(
-											{
-												target: `${prefix}icon-background-palette-color`,
-												breakpoint,
-												attributes: props,
-												isHover,
-												prefix,
-											}
-										)}
-										paletteOpacity={getLastBreakpointAttribute(
-											{
-												target: `${prefix}icon-background-palette-opacity`,
-												breakpoint,
-												attributes: props,
-												isHover,
-												prefix,
-											}
-										)}
-										color={getLastBreakpointAttribute({
-											target: `${prefix}icon-background-color`,
-											breakpoint,
-											attributes: props,
-											isHover,
-											prefix,
-										})}
-										prefix={`${prefix}icon-background-`}
-										avoidBreakpointForDefault
-										onChangeInline={({ color }) =>
-											onChangeInline &&
-											onChangeInline(
-												{
-													background: color,
-												},
-												inlineTarget
-											)
-										}
-										onChange={({
-											paletteStatus,
-											paletteColor,
-											paletteOpacity,
-											color,
-										}) => {
-											onChange(
-												{
-													[getAttributeKey(
-														'background-palette-status',
-														isHover,
-														`${prefix}icon-`,
-														breakpoint
-													)]: paletteStatus,
-													[getAttributeKey(
-														'background-palette-color',
-														isHover,
-														`${prefix}icon-`,
-														breakpoint
-													)]: paletteColor,
-													[getAttributeKey(
-														'background-palette-opacity',
-														isHover,
-														`${prefix}icon-`,
-														breakpoint
-													)]: paletteOpacity,
-													[getAttributeKey(
-														'background-color',
-														isHover,
-														`${prefix}icon-`,
-														breakpoint
-													)]: color,
-												},
-												inlineTarget
-											);
-										}}
-										isHover={isHover}
-									/>
-								) : (
-									<InfoBox
-										key='maxi-warning-box__icon-background'
-										message={__(
-											'Icon background is inheriting from button.',
-											'maxi-blocks'
-										)}
-										links={[
-											{
-												title: __(
-													'Button Background colour',
-													'maxi-blocks'
-												),
-												panel: 'button background',
-											},
-										]}
-									/>
-								))}
-							{iconBgActive === 'gradient' && (
-								<GradientControl
-									{...getGroupAttributes(
-										props,
-										'iconBackgroundGradient',
-										isHover,
-										prefix
-									)}
-									label={__(
-										'Icon Background gradient',
-										'maxi-blocks'
-									)}
-									breakpoint={breakpoint}
-									prefix={`${prefix}icon-background-`}
-									isHover={isHover}
-									onChange={onChange}
-								/>
-							)}
-						</>
-					)}
-					{!disablePadding && !isHover && (
-						<AxisControl
-							{...getGroupAttributes(
-								props,
-								'iconPadding',
-								false,
-								prefix
-							)}
-							prefix={prefix}
-							label={__('Icon padding', 'maxi-blocks')}
-							onChange={onChange}
-							breakpoint={breakpoint}
-							target='icon-padding'
-							disableAuto
-							optionType='string'
-							minMaxSettings={minMaxSettings}
-						/>
-					)}
-				</>
-			)}
+			{iconContent && <IconControlResponsiveSettings {...props} />}
 		</div>
 	);
 };
 
-export default withRTC(IconControl);
+export default IconControl;

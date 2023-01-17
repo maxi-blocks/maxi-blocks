@@ -22,6 +22,7 @@ import {
 } from '../../extensions/styles/helpers';
 import { getCanvasSettings } from '../../extensions/relations';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
+import { getEditorWrapper } from '../../extensions/dom';
 
 /**
  * Classnames
@@ -264,7 +265,18 @@ const interactionBuilderSettings = {
 			attrGroupName: 'clipPath',
 			transitionTarget: transition.block['clip path'].target,
 			hoverProp: 'clip-path-status-hover',
-			component: props => <ClipPathControl {...props} />,
+			component: props => (
+				<ClipPathControl
+					{...props}
+					getBounds={() =>
+						getEditorWrapper()
+							.querySelector(
+								`.${props.attributes.uniqueID}${imageClass}`
+							)
+							.getBoundingClientRect()
+					}
+				/>
+			),
 			helper: props => getClipPathStyles(props),
 			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
 		},

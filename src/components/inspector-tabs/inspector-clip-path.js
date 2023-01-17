@@ -20,11 +20,13 @@ import {
 import { isEmpty } from 'lodash';
 
 const clipPath = ({ props, prefix = '' }) => {
-	const { attributes, deviceType, maxiSetAttributes } = props;
+	const { attributes, deviceType, maxiSetAttributes, getBlockRefBounds } =
+		props;
 	const clipPathControlProps = {
-		onChange: maxiSetAttributes,
 		prefix,
 		breakpoint: deviceType,
+		onChange: maxiSetAttributes,
+		getBlockRefBounds,
 	};
 
 	return {
@@ -38,7 +40,6 @@ const clipPath = ({ props, prefix = '' }) => {
 							<ClipPathControl
 								{...getGroupAttributes(attributes, 'clipPath')}
 								{...clipPathControlProps}
-								block={props.resizableObject?.resizable}
 							/>
 						),
 					},

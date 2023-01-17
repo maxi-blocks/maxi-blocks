@@ -168,11 +168,11 @@ const ClipPathControl = props => {
 	const {
 		className,
 		onChange,
+		getBlockRefBounds,
 		prefix = '',
 		breakpoint,
 		isHover = false,
 		isLayer = false,
-		block,
 	} = props;
 
 	const classes = classnames('maxi-clip-path-control', className);
@@ -226,7 +226,6 @@ const ClipPathControl = props => {
 				});
 				break;
 			case 'circle':
-				// TODO:
 				cpContent = clipPathToDeconstruct
 					.replace(cpType, '')
 					.replace('(', '')
@@ -456,7 +455,7 @@ const ClipPathControl = props => {
 							{customMode === 'visual' && (
 								<ClipPathVisualEditor
 									ref={visualEditorRef}
-									block={block}
+									getBlockRefBounds={getBlockRefBounds}
 									clipPathOptions={clipPathOptions}
 									clipPath={clipPath}
 									colors={optionColors}

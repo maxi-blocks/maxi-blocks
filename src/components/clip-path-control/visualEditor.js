@@ -29,7 +29,7 @@ import { cloneDeep, round } from 'lodash';
 const ClipPathVisualEditor = props => {
 	const {
 		visualEditorRef,
-		block,
+		getBlockRefBounds,
 		clipPathOptions,
 		colors,
 		onChange,
@@ -46,7 +46,7 @@ const ClipPathVisualEditor = props => {
 			}
 
 			const { width: blockWidth, height: blockHeight } =
-				block.getBoundingClientRect();
+				getBlockRefBounds();
 			const blockSize = direction === 'x' ? blockWidth : blockHeight;
 
 			const { width: editorWidth, height: editorHeight } =
@@ -93,7 +93,7 @@ const ClipPathVisualEditor = props => {
 		const setAxisLimits = (value, unit, direction) => {
 			const getAxisMaxLimits = (unit, direction) => {
 				const { width: blockWidth, height: blockHeight } =
-					block.getBoundingClientRect();
+					getBlockRefBounds();
 				const absSize = direction === 'x' ? blockWidth : blockHeight;
 
 				switch (unit) {
@@ -117,9 +117,10 @@ const ClipPathVisualEditor = props => {
 				return value;
 			}
 
-			const { width: blockWidth, height: blockHeight } =
-				block.getBoundingClientRect();
 			const getSize = direction => {
+				const { width: blockWidth, height: blockHeight } =
+					getBlockRefBounds();
+
 				switch (direction) {
 					case 'x':
 						return blockWidth;

@@ -13,7 +13,6 @@ import { Tooltip } from '@wordpress/components';
 import Button from '../button';
 import Dropdown from '../dropdown';
 import Popover from '../popover';
-import getBoundaryElement from '../../extensions/dom/getBoundaryElement';
 
 /**
  * External dependencies
@@ -286,7 +285,7 @@ const InterBlockInserter = forwardRef((props, ref) => {
 
 	const popoverRef = useRef(null);
 
-	const { nextClientId, isNextMaxiBlock, version } = useSelect(select => {
+	const { nextClientId, isNextMaxiBlock } = useSelect(select => {
 		const { getBlockOrder, getBlockRootClientId, getBlockName } =
 			select('core/block-editor');
 		const { receiveMaxiSettings } = select('maxiBlocks');
@@ -313,63 +312,8 @@ const InterBlockInserter = forwardRef((props, ref) => {
 
 	if (!blockRef || !nextClientId || !isNextMaxiBlock) return null;
 
-	const getAnchor = popoverRef => {
-		const popoverRect = popoverRef
-			?.querySelector('.components-popover__content')
-			?.getBoundingClientRect();
-
-		if (!popoverRect) return null;
-
-		const rect = blockRef.getBoundingClientRect();
-
-		const { width, x } = rect;
-		const { width: popoverWidth } = popoverRect;
-
-		const expectedContentX = x + width / 2 - popoverWidth / 2;
-
-		const container = document
-			.querySelector('.editor-styles-wrapper')
-			?.getBoundingClientRect();
-
-		if (container) {
-			const { x: containerX, width: containerWidth } = container;
-
-			// Left cut off check
-			if (expectedContentX < containerX)
-				rect.x += containerX - expectedContentX;
-
-			// Right cut off check
-			if (expectedContentX + popoverWidth > containerX + containerWidth)
-				rect.x -=
-					expectedContentX +
-					popoverWidth -
-					(containerX + containerWidth);
-		}
-
-		return {
-			getBoundingClientRect: () => rect,
-			ownerDocument: blockRef.ownerDocument,
-		};
-	};
-
 	const popoverProps = {
-		...((parseFloat(version) <= 13.0 && {
-			getAnchorRect: spanEl => {
-				// span element needs to be hidden to don't break the grid
-				spanEl.style.display = 'none';
-
-				return getAnchor(popoverRef.current).getBoundingClientRect();
-			},
-			shouldAnchorIncludePadding: true,
-			__unstableStickyBoundaryElement: getBoundaryElement(blockRef),
-			className:
-				'maxi-inter-blocks-inserter maxi-inter-blocks-inserter--old',
-		}) ||
-			(!isNaN(parseFloat(version)) && {
-				anchor: blockRef,
-				flip: false,
-				resize: false,
-			})),
+		anchor: blockRef,
 	};
 
 	return (
@@ -382,6 +326,7 @@ const InterBlockInserter = forwardRef((props, ref) => {
 			position='bottom center'
 			focusOnMount={false}
 			__unstableSlotName='block-toolbar'
+			__unstableShift
 			dataclientid={clientId}
 			{...popoverProps}
 		>

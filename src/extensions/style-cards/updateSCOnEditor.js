@@ -237,7 +237,7 @@ const getSCFontsData = obj => {
 			response[fontName] = { weight: [], style: [] };
 		}
 		if (key.includes('font-weight'))
-			response[fontName].weight.push(val.toString());
+			response[fontName].weight.push(val?.toString());
 
 		if (key.includes('font-style')) response[fontName].style.push(val);
 	});

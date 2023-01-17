@@ -15,7 +15,10 @@ import {
 	getColumnSizeStyles,
 	getFlexStyles,
 } from '../../extensions/styles/helpers';
-import { getCanvasSettings } from '../../extensions/relations';
+import {
+	getCanvasSettings,
+	getAdvancedSettings,
+} from '../../extensions/relations';
 
 /**
  * External dependencies
@@ -125,7 +128,8 @@ const interactionBuilderSettings = {
 			},
 		},
 	],
-	canvas: getCanvasSettings({ name, customCss }),
+	canvas: getCanvasSettings({ name }),
+	advanced: getAdvancedSettings({ customCss }),
 };
 
 const data = {

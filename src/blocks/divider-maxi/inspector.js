@@ -258,6 +258,7 @@ const Inspector = props => {
 									...inspectorTabs.boxShadow({
 										props,
 										prefix: 'divider-',
+										disableInset: true,
 									}),
 								]}
 							/>
@@ -276,9 +277,6 @@ const Inspector = props => {
 										props,
 									}),
 									...inspectorTabs.boxShadow({
-										props,
-									}),
-									...inspectorTabs.opacity({
 										props,
 									}),
 									...inspectorTabs.size({
@@ -329,6 +327,9 @@ const Inspector = props => {
 										},
 									}),
 									...inspectorTabs.display({
+										props,
+									}),
+									...inspectorTabs.opacity({
 										props,
 									}),
 									...inspectorTabs.position({

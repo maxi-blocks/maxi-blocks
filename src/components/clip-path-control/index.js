@@ -168,7 +168,7 @@ const ClipPathControl = props => {
 	const {
 		className,
 		onChange,
-		getBlockRefBounds,
+		getBounds,
 		prefix = '',
 		breakpoint,
 		isHover = false,
@@ -455,7 +455,7 @@ const ClipPathControl = props => {
 							{customMode === 'visual' && (
 								<ClipPathVisualEditor
 									ref={visualEditorRef}
-									getBlockRefBounds={getBlockRefBounds}
+									getBounds={getBounds}
 									clipPathOptions={clipPathOptions}
 									clipPath={clipPath}
 									colors={optionColors}

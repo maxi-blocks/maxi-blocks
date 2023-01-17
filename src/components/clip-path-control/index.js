@@ -571,7 +571,16 @@ const ClipPathControl = props => {
 														...clipPathOptions.content,
 														[Object.keys(
 															clipPathOptions.content
-														).length]: [0, 0],
+														).length]: [
+															{
+																value: 0,
+																unit: '%',
+															},
+															{
+																value: 0,
+																unit: '%',
+															},
+														],
 													};
 													generateCP(clipPathOptions);
 												}}

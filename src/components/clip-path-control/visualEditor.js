@@ -15,7 +15,7 @@ import { withFallbackStyles } from '@wordpress/components';
 import ClipPathRadiusPoint from './radiusPoint';
 import ClipPathSinglePoint from './singlePoint';
 import ClipPathDoublePoint from './doublePoint';
-import getClipPath from './utils';
+import getClipPath from './getClipPath';
 
 /**
  * External dependencies

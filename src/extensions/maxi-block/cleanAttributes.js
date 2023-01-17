@@ -602,10 +602,18 @@ const cleanAttributes = ({
 	};
 
 	dispatch('maxiBlocks/styles').savePrevSavedAttrs(
-		pickBy(result, (_, key) => {
-			const defaultAttribute = getDefaultAttribute(key, clientId);
-			return [attributes[key], defaultAttribute].every(
-				value => value !== result[key]
+		pickBy(result, (value, key) => {
+			const breakpoint = getBreakpointFromAttribute(key);
+			const simpleLabel = getSimpleLabel(key, breakpoint);
+			const higherAttr = getLastBreakpointAttribute({
+				target: simpleLabel,
+				attributes,
+				breakpoint: breakpoints[breakpoints.indexOf(breakpoint) - 1],
+			});
+
+			return (
+				value !== attributes[key] &&
+				(isNil(higherAttr) || attributes[key] !== higherAttr)
 			);
 		})
 	);

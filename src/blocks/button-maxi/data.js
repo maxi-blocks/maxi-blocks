@@ -29,7 +29,10 @@ import {
 	getMarginPaddingStyles,
 	getTypographyStyles,
 } from '../../extensions/styles/helpers';
-import { getCanvasSettings } from '../../extensions/relations';
+import {
+	getCanvasSettings,
+	getAdvancedSettings,
+} from '../../extensions/relations';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
 /**
@@ -351,7 +354,8 @@ const interactionBuilderSettings = {
 			target: '.maxi-button-block__button',
 		},
 	],
-	canvas: getCanvasSettings({ name, customCss }),
+	canvas: getCanvasSettings({ name }),
+	advanced: getAdvancedSettings({ customCss }),
 };
 const maxiAttributes = {
 	'button-padding-sync-xxl': 'axis',

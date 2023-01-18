@@ -258,6 +258,7 @@ const Inspector = props => {
 									...inspectorTabs.boxShadow({
 										props,
 										prefix: 'divider-',
+										disableInset: true,
 									}),
 								]}
 							/>

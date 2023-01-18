@@ -147,7 +147,6 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 
 	const onChangeValue = (obj, type) => {
 		let newSC = { ...selectedSCValue };
-
 		const isTypography = Object.keys(obj)[0] === 'typography';
 
 		const newObj = handleSetAttributes({

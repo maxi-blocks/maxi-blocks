@@ -17,7 +17,7 @@ import { Button, Icon } from '../../components';
 import './editor.scss';
 import { styleCardMenu } from '../../icons';
 
-const MaxiStyleCardsEditorPopUp = () => {
+const MaxiStyleCardsEditorPopUp = props => {
 	const { styleCards } = useSelect(select => {
 		const { receiveMaxiStyleCards } = select('maxiBlocks/style-cards');
 
@@ -27,6 +27,10 @@ const MaxiStyleCardsEditorPopUp = () => {
 	});
 
 	const [isVisible, setIsVisible] = useState(false);
+	if (props.isStyleCardVisible === false) {
+		setIsVisible(props.isStyleCardVisible);
+	}
+	console.log(props.isStyleCardVisible);
 
 	return (
 		<>

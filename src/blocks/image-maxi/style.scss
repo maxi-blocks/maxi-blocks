@@ -2,7 +2,7 @@ body.maxi-blocks--active figure.maxi-image-block {
 	display: flex;
 	justify-content: center;
 	flex-wrap: wrap;
-	flex: 0;
+	height: auto;
 
 	img {
 		box-sizing: border-box;

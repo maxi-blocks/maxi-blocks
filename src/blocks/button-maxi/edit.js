@@ -150,7 +150,6 @@ class edit extends MaxiBlockComponent {
 								ref={this.iconRef}
 								uniqueID={uniqueID}
 								className='maxi-button-block__icon'
-								showTooltip={false}
 							>
 								<RawHTML>{attributes['icon-content']}</RawHTML>
 							</IconWrapper>

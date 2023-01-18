@@ -55,7 +55,6 @@ const SvgWidthControl = props => {
 
 	return (
 		<AdvancedNumberControl
-			showTooltip={false}
 			label={__('Width', 'maxi-blocks')}
 			className={classes}
 			value={width}

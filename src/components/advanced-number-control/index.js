@@ -93,7 +93,6 @@ const AdvancedNumberControl = props => {
 		allowedUnits = ['px', 'em', 'vw', 'vh', '%', '-'],
 		minMaxSettings = minMaxSettingsDefault,
 		optionType = 'number',
-		showTooltip,
 	} = props;
 
 	const [currentValue, setCurrentValue] = useState(
@@ -263,13 +262,11 @@ const AdvancedNumberControl = props => {
 					)}
 					{!disableRange && (
 						<RangeControl
-							showTooltip={showTooltip}
 							label={label}
 							className='maxi-advanced-number-control__range'
 							value={
 								+[
-									value,
-									defaultValue,
+									value || defaultValue,
 									initial,
 									placeholder,
 								].find(val => /\d/.test(val) && +val !== 0) || 0

@@ -171,17 +171,19 @@ const DynamicContent = props => {
 	};
 
 	const getFirstSeparator = async () => {
+		let separator = '';
 		await apiFetch({
 			path: 'maxi-blocks/v1.0/rest-url',
 		})
 			.catch(err => console.error(err))
 			.then(url => {
-				const separator = getParametersFirstSeparator(url);
+				separator = getParametersFirstSeparator(url);
 				setFirstSeparator(separator);
 			});
+		return separator;
 	};
 
-	const setAuthorList = async () => {
+	const setAuthorList = async firstSeparator => {
 		if (!postAuthorOptions) {
 			apiFetch({
 				path: `/wp/v2/users${firstSeparator}per_page=99&thisFields=id, name`,
@@ -615,19 +617,24 @@ const DynamicContent = props => {
 		year,
 	]);
 
-	getFirstSeparator();
-	setAuthorList();
-	statusRef.current && setAuthorDefault();
-	if (
-		statusRef.current &&
-		typeRef.current &&
-		isEmpty(postIdOptions) &&
-		isEmptyIdOptions
-	) {
-		getIdOptions(typeRef.current, {}, relationRef.current)
-			?.catch(rej => console.error(rej))
-			?.then(res => res);
-	}
+	const initDynamicContent = async () => {
+		await getFirstSeparator().then(separator => {
+			setAuthorList(separator);
+			statusRef.current && setAuthorDefault();
+			if (
+				statusRef.current &&
+				typeRef.current &&
+				isEmpty(postIdOptions) &&
+				isEmptyIdOptions
+			) {
+				getIdOptions(typeRef.current, {}, relationRef.current)
+					?.catch(rej => console.error(rej))
+					?.then(res => res);
+			}
+		});
+	};
+
+	initDynamicContent();
 
 	return (
 		<ToolbarPopover

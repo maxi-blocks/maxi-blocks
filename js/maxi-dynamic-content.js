@@ -134,6 +134,8 @@ class DynamicContent {
 			return response;
 		};
 
+		const hasHTMLTags = RegExp.prototype.test.bind(/(<([^>]+)>)/i);
+
 		async function getDynamicContentPerBlock(elementId, elementSettings) {
 			await getRESTContent(elementSettings)
 				.catch(err => console.error(err))
@@ -145,6 +147,21 @@ class DynamicContent {
 
 						const currentHTML = element.innerHTML;
 						if (currentHTML !== result) element.innerHTML = result;
+
+						if (hasHTMLTags(result)) {
+							const newElement = document.createElement('div');
+							newElement.innerHTML = element.innerHTML;
+							newElement.classList = element.classList;
+
+							element.parentNode.replaceChild(
+								newElement,
+								element
+							);
+
+							newElement.classList.remove(
+								'maxi-text-block__dynamic_content__is-rendering'
+							);
+						}
 
 						element.classList.remove(
 							'maxi-text-block__dynamic_content__is-rendering'

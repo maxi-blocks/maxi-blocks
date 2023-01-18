@@ -151,10 +151,11 @@ const ClipPathControl = props => {
 					isHover,
 			  })
 			: props[
-					`${gradientPrefix}${getAttributeKey(
+					getAttributeKey(
 						'clip-path-status',
-						true
-					)}`
+						true,
+						`${gradientPrefix}${prefix}`
+					)
 			  ];
 
 	const deconstructCP = (clipPathToDeconstruct = clipPath) => {
@@ -263,12 +264,12 @@ const ClipPathControl = props => {
 
 	const onChangeValue = val => {
 		onChange({
-			[`${gradientPrefix}${getAttributeKey(
+			[getAttributeKey(
 				'clip-path',
 				isHover,
-				prefix,
+				`${gradientPrefix}${prefix}`,
 				breakpoint
-			)}`]: val,
+			)]: val,
 		});
 	};
 
@@ -335,12 +336,12 @@ const ClipPathControl = props => {
 
 	const onToggleClipPath = val => {
 		onChange({
-			[`${gradientPrefix}${getAttributeKey(
+			[getAttributeKey(
 				'clip-path-status',
 				isHover,
-				prefix,
+				`${gradientPrefix}${prefix}`,
 				breakpoint
-			)}`]: val,
+			)]: val,
 		});
 	};
 

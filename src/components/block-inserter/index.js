@@ -326,7 +326,7 @@ const InterBlockInserter = forwardRef((props, ref) => {
 			position='bottom center'
 			focusOnMount={false}
 			__unstableSlotName='block-toolbar'
-			__unstableShift
+			observeBlockPosition={clientId}
 			dataclientid={clientId}
 			{...popoverProps}
 		>

@@ -267,7 +267,8 @@ const Popover = (
 		strategy,
 		placement: normalizedPlacementFromProps,
 		middleware,
-		whileElementsMounted: autoUpdate,
+		whileElementsMounted: (...args) =>
+			autoUpdate(...args, { ancestorScroll: false }),
 	});
 
 	// Update the `reference`'s ref.

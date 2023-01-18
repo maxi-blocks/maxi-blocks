@@ -613,6 +613,7 @@ const MaxiToolbar = memo(
 							textLevel={textLevel}
 						/>
 						<DynamicContent
+							blockName={name}
 							onChange={obj => maxiSetAttributes(obj)}
 							{...getGroupAttributes(
 								attributes,

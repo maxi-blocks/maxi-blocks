@@ -57,7 +57,7 @@ import { toolbarDynamicContent } from '../../../../icons';
  */
 
 const DynamicContent = props => {
-	const { onChange, ...dynamicContent } = props;
+	const { blockName, onChange, ...dynamicContent } = props;
 
 	const {
 		'dc-author': author,
@@ -617,16 +617,13 @@ const DynamicContent = props => {
 		year,
 	]);
 
+	if (blockName !== 'maxi-blocks/text-maxi') return null;
+
 	const initDynamicContent = async () => {
 		await getFirstSeparator().then(separator => {
 			setAuthorList(separator);
-			statusRef.current && setAuthorDefault();
-			if (
-				statusRef.current &&
-				typeRef.current &&
-				isEmpty(postIdOptions) &&
-				isEmptyIdOptions
-			) {
+			setAuthorDefault();
+			if (typeRef.current && isEmpty(postIdOptions) && isEmptyIdOptions) {
 				getIdOptions(typeRef.current, {}, relationRef.current)
 					?.catch(rej => console.error(rej))
 					?.then(res => res);
@@ -634,7 +631,7 @@ const DynamicContent = props => {
 		});
 	};
 
-	initDynamicContent();
+	statusRef.current && initDynamicContent();
 
 	return (
 		<ToolbarPopover

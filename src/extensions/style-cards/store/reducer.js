@@ -3,15 +3,30 @@
  */
 import getActiveStyleCard from '../getActiveStyleCard';
 import controls from './controls';
+import standardSC from '../../../../core/utils/defaultSC.json';
+
+/**
+ * External dependencies
+ */
+import { cloneDeep, merge } from 'lodash';
 
 const getNewActiveStyleCards = (styleCards, cardKey) => {
-	const newStyleCards = { ...styleCards };
+	const newStyleCards = cloneDeep(styleCards);
 	const currentSC = getActiveStyleCard(newStyleCards).key;
 
 	Object.entries(newStyleCards).forEach(([key, value]) => {
-		if (key === currentSC) newStyleCards[key] = { ...value, status: '' };
-		if (key === cardKey)
-			newStyleCards[key] = { ...value, status: 'active' };
+		const standardMerge = cloneDeep(standardSC?.sc_maxi);
+		const mergeWith = cloneDeep(value);
+		const newSCvalue = merge(standardMerge, mergeWith);
+
+		if (key === currentSC)
+			newStyleCards[key] = { ...newSCvalue, status: '' };
+		if (key === cardKey) {
+			newStyleCards[key] = {
+				...newSCvalue,
+				status: 'active',
+			};
+		}
 	});
 
 	return newStyleCards;

@@ -64,6 +64,7 @@
 
 				height: 28px;
 				min-height: 0;
+				flex-basis: 100%;
 				border-radius: 0;
 				border-color: #dbdde6;
 				font-weight: 400;
@@ -90,8 +91,11 @@
 /*******************************
 * RTL
 *******************************/
-html[dir="rtl"]  {
-	.maxi-dropdown__content.maxi-dropdown__reusable-content .components-popover__content .maxi-base-control input {
+html[dir='rtl'] {
+	.maxi-dropdown__content.maxi-dropdown__reusable-content
+		.components-popover__content
+		.maxi-base-control
+		input {
 		text-indent: 53px;
 	}
 }

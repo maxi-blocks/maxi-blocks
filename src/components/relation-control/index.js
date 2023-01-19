@@ -2,7 +2,7 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { select } from '@wordpress/data';
+import { select, useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -16,6 +16,7 @@ import SelectControl from '../select-control';
 import SettingTabsControl from '../setting-tabs-control';
 import TextControl from '../text-control';
 import TransitionControl from '../transition-control';
+import { openSidebarAccordion } from '../../extensions/inspector';
 import {
 	createTransitionObj,
 	getDefaultAttribute,
@@ -37,6 +38,8 @@ import './editor.scss';
 
 const RelationControl = props => {
 	const { getBlock } = select('core/block-editor');
+
+	const { selectBlock } = useDispatch('core/block-editor');
 
 	const { deviceType, isButton, onChange, relations, uniqueID } = props;
 
@@ -577,6 +580,25 @@ const RelationControl = props => {
 													);
 												}}
 											/>
+											<div className='maxi-relation-control__block-access maxi-warning-box__links'>
+												<a
+													onClick={() =>
+														selectBlock(
+															getClientIdFromUniqueId(
+																item.uniqueID
+															),
+															openSidebarAccordion(
+																0
+															)
+														)
+													}
+												>
+													{__(
+														'Open block settings',
+														'maxi-blocks'
+													)}
+												</a>
+											</div>
 										</>
 									)}
 									{item.uniqueID &&

@@ -3,6 +3,7 @@
  */
 import { useState, useEffect, cloneElement } from '@wordpress/element';
 import { select, useDispatch, useSelect } from '@wordpress/data';
+import { Tooltip } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -48,6 +49,7 @@ const SettingTabsControl = props => {
 		blockName,
 		depth,
 		hasBorder = false,
+		showTooltip = false,
 	} = props;
 	const { getBlockName, getSelectedBlockClientId } =
 		select('core/block-editor');
@@ -119,7 +121,8 @@ const SettingTabsControl = props => {
 						const itemsIndicators = !isEmpty(item.content)
 							? cloneElement(item.content)
 							: item;
-						return (
+
+						const showButton = (
 							<Button
 								key={`maxi-tabs-control__button-${buttonLabel.toLowerCase()}`}
 								label={item.value}
@@ -173,6 +176,17 @@ const SettingTabsControl = props => {
 									</svg>
 								)}
 							</Button>
+						);
+						return showTooltip ? (
+							<Tooltip
+								key={`maxi-tabs-control__button-${buttonLabel.toLowerCase()}__tooltip`}
+								text={item.label || item.value}
+								position='top center'
+							>
+								{showButton}
+							</Tooltip>
+						) : (
+							!showTooltip && showButton
 						);
 					}
 

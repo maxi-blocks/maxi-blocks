@@ -124,8 +124,7 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 				focusOnMount={false}
 				style={{ zIndex: Object.keys(blockHierarchy).length + 1 }}
 				__unstableSlotName='block-toolbar'
-				__unstableObserveElement={ref.current}
-				observeBlockPosition={clientId}
+				useAnimationFrame
 				{...popoverProps}
 			>
 				{Object.keys(blockHierarchy).length > 1 && (
@@ -328,6 +327,7 @@ const InterBlockInserter = forwardRef((props, ref) => {
 			__unstableSlotName='block-toolbar'
 			observeBlockPosition={clientId}
 			dataclientid={clientId}
+			useAnimationFrame
 			{...popoverProps}
 		>
 			<Inserter

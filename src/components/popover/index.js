@@ -140,6 +140,7 @@ const Popover = (
 		onFocusOutside,
 		strategy = 'absolute',
 		observeBlockPosition,
+		useAnimationFrame = false,
 		__unstableSlotName = SLOT_NAME,
 		__unstableObserveElement,
 		__unstableShift = false,
@@ -268,7 +269,10 @@ const Popover = (
 		placement: normalizedPlacementFromProps,
 		middleware,
 		whileElementsMounted: (...args) =>
-			autoUpdate(...args, { ancestorScroll: false }),
+			autoUpdate(...args, {
+				ancestorScroll: false,
+				animationFrame: useAnimationFrame,
+			}),
 	});
 
 	// Update the `reference`'s ref.

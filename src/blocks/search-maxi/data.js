@@ -3,7 +3,10 @@
  */
 import { createSelectors } from '../../extensions/styles/custom-css';
 import { createIconTransitions } from '../../extensions/styles';
-import { getCanvasSettings } from '../../extensions/relations';
+import {
+	getCanvasSettings,
+	getAdvancedSettings,
+} from '../../extensions/relations';
 
 /**
  * Classnames
@@ -291,7 +294,8 @@ const transition = {
 	},
 };
 const interactionBuilderSettings = {
-	canvas: getCanvasSettings({ name, customCss }),
+	canvas: getCanvasSettings({ name }),
+	advanced: getAdvancedSettings({ customCss }),
 };
 
 const data = {

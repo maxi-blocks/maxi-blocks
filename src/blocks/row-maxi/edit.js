@@ -62,6 +62,7 @@ const RowBlockTemplate = ({ clientId, maxiSetAttributes, deviceType }) => {
 							<Icon
 								className='maxi-row-block__template__icon'
 								icon={template.icon}
+								avoidSize
 							/>
 						</Button>
 					);

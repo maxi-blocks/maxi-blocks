@@ -632,7 +632,7 @@ Array [
       "transition-duration-general": 0.3,
       "transition-status-general": true,
       "transitionTarget": Array [
-        "  .maxi-button-block__icon svg *:not(g)",
+        "  .maxi-button-block__icon svg > *:not(g)",
         " .maxi-button-block__icon svg",
         " .maxi-button-block__icon",
         " .maxi-button-block__icon",

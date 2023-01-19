@@ -148,6 +148,7 @@ const BoxShadowControl = props => {
 		prefix = '',
 		clientId,
 		dropShadow = false,
+		disableInset = false,
 	} = props;
 
 	const boxShadowItems = ['horizontal', 'vertical', 'blur'];
@@ -353,7 +354,7 @@ const BoxShadowControl = props => {
 			/>
 			{!isToolbar && (
 				<>
-					{!dropShadow && (
+					{!dropShadow && !disableInset && (
 						<ToggleSwitch
 							label={__('Inset', 'maxi-block')}
 							selected={getLastBreakpointAttribute({

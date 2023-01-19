@@ -160,9 +160,15 @@ const getBorderStyles = ({
 					].includes(newLabel)
 				) {
 					if (isBorderNone) return;
+					if (Number.isFinite(value)) {
+						response[breakpoint][newLabel] = `${value}${unit}`;
+					} else {
+						response[breakpoint][newLabel] = `0${unit}`;
+					}
+				} else if (Number.isFinite(value)) {
 					response[breakpoint][newLabel] = `${value}${unit}`;
 				} else {
-					response[breakpoint][newLabel] = `${value}${unit}`;
+					response[breakpoint][newLabel] = `0${unit}`;
 				}
 			}
 		});

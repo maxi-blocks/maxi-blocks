@@ -154,6 +154,7 @@ Array [
     "background-svg-position-right-s-hover": "44",
     "background-svg-position-right-unit-general": "px",
     "background-svg-position-right-xs": "13",
+    "background-svg-position-right-xs-hover": "13",
     "background-svg-position-sync-general": "none",
     "background-svg-position-sync-m-hover": "none",
     "background-svg-position-top-general": "1",

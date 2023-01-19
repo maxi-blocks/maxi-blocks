@@ -16,8 +16,8 @@ exports[`getIconSize Should return correct icon size 2`] = `
 Object {
   "iconSize": Object {
     "general": Object {
-      "height": "123%",
-      "width": "123%",
+      "height": "123px",
+      "width": "123px",
     },
     "label": "Icon size",
   },

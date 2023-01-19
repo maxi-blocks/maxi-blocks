@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import getAttributeValue from '../getAttributeValue';
+import getAttributeKey from '../getAttributeKey';
 
 /**
  * External dependencies
@@ -19,13 +19,8 @@ const getIconPathStyles = (obj, isHover = false, prefix = '') => {
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
-		const iconStroke = getAttributeValue({
-			target: 'icon-stroke',
-			prefix,
-			isHover,
-			breakpoint,
-			props: obj,
-		});
+		const iconStroke =
+			obj[getAttributeKey('icon-stroke', isHover, prefix, breakpoint)];
 
 		if (!isNil(iconStroke)) {
 			response[breakpoint]['stroke-width'] = iconStroke;

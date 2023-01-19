@@ -3,12 +3,12 @@
  */
 import getColorRGBAString from '../getColorRGBAString';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+import getAttributeKey from '../getAttributeKey';
 
 /**
  * External dependencies
  */
 import { isEmpty, isNil } from 'lodash';
-import getAttributeValue from '../getAttributeValue';
 
 /**
  * General
@@ -44,13 +44,14 @@ const getTypographyStyles = ({
 	const isCustomFormat = !!customFormatTypography;
 
 	const getValue = (target, breakpoint) =>
-		getAttributeValue({
-			target,
-			prefix,
-			isHover: !isCustomFormat && isHover,
-			breakpoint,
-			props: { ...obj, ...normalTypography },
-		});
+		obj[
+			getAttributeKey(
+				target,
+				!isCustomFormat && isHover,
+				prefix,
+				breakpoint
+			)
+		];
 
 	const getPaletteColorStatus = breakpoint => {
 		const paletteStatus = getLastBreakpointAttribute({

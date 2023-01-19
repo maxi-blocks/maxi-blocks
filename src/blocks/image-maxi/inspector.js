@@ -285,6 +285,7 @@ const Inspector = props => {
 																	]
 																)}
 																textLevel='p'
+																hideBottomGap
 																onChange={obj => {
 																	if (
 																		'content' in

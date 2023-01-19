@@ -30,7 +30,7 @@ const TitleSettings = props => {
 
 	return (
 		<>
-			<TypographyControl {...props} isHover={isHover} />
+			<TypographyControl {...props} isHover={isHover} hideBottomGap />
 			<ToggleSwitch
 				label={__('Enable title background', 'maxi-blocks')}
 				selected={bgStatus}

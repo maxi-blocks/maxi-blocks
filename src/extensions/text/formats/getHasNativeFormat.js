@@ -1,7 +1,7 @@
-const getHasNativeFormat = (formatValue, isHover) => {
+const getHasNativeFormat = formatValue => {
 	const { formats, start, end } = formatValue;
 
-	return formats.some((formatEl, i) => {
+	return formats?.some((formatEl, i) => {
 		if (formatEl)
 			return formatEl.some(format => {
 				return format.type.includes('core') && i <= start && i <= end;

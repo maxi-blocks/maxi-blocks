@@ -124,10 +124,6 @@ class edit extends MaxiBlockComponent {
 			uniqueID,
 			'dc-status': dcStatus,
 			'dc-content': dcContent,
-			'dc-type': dsType,
-			'dc-author': dsAuthor,
-			'dc-relation': dsRelation,
-			'dc-id': dsId,
 		} = attributes;
 
 		const className = 'maxi-text-block__content';
@@ -210,7 +206,7 @@ class edit extends MaxiBlockComponent {
 						...this.state.formatValue,
 					},
 					onChangeTextFormat: newFormatValue => {
-						this.state.onChangeFormat(newFormatValue);
+						!dcStatus && this.state.onChangeFormat(newFormatValue);
 						onChangeRichText({
 							attributes,
 							maxiSetAttributes,
@@ -250,7 +246,6 @@ class edit extends MaxiBlockComponent {
 							withoutInteractiveFormatting
 							preserveWhiteSpace
 							multiline={false}
-							data-dynamic-content={`${dsType} ${dsAuthor} ${dsRelation} ${dsId}`}
 							{...commonProps}
 						>
 							{richTextValues =>

@@ -352,12 +352,18 @@ const removeHoverSameAsNormal = (newAttributes, attributes) => {
 	const result = { ...newAttributes };
 
 	Object.entries(newAttributes).forEach(([key]) => {
-		const hoverKey = getHoverAttributeKey(key);
-		const hoverValue = getValue(hoverKey);
-		const normalValue = getValue(getNormalAttributeKey(key));
+		const breakpoint = getBreakpointFromAttribute(key);
+		// If hover value is on responsive there is possibly hover value on higher breakpoint
+		// that will overwrite the responsive value if it is deleted,
+		// so need to keep the responsive values.
+		if (!breakpoint || breakpoint === 'general') {
+			const hoverKey = getHoverAttributeKey(key);
+			const hoverValue = getValue(hoverKey);
+			const normalValue = getValue(getNormalAttributeKey(key));
 
-		if (isEqual(hoverValue, normalValue) && !isNil(hoverValue)) {
-			result[hoverKey] = undefined;
+			if (isEqual(hoverValue, normalValue) && !isNil(hoverValue)) {
+				result[hoverKey] = undefined;
+			}
 		}
 	});
 

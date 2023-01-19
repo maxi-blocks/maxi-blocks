@@ -8,18 +8,16 @@ import { __ } from '@wordpress/i18n';
  */
 import SettingTabsControl from '../setting-tabs-control';
 import Icon from '../icon';
-import {
-	getDefaultAttribute,
-	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+import { getLastBreakpointAttribute } from '../../extensions/styles';
 
 /**
  * Icons
  */
 import {
-	flexWrapNowrap,
-	flexWrap,
-	flexWrapReverse,
+	flexDirectionRow,
+	flexDirectionColumn,
+	flexDirectionRowReverse,
+	flexDirectionColumnReverse,
 	styleNone,
 } from '../../icons';
 
@@ -27,7 +25,7 @@ import {
  * Component
  */
 
-const FlexWrapControl = props => {
+const FlexDirectionControl = props => {
 	const { breakpoint, onChange } = props;
 
 	const getOptions = () => {
@@ -39,18 +37,23 @@ const FlexWrapControl = props => {
 		});
 
 		options.push({
-			icon: <Icon icon={flexWrapNowrap} />,
-			value: 'nowrap',
+			icon: <Icon icon={flexDirectionRow} />,
+			value: 'row',
 		});
 
 		options.push({
-			icon: <Icon icon={flexWrap} />,
-			value: 'wrap',
+			icon: <Icon icon={flexDirectionColumn} />,
+			value: 'column',
 		});
 
 		options.push({
-			icon: <Icon icon={flexWrapReverse} />,
-			value: 'wrap-reverse',
+			icon: <Icon icon={flexDirectionRowReverse} />,
+			value: 'row-reverse',
+		});
+
+		options.push({
+			icon: <Icon icon={flexDirectionColumnReverse} />,
+			value: 'column-reverse',
 		});
 
 		return options;
@@ -58,42 +61,34 @@ const FlexWrapControl = props => {
 
 	return (
 		<SettingTabsControl
-			label={__('Flex wrap', 'maxi-blocks')}
+			label={__('Flex direction', 'maxi-blocks')}
 			type='buttons'
 			fullWidthMode
 			showTooltip
-			className='maxi-flex-wrap-control'
+			className='maxi-flex__direction'
 			hasBorder
 			items={getOptions()}
 			value={
 				getLastBreakpointAttribute({
-					target: 'flex-wrap',
+					target: 'flex-direction',
 					breakpoint,
 					attributes: props,
 				}) ?? ''
 			}
 			selected={
 				getLastBreakpointAttribute({
-					target: 'flex-wrap',
+					target: 'flex-direction',
 					breakpoint,
 					attributes: props,
 				}) || getOptions()[0].value
 			}
-			onReset={() =>
-				onChange({
-					[`flex-wrap-${breakpoint}`]: getDefaultAttribute(
-						`flex-wrap-${breakpoint}`
-					),
-					isReset: true,
-				})
-			}
 			onChange={val =>
 				onChange({
-					[`flex-wrap-${breakpoint}`]: val,
+					[`flex-direction-${breakpoint}`]: val,
 				})
 			}
 		/>
 	);
 };
 
-export default FlexWrapControl;
+export default FlexDirectionControl;

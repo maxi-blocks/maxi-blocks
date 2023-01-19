@@ -1,7 +1,6 @@
 .maxi-text-block {
 	&__content {
 		outline: 1.5px dashed var(--maxi-light-blue-3-color) !important;
-		outline-offset: 2px;
 
 		a.maxi-text-block--link {
 			text-decoration-skip-ink: auto;
@@ -25,7 +24,6 @@
 		}
 		.maxi-text-block__content {
 			outline: 1.5px dashed transparent !important;
-			outline-offset: 2px;
 		}
 	}
 	&::after {

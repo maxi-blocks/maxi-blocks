@@ -3,7 +3,7 @@
  */
 import getColorRGBAString from '../getColorRGBAString';
 import getPaletteAttributes from '../getPaletteAttributes';
-import getAttributeValue from '../getAttributeValue';
+import getAttributeKey from '../getAttributeKey';
 
 /**
  * External dependencies
@@ -29,16 +29,9 @@ const getLinkStyles = (obj, target, blockStyle) => {
 	};
 
 	const getTextDecoration = (breakpoint, isHover = false) => {
-		const hoverStatus = getAttributeValue({
-			target: 'typography-status-hover',
-			props: obj,
-		});
-		const value = getAttributeValue({
-			target: 'text-decoration',
-			breakpoint,
-			isHover,
-			props: obj,
-		});
+		const hoverStatus = obj['typography-status-hover'];
+		const value =
+			obj[getAttributeKey('text-decoration', isHover, '', breakpoint)];
 		return !isNil(value) && (hoverStatus || !isHover) && value;
 	};
 

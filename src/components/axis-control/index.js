@@ -17,7 +17,6 @@ import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
 	getAttributeKey,
-	getAttributeValue,
 } from '../../extensions/styles';
 import ResetButton from '../reset-control';
 
@@ -523,20 +522,21 @@ const AxisControl = props => {
 		if (breakpoint === 'general' || customBreakpoint === 'general') {
 			const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 
-			value = getAttributeValue({
-				target: getKey(key),
-				isHover,
-				breakpoint: baseBreakpoint,
-				props,
-			});
+			value =
+				props[
+					getAttributeKey(getKey(key), isHover, false, baseBreakpoint)
+				];
 		}
 		if (isNil(value)) {
-			value = getAttributeValue({
-				target: getKey(key),
-				isHover,
-				breakpoint: customBreakpoint ?? breakpoint,
-				props,
-			});
+			value =
+				props[
+					getAttributeKey(
+						getKey(key),
+						isHover,
+						false,
+						customBreakpoint ?? breakpoint
+					)
+				];
 		}
 
 		if (isNumber(value) || value) return value;

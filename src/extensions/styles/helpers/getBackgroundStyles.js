@@ -300,13 +300,7 @@ export const getImageBackgroundObject = ({
 	if (isEmpty(bgImageUrl) && !ignoreMediaAttributes) return {};
 
 	const getBgImageAttributeValue = (target, isHoverParam = isHover) =>
-		getAttributeValue({
-			target,
-			props,
-			prefix,
-			isHover: isHoverParam,
-			breakpoint,
-		});
+		props[getAttributeKey(target, isHoverParam, prefix, breakpoint)];
 	const getBgImageLastBreakpointAttribute = target =>
 		getLastBreakpointAttribute({
 			target: prefix + target,

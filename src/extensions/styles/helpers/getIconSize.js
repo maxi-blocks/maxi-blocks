@@ -6,7 +6,7 @@ import { isNil, isEmpty } from 'lodash';
 /**
  * Internal dependencies
  */
-import getAttributeValue from '../getAttributeValue';
+import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -20,14 +20,14 @@ const getIconSize = (obj, isHover = false, prefix = '') => {
 		response[breakpoint] = {};
 
 		const iconSize =
-			getAttributeValue({
+			getLastBreakpointAttribute({
 				target: 'icon-width',
 				isHover,
 				breakpoint,
 				prefix,
 				props: obj,
 			}) ??
-			getAttributeValue({
+			getLastBreakpointAttribute({
 				target: 'icon-height',
 				isHover,
 				breakpoint,
@@ -36,14 +36,14 @@ const getIconSize = (obj, isHover = false, prefix = '') => {
 			});
 
 		const iconUnit =
-			getAttributeValue({
+			getLastBreakpointAttribute({
 				target: 'icon-width-unit',
 				isHover,
 				breakpoint,
 				prefix,
 				props: obj,
 			}) ??
-			getAttributeValue({
+			getLastBreakpointAttribute({
 				target: 'icon-height-unit',
 				isHover,
 				breakpoint,

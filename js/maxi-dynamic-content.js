@@ -145,9 +145,6 @@ class DynamicContent {
 							`#${elementId} .maxi-text-block__content`
 						);
 
-						const currentHTML = element.innerHTML;
-						if (currentHTML !== result) element.innerHTML = result;
-
 						if (hasHTMLTags(result)) {
 							const newElement = document.createElement('div');
 							newElement.innerHTML = element.innerHTML;
@@ -161,11 +158,12 @@ class DynamicContent {
 							newElement.classList.remove(
 								'maxi-text-block__dynamic_content__is-rendering'
 							);
+						} else {
+							element.innerHTML = result;
+							element.classList.remove(
+								'maxi-text-block__dynamic_content__is-rendering'
+							);
 						}
-
-						element.classList.remove(
-							'maxi-text-block__dynamic_content__is-rendering'
-						);
 					}
 				});
 		}

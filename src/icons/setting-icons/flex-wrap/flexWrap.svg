@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="17.863" height="18.381" viewBox="0 0 17.863 18.381">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_2" data-name="Rectangle 2" width="17.863" height="18.381" transform="translate(0 0)" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="Group_730" data-name="Group 730" transform="translate(0 0)">
+    <g id="Group_729" data-name="Group 729" clip-path="url(#clip-path)">
+      <path id="Path_89" data-name="Path 89" d="M1,8.863a1,1,0,0,1-1-1V1A1,1,0,0,1,2,1V7.863a1,1,0,0,1-1,1" fill="#090f13"/>
+      <path id="Path_90" data-name="Path 90" d="M6.5,8.863a1,1,0,0,1-1-1V1a1,1,0,0,1,2,0V7.863a1,1,0,0,1-1,1" fill="#090f13"/>
+      <path id="Path_91" data-name="Path 91" d="M1,18.381a1,1,0,0,1-1-1V10.518a1,1,0,0,1,2,0v6.863a1,1,0,0,1-1,1" fill="#090f13"/>
+      <path id="Path_92" data-name="Path 92" d="M6.5,18.381a1,1,0,0,1-1-1V10.518a1,1,0,0,1,2,0v6.863a1,1,0,0,1-1,1" fill="#090f13"/>
+      <path id="Path_93" data-name="Path 93" d="M11.367,8.863a1,1,0,0,1-1-1V1a1,1,0,0,1,2,0V7.863a1,1,0,0,1-1,1" fill="#090f13"/>
+      <path id="Path_94" data-name="Path 94" d="M16.863,8.863a1,1,0,0,1-1-1V1a1,1,0,0,1,2,0V7.863a1,1,0,0,1-1,1" fill="#090f13"/>
+    </g>
+  </g>
+</svg>

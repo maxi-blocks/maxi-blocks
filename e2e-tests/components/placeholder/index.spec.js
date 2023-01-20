@@ -25,7 +25,7 @@ describe('Placeholder', () => {
 
 		// check placeholder
 		const placeholder = await page.$eval(
-			'.maxi-placeholder ',
+			'.maxi-block-library__placeholder ',
 			div => div.innerHTML
 		);
 		await page.waitForTimeout(500);

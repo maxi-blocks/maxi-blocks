@@ -24,6 +24,8 @@ const VideoUrl = props => {
 
 	const [validationText, setValidationText] = useState(null);
 
+	const defaultURL = 'https://www.youtube.com/watch?v=ScMzIvxBSi4';
+
 	return (
 		<ToolbarPopover
 			className='toolbar-item__video-url'
@@ -37,7 +39,7 @@ const VideoUrl = props => {
 				</label>
 				<TextInput
 					type='url'
-					placeholder='Youtube, Vimeo, or Direct Link'
+					placeholder={defaultURL}
 					value={url}
 					onChange={val => {
 						if (val && !videoUrlRegex.test(val)) {
@@ -49,10 +51,10 @@ const VideoUrl = props => {
 						}
 
 						onChange({
-							url: val,
+							url: val !== '' ? val : defaultURL,
 							embedUrl: getParsedVideoUrl({
 								...props,
-								url: val,
+								url: val !== '' ? val : defaultURL,
 							}),
 							videoType: parseVideo(val).type,
 						});

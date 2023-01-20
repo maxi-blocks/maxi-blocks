@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
+import { useState, forwardRef } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 
 /**
@@ -16,7 +16,6 @@ import { Button, Icon } from '../../components';
  */
 import './editor.scss';
 import { styleCardMenu } from '../../icons';
-import { forwardRef } from 'react';
 
 const MaxiStyleCardsEditorPopUp = forwardRef((props, settingsRef) => {
 	const { styleCards } = useSelect(select => {

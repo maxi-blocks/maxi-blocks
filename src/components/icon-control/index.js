@@ -382,11 +382,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 				<BorderControl
 					{...getGroupAttributes(
 						props,
-						[
-							`iconBorder${isHover ? 'Hover' : ''}`,
-							`iconBorderWidth${isHover ? 'Hover' : ''}`,
-							`iconBorderRadius${isHover ? 'Hover' : ''}`,
-						],
+						['iconBorder', 'iconBorderWidth', 'iconBorderRadius'],
 						isHover,
 						prefix
 					)}

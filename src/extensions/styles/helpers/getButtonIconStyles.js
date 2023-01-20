@@ -209,11 +209,7 @@ const getIconHoverObject = (props, target, prefix = '', iconType = '') => {
 				obj: {
 					...getGroupAttributes(
 						props,
-						[
-							'iconBorderHover',
-							'iconBorderWidthHover',
-							'iconBorderRadiusHover',
-						],
+						['iconBorder', 'iconBorderWidth', 'iconBorderRadius'],
 						true,
 						prefix
 					),

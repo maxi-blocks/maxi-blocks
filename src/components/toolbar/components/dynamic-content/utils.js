@@ -68,8 +68,15 @@ export const processDate = (
 export const cutTags = str => {
 	const regex = /( |<([^>]+)>)/gi;
 	const result = str.replace(regex, ' ');
-
 	return result;
+};
+
+export const getSimpleText = str => {
+	const result = str
+		.replace(/<style.*?<\/style>/g, '')
+		.replace(/<svg.*?<\/svg>/g, '');
+
+	return cutTags(result);
 };
 
 export const limitFormat = (value, limit) => {
@@ -345,5 +352,6 @@ export const LimitOptions = {
 	steps: 1,
 	withInputField: false,
 	min: 0,
-	max: 999,
+	max: 9999,
+	defaultValue: 150,
 };

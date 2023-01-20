@@ -11,6 +11,7 @@ import {
 	processDate,
 	relationTypes,
 	getParametersFirstSeparator,
+	getSimpleText,
 } from '../src/components/toolbar/components/dynamic-content/utils';
 import { formatDateOptions } from '../src/components/toolbar/components/date-formatting/utils';
 
@@ -128,13 +129,16 @@ class DynamicContent {
 						);
 					} else if (field === 'excerpt') {
 						response = limitFormat(value?.rendered, limit);
+					} else if (field === 'content') {
+						response = limitFormat(
+							getSimpleText(value?.rendered),
+							limit
+						);
 					} else response = value?.rendered ?? value;
 				});
 
 			return response;
 		};
-
-		const hasHTMLTags = RegExp.prototype.test.bind(/(<([^>]+)>)/i);
 
 		async function getDynamicContentPerBlock(elementId, elementSettings) {
 			await getRESTContent(elementSettings)
@@ -145,25 +149,10 @@ class DynamicContent {
 							`#${elementId} .maxi-text-block__content`
 						);
 
-						if (hasHTMLTags(result)) {
-							const newElement = document.createElement('div');
-							newElement.innerHTML = element.innerHTML;
-							newElement.classList = element.classList;
-
-							element.parentNode.replaceChild(
-								newElement,
-								element
-							);
-
-							newElement.classList.remove(
-								'maxi-text-block__dynamic_content__is-rendering'
-							);
-						} else {
-							element.innerHTML = result;
-							element.classList.remove(
-								'maxi-text-block__dynamic_content__is-rendering'
-							);
-						}
+						element.innerHTML = result;
+						element.classList.remove(
+							'maxi-text-block__dynamic_content__is-rendering'
+						);
 					}
 				});
 		}

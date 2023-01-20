@@ -28,9 +28,9 @@ import {
 	showOptions,
 	typeOptions,
 	limitFormat,
-	cutTags,
 	processDate,
 	getParametersFirstSeparator,
+	getSimpleText,
 } from './utils';
 
 /**
@@ -61,7 +61,7 @@ const DynamicContent = props => {
 
 	const {
 		'dc-author': author,
-		'dc-content': content,
+		//	'dc-content': content,
 		'dc-custom-date': isCustomDate,
 		'dc-day': day,
 		'dc-era': era,
@@ -408,6 +408,11 @@ const DynamicContent = props => {
 					} else if (fieldRef.current === 'excerpt') {
 						contentValue = limitFormat(
 							contentValue,
+							limitRef.current
+						);
+					} else if (fieldRef.current === 'content') {
+						contentValue = limitFormat(
+							getSimpleText(contentValue),
 							limitRef.current
 						);
 					}
@@ -758,30 +763,40 @@ const DynamicContent = props => {
 											}
 										/>
 									)}
-								{fieldRef.current === 'excerpt' && !error && (
-									<AdvancedNumberControl
-										label={__(
-											'Character limit',
-											'maxi-blocks'
-										)}
-										defaultValues={limitRef.current}
-										value={limitRef.current}
-										onChangeValue={value =>
-											switchOnChange('limit', value)
-										}
-										disableReset={LimitOptions.disableReset}
-										step={LimitOptions.steps}
-										withInputField={
-											LimitOptions.withInputField
-										}
-										onReset={() =>
-											switchOnChange('limit', 0)
-										}
-										min={LimitOptions.min}
-										max={cutTags(content).trim().length}
-										initialPosition={limitRef.current || 0}
-									/>
-								)}
+								{(fieldRef.current === 'excerpt' ||
+									fieldRef.current === 'content') &&
+									!error && (
+										<AdvancedNumberControl
+											label={__(
+												'Character limit',
+												'maxi-blocks'
+											)}
+											value={limitRef.current}
+											onChangeValue={value =>
+												switchOnChange('limit', value)
+											}
+											disableReset={
+												LimitOptions.disableReset
+											}
+											step={LimitOptions.steps}
+											withInputField={
+												LimitOptions.withInputField
+											}
+											onReset={() =>
+												switchOnChange(
+													'limit',
+													LimitOptions.defaultValue ||
+														'150'
+												)
+											}
+											min={LimitOptions.min}
+											max={LimitOptions.max}
+											initialPosition={
+												limitRef.current ||
+												LimitOptions.defaultValue
+											}
+										/>
+									)}
 
 								{fieldRef.current === 'date' && !error && (
 									<DateFormatting

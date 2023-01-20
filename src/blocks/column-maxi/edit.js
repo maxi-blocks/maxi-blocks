@@ -89,22 +89,12 @@ class edit extends MaxiBlockComponent {
 			clientId
 		);
 
-		if (columnValues[deviceType]?.width)
-			return columnValues[deviceType].width;
-
-		let width;
-		const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-
-		for (
-			let i = breakpoints.indexOf(deviceType) + 1;
-			i < breakpoints.length && !width;
-			i += 1
-		) {
-			if (columnValues[breakpoints[i]]?.width)
-				width = columnValues[breakpoints[i]].width;
-		}
-
-		return width;
+		return getLastBreakpointAttribute({
+			target: null,
+			breakpoint: deviceType,
+			attributes: columnValues,
+			keys: ['width'],
+		});
 	}
 
 	getHeight() {

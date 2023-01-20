@@ -30,7 +30,10 @@ export const getResponsiveStyles = styles => {
 };
 
 const getTargetString = (target, isIframe, isSiteEditor) => {
-	if (isIframe || isSiteEditor)
+	if (isSiteEditor)
+		return `body.maxi-blocks--active.editor-styles-wrapper .is-root-container .maxi-block.maxi-block--backend.${target},body.maxi-blocks--active.editor-styles-wrapper[maxi-blocks-responsive] .is-root-container .maxi-block.maxi-block--backend.${target}{`;
+
+	if (isIframe)
 		return `body.maxi-blocks--active.editor-styles-wrapper .maxi-block.maxi-block--backend.${target},body.maxi-blocks--active.editor-styles-wrapper[maxi-blocks-responsive] .maxi-block.maxi-block--backend.${target}{`;
 
 	return `body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.${target},body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.${target}{`;
@@ -59,7 +62,9 @@ const styleStringGenerator = (
 			!isIframe && !isSiteEditor
 				? ' .edit-post-visual-editor'
 				: '.editor-styles-wrapper'
-		}[maxi-blocks-responsive="xxl"] .maxi-block.maxi-block--backend.${target}{`;
+		}[maxi-blocks-responsive="xxl"]${
+			isSiteEditor ? ' .is-root-container' : ''
+		} .maxi-block.maxi-block--backend.${target}{`;
 	} else {
 		let breakpointPos = ALLOWED_BREAKPOINTS.indexOf(breakpoint);
 
@@ -68,9 +73,9 @@ const styleStringGenerator = (
 				!isIframe && !isSiteEditor
 					? ' .edit-post-visual-editor'
 					: '.editor-styles-wrapper'
-			}[maxi-blocks-responsive="${
-				ALLOWED_BREAKPOINTS[breakpointPos]
-			}"] .maxi-block.maxi-block--backend.${target}${
+			}[maxi-blocks-responsive="${ALLOWED_BREAKPOINTS[breakpointPos]}"]${
+				isSiteEditor ? ' .is-root-container' : ''
+			} .maxi-block.maxi-block--backend.${target}${
 				breakpointPos ? ',' : '{'
 			}`;
 			breakpointPos -= 1;

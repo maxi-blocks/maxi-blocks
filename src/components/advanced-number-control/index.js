@@ -266,10 +266,8 @@ const AdvancedNumberControl = props => {
 							className='maxi-advanced-number-control__range'
 							value={
 								+[
-									value,
-									defaultValue,
-									initial,
-									placeholder,
+									value ||
+										(defaultValue, initial, placeholder),
 								].find(val => /\d/.test(val) && +val !== 0) || 0
 							}
 							onChange={val => {

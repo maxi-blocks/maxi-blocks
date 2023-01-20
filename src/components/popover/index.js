@@ -143,7 +143,10 @@ const Popover = (
 		useAnimationFrame = false,
 		__unstableSlotName = SLOT_NAME,
 		__unstableObserveElement,
-		__unstableShift = false,
+		// Shift element when it is out of screen
+		useShift = false,
+		shiftPadding,
+		shiftLimit,
 		...contentProps
 	},
 	forwardedRef
@@ -222,11 +225,11 @@ const Popover = (
 					};
 			  })
 			: undefined,
-		__unstableShift
+		useShift
 			? shift({
 					crossAxis: true,
-					limiter: limitShift(),
-					padding: 1, // Necessary to avoid flickering at the edge of the viewport.
+					...(shiftLimit && { limiter: limitShift(shiftLimit) }),
+					padding: shiftPadding ?? 1, // Necessary to avoid flickering at the edge of the viewport.
 			  })
 			: undefined,
 		hasArrow ? arrow({ element: arrowRef }) : undefined,

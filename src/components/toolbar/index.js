@@ -146,69 +146,10 @@ const MaxiToolbar = memo(
 		const popoverRef = useRef(null);
 
 		const [anchorRef, setAnchorRef] = useState(ref.current);
-		const [anchor, setAnchor] = useState(null);
 		const [pinActive, setPinActive] = useState(false);
-
-		const getAnchor = popoverRef => {
-			return {
-				getBoundingClientRect: () => {
-					const popoverRect = popoverRef
-						?.querySelector('.components-popover__content')
-						?.getBoundingClientRect();
-
-					if (!popoverRect) return null;
-
-					const rect = anchorRef.getBoundingClientRect();
-
-					const { width, x } = rect;
-					const { width: popoverWidth } = popoverRect;
-
-					const expectedContentX = x + width / 2 - popoverWidth / 2;
-
-					const container = document
-						.querySelector('.editor-styles-wrapper')
-						?.getBoundingClientRect();
-
-					if (container) {
-						const { x: containerX, width: containerWidth } =
-							container;
-
-						// Left cut off check
-						if (expectedContentX < containerX)
-							rect.x += containerX - expectedContentX;
-
-						// Right cut off check
-						if (
-							expectedContentX + popoverWidth >
-							containerX + containerWidth
-						)
-							rect.x -=
-								expectedContentX +
-								popoverWidth -
-								(containerX + containerWidth);
-					}
-					return rect;
-				},
-				ownerDocument: anchorRef.ownerDocument,
-			};
-		};
 
 		useEffect(() => {
 			setAnchorRef(ref.current);
-
-			if (popoverRef.current) {
-				const newAnchor = getAnchor(popoverRef.current);
-
-				if (
-					!anchor ||
-					(anchor &&
-						!isEqual(
-							JSON.stringify(anchor.getBoundingClientRect()),
-							JSON.stringify(newAnchor.getBoundingClientRect())
-						))
-				)
-					setAnchor(newAnchor);
-			}
 		});
 
 		const breadcrumbStatus = () => {
@@ -233,7 +174,7 @@ const MaxiToolbar = memo(
 		);
 
 		const popoverPropsByVersion = {
-			anchor,
+			anchor: anchorRef,
 			position: 'top center',
 		};
 
@@ -253,6 +194,10 @@ const MaxiToolbar = memo(
 					__unstableSlotName='block-toolbar'
 					__unstableObserveElement={ref.current}
 					observeBlockPosition={clientId}
+					useAnimationFrame
+					useShift
+					shiftPadding={{ top: 22 }}
+					shiftLimit={{ mainAxis: false }}
 					{...popoverPropsByVersion}
 				>
 					<div className={`toolbar-wrapper pinned--${pinActive}`}>

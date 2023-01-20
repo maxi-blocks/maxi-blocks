@@ -181,6 +181,9 @@ const DividerControl = props => {
 							isHover,
 						}) || 'none'
 					}
+					defaultValue={getDefaultAttribute(
+						`${prefix}divider-border-style-${breakpoint}`
+					)}
 					onReset={() =>
 						onChange({
 							[`${prefix}divider-border-style-${breakpoint}`]:

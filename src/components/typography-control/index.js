@@ -935,6 +935,11 @@ const TypographyControl = props => {
 							[`${prefix}white-space`]: val,
 						});
 					}}
+					onReset={() => {
+						onChangeFormat({
+							[`${prefix}white-space`]: getDefault('white-space'),
+						});
+					}}
 				/>
 				<AdvancedNumberControl
 					className='maxi-typography-control__word-spacing'

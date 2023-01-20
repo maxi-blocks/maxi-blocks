@@ -3,6 +3,13 @@
  */
 import { isNumber, isBoolean, isEmpty } from 'lodash';
 
+const getBreakpointLine = (breakpoint, target) => {
+	if (isEmpty(breakpoint)) return '';
+	if (isEmpty(target)) return breakpoint;
+
+	return `-${breakpoint}`;
+};
+
 const getAttributeValue = ({
 	target,
 	props,
@@ -12,7 +19,7 @@ const getAttributeValue = ({
 }) => {
 	const value =
 		props[
-			`${prefix}${target}${breakpoint ? `-${breakpoint}` : ''}${
+			`${prefix}${target}${getBreakpointLine(breakpoint, target)}${
 				isHover ? '-hover' : ''
 			}`
 		];

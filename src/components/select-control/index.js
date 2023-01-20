@@ -29,6 +29,8 @@ export default function SelectControl({
 	options = [],
 	className,
 	hideLabelFromVision,
+	defaultValue,
+	value,
 	...props
 }) {
 	const instanceId = useInstanceId(SelectControl);
@@ -75,6 +77,7 @@ export default function SelectControl({
 					onChange={onChangeValue}
 					aria-describedby={help ? `${id}__help` : undefined}
 					multiple={multiple}
+					value={value ?? defaultValue ?? options[0].value}
 					{...props}
 				>
 					{isPlainObject(options)

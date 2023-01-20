@@ -94,16 +94,7 @@ const styleGenerator = (styles, isIframe = false, isSiteEditor = false) => {
 	const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 	const currentBreakpoint = select('maxiBlocks').receiveMaxiDeviceType();
 
-	const availableBreakpoints = isSiteEditor
-		? BREAKPOINTS.slice(
-				0,
-				BREAKPOINTS.indexOf(
-					currentBreakpoint === 'general' ? 'xl' : currentBreakpoint
-				) + 1
-		  )
-		: BREAKPOINTS;
-
-	availableBreakpoints.forEach(breakpoint => {
+	BREAKPOINTS.forEach(breakpoint => {
 		Object.entries(styles).forEach(([key, value]) => {
 			const target = getTarget(key);
 			const { content } = value;

@@ -230,6 +230,6 @@ export const getPageFonts = (onlyBackend = false) => {
 			oldResponse = cloneDeep(mergedResponse);
 		}
 	});
-	console.log(mergedResponse);
+
 	return mergedResponse;
 };

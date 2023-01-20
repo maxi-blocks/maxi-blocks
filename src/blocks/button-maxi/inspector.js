@@ -229,7 +229,6 @@ const Inspector = props => {
 											},
 											styleCardPrefix: 'button',
 											hideAlignment: true,
-											hideBottomGap: true,
 											disableCustomFormats: true,
 											globalProps: {
 												target: '',

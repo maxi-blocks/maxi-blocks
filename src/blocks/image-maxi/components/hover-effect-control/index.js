@@ -411,7 +411,6 @@ const HoverEffectControl = props => {
 									'hoverTitleTypography'
 								),
 							}}
-							hideBottomGap
 							hideAlignment
 							onChangeInline={onChangeInline}
 							onChange={onChange}
@@ -461,7 +460,6 @@ const HoverEffectControl = props => {
 									'hoverContentTypography'
 								),
 							}}
-							hideBottomGap
 							hideAlignment
 							onChange={onChange}
 							prefix='hover-content-'

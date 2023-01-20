@@ -82,6 +82,7 @@ const Inspector = props => {
 										props,
 										styleCardPrefix: '',
 										hideAlignment: true,
+										showBottomGap: true,
 										allowLink: true,
 										globalProps: {
 											target: '',

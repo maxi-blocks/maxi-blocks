@@ -19,7 +19,7 @@ const typography = ({
 	props,
 	styleCardPrefix = '',
 	hideAlignment = false,
-	hideBottomGap = false,
+	showBottomGap = false,
 	disableCustomFormats = false,
 	allowLink = false,
 	globalProps,
@@ -84,7 +84,7 @@ const typography = ({
 									cleanInlineStyles(target);
 								}}
 								hideAlignment={hideAlignment}
-								hideBottomGap={hideBottomGap}
+								showBottomGap={showBottomGap}
 								breakpoint={deviceType}
 								clientId={clientId}
 								disableCustomFormats={disableCustomFormats}

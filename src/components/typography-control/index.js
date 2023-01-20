@@ -285,7 +285,7 @@ const TypographyControl = props => {
 		prefix = '',
 		disableFormats = false,
 		disableCustomFormats = false,
-		hideBottomGap = false,
+		showBottomGap,
 		hideTextShadow = false,
 		isStyleCards = false,
 		disablePalette = false,
@@ -986,7 +986,7 @@ const TypographyControl = props => {
 					}}
 					allowedUnits={['px', 'em', 'vw', '%']}
 				/>
-				{!hideBottomGap && (
+				{showBottomGap && (
 					<AdvancedNumberControl
 						className='maxi-typography-control__bottom-gap'
 						label={__('Bottom gap', 'maxi-blocks')}

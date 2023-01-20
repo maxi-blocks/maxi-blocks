@@ -13,6 +13,7 @@ import { isEmpty, isString, cloneDeep, isObject } from 'lodash';
  */
 import { getGroupAttributes } from '../../styles';
 import { getCustomFormatValue } from '../formats';
+import { goThroughMaxiBlocks } from '../../maxi-block';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -150,8 +151,6 @@ const mergeDeep = (target, source) => {
 };
 
 export const getPageFonts = (onlyBackend = false) => {
-	const { getBlocks } = select('core/block-editor');
-
 	let response = {};
 	let oldResponse = {};
 	let mergedResponse = {};
@@ -162,91 +161,75 @@ export const getPageFonts = (onlyBackend = false) => {
 		'maxi-blocks/image-maxi',
 	];
 
-	const getBlockFonts = blocks => {
-		Object.entries(blocks).forEach(([key, block]) => {
-			const { attributes, innerBlocks, name } = block;
+	goThroughMaxiBlocks(({ attributes, name }) => {
+		if (blocksWithFonts.includes(name) && !isEmpty(attributes)) {
+			let typography = {};
+			let typographyHover = {};
+			let textLevel = attributes?.textLevel || 'p';
+			const { blockStyle } = attributes;
 
-			if (blocksWithFonts.includes(name) && !isEmpty(attributes)) {
-				let typography = {};
-				let typographyHover = {};
-				let textLevel = attributes?.textLevel || 'p';
-				const { blockStyle } = attributes;
+			switch (name) {
+				case 'maxi-blocks/number-counter-maxi':
+					typography = {
+						...getGroupAttributes(attributes, 'numberCounter'),
+					};
+					break;
+				case 'maxi-blocks/button-maxi':
+					typography = {
+						...getGroupAttributes(attributes, 'typography'),
+					};
+					typographyHover = {
+						...getGroupAttributes(attributes, 'typographyHover'),
+					};
+					textLevel = 'button';
+					break;
+				default:
+					typography = {
+						...getGroupAttributes(attributes, 'typography'),
+					};
+					typographyHover = {
+						...getGroupAttributes(attributes, 'typographyHover'),
+					};
+					break;
+			}
 
-				switch (name) {
-					case 'maxi-blocks/number-counter-maxi':
-						typography = {
-							...getGroupAttributes(attributes, 'numberCounter'),
-						};
-						break;
-					case 'maxi-blocks/button-maxi':
-						typography = {
-							...getGroupAttributes(attributes, 'typography'),
-						};
-						typographyHover = {
-							...getGroupAttributes(
-								attributes,
-								'typographyHover'
-							),
-						};
-						textLevel = 'button';
-						break;
-					default:
-						typography = {
-							...getGroupAttributes(attributes, 'typography'),
-						};
-						typographyHover = {
-							...getGroupAttributes(
-								attributes,
-								'typographyHover'
-							),
-						};
-						break;
-				}
-
-				if (typographyHover?.['typography-status-hover'])
-					response = mergeDeep(
-						getAllFonts(
-							typography,
-							false,
-							false,
-							textLevel,
-							blockStyle,
-							onlyBackend
-						),
-						getAllFonts(
-							typographyHover,
-							false,
-							true,
-							textLevel,
-							blockStyle,
-							onlyBackend
-						)
-					);
-				else
-					response = getAllFonts(
+			if (typographyHover?.['typography-status-hover'])
+				response = mergeDeep(
+					getAllFonts(
 						typography,
 						false,
 						false,
 						textLevel,
 						blockStyle,
 						onlyBackend
-					);
-
-				mergedResponse = mergeDeep(
-					cloneDeep(oldResponse),
-					cloneDeep(response)
+					),
+					getAllFonts(
+						typographyHover,
+						false,
+						true,
+						textLevel,
+						blockStyle,
+						onlyBackend
+					)
+				);
+			else
+				response = getAllFonts(
+					typography,
+					false,
+					false,
+					textLevel,
+					blockStyle,
+					onlyBackend
 				);
 
-				oldResponse = cloneDeep(mergedResponse);
-			}
+			mergedResponse = mergeDeep(
+				cloneDeep(oldResponse),
+				cloneDeep(response)
+			);
 
-			if (!isEmpty(innerBlocks)) getBlockFonts(innerBlocks);
-		});
-
-		return null;
-	};
-
-	getBlockFonts(getBlocks());
-
+			oldResponse = cloneDeep(mergedResponse);
+		}
+	});
+	console.log(mergedResponse);
 	return mergedResponse;
 };

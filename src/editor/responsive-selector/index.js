@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { createBlock } from '@wordpress/blocks';
-import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -122,21 +121,11 @@ const ResponsiveSelector = props => {
 		insertBlock(createBlock('maxi-blocks/maxi-cloud'));
 	};
 
-	const [isStyleCardVisible, setIsStyleCardVisible] = useState(false);
-
-	const onClickFunction = () => {
-		onClose();
-		setIsStyleCardVisible(!isStyleCardVisible);
-	};
-
 	const classes = classnames('maxi-responsive-selector', className);
 
 	return (
 		<div className={classes} style={{ display: isOpen ? 'flex' : 'none' }}>
-			<span
-				className='maxi-responsive-selector__close'
-				onClick={onClickFunction}
-			>
+			<span className='maxi-responsive-selector__close' onClick={onClose}>
 				<Icon icon={closeIcon} />
 			</span>
 			<ResponsiveButton
@@ -200,10 +189,7 @@ const ResponsiveSelector = props => {
 					<span>{__('Template library', 'maxi-blocks')}</span>
 				</Button>
 			</div>
-			{console.log(isStyleCardVisible)}
-			<MaxiStyleCardsEditorPopUp
-				isStyleCardVisible={isStyleCardVisible}
-			/>
+			<MaxiStyleCardsEditorPopUp />
 			<Button className='action-buttons__help' href='#'>
 				<Icon className='toolbar-item__icon' icon={helpIcon} /> Help
 			</Button>

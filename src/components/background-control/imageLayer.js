@@ -191,6 +191,7 @@ const ImageLayerSettings = props => {
 						attributes: imageOptions,
 						isHover,
 					})}
+					defaultValue={getDefaultAttr('background-image-repeat')}
 					options={[
 						{
 							label: __('No repeat', 'maxi-blocks'),
@@ -227,7 +228,6 @@ const ImageLayerSettings = props => {
 							)]: val,
 						})
 					}
-					defaultValue={getDefaultAttr('background-image-repeat')}
 					onReset={() =>
 						onChange({
 							[getAttributeKey(

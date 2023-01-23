@@ -650,6 +650,7 @@ const TypographyControl = props => {
 						);
 					}}
 					fontWeight={getValue('font-weight')}
+					defaultfontWeight={getDefault('font-weight')}
 					fontName={getValue('font-family')}
 					fontStyle={getValue('font-style')}
 					breakpoint={breakpoint}

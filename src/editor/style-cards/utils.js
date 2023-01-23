@@ -77,7 +77,8 @@ export const exportStyleCard = (data, fileName) => {
 	a.style = 'display: none';
 
 	const reducedSC = updatedDiff(standardSC?.sc_maxi, data);
-	const json = JSON.stringify(reducedSC);
+	// Need stringify twice to get 'text/plain' mime type
+	const json = JSON.stringify(JSON.stringify(reducedSC));
 	const blob = new Blob([json], { type: 'text/plain' });
 	const url = window.URL.createObjectURL(blob);
 

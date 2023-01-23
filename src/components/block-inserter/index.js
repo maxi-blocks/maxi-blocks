@@ -287,7 +287,6 @@ const InterBlockInserter = forwardRef((props, ref) => {
 	const { nextClientId, isNextMaxiBlock } = useSelect(select => {
 		const { getBlockOrder, getBlockRootClientId, getBlockName } =
 			select('core/block-editor');
-		const { receiveMaxiSettings } = select('maxiBlocks');
 
 		const rootClientId = getBlockRootClientId(clientId);
 		const blockOrder = getBlockOrder(rootClientId);
@@ -299,13 +298,9 @@ const InterBlockInserter = forwardRef((props, ref) => {
 		const isNextMaxiBlock =
 			nextClientId && getBlockName(nextClientId).includes('maxi-blocks/');
 
-		const maxiSettings = receiveMaxiSettings();
-		const { editor } = maxiSettings;
-
 		return {
 			nextClientId,
 			isNextMaxiBlock,
-			version: editor?.version,
 		};
 	}, []);
 

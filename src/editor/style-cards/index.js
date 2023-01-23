@@ -41,9 +41,9 @@ const MaxiStyleCardsEditorPopUp = forwardRef((props, settingsRef) => {
 			</Button>
 			{isVisible && (
 				<MaxiStyleCardsEditor
+					ref={settingsRef}
 					styleCards={styleCards}
 					setIsVisible={setIsVisible}
-					ref={settingsRef}
 				/>
 			)}
 		</>

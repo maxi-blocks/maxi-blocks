@@ -70,9 +70,6 @@ const CaptionToolbar = memo(
 			);
 
 			const maxiSettings = receiveMaxiSettings();
-			const version = !isEmpty(maxiSettings.editor)
-				? maxiSettings.editor.version
-				: null;
 
 			const breakpoint = receiveMaxiDeviceType();
 
@@ -83,7 +80,6 @@ const CaptionToolbar = memo(
 				: false;
 
 			return {
-				editorVersion: version,
 				breakpoint,
 				styleCard,
 				tooltipsHide,

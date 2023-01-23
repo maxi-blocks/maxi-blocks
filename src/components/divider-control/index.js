@@ -6,18 +6,18 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
+import AdvancedNumberControl from '../advanced-number-control';
 import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
-import ToggleSwitch from '../toggle-switch';
 import Icon from '../icon';
 import SelectControl from '../select-control';
-import AdvancedNumberControl from '../advanced-number-control';
+import ToggleSwitch from '../toggle-switch';
+import withRTC from '../../extensions/maxi-block/withRTC';
 import {
 	getAttributeKey,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * Icons
@@ -156,10 +156,22 @@ const DividerControl = props => {
 					label={__('Add border line', 'maxi-blocks')}
 					options={[
 						{ label: __('None', 'maxi-blocks'), value: 'none' },
-						{ label: __('Dotted', 'maxi-blocks'), value: 'dotted' },
-						{ label: __('Dashed', 'maxi-blocks'), value: 'dashed' },
-						{ label: __('Solid', 'maxi-blocks'), value: 'solid' },
-						{ label: __('Double', 'maxi-blocks'), value: 'double' },
+						{
+							label: __('Dotted', 'maxi-blocks'),
+							value: 'dotted',
+						},
+						{
+							label: __('Dashed', 'maxi-blocks'),
+							value: 'dashed',
+						},
+						{
+							label: __('Solid', 'maxi-blocks'),
+							value: 'solid',
+						},
+						{
+							label: __('Double', 'maxi-blocks'),
+							value: 'double',
+						},
 					]}
 					value={
 						getLastBreakpointAttribute({
@@ -168,6 +180,15 @@ const DividerControl = props => {
 							attributes: props,
 							isHover,
 						}) || 'none'
+					}
+					onReset={() =>
+						onChange({
+							[`${prefix}divider-border-style-${breakpoint}`]:
+								getDefaultAttribute(
+									`${prefix}divider-border-style-${breakpoint}`
+								),
+							isReset: true,
+						})
 					}
 					onChange={val =>
 						onChange({
@@ -310,26 +331,25 @@ const DividerControl = props => {
 								})
 							}
 							onReset={() =>
-								onChange(
-									handleOnReset({
-										[getAttributeKey(
-											'divider-width',
-											isHover,
-											prefix,
-											breakpoint
-										)]: getDefaultAttribute(
-											`divider-width-${breakpoint}`
-										),
-										[getAttributeKey(
-											'divider-width-unit',
-											isHover,
-											prefix,
-											breakpoint
-										)]: getDefaultAttribute(
-											`divider-width-unit-${breakpoint}`
-										),
-									})
-								)
+								onChange({
+									[getAttributeKey(
+										'divider-width',
+										isHover,
+										prefix,
+										breakpoint
+									)]: getDefaultAttribute(
+										`divider-width-${breakpoint}`
+									),
+									[getAttributeKey(
+										'divider-width-unit',
+										isHover,
+										prefix,
+										breakpoint
+									)]: getDefaultAttribute(
+										`divider-width-unit-${breakpoint}`
+									),
+									isReset: true,
+								})
 							}
 							minMaxSettings={minMaxSettings}
 						/>
@@ -380,26 +400,25 @@ const DividerControl = props => {
 								})
 							}
 							onReset={() =>
-								onChange(
-									handleOnReset({
-										[getAttributeKey(
-											'divider-border-top-width',
-											isHover,
-											prefix,
-											breakpoint
-										)]: getDefaultAttribute(
-											`divider-border-top-width-${breakpoint}`
-										),
-										[getAttributeKey(
-											'divider-border-top-unit',
-											isHover,
-											prefix,
-											breakpoint
-										)]: getDefaultAttribute(
-											`divider-border-top-unit-${breakpoint}`
-										),
-									})
-								)
+								onChange({
+									[getAttributeKey(
+										'divider-border-top-width',
+										isHover,
+										prefix,
+										breakpoint
+									)]: getDefaultAttribute(
+										`divider-border-top-width-${breakpoint}`
+									),
+									[getAttributeKey(
+										'divider-border-top-unit',
+										isHover,
+										prefix,
+										breakpoint
+									)]: getDefaultAttribute(
+										`divider-border-top-unit-${breakpoint}`
+									),
+									isReset: true,
+								})
 							}
 							minMaxSettings={minMaxSettings}
 						/>
@@ -433,18 +452,17 @@ const DividerControl = props => {
 							min={0}
 							max={100}
 							onReset={() =>
-								onChange(
-									handleOnReset({
-										[getAttributeKey(
-											'divider-height',
-											isHover,
-											prefix,
-											breakpoint
-										)]: getDefaultAttribute(
-											`divider-height-${breakpoint}`
-										),
-									})
-								)
+								onChange({
+									[getAttributeKey(
+										'divider-height',
+										isHover,
+										prefix,
+										breakpoint
+									)]: getDefaultAttribute(
+										`divider-height-${breakpoint}`
+									),
+									isReset: true,
+								})
 							}
 							initialPosition={getDefaultAttribute(
 								`divider-height-${breakpoint}`
@@ -474,18 +492,17 @@ const DividerControl = props => {
 							min={0}
 							max={100}
 							onReset={() =>
-								onChange(
-									handleOnReset({
-										[getAttributeKey(
-											'divider-border-right-width',
-											isHover,
-											prefix,
-											breakpoint
-										)]: getDefaultAttribute(
-											`divider-border-right-width-${breakpoint}`
-										),
-									})
-								)
+								onChange({
+									[getAttributeKey(
+										'divider-border-right-width',
+										isHover,
+										prefix,
+										breakpoint
+									)]: getDefaultAttribute(
+										`divider-border-right-width-${breakpoint}`
+									),
+									isReset: true,
+								})
 							}
 							initialPosition={getDefaultAttribute(
 								`divider-border-right-width-${breakpoint}`
@@ -497,4 +514,4 @@ const DividerControl = props => {
 	);
 };
 
-export default DividerControl;
+export default withRTC(DividerControl);

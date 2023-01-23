@@ -49,7 +49,11 @@ const getParsedObj = obj => {
 	Object.keys(typographyObj).forEach(key => delete newObj[key]);
 
 	Object.entries(
-		getTypographyStyles({ obj: typographyObj, disableGlobals: true })
+		getTypographyStyles({
+			obj: typographyObj,
+			disableGlobals: true,
+			isStyleCards: true,
+		})
 	).forEach(([breakpoint, value]) => {
 		Object.entries(value).forEach(([key, val]) => {
 			newObj[`${key}-${breakpoint}`] = val;
@@ -89,6 +93,10 @@ export const getSCVariablesObject = (
 		'text-decoration',
 		'text-transform',
 		'letter-spacing',
+		'white-space',
+		'word-spacing',
+		'margin-bottom',
+		'text-indent',
 	];
 	const SC = {
 		dark: {
@@ -234,7 +242,7 @@ const getSCFontsData = obj => {
 			response[fontName] = { weight: [], style: [] };
 		}
 		if (key.includes('font-weight'))
-			response[fontName].weight.push(val.toString());
+			response[fontName].weight.push(val?.toString());
 
 		if (key.includes('font-style')) response[fontName].style.push(val);
 	});

@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { createRef } from '@wordpress/element';
+import { createRef, forwardRef, useEffect, useState } from '@wordpress/element';
 import { dispatch } from '@wordpress/data';
 
 /**
@@ -20,6 +20,7 @@ import {
 	RawHTML,
 	MaxiPopoverButton,
 	Button,
+	Icon,
 } from '../../components';
 import {
 	getIsOverflowHidden,
@@ -33,23 +34,105 @@ import { copyPasteMapping } from './data';
 /**
  * External dependencies
  */
-import { isEmpty, uniqueId } from 'lodash';
+import { isEmpty, uniqueId, uniq, isArray } from 'lodash';
+import classNames from 'classnames';
+
+/**
+ * Icons
+ */
+import { selectIcon } from '../../icons';
 
 /**
  * Content
  */
+const SVGIconPlaceholder = forwardRef((props, ref) => {
+	const { uniqueID, clientId, onClick } = props;
+
+	const [isBlockSmall, setIsBlockSmall] = useState(null);
+	const [isBlockSmaller, setIsBlockSmaller] = useState(null);
+
+	const resizeObserver = new ResizeObserver(entries => {
+		const newIsSmallBlock = entries[0].contentRect.width < 120;
+		const newIsSmallerBlock = entries[0].contentRect.width < 38;
+
+		if (newIsSmallBlock !== isBlockSmall) setIsBlockSmall(newIsSmallBlock);
+		if (newIsSmallerBlock !== isBlockSmaller)
+			setIsBlockSmaller(newIsSmallerBlock);
+	});
+
+	useEffect(() => {
+		resizeObserver.observe(ref.current);
+
+		return () => {
+			resizeObserver.disconnect();
+		};
+	}, []);
+
+	return (
+		<div
+			className={classNames(
+				'maxi-svg-icon-block__placeholder',
+				isBlockSmall && 'maxi-svg-icon-block__placeholder--small',
+				isBlockSmaller && 'maxi-svg-icon-block__placeholder--smaller'
+			)}
+			key={`maxi-svg-icon-block__placeholder--${uniqueID}`}
+		>
+			<Button
+				isPrimary
+				key={`maxi-block-library__modal-button--${clientId}`}
+				className='maxi-block-library__modal-button'
+				onClick={onClick}
+			>
+				<Icon
+					className='maxi-icon-block__select__icon'
+					icon={selectIcon}
+				/>
+				{!isBlockSmall && __('Select icon', 'maxi-blocks')}
+			</Button>
+		</div>
+	);
+});
 class edit extends MaxiBlockComponent {
 	constructor(props) {
 		super(props);
 
 		this.resizableObject = createRef();
 
-		this.state = { isOpen: this.props.attributes.openFirstTime };
+		this.state = {
+			isOpen: this.props.attributes.openFirstTime,
+		};
 	}
 
 	maxiBlockDidUpdate(prevProps) {
 		const { updateBlockAttributes } = dispatch('core/block-editor');
 		const svgCode = this.props.attributes.content;
+		const blockId = this.props.attributes.uniqueID;
+
+		if (svgCode) {
+			const svgInsideIds = uniq(
+				Array.from(svgCode.matchAll(/ xlink:href="#(.+?(?=))"/g)).map(
+					match => match[1]
+				)
+			);
+
+			if (isArray(svgInsideIds) && svgInsideIds.length > 0) {
+				svgInsideIds.forEach(insideId => {
+					if (!insideId.includes(blockId)) {
+						const newInsideId = `${
+							insideId.split('__')[0] // let's check for another 'svg-icon-max-X' part in case the block was duplicated, and remove the part
+						}__${blockId}`;
+
+						const newSvgCode = svgCode.replaceAll(
+							insideId,
+							newInsideId
+						);
+						this.props.maxiSetAttributes({
+							content: newSvgCode,
+						});
+					}
+				});
+			}
+		}
 
 		if (prevProps.attributes.uniqueID !== this.props.attributes.uniqueID) {
 			const svgClass = svgCode.match(/ class="(.+?(?=))"/)[1];
@@ -96,6 +179,22 @@ class edit extends MaxiBlockComponent {
 					});
 			}
 		}
+	}
+
+	maxiBlockDidChangeUniqueID(newUniqueID) {
+		/**
+		 * Each svg icon content svg tag has unique class name, which should be changed
+		 * when the block is duplicated.
+		 */
+		const svgClass =
+			this.props.attributes.content.match(/ class="(.+?(?=))"/)?.[1];
+		if (!svgClass) return;
+
+		const newContent = this.props.attributes.content.replaceAll(
+			svgClass.match(/__(\d)/)[0],
+			`__${newUniqueID.match(/-(\d+)$/).pop()}`
+		);
+		this.props.attributes.content = newContent;
 	}
 
 	get getStylesObject() {
@@ -181,16 +280,14 @@ class edit extends MaxiBlockComponent {
 						copyPasteMapping={copyPasteMapping}
 						prefix='svg-'
 						inlineStylesTargets={inlineStylesTargets}
+						onModalOpen={() => this.setState({ isOpen: true })}
 						{...this.props}
 					/>,
 					<MaxiPopoverButton
 						key={`popover-${uniqueID}`}
 						ref={this.blockRef}
 						isOpen={isOpen}
-						isSmall={
-							this.props.isChild ||
-							this.props.attributes['width-fit-content-general']
-						}
+						prefix='svg-'
 						{...this.props}
 					>
 						<MaxiModal {...maxiModalProps} />
@@ -213,19 +310,12 @@ class edit extends MaxiBlockComponent {
 			>
 				<>
 					{isEmptyContent && (
-						<div
-							className='maxi-svg-icon-block__placeholder'
-							key={`maxi-svg-icon-block__placeholder--${uniqueID}`}
-						>
-							<Button
-								isPrimary
-								key={`maxi-block-library__modal-button--${clientId}`}
-								className='maxi-block-library__modal-button'
-								onClick={() => this.setState({ isOpen: true })}
-							>
-								{__('Select icon', 'maxi-blocks')}
-							</Button>
-						</div>
+						<SVGIconPlaceholder
+							ref={this.blockRef}
+							uniqueID={uniqueID}
+							clientId={clientId}
+							onClick={() => this.setState({ isOpen: true })}
+						/>
 					)}
 					{!isEmptyContent && (
 						<BlockResizer

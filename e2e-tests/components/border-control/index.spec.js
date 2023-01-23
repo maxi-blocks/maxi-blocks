@@ -53,9 +53,7 @@ describe('BorderControl', () => {
 		]);
 
 		expect(marginResult).toStrictEqual(expectMargin);
-		await borderAccordion.$$(
-			'.maxi-tabs-content .maxi-default-styles-control button'
-		);
+		await borderAccordion.$$('.maxi-default-styles-control button');
 
 		const expectAttributes = ['none', 'solid', 'dashed', 'dotted'];
 
@@ -73,7 +71,7 @@ describe('BorderControl', () => {
 		}
 
 		const borderType = await borderAccordion.$(
-			'.maxi-tabs-content .maxi-border-control__type .maxi-base-control__field select'
+			'.maxi-border-control__type .maxi-base-control__field select'
 		);
 
 		await borderType.select('groove');
@@ -95,7 +93,7 @@ describe('BorderControl', () => {
 		).toStrictEqual(4);
 
 		const selector = await borderAccordion.$(
-			'.maxi-tabs-content .maxi-border-control .maxi-base-control__field select'
+			'.maxi-border-control .maxi-base-control__field select'
 		);
 		await selector.select('dotted');
 
@@ -106,10 +104,9 @@ describe('BorderControl', () => {
 		// check responsive border
 		const responsiveBorder = await addResponsiveTest({
 			page,
-			instance:
-				'.maxi-tabs-content .maxi-border-control .maxi-base-control__field select',
+			instance: '.maxi-border-control .maxi-base-control__field select',
 			selectInstance:
-				'.maxi-tabs-content .maxi-border-control .maxi-base-control__field select',
+				'.maxi-border-control .maxi-base-control__field select',
 			needSelectIndex: true,
 			baseExpect: 'dotted',
 			xsExpect: 'groove',
@@ -125,27 +122,24 @@ describe('BorderControl', () => {
 		await insertBlock('Text Maxi');
 		const borderAccordion = await openSidebarTab(page, 'style', 'border');
 		await borderAccordion.$$eval(
-			'.maxi-tabs-content .maxi-default-styles-control button',
+			'.maxi-default-styles-control button',
 			buttons => buttons[1].click()
 		);
 
 		await borderAccordion.$$eval(
-			'.maxi-accordion-control__item__panel .maxi-tabs-content .maxi-tabs-control button',
+			'.maxi-accordion-control__item__panel .maxi-tabs-control button',
 			buttons => buttons[1].click()
 		);
 
-		await page.$eval(
-			'.maxi-tabs-content .maxi-border-status-hover input',
-			use => use.click()
-		);
+		await page.$eval('.maxi-border-status-hover input', use => use.click());
 
 		await borderAccordion.$$eval(
-			'.maxi-accordion-control__item__panel .maxi-tabs-content .maxi-tabs-control button',
+			'.maxi-accordion-control__item__panel .maxi-tabs-control button',
 			buttons => buttons[0].click()
 		);
 
 		await borderAccordion.$$eval(
-			'.maxi-tabs-content .maxi-default-styles-control button',
+			'.maxi-default-styles-control button',
 			buttons => buttons[0].click()
 		);
 
@@ -260,7 +254,7 @@ describe('BorderControl', () => {
 
 		// base
 		await borderAccordion.$$eval(
-			'.maxi-tabs-content .maxi-default-styles-control button',
+			'.maxi-default-styles-control button',
 			buttons => buttons[1].click()
 		);
 
@@ -271,7 +265,7 @@ describe('BorderControl', () => {
 		// s
 		await changeResponsive(page, 's');
 		await borderAccordion.$$eval(
-			'.maxi-tabs-content .maxi-default-styles-control button',
+			'.maxi-default-styles-control button',
 			buttons => buttons[2].click()
 		);
 
@@ -305,7 +299,7 @@ describe('BorderControl', () => {
 
 		// base
 		await borderAccordion.$$eval(
-			'.maxi-tabs-content .maxi-default-styles-control button',
+			'.maxi-default-styles-control button',
 			buttons => buttons[1].click()
 		);
 
@@ -316,7 +310,7 @@ describe('BorderControl', () => {
 		// s
 		await changeResponsive(page, 's');
 		await borderAccordion.$$eval(
-			'.maxi-tabs-content .maxi-default-styles-control button',
+			'.maxi-default-styles-control button',
 			buttons => buttons[0].click()
 		);
 

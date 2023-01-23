@@ -14,11 +14,11 @@ import {
 } from '../../../../extensions/video';
 import {
 	AdvancedNumberControl,
-	SelectControl,
+	AspectRatioControl,
 	SettingTabsControl,
 	TextControl,
 } from '../../../../components';
-import { handleOnReset } from '../../../../extensions/attributes';
+import { getDefaultAttribute } from '../../../../extensions/styles';
 
 const VideoControl = props => {
 	const {
@@ -29,6 +29,8 @@ const VideoControl = props => {
 		videoRatio,
 		playerType,
 	} = props;
+
+	const defaultURL = 'https://www.youtube.com/watch?v=ScMzIvxBSi4';
 
 	const [validationText, setValidationText] = useState(null);
 	return (
@@ -61,7 +63,7 @@ const VideoControl = props => {
 				label={__('URL', 'maxi-blocks')}
 				type='url'
 				value={videoUrl}
-				placeholder='Youtube, Vimeo, or Direct Link'
+				placeholder={defaultURL}
 				onChange={val => {
 					if (val && !videoUrlRegex.test(val)) {
 						setValidationText(
@@ -72,10 +74,10 @@ const VideoControl = props => {
 					}
 
 					onChange({
-						url: val,
+						url: val !== '' ? val : defaultURL,
 						embedUrl: getParsedVideoUrl({
 							...props,
-							url: val,
+							url: val !== '' ? val : defaultURL,
 						}),
 						videoType: parseVideo(val).type,
 					});
@@ -100,11 +102,10 @@ const VideoControl = props => {
 				min={0}
 				max={999}
 				onReset={() =>
-					onChange(
-						handleOnReset({
-							startTime: '',
-						})
-					)
+					onChange({
+						startTime: '',
+						isReset: true,
+					})
 				}
 				optionType='string'
 			/>
@@ -125,47 +126,28 @@ const VideoControl = props => {
 				min={0}
 				max={999}
 				onReset={() =>
-					onChange(
-						handleOnReset({
-							endTime: '',
-						})
-					)
+					onChange({
+						endTime: '',
+						isReset: true,
+					})
 				}
 				optionType='string'
 			/>
-			<SelectControl
+			<AspectRatioControl
 				className='maxi-video-control__ratio'
 				label={__('Aspect ratio', 'maxi-blocks')}
 				value={videoRatio}
-				options={[
+				additionalOptions={[
 					{
 						label: __('None', 'maxi-blocks'),
 						value: 'initial',
 					},
-					{
-						label: __('1:1 Aspect ratio', 'maxi-blocks'),
-						value: 'ar11',
-					},
-					{
-						label: __('2:3 Aspect ratio', 'maxi-blocks'),
-						value: 'ar23',
-					},
-					{
-						label: __('3:2 Aspect ratio', 'maxi-blocks'),
-						value: 'ar32',
-					},
-					{
-						label: __('4:3 Aspect ratio', 'maxi-blocks'),
-						value: 'ar43',
-					},
-					{
-						label: __('16:9 Aspect ratio', 'maxi-blocks'),
-						value: 'ar169',
-					},
 				]}
-				onChange={newRatio =>
+				onChange={videoRatio => onChange({ videoRatio })}
+				onReset={() =>
 					onChange({
-						videoRatio: newRatio,
+						videoRatio: getDefaultAttribute('videoRatio'),
+						isReset: true,
 					})
 				}
 			/>

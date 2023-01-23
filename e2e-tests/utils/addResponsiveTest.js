@@ -36,6 +36,7 @@ const addResponsiveTest = async ({
 		await page.$eval(`${instance}`, changeValue => changeValue.focus());
 
 		await pressKeyWithModifier('primary', 'a');
+
 		await page.keyboard.type(`${newValue}`);
 
 		// change responsive xs

@@ -46,18 +46,7 @@ const addMoreSC = async (title = 'Daemon') => {
 	);
 };
 
-const createEditableCopyOfSC = async (title = 'Daemon') => {
-	// Open SC modal
-	await page.$eval('.maxi-style-cards__sc__more-sc--add-more', button =>
-		button.click()
-	);
-
-	// Switch to SC Daemon
-	await page.select(
-		'.maxi-style-cards__sc__more-sc--select select',
-		'sc_daemon'
-	);
-
+const copySCtoEdit = async newName => {
 	// Click Customize Card button
 	await page.$eval('.maxi-style-cards-customise-card-button', button =>
 		button.click()
@@ -67,17 +56,11 @@ const createEditableCopyOfSC = async (title = 'Daemon') => {
 	await page.$eval('.maxi-style-cards__sc__save > input', input =>
 		input.focus()
 	);
-	await page.keyboard.type('copy');
+	await page.keyboard.type(newName);
 	await page.$eval(
 		'.maxi-style-cards__sc__save > button:nth-child(2)',
 		button => button.click()
 	);
-
-	const {
-		value: { name },
-	} = await receiveSelectedMaxiStyleCard(page);
-
-	expect(name).toContain('Daemon - copy');
 };
 
 describe('SC settings', () => {
@@ -108,6 +91,26 @@ describe('SC settings', () => {
 		const { key } = await receiveSelectedMaxiStyleCard(page);
 
 		expect(key).toStrictEqual('sc_maxi');
+	});
+
+	it('Can copy a style card to edit it', async () => {
+		await createNewPost();
+		await setBrowserViewport('large');
+
+		await getStyleCardEditor({
+			page,
+			accordion: 'divider',
+		});
+
+		await addMoreSC();
+
+		await copySCtoEdit('copy');
+
+		const {
+			value: { name: SCName },
+		} = await receiveSelectedMaxiStyleCard(page);
+
+		expect(SCName).toContain('Daemon - copy');
 	});
 
 	it('Applies SC on all pages', async () => {
@@ -197,32 +200,6 @@ describe('SC settings', () => {
 				)
 			)
 		).not.toContain(SCToDelete);
-	});
-
-	it('Can add custom name for SC', async () => {
-		await createNewPost();
-		await getStyleCardEditor({
-			page,
-			accordion: 'color',
-		});
-
-		await page.$eval('.maxi-style-cards__sc__save input', input =>
-			input.focus()
-		);
-
-		const customName = 'Custom name :)';
-
-		await page.keyboard.type(customName);
-
-		await page.$eval('.maxi-style-cards__sc__save button', button =>
-			button.click()
-		);
-
-		const {
-			value: { name: SCName },
-		} = await receiveSelectedMaxiStyleCard(page);
-
-		expect(SCName).toStrictEqual(customName);
 	});
 
 	it('Can export/import style cards', async () => {

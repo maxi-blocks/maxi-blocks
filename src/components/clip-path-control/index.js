@@ -135,7 +135,7 @@ const ClipPathOption = props => {
 									value={values[index].value}
 									unit={values[index].unit}
 									onChangeValue={value => {
-										values[index].value = value;
+										values[index].value = value || 0;
 										onChange(values);
 									}}
 									onChangeUnit={unit => {

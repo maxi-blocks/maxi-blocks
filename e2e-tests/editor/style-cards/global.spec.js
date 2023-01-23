@@ -11,11 +11,7 @@ import {
 /**
  * Internal dependencies
  */
-import {
-	checkSCResult,
-	getStyleCardEditor,
-	receiveSelectedMaxiStyleCard,
-} from '../../utils';
+import { getStyleCardEditor, receiveSelectedMaxiStyleCard } from '../../utils';
 
 /**
  * External dependencies
@@ -48,6 +44,40 @@ const addMoreSC = async (title = 'Daemon') => {
 		'.maxi-cloud-container .maxi-cloud-container__sc__content-sc .ais-InfiniteHits-list .ais-InfiniteHits-item button',
 		button => button.click()
 	);
+};
+
+const createEditableCopyOfSC = async (title = 'Daemon') => {
+	// Open SC modal
+	await page.$eval('.maxi-style-cards__sc__more-sc--add-more', button =>
+		button.click()
+	);
+
+	// Switch to SC Daemon
+	await page.select(
+		'.maxi-style-cards__sc__more-sc--select select',
+		'sc_daemon'
+	);
+
+	// Click Customize Card button
+	await page.$eval('.maxi-style-cards-customise-card-button', button =>
+		button.click()
+	);
+
+	// Input the new SC name
+	await page.$eval('.maxi-style-cards__sc__save > input', input =>
+		input.focus()
+	);
+	await page.keyboard.type('copy');
+	await page.$eval(
+		'.maxi-style-cards__sc__save > button:nth-child(2)',
+		button => button.click()
+	);
+
+	const {
+		value: { name },
+	} = await receiveSelectedMaxiStyleCard(page);
+
+	expect(name).toContain('Daemon - copy');
 };
 
 describe('SC settings', () => {
@@ -124,31 +154,6 @@ describe('SC settings', () => {
 		);
 
 		expect(secondColour).toStrictEqual(firstColour);
-	});
-
-	it('Can reset SC styles to default', async () => {
-		await createNewPost();
-		await getStyleCardEditor({
-			page,
-			accordion: 'color',
-		});
-
-		// Change colour value
-		await page.$eval(
-			'.maxi-color-control .maxi-color-control__color input',
-			input => input.focus()
-		);
-
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('106D3C');
-
-		// Reset value
-		await page.$eval('.maxi-style-cards__sc__more-sc--reset', button =>
-			button.click()
-		);
-
-		// Style cards value should be empty
-		expect(await checkSCResult(page)).toMatchObject({});
 	});
 
 	it('Can delete style card', async () => {

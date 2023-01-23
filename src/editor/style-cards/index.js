@@ -1,3 +1,5 @@
+// import {useEffect, useRef, useMemo} from 'react';
+
 /**
  * WordPress dependencies
  */
@@ -17,7 +19,7 @@ import { Button, Icon } from '../../components';
 import './editor.scss';
 import { styleCardMenu } from '../../icons';
 
-const MaxiStyleCardsEditorPopUp = props => {
+const MaxiStyleCardsEditorPopUp = () => {
 	const { styleCards } = useSelect(select => {
 		const { receiveMaxiStyleCards } = select('maxiBlocks/style-cards');
 
@@ -27,10 +29,53 @@ const MaxiStyleCardsEditorPopUp = props => {
 	});
 
 	const [isVisible, setIsVisible] = useState(false);
-	if (props.isStyleCardVisible === false) {
-		setIsVisible(props.isStyleCardVisible);
-	}
-	console.log(props.isStyleCardVisible);
+	// const ref1 = useRef(null);
+	// function useIsInViewport(ref) {
+	// 	const [isIntersecting, setIsIntersecting] = useState(false);
+
+	// 	const observer = useMemo(
+	// 		() =>
+	// 			new IntersectionObserver(([entry]) =>
+	// 				setIsIntersecting(entry.isIntersecting)
+	// 			),
+	// 		[]
+	// 	);
+
+	// 	useEffect(() => {
+	// 		observer.observe(ref.current);
+
+	// 		return () => {
+	// 			observer.disconnect();
+	// 		};
+	// 	}, [ref, observer]);
+
+	// 	return isIntersecting;
+	// }
+
+	// const isInViewport1 = useIsInViewport(ref1);
+	// console.log('isInViewport1: ', isInViewport1);
+	// const ref1 = useRef(null);
+	// function elementInViewport(ref) {
+	// 	let top = ref.offsetTop;
+	// 	let left = ref.offsetLeft;
+	// 	const width = ref.offsetWidth;
+	// 	const height = ref.offsetHeight;
+
+	// 	while (ref.offsetParent) {
+	// 		ref = ref.offsetParent;
+	// 		top += ref.offsetTop;
+	// 		left += ref.offsetLeft;
+	// 	}
+
+	// 	return (
+	// 		top >= window.pageYOffset &&
+	// 		left >= window.pageXOffset &&
+	// 		top + height <= window.pageYOffset + window.innerHeight &&
+	// 		left + width <= window.pageXOffset + window.innerWidth
+	// 	);
+	// }
+
+	// console.log(elementInViewport(ref1));
 
 	return (
 		<>
@@ -45,6 +90,7 @@ const MaxiStyleCardsEditorPopUp = props => {
 			</Button>
 			{isVisible && (
 				<MaxiStyleCardsEditor
+					// ref={ref1}
 					styleCards={styleCards}
 					setIsVisible={setIsVisible}
 				/>

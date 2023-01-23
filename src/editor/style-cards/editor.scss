@@ -177,7 +177,6 @@ body {
 		left: 0 !important;
 		z-index: 98;
 		height: calc( 100% - 125px );
-		padding-bottom: 25px;
 
 		.maxi-accordion-control__item {
 			hr {
@@ -324,10 +323,6 @@ body {
 				border-radius: 0;
 				padding: 8px;
 				color: #232533;
-
-				// &:not(:disabled):hover {
-				// 	background-color: #f2f2f2;
-				// }
 			}
 
 			button:last-of-type {
@@ -515,6 +510,10 @@ body {
 			min-width: 350px;
 			background: #f1f1f1;
 			border-radius: 0;
+			&-bigger{
+				overflow: scroll !important;
+				padding-bottom: 7px;
+			}
 		}
 		.maxi-base-control__field {
 			.components-range-control {

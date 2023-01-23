@@ -103,7 +103,6 @@ const Dropdown = forwardRef(
 						headerTitle={headerTitle}
 						focusOnMount={focusOnMount}
 						{...popoverProps}
-						variant='unstyled'
 						className={classnames(
 							'maxi-dropdown__content',
 							popoverProps ? popoverProps.className : undefined,

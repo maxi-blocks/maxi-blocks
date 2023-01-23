@@ -639,6 +639,9 @@ const ListOptionsControl = props => {
 					onReset={() =>
 						maxiSetAttributes({
 							typeOfList: getDefaultAttribute('typeOfList'),
+							listStyle: getListStyleOptions(
+								getDefaultAttribute('typeOfList')
+							)[0].value,
 							isReset: true,
 						})
 					}

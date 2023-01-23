@@ -74,14 +74,14 @@ body {
 			display: none !important;
 		}
 
-		&:hover{
+		&:hover {
 			background-color: #232533;
 		}
 
 		svg {
-		    height: 9.11px;
-    		width: 9.11px;
-			path{
+			height: 9.11px;
+			width: 9.11px;
+			path {
 				stroke: #fff;
 			}
 		}
@@ -93,7 +93,7 @@ body {
 .maxi-style-cards__sc__ie--import,
 .maxi-style-cards__popover .maxi-library-modal__action-section {
 	width: 50% !important;
-	.maxi-style-cards__sc__more-sc--add-more:hover{
+	.maxi-style-cards__sc__more-sc--add-more:hover {
 		border-color: rgb(var(--maxi-light-color-4)) !important;
 	}
 
@@ -121,7 +121,7 @@ body {
 }
 .maxi-style-cards__settings {
 	background-color: #fff;
-	padding: 0 0 1px !important;
+	padding: 0 !important;
 
 	.maxi-style-cards__sc-cancel-save {
 		display: flex;
@@ -164,9 +164,9 @@ body {
 .edit-activate {
 	button {
 		border: 1px solid rgb(var(--maxi-light-color-4)) !important;
-		&:not(:disabled):hover{
-			background-color: #EDF6FA;
-			border-color: #DBDDE6 !important;
+		&:not(:disabled):hover {
+			background-color: #edf6fa;
+			border-color: #dbdde6 !important;
 		}
 	}
 }
@@ -176,7 +176,7 @@ body {
 		position: fixed !important;
 		left: 0 !important;
 		z-index: 98;
-		height: calc( 100% - 125px );
+		height: 100%;
 
 		.maxi-accordion-control__item {
 			hr {
@@ -260,9 +260,9 @@ body {
 
 				&:hover {
 					background: var(--maxi-white-1-color);
-    				border-color: var(--maxi-grey-6-color);
+					border-color: var(--maxi-grey-6-color);
 				}
-				&--active{
+				&--active {
 					border: 2px solid var(--maxi-primary-color);
 				}
 				&__item {
@@ -346,10 +346,10 @@ body {
 				}
 
 				.maxi-style-cards__sc__ie--import,
-				.maxi-style-cards__sc__ie{
+				.maxi-style-cards__sc__ie {
 					width: 25% !important;
 					&--export:hover,
-					&:hover{
+					&:hover {
 						border-color: rgb(var(--maxi-light-color-4)) !important;
 					}
 				}
@@ -382,8 +382,8 @@ body {
 						line-height: 36px;
 						text-align: center;
 						overflow-wrap: break-word;
-    					text-overflow: ellipsis;
-    					white-space: nowrap;
+						text-overflow: ellipsis;
+						white-space: nowrap;
 
 						option {
 							text-align: center;
@@ -407,7 +407,7 @@ body {
 				}
 				&--reset[type='button'] {
 					position: relative;
-					right: -2px; 
+					right: -2px;
 					border-top-right-radius: 0;
 					border-bottom-right-radius: 0;
 				}
@@ -417,7 +417,7 @@ body {
 					// margin-right: 8px !important;
 					width: 15%;
 					position: relative;
-					&:not(:disabled):hover{
+					&:not(:disabled):hover {
 						border-color: rgb(var(--maxi-light-color-4)) !important;
 					}
 				}
@@ -461,7 +461,7 @@ body {
 
 				button {
 					flex: 2;
-					&:hover{
+					&:hover {
 						border-color: rgb(var(--maxi-light-color-4)) !important;
 					}
 				}
@@ -508,11 +508,20 @@ body {
 		}
 		.components-popover__content {
 			min-width: 350px;
-			background: #f1f1f1;
+			height: calc(100% - 127px);
+			background: transparent;
 			border-radius: 0;
-			&-bigger{
+			outline: none;
+			box-shadow: none;
+			&-bigger {
 				overflow: scroll !important;
 				padding-bottom: 7px;
+			}
+			> * {
+				border-right: 1px solid #ccc;
+			}
+			> :last-child {
+				border-bottom: 1px solid #ccc;
 			}
 		}
 		.maxi-base-control__field {
@@ -529,7 +538,7 @@ body {
 			&__direction {
 				margin-bottom: 8px;
 			}
-			&__size{
+			&__size {
 				margin-top: 8px;
 			}
 		}
@@ -540,33 +549,32 @@ body {
 		}
 	}
 }
-@media only screen and (min-width: 2500px){
-	.maxi-style-cards__popover{
-			.maxi-style-cards__sc__more-sc{
-				&--delete[type=button]:not(:disabled),
-				&--add-more{
-					border-width: 2px !important;
-				}
-				.maxi-style-cards__sc__ie--import,
-				.maxi-style-cards__sc__ie--export{
-					border-width: 2px !important;
-				}
-			}
-			.maxi-style-cards__sc__save button{
+@media only screen and (min-width: 2500px) {
+	.maxi-style-cards__popover {
+		.maxi-style-cards__sc__more-sc {
+			&--delete[type='button']:not(:disabled),
+			&--add-more {
 				border-width: 2px !important;
 			}
-			.maxi-style-cards__sc__save {
-				input[type=text]{
-					border-width: 2px !important;
-				}
+			.maxi-style-cards__sc__ie--import,
+			.maxi-style-cards__sc__ie--export {
+				border-width: 2px !important;
 			}
-	} 
+		}
+		.maxi-style-cards__sc__save button {
+			border-width: 2px !important;
+		}
+		.maxi-style-cards__sc__save {
+			input[type='text'] {
+				border-width: 2px !important;
+			}
+		}
+	}
 	.edit-activate button,
-	.maxi-style-cards__sc__actions--save, 
-	.maxi-style-cards__sc__more-sc--select select{
+	.maxi-style-cards__sc__actions--save,
+	.maxi-style-cards__sc__more-sc--select select {
 		border-width: 2px !important;
 	}
-
 }
 @media only screen and (max-width: 768px) {
 	body {

@@ -167,6 +167,8 @@ describe('SC settings', () => {
 		});
 		await addMoreSC();
 
+		await copySCtoEdit('copy 2');
+
 		const SCToDelete = await page.$eval(
 			'.maxi-style-cards__sc__more-sc--select select',
 			selector => selector.value
@@ -174,6 +176,11 @@ describe('SC settings', () => {
 
 		await page.$eval('.maxi-style-cards__sc__more-sc--delete', button =>
 			button.click()
+		);
+
+		await page.$eval(
+			'.maxi-dialog-box-buttons button:nth-child(2)',
+			button => button.click()
 		);
 
 		expect(
@@ -209,18 +216,13 @@ describe('SC settings', () => {
 			accordion: 'color',
 		});
 
-		// Change name and colour preset, and save
-		await page.$eval('.maxi-style-cards__sc__save input', input =>
-			input.focus()
-		);
+		await addMoreSC('Wally');
 
-		const name = 'Random SC name';
+		await copySCtoEdit('copy 3');
 
-		await page.keyboard.type(name);
-
-		await page.$eval('.maxi-style-cards__sc__save button', button =>
-			button.click()
-		);
+		const {
+			value: { name },
+		} = await receiveSelectedMaxiStyleCard(page);
 
 		await page.$eval(
 			'.maxi-color-control .maxi-color-control__color input',
@@ -234,8 +236,13 @@ describe('SC settings', () => {
 			button.click()
 		);
 
+		await page.$eval(
+			'.maxi-dialog-box-buttons button:nth-child(2)',
+			button => button.click()
+		);
+
 		// Export
-		const fileName = `${name}.txt`;
+		const fileName = `${name}_exported.txt`;
 		const downloadFolder = path.join(__dirname, './SC-downloads');
 
 		await page._client.send('Page.setDownloadBehavior', {
@@ -247,15 +254,7 @@ describe('SC settings', () => {
 			button.click()
 		);
 
-		// Switch to default SC
-		await page.select(
-			'.maxi-style-cards__sc__more-sc--select select',
-			'sc_maxi'
-		);
-
-		await page.$eval('.maxi-style-cards__sc__actions--apply', button =>
-			button.click()
-		);
+		await page.waitForTimeout(150);
 
 		// Import
 		await page.$eval('.maxi-style-cards__sc__ie--import', button =>
@@ -266,9 +265,7 @@ describe('SC settings', () => {
 
 		uploader.uploadFile(path.join(downloadFolder, fileName));
 
-		await page.waitForSelector(
-			'.media-frame-toolbar .media-toolbar-primary button:not([disabled])'
-		);
+		await page.waitForTimeout(150);
 
 		await page.$eval(
 			'.media-frame-toolbar .media-toolbar-primary button',
@@ -284,6 +281,6 @@ describe('SC settings', () => {
 			value: { name: newName },
 		} = await receiveSelectedMaxiStyleCard(page);
 
-		expect(newName).toStrictEqual(name);
+		expect(newName).toStrictEqual(`${name} exported`);
 	});
 });

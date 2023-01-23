@@ -203,6 +203,20 @@ const ClipPathControl = props => {
 
 		const cpType = clipPathToDeconstruct.match(/^[^(]+/gi)[0];
 		const cpValues = [];
+
+		const parseClipPathContent = content => {
+			const newItem = [];
+			content.split(' ').forEach(item => {
+				const match = item.match(/^([\d.]+)(\D+)$/);
+				if (!match) return;
+				newItem.push({
+					value: Number(match?.[1]),
+					unit: match?.[2],
+				});
+			});
+			cpValues.push(newItem);
+		};
+
 		let cpContent = [];
 
 		switch (cpType) {
@@ -212,18 +226,9 @@ const ClipPathControl = props => {
 					.replace('(', '')
 					.replace(')', '');
 
-				cpContent.split(', ').forEach(value => {
-					const newItem = [];
-					value.split(' ').forEach(item => {
-						const match = item.match(/^([\d.]+)(\D+)$/);
-						if (!match) return;
-						newItem.push({
-							value: Number(match?.[1]),
-							unit: match?.[2],
-						});
-					});
-					cpValues.push(newItem);
-				});
+				cpContent
+					.split(', ')
+					.forEach(value => parseClipPathContent(value));
 				break;
 			case 'circle':
 				cpContent = clipPathToDeconstruct
@@ -231,18 +236,9 @@ const ClipPathControl = props => {
 					.replace('(', '')
 					.replace(')', '');
 
-				cpContent.split('at ').forEach(value => {
-					const newItem = [];
-					value.split(' ').forEach(item => {
-						const match = item.match(/^([\d.]+)(\D+)$/);
-						if (!match) return;
-						newItem.push({
-							value: Number(match?.[1]),
-							unit: match?.[2],
-						});
-					});
-					cpValues.push(newItem);
-				});
+				cpContent
+					.split('at ')
+					.forEach(value => parseClipPathContent(value));
 				break;
 			case 'ellipse':
 				cpContent = clipPathToDeconstruct
@@ -253,22 +249,9 @@ const ClipPathControl = props => {
 				// eslint-disable-next-line no-case-declarations
 				const result = cpContent.split(' at ');
 
-				[...result[0].split(' '), result[1]].forEach((value, i) => {
-					const newItem = [];
-					value
-						.trim()
-						.split(' ')
-						.forEach(item => {
-							const match = item.match(/^([\d.]+)(\D+)$/);
-							if (!match) return;
-							newItem.push({
-								value: Number(match?.[1]),
-								unit: match?.[2],
-							});
-						});
-
-					cpValues.push(newItem);
-				});
+				[...result[0].split(' '), result[1]].forEach(value =>
+					parseClipPathContent(value.trim())
+				);
 				break;
 			case 'inset':
 				cpContent = clipPathToDeconstruct

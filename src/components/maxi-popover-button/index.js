@@ -104,15 +104,10 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 		className
 	);
 
-	const popoverPropsByVersion = {
-		anchor: ref.current,
-		placement: 'top-end',
-		variant: 'unstyled',
-	};
-
 	return (
 		<Popover
 			ref={popoverRef}
+			anchor={ref.current}
 			className={classes}
 			noArrow
 			animate={false}
@@ -121,7 +116,8 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 			__unstableObserveElement={ref.current}
 			observeBlockPosition={clientId}
 			uniqueid={uniqueID}
-			{...popoverPropsByVersion}
+			placement='top-end'
+			variant='unstyled'
 		>
 			{props.children}
 		</Popover>

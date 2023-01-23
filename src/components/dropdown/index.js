@@ -87,11 +87,6 @@ const Dropdown = forwardRef(
 
 		const args = { isOpen, onToggle: toggle, onClose: close };
 
-		const popoverPropsByVersion = {
-			anchor: popoverProps?.anchorRef ?? containerRef.current,
-			variant: 'unstyled',
-		};
-
 		return (
 			<div
 				className={classnames('maxi-dropdown', className)}
@@ -100,6 +95,7 @@ const Dropdown = forwardRef(
 				{renderToggle(args)}
 				{isOpen && (
 					<Popover
+						anchor={popoverProps?.anchorRef ?? containerRef.current}
 						position={position}
 						onClose={close}
 						onFocusOutside={closeIfFocusOutside}
@@ -107,7 +103,7 @@ const Dropdown = forwardRef(
 						headerTitle={headerTitle}
 						focusOnMount={focusOnMount}
 						{...popoverProps}
-						{...popoverPropsByVersion}
+						variant='unstyled'
 						className={classnames(
 							'maxi-dropdown__content',
 							popoverProps ? popoverProps.className : undefined,

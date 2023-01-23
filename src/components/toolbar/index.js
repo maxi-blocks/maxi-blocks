@@ -173,16 +173,12 @@ const MaxiToolbar = memo(
 			attributes
 		);
 
-		const popoverPropsByVersion = {
-			anchor: anchorRef,
-			position: 'top center',
-		};
-
 		return (
 			isSelected &&
 			anchorRef && (
 				<Popover
 					ref={popoverRef}
+					anchor={anchorRef}
 					noArrow
 					animate={false}
 					focusOnMount={false}
@@ -198,7 +194,7 @@ const MaxiToolbar = memo(
 					useShift
 					shiftPadding={{ top: 22 }}
 					shiftLimit={{ mainAxis: false }}
-					{...popoverPropsByVersion}
+					position='top center'
 				>
 					<div className={`toolbar-wrapper pinned--${pinActive}`}>
 						{!isTyping && (

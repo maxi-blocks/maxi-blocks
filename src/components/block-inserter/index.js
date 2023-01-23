@@ -107,16 +107,11 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 		'--maxi-inter-blocks-inserter-width': `${width}px`,
 	};
 
-	const popoverProps = {
-		anchor: ref.current,
-		placement: 'bottom',
-		variant: 'unstyled',
-	};
-
 	if (isSelected || hasSelectedChild || shouldRemain.current)
 		return (
 			<Popover
 				key={`maxi-wrapper-block-inserter__${clientId}`}
+				anchor={ref.current}
 				className='maxi-wrapper-block-inserter'
 				noArrow
 				animate={false}
@@ -125,7 +120,8 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 				style={{ zIndex: Object.keys(blockHierarchy).length + 1 }}
 				__unstableSlotName='block-toolbar'
 				useAnimationFrame
-				{...popoverProps}
+				placement='bottom'
+				variant='unstyled'
 			>
 				{Object.keys(blockHierarchy).length > 1 && (
 					<Dropdown
@@ -306,13 +302,10 @@ const InterBlockInserter = forwardRef((props, ref) => {
 
 	if (!blockRef || !nextClientId || !isNextMaxiBlock) return null;
 
-	const popoverProps = {
-		anchor: blockRef,
-	};
-
 	return (
 		<Popover
 			ref={popoverRef}
+			anchor={blockRef}
 			key={`maxi-inter-blocks-inserter__${clientId}`}
 			className='maxi-inter-blocks-inserter'
 			noArrow
@@ -323,7 +316,6 @@ const InterBlockInserter = forwardRef((props, ref) => {
 			observeBlockPosition={clientId}
 			dataclientid={clientId}
 			useAnimationFrame
-			{...popoverProps}
 		>
 			<Inserter
 				key={`maxi-inter-blocks-inserter__content-${clientId}`}

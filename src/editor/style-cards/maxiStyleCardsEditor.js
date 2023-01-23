@@ -261,11 +261,11 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	return (
 		!isEmpty(styleCards) && (
 			<Popover
+				anchor={ref.current}
 				noArrow
 				position={isRTL ? 'bottom left right' : 'bottom right left'}
 				className='maxi-style-cards__popover maxi-sidebar'
 				focusOnMount
-				anchor={ref.current}
 				strategy='fixed'
 			>
 				<h2 className='maxi-style-cards__popover__title'>

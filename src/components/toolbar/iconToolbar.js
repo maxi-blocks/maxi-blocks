@@ -69,15 +69,11 @@ const IconToolbar = memo(
 			maxiSetAttributes(obj);
 		};
 
-		const popoverPropsByVersion = {
-			anchor: anchorRef,
-			variant: 'unstyled',
-		};
-
 		return (
 			isSelected &&
 			anchorRef && (
 				<Popover
+					anchor={anchorRef}
 					noArrow
 					animate={false}
 					position='bottom center'
@@ -86,7 +82,7 @@ const IconToolbar = memo(
 					uniqueid={uniqueID}
 					__unstableSlotName='block-toolbar'
 					observeBlockPosition={clientId}
-					{...popoverPropsByVersion}
+					variant='unstyled'
 				>
 					<div className='toolbar-wrapper icon-toolbar'>
 						<IconPosition

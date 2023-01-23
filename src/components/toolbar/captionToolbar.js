@@ -134,14 +134,10 @@ const CaptionToolbar = memo(
 			processAttributes(obj);
 		};
 
-		const popoverProps = {
-			anchor: anchorRef,
-			position: 'bottom center',
-		};
-
 		if (isSelected && anchorRef)
 			return (
 				<Popover
+					anchor={anchorRef}
 					noArrow
 					animate={false}
 					focusOnMount={false}
@@ -149,7 +145,7 @@ const CaptionToolbar = memo(
 					uniqueid={uniqueID}
 					__unstableSlotName='block-toolbar'
 					observeBlockPosition={clientId}
-					{...popoverProps}
+					position='bottom center'
 				>
 					<div className='toolbar-wrapper caption-toolbar'>
 						<TextOptions

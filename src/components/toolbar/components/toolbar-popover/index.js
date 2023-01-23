@@ -137,12 +137,6 @@ class ToolbarPopover extends Component {
 			);
 		};
 
-		const popoverProps = {
-			noArrow: false,
-			anchorRef: this.ref?.current?.closest('.toolbar-wrapper'),
-			variant: 'unstyled',
-		};
-
 		return (
 			<div ref={this.ref}>
 				<ToolbarContext.Provider value={{ isOpen, onClose }}>
@@ -154,12 +148,15 @@ class ToolbarPopover extends Component {
 					{tooltipsHide && buttonContent()}
 					{isOpen && children && (
 						<Popover
+							anchorRef={this.ref?.current?.closest(
+								'.toolbar-wrapper'
+							)}
 							className='toolbar-item__popover'
 							onClose={onClose}
 							position={position}
 							isAlternate
-							{...popoverProps}
-							noArrow
+							noArrow={false}
+							variant='unstyled'
 						>
 							<div>{children}</div>
 							{!!advancedOptions && (

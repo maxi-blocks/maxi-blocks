@@ -195,7 +195,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 		updateSCOnEditor(newSC);
 	};
 
-	const [postDate, setPostDate] = useState();
+	const [postDate] = useState();
 
 	const saveImportedStyleCard = card => {
 		const newId = `sc_${new Date().getTime()}`;
@@ -217,7 +217,6 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 	}, [showCopyCardDialog]);
 
 	const [isHiddenActivate, setIsHiddenActivate] = useState(true);
-	const [isHiddenSave, setIsHiddenSave] = useState(true);
 	const [isHiddenRemove, setIsHiddenRemove] = useState(true);
 
 	const applyCurrentSCGlobally = () => {
@@ -238,23 +237,6 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 		saveSCStyles(true);
 
 		setIsHiddenActivate(true);
-	};
-
-	const activateSC = () => {
-		const current = new Date();
-		const date = `${current.getDate()}/${
-			current.getMonth() + 1
-		}/${current.getFullYear()}`;
-		setPostDate(date);
-
-		const newStyleCards = {
-			...styleCards,
-			[selectedSCKey]: { ...selectedSCValue },
-		};
-
-		saveMaxiStyleCards(newStyleCards, true);
-		saveSCStyles(true);
-		setIsHiddenSave(true);
 	};
 
 	const saveCurrentSC = () => {

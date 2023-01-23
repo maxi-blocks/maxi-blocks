@@ -29,53 +29,6 @@ const MaxiStyleCardsEditorPopUp = () => {
 	});
 
 	const [isVisible, setIsVisible] = useState(false);
-	// const ref1 = useRef(null);
-	// function useIsInViewport(ref) {
-	// 	const [isIntersecting, setIsIntersecting] = useState(false);
-
-	// 	const observer = useMemo(
-	// 		() =>
-	// 			new IntersectionObserver(([entry]) =>
-	// 				setIsIntersecting(entry.isIntersecting)
-	// 			),
-	// 		[]
-	// 	);
-
-	// 	useEffect(() => {
-	// 		observer.observe(ref.current);
-
-	// 		return () => {
-	// 			observer.disconnect();
-	// 		};
-	// 	}, [ref, observer]);
-
-	// 	return isIntersecting;
-	// }
-
-	// const isInViewport1 = useIsInViewport(ref1);
-	// console.log('isInViewport1: ', isInViewport1);
-	// const ref1 = useRef(null);
-	// function elementInViewport(ref) {
-	// 	let top = ref.offsetTop;
-	// 	let left = ref.offsetLeft;
-	// 	const width = ref.offsetWidth;
-	// 	const height = ref.offsetHeight;
-
-	// 	while (ref.offsetParent) {
-	// 		ref = ref.offsetParent;
-	// 		top += ref.offsetTop;
-	// 		left += ref.offsetLeft;
-	// 	}
-
-	// 	return (
-	// 		top >= window.pageYOffset &&
-	// 		left >= window.pageXOffset &&
-	// 		top + height <= window.pageYOffset + window.innerHeight &&
-	// 		left + width <= window.pageXOffset + window.innerWidth
-	// 	);
-	// }
-
-	// console.log(elementInViewport(ref1));
 
 	return (
 		<>
@@ -90,7 +43,6 @@ const MaxiStyleCardsEditorPopUp = () => {
 			</Button>
 			{isVisible && (
 				<MaxiStyleCardsEditor
-					// ref={ref1}
 					styleCards={styleCards}
 					setIsVisible={setIsVisible}
 				/>

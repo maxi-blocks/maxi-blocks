@@ -121,7 +121,6 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 				__unstableSlotName='block-toolbar'
 				useAnimationFrame
 				placement='bottom'
-				variant='unstyled'
 			>
 				{Object.keys(blockHierarchy).length > 1 && (
 					<Dropdown

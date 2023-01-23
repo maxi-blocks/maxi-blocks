@@ -156,7 +156,6 @@ class ToolbarPopover extends Component {
 							position={position}
 							isAlternate
 							noArrow={false}
-							variant='unstyled'
 						>
 							<div>{children}</div>
 							{!!advancedOptions && (

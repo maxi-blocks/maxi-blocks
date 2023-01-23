@@ -82,7 +82,6 @@ const IconToolbar = memo(
 					uniqueid={uniqueID}
 					__unstableSlotName='block-toolbar'
 					observeBlockPosition={clientId}
-					variant='unstyled'
 				>
 					<div className='toolbar-wrapper icon-toolbar'>
 						<IconPosition

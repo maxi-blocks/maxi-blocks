@@ -117,7 +117,6 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 			observeBlockPosition={clientId}
 			uniqueid={uniqueID}
 			placement='top-end'
-			variant='unstyled'
 		>
 			{props.children}
 		</Popover>

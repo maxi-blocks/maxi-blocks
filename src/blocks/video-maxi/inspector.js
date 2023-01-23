@@ -234,9 +234,6 @@ const Inspector = props => {
 									...inspectorTabs.boxShadow({
 										props,
 									}),
-									...inspectorTabs.opacity({
-										props,
-									}),
 									...inspectorTabs.size({
 										props,
 										block: true,

@@ -30,7 +30,6 @@ import {
 	getGroupAttributes,
 	getDefaultAttribute,
 } from '../../../../extensions/styles';
-import { handleOnReset } from '../../../../extensions/attributes';
 
 /**
  * External dependencies
@@ -230,7 +229,7 @@ const TextOptions = props => {
 		onChangeTextFormat(newFormatValue);
 
 		if (!isReset) onChange(obj);
-		else onChange(handleOnReset(obj));
+		else onChange({ ...obj, isReset: true });
 	};
 
 	const getDefault = (prop, customBreakpoint) => {
@@ -321,6 +320,7 @@ const TextOptions = props => {
 										breakpoint={breakpoint}
 										type='text'
 										isToolbar
+										disableRTC
 									/>
 									<TextBold
 										onChangeFormat={onChangeFormat}

@@ -12,7 +12,6 @@ import {
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
-import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * External dependencies
@@ -89,18 +88,17 @@ const SvgWidthControl = props => {
 			max={500}
 			step={1}
 			onReset={() =>
-				onChange(
-					handleOnReset({
-						[getAttributeKey('width', isHover, prefix, breakpoint)]:
-							defaultWidth,
-						[getAttributeKey(
-							'width-unit',
-							isHover,
-							prefix,
-							breakpoint
-						)]: defaultWidthUnit,
-					})
-				)
+				onChange({
+					[getAttributeKey('width', isHover, prefix, breakpoint)]:
+						defaultWidth,
+					[getAttributeKey(
+						'width-unit',
+						isHover,
+						prefix,
+						breakpoint
+					)]: defaultWidthUnit,
+					isReset: true,
+				})
 			}
 			defaultValue={defaultWidth}
 			initialPosition={placeholderWidth}

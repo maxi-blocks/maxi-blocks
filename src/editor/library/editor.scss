@@ -72,16 +72,6 @@
 			margin-right: 5px;
 			height: 66px;
 
-			&__icon {
-				svg {
-					stroke-width: 1;
-					stroke: #000;
-					* {
-						stroke-width: 1;
-						stroke: #000;
-					}
-				}
-			}
 			&__shape {
 				svg {
 					max-height: 100%;

@@ -140,7 +140,8 @@ const getLastBreakpointAttributeGroup = (
 	target,
 	breakpoint,
 	isHover,
-	avoidXXL
+	avoidXXL,
+	keys
 ) => {
 	const { getSelectedBlockClientIds, getBlockAttributes } =
 		select('core/block-editor');
@@ -155,7 +156,8 @@ const getLastBreakpointAttributeGroup = (
 			breakpoint,
 			attributes,
 			isHover,
-			avoidXXL
+			avoidXXL,
+			keys
 		);
 	});
 
@@ -183,7 +185,8 @@ const getLastBreakpointAttribute = ({
 			target,
 			breakpoint,
 			isHover,
-			avoidXXL
+			avoidXXL,
+			keys
 		);
 
 	return getLastBreakpointAttributeSingle(

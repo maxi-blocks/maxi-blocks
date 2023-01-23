@@ -45,9 +45,9 @@
 
 	&__overlay {
 		position: relative;
-		display: flex;
-		justify-content: center;
-		align-items: center;
+		display: grid;
+		grid-template-areas: 'video-overlay';
+		place-items: center;
 
 		width: 100%;
 		height: 100%;
@@ -61,11 +61,14 @@
 		width: 100%;
 	}
 
+	&__placeholder,
 	&__overlay-image {
 		display: block;
-		width: 100% !important;
+		grid-area: video-overlay;
+
+		min-width: 0;
+		min-height: 0;
 		max-height: 100%;
-		height: 100%;
 		margin: auto;
 		object-fit: cover;
 	}
@@ -85,12 +88,9 @@
 	}
 
 	&__play-button {
-		position: absolute;
-		left: 50%;
-		top: 50%;
+		position: relative;
 		z-index: 2;
-
-		transform: translate(-50%, -50%);
+		grid-area: video-overlay;
 	}
 
 	&__close-button {
@@ -132,10 +132,7 @@
 		font-size: 12px;
 	}
 }
-.maxi-text-input[value="https://www.youtube.com/watch?v=ScMzIvxBSi4"]
-{
-	color: var(--maxi-grey-7-color) !important;
-}
+
 @keyframes popup-zoom-out {
 	0% {
 		transform: scale(1.2);

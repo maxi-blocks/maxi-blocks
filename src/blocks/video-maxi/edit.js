@@ -125,7 +125,6 @@ const VideoPlayer = props => {
 					allowFullScreen
 					allow='autoplay'
 					src={embedUrl}
-					frameBorder={0}
 				/>
 			)}
 			{!isSelected && (
@@ -176,9 +175,8 @@ class edit extends MaxiBlockComponent {
 			'overlay-mediaID': overlayMediaId,
 			'overlay-mediaURL': overlayMediaUrl,
 			'overlay-mediaAlt': overlayMediaAlt,
+			'overlay-altSelector': altSelector,
 			hideImage,
-			mediaID,
-			altSelector,
 		} = attributes;
 
 		const { isUploaderOpen } = this.state;
@@ -210,6 +208,8 @@ class edit extends MaxiBlockComponent {
 					key={`popover-${uniqueID}`}
 					ref={this.blockRef}
 					isOpen={isUploaderOpen}
+					prefix='video-'
+					isEmptyContent={!overlayMediaId}
 					{...this.props}
 				>
 					<MediaUpload
@@ -229,7 +229,6 @@ class edit extends MaxiBlockComponent {
 							});
 						}}
 						allowedTypes='image'
-						value={mediaID}
 						render={({ open }) =>
 							!hideImage && (
 								<div className='maxi-video-block__settings maxi-settings-media-upload'>

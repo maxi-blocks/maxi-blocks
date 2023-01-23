@@ -13,11 +13,11 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  *
  * @param {Object} obj Block size properties
  */
-const getOpacityStyles = (obj, isHover = false) => {
+const getOpacityStyles = (obj, isHover = false, prefix = '') => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
-		const attrKey = getAttributeKey('opacity', isHover, '', breakpoint);
+		const attrKey = getAttributeKey('opacity', isHover, prefix, breakpoint);
 		response[breakpoint] = {
 			...(obj[attrKey] !== undefined &&
 				obj[attrKey] !== '' && {

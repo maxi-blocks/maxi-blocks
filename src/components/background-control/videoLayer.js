@@ -20,7 +20,6 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { videoUrlRegex } from '../../extensions/video';
-import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * External dependencies
@@ -31,7 +30,7 @@ import { cloneDeep } from 'lodash';
  * Component
  */
 const VideoLayerContent = props => {
-	const { onChange, isHover = false, prefix = '', breakpoint } = props;
+	const { isIB, onChange, isHover = false, prefix = '', breakpoint } = props;
 
 	const videoOptions = cloneDeep(props.videoOptions);
 
@@ -45,72 +44,69 @@ const VideoLayerContent = props => {
 					attributes: videoOptions,
 					isHover,
 				})}
-				onChange={opacity => {
-					videoOptions[
-						getAttributeKey(
-							'background-video-opacity',
-							isHover,
-							prefix,
-							breakpoint
-						)
-					] = opacity;
-
-					onChange(videoOptions);
-				}}
+				breakpoint={breakpoint}
+				prefix={`${prefix}background-video-`}
+				isHover={isHover}
+				onChange={onChange}
+				disableRTC
 			/>
-			<MediaUploaderControl
-				className='maxi-mediauploader-control__video-fallback'
-				placeholder={__('Background fallback')}
-				mediaID={getLastBreakpointAttribute({
-					target: `${prefix}background-video-fallbackID`,
-					breakpoint,
-					attributes: videoOptions,
-					isHover,
-				})}
-				onSelectImage={val =>
-					onChange({
-						[getAttributeKey(
-							'background-video-fallbackID',
-							isHover,
-							prefix,
-							breakpoint
-						)]: val.order,
-						[getAttributeKey(
-							'background-video-fallbackURL',
-							isHover,
-							prefix,
-							breakpoint
-						)]: val.url,
-					})
-				}
-				onRemoveImage={() =>
-					onChange({
-						[getAttributeKey(
-							'background-video-fallbackID',
-							isHover,
-							prefix,
-							breakpoint
-						)]: '',
-						[getAttributeKey(
-							'background-video-fallbackURL',
-							isHover,
-							prefix,
-							breakpoint
-						)]: '',
-					})
-				}
-			/>
+			{!isHover && !isIB && (
+				<MediaUploaderControl
+					className='maxi-mediauploader-control__video-fallback'
+					placeholder={__('Background fallback')}
+					mediaID={getLastBreakpointAttribute({
+						target: `${prefix}background-video-fallbackID`,
+						breakpoint,
+						attributes: videoOptions,
+						isHover,
+					})}
+					onSelectImage={val =>
+						onChange({
+							[getAttributeKey(
+								'background-video-fallbackID',
+								isHover,
+								prefix,
+								breakpoint
+							)]: val.id,
+							[getAttributeKey(
+								'background-video-fallbackURL',
+								isHover,
+								prefix,
+								breakpoint
+							)]: val.url,
+						})
+					}
+					onRemoveImage={() =>
+						onChange({
+							[getAttributeKey(
+								'background-video-fallbackID',
+								isHover,
+								prefix,
+								breakpoint
+							)]: '',
+							[getAttributeKey(
+								'background-video-fallbackURL',
+								isHover,
+								prefix,
+								breakpoint
+							)]: '',
+						})
+					}
+				/>
+			)}
 		</>
 	);
 };
 
 const VideoLayer = props => {
-	const { onChange, isHover = false, prefix = '', breakpoint } = props;
+	const { isIB, onChange, isHover = false, prefix = '', breakpoint } = props;
 
 	const videoOptions = cloneDeep(props.videoOptions);
 	const isLayerHover = videoOptions.isHover;
 
 	const [validationText, setValidationText] = useState(null);
+
+	const defaultURL = 'https://www.youtube.com/watch?v=ScMzIvxBSi4';
 
 	return (
 		<div className='maxi-background-control__video'>
@@ -124,7 +120,7 @@ const VideoLayer = props => {
 							props: videoOptions,
 							prefix,
 						})}
-						placeholder='Youtube, Vimeo, or Direct Link'
+						placeholder={defaultURL}
 						onChange={val => {
 							if (val && !videoUrlRegex.test(val)) {
 								setValidationText(
@@ -139,7 +135,7 @@ const VideoLayer = props => {
 									'background-video-mediaURL',
 									false,
 									prefix
-								)]: val,
+								)]: val !== '' ? val : defaultURL,
 							});
 						}}
 						validationText={validationText}
@@ -164,15 +160,14 @@ const VideoLayer = props => {
 						min={0}
 						max={999}
 						onReset={() =>
-							onChange(
-								handleOnReset({
-									[getAttributeKey(
-										'background-video-startTime',
-										false,
-										prefix
-									)]: '',
-								})
-							)
+							onChange({
+								[getAttributeKey(
+									'background-video-startTime',
+									false,
+									prefix
+								)]: '',
+								isReset: true,
+							})
 						}
 					/>
 					<AdvancedNumberControl
@@ -195,15 +190,14 @@ const VideoLayer = props => {
 						min={0}
 						max={999}
 						onReset={() =>
-							onChange(
-								handleOnReset({
-									[getAttributeKey(
-										'background-video-endTime',
-										false,
-										prefix
-									)]: '',
-								})
-							)
+							onChange({
+								[getAttributeKey(
+									'background-video-endTime',
+									false,
+									prefix
+								)]: '',
+								isReset: true,
+							})
 						}
 					/>
 					<ToggleSwitch
@@ -258,6 +252,7 @@ const VideoLayer = props => {
 						onChange={onChange}
 						isHover={isHover}
 						prefix={prefix}
+						isIB={isIB}
 						breakpoint={breakpoint}
 					/>
 					<SizeAndPositionLayerControl

@@ -3,6 +3,9 @@ import handleSetAttributes from '../handleSetAttributes';
 jest.mock('src/extensions/styles/getDefaultAttribute.js', () =>
 	jest.fn(() => undefined)
 );
+jest.mock('src/extensions/attributes/handleOnReset.js', () =>
+	jest.fn(obj => obj)
+);
 jest.mock('@wordpress/data', () => {
 	let i = 0;
 
@@ -308,5 +311,24 @@ describe('handleSetAttributes', () => {
 		};
 
 		expect(resultAttrs).toStrictEqual(expectedAttrs);
+	});
+
+	it('Should not save isReset as an attribute', () => {
+		const args = {
+			obj: {
+				isReset: true,
+				'test-general': 1,
+			},
+			attributes: {
+				'test-general': 0,
+			},
+			onChange,
+		};
+
+		const expectedAttrs = {
+			'test-general': 1,
+		};
+
+		expect(handleSetAttributes(args)).toStrictEqual(expectedAttrs);
 	});
 });

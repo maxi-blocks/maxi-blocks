@@ -262,6 +262,8 @@ class edit extends MaxiBlockComponent {
 					key={`popover-${uniqueID}`}
 					ref={this.blockRef}
 					isOpen={isUploaderOpen}
+					isEmptyContent={!mediaID}
+					prefix='image-'
 					{...this.props}
 				>
 					<MediaUpload

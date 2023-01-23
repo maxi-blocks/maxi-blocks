@@ -14,7 +14,6 @@ import {
 } from '../../../../extensions/styles';
 import AdvancedNumberControl from '../../../advanced-number-control';
 import { getColumnDefaultValue } from '../../../../extensions/column-templates';
-import { handleOnReset } from '../../../../extensions/attributes';
 
 /**
  * Styles & Icons
@@ -55,22 +54,21 @@ const ColumnSize = props => {
 					max={100}
 					step={0.1}
 					onReset={() =>
-						onChange(
-							handleOnReset({
-								[`column-size-${breakpoint}`]:
-									getColumnDefaultValue(
-										rowPattern,
-										{
-											...getGroupAttributes(
-												props,
-												'columnSize'
-											),
-										},
-										clientId,
-										breakpoint
-									),
-							})
-						)
+						onChange({
+							[`column-size-${breakpoint}`]:
+								getColumnDefaultValue(
+									rowPattern,
+									{
+										...getGroupAttributes(
+											props,
+											'columnSize'
+										),
+									},
+									clientId,
+									breakpoint
+								),
+							isReset: true,
+						})
 					}
 					initialPosition={getDefaultAttribute(
 						`column-size-${breakpoint}`,

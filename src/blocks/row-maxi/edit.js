@@ -2,6 +2,7 @@
 /**
  * WordPress dependencies
  */
+import { __ } from '@wordpress/i18n';
 import { useDispatch } from '@wordpress/data';
 
 /**
@@ -32,36 +33,42 @@ const RowBlockTemplate = ({ clientId, maxiSetAttributes, deviceType }) => {
 	const { selectBlock } = useDispatch('core/block-editor');
 
 	return (
-		<div
-			className='maxi-row-block__template'
-			onClick={() => selectBlock(clientId)}
-			key={`maxi-row-block--${clientId}`}
-		>
-			{getTemplates().map(template => {
-				return (
-					<Button
-						key={uniqueId(`maxi-row-block--${clientId}--`)}
-						className='maxi-row-block__template__button'
-						onClick={() => {
-							maxiSetAttributes({
-								'row-pattern-general': template.name,
-								'row-pattern-m': template.responsiveLayout,
-							});
-							loadColumnsTemplate(
-								template.name,
-								clientId,
-								deviceType
-							);
-						}}
-					>
-						<Icon
-							className='maxi-row-block__template__icon'
-							icon={template.icon}
-						/>
-					</Button>
-				);
-			})}
-		</div>
+		<>
+			<div className='maxi-row-block__title'>
+				<span>{__('Column picker', 'maxi-blocks')}</span>
+			</div>
+			<div
+				className='maxi-row-block__template'
+				onClick={() => selectBlock(clientId)}
+				key={`maxi-row-block--${clientId}`}
+			>
+				{getTemplates().map(template => {
+					return (
+						<Button
+							key={uniqueId(`maxi-row-block--${clientId}--`)}
+							className='maxi-row-block__template__button'
+							onClick={() => {
+								maxiSetAttributes({
+									'row-pattern-general': template.name,
+									'row-pattern-m': template.responsiveLayout,
+								});
+								loadColumnsTemplate(
+									template.name,
+									clientId,
+									deviceType
+								);
+							}}
+						>
+							<Icon
+								className='maxi-row-block__template__icon'
+								icon={template.icon}
+								avoidSize
+							/>
+						</Button>
+					);
+				})}
+			</div>
+		</>
 	);
 };
 

@@ -35,7 +35,7 @@ export const hover = {
 	},
 	'hover-transition-easing': {
 		type: 'string',
-		default: 'easing',
+		default: 'ease',
 	},
 	'hover-transition-easing-cubic-bezier': {
 		type: 'object',

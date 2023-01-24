@@ -29,7 +29,7 @@ Object {
 exports[`getBoxShadowStyles Returns box-shadow default styles for IB 1`] = `
 Object {
   "general": Object {
-    "box-shadow": "0px 0px 0px 0px rgba(var(--maxi-light-color-8,203,203,203),1)",
+    "box-shadow": "0px 0px 0px 0px rgba(var(--maxi-light-color-8,150,176,203),1)",
   },
 }
 `;

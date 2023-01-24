@@ -443,7 +443,7 @@ Object {
         "width": "105px",
       },
       "s": Object {
-        "background-color": "rgba(var(--maxi-light-color-8,203,203,203),0.59)",
+        "background-color": "rgba(var(--maxi-light-color-8,150,176,203),0.59)",
         "bottom": "16%",
         "height": "106px",
         "left": "16%",
@@ -461,7 +461,7 @@ Object {
         "width": "103px",
       },
       "xs": Object {
-        "background-color": "rgba(var(--maxi-light-color-8,203,203,203),0.59)",
+        "background-color": "rgba(var(--maxi-light-color-8,150,176,203),0.59)",
         "bottom": "17%",
         "height": "107px",
         "left": "17%",
@@ -1738,13 +1738,13 @@ Object {
         "fill": "rgba(var(--maxi-light-color-4,255,74,23),0.92)",
       },
       "s": Object {
-        "fill": "rgba(var(--maxi-light-color-8,203,203,203),0.92)",
+        "fill": "rgba(var(--maxi-light-color-8,150,176,203),0.92)",
       },
       "xl": Object {
         "fill": "rgba(var(--maxi-light-color-4,255,74,23),0.92)",
       },
       "xs": Object {
-        "fill": "rgba(var(--maxi-light-color-8,203,203,203),0.92)",
+        "fill": "rgba(var(--maxi-light-color-8,150,176,203),0.92)",
       },
       "xxl": Object {
         "fill": "rgba(var(--maxi-light-color-3,155,155,155),0.17)",

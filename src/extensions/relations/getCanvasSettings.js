@@ -23,6 +23,7 @@ import {
 	getSizeStyles,
 } from '../styles/helpers';
 import { getGroupAttributes, getLastBreakpointAttribute } from '../styles';
+import { getEditorWrapper } from '../dom';
 
 /**
  * External dependencies
@@ -74,6 +75,11 @@ const getCanvasSettings = ({ name }) => [
 							'background-layers': newBgLayers,
 						});
 					}}
+					getBounds={() =>
+						getEditorWrapper()
+							.querySelector(`.${props.attributes.uniqueID}`)
+							.getBoundingClientRect()
+					}
 					isIB
 					disableAddLayer
 				/>

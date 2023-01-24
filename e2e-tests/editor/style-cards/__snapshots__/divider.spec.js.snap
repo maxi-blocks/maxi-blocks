@@ -2,6 +2,9 @@
 
 exports[`SC Divider Checking divider accordion 1`] = `
 Object {
+  "color": Object {
+    "1": "16,109,60",
+  },
   "divider": Object {
     "color": "",
     "color-global": true,

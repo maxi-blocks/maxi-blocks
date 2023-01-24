@@ -32,7 +32,7 @@ Array [
       "general": Object {
         "breakpoint": null,
         "styles": Object {
-          "box-shadow": "22px 33px 44px 55px rgba(var(--maxi-light-color-8,150,176,203),0.11)",
+          "box-shadow": "22px 33px 44px 55px rgba(var(--maxi-light-color-8,203,203,203),0.11)",
         },
       },
     },
@@ -55,7 +55,7 @@ Array [
 ]
 `;
 
-exports[`Divider Maxi hover simple actions Divider shadow 2`] = `" body.maxi-blocks--active #divider-maxi-1[data-maxi-relations=\\"true\\"] .maxi-divider-block__divider { box-shadow: 22px 33px 44px 55px rgba(var(--maxi-light-color-8,150,176,203),0.11);}"`;
+exports[`Divider Maxi hover simple actions Divider shadow 2`] = `" body.maxi-blocks--active #divider-maxi-1[data-maxi-relations=\\"true\\"] .maxi-divider-block__divider { box-shadow: 22px 33px 44px 55px rgba(var(--maxi-light-color-8,203,203,203),0.11);}"`;
 
 exports[`Divider Maxi hover simple actions Divider shadow 3`] = `"body.maxi-blocks--active #divider-maxi-1[data-maxi-relations=\\"true\\"] .maxi-divider-block__divider { transition: all 0s ease 0s, box-shadow 0.3s ease 0s;}"`;
 
@@ -81,7 +81,7 @@ Array [
       "general": Object {
         "breakpoint": null,
         "styles": Object {
-          "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
+          "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,203,203,203),0.5))",
           "border-right-style": "none",
           "border-top-style": "dashed",
           "border-top-width": "22px",
@@ -92,7 +92,7 @@ Array [
       "l": Object {
         "breakpoint": 1366,
         "styles": Object {
-          "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
+          "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,203,203,203),0.5))",
           "border-right-style": "none",
           "border-top-style": "dashed",
           "border-top-width": "22px",
@@ -103,7 +103,7 @@ Array [
       "m": Object {
         "breakpoint": 1024,
         "styles": Object {
-          "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
+          "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,203,203,203),0.5))",
           "border-right-style": "none",
           "border-top-style": "dashed",
           "border-top-width": "22px",
@@ -114,7 +114,7 @@ Array [
       "s": Object {
         "breakpoint": 767,
         "styles": Object {
-          "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
+          "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,203,203,203),0.5))",
           "border-right-style": "none",
           "border-top-style": "dashed",
           "border-top-width": "22px",
@@ -125,7 +125,7 @@ Array [
       "xl": Object {
         "breakpoint": 1920,
         "styles": Object {
-          "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
+          "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,203,203,203),0.5))",
           "border-right-style": "none",
           "border-top-style": "dashed",
           "border-top-width": "22px",
@@ -136,7 +136,7 @@ Array [
       "xs": Object {
         "breakpoint": 480,
         "styles": Object {
-          "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
+          "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,203,203,203),0.5))",
           "border-right-style": "none",
           "border-top-style": "dashed",
           "border-top-width": "22px",
@@ -147,7 +147,7 @@ Array [
       "xxl": Object {
         "breakpoint": 1921,
         "styles": Object {
-          "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
+          "border-color": "var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,203,203,203),0.5))",
           "border-right-style": "none",
           "border-top-style": "dashed",
           "border-top-width": "22px",
@@ -174,6 +174,6 @@ Array [
 ]
 `;
 
-exports[`Divider Maxi hover simple actions Line settings 2`] = `" body.maxi-blocks--active #divider-maxi-1[data-maxi-relations=\\"true\\"] .maxi-divider-block__divider { width: 11%; height: 22px; border-top-width: 22px; border-right-style: none; border-top-style: dashed; border-color: var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,150,176,203),0.5));}"`;
+exports[`Divider Maxi hover simple actions Line settings 2`] = `" body.maxi-blocks--active #divider-maxi-1[data-maxi-relations=\\"true\\"] .maxi-divider-block__divider { width: 11%; height: 22px; border-top-width: 22px; border-right-style: none; border-top-style: dashed; border-color: var(--maxi-light-divider-color,rgba(var(--maxi-light-color-8,203,203,203),0.5));}"`;
 
 exports[`Divider Maxi hover simple actions Line settings 3`] = `"body.maxi-blocks--active #divider-maxi-1[data-maxi-relations=\\"true\\"] .maxi-divider-block__divider { transition: all 0s ease 0s, border-color 0.3s ease 0s, border-top-style 0.3s ease 0s, border-right-style 0.3s ease 0s, border-top-width 0.3s ease 0s, height 0.3s ease 0s, width 0.3s ease 0s;}"`;

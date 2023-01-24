@@ -2,6 +2,9 @@
 
 exports[`SC svg icon Checking svg icon accordion 1`] = `
 Object {
+  "color": Object {
+    "1": "16,109,60",
+  },
   "icon": Object {
     "fill-color-global": true,
     "line-color": "",

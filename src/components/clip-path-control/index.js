@@ -502,17 +502,24 @@ const ClipPathControl = props => {
 														];
 
 													let newValue;
-													if (higherBreakpoint) {
+													let resetToDefault = false;
+													if (
+														higherBreakpoint ||
+														isHover
+													) {
 														const oneBreakpointHigherClipPath =
 															deconstructCP(
 																getLastBreakpointAttribute(
 																	{
 																		target: `${prefix}clip-path`,
 																		breakpoint:
-																			higherBreakpoint,
+																			higherBreakpoint ??
+																			breakpoint,
 																		attributes:
 																			props,
-																		isHover,
+																		isHover:
+																			isHover &&
+																			higherBreakpoint,
 																	}
 																)
 															);
@@ -520,22 +527,26 @@ const ClipPathControl = props => {
 														if (
 															oneBreakpointHigherClipPath.type !==
 															clipPathOptions.type
-														)
-															return;
-
-														newValue =
-															oneBreakpointHigherClipPath
-																?.content?.[
-																i
-															]?.[coordIndex];
+														) {
+															resetToDefault = true;
+														} else {
+															newValue =
+																oneBreakpointHigherClipPath
+																	?.content?.[
+																	i
+																]?.[coordIndex];
+														}
 													} else {
+														resetToDefault = true;
+													}
+
+													if (resetToDefault)
 														newValue = cloneDeep(
 															typeDefaults[
 																clipPathOptions
 																	.type
 															]?.[i]?.[coordIndex]
 														);
-													}
 
 													if (
 														isEqual(

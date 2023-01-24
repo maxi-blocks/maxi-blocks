@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useEffect } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -22,7 +22,7 @@ import {
 /**
  * External dependencies
  */
-import { capitalize, cloneDeep, isEmpty, isArray } from 'lodash';
+import { capitalize, cloneDeep, isArray, isEmpty, omit } from 'lodash';
 
 /**
  * Component
@@ -39,14 +39,17 @@ const TransitionControlWrapper = props => {
 	} = props;
 	const { 'transition-change-all': transitionChangeAll } = attributes;
 
+	const [transitionStatus, setTransitionStatus] = useState('in');
+
 	const selected =
 		attributes[`transition-${type}-selected`] === 'none' &&
 		transitionChangeAll
 			? Object.keys(transition?.[type])[0]
 			: attributes[`transition-${type}-selected`];
 
-	const defaultTransition = getDefaultAttribute('transition')[type][selected];
 	const selectedTransition = transition[type][selected];
+	const split = !!selectedTransition?.split;
+	const defaultTransition = getDefaultAttribute('transition')[type][selected];
 
 	const getDefaultTransitionAttribute = prop =>
 		defaultTransition[`${prop}-${deviceType}`];
@@ -54,7 +57,7 @@ const TransitionControlWrapper = props => {
 	const onChangeTransition = (obj = {}) => {
 		if (!transitionData) return null;
 
-		let newObj = {
+		const newObj = {
 			transition: {},
 		};
 
@@ -66,25 +69,46 @@ const TransitionControlWrapper = props => {
 					key => {
 						newObj.transition[currentType][key] = {
 							...attributes.transition[currentType][key],
-							...attributes.transition[type][selected],
-							hoverProp:
-								transitionData[currentType][key].hoverProp,
-							...obj,
+							...(transitionStatus === 'out'
+								? {
+										out: {
+											...attributes.transition[
+												currentType
+											][key].out,
+											...attributes.transition[type][
+												selected
+											].out,
+											...obj,
+										},
+								  }
+								: {
+										...attributes.transition[currentType][
+											key
+										],
+										...attributes.transition[type][
+											selected
+										],
+										...obj,
+								  }),
 						};
 					}
 				);
 			});
 		} else {
-			newObj = {
-				transition: {
-					...attributes?.transition,
-					[type]: {
-						...(attributes?.transition?.[type] || []),
-						[selected]: {
-							...selectedTransition,
-							...obj,
-						},
-					},
+			const newSelectedTransition = {
+				...selectedTransition,
+				...obj,
+			};
+			newObj.transition = {
+				...attributes?.transition,
+				[type]: {
+					...(attributes?.transition?.[type] || []),
+					[selected]:
+						transitionStatus === 'out'
+							? {
+									out: newSelectedTransition,
+							  }
+							: newSelectedTransition,
 				},
 			};
 		}
@@ -135,18 +159,62 @@ const TransitionControlWrapper = props => {
 				/>
 			)}
 			{selected && selected !== 'none' && (
-				<ResponsiveTabsControl breakpoint={deviceType}>
-					<TransitionControl
-						{...getTransitionAttributes(attributes, 'transition')}
-						onChange={onChangeTransition}
-						getDefaultTransitionAttribute={
-							getDefaultTransitionAttribute
-						}
-						transition={selectedTransition}
-						breakpoint={deviceType}
-						type={type}
+				<>
+					<ToggleSwitch
+						label={__('Split in/out transition', 'maxi-blocks')}
+						selected={split}
+						onChange={val => {
+							onChangeTransition({
+								split: val,
+								...(!selectedTransition?.out
+									? {
+											out: omit(
+												cloneDeep(selectedTransition),
+												'split'
+											),
+									  }
+									: {}),
+							});
+						}}
 					/>
-				</ResponsiveTabsControl>
+					{split && (
+						<SettingTabsControl
+							type='buttons'
+							selected={transitionStatus}
+							items={[
+								{
+									label: __('In', 'maxi-blocks'),
+									value: 'in',
+								},
+								{
+									label: __('Out', 'maxi-blocks'),
+									value: 'out',
+								},
+							]}
+							fullWidthMode
+							onChange={val => setTransitionStatus(val)}
+						/>
+					)}
+					<ResponsiveTabsControl breakpoint={deviceType}>
+						<TransitionControl
+							{...getTransitionAttributes(
+								attributes,
+								'transition'
+							)}
+							onChange={onChangeTransition}
+							getDefaultTransitionAttribute={
+								getDefaultTransitionAttribute
+							}
+							transition={
+								transitionStatus === 'out'
+									? selectedTransition.out
+									: selectedTransition
+							}
+							breakpoint={deviceType}
+							type={type}
+						/>
+					</ResponsiveTabsControl>
+				</>
 			)}
 		</>
 	) : (

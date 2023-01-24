@@ -182,6 +182,23 @@ body {
 			hr {
 				margin: 0 0 8px;
 			}
+			&.maxi-blocks-sc__type--color{
+				position: relative;
+				.maxi-color-control__color{
+					.chrome-picker {
+						& > div{
+							&:last-child{
+								padding-bottom: 0 !important;
+								.flexbox-fix{
+									&:last-child{
+										padding-right: 48px;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 
 		.maxi-color-control {
@@ -218,30 +235,30 @@ body {
 			margin-bottom: 8px;
 
 			&__reset-button {
-				position: relative;
+				position: absolute;
+				bottom: 8px;
+				right: 8px;
 				display: flex;
 				align-items: center;
+				width: 40px;
+				height: 32px;
+				padding-left: 16px !important;
 				border: 1px solid #dddfe1;
 				border-radius: 5px;
 				color: #464a53;
 				transition: all 0.5s;
-				margin-right: 10px;
 
 				&__preview {
 					position: absolute;
 					top: 2px;
 					left: 2px;
-					width: 10px;
-					height: 10px;
-					border-radius: 50%;
+					width: 8px;
+					height: 26px;
+					border-radius: 0;
 					border: 1px solid #dfe2e4;
 				}
 				&:hover {
 					background: #f9f9f9;
-				}
-				svg {
-					width: 16px;
-					margin-right: 10px;
 				}
 			}
 			&__box {

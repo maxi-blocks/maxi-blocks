@@ -25,10 +25,12 @@ const GradientLayerContent = props => {
 		onChange,
 		disableClipPath,
 		isHover = false,
+		isIB = false,
 		prefix = '',
 		breakpoint,
 		isLayer = false,
 		getBounds,
+		getBlockClipPath, // for IB
 	} = props;
 
 	const gradientOptions = cloneDeep(props.gradientOptions);
@@ -54,11 +56,13 @@ const GradientLayerContent = props => {
 					)}
 					{...gradientOptions}
 					isHover={isHover}
+					isIB={isIB}
 					prefix='background-gradient-'
 					breakpoint={breakpoint}
 					isLayer
 					disableRTC
 					getBounds={getBounds}
+					getBlockClipPath={getBlockClipPath}
 				/>
 			)}
 			<SizeAndPositionLayerControl

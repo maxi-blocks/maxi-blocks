@@ -52,12 +52,15 @@ const getLayerCardContent = props => {
 		onChange,
 		previewRef,
 		getBounds,
+		getBlockClipPath, // for IB
 	} = props;
 
 	const handleGetBounds = () =>
 		getBounds(
 			`.maxi-background-displayer .maxi-background-displayer__${layer.order}`
 		);
+
+	const handleGetBlockClipPath = () => getBlockClipPath(layer.id);
 
 	switch (layer.type) {
 		case 'color':
@@ -82,8 +85,10 @@ const getLayerCardContent = props => {
 					}}
 					breakpoint={breakpoint}
 					isHover={isHover}
+					isIB={isIB}
 					isLayer
 					getBounds={handleGetBounds}
+					getBlockClipPath={handleGetBlockClipPath}
 				/>
 			);
 		case 'image':
@@ -99,9 +104,11 @@ const getLayerCardContent = props => {
 					}
 					breakpoint={breakpoint}
 					isHover={isHover}
+					isIB={isIB}
 					disableUpload={isHover || isIB}
 					isLayer
 					getBounds={handleGetBounds}
+					getBlockClipPath={handleGetBlockClipPath}
 				/>
 			);
 		case 'video':
@@ -134,8 +141,10 @@ const getLayerCardContent = props => {
 					}
 					breakpoint={breakpoint}
 					isHover={isHover}
+					isIB={isIB}
 					isLayer
 					getBounds={handleGetBounds}
+					getBlockClipPath={handleGetBlockClipPath}
 				/>
 			);
 		case 'shape':
@@ -379,6 +388,7 @@ const BackgroundLayersControl = ({
 	breakpoint,
 	disableAddLayer,
 	getBounds,
+	getBlockClipPath, // for IB
 }) => {
 	const previewRef = useRef(null);
 
@@ -539,6 +549,7 @@ const BackgroundLayersControl = ({
 										onChange: onChangeLayer,
 										previewRef,
 										getBounds,
+										getBlockClipPath, // for IB
 									})}
 									id={layer.order}
 									onRemove={() => onRemoveLayer(layer)}

@@ -28,6 +28,11 @@ import transitionDefault from '../../extensions/styles/transitions/transitionDef
 import { getEditorWrapper } from '../../extensions/dom';
 
 /**
+ * External dependencies
+ */
+import { pickBy } from 'lodash';
+
+/**
  * Classnames
  */
 const blockClass = ' .maxi-image-block';
@@ -278,6 +283,12 @@ const interactionBuilderSettings = {
 							)
 							.getBoundingClientRect()
 					}
+					getBlockClipPath={() =>
+						pickBy(props.blockAttributes, (_value, key) =>
+							key.includes('clip-path')
+						)
+					}
+					isIB
 				/>
 			),
 			helper: props => getClipPathStyles(props),

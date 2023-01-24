@@ -36,6 +36,7 @@ const ColorLayerContent = props => {
 		onChangeInline,
 		disableClipPath,
 		isHover = false,
+		isIB = false,
 		prefix = '',
 		clientId,
 		breakpoint,
@@ -43,6 +44,7 @@ const ColorLayerContent = props => {
 		globalProps,
 		isToolbar = false,
 		getBounds,
+		getBlockClipPath, // for IB
 	} = props;
 
 	const colorOptions = cloneDeep(props.colorOptions);
@@ -217,11 +219,13 @@ const ColorLayerContent = props => {
 					)}
 					{...colorOptions}
 					isHover={isHover}
+					isIB={isIB}
 					prefix={`${prefix}background-color-`}
 					breakpoint={breakpoint}
 					isLayer
 					disableRTC
 					getBounds={getBounds}
+					getBlockClipPath={getBlockClipPath}
 				/>
 			)}
 			<SizeAndPositionLayerControl

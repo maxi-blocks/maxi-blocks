@@ -135,11 +135,13 @@ const ClipPathControl = props => {
 	const {
 		className,
 		onChange,
-		getBounds,
 		prefix = '',
 		breakpoint,
 		isHover = false,
 		isLayer = false,
+		isIB = false,
+		getBounds,
+		getBlockClipPath,
 	} = props;
 
 	const classes = classnames('maxi-clip-path-control', className);
@@ -472,7 +474,8 @@ const ClipPathControl = props => {
 													let resetToDefault = false;
 													if (
 														higherBreakpoint ||
-														isHover
+														isHover ||
+														isIB
 													) {
 														const oneBreakpointHigherClipPath =
 															deconstructCP(
@@ -483,7 +486,10 @@ const ClipPathControl = props => {
 																			higherBreakpoint ??
 																			breakpoint,
 																		attributes:
-																			props,
+																			isIB &&
+																			!higherBreakpoint
+																				? getBlockClipPath()
+																				: props,
 																		isHover:
 																			isHover &&
 																			higherBreakpoint,

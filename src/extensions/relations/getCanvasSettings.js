@@ -80,6 +80,14 @@ const getCanvasSettings = ({ name }) => [
 							.querySelector(`.${props.attributes.uniqueID}`)
 							.getBoundingClientRect()
 					}
+					getBlockClipPath={layerID =>
+						pickBy(
+							Object.values(
+								props.blockAttributes['background-layers']
+							).find(({ id }) => id === layerID),
+							(_value, key) => key.includes('clip-path')
+						)
+					}
 					isIB
 					disableAddLayer
 				/>

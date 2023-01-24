@@ -42,26 +42,8 @@ import { styleNone } from '../../icons';
  * Component
  */
 const ClipPathOption = props => {
-	const {
-		values,
-		number,
-		type,
-		visualEditorBounds: rawVisualEditorBounds,
-		onChange,
-		onReset,
-		onRemove,
-	} = props;
-
-	const [visualEditorBounds, setVisualEditorBounds] = useState(null);
-	useEffect(() => {
-		if (
-			!rawVisualEditorBounds ||
-			isEqual(rawVisualEditorBounds && visualEditorBounds)
-		)
-			return;
-
-		setVisualEditorBounds(rawVisualEditorBounds);
-	}, [rawVisualEditorBounds]);
+	const { values, number, type, getBounds, onChange, onReset, onRemove } =
+		props;
 
 	const getLabel = () => {
 		if (type === 'circle' && number === 0)
@@ -97,7 +79,7 @@ const ClipPathOption = props => {
 			const getMax = () => {
 				switch (unit) {
 					case 'px':
-						return visualEditorBounds?.[
+						return getBounds()?.[
 							direction === 'x' ? 'width' : 'height'
 						];
 					case '%':
@@ -478,7 +460,7 @@ const ClipPathControl = props => {
 												values={handle}
 												number={i}
 												type={clipPathOptions.type}
-												visualEditorBounds={visualEditorRef.current?.getBoundingClientRect()}
+												getBounds={getBounds}
 												onChange={value => {
 													clipPathOptions.content[i] =
 														value;

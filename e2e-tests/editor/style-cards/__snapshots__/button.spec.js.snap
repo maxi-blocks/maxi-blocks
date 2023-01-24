@@ -17,7 +17,7 @@ Object {
     "bottom-gap-unit-general": "px",
     "color": "",
     "color-global": true,
-    "font-family-general": "Exo 2",
+    "font-family-general": "Roboto",
     "font-size-general": 20,
     "font-size-unit-general": "px",
     "font-size-unit-xl": "px",
@@ -67,9 +67,6 @@ Object {
     "word-spacing-general": 10,
     "word-spacing-unit-general": "px",
   },
-  "color": Object {
-    "1": "16,109,60",
-  },
 }
 `;
 
@@ -91,8 +88,8 @@ Object {
     "bottom-gap-unit-general": "px",
     "color": "",
     "color-global": true,
-    "font-family-general": "Exo 2",
-    "font-family-m": "Exo 2",
+    "font-family-general": "Roboto",
+    "font-family-m": "Roboto",
     "font-size-general": 20,
     "font-size-m": 10,
     "font-size-unit-general": "px",
@@ -151,9 +148,6 @@ Object {
     "word-spacing-general": 10,
     "word-spacing-m": 20,
     "word-spacing-unit-general": "px",
-  },
-  "color": Object {
-    "1": "16,109,60",
   },
 }
 `;

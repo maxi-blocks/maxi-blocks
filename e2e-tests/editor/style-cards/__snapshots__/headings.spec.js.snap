@@ -2,16 +2,12 @@
 
 exports[`StyleCards headings Check Headings 1`] = `
 Object {
-  "color": Object {
-    "1": "16,109,60",
-  },
   "h1": Object {
     "bottom-gap-general": 20,
     "bottom-gap-unit-general": "px",
     "color": "",
     "color-global": true,
-    "content": "",
-    "font-family-general": "Exo 2",
+    "font-family-general": "Roboto",
     "font-size-general": 20,
     "font-size-l": 40,
     "font-size-m": 36,
@@ -66,17 +62,13 @@ Object {
 
 exports[`StyleCards headings Works on responsive 1`] = `
 Object {
-  "color": Object {
-    "1": "16,109,60",
-  },
   "h1": Object {
     "bottom-gap-general": 20,
     "bottom-gap-m": 10,
     "bottom-gap-unit-general": "px",
     "color": "",
     "color-global": true,
-    "content": "",
-    "font-family-general": "Exo 2",
+    "font-family-general": "Roboto",
     "font-size-general": 20,
     "font-size-l": 40,
     "font-size-m": 10,

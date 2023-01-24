@@ -2,9 +2,6 @@
 
 exports[`SC Link Checking link accordion 1`] = `
 Object {
-  "color": Object {
-    "1": "16,109,60",
-  },
   "link": Object {
     "active-color-global": true,
     "hover-color-global": true,

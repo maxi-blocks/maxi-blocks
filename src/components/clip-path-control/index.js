@@ -146,11 +146,8 @@ const ClipPathControl = props => {
 
 	const classes = classnames('maxi-clip-path-control', className);
 
-	const gradientPrefix =
-		props.prefix === 'background-gradient-' ? 'header-' : '';
-
 	const clipPath = getLastBreakpointAttribute({
-		target: `${gradientPrefix}${prefix}clip-path`,
+		target: `${prefix}clip-path`,
 		breakpoint,
 		attributes: props,
 		isHover,
@@ -159,18 +156,12 @@ const ClipPathControl = props => {
 	const hasClipPath =
 		isLayer || !isHover
 			? getLastBreakpointAttribute({
-					target: `${gradientPrefix}${prefix}clip-path-status`,
+					target: `${prefix}clip-path-status`,
 					breakpoint,
 					attributes: props,
 					isHover,
 			  })
-			: props[
-					getAttributeKey(
-						'clip-path-status',
-						true,
-						`${gradientPrefix}${prefix}`
-					)
-			  ];
+			: props[getAttributeKey('clip-path-status', true, prefix)];
 
 	const deconstructCP = (clipPathToDeconstruct = clipPath) => {
 		if (isEmpty(clipPathToDeconstruct) || clipPath === 'none')
@@ -280,12 +271,7 @@ const ClipPathControl = props => {
 
 	const onChangeValue = val => {
 		onChange({
-			[getAttributeKey(
-				'clip-path',
-				isHover,
-				`${gradientPrefix}${prefix}`,
-				breakpoint
-			)]: val,
+			[getAttributeKey('clip-path', isHover, prefix, breakpoint)]: val,
 		});
 	};
 
@@ -309,12 +295,8 @@ const ClipPathControl = props => {
 
 	const onToggleClipPath = val => {
 		onChange({
-			[getAttributeKey(
-				'clip-path-status',
-				isHover,
-				`${gradientPrefix}${prefix}`,
-				breakpoint
-			)]: val,
+			[getAttributeKey('clip-path-status', isHover, prefix, breakpoint)]:
+				val,
 		});
 	};
 

@@ -52,12 +52,12 @@ const GradientLayerContent = props => {
 						props,
 						'clipPath',
 						false,
-						'background-gradient-'
+						`${prefix}background-gradient-`
 					)}
 					{...gradientOptions}
 					isHover={isHover}
 					isIB={isIB}
-					prefix='background-gradient-'
+					prefix={`${prefix}background-gradient-`}
 					breakpoint={breakpoint}
 					isLayer
 					disableRTC

@@ -23,6 +23,7 @@ import {
 	getGroupAttributes,
 } from '../../extensions/styles';
 import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
+import { goThroughMaxiBlocks } from '../../extensions/maxi-block';
 import { getHoverStatus } from '../../extensions/relations';
 import { getBlockData } from '../../extensions/attributes';
 
@@ -35,7 +36,6 @@ import { capitalize, cloneDeep, isEmpty, merge } from 'lodash';
  * Styles
  */
 import './editor.scss';
-import { goThroughMaxiBlocks } from '../../extensions/maxi-block';
 
 const RelationControl = props => {
 	const { getBlock } = select('core/block-editor');
@@ -328,7 +328,6 @@ const RelationControl = props => {
 		const arr = [];
 		goThroughMaxiBlocks(block => {
 			if (
-				block.name.includes('maxi-blocks') &&
 				block.attributes.customLabel !==
 					getDefaultAttribute('customLabel', block.clientId) &&
 				block.attributes.uniqueID !== uniqueID

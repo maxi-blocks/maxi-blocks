@@ -656,16 +656,9 @@ class MaxiBlockComponent extends Component {
 		);
 		const siteEditorIframe = getSiteEditorIframe();
 
-		const getEditorWrapper = () => {
-			switch (true) {
-				case !!templateViewIframe:
-					return templateViewIframe;
-				case !!siteEditorIframe:
-					return siteEditorIframe;
-				default:
-					return document;
-			}
-		};
+		// TODO: after #4229 will be merged, replace this `getEditorWrapper` with `/dom/getEditorWrapper` and modify it to support FSE
+		const getEditorWrapper = () =>
+			templateViewIframe || siteEditorIframe || document;
 
 		getEditorWrapper()
 			.getElementById(getStylesWrapperId(this.props.attributes.uniqueID))

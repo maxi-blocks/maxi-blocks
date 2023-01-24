@@ -78,7 +78,7 @@ const ClipPathVisualEditor = props => {
 
 	const clipPathEditorOptions = useRef(transformValuesToBlockEditor());
 	const [clipPath, changeClipPath] = useState(
-		getClipPath(transformValuesToBlockEditor())
+		getClipPath(clipPathEditorOptions.current)
 	);
 	useLayoutEffect(() => {
 		clipPathEditorOptions.current = transformValuesToBlockEditor();

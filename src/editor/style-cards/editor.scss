@@ -2,17 +2,6 @@ body {
 	.maxi-current-option {
 		background-color: #ff4a16;
 	}
-	// &.folded .maxi-responsive-selector .maxi-style-cards__popover {
-	// 	margin: 153px 0 0 60px;
-	// }
-	// &.is-fullscreen-mode .maxi-responsive-selector .maxi-style-cards__popover {
-	// 	margin: 121px 0 0 25px;
-	// }
-	// &:not(.is-fullscreen-mode, .folded)
-	// 	.maxi-responsive-selector
-	// 	.maxi-style-cards__popover {
-	// 	margin: 134px 0 0 184px;
-	// }
 }
 
 .has-tooltip {
@@ -321,14 +310,6 @@ body {
 		.maxi-style-cards__sc {
 			padding: 0 8px 1px;
 			background: #fff;
-
-			// .maxi-settingstab-control:not(.maxi-responsive-tabs-control) {
-			// 	& > .maxi-tabs-control{
-			// 		.maxi-tabs-control__button:not(.maxi-tabs-control__button--nested)[aria-pressed=true] {
-			// 			border-bottom-color: rgb(var(--maxi-light-color-4)) !important;
-			// 		}
-			// 	}
-			// }
 
 			button:not(.maxi-reset-button):not(.maxi-color-control__palette-box),
 			a.components-button {

@@ -30,7 +30,7 @@ import typeDefaults from './typeDefaults';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isEqual, isNil, cloneDeep } from 'lodash';
+import { cloneDeep, isEmpty, isEqual, isNil } from 'lodash';
 
 /**
  * Styles
@@ -42,8 +42,7 @@ import { styleNone } from '../../icons';
  * Component
  */
 const ClipPathOption = props => {
-	const { values, number, type, getBounds, onChange, onReset, onRemove } =
-		props;
+	const { values, number, type, onChange, onReset, onRemove } = props;
 
 	const getLabel = () => {
 		if (type === 'circle' && number === 0)
@@ -73,27 +72,6 @@ const ClipPathOption = props => {
 
 		return `${__('Point', 'maxi-blocks')} ${number + 1}`;
 	};
-
-	const getMinMaxSettings = direction =>
-		['%', 'px'].reduce((acc, unit) => {
-			const getMax = () => {
-				switch (unit) {
-					case 'px':
-						return getBounds()?.[
-							direction === 'x' ? 'width' : 'height'
-						];
-					case '%':
-					default:
-						return 100;
-				}
-			};
-
-			acc[unit] = {
-				min: 0,
-				max: getMax(),
-			};
-			return acc;
-		}, {});
 
 	return (
 		<div className='maxi-clip-path-controller'>
@@ -125,9 +103,16 @@ const ClipPathOption = props => {
 										onChange(values);
 									}}
 									onReset={() => onReset(index)}
-									minMaxSettings={getMinMaxSettings(
-										index === 0 ? 'x' : 'y'
-									)}
+									minMaxSettings={{
+										px: {
+											min: 0,
+											max: 3999,
+										},
+										'%': {
+											min: 0,
+											max: 100,
+										},
+									}}
 									disableRange
 									enableUnit
 								/>

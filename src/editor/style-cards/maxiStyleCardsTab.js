@@ -511,7 +511,6 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 										}}
 									/>
 									<Icon icon={reset} />
-									{__('Reset Preset', 'maxi-blocks')}
 								</Button>
 							</>
 						),

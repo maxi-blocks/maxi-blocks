@@ -34,8 +34,9 @@ import { isEmpty, isNil, isEqual } from 'lodash';
  * Icons
  */
 import { styleCardBoat, SCDelete, closeIcon } from '../../icons';
+import { forwardRef } from 'react';
 
-const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
+const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	const {
 		isRTL,
 		breakpoint,
@@ -316,10 +317,12 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 	return (
 		!isEmpty(styleCards) && (
 			<Popover
+				anchor={ref.current}
 				noArrow
-				position={isRTL ? 'top left right' : 'top right left'}
+				position={isRTL ? 'bottom left right' : 'bottom right left'}
 				className='maxi-style-cards__popover maxi-sidebar'
 				focusOnMount
+				strategy='fixed'
 			>
 				<div className='active-style-card'>
 					<div className='active-style-card_icon'>
@@ -627,6 +630,6 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 			</Popover>
 		)
 	);
-};
+});
 
 export default MaxiStyleCardsEditor;

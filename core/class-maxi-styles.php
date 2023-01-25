@@ -489,7 +489,7 @@ class MaxiBlocks_Styles
 
         $result_decoded = $result[$metaJs];
 
-        if (empty($result_decoded)) {
+        if (!is_array($result_decoded) || empty($result_decoded)) {
             return [];
         }
 

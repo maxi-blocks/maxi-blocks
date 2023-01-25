@@ -188,7 +188,7 @@ const getListObject = props => {
 			},
 		},
 		...(() => {
-			const response = { listGap: {} };
+			const response = { listGap: {}, bottomGap: {} };
 
 			breakpoints.forEach(breakpoint => {
 				const isRTL =
@@ -258,6 +258,24 @@ const getListObject = props => {
 				if (!isNil(gapNum) && !isNil(gapUnit)) {
 					response.listGap[breakpoint] = {
 						[`padding-${isRTL ? 'right' : 'left'}`]: padding,
+					};
+				}
+
+				// Bottom gap
+				const bottomGapNum = getLastBreakpointAttribute({
+					target: 'bottom-gap',
+					breakpoint,
+					attributes: props,
+				});
+				const bottomGapUnit = getLastBreakpointAttribute({
+					target: 'bottom-gap-unit',
+					breakpoint,
+					attributes: props,
+				});
+
+				if (!isNil(bottomGapNum) && !isNil(bottomGapUnit)) {
+					response.bottomGap[breakpoint] = {
+						'margin-bottom': bottomGapNum + bottomGapUnit,
 					};
 				}
 			});
@@ -544,13 +562,10 @@ const getStyles = props => {
 						getTypographyHoverObject(props),
 				}),
 				...(isList && {
-					[` ${element}.maxi-text-block__content`]: {
-						...getListObject({
-							...props,
-							isRTL,
-						}),
-						...getTypographyObject(props),
-					},
+					[` ${element}.maxi-text-block__content`]: getListObject({
+						...props,
+						isRTL,
+					}),
 					[` ${element}.maxi-text-block__content li`]: {
 						...getTypographyObject(props),
 						...getListItemObject(props),

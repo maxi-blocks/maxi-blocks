@@ -285,7 +285,7 @@ const TypographyControl = props => {
 		prefix = '',
 		disableFormats = false,
 		disableCustomFormats = false,
-		showBottomGap,
+		showBottomGap = false,
 		hideTextShadow = false,
 		isStyleCards = false,
 		disablePalette = false,

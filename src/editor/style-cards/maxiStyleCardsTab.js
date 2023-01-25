@@ -151,14 +151,9 @@ const SCAccordion = props => {
 		disableTypography = false,
 	} = props;
 
-	const ifParagraphOrHeading =
-		groupAttr === 'p' ||
-		groupAttr === 'h1' ||
-		groupAttr === 'h2' ||
-		groupAttr === 'h3' ||
-		groupAttr === 'h4' ||
-		groupAttr === 'h5' ||
-		groupAttr === 'h6';
+	const ifParagraphOrHeading = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'].some(
+		tag => groupAttr === tag
+	);
 
 	return (
 		<>

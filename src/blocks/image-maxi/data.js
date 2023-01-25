@@ -20,17 +20,13 @@ import {
 	getClipPathStyles,
 	getImageShapeStyles,
 } from '../../extensions/styles/helpers';
+import { getGroupAttributes } from '../../extensions/styles';
 import {
 	getCanvasSettings,
 	getAdvancedSettings,
 } from '../../extensions/relations';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 import { getEditorWrapper } from '../../extensions/dom';
-
-/**
- * External dependencies
- */
-import { pickBy } from 'lodash';
 
 /**
  * Classnames
@@ -284,9 +280,7 @@ const interactionBuilderSettings = {
 							.getBoundingClientRect()
 					}
 					getBlockClipPath={() =>
-						pickBy(props.blockAttributes, (_value, key) =>
-							key.includes('clip-path')
-						)
+						getGroupAttributes(props.blockAttributes, 'clipPath')
 					}
 					isIB
 				/>

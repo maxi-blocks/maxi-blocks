@@ -229,16 +229,9 @@ const ClipPathControl = props => {
 					.replace(')', '')
 					.replace('at ', '');
 
-				cpContent.split(' ').forEach(value => {
-					const match = value.match(/^([\d.]+)(\D+)$/);
-					if (!match) return;
-					cpValues.push([
-						{
-							value: Number(match?.[1]),
-							unit: match?.[2],
-						},
-					]);
-				});
+				cpContent
+					.split(' ')
+					.forEach(value => parseClipPathContent(value));
 				break;
 			case 'none':
 				break;

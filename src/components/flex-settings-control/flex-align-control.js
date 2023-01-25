@@ -6,22 +6,121 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import SelectControl from '../select-control';
+import SettingTabsControl from '../setting-tabs-control';
+import Icon from '../icon';
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-import getOptions from './utils';
-import { handleOnReset } from '../../extensions/attributes';
+
+/**
+ * Icons
+ */
+import {
+	flexJustifyStart,
+	flexJustifyEnd,
+	flexJustifyCenter,
+	flexJustifySpaceBetween,
+	flexJustifySpaceArround,
+	flexJustifySpaceEvenly,
+	flexAlignVerticallyStart,
+	flexAlignVerticallyEnd,
+	flexAlignVerticallyCenter,
+	flexAlignVerticallyStretch,
+	flexAlignVerticallyBaseline,
+	styleNone,
+} from '../../icons';
 
 const FlexAlignControl = props => {
 	const { breakpoint, onChange } = props;
 
+	const getOptions = () => {
+		const options = [];
+
+		options.push({
+			icon: <Icon icon={styleNone} />,
+			value: 'unset',
+		});
+
+		options.push({
+			icon: <Icon icon={flexJustifyStart} />,
+			value: 'flex-start',
+		});
+
+		options.push({
+			icon: <Icon icon={flexJustifyEnd} />,
+			value: 'flex-end',
+		});
+
+		options.push({
+			icon: <Icon icon={flexJustifyCenter} />,
+			value: 'center',
+		});
+
+		options.push({
+			icon: <Icon icon={flexJustifySpaceBetween} />,
+			value: 'space-between',
+		});
+
+		options.push({
+			icon: <Icon icon={flexJustifySpaceArround} />,
+			value: 'space-around',
+		});
+
+		options.push({
+			icon: <Icon icon={flexJustifySpaceEvenly} />,
+			value: 'space-evenly',
+		});
+
+		return options;
+	};
+
+	const getOptionsVertical = () => {
+		const options = [];
+
+		options.push({
+			icon: <Icon icon={styleNone} />,
+			value: 'unset',
+		});
+
+		options.push({
+			icon: <Icon icon={flexAlignVerticallyStart} />,
+			value: 'flex-start',
+		});
+
+		options.push({
+			icon: <Icon icon={flexAlignVerticallyEnd} />,
+			value: 'flex-end',
+		});
+
+		options.push({
+			icon: <Icon icon={flexAlignVerticallyCenter} />,
+			value: 'center',
+		});
+
+		options.push({
+			icon: <Icon icon={flexAlignVerticallyStretch} />,
+			value: 'stretch',
+		});
+
+		options.push({
+			icon: <Icon icon={flexAlignVerticallyBaseline} />,
+			value: 'baseline',
+		});
+
+		return options;
+	};
+
 	return (
 		<>
-			<SelectControl
+			<SettingTabsControl
 				label={__('Justify content horizontally', 'maxi-blocks')}
+				type='buttons'
+				fullWidthMode
+				showTooltip
 				className='maxi-flex-align-control__justify-content'
+				hasBorder
+				items={getOptions()}
 				value={
 					getLastBreakpointAttribute({
 						target: 'justify-content',
@@ -29,33 +128,35 @@ const FlexAlignControl = props => {
 						attributes: props,
 					}) ?? ''
 				}
-				onReset={() =>
-					onChange(
-						handleOnReset({
-							[`justify-content-${breakpoint}`]:
-								getDefaultAttribute(
-									`justify-content-${breakpoint}`
-								),
-						})
-					)
+				selected={
+					getLastBreakpointAttribute({
+						target: 'justify-content',
+						breakpoint,
+						attributes: props,
+					}) || getOptions()[0].value
 				}
-				options={getOptions([
-					'flex-start',
-					'flex-end',
-					'center',
-					'space-between',
-					'space-around',
-					'space-evenly',
-				])}
+				onReset={() =>
+					onChange({
+						[`justify-content-${breakpoint}`]: getDefaultAttribute(
+							`justify-content-${breakpoint}`
+						),
+						isReset: true,
+					})
+				}
 				onChange={val =>
 					onChange({
 						[`justify-content-${breakpoint}`]: val,
 					})
 				}
 			/>
-			<SelectControl
+			<SettingTabsControl
 				label={__('Align items vertically', 'maxi-blocks')}
+				type='buttons'
+				fullWidthMode
+				showTooltip
 				className='maxi-flex-align-control__align-items'
+				hasBorder
+				items={getOptionsVertical()}
 				value={
 					getLastBreakpointAttribute({
 						target: 'align-items',
@@ -63,22 +164,21 @@ const FlexAlignControl = props => {
 						attributes: props,
 					}) ?? ''
 				}
-				onReset={() =>
-					onChange(
-						handleOnReset({
-							[`align-items-${breakpoint}`]: getDefaultAttribute(
-								`align-items-${breakpoint}`
-							),
-						})
-					)
+				selected={
+					getLastBreakpointAttribute({
+						target: 'align-items',
+						breakpoint,
+						attributes: props,
+					}) || getOptions()[0].value
 				}
-				options={getOptions([
-					'flex-start',
-					'flex-end',
-					'center',
-					'stretch',
-					'baseline',
-				])}
+				onReset={() =>
+					onChange({
+						[`align-items-${breakpoint}`]: getDefaultAttribute(
+							`align-items-${breakpoint}`
+						),
+						isReset: true,
+					})
+				}
 				onChange={val =>
 					onChange({
 						[`align-items-${breakpoint}`]: val,

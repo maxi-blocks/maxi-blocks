@@ -20,7 +20,6 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { videoUrlRegex } from '../../extensions/video';
-import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * External dependencies
@@ -107,6 +106,8 @@ const VideoLayer = props => {
 
 	const [validationText, setValidationText] = useState(null);
 
+	const defaultURL = 'https://www.youtube.com/watch?v=ScMzIvxBSi4';
+
 	return (
 		<div className='maxi-background-control__video'>
 			{(!isHover || (isHover && isLayerHover)) && (
@@ -119,7 +120,7 @@ const VideoLayer = props => {
 							props: videoOptions,
 							prefix,
 						})}
-						placeholder='Youtube, Vimeo, or Direct Link'
+						placeholder={defaultURL}
 						onChange={val => {
 							if (val && !videoUrlRegex.test(val)) {
 								setValidationText(
@@ -134,7 +135,7 @@ const VideoLayer = props => {
 									'background-video-mediaURL',
 									false,
 									prefix
-								)]: val,
+								)]: val !== '' ? val : defaultURL,
 							});
 						}}
 						validationText={validationText}
@@ -159,15 +160,14 @@ const VideoLayer = props => {
 						min={0}
 						max={999}
 						onReset={() =>
-							onChange(
-								handleOnReset({
-									[getAttributeKey(
-										'background-video-startTime',
-										false,
-										prefix
-									)]: '',
-								})
-							)
+							onChange({
+								[getAttributeKey(
+									'background-video-startTime',
+									false,
+									prefix
+								)]: '',
+								isReset: true,
+							})
 						}
 					/>
 					<AdvancedNumberControl
@@ -190,15 +190,14 @@ const VideoLayer = props => {
 						min={0}
 						max={999}
 						onReset={() =>
-							onChange(
-								handleOnReset({
-									[getAttributeKey(
-										'background-video-endTime',
-										false,
-										prefix
-									)]: '',
-								})
-							)
+							onChange({
+								[getAttributeKey(
+									'background-video-endTime',
+									false,
+									prefix
+								)]: '',
+								isReset: true,
+							})
 						}
 					/>
 					<ToggleSwitch

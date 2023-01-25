@@ -20,7 +20,10 @@ import {
 	getClipPathStyles,
 	getImageShapeStyles,
 } from '../../extensions/styles/helpers';
-import { getCanvasSettings } from '../../extensions/relations';
+import {
+	getCanvasSettings,
+	getAdvancedSettings,
+} from '../../extensions/relations';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
 /**
@@ -204,7 +207,7 @@ const transition = {
 		},
 		'clip path': {
 			title: 'Clip path',
-			target: `${imageWrapperClass} img`,
+			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
 			property: 'clip-path',
 			hoverProp: 'clip-path-status-hover',
 		},
@@ -262,6 +265,8 @@ const interactionBuilderSettings = {
 		{
 			label: __('Clip-path', 'maxi-blocks'),
 			attrGroupName: 'clipPath',
+			transitionTarget: transition.block['clip path'].target,
+			hoverProp: 'clip-path-status-hover',
 			component: props => <ClipPathControl {...props} />,
 			helper: props => getClipPathStyles(props),
 			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
@@ -277,7 +282,8 @@ const interactionBuilderSettings = {
 			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
 		},
 	],
-	canvas: getCanvasSettings({ name, customCss }),
+	canvas: getCanvasSettings({ name }),
+	advanced: getAdvancedSettings({ customCss }),
 };
 
 const data = {

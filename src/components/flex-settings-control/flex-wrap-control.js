@@ -6,13 +6,22 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import SelectControl from '../select-control';
+import SettingTabsControl from '../setting-tabs-control';
+import Icon from '../icon';
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-import getOptions from './utils';
-import { handleOnReset } from '../../extensions/attributes';
+
+/**
+ * Icons
+ */
+import {
+	flexWrapNowrap,
+	flexWrap,
+	flexWrapReverse,
+	styleNone,
+} from '../../icons';
 
 /**
  * Component
@@ -21,10 +30,41 @@ import { handleOnReset } from '../../extensions/attributes';
 const FlexWrapControl = props => {
 	const { breakpoint, onChange } = props;
 
+	const getOptions = () => {
+		const options = [];
+
+		options.push({
+			icon: <Icon icon={styleNone} />,
+			value: 'unset',
+		});
+
+		options.push({
+			icon: <Icon icon={flexWrapNowrap} />,
+			value: 'nowrap',
+		});
+
+		options.push({
+			icon: <Icon icon={flexWrap} />,
+			value: 'wrap',
+		});
+
+		options.push({
+			icon: <Icon icon={flexWrapReverse} />,
+			value: 'wrap-reverse',
+		});
+
+		return options;
+	};
+
 	return (
-		<SelectControl
+		<SettingTabsControl
 			label={__('Flex wrap', 'maxi-blocks')}
+			type='buttons'
+			fullWidthMode
+			showTooltip
 			className='maxi-flex-wrap-control'
+			hasBorder
+			items={getOptions()}
 			value={
 				getLastBreakpointAttribute({
 					target: 'flex-wrap',
@@ -32,16 +72,21 @@ const FlexWrapControl = props => {
 					attributes: props,
 				}) ?? ''
 			}
-			onReset={() =>
-				onChange(
-					handleOnReset({
-						[`flex-wrap-${breakpoint}`]: getDefaultAttribute(
-							`flex-wrap-${breakpoint}`
-						),
-					})
-				)
+			selected={
+				getLastBreakpointAttribute({
+					target: 'flex-wrap',
+					breakpoint,
+					attributes: props,
+				}) || getOptions()[0].value
 			}
-			options={getOptions(['nowrap', 'wrap', 'wrap-reverse'])}
+			onReset={() =>
+				onChange({
+					[`flex-wrap-${breakpoint}`]: getDefaultAttribute(
+						`flex-wrap-${breakpoint}`
+					),
+					isReset: true,
+				})
+			}
 			onChange={val =>
 				onChange({
 					[`flex-wrap-${breakpoint}`]: val,

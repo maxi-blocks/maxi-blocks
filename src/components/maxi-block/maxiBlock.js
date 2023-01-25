@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-/* eslint-disable @wordpress/no-unsafe-wp-apis */
 /**
  * WordPress dependencies
  */

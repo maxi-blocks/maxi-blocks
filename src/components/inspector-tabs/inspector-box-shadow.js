@@ -25,6 +25,7 @@ const boxShadow = ({
 	inlineTarget = '',
 	dropShadow,
 	enableActiveState = false,
+	disableInset,
 }) => {
 	const {
 		attributes,
@@ -67,6 +68,7 @@ const boxShadow = ({
 								breakpoint={deviceType}
 								clientId={clientId}
 								dropShadow={dropShadow}
+								disableInset={disableInset}
 							/>
 						),
 					},
@@ -123,6 +125,7 @@ const boxShadow = ({
 										isHover
 										clientId={clientId}
 										dropShadow={dropShadow}
+										disableInset={disableInset}
 									/>
 								)}
 							</>
@@ -160,6 +163,7 @@ const boxShadow = ({
 										breakpoint={deviceType}
 										clientId={clientId}
 										dropShadow={dropShadow}
+										disableInset={disableInset}
 									/>
 								)}
 							</>

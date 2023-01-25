@@ -18,6 +18,7 @@
 		"test:e2e-interactive:debug": "wp-scripts --inspect-brk test-e2e -c ./e2e-tests/jest.config.js --runInBand --no-cache --verbose --puppeteer-interactive"
 	},
 	"dependencies": {
+		"@floating-ui/react-dom": "^1.2.1",
 		"@uiw/react-textarea-code-editor": "^2.0.3",
 		"@wordpress/block-editor": "^9.6.0",
 		"@wordpress/blocks": "^11.13.0",
@@ -36,6 +37,7 @@
 		"bezier-easing-editor": "^0.8.0",
 		"classnames": "^2.3.1",
 		"css-to-react-native": "^3.0.0",
+		"deep-object-diff": "^1.1.9",
 		"dompurify": "^2.3.10",
 		"dotenv": "^16.0.1",
 		"html-react-parser": "^3.0.1",

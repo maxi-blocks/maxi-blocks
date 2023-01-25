@@ -35,7 +35,6 @@ import { isNumber, capitalize } from 'lodash';
  * Icons
  */
 import { styleNone, dashed, dotted, solid, borderWidth } from '../../icons';
-import { handleOnReset } from '../../extensions/attributes';
 
 /**
  * Component
@@ -317,23 +316,22 @@ const BorderControl = props => {
 					className='maxi-border-control__type'
 					value={borderStyleValue || 'none'}
 					onReset={() =>
-						onChange(
-							handleOnReset({
-								[getAttributeKey(
+						onChange({
+							[getAttributeKey(
+								'border-style',
+								isHover,
+								prefix,
+								breakpoint
+							)]: getDefaultAttribute(
+								getAttributeKey(
 									'border-style',
 									isHover,
 									prefix,
 									breakpoint
-								)]: getDefaultAttribute(
-									getAttributeKey(
-										'border-style',
-										isHover,
-										prefix,
-										breakpoint
-									)
-								),
-							})
-						)
+								)
+							),
+							isReset: true,
+						})
 					}
 					options={[
 						{ label: 'None', value: 'none' },

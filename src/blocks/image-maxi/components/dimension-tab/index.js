@@ -9,6 +9,7 @@ import { RangeControl } from '@wordpress/components';
  */
 import {
 	AdvancedNumberControl,
+	AspectRatioControl,
 	ImageCropControl,
 	SelectControl,
 	ToggleSwitch,
@@ -17,7 +18,6 @@ import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
-import { handleOnReset } from '../../../../extensions/attributes';
 
 /**
  * External dependencies
@@ -103,11 +103,10 @@ const DimensionTab = props => {
 								: 'full'
 						} // is still necessary?
 						onReset={() =>
-							maxiSetAttributes(
-								handleOnReset({
-									imageSize: getDefaultAttribute('imageSize'),
-								})
-							)
+							maxiSetAttributes({
+								imageSize: getDefaultAttribute('imageSize'),
+								isReset: true,
+							})
 						}
 						options={getSizeOptions()}
 						onChange={imageSize => {
@@ -183,46 +182,25 @@ const DimensionTab = props => {
 					initialPosition={getDefaultAttribute('imgWidth', clientId)}
 				/>
 			)}
-			<SelectControl
+			<AspectRatioControl
 				className='maxi-image-inspector__ratio'
 				label={__('Image ratio', 'maxi-blocks')}
 				value={imageRatio}
-				onReset={() =>
-					maxiSetAttributes(
-						handleOnReset({
-							imageRatio: getDefaultAttribute('imageRatio'),
-						})
-					)
-				}
-				options={[
+				additionalOptions={[
 					{
 						label: __('Original size', 'maxi-blocks'),
 						value: 'original',
-					},
-					{
-						label: __('1:1 Aspect ratio', 'maxi-blocks'),
-						value: 'ar11',
-					},
-					{
-						label: __('2:3 Aspect ratio', 'maxi-blocks'),
-						value: 'ar23',
-					},
-					{
-						label: __('3:2 Aspect ratio', 'maxi-blocks'),
-						value: 'ar32',
-					},
-					{
-						label: __('4:3 Aspect ratio', 'maxi-blocks'),
-						value: 'ar43',
-					},
-					{
-						label: __('16:9 Aspect ratio', 'maxi-blocks'),
-						value: 'ar169',
 					},
 				]}
 				onChange={imageRatio =>
 					maxiSetAttributes({
 						imageRatio,
+					})
+				}
+				onReset={() =>
+					maxiSetAttributes({
+						imageRatio: getDefaultAttribute('imageRatio'),
+						isReset: true,
 					})
 				}
 			/>
@@ -255,14 +233,13 @@ const DimensionTab = props => {
 									})
 								}
 								onReset={() =>
-									maxiSetAttributes(
-										handleOnReset({
-											[`object-size-${deviceType}`]:
-												getDefaultAttribute(
-													`object-size-${deviceType}`
-												),
-										})
-									)
+									maxiSetAttributes({
+										[`object-size-${deviceType}`]:
+											getDefaultAttribute(
+												`object-size-${deviceType}`
+											),
+										isReset: true,
+									})
 								}
 								min={1}
 								max={5}
@@ -291,14 +268,13 @@ const DimensionTab = props => {
 									})
 								}
 								onReset={() =>
-									maxiSetAttributes(
-										handleOnReset({
-											[`object-position-horizontal-${deviceType}`]:
-												getDefaultAttribute(
-													`object-position-horizontal-${deviceType}`
-												),
-										})
-									)
+									maxiSetAttributes({
+										[`object-position-horizontal-${deviceType}`]:
+											getDefaultAttribute(
+												`object-position-horizontal-${deviceType}`
+											),
+										isReset: true,
+									})
 								}
 								min={0}
 								max={100}
@@ -326,14 +302,13 @@ const DimensionTab = props => {
 									})
 								}
 								onReset={() =>
-									maxiSetAttributes(
-										handleOnReset({
-											[`object-position-vertical-${deviceType}`]:
-												getDefaultAttribute(
-													`object-position-vertical-${deviceType}`
-												),
-										})
-									)
+									maxiSetAttributes({
+										[`object-position-vertical-${deviceType}`]:
+											getDefaultAttribute(
+												`object-position-vertical-${deviceType}`
+											),
+										isReset: true,
+									})
 								}
 								min={0}
 								max={100}

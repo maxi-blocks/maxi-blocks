@@ -67,6 +67,13 @@ class edit extends MaxiBlockComponent {
 		return getStyles(attributes, scValues);
 	}
 
+	maxiBlockDidUpdate() {
+		// Ensures white-space is applied from Maxi and not with inline styles
+		Array.from(this.blockRef.current.children[0].children).forEach(el => {
+			if (el.style.whiteSpace) el.style.whiteSpace = null;
+		});
+	}
+
 	render() {
 		const { attributes, maxiSetAttributes } = this.props;
 		const { uniqueID } = attributes;

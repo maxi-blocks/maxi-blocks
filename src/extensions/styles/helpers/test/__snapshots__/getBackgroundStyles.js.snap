@@ -2146,15 +2146,7 @@ Object {
   "maxi-test:hover > .maxi-background-displayer": Object {
     "border": Object {
       "general": Object {
-        "border-bottom-style": "solid",
-        "border-bottom-width": "2px",
         "border-color": "rgba(var(--maxi-light-color-6,201,52,10),0)",
-        "border-left-style": "solid",
-        "border-left-width": "2px",
-        "border-right-style": "solid",
-        "border-right-width": "2px",
-        "border-top-style": "solid",
-        "border-top-width": "2px",
       },
       "l": Object {},
       "m": Object {},
@@ -2390,14 +2382,8 @@ Object {
   "maxi-test:hover > .maxi-background-displayer": Object {
     "border": Object {
       "general": Object {
-        "border-bottom-style": "solid",
-        "border-bottom-width": "2px",
         "border-color": "rgba(var(--maxi-light-color-6,201,52,10),0)",
-        "border-left-style": "solid",
-        "border-left-width": "2px",
-        "border-right-style": "solid",
-        "border-right-width": "2px",
-        "border-top-style": "solid",
+        "border-top-style": undefined,
         "border-top-width": "3px",
       },
       "l": Object {},
@@ -2409,9 +2395,6 @@ Object {
     },
     "size": Object {
       "general": Object {
-        "top": "-3px",
-      },
-      "xl": Object {
         "top": "-3px",
       },
     },

@@ -1477,19 +1477,10 @@ describe('getBackgroundStyles', () => {
 			'border-unit-width-general': 'px',
 			'border-sync-radius-general': 'all',
 			'border-unit-radius-general': 'px',
+			'border-status-hover': true,
 			'border-palette-status-general-hover': true,
 			'border-palette-color-general-hover': 6,
 			'border-palette-opacity-general-hover': 0,
-			'border-style-general-hover': 'solid',
-			'border-status-hover': true,
-			'border-top-width-general-hover': 2,
-			'border-right-width-general-hover': 2,
-			'border-bottom-width-general-hover': 2,
-			'border-left-width-general-hover': 2,
-			'border-sync-width-general-hover': 'all',
-			'border-unit-width-general-hover': 'px',
-			'border-sync-radius-general-hover': 'all',
-			'border-unit-radius-general-hover': 'px',
 		};
 
 		const result = getBlockBackgroundNormalAndHoverStyles(attributes);
@@ -1541,19 +1532,11 @@ describe('getBackgroundStyles', () => {
 			'border-unit-width-general': 'px',
 			'border-sync-radius-general': 'all',
 			'border-unit-radius-general': 'px',
+			'border-status-hover': true,
 			'border-palette-status-general-hover': true,
 			'border-palette-color-general-hover': 6,
 			'border-palette-opacity-general-hover': 0,
-			'border-style-general-hover': 'solid',
-			'border-status-hover': true,
 			'border-top-width-general-hover': 3,
-			'border-right-width-general-hover': 2,
-			'border-bottom-width-general-hover': 2,
-			'border-left-width-general-hover': 2,
-			'border-sync-width-general-hover': 'all',
-			'border-unit-width-general-hover': 'px',
-			'border-sync-radius-general-hover': 'all',
-			'border-unit-radius-general-hover': 'px',
 		};
 
 		const result = getBlockBackgroundNormalAndHoverStyles(attributes);

@@ -23,6 +23,7 @@ import {
 	getSizeStyles,
 } from '../styles/helpers';
 import { getGroupAttributes, getLastBreakpointAttribute } from '../styles';
+import { getEditorWrapper } from '../dom';
 
 /**
  * External dependencies
@@ -73,6 +74,22 @@ const getCanvasSettings = ({ name }) => [
 							...rest,
 							'background-layers': newBgLayers,
 						});
+					}}
+					getBounds={() =>
+						getEditorWrapper()
+							.querySelector(`.${props.attributes.uniqueID}`)
+							.getBoundingClientRect()
+					}
+					getBlockClipPath={layerID => {
+						const layerAttributes = Object.values(
+							props.blockAttributes['background-layers']
+						).find(({ id }) => id === layerID);
+						return getGroupAttributes(
+							layerAttributes,
+							'clipPath',
+							false,
+							`background-${layerAttributes.type}-`
+						);
 					}}
 					isIB
 					disableAddLayer

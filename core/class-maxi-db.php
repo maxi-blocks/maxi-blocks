@@ -102,7 +102,7 @@ if (!class_exists('MaxiBlocks_DB')):
             ) {
                 $sql = "CREATE TABLE $db_css_templates_table_name (
 						id bigint(20) NOT NULL AUTO_INCREMENT,
-						template_id longtext UNIQUE NOT NULL,
+						template_id varchar(255) UNIQUE NOT NULL,
 						prev_css_value longtext,
 						css_value longtext,
                         prev_fonts_value longtext,
@@ -141,7 +141,7 @@ if (!class_exists('MaxiBlocks_DB')):
             ) {
                 $sql = "CREATE TABLE $db_custom_data_templates_table_name (
 						id bigint(20) NOT NULL AUTO_INCREMENT,
-						template_id longtext UNIQUE NOT NULL,
+						template_id varchar(255) UNIQUE NOT NULL,
 						prev_custom_data_value longtext,
 						custom_data_value longtext,
 						UNIQUE (id)

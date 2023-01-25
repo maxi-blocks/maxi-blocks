@@ -460,7 +460,10 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 							<MediaUpload
 								onSelect={media => {
 									fetch(media.url)
+										// Need to parse the response 2 times,
+										// because it was stringified twice in the export function
 										.then(response => response.json())
+										.then(response => JSON.parse(response))
 										.then(jsonData => {
 											saveImportedStyleCard(jsonData);
 										})

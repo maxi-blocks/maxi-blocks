@@ -97,9 +97,11 @@ const getLastBreakpointAttributeSingle = (
 		breakpointPosition > 0 &&
 		!isNumber(currentAttr) &&
 		!isBoolean(currentAttr) &&
-		(isEmpty(currentAttr) || isNil(currentAttr))
+		(isEmpty(currentAttr) || isNil(currentAttr)) &&
+		!(isHover && breakpoint === 'xxl' && !avoidXXL)
 	) {
 		breakpointPosition -= 1;
+
 		if (!(avoidXXL && breakpoints[breakpointPosition] === 'xxl'))
 			currentAttr = getValueFromKeys(
 				attr[

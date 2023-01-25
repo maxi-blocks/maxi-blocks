@@ -55,7 +55,7 @@ const HoverPreview = props => {
 	}`;
 
 	const mouseHoverHandle = ({ target }) => {
-		const targetWrapper = target.closest('.maxi-hover-preview');
+		const targetWrapper = target.closest('.maxi-hover-preview img');
 		if (
 			hoverType === 'text' ||
 			transitionDurationEffects.includes(hoverBasicEffectType)
@@ -88,7 +88,7 @@ const HoverPreview = props => {
 	};
 
 	const mouseOutHandle = ({ target }) => {
-		const targetWrapper = target.closest('.maxi-hover-preview');
+		const targetWrapper = target.closest('.maxi-hover-preview img');
 		if (hoverType === 'basic') {
 			if (hoverBasicEffectType === 'zoom-in')
 				targetWrapper.style.transform = 'scale(1)';

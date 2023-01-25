@@ -16,11 +16,11 @@ class Relation {
 		this.targetEl = document.querySelector(this.fullTarget);
 		this.dataTarget = `#${item.uniqueID}[data-maxi-relations="true"]`;
 
+		if (!this.triggerEl || !this.targetEl) return;
+
 		this.defaultTransition = window
 			.getComputedStyle(this.targetEl)
 			.getPropertyValue('transition');
-
-		if (!this.triggerEl || !this.targetEl) return;
 
 		this.breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 		this.hasMultipleTargetsArray = this.css.map(item =>
@@ -945,7 +945,7 @@ class Relation {
 	}
 }
 
-window.addEventListener('load', () => {
+window.addEventListener('DOMContentLoaded', () => {
 	// eslint-disable-next-line no-undef
 	const relations = maxiRelations?.[0];
 	if (!relations) return;

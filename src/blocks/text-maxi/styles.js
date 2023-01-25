@@ -544,10 +544,13 @@ const getStyles = props => {
 						getTypographyHoverObject(props),
 				}),
 				...(isList && {
-					[` ${element}.maxi-text-block__content`]: getListObject({
-						...props,
-						isRTL,
-					}),
+					[` ${element}.maxi-text-block__content`]: {
+						...getListObject({
+							...props,
+							isRTL,
+						}),
+						...getTypographyObject(props),
+					},
 					[` ${element}.maxi-text-block__content li`]: {
 						...getTypographyObject(props),
 						...getListItemObject(props),

@@ -31,6 +31,7 @@ const blockBackground = ({
 		maxiSetAttributes,
 		insertInlineStyles,
 		cleanInlineStyles,
+		getBounds,
 	} = props;
 
 	const bgHoverStatus = attributes['block-background-status-hover'];
@@ -63,6 +64,7 @@ const blockBackground = ({
 								disableGradient={disableGradient}
 								disableColor={disableColor}
 								disableSVG={disableSVG}
+								getBounds={getBounds}
 							/>
 						),
 						extraIndicators: ['background-layers'],
@@ -97,6 +99,7 @@ const blockBackground = ({
 										isHover
 										clientId={clientId}
 										breakpoint={deviceType}
+										getBounds={getBounds}
 									/>
 								)}
 							</>

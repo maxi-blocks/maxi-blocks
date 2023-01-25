@@ -164,6 +164,14 @@ function popupEvents(video, popupContent, embedUrl, pauseVideo = null) {
 		}
 	};
 
+	document.addEventListener('keydown', e => {
+		if (popupContent.style.display === 'flex') {
+			if (e.key === 'Escape') {
+				closeVideo(e);
+			}
+		}
+	});
+
 	overlay.addEventListener('click', openVideo);
 	popupContent.addEventListener('click', closeVideo);
 }

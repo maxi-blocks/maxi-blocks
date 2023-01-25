@@ -655,12 +655,14 @@ class MaxiBlockComponent extends Component {
 			this.props.attributes.uniqueID
 		);
 		const siteEditorIframe = getSiteEditorIframe();
+		const iframe = document.querySelector(
+			'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)'
+		);
 
-		// TODO: after #4229 will be merged, replace this `getEditorWrapper` with `/dom/getEditorWrapper` and modify it to support FSE
-		const getEditorWrapper = () =>
-			templateViewIframe || siteEditorIframe || document;
+		const getEditorElement = () =>
+			templateViewIframe || siteEditorIframe || iframe || document;
 
-		getEditorWrapper()
+		getEditorElement()
 			.getElementById(getStylesWrapperId(this.props.attributes.uniqueID))
 			?.remove();
 	}

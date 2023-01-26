@@ -40,12 +40,15 @@ const ImageLayerSettings = props => {
 		onChange,
 		disableClipPath,
 		isHover = false,
+		isIB = false,
 		prefix = '',
 		breakpoint,
 		getDefaultAttr,
 		moreSettings,
 		setMoreSettings,
 		isLayer,
+		getBounds,
+		getBlockClipPath, // for IB
 	} = props;
 
 	const imageOptions = cloneDeep(props.imageOptions);
@@ -599,8 +602,11 @@ const ImageLayerSettings = props => {
 					)}
 					{...imageOptions}
 					isHover={isHover}
+					isIB={isIB}
 					prefix='background-image-'
 					breakpoint={breakpoint}
+					getBounds={getBounds}
+					getBlockClipPath={getBlockClipPath}
 					isLayer
 					disableRTC
 				/>

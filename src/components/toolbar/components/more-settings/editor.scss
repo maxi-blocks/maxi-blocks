@@ -19,7 +19,9 @@
 	.components-popover__content {
 		width: 190px;
 		margin-left: 0 !important;
+		margin-top: 15px;
 		transform: translate(3px, -13px);
+		background-color: white;
 		font-family: 'Roboto', sans-serif !important;
 
 		.maxi-reusableblocks__blocks-selector,
@@ -56,6 +58,7 @@
 			position: relative;
 			transition: 0.3s;
 			height: 30px !important;
+			padding: 6px 12px !important;
 			span {
 				float: right;
 			}

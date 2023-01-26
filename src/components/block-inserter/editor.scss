@@ -210,11 +210,4 @@
 			color: #fff;
 		}
 	}
-
-	&--old[data-x-axis='center'] {
-		.components-popover__content {
-			transform: translate(-50%, -50%);
-			overflow: hidden;
-		}
-	}
 }

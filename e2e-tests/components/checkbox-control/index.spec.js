@@ -19,7 +19,7 @@ describe('CheckBoxControl', () => {
 
 		// use checkbox
 		await accordionPanel.$eval(
-			'.maxi-responsive-tabs-control .maxi-full-width-toggle .maxi-toggle-switch__toggle input',
+			'.maxi-full-size-control .maxi-full-width-toggle .maxi-toggle-switch__toggle input',
 			checkBox => checkBox.click()
 		);
 

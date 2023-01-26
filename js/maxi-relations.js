@@ -46,7 +46,7 @@ class Relation {
 		this.transitionTriggers = Array.from(
 			new Set(
 				this.effects.map(
-					item => item.transitionTrigger && !item.disableTransition
+					item => !item.disableTransition && item.transitionTrigger
 				)
 			)
 		).filter(Boolean);

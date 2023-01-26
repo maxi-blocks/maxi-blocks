@@ -6,17 +6,11 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ClipPath from '../clip-path-control';
+import ClipPathControl from '../clip-path-control';
 import GradientControl from '../gradient-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import SizeAndPositionLayerControl from './sizeAndPositionLayerControl';
-import {
-	getDefaultAttribute,
-	getAttributeKey,
-	getLastBreakpointAttribute,
-	getGroupAttributes,
-} from '../../extensions/styles';
-import { getDefaultLayerAttr } from './utils';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -31,73 +25,44 @@ const GradientLayerContent = props => {
 		onChange,
 		disableClipPath,
 		isHover = false,
+		isIB = false,
 		prefix = '',
 		breakpoint,
 		isLayer = false,
+		getBounds,
+		getBlockClipPath, // for IB
 	} = props;
 
 	const gradientOptions = cloneDeep(props.gradientOptions);
 
-	const getDefaultAttr = target => {
-		if (isLayer)
-			return getDefaultLayerAttr('colorOptions', `${prefix}${target}`);
-
-		return getDefaultAttribute(
-			getAttributeKey(target, isHover, prefix, breakpoint)
-		);
-	};
-
 	return (
 		<>
 			<GradientControl
+				{...gradientOptions}
 				label={__('Background gradient', 'maxi-blocks')}
-				gradient={getLastBreakpointAttribute({
-					target: `${prefix}background-gradient`,
-					breakpoint,
-					attributes: gradientOptions,
-					isHover,
-				})}
-				gradientOpacity={getLastBreakpointAttribute({
-					target: `${prefix}background-gradient-opacity`,
-					breakpoint,
-					attributes: gradientOptions,
-					isHover,
-				})}
-				defaultGradient={getDefaultAttr('background-gradient')}
-				onChange={val =>
-					onChange({
-						[getAttributeKey(
-							'background-gradient',
-							isHover,
-							prefix,
-							breakpoint
-						)]: val,
-					})
-				}
-				onChangeOpacity={val =>
-					onChange({
-						[getAttributeKey(
-							'background-gradient-opacity',
-							isHover,
-							prefix,
-							breakpoint
-						)]: val,
-					})
-				}
+				breakpoint={breakpoint}
+				prefix={`${prefix}background-`}
+				isHover={isHover}
+				onChange={onChange}
 			/>
 			{!disableClipPath && (
-				<ClipPath
+				<ClipPathControl
 					onChange={onChange}
 					{...getGroupAttributes(
 						props,
 						'clipPath',
 						false,
-						'background-gradient-'
+						`${prefix}background-gradient-`
 					)}
 					{...gradientOptions}
 					isHover={isHover}
-					prefix='background-gradient-'
+					isIB={isIB}
+					prefix={`${prefix}background-gradient-`}
 					breakpoint={breakpoint}
+					isLayer
+					disableRTC
+					getBounds={getBounds}
+					getBlockClipPath={getBlockClipPath}
 				/>
 			)}
 			<SizeAndPositionLayerControl

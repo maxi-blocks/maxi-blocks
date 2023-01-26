@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import ColorControl from '../color-control';
-import ClipPath from '../clip-path-control';
+import ClipPathControl from '../clip-path-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import SizeAndPositionLayerControl from './sizeAndPositionLayerControl';
 import {
@@ -36,12 +36,15 @@ const ColorLayerContent = props => {
 		onChangeInline,
 		disableClipPath,
 		isHover = false,
+		isIB = false,
 		prefix = '',
 		clientId,
 		breakpoint,
 		isLayer = false,
 		globalProps,
 		isToolbar = false,
+		getBounds,
+		getBlockClipPath, // for IB
 	} = props;
 
 	const colorOptions = cloneDeep(props.colorOptions);
@@ -206,7 +209,7 @@ const ColorLayerContent = props => {
 				isToolbar={isToolbar}
 			/>
 			{!disableClipPath && (
-				<ClipPath
+				<ClipPathControl
 					onChange={onChange}
 					{...getGroupAttributes(
 						props,
@@ -216,8 +219,13 @@ const ColorLayerContent = props => {
 					)}
 					{...colorOptions}
 					isHover={isHover}
+					isIB={isIB}
 					prefix={`${prefix}background-color-`}
 					breakpoint={breakpoint}
+					isLayer
+					disableRTC
+					getBounds={getBounds}
+					getBlockClipPath={getBlockClipPath}
 				/>
 			)}
 			<SizeAndPositionLayerControl

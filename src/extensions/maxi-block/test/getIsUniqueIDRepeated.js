@@ -1,3 +1,11 @@
+/**
+ * WordPress dependencies
+ */
+import { select } from '@wordpress/data';
+
+/**
+ * Internal dependencies
+ */
 import getIsUniqueIDRepeated from '../getIsUniqueIDRepeated';
 
 jest.mock('@wordpress/data', () => {
@@ -253,5 +261,47 @@ describe('getIsUniqueIDRepeated', () => {
 
 	it('Should be repeated only 4 times, nested blocks on different levels', () => {
 		expect(getIsUniqueIDRepeated('column-maxi-1', 4)).toBe(false);
+	});
+
+	it('Should be repeated, when uniqueID is the same for two inner blocks with different root and parent', () => {
+		select.mockImplementation(() => ({
+			getBlocks: jest.fn(() => [
+				{
+					clientId: '36d5807b-981b-4d80-88ea-21fef846647d',
+					name: 'maxi-blocks/group-maxi',
+					attributes: {
+						uniqueID: 'group-maxi-1',
+					},
+					innerBlocks: [
+						{
+							clientId: 'a8db982d-4460-4092-8c34-3e7d8ff1623f',
+							name: 'maxi-blocks/text-maxi',
+							attributes: {
+								uniqueID: 'text-maxi-1',
+							},
+							innerBlocks: [],
+						},
+					],
+				},
+				{
+					clientId: '437157e6-2af5-4e6e-8b2c-f2274fff85eb',
+					name: 'maxi-blocks/group-maxi',
+					attributes: {
+						uniqueID: 'group-maxi-2',
+					},
+					innerBlocks: [
+						{
+							clientId: '687687a4-0636-4b9a-a70c-979ef4dbad60',
+							name: 'maxi-blocks/text-maxi',
+							attributes: {
+								uniqueID: 'text-maxi-1',
+							},
+							innerBlocks: [],
+						},
+					],
+				},
+			]),
+		}));
+		expect(getIsUniqueIDRepeated('text-maxi-1')).toBe(true);
 	});
 });

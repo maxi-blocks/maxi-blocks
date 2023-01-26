@@ -66,6 +66,7 @@ const ImageShapeResponsiveSettings = ({
 					onChange({
 						[targetWithBreakpoint]:
 							getDefaultAttribute(targetWithBreakpoint),
+						isReset: true,
 					}),
 			}),
 		};

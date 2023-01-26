@@ -15,7 +15,7 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import { getIconPositionClass } from '../../extensions/styles';
 import getStyles from './styles';
 import IconToolbar from '../../components/toolbar/iconToolbar';
-import { copyPasteMapping } from './data';
+import { copyPasteMapping, maxiAttributes } from './data';
 
 /**
  * External dependencies
@@ -55,11 +55,23 @@ class edit extends MaxiBlockComponent {
 
 	typingTimeout = 0;
 
+	// eslint-disable-next-line class-methods-use-this
+	getMaxiAttributes() {
+		return maxiAttributes;
+	}
+
 	get getStylesObject() {
 		const { attributes } = this.props;
 		const { scValues } = this.state;
 
 		return getStyles(attributes, scValues);
+	}
+
+	maxiBlockDidUpdate() {
+		// Ensures white-space is applied from Maxi and not with inline styles
+		Array.from(this.blockRef.current.children[0].children).forEach(el => {
+			if (el.style.whiteSpace) el.style.whiteSpace = null;
+		});
 	}
 
 	render() {

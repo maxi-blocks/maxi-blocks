@@ -6,9 +6,11 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import SelectControl from '../select-control';
 import AxisControl from '../axis-control';
+import SelectControl from '../select-control';
+import withRTC from '../../extensions/maxi-block/withRTC';
 import {
+	getAttributeKey,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
@@ -30,6 +32,7 @@ const PositionControl = props => {
 		breakpoint = 'general',
 		prefix = '',
 		isHover = false,
+		defaultAttributes,
 	} = props;
 
 	const classes = classnames('maxi-position-control', className);
@@ -98,6 +101,7 @@ const PositionControl = props => {
 			enableAxisUnits
 			allowedUnits={['px', 'em', 'vw', '%', '-']}
 			isHover={isHover}
+			defaultAttributes={defaultAttributes}
 		/>
 	);
 
@@ -122,6 +126,24 @@ const PositionControl = props => {
 								attributes: props,
 							}) || ''
 						}
+						onReset={() =>
+							onChange({
+								[getAttributeKey(
+									'position',
+									isHover,
+									prefix,
+									breakpoint
+								)]: getDefaultAttribute(
+									getAttributeKey(
+										'position',
+										isHover,
+										prefix,
+										breakpoint
+									)
+								),
+								isReset: true,
+							})
+						}
 						onChange={val =>
 							onChange({
 								[`${prefix}position-${breakpoint}`]: val,
@@ -142,4 +164,4 @@ const PositionControl = props => {
 	);
 };
 
-export default PositionControl;
+export default withRTC(PositionControl);

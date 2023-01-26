@@ -4,6 +4,7 @@
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 import SettingTabsControl from '../setting-tabs-control';
 import Icon from '../icon';
+import withRTC from '../../extensions/maxi-block/withRTC';
 
 /**
  * External dependencies
@@ -38,6 +39,7 @@ const AlignmentControl = props => {
 		disableCenter = false,
 		disableRight = false,
 		disableJustify = false,
+		showLabel = false,
 		breakpoint = 'general',
 		type = '',
 		isHover = false,
@@ -90,27 +92,38 @@ const AlignmentControl = props => {
 
 	const target = `${prefix}${type === 'text' ? 'text-' : ''}alignment`;
 	return (
-		<SettingTabsControl
-			type='buttons'
-			fullWidthMode
-			className={classes}
-			hasBorder
-			items={getOptions()}
-			selected={
-				getLastBreakpointAttribute({
-					target,
-					breakpoint,
-					attributes: props,
-					isHover,
-				}) || getOptions()[0].value
-			}
-			onChange={val =>
-				onChange({
-					[`${target}-${breakpoint}${isHover ? '-hover' : ''}`]: val,
-				})
-			}
-		/>
+		<>
+			{showLabel && (
+				<label
+					className='maxi-base-control__label'
+					htmlFor={`${label}-alignment`}
+				>
+					{`${label} alignment`}
+				</label>
+			)}
+			<SettingTabsControl
+				type='buttons'
+				fullWidthMode
+				className={classes}
+				hasBorder
+				items={getOptions()}
+				selected={
+					getLastBreakpointAttribute({
+						target,
+						breakpoint,
+						attributes: props,
+						isHover,
+					}) || getOptions()[0].value
+				}
+				onChange={val =>
+					onChange({
+						[`${target}-${breakpoint}${isHover ? '-hover' : ''}`]:
+							val,
+					})
+				}
+			/>
+		</>
 	);
 };
 
-export default AlignmentControl;
+export default withRTC(AlignmentControl);

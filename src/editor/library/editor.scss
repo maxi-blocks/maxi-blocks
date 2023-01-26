@@ -72,16 +72,6 @@
 			margin-right: 5px;
 			height: 66px;
 
-			&__icon {
-				svg {
-					stroke-width: 1;
-					stroke: #000;
-					* {
-						stroke-width: 1;
-						stroke: #000;
-					}
-				}
-			}
 			&__shape {
 				svg {
 					max-height: 100%;
@@ -295,10 +285,7 @@
 		.ais-ClearRefinements-button {
 			color: #081219;
 			background-color: #eaf3f7;
-			font-size: 14px;
-			font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif !important;
 			font-weight: 400;
-			border: none;
 			border-radius: 0;
 			padding: 7px;
 			margin: 8px 8px 0;
@@ -339,7 +326,6 @@
 			&__title {
 				position: relative;
 				background: #fff;
-				font-size: 12px;
 				font-weight: 400;
 				border-bottom: 1px solid #dbdde6;
 				border-radius: 0;
@@ -881,7 +867,6 @@
 						}
 					}
 					a {
-						color: #151617;
 						font-family: 'Roboto', Helvetica, Arial, Lucida,
 							sans-serif !important;
 						font-weight: 400;
@@ -1082,7 +1067,6 @@
 					}
 
 					.maxi-cloud-masonry-card__image {
-						background: #f0f2f4;
 						border: none;
 						padding: 0;
 						background: #fff;
@@ -1187,7 +1171,7 @@
 		margin-top: 1rem;
 
 		.ais-InfiniteHits-item {
-			margin: 0 0 1rem 0;
+			margin: 0 0 1rem;
 			background-color: #fff;
 			position: relative;
 
@@ -1457,8 +1441,6 @@
 		.maxi-cloud-container {
 			&__content-svg-shape {
 				&__search-bar {
-					display: flex;
-					align-items: center;
 					display: flex;
 					align-items: flex-start;
 					position: static;

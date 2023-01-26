@@ -139,9 +139,15 @@ const flatSameAsPrev = (
 							) {
 								result[key] = undefined;
 							}
-						} else if (breakpoint !== 'general')
-							result[key] = defaultAttribute;
-						else if (!isNil(attribute)) breakpointLock = true;
+						} else if (breakpoint !== 'general') {
+							const currentDefaultAttribute =
+								defaultAttributes?.[key] ??
+								getDefaultAttribute(key, clientId, true);
+
+							if (!isEqual(value, currentDefaultAttribute))
+								result[key] = defaultAttribute;
+							else result[key] = currentDefaultAttribute;
+						} else if (!isNil(attribute)) breakpointLock = true;
 					} else if (!isNil(attribute)) breakpointLock = true;
 				}
 			});
@@ -305,7 +311,12 @@ const flatNewAttributes = (
  * Removes new saved responsive attributes on base breakpoint that have the same value
  * than the saved general ones.
  */
-const removeSameAsGeneral = (newAttributes, attributes) => {
+const removeSameAsGeneral = (
+	newAttributes,
+	attributes,
+	clientId,
+	defaultAttributes
+) => {
 	const result = {};
 
 	Object.entries(newAttributes).forEach(([key, value]) => {
@@ -332,16 +343,25 @@ const removeSameAsGeneral = (newAttributes, attributes) => {
 		const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 		const baseLabel = key.replace(`-${breakpoint}`, `-${baseBreakpoint}`);
 		const baseAttr = attributes?.[baseLabel];
+		const defaultBaseAttribute =
+			defaultAttributes?.[baseLabel] ??
+			getDefaultAttribute(baseLabel, clientId, true);
 
 		if (breakpoint !== 'general') {
-			if (key !== baseLabel) result[key] = value;
+			if (key !== baseLabel || !isNil(defaultBaseAttribute))
+				result[key] = value;
 			else result[baseLabel] = undefined;
 
 			return;
 		}
 
-		if (!isNil(baseAttr)) result[baseLabel] = undefined;
-		if (baseLabel in newAttributes) result[baseLabel] = undefined;
+		if (
+			isNil(defaultBaseAttribute) ||
+			isEqual(defaultBaseAttribute, newAttributes[baseLabel])
+		) {
+			if (!isNil(baseAttr)) result[baseLabel] = undefined;
+			if (baseLabel in newAttributes) result[baseLabel] = undefined;
+		}
 
 		result[key] = value;
 	});
@@ -500,7 +520,7 @@ const cleanAttributes = ({
 
 	result = {
 		...result,
-		...removeSameAsGeneral(result, attributes),
+		...removeSameAsGeneral(result, attributes, clientId, defaultAttributes),
 	};
 	result = {
 		...result,
@@ -524,8 +544,6 @@ const cleanAttributes = ({
 	};
 
 	dispatch('maxiBlocks/styles').savePrevSavedAttrs(result);
-
-	// console.log(result);
 
 	return result;
 };

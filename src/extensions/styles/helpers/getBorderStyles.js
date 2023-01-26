@@ -24,11 +24,13 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 const getBorderStyles = ({
 	obj,
 	isHover = false,
+	isIB = false,
 	prefix = '',
 	blockStyle,
 	isButton = false,
 	scValues = {},
 	borderColorProperty = 'border-color',
+	uniqueID,
 }) => {
 	const response = {};
 
@@ -53,6 +55,7 @@ const getBorderStyles = ({
 		'left',
 	];
 
+	let omitBorderStyle = !isIB && !hoverStatus && !globalHoverStatus;
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
@@ -63,6 +66,7 @@ const getBorderStyles = ({
 			isHover,
 		});
 		const isBorderNone = isUndefined(borderStyle) || borderStyle === 'none';
+		omitBorderStyle = omitBorderStyle ? isBorderNone : false;
 
 		const getColorString = () => {
 			const { paletteStatus, paletteColor, paletteOpacity, color } =
@@ -127,9 +131,11 @@ const getBorderStyles = ({
 					}) || 'px';
 
 				if (key.includes('style')) {
-					if (isHover && isBorderNone) {
-						response[breakpoint].border = 'none';
-					} else response[breakpoint]['border-style'] = borderStyle;
+					if (!omitBorderStyle)
+						if ((isHover || isIB) && isBorderNone) {
+							response[breakpoint].border = 'none';
+						} else
+							response[breakpoint]['border-style'] = borderStyle;
 				} else if (!keyWords.some(key => newKey.includes(key))) {
 					if (
 						(key.includes('color') || key.includes('opacity')) &&
@@ -154,9 +160,15 @@ const getBorderStyles = ({
 					].includes(newLabel)
 				) {
 					if (isBorderNone) return;
+					if (Number.isFinite(value)) {
+						response[breakpoint][newLabel] = `${value}${unit}`;
+					} else {
+						response[breakpoint][newLabel] = `0${unit}`;
+					}
+				} else if (Number.isFinite(value)) {
 					response[breakpoint][newLabel] = `${value}${unit}`;
 				} else {
-					response[breakpoint][newLabel] = `${value}${unit}`;
+					response[breakpoint][newLabel] = `0${unit}`;
 				}
 			}
 		});

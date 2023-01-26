@@ -114,6 +114,7 @@ const hoverStylesCleaner = (normalObj, hoverObj) => {
 								// If higher breakpoint has hover value that is
 								// different from this breakpoint hover value then keep it
 								if (
+									prevBreakpoint &&
 									hoverObj[key]?.[prevBreakpoint]?.[
 										attrKey
 									] !== hoverObj[key][breakpoint][attrKey]

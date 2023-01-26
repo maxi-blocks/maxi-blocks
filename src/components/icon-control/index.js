@@ -409,7 +409,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 							`${prefix}icon-fill-color${isHover ? '-hover' : ''}`
 						]
 					}
-					prefix={`${prefix}icon-fill`}
+					prefix={`${prefix}icon-fill-`}
 					paletteColor={
 						props[
 							`${prefix}icon-fill-palette-color${

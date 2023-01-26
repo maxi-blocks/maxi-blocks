@@ -22,7 +22,11 @@ const getAttributeValue = ({
 		!isNil(value)
 	)
 		return value;
-	if (isHover && isNil(value))
+	if (
+		(isNil(breakpoint) || breakpoint === 'general') &&
+		isHover &&
+		isNil(value)
+	)
 		return getAttributeValue({
 			target,
 			props,

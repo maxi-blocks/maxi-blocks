@@ -34,14 +34,8 @@ import './editor.scss';
  * Duplicate
  */
 const MoreSettings = props => {
-	const {
-		clientId,
-		blockName,
-		onChange,
-		prefix,
-		copyPasteMapping,
-		tooltipsHide,
-	} = props;
+	const { clientId, blockName, onChange, copyPasteMapping, tooltipsHide } =
+		props;
 
 	const { breakpoint } = useSelect(select => {
 		const { receiveMaxiDeviceType } = select('maxiBlocks');

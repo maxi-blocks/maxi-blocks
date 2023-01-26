@@ -1,21 +1,19 @@
 /**
  * WordPress dependencies
  */
-import { useSelect } from '@wordpress/data';
-import { Popover } from '@wordpress/components';
 import { forwardRef, useRef } from '@wordpress/element';
-import { getScrollContainer } from '@wordpress/dom';
 
 /**
  * Internal dependencies
  */
+import Popover from '../popover';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isEqual, isNaN, toNumber } from 'lodash';
+import { isEqual, isNaN, toNumber } from 'lodash';
 
 /**
  * Styles
@@ -31,6 +29,7 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 		isEmptyContent = false,
 		prefix = '',
 		className,
+		clientId,
 	} = props;
 	const { uniqueID } = attributes;
 
@@ -44,16 +43,6 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 			attributes,
 		})
 	);
-
-	const { version } = useSelect(select => {
-		const { receiveMaxiSettings } = select('maxiBlocks');
-		const maxiSettings = receiveMaxiSettings();
-		return {
-			version: !isEmpty(maxiSettings.editor)
-				? maxiSettings.editor.version
-				: null,
-		};
-	}, []);
 
 	const shouldDisplayComponent = () => !(!isSelected || !ref.current);
 
@@ -111,62 +100,23 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 	const classes = classnames(
 		'maxi-popover-button',
 		isOpen && 'maxi-popover-button--open',
-		version <= 13.0 && 'maxi-popover-button--old',
 		shouldHideComponent() && 'maxi-popover-button--hidden',
 		className
 	);
 
-	const boundaryElement =
-		document.defaultView.frameElement ||
-		getScrollContainer(ref.current) ||
-		document.body;
-
-	const popoverPropsByVersion = {
-		...((parseFloat(version) <= 13.0 && {
-			shouldAnchorIncludePadding: true,
-			__unstableStickyBoundaryElement: boundaryElement,
-			getAnchorRect: () => {
-				// Return default anchor rect if no ref is available.
-				if (!ref.current) return DOMRect.fromRect();
-
-				const { x, y, width, height } =
-					ref.current.getBoundingClientRect();
-
-				const { width: popoverWidth, height: popoverHeight } =
-					popoverRef.current
-						.querySelector('.components-popover__content')
-						.getBoundingClientRect();
-
-				const newRect = DOMRect.fromRect({
-					x: x + width / 2 - popoverWidth / 2,
-					y: y + popoverHeight,
-					width,
-					height,
-				});
-
-				return newRect;
-			},
-			position: 'top right',
-		}) ||
-			(!isNaN(parseFloat(version)) && {
-				anchor: ref.current,
-				placement: 'top-end',
-				flip: false,
-				resize: false,
-				variant: 'unstyled',
-			})),
-	};
-
 	return (
 		<Popover
 			ref={popoverRef}
+			anchor={ref.current}
 			className={classes}
 			noArrow
 			animate={false}
 			focusOnMount={false}
 			__unstableSlotName='block-toolbar'
+			__unstableObserveElement={ref.current}
+			observeBlockPosition={clientId}
 			uniqueid={uniqueID}
-			{...popoverPropsByVersion}
+			placement='top-end'
 		>
 			{props.children}
 		</Popover>

@@ -19,13 +19,15 @@ import {
  */
 import { isEmpty } from 'lodash';
 
-const clipPath = ({ props, prefix = '' }) => {
-	const { attributes, deviceType, maxiSetAttributes } = props;
+const clipPath = ({ props, selector, prefix = '' }) => {
+	const { attributes, deviceType, maxiSetAttributes, getBounds } = props;
 	const clipPathControlProps = {
-		onChange: maxiSetAttributes,
 		prefix,
 		breakpoint: deviceType,
+		onChange: maxiSetAttributes,
+		getBounds: () => getBounds(selector),
 	};
+
 	return {
 		label: __('Clip-path', 'maxi-blocks'),
 		content: (

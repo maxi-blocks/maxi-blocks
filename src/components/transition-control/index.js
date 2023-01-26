@@ -20,16 +20,27 @@ import { cloneDeep, omitBy } from 'lodash';
 import classnames from 'classnames';
 import withRTC from '../../extensions/maxi-block/withRTC';
 
-const TransitionControlContent = withRTC(props => {
+/**
+ * Component
+ */
+const TransitionControl = props => {
 	const {
-		onChange,
-		breakpoint,
-		getDefaultTransitionAttribute,
 		transition: transitionRaw,
-		transitionSplit,
-		splitMode,
-		setSplitMode,
+		breakpoint,
+		className,
+		onChange,
+		getDefaultTransitionAttribute,
 	} = props;
+
+	const [splitMode, setSplitMode] = useState('in');
+
+	const classes = classnames('maxi-transition-control', className);
+
+	const transitionSplit = getLastBreakpointAttribute({
+		target: 'split',
+		attributes: transitionRaw,
+		breakpoint,
+	});
 
 	const transition = splitMode === 'out' ? transitionRaw?.out : transitionRaw;
 
@@ -61,12 +72,30 @@ const TransitionControlContent = withRTC(props => {
 		});
 
 	return (
-		<>
+		<div className={classes}>
 			<ToggleSwitch
 				label={__('Split in/out transitions', 'maxi-blocks')}
 				selected={transitionSplit}
 				onChange={handleChangeSplit}
 			/>
+			{transitionSplit && (
+				<SettingTabsControl
+					type='buttons'
+					selected={splitMode}
+					items={[
+						{
+							label: __('In', 'maxi-blocks'),
+							value: 'in',
+						},
+						{
+							label: __('Out', 'maxi-blocks'),
+							value: 'out',
+						},
+					]}
+					fullWidthMode
+					onChange={val => setSplitMode(val)}
+				/>
+			)}
 			<ToggleSwitch
 				label={__('Disable transition', 'maxi-blocks')}
 				className='maxi-transition-control__toggle'
@@ -180,54 +209,8 @@ const TransitionControlContent = withRTC(props => {
 					/>
 				</>
 			)}
-		</>
-	);
-});
-
-/**
- * Component
- */
-const TransitionControl = props => {
-	const { className, breakpoint, transition: transitionRaw } = props;
-
-	const [splitMode, setSplitMode] = useState('in');
-
-	const classes = classnames('maxi-transition-control', className);
-
-	const transitionSplit = getLastBreakpointAttribute({
-		target: 'split',
-		attributes: transitionRaw,
-		breakpoint,
-	});
-
-	return (
-		<div className={classes}>
-			{transitionSplit && (
-				<SettingTabsControl
-					type='buttons'
-					selected={splitMode}
-					items={[
-						{
-							label: __('In', 'maxi-blocks'),
-							value: 'in',
-						},
-						{
-							label: __('Out', 'maxi-blocks'),
-							value: 'out',
-						},
-					]}
-					fullWidthMode
-					onChange={val => setSplitMode(val)}
-				/>
-			)}
-			<TransitionControlContent
-				{...props}
-				transitionSplit={transitionSplit}
-				splitMode={splitMode}
-				setSplitMode={setSplitMode}
-			/>
 		</div>
 	);
 };
 
-export default TransitionControl;
+export default withRTC(TransitionControl);

@@ -10,6 +10,7 @@ import { getIsValid } from '../utils';
  * External dependencies
  */
 import { isUndefined, isNil } from 'lodash';
+import getAttributeValue from '../getAttributeValue';
 
 /**
  * General
@@ -108,11 +109,11 @@ const getBorderStyles = ({
 				'gm'
 			);
 			const newLabel = newKey.replace(replacer, '');
-			const value = getLastBreakpointAttribute({
+			const value = getAttributeValue({
 				target: `${prefix}${newLabel}`,
 				isHover,
 				breakpoint,
-				attributes: obj,
+				props: obj,
 			});
 
 			if (

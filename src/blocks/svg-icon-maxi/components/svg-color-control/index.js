@@ -12,10 +12,6 @@ import {
 	ToggleSwitch,
 	SvgColor,
 } from '../../../../components';
-import {
-	getGroupAttributes,
-	setHoverAttributes,
-} from '../../../../extensions/styles';
 
 const SvgColorControl = props => {
 	const {
@@ -89,23 +85,6 @@ const SvgColorControl = props => {
 								className='maxi-svg-status-hover'
 								onChange={val => {
 									maxiSetAttributes({
-										...(val &&
-											setHoverAttributes(
-												{
-													...getGroupAttributes(
-														props,
-														'svg',
-														false
-													),
-												},
-												{
-													...getGroupAttributes(
-														props,
-														'svg',
-														true
-													),
-												}
-											)),
 										'svg-status-hover': val,
 									});
 								}}

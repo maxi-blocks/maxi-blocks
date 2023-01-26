@@ -1538,4 +1538,30 @@ describe('cleanAttributes', () => {
 
 		expect(result).toStrictEqual(expectedResult);
 	});
+
+	it('Random test 17', () => {
+		select.mockImplementation(
+			jest.fn(() => {
+				return {
+					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
+				};
+			})
+		);
+
+		const obj = {
+			newAttributes: { 'test-xxl': true, 'test-general': true },
+			attributes: {},
+			defaultAttributes: {},
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'test-xxl': true,
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
 });

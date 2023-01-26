@@ -55,6 +55,31 @@ const getShouldPreserveAttribute = (
 };
 
 /**
+ * `handleSetAttributes` returns an object with XXL and General attributes when
+ * we set an attribute on XXL breakpoint, with baseBreakpoint different to XXL, and
+ * General attribute empty. This part of the code deals with that exception.
+ */
+const removeXXLandGeneralCoincidences = newAttributes => {
+	const result = {};
+
+	Object.entries(newAttributes).forEach(([key, value]) => {
+		const breakpoint = getBreakpointFromAttribute(key);
+
+		if (breakpoint === 'general') {
+			const simpleLabel = getSimpleLabel(key, breakpoint);
+			const existsXXLAttr = `${simpleLabel}-xxl` in newAttributes;
+
+			if (existsXXLAttr && newAttributes[`${simpleLabel}-xxl`] === value)
+				return;
+		}
+
+		result[key] = value;
+	});
+
+	return result;
+};
+
+/**
  * In case we are saving a breakpoint attribute that has the same value as its
  * previous saved valid attribute, it will be returned to its default value.
  */
@@ -576,6 +601,9 @@ const cleanAttributes = ({
 
 	let result = { ...newAttributes };
 
+	result = {
+		...removeXXLandGeneralCoincidences(newAttributes),
+	};
 	result = {
 		...result,
 		...removeSameAsGeneral(result, attributes, clientId, defaultAttributes),

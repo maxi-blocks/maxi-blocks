@@ -246,8 +246,10 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 			[selectedSCKey]: { ...selectedSCValue },
 		};
 
+		console.log(newStyleCards);
+
 		saveMaxiStyleCards(newStyleCards, true);
-		saveSCStyles(true);
+		saveSCStyles(false);
 	};
 
 	const deleteSC = () => {
@@ -420,6 +422,8 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 								value={selectedSCKey}
 								options={optionsSCList()}
 								onChange={val => {
+									console.log('val');
+									console.log(val);
 									setSelectedStyleCard(val);
 								}}
 							/>

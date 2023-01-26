@@ -50,7 +50,6 @@ const TransitionControlWrapper = props => {
 	const getDefaultTransitionAttribute = prop =>
 		defaultTransition[`${prop}-${deviceType}`];
 
-	// TODO: abstract out part
 	const onChangeTransition = (obj = {}, splitMode) => {
 		if (!transitionData) return null;
 
@@ -79,9 +78,6 @@ const TransitionControlWrapper = props => {
 										},
 								  }
 								: {
-										...attributes.transition[currentType][
-											key
-										],
 										...attributes.transition[type][
 											selected
 										],
@@ -92,20 +88,21 @@ const TransitionControlWrapper = props => {
 				);
 			});
 		} else {
-			const newSelectedTransition = {
-				...selectedTransition,
-				...obj,
-			};
 			newObj.transition = {
 				...attributes?.transition,
 				[type]: {
 					...(attributes?.transition?.[type] || []),
-					[selected]:
-						splitMode === 'out'
+					[selected]: {
+						...selectedTransition,
+						...(splitMode === 'out'
 							? {
-									out: newSelectedTransition,
+									out: {
+										...selectedTransition.out,
+										...obj,
+									},
 							  }
-							: newSelectedTransition,
+							: obj),
+					},
 				},
 			};
 		}

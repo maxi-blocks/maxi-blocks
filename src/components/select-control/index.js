@@ -29,6 +29,8 @@ export default function SelectControl({
 	options = [],
 	className,
 	hideLabelFromVision,
+	defaultValue,
+	value,
 	...props
 }) {
 	const instanceId = useInstanceId(SelectControl);
@@ -72,6 +74,7 @@ export default function SelectControl({
 				<select
 					id={id}
 					className='maxi-select-control__input'
+					value={value ?? defaultValue ?? options[0].value}
 					onChange={onChangeValue}
 					aria-describedby={help ? `${id}__help` : undefined}
 					multiple={multiple}

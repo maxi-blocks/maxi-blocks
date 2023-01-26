@@ -403,7 +403,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 						isHover,
 						prefix,
 					})}
-					prefix={`${prefix}icon-fill`}
+					prefix={`${prefix}icon-fill-`}
 					paletteColor={getAttributeValue({
 						target: 'icon-fill-palette-color',
 						props,

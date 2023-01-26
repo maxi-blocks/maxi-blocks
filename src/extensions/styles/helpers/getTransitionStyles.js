@@ -65,11 +65,10 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 							isEqual(transitionSplit, lastTransitionSplit) &&
 							!isNil(transitionSplit);
 
-						if (isHover) {
+						if (isHover && isNil(response[target])) {
 							if (!isNewTransitionSplit) return;
 
-							if (isNil(response[target]))
-								response[target] = { transition: {} };
+							response[target] = { transition: {} };
 						}
 
 						const transitionContent =

@@ -38,13 +38,13 @@ const HoverPreview = props => {
 		'clear-grey-scale',
 	];
 
-	const classes = classnames(
-		'maxi-hover-preview',
-		wrapperClassName,
-		hoverType !== 'none' && hoverClassName
-	);
-
 	const showEffects = props['hover-preview'] || isSave;
+
+	const classes = classnames(
+		showEffects && hoverType !== 'none' && 'maxi-hover-preview',
+		wrapperClassName,
+		showEffects && hoverType !== 'none' && hoverClassName
+	);
 
 	const transitionTimingFunction = `${
 		hoverTransitionEasing !== 'cubic-bezier'
@@ -55,10 +55,12 @@ const HoverPreview = props => {
 	}`;
 
 	const mouseHoverHandle = ({ target }) => {
-		const targetWrapper = target.closest('.maxi-hover-preview');
+		const targetWrapper = target.closest('.maxi-hover-preview img');
 		if (
-			hoverType === 'text' ||
-			transitionDurationEffects.includes(hoverBasicEffectType)
+			hoverType !== 'none' &&
+			(hoverType === 'text' ||
+				transitionDurationEffects.includes(hoverBasicEffectType)) &&
+			showEffects
 		) {
 			targetWrapper.style.transform = '';
 			targetWrapper.style.marginLeft = '';
@@ -88,7 +90,7 @@ const HoverPreview = props => {
 	};
 
 	const mouseOutHandle = ({ target }) => {
-		const targetWrapper = target.closest('.maxi-hover-preview');
+		const targetWrapper = target.closest('.maxi-hover-preview img');
 		if (hoverType === 'basic') {
 			if (hoverBasicEffectType === 'zoom-in')
 				targetWrapper.style.transform = 'scale(1)';
@@ -109,12 +111,12 @@ const HoverPreview = props => {
 	};
 
 	const getEnhancedChildren = children => {
-		if (children.type === 'img')
+		if (children.type === 'img') {
 			return cloneElement(children, {
 				onMouseOver: mouseHoverHandle,
 				onMouseOut: mouseOutHandle,
 			});
-
+		}
 		if (children?.props?.children) {
 			const cleanedChildren = DOMPurify.sanitize(children.props.children);
 			const parsedContent = parse(cleanedChildren, {

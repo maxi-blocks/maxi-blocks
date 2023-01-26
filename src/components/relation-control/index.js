@@ -41,10 +41,21 @@ const RelationControl = props => {
 
 	const { selectBlock } = useDispatch('core/block-editor');
 
-	const { deviceType, isButton, onChange, relations, uniqueID } = props;
+	const {
+		deviceType,
+		isButton,
+		onChange,
+		relations: rawRelations,
+		uniqueID,
+	} = props;
 
 	const cloneRelations = relations =>
 		!isEmpty(relations) ? cloneDeep(relations) : [];
+
+	// Ensure that each relation of `relations` array has a valid block
+	const relations = cloneRelations(rawRelations).filter(
+		relation => !!getClientIdFromUniqueId(relation.uniqueID)
+	);
 
 	const getRelationId = relations => {
 		return relations && !isEmpty(relations)
@@ -364,13 +375,13 @@ const RelationControl = props => {
 				className='maxi-relation-control__button'
 				type='button'
 				variant='secondary'
-				onClick={() => onAddRelation(props.relations)}
+				onClick={() => onAddRelation(relations)}
 			>
 				{__('Add new interaction', 'maxi-blocks')}
 			</Button>
-			{!isEmpty(props.relations) && (
+			{!isEmpty(relations) && (
 				<ListControl>
-					{props.relations.map(item => (
+					{relations.map(item => (
 						<ListItemControl
 							key={item.id}
 							className='maxi-relation-control__item'

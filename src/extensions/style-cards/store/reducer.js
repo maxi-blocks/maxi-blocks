@@ -10,7 +10,7 @@ import standardSC from '../../../../core/utils/defaultSC.json';
  */
 import { cloneDeep, merge } from 'lodash';
 
-const getNewActiveStyleCards = (styleCards, cardKey) => {
+const getNewActiveStyleCards = (styleCards, cardKey, activate = true) => {
 	const newStyleCards = cloneDeep(styleCards);
 	const currentSC = getActiveStyleCard(newStyleCards).key;
 
@@ -18,14 +18,17 @@ const getNewActiveStyleCards = (styleCards, cardKey) => {
 		const standardMerge = cloneDeep(standardSC?.sc_maxi);
 		const mergeWith = cloneDeep(value);
 		const newSCvalue = merge(standardMerge, mergeWith);
-
-		if (key === currentSC)
-			newStyleCards[key] = { ...newSCvalue, status: '' };
-		if (key === cardKey) {
-			newStyleCards[key] = {
-				...newSCvalue,
-				status: 'active',
-			};
+		if (!activate) {
+			newStyleCards[key] = { ...newSCvalue };
+		} else {
+			if (key === currentSC)
+				newStyleCards[key] = { ...newSCvalue, status: '' };
+			if (key === cardKey) {
+				newStyleCards[key] = {
+					...newSCvalue,
+					status: 'active',
+				};
+			}
 		}
 	});
 
@@ -74,7 +77,8 @@ function reducer(state = { styleCards: {}, savedStyleCards: {} }, action) {
 				...state,
 				styleCards: getNewActiveStyleCards(
 					state.styleCards,
-					action.cardKey
+					action.cardKey,
+					false
 				),
 			};
 		case 'REMOVE_STYLE_CARD':

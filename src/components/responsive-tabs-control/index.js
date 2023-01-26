@@ -70,12 +70,14 @@ const ResponsiveTabsControl = props => {
 			items={breakpoints.map(breakpoint => {
 				return {
 					label: breakpoint,
-					content: cloneElement(children, {
-						breakpoint:
-							baseBreakpoint === breakpoint.toLowerCase()
-								? 'general'
-								: breakpoint.toLowerCase(),
-					}),
+					content:
+						children &&
+						cloneElement(children, {
+							breakpoint:
+								baseBreakpoint === breakpoint.toLowerCase()
+									? 'general'
+									: breakpoint.toLowerCase(),
+						}),
 					// content: children,
 					showNotification: showNotification(breakpoint),
 					callback: () =>

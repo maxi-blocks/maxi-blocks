@@ -412,6 +412,15 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 						</div>
 					</div>
 					<div className='maxi-style-cards__active-edit'>
+						<div className='maxi-style-cards__active-edit-title'>
+							<h3>{__('Style card editor', 'maxi-blocks')}</h3>
+							<span>
+								{__(
+									'Preview, edit or activate style card',
+									'maxi-blocks'
+								)}
+							</span>
+						</div>
 						{importedCardExists && (
 							<div className='maxi-style-cards__card-already-exists'>
 								<span>
@@ -425,8 +434,6 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 								value={selectedSCKey}
 								options={optionsSCList()}
 								onChange={val => {
-									console.log('val');
-									console.log(val);
 									setSelectedStyleCard(val);
 								}}
 							/>

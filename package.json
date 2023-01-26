@@ -18,6 +18,7 @@
 		"test:e2e-interactive:debug": "wp-scripts --inspect-brk test-e2e -c ./e2e-tests/jest.config.js --runInBand --no-cache --verbose --puppeteer-interactive"
 	},
 	"dependencies": {
+		"@floating-ui/react-dom": "^1.2.1",
 		"@uiw/react-textarea-code-editor": "^2.0.3",
 		"@wordpress/block-editor": "^9.6.0",
 		"@wordpress/blocks": "^11.13.0",

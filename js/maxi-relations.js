@@ -50,12 +50,16 @@ class Relation {
 				)
 			)
 		).filter(Boolean);
-		this.transitionTriggerEls = this.transitionTriggers.map(
-			transitionTrigger =>
-				transitionTrigger
-					? this.blockTargetEl.querySelector(transitionTrigger)
-					: this.targetEl
-		);
+		this.transitionTriggerEls =
+			this.transitionTriggers.length > 0
+				? this.transitionTriggers.map(transitionTrigger =>
+						transitionTrigger
+							? this.blockTargetEl.querySelector(
+									transitionTrigger
+							  )
+							: this.targetEl
+				  )
+				: [this.targetEl];
 
 		this.transitionTargetsArray = this.effects.map(item => {
 			if (item.disableTransition) return [''];

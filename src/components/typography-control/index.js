@@ -949,9 +949,13 @@ const TypographyControl = props => {
 						});
 					}}
 					onReset={() => {
-						onChangeFormat({
-							[`${prefix}white-space`]: getDefault('white-space'),
-						});
+						onChangeFormat(
+							{
+								[`${prefix}white-space`]:
+									getDefault('white-space'),
+							},
+							{ isReset: true }
+						);
 					}}
 				/>
 				<AdvancedNumberControl

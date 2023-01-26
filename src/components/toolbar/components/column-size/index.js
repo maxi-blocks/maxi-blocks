@@ -67,6 +67,7 @@ const ColumnSize = props => {
 									clientId,
 									breakpoint
 								),
+							isReset: true,
 						})
 					}
 					initialPosition={getDefaultAttribute(

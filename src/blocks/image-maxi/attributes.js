@@ -117,6 +117,7 @@ const attributes = {
 		},
 	}),
 	...attributesData.clipPath,
+	...attributesData.clipPathHover,
 	...attributesData.link,
 	...attributesData.textAlignment,
 	...attributesData.typography,

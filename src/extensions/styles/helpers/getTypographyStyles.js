@@ -28,6 +28,7 @@ const getTypographyStyles = ({
 	textLevel = 'p',
 	normalTypography, // Just in case is hover,
 	scValues = {},
+	isStyleCards = false,
 }) => {
 	const response = {};
 
@@ -178,6 +179,32 @@ const getTypographyStyles = ({
 			}),
 			...(!isNil(obj[getName('text-direction', breakpoint)]) && {
 				direction: obj[getName('text-direction', breakpoint)],
+			}),
+			...(!isNil(obj[getName('white-space', breakpoint)]) && {
+				'white-space': obj[getName('white-space', breakpoint)],
+			}),
+			...(!isNil(obj[getName('word-spacing', breakpoint)]) && {
+				'word-spacing': `${
+					obj[getName('word-spacing', breakpoint)]
+				}${getUnitValue('word-spacing-unit', breakpoint)}`,
+			}),
+			...(!isNil(obj[getName('bottom-gap', breakpoint)]) && {
+				'margin-bottom': `${
+					obj[getName('bottom-gap', breakpoint)]
+				}${getUnitValue('bottom-gap-unit', breakpoint)}`,
+			}),
+			...(!isStyleCards && {
+				...(!isNil(obj[getName('text-orientation', breakpoint)]) && {
+					'writing-mode':
+						obj[getName('text-orientation', breakpoint)] !== 'unset'
+							? 'vertical-rl'
+							: 'unset',
+					'text-orientation':
+						obj[getName('text-orientation', breakpoint)],
+				}),
+				...(!isNil(obj[getName('text-direction', breakpoint)]) && {
+					direction: obj[getName('text-direction', breakpoint)],
+				}),
 			}),
 		};
 

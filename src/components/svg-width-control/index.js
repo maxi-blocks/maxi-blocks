@@ -97,6 +97,7 @@ const SvgWidthControl = props => {
 						prefix,
 						breakpoint
 					)]: defaultWidthUnit,
+					isReset: true,
 				})
 			}
 			defaultValue={defaultWidth}

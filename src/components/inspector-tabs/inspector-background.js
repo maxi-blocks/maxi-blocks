@@ -29,8 +29,8 @@ const background = ({
 	disableNoneStyle = false,
 	disableSVG = false,
 	disableVideo = false,
+	enableActiveState = false,
 	globalProps,
-	hoverGlobalProps,
 	groupAttributes = ['background', 'backgroundColor', 'backgroundGradient'],
 	depth = 2,
 	inlineTarget = '',
@@ -43,6 +43,7 @@ const background = ({
 		scValues = {},
 		insertInlineStyles,
 		cleanInlineStyles,
+		getBounds,
 	} = props;
 
 	const {
@@ -53,6 +54,7 @@ const background = ({
 
 	const hoverStatus =
 		attributes[`${prefix}background-status-hover`] || globalHoverStatus;
+	const activeStatus = attributes[`${prefix}background-status-active`];
 
 	const backgroundControlBasicProps = {
 		prefix,
@@ -66,6 +68,7 @@ const background = ({
 		clientId,
 		breakpoint: deviceType,
 		globalProps,
+		getBounds,
 	};
 
 	return {
@@ -103,7 +106,6 @@ const background = ({
 						content: (
 							<>
 								<ManageHoverTransitions />
-
 								<ToggleSwitch
 									label={__(
 										'Enable background hover',
@@ -167,6 +169,47 @@ const background = ({
 							</>
 						),
 						extraIndicators: [`${prefix}background-status-hover`],
+					},
+					enableActiveState && {
+						label: 'Active state',
+						content: (
+							<>
+								<ToggleSwitch
+									label={__(
+										'Enable background active',
+										'maxi-blocks'
+									)}
+									selected={activeStatus}
+									className='maxi-background-status-active'
+									onChange={val =>
+										maxiSetAttributes({
+											[`${prefix}background-status-active`]:
+												val,
+										})
+									}
+								/>
+								{activeStatus && (
+									<BackgroundControl
+										{...getGroupAttributes(
+											attributes,
+											[
+												'background',
+												'backgroundColor',
+												'backgroundGradient',
+											],
+											false,
+											`${prefix}active-`
+										)}
+										onChange={obj => {
+											maxiSetAttributes(obj);
+										}}
+										{...backgroundControlBasicProps}
+										prefix={`${prefix}active-`}
+									/>
+								)}
+							</>
+						),
+						extraIndicators: [`${prefix}background-status-active`],
 					},
 				]}
 				depth={depth}

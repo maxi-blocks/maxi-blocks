@@ -13,6 +13,7 @@ import {
 	handleInsertInlineStyles,
 	handleCleanInlineStyles,
 } from './inlineStyles';
+import BlockInserter from '../../components/block-inserter';
 
 /**
  * External dependencies
@@ -31,6 +32,7 @@ const withMaxiProps = createHigherOrderComponent(
 				hasInnerBlocks,
 				isChild,
 				hasSelectedChild,
+				isTyping,
 			} = useSelect(select => {
 				const { receiveMaxiDeviceType, receiveBaseBreakpoint } =
 					select('maxiBlocks');
@@ -38,6 +40,7 @@ const withMaxiProps = createHigherOrderComponent(
 					getBlockOrder,
 					getBlockParents,
 					hasSelectedInnerBlock,
+					isTyping,
 				} = select('core/block-editor');
 
 				const deviceType = receiveMaxiDeviceType();
@@ -57,6 +60,7 @@ const withMaxiProps = createHigherOrderComponent(
 					hasInnerBlocks,
 					isChild,
 					hasSelectedChild,
+					isTyping: isTyping(),
 				};
 			});
 
@@ -99,23 +103,50 @@ const withMaxiProps = createHigherOrderComponent(
 					)
 			);
 
+			const getBounds = useCallback(selector => {
+				const blockRef = ref.current.blockRef.current;
+
+				const getTarget = () => {
+					if (selector) {
+						const target = blockRef.querySelector(selector);
+						if (target) return target;
+					}
+					return blockRef;
+				};
+
+				return getTarget().getBoundingClientRect();
+			});
+
 			useEffect(() => {
 				dispatch('maxiBlocks/styles').savePrevSavedAttrs([]);
 			}, [isSelected]);
 
 			return (
-				<WrappedComponent
-					{...ownProps}
-					ref={ref}
-					maxiSetAttributes={maxiSetAttributes}
-					insertInlineStyles={insertInlineStyles}
-					cleanInlineStyles={cleanInlineStyles}
-					deviceType={deviceType}
-					baseBreakpoint={baseBreakpoint}
-					hasInnerBlocks={hasInnerBlocks}
-					isChild={isChild}
-					hasSelectedChild={hasSelectedChild}
-				/>
+				<>
+					<WrappedComponent
+						{...ownProps}
+						ref={ref}
+						maxiSetAttributes={maxiSetAttributes}
+						insertInlineStyles={insertInlineStyles}
+						cleanInlineStyles={cleanInlineStyles}
+						getBounds={getBounds}
+						deviceType={deviceType}
+						baseBreakpoint={baseBreakpoint}
+						hasInnerBlocks={hasInnerBlocks}
+						isChild={isChild}
+						hasSelectedChild={hasSelectedChild}
+					/>
+					{/*
+						Need to check if it's typing to avoid an error on Text Maxi when moving the caret selector doing a keyDown event.
+						It happens when, for example, you are typing and you move the caret selector to another block using the arrows.
+					*/}
+					{!isTyping && (
+						<BlockInserter.InterBlockInserter
+							ref={ref}
+							{...ownProps}
+						/>
+					)}
+				</>
 			);
 		}),
 	'withMaxiProps'

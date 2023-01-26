@@ -2,7 +2,6 @@
  * Internal dependencies
  */
 import MaxiModal from '../../editor/library/modal';
-import ResponsiveTabsControl from '../responsive-tabs-control';
 import SizeAndPositionLayerControl from './sizeAndPositionLayerControl';
 import SVGFillControl from '../svg-fill-control';
 import { getBlockStyle } from '../../extensions/styles';
@@ -58,16 +57,14 @@ const SVGLayer = props => {
 						isHover={isHover}
 						breakpoint={breakpoint}
 					/>
-					<ResponsiveTabsControl breakpoint={breakpoint}>
-						<SizeAndPositionLayerControl
-							prefix={prefix}
-							options={SVGOptions}
-							onChange={onChange}
-							isHover={isHover}
-							isLayer={isLayer}
-							breakpoint={breakpoint}
-						/>
-					</ResponsiveTabsControl>
+					<SizeAndPositionLayerControl
+						prefix={prefix}
+						options={SVGOptions}
+						onChange={onChange}
+						isHover={isHover}
+						isLayer={isLayer}
+						breakpoint={breakpoint}
+					/>
 				</>
 			)}
 		</>

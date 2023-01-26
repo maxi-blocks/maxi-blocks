@@ -137,4 +137,38 @@ describe('getBoxShadowStyles', () => {
 		});
 		expect(result).toMatchSnapshot();
 	});
+
+	it('Returns box-shadow default styles for IB', () => {
+		const object = {
+			'box-shadow-palette-status-general': true,
+			'box-shadow-palette-color-general': 8,
+			'box-shadow-palette-color-l': 8,
+			'box-shadow-palette-opacity-general': 1,
+			'box-shadow-palette-opacity-l': 1,
+			'box-shadow-inset-general': false,
+			'box-shadow-horizontal-general': 0,
+			'box-shadow-horizontal-l': 0,
+			'box-shadow-horizontal-unit-general': 'px',
+			'box-shadow-horizontal-unit-l': 'px',
+			'box-shadow-vertical-general': 0,
+			'box-shadow-vertical-l': 0,
+			'box-shadow-vertical-unit-general': 'px',
+			'box-shadow-vertical-unit-l': 'px',
+			'box-shadow-blur-general': 0,
+			'box-shadow-blur-l': 0,
+			'box-shadow-blur-unit-general': 'px',
+			'box-shadow-blur-unit-l': 'px',
+			'box-shadow-spread-general': 0,
+			'box-shadow-spread-l': 0,
+			'box-shadow-spread-unit-general': 'px',
+			'box-shadow-spread-unit-l': 'px',
+		};
+
+		const result = getBoxShadowStyles({
+			obj: object,
+			blockStyle: 'light',
+			isIB: true,
+		});
+		expect(result).toMatchSnapshot();
+	});
 });

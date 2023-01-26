@@ -188,6 +188,15 @@ const IconSettings = props => {
 							label={__('Icon position', 'maxi-blocks')}
 							className='maxi-video-icon-control__icon-position'
 							value={props[`${prefix}icon-position`]}
+							onReset={() =>
+								onChange({
+									[`${prefix}icon-position`]:
+										getDefaultAttribute(
+											`${prefix}icon-position`
+										),
+									isReset: true,
+								})
+							}
 							options={[
 								{
 									label: __(
@@ -277,6 +286,7 @@ const IconSettings = props => {
 										)]: getDefaultAttribute(
 											`${prefix}icon-height-unit`
 										),
+										isReset: true,
 									})
 								}
 								minMaxSettings={minMaxSettings}
@@ -338,6 +348,7 @@ const IconSettings = props => {
 												getDefaultAttribute(
 													`${prefix}icon-spacing-unit-${breakpoint}`
 												),
+											isReset: true,
 										});
 									}}
 								/>

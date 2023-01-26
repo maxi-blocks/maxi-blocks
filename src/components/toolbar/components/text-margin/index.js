@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import ToolbarPopover from '../toolbar-popover';
 import { getGroupAttributes } from '../../../../extensions/styles';
-import AxisControl from '../../../axis-control';
+import MarginControl from '../../../margin-control';
 
 /**
  * Icons
@@ -28,22 +28,18 @@ const TextMargin = props => {
 
 	return (
 		<ToolbarPopover
+			position='bottom center'
 			className='toolbar-item__text-margin'
 			tooltip={__('Margin', 'maxi-blocks')}
 			icon={toolbarTextMargin}
 			advancedOptions='margin padding'
 		>
 			<div className='toolbar-item__text-margin__popover toolbar-item__padding-margin__popover'>
-				<AxisControl
+				<MarginControl
 					{...getGroupAttributes(props, 'margin')}
-					label={__('Margin', 'maxi-blocks')}
 					onChange={onChange}
-					target='margin'
-					noResponsiveTabs
 					breakpoint={breakpoint}
-					optionType='string'
-					disableSync
-					disableAuto
+					noResponsiveTabs
 				/>
 			</div>
 		</ToolbarPopover>

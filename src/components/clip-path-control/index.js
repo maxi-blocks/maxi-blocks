@@ -2,12 +2,13 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState, useEffect } from '@wordpress/element';
+import { useEffect, useRef, useState } from '@wordpress/element';
 import { Tooltip } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
+import AdvancedNumberControl from '../advanced-number-control';
 import Button from '../button';
 import SelectControl from '../select-control';
 import BaseControl from '../base-control';
@@ -16,15 +17,20 @@ import ClipPathVisualEditor from './visualEditor';
 import Icon from '../icon';
 import ToggleSwitch from '../toggle-switch';
 import SettingTabsControl from '../setting-tabs-control';
+import withRTC from '../../extensions/maxi-block/withRTC';
 import {
-	getLastBreakpointAttribute,
 	getAttributeKey,
+	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import getClipPath from './getClipPath';
+import optionColors from './optionColors';
+import typeDefaults from './typeDefaults';
+
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isArray, isEmpty, isNil, trim } from 'lodash';
+import { cloneDeep, isEmpty, isEqual, isNil } from 'lodash';
 
 /**
  * Styles
@@ -35,21 +41,8 @@ import { styleNone } from '../../icons';
 /**
  * Component
  */
-const optionColors = [
-	'red',
-	'blue',
-	'pink',
-	'green',
-	'yellow',
-	'grey',
-	'brown',
-	'orange',
-	'black',
-	'violet',
-];
-
 const ClipPathOption = props => {
-	const { values, onRemove, onChange, number, type } = props;
+	const { values, number, type, onChange, onReset, onRemove } = props;
 
 	const getLabel = () => {
 		if (type === 'circle' && number === 0)
@@ -94,39 +87,36 @@ const ClipPathOption = props => {
 				className='maxi-clip-path-controller__item'
 			>
 				<div className='maxi-clip-path-controller__settings'>
-					<input
-						type='number'
-						value={trim(Number(values[0]))}
-						onChange={e => {
-							let value = +e.target.value;
-
-							if (value > 100) value = 100;
-							if (value < 0) value = 0;
-
-							values[0] = value;
-
-							onChange(values);
-						}}
-						min={0}
-						max={100}
-					/>
-					{!isNil(values[1]) && (
-						<input
-							type='number'
-							value={trim(Number(values[1]))}
-							onChange={e => {
-								let value = +e.target.value;
-
-								if (value > 100) value = 100;
-								if (value < 0) value = 0;
-
-								values[1] = value;
-
-								onChangeValue(values);
-							}}
-							min={0}
-							max={100}
-						/>
+					{[0, 1].map(
+						index =>
+							!isNil(values[index]) && (
+								<AdvancedNumberControl
+									key={index}
+									value={values[index].value}
+									unit={values[index].unit}
+									onChangeValue={value => {
+										values[index].value = value || 0;
+										onChange(values);
+									}}
+									onChangeUnit={unit => {
+										values[index].unit = unit;
+										onChange(values);
+									}}
+									onReset={() => onReset(index)}
+									minMaxSettings={{
+										px: {
+											min: 0,
+											max: 3999,
+										},
+										'%': {
+											min: 0,
+											max: 100,
+										},
+									}}
+									disableRange
+									enableUnit
+								/>
+							)
 					)}
 				</div>
 			</BaseControl>
@@ -139,8 +129,20 @@ const ClipPathOption = props => {
 	);
 };
 
-const ClipPath = props => {
-	const { className, onChange, prefix, breakpoint, isHover } = props;
+const ClipPathControl = props => {
+	const visualEditorRef = useRef(null);
+
+	const {
+		className,
+		onChange,
+		prefix = '',
+		breakpoint,
+		isHover = false,
+		isLayer = false,
+		isIB = false,
+		getBounds,
+		getBlockClipPath,
+	} = props;
 
 	const classes = classnames('maxi-clip-path-control', className);
 
@@ -151,87 +153,87 @@ const ClipPath = props => {
 		isHover,
 	});
 
-	const hasClipPath = getLastBreakpointAttribute({
-		target: `${prefix}clip-path-status`,
-		breakpoint,
-		attributes: props,
-		isHover,
-	});
+	const hasClipPath =
+		isLayer || !isHover
+			? getLastBreakpointAttribute({
+					target: `${prefix}clip-path-status`,
+					breakpoint,
+					attributes: props,
+					isHover,
+			  })
+			: props[getAttributeKey('clip-path-status', true, prefix)];
 
-	const deconstructCP = () => {
-		if (isEmpty(clipPath))
+	const deconstructCP = (clipPathToDeconstruct = clipPath) => {
+		if (isEmpty(clipPathToDeconstruct) || clipPath === 'none')
 			return {
 				type: 'polygon',
-				content: [],
+				content: cloneDeep(typeDefaults.polygon),
 			};
 
-		const cpType = clipPath.match(/^[^(]+/gi)[0];
+		const cpType = clipPathToDeconstruct.match(/^[^(]+/gi)[0];
 		const cpValues = [];
+
+		const parseClipPathContent = content => {
+			const newItem = [];
+			content.split(' ').forEach(item => {
+				const match = item.match(/^([\d.]+)(\D+)$/);
+				if (!match) return;
+				newItem.push({
+					value: Number(match?.[1]),
+					unit: match?.[2],
+				});
+			});
+			cpValues.push(newItem);
+		};
+
 		let cpContent = [];
 
 		switch (cpType) {
 			case 'polygon':
-				cpContent = clipPath
+				cpContent = clipPathToDeconstruct
 					.replace(cpType, '')
 					.replace('(', '')
 					.replace(')', '');
 
-				cpContent.split(', ').forEach(value => {
-					const newItem = value.trim().replace(/%/g, '').split(' ');
-					newItem.forEach((item, i) => {
-						newItem[i] = Number(item);
-					});
-					cpValues.push(newItem);
-				});
+				cpContent
+					.split(', ')
+					.forEach(value => parseClipPathContent(value));
 				break;
 			case 'circle':
-				cpContent = clipPath
+				cpContent = clipPathToDeconstruct
 					.replace(cpType, '')
 					.replace('(', '')
 					.replace(')', '');
 
-				cpContent.split('at ').forEach(value => {
-					const newItem = value.trim().replace(/%/g, '').split(' ');
-					newItem.forEach((item, i) => {
-						if (!isEmpty(item)) newItem[i] = Number(item);
-						else {
-							delete newItem[i];
-							newItem.length -= 1;
-						}
-					});
-					cpValues.push(newItem);
-				});
+				cpContent
+					.split('at ')
+					.forEach(value => parseClipPathContent(value));
 				break;
 			case 'ellipse':
-				cpContent = clipPath
+				cpContent = clipPathToDeconstruct
 					.replace(cpType, '')
 					.replace('(', '')
 					.replace(')', '');
 
-				cpContent.split('at ').forEach((value, i) => {
-					const newItem = value.trim().replace(/%/g, '').split(' ');
-					newItem.forEach((item, j) => {
-						if (i === 0) {
-							cpValues.push([Number(item)]);
-						} else if (!isEmpty(item)) newItem[j] = Number(item);
-						else {
-							delete newItem[j];
-							newItem.length -= 1;
-						}
-					});
-					if (i !== 0) cpValues.push(newItem);
-				});
+				// eslint-disable-next-line no-case-declarations
+				const result = cpContent.split(' at ');
+
+				[...result[0].split(' '), result[1]].forEach(value =>
+					parseClipPathContent(value.trim())
+				);
 				break;
 			case 'inset':
-				cpContent = clipPath
+				cpContent = clipPathToDeconstruct
 					.replace(cpType, '')
 					.replace('(', '')
 					.replace(')', '')
 					.replace('at ', '');
 
-				cpContent.split(' ').forEach(value => {
-					cpValues.push([Number(value.trim().replace(/%/g, ''))]);
-				});
+				cpContent
+					.split(' ')
+					.forEach(value => parseClipPathContent(value));
+				break;
+			case 'none':
 				break;
 			default:
 				return false;
@@ -250,7 +252,8 @@ const ClipPath = props => {
 	const [isCustom, changeIsCustom] = useState(
 		!(
 			Object.values(clipPathDefaults).includes(clipPath) ||
-			isEmpty(clipPath)
+			isEmpty(clipPath) ||
+			clipPath === 'none'
 		)
 	);
 
@@ -259,73 +262,25 @@ const ClipPath = props => {
 			changeClipPathOptions(deconstructCP());
 	}, [clipPath, clipPathOptions]);
 
-	const generateCP = clipPath => {
-		const { type, content } = clipPath;
-		const arrayContent = Object.values(content);
-
-		let newContent = '';
-
-		switch (type) {
-			case 'polygon':
-				newContent = arrayContent.reduce((a, b) => {
-					if (isArray(a))
-						return `${a[0]}% ${a[1]}%, ${b[0]}% ${b[1]}%`;
-					return `${a}, ${b[0]}% ${b[1]}%`;
-				});
-				break;
-			case 'circle':
-				newContent = `${arrayContent[0][0]}% at ${arrayContent[1][0]}% ${arrayContent[1][1]}%`;
-				break;
-			case 'ellipse':
-				newContent = `${arrayContent[0][0]}% ${arrayContent[1][0]}% at ${arrayContent[2][0]}% ${arrayContent[2][1]}%`;
-				break;
-			case 'inset':
-				newContent = `${arrayContent[0][0]}% ${arrayContent[1][0]}% ${arrayContent[2][0]}% ${arrayContent[3][0]}%`;
-				break;
-			default:
-				break;
-		}
-		const newCP = `${type}(${newContent})`;
-
-		onChangeValue(newCP);
-
-		changeClipPathOptions(clipPath);
-	};
-
 	const onChangeValue = val => {
 		onChange({
 			[getAttributeKey('clip-path', isHover, prefix, breakpoint)]: val,
 		});
 	};
 
-	const onChangeType = newType => {
-		const newCP = clipPathOptions;
+	const generateCP = clipPath => {
+		const newCP = getClipPath(clipPath);
 
-		switch (newType) {
-			case 'polygon':
-				newCP.type = 'polygon';
-				newCP.content = {
-					0: [0, 0],
-					1: [100, 0],
-					2: [100, 100],
-					3: [0, 100],
-				};
-				break;
-			case 'circle':
-				newCP.type = 'circle';
-				newCP.content = { 0: [50], 1: [50, 50] };
-				break;
-			case 'ellipse':
-				newCP.type = 'ellipse';
-				newCP.content = { 0: [25], 1: [50], 2: [50, 50] };
-				break;
-			case 'inset':
-				newCP.type = 'inset';
-				newCP.content = { 0: [15], 1: [5], 2: [15], 3: [5] };
-				break;
-			default:
-				break;
-		}
+		onChangeValue(newCP);
+		changeClipPathOptions(clipPath);
+	};
+
+	const onChangeType = newType => {
+		const newCP = {
+			...clipPathOptions,
+			type: newType,
+			content: cloneDeep(typeDefaults[newType]),
+		};
 
 		changeClipPathOptions(newCP);
 		generateCP(newCP);
@@ -340,11 +295,13 @@ const ClipPath = props => {
 
 	return (
 		<div className={classes}>
-			<ToggleSwitch
-				label={__('Use clip-path', 'maxi-blocks')}
-				selected={hasClipPath}
-				onChange={val => onToggleClipPath(val)}
-			/>
+			{(isLayer || !isHover) && (
+				<ToggleSwitch
+					label={__('Use clip-path', 'maxi-blocks')}
+					selected={hasClipPath}
+					onChange={val => onToggleClipPath(val)}
+				/>
+			)}
 			{hasClipPath && (
 				<>
 					<ToggleSwitch
@@ -361,9 +318,11 @@ const ClipPath = props => {
 								position='top center'
 							>
 								<Button
-									aria-pressed={clipPath === ''}
+									aria-pressed={['', 'none'].includes(
+										clipPath
+									)}
 									className='clip-path-defaults__items clip-path-defaults__items__none'
-									onClick={() => onChangeValue('')}
+									onClick={() => onChangeValue('none')}
 								>
 									<Icon icon={styleNone} />
 								</Button>
@@ -440,6 +399,8 @@ const ClipPath = props => {
 							/>
 							{customMode === 'visual' && (
 								<ClipPathVisualEditor
+									ref={visualEditorRef}
+									getBounds={getBounds}
 									clipPathOptions={clipPathOptions}
 									clipPath={clipPath}
 									colors={optionColors}
@@ -459,9 +420,97 @@ const ClipPath = props => {
 											<ClipPathOption
 												key={`maxi-clip-path-control-${i}`}
 												values={handle}
+												number={i}
+												type={clipPathOptions.type}
+												getBounds={getBounds}
 												onChange={value => {
 													clipPathOptions.content[i] =
 														value;
+													generateCP(clipPathOptions);
+												}}
+												onReset={coordIndex => {
+													const breakpoints = [
+														'general',
+														'xxl',
+														'xl',
+														'l',
+														'm',
+														's',
+														'xs',
+													];
+													const higherBreakpoint =
+														breakpoints[
+															breakpoints.indexOf(
+																breakpoint
+															) - 1
+														];
+
+													let newValue;
+													let resetToDefault = false;
+													if (
+														higherBreakpoint ||
+														isHover ||
+														isIB
+													) {
+														const oneBreakpointHigherClipPath =
+															deconstructCP(
+																getLastBreakpointAttribute(
+																	{
+																		target: `${prefix}clip-path`,
+																		breakpoint:
+																			higherBreakpoint ??
+																			breakpoint,
+																		attributes:
+																			isIB &&
+																			!higherBreakpoint
+																				? getBlockClipPath()
+																				: props,
+																		isHover:
+																			isHover &&
+																			higherBreakpoint,
+																	}
+																)
+															);
+
+														if (
+															oneBreakpointHigherClipPath.type !==
+															clipPathOptions.type
+														) {
+															resetToDefault = true;
+														} else {
+															newValue =
+																oneBreakpointHigherClipPath
+																	?.content?.[
+																	i
+																]?.[coordIndex];
+														}
+													} else {
+														resetToDefault = true;
+													}
+
+													if (resetToDefault)
+														newValue = cloneDeep(
+															typeDefaults[
+																clipPathOptions
+																	.type
+															]?.[i]?.[coordIndex]
+														);
+
+													if (
+														isEqual(
+															newValue,
+															clipPathOptions
+																.content[i][
+																coordIndex
+															]
+														)
+													)
+														return;
+
+													clipPathOptions.content[i][
+														coordIndex
+													] = newValue;
+
 													generateCP(clipPathOptions);
 												}}
 												onRemove={number => {
@@ -469,19 +518,30 @@ const ClipPath = props => {
 														.content[number];
 													generateCP(clipPathOptions);
 												}}
-												number={i}
-												type={clipPathOptions.type}
 											/>
 										);
 									})}
 									{clipPathOptions.type === 'polygon' &&
-										clipPathOptions.content.length < 10 && (
+										Object.keys(clipPathOptions.content)
+											.length < 100 && (
 											<Button
 												className='maxi-clip-path-control__handles'
 												onClick={() => {
-													clipPathOptions.content.push(
-														[0, 0]
-													);
+													clipPathOptions.content = {
+														...clipPathOptions.content,
+														[Object.keys(
+															clipPathOptions.content
+														).length]: [
+															{
+																value: 0,
+																unit: '%',
+															},
+															{
+																value: 0,
+																unit: '%',
+															},
+														],
+													};
 													generateCP(clipPathOptions);
 												}}
 											>
@@ -501,4 +561,4 @@ const ClipPath = props => {
 	);
 };
 
-export default ClipPath;
+export default withRTC(ClipPathControl);

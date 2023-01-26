@@ -3,9 +3,10 @@ export const generalTypographyStyle = {
 	weight: '300',
 	transform: 'capitalize',
 	style: 'italic',
-	orientation: 'mixed',
-	direction: 'ltr',
 	indent: '44',
+	whiteSpace: 'pre',
+	wordSpacing: '10',
+	bottomGap: '20',
 };
 
 export const responsiveTypographyStyle = {
@@ -13,9 +14,10 @@ export const responsiveTypographyStyle = {
 	weight: '400',
 	transform: 'uppercase',
 	style: 'oblique',
-	orientation: 'upright',
-	direction: 'rtl',
 	indent: '22',
+	whiteSpace: 'pre-wrap',
+	wordSpacing: '20',
+	bottomGap: '10',
 };
 
 export const generalTypographyOptions = {

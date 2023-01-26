@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 
 /**
- * Interr dependencies
+ * Internal dependencies
  */
 import { openTransitions } from '../../extensions/inspector';
 

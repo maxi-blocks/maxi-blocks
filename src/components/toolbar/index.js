@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { select, useSelect } from '@wordpress/data';
-import { Popover } from '@wordpress/components';
+
 import {
 	memo,
 	forwardRef,
@@ -14,15 +14,15 @@ import {
 /**
  * External dependencies
  */
-import { isEmpty, cloneDeep, isEqual, merge, isNaN } from 'lodash';
+import { isEmpty, cloneDeep, isEqual, merge } from 'lodash';
 import classnames from 'classnames';
 
 /**
  * Internal dependencies
  */
-import { getBoundaryElement } from '../../extensions/dom';
 import SvgColorToolbar from './components/svg-color';
 import VideoUrl from './components/video-url';
+import Popover from '../popover';
 
 /**
  * Utils
@@ -88,6 +88,7 @@ const MaxiToolbar = memo(
 			isSelected,
 			name,
 			maxiSetAttributes,
+			onModalOpen,
 			toggleHandlers,
 			rowPattern,
 			prefix = '',
@@ -100,6 +101,7 @@ const MaxiToolbar = memo(
 			copyPasteMapping,
 			mediaPrefix,
 			dropShadow,
+			disableInset,
 		} = props;
 		const {
 			customLabel,
@@ -113,8 +115,8 @@ const MaxiToolbar = memo(
 			svgType,
 		} = attributes;
 
-		const { breakpoint, styleCard, isTyping, tooltipsHide, version } =
-			useSelect(select => {
+		const { breakpoint, styleCard, isTyping, tooltipsHide } = useSelect(
+			select => {
 				const { receiveMaxiDeviceType, receiveMaxiSettings } =
 					select('maxiBlocks');
 				const { receiveMaxiSelectedStyleCard } = select(
@@ -127,7 +129,7 @@ const MaxiToolbar = memo(
 				const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
 
 				const maxiSettings = receiveMaxiSettings();
-				const { hide_tooltips: hideTooltips, editor } = maxiSettings;
+				const { hide_tooltips: hideTooltips } = maxiSettings;
 
 				const tooltipsHide = !isEmpty(hideTooltips)
 					? hideTooltips
@@ -138,74 +140,17 @@ const MaxiToolbar = memo(
 					styleCard,
 					isTyping: isTyping(),
 					tooltipsHide,
-					version: editor?.version,
 				};
-			});
+			}
+		);
 
 		const popoverRef = useRef(null);
 
 		const [anchorRef, setAnchorRef] = useState(ref.current);
-		const [anchor, setAnchor] = useState(null);
 		const [pinActive, setPinActive] = useState(false);
-
-		const getAnchor = popoverRef => {
-			const popoverRect = popoverRef
-				?.querySelector('.components-popover__content')
-				?.getBoundingClientRect();
-
-			if (!popoverRect) return null;
-
-			const rect = anchorRef.getBoundingClientRect();
-
-			const { width, x } = rect;
-			const { width: popoverWidth } = popoverRect;
-
-			const expectedContentX = x + width / 2 - popoverWidth / 2;
-
-			const container = document
-				.querySelector('.editor-styles-wrapper')
-				?.getBoundingClientRect();
-
-			if (container) {
-				const { x: containerX, width: containerWidth } = container;
-
-				// Left cut off check
-				if (expectedContentX < containerX)
-					rect.x += containerX - expectedContentX;
-
-				// Right cut off check
-				if (
-					expectedContentX + popoverWidth >
-					containerX + containerWidth
-				)
-					rect.x -=
-						expectedContentX +
-						popoverWidth -
-						(containerX + containerWidth);
-			}
-
-			return {
-				getBoundingClientRect: () => rect,
-				ownerDocument: anchorRef.ownerDocument,
-			};
-		};
 
 		useEffect(() => {
 			setAnchorRef(ref.current);
-
-			if (version > 13.0 && popoverRef.current) {
-				const newAnchor = getAnchor(popoverRef.current);
-
-				if (
-					!anchor ||
-					(anchor &&
-						!isEqual(
-							JSON.stringify(anchor.getBoundingClientRect()),
-							JSON.stringify(newAnchor.getBoundingClientRect())
-						))
-				)
-					setAnchor(newAnchor);
-			}
 		});
 
 		const breadcrumbStatus = () => {
@@ -229,33 +174,12 @@ const MaxiToolbar = memo(
 			attributes
 		);
 
-		const popoverPropsByVersion = {
-			...((parseFloat(version) <= 13.0 && {
-				getAnchorRect: spanEl => {
-					// span element needs to be hidden to don't break the grid
-					spanEl.style.display = 'none';
-
-					return getAnchor(
-						popoverRef.current
-					).getBoundingClientRect();
-				},
-				position: 'top center right',
-				shouldAnchorIncludePadding: true,
-				__unstableStickyBoundaryElement: getBoundaryElement(anchorRef),
-			}) ||
-				(!isNaN(parseFloat(version)) && {
-					anchor,
-					position: 'top center',
-					flip: false,
-					resize: false,
-				})),
-		};
-
 		return (
 			isSelected &&
 			anchorRef && (
 				<Popover
 					ref={popoverRef}
+					anchor={anchorRef}
 					noArrow
 					animate={false}
 					focusOnMount={false}
@@ -265,7 +189,13 @@ const MaxiToolbar = memo(
 							'maxi-toolbar__popover--has-breadcrumb'
 					)}
 					__unstableSlotName='block-toolbar'
-					{...popoverPropsByVersion}
+					__unstableObserveElement={ref.current}
+					observeBlockPosition={clientId}
+					useAnimationFrame
+					useShift
+					shiftPadding={{ top: 22 }}
+					shiftLimit={{ mainAxis: false }}
+					position='top center'
 				>
 					<div className={`toolbar-wrapper pinned--${pinActive}`}>
 						{!isTyping && (
@@ -307,6 +237,7 @@ const MaxiToolbar = memo(
 							maxiSetAttributes={maxiSetAttributes}
 							{...getGroupAttributes(attributes, 'typography')}
 							onChange={obj => maxiSetAttributes(obj)}
+							onModalOpen={onModalOpen}
 							breakpoint={breakpoint}
 							clientId={clientId}
 							attributes={attributes}
@@ -552,6 +483,7 @@ const MaxiToolbar = memo(
 							breakpoint={breakpoint}
 							prefix={prefix}
 							dropShadow={dropShadow}
+							disableInset={disableInset}
 						/>
 						<ToolbarColumnPattern
 							clientId={clientId}
@@ -593,6 +525,7 @@ const MaxiToolbar = memo(
 						/>
 						<TextMargin
 							blockName={name}
+							breakpoint={breakpoint}
 							{...getGroupAttributes(
 								attributes,
 								'margin',

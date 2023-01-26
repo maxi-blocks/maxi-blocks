@@ -2,7 +2,10 @@
  * Internal dependencies
  */
 import { createSelectors } from '../../extensions/styles/custom-css';
-import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
+import {
+	getCanvasSettings,
+	getAdvancedSettings,
+} from '../../extensions/relations';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
 /**
@@ -105,7 +108,8 @@ const transition = {
 	},
 };
 const interactionBuilderSettings = {
-	canvas: getCanvasSettings({ name, customCss }),
+	canvas: getCanvasSettings({ name }),
+	advanced: getAdvancedSettings({ customCss }),
 };
 
 const data = {

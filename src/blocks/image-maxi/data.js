@@ -7,13 +7,26 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import { createSelectors } from '../../extensions/styles/custom-css';
-import { AlignmentControl, ImageShape, InfoBox } from '../../components';
+import {
+	AlignmentControl,
+	BorderControl,
+	ImageShape,
+	InfoBox,
+	ClipPathControl,
+} from '../../components';
 import {
 	getAlignmentFlexStyles,
+	getBorderStyles,
+	getClipPathStyles,
 	getImageShapeStyles,
 } from '../../extensions/styles/helpers';
-import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
+import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getCanvasSettings,
+	getAdvancedSettings,
+} from '../../extensions/relations';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
+import { getEditorWrapper } from '../../extensions/dom';
 
 /**
  * Classnames
@@ -184,15 +197,21 @@ const transition = {
 	block: {
 		border: {
 			title: 'Border',
-			target: `${imageWrapperClass} img`,
+			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
 			property: ['border', 'border-radius'],
 			hoverProp: `${prefix}border-status-hover`,
 		},
 		'box shadow': {
 			title: 'Box shadow',
-			target: `${imageWrapperClass} img`,
+			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
 			property: 'box-shadow',
 			hoverProp: `${prefix}box-shadow-status-hover`,
+		},
+		'clip path': {
+			title: 'Clip path',
+			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
+			property: 'clip-path',
+			hoverProp: 'clip-path-status-hover',
 		},
 	},
 };
@@ -201,11 +220,10 @@ const interactionBuilderSettings = {
 		{
 			label: __('Alignment', 'maxi-blocks'),
 			attrGroupName: 'alignment',
-			component: props => (
-				<AlignmentControl {...props} disableJustify {...props} />
-			),
+			component: props => <AlignmentControl disableJustify {...props} />,
 			helper: props => getAlignmentFlexStyles(props.obj),
-			target: ' .maxi-image-block-wrapper',
+			target: imageWrapperClass,
+			disableTransition: true,
 		},
 		{
 			label: __('Shape mask', 'maxi-blocks'),
@@ -246,8 +264,43 @@ const interactionBuilderSettings = {
 					return acc;
 				}, {}),
 		},
+		{
+			label: __('Clip-path', 'maxi-blocks'),
+			attrGroupName: 'clipPath',
+			transitionTarget: transition.block['clip path'].target,
+			hoverProp: 'clip-path-status-hover',
+			component: props => (
+				<ClipPathControl
+					{...props}
+					getBounds={() =>
+						getEditorWrapper()
+							.querySelector(
+								`.${props.attributes.uniqueID}${imageClass}`
+							)
+							.getBoundingClientRect()
+					}
+					getBlockClipPath={() =>
+						getGroupAttributes(props.blockAttributes, 'clipPath')
+					}
+					isIB
+				/>
+			),
+			helper: props => getClipPathStyles(props),
+			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
+		},
+		{
+			label: __('Border', 'maxi-blocks'),
+			transitionTarget: transition.block.border.target,
+			hoverProp: 'image-border-status-hover',
+			attrGroupName: ['border', 'borderWidth', 'borderRadius'],
+			prefix,
+			component: props => <BorderControl {...props} />,
+			helper: props => getBorderStyles(props),
+			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
+		},
 	],
-	canvas: getCanvasSettings({ name, customCss }),
+	canvas: getCanvasSettings({ name }),
+	advanced: getAdvancedSettings({ customCss }),
 };
 
 const data = {

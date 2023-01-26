@@ -2,7 +2,7 @@ const clipPathDefaults = {
 	Triangle: 'polygon(50% 0%, 0% 100%, 100% 100%)',
 	Trapezoid: 'polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)',
 	Parallelogram: 'polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)',
-	'Parallelogram 2': 'polygon(0 0, 75% 0, 100% 100%, 25% 100%)',
+	'Parallelogram 2': 'polygon(0% 0%, 75% 0%, 100% 100%, 25% 100%)',
 	Rhombus: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
 	Pentagon: 'polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)',
 	'Pentagon 2': 'polygon(50% 100%, 100% 52%, 75% 0, 25% 0, 0 52%)',

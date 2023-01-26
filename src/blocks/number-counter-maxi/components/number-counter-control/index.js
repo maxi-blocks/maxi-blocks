@@ -108,6 +108,7 @@ const NumberCounterControl = props => {
 										getDefaultAttribute(
 											`number-counter-width-unit-${breakpoint}`
 										),
+									isReset: true,
 								})
 							}
 							minMaxSettings={minMaxSettings}
@@ -162,6 +163,7 @@ const NumberCounterControl = props => {
 								getDefaultAttribute(
 									'number-counter-start-animation-offset'
 								),
+							isReset: true,
 						})
 					}
 				/>
@@ -186,6 +188,7 @@ const NumberCounterControl = props => {
 						'number-counter-start': getDefaultAttribute(
 							'number-counter-start'
 						),
+						isReset: true,
 					})
 				}
 			/>
@@ -201,6 +204,7 @@ const NumberCounterControl = props => {
 					onChange({
 						'number-counter-end':
 							getDefaultAttribute('number-counter-end'),
+						isReset: true,
 					})
 				}
 			/>
@@ -230,6 +234,7 @@ const NumberCounterControl = props => {
 						'number-counter-duration': getDefaultAttribute(
 							'number-counter-duration'
 						),
+						isReset: true,
 					})
 				}
 			/>
@@ -249,6 +254,7 @@ const NumberCounterControl = props => {
 							'number-counter-stroke': getDefaultAttribute(
 								'number-counter-stroke'
 							),
+							isReset: true,
 						})
 					}
 				/>
@@ -271,6 +277,14 @@ const NumberCounterControl = props => {
 			<FontWeightControl
 				onChange={val => {
 					onChange({ [`font-weight-${breakpoint}`]: val });
+				}}
+				onReset={() => {
+					onChange({
+						[`font-weight-${breakpoint}`]: getDefaultAttribute(
+							`font-weight-${breakpoint}`
+						),
+						isReset: true,
+					});
 				}}
 				fontWeight={
 					getLastBreakpointAttribute({
@@ -309,6 +323,7 @@ const NumberCounterControl = props => {
 							getDefaultAttribute(
 								`number-counter-title-font-size-${breakpoint}`
 							),
+						isReset: true,
 					})
 				}
 			/>

@@ -168,6 +168,7 @@ const Inspector = props => {
 																					props,
 																					disableCustomFormats: true,
 																					hideAlignment: true,
+																					hideBottomGap: true,
 																					prefix: buttonPrefix,
 																					inlineTarget:
 																						' .maxi-search-block__button__content',
@@ -268,6 +269,7 @@ const Inspector = props => {
 																			props,
 																			disableCustomFormats: true,
 																			hideAlignment: true,
+																			hideBottomGap: true,
 																			prefix: inputPrefix,
 																			inlineTarget:
 																				' .maxi-search-block__input',

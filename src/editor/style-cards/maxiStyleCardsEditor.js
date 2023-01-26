@@ -7,7 +7,6 @@ import { useSelect, useDispatch } from '@wordpress/data';
 import { useState, useEffect } from '@wordpress/element';
 import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 import { PostPreviewButton } from '@wordpress/editor';
-import { Popover } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -23,6 +22,7 @@ import {
 	SelectControl,
 	Button,
 	Icon,
+	Popover,
 } from '../../components';
 import MaxiStyleCardsTab from './maxiStyleCardsTab';
 import { updateSCOnEditor } from '../../extensions/style-cards';
@@ -38,8 +38,9 @@ import { isEmpty, isNil, isEqual } from 'lodash';
  * Icons
  */
 import { styleCardBoat, reset, SCDelete, closeIcon } from '../../icons';
+import { forwardRef } from 'react';
 
-const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
+const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	const {
 		isRTL,
 		breakpoint,
@@ -148,6 +149,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 			defaultAttributes:
 				selectedSCValue[currentSCStyle].defaultStyleCard[type],
 			onChange: response => response,
+			isStyleCard: true,
 		});
 
 		Object.entries(newObj).forEach(([prop, value]) => {
@@ -259,10 +261,12 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 	return (
 		!isEmpty(styleCards) && (
 			<Popover
+				anchor={ref.current}
 				noArrow
-				position={isRTL ? 'top left right' : 'top right left'}
+				position={isRTL ? 'bottom left right' : 'bottom right left'}
 				className='maxi-style-cards__popover maxi-sidebar'
 				focusOnMount
+				strategy='fixed'
 			>
 				<h2 className='maxi-style-cards__popover__title'>
 					<Icon icon={styleCardBoat} />
@@ -456,7 +460,10 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 							<MediaUpload
 								onSelect={media => {
 									fetch(media.url)
+										// Need to parse the response 2 times,
+										// because it was stringified twice in the export function
 										.then(response => response.json())
+										.then(response => JSON.parse(response))
 										.then(jsonData => {
 											saveImportedStyleCard(jsonData);
 										})
@@ -513,6 +520,6 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 			</Popover>
 		)
 	);
-};
+});
 
 export default MaxiStyleCardsEditor;

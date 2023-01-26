@@ -17,7 +17,7 @@ jest.mock('../../../styles/getBlockStyle', () => {
 		return 'light';
 	});
 });
-jest.mock('../../../styles/transitions/getTransitionData.js', () => jest.fn());
+jest.mock('../../../attributes/getBlockData.js', () => jest.fn());
 
 const styleCard = {
 	name: 'Maxi (Default)',
@@ -236,9 +236,9 @@ const styleCard = {
 				'hover-background-color-hover': '',
 			},
 			icon: {
-				'line-global': false,
+				'line-color-global': false,
 				line: '',
-				'fill-global': false,
+				'fill-color-global': false,
 				fill: '',
 			},
 			divider: {
@@ -463,9 +463,9 @@ const styleCard = {
 				'hover-background-color-hover': '',
 			},
 			icon: {
-				'line-global': false,
+				'line-color-global': false,
 				line: '',
-				'fill-global': false,
+				'fill-color-global': false,
 				fill: '',
 			},
 			divider: {

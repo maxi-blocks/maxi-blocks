@@ -24,13 +24,7 @@ const getColorString = (obj, target, style) => {
 	const paletteStatus = obj[`${prefix}palette-status`];
 	const paletteColor = obj[`${prefix}palette-color`];
 	const paletteOpacity = obj[`${prefix}palette-opacity`];
-	const color =
-		target === 'line' ||
-		target === 'fill' ||
-		target === 'hover-line' ||
-		target === 'hover-fill'
-			? obj[target]
-			: obj[`${prefix}color`];
+	const color = obj[`${prefix}color`];
 
 	return paletteStatus
 		? getColorRGBAString({
@@ -55,7 +49,11 @@ const getParsedObj = obj => {
 	Object.keys(typographyObj).forEach(key => delete newObj[key]);
 
 	Object.entries(
-		getTypographyStyles({ obj: typographyObj, disableGlobals: true })
+		getTypographyStyles({
+			obj: typographyObj,
+			disableGlobals: true,
+			isStyleCards: true,
+		})
 	).forEach(([breakpoint, value]) => {
 		Object.entries(value).forEach(([key, val]) => {
 			newObj[`${key}-${breakpoint}`] = val;
@@ -91,6 +89,10 @@ export const getSCVariablesObject = styleCards => {
 		'text-decoration',
 		'text-transform',
 		'letter-spacing',
+		'white-space',
+		'word-spacing',
+		'margin-bottom',
+		'text-indent',
 	];
 	const SC = {
 		dark: {
@@ -156,19 +158,19 @@ export const getSCVariablesObject = styleCards => {
 					break;
 
 				case 'icon':
-					if (obj['line-global'])
+					if (obj['line-color-global'])
 						response[`--maxi-${style}-${element}-stroke`] =
 							getColorString(obj, 'line', style);
 
-					if (obj['fill-global'])
+					if (obj['fill-color-global'])
 						response[`--maxi-${style}-${element}-fill`] =
 							getColorString(obj, 'fill', style);
 
-					if (obj['hover-line-global'])
+					if (obj['hover-line-color-global'])
 						response[`--maxi-${style}-${element}-stroke-hover`] =
 							getColorString(obj, 'hover-line', style);
 
-					if (obj['hover-fill-global'])
+					if (obj['hover-fill-color-global'])
 						response[`--maxi-${style}-${element}-fill-hover`] =
 							getColorString(obj, 'hover-fill', style);
 
@@ -235,7 +237,7 @@ const getSCFontsData = obj => {
 			response[fontName] = { weight: [], style: [] };
 		}
 		if (key.includes('font-weight'))
-			response[fontName].weight.push(val.toString());
+			response[fontName].weight.push(val?.toString());
 
 		if (key.includes('font-style')) response[fontName].style.push(val);
 	});

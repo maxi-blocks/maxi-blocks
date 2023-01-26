@@ -67,7 +67,7 @@ const TransitionControl = props => {
 	};
 
 	const handleChangeSwitch = value =>
-		onChange({
+		handleChange({
 			[`transition-status-${breakpoint}`]: !value,
 		});
 
@@ -131,7 +131,6 @@ const TransitionControl = props => {
 									getDefaultTransitionAttribute(
 										'transition-duration'
 									),
-								isReset: true,
 							})
 						}
 					/>
@@ -162,7 +161,6 @@ const TransitionControl = props => {
 									getDefaultTransitionAttribute(
 										'transition-delay'
 									),
-								isReset: true,
 							})
 						}
 					/>
@@ -203,7 +201,6 @@ const TransitionControl = props => {
 							handleChange({
 								[`easing-${breakpoint}`]:
 									getDefaultTransitionAttribute('easing'),
-								isReset: true,
 							})
 						}
 					/>

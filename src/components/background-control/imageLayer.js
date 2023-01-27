@@ -84,6 +84,7 @@ const ImageLayerSettings = props => {
 					attributes: imageOptions,
 					isHover,
 				})}
+				defaultValue={getDefaultAttr('background-image-size')}
 				options={[
 					{
 						label: __('Auto', 'maxi-blocks'),
@@ -193,6 +194,7 @@ const ImageLayerSettings = props => {
 						attributes: imageOptions,
 						isHover,
 					})}
+					defaultValue={getDefaultAttr('background-image-repeat')}
 					options={[
 						{
 							label: __('No repeat', 'maxi-blocks'),
@@ -250,6 +252,7 @@ const ImageLayerSettings = props => {
 					attributes: imageOptions,
 					isHover,
 				})}
+				defaultValue={getDefaultAttr('background-image-position')}
 				options={[
 					{
 						label: __('Left top', 'maxi-blocks'),
@@ -447,6 +450,9 @@ const ImageLayerSettings = props => {
 							attributes: imageOptions,
 							isHover,
 						})}
+						defaultValue={getDefaultAttr(
+							'background-image-attachment'
+						)}
 						options={[
 							{
 								label: __('Scroll', 'maxi-blocks'),
@@ -503,6 +509,9 @@ const ImageLayerSettings = props => {
 									attributes: imageOptions,
 									isHover,
 								})}
+								defaultValue={getDefaultAttr(
+									'background-image-origin'
+								)}
 								options={[
 									{
 										label: __('Padding', 'maxi-blocks'),
@@ -549,6 +558,9 @@ const ImageLayerSettings = props => {
 									attributes: imageOptions,
 									isHover,
 								})}
+								defaultValue={getDefaultAttr(
+									'background-image-clip'
+								)}
 								options={[
 									{
 										label: __('Border', 'maxi-blocks'),

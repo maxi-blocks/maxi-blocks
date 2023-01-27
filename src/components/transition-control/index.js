@@ -12,13 +12,13 @@ import SelectControl from '../select-control';
 import SettingTabsControl from '../setting-tabs-control';
 import ToggleSwitch from '../toggle-switch';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
+import withRTC from '../../extensions/maxi-block/withRTC';
 
 /**
  * External dependencies
  */
 import { cloneDeep, omitBy } from 'lodash';
 import classnames from 'classnames';
-import withRTC from '../../extensions/maxi-block/withRTC';
 
 /**
  * Component

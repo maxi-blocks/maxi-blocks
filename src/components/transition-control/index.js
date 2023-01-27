@@ -58,8 +58,15 @@ const TransitionControl = props => {
 			[`split-${breakpoint}`]: value,
 			...(!transition?.out
 				? {
-						out: omitBy(cloneDeep(transition), (_value, key) =>
-							key.includes('split-')
+						out: omitBy(
+							cloneDeep(transition),
+							(_value, key) =>
+								key.includes('split-') ||
+								[
+									'hoverStatus',
+									'transitionTarget',
+									'transitionTrigger',
+								].some(item => item === key)
 						),
 				  }
 				: {}),

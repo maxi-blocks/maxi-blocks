@@ -26,6 +26,9 @@ const getNewActiveStyleCards = (styleCards, cardKey) => {
 		}
 	});
 
+	console.log('newStyleCards');
+	console.log(newStyleCards);
+
 	return newStyleCards;
 };
 

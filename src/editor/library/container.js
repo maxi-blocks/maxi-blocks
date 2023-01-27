@@ -702,6 +702,7 @@ const LibraryContainer = props => {
 		};
 
 		saveMaxiStyleCards(newAllSCs);
+		console.log('onRequestInsertSC');
 		updateSCOnEditor(parsedCard);
 		setSelectedStyleCard(newId);
 

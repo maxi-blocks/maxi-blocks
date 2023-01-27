@@ -57,6 +57,24 @@ const HoverEffectControl = props => {
 
 	const classes = classnames('maxi-hover-effect-control', className);
 
+	const effectNone = () => {
+		onChange({
+			'hover-type': 'none',
+		});
+		document
+			.getElementsByClassName('maxi-image-block__image')[0]
+			.removeAttribute('style');
+	};
+
+	const disablePreview = () => {
+		onChange({
+			'hover-preview': false,
+		});
+		document
+			.getElementsByClassName('maxi-image-block__image')[0]
+			.removeAttribute('style');
+	};
+
 	return (
 		<div className={classes}>
 			<SettingTabsControl
@@ -69,10 +87,12 @@ const HoverEffectControl = props => {
 					{ icon: <Icon icon={hoverText} />, value: 'text' },
 				]}
 				onChange={val => {
-					onChange({
-						'hover-type': val,
-						'hover-transition-duration': 0.5,
-					});
+					val === 'none'
+						? effectNone()
+						: onChange({
+								'hover-type': val,
+								'hover-transition-duration': 0.5,
+						  });
 				}}
 				hasBorder
 			/>
@@ -80,7 +100,11 @@ const HoverEffectControl = props => {
 				<ToggleSwitch
 					label={__('Show hover preview', 'maxi-blocks')}
 					selected={props['hover-preview']}
-					onChange={val => onChange({ 'hover-preview': val })}
+					onChange={val => {
+						val === false
+							? disablePreview()
+							: onChange({ 'hover-preview': val });
+					}}
 				/>
 			)}
 			<ToggleSwitch

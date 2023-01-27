@@ -64,6 +64,11 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 							isEqual(transitionSplit, lastTransitionSplit) &&
 							!isNil(transitionSplit);
 
+						/**
+						 * If no hover styles was created and no new transition split,
+						 * then we don't need to generate transition styles for hover
+						 * and duplicate normal transition styles for hover.
+						 */
 						if (isHover && isNil(response[target])) {
 							if (!isNewTransitionSplit) return;
 

@@ -1023,7 +1023,7 @@ const getGeneralBackgroundStyles = (
 				Number.isFinite(widthRight)
 			) {
 				const getSize = width => {
-					if (!Number.isFinite(width)) return;
+					if (!Number.isFinite(width)) return null;
 
 					return isHover ? 'auto' : -round(width, 2) + widthUnit;
 				};

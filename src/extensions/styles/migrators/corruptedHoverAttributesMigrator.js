@@ -18,7 +18,6 @@ const isEligible = blockAttributes => {
 		'border-status-hover',
 		'box-shadow-status-hover',
 		'background-status-hover',
-		'background-hover-status',
 		'svg-status-hover',
 	];
 

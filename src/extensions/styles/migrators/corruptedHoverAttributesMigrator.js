@@ -1,6 +1,6 @@
 const name = 'Corrupted Hover Attributes';
 
-const maxiVersions = ['0.0.1 SC1', '0.0.1 SC2', '0.0.1-SC3', '0.0.1-SC4'];
+const maxiVersions = ['0.0.1 SC1', '0.0.1 SC2', '0.0.1-SC3'];
 
 const isEligible = blockAttributes => {
 	const {
@@ -12,6 +12,7 @@ const isEligible = blockAttributes => {
 		'border-status-hover',
 		'box-shadow-status-hover',
 		'background-status-hover',
+		'background-hover-status',
 		'svg-status-hover',
 	];
 

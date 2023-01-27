@@ -17,7 +17,6 @@ import SettingTabsControl from '../setting-tabs-control';
 import FlexContentAlignControl from './flex-content-align-control';
 import {
 	getLastBreakpointAttribute,
-	getAttributeValue,
 	getDefaultAttribute,
 } from '../../extensions/styles';
 import getOptions from './utils';
@@ -46,9 +45,9 @@ const FlexSettingsControl = props => {
 	} = props;
 
 	const isCustomFlexBasis = /\d/.test(
-		getAttributeValue({
+		getLastBreakpointAttribute({
 			target: 'flex-basis',
-			props,
+			attributes: props,
 			isHover: false,
 			breakpoint,
 		})

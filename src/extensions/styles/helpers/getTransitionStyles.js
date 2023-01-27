@@ -57,7 +57,6 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 							breakpoint,
 							attributes: transition[type][key],
 						});
-
 						const transitionSplit =
 							transition[type][key]?.[`split-${breakpoint}`];
 
@@ -122,16 +121,17 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 							isEqual(transitionStatus, lastTransitionStatus) ||
 							(isHover && isNewTransitionSplit);
 
-						properties.forEach(property => {
-							const transitionProperty = property || 'all';
+						if (isSomeValue) {
+							properties.forEach(property => {
+								const transitionProperty = property || 'all';
 
-							if (isSomeValue)
 								if (!lastTransitionStatus) {
 									transitionString += `${transitionProperty} 0s 0s, `;
 								} else if (lastTransitionStatus) {
 									transitionString += `${transitionProperty} ${lastTransitionDuration}s ${lastTransitionDelay}s ${lastTransitionTimingFunction}, `;
 								}
-						});
+							});
+						}
 
 						transitionString = transitionString.replace(
 							/,\s*$/,

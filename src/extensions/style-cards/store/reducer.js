@@ -32,6 +32,17 @@ const getNewActiveStyleCards = (styleCards, cardKey) => {
 	return newStyleCards;
 };
 
+export const getNewSelectedStyleCards = (styleCards, cardKey) => {
+	const newStyleCards = cloneDeep(styleCards);
+
+	Object.entries(newStyleCards).forEach(([key, value]) => {
+		delete newStyleCards[key].selected;
+		newStyleCards[cardKey] = { ...value, selected: true };
+	});
+
+	return newStyleCards;
+};
+
 const removeStyleCard = (styleCards, cardKey) => {
 	const newStyleCards = { ...getNewActiveStyleCards(styleCards, 'sc_maxi') };
 
@@ -72,7 +83,7 @@ function reducer(state = { styleCards: {}, savedStyleCards: {} }, action) {
 		case 'SET_SELECTED_STYLE_CARD':
 			return {
 				...state,
-				styleCards: getNewActiveStyleCards(
+				styleCards: getNewSelectedStyleCards(
 					state.styleCards,
 					action.cardKey
 				),

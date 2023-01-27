@@ -694,7 +694,8 @@ const LibraryContainer = props => {
 	const onRequestInsertSC = card => {
 		const parsedCard = JSON.parse(card);
 
-		const newId = `sc_${new Date().getTime()}`;
+		// const newId = `sc_${new Date().getTime()}`;
+		const newId = `sc_${parsedCard.name.toLowerCase()}`;
 
 		const newAllSCs = {
 			...styleCards,
@@ -736,10 +737,11 @@ const LibraryContainer = props => {
 			/>
 		);
 	};
+	// eslint-disable-next-line react/no-unstable-nested-components
 	const PlaceholderCheckboxControl = () => {
 		return (
 			<CheckboxControl
-				className='use-placeholer-all-images'
+				className='use-placeholder-all-images'
 				label={__(
 					'Swap stock images for placeholders to save disk space',
 					'maxi-blocks'

@@ -8,7 +8,7 @@ import { select } from '@wordpress/data';
  */
 import { forIn } from 'lodash';
 
-const getActiveStyleCard = styleCards => {
+const getActiveStyleCard = (styleCards, getSelected = false) => {
 	let SC;
 
 	if (!styleCards)
@@ -21,11 +21,46 @@ const getActiveStyleCard = styleCards => {
 
 	let styleCardActive;
 
-	forIn(SC, (value, key) => {
-		if (value.status === 'active') {
-			styleCardActive = { key, value };
-		}
-	});
+	const propExists = (obj, prop) => {
+		let response = false;
+		forIn(obj, value => {
+			if (value[prop] !== undefined) {
+				response = true;
+			}
+		});
+		return response;
+	};
+
+	if (!getSelected) {
+		forIn(SC, (value, key) => {
+			if (value.status === 'active') {
+				styleCardActive = { key, value };
+			}
+		});
+
+		return styleCardActive || false;
+	}
+
+	const selectedExists = propExists(SC, 'selected');
+
+	if (selectedExists)
+		forIn(SC, (value, key) => {
+			if (value.selected) {
+				styleCardActive = { key, value };
+			}
+		});
+	else
+		forIn(SC, (value, key) => {
+			if (value.status === 'active') {
+				styleCardActive = { key, value };
+			}
+		});
+
+	console.log('selectedExists');
+	console.log(selectedExists);
+
+	console.log('styleCardActive');
+	console.log(styleCardActive);
 
 	return styleCardActive || false;
 };

@@ -42,6 +42,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		breakpoint,
 		SCList,
 		activeSCKey,
+		activeSCValue,
 		activeStyleCard,
 		savedStyleCards,
 		selectedSCKey,
@@ -62,11 +63,14 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 
 		const SCList = receiveStyleCardsList();
 		const activeStyleCard = receiveMaxiActiveStyleCard();
-		const { key: activeSCKey } = activeStyleCard;
+		const { key: activeSCKey, value: activeSCValue } = activeStyleCard;
 		const savedStyleCards = receiveSavedMaxiStyleCards();
 		const selectedStyleCard = receiveMaxiSelectedStyleCard();
 		const { key: selectedSCKey, value: selectedSCValue } =
 			selectedStyleCard;
+
+		console.log('selectedSCValue');
+		console.log(selectedSCValue);
 
 		return {
 			isRTL,
@@ -74,6 +78,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 			SCList,
 			activeSCKey,
 			activeStyleCard,
+			activeSCValue,
 			savedStyleCards,
 			selectedSCKey,
 			selectedSCValue,
@@ -89,7 +94,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	} = useDispatch('maxiBlocks/style-cards');
 
 	const [styleCardName, setStyleCardName] = useState(
-		`${selectedSCValue?.name} - `
+		`${activeSCValue?.name} - `
 	);
 	const [currentSCStyle, setCurrentSCStyle] = useState('light');
 

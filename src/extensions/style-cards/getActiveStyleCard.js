@@ -56,12 +56,6 @@ const getActiveStyleCard = (styleCards, getSelected = false) => {
 			}
 		});
 
-	console.log('selectedExists');
-	console.log(selectedExists);
-
-	console.log('styleCardActive');
-	console.log(styleCardActive);
-
 	return styleCardActive || false;
 };
 

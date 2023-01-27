@@ -12,15 +12,12 @@ import { cloneDeep, merge } from 'lodash';
 
 const getNewActiveStyleCards = (styleCards, cardKey) => {
 	const newStyleCards = cloneDeep(styleCards);
-	const currentSC = getActiveStyleCard(newStyleCards).key;
 
 	Object.entries(newStyleCards).forEach(([key, value]) => {
 		const standardMerge = cloneDeep(standardSC?.sc_maxi);
 		const mergeWith = cloneDeep(value);
 		const newSCvalue = merge(standardMerge, mergeWith);
-
-		if (key === currentSC)
-			newStyleCards[key] = { ...newSCvalue, status: '' };
+		newStyleCards[key] = { ...newSCvalue, status: '' };
 		if (key === cardKey) {
 			newStyleCards[key] = {
 				...newSCvalue,
@@ -29,6 +26,9 @@ const getNewActiveStyleCards = (styleCards, cardKey) => {
 		}
 	});
 
+	console.log('newStyleCards');
+	console.log(newStyleCards);
+
 	return newStyleCards;
 };
 
@@ -36,8 +36,8 @@ export const getNewSelectedStyleCards = (styleCards, cardKey) => {
 	const newStyleCards = cloneDeep(styleCards);
 
 	Object.entries(newStyleCards).forEach(([key, value]) => {
-		delete newStyleCards[key].selected;
-		newStyleCards[cardKey] = { ...value, selected: true };
+		if (key === cardKey) newStyleCards[key] = { ...value, selected: true };
+		else delete newStyleCards[key].selected;
 	});
 
 	return newStyleCards;

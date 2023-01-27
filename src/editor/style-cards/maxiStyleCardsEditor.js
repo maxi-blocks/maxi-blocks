@@ -28,7 +28,7 @@ import { handleSetAttributes } from '../../extensions/maxi-block';
 /**
  * External dependencies
  */
-import { isEmpty, isNil, isEqual } from 'lodash';
+import { isEmpty, isNil, isEqual, cloneDeep } from 'lodash';
 
 /**
  * Icons
@@ -69,8 +69,8 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		const { key: selectedSCKey, value: selectedSCValue } =
 			selectedStyleCard;
 
-		console.log('selectedSCValue');
-		console.log(selectedSCValue);
+		// console.log('selectedSCValue');
+		// console.log(selectedSCValue);
 
 		return {
 			isRTL,
@@ -104,10 +104,10 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 
 	const [isTemplate, setIsTemplate] = useState(!getIsUserCreatedStyleCard());
 	const [showCopyCardDialog, setShowCopyCardDialog] = useState(false);
-	const [activeSCColour, setActiveSCColour] = useState(
+	const [activeSCColour] = useState(
 		activeStyleCard.value.light.defaultStyleCard.color[4]
 	);
-	const [activeSCColourTwo, setActiveSCColourTwo] = useState(
+	const [activeSCColourTwo] = useState(
 		activeStyleCard.value.light.defaultStyleCard.color[5]
 	);
 
@@ -205,9 +205,9 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 			},
 		};
 		saveMaxiStyleCards(newStyleCards);
-		console.log('onChangeValue');
-		console.log('canBeApplied');
-		console.log(canBeApplied(selectedSCKey, activeSCKey));
+		// console.log('onChangeValue');
+		// console.log('canBeApplied');
+		// console.log(canBeApplied(selectedSCKey, activeSCKey));
 		updateSCOnEditor(newSC, activeSCColour, activeSCColourTwo);
 	};
 
@@ -238,18 +238,17 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 
 	const applyCurrentSCGlobally = () => {
 		setActiveStyleCard(selectedSCKey);
-
-		const newStyleCards = {
-			...styleCards,
-			[selectedSCKey]: {
-				...selectedSCValue,
-				status: 'active',
-			},
-		};
-
 		saveMaxiStyleCards(selectedSCValue);
 		console.log('applyCurrentSCGlobally');
 		updateSCOnEditor(selectedSCValue);
+
+		const newStyleCards = cloneDeep(styleCards);
+
+		Object.entries(newStyleCards).forEach(([key, value]) => {
+			if (key === selectedSCKey)
+				newStyleCards[key] = { ...value, status: 'active' };
+			else newStyleCards[key] = { ...value, status: '' };
+		});
 
 		saveMaxiStyleCards(newStyleCards, true);
 		saveSCStyles(true);
@@ -262,10 +261,10 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 			...styleCards,
 			[selectedSCKey]: { ...selectedSCValue, ...{ status: '' } },
 		};
-		console.log('oldStyleCards');
-		console.log(styleCards);
-		console.log('newStyleCards');
-		console.log(newStyleCards);
+		// console.log('oldStyleCards');
+		// console.log(styleCards);
+		// console.log('newStyleCards');
+		// console.log(newStyleCards);
 
 		saveMaxiStyleCards(newStyleCards, true);
 		saveSCStyles(false);

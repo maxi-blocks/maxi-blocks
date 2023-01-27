@@ -694,7 +694,6 @@ const LibraryContainer = props => {
 	const onRequestInsertSC = card => {
 		const parsedCard = JSON.parse(card);
 
-		// const newId = `sc_${new Date().getTime()}`;
 		const newId = `sc_${parsedCard.name.toLowerCase()}`;
 
 		const newAllSCs = {

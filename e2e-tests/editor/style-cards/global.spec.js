@@ -11,11 +11,7 @@ import {
 /**
  * Internal dependencies
  */
-import {
-	getStyleCardEditor,
-	receiveSelectedMaxiStyleCard,
-	resetSC,
-} from '../../utils';
+import { getStyleCardEditor, receiveSelectedMaxiStyleCard } from '../../utils';
 
 /**
  * External dependencies
@@ -107,14 +103,14 @@ describe('SC settings', () => {
 		});
 
 		await addMoreSC();
-
-		await copySCtoEdit('copy');
+		const newName = `copy ${new Date().getTime()}`;
+		await copySCtoEdit(newName);
 
 		const {
 			value: { name: SCName },
 		} = await receiveSelectedMaxiStyleCard(page);
 
-		expect(SCName).toContain('Daemon - copy');
+		expect(SCName).toContain(`Daemon - ${newName}`);
 	});
 
 	it('Applies SC on all pages', async () => {
@@ -171,7 +167,7 @@ describe('SC settings', () => {
 		});
 		await addMoreSC();
 
-		await copySCtoEdit('copy 2');
+		await copySCtoEdit(`copy 2 ${new Date().getTime()}`);
 
 		const SCToDelete = await page.$eval(
 			'.maxi-style-cards__sc__more-sc--select select',

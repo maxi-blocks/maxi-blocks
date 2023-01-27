@@ -24,11 +24,12 @@ import MaxiStyleCardsTab from './maxiStyleCardsTab';
 import { updateSCOnEditor } from '../../extensions/style-cards';
 import MaxiModal from '../library/modal';
 import { handleSetAttributes } from '../../extensions/maxi-block';
+import standardSC from '../../../core/utils/defaultSC.json';
 
 /**
  * External dependencies
  */
-import { isEmpty, isNil, isEqual, cloneDeep } from 'lodash';
+import { isEmpty, isNil, isEqual, cloneDeep, merge } from 'lodash';
 
 /**
  * Icons
@@ -69,9 +70,6 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		const { key: selectedSCKey, value: selectedSCValue } =
 			selectedStyleCard;
 
-		// console.log('selectedSCValue');
-		// console.log(selectedSCValue);
-
 		return {
 			isRTL,
 			breakpoint,
@@ -104,20 +102,15 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 
 	const [isTemplate, setIsTemplate] = useState(!getIsUserCreatedStyleCard());
 	const [showCopyCardDialog, setShowCopyCardDialog] = useState(false);
-	const [activeSCColour] = useState(
+	const [activeSCColour, setActiveSCColour] = useState(
 		activeStyleCard.value.light.defaultStyleCard.color[4]
 	);
-	const [activeSCColourTwo] = useState(
+	const [activeSCColourTwo, setActiveSCColourTwo] = useState(
 		activeStyleCard.value.light.defaultStyleCard.color[5]
 	);
 
 	useEffect(() => {
-		// const activeSCColour =
-		// 	activeStyleCard.value.light.defaultStyleCard.color[4];
-		// const activeSCColourTwo =
-		// 	activeStyleCard.value.light.defaultStyleCard.color[5];
 		if (selectedSCValue) {
-			console.log('useEffect');
 			updateSCOnEditor(
 				selectedSCValue,
 				activeSCColour,
@@ -152,8 +145,8 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		return false;
 	};
 
-	const canBeRemoved = keySC => {
-		if (keySC === 'sc_maxi') return false;
+	const canBeRemoved = (keySC, activeSCKey) => {
+		if (keySC === 'sc_maxi' || keySC === activeSCKey) return false;
 
 		return true;
 	};
@@ -205,9 +198,6 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 			},
 		};
 		saveMaxiStyleCards(newStyleCards);
-		// console.log('onChangeValue');
-		// console.log('canBeApplied');
-		// console.log(canBeApplied(selectedSCKey, activeSCKey));
 		updateSCOnEditor(newSC, activeSCColour, activeSCColourTwo);
 	};
 
@@ -216,14 +206,17 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	const saveImportedStyleCard = card => {
 		const newId = `sc_${new Date().getTime()}`;
 
+		const standardMerge = cloneDeep(standardSC?.sc_maxi);
+		const mergeWith = cloneDeep(card);
+		const newCard = merge(standardMerge, mergeWith);
+
 		const newAllSCs = {
 			...styleCards,
-			[newId]: card,
+			[newId]: newCard,
 		};
 
 		saveMaxiStyleCards(newAllSCs, true);
-		console.log('saveImportedStyleCard');
-		updateSCOnEditor(card);
+		updateSCOnEditor(card, activeSCColour, activeSCColourTwo);
 		setSelectedStyleCard(newId);
 	};
 
@@ -239,8 +232,10 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	const applyCurrentSCGlobally = () => {
 		setActiveStyleCard(selectedSCKey);
 		saveMaxiStyleCards(selectedSCValue);
-		console.log('applyCurrentSCGlobally');
 		updateSCOnEditor(selectedSCValue);
+
+		setActiveSCColour(selectedSCValue.light.defaultStyleCard.color[4]);
+		setActiveSCColourTwo(selectedSCValue.light.defaultStyleCard.color[5]);
 
 		const newStyleCards = cloneDeep(styleCards);
 
@@ -261,11 +256,6 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 			...styleCards,
 			[selectedSCKey]: { ...selectedSCValue, ...{ status: '' } },
 		};
-		// console.log('oldStyleCards');
-		// console.log(styleCards);
-		// console.log('newStyleCards');
-		// console.log(newStyleCards);
-
 		saveMaxiStyleCards(newStyleCards, true);
 		saveSCStyles(false);
 	};
@@ -467,7 +457,12 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 								onConfirm={deleteSC}
 							>
 								<Button
-									disabled={!canBeRemoved(selectedSCKey)}
+									disabled={
+										!canBeRemoved(
+											selectedSCKey,
+											activeSCKey
+										)
+									}
 									className='maxi-style-cards__sc__more-sc--delete has-tooltip'
 									onClick={() => setIsHiddenRemove(false)}
 								>

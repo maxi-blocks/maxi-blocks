@@ -19,7 +19,7 @@ import {
 } from './util';
 import { injectImgSVG } from '../../extensions/svg';
 import MaxiModal from './modal';
-import DOMPurify from 'dompurify';
+import useInterval from '../../extensions/dom/useInterval';
 
 /**
  * External dependencies
@@ -39,8 +39,8 @@ import {
 } from 'react-instantsearch-dom';
 import classnames from 'classnames';
 import { isEmpty, uniqueId, orderBy, capitalize, unescape } from 'lodash';
+import DOMPurify from 'dompurify';
 import Masonry from 'masonry-layout';
-import useInterval from '../../extensions/dom/useInterval';
 
 const MasonryItem = props => {
 	const {

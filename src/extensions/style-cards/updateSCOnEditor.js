@@ -263,9 +263,9 @@ const getSCFontsData = obj => {
 };
 
 const updateSCOnEditor = (styleCards, activeSCColour, activeSCColourTwo) => {
-	console.log('=========================');
-	console.log('updateSCOnEditor');
-	console.log(activeSCColour, activeSCColourTwo);
+	// console.log('=========================');
+	// console.log('updateSCOnEditor');
+	// console.log(activeSCColour, activeSCColourTwo);
 	const SCObject = getSCVariablesObject(
 		{ ...cloneDeep(styleCards) },
 		activeSCColour,

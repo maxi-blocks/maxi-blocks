@@ -9,7 +9,6 @@ import getGroupAttributes from '../getGroupAttributes';
 import getImageShapeStyles from './getImageShapeStyles';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 import getPaletteAttributes from '../getPaletteAttributes';
-import getAttributeKey from '../getAttributeKey';
 
 /**
  * External dependencies
@@ -300,7 +299,13 @@ export const getImageBackgroundObject = ({
 	if (isEmpty(bgImageUrl) && !ignoreMediaAttributes) return {};
 
 	const getBgImageAttributeValue = (target, isHoverParam = isHover) =>
-		props[getAttributeKey(target, isHoverParam, prefix, breakpoint)];
+		getAttributeValue({
+			target,
+			isHover: isHoverParam,
+			prefix,
+			breakpoint,
+			props,
+		});
 	const getBgImageLastBreakpointAttribute = target =>
 		getLastBreakpointAttribute({
 			target: prefix + target,
@@ -451,15 +456,10 @@ export const getImageBackgroundObject = ({
 
 		// To avoid image blinking on opacity hover
 		if (!isHover) {
-			const bgImageOpacity =
-				props[
-					getAttributeKey(
-						'background-image-opacity',
-						true,
-						prefix,
-						breakpoint
-					)
-				];
+			const bgImageOpacity = getBgImageAttributeValue(
+				'background-image-opacity',
+				true
+			);
 
 			if (bgImageOpacity)
 				response[breakpoint]['-webkit-transform'] =

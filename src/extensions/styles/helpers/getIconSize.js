@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import getAttributeKey from '../getAttributeKey';
+import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 
 /**
  * External dependencies
@@ -20,16 +20,32 @@ const getIconSize = (obj, isHover = false, prefix = '') => {
 		response[breakpoint] = {};
 
 		const iconSize =
-			obj[getAttributeKey('icon-width', isHover, prefix, breakpoint)] ??
-			obj[getAttributeKey('icon-height', isHover, prefix, breakpoint)];
+			getLastBreakpointAttribute({
+				target: `${prefix}icon-width`,
+				isHover,
+				breakpoint,
+				attributes: obj,
+			}) ??
+			getLastBreakpointAttribute({
+				target: `${prefix}icon-height`,
+				isHover,
+				breakpoint,
+				attributes: obj,
+			});
 
 		const iconUnit =
-			obj[
-				getAttributeKey('icon-width-unit', isHover, prefix, breakpoint)
-			] ??
-			obj[
-				getAttributeKey('icon-height-unit', isHover, prefix, breakpoint)
-			] ??
+			getLastBreakpointAttribute({
+				target: `${prefix}icon-width-unit`,
+				isHover,
+				breakpoint,
+				attributes: obj,
+			}) ??
+			getLastBreakpointAttribute({
+				target: `${prefix}icon-height-unit`,
+				isHover,
+				breakpoint,
+				attributes: obj,
+			}) ??
 			'px';
 
 		if (!isNil(iconSize) && !isEmpty(iconSize)) {

@@ -2,7 +2,7 @@ const name = 'Corrupted Hover Attributes';
 
 const maxiVersions = [
 	'0.1',
-	'0.0.1 SC1',
+	'0.0.1-SC1',
 	'0.0.1-SC2',
 	'0.0.1-SC3',
 	'0.0.1-SC4',

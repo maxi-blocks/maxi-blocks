@@ -99,13 +99,20 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 
 	const [isTemplate, setIsTemplate] = useState(!getIsUserCreatedStyleCard());
 	const [showCopyCardDialog, setShowCopyCardDialog] = useState(false);
+	const [activeSCColour, setActiveSCColour] = useState(
+		activeStyleCard.value.light.defaultStyleCard.color[4]
+	);
+	const [activeSCColourTwo, setActiveSCColourTwo] = useState(
+		activeStyleCard.value.light.defaultStyleCard.color[5]
+	);
 
 	useEffect(() => {
-		const activeSCColour =
-			activeStyleCard.value.light.defaultStyleCard.color[4];
-		const activeSCColourTwo =
-			activeStyleCard.value.light.defaultStyleCard.color[5];
+		// const activeSCColour =
+		// 	activeStyleCard.value.light.defaultStyleCard.color[4];
+		// const activeSCColourTwo =
+		// 	activeStyleCard.value.light.defaultStyleCard.color[5];
 		if (selectedSCValue) {
+			console.log('useEffect');
 			updateSCOnEditor(
 				selectedSCValue,
 				activeSCColour,
@@ -193,7 +200,10 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 			},
 		};
 		saveMaxiStyleCards(newStyleCards);
-		updateSCOnEditor(newSC);
+		console.log('onChangeValue');
+		console.log('canBeApplied');
+		console.log(canBeApplied(selectedSCKey, activeSCKey));
+		updateSCOnEditor(newSC, activeSCColour, activeSCColourTwo);
 	};
 
 	const [postDate] = useState();
@@ -207,6 +217,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		};
 
 		saveMaxiStyleCards(newAllSCs, true);
+		console.log('saveImportedStyleCard');
 		updateSCOnEditor(card);
 		setSelectedStyleCard(newId);
 	};
@@ -232,6 +243,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		};
 
 		saveMaxiStyleCards(selectedSCValue);
+		console.log('applyCurrentSCGlobally');
 		updateSCOnEditor(selectedSCValue);
 
 		saveMaxiStyleCards(newStyleCards, true);
@@ -243,9 +255,11 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	const saveCurrentSC = () => {
 		const newStyleCards = {
 			...styleCards,
-			[selectedSCKey]: { ...selectedSCValue },
+			[selectedSCKey]: { ...selectedSCValue, ...{ status: '' } },
 		};
-
+		console.log('oldStyleCards');
+		console.log(styleCards);
+		console.log('newStyleCards');
 		console.log(newStyleCards);
 
 		saveMaxiStyleCards(newStyleCards, true);

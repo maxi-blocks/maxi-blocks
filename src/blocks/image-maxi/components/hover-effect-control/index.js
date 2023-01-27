@@ -405,6 +405,7 @@ const HoverEffectControl = props => {
 					/>
 					{props['hover-title-typography-status'] && (
 						<TypographyControl
+							showBottomGap
 							typography={{
 								...getGroupAttributes(
 									props,
@@ -454,6 +455,7 @@ const HoverEffectControl = props => {
 					/>
 					{props['hover-content-typography-status'] && (
 						<TypographyControl
+							showBottomGap={false}
 							typography={{
 								...getGroupAttributes(
 									props,

@@ -256,6 +256,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 			...styleCards,
 			[selectedSCKey]: { ...selectedSCValue, ...{ status: '' } },
 		};
+
 		saveMaxiStyleCards(newStyleCards, true);
 		saveSCStyles(false);
 	};

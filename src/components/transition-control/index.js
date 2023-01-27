@@ -34,7 +34,7 @@ const TransitionControl = props => {
 
 	const [splitMode, setSplitMode] = useState('in');
 
-	const classes = classnames('maxi-transition-control', className);
+	const transition = splitMode === 'out' ? transitionRaw?.out : transitionRaw;
 
 	const transitionSplit = getLastBreakpointAttribute({
 		target: 'split',
@@ -42,13 +42,13 @@ const TransitionControl = props => {
 		breakpoint,
 	});
 
-	const transition = splitMode === 'out' ? transitionRaw?.out : transitionRaw;
-
 	const transitionStatus = getLastBreakpointAttribute({
 		target: 'transition-status',
 		attributes: transition,
 		breakpoint,
 	});
+
+	const classes = classnames('maxi-transition-control', className);
 
 	const handleChange = obj => onChange(obj, splitMode);
 

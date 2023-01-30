@@ -7,6 +7,7 @@ export const rawPosition = {
 	},
 	'position-top': {
 		type: 'string',
+		default: 50,
 	},
 	'position-right': {
 		type: 'string',
@@ -16,14 +17,15 @@ export const rawPosition = {
 	},
 	'position-left': {
 		type: 'string',
+		default: 50,
 	},
 	'position-sync': {
 		type: 'string',
-		default: 'all',
+		default: 'none',
 	},
 	'position-top-unit': {
 		type: 'string',
-		default: 'px',
+		default: '%',
 	},
 	'position-right-unit': {
 		type: 'string',
@@ -35,7 +37,7 @@ export const rawPosition = {
 	},
 	'position-left-unit': {
 		type: 'string',
-		default: 'px',
+		default: '%',
 	},
 };
 

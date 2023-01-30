@@ -68,6 +68,7 @@ const RelationControl = props => {
 	};
 
 	const getParsedOptions = rawOptions => {
+		if (!rawOptions || Object.keys(rawOptions).length === 0) return null;
 		const parseOptionsArray = options =>
 			options.map(({ label }) => ({
 				label,

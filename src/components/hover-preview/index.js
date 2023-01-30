@@ -63,7 +63,6 @@ const HoverPreview = props => {
 			showEffects
 		) {
 			targetWrapper.style.transform = '';
-			targetWrapper.style.marginLeft = '';
 			targetWrapper.style.filter = '';
 			targetWrapper.style.transitionDuration = `${hoverTransitionDuration}s`;
 			targetWrapper.style.transitionTimingFunction =
@@ -78,12 +77,11 @@ const HoverPreview = props => {
 			else if (hoverBasicEffectType === 'zoom-out')
 				targetWrapper.style.transform = 'scale(1)';
 			else if (hoverBasicEffectType === 'slide')
-				targetWrapper.style.marginLeft = `${props['hover-basic-slide-value']}px`;
+				targetWrapper.style.transform = `translateX(${props['hover-basic-slide-value']}px)`;
 			else if (hoverBasicEffectType === 'blur')
 				targetWrapper.style.filter = `blur(${props['hover-basic-blur-value']}px)`;
 			else {
 				targetWrapper.style.transform = '';
-				targetWrapper.style.marginLeft = '';
 				targetWrapper.style.filter = '';
 			}
 		}
@@ -99,12 +97,11 @@ const HoverPreview = props => {
 			else if (hoverBasicEffectType === 'zoom-out')
 				targetWrapper.style.transform = `scale(${props['hover-basic-zoom-out-value']})`;
 			else if (hoverBasicEffectType === 'slide')
-				targetWrapper.style.marginLeft = 0;
+				targetWrapper.style.transform = 'translateX(0)';
 			else if (hoverBasicEffectType === 'blur')
 				targetWrapper.style.filter = 'blur(0)';
 			else {
 				targetWrapper.style.transform = '';
-				targetWrapper.style.marginLeft = '';
 				targetWrapper.style.filter = '';
 			}
 		}

@@ -70,14 +70,13 @@ const hovers = () => {
 						else if (
 							hoverData['hover-basic-effect-type'] === 'slide'
 						)
-							e.target.style.marginLeft = `${hoverData['hover-basic-slide-value']}px`;
+							e.target.style.transform = `translateX(${hoverData['hover-basic-slide-value']}px)`;
 						else if (
 							hoverData['hover-basic-effect-type'] === 'blur'
 						)
 							e.target.style.filter = `blur(${hoverData['hover-basic-blur-value']}px)`;
 						else {
 							e.target.style.transform = '';
-							e.target.style.marginLeft = '';
 							e.target.style.filter = '';
 						}
 					}
@@ -98,14 +97,14 @@ const hovers = () => {
 						else if (
 							hoverData['hover-basic-effect-type'] === 'slide'
 						)
-							e.target.style.marginLeft = 0;
+							e.target.style.transform = 'translateX(0)';
 						else if (
 							hoverData['hover-basic-effect-type'] === 'blur'
 						)
 							e.target.style.filter = 'blur(0)';
 						else {
 							e.target.style.transform = '';
-							e.target.style.marginLeft = '';
+
 							e.target.style.filter = '';
 						}
 					}

@@ -41,15 +41,17 @@ const SvgWidthControl = props => {
 	const placeholderWidth = getLastBreakpointAttribute({
 		target: `${prefix}width`,
 		breakpoint,
+		isHover,
 		attributes: props,
 	});
 	const widthUnit = getLastBreakpointAttribute({
 		target: `${prefix}width-unit`,
 		breakpoint,
+		isHover,
 		attributes: props,
 	});
 	const defaultWidthUnit = getDefaultAttribute(
-		`${prefix}width-unit-${breakpoint}`
+		`${prefix}width-unit-${breakpoint}${isHover ? '-hover' : ''}`
 	);
 
 	return (

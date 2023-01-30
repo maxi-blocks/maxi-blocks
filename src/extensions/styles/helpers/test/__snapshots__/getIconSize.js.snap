@@ -7,7 +7,31 @@ Object {
       "height": "71%",
       "width": "71%",
     },
+    "l": Object {
+      "height": "71%",
+      "width": "71%",
+    },
     "label": "Icon size",
+    "m": Object {
+      "height": "71%",
+      "width": "71%",
+    },
+    "s": Object {
+      "height": "71%",
+      "width": "71%",
+    },
+    "xl": Object {
+      "height": "71%",
+      "width": "71%",
+    },
+    "xs": Object {
+      "height": "71%",
+      "width": "71%",
+    },
+    "xxl": Object {
+      "height": "71%",
+      "width": "71%",
+    },
   },
 }
 `;
@@ -16,10 +40,142 @@ exports[`getIconSize Should return correct icon size 2`] = `
 Object {
   "iconSize": Object {
     "general": Object {
-      "height": "123px",
-      "width": "123px",
+      "height": "123%",
+      "width": "123%",
+    },
+    "l": Object {
+      "height": "123%",
+      "width": "123%",
     },
     "label": "Icon size",
+    "m": Object {
+      "height": "123%",
+      "width": "123%",
+    },
+    "s": Object {
+      "height": "123%",
+      "width": "123%",
+    },
+    "xl": Object {
+      "height": "123%",
+      "width": "123%",
+    },
+    "xs": Object {
+      "height": "123%",
+      "width": "123%",
+    },
+    "xxl": Object {
+      "height": "123%",
+      "width": "123%",
+    },
+  },
+}
+`;
+
+exports[`getIconSize Should return right hover styles with only unit specified on hover 1`] = `
+Object {
+  "iconSize": Object {
+    "general": Object {
+      "height": "32em",
+      "width": "32em",
+    },
+    "l": Object {
+      "height": "32em",
+      "width": "32em",
+    },
+    "label": "Icon size",
+    "m": Object {
+      "height": "32em",
+      "width": "32em",
+    },
+    "s": Object {
+      "height": "32em",
+      "width": "32em",
+    },
+    "xl": Object {
+      "height": "32em",
+      "width": "32em",
+    },
+    "xs": Object {
+      "height": "32em",
+      "width": "32em",
+    },
+    "xxl": Object {
+      "height": "32em",
+      "width": "32em",
+    },
+  },
+}
+`;
+
+exports[`getIconSize Should return right hover styles with only value specified on hover (no unit) 1`] = `
+Object {
+  "iconSize": Object {
+    "general": Object {
+      "height": "64%",
+      "width": "64%",
+    },
+    "l": Object {
+      "height": "64%",
+      "width": "64%",
+    },
+    "label": "Icon size",
+    "m": Object {
+      "height": "64%",
+      "width": "64%",
+    },
+    "s": Object {
+      "height": "64%",
+      "width": "64%",
+    },
+    "xl": Object {
+      "height": "64%",
+      "width": "64%",
+    },
+    "xs": Object {
+      "height": "64%",
+      "width": "64%",
+    },
+    "xxl": Object {
+      "height": "64%",
+      "width": "64%",
+    },
+  },
+}
+`;
+
+exports[`getIconSize Should return right styles with only unit specified on responsive 1`] = `
+Object {
+  "iconSize": Object {
+    "general": Object {
+      "height": "32%",
+      "width": "32%",
+    },
+    "l": Object {
+      "height": "32em",
+      "width": "32em",
+    },
+    "label": "Icon size",
+    "m": Object {
+      "height": "32em",
+      "width": "32em",
+    },
+    "s": Object {
+      "height": "32em",
+      "width": "32em",
+    },
+    "xl": Object {
+      "height": "32%",
+      "width": "32%",
+    },
+    "xs": Object {
+      "height": "32em",
+      "width": "32em",
+    },
+    "xxl": Object {
+      "height": "32%",
+      "width": "32%",
+    },
   },
 }
 `;
@@ -31,7 +187,31 @@ Object {
       "height": "32px",
       "width": "32px",
     },
+    "l": Object {
+      "height": "32px",
+      "width": "32px",
+    },
     "label": "Icon size",
+    "m": Object {
+      "height": "32px",
+      "width": "32px",
+    },
+    "s": Object {
+      "height": "32px",
+      "width": "32px",
+    },
+    "xl": Object {
+      "height": "32px",
+      "width": "32px",
+    },
+    "xs": Object {
+      "height": "32px",
+      "width": "32px",
+    },
+    "xxl": Object {
+      "height": "32px",
+      "width": "32px",
+    },
   },
 }
 `;
@@ -43,7 +223,31 @@ Object {
       "height": "50%",
       "width": "50%",
     },
+    "l": Object {
+      "height": "50%",
+      "width": "50%",
+    },
     "label": "Icon size",
+    "m": Object {
+      "height": "50%",
+      "width": "50%",
+    },
+    "s": Object {
+      "height": "50%",
+      "width": "50%",
+    },
+    "xl": Object {
+      "height": "50%",
+      "width": "50%",
+    },
+    "xs": Object {
+      "height": "50%",
+      "width": "50%",
+    },
+    "xxl": Object {
+      "height": "50%",
+      "width": "50%",
+    },
   },
 }
 `;
@@ -55,10 +259,30 @@ Object {
       "height": "32px",
       "width": "32px",
     },
+    "l": Object {
+      "height": "32px",
+      "width": "32px",
+    },
     "label": "Icon size",
     "m": Object {
       "height": "12em",
       "width": "12em",
+    },
+    "s": Object {
+      "height": "12em",
+      "width": "12em",
+    },
+    "xl": Object {
+      "height": "32px",
+      "width": "32px",
+    },
+    "xs": Object {
+      "height": "12em",
+      "width": "12em",
+    },
+    "xxl": Object {
+      "height": "32px",
+      "width": "32px",
     },
   },
 }
@@ -71,10 +295,30 @@ Object {
       "height": "50%",
       "width": "50%",
     },
+    "l": Object {
+      "height": "50%",
+      "width": "50%",
+    },
     "label": "Icon size",
     "m": Object {
       "height": "15px",
       "width": "15px",
+    },
+    "s": Object {
+      "height": "15px",
+      "width": "15px",
+    },
+    "xl": Object {
+      "height": "50%",
+      "width": "50%",
+    },
+    "xs": Object {
+      "height": "15px",
+      "width": "15px",
+    },
+    "xxl": Object {
+      "height": "50%",
+      "width": "50%",
     },
   },
 }
@@ -87,7 +331,31 @@ Object {
       "height": "32px",
       "width": "32px",
     },
+    "l": Object {
+      "height": "32px",
+      "width": "32px",
+    },
     "label": "Icon size",
+    "m": Object {
+      "height": "32px",
+      "width": "32px",
+    },
+    "s": Object {
+      "height": "32px",
+      "width": "32px",
+    },
+    "xl": Object {
+      "height": "32px",
+      "width": "32px",
+    },
+    "xs": Object {
+      "height": "32px",
+      "width": "32px",
+    },
+    "xxl": Object {
+      "height": "32px",
+      "width": "32px",
+    },
   },
 }
 `;
@@ -99,7 +367,31 @@ Object {
       "height": "50%",
       "width": "50%",
     },
+    "l": Object {
+      "height": "50%",
+      "width": "50%",
+    },
     "label": "Icon size",
+    "m": Object {
+      "height": "50%",
+      "width": "50%",
+    },
+    "s": Object {
+      "height": "50%",
+      "width": "50%",
+    },
+    "xl": Object {
+      "height": "50%",
+      "width": "50%",
+    },
+    "xs": Object {
+      "height": "50%",
+      "width": "50%",
+    },
+    "xxl": Object {
+      "height": "50%",
+      "width": "50%",
+    },
   },
 }
 `;

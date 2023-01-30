@@ -259,19 +259,46 @@ Array [
       "l": Object {
         "breakpoint": 1366,
         "styles": Object {
+          "border-bottom-left-radius": "11px",
+          "border-bottom-right-radius": "11px",
+          "border-bottom-width": "2px",
           "border-color": "rgba(var(--maxi-light-color-8,150,176,203),0.5)",
+          "border-left-width": "2px",
+          "border-right-width": "2px",
+          "border-style": "solid",
+          "border-top-left-radius": "11px",
+          "border-top-right-radius": "11px",
+          "border-top-width": "2px",
         },
       },
       "m": Object {
         "breakpoint": 1024,
         "styles": Object {
+          "border-bottom-left-radius": "11px",
+          "border-bottom-right-radius": "11px",
+          "border-bottom-width": "2px",
           "border-color": "rgba(var(--maxi-light-color-8,150,176,203),0.5)",
+          "border-left-width": "2px",
+          "border-right-width": "2px",
+          "border-style": "solid",
+          "border-top-left-radius": "11px",
+          "border-top-right-radius": "11px",
+          "border-top-width": "2px",
         },
       },
       "s": Object {
         "breakpoint": 767,
         "styles": Object {
+          "border-bottom-left-radius": "11px",
+          "border-bottom-right-radius": "11px",
+          "border-bottom-width": "2px",
           "border-color": "rgba(var(--maxi-light-color-8,150,176,203),0.5)",
+          "border-left-width": "2px",
+          "border-right-width": "2px",
+          "border-style": "solid",
+          "border-top-left-radius": "11px",
+          "border-top-right-radius": "11px",
+          "border-top-width": "2px",
         },
       },
       "xl": Object {
@@ -292,13 +319,31 @@ Array [
       "xs": Object {
         "breakpoint": 480,
         "styles": Object {
+          "border-bottom-left-radius": "11px",
+          "border-bottom-right-radius": "11px",
+          "border-bottom-width": "2px",
           "border-color": "rgba(var(--maxi-light-color-8,150,176,203),0.5)",
+          "border-left-width": "2px",
+          "border-right-width": "2px",
+          "border-style": "solid",
+          "border-top-left-radius": "11px",
+          "border-top-right-radius": "11px",
+          "border-top-width": "2px",
         },
       },
       "xxl": Object {
         "breakpoint": 1921,
         "styles": Object {
+          "border-bottom-left-radius": "11px",
+          "border-bottom-right-radius": "11px",
+          "border-bottom-width": "2px",
           "border-color": "rgba(var(--maxi-light-color-8,150,176,203),0.5)",
+          "border-left-width": "2px",
+          "border-right-width": "2px",
+          "border-style": "solid",
+          "border-top-left-radius": "11px",
+          "border-top-right-radius": "11px",
+          "border-top-width": "2px",
         },
       },
     },
@@ -321,7 +366,7 @@ Array [
 ]
 `;
 
-exports[`Button Maxi hover simple actions Button border 2`] = `" body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { border-bottom-left-radius: 11px; border-bottom-right-radius: 11px; border-top-right-radius: 11px; border-top-left-radius: 11px; border-left-width: 2px; border-bottom-width: 2px; border-right-width: 2px; border-top-width: 2px; border-style: solid; border-color: rgba(var(--maxi-light-color-8,150,176,203),0.5);}@media screen and (min-width: 1921px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { border-color: rgba(var(--maxi-light-color-8,150,176,203),0.5);}}@media screen and (max-width: 1920px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { border-bottom-left-radius: 11px; border-bottom-right-radius: 11px; border-top-right-radius: 11px; border-top-left-radius: 11px; border-left-width: 2px; border-bottom-width: 2px; border-right-width: 2px; border-top-width: 2px; border-style: solid; border-color: rgba(var(--maxi-light-color-8,150,176,203),0.5);}}@media screen and (max-width: 1366px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { border-color: rgba(var(--maxi-light-color-8,150,176,203),0.5);}}"`;
+exports[`Button Maxi hover simple actions Button border 2`] = `" body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { border-bottom-left-radius: 11px; border-bottom-right-radius: 11px; border-top-right-radius: 11px; border-top-left-radius: 11px; border-left-width: 2px; border-bottom-width: 2px; border-right-width: 2px; border-top-width: 2px; border-style: solid; border-color: rgba(var(--maxi-light-color-8,150,176,203),0.5);}"`;
 
 exports[`Button Maxi hover simple actions Button border 3`] = `"body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button { transition: background 0.3s ease 0s, border-color 0.3s ease 0s, border-style 0.3s ease 0s, border-top-width 0.3s ease 0s, border-right-width 0.3s ease 0s, border-bottom-width 0.3s ease 0s, border-left-width 0.3s ease 0s, border-top-left-radius 0.3s ease 0s, border-top-right-radius 0.3s ease 0s, border-bottom-right-radius 0.3s ease 0s, border-bottom-left-radius 0.3s ease 0s;}"`;
 
@@ -381,19 +426,46 @@ Array [
         },
         "l": Object {
           "breakpoint": 1366,
-          "styles": Object {},
+          "styles": Object {
+            "border": "none",
+            "border-bottom-left-radius": "5px",
+            "border-bottom-right-radius": "5px",
+            "border-color": "0",
+            "border-top-left-radius": "5px",
+            "border-top-right-radius": "5px",
+          },
         },
         "m": Object {
           "breakpoint": 1024,
-          "styles": Object {},
+          "styles": Object {
+            "border": "none",
+            "border-bottom-left-radius": "5px",
+            "border-bottom-right-radius": "5px",
+            "border-color": "0",
+            "border-top-left-radius": "5px",
+            "border-top-right-radius": "5px",
+          },
         },
         "s": Object {
           "breakpoint": 767,
-          "styles": Object {},
+          "styles": Object {
+            "border": "none",
+            "border-bottom-left-radius": "5px",
+            "border-bottom-right-radius": "5px",
+            "border-color": "0",
+            "border-top-left-radius": "5px",
+            "border-top-right-radius": "5px",
+          },
         },
         "xl": Object {
           "breakpoint": 1920,
           "styles": Object {
+            "border": "none",
+            "border-bottom-left-radius": "5px",
+            "border-bottom-right-radius": "5px",
+            "border-color": "0",
+            "border-top-left-radius": "5px",
+            "border-top-right-radius": "5px",
             "margin-left": "33px",
             "padding-bottom": "44px",
             "padding-left": "44px",
@@ -403,11 +475,24 @@ Array [
         },
         "xs": Object {
           "breakpoint": 480,
-          "styles": Object {},
+          "styles": Object {
+            "border": "none",
+            "border-bottom-left-radius": "5px",
+            "border-bottom-right-radius": "5px",
+            "border-color": "0",
+            "border-top-left-radius": "5px",
+            "border-top-right-radius": "5px",
+          },
         },
         "xxl": Object {
           "breakpoint": 1921,
           "styles": Object {
+            "border": "none",
+            "border-bottom-left-radius": "5px",
+            "border-bottom-right-radius": "5px",
+            "border-color": "0",
+            "border-top-left-radius": "5px",
+            "border-top-right-radius": "5px",
             "margin-left": "23px",
             "padding-bottom": "22px",
             "padding-left": "22px",
@@ -424,8 +509,36 @@ Array [
             "width": "11%",
           },
         },
+        "l": Object {
+          "breakpoint": 1366,
+          "styles": Object {
+            "height": "11%",
+            "width": "11%",
+          },
+        },
+        "m": Object {
+          "breakpoint": 1024,
+          "styles": Object {
+            "height": "11%",
+            "width": "11%",
+          },
+        },
+        "s": Object {
+          "breakpoint": 767,
+          "styles": Object {
+            "height": "11%",
+            "width": "11%",
+          },
+        },
         "xl": Object {
           "breakpoint": 1920,
+          "styles": Object {
+            "height": "11%",
+            "width": "11%",
+          },
+        },
+        "xs": Object {
+          "breakpoint": 480,
           "styles": Object {
             "height": "11%",
             "width": "11%",
@@ -434,8 +547,8 @@ Array [
         "xxl": Object {
           "breakpoint": 1921,
           "styles": Object {
-            "height": "18px",
-            "width": "18px",
+            "height": "18%",
+            "width": "18%",
           },
         },
       },
@@ -513,19 +626,19 @@ Array [
         "general": Object {
           "breakpoint": null,
           "styles": Object {
-            "stroke-width": "5",
+            "stroke-width": 5,
           },
         },
         "xl": Object {
           "breakpoint": 1920,
           "styles": Object {
-            "stroke-width": "5",
+            "stroke-width": 5,
           },
         },
         "xxl": Object {
           "breakpoint": 1921,
           "styles": Object {
-            "stroke-width": "4",
+            "stroke-width": 4,
           },
         },
       },
@@ -648,7 +761,7 @@ Array [
 ]
 `;
 
-exports[`Button Maxi hover simple actions Button icon 2`] = `" body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-fill]:not([fill^=\\"none\\"]) { fill: var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-fill]:not([fill^=\\"none\\"]) * { fill: var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg g[data-fill]:not([fill^=\\"none\\"]) { fill: var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg use[data-fill]:not([fill^=\\"none\\"]) { fill: var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-fill]:not([fill^=\\"none\\"]) { fill: var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path[data-fill]:not([fill^=\\"none\\"]) { fill: var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path { stroke-width: 5;}@media screen and (min-width: 1921px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path { stroke-width: 4;}}@media screen and (max-width: 1920px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path { stroke-width: 5;}} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^=\\"none\\"]) * { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^=\\"none\\"]) { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^=\\"none\\"]) { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^=\\"none\\"]) { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^=\\"none\\"]) { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^=\\"none\\"]) { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon { margin-left: 33px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; border-top-right-radius: 5px; border-top-left-radius: 5px; border: none; border-color: 0; padding-left: 44px; padding-bottom: 44px; padding-right: 44px; padding-top: 44px; background: rgba(var(--maxi-undefined-color-5,0,0,0),0.43); background-color: rgba(var(--maxi-undefined-color-5,0,0,0),0.43);}@media screen and (min-width: 1921px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon { margin-left: 23px; padding-left: 22px; padding-bottom: 22px; padding-right: 22px; padding-top: 22px;}}@media screen and (max-width: 1920px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon { margin-left: 33px; padding-left: 44px; padding-bottom: 44px; padding-right: 44px; padding-top: 44px;}} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg { width: 11%; height: 11%;}@media screen and (min-width: 1921px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg { width: 18px; height: 18px;}}@media screen and (max-width: 1920px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg { width: 11%; height: 11%;}} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg > * { margin-left: 33px; background: rgba(var(--maxi-undefined-color-5,0,0,0),0.43); background-color: rgba(var(--maxi-undefined-color-5,0,0,0),0.43);}@media screen and (min-width: 1921px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg > * { margin-left: 23px;}}@media screen and (max-width: 1920px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg > * { margin-left: 33px;}}"`;
+exports[`Button Maxi hover simple actions Button icon 2`] = `" body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-fill]:not([fill^=\\"none\\"]) { fill: var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-fill]:not([fill^=\\"none\\"]) * { fill: var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg g[data-fill]:not([fill^=\\"none\\"]) { fill: var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg use[data-fill]:not([fill^=\\"none\\"]) { fill: var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-fill]:not([fill^=\\"none\\"]) { fill: var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path[data-fill]:not([fill^=\\"none\\"]) { fill: var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path { stroke-width: 5;}@media screen and (min-width: 1921px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path { stroke-width: 4;}}@media screen and (max-width: 1920px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path { stroke-width: 5;}} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^=\\"none\\"]) * { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^=\\"none\\"]) { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^=\\"none\\"]) { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^=\\"none\\"]) { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^=\\"none\\"]) { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^=\\"none\\"]) { stroke: var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75));} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon { margin-left: 33px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; border-top-right-radius: 5px; border-top-left-radius: 5px; border: none; border-color: 0; padding-left: 44px; padding-bottom: 44px; padding-right: 44px; padding-top: 44px; background: rgba(var(--maxi-undefined-color-5,0,0,0),0.43); background-color: rgba(var(--maxi-undefined-color-5,0,0,0),0.43);}@media screen and (min-width: 1921px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon { margin-left: 23px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; border-top-right-radius: 5px; border-top-left-radius: 5px; border: none; border-color: 0; padding-left: 22px; padding-bottom: 22px; padding-right: 22px; padding-top: 22px;}}@media screen and (max-width: 1920px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon { margin-left: 33px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; border-top-right-radius: 5px; border-top-left-radius: 5px; border: none; border-color: 0; padding-left: 44px; padding-bottom: 44px; padding-right: 44px; padding-top: 44px;}}@media screen and (max-width: 1366px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon { border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; border-top-right-radius: 5px; border-top-left-radius: 5px; border: none; border-color: 0;}} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg { width: 11%; height: 11%;}@media screen and (min-width: 1921px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg { width: 18%; height: 18%;}}@media screen and (max-width: 1920px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg { width: 11%; height: 11%;}} body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg > * { margin-left: 33px; background: rgba(var(--maxi-undefined-color-5,0,0,0),0.43); background-color: rgba(var(--maxi-undefined-color-5,0,0,0),0.43);}@media screen and (min-width: 1921px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg > * { margin-left: 23px;}}@media screen and (max-width: 1920px) { body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg > * { margin-left: 33px;}}"`;
 
 exports[`Button Maxi hover simple actions Button icon 3`] = `"body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-fill]:not([fill^=\\"none\\"]) * { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg g[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg use[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path[data-fill]:not([fill^=\\"none\\"]) { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^=\\"none\\"]) * { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg path[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg g[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg use[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg circle[data-stroke]:not([stroke^=\\"none\\"]) { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg { transition: all 0.3s ease 0s;}body.maxi-blocks--active #button-maxi-1[data-maxi-relations=\\"true\\"] .maxi-button-block__button .maxi-button-block__icon svg > * { transition: all 0.3s ease 0s;}"`;
 

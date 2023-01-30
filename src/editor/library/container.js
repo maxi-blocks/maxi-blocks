@@ -3,13 +3,13 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useDispatch, select, useSelect } from '@wordpress/data';
-import { RawHTML, useEffect, useState } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 import { CheckboxControl } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
-import { Button, ToggleSwitch } from '../../components';
+import { ToggleSwitch } from '../../components';
 import { updateSCOnEditor } from '../../extensions/style-cards';
 import {
 	svgAttributesReplacer,
@@ -19,9 +19,14 @@ import {
 } from './util';
 import { injectImgSVG } from '../../extensions/svg';
 // eslint-disable-next-line import/no-cycle
-import MaxiModal from './modal';
 import DOMPurify from 'dompurify';
 // import Icon from '../../components/icon';
+/**
+ * Internal dependencies
+ */
+import MasonryItem from './MasonryItem';
+import masonryGenerator from './masonryGenerator';
+import InfiniteHits from './InfiniteHits';
 
 /**
  * External dependencies
@@ -30,7 +35,7 @@ import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter';
 import {
 	InstantSearch,
 	SearchBox,
-	InfiniteHits,
+	// InfiniteHits,
 	connectRefinementList,
 	connectMenu,
 	connectHierarchicalMenu,
@@ -49,132 +54,132 @@ import useInterval from '../../extensions/dom/useInterval';
  */
 import { arrowIcon } from '../../icons';
 
-const MasonryItem = props => {
-	const {
-		type,
-		target,
-		svgCode,
-		isPro,
-		serial,
-		onRequestInsert,
-		previewIMG,
-		demoUrl,
-		title,
-		cost,
-		toneUrl,
-		currentItemColorStatus = false,
-		className,
-	} = props;
+// const MasonryItem = props => {
+// 	const {
+// 		type,
+// 		target,
+// 		svgCode,
+// 		isPro,
+// 		serial,
+// 		onRequestInsert,
+// 		previewIMG,
+// 		demoUrl,
+// 		title,
+// 		cost,
+// 		toneUrl,
+// 		currentItemColorStatus = false,
+// 		className,
+// 	} = props;
 
-	const masonryCardClasses = classnames(
-		'maxi-cloud-masonry-card',
-		`maxi-cloud-masonry-card__${target}`,
-		type === 'patterns' && `maxi-cloud-masonry-card__pattern-${serial}`,
-		type === 'svg' &&
-			currentItemColorStatus &&
-			'maxi-cloud-masonry-card__light',
-		className
-	);
+// 	const masonryCardClasses = classnames(
+// 		'maxi-cloud-masonry-card',
+// 		`maxi-cloud-masonry-card__${target}`,
+// 		type === 'patterns' && `maxi-cloud-masonry-card__pattern-${serial}`,
+// 		type === 'svg' &&
+// 			currentItemColorStatus &&
+// 			'maxi-cloud-masonry-card__light',
+// 		className
+// 	);
 
-	const masonryCardId = `maxi-cloud-masonry-card__pattern-${serial}`;
+// 	const masonryCardId = `maxi-cloud-masonry-card__pattern-${serial}`;
 
-	const patternsScContent = () => {
-		return (
-			<>
-				<div className='maxi-cloud-masonry-card__container'>
-					<div className='maxi-cloud-masonry-card__container__top-bar'>
-						<div className='maxi-cloud-masonry__serial-tag'>
-							{type === 'patterns' && title}
-							{type === 'sc' && serial}
-						</div>
-					</div>
-				</div>
-				<div className='maxi-cloud-masonry-card__image'>
-					<img src={previewIMG} alt={`Preview for ${serial}`} />
-				</div>
-				<div className='maxi-cloud-masonry-card__buttons'>
-					{type === 'patterns' && (
-						<>
-							<MaxiModal
-								type='preview'
-								url={demoUrl}
-								title={serial}
-								onRequestInsert={onRequestInsert}
-								cardId={masonryCardId}
-								cost={cost}
-								toneUrl={toneUrl}
-							/>
-							<Button
-								className='maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-load'
-								onClick={onRequestInsert}
-							>
-								{__('Insert', 'maxi-blocks')}
-							</Button>
-							<div className='maxi-cloud-masonry-card__tags'>
-								{!isPro && (
-									<span className='maxi-cloud-masonry-card__tags__tag maxi-cloud-masonry-card__tags__tag-free'>
-										{__('Free', 'maxi-blocks')}
-									</span>
-								)}
-								{isPro && (
-									<span className='maxi-cloud-masonry-card__tags__tag maxi-cloud-masonry-card__tags__tag-pro'>
-										{__('Pro', 'maxi-blocks')}
-									</span>
-								)}
-							</div>
-						</>
-					)}
-					{type === 'sc' && (
-						<span className='maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-load'>
-							{__('Insert', 'maxi-block')}
-						</span>
-					)}
-				</div>
-			</>
-		);
-	};
+// 	const patternsScContent = () => {
+// 		return (
+// 			<>
+// 				<div className='maxi-cloud-masonry-card__container'>
+// 					<div className='maxi-cloud-masonry-card__container__top-bar'>
+// 						<div className='maxi-cloud-masonry__serial-tag'>
+// 							{type === 'patterns' && title}
+// 							{type === 'sc' && serial}
+// 						</div>
+// 					</div>
+// 				</div>
+// 				<div className='maxi-cloud-masonry-card__image'>
+// 					<img src={previewIMG} alt={`Preview for ${serial}`} />
+// 				</div>
+// 				<div className='maxi-cloud-masonry-card__buttons'>
+// 					{type === 'patterns' && (
+// 						<>
+// 							<MaxiModal
+// 								type='preview'
+// 								url={demoUrl}
+// 								title={serial}
+// 								onRequestInsert={onRequestInsert}
+// 								cardId={masonryCardId}
+// 								cost={cost}
+// 								toneUrl={toneUrl}
+// 							/>
+// 							<Button
+// 								className='maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-load'
+// 								onClick={onRequestInsert}
+// 							>
+// 								{__('Insert', 'maxi-blocks')}
+// 							</Button>
+// 							<div className='maxi-cloud-masonry-card__tags'>
+// 								{!isPro && (
+// 									<span className='maxi-cloud-masonry-card__tags__tag maxi-cloud-masonry-card__tags__tag-free'>
+// 										{__('Free', 'maxi-blocks')}
+// 									</span>
+// 								)}
+// 								{isPro && (
+// 									<span className='maxi-cloud-masonry-card__tags__tag maxi-cloud-masonry-card__tags__tag-pro'>
+// 										{__('Pro', 'maxi-blocks')}
+// 									</span>
+// 								)}
+// 							</div>
+// 						</>
+// 					)}
+// 					{type === 'sc' && (
+// 						<span className='maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-load'>
+// 							{__('Insert', 'maxi-block')}
+// 						</span>
+// 					)}
+// 				</div>
+// 			</>
+// 		);
+// 	};
 
-	return (
-		<div className={masonryCardClasses} id={masonryCardId}>
-			{type === 'sc' && (
-				<Button onClick={onRequestInsert}>{patternsScContent()}</Button>
-			)}
-			{type === 'patterns' && patternsScContent()}
-			{type === 'svg' && (
-				<div
-					className='maxi-cloud-masonry-card__svg-container'
-					onClick={onRequestInsert}
-				>
-					<RawHTML
-						style={{
-							backgroundColor: currentItemColorStatus
-								? '#000000'
-								: '#ffffff',
-						}}
-						className='maxi-cloud-masonry-card__svg-container__code'
-					>
-						{svgCode}
-					</RawHTML>
-					<div className='maxi-cloud-masonry-card__svg-container__title'>
-						{target === 'button-icon' ||
-						target === 'search-icon' ||
-						target.includes('Line') ||
-						target.includes('video-icon')
-							? serial.replace(' Line', '').replace(' line', '')
-							: [
-									'image-shape',
-									'bg-shape',
-									'sidebar-block-shape',
-							  ].includes(target) || target.includes('Shape')
-							? serial.replace(' shape', '')
-							: serial}
-					</div>
-					<span>{__('Insert', 'maxi-block')}</span>
-				</div>
-			)}
-		</div>
-	);
-};
+// 	return (
+// 		<div className={masonryCardClasses} id={masonryCardId}>
+// 			{type === 'sc' && (
+// 				<Button onClick={onRequestInsert}>{patternsScContent()}</Button>
+// 			)}
+// 			{type === 'patterns' && patternsScContent()}
+// 			{type === 'svg' && (
+// 				<div
+// 					className='maxi-cloud-masonry-card__svg-container'
+// 					onClick={onRequestInsert}
+// 				>
+// 					<RawHTML
+// 						style={{
+// 							backgroundColor: currentItemColorStatus
+// 								? '#000000'
+// 								: '#ffffff',
+// 						}}
+// 						className='maxi-cloud-masonry-card__svg-container__code'
+// 					>
+// 						{svgCode}
+// 					</RawHTML>
+// 					<div className='maxi-cloud-masonry-card__svg-container__title'>
+// 						{target === 'button-icon' ||
+// 						target === 'search-icon' ||
+// 						target.includes('Line') ||
+// 						target.includes('video-icon')
+// 							? serial.replace(' Line', '').replace(' line', '')
+// 							: [
+// 									'image-shape',
+// 									'bg-shape',
+// 									'sidebar-block-shape',
+// 							  ].includes(target) || target.includes('Shape')
+// 							? serial.replace(' shape', '')
+// 							: serial}
+// 					</div>
+// 					<span>{__('Insert', 'maxi-block')}</span>
+// 				</div>
+// 			)}
+// 		</div>
+// 	);
+// };
 
 const Accordion = ({ children, title, openByDefault = false }) => {
 	const [isAccordionOpen, setAccordionOpen] = useState(openByDefault);
@@ -789,10 +794,11 @@ const LibraryContainer = props => {
 		);
 	};
 
+	// eslint-disable-next-line react/no-unstable-nested-components
 	const PlaceholderCheckboxControl = () => {
 		return (
 			<CheckboxControl
-				className='use-placeholer-all-images'
+				className='use-placeholder-all-images'
 				label={__(
 					'Swap stock images for placeholders to save disk space',
 					'maxi-blocks'

@@ -4,6 +4,15 @@
 	max-width: 90%;
 	overflow-y: auto;
 
+	@keyframes opacityAnimation {
+		0% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
+	}
+
 	&__action-section {
 		display: flex;
 		align-items: center;
@@ -204,7 +213,7 @@
 				column-gap: 10px;
 				width: 33.33%;
 			}
-			&__buttuns-group {
+			&__buttons-group {
 				display: flex;
 				align-items: center;
 				column-gap: 17px;
@@ -232,7 +241,7 @@
 					font-size: 0;
 				}
 			}
-			&__buttuns-group_close {
+			&__buttons-group_close {
 				display: flex;
 				align-items: center;
 				justify-content: flex-end;
@@ -452,6 +461,14 @@
 		}
 		.ais-ClearRefinements-button {
 			width: calc(100% - 16px);
+		}
+
+		.ais-InfiniteHits-sentinel {
+			height: 10px !important;
+			width: 10px !important;
+			bottom: 0;
+			right: 0;
+			position: absolute;
 		}
 
 		&__preview-iframe {
@@ -1734,8 +1751,8 @@
 @media only screen and (max-width: 1850px) {
 	.maxi-library-modal__preview {
 		.maxi-cloud-toolbar {
-			&__buttuns-group,
-			&__buttuns-group_close,
+			&__buttons-group,
+			&__buttons-group_close,
 			&__responsive-buttons {
 				width: auto;
 			}
@@ -1839,7 +1856,7 @@
 @media only screen and (max-width: 980px) {
 	.maxi-library-modal__preview {
 		.maxi-cloud-toolbar {
-			&__buttuns-group {
+			&__buttons-group {
 				column-gap: 10px;
 				h2,
 				span {
@@ -1947,7 +1964,7 @@
 	}
 	.maxi-library-modal__preview {
 		.maxi-cloud-toolbar {
-			&__buttuns-group {
+			&__buttons-group {
 				flex-direction: column;
 				justify-content: flex-start;
 				align-items: flex-start;

@@ -7,7 +7,10 @@ import { RawHTML } from '@wordpress/element';
 /**
  * Internal dependencies
  */
+
+// eslint-disable-next-line import/no-cycle
 import MaxiModal from './modal';
+import { Button } from '../../components';
 
 /**
  * External dependencies
@@ -28,24 +31,26 @@ const MasonryItem = props => {
 		toneUrl,
 		currentItemColorStatus = false,
 		className,
+		onRequestInsert,
 	} = props;
 
-	const cardSerial = serial
-		?.substring(serial?.lastIndexOf(' ') + 1)
-		?.toLowerCase();
-
+	const getCardSerial = (string = serial) => {
+		const sub = string?.lastIndexOf(' ');
+		const response = string?.substring(sub + 1);
+		return response?.toLowerCase();
+	};
 	const masonryCardClasses = classnames(
 		'maxi-cloud-masonry-card',
 		`maxi-cloud-masonry-card__${target}`,
 		type === 'patterns' &&
-			`maxi-cloud-masonry-card__pattern-${cardSerial} maxi-open-preview`,
+			`maxi-cloud-masonry-card__pattern-${getCardSerial()} maxi-open-preview`,
 		type === 'svg' &&
 			currentItemColorStatus &&
 			'maxi-cloud-masonry-card__light',
 		className
 	);
 
-	const masonryCardId = `maxi-cloud-masonry-card__pattern-${cardSerial}`;
+	const masonryCardId = `maxi-cloud-masonry-card__pattern-${getCardSerial()}`;
 
 	const patternsScContent = () => {
 		return (
@@ -66,15 +71,23 @@ const MasonryItem = props => {
 				</div>
 				<div className='maxi-cloud-masonry-card__buttons maxi-open-preview'>
 					{type === 'patterns' && (
-						<MaxiModal
-							type='preview'
-							url={demoUrl}
-							title={serial}
-							serial={cardSerial}
-							cost={cost}
-							toneUrl={toneUrl}
-							cardId={masonryCardId}
-						/>
+						<>
+							<MaxiModal
+								type='preview'
+								url={demoUrl}
+								title={serial}
+								serial={getCardSerial()}
+								cost={cost}
+								toneUrl={toneUrl}
+								cardId={masonryCardId}
+							/>
+							<Button
+								className='maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-load'
+								onClick={onRequestInsert}
+							>
+								{__('Insert', 'maxi-blocks')}
+							</Button>
+						</>
 					)}
 					<div className='maxi-cloud-masonry-card__tags maxi-open-preview'>
 						{!isPro && (
@@ -114,9 +127,15 @@ const MasonryItem = props => {
 				}
 			}}
 		>
+			{type === 'sc' && (
+				<Button onClick={onRequestInsert}>{patternsScContent()}</Button>
+			)}
 			{type === 'patterns' && patternsScContent()}
 			{type === 'svg' && (
-				<div className='maxi-cloud-masonry-card__svg-container'>
+				<div
+					className='maxi-cloud-masonry-card__svg-container'
+					onClick={onRequestInsert}
+				>
 					<RawHTML
 						style={{
 							backgroundColor: currentItemColorStatus
@@ -128,17 +147,20 @@ const MasonryItem = props => {
 						{svgCode}
 					</RawHTML>
 					<div className='maxi-cloud-masonry-card__svg-container__title'>
-						{target === 'button-icon' || target.includes('Line')
-							? serial.replace(' Line', '')
+						{target === 'button-icon' ||
+						target === 'search-icon' ||
+						target.includes('Line') ||
+						target.includes('video-icon')
+							? serial.replace(' Line', '').replace(' line', '')
 							: [
 									'image-shape',
 									'bg-shape',
 									'sidebar-block-shape',
-									'video-icon',
 							  ].includes(target) || target.includes('Shape')
 							? serial.replace(' shape', '')
 							: serial}
 					</div>
+					<span>{__('Insert', 'maxi-block')}</span>
 				</div>
 			)}
 		</div>

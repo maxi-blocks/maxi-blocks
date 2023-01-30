@@ -190,16 +190,16 @@ const LibraryToolbar = props => {
 		};
 
 		const masonryCardId = `maxi-cloud-masonry-card__pattern-${relatedSerial}`;
-		let fuulWidth = false;
+		let fullWidth = false;
 		if (document.fullscreenElement) {
-			fuulWidth = true;
+			fullWidth = true;
 		}
 
 		client
 			.collections('post')
 			.documents()
 			.search(searchParameters)
-			.then(function (result) {
+			.then(result => {
 				const relatedHint = result?.hits[0]?.document;
 				const root = ReactDOM.createRoot(
 					document.getElementById('maxi-modal')
@@ -224,8 +224,8 @@ const LibraryToolbar = props => {
 						onClose={onRequestClose}
 					/>
 				);
-				window.setTimeout(function () {
-					if (fuulWidth) {
+				window.setTimeout(() => {
+					if (fullWidth) {
 						const modal = document.getElementsByClassName(
 							'maxi-library-modal maxi-preview'
 						)[0];
@@ -239,7 +239,7 @@ const LibraryToolbar = props => {
 						});
 					}
 				}, 100);
-				window.setTimeout(function () {
+				window.setTimeout(() => {
 					const modal = document.getElementsByClassName(
 						'maxi-library-modal maxi-preview'
 					)[0];
@@ -508,7 +508,7 @@ const LibraryToolbar = props => {
 			)}
 			{(type === 'preview' || type === 'switch-tone') && (
 				<>
-					<div className='maxi-cloud-toolbar__buttuns-group'>
+					<div className='maxi-cloud-toolbar__buttons-group'>
 						<ToolbarButton
 							label={__('Back', 'maxi-blocks')}
 							onClick={onRequestClose}
@@ -576,7 +576,7 @@ const LibraryToolbar = props => {
 			)}
 
 			{(type === 'preview' || type === 'switch-tone') && (
-				<div className='maxi-cloud-toolbar__buttuns-group_close'>
+				<div className='maxi-cloud-toolbar__buttons-group_close'>
 					<ToolbarButton onClick={onRequestClose} icon={closeIcon} />
 				</div>
 			)}

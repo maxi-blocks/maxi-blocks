@@ -18,14 +18,15 @@ import {
 	onRequestInsertPattern,
 } from './util';
 import { injectImgSVG } from '../../extensions/svg';
-// eslint-disable-next-line import/no-cycle
 import DOMPurify from 'dompurify';
-// import Icon from '../../components/icon';
 /**
  * Internal dependencies
  */
+// eslint-disable-next-line import/no-cycle
 import MasonryItem from './MasonryItem';
+// eslint-disable-next-line no-unused-vars
 import masonryGenerator from './masonryGenerator';
+// eslint-disable-next-line import/no-cycle
 import InfiniteHits from './InfiniteHits';
 
 /**
@@ -815,6 +816,8 @@ const LibraryContainer = props => {
 	const CustomClearRefinements = connectCurrentRefinements(ClearRefinements);
 
 	const masonryGenerator = () => {
+		if (type !== 'patterns') return;
+
 		const elem = document.querySelector(
 			'.maxi-cloud-container__patterns__content-patterns .ais-InfiniteHits-list'
 		);
@@ -1139,7 +1142,42 @@ const LibraryContainer = props => {
 								attributes={['category.lvl0', 'category.lvl1']}
 								limit={100}
 							/>
-							<CustomClearRefinements />
+							<div className='ais-ClearRefinements'>
+								<button
+									type='button'
+									className='ais-ClearRefinements-button'
+									onClick={e => {
+										e.preventDefault();
+										const allButton =
+											document.querySelector(
+												'.top-Menu > button:first-child'
+											);
+										allButton?.click();
+
+										const patternsButton =
+											document.querySelector(
+												'.maxi-cloud-container__patterns__top-menu .ais-Menu-list > .ais-Menu-item:nth-child(2):not(.ais-Menu-item--selected) a'
+											);
+										patternsButton?.click();
+
+										const lightButton =
+											document.querySelector(
+												'.maxi-cloud-container__patterns__sidebar > .ais-Menu .ais-Menu-list > .ais-Menu-item:first-child:not(.ais-Menu-item--selected) a'
+											);
+										lightButton?.click();
+
+										setTimeout(() => {
+											const listItem =
+												document.querySelector(
+													'.maxi-cloud-container__patterns__sidebar > ul .ais-HierarchicalMenu-item--selected > a'
+												);
+											listItem?.click();
+										}, '100');
+									}}
+								>
+									{__('Clear filters', 'maxi-blocks')}
+								</button>
+							</div>
 						</div>
 						<div className='maxi-cloud-container__patterns__content-patterns'>
 							<Stats translations={resultsCount} />

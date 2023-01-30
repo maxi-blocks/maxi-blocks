@@ -40,6 +40,8 @@ import { getSVGListStyle } from './utils';
 import { isNil, isNumber } from 'lodash';
 import parse from 'html-react-parser';
 
+const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
 const getNormalObject = props => {
 	const response = {
 		border: getBorderStyles({
@@ -161,7 +163,7 @@ const getTypographyHoverObject = props => {
 };
 
 const getListObject = props => {
-	const { listStyle, listStart, listReversed, content, isRTL } = props;
+	const { listStyle, listStart, listReversed, content } = props;
 
 	let counterReset;
 	if (isNumber(listStart)) {
@@ -186,91 +188,79 @@ const getListObject = props => {
 			},
 		},
 		...(() => {
-			const response = { listGap: {}, textIndent: {} };
+			const response = { listGap: {} };
 
-			['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].forEach(
-				breakpoint => {
-					// List gap
-					const gapNum = getLastBreakpointAttribute({
-						target: 'list-gap',
+			breakpoints.forEach(breakpoint => {
+				const isRTL =
+					props.isRTL ||
+					getLastBreakpointAttribute({
+						target: 'text-direction',
 						breakpoint,
 						attributes: props,
-					});
-					const gapUnit = getLastBreakpointAttribute({
-						target: 'list-gap-unit',
+					}) === 'rtl';
+
+				// List gap
+				const gapNum = getLastBreakpointAttribute({
+					target: 'list-gap',
+					breakpoint,
+					attributes: props,
+				});
+				const gapUnit = getLastBreakpointAttribute({
+					target: 'list-gap-unit',
+					breakpoint,
+					attributes: props,
+				});
+
+				// List style position
+				const listStylePosition = getLastBreakpointAttribute({
+					target: 'list-style-position',
+					breakpoint,
+					attributes: props,
+				});
+
+				// List marker size
+				const sizeNum =
+					getLastBreakpointAttribute({
+						target: 'list-marker-size',
 						breakpoint,
 						attributes: props,
-					});
-
-					// List style position
-					const listStylePosition = getLastBreakpointAttribute({
-						target: 'list-style-position',
+					}) || 0;
+				const sizeUnit =
+					getLastBreakpointAttribute({
+						target: 'list-marker-size-unit',
 						breakpoint,
 						attributes: props,
-					});
+					}) || 'px';
 
-					// List marker size
-					const sizeNum =
-						getLastBreakpointAttribute({
-							target: 'list-marker-size',
-							breakpoint,
-							attributes: props,
-						}) || 0;
-					const sizeUnit =
-						getLastBreakpointAttribute({
-							target: 'list-marker-size-unit',
-							breakpoint,
-							attributes: props,
-						}) || 'px';
-
-					// Marker indent
-					const indentMarkerNum =
-						getLastBreakpointAttribute({
-							target: 'list-marker-indent',
-							breakpoint,
-							attributes: props,
-						}) || 0;
-					const indentMarkerUnit =
-						getLastBreakpointAttribute({
-							target: 'list-marker-indent-unit',
-							breakpoint,
-							attributes: props,
-						}) || 'px';
-
-					const indentMarkerSum = indentMarkerNum + indentMarkerUnit;
-
-					const padding =
-						listStylePosition === 'inside'
-							? gapNum + gapUnit
-							: `calc(${gapNum + gapUnit} + ${
-									sizeNum + sizeUnit
-							  } + ${indentMarkerSum})`;
-
-					if (!isNil(gapNum) && !isNil(gapUnit)) {
-						response.listGap[breakpoint] = {
-							[`padding-${isRTL ? 'right' : 'left'}`]: padding,
-						};
-					}
-
-					// List indent
-					const indentNum = getLastBreakpointAttribute({
-						target: 'list-indent',
+				// Marker indent
+				const indentMarkerNum =
+					getLastBreakpointAttribute({
+						target: 'list-marker-indent',
 						breakpoint,
 						attributes: props,
-					});
-					const indentUnit = getLastBreakpointAttribute({
-						target: 'list-indent-unit',
+					}) || 0;
+				const indentMarkerUnit =
+					getLastBreakpointAttribute({
+						target: 'list-marker-indent-unit',
 						breakpoint,
 						attributes: props,
-					});
+					}) || 'px';
 
-					if (!isNil(indentNum) && !isNil(indentUnit)) {
-						response.textIndent[breakpoint] = {
-							'text-indent': indentNum + indentUnit,
-						};
-					}
+				const indentMarkerSum = indentMarkerNum + indentMarkerUnit;
+
+				const padding =
+					listStylePosition === 'inside'
+						? gapNum + gapUnit
+						: `calc(${gapNum + gapUnit} + ${
+								sizeNum + sizeUnit
+						  } + ${indentMarkerSum})`;
+
+				if (!isNil(gapNum) && !isNil(gapUnit)) {
+					response.listGap[breakpoint] = {
+						[`padding-${isRTL ? 'right' : 'left'}`]: padding,
+					};
 				}
-			);
+			});
 
 			return response;
 		})(),
@@ -290,6 +280,33 @@ const getListItemObject = props => {
 				},
 			},
 		}),
+		...(() => {
+			const response = {
+				textIndent: {},
+			};
+
+			breakpoints.forEach(breakpoint => {
+				// List indent
+				const indentNum = getLastBreakpointAttribute({
+					target: 'list-indent',
+					breakpoint,
+					attributes: props,
+				});
+				const indentUnit = getLastBreakpointAttribute({
+					target: 'list-indent-unit',
+					breakpoint,
+					attributes: props,
+				});
+
+				if (!isNil(indentNum) && !isNil(indentUnit)) {
+					response.textIndent[breakpoint] = {
+						'text-indent': indentNum + indentUnit,
+					};
+				}
+			});
+
+			return response;
+		})(),
 	};
 };
 
@@ -298,31 +315,29 @@ const getListParagraphObject = props => {
 		...(() => {
 			const response = { paragraphSpacing: {} };
 
-			['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].forEach(
-				breakpoint => {
-					// List gap
-					const paragraphSpacingNum = getLastBreakpointAttribute({
-						target: 'list-paragraph-spacing',
-						breakpoint,
-						attributes: props,
-					});
-					const paragraphSpacingUnit = getLastBreakpointAttribute({
-						target: 'list-paragraph-spacing-unit',
-						breakpoint,
-						attributes: props,
-					});
+			breakpoints.forEach(breakpoint => {
+				// List gap
+				const paragraphSpacingNum = getLastBreakpointAttribute({
+					target: 'list-paragraph-spacing',
+					breakpoint,
+					attributes: props,
+				});
+				const paragraphSpacingUnit = getLastBreakpointAttribute({
+					target: 'list-paragraph-spacing-unit',
+					breakpoint,
+					attributes: props,
+				});
 
-					if (
-						!isNil(paragraphSpacingNum) &&
-						!isNil(paragraphSpacingUnit)
-					) {
-						response.paragraphSpacing[breakpoint] = {
-							'margin-top':
-								paragraphSpacingNum + paragraphSpacingUnit,
-						};
-					}
+				if (
+					!isNil(paragraphSpacingNum) &&
+					!isNil(paragraphSpacingUnit)
+				) {
+					response.paragraphSpacing[breakpoint] = {
+						'margin-top':
+							paragraphSpacingNum + paragraphSpacingUnit,
+					};
 				}
-			);
+			});
 
 			return response;
 		})(),
@@ -332,7 +347,7 @@ const getListParagraphObject = props => {
 };
 
 const getMarkerObject = props => {
-	const { typeOfList, listStyle, listStyleCustom, blockStyle, isRTL } = props;
+	const { typeOfList, listStyle, listStyleCustom, blockStyle } = props;
 
 	const { paletteStatus, paletteColor, paletteOpacity, color } =
 		getPaletteAttributes({
@@ -405,112 +420,107 @@ const getMarkerObject = props => {
 		...(() => {
 			const response = { listSize: {} };
 
-			['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].forEach(
-				breakpoint => {
-					// List indent
-					const indentNum =
-						getLastBreakpointAttribute({
-							target: 'list-indent',
-							breakpoint,
-							attributes: props,
-						}) || 0;
-					const indentUnit =
-						getLastBreakpointAttribute({
-							target: 'list-indent-unit',
-							breakpoint,
-							attributes: props,
-						}) || 'px';
-
-					// List style position
-					const listStylePosition = getLastBreakpointAttribute({
-						target: 'list-style-position',
+			breakpoints.forEach(breakpoint => {
+				const isRTL =
+					props.isRTL ||
+					getLastBreakpointAttribute({
+						target: 'text-direction',
 						breakpoint,
 						attributes: props,
-					});
+					}) === 'rtl';
 
-					// List marker size
-					const sizeNum =
-						getLastBreakpointAttribute({
-							target: 'list-marker-size',
-							breakpoint,
-							attributes: props,
-						}) || 0;
-					const sizeUnit =
-						getLastBreakpointAttribute({
-							target: 'list-marker-size-unit',
-							breakpoint,
-							attributes: props,
-						}) || 'px';
+				// List style position
+				const listStylePosition = getLastBreakpointAttribute({
+					target: 'list-style-position',
+					breakpoint,
+					attributes: props,
+				});
 
-					// Text position
-					const textPosition =
-						getLastBreakpointAttribute({
-							target: 'list-text-position',
-							breakpoint,
-							attributes: props,
-						}) || false;
+				// List marker size
+				const sizeNum =
+					getLastBreakpointAttribute({
+						target: 'list-marker-size',
+						breakpoint,
+						attributes: props,
+					}) || 0;
+				const sizeUnit =
+					getLastBreakpointAttribute({
+						target: 'list-marker-size-unit',
+						breakpoint,
+						attributes: props,
+					}) || 'px';
 
-					// Marker indent
-					const indentMarkerNum =
-						getLastBreakpointAttribute({
-							target: 'list-marker-indent',
-							breakpoint,
-							attributes: props,
-						}) || 0;
-					const indentMarkerUnit =
-						getLastBreakpointAttribute({
-							target: 'list-marker-indent-unit',
-							breakpoint,
-							attributes: props,
-						}) || 'px';
+				// Text position
+				const textPosition =
+					getLastBreakpointAttribute({
+						target: 'list-text-position',
+						breakpoint,
+						attributes: props,
+					}) || false;
 
-					const indentMarkerSum = indentMarkerNum + indentMarkerUnit;
-					const indentSum =
-						listStylePosition === 'inside'
-							? indentNum + indentUnit
-							: `calc(${indentNum}${indentUnit} - ${
-									sizeNum + sizeUnit
-							  } - ${indentMarkerSum})`;
+				// Marker indent
+				const indentMarkerNum =
+					getLastBreakpointAttribute({
+						target: 'list-marker-indent',
+						breakpoint,
+						attributes: props,
+					}) || 0;
+				const indentMarkerUnit =
+					getLastBreakpointAttribute({
+						target: 'list-marker-indent-unit',
+						breakpoint,
+						attributes: props,
+					}) || 'px';
 
-					// Marker line-height
-					const lineHeightMarkerNum =
-						getLastBreakpointAttribute({
-							target: 'list-marker-line-height',
-							breakpoint,
-							attributes: props,
-						}) || 0;
-					const lineHeightMarkerUnit =
-						getLastBreakpointAttribute({
-							target: 'list-marker-line-height-unit',
-							breakpoint,
-							attributes: props,
-						}) || 'px';
+				const indentMarkerSum = indentMarkerNum + indentMarkerUnit;
+				const markerPosition =
+					listStylePosition === 'inside'
+						? 0
+						: `calc(-${sizeNum + sizeUnit} - ${indentMarkerSum})`;
 
-					response.listSize[breakpoint] = {
-						...(typeOfList === 'ul' &&
-						listStyle === 'custom' &&
-						listStyleCustom &&
-						listStyleCustom.includes('</svg>')
-							? {
-									width: sizeNum + sizeUnit,
-							  }
-							: { 'font-size': sizeNum + sizeUnit }),
-						'line-height':
-							lineHeightMarkerNum +
-							(lineHeightMarkerUnit !== '-'
-								? lineHeightMarkerUnit
-								: ''),
-						'margin-right': isRTL ? indentSum : indentMarkerSum,
-						'margin-left': isRTL ? indentMarkerSum : indentSum,
-						...(listStyle === 'none' && {
-							'padding-right': '1em',
-						}),
-						...(textPosition && {
-							'vertical-align': textPosition,
-						}),
-					};
-				}
-			);
+				// Marker line-height
+				const lineHeightMarkerNum =
+					getLastBreakpointAttribute({
+						target: 'list-marker-line-height',
+						breakpoint,
+						attributes: props,
+					}) || 0;
+				const lineHeightMarkerUnit =
+					getLastBreakpointAttribute({
+						target: 'list-marker-line-height-unit',
+						breakpoint,
+						attributes: props,
+					}) || 'px';
+
+				response.listSize[breakpoint] = {
+					...(typeOfList === 'ul' &&
+					listStyle === 'custom' &&
+					listStyleCustom &&
+					listStyleCustom.includes('</svg>')
+						? {
+								height: sizeNum + sizeUnit,
+						  }
+						: { 'font-size': sizeNum + sizeUnit }),
+					'line-height':
+						lineHeightMarkerNum +
+						(lineHeightMarkerUnit !== '-'
+							? lineHeightMarkerUnit
+							: ''),
+					[isRTL ? 'right' : 'left']: markerPosition,
+					...(listStylePosition === 'outside' && {
+						width: 0,
+					}),
+					...(listStylePosition === 'inside' && {
+						'margin-right': indentMarkerSum,
+					}),
+					...(listStyle === 'none' && {
+						'padding-right': '1em',
+					}),
+					...(textPosition && {
+						'vertical-align': textPosition,
+					}),
+				};
+			});
 
 			return response;
 		})(),

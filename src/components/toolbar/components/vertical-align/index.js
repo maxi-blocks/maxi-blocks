@@ -35,6 +35,9 @@ const VerticalAlign = props => {
 				<SelectControl
 					label={__('Vertical align', 'maxi-blocks')}
 					value={verticalAlign}
+					defaultValue={getDefaultAttribute(
+						`justify-content-${breakpoint}`
+					)}
 					onReset={() =>
 						onChange({
 							[`justify-content-${breakpoint}`]:

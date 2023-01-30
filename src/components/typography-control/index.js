@@ -35,7 +35,7 @@ import { getDefaultSCValue } from '../../extensions/style-cards';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 
 /**
  * Styles
@@ -383,14 +383,17 @@ const TypographyControl = props => {
 			avoidSC,
 		});
 
-	const getDefault = target => {
+	const getDefault = (target, keepBreakpoint = false) => {
 		const prop = `${prefix}${target}`;
 
 		const currentBreakpoint =
-			(isStyleCards && breakpoint === 'general' && baseBreakpoint) ||
+			(isStyleCards &&
+				breakpoint === 'general' &&
+				!keepBreakpoint &&
+				baseBreakpoint) ||
 			breakpoint;
 
-		const defaultAttribute = !isStyleCards
+		let defaultAttribute = !isStyleCards
 			? getDefaultAttribute(`${prop}-${currentBreakpoint}`, clientId)
 			: getDefaultSCValue({
 					target: `${prop}-${currentBreakpoint}`,
@@ -398,6 +401,15 @@ const TypographyControl = props => {
 					SCStyle: blockStyle,
 					groupAttr: textLevel,
 			  });
+
+		if (isStyleCards && isNil(defaultAttribute)) {
+			defaultAttribute = getDefaultSCValue({
+				target: `${prop}-${breakpoint}`,
+				SC: styleCard,
+				SCStyle: blockStyle,
+				groupAttr: textLevel,
+			});
+		}
 
 		return defaultAttribute;
 	};
@@ -650,6 +662,7 @@ const TypographyControl = props => {
 						);
 					}}
 					fontWeight={getValue('font-weight')}
+					defaultFontWeight={getDefault('font-weight')}
 					fontName={getValue('font-family')}
 					fontStyle={getValue('font-style')}
 					breakpoint={breakpoint}
@@ -658,6 +671,7 @@ const TypographyControl = props => {
 					label={__('Text transform', 'maxi-blocks')}
 					className='maxi-typography-control__transform'
 					value={getValue('text-transform')}
+					defaultValue={getDefault('text-transform')}
 					options={[
 						{
 							label: __('Default', 'maxi-blocks'),
@@ -695,6 +709,7 @@ const TypographyControl = props => {
 					label={__('Style', 'maxi-blocks')}
 					className='maxi-typography-control__font-style'
 					value={getValue('font-style')}
+					defaultValue={getDefault('font-style')}
 					options={[
 						{
 							label: __('Default', 'maxi-blocks'),
@@ -728,6 +743,7 @@ const TypographyControl = props => {
 					label={__('Text decoration', 'maxi-blocks')}
 					className='maxi-typography-control__decoration'
 					value={getValue('text-decoration')}
+					defaultValue={getDefault('text-decoration')}
 					options={[
 						{
 							label: __('Default', 'maxi-blocks'),
@@ -771,6 +787,7 @@ const TypographyControl = props => {
 							label={__('Text orientation', 'maxi-blocks')}
 							className='maxi-typography-control__orientation'
 							value={getValue('text-orientation')}
+							defaultValue={getDefault('text-orientation')}
 							options={[
 								{
 									label: __('None', 'maxi-blocks'),
@@ -811,6 +828,7 @@ const TypographyControl = props => {
 							label={__('Text direction', 'maxi-blocks')}
 							className='maxi-typography-control__direction'
 							value={getValue('text-direction')}
+							defaultValue={getDefault('text-direction')}
 							options={[
 								{
 									label: __('Left to right', 'maxi-blocks'),
@@ -898,6 +916,7 @@ const TypographyControl = props => {
 					label={__('White space', 'maxi-blocks')}
 					className='maxi-typography-control__white-space'
 					value={getValue('white-space')}
+					defaultValue={getDefault('white-space')}
 					options={[
 						{
 							label: __('Normal', 'maxi-blocks'),
@@ -928,6 +947,15 @@ const TypographyControl = props => {
 						onChangeFormat({
 							[`${prefix}white-space`]: val,
 						});
+					}}
+					onReset={() => {
+						onChangeFormat(
+							{
+								[`${prefix}white-space`]:
+									getDefault('white-space'),
+							},
+							{ isReset: true }
+						);
 					}}
 				/>
 				<AdvancedNumberControl

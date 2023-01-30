@@ -43,6 +43,7 @@ const background = ({
 		scValues = {},
 		insertInlineStyles,
 		cleanInlineStyles,
+		getBounds,
 	} = props;
 
 	const {
@@ -67,6 +68,7 @@ const background = ({
 		clientId,
 		breakpoint: deviceType,
 		globalProps,
+		getBounds,
 	};
 
 	return {

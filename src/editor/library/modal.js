@@ -13,6 +13,7 @@ import {
 /**
  * Internal dependencies
  */
+// eslint-disable-next-line import/no-cycle
 import CloudLibrary from '.';
 import { Icon, BaseControl, Button } from '../../components';
 
@@ -95,6 +96,8 @@ const MaxiModal = props => {
 		forceHide = false,
 		url,
 		title,
+		cost,
+		toneUrl,
 		cardId,
 		prefix = '',
 		label = '',
@@ -211,6 +214,8 @@ const MaxiModal = props => {
 						onSelect={onSelect}
 						url={url}
 						title={title}
+						cost={cost}
+						toneUrl={toneUrl}
 						cardId={cardId}
 						prefix={prefix}
 						className={`maxi-library-modal__${type}`}

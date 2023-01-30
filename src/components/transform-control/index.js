@@ -55,12 +55,14 @@ const TransformControl = props => {
 	const latestTarget = useRef();
 
 	useEffect(() => {
-		const targetSelector =
-			selectors[transformTarget]?.[hoverSelected]?.target;
+		const currentSelector = selectors[transformTarget]?.[hoverSelected];
+		const targetSelector = currentSelector?.target;
+		const defaultValues = currentSelector?.defaultValues;
 		latestTarget.current = {
 			transformTarget,
 			hoverSelected,
 			targetSelector,
+			defaultValues,
 		};
 	}, [transformTarget, hoverSelected]);
 
@@ -407,18 +409,14 @@ const TransformControl = props => {
 							{transformStatus === 'translate' && (
 								<SquareControl
 									type='drag'
-									x={
-										getLastBreakpointTransformAttribute({
-											target: 'transform-translate',
-											key: 'x',
-										}) ?? 0
-									}
-									y={
-										getLastBreakpointTransformAttribute({
-											target: 'transform-translate',
-											key: 'y',
-										}) ?? 0
-									}
+									x={getLastBreakpointTransformAttribute({
+										target: 'transform-translate',
+										key: 'x',
+									})}
+									y={getLastBreakpointTransformAttribute({
+										target: 'transform-translate',
+										key: 'y',
+									})}
 									xUnit={
 										getLastBreakpointTransformAttribute({
 											target: 'transform-translate',
@@ -430,6 +428,10 @@ const TransformControl = props => {
 											target: 'transform-translate',
 											key: 'y-unit',
 										}) ?? '%'
+									}
+									defaultValues={
+										latestTarget.current?.defaultValues
+											?.translate
 									}
 									onChange={(x, y, xUnit, yUnit) => {
 										onChangeTransform({

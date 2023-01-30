@@ -619,6 +619,14 @@
 			position: absolute;
 		}
 
+		.ais-InfiniteHits-sentinel {
+			height: 10px !important;
+			width: 10px !important;
+			bottom: 0;
+			right: 0;
+			position: absolute;
+		}
+
 		&__preview-iframe {
 			border-width: 0 !important;
 		}

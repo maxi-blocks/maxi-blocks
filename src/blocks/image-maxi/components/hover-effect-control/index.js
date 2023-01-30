@@ -53,7 +53,14 @@ import {
  * Component
  */
 const HoverEffectControl = props => {
-	const { className, onChangeInline, onChange, blockStyle, clientId } = props;
+	const {
+		className,
+		onChangeInline,
+		onChange,
+		blockStyle,
+		clientId,
+		breakpoint,
+	} = props;
 
 	const classes = classnames('maxi-hover-effect-control', className);
 
@@ -97,21 +104,23 @@ const HoverEffectControl = props => {
 				hasBorder
 			/>
 			{props['hover-type'] !== 'none' && (
-				<ToggleSwitch
-					label={__('Show hover preview', 'maxi-blocks')}
-					selected={props['hover-preview']}
-					onChange={val => {
-						val === false
-							? disablePreview()
-							: onChange({ 'hover-preview': val });
-					}}
-				/>
+				<>
+					<ToggleSwitch
+						label={__('Show hover preview', 'maxi-blocks')}
+						selected={props['hover-preview']}
+						onChange={val => {
+							val === false
+								? disablePreview()
+								: onChange({ 'hover-preview': val });
+						}}
+					/>
+					<ToggleSwitch
+						label={__('Extend outside boundary', 'maxi-blocks')}
+						selected={props['hover-extension']}
+						onChange={val => onChange({ 'hover-extension': val })}
+					/>
+				</>
 			)}
-			<ToggleSwitch
-				label={__('Extend outside boundary', 'maxi-blocks')}
-				selected={props['hover-extension']}
-				onChange={val => onChange({ 'hover-extension': val })}
-			/>
 			{props['hover-type'] !== 'none' &&
 				(props['hover-type'] === 'text' ||
 					props['hover-basic-effect-type'] === 'zoom-in' ||
@@ -559,6 +568,7 @@ const HoverEffectControl = props => {
 							label={__('Padding', 'maxi-blocks')}
 							onChange={onChange}
 							target='hover-padding'
+							breakpoint={breakpoint}
 							disableAuto
 						/>
 					)}
@@ -578,6 +588,7 @@ const HoverEffectControl = props => {
 							onChange={onChange}
 							target='hover-margin'
 							optionType='string'
+							breakpoint={breakpoint}
 						/>
 					)}
 				</>

@@ -1,15 +1,18 @@
 body.maxi-blocks--active .maxi-image-block {
 	&__resizer {
-		height: inherit !important;
 		max-height: 100%;
 	}
-
 	&__image {
 		display: block;
 		margin: auto;
 	}
 
 	.maxi-image-block-wrapper {
+		height: inherit;
+		width: 100% !important;
+		max-height: 100%;
+		margin: auto;
+
 		&:not(.maxi-image-block-wrapper--fit-parent-size) {
 			.maxi-image-block__image {
 				width: 100% !important;
@@ -69,13 +72,6 @@ body.maxi-blocks--active .maxi-image-block {
 			max-width: 100%;
 			height: auto;
 		}
-	}
-
-	.maxi-image-block-wrapper {
-		width: 100% !important;
-		height: inherit;
-		max-height: 100%;
-		margin: auto;
 	}
 }
 

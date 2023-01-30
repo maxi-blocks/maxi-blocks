@@ -2,38 +2,27 @@
  * Internal dependencies
  */
 import getLastBreakpointAttribute from './getLastBreakpointAttribute';
+import getAttributeValue from './getAttributeValue';
 
 /**
  * External dependencies
  */
-import { isNil, isBoolean } from 'lodash';
+import { isNil } from 'lodash';
 
 const getPaletteAttributes = ({ obj, prefix = '', breakpoint, isHover }) => {
-	if (isNil(breakpoint)) {
-		const hoverFrag = isHover ? '-hover' : '';
-
-		const {
-			[`${prefix}palette-status${hoverFrag}`]: rawPaletteStatus,
-			[`${prefix}palette-status`]: nonHoverPaletteStatus,
-			[`${prefix}palette-color${hoverFrag}`]: paletteColor,
-			[`${prefix}palette-opacity${hoverFrag}`]: paletteOpacity,
-			[`${prefix}color${hoverFrag}`]: color,
-		} = obj;
-
-		const paletteStatus =
-			isHover && isBoolean(rawPaletteStatus)
-				? rawPaletteStatus
-				: nonHoverPaletteStatus;
-		return { paletteStatus, paletteColor, paletteOpacity, color };
-	}
-
 	const getValue = key =>
-		getLastBreakpointAttribute({
-			target: `${prefix}${key}`,
-			breakpoint,
-			attributes: obj,
-			isHover,
-		});
+		isNil(breakpoint)
+			? getAttributeValue({
+					target: `${prefix}${key}`,
+					props: obj,
+					isHover,
+			  })
+			: getLastBreakpointAttribute({
+					target: `${prefix}${key}`,
+					breakpoint,
+					attributes: obj,
+					isHover,
+			  });
 
 	return {
 		paletteStatus: getValue('palette-status'),

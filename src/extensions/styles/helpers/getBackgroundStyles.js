@@ -301,10 +301,10 @@ export const getImageBackgroundObject = ({
 	const getBgImageAttributeValue = (target, isHoverParam = isHover) =>
 		getAttributeValue({
 			target,
-			props,
-			prefix,
 			isHover: isHoverParam,
+			prefix,
 			breakpoint,
+			props,
 		});
 	const getBgImageLastBreakpointAttribute = target =>
 		getLastBreakpointAttribute({

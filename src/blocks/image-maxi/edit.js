@@ -356,7 +356,7 @@ class edit extends MaxiBlockComponent {
 					{!isNil(mediaID) || mediaURL ? (
 						<BlockResizer
 							key={uniqueID}
-							className='maxi-block__resizer maxi-image-block__resizer'
+							className='maxi-image-block__resizer'
 							resizableObject={this.resizableObject}
 							isOverflowHidden={getIsOverflowHidden(
 								attributes,

@@ -6,3 +6,4 @@ export { default as helpIcon } from './help-icon';
 export { default as styleCardMenu } from './style-cards-menu';
 export { default as ribbonFree } from './cloud-lib-ribbon_free';
 export { default as ribbonPro } from './cloud-lib-ribbon_pro';
+export { default as arrowIcon } from './arrow';

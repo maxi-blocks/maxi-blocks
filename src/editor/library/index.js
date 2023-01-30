@@ -34,6 +34,8 @@ const CloudLibrary = props => {
 		onSelect,
 		url,
 		title,
+		cost,
+		toneUrl,
 		cardId,
 		prefix,
 	} = props;
@@ -54,8 +56,11 @@ const CloudLibrary = props => {
 				<LibraryToolbar
 					type={type}
 					onChange={type => setType(type)}
-					onRequestClose={onClose}
 					cardId={cardId}
+					title={title}
+					cost={cost}
+					toneUrl={toneUrl}
+					onRequestClose={onClose}
 				/>
 				<LibraryContainer
 					type={type}
@@ -65,6 +70,7 @@ const CloudLibrary = props => {
 					url={url}
 					title={title}
 					prefix={prefix}
+					isPro
 				/>
 			</>
 		</Modal>

@@ -676,6 +676,9 @@ body.maxi-blocks--active {
 								word-spacing: var(
 									--maxi-#{$style}-#{$level}-word-spacing-#{$current_responsive_stage}
 								);
+								margin-bottom: var(
+									--maxi-#{$style}-#{$level}-margin-bottom-#{$current_responsive_stage}
+								);
 								text-indent: var(
 									--maxi-#{$style}-#{$level}-text-indent-#{$current_responsive_stage}
 								);

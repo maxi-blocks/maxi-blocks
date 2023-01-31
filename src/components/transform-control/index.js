@@ -55,14 +55,12 @@ const TransformControl = props => {
 	const latestTarget = useRef();
 
 	useEffect(() => {
-		const currentSelector = selectors[transformTarget]?.[hoverSelected];
-		const targetSelector = currentSelector?.target;
-		const defaultValues = currentSelector?.defaultValues;
+		const targetSelector =
+			selectors[transformTarget]?.[hoverSelected]?.target;
 		latestTarget.current = {
 			transformTarget,
 			hoverSelected,
 			targetSelector,
-			defaultValues,
 		};
 	}, [transformTarget, hoverSelected]);
 
@@ -430,7 +428,9 @@ const TransformControl = props => {
 										}) ?? '%'
 									}
 									defaultValues={
-										latestTarget.current?.defaultValues?.[
+										selectors[transformTarget]?.[
+											hoverSelected
+										]?.defaultValues?.[
 											'transform-translate'
 										]
 									}

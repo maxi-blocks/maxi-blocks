@@ -18,7 +18,7 @@ import ResetButton from '../reset-control';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNaN, isNumber, round, toNumber } from 'lodash';
+import { isEmpty, isEqual, isNaN, isNumber, round, toNumber } from 'lodash';
 
 /**
  * Icons
@@ -34,13 +34,14 @@ const SquareControl = props => {
 		xUnit = null,
 		y,
 		yUnit = null,
-		defaultValues,
+		defaultValues: defaultValuesRaw,
 		onChange,
 		onSave,
 		type = 'resize',
 	} = props;
 
 	const canvasRef = useRef(null);
+	const defaultValues = useRef(defaultValuesRaw);
 
 	const [sync, changeSync] = useState(false);
 	const [xAxis, changeXAxis] = useState(x || '');
@@ -52,7 +53,7 @@ const SquareControl = props => {
 	const [clientY, changeClientY] = useState(0);
 
 	const getPlaceholder = (value, axis) => {
-		if (!isEmpty(defaultValues)) return defaultValues[axis];
+		if (!isEmpty(defaultValues.current)) return defaultValues.current[axis];
 
 		switch (type) {
 			case 'resize':
@@ -191,6 +192,15 @@ const SquareControl = props => {
 			}
 		}
 	}, [x, y]);
+
+	useEffect(() => {
+		if (isEqual(defaultValues.current, defaultValuesRaw)) return;
+
+		defaultValues.current = defaultValuesRaw;
+
+		changeTempX(getPlaceholder(x, 'x'));
+		changeTempY(getPlaceholder(y, 'y'));
+	}, [defaultValuesRaw]);
 
 	useEffect(() => {
 		changeXUnit(xUnit);

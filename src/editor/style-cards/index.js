@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
+import { useState, forwardRef } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 
 /**
@@ -17,7 +17,7 @@ import { Button, Icon } from '../../components';
 import './editor.scss';
 import { styleCardMenu } from '../../icons';
 
-const MaxiStyleCardsEditorPopUp = () => {
+const MaxiStyleCardsEditorPopUp = forwardRef((props, settingsRef) => {
 	const { styleCards } = useSelect(select => {
 		const { receiveMaxiStyleCards } = select('maxiBlocks/style-cards');
 
@@ -41,12 +41,13 @@ const MaxiStyleCardsEditorPopUp = () => {
 			</Button>
 			{isVisible && (
 				<MaxiStyleCardsEditor
+					ref={settingsRef}
 					styleCards={styleCards}
 					setIsVisible={setIsVisible}
 				/>
 			)}
 		</>
 	);
-};
+});
 
 export default MaxiStyleCardsEditorPopUp;

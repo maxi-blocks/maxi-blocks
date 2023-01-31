@@ -109,7 +109,7 @@ const addTypographyStyle = async ({
 	const bottomGapInput = await instance.$(
 		'.maxi-typography-control__bottom-gap input'
 	);
-	if (!bottomGap) {
+	if (bottomGap) {
 		bottomGapInput.focus();
 		await pressKeyWithModifier('primary', 'a');
 		await bottomGapInput.type(`${bottomGap}`);

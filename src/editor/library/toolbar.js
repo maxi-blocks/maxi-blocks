@@ -24,7 +24,6 @@ import MaxiModal from './modal';
 import classnames from 'classnames';
 import React from 'react';
 import { SearchClient as TypesenseSearchClient } from 'typesense';
-import * as ReactDOM from 'react-dom';
 
 /**
  * Component
@@ -134,7 +133,7 @@ const LibraryToolbar = props => {
 
 	const goFullScreen = () => {
 		const modal = document.getElementsByClassName(
-			'maxi-library-modal maxi-preview'
+			'maxi-library-modal maxi-library-modal__preview'
 		)[0];
 
 		const elem = modal?.getElementsByClassName(
@@ -201,7 +200,7 @@ const LibraryToolbar = props => {
 			.search(searchParameters)
 			.then(result => {
 				const relatedHint = result?.hits[0]?.document;
-				const root = ReactDOM.createRoot(
+				const root = wp.element.createRoot(
 					document.getElementById('maxi-modal')
 				);
 

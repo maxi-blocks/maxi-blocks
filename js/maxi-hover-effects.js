@@ -70,7 +70,7 @@ const hovers = () => {
 						else if (
 							hoverData['hover-basic-effect-type'] === 'slide'
 						)
-							e.target.style.transform = `translateX(${hoverData['hover-basic-slide-value']}px)`;
+							e.target.style.transform = `translateX(${hoverData['hover-basic-slide-value']}%)`;
 						else if (
 							hoverData['hover-basic-effect-type'] === 'blur'
 						)
@@ -97,7 +97,7 @@ const hovers = () => {
 						else if (
 							hoverData['hover-basic-effect-type'] === 'slide'
 						)
-							e.target.style.transform = 'translateX(0)';
+							e.target.style.transform = 'translateX(0%)';
 						else if (
 							hoverData['hover-basic-effect-type'] === 'blur'
 						)

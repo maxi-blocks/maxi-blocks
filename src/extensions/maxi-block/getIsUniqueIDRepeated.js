@@ -24,12 +24,14 @@ const getIsUniqueIDRepeated = (uniqueIDToCompare, repeatCount = 1) => {
 					}
 				}
 
-				if (block.innerBlocks.length) {
+				const innerBlocks = getBlocks(block.clientId);
+
+				if (innerBlocks.length) {
 					const {
 						repeated: foundRepeated,
 						repeatCount: newRepeatCount,
 					} = goThroughBlocks(
-						block.innerBlocks,
+						innerBlocks,
 						uniqueIDToCompare,
 						repeatCount,
 						currentRepeatCount

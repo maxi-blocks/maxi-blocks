@@ -1,6 +1,9 @@
+import { getNormalAttributeKey } from './utils';
+
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-const getBreakpointFromAttribute = target => {
+const getBreakpointFromAttribute = rawTarget => {
+	const target = getNormalAttributeKey(rawTarget);
 	const lastDash = target.lastIndexOf('-');
 
 	if (lastDash <= -1) return false;

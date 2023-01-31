@@ -29,6 +29,9 @@ const AccordionLineControl = props => {
 					breakpoint,
 					attributes: props,
 				})}
+				defaultValue={getDefaultAttribute(
+					`${prefix}line-horizontal-${breakpoint}`
+				)}
 				options={[
 					{
 						label: __('Left', 'maxi-blocks'),

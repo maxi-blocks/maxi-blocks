@@ -985,4 +985,92 @@ describe('cleanAttributes', () => {
 
 		expect(result).toStrictEqual(expectedResult);
 	});
+
+	it('Should save hover attribute same as normal one as undefined', () => {
+		const obj = {
+			newAttributes: {
+				'test-general-hover': '5',
+			},
+			attributes: {
+				'test-general': '5',
+				'test-general-hover': '4',
+			},
+			defaultAttributes: {},
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'test-general-hover': undefined,
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
+
+	it('Should delete hover attribute same as normal one', () => {
+		const obj = {
+			newAttributes: {
+				'test-general': '4',
+			},
+			attributes: {
+				'test-general': '5',
+				'test-general-hover': '4',
+			},
+			defaultAttributes: {},
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'test-general': '4',
+			'test-general-hover': undefined,
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
+
+	it('Should save responsive hover attributes same as general as undefined', () => {
+		const obj = {
+			newAttributes: {
+				'test-s-hover': '4',
+			},
+			attributes: {
+				'test-general': '5',
+				'test-general-hover': '4',
+				'test-s-hover': '3',
+			},
+			defaultAttributes: {},
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'test-s-hover': undefined,
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
+
+	it('Should delete responsive hover attributes same as general', () => {
+		const obj = {
+			newAttributes: {
+				'test-general-hover': '3',
+			},
+			attributes: {
+				'test-general': '5',
+				'test-general-hover': '4',
+				'test-s-hover': '3',
+			},
+			defaultAttributes: {},
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'test-general-hover': '3',
+			'test-s-hover': undefined,
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
 });

@@ -25,10 +25,7 @@ const getGroupAttributes = (
 
 		if (defaultAttributes)
 			Object?.keys(defaultAttributes)?.forEach(key => {
-				if (
-					attributes?.[`${prefix}${key}`] &&
-					getIsValid(attributes[`${prefix}${key}`], cleaned)
-				)
+				if (getIsValid(attributes[`${prefix}${key}`], cleaned))
 					response[`${prefix}${key}`] = attributes[`${prefix}${key}`];
 			});
 	} else

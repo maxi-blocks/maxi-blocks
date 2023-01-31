@@ -37,7 +37,7 @@ import { capitalize, cloneDeep, isEmpty, merge } from 'lodash';
 import './editor.scss';
 
 const RelationControl = props => {
-	const { getBlock } = select('core/block-editor');
+	const { getBlock, getBlocks } = select('core/block-editor');
 
 	const { selectBlock } = useDispatch('core/block-editor');
 
@@ -57,7 +57,31 @@ const RelationControl = props => {
 	};
 
 	const getOptions = clientId => {
-		const blockName = getBlock(clientId)?.name.replace('maxi-blocks/', '');
+		let blockName = getBlock(clientId)?.name.replace('maxi-blocks/', '');
+
+		if (!blockName) {
+			// the block is out of the select scope, usually after copy/pasting
+			const getNameRecursively = obj => {
+				let response = null;
+				obj.forEach(block => {
+					if (block.clientId === clientId) {
+						response = block.name;
+					}
+					if (response === null && block.innerBlocks.length) {
+						const recResponse = getNameRecursively(
+							block.innerBlocks
+						);
+						if (recResponse) response = recResponse;
+					}
+				});
+				return response;
+			};
+
+			blockName = getNameRecursively(getBlocks())?.replace(
+				'maxi-blocks/',
+				''
+			);
+		}
 
 		// TODO: without this line, the block may break after copy/pasting
 		if (!blockName) return {};
@@ -69,6 +93,7 @@ const RelationControl = props => {
 
 	const getParsedOptions = rawOptions => {
 		if (!rawOptions || Object.keys(rawOptions).length === 0) return null;
+
 		const parseOptionsArray = options =>
 			options.map(({ label }) => ({
 				label,
@@ -234,7 +259,7 @@ const RelationControl = props => {
 				obj: newGroupAttributes,
 				isIB: true,
 				prefix,
-				blockStyle: blockAttributes.blockStyle,
+				blockStyle: blockAttributes?.blockStyle,
 				deviceType,
 				blockAttributes: {
 					...blockAttributes,
@@ -318,7 +343,7 @@ const RelationControl = props => {
 				});
 			},
 			prefix,
-			blockStyle: blockAttributes.blockStyle,
+			blockStyle: blockAttributes?.blockStyle,
 			breakpoint: deviceType,
 			clientId,
 		});

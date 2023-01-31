@@ -12,8 +12,10 @@ const getClientIdFromUniqueId = uniqueID => {
 			}
 
 			if (block.innerBlocks.length) {
-				clientId =
-					findClientId(block.innerBlocks, uniqueID) || block.clientId;
+				const foundClientId = findClientId(block.innerBlocks, uniqueID);
+				if (foundClientId) {
+					clientId = foundClientId;
+				}
 			}
 		});
 

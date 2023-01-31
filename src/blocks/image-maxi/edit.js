@@ -248,6 +248,9 @@ class edit extends MaxiBlockComponent {
 				<Inspector
 					key={`block-settings-${uniqueID}`}
 					resizableObject={this.resizableObject.current}
+					getBlockRefBounds={() =>
+						this.blockRef.current.getBoundingClientRect()
+					}
 					{...this.props}
 				/>
 				<Toolbar

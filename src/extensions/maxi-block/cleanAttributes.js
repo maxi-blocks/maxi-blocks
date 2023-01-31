@@ -6,19 +6,23 @@ import { dispatch, select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import getLastBreakpointAttribute from '../styles/getLastBreakpointAttribute';
-import getDefaultAttribute from '../styles/getDefaultAttribute';
+import getAttributeKey from '../styles/getAttributeKey';
 import getBreakpointFromAttribute from '../styles/getBreakpointFromAttribute';
+import getDefaultAttribute from '../styles/getDefaultAttribute';
+import getLastBreakpointAttribute from '../styles/getLastBreakpointAttribute';
+import { getHoverAttributeKey, getNormalAttributeKey } from '../styles/utils';
 
 /**
  * External dependencies
  */
-import { isNil, isEqual } from 'lodash';
+import { isEqual, isNil } from 'lodash';
 
 const breakpoints = ['general', 'xl', 'l', 'm', 's', 'xs'];
 
 const getSimpleLabel = (key, breakpoint) =>
-	key.slice(0, key.length - 1 - breakpoint.length);
+	getNormalAttributeKey(key).slice(0, -(breakpoint.length + 1));
+
+const getIsHover = key => key.includes('-hover');
 
 const getShouldPreserveAttribute = (
 	attributes,
@@ -75,19 +79,21 @@ const flatSameAsPrev = (
 		}
 
 		const isXXL = breakpoint === 'xxl';
+		const isHover = getIsHover(key);
 		const simpleLabel = getSimpleLabel(key, breakpoint);
-
 		if (isXXL) {
-			const generalAttr = attributes[`${simpleLabel}-general`];
+			const generalKey = getAttributeKey(
+				simpleLabel,
+				isHover,
+				'',
+				'general'
+			);
+			const generalAttr = attributes[generalKey];
 
 			if (!isNil(generalAttr) && isEqual(generalAttr, value)) {
 				const generalDefaultValue =
-					defaultAttributes?.[`${simpleLabel}-general`] ??
-					getDefaultAttribute(
-						`${simpleLabel}-general`,
-						clientId,
-						true
-					);
+					defaultAttributes?.[generalKey] ??
+					getDefaultAttribute(generalKey, clientId, true);
 
 				// Covers a concrete situation where we've got XXL and XL
 				// values by default, but General is undefined. An example
@@ -120,7 +126,12 @@ const flatSameAsPrev = (
 
 			higherBreakpoints.reverse().forEach(breakpoint => {
 				if (!breakpointLock) {
-					const label = `${simpleLabel}-${breakpoint}`;
+					const label = getAttributeKey(
+						simpleLabel,
+						isHover,
+						'',
+						breakpoint
+					);
 					const attribute = attributes?.[label];
 					const defaultAttribute =
 						defaultAttributes?.[label] ??
@@ -131,7 +142,14 @@ const flatSameAsPrev = (
 							result[key] = undefined;
 						else if (breakpoint === 'general') {
 							const generalAttr =
-								attributes[`${simpleLabel}-general`];
+								attributes[
+									getAttributeKey(
+										simpleLabel,
+										isHover,
+										'',
+										'general'
+									)
+								];
 
 							if (
 								!isNil(generalAttr) &&
@@ -190,15 +208,28 @@ const flatWithGeneral = (
 				select('maxiBlocks').receiveMaxiDeviceType();
 
 			if (attrBreakpoint === 'general') {
+				const isHover = getIsHover(attr);
 				const simpleLabel = getSimpleLabel(attr, attrBreakpoint);
-				const generalAttr = attributes[`${simpleLabel}-general`];
+
+				const generalKey = getAttributeKey(
+					simpleLabel,
+					isHover,
+					'',
+					'general'
+				);
+				const generalAttr = attributes[generalKey];
 
 				if (
-					`${simpleLabel}-${currentBreakpoint}` === key &&
+					getAttributeKey(
+						simpleLabel,
+						isHover,
+						'',
+						currentBreakpoint
+					) === key &&
 					value.toString().startsWith(generalAttr)
 				) {
 					result[key] = undefined;
-					result[`${simpleLabel}-general`] = value;
+					result[generalKey] = value;
 				}
 
 				return;
@@ -226,18 +257,20 @@ const flatWithGeneral = (
 		}
 		if (breakpoint !== 'general') return;
 
+		const isHover = getIsHover(key);
 		const simpleLabel = getSimpleLabel(key, breakpoint);
-		const attrOnXXL = attributes[`${simpleLabel}-xxl`];
+		const keyOnXXL = getAttributeKey(simpleLabel, isHover, '', 'xxl');
+		const attrOnXXL = attributes[keyOnXXL];
 
 		if (!isNil(attrOnXXL) && isEqual(value, attrOnXXL))
-			result[`${simpleLabel}-xxl`] = undefined;
+			result[keyOnXXL] = undefined;
 
 		let breakpointLock = false;
 
 		breakpoints.forEach(breakpoint => {
 			if (breakpointLock || breakpoint === 'general') return;
 
-			const label = `${simpleLabel}-${breakpoint}`;
+			const label = getAttributeKey(simpleLabel, isHover, '', breakpoint);
 			const attribute = { ...attributes, ...newAttributes }?.[label];
 
 			if (isNil(attribute)) return;
@@ -277,12 +310,14 @@ const flatNewAttributes = (
 			return;
 		}
 
+		const isHover = getIsHover(key);
 		const simpleLabel = getSimpleLabel(key, breakpoint);
-		const existsGeneralAttr = `${simpleLabel}-general` in newAttributes;
+		const generalKey = getAttributeKey(simpleLabel, isHover, '', 'general');
+		const existsGeneralAttr = generalKey in newAttributes;
 
 		if (!existsGeneralAttr) return;
 
-		const generalAttr = newAttributes[`${simpleLabel}-general`];
+		const generalAttr = newAttributes[generalKey];
 
 		if (!isNil(generalAttr) && isEqual(generalAttr, value)) {
 			const shouldPreserveAttribute = getShouldPreserveAttribute(
@@ -300,6 +335,34 @@ const flatNewAttributes = (
 					getDefaultAttribute(key, clientId, true);
 
 				result[key] = defaultAttribute;
+			}
+		}
+	});
+
+	return result;
+};
+
+/**
+ * Removes hover attributes that coincide with normal ones.
+ */
+const removeHoverSameAsNormal = (newAttributes, attributes) => {
+	const getValue = key =>
+		key in newAttributes ? newAttributes[key] : attributes[key];
+
+	const result = { ...newAttributes };
+
+	Object.entries(newAttributes).forEach(([key]) => {
+		const breakpoint = getBreakpointFromAttribute(key);
+		// If hover value is on responsive there is possibly hover value on higher breakpoint
+		// that will overwrite the responsive value if it is deleted,
+		// so need to keep the responsive values.
+		if (!breakpoint || breakpoint === 'general') {
+			const hoverKey = getHoverAttributeKey(key);
+			const hoverValue = getValue(hoverKey);
+			const normalValue = getValue(getNormalAttributeKey(key));
+
+			if (isEqual(hoverValue, normalValue) && !isNil(hoverValue)) {
+				result[hoverKey] = undefined;
 			}
 		}
 	});
@@ -390,6 +453,7 @@ const flatLowerAttr = (
 		if (breakpoint === 'xxl') return;
 
 		const isGeneral = breakpoint === 'general';
+		const isHover = getIsHover(key);
 		const simpleLabel = getSimpleLabel(key, breakpoint);
 		const lowerBreakpoints = breakpoints.slice(
 			breakpoints.indexOf(breakpoint) + 1
@@ -400,7 +464,7 @@ const flatLowerAttr = (
 		lowerBreakpoints.forEach(breakpoint => {
 			if (breakpointLock) return;
 
-			const label = `${simpleLabel}-${breakpoint}`;
+			const label = getAttributeKey(simpleLabel, isHover, '', breakpoint);
 			const attribute = attributes?.[label];
 
 			if (isNil(attribute)) return;
@@ -409,18 +473,21 @@ const flatLowerAttr = (
 				defaultAttributes?.[label] ??
 				getDefaultAttribute(label, clientId, true);
 
+			const generalKey = getAttributeKey(
+				simpleLabel,
+				isHover,
+				'',
+				'general'
+			);
+
 			if (isEqual(value, attribute)) {
 				// Covers a concrete situation where we've got XXL and XL
 				// values by default, but General is undefined. An example
 				// is Row Maxi `max-width-unit` attribute.
 				if (label in newAttributes && isGeneral) {
 					const generalDefaultValue =
-						defaultAttributes?.[`${simpleLabel}-general`] ??
-						getDefaultAttribute(
-							`${simpleLabel}-general`,
-							clientId,
-							true
-						);
+						defaultAttributes?.[generalKey] ??
+						getDefaultAttribute(generalKey, clientId, true);
 
 					if (isNil(generalDefaultValue)) {
 						result[label] = generalDefaultValue;
@@ -445,7 +512,7 @@ const flatLowerAttr = (
 			const generalAttribute = {
 				...defaultAttributes,
 				...attributes,
-			}?.[`${simpleLabel}-general`];
+			}?.[generalKey];
 
 			if (isEqual(attribute, generalAttribute)) {
 				const shouldPreserveAttribute = getShouldPreserveAttribute(
@@ -490,11 +557,17 @@ const preserveBaseBreakpoint = (newAttributes, attributes) => {
 
 		if (!isHigherThanBase) return;
 
+		const isHover = getIsHover(key);
 		const simpleLabel = getSimpleLabel(key, breakpoint);
-		const baseLabel = `${simpleLabel}-${baseBreakpoint}`;
+		const baseLabel = getAttributeKey(
+			simpleLabel,
+			isHover,
+			'',
+			baseBreakpoint
+		);
 		const baseAttr = { ...attributes, ...newAttributes }?.[baseLabel];
 		const generalAttr = { ...attributes, ...newAttributes }?.[
-			`${simpleLabel}-general`
+			getAttributeKey(simpleLabel, isHover, '', 'general')
 		];
 
 		if (!isEqual(baseAttr, generalAttr) && !isEqual(generalAttr, value))
@@ -514,9 +587,14 @@ const cleanAttributes = ({
 		key => !!getBreakpointFromAttribute(key)
 	);
 
-	if (!containsBreakpoint) return newAttributes;
-
 	let result = { ...newAttributes };
+
+	result = {
+		...result,
+		...removeHoverSameAsNormal(result, attributes),
+	};
+
+	if (!containsBreakpoint) return result;
 
 	result = {
 		...result,

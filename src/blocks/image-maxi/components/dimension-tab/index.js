@@ -102,6 +102,7 @@ const DimensionTab = props => {
 								? imageSize
 								: 'full'
 						} // is still necessary?
+						defaultValue={getDefaultAttribute('imageSize')}
 						onReset={() =>
 							maxiSetAttributes({
 								imageSize: getDefaultAttribute('imageSize'),

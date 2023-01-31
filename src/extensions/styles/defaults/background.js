@@ -8,6 +8,11 @@ const prefix = 'background-';
 
 // eslint-disable-next-line no-unused-vars
 const { position, ...backgroundPosition } = rawPosition;
+backgroundPosition['position-top'].default = '50';
+backgroundPosition['position-left'].default = '50';
+backgroundPosition['position-top-unit'].default = '%';
+backgroundPosition['position-left-unit'].default = '%';
+backgroundPosition['position-sync'].default = 'none';
 
 export const blockBackground = {
 	'background-layers': {

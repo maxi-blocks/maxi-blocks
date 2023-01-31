@@ -3,15 +3,12 @@
  */
 import { isNil, isEmpty, without } from 'lodash';
 
-export function getBgLayersSelectorsCss(bgLayers, addOnHoverToLabel = true) {
+export function getBgLayersSelectorsCss(
+	bgLayers,
+	addOnHoverToLabel = true,
+	defaultValues
+) {
 	const onHoverString = addOnHoverToLabel ? ' on hover' : '';
-
-	const defaultValues = {
-		translate: {
-			x: -50,
-			y: -50,
-		},
-	};
 
 	const bgLayersSelectors = {
 		background: {
@@ -38,7 +35,7 @@ export function getBgLayersSelectorsCss(bgLayers, addOnHoverToLabel = true) {
 				[`_${bgLayer.id}`]: {
 					label: `background ${bgLayer.type} ${bgLayersShowedOrder}`,
 					target: ` > .maxi-background-displayer .maxi-background-displayer__${bgLayer.order}`,
-					defaultValues,
+					...(!isEmpty(defaultValues) ? { defaultValues } : {}),
 				},
 			};
 
@@ -47,7 +44,7 @@ export function getBgLayersSelectorsCss(bgLayers, addOnHoverToLabel = true) {
 				[`_${bgLayer.id}`]: {
 					label: `background ${bgLayer.type} ${bgHoverLayersShowedOrder}${onHoverString}`,
 					target: `:hover > .maxi-background-displayer .maxi-background-displayer__${bgLayer.order}`,
-					defaultValues,
+					...(!isEmpty(defaultValues) ? { defaultValues } : {}),
 				},
 			};
 

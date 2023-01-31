@@ -34,7 +34,13 @@ export const getTransformSelectors = (selectors, attributes) => {
 
 	const bgLayersSelectors = getBgLayersSelectorsCss(
 		[...bgLayers, ...bgLayersHover],
-		false
+		false,
+		{
+			'transform-translate': {
+				x: -50,
+				y: -50,
+			},
+		}
 	);
 
 	return {

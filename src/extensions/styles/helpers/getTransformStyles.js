@@ -7,26 +7,42 @@ import { validateOriginValue } from '../utils';
 /**
  * External dependencies
  */
-import { isNumber, isString, isEmpty } from 'lodash';
+import { isEmpty, isNil, isNumber, isString } from 'lodash';
 
 /**
  * General
  */
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-const getTransformStrings = (category, breakpoint, index, obj) => {
+const getTransformStrings = (
+	category,
+	breakpoint,
+	index,
+	obj,
+	defaultValues
+) => {
 	const getLastBreakpointTransformAttribute = ({
 		target,
 		key,
 		hoverSelected,
 		keys,
-	}) =>
-		getLastBreakpointAttribute({
+	}) => {
+		const lastBreakpointAttribute = getLastBreakpointAttribute({
 			target,
 			breakpoint,
 			attributes: obj,
 			keys: keys ?? [category, hoverSelected, key],
 		});
+
+		if (
+			!isNil(lastBreakpointAttribute) ||
+			hoverSelected === 'hover' ||
+			isNil(defaultValues?.[target]?.[key])
+		)
+			return lastBreakpointAttribute;
+
+		return defaultValues[target][key];
+	};
 
 	const originValueToNumber = value => {
 		switch (validateOriginValue(value)) {
@@ -160,7 +176,7 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 	return [transformString, transformOriginString];
 };
 
-const getTransformValue = (obj, category, index) => {
+const getTransformValue = (obj, category, index, defaultValues) => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
@@ -168,7 +184,8 @@ const getTransformValue = (obj, category, index) => {
 			category,
 			breakpoint,
 			index,
-			obj
+			obj,
+			defaultValues
 		);
 
 		const transformObj = {
@@ -193,8 +210,13 @@ const getTransformStyles = (obj, selectors) => {
 
 	Object.entries(selectors).forEach(([category, targets]) => {
 		Object.entries(targets).forEach(([index, targetObj]) => {
-			const { target } = targetObj;
-			const transformObj = getTransformValue(obj, category, index);
+			const { target, defaultValues } = targetObj;
+			const transformObj = getTransformValue(
+				obj,
+				category,
+				index,
+				defaultValues
+			);
 			if (!isEmpty(transformObj))
 				response[target] = { transform: transformObj };
 		});

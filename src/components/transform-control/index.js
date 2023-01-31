@@ -430,8 +430,9 @@ const TransformControl = props => {
 										}) ?? '%'
 									}
 									defaultValues={
-										latestTarget.current?.defaultValues
-											?.translate
+										latestTarget.current?.defaultValues?.[
+											'transform-translate'
+										]
 									}
 									onChange={(x, y, xUnit, yUnit) => {
 										onChangeTransform({

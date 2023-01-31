@@ -125,7 +125,8 @@ const hoverStylesCleaner = (normalObj, hoverObj) => {
 								if (
 									attrKey in hoverObj[key][breakpoint] &&
 									hoverObj[key][breakpoint][attrKey] ===
-										attrVal
+										attrVal &&
+									attrKey !== 'transition'
 								)
 									delete hoverObj[key][breakpoint][attrKey];
 							}

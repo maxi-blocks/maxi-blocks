@@ -19,7 +19,6 @@ export { default as getTransitionData } from './transitions/getTransitionData';
 export { default as hoverAttributesCreator } from './hoverAttributesCreator';
 export { default as paletteAttributesCreator } from './paletteAttributesCreator';
 export { default as prefixAttributesCreator } from './prefixAttributesCreator';
-export { default as setHoverAttributes } from './setHoverAttributes';
 export { default as setScreenSize } from './setScreenSize';
 export { default as setTransitionToSelectors } from './transitions/setTransitionToSelectors';
 export { default as styleGenerator } from './styleGenerator';

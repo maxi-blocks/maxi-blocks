@@ -77,7 +77,7 @@ const HoverPreview = props => {
 			else if (hoverBasicEffectType === 'zoom-out')
 				targetWrapper.style.transform = 'scale(1)';
 			else if (hoverBasicEffectType === 'slide')
-				targetWrapper.style.transform = `translateX(${props['hover-basic-slide-value']}px)`;
+				targetWrapper.style.transform = `translateX(${props['hover-basic-slide-value']}%)`;
 			else if (hoverBasicEffectType === 'blur')
 				targetWrapper.style.filter = `blur(${props['hover-basic-blur-value']}px)`;
 			else {
@@ -97,7 +97,7 @@ const HoverPreview = props => {
 			else if (hoverBasicEffectType === 'zoom-out')
 				targetWrapper.style.transform = `scale(${props['hover-basic-zoom-out-value']})`;
 			else if (hoverBasicEffectType === 'slide')
-				targetWrapper.style.transform = 'translateX(0)';
+				targetWrapper.style.transform = 'translateX(0%)';
 			else if (hoverBasicEffectType === 'blur')
 				targetWrapper.style.filter = 'blur(0)';
 			else {

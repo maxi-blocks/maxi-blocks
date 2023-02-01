@@ -307,20 +307,23 @@ body {
 			}
 		}
 		.maxi-style-cards__sc {
+			&:not(.maxi-style-cards__settings){
+				z-index: 9;
+				position: relative;
+				button:not(.maxi-reset-button):not(.maxi-color-control__palette-box),
+				a.components-button {
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					transition: all 0.5s;
+					border: 1px solid #dddfe1;
+					border-radius: 0;
+					padding: 8px;
+					color: #232533;
+				}
+			}
 			padding: 0 8px 1px;
 			background: #fff;
-
-			button:not(.maxi-reset-button):not(.maxi-color-control__palette-box),
-			a.components-button {
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				transition: all 0.5s;
-				border: 1px solid #dddfe1;
-				border-radius: 0;
-				padding: 8px;
-				color: #232533;
-			}
 
 			button:last-of-type {
 				margin-right: 0;
@@ -383,11 +386,13 @@ body {
 						white-space: nowrap;
 
 						option {
-							text-align: center;
-							overflow-wrap: break-word;
-							text-overflow: ellipsis;
-							white-space: nowrap;
-							width: 50px;
+							white-space: normal;
+						}
+					}
+					& > .css-26l3qy-menu{
+						margin: -8px 0 0 0;
+						& > div{
+							padding: 0;
 						}
 					}
 				}
@@ -409,11 +414,11 @@ body {
 					border-bottom-right-radius: 0;
 				}
 				&--delete[type='button'] {
+					position: relative;
+					width: 15%;
+					height: 38px !important;
 					border-top-left-radius: 0;
 					border-bottom-left-radius: 0;
-					// margin-right: 8px !important;
-					width: 15%;
-					position: relative;
 					&:not(:disabled):hover {
 						border-color: rgb(var(--maxi-light-color-4)) !important;
 					}
@@ -535,6 +540,7 @@ body {
 			&__direction {
 				margin-bottom: 8px;
 			}
+			&__word-spacing,
 			&__size {
 				margin-top: 8px;
 			}

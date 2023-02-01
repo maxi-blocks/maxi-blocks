@@ -13,13 +13,7 @@ import { Popover } from '@wordpress/components';
  * Internal dependencies
  */
 import { exportStyleCard } from './utils';
-import {
-	SettingTabsControl,
-	SelectControl,
-	Button,
-	Icon,
-	DialogBox,
-} from '../../components';
+import { SettingTabsControl, Button, Icon, DialogBox } from '../../components';
 import MaxiStyleCardsTab from './maxiStyleCardsTab';
 import { updateSCOnEditor } from '../../extensions/style-cards';
 import MaxiModal from '../library/modal';
@@ -30,6 +24,7 @@ import standardSC from '../../../core/utils/defaultSC.json';
  * External dependencies
  */
 import { isEmpty, isNil, isEqual, cloneDeep, merge } from 'lodash';
+import Select from 'react-select';
 
 /**
  * Icons
@@ -323,6 +318,22 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 
 		return sortedByDate;
 	};
+	const customStyles = {
+		option: (base, state) => ({
+			...base,
+			padding: '8px',
+			whiteSpace: 'wrap',
+			borderBottom: state ? '1px solid #E3E3E3' : 'none',
+			width: 'auto',
+		}),
+		control: () => ({
+			display: 'flex',
+			padding: '0',
+			marginBottom: '8px',
+			borderRadius: '0px',
+			border: '1px solid rgb(var(--maxi-light-color-4))',
+		}),
+	};
 
 	return (
 		!isEmpty(styleCards) && (
@@ -438,12 +449,15 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 							</div>
 						)}
 						<div className='maxi-style-cards__active-edit-options'>
-							<SelectControl
+							<Select
+								defaultMenuIsOpen
 								className='maxi-style-cards__sc__more-sc--select'
-								value={selectedSCKey}
 								options={optionsSCList()}
+								value={selectedSCValue.name}
+								placeholder={selectedSCValue.name}
+								styles={customStyles}
 								onChange={val => {
-									setSelectedStyleCard(val);
+									setSelectedStyleCard(val.value);
 								}}
 							/>
 							<DialogBox

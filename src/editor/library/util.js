@@ -176,6 +176,7 @@ export const onRequestInsertPattern = (
 	replaceBlock,
 	clientId
 ) => {
+	console.log('onRequestInsertPattern');
 	const isValid = isValidTemplate(parsedContent);
 
 	if (isValid) {

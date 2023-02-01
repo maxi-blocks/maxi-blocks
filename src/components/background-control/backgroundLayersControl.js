@@ -507,10 +507,10 @@ const BackgroundLayersControl = ({
 		onChange({
 			[`background-layers${isHoverLayer ? '-hover' : ''}`]: newLayers,
 			'transform-translate-general': {
-				// TODO: check if transform other targets don't disappear on add layer
 				...transformTranslate,
 				[`_${layer.id}`]: {
-					normal: {
+					...(isHoverLayer ? { 'hover-status': true } : {}),
+					[isHoverLayer ? 'hover' : 'normal']: {
 						x: -50,
 						y: -50,
 						'x-unit': '%',

@@ -907,7 +907,7 @@ const LibraryContainer = props => {
 									}}
 								/>
 							</div>
-							<div className='maxi-cloud-container__sc__content-sc'>
+							<div className='maxi-cloud-container__svg-icon__content-svg-icon'>
 								<Stats translations={resultsCount} />
 								<InfiniteHits hitComponent={svgResults} />
 							</div>

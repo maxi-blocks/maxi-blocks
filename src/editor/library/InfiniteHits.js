@@ -1,7 +1,6 @@
 /**
  * Internal dependencies
  */
-import Hit from './Hit';
 import masonryGenerator from './masonryGenerator';
 
 /**
@@ -12,12 +11,6 @@ import { connectInfiniteHits } from 'react-instantsearch-dom';
 import PropTypes from 'prop-types';
 
 class InfiniteHits extends Component {
-	static propTypes = {
-		hits: PropTypes.arrayOf(PropTypes.object).isRequired,
-		hasMore: PropTypes.bool.isRequired,
-		refineNext: PropTypes.func.isRequired,
-	};
-
 	sentinel = null;
 
 	componentDidMount() {
@@ -52,7 +45,7 @@ class InfiniteHits extends Component {
 							key={hit.objectID}
 							className='ais-InfiniteHits-item'
 						>
-							<Hit hit={hit} />
+							{hitComponent(hit)}
 						</li>
 					))}
 					<li
@@ -66,5 +59,12 @@ class InfiniteHits extends Component {
 		);
 	}
 }
+
+InfiniteHits.propTypes = {
+	// eslint-disable-next-line react/forbid-prop-types
+	hits: PropTypes.arrayOf(PropTypes.object).isRequired,
+	hasMore: PropTypes.bool.isRequired,
+	refineNext: PropTypes.func.isRequired,
+};
 
 export default connectInfiniteHits(InfiniteHits);

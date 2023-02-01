@@ -86,6 +86,7 @@ class MaxiBlockComponent extends Component {
 		const { attributes } = this.props;
 		const { uniqueID } = attributes;
 
+		this.isReusable = false;
 		this.currentBreakpoint =
 			select('maxiBlocks').receiveMaxiDeviceType() || 'general';
 		// eslint-disable-next-line react/no-unused-class-component-methods
@@ -119,6 +120,12 @@ class MaxiBlockComponent extends Component {
 					attributes['maxi-version-origin'] = maxiVersion;
 			})
 			.catch(() => console.error('Maxi Blocks: Could not load settings'));
+
+		if (
+			this.blockRef.current.parentNode.classList.contains('is-reusable')
+		) {
+			this.updateBlockSize();
+		}
 
 		if (this.maxiBlockDidMount) this.maxiBlockDidMount();
 
@@ -259,6 +266,15 @@ class MaxiBlockComponent extends Component {
 			select('core/block-editor').getBlocks()
 		);
 
+		if (this.isReusable) {
+			this.widthObserver.disconnect();
+			document
+				.getElementById(
+					`maxi-block-size-checker-${this.props.attributes.uniqueID}`
+				)
+				.remove();
+		}
+
 		if (this.maxiBlockWillUnmount) this.maxiBlockWillUnmount();
 	}
 
@@ -345,6 +361,32 @@ class MaxiBlockComponent extends Component {
 		}
 
 		return false;
+	}
+
+	// This is a fix for wrong width of reusable blocks on backend only.
+	// This makes reusable blocks container full width and inserts element
+	// that mirrors the block on the same level as reusable container.
+	// The size of the clone if observed to get the width of the real block.
+	updateBlockSize() {
+		this.isReusable = true;
+		this.blockRef.current.parentNode.dataset.containsMaxiBlock = true;
+		const sizeElement = document.createElement('div');
+		sizeElement.classList.add(
+			this.props.attributes.uniqueID,
+			'maxi-block',
+			'maxi-block--backend'
+		);
+		sizeElement.id = `maxi-block-size-checker-${this.props.attributes.uniqueID}`;
+		sizeElement.style =
+			'top: 0 !important; height: 0 !important;  min-height: 0 !important; padding: 0 !important; margin: 0 !important';
+		this.blockRef.current.parentNode.insertAdjacentElement(
+			'afterend',
+			sizeElement
+		);
+		this.widthObserver = new ResizeObserver(entries => {
+			this.blockRef.current.style.width = `${entries[0].contentRect.width}px`;
+		});
+		this.widthObserver.observe(sizeElement);
 	}
 
 	// Removes non-necessary entries of props object for comparison

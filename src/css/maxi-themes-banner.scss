@@ -134,3 +134,8 @@ body.maxi-blocks--active.page-template-full-width-template .ast-container {
 		width: 100%;
 	}
 }
+
+body.maxi-blocks--active .is-reusable[data-contains-maxi-block='true'] {
+	min-width: 100%;
+	max-width: 100% !important;
+}

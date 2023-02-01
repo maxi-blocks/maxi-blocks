@@ -7,42 +7,26 @@ import { validateOriginValue } from '../utils';
 /**
  * External dependencies
  */
-import { isEmpty, isNil, isNumber, isString } from 'lodash';
+import { isNumber, isString, isEmpty } from 'lodash';
 
 /**
  * General
  */
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-const getTransformStrings = (
-	category,
-	breakpoint,
-	index,
-	obj,
-	defaultValues
-) => {
+const getTransformStrings = (category, breakpoint, index, obj) => {
 	const getLastBreakpointTransformAttribute = ({
 		target,
 		key,
 		hoverSelected,
 		keys,
-	}) => {
-		const lastBreakpointAttribute = getLastBreakpointAttribute({
+	}) =>
+		getLastBreakpointAttribute({
 			target,
 			breakpoint,
 			attributes: obj,
 			keys: keys ?? [category, hoverSelected, key],
 		});
-
-		if (
-			!isNil(lastBreakpointAttribute) ||
-			hoverSelected === 'hover' ||
-			isNil(defaultValues?.[target]?.[key])
-		)
-			return lastBreakpointAttribute;
-
-		return defaultValues[target][key];
-	};
 
 	const originValueToNumber = value => {
 		switch (validateOriginValue(value)) {
@@ -176,7 +160,7 @@ const getTransformStrings = (
 	return [transformString, transformOriginString];
 };
 
-const getTransformValue = (obj, category, index, defaultValues) => {
+const getTransformValue = (obj, category, index) => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
@@ -184,8 +168,7 @@ const getTransformValue = (obj, category, index, defaultValues) => {
 			category,
 			breakpoint,
 			index,
-			obj,
-			defaultValues
+			obj
 		);
 
 		const transformObj = {
@@ -210,13 +193,8 @@ const getTransformStyles = (obj, selectors) => {
 
 	Object.entries(selectors).forEach(([category, targets]) => {
 		Object.entries(targets).forEach(([index, targetObj]) => {
-			const { target, defaultValues } = targetObj;
-			const transformObj = getTransformValue(
-				obj,
-				category,
-				index,
-				defaultValues
-			);
+			const { target } = targetObj;
+			const transformObj = getTransformValue(obj, category, index);
 			if (!isEmpty(transformObj))
 				response[target] = { transform: transformObj };
 		});

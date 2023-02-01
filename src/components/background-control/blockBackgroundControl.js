@@ -60,6 +60,12 @@ const BlockBackgroundControl = props => {
 		prefix,
 	});
 
+	const transformTranslate = getAttributeValue({
+		target: 'transform-translate',
+		props,
+		breakpoint: 'general',
+	});
+
 	const classes = classnames('maxi-background-control', className);
 
 	return (
@@ -81,6 +87,7 @@ const BlockBackgroundControl = props => {
 				clientId={clientId}
 				breakpoint={breakpoint}
 				hoverStatus={hoverStatus}
+				transformTranslate={transformTranslate}
 				getBounds={getBounds}
 				getBlockClipPath={getBlockClipPath}
 			/>

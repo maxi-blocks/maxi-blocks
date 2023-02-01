@@ -411,10 +411,24 @@ const TransformControl = props => {
 										target: 'transform-translate',
 										key: 'x',
 									})}
+									defaultX={
+										selectors[transformTarget]?.[
+											hoverSelected
+										]?.defaultValues?.[
+											'transform-translate'
+										]?.x
+									}
 									y={getLastBreakpointTransformAttribute({
 										target: 'transform-translate',
 										key: 'y',
 									})}
+									defaultY={
+										selectors[transformTarget]?.[
+											hoverSelected
+										]?.defaultValues?.[
+											'transform-translate'
+										]?.y
+									}
 									xUnit={
 										getLastBreakpointTransformAttribute({
 											target: 'transform-translate',
@@ -426,13 +440,6 @@ const TransformControl = props => {
 											target: 'transform-translate',
 											key: 'y-unit',
 										}) ?? '%'
-									}
-									defaultValues={
-										selectors[transformTarget]?.[
-											hoverSelected
-										]?.defaultValues?.[
-											'transform-translate'
-										]
 									}
 									onChange={(x, y, xUnit, yUnit) => {
 										onChangeTransform({

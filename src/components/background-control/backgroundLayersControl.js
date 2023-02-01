@@ -387,6 +387,7 @@ const BackgroundLayersControl = ({
 	clientId,
 	breakpoint,
 	disableAddLayer,
+	transformTranslate,
 	getBounds,
 	getBlockClipPath, // for IB
 }) => {
@@ -505,6 +506,18 @@ const BackgroundLayersControl = ({
 
 		onChange({
 			[`background-layers${isHoverLayer ? '-hover' : ''}`]: newLayers,
+			'transform-translate-general': {
+				// TODO: check if transform other targets don't disappear on add layer
+				...transformTranslate,
+				[`_${layer.id}`]: {
+					normal: {
+						x: -50,
+						y: -50,
+						'x-unit': '%',
+						'y-unit': '%',
+					},
+				},
+			},
 		});
 	};
 

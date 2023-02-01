@@ -49,6 +49,7 @@ const blockBackground = ({
 								{...getGroupAttributes(attributes, [
 									'blockBackground',
 									'background-layers',
+									'transform', // for bg layers center
 								])}
 								onChangeInline={(obj, target) =>
 									insertInlineStyles({ obj, target })
@@ -92,7 +93,10 @@ const blockBackground = ({
 									<BlockBackgroundControl
 										{...getGroupAttributes(
 											attributes,
-											'blockBackground',
+											[
+												'blockBackground',
+												'transform', // for bg layers center
+											],
 											true
 										)}
 										onChange={obj => maxiSetAttributes(obj)}

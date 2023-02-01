@@ -18,7 +18,7 @@ import ResetButton from '../reset-control';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isEqual, isNaN, isNumber, round, toNumber } from 'lodash';
+import { isEmpty, isNaN, isNil, isNumber, round, toNumber } from 'lodash';
 
 /**
  * Icons
@@ -31,17 +31,17 @@ import { sync as syncIcon } from '../../icons';
 const SquareControl = props => {
 	const {
 		x,
+		defaultX,
 		xUnit = null,
 		y,
+		defaultY,
 		yUnit = null,
-		defaultValues: defaultValuesRaw,
 		onChange,
 		onSave,
 		type = 'resize',
 	} = props;
 
 	const canvasRef = useRef(null);
-	const defaultValues = useRef(defaultValuesRaw);
 
 	const [sync, changeSync] = useState(false);
 	const [xAxis, changeXAxis] = useState(x || '');
@@ -53,7 +53,8 @@ const SquareControl = props => {
 	const [clientY, changeClientY] = useState(0);
 
 	const getPlaceholder = (value, axis) => {
-		if (!isEmpty(defaultValues.current)) return defaultValues.current[axis];
+		const defaultValue = axis === 'x' ? defaultX : defaultY;
+		if (!isNil(defaultValue)) return defaultValue;
 
 		switch (type) {
 			case 'resize':
@@ -131,7 +132,7 @@ const SquareControl = props => {
 			case 'origin':
 				changeTempX(getPlaceholder(x, 'x'));
 				changeTempY(getPlaceholder(y, 'y'));
-				onSave();
+				onSave(defaultX, defaultY);
 				break;
 			default:
 				return false;
@@ -192,15 +193,6 @@ const SquareControl = props => {
 			}
 		}
 	}, [x, y]);
-
-	useEffect(() => {
-		if (isEqual(defaultValues.current, defaultValuesRaw)) return;
-
-		defaultValues.current = defaultValuesRaw;
-
-		changeTempX(getPlaceholder(x, 'x'));
-		changeTempY(getPlaceholder(y, 'y'));
-	}, [defaultValuesRaw]);
 
 	useEffect(() => {
 		changeXUnit(xUnit);

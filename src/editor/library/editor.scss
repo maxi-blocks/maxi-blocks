@@ -1636,6 +1636,25 @@
 			}
 		}
 	}
+	.maxi-cloud-container .maxi-cloud-container__svg-icon {
+		&__content-svg-icon {
+			min-height: calc(100% - 31px);
+			height: 100%;
+			overflow: hidden;
+			& > .ais-Stats {
+				display: flex;
+				align-items: center;
+				height: 31px;
+				padding: 0 8px;
+			}
+			& > .ais-InfiniteHits {
+				height: calc(100% - 31px);
+				overflow-x: hidden;
+				overflow-y: scroll;
+				padding: 8px 8px 6px;
+			}
+		}
+	}
 	.maxi-cloud-container .maxi-cloud-container__patterns {
 		&__content-patterns {
 			min-height: calc(100% - 31px);

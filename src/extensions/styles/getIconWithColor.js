@@ -2,6 +2,7 @@ import { isArray, isNil } from 'lodash';
 
 import getColorRGBAString from './getColorRGBAString';
 import { setSVGContent, setSVGContentHover } from '../svg';
+import getAttributeValue from './getAttributeValue';
 
 const getIconWithColor = (attributes, args = {}, prefix = '') => {
 	const {
@@ -33,23 +34,29 @@ const getIconWithColor = (attributes, args = {}, prefix = '') => {
 			(isHover && !useIconColor && !attributes['typography-status-hover'])
 		) {
 			if (!paletteColor)
-				paletteColor =
-					attributes[
-						`icon-${type}-palette-color${isHover ? '-hover' : ''}`
-					];
+				paletteColor = getAttributeValue({
+					target: `icon-${type}-palette-color`,
+					isHover,
+					props: attributes,
+				});
 			if (!paletteOpacity)
-				paletteOpacity =
-					attributes[
-						`icon-${type}-palette-opacity${isHover ? '-hover' : ''}`
-					];
+				paletteOpacity = getAttributeValue({
+					target: `icon-${type}-palette-opacity`,
+					isHover,
+					props: attributes,
+				});
 			if (!paletteStatus)
-				paletteStatus =
-					attributes[
-						`icon-${type}-palette-status${isHover ? '-hover' : ''}`
-					];
+				paletteStatus = getAttributeValue({
+					target: `icon-${type}-palette-status`,
+					isHover,
+					props: attributes,
+				});
 			if (!color)
-				color =
-					attributes[`icon-${type}-color${isHover ? '-hover' : ''}`];
+				color = getAttributeValue({
+					target: `icon-${type}-color`,
+					isHover,
+					props: attributes,
+				});
 
 			lineColorStr = getColorRGBAString({
 				firstVar: `icon-${type}${isHover ? '-hover' : ''}`,
@@ -59,22 +66,33 @@ const getIconWithColor = (attributes, args = {}, prefix = '') => {
 			});
 		} else {
 			if (!paletteColor)
-				paletteColor =
-					attributes[
-						`palette-color-general${isHover ? '-hover' : ''}`
-					];
+				paletteColor = getAttributeValue({
+					target: 'palette-color',
+					isHover,
+					breakpoint: 'general',
+					props: attributes,
+				});
 			if (!paletteOpacity)
-				paletteOpacity =
-					attributes[
-						`palette-opacity-general${isHover ? '-hover' : ''}`
-					];
+				paletteOpacity = getAttributeValue({
+					target: 'palette-opacity',
+					isHover,
+					breakpoint: 'general',
+					props: attributes,
+				});
 			if (!paletteStatus)
-				paletteStatus =
-					attributes[
-						`palette-status-general${isHover ? '-hover' : ''}`
-					];
+				paletteStatus = getAttributeValue({
+					target: 'palette-status',
+					isHover,
+					breakpoint: 'general',
+					props: attributes,
+				});
 			if (!color)
-				color = attributes[`color-general${isHover ? '-hover' : ''}`];
+				color = getAttributeValue({
+					target: 'color',
+					isHover,
+					breakpoint: 'general',
+					props: attributes,
+				});
 
 			lineColorStr = getColorRGBAString({
 				firstVar: `color-${paletteColor}${isHover ? '-hover' : ''}`,

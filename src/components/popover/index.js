@@ -38,6 +38,7 @@ import {
 	arrow,
 	offset as offsetMiddleware,
 	limitShift,
+	size,
 } from '@floating-ui/react-dom';
 
 /**
@@ -146,6 +147,7 @@ const Popover = (
 		useShift = false,
 		shiftPadding,
 		shiftLimit,
+		resize = false,
 		__unstableObserveElement,
 		__unstableSlotName = SLOT_NAME,
 		...contentProps
@@ -226,6 +228,23 @@ const Popover = (
 					};
 			  })
 			: undefined,
+		resize
+			? size({
+					apply(sizeProps) {
+						const { firstElementChild } =
+							// eslint-disable-next-line no-use-before-define
+							refs.floating.current ?? {};
+
+						if (!firstElementChild) return;
+
+						// Reduce the height of the popover to the available space.
+						Object.assign(firstElementChild.style, {
+							maxHeight: `${sizeProps.availableHeight}px`,
+							overflow: 'auto',
+						});
+					},
+			  })
+			: undefined,
 		useShift
 			? shift({
 					crossAxis: true,
@@ -261,6 +280,8 @@ const Popover = (
 		// Positioning coordinates
 		x,
 		y,
+		// regular references
+		refs,
 		// Callback refs (not regular refs). This allows the position to be updated.
 		// when either elements change.
 		reference,

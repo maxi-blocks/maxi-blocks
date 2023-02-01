@@ -37,11 +37,11 @@ Object {
   "  .maxi-svg-icon-block__icon svg path": Object {
     "SVGPath": Object {
       "general": Object {
-        "stroke-width": "2",
+        "stroke-width": 2,
       },
       "label": "SVG path",
       "m": Object {
-        "stroke-width": "20",
+        "stroke-width": 20,
       },
     },
   },

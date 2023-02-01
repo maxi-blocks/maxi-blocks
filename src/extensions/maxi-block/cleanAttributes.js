@@ -15,7 +15,7 @@ import { getHoverAttributeKey, getNormalAttributeKey } from '../styles/utils';
 /**
  * External dependencies
  */
-import { isEqual, isNil } from 'lodash';
+import { isEqual, isNil, isPlainObject, pickBy, toNumber } from 'lodash';
 
 const breakpoints = ['general', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -200,9 +200,67 @@ const flatWithGeneral = (
 		const breakpoint = getBreakpointFromAttribute(key);
 
 		prevSavedAttrs.forEach(attr => {
-			if (attr in newAttributes) return;
-
+			const prevValue = attributes[attr];
 			const attrBreakpoint = getBreakpointFromAttribute(attr);
+
+			/**
+			 * In case if after cleaning lower breakpoint attributes,
+			 * because they were the same with higher, on the next iteration
+			 * if higher attribute different from the previous one by number of digits(1 less or more) or
+			 * by value(1 less or more), cleaned lower breakpoint attribute will be restored.
+			 */
+			if (attr === key && !isNil(prevValue)) {
+				const recursiveSum = attrValue => {
+					if (isNil(attrValue)) return 0;
+
+					if (isPlainObject(attrValue)) {
+						return Object.values(attrValue).reduce(
+							(acc, val) => acc + recursiveSum(val),
+							0
+						);
+					}
+
+					return toNumber(attrValue) || 0;
+				};
+
+				const prevValueSum = recursiveSum(prevValue);
+				const valueSum = recursiveSum(value);
+
+				const isChangingDigitsNumber = (firstValue, secondValue) =>
+					firstValue.toString().length + 1 ===
+						secondValue.toString().length &&
+					secondValue.toString().startsWith(firstValue);
+
+				const isAdjustingNumber = (firstValue, secondValue) =>
+					Math.abs(firstValue - secondValue) === 1;
+
+				if (
+					isAdjustingNumber(prevValueSum, valueSum) ||
+					isChangingDigitsNumber(prevValueSum, valueSum) ||
+					isChangingDigitsNumber(valueSum, prevValueSum)
+				) {
+					const simpleLabel = getSimpleLabel(attr, attrBreakpoint);
+
+					['xxl', ...breakpoints].forEach(breakpoint => {
+						if (
+							breakpoint === attrBreakpoint ||
+							breakpoint === 'general'
+						)
+							return;
+
+						const label = `${simpleLabel}-${breakpoint}`;
+
+						if (
+							prevSavedAttrs.includes(label) &&
+							isNil(prevSavedAttrs[label]) &&
+							isNil(attributes[label])
+						)
+							result[label] = prevValue;
+					});
+				}
+			}
+
+			if (attr in newAttributes) return;
 
 			const currentBreakpoint =
 				select('maxiBlocks').receiveMaxiDeviceType();
@@ -621,7 +679,22 @@ const cleanAttributes = ({
 		...preserveBaseBreakpoint(result, attributes),
 	};
 
-	dispatch('maxiBlocks/styles').savePrevSavedAttrs(result);
+	dispatch('maxiBlocks/styles').savePrevSavedAttrs(
+		pickBy(result, (value, key) => {
+			const breakpoint = getBreakpointFromAttribute(key);
+			const simpleLabel = getSimpleLabel(key, breakpoint);
+			const higherAttr = getLastBreakpointAttribute({
+				target: simpleLabel,
+				attributes,
+				breakpoint: breakpoints[breakpoints.indexOf(breakpoint) - 1],
+			});
+
+			return (
+				value !== attributes[key] &&
+				(isNil(higherAttr) || attributes[key] !== higherAttr)
+			);
+		})
+	);
 
 	return result;
 };

@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import createRoot from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -200,9 +201,9 @@ const LibraryToolbar = props => {
 			.search(searchParameters)
 			.then(result => {
 				const relatedHint = result?.hits[0]?.document;
-				const root = wp.element.createRoot(
-					document.getElementById('maxi-modal')
-				);
+				// const root = wp.element.createRoot(
+				// 	document.getElementById('maxi-modal')
+				// );
 
 				const previewIframeStyles = previewIframe.style;
 				const previewIframeWrapStyles = previewIframeWrap.style;
@@ -211,18 +212,6 @@ const LibraryToolbar = props => {
 				const labelTabletStyles = labelTablet.style;
 				const labelMobileStyles = labelMobile.style;
 
-				root.render(
-					<MaxiModal
-						type='switch-tone'
-						url={relatedHint.demo_url}
-						title={relatedHint.post_title}
-						serial={relatedHint.post_number}
-						cost={relatedHint.cost[0]}
-						toneUrl={relatedHint.link_to_related}
-						cardId={masonryCardId}
-						onClose={onRequestClose}
-					/>
-				);
 				window.setTimeout(() => {
 					if (fullWidth) {
 						const modal = document.getElementsByClassName(
@@ -238,6 +227,7 @@ const LibraryToolbar = props => {
 						});
 					}
 				}, 100);
+
 				window.setTimeout(() => {
 					const modal = document.getElementsByClassName(
 						'maxi-library-modal maxi-preview'
@@ -316,6 +306,19 @@ const LibraryToolbar = props => {
 						);
 					}
 				}, 0);
+
+				return (
+					<MaxiModal
+						type='switch-tone'
+						url={relatedHint.demo_url}
+						title={relatedHint.post_title}
+						serial={relatedHint.post_number}
+						cost={relatedHint.cost[0]}
+						toneUrl={relatedHint.link_to_related}
+						cardId={masonryCardId}
+						onClose={onRequestClose}
+					/>
+				);
 			});
 	};
 

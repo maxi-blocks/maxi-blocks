@@ -539,7 +539,7 @@ const LibraryContainer = props => {
 	};
 
 	/** Patterns / Blocks Results */
-	const patternsResults = ({ hit }) => {
+	const patternsResults = hit => {
 		const wrapClassName =
 			hit.cost?.[0] === 'Pro'
 				? 'ais-InfiniteHits-item-pro'
@@ -602,7 +602,7 @@ const LibraryContainer = props => {
 	};
 
 	/** SVG Icons Results */
-	const svgResults = ({ hit }) => {
+	const svgResults = hit => {
 		const newContent = svgAttributesReplacer(hit.svg_code);
 		const svgType = hit.svg_category[0];
 		const shapeType = getShapeType(type);
@@ -736,7 +736,7 @@ const LibraryContainer = props => {
 	};
 
 	/** Shapes Results */
-	const svgShapeResults = ({ hit }) => {
+	const svgShapeResults = hit => {
 		const shapeType = getShapeType(type);
 		const svgType = hit.svg_category[0];
 
@@ -781,7 +781,7 @@ const LibraryContainer = props => {
 	};
 
 	/** Style Cards Results */
-	const scResults = ({ hit }) => {
+	const scResults = hit => {
 		return (
 			<MasonryItem
 				type='sc'

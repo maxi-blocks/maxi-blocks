@@ -42,7 +42,7 @@ class InfiniteHits extends Component {
 	};
 
 	render() {
-		const { hits } = this.props;
+		const { hits, hitComponent } = this.props;
 
 		return (
 			<div className='ais-InfiniteHits'>

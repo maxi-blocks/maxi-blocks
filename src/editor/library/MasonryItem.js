@@ -52,6 +52,8 @@ const MasonryItem = props => {
 
 	const masonryCardId = `maxi-cloud-masonry-card__pattern-${getCardSerial()}`;
 
+	console.log(onRequestInsert);
+
 	const patternsScContent = () => {
 		return (
 			<>
@@ -83,7 +85,10 @@ const MasonryItem = props => {
 							/>
 							<Button
 								className='maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-load'
-								onClick={onRequestInsert}
+								onClick={() => {
+									console.log('click');
+									onRequestInsert();
+								}}
 							>
 								{__('Insert', 'maxi-blocks')}
 							</Button>

@@ -165,6 +165,11 @@ const SquareControl = props => {
 		}
 	};
 
+	useEffect(() => {
+		changeTempX(getPlaceholder(defaultX, 'x'));
+		changeTempY(getPlaceholder(defaultY, 'y'));
+	}, [defaultX, defaultY]);
+
 	const transformStr = useCallback(() => {
 		return `translateX(${tempX}${xUnit}) translateY(${tempY}${yUnit})`;
 	}, [tempX, xAxis, xUnit, tempY, yAxis, yUnit]);

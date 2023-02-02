@@ -141,6 +141,9 @@ const ListOptionsControl = props => {
 					breakpoint: deviceType,
 					attributes,
 				})}
+				defaultValue={getDefaultAttribute(
+					`list-style-position-${deviceType}`
+				)}
 				onReset={() =>
 					maxiSetAttributes({
 						[`list-style-position-${deviceType}`]:
@@ -588,6 +591,9 @@ const ListOptionsControl = props => {
 					breakpoint: deviceType,
 					attributes,
 				})}
+				defaultValue={getDefaultAttribute(
+					`list-text-position-${deviceType}`
+				)}
 				onReset={() =>
 					maxiSetAttributes({
 						[`list-text-position-${deviceType}`]:
@@ -636,6 +642,7 @@ const ListOptionsControl = props => {
 					label={__('Type of list', 'maxi-blocks')}
 					className='maxi-text-inspector__list-type'
 					value={typeOfList}
+					defaultValue={getDefaultAttribute('typeOfList')}
 					onReset={() =>
 						maxiSetAttributes({
 							typeOfList: getDefaultAttribute('typeOfList'),
@@ -669,6 +676,7 @@ const ListOptionsControl = props => {
 						label={__('Style', 'maxi-blocks')}
 						className='maxi-text-inspector__list-style'
 						value={listStyle || 'disc'}
+						defaultValue={getDefaultAttribute('listStyle')}
 						onReset={() =>
 							maxiSetAttributes({
 								listStyle: getDefaultAttribute('listStyle'),
@@ -739,9 +747,10 @@ const ListOptionsControl = props => {
 								label={__('Source', 'maxi-blocks')}
 								className='maxi-text-inspector__list-source-selector'
 								value={listStyleSource}
+								defaultValue={defaultListStyleSource}
 								onReset={() =>
 									maxiSetAttributes({
-										defaultListStyleSource,
+										listStyleCustom: defaultListStyleSource,
 										isReset: true,
 									})
 								}

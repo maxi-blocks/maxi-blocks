@@ -11,6 +11,7 @@ import RowContext from '../row-maxi/context';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { BlockInserter, BlockResizer, Toolbar } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+import { getColumnSizeStyles } from '../../extensions/styles/helpers';
 import {
 	getGroupAttributes,
 	getIsOverflowHidden,
@@ -72,6 +73,30 @@ class edit extends MaxiBlockComponent {
 		return true;
 	}
 
+	getWidth() {
+		const { attributes, deviceType, clientId } = this.props;
+		const { rowGapProps, columnsSize, columnsClientIds } = this.context;
+
+		const columnValues = getColumnSizeStyles(
+			{
+				...getGroupAttributes(attributes, 'columnSize'),
+			},
+			{
+				...rowGapProps,
+				columnNum: columnsClientIds.length,
+				columnsSize,
+			},
+			clientId
+		);
+
+		return getLastBreakpointAttribute({
+			target: null,
+			breakpoint: deviceType,
+			attributes: columnValues,
+			keys: ['width'],
+		});
+	}
+
 	getHeight() {
 		const forceAspectRatio = getLastBreakpointAttribute({
 			target: 'force-aspect-ratio',
@@ -99,21 +124,15 @@ class edit extends MaxiBlockComponent {
 
 	maxiBlockDidUpdate(prevProps) {
 		if (this.resizableObject.current) {
-			const columnWidth = getLastBreakpointAttribute({
-				target: 'column-size',
-				breakpoint: this.props.deviceType || 'general',
-				attributes: this.props.attributes,
-			});
-
+			const columnWidth = this.getWidth();
 			const columnHeight = this.getHeight();
 
 			if (
-				this.resizableObject.current.state.width !==
-					`${columnWidth}%` ||
+				this.resizableObject.current.state.width !== columnWidth ||
 				this.resizableObject.current.state.height !== columnHeight
 			) {
 				this.resizableObject.current.updateSize({
-					width: `${columnWidth}%`,
+					width: columnWidth,
 					height: columnHeight,
 				});
 
@@ -161,19 +180,6 @@ class edit extends MaxiBlockComponent {
 			clientId,
 		} = this.props;
 		const { uniqueID } = attributes;
-		const { columnsClientIds } = this.context;
-
-		const getColumnWidthDefault = () => {
-			const columnWidth = getLastBreakpointAttribute({
-				target: 'column-size',
-				breakpoint: deviceType,
-				attributes,
-			});
-
-			if (columnWidth) return `${columnWidth}%`;
-
-			return `${100 / columnsClientIds.length}%`;
-		};
 
 		const ALLOWED_BLOCKS = wp.blocks
 			.getBlockTypes()
@@ -237,7 +243,7 @@ class edit extends MaxiBlockComponent {
 							}) === 'none' && 'maxi-block-display-none'
 						)}
 						defaultSize={{
-							width: getColumnWidthDefault(),
+							width: this.getWidth(),
 							height: this.getHeight(),
 						}}
 						enable={{

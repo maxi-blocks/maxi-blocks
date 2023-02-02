@@ -127,6 +127,10 @@
 		border-radius: 0;
 		box-shadow: none;
 		outline: none;
+
+		.components-dropdown {
+			background-color: #fff;
+		}
 	}
 
 	&__button-wrapper {
@@ -157,6 +161,10 @@
 		border-radius: 0;
 		box-shadow: none;
 		outline: none;
+
+		.components-dropdown {
+			background-color: transparent;
+		}
 
 		> div:first-of-type {
 			display: flex;

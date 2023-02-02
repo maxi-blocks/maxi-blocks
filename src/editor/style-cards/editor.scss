@@ -389,10 +389,12 @@ body {
 							white-space: normal;
 						}
 					}
-					& > .css-26l3qy-menu{
-						margin: -8px 0 0 0;
-						& > div{
-							padding: 0;
+					& > div{
+						& > .css-26l3qy-menu{
+							margin: 0;
+							& > div{
+								padding: 0;
+							}
 						}
 					}
 				}

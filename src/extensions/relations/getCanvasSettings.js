@@ -108,7 +108,7 @@ const getCanvasSettings = ({ name }) => [
 			}),
 	},
 	{
-		label: __('Border', 'maxi-blocks'),
+		label: __('Canvas border', 'maxi-blocks'),
 		transitionTarget: ['', ' > .maxi-background-displayer'],
 		hoverProp: 'border-status-hover',
 		attrGroupName: ['border', 'borderWidth', 'borderRadius'],

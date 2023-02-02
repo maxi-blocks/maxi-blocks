@@ -18,14 +18,8 @@ import {
 	onRequestInsertPattern,
 } from './util';
 import { injectImgSVG } from '../../extensions/svg';
-import DOMPurify from 'dompurify';
-/**
- * Internal dependencies
- */
-// eslint-disable-next-line import/no-cycle
-import MasonryItem from './MasonryItem';
-// eslint-disable-next-line no-unused-vars
 import masonryGenerator from './masonryGenerator';
+import useInterval from '../../extensions/dom/useInterval';
 // eslint-disable-next-line import/no-cycle
 import InfiniteHits from './InfiniteHits';
 
@@ -47,8 +41,7 @@ import {
 } from 'react-instantsearch-dom';
 import classnames from 'classnames';
 import { isEmpty, uniqueId, orderBy, capitalize, unescape } from 'lodash';
-import Masonry from 'masonry-layout';
-import useInterval from '../../extensions/dom/useInterval';
+import DOMPurify from 'dompurify';
 
 /**
  * Icons
@@ -295,7 +288,6 @@ const MenuSelect = ({ items, currentRefinement, refine }) => {
 					'maxi-cloud-container__content-svg-shape__button',
 					freeElement?.isRefined &&
 						' maxi-cloud-container__content-svg-shape__button___pressed'
-					// freeClass
 				)}
 				value='Free'
 				onClick={event => {
@@ -313,7 +305,6 @@ const MenuSelect = ({ items, currentRefinement, refine }) => {
 					'maxi-cloud-container__content-svg-shape__button',
 					proElement?.isRefined &&
 						' maxi-cloud-container__content-svg-shape__button___pressed'
-					// proClass
 				)}
 				value='Pro'
 				onClick={event => {
@@ -814,22 +805,6 @@ const LibraryContainer = props => {
 	const CustomMenuSelect = connectMenu(MenuSelect);
 	const CustomHierarchicalMenu = connectHierarchicalMenu(HierarchicalMenu);
 	const CustomClearRefinements = connectCurrentRefinements(ClearRefinements);
-
-	const masonryGenerator = () => {
-		if (type !== 'patterns') return;
-
-		const elem = document.querySelector(
-			'.maxi-cloud-container__patterns__content-patterns .ais-InfiniteHits-list'
-		);
-
-		if (elem) {
-			// eslint-disable-next-line no-new
-			new Masonry(elem, {
-				itemSelector: '.ais-InfiniteHits-item',
-				gutter: 16,
-			});
-		}
-	};
 
 	useInterval(masonryGenerator, 100);
 

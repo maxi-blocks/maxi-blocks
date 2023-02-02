@@ -32,6 +32,7 @@ const MasonryItem = props => {
 		currentItemColorStatus = false,
 		className,
 		onRequestInsert,
+		isSaved = false,
 	} = props;
 
 	const getCardSerial = (string = serial) => {
@@ -39,6 +40,7 @@ const MasonryItem = props => {
 		const response = string?.substring(sub + 1);
 		return response?.toLowerCase();
 	};
+
 	const masonryCardClasses = classnames(
 		'maxi-cloud-masonry-card',
 		`maxi-cloud-masonry-card__${target}`,
@@ -90,6 +92,19 @@ const MasonryItem = props => {
 								{__('Insert', 'maxi-blocks')}
 							</Button>
 						</>
+					)}
+					{type === 'sc' && (
+						<span
+							className={classnames(
+								'maxi-cloud-masonry-card__button',
+								'maxi-cloud-masonry-card__button-load',
+								isSaved && 'maxi-cloud-masonry-card__saved'
+							)}
+						>
+							{!isSaved
+								? __('Save', 'maxi-block')
+								: __('Saved', 'maxi-block')}
+						</span>
 					)}
 					<div className='maxi-cloud-masonry-card__tags maxi-open-preview'>
 						{!isPro && (

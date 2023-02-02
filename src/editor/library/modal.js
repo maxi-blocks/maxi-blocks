@@ -97,11 +97,12 @@ const MaxiModal = props => {
 		url,
 		title,
 		cost,
-		beta,
 		toneUrl,
 		cardId,
 		prefix = '',
 		label = '',
+		isPro,
+		isBeta,
 	} = props;
 
 	const ref = useRef(null);
@@ -216,7 +217,8 @@ const MaxiModal = props => {
 						url={url}
 						title={title}
 						cost={cost}
-						beta={beta}
+						isPro={isPro}
+						isBeta={isBeta}
 						toneUrl={toneUrl}
 						cardId={cardId}
 						prefix={prefix}

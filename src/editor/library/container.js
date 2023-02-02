@@ -411,7 +411,6 @@ const LibraryContainer = props => {
 			hit.cost?.[0] === 'Pro'
 				? 'ais-InfiniteHits-item-pro'
 				: 'ais-InfiniteHits-item-free';
-		console.log()
 		return (
 			<MasonryItem
 				type='patterns'
@@ -422,7 +421,7 @@ const LibraryContainer = props => {
 				demoUrl={hit.demo_url}
 				previewIMG={hit.preview_image_url}
 				cost={hit.cost?.[0]}
-				beta={hit.post_tag}
+				isBeta={hit.post_tag?.includes('Beta')}
 				isPro={hit.cost?.[0] === 'Pro'}
 				taxonomies={hit.category?.[0]}
 				serial={hit.post_number}
@@ -483,7 +482,7 @@ const LibraryContainer = props => {
 				target={svgType}
 				key={`maxi-cloud-masonry__item-${hit.post_id}`}
 				svgCode={newContent}
-				isPro={hit.cost === 'pro'}
+				isPro={hit.cost?.[0] === 'Pro'}
 				serial={hit.post_title}
 				onRequestInsert={() => onRequestInsertSVG(newContent, svgType)}
 				currentItemColorStatus={svgCurrentColorStatus(
@@ -618,7 +617,7 @@ const LibraryContainer = props => {
 				target={type}
 				key={`maxi-cloud-masonry__item-${hit.post_id}`}
 				svgCode={newContent}
-				isPro={hit.cost === 'pro'}
+				isPro={hit.cost?.[0] === 'Pro'}
 				serial={hit.post_title}
 				onRequestInsert={() =>
 					onRequestInsertShape(newContent, svgType)
@@ -658,7 +657,7 @@ const LibraryContainer = props => {
 				target='style-cards'
 				key={`maxi-cloud-masonry__item-${hit.post_id}`}
 				previewIMG={hit.post_thumbnail}
-				isPro={hit.cost === 'pro'}
+				isPro={hit.cost?.[0] === 'Pro'}
 				serial={hit.post_title}
 				onRequestInsert={
 					SCList.map(item => {

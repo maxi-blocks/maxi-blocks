@@ -53,10 +53,11 @@ const LibraryToolbar = props => {
 		onRequestClose,
 		title = '',
 		cost = '',
-		beta = '',
 		toneUrl = '',
 		cardId,
 		isMaxiProActive = false,
+		isPro,
+		isBeta,
 	} = props;
 
 	const client = new TypesenseSearchClient({
@@ -203,10 +204,6 @@ const LibraryToolbar = props => {
 			.search(searchParameters)
 			.then(result => {
 				const relatedHint = result?.hits[0]?.document;
-				// const root = wp.element.createRoot(
-				// 	document.getElementById('maxi-modal')
-				// );
-
 				const previewIframeStyles = previewIframe.style;
 				const previewIframeWrapStyles = previewIframeWrap.style;
 				const previewIframeSpaceStyles = previewIframeSpace.style;
@@ -316,10 +313,11 @@ const LibraryToolbar = props => {
 						title={relatedHint.post_title}
 						serial={relatedHint.post_number}
 						cost={relatedHint.cost[0]}
-						beta={relatedHint.beta}
 						toneUrl={relatedHint.link_to_related}
 						cardId={masonryCardId}
 						onClose={onRequestClose}
+						isPro={relatedHint.cost?.[0] === 'Pro'}
+						isBeta={relatedHint.post_tag.includes('Beta')}
 					/>
 				);
 			});
@@ -500,12 +498,6 @@ const LibraryToolbar = props => {
 
 		button?.click();
 	};
-
-	const isPro = cost === 'Pro';
-	const isBeta = beta.includes('Beta');
-
-	console.log(`beta value: ${beta}`);
-	console.log(`beta: ${isBeta}`);
 
 	return (
 		<div className='maxi-cloud-toolbar'>

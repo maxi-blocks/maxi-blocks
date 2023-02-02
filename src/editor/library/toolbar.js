@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import createRoot from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -55,6 +54,8 @@ const LibraryToolbar = props => {
 		title = '',
 		cost = '',
 		toneUrl = '',
+		cardId,
+		isMaxiProActive = false,
 	} = props;
 
 	const client = new TypesenseSearchClient({
@@ -490,6 +491,16 @@ const LibraryToolbar = props => {
 		previewIframeWrap.style.right = 0;
 	};
 
+	const clickLoadButton = id => {
+		const button = document.querySelector(
+			`#${id} .maxi-cloud-masonry-card__button-load`
+		);
+
+		button?.click();
+	};
+
+	const isPro = cost === 'Pro';
+
 	return (
 		<div className='maxi-cloud-toolbar'>
 			{type !== 'preview' && type !== 'switch-tone' && (
@@ -579,6 +590,26 @@ const LibraryToolbar = props => {
 
 			{(type === 'preview' || type === 'switch-tone') && (
 				<div className='maxi-cloud-toolbar__buttons-group_close'>
+					{(!isPro || isMaxiProActive) && (
+						<ToolbarButton
+							label={__('Insert', 'maxi-blocks')}
+							onClick={() => {
+								clickLoadButton(cardId);
+								onRequestClose();
+							}}
+						/>
+					)}
+					{isPro && !isMaxiProActive && (
+						<ToolbarButton
+							label={__('Go Pro', 'maxi-blocks')}
+							onClick={() =>
+								window.open(
+									'https://maxiblocks.com/go/pro-library',
+									'_blank'
+								)
+							}
+						/>
+					)}
 					<ToolbarButton onClick={onRequestClose} icon={closeIcon} />
 				</div>
 			)}

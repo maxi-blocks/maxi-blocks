@@ -403,6 +403,8 @@ const LibraryContainer = props => {
 		}
 	};
 
+	// TO DO: connect to auth later
+	const isMaxiProActive = false;
 	/** Patterns / Blocks Results */
 	const patternsResults = hit => {
 		const wrapClassName =
@@ -414,6 +416,7 @@ const LibraryContainer = props => {
 				type='patterns'
 				target='patterns'
 				key={`maxi-cloud-masonry__item-${hit.post_id}`}
+				className={wrapClassName}
 				title={hit.post_title}
 				demoUrl={hit.demo_url}
 				previewIMG={hit.preview_image_url}
@@ -421,7 +424,7 @@ const LibraryContainer = props => {
 				isPro={hit.cost?.[0] === 'Pro'}
 				taxonomies={hit.category?.[0]}
 				serial={hit.post_number}
-				className={wrapClassName}
+				isMaxiProActive={isMaxiProActive}
 				onRequestInsert={() =>
 					onRequestInsertPattern(
 						hit.gutenberg_code,

@@ -271,7 +271,7 @@ const ClearRefinements = ({ items, refine }) => {
 			}`}
 			onClick={e => {
 				e.preventDefault();
-				// refine(items);
+				refine(items);
 				removeMenuBugFix();
 				const allButton = document.querySelector(
 					'.top-Menu > button:first-child'
@@ -937,7 +937,7 @@ const LibraryContainer = props => {
 										};
 
 									itemsReturn.push({
-										label: 'Go pro',
+										label: 'Go Pro',
 										value: 'Go pro',
 										isRefined: false,
 									});

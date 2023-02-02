@@ -320,15 +320,15 @@ const HoverEffectControl = props => {
 								onReset={() =>
 									onChange({
 										[`hover-basic-${props['hover-basic-effect-type']}-value`]:
-											getDefaultAttribute([
-												`hover-basic-${props['hover-basic-effect-type']}-value`,
-											]),
+											getDefaultAttribute(
+												`hover-basic-${props['hover-basic-effect-type']}-value`
+											),
 										isReset: true,
 									})
 								}
-								initialPosition={getDefaultAttribute([
-									`hover-basic-${props['hover-basic-effect-type']}-value`,
-								])}
+								initialPosition={getDefaultAttribute(
+									`hover-basic-${props['hover-basic-effect-type']}-value`
+								)}
 							/>
 						)}
 				</>

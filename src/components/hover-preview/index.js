@@ -41,7 +41,7 @@ const HoverPreview = props => {
 	const showEffects = props['hover-preview'] || isSave;
 
 	const classes = classnames(
-		showEffects && hoverType !== 'none' && 'maxi-hover-preview',
+		'maxi-hover-preview',
 		wrapperClassName,
 		showEffects && hoverType !== 'none' && hoverClassName
 	);

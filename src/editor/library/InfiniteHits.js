@@ -15,7 +15,6 @@ class InfiniteHits extends Component {
 
 	componentDidMount() {
 		this.observer = new IntersectionObserver(this.onSentinelIntersection);
-
 		this.observer.observe(this.sentinel);
 	}
 
@@ -51,7 +50,9 @@ class InfiniteHits extends Component {
 					<li
 						className='ais-InfiniteHits-sentinel'
 						ref={c => {
-							return (this.sentinel = c);
+							this.sentinel = c;
+							const val = this.sentinel;
+							return val;
 						}}
 					/>
 				</ul>

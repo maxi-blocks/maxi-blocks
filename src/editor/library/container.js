@@ -18,6 +18,8 @@ import {
 	onRequestInsertPattern,
 } from './util';
 import { injectImgSVG } from '../../extensions/svg';
+// eslint-disable-next-line import/no-cycle
+import MasonryItem from './MasonryItem';
 import masonryGenerator from './masonryGenerator';
 import useInterval from '../../extensions/dom/useInterval';
 // eslint-disable-next-line import/no-cycle

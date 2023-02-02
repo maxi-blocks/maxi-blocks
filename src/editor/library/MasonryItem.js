@@ -33,6 +33,7 @@ const MasonryItem = props => {
 		className,
 		onRequestInsert,
 		isSaved = false,
+		isMaxiProActive = false,
 	} = props;
 
 	const getCardSerial = (string = serial) => {
@@ -82,15 +83,27 @@ const MasonryItem = props => {
 								cost={cost}
 								toneUrl={toneUrl}
 								cardId={masonryCardId}
+								isMaxiProActive={isMaxiProActive}
 							/>
-							<Button
-								className='maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-load'
-								onClick={() => {
-									onRequestInsert();
-								}}
-							>
-								{__('Insert', 'maxi-blocks')}
-							</Button>
+							{(!isPro || isMaxiProActive) && (
+								<Button
+									className='maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-load'
+									onClick={() => {
+										onRequestInsert();
+									}}
+								>
+									{__('Insert', 'maxi-blocks')}
+								</Button>
+							)}
+							{isPro && !isMaxiProActive && (
+								<Button
+									className='maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-go-pro'
+									href='https://maxiblocks.com/go/pro-library'
+									target='_blank'
+								>
+									{__('Go Pro', 'maxi-blocks')}
+								</Button>
+							)}
 						</>
 					)}
 					{type === 'sc' && (

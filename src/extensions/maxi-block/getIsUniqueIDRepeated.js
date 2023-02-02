@@ -24,7 +24,9 @@ const getIsUniqueIDRepeated = (uniqueIDToCompare, repeatCount = 1) => {
 					}
 				}
 
-				const innerBlocks = getBlocks(block.clientId);
+				// TODO: when FSE (#3561) is merged, need to adjust `goThroughMaxiBlocks` to work with reusable blocks
+				const innerBlocks =
+					getBlocks(block.clientId) || block.innerBlocks;
 
 				if (innerBlocks.length) {
 					const {

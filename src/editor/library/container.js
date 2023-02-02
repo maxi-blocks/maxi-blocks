@@ -10,7 +10,6 @@ import { CheckboxControl } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import { ToggleSwitch } from '../../components';
 import { updateSCOnEditor } from '../../extensions/style-cards';
 import {
 	svgAttributesReplacer,
@@ -114,10 +113,6 @@ const RefinementList = ({ items, refine }) => (
 				>
 					{capitalize(item.label)} ({item.count})
 				</a>
-				<ToggleSwitch
-					selected={item.isRefined}
-					onChange={val => refine(item.value)}
-				/>
 			</li>
 		))}
 	</ul>

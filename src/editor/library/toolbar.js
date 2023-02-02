@@ -53,6 +53,7 @@ const LibraryToolbar = props => {
 		onRequestClose,
 		title = '',
 		cost = '',
+		beta = '',
 		toneUrl = '',
 		cardId,
 		isMaxiProActive = false,
@@ -315,6 +316,7 @@ const LibraryToolbar = props => {
 						title={relatedHint.post_title}
 						serial={relatedHint.post_number}
 						cost={relatedHint.cost[0]}
+						beta={relatedHint.beta}
 						toneUrl={relatedHint.link_to_related}
 						cardId={masonryCardId}
 						onClose={onRequestClose}
@@ -500,6 +502,10 @@ const LibraryToolbar = props => {
 	};
 
 	const isPro = cost === 'Pro';
+	const isBeta = beta.includes('Beta');
+
+	console.log(`beta value: ${beta}`);
+	console.log(`beta: ${isBeta}`);
 
 	return (
 		<div className='maxi-cloud-toolbar'>
@@ -590,7 +596,7 @@ const LibraryToolbar = props => {
 
 			{(type === 'preview' || type === 'switch-tone') && (
 				<div className='maxi-cloud-toolbar__buttons-group_close'>
-					{(!isPro || isMaxiProActive) && (
+					{(!isPro || isBeta || isMaxiProActive) && (
 						<ToolbarButton
 							label={__('Insert', 'maxi-blocks')}
 							onClick={() => {
@@ -599,7 +605,7 @@ const LibraryToolbar = props => {
 							}}
 						/>
 					)}
-					{isPro && !isMaxiProActive && (
+					{isPro && !isBeta && !isMaxiProActive && (
 						<ToolbarButton
 							label={__('Go Pro', 'maxi-blocks')}
 							onClick={() =>

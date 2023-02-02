@@ -37,6 +37,7 @@ const CloudLibrary = props => {
 		url,
 		title,
 		cost,
+		beta,
 		toneUrl,
 		cardId,
 		prefix,
@@ -61,6 +62,7 @@ const CloudLibrary = props => {
 					cardId={cardId}
 					title={title}
 					cost={cost}
+					beta={beta}
 					toneUrl={toneUrl}
 					onRequestClose={onClose}
 				/>

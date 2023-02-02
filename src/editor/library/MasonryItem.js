@@ -28,6 +28,7 @@ const MasonryItem = props => {
 		previewIMG,
 		demoUrl,
 		cost,
+		beta,
 		toneUrl,
 		currentItemColorStatus = false,
 		className,
@@ -55,6 +56,8 @@ const MasonryItem = props => {
 
 	const masonryCardId = `maxi-cloud-masonry-card__pattern-${getCardSerial()}`;
 
+	const isBeta = beta.includes('Beta');
+
 	const patternsScContent = () => {
 		return (
 			<>
@@ -81,11 +84,12 @@ const MasonryItem = props => {
 								title={serial}
 								serial={getCardSerial()}
 								cost={cost}
+								beta={beta}
 								toneUrl={toneUrl}
 								cardId={masonryCardId}
 								isMaxiProActive={isMaxiProActive}
 							/>
-							{(!isPro || isMaxiProActive) && (
+							{(!isPro || isBeta || isMaxiProActive) && (
 								<Button
 									className='maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-load'
 									onClick={() => {
@@ -95,7 +99,7 @@ const MasonryItem = props => {
 									{__('Insert', 'maxi-blocks')}
 								</Button>
 							)}
-							{isPro && !isMaxiProActive && (
+							{isPro && !isBeta && !isMaxiProActive && (
 								<Button
 									className='maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-go-pro'
 									href='https://maxiblocks.com/go/pro-library'

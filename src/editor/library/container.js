@@ -411,6 +411,7 @@ const LibraryContainer = props => {
 			hit.cost?.[0] === 'Pro'
 				? 'ais-InfiniteHits-item-pro'
 				: 'ais-InfiniteHits-item-free';
+		console.log()
 		return (
 			<MasonryItem
 				type='patterns'
@@ -421,6 +422,7 @@ const LibraryContainer = props => {
 				demoUrl={hit.demo_url}
 				previewIMG={hit.preview_image_url}
 				cost={hit.cost?.[0]}
+				beta={hit.post_tag}
 				isPro={hit.cost?.[0] === 'Pro'}
 				taxonomies={hit.category?.[0]}
 				serial={hit.post_number}

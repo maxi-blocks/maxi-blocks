@@ -8,7 +8,6 @@ import { useEffect } from '@wordpress/element';
  * Internal dependencies
  */
 import InfoBox from '../info-box';
-import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
 import SettingTabsControl from '../setting-tabs-control';
 import ToggleSwitch from '../toggle-switch';
@@ -22,7 +21,7 @@ import {
 /**
  * External dependencies
  */
-import { capitalize, cloneDeep, isEmpty, isArray } from 'lodash';
+import { capitalize, cloneDeep, isArray, isEmpty } from 'lodash';
 
 /**
  * Component
@@ -45,16 +44,16 @@ const TransitionControlWrapper = props => {
 			? Object.keys(transition?.[type])[0]
 			: attributes[`transition-${type}-selected`];
 
-	const defaultTransition = getDefaultAttribute('transition')[type][selected];
 	const selectedTransition = transition[type][selected];
+	const defaultTransition = getDefaultAttribute('transition')[type][selected];
 
 	const getDefaultTransitionAttribute = prop =>
 		defaultTransition[`${prop}-${deviceType}`];
 
-	const onChangeTransition = (obj = {}) => {
+	const onChangeTransition = (obj = {}, splitMode) => {
 		if (!transitionData) return null;
 
-		let newObj = {
+		const newObj = {
 			transition: {},
 		};
 
@@ -66,24 +65,43 @@ const TransitionControlWrapper = props => {
 					key => {
 						newObj.transition[currentType][key] = {
 							...attributes.transition[currentType][key],
-							...attributes.transition[type][selected],
-							hoverProp:
-								transitionData[currentType][key].hoverProp,
-							...obj,
+							...(splitMode === 'out'
+								? {
+										out: {
+											...attributes.transition[
+												currentType
+											][key].out,
+											...attributes.transition[type][
+												selected
+											].out,
+											...obj,
+										},
+								  }
+								: {
+										...attributes.transition[type][
+											selected
+										],
+										...obj,
+								  }),
 						};
 					}
 				);
 			});
 		} else {
-			newObj = {
-				transition: {
-					...attributes?.transition,
-					[type]: {
-						...(attributes?.transition?.[type] || []),
-						[selected]: {
-							...selectedTransition,
-							...obj,
-						},
+			newObj.transition = {
+				...attributes?.transition,
+				[type]: {
+					...(attributes?.transition?.[type] || []),
+					[selected]: {
+						...selectedTransition,
+						...(splitMode === 'out'
+							? {
+									out: {
+										...selectedTransition.out,
+										...obj,
+									},
+							  }
+							: obj),
 					},
 				},
 			};
@@ -135,18 +153,16 @@ const TransitionControlWrapper = props => {
 				/>
 			)}
 			{selected && selected !== 'none' && (
-				<ResponsiveTabsControl breakpoint={deviceType}>
-					<TransitionControl
-						{...getTransitionAttributes(attributes, 'transition')}
-						onChange={onChangeTransition}
-						getDefaultTransitionAttribute={
-							getDefaultTransitionAttribute
-						}
-						transition={selectedTransition}
-						breakpoint={deviceType}
-						type={type}
-					/>
-				</ResponsiveTabsControl>
+				<TransitionControl
+					{...getTransitionAttributes(attributes, 'transition')}
+					onChange={onChangeTransition}
+					getDefaultTransitionAttribute={
+						getDefaultTransitionAttribute
+					}
+					transition={selectedTransition}
+					breakpoint={deviceType}
+					type={type}
+				/>
 			)}
 		</>
 	) : (

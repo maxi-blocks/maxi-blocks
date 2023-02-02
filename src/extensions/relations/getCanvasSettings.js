@@ -13,65 +13,24 @@ import {
 	FullSizeControl,
 	InfoBox,
 	MarginControl,
-	OpacityControl,
 	PaddingControl,
-	PositionControl,
-	TransformControl,
 } from '../../components';
 import {
 	getBlockBackgroundStyles,
 	getBorderStyles,
 	getBoxShadowStyles,
 	getMarginPaddingStyles,
-	getOpacityStyles,
-	getPositionStyles,
 	getSizeStyles,
-	getTransformStyles,
 } from '../styles/helpers';
-import {
-	getTransformCategories,
-	getTransformSelectors,
-} from '../../components/transform-control/utils';
 import { getGroupAttributes, getLastBreakpointAttribute } from '../styles';
+import { getEditorWrapper } from '../dom';
 
 /**
  * External dependencies
  */
-import { isEmpty, isEqual, isPlainObject, pickBy } from 'lodash';
+import { isEmpty, isEqual, pickBy } from 'lodash';
 
-const getTransformControl = ({ categories, selectors }) => ({
-	label: __('Transform', 'maxi-blocks'),
-	transitionTarget: [],
-	hoverProp: (attributes, relationAttributes) =>
-		Object.entries(getGroupAttributes(attributes, 'transform')).some(
-			([attributeKey, attribute]) =>
-				relationAttributes?.[attributeKey] &&
-				isPlainObject(attribute) &&
-				Object.entries(attribute).some(
-					([objKey, obj]) =>
-						relationAttributes[attributeKey][objKey] &&
-						obj?.['hover-status']
-				)
-		),
-	attrGroupName: 'transform',
-	component: props => (
-		<TransformControl
-			{...props}
-			uniqueID={props.attributes.uniqueID}
-			depth={2}
-			selectors={getTransformSelectors(selectors, props.attributes)}
-			categories={getTransformCategories(categories, props.attributes)}
-			disableHover
-		/>
-	),
-	helper: props =>
-		getTransformStyles(
-			props.obj,
-			getTransformSelectors(selectors, props.blockAttributes)
-		),
-});
-
-const getCanvasSettings = ({ name, customCss }) => [
+const getCanvasSettings = ({ name }) => [
 	{
 		label: __('Background / Layer', 'maxi-blocks'),
 		transitionTarget: ' > .maxi-background-displayer > div',
@@ -116,6 +75,22 @@ const getCanvasSettings = ({ name, customCss }) => [
 							'background-layers': newBgLayers,
 						});
 					}}
+					getBounds={() =>
+						getEditorWrapper()
+							.querySelector(`.${props.attributes.uniqueID}`)
+							.getBoundingClientRect()
+					}
+					getBlockClipPath={layerID => {
+						const layerAttributes = Object.values(
+							props.blockAttributes['background-layers']
+						).find(({ id }) => id === layerID);
+						return getGroupAttributes(
+							layerAttributes,
+							'clipPath',
+							false,
+							`background-${layerAttributes.type}-`
+						);
+					}}
 					isIB
 					disableAddLayer
 				/>
@@ -146,22 +121,6 @@ const getCanvasSettings = ({ name, customCss }) => [
 		attrGroupName: 'boxShadow',
 		component: props => <BoxShadowControl {...props} />,
 		helper: props => getBoxShadowStyles(props),
-	},
-	{
-		label: __('Opacity', 'maxi-blocks'),
-		hoverProp: 'opacity-status-hover',
-		attrGroupName: 'opacity',
-		component: props => (
-			<OpacityControl
-				{...props}
-				opacity={getLastBreakpointAttribute({
-					target: 'opacity',
-					breakpoint: props.breakpoint,
-					attributes: getGroupAttributes(props, 'opacity'),
-				})}
-			/>
-		),
-		helper: props => getOpacityStyles(props.obj),
 	},
 	{
 		label: __('Height / Width', 'maxi-blocks'),
@@ -197,13 +156,6 @@ const getCanvasSettings = ({ name, customCss }) => [
 		),
 		helper: props => getMarginPaddingStyles(props),
 	},
-	{
-		label: __('Position', 'maxi-blocks'),
-		attrGroupName: 'position',
-		component: props => <PositionControl {...props} />,
-		helper: props => getPositionStyles(props.obj),
-	},
-	...getTransformControl(customCss),
 ];
 
 export default getCanvasSettings;

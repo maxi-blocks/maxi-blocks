@@ -2,7 +2,7 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { select } from '@wordpress/data';
+import { select, useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -11,11 +11,11 @@ import Button from '../button';
 import InfoBox from '../info-box';
 import ListControl from '../list-control';
 import ListItemControl from '../list-control/list-item-control';
-import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
 import SettingTabsControl from '../setting-tabs-control';
 import TextControl from '../text-control';
 import TransitionControl from '../transition-control';
+import { openSidebarAccordion } from '../../extensions/inspector';
 import {
 	createTransitionObj,
 	getDefaultAttribute,
@@ -38,10 +38,25 @@ import './editor.scss';
 const RelationControl = props => {
 	const { getBlock } = select('core/block-editor');
 
-	const { deviceType, isButton, onChange, relations, uniqueID } = props;
+	const { selectBlock } = useDispatch('core/block-editor');
+
+	const {
+		deviceType,
+		isButton,
+		onChange,
+		relations: rawRelations,
+		uniqueID,
+	} = props;
 
 	const cloneRelations = relations =>
 		!isEmpty(relations) ? cloneDeep(relations) : [];
+
+	// Ensure that each relation of `relations` array has a valid block
+	const relations = cloneRelations(rawRelations).filter(
+		relation =>
+			isEmpty(relation.uniqueID) ||
+			!!getClientIdFromUniqueId(relation.uniqueID)
+	);
 
 	const getRelationId = relations => {
 		return relations && !isEmpty(relations)
@@ -361,13 +376,13 @@ const RelationControl = props => {
 				className='maxi-relation-control__button'
 				type='button'
 				variant='secondary'
-				onClick={() => onAddRelation(props.relations)}
+				onClick={() => onAddRelation(relations)}
 			>
 				{__('Add new interaction', 'maxi-blocks')}
 			</Button>
-			{!isEmpty(props.relations) && (
+			{!isEmpty(relations) && (
 				<ListControl>
-					{props.relations.map(item => (
+					{relations.map(item => (
 						<ListItemControl
 							key={item.id}
 							className='maxi-relation-control__item'
@@ -577,6 +592,25 @@ const RelationControl = props => {
 													);
 												}}
 											/>
+											<div className='maxi-relation-control__block-access maxi-warning-box__links'>
+												<a
+													onClick={() =>
+														selectBlock(
+															getClientIdFromUniqueId(
+																item.uniqueID
+															),
+															openSidebarAccordion(
+																0
+															)
+														)
+													}
+												>
+													{__(
+														'Open block settings',
+														'maxi-blocks'
+													)}
+												</a>
+											</div>
 										</>
 									)}
 									{item.uniqueID &&
@@ -603,37 +637,45 @@ const RelationControl = props => {
 															'maxi-blocks'
 														),
 														content: (
-															<ResponsiveTabsControl
+															<TransitionControl
+																className='maxi-relation-control__item__effects'
+																onChange={(
+																	obj,
+																	splitMode
+																) =>
+																	onChangeRelation(
+																		relations,
+																		item.id,
+																		{
+																			effects:
+																				splitMode ===
+																				'out'
+																					? {
+																							...item.effects,
+																							out: {
+																								...item
+																									.effects
+																									.out,
+																								...obj,
+																							},
+																					  }
+																					: {
+																							...item.effects,
+																							...obj,
+																					  },
+																		}
+																	)
+																}
+																transition={
+																	item.effects
+																}
+																getDefaultTransitionAttribute={
+																	getDefaultTransitionAttribute
+																}
 																breakpoint={
 																	deviceType
 																}
-															>
-																<TransitionControl
-																	className='maxi-relation-control__item__effects'
-																	onChange={obj =>
-																		onChangeRelation(
-																			relations,
-																			item.id,
-																			{
-																				effects:
-																					{
-																						...item.effects,
-																						...obj,
-																					},
-																			}
-																		)
-																	}
-																	transition={
-																		item.effects
-																	}
-																	getDefaultTransitionAttribute={
-																		getDefaultTransitionAttribute
-																	}
-																	breakpoint={
-																		deviceType
-																	}
-																/>
-															</ResponsiveTabsControl>
+															/>
 														),
 													},
 												]}

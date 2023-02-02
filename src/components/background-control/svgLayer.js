@@ -2,7 +2,6 @@
  * Internal dependencies
  */
 import MaxiModal from '../../editor/library/modal';
-import ResponsiveTabsControl from '../responsive-tabs-control';
 import SizeAndPositionLayerControl from './sizeAndPositionLayerControl';
 import SVGFillControl from '../svg-fill-control';
 import { getBlockStyle } from '../../extensions/styles';

@@ -40,12 +40,15 @@ const ImageLayerSettings = props => {
 		onChange,
 		disableClipPath,
 		isHover = false,
+		isIB = false,
 		prefix = '',
 		breakpoint,
 		getDefaultAttr,
 		moreSettings,
 		setMoreSettings,
 		isLayer,
+		getBounds,
+		getBlockClipPath, // for IB
 	} = props;
 
 	const imageOptions = cloneDeep(props.imageOptions);
@@ -81,6 +84,7 @@ const ImageLayerSettings = props => {
 					attributes: imageOptions,
 					isHover,
 				})}
+				defaultValue={getDefaultAttr('background-image-size')}
 				options={[
 					{
 						label: __('Auto', 'maxi-blocks'),
@@ -190,14 +194,15 @@ const ImageLayerSettings = props => {
 						attributes: imageOptions,
 						isHover,
 					})}
+					defaultValue={getDefaultAttr('background-image-repeat')}
 					options={[
-						{
-							label: __('Repeat', 'maxi-blocks'),
-							value: 'repeat',
-						},
 						{
 							label: __('No repeat', 'maxi-blocks'),
 							value: 'no-repeat',
+						},
+						{
+							label: __('Repeat', 'maxi-blocks'),
+							value: 'repeat',
 						},
 						{
 							label: __('Repeat X', 'maxi-blocks'),
@@ -247,6 +252,7 @@ const ImageLayerSettings = props => {
 					attributes: imageOptions,
 					isHover,
 				})}
+				defaultValue={getDefaultAttr('background-image-position')}
 				options={[
 					{
 						label: __('Left top', 'maxi-blocks'),
@@ -444,6 +450,9 @@ const ImageLayerSettings = props => {
 							attributes: imageOptions,
 							isHover,
 						})}
+						defaultValue={getDefaultAttr(
+							'background-image-attachment'
+						)}
 						options={[
 							{
 								label: __('Scroll', 'maxi-blocks'),
@@ -500,6 +509,9 @@ const ImageLayerSettings = props => {
 									attributes: imageOptions,
 									isHover,
 								})}
+								defaultValue={getDefaultAttr(
+									'background-image-origin'
+								)}
 								options={[
 									{
 										label: __('Padding', 'maxi-blocks'),
@@ -546,6 +558,9 @@ const ImageLayerSettings = props => {
 									attributes: imageOptions,
 									isHover,
 								})}
+								defaultValue={getDefaultAttr(
+									'background-image-clip'
+								)}
 								options={[
 									{
 										label: __('Border', 'maxi-blocks'),
@@ -599,8 +614,11 @@ const ImageLayerSettings = props => {
 					)}
 					{...imageOptions}
 					isHover={isHover}
+					isIB={isIB}
 					prefix='background-image-'
 					breakpoint={breakpoint}
+					getBounds={getBounds}
+					getBlockClipPath={getBlockClipPath}
 					isLayer
 					disableRTC
 				/>

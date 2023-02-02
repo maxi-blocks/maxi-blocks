@@ -146,10 +146,6 @@ body {
 		background: #f5f5f5;
 	}
 
-	* {
-		overflow-x: none;
-	}
-
 	.components-panel__body {
 		// This should be fix
 		border-top: none;
@@ -389,11 +385,11 @@ svg path#styleCardBoat_b {
 			bottom: 0px !important;
 			left: 0px !important;
 		}
-		.maxi-indicators__padding--left {
+		.maxi-block-indicators__padding--left {
 			position: absolute;
 			left: 4px;
 		}
-		.maxi-indicators__padding--right {
+		.maxi-block-indicators__padding--right {
 			position: absolute;
 			right: 4px;
 		}

@@ -30,6 +30,8 @@ const VideoControl = props => {
 		playerType,
 	} = props;
 
+	const defaultURL = 'https://www.youtube.com/watch?v=ScMzIvxBSi4';
+
 	const [validationText, setValidationText] = useState(null);
 	return (
 		<>
@@ -61,7 +63,7 @@ const VideoControl = props => {
 				label={__('URL', 'maxi-blocks')}
 				type='url'
 				value={videoUrl}
-				placeholder='Youtube, Vimeo, or Direct Link'
+				placeholder={defaultURL}
 				onChange={val => {
 					if (val && !videoUrlRegex.test(val)) {
 						setValidationText(
@@ -72,10 +74,10 @@ const VideoControl = props => {
 					}
 
 					onChange({
-						url: val,
+						url: val !== '' ? val : defaultURL,
 						embedUrl: getParsedVideoUrl({
 							...props,
-							url: val,
+							url: val !== '' ? val : defaultURL,
 						}),
 						videoType: parseVideo(val).type,
 					});

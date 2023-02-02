@@ -106,6 +106,8 @@ const VideoLayer = props => {
 
 	const [validationText, setValidationText] = useState(null);
 
+	const defaultURL = 'https://www.youtube.com/watch?v=ScMzIvxBSi4';
+
 	return (
 		<div className='maxi-background-control__video'>
 			{(!isHover || (isHover && isLayerHover)) && (
@@ -118,7 +120,7 @@ const VideoLayer = props => {
 							props: videoOptions,
 							prefix,
 						})}
-						placeholder='Youtube, Vimeo, or Direct Link'
+						placeholder={defaultURL}
 						onChange={val => {
 							if (val && !videoUrlRegex.test(val)) {
 								setValidationText(
@@ -133,7 +135,7 @@ const VideoLayer = props => {
 									'background-video-mediaURL',
 									false,
 									prefix
-								)]: val,
+								)]: val !== '' ? val : defaultURL,
 							});
 						}}
 						validationText={validationText}

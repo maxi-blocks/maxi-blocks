@@ -37,10 +37,11 @@ const CloudLibrary = props => {
 		url,
 		title,
 		cost,
-		beta,
 		toneUrl,
 		cardId,
 		prefix,
+		isPro,
+		isBeta,
 	} = props;
 
 	const [type, setType] = useState(cloudType);
@@ -62,9 +63,10 @@ const CloudLibrary = props => {
 					cardId={cardId}
 					title={title}
 					cost={cost}
-					beta={beta}
 					toneUrl={toneUrl}
 					onRequestClose={onClose}
+					isPro={isPro}
+					isBeta={isBeta}
 				/>
 				<LibraryContainer
 					type={type}
@@ -74,7 +76,8 @@ const CloudLibrary = props => {
 					url={url}
 					title={title}
 					prefix={prefix}
-					isPro
+					isPro={isPro}
+					isBeta={isBeta}
 				/>
 			</>
 		</Modal>

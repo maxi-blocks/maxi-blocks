@@ -23,18 +23,18 @@ const MasonryItem = props => {
 		type,
 		target,
 		svgCode,
-		isPro,
 		serial,
 		previewIMG,
 		demoUrl,
 		cost,
-		beta,
 		toneUrl,
 		currentItemColorStatus = false,
 		className,
 		onRequestInsert,
 		isSaved = false,
 		isMaxiProActive = false,
+		isPro,
+		isBeta,
 	} = props;
 
 	const getCardSerial = (string = serial) => {
@@ -55,8 +55,6 @@ const MasonryItem = props => {
 	);
 
 	const masonryCardId = `maxi-cloud-masonry-card__pattern-${getCardSerial()}`;
-
-	const isBeta = beta.includes('Beta');
 
 	const patternsScContent = () => {
 		return (
@@ -84,10 +82,11 @@ const MasonryItem = props => {
 								title={serial}
 								serial={getCardSerial()}
 								cost={cost}
-								beta={beta}
 								toneUrl={toneUrl}
 								cardId={masonryCardId}
 								isMaxiProActive={isMaxiProActive}
+								isPro={isPro}
+								isBeta={isBeta}
 							/>
 							{(!isPro || isBeta || isMaxiProActive) && (
 								<Button

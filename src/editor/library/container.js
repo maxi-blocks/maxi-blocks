@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 /**
  * WordPress dependencies
  */
@@ -18,11 +19,9 @@ import {
 	onRequestInsertPattern,
 } from './util';
 import { injectImgSVG } from '../../extensions/svg';
-// eslint-disable-next-line import/no-cycle
 import MasonryItem from './MasonryItem';
 import masonryGenerator from './masonryGenerator';
 import useInterval from '../../extensions/dom/useInterval';
-// eslint-disable-next-line import/no-cycle
 import InfiniteHits from './InfiniteHits';
 
 /**
@@ -32,7 +31,6 @@ import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter';
 import {
 	InstantSearch,
 	SearchBox,
-	// InfiniteHits,
 	connectRefinementList,
 	connectMenu,
 	connectHierarchicalMenu,
@@ -49,133 +47,6 @@ import DOMPurify from 'dompurify';
  * Icons
  */
 import { arrowIcon } from '../../icons';
-
-// const MasonryItem = props => {
-// 	const {
-// 		type,
-// 		target,
-// 		svgCode,
-// 		isPro,
-// 		serial,
-// 		onRequestInsert,
-// 		previewIMG,
-// 		demoUrl,
-// 		title,
-// 		cost,
-// 		toneUrl,
-// 		currentItemColorStatus = false,
-// 		className,
-// 	} = props;
-
-// 	const masonryCardClasses = classnames(
-// 		'maxi-cloud-masonry-card',
-// 		`maxi-cloud-masonry-card__${target}`,
-// 		type === 'patterns' && `maxi-cloud-masonry-card__pattern-${serial}`,
-// 		type === 'svg' &&
-// 			currentItemColorStatus &&
-// 			'maxi-cloud-masonry-card__light',
-// 		className
-// 	);
-
-// 	const masonryCardId = `maxi-cloud-masonry-card__pattern-${serial}`;
-
-// 	const patternsScContent = () => {
-// 		return (
-// 			<>
-// 				<div className='maxi-cloud-masonry-card__container'>
-// 					<div className='maxi-cloud-masonry-card__container__top-bar'>
-// 						<div className='maxi-cloud-masonry__serial-tag'>
-// 							{type === 'patterns' && title}
-// 							{type === 'sc' && serial}
-// 						</div>
-// 					</div>
-// 				</div>
-// 				<div className='maxi-cloud-masonry-card__image'>
-// 					<img src={previewIMG} alt={`Preview for ${serial}`} />
-// 				</div>
-// 				<div className='maxi-cloud-masonry-card__buttons'>
-// 					{type === 'patterns' && (
-// 						<>
-// 							<MaxiModal
-// 								type='preview'
-// 								url={demoUrl}
-// 								title={serial}
-// 								onRequestInsert={onRequestInsert}
-// 								cardId={masonryCardId}
-// 								cost={cost}
-// 								toneUrl={toneUrl}
-// 							/>
-// 							<Button
-// 								className='maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-load'
-// 								onClick={onRequestInsert}
-// 							>
-// 								{__('Insert', 'maxi-blocks')}
-// 							</Button>
-// 							<div className='maxi-cloud-masonry-card__tags'>
-// 								{!isPro && (
-// 									<span className='maxi-cloud-masonry-card__tags__tag maxi-cloud-masonry-card__tags__tag-free'>
-// 										{__('Free', 'maxi-blocks')}
-// 									</span>
-// 								)}
-// 								{isPro && (
-// 									<span className='maxi-cloud-masonry-card__tags__tag maxi-cloud-masonry-card__tags__tag-pro'>
-// 										{__('Pro', 'maxi-blocks')}
-// 									</span>
-// 								)}
-// 							</div>
-// 						</>
-// 					)}
-// 					{type === 'sc' && (
-// 						<span className='maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-load'>
-// 							{__('Insert', 'maxi-block')}
-// 						</span>
-// 					)}
-// 				</div>
-// 			</>
-// 		);
-// 	};
-
-// 	return (
-// 		<div className={masonryCardClasses} id={masonryCardId}>
-// 			{type === 'sc' && (
-// 				<Button onClick={onRequestInsert}>{patternsScContent()}</Button>
-// 			)}
-// 			{type === 'patterns' && patternsScContent()}
-// 			{type === 'svg' && (
-// 				<div
-// 					className='maxi-cloud-masonry-card__svg-container'
-// 					onClick={onRequestInsert}
-// 				>
-// 					<RawHTML
-// 						style={{
-// 							backgroundColor: currentItemColorStatus
-// 								? '#000000'
-// 								: '#ffffff',
-// 						}}
-// 						className='maxi-cloud-masonry-card__svg-container__code'
-// 					>
-// 						{svgCode}
-// 					</RawHTML>
-// 					<div className='maxi-cloud-masonry-card__svg-container__title'>
-// 						{target === 'button-icon' ||
-// 						target === 'search-icon' ||
-// 						target.includes('Line') ||
-// 						target.includes('video-icon')
-// 							? serial.replace(' Line', '').replace(' line', '')
-// 							: [
-// 									'image-shape',
-// 									'bg-shape',
-// 									'sidebar-block-shape',
-// 							  ].includes(target) || target.includes('Shape')
-// 							? serial.replace(' shape', '')
-// 							: serial}
-// 					</div>
-// 					<span>{__('Insert', 'maxi-block')}</span>
-// 				</div>
-// 			)}
-// 		</div>
-// 	);
-// };
 
 const Accordion = ({ children, title, openByDefault = false }) => {
 	const [isAccordionOpen, setAccordionOpen] = useState(openByDefault);
@@ -449,14 +320,19 @@ const LibraryContainer = props => {
 		selectedSCValue,
 		clientId,
 		isValidTemplate,
+		SCList,
 	} = useSelect(select => {
 		const { isValidTemplate, getSelectedBlockClientId } =
 			select('core/block-editor');
 		const clientId = getSelectedBlockClientId();
 
-		const { receiveMaxiStyleCards, receiveMaxiSelectedStyleCard } = select(
-			'maxiBlocks/style-cards'
-		);
+		const {
+			receiveMaxiStyleCards,
+			receiveMaxiSelectedStyleCard,
+			receiveStyleCardsList,
+		} = select('maxiBlocks/style-cards');
+
+		const SCList = receiveStyleCardsList();
 		const styleCards = receiveMaxiStyleCards();
 		const { key: selectedSCKey, value: selectedSCValue } =
 			receiveMaxiSelectedStyleCard();
@@ -467,6 +343,7 @@ const LibraryContainer = props => {
 			selectedSCValue,
 			clientId,
 			isValidTemplate,
+			SCList,
 		};
 	});
 
@@ -783,7 +660,18 @@ const LibraryContainer = props => {
 				previewIMG={hit.post_thumbnail}
 				isPro={hit.cost === 'pro'}
 				serial={hit.post_title}
-				onRequestInsert={() => onRequestInsertSC(hit.sc_code)}
+				onRequestInsert={
+					SCList.map(item => {
+						return item.label;
+					}).includes(hit.post_title)
+						? () => {}
+						: () => onRequestInsertSC(hit.sc_code)
+				}
+				isSaved={
+					!!SCList.map(item => {
+						return item.label;
+					}).includes(hit.post_title)
+				}
 			/>
 		);
 	};

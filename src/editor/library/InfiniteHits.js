@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+import { Component } from '@wordpress/element';
+
+/**
  * Internal dependencies
  */
 import masonryGenerator from './masonryGenerator';
@@ -6,7 +11,6 @@ import masonryGenerator from './masonryGenerator';
 /**
  * External dependencies
  */
-import React, { Component } from 'react';
 import { connectInfiniteHits } from 'react-instantsearch-dom';
 import PropTypes from 'prop-types';
 

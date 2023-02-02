@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 /**
  * WordPress dependencies.
  */
@@ -8,6 +9,7 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
+
 import LibraryToolbar from './toolbar';
 import LibraryContainer from './container';
 /**

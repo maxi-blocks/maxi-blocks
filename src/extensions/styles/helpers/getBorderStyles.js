@@ -30,7 +30,6 @@ const getBorderStyles = ({
 	isButton = false,
 	scValues = {},
 	borderColorProperty = 'border-color',
-	uniqueID,
 }) => {
 	const response = {};
 
@@ -96,12 +95,25 @@ const getBorderStyles = ({
 			return color;
 		};
 
-		Object.entries(obj).forEach(([key, value]) => {
+		Object.entries(obj).forEach(([key, rawValue]) => {
 			const newKey = prefix ? key.replace(prefix, '') : key;
 			const includesBreakpoint =
 				newKey.lastIndexOf(`-${breakpoint}${isHover ? '-hover' : ''}`) +
 					`-${breakpoint}${isHover ? '-hover' : ''}`.length ===
 				newKey.length;
+			const replacer = new RegExp(
+				`\\b-${breakpoint}${
+					isHover ? '-hover' : ''
+				}\\b(?!.*\\b-${breakpoint}${isHover ? '-hover' : ''}\\b)`,
+				'gm'
+			);
+			const newLabel = newKey.replace(replacer, '');
+			const value = getLastBreakpointAttribute({
+				target: `${prefix}${newLabel}`,
+				isHover,
+				breakpoint,
+				attributes: obj,
+			});
 
 			if (
 				(getIsValid(value, true) ||
@@ -111,13 +123,6 @@ const getBorderStyles = ({
 				!newKey.includes('sync') &&
 				!newKey.includes('unit')
 			) {
-				const replacer = new RegExp(
-					`\\b-${breakpoint}${
-						isHover ? '-hover' : ''
-					}\\b(?!.*\\b-${breakpoint}${isHover ? '-hover' : ''}\\b)`,
-					'gm'
-				);
-				const newLabel = newKey.replace(replacer, '');
 				const unitKey = keyWords.filter(key =>
 					newLabel.includes(key)
 				)[0];

@@ -11,7 +11,6 @@ import Button from '../button';
 import InfoBox from '../info-box';
 import ListControl from '../list-control';
 import ListItemControl from '../list-control/list-item-control';
-import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
 import SettingTabsControl from '../setting-tabs-control';
 import TextControl from '../text-control';
@@ -625,37 +624,45 @@ const RelationControl = props => {
 															'maxi-blocks'
 														),
 														content: (
-															<ResponsiveTabsControl
+															<TransitionControl
+																className='maxi-relation-control__item__effects'
+																onChange={(
+																	obj,
+																	splitMode
+																) =>
+																	onChangeRelation(
+																		relations,
+																		item.id,
+																		{
+																			effects:
+																				splitMode ===
+																				'out'
+																					? {
+																							...item.effects,
+																							out: {
+																								...item
+																									.effects
+																									.out,
+																								...obj,
+																							},
+																					  }
+																					: {
+																							...item.effects,
+																							...obj,
+																					  },
+																		}
+																	)
+																}
+																transition={
+																	item.effects
+																}
+																getDefaultTransitionAttribute={
+																	getDefaultTransitionAttribute
+																}
 																breakpoint={
 																	deviceType
 																}
-															>
-																<TransitionControl
-																	className='maxi-relation-control__item__effects'
-																	onChange={obj =>
-																		onChangeRelation(
-																			relations,
-																			item.id,
-																			{
-																				effects:
-																					{
-																						...item.effects,
-																						...obj,
-																					},
-																			}
-																		)
-																	}
-																	transition={
-																		item.effects
-																	}
-																	getDefaultTransitionAttribute={
-																		getDefaultTransitionAttribute
-																	}
-																	breakpoint={
-																		deviceType
-																	}
-																/>
-															</ResponsiveTabsControl>
+															/>
 														),
 													},
 												]}

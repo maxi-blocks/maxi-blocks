@@ -90,7 +90,7 @@ class MaxiBlocks_Local_Fonts
         return $array_all;
     }
 
-    public function generateFontURL($font_url, $fontata)
+    public function generateFontURL($font_url, $font_data)
     {
         if (!empty($font_data)) {
             $font_weight = array_key_exists('weight', $font_data) ? $font_data['weight'] : false;

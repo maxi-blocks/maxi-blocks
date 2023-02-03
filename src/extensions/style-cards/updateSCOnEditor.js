@@ -235,7 +235,10 @@ const getSCFontsData = obj => {
 	Object.entries(obj).forEach(([key, val]) => {
 		if (key.includes('font-family')) {
 			fontName = val;
-			response[fontName] = { weight: [], style: [] };
+			response[fontName] = response[fontName] ?? {
+				weight: [],
+				style: [],
+			};
 		}
 		if (key.includes('font-weight'))
 			response[fontName].weight.push(val?.toString());

@@ -198,12 +198,17 @@ const LibraryToolbar = props => {
 			fullWidth = true;
 		}
 
+		console.log('searchParameters');
+		console.log(searchParameters);
+
 		client
 			.collections('post')
 			.documents()
 			.search(searchParameters)
 			.then(result => {
-				const relatedHint = result?.hits[0]?.document;
+				const relatedHit = result?.hits[0]?.document;
+				console.log('relatedHit');
+				console.log(relatedHit);
 				const previewIframeStyles = previewIframe.style;
 				const previewIframeWrapStyles = previewIframeWrap.style;
 				const previewIframeSpaceStyles = previewIframeSpace.style;
@@ -229,7 +234,7 @@ const LibraryToolbar = props => {
 
 				window.setTimeout(() => {
 					const modal = document.getElementsByClassName(
-						'maxi-library-modal maxi-preview'
+						'maxi-library-modal maxi-library-modal__preview'
 					)[0];
 					const previewIframe = modal?.getElementsByClassName(
 						'maxi-cloud-container__preview-iframe_wrap'
@@ -306,19 +311,22 @@ const LibraryToolbar = props => {
 					}
 				}, 0);
 
-				return (
+				const maxiModal = document.getElementById('maxi-modal');
+
+				wp.element.render(
 					<MaxiModal
 						type='switch-tone'
-						url={relatedHint.demo_url}
-						title={relatedHint.post_title}
-						serial={relatedHint.post_number}
-						cost={relatedHint.cost[0]}
-						toneUrl={relatedHint.link_to_related}
+						url={relatedHit.demo_url}
+						title={relatedHit.post_title}
+						serial={relatedHit.post_number}
+						cost={relatedHit.cost[0]}
+						toneUrl={relatedHit.link_to_related}
 						cardId={masonryCardId}
 						onClose={onRequestClose}
-						isPro={relatedHint.cost?.[0] === 'Pro'}
-						isBeta={relatedHint.post_tag.includes('Beta')}
-					/>
+						isPro={relatedHit.cost?.[0] === 'Pro'}
+						isBeta={relatedHit.post_tag?.includes('Beta')}
+					/>,
+					maxiModal
 				);
 			});
 	};

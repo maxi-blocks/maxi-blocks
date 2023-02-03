@@ -209,21 +209,28 @@ const MaxiModal = props => {
 					</Button>
 				)}
 				{isOpen && (
-					<CloudLibrary
-						cloudType={type}
-						onClose={onClick}
-						blockStyle={style}
-						onSelect={onSelect}
-						url={url}
-						title={title}
-						cost={cost}
-						isPro={isPro}
-						isBeta={isBeta}
-						toneUrl={toneUrl}
-						cardId={cardId}
-						prefix={prefix}
-						className={`maxi-library-modal__${type}`}
-					/>
+					<div
+						className='components-modal__screen-overlay maxi-open-preview test'
+						id='maxi-modal'
+					>
+						<div className='maxi-library-modal maxi-preview'>
+							<CloudLibrary
+								cloudType={type}
+								onClose={onClick}
+								blockStyle={style}
+								onSelect={onSelect}
+								url={url}
+								title={title}
+								cost={cost}
+								isPro={isPro}
+								isBeta={isBeta}
+								toneUrl={toneUrl}
+								cardId={cardId}
+								prefix={prefix}
+								className={`maxi-library-modal__${type}`}
+							/>
+						</div>
+					</div>
 				)}
 			</div>
 			{type === 'button-icon' && !isEmpty(icon) && (
@@ -306,6 +313,26 @@ const MaxiModal = props => {
 					<RawHTML className='maxi-library-modal__action-section__preview__icon'>
 						{icon}
 					</RawHTML>
+				</div>
+			)}
+			{type === 'switch-tone' && (
+				<div className='components-modal__screen-overlay maxi-open-preview maxi-switch-tone'>
+					<div className='maxi-library-modal maxi-preview'>
+						<CloudLibrary
+							cloudType={type}
+							onClose={onClick}
+							blockStyle='light'
+							url={url}
+							title={title}
+							cost={cost}
+							toneUrl={toneUrl}
+							cardId={cardId}
+							prefix={prefix}
+							className={`maxi-library-modal__preview maxi-library-modal__${type}`}
+							isPro={isPro}
+							isBeta={isBeta}
+						/>
+					</div>
 				</div>
 			)}
 		</div>

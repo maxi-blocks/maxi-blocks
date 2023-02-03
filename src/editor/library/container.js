@@ -425,6 +425,7 @@ const LibraryContainer = props => {
 				isPro={hit.cost?.[0] === 'Pro'}
 				taxonomies={hit.category?.[0]}
 				serial={hit.post_number}
+				toneUrl={hit.link_to_related}
 				isMaxiProActive={isMaxiProActive}
 				onRequestInsert={() =>
 					onRequestInsertPattern(

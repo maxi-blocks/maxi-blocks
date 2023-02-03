@@ -22,6 +22,7 @@ import {
 	getGroupAttributes,
 } from '../../extensions/styles';
 import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
+import { goThroughMaxiBlocks } from '../../extensions/maxi-block';
 import { getHoverStatus } from '../../extensions/relations';
 import { getBlockData } from '../../extensions/attributes';
 
@@ -336,33 +337,20 @@ const RelationControl = props => {
 	};
 
 	const getBlocksToAffect = () => {
-		const { getBlocks } = select('core/block-editor');
-		const maxiBlocks = getBlocks().filter(block =>
-			block.name.includes('maxi-blocks')
-		);
-
-		const blocksToAffect = (blocks, arr = []) => {
-			blocks.forEach(block => {
-				if (
-					block.attributes.customLabel !==
-						getDefaultAttribute('customLabel', block.clientId) &&
-					block.attributes.uniqueID !== uniqueID
-				) {
-					arr.push({
-						label: block.attributes.customLabel,
-						value: block.attributes.uniqueID,
-					});
-				}
-
-				if (block.innerBlocks.length) {
-					blocksToAffect(block.innerBlocks, arr);
-				}
-			});
-
-			return arr;
-		};
-
-		return blocksToAffect(maxiBlocks);
+		const arr = [];
+		goThroughMaxiBlocks(block => {
+			if (
+				block.attributes.customLabel !==
+					getDefaultAttribute('customLabel', block.clientId) &&
+				block.attributes.uniqueID !== uniqueID
+			) {
+				arr.push({
+					label: block.attributes.customLabel,
+					value: block.attributes.uniqueID,
+				});
+			}
+		});
+		return arr;
 	};
 
 	const blocksToAffect = getBlocksToAffect();

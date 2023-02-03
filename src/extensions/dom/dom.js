@@ -7,6 +7,13 @@ import { select, dispatch, subscribe } from '@wordpress/data';
  * Internal dependencies
  */
 import { getPageFonts, loadFonts } from '../text/fonts';
+import { updateSCOnEditor } from '../style-cards';
+import {
+	getIsSiteEditor,
+	getIsTemplatePart,
+	getIsTemplatesListOpened,
+	getSiteEditorIframeBody,
+} from '../fse';
 import getWinBreakpoint from './getWinBreakpoint';
 import { setScreenSize } from '../styles';
 
@@ -45,7 +52,9 @@ const allowedBlocks = [
 
 wp.domReady(() => {
 	const observerSubscribe = subscribe(() => {
-		const targetNode = document.querySelector('.edit-post-layout');
+		const targetNode =
+			document.querySelector('.edit-post-layout') ||
+			document.querySelector('.edit-site');
 
 		if (targetNode) {
 			/**
@@ -84,8 +93,9 @@ wp.domReady(() => {
 								'core/block-editor'
 							).getSelectedBlockClientId()
 						);
-						const editPostSidebarNode =
-							document.querySelector('.edit-post-sidebar');
+						const editPostSidebarNode = document.querySelector(
+							'.interface-complementary-area'
+						);
 						const blockEditorBlockInspectorNode =
 							document.querySelector(
 								'.block-editor-block-inspector'
@@ -154,6 +164,34 @@ wp.domReady(() => {
 									blockToolbarEditor.style.display = null;
 							}
 						}
+
+						const editorWrapper =
+							document.querySelector(
+								'.edit-post-visual-editor'
+							) ||
+							document.querySelector('.edit-site-visual-editor');
+
+						[editorWrapper, getSiteEditorIframeBody()].forEach(
+							wrapper => {
+								if (
+									wrapper &&
+									!wrapper
+										.getAttributeNames()
+										.includes('maxi-blocks-responsive')
+								) {
+									const { receiveBaseBreakpoint } =
+										select('maxiBlocks');
+
+									const baseBreakpoint =
+										receiveBaseBreakpoint();
+
+									wrapper.setAttribute(
+										'maxi-blocks-responsive',
+										baseBreakpoint
+									);
+								}
+							}
+						);
 					}
 
 					if (
@@ -186,6 +224,7 @@ wp.domReady(() => {
 							mutation.target.style.width = `${responsiveWidth}px`;
 						}
 					}
+
 					// Responsive iframe
 					if (
 						mutation.type === 'attributes' &&
@@ -347,7 +386,7 @@ wp.domReady(() => {
 					) {
 						if (mutation.target.getAttribute('aria-expanded')) {
 							const node = document.querySelector(
-								'.edit-post-post-preview-dropdown'
+								'.block-editor-post-preview__dropdown-content'
 							);
 							const repeatedNode = document.querySelector(
 								'#maxi-blocks__responsive-toolbar'
@@ -377,7 +416,11 @@ wp.domReady(() => {
 										const editorWrapper =
 											document.querySelector(
 												'.edit-post-visual-editor'
+											) ||
+											document.querySelector(
+												'.edit-site-visual-editor'
 											);
+
 										editorWrapper.setAttribute(
 											'maxi-blocks-responsive',
 											maxiValue
@@ -407,46 +450,182 @@ wp.domReady(() => {
 		}
 	});
 
-	const editorContentUnsubscribe = subscribe(() => {
-		const targetNode = document.querySelector(
-			'.interface-interface-skeleton__content'
-		);
+	const changeHandlesDisplay = (display, wrapper) =>
+		Array.from(
+			wrapper.querySelectorAll('.resizable-editor__drag-handle')
+		).forEach(handle => {
+			handle.style.display = display;
+		});
 
-		if (targetNode) {
-			const { setEditorContentSize } = dispatch('maxiBlocks');
+	const changeSiteEditorWidth = (width = '') => {
+		document.querySelector('.edit-site-visual-editor').style.width = width;
+	};
 
-			const resizeObserver = new ResizeObserver(() => {
-				const { width, height } = targetNode.getBoundingClientRect();
-				setEditorContentSize({ width, height });
+	const templatePartResizeObserver = new ResizeObserver(entries => {
+		if (getIsTemplatesListOpened()) return;
 
-				// On changing the canvas editor size, we must update the winBreakpoint
-				// to add the necessary attributes to display styles. The observer can't
-				// rely on the next element cause it disappears when selecting 's' or 'xs'
-				// due to the appearance of the iframe.
-				const editorWrapper = document.querySelector(
-					'.editor-styles-wrapper'
-				);
+		setTimeout(() => {
+			const editorWrapper = entries[0].target;
+			if (!editorWrapper) return;
 
-				if (editorWrapper) {
-					const { width: winWidth } =
-						editorWrapper.getBoundingClientRect();
+			editorWrapper.style.maxWidth = 'initial';
+			const { width } = editorWrapper.getBoundingClientRect();
 
-					const deviceType = getWinBreakpoint(winWidth);
-					const baseWinBreakpoint =
-						select('maxiBlocks').receiveBaseBreakpoint();
-
-					if (
-						deviceType === baseWinBreakpoint ||
-						isNil(baseWinBreakpoint)
-					)
-						setScreenSize('general', false);
-					else if (!['xs', 's'].includes(deviceType))
-						setScreenSize(deviceType, false);
-				}
+			const { setMaxiDeviceType } = dispatch('maxiBlocks');
+			setMaxiDeviceType({
+				width,
+				changeSize: false,
 			});
 
-			[targetNode, document.body].forEach(element =>
-				resizeObserver.observe(element)
+			const { receiveMaxiDeviceType, receiveBaseBreakpoint } =
+				select('maxiBlocks');
+			const deviceType = receiveMaxiDeviceType();
+			const baseBreakpoint = receiveBaseBreakpoint();
+
+			const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
+
+			// Hiding handles if current breakpoint smaller than baseBreakpoint,
+			// because resizing is broken in this case
+			if (
+				baseBreakpoint &&
+				deviceType &&
+				deviceType !== 'general' &&
+				breakpoints.indexOf(baseBreakpoint) >
+					breakpoints.indexOf(deviceType)
+			) {
+				changeSiteEditorWidth('fit-content');
+				changeHandlesDisplay('none', editorWrapper);
+			} else {
+				changeSiteEditorWidth();
+				changeHandlesDisplay('inline-block', editorWrapper);
+			}
+		}, 150);
+	});
+
+	const resizeObserver = new ResizeObserver(() => {
+		const { width, height } = document
+			.querySelector('.interface-interface-skeleton__content')
+			.getBoundingClientRect();
+		dispatch('maxiBlocks').setEditorContentSize({ width, height });
+
+		// On changing the canvas editor size, we must update the winBreakpoint
+		// to add the necessary attributes to display styles. The observer can't
+		// rely on the next element cause it disappears when selecting 's' or 'xs'
+		// due to the appearance of the iframe.
+		const editorWrapper = document.querySelector('.editor-styles-wrapper');
+
+		if (editorWrapper) {
+			const { width: winWidth } = editorWrapper.getBoundingClientRect();
+
+			const deviceType = getWinBreakpoint(winWidth);
+			const baseWinBreakpoint =
+				select('maxiBlocks').receiveBaseBreakpoint();
+
+			if (deviceType === baseWinBreakpoint || isNil(baseWinBreakpoint))
+				setScreenSize('general', false);
+			else if (!['xs', 's'].includes(deviceType))
+				setScreenSize(deviceType, false);
+		}
+	});
+
+	const isSiteEditor = getIsSiteEditor();
+
+	let isNewEditorContentObserver = true;
+	let isNewObserver = true;
+	let isSCLoaded = false;
+	let type = null;
+
+	const editorContentUnsubscribe = subscribe(() => {
+		const resizeObserverTarget = document.querySelector(
+			'.interface-interface-skeleton__content'
+		);
+		if (!resizeObserverTarget) {
+			isNewEditorContentObserver = true;
+		}
+
+		if (isSiteEditor) {
+			const currentType = select('core/edit-site').getEditedPostType();
+			const isTemplatesListOpened = getIsTemplatesListOpened();
+			const siteEditorIframeBody = getSiteEditorIframeBody();
+
+			if (
+				!isTemplatesListOpened &&
+				isNewEditorContentObserver &&
+				siteEditorIframeBody
+			) {
+				setTimeout(() => {
+					dispatch('maxiBlocks').setMaxiDeviceType({
+						deviceType: 'general',
+					});
+				}, 150);
+
+				isNewEditorContentObserver = false;
+				resizeObserver.observe(resizeObserverTarget);
+			} else if (
+				(isTemplatesListOpened || type !== currentType) &&
+				!isNewEditorContentObserver
+			) {
+				isNewEditorContentObserver = true;
+				resizeObserver.disconnect();
+			}
+
+			// Need to add 'maxi-blocks--active' class to the FSE iframe body
+			// because gutenberg is filtering the iframe classList
+			// https://github.com/WordPress/gutenberg/blob/trunk/packages/block-editor/src/components/iframe/index.js#L213-L220
+			if (
+				siteEditorIframeBody &&
+				!siteEditorIframeBody.classList.contains('maxi-blocks--active')
+			)
+				siteEditorIframeBody.classList.add('maxi-blocks--active');
+
+			if (
+				(getIsTemplatesListOpened() || type !== currentType) &&
+				isSCLoaded
+			)
+				isSCLoaded = false;
+
+			// Adding the SC styles after switching between the templates
+			if (siteEditorIframeBody && !isSCLoaded) {
+				setTimeout(() => {
+					const SC = select(
+						'maxiBlocks/style-cards'
+					).receiveMaxiActiveStyleCard();
+					if (SC) {
+						updateSCOnEditor(SC.value);
+						isSCLoaded = true;
+					}
+				}, 150);
+			}
+
+			if (getIsTemplatePart()) {
+				const resizableBox = document.querySelector(
+					'.components-resizable-box__container'
+				);
+				const isTemplatesListOpened = getIsTemplatesListOpened();
+
+				if (
+					!isTemplatesListOpened &&
+					isNewObserver &&
+					getSiteEditorIframeBody() &&
+					resizableBox
+				) {
+					isNewObserver = false;
+					templatePartResizeObserver.observe(resizableBox);
+				} else if (
+					(isTemplatesListOpened || type !== currentType) &&
+					!isNewObserver
+				) {
+					isNewObserver = true;
+					templatePartResizeObserver.disconnect();
+				}
+			}
+
+			type = currentType;
+		} else {
+			if (!resizeObserverTarget) return;
+
+			[resizeObserverTarget, document.body].forEach(
+				element => element && resizeObserver.observe(element)
 			);
 
 			editorContentUnsubscribe();

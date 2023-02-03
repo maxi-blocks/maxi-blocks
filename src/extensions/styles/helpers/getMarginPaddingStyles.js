@@ -47,9 +47,7 @@ const getMarginPaddingStyles = ({ obj, prefix = '' }) => {
 							? 'auto'
 							: `${lastValue}${lastUnit}`;
 
-				if (value === '') {
-					delete response[breakpoint][`${type}-${key}`];
-				}
+				if (value === '') delete response[breakpoint][`${type}-${key}`];
 			})
 		);
 	});

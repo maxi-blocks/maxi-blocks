@@ -58,13 +58,11 @@ const SvgStrokeWidthControl = props => {
 				onChange({
 					[strokeAttrLabel]:
 						val !== undefined && val !== '' ? val : '',
-				});
-
-				!prefix.includes('navigation') &&
-					onChange({
+					...(!prefix.includes('navigation') && {
 						[`${prefix === 'svg-' ? '' : prefix}content`]:
 							setSVGStrokeWidth(content, val),
-					});
+					}),
+				});
 			}}
 			min={0.1}
 			max={5}

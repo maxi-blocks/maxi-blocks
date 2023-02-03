@@ -13,11 +13,11 @@ const withRTC = createHigherOrderComponent(
 		pure(ownProps => {
 			const { disableRTC = false, ...otherProps } = ownProps;
 
-			const component = <WrappedComponent {...otherProps} />;
-			return disableRTC ? (
-				component
-			) : (
-				<ResponsiveTabsControl>{component}</ResponsiveTabsControl>
+			return (
+				<>
+					{!disableRTC && <ResponsiveTabsControl />}
+					<WrappedComponent {...otherProps} />
+				</>
 			);
 		}),
 	'withRTC'

@@ -150,15 +150,14 @@ describe('CopyPaste from Toolbar', () => {
 			'flexbox'
 		);
 
-		const wrapSelector = await accordionPanel.$(
-			'.maxi-flex-wrap-control select'
+		await accordionPanel.$eval(
+			'.maxi-flex-wrap-control .maxi-tabs-control button[aria-label="wrap"]',
+			button => button.click()
 		);
-		await wrapSelector.select('wrap');
-
-		const directionSelector = await accordionPanel.$(
-			'.maxi-flex__direction select'
+		await accordionPanel.$eval(
+			'.maxi-flex__direction .maxi-tabs-control button[aria-label="row"]',
+			button => button.click()
 		);
-		await directionSelector.select('row');
 
 		// add box shadow (these attributes should not appear in the second group maxi)
 		const boxShadowAccordion = await openSidebarTab(

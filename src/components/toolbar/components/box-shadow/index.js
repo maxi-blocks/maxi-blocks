@@ -36,6 +36,7 @@ const BoxShadow = props => {
 		clientId,
 		prefix = '',
 		dropShadow,
+		disableInset,
 	} = props;
 
 	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
@@ -58,6 +59,7 @@ const BoxShadow = props => {
 					prefix={prefix}
 					isToolbar
 					dropShadow={dropShadow}
+					disableInset={disableInset}
 				/>
 			</div>
 		</ToolbarPopover>

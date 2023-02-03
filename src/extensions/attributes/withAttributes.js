@@ -53,7 +53,7 @@ const withAttributes = createHigherOrderComponent(
 		if (allowedBlocks.includes(blockName)) {
 			// uniqueID
 			if (isNil(uniqueID)) {
-				const newUniqueID = uniqueIDGenerator(blockName);
+				const newUniqueID = uniqueIDGenerator({ blockName, clientId });
 				attributes.uniqueID = newUniqueID;
 				attributes.customLabel = getCustomLabel(
 					attributes.customLabel,
@@ -62,7 +62,7 @@ const withAttributes = createHigherOrderComponent(
 			}
 			// isFirstOnHierarchy
 			const parentBlocks = select('core/block-editor')
-				.getBlockParents(clientId)
+				.getBlockParentsByBlockName(clientId, allowedBlocks)
 				.filter(el => {
 					return el !== clientId;
 				});
@@ -71,14 +71,12 @@ const withAttributes = createHigherOrderComponent(
 
 			attributes.isFirstOnHierarchy = isEmpty(parentBlocks);
 			if (!attributes.isFirstOnHierarchy) {
-				const { getBlockHierarchyRootClientId } =
-					select('core/block-editor');
+				const firstMaxiParentBlock = select(
+					'core/block-editor'
+				).getBlock(parentBlocks[0]);
 
-				const firstParentBlock = select('core/block-editor').getBlock(
-					getBlockHierarchyRootClientId(clientId)
-				);
-
-				attributes.blockStyle = firstParentBlock.attributes.blockStyle;
+				attributes.blockStyle =
+					firstMaxiParentBlock.attributes.blockStyle;
 			}
 
 			// RTL

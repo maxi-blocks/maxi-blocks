@@ -99,10 +99,34 @@ const hoverStylesCleaner = (normalObj, hoverObj) => {
 					if (breakpoint in hoverObj[key])
 						Object.entries(breakpointVal).forEach(
 							([attrKey, attrVal]) => {
+								// First higher breakpoint that has this property defined
+								const prevBreakpoint = BREAKPOINTS.slice(
+									BREAKPOINTS.indexOf(breakpoint) + 1
+								).filter(
+									prevBreakpoint =>
+										!isNil(
+											hoverObj[key]?.[prevBreakpoint]?.[
+												attrKey
+											]
+										)
+								)?.[0];
+
+								// If higher breakpoint has hover value that is
+								// different from this breakpoint hover value then keep it
+								if (
+									prevBreakpoint &&
+									hoverObj[key]?.[prevBreakpoint]?.[
+										attrKey
+									] !== hoverObj[key][breakpoint][attrKey]
+								) {
+									return;
+								}
+
 								if (
 									attrKey in hoverObj[key][breakpoint] &&
 									hoverObj[key][breakpoint][attrKey] ===
-										attrVal
+										attrVal &&
+									attrKey !== 'transition'
 								)
 									delete hoverObj[key][breakpoint][attrKey];
 							}

@@ -61,7 +61,7 @@ const save = props => {
 					</div>
 				)}
 				{circleStatus && (
-					<span className='maxi-number-counter__box__text' />
+					<span className='maxi-number-counter__box__text circle-hidden' />
 				)}
 			</div>
 		</MaxiBlock.save>

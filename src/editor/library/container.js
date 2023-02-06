@@ -745,6 +745,18 @@ const LibraryContainer = props => {
 						indexName='svg_icon'
 						searchClient={searchClientSvg}
 					>
+						<div className='maxi-cloud-container__content-svg-shape__search-bar'>
+							<CustomMenuSelect
+								className='maxi-cloud-container__content-svg-shape__categories'
+								attribute='svg_category'
+								translations={{
+									seeAllOption: __(
+										'All icons',
+										'maxi-blocks'
+									),
+								}}
+							/>
+						</div>
 						<Configure hitsPerPage={49} />
 						<div className='maxi-cloud-container__svg-icon__sidebar'>
 							<SearchBox
@@ -760,18 +772,6 @@ const LibraryContainer = props => {
 							<CustomClearRefinements />
 						</div>
 						<div className='maxi-cloud-container__content-svg-shape'>
-							<div className='maxi-cloud-container__content-svg-shape__search-bar'>
-								<CustomMenuSelect
-									className='maxi-cloud-container__content-svg-shape__categories'
-									attribute='svg_category'
-									translations={{
-										seeAllOption: __(
-											'All icons',
-											'maxi-blocks'
-										),
-									}}
-								/>
-							</div>
 							<div className='maxi-cloud-container__svg-icon__content-svg-icon'>
 								<Stats translations={resultsCount} />
 								<InfiniteHits hitComponent={svgResults} />

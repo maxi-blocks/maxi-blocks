@@ -267,8 +267,11 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 
 	const currentDate = date(getSettings()?.formats?.date);
 
-	const optionsSCList = () => {
+	const getOptionsSCList = () => {
 		const response = [];
+
+		console.log('before:');
+		console.log(styleCards);
 
 		!isEmpty(styleCards) &&
 			Object.entries(styleCards).map(([key, val], i) => {
@@ -276,16 +279,22 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 					response.push({
 						label: `${__('Template', 'maxi-blocks')}: ${val.name}`,
 						value: key,
+						status: val?.status,
+						selected: val?.selected || false,
 					});
 				else if (!isEmpty(val?.updated))
 					response.push({
 						label: `${val.name} - ${val.updated}`,
 						value: key,
+						status: val?.status,
+						selected: val?.selected || false,
 					});
 				else
 					response.push({
 						label: `${val.name}`,
 						value: key,
+						status: val?.status,
+						selected: val?.selected || false,
 					});
 				return null;
 			});
@@ -316,11 +325,29 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 			return null;
 		});
 
+		console.log('after:');
+		console.log(sortedByDate);
 		return sortedByDate;
 	};
 
+	const getActiveInList = list => {
+		let response = '';
+		list.forEach((sc, index) => {
+			if (sc.status === 'active') response = index;
+		});
+		return response;
+	};
+
+	const getSelectedInList = list => {
+		let response = '';
+		list.forEach((sc, index) => {
+			if (sc.selected) response = index;
+		});
+		return response;
+	};
+
 	const customStyles = {
-		option: (base, state) => ({
+		option: (base, state, selected) => ({
 			...base,
 			padding: '8px',
 			whiteSpace: 'wrap',
@@ -461,12 +488,31 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 						<div className='maxi-style-cards__active-edit-options'>
 							<div className='maxi-style-cards__sc__more-sc--select'>
 								<Select
-									options={optionsSCList()}
-									placeholder={selectedSCValue.name}
+									options={getOptionsSCList()}
+									defaultValue={
+										getOptionsSCList()[
+											getActiveInList(getOptionsSCList())
+										]
+									}
+									value={
+										getOptionsSCList()[
+											getSelectedInList(
+												getOptionsSCList()
+											)
+										] ||
+										getOptionsSCList()[
+											getActiveInList(getOptionsSCList())
+										]
+									}
+									placeholder={__(
+										'Type to search…',
+										'maxi-blocks'
+									)}
 									styles={customStyles}
 									onChange={val => {
-										setSelectedStyleCard(val.value);
+										setSelectedStyleCard(val?.value);
 									}}
+									hideSelectedOptions
 								/>
 							</div>
 							<DialogBox

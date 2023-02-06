@@ -24,7 +24,6 @@ import MaxiModal from './modal';
 import classnames from 'classnames';
 import React from 'react';
 import { SearchClient as TypesenseSearchClient } from 'typesense';
-import * as ReactDOM from 'react-dom';
 
 /**
  * Component
@@ -55,6 +54,10 @@ const LibraryToolbar = props => {
 		title = '',
 		cost = '',
 		toneUrl = '',
+		cardId,
+		isMaxiProActive = false,
+		isPro,
+		isBeta,
 	} = props;
 
 	const client = new TypesenseSearchClient({
@@ -134,7 +137,7 @@ const LibraryToolbar = props => {
 
 	const goFullScreen = () => {
 		const modal = document.getElementsByClassName(
-			'maxi-library-modal maxi-preview'
+			'maxi-library-modal maxi-library-modal__preview'
 		)[0];
 
 		const elem = modal?.getElementsByClassName(
@@ -190,21 +193,22 @@ const LibraryToolbar = props => {
 		};
 
 		const masonryCardId = `maxi-cloud-masonry-card__pattern-${relatedSerial}`;
-		let fuulWidth = false;
+		let fullWidth = false;
 		if (document.fullscreenElement) {
-			fuulWidth = true;
+			fullWidth = true;
 		}
+
+		console.log('searchParameters');
+		console.log(searchParameters);
 
 		client
 			.collections('post')
 			.documents()
 			.search(searchParameters)
-			.then(function (result) {
-				const relatedHint = result?.hits[0]?.document;
-				const root = ReactDOM.createRoot(
-					document.getElementById('maxi-modal')
-				);
-
+			.then(result => {
+				const relatedHit = result?.hits[0]?.document;
+				console.log('relatedHit');
+				console.log(relatedHit);
 				const previewIframeStyles = previewIframe.style;
 				const previewIframeWrapStyles = previewIframeWrap.style;
 				const previewIframeSpaceStyles = previewIframeSpace.style;
@@ -212,20 +216,8 @@ const LibraryToolbar = props => {
 				const labelTabletStyles = labelTablet.style;
 				const labelMobileStyles = labelMobile.style;
 
-				root.render(
-					<MaxiModal
-						type='switch-tone'
-						url={relatedHint.demo_url}
-						title={relatedHint.post_title}
-						serial={relatedHint.post_number}
-						cost={relatedHint.cost[0]}
-						toneUrl={relatedHint.link_to_related}
-						cardId={masonryCardId}
-						onClose={onRequestClose}
-					/>
-				);
-				window.setTimeout(function () {
-					if (fuulWidth) {
+				window.setTimeout(() => {
+					if (fullWidth) {
 						const modal = document.getElementsByClassName(
 							'maxi-library-modal maxi-preview'
 						)[0];
@@ -239,9 +231,10 @@ const LibraryToolbar = props => {
 						});
 					}
 				}, 100);
-				window.setTimeout(function () {
+
+				window.setTimeout(() => {
 					const modal = document.getElementsByClassName(
-						'maxi-library-modal maxi-preview'
+						'maxi-library-modal maxi-library-modal__preview'
 					)[0];
 					const previewIframe = modal?.getElementsByClassName(
 						'maxi-cloud-container__preview-iframe_wrap'
@@ -317,6 +310,24 @@ const LibraryToolbar = props => {
 						);
 					}
 				}, 0);
+
+				const maxiModal = document.getElementById('maxi-modal');
+
+				wp.element.render(
+					<MaxiModal
+						type='switch-tone'
+						url={relatedHit.demo_url}
+						title={relatedHit.post_title}
+						serial={relatedHit.post_number}
+						cost={relatedHit.cost[0]}
+						toneUrl={relatedHit.link_to_related}
+						cardId={masonryCardId}
+						onClose={onRequestClose}
+						isPro={relatedHit.cost?.[0] === 'Pro'}
+						isBeta={relatedHit.post_tag?.includes('Beta')}
+					/>,
+					maxiModal
+				);
 			});
 	};
 
@@ -488,6 +499,14 @@ const LibraryToolbar = props => {
 		previewIframeWrap.style.right = 0;
 	};
 
+	const clickLoadButton = id => {
+		const button = document.querySelector(
+			`#${id} .maxi-cloud-masonry-card__button-load`
+		);
+
+		button?.click();
+	};
+
 	return (
 		<div className='maxi-cloud-toolbar'>
 			{type !== 'preview' && type !== 'switch-tone' && (
@@ -508,7 +527,7 @@ const LibraryToolbar = props => {
 			)}
 			{(type === 'preview' || type === 'switch-tone') && (
 				<>
-					<div className='maxi-cloud-toolbar__buttuns-group'>
+					<div className='maxi-cloud-toolbar__buttons-group'>
 						<ToolbarButton
 							label={__('Back', 'maxi-blocks')}
 							onClick={onRequestClose}
@@ -576,7 +595,27 @@ const LibraryToolbar = props => {
 			)}
 
 			{(type === 'preview' || type === 'switch-tone') && (
-				<div className='maxi-cloud-toolbar__buttuns-group_close'>
+				<div className='maxi-cloud-toolbar__buttons-group_close'>
+					{(!isPro || isBeta || isMaxiProActive) && (
+						<ToolbarButton
+							label={__('Insert', 'maxi-blocks')}
+							onClick={() => {
+								clickLoadButton(cardId);
+								onRequestClose();
+							}}
+						/>
+					)}
+					{isPro && !isBeta && !isMaxiProActive && (
+						<ToolbarButton
+							label={__('Go Pro', 'maxi-blocks')}
+							onClick={() =>
+								window.open(
+									'https://maxiblocks.com/go/pro-library',
+									'_blank'
+								)
+							}
+						/>
+					)}
 					<ToolbarButton onClick={onRequestClose} icon={closeIcon} />
 				</div>
 			)}

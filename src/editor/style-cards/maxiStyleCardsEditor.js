@@ -4,7 +4,7 @@
  */
 import { __, sprintf } from '@wordpress/i18n';
 import { useSelect, useDispatch } from '@wordpress/data';
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, forwardRef } from '@wordpress/element';
 import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 import { PostPreviewButton } from '@wordpress/editor';
 
@@ -38,7 +38,6 @@ import { isEmpty, isNil, isEqual } from 'lodash';
  * Icons
  */
 import { styleCardBoat, reset, SCDelete, closeIcon } from '../../icons';
-import { forwardRef } from 'react';
 
 const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	const {
@@ -263,6 +262,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 			<Popover
 				anchor={ref.current}
 				noArrow
+				resize
 				position={isRTL ? 'bottom left right' : 'bottom right left'}
 				className='maxi-style-cards__popover maxi-sidebar'
 				focusOnMount

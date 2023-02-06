@@ -144,18 +144,18 @@ describe('BorderControl', () => {
 		);
 
 		const expectBorder = {
+			'border-bottom-width-general': 2,
+			'border-bottom-width-general-hover': undefined,
 			'border-color-general': undefined,
 			'border-color-general-hover': undefined,
-			'border-style-general': 'none',
-			'border-style-general-hover': 'solid',
-			'border-top-width-general': 2,
-			'border-top-width-general-hover': 2,
-			'border-right-width-general': 2,
-			'border-right-width-general-hover': 2,
-			'border-bottom-width-general': 2,
-			'border-bottom-width-general-hover': 2,
 			'border-left-width-general': 2,
-			'border-left-width-general-hover': 2,
+			'border-left-width-general-hover': undefined,
+			'border-right-width-general': 2,
+			'border-right-width-general-hover': undefined,
+			'border-style-general': 'none',
+			'border-style-general-hover': undefined,
+			'border-top-width-general': 2,
+			'border-top-width-general-hover': undefined,
 		};
 
 		const borderResult = await getAttributes([

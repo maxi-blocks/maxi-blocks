@@ -1,15 +1,15 @@
+/* eslint-disable import/no-cycle */
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
 import { useDispatch, select, useSelect } from '@wordpress/data';
-import { RawHTML, useEffect, useState } from '@wordpress/element';
-import { CheckboxControl } from '@wordpress/components';
+import { useEffect, useState } from '@wordpress/element';
+import { CheckboxControl, Button } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
-import { Button, ToggleSwitch } from '../../components';
 import { updateSCOnEditor } from '../../extensions/style-cards';
 import {
 	svgAttributesReplacer,
@@ -18,10 +18,10 @@ import {
 	onRequestInsertPattern,
 } from './util';
 import { injectImgSVG } from '../../extensions/svg';
-// eslint-disable-next-line import/no-cycle
-import MaxiModal from './modal';
-import DOMPurify from 'dompurify';
-// import Icon from '../../components/icon';
+import MasonryItem from './MasonryItem';
+import masonryGenerator from './masonryGenerator';
+import useInterval from '../../extensions/dom/useInterval';
+import InfiniteHits from './InfiniteHits';
 
 /**
  * External dependencies
@@ -30,7 +30,6 @@ import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter';
 import {
 	InstantSearch,
 	SearchBox,
-	InfiniteHits,
 	connectRefinementList,
 	connectMenu,
 	connectHierarchicalMenu,
@@ -41,140 +40,12 @@ import {
 } from 'react-instantsearch-dom';
 import classnames from 'classnames';
 import { isEmpty, uniqueId, orderBy, capitalize, unescape } from 'lodash';
-import Masonry from 'masonry-layout';
-import useInterval from '../../extensions/dom/useInterval';
+import DOMPurify from 'dompurify';
 
 /**
  * Icons
  */
 import { arrowIcon } from '../../icons';
-
-const MasonryItem = props => {
-	const {
-		type,
-		target,
-		svgCode,
-		isPro,
-		serial,
-		onRequestInsert,
-		previewIMG,
-		demoUrl,
-		title,
-		cost,
-		toneUrl,
-		currentItemColorStatus = false,
-		className,
-	} = props;
-
-	const masonryCardClasses = classnames(
-		'maxi-cloud-masonry-card',
-		`maxi-cloud-masonry-card__${target}`,
-		type === 'patterns' && `maxi-cloud-masonry-card__pattern-${serial}`,
-		type === 'svg' &&
-			currentItemColorStatus &&
-			'maxi-cloud-masonry-card__light',
-		className
-	);
-
-	const masonryCardId = `maxi-cloud-masonry-card__pattern-${serial}`;
-
-	const patternsScContent = () => {
-		return (
-			<>
-				<div className='maxi-cloud-masonry-card__container'>
-					<div className='maxi-cloud-masonry-card__container__top-bar'>
-						<div className='maxi-cloud-masonry__serial-tag'>
-							{type === 'patterns' && title}
-							{type === 'sc' && serial}
-						</div>
-					</div>
-				</div>
-				<div className='maxi-cloud-masonry-card__image'>
-					<img src={previewIMG} alt={`Preview for ${serial}`} />
-				</div>
-				<div className='maxi-cloud-masonry-card__buttons'>
-					{type === 'patterns' && (
-						<>
-							<MaxiModal
-								type='preview'
-								url={demoUrl}
-								title={serial}
-								onRequestInsert={onRequestInsert}
-								cardId={masonryCardId}
-								cost={cost}
-								toneUrl={toneUrl}
-							/>
-							<Button
-								className='maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-load'
-								onClick={onRequestInsert}
-							>
-								{__('Insert', 'maxi-blocks')}
-							</Button>
-							<div className='maxi-cloud-masonry-card__tags'>
-								{!isPro && (
-									<span className='maxi-cloud-masonry-card__tags__tag maxi-cloud-masonry-card__tags__tag-free'>
-										{__('Free', 'maxi-blocks')}
-									</span>
-								)}
-								{isPro && (
-									<span className='maxi-cloud-masonry-card__tags__tag maxi-cloud-masonry-card__tags__tag-pro'>
-										{__('Pro', 'maxi-blocks')}
-									</span>
-								)}
-							</div>
-						</>
-					)}
-					{type === 'sc' && (
-						<span className='maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-load'>
-							{__('Insert', 'maxi-block')}
-						</span>
-					)}
-				</div>
-			</>
-		);
-	};
-
-	return (
-		<div className={masonryCardClasses} id={masonryCardId}>
-			{type === 'sc' && (
-				<Button onClick={onRequestInsert}>{patternsScContent()}</Button>
-			)}
-			{type === 'patterns' && patternsScContent()}
-			{type === 'svg' && (
-				<div
-					className='maxi-cloud-masonry-card__svg-container'
-					onClick={onRequestInsert}
-				>
-					<RawHTML
-						style={{
-							backgroundColor: currentItemColorStatus
-								? '#000000'
-								: '#ffffff',
-						}}
-						className='maxi-cloud-masonry-card__svg-container__code'
-					>
-						{svgCode}
-					</RawHTML>
-					<div className='maxi-cloud-masonry-card__svg-container__title'>
-						{target === 'button-icon' ||
-						target === 'search-icon' ||
-						target.includes('Line') ||
-						target.includes('video-icon')
-							? serial.replace(' Line', '').replace(' line', '')
-							: [
-									'image-shape',
-									'bg-shape',
-									'sidebar-block-shape',
-							  ].includes(target) || target.includes('Shape')
-							? serial.replace(' shape', '')
-							: serial}
-					</div>
-					<span>{__('Insert', 'maxi-block')}</span>
-				</div>
-			)}
-		</div>
-	);
-};
 
 const Accordion = ({ children, title, openByDefault = false }) => {
 	const [isAccordionOpen, setAccordionOpen] = useState(openByDefault);
@@ -242,10 +113,6 @@ const RefinementList = ({ items, refine }) => (
 				>
 					{capitalize(item.label)} ({item.count})
 				</a>
-				<ToggleSwitch
-					selected={item.isRefined}
-					onChange={val => refine(item.value)}
-				/>
 			</li>
 		))}
 	</ul>
@@ -289,7 +156,6 @@ const MenuSelect = ({ items, currentRefinement, refine }) => {
 					'maxi-cloud-container__content-svg-shape__button',
 					freeElement?.isRefined &&
 						' maxi-cloud-container__content-svg-shape__button___pressed'
-					// freeClass
 				)}
 				value='Free'
 				onClick={event => {
@@ -307,7 +173,6 @@ const MenuSelect = ({ items, currentRefinement, refine }) => {
 					'maxi-cloud-container__content-svg-shape__button',
 					proElement?.isRefined &&
 						' maxi-cloud-container__content-svg-shape__button___pressed'
-					// proClass
 				)}
 				value='Pro'
 				onClick={event => {
@@ -406,7 +271,7 @@ const ClearRefinements = ({ items, refine }) => {
 			}`}
 			onClick={e => {
 				e.preventDefault();
-				// refine(items);
+				refine(items);
 				removeMenuBugFix();
 				const allButton = document.querySelector(
 					'.top-Menu > button:first-child'
@@ -450,14 +315,19 @@ const LibraryContainer = props => {
 		selectedSCValue,
 		clientId,
 		isValidTemplate,
+		SCList,
 	} = useSelect(select => {
 		const { isValidTemplate, getSelectedBlockClientId } =
 			select('core/block-editor');
 		const clientId = getSelectedBlockClientId();
 
-		const { receiveMaxiStyleCards, receiveMaxiSelectedStyleCard } = select(
-			'maxiBlocks/style-cards'
-		);
+		const {
+			receiveMaxiStyleCards,
+			receiveMaxiSelectedStyleCard,
+			receiveStyleCardsList,
+		} = select('maxiBlocks/style-cards');
+
+		const SCList = receiveStyleCardsList();
 		const styleCards = receiveMaxiStyleCards();
 		const { key: selectedSCKey, value: selectedSCValue } =
 			receiveMaxiSelectedStyleCard();
@@ -468,6 +338,7 @@ const LibraryContainer = props => {
 			selectedSCValue,
 			clientId,
 			isValidTemplate,
+			SCList,
 		};
 	});
 
@@ -532,8 +403,10 @@ const LibraryContainer = props => {
 		}
 	};
 
+	// TO DO: connect to auth later
+	const isMaxiProActive = false;
 	/** Patterns / Blocks Results */
-	const patternsResults = ({ hit }) => {
+	const patternsResults = hit => {
 		const wrapClassName =
 			hit.cost?.[0] === 'Pro'
 				? 'ais-InfiniteHits-item-pro'
@@ -543,14 +416,17 @@ const LibraryContainer = props => {
 				type='patterns'
 				target='patterns'
 				key={`maxi-cloud-masonry__item-${hit.post_id}`}
+				className={wrapClassName}
 				title={hit.post_title}
 				demoUrl={hit.demo_url}
 				previewIMG={hit.preview_image_url}
 				cost={hit.cost?.[0]}
+				isBeta={hit.post_tag?.includes('Beta')}
 				isPro={hit.cost?.[0] === 'Pro'}
 				taxonomies={hit.category?.[0]}
 				serial={hit.post_number}
-				className={wrapClassName}
+				toneUrl={hit.link_to_related}
+				isMaxiProActive={isMaxiProActive}
 				onRequestInsert={() =>
 					onRequestInsertPattern(
 						hit.gutenberg_code,
@@ -596,7 +472,7 @@ const LibraryContainer = props => {
 	};
 
 	/** SVG Icons Results */
-	const svgResults = ({ hit }) => {
+	const svgResults = hit => {
 		const newContent = svgAttributesReplacer(hit.svg_code);
 		const svgType = hit.svg_category[0];
 		const shapeType = getShapeType(type);
@@ -607,7 +483,7 @@ const LibraryContainer = props => {
 				target={svgType}
 				key={`maxi-cloud-masonry__item-${hit.post_id}`}
 				svgCode={newContent}
-				isPro={hit.cost === 'pro'}
+				isPro={hit.cost?.[0] === 'Pro'}
 				serial={hit.post_title}
 				onRequestInsert={() => onRequestInsertSVG(newContent, svgType)}
 				currentItemColorStatus={svgCurrentColorStatus(
@@ -730,7 +606,7 @@ const LibraryContainer = props => {
 	};
 
 	/** Shapes Results */
-	const svgShapeResults = ({ hit }) => {
+	const svgShapeResults = hit => {
 		const shapeType = getShapeType(type);
 		const svgType = hit.svg_category[0];
 
@@ -742,7 +618,7 @@ const LibraryContainer = props => {
 				target={type}
 				key={`maxi-cloud-masonry__item-${hit.post_id}`}
 				svgCode={newContent}
-				isPro={hit.cost === 'pro'}
+				isPro={hit.cost?.[0] === 'Pro'}
 				serial={hit.post_title}
 				onRequestInsert={() =>
 					onRequestInsertShape(newContent, svgType)
@@ -775,24 +651,36 @@ const LibraryContainer = props => {
 	};
 
 	/** Style Cards Results */
-	const scResults = ({ hit }) => {
+	const scResults = hit => {
 		return (
 			<MasonryItem
 				type='sc'
 				target='style-cards'
 				key={`maxi-cloud-masonry__item-${hit.post_id}`}
 				previewIMG={hit.post_thumbnail}
-				isPro={hit.cost === 'pro'}
+				isPro={hit.cost?.[0] === 'Pro'}
 				serial={hit.post_title}
-				onRequestInsert={() => onRequestInsertSC(hit.sc_code)}
+				onRequestInsert={
+					SCList.map(item => {
+						return item.label;
+					}).includes(hit.post_title)
+						? () => {}
+						: () => onRequestInsertSC(hit.sc_code)
+				}
+				isSaved={
+					!!SCList.map(item => {
+						return item.label;
+					}).includes(hit.post_title)
+				}
 			/>
 		);
 	};
 
+	// eslint-disable-next-line react/no-unstable-nested-components
 	const PlaceholderCheckboxControl = () => {
 		return (
 			<CheckboxControl
-				className='use-placeholer-all-images'
+				className='use-placeholder-all-images'
 				label={__(
 					'Swap stock images for placeholders to save disk space',
 					'maxi-blocks'
@@ -807,20 +695,6 @@ const LibraryContainer = props => {
 	const CustomMenuSelect = connectMenu(MenuSelect);
 	const CustomHierarchicalMenu = connectHierarchicalMenu(HierarchicalMenu);
 	const CustomClearRefinements = connectCurrentRefinements(ClearRefinements);
-
-	const masonryGenerator = () => {
-		const elem = document.querySelector(
-			'.maxi-cloud-container__patterns__content-patterns .ais-InfiniteHits-list'
-		);
-
-		if (elem) {
-			// eslint-disable-next-line no-new
-			new Masonry(elem, {
-				itemSelector: '.ais-InfiniteHits-item',
-				gutter: 16,
-			});
-		}
-	};
 
 	useInterval(masonryGenerator, 100);
 
@@ -898,7 +772,7 @@ const LibraryContainer = props => {
 									}}
 								/>
 							</div>
-							<div className='maxi-cloud-container__sc__content-sc'>
+							<div className='maxi-cloud-container__svg-icon__content-svg-icon'>
 								<Stats translations={resultsCount} />
 								<InfiniteHits hitComponent={svgResults} />
 							</div>
@@ -1067,14 +941,18 @@ const LibraryContainer = props => {
 											isRefined: false,
 										};
 
-									itemsReturn.push({
-										label: 'Go pro',
-										value: 'Go pro',
-										isRefined: false,
-									});
 									return itemsReturn;
 								}}
 							/>
+							<Button
+								type='button'
+								label='Go Pro'
+								className='maxi-cloud-container__patterns__top-menu__button-go-pro'
+								href='https://maxiblocks.com/go/pro-library'
+								target='_blank'
+							>
+								{__('Go Pro', 'maxi-blocks')}
+							</Button>
 						</div>
 						<div className='maxi-cloud-container__patterns__sidebar'>
 							<CustomMenuSelect
@@ -1133,7 +1011,42 @@ const LibraryContainer = props => {
 								attributes={['category.lvl0', 'category.lvl1']}
 								limit={100}
 							/>
-							<CustomClearRefinements />
+							<div className='ais-ClearRefinements'>
+								<button
+									type='button'
+									className='ais-ClearRefinements-button'
+									onClick={e => {
+										e.preventDefault();
+										const allButton =
+											document.querySelector(
+												'.top-Menu > button:first-child'
+											);
+										allButton?.click();
+
+										const patternsButton =
+											document.querySelector(
+												'.maxi-cloud-container__patterns__top-menu .ais-Menu-list > .ais-Menu-item:nth-child(2):not(.ais-Menu-item--selected) a'
+											);
+										patternsButton?.click();
+
+										const lightButton =
+											document.querySelector(
+												'.maxi-cloud-container__patterns__sidebar > .ais-Menu .ais-Menu-list > .ais-Menu-item:first-child:not(.ais-Menu-item--selected) a'
+											);
+										lightButton?.click();
+
+										setTimeout(() => {
+											const listItem =
+												document.querySelector(
+													'.maxi-cloud-container__patterns__sidebar > ul .ais-HierarchicalMenu-item--selected > a'
+												);
+											listItem?.click();
+										}, '100');
+									}}
+								>
+									{__('Clear filters', 'maxi-blocks')}
+								</button>
+							</div>
 						</div>
 						<div className='maxi-cloud-container__patterns__content-patterns'>
 							<Stats translations={resultsCount} />

@@ -70,4 +70,34 @@ describe('getIconSize', () => {
 		// Hover state
 		expect(getIconSize(attributes, true, prefix)).toMatchSnapshot();
 	});
+
+	it('Should return right hover styles with only value specified on hover (no unit)', () => {
+		const attributes = {
+			'icon-width-general': '32',
+			'icon-width-unit-general': '%',
+			'icon-width-general-hover': '64',
+		};
+
+		expect(getIconSize(attributes, true)).toMatchSnapshot();
+	});
+
+	it('Should return right hover styles with only unit specified on hover', () => {
+		const attributes = {
+			'icon-width-general': '32',
+			'icon-width-unit-general': '%',
+			'icon-width-unit-general-hover': 'em',
+		};
+
+		expect(getIconSize(attributes, true)).toMatchSnapshot();
+	});
+
+	it('Should return right styles with only unit specified on responsive', () => {
+		const attributes = {
+			'icon-width-general': '32',
+			'icon-width-unit-general': '%',
+			'icon-width-unit-l': 'em',
+		};
+
+		expect(getIconSize(attributes, true)).toMatchSnapshot();
+	});
 });

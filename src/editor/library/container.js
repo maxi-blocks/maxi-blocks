@@ -187,6 +187,51 @@ const MenuSelect = ({ items, currentRefinement, refine }) => {
 	);
 };
 
+const SvgMenuSelect = ({ items, currentRefinement, refine }) => {
+	return (
+		<div className='top-Menu'>
+			{items.length > 2 && (
+				<button
+					type='button'
+					value=''
+					className={classnames(
+						'maxi-cloud-container__content-svg-shape__button',
+						isEmpty(currentRefinement) &&
+							' maxi-cloud-container__content-svg-shape__button___pressed'
+					)}
+					onClick={event => {
+						event.preventDefault();
+						refine('');
+						items[0].isRefined = true;
+					}}
+				>
+					{__('All', 'maxi-blocks')}
+				</button>
+			)}
+			{items.map(item => (
+				<button
+					type='button'
+					key={item.label}
+					className={classnames(
+						'maxi-cloud-container__content-svg-shape__button',
+						(item.isRefined || items.length === 1) &&
+							' maxi-cloud-container__content-svg-shape__button___pressed'
+					)}
+					value={item.value}
+					onClick={event => {
+						event.preventDefault();
+						removeMenuBugFix();
+						refine(item.value);
+						item.isRefined = true;
+					}}
+				>
+					{item.label}
+				</button>
+			))}
+		</div>
+	);
+};
+
 const HierarchicalMenu = ({ items, refine, type = 'firstLevel' }) => {
 	// hack to fix issue #3930: top level tags resetting when we choose a second-level tag
 	const fixMenuBug = el => {
@@ -693,6 +738,7 @@ const LibraryContainer = props => {
 
 	const CustomRefinementList = connectRefinementList(RefinementList);
 	const CustomMenuSelect = connectMenu(MenuSelect);
+	const CustomSvgMenuSelect = connectMenu(SvgMenuSelect);
 	const CustomHierarchicalMenu = connectHierarchicalMenu(HierarchicalMenu);
 	const CustomClearRefinements = connectCurrentRefinements(ClearRefinements);
 
@@ -746,7 +792,7 @@ const LibraryContainer = props => {
 						searchClient={searchClientSvg}
 					>
 						<div className='maxi-cloud-container__content-svg-shape__search-bar'>
-							<CustomMenuSelect
+							<CustomSvgMenuSelect
 								className='maxi-cloud-container__content-svg-shape__categories'
 								attribute='svg_category'
 								translations={{
@@ -797,7 +843,10 @@ const LibraryContainer = props => {
 									submit={__('Find', 'maxi-blocks')}
 									autoFocus
 									searchAsYouType
-									showLoadingIndicator
+									reset='X'
+									translations={{
+										resetTitle: 'Clear',
+									}}
 								/>
 							)}
 							{type === 'video-icon-play' && (
@@ -865,12 +914,28 @@ const LibraryContainer = props => {
 				>
 					<Configure hitsPerPage={49} />
 					<div className='maxi-cloud-container__svg-shape'>
+						<div className='maxi-cloud-container__content-svg-shape__search-bar'>
+							<CustomSvgMenuSelect
+								className='maxi-cloud-container__content-svg-shape__categories'
+								attribute='svg_category'
+								defaultRefinement='Line'
+								translations={{
+									seeAllOption: __(
+										'All icons',
+										'maxi-blocks'
+									),
+								}}
+							/>
+						</div>
 						<div className='maxi-cloud-container__svg-shape__sidebar'>
 							<SearchBox
 								submit={__('Find', 'maxi-blocks')}
 								autoFocus
 								searchAsYouType
-								showLoadingIndicator
+								reset='X'
+								translations={{
+									resetTitle: 'Clear',
+								}}
 							/>
 							<CustomHierarchicalMenu
 								attributes={['svg_tag.lvl0', 'svg_tag.lvl1']}
@@ -879,19 +944,6 @@ const LibraryContainer = props => {
 							<CustomClearRefinements />
 						</div>
 						<div className='maxi-cloud-container__content-svg-shape'>
-							<div className='maxi-cloud-container__content-svg-shape__search-bar'>
-								<CustomMenuSelect
-									className='maxi-cloud-container__content-svg-shape__categories'
-									attribute='svg_category'
-									defaultRefinement='Line'
-									translations={{
-										seeAllOption: __(
-											'All icons',
-											'maxi-blocks'
-										),
-									}}
-								/>
-							</div>
 							<div className='maxi-cloud-container__sc__content-sc'>
 								<Stats translations={resultsCount} />
 								<InfiniteHits hitComponent={svgShapeResults} />

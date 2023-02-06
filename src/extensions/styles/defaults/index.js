@@ -34,6 +34,7 @@ export { default as mapPopupText } from './mapPopupText';
 export { default as margin } from './margin';
 export { default as navigation } from './navigation';
 export { default as numberCounter } from './numberCounter';
+export { default as navigation } from './navigation';
 export { default as opacity } from './opacity';
 export { default as opacityHover } from './opacityHover';
 export { default as overflow } from './overflow';

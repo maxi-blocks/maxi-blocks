@@ -158,6 +158,13 @@ const IconControlResponsiveSettings = withRTC(props => {
 		iconBackgroundActiveMedia || 'none'
 	);
 
+	const iconWidthFitContent = getLastBreakpointAttribute({
+		target: `${prefix}icon-width-fit-content`,
+		breakpoint,
+		attributes: props,
+		isHover,
+	});
+
 	return (
 		<>
 			{!isInteractionBuilder &&

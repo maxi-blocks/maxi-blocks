@@ -10,11 +10,18 @@ import { isNil, isEmpty } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-const getIconSize = (obj, isHover = false, prefix = '') => {
+const getIconSize = (
+	obj,
+	isHover = false,
+	prefix = '',
+	iconWidthHeightRatio = 1
+) => {
 	const response = {
 		label: 'Icon size',
 		general: {},
 	};
+
+	console.log(iconWidthHeightRatio);
 
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
@@ -48,8 +55,19 @@ const getIconSize = (obj, isHover = false, prefix = '') => {
 			}) ??
 			'px';
 
+		const iconWidthFitContent = getLastBreakpointAttribute({
+			target: `${prefix}icon-width-fit-content`,
+			isHover,
+			breakpoint,
+			attributes: obj,
+		});
+
 		if (!isNil(iconSize) && !isEmpty(iconSize)) {
-			response[breakpoint].height = `${iconSize}${iconUnit}`;
+			response[breakpoint].height = `${
+				iconWidthFitContent
+					? (iconSize / iconWidthHeightRatio) * 1.05
+					: iconSize
+			}${iconUnit}`;
 			response[breakpoint].width = `${iconSize}${iconUnit}`;
 		}
 

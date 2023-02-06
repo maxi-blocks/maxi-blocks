@@ -64,7 +64,25 @@ class edit extends MaxiBlockComponent {
 		const { attributes } = this.props;
 		const { scValues } = this.state;
 
-		return getStyles(attributes, scValues);
+		const svg = this.blockRef.current?.querySelector(
+			'.maxi-button-block__icon svg'
+		);
+
+		let iconWidthHeightRatio;
+		if (svg) {
+			svg.childNodes.forEach(child => {
+				if (!child.getBBox) return;
+
+				const { width, height } = child.getBBox();
+				if (width && height) {
+					iconWidthHeightRatio = !iconWidthHeightRatio
+						? width / height
+						: Math.min(iconWidthHeightRatio, width / height);
+				}
+			});
+		}
+
+		return getStyles(attributes, scValues, iconWidthHeightRatio);
 	}
 
 	maxiBlockDidUpdate() {

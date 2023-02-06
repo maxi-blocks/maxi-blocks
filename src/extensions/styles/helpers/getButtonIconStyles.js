@@ -231,6 +231,7 @@ const getButtonIconStyles = ({
 	target = '',
 	wrapperTarget = '',
 	prefix = '',
+	iconWidthHeightRatio,
 }) => {
 	const hasIcon = !!obj[`${prefix}icon-content`];
 	const {
@@ -263,7 +264,8 @@ const getButtonIconStyles = ({
 					[` ${wrapperTarget} ${target} svg`]: getIconSize(
 						obj,
 						false,
-						prefix
+						prefix,
+						iconWidthHeightRatio
 					),
 					[` ${wrapperTarget} ${target} svg > *`]: getIconObject(
 						obj,
@@ -288,7 +290,12 @@ const getButtonIconStyles = ({
 					return {
 						[` ${hoverTarget}`]: iconHoverObj,
 						[` ${hoverTarget} svg > *`]: iconHoverObj,
-						[` ${hoverTarget} svg`]: getIconSize(obj, true, prefix),
+						[` ${hoverTarget} svg`]: getIconSize(
+							obj,
+							true,
+							prefix,
+							iconWidthHeightRatio
+						),
 						[` ${hoverTarget} svg path`]: getIconPathStyles(
 							obj,
 							true
@@ -315,7 +322,8 @@ const getButtonIconStyles = ({
 				obj['icon-status-hover'] &&
 				getIconHoverObject(obj, 'iconHover'),
 			[` ${hoverTarget} svg`]:
-				obj['icon-status-hover'] && getIconSize(obj, true),
+				obj['icon-status-hover'] &&
+				getIconSize(obj, true, prefix, iconWidthHeightRatio),
 			[` ${hoverTarget} svg path`]:
 				obj['icon-status-hover'] && getIconPathStyles(obj, true),
 			...getBlockBackgroundStyles({

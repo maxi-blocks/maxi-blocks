@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import {
 	getAttributeKey,
+	getAttributeValue,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
@@ -12,6 +13,7 @@ import {
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
+import ToggleSwitch from '../toggle-switch';
 
 /**
  * External dependencies
@@ -55,59 +57,95 @@ const SvgWidthControl = props => {
 		`${prefix}width-unit-${breakpoint}${isHover ? '-hover' : ''}`
 	);
 
+	const widthFitContent = getLastBreakpointAttribute({
+		target: `${prefix}width-fit-content`,
+		breakpoint,
+		isHover,
+		attributes: props,
+	});
+
 	return (
-		<AdvancedNumberControl
-			label={__(customLabel, 'maxi-blocks')}
-			className={classes}
-			value={width}
-			placeholder={placeholderWidth}
-			onChangeValue={val => {
-				const newVal = val !== undefined && val !== '' ? val : '';
+		<div className={classes}>
+			<AdvancedNumberControl
+				label={__(customLabel, 'maxi-blocks')}
+				value={width}
+				placeholder={placeholderWidth}
+				onChangeValue={val => {
+					const newVal = val !== undefined && val !== '' ? val : '';
 
-				onChange({
-					[getAttributeKey('width', isHover, prefix, breakpoint)]:
-						newVal,
-				});
-			}}
-			enableUnit
-			unit={widthUnit}
-			allowedUnits={['px', 'vw', '%']}
-			onChangeUnit={val => {
-				onChange({
-					[getAttributeKey(
-						'width-unit',
-						isHover,
-						prefix,
-						breakpoint
-					)]: val,
-				});
-
-				if (resizableObject)
-					resizableObject.current?.updateSize({
-						width: `${width}${val}`,
+					onChange({
+						[getAttributeKey('width', isHover, prefix, breakpoint)]:
+							newVal,
 					});
-			}}
-			min={10}
-			max={500}
-			step={1}
-			onReset={() =>
-				onChange({
-					[getAttributeKey('width', isHover, prefix, breakpoint)]:
-						defaultWidth,
-					[getAttributeKey(
-						'width-unit',
-						isHover,
-						prefix,
-						breakpoint
-					)]: defaultWidthUnit,
-					isReset: true,
-				})
-			}
-			defaultValue={defaultWidth}
-			initialPosition={placeholderWidth}
-			isHover={isHover}
-			optionType='string'
-		/>
+				}}
+				enableUnit
+				unit={widthUnit}
+				allowedUnits={['px', 'vw', '%']}
+				onChangeUnit={val => {
+					onChange({
+						[getAttributeKey(
+							'width-unit',
+							isHover,
+							prefix,
+							breakpoint
+						)]: val,
+					});
+
+					if (resizableObject)
+						resizableObject.current?.updateSize({
+							width: `${width}${val}`,
+						});
+				}}
+				min={10}
+				max={500}
+				step={1}
+				onReset={() =>
+					onChange({
+						[getAttributeKey('width', isHover, prefix, breakpoint)]:
+							defaultWidth,
+						[getAttributeKey(
+							'width-unit',
+							isHover,
+							prefix,
+							breakpoint
+						)]: defaultWidthUnit,
+						isReset: true,
+					})
+				}
+				defaultValue={defaultWidth}
+				initialPosition={placeholderWidth}
+				isHover={isHover}
+				optionType='string'
+			/>
+			<ToggleSwitch
+				label={__('Set height to fit content', 'maxi-blocks')}
+				selected={widthFitContent}
+				onChange={val => {
+					onChange({
+						[getAttributeKey(
+							'width-fit-content',
+							isHover,
+							prefix,
+							breakpoint
+						)]: val,
+						[getAttributeKey('content', isHover, prefix)]:
+							getAttributeValue({
+								target: 'content',
+								isHover,
+								prefix,
+								props,
+							}).replace(
+								val
+									? '<svg'
+									: '<svg preserveAspectRatio="xMidYMid slice"',
+								val
+									? '<svg preserveAspectRatio="xMidYMid slice"'
+									: '<svg'
+							),
+					});
+				}}
+			/>
+		</div>
 	);
 };
 

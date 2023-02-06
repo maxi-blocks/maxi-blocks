@@ -4,6 +4,11 @@
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 
 /**
+ * External dependencies
+ */
+import { isNil } from 'lodash';
+
+/**
  * General
  */
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -11,47 +16,40 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 const getMarginPaddingStyles = ({ obj, prefix = '' }) => {
 	const keyWords = ['top', 'right', 'bottom', 'left'];
 	const response = {};
+
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
-		Object.entries(obj).forEach(([key, value]) => {
-			const newKey = key.replace(prefix, '');
+		['margin', 'padding'].forEach(type =>
+			keyWords.forEach(key => {
+				const attributeName = `${prefix}${type}-${key}`;
 
-			const includesBreakpoint =
-				newKey.lastIndexOf(`-${breakpoint}`) +
-					`-${breakpoint}`.length ===
-				newKey.length;
-
-			if (
-				value !== undefined &&
-				`${value}` !== '' &&
-				includesBreakpoint &&
-				!newKey.includes('sync') &&
-				!newKey.includes('unit')
-			) {
-				const replacer = new RegExp(
-					`\\b-${breakpoint}\\b(?!.*\\b-${breakpoint}\\b)`,
-					'gm'
-				);
-				const newLabel = newKey.replace(replacer, '');
-
-				if (
-					!keyWords.some(key => newLabel.includes(key)) ||
-					value === 0
-				)
-					response[breakpoint][newLabel] = `${value}`;
-				else {
-					const unit =
+				const [lastValue, lastUnit, value, unit] = [
+					target =>
 						getLastBreakpointAttribute({
-							target: `${prefix}${newLabel}-unit`,
+							target,
 							breakpoint,
 							attributes: obj,
-						}) || 'px';
-					response[breakpoint][newLabel] =
-						value === 'auto' ? 'auto' : `${value}${unit}`;
-				}
-			}
-		});
+						}),
+					target => obj[`${target}-${breakpoint}`],
+				].flatMap(callback =>
+					['', '-unit'].map(suffix =>
+						callback(`${attributeName}${suffix}`)
+					)
+				);
+
+				if (
+					!isNil(lastValue) &&
+					(lastValue === value || lastUnit === unit)
+				)
+					response[breakpoint][`${type}-${key}`] =
+						lastValue === 'auto'
+							? 'auto'
+							: `${lastValue}${lastUnit}`;
+
+				if (value === '') delete response[breakpoint][`${type}-${key}`];
+			})
+		);
 	});
 
 	return response;

@@ -139,6 +139,7 @@ const MasonryItem = props => {
 					</RawHTML>
 					<div className='maxi-cloud-masonry-card__svg-container__title'>
 						{target === 'button-icon' ||
+						target === 'navigation-icon' ||
 						target === 'search-icon' ||
 						target.includes('Line') ||
 						target.includes('video-icon')
@@ -179,6 +180,19 @@ const Accordion = ({ children, title, openByDefault = false }) => {
 			</div>
 		</div>
 	);
+};
+
+// hack to fix issue #3930: top level tags resetting when we choose a second-level tag
+const removeMenuBugFix = () => {
+	const lists = document.querySelectorAll('.maxi__hide-top-tags');
+
+	for (const list of lists) {
+		list.classList.remove('maxi__hide-top-tags');
+		const listElements = list.childNodes;
+		for (const element of listElements) {
+			element.classList.remove('maxi__show-top-tag');
+		}
+	}
 };
 
 const resultsCount = {
@@ -253,6 +267,7 @@ const MenuSelect = ({ items, currentRefinement, refine }) => {
 					value={item.value}
 					onClick={event => {
 						event.preventDefault();
+						removeMenuBugFix();
 						refine(item.value);
 						item.isRefined = true;
 					}}
@@ -337,19 +352,6 @@ const HierarchicalMenu = ({ items, refine, type = 'firstLevel' }) => {
 };
 
 const ClearRefinements = ({ items, refine }) => {
-	// hack to fix issue #3930: top level tags resetting when we choose a second-level tag
-	const removeMenuBugFix = () => {
-		const lists = document.querySelectorAll('.maxi__hide-top-tags');
-
-		for (const list of lists) {
-			list.classList.remove('maxi__hide-top-tags');
-			const listElements = list.childNodes;
-			for (const element of listElements) {
-				element.classList.remove('maxi__show-top-tag');
-			}
-		}
-	};
-
 	return (
 		<button
 			type='button'
@@ -371,8 +373,15 @@ const ClearRefinements = ({ items, refine }) => {
  * Component
  */
 const LibraryContainer = props => {
-	const { type, onRequestClose, blockStyle, onSelect, url, title, prefix } =
-		props;
+	const {
+		type,
+		onRequestClose,
+		blockStyle,
+		onSelect,
+		url,
+		title,
+		prefix = '',
+	} = props;
 
 	const {
 		styleCards,
@@ -457,6 +466,8 @@ const LibraryContainer = props => {
 			case 'sidebar-block-shape':
 			case 'bg-shape':
 				return 'shape';
+			case 'navigation-icon':
+				return 'icon';
 			default:
 				return type;
 		}
@@ -632,6 +643,7 @@ const LibraryContainer = props => {
 					'video-icon-close',
 					'accordion-icon',
 					'search-icon',
+					'navigation-icon',
 				].includes(type)
 			) {
 				onSelect({
@@ -876,6 +888,7 @@ const LibraryContainer = props => {
 			)}
 
 			{(type === 'button-icon' ||
+				type === 'navigation-icon' ||
 				type === 'search-icon' ||
 				type === 'accordion-icon' ||
 				type === 'accordion-icon-active') && (

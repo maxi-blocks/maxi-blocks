@@ -10,20 +10,27 @@ import { useState } from '@wordpress/element';
 import FlexGapControl from './flex-gap-control';
 import FlexAlignControl from './flex-align-control';
 import FlexWrapControl from './flex-wrap-control';
+import FlexDirectionControl from './flex-direction-control';
 import AdvancedNumberControl from '../advanced-number-control';
 import SelectControl from '../select-control';
 import SettingTabsControl from '../setting-tabs-control';
+import FlexContentAlignControl from './flex-content-align-control';
 import {
 	getLastBreakpointAttribute,
-	getAttributeValue,
+	getDefaultAttribute,
 } from '../../extensions/styles';
+import getOptions from './utils';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
 import { toString } from 'lodash';
-import getOptions from './utils';
+
+/**
+ * Styles
+ */
+import './editor.scss';
 
 /**
  * Component
@@ -38,9 +45,9 @@ const FlexSettingsControl = props => {
 	} = props;
 
 	const isCustomFlexBasis = /\d/.test(
-		getAttributeValue({
+		getLastBreakpointAttribute({
 			target: 'flex-basis',
-			props,
+			attributes: props,
 			isHover: false,
 			breakpoint,
 		})
@@ -61,70 +68,25 @@ const FlexSettingsControl = props => {
 	return (
 		<div className={classes}>
 			<SettingTabsControl
+				className='maxi-accordion-control__item__flexbox'
 				fullWidthMode
+				showTooltip
 				items={[
 					{
 						label: __('Flex-parent', 'maxi-blocks'),
 						value: 'flex-parent',
 						content: wrapperBlocks.includes(name) ? (
 							<>
-								<FlexWrapControl {...props} />
-								<SelectControl
-									label={__('Flex direction', 'maxi-blocks')}
-									className='maxi-flex__direction'
-									value={
-										getLastBreakpointAttribute({
-											target: 'flex-direction',
-											breakpoint,
-											attributes: props,
-										}) ?? ''
-									}
-									options={getOptions([
-										'row',
-										'row-reverse',
-										'column',
-										'column-reverse',
-									])}
-									onChange={val =>
-										onChange({
-											[`flex-direction-${breakpoint}`]:
-												val,
-										})
-									}
-								/>
-								<FlexAlignControl
-									{...props}
-									onChange={onChange}
-									breakpoint={breakpoint}
-								/>
-
-								<SelectControl
-									label={__('Align content', 'maxi-blocks')}
-									className='maxi-flex__align-content'
-									value={
-										getLastBreakpointAttribute({
-											target: 'align-content',
-											breakpoint,
-											attributes: props,
-										}) ?? ''
-									}
-									options={getOptions([
-										'flex-start',
-										'flex-end',
-										'center',
-										'space-between',
-										'space-around',
-										'space-evenly',
-										'stretch',
-										'baseline',
-									])}
-									onChange={val =>
-										onChange({
-											[`align-content-${breakpoint}`]:
-												val,
-										})
-									}
-								/>
+								<div className='maxi-flex-options__wrap'>
+									<FlexWrapControl {...props} />
+									<FlexDirectionControl {...props} />
+									<FlexAlignControl
+										{...props}
+										onChange={onChange}
+										breakpoint={breakpoint}
+									/>
+									<FlexContentAlignControl {...props} />
+								</div>
 								<FlexGapControl
 									{...props}
 									onChange={onChange}
@@ -165,6 +127,7 @@ const FlexSettingsControl = props => {
 									onReset={() =>
 										onChange({
 											[`order-${breakpoint}`]: null,
+											isReset: true,
 										})
 									}
 								/>
@@ -188,6 +151,7 @@ const FlexSettingsControl = props => {
 									onReset={() =>
 										onChange({
 											[`flex-grow-${breakpoint}`]: null,
+											isReset: true,
 										})
 									}
 								/>
@@ -211,6 +175,7 @@ const FlexSettingsControl = props => {
 									onReset={() =>
 										onChange({
 											[`flex-shrink-${breakpoint}`]: null,
+											isReset: true,
 										})
 									}
 								/>
@@ -225,6 +190,18 @@ const FlexSettingsControl = props => {
 													breakpoint,
 													attributes: props,
 											  }) ?? ''
+									}
+									defaultValue={getDefaultAttribute(
+										`flex-basis-${breakpoint}`
+									)}
+									onReset={() =>
+										onChange({
+											[`flex-basis-${breakpoint}`]:
+												getDefaultAttribute(
+													`flex-basis-${breakpoint}`
+												),
+											isReset: true,
+										})
 									}
 									options={getOptions([
 										'content',
@@ -299,6 +276,7 @@ const FlexSettingsControl = props => {
 											onChange({
 												[`flex-basis-${breakpoint}`]:
 													null,
+												isReset: true,
 											})
 										}
 									/>

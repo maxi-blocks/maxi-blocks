@@ -33,7 +33,9 @@ const Link = props => {
 
 	if (
 		blockName === 'maxi-blocks/divider-maxi' ||
-		blockName === 'maxi-blocks/text-maxi'
+		blockName === 'maxi-blocks/accordion-maxi' ||
+		blockName === 'maxi-blocks/text-maxi' ||
+		blockName === 'maxi-blocks/slider-maxi'
 	)
 		return null;
 

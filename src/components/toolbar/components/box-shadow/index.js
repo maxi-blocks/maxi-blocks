@@ -22,6 +22,8 @@ import BoxShadowControl from '../../../box-shadow-control';
 const ALLOWED_BLOCKS = [
 	'maxi-blocks/button-maxi',
 	'maxi-blocks/image-maxi',
+	'maxi-blocks/slider-maxi',
+	'maxi-blocks/slide-maxi',
 	'maxi-blocks/video-maxi',
 ];
 
@@ -34,6 +36,7 @@ const BoxShadow = props => {
 		clientId,
 		prefix = '',
 		dropShadow,
+		disableInset,
 	} = props;
 
 	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
@@ -41,7 +44,7 @@ const BoxShadow = props => {
 	return (
 		<ToolbarPopover
 			className='toolbar-item__box-shadow'
-			tooltip={__('Drop shadow', 'maxi-blocks')}
+			tooltip={__('Box shadow', 'maxi-blocks')}
 			icon={toolbarDropShadow}
 			advancedOptions='box shadow'
 		>
@@ -56,6 +59,7 @@ const BoxShadow = props => {
 					prefix={prefix}
 					isToolbar
 					dropShadow={dropShadow}
+					disableInset={disableInset}
 				/>
 			</div>
 		</ToolbarPopover>

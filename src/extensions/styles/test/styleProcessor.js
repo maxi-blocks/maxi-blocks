@@ -1,5 +1,7 @@
 import styleProcessor from '../styleProcessor';
 
+jest.mock('../../attributes/getBlockData.js', () => jest.fn());
+
 describe('styleCleaner', () => {
 	it('Returns cleaned styles obj', () => {
 		const obj = {

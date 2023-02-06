@@ -10,7 +10,6 @@ import Inspector from './inspector';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar, RawHTML } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-
 import { getIconPositionClass } from '../../extensions/styles';
 import getStyles from './styles';
 import { prefixes, copyPasteMapping } from './data';
@@ -60,7 +59,9 @@ const SearchBlock = props => {
 
 	const inputClasses = classnames(
 		'maxi-search-block__input',
-		!isInputOpen && 'maxi-search-block__input--hidden'
+		skin === 'icon-reveal' &&
+			!isInputOpen &&
+			'maxi-search-block__input--hidden'
 	);
 
 	const buttonIconClasses = classnames(
@@ -106,9 +107,7 @@ const SearchBlock = props => {
 				placeholder={placeholder}
 				onMouseOver={() => onInputChangeByHover(true)}
 				onMouseOut={event =>
-					event.target !==
-						document.querySelector('.editor-styles-wrapper')
-							.ownerDocument.activeElement &&
+					event.target !== event.target.ownerDocument.activeElement &&
 					onInputChangeByHover(false)
 				}
 			/>

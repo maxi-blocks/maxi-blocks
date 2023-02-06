@@ -48,6 +48,7 @@ const ZIndexControl = props => {
 					[`z-index-${breakpoint}`]: getDefaultAttribute(
 						`z-index-${breakpoint}`
 					),
+					isReset: true,
 				})
 			}
 			initialPosition={getDefaultAttribute(`z-index-${breakpoint}`)}

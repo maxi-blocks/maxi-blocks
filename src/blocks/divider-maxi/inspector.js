@@ -15,6 +15,7 @@ import {
 	SettingTabsControl,
 } from '../../components';
 import {
+	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
@@ -76,6 +77,9 @@ const Inspector = props => {
 																attributes,
 															}
 														)}
+														defaultValue={getDefaultAttribute(
+															`line-orientation-${deviceType}`
+														)}
 														options={[
 															{
 																label: __(
@@ -98,6 +102,15 @@ const Inspector = props => {
 																	val,
 															})
 														}
+														onReset={() => {
+															maxiSetAttributes({
+																[`line-orientation-${deviceType}`]:
+																	getDefaultAttribute(
+																		`line-orientation-${deviceType}`
+																	),
+																isReset: true,
+															});
+														}}
 													/>
 													<SelectControl
 														label={__(
@@ -111,6 +124,9 @@ const Inspector = props => {
 																	deviceType,
 																attributes,
 															}
+														)}
+														defaultValue={getDefaultAttribute(
+															`line-vertical-${deviceType}`
 														)}
 														options={[
 															{
@@ -141,6 +157,15 @@ const Inspector = props => {
 																	val,
 															})
 														}
+														onReset={() => {
+															maxiSetAttributes({
+																[`line-vertical-${deviceType}`]:
+																	getDefaultAttribute(
+																		`line-vertical-${deviceType}`
+																	),
+																isReset: true,
+															});
+														}}
 													/>
 													<SelectControl
 														label={__(
@@ -154,6 +179,9 @@ const Inspector = props => {
 																	deviceType,
 																attributes,
 															}
+														)}
+														defaultValue={getDefaultAttribute(
+															`line-horizontal-${deviceType}`
 														)}
 														options={[
 															{
@@ -184,6 +212,15 @@ const Inspector = props => {
 																	val,
 															})
 														}
+														onReset={() =>
+															maxiSetAttributes({
+																[`line-horizontal-${deviceType}`]:
+																	getDefaultAttribute(
+																		`line-horizontal-${deviceType}`
+																	),
+																isReset: true,
+															})
+														}
 													/>
 												</>
 											</ResponsiveTabsControl>
@@ -200,30 +237,26 @@ const Inspector = props => {
 											'maxi-blocks'
 										),
 										content: (
-											<ResponsiveTabsControl
+											<DividerControl
+												{...getGroupAttributes(
+													attributes,
+													['divider', 'size']
+												)}
+												onChangeInline={obj =>
+													insertInlineStyles({
+														obj,
+														target: inlineStylesTargets.dividerColor,
+													})
+												}
+												onChange={obj => {
+													maxiSetAttributes(obj);
+													cleanInlineStyles(
+														inlineStylesTargets.dividerColor
+													);
+												}}
 												breakpoint={deviceType}
-											>
-												<DividerControl
-													{...getGroupAttributes(
-														attributes,
-														['divider', 'size']
-													)}
-													onChangeInline={obj =>
-														insertInlineStyles({
-															obj,
-															target: inlineStylesTargets.dividerColor,
-														})
-													}
-													onChange={obj => {
-														maxiSetAttributes(obj);
-														cleanInlineStyles(
-															inlineStylesTargets.dividerColor
-														);
-													}}
-													breakpoint={deviceType}
-													clientId={clientId}
-												/>
-											</ResponsiveTabsControl>
+												clientId={clientId}
+											/>
 										),
 										ignoreIndicator: [
 											`line-horizontal-${deviceType}`,
@@ -234,6 +267,7 @@ const Inspector = props => {
 									...inspectorTabs.boxShadow({
 										props,
 										prefix: 'divider-',
+										disableInset: true,
 									}),
 								]}
 							/>
@@ -252,9 +286,6 @@ const Inspector = props => {
 										props,
 									}),
 									...inspectorTabs.boxShadow({
-										props,
-									}),
-									...inspectorTabs.opacity({
 										props,
 									}),
 									...inspectorTabs.size({
@@ -305,6 +336,9 @@ const Inspector = props => {
 										},
 									}),
 									...inspectorTabs.display({
+										props,
+									}),
+									...inspectorTabs.opacity({
 										props,
 									}),
 									...inspectorTabs.position({

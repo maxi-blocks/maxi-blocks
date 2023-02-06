@@ -11,15 +11,15 @@ import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import {
 	ArrowDisplayer,
 	BlockInserter,
-	Indicators,
 	ShapeDivider,
 	Toolbar,
+	BlockIndicators,
 } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
-import { copyPasteMapping } from './data';
+import { copyPasteMapping, maxiAttributes } from './data';
 
 /**
  * General
@@ -33,6 +33,11 @@ const ROW_TEMPLATE = [['maxi-blocks/row-maxi']];
 class edit extends MaxiBlockComponent {
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
+	}
+
+	// eslint-disable-next-line class-methods-use-this
+	getMaxiAttributes() {
+		return maxiAttributes;
 	}
 
 	get getMaxiCustomData() {
@@ -70,6 +75,9 @@ class edit extends MaxiBlockComponent {
 			hasInnerBlocks,
 			maxiSetAttributes,
 			clientId,
+			insertInlineStyles,
+			cleanInlineStyles,
+			isSelected,
 		} = this.props;
 		const { uniqueID, isFirstOnHierarchy } = attributes;
 
@@ -114,15 +122,18 @@ class edit extends MaxiBlockComponent {
 							)}
 							breakpoint={deviceType}
 						/>
-						<Indicators
+						<BlockIndicators
 							key={`indicators-${uniqueID}`}
-							deviceType={deviceType}
 							{...getGroupAttributes(attributes, [
 								'padding',
 								'margin',
 							])}
 							onChange={obj => maxiSetAttributes(obj)}
 							breakpoint={deviceType}
+							avoidIndicators={{ margin: ['right', 'left'] }}
+							insertInlineStyles={insertInlineStyles}
+							cleanInlineStyles={cleanInlineStyles}
+							isBlockSelected={isSelected}
 						/>
 					</>
 				)}

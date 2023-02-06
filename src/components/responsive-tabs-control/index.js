@@ -27,20 +27,25 @@ const ResponsiveTabsControl = props => {
 	const {
 		className,
 		children,
-		breakpoint,
+		breakpoint: rawBreakpoint,
 		disableCallback = false,
 		target,
 	} = props;
+	const { baseBreakpoint, breakpoint: storeBreakpoint } = useSelect(
+		select => {
+			const { receiveBaseBreakpoint, receiveMaxiDeviceType } =
+				select('maxiBlocks');
 
-	const { baseBreakpoint } = useSelect(select => {
-		const { receiveBaseBreakpoint } = select('maxiBlocks');
+			const baseBreakpoint = receiveBaseBreakpoint();
+			const breakpoint = receiveMaxiDeviceType();
 
-		const baseBreakpoint = receiveBaseBreakpoint();
-
-		return {
-			baseBreakpoint,
-		};
-	});
+			return {
+				baseBreakpoint,
+				breakpoint,
+			};
+		}
+	);
+	const breakpoint = rawBreakpoint || storeBreakpoint;
 
 	const breakpoints = ['XXL', 'XL', 'L', 'M', 'S', 'XS'];
 
@@ -65,12 +70,14 @@ const ResponsiveTabsControl = props => {
 			items={breakpoints.map(breakpoint => {
 				return {
 					label: breakpoint,
-					content: cloneElement(children, {
-						breakpoint:
-							baseBreakpoint === breakpoint.toLowerCase()
-								? 'general'
-								: breakpoint.toLowerCase(),
-					}),
+					content:
+						children &&
+						cloneElement(children, {
+							breakpoint:
+								baseBreakpoint === breakpoint.toLowerCase()
+									? 'general'
+									: breakpoint.toLowerCase(),
+						}),
 					// content: children,
 					showNotification: showNotification(breakpoint),
 					callback: () =>

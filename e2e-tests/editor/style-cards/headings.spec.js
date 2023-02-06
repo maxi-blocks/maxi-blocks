@@ -45,6 +45,7 @@ describe('StyleCards headings', () => {
 				'.maxi-blocks-sc__type--heading .maxi-style-cards-control__sc__h1-typography'
 			),
 			...generalTypographyStyle,
+			isStyleCards: true,
 		});
 
 		// Check paragraph global styles
@@ -75,6 +76,7 @@ describe('StyleCards headings', () => {
 				'.maxi-blocks-sc__type--heading .maxi-style-cards-control__sc__h1-typography'
 			),
 			...responsiveTypographyStyle,
+			isStyleCards: true,
 		});
 
 		expect(await checkSCResult(page)).toMatchSnapshot();
@@ -85,6 +87,7 @@ describe('StyleCards headings', () => {
 			instance: await page.$(
 				'.maxi-blocks-sc__type--heading .maxi-style-cards-control__sc__h1-typography'
 			),
+			isStyleCards: true,
 		});
 
 		expect(typographyStylesS).toEqual(responsiveTypographyStyle);
@@ -95,6 +98,7 @@ describe('StyleCards headings', () => {
 			instance: await page.$(
 				'.maxi-blocks-sc__type--heading .maxi-style-cards-control__sc__h1-typography'
 			),
+			isStyleCards: true,
 		});
 
 		expect(typographyStylesL).toEqual(generalTypographyStyle);

@@ -12,7 +12,7 @@ import transitionDefault from '../transitions/transitionDefault';
 /**
  * External dependencies
  */
-import { isNil, isEqual, isEmpty, isArray } from 'lodash';
+import { isArray, isEmpty, isEqual, isNil } from 'lodash';
 
 /**
  * Generates size styles object
@@ -42,48 +42,77 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 				: [rawProperty];
 
 			targets.forEach(target => {
-				const transitionContent = transition[type][key];
-
 				if (isNil(response[target]))
 					response[target] = { transition: {} };
 
+				const hoverTarget = `${target}:hover`;
+
 				breakpoints.forEach(breakpoint => {
-					let transitionString = '';
-
-					const getLastTransitionAttribute = target =>
-						getLastBreakpointAttribute({
-							target,
+					const generateTransitionString = (
+						target,
+						isHover = false
+					) => {
+						const lastTransitionSplit = getLastBreakpointAttribute({
+							target: 'split',
 							breakpoint,
-							attributes: transitionContent,
+							attributes: transition[type][key],
 						});
+						const transitionSplit =
+							transition[type][key]?.[`split-${breakpoint}`];
 
-					const getTransitionAttribute = target =>
-						transitionContent?.[`${target}-${breakpoint}`];
+						const isNewTransitionSplit =
+							isEqual(transitionSplit, lastTransitionSplit) &&
+							!isNil(transitionSplit);
 
-					const lastTransitionDuration = getLastTransitionAttribute(
-						'transition-duration'
-					);
-					const transitionDuration = getTransitionAttribute(
-						'transition-duration'
-					);
+						/**
+						 * If no hover styles was created and no new transition split,
+						 * then we don't need to generate transition styles for hover
+						 * and duplicate normal transition styles for hover.
+						 */
+						if (isHover && isNil(response[target])) {
+							if (!isNewTransitionSplit) return;
 
-					const lastTransitionDelay =
-						getLastTransitionAttribute('transition-delay');
-					const transitionDelay =
-						getTransitionAttribute('transition-delay');
+							response[target] = { transition: {} };
+						}
 
-					const lastTransitionTimingFunction =
-						getLastTransitionAttribute('easing');
-					const transitionTimingFunction =
-						getTransitionAttribute('easing');
+						const transitionContent =
+							isHover || !lastTransitionSplit
+								? transition[type][key]
+								: transition[type][key]?.out;
 
-					const lastTransitionStatus =
-						getLastTransitionAttribute('transition-status');
-					const transitionStatus =
-						getTransitionAttribute('transition-status');
+						let transitionString = '';
 
-					properties.forEach(property => {
-						const transitionProperty = property || 'all';
+						const getLastTransitionAttribute = target =>
+							getLastBreakpointAttribute({
+								target,
+								breakpoint,
+								attributes: transitionContent,
+							});
+
+						const getTransitionAttribute = target =>
+							transitionContent?.[`${target}-${breakpoint}`];
+
+						const lastTransitionDuration =
+							getLastTransitionAttribute('transition-duration');
+						const transitionDuration = getTransitionAttribute(
+							'transition-duration'
+						);
+
+						const lastTransitionDelay =
+							getLastTransitionAttribute('transition-delay');
+						const transitionDelay =
+							getTransitionAttribute('transition-delay');
+
+						const lastTransitionTimingFunction =
+							getLastTransitionAttribute('easing');
+						const transitionTimingFunction =
+							getTransitionAttribute('easing');
+
+						const lastTransitionStatus =
+							getLastTransitionAttribute('transition-status');
+						const transitionStatus =
+							getTransitionAttribute('transition-status');
+
 						const isSomeValue =
 							isEqual(
 								transitionDuration,
@@ -94,27 +123,39 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 								transitionTimingFunction,
 								lastTransitionTimingFunction
 							) ||
-							isEqual(transitionStatus, lastTransitionStatus);
+							isEqual(transitionStatus, lastTransitionStatus) ||
+							(isHover && isNewTransitionSplit);
 
-						if (isSomeValue)
-							if (!lastTransitionStatus) {
-								transitionString += `${transitionProperty} 0s 0s, `;
-							} else if (lastTransitionStatus) {
-								transitionString += `${transitionProperty} ${lastTransitionDuration}s ${lastTransitionDelay}s ${lastTransitionTimingFunction}, `;
-							}
-					});
+						if (isSomeValue) {
+							properties.forEach(property => {
+								const transitionProperty = property || 'all';
 
-					transitionString = transitionString.replace(/,\s*$/, '');
+								if (!lastTransitionStatus) {
+									transitionString += `${transitionProperty} 0s 0s, `;
+								} else if (lastTransitionStatus) {
+									transitionString += `${transitionProperty} ${lastTransitionDuration}s ${lastTransitionDelay}s ${lastTransitionTimingFunction}, `;
+								}
+							});
+						}
 
-					if (transitionString)
-						if (isNil(response[target].transition[breakpoint]))
-							response[target].transition[breakpoint] = {
-								transition: transitionString,
-							};
-						else
-							response[target].transition[
-								breakpoint
-							].transition += `, ${transitionString}`;
+						transitionString = transitionString.replace(
+							/,\s*$/,
+							''
+						);
+
+						if (transitionString)
+							if (isNil(response[target].transition[breakpoint]))
+								response[target].transition[breakpoint] = {
+									transition: transitionString,
+								};
+							else
+								response[target].transition[
+									breakpoint
+								].transition += `, ${transitionString}`;
+					};
+
+					generateTransitionString(target);
+					generateTransitionString(hoverTarget, true);
 				});
 			});
 		});

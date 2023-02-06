@@ -10,7 +10,12 @@ describe('BlockInserter', () => {
 
 		const groupInserter = await page.$eval(
 			'.maxi-block-inserter',
-			select => select.innerHTML
+			select => {
+				// Inserter creates a unique ID as a class for the `span` element that change on every render.
+				select.querySelector('span').removeAttribute('class');
+
+				return select.innerHTML;
+			}
 		);
 
 		expect(groupInserter).toMatchSnapshot();

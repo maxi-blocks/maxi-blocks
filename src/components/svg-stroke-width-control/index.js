@@ -28,6 +28,7 @@ const SvgStrokeWidthControl = props => {
 		prefix,
 		content,
 		isHover = false,
+		customLabel = 'Stroke width',
 		className,
 	} = props;
 
@@ -47,7 +48,7 @@ const SvgStrokeWidthControl = props => {
 
 	return (
 		<AdvancedNumberControl
-			label={__('Stroke width', 'maxi-blocks')}
+			label={__(customLabel, 'maxi-blocks')}
 			className={classes}
 			value={stroke}
 			placeholder={placeholderStroke}
@@ -57,18 +58,23 @@ const SvgStrokeWidthControl = props => {
 				onChange({
 					[strokeAttrLabel]:
 						val !== undefined && val !== '' ? val : '',
-					[`${prefix === 'svg-' ? '' : prefix}content`]:
-						setSVGStrokeWidth(content, val),
+					...(!prefix.includes('navigation') && {
+						[`${prefix === 'svg-' ? '' : prefix}content`]:
+							setSVGStrokeWidth(content, val),
+					}),
 				});
 			}}
 			min={0.1}
 			max={5}
 			step={0.1}
-			onReset={() =>
+			onReset={() => {
 				onChange({
 					[strokeAttrLabel]: defaultStroke,
-				})
-			}
+					[`${prefix === 'svg-' ? '' : prefix}content`]:
+						setSVGStrokeWidth(content, defaultStroke),
+					isReset: true,
+				});
+			}}
 			defaultValue={defaultStroke}
 			initialPosition={placeholderStroke}
 		/>

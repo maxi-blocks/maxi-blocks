@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { createBlock } from '@wordpress/blocks';
+import { useRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -38,7 +39,13 @@ import {
 /**
  * Components
  */
-const ResponsiveButton = ({ baseBreakpoint, icon, breakpoint, target }) => {
+const ResponsiveButton = ({
+	baseBreakpoint,
+	icon,
+	tooltipValue,
+	breakpoint,
+	target,
+}) => {
 	const isBaseBreakpoint = baseBreakpoint === target;
 
 	const classes = classnames(
@@ -62,6 +69,11 @@ const ResponsiveButton = ({ baseBreakpoint, icon, breakpoint, target }) => {
 				aria-pressed={getIsPressed()}
 			>
 				<div>
+					{tooltipValue && (
+						<div className='responsive-button-tooltip'>
+							{tooltipValue}
+						</div>
+					)}
 					{icon}
 					{isBaseBreakpoint && (
 						<>
@@ -89,6 +101,8 @@ const ResponsiveButton = ({ baseBreakpoint, icon, breakpoint, target }) => {
 const ResponsiveSelector = props => {
 	const { className, isOpen, onClose } = props;
 
+	const settingsRef = useRef(null);
+
 	const { insertBlock } = useDispatch('core/block-editor');
 
 	const { deviceType, breakpoints, baseBreakpoint } = useSelect(select => {
@@ -114,7 +128,11 @@ const ResponsiveSelector = props => {
 	const classes = classnames('maxi-responsive-selector', className);
 
 	return (
-		<div className={classes} style={{ display: isOpen ? 'flex' : 'none' }}>
+		<div
+			className={classes}
+			style={{ display: isOpen ? 'flex' : 'none' }}
+			ref={settingsRef}
+		>
 			<span className='maxi-responsive-selector__close' onClick={onClose}>
 				<Icon icon={closeIcon} />
 			</span>
@@ -124,6 +142,7 @@ const ResponsiveSelector = props => {
 				breakpoint={deviceType}
 				baseBreakpoint={baseBreakpoint}
 				breakpoints={breakpoints}
+				tooltipValue={`>${breakpoints.xl}`}
 			/>
 			<ResponsiveButton
 				icon={xlMode}
@@ -131,6 +150,7 @@ const ResponsiveSelector = props => {
 				breakpoint={deviceType}
 				baseBreakpoint={baseBreakpoint}
 				breakpoints={breakpoints}
+				tooltipValue={breakpoints.xl}
 			/>
 			<ResponsiveButton
 				icon={largeMode}
@@ -138,6 +158,7 @@ const ResponsiveSelector = props => {
 				breakpoint={deviceType}
 				baseBreakpoint={baseBreakpoint}
 				breakpoints={breakpoints}
+				tooltipValue={breakpoints.l}
 			/>
 			<ResponsiveButton
 				icon={mediumMode}
@@ -145,6 +166,7 @@ const ResponsiveSelector = props => {
 				breakpoint={deviceType}
 				baseBreakpoint={baseBreakpoint}
 				breakpoints={breakpoints}
+				tooltipValue={breakpoints.m}
 			/>
 			<ResponsiveButton
 				icon={smallMode}
@@ -152,6 +174,7 @@ const ResponsiveSelector = props => {
 				breakpoint={deviceType}
 				baseBreakpoint={baseBreakpoint}
 				breakpoints={breakpoints}
+				tooltipValue={breakpoints.s}
 			/>
 			<ResponsiveButton
 				icon={xsMode}
@@ -159,6 +182,7 @@ const ResponsiveSelector = props => {
 				breakpoint={deviceType}
 				baseBreakpoint={baseBreakpoint}
 				breakpoints={breakpoints}
+				tooltipValue={breakpoints.xs}
 			/>
 			<div className='action-buttons'>
 				<Button
@@ -170,7 +194,7 @@ const ResponsiveSelector = props => {
 					<span>{__('Template library', 'maxi-blocks')}</span>
 				</Button>
 			</div>
-			<MaxiStyleCardsEditorPopUp />
+			<MaxiStyleCardsEditorPopUp ref={settingsRef} />
 			<Button
 				className='action-buttons__help'
 				onClick={() => crispChat()}

@@ -8,12 +8,15 @@ import { dispatch, select } from '@wordpress/data';
  * External dependencies
  */
 import { isEmpty, uniq } from 'lodash';
+
 /**
  * Loads the font on background using JS FontFace API
  * FontFaceSet API uses check() to check if a font exists, but needs to compare with some exact value:
  * in this case is used '12px' as a standard that returns if the font has been loaded.
  *
- * @param {string} font Name of the selected font
+ * @param {string}      font        Name of the selected font
+ * @param {boolean}     backendOnly If true, `dispatch('maxiBlocks/text').updateFonts()` isn't called
+ * @param {HTMLElement} target      Element, where the font will be loaded
  */
 const loadFonts = (font, backendOnly = true, target = document) => {
 	if (typeof font === 'object' && font !== null) {
@@ -129,11 +132,9 @@ const loadFonts = (font, backendOnly = true, target = document) => {
 	return null;
 };
 
-const loadFontsInEditor = (breakpoint, objFont) => {
-	if (breakpoint === 's' || breakpoint === 'xs') {
-		const iframeEditor = document.querySelector(
-			'iframe[name="editor-canvas"]'
-		);
+const loadFontsInEditor = objFont => {
+	const iframeEditor = document.querySelector('iframe[name="editor-canvas"]');
+	if (iframeEditor) {
 		loadFonts(objFont, true, iframeEditor.contentDocument);
 	} else loadFonts(objFont);
 };

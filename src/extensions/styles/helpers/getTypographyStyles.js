@@ -3,6 +3,7 @@
  */
 import getColorRGBAString from '../getColorRGBAString';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+import getAttributeKey from '../getAttributeKey';
 
 /**
  * External dependencies
@@ -28,6 +29,7 @@ const getTypographyStyles = ({
 	textLevel = 'p',
 	normalTypography, // Just in case is hover,
 	scValues = {},
+	isStyleCards = false,
 }) => {
 	const response = {};
 
@@ -41,16 +43,21 @@ const getTypographyStyles = ({
 
 	const isCustomFormat = !!customFormatTypography;
 
-	const getName = (target, breakpoint) =>
-		`${prefix}${target}-${breakpoint}${
-			!isCustomFormat && isHover ? '-hover' : ''
-		}`;
+	const getValue = (target, breakpoint) =>
+		obj[
+			getAttributeKey(
+				target,
+				!isCustomFormat && isHover,
+				prefix,
+				breakpoint
+			)
+		];
 
 	const getPaletteColorStatus = breakpoint => {
 		const paletteStatus = getLastBreakpointAttribute({
 			target: `${prefix}palette-status`,
 			breakpoint,
-			attributes: obj,
+			attributes: { ...obj, ...normalTypography },
 			isHover,
 		});
 
@@ -69,9 +76,8 @@ const getTypographyStyles = ({
 
 	const getColorString = breakpoint => {
 		const paletteStatus = getPaletteColorStatus(breakpoint);
-		const paletteColor = obj[getName('palette-color', breakpoint)];
-		const paletteOpacity = obj[getName('palette-opacity', breakpoint)];
-		const color = obj[getName('color', breakpoint)];
+		const paletteColor = getValue('palette-color', breakpoint);
+		const paletteOpacity = getValue('palette-opacity', breakpoint);
 
 		if (paletteStatus && (!isHover || hoverStatus || globalHoverStatus))
 			return {
@@ -97,6 +103,7 @@ const getTypographyStyles = ({
 				}),
 			};
 
+		const color = getValue('color', breakpoint);
 		return {
 			...(!isNil(color) && {
 				color,
@@ -126,58 +133,90 @@ const getTypographyStyles = ({
 
 	breakpoints.forEach(breakpoint => {
 		const typography = {
-			...(!isNil(obj[getName('font-family', breakpoint)]) && {
-				'font-family': obj[getName('font-family', breakpoint)],
+			...(!isNil(getValue('font-family', breakpoint)) && {
+				'font-family': getValue('font-family', breakpoint),
 			}),
 			...getColorString(breakpoint),
-			...(!isNil(obj[getName('font-size', breakpoint)]) && {
-				'font-size': `${
-					obj[getName('font-size', breakpoint)]
-				}${getUnitValue('font-size-unit', breakpoint)}`,
+			...(!isNil(getValue('font-size', breakpoint)) && {
+				'font-size': `${getValue(
+					'font-size',
+					breakpoint
+				)}${getUnitValue('font-size-unit', breakpoint)}`,
 			}),
-			...(!isNil(obj[getName('line-height', breakpoint)]) && {
-				'line-height': `${obj[getName('line-height', breakpoint)]}${
+			...(!isNil(getValue('line-height', breakpoint)) && {
+				'line-height': `${getValue('line-height', breakpoint)}${
 					getUnitValue('line-height-unit', breakpoint) || ''
 				}`,
 			}),
-			...(!isNil(obj[getName('letter-spacing', breakpoint)]) && {
-				'letter-spacing': `${
-					obj[getName('letter-spacing', breakpoint)]
-				}${getUnitValue('letter-spacing-unit', breakpoint)}`,
+			...(!isNil(getValue('letter-spacing', breakpoint)) && {
+				'letter-spacing': `${getValue(
+					'letter-spacing',
+					breakpoint
+				)}${getUnitValue('letter-spacing-unit', breakpoint)}`,
 			}),
-			...(!isNil(obj[getName('font-weight', breakpoint)]) && {
-				'font-weight': obj[getName('font-weight', breakpoint)],
+			...(!isNil(getValue('font-weight', breakpoint)) && {
+				'font-weight': getValue('font-weight', breakpoint),
 			}),
-			...(!isNil(obj[getName('text-transform', breakpoint)]) && {
-				'text-transform': obj[getName('text-transform', breakpoint)],
+			...(!isNil(getValue('text-transform', breakpoint)) && {
+				'text-transform': getValue('text-transform', breakpoint),
 			}),
-			...(!isNil(obj[getName('font-style', breakpoint)]) && {
-				'font-style': obj[getName('font-style', breakpoint)],
+			...(!isNil(getValue('font-style', breakpoint)) && {
+				'font-style': getValue('font-style', breakpoint),
 			}),
-			...(!isNil(obj[getName('text-decoration', breakpoint)]) && {
-				'text-decoration': obj[getName('text-decoration', breakpoint)],
+			...(!isNil(getValue('text-decoration', breakpoint)) && {
+				'text-decoration': getValue('text-decoration', breakpoint),
 			}),
-			...(!isNil(obj[getName('text-indent', breakpoint)]) && {
-				'text-indent': `${
-					obj[getName('text-indent', breakpoint)]
-				}${getUnitValue('text-indent-unit', breakpoint)}`,
+			...(!isNil(getValue('text-indent', breakpoint)) && {
+				'text-indent': `${getValue(
+					'text-indent',
+					breakpoint
+				)}${getUnitValue('text-indent-unit', breakpoint)}`,
 			}),
-			...(!isNil(obj[getName('text-shadow', breakpoint)]) && {
-				'text-shadow': obj[getName('text-shadow', breakpoint)],
+			...(!isNil(getValue('text-shadow', breakpoint)) && {
+				'text-shadow': getValue('text-shadow', breakpoint),
 			}),
-			...(!isNil(obj[getName('vertical-align', breakpoint)]) && {
-				'vertical-align': obj[getName('vertical-align', breakpoint)],
+			...(!isNil(getValue('vertical-align', breakpoint)) && {
+				'vertical-align': getValue('vertical-align', breakpoint),
 			}),
-			...(!isNil(obj[getName('text-orientation', breakpoint)]) && {
+			...(!isNil(getValue('text-orientation', breakpoint)) && {
 				'writing-mode':
-					obj[getName('text-orientation', breakpoint)] !== 'unset'
+					getValue('text-orientation', breakpoint) !== 'unset'
 						? 'vertical-rl'
 						: 'unset',
-				'text-orientation':
-					obj[getName('text-orientation', breakpoint)],
+				'text-orientation': getValue('text-orientation', breakpoint),
 			}),
-			...(!isNil(obj[getName('text-direction', breakpoint)]) && {
-				direction: obj[getName('text-direction', breakpoint)],
+			...(!isNil(getValue('text-direction', breakpoint)) && {
+				direction: getValue('text-direction', breakpoint),
+			}),
+			...(!isNil(getValue('white-space', breakpoint)) && {
+				'white-space': getValue('white-space', breakpoint),
+			}),
+			...(!isNil(getValue('word-spacing', breakpoint)) && {
+				'word-spacing': `${getValue(
+					'word-spacing',
+					breakpoint
+				)}${getUnitValue('word-spacing-unit', breakpoint)}`,
+			}),
+			...(!isNil(getValue('bottom-gap', breakpoint)) && {
+				'margin-bottom': `${getValue(
+					'bottom-gap',
+					breakpoint
+				)}${getUnitValue('bottom-gap-unit', breakpoint)}`,
+			}),
+			...(!isStyleCards && {
+				...(!isNil(getValue('text-orientation', breakpoint)) && {
+					'writing-mode':
+						getValue('text-orientation', breakpoint) !== 'unset'
+							? 'vertical-rl'
+							: 'unset',
+					'text-orientation': getValue(
+						'text-orientation',
+						breakpoint
+					),
+				}),
+				...(!isNil(getValue('text-direction', breakpoint)) && {
+					direction: getValue('text-direction', breakpoint),
+				}),
 			}),
 		};
 

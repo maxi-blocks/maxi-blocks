@@ -3,13 +3,12 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
-import { Button, TextControl } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
-
 import { getNewMarker, getUpdatedMarkers } from '../../utils';
+import { Button, TextInput } from '../../../../components';
 
 /**
  * External dependencies
@@ -89,7 +88,7 @@ const SearchBox = ({ mapMarkers, maxiSetAttributes }) => {
 	return (
 		<>
 			<div className='maxi-map-block__search-box'>
-				<TextControl
+				<TextInput
 					value={keywords}
 					onChange={keyWords => setKeywords(keyWords)}
 					onKeyDown={event => handleKeyDown(event)}

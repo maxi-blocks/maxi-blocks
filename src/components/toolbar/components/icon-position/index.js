@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import SelectControl from '../../../select-control';
 import ToolbarPopover from '../toolbar-popover';
+import { getDefaultAttribute } from '../../../../extensions/styles';
 
 /**
  * Styles & Icons
@@ -35,6 +36,14 @@ const IconPosition = props => {
 					label={__('Icon position', 'maxi-block')}
 					className='maxi-icon__position'
 					value={props['icon-position']}
+					defaultValue={getDefaultAttribute('icon-position')}
+					onReset={() =>
+						onChange({
+							'icon-position':
+								getDefaultAttribute('icon-position'),
+							isReset: true,
+						})
+					}
 					options={[
 						{
 							label: __('Top', 'maxi-blocks'),

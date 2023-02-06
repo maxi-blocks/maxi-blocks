@@ -12,11 +12,12 @@ import {
 	getLastBreakpointAttribute,
 } from '../styles';
 import { loadFonts } from '../text/fonts';
+import { getSiteEditorIframe } from '../fse';
 
 /**
  * External dependencies
  */
-import { times, isEmpty, merge, cloneDeep, uniq } from 'lodash';
+import { cloneDeep, isArray, isEmpty, merge, times, uniq } from 'lodash';
 import { getTypographyStyles } from '../styles/helpers';
 
 const getColorString = (obj, target, style) => {
@@ -24,13 +25,7 @@ const getColorString = (obj, target, style) => {
 	const paletteStatus = obj[`${prefix}palette-status`];
 	const paletteColor = obj[`${prefix}palette-color`];
 	const paletteOpacity = obj[`${prefix}palette-opacity`];
-	const color =
-		target === 'line' ||
-		target === 'fill' ||
-		target === 'hover-line' ||
-		target === 'hover-fill'
-			? obj[target]
-			: obj[`${prefix}color`];
+	const color = obj[`${prefix}color`];
 
 	return paletteStatus
 		? getColorRGBAString({
@@ -55,7 +50,11 @@ const getParsedObj = obj => {
 	Object.keys(typographyObj).forEach(key => delete newObj[key]);
 
 	Object.entries(
-		getTypographyStyles({ obj: typographyObj, disableGlobals: true })
+		getTypographyStyles({
+			obj: typographyObj,
+			disableGlobals: true,
+			isStyleCards: true,
+		})
 	).forEach(([breakpoint, value]) => {
 		Object.entries(value).forEach(([key, val]) => {
 			newObj[`${key}-${breakpoint}`] = val;
@@ -91,6 +90,10 @@ export const getSCVariablesObject = styleCards => {
 		'text-decoration',
 		'text-transform',
 		'letter-spacing',
+		'white-space',
+		'word-spacing',
+		'margin-bottom',
+		'text-indent',
 	];
 	const SC = {
 		dark: {
@@ -156,19 +159,19 @@ export const getSCVariablesObject = styleCards => {
 					break;
 
 				case 'icon':
-					if (obj['line-global'])
+					if (obj['line-color-global'])
 						response[`--maxi-${style}-${element}-stroke`] =
 							getColorString(obj, 'line', style);
 
-					if (obj['fill-global'])
+					if (obj['fill-color-global'])
 						response[`--maxi-${style}-${element}-fill`] =
 							getColorString(obj, 'fill', style);
 
-					if (obj['hover-line-global'])
+					if (obj['hover-line-color-global'])
 						response[`--maxi-${style}-${element}-stroke-hover`] =
 							getColorString(obj, 'hover-line', style);
 
-					if (obj['hover-fill-global'])
+					if (obj['hover-fill-color-global'])
 						response[`--maxi-${style}-${element}-fill-hover`] =
 							getColorString(obj, 'hover-fill', style);
 
@@ -235,7 +238,7 @@ const getSCFontsData = obj => {
 			response[fontName] = { weight: [], style: [] };
 		}
 		if (key.includes('font-weight'))
-			response[fontName].weight.push(val.toString());
+			response[fontName].weight.push(val?.toString());
 
 		if (key.includes('font-style')) response[fontName].style.push(val);
 	});
@@ -255,22 +258,37 @@ const getSCFontsData = obj => {
 	return response;
 };
 
-const updateSCOnEditor = styleCards => {
+const updateSCOnEditor = (
+	styleCards,
+	rawElements = [document, getSiteEditorIframe()]
+) => {
 	const SCObject = getSCVariablesObject({ ...cloneDeep(styleCards) });
-	let SCStyle = document.getElementById('maxi-blocks-sc-vars-inline-css');
-	if (!SCStyle) {
-		SCStyle = document.createElement('style');
-		SCStyle.id = 'maxi-blocks-sc-vars-inline-css';
-		SCStyle.innerHTML = createSCStyleString(SCObject);
-		document.head.appendChild(SCStyle);
-		const { saveSCStyles } = dispatch('maxiBlocks/style-cards');
-
-		// Needs a delay, if not Redux returns error 3
-		setTimeout(() => saveSCStyles(false), 150);
-	} else SCStyle.innerHTML = createSCStyleString(SCObject);
-
 	const allSCFonts = getSCFontsData(SCObject);
-	if (!isEmpty(allSCFonts)) loadFonts(allSCFonts);
+
+	const elements = isArray(rawElements) ? rawElements : [rawElements];
+
+	elements.forEach(element => {
+		if (!element) return;
+
+		let SCStyle = element.getElementById('maxi-blocks-sc-vars-inline-css');
+		if (!SCStyle) {
+			SCStyle = element.createElement('style');
+			SCStyle.id = 'maxi-blocks-sc-vars-inline-css';
+			SCStyle.innerHTML = createSCStyleString(SCObject);
+			// Iframe on creation generates head, then gutenberg generates their own head
+			// and in some moment we have two heads, so we need to add SC only to head which is second(gutenberg one)
+			const elementHead = Array.from(
+				element.querySelectorAll('head')
+			).pop();
+			elementHead.appendChild(SCStyle);
+			const { saveSCStyles } = dispatch('maxiBlocks/style-cards');
+
+			// Needs a delay, if not Redux returns error 3
+			setTimeout(() => saveSCStyles(false), 150);
+		} else SCStyle.innerHTML = createSCStyleString(SCObject);
+
+		if (!isEmpty(allSCFonts)) loadFonts(allSCFonts, false, element);
+	});
 };
 
 export default updateSCOnEditor;

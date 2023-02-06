@@ -46,10 +46,12 @@ const ListOptionsControl = props => {
 		listStyleCustom,
 	} = attributes;
 
-	const [listStyleSource, setListStyleSource] = useState(
+	const defaultListStyleSource =
 		(isURL(listStyleCustom) && 'url') ||
-			(listStyleCustom?.includes('<svg ') && 'icon') ||
-			'text'
+		(listStyleCustom?.includes('<svg ') && 'icon') ||
+		'text';
+	const [listStyleSource, setListStyleSource] = useState(
+		defaultListStyleSource
 	);
 	const [listStyleCustoms, setListStyleCustoms] = useState({
 		[listStyleSource]: listStyleCustom,
@@ -139,6 +141,18 @@ const ListOptionsControl = props => {
 					breakpoint: deviceType,
 					attributes,
 				})}
+				defaultValue={getDefaultAttribute(
+					`list-style-position-${deviceType}`
+				)}
+				onReset={() =>
+					maxiSetAttributes({
+						[`list-style-position-${deviceType}`]:
+							getDefaultAttribute(
+								`list-style-position-${deviceType}`
+							),
+						isReset: true,
+					})
+				}
 				options={[
 					{
 						label: __('Inside', 'maxi-blocks'),
@@ -206,6 +220,7 @@ const ListOptionsControl = props => {
 						[`list-indent-unit-${deviceType}`]: getDefaultAttribute(
 							`list-indent-unit-${deviceType}`
 						),
+						isReset: true,
 					});
 				}}
 			/>
@@ -264,6 +279,7 @@ const ListOptionsControl = props => {
 						[`list-gap-unit-${deviceType}`]: getDefaultAttribute(
 							`list-gap-unit-${deviceType}`
 						),
+						isReset: true,
 					});
 				}}
 			/>
@@ -324,6 +340,7 @@ const ListOptionsControl = props => {
 							getDefaultAttribute(
 								`list-paragraph-spacing-unit-${deviceType}`
 							),
+						isReset: true,
 					});
 				}}
 			/>
@@ -416,6 +433,7 @@ const ListOptionsControl = props => {
 							getDefaultAttribute(
 								`list-marker-size-unit-${deviceType}`
 							),
+						isReset: true,
 					})
 				}
 			/>
@@ -454,6 +472,7 @@ const ListOptionsControl = props => {
 							getDefaultAttribute(
 								`list-marker-line-height-unit-${deviceType}`
 							),
+						isReset: true,
 					});
 				}}
 				allowedUnits={['px', 'em', 'vw', '%', '-']}
@@ -512,6 +531,7 @@ const ListOptionsControl = props => {
 							getDefaultAttribute(
 								`list-marker-indent-unit-${deviceType}`
 							),
+						isReset: true,
 					});
 				}}
 			/>
@@ -571,6 +591,18 @@ const ListOptionsControl = props => {
 					breakpoint: deviceType,
 					attributes,
 				})}
+				defaultValue={getDefaultAttribute(
+					`list-text-position-${deviceType}`
+				)}
+				onReset={() =>
+					maxiSetAttributes({
+						[`list-text-position-${deviceType}`]:
+							getDefaultAttribute(
+								`list-text-position-${deviceType}`
+							),
+						isReset: true,
+					})
+				}
 				options={[
 					{
 						label: __('Baseline', 'maxi-blocks'),
@@ -610,6 +642,16 @@ const ListOptionsControl = props => {
 					label={__('Type of list', 'maxi-blocks')}
 					className='maxi-text-inspector__list-type'
 					value={typeOfList}
+					defaultValue={getDefaultAttribute('typeOfList')}
+					onReset={() =>
+						maxiSetAttributes({
+							typeOfList: getDefaultAttribute('typeOfList'),
+							listStyle: getListStyleOptions(
+								getDefaultAttribute('typeOfList')
+							)[0].value,
+							isReset: true,
+						})
+					}
 					options={[
 						{
 							label: __('Unordered', 'maxi-blocks'),
@@ -634,6 +676,13 @@ const ListOptionsControl = props => {
 						label={__('Style', 'maxi-blocks')}
 						className='maxi-text-inspector__list-style'
 						value={listStyle || 'disc'}
+						defaultValue={getDefaultAttribute('listStyle')}
+						onReset={() =>
+							maxiSetAttributes({
+								listStyle: getDefaultAttribute('listStyle'),
+								isReset: true,
+							})
+						}
 						options={getListStyleOptions(typeOfList)}
 						onChange={listStyle => {
 							maxiSetAttributes({
@@ -676,6 +725,7 @@ const ListOptionsControl = props => {
 								onReset={() =>
 									maxiSetAttributes({
 										listStart: '',
+										isReset: true,
 									})
 								}
 							/>
@@ -697,6 +747,13 @@ const ListOptionsControl = props => {
 								label={__('Source', 'maxi-blocks')}
 								className='maxi-text-inspector__list-source-selector'
 								value={listStyleSource}
+								defaultValue={defaultListStyleSource}
+								onReset={() =>
+									maxiSetAttributes({
+										listStyleCustom: defaultListStyleSource,
+										isReset: true,
+									})
+								}
 								options={[
 									{
 										label: __('Text', 'maxi-blocks'),

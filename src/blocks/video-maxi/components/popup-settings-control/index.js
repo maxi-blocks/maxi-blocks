@@ -7,7 +7,11 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import VideoIconControl from '../video-icon-control';
-import { SelectControl, ColorControl } from '../../../../components';
+import {
+	SelectControl,
+	ColorControl,
+	AspectRatioControl,
+} from '../../../../components';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
@@ -15,7 +19,14 @@ import {
 } from '../../../../extensions/styles';
 
 const PopupSettingsControl = props => {
-	const { breakpoint, clientId, blockStyle, onChange, popAnimation } = props;
+	const {
+		breakpoint,
+		clientId,
+		blockStyle,
+		onChange,
+		popAnimation,
+		popupRatio,
+	} = props;
 
 	return (
 		<>
@@ -70,6 +81,24 @@ const PopupSettingsControl = props => {
 				globalProps={{
 					target: 'lightbox',
 				}}
+			/>
+			<AspectRatioControl
+				className='maxi-video-control__ratio'
+				label={__('Video aspect ratio', 'maxi-blocks')}
+				value={popupRatio}
+				additionalOptions={[
+					{
+						label: __('None', 'maxi-blocks'),
+						value: 'initial',
+					},
+				]}
+				onChange={popupRatio => onChange({ popupRatio })}
+				onReset={() =>
+					onChange({
+						popupRatio: getDefaultAttribute('popupRatio'),
+						isReset: true,
+					})
+				}
 			/>
 			<SelectControl
 				label={__('Pop animation', 'maxi-blocks')}

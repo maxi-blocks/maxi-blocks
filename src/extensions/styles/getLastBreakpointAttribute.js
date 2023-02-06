@@ -18,6 +18,9 @@ import { isNil, isEmpty, isBoolean, isNumber, isString, uniq } from 'lodash';
  */
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
+const getValueFromKeys = (value, keys) =>
+	keys.reduce((acc, key) => acc?.[key], value);
+
 /**
  * Gets an object base on Maxi Blocks breakpoints schema and looks for the last set value
  * for a concrete property in case is not set for the requested breakpoint. Also enables getting
@@ -28,7 +31,8 @@ const getLastBreakpointAttributeSingle = (
 	breakpoint,
 	attributes,
 	isHover,
-	avoidXXL
+	avoidXXL,
+	keys
 ) => {
 	const { getBlockAttributes, getSelectedBlockClientId } = select(
 		'core/block-editor'
@@ -41,12 +45,15 @@ const getLastBreakpointAttributeSingle = (
 
 	if (isNil(attr)) return false;
 	if (isNil(breakpoint))
-		return getAttributeValue({
-			target,
-			props: attr,
-			isHover,
-			breakpoint,
-		});
+		return getValueFromKeys(
+			getAttributeValue({
+				target,
+				props: attr,
+				isHover,
+				breakpoint,
+			}),
+			keys
+		);
 
 	const baseBreakpoint = select('maxiBlocks')?.receiveBaseBreakpoint();
 
@@ -54,25 +61,29 @@ const getLastBreakpointAttributeSingle = (
 		!isNil(attr) &&
 		(isNumber(attr) || isBoolean(attr) || isString(attr) || !isEmpty(attr));
 
-	let currentAttr =
-		attr[
-			`${!isEmpty(target) ? `${target}-` : ''}${breakpoint}${
-				isHover ? '-hover' : ''
-			}`
-		];
-
 	// In case that breakpoint is general and baseBreakpoint attribute exists,
 	// give priority to baseBreakpoint attribute
 	if (breakpoint === 'general') {
-		const baseBreakpointAttr =
+		const baseBreakpointAttr = getValueFromKeys(
 			attr[
 				`${!isEmpty(target) ? `${target}-` : ''}${baseBreakpoint}${
 					isHover ? '-hover' : ''
 				}`
-			];
+			],
+			keys
+		);
 
 		if (attrFilter(baseBreakpointAttr)) return baseBreakpointAttr;
 	}
+
+	let currentAttr = getValueFromKeys(
+		attr[
+			`${!isEmpty(target) ? `${target}-` : ''}${breakpoint}${
+				isHover ? '-hover' : ''
+			}`
+		],
+		keys
+	);
 
 	if (
 		attrFilter(currentAttr) &&
@@ -89,13 +100,16 @@ const getLastBreakpointAttributeSingle = (
 		(isEmpty(currentAttr) || isNil(currentAttr))
 	) {
 		breakpointPosition -= 1;
+
 		if (!(avoidXXL && breakpoints[breakpointPosition] === 'xxl'))
-			currentAttr =
+			currentAttr = getValueFromKeys(
 				attr[
 					`${!isEmpty(target) ? `${target}-` : ''}${
 						breakpoints[breakpointPosition]
 					}${isHover ? '-hover' : ''}`
-				];
+				],
+				keys
+			);
 	}
 
 	if (isHover && !attrFilter(currentAttr))
@@ -104,7 +118,8 @@ const getLastBreakpointAttributeSingle = (
 			breakpoint,
 			attributes,
 			false,
-			avoidXXL
+			avoidXXL,
+			keys
 		);
 
 	// Helps responsive API: when breakpoint is general and the attribute is undefined,
@@ -115,7 +130,8 @@ const getLastBreakpointAttributeSingle = (
 			baseBreakpoint,
 			attributes,
 			isHover,
-			baseBreakpoint === 'xxl' ? false : avoidXXL
+			baseBreakpoint === 'xxl' ? false : avoidXXL,
+			keys
 		);
 
 	return currentAttr;
@@ -125,7 +141,8 @@ const getLastBreakpointAttributeGroup = (
 	target,
 	breakpoint,
 	isHover,
-	avoidXXL
+	avoidXXL,
+	keys
 ) => {
 	const { getSelectedBlockClientIds, getBlockAttributes } =
 		select('core/block-editor');
@@ -140,7 +157,8 @@ const getLastBreakpointAttributeGroup = (
 			breakpoint,
 			attributes,
 			isHover,
-			avoidXXL
+			avoidXXL,
+			keys
 		);
 	});
 
@@ -157,6 +175,7 @@ const getLastBreakpointAttribute = ({
 	isHover = false,
 	forceSingle = false,
 	avoidXXL = true,
+	keys = [],
 }) => {
 	const { getSelectedBlockCount } = select('core/block-editor') || {
 		getSelectedBlockCount: () => 1, // Necessary for testing, mocking '@wordpress/data' is too dense
@@ -167,7 +186,8 @@ const getLastBreakpointAttribute = ({
 			target,
 			breakpoint,
 			isHover,
-			avoidXXL
+			avoidXXL,
+			keys
 		);
 
 	return getLastBreakpointAttributeSingle(
@@ -175,7 +195,8 @@ const getLastBreakpointAttribute = ({
 		breakpoint,
 		attributes,
 		isHover,
-		avoidXXL
+		avoidXXL,
+		keys
 	);
 };
 

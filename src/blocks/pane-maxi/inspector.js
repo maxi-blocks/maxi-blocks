@@ -28,14 +28,17 @@ const Inspector = props => {
 			disableImage: true,
 			disableVideo: true,
 			disableSVG: true,
+			enableActiveState: true,
 		}),
 		...inspectorTabs.border({
 			props,
 			prefix,
+			enableActiveState: true,
 		}),
 		...inspectorTabs.boxShadow({
 			props,
 			prefix,
+			enableActiveState: true,
 		}),
 		...inspectorTabs.size({
 			props,
@@ -218,7 +221,6 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.relation({
 										props,
-										isButton: true,
 									}),
 								]}
 							/>

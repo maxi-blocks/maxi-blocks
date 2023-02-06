@@ -17,6 +17,7 @@ import {
 import MaxiModal from '../../../../editor/library/modal';
 import {
 	getAttributeKey,
+	getAttributeValue,
 	getColorRGBAString,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
@@ -79,45 +80,33 @@ const IconSettings = props => {
 					<ColorControl
 						className='maxi-video-icon-control__icon-colour'
 						label={label}
-						color={
-							props[
-								getAttributeKey(
-									'icon-fill-color',
-									isHover,
-									prefix
-								)
-							]
-						}
+						color={getAttributeValue({
+							target: 'icon-fill-color',
+							isHover,
+							prefix,
+							props,
+						})}
 						defaultColor={getDefaultAttribute(
-							`${prefix}icon-fill-color`
+							getAttributeKey('icon-fill-color', isHover, prefix)
 						)}
-						paletteStatus={
-							props[
-								getAttributeKey(
-									'icon-fill-palette-status',
-									isHover,
-									prefix
-								)
-							]
-						}
-						paletteColor={
-							props[
-								getAttributeKey(
-									'icon-fill-palette-color',
-									isHover,
-									prefix
-								)
-							]
-						}
-						paletteOpacity={
-							props[
-								getAttributeKey(
-									'icon-fill-palette-opacity',
-									isHover,
-									prefix
-								)
-							]
-						}
+						paletteStatus={getAttributeValue({
+							target: 'icon-fill-palette-status',
+							isHover,
+							prefix,
+							props,
+						})}
+						paletteColor={getAttributeValue({
+							target: 'icon-fill-palette-color',
+							isHover,
+							prefix,
+							props,
+						})}
+						paletteOpacity={getAttributeValue({
+							target: 'icon-fill-palette-opacity',
+							isHover,
+							prefix,
+							props,
+						})}
 						onChangeInline={({ color }) => {
 							onChangeInline &&
 								!isHover &&
@@ -188,6 +177,18 @@ const IconSettings = props => {
 							label={__('Icon position', 'maxi-blocks')}
 							className='maxi-video-icon-control__icon-position'
 							value={props[`${prefix}icon-position`]}
+							defaultValue={getDefaultAttribute(
+								`${prefix}icon-position`
+							)}
+							onReset={() =>
+								onChange({
+									[`${prefix}icon-position`]:
+										getDefaultAttribute(
+											`${prefix}icon-position`
+										),
+									isReset: true,
+								})
+							}
 							options={[
 								{
 									label: __(
@@ -277,6 +278,7 @@ const IconSettings = props => {
 										)]: getDefaultAttribute(
 											`${prefix}icon-height-unit`
 										),
+										isReset: true,
 									})
 								}
 								minMaxSettings={minMaxSettings}
@@ -338,6 +340,7 @@ const IconSettings = props => {
 												getDefaultAttribute(
 													`${prefix}icon-spacing-unit-${breakpoint}`
 												),
+											isReset: true,
 										});
 									}}
 								/>

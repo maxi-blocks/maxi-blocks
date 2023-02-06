@@ -22,6 +22,10 @@ const rawVideo = {
 		type: 'string',
 		default: 'ar169',
 	},
+	popupRatio: {
+		type: 'string',
+		default: 'ar169',
+	},
 	videoType: {
 		type: 'string',
 		default: 'youtube',
@@ -56,9 +60,6 @@ const rawVideo = {
 };
 
 const rawIcon = {
-	svgType: {
-		type: 'string',
-	},
 	...icon,
 	...iconHover,
 	'icon-inherit': {

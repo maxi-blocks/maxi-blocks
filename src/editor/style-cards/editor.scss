@@ -464,8 +464,13 @@ body {
 
 				button {
 					flex: 2;
+					justify-content: center;
+					border: 1px solid rgb(var(--maxi-light-color-4));
+					transition: 0.1s;
 					&:hover {
-						border-color: rgb(var(--maxi-light-color-4)) !important;
+						background-color: #edf6fa;
+						border-color: #dbdde6 !important;
+						color: var(--maxi-grey-5-color);
 					}
 				}
 				input[type='text'] {

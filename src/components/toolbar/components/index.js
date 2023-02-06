@@ -21,6 +21,8 @@ export { default as NumberCounterReplay } from './number-counter-replay';
 export { default as PaddingMargin } from './padding-margin';
 export { default as ReusableBlocks } from './reusable-blocks';
 export { default as Size } from './size';
+export { default as SliderSettings } from './slider-settings';
+export { default as SliderSlidesSettings } from './slider-slides-settings';
 export { default as Style } from './style';
 export { default as SvgColorToolbar } from './svg-color';
 export { default as SvgWidth } from './svg-width';

@@ -1,5 +1,5 @@
 <?php
-require_once plugin_dir_path(__DIR__) . 'core/class-maxi-local-fonts.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-local-fonts.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-style-cards.php';
 
 class MaxiBlocks_Styles
@@ -75,6 +75,7 @@ class MaxiBlocks_Styles
                 'search',
                 'map',
                 'accordion',
+				'slider'
             ];
 
             $template_parts = $this->get_template_parts($template_content);

@@ -169,15 +169,15 @@ body {
 			hr {
 				margin: 0 0 8px;
 			}
-			&.maxi-blocks-sc__type--color{
+			&.maxi-blocks-sc__type--color {
 				position: relative;
-				.maxi-color-control__color{
+				.maxi-color-control__color {
 					.chrome-picker {
-						& > div{
-							&:last-child{
+						& > div {
+							&:last-child {
 								padding-bottom: 0 !important;
-								.flexbox-fix{
-									&:last-child{
+								.flexbox-fix {
+									&:last-child {
 										padding-right: 48px;
 									}
 								}
@@ -306,7 +306,7 @@ body {
 			}
 		}
 		.maxi-style-cards__sc {
-			&:not(.maxi-style-cards__settings){
+			&:not(.maxi-style-cards__settings) {
 				z-index: 9;
 				position: relative;
 				button:not(.maxi-reset-button):not(.maxi-color-control__palette-box),
@@ -388,10 +388,10 @@ body {
 							white-space: normal;
 						}
 					}
-					& > div{
-						& > .css-26l3qy-menu{
+					& > div {
+						& > .css-26l3qy-menu {
 							margin: 0;
-							& > div{
+							& > div {
 								padding: 0;
 							}
 						}
@@ -464,6 +464,7 @@ body {
 
 				button {
 					flex: 2;
+					margin-right: 8px;
 					justify-content: center;
 					border: 1px solid rgb(var(--maxi-light-color-4));
 					transition: 0.1s;

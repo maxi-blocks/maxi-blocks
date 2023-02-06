@@ -6,6 +6,7 @@ import {
 	createNewPost,
 	setBrowserViewport,
 	pressKeyWithModifier,
+	pressKeyTimes,
 } from '@wordpress/e2e-test-utils';
 
 /**
@@ -83,10 +84,18 @@ describe('SC settings', () => {
 		expect(name).toStrictEqual('Daemon');
 
 		// Switch back to maxi default SC
-		await page.select(
-			'.maxi-style-cards__sc__more-sc--select select',
-			'sc_maxi'
+
+		await page.$eval(
+			'.maxi-style-cards__sc__more-sc--select .css-6j8wv5-Input',
+			input => input.click()
 		);
+		await page.waitForTimeout(300);
+		await page.waitForSelector('#react-select-2-listbox');
+		await pressKeyTimes('ArrowDown', '1');
+		await page.waitForTimeout(300);
+		await pressKeyTimes('Enter', '1');
+
+		await page.waitForTimeout(300);
 
 		const { key } = await receiveSelectedMaxiStyleCard(page);
 

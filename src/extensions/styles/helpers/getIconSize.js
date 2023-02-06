@@ -1,12 +1,12 @@
 /**
+ * Internal dependencies
+ */
+import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+
+/**
  * External dependencies
  */
 import { isNil, isEmpty } from 'lodash';
-
-/**
- * Internal dependencies
- */
-import getAttributeValue from '../getAttributeValue';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -20,35 +20,31 @@ const getIconSize = (obj, isHover = false, prefix = '') => {
 		response[breakpoint] = {};
 
 		const iconSize =
-			getAttributeValue({
-				target: 'icon-width',
+			getLastBreakpointAttribute({
+				target: `${prefix}icon-width`,
 				isHover,
 				breakpoint,
-				prefix,
-				props: obj,
+				attributes: obj,
 			}) ??
-			getAttributeValue({
-				target: 'icon-height',
+			getLastBreakpointAttribute({
+				target: `${prefix}icon-height`,
 				isHover,
 				breakpoint,
-				prefix,
-				props: obj,
+				attributes: obj,
 			});
 
 		const iconUnit =
-			getAttributeValue({
-				target: 'icon-width-unit',
+			getLastBreakpointAttribute({
+				target: `${prefix}icon-width-unit`,
 				isHover,
 				breakpoint,
-				prefix,
-				props: obj,
+				attributes: obj,
 			}) ??
-			getAttributeValue({
-				target: 'icon-height-unit',
+			getLastBreakpointAttribute({
+				target: `${prefix}icon-height-unit`,
 				isHover,
 				breakpoint,
-				prefix,
-				props: obj,
+				attributes: obj,
 			}) ??
 			'px';
 

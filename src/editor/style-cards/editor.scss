@@ -133,8 +133,7 @@ body {
 		}
 	}
 }
-.maxi-style-cards__sc__actions--save,
-.maxi-style-cards__sc__more-sc--select select {
+.maxi-style-cards__sc__actions--save {
 	border: 1px solid rgb(var(--maxi-light-color-4)) !important;
 }
 .maxi-style-card-settings-disabled {
@@ -576,8 +575,7 @@ body {
 		}
 	}
 	.edit-activate button,
-	.maxi-style-cards__sc__actions--save,
-	.maxi-style-cards__sc__more-sc--select select {
+	.maxi-style-cards__sc__actions--save {
 		border-width: 2px !important;
 	}
 }

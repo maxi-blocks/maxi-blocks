@@ -49,10 +49,10 @@
 
 				&::after {
 					content: '';
-					display: block;
-					bottom: 0;
+					width: 200%;
 					height: 1px;
 					margin: 8px -8px;
+					display: block;
 					background-color: #dbdde6;
 				}
 			}
@@ -72,17 +72,17 @@
 		}
 
 		form {
+			display: flex;
+			overflow: hidden;
+
 			.components-button {
-				float: right;
-				position: absolute !important;
-				right: 2px;
-				bottom: 1px;
 				width: auto !important;
-				height: 26px !important;
+				height: 29px !important;
+				margin-top: auto;
+				padding: 0px 12px;
 				background-color: #e5f2f8;
 				font-weight: 700;
 				color: #007cba;
-				padding: 0px 12px;
 			}
 		}
 	}

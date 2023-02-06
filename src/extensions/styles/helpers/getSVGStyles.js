@@ -5,6 +5,7 @@
 import getColorRGBAString from '../getColorRGBAString';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 import getPaletteAttributes from '../getPaletteAttributes';
+import getAttributeKey from '../getAttributeKey';
 
 /**
  * External dependencies
@@ -49,14 +50,11 @@ const getSVGPathStyles = (obj, prefix = 'svg-', isHover) => {
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
-		if (
-			!isNil(
-				obj[`${prefix}stroke-${breakpoint}${isHover ? '-hover' : ''}`]
-			)
-		) {
-			response[breakpoint]['stroke-width'] = `${
-				obj[`${prefix}stroke-${breakpoint}${isHover ? '-hover' : ''}`]
-			}`;
+		const iconStroke =
+			obj[getAttributeKey('stroke', isHover, prefix, breakpoint)];
+
+		if (!isNil(iconStroke)) {
+			response[breakpoint]['stroke-width'] = iconStroke;
 		}
 
 		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')

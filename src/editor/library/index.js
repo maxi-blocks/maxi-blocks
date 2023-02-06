@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 /**
  * WordPress dependencies.
  */
@@ -8,6 +9,7 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
+
 import LibraryToolbar from './toolbar';
 import LibraryContainer from './container';
 /**
@@ -38,6 +40,8 @@ const CloudLibrary = props => {
 		toneUrl,
 		cardId,
 		prefix,
+		isPro,
+		isBeta,
 	} = props;
 
 	const [type, setType] = useState(cloudType);
@@ -61,6 +65,8 @@ const CloudLibrary = props => {
 					cost={cost}
 					toneUrl={toneUrl}
 					onRequestClose={onClose}
+					isPro={isPro}
+					isBeta={isBeta}
 				/>
 				<LibraryContainer
 					type={type}
@@ -70,7 +76,8 @@ const CloudLibrary = props => {
 					url={url}
 					title={title}
 					prefix={prefix}
-					isPro
+					isPro={isPro}
+					isBeta={isBeta}
 				/>
 			</>
 		</Modal>

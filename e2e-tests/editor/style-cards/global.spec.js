@@ -6,7 +6,6 @@ import {
 	createNewPost,
 	setBrowserViewport,
 	pressKeyWithModifier,
-	pressKeyTimes,
 } from '@wordpress/e2e-test-utils';
 
 /**
@@ -86,16 +85,13 @@ describe('SC settings', () => {
 		// Switch back to maxi default SC
 
 		await page.$eval(
-			'.maxi-style-cards__sc__more-sc--select .css-6j8wv5-Input',
-			input => input.click()
+			'.maxi-style-cards__sc__more-sc--select input',
+			input => input.focus()
 		);
-		await page.waitForTimeout(300);
-		await page.waitForSelector('#react-select-2-listbox');
-		await pressKeyTimes('ArrowDown', '1');
-		await page.waitForTimeout(300);
-		await pressKeyTimes('Enter', '1');
 
-		await page.waitForTimeout(300);
+		await page.keyboard.type('Maxi');
+		await page.keyboard.press('Enter');
+		await page.waitForTimeout(100);
 
 		const { key } = await receiveSelectedMaxiStyleCard(page);
 
@@ -178,11 +174,6 @@ describe('SC settings', () => {
 
 		await copySCtoEdit(`copy 2 ${new Date().getTime()}`);
 
-		const SCToDelete = await page.$eval(
-			'.maxi-style-cards__sc__more-sc--select select',
-			selector => selector.value
-		);
-
 		await page.$eval('.maxi-style-cards__sc__more-sc--delete', button =>
 			button.click()
 		);
@@ -192,30 +183,18 @@ describe('SC settings', () => {
 			button => button.click()
 		);
 
-		expect(
-			Array.from(
-				await page.$$eval(
-					'.maxi-style-cards__sc__more-sc--select select option',
-					options => options.map(option => option.value)
-				)
-			)
-		).not.toContain(SCToDelete);
+		await page.$eval(
+			'.maxi-style-cards__sc__more-sc--select input',
+			input => input.focus()
+		);
 
-		// Check if SC is deleted on all pages
-		await createNewPost();
-		await getStyleCardEditor({
-			page,
-			accordion: 'color',
-		});
+		await page.keyboard.type('Daemon - copy 2');
+		await page.keyboard.press('Enter');
+		await page.waitForTimeout(100);
 
-		expect(
-			Array.from(
-				await page.$$eval(
-					'.maxi-style-cards__sc__more-sc--select select option',
-					options => options.map(option => option.value)
-				)
-			)
-		).not.toContain(SCToDelete);
+		const { key } = await receiveSelectedMaxiStyleCard(page);
+
+		expect(key).toStrictEqual('sc_maxi');
 	});
 
 	it('Can export/import style cards', async () => {
@@ -300,10 +279,14 @@ describe('SC settings', () => {
 		);
 
 		// Remove Daemon card
-		await page.select(
-			'.maxi-style-cards__sc__more-sc--select select',
-			'sc_daemon'
+		await page.$eval(
+			'.maxi-style-cards__sc__more-sc--select input',
+			input => input.focus()
 		);
+
+		await page.keyboard.type('Daemon');
+		await page.keyboard.press('Enter');
+		await page.waitForTimeout(100);
 
 		await page.$eval('.maxi-style-cards__sc__more-sc--delete', button =>
 			button.click()
@@ -315,10 +298,18 @@ describe('SC settings', () => {
 		);
 
 		// Switch back to maxi default SC and activate it
-		await page.select(
-			'.maxi-style-cards__sc__more-sc--select select',
-			'sc_maxi'
+		await page.$eval(
+			'.maxi-style-cards__sc__more-sc--select input',
+			input => input.focus()
 		);
+
+		await page.keyboard.type('Maxi');
+		await page.keyboard.press('Enter');
+		await page.waitForTimeout(100);
+
+		const { key } = await receiveSelectedMaxiStyleCard(page);
+
+		expect(key).toStrictEqual('sc_maxi');
 		await page.$eval('.maxi-style-cards__sc__actions--apply', button =>
 			button.click()
 		);

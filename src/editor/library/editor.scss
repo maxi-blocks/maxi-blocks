@@ -1540,9 +1540,20 @@
 			}
 			&__button-go-pro {
 				position: absolute;
-				left: 437px;
-				width: 110px;
-				margin-top: -35px;
+				top: 7px;
+				right: 100px;
+				width: auto;
+				height: 31px;
+				padding: 6px 18px;
+				background-color: var(--maxi-primary-color);
+				color: #fff;
+				border: 1px solid var(--maxi-primary-color);
+				transition: 0.1s;
+				&:hover{
+					background-color: #eaf3f7;
+					color: #081219;
+					border-color: #dbdde6;
+				}
 			}
 		}
 	}

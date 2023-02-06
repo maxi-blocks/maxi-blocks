@@ -763,7 +763,10 @@ const LibraryContainer = props => {
 								submit={__('Find', 'maxi-blocks')}
 								autoFocus
 								searchAsYouType
-								showLoadingIndicator
+								reset='X'
+								translations={{
+									resetTitle: 'Clear',
+								}}
 							/>
 							<CustomHierarchicalMenu
 								attributes={['svg_tag.lvl0', 'svg_tag.lvl1']}

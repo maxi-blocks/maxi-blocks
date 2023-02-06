@@ -437,7 +437,7 @@
 			padding: 7px;
 			border: 1px solid #dbdde6;
 			border-radius: 0;
-			margin: 8px 8px 0;
+			margin: 8px 8px 8px;
 			background-color: #eaf3f7;
 			color: #081219;
 			font-size: 14px;
@@ -609,17 +609,21 @@
 			}
 		}
 		&__content-svg-shape {
-			position: relative;
-			width: 100%;
+			min-height: calc(100% - 1550px);
+			height: 100%;
+			overflow: hidden;
+			background-color: #fff;
 
 			&__search-bar {
 				display: flex;
-				align-items: center;
+				// align-items: center;
+				grid-column: span 3;
 				// position: absolute;
 				// top: -7px;
 				// left: 15px;
 				// transform: translate(0px, -100%);
 				height: 10px;
+				border-bottom: 1px solid #dbdde6;
 				.top-Menu {
 					position: absolute;
 					left: 230px;
@@ -846,7 +850,7 @@
 							top: 0;
 							bottom: 0;
 							display: block;
-							background-color: #f9f9f9;
+							// background-color: #f9f9f9;
 							border: 1px solid #dbdde6;
 							transition: 0.3s;
 							z-index: 0;
@@ -879,7 +883,7 @@
 								background-color: #edf6fa;
 								border-color: #007cba;
 								box-shadow: 0 0 0 1px #007cba;
-								transform: scale(1.2);
+								transform: scale(1.05);
 							}
 						}
 					}
@@ -889,6 +893,27 @@
 
 		&__svg-icon {
 			width: 100%;
+			&__sidebar{
+				min-height: calc(100% - 10px);
+    			height: 100%;
+    			overflow-y: scroll;
+								
+				&::-webkit-scrollbar {
+					width: 2px;
+				}
+
+				&::-webkit-scrollbar-track {
+					background: #f1f1f1;
+				}
+
+				&::-webkit-scrollbar-thumb {
+					background: #888;
+				}
+
+				&::-webkit-scrollbar-thumb:hover {
+					background: #555;
+				}
+			}
 		}
 		&__svg-shape,
 		&__svg-icon,
@@ -1045,6 +1070,7 @@
 							position: absolute;
 							top: 50%;
 							right: 1px;
+							display: block;
 							padding: 2px 6px;
 							border: none;
 							color: #081219;
@@ -1687,6 +1713,22 @@
 				overflow-x: hidden;
 				overflow-y: scroll;
 				padding: 8px 8px 6px;
+				
+				&::-webkit-scrollbar {
+					width: 5px;
+				}
+
+				&::-webkit-scrollbar-track {
+					background: #f1f1f1;
+				}
+
+				&::-webkit-scrollbar-thumb {
+					background: #888;
+				}
+
+				&::-webkit-scrollbar-thumb:hover {
+					background: #555;
+				}
 			}
 		}
 	}
@@ -1724,11 +1766,13 @@
 			}
 		}
 	}
+	.maxi-cloud-container .maxi-cloud-container__svg-icon,
 	.maxi-cloud-container .maxi-cloud-container__patterns,
 	.maxi-cloud-container .maxi-cloud-container__sc {
+		&__content-svg-icon,
 		&__content-patterns,
 		&__content-sc {
-			margin: 6px 15px;
+			margin: 0;
 			.ais-Stats {
 				margin-bottom: 0;
 				border-bottom: 1px solid var(--maxi-grey-1-color);

@@ -270,9 +270,6 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	const getOptionsSCList = () => {
 		const response = [];
 
-		console.log('before:');
-		console.log(styleCards);
-
 		!isEmpty(styleCards) &&
 			Object.entries(styleCards).map(([key, val], i) => {
 				if (val?.type !== 'user')
@@ -325,8 +322,6 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 			return null;
 		});
 
-		console.log('after:');
-		console.log(sortedByDate);
 		return sortedByDate;
 	};
 
@@ -372,6 +367,12 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 			cursor: 'pointer',
 		}),
 	};
+
+	const listForDropdown = getOptionsSCList();
+	const selectedForDropdown =
+		listForDropdown[getSelectedInList(listForDropdown)];
+	const activeForDropdown = listForDropdown[getActiveInList(listForDropdown)];
+
 	return (
 		!isEmpty(styleCards) && (
 			<Popover
@@ -488,21 +489,9 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 						<div className='maxi-style-cards__active-edit-options'>
 							<div className='maxi-style-cards__sc__more-sc--select'>
 								<Select
-									options={getOptionsSCList()}
-									defaultValue={
-										getOptionsSCList()[
-											getActiveInList(getOptionsSCList())
-										]
-									}
+									options={listForDropdown}
 									value={
-										getOptionsSCList()[
-											getSelectedInList(
-												getOptionsSCList()
-											)
-										] ||
-										getOptionsSCList()[
-											getActiveInList(getOptionsSCList())
-										]
+										selectedForDropdown || activeForDropdown
 									}
 									placeholder={__(
 										'Type to search…',
@@ -513,6 +502,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 										setSelectedStyleCard(val?.value);
 									}}
 									hideSelectedOptions
+									noOptionsMessage={() => null}
 								/>
 							</div>
 							<DialogBox

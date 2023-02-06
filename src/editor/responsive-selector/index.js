@@ -13,7 +13,7 @@ import Button from '../../components/button';
 import Icon from '../../components/icon';
 import MaxiStyleCardsEditorPopUp from '../style-cards';
 import { setScreenSize } from '../../extensions/styles';
-import crispChat from '../../components/toolbar/components/crisp-chat';
+import CrispChat from '../crisp-chat';
 
 /**
  * External dependencies
@@ -195,12 +195,9 @@ const ResponsiveSelector = props => {
 				</Button>
 			</div>
 			<MaxiStyleCardsEditorPopUp ref={settingsRef} />
-			<Button
-				className='action-buttons__help'
-				onClick={() => crispChat()}
-			>
+			<CrispChat className='action-buttons__help'>
 				<Icon className='toolbar-item__icon' icon={helpIcon} /> Help
-			</Button>
+			</CrispChat>
 		</div>
 	);
 };

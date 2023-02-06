@@ -8,12 +8,12 @@ import { __ } from '@wordpress/i18n';
  */
 import { library, help, fullScreen } from '../../icons';
 import Button from '../../components/button';
-import crispChat from '../../components/toolbar/components/crisp-chat';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
+import CrispChat from '../crisp-chat';
 
 /**
  * Component
@@ -109,16 +109,10 @@ const LibraryToolbar = props => {
 					))}
 				</div>
 			)}
-			<a
-				className='maxi-cloud-toolbar__help-button'
-				onClick={e => {
-					e.preventDefault();
-					crispChat();
-				}}
-			>
+			<CrispChat className='maxi-cloud-toolbar__help-button' as='a'>
 				{help}
 				{__('Help', 'maxi-blocks')}
-			</a>
+			</CrispChat>
 		</div>
 	);
 };

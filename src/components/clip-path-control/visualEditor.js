@@ -231,7 +231,6 @@ const ClipPathVisualEditor = props => {
 					break;
 				case 2:
 					clipPathOptions.content[2][0].value = transformValue(
-						// todo:
 						100 - newTop,
 						clipPathOptions.content[2][0].unit,
 						'y'

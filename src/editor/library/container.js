@@ -144,6 +144,7 @@ const MasonryItem = props => {
 					</RawHTML>
 					<div className='maxi-cloud-masonry-card__svg-container__title'>
 						{target === 'button-icon' ||
+						target === 'navigation-icon' ||
 						target === 'search-icon' ||
 						target.includes('Line') ||
 						target.includes('video-icon')
@@ -377,8 +378,15 @@ const ClearRefinements = ({ items, refine }) => {
  * Component
  */
 const LibraryContainer = props => {
-	const { type, onRequestClose, blockStyle, onSelect, url, title, prefix } =
-		props;
+	const {
+		type,
+		onRequestClose,
+		blockStyle,
+		onSelect,
+		url,
+		title,
+		prefix = '',
+	} = props;
 
 	const {
 		styleCards,
@@ -467,6 +475,8 @@ const LibraryContainer = props => {
 			case 'sidebar-block-shape':
 			case 'bg-shape':
 				return 'shape';
+			case 'navigation-icon':
+				return 'icon';
 			default:
 				return type;
 		}
@@ -642,6 +652,7 @@ const LibraryContainer = props => {
 					'video-icon-close',
 					'accordion-icon',
 					'search-icon',
+					'navigation-icon',
 				].includes(type)
 			) {
 				onSelect({
@@ -899,6 +910,7 @@ const LibraryContainer = props => {
 			)}
 
 			{(type === 'button-icon' ||
+				type === 'navigation-icon' ||
 				type === 'search-icon' ||
 				type === 'accordion-icon' ||
 				type === 'accordion-icon-active') && (

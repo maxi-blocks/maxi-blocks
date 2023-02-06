@@ -11,7 +11,6 @@ import {
 	addCustomCSS,
 	getBlockStyle,
 	getEditedPostContent,
-	openSidebarTab,
 } from '../../utils';
 
 describe('Container Maxi', () => {

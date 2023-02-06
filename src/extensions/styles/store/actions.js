@@ -1,9 +1,4 @@
 /**
- * External dependencies
- */
-import { omitBy, isNil } from 'lodash';
-
-/**
  * Updates style object on the store
  *
  * @param {Object} styles new/updated targets with styles
@@ -46,6 +41,6 @@ export function saveStyles(isUpdate) {
 export function savePrevSavedAttrs(prevSavedAttrs) {
 	return {
 		type: 'SAVE_PREV_SAVED_ATTRS',
-		prevSavedAttrs: Object.keys(omitBy(prevSavedAttrs, isNil)),
+		prevSavedAttrs: Object.keys(prevSavedAttrs),
 	};
 }

@@ -5,6 +5,7 @@
 import getColorRGBAString from '../getColorRGBAString';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 import getPaletteAttributes from '../getPaletteAttributes';
+import getAttributeKey from '../getAttributeKey';
 
 /**
  * External dependencies
@@ -40,7 +41,7 @@ export const getSVGWidthStyles = ({ obj, prefix = '' }) => {
 	return { SVGWidth: response };
 };
 
-const getSVGPathStyles = (obj, prefix = 'svg-', isHover) => {
+const getSVGPathStyles = (obj, prefix = 'svg-', isHover = false) => {
 	const response = {
 		label: 'SVG path',
 		general: {},
@@ -49,14 +50,11 @@ const getSVGPathStyles = (obj, prefix = 'svg-', isHover) => {
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
-		if (
-			!isNil(
-				obj[`${prefix}stroke-${breakpoint}${isHover ? '-hover' : ''}`]
-			)
-		) {
-			response[breakpoint]['stroke-width'] = `${
-				obj[`${prefix}stroke-${breakpoint}${isHover ? '-hover' : ''}`]
-			}`;
+		const iconStroke =
+			obj[getAttributeKey('stroke', isHover, prefix, breakpoint)];
+
+		if (!isNil(iconStroke)) {
+			response[breakpoint]['stroke-width'] = iconStroke;
 		}
 
 		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')
@@ -66,7 +64,12 @@ const getSVGPathStyles = (obj, prefix = 'svg-', isHover) => {
 	return { SVGPath: response };
 };
 
-const getSVGPathFillStyles = (obj, blockStyle, prefix = 'svg-', isHover) => {
+const getSVGPathFillStyles = (
+	obj,
+	blockStyle,
+	prefix = 'svg-',
+	isHover = false
+) => {
 	const response = {
 		label: 'SVG path-fill',
 		general: {},
@@ -108,10 +111,20 @@ const getSVGPathStrokeStyles = (
 	(!useIconColor ? breakpoints : ['general']).forEach(breakpoint => {
 		response[breakpoint] = {};
 
-		const linePrefix =
-			prefix === 'icon-' || prefix === 'active-icon-'
-				? `${prefix}stroke-`
-				: `${prefix}line-`;
+		let linePrefix = '';
+
+		switch (prefix) {
+			case 'icon-':
+			case 'active-icon-':
+			case 'navigation-arrow-both-icon-':
+			case 'navigation-dot-icon-':
+			case 'active-navigation-dot-icon-':
+				linePrefix = `${prefix}stroke-`;
+				break;
+			default:
+				linePrefix = `${prefix}line-`;
+				break;
+		}
 
 		const { paletteStatus, paletteColor, paletteOpacity, color } =
 			getPaletteAttributes({

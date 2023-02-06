@@ -1432,4 +1432,115 @@ describe('getBackgroundStyles', () => {
 
 		expect(result).toMatchSnapshot();
 	});
+
+	it('Get correct block background styles when border attributes are default, so the source is the normal attributes', () => {
+		const attributes = {
+			blockStyle: 'light',
+			'background-layers': [
+				{
+					type: 'color',
+					isHover: false,
+					'display-general': 'block',
+					'background-palette-status-general': true,
+					'background-palette-color-general': 1,
+					'background-color-clip-path-status-general': false,
+					order: 1,
+					id: 1,
+					'background-palette-status-general-hover': true,
+					'background-palette-color-general-hover': 1,
+					'background-palette-opacity-general-hover': 0,
+					'background-color-wrapper-position-top-unit-general': 'px',
+					'background-color-wrapper-position-left-unit-general': 'px',
+					'background-color-wrapper-position-bottom-unit-general':
+						'px',
+					'background-color-wrapper-position-right-unit-general':
+						'px',
+				},
+			],
+			'block-background-status-hover': true,
+			'border-palette-status-general': true,
+			'border-palette-color-general': 2,
+			'border-style-general': 'solid',
+			'border-top-width-general': 2,
+			'border-top-width-xxl': 4,
+			'border-top-width-xl': 2,
+			'border-right-width-general': 2,
+			'border-right-width-xxl': 4,
+			'border-right-width-xl': 2,
+			'border-bottom-width-general': 2,
+			'border-bottom-width-xxl': 4,
+			'border-bottom-width-xl': 2,
+			'border-left-width-general': 2,
+			'border-left-width-xxl': 4,
+			'border-left-width-xl': 2,
+			'border-sync-width-general': 'all',
+			'border-unit-width-general': 'px',
+			'border-sync-radius-general': 'all',
+			'border-unit-radius-general': 'px',
+			'border-status-hover': true,
+			'border-palette-status-general-hover': true,
+			'border-palette-color-general-hover': 6,
+			'border-palette-opacity-general-hover': 0,
+		};
+
+		const result = getBlockBackgroundNormalAndHoverStyles(attributes);
+
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Get correct block background styles when most border attributes are default, so the source is the normal attributes and the one different', () => {
+		const attributes = {
+			blockStyle: 'light',
+			'background-layers': [
+				{
+					type: 'color',
+					isHover: false,
+					'display-general': 'block',
+					'background-palette-status-general': true,
+					'background-palette-color-general': 1,
+					'background-color-clip-path-status-general': false,
+					order: 1,
+					id: 1,
+					'background-palette-status-general-hover': true,
+					'background-palette-color-general-hover': 1,
+					'background-palette-opacity-general-hover': 0,
+					'background-color-wrapper-position-top-unit-general': 'px',
+					'background-color-wrapper-position-left-unit-general': 'px',
+					'background-color-wrapper-position-bottom-unit-general':
+						'px',
+					'background-color-wrapper-position-right-unit-general':
+						'px',
+				},
+			],
+			'block-background-status-hover': true,
+			'border-palette-status-general': true,
+			'border-palette-color-general': 2,
+			'border-style-general': 'solid',
+			'border-top-width-general': 2,
+			'border-top-width-xxl': 4,
+			'border-top-width-xl': 2,
+			'border-right-width-general': 2,
+			'border-right-width-xxl': 4,
+			'border-right-width-xl': 2,
+			'border-bottom-width-general': 2,
+			'border-bottom-width-xxl': 4,
+			'border-bottom-width-xl': 2,
+			'border-left-width-general': 2,
+			'border-left-width-xxl': 4,
+			'border-left-width-xl': 2,
+			'border-sync-width-general': 'all',
+			'border-unit-width-general': 'px',
+			'border-sync-radius-general': 'all',
+			'border-unit-radius-general': 'px',
+			'border-status-hover': true,
+			'border-palette-status-general-hover': true,
+			'border-palette-color-general-hover': 6,
+			'border-palette-opacity-general-hover': 0,
+			'border-top-width-general-hover': 3,
+		};
+
+		const result = getBlockBackgroundNormalAndHoverStyles(attributes);
+
+		expect(result).toMatchSnapshot();
+	});
 });

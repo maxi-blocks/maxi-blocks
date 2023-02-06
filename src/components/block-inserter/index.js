@@ -27,7 +27,11 @@ import './editor.scss';
 /**
  * Component
  */
-const WRAPPER_BLOCKS = ['maxi-blocks/column-maxi', 'maxi-blocks/group-maxi'];
+const WRAPPER_BLOCKS = [
+	'maxi-blocks/column-maxi',
+	'maxi-blocks/group-maxi',
+	'maxi-blocks/slide-maxi',
+];
 
 const BlockInserter = props => {
 	const { className, clientId } = props;

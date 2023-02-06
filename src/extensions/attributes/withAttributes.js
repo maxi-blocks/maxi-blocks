@@ -31,6 +31,8 @@ const allowedBlocks = [
 	'maxi-blocks/group-maxi',
 	'maxi-blocks/number-counter-maxi',
 	'maxi-blocks/svg-icon-maxi',
+	'maxi-blocks/slide-maxi',
+	'maxi-blocks/slider-maxi',
 	'maxi-blocks/pane-maxi',
 	'maxi-blocks/accordion-maxi',
 	'maxi-blocks/video-maxi',

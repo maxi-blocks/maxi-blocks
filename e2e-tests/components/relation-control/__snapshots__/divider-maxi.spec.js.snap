@@ -13,6 +13,8 @@ Array [
       "divider-box-shadow-horizontal-unit-general": "px",
       "divider-box-shadow-horizontal-unit-xl": "px",
       "divider-box-shadow-horizontal-xl": 22,
+      "divider-box-shadow-inset-general": false,
+      "divider-box-shadow-inset-xl": false,
       "divider-box-shadow-palette-color-general": 8,
       "divider-box-shadow-palette-color-xl": 8,
       "divider-box-shadow-palette-opacity-general": 0.11,

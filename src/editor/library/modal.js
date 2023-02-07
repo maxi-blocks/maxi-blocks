@@ -331,13 +331,13 @@ const MaxiModal = props => {
 					</RawHTML>
 				</div>
 			)}
-			{type === 'switch-tone' && (
+			{type === 'switch-tone' && isOpen && (
 				<div className='components-modal__screen-overlay maxi-open-preview maxi-switch-tone'>
 					<div className='maxi-library-modal maxi-preview'>
 						<CloudLibrary
 							cloudType={type}
 							onClose={onCloseModal}
-							blockStyle='light'
+							// blockStyle='light'
 							url={url}
 							title={title}
 							cost={cost}

@@ -5,6 +5,11 @@
 			flex-direction: row;
 		}
 	}
+	.maxi-custom-css-control__group:nth-child(2) {
+		.maxi-base-control__label {
+			max-width: 180px;
+		}
+	}
 	.maxi-base-control {
 		&__field {
 			align-items: start;

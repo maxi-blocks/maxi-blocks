@@ -22,6 +22,8 @@ export const boxShadowNone = prefix => {
 			boxShadow['box-shadow-spread-general'].default,
 		[`${[prefix]}box-shadow-spread-unit`]:
 			boxShadow['box-shadow-spread-unit-general'].default,
+		[`${[prefix]}box-shadow-inset`]:
+			boxShadow['box-shadow-inset-general'].default,
 	};
 
 	return response;
@@ -49,6 +51,7 @@ export const boxShadowTotal = prefix => {
 		[`${prefix}box-shadow-vertical`]: 30,
 		[`${prefix}box-shadow-blur`]: 50,
 		[`${prefix}box-shadow-spread`]: 0,
+		[`${prefix}box-shadow-inset`]: false,
 		...boxShadowUnits(prefix),
 	};
 
@@ -64,6 +67,7 @@ export const boxShadowBottom = prefix => {
 		[`${prefix}box-shadow-vertical`]: 30,
 		[`${prefix}box-shadow-blur`]: 50,
 		[`${prefix}box-shadow-spread`]: 0,
+		[`${prefix}box-shadow-inset`]: false,
 		...boxShadowUnits(prefix),
 	};
 
@@ -79,6 +83,7 @@ export const boxShadowSolid = prefix => {
 		[`${prefix}box-shadow-vertical`]: 6,
 		[`${prefix}box-shadow-blur`]: 0,
 		[`${prefix}box-shadow-spread`]: 0,
+		[`${prefix}box-shadow-inset`]: false,
 		...boxShadowUnits(prefix),
 	};
 

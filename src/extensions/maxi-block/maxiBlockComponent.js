@@ -35,6 +35,16 @@ import getBreakpoints from '../styles/helpers/getBreakpoints';
 import getIsUniqueIDRepeated from './getIsUniqueIDRepeated';
 import getCustomLabel from './getCustomLabel';
 import { loadFonts, getAllFonts } from '../text/fonts';
+import goThroughMaxiBlocks from './goThroughMaxiBlocks';
+import uniqueIDStructureChecker from './uniqueIDStructureChecker';
+import {
+	getIsSiteEditor,
+	getSiteEditorIframe,
+	getTemplatePartChooseList,
+	getTemplateViewIframe,
+} from '../fse';
+import { updateSCOnEditor } from '../style-cards';
+import getWinBreakpoint from '../dom/getWinBreakpoint';
 import { uniqueIDGenerator, getBlockData } from '../attributes';
 import getHoverStatus from '../relations/getHoverStatus';
 import { getStylesWrapperId } from './utils';
@@ -42,12 +52,17 @@ import { getStylesWrapperId } from './utils';
 /**
  * External dependencies
  */
-import { isEmpty, isEqual, cloneDeep, isNil } from 'lodash';
+import { cloneDeep, isEmpty, isEqual, isFunction, isNil } from 'lodash';
 
 /**
  * Style Component
  */
-const StyleComponent = ({ stylesObj, blockBreakpoints, isIframe = false }) => {
+const StyleComponent = ({
+	stylesObj,
+	blockBreakpoints,
+	isIframe = false,
+	isSiteEditor = false,
+}) => {
 	const { breakpoints } = useSelect(select => {
 		const { receiveMaxiBreakpoints } = select('maxiBlocks');
 
@@ -66,7 +81,7 @@ const StyleComponent = ({ stylesObj, blockBreakpoints, isIframe = false }) => {
 
 	const styles = styleResolver(stylesObj, false, getBreakpoints());
 
-	const styleContent = styleGenerator(styles, isIframe);
+	const styleContent = styleGenerator(styles, isIframe, isSiteEditor);
 
 	return <style>{styleContent}</style>;
 };
@@ -83,6 +98,8 @@ class MaxiBlockComponent extends Component {
 			scValues: {},
 		};
 
+		this.areFontsLoaded = createRef(false);
+
 		const { attributes } = this.props;
 		const { uniqueID } = attributes;
 
@@ -91,12 +108,13 @@ class MaxiBlockComponent extends Component {
 		// eslint-disable-next-line react/no-unused-class-component-methods
 		this.blockRef = createRef();
 		this.typography = getGroupAttributes(attributes, 'typography');
+		this.isPreviewBlock = !!getTemplatePartChooseList();
 
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
 
 		// Init
 		const newUniqueID = this.uniqueIDChecker(uniqueID);
-		if (!isEmpty(this.typography)) this.loadFonts();
+		this.loadFonts();
 		this.getCurrentBlockStyle();
 		this.displayStyles(newUniqueID);
 
@@ -122,6 +140,7 @@ class MaxiBlockComponent extends Component {
 
 		if (this.maxiBlockDidMount) this.maxiBlockDidMount();
 
+		this.loadFonts();
 		this.displayStyles();
 
 		if (!this.getBreakpoints.xxl) this.forceUpdate();
@@ -254,10 +273,7 @@ class MaxiBlockComponent extends Component {
 			this.props.attributes.uniqueID
 		);
 
-		this.removeUnmountedBlockFromRelations(
-			this.props.attributes.uniqueID,
-			select('core/block-editor').getBlocks()
-		);
+		this.removeUnmountedBlockFromRelations(this.props.attributes.uniqueID);
 
 		if (this.maxiBlockWillUnmount) this.maxiBlockWillUnmount();
 	}
@@ -371,8 +387,18 @@ class MaxiBlockComponent extends Component {
 	}
 
 	uniqueIDChecker(idToCheck) {
-		if (getIsUniqueIDRepeated(idToCheck)) {
-			const newUniqueID = uniqueIDGenerator(this.props.name);
+		const { clientId, name: blockName } = this.props;
+
+		if (
+			getIsUniqueIDRepeated(idToCheck) ||
+			!uniqueIDStructureChecker(idToCheck, clientId)
+		) {
+			const newUniqueID = uniqueIDGenerator({
+				blockName,
+				diff: 1,
+				clientId,
+			});
+
 			this.props.attributes.uniqueID = newUniqueID;
 			this.props.attributes.customLabel = getCustomLabel(
 				this.props.attributes.customLabel,
@@ -396,97 +422,78 @@ class MaxiBlockComponent extends Component {
 	}
 
 	loadFonts() {
-		const response = getAllFonts(this.typography, 'custom-formats');
+		if (this.areFontsLoaded.current || isEmpty(this.typography)) return;
 
-		if (!isEmpty(response)) loadFonts(response);
+		const target = getIsSiteEditor() ? getSiteEditorIframe() : document;
+		if (!target) return;
+
+		const response = getAllFonts(this.typography, 'custom-formats');
+		if (isEmpty(response)) return;
+
+		loadFonts(response, true, target);
+		this.areFontsLoaded.current = true;
 	}
 
 	updateRelationHoverStatus() {
-		const { name, attributes } = this.props;
+		const { name: blockName, attributes: blockAttributes } = this.props;
+		const { uniqueID } = blockAttributes;
 
-		const updateRelationHoverStatusRecursive = (
-			blockName,
-			blockAttributes,
-			blocksToCheck
-		) => {
-			const { uniqueID } = blockAttributes;
+		goThroughMaxiBlocks(
+			({ clientId, attributes: currentBlockAttributes, innerBlocks }) => {
+				const { relations, uniqueID: blockUniqueID } =
+					currentBlockAttributes;
 
-			blocksToCheck.forEach(
-				({
-					clientId,
-					attributes: currentBlockAttributes,
-					innerBlocks,
-				}) => {
-					const { relations, uniqueID: blockUniqueID } =
-						currentBlockAttributes;
+				if (uniqueID !== blockUniqueID && !isEmpty(relations)) {
+					const newRelations = relations.map(relation => {
+						const {
+							attributes: relationAttributes,
+							settings: settingName,
+							uniqueID: relationUniqueID,
+						} = relation;
 
-					if (uniqueID !== blockUniqueID && !isEmpty(relations)) {
-						const newRelations = relations.map(relation => {
-							const {
-								attributes: relationAttributes,
-								settings: settingName,
-								uniqueID: relationUniqueID,
-							} = relation;
+						if (!settingName || uniqueID !== relationUniqueID)
+							return relation;
 
-							if (!settingName || uniqueID !== relationUniqueID)
-								return relation;
+						const { effects } = relation;
 
-							const { effects } = relation;
+						if (!('hoverStatus' in effects)) return relation;
 
-							if (!('hoverStatus' in effects)) return relation;
+						const blockData = getBlockData(blockName);
 
-							const blockData = getBlockData(blockName);
+						if (!blockData?.interactionBuilderSettings)
+							return relation;
 
-							if (!blockData?.interactionBuilderSettings)
-								return relation;
+						const { hoverProp } = Object.values(
+							blockData.interactionBuilderSettings
+						)
+							.flat()
+							.find(({ label }) => label === settingName);
 
-							const { hoverProp } = Object.values(
-								blockData.interactionBuilderSettings
-							)
-								.flat()
-								.find(({ label }) => label === settingName);
+						return {
+							...relation,
+							effects: {
+								...effects,
+								hoverStatus: getHoverStatus(
+									hoverProp,
+									blockAttributes,
+									relationAttributes
+								),
+							},
+						};
+					});
 
-							return {
-								...relation,
-								effects: {
-									...effects,
-									hoverStatus: getHoverStatus(
-										hoverProp,
-										blockAttributes,
-										relationAttributes
-									),
-								},
-							};
-						});
-
-						if (!isEqual(relations, newRelations))
-							dispatch('core/block-editor').updateBlockAttributes(
-								clientId,
-								{ relations: newRelations }
-							);
-					}
-
-					if (!isEmpty(innerBlocks))
-						updateRelationHoverStatusRecursive(
-							blockName,
-							blockAttributes,
-							innerBlocks
+					if (!isEqual(relations, newRelations))
+						dispatch('core/block-editor').updateBlockAttributes(
+							clientId,
+							{ relations: newRelations }
 						);
 				}
-			);
-		};
-
-		updateRelationHoverStatusRecursive(
-			name,
-			attributes,
-			select('core/block-editor').getBlocks()
+			}
 		);
 	}
 
-	removeUnmountedBlockFromRelations(uniqueID, blocksToCheck) {
-		if (getIsUniqueIDRepeated(uniqueID, 0)) return;
-
-		blocksToCheck.forEach(({ clientId, attributes, innerBlocks }) => {
+	removeUnmountedBlockFromRelations(uniqueID) {
+		goThroughMaxiBlocks(({ clientId, attributes, innerBlocks }) => {
 			const { relations, uniqueID: blockUniqueID } = attributes;
 
 			if (uniqueID !== blockUniqueID && !isEmpty(relations)) {
@@ -502,11 +509,12 @@ class MaxiBlockComponent extends Component {
 					updateBlockAttributes(clientId, {
 						relations: filteredRelations,
 					});
+
+					return true;
 				}
 			}
 
-			if (!isEmpty(innerBlocks))
-				this.removeUnmountedBlockFromRelations(uniqueID, innerBlocks);
+			return false;
 		});
 	}
 
@@ -530,46 +538,102 @@ class MaxiBlockComponent extends Component {
 		dispatch('maxiBlocks/customData').updateCustomData(customData);
 
 		if (document.body.classList.contains('maxi-blocks--active')) {
-			let wrapper = document.querySelector(
-				`#${getStylesWrapperId(uniqueID)}`
-			);
+			const getStylesWrapper = (element, onCreateWrapper) => {
+				const wrapperId = getStylesWrapperId(uniqueID);
 
-			if (!wrapper) {
-				wrapper = document.createElement('div');
-				wrapper.id = getStylesWrapperId(uniqueID);
-				wrapper.classList.add('maxi-blocks__styles');
-				document.head.appendChild(wrapper);
+				let wrapper = element.querySelector(`#${wrapperId}`);
+
+				if (!wrapper) {
+					wrapper = document.createElement('div');
+					wrapper.id = wrapperId;
+					wrapper.classList.add('maxi-blocks__styles');
+					element.appendChild(wrapper);
+
+					if (isFunction(onCreateWrapper)) onCreateWrapper(wrapper);
+				}
+
+				return wrapper;
+			};
+
+			let wrapper;
+
+			const isSiteEditor = getIsSiteEditor();
+			if (isSiteEditor) {
+				// for full site editor (FSE)
+				const siteEditorIframe = getSiteEditorIframe();
+
+				if (this.isPreviewBlock) {
+					const templateViewIframe = getTemplateViewIframe(uniqueID);
+					if (templateViewIframe) {
+						const iframeHead = Array.from(
+							templateViewIframe.querySelectorAll('head')
+						).pop();
+
+						const iframeBody = Array.from(
+							templateViewIframe.querySelectorAll('body')
+						).pop();
+
+						iframeBody.classList.add('maxi-blocks--active');
+						iframeBody.setAttribute(
+							'maxi-blocks-responsive',
+							getWinBreakpoint(iframeBody.offsetWidth)
+						);
+
+						wrapper = getStylesWrapper(iframeHead, () => {
+							if (
+								!templateViewIframe.getElementById(
+									'maxi-blocks-sc-vars-inline-css'
+								)
+							) {
+								const SC = select(
+									'maxiBlocks/style-cards'
+								).receiveMaxiActiveStyleCard();
+								if (SC) {
+									updateSCOnEditor(
+										SC.value,
+										templateViewIframe
+									);
+								}
+							}
+						});
+					}
+				} else if (siteEditorIframe) {
+					// Iframe on creation generates head, then gutenberg generates their own head
+					// and in some moment we have two heads, so we need to add styles only to second head(gutenberg one)
+					const iframeHead = Array.from(
+						siteEditorIframe.querySelectorAll('head')
+					).pop();
+
+					if (isEmpty(iframeHead.childNodes)) return;
+
+					wrapper = getStylesWrapper(iframeHead);
+				}
+			} else {
+				wrapper = getStylesWrapper(document.head);
 			}
 
-			render(
-				<StyleComponent
-					uniqueID={uniqueID}
-					stylesObj={obj}
-					currentBreakpoint={this.currentBreakpoint}
-					blockBreakpoints={breakpoints}
-				/>,
-				wrapper
-			);
+			if (wrapper)
+				render(
+					<StyleComponent
+						uniqueID={uniqueID}
+						stylesObj={obj}
+						currentBreakpoint={this.currentBreakpoint}
+						blockBreakpoints={breakpoints}
+						isSiteEditor={isSiteEditor}
+					/>,
+					wrapper
+				);
 
 			// Since WP 5.9 Gutenberg includes the responsive into iframes, so need to add the styles there also
 			const iframe = document.querySelector(
-				'iframe[name="editor-canvas"]'
+				'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)'
 			);
 
 			if (iframe) {
 				const iframeDocument = iframe.contentDocument;
 
 				if (iframeDocument.head) {
-					let iframeWrapper = iframeDocument.querySelector(
-						`#${getStylesWrapperId(uniqueID)}`
-					);
-
-					if (!iframeWrapper) {
-						iframeWrapper = iframeDocument.createElement('div');
-						iframeWrapper.id = getStylesWrapperId(uniqueID);
-						iframeWrapper.classList.add('maxi-blocks__styles');
-						iframeDocument.head.appendChild(iframeWrapper);
-					}
+					const iframeWrapper = getStylesWrapper(iframeDocument.head);
 
 					render(
 						<StyleComponent
@@ -587,9 +651,20 @@ class MaxiBlockComponent extends Component {
 	}
 
 	removeStyles() {
-		document
+		const templateViewIframe = getTemplateViewIframe(
+			this.props.attributes.uniqueID
+		);
+		const siteEditorIframe = getSiteEditorIframe();
+		const iframe = document.querySelector(
+			'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)'
+		);
+
+		const getEditorElement = () =>
+			templateViewIframe || siteEditorIframe || iframe || document;
+
+		getEditorElement()
 			.getElementById(getStylesWrapperId(this.props.attributes.uniqueID))
-			.remove();
+			?.remove();
 	}
 }
 

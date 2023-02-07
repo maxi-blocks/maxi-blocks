@@ -29,14 +29,23 @@ export const getResponsiveStyles = styles => {
 	return responsiveStyles;
 };
 
-const getTargetString = (target, isIframe) => {
-	if (!isIframe)
-		return `body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.${target},body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.${target}{`;
+const getTargetString = (target, isIframe, isSiteEditor) => {
+	if (isSiteEditor)
+		return `body.maxi-blocks--active.editor-styles-wrapper .is-root-container .maxi-block.maxi-block--backend.${target},body.maxi-blocks--active.editor-styles-wrapper[maxi-blocks-responsive] .is-root-container .maxi-block.maxi-block--backend.${target}{`;
 
-	return `body.maxi-blocks--active.editor-styles-wrapper .maxi-block.maxi-block--backend.${target},body.maxi-blocks--active.editor-styles-wrapper[maxi-blocks-responsive] .maxi-block.maxi-block--backend.${target}{`;
+	if (isIframe)
+		return `body.maxi-blocks--active.editor-styles-wrapper .maxi-block.maxi-block--backend.${target},body.maxi-blocks--active.editor-styles-wrapper[maxi-blocks-responsive] .maxi-block.maxi-block--backend.${target}{`;
+
+	return `body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.${target},body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.${target}{`;
 };
 
-const styleStringGenerator = (target, content, breakpoint, isIframe) => {
+const styleStringGenerator = (
+	target,
+	content,
+	breakpoint,
+	isIframe,
+	isSiteEditor
+) => {
 	let string = '';
 	let generalString = '';
 	let finalContent = content;
@@ -44,25 +53,29 @@ const styleStringGenerator = (target, content, breakpoint, isIframe) => {
 	if (content.includes('css:'))
 		finalContent = content.replace('css: ', '').replace(';;', ';');
 
-	generalString += getTargetString(target, isIframe);
+	generalString += getTargetString(target, isIframe, isSiteEditor);
 
 	if (breakpoint === 'general') {
 		string += generalString;
 	} else if (breakpoint === 'xxl') {
 		string += `body.maxi-blocks--active${
-			!isIframe ? ' .edit-post-visual-editor' : '.editor-styles-wrapper'
-		}[maxi-blocks-responsive="xxl"] .maxi-block.maxi-block--backend.${target}{`;
+			!isIframe && !isSiteEditor
+				? ' .edit-post-visual-editor'
+				: '.editor-styles-wrapper'
+		}[maxi-blocks-responsive="xxl"]${
+			isSiteEditor ? ' .is-root-container' : ''
+		} .maxi-block.maxi-block--backend.${target}{`;
 	} else {
 		let breakpointPos = ALLOWED_BREAKPOINTS.indexOf(breakpoint);
 
 		do {
 			string += `body.maxi-blocks--active${
-				!isIframe
+				!isIframe && !isSiteEditor
 					? ' .edit-post-visual-editor'
 					: '.editor-styles-wrapper'
-			}[maxi-blocks-responsive="${
-				ALLOWED_BREAKPOINTS[breakpointPos]
-			}"] .maxi-block.maxi-block--backend.${target}${
+			}[maxi-blocks-responsive="${ALLOWED_BREAKPOINTS[breakpointPos]}"]${
+				isSiteEditor ? ' .is-root-container' : ''
+			} .maxi-block.maxi-block--backend.${target}${
 				breakpointPos ? ',' : '{'
 			}`;
 			breakpointPos -= 1;
@@ -75,7 +88,7 @@ const styleStringGenerator = (target, content, breakpoint, isIframe) => {
 	return string;
 };
 
-const styleGenerator = (styles, isIframe = false) => {
+const styleGenerator = (styles, isIframe = false, isSiteEditor = false) => {
 	let response = '';
 
 	const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
@@ -105,7 +118,8 @@ const styleGenerator = (styles, isIframe = false) => {
 					`${target}${suffix}`,
 					style,
 					breakpoint,
-					isIframe
+					isIframe,
+					isSiteEditor
 				);
 
 				if (breakpoint === 'general') {
@@ -113,14 +127,16 @@ const styleGenerator = (styles, isIframe = false) => {
 						`${target}${suffix}`,
 						getResponsiveStyles(props.general),
 						baseBreakpoint,
-						isIframe
+						isIframe,
+						isSiteEditor
 					);
 					if (props?.[baseBreakpoint])
 						response += styleStringGenerator(
 							`${target}${suffix}`,
 							getResponsiveStyles(props[baseBreakpoint]),
 							baseBreakpoint,
-							isIframe
+							isIframe,
+							isSiteEditor
 						);
 				}
 			});

@@ -972,12 +972,13 @@ const getGeneralBackgroundStyles = (
 	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 	const size = {};
 
-	const getBorderValue = (target, breakpoint) => {
+	const getBorderValue = (target, breakpoint, forceIsHover = null) => {
 		const lastValue = getLastBreakpointAttribute({
 			target: `border-${target}-width`,
 			breakpoint,
 			attributes: props,
-			isHover,
+			avoidXXL: !isHover,
+			isHover: forceIsHover ?? isHover,
 		});
 
 		return isNumber(lastValue) ? lastValue : 2;
@@ -1022,17 +1023,25 @@ const getGeneralBackgroundStyles = (
 				Number.isFinite(widthLeft) ||
 				Number.isFinite(widthRight)
 			) {
-				const getSize = width => {
+				const getSize = (width, target) => {
 					if (!Number.isFinite(width)) return null;
 
-					return isHover ? 'auto' : -round(width, 2) + widthUnit;
+					if (isHover) {
+						const isSameThanNormal =
+							getBorderValue(target, breakpoint, false) === width;
+
+						if (isSameThanNormal) {
+							return null;
+						}
+					}
+					return { [target]: -round(width, 2) + widthUnit };
 				};
 
 				size[breakpoint] = {
-					top: getSize(widthTop),
-					bottom: getSize(widthBottom),
-					left: getSize(widthLeft),
-					right: getSize(widthRight),
+					...getSize(widthTop, 'top'),
+					...getSize(widthBottom, 'bottom'),
+					...getSize(widthLeft, 'left'),
+					...getSize(widthRight, 'right'),
 				};
 			}
 		});

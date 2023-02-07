@@ -7,7 +7,7 @@ import { getBlockData } from '../../attributes';
  * Returns block name from uniqueID
  */
 export const getBlockNameFromUniqueID = uniqueID =>
-	uniqueID.slice(0, uniqueID.lastIndexOf('-'));
+	uniqueID.slice(0, uniqueID.indexOf('maxi') + 4);
 
 /**
  * Returns block data from uniqueID

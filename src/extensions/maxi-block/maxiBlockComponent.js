@@ -476,11 +476,11 @@ class MaxiBlockComponent extends Component {
 						};
 				}
 
-				const innerBlocks = isArray(rawInnerBlocks)
-					? rawInnerBlocks
-					: Object.values(rawInnerBlocks);
+				if (!isEmpty(rawInnerBlocks)) {
+					const innerBlocks = isArray(rawInnerBlocks)
+						? rawInnerBlocks
+						: Object.values(rawInnerBlocks);
 
-				if (!isEmpty(innerBlocks)) {
 					innerBlocks.forEach(innerBlock => {
 						updateNewUniqueID(innerBlock);
 					});

@@ -8,6 +8,15 @@ export const generalTypographyStyle = {
 	wordSpacing: '10',
 	bottomGap: '20',
 };
+export const generalButtonTypographyStyle = {
+	decoration: 'overline',
+	weight: '300',
+	transform: 'capitalize',
+	style: 'italic',
+	indent: '44',
+	whiteSpace: 'pre',
+	wordSpacing: '10',
+};
 
 export const responsiveTypographyStyle = {
 	decoration: 'underline',
@@ -18,6 +27,16 @@ export const responsiveTypographyStyle = {
 	whiteSpace: 'pre-wrap',
 	wordSpacing: '20',
 	bottomGap: '10',
+};
+
+export const responsiveButtonTypographyStyle = {
+	decoration: 'underline',
+	weight: '400',
+	transform: 'uppercase',
+	style: 'oblique',
+	indent: '22',
+	whiteSpace: 'pre-wrap',
+	wordSpacing: '20',
 };
 
 export const generalTypographyOptions = {

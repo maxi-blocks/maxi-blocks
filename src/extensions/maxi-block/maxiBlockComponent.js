@@ -453,13 +453,17 @@ class MaxiBlockComponent extends Component {
 
 			const updateNewUniqueID = block => {
 				const {
-					attributes,
-					innerBlocks: rawInnerBlocks,
+					attributes = {},
+					innerBlocks: rawInnerBlocks = [],
 					clientId,
 				} = block;
-				const { relations } = attributes;
 
-				if (!isEmpty(relations)) {
+				if (
+					'relations' in attributes &&
+					!isEmpty(attributes.relations)
+				) {
+					const { relations } = attributes;
+
 					const newRelations = cloneDeep(relations).map(relation => {
 						const { uniqueID } = relation;
 
@@ -470,7 +474,7 @@ class MaxiBlockComponent extends Component {
 						return relation;
 					});
 
-					if (!isEqual(relations, newRelations))
+					if (!isEqual(relations, newRelations) && clientId)
 						blockAttributesUpdate[clientId] = {
 							relations: newRelations,
 						};

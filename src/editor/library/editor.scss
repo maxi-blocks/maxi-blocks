@@ -622,8 +622,8 @@
 				// top: -7px;
 				// left: 15px;
 				// transform: translate(0px, -100%);
-				height: 10px;
-				border-bottom: 1px solid #dbdde6;
+				// height: 10px;
+				// border-bottom: 1px solid #dbdde6;
 				.top-Menu {
 					position: absolute;
 					left: 230px;
@@ -663,12 +663,27 @@
 								transition: 0.1s;
 								opacity: 0;
 							}
+							&:after{
+								content: '';
+								position: absolute;
+								z-index: 1;
+								left: -1px;
+								top: -1px;
+								bottom: -1px;
+								width: 1px;
+								display: block;
+								background-color: #fff;
+								opacity: 0;
+							}
 							&:hover,
 							&___pressed {
 								// border-bottom: 2px solid var(--maxi-primary-color) !important;
 								font-weight: 500;
 								color: #fff;
 								&::before {
+									opacity: 1;
+								}
+								&:after{
 									opacity: 1;
 								}
 							}
@@ -1707,7 +1722,7 @@
 			.ais-Stats {
 				display: flex;
 				align-items: center;
-				height: 31px;
+				height: 53px;
 				padding: 0 8px;
 			}
 			.ais-InfiniteHits {
@@ -1981,6 +1996,19 @@
 					padding: 8px 5px 4px;
 				}
 			}
+			
+		}
+	}
+	.maxi-library-modal{
+		.maxi-cloud-container{
+			&__content-svg-shape {
+				&__search-bar {
+					.maxi-cloud-container__content-svg-shape__button {
+						min-width: 70px !important;
+						padding: 6px 10px !important;
+					}
+				}
+			}
 		}
 	}
 }
@@ -2029,10 +2057,27 @@
 					transform: none;
 					margin: 8px;
 					.maxi-cloud-container__content-svg-shape__button {
-						min-width: 60px;
-						padding: 6px 8px;
+						min-width: 60px !important;
+						padding: 6px 8px !important;
 					}
 				}
+			}
+			&__svg-shape,
+			&__svg-icon{
+				.top-Menu {
+					position: static;
+					left: 0;
+					display: block;
+					width: 100%;
+					padding: 8px;
+					margin: 0;
+					text-align: center;
+				}
+			}
+			&__content-svg-shape__search-bar{
+				display: block !important;
+				height: auto;
+				margin: 0;
 			}
 			&__patterns {
 				&__top-menu {
@@ -2128,9 +2173,9 @@
 			&__sc {
 				-ms-grid-columns: 100%;
 				grid-template-columns: 100%;
+				display: block;
 			}
 			&__patterns {
-				display: block;
 				&__content-patterns {
 					.ais-InfiniteHits-list {
 						.ais-InfiniteHits-item {
@@ -2148,8 +2193,25 @@
 					}
 				}
 			}
+			&__svg-shape,
+			&__svg-icon{
+				.maxi-cloud-container__content-svg-shape {
+					.ais-InfiniteHits-list {
+						.ais-InfiniteHits-item{
+							&:hover {
+								.maxi-cloud-masonry-card{
+									&::after{
+										transform: scaleY(1.05);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 	}
+	
 	.maxi-library-modal__preview {
 		.maxi-cloud-container {
 			height: 100%;

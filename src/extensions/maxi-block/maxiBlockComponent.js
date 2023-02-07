@@ -48,11 +48,19 @@ import getWinBreakpoint from '../dom/getWinBreakpoint';
 import { uniqueIDGenerator, getBlockData } from '../attributes';
 import getHoverStatus from '../relations/getHoverStatus';
 import { getStylesWrapperId } from './utils';
+import getLastChangedBlocks from './getLastChangedBlocks';
 
 /**
  * External dependencies
  */
-import { cloneDeep, isEmpty, isEqual, isFunction, isNil } from 'lodash';
+import {
+	cloneDeep,
+	isEmpty,
+	isEqual,
+	isFunction,
+	isNil,
+	isArray,
+} from 'lodash';
 
 /**
  * Style Component
@@ -399,6 +407,8 @@ class MaxiBlockComponent extends Component {
 				clientId,
 			});
 
+			this.propagateNewUniqueID(idToCheck, newUniqueID);
+
 			this.props.attributes.uniqueID = newUniqueID;
 			this.props.attributes.customLabel = getCustomLabel(
 				this.props.attributes.customLabel,
@@ -432,6 +442,70 @@ class MaxiBlockComponent extends Component {
 
 		loadFonts(response, true, target);
 		this.areFontsLoaded.current = true;
+	}
+
+	propagateNewUniqueID(oldUniqueID, newUniqueID) {
+		const updateRelations = () => {
+			const blockAttributesUpdate = {};
+			const lastChangedBlocks = getLastChangedBlocks();
+
+			if (isEmpty(lastChangedBlocks)) return;
+
+			const updateNewUniqueID = block => {
+				const {
+					attributes,
+					innerBlocks: rawInnerBlocks,
+					clientId,
+				} = block;
+				const { relations } = attributes;
+
+				if (!isEmpty(relations)) {
+					const newRelations = cloneDeep(relations).map(relation => {
+						const { uniqueID } = relation;
+
+						if (uniqueID === oldUniqueID) {
+							relation.uniqueID = newUniqueID;
+						}
+
+						return relation;
+					});
+
+					if (!isEqual(relations, newRelations))
+						blockAttributesUpdate[clientId] = {
+							relations: newRelations,
+						};
+				}
+
+				const innerBlocks = isArray(rawInnerBlocks)
+					? rawInnerBlocks
+					: Object.values(rawInnerBlocks);
+
+				if (!isEmpty(innerBlocks)) {
+					innerBlocks.forEach(innerBlock => {
+						updateNewUniqueID(innerBlock);
+					});
+				}
+			};
+
+			lastChangedBlocks.forEach(block => updateNewUniqueID(block));
+
+			if (!isEmpty(blockAttributesUpdate)) {
+				const {
+					__unstableMarkNextChangeAsNotPersistent:
+						markNextChangeAsNotPersistent,
+					updateBlockAttributes,
+				} = dispatch('core/block-editor');
+
+				Object.entries(blockAttributesUpdate).forEach(
+					([clientId, attributes]) => {
+						markNextChangeAsNotPersistent();
+						updateBlockAttributes(clientId, attributes);
+					}
+				);
+			}
+		};
+
+		updateRelations();
 	}
 
 	updateRelationHoverStatus() {
@@ -493,7 +567,7 @@ class MaxiBlockComponent extends Component {
 	}
 
 	removeUnmountedBlockFromRelations(uniqueID) {
-		goThroughMaxiBlocks(({ clientId, attributes, innerBlocks }) => {
+		goThroughMaxiBlocks(({ clientId, attributes }) => {
 			const { relations, uniqueID: blockUniqueID } = attributes;
 
 			if (uniqueID !== blockUniqueID && !isEmpty(relations)) {

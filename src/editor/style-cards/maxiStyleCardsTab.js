@@ -48,6 +48,7 @@ const GlobalColor = props => {
 		SC,
 		onChangeValue,
 		SCStyle,
+		disableOpacity = false,
 	} = props;
 
 	return (
@@ -132,6 +133,7 @@ const GlobalColor = props => {
 							);
 						}}
 						blockStyle={SCStyle}
+						disableOpacity={disableOpacity}
 						disableGradient
 					/>
 				</>
@@ -149,6 +151,7 @@ const SCAccordion = props => {
 		SCStyle,
 		onChangeValue,
 		disableTypography = false,
+		disableOpacity = false,
 	} = props;
 
 	return (
@@ -196,6 +199,7 @@ const SCAccordion = props => {
 							SC={SC}
 							onChangeValue={onChangeValue}
 							SCStyle={SCStyle}
+							disableOpacity={disableOpacity}
 						/>
 					)
 				)}
@@ -581,6 +585,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 								SCStyle={SCStyle}
 								onChangeValue={onChangeValue}
 								disableTypography
+								disableOpacity
 							/>
 						),
 					},

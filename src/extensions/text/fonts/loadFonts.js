@@ -26,10 +26,12 @@ const loadFonts = (font, backendOnly = true, target = document) => {
 			const fontWeight = fontData?.weight || '400';
 			const fontStyle = fontData?.style;
 
-			let fontWeightArr = ['400'];
+			let fontWeightArr = [];
 			let fontDataNew;
 
-			if (Array.isArray(fontWeight)) {
+			if (isEmpty(fontWeight)) {
+				fontWeightArr = ['400'];
+			} else if (Array.isArray(fontWeight)) {
 				font[fontName].weight = uniq(fontWeight).join();
 				fontWeightArr = fontWeight;
 			} else if (typeof fontWeight === 'string') {
@@ -41,9 +43,11 @@ const loadFonts = (font, backendOnly = true, target = document) => {
 				font[fontName].weight = fontWeightArr.join();
 			} else fontDataNew = { ...fontData, ...{ weight: fontWeight } };
 
-			let fontStyleArr = ['normal'];
+			let fontStyleArr = [];
 
-			if (Array.isArray(fontStyle)) {
+			if (isEmpty(fontStyle)) {
+				fontWeightArr = ['normal'];
+			} else if (Array.isArray(fontStyle)) {
 				font[fontName].style = uniq(fontStyle).join();
 			} else if (typeof fontStyle === 'string') {
 				fontStyleArr = uniq(fontStyle.split(','));

@@ -90,7 +90,7 @@ Array [
       "general": Object {
         "breakpoint": null,
         "styles": Object {
-          "color": "var(--maxi-light-p-color,rgba(var(--maxi-light-color-8,203,203,203),0.5))",
+          "color": "var(--maxi-light-p-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
           "font-size": "11px",
           "font-style": "italic",
           "font-weight": "",
@@ -106,7 +106,7 @@ Array [
       "xl": Object {
         "breakpoint": 1920,
         "styles": Object {
-          "color": "var(--maxi-light-p-color,rgba(var(--maxi-light-color-8,203,203,203),0.5))",
+          "color": "var(--maxi-light-p-color,rgba(var(--maxi-light-color-8,150,176,203),0.5))",
           "font-size": "11px",
           "font-style": "italic",
           "font-weight": "",

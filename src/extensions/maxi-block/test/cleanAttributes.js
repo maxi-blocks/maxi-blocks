@@ -1,7 +1,9 @@
 import cleanAttributes from '../cleanAttributes';
 
 jest.mock('src/extensions/styles/getDefaultAttribute.js', () =>
-	jest.fn(() => undefined)
+	jest.fn(attr =>
+		attr === 'attribute-with-default-value-hover' ? true : undefined
+	)
 );
 jest.mock('@wordpress/data', () => {
 	return {
@@ -1622,6 +1624,26 @@ describe('cleanAttributes', () => {
 		const expectedResult = {
 			'test-general-hover': '3',
 			'test-s-hover': undefined,
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
+
+	it('Should not delete hover attributes if they have default value', () => {
+		const obj = {
+			newAttributes: {
+				'attribute-with-default-value-hover': 3,
+			},
+			attributes: {
+				'attribute-with-default-value': 3,
+			},
+			defaultAttributes: {},
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'attribute-with-default-value-hover': 3,
 		};
 
 		expect(result).toStrictEqual(expectedResult);

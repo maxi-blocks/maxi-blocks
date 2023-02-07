@@ -82,13 +82,13 @@ if (!class_exists('MaxiBlocks_API')):
                     return current_user_can('edit_posts');
                 },
             ]);
-            register_rest_route($this->namespace, '/post', [
+            register_rest_route($this->namespace, '/styles', [
                 'methods' => 'POST',
-                'callback' => [$this, 'post_maxi_blocks_post'],
+                'callback' => [$this, 'post_maxi_blocks_styles'],
                 'args' => [
                     'id' => [
                         'validate_callback' => function ($param) {
-                            return is_numeric($param);
+                            return is_numeric($param) || is_string($param);
                         },
                     ],
                     'meta' => [
@@ -101,6 +101,16 @@ if (!class_exists('MaxiBlocks_API')):
                             return is_bool($param);
                         },
                     ],
+                    'isTemplate' => [
+                        'validate_callback' => function ($param) {
+                            return is_bool($param);
+                        },
+                    ],
+                    'templateParts' => [
+                        'validate_callback' => function ($param) {
+                            return is_string($param);
+                        },
+                    ]
                 ],
                 'permission_callback' => function () {
                     return current_user_can('edit_posts');
@@ -180,7 +190,7 @@ if (!class_exists('MaxiBlocks_API')):
                 'args' => [
                     'id' => [
                         'validate_callback' => function ($param) {
-                            return is_numeric($param);
+                            return is_numeric($param) || is_string($param);
                         },
                     ],
                     'data' => [
@@ -193,6 +203,11 @@ if (!class_exists('MaxiBlocks_API')):
                             return is_bool($param);
                         },
                     ],
+                    'isTemplate' => [
+                        'validate_callback' => function ($param) {
+                            return is_bool($param);
+                        },
+                    ]
                 ],
                 'permission_callback' => function () {
                     return current_user_can('edit_posts');
@@ -268,16 +283,33 @@ if (!class_exists('MaxiBlocks_API')):
             return $response;
         }
 
+        public function get_query_params($table, $is_template)
+        {
+            global $wpdb;
+
+            $table = $wpdb->prefix . $table . ($is_template ? '_templates' : '');
+            $id_key = $is_template ? 'template_id' : 'post_id';
+            $where_clause = $id_key . ' = %' . ($is_template ? 's' : 'd');
+
+            return [
+                'table' => $table,
+                'id_key' => $id_key,
+                'where_clause' => $where_clause,
+            ];
+        }
+
         /**
-         * Post the posts
+         * Post the styles
          */
-        public function post_maxi_blocks_post($data)
+        public function post_maxi_blocks_styles($data)
         {
             global $wpdb;
 
             $id = $data['id'];
             $meta = json_decode($data['meta'], true);
             $styles = $meta['styles'];
+            $is_template = $data['isTemplate'];
+            $template_parts = $data['templateParts'];
 
             $fonts_arr = $meta['fonts'];
             foreach ($fonts_arr as $key => $font) {
@@ -285,52 +317,79 @@ if (!class_exists('MaxiBlocks_API')):
             }
             $fonts = json_encode(array_merge_recursive(...$fonts_arr));
 
-            $table =  $wpdb->prefix . 'maxi_blocks_styles';
+            ['table' => $table, 'id_key' => $id_key, 'where_clause' => $where_clause] = $this->get_query_params('maxi_blocks_styles', $is_template);
 
             if (empty($styles) || $styles === '{}') {
-                $wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->prefix}maxi_blocks_styles WHERE post_id = %d", $id));
+                $wpdb->query($wpdb->prepare("DELETE FROM $table WHERE $where_clause", $id));
                 return '{}';
             }
 
             $exists = $wpdb->get_results(
                 $wpdb->prepare(
-                    "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles WHERE post_id = %d",
+                    "SELECT * FROM $table WHERE $where_clause",
                     $id
                 ),
                 OBJECT
             );
 
+            $dictionary = array(
+                "{$id_key}" => $id,
+                'prev_css_value' => $styles,
+                'css_value' => $styles,
+                'prev_fonts_value' => $fonts,
+                'fonts_value' => $fonts,
+                'template_parts' => $template_parts,
+            );
+
+            $get_array = function ($keys, $dictionary) {
+                $array = [];
+
+                foreach ($keys as $key) {
+                    if(($key === 'template_parts' && $dictionary[$key] !== 'null') || $key !== 'template_parts') {
+                        $array[$key] = $dictionary[$key];
+                    }
+                }
+
+                return $array;
+            };
+
             if (!empty($exists)) {
                 if ($data['update']) {
-                    $wpdb->update("{$table}", array(
-                        'post_id' => $id,
-                        'prev_css_value' =>  $styles,
-                        'css_value' =>  $styles,
-                        'prev_fonts_value' =>  $fonts,
-                        'fonts_value' =>  $fonts,
-                    ), ['post_id' => $id]);
+                    $wpdb->update("{$table}", $get_array([
+                        "{$id_key}",
+                        'prev_css_value',
+                        'css_value',
+                        'prev_fonts_value',
+                        'fonts_value',
+                        'template_parts',
+                    ], $dictionary), [
+                        "{$id_key}" => $id,
+                    ]);
                 } else {
-                    $wpdb->update("{$table}", array(
-                        'post_id' => $id,
-                        'prev_css_value' =>  $styles,
-                        'prev_fonts_value' =>  $fonts,
-                    ), ['post_id' => $id]);
+                    $wpdb->update("{$table}", $get_array([
+                        "{$id_key}",
+                        'prev_css_value',
+                        'prev_fonts_value',
+                        'template_parts',
+                    ], $dictionary), ["{$id_key}" => $id]);
                 }
             } else {
                 if ($data['update']) {
-                    $wpdb->insert("{$table}", array(
-                        'post_id' => $id,
-                        'prev_css_value' =>  $styles,
-                        'css_value' =>  $styles,
-                        'prev_fonts_value' =>  $fonts,
-                        'fonts_value' =>  $fonts,
-                    ));
+                    $wpdb->insert("{$table}", $get_array([
+                        "{$id_key}",
+                        'prev_css_value',
+                        'css_value',
+                        'prev_fonts_value',
+                        'fonts_value',
+                        'template_parts',
+                    ], $dictionary));
                 } else {
-                    $wpdb->insert("{$table}", array(
-                        'post_id' => $id,
-                        'prev_css_value' =>  $styles,
-                        'prev_fonts_value' =>  $fonts,
-                    ));
+                    $wpdb->insert("{$table}", $get_array([
+                        "{$id_key}",
+                        'prev_css_value',
+                        'prev_fonts_value',
+                        'template_parts',
+                    ], $dictionary));
                 }
             }
 
@@ -338,15 +397,15 @@ if (!class_exists('MaxiBlocks_API')):
                 new MaxiBlocks_Local_Fonts();
             }
 
-            $post = (array)$wpdb->get_results(
+            $updated_meta = (array)$wpdb->get_results(
                 $wpdb->prepare(
-                    "SELECT * FROM {$wpdb->prefix}maxi_blocks_styles WHERE post_id = %d",
+                    "SELECT * FROM $table WHERE $where_clause",
                     $id
                 ),
                 OBJECT
             )[0];
 
-            return $post;
+            return $updated_meta;
         }
 
         /**
@@ -555,37 +614,57 @@ if (!class_exists('MaxiBlocks_API')):
 
         public function set_maxi_blocks_current_custom_data($data)
         {
+            global $wpdb;
+
             $id = $data['id'];
             $update = $data['update'];
             $data_val = $data['data'];
+            $is_template = $data['isTemplate'];
 
-            global $wpdb;
+            ['table' => $table, 'id_key' => $id_key, 'where_clause' => $where_clause] = $this->get_query_params('maxi_blocks_custom_data', $is_template);
+            ['table' => $styles_table] = $this->get_query_params('maxi_blocks_styles', $is_template);
 
             if (empty($data_val) || $data_val === '{}') {
-                $wpdb->update("{$wpdb->prefix}maxi_blocks_styles", array(
+                $wpdb->update("{$styles_table}", array(
                     'prev_active_custom_data' =>  null,
                     'active_custom_data' =>  null,
-                ), ['post_id' => $id]);
+                ), ["{$id_key}" => $id]);
 
-                $wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->prefix}maxi_blocks_custom_data WHERE post_id=%d", $id));
+                $wpdb->query($wpdb->prepare("DELETE FROM $table WHERE $where_clause", $id));
 
                 return '{}';
             }
+
+            $exists = $wpdb->get_results(
+                $wpdb->prepare(
+                    "SELECT * FROM $table WHERE $where_clause",
+                    $id
+                ),
+                OBJECT
+            );
 
             if ($update) {
                 $array_new_data = json_decode($data_val, true);
                 $new_custom_data = serialize(array_merge_recursive(...array_values($array_new_data)));
 
-                $wpdb->update("{$wpdb->prefix}maxi_blocks_styles", array(
+                $wpdb->update("{$styles_table}", array(
                     'prev_active_custom_data' =>  1,
                     'active_custom_data' =>  1,
-                ), ['post_id' => $id]);
+                ), ["{$id_key}" => $id]);
 
-                $wpdb->replace("{$wpdb->prefix}maxi_blocks_custom_data", array(
-                    'post_id' => $id,
-                    'prev_custom_data_value' =>  $new_custom_data,
-                    'custom_data_value' =>  $new_custom_data,
-                ));
+
+                if(!empty($exists)) {
+                    $wpdb->update("{$table}", array(
+                        'prev_custom_data_value' =>  $new_custom_data,
+                        'custom_data_value' =>  $new_custom_data,
+                    ), ["{$id_key}" =>  $id]);
+                } else {
+                    $wpdb->insert("{$table}", array(
+                        $id_key => $id,
+                        'prev_custom_data_value' =>  $new_custom_data,
+                        'custom_data_value' => $new_custom_data,
+                    ));
+                }
             }
 
             return $new_custom_data;

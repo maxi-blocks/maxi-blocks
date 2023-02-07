@@ -44,6 +44,8 @@ import {
 	Mover,
 	NumberCounterReplay,
 	Size,
+	SliderSettings,
+	SliderSlidesSettings,
 	SvgWidth,
 	TextColor,
 	TextLevel,
@@ -535,6 +537,18 @@ const MaxiToolbar = memo(
 							onChange={obj => maxiSetAttributes(obj)}
 							textLevel={textLevel}
 						/>
+						{name === 'maxi-blocks/slider-maxi' && (
+							<>
+								<SliderSlidesSettings />
+								<SliderSettings
+									{...getGroupAttributes(
+										attributes,
+										'slider'
+									)}
+									onChange={obj => maxiSetAttributes(obj)}
+								/>
+							</>
+						)}
 						<Link
 							blockName={name}
 							linkSettings={linkSettings}
@@ -630,6 +644,7 @@ const MaxiToolbar = memo(
 							clientId={clientId}
 							blockName={name}
 							tooltipsHide={tooltipsHide}
+							updateSelection={name !== 'maxi-blocks/slide-maxi'}
 						/>
 						<Help tooltipsHide={tooltipsHide} />
 						<MoreSettings

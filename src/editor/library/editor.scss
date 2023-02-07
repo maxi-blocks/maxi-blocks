@@ -109,9 +109,6 @@
 					}
 				}
 			}
-			// .maxi-cloud-container{
-			// 	overflow-y: scroll;
-			// }
 			.axi-cloud-container__patterns {
 				position: relative;
 			}
@@ -129,7 +126,6 @@
 				#fff 40px
 			) !important;
 			.maxi-cloud-container {
-				// overflow-y: scroll;
 				&::-webkit-scrollbar {
 					width: 5px;
 				}
@@ -473,9 +469,6 @@
 
 		&__preview-iframe {
 			border-width: 0 !important;
-			// position: absolute;
-			// width: 100%;
-			// height: 100%;
 		}
 		&__preview-iframe_wrap,
 		&__preview-iframe_wrap > div {
@@ -616,14 +609,7 @@
 
 			&__search-bar {
 				display: flex;
-				// align-items: center;
 				grid-column: span 3;
-				// position: absolute;
-				// top: -7px;
-				// left: 15px;
-				// transform: translate(0px, -100%);
-				// height: 10px;
-				// border-bottom: 1px solid #dbdde6;
 				.top-Menu {
 					position: absolute;
 					left: 230px;
@@ -677,7 +663,6 @@
 							}
 							&:hover,
 							&___pressed {
-								// border-bottom: 2px solid var(--maxi-primary-color) !important;
 								font-weight: 500;
 								color: #fff;
 								&::before {
@@ -688,16 +673,6 @@
 								}
 							}
 						}
-						// &:first-child {
-						// 	a {
-						// 		border-left: 1px solid var(--maxi-grey-1-color);
-						// 	}
-						// }
-						// &:last-child {
-						// 	a {
-						// 		border-right: 1px solid var(--maxi-grey-1-color);
-						// 	}
-						// }
 				}
 				& > div {
 					display: flex;
@@ -865,7 +840,6 @@
 							top: 0;
 							bottom: 0;
 							display: block;
-							// background-color: #f9f9f9;
 							border: 1px solid #dbdde6;
 							transition: 0.3s;
 							z-index: 0;
@@ -1355,13 +1329,11 @@
 							a {
 								border-color: #707070;
 								font-weight: 500;
-								// background-color: var(--maxi-primary-color);
 							}
 						}
 					}
 				}
 			}
-			// &__search-bar,
 			&__top-menu {
 				.ais-Menu {
 					&-list {
@@ -2034,10 +2006,6 @@
 		}
 		.maxi-cloud-container .maxi-cloud-container__patterns {
 			grid-template-columns: 190px 1fr;
-
-			// &__content-patterns {
-			// 	margin-top: 1rem;
-			// }
 		}
 		.maxi-cloud-container .maxi-cloud-container__sc {
 			grid-template-columns: 100%;

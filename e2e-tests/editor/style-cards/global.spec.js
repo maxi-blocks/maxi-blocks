@@ -278,45 +278,10 @@ describe('SC settings', () => {
 			button => button.click()
 		);
 
-		// Remove Daemon card
-		await page.$eval(
-			'.maxi-style-cards__sc__more-sc--select input',
-			input => input.focus()
-		);
-
-		await page.keyboard.type('Daemon');
-		await page.keyboard.press('Enter');
-		await page.waitForTimeout(100);
-
-		await page.$eval('.maxi-style-cards__sc__more-sc--delete', button =>
-			button.click()
-		);
-
-		await page.$eval(
-			'.maxi-dialog-box-buttons button:nth-child(2)',
-			button => button.click()
-		);
-
-		// Switch back to maxi default SC and activate it
-		await page.$eval(
-			'.maxi-style-cards__sc__more-sc--select input',
-			input => input.focus()
-		);
-
-		await page.keyboard.type('Maxi');
-		await page.keyboard.press('Enter');
-		await page.waitForTimeout(100);
-
-		const { key } = await receiveSelectedMaxiStyleCard(page);
-
-		expect(key).toStrictEqual('sc_maxi');
-		await page.$eval('.maxi-style-cards__sc__actions--apply', button =>
-			button.click()
-		);
-		await page.$eval(
-			'.maxi-dialog-box-buttons button:nth-child(2)',
-			button => button.click()
-		);
+		// let's reset the SCs for all other tests
+		await page.evaluate(() => {
+			wp.data.dispatch('maxiBlocks/style-cards').resetSC();
+		});
 
 		expect(newName).toStrictEqual(`${name} exported`);
 	});

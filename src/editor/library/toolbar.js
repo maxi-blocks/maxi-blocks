@@ -198,17 +198,12 @@ const LibraryToolbar = props => {
 			fullWidth = true;
 		}
 
-		console.log('searchParameters');
-		console.log(searchParameters);
-
 		client
 			.collections('post')
 			.documents()
 			.search(searchParameters)
 			.then(result => {
 				const relatedHit = result?.hits[0]?.document;
-				console.log('relatedHit');
-				console.log(relatedHit);
 				const previewIframeStyles = previewIframe.style;
 				const previewIframeWrapStyles = previewIframeWrap.style;
 				const previewIframeSpaceStyles = previewIframeSpace.style;

@@ -115,8 +115,13 @@ const MaxiModal = props => {
 		if (onClose) onClose();
 	};
 
+	const onCloseModal = () => {
+		changeIsOpen(false);
+	};
+
 	useEffect(() => {
 		if (isOpen || forceIsOpen) changeIsOpen(true);
+		if (!isOpen) changeIsOpen(false);
 	}, [isOpen, forceIsOpen]);
 
 	return (
@@ -220,13 +225,13 @@ const MaxiModal = props => {
 				)}
 				{isOpen && (
 					<div
-						className='components-modal__screen-overlay maxi-open-preview test'
+						className='components-modal__screen-overlay maxi-open-preview'
 						id='maxi-modal'
 					>
 						<div className='maxi-library-modal maxi-preview'>
 							<CloudLibrary
 								cloudType={type}
-								onClose={onClick}
+								onClose={onCloseModal}
 								blockStyle={style}
 								onSelect={onSelect}
 								url={url}
@@ -331,7 +336,7 @@ const MaxiModal = props => {
 					<div className='maxi-library-modal maxi-preview'>
 						<CloudLibrary
 							cloudType={type}
-							onClose={onClick}
+							onClose={onCloseModal}
 							blockStyle='light'
 							url={url}
 							title={title}

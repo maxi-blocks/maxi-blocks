@@ -190,24 +190,6 @@ const MenuSelect = ({ items, currentRefinement, refine }) => {
 const SvgMenuSelect = ({ items, currentRefinement, refine }) => {
 	return (
 		<div className='top-Menu'>
-			{items.length > 2 && (
-				<button
-					type='button'
-					value=''
-					className={classnames(
-						'maxi-cloud-container__content-svg-shape__button',
-						isEmpty(currentRefinement) &&
-							' maxi-cloud-container__content-svg-shape__button___pressed'
-					)}
-					onClick={event => {
-						event.preventDefault();
-						refine('');
-						items[0].isRefined = true;
-					}}
-				>
-					{__('All', 'maxi-blocks')}
-				</button>
-			)}
 			{items.map(item => (
 				<button
 					type='button'
@@ -228,6 +210,24 @@ const SvgMenuSelect = ({ items, currentRefinement, refine }) => {
 					{item.label}
 				</button>
 			))}
+			{items.length > 2 && (
+				<button
+					type='button'
+					value=''
+					className={classnames(
+						'maxi-cloud-container__content-svg-shape__button',
+						isEmpty(currentRefinement) &&
+							' maxi-cloud-container__content-svg-shape__button___pressed'
+					)}
+					onClick={event => {
+						event.preventDefault();
+						refine('');
+						items[0].isRefined = true;
+					}}
+				>
+					{__('All', 'maxi-blocks')}
+				</button>
+			)}
 		</div>
 	);
 };
@@ -795,6 +795,7 @@ const LibraryContainer = props => {
 							<CustomSvgMenuSelect
 								className='maxi-cloud-container__content-svg-shape__categories'
 								attribute='svg_category'
+								defaultRefinement='Filled'
 								translations={{
 									seeAllOption: __(
 										'All icons',
@@ -918,7 +919,7 @@ const LibraryContainer = props => {
 							<CustomSvgMenuSelect
 								className='maxi-cloud-container__content-svg-shape__categories'
 								attribute='svg_category'
-								defaultRefinement='Line'
+								defaultRefinement='Filled'
 								translations={{
 									seeAllOption: __(
 										'All icons',

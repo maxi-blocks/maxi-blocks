@@ -39,9 +39,9 @@ const CloudLibrary = props => {
 		cost,
 		toneUrl,
 		cardId,
-		prefix,
 		isPro,
 		isBeta,
+		prefix = '',
 	} = props;
 
 	const [type, setType] = useState(cloudType);

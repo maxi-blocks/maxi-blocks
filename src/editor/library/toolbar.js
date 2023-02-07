@@ -320,6 +320,8 @@ const LibraryToolbar = props => {
 						onClose={onRequestClose}
 						isPro={relatedHit.cost?.[0] === 'Pro'}
 						isBeta={relatedHit.post_tag?.includes('Beta')}
+						forceIsOpen
+						isOpen
 					/>,
 					maxiModal
 				);

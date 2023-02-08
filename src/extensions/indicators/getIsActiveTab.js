@@ -1,3 +1,4 @@
+/* eslint-disable no-unreachable */
 /**
  * WordPress dependencies
  */
@@ -14,6 +15,9 @@ const getIsActiveTab = (
 	ignoreIndicator = [],
 	ignoreIndicatorGroups = []
 ) => {
+	// Beta: This function is not working properly.
+	return false;
+
 	const { getBlock, getSelectedBlockClientId } = select('core/block-editor');
 
 	const block = getBlock(getSelectedBlockClientId());

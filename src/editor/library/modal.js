@@ -26,10 +26,16 @@ import classNames from 'classnames';
 /**
  * Icons
  */
-import { SCaddMore, toolbarReplaceImage, remove, cloudLib } from '../../icons';
+import {
+	SCaddMore,
+	remove,
+	cloudLib,
+	selectIcon,
+	toolbarReplaceImage,
+} from '../../icons';
 
 /**
- * Content
+ * Cloud Content Placeholder
  */
 const CloudPlaceholder = forwardRef((props, ref) => {
 	const { clientId, onClick } = props;
@@ -75,6 +81,57 @@ const CloudPlaceholder = forwardRef((props, ref) => {
 			/>
 			{!isBlockSmall && __('Template library', 'maxi-blocks')}
 		</Button>
+	);
+});
+
+/**
+ * Icon Content Placeholder
+ */
+const SVGIconPlaceholder = forwardRef((props, ref) => {
+	const { uniqueID, clientId, onClick } = props;
+
+	const [isBlockSmall, setIsBlockSmall] = useState(null);
+	const [isBlockSmaller, setIsBlockSmaller] = useState(null);
+
+	const resizeObserver = new ResizeObserver(entries => {
+		const newIsSmallBlock = entries[0].contentRect.width < 120;
+		const newIsSmallerBlock = entries[0].contentRect.width < 38;
+
+		if (newIsSmallBlock !== isBlockSmall) setIsBlockSmall(newIsSmallBlock);
+		if (newIsSmallerBlock !== isBlockSmaller)
+			setIsBlockSmaller(newIsSmallerBlock);
+	});
+
+	useEffect(() => {
+		resizeObserver.observe(ref.current);
+
+		return () => {
+			resizeObserver.disconnect();
+		};
+	}, []);
+
+	return (
+		<div
+			className={classNames(
+				'maxi-svg-icon-block__placeholder',
+				isBlockSmall && 'maxi-svg-icon-block__placeholder--small',
+				isBlockSmaller && 'maxi-svg-icon-block__placeholder--smaller'
+			)}
+			key={`maxi-svg-icon-block__placeholder--${uniqueID}`}
+		>
+			<Button
+				isPrimary
+				key={`maxi-block-library__modal-button--${clientId}`}
+				className='maxi-block-library__modal-button'
+				onClick={onClick}
+			>
+				<Icon
+					className='maxi-icon-block__select__icon'
+					icon={selectIcon}
+				/>
+				{!isBlockSmall && __('Select icon', 'maxi-blocks')}
+			</Button>
+		</div>
 	);
 });
 
@@ -146,6 +203,13 @@ const MaxiModal = props => {
 					>
 						<Icon icon={SCaddMore} />
 					</Button>
+				)}
+				{type === 'svg' && forceHide && (
+					<SVGIconPlaceholder
+						ref={ref}
+						clientId={clientId}
+						onClick={onClick}
+					/>
 				)}
 				{type === 'svg' && !forceHide && (
 					<Button
@@ -231,7 +295,7 @@ const MaxiModal = props => {
 						<div className='maxi-library-modal maxi-preview'>
 							<CloudLibrary
 								cloudType={type}
-								onClose={onCloseModal}
+								onClose={onClick}
 								blockStyle={style}
 								onSelect={onSelect}
 								url={url}

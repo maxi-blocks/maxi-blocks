@@ -5,6 +5,7 @@
 import { __ } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
 import { useState, useContext } from '@wordpress/element';
+import { getWeightOptions } from './utils';
 
 /**
  * Internal dependencies
@@ -477,6 +478,11 @@ const TypographyControl = props => {
 						onChange={font => {
 							onChangeFormat({
 								[`${prefix}font-family`]: font.value,
+								[`${prefix}font-weight`]: getWeightOptions(
+									font.value
+								).some(e => e.value === getValue('font-weight'))
+									? getValue('font-weight')
+									: 400,
 								[`${prefix}font-options`]: font.files,
 							});
 						}}

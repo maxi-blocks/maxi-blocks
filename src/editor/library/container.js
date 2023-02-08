@@ -47,31 +47,9 @@ import DOMPurify from 'dompurify';
  */
 import { arrowIcon } from '../../icons';
 
-// const Accordion = ({ children, title, openByDefault = false }) => {
-// 	const [isAccordionOpen, setAccordionOpen] = useState(openByDefault);
-
-// 	const accordionClasses = classnames(
-// 		'maxi-cloud-container__accordion',
-// 		isAccordionOpen && 'maxi-cloud-container__accordion__open'
-// 	);
-
-// 	return (
-// 		<div className={accordionClasses}>
-// 			<div
-// 				onClick={() => setAccordionOpen(!isAccordionOpen)}
-// 				className='maxi-cloud-container__accordion__title'
-// 			>
-// 				{title}
-// 			</div>
-// 			<div className='maxi-cloud-container__accordion__content'>
-// 				{children}
-// 			</div>
-// 		</div>
-// 	);
-// };
-
 // hack to fix issue #3930: top level tags resetting when we choose a second-level tag
 const removeMenuBugFix = () => {
+	console.log('remove hack!');
 	const lists = document.querySelectorAll('.maxi__hide-top-tags');
 
 	for (const list of lists) {
@@ -243,8 +221,9 @@ const SvgMenuSelect = ({ items, currentRefinement, refine }) => {
 const HierarchicalMenu = ({ items, refine, type = 'firstLevel' }) => {
 	// hack to fix issue #3930: top level tags resetting when we choose a second-level tag
 	const fixMenuBug = el => {
+		console.log('fixMenuBug');
 		const topLevelParent =
-			el.target === 'a'
+			el?.target === 'a'
 				? el?.currentTarget?.parentNode?.parentNode?.parentNode
 						?.parentNode
 				: el?.parentNode?.parentNode?.parentNode;
@@ -256,6 +235,9 @@ const HierarchicalMenu = ({ items, refine, type = 'firstLevel' }) => {
 			return;
 
 		const topLevelElements = topLevelParent?.childNodes;
+
+		console.log('topLevelElements');
+		console.log(topLevelElements);
 
 		if (!isEmpty(topLevelElements)) {
 			topLevelParent.classList.add('maxi__hide-top-tags');
@@ -270,17 +252,27 @@ const HierarchicalMenu = ({ items, refine, type = 'firstLevel' }) => {
 				{items.map(item => (
 					<li
 						key={item.label}
-						className={
-							item.isRefined
-								? 'ais-HierarchicalMenu-item ais-HierarchicalMenu-item--selected'
-								: 'ais-HierarchicalMenu-item'
-						}
+						className={classnames(
+							'ais-HierarchicalMenu-item',
+							`ais-HierarchicalMenu-item__${item.label
+								.replace(/\s+/g, '-')
+								.toLowerCase()}`,
+							item.isRefined &&
+								'ais-HierarchicalMenu-item--selected'
+						)}
 					>
 						<a
 							href='#'
 							onClick={event => {
-								type === 'secondLevel' && fixMenuBug(event);
 								event.preventDefault();
+								type === 'secondLevel' &&
+									fixMenuBug(
+										document.getElementsByClassName(
+											`ais-HierarchicalMenu-item__${item.label
+												.replace(/\s+/g, '-')
+												.toLowerCase()}`
+										)[0]
+									);
 								refine(item.value);
 							}}
 						>
@@ -1146,18 +1138,6 @@ const LibraryContainer = props => {
 									resetTitle: 'Clear',
 								}}
 							/>
-							{/* <Accordion
-								title={__('Colour', 'maxi-blocks')}
-								openByDefault
-							>
-								<CustomRefinementList
-									attribute='sc_color'
-									limit={20}
-									transformItems={items =>
-										orderBy(items, 'label', 'asc')
-									}
-								/>
-							</Accordion> */}
 							<CustomRefinementList
 								attribute='sc_color'
 								limit={20}

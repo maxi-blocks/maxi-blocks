@@ -47,28 +47,28 @@ import DOMPurify from 'dompurify';
  */
 import { arrowIcon } from '../../icons';
 
-const Accordion = ({ children, title, openByDefault = false }) => {
-	const [isAccordionOpen, setAccordionOpen] = useState(openByDefault);
+// const Accordion = ({ children, title, openByDefault = false }) => {
+// 	const [isAccordionOpen, setAccordionOpen] = useState(openByDefault);
 
-	const accordionClasses = classnames(
-		'maxi-cloud-container__accordion',
-		isAccordionOpen && 'maxi-cloud-container__accordion__open'
-	);
+// 	const accordionClasses = classnames(
+// 		'maxi-cloud-container__accordion',
+// 		isAccordionOpen && 'maxi-cloud-container__accordion__open'
+// 	);
 
-	return (
-		<div className={accordionClasses}>
-			<div
-				onClick={() => setAccordionOpen(!isAccordionOpen)}
-				className='maxi-cloud-container__accordion__title'
-			>
-				{title}
-			</div>
-			<div className='maxi-cloud-container__accordion__content'>
-				{children}
-			</div>
-		</div>
-	);
-};
+// 	return (
+// 		<div className={accordionClasses}>
+// 			<div
+// 				onClick={() => setAccordionOpen(!isAccordionOpen)}
+// 				className='maxi-cloud-container__accordion__title'
+// 			>
+// 				{title}
+// 			</div>
+// 			<div className='maxi-cloud-container__accordion__content'>
+// 				{children}
+// 			</div>
+// 		</div>
+// 	);
+// };
 
 // hack to fix issue #3930: top level tags resetting when we choose a second-level tag
 const removeMenuBugFix = () => {
@@ -103,7 +103,14 @@ const resultsCount = {
 const RefinementList = ({ items, refine }) => (
 	<ul className='maxi-cloud-container__content__svg-categories'>
 		{items.map(item => (
-			<li key={item.label} className='ais-RefinementList-item'>
+			<li
+				key={item.label}
+				className={
+					item.isRefined
+						? 'ais-RefinementList-item ais-RefinementList-item--selected'
+						: 'ais-RefinementList-item'
+				}
+			>
 				<a
 					href='#'
 					onClick={event => {
@@ -111,7 +118,8 @@ const RefinementList = ({ items, refine }) => (
 						refine(item.value);
 					}}
 				>
-					{capitalize(item.label)} ({item.count})
+					<span>{capitalize(item.label)}</span>
+					<span>{item.count}</span>
 				</a>
 			</li>
 		))}
@@ -1133,9 +1141,12 @@ const LibraryContainer = props => {
 							<SearchBox
 								autoFocus
 								searchAsYouType
-								showLoadingIndicator
+								reset='X'
+								translations={{
+									resetTitle: 'Clear',
+								}}
 							/>
-							<Accordion
+							{/* <Accordion
 								title={__('Colour', 'maxi-blocks')}
 								openByDefault
 							>
@@ -1146,7 +1157,14 @@ const LibraryContainer = props => {
 										orderBy(items, 'label', 'asc')
 									}
 								/>
-							</Accordion>
+							</Accordion> */}
+							<CustomRefinementList
+								attribute='sc_color'
+								limit={20}
+								transformItems={items =>
+									orderBy(items, 'label', 'asc')
+								}
+							/>
 							<CustomClearRefinements />
 						</div>
 						<div className='maxi-cloud-container__sc__content-sc'>

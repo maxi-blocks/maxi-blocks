@@ -378,7 +378,6 @@ const LibraryContainer = props => {
 		const styleCards = receiveMaxiStyleCards();
 		const { key: selectedSCKey, value: selectedSCValue } =
 			receiveMaxiSelectedStyleCard();
-
 		return {
 			styleCards,
 			selectedSCKey,
@@ -686,7 +685,7 @@ const LibraryContainer = props => {
 	const onRequestInsertSC = card => {
 		const parsedCard = JSON.parse(card);
 
-		const newId = `sc_${new Date().getTime()}`;
+		const newId = `sc_${parsedCard.name.toLowerCase()}`;
 
 		const newAllSCs = {
 			...styleCards,
@@ -725,7 +724,6 @@ const LibraryContainer = props => {
 			/>
 		);
 	};
-
 	// eslint-disable-next-line react/no-unstable-nested-components
 	const PlaceholderCheckboxControl = () => {
 		return (

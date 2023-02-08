@@ -1,3 +1,5 @@
+// import {useEffect, useRef, useMemo} from 'react';
+
 /**
  * WordPress dependencies
  */
@@ -33,11 +35,11 @@ const MaxiStyleCardsEditorPopUp = forwardRef((props, settingsRef) => {
 			<Button
 				id='maxi-button__go-to-customizer'
 				className='action-buttons__button style-card-button'
-				aria-label={__('Style card manager', 'maxi-blocks')}
+				aria-label={__('Style cards', 'maxi-blocks')}
 				onClick={() => setIsVisible(!isVisible)}
 			>
 				<Icon icon={styleCardMenu} />
-				<span>{__('Style card manager', 'maxi-blocks')}</span>
+				<span>{__('Style cards', 'maxi-blocks')}</span>
 			</Button>
 			{isVisible && (
 				<MaxiStyleCardsEditor

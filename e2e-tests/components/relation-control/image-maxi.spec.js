@@ -60,13 +60,24 @@ describe('Image Maxi hover simple actions', () => {
 
 		if (!disableTransition) {
 			await previewPage.waitForSelector(
-				'#relations--image-maxi-1-transitions'
+				'#relations--image-maxi-1-in-transitions'
 			);
-			const transitionsCSS = await previewPage.$eval(
-				'#relations--image-maxi-1-transitions',
+			const inTransitionsCSS = await previewPage.$eval(
+				'#relations--image-maxi-1-in-transitions',
 				el => el.textContent
 			);
-			expect(transitionsCSS).toMatchSnapshot();
+			expect(inTransitionsCSS).toMatchSnapshot();
+
+			await previewPage.mouse.move(0, 0);
+
+			await previewPage.waitForSelector(
+				'#relations--image-maxi-1-out-transitions'
+			);
+			const outTransitionsCSS = await previewPage.$eval(
+				'#relations--image-maxi-1-out-transitions',
+				el => el.textContent
+			);
+			expect(outTransitionsCSS).toMatchSnapshot();
 		}
 	};
 

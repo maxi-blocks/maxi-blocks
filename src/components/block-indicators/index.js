@@ -82,6 +82,9 @@ const Indicator = props => {
 		...(type === 'padding' &&
 			!isVertical && {
 				[dir]: 0,
+				...(dir === 'right' && {
+					right: '1px',
+				}),
 			}),
 	};
 

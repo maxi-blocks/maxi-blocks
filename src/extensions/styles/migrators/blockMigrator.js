@@ -21,6 +21,7 @@ import transformIBTargetMigrator from './transformIBTargetMigrator';
 import backgroundPositionMigrator from './backgroundPositionMigrator';
 import disableTransitionIBMigrator from './disableTransitionIBMigrator';
 import corruptedHoverAttributesMigrator from './corruptedHoverAttributesMigrator';
+import bottomGapMigrator from './bottomGapMigrator';
 
 /**
  * External dependencies
@@ -99,6 +100,7 @@ const blockMigrator = blockMigratorProps => {
 		backgroundPositionMigrator,
 		disableTransitionIBMigrator,
 		corruptedHoverAttributesMigrator,
+		bottomGapMigrator,
 		...(blockMigratorProps.migrators ?? []),
 	];
 

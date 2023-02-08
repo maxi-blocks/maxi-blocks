@@ -5,10 +5,14 @@ import padding from './padding';
 
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import paletteAttributesCreator from '../paletteAttributesCreator';
+import boxShadow from './boxShadow';
 
 const prefix = 'icon-';
 
 export const icon = {
+	svgType: {
+		type: 'string',
+	},
 	'icon-inherit': {
 		type: 'boolean',
 		default: true,
@@ -80,4 +84,9 @@ export const iconBackgroundGradient = prefixAttributesCreator({
 	obj: backgroundGradient,
 	prefix,
 	exclAttr: ['background-gradient-clip-path'],
+});
+
+export const iconBoxShadow = prefixAttributesCreator({
+	obj: boxShadow,
+	prefix,
 });

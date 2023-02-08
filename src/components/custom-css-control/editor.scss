@@ -5,11 +5,6 @@
 			flex-direction: row;
 		}
 	}
-	.maxi-custom-css-control__group {
-		.maxi-base-control__label {
-			max-width: 180px;
-		}
-	}
 	.maxi-base-control {
 		&__field {
 			align-items: start;
@@ -17,10 +12,9 @@
 		}
 	}
 	.maxi-base-control__field {
-		display: block !important;
-		.maxi-base-control__label {
-			margin-top: 7px;
-		}
+		flex-direction: row;
+		flex-wrap: wrap;
+
 		.components-button {
 			float: right;
 			height: 24px;
@@ -36,6 +30,7 @@
 		background-color: var(--maxi-white-4-color);
 		border: 1px solid var(--maxi-grey-1-color);
 		font-family: monospace !important;
+		flex: 1 0 100%;
 
 		textarea {
 			background-color: var(--maxi-white-4-color);

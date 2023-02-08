@@ -193,6 +193,7 @@ const transition = {
 	block: {
 		typography: {
 			title: 'Typography',
+			// target: `${buttonClass} ${contentClass}`,
 			target: contentClass,
 			property: false,
 			hoverProp: 'typography-status-hover',

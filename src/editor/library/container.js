@@ -49,7 +49,6 @@ import { arrowIcon } from '../../icons';
 
 // hack to fix issue #3930: top level tags resetting when we choose a second-level tag
 const removeMenuBugFix = () => {
-	console.log('remove hack!');
 	const lists = document.querySelectorAll('.maxi__hide-top-tags');
 
 	for (const list of lists) {
@@ -221,7 +220,6 @@ const SvgMenuSelect = ({ items, currentRefinement, refine }) => {
 const HierarchicalMenu = ({ items, refine, type = 'firstLevel' }) => {
 	// hack to fix issue #3930: top level tags resetting when we choose a second-level tag
 	const fixMenuBug = el => {
-		console.log('fixMenuBug');
 		const topLevelParent =
 			el?.target === 'a'
 				? el?.currentTarget?.parentNode?.parentNode?.parentNode
@@ -235,9 +233,6 @@ const HierarchicalMenu = ({ items, refine, type = 'firstLevel' }) => {
 			return;
 
 		const topLevelElements = topLevelParent?.childNodes;
-
-		console.log('topLevelElements');
-		console.log(topLevelElements);
 
 		if (!isEmpty(topLevelElements)) {
 			topLevelParent.classList.add('maxi__hide-top-tags');

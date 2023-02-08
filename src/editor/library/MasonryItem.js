@@ -24,6 +24,7 @@ const MasonryItem = props => {
 		target,
 		svgCode,
 		serial,
+		title,
 		previewIMG,
 		demoUrl,
 		cost,
@@ -79,7 +80,7 @@ const MasonryItem = props => {
 							<MaxiModal
 								type='preview'
 								url={demoUrl}
-								title={serial}
+								title={title}
 								serial={getCardSerial()}
 								cost={cost}
 								toneUrl={toneUrl}

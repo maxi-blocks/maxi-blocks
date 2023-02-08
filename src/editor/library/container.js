@@ -223,8 +223,8 @@ const HierarchicalMenu = ({ items, refine, type = 'firstLevel' }) => {
 		const topLevelParent =
 			el?.target === 'a'
 				? el?.currentTarget?.parentNode?.parentNode?.parentNode
-						?.parentNode
-				: el?.parentNode?.parentNode?.parentNode;
+						?.parentNode?.parentNode
+				: el?.parentNode?.parentNode?.parentNode?.parentNode;
 
 		if (
 			isEmpty(topLevelParent) ||
@@ -249,6 +249,7 @@ const HierarchicalMenu = ({ items, refine, type = 'firstLevel' }) => {
 						key={item.label}
 						className={classnames(
 							'ais-HierarchicalMenu-item',
+							`ais-HierarchicalMenu-item__${type}`,
 							`ais-HierarchicalMenu-item__${item.label
 								.replace(/\s+/g, '-')
 								.toLowerCase()}`,
@@ -268,6 +269,7 @@ const HierarchicalMenu = ({ items, refine, type = 'firstLevel' }) => {
 												.toLowerCase()}`
 										)[0]
 									);
+								type === 'firstLevel' && removeMenuBugFix();
 								refine(item.value);
 							}}
 						>

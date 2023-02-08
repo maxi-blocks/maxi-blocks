@@ -11,11 +11,7 @@ import {
 /**
  * Internal dependencies
  */
-import {
-	checkSCResult,
-	getStyleCardEditor,
-	receiveSelectedMaxiStyleCard,
-} from '../../utils';
+import { getStyleCardEditor, receiveSelectedMaxiStyleCard } from '../../utils';
 
 /**
  * External dependencies
@@ -50,6 +46,23 @@ const addMoreSC = async (title = 'Daemon') => {
 	);
 };
 
+const copySCtoEdit = async newName => {
+	// Click Customize Card button
+	await page.$eval('.maxi-style-cards-customise-card-button', button =>
+		button.click()
+	);
+
+	// Input the new SC name
+	await page.$eval('.maxi-style-cards__sc__save > input', input =>
+		input.focus()
+	);
+	await page.keyboard.type(newName);
+	await page.$eval(
+		'.maxi-style-cards__sc__save > button:nth-child(2)',
+		button => button.click()
+	);
+};
+
 describe('SC settings', () => {
 	it('Can add style cards from library and switch them with select', async () => {
 		await createNewPost();
@@ -70,14 +83,39 @@ describe('SC settings', () => {
 		expect(name).toStrictEqual('Daemon');
 
 		// Switch back to maxi default SC
-		await page.select(
-			'.maxi-style-cards__sc__more-sc--select select',
-			'sc_maxi'
+
+		await page.$eval(
+			'.maxi-style-cards__sc__more-sc--select input',
+			input => input.focus()
 		);
+
+		await page.keyboard.type('Maxi');
+		await page.keyboard.press('Enter');
+		await page.waitForTimeout(100);
 
 		const { key } = await receiveSelectedMaxiStyleCard(page);
 
 		expect(key).toStrictEqual('sc_maxi');
+	});
+
+	it('Can copy a style card to edit it', async () => {
+		await createNewPost();
+		await setBrowserViewport('large');
+
+		await getStyleCardEditor({
+			page,
+			accordion: 'divider',
+		});
+
+		await addMoreSC();
+		const newName = `copy ${new Date().getTime()}`;
+		await copySCtoEdit(newName);
+
+		const {
+			value: { name: SCName },
+		} = await receiveSelectedMaxiStyleCard(page);
+
+		expect(SCName).toContain(`Daemon - ${newName}`);
 	});
 
 	it('Applies SC on all pages', async () => {
@@ -126,31 +164,6 @@ describe('SC settings', () => {
 		expect(secondColour).toStrictEqual(firstColour);
 	});
 
-	it('Can reset SC styles to default', async () => {
-		await createNewPost();
-		await getStyleCardEditor({
-			page,
-			accordion: 'color',
-		});
-
-		// Change colour value
-		await page.$eval(
-			'.maxi-color-control .maxi-color-control__color input',
-			input => input.focus()
-		);
-
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('106D3C');
-
-		// Reset value
-		await page.$eval('.maxi-style-cards__sc__more-sc--reset', button =>
-			button.click()
-		);
-
-		// Style cards value should be empty
-		expect(await checkSCResult(page)).toMatchObject({});
-	});
-
 	it('Can delete style card', async () => {
 		await createNewPost();
 		await getStyleCardEditor({
@@ -159,65 +172,29 @@ describe('SC settings', () => {
 		});
 		await addMoreSC();
 
-		const SCToDelete = await page.$eval(
-			'.maxi-style-cards__sc__more-sc--select select',
-			selector => selector.value
-		);
+		await copySCtoEdit(`copy 2 ${new Date().getTime()}`);
 
 		await page.$eval('.maxi-style-cards__sc__more-sc--delete', button =>
 			button.click()
 		);
 
-		expect(
-			Array.from(
-				await page.$$eval(
-					'.maxi-style-cards__sc__more-sc--select select option',
-					options => options.map(option => option.value)
-				)
-			)
-		).not.toContain(SCToDelete);
-
-		// Check if SC is deleted on all pages
-		await createNewPost();
-		await getStyleCardEditor({
-			page,
-			accordion: 'color',
-		});
-
-		expect(
-			Array.from(
-				await page.$$eval(
-					'.maxi-style-cards__sc__more-sc--select select option',
-					options => options.map(option => option.value)
-				)
-			)
-		).not.toContain(SCToDelete);
-	});
-
-	it('Can add custom name for SC', async () => {
-		await createNewPost();
-		await getStyleCardEditor({
-			page,
-			accordion: 'color',
-		});
-
-		await page.$eval('.maxi-style-cards__sc__save input', input =>
-			input.focus()
+		await page.$eval(
+			'.maxi-dialog-box-buttons button:nth-child(2)',
+			button => button.click()
 		);
 
-		const customName = 'Custom name :)';
-
-		await page.keyboard.type(customName);
-
-		await page.$eval('.maxi-style-cards__sc__save button', button =>
-			button.click()
+		await page.$eval(
+			'.maxi-style-cards__sc__more-sc--select input',
+			input => input.focus()
 		);
 
-		const {
-			value: { name: SCName },
-		} = await receiveSelectedMaxiStyleCard(page);
+		await page.keyboard.type('Daemon - copy 2');
+		await page.keyboard.press('Enter');
+		await page.waitForTimeout(100);
 
-		expect(SCName).toStrictEqual(customName);
+		const { key } = await receiveSelectedMaxiStyleCard(page);
+
+		expect(key).toStrictEqual('sc_maxi');
 	});
 
 	it('Can export/import style cards', async () => {
@@ -227,18 +204,13 @@ describe('SC settings', () => {
 			accordion: 'color',
 		});
 
-		// Change name and colour preset, and save
-		await page.$eval('.maxi-style-cards__sc__save input', input =>
-			input.focus()
-		);
+		await addMoreSC('');
 
-		const name = 'Random SC name';
+		await copySCtoEdit(`copy 3 ${new Date().getTime()}`);
 
-		await page.keyboard.type(name);
-
-		await page.$eval('.maxi-style-cards__sc__save button', button =>
-			button.click()
-		);
+		const {
+			value: { name },
+		} = await receiveSelectedMaxiStyleCard(page);
 
 		await page.$eval(
 			'.maxi-color-control .maxi-color-control__color input',
@@ -252,8 +224,13 @@ describe('SC settings', () => {
 			button.click()
 		);
 
+		await page.$eval(
+			'.maxi-dialog-box-buttons button:nth-child(2)',
+			button => button.click()
+		);
+
 		// Export
-		const fileName = `${name}.txt`;
+		const fileName = `${name}_exported.txt`;
 		const downloadFolder = path.join(__dirname, './SC-downloads');
 
 		await page._client.send('Page.setDownloadBehavior', {
@@ -265,15 +242,7 @@ describe('SC settings', () => {
 			button.click()
 		);
 
-		// Switch to default SC
-		await page.select(
-			'.maxi-style-cards__sc__more-sc--select select',
-			'sc_maxi'
-		);
-
-		await page.$eval('.maxi-style-cards__sc__actions--apply', button =>
-			button.click()
-		);
+		await page.waitForTimeout(150);
 
 		// Import
 		await page.$eval('.maxi-style-cards__sc__ie--import', button =>
@@ -284,9 +253,7 @@ describe('SC settings', () => {
 
 		uploader.uploadFile(path.join(downloadFolder, fileName));
 
-		await page.waitForSelector(
-			'.media-frame-toolbar .media-toolbar-primary button:not([disabled])'
-		);
+		await page.waitForTimeout(150);
 
 		await page.$eval(
 			'.media-frame-toolbar .media-toolbar-primary button',
@@ -302,6 +269,20 @@ describe('SC settings', () => {
 			value: { name: newName },
 		} = await receiveSelectedMaxiStyleCard(page);
 
-		expect(newName).toStrictEqual(name);
+		await page.$eval('.maxi-style-cards__sc__more-sc--delete', button =>
+			button.click()
+		);
+
+		await page.$eval(
+			'.maxi-dialog-box-buttons button:nth-child(2)',
+			button => button.click()
+		);
+
+		// let's reset the SCs for all other tests
+		await page.evaluate(() => {
+			wp.data.dispatch('maxiBlocks/style-cards').resetSC();
+		});
+
+		expect(newName).toStrictEqual(`${name} exported`);
 	});
 });

@@ -64,7 +64,11 @@ const getParsedObj = obj => {
 	return newObj;
 };
 
-export const getSCVariablesObject = styleCards => {
+export const getSCVariablesObject = (
+	styleCards,
+	activeSCColour = styleCards?.light?.defaultStyleCard?.color?.[4],
+	activeSCColourTwo = styleCards?.light?.defaultStyleCard?.color?.[5]
+) => {
 	const response = {};
 	const styles = ['light', 'dark'];
 	const elements = [
@@ -212,7 +216,8 @@ export const getSCVariablesObject = styleCards => {
 			});
 		}
 	});
-
+	response['--maxi-active-sc-color'] = activeSCColour;
+	response['--maxi-active-sc-color-two'] = activeSCColourTwo;
 	return response;
 };
 
@@ -260,9 +265,15 @@ const getSCFontsData = obj => {
 
 const updateSCOnEditor = (
 	styleCards,
+	activeSCColour,
+	activeSCColourTwo,
 	rawElements = [document, getSiteEditorIframe()]
 ) => {
-	const SCObject = getSCVariablesObject({ ...cloneDeep(styleCards) });
+	const SCObject = getSCVariablesObject(
+		{ ...cloneDeep(styleCards) },
+		activeSCColour,
+		activeSCColourTwo
+	);
 	const allSCFonts = getSCFontsData(SCObject);
 
 	const elements = isArray(rawElements) ? rawElements : [rawElements];

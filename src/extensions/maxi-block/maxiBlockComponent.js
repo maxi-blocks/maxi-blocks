@@ -571,29 +571,34 @@ class MaxiBlockComponent extends Component {
 	}
 
 	removeUnmountedBlockFromRelations(uniqueID) {
-		goThroughMaxiBlocks(({ clientId, attributes }) => {
-			const { relations, uniqueID: blockUniqueID } = attributes;
+		const { isDraggingBlocks } = select('core/block-editor');
 
-			if (uniqueID !== blockUniqueID && !isEmpty(relations)) {
-				const filteredRelations = relations.filter(
-					({ uniqueID: relationUniqueID }) =>
-						relationUniqueID !== uniqueID
-				);
+		const isDragging = isDraggingBlocks();
 
-				if (!isEqual(relations, filteredRelations)) {
-					const { updateBlockAttributes } =
-						dispatch('core/block-editor');
+		if (!isDragging)
+			goThroughMaxiBlocks(({ clientId, attributes }) => {
+				const { relations, uniqueID: blockUniqueID } = attributes;
 
-					updateBlockAttributes(clientId, {
-						relations: filteredRelations,
-					});
+				if (uniqueID !== blockUniqueID && !isEmpty(relations)) {
+					const filteredRelations = relations.filter(
+						({ uniqueID: relationUniqueID }) =>
+							relationUniqueID !== uniqueID
+					);
 
-					return true;
+					if (!isEqual(relations, filteredRelations)) {
+						const { updateBlockAttributes } =
+							dispatch('core/block-editor');
+
+						updateBlockAttributes(clientId, {
+							relations: filteredRelations,
+						});
+
+						return true;
+					}
 				}
-			}
 
-			return false;
-		});
+				return false;
+			});
 	}
 
 	/**

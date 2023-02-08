@@ -259,7 +259,7 @@
 		width: 100%;
 		min-height: 100%;
 		max-height: calc(100% - 120px);
-		background: #f9f9f9;
+		background: #fff;
 		margin-top: 0;
 		padding: 46px 0 0;
 		overflow: hidden;
@@ -605,7 +605,6 @@
 			min-height: calc(100% - 1550px);
 			height: 100%;
 			overflow: hidden;
-			background-color: #fff;
 
 			&__search-bar {
 				display: flex;
@@ -879,7 +878,7 @@
 				}
 			}
 		}
-
+		&__sc,
 		&__svg-icon {
 			width: 100%;
 			&__sidebar{
@@ -1077,6 +1076,7 @@
 						.ais-SearchBox-input {
 							display: block;
 							width: 100%;
+							min-height: 36px;
 							padding: 5px 10px;
 							border: 1px solid #dbdde6;
 							border-radius: 0;
@@ -1431,6 +1431,7 @@
 				}
 			}
 			.ais-InfiniteHits-list {
+				position: relative;
 				grid-template-columns: repeat(3, 1fr);
 				margin-top: 0;
 
@@ -1474,6 +1475,7 @@
 				}
 			}
 		}
+		&__sc,
 		&__svg-shape,
 		&__svg-icon,
 		&__patterns {
@@ -1507,6 +1509,7 @@
 		&__svg-shape,
 		&__svg-icon {
 			.ais-InfiniteHits-list {
+				position: relative;
 				grid-template-columns: repeat(8, 1fr);
 			}
 		}
@@ -1684,8 +1687,10 @@
 			}
 		}
 	}
+	.maxi-cloud-container .maxi-cloud-container__sc,
 	.maxi-cloud-container .maxi-cloud-container__svg-shape,
 	.maxi-cloud-container .maxi-cloud-container__svg-icon {
+		.maxi-cloud-container__sc__content-sc,
 		.maxi-cloud-container__content-svg-shape,
 		&__content-svg-icon {
 			min-height: calc(100% - 31px);
@@ -1786,7 +1791,6 @@
 			&__content-patterns {
 				margin: 0 !important;
 				padding: 0;
-				background-color: #fff;
 			}
 			.maxi-cloud-container__sc__content-sc{
 				height: 100%;
@@ -2008,11 +2012,7 @@
 			grid-template-columns: 190px 1fr;
 		}
 		.maxi-cloud-container .maxi-cloud-container__sc {
-			grid-template-columns: 100%;
-
-			&__content-sc {
-				margin-top: 1rem;
-			}
+			grid-template-columns: 190px 1fr;
 		}
 		.maxi-cloud-container {
 			&__content-svg-shape {
@@ -2046,6 +2046,7 @@
 				display: block !important;
 				height: auto;
 				margin: 0;
+				border-bottom: 1px solid #dbdde6;
 			}
 			&__patterns {
 				&__top-menu {

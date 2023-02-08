@@ -1676,6 +1676,9 @@
 							background-color: #edf6fa !important;
 						}
 					}
+					&.saved {
+						opacity: 0.4;
+					}
 				}
 
 				&__tags {

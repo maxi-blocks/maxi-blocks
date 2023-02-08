@@ -26,13 +26,7 @@ import classNames from 'classnames';
 /**
  * Icons
  */
-import {
-	SCaddMore,
-	remove,
-	cloudLib,
-	selectIcon,
-	toolbarReplaceImage,
-} from '../../icons';
+import { toolbarReplaceImage, remove, cloudLib, selectIcon } from '../../icons';
 
 /**
  * Cloud Content Placeholder
@@ -201,7 +195,7 @@ const MaxiModal = props => {
 						className='maxi-style-cards__sc__more-sc--add-more'
 						onClick={onClick}
 					>
-						<Icon icon={SCaddMore} />
+						<span>{__('Browse style cards', 'maxi-blocks')}</span>
 					</Button>
 				)}
 				{type === 'svg' && forceHide && (

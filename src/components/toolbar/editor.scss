@@ -163,7 +163,7 @@
 				&__duplicate .components-button,
 				&__move,
 				&__replay,
-				&__alignment,
+				&__alignment:not(.maxi-dropdown),
 				&__bold,
 				&__italic,
 				&__button {
@@ -211,7 +211,7 @@
 						outline: 0;
 					}
 				}
-				&__alignment,
+				&__alignment:not(.maxi-dropdown),
 				&__bold,
 				&__italic {
 					height: auto;

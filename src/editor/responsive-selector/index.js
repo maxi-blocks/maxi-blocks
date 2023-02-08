@@ -190,7 +190,10 @@ const ResponsiveSelector = props => {
 					aria-label='Template library'
 					onClick={() => addCloudLibrary()}
 				>
-					<Icon icon={cloudLib} />
+					<Icon
+						className='template-library-cloud-icon'
+						icon={cloudLib}
+					/>
 					<span>{__('Template library', 'maxi-blocks')}</span>
 				</Button>
 			</div>

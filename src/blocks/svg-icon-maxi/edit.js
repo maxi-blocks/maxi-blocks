@@ -294,15 +294,6 @@ class edit extends MaxiBlockComponent {
 					</MaxiPopoverButton>,
 				],
 			],
-			...[
-				isEmptyContent && (
-					<MaxiModal
-						{...maxiModalProps}
-						forceHide
-						key={`maxi-modal--${uniqueID}`}
-					/>
-				),
-			],
 			<MaxiBlock
 				key={`maxi-svg-icon--${uniqueID}`}
 				ref={this.blockRef}
@@ -310,11 +301,10 @@ class edit extends MaxiBlockComponent {
 			>
 				<>
 					{isEmptyContent && (
-						<SVGIconPlaceholder
-							ref={this.blockRef}
-							uniqueID={uniqueID}
-							clientId={clientId}
-							onClick={() => this.setState({ isOpen: true })}
+						<MaxiModal
+							{...maxiModalProps}
+							forceHide
+							key={`maxi-modal--${uniqueID}`}
 						/>
 					)}
 					{!isEmptyContent && (

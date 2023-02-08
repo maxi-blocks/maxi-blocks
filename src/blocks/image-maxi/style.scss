@@ -598,13 +598,13 @@ body.maxi-blocks--active figure.maxi-image-block {
 			&__slide {
 				img,
 				svg {
-					margin-left: 0;
+					transform: translateX(0);
 					transition: 0.3s ease-in-out;
 				}
 				&:hover {
 					img,
 					svg {
-						margin-left: 30px;
+						transform: translateX(0);
 					}
 				}
 			}
@@ -634,7 +634,7 @@ body.maxi-blocks--active figure.maxi-image-block {
 					}
 				}
 			}
-			&__greay-scale {
+			&__grey-scale {
 				img,
 				svg {
 					filter: grayscale(0);

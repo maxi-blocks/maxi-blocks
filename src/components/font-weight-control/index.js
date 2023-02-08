@@ -7,13 +7,21 @@ import { getWeightOptions } from '../typography-control/utils';
 import { loadFontsInEditor } from '../../extensions/text/fonts';
 
 const FontWeightControl = props => {
-	const { onChange, fontName, fontStyle, fontWeight, onReset } = props;
+	const {
+		onChange,
+		fontName,
+		fontStyle,
+		fontWeight,
+		defaultFontWeight,
+		onReset,
+	} = props;
 
 	return (
 		<SelectControl
 			label={__('Font weight', 'maxi-blocks')}
 			className='maxi-typography-control__weight'
 			value={fontWeight}
+			defaultValue={defaultFontWeight}
 			options={getWeightOptions(fontName)}
 			onChange={val => {
 				onChange(val);

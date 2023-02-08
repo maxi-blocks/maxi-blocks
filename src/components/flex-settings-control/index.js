@@ -191,6 +191,9 @@ const FlexSettingsControl = props => {
 													attributes: props,
 											  }) ?? ''
 									}
+									defaultValue={getDefaultAttribute(
+										`flex-basis-${breakpoint}`
+									)}
 									onReset={() =>
 										onChange({
 											[`flex-basis-${breakpoint}`]:

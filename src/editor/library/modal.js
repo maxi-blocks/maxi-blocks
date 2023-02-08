@@ -25,7 +25,7 @@ import classNames from 'classnames';
 /**
  * Icons
  */
-import { SCaddMore, toolbarReplaceImage, remove, cloudLib } from '../../icons';
+import { toolbarReplaceImage, remove, cloudLib } from '../../icons';
 
 /**
  * Content
@@ -134,7 +134,7 @@ const MaxiModal = props => {
 						className='maxi-style-cards__sc__more-sc--add-more'
 						onClick={onClick}
 					>
-						<Icon icon={SCaddMore} />
+						<span>{__('Browse style cards', 'maxi-blocks')}</span>
 					</Button>
 				)}
 				{type === 'svg' && !forceHide && (
@@ -164,6 +164,16 @@ const MaxiModal = props => {
 						{isEmpty(icon)
 							? __('Add Icon', 'maxi-blocks')
 							: __('Replace Icon', 'maxi-blocks')}
+					</Button>
+				)}
+				{type === 'navigation-icon' && (
+					<Button
+						className='maxi-library-modal__action-section__buttons__load-library'
+						onClick={onClick}
+					>
+						{isEmpty(icon)
+							? __('Add icon', 'maxi-blocks')
+							: __('Replace icon', 'maxi-blocks')}
 					</Button>
 				)}
 				{(type === 'accordion-icon' ||
@@ -234,22 +244,23 @@ const MaxiModal = props => {
 					</RawHTML>
 				</div>
 			)}
-			{type === 'search-icon' && !isEmpty(icon) && (
-				<div className='maxi-library-modal__action-section__preview'>
-					<Icon
-						className='maxi-library-modal__action-section__preview--remove'
-						icon={remove}
-						onClick={() =>
-							onRemove({
-								[`${prefix}icon-content`]: '',
-							})
-						}
-					/>
-					<RawHTML className='maxi-library-modal__action-section__preview__icon'>
-						{icon}
-					</RawHTML>
-				</div>
-			)}
+			{(type === 'navigation-icon' || type === 'search-icon') &&
+				!isEmpty(icon) && (
+					<div className='maxi-library-modal__action-section__preview'>
+						<Icon
+							className='maxi-library-modal__action-section__preview--remove'
+							icon={remove}
+							onClick={() =>
+								onRemove({
+									[`${prefix}icon-content`]: '',
+								})
+							}
+						/>
+						<RawHTML className='maxi-library-modal__action-section__preview__icon'>
+							{icon}
+						</RawHTML>
+					</div>
+				)}
 			{type === 'bg-shape' && !isEmpty(icon) && (
 				<div className='maxi-library-modal__action-section__preview'>
 					<Icon

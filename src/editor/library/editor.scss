@@ -214,10 +214,10 @@
 				align-items: center;
 				column-gap: 17px;
 				width: 33.33%;
+				font-family: "Roboto", Helvetica, Arial, Lucida, sans-serif !important;
 				h2 {
 					color: #282828;
 					font-size: 16px;
-					font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif !important;
 					font-weight: 500;
 					letter-spacing: -0.5px;
 				}
@@ -241,6 +241,7 @@
 				display: flex;
 				align-items: center;
 				justify-content: flex-end;
+				column-gap: 10px;
 				width: 33.33%;
 				.maxi-cloud-toolbar__button {
 					padding: 7px 9px;
@@ -248,6 +249,11 @@
 						width: 13px;
 						height: 13px;
 						margin: 0 auto 1px;
+					}
+					span{
+						font-size: 16px;
+						font-weight: 500;
+						color: #282828;
 					}
 				}
 			}
@@ -1458,7 +1464,6 @@
 					}
 
 					.maxi-cloud-masonry-card__image {
-						border: none;
 						padding: 0;
 						background: #fff;
 						border: 1px solid #e3e3e3;
@@ -1471,6 +1476,15 @@
 							box-shadow: 0 0 0 1px #007cba;
 							color: #007cba;
 						}
+					}
+				}
+			}
+		}
+		&__sc{
+			.ais-InfiniteHits-list{
+				.ais-InfiniteHits-item {
+					.maxi-cloud-masonry-card__image {
+						border: none;
 					}
 				}
 			}

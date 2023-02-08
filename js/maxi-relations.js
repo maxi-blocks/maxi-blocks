@@ -137,7 +137,7 @@ class Relation {
 
 		if (!this.inlineStylesEl)
 			this.inlineStylesEl = document.querySelector(
-				'#maxi-blocks-inline-css'
+				'style[id*=maxi-blocks]'
 			);
 
 		const currentEl = document.querySelector(`#${styleEl.id}`);

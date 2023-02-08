@@ -12,11 +12,12 @@ import {
 	getLastBreakpointAttribute,
 } from '../styles';
 import { loadFonts } from '../text/fonts';
+import { getSiteEditorIframe } from '../fse';
 
 /**
  * External dependencies
  */
-import { times, isEmpty, merge, cloneDeep, uniq } from 'lodash';
+import { cloneDeep, isArray, isEmpty, merge, times, uniq } from 'lodash';
 import { getTypographyStyles } from '../styles/helpers';
 
 const getColorString = (obj, target, style) => {
@@ -257,22 +258,37 @@ const getSCFontsData = obj => {
 	return response;
 };
 
-const updateSCOnEditor = styleCards => {
+const updateSCOnEditor = (
+	styleCards,
+	rawElements = [document, getSiteEditorIframe()]
+) => {
 	const SCObject = getSCVariablesObject({ ...cloneDeep(styleCards) });
-	let SCStyle = document.getElementById('maxi-blocks-sc-vars-inline-css');
-	if (!SCStyle) {
-		SCStyle = document.createElement('style');
-		SCStyle.id = 'maxi-blocks-sc-vars-inline-css';
-		SCStyle.innerHTML = createSCStyleString(SCObject);
-		document.head.appendChild(SCStyle);
-		const { saveSCStyles } = dispatch('maxiBlocks/style-cards');
-
-		// Needs a delay, if not Redux returns error 3
-		setTimeout(() => saveSCStyles(false), 150);
-	} else SCStyle.innerHTML = createSCStyleString(SCObject);
-
 	const allSCFonts = getSCFontsData(SCObject);
-	if (!isEmpty(allSCFonts)) loadFonts(allSCFonts);
+
+	const elements = isArray(rawElements) ? rawElements : [rawElements];
+
+	elements.forEach(element => {
+		if (!element) return;
+
+		let SCStyle = element.getElementById('maxi-blocks-sc-vars-inline-css');
+		if (!SCStyle) {
+			SCStyle = element.createElement('style');
+			SCStyle.id = 'maxi-blocks-sc-vars-inline-css';
+			SCStyle.innerHTML = createSCStyleString(SCObject);
+			// Iframe on creation generates head, then gutenberg generates their own head
+			// and in some moment we have two heads, so we need to add SC only to head which is second(gutenberg one)
+			const elementHead = Array.from(
+				element.querySelectorAll('head')
+			).pop();
+			elementHead.appendChild(SCStyle);
+			const { saveSCStyles } = dispatch('maxiBlocks/style-cards');
+
+			// Needs a delay, if not Redux returns error 3
+			setTimeout(() => saveSCStyles(false), 150);
+		} else SCStyle.innerHTML = createSCStyleString(SCObject);
+
+		if (!isEmpty(allSCFonts)) loadFonts(allSCFonts, false, element);
+	});
 };
 
 export default updateSCOnEditor;

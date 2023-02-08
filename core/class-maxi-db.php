@@ -53,12 +53,13 @@ if (!class_exists('MaxiBlocks_DB')):
             $db_custom_prefix = 'maxi_blocks_';
             $db_general_table_name = $wpdb->prefix . $db_custom_prefix . 'general';
             $db_css_table_name = $wpdb->prefix . $db_custom_prefix . 'styles';
+            $db_css_templates_table_name = $db_css_table_name . '_templates';
             $db_custom_data_table_name = $wpdb->prefix . $db_custom_prefix . 'custom_data';
-           
+            $db_custom_data_templates_table_name = $db_custom_data_table_name . '_templates';
+
             $charset_collate = $wpdb->get_charset_collate();
 
             //add general table
-            
             if (
                 $wpdb->get_var($wpdb->prepare("show tables like %s", $db_general_table_name)) !=
                 $db_general_table_name
@@ -94,6 +95,28 @@ if (!class_exists('MaxiBlocks_DB')):
                 dbDelta($sql);
             }
 
+            //add css templates table
+            if (
+                $wpdb->get_var($wpdb->prepare("show tables like %s", $db_css_templates_table_name)) !=
+                $db_css_templates_table_name
+            ) {
+                $sql = "CREATE TABLE $db_css_templates_table_name (
+						id bigint(20) NOT NULL AUTO_INCREMENT,
+						template_id varchar(255) UNIQUE NOT NULL,
+						prev_css_value longtext,
+						css_value longtext,
+                        prev_fonts_value longtext,
+						fonts_value longtext,
+						template_parts longtext,
+						prev_active_custom_data BIT DEFAULT 0,
+                        active_custom_data BIT DEFAULT 0,
+						UNIQUE (id)
+				) $charset_collate;";
+
+                require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+                dbDelta($sql);
+            }
+
             //add custom data table
             if (
                 $wpdb->get_var($wpdb->prepare("show tables like %s", $db_custom_data_table_name)) !=
@@ -102,6 +125,23 @@ if (!class_exists('MaxiBlocks_DB')):
                 $sql = "CREATE TABLE $db_custom_data_table_name (
 						id bigint(20) NOT NULL AUTO_INCREMENT,
 						post_id bigint(20) UNIQUE NOT NULL,
+						prev_custom_data_value longtext,
+						custom_data_value longtext,
+						UNIQUE (id)
+				) $charset_collate;";
+
+                require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+                dbDelta($sql);
+            }
+
+            //add custom data templates table
+            if (
+                $wpdb->get_var($wpdb->prepare("show tables like %s", $db_custom_data_templates_table_name)) !=
+                $db_custom_data_templates_table_name
+            ) {
+                $sql = "CREATE TABLE $db_custom_data_templates_table_name (
+						id bigint(20) NOT NULL AUTO_INCREMENT,
+						template_id varchar(255) UNIQUE NOT NULL,
 						prev_custom_data_value longtext,
 						custom_data_value longtext,
 						UNIQUE (id)

@@ -15,11 +15,6 @@ import { Crisp } from 'crisp-sdk-web';
 import classnames from 'classnames';
 
 const CrispChat = ({ className, as: As = Button, children }) => {
-	useEffect(() => {
-		Crisp.configure('8434178e-1d60-45d5-b112-14a32ee6903c');
-		Crisp.chat.hide();
-	}, []);
-
 	const openChat = () => {
 		Crisp.chat.show();
 		Crisp.chat.open();
@@ -29,6 +24,13 @@ const CrispChat = ({ className, as: As = Button, children }) => {
 		Crisp.chat.hide();
 		Crisp.chat.close();
 	};
+
+	useEffect(() => {
+		Crisp.configure('8434178e-1d60-45d5-b112-14a32ee6903c');
+		Crisp.chat.hide();
+
+		return () => closeChat();
+	}, []);
 
 	const classes = classnames('maxi-crisp-chat', className);
 

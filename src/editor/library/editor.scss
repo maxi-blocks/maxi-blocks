@@ -295,13 +295,13 @@
 				box-shadow: none;
 				min-width: 25px;
 				svg {
-					fill: #081219;
+					fill: #ff4a17;
 					width: 25px;
 					height: 25px;
 				}
 				&:hover {
 					svg {
-						fill: #ff4a17;
+						fill: #081219;
 					}
 				}
 			}
@@ -347,54 +347,57 @@
 
 	.maxi-cloud-toolbar {
 		position: absolute;
+		top: 0;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		width: 100%;
 		height: 46px;
-		top: 0;
-		margin: 0;
 		padding: 5px 43px 5px 8px;
+		background-color: #fff;
+		border-bottom: 1px solid #dbdde6;
+		margin: 0;
 		font-size: 16px;
 		line-height: 1;
 		word-spacing: 4px;
-		border-bottom: 1px solid #dbdde6;
 		font-weight: 500;
-		background-color: #fff;
 
 		&__help-button {
+			z-index: 9;
 			display: flex;
-			background-color: transparent;
-			color: #081219;
-			font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif !important;
-			text-decoration: none;
-			padding: 0;
-			font-size: 14px;
-			cursor: pointer;
 			align-items: center;
 			justify-content: center;
-			transition: 0s;
+			padding: 0;
+			background-color: transparent;
+			color: #ff4a17;
+			font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif !important;
+			text-decoration: none;
+			font-size: 14px;
+			cursor: pointer;
+			transition: 0.1s;
 
 			svg {
-				margin-right: 5px;
 				width: 12px;
-				background-color: #081219;
 				height: 12px;
 				padding: 2px;
+				background-color: #ff4a17;
 				border-radius: 50%;
+				margin-right: 5px;
+				transition: 0.1s;
 
 				path {
-					fill: #081219;
+					fill: #ff4a17;
 					stroke: #fff;
+					transition: 0.1s;
 				}
 			}
 
 			&:hover {
-				color: #ff4a17;
+				color: #081219;
 				svg {
-					background-color: #ff4a17;
+					background-color: #081219;
 					path {
-						fill: #ff4a17;
+						fill: #081219;
 					}
 				}
 			}

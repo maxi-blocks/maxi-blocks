@@ -891,7 +891,7 @@ const LibraryContainer = props => {
 							{type === 'video-icon-close' && (
 								<SearchBox
 									submit={__('Find', 'maxi-blocks')}
-									defaultRefinement='cross'
+									defaultRefinement='close'
 									autoFocus
 									searchAsYouType
 								/>
@@ -907,26 +907,14 @@ const LibraryContainer = props => {
 									defaultRefinement='Shape'
 								/>
 							)}
-							{type.includes('video') && (
-								<CustomSvgMenuSelect
-									attribute='svg_category'
-									defaultRefinement='Line'
-								/>
-							)}
 							<CustomClearRefinements topMenu={2} />
 						</div>
 						<div className='maxi-cloud-container__content-svg-shape'>
 							{type.includes('video-icon') && (
 								<div className='maxi-cloud-container__content-svg-shape__search-bar'>
-									<CustomMenuSelect
-										className='maxi-cloud-container__content-svg-shape__categories'
+									<CustomSvgMenuSelect
 										attribute='svg_category'
-										translations={{
-											seeAllOption: __(
-												'All icons',
-												'maxi-blocks'
-											),
-										}}
+										defaultRefinement='Shape'
 									/>
 								</div>
 							)}
@@ -951,33 +939,67 @@ const LibraryContainer = props => {
 					<Configure hitsPerPage={49} />
 					<div className='maxi-cloud-container__svg-shape'>
 						<div className='maxi-cloud-container__content-svg-shape__search-bar'>
-							<CustomSvgMenuSelect
-								className='maxi-cloud-container__content-svg-shape__categories'
-								attribute='svg_category'
-								defaultRefinement='Line'
-								translations={{
-									seeAllOption: __(
-										'All icons',
-										'maxi-blocks'
-									),
-								}}
-							/>
+							{type === 'search-icon' && (
+								<CustomSvgMenuSelect
+									className='maxi-cloud-container__content-svg-shape__categories'
+									attribute='svg_category'
+									defaultRefinement='Shape'
+									translations={{
+										seeAllOption: __(
+											'All icons',
+											'maxi-blocks'
+										),
+									}}
+								/>
+							)}
+							{type !== 'search-icon' && (
+								<CustomSvgMenuSelect
+									className='maxi-cloud-container__content-svg-shape__categories'
+									attribute='svg_category'
+									defaultRefinement='Line'
+									translations={{
+										seeAllOption: __(
+											'All icons',
+											'maxi-blocks'
+										),
+									}}
+								/>
+							)}
 						</div>
 						<div className='maxi-cloud-container__svg-shape__sidebar'>
-							<SearchBox
-								submit={__('Find', 'maxi-blocks')}
-								autoFocus
-								searchAsYouType
-								reset='X'
-								translations={{
-									resetTitle: 'Clear',
-								}}
-							/>
+							{type !== 'search-icon' && (
+								<SearchBox
+									submit={__('Find', 'maxi-blocks')}
+									autoFocus
+									searchAsYouType
+									reset='X'
+									translations={{
+										resetTitle: 'Clear',
+									}}
+								/>
+							)}
+							{type === 'search-icon' && (
+								<SearchBox
+									submit={__('Find', 'maxi-blocks')}
+									defaultRefinement='search'
+									autoFocus
+									searchAsYouType
+									reset='X'
+									translations={{
+										resetTitle: 'Clear',
+									}}
+								/>
+							)}
 							<CustomHierarchicalMenu
 								attributes={['svg_tag.lvl0', 'svg_tag.lvl1']}
 								limit={100}
 							/>
-							<CustomClearRefinements topMenu={3} />
+							{type !== 'search-icon' && (
+								<CustomClearRefinements topMenu={3} />
+							)}
+							{type === 'search-icon' && (
+								<CustomClearRefinements topMenu={2} />
+							)}
 						</div>
 						<div className='maxi-cloud-container__content-svg-shape'>
 							<div className='maxi-cloud-container__sc__content-sc'>

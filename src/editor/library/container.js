@@ -304,7 +304,7 @@ const HierarchicalMenu = ({ items, refine, type = 'firstLevel' }) => {
 	);
 };
 
-const ClearRefinements = ({ items, refine }) => {
+const ClearRefinements = ({ items, refine }, topMenu = 1) => {
 	return (
 		<button
 			type='button'
@@ -315,10 +315,6 @@ const ClearRefinements = ({ items, refine }) => {
 				e.preventDefault();
 				refine(items);
 				removeMenuBugFix();
-				const allButton = document.querySelector(
-					'.top-Menu > button:first-child'
-				);
-				allButton?.click();
 
 				const patternsButton = document.querySelector(
 					'.maxi-cloud-container__patterns__top-menu .ais-Menu-list > .ais-Menu-item:nth-child(2):not(.ais-Menu-item--selected) a'
@@ -335,6 +331,16 @@ const ClearRefinements = ({ items, refine }) => {
 						'.maxi-cloud-container__patterns__sidebar > ul .ais-HierarchicalMenu-item--selected > a'
 					);
 					listItem?.click();
+
+					const typeButton =
+						topMenu === 1
+							? document.querySelector(
+									'.top-Menu > button:first-child'
+							  )
+							: document.querySelector(
+									'.top-Menu > button:nth-child(3)'
+							  );
+					typeButton?.click();
 				}, '100');
 			}}
 			disabled={!items.length}
@@ -925,7 +931,7 @@ const LibraryContainer = props => {
 							<CustomSvgMenuSelect
 								className='maxi-cloud-container__content-svg-shape__categories'
 								attribute='svg_category'
-								defaultRefinement='Filled'
+								defaultRefinement='Line'
 								translations={{
 									seeAllOption: __(
 										'All icons',
@@ -948,7 +954,7 @@ const LibraryContainer = props => {
 								attributes={['svg_tag.lvl0', 'svg_tag.lvl1']}
 								limit={100}
 							/>
-							<CustomClearRefinements />
+							<CustomClearRefinements topMenu={3} />
 						</div>
 						<div className='maxi-cloud-container__content-svg-shape'>
 							<div className='maxi-cloud-container__sc__content-sc'>

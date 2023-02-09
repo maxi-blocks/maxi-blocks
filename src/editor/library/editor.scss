@@ -770,6 +770,7 @@
 						transition: all 0.5s;
 						padding: 6px;
 						height: 100%;
+						overflow: hidden;
 
 						&__image {
 							svg {
@@ -837,19 +838,6 @@
 							}
 						}
 
-						&:after {
-							content: '';
-							position: absolute;
-							left: 0;
-							right: 0;
-							top: 0;
-							bottom: 0;
-							display: block;
-							border: 1px solid #dbdde6;
-							transition: 0.3s;
-							z-index: 0;
-						}
-
 						&__light {
 							g[data-stroke],
 							path[data-stroke],
@@ -857,6 +845,18 @@
 								stroke: #000;
 							}
 						}
+					}
+					&:after {
+						content: '';
+						position: absolute;
+						left: 0;
+						right: 0;
+						top: 0;
+						bottom: 0;
+						display: block;
+						border: 1px solid #dbdde6;
+						transition: 0.3s;
+						z-index: 0;
 					}
 					&:hover {
 						z-index: 9;
@@ -873,12 +873,12 @@
 									opacity: 1;
 								}
 							}
-							&::after {
-								background-color: #edf6fa;
-								border-color: #007cba;
-								box-shadow: 0 0 0 1px #007cba;
-								transform: scale(1.05);
-							}
+						}
+						&::after {
+							background-color: #edf6fa;
+							border-color: #007cba;
+							box-shadow: 0 0 0 1px #007cba;
+							transform: scale(1.05);
 						}
 					}
 				}
@@ -1445,6 +1445,7 @@
 					background: #fff;
 					border: 1px solid #dbdde6;
 					padding: 0;
+					cursor: pointer;
 					transition: 0.3s;
 					animation: 1s ease-out 0s 1 opacityAnimation;
 

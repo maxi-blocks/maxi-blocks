@@ -18,6 +18,7 @@ import {
 	onRequestInsertPattern,
 } from './util';
 import { injectImgSVG } from '../../extensions/svg';
+// eslint-disable-next-line import/no-cycle
 import MaxiModal from './modal';
 import useInterval from '../../extensions/dom/useInterval';
 

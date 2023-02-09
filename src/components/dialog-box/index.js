@@ -17,8 +17,18 @@ import { closeIcon, dialogIcon } from '../../icons';
 import './editor.scss';
 
 const DialogBox = props => {
-	return props.isDisabled
-		? props.children
+	const {
+		isDisabled,
+		children,
+		message,
+		onCancel,
+		cancel,
+		onConfirm,
+		confirm,
+	} = props;
+
+	return isDisabled
+		? children
 		: createPortal(
 				<div className='maxi-dialog-box'>
 					<div className='maxi-dialog-box__overlay' />
@@ -26,22 +36,16 @@ const DialogBox = props => {
 						<div className='maxi-dialog-box-title'>
 							<Icon icon={dialogIcon} />
 						</div>
-						<div className='maxi-dialog-box-message'>
-							{props.message}
-						</div>
+						<div className='maxi-dialog-box-message'>{message}</div>
 						<div className='maxi-dialog-box-buttons'>
-							<Button onClick={props.onCancel}>
-								{props.cancel}
-							</Button>
-							<Button onClick={props.onConfirm}>
-								{props.confirm}
-							</Button>
+							<Button onClick={onCancel}>{cancel}</Button>
+							<Button onClick={onConfirm}>{confirm}</Button>
 						</div>
 						<div className='maxi-dialog-close-button'>
 							<Button
 								label={__('Close', 'maxi-blocks')}
 								showTooltip
-								onClick={props.onCancel}
+								onClick={onCancel}
 								icon={closeIcon}
 							/>
 						</div>

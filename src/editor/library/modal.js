@@ -13,6 +13,7 @@ import {
 /**
  * Internal dependencies
  */
+// eslint-disable-next-line import/no-cycle
 import CloudLibrary from '.';
 import { Icon, BaseControl, Button } from '../../components';
 

@@ -173,15 +173,34 @@ const MenuSelect = ({ items, currentRefinement, refine }) => {
 };
 
 const SvgMenuSelect = ({ items, currentRefinement, refine }) => {
+	if (isEmpty(items)) return null;
+	const finalItems = [];
+
+	const createFinalItem = (name, index) => {
+		const found = items.find(item => item.label === name);
+		if (found) finalItems[index] = found;
+		else
+			finalItems[index] = {
+				label: name,
+				value: name,
+				count: 0,
+				isRefined: false,
+			};
+	};
+
+	createFinalItem('Filled', 0);
+	createFinalItem('Shape', 1);
+	createFinalItem('Line', 2);
+
 	return (
 		<div className='top-Menu'>
-			{items.map(item => (
+			{finalItems.map(item => (
 				<button
 					type='button'
 					key={item.label}
 					className={classnames(
 						'maxi-cloud-container__content-svg-shape__button',
-						(item.isRefined || items.length === 1) &&
+						item.isRefined &&
 							' maxi-cloud-container__content-svg-shape__button___pressed'
 					)}
 					value={item.value}
@@ -195,24 +214,23 @@ const SvgMenuSelect = ({ items, currentRefinement, refine }) => {
 					{item.label}
 				</button>
 			))}
-			{items.length > 2 && (
-				<button
-					type='button'
-					value=''
-					className={classnames(
-						'maxi-cloud-container__content-svg-shape__button',
-						isEmpty(currentRefinement) &&
-							' maxi-cloud-container__content-svg-shape__button___pressed'
-					)}
-					onClick={event => {
-						event.preventDefault();
-						refine('');
-						items[0].isRefined = true;
-					}}
-				>
-					{__('All', 'maxi-blocks')}
-				</button>
-			)}
+
+			<button
+				type='button'
+				value=''
+				className={classnames(
+					'maxi-cloud-container__content-svg-shape__button',
+					isEmpty(currentRefinement) &&
+						' maxi-cloud-container__content-svg-shape__button___pressed'
+				)}
+				onClick={event => {
+					event.preventDefault();
+					refine('');
+					items[0].isRefined = true;
+				}}
+			>
+				{__('All', 'maxi-blocks')}
+			</button>
 		</div>
 	);
 };
@@ -304,7 +322,7 @@ const HierarchicalMenu = ({ items, refine, type = 'firstLevel' }) => {
 	);
 };
 
-const ClearRefinements = ({ items, refine }, topMenu = 1) => {
+const ClearRefinements = ({ items, refine, topMenu = 1 }) => {
 	return (
 		<button
 			type='button'
@@ -338,7 +356,7 @@ const ClearRefinements = ({ items, refine }, topMenu = 1) => {
 									'.top-Menu > button:first-child'
 							  )
 							: document.querySelector(
-									'.top-Menu > button:nth-child(3)'
+									`.top-Menu > button:nth-child(${topMenu})`
 							  );
 					typeButton?.click();
 				}, '100');
@@ -876,7 +894,6 @@ const LibraryContainer = props => {
 									defaultRefinement='cross'
 									autoFocus
 									searchAsYouType
-									showLoadingIndicator
 								/>
 							)}
 							<CustomHierarchicalMenu
@@ -884,13 +901,19 @@ const LibraryContainer = props => {
 								limit={100}
 							/>
 							{type.includes('shape') && (
-								<CustomRefinementList
+								<CustomSvgMenuSelect
 									className='hidden'
 									attribute='svg_category'
-									defaultRefinement={['Shape']}
-									showLoadingIndicator
+									defaultRefinement='Shape'
 								/>
 							)}
+							{type.includes('video') && (
+								<CustomSvgMenuSelect
+									attribute='svg_category'
+									defaultRefinement='Line'
+								/>
+							)}
+							<CustomClearRefinements topMenu={2} />
 						</div>
 						<div className='maxi-cloud-container__content-svg-shape'>
 							{type.includes('video-icon') && (

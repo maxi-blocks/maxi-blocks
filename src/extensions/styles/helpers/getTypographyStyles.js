@@ -118,7 +118,7 @@ const getTypographyStyles = ({
 			target: `${prefix}${prop}`,
 			breakpoint,
 			attributes: isCustomFormat ? customFormatTypography : obj,
-			avoidXXL: false,
+			avoidXXL: breakpoint === 'general',
 		});
 
 		if (!normalTypography || unit) return unit === '-' ? '' : unit;
@@ -127,7 +127,7 @@ const getTypographyStyles = ({
 			target: `${prefix}${prop}`,
 			breakpoint,
 			attributes: normalTypography,
-			avoidXXL: false,
+			avoidXXL: breakpoint === 'general',
 		});
 	};
 

@@ -2,11 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-
-/**
- * External dependencies
- */
-import { createPortal } from 'react-dom';
+import { createPortal } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -25,10 +21,9 @@ const DialogBox = props => {
 		? props.children
 		: createPortal(
 				<div className='maxi-dialog-box'>
-					<div className='maxi-dialog-box-overlay' />
-					<div className='maxi-dialog-box-content'>
+					<div className='maxi-dialog-box__overlay' />
+					<div className='maxi-dialog-box__content'>
 						<div className='maxi-dialog-box-title'>
-							{/* <h4>{__('Confirm', 'maxi-blocks')}</h4> */}
 							<Icon icon={dialogIcon} />
 						</div>
 						<div className='maxi-dialog-box-message'>

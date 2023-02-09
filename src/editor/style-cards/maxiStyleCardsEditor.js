@@ -373,6 +373,10 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		listForDropdown[getSelectedInList(listForDropdown)];
 	const activeForDropdown = listForDropdown[getActiveInList(listForDropdown)];
 
+	const filteredCardName = SCList.map(listItem => listItem.label)
+		.filter(cardName => cardName)
+		.indexOf(styleCardName);
+
 	return (
 		!isEmpty(styleCards) && (
 			<Popover
@@ -418,15 +422,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 										.then(response => response.json())
 										.then(response => JSON.parse(response))
 										.then(jsonData => {
-											if (
-												SCList.map(
-													listItem => listItem.label
-												)
-													.filter(
-														cardname => cardname
-													)
-													.indexOf(jsonData.name) < 0
-											) {
+											if (filteredCardName < 0) {
 												saveImportedStyleCard(jsonData);
 												setImportedCardExists(false);
 												setCardAlreadyExists(false);
@@ -482,7 +478,10 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 						{importedCardExists && (
 							<div className='maxi-style-cards__card-already-exists'>
 								<span>
-									{__('Imported card already exists.')}
+									{__(
+										'Imported card already exists',
+										'maxi-blocks'
+									)}
 								</span>
 							</div>
 						)}
@@ -541,8 +540,9 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 								setShowCopyCardDialog(!showCopyCardDialog)
 							}
 						>
-							{isTemplate && __('Customise card', 'maxi-blocks')}
-							{!isTemplate && __('Copy card', 'maxi-blocks')}
+							{isTemplate
+								? __('Customise card', 'maxi-blocks')
+								: __('Copy card', 'maxi-blocks')}
 						</Button>
 						{!isTemplate && (
 							<Button
@@ -591,6 +591,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 
 							<div className='maxi-style-cards__sc__save'>
 								<input
+									ref={customiseInputRef}
 									type='text'
 									maxLength='35'
 									placeholder={__(
@@ -602,18 +603,11 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 										setStyleCardName(e.target.value);
 										setCardAlreadyExists(false);
 									}}
-									ref={customiseInputRef}
 								/>
 								<Button
 									disabled={isEmpty(styleCardName)}
 									onClick={() => {
-										if (
-											SCList.map(
-												listItem => listItem.label
-											)
-												.filter(cardname => cardname)
-												.indexOf(styleCardName) >= 0
-										) {
+										if (filteredCardName >= 0) {
 											setCardAlreadyExists(true);
 										} else {
 											setCardAlreadyExists(false);

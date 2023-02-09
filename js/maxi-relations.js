@@ -518,6 +518,14 @@ class Relation {
 									match => `${avoidHoverString}${match}`
 								)
 								.trim();
+						} else if (
+							target.includes('.maxi-button-block__button')
+						) {
+							// Avoids button content and icon have different trigger when hovering.
+							finalTarget = target.replace(
+								'maxi-button-block__button',
+								match => `${match}${avoidHoverString}`
+							);
 						} else if (this.isSVG) {
 							finalTarget = target.replace(
 								'maxi-svg-icon-block__icon',
@@ -525,6 +533,20 @@ class Relation {
 							);
 						} else {
 							finalTarget = `${target.trim()}${avoidHoverString}`;
+						}
+
+						if (
+							finalTarget.includes(
+								'maxi-button-block__content'
+							) &&
+							!finalTarget.includes('maxi-button-block__button')
+						) {
+							finalTarget = finalTarget
+								.replace(avoidHoverString, '')
+								.replace(
+									'.maxi-button-block__content',
+									`.maxi-button-block__button${avoidHoverString} .maxi-button-block__content`
+								);
 						}
 
 						const selector =

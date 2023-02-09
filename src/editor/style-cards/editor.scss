@@ -188,6 +188,14 @@ body {
 			}
 		}
 
+		.maxi-blocks-sc__type--SVG {
+			.maxi-color-control__palette,
+			.maxi-color-control__display {
+				margin-top: 8px;
+				margin-bottom: 8px;
+			}
+		}
+
 		.maxi-color-control {
 			.chrome-picker {
 				width: 100% !important;

@@ -75,7 +75,7 @@ class MaxiBlocks_Styles
                 'search',
                 'map',
                 'accordion',
-				'slider'
+                'slider'
             ];
 
             $template_parts = $this->get_template_parts($template_content);
@@ -153,12 +153,14 @@ class MaxiBlocks_Styles
     public function apply_content($name, $content, $id)
     {
         $is_content = $content && !empty($content);
+        $is_template_part = is_string($name) && strpos($name, '-templates');
+        $is_template = $is_template_part && str_ends_with($name, '-templates');
 
         if ($is_content) {
             $styles = $this->get_styles($content);
             $fonts = $this->get_fonts($content);
 
-            if ($styles) {
+            if ($styles === 'false') {
                 // Inline styles
                 wp_register_style($name, false);
                 wp_enqueue_style($name);
@@ -168,12 +170,21 @@ class MaxiBlocks_Styles
             if ($fonts) {
                 $this->enqueue_fonts($fonts);
             }
+        } elseif ($is_template_part) {
+            $name = @end(explode('//', $id, 2));
+
+            // Backup from the file
+            if ($is_template) {
+                $path =  get_template_directory_uri() . '/templates/' . $name . '.css';
+            } else {
+                $path =  get_template_directory_uri() . '/parts/' . $name . '.css';
+            }
+
+            wp_register_style($name, $path);
+            wp_enqueue_style($name);
         }
 
-        $is_template =
-            is_string($name) &&
-            strpos($name, '-templates') &&
-            str_ends_with($name, '-templates');
+
 
         if ($is_template) {
             $template_parts = $this->get_template_parts($content);
@@ -203,7 +214,10 @@ class MaxiBlocks_Styles
         if ($template_slug != '' && $template_slug !== false) {
             $template_id .= $template_slug;
         } elseif (is_home()) {
-            $template_id .= resolve_block_template('home', array('front-page', 'home'), '')->slug;
+            // $template_id .= resolve_block_template('home', array('front-page', 'home'), '')->slug;
+            // global $post;
+            // $template_id .= get_page_template_slug($post->ID);
+            $template_id .= 'index';
         } elseif (is_search()) {
             $template_id .= 'search';
         } elseif (is_404()) {

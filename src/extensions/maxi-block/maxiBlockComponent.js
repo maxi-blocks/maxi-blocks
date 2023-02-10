@@ -21,6 +21,7 @@ import { dispatch, resolveSelect, select, useSelect } from '@wordpress/data';
  * Internal dependencies
  */
 import {
+	entityRecordsWrapper,
 	getBlockStyle,
 	getDefaultAttribute,
 	getGroupAttributes,
@@ -255,27 +256,64 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentWillUnmount() {
+		// If it's site editor, when swapping from pages we need to keep the styles
+		// On post editor, when entering to `code editor` page, we need to keep the styles
+		let keepStylesOnEditor = false;
+		entityRecordsWrapper(({ key: id, name }) => {
+			const { getEditedEntityRecord } = select('core');
+
+			const { blocks } = getEditedEntityRecord('postType', name, id);
+
+			const getName = block => {
+				const {
+					attributes: { uniqueID },
+					innerBlocks,
+				} = block;
+
+				if (uniqueID === this.props.attributes.uniqueID) return true;
+
+				if (innerBlocks.length)
+					return innerBlocks.some(block => getName(block));
+
+				return false;
+			};
+
+			keepStylesOnEditor = blocks.some(block => getName(block));
+		});
+
 		// When duplicating Gutenberg creates a copy of the current copied block twice, making the first keep the same uniqueID and second
 		// has a different one. The original block is removed so componentWillUnmount method is triggered, and as its uniqueID coincide with
 		// the first copied block, on removing the styles the copied block appears naked. That's why we check if there's more than one block
 		// with same uniqueID
-		if (
+		const keepStylesOnCloning =
 			Array.from(
 				document.getElementsByClassName(this.props.attributes.uniqueID)
-			).length <= 1
-		) {
+			).length > 1;
+
+		// Different cases:
+		// 1. Swapping page on site editor or entering to `code editor` page on post editor
+		// 2. Duplicating block
+		const isBlockBeingRemoved = !keepStylesOnEditor && !keepStylesOnCloning;
+
+		if (isBlockBeingRemoved) {
+			// Styles
 			const obj = this.getStylesObject;
 			styleResolver(obj, true);
 			this.removeStyles();
+
+			// Custom data
+			dispatch('maxiBlocks/customData').removeCustomData(
+				this.props.attributes.uniqueID
+			);
+
+			// IB
+			this.removeUnmountedBlockFromRelations(
+				this.props.attributes.uniqueID
+			);
 		}
 
-		dispatch('maxiBlocks/customData').removeCustomData(
-			this.props.attributes.uniqueID
-		);
-
-		this.removeUnmountedBlockFromRelations(this.props.attributes.uniqueID);
-
-		if (this.maxiBlockWillUnmount) this.maxiBlockWillUnmount();
+		if (this.maxiBlockWillUnmount)
+			this.maxiBlockWillUnmount(isBlockBeingRemoved);
 	}
 
 	getMaxiAttributes() {

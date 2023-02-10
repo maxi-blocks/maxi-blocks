@@ -32,6 +32,7 @@ const SvgWidthControl = props => {
 		resizableObject = false,
 		customLabel = 'Width',
 		className,
+		disableHeightFitContent = false,
 	} = props;
 
 	const classes = classnames('maxi-svg-width-control', className);
@@ -117,34 +118,40 @@ const SvgWidthControl = props => {
 				isHover={isHover}
 				optionType='string'
 			/>
-			<ToggleSwitch
-				label={__('Set height to fit content', 'maxi-blocks')}
-				selected={widthFitContent}
-				onChange={val => {
-					onChange({
-						[getAttributeKey(
-							'width-fit-content',
+			{!disableHeightFitContent && (
+				<ToggleSwitch
+					label={__('Set height to fit content', 'maxi-blocks')}
+					selected={widthFitContent}
+					onChange={val => {
+						let icon = getAttributeValue({
+							target: 'content',
 							isHover,
 							prefix,
-							breakpoint
-						)]: val,
-						[getAttributeKey('content', isHover, prefix)]:
-							getAttributeValue({
-								target: 'content',
+							props,
+						});
+
+						if (
+							!icon.includes(
+								'preserveAspectRatio="xMidYMid slice"'
+							)
+						)
+							icon = icon.replace(
+								'>',
+								' preserveAspectRatio="xMidYMid slice">'
+							);
+
+						onChange({
+							[getAttributeKey(
+								'width-fit-content',
 								isHover,
 								prefix,
-								props,
-							}).replace(
-								val
-									? '<svg'
-									: '<svg preserveAspectRatio="xMidYMid slice"',
-								val
-									? '<svg preserveAspectRatio="xMidYMid slice"'
-									: '<svg'
-							),
-					});
-				}}
-			/>
+								breakpoint
+							)]: val,
+							[getAttributeKey('content', isHover, prefix)]: icon,
+						});
+					}}
+				/>
+			)}
 		</div>
 	);
 };

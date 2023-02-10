@@ -57,6 +57,7 @@ const AccordionIconSettings = props => {
 								getIconWithColor={args =>
 									getIconWithColor(props, args, '')
 								}
+								disableHeightFitContent
 							/>
 						),
 					},
@@ -83,6 +84,7 @@ const AccordionIconSettings = props => {
 										getIconWithColor={args =>
 											getIconWithColor(props, args, '')
 										}
+										disableHeightFitContent
 										isHover
 									/>
 								)}
@@ -99,6 +101,7 @@ const AccordionIconSettings = props => {
 								}
 								prefix='active-'
 								svgType={svgTypeActive}
+								disableHeightFitContent
 							/>
 						),
 					},

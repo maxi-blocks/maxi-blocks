@@ -28,6 +28,7 @@ import MainMaxiBlock from './mainMaxiBlock';
  */
 import classnames from 'classnames';
 import { isEmpty, isEqual, isNil } from 'lodash';
+import mobile from 'is-mobile';
 
 /**
  * Styles
@@ -175,9 +176,9 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		}) === 'full';
 
 	// Gets if the block has to be disabled due to the device type
-	const isDisabled = DISALLOWED_BREAKPOINTS.includes(
-		extraProps.baseBreakpoint
-	);
+	const isDisabled =
+		DISALLOWED_BREAKPOINTS.includes(extraProps.baseBreakpoint) &&
+		mobile({ tablet: true });
 
 	// Unselect the block if it's disabled
 	if (isDisabled && isSelected)

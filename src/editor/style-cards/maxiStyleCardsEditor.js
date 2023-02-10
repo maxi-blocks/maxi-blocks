@@ -220,9 +220,6 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		customiseInputRef?.current?.focus?.();
 	}, [showCopyCardDialog]);
 
-	// const [isHiddenActivate, setIsHiddenActivate] = useState(true);
-	// const [isHiddenRemove, setIsHiddenRemove] = useState(true);
-
 	const applyCurrentSCGlobally = () => {
 		setActiveStyleCard(selectedSCKey);
 		saveMaxiStyleCards(selectedSCValue);

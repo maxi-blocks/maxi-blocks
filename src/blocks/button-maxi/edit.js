@@ -12,9 +12,10 @@ import Inspector from './inspector';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-import { getIconPositionClass } from '../../extensions/styles';
-import getStyles from './styles';
 import IconToolbar from '../../components/toolbar/iconToolbar';
+import { getIconPositionClass } from '../../extensions/styles';
+import { getSVGWidthHeightRatio } from '../../extensions/svg';
+import getStyles from './styles';
 import { copyPasteMapping, maxiAttributes } from './data';
 
 /**
@@ -64,25 +65,15 @@ class edit extends MaxiBlockComponent {
 		const { attributes } = this.props;
 		const { scValues } = this.state;
 
-		const svg = this.blockRef.current?.querySelector(
-			'.maxi-button-block__icon svg'
+		return getStyles(
+			attributes,
+			scValues,
+			getSVGWidthHeightRatio(
+				this.blockRef.current?.querySelector(
+					'.maxi-button-block__icon svg'
+				)
+			)
 		);
-
-		let iconWidthHeightRatio;
-		if (svg) {
-			svg.childNodes.forEach(child => {
-				if (!child.getBBox) return;
-
-				const { width, height } = child.getBBox();
-				if (width && height) {
-					iconWidthHeightRatio = !iconWidthHeightRatio
-						? width / height
-						: Math.min(iconWidthHeightRatio, width / height);
-				}
-			});
-		}
-
-		return getStyles(attributes, scValues, iconWidthHeightRatio);
 	}
 
 	maxiBlockDidUpdate() {

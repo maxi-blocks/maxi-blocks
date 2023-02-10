@@ -344,7 +344,7 @@
 				ul {
 					margin: 0 0 8px;
 				}
-				.use-placeholer-all-images {
+				.use-placeholder-all-images {
 					margin-top: 1rem;
 
 					.components-base-control__help {
@@ -751,7 +751,7 @@
 						font-size: 12px;
 						color: #bdbdbd;
 					}
-					&.use-placeholer-all-images {
+					&.use-placeholder-all-images {
 						.components-base-control__field {
 							display: flex;
 							column-gap: 2px;
@@ -1082,6 +1082,9 @@
 					&:hover {
 						background-color: #007cba;
 						color: #fff !important;
+					}
+					&.saved {
+						opacity: 0.4;
 					}
 				}
 

@@ -76,6 +76,14 @@ describe('SC settings', () => {
 			wp.data.dispatch('maxiBlocks/style-cards').resetSC()
 		);
 	});
+
+	afterAll(async () => {
+		// let's reset the SCs for all other tests
+		await page.evaluate(() => {
+			wp.data.dispatch('maxiBlocks/style-cards').resetSC();
+		});
+	});
+
 	it('Can add style cards from library and switch them with select', async () => {
 		await createNewPost();
 		await setBrowserViewport('large');

@@ -119,6 +119,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		isSelected,
 		hasSelectedChild,
 		isHovered,
+		isChild,
 		...extraProps
 	} = props;
 
@@ -186,7 +187,6 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 
 	// Are just necessary for the memo() part
 	delete extraProps.attributes;
-	delete extraProps.isChild;
 	delete extraProps.deviceType;
 	delete extraProps.baseBreakpoint;
 	delete extraProps.context;
@@ -308,7 +308,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 	if (!useInnerBlocks)
 		return (
 			<MainMaxiBlock {...blockProps}>
-				{isDisabled && <DisabledMaxiBlock />}
+				{isDisabled && !isChild && <DisabledMaxiBlock />}
 				{children}
 			</MainMaxiBlock>
 		);
@@ -322,7 +322,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 			isSelected={isSelected}
 			hasSelectedChild={hasSelectedChild}
 		>
-			{isDisabled && <DisabledMaxiBlock />}
+			{isDisabled && !isChild && <DisabledMaxiBlock />}
 			{children}
 		</InnerBlocksBlock>
 	);

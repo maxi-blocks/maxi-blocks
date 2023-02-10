@@ -29,6 +29,8 @@
 	/** Layer for disable maxi blocks on tablet and mobile devices **/
 	&--disabled > *:not(.maxi-block__disabled) {
 		filter: blur(5px);
+		pointer-events: none;
+		cursor: not-allowed;
 	}
 	&__disabled {
 		position: absolute;

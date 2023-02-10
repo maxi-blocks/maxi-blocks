@@ -178,6 +178,12 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		extraProps.baseBreakpoint
 	);
 
+	// Unselect the block if it's disabled
+	if (isDisabled && isSelected)
+		setTimeout(() => {
+			dispatch('core/block-editor').selectBlock();
+		}, 0);
+
 	// Are just necessary for the memo() part
 	delete extraProps.attributes;
 	delete extraProps.isChild;

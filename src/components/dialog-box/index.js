@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { createPortal } from '@wordpress/element';
+import { createPortal, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -18,41 +18,62 @@ import './editor.scss';
 
 const DialogBox = props => {
 	const {
-		isDisabled,
-		children,
 		message,
-		onCancel,
-		cancel,
+		cancelText,
+		confirmText,
 		onConfirm,
-		confirm,
+		buttonDisabled,
+		buttonClassName,
+		buttonChildren,
 	} = props;
 
-	return isDisabled
-		? children
-		: createPortal(
-				<div className='maxi-dialog-box'>
-					<div className='maxi-dialog-box__overlay' />
-					<div className='maxi-dialog-box__content'>
-						<div className='maxi-dialog-box-title'>
-							<Icon icon={dialogIcon} />
-						</div>
-						<div className='maxi-dialog-box-message'>{message}</div>
-						<div className='maxi-dialog-box-buttons'>
-							<Button onClick={onCancel}>{cancel}</Button>
-							<Button onClick={onConfirm}>{confirm}</Button>
-						</div>
-						<div className='maxi-dialog-close-button'>
-							<Button
-								label={__('Close', 'maxi-blocks')}
-								showTooltip
-								onClick={onCancel}
-								icon={closeIcon}
-							/>
-						</div>
+	const [isHidden, setIsHidden] = useState(true);
+
+	return isHidden ? (
+		<Button
+			disabled={buttonDisabled}
+			className={buttonClassName}
+			onClick={() => {
+				setIsHidden(false);
+			}}
+		>
+			{buttonChildren}
+		</Button>
+	) : (
+		createPortal(
+			<div className='maxi-dialog-box'>
+				<div className='maxi-dialog-box__overlay' />
+				<div className='maxi-dialog-box__content'>
+					<div className='maxi-dialog-box-title'>
+						<Icon icon={dialogIcon} />
 					</div>
-				</div>,
-				document.getElementById('editor')
-		  );
+					<div className='maxi-dialog-box-message'>{message}</div>
+					<div className='maxi-dialog-box-buttons'>
+						<Button onClick={() => setIsHidden(true)}>
+							{cancelText}
+						</Button>
+						<Button
+							onClick={() => {
+								onConfirm();
+								setIsHidden(true);
+							}}
+						>
+							{confirmText}
+						</Button>
+					</div>
+					<div className='maxi-dialog-close-button'>
+						<Button
+							label={__('Close', 'maxi-blocks')}
+							showTooltip
+							onClick={() => setIsHidden(true)}
+							icon={closeIcon}
+						/>
+					</div>
+				</div>
+			</div>,
+			document.getElementById('editor')
+		)
+	);
 };
 
 export default DialogBox;

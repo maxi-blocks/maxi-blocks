@@ -220,8 +220,8 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		customiseInputRef?.current?.focus?.();
 	}, [showCopyCardDialog]);
 
-	const [isHiddenActivate, setIsHiddenActivate] = useState(true);
-	const [isHiddenRemove, setIsHiddenRemove] = useState(true);
+	// const [isHiddenActivate, setIsHiddenActivate] = useState(true);
+	// const [isHiddenRemove, setIsHiddenRemove] = useState(true);
 
 	const applyCurrentSCGlobally = () => {
 		setActiveStyleCard(selectedSCKey);
@@ -241,8 +241,6 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 
 		saveMaxiStyleCards(newStyleCards, true);
 		saveSCStyles(true);
-
-		setIsHiddenActivate(true);
 	};
 
 	const saveCurrentSC = () => {
@@ -259,7 +257,6 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		removeStyleCard(selectedSCKey);
 
 		if (activeSCKey === selectedSCKey) setActiveStyleCard('sc_maxi');
-		setIsHiddenRemove(true);
 	};
 
 	const [cardAlreadyExists, setCardAlreadyExists] = useState(false);
@@ -505,32 +502,26 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 								/>
 							</div>
 							<DialogBox
-								isDisabled={isHiddenRemove}
 								message={__(
 									`Deleting${` ${selectedSCValue.name} `}style card. This action is permanent.`,
 									'maxi-blocks'
 								)}
-								cancel={__('Cancel', 'maxi-blocks')}
-								confirm={__('Delete', 'maxi-blocks')}
-								onCancel={() => setIsHiddenRemove(true)}
+								cancelLabel={__('Cancel', 'maxi-blocks')}
+								confirmLabel={__('Delete', 'maxi-blocks')}
 								onConfirm={deleteSC}
-							>
-								<Button
-									disabled={
-										!canBeRemoved(
-											selectedSCKey,
-											activeSCKey
-										)
-									}
-									className='maxi-style-cards__sc__more-sc--delete has-tooltip'
-									onClick={() => setIsHiddenRemove(false)}
-								>
-									<span className='tooltip'>
-										{__('Delete', 'maxi-blocks')}
-									</span>
-									<Icon icon={SCDelete} />
-								</Button>
-							</DialogBox>
+								buttonDisabled={
+									!canBeRemoved(selectedSCKey, activeSCKey)
+								}
+								buttonClassName='maxi-style-cards__sc__more-sc--delete has-tooltip'
+								buttonChildren={
+									<>
+										<span className='tooltip'>
+											{__('Delete', 'maxi-blocks')}
+										</span>
+										<Icon icon={SCDelete} />
+									</>
+								}
+							/>
 						</div>
 					</div>
 					<div className='maxi-style-cards__sc__actions edit-activate'>
@@ -554,30 +545,31 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 							</Button>
 						)}
 						<DialogBox
-							isDisabled={isHiddenActivate}
 							message={__(
 								`Activate new style. Customized blocks will not change. All other Maxi blocks will get new,${` "${selectedSCValue.name}" `}styles.`,
 								'maxi-blocks'
 							)}
-							cancel={__('Cancel', 'maxi-blocks')}
-							confirm={__('Activate', 'maxi-blocks')}
-							onCancel={() => setIsHiddenActivate(true)}
+							cancelLabel={__('Cancel', 'maxi-blocks')}
+							confirmLabel={__('Activate', 'maxi-blocks')}
 							onConfirm={applyCurrentSCGlobally}
-						>
-							<Button
-								className='maxi-style-cards__sc__actions--apply'
-								disabled={
-									!canBeApplied(selectedSCKey, activeSCKey)
-								}
-								onClick={() => setIsHiddenActivate(false)}
-							>
-								{(isTemplate || !canBeSaved(selectedSCKey)) &&
-									__('Activate now', 'maxi-blocks')}
-								{!isTemplate &&
-									canBeSaved(selectedSCKey) &&
-									__('Save and activate now', 'maxi-blocks')}
-							</Button>
-						</DialogBox>
+							buttonDisabled={
+								!canBeApplied(selectedSCKey, activeSCKey)
+							}
+							buttonClassName='maxi-style-cards__sc__actions--apply'
+							buttonChildren={
+								<>
+									{(isTemplate ||
+										!canBeSaved(selectedSCKey)) &&
+										__('Activate now', 'maxi-blocks')}
+									{!isTemplate &&
+										canBeSaved(selectedSCKey) &&
+										__(
+											'Save and activate now',
+											'maxi-blocks'
+										)}
+								</>
+							}
+						/>
 					</div>
 				</div>
 

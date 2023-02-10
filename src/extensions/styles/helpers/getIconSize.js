@@ -1,12 +1,13 @@
 /**
  * Internal dependencies
  */
+import getAttributeValue from '../getAttributeValue';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 
 /**
  * External dependencies
  */
-import { isNil, isEmpty } from 'lodash';
+import { isEmpty, isNil, round } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -21,7 +22,12 @@ const getIconSize = (
 		general: {},
 	};
 
-	console.log(iconWidthHeightRatio);
+	const svgType = getAttributeValue({
+		target: 'svgType',
+		props: obj,
+		isHover,
+		prefix,
+	});
 
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
@@ -62,10 +68,36 @@ const getIconSize = (
 			attributes: obj,
 		});
 
+		const iconStrokeWidth =
+			svgType !== 'Shape'
+				? getLastBreakpointAttribute({
+						target: `${prefix}icon-stroke`,
+						isHover,
+						breakpoint,
+						attributes: obj,
+				  })
+				: 1;
+
+		const perStrokeWidthCoefficient = 4;
+
+		const heightToStrokeWidthCoefficient =
+			1 +
+			((iconStrokeWidth - 1) *
+				perStrokeWidthCoefficient *
+				iconWidthHeightRatio) /
+				100;
+
 		if (!isNil(iconSize) && !isEmpty(iconSize)) {
 			response[breakpoint].height = `${
 				iconWidthFitContent
-					? (iconSize / iconWidthHeightRatio) * 1.05
+					? round(
+							iconWidthHeightRatio > 1
+								? (iconSize * heightToStrokeWidthCoefficient) /
+										iconWidthHeightRatio
+								: iconSize /
+										(iconWidthHeightRatio *
+											heightToStrokeWidthCoefficient)
+					  )
 					: iconSize
 			}${iconUnit}`;
 			response[breakpoint].width = `${iconSize}${iconUnit}`;

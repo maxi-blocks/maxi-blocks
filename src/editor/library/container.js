@@ -30,7 +30,6 @@ import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter';
 import {
 	InstantSearch,
 	SearchBox,
-	connectRefinementList,
 	connectMenu,
 	connectHierarchicalMenu,
 	connectCurrentRefinements,
@@ -77,7 +76,7 @@ const resultsCount = {
 	},
 };
 
-const RefinementList = ({ items, refine }) => (
+const MenuSC = ({ items, refine }) => (
 	<ul className='maxi-cloud-container__content__svg-categories'>
 		{items.map(item => (
 			<li
@@ -765,8 +764,8 @@ const LibraryContainer = props => {
 		);
 	};
 
-	const CustomRefinementList = connectRefinementList(RefinementList);
 	const CustomMenuSelect = connectMenu(MenuSelect);
+	const CustomMenuSC = connectMenu(MenuSC);
 	const CustomSvgMenuSelect = connectMenu(SvgMenuSelect);
 	const CustomHierarchicalMenu = connectHierarchicalMenu(HierarchicalMenu);
 	const CustomClearRefinements = connectCurrentRefinements(ClearRefinements);
@@ -1184,9 +1183,9 @@ const LibraryContainer = props => {
 									resetTitle: 'Clear',
 								}}
 							/>
-							<CustomRefinementList
+							<CustomMenuSC
 								attribute='sc_color'
-								limit={20}
+								limit={100}
 								transformItems={items =>
 									orderBy(items, 'label', 'asc')
 								}

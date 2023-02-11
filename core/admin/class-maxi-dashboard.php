@@ -50,6 +50,11 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'maxi_admin_scripts_styles'
             ));
 
+            add_action('admin_init', array(
+                $this,
+                'maxi_admin_register_settings'
+            ));
+
             $this->allow_svg_json_uploads();
         }
 
@@ -629,6 +634,16 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     return $versions;
                 }
             }
+        }
+
+        public function maxi_admin_register_settings()
+        {
+            $args = array(
+                    'type' => 'boolean',
+                    'sanitize_callback' => 'rest_sanitize_boolean',
+                    'default' => false,
+                    );
+            register_setting('maxi_blocks', 'swap_cloud_images_with_placeholder', $args);
         }
     }
 endif;

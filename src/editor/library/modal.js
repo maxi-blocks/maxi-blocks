@@ -154,6 +154,8 @@ const MaxiModal = props => {
 		label = '',
 		isPro,
 		isBeta,
+		gutenbergCode,
+		isSwapChecked,
 	} = props;
 
 	const ref = useRef(null);
@@ -288,6 +290,7 @@ const MaxiModal = props => {
 					>
 						<div className='maxi-library-modal maxi-preview'>
 							<CloudLibrary
+								className={`maxi-library-modal__${type}`}
 								cloudType={type}
 								onClose={onClick}
 								blockStyle={style}
@@ -300,7 +303,8 @@ const MaxiModal = props => {
 								toneUrl={toneUrl}
 								cardId={cardId}
 								prefix={prefix}
-								className={`maxi-library-modal__${type}`}
+								gutenbergCode={gutenbergCode}
+								isSwapChecked={isSwapChecked}
 							/>
 						</div>
 					</div>
@@ -395,7 +399,6 @@ const MaxiModal = props => {
 						<CloudLibrary
 							cloudType={type}
 							onClose={onCloseModal}
-							// blockStyle='light'
 							url={url}
 							title={title}
 							cost={cost}
@@ -405,6 +408,9 @@ const MaxiModal = props => {
 							className={`maxi-library-modal__preview maxi-library-modal__${type}`}
 							isPro={isPro}
 							isBeta={isBeta}
+							onSelect={onSelect}
+							gutenbergCode={gutenbergCode}
+							isSwapChecked={isSwapChecked}
 						/>
 					</div>
 				</div>

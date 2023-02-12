@@ -68,6 +68,13 @@ if (!class_exists('MaxiBlocks_API')):
                     return current_user_can('edit_posts');
                 },
             ]);
+            register_rest_route($this->namespace, '/settings', [
+                'methods' => 'POST',
+                'callback' => [$this, 'set_maxi_blocks_options'],
+                'permission_callback' => function () {
+                    return current_user_can('edit_posts');
+                },
+            ]);
             register_rest_route($this->namespace, '/post/(?P<id>\d+)', [
                 'methods' => 'GET',
                 'callback' => [$this, 'get_maxi_blocks_post'],
@@ -215,6 +222,16 @@ if (!class_exists('MaxiBlocks_API')):
             ]);
         }
 
+
+        public function write_log($log)
+        {
+            if (is_array($log) || is_object($log)) {
+                error_log(print_r($log, true));
+            } else {
+                error_log($log);
+            }
+        }
+
         /**
          * Returns Maxi Blocks general settings
          */
@@ -256,6 +273,19 @@ if (!class_exists('MaxiBlocks_API')):
             ];
 
             return $response;
+        }
+
+
+        public function set_maxi_blocks_options($request)
+        {
+            $this->write_log('set_maxi_blocks_options');
+            $this->write_log($request);
+            // $request_result = $request->get_json_params();
+
+            // $option = $request_result['option'];
+            // $value = $request_result['value'];
+
+            // update_option($option, $value);
         }
 
         /**

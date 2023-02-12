@@ -6,6 +6,7 @@ import { __ } from '@wordpress/i18n';
 import { useDispatch, select, useSelect } from '@wordpress/data';
 import { useEffect, useState } from '@wordpress/element';
 import { CheckboxControl, Button } from '@wordpress/components';
+import { store as wpDataStore } from '@wordpress/core-data';
 
 /**
  * Internal dependencies
@@ -455,7 +456,7 @@ const LibraryContainer = props => {
 		'post_title, svg_tag.lvl0, svg_tag.lvl1, svg_tag.lvl2, svg_category'
 	).searchClient;
 
-	const [isChecked, setChecked] = useState(false);
+	const [isSwapChecked, setSwapChecked] = useState(false);
 
 	const getShapeType = type => {
 		switch (type) {
@@ -499,11 +500,14 @@ const LibraryContainer = props => {
 				taxonomies={hit.category?.[0]}
 				serial={hit.post_number}
 				toneUrl={hit.link_to_related}
+				gutenbergCode={hit.gutenberg_code}
 				isMaxiProActive={isMaxiProActive}
+				isSwapChecked={isSwapChecked}
+				onSelect={onSelect}
 				onRequestInsert={() =>
 					onRequestInsertPattern(
 						hit.gutenberg_code,
-						isChecked,
+						isSwapChecked,
 						isValidTemplate,
 						onSelect,
 						onRequestClose,
@@ -758,8 +762,8 @@ const LibraryContainer = props => {
 					'Swap stock images for placeholders to save disk space',
 					'maxi-blocks'
 				)}
-				checked={isChecked}
-				onChange={setChecked}
+				checked={isSwapChecked}
+				onChange={setSwapChecked}
 			/>
 		);
 	};

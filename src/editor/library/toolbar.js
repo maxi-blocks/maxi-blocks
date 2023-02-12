@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { select, useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -17,6 +18,7 @@ import {
 } from '../../icons';
 // eslint-disable-next-line import/no-cycle
 import MaxiModal from './modal';
+import { onRequestInsertPattern } from './util';
 
 /**
  * External dependencies
@@ -58,6 +60,9 @@ const LibraryToolbar = props => {
 		isMaxiProActive = false,
 		isPro,
 		isBeta,
+		gutenbergCode,
+		onSelect,
+		isSwapChecked,
 	} = props;
 
 	const client = new TypesenseSearchClient({
@@ -154,6 +159,11 @@ const LibraryToolbar = props => {
 			document.exitFullscreen();
 		}
 	};
+
+	const { isValidTemplate, getSelectedBlockClientId } =
+		select('core/block-editor');
+	const clientId = getSelectedBlockClientId();
+	const { replaceBlock } = useDispatch('core/block-editor');
 
 	const openRelatedPattern = () => {
 		let relatedSerial = toneUrl.toLowerCase();
@@ -320,6 +330,9 @@ const LibraryToolbar = props => {
 						onClose={onRequestClose}
 						isPro={relatedHit.cost?.[0] === 'Pro'}
 						isBeta={relatedHit.post_tag?.includes('Beta')}
+						gutenbergCode={relatedHit.gutenberg_code}
+						isSwapChecked={isSwapChecked}
+						onSelect={onSelect}
 						forceIsOpen
 						isOpen
 					/>,
@@ -533,7 +546,10 @@ const LibraryToolbar = props => {
 						<span className='maxi-cloud-toolbar__line'>|</span>
 						<span>{cost}</span>
 						<ToolbarButton
-							onClick={openRelatedPattern}
+							onClick={() => {
+								onRequestClose();
+								openRelatedPattern();
+							}}
 							label={__('Switch tone', 'maxi-blocks')}
 						/>
 					</div>
@@ -597,7 +613,16 @@ const LibraryToolbar = props => {
 						<ToolbarButton
 							label={__('Insert', 'maxi-blocks')}
 							onClick={() => {
-								clickLoadButton(cardId);
+								//clickLoadButton(cardId);
+								onRequestInsertPattern(
+									gutenbergCode,
+									isSwapChecked,
+									isValidTemplate,
+									onSelect,
+									onRequestClose,
+									replaceBlock,
+									clientId
+								);
 								onRequestClose();
 							}}
 						/>

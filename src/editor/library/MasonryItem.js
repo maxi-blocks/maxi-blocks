@@ -36,6 +36,9 @@ const MasonryItem = props => {
 		isMaxiProActive = false,
 		isPro,
 		isBeta,
+		isSwapChecked,
+		onSelect,
+		gutenbergCode,
 	} = props;
 
 	const getCardSerial = (string = serial) => {
@@ -88,6 +91,9 @@ const MasonryItem = props => {
 								isMaxiProActive={isMaxiProActive}
 								isPro={isPro}
 								isBeta={isBeta}
+								onSelect={onSelect}
+								isSwapChecked={isSwapChecked}
+								gutenbergCode={gutenbergCode}
 							/>
 							{(!isPro || isBeta || isMaxiProActive) && (
 								<Button

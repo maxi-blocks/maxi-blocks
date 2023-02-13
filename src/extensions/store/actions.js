@@ -27,9 +27,6 @@ const actions = {
 		};
 	},
 	saveMaxiSetting(setting, value) {
-		console.log('saveMaxiSetting');
-		console.log(setting);
-		console.log(value);
 		return {
 			type: 'SAVE_GENERAL_SETTING',
 			setting: setting,

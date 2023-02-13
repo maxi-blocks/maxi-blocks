@@ -8,25 +8,19 @@ const controls = {
 	async RECEIVE_GENERAL_SETTINGS() {
 		return apiFetch({ path: '/maxi-blocks/v1.0/settings' });
 	},
-	async SAVE_GENERAL_SETTING(setting, value) {
+	async SAVE_GENERAL_SETTING(settings) {
 		await apiFetch({
 			path: '/maxi-blocks/v1.0/settings/',
 			method: 'POST',
 			data: {
-				setting: setting,
-				value: value,
+				settings,
 			},
-		})
-			.catch(err => {
-				console.error(
-					'Error saving general maxi setting. Code error: ',
-					err
-				);
-			})
-			.then(() =>
-				// eslint-disable-next-line no-console
-				console.log('SAVE_GENERAL_SETTING')
+		}).catch(err => {
+			console.error(
+				'Error saving general maxi setting. Code error: ',
+				err
 			);
+		});
 	},
 	async RECEIVE_BREAKPOINTS() {
 		return apiFetch({ path: '/maxi-blocks/v1.0/breakpoints/' });

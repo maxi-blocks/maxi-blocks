@@ -27,9 +27,8 @@ const CrispChat = ({ className, as: As = Button, children }) => {
 
 	useEffect(() => {
 		Crisp.configure('8434178e-1d60-45d5-b112-14a32ee6903c');
-		Crisp.chat.hide();
 
-		return () => closeChat();
+		if (!window.$crisp?.is) Crisp.chat.hide();
 	}, []);
 
 	const classes = classnames('maxi-crisp-chat', className);

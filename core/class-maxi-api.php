@@ -222,16 +222,6 @@ if (!class_exists('MaxiBlocks_API')):
             ]);
         }
 
-
-        public function write_log($log)
-        {
-            if (is_array($log) || is_object($log)) {
-                error_log(print_r($log, true));
-            } else {
-                error_log($log);
-            }
-        }
-
         /**
          * Returns Maxi Blocks general settings
          */
@@ -270,6 +260,7 @@ if (!class_exists('MaxiBlocks_API')):
                     'is_core' => $is_core,
                 ],
                 'hide_tooltips' => get_option('hide_tooltips'),
+                'swap_cloud_images' => get_option('swap_cloud_images'),
             ];
 
             return $response;
@@ -278,14 +269,12 @@ if (!class_exists('MaxiBlocks_API')):
 
         public function set_maxi_blocks_options($request)
         {
-            $this->write_log('set_maxi_blocks_options');
-            $this->write_log($request);
-            // $request_result = $request->get_json_params();
+            $request_result = $request->get_json_params();
 
-            // $option = $request_result['option'];
-            // $value = $request_result['value'];
+            $option = $request_result['option'];
+            $value = $request_result['value'];
 
-            // update_option($option, $value);
+            update_option($option, $value);
         }
 
         /**

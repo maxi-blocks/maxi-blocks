@@ -456,7 +456,19 @@ const LibraryContainer = props => {
 		'post_title, svg_tag.lvl0, svg_tag.lvl1, svg_tag.lvl2, svg_category'
 	).searchClient;
 
-	const [isSwapChecked, setSwapChecked] = useState(false);
+	const { receiveMaxiSettings } = select('maxiBlocks');
+
+	const maxiSettings = receiveMaxiSettings();
+	console.log(maxiSettings);
+	const swapOption = maxiSettings?.swap_cloud_images;
+
+	const [isSwapChecked, setSwapChecked] = useState(swapOption);
+
+	const { saveMaxiSetting } = useDispatch('maxiBlocks');
+
+	useEffect(() => {
+		setSwapChecked(swapOption);
+	}, [swapOption]);
 
 	const getShapeType = type => {
 		switch (type) {
@@ -763,7 +775,12 @@ const LibraryContainer = props => {
 					'maxi-blocks'
 				)}
 				checked={isSwapChecked}
-				onChange={setSwapChecked}
+				onChange={val => {
+					console.log('check');
+					console.log(val);
+					setSwapChecked(val);
+					saveMaxiSetting('swap_cloud_images', val);
+				}}
 			/>
 		);
 	};

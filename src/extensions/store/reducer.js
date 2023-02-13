@@ -105,8 +105,6 @@ const reducer = (
 		copiedBlocks: {},
 		inspectorPath: [{ name: 'Settings', value: 0 }],
 		deprecatedBlocks: {},
-		setting: '',
-		value: '',
 	},
 	action
 ) => {
@@ -120,10 +118,14 @@ const reducer = (
 				},
 			};
 		case 'SAVE_GENERAL_SETTING':
+			const { setting, value } = action;
+			console.log(setting);
+			const newSettings = { [setting]: value };
+			console.log('newSettings');
+			console.log(newSettings);
 			return {
 				...state,
-				setting: action.setting,
-				value: action.value,
+				settings: { ...state.settings, ...newSettings },
 			};
 		case 'SEND_BREAKPOINTS':
 			return {

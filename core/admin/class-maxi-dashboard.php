@@ -505,6 +505,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             register_setting('maxi-blocks-settings-group', 'remove_local_fonts', $args);
             register_setting('maxi-blocks-settings-group', 'allow_svg_json_uploads', $args);
             register_setting('maxi-blocks-settings-group', 'hide_tooltips', $args);
+            register_setting('maxi-blocks-settings-group', 'swap_cloud_images', $args);
             register_setting('maxi-blocks-settings-group', 'google_api_key_option');
             register_setting('maxi-blocks-settings-group', 'maxi_breakpoints');
             register_setting('maxi-blocks-settings-group', 'maxi_rollback_version', $args_rollback);

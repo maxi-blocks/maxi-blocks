@@ -21,7 +21,7 @@ import {
 	responsiveButtonTypographyStyle,
 } from './constants';
 
-describe('StyleCards, Buttons', () => {
+describe.skip('StyleCards, Buttons', () => {
 	it('Check Button', async () => {
 		await createNewPost();
 

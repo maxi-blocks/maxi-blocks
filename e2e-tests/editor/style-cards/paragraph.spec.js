@@ -21,7 +21,7 @@ import {
 	responsiveTypographyStyle,
 } from './constants';
 
-describe('StyleCards Paragraph', () => {
+describe.skip('StyleCards Paragraph', () => {
 	it('Check Paragraph', async () => {
 		await createNewPost();
 

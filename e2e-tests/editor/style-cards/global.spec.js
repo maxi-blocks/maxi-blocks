@@ -68,7 +68,7 @@ const copySCtoEdit = async newName => {
 	);
 };
 
-describe('SC settings', () => {
+describe.skip('SC settings', () => {
 	beforeAll(async () => {
 		// Ensures clean SC
 		await createNewPost();

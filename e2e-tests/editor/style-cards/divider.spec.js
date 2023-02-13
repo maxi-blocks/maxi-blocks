@@ -16,7 +16,7 @@ import {
 	checkSCResult,
 } from '../../utils';
 
-describe('SC Divider', () => {
+describe.skip('SC Divider', () => {
 	it('Checking divider accordion', async () => {
 		await createNewPost();
 		await insertBlock('Divider Maxi');

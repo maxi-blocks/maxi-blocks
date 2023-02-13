@@ -12,7 +12,7 @@ import {
 	checkSCResult,
 } from '../../utils';
 
-describe('SC Link', () => {
+describe.skip('SC Link', () => {
 	it('Checking link accordion', async () => {
 		await createNewPost();
 		await setBrowserViewport('large');

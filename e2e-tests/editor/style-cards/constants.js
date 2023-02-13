@@ -1,3 +1,11 @@
+const getButtonConstants = obj => {
+	const newObj = { ...obj };
+
+	delete newObj.bottomGap;
+
+	return newObj;
+};
+
 export const generalTypographyStyle = {
 	decoration: 'overline',
 	weight: '300',
@@ -8,15 +16,9 @@ export const generalTypographyStyle = {
 	wordSpacing: '10',
 	bottomGap: '20',
 };
-export const generalButtonTypographyStyle = {
-	decoration: 'overline',
-	weight: '300',
-	transform: 'capitalize',
-	style: 'italic',
-	indent: '44',
-	whiteSpace: 'pre',
-	wordSpacing: '10',
-};
+export const generalButtonTypographyStyle = getButtonConstants(
+	generalTypographyStyle
+);
 
 export const responsiveTypographyStyle = {
 	decoration: 'underline',
@@ -29,15 +31,9 @@ export const responsiveTypographyStyle = {
 	bottomGap: '10',
 };
 
-export const responsiveButtonTypographyStyle = {
-	decoration: 'underline',
-	weight: '400',
-	transform: 'uppercase',
-	style: 'oblique',
-	indent: '22',
-	whiteSpace: 'pre-wrap',
-	wordSpacing: '20',
-};
+export const responsiveButtonTypographyStyle = getButtonConstants(
+	responsiveTypographyStyle
+);
 
 export const generalTypographyOptions = {
 	size: '20',

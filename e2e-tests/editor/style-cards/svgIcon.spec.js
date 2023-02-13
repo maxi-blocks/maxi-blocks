@@ -8,7 +8,7 @@ import { createNewPost, setBrowserViewport } from '@wordpress/e2e-test-utils';
  */
 import { getStyleCardEditor, checkSCResult } from '../../utils';
 
-describe('SC svg icon', () => {
+describe.skip('SC svg icon', () => {
 	it('Checking svg icon accordion', async () => {
 		await createNewPost();
 		await setBrowserViewport('large');

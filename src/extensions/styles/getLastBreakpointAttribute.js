@@ -66,12 +66,21 @@ const getLastBreakpointAttributeSingle = (
 	// In case that breakpoint is general and baseBreakpoint attribute exists,
 	// give priority to baseBreakpoint attribute
 	if (breakpoint === 'general' && currentBreakpoint === 'general') {
-		const baseBreakpointAttr = getValueFromKeys(
-			attr[
-				`${!isEmpty(target) ? `${target}-` : ''}${baseBreakpoint}${
-					isHover ? '-hover' : ''
-				}`
-			],
+		// const baseBreakpointAttr = getValueFromKeys(
+		// 	attr[
+		// 		`${!isEmpty(target) ? `${target}-` : ''}${baseBreakpoint}${
+		// 			isHover ? '-hover' : ''
+		// 		}`
+		// 	],
+		// 	keys
+		// );
+
+		const baseBreakpointAttr = getLastBreakpointAttributeSingle(
+			target,
+			baseBreakpoint,
+			attributes,
+			isHover,
+			avoidXXL,
 			keys
 		);
 

@@ -156,7 +156,7 @@ class MaxiBlocks_Styles
         $is_template_part = is_string($name) && strpos($name, '-templates');
         $is_template = $is_template_part && str_ends_with($name, '-templates');
 
-        if ($is_content === '') {
+        if ($is_content) {
             $styles = $this->get_styles($content);
             $fonts = $this->get_fonts($content);
 

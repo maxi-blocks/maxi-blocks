@@ -56,7 +56,6 @@ const LibraryToolbar = props => {
 		title = '',
 		cost = '',
 		toneUrl = '',
-		cardId,
 		isMaxiProActive = false,
 		isPro,
 		isBeta,
@@ -167,6 +166,24 @@ const LibraryToolbar = props => {
 
 	const openRelatedPattern = () => {
 		let relatedSerial = toneUrl.toLowerCase();
+
+		if (toneUrl.includes('/')) {
+			const parts = toneUrl.replace(/:$/ / '').split('/');
+			relatedSerial = parts.pop() || parts.pop();
+		}
+
+		const searchParameters = {
+			q: relatedSerial,
+			query_by: 'post_number',
+			per_page: 1,
+		};
+
+		const masonryCardId = `maxi-cloud-masonry-card__pattern-${relatedSerial}`;
+		let fullWidth = false;
+		if (document.fullscreenElement) {
+			fullWidth = true;
+		}
+
 		const modal = document.getElementsByClassName(
 			'maxi-library-modal__preview'
 		)[0];
@@ -190,23 +207,6 @@ const LibraryToolbar = props => {
 		const labelMobile = modal?.getElementsByClassName(
 			'maxi-cloud-container__preview-mobile__label'
 		)[0];
-
-		if (toneUrl.includes('/')) {
-			const parts = toneUrl.replace(/:$/ / '').split('/');
-			relatedSerial = parts.pop() || parts.pop();
-		}
-
-		const searchParameters = {
-			q: relatedSerial,
-			query_by: 'post_number',
-			per_page: 1,
-		};
-
-		const masonryCardId = `maxi-cloud-masonry-card__pattern-${relatedSerial}`;
-		let fullWidth = false;
-		if (document.fullscreenElement) {
-			fullWidth = true;
-		}
 
 		client
 			.collections('post')
@@ -237,84 +237,84 @@ const LibraryToolbar = props => {
 					}
 				}, 100);
 
-				window.setTimeout(() => {
-					const modal = document.getElementsByClassName(
-						'maxi-library-modal maxi-library-modal__preview'
-					)[0];
-					const previewIframe = modal?.getElementsByClassName(
-						'maxi-cloud-container__preview-iframe_wrap'
-					)[0];
+				// window.setTimeout(() => {
+				// 	const modal = document.getElementsByClassName(
+				// 		'maxi-library-modal maxi-library-modal__preview'
+				// 	)[0];
+				// 	const previewIframe = modal?.getElementsByClassName(
+				// 		'maxi-cloud-container__preview-iframe_wrap'
+				// 	)[0];
 
-					const previewIframeWrap = modal?.getElementsByClassName(
-						'maxi-cloud-container__preview-iframe_main-wrap'
-					)[0];
+				// 	const previewIframeWrap = modal?.getElementsByClassName(
+				// 		'maxi-cloud-container__preview-iframe_main-wrap'
+				// 	)[0];
 
-					const previewIframeSpace = modal?.getElementsByClassName(
-						'maxi-cloud-container__preview-iframe_space'
-					)[0];
+				// 	const previewIframeSpace = modal?.getElementsByClassName(
+				// 		'maxi-cloud-container__preview-iframe_space'
+				// 	)[0];
 
-					const labelTablet = modal?.getElementsByClassName(
-						'maxi-cloud-container__preview-tablet__label'
-					)[0];
+				// 	const labelTablet = modal?.getElementsByClassName(
+				// 		'maxi-cloud-container__preview-tablet__label'
+				// 	)[0];
 
-					const labelMobile = modal?.getElementsByClassName(
-						'maxi-cloud-container__preview-mobile__label'
-					)[0];
+				// 	const labelMobile = modal?.getElementsByClassName(
+				// 		'maxi-cloud-container__preview-mobile__label'
+				// 	)[0];
 
-					previewIframe.style.outline = previewIframeStyles.outline;
-					previewIframe.style['border-radius'] =
-						previewIframeStyles['border-radius'];
-					labelTablet.style.display = labelTabletStyles.display;
-					labelMobile.style.display = labelMobileStyles.display;
-					previewIframeWrap.style.top = previewIframeWrapStyles.top;
-					previewIframeSpace.style.height =
-						previewIframeSpaceStyles.height;
-					previewIframe.style.width = previewIframeStyles.width;
-					previewIframe.style.height = previewIframeStyles.height;
-					previewIframeWrap.style.left = previewIframeWrapStyles.left;
-					previewIframeWrap.style.right =
-						previewIframeWrapStyles.right;
-					previewIframe.style.margin = previewIframeStyles.margin;
-					if (previewIframe.style.width === '768px') {
-						removeClass(
-							document.getElementsByClassName(
-								'maxi-cloud-toolbar__button-desktop'
-							),
-							'maxi-cloud-toolbar__button_active'
-						);
-						addClass(
-							document.getElementsByClassName(
-								'maxi-cloud-toolbar__button-tablet'
-							),
-							'maxi-cloud-toolbar__button_active'
-						);
-						removeClass(
-							document.getElementsByClassName(
-								'maxi-cloud-toolbar__button-mobile'
-							),
-							'maxi-cloud-toolbar__button_active'
-						);
-					} else if (previewIframe.style.width === '390px') {
-						removeClass(
-							document.getElementsByClassName(
-								'maxi-cloud-toolbar__button-desktop'
-							),
-							'maxi-cloud-toolbar__button_active'
-						);
-						removeClass(
-							document.getElementsByClassName(
-								'maxi-cloud-toolbar__button-tablet'
-							),
-							'maxi-cloud-toolbar__button_active'
-						);
-						addClass(
-							document.getElementsByClassName(
-								'maxi-cloud-toolbar__button-mobile'
-							),
-							'maxi-cloud-toolbar__button_active'
-						);
-					}
-				}, 0);
+				// 	previewIframe.style.outline = previewIframeStyles.outline;
+				// 	previewIframe.style['border-radius'] =
+				// 		previewIframeStyles['border-radius'];
+				// 	labelTablet.style.display = labelTabletStyles.display;
+				// 	labelMobile.style.display = labelMobileStyles.display;
+				// 	previewIframeWrap.style.top = previewIframeWrapStyles.top;
+				// 	previewIframeSpace.style.height =
+				// 		previewIframeSpaceStyles.height;
+				// 	previewIframe.style.width = previewIframeStyles.width;
+				// 	previewIframe.style.height = previewIframeStyles.height;
+				// 	previewIframeWrap.style.left = previewIframeWrapStyles.left;
+				// 	previewIframeWrap.style.right =
+				// 		previewIframeWrapStyles.right;
+				// 	previewIframe.style.margin = previewIframeStyles.margin;
+				// 	if (previewIframe.style.width === '768px') {
+				// 		removeClass(
+				// 			document.getElementsByClassName(
+				// 				'maxi-cloud-toolbar__button-desktop'
+				// 			),
+				// 			'maxi-cloud-toolbar__button_active'
+				// 		);
+				// 		addClass(
+				// 			document.getElementsByClassName(
+				// 				'maxi-cloud-toolbar__button-tablet'
+				// 			),
+				// 			'maxi-cloud-toolbar__button_active'
+				// 		);
+				// 		removeClass(
+				// 			document.getElementsByClassName(
+				// 				'maxi-cloud-toolbar__button-mobile'
+				// 			),
+				// 			'maxi-cloud-toolbar__button_active'
+				// 		);
+				// 	} else if (previewIframe.style.width === '390px') {
+				// 		removeClass(
+				// 			document.getElementsByClassName(
+				// 				'maxi-cloud-toolbar__button-desktop'
+				// 			),
+				// 			'maxi-cloud-toolbar__button_active'
+				// 		);
+				// 		removeClass(
+				// 			document.getElementsByClassName(
+				// 				'maxi-cloud-toolbar__button-tablet'
+				// 			),
+				// 			'maxi-cloud-toolbar__button_active'
+				// 		);
+				// 		addClass(
+				// 			document.getElementsByClassName(
+				// 				'maxi-cloud-toolbar__button-mobile'
+				// 			),
+				// 			'maxi-cloud-toolbar__button_active'
+				// 		);
+				// 	}
+				// }, 0);
 
 				const maxiModal = document.getElementById('maxi-modal');
 
@@ -326,7 +326,6 @@ const LibraryToolbar = props => {
 						serial={relatedHit.post_number}
 						cost={relatedHit.cost[0]}
 						toneUrl={relatedHit.link_to_related}
-						cardId={masonryCardId}
 						onClose={onRequestClose}
 						isPro={relatedHit.cost?.[0] === 'Pro'}
 						isBeta={relatedHit.post_tag?.includes('Beta')}
@@ -509,14 +508,6 @@ const LibraryToolbar = props => {
 		previewIframeWrap.style.right = 0;
 	};
 
-	const clickLoadButton = id => {
-		const button = document.querySelector(
-			`#${id} .maxi-cloud-masonry-card__button-load`
-		);
-
-		button?.click();
-	};
-
 	return (
 		<div className='maxi-cloud-toolbar'>
 			{type !== 'preview' && type !== 'switch-tone' && (
@@ -613,7 +604,6 @@ const LibraryToolbar = props => {
 						<ToolbarButton
 							label={__('Insert', 'maxi-blocks')}
 							onClick={() => {
-								//clickLoadButton(cardId);
 								onRequestInsertPattern(
 									gutenbergCode,
 									isSwapChecked,

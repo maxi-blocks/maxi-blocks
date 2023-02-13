@@ -119,10 +119,7 @@ const reducer = (
 			};
 		case 'SAVE_GENERAL_SETTING':
 			const { setting, value } = action;
-			console.log(setting);
 			const newSettings = { [setting]: value };
-			console.log('newSettings');
-			console.log(newSettings);
 			return {
 				...state,
 				settings: { ...state.settings, ...newSettings },

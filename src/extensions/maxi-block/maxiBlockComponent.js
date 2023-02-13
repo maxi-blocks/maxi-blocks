@@ -49,11 +49,19 @@ import getWinBreakpoint from '../dom/getWinBreakpoint';
 import { uniqueIDGenerator, getBlockData } from '../attributes';
 import getHoverStatus from '../relations/getHoverStatus';
 import { getStylesWrapperId } from './utils';
+import getLastChangedBlocks from './getLastChangedBlocks';
 
 /**
  * External dependencies
  */
-import { cloneDeep, isEmpty, isEqual, isFunction, isNil } from 'lodash';
+import {
+	cloneDeep,
+	isEmpty,
+	isEqual,
+	isFunction,
+	isNil,
+	isArray,
+} from 'lodash';
 
 /**
  * Style Component
@@ -437,6 +445,8 @@ class MaxiBlockComponent extends Component {
 				clientId,
 			});
 
+			this.propagateNewUniqueID(idToCheck, newUniqueID);
+
 			this.props.attributes.uniqueID = newUniqueID;
 			this.props.attributes.customLabel = getCustomLabel(
 				this.props.attributes.customLabel,
@@ -470,6 +480,74 @@ class MaxiBlockComponent extends Component {
 
 		loadFonts(response, true, target);
 		this.areFontsLoaded.current = true;
+	}
+
+	propagateNewUniqueID(oldUniqueID, newUniqueID) {
+		const updateRelations = () => {
+			const blockAttributesUpdate = {};
+			const lastChangedBlocks = getLastChangedBlocks();
+
+			if (isEmpty(lastChangedBlocks)) return;
+
+			const updateNewUniqueID = block => {
+				const {
+					attributes = {},
+					innerBlocks: rawInnerBlocks = [],
+					clientId,
+				} = block;
+
+				if (
+					'relations' in attributes &&
+					!isEmpty(attributes.relations)
+				) {
+					const { relations } = attributes;
+
+					const newRelations = cloneDeep(relations).map(relation => {
+						const { uniqueID } = relation;
+
+						if (uniqueID === oldUniqueID) {
+							relation.uniqueID = newUniqueID;
+						}
+
+						return relation;
+					});
+
+					if (!isEqual(relations, newRelations) && clientId)
+						blockAttributesUpdate[clientId] = {
+							relations: newRelations,
+						};
+				}
+
+				if (!isEmpty(rawInnerBlocks)) {
+					const innerBlocks = isArray(rawInnerBlocks)
+						? rawInnerBlocks
+						: Object.values(rawInnerBlocks);
+
+					innerBlocks.forEach(innerBlock => {
+						updateNewUniqueID(innerBlock);
+					});
+				}
+			};
+
+			lastChangedBlocks.forEach(block => updateNewUniqueID(block));
+
+			if (!isEmpty(blockAttributesUpdate)) {
+				const {
+					__unstableMarkNextChangeAsNotPersistent:
+						markNextChangeAsNotPersistent,
+					updateBlockAttributes,
+				} = dispatch('core/block-editor');
+
+				Object.entries(blockAttributesUpdate).forEach(
+					([clientId, attributes]) => {
+						markNextChangeAsNotPersistent();
+						updateBlockAttributes(clientId, attributes);
+					}
+				);
+			}
+		};
+
+		updateRelations();
 	}
 
 	updateRelationHoverStatus() {
@@ -531,29 +609,34 @@ class MaxiBlockComponent extends Component {
 	}
 
 	removeUnmountedBlockFromRelations(uniqueID) {
-		goThroughMaxiBlocks(({ clientId, attributes, innerBlocks }) => {
-			const { relations, uniqueID: blockUniqueID } = attributes;
+		const { isDraggingBlocks } = select('core/block-editor');
 
-			if (uniqueID !== blockUniqueID && !isEmpty(relations)) {
-				const filteredRelations = relations.filter(
-					({ uniqueID: relationUniqueID }) =>
-						relationUniqueID !== uniqueID
-				);
+		const isDragging = isDraggingBlocks();
 
-				if (!isEqual(relations, filteredRelations)) {
-					const { updateBlockAttributes } =
-						dispatch('core/block-editor');
+		if (!isDragging)
+			goThroughMaxiBlocks(({ clientId, attributes }) => {
+				const { relations, uniqueID: blockUniqueID } = attributes;
 
-					updateBlockAttributes(clientId, {
-						relations: filteredRelations,
-					});
+				if (uniqueID !== blockUniqueID && !isEmpty(relations)) {
+					const filteredRelations = relations.filter(
+						({ uniqueID: relationUniqueID }) =>
+							relationUniqueID !== uniqueID
+					);
 
-					return true;
+					if (!isEqual(relations, filteredRelations)) {
+						const { updateBlockAttributes } =
+							dispatch('core/block-editor');
+
+						updateBlockAttributes(clientId, {
+							relations: filteredRelations,
+						});
+
+						return true;
+					}
 				}
-			}
 
-			return false;
-		});
+				return false;
+			});
 	}
 
 	/**

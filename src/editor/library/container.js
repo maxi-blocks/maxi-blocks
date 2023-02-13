@@ -459,7 +459,6 @@ const LibraryContainer = props => {
 	const { receiveMaxiSettings } = select('maxiBlocks');
 
 	const maxiSettings = receiveMaxiSettings();
-	console.log(maxiSettings);
 	const swapOption = maxiSettings?.swap_cloud_images;
 
 	const [isSwapChecked, setSwapChecked] = useState(swapOption);
@@ -776,8 +775,6 @@ const LibraryContainer = props => {
 				)}
 				checked={isSwapChecked}
 				onChange={val => {
-					console.log('check');
-					console.log(val);
 					setSwapChecked(val);
 					saveMaxiSetting('swap_cloud_images', val);
 				}}

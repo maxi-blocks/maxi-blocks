@@ -229,7 +229,10 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		saveMaxiStyleCards(selectedSCValue);
 		updateSCOnEditor(selectedSCValue);
 
-		setActiveSCColour(selectedSCValue.light.defaultStyleCard.color[4]);
+		setActiveSCColour(
+			selectedSCValue.light?.styleCard?.color?.[4] ||
+				selectedSCValue.light.defaultStyleCard.color[4]
+		);
 		setActiveSCColourTwo(selectedSCValue.light.defaultStyleCard.color[5]);
 
 		const newStyleCards = cloneDeep(styleCards);

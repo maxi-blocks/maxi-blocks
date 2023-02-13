@@ -15,11 +15,7 @@ import {
 	SettingTabsControl,
 } from '../../components';
 import * as defaultPresets from './defaults';
-import {
-	getGroupAttributes,
-	setHoverAttributes,
-	getIconWithColor,
-} from '../../extensions/styles';
+import { getGroupAttributes, getIconWithColor } from '../../extensions/styles';
 import { customCss } from './data';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { withMaxiInspector } from '../../extensions/inspector';
@@ -85,7 +81,6 @@ const Inspector = props => {
 			Object.keys(nonHoverAttr).forEach(h => {
 				if (h.includes('hover')) delete nonHoverAttr[h];
 			});
-			setHoverAttributes(nonHoverAttr, hoverAttr);
 
 			newDefaultPresets[`preset${number}`] = {
 				...newDefaultPresets[`preset${number}`],

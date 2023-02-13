@@ -2,6 +2,8 @@
 
 exports[`getSCVariablesObject Return an object with variables ready to update on \`document.documentElement\` 1`] = `
 Object {
+  "--maxi-active-sc-color": "255,74,23",
+  "--maxi-active-sc-color-two": "0,0,0",
   "--maxi-dark-button-font-family-general": "Roboto",
   "--maxi-dark-button-font-family-l": "Roboto",
   "--maxi-dark-button-font-family-m": "Roboto",

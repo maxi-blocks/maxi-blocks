@@ -97,13 +97,15 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	const [isTemplate, setIsTemplate] = useState(!getIsUserCreatedStyleCard());
 	const [showCopyCardDialog, setShowCopyCardDialog] = useState(false);
 	const [activeSCColour, setActiveSCColour] = useState(
-		activeStyleCard.value.light.defaultStyleCard.color[4]
+		activeStyleCard?.value?.light?.styleCard?.color?.[4] ||
+			activeStyleCard?.value?.light?.defaultStyleCard?.color?.[4]
 	);
 	const [activeSCColourTwo, setActiveSCColourTwo] = useState(
-		activeStyleCard.value.light.defaultStyleCard.color[5]
+		activeStyleCard?.value?.light?.defaultStyleCard?.color?.[5]
 	);
 
 	useEffect(() => {
+		console.log('3');
 		if (selectedSCValue) {
 			updateSCOnEditor(
 				selectedSCValue,
@@ -246,10 +248,19 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	};
 
 	const saveCurrentSC = () => {
-		const newStyleCards = {
-			...styleCards,
-			[selectedSCKey]: { ...selectedSCValue, ...{ status: '' } },
-		};
+		const newStyleCards =
+			selectedSCValue?.status === 'active'
+				? {
+						...styleCards,
+						[selectedSCKey]: { ...selectedSCValue },
+				  }
+				: {
+						...styleCards,
+						[selectedSCKey]: {
+							...selectedSCValue,
+							...{ status: '' },
+						},
+				  };
 
 		saveMaxiStyleCards(newStyleCards, true);
 		saveSCStyles(false);

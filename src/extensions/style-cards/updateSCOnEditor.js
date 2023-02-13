@@ -270,8 +270,6 @@ const updateSCOnEditor = (
 	activeSCColourTwo,
 	rawElements = [document, getSiteEditorIframe()]
 ) => {
-	console.log('updateSCOnEditor');
-	console.log(activeSCColour);
 	const SCObject = getSCVariablesObject(
 		{ ...cloneDeep(styleCards) },
 		activeSCColour,

@@ -44,6 +44,7 @@ const CloudLibrary = props => {
 		prefix = '',
 		gutenbergCode,
 		isSwapChecked,
+		onClick,
 	} = props;
 
 	const [type, setType] = useState(cloudType);
@@ -72,6 +73,7 @@ const CloudLibrary = props => {
 					gutenbergCode={gutenbergCode}
 					onSelect={onSelect}
 					isSwapChecked={isSwapChecked}
+					onClick={onClick}
 				/>
 				<LibraryContainer
 					type={type}

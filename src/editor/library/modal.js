@@ -159,7 +159,10 @@ const MaxiModal = props => {
 	} = props;
 
 	const ref = useRef(null);
-	const [isOpen, changeIsOpen] = useState(openFirstTime || forceIsOpen);
+	const [isOpen, changeIsOpen] = useState(
+		openFirstTime || forceIsOpen || false
+	);
+	const [wasOpenedFirstTime, changeOpenedFirstTime] = useState(openFirstTime);
 
 	const onClick = () => {
 		changeIsOpen(!isOpen);
@@ -170,12 +173,8 @@ const MaxiModal = props => {
 
 	const onCloseModal = () => {
 		changeIsOpen(false);
+		changeOpenedFirstTime(false);
 	};
-
-	useEffect(() => {
-		if (isOpen || forceIsOpen) changeIsOpen(true);
-		if (!isOpen) changeIsOpen(false);
-	}, [isOpen, forceIsOpen]);
 
 	return (
 		<div ref={ref} className='maxi-library-modal__action-section'>
@@ -305,6 +304,7 @@ const MaxiModal = props => {
 								prefix={prefix}
 								gutenbergCode={gutenbergCode}
 								isSwapChecked={isSwapChecked}
+								onClick={onClick}
 							/>
 						</div>
 					</div>
@@ -393,7 +393,7 @@ const MaxiModal = props => {
 					</RawHTML>
 				</div>
 			)}
-			{type === 'switch-tone' && isOpen && (
+			{type === 'switch-tone' && (isOpen || wasOpenedFirstTime) && (
 				<div className='components-modal__screen-overlay maxi-open-preview maxi-switch-tone'>
 					<div className='maxi-library-modal maxi-preview'>
 						<CloudLibrary
@@ -411,6 +411,7 @@ const MaxiModal = props => {
 							onSelect={onSelect}
 							gutenbergCode={gutenbergCode}
 							isSwapChecked={isSwapChecked}
+							onClick={onClick}
 						/>
 					</div>
 				</div>

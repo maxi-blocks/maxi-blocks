@@ -62,6 +62,7 @@ const LibraryToolbar = props => {
 		gutenbergCode,
 		onSelect,
 		isSwapChecked,
+		onClick,
 	} = props;
 
 	const client = new TypesenseSearchClient({
@@ -165,6 +166,7 @@ const LibraryToolbar = props => {
 	const { replaceBlock } = useDispatch('core/block-editor');
 
 	const openRelatedPattern = () => {
+		onClick();
 		let relatedSerial = toneUrl.toLowerCase();
 
 		if (toneUrl.includes('/')) {
@@ -178,35 +180,10 @@ const LibraryToolbar = props => {
 			per_page: 1,
 		};
 
-		const masonryCardId = `maxi-cloud-masonry-card__pattern-${relatedSerial}`;
 		let fullWidth = false;
 		if (document.fullscreenElement) {
 			fullWidth = true;
 		}
-
-		const modal = document.getElementsByClassName(
-			'maxi-library-modal__preview'
-		)[0];
-
-		const previewIframe = modal?.getElementsByClassName(
-			'maxi-cloud-container__preview-iframe_wrap'
-		)[0];
-
-		const previewIframeWrap = modal?.getElementsByClassName(
-			'maxi-cloud-container__preview-iframe_main-wrap'
-		)[0];
-
-		const previewIframeSpace = modal?.getElementsByClassName(
-			'maxi-cloud-container__preview-iframe_space'
-		)[0];
-
-		const labelTablet = modal?.getElementsByClassName(
-			'maxi-cloud-container__preview-tablet__label'
-		)[0];
-
-		const labelMobile = modal?.getElementsByClassName(
-			'maxi-cloud-container__preview-mobile__label'
-		)[0];
 
 		client
 			.collections('post')
@@ -214,12 +191,6 @@ const LibraryToolbar = props => {
 			.search(searchParameters)
 			.then(result => {
 				const relatedHit = result?.hits[0]?.document;
-				const previewIframeStyles = previewIframe.style;
-				const previewIframeWrapStyles = previewIframeWrap.style;
-				const previewIframeSpaceStyles = previewIframeSpace.style;
-
-				const labelTabletStyles = labelTablet.style;
-				const labelMobileStyles = labelMobile.style;
 
 				window.setTimeout(() => {
 					if (fullWidth) {
@@ -237,85 +208,6 @@ const LibraryToolbar = props => {
 					}
 				}, 100);
 
-				// window.setTimeout(() => {
-				// 	const modal = document.getElementsByClassName(
-				// 		'maxi-library-modal maxi-library-modal__preview'
-				// 	)[0];
-				// 	const previewIframe = modal?.getElementsByClassName(
-				// 		'maxi-cloud-container__preview-iframe_wrap'
-				// 	)[0];
-
-				// 	const previewIframeWrap = modal?.getElementsByClassName(
-				// 		'maxi-cloud-container__preview-iframe_main-wrap'
-				// 	)[0];
-
-				// 	const previewIframeSpace = modal?.getElementsByClassName(
-				// 		'maxi-cloud-container__preview-iframe_space'
-				// 	)[0];
-
-				// 	const labelTablet = modal?.getElementsByClassName(
-				// 		'maxi-cloud-container__preview-tablet__label'
-				// 	)[0];
-
-				// 	const labelMobile = modal?.getElementsByClassName(
-				// 		'maxi-cloud-container__preview-mobile__label'
-				// 	)[0];
-
-				// 	previewIframe.style.outline = previewIframeStyles.outline;
-				// 	previewIframe.style['border-radius'] =
-				// 		previewIframeStyles['border-radius'];
-				// 	labelTablet.style.display = labelTabletStyles.display;
-				// 	labelMobile.style.display = labelMobileStyles.display;
-				// 	previewIframeWrap.style.top = previewIframeWrapStyles.top;
-				// 	previewIframeSpace.style.height =
-				// 		previewIframeSpaceStyles.height;
-				// 	previewIframe.style.width = previewIframeStyles.width;
-				// 	previewIframe.style.height = previewIframeStyles.height;
-				// 	previewIframeWrap.style.left = previewIframeWrapStyles.left;
-				// 	previewIframeWrap.style.right =
-				// 		previewIframeWrapStyles.right;
-				// 	previewIframe.style.margin = previewIframeStyles.margin;
-				// 	if (previewIframe.style.width === '768px') {
-				// 		removeClass(
-				// 			document.getElementsByClassName(
-				// 				'maxi-cloud-toolbar__button-desktop'
-				// 			),
-				// 			'maxi-cloud-toolbar__button_active'
-				// 		);
-				// 		addClass(
-				// 			document.getElementsByClassName(
-				// 				'maxi-cloud-toolbar__button-tablet'
-				// 			),
-				// 			'maxi-cloud-toolbar__button_active'
-				// 		);
-				// 		removeClass(
-				// 			document.getElementsByClassName(
-				// 				'maxi-cloud-toolbar__button-mobile'
-				// 			),
-				// 			'maxi-cloud-toolbar__button_active'
-				// 		);
-				// 	} else if (previewIframe.style.width === '390px') {
-				// 		removeClass(
-				// 			document.getElementsByClassName(
-				// 				'maxi-cloud-toolbar__button-desktop'
-				// 			),
-				// 			'maxi-cloud-toolbar__button_active'
-				// 		);
-				// 		removeClass(
-				// 			document.getElementsByClassName(
-				// 				'maxi-cloud-toolbar__button-tablet'
-				// 			),
-				// 			'maxi-cloud-toolbar__button_active'
-				// 		);
-				// 		addClass(
-				// 			document.getElementsByClassName(
-				// 				'maxi-cloud-toolbar__button-mobile'
-				// 			),
-				// 			'maxi-cloud-toolbar__button_active'
-				// 		);
-				// 	}
-				// }, 0);
-
 				const maxiModal = document.getElementById('maxi-modal');
 
 				wp.element.render(
@@ -332,8 +224,8 @@ const LibraryToolbar = props => {
 						gutenbergCode={relatedHit.gutenberg_code}
 						isSwapChecked={isSwapChecked}
 						onSelect={onSelect}
-						forceIsOpen
-						isOpen
+						onClick={onClick}
+						openFirstTime={true}
 					/>,
 					maxiModal
 				);
@@ -416,9 +308,7 @@ const LibraryToolbar = props => {
 				previewIframe.style['border-radius'] = '15px';
 				labelTablet.style.display = 'block';
 				labelMobile.style.display = 'none';
-				// previewIframeWrap.style.top = '100px';
 				previewIframeSpace.style.height = '20px';
-				// previewModalContent.style.overflowY = 'scroll';
 				previewIframeContainer.style.overflowY = 'scroll';
 				previewIframe.style.margin = '50px auto 35px auto';
 				removeClass(
@@ -447,9 +337,7 @@ const LibraryToolbar = props => {
 				previewIframe.style['border-radius'] = '15px';
 				labelTablet.style.display = 'none';
 				labelMobile.style.display = 'block';
-				// previewIframeWrap.style.top = '100px';
 				previewIframeSpace.style.height = '20px';
-				// previewModalContent.style.overflowY = 'scroll';
 				previewIframe.style.margin = '50px auto 35px auto';
 				previewIframeContainer.style.overflowY = 'scroll';
 				removeClass(
@@ -476,7 +364,6 @@ const LibraryToolbar = props => {
 				previewIframe.style['border-radius'] = 0;
 				labelTablet.style.display = 'none';
 				labelMobile.style.display = 'none';
-				// previewIframeWrap.style.top = 0;
 				previewIframeSpace.style.height = '0px';
 				previewModalContent.style.overflowY = 'hidden';
 				previewIframe.style.margin = '0 auto 35px auto';
@@ -538,7 +425,6 @@ const LibraryToolbar = props => {
 						<span>{cost}</span>
 						<ToolbarButton
 							onClick={() => {
-								onRequestClose();
 								openRelatedPattern();
 							}}
 							label={__('Switch tone', 'maxi-blocks')}

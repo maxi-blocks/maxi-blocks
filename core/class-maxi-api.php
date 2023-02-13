@@ -396,49 +396,25 @@ if (!class_exists('MaxiBlocks_API')):
             if ((bool) get_option('local_fonts')) {
                 new MaxiBlocks_Local_Fonts();
             }
-
-            // Save CSS files for Maxi Themes
-            function save_template_css($styles, $template_name, $is_template_part)
-            {
-                if ($is_template_part) {
-                    $file_path = get_template_directory() . '/parts/' . $template_name . '.css';
-                } else {
-                    $file_path = get_template_directory() . '/templates/' . $template_name . '.css';
+            
+            // Check if Maxi Blocks Theme is installed and active
+            if (get_template() === 'maxi-theme') {
+                $template_part = $data['templatePart'];
+                $is_template_part = strpos($template_part, 'maxi-theme//') !== false;
+    
+                if ($is_template_part || $is_template) {
+                    $template_name;
+    
+                    if ($is_template) {
+                        $template_name = $id;
+                    } else {
+                        $template_name = $template_part;
+                    }
+    
+                    $template_name = str_replace('maxi-theme//', '', $template_name);
+    
+                    do_action('maxi_blocks_save_styles', $styles, $template_name, $is_template_part);
                 }
-
-                // Check if the file path is writable
-                if (!is_writable($file_path)) {
-                    return false;
-                }
-                
-                // Open the file for writing
-                $file = fopen($file_path, 'w');
-                
-                // Write the CSS string to the file
-                fwrite($file, $styles);
-                
-                // Close the file
-                fclose($file);
-                
-                // Return true if the file was saved successfully
-                return true;
-            }
-
-            $template_part = $data['templatePart'];
-            $is_template_part = strpos($template_part, 'maxi-theme//') !== false;
-
-            if ($is_template_part || $is_template) {
-                $template_name;
-
-                if ($is_template) {
-                    $template_name = $id;
-                } else {
-                    $template_name = $template_part;
-                }
-
-                $template_name = str_replace('maxi-theme//', '', $template_name);
-
-                save_template_css($styles, $template_name, $is_template_part);
             }
 
             $updated_meta = (array)$wpdb->get_results(

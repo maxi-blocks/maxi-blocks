@@ -156,7 +156,7 @@ class MaxiBlocks_Styles
         $is_template_part = is_string($name) && strpos($name, '-templates');
         $is_template = $is_template_part && str_ends_with($name, '-templates');
 
-        if ($is_content) {
+        if ($is_content === '') {
             $styles = $this->get_styles($content);
             $fonts = $this->get_fonts($content);
 
@@ -170,21 +170,9 @@ class MaxiBlocks_Styles
             if ($fonts) {
                 $this->enqueue_fonts($fonts);
             }
-        } elseif ($is_template_part) {
-            $name = @end(explode('//', $id, 2));
-
-            // Backup from the file
-            if ($is_template) {
-                $path =  get_template_directory_uri() . '/templates/' . $name . '.css';
-            } else {
-                $path =  get_template_directory_uri() . '/parts/' . $name . '.css';
-            }
-
-            wp_register_style($name, $path);
-            wp_enqueue_style($name);
+        } elseif (get_template() === 'maxi-theme' && $is_template_part) {
+            do_action('maxi_enqueue_template_styles', $name, $id, $is_template);
         }
-
-
 
         if ($is_template) {
             $template_parts = $this->get_template_parts($content);

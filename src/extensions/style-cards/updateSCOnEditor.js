@@ -66,7 +66,8 @@ const getParsedObj = obj => {
 
 export const getSCVariablesObject = (
 	styleCards,
-	activeSCColour = styleCards?.light?.defaultStyleCard?.color?.[4],
+	activeSCColour = styleCards?.light?.styleCard?.color?.[4] ||
+		styleCards?.light?.defaultStyleCard?.color?.[4],
 	activeSCColourTwo = styleCards?.light?.defaultStyleCard?.color?.[5]
 ) => {
 	const response = {};
@@ -269,6 +270,8 @@ const updateSCOnEditor = (
 	activeSCColourTwo,
 	rawElements = [document, getSiteEditorIframe()]
 ) => {
+	console.log('updateSCOnEditor');
+	console.log(activeSCColour);
 	const SCObject = getSCVariablesObject(
 		{ ...cloneDeep(styleCards) },
 		activeSCColour,

@@ -6,6 +6,7 @@ jest.mock('@wordpress/data', () => {
 			return {
 				getSelectedBlockCount: jest.fn(() => 1),
 				receiveBaseBreakpoint: jest.fn(() => 'xl'),
+				receiveMaxiDeviceType: jest.fn(() => 'general'),
 			};
 		}),
 	};
@@ -163,6 +164,7 @@ describe('getLastBreakpointAttribute', () => {
 	test('Should return XXL value when breakpoint is General but there is not General attribute; baseBreakpoint is XXL', () => {
 		select.mockImplementation(() => ({
 			getSelectedBlockCount: jest.fn(() => 1),
+			receiveMaxiDeviceType: jest.fn(() => 'general'),
 			receiveBaseBreakpoint: jest.fn(() => 'xxl'),
 		}));
 
@@ -185,6 +187,7 @@ describe('getLastBreakpointAttribute', () => {
 	test('Should return XXL value when breakpoint is General and baseBreakpoint is XXL', () => {
 		select.mockImplementation(() => ({
 			getSelectedBlockCount: jest.fn(() => 1),
+			receiveMaxiDeviceType: jest.fn(() => 'general'),
 			receiveBaseBreakpoint: jest.fn(() => 'xxl'),
 		}));
 

@@ -9,10 +9,7 @@ import { __ } from '@wordpress/i18n';
 import SettingTabsControl from '../setting-tabs-control';
 import BackgroundControl from '../background-control';
 import ToggleSwitch from '../toggle-switch';
-import {
-	getGroupAttributes,
-	setHoverAttributes,
-} from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/styles';
 import ManageHoverTransitions from '../manage-hover-transitions';
 
 /**
@@ -115,33 +112,6 @@ const background = ({
 									className='maxi-background-status-hover'
 									onChange={val =>
 										maxiSetAttributes({
-											...(val &&
-												setHoverAttributes(
-													{
-														...getGroupAttributes(
-															attributes,
-															[
-																'background',
-																'backgroundColor',
-																'backgroundGradient',
-															],
-															false,
-															prefix
-														),
-													},
-													{
-														...getGroupAttributes(
-															attributes,
-															[
-																'background',
-																'backgroundColor',
-																'backgroundGradient',
-															],
-															true,
-															prefix
-														),
-													}
-												)),
 											[`${prefix}background-status-hover`]:
 												val,
 										})

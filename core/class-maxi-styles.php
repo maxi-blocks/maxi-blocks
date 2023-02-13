@@ -160,7 +160,7 @@ class MaxiBlocks_Styles
             $styles = $this->get_styles($content);
             $fonts = $this->get_fonts($content);
 
-            if ($styles === 'false') {
+            if ($styles) {
                 // Inline styles
                 wp_register_style($name, false);
                 wp_enqueue_style($name);

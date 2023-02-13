@@ -105,7 +105,6 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	);
 
 	useEffect(() => {
-		console.log('3');
 		if (selectedSCValue) {
 			updateSCOnEditor(
 				selectedSCValue,

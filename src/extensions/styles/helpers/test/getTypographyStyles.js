@@ -1,5 +1,12 @@
 import getTypographyStyles from '../getTypographyStyles';
 
+jest.mock('@wordpress/data', () => {
+	return {
+		select: jest.fn(),
+	};
+});
+import { select } from '@wordpress/data';
+
 jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 	return jest.fn(() => {
 		return {
@@ -319,6 +326,44 @@ describe('getTypographyStyles', () => {
 			blockStyle: 'light',
 			isHover: true,
 			normalTypography: obj,
+		});
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Get a correct typography styles when there is a unit value set for XXL and general has no value (it has unit)', () => {
+		select.mockImplementation(
+			jest.fn(() => {
+				return {
+					receiveMaxiDeviceType: jest.fn(() => 'xl'),
+					receiveBaseBreakpoint: jest.fn(() => 'xxl'),
+					getSelectedBlockCount: jest.fn(() => 1),
+				};
+			})
+		);
+		const obj = {
+			'palette-status-general': true,
+			'palette-color-general': 5,
+			'list-palette-status-general': true,
+			'list-palette-color-general': 4,
+			'font-size-unit-general': 'px',
+			'font-size-unit-xxl': 'em',
+			'font-size-unit-m': 'px',
+			'font-size-general': 90,
+			'font-size-xxl': 6.12,
+			'font-size-m': 60,
+			'font-size-s': 36,
+			'line-height-unit-general': 'px',
+			'line-height-unit-xxl': 'em',
+			'line-height-unit-m': 'px',
+			'line-height-general': 99,
+			'line-height-xxl': 1.19,
+			'line-height-m': 70,
+			'line-height-s': 48,
+		};
+
+		const result = getTypographyStyles({
+			obj,
+			blockStyle: 'light',
 		});
 		expect(result).toMatchSnapshot();
 	});

@@ -9,10 +9,7 @@ import { __ } from '@wordpress/i18n';
 import SettingTabsControl from '../setting-tabs-control';
 import BoxShadowControl from '../box-shadow-control';
 import ToggleSwitch from '../toggle-switch';
-import {
-	getGroupAttributes,
-	setHoverAttributes,
-} from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/styles';
 import ManageHoverTransitions from '../manage-hover-transitions';
 
 /**
@@ -86,25 +83,6 @@ const boxShadow = ({
 									className='maxi-box-shadow-status-hover'
 									onChange={val =>
 										maxiSetAttributes({
-											...(val &&
-												setHoverAttributes(
-													{
-														...getGroupAttributes(
-															attributes,
-															'boxShadow',
-															false,
-															prefix
-														),
-													},
-													{
-														...getGroupAttributes(
-															attributes,
-															'boxShadow',
-															true,
-															prefix
-														),
-													}
-												)),
 											[`${prefix}box-shadow-status-hover`]:
 												val,
 										})

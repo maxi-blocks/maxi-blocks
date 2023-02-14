@@ -75,7 +75,7 @@ class MaxiBlocks_Styles
                 'search',
                 'map',
                 'accordion',
-				'slider'
+                'slider'
             ];
 
             $template_parts = $this->get_template_parts($template_content);
@@ -489,6 +489,11 @@ class MaxiBlocks_Styles
         }
 
         $result_decoded = $result[$metaJs];
+
+        // TODO: This is a temporary solution to fix the issue with the bg_video and scroll_effects meta
+        if (in_array($metaJs, ['bg_video', 'scroll_effects'])) {
+            return [ true ];
+        }
 
         if (!is_array($result_decoded) || empty($result_decoded)) {
             return [];

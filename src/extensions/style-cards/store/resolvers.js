@@ -14,8 +14,7 @@ const resolvers = {
 
 			updateSCOnEditor(
 				currentSC.value,
-				getActiveColourFromSC(currentSC, 4),
-				getActiveColourFromSC(currentSC, 5)
+				getActiveColourFromSC(currentSC, 4)
 			);
 		}
 

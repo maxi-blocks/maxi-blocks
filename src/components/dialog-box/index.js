@@ -19,8 +19,8 @@ import './editor.scss';
 const DialogBox = props => {
 	const {
 		message,
-		cancelText,
-		confirmText,
+		cancelLabel,
+		confirmLabel,
 		onConfirm,
 		buttonDisabled,
 		buttonClassName,
@@ -50,7 +50,7 @@ const DialogBox = props => {
 					<div className='maxi-dialog-box-message'>{message}</div>
 					<div className='maxi-dialog-box-buttons'>
 						<Button onClick={() => setIsHidden(true)}>
-							{cancelText}
+							{cancelLabel}
 						</Button>
 						<Button
 							onClick={() => {
@@ -58,7 +58,7 @@ const DialogBox = props => {
 								setIsHidden(true);
 							}}
 						>
-							{confirmText}
+							{confirmLabel}
 						</Button>
 					</div>
 					<div className='maxi-dialog-close-button'>

@@ -94,13 +94,21 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		return card?.type === 'user';
 	};
 
+	const getActiveColourFromSC = (sc, number) => {
+		if (isEmpty(sc)) return '0,0,0';
+		return (
+			sc?.value?.light?.styleCard?.color?.[number] ||
+			sc.value.light.defaultStyleCard.color[number]
+		);
+	};
+
 	const [isTemplate, setIsTemplate] = useState(!getIsUserCreatedStyleCard());
 	const [showCopyCardDialog, setShowCopyCardDialog] = useState(false);
 	const [activeSCColour, setActiveSCColour] = useState(
-		activeStyleCard.value.light.defaultStyleCard.color[4]
+		getActiveColourFromSC(activeStyleCard, 4)
 	);
 	const [activeSCColourTwo, setActiveSCColourTwo] = useState(
-		activeStyleCard.value.light.defaultStyleCard.color[5]
+		getActiveColourFromSC(activeStyleCard, 5)
 	);
 
 	useEffect(() => {
@@ -241,10 +249,28 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	};
 
 	const saveCurrentSC = () => {
-		const newStyleCards = {
-			...styleCards,
-			[selectedSCKey]: { ...selectedSCValue, ...{ status: '' } },
-		};
+		const isChosenActive = selectedSCValue?.status === 'active';
+		const newStyleCards = isChosenActive
+			? {
+					...styleCards,
+					[selectedSCKey]: {
+						...selectedSCValue,
+						...{ status: 'active' },
+					},
+			  }
+			: {
+					...styleCards,
+					[selectedSCKey]: { ...selectedSCValue, ...{ status: '' } },
+			  };
+
+		if (isChosenActive) {
+			setActiveSCColour(
+				selectedSCValue.light?.styleCard?.color?.[4] ||
+					selectedSCValue.light.defaultStyleCard.color[4]
+			);
+		}
+
+		console.log(activeSCColour);
 
 		saveMaxiStyleCards(newStyleCards, true);
 		saveSCStyles(false);

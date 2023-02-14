@@ -16,8 +16,6 @@ import {
 	mediumMode,
 	smallMode,
 } from '../../icons';
-// eslint-disable-next-line import/no-cycle
-import MaxiModal from './modal';
 import { onRequestInsertPattern } from './util';
 
 /**
@@ -62,7 +60,7 @@ const LibraryToolbar = props => {
 		gutenbergCode,
 		onSelect,
 		isSwapChecked,
-		onClick,
+		onChangeTone,
 	} = props;
 
 	const client = new TypesenseSearchClient({
@@ -166,11 +164,10 @@ const LibraryToolbar = props => {
 	const { replaceBlock } = useDispatch('core/block-editor');
 
 	const openRelatedPattern = () => {
-		onClick();
 		let relatedSerial = toneUrl.toLowerCase();
 
 		if (toneUrl.includes('/')) {
-			const parts = toneUrl.replace(/:$/ / '').split('/');
+			const parts = toneUrl.replace(/:$/, '').split('/');
 			relatedSerial = parts.pop() || parts.pop();
 		}
 
@@ -208,26 +205,10 @@ const LibraryToolbar = props => {
 					}
 				}, 100);
 
-				const maxiModal = document.getElementById('maxi-modal');
-
-				wp.element.render(
-					<MaxiModal
-						type='switch-tone'
-						url={relatedHit.demo_url}
-						title={relatedHit.post_title}
-						serial={relatedHit.post_number}
-						cost={relatedHit.cost[0]}
-						toneUrl={relatedHit.link_to_related}
-						onClose={onRequestClose}
-						isPro={relatedHit.cost?.[0] === 'Pro'}
-						isBeta={relatedHit.post_tag?.includes('Beta')}
-						gutenbergCode={relatedHit.gutenberg_code}
-						isSwapChecked={isSwapChecked}
-						onSelect={onSelect}
-						onClick={onClick}
-						openFirstTime={true}
-					/>,
-					maxiModal
+				onChangeTone(
+					relatedHit.demo_url,
+					relatedHit.light_or_dark[0],
+					relatedHit.link_to_related
 				);
 			});
 	};

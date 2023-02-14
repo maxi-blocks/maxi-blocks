@@ -8,8 +8,8 @@ import { Tooltip } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import Button from '../../../button';
 import Icon from '../../../icon';
+import CrispChat from '../../../../editor/crisp-chat';
 
 /**
  * Icons
@@ -32,9 +32,9 @@ const Help = props => {
 	const helpContent = () => {
 		return (
 			<div className='toolbar-item toolbar-item__help'>
-				<Button href='#'>
+				<CrispChat>
 					<Icon className='toolbar-item__icon' icon={toolbarHelp} />
-				</Button>
+				</CrispChat>
 			</div>
 		);
 	};
@@ -45,6 +45,7 @@ const Help = props => {
 				{helpContent()}
 			</Tooltip>
 		);
+
 	return helpContent();
 };
 

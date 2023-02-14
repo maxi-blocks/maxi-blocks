@@ -12,7 +12,7 @@ import { Popover } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import { exportStyleCard } from './utils';
+import { exportStyleCard, getActiveColourFromSC } from './utils';
 import { SettingTabsControl, Button, Icon, DialogBox } from '../../components';
 import MaxiStyleCardsTab from './maxiStyleCardsTab';
 import { updateSCOnEditor } from '../../extensions/style-cards';
@@ -97,20 +97,12 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	const [isTemplate, setIsTemplate] = useState(!getIsUserCreatedStyleCard());
 	const [showCopyCardDialog, setShowCopyCardDialog] = useState(false);
 	const [activeSCColour, setActiveSCColour] = useState(
-		activeStyleCard?.value?.light?.styleCard?.color?.[4] ||
-			activeStyleCard?.value?.light?.defaultStyleCard?.color?.[4]
-	);
-	const [activeSCColourTwo, setActiveSCColourTwo] = useState(
-		activeStyleCard?.value?.light?.defaultStyleCard?.color?.[5]
+		getActiveColourFromSC(activeStyleCard, 4)
 	);
 
 	useEffect(() => {
 		if (selectedSCValue) {
-			updateSCOnEditor(
-				selectedSCValue,
-				activeSCColour,
-				activeSCColourTwo
-			);
+			updateSCOnEditor(selectedSCValue, activeSCColour);
 			setStyleCardName(`${selectedSCValue?.name} - `);
 
 			const isUserCreatedSC = getIsUserCreatedStyleCard();
@@ -193,7 +185,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 			},
 		};
 		saveMaxiStyleCards(newStyleCards);
-		updateSCOnEditor(newSC, activeSCColour, activeSCColourTwo);
+		updateSCOnEditor(newSC, activeSCColour);
 	};
 
 	const [postDate] = useState();
@@ -211,7 +203,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		};
 
 		saveMaxiStyleCards(newAllSCs, true);
-		updateSCOnEditor(card, activeSCColour, activeSCColourTwo);
+		updateSCOnEditor(card, activeSCColour);
 		setSelectedStyleCard(newId);
 	};
 
@@ -227,13 +219,12 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	const applyCurrentSCGlobally = () => {
 		setActiveStyleCard(selectedSCKey);
 		saveMaxiStyleCards(selectedSCValue);
-		updateSCOnEditor(selectedSCValue);
-
-		setActiveSCColour(
-			selectedSCValue.light?.styleCard?.color?.[4] ||
-				selectedSCValue.light.defaultStyleCard.color[4]
+		updateSCOnEditor(
+			selectedSCValue,
+			getActiveColourFromSC(selectedSCValue, 4)
 		);
-		setActiveSCColourTwo(selectedSCValue.light.defaultStyleCard.color[5]);
+
+		setActiveSCColour(getActiveColourFromSC(selectedSCValue, 4));
 
 		const newStyleCards = cloneDeep(styleCards);
 
@@ -250,12 +241,27 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	};
 
 	const saveCurrentSC = () => {
-		const newStyleCards = {
-			...styleCards,
-			[selectedSCKey]: {
+		const isChosenActive = selectedSCValue?.status === 'active';
+		const newStyleCards = isChosenActive
+			? {
+					...styleCards,
+					[selectedSCKey]: {
+						...selectedSCValue,
+						...{ status: 'active' },
+					},
+			  }
+			: {
+					...styleCards,
+					[selectedSCKey]: { ...selectedSCValue, ...{ status: '' } },
+			  };
+
+		if (isChosenActive) {
+			setActiveSCColour(getActiveColourFromSC(selectedSCValue, 4));
+			updateSCOnEditor(
 				selectedSCValue,
-			},
-		};
+				getActiveColourFromSC(selectedSCValue, 4)
+			);
+		}
 
 		saveMaxiStyleCards(newStyleCards, true);
 		saveSCStyles(false);

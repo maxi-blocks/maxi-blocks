@@ -113,3 +113,18 @@ export const processSCAttribute = (SC, attr, type) => {
 
 	return null;
 };
+
+export const getActiveColourFromSC = (sc, number) => {
+	if (isEmpty(sc)) return '0,0,0';
+
+	if (!isEmpty(sc?.value))
+		return (
+			sc.value?.light?.styleCard?.color?.[number] ||
+			sc.value?.light?.defaultStyleCard?.color?.[number]
+		);
+
+	return (
+		sc?.light?.styleCard?.color?.[number] ||
+		sc?.light?.defaultStyleCard?.color?.[number]
+	);
+};

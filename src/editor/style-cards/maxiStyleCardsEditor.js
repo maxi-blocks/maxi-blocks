@@ -12,7 +12,7 @@ import { Popover } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import { exportStyleCard } from './utils';
+import { exportStyleCard, getActiveColourFromSC } from './utils';
 import { SettingTabsControl, Button, Icon, DialogBox } from '../../components';
 import MaxiStyleCardsTab from './maxiStyleCardsTab';
 import { updateSCOnEditor } from '../../extensions/style-cards';
@@ -92,14 +92,6 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 
 	const getIsUserCreatedStyleCard = (card = selectedSCValue) => {
 		return card?.type === 'user';
-	};
-
-	const getActiveColourFromSC = (sc, number) => {
-		if (isEmpty(sc)) return '0,0,0';
-		return (
-			sc?.value?.light?.styleCard?.color?.[number] ||
-			sc.value.light.defaultStyleCard.color[number]
-		);
 	};
 
 	const [isTemplate, setIsTemplate] = useState(!getIsUserCreatedStyleCard());
@@ -233,8 +225,11 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		saveMaxiStyleCards(selectedSCValue);
 		updateSCOnEditor(selectedSCValue);
 
-		setActiveSCColour(selectedSCValue.light.defaultStyleCard.color[4]);
-		setActiveSCColourTwo(selectedSCValue.light.defaultStyleCard.color[5]);
+		console.log('selectedSCValue on active');
+		console.log(selectedSCValue);
+
+		setActiveSCColour(getActiveColourFromSC(selectedSCValue, 4));
+		setActiveSCColourTwo(getActiveColourFromSC(selectedSCValue, 5));
 
 		const newStyleCards = cloneDeep(styleCards);
 
@@ -264,10 +259,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 			  };
 
 		if (isChosenActive) {
-			setActiveSCColour(
-				selectedSCValue.light?.styleCard?.color?.[4] ||
-					selectedSCValue.light.defaultStyleCard.color[4]
-			);
+			setActiveSCColour(getActiveColourFromSC(selectedSCValue, 4));
 		}
 
 		console.log(activeSCColour);

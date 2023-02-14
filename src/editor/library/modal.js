@@ -304,7 +304,6 @@ const MaxiModal = props => {
 								prefix={prefix}
 								gutenbergCode={gutenbergCode}
 								isSwapChecked={isSwapChecked}
-								onClick={onClick}
 							/>
 						</div>
 					</div>
@@ -411,7 +410,6 @@ const MaxiModal = props => {
 							onSelect={onSelect}
 							gutenbergCode={gutenbergCode}
 							isSwapChecked={isSwapChecked}
-							onClick={onClick}
 						/>
 					</div>
 				</div>

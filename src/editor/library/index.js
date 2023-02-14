@@ -32,22 +32,24 @@ const CloudLibrary = props => {
 		onClose,
 		className,
 		cloudType,
-		blockStyle,
+		blockStyle: rawBlockStyle,
 		onSelect,
-		url,
+		url: rawURL,
 		title,
 		cost,
-		toneUrl,
+		toneUrl: rawToneUrl,
 		cardId,
 		isPro,
 		isBeta,
 		prefix = '',
 		gutenbergCode,
 		isSwapChecked,
-		onClick,
 	} = props;
 
 	const [type, setType] = useState(cloudType);
+	const [url, setUrl] = useState(rawURL);
+	const [blockStyle, setBlockStyle] = useState(rawBlockStyle);
+	const [toneUrl, setToneUrl] = useState(rawToneUrl);
 
 	const classes = classnames('maxi-library-modal', className);
 
@@ -59,34 +61,36 @@ const CloudLibrary = props => {
 			shouldCloseOnClickOutside={false}
 			onRequestClose={onClose}
 		>
-			<>
-				<LibraryToolbar
-					type={type}
-					onChange={type => setType(type)}
-					cardId={cardId}
-					title={title}
-					cost={cost}
-					toneUrl={toneUrl}
-					onRequestClose={onClose}
-					isPro={isPro}
-					isBeta={isBeta}
-					gutenbergCode={gutenbergCode}
-					onSelect={onSelect}
-					isSwapChecked={isSwapChecked}
-					onClick={onClick}
-				/>
-				<LibraryContainer
-					type={type}
-					onRequestClose={onClose}
-					blockStyle={blockStyle}
-					onSelect={onSelect}
-					url={url}
-					title={title}
-					prefix={prefix}
-					isPro={isPro}
-					isBeta={isBeta}
-				/>
-			</>
+			<LibraryToolbar
+				type={type}
+				onChange={type => setType(type)}
+				cardId={cardId}
+				title={title}
+				cost={cost}
+				toneUrl={toneUrl}
+				onRequestClose={onClose}
+				isPro={isPro}
+				isBeta={isBeta}
+				gutenbergCode={gutenbergCode}
+				onSelect={onSelect}
+				isSwapChecked={isSwapChecked}
+				onChangeTone={(newUrl, newBlockStyle, newToneUrl) => {
+					setUrl(newUrl);
+					setBlockStyle(newBlockStyle);
+					setToneUrl(newToneUrl);
+				}}
+			/>
+			<LibraryContainer
+				type={type}
+				onRequestClose={onClose}
+				blockStyle={blockStyle}
+				onSelect={onSelect}
+				url={url}
+				title={title}
+				prefix={prefix}
+				isPro={isPro}
+				isBeta={isBeta}
+			/>
 		</Modal>
 	);
 };

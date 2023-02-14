@@ -89,7 +89,7 @@ const getIconSize = (
 
 		if (!isNil(iconSize) && !isEmpty(iconSize)) {
 			response[breakpoint].height = `${
-				iconWidthFitContent
+				iconWidthFitContent && iconWidthHeightRatio !== 1
 					? round(
 							iconWidthHeightRatio > 1
 								? (iconSize * heightToStrokeWidthCoefficient) /

@@ -13,6 +13,7 @@ import Button from '../../components/button';
  * External dependencies
  */
 import classnames from 'classnames';
+import CrispChat from '../crisp-chat';
 
 /**
  * Component
@@ -108,10 +109,10 @@ const LibraryToolbar = props => {
 					))}
 				</div>
 			)}
-			<a className='maxi-cloud-toolbar__help-button'>
+			<CrispChat className='maxi-cloud-toolbar__help-button' as='a'>
 				{help}
 				{__('Help', 'maxi-blocks')}
-			</a>
+			</CrispChat>
 		</div>
 	);
 };

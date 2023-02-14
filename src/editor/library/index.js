@@ -59,7 +59,7 @@ const CloudLibrary = props => {
 			title={__('Template Library Maxi', 'maxi-blocks')}
 			className={classes}
 			shouldCloseOnEsc
-			shouldCloseOnClickOutside={false}
+			shouldCloseOnClickOutside
 			onRequestClose={onClose}
 		>
 			<LibraryToolbar

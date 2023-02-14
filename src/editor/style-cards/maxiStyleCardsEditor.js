@@ -221,9 +221,6 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 			getActiveColourFromSC(selectedSCValue, 4)
 		);
 
-		console.log('selectedSCValue on active');
-		console.log(selectedSCValue);
-
 		setActiveSCColour(getActiveColourFromSC(selectedSCValue, 4));
 
 		const newStyleCards = cloneDeep(styleCards);
@@ -255,6 +252,10 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 
 		if (isChosenActive) {
 			setActiveSCColour(getActiveColourFromSC(selectedSCValue, 4));
+			updateSCOnEditor(
+				selectedSCValue,
+				getActiveColourFromSC(selectedSCValue, 4)
+			);
 		}
 
 		console.log(activeSCColour);

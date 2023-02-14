@@ -10,16 +10,20 @@ import { diff } from 'deep-object-diff';
 
 const getLastChangedBlocks = () => {
 	const { getEntityRecordEdits, getUndoEdit } = select('core');
-	const { getCurrentPostType } = select('core/editor');
 
 	const undoEdit = getUndoEdit();
+
+	if (!undoEdit) return false;
+
+	const { getCurrentPostType } = select('core/editor');
+
 	const entityRecordEdit = getEntityRecordEdits(
 		'postType',
 		getCurrentPostType(),
 		undoEdit.recordId
 	);
 
-	const diffBlocks = diff(undoEdit.edits.blocks, entityRecordEdit.blocks);
+	const diffBlocks = diff(undoEdit?.edits?.blocks, entityRecordEdit?.blocks);
 
 	return Object.values(diffBlocks);
 };

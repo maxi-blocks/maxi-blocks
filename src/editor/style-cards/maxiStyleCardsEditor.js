@@ -97,10 +97,11 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	const [isTemplate, setIsTemplate] = useState(!getIsUserCreatedStyleCard());
 	const [showCopyCardDialog, setShowCopyCardDialog] = useState(false);
 	const [activeSCColour, setActiveSCColour] = useState(
-		activeStyleCard.value.light.defaultStyleCard.color[4]
+		activeStyleCard?.value?.light?.styleCard?.color?.[4] ||
+			activeStyleCard?.value?.light?.defaultStyleCard?.color?.[4]
 	);
 	const [activeSCColourTwo, setActiveSCColourTwo] = useState(
-		activeStyleCard.value.light.defaultStyleCard.color[5]
+		activeStyleCard?.value?.light?.defaultStyleCard?.color?.[5]
 	);
 
 	useEffect(() => {
@@ -220,12 +221,18 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		customiseInputRef?.current?.focus?.();
 	}, [showCopyCardDialog]);
 
+	const [isHiddenActivate, setIsHiddenActivate] = useState(true);
+	const [isHiddenRemove, setIsHiddenRemove] = useState(true);
+
 	const applyCurrentSCGlobally = () => {
 		setActiveStyleCard(selectedSCKey);
 		saveMaxiStyleCards(selectedSCValue);
 		updateSCOnEditor(selectedSCValue);
 
-		setActiveSCColour(selectedSCValue.light.defaultStyleCard.color[4]);
+		setActiveSCColour(
+			selectedSCValue.light?.styleCard?.color?.[4] ||
+				selectedSCValue.light.defaultStyleCard.color[4]
+		);
 		setActiveSCColourTwo(selectedSCValue.light.defaultStyleCard.color[5]);
 
 		const newStyleCards = cloneDeep(styleCards);
@@ -238,12 +245,16 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 
 		saveMaxiStyleCards(newStyleCards, true);
 		saveSCStyles(true);
+
+		setIsHiddenActivate(true);
 	};
 
 	const saveCurrentSC = () => {
 		const newStyleCards = {
 			...styleCards,
-			[selectedSCKey]: { ...selectedSCValue, ...{ status: '' } },
+			[selectedSCKey]: {
+				selectedSCValue,
+			},
 		};
 
 		saveMaxiStyleCards(newStyleCards, true);
@@ -254,6 +265,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		removeStyleCard(selectedSCKey);
 
 		if (activeSCKey === selectedSCKey) setActiveStyleCard('sc_maxi');
+		setIsHiddenRemove(true);
 	};
 
 	const [cardAlreadyExists, setCardAlreadyExists] = useState(false);
@@ -367,10 +379,6 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		listForDropdown[getSelectedInList(listForDropdown)];
 	const activeForDropdown = listForDropdown[getActiveInList(listForDropdown)];
 
-	const filteredCardName = SCList.map(listItem => listItem.label)
-		.filter(cardName => cardName)
-		.indexOf(styleCardName);
-
 	return (
 		!isEmpty(styleCards) && (
 			<Popover
@@ -416,7 +424,15 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 										.then(response => response.json())
 										.then(response => JSON.parse(response))
 										.then(jsonData => {
-											if (filteredCardName < 0) {
+											if (
+												SCList.map(
+													listItem => listItem.label
+												)
+													.filter(
+														cardname => cardname
+													)
+													.indexOf(jsonData.name) < 0
+											) {
 												saveImportedStyleCard(jsonData);
 												setImportedCardExists(false);
 												setCardAlreadyExists(false);
@@ -472,10 +488,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 						{importedCardExists && (
 							<div className='maxi-style-cards__card-already-exists'>
 								<span>
-									{__(
-										'Imported card already exists',
-										'maxi-blocks'
-									)}
+									{__('Imported card already exists.')}
 								</span>
 							</div>
 						)}
@@ -499,26 +512,32 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 								/>
 							</div>
 							<DialogBox
+								isDisabled={isHiddenRemove}
 								message={__(
 									`Deleting${` ${selectedSCValue.name} `}style card. This action is permanent.`,
 									'maxi-blocks'
 								)}
 								cancelLabel={__('Cancel', 'maxi-blocks')}
 								confirmLabel={__('Delete', 'maxi-blocks')}
+								onCancel={() => setIsHiddenRemove(true)}
 								onConfirm={deleteSC}
-								buttonDisabled={
-									!canBeRemoved(selectedSCKey, activeSCKey)
-								}
-								buttonClassName='maxi-style-cards__sc__more-sc--delete has-tooltip'
-								buttonChildren={
-									<>
-										<span className='tooltip'>
-											{__('Delete', 'maxi-blocks')}
-										</span>
-										<Icon icon={SCDelete} />
-									</>
-								}
-							/>
+							>
+								<Button
+									disabled={
+										!canBeRemoved(
+											selectedSCKey,
+											activeSCKey
+										)
+									}
+									className='maxi-style-cards__sc__more-sc--delete has-tooltip'
+									onClick={() => setIsHiddenRemove(false)}
+								>
+									<span className='tooltip'>
+										{__('Delete', 'maxi-blocks')}
+									</span>
+									<Icon icon={SCDelete} />
+								</Button>
+							</DialogBox>
 						</div>
 					</div>
 					<div className='maxi-style-cards__sc__actions edit-activate'>
@@ -528,9 +547,8 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 								setShowCopyCardDialog(!showCopyCardDialog)
 							}
 						>
-							{isTemplate
-								? __('Customise card', 'maxi-blocks')
-								: __('Copy card', 'maxi-blocks')}
+							{isTemplate && __('Customise card', 'maxi-blocks')}
+							{!isTemplate && __('Copy card', 'maxi-blocks')}
 						</Button>
 						{!isTemplate && (
 							<Button
@@ -542,31 +560,30 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 							</Button>
 						)}
 						<DialogBox
+							isDisabled={isHiddenActivate}
 							message={__(
 								`Activate new style. Customized blocks will not change. All other Maxi blocks will get new,${` "${selectedSCValue.name}" `}styles.`,
 								'maxi-blocks'
 							)}
 							cancelLabel={__('Cancel', 'maxi-blocks')}
 							confirmLabel={__('Activate', 'maxi-blocks')}
+							onCancel={() => setIsHiddenActivate(true)}
 							onConfirm={applyCurrentSCGlobally}
-							buttonDisabled={
-								!canBeApplied(selectedSCKey, activeSCKey)
-							}
-							buttonClassName='maxi-style-cards__sc__actions--apply'
-							buttonChildren={
-								<>
-									{(isTemplate ||
-										!canBeSaved(selectedSCKey)) &&
-										__('Activate now', 'maxi-blocks')}
-									{!isTemplate &&
-										canBeSaved(selectedSCKey) &&
-										__(
-											'Save and activate now',
-											'maxi-blocks'
-										)}
-								</>
-							}
-						/>
+						>
+							<Button
+								className='maxi-style-cards__sc__actions--apply'
+								disabled={
+									!canBeApplied(selectedSCKey, activeSCKey)
+								}
+								onClick={() => setIsHiddenActivate(false)}
+							>
+								{(isTemplate || !canBeSaved(selectedSCKey)) &&
+									__('Activate now', 'maxi-blocks')}
+								{!isTemplate &&
+									canBeSaved(selectedSCKey) &&
+									__('Save and activate now', 'maxi-blocks')}
+							</Button>
+						</DialogBox>
 					</div>
 				</div>
 
@@ -580,7 +597,6 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 
 							<div className='maxi-style-cards__sc__save'>
 								<input
-									ref={customiseInputRef}
 									type='text'
 									maxLength='35'
 									placeholder={__(
@@ -592,11 +608,18 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 										setStyleCardName(e.target.value);
 										setCardAlreadyExists(false);
 									}}
+									ref={customiseInputRef}
 								/>
 								<Button
 									disabled={isEmpty(styleCardName)}
 									onClick={() => {
-										if (filteredCardName >= 0) {
+										if (
+											SCList.map(
+												listItem => listItem.label
+											)
+												.filter(cardname => cardname)
+												.indexOf(styleCardName) >= 0
+										) {
 											setCardAlreadyExists(true);
 										} else {
 											setCardAlreadyExists(false);

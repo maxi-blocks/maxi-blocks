@@ -58,6 +58,19 @@ const getLastBreakpointAttributeSingle = (
 	const currentBreakpoint =
 		select('maxiBlocks')?.receiveMaxiDeviceType() ?? 'general';
 	const baseBreakpoint = select('maxiBlocks')?.receiveBaseBreakpoint();
+	// Necessary in case the baseBreakpoint is lower than currentBreakpoint
+	const isCurrentOverBase = (() => {
+		if (
+			breakpoints.includes(currentBreakpoint) &&
+			breakpoints.includes(baseBreakpoint)
+		)
+			return (
+				breakpoints.indexOf(currentBreakpoint) <
+				breakpoints.indexOf(baseBreakpoint)
+			);
+
+		return false;
+	})();
 
 	const attrFilter = attr =>
 		!isNil(attr) &&
@@ -65,7 +78,10 @@ const getLastBreakpointAttributeSingle = (
 
 	// In case that breakpoint is general and baseBreakpoint attribute exists,
 	// give priority to baseBreakpoint attribute
-	if (breakpoint === 'general' && currentBreakpoint === 'general') {
+	if (
+		breakpoint === 'general' &&
+		(currentBreakpoint === 'general' || isCurrentOverBase)
+	) {
 		const baseBreakpointAttr = getLastBreakpointAttributeSingle(
 			target,
 			baseBreakpoint,

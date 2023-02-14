@@ -213,9 +213,6 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		customiseInputRef?.current?.focus?.();
 	}, [showCopyCardDialog]);
 
-	const [isHiddenActivate, setIsHiddenActivate] = useState(true);
-	const [isHiddenRemove, setIsHiddenRemove] = useState(true);
-
 	const applyCurrentSCGlobally = () => {
 		setActiveStyleCard(selectedSCKey);
 		saveMaxiStyleCards(selectedSCValue);
@@ -236,8 +233,6 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 
 		saveMaxiStyleCards(newStyleCards, true);
 		saveSCStyles(true);
-
-		setIsHiddenActivate(true);
 	};
 
 	const saveCurrentSC = () => {
@@ -271,7 +266,6 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		removeStyleCard(selectedSCKey);
 
 		if (activeSCKey === selectedSCKey) setActiveStyleCard('sc_maxi');
-		setIsHiddenRemove(true);
 	};
 
 	const [cardAlreadyExists, setCardAlreadyExists] = useState(false);
@@ -384,6 +378,21 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	const selectedForDropdown =
 		listForDropdown[getSelectedInList(listForDropdown)];
 	const activeForDropdown = listForDropdown[getActiveInList(listForDropdown)];
+
+	const closeAllAccordions = () => {
+		const scEditor = document.getElementsByClassName(
+			'maxi-style-cards__settings'
+		)[0];
+		const accordions = scEditor?.getElementsByClassName(
+			'maxi-accordion-control__item'
+		);
+
+		if (!accordions || isEmpty(accordions)) return null;
+
+		for (let accordion of accordions) {
+			accordion.querySelector('[aria-expanded=true]')?.click();
+		}
+	};
 
 	return (
 		!isEmpty(styleCards) && (
@@ -511,7 +520,13 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 									)}
 									styles={customStyles}
 									onChange={val => {
-										setSelectedStyleCard(val?.value);
+										const newSCKey = val?.value;
+										setSelectedStyleCard(newSCKey);
+										const newSCValue =
+											styleCards?.[newSCKey];
+										!getIsUserCreatedStyleCard(
+											newSCValue
+										) && closeAllAccordions();
 									}}
 									hideSelectedOptions
 									noOptionsMessage={() => null}

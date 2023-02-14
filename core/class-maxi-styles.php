@@ -194,7 +194,10 @@ class MaxiBlocks_Styles
     {
         if (!$is_template) {
             global $post;
-            return $post->ID;
+			if (!$post) {
+				return null;
+			}
+			return $post->ID;
         }
 
         $template_slug = get_page_template_slug();
@@ -305,7 +308,7 @@ class MaxiBlocks_Styles
     {
         global $post;
 
-        if (!$is_template && (!$post || !isset($post->ID))) {
+        if ((!$is_template && (!$post || !isset($post->ID))) || !$id) {
             return false;
         }
 

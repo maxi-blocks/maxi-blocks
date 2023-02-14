@@ -11,6 +11,7 @@ import {
 	useReducer,
 } from '@wordpress/element';
 import { dispatch, select } from '@wordpress/data';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -27,6 +28,7 @@ import MainMaxiBlock from './mainMaxiBlock';
  */
 import classnames from 'classnames';
 import { isEmpty, isEqual, isNil } from 'lodash';
+import mobile from 'is-mobile';
 
 /**
  * Styles
@@ -34,6 +36,19 @@ import { isEmpty, isEqual, isNil } from 'lodash';
 import './editor.scss';
 
 const INNER_BLOCKS = ['maxi-blocks/group-maxi', 'maxi-blocks/column-maxi'];
+
+const DISALLOWED_BREAKPOINTS = ['m', 's', 'xs'];
+
+const DisabledMaxiBlock = () => (
+	<div className='maxi-block__disabled'>
+		<p>
+			{__(
+				'To edit this block please use a desktop browser',
+				'maxi-blocks'
+			)}
+		</p>
+	</div>
+);
 
 const getBlockClassName = blockName => {
 	return `maxi-${blockName
@@ -105,6 +120,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		isSelected,
 		hasSelectedChild,
 		isHovered,
+		isChild,
 		...extraProps
 	} = props;
 
@@ -159,10 +175,21 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 			attributes: extraProps.attributes,
 		}) === 'full';
 
+	// Gets if the block has to be disabled due to the device type
+	const isDisabled =
+		DISALLOWED_BREAKPOINTS.includes(extraProps.baseBreakpoint) &&
+		mobile({ tablet: true });
+
+	// Unselect the block if it's disabled
+	if (isDisabled && isSelected)
+		setTimeout(() => {
+			dispatch('core/block-editor').selectBlock();
+		}, 0);
+
 	// Are just necessary for the memo() part
 	delete extraProps.attributes;
-	delete extraProps.isChild;
 	delete extraProps.deviceType;
+	delete extraProps.baseBreakpoint;
 	delete extraProps.context;
 	delete extraProps.state;
 
@@ -218,6 +245,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		hasLink && 'maxi-block--has-link',
 		isDragging && isDragOverBlock && 'maxi-block--is-drag-over',
 		isHovered && 'maxi-block--is-hovered',
+		isDisabled && 'maxi-block--disabled',
 		!isSave && isFullWidth && 'maxi-block--full-width'
 	);
 
@@ -279,7 +307,12 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 	};
 
 	if (!useInnerBlocks)
-		return <MainMaxiBlock {...blockProps}>{children}</MainMaxiBlock>;
+		return (
+			<MainMaxiBlock {...blockProps}>
+				{isDisabled && !isChild && <DisabledMaxiBlock />}
+				{children}
+			</MainMaxiBlock>
+		);
 
 	return (
 		<InnerBlocksBlock
@@ -290,6 +323,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 			isSelected={isSelected}
 			hasSelectedChild={hasSelectedChild}
 		>
+			{isDisabled && !isChild && <DisabledMaxiBlock />}
 			{children}
 		</InnerBlocksBlock>
 	);
@@ -333,8 +367,14 @@ const MaxiBlock = memo(
 		if (!isEqual(oldAttr, newAttr)) return false;
 
 		// Check differences between children
-		if (rawOldProps?.children || rawNewProps?.children)
-			return isEqual(rawOldProps.children, rawNewProps.children);
+		if (rawOldProps?.children || rawNewProps?.children) {
+			const areChildrenEqual = isEqual(
+				rawOldProps.children,
+				rawNewProps.children
+			);
+
+			if (!areChildrenEqual) return false;
+		}
 
 		if (select('core/block-editor').isDraggingBlocks()) return true;
 

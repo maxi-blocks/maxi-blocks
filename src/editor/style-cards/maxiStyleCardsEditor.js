@@ -99,17 +99,10 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	const [activeSCColour, setActiveSCColour] = useState(
 		getActiveColourFromSC(activeStyleCard, 4)
 	);
-	const [activeSCColourTwo, setActiveSCColourTwo] = useState(
-		getActiveColourFromSC(activeStyleCard, 5)
-	);
 
 	useEffect(() => {
 		if (selectedSCValue) {
-			updateSCOnEditor(
-				selectedSCValue,
-				activeSCColour,
-				activeSCColourTwo
-			);
+			updateSCOnEditor(selectedSCValue, activeSCColour);
 			setStyleCardName(`${selectedSCValue?.name} - `);
 
 			const isUserCreatedSC = getIsUserCreatedStyleCard();
@@ -192,7 +185,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 			},
 		};
 		saveMaxiStyleCards(newStyleCards);
-		updateSCOnEditor(newSC, activeSCColour, activeSCColourTwo);
+		updateSCOnEditor(newSC, activeSCColour);
 	};
 
 	const [postDate] = useState();
@@ -210,7 +203,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		};
 
 		saveMaxiStyleCards(newAllSCs, true);
-		updateSCOnEditor(card, activeSCColour, activeSCColourTwo);
+		updateSCOnEditor(card, activeSCColour);
 		setSelectedStyleCard(newId);
 	};
 
@@ -223,13 +216,15 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	const applyCurrentSCGlobally = () => {
 		setActiveStyleCard(selectedSCKey);
 		saveMaxiStyleCards(selectedSCValue);
-		updateSCOnEditor(selectedSCValue);
+		updateSCOnEditor(
+			selectedSCValue,
+			getActiveColourFromSC(selectedSCValue, 4)
+		);
 
 		console.log('selectedSCValue on active');
 		console.log(selectedSCValue);
 
 		setActiveSCColour(getActiveColourFromSC(selectedSCValue, 4));
-		setActiveSCColourTwo(getActiveColourFromSC(selectedSCValue, 5));
 
 		const newStyleCards = cloneDeep(styleCards);
 

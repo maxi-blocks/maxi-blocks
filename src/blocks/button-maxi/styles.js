@@ -301,6 +301,7 @@ const getStyles = (props, scValues, iconWidthHeightRatio) => {
 					isHover: true,
 					target: '.maxi-button-block__icon',
 					wrapperTarget: '.maxi-button-block__button',
+					iconWidthHeightRatio,
 				}),
 			},
 			data,

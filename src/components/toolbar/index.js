@@ -278,6 +278,7 @@ const MaxiToolbar = memo(
 							blockName={name}
 							onChange={obj => maxiSetAttributes(obj)}
 							breakpoint={breakpoint}
+							blockStyle={blockStyle}
 							isList={isList}
 							textLevel={textLevel}
 							styleCard={styleCard}

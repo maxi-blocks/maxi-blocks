@@ -1,13 +1,16 @@
 import cleanAttributes from '../cleanAttributes';
 
 jest.mock('src/extensions/styles/getDefaultAttribute.js', () =>
-	jest.fn(() => undefined)
+	jest.fn(attr =>
+		attr === 'attribute-with-default-value-hover' ? true : undefined
+	)
 );
 jest.mock('@wordpress/data', () => {
 	return {
 		select: jest.fn(() => {
 			return {
 				receiveBaseBreakpoint: jest.fn(() => 'm'),
+				receiveMaxiDeviceType: jest.fn(() => 'general'),
 				getPrevSavedAttrs: jest.fn(() => []),
 				getSelectedBlockCount: jest.fn(() => 1),
 			};
@@ -336,9 +339,9 @@ describe('cleanAttributes', () => {
 		select.mockImplementation(
 			jest.fn(() => {
 				return {
+					receiveBaseBreakpoint: jest.fn(() => 'xl'),
 					receiveMaxiDeviceType: jest.fn(() => 'xl'),
 					getSelectedBlockCount: jest.fn(() => 1),
-					receiveBaseBreakpoint: jest.fn(() => 'xl'),
 					getPrevSavedAttrs: jest.fn(() => {
 						i += 1;
 						switch (i) {
@@ -409,6 +412,7 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
 					getPrevSavedAttrs: jest.fn(() => []),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
@@ -648,6 +652,7 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'm'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
 					getPrevSavedAttrs: jest.fn(() => []),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
@@ -872,6 +877,7 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'l'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
 					getPrevSavedAttrs: jest.fn(() => []),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
@@ -911,6 +917,7 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'm'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
 					getPrevSavedAttrs: jest.fn(() => []),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
@@ -974,6 +981,7 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'l'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
 					getPrevSavedAttrs: jest.fn(() => []),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
@@ -1034,6 +1042,7 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'm'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
 					getPrevSavedAttrs: jest.fn(() => []),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
@@ -1089,6 +1098,7 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
 					getPrevSavedAttrs: jest.fn(() => []),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
@@ -1125,6 +1135,7 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'l'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
 					getPrevSavedAttrs: jest.fn(() => []),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
@@ -1164,6 +1175,7 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
 					getPrevSavedAttrs: jest.fn(() => []),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
@@ -1204,6 +1216,7 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
 					getPrevSavedAttrs: jest.fn(() => []),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
@@ -1240,6 +1253,7 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
 					getPrevSavedAttrs: jest.fn(() => [
 						'test-general',
 						'test-m',
@@ -1288,6 +1302,7 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
 					getPrevSavedAttrs: jest.fn(() => []),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
@@ -1329,6 +1344,7 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
 					getPrevSavedAttrs: jest.fn(() => []),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
@@ -1369,6 +1385,7 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
 					getPrevSavedAttrs: jest.fn(() => []),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
@@ -1401,6 +1418,7 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
 					getPrevSavedAttrs: jest.fn(() => []),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
@@ -1437,6 +1455,7 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
 					getPrevSavedAttrs: jest.fn(() => []),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
@@ -1473,6 +1492,7 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
 					getPrevSavedAttrs: jest.fn(() => []),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
@@ -1509,6 +1529,7 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
 					getPrevSavedAttrs: jest.fn(() => []),
 					getSelectedBlockCount: jest.fn(() => 1),
 				};
@@ -1622,6 +1643,26 @@ describe('cleanAttributes', () => {
 		const expectedResult = {
 			'test-general-hover': '3',
 			'test-s-hover': undefined,
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
+
+	it('Should not delete hover attributes if they have default value', () => {
+		const obj = {
+			newAttributes: {
+				'attribute-with-default-value-hover': 3,
+			},
+			attributes: {
+				'attribute-with-default-value': 3,
+			},
+			defaultAttributes: {},
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'attribute-with-default-value-hover': 3,
 		};
 
 		expect(result).toStrictEqual(expectedResult);

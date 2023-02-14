@@ -1,65 +1,20 @@
 /**
- * WordPress dependencies
+ * Internal dependencies
  */
-import { select } from '@wordpress/data';
+import goThroughMaxiBlocks from './goThroughMaxiBlocks';
 
 const getIsUniqueIDRepeated = (uniqueIDToCompare, repeatCount = 1) => {
-	const { getBlocks } = select('core/block-editor');
+	let currentRepeatCount = 0;
+	return goThroughMaxiBlocks(block => {
+		if (block.attributes.uniqueID === uniqueIDToCompare) {
+			currentRepeatCount += 1;
 
-	const goThroughBlocks = (
-		blocks,
-		uniqueIDToCompare,
-		repeatCount,
-		rawCurrentRepeatCount = 0
-	) => {
-		let currentRepeatCount = rawCurrentRepeatCount;
-
-		return {
-			repeated: blocks.some(block => {
-				if (block.attributes.uniqueID === uniqueIDToCompare) {
-					currentRepeatCount += 1;
-
-					if (currentRepeatCount > repeatCount) {
-						return true;
-					}
-				}
-
-				// TODO: when FSE (#3561) is merged, need to adjust `goThroughMaxiBlocks` to work with reusable blocks
-				const innerBlocks =
-					getBlocks(block.clientId) || block.innerBlocks;
-
-				if (innerBlocks.length) {
-					const {
-						repeated: foundRepeated,
-						repeatCount: newRepeatCount,
-					} = goThroughBlocks(
-						innerBlocks,
-						uniqueIDToCompare,
-						repeatCount,
-						currentRepeatCount
-					);
-
-					if (foundRepeated) {
-						return true;
-					}
-
-					currentRepeatCount = newRepeatCount;
-				}
-
-				return false;
-			}),
-			repeatCount: currentRepeatCount,
-		};
-	};
-
-	const blocks = getBlocks();
-	const { repeated } = goThroughBlocks(
-		blocks,
-		uniqueIDToCompare,
-		repeatCount
-	);
-
-	return repeated;
+			if (currentRepeatCount > repeatCount) {
+				return true;
+			}
+		}
+		return false;
+	});
 };
 
 export default getIsUniqueIDRepeated;

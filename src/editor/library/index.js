@@ -35,7 +35,7 @@ const CloudLibrary = props => {
 		url,
 		title,
 		cardId,
-		prefix,
+		prefix = '',
 	} = props;
 
 	const [type, setType] = useState(cloudType);

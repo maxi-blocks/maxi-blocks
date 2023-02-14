@@ -16,7 +16,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         private static $maxi_prefix  = 'maxi_blocks_';
         private static $maxi_slug = 'maxi-blocks';
         private static $maxi_slug_dashboard = 'maxi-blocks-dashboard';
-        private static $maxi_plugin_name = 'Maxi Blocks';
+        private static $maxi_plugin_name = 'Maxi Blocks Beta';
         private static $maxi_text_domain = 'maxi-blocks';
 
 
@@ -106,7 +106,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             }
 
             echo '<div class="maxi-dashboard_wrap">';
-            echo '<header class="maxi-dashboard_header"><img class="maxi-dashboard_logo" width="200" src="'.esc_url(MAXI_PLUGIN_URL_PATH) . 'img/maxi-logo-dashboard.svg'.'" alt="'.esc_html(__('Maxi Blocks Logo', self::$maxi_text_domain)).'"></header>';
+            echo '<header class="maxi-dashboard_header"><img class="maxi-dashboard_logo" width="200" src="'.esc_url(MAXI_PLUGIN_URL_PATH) . 'img/maxi-logo-dashboard-beta.svg'.'" alt="'.esc_html(__('Maxi Blocks Logo', self::$maxi_text_domain)).'"></header>';
             echo  '<h4 class="maxi-dashboard_nav-tab-wrapper nav-tab-wrapper">';
 
             foreach ($settings_tabs as $tab_page => $tab_name) {

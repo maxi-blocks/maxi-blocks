@@ -42,7 +42,7 @@ const CloudLibrary = props => {
 		isPro,
 		isBeta,
 		prefix = '',
-		gutenbergCode,
+		gutenbergCode: rawGutenbergCode,
 		isSwapChecked,
 	} = props;
 
@@ -50,6 +50,7 @@ const CloudLibrary = props => {
 	const [url, setUrl] = useState(rawURL);
 	const [blockStyle, setBlockStyle] = useState(rawBlockStyle);
 	const [toneUrl, setToneUrl] = useState(rawToneUrl);
+	const [gutenbergCode, setGutenbergCode] = useState(rawGutenbergCode);
 
 	const classes = classnames('maxi-library-modal', className);
 
@@ -74,10 +75,16 @@ const CloudLibrary = props => {
 				gutenbergCode={gutenbergCode}
 				onSelect={onSelect}
 				isSwapChecked={isSwapChecked}
-				onChangeTone={(newUrl, newBlockStyle, newToneUrl) => {
+				onChangeTone={(
+					newUrl,
+					newBlockStyle,
+					newToneUrl,
+					newGutenbergCode
+				) => {
 					setUrl(newUrl);
 					setBlockStyle(newBlockStyle);
 					setToneUrl(newToneUrl);
+					setGutenbergCode(newGutenbergCode);
 				}}
 			/>
 			<LibraryContainer

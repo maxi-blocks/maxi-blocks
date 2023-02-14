@@ -110,6 +110,11 @@ if (!class_exists('MaxiBlocks_API')):
                         'validate_callback' => function ($param) {
                             return is_string($param);
                         },
+                    ],
+                    'templatePart' => [
+                        'validate_callback' => function ($param) {
+                            return is_string($param);
+                        },
                     ]
                 ],
                 'permission_callback' => function () {

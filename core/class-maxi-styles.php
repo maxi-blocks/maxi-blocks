@@ -201,11 +201,20 @@ class MaxiBlocks_Styles
 
         if ($template_slug != '' && $template_slug !== false) {
             $template_id .= $template_slug;
-        } elseif (is_home()) {
-            // $template_id .= resolve_block_template('home', array('front-page', 'home'), '')->slug;
-            // global $post;
-            // $template_id .= get_page_template_slug($post->ID);
-            $template_id .= 'index';
+        } elseif (is_home() || is_front_page()) {
+            $block_templates = get_block_templates(['slug__in' => ['index', 'front-page']]);
+
+            $has_front_page_and_home = count($block_templates) === 2;
+
+            if ($has_front_page_and_home) {
+                if (is_home() && !is_front_page()) {
+                    $template_id .= 'index';
+                } else {
+                    $template_id .= 'front-page';
+                }
+            } else {
+                $template_id .= $block_templates[0]->slug;
+            }
         } elseif (is_search()) {
             $template_id .= 'search';
         } elseif (is_404()) {

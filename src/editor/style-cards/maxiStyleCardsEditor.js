@@ -258,8 +258,6 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 			);
 		}
 
-		console.log(activeSCColour);
-
 		saveMaxiStyleCards(newStyleCards, true);
 		saveSCStyles(false);
 	};

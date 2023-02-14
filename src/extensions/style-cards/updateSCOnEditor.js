@@ -67,8 +67,7 @@ const getParsedObj = obj => {
 
 export const getSCVariablesObject = (
 	styleCards,
-	activeSCColour = getActiveColourFromSC(styleCards, 4),
-	activeSCColourTwo = getActiveColourFromSC(styleCards, 5)
+	activeSCColour = getActiveColourFromSC(styleCards, 4)
 ) => {
 	const response = {};
 	const styles = ['light', 'dark'];
@@ -266,13 +265,11 @@ const getSCFontsData = obj => {
 const updateSCOnEditor = (
 	styleCards,
 	activeSCColour,
-	activeSCColourTwo,
 	rawElements = [document, getSiteEditorIframe()]
 ) => {
 	const SCObject = getSCVariablesObject(
 		{ ...cloneDeep(styleCards) },
-		activeSCColour,
-		activeSCColourTwo
+		activeSCColour
 	);
 	const allSCFonts = getSCFontsData(SCObject);
 

@@ -749,13 +749,12 @@ const LibraryContainer = props => {
 				previewIMG={hit.post_thumbnail}
 				isPro={hit.cost?.[0] === 'Pro'}
 				serial={hit.post_title}
-				onRequestInsert={
-					SCList.map(item => {
+				onRequestInsert={() => {
+					!SCList.map(item => {
 						return item.label;
-					}).includes(hit.post_title)
-						? () => {}
-						: () => onRequestInsertSC(hit.sc_code)
-				}
+					}).includes(hit.post_title) &&
+						onRequestInsertSC(hit.sc_code);
+				}}
 				isSaved={
 					!!SCList.map(item => {
 						return item.label;

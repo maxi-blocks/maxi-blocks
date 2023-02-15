@@ -51,6 +51,7 @@ if (!class_exists('MaxiBlocks_DB')):
             global $wpdb;
 
             $db_custom_prefix = 'maxi_blocks_';
+
             $db_general_table_name = $wpdb->prefix . $db_custom_prefix . 'general';
             $db_css_table_name = $wpdb->prefix . $db_custom_prefix . 'styles';
             $db_css_templates_table_name = $db_css_table_name . '_templates';

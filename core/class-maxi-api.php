@@ -110,6 +110,11 @@ if (!class_exists('MaxiBlocks_API')):
                         'validate_callback' => function ($param) {
                             return is_string($param);
                         },
+                    ],
+                    'templatePart' => [
+                        'validate_callback' => function ($param) {
+                            return is_string($param);
+                        },
                     ]
                 ],
                 'permission_callback' => function () {
@@ -345,7 +350,7 @@ if (!class_exists('MaxiBlocks_API')):
                 $array = [];
 
                 foreach ($keys as $key) {
-                    if(($key === 'template_parts' && $dictionary[$key] !== 'null') || $key !== 'template_parts') {
+                    if (($key === 'template_parts' && $dictionary[$key] !== 'null') || $key !== 'template_parts') {
                         $array[$key] = $dictionary[$key];
                     }
                 }
@@ -395,6 +400,26 @@ if (!class_exists('MaxiBlocks_API')):
 
             if ((bool) get_option('local_fonts')) {
                 new MaxiBlocks_Local_Fonts();
+            }
+            
+            // Check if Maxi Blocks Theme is installed and active
+            if (get_template() === 'maxi-theme') {
+                $template_part = $data['templatePart'];
+                $is_template_part = strpos($template_part, 'maxi-theme//') !== false;
+    
+                if ($is_template_part || $is_template) {
+                    $template_name;
+    
+                    if ($is_template) {
+                        $template_name = $id;
+                    } else {
+                        $template_name = $template_part;
+                    }
+    
+                    $template_name = str_replace('maxi-theme//', '', $template_name);
+    
+                    do_action('maxi_blocks_save_styles', $styles, $template_name, $is_template_part);
+                }
             }
 
             $updated_meta = (array)$wpdb->get_results(
@@ -653,7 +678,7 @@ if (!class_exists('MaxiBlocks_API')):
                 ), ["{$id_key}" => $id]);
 
 
-                if(!empty($exists)) {
+                if (!empty($exists)) {
                     $wpdb->update("{$table}", array(
                         'prev_custom_data_value' =>  $new_custom_data,
                         'custom_data_value' =>  $new_custom_data,

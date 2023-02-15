@@ -175,7 +175,10 @@ const Popover = (
 		[observeBlockPosition]
 	);
 
-	const ownerDocument = anchor?.ownerDocument ?? document;
+	// MVP to fix toolbar on FSE
+	const siteEditor = document.querySelector('#site-editor');
+	const ownerDocument =
+		siteEditor?.ownerDocument ?? anchor?.ownerDocument ?? document;
 
 	/**
 	 * Offsets the position of the popover when the anchor is inside an iframe.

@@ -11,7 +11,6 @@ const resolvers = {
 
 		if (maxiStyleCards && !isEmpty(maxiStyleCards)) {
 			const currentSC = getActiveStyleCard(maxiStyleCards);
-
 			updateSCOnEditor(
 				currentSC.value,
 				getActiveColourFromSC(currentSC, 4)

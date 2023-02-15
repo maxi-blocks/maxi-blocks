@@ -741,6 +741,10 @@ const LibraryContainer = props => {
 
 	/** Style Cards Results */
 	const scResults = hit => {
+		const scSaved = SCList.map(item => {
+			return item.label;
+		}).includes(hit.post_title);
+
 		return (
 			<MasonryItem
 				type='sc'
@@ -750,16 +754,9 @@ const LibraryContainer = props => {
 				isPro={hit.cost?.[0] === 'Pro'}
 				serial={hit.post_title}
 				onRequestInsert={() => {
-					!SCList.map(item => {
-						return item.label;
-					}).includes(hit.post_title) &&
-						onRequestInsertSC(hit.sc_code);
+					!scSaved && onRequestInsertSC(hit.sc_code);
 				}}
-				isSaved={
-					!!SCList.map(item => {
-						return item.label;
-					}).includes(hit.post_title)
-				}
+				isSaved={scSaved}
 			/>
 		);
 	};

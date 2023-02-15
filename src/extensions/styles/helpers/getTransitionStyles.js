@@ -28,12 +28,17 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 
 	Object.entries(transitionObj).forEach(([type, obj]) => {
 		Object.entries(obj).forEach(([key, value]) => {
-			const { hoverProp: rawHoverProp } = value;
+			const { hoverProp: rawHoverProp, isTransform = false } = value;
 			const hoverProp =
 				!rawHoverProp || isArray(rawHoverProp)
 					? rawHoverProp
 					: [rawHoverProp];
-			if (hoverProp && hoverProp.every(prop => !props[prop])) return;
+			if (
+				hoverProp &&
+				hoverProp.every(prop => !props[prop]) &&
+				!isTransform
+			)
+				return;
 
 			const { target: rawTarget, property: rawProperty } = value;
 			const targets = isArray(rawTarget) ? rawTarget : [rawTarget];
@@ -42,12 +47,29 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 				: [rawProperty];
 
 			targets.forEach(target => {
-				if (isNil(response[target]))
-					response[target] = { transition: {} };
-
 				const hoverTarget = `${target}:hover`;
 
 				breakpoints.forEach(breakpoint => {
+					if (
+						isTransform &&
+						['scale', 'rotate', 'translate', 'origin'].every(
+							prop =>
+								!getLastBreakpointAttribute({
+									target: `transform-${prop}`,
+									breakpoint,
+									attributes: props,
+									keys: [
+										key.replace('transform ', ''),
+										'hover-status',
+									],
+								})
+						)
+					)
+						return;
+
+					if (isNil(response[target]))
+						response[target] = { transition: {} };
+
 					const generateTransitionString = (
 						target,
 						isHover = false

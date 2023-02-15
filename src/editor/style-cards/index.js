@@ -1,5 +1,3 @@
-// import {useEffect, useRef, useMemo} from 'react';
-
 /**
  * WordPress dependencies
  */

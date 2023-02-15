@@ -50,6 +50,7 @@ const CaptionToolbar = memo(
 	forwardRef((props, ref) => {
 		const {
 			attributes,
+			blockStyle,
 			clientId,
 			maxiSetAttributes,
 			insertInlineStyles,
@@ -110,6 +111,7 @@ const CaptionToolbar = memo(
 				typography,
 				formatValue,
 				textLevel,
+				blockStyle,
 				styleCard,
 			});
 
@@ -152,6 +154,7 @@ const CaptionToolbar = memo(
 							{...getGroupAttributes(attributes, 'typography')}
 							onChange={obj => processAttributes(obj)}
 							breakpoint={breakpoint}
+							blockStyle={blockStyle}
 							isList={isList}
 							clientId={clientId}
 							isCaptionToolbar

@@ -13,6 +13,7 @@ import {
 } from '../styles';
 import { loadFonts } from '../text/fonts';
 import { getSiteEditorIframe } from '../fse';
+import { getActiveColourFromSC } from '../../editor/style-cards/utils';
 
 /**
  * External dependencies
@@ -66,9 +67,7 @@ const getParsedObj = obj => {
 
 export const getSCVariablesObject = (
 	styleCards,
-	activeSCColour = styleCards?.light?.styleCard?.color?.[4] ||
-		styleCards?.light?.defaultStyleCard?.color?.[4],
-	activeSCColourTwo = styleCards?.light?.defaultStyleCard?.color?.[5]
+	activeSCColour = getActiveColourFromSC(styleCards, 4)
 ) => {
 	const response = {};
 	const styles = ['light', 'dark'];
@@ -218,7 +217,6 @@ export const getSCVariablesObject = (
 		}
 	});
 	response['--maxi-active-sc-color'] = activeSCColour;
-	response['--maxi-active-sc-color-two'] = activeSCColourTwo;
 	return response;
 };
 
@@ -267,13 +265,11 @@ const getSCFontsData = obj => {
 const updateSCOnEditor = (
 	styleCards,
 	activeSCColour,
-	activeSCColourTwo,
 	rawElements = [document, getSiteEditorIframe()]
 ) => {
 	const SCObject = getSCVariablesObject(
 		{ ...cloneDeep(styleCards) },
-		activeSCColour,
-		activeSCColourTwo
+		activeSCColour
 	);
 	const allSCFonts = getSCFontsData(SCObject);
 

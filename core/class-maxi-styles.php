@@ -153,6 +153,8 @@ class MaxiBlocks_Styles
     public function apply_content($name, $content, $id)
     {
         $is_content = $content && !empty($content);
+        $is_template_part = is_string($name) && strpos($name, '-templates');
+        $is_template = $is_template_part && str_ends_with($name, '-templates');
 
         if ($is_content) {
             $styles = $this->get_styles($content);
@@ -168,12 +170,9 @@ class MaxiBlocks_Styles
             if ($fonts) {
                 $this->enqueue_fonts($fonts);
             }
+        } elseif (get_template() === 'maxi-theme' && $is_template_part) {
+            do_action('maxi_enqueue_template_styles', $name, $id, $is_template);
         }
-
-        $is_template =
-            is_string($name) &&
-            strpos($name, '-templates') &&
-            str_ends_with($name, '-templates');
 
         if ($is_template) {
             $template_parts = $this->get_template_parts($content);
@@ -202,8 +201,20 @@ class MaxiBlocks_Styles
 
         if ($template_slug != '' && $template_slug !== false) {
             $template_id .= $template_slug;
-        } elseif (is_home()) {
-            $template_id .= resolve_block_template('home', array('front-page', 'home'), '')->slug;
+        } elseif (is_home() || is_front_page()) {
+            $block_templates = get_block_templates(['slug__in' => ['index', 'front-page']]);
+
+            $has_front_page_and_home = count($block_templates) === 2;
+
+            if ($has_front_page_and_home) {
+                if (is_home() && !is_front_page()) {
+                    $template_id .= 'index';
+                } else {
+                    $template_id .= 'front-page';
+                }
+            } else {
+                $template_id .= $block_templates[0]->slug;
+            }
         } elseif (is_search()) {
             $template_id .= 'search';
         } elseif (is_404()) {

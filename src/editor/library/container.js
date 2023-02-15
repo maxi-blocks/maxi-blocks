@@ -149,7 +149,7 @@ const MenuSelect = ({ items, currentRefinement, refine }) => {
 					freeElement.isRefined = true;
 				}}
 			>
-				Free
+				{__('Free', 'maxi-blocks')}
 			</button>
 			<button
 				type='button'
@@ -166,7 +166,7 @@ const MenuSelect = ({ items, currentRefinement, refine }) => {
 					proElement.isRefined = true;
 				}}
 			>
-				Pro
+				{__('Pro', 'maxi-blocks')}
 			</button>
 		</div>
 	);

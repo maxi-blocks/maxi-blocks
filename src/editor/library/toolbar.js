@@ -205,12 +205,7 @@ const LibraryToolbar = props => {
 					}
 				}, 100);
 
-				onChangeTone(
-					relatedHit.demo_url,
-					relatedHit.light_or_dark[0],
-					relatedHit.link_to_related,
-					relatedHit.gutenberg_code
-				);
+				onChangeTone(relatedHit);
 			});
 	};
 

@@ -1,12 +1,12 @@
 /**
- * External dependencies
- */
-import { isEmpty, pickBy, uniq, without } from 'lodash';
-
-/**
  * Internal dependencies
  */
 import { getBgLayersSelectorsCss } from '../custom-css-control/utils';
+
+/**
+ * External dependencies
+ */
+import { isEmpty, pickBy, uniq, without } from 'lodash';
 
 const getBgLayersSelectorsKeys = bgLayersSelectors =>
 	uniq(

@@ -184,8 +184,8 @@ beforeAll(async () => {
 
 	await setupBrowser();
 
-	await deactivatePlugin('maxi-blocks-last-github-version');
-	await activatePlugin('maxi-blocks-last-github-version');
+	await deactivatePlugin('maxi-blocks');
+	await activatePlugin('maxi-blocks');
 
 	// Default theme, twentytwentytwo, has a bug that returns a console.error
 	await activateTheme('twentytwentyone');

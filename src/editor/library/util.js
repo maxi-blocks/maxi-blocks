@@ -172,7 +172,9 @@ export const svgCurrentColorStatus = (blockStyle, target = 'svg') => {
 	const { getSelectedBlockClientId, getBlock } = select('core/block-editor');
 	const clientId = getSelectedBlockClientId();
 
-	const currentAttributes = getBlock(clientId).attributes;
+	const currentAttributes = getBlock(clientId)?.attributes;
+
+	if (!currentAttributes) return null;
 
 	const { receiveStyleCardValue } = select('maxiBlocks/style-cards');
 

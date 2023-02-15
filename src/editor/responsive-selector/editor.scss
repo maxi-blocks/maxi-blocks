@@ -35,6 +35,7 @@
 			box-shadow: none !important;
 			height: 40px;
 			padding: 2px 7px;
+			outline: none !important;
 
 			svg {
 				margin-right: 5px;
@@ -43,19 +44,17 @@
 				content: '';
 				position: absolute;
 				display: block;
-				background-color: #081219;
-				transition: 0.2s;
-				bottom: 0px;
+				background-color: transparent;
+				transition: 0.3s;
+				bottom: -1px;
 				left: 0;
 				width: 100%;
 				height: 2px;
-				pointer-events: none;
-				opacity: 0;
 			}
 			&:hover {
 				background-color: #f9f9f9;
 				&::after {
-					opacity: 1;
+					background-color: #081219;
 				}
 			}
 		}
@@ -71,32 +70,29 @@
 			transition: 0.3s;
 			padding: 0;
 			height: 40px;
-			margin-left: 9px;
+			padding: 0 9px;
 			vertical-align: middle;
 			justify-content: center;
 			align-items: center;
 			box-shadow: none;
+			border-right: 1px solid #dbdde6;
 
 			&::after {
 				content: '';
 				position: absolute;
 				display: block;
-				background-color: #007cba;
+				background-color: transparent;
 				transition: 0.3s;
 				bottom: -1px;
 				left: 0;
 				width: 100%;
-				height: 0;
+				height: 2px;
 			}
 			&:hover {
-				color: #007cba;
+				background-color: #f9f9f9;
+
 				&::after {
-					height: 2px;
-				}
-				svg {
-					g {
-						stroke: #007cba;
-					}
+					background-color: #081219;
 				}
 			}
 			svg {
@@ -116,16 +112,28 @@
 		z-index: 99;
 		padding: 0 7px 0 9px;
 		right: 0;
+		height: 100%;
+
+		&::after {
+			content: '';
+			position: absolute;
+			display: block;
+			background-color: transparent;
+			transition: 0.3s;
+			bottom: -1px;
+			left: 0;
+			width: 100%;
+			height: 2px;
+		}
 		svg {
 			g {
 				transition: 0.3s;
 			}
 		}
 		&:hover {
-			svg {
-				g {
-					stroke: #007cba;
-				}
+			background-color: #f9f9f9;
+			&::after {
+				background-color: #081219;
 			}
 		}
 	}
@@ -182,14 +190,12 @@
 				content: '';
 				position: absolute;
 				display: block;
-				background-color: #081219;
-				transition: 0.2s;
-				bottom: 0px;
+				background-color: transparent;
+				transition: 0.3s;
+				bottom: -1px;
 				left: 0;
 				width: 100%;
 				height: 2px;
-				opacity: 0;
-				pointer-events: none;
 			}
 			&[aria-pressed='true'] {
 				background-color: #eaf2f6 !important;
@@ -208,7 +214,7 @@
 			&:hover {
 				background-color: #f9f9f9;
 				&::after {
-					opacity: 1;
+					background-color: #081219;
 				}
 			}
 			&:focus {

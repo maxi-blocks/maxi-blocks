@@ -13,6 +13,7 @@ import {
 /**
  * Internal dependencies
  */
+// eslint-disable-next-line import/no-cycle
 import CloudLibrary from '.';
 import { Icon, BaseControl, Button } from '../../components';
 
@@ -25,10 +26,10 @@ import classNames from 'classnames';
 /**
  * Icons
  */
-import { SCaddMore, toolbarReplaceImage, remove, cloudLib } from '../../icons';
+import { toolbarReplaceImage, remove, cloudLib, selectIcon } from '../../icons';
 
 /**
- * Content
+ * Cloud Content Placeholder
  */
 const CloudPlaceholder = forwardRef((props, ref) => {
 	const { clientId, onClick } = props;
@@ -78,6 +79,57 @@ const CloudPlaceholder = forwardRef((props, ref) => {
 });
 
 /**
+ * Icon Content Placeholder
+ */
+const SVGIconPlaceholder = forwardRef((props, ref) => {
+	const { uniqueID, clientId, onClick } = props;
+
+	const [isBlockSmall, setIsBlockSmall] = useState(null);
+	const [isBlockSmaller, setIsBlockSmaller] = useState(null);
+
+	const resizeObserver = new ResizeObserver(entries => {
+		const newIsSmallBlock = entries[0].contentRect.width < 120;
+		const newIsSmallerBlock = entries[0].contentRect.width < 38;
+
+		if (newIsSmallBlock !== isBlockSmall) setIsBlockSmall(newIsSmallBlock);
+		if (newIsSmallerBlock !== isBlockSmaller)
+			setIsBlockSmaller(newIsSmallerBlock);
+	});
+
+	useEffect(() => {
+		resizeObserver.observe(ref.current);
+
+		return () => {
+			resizeObserver.disconnect();
+		};
+	}, []);
+
+	return (
+		<div
+			className={classNames(
+				'maxi-svg-icon-block__placeholder',
+				isBlockSmall && 'maxi-svg-icon-block__placeholder--small',
+				isBlockSmaller && 'maxi-svg-icon-block__placeholder--smaller'
+			)}
+			key={`maxi-svg-icon-block__placeholder--${uniqueID}`}
+		>
+			<Button
+				isPrimary
+				key={`maxi-block-library__modal-button--${clientId}`}
+				className='maxi-block-library__modal-button'
+				onClick={onClick}
+			>
+				<Icon
+					className='maxi-icon-block__select__icon'
+					icon={selectIcon}
+				/>
+				{!isBlockSmall && __('Select icon', 'maxi-blocks')}
+			</Button>
+		</div>
+	);
+});
+
+/**
  * Layout modal window with tab panel.
  */
 const MaxiModal = props => {
@@ -95,13 +147,27 @@ const MaxiModal = props => {
 		forceHide = false,
 		url,
 		title,
+		cost,
+		toneUrl,
 		cardId,
 		prefix = '',
 		label = '',
+		isPro,
+		isBeta,
+		gutenbergCode,
+		isSwapChecked,
 	} = props;
 
 	const ref = useRef(null);
-	const [isOpen, changeIsOpen] = useState(openFirstTime || forceIsOpen);
+	const [isOpen, changeIsOpen] = useState(
+		openFirstTime || forceIsOpen || false
+	);
+	const [wasOpenedFirstTime, changeOpenedFirstTime] = useState(openFirstTime);
+
+	useEffect(
+		() => (forceIsOpen ? changeIsOpen(forceIsOpen) : null),
+		[forceIsOpen]
+	);
 
 	const onClick = () => {
 		changeIsOpen(!isOpen);
@@ -110,9 +176,10 @@ const MaxiModal = props => {
 		if (onClose) onClose();
 	};
 
-	useEffect(() => {
-		if (isOpen || forceIsOpen) changeIsOpen(true);
-	}, [isOpen, forceIsOpen]);
+	const onCloseModal = () => {
+		changeIsOpen(false);
+		changeOpenedFirstTime(false);
+	};
 
 	return (
 		<div ref={ref} className='maxi-library-modal__action-section'>
@@ -134,8 +201,15 @@ const MaxiModal = props => {
 						className='maxi-style-cards__sc__more-sc--add-more'
 						onClick={onClick}
 					>
-						<Icon icon={SCaddMore} />
+						<span>{__('Browse style cards', 'maxi-blocks')}</span>
 					</Button>
+				)}
+				{type === 'svg' && forceHide && (
+					<SVGIconPlaceholder
+						ref={ref}
+						clientId={clientId}
+						onClick={onClick}
+					/>
 				)}
 				{type === 'svg' && !forceHide && (
 					<Button
@@ -214,17 +288,30 @@ const MaxiModal = props => {
 					</Button>
 				)}
 				{isOpen && (
-					<CloudLibrary
-						cloudType={type}
-						onClose={onClick}
-						blockStyle={style}
-						onSelect={onSelect}
-						url={url}
-						title={title}
-						cardId={cardId}
-						prefix={prefix}
-						className={`maxi-library-modal__${type}`}
-					/>
+					<div
+						className='components-modal__screen-overlay maxi-open-preview'
+						id='maxi-modal'
+					>
+						<div className='maxi-library-modal maxi-preview'>
+							<CloudLibrary
+								className={`maxi-library-modal__${type}`}
+								cloudType={type}
+								onClose={onClick}
+								blockStyle={style}
+								onSelect={onSelect}
+								url={url}
+								title={title}
+								cost={cost}
+								isPro={isPro}
+								isBeta={isBeta}
+								toneUrl={toneUrl}
+								cardId={cardId}
+								prefix={prefix}
+								gutenbergCode={gutenbergCode}
+								isSwapChecked={isSwapChecked}
+							/>
+						</div>
+					</div>
 				)}
 			</div>
 			{type === 'button-icon' && !isEmpty(icon) && (
@@ -308,6 +395,28 @@ const MaxiModal = props => {
 					<RawHTML className='maxi-library-modal__action-section__preview__icon'>
 						{icon}
 					</RawHTML>
+				</div>
+			)}
+			{type === 'switch-tone' && (isOpen || wasOpenedFirstTime) && (
+				<div className='components-modal__screen-overlay maxi-open-preview maxi-switch-tone'>
+					<div className='maxi-library-modal maxi-preview'>
+						<CloudLibrary
+							cloudType={type}
+							onClose={onCloseModal}
+							url={url}
+							title={title}
+							cost={cost}
+							toneUrl={toneUrl}
+							cardId={cardId}
+							prefix={prefix}
+							className={`maxi-library-modal__preview maxi-library-modal__${type}`}
+							isPro={isPro}
+							isBeta={isBeta}
+							onSelect={onSelect}
+							gutenbergCode={gutenbergCode}
+							isSwapChecked={isSwapChecked}
+						/>
+					</div>
 				</div>
 			)}
 		</div>

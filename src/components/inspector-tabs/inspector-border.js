@@ -9,10 +9,7 @@ import { __ } from '@wordpress/i18n';
 import SettingTabsControl from '../setting-tabs-control';
 import BorderControl from '../border-control';
 import ToggleSwitch from '../toggle-switch';
-import {
-	getGroupAttributes,
-	setHoverAttributes,
-} from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/styles';
 import ManageHoverTransitions from '../manage-hover-transitions';
 /**
  * Component
@@ -101,33 +98,6 @@ const border = ({
 										className='maxi-border-status-hover'
 										onChange={val =>
 											maxiSetAttributes({
-												...(val &&
-													setHoverAttributes(
-														{
-															...getGroupAttributes(
-																attributes,
-																[
-																	'border',
-																	'borderWidth',
-																	'borderRadius',
-																],
-																false,
-																prefix
-															),
-														},
-														{
-															...getGroupAttributes(
-																attributes,
-																[
-																	'border',
-																	'borderWidth',
-																	'borderRadius',
-																],
-																true,
-																prefix
-															),
-														}
-													)),
 												[`${prefix}border-status-hover`]:
 													val,
 											})

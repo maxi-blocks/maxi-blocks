@@ -15,6 +15,7 @@ import TransitionControl from '../transition-control';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
+	getLastBreakpointAttribute,
 	getTransitionData,
 } from '../../extensions/styles';
 
@@ -194,13 +195,36 @@ const transition = ({
 
 	Object.keys(transition).forEach(type => {
 		Object.keys(transition[type]).forEach(key => {
-			const hoverProp = transitionData?.[type]?.[key]?.hoverProp;
-			if (!hoverProp) return;
+			if (!transitionData?.[type]?.[key]) return;
 
-			if (isArray(hoverProp))
-				hoverProp.every(prop => !attributes[prop]) &&
+			const { hoverProp, isTransform = false } =
+				transitionData[type][key];
+
+			if (hoverProp) {
+				if (
+					isArray(hoverProp) &&
+					hoverProp.every(prop => !attributes[prop])
+				)
 					delete transition[type][key];
-			else !attributes[hoverProp] && delete transition[type][key];
+				else !attributes[hoverProp] && delete transition[type][key];
+			}
+
+			if (
+				isTransform &&
+				['scale', 'rotate', 'translate', 'origin'].every(
+					prop =>
+						!getLastBreakpointAttribute({
+							target: `transform-${prop}`,
+							breakpoint: deviceType,
+							attributes,
+							keys: [
+								key.replace('transform ', ''),
+								'hover-status',
+							],
+						})
+				)
+			)
+				delete transition[type][key];
 		});
 	});
 

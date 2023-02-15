@@ -377,6 +377,7 @@ const TypographyControl = props => {
 			isHover,
 			formatValue,
 			textLevel,
+			blockStyle,
 			styleCard,
 			styleCardPrefix,
 			prefix,

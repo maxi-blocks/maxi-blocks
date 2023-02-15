@@ -49,6 +49,7 @@ const GlobalColor = props => {
 		onChangeValue,
 		SCStyle,
 		disableOpacity = false,
+		isHover = false,
 	} = props;
 
 	return (
@@ -134,6 +135,7 @@ const GlobalColor = props => {
 						}}
 						blockStyle={SCStyle}
 						disableOpacity={disableOpacity}
+						isHover={isHover}
 						disableGradient
 					/>
 				</>
@@ -200,6 +202,7 @@ const SCAccordion = props => {
 							onChangeValue={onChangeValue}
 							SCStyle={SCStyle}
 							disableOpacity={disableOpacity}
+							isHover={label.includes('hover')}
 						/>
 					)
 				)}

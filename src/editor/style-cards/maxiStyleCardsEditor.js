@@ -222,7 +222,6 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		);
 
 		setActiveSCColour(getActiveColourFromSC(selectedSCValue, 4));
-
 		const newStyleCards = cloneDeep(styleCards);
 
 		Object.entries(newStyleCards).forEach(([key, value]) => {
@@ -254,7 +253,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		}
 
 		saveMaxiStyleCards(newStyleCards, true);
-		saveSCStyles(false);
+		saveSCStyles(isChosenActive);
 	};
 
 	const deleteSC = () => {

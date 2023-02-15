@@ -44,7 +44,9 @@ const getInnerBlocksChild = ({
 
 	if (!needToSplit)
 		return [
-			...(isDisabled && !isChild && <DisabledMaxiBlock />),
+			...(isDisabled && !isChild && (
+				<DisabledMaxiBlock key={`maxi-block-disabled__${uniqueID}`} />
+			)),
 			...(!isEmpty(anchorLink) && (
 				<span
 					id={anchorLink}
@@ -82,7 +84,9 @@ const getInnerBlocksChild = ({
 		);
 
 	return [
-		...(isDisabled && !isChild && <DisabledMaxiBlock />),
+		...(isDisabled && !isChild && (
+			<DisabledMaxiBlock key={`maxi-block-disabled__${uniqueID}`} />
+		)),
 		...(!isEmpty(anchorLink) && (
 			<span
 				id={anchorLink}

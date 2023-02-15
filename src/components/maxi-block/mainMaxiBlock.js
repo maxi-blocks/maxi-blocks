@@ -13,6 +13,7 @@ import BackgroundDisplayer from '../background-displayer';
  * External dependencies
  */
 import { isEmpty, isEqual } from 'lodash';
+import DisabledMaxiBlock from './disabledMaxiBlock';
 
 const MainBlock = forwardRef(
 	(
@@ -24,6 +25,8 @@ const MainBlock = forwardRef(
 			uniqueID,
 			isSave,
 			anchorLink,
+			isChild,
+			isDisabled,
 			...props
 		},
 		ref
@@ -52,6 +55,12 @@ const MainBlock = forwardRef(
 		return (
 			// eslint-disable-next-line react-hooks/rules-of-hooks
 			<TagName {...useBlockProps({ ...props, ref })}>
+				{isDisabled && !isChild && (
+					<DisabledMaxiBlock
+						key={`maxi-block-disabled__${uniqueID}`}
+					/>
+				)}
+				,
 				{!isEmpty(anchorLink) && (
 					<span
 						id={anchorLink}

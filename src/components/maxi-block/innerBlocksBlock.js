@@ -16,6 +16,7 @@ import BlockInserter from '../block-inserter';
  * External dependencies
  */
 import { isEmpty, isArray, compact, isEqual } from 'lodash';
+import DisabledMaxiBlock from './disabledMaxiBlock';
 
 const getInnerBlocksChild = ({
 	children,
@@ -31,6 +32,8 @@ const getInnerBlocksChild = ({
 	isSelected,
 	hasSelectedChild,
 	renderWrapperInserter = true,
+	isChild,
+	isDisabled,
 }) => {
 	const needToSplit =
 		isArray(children) &&
@@ -41,6 +44,7 @@ const getInnerBlocksChild = ({
 
 	if (!needToSplit)
 		return [
+			...(isDisabled && !isChild && <DisabledMaxiBlock />),
 			...(!isEmpty(anchorLink) && (
 				<span
 					id={anchorLink}
@@ -78,6 +82,7 @@ const getInnerBlocksChild = ({
 		);
 
 	return [
+		...(isDisabled && !isChild && <DisabledMaxiBlock />),
 		...(!isEmpty(anchorLink) && (
 			<span
 				id={anchorLink}
@@ -126,6 +131,8 @@ const MainInnerBlocksBlock = forwardRef(
 			isSelected,
 			hasSelectedChild,
 			renderWrapperInserter,
+			isChild,
+			isDisabled,
 			...props
 		},
 		ref
@@ -160,6 +167,8 @@ const MainInnerBlocksBlock = forwardRef(
 				isSelected,
 				hasSelectedChild,
 				renderWrapperInserter,
+				isChild,
+				isDisabled,
 			})
 		);
 

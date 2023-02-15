@@ -93,8 +93,12 @@ class MaxiBlocks_Local_Fonts
     public function generateFontURL($font_url, $font_data)
     {
         if (!empty($font_data)) {
-            $font_weight = array_key_exists('weight', $font_data) ? $font_data['weight'] : false;
-            $font_style = array_key_exists('style', $font_data) ? $font_data['style'] : false;
+			// For legacy reasons font data is saved both as 'weight' ('style') and 'fontWeight' ('fontStyle')
+			// See https://github.com/maxi-blocks/maxi-blocks/pull/4305#discussion_r1098988152
+			$font_weight = array_key_exists('fontWeight', $font_data) ? $font_data['fontWeight'] :
+				(array_key_exists('weight', $font_data) ? $font_data['weight'] : false);
+			$font_style = array_key_exists('fontStyle', $font_data) ? $font_data['fontStyle'] :
+				(array_key_exists('style', $font_data) ? $font_data['style'] : false);
 
             if (is_array($font_weight)) {
                 $font_weight = implode(',', array_unique($font_weight));

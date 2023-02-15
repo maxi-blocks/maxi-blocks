@@ -60,7 +60,6 @@ const MainBlock = forwardRef(
 						key={`maxi-block-disabled__${uniqueID}`}
 					/>
 				)}
-				,
 				{!isEmpty(anchorLink) && (
 					<span
 						id={anchorLink}

@@ -1,9 +1,27 @@
+/**
+ * Internal dependencies
+ */
 import createTransitionObj from './createTransitionObj';
 import transitionDefault from './transitionDefault';
+import getTransformTransition from './getTransformTransition';
 
-const transitionAttributesCreator = (transitionObj = transitionDefault) => {
+/**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
+
+const transitionAttributesCreator = ({
+	transition = transitionDefault,
+	selectors,
+}) => {
 	const getTransitionOptions = transitionObj =>
 		transitionObj ? Object.values(transitionObj) : null;
+
+	if (!isEmpty(selectors))
+		transition.canvas = {
+			...transition.canvas,
+			...getTransformTransition(selectors),
+		};
 
 	const transitionRawObj = createTransitionObj();
 
@@ -20,10 +38,10 @@ const transitionAttributesCreator = (transitionObj = transitionDefault) => {
 			};
 		});
 
-	Object.keys(transitionObj).forEach(type => {
+	Object.keys(transition).forEach(type => {
 		transitionStyleObj[type] = {};
 
-		const options = getTransitionOptions(transitionObj[type]);
+		const options = getTransitionOptions(transition[type]);
 		createTransitionStyleObjForType(type, options);
 	});
 
@@ -42,7 +60,7 @@ const transitionAttributesCreator = (transitionObj = transitionDefault) => {
 			type: 'object',
 			default: transitionStyleObj,
 		},
-		...createTransitionSelectedAttributes(transitionObj),
+		...createTransitionSelectedAttributes(transition),
 	};
 };
 

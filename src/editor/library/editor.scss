@@ -1293,6 +1293,11 @@
 						.sub_menu-wrapper {
 							transform: scaleY(1);
 						}
+						a{
+							&:focus{
+								box-shadow: inset 0 0 0 1px #000;
+							}
+						}
 					}
 				}
 				//hack to fix issue #3930: top level tags resetting when we choose a second-level tag

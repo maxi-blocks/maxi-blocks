@@ -1500,6 +1500,10 @@
 					.maxi-cloud-masonry-card__image {
 						border: none;
 					}
+					.maxi-cloud-masonry-card__saved {
+						opacity: 0.4;
+						pointer-events: none;
+					}
 				}
 			}
 		}

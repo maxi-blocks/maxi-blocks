@@ -35,12 +35,12 @@ const CloudLibrary = props => {
 		blockStyle: rawBlockStyle,
 		onSelect,
 		url: rawURL,
-		title,
-		cost,
+		title: rowTitle,
+		cost: rawCost,
 		toneUrl: rawToneUrl,
 		cardId,
-		isPro,
-		isBeta,
+		isPro: rawIsPro,
+		isBeta: rawIsBeta,
 		prefix = '',
 		gutenbergCode: rawGutenbergCode,
 		isSwapChecked,
@@ -51,6 +51,10 @@ const CloudLibrary = props => {
 	const [blockStyle, setBlockStyle] = useState(rawBlockStyle);
 	const [toneUrl, setToneUrl] = useState(rawToneUrl);
 	const [gutenbergCode, setGutenbergCode] = useState(rawGutenbergCode);
+	const [isBeta, setIsBeta] = useState(rawIsBeta);
+	const [isPro, setIsPro] = useState(rawIsPro);
+	const [title, setTitle] = useState(rowTitle);
+	const [cost, setCost] = useState(rawCost);
 
 	const classes = classnames('maxi-library-modal', className);
 
@@ -59,7 +63,7 @@ const CloudLibrary = props => {
 			title={__('Template Library Maxi', 'maxi-blocks')}
 			className={classes}
 			shouldCloseOnEsc
-			shouldCloseOnClickOutside
+			shouldCloseOnClickOutside={false}
 			onRequestClose={onClose}
 		>
 			<LibraryToolbar
@@ -75,16 +79,23 @@ const CloudLibrary = props => {
 				gutenbergCode={gutenbergCode}
 				onSelect={onSelect}
 				isSwapChecked={isSwapChecked}
-				onChangeTone={(
-					newUrl,
-					newBlockStyle,
-					newToneUrl,
-					newGutenbergCode
-				) => {
+				onChangeTone={hit => {
+					const {
+						demo_url: newUrl,
+						light_or_dark: [newBlockStyle],
+						link_to_related: newToneUrl,
+						gutenberg_code: newGutenbergCode,
+						post_title: newTitle,
+					} = hit;
+
 					setUrl(newUrl);
 					setBlockStyle(newBlockStyle);
 					setToneUrl(newToneUrl);
 					setGutenbergCode(newGutenbergCode);
+					setIsBeta(hit.post_tag?.includes('Beta'));
+					setIsPro(hit.cost?.[0] === 'Pro');
+					setTitle(newTitle);
+					setCost(hit.cost?.[0]);
 				}}
 			/>
 			<LibraryContainer

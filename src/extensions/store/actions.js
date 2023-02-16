@@ -1,7 +1,13 @@
 /**
  * WordPress dependencies
  */
-import { dispatch } from '@wordpress/data';
+import { dispatch, select } from '@wordpress/data';
+
+/**
+ * Internal dependencies
+ */
+import { getIsSiteEditor } from '../fse';
+import getWinBreakpoint from '../dom/getWinBreakpoint';
 
 const actions = {
 	receiveMaxiSettings() {
@@ -18,6 +24,13 @@ const actions = {
 		return {
 			type: 'SEND_GLOBAL_SETTINGS',
 			settings,
+		};
+	},
+	saveMaxiSetting(setting, value) {
+		return {
+			type: 'SAVE_GENERAL_SETTING',
+			setting: setting,
+			value: value,
 		};
 	},
 	sendMaxiBreakpoints(breakpoints) {
@@ -38,14 +51,34 @@ const actions = {
 		};
 	},
 	setMaxiDeviceType({
-		deviceType,
+		deviceType: rawDeviceType,
 		width,
 		isGutenbergButton = false,
 		changeSize = true,
 	}) {
+		const { receiveBaseBreakpoint, receiveMaxiBreakpoints } =
+			select('maxiBlocks');
+		const breakpoints = receiveMaxiBreakpoints();
+
+		const getDeviceType = () => {
+			if (rawDeviceType) {
+				return rawDeviceType;
+			}
+			const winBreakpoint = getWinBreakpoint(width, breakpoints);
+			const baseBreakpoint = receiveBaseBreakpoint();
+			if (winBreakpoint === baseBreakpoint) {
+				return 'general';
+			}
+			return winBreakpoint;
+		};
+		const deviceType = getDeviceType();
+
 		if (!isGutenbergButton) {
-			const { __experimentalSetPreviewDeviceType: setPreviewDeviceType } =
-				dispatch('core/edit-post');
+			const isSiteEditor = getIsSiteEditor();
+
+			const setPreviewDeviceType = dispatch(
+				`core/edit-${isSiteEditor ? 'site' : 'post'}`
+			).__experimentalSetPreviewDeviceType;
 
 			setPreviewDeviceType('Desktop');
 		}
@@ -53,7 +86,6 @@ const actions = {
 		return {
 			type: 'SET_DEVICE_TYPE',
 			deviceType,
-			width,
 			isGutenbergButton,
 			changeSize,
 		};

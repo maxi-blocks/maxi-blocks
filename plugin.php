@@ -1,13 +1,14 @@
 <?php
 
 /**
- * Plugin Name: Maxi Blocks - Last Github version
- * Plugin URI:
- * Description: MaxiBlocks
- * Author: Gutenberg Den
- * Author URI:
- * Version: 0.0.1-SC4
- * License: GPL2+
+ * Plugin Name: Maxi Blocks
+ * Plugin URI: https://maxiblocks.com/
+ * Description: A powerful page builder for WordPress Gutenberg with a vast library of free web templates, icons & patterns. Open source and free to build. Anything you create with Maxi Blocks is yours to keep. There's no lock-in, no domain restrictions or license keys to keep track of. All blocks and features are free to use. Save time, get advanced designs & more with the Pro template library upgrade.
+ * Author: Maxi Blocks
+ * Author URI: https://maxiblocks.com/
+ * Version: 0.0.1-SC6
+ * Requires at least: 6.1
+ * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  */
 

@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { createBlock } from '@wordpress/blocks';
+import { useRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -99,6 +100,8 @@ const ResponsiveButton = ({
 const ResponsiveSelector = props => {
 	const { className, isOpen, onClose } = props;
 
+	const settingsRef = useRef(null);
+
 	const { insertBlock } = useDispatch('core/block-editor');
 
 	const { deviceType, breakpoints, baseBreakpoint } = useSelect(select => {
@@ -124,7 +127,11 @@ const ResponsiveSelector = props => {
 	const classes = classnames('maxi-responsive-selector', className);
 
 	return (
-		<div className={classes} style={{ display: isOpen ? 'flex' : 'none' }}>
+		<div
+			className={classes}
+			style={{ display: isOpen ? 'flex' : 'none' }}
+			ref={settingsRef}
+		>
 			<span className='maxi-responsive-selector__close' onClick={onClose}>
 				<Icon icon={closeIcon} />
 			</span>
@@ -182,11 +189,14 @@ const ResponsiveSelector = props => {
 					aria-label='Template library'
 					onClick={() => addCloudLibrary()}
 				>
-					<Icon icon={cloudLib} />
+					<Icon
+						className='template-library-cloud-icon'
+						icon={cloudLib}
+					/>
 					<span>{__('Template library', 'maxi-blocks')}</span>
 				</Button>
 			</div>
-			<MaxiStyleCardsEditorPopUp />
+			<MaxiStyleCardsEditorPopUp ref={settingsRef} />
 			<Button className='action-buttons__help' href='#'>
 				<Icon className='toolbar-item__icon' icon={helpIcon} /> Help
 			</Button>

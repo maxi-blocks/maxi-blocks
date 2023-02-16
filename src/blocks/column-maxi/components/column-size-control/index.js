@@ -92,6 +92,9 @@ const ColumnSizeControl = props => {
 					breakpoint,
 					attributes: props,
 				})}
+				defaultValue={getDefaultAttribute(
+					getAttributeKey('justify-content', false, '', breakpoint)
+				)}
 				options={[
 					{
 						label: __('Top', 'maxi-blocks'),

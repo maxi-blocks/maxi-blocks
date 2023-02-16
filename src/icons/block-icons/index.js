@@ -33,6 +33,8 @@ export { default as pricingTablets } from './pricing-tablets';
 export { default as rowIcon } from './row-icon';
 export { default as sectionIcon } from './section-icon';
 export { default as shapeIcon } from './shape-icon';
+export { default as slideIcon } from './slide-icon';
+export { default as sliderIcon } from './slider-icon';
 export { default as tabs } from './tabs';
 export { default as testimonials } from './testimonials';
 export { default as textBox } from './text-box';

@@ -12,11 +12,13 @@ import {
 	getLastBreakpointAttribute,
 } from '../styles';
 import { loadFonts } from '../text/fonts';
+import { getSiteEditorIframe } from '../fse';
+import { getActiveColourFromSC } from '../../editor/style-cards/utils';
 
 /**
  * External dependencies
  */
-import { times, isEmpty, merge, cloneDeep, uniq } from 'lodash';
+import { cloneDeep, isArray, isEmpty, merge, times, uniq } from 'lodash';
 import { getTypographyStyles } from '../styles/helpers';
 
 const getColorString = (obj, target, style) => {
@@ -63,7 +65,10 @@ const getParsedObj = obj => {
 	return newObj;
 };
 
-export const getSCVariablesObject = styleCards => {
+export const getSCVariablesObject = (
+	styleCards,
+	activeSCColour = getActiveColourFromSC(styleCards, 4)
+) => {
 	const response = {};
 	const styles = ['light', 'dark'];
 	const elements = [
@@ -211,7 +216,7 @@ export const getSCVariablesObject = styleCards => {
 			});
 		}
 	});
-
+	response['--maxi-active-sc-color'] = activeSCColour;
 	return response;
 };
 
@@ -234,7 +239,10 @@ const getSCFontsData = obj => {
 	Object.entries(obj).forEach(([key, val]) => {
 		if (key.includes('font-family')) {
 			fontName = val;
-			response[fontName] = { weight: [], style: [] };
+			response[fontName] = response[fontName] ?? {
+				weight: [],
+				style: [],
+			};
 		}
 		if (key.includes('font-weight'))
 			response[fontName].weight.push(val?.toString());
@@ -257,22 +265,41 @@ const getSCFontsData = obj => {
 	return response;
 };
 
-const updateSCOnEditor = styleCards => {
-	const SCObject = getSCVariablesObject({ ...cloneDeep(styleCards) });
-	let SCStyle = document.getElementById('maxi-blocks-sc-vars-inline-css');
-	if (!SCStyle) {
-		SCStyle = document.createElement('style');
-		SCStyle.id = 'maxi-blocks-sc-vars-inline-css';
-		SCStyle.innerHTML = createSCStyleString(SCObject);
-		document.head.appendChild(SCStyle);
-		const { saveSCStyles } = dispatch('maxiBlocks/style-cards');
-
-		// Needs a delay, if not Redux returns error 3
-		setTimeout(() => saveSCStyles(false), 150);
-	} else SCStyle.innerHTML = createSCStyleString(SCObject);
-
+const updateSCOnEditor = (
+	styleCards,
+	activeSCColour,
+	rawElements = [document, getSiteEditorIframe()]
+) => {
+	const SCObject = getSCVariablesObject(
+		{ ...cloneDeep(styleCards) },
+		activeSCColour
+	);
 	const allSCFonts = getSCFontsData(SCObject);
-	if (!isEmpty(allSCFonts)) loadFonts(allSCFonts);
+
+	const elements = isArray(rawElements) ? rawElements : [rawElements];
+
+	elements.forEach(element => {
+		if (!element) return;
+
+		let SCStyle = element.getElementById('maxi-blocks-sc-vars-inline-css');
+		if (!SCStyle) {
+			SCStyle = element.createElement('style');
+			SCStyle.id = 'maxi-blocks-sc-vars-inline-css';
+			SCStyle.innerHTML = createSCStyleString(SCObject);
+			// Iframe on creation generates head, then gutenberg generates their own head
+			// and in some moment we have two heads, so we need to add SC only to head which is second(gutenberg one)
+			const elementHead = Array.from(
+				element.querySelectorAll('head')
+			).pop();
+			elementHead.appendChild(SCStyle);
+			const { saveSCStyles } = dispatch('maxiBlocks/style-cards');
+
+			// Needs a delay, if not Redux returns error 3
+			setTimeout(() => saveSCStyles(false), 150);
+		} else SCStyle.innerHTML = createSCStyleString(SCObject);
+
+		if (!isEmpty(allSCFonts)) loadFonts(allSCFonts, false, element);
+	});
 };
 
 export default updateSCOnEditor;

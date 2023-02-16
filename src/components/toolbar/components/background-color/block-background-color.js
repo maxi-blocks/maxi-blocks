@@ -35,6 +35,8 @@ const ALLOWED_BLOCKS = [
 	'maxi-blocks/row-maxi',
 	'maxi-blocks/column-maxi',
 	'maxi-blocks/group-maxi',
+	'maxi-blocks/slide-maxi',
+	'maxi-blocks/slider-maxi',
 ];
 
 const BlockBackgroundColor = props => {
@@ -68,8 +70,8 @@ const BlockBackgroundColor = props => {
 			advancedOptions='background layer'
 			tooltip={
 				!isBackgroundColor
-					? __('Background Colour Disabled', 'maxi-blocks')
-					: __('Background Colour', 'maxi-blocks')
+					? __('Background colour disabled', 'maxi-blocks')
+					: __('Background colour', 'maxi-blocks')
 			}
 			icon={backgroundColor}
 		>

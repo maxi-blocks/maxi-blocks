@@ -39,8 +39,8 @@ const ClipPathDoublePoint = props => {
 				onChangeMoving(false);
 			}}
 			style={{
-				top: `${handle[1]}%`,
-				left: `${handle[0]}%`,
+				top: `${handle[1].value}${handle[1].unit}`,
+				left: `${handle[0].value}${handle[0].unit}`,
 				backgroundColor: color,
 			}}
 		>

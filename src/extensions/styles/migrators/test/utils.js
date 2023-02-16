@@ -15,6 +15,7 @@ import {
 import { handleBlockMigrator } from '../blockMigrator';
 
 jest.mock('src/components/index.js', () => jest.fn());
+jest.mock('src/extensions/dom/dom.js', () => jest.fn());
 
 const TestComponent = ({
 	content = 'Testing',

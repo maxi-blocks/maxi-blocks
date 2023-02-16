@@ -15,6 +15,7 @@ const getMaxiBlockAttributes = props => {
 	const {
 		name,
 		deviceType,
+		baseBreakpoint,
 		attributes,
 		clientId,
 		hasInnerBlocks,
@@ -159,6 +160,7 @@ const getMaxiBlockAttributes = props => {
 	return {
 		clientId,
 		deviceType,
+		baseBreakpoint,
 		blockName: name,
 		blockStyle,
 		extraClassName,

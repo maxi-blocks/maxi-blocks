@@ -1,14 +1,13 @@
 /**
  * WordPress dependencies
  */
-import { Popover } from '@wordpress/components';
 import { useEffect, useState, memo, forwardRef } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 
 /**
  * External dependencies
  */
-import { isEmpty, cloneDeep, isEqual, isNaN } from 'lodash';
+import { isEmpty, cloneDeep, isEqual } from 'lodash';
 
 /**
  * Internal dependencies
@@ -20,7 +19,7 @@ import IconBackground from './components/icon-background';
 import Border from './components/border';
 import PaddingMargin from './components/padding-margin';
 import { getGroupAttributes } from '../../extensions/styles';
-import { getBoundaryElement } from '../../extensions/dom';
+import Popover from '../popover';
 
 /**
  * Styles
@@ -43,18 +42,13 @@ const IconToolbar = memo(
 		} = props;
 		const { uniqueID, svgType, blockStyle } = attributes;
 
-		const { breakpoint, version } = useSelect(select => {
-			const { receiveMaxiDeviceType, receiveMaxiSettings } =
-				select('maxiBlocks');
+		const { breakpoint } = useSelect(select => {
+			const { receiveMaxiDeviceType } = select('maxiBlocks');
 
 			const breakpoint = receiveMaxiDeviceType();
 
-			const maxiSettings = receiveMaxiSettings();
-			const { version } = maxiSettings;
-
 			return {
 				breakpoint,
-				version,
 			};
 		});
 
@@ -75,26 +69,11 @@ const IconToolbar = memo(
 			maxiSetAttributes(obj);
 		};
 
-		const popoverPropsByVersion = {
-			...((parseFloat(version) <= 13.0 && {
-				shouldAnchorIncludePadding: true,
-				__unstableStickyBoundaryElement: getBoundaryElement(
-					ref.current
-				),
-				anchorRef,
-			}) ||
-				(!isNaN(parseFloat(version)) && {
-					anchor: anchorRef,
-					flip: false,
-					resize: false,
-					variant: 'unstyled',
-				})),
-		};
-
 		return (
 			isSelected &&
 			anchorRef && (
 				<Popover
+					anchor={anchorRef}
 					noArrow
 					animate={false}
 					position='bottom center'
@@ -102,7 +81,7 @@ const IconToolbar = memo(
 					className='maxi-toolbar__popover'
 					uniqueid={uniqueID}
 					__unstableSlotName='block-toolbar'
-					{...popoverPropsByVersion}
+					observeBlockPosition={clientId}
 				>
 					<div className='toolbar-wrapper icon-toolbar'>
 						<IconPosition

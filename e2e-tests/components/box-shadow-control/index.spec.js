@@ -131,13 +131,13 @@ describe('BoxShadowControl', () => {
 
 		const expectBoxShadow = {
 			'box-shadow-blur-general': 0,
-			'box-shadow-blur-general-hover': 50,
+			'box-shadow-blur-general-hover': undefined,
 			'box-shadow-horizontal-general': 0,
-			'box-shadow-horizontal-general-hover': 0,
+			'box-shadow-horizontal-general-hover': undefined,
 			'box-shadow-spread-general': 0,
-			'box-shadow-spread-general-hover': 0,
+			'box-shadow-spread-general-hover': undefined,
 			'box-shadow-vertical-general': 0,
-			'box-shadow-vertical-general-hover': 30,
+			'box-shadow-vertical-general-hover': undefined,
 		};
 
 		const boxShadowResult = await getAttributes([

@@ -74,14 +74,6 @@ const attributes = {
 	/**
 	 * Button styles
 	 */
-	svgType: {
-		type: 'string',
-		default: 'Shape',
-	},
-	[`${closeIconPrefix}svgType`]: {
-		type: 'string',
-		default: 'Shape',
-	},
 	...attributesData.searchButton,
 	...prefixAttributesCreator({
 		obj: {
@@ -116,6 +108,10 @@ const attributes = {
 	...attributesData.placeholderColor,
 	...{
 		...attributesData.icon,
+		svgType: {
+			type: 'string',
+			default: 'Shape',
+		},
 		'icon-inherit': {
 			type: 'boolean',
 			default: false,
@@ -143,6 +139,7 @@ const attributes = {
 		obj: { ...attributesData.icon, ...attributesData.iconHover },
 		prefix: closeIconPrefix,
 		diffValAttr: {
+			[`${closeIconPrefix}svgType`]: 'Shape',
 			[`${closeIconPrefix}icon-inherit`]: false,
 			[`${closeIconPrefix}icon-width-general`]: '25',
 			[`${closeIconPrefix}icon-fill-palette-color`]: 1,

@@ -126,6 +126,14 @@ const PositionControl = props => {
 								attributes: props,
 							}) || ''
 						}
+						defaultValue={getDefaultAttribute(
+							getAttributeKey(
+								'position',
+								isHover,
+								prefix,
+								breakpoint
+							)
+						)}
 						onReset={() =>
 							onChange({
 								[getAttributeKey(

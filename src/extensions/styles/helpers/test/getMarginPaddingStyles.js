@@ -201,4 +201,23 @@ describe('getMarginPaddingStyles', () => {
 		});
 		expect(result).toMatchSnapshot();
 	});
+
+	it('Get a correct margin and padding styles, when value is undefined but unit is defined', () => {
+		const obj = {
+			'margin-top-general': '',
+			'margin-right-general': '',
+			'margin-bottom-general': '',
+			'margin-left-general': '',
+			'margin-sync-general': 'all',
+			'margin-top-unit-general': 'px',
+			'margin-right-unit-general': 'px',
+			'margin-bottom-unit-general': 'px',
+			'margin-left-unit-general': 'px',
+		};
+
+		const result = getMarginPaddingStyles({
+			obj,
+		});
+		expect(result).toMatchSnapshot();
+	});
 });

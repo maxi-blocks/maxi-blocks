@@ -22,7 +22,7 @@ export const receiveMaxiActiveStyleCard = state => {
 
 export const receiveMaxiSelectedStyleCard = state => {
 	if (state.styleCards) {
-		return getActiveStyleCard(state.styleCards);
+		return getActiveStyleCard(state.styleCards, true);
 	}
 	return false;
 };

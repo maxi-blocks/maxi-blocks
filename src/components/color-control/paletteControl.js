@@ -44,7 +44,7 @@ const ColorPaletteControl = props => {
 			const { receiveStyleCardValue } = select('maxiBlocks/style-cards');
 
 			const prefix = globalProps?.target
-				? isHover
+				? isHover && !globalProps?.target.includes('hover')
 					? `hover-${globalProps?.target}-`
 					: `${globalProps?.target}-`
 				: '';

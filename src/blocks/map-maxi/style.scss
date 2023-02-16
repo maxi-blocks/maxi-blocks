@@ -11,6 +11,13 @@ body.maxi-blocks--active .maxi-map-block {
 	.leaflet-container {
 		width: 100%;
 		height: 100%;
+		.leaflet-control-container{
+			.leaflet-control-zoom{
+				a{
+					text-decoration: none;
+				}
+			}
+		}
 	}
 
 	.leaflet-div-icon {
@@ -20,8 +27,26 @@ body.maxi-blocks--active .maxi-map-block {
 	}
 
 	.leaflet-popup-close-button {
-		top: 18px;
-		right: 25px;
+		top: 5px;
+		right: 1px;
+		z-index: 15;
+		display: block;
+		width: 17px;
+		height: 17px;
+		background-color: #fff;
+		border-radius: 50%;
+		transition: 0.1s;
+		span{
+			display: block;
+    		margin-top: -4px;
+			transition: 0.1s;
+		}
+		&:hover{
+			background-color: #000;
+			span{
+				color: #fff
+			}
+		}
 	}
 
 	.leaflet-popup-tip-container {
@@ -38,6 +63,7 @@ body.maxi-blocks--active .maxi-map-block {
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		margin: 0 0 13px;
 	}
 
 	&__popup {
@@ -59,7 +85,7 @@ body.maxi-blocks--active .maxi-map-block {
 
 		&__content {
 			min-width: 100px;
-			margin: 32px;
+			padding: 32px;
 			position: relative;
 			z-index: 10;
 
@@ -81,7 +107,7 @@ body.maxi-blocks--active .maxi-map-block {
 			bottom: 0;
 			left: 50%;
 			transform: translate(-50%, 100%);
-			border-width: 15px;
+			border-width: 15px 20px;
 		}
 	}
 

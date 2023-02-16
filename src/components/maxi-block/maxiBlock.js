@@ -11,7 +11,6 @@ import {
 	useReducer,
 } from '@wordpress/element';
 import { dispatch, select } from '@wordpress/data';
-import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -38,17 +37,6 @@ import './editor.scss';
 const INNER_BLOCKS = ['maxi-blocks/group-maxi', 'maxi-blocks/column-maxi'];
 
 const DISALLOWED_BREAKPOINTS = ['m', 's', 'xs'];
-
-const DisabledMaxiBlock = () => (
-	<div className='maxi-block__disabled'>
-		<p>
-			{__(
-				'To edit this block please use a desktop browser',
-				'maxi-blocks'
-			)}
-		</p>
-	</div>
-);
 
 const getBlockClassName = blockName => {
 	return `maxi-${blockName
@@ -296,6 +284,8 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		anchorLink,
 		background,
 		disableBackground: !disableBackground,
+		isChild,
+		isDisabled,
 		isSave,
 		...(!isSave && isFirstOnHierarchy && { style }),
 		...(!isSave &&
@@ -307,12 +297,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 	};
 
 	if (!useInnerBlocks)
-		return (
-			<MainMaxiBlock {...blockProps}>
-				{isDisabled && !isChild && <DisabledMaxiBlock />}
-				{children}
-			</MainMaxiBlock>
-		);
+		return <MainMaxiBlock {...blockProps}>{children}</MainMaxiBlock>;
 
 	return (
 		<InnerBlocksBlock
@@ -323,7 +308,6 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 			isSelected={isSelected}
 			hasSelectedChild={hasSelectedChild}
 		>
-			{isDisabled && !isChild && <DisabledMaxiBlock />}
 			{children}
 		</InnerBlocksBlock>
 	);

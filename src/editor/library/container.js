@@ -1042,7 +1042,6 @@ const LibraryContainer = props => {
 								attribute='gutenberg_type'
 								defaultRefinement='Patterns'
 								transformItems={items => {
-									const itemsReturn = [];
 									const generateItem = name => {
 										const item = items.find(
 											item => item.label === name
@@ -1057,6 +1056,7 @@ const LibraryContainer = props => {
 											};
 									};
 
+									const itemsReturn = [];
 									itemsReturn.push(generateItem('Patterns'));
 									const itemBlocks = items.find(
 										item => item.label === 'Blocks'
@@ -1096,8 +1096,10 @@ const LibraryContainer = props => {
 										const item = items.find(
 											item => item.label === name
 										);
-										if (item) return item;
-										else
+										if (item) {
+											item.label = `${name} tone`;
+											return item;
+										} else
 											return {
 												label: `${name} tone`,
 												value: name,

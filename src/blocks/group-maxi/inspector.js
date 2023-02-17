@@ -11,13 +11,12 @@ import { AccordionControl, SettingTabsControl } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { customCss } from './data';
 import { withMaxiInspector } from '../../extensions/inspector';
-import { getTransformSelectors } from '../../components/transform-control/utils';
 
 /**
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType } = props;
+	const { deviceType } = props;
 	const { selectors, categories } = customCss;
 
 	return (

@@ -50,6 +50,9 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 				const hoverTarget = `${target}:hover`;
 
 				breakpoints.forEach(breakpoint => {
+					/**
+					 * Check if there is any hover transform styles.
+					 */
 					if (
 						isTransform &&
 						['scale', 'rotate', 'translate'].every(

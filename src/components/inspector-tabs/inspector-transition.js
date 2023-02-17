@@ -259,7 +259,20 @@ const transition = ({
 					<SettingTabsControl
 						breakpoint={deviceType}
 						items={Object.keys(rawTransition).map(type => ({
-							label: __(capitalize(type), 'maxi-blocks'),
+							label: __(
+								capitalize(
+									// For blocks that don't have a `canvas` tab, the block's transition attributes are in `transition.canvas`.
+									// To avoid confusion with labeling, display the `block` instead of the `canvas`
+									// if the `block` transition attribute is missing.
+									type === 'canvas' &&
+										!Object.keys(rawTransition).includes(
+											'block'
+										)
+										? 'block'
+										: type
+								),
+								'maxi-blocks'
+							),
 							content: (
 								<TransitionControlWrapper
 									type={type}

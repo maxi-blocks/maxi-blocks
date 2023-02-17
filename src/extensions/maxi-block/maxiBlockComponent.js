@@ -21,6 +21,7 @@ import { dispatch, resolveSelect, select, useSelect } from '@wordpress/data';
  * Internal dependencies
  */
 import {
+	entityRecordsWrapper,
 	getBlockStyle,
 	getDefaultAttribute,
 	getGroupAttributes,
@@ -48,11 +49,19 @@ import getWinBreakpoint from '../dom/getWinBreakpoint';
 import { uniqueIDGenerator, getBlockData } from '../attributes';
 import getHoverStatus from '../relations/getHoverStatus';
 import { getStylesWrapperId } from './utils';
+import getLastChangedBlocks from './getLastChangedBlocks';
 
 /**
  * External dependencies
  */
-import { cloneDeep, isEmpty, isEqual, isFunction, isNil } from 'lodash';
+import {
+	cloneDeep,
+	isEmpty,
+	isEqual,
+	isFunction,
+	isNil,
+	isArray,
+} from 'lodash';
 
 /**
  * Style Component
@@ -255,27 +264,64 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentWillUnmount() {
+		// If it's site editor, when swapping from pages we need to keep the styles
+		// On post editor, when entering to `code editor` page, we need to keep the styles
+		let keepStylesOnEditor = false;
+		entityRecordsWrapper(({ key: id, name }) => {
+			const { getEditedEntityRecord } = select('core');
+
+			const { blocks } = getEditedEntityRecord('postType', name, id);
+
+			const getName = block => {
+				const {
+					attributes: { uniqueID },
+					innerBlocks,
+				} = block;
+
+				if (uniqueID === this.props.attributes.uniqueID) return true;
+
+				if (innerBlocks.length)
+					return innerBlocks.some(block => getName(block));
+
+				return false;
+			};
+
+			keepStylesOnEditor = blocks.some(block => getName(block));
+		});
+
 		// When duplicating Gutenberg creates a copy of the current copied block twice, making the first keep the same uniqueID and second
 		// has a different one. The original block is removed so componentWillUnmount method is triggered, and as its uniqueID coincide with
 		// the first copied block, on removing the styles the copied block appears naked. That's why we check if there's more than one block
 		// with same uniqueID
-		if (
+		const keepStylesOnCloning =
 			Array.from(
 				document.getElementsByClassName(this.props.attributes.uniqueID)
-			).length <= 1
-		) {
+			).length > 1;
+
+		// Different cases:
+		// 1. Swapping page on site editor or entering to `code editor` page on post editor
+		// 2. Duplicating block
+		const isBlockBeingRemoved = !keepStylesOnEditor && !keepStylesOnCloning;
+
+		if (isBlockBeingRemoved) {
+			// Styles
 			const obj = this.getStylesObject;
 			styleResolver(obj, true);
 			this.removeStyles();
+
+			// Custom data
+			dispatch('maxiBlocks/customData').removeCustomData(
+				this.props.attributes.uniqueID
+			);
+
+			// IB
+			this.removeUnmountedBlockFromRelations(
+				this.props.attributes.uniqueID
+			);
 		}
 
-		dispatch('maxiBlocks/customData').removeCustomData(
-			this.props.attributes.uniqueID
-		);
-
-		this.removeUnmountedBlockFromRelations(this.props.attributes.uniqueID);
-
-		if (this.maxiBlockWillUnmount) this.maxiBlockWillUnmount();
+		if (this.maxiBlockWillUnmount)
+			this.maxiBlockWillUnmount(isBlockBeingRemoved);
 	}
 
 	getMaxiAttributes() {
@@ -399,6 +445,8 @@ class MaxiBlockComponent extends Component {
 				clientId,
 			});
 
+			this.propagateNewUniqueID(idToCheck, newUniqueID);
+
 			this.props.attributes.uniqueID = newUniqueID;
 			this.props.attributes.customLabel = getCustomLabel(
 				this.props.attributes.customLabel,
@@ -432,6 +480,74 @@ class MaxiBlockComponent extends Component {
 
 		loadFonts(response, true, target);
 		this.areFontsLoaded.current = true;
+	}
+
+	propagateNewUniqueID(oldUniqueID, newUniqueID) {
+		const updateRelations = () => {
+			const blockAttributesUpdate = {};
+			const lastChangedBlocks = getLastChangedBlocks();
+
+			if (isEmpty(lastChangedBlocks)) return;
+
+			const updateNewUniqueID = block => {
+				const {
+					attributes = {},
+					innerBlocks: rawInnerBlocks = [],
+					clientId,
+				} = block;
+
+				if (
+					'relations' in attributes &&
+					!isEmpty(attributes.relations)
+				) {
+					const { relations } = attributes;
+
+					const newRelations = cloneDeep(relations).map(relation => {
+						const { uniqueID } = relation;
+
+						if (uniqueID === oldUniqueID) {
+							relation.uniqueID = newUniqueID;
+						}
+
+						return relation;
+					});
+
+					if (!isEqual(relations, newRelations) && clientId)
+						blockAttributesUpdate[clientId] = {
+							relations: newRelations,
+						};
+				}
+
+				if (!isEmpty(rawInnerBlocks)) {
+					const innerBlocks = isArray(rawInnerBlocks)
+						? rawInnerBlocks
+						: Object.values(rawInnerBlocks);
+
+					innerBlocks.forEach(innerBlock => {
+						updateNewUniqueID(innerBlock);
+					});
+				}
+			};
+
+			lastChangedBlocks.forEach(block => updateNewUniqueID(block));
+
+			if (!isEmpty(blockAttributesUpdate)) {
+				const {
+					__unstableMarkNextChangeAsNotPersistent:
+						markNextChangeAsNotPersistent,
+					updateBlockAttributes,
+				} = dispatch('core/block-editor');
+
+				Object.entries(blockAttributesUpdate).forEach(
+					([clientId, attributes]) => {
+						markNextChangeAsNotPersistent();
+						updateBlockAttributes(clientId, attributes);
+					}
+				);
+			}
+		};
+
+		updateRelations();
 	}
 
 	updateRelationHoverStatus() {
@@ -493,29 +609,34 @@ class MaxiBlockComponent extends Component {
 	}
 
 	removeUnmountedBlockFromRelations(uniqueID) {
-		goThroughMaxiBlocks(({ clientId, attributes, innerBlocks }) => {
-			const { relations, uniqueID: blockUniqueID } = attributes;
+		const { isDraggingBlocks } = select('core/block-editor');
 
-			if (uniqueID !== blockUniqueID && !isEmpty(relations)) {
-				const filteredRelations = relations.filter(
-					({ uniqueID: relationUniqueID }) =>
-						relationUniqueID !== uniqueID
-				);
+		const isDragging = isDraggingBlocks();
 
-				if (!isEqual(relations, filteredRelations)) {
-					const { updateBlockAttributes } =
-						dispatch('core/block-editor');
+		if (!isDragging)
+			goThroughMaxiBlocks(({ clientId, attributes }) => {
+				const { relations, uniqueID: blockUniqueID } = attributes;
 
-					updateBlockAttributes(clientId, {
-						relations: filteredRelations,
-					});
+				if (uniqueID !== blockUniqueID && !isEmpty(relations)) {
+					const filteredRelations = relations.filter(
+						({ uniqueID: relationUniqueID }) =>
+							relationUniqueID !== uniqueID
+					);
 
-					return true;
+					if (!isEqual(relations, filteredRelations)) {
+						const { updateBlockAttributes } =
+							dispatch('core/block-editor');
+
+						updateBlockAttributes(clientId, {
+							relations: filteredRelations,
+						});
+
+						return true;
+					}
 				}
-			}
 
-			return false;
-		});
+				return false;
+			});
 	}
 
 	/**

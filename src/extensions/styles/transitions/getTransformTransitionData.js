@@ -6,21 +6,21 @@ import { getTransformSelectors } from '../../../components/transform-control/uti
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import { isEmpty, capitalize } from 'lodash';
 
 /**
  * @param {Readonly<Object>} selectors custom css selectors
  * @returns {Object} transform transition
  */
-const getTransformTransition = selectors => {
+const getTransformTransitionData = selectors => {
 	const transformTransition = {};
 
 	if (!isEmpty(selectors)) {
 		const transformSelectors = getTransformSelectors(selectors);
 
 		Object.values(transformSelectors).forEach(selectorData => {
-			transformTransition[`transform ${selectorData.normal.label}`] = {
-				title: `Transform ${selectorData.normal.label}`,
+			transformTransition[selectorData.normal.label] = {
+				title: capitalize(selectorData.normal.label),
 				target: selectorData.normal.target,
 				property: 'transform',
 				isTransform: true,
@@ -31,4 +31,4 @@ const getTransformTransition = selectors => {
 	return transformTransition;
 };
 
-export default getTransformTransition;
+export default getTransformTransitionData;

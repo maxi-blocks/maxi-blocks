@@ -3,25 +3,22 @@
  */
 import createTransitionObj from './createTransitionObj';
 import transitionDefault from './transitionDefault';
-import getTransformTransition from './getTransformTransition';
+import getTransformTransitionData from './getTransformTransitionData';
 
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import { cloneDeep, isEmpty } from 'lodash';
 
 const transitionAttributesCreator = ({
-	transition = transitionDefault,
+	transition = cloneDeep(transitionDefault),
 	selectors,
 }) => {
 	const getTransitionOptions = transitionObj =>
 		transitionObj ? Object.values(transitionObj) : null;
 
 	if (!isEmpty(selectors))
-		transition.canvas = {
-			...transition.canvas,
-			...getTransformTransition(selectors),
-		};
+		transition.transform = getTransformTransitionData(selectors);
 
 	const transitionRawObj = createTransitionObj();
 

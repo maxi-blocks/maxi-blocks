@@ -181,6 +181,7 @@ const TransitionControlWrapper = props => {
 
 const transition = ({
 	props,
+	selectors,
 	label = __('Hover transition', 'maxi-blocks'),
 }) => {
 	const { attributes, deviceType, maxiSetAttributes, name } = props;
@@ -191,7 +192,7 @@ const transition = ({
 
 	const transition = cloneDeep(rawTransition);
 
-	const transitionData = getTransitionData(name);
+	const transitionData = getTransitionData(name, selectors);
 
 	Object.keys(transition).forEach(type => {
 		Object.keys(transition[type]).forEach(key => {

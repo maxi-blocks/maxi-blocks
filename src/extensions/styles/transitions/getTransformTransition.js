@@ -1,4 +1,9 @@
 /**
+ * Internal dependencies
+ */
+import { getTransformSelectors } from '../../../components/transform-control/utils';
+
+/**
  * External dependencies
  */
 import { isEmpty } from 'lodash';
@@ -10,8 +15,10 @@ import { isEmpty } from 'lodash';
 const getTransformTransition = selectors => {
 	const transformTransition = {};
 
-	if (!isEmpty(selectors))
-		Object.values(selectors).forEach(selectorData => {
+	if (!isEmpty(selectors)) {
+		const transformSelectors = getTransformSelectors(selectors);
+
+		Object.values(transformSelectors).forEach(selectorData => {
 			transformTransition[`transform ${selectorData.normal.label}`] = {
 				title: `Transform ${selectorData.normal.label}`,
 				target: selectorData.normal.target,
@@ -19,6 +26,7 @@ const getTransformTransition = selectors => {
 				isTransform: true,
 			};
 		});
+	}
 
 	return transformTransition;
 };

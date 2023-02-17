@@ -26,7 +26,7 @@ const getKey = key => {
 	}
 };
 
-export const getTransformSelectors = (selectors, attributes) => {
+export const getTransformSelectors = (selectors, attributes = {}) => {
 	const {
 		'background-layers': bgLayers = [],
 		'background-layers-hover': bgLayersHover = [],

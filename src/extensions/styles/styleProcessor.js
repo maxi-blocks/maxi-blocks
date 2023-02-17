@@ -9,6 +9,7 @@ import {
 import { getSelectorsCss } from '../../components/custom-css-control/utils';
 import { getTransformSelectors } from '../../components/transform-control/utils';
 import getTransformTransitionData from './transitions/getTransformTransitionData';
+import transitionDefault from './transitions/transitionDefault';
 
 /**
  * External dependencies
@@ -200,7 +201,7 @@ const styleCleaner = styles => {
 const styleProcessor = (obj, data, props) => {
 	const selectors = data?.customCss?.selectors;
 	const transitionSelectors = {
-		...data?.transition,
+		...(data?.transition || transitionDefault),
 		transform: getTransformTransitionData(selectors, props),
 	};
 

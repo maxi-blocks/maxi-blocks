@@ -327,15 +327,6 @@ class MaxiBlockComponent extends Component {
 			);
 		}
 
-		if (this.isReusable) {
-			this.widthObserver.disconnect();
-			document
-				.getElementById(
-					`maxi-block-size-checker-${this.props.attributes.uniqueID}`
-				)
-				.remove();
-		}
-
 		if (this.maxiBlockWillUnmount)
 			this.maxiBlockWillUnmount(isBlockBeingRemoved);
 	}
@@ -438,7 +429,7 @@ class MaxiBlockComponent extends Component {
 			'maxi-block',
 			'maxi-block--backend'
 		);
-		sizeElement.id = `maxi-block-size-checker-${this.props.attributes.uniqueID}`;
+		sizeElement.id = `maxi-block-size-checker-${this.props.clientId}`;
 		sizeElement.style =
 			'top: 0 !important; height: 0 !important;  min-height: 0 !important; padding: 0 !important; margin: 0 !important';
 		this.blockRef.current.parentNode.insertAdjacentElement(
@@ -818,16 +809,32 @@ class MaxiBlockComponent extends Component {
 			this.props.attributes.uniqueID
 		);
 		const siteEditorIframe = getSiteEditorIframe();
+		const previewIframe = document.querySelector(
+			'.block-editor-block-preview__container iframe'
+		);
 		const iframe = document.querySelector(
 			'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)'
 		);
 
 		const getEditorElement = () =>
-			templateViewIframe || siteEditorIframe || iframe || document;
+			templateViewIframe ||
+			siteEditorIframe ||
+			previewIframe ||
+			iframe ||
+			document;
 
 		getEditorElement()
 			.getElementById(getStylesWrapperId(this.props.attributes.uniqueID))
 			?.remove();
+
+		if (this.isReusable) {
+			this.widthObserver.disconnect();
+			getEditorElement()
+				.getElementById(
+					`maxi-block-size-checker-${this.props.clientId}`
+				)
+				?.remove();
+		}
 	}
 }
 

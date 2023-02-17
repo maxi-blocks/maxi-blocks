@@ -8,6 +8,7 @@ import {
 } from './helpers';
 import { getSelectorsCss } from '../../components/custom-css-control/utils';
 import { getTransformSelectors } from '../../components/transform-control/utils';
+import getTransformTransitionData from './transitions/getTransformTransitionData';
 
 /**
  * External dependencies
@@ -198,7 +199,10 @@ const styleCleaner = styles => {
 
 const styleProcessor = (obj, data, props) => {
 	const selectors = data?.customCss?.selectors;
-	const transitionSelectors = data?.transition;
+	const transitionSelectors = {
+		...data?.transition,
+		transform: getTransformTransitionData(selectors, props),
+	};
 
 	const styles = cloneDeep(obj);
 

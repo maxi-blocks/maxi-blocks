@@ -8,6 +8,7 @@ import { RawHTML, useRef } from '@wordpress/element';
  * Internal dependencies
  */
 import {
+	createTransitionObj,
 	getAttributeKey,
 	getAttributeValue,
 	getBlockStyle,
@@ -31,7 +32,15 @@ import ListItemControl from '../list-control/list-item-control';
  * External dependencies
  */
 import classnames from 'classnames';
-import { cloneDeep, findIndex, isEmpty, isEqual, isNil, omitBy } from 'lodash';
+import {
+	cloneDeep,
+	findIndex,
+	isEmpty,
+	isEqual,
+	isNil,
+	omit,
+	omitBy,
+} from 'lodash';
 
 /**
  * Icons
@@ -380,6 +389,7 @@ const getLayerCardTitle = props => {
 const BackgroundLayersControl = ({
 	layersOptions,
 	layersHoverOptions,
+	transition,
 	isHover = false,
 	isIB = false,
 	onChangeInline,
@@ -505,16 +515,36 @@ const BackgroundLayersControl = ({
 
 		onChange({
 			[`background-layers${isHoverLayer ? '-hover' : ''}`]: newLayers,
+			transition: {
+				...transition,
+				transform: {
+					...transition.transform,
+					[`_${layer.id}`]: createTransitionObj(),
+				},
+			},
 		});
 	};
 
 	const onRemoveLayer = ({ order, isHover: isHoverLayer }) => {
+		let idOfRemovedLayer;
+
 		const newLayers = cloneDeep(isHoverLayer ? layersHover : layers).filter(
-			lay => lay.order !== order
+			lay => {
+				if (lay.order !== order) {
+					return true;
+				}
+
+				idOfRemovedLayer = lay.id;
+				return false;
+			}
 		);
 
 		onChange({
 			[`background-layers${isHover ? '-hover' : ''}`]: newLayers,
+			transition: {
+				...transition,
+				transform: omit(transition.transform, `_${idOfRemovedLayer}`),
+			},
 		});
 	};
 

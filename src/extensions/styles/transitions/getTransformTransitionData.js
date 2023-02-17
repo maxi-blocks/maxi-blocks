@@ -12,20 +12,22 @@ import { isEmpty, capitalize } from 'lodash';
  * @param {Readonly<Object>} selectors custom css selectors
  * @returns {Object} transform transition
  */
-const getTransformTransitionData = selectors => {
+const getTransformTransitionData = (selectors, attributes) => {
 	const transformTransition = {};
 
 	if (!isEmpty(selectors)) {
-		const transformSelectors = getTransformSelectors(selectors);
+		const transformSelectors = getTransformSelectors(selectors, attributes);
 
-		Object.values(transformSelectors).forEach(selectorData => {
-			transformTransition[selectorData.normal.label] = {
-				title: capitalize(selectorData.normal.label),
-				target: selectorData.normal.target,
-				property: 'transform',
-				isTransform: true,
-			};
-		});
+		Object.entries(transformSelectors).forEach(
+			([selector, selectorData]) => {
+				transformTransition[selector] = {
+					title: capitalize(selectorData.normal.label),
+					target: selectorData.normal.target,
+					property: 'transform',
+					isTransform: true,
+				};
+			}
+		);
 	}
 
 	return transformTransition;

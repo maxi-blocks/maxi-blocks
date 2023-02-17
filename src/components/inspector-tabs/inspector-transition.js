@@ -13,6 +13,7 @@ import SettingTabsControl from '../setting-tabs-control';
 import ToggleSwitch from '../toggle-switch';
 import TransitionControl from '../transition-control';
 import {
+	createTransitionObj,
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -46,7 +47,9 @@ const TransitionControlWrapper = props => {
 			: attributes[`transition-${type}-selected`];
 
 	const selectedTransition = transition[type][selected];
-	const defaultTransition = getDefaultAttribute('transition')[type][selected];
+	const defaultTransition =
+		getDefaultAttribute('transition')?.[type]?.[selected] ||
+		createTransitionObj();
 
 	const getDefaultTransitionAttribute = prop =>
 		defaultTransition[`${prop}-${deviceType}`];
@@ -140,11 +143,13 @@ const TransitionControlWrapper = props => {
 							label: __('Select setting', 'maxi-blocks'),
 							value: 'none',
 						},
-						...(transition[type] &&
-							Object.keys(transition[type]).map(name => ({
-								label: __(capitalize(name), 'maxi-blocks'),
-								value: name,
-							}))),
+						...(transitionData[type] &&
+							Object.entries(transitionData[type]).map(
+								([key, { title }]) => ({
+									label: __(title, 'maxi-blocks'),
+									value: key,
+								})
+							)),
 					]}
 					onChange={val => {
 						maxiSetAttributes({
@@ -192,7 +197,7 @@ const transition = ({
 
 	const transition = cloneDeep(rawTransition);
 
-	const transitionData = getTransitionData(name, selectors);
+	const transitionData = getTransitionData(name, selectors, attributes);
 
 	Object.keys(transition).forEach(type => {
 		Object.keys(transition[type]).forEach(key => {

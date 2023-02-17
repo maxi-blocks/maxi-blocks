@@ -1058,7 +1058,6 @@ const LibraryContainer = props => {
 									};
 
 									itemsReturn.push(generateItem('Patterns'));
-									itemsReturn.push(generateItem('Pages'));
 									const itemBlocks = items.find(
 										item => item.label === 'Blocks'
 									);
@@ -1066,6 +1065,7 @@ const LibraryContainer = props => {
 										itemsReturn.push(
 											generateItem('Blocks')
 										);
+									itemsReturn.push(generateItem('Pages'));
 									itemsReturn.push(
 										generateItem('Playground')
 									);
@@ -1133,7 +1133,7 @@ const LibraryContainer = props => {
 
 										const patternsButton =
 											document.querySelector(
-												'.maxi-cloud-container__patterns__top-menu .ais-Menu-list > .ais-Menu-item:nth-child(2):not(.ais-Menu-item--selected) a'
+												'.maxi-cloud-container__patterns__top-menu .ais-Menu-list > .ais-Menu-item:first-child:not(.ais-Menu-item--selected) a'
 											);
 										patternsButton?.click();
 

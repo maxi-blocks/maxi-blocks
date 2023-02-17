@@ -52,16 +52,13 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 				breakpoints.forEach(breakpoint => {
 					if (
 						isTransform &&
-						['scale', 'rotate', 'translate', 'origin'].every(
+						['scale', 'rotate', 'translate'].every(
 							prop =>
 								!getLastBreakpointAttribute({
 									target: `transform-${prop}`,
 									breakpoint,
 									attributes: props,
-									keys: [
-										key.replace('transform ', ''),
-										'hover-status',
-									],
+									keys: [key, 'hover-status'],
 								})
 						)
 					)

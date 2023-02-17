@@ -495,6 +495,8 @@ const LibraryContainer = props => {
 			hit.cost?.[0] === 'Pro'
 				? 'ais-InfiniteHits-item-pro'
 				: 'ais-InfiniteHits-item-free';
+		const isPattern = hit?.gutenberg_type?.[0] === 'Patterns';
+
 		return (
 			<MasonryItem
 				type='patterns'
@@ -509,7 +511,7 @@ const LibraryContainer = props => {
 				isPro={hit.cost?.[0] === 'Pro'}
 				taxonomies={hit.category?.[0]}
 				serial={hit.post_number}
-				toneUrl={hit.link_to_related}
+				toneUrl={isPattern ? hit.link_to_related : null}
 				gutenbergCode={hit.gutenberg_code}
 				isMaxiProActive={isMaxiProActive}
 				isSwapChecked={isSwapChecked}
@@ -1041,30 +1043,32 @@ const LibraryContainer = props => {
 								defaultRefinement='Patterns'
 								transformItems={items => {
 									const itemsReturn = [];
+									const generateItem = name => {
+										const item = items.find(
+											item => item.label === name
+										);
+										if (item) return item;
+										else
+											return {
+												label: name,
+												value: name,
+												count: 0,
+												isRefined: false,
+											};
+									};
 
-									const firstItem = items.find(
-										item => item.label === 'Pages'
+									itemsReturn.push(generateItem('Patterns'));
+									itemsReturn.push(generateItem('Pages'));
+									const itemBlocks = items.find(
+										item => item.label === 'Blocks'
 									);
-									if (firstItem) itemsReturn[0] = firstItem;
-									else
-										itemsReturn[0] = {
-											label: 'Pages',
-											value: 'Pages',
-											count: 0,
-											isRefined: false,
-										};
-
-									const secondItem = items.find(
-										item => item.label === 'Patterns'
+									if (itemBlocks)
+										itemsReturn.push(
+											generateItem('Blocks')
+										);
+									itemsReturn.push(
+										generateItem('Playground')
 									);
-									if (secondItem) itemsReturn[1] = secondItem;
-									else
-										itemsReturn[1] = {
-											label: 'Patterns',
-											value: 'Patterns',
-											count: 0,
-											isRefined: false,
-										};
 
 									return itemsReturn;
 								}}
@@ -1088,38 +1092,22 @@ const LibraryContainer = props => {
 								attribute='light_or_dark'
 								defaultRefinement='Light'
 								transformItems={items => {
-									const itemsReturn = items.map(item => {
-										return {
-											...item,
-											label: `${item.label}
-											${__('tone', 'maxi-blocks')}`,
-										};
-									});
-									const firstItem = itemsReturn[0];
-									const secondItem = itemsReturn[1];
-									if (secondItem?.label?.includes('Light')) {
-										itemsReturn[0] = secondItem;
-										itemsReturn[1] = firstItem;
-									}
-									if (
-										itemsReturn.length === 1 &&
-										itemsReturn[0]?.count === 0
-									) {
-										return [
-											{
+									const generateItem = name => {
+										const item = items.find(
+											item => item.label === name
+										);
+										if (item) return item;
+										else
+											return {
+												label: `${name} tone`,
+												value: name,
 												count: 0,
 												isRefined: false,
-												label: 'Light tone',
-												value: 'Light',
-											},
-											{
-												count: 0,
-												isRefined: false,
-												label: 'Dark tone',
-												value: 'Dark',
-											},
-										];
-									}
+											};
+									};
+									const itemsReturn = [];
+									itemsReturn.push(generateItem('Light'));
+									itemsReturn.push(generateItem('Dark'));
 									return itemsReturn;
 								}}
 							/>
@@ -1142,11 +1130,6 @@ const LibraryContainer = props => {
 									className='ais-ClearRefinements-button'
 									onClick={e => {
 										e.preventDefault();
-										const allButton =
-											document.querySelector(
-												'.top-Menu > button:first-child'
-											);
-										allButton?.click();
 
 										const patternsButton =
 											document.querySelector(
@@ -1161,6 +1144,11 @@ const LibraryContainer = props => {
 										lightButton?.click();
 
 										setTimeout(() => {
+											const allButton =
+												document.querySelector(
+													'.top-Menu > button:first-child'
+												);
+											allButton?.click();
 											const listItem =
 												document.querySelector(
 													'.maxi-cloud-container__patterns__sidebar > ul .ais-HierarchicalMenu-item--selected > a'

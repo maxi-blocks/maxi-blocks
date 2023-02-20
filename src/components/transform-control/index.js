@@ -25,7 +25,7 @@ import { getActiveTabName } from '../../extensions/inspector';
  * External dependencies
  */
 import classnames from 'classnames';
-import { capitalize, isEmpty, isNil, isPlainObject, toLower } from 'lodash';
+import { capitalize, isBoolean, isEmpty, isNil, toLower } from 'lodash';
 
 /**
  * Styles and icons
@@ -65,10 +65,7 @@ const TransformControl = props => {
 	}, [transformTarget, hoverSelected]);
 
 	const isTransformed = () =>
-		Object.entries(transformOptions).some(([key, val]) => {
-			if (!isNil(val)) return true;
-			return false;
-		});
+		Object.values(transformOptions).some(val => !isNil(val));
 
 	const [transformStatus, setTransformStatus] = useState('scale');
 
@@ -77,13 +74,32 @@ const TransformControl = props => {
 		key,
 		keys,
 		attributes = props,
-	}) =>
-		getLastBreakpointAttribute({
-			target,
-			breakpoint,
-			attributes,
-			keys: keys ?? [transformTarget, hoverSelected, key],
-		});
+	}) => {
+		const getLastBreakpointAttributeWrapper = isHover =>
+			getLastBreakpointAttribute({
+				target,
+				breakpoint,
+				attributes,
+				keys: keys ?? [
+					transformTarget,
+					isHover ? 'hover' : 'normal',
+					key,
+				],
+			});
+
+		if (hoverSelected !== 'hover')
+			return getLastBreakpointAttributeWrapper(false);
+
+		/**
+		 * If no hover attribute is defined and if the attribute isn't switch(boolean),
+		 * inherit normal state attribute
+		 */
+		const hoverAttribute = getLastBreakpointAttributeWrapper(true);
+		if (!isNil(hoverAttribute) || isBoolean(hoverAttribute))
+			return hoverAttribute;
+
+		return getLastBreakpointAttributeWrapper(false);
+	};
 
 	const updateTransformOptions = obj => {
 		Object.entries(obj).forEach(([type, diffTypeObj]) => {
@@ -91,31 +107,6 @@ const TransformControl = props => {
 			Object.entries(diffTypeObj).forEach(([target, targetObj]) => {
 				// save both hover and normal state
 				typeObj[target] = { ...typeObj?.[target], ...targetObj };
-				// hover attributes inherit normal state attributes when they undefined or null
-				if (isPlainObject(typeObj[target].hover)) {
-					Object.keys(typeObj[target].hover).forEach(key => {
-						if (
-							isNil(
-								getLastBreakpointTransformAttribute({
-									target: type,
-									attributes: {
-										...transformOptions,
-										[`${type}-${breakpoint}`]: {
-											...typeObj,
-										},
-									},
-									keys: [target, 'hover', key],
-								})
-							)
-						)
-							typeObj[target].hover[key] =
-								getLastBreakpointTransformAttribute({
-									target: type,
-									attributes: props,
-									keys: [target, 'normal', key],
-								});
-					});
-				}
 			});
 			// save each type of transform(scale, translate, etc...)
 			transformOptions[`${type}-${breakpoint}`] = {

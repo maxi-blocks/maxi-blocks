@@ -299,36 +299,28 @@ const ScrollEffectsControl = props => {
 						value: 0,
 					},
 					{
-						label: __('In vertical', 'maxi-blocks'),
+						label: __('In less', 'maxi-blocks'),
 						value: 1,
 					},
 					{
-						label: __('Out vertical', 'maxi-blocks'),
+						label: __('Out less', 'maxi-blocks'),
 						value: 2,
 					},
 					{
-						label: __('In horizontal', 'maxi-blocks'),
+						label: __('In some', 'maxi-blocks'),
 						value: 3,
 					},
 					{
-						label: __('Out horizontal', 'maxi-blocks'),
+						label: __('Out some', 'maxi-blocks'),
 						value: 4,
 					},
 					{
-						label: __('In rotate', 'maxi-blocks'),
+						label: __('In more', 'maxi-blocks'),
 						value: 5,
 					},
 					{
-						label: __('Out rotate', 'maxi-blocks'),
+						label: __('Out more', 'maxi-blocks'),
 						value: 6,
-					},
-					{
-						label: __('In scale', 'maxi-blocks'),
-						value: 7,
-					},
-					{
-						label: __('Out scale', 'maxi-blocks'),
-						value: 8,
 					},
 				];
 				break;

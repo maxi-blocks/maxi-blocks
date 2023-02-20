@@ -272,6 +272,7 @@ const SVGFillControl = props => {
 								icon={SVGElement}
 								breakpoint={breakpoint}
 								prefix='background-svg-'
+								isHover={isHover}
 								disableModal
 							/>
 						)}

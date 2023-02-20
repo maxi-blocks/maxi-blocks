@@ -1,4 +1,5 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import hoverAttributesCreator from '../hoverAttributesCreator';
 
 export const rawImageShape = {
 	'image-shape-scale': {
@@ -18,4 +19,8 @@ export const rawImageShape = {
 
 export const imageShape = breakpointAttributesCreator({
 	obj: rawImageShape,
+});
+
+export const imageShapeHover = hoverAttributesCreator({
+	obj: imageShape,
 });

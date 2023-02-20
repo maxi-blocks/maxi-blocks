@@ -28,6 +28,7 @@ const ImageShapeResponsiveSettings = ({
 	breakpoint,
 	prefix = '',
 	onChange,
+	isHover,
 	...attributes
 }) => {
 	const getLastShapeAttribute = target =>
@@ -35,6 +36,7 @@ const ImageShapeResponsiveSettings = ({
 			target,
 			breakpoint,
 			attributes,
+			isHover,
 		});
 
 	const getProps = (rawTarget, component = 'AdvancedNumberControl') => {
@@ -52,10 +54,12 @@ const ImageShapeResponsiveSettings = ({
 		const getDictionaryValue = value => dictionary[component][value];
 
 		const target = `${prefix}image-shape-${rawTarget}`;
-		const targetWithBreakpoint = `${target}-${breakpoint}`;
+		const targetWithBreakpoint = `${target}-${breakpoint}${
+			isHover ? '-hover' : ''
+		}`;
 
 		return {
-			[getDictionaryValue('value')]: getLastShapeAttribute(target) || '',
+			[getDictionaryValue('value')]: getLastShapeAttribute(target),
 			[getDictionaryValue('onChange')]: value =>
 				onChange({
 					[targetWithBreakpoint]:

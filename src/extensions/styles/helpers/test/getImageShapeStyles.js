@@ -26,6 +26,7 @@ describe('getImageShapeStyles', () => {
 			'svg',
 			object,
 			'background-svg-',
+			false,
 			true
 		);
 		expect(result).toMatchSnapshot();

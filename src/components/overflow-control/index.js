@@ -122,6 +122,9 @@ const OverflowControl = props => {
 							attributes: props,
 						}) || ''
 					}
+					defaultValue={getDefaultAttribute(
+						`overflow-${axis}-${breakpoint}`
+					)}
 					onChange={val => onChangeValue(val, axis)}
 					onReset={() =>
 						onChangeValue(

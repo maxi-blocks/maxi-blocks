@@ -1,7 +1,6 @@
 /**
  * WordPress dependencies
  */
-import { Popover } from '@wordpress/components';
 import {
 	memo,
 	forwardRef,
@@ -15,7 +14,7 @@ import { useSelect } from '@wordpress/data';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, cloneDeep, isEqual, isNaN } from 'lodash';
+import { isEmpty, cloneDeep, isEqual } from 'lodash';
 
 /**
  * Utils
@@ -27,7 +26,11 @@ import {
 	TextItalic,
 	TextOptions,
 } from './components';
-import { getBoundaryElement } from '../../extensions/dom';
+
+/**
+ * Internal dependencies
+ */
+import Popover from '../popover';
 
 /**
  * Styles
@@ -47,6 +50,7 @@ const CaptionToolbar = memo(
 	forwardRef((props, ref) => {
 		const {
 			attributes,
+			blockStyle,
 			clientId,
 			maxiSetAttributes,
 			insertInlineStyles,
@@ -59,34 +63,29 @@ const CaptionToolbar = memo(
 
 		const { formatValue, onChangeTextFormat } = useContext(textContext);
 
-		const { editorVersion, breakpoint, styleCard, tooltipsHide } =
-			useSelect(select => {
-				const { receiveMaxiSettings, receiveMaxiDeviceType } =
-					select('maxiBlocks');
-				const { receiveMaxiSelectedStyleCard } = select(
-					'maxiBlocks/style-cards'
-				);
+		const { breakpoint, styleCard, tooltipsHide } = useSelect(select => {
+			const { receiveMaxiSettings, receiveMaxiDeviceType } =
+				select('maxiBlocks');
+			const { receiveMaxiSelectedStyleCard } = select(
+				'maxiBlocks/style-cards'
+			);
 
-				const maxiSettings = receiveMaxiSettings();
-				const version = !isEmpty(maxiSettings.editor)
-					? maxiSettings.editor.version
-					: null;
+			const maxiSettings = receiveMaxiSettings();
 
-				const breakpoint = receiveMaxiDeviceType();
+			const breakpoint = receiveMaxiDeviceType();
 
-				const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
+			const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
 
-				const tooltipsHide = !isEmpty(maxiSettings.hide_tooltips)
-					? maxiSettings.hide_tooltips
-					: false;
+			const tooltipsHide = !isEmpty(maxiSettings.hide_tooltips)
+				? maxiSettings.hide_tooltips
+				: false;
 
-				return {
-					editorVersion: version,
-					breakpoint,
-					styleCard,
-					tooltipsHide,
-				};
-			});
+			return {
+				breakpoint,
+				styleCard,
+				tooltipsHide,
+			};
+		});
 
 		const [anchorRef, setAnchorRef] = useState(ref.current);
 
@@ -112,6 +111,7 @@ const CaptionToolbar = memo(
 				typography,
 				formatValue,
 				textLevel,
+				blockStyle,
 				styleCard,
 			});
 
@@ -136,36 +136,25 @@ const CaptionToolbar = memo(
 			processAttributes(obj);
 		};
 
-		const popoverProps = {
-			...((parseFloat(editorVersion) <= 13.0 && {
-				shouldAnchorIncludePadding: true,
-				__unstableStickyBoundaryElement: getBoundaryElement(anchorRef),
-				position: 'bottom center right',
-			}) ||
-				(!isNaN(parseFloat(editorVersion)) && {
-					anchor: anchorRef,
-					position: 'bottom center',
-					flip: false,
-					resize: false,
-				})),
-		};
-
 		if (isSelected && anchorRef)
 			return (
 				<Popover
+					anchor={anchorRef}
 					noArrow
 					animate={false}
 					focusOnMount={false}
 					className={classnames('maxi-toolbar__popover')}
 					uniqueid={uniqueID}
 					__unstableSlotName='block-toolbar'
-					{...popoverProps}
+					observeBlockPosition={clientId}
+					position='bottom center'
 				>
 					<div className='toolbar-wrapper caption-toolbar'>
 						<TextOptions
 							{...getGroupAttributes(attributes, 'typography')}
 							onChange={obj => processAttributes(obj)}
 							breakpoint={breakpoint}
+							blockStyle={blockStyle}
 							isList={isList}
 							clientId={clientId}
 							isCaptionToolbar

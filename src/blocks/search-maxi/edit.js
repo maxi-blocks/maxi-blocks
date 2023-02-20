@@ -10,7 +10,6 @@ import Inspector from './inspector';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar, RawHTML } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-
 import { getIconPositionClass } from '../../extensions/styles';
 import getStyles from './styles';
 import { prefixes, copyPasteMapping } from './data';
@@ -108,9 +107,7 @@ const SearchBlock = props => {
 				placeholder={placeholder}
 				onMouseOver={() => onInputChangeByHover(true)}
 				onMouseOut={event =>
-					event.target !==
-						document.querySelector('.editor-styles-wrapper')
-							.ownerDocument.activeElement &&
+					event.target !== event.target.ownerDocument.activeElement &&
 					onInputChangeByHover(false)
 				}
 			/>

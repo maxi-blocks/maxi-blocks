@@ -27,6 +27,7 @@ import MainMaxiBlock from './mainMaxiBlock';
  */
 import classnames from 'classnames';
 import { isEmpty, isEqual, isNil } from 'lodash';
+import mobile from 'is-mobile';
 
 /**
  * Styles
@@ -34,6 +35,8 @@ import { isEmpty, isEqual, isNil } from 'lodash';
 import './editor.scss';
 
 const INNER_BLOCKS = ['maxi-blocks/group-maxi', 'maxi-blocks/column-maxi'];
+
+const DISALLOWED_BREAKPOINTS = ['m', 's', 'xs'];
 
 const getBlockClassName = blockName => {
 	return `maxi-${blockName
@@ -105,6 +108,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		isSelected,
 		hasSelectedChild,
 		isHovered,
+		isChild,
 		...extraProps
 	} = props;
 
@@ -159,11 +163,23 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 			attributes: extraProps.attributes,
 		}) === 'full';
 
+	// Gets if the block has to be disabled due to the device type
+	const isDisabled =
+		DISALLOWED_BREAKPOINTS.includes(extraProps.baseBreakpoint) &&
+		mobile({ tablet: true });
+
+	// Unselect the block if it's disabled
+	if (isDisabled && isSelected)
+		setTimeout(() => {
+			dispatch('core/block-editor').selectBlock();
+		}, 0);
+
 	// Are just necessary for the memo() part
 	delete extraProps.attributes;
-	delete extraProps.isChild;
 	delete extraProps.deviceType;
+	delete extraProps.baseBreakpoint;
 	delete extraProps.context;
+	delete extraProps.state;
 
 	// Not usable/necessary on save blocks
 	const [isDragOverBlock, setIsDragOverBlock] = isSave ? [] : useState(false);
@@ -217,6 +233,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		hasLink && 'maxi-block--has-link',
 		isDragging && isDragOverBlock && 'maxi-block--is-drag-over',
 		isHovered && 'maxi-block--is-hovered',
+		isDisabled && 'maxi-block--disabled',
 		!isSave && isFullWidth && 'maxi-block--full-width'
 	);
 
@@ -267,6 +284,8 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		anchorLink,
 		background,
 		disableBackground: !disableBackground,
+		isChild,
+		isDisabled,
 		isSave,
 		...(!isSave && isFirstOnHierarchy && { style }),
 		...(!isSave &&
@@ -317,6 +336,7 @@ const MaxiBlock = memo(
 			isSelected: wasSelected,
 			deviceType: oldDeviceType,
 			context: oldContext,
+			state: oldState,
 		} = rawOldProps;
 
 		const {
@@ -324,9 +344,21 @@ const MaxiBlock = memo(
 			isSelected,
 			deviceType: newDeviceType,
 			context,
+			state,
 		} = rawNewProps;
 
+		// Check differences between attributes
 		if (!isEqual(oldAttr, newAttr)) return false;
+
+		// Check differences between children
+		if (rawOldProps?.children || rawNewProps?.children) {
+			const areChildrenEqual = isEqual(
+				rawOldProps.children,
+				rawNewProps.children
+			);
+
+			if (!areChildrenEqual) return false;
+		}
 
 		if (select('core/block-editor').isDraggingBlocks()) return true;
 
@@ -335,6 +367,8 @@ const MaxiBlock = memo(
 		if (!isEqual(oldDeviceType, newDeviceType)) return false;
 
 		if (!isEqual(oldContext, context)) return false;
+
+		if (!isEqual(oldState, state)) return false;
 
 		const propsCleaner = props => {
 			const response = {};

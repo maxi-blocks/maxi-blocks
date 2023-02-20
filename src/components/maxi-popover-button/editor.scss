@@ -5,10 +5,6 @@ body.maxi-blocks--active .components-popover.maxi-popover-button {
 		transform: translateY(100%);
 	}
 
-	&--old .components-popover__content {
-		transform: translateX(-50%);
-	}
-
 	&--open {
 		z-index: -1;
 	}

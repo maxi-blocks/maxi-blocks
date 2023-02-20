@@ -315,6 +315,14 @@ const BorderControl = props => {
 					label={__('Add border line', 'maxi-blocks')}
 					className='maxi-border-control__type'
 					value={borderStyleValue || 'none'}
+					defaultValue={getDefaultAttribute(
+						getAttributeKey(
+							'border-style',
+							isHover,
+							prefix,
+							breakpoint
+						)
+					)}
 					onReset={() =>
 						onChange({
 							[getAttributeKey(

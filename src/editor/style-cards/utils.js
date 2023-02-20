@@ -13,7 +13,7 @@ import standardSC from '../../../core/utils/defaultSC.json';
  * External dependencies
  */
 import { isEmpty, isNil, isString } from 'lodash';
-import { updatedDiff } from 'deep-object-diff';
+import { diff } from 'deep-object-diff';
 
 /**
  * Utils
@@ -76,8 +76,9 @@ export const exportStyleCard = (data, fileName) => {
 	document.body.appendChild(a);
 	a.style = 'display: none';
 
-	const reducedSC = updatedDiff(standardSC?.sc_maxi, data);
-	const json = JSON.stringify(reducedSC);
+	const reducedSC = diff(standardSC?.sc_maxi, data);
+	// Need stringify twice to get 'text/plain' mime type
+	const json = JSON.stringify(JSON.stringify(reducedSC));
 	const blob = new Blob([json], { type: 'text/plain' });
 	const url = window.URL.createObjectURL(blob);
 
@@ -111,4 +112,19 @@ export const processSCAttribute = (SC, attr, type) => {
 	}
 
 	return null;
+};
+
+export const getActiveColourFromSC = (sc, number) => {
+	if (isEmpty(sc)) return '0,0,0';
+
+	if (!isEmpty(sc?.value))
+		return (
+			sc.value?.light?.styleCard?.color?.[number] ||
+			sc.value?.light?.defaultStyleCard?.color?.[number]
+		);
+
+	return (
+		sc?.light?.styleCard?.color?.[number] ||
+		sc?.light?.defaultStyleCard?.color?.[number]
+	);
 };

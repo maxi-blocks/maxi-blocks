@@ -93,8 +93,7 @@ const blockBackground = ({
 									<BlockBackgroundControl
 										{...getGroupAttributes(
 											attributes,
-											'blockBackground',
-											'transition',
+											['blockBackground', 'transition'],
 											true
 										)}
 										onChange={obj => maxiSetAttributes(obj)}

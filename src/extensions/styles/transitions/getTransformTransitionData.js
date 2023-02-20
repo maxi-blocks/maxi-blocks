@@ -20,6 +20,8 @@ const getTransformTransitionData = (selectors, attributes) => {
 
 		Object.entries(transformSelectors).forEach(
 			([selector, selectorData]) => {
+				if (!selectorData?.normal) return;
+
 				transformTransition[selector] = {
 					title: capitalize(selectorData.normal.label),
 					target: selectorData.normal.target,

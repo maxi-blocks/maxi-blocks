@@ -515,13 +515,17 @@ const BackgroundLayersControl = ({
 
 		onChange({
 			[`background-layers${isHoverLayer ? '-hover' : ''}`]: newLayers,
-			transition: {
-				...transition,
-				transform: {
-					...transition.transform,
-					[`_${layer.id}`]: createTransitionObj(),
-				},
-			},
+			...(!isHoverLayer
+				? {
+						transition: {
+							...transition,
+							transform: {
+								...transition.transform,
+								[`_${layer.id}`]: createTransitionObj(),
+							},
+						},
+				  }
+				: {}),
 		});
 	};
 

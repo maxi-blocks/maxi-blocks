@@ -168,7 +168,7 @@ class MaxiBlocks_Styles
             }
 
             if ($fonts) {
-                $this->enqueue_fonts($fonts);
+                $this->enqueue_fonts($fonts, $name);
             }
         } elseif (get_template() === 'maxi-theme' && $is_template_part) {
             do_action('maxi_enqueue_template_styles', $name, $id, $is_template);
@@ -400,7 +400,7 @@ class MaxiBlocks_Styles
      * @return object   Font name with font options
      */
 
-    public function enqueue_fonts($fonts)
+    public function enqueue_fonts($fonts, $name)
     {
         if (empty($fonts) || !is_array($fonts)) {
             return;
@@ -443,7 +443,7 @@ class MaxiBlocks_Styles
                 }
 
                 wp_enqueue_style(
-                    'maxi-font-' . sanitize_title_with_dashes($font),
+                    $name . '-font-' . sanitize_title_with_dashes($font),
                     $font_url
                 );
             }

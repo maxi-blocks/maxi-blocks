@@ -36,13 +36,18 @@ const ColorPaletteControl = props => {
 		disableReset,
 		onReset,
 		onResetOpacity,
+		isHover,
 	} = props;
 
 	const { globalStatus, globalPaletteColor, globalPaletteOpacity } =
 		useSelect(select => {
 			const { receiveStyleCardValue } = select('maxiBlocks/style-cards');
 
-			const prefix = globalProps?.target ? `${globalProps?.target}-` : '';
+			const prefix = globalProps?.target
+				? isHover && !globalProps?.target.includes('hover')
+					? `hover-${globalProps?.target}-`
+					: `${globalProps?.target}-`
+				: '';
 
 			const globalStatus = globalProps
 				? receiveStyleCardValue(

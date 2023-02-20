@@ -376,35 +376,35 @@ const ScrollEffectsControl = props => {
 		},
 
 		{
-			label: __('In vertical', 'maxi-blocks'),
+			label: __('In vertical Blur', 'maxi-blocks'),
 			value: 2,
 		},
 		{
-			label: __('Out vertical', 'maxi-blocks'),
+			label: __('Out vertical Blur', 'maxi-blocks'),
 			value: 3,
 		},
 		{
-			label: __('In horizontal', 'maxi-blocks'),
+			label: __('In horizontal Blur', 'maxi-blocks'),
 			value: 4,
 		},
 		{
-			label: __('Out horizontal', 'maxi-blocks'),
+			label: __('Out horizontal Blur', 'maxi-blocks'),
 			value: 5,
 		},
 		{
-			label: __('In rotate', 'maxi-blocks'),
+			label: __('In rotate Blur', 'maxi-blocks'),
 			value: 6,
 		},
 		{
-			label: __('Out rotate', 'maxi-blocks'),
+			label: __('Out rotate Blur', 'maxi-blocks'),
 			value: 7,
 		},
 		{
-			label: __('In scale', 'maxi-blocks'),
+			label: __('In scale Blur', 'maxi-blocks'),
 			value: 8,
 		},
 		{
-			label: __('Out scale', 'maxi-blocks'),
+			label: __('Out scale Blur', 'maxi-blocks'),
 			value: 9,
 		},
 

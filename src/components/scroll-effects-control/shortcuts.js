@@ -18,9 +18,9 @@ export const shortcut2 = {
 
 	'scroll-vertical-status-general': true,
 	'scroll-vertical-easing-general': 'ease',
-	'scroll-vertical-offset-end-general': -60,
-	'scroll-vertical-offset-mid-general': -30,
-	'scroll-vertical-offset-start-general': 0,
+	'scroll-vertical-offset-end-general': 0,
+	'scroll-vertical-offset-mid-general': 30,
+	'scroll-vertical-offset-start-general': 60,
 	'scroll-vertical-speed-general': 500,
 
 	'scroll-horizontal-status-general': false,
@@ -37,8 +37,8 @@ export const shortcut3 = {
 	'scroll-blur-speed-general': 500,
 
 	'scroll-vertical-easing-general': 'ease',
-	'scroll-vertical-offset-end-general': 60,
-	'scroll-vertical-offset-mid-general': 30,
+	'scroll-vertical-offset-end-general': -60,
+	'scroll-vertical-offset-mid-general': -30,
 	'scroll-vertical-offset-start-general': 0,
 	'scroll-vertical-speed-general': 500,
 
@@ -60,9 +60,9 @@ export const shortcut4 = {
 
 	'scroll-horizontal-status-general': true,
 	'scroll-horizontal-easing-general': 'ease',
-	'scroll-horizontal-offset-end-general': -60,
-	'scroll-horizontal-offset-mid-general': -30,
-	'scroll-horizontal-offset-start-general': 0,
+	'scroll-horizontal-offset-end-general': 0,
+	'scroll-horizontal-offset-mid-general': 30,
+	'scroll-horizontal-offset-start-general': 60,
 	'scroll-horizontal-speed-general': 500,
 
 	'scroll-vertical-status-general': false,
@@ -81,8 +81,8 @@ export const shortcut5 = {
 
 	'scroll-horizontal-status-general': true,
 	'scroll-horizontal-easing-general': 'ease',
-	'scroll-horizontal-offset-end-general': 60,
-	'scroll-horizontal-offset-mid-general': 30,
+	'scroll-horizontal-offset-end-general': -60,
+	'scroll-horizontal-offset-mid-general': -30,
 	'scroll-horizontal-offset-start-general': 0,
 	'scroll-horizontal-speed-general': 500,
 
@@ -101,9 +101,9 @@ export const shortcut6 = {
 	'scroll-blur-speed-general': 500,
 
 	'scroll-easing-rotate-general': 'ease',
-	'scroll-rotate-rotate-end-rotate-general': -90,
+	'scroll-rotate-rotate-end-rotate-general': 0,
 	'scroll-rotate-rotate-mid-rotate-general': 0,
-	'scroll-rotate-rotate-start-rotate-general': 0,
+	'scroll-rotate-rotate-start-rotate-general': -90,
 	'scroll-speed-rotate-general': 500,
 	'scroll-rotate-status-general': true,
 
@@ -143,9 +143,9 @@ export const shortcut8 = {
 	'scroll-blur-speed-general': 500,
 
 	'scroll-scale-easing-general': 'ease',
-	'scroll-scale-scale-end-general': 130,
+	'scroll-scale-scale-end-general': 100,
 	'scroll-scale-scale-mid-general': 115,
-	'scroll-scale-scale-start-general': 100,
+	'scroll-scale-scale-start-general': 130,
 	'scroll-scale-speed-general': 500,
 	'scroll-scale-status-general': true,
 
@@ -186,9 +186,9 @@ export const shortcut10 = {
 
 	'scroll-vertical-delay-general': 0,
 	'scroll-vertical-easing-general': 'ease',
-	'scroll-vertical-offset-end-general': -40,
-	'scroll-vertical-offset-mid-general': -20,
-	'scroll-vertical-offset-start-general': 0,
+	'scroll-vertical-offset-end-general': 0,
+	'scroll-vertical-offset-mid-general': 20,
+	'scroll-vertical-offset-start-general': 40,
 	'scroll-vertical-speed-general': 500,
 
 	'scroll-vertical-status-general': true,
@@ -587,7 +587,7 @@ export const shortcut27 = {
 	'scroll-blur-status-general': false,
 };
 export const shortcut28 = {
-	// Scale in Fade in less
+	// Scale in Fade in lessn
 	'scroll-scale-easing-general': 'ease',
 	'scroll-scale-opacity-end-general': 100,
 	'scroll-scale-opacity-mid-general': 100,
@@ -632,9 +632,9 @@ export const shortcut29 = {
 export const vertical = {
 	shortcut1: {
 		'scroll-vertical-easing-general': 'ease',
-		'scroll-vertical-offset-end-general': -40,
+		'scroll-vertical-offset-end-general': 0,
 		'scroll-vertical-offset-mid-general': 20,
-		'scroll-vertical-offset-start-general': 0,
+		'scroll-vertical-offset-start-general': 40,
 		'scroll-vertical-speed-general': 500,
 	},
 	shortcut2: {
@@ -644,9 +644,9 @@ export const vertical = {
 		'scroll-vertical-speed-general': 500,
 	},
 	shortcut3: {
-		'scroll-vertical-offset-end-general': -80,
-		'scroll-vertical-offset-mid-general': -40,
-		'scroll-vertical-offset-start-general': 0,
+		'scroll-vertical-offset-end-general': 0,
+		'scroll-vertical-offset-mid-general': 40,
+		'scroll-vertical-offset-start-general': 80,
 		'scroll-vertical-speed-general': 500,
 	},
 	shortcut4: {
@@ -656,9 +656,9 @@ export const vertical = {
 		'scroll-vertical-speed-general': 500,
 	},
 	shortcut5: {
-		'scroll-vertical-offset-end-general': -120,
-		'scroll-vertical-offset-mid-general': -60,
-		'scroll-vertical-offset-start-general': 0,
+		'scroll-vertical-offset-end-general': 0,
+		'scroll-vertical-offset-mid-general': 60,
+		'scroll-vertical-offset-start-general': 120,
 		'scroll-vertical-speed-general': 500,
 	},
 	shortcut6: {
@@ -672,39 +672,39 @@ export const vertical = {
 export const horizontal = {
 	shortcut1: {
 		'scroll-horizontal-easing-general': 'ease',
-		'scroll-horizontal-offset-end-general': 100,
+		'scroll-horizontal-offset-end-general': 0,
 		'scroll-horizontal-offset-mid-general': 50,
-		'scroll-horizontal-offset-start-general': 0,
+		'scroll-horizontal-offset-start-general': 100,
 		'scroll-horizontal-speed-general': 500,
 	},
 	shortcut2: {
-		'scroll-horizontal-offset-end-general': -100,
+		'scroll-horizontal-offset-end-general': 0,
 		'scroll-horizontal-offset-mid-general': -50,
-		'scroll-horizontal-offset-start-general': 0,
+		'scroll-horizontal-offset-start-general': -100,
 		'scroll-horizontal-speed-general': 500,
 	},
 	shortcut3: {
-		'scroll-horizontal-offset-end-general': 150,
+		'scroll-horizontal-offset-end-general': 0,
 		'scroll-horizontal-offset-mid-general': 75,
-		'scroll-horizontal-offset-start-general': 0,
+		'scroll-horizontal-offset-start-general': 150,
 		'scroll-horizontal-speed-general': 500,
 	},
 	shortcut4: {
-		'scroll-horizontal-offset-end-general': -150,
+		'scroll-horizontal-offset-end-general': 0,
 		'scroll-horizontal-offset-mid-general': -75,
-		'scroll-horizontal-offset-start-general': 0,
+		'scroll-horizontal-offset-start-general': -150,
 		'scroll-horizontal-speed-general': 500,
 	},
 	shortcut5: {
-		'scroll-horizontal-offset-end-general': 200,
+		'scroll-horizontal-offset-end-general': 0,
 		'scroll-horizontal-offset-mid-general': 100,
-		'scroll-horizontal-offset-start-general': 0,
+		'scroll-horizontal-offset-start-general': 200,
 		'scroll-horizontal-speed-general': 500,
 	},
 	shortcut6: {
-		'scroll-horizontal-offset-end-general': -200,
+		'scroll-horizontal-offset-end-general': 0,
 		'scroll-horizontal-offset-mid-general': -100,
-		'scroll-horizontal-offset-start-general': 0,
+		'scroll-horizontal-offset-start-general': -200,
 		'scroll-horizontal-speed-general': 500,
 	},
 };

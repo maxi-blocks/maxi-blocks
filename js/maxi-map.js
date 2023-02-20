@@ -129,12 +129,17 @@ window.onload = () => {
 					</div>
 					`;
 
-					L.marker([latitude, longitude], {
-						icon: markerIcon,
-					})
-						.addTo(map)
-						.bindPopup(popupContent)
-						.openPopup();
+					if (heading === '' && description === '') {
+						L.marker([latitude, longitude], {
+							icon: markerIcon,
+						}).addTo(map);
+					} else
+						L.marker([latitude, longitude], {
+							icon: markerIcon,
+						})
+							.addTo(map)
+							.bindPopup(popupContent)
+							.openPopup();
 				});
 			});
 		}

@@ -50,6 +50,8 @@ const Markers = props => {
 	return mapMarkers.map((marker, index) => {
 		const { id, latitude, longitude } = marker;
 
+		console.log(marker);
+
 		return (
 			<Marker
 				position={[latitude, longitude]}

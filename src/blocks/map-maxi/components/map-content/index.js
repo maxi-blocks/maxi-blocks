@@ -70,7 +70,10 @@ const MapContent = props => {
 						whenReady={map => resizeMap(map.target)}
 					>
 						{isGoogleMaps ? (
-							<ReactLeafletGoogleLayer apiKey={apiKey} />
+							<ReactLeafletGoogleLayer
+								apiKey={apiKey}
+								callback={Function.prototype}
+							/>
 						) : (
 							<TileLayer
 								attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

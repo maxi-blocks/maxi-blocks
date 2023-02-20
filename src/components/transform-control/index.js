@@ -40,7 +40,7 @@ const TransformControl = props => {
 		className,
 		onChangeInline = null,
 		onChange,
-		breakpoint = 'general',
+		breakpoint,
 		depth,
 		categories,
 		selectors,
@@ -360,6 +360,7 @@ const TransformControl = props => {
 										target: 'transform-scale',
 										key: 'y',
 									})}
+									breakpoint={breakpoint}
 									onChange={(x, y) => {
 										onChangeTransform({
 											'transform-scale': {
@@ -431,6 +432,7 @@ const TransformControl = props => {
 											key: 'y-unit',
 										}) ?? '%'
 									}
+									breakpoint={breakpoint}
 									onChange={(x, y, xUnit, yUnit) => {
 										onChangeTransform({
 											'transform-translate': {
@@ -551,6 +553,7 @@ const TransformControl = props => {
 											key: 'y-unit',
 										}) ?? '%'
 									}
+									breakpoint={breakpoint}
 									onChange={(x, y, xUnit, yUnit) => {
 										onChangeTransform({
 											'transform-origin': {

@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { select } from '@wordpress/data';
+import { select, resolveSelect } from '@wordpress/data';
 import { renderToString } from '@wordpress/element';
 
 /**
@@ -59,44 +59,49 @@ class edit extends MaxiBlockComponent {
 		const { attributes, isSelected } = this.props;
 		const { uniqueID, 'map-provider': mapProvider } = attributes;
 
-		const getApiKey = () => {
-			const { receiveMaxiSettings } = select('maxiBlocks');
-
-			const maxiSettings = receiveMaxiSettings();
-
-			const key = maxiSettings?.google_api_key;
-
-			if (key) return key;
-			return false;
+		const delayed_render = (async_fun, deps = []) => {
+			const [output, setOutput] = useState();
+			useEffect(async () => setOutput(await async_fun()), deps);
+			return output === undefined ? null : output;
 		};
 
-		return [
-			<Inspector
-				key={`block-settings-${uniqueID}`}
-				{...this.props}
-				apiKey={getApiKey()}
-			/>,
-			<Toolbar
-				key={`toolbar-${uniqueID}`}
-				ref={this.blockRef}
-				{...this.props}
-				copyPasteMapping={copyPasteMapping}
-			/>,
-			<MaxiBlock
-				key={`maxi-map--${uniqueID}`}
-				ref={this.blockRef}
-				className='maxi-map-block'
-				{...getMaxiBlockAttributes(this.props)}
-			>
-				<MapContent
-					{...this.props}
-					apiKey={getApiKey()}
-					isFirstClick={this.state.isFirstClick}
-					isGoogleMaps={mapProvider === 'googlemaps'}
-					isSelected={isSelected}
-				/>
-			</MaxiBlock>,
-		];
+		return delayed_render(async () => {
+			const { receiveMaxiSettings } = resolveSelect('maxiBlocks');
+			receiveMaxiSettings()
+				.then(maxiSettings => {
+					const googleApiKey = maxiSettings?.google_api_key;
+					return [
+						<Inspector
+							key={`block-settings-${uniqueID}`}
+							{...this.props}
+							apiKey={googleApiKey}
+						/>,
+						<Toolbar
+							key={`toolbar-${uniqueID}`}
+							ref={this.blockRef}
+							{...this.props}
+							copyPasteMapping={copyPasteMapping}
+						/>,
+						<MaxiBlock
+							key={`maxi-map--${uniqueID}`}
+							ref={this.blockRef}
+							className='maxi-map-block'
+							{...getMaxiBlockAttributes(this.props)}
+						>
+							<MapContent
+								{...this.props}
+								apiKey={googleApiKey}
+								isFirstClick={this.state.isFirstClick}
+								isGoogleMaps={mapProvider === 'googlemaps'}
+								isSelected={isSelected}
+							/>
+						</MaxiBlock>,
+					];
+				})
+				.catch(() =>
+					console.error('Maxi Blocks: Could not load settings')
+				);
+		});
 	}
 }
 

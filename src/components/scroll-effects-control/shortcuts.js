@@ -712,45 +712,45 @@ export const horizontal = {
 export const rotate = {
 	shortcut1: {
 		// Right less
-		'scroll-easing-rotate-general': 'ease',
-		'scroll-rotate-end-rotate-general': 0,
-		'scroll-rotate-mid-rotate-general': 0,
-		'scroll-rotate-start-rotate-general': -60,
+		'scroll-easing-general': 'ease',
+		'scroll-rotate-rotate-end-general': 0,
+		'scroll-rotate-rotate-mid-general': 0,
+		'scroll-rotate-rotate-start-general': -60,
 		'scroll-speed-rotate-general': 500,
 	},
 	shortcut2: {
 		// Left less
-		'scroll-rotate-end-rotate-general': 0,
-		'scroll-rotate-mid-rotate-general': 0,
-		'scroll-rotate-start-rotate-general': 60,
+		'scroll-rotate-rotate-end-general': 0,
+		'scroll-rotate-rotate-mid-general': 0,
+		'scroll-rotate-rotate-start-general': 60,
 		'scroll-speed-rotate-general': 500,
 	},
 	shortcut3: {
 		// Right some
-		'scroll-rotate-end-rotate-general': 0,
-		'scroll-rotate-mid-rotate-general': 0,
-		'scroll-rotate-start-rotate-general': -120,
+		'scroll-rotate-rotate-end-general': 0,
+		'scroll-rotate-rotate-mid-general': 0,
+		'scroll-rotate-rotate-start-general': -120,
 		'scroll-speed-rotate-general': 500,
 	},
 	shortcut4: {
 		// Left some
-		'scroll-rotate-end-rotate-general': 0,
-		'scroll-rotate-mid-rotate-general': 0,
-		'scroll-rotate-start-rotate-general': 120,
+		'scroll-rotate-rotate-end-general': 0,
+		'scroll-rotate-rotate-mid-general': 0,
+		'scroll-rotate-rotate-start-general': 120,
 		'scroll-speed-rotate-general': 500,
 	},
 	shortcut5: {
 		// Right more
-		'scroll-rotate-end-rotate-general': 0,
-		'scroll-rotate-mid-rotate-general': 0,
-		'scroll-rotate-start-rotate-general': -180,
+		'scroll-rotate-rotate-end-general': 0,
+		'scroll-rotate-rotate-mid-general': 0,
+		'scroll-rotate-rotate-start-general': -180,
 		'scroll-speed-rotate-general': 500,
 	},
 	shortcut6: {
 		// Left more
-		'scroll-rotate-end-rotate-general': 0,
-		'scroll-rotate-mid-rotate-general': 0,
-		'scroll-rotate-start-rotate-general': 180,
+		'scroll-rotate-rotate-end-general': 0,
+		'scroll-rotate-rotate-mid-general': 0,
+		'scroll-rotate-rotate-start-general': 180,
 		'scroll-speed-rotate-general': 500,
 	},
 };
@@ -840,5 +840,50 @@ export const fade = {
 		'scroll-fade-opacity-mid-general': 50,
 		'scroll-fade-opacity-start-general': 100,
 		'scroll-fade-speed-general': 500,
+	},
+};
+
+export const blur = {
+	shortcut1: {
+		'scroll-blur-easing-general': 'ease',
+		'scroll-blur-opacity-end-general': 40,
+		'scroll-blur-opacity-mid-general': 20,
+		'scroll-blur-opacity-start-general': 0,
+		'scroll-blur-speed-general': 500,
+	},
+	shortcut2: {
+		'scroll-blur-easing-general': 'ease',
+		'scroll-blur-opacity-end-general': 60,
+		'scroll-blur-opacity-mid-general': 80,
+		'scroll-blur-opacity-start-general': 100,
+		'scroll-blur-speed-general': 500,
+	},
+	shortcut3: {
+		'scroll-blur-easing-general': 'ease',
+		'scroll-blur-opacity-end-general': 70,
+		'scroll-blur-opacity-mid-general': 35,
+		'scroll-blur-opacity-start-general': 0,
+		'scroll-blur-speed-general': 500,
+	},
+	shortcut4: {
+		'scroll-blur-easing-general': 'ease',
+		'scroll-blur-opacity-end-general': 35,
+		'scroll-blur-opacity-mid-general': 70,
+		'scroll-blur-opacity-start-general': 100,
+		'scroll-blur-speed-general': 500,
+	},
+	shortcut5: {
+		'scroll-blur-easing-general': 'ease',
+		'scroll-blur-opacity-end-general': 100,
+		'scroll-blur-opacity-mid-general': 50,
+		'scroll-blur-opacity-start-general': 0,
+		'scroll-blur-speed-general': 500,
+	},
+	shortcut6: {
+		'scroll-blur-easing-general': 'ease',
+		'scroll-blur-opacity-end-general': 0,
+		'scroll-blur-opacity-mid-general': 50,
+		'scroll-blur-opacity-start-general': 100,
+		'scroll-blur-speed-general': 500,
 	},
 };

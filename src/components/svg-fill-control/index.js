@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { select } from '@wordpress/data';
 import { useState } from '@wordpress/element';
 
 /**
@@ -11,6 +12,7 @@ import ColorControl from '../color-control';
 import ImageShape from '../image-shape';
 import MediaUploaderControl from '../media-uploader-control';
 import ToggleSwitch from '../toggle-switch';
+
 import { injectImgSVG, getSVGHasImage } from '../../extensions/svg';
 
 /**
@@ -207,11 +209,35 @@ const SVGFillControl = props => {
 								allowedTypes={['image']}
 								mediaID={value.imageID}
 								onSelectImage={imageData => {
-									SVGData[id].imageID = imageData.id;
-									SVGData[id].imageURL = imageData.url;
+									const {
+										getBlockAttributes,
+										getSelectedBlockClientId,
+									} = select('core/block-editor');
+									const { uniqueID } = getBlockAttributes(
+										getSelectedBlockClientId()
+									);
+
+									let newId = id;
+
+									/**
+									 * In case if block was duplicated we need to change id of the SVG element
+									 * to avoid conflicts with the original block.
+									 */
+									if (!id.includes(uniqueID)) {
+										newId = id.replace(
+											/^(.*?)(?=(__))/,
+											uniqueID
+										);
+										SVGData[newId] = cloneDeep(SVGData[id]);
+										delete SVGData[id];
+									}
+
+									SVGData[newId].imageID = imageData.id;
+									SVGData[newId].imageURL = imageData.url;
 									const resEl = injectImgSVG(
 										SVGElement,
-										SVGData
+										SVGData,
+										uniqueID
 									);
 
 									onChange({

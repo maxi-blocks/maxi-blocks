@@ -96,8 +96,8 @@ export const getAllFonts = (
 				}
 
 				result[finalFontName] = {
-					fontWeight: finalFontWeight,
-					fontStyle: finalFontStyle,
+					weight: finalFontWeight,
+					style: finalFontStyle,
 				};
 			}
 		});

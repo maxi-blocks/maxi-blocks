@@ -801,9 +801,9 @@ export const scale = {
 export const fade = {
 	shortcut1: {
 		'scroll-fade-easing-general': 'ease',
-		'scroll-fade-opacity-end-general': 40,
-		'scroll-fade-opacity-mid-general': 20,
-		'scroll-fade-opacity-start-general': 0,
+		'scroll-fade-opacity-end-general': 100,
+		'scroll-fade-opacity-mid-general': 80,
+		'scroll-fade-opacity-start-general': 60,
 		'scroll-fade-speed-general': 500,
 	},
 	shortcut2: {
@@ -815,9 +815,9 @@ export const fade = {
 	},
 	shortcut3: {
 		'scroll-fade-easing-general': 'ease',
-		'scroll-fade-opacity-end-general': 70,
-		'scroll-fade-opacity-mid-general': 35,
-		'scroll-fade-opacity-start-general': 0,
+		'scroll-fade-opacity-end-general': 100,
+		'scroll-fade-opacity-mid-general': 70,
+		'scroll-fade-opacity-start-general': 35,
 		'scroll-fade-speed-general': 500,
 	},
 	shortcut4: {

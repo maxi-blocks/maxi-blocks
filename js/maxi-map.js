@@ -45,7 +45,7 @@ window.onload = () => {
 		[
 			isGoogleScriptsNeeded && {
 				properties: {
-					src: `https://maps.googleapis.com/maps/api/js?key=${apiKey}`,
+					src: `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=Function.prototype`,
 					async: true,
 					defer: true,
 				},

@@ -58,7 +58,7 @@ const MapControl = props => {
 				className='maxi-map-control__min-zoom'
 				label={__('Minimum zoom', 'maxi-blocks')}
 				min={1}
-				max={21}
+				max={mapMaxZoom - 1 || 21}
 				initial={1}
 				step={1}
 				value={mapMinZoom}
@@ -73,7 +73,7 @@ const MapControl = props => {
 			<AdvancedNumberControl
 				className='maxi-map-control__max-zoom'
 				label={__('Maximum zoom', 'maxi-blocks')}
-				min={2}
+				min={mapMinZoom + 1 || 2}
 				max={22}
 				initial={1}
 				step={1}

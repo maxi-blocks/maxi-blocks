@@ -1898,6 +1898,13 @@
 					.ais-InfiniteHits-list {
 						.ais-InfiniteHits-item {
 							width: 23%;
+
+							.long-title {
+								.maxi-cloud-masonry-card__tags__tag,
+								.maxi-cloud-masonry__serial-tag {
+									font-size: 12px;
+								}
+							}
 						}
 					}
 				}

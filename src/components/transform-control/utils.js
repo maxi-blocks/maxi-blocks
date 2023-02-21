@@ -34,6 +34,7 @@ export const getTransformSelectors = (selectors, attributes = {}) => {
 
 	const bgLayersSelectors = getBgLayersSelectorsCss(
 		[...bgLayers, ...bgLayersHover],
+		false,
 		false
 	);
 

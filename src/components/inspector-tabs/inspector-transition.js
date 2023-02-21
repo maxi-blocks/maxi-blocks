@@ -144,11 +144,18 @@ const TransitionControlWrapper = props => {
 							value: 'none',
 						},
 						...(transitionData[type] &&
-							Object.entries(transitionData[type]).map(
-								([key, { title }]) => ({
-									label: __(title, 'maxi-blocks'),
-									value: key,
-								})
+							Object.entries(transitionData[type]).reduce(
+								(acc, [key, { title }]) => {
+									if (!transition[type][key]) return acc;
+
+									acc.push({
+										label: __(title, 'maxi-blocks'),
+										value: key,
+									});
+
+									return acc;
+								},
+								[]
 							)),
 					]}
 					onChange={val => {

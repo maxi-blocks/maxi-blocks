@@ -27,13 +27,24 @@
 	&__popup {
 		&__content {
 			&__marker-remove {
-				background: #f5f5f5;
-				border-radius: 5px;
-				border: 1px solid #eee;
+				position: absolute;
+				right: 0;
+				bottom: -16px;
+				background: var(--maxi-primary-color);
+				border-radius: 50%;
 				text-align: center;
+				transition: 0.1s;
 
 				svg.dashicon {
 					fill: #b52727;
+				}
+				span.dashicon{
+					&::before{
+						color: #fff;
+					}
+				}
+				&:hover{
+					background: #000;
 				}
 			}
 		}

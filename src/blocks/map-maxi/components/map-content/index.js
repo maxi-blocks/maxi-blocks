@@ -54,7 +54,6 @@ const MapContent = props => {
 
 		if (container) resizeObserver.observe(container);
 	};
-
 	return (
 		<div
 			className='maxi-map-block__container'

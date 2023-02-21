@@ -46,7 +46,11 @@ import {
 } from '../fse';
 import { updateSCOnEditor } from '../style-cards';
 import getWinBreakpoint from '../dom/getWinBreakpoint';
-import { uniqueIDGenerator, getBlockData } from '../attributes';
+import {
+	getBlockData,
+	handleBGLayersOnUniqueIDChange,
+	uniqueIDGenerator,
+} from '../attributes';
 import getHoverStatus from '../relations/getHoverStatus';
 import { getStylesWrapperId } from './utils';
 import getLastChangedBlocks from './getLastChangedBlocks';
@@ -452,6 +456,10 @@ class MaxiBlockComponent extends Component {
 				this.props.attributes.customLabel,
 				this.props.attributes.uniqueID
 			);
+
+			handleBGLayersOnUniqueIDChange({
+				attributes: this.props.attributes,
+			});
 
 			if (this.maxiBlockDidChangeUniqueID)
 				this.maxiBlockDidChangeUniqueID(newUniqueID);

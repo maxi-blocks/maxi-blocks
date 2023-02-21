@@ -55,7 +55,7 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 					 */
 					if (
 						isTransform &&
-						['scale', 'rotate', 'translate'].every(
+						['scale', 'rotate', 'translate', 'origin'].every(
 							prop =>
 								!getLastBreakpointAttribute({
 									target: `transform-${prop}`,

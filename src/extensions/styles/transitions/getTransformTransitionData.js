@@ -25,7 +25,7 @@ const getTransformTransitionData = (selectors, attributes) => {
 				transformTransition[selector] = {
 					title: capitalize(selectorData.normal.label),
 					target: selectorData.normal.target,
-					property: 'transform',
+					property: ['transform', 'transform-origin'],
 					isTransform: true,
 				};
 			}

@@ -12,6 +12,7 @@ import MapEventsListener from '../map-events-listener';
 import Markers from '../markers';
 import SearchBox from '../search-box';
 import { getGroupAttributes } from '../../../../extensions/styles';
+import { getMaxiAdminSettingsUrl } from '../../utils';
 
 /**
  * External dependencies
@@ -115,11 +116,8 @@ const MapContent = props => {
 						'Oops, you can not see the map because you have not set your Google map API key, please navigate to the Maxi Block ',
 						'maxi-blocks'
 					)}
-					<a
-						target='_blank'
-						href='/wp-admin/admin.php?page=maxi-blocks-dashboard&tab=maxi_blocks_settings'
-					>
-						{__('General > Google API Key', 'maxi-blocks')}
+					<a target='_blank' href={getMaxiAdminSettingsUrl()}>
+						{__('Settings > Google Maps API key', 'maxi-blocks')}
 					</a>
 				</p>
 			)}

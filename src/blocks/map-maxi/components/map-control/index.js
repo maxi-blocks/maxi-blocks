@@ -10,6 +10,7 @@ import AdvancedNumberControl from '../../../../components/advanced-number-contro
 import InfoBox from '../../../../components/info-box';
 import SelectControl from '../../../../components/select-control';
 import { getDefaultAttribute } from '../../../../extensions/styles';
+import { getMaxiAdminSettingsUrl } from '../../utils';
 
 /**
  * Component
@@ -33,7 +34,7 @@ const MapControl = props => {
 					links={[
 						{
 							title: __('Maxi Block Settings', 'maxi-blocks'),
-							href: '/wp-admin/admin.php?page=maxi-blocks-dashboard&tab=maxi_blocks_settings',
+							href: getMaxiAdminSettingsUrl(),
 						},
 					]}
 				/>

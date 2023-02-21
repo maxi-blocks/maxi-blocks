@@ -12,9 +12,10 @@ import Inspector from './inspector';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-import { getIconPositionClass } from '../../extensions/styles';
-import getStyles from './styles';
 import IconToolbar from '../../components/toolbar/iconToolbar';
+import { getIconPositionClass } from '../../extensions/styles';
+import { getSVGWidthHeightRatio } from '../../extensions/svg';
+import getStyles from './styles';
 import { copyPasteMapping, maxiAttributes } from './data';
 
 /**
@@ -64,7 +65,15 @@ class edit extends MaxiBlockComponent {
 		const { attributes } = this.props;
 		const { scValues } = this.state;
 
-		return getStyles(attributes, scValues);
+		return getStyles(
+			attributes,
+			scValues,
+			getSVGWidthHeightRatio(
+				this.blockRef.current?.querySelector(
+					'.maxi-button-block__icon svg'
+				)
+			)
+		);
 	}
 
 	maxiBlockDidUpdate() {

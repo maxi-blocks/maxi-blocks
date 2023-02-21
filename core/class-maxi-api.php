@@ -68,6 +68,13 @@ if (!class_exists('MaxiBlocks_API')):
                     return current_user_can('edit_posts');
                 },
             ]);
+            register_rest_route($this->namespace, '/settings', [
+                'methods' => 'POST',
+                'callback' => [$this, 'set_maxi_blocks_options'],
+                'permission_callback' => function () {
+                    return current_user_can('edit_posts');
+                },
+            ]);
             register_rest_route($this->namespace, '/post/(?P<id>\d+)', [
                 'methods' => 'GET',
                 'callback' => [$this, 'get_maxi_blocks_post'],
@@ -107,6 +114,11 @@ if (!class_exists('MaxiBlocks_API')):
                         },
                     ],
                     'templateParts' => [
+                        'validate_callback' => function ($param) {
+                            return is_string($param);
+                        },
+                    ],
+                    'templatePart' => [
                         'validate_callback' => function ($param) {
                             return is_string($param);
                         },
@@ -253,9 +265,21 @@ if (!class_exists('MaxiBlocks_API')):
                     'is_core' => $is_core,
                 ],
                 'hide_tooltips' => get_option('hide_tooltips'),
+                'swap_cloud_images' => get_option('swap_cloud_images'),
             ];
 
             return $response;
+        }
+
+
+        public function set_maxi_blocks_options($request)
+        {
+            $request_result = $request->get_json_params();
+
+            $option = $request_result['option'];
+            $value = $request_result['value'];
+
+            update_option($option, $value);
         }
 
         /**
@@ -345,7 +369,7 @@ if (!class_exists('MaxiBlocks_API')):
                 $array = [];
 
                 foreach ($keys as $key) {
-                    if(($key === 'template_parts' && $dictionary[$key] !== 'null') || $key !== 'template_parts') {
+                    if (($key === 'template_parts' && $dictionary[$key] !== 'null') || $key !== 'template_parts') {
                         $array[$key] = $dictionary[$key];
                     }
                 }
@@ -395,6 +419,26 @@ if (!class_exists('MaxiBlocks_API')):
 
             if ((bool) get_option('local_fonts')) {
                 new MaxiBlocks_Local_Fonts();
+            }
+            
+            // Check if Maxi Blocks Theme is installed and active
+            if (get_template() === 'maxi-theme') {
+                $template_part = $data['templatePart'];
+                $is_template_part = strpos($template_part, 'maxi-theme//') !== false;
+    
+                if ($is_template_part || $is_template) {
+                    $template_name;
+    
+                    if ($is_template) {
+                        $template_name = $id;
+                    } else {
+                        $template_name = $template_part;
+                    }
+    
+                    $template_name = str_replace('maxi-theme//', '', $template_name);
+    
+                    do_action('maxi_blocks_save_styles', $styles, $template_name, $is_template_part);
+                }
             }
 
             $updated_meta = (array)$wpdb->get_results(
@@ -653,7 +697,7 @@ if (!class_exists('MaxiBlocks_API')):
                 ), ["{$id_key}" => $id]);
 
 
-                if(!empty($exists)) {
+                if (!empty($exists)) {
                     $wpdb->update("{$table}", array(
                         'prev_custom_data_value' =>  $new_custom_data,
                         'custom_data_value' =>  $new_custom_data,

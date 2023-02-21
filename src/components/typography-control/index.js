@@ -355,15 +355,15 @@ const TypographyControl = props => {
 
 	const minMaxSettingsLetterSpacing = {
 		px: {
-			min: -3,
+			min: -10,
 			max: 30,
 		},
 		em: {
-			min: -1,
+			min: -3,
 			max: 10,
 		},
 		vw: {
-			min: -1,
+			min: -3,
 			max: 10,
 		},
 	};
@@ -377,6 +377,7 @@ const TypographyControl = props => {
 			isHover,
 			formatValue,
 			textLevel,
+			blockStyle,
 			styleCard,
 			styleCardPrefix,
 			prefix,

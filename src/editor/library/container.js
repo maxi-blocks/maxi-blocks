@@ -1,15 +1,15 @@
+/* eslint-disable import/no-cycle */
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
 import { useDispatch, select, useSelect } from '@wordpress/data';
-import { RawHTML, useEffect, useState } from '@wordpress/element';
-import { CheckboxControl } from '@wordpress/components';
+import { useEffect, useState } from '@wordpress/element';
+import { CheckboxControl, Button } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
-import { Button, ToggleSwitch } from '../../components';
 import { updateSCOnEditor } from '../../extensions/style-cards';
 import {
 	svgAttributesReplacer,
@@ -18,8 +18,10 @@ import {
 	onRequestInsertPattern,
 } from './util';
 import { injectImgSVG } from '../../extensions/svg';
-import MaxiModal from './modal';
+import MasonryItem from './MasonryItem';
+import masonryGenerator from './masonryGenerator';
 import useInterval from '../../extensions/dom/useInterval';
+import InfiniteHits from './InfiniteHits';
 
 /**
  * External dependencies
@@ -28,8 +30,6 @@ import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter';
 import {
 	InstantSearch,
 	SearchBox,
-	InfiniteHits,
-	connectRefinementList,
 	connectMenu,
 	connectHierarchicalMenu,
 	connectCurrentRefinements,
@@ -40,152 +40,11 @@ import {
 import classnames from 'classnames';
 import { isEmpty, uniqueId, orderBy, capitalize, unescape } from 'lodash';
 import DOMPurify from 'dompurify';
-import Masonry from 'masonry-layout';
 
-const MasonryItem = props => {
-	const {
-		type,
-		target,
-		svgCode,
-		isPro,
-		isSaved,
-		serial,
-		onRequestInsert,
-		previewIMG,
-		demoUrl,
-		title,
-		currentItemColorStatus = false,
-	} = props;
-
-	const masonryCardClasses = classnames(
-		'maxi-cloud-masonry-card',
-		`maxi-cloud-masonry-card__${target}`,
-		type === 'patterns' && `maxi-cloud-masonry-card__pattern-${serial}`,
-		type === 'svg' &&
-			currentItemColorStatus &&
-			'maxi-cloud-masonry-card__light'
-	);
-
-	const masonryCardId = `maxi-cloud-masonry-card__pattern-${serial}`;
-
-	const patternsScContent = () => {
-		return (
-			<>
-				<div className='maxi-cloud-masonry-card__container'>
-					<div className='maxi-cloud-masonry-card__container__top-bar'>
-						<div className='maxi-cloud-masonry__serial-tag'>
-							{type === 'patterns' && title}
-							{type === 'sc' && serial}
-						</div>
-					</div>
-				</div>
-				<div className='maxi-cloud-masonry-card__image'>
-					<img src={previewIMG} alt={`Preview for ${serial}`} />
-				</div>
-				<div className='maxi-cloud-masonry-card__buttons'>
-					{type === 'patterns' && (
-						<>
-							<MaxiModal
-								type='preview'
-								url={demoUrl}
-								title={serial}
-								onRequestInsert={onRequestInsert}
-								cardId={masonryCardId}
-							/>
-							<Button
-								className='maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-load'
-								onClick={onRequestInsert}
-							>
-								{__('Insert', 'maxi-blocks')}
-							</Button>
-						</>
-					)}
-					{type === 'sc' && (
-						<span
-							className={`${isSaved} maxi-cloud-masonry-card__button maxi-cloud-masonry-card__button-load`}
-						>
-							{isSaved === 'not-saved'
-								? __('Save', 'maxi-block')
-								: __('Saved', 'maxi-block')}
-						</span>
-					)}
-					<div className='maxi-cloud-masonry-card__tags'>
-						{isPro && (
-							<span className='maxi-cloud-masonry-card__tags__pro-tag'>
-								{__('PRO', 'maxi-blocks')}
-							</span>
-						)}
-					</div>
-				</div>
-			</>
-		);
-	};
-
-	return (
-		<div className={masonryCardClasses} id={masonryCardId}>
-			{type === 'sc' && (
-				<Button onClick={onRequestInsert}>{patternsScContent()}</Button>
-			)}
-			{type === 'patterns' && patternsScContent()}
-			{type === 'svg' && (
-				<div
-					className='maxi-cloud-masonry-card__svg-container'
-					onClick={onRequestInsert}
-				>
-					<RawHTML
-						style={{
-							backgroundColor: currentItemColorStatus
-								? '#000000'
-								: '#ffffff',
-						}}
-						className='maxi-cloud-masonry-card__svg-container__code'
-					>
-						{svgCode}
-					</RawHTML>
-					<div className='maxi-cloud-masonry-card__svg-container__title'>
-						{target === 'button-icon' ||
-						target === 'navigation-icon' ||
-						target === 'search-icon' ||
-						target.includes('Line') ||
-						target.includes('video-icon')
-							? serial.replace(' Line', '').replace(' line', '')
-							: [
-									'image-shape',
-									'bg-shape',
-									'sidebar-block-shape',
-							  ].includes(target) || target.includes('Shape')
-							? serial.replace(' shape', '')
-							: serial}
-					</div>
-					<span>{__('Insert', 'maxi-block')}</span>
-				</div>
-			)}
-		</div>
-	);
-};
-
-const Accordion = ({ children, title, openByDefault = false }) => {
-	const [isAccordionOpen, setAccordionOpen] = useState(openByDefault);
-
-	const accordionClasses = classnames(
-		'maxi-cloud-container__accordion',
-		isAccordionOpen && 'maxi-cloud-container__accordion__open'
-	);
-
-	return (
-		<div className={accordionClasses}>
-			<div
-				onClick={() => setAccordionOpen(!isAccordionOpen)}
-				className='maxi-cloud-container__accordion__title'
-			>
-				{title}
-			</div>
-			<div className='maxi-cloud-container__accordion__content'>
-				{children}
-			</div>
-		</div>
-	);
-};
+/**
+ * Icons
+ */
+import { arrowIcon } from '../../icons';
 
 // hack to fix issue #3930: top level tags resetting when we choose a second-level tag
 const removeMenuBugFix = () => {
@@ -217,10 +76,17 @@ const resultsCount = {
 	},
 };
 
-const RefinementList = ({ items, refine }) => (
+const MenuSC = ({ items, refine }) => (
 	<ul className='maxi-cloud-container__content__svg-categories'>
 		{items.map(item => (
-			<li key={item.label} className='ais-RefinementList-item'>
+			<li
+				key={item.label}
+				className={
+					item.isRefined
+						? 'ais-RefinementList-item ais-RefinementList-item--selected'
+						: 'ais-RefinementList-item'
+				}
+			>
 				<a
 					href='#'
 					onClick={event => {
@@ -228,45 +94,112 @@ const RefinementList = ({ items, refine }) => (
 						refine(item.value);
 					}}
 				>
-					{capitalize(item.label)} ({item.count})
+					<span>{capitalize(item.label)}</span>
+					<span>{item.count}</span>
 				</a>
-				<ToggleSwitch
-					selected={item.isRefined}
-					onChange={val => refine(item.value)}
-				/>
 			</li>
 		))}
 	</ul>
 );
 
 const MenuSelect = ({ items, currentRefinement, refine }) => {
+	const proElement = items.find(element => element.label === 'Pro') || {
+		label: 'Pro',
+		value: 'Pro',
+		count: 0,
+		isRefined: false,
+	};
+	const freeElement = items.find(element => element.label === 'Free') || {
+		label: 'Free',
+		value: 'Free',
+		count: 0,
+		isRefined: false,
+	};
+
 	return (
-		<div>
-			{items.length > 2 && (
-				<button
-					type='button'
-					value=''
-					className={classnames(
-						'maxi-cloud-container__content-svg-shape__button',
-						isEmpty(currentRefinement) &&
-							' maxi-cloud-container__content-svg-shape__button___pressed'
-					)}
-					onClick={event => {
-						event.preventDefault();
-						refine('');
-						items[0].isRefined = true;
-					}}
-				>
-					{__('All', 'maxi-blocks')}
-				</button>
-			)}
-			{items.map(item => (
+		<div className='top-Menu'>
+			<button
+				type='button'
+				value=''
+				className={classnames(
+					'maxi-cloud-container__content-svg-shape__button',
+					isEmpty(currentRefinement) &&
+						' maxi-cloud-container__content-svg-shape__button___pressed'
+				)}
+				onClick={event => {
+					event.preventDefault();
+					refine('');
+				}}
+			>
+				{__('All', 'maxi-blocks')}
+			</button>
+			<button
+				type='button'
+				key='Free'
+				className={classnames(
+					'maxi-cloud-container__content-svg-shape__button',
+					freeElement?.isRefined &&
+						' maxi-cloud-container__content-svg-shape__button___pressed'
+				)}
+				value='Free'
+				onClick={event => {
+					event.preventDefault();
+					refine('Free');
+					freeElement.isRefined = true;
+				}}
+			>
+				{__('Free', 'maxi-blocks')}
+			</button>
+			<button
+				type='button'
+				key='Pro'
+				className={classnames(
+					'maxi-cloud-container__content-svg-shape__button',
+					proElement?.isRefined &&
+						' maxi-cloud-container__content-svg-shape__button___pressed'
+				)}
+				value='Pro'
+				onClick={event => {
+					event.preventDefault();
+					refine('Pro');
+					proElement.isRefined = true;
+				}}
+			>
+				{__('Pro', 'maxi-blocks')}
+			</button>
+		</div>
+	);
+};
+
+const SvgMenuSelect = ({ items, currentRefinement, refine }) => {
+	if (isEmpty(items)) return null;
+	const finalItems = [];
+
+	const createFinalItem = (name, index) => {
+		const found = items.find(item => item.label === name);
+		if (found) finalItems[index] = found;
+		else
+			finalItems[index] = {
+				label: name,
+				value: name,
+				count: 0,
+				isRefined: false,
+			};
+	};
+
+	createFinalItem('Filled', 0);
+	createFinalItem('Shape', 1);
+	createFinalItem('Line', 2);
+
+	return (
+		<div className='top-Menu'>
+			{finalItems.map(item => (
 				<button
 					type='button'
 					key={item.label}
 					className={classnames(
 						'maxi-cloud-container__content-svg-shape__button',
-						(item.isRefined || items.length === 1) &&
+						item.isRefined &&
 							' maxi-cloud-container__content-svg-shape__button___pressed'
 					)}
 					value={item.value}
@@ -280,6 +213,23 @@ const MenuSelect = ({ items, currentRefinement, refine }) => {
 					{item.label}
 				</button>
 			))}
+
+			<button
+				type='button'
+				value=''
+				className={classnames(
+					'maxi-cloud-container__content-svg-shape__button',
+					isEmpty(currentRefinement) &&
+						' maxi-cloud-container__content-svg-shape__button___pressed'
+				)}
+				onClick={event => {
+					event.preventDefault();
+					refine('');
+					items[0].isRefined = true;
+				}}
+			>
+				{__('All', 'maxi-blocks')}
+			</button>
 		</div>
 	);
 };
@@ -288,10 +238,10 @@ const HierarchicalMenu = ({ items, refine, type = 'firstLevel' }) => {
 	// hack to fix issue #3930: top level tags resetting when we choose a second-level tag
 	const fixMenuBug = el => {
 		const topLevelParent =
-			el.target === 'a'
+			el?.target === 'a'
 				? el?.currentTarget?.parentNode?.parentNode?.parentNode
-						?.parentNode
-				: el?.parentNode?.parentNode?.parentNode;
+						?.parentNode?.parentNode
+				: el?.parentNode?.parentNode?.parentNode?.parentNode;
 
 		if (
 			isEmpty(topLevelParent) ||
@@ -314,23 +264,20 @@ const HierarchicalMenu = ({ items, refine, type = 'firstLevel' }) => {
 				{items.map(item => (
 					<li
 						key={item.label}
-						className={`ais-HierarchicalMenu-item ais-HierarchicalMenu-item__${type} ais-HierarchicalMenu-item__${item.label
-							.replace(/\s+/g, '-')
-							.toLowerCase()}`}
+						className={classnames(
+							'ais-HierarchicalMenu-item',
+							`ais-HierarchicalMenu-item__${type}`,
+							`ais-HierarchicalMenu-item__${item.label
+								.replace(/\s+/g, '-')
+								.toLowerCase()}`,
+							item.isRefined &&
+								'ais-HierarchicalMenu-item--selected'
+						)}
 					>
 						<a
 							href='#'
 							onClick={event => {
-								type === 'secondLevel' && fixMenuBug(event);
 								event.preventDefault();
-								refine(item.value);
-							}}
-						>
-							{unescape(item.label)} ({item.count})
-						</a>
-						<ToggleSwitch
-							selected={item.isRefined}
-							onChange={() => {
 								type === 'secondLevel' &&
 									fixMenuBug(
 										document.getElementsByClassName(
@@ -339,16 +286,34 @@ const HierarchicalMenu = ({ items, refine, type = 'firstLevel' }) => {
 												.toLowerCase()}`
 										)[0]
 									);
+								type === 'firstLevel' && removeMenuBugFix();
 								refine(item.value);
 							}}
-						/>
-						{item.items && (
-							<HierarchicalMenu
-								items={item.items}
-								refine={refine}
-								type='secondLevel'
-							/>
-						)}
+						>
+							<span>
+								<span
+									className='ais-HierarchicalMenu-item-arrow'
+									visible={
+										!isEmpty(item.items)
+											? 'visible'
+											: 'hide'
+									}
+								>
+									{arrowIcon}
+								</span>
+								{unescape(item.label)}
+							</span>
+							<span>{item.count}</span>
+						</a>
+						<div className='sub_menu-wrapper'>
+							{item.items && (
+								<HierarchicalMenu
+									items={item.items}
+									refine={refine}
+									type='secondLevel'
+								/>
+							)}
+						</div>
 					</li>
 				))}
 			</ul>
@@ -356,20 +321,48 @@ const HierarchicalMenu = ({ items, refine, type = 'firstLevel' }) => {
 	);
 };
 
-const ClearRefinements = ({ items, refine }) => {
+const ClearRefinements = ({ items, refine, topMenu = 1 }) => {
 	return (
 		<button
 			type='button'
 			className={`ais-ClearRefinements-button ais-ClearRefinements-button${
 				!items.length ? '--disabled' : ''
 			}`}
-			onClick={() => {
+			onClick={e => {
+				e.preventDefault();
 				refine(items);
 				removeMenuBugFix();
+
+				const patternsButton = document.querySelector(
+					'.maxi-cloud-container__patterns__top-menu .ais-Menu-list > .ais-Menu-item:nth-child(2):not(.ais-Menu-item--selected) a'
+				);
+				patternsButton?.click();
+
+				const lightButton = document.querySelector(
+					'.maxi-cloud-container__patterns__sidebar > .ais-Menu .ais-Menu-list > .ais-Menu-item:first-child:not(.ais-Menu-item--selected) a'
+				);
+				lightButton?.click();
+
+				setTimeout(() => {
+					const listItem = document.querySelector(
+						'.maxi-cloud-container__patterns__sidebar > ul .ais-HierarchicalMenu-item--selected > a'
+					);
+					listItem?.click();
+
+					const typeButton =
+						topMenu === 1
+							? document.querySelector(
+									'.top-Menu > button:first-child'
+							  )
+							: document.querySelector(
+									`.top-Menu > button:nth-child(${topMenu})`
+							  );
+					typeButton?.click();
+				}, '100');
 			}}
 			disabled={!items.length}
 		>
-			{__('Clear all filters', 'maxi-blocks')}
+			{__('Clear filters', 'maxi-blocks')}
 		</button>
 	);
 };
@@ -390,32 +383,33 @@ const LibraryContainer = props => {
 
 	const {
 		styleCards,
-		SCList,
 		selectedSCKey,
 		selectedSCValue,
 		clientId,
 		isValidTemplate,
+		SCList,
 	} = useSelect(select => {
 		const { isValidTemplate, getSelectedBlockClientId } =
 			select('core/block-editor');
 		const clientId = getSelectedBlockClientId();
 
 		const {
-			receiveStyleCardsList,
 			receiveMaxiStyleCards,
 			receiveMaxiSelectedStyleCard,
+			receiveStyleCardsList,
 		} = select('maxiBlocks/style-cards');
+
 		const SCList = receiveStyleCardsList();
 		const styleCards = receiveMaxiStyleCards();
 		const { key: selectedSCKey, value: selectedSCValue } =
 			receiveMaxiSelectedStyleCard();
 		return {
-			SCList,
 			styleCards,
 			selectedSCKey,
 			selectedSCValue,
 			clientId,
 			isValidTemplate,
+			SCList,
 		};
 	});
 
@@ -461,7 +455,18 @@ const LibraryContainer = props => {
 		'post_title, svg_tag.lvl0, svg_tag.lvl1, svg_tag.lvl2, svg_category'
 	).searchClient;
 
-	const [isChecked, setChecked] = useState(false);
+	const { receiveMaxiSettings } = select('maxiBlocks');
+
+	const maxiSettings = receiveMaxiSettings();
+	const swapOption = maxiSettings?.swap_cloud_images;
+
+	const [isSwapChecked, setSwapChecked] = useState(swapOption);
+
+	const { saveMaxiSetting } = useDispatch('maxiBlocks');
+
+	useEffect(() => {
+		setSwapChecked(swapOption);
+	}, [swapOption]);
 
 	const getShapeType = type => {
 		switch (type) {
@@ -482,23 +487,39 @@ const LibraryContainer = props => {
 		}
 	};
 
+	// TO DO: connect to auth later
+	const isMaxiProActive = false;
 	/** Patterns / Blocks Results */
-	const patternsResults = ({ hit }) => {
+	const patternsResults = hit => {
+		const wrapClassName =
+			hit.cost?.[0] === 'Pro'
+				? 'ais-InfiniteHits-item-pro'
+				: 'ais-InfiniteHits-item-free';
+		const isPattern = hit?.gutenberg_type?.[0] === 'Patterns';
+
 		return (
 			<MasonryItem
 				type='patterns'
 				target='patterns'
 				key={`maxi-cloud-masonry__item-${hit.post_id}`}
+				className={wrapClassName}
 				title={hit.post_title}
 				demoUrl={hit.demo_url}
 				previewIMG={hit.preview_image_url}
-				isPro={hit.cost?.[0] === 'pro'}
+				cost={hit.cost?.[0]}
+				isBeta={hit.post_tag?.includes('Beta')}
+				isPro={hit.cost?.[0] === 'Pro'}
 				taxonomies={hit.category?.[0]}
 				serial={hit.post_number}
+				toneUrl={isPattern ? hit.link_to_related : null}
+				gutenbergCode={hit.gutenberg_code}
+				isMaxiProActive={isMaxiProActive}
+				isSwapChecked={isSwapChecked}
+				onSelect={onSelect}
 				onRequestInsert={() =>
 					onRequestInsertPattern(
 						hit.gutenberg_code,
-						isChecked,
+						isSwapChecked,
 						isValidTemplate,
 						onSelect,
 						onRequestClose,
@@ -540,7 +561,7 @@ const LibraryContainer = props => {
 	};
 
 	/** SVG Icons Results */
-	const svgResults = ({ hit }) => {
+	const svgResults = hit => {
 		const newContent = svgAttributesReplacer(hit.svg_code);
 		const svgType = hit.svg_category[0];
 		const shapeType = getShapeType(type);
@@ -551,7 +572,7 @@ const LibraryContainer = props => {
 				target={svgType}
 				key={`maxi-cloud-masonry__item-${hit.post_id}`}
 				svgCode={newContent}
-				isPro={hit.cost === 'pro'}
+				isPro={hit.cost?.[0] === 'Pro'}
 				serial={hit.post_title}
 				onRequestInsert={() => onRequestInsertSVG(newContent, svgType)}
 				currentItemColorStatus={svgCurrentColorStatus(
@@ -675,7 +696,7 @@ const LibraryContainer = props => {
 	};
 
 	/** Shapes Results */
-	const svgShapeResults = ({ hit }) => {
+	const svgShapeResults = hit => {
 		const shapeType = getShapeType(type);
 		const svgType = hit.svg_category[0];
 
@@ -687,7 +708,7 @@ const LibraryContainer = props => {
 				target={type}
 				key={`maxi-cloud-masonry__item-${hit.post_id}`}
 				svgCode={newContent}
-				isPro={hit.cost === 'pro'}
+				isPro={hit.cost?.[0] === 'Pro'}
 				serial={hit.post_title}
 				onRequestInsert={() =>
 					onRequestInsertShape(newContent, svgType)
@@ -720,29 +741,23 @@ const LibraryContainer = props => {
 	};
 
 	/** Style Cards Results */
-	const scResults = ({ hit }) => {
+	const scResults = hit => {
+		const scSaved = SCList.map(item => {
+			return item.label;
+		}).includes(hit.post_title);
+
 		return (
 			<MasonryItem
 				type='sc'
 				target='style-cards'
 				key={`maxi-cloud-masonry__item-${hit.post_id}`}
 				previewIMG={hit.post_thumbnail}
-				isPro={hit.cost === 'pro'}
+				isPro={hit.cost?.[0] === 'Pro'}
 				serial={hit.post_title}
-				onRequestInsert={
-					SCList.map(item => {
-						return item.label;
-					}).includes(hit.post_title)
-						? () => {}
-						: () => onRequestInsertSC(hit.sc_code)
-				}
-				isSaved={
-					SCList.map(item => {
-						return item.label;
-					}).includes(hit.post_title)
-						? 'saved'
-						: 'not-saved'
-				}
+				onRequestInsert={() => {
+					!scSaved && onRequestInsertSC(hit.sc_code);
+				}}
+				isSaved={scSaved}
 			/>
 		);
 	};
@@ -755,42 +770,59 @@ const LibraryContainer = props => {
 					'Swap stock images for placeholders to save disk space',
 					'maxi-blocks'
 				)}
-				checked={isChecked}
-				onChange={setChecked}
+				checked={isSwapChecked}
+				onChange={val => {
+					setSwapChecked(val);
+					saveMaxiSetting('swap_cloud_images', val);
+				}}
 			/>
 		);
 	};
 
-	const CustomRefinementList = connectRefinementList(RefinementList);
 	const CustomMenuSelect = connectMenu(MenuSelect);
+	const CustomMenuSC = connectMenu(MenuSC);
+	const CustomSvgMenuSelect = connectMenu(SvgMenuSelect);
 	const CustomHierarchicalMenu = connectHierarchicalMenu(HierarchicalMenu);
 	const CustomClearRefinements = connectCurrentRefinements(ClearRefinements);
-
-	const masonryGenerator = () => {
-		const elem = document.querySelector(
-			'.maxi-cloud-container__patterns__content-patterns .ais-InfiniteHits-list'
-		);
-
-		if (elem) {
-			// eslint-disable-next-line no-new
-			new Masonry(elem, {
-				itemSelector: '.ais-InfiniteHits-item',
-				gutter: 16,
-			});
-		}
-	};
 
 	useInterval(masonryGenerator, 100);
 
 	const maxiPreviewIframe = (url, title) => {
 		return (
-			<iframe
-				className='maxi-cloud-container__preview-iframe'
-				src={url}
-				title={title}
-				width='100%'
-				height='100%'
-			/>
+			<>
+				<div
+					className='maxi-cloud-container__preview-tablet__label'
+					style={{ display: 'none' }}
+				>
+					{__(
+						'Tablet / iPad simulator | Viewport 768px x 1024px',
+						'maxi-blocks'
+					)}
+				</div>
+				<div
+					className='maxi-cloud-container__preview-mobile__label'
+					style={{ display: 'none' }}
+				>
+					{__(
+						'Mobile / iPhone simulator | Viewport 390px x 844px',
+						'maxi-blocks'
+					)}
+				</div>
+				<div className='maxi-cloud-container__preview-iframe_main-wrap'>
+					<div className='maxi-cloud-container__preview-iframe_wrap'>
+						<div>
+							<iframe
+								className='maxi-cloud-container__preview-iframe'
+								src={url}
+								title={title}
+								width='100%'
+								height='100%'
+							/>
+						</div>
+					</div>
+					<div className='maxi-cloud-container__preview-iframe_space' />
+				</div>
+			</>
 		);
 	};
 
@@ -802,13 +834,29 @@ const LibraryContainer = props => {
 						indexName='svg_icon'
 						searchClient={searchClientSvg}
 					>
+						<div className='maxi-cloud-container__content-svg-shape__search-bar'>
+							<CustomSvgMenuSelect
+								className='maxi-cloud-container__content-svg-shape__categories'
+								attribute='svg_category'
+								defaultRefinement='Filled'
+								translations={{
+									seeAllOption: __(
+										'All icons',
+										'maxi-blocks'
+									),
+								}}
+							/>
+						</div>
 						<Configure hitsPerPage={49} />
 						<div className='maxi-cloud-container__svg-icon__sidebar'>
 							<SearchBox
 								submit={__('Find', 'maxi-blocks')}
 								autoFocus
 								searchAsYouType
-								showLoadingIndicator
+								reset='X'
+								translations={{
+									resetTitle: 'Clear',
+								}}
 							/>
 							<CustomHierarchicalMenu
 								attributes={['svg_tag.lvl0', 'svg_tag.lvl1']}
@@ -817,19 +865,7 @@ const LibraryContainer = props => {
 							<CustomClearRefinements />
 						</div>
 						<div className='maxi-cloud-container__content-svg-shape'>
-							<div className='maxi-cloud-container__content-svg-shape__search-bar'>
-								<CustomMenuSelect
-									className='maxi-cloud-container__content-svg-shape__categories'
-									attribute='svg_category'
-									translations={{
-										seeAllOption: __(
-											'All icons',
-											'maxi-blocks'
-										),
-									}}
-								/>
-							</div>
-							<div className='maxi-cloud-container__sc__content-sc'>
+							<div className='maxi-cloud-container__svg-icon__content-svg-icon'>
 								<Stats translations={resultsCount} />
 								<InfiniteHits hitComponent={svgResults} />
 							</div>
@@ -851,7 +887,10 @@ const LibraryContainer = props => {
 									submit={__('Find', 'maxi-blocks')}
 									autoFocus
 									searchAsYouType
-									showLoadingIndicator
+									reset='X'
+									translations={{
+										resetTitle: 'Clear',
+									}}
 								/>
 							)}
 							{type === 'video-icon-play' && (
@@ -866,10 +905,9 @@ const LibraryContainer = props => {
 							{type === 'video-icon-close' && (
 								<SearchBox
 									submit={__('Find', 'maxi-blocks')}
-									defaultRefinement='cross'
+									defaultRefinement='close'
 									autoFocus
 									searchAsYouType
-									showLoadingIndicator
 								/>
 							)}
 							<CustomHierarchicalMenu
@@ -877,26 +915,20 @@ const LibraryContainer = props => {
 								limit={100}
 							/>
 							{type.includes('shape') && (
-								<CustomRefinementList
+								<CustomSvgMenuSelect
 									className='hidden'
 									attribute='svg_category'
-									defaultRefinement={['Shape']}
-									showLoadingIndicator
+									defaultRefinement='Shape'
 								/>
 							)}
+							<CustomClearRefinements topMenu={2} />
 						</div>
 						<div className='maxi-cloud-container__content-svg-shape'>
 							{type.includes('video-icon') && (
 								<div className='maxi-cloud-container__content-svg-shape__search-bar'>
-									<CustomMenuSelect
-										className='maxi-cloud-container__content-svg-shape__categories'
+									<CustomSvgMenuSelect
 										attribute='svg_category'
-										translations={{
-											seeAllOption: __(
-												'All icons',
-												'maxi-blocks'
-											),
-										}}
+										defaultRefinement='Shape'
 									/>
 								</div>
 							)}
@@ -920,22 +952,22 @@ const LibraryContainer = props => {
 				>
 					<Configure hitsPerPage={49} />
 					<div className='maxi-cloud-container__svg-shape'>
-						<div className='maxi-cloud-container__svg-shape__sidebar'>
-							<SearchBox
-								submit={__('Find', 'maxi-blocks')}
-								autoFocus
-								searchAsYouType
-								showLoadingIndicator
-							/>
-							<CustomHierarchicalMenu
-								attributes={['svg_tag.lvl0', 'svg_tag.lvl1']}
-								limit={100}
-							/>
-							<CustomClearRefinements />
-						</div>
-						<div className='maxi-cloud-container__content-svg-shape'>
-							<div className='maxi-cloud-container__content-svg-shape__search-bar'>
-								<CustomMenuSelect
+						<div className='maxi-cloud-container__content-svg-shape__search-bar'>
+							{type === 'search-icon' && (
+								<CustomSvgMenuSelect
+									className='maxi-cloud-container__content-svg-shape__categories'
+									attribute='svg_category'
+									defaultRefinement='Shape'
+									translations={{
+										seeAllOption: __(
+											'All icons',
+											'maxi-blocks'
+										),
+									}}
+								/>
+							)}
+							{type !== 'search-icon' && (
+								<CustomSvgMenuSelect
 									className='maxi-cloud-container__content-svg-shape__categories'
 									attribute='svg_category'
 									defaultRefinement='Line'
@@ -946,7 +978,44 @@ const LibraryContainer = props => {
 										),
 									}}
 								/>
-							</div>
+							)}
+						</div>
+						<div className='maxi-cloud-container__svg-shape__sidebar'>
+							{type !== 'search-icon' && (
+								<SearchBox
+									submit={__('Find', 'maxi-blocks')}
+									autoFocus
+									searchAsYouType
+									reset='X'
+									translations={{
+										resetTitle: 'Clear',
+									}}
+								/>
+							)}
+							{type === 'search-icon' && (
+								<SearchBox
+									submit={__('Find', 'maxi-blocks')}
+									defaultRefinement='search'
+									autoFocus
+									searchAsYouType
+									reset='X'
+									translations={{
+										resetTitle: 'Clear',
+									}}
+								/>
+							)}
+							<CustomHierarchicalMenu
+								attributes={['svg_tag.lvl0', 'svg_tag.lvl1']}
+								limit={100}
+							/>
+							{type !== 'search-icon' && (
+								<CustomClearRefinements topMenu={3} />
+							)}
+							{type === 'search-icon' && (
+								<CustomClearRefinements topMenu={2} />
+							)}
+						</div>
+						<div className='maxi-cloud-container__content-svg-shape'>
 							<div className='maxi-cloud-container__sc__content-sc'>
 								<Stats translations={resultsCount} />
 								<InfiniteHits hitComponent={svgShapeResults} />
@@ -955,7 +1024,7 @@ const LibraryContainer = props => {
 					</div>
 				</InstantSearch>
 			)}
-			{type === 'preview' && (
+			{(type === 'preview' || type === 'switch-tone') && (
 				<div className='maxi-cloud-container__patterns'>
 					{maxiPreviewIframe(url, title)}
 				</div>
@@ -969,38 +1038,130 @@ const LibraryContainer = props => {
 					>
 						<Configure hitsPerPage={20} />
 						<div className='maxi-cloud-container__patterns__top-menu'>
+							<Menu
+								attribute='gutenberg_type'
+								defaultRefinement='Patterns'
+								transformItems={items => {
+									const generateItem = name => {
+										const item = items.find(
+											item => item.label === name
+										);
+										if (item) return item;
+										else
+											return {
+												label: name,
+												value: name,
+												count: 0,
+												isRefined: false,
+											};
+									};
+
+									const itemsReturn = [];
+									itemsReturn.push(generateItem('Patterns'));
+									const itemBlocks = items.find(
+										item => item.label === 'Blocks'
+									);
+									if (itemBlocks)
+										itemsReturn.push(
+											generateItem('Blocks')
+										);
+									itemsReturn.push(generateItem('Pages'));
+									itemsReturn.push(
+										generateItem('Playground')
+									);
+
+									return itemsReturn;
+								}}
+							/>
+							<Button
+								type='button'
+								label='Go Pro'
+								className='maxi-cloud-container__patterns__top-menu__button-go-pro'
+								href='https://maxiblocks.com/go/pro-library'
+								target='_blank'
+							>
+								{__('Go Pro', 'maxi-blocks')}
+							</Button>
+						</div>
+						<div className='maxi-cloud-container__patterns__sidebar'>
 							<CustomMenuSelect
 								className='maxi-cloud-container__content-patterns__cost'
 								attribute='cost'
 							/>
 							<Menu
-								attribute='gutenberg_type'
-								defaultRefinement='Patterns'
-							/>
-						</div>
-						<div className='maxi-cloud-container__patterns__sidebar'>
-							<Menu
 								attribute='light_or_dark'
 								defaultRefinement='Light'
-								transformItems={items =>
-									items.map(item => ({
-										...item,
-										label: `${item.label}
-											 ${__('tone', 'maxi-blocks')}`,
-									}))
-								}
+								transformItems={items => {
+									const generateItem = name => {
+										const item = items.find(
+											item => item.label === name
+										);
+										if (item) {
+											item.label = `${name} tone`;
+											return item;
+										} else
+											return {
+												label: `${name} tone`,
+												value: name,
+												count: 0,
+												isRefined: false,
+											};
+									};
+									const itemsReturn = [];
+									itemsReturn.push(generateItem('Light'));
+									itemsReturn.push(generateItem('Dark'));
+									return itemsReturn;
+								}}
 							/>
 							<SearchBox
 								autoFocus
 								searchAsYouType
-								showLoadingIndicator
+								reset='X'
+								translations={{
+									resetTitle: 'Clear',
+								}}
 							/>
 							<PlaceholderCheckboxControl />
 							<CustomHierarchicalMenu
 								attributes={['category.lvl0', 'category.lvl1']}
 								limit={100}
 							/>
-							<CustomClearRefinements />
+							<div className='ais-ClearRefinements'>
+								<button
+									type='button'
+									className='ais-ClearRefinements-button'
+									onClick={e => {
+										e.preventDefault();
+
+										const patternsButton =
+											document.querySelector(
+												'.maxi-cloud-container__patterns__top-menu .ais-Menu-list > .ais-Menu-item:first-child:not(.ais-Menu-item--selected) a'
+											);
+										patternsButton?.click();
+
+										const lightButton =
+											document.querySelector(
+												'.maxi-cloud-container__patterns__sidebar > .ais-Menu .ais-Menu-list > .ais-Menu-item:first-child:not(.ais-Menu-item--selected) a'
+											);
+										lightButton?.click();
+
+										setTimeout(() => {
+											const allButton =
+												document.querySelector(
+													'.top-Menu > button:first-child'
+												);
+											allButton?.click();
+											const listItem =
+												document.querySelector(
+													'.maxi-cloud-container__patterns__sidebar > ul .ais-HierarchicalMenu-item--selected > a'
+												);
+											listItem?.click();
+										}, '100');
+									}}
+								>
+									{__('Clear filters', 'maxi-blocks')}
+								</button>
+							</div>
 						</div>
 						<div className='maxi-cloud-container__patterns__content-patterns'>
 							<Stats translations={resultsCount} />
@@ -1020,20 +1181,18 @@ const LibraryContainer = props => {
 							<SearchBox
 								autoFocus
 								searchAsYouType
-								showLoadingIndicator
+								reset='X'
+								translations={{
+									resetTitle: 'Clear',
+								}}
 							/>
-							<Accordion
-								title={__('Colour', 'maxi-blocks')}
-								openByDefault
-							>
-								<CustomRefinementList
-									attribute='sc_color'
-									limit={20}
-									transformItems={items =>
-										orderBy(items, 'label', 'asc')
-									}
-								/>
-							</Accordion>
+							<CustomMenuSC
+								attribute='sc_color'
+								limit={100}
+								transformItems={items =>
+									orderBy(items, 'label', 'asc')
+								}
+							/>
 							<CustomClearRefinements />
 						</div>
 						<div className='maxi-cloud-container__sc__content-sc'>

@@ -8,14 +8,14 @@
 	display: flex;
 	align-items: center;
 }
-.maxi-dialog-box-overlay {
+.maxi-dialog-box__overlay {
 	position: fixed;
 	width: 100%;
 	height: 100%;
 	background-color: rgba(0, 0, 0, 0.7);
 }
 
-.maxi-dialog-box-content {
+.maxi-dialog-box__content {
 	position: relative;
 	z-index: 2;
 	display: flex;
@@ -26,25 +26,25 @@
 	width: 400px;
 	height: auto;
 	padding: 25px 30px;
-	border: 1px solid #DBDDE6;
+	border: 1px solid #dbdde6;
 	border-radius: 3px;
 	margin: auto;
 	background: #fff;
 	animation: scale 0.2s ease-in-out;
-	.maxi-dialog-close-button{
+	.maxi-dialog-close-button {
 		position: absolute;
-	    top: -10px;
-    	right: -10px;
-		.maxi-components-button{
+		top: -10px;
+		right: -10px;
+		.maxi-components-button {
 			min-width: 20px;
-    		height: 20px;
-    		padding: 0 0 1px;
+			height: 20px;
+			padding: 0 0 1px;
 			background-color: rgba(var(--maxi-active-sc-color), 1);
 			border-radius: 50%;
-			&:hover{
+			&:hover {
 				background-color: #232533;
 			}
-			path{
+			path {
 				stroke: #fff;
 			}
 		}
@@ -71,7 +71,7 @@
 	height: calc(100% - 50px);
 	padding: 10px 0;
 	color: #151617;
-	font-family: "Roboto", Helvetica, Arial, Lucida, sans-serif !important;
+	font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif !important;
 	font-size: 12px;
 	text-align: center;
 }
@@ -82,9 +82,9 @@
 
 	button {
 		height: auto !important;
-		border: 1px solid #E1E2EA;
+		border: 1px solid #e1e2ea;
 		color: #151617;
-		font-family: "Roboto", Helvetica, Arial, Lucida, sans-serif !important;
+		font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif !important;
 		font-size: 12px;
 		transition: all 0.1s;
 

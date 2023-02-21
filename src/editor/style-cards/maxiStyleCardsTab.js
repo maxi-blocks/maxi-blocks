@@ -48,6 +48,8 @@ const GlobalColor = props => {
 		SC,
 		onChangeValue,
 		SCStyle,
+		disableOpacity = false,
+		isHover = false,
 	} = props;
 
 	return (
@@ -132,6 +134,8 @@ const GlobalColor = props => {
 							);
 						}}
 						blockStyle={SCStyle}
+						disableOpacity={disableOpacity}
+						isHover={isHover}
 						disableGradient
 					/>
 				</>
@@ -149,6 +153,7 @@ const SCAccordion = props => {
 		SCStyle,
 		onChangeValue,
 		disableTypography = false,
+		disableOpacity = false,
 	} = props;
 
 	return (
@@ -196,6 +201,8 @@ const SCAccordion = props => {
 							SC={SC}
 							onChangeValue={onChangeValue}
 							SCStyle={SCStyle}
+							disableOpacity={disableOpacity}
+							isHover={label.includes('hover')}
 						/>
 					)
 				)}
@@ -247,6 +254,15 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				color: 'color',
 			},
 			{
+				label: __('Text hover', 'maxi-blocks'),
+				globalAttr: 'hover-color-global',
+				globalAllAttr: 'hover-color-all',
+				paletteStatus: 'hover-palette-status',
+				paletteColor: 'hover-palette-color',
+				paletteOpacity: 'hover-palette-opacity',
+				color: 'hover-color',
+			},
+			{
 				label: __('Background', 'maxi-blocks'),
 				globalAttr: 'background-color-global',
 				paletteStatus: 'background-palette-status',
@@ -262,15 +278,6 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				paletteColor: 'hover-background-palette-color',
 				paletteOpacity: 'hover-background-palette-opacity',
 				color: 'hover-background-color',
-			},
-			{
-				label: __('Text hover', 'maxi-blocks'),
-				globalAttr: 'hover-color-global',
-				globalAllAttr: 'hover-color-all',
-				paletteStatus: 'hover-palette-status',
-				paletteColor: 'hover-palette-color',
-				paletteOpacity: 'hover-palette-opacity',
-				color: 'hover-color',
 			},
 			{
 				label: __('Border', 'maxi-blocks'),
@@ -511,7 +518,6 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 										}}
 									/>
 									<Icon icon={reset} />
-									{__('Reset Preset', 'maxi-blocks')}
 								</Button>
 							</>
 						),
@@ -581,6 +587,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 								SCStyle={SCStyle}
 								onChangeValue={onChangeValue}
 								disableTypography
+								disableOpacity
 							/>
 						),
 					},

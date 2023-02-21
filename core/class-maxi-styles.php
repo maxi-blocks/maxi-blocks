@@ -75,7 +75,7 @@ class MaxiBlocks_Styles
                 'search',
                 'map',
                 'accordion',
-				'slider'
+                'slider'
             ];
 
             $template_parts = $this->get_template_parts($template_content);
@@ -153,6 +153,8 @@ class MaxiBlocks_Styles
     public function apply_content($name, $content, $id)
     {
         $is_content = $content && !empty($content);
+        $is_template_part = is_string($name) && strpos($name, '-templates');
+        $is_template = $is_template_part && str_ends_with($name, '-templates');
 
         if ($is_content) {
             $styles = $this->get_styles($content);
@@ -166,14 +168,11 @@ class MaxiBlocks_Styles
             }
 
             if ($fonts) {
-                $this->enqueue_fonts($fonts);
+                $this->enqueue_fonts($fonts, $name);
             }
+        } elseif (get_template() === 'maxi-theme' && $is_template_part) {
+            do_action('maxi_enqueue_template_styles', $name, $id, $is_template);
         }
-
-        $is_template =
-            is_string($name) &&
-            strpos($name, '-templates') &&
-            str_ends_with($name, '-templates');
 
         if ($is_template) {
             $template_parts = $this->get_template_parts($content);
@@ -194,7 +193,10 @@ class MaxiBlocks_Styles
     {
         if (!$is_template) {
             global $post;
-            return $post->ID;
+			if (!$post) {
+				return null;
+			}
+			return $post->ID;
         }
 
         $template_slug = get_page_template_slug();
@@ -202,8 +204,20 @@ class MaxiBlocks_Styles
 
         if ($template_slug != '' && $template_slug !== false) {
             $template_id .= $template_slug;
-        } elseif (is_home()) {
-            $template_id .= resolve_block_template('home', array('front-page', 'home'), '')->slug;
+        } elseif (is_home() || is_front_page()) {
+            $block_templates = get_block_templates(['slug__in' => ['index', 'front-page']]);
+
+            $has_front_page_and_home = count($block_templates) === 2;
+
+            if ($has_front_page_and_home) {
+                if (is_home() && !is_front_page()) {
+                    $template_id .= 'index';
+                } else {
+                    $template_id .= 'front-page';
+                }
+            } else {
+                $template_id .= $block_templates[0]->slug;
+            }
         } elseif (is_search()) {
             $template_id .= 'search';
         } elseif (is_404()) {
@@ -305,7 +319,7 @@ class MaxiBlocks_Styles
     {
         global $post;
 
-        if (!$is_template && (!$post || !isset($post->ID))) {
+        if ((!$is_template && (!$post || !isset($post->ID))) || !$id) {
             return false;
         }
 
@@ -386,7 +400,7 @@ class MaxiBlocks_Styles
      * @return object   Font name with font options
      */
 
-    public function enqueue_fonts($fonts)
+    public function enqueue_fonts($fonts, $name)
     {
         if (empty($fonts) || !is_array($fonts)) {
             return;
@@ -429,7 +443,7 @@ class MaxiBlocks_Styles
                 }
 
                 wp_enqueue_style(
-                    'maxi-font-' . sanitize_title_with_dashes($font),
+                    $name . '-font-' . sanitize_title_with_dashes($font),
                     $font_url
                 );
             }
@@ -489,6 +503,11 @@ class MaxiBlocks_Styles
         }
 
         $result_decoded = $result[$metaJs];
+
+        // TODO: This is a temporary solution to fix the issue with the bg_video and scroll_effects meta
+        if (in_array($metaJs, ['bg_video', 'scroll_effects'])) {
+            return [ true ];
+        }
 
         if (!is_array($result_decoded) || empty($result_decoded)) {
             return [];

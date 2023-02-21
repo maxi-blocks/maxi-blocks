@@ -165,6 +165,7 @@ const TextOptions = props => {
 		blockName,
 		onChange,
 		breakpoint,
+		blockStyle,
 		isList,
 		clientId,
 		prefix = '',
@@ -206,6 +207,7 @@ const TextOptions = props => {
 			typography,
 			formatValue,
 			textLevel,
+			blockStyle,
 			styleCard,
 			styleCardPrefix,
 		});

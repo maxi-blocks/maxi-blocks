@@ -1,8 +1,8 @@
 /**
  * WordPress dependencies
  */
-import { select, resolveSelect } from '@wordpress/data';
-import { renderToString, useEffect } from '@wordpress/element';
+import { resolveSelect } from '@wordpress/data';
+import { renderToString } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -81,7 +81,6 @@ class edit extends MaxiBlockComponent {
 			return this.state.googleApiKey;
 		};
 
-		//if (googleApiKey)
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}

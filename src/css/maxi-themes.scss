@@ -88,6 +88,9 @@ body.maxi-blocks--active {
 						font-family: var(
 							--maxi-#{$style}-#{$level}-font-family-general
 						);
+						font-size: var(
+							--maxi-#{$style}-#{$level}-font-size-general
+						);
 						font-weight: var(
 							--maxi-#{$style}-#{$level}-font-weight-general
 						);

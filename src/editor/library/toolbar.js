@@ -24,6 +24,7 @@ import { onRequestInsertPattern } from './util';
 import classnames from 'classnames';
 import React from 'react';
 import { SearchClient as TypesenseSearchClient } from 'typesense';
+import { isNil, isUndefined } from 'lodash';
 
 /**
  * Component
@@ -53,7 +54,7 @@ const LibraryToolbar = props => {
 		onRequestClose,
 		title = '',
 		cost = '',
-		toneUrl = '',
+		toneUrl,
 		isMaxiProActive = false,
 		isPro,
 		isBeta,
@@ -400,12 +401,14 @@ const LibraryToolbar = props => {
 						<h2>{title}</h2>
 						<span className='maxi-cloud-toolbar__line'>|</span>
 						<span>{cost}</span>
-						<ToolbarButton
-							onClick={() => {
-								openRelatedPattern();
-							}}
-							label={__('Switch tone', 'maxi-blocks')}
-						/>
+						{!isUndefined(toneUrl) && !isNil(toneUrl) && (
+							<ToolbarButton
+								onClick={() => {
+									openRelatedPattern();
+								}}
+								label={__('Switch tone', 'maxi-blocks')}
+							/>
+						)}
 					</div>
 					<div className='maxi-cloud-toolbar__responsive-buttons'>
 						<ToolbarButton

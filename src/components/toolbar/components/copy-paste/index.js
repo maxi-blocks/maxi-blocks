@@ -132,10 +132,10 @@ const CopyPaste = props => {
 			});
 		}
 
-		handleBGLayersOnUniqueIDChange({
+		handleBGLayersOnUniqueIDChange(
 			attributes,
-			backgroundLayers: copiedAttributes['background-layers'],
-		});
+			copiedAttributes['background-layers']
+		);
 	};
 
 	const onCopyStyles = () => {

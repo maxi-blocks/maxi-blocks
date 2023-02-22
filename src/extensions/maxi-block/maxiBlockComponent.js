@@ -457,9 +457,7 @@ class MaxiBlockComponent extends Component {
 				this.props.attributes.uniqueID
 			);
 
-			handleBGLayersOnUniqueIDChange({
-				attributes: this.props.attributes,
-			});
+			handleBGLayersOnUniqueIDChange(this.props.attributes);
 
 			if (this.maxiBlockDidChangeUniqueID)
 				this.maxiBlockDidChangeUniqueID(newUniqueID);

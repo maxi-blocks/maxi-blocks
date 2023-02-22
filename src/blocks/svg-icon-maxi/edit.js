@@ -24,7 +24,10 @@ import {
 	getIsOverflowHidden,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-import { getSVGWidthHeightRatio } from '../../extensions/svg';
+import {
+	getSVGWidthHeightRatio,
+	togglePreserveAspectRatio,
+} from '../../extensions/svg';
 import MaxiModal from '../../editor/library/modal';
 import getStyles from './styles';
 import { copyPasteMapping } from './data';
@@ -202,6 +205,19 @@ class edit extends MaxiBlockComponent {
 				this.setState({ isOpen: true });
 			},
 			onSelect: obj => {
+				const { content } = obj;
+
+				if (content) {
+					const disableHeightFitContent = getLastBreakpointAttribute({
+						target: 'svg-width-fit-content',
+						breakpoint: deviceType,
+						attributes,
+					});
+
+					if (disableHeightFitContent)
+						obj.content = togglePreserveAspectRatio(content, true);
+				}
+
 				maxiSetAttributes(obj);
 
 				this.setState({ isOpen: false });

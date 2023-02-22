@@ -11,7 +11,11 @@ import {
 /**
  * Internal dependencies
  */
-import { getStyleCardEditor, receiveSelectedMaxiStyleCard } from '../../utils';
+import {
+	copySCToEdit,
+	getStyleCardEditor,
+	receiveSelectedMaxiStyleCard,
+} from '../../utils';
 
 /**
  * External dependencies
@@ -41,29 +45,6 @@ const addMoreSC = async (title = 'Daemon') => {
 	);
 	await page.$eval(
 		'.maxi-cloud-container .maxi-cloud-container__sc__content-sc .ais-InfiniteHits-list .ais-InfiniteHits-item button',
-		button => button.click()
-	);
-};
-
-const copySCtoEdit = async newName => {
-	// Click Customize Card button
-	await page.waitForSelector('.maxi-style-cards-customise-card-button');
-	await page.$eval('.maxi-style-cards-customise-card-button', button =>
-		button.click()
-	);
-
-	// Input the new SC name
-	await page.waitForSelector('.maxi-style-cards__sc__save > input');
-	await page.$eval('.maxi-style-cards__sc__save > input', input =>
-		input.focus()
-	);
-	await page.keyboard.type(newName);
-
-	await page.waitForSelector(
-		'.maxi-style-cards__sc__save > button:nth-child(2)'
-	);
-	await page.$eval(
-		'.maxi-style-cards__sc__save > button:nth-child(2)',
 		button => button.click()
 	);
 };
@@ -129,7 +110,7 @@ describe('SC settings', () => {
 
 		await addMoreSC();
 		const newName = `copy ${new Date().getTime()}`;
-		await copySCtoEdit(newName);
+		await copySCToEdit(page, newName);
 
 		const {
 			value: { name: SCName },
@@ -192,7 +173,7 @@ describe('SC settings', () => {
 		});
 		await addMoreSC();
 
-		await copySCtoEdit(`copy 2 ${new Date().getTime()}`);
+		await copySCToEdit(page, `copy 2 ${new Date().getTime()}`);
 
 		await page.$eval('.maxi-style-cards__sc__more-sc--delete', button =>
 			button.click()
@@ -229,7 +210,7 @@ describe('SC settings', () => {
 
 		await addMoreSC();
 
-		await copySCtoEdit(`copy 3 ${new Date().getTime()}`);
+		await copySCToEdit(page, `copy 3 ${new Date().getTime()}`);
 
 		const {
 			value: { name },

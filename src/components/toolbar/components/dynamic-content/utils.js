@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { resolveSelect } from '@wordpress/data';
-import apiFetch from '@wordpress/api-fetch';
 import { store as coreStore } from '@wordpress/core-data';
 
 /**
@@ -11,7 +10,7 @@ import { store as coreStore } from '@wordpress/core-data';
  */
 import { isEmpty } from 'lodash';
 import moment from 'moment';
-import { fieldOptions, idFields } from './constants';
+import { descriptionOfErrors, fieldOptions, idFields } from './constants';
 
 /**
  * TODO: Returns an array of CPT options for a SelectControl
@@ -130,7 +129,26 @@ export const validationsValues = (variableValue, field) => {
 	return result.includes(field) ? {} : { 'dc-field': result[0] };
 };
 
-export const getAuthorByID = async thisId =>
-	apiFetch({ path: `/wp/v2/users/${thisId}` }).then(
-		author => author.name ?? 'No name'
-	);
+export const getErrors = (type, error, show, relation) => {
+	if (type === 'posts' && error === 'next' && show === 'next') {
+		return descriptionOfErrors.next;
+	}
+
+	if (type === 'posts' && error === 'previous' && relation === 'previous') {
+		return descriptionOfErrors.previous;
+	}
+
+	if (error === 'author' && relation === 'author') {
+		return descriptionOfErrors.author;
+	}
+
+	if (type === 'media' && error === 'media') {
+		return descriptionOfErrors.media;
+	}
+
+	if (type === 'tags' && error === 'tags') {
+		return descriptionOfErrors.tags;
+	}
+
+	return false;
+};

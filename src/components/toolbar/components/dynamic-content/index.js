@@ -2,13 +2,8 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import {
-	useEffect,
-	useLayoutEffect,
-	useRef,
-	useState,
-} from '@wordpress/element';
-import { select } from '@wordpress/data';
+import { useEffect, useState } from '@wordpress/element';
+import { resolveSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -26,7 +21,7 @@ import {
 	getSimpleText,
 	getIdOptions,
 	validationsValues,
-	getAuthorByID,
+	getErrors,
 } from './utils';
 import {
 	renderedFields,
@@ -37,13 +32,12 @@ import {
 	relationOptions,
 	relationTypes,
 	limitOptions,
-	descriptionOfErrors,
 } from './constants';
 
 /**
  * External dependencies
  */
-import { find, isEmpty, isFinite, isNil, capitalize, isEqual } from 'lodash';
+import { find, isEmpty, isFinite, isNil, capitalize } from 'lodash';
 
 /**
  * Styles & Icons
@@ -90,9 +84,6 @@ const DynamicContent = props => {
 	const [isEmptyIdOptions, setIsEmptyIdOptions] = useState(true);
 	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
 	const [postIdOptions, setPostIdOptions] = useState(null);
-	const [possibleContent, setPossibleContent] = useState(null);
-
-	const isLoading = useRef(false);
 
 	const updateState = params => {
 		const paramFn = {
@@ -140,190 +131,198 @@ const DynamicContent = props => {
 		hide(thisType === 'relation' ? relationOptions : typeOptions);
 	};
 
-	const setIdOptions = (
+	const setIdOptions = async (
 		thisType = type,
 		defaultValues = {},
 		thisRelation = relation
 	) => {
-		isLoading.current = true;
-
-		const data = getIdOptions(
+		const data = await getIdOptions(
 			thisType,
 			defaultValues,
 			thisRelation,
 			author
-		).then(data => {
-			if (!data) return null;
+		);
 
-			// Set default values in case they are not defined
-			// const relation = defaultValues['dc-relation'] ?? relation;
-			const {
-				'dc-relation': optRelation = relation,
-				'dc-type': optType = type,
-				'dc-id': optId = id,
-			} = defaultValues;
+		if (!data) return null;
 
-			const newPostIdOptions = data.map(item => {
-				return {
-					label: `${item.id} - ${
-						item[idOptionByField[thisType]]?.rendered ??
-						item[idOptionByField[thisType]]
-					}`,
-					value: +item.id,
-				};
-			});
+		// Set default values in case they are not defined
+		// const relation = defaultValues['dc-relation'] ?? relation;
+		const {
+			'dc-relation': optRelation = relation,
+			'dc-type': optType = type,
+			'dc-id': optId = id,
+		} = defaultValues;
 
-			if (isEmpty(newPostIdOptions)) {
-				if (optRelation === 'author')
-					defaultValues['dc-error'] = optRelation;
-
-				if (['tags', 'media'].includes(optType)) {
-					defaultValues['dc-error'] = optType;
-					disabledType(thisType);
-				}
-
-				setIsEmptyIdOptions(true);
-				if (!isEmpty(defaultValues)) changeProps(defaultValues);
-			} else {
-				if (optRelation === 'author') changeProps({ 'dc-error': '' });
-
-				setIsEmptyIdOptions(false);
-				setPostIdOptions(newPostIdOptions);
-
-				// Ensures first post id is selected
-				if (isEmpty(find(newPostIdOptions, { value: optId }))) {
-					defaultValues['dc-id'] = Number(data[0].id);
-					idFields.current = data[0].id;
-				}
-
-				// Ensures first field is selected
-				if (!field)
-					defaultValues['dc-field'] = fieldOptions[optType][0].value;
-
-				if (!isEmpty(defaultValues)) updateState(defaultValues);
-			}
-
-			isLoading.current = false;
-
-			return newPostIdOptions;
+		const newPostIdOptions = data.map(item => {
+			return {
+				label: `${item.id} - ${
+					item[idOptionByField[thisType]]?.rendered ??
+					item[idOptionByField[thisType]]
+				}`,
+				value: +item.id,
+			};
 		});
 
-		return data;
+		if (isEmpty(newPostIdOptions)) {
+			if (optRelation === 'author')
+				defaultValues['dc-error'] = optRelation;
+
+			if (['tags', 'media'].includes(optType)) {
+				defaultValues['dc-error'] = optType;
+				disabledType(thisType);
+			}
+
+			setIsEmptyIdOptions(true);
+			if (!isEmpty(defaultValues)) changeProps(defaultValues);
+		} else {
+			if (optRelation === 'author') changeProps({ 'dc-error': '' });
+
+			setIsEmptyIdOptions(false);
+			setPostIdOptions(newPostIdOptions);
+
+			// Ensures first post id is selected
+			if (isEmpty(find(newPostIdOptions, { value: optId }))) {
+				defaultValues['dc-id'] = Number(data[0].id);
+				idFields.current = data[0].id;
+			}
+
+			// Ensures first field is selected
+			if (!field)
+				defaultValues['dc-field'] = fieldOptions[optType][0].value;
+
+			if (!isEmpty(defaultValues)) updateState(defaultValues);
+		}
+
+		return newPostIdOptions;
 	};
 
-	const getContent = (dataRequest, data) => {
-		const { type, id } = dataRequest;
-		if (type === 'users') {
-			dataRequest.id = author ?? id;
-		}
+	const getContentValue = async (dataRequest, data) => {
+		let contentValue;
 
-		if (type === 'posts' && error === 'next' && show === 'next') {
-			return descriptionOfErrors.next;
-		}
+		if (data.id) updateState({ 'dc-id': Number(data.id) });
 
 		if (
-			type === 'posts' &&
-			error === 'previous' &&
-			relation === 'previous'
+			renderedFields.includes(dataRequest.field) &&
+			!isNil(data[dataRequest.field]?.rendered)
 		) {
-			return descriptionOfErrors.previous;
+			contentValue = data[dataRequest.field].rendered;
+		} else if (dataRequest.field === 'author') {
+			const { getUsers } = resolveSelect('core');
+
+			const user = await getUsers({ p: data[dataRequest.field] });
+
+			if (user) contentValue = user[0].name;
+		} else {
+			contentValue = data[dataRequest.field];
 		}
 
-		if (error === 'author' && relation === 'author') {
-			return descriptionOfErrors.author;
+		const options = formatDateOptions({
+			day,
+			era,
+			hour,
+			hour12,
+			minute,
+			month,
+			second,
+			timeZone,
+			timeZoneName,
+			weekday,
+			year,
+		});
+
+		if (field === 'date') {
+			contentValue = processDate(
+				contentValue,
+				isCustomDate,
+				format,
+				locale,
+				options
+			);
+		} else if (field === 'excerpt') {
+			contentValue = limitFormat(contentValue, limit);
+		} else if (field === 'content') {
+			contentValue = limitFormat(getSimpleText(contentValue), limit);
 		}
 
-		if (type === 'media' && error === 'media') {
-			return descriptionOfErrors.media;
-		}
-
-		if (type === 'tags' && error === 'tags') {
-			return descriptionOfErrors.tags;
-		}
-
-		if (relationTypes.includes(type) && relation === 'random') {
-			// TODO: get random entity
-			// return apiFetch({
-			// 	path: `/wp/v2/${type}/${firstSeparator}thisFields=id&per_page=99&orderby=${
-			// 		randomOptions[type][
-			// 			random(randomOptions[type].length - 1)
-			// 		]
-			// 	}`,
-			// })
-			// 	.then(res => {
-			// 		if (typeof res[0] === 'object' && 'id' in res[0]) {
-			// 			return res;
-			// 		}
-			// 		throw new Error(descriptionOfErrors.object);
-			// 	})
-			// 	.then(
-			// 		res =>
-			// 			requestContent({
-			// 				...dataRequest,
-			// 				id: res[random(res.length - 1)].id,
-			// 			}),
-			// 		error => console.error(error)
-			// 	);
-		}
-
-		if (data) {
-			let contentValue;
-			if (data.id) updateState({ 'dc-id': Number(data.id) });
-
-			if (
-				renderedFields.includes(dataRequest.field) &&
-				!isNil(data[dataRequest.field]?.rendered)
-			) {
-				contentValue = data[dataRequest.field].rendered;
-			} else if (dataRequest.field === 'author') {
-				const authorId = getAuthorByID(data[dataRequest.field]);
-				contentValue = authorId.then(value => value);
-			} else {
-				contentValue = data[dataRequest.field];
-			}
-
-			const options = formatDateOptions({
-				day,
-				era,
-				hour,
-				hour12,
-				minute,
-				month,
-				second,
-				timeZone,
-				timeZoneName,
-				weekday,
-				year,
-			});
-
-			if (field === 'date') {
-				contentValue = processDate(
-					contentValue,
-					isCustomDate,
-					format,
-					locale,
-					options
-				);
-			} else if (field === 'excerpt') {
-				contentValue = limitFormat(contentValue, limit);
-			} else if (field === 'content') {
-				contentValue = limitFormat(getSimpleText(contentValue), limit);
-			}
-
-			if (contentValue) {
-				return contentValue;
-			}
+		if (contentValue) {
+			return contentValue;
 		}
 
 		return null;
 	};
 
-	useEffect(() => {
-		const { getUsers, getCurrentUser } = select('core');
+	const getContent = async dataRequest => {
+		const { type, id } = dataRequest;
 
+		const contentError = getErrors(type, error, show, relation);
+
+		if (contentError) return contentError;
+
+		if (type === 'users') {
+			dataRequest.id = author ?? id;
+		}
+
+		const dictionary = {
+			posts: 'post',
+			pages: 'page',
+			media: 'attachment',
+			settings: '__unstableBase',
+		};
+
+		if (relationTypes.includes(type) && relation === 'random') {
+			const randomEntity = await resolveSelect('core').getEntityRecords(
+				'postType',
+				dictionary[type],
+				{
+					per_page: 1,
+					orderby: 'rand',
+				}
+			);
+
+			return getContentValue(dataRequest, randomEntity[0]);
+		}
+		if (type === 'settings') {
+			const canEdit = await resolveSelect('core').canUser(
+				'update',
+				'settings'
+			);
+			const settings = canEdit
+				? await resolveSelect('core').getEditedEntityRecord(
+						'root',
+						'site'
+				  )
+				: {};
+			const readOnlySettings = await resolveSelect(
+				'core'
+			).getEntityRecord('root', '__unstableBase');
+
+			const siteEntity = canEdit ? settings : readOnlySettings;
+
+			return getContentValue(dataRequest, siteEntity);
+		}
+
+		// Get selected entity
+		const entity = await resolveSelect('core').getEntityRecord(
+			'postType',
+			dictionary[type] ?? type,
+			id,
+			{
+				per_page: 1,
+			}
+		);
+
+		if (entity) return getContentValue(dataRequest, entity);
+
+		return null;
+	};
+
+	useEffect(async () => {
+		// TODO: check if this code is necessary
 		// On init, get post author options and set current user as default
 		if (!postAuthorOptions) {
-			const authors = getUsers({ who: 'authors' });
+			const authors = await resolveSelect('core').getUsers({
+				who: 'authors',
+			});
 
 			if (authors) {
 				setPostAuthorOptions(
@@ -333,56 +332,32 @@ const DynamicContent = props => {
 					}))
 				);
 
-				const { id } = getCurrentUser();
+				const { id } = await resolveSelect('core').getCurrentUser();
 
 				updateState({ 'dc-author': id });
 			}
 		}
-	});
 
-	useEffect(() => {
-		const dictionary = {
-			posts: 'post',
-			pages: 'page',
-			media: 'attachment',
-			settings: '__unstableBase',
-		};
+		// Sets new content
+		if (
+			status &&
+			!isNil(type) &&
+			!isNil(field) &&
+			(!isNil(id) || type === 'settings') // id is not necessary for site settings
+		) {
+			const newContent = sanitizeContent(
+				await getContent({ type, id, field })
+			);
 
-		const kind = type !== 'settings' ? 'postType' : 'root';
-		const name = dictionary[type] ?? type;
-		let key = type === 'settings' ? null : id;
-
-		// Ensures first post id is selected
-		if (postIdOptions && isEmpty(find(postIdOptions, { value: id })))
-			key = Number(postIdOptions[0].id);
-
-		if (isLoading.current) return;
-
-		const { getEntityRecord } = select('core');
-
-		const entity = getEntityRecord(kind, name, key, {
-			per_page: 1,
-		});
-
-		if (entity) {
-			if (!isEqual(entity, possibleContent)) setPossibleContent(entity);
-
-			// Sets new content
-			if (status && !!id && !!type && !!field && !isLoading.current) {
-				const newContent = sanitizeContent(
-					getContent({ type, id, field }, entity)
-				);
-
-				if (newContent !== content)
-					onChange({
-						'dc-content': newContent,
-					});
-			}
+			if (newContent !== content)
+				onChange({
+					'dc-content': newContent,
+				});
 		}
 	});
 
-	useLayoutEffect(() => {
-		if (relation === 'by-id') setIdOptions(type, {}, relation);
+	useEffect(async () => {
+		if (relation === 'by-id') await setIdOptions(type, {}, relation);
 	}, [status, type, relation, author]);
 
 	const handleDateCallback = childData => {

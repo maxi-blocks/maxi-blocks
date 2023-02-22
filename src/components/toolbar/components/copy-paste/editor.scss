@@ -3,8 +3,6 @@
 		min-width: 170px;
 
 		form {
-			max-height: 196px;
-			overflow-y: scroll;
 			padding: 0 12px 10px;
 			background-color: var(--maxi-white-1-color);
 
@@ -139,6 +137,7 @@
 				font-size: 12px;
 				text-align: center !important;
 
+				&::before,
 				&::after {
 					display: none !important;
 				}
@@ -183,7 +182,7 @@
 
 .maxi-copy-paste__popover {
 	.components-popover__content {
-		width: 210px !important;
+		width: fit-content !important;
 		border-radius: 0 !important;
 
 		/* width */
@@ -217,11 +216,16 @@
 					padding-left: 0;
 					padding-right: 0;
 					transition: background-color 0.3s;
+					border-bottom: 2px solid transparent;
+					font-weight: 400 !important;
 					&:last-child {
 						border-right: none;
 					}
+					&::before {
+						display: none !important;
+					}
 					&::after {
-						display: none;
+						bottom: -2px !important;
 					}
 				}
 			}

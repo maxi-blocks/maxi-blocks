@@ -49,6 +49,16 @@ const addMoreSC = async (title = 'Daemon') => {
 	);
 };
 
+const switchSC = async (title = 'Daemon') => {
+	await page.$eval('.maxi-style-cards__sc__more-sc--select input', input =>
+		input.focus()
+	);
+
+	await page.keyboard.type(title);
+	await page.keyboard.press('Enter');
+	await page.waitForTimeout(100);
+};
+
 describe('SC settings', () => {
 	beforeAll(async () => {
 		// Ensures clean SC
@@ -84,15 +94,7 @@ describe('SC settings', () => {
 		expect(name).toStrictEqual('Daemon');
 
 		// Switch back to maxi default SC
-
-		await page.$eval(
-			'.maxi-style-cards__sc__more-sc--select input',
-			input => input.focus()
-		);
-
-		await page.keyboard.type('Maxi');
-		await page.keyboard.press('Enter');
-		await page.waitForTimeout(100);
+		await switchSC('Maxi');
 
 		const { key } = await receiveSelectedMaxiStyleCard(page);
 
@@ -128,7 +130,7 @@ describe('SC settings', () => {
 			accordion: 'color',
 		});
 
-		await addMoreSC();
+		await switchSC();
 
 		await page.$eval('.maxi-style-cards__sc__actions--apply', button =>
 			button.click()
@@ -171,7 +173,7 @@ describe('SC settings', () => {
 			page,
 			accordion: 'color',
 		});
-		await addMoreSC();
+		await switchSC();
 
 		await copySCToEdit(page, `copy 2 ${new Date().getTime()}`);
 
@@ -208,7 +210,7 @@ describe('SC settings', () => {
 			accordion: 'color',
 		});
 
-		await addMoreSC();
+		await switchSC();
 
 		await copySCToEdit(page, `copy 3 ${new Date().getTime()}`);
 

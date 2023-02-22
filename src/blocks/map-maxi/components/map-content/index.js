@@ -107,18 +107,20 @@ const MapContent = props => {
 				</>
 			)}
 			{showError && (
-				<p className='maxi-map-block__not-found'>
-					{__(
-						'Oops, you can not see the map because you have not set your Google map API key, please navigate to the Maxi Block ',
-						'maxi-blocks'
-					)}
-					<a
-						target='_blank'
-						href='/wp-admin/admin.php?page=maxi-blocks-dashboard&tab=maxi_blocks_settings'
-					>
-						{__('General > Google API Key', 'maxi-blocks')}
-					</a>
-				</p>
+				<div className='maxi-map-block__not-found'>
+					<p>
+						{__(
+							'Oops, you can not see the map because you have not set your Google map API key, please navigate to the Maxi Block Settings > ',
+							'maxi-blocks'
+						)}
+						<a
+							target='_blank'
+							href='/wp-admin/admin.php?page=maxi-blocks-dashboard&tab=maxi_blocks_settings'
+						>
+							{__('Google Maps API Key', 'maxi-blocks')}
+						</a>
+					</p>
+				</div>
 			)}
 		</div>
 	);

@@ -3,7 +3,7 @@
 		min-width: 170px;
 
 		form {
-			padding: 0 12px 10px;
+			padding: 5px;
 			background-color: var(--maxi-white-1-color);
 
 			/* width */
@@ -67,6 +67,7 @@
 				align-items: center;
 				color: var(--maxi-black-1-color);
 				margin-top: 0;
+				width: 100%;
 			}
 
 			input[type='checkbox'] {

@@ -9,11 +9,6 @@ import { RichText } from '@wordpress/block-editor';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 
 /**
- * External dependencies
- */
-import classnames from 'classnames';
-
-/**
  * Save
  */
 const save = props => {
@@ -24,13 +19,11 @@ const save = props => {
 		content,
 		listReversed,
 		listStart,
-		'dc-content': dcContent,
 		'dc-status': dcStatus,
 	} = props.attributes;
 
 	const name = 'maxi-blocks/text-maxi';
 	const className = 'maxi-text-block__content';
-	const dcRenderClassName = 'maxi-text-block__dynamic_content__is-rendering';
 	const value = content?.replace(/\n/g, '<br />');
 
 	return (
@@ -39,12 +32,9 @@ const save = props => {
 			{...getMaxiBlockAttributes({ ...props, name })}
 		>
 			<RichText.Content
-				className={
-					dcStatus
-						? classnames(className, dcRenderClassName)
-						: className
-				}
-				value={dcStatus ? dcContent : value}
+				className={className}
+				value={dcStatus ? '$text-to-replace' : value}
+				// TODO: avoid DC for lists
 				tagName={isList && !dcStatus ? typeOfList : textLevel}
 				{...(!dcStatus && {
 					reversed: !!listReversed,

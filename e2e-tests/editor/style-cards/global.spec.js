@@ -220,14 +220,14 @@ describe('SC settings', () => {
 		expect(key).toStrictEqual('sc_maxi');
 	});
 
-	it.skip('Can export/import style cards', async () => {
+	it('Can export/import style cards', async () => {
 		await createNewPost();
 		await getStyleCardEditor({
 			page,
 			accordion: 'color',
 		});
 
-		// await addMoreSC('');
+		await addMoreSC();
 
 		await copySCtoEdit(`copy 3 ${new Date().getTime()}`);
 
@@ -288,7 +288,7 @@ describe('SC settings', () => {
 		await page.waitForTimeout(150);
 
 		await page.waitForSelector(
-			'.media-frame-toolbar .media-toolbar-primary button'
+			'.media-frame-toolbar .media-toolbar-primary button:not([disabled])'
 		);
 		await page.$eval(
 			'.media-frame-toolbar .media-toolbar-primary button',
@@ -304,7 +304,9 @@ describe('SC settings', () => {
 			value: { name: newName },
 		} = await receiveSelectedMaxiStyleCard(page);
 
-		await page.waitForSelector('.maxi-style-cards__sc__more-sc--delete');
+		await page.waitForSelector(
+			'.maxi-style-cards__sc__more-sc--delete:not([disabled])'
+		);
 		await page.$eval('.maxi-style-cards__sc__more-sc--delete', button =>
 			button.click()
 		);

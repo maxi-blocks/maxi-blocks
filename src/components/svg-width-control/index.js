@@ -123,10 +123,12 @@ const SvgWidthControl = props => {
 					label={__('Set height to fit content', 'maxi-blocks')}
 					selected={widthFitContent}
 					onChange={val => {
+						const contentPrefix = prefix === 'svg-' ? '' : prefix;
+
 						let icon = getAttributeValue({
 							target: 'content',
 							isHover,
-							prefix,
+							prefix: contentPrefix,
 							props,
 						});
 
@@ -147,7 +149,11 @@ const SvgWidthControl = props => {
 								prefix,
 								breakpoint
 							)]: val,
-							[getAttributeKey('content', isHover, prefix)]: icon,
+							[getAttributeKey(
+								'content',
+								isHover,
+								contentPrefix
+							)]: icon,
 						});
 					}}
 				/>

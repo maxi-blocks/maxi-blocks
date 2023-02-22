@@ -19,11 +19,12 @@ import {
 	RawHTML,
 	MaxiPopoverButton,
 } from '../../components';
+import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import {
 	getIsOverflowHidden,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+import { getSVGWidthHeightRatio } from '../../extensions/svg';
 import MaxiModal from '../../editor/library/modal';
 import getStyles from './styles';
 import { copyPasteMapping } from './data';
@@ -139,7 +140,14 @@ class edit extends MaxiBlockComponent {
 	}
 
 	get getStylesObject() {
-		return getStyles(this.props.attributes);
+		return getStyles(
+			this.props.attributes,
+			getSVGWidthHeightRatio(
+				this.blockRef.current?.querySelector(
+					'.maxi-svg-icon-block__icon svg'
+				)
+			)
+		);
 	}
 
 	state = {
@@ -158,6 +166,12 @@ class edit extends MaxiBlockComponent {
 		const { isOpen } = this.state;
 
 		const isEmptyContent = isEmpty(content);
+
+		const heightFitContent = getLastBreakpointAttribute({
+			target: 'svg-width-fit-content',
+			breakpoint: deviceType,
+			attributes,
+		});
 
 		const handleOnResizeStop = (event, direction, elt) => {
 			// Return SVG element its CSS width
@@ -248,7 +262,7 @@ class edit extends MaxiBlockComponent {
 							key={`maxi-modal--${uniqueID}`}
 						/>
 					)}
-					{!isEmptyContent && (
+					{!isEmptyContent && !heightFitContent && (
 						<BlockResizer
 							className='maxi-svg-icon-block__icon'
 							key={`maxi-svg-icon-block__icon--${clientId}`}
@@ -281,6 +295,11 @@ class edit extends MaxiBlockComponent {
 						>
 							<RawHTML>{content}</RawHTML>
 						</BlockResizer>
+					)}
+					{!isEmptyContent && heightFitContent && (
+						<div className='maxi-svg-icon-block__icon'>
+							<RawHTML>{content}</RawHTML>
+						</div>
 					)}
 				</>
 			</MaxiBlock>,

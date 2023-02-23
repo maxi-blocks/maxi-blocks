@@ -8,21 +8,22 @@ import { useEffect } from '@wordpress/element';
  * Internal dependencies
  */
 import InfoBox from '../info-box';
-import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
 import SettingTabsControl from '../setting-tabs-control';
 import ToggleSwitch from '../toggle-switch';
 import TransitionControl from '../transition-control';
 import {
+	createTransitionObj,
 	getDefaultAttribute,
 	getGroupAttributes,
+	getLastBreakpointAttribute,
 	getTransitionData,
 } from '../../extensions/styles';
 
 /**
  * External dependencies
  */
-import { capitalize, cloneDeep, isEmpty, isArray } from 'lodash';
+import { capitalize, cloneDeep, isArray, isEmpty } from 'lodash';
 
 /**
  * Component
@@ -45,16 +46,18 @@ const TransitionControlWrapper = props => {
 			? Object.keys(transition?.[type])[0]
 			: attributes[`transition-${type}-selected`];
 
-	const defaultTransition = getDefaultAttribute('transition')[type][selected];
 	const selectedTransition = transition[type][selected];
+	const defaultTransition =
+		getDefaultAttribute('transition')?.[type]?.[selected] ||
+		createTransitionObj();
 
 	const getDefaultTransitionAttribute = prop =>
 		defaultTransition[`${prop}-${deviceType}`];
 
-	const onChangeTransition = (obj = {}) => {
+	const onChangeTransition = (obj = {}, splitMode) => {
 		if (!transitionData) return null;
 
-		let newObj = {
+		const newObj = {
 			transition: {},
 		};
 
@@ -66,24 +69,43 @@ const TransitionControlWrapper = props => {
 					key => {
 						newObj.transition[currentType][key] = {
 							...attributes.transition[currentType][key],
-							...attributes.transition[type][selected],
-							hoverProp:
-								transitionData[currentType][key].hoverProp,
-							...obj,
+							...(splitMode === 'out'
+								? {
+										out: {
+											...attributes.transition[
+												currentType
+											][key].out,
+											...attributes.transition[type][
+												selected
+											].out,
+											...obj,
+										},
+								  }
+								: {
+										...attributes.transition[type][
+											selected
+										],
+										...obj,
+								  }),
 						};
 					}
 				);
 			});
 		} else {
-			newObj = {
-				transition: {
-					...attributes?.transition,
-					[type]: {
-						...(attributes?.transition?.[type] || []),
-						[selected]: {
-							...selectedTransition,
-							...obj,
-						},
+			newObj.transition = {
+				...attributes?.transition,
+				[type]: {
+					...(attributes?.transition?.[type] || []),
+					[selected]: {
+						...selectedTransition,
+						...(splitMode === 'out'
+							? {
+									out: {
+										...selectedTransition.out,
+										...obj,
+									},
+							  }
+							: obj),
 					},
 				},
 			};
@@ -121,11 +143,20 @@ const TransitionControlWrapper = props => {
 							label: __('Select setting', 'maxi-blocks'),
 							value: 'none',
 						},
-						...(transition[type] &&
-							Object.keys(transition[type]).map(name => ({
-								label: __(capitalize(name), 'maxi-blocks'),
-								value: name,
-							}))),
+						...(transitionData[type] &&
+							Object.entries(transitionData[type]).reduce(
+								(acc, [key, { title }]) => {
+									if (!transition[type][key]) return acc;
+
+									acc.push({
+										label: __(title, 'maxi-blocks'),
+										value: key,
+									});
+
+									return acc;
+								},
+								[]
+							)),
 					]}
 					onChange={val => {
 						maxiSetAttributes({
@@ -135,18 +166,16 @@ const TransitionControlWrapper = props => {
 				/>
 			)}
 			{selected && selected !== 'none' && (
-				<ResponsiveTabsControl breakpoint={deviceType}>
-					<TransitionControl
-						{...getTransitionAttributes(attributes, 'transition')}
-						onChange={onChangeTransition}
-						getDefaultTransitionAttribute={
-							getDefaultTransitionAttribute
-						}
-						transition={selectedTransition}
-						breakpoint={deviceType}
-						type={type}
-					/>
-				</ResponsiveTabsControl>
+				<TransitionControl
+					{...getTransitionAttributes(attributes, 'transition')}
+					onChange={onChangeTransition}
+					getDefaultTransitionAttribute={
+						getDefaultTransitionAttribute
+					}
+					transition={selectedTransition}
+					breakpoint={deviceType}
+					type={type}
+				/>
 			)}
 		</>
 	) : (
@@ -164,6 +193,7 @@ const TransitionControlWrapper = props => {
 
 const transition = ({
 	props,
+	selectors,
 	label = __('Hover transition', 'maxi-blocks'),
 }) => {
 	const { attributes, deviceType, maxiSetAttributes, name } = props;
@@ -174,17 +204,40 @@ const transition = ({
 
 	const transition = cloneDeep(rawTransition);
 
-	const transitionData = getTransitionData(name);
+	const transitionData = getTransitionData(name, selectors, attributes);
 
 	Object.keys(transition).forEach(type => {
 		Object.keys(transition[type]).forEach(key => {
-			const hoverProp = transitionData?.[type]?.[key]?.hoverProp;
-			if (!hoverProp) return;
+			if (!transitionData?.[type]?.[key]) return;
 
-			if (isArray(hoverProp))
-				hoverProp.every(prop => !attributes[prop]) &&
+			const { hoverProp, isTransform = false } =
+				transitionData[type][key];
+
+			if (hoverProp) {
+				if (
+					isArray(hoverProp) &&
+					hoverProp.every(prop => !attributes[prop])
+				)
 					delete transition[type][key];
-			else !attributes[hoverProp] && delete transition[type][key];
+				else !attributes[hoverProp] && delete transition[type][key];
+			}
+
+			if (
+				isTransform &&
+				['scale', 'rotate', 'translate', 'origin'].every(
+					prop =>
+						!getLastBreakpointAttribute({
+							target: `transform-${prop}`,
+							breakpoint: deviceType,
+							attributes,
+							keys: [
+								key.replace('transform ', ''),
+								'hover-status',
+							],
+						})
+				)
+			)
+				delete transition[type][key];
 		});
 	});
 
@@ -218,7 +271,20 @@ const transition = ({
 					<SettingTabsControl
 						breakpoint={deviceType}
 						items={Object.keys(rawTransition).map(type => ({
-							label: __(capitalize(type), 'maxi-blocks'),
+							label: __(
+								capitalize(
+									// For blocks that don't have a `canvas` tab, the block's transition attributes are in `transition.canvas`.
+									// To avoid confusion with labeling, display the `block` instead of the `canvas`
+									// if the `block` transition attribute is missing.
+									type === 'canvas' &&
+										!Object.keys(rawTransition).includes(
+											'block'
+										)
+										? 'block'
+										: type
+								),
+								'maxi-blocks'
+							),
 							content: (
 								<TransitionControlWrapper
 									type={type}

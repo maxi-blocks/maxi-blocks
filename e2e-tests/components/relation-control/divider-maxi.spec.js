@@ -71,13 +71,24 @@ describe('Divider Maxi hover simple actions', () => {
 		expect(stylesCSS).toMatchSnapshot();
 
 		await previewPage.waitForSelector(
-			'#relations--divider-maxi-1-transitions'
+			'#relations--divider-maxi-1-in-transitions'
 		);
-		const transitionsCSS = await previewPage.$eval(
-			'#relations--divider-maxi-1-transitions',
+		const inTransitionsCSS = await previewPage.$eval(
+			'#relations--divider-maxi-1-in-transitions',
 			el => el.textContent
 		);
-		expect(transitionsCSS).toMatchSnapshot();
+		expect(inTransitionsCSS).toMatchSnapshot();
+
+		await previewPage.mouse.move(0, 0);
+
+		await previewPage.waitForSelector(
+			'#relations--divider-maxi-1-out-transitions'
+		);
+		const outTransitionsCSS = await previewPage.$eval(
+			'#relations--divider-maxi-1-out-transitions',
+			el => el.textContent
+		);
+		expect(outTransitionsCSS).toMatchSnapshot();
 	};
 
 	it('Divider shadow', async () => {

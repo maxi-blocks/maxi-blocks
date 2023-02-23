@@ -77,6 +77,9 @@ const Inspector = props => {
 																attributes,
 															}
 														)}
+														defaultValue={getDefaultAttribute(
+															`line-orientation-${deviceType}`
+														)}
 														options={[
 															{
 																label: __(
@@ -121,6 +124,9 @@ const Inspector = props => {
 																	deviceType,
 																attributes,
 															}
+														)}
+														defaultValue={getDefaultAttribute(
+															`line-vertical-${deviceType}`
 														)}
 														options={[
 															{
@@ -173,6 +179,9 @@ const Inspector = props => {
 																	deviceType,
 																attributes,
 															}
+														)}
+														defaultValue={getDefaultAttribute(
+															`line-horizontal-${deviceType}`
 														)}
 														options={[
 															{
@@ -325,6 +334,7 @@ const Inspector = props => {
 										props: {
 											...props,
 										},
+										selectors,
 									}),
 									...inspectorTabs.display({
 										props,

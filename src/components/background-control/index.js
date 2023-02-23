@@ -59,6 +59,7 @@ const BackgroundControl = props => {
 		breakpoint = 'general',
 		globalProps,
 		inlineTarget = '',
+		getBounds,
 	} = props;
 
 	const backgroundActiveMedia = getLastBreakpointAttribute({
@@ -155,6 +156,7 @@ const BackgroundControl = props => {
 					clientId={clientId}
 					breakpoint={breakpoint}
 					globalProps={globalProps}
+					getBounds={getBounds}
 				/>
 			)}
 			{!disableImage && backgroundActiveMedia === 'image' && (
@@ -172,6 +174,7 @@ const BackgroundControl = props => {
 					isHover={isHover}
 					prefix={prefix}
 					breakpoint={breakpoint}
+					getBounds={getBounds}
 				/>
 			)}
 			{!disableVideo && backgroundActiveMedia === 'video' && (
@@ -206,6 +209,7 @@ const BackgroundControl = props => {
 					isHover={isHover}
 					prefix={prefix}
 					breakpoint={breakpoint}
+					getBounds={getBounds}
 				/>
 			)}
 			{!disableSVG && backgroundActiveMedia === 'svg' && (

@@ -26,9 +26,9 @@ const migrate = newAttributes => {
 	const blockName = getBlockNameFromUniqueID(uniqueID);
 	const blockDataTransition = getTransitionData(blockName);
 
-	const defaultAttributes =
-		transitionAttributesCreator(blockDataTransition).transition.default
-			.block;
+	const defaultAttributes = transitionAttributesCreator({
+		transition: blockDataTransition,
+	}).transition.default.block;
 
 	Object.keys(blockDataTransition.block).forEach(transitionName => {
 		if (!newAttributes.transition.block[transitionName]) {

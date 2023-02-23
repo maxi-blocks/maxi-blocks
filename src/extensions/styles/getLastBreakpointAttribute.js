@@ -55,6 +55,8 @@ const getLastBreakpointAttributeSingle = (
 			keys
 		);
 
+	const currentBreakpoint =
+		select('maxiBlocks')?.receiveMaxiDeviceType() ?? 'general';
 	const baseBreakpoint = select('maxiBlocks')?.receiveBaseBreakpoint();
 
 	const attrFilter = attr =>
@@ -62,14 +64,19 @@ const getLastBreakpointAttributeSingle = (
 		(isNumber(attr) || isBoolean(attr) || isString(attr) || !isEmpty(attr));
 
 	// In case that breakpoint is general and baseBreakpoint attribute exists,
-	// give priority to baseBreakpoint attribute
-	if (breakpoint === 'general') {
-		const baseBreakpointAttr = getValueFromKeys(
-			attr[
-				`${!isEmpty(target) ? `${target}-` : ''}${baseBreakpoint}${
-					isHover ? '-hover' : ''
-				}`
-			],
+	// give priority to baseBreakpoint attribute just when the currentBreakpoint it's 'general'
+	// or the baseBreakpoint is different from 'xxl' and currentBreakpoint
+	if (
+		breakpoint === 'general' &&
+		(currentBreakpoint === 'general' ||
+			(baseBreakpoint !== 'xxl' && currentBreakpoint !== baseBreakpoint))
+	) {
+		const baseBreakpointAttr = getLastBreakpointAttributeSingle(
+			target,
+			baseBreakpoint,
+			attributes,
+			isHover,
+			avoidXXL,
 			keys
 		);
 
@@ -100,6 +107,7 @@ const getLastBreakpointAttributeSingle = (
 		(isEmpty(currentAttr) || isNil(currentAttr))
 	) {
 		breakpointPosition -= 1;
+
 		if (!(avoidXXL && breakpoints[breakpointPosition] === 'xxl'))
 			currentAttr = getValueFromKeys(
 				attr[

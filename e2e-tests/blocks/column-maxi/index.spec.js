@@ -32,7 +32,7 @@ describe('Column Maxi', () => {
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 	});
 
-	it('check column settings', async () => {
+	it('Check column settings', async () => {
 		const columnClientId = await page.$eval('.maxi-column-block', column =>
 			column.getAttribute('data-block')
 		);
@@ -109,7 +109,7 @@ describe('Column Maxi', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it('check column Border', async () => {
+	it('Check column Border', async () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
 

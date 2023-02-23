@@ -389,6 +389,7 @@ const Inspector = props => {
 									},
 									...inspectorTabs.clipPath({
 										props,
+										selector: '.maxi-image-block__image',
 									}),
 									...inspectorTabs.border({
 										props,
@@ -480,6 +481,7 @@ const Inspector = props => {
 										props: {
 											...props,
 										},
+										selectors,
 									}),
 									...inspectorTabs.display({
 										props,

@@ -22,6 +22,7 @@ import ToggleSwitch from '../toggle-switch';
 import withRTC from '../../extensions/maxi-block/withRTC';
 import {
 	getAttributeKey,
+	getAttributeValue,
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -62,6 +63,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 		disablePadding = false,
 		disablePosition = false,
 		disableSpacing = false,
+		disableHeightFitContent = false,
 		getIconWithColor,
 		inlineTarget,
 		prefix = '',
@@ -190,6 +192,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 				prefix={`${prefix}icon-`}
 				breakpoint={breakpoint}
 				isHover={isHover}
+				disableHeightFitContent={disableHeightFitContent}
 			/>
 			{svgType !== 'Shape' && (
 				<SvgStrokeWidthControl
@@ -292,35 +295,31 @@ const IconControlResponsiveSettings = withRTC(props => {
 							label={__('Icon stroke', 'maxi-blocks')}
 							className='maxi-icon-styles-control--color'
 							avoidBreakpointForDefault
-							color={
-								props[
-									`${prefix}icon-stroke-color${
-										isHover ? '-hover' : ''
-									}`
-								]
-							}
+							color={getAttributeValue({
+								target: 'icon-stroke-color',
+								props,
+								isHover,
+								prefix,
+							})}
 							prefix={`${prefix}icon-stroke-`}
-							paletteColor={
-								props[
-									`${prefix}icon-stroke-palette-color${
-										isHover ? '-hover' : ''
-									}`
-								]
-							}
-							paletteOpacity={
-								props[
-									`${prefix}icon-stroke-palette-opacity${
-										isHover ? '-hover' : ''
-									}`
-								]
-							}
-							paletteStatus={
-								props[
-									`${prefix}icon-stroke-palette-status${
-										isHover ? '-hover' : ''
-									}`
-								]
-							}
+							paletteColor={getAttributeValue({
+								target: 'icon-stroke-palette-color',
+								props,
+								isHover,
+								prefix,
+							})}
+							paletteOpacity={getAttributeValue({
+								target: 'icon-stroke-palette-opacity',
+								props,
+								isHover,
+								prefix,
+							})}
+							paletteStatus={getAttributeValue({
+								target: 'icon-stroke-palette-status',
+								props,
+								isHover,
+								prefix,
+							})}
 							onChangeInline={({ color }) =>
 								onChangeInline &&
 								onChangeInline(
@@ -385,11 +384,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 				<BorderControl
 					{...getGroupAttributes(
 						props,
-						[
-							`iconBorder${isHover ? 'Hover' : ''}`,
-							`iconBorderWidth${isHover ? 'Hover' : ''}`,
-							`iconBorderRadius${isHover ? 'Hover' : ''}`,
-						],
+						['iconBorder', 'iconBorderWidth', 'iconBorderRadius'],
 						isHover,
 						prefix
 					)}
@@ -404,33 +399,31 @@ const IconControlResponsiveSettings = withRTC(props => {
 			{iconStyle === 'fill' && svgType !== 'Line' && (
 				<ColorControl
 					label={__('Icon fill', 'maxi-blocks')}
-					color={
-						props[
-							`${prefix}icon-fill-color${isHover ? '-hover' : ''}`
-						]
-					}
-					prefix={`${prefix}icon-fill`}
-					paletteColor={
-						props[
-							`${prefix}icon-fill-palette-color${
-								isHover ? '-hover' : ''
-							}`
-						]
-					}
-					paletteOpacity={
-						props[
-							`${prefix}icon-fill-palette-opacity${
-								isHover ? '-hover' : ''
-							}`
-						]
-					}
-					paletteStatus={
-						props[
-							`${prefix}icon-fill-palette-status${
-								isHover ? '-hover' : ''
-							}`
-						]
-					}
+					color={getAttributeValue({
+						target: 'icon-fill-color',
+						props,
+						isHover,
+						prefix,
+					})}
+					prefix={`${prefix}icon-fill-`}
+					paletteColor={getAttributeValue({
+						target: 'icon-fill-palette-color',
+						props,
+						isHover,
+						prefix,
+					})}
+					paletteOpacity={getAttributeValue({
+						target: 'icon-fill-palette-opacity',
+						props,
+						isHover,
+						prefix,
+					})}
+					paletteStatus={getAttributeValue({
+						target: 'icon-fill-palette-status',
+						props,
+						isHover,
+						prefix,
+					})}
 					onChangeInline={({ color }) =>
 						onChangeInline &&
 						onChangeInline({ fill: color }, '[data-fill]', true)
@@ -640,6 +633,7 @@ const IconControl = props => {
 		isHover = false,
 		isInteractionBuilder = false,
 		disableModal = false,
+		disableHeightFitContent = false,
 		getIconWithColor,
 		type = 'button-icon',
 		prefix = '',
@@ -660,13 +654,19 @@ const IconControl = props => {
 						onSelect={obj => {
 							const newSvgType = obj[`${prefix}svgType`];
 
-							const icon = getIconWithColor({
+							let icon = getIconWithColor({
 								rawIcon: obj[`${prefix}icon-content`],
 								type: [
 									newSvgType !== 'Shape' && 'stroke',
 									newSvgType !== 'Line' && 'fill',
 								].filter(Boolean),
 							});
+
+							if (!disableHeightFitContent)
+								icon = icon.replace(
+									'>',
+									' preserveAspectRatio="xMidYMid slice">'
+								);
 
 							onChange({
 								...obj,

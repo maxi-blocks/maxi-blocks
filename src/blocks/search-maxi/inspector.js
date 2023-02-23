@@ -69,6 +69,7 @@ const Inspector = props => {
 		disablePadding: true,
 		disablePosition: true,
 		disableSpacing: true,
+		disableHeightFitContent: true,
 	};
 
 	const backgroundDisabledProps = {
@@ -395,6 +396,7 @@ const Inspector = props => {
 										props: {
 											...props,
 										},
+										selectors,
 									}),
 									...inspectorTabs.display({
 										props,

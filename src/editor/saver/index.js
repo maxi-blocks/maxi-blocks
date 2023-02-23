@@ -17,9 +17,20 @@ const BlockStylesSaver = () => {
 		select => {
 			const { isSavingPost, isPreviewingPost, getCurrentPostAttribute } =
 				select('core/editor');
-			const { getEditorMode } = select('core/edit-post');
+			const {
+				__experimentalGetDirtyEntityRecords,
+				isSavingEntityRecord,
+			} = select('core');
+			const { getEditorMode } =
+				select('core/edit-site') || select('core/edit-post');
 
-			const isSaving = isSavingPost();
+			const dirtyEntityRecords = __experimentalGetDirtyEntityRecords();
+
+			const isSaving =
+				isSavingPost() ||
+				dirtyEntityRecords.some(record =>
+					isSavingEntityRecord(record.kind, record.name, record.key)
+				);
 			const isPreviewing = isPreviewingPost();
 			const isDraft = getCurrentPostAttribute('status') === 'draft';
 			const isCodeEditor = getEditorMode() === 'text';

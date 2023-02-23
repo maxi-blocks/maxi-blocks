@@ -8,6 +8,8 @@ import {
 } from './helpers';
 import { getSelectorsCss } from '../../components/custom-css-control/utils';
 import { getTransformSelectors } from '../../components/transform-control/utils';
+import getTransformTransitionData from './transitions/getTransformTransitionData';
+import transitionDefault from './transitions/transitionDefault';
 
 /**
  * External dependencies
@@ -99,10 +101,34 @@ const hoverStylesCleaner = (normalObj, hoverObj) => {
 					if (breakpoint in hoverObj[key])
 						Object.entries(breakpointVal).forEach(
 							([attrKey, attrVal]) => {
+								// First higher breakpoint that has this property defined
+								const prevBreakpoint = BREAKPOINTS.slice(
+									BREAKPOINTS.indexOf(breakpoint) + 1
+								).filter(
+									prevBreakpoint =>
+										!isNil(
+											hoverObj[key]?.[prevBreakpoint]?.[
+												attrKey
+											]
+										)
+								)?.[0];
+
+								// If higher breakpoint has hover value that is
+								// different from this breakpoint hover value then keep it
+								if (
+									prevBreakpoint &&
+									hoverObj[key]?.[prevBreakpoint]?.[
+										attrKey
+									] !== hoverObj[key][breakpoint][attrKey]
+								) {
+									return;
+								}
+
 								if (
 									attrKey in hoverObj[key][breakpoint] &&
 									hoverObj[key][breakpoint][attrKey] ===
-										attrVal
+										attrVal &&
+									attrKey !== 'transition'
 								)
 									delete hoverObj[key][breakpoint][attrKey];
 							}
@@ -174,7 +200,10 @@ const styleCleaner = styles => {
 
 const styleProcessor = (obj, data, props) => {
 	const selectors = data?.customCss?.selectors;
-	const transitionSelectors = data?.transition;
+	const transitionSelectors = {
+		...(data?.transition || transitionDefault),
+		transform: getTransformTransitionData(selectors, props),
+	};
 
 	const styles = cloneDeep(obj);
 

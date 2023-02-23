@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 /**
  * WordPress dependencies.
  */
@@ -8,6 +9,7 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
+
 import LibraryToolbar from './toolbar';
 import LibraryContainer from './container';
 /**
@@ -30,15 +32,29 @@ const CloudLibrary = props => {
 		onClose,
 		className,
 		cloudType,
-		blockStyle,
+		blockStyle: rawBlockStyle,
 		onSelect,
-		url,
-		title,
+		url: rawURL,
+		title: rowTitle,
+		cost: rawCost,
+		toneUrl: rawToneUrl,
 		cardId,
-		prefix,
+		isPro: rawIsPro,
+		isBeta: rawIsBeta,
+		prefix = '',
+		gutenbergCode: rawGutenbergCode,
+		isSwapChecked,
 	} = props;
 
 	const [type, setType] = useState(cloudType);
+	const [url, setUrl] = useState(rawURL);
+	const [blockStyle, setBlockStyle] = useState(rawBlockStyle);
+	const [toneUrl, setToneUrl] = useState(rawToneUrl);
+	const [gutenbergCode, setGutenbergCode] = useState(rawGutenbergCode);
+	const [isBeta, setIsBeta] = useState(rawIsBeta);
+	const [isPro, setIsPro] = useState(rawIsPro);
+	const [title, setTitle] = useState(rowTitle);
+	const [cost, setCost] = useState(rawCost);
 
 	const classes = classnames('maxi-library-modal', className);
 
@@ -50,23 +66,49 @@ const CloudLibrary = props => {
 			shouldCloseOnClickOutside={false}
 			onRequestClose={onClose}
 		>
-			<>
-				<LibraryToolbar
-					type={type}
-					onChange={type => setType(type)}
-					onRequestClose={onClose}
-					cardId={cardId}
-				/>
-				<LibraryContainer
-					type={type}
-					onRequestClose={onClose}
-					blockStyle={blockStyle}
-					onSelect={onSelect}
-					url={url}
-					title={title}
-					prefix={prefix}
-				/>
-			</>
+			<LibraryToolbar
+				type={type}
+				onChange={type => setType(type)}
+				cardId={cardId}
+				title={title}
+				cost={cost}
+				toneUrl={toneUrl}
+				onRequestClose={onClose}
+				isPro={isPro}
+				isBeta={isBeta}
+				gutenbergCode={gutenbergCode}
+				onSelect={onSelect}
+				isSwapChecked={isSwapChecked}
+				onChangeTone={hit => {
+					const {
+						demo_url: newUrl,
+						light_or_dark: [newBlockStyle],
+						link_to_related: newToneUrl,
+						gutenberg_code: newGutenbergCode,
+						post_title: newTitle,
+					} = hit;
+
+					setUrl(newUrl);
+					setBlockStyle(newBlockStyle);
+					setToneUrl(newToneUrl);
+					setGutenbergCode(newGutenbergCode);
+					setIsBeta(hit.post_tag?.includes('Beta'));
+					setIsPro(hit.cost?.[0] === 'Pro');
+					setTitle(newTitle);
+					setCost(hit.cost?.[0]);
+				}}
+			/>
+			<LibraryContainer
+				type={type}
+				onRequestClose={onClose}
+				blockStyle={blockStyle}
+				onSelect={onSelect}
+				url={url}
+				title={title}
+				prefix={prefix}
+				isPro={isPro}
+				isBeta={isBeta}
+			/>
 		</Modal>
 	);
 };

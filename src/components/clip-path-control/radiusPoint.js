@@ -37,10 +37,10 @@ const ClipPathRadiusPoint = props => {
 					onChangeMoving(false);
 				}}
 				style={{
-					top: `${position[1]}%`,
-					left: `${position[0]}%`,
-					width: `${radius * 2}%`,
-					height: `${radius * 2}%`,
+					top: `${position[1].value}${position[1].unit}`,
+					left: `${position[0].value}${position[0].unit}`,
+					width: `${radius.value * 2}${radius.unit}`,
+					height: `${radius.value * 2}${radius.unit}`,
 					borderColor: color,
 				}}
 			>
@@ -54,10 +54,10 @@ const ClipPathRadiusPoint = props => {
 					onChangeMoving(false);
 				}}
 				style={{
-					top: `${position[1]}%`,
-					left: `${position[0]}%`,
-					width: `calc(${radius * 2}% - 1rem)`,
-					height: `calc(${radius * 2}% - 1rem)`,
+					top: `${position[1].value}${position[1].unit}`,
+					left: `${position[0].value}${position[0].unit}`,
+					width: `calc(${radius.value * 2}${radius.unit} - 1rem)`,
+					height: `calc(${radius.value * 2}${radius.unit} - 1rem)`,
 				}}
 			/>
 		</>

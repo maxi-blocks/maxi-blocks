@@ -18,11 +18,14 @@ const ClipPathSinglePoint = props => {
 		left,
 		color,
 		isMoving,
+		addOppositePoint = false,
+		number,
+		position = [
+			{ value: 0, unit: 'px' },
+			{ value: 0, unit: 'px' },
+		],
 		onMouseOut,
 		onChangeMoving,
-		setOpposite = null,
-		number,
-		position = [0, 0],
 	} = props;
 
 	const tooltipText =
@@ -42,7 +45,6 @@ const ClipPathSinglePoint = props => {
 				className={classes}
 				onMouseDown={e => {
 					e.preventDefault();
-					setOpposite && setOpposite(false);
 					onChangeMoving(true, number);
 				}}
 				onMouseOut={e => onMouseOut(e, () => onChangeMoving(false))}
@@ -50,8 +52,8 @@ const ClipPathSinglePoint = props => {
 					onChangeMoving(false);
 				}}
 				style={{
-					left: `${left}%`,
-					top: `${top}%`,
+					left,
+					top,
 					backgroundColor: color,
 				}}
 			>
@@ -61,12 +63,11 @@ const ClipPathSinglePoint = props => {
 					</Tooltip>
 				)}
 			</span>
-			{!!setOpposite && (
+			{addOppositePoint && (
 				<span
 					className={`maxi-clip-path-button maxi-clip-path-button--single maxi-clip-path-button--opposite maxi-clip-path-visual-editor-${number}`}
 					onMouseDown={e => {
 						e.preventDefault();
-						setOpposite && setOpposite(true);
 						onChangeMoving(true, number);
 					}}
 					onMouseOut={e => onMouseOut(e, () => onChangeMoving(false))}
@@ -75,12 +76,12 @@ const ClipPathSinglePoint = props => {
 					}}
 					style={{
 						...(number === 0 && {
-							left: `${(position[0] - 50) * 2 - (left - 100)}%`,
-							top: `${top}%`,
+							left: `calc((${position[0].value}${position[0].unit} - 50%) * 2 - (${left} - 100%))`,
+							top,
 						}),
 						...(number === 1 && {
-							top: `${(position[1] - 50) * 2 - (top - 100)}%`,
-							left: `${left}%`,
+							top: `calc((${position[1].value}${position[1].unit} - 50%) * 2 - (${top} - 100%))`,
+							left,
 						}),
 						backgroundColor: color,
 					}}

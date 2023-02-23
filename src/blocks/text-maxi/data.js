@@ -134,28 +134,21 @@ const customCss = {
 			{
 				'text wrapper': '',
 				links: linkClass,
+				'ordered list': ' ol.maxi-text-block__content',
+				'unordered list': ' ul.maxi-text-block__content',
 			},
 			false
 		),
 		...createSelectors({
 			text: contentClass,
 		}),
-		lists: {
-			ordered: {
-				label: 'Ordered list',
-				target: ' ol.maxi-text-block__content',
-			},
-			unordered: {
-				label: 'Unordered list',
-				target: ' ul.maxi-text-block__content',
-			},
-		},
 	},
 	categories: [
 		'text wrapper',
 		'text',
 		'links',
-		'lists',
+		'ordered list',
+		'unordered list',
 		'before text',
 		'after text',
 		'background',

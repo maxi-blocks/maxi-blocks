@@ -133,6 +133,40 @@ Object {
 }
 `;
 
+exports[`getTransitionStyles Get a correct responsive transform(mixed with others) transition styles 1`] = `
+Object {
+  "": Object {
+    "transition": Object {
+      "general": Object {
+        "transition": "transform 0.3s 0s ease",
+      },
+      "l": Object {
+        "transition": "transform 0s 0s",
+      },
+      "m": Object {
+        "transition": "transform 0.5s 0.2s ease-out",
+      },
+      "xxl": Object {
+        "transition": "transform 0s 0s",
+      },
+    },
+  },
+  " .block-class": Object {
+    "transition": Object {
+      "m": Object {
+        "transition": "transform 0.5s 0.2s ease-out",
+      },
+      "s": Object {
+        "transition": "transform 0s 0s",
+      },
+      "xs": Object {
+        "transition": "transform 0.7s 0.4s linear",
+      },
+    },
+  },
+}
+`;
+
 exports[`getTransitionStyles Get a correct responsive transition styles 1`] = `
 Object {
   "": Object {
@@ -247,6 +281,25 @@ Object {
       },
       "xxl": Object {
         "transition": "border 0s 0s, border-radius 0s 0s, top 0s 0s, left 0s 0s",
+      },
+    },
+  },
+}
+`;
+
+exports[`getTransitionStyles Get a correct transform transition styles 1`] = `
+Object {
+  "": Object {
+    "transition": Object {
+      "general": Object {
+        "transition": "transform 0.3s 0s ease",
+      },
+    },
+  },
+  " .block-class": Object {
+    "transition": Object {
+      "general": Object {
+        "transition": "transform 0.3s 0s ease",
       },
     },
   },

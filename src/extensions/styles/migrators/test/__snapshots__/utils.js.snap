@@ -1157,14 +1157,14 @@ Object {
       "target": " .maxi-text-block--link",
     },
   },
-  "lists": Object {
-    "ordered": Object {
-      "label": "Ordered list",
-      "target": " ol.maxi-text-block__content",
+  "ordered list": Object {
+    "hover": Object {
+      "label": "ordered list on hover",
+      "target": " ol.maxi-text-block__content:hover",
     },
-    "unordered": Object {
-      "label": "Unordered list",
-      "target": " ul.maxi-text-block__content",
+    "normal": Object {
+      "label": "ordered list",
+      "target": " ol.maxi-text-block__content",
     },
   },
   "text": Object {
@@ -1185,6 +1185,16 @@ Object {
     "normal": Object {
       "label": "text wrapper",
       "target": "",
+    },
+  },
+  "unordered list": Object {
+    "hover": Object {
+      "label": "unordered list on hover",
+      "target": " ul.maxi-text-block__content:hover",
+    },
+    "normal": Object {
+      "label": "unordered list",
+      "target": " ul.maxi-text-block__content",
     },
   },
 }

@@ -47,9 +47,6 @@ if (!class_exists('MaxiBlocks_API')):
 
             // Handlers
             add_action('before_delete_post', [$this, 'mb_delete_register']);
-
-            // Extensions
-            add_filter('rest_prepare_post', [$this, 'mb_add_prev_next_to_rest'], 10, 3);
         }
 
         /**
@@ -227,34 +224,6 @@ if (!class_exists('MaxiBlocks_API')):
                 'permission_callback' => function () {
                     return current_user_can('edit_posts');
                 },
-            ]);
-            register_rest_route($this->namespace, '/dc', [
-                'methods' => 'GET',
-                'callback' => [$this, 'get_maxi_blocks_dynamic_content'],
-                'args' => [
-                    'type' => [
-                        'validate_callback' => function ($param) {
-                            return is_string($param);
-                        },
-                    ],
-                    'field' => [
-                        'validate_callback' => function ($param) {
-                            return is_string($param);
-                        },
-                    ],
-                ],
-                'permission_callback' => function () {
-                    return true;
-                },
-            ]);
-            register_rest_route($this->namespace, '/rest-url', [
-                'methods' => 'GET',
-                'callback' => [$this, 'get_maxi_blocks_wp_rest_api_url'],
-                
-                'permission_callback' => function () {
-                    return current_user_can('edit_posts');
-                },
-                
             ]);
         }
 
@@ -743,70 +712,6 @@ if (!class_exists('MaxiBlocks_API')):
             }
 
             return $new_custom_data;
-        }
-
-        /**
-         * Add previous and next posts data on REST API requests for posts
-         */
-        public function mb_add_prev_next_to_rest($response, $post, $request)
-        {
-            global $post;
-
-            // Get the next post.
-            $next = get_adjacent_post(false, '', false);
-
-            // Get the previous post.
-            $previous = get_adjacent_post(false, '', true);
-
-            // Only send id and slug (or null, if there is no next/previous post).
-            $response->data['next'] = (is_a($next, 'WP_Post')) ? array( "id" => $next->ID ) : null;
-            $response->data['previous'] = (is_a($previous, 'WP_Post')) ? array( "id" => $previous->ID ) : null;
-
-            return $response;
-        }
-
-        // Dynamic content for Site Settings and Author field
-        public function get_maxi_blocks_dynamic_content($data)
-        {
-            $type = $_GET['type'];
-            $field = $_GET['field'];
-            
-            if(!$type || !$field) {
-                return '';
-            }
-            
-            if($type === 'settings') {
-                switch ($field) {
-                    case 'title':
-                        $response = (object)['title' => get_bloginfo('name')];
-                        break;
-                    case 'tagline':
-                        $response = (object)['tagline' => get_bloginfo('description')];
-                        break;
-                    case 'email':
-                        $response = (object)['email' => get_bloginfo('admin_email')];
-                        break;
-                    default:
-                        $response = (object)[$field => get_bloginfo($field)];
-                        break;
-                }
-            }
-            if($type === 'author') {
-                $author_id = get_post_field('post_author', $field);
-                $display_name = get_the_author_meta('display_name', $author_id);
-                $response = (object)['author' => $display_name];
-            }
-
-            if (!$response) {
-                $response = '';
-            }
-
-            return $response;
-        }
-
-        public function get_maxi_blocks_wp_rest_api_url()
-        {
-            return get_rest_url();
         }
     }
 endif;

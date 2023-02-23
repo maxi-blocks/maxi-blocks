@@ -10,6 +10,7 @@ import { store as coreStore } from '@wordpress/core-data';
  */
 import { isEmpty } from 'lodash';
 import moment from 'moment';
+import 'moment-parseformat';
 import { descriptionOfErrors, fieldOptions, idFields } from './constants';
 
 /**
@@ -62,6 +63,8 @@ export const processDate = (
 	return content;
 };
 
+export const getCustomFormat = date => moment.parseFormat(date);
+
 export const cutTags = str => {
 	const regex = /( |<([^>]+)>)/gi;
 	const result = str.replace(regex, ' ');
@@ -77,12 +80,14 @@ export const getSimpleText = str => {
 };
 
 export const limitFormat = (value, limit) => {
+	if (limit === 0) return value;
+
 	const str = cutTags(value).trim();
-	return str.length > limit && limit !== 0
-		? `${str.substr(0, limit).trim()}...`
-		: limit !== 0
-		? str
-		: value;
+
+	if (str.length > limit && limit !== 0)
+		return `${str.substr(0, limit).trim()}...`;
+
+	return str;
 };
 
 // In case content is empty, show this text

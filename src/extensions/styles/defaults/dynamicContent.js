@@ -32,6 +32,9 @@ const dynamicContent = {
 		type: 'string',
 		default: 'd.m.Y t',
 	},
+	'dc-custom-format': {
+		type: 'string',
+	},
 	'dc-custom-date': {
 		type: 'boolean',
 		default: false,

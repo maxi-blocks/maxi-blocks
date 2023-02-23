@@ -276,6 +276,9 @@ class edit extends MaxiBlockComponent {
 							}
 						</RichText>
 					)}
+					{dcStatus && (
+						<DCTagName className={className}>{dcContent}</DCTagName>
+					)}
 					{!dcStatus && isList && (
 						<RichText
 							multiline='li'
@@ -363,9 +366,6 @@ class edit extends MaxiBlockComponent {
 								return null;
 							}}
 						</RichText>
-					)}
-					{dcStatus && (
-						<DCTagName className={className}>{dcContent}</DCTagName>
 					)}
 				</MaxiBlock>
 			</textContext.Provider>,

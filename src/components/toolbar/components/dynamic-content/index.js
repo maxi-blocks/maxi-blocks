@@ -22,6 +22,7 @@ import {
 	getIdOptions,
 	validationsValues,
 	getErrors,
+	getCustomFormat,
 } from './utils';
 import {
 	renderedFields,
@@ -227,21 +228,21 @@ const DynamicContent = props => {
 			contentValue = data[dataRequest.field];
 		}
 
-		const options = formatDateOptions({
-			day,
-			era,
-			hour,
-			hour12,
-			minute,
-			month,
-			second,
-			timeZone,
-			timeZoneName,
-			weekday,
-			year,
-		});
-
 		if (field === 'date') {
+			const options = formatDateOptions({
+				day,
+				era,
+				hour,
+				hour12,
+				minute,
+				month,
+				second,
+				timeZone,
+				timeZoneName,
+				weekday,
+				year,
+			});
+
 			contentValue = processDate(
 				contentValue,
 				isCustomDate,
@@ -419,6 +420,9 @@ const DynamicContent = props => {
 			if (newContent !== content)
 				return changeProps({
 					'dc-content': newContent,
+					...(dataRequest.field === 'date' && {
+						'dc-custom-format': getCustomFormat(newContent),
+					}),
 					...newDataRequest,
 				});
 		} else if (!isEmpty(newDataRequest)) return changeProps(newDataRequest);

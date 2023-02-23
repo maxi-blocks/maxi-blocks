@@ -41,8 +41,6 @@ class MaxiBlocks_Styles
             case 'map':
                 return [$meta, get_option('google_api_key_option')];
                 break;
-            case 'dynamic_content':
-                return [$meta, get_rest_url()];
             default:
                 return [$meta];
                 break;
@@ -77,7 +75,6 @@ class MaxiBlocks_Styles
                 'search',
                 'map',
                 'accordion',
-                'dynamic-content',
                 'slider'
             ];
 
@@ -196,9 +193,11 @@ class MaxiBlocks_Styles
     {
         if (!$is_template) {
             global $post;
+
             if (!$post) {
                 return null;
             }
+            
             return $post->ID;
         }
 

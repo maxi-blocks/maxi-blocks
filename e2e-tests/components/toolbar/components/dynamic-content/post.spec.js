@@ -43,11 +43,10 @@ describe('Dynamic content', () => {
 			author: 'admin',
 		};
 
-		const titleBlocks = ['text-maxi-1', 'text-maxi-8', 'text-maxi-15'];
-		const contentBlocks = ['text-maxi-2', 'text-maxi-9', 'text-maxi-16'];
-		const excerptBlocks = ['text-maxi-3', 'text-maxi-10', 'text-maxi-17'];
-		// const dateBlocks = ['text-maxi-4', 'text-maxi-11', 'text-maxi-18']; // TODO: Check if it's date format
-		const authorBlocks = ['text-maxi-5', 'text-maxi-12', 'text-maxi-19'];
+		const titleBlocks = ['text-maxi-1', 'text-maxi-15'];
+		const contentBlocks = ['text-maxi-2', 'text-maxi-16'];
+		const excerptBlocks = ['text-maxi-3', 'text-maxi-17'];
+		const authorBlocks = ['text-maxi-5', 'text-maxi-19'];
 
 		const getBackResults = async (block, type) =>
 			page.$eval(

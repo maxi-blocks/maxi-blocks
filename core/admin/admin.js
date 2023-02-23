@@ -61,26 +61,24 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 	const validationDiv = document.getElementById(
 		'maxi-google-test-map_validation-message'
 	);
+	const head = document.getElementsByTagName('head')[0];
 
 	const getGoogleApiKey = () =>
 		document.getElementById('google_api_key_option').value;
 
 	const testGoogleApiKey = () => {
-		const googleApiKey = getGoogleApiKey();
-		console.log('googleApiKey: ', googleApiKey);
-		console.log('type of googleApiKey: ', typeof googleApiKey);
+		const oldScript = document.getElementById(
+			'maxi-test-google-map-script'
+		);
+		if (oldScript) head.removeChild(oldScript);
 
-		const head = document.getElementsByTagName('head')[0];
+		const googleApiKey = getGoogleApiKey();
+
 		const script = document.createElement('script');
 		script.src = `https://maps.googleapis.com/maps/api/js?key=${googleApiKey}&callback=initMap`;
 		script.id = 'maxi-test-google-map-script';
 		script.defer = true;
 		script.async = true;
-
-		const oldScript = document.getElementById(
-			'maxi-test-google-map-script'
-		);
-		if (oldScript) head.removeChild(oldScript);
 
 		head.appendChild(script);
 		window.initMap = initTestMap;

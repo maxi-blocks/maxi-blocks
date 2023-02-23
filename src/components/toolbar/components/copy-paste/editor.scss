@@ -5,6 +5,7 @@
 		form {
 			padding: 5px;
 			background-color: var(--maxi-white-1-color);
+			min-width: max-content;
 
 			/* width */
 			&::-webkit-scrollbar {

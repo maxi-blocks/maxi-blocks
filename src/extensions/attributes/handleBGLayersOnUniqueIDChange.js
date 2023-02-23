@@ -18,8 +18,10 @@ const handleBGLayersOnUniqueIDChange = (attributes, rawBackgroundLayers) => {
 	backgroundLayers.forEach(layer => {
 		const { uniqueID } = attributes;
 		const SVGData = layer?.['background-svg-SVGData'];
+		if (!SVGData) return;
+
 		const id = Object.keys(SVGData)[0];
-		if (!SVGData || id.includes(uniqueID)) return;
+		if (id.includes(uniqueID)) return;
 
 		const newId = id.replace(/^(.*?)(?=(__))/, uniqueID);
 		SVGData[newId] = { ...SVGData[id] };

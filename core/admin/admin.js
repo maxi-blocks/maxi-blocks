@@ -62,10 +62,14 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		'maxi-google-test-map_validation-message'
 	);
 
+	const getGoogleApiKey = () =>
+		document.getElementById('google_api_key_option').value;
+
 	const testGoogleApiKey = () => {
-		const googleApiKey = document.getElementById(
-			'google_api_key_option'
-		).value;
+		const googleApiKey = getGoogleApiKey();
+		console.log('googleApiKey: ', googleApiKey);
+		console.log('type of googleApiKey: ', typeof googleApiKey);
+
 		const head = document.getElementsByTagName('head')[0];
 		const script = document.createElement('script');
 		script.src = `https://maps.googleapis.com/maps/api/js?key=${googleApiKey}&callback=initMap`;
@@ -81,28 +85,30 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		head.appendChild(script);
 		window.initMap = initTestMap;
 		validationDiv.innerHTML = '';
-		validationDiv.classList.remove('map-error', 'map-valid');
+		validationDiv.classList.remove('map-error');
 	};
 
 	const googleMapsCustomValidation = type => {
+		const googleApiKey = getGoogleApiKey();
 		let validationMessage = '';
-		switch (type) {
-			case 'InvalidKeyMapError':
-				validationMessage =
-					'Invalid API Key, please check your key and try again';
-				break;
-			case 'RefererNotAllowedMapError':
-				validationMessage =
-					'Referer not allowed, please allow your domain for that key';
-			case 'EmptyKeyMapError':
-				validationMessage = 'Please add your Google Maps API key';
-			case 'valid':
-				validationMessage = 'Valid key, you may now use Google Maps';
 
-			default:
-				validationMessage = 'Google Maps API error';
-				break;
-		}
+		if (googleApiKey === '') {
+			validationMessage = 'Please add your Google Maps API key';
+		} else
+			switch (type) {
+				case 'InvalidKeyMapError':
+					validationMessage =
+						'Invalid API Key, please check your key and try again';
+					break;
+				case 'RefererNotAllowedMapError':
+					validationMessage =
+						'Referer not allowed, please allow your domain for that key';
+				case 'EmptyKeyMapError':
+					validationMessage = 'Please add your Google Maps API key';
+
+				default:
+					break;
+			}
 
 		validationDiv.classList.add('map-error');
 		validationDiv.innerHTML = validationMessage;

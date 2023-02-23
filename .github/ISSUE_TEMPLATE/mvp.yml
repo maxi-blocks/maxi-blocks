@@ -1,0 +1,29 @@
+name: MVP legacy
+description: Better issue fixes for MVP solutions
+labels: ['mvp legacy']
+body:
+    - type: textarea
+      attributes:
+          label: Original issue
+          description: Describe the original issue and add a link to it.
+          placeholder: |
+              The original issue is:
+      validations:
+          required: true
+
+    - type: textarea
+      attributes:
+          label: MVP solution
+          description: How the issue has been fixed with the MVP solution? Share the PR link.
+          placeholder: |
+              The issue has been fixed by
+      validations:
+          required: true
+
+    - type: textarea
+      attributes:
+          label: How to fix it
+          description: |
+              Please, if you have an idea or suggestion how to fix the bug, write it here.
+      validations:
+          required: false

@@ -1,12 +1,12 @@
 /**
- * External dependencies
- */
-import { isEmpty, pickBy, uniq, without } from 'lodash';
-
-/**
  * Internal dependencies
  */
 import { getBgLayersSelectorsCss } from '../custom-css-control/utils';
+
+/**
+ * External dependencies
+ */
+import { isEmpty, pickBy, uniq, without } from 'lodash';
 
 const getBgLayersSelectorsKeys = bgLayersSelectors =>
 	uniq(
@@ -26,7 +26,7 @@ const getKey = key => {
 	}
 };
 
-export const getTransformSelectors = (selectors, attributes) => {
+export const getTransformSelectors = (selectors, attributes = {}) => {
 	const {
 		'background-layers': bgLayers = [],
 		'background-layers-hover': bgLayersHover = [],
@@ -34,6 +34,7 @@ export const getTransformSelectors = (selectors, attributes) => {
 
 	const bgLayersSelectors = getBgLayersSelectorsCss(
 		[...bgLayers, ...bgLayersHover],
+		false,
 		false
 	);
 

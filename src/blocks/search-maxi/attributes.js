@@ -6,7 +6,7 @@ import {
 	prefixAttributesCreator,
 	transitionAttributesCreator,
 } from '../../extensions/styles';
-import { prefixes, transition } from './data';
+import { customCss, prefixes, transition } from './data';
 
 const { buttonPrefix, closeIconPrefix, inputPrefix } = prefixes;
 
@@ -156,7 +156,10 @@ const attributes = {
 	...attributesData.transform,
 	...{
 		...attributesData.transition,
-		...transitionAttributesCreator(transition),
+		...transitionAttributesCreator({
+			transition,
+			selectors: customCss.selectors,
+		}),
 	},
 	...attributesData.display,
 	...attributesData.opacity,

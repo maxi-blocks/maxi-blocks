@@ -3,23 +3,29 @@
  */
 import { isNil, isEmpty, without } from 'lodash';
 
-export function getBgLayersSelectorsCss(bgLayers, addOnHoverToLabel = true) {
+export function getBgLayersSelectorsCss(
+	bgLayers,
+	addOnHoverToLabel = true,
+	addBackgroundWrapper = true
+) {
 	const onHoverString = addOnHoverToLabel ? ' on hover' : '';
 
-	const bgLayersSelectors = {
-		background: {
-			'background-displayer': {
-				label: 'background wrapper',
-				target: ' > .maxi-background-displayer',
-			},
-		},
-		'background hover': {
-			'background-displayer': {
-				label: `background wrapper${onHoverString}`,
-				target: ':hover > .maxi-background-displayer',
-			},
-		},
-	};
+	const bgLayersSelectors = addBackgroundWrapper
+		? {
+				background: {
+					'background-displayer': {
+						label: 'background wrapper',
+						target: ' > .maxi-background-displayer',
+					},
+				},
+				'background hover': {
+					'background-displayer': {
+						label: `background wrapper${onHoverString}`,
+						target: ':hover > .maxi-background-displayer',
+					},
+				},
+		  }
+		: {};
 	let bgLayersShowedOrder = 1;
 	let bgHoverLayersShowedOrder = 1;
 

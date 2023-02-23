@@ -513,7 +513,6 @@ const LibraryContainer = props => {
 				isBeta={hit.post_tag?.includes('Beta')}
 				isPro={hit.cost?.[0] === 'Pro'}
 				taxonomies={hit.category?.[0]}
-				serial={hit.post_title}
 				toneUrl={isPattern ? hit.link_to_related : null}
 				gutenbergCode={hit.gutenberg_code}
 				isMaxiProActive={isMaxiProActive}

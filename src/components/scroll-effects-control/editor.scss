@@ -6,6 +6,11 @@
 			font-size: 12px;
 		}
 	}
+	.maxi-scroll-combinations-select .maxi-base-control__field {
+		flex-direction: column;
+		row-gap: 5px;
+		align-items: flex-start;
+	}
 	.components-button {
 		box-shadow: none;
 		transition: all 0.5s;

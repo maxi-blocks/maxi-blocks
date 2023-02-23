@@ -519,6 +519,7 @@ const ScrollEffectsControl = props => {
 	return (
 		<div className={classes}>
 			<SelectControl
+				className='maxi-scroll-combinations-select'
 				label={__('Scroll combinations', 'maxi-blocks')}
 				onChange={val => onChangeShortcut(val)}
 				value={props.shortcutEffect}

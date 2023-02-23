@@ -8,7 +8,7 @@ export const typeOptions = [
 	{ label: __('Page', 'maxi-blocks'), value: 'pages' },
 	{ label: __('Site', 'maxi-blocks'), value: 'settings' },
 	{ label: __('Media', 'maxi-blocks'), value: 'media' },
-	{ label: __('Author', 'maxi-blocks'), value: 'users' },
+	{ label: __('Author', 'maxi-blocks'), value: 'users' }, // TODO: add author support
 	{ label: __('Categories', 'maxi-blocks'), value: 'categories' },
 	{ label: __('Tags', 'maxi-blocks'), value: 'tags' },
 ];
@@ -19,12 +19,9 @@ export const relationOptionsPosts = [
 	// { label: __('Date', 'maxi-blocks'), value: 'date' },	// TODO: add date support
 	// { label: __('Modified', 'maxi-blocks'), value: 'modified' },	// TODO: add modified support
 ];
-export const relationOptionsUsers = [
-	{ label: __('Get by author', 'maxi-blocks'), value: 'author' },
-];
 export const relationOptionsPages = [
 	{ label: __('Get by id', 'maxi-blocks'), value: 'by-id' },
-	{ label: __('Get by author', 'maxi-blocks'), value: 'author' },
+	// { label: __('Get by author', 'maxi-blocks'), value: 'author' }, // TODO: add author support
 	{ label: __('Get random'), value: 'random' },
 ];
 export const relationOptionsCategories = [
@@ -40,7 +37,6 @@ export const relationOptions = {
 	pages: relationOptionsPages,
 	settings: relationOptionsPosts,
 	media: relationOptionsPosts,
-	users: relationOptionsUsers,
 	categories: relationOptionsCategories,
 	tags: relationOptionsTags,
 };
@@ -146,7 +142,7 @@ export const relationTypes = [
 	'media',
 	'categories',
 	'tags',
-	// 'users', // TODO: Add support for users
+	'users', // TODO: Add support for users
 ];
 
 // Random get-by types

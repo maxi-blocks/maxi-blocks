@@ -37,7 +37,7 @@ import {
 /**
  * External dependencies
  */
-import { find, isEmpty, isFinite, isNil, capitalize } from 'lodash';
+import { find, isEmpty, isFinite, isNil, capitalize, isEqual } from 'lodash';
 
 /**
  * Styles & Icons
@@ -68,7 +68,7 @@ const DynamicContent = props => {
 		'dc-timezone-name': timeZoneName,
 		'dc-weekday': weekday,
 		'dc-year': year,
-		'dc-timezone': zone,
+		'dc-timezone': zone, // TODO: repeated!
 	} = dynamicContent;
 
 	const [status, setStatus] = useState(dynamicContent['dc-status']);
@@ -81,7 +81,6 @@ const DynamicContent = props => {
 	const [limit, setLimit] = useState(dynamicContent['dc-limit']);
 	const [error, setError] = useState(dynamicContent['dc-error']);
 
-	const [isEmptyIdOptions, setIsEmptyIdOptions] = useState(true);
 	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
 	const [postIdOptions, setPostIdOptions] = useState(null);
 
@@ -117,7 +116,39 @@ const DynamicContent = props => {
 	const changeProps = (params, updateStates = true) => {
 		if (updateStates) updateState(params);
 
-		onChange(params);
+		const newProps = {
+			'dc-status': status,
+			'dc-type': type,
+			'dc-relation': relation,
+			'dc-id': id,
+			'dc-field': field,
+			'dc-author': author,
+			'dc-show': show,
+			'dc-limit': limit,
+			'dc-error': error,
+			'dc-content': content,
+			'dc-custom-date': isCustomDate,
+			'dc-day': day,
+			'dc-era': era,
+			'dc-format': format,
+			'dc-hour': hour,
+			'dc-hour12': hour12,
+			'dc-minute': minute,
+			'dc-month': month,
+			'dc-second': second,
+			'dc-locale': locale,
+			'dc-timezone': timeZone,
+			'dc-timezone-name': timeZoneName,
+			'dc-weekday': weekday,
+			'dc-year': year,
+			...params,
+		};
+
+		const hasChangesToSave = Object.entries(newProps).some(
+			([key, val]) => dynamicContent[key] !== val
+		);
+
+		if (hasChangesToSave) onChange(newProps);
 	};
 
 	const disabledType = (valueType, thisType = 'type') => {
@@ -131,87 +162,67 @@ const DynamicContent = props => {
 		hide(thisType === 'relation' ? relationOptions : typeOptions);
 	};
 
-	const setIdOptions = async (
-		thisType = type,
-		defaultValues = {},
-		thisRelation = relation
-	) => {
-		const data = await getIdOptions(
-			thisType,
-			defaultValues,
-			thisRelation,
-			author
-		);
+	const getIDOptions = async () => {
+		const data = await getIdOptions(type, relation, author);
 
 		if (!data) return null;
 
-		// Set default values in case they are not defined
-		// const relation = defaultValues['dc-relation'] ?? relation;
-		const {
-			'dc-relation': optRelation = relation,
-			'dc-type': optType = type,
-			'dc-id': optId = id,
-		} = defaultValues;
+		const newValues = {};
 
 		const newPostIdOptions = data.map(item => {
+			if (['tags', 'categories'].includes(type)) {
+				return {
+					label: item.name,
+					value: +item.id,
+				};
+			}
+
 			return {
 				label: `${item.id} - ${
-					item[idOptionByField[thisType]]?.rendered ??
-					item[idOptionByField[thisType]]
+					item[idOptionByField[type]]?.rendered ??
+					item[idOptionByField[type]]
 				}`,
 				value: +item.id,
 			};
 		});
 
-		if (isEmpty(newPostIdOptions)) {
-			if (optRelation === 'author')
-				defaultValues['dc-error'] = optRelation;
+		if (!isEqual(newPostIdOptions, postIdOptions)) {
+			if (isEmpty(newPostIdOptions)) {
+				if (relation === 'author') newValues['dc-error'] = relation;
 
-			if (['tags', 'media'].includes(optType)) {
-				defaultValues['dc-error'] = optType;
-				disabledType(thisType);
+				if (['tags', 'media'].includes(type)) {
+					newValues['dc-error'] = type;
+					disabledType(type);
+				}
+
+				return { newValues, newPostIdOptions: [] };
 			}
-
-			setIsEmptyIdOptions(true);
-			if (!isEmpty(defaultValues)) changeProps(defaultValues);
-		} else {
-			if (optRelation === 'author') changeProps({ 'dc-error': '' });
-
-			setIsEmptyIdOptions(false);
-			setPostIdOptions(newPostIdOptions);
+			if (relation === 'author') newValues['dc-error'] = '';
 
 			// Ensures first post id is selected
-			if (isEmpty(find(newPostIdOptions, { value: optId }))) {
-				defaultValues['dc-id'] = Number(data[0].id);
+			if (isEmpty(find(newPostIdOptions, { value: id }))) {
+				newValues['dc-id'] = Number(data[0].id);
 				idFields.current = data[0].id;
 			}
 
 			// Ensures first field is selected
-			if (!field)
-				defaultValues['dc-field'] = fieldOptions[optType][0].value;
+			if (!field) newValues['dc-field'] = fieldOptions[type][0].value;
 
-			if (!isEmpty(defaultValues)) updateState(defaultValues);
+			return { newValues, newPostIdOptions };
 		}
 
-		return newPostIdOptions;
+		return null;
 	};
 
 	const getContentValue = async (dataRequest, data) => {
 		let contentValue;
 
-		if (data.id) updateState({ 'dc-id': Number(data.id) });
-
 		if (
 			renderedFields.includes(dataRequest.field) &&
-			!isNil(data[dataRequest.field]?.rendered)
+			!isNil(data[dataRequest.field]?.rendered) &&
+			!['tags', 'categories'].includes(dataRequest.type)
 		) {
 			contentValue = data[dataRequest.field].rendered;
-		} else if (dataRequest.field === 'author') {
-			const { getUsers } = resolveSelect('core');
-
-			const user = await getUsers({ p: data[dataRequest.field] });
-
-			if (user) contentValue = user[0].name;
 		} else {
 			contentValue = data[dataRequest.field];
 		}
@@ -262,24 +273,44 @@ const DynamicContent = props => {
 			dataRequest.id = author ?? id;
 		}
 
-		const dictionary = {
+		const kindDictionary = {
+			posts: 'postType',
+			pages: 'postType',
+			media: 'postType',
+			settings: 'root',
+			categories: 'taxonomy',
+			tags: 'taxonomy',
+		};
+		const nameDictionary = {
 			posts: 'post',
 			pages: 'page',
 			media: 'attachment',
 			settings: '__unstableBase',
+			categories: 'category',
+			tags: 'post_tag',
 		};
 
+		if (type === 'users') {
+			const { getUsers } = resolveSelect('core');
+
+			const user = await getUsers({ p: author });
+
+			return getContentValue(dataRequest, user[0]);
+		}
 		if (relationTypes.includes(type) && relation === 'random') {
 			const randomEntity = await resolveSelect('core').getEntityRecords(
-				'postType',
-				dictionary[type],
+				kindDictionary[type],
+				nameDictionary[type],
 				{
-					per_page: 1,
-					orderby: 'rand',
+					per_page: 100,
+					hide_empty: false,
 				}
 			);
 
-			return getContentValue(dataRequest, randomEntity[0]);
+			return getContentValue(
+				dataRequest,
+				randomEntity[Math.floor(Math.random() * randomEntity.length)]
+			);
 		}
 		if (type === 'settings') {
 			const canEdit = await resolveSelect('core').canUser(
@@ -288,23 +319,36 @@ const DynamicContent = props => {
 			);
 			const settings = canEdit
 				? await resolveSelect('core').getEditedEntityRecord(
-						'root',
+						kindDictionary[type],
 						'site'
 				  )
 				: {};
 			const readOnlySettings = await resolveSelect(
 				'core'
-			).getEntityRecord('root', '__unstableBase');
+			).getEntityRecord(kindDictionary[type], '__unstableBase');
 
 			const siteEntity = canEdit ? settings : readOnlySettings;
 
 			return getContentValue(dataRequest, siteEntity);
 		}
+		if (['tags', 'categories'].includes(type)) {
+			const termsEntity = await resolveSelect('core').getEntityRecords(
+				kindDictionary[type],
+				nameDictionary[type],
+				{
+					per_page: 1,
+					hide_empty: false,
+					include: id,
+				}
+			);
+
+			return getContentValue(dataRequest, termsEntity[0]);
+		}
 
 		// Get selected entity
 		const entity = await resolveSelect('core').getEntityRecord(
-			'postType',
-			dictionary[type] ?? type,
+			kindDictionary[type],
+			nameDictionary[type] ?? type,
 			id,
 			{
 				per_page: 1,
@@ -338,27 +382,55 @@ const DynamicContent = props => {
 			}
 		}
 
+		let newDataRequest;
+		let newPostIdOptions;
+
+		// Sets new content
+		if (status && relationTypes.includes(type)) {
+			const postIDSettings = await getIDOptions();
+
+			if (postIDSettings) {
+				const { newValues, newPostIdOptions: rawNewPostIdOptions } =
+					postIDSettings;
+
+				newDataRequest = newValues;
+				newPostIdOptions = rawNewPostIdOptions;
+			}
+		}
+
+		const dataRequest = { type, id, field };
+
+		if (newDataRequest) {
+			if ('dc-id' in newDataRequest)
+				dataRequest.id = newDataRequest['dc-id'];
+			if ('dc-field' in newDataRequest)
+				dataRequest.field = newDataRequest['dc-field'];
+		}
+
 		// Sets new content
 		if (
 			status &&
-			!isNil(type) &&
-			!isNil(field) &&
-			(!isNil(id) || type === 'settings') // id is not necessary for site settings
+			!isNil(dataRequest.type) &&
+			!isNil(dataRequest.field) &&
+			(!isNil(dataRequest.id) || type === 'settings') // id is not necessary for site settings
 		) {
-			const newContent = sanitizeContent(
-				await getContent({ type, id, field })
-			);
+			const newContent = sanitizeContent(await getContent(dataRequest));
 
 			if (newContent !== content)
-				onChange({
+				return changeProps({
 					'dc-content': newContent,
+					...newDataRequest,
 				});
-		}
-	});
+		} else if (!isEmpty(newDataRequest)) return changeProps(newDataRequest);
 
-	useEffect(async () => {
-		if (relation === 'by-id') await setIdOptions(type, {}, relation);
-	}, [status, type, relation, author]);
+		if (
+			!isNil(newPostIdOptions) &&
+			!isEqual(postIdOptions, newPostIdOptions)
+		)
+			setPostIdOptions(newPostIdOptions);
+
+		return null;
+	});
 
 	const handleDateCallback = childData => {
 		onChange({
@@ -391,7 +463,7 @@ const DynamicContent = props => {
 				<ToggleSwitch
 					label={__('Use dynamic content', 'maxi-blocks')}
 					selected={status}
-					onChange={value => changeProps({ 'dc-status': value })}
+					onChange={value => updateState({ 'dc-status': value })}
 				/>
 				{status && (
 					<>
@@ -406,7 +478,7 @@ const DynamicContent = props => {
 										field
 									);
 
-									changeProps({
+									updateState({
 										'dc-type': value,
 										'dc-show': 'current',
 										'dc-error': '',
@@ -415,7 +487,7 @@ const DynamicContent = props => {
 								}}
 							/>
 						)}
-						{!postIdOptions && type !== 'settings' ? (
+						{isEmpty(postIdOptions) && type !== 'settings' ? (
 							<p>{__('This type is empty', 'maxi-blocks')}</p>
 						) : (
 							<>
@@ -425,7 +497,7 @@ const DynamicContent = props => {
 										value={relation}
 										options={relationOptions[type]}
 										onChange={value =>
-											changeProps({
+											updateState({
 												'dc-relation': value,
 												'dc-show': 'current',
 												'dc-error': '',
@@ -444,7 +516,7 @@ const DynamicContent = props => {
 											value={author}
 											options={postAuthorOptions}
 											onChange={value =>
-												changeProps({
+												updateState({
 													'dc-author': Number(value),
 												})
 											}
@@ -460,13 +532,9 @@ const DynamicContent = props => {
 												'maxi-blocks'
 											)}
 											value={id}
-											options={
-												!isEmptyIdOptions
-													? postIdOptions
-													: {}
-											}
+											options={postIdOptions}
 											onChange={value =>
-												changeProps({
+												updateState({
 													'dc-error': '',
 													'dc-show': 'current',
 													'dc-id': Number(value),
@@ -479,7 +547,7 @@ const DynamicContent = props => {
 										(relation === 'by-id' &&
 											isFinite(id)) ||
 										(relation === 'author' &&
-											!isEmptyIdOptions) ||
+											!isEmpty(postIdOptions)) ||
 										['date', 'modified', 'random'].includes(
 											relation
 										)) && (
@@ -488,7 +556,7 @@ const DynamicContent = props => {
 											value={field}
 											options={fieldOptions[type]}
 											onChange={value =>
-												changeProps({
+												updateState({
 													'dc-field': value,
 												})
 											}
@@ -503,7 +571,7 @@ const DynamicContent = props => {
 											)}
 											value={limit}
 											onChangeValue={value =>
-												changeProps({
+												updateState({
 													'dc-limit': Number(value),
 												})
 											}
@@ -515,7 +583,7 @@ const DynamicContent = props => {
 												limitOptions.withInputField
 											}
 											onReset={() =>
-												changeProps({
+												updateState({
 													'dc-limit': Number(
 														limitOptions.defaultValue ||
 															'150'

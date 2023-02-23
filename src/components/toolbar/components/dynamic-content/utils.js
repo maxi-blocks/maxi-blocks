@@ -21,6 +21,7 @@ export const getCPTOptions = () => {
 
 /**
  * TODO: Returns an array of CT (Custom Taxonomies) options for a SelectControl
+ * wp.data.select( 'core' ).getTaxonomies( { type: 'post' } )
  */
 export const getCTOptions = () => {
 	return [{}];
@@ -90,7 +91,7 @@ export const sanitizeContent = content =>
 		? __(content, 'maxi-blocks')
 		: __('No content found', 'maxi-blocks');
 
-export const getIdOptions = async (type, defaultValues, relation, author) => {
+export const getIdOptions = async (type, relation, author) => {
 	if (!idFields.includes(type) || (relation === 'author' && !author))
 		return false;
 
@@ -112,9 +113,13 @@ export const getIdOptions = async (type, defaultValues, relation, author) => {
 				name,
 			}));
 		}
+	} else if (type === 'categories') {
+		data = await getEntityRecords('taxonomy', 'category');
+	} else if (type === 'tags') {
+		data = await getEntityRecords('taxonomy', 'post_tag');
 	} else if (relation === 'author') {
 		data = await getEntityRecords('postType', dictionary[type], {
-			author: defaultValues.author ? defaultValues['dc-autor'] : author,
+			author,
 		});
 	} else {
 		data = await getEntityRecords('postType', dictionary[type]);

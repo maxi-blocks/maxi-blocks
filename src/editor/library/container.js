@@ -491,10 +491,6 @@ const LibraryContainer = props => {
 	const isMaxiProActive = false;
 	/** Patterns / Blocks Results */
 	const patternsResults = hit => {
-		const wrapClassName =
-			hit.cost?.[0] === 'Pro'
-				? 'ais-InfiniteHits-item-pro'
-				: 'ais-InfiniteHits-item-free';
 		const isPattern = hit?.gutenberg_type?.[0] === 'Patterns';
 
 		return (
@@ -502,10 +498,12 @@ const LibraryContainer = props => {
 				type='patterns'
 				target='patterns'
 				key={`maxi-cloud-masonry__item-${hit.post_id}`}
-				className={
-					(wrapClassName,
-					hit.post_title.length > 23 ? 'long-title' : '')
-				}
+				className={classnames(
+					hit.cost?.[0] === 'Pro'
+						? 'ais-InfiniteHits-item-pro'
+						: 'ais-InfiniteHits-item-free',
+					hit.post_title.length > 23 && 'maxi-modal-long-title'
+				)}
 				title={hit.post_title}
 				demoUrl={hit.demo_url}
 				previewIMG={hit.preview_image_url}

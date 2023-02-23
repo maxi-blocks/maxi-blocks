@@ -270,4 +270,30 @@ html[dir='rtl'] {
 		border-left: 1px solid var(--maxi-grey-1-color);
 		border-right: none;
 	}
+	.sidebar-block-info {
+		padding-right: 5px;
+		padding-left: 0;
+
+		.maxi-block-style-preview {
+			margin-right: 10px;
+			margin-left: 0;
+		}
+		.maxi-text-control__input {
+			padding-right: 10px !important;
+			padding-left: 0 !important;
+		}
+		.maxi-select-control__input {
+			padding-right: 12px !important;
+			padding-left: 0 !important;
+		}
+		.block-style-label-2,
+		.maxi-base-control__label {
+			left: auto;
+			right: 8px;
+		}
+		.block-info-icon {
+			left: 5px;
+			right: auto;
+		}
+	}
 }

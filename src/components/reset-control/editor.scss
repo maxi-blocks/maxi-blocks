@@ -30,9 +30,6 @@
 		margin: auto;
 		fill: var(--maxi-black-1-color);
 	}
-	@at-root .rtl #{&} {
-		margin-right: 4px;
-	}
 }
 .maxi-color-control__palette-label {
 	.maxi-reset-button {
@@ -66,5 +63,17 @@
 		&:focus {
 			border-color: var(--maxi-grey-6-color);
 		}
+	}
+}
+
+/*******************************
+* RTL
+*******************************/
+html[dir='rtl'] {
+	.maxi-reset-button {
+		right: unset;
+		left: 0;
+		margin-left: 0 !important;
+		margin-right: 4px !important;
 	}
 }

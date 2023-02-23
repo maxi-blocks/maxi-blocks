@@ -275,14 +275,6 @@ body.maxi-blocks--active .components-tooltip {
 	pointer-events: none;
 }
 
-body.maxi-blocks--active.rtl .maxi-sidebar,
-body.rtl .maxi-popover,
-body.rtl .toolbar-item__popover {
-	input[type='number'] {
-		padding: 0 8px 0 0px;
-	}
-}
-
 body .toolbar-item__popover {
 	input[type='text'],
 	input[type='number'],
@@ -418,13 +410,51 @@ svg path#styleCardBoat_b,
 	}
 }
 
+/***************
+* Upload button
+***************/
+.maxi-settings-media-upload {
+	&__button {
+		width: 30px;
+		height: 30px;
+		box-shadow: -3px 3px 6px 0px rgb(0 0 0 / 16%) !important;
+		border-radius: 0;
+		background: #fff;
+		visibility: visible;
+		transition: 0.3s;
+
+		svg {
+			fill: #007cba;
+			width: 15px;
+			height: 15px;
+		}
+		&:hover {
+			svg {
+				fill: #ff4a17;
+			}
+		}
+	}
+}
+
+/**
+* Hide scrollbar in iframe editor #3574
+*/
+body[maxi-blocks-responsive] {
+	&::-webkit-scrollbar {
+		width: 0;
+	}
+}
+
 /*******************************
 * RTL
 *******************************/
 
 html[dir='rtl'] {
-	.interface-interface-skeleton__sidebar {
-		scrollbar-gutter: unset;
+	.maxi-sidebar {
+		padding-left: 20px;
+		input[type='number'] {
+			padding-right: 8px;
+		}
 	}
 	.maxi-color-control
 		.chrome-picker
@@ -476,50 +506,12 @@ html[dir='rtl'] {
 	.maxi-advanced-number-control .maxi-base-control__field > *,
 	.maxi-advanced-number-control .components-base-control__field > * {
 		margin-left: 0;
-		margin-right: 4px;
+		margin-right: 4px !important;
 	}
 	.maxi-tab-content__box
 		.maxi-base-control.maxi-typography-control__orientation,
 	.maxi-tab-content__box
 		.maxi-base-control.maxi-typography-control__direction {
 		margin-bottom: 8px;
-	}
-	.rtl .maxi-base-control .components-maxi-control__reset-button {
-		margin-left: 0;
-	}
-}
-
-/***************
-* Upload button
-***************/
-.maxi-settings-media-upload {
-	&__button {
-		width: 30px;
-		height: 30px;
-		box-shadow: -3px 3px 6px 0px rgb(0 0 0 / 16%) !important;
-		border-radius: 0;
-		background: #fff;
-		visibility: visible;
-		transition: 0.3s;
-
-		svg {
-			fill: #007cba;
-			width: 15px;
-			height: 15px;
-		}
-		&:hover {
-			svg {
-				fill: #ff4a17;
-			}
-		}
-	}
-}
-
-/**
-* Hide scrollbar in iframe editor #3574
-*/
-body[maxi-blocks-responsive] {
-	&::-webkit-scrollbar {
-		width: 0;
 	}
 }

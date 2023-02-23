@@ -34,6 +34,7 @@ const SquareControl = props => {
 		xUnit = null,
 		y,
 		yUnit = null,
+		breakpoint,
 		onChange,
 		onSave,
 		type = 'resize',
@@ -245,6 +246,7 @@ const SquareControl = props => {
 							topLeft: true,
 						}}
 						lockAspectRatio={sync}
+						deviceType={breakpoint}
 						onResize={(event, direction, elt) => {
 							changeXAxis(
 								pxToPercent(elt.style.width.replace('px', ''))

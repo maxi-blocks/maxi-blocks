@@ -49,7 +49,7 @@ const addMoreSC = async (title = 'Daemon') => {
 	);
 };
 
-const switchSC = async (title = 'Daemon') => {
+const switchSC = async (title = 'Template: Daemon') => {
 	await page.$eval('.maxi-style-cards__sc__more-sc--select input', input =>
 		input.focus()
 	);

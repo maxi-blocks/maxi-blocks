@@ -41,7 +41,7 @@ const MasonryItem = props => {
 		gutenbergCode,
 	} = props;
 
-	const getCardSerial = (string = serial) => {
+	const getCardSerial = (string = title) => {
 		const sub = string?.lastIndexOf(' ');
 		const response = string?.substring(sub + 1);
 		return response?.toLowerCase();

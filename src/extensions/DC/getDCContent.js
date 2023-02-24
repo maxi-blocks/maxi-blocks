@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { resolveSelect } from '@wordpress/data';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -9,7 +10,7 @@ import { resolveSelect } from '@wordpress/data';
 import { relationTypes, renderedFields } from './constants';
 import getDCErrors from './getDCErrors';
 import { getSimpleText, limitFormat } from './utils';
-import processDCDate, { formatDateOptions } from './date/processDCDate';
+import processDCDate, { formatDateOptions } from './processDCDate';
 
 /**
  * External dependencies
@@ -48,15 +49,43 @@ const getContentValue = async (dataRequest, data) => {
 			locale,
 			options
 		);
-	} else if (field === 'excerpt') {
-		contentValue = limitFormat(contentValue, limit);
-	} else if (field === 'content') {
-		contentValue = limitFormat(getSimpleText(contentValue), limit);
+	} else if (['excerpt', 'content'].includes(field)) {
+		// Parse content value
+		if (typeof contentValue === 'string') {
+			const parser = new DOMParser();
+			const doc = parser.parseFromString(contentValue, 'text/html');
+			contentValue = doc.body.textContent;
+		}
+
+		if (field === 'excerpt') {
+			contentValue = limitFormat(contentValue, limit);
+		}
+		if (field === 'content') {
+			contentValue = limitFormat(getSimpleText(contentValue), limit);
+		}
+	} else if (field === 'author') {
+		const { getUsers } = resolveSelect('core');
+
+		const user = await getUsers({ p: contentValue });
+
+		contentValue = user[0].name;
+	}
+	if (['tags', 'categories'].includes(type) && field === 'parent') {
+		if (!contentValue || contentValue === 0)
+			contentValue = __('No parent', 'maxi-blocks');
+		else {
+			const { getEntityRecords } = resolveSelect('core');
+
+			const parent = await getEntityRecords('taxonomy', type, {
+				per_page: 1,
+				include: contentValue,
+			});
+
+			contentValue = parent[0].name;
+		}
 	}
 
-	if (contentValue) {
-		return contentValue;
-	}
+	if (contentValue) return contentValue;
 
 	return null;
 };

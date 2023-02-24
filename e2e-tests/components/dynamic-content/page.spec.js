@@ -7,20 +7,18 @@ import {
 	pressKeyWithModifier,
 	openPreviewPage,
 } from '@wordpress/e2e-test-utils';
-import addImageToLibrary from '../../../../utils/addImageToLibrary';
 
 /**
  * Internal dependencies
  */
-import { mediaCodeEditor } from './content';
+import { pageCodeEditor } from './content';
 
 describe('Dynamic content', () => {
-	test('Should return media DC content', async () => {
+	test('Should return page DC content', async () => {
 		await createNewPost();
-		await addImageToLibrary(page);
 
 		// Set code editor as clipboard data
-		const codeEditor = mediaCodeEditor;
+		const codeEditor = pageCodeEditor;
 		await setClipboardData({ plainText: codeEditor });
 
 		// Set title
@@ -37,17 +35,18 @@ describe('Dynamic content', () => {
 
 		// Check backend
 		const expectedResults = {
-			title: 'Delete Key',
-			content: 'Delete Key',
-			excerpt: 'Delete Key',
+			title: 'Sample Page',
+			content:
+				'This is an example page. It’s different from a blog post because it will stay in one place and will…',
+			excerpt:
+				'This is an example page. It’s different from a blog post because it will stay in one place and will…',
 			author: 'admin',
 		};
 
-		const titleBlocks = ['text-maxi-1', 'text-maxi-8', 'text-maxi-15'];
-		const contentBlocks = ['text-maxi-2', 'text-maxi-9', 'text-maxi-16'];
-		const excerptBlocks = ['text-maxi-3', 'text-maxi-10', 'text-maxi-17'];
-		// const dateBlocks = ['text-maxi-4', 'text-maxi-11', 'text-maxi-18']; // TODO: Check if it's date format
-		const authorBlocks = ['text-maxi-5', 'text-maxi-12', 'text-maxi-19'];
+		const titleBlocks = ['text-maxi-1', 'text-maxi-15'];
+		const contentBlocks = ['text-maxi-2', 'text-maxi-16'];
+		const excerptBlocks = ['text-maxi-3', 'text-maxi-17'];
+		const authorBlocks = ['text-maxi-5', 'text-maxi-19'];
 
 		const getBackResults = async (block, type) =>
 			page.$eval(
@@ -107,7 +106,6 @@ describe('Dynamic content', () => {
 		const frontAuthorResults = await Promise.all(
 			authorBlocks.map(block => getFrontResults(block, 'author'))
 		);
-
 		const frontResults = [
 			...frontTitleResults,
 			...frontContentResults,

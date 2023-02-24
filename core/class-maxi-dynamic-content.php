@@ -75,6 +75,10 @@ class MaxiBlocks_DynamicContent
             $response = self::get_date($response, $attributes);
         }
 
+        if (empty($response)) {
+            $response = 'No content found';
+        }
+
         $content = str_replace('$text-to-replace', $response, $content);
 
         return $content;
@@ -139,7 +143,8 @@ class MaxiBlocks_DynamicContent
 
             // Limit content
             if ($dc_limit > 0 && strlen($post_data) > $dc_limit) {
-                $post_data = substr($post_data, 0, $dc_limit) . '...';
+                $post_data = trim($post_data);
+                $post_data = substr($post_data, 0, $dc_limit - 1) . '…';
             }
         }
 
@@ -174,16 +179,25 @@ class MaxiBlocks_DynamicContent
             'dc-field' => $dc_field,
         ) = $attributes;
 
+        if (empty($dc_relation)) {
+            $dc_relation = 'id';
+        }
+
         $args = [
             'post_type' => 'attachment',
             'posts_per_page' => 1,
         ];
 
         // DC Relation
+        $is_random = $dc_relation == 'random';
         if ($dc_relation == 'id') {
             $args['p'] = $dc_id;
-        } elseif ($dc_relation == 'random') {
-            $args['orderby'] = 'rand';
+        } if ($is_random) {
+            $args= [
+                'post_type' => 'attachment',
+                'post_status' => 'inherit',
+               'posts_per_page' => -1
+            ];
         }
 
         $query = new WP_Query($args);
@@ -194,7 +208,20 @@ class MaxiBlocks_DynamicContent
             $dc_field = 'content';
         }
 
-        $media_data = $query->post->{"post_$dc_field"};
+        $post;
+
+        if ($is_random) {
+            $posts = $query->posts;
+            $post = $posts[array_rand($posts)];
+        } else {
+            $post = $query->post;
+        }
+
+        $media_data = $post->{"post_$dc_field"};
+
+        if ($dc_field === 'author') {
+            $media_data = get_the_author_meta('display_name', $query->post->post_author);
+        }
 
         return $media_data;
     }
@@ -235,6 +262,14 @@ class MaxiBlocks_DynamicContent
             $tax_data = $terms[0]->{"$dc_field"};
         }
 
+        if ($dc_field === 'parent') {
+            if ($tax_data === 0) {
+                $tax_data = 'No parent';
+            } else {
+                $tax_data = get_term($tax_data)->name;
+            }
+        }
+
         return $tax_data;
     }
 
@@ -264,6 +299,9 @@ class MaxiBlocks_DynamicContent
         if (!isset($dc_timezone)) {
             $dc_timezone = 'none';
         }
+        if (!isset($dc_format)) {
+            $dc_format = 'd.m.Y t';
+        }
         
         $options = array(
             'day' => $dc_day === 'none' ? null : $dc_day,
@@ -282,11 +320,13 @@ class MaxiBlocks_DynamicContent
         $new_date = new DateTime($date, new DateTimeZone($options['timezone']));
 
         $content = '';
-        $new_format = '';
+        $new_format = $dc_custom_date ? $dc_custom_format : $dc_format;
 
-        $dc_custom_format = self::convert_moment_to_php_date_format($dc_custom_format);
+        if ($dc_custom_date) {
+            $new_format = self::convert_moment_to_php_date_format($dc_custom_format);
+        }
 
-        $new_format = str_replace(['DV', 'DS', 'MS'], ['x', 'z', 'c'], $dc_custom_format);
+        $new_format = str_replace(['DV', 'DS', 'MS'], ['x', 'z', 'c'], $new_format);
 
         $map = array(
             'z' => 'D',

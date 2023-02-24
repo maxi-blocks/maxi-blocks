@@ -13,7 +13,7 @@ import { fieldOptions } from './constants';
  */
 import moment from 'moment';
 import 'moment-parseformat';
-import { isEmpty } from 'lodash';
+import { isEmpty, isNumber } from 'lodash';
 
 export const cutTags = str => {
 	const regex = /( |<([^>]+)>)/gi;
@@ -35,14 +35,14 @@ export const limitFormat = (value, limit) => {
 	const str = cutTags(value).trim();
 
 	if (str.length > limit && limit !== 0)
-		return `${str.substr(0, limit).trim()}...`;
+		return `${str.substr(0, limit).trim()}…`;
 
 	return str;
 };
 
 // In case content is empty, show this text
 export const sanitizeDCContent = content =>
-	!isEmpty(content) || typeof content === 'number'
+	!isEmpty(content) || isNumber(content)
 		? __(content, 'maxi-blocks')
 		: __('No content found', 'maxi-blocks');
 

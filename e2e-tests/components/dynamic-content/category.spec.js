@@ -37,8 +37,8 @@ describe('Dynamic content', () => {
 		const expectedResults = {
 			title: 'Uncategorized',
 			description: 'No content found',
-			slug: 'No content found',
-			parent: '0',
+			slug: 'uncategorized',
+			parent: 'No parent',
 			count: '1',
 			link: 'http://localhost:8889/?cat=1',
 		};
@@ -75,7 +75,6 @@ describe('Dynamic content', () => {
 		const linkResults = await Promise.all(
 			linkBlocks.map(block => getBackResults(block, 'link'))
 		);
-
 		const results = [
 			...titleResults,
 			...descriptionResults,

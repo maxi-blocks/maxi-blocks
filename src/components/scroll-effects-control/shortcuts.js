@@ -30,9 +30,9 @@ export const shortcut2 = {
 };
 export const shortcut3 = {
 	// Out Vertical
-	'scroll-blur-blur-end-general': 0,
+	'scroll-blur-blur-end-general': 10,
 	'scroll-blur-blur-mid-general': 5,
-	'scroll-blur-blur-start-general': 10,
+	'scroll-blur-blur-start-general': 0,
 	'scroll-blur-easing-general': 'ease',
 	'scroll-blur-speed-general': 500,
 
@@ -73,9 +73,9 @@ export const shortcut4 = {
 export const shortcut5 = {
 	// Out Horizontal
 	'scroll-blur-status-general': true,
-	'scroll-blur-blur-end-general': 0,
+	'scroll-blur-blur-end-general': 10,
 	'scroll-blur-blur-mid-general': 5,
-	'scroll-blur-blur-start-general': 10,
+	'scroll-blur-blur-start-general': 0,
 	'scroll-blur-easing-general': 'ease',
 	'scroll-blur-speed-general': 500,
 
@@ -122,9 +122,9 @@ export const shortcut7 = {
 	'scroll-blur-speed-general': 500,
 
 	'scroll-easing-rotate-general': 'ease',
-	'scroll-rotate-rotate-end-rotate-general': 0,
-	'scroll-rotate-rotate-mid-rotate-general': 0,
-	'scroll-rotate-rotate-start-rotate-general': -90,
+	'scroll-rotate-rotate-end-rotate-general': 90,
+	'scroll-rotate-rotate-mid-rotate-general': 90,
+	'scroll-rotate-rotate-start-rotate-general': 0,
 	'scroll-speed-rotate-general': 500,
 	'scroll-rotate-status-general': true,
 
@@ -297,7 +297,7 @@ export const shortcut15 = {
 	'scroll-vertical-delay-general': 0,
 	'scroll-vertical-easing-general': 'ease',
 	'scroll-vertical-offset-end-general': 0,
-	'scroll-vertical-offset-mid-general': 0,
+	'scroll-vertical-offset-mid-general': 40,
 	'scroll-vertical-offset-start-general': 80,
 	'scroll-vertical-speed-general': 500,
 
@@ -517,9 +517,9 @@ export const shortcut25 = {
 
 	'scroll-horizontal-delay-general': 0,
 	'scroll-horizontal-easing-general': 'ease',
-	'scroll-horizontal-offset-end-general': -80,
-	'scroll-horizontal-offset-mid-general': 0,
-	'scroll-horizontal-offset-start-general': 0,
+	'scroll-horizontal-offset-end-general': 0,
+	'scroll-horizontal-offset-mid-general': -40,
+	'scroll-horizontal-offset-start-general': -80,
 	'scroll-horizontal-speed-general': 500,
 
 	'scroll-vertical-status-general': false,
@@ -608,7 +608,7 @@ export const shortcut28 = {
 	'scroll-blur-status-general': false,
 };
 export const shortcut29 = {
-	// Scale out Fade in less
+	// Scale out Fade out less
 	'scroll-scale-easing-general': 'ease',
 	'scroll-scale-opacity-end-general': 90,
 	'scroll-scale-opacity-mid-general': 95,

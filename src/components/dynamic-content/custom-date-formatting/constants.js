@@ -3,36 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 
-export const formatDateOptions = props => {
-	const {
-		day,
-		era,
-		hour,
-		hour12,
-		minute,
-		month,
-		second,
-		timeZone,
-		timeZoneName,
-		weekday,
-		year,
-	} = props;
-
-	return {
-		day: day === 'none' ? undefined : day,
-		era: era === 'none' ? undefined : era,
-		hour: hour === 'none' ? undefined : hour,
-		hour12: hour12 === 'false' ? false : hour12 === 'true' ? true : hour12,
-		minute: minute === 'none' ? undefined : minute,
-		month: month === 'none' ? undefined : month,
-		second: second === 'none' ? undefined : second,
-		timeZone: timeZone === 'none' ? 'UTC' : timeZone,
-		timeZoneName: timeZoneName === 'none' ? undefined : timeZoneName,
-		weekday: weekday === 'none' ? undefined : weekday,
-		year: year === 'none' ? undefined : year,
-	};
-};
-
 export const typeDefault = [
 	{
 		label: __('none', 'maxi-blocks'),
@@ -1245,7 +1215,7 @@ export const typeLocale = [
 	},
 ];
 
-export const DateOptions = {
+const DateOptions = {
 	day: typeDefault,
 	era: typeEra,
 	hour12: typeHour12,
@@ -1259,3 +1229,5 @@ export const DateOptions = {
 	year: typeDefault,
 	locale: typeLocale,
 };
+
+export default DateOptions;

@@ -1,22 +1,24 @@
-.date-popover {
+.maxi-date-helper-popover {
 	.components-popover__content {
 		width: 220px;
 		padding: 0px 16px;
 		transform: translateY(0%) !important;
 	}
 }
-.date-formatting {
-	.date-status {
+.maxi-custom-date-formatting {
+	&__help-trigger {
 		position: relative;
-		.block-info-icon {
-			top: 0%;
-			bottom: 0%;
-			left: 80px;
-			right: inherit;
-			margin-top: auto;
-			margin-bottom: auto;
-		}
 	}
+
+	&__help-icon {
+		top: 0%;
+		bottom: 0%;
+		left: 80px;
+		right: inherit;
+		margin-top: auto;
+		margin-bottom: auto;
+	}
+
 	.maxi-base-control__field {
 		.maxi-text-control__input {
 			-webkit-box-flex: 1;

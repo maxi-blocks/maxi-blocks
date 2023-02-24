@@ -516,7 +516,7 @@ const getMarkerObject = props => {
 					listStyleCustom &&
 					listStyleCustom.includes('</svg>')
 						? {
-								height: sizeNum + sizeUnit,
+								width: sizeNum + sizeUnit,
 						  }
 						: { 'font-size': sizeNum + sizeUnit }),
 					'line-height':
@@ -525,9 +525,15 @@ const getMarkerObject = props => {
 							? lineHeightMarkerUnit
 							: ''),
 					[isRTL ? 'right' : 'left']: markerPosition,
-					...(listStylePosition === 'outside' && {
-						width: 0,
-					}),
+					...(listStylePosition === 'outside' &&
+						(!listStyleCustom?.includes('</svg>')
+							? {
+									width: '1em',
+									'margin-left': '-1em',
+							  }
+							: {
+									'margin-left': -sizeNum + sizeUnit,
+							  })),
 					...(listStylePosition === 'inside' && {
 						'margin-right': indentMarkerSum,
 					}),

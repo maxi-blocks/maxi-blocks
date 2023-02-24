@@ -6,7 +6,7 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { getLastBreakpointAttribute } from '../styles';
+import { getAttributeValue } from '../styles';
 import getColumnTemplate from './getColumnTemplate';
 
 const getColumnDefaultValue = (
@@ -15,16 +15,17 @@ const getColumnDefaultValue = (
 	clientId,
 	breakpoint
 ) => {
+	if (breakpoint !== 'general') return null;
+
 	const { getBlockOrder, getBlockRootClientId } = select('core/block-editor');
 	const columns = getBlockOrder(getBlockRootClientId(clientId));
 	const colPosition = columns.indexOf(clientId);
 
 	const template = getColumnTemplate(
-		getLastBreakpointAttribute({
+		getAttributeValue({
 			target: 'row-pattern',
+			props: rowPattern,
 			breakpoint,
-			attributes: rowPattern,
-			forceSingle: true,
 		}),
 		breakpoint
 	);
@@ -34,10 +35,10 @@ const getColumnDefaultValue = (
 	delete cleanColumnSizes[`column-size-${breakpoint}`];
 	const values = { ...defaultColumnSizes, ...cleanColumnSizes };
 
-	return getLastBreakpointAttribute({
+	return getAttributeValue({
 		target: 'column-size',
+		props: values,
 		breakpoint,
-		attributes: values,
 	});
 };
 

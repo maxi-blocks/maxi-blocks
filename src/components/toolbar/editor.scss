@@ -1,6 +1,10 @@
 .maxi-toolbar__popover {
 	z-index: 9999999;
 
+	&--icon {
+		z-index: 9999998;
+	}
+
 	.toolbar-more-indicator {
 		margin-left: 10px;
 		position: absolute;

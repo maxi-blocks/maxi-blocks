@@ -14,6 +14,7 @@ import {
 	getStyleCardEditor,
 	editGlobalStyles,
 	checkSCResult,
+	copySCToEdit,
 } from '../../utils';
 
 describe('SC Divider', () => {
@@ -26,6 +27,7 @@ describe('SC Divider', () => {
 			page,
 			accordion: 'divider',
 		});
+		await copySCToEdit(page, `copy - ${Date.now()}`);
 
 		await editGlobalStyles({
 			page,

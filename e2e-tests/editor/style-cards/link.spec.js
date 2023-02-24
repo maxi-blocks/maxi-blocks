@@ -10,6 +10,7 @@ import {
 	getStyleCardEditor,
 	editGlobalStyles,
 	checkSCResult,
+	copySCToEdit,
 } from '../../utils';
 
 describe('SC Link', () => {
@@ -21,6 +22,7 @@ describe('SC Link', () => {
 			page,
 			accordion: 'link',
 		});
+		await copySCToEdit(page, `copy - ${Date.now()}`);
 
 		// Link Colour
 		await editGlobalStyles({

@@ -123,7 +123,7 @@ export const shortcut7 = {
 
 	'scroll-easing-rotate-general': 'ease',
 	'scroll-rotate-rotate-end-rotate-general': 90,
-	'scroll-rotate-rotate-mid-rotate-general': 90,
+	'scroll-rotate-rotate-mid-rotate-general': 0,
 	'scroll-rotate-rotate-start-rotate-general': 0,
 	'scroll-speed-rotate-general': 500,
 	'scroll-rotate-status-general': true,
@@ -267,16 +267,16 @@ export const shortcut13 = {
 export const shortcut14 = {
 	// Fade in up S
 	'scroll-fade-easing-general': 'ease',
-	'scroll-fade-opacity-end-general': 0,
+	'scroll-fade-opacity-end-general': 100,
 	'scroll-fade-opacity-mid-general': 50,
-	'scroll-fade-opacity-start-general': 100,
+	'scroll-fade-opacity-start-general': 0,
 	'scroll-fade-speed-general': 500,
 
 	'scroll-vertical-delay-general': 0,
 	'scroll-vertical-easing-general': 'ease',
 	'scroll-vertical-offset-end-general': 0,
-	'scroll-vertical-offset-mid-general': -40,
-	'scroll-vertical-offset-start-general': -80,
+	'scroll-vertical-offset-mid-general': 40,
+	'scroll-vertical-offset-start-general': 80,
 	'scroll-vertical-speed-general': 500,
 
 	'scroll-vertical-status-general': true,
@@ -296,9 +296,9 @@ export const shortcut15 = {
 
 	'scroll-vertical-delay-general': 0,
 	'scroll-vertical-easing-general': 'ease',
-	'scroll-vertical-offset-end-general': 0,
+	'scroll-vertical-offset-end-general': 80,
 	'scroll-vertical-offset-mid-general': 40,
-	'scroll-vertical-offset-start-general': 80,
+	'scroll-vertical-offset-start-general': 0,
 	'scroll-vertical-speed-general': 500,
 
 	'scroll-vertical-status-general': true,
@@ -518,8 +518,8 @@ export const shortcut25 = {
 	'scroll-horizontal-delay-general': 0,
 	'scroll-horizontal-easing-general': 'ease',
 	'scroll-horizontal-offset-end-general': 0,
-	'scroll-horizontal-offset-mid-general': -40,
-	'scroll-horizontal-offset-start-general': -80,
+	'scroll-horizontal-offset-mid-general': 0,
+	'scroll-horizontal-offset-start-general': 80,
 	'scroll-horizontal-speed-general': 500,
 
 	'scroll-vertical-status-general': false,
@@ -529,14 +529,56 @@ export const shortcut25 = {
 	'scroll-fade-status-general': false,
 	'scroll-blur-status-general': false,
 };
+export const shortcut27 = {
+	// Scale in Fade in less
+	'scroll-scale-scale-easing-general': 'ease',
+	'scroll-scale-scale-end-general': 100,
+	'scroll-scale-scale-mid-general': 95,
+	'scroll-scale-scale-start-general': 90,
+	'scroll-scale-scale-speed-general': 500,
 
+	'scroll-fade-easing-general': 'ease',
+	'scroll-fade-opacity-end-general': 100,
+	'scroll-fade-opacity-mid-general': 50,
+	'scroll-fade-opacity-start-general': 0,
+	'scroll-fade-speed-general': 500,
+
+	'scroll-vertical-status-general': false,
+	'scroll-horizontal-status-general': false,
+	'scroll-rotate-status-general': false,
+	'scroll-scale-status-general': true,
+	'scroll-fade-status-general': true,
+	'scroll-blur-status-general': false,
+};
 export const shortcut26 = {
+	// Scale out Fade out less
+	'scroll-scale-scale-easing-general': 'ease',
+	'scroll-scale-scale-end-general': 90,
+	'scroll-scale-scale-mid-general': 95,
+	'scroll-scale-scale-start-general': 100,
+	'scroll-scale-scale-speed-general': 500,
+
+	'scroll-fade-easing-general': 'ease',
+	'scroll-fade-opacity-end-general': 0,
+	'scroll-fade-opacity-mid-general': 50,
+	'scroll-fade-opacity-start-general': 100,
+	'scroll-fade-speed-general': 500,
+
+	'scroll-vertical-status-general': false,
+	'scroll-horizontal-status-general': false,
+	'scroll-rotate-status-general': false,
+	'scroll-scale-status-general': true,
+	'scroll-fade-status-general': true,
+	'scroll-blur-status-general': false,
+};
+
+export const shortcut28 = {
 	// Scale up Fade in less
-	'scroll-scale-easing-general': 'ease',
-	'scroll-scale-opacity-end-general': 100,
-	'scroll-scale-opacity-mid-general': 95,
-	'scroll-scale-opacity-start-general': 90,
-	'scroll-scale-speed-general': 500,
+	'scroll-scale-scale-easing-general': 'ease',
+	'scroll-scale-scale-end-general': 100,
+	'scroll-scale-scale-mid-general': 95,
+	'scroll-scale-scale-start-general': 90,
+	'scroll-scale-scale-speed-general': 500,
 
 	'scroll-fade-easing-general': 'ease',
 	'scroll-fade-opacity-end-general': 100,
@@ -558,13 +600,13 @@ export const shortcut26 = {
 	'scroll-fade-status-general': true,
 	'scroll-blur-status-general': false,
 };
-export const shortcut27 = {
+export const shortcut29 = {
 	// Scale down Fade in less
-	'scroll-scale-easing-general': 'ease',
-	'scroll-scale-opacity-end-general': 100,
-	'scroll-scale-opacity-mid-general': 105,
-	'scroll-scale-opacity-start-general': 110,
-	'scroll-scale-speed-general': 500,
+	'scroll-scale-scale-easing-general': 'ease',
+	'scroll-scale-scale--end-general': 100,
+	'scroll-scale-scale-mid-general': 105,
+	'scroll-scale-scale-start-general': 110,
+	'scroll-scale-scale-speed-general': 500,
 
 	'scroll-fade-easing-general': 'ease',
 	'scroll-fade-opacity-end-general': 100,
@@ -580,48 +622,6 @@ export const shortcut27 = {
 	'scroll-vertical-speed-general': 500,
 
 	'scroll-vertical-status-general': true,
-	'scroll-horizontal-status-general': false,
-	'scroll-rotate-status-general': false,
-	'scroll-scale-status-general': true,
-	'scroll-fade-status-general': true,
-	'scroll-blur-status-general': false,
-};
-export const shortcut28 = {
-	// Scale in Fade in lessn
-	'scroll-scale-easing-general': 'ease',
-	'scroll-scale-opacity-end-general': 100,
-	'scroll-scale-opacity-mid-general': 95,
-	'scroll-scale-opacity-start-general': 90,
-	'scroll-scale-speed-general': 500,
-
-	'scroll-fade-easing-general': 'ease',
-	'scroll-fade-opacity-end-general': 100,
-	'scroll-fade-opacity-mid-general': 50,
-	'scroll-fade-opacity-start-general': 0,
-	'scroll-fade-speed-general': 500,
-
-	'scroll-vertical-status-general': false,
-	'scroll-horizontal-status-general': false,
-	'scroll-rotate-status-general': false,
-	'scroll-scale-status-general': true,
-	'scroll-fade-status-general': true,
-	'scroll-blur-status-general': false,
-};
-export const shortcut29 = {
-	// Scale out Fade out less
-	'scroll-scale-easing-general': 'ease',
-	'scroll-scale-opacity-end-general': 90,
-	'scroll-scale-opacity-mid-general': 95,
-	'scroll-scale-opacity-start-general': 100,
-	'scroll-scale-speed-general': 500,
-
-	'scroll-fade-easing-general': 'ease',
-	'scroll-fade-opacity-end-general': 100,
-	'scroll-fade-opacity-mid-general': 50,
-	'scroll-fade-opacity-start-general': 0,
-	'scroll-fade-speed-general': 500,
-
-	'scroll-vertical-status-general': false,
 	'scroll-horizontal-status-general': false,
 	'scroll-rotate-status-general': false,
 	'scroll-scale-status-general': true,

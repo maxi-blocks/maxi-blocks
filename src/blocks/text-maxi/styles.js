@@ -494,7 +494,7 @@ const getMarkerObject = props => {
 				const markerPosition =
 					listStylePosition === 'inside'
 						? 0
-						: `calc(-${sizeNum + sizeUnit} - ${indentMarkerSum})`;
+						: `calc(${-indentMarkerNum + indentMarkerUnit})`;
 
 				// Marker line-height
 				const lineHeightMarkerNum =

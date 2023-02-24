@@ -475,19 +475,19 @@ const ScrollEffectsControl = props => {
 		},
 
 		{
-			label: __('Scale up Fade in less', 'maxi-blocks'),
+			label: __('Scale in Fade in less', 'maxi-blocks'),
 			value: 26,
 		},
 		{
-			label: __('Scale down Fade in less', 'maxi-blocks'),
+			label: __('Scale out Fade out less', 'maxi-blocks'),
 			value: 27,
 		},
 		{
-			label: __('Scale in Fade in less', 'maxi-blocks'),
+			label: __('Scale up Fade in less', 'maxi-blocks'),
 			value: 28,
 		},
 		{
-			label: __('Scale out Fade out less', 'maxi-blocks'),
+			label: __('Scale down Fade in less', 'maxi-blocks'),
 			value: 29,
 		},
 	];

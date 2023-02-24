@@ -529,7 +529,7 @@ export const shortcut25 = {
 	'scroll-fade-status-general': false,
 	'scroll-blur-status-general': false,
 };
-export const shortcut27 = {
+export const shortcut26 = {
 	// Scale in Fade in less
 	'scroll-scale-scale-easing-general': 'ease',
 	'scroll-scale-scale-end-general': 100,
@@ -550,7 +550,7 @@ export const shortcut27 = {
 	'scroll-fade-status-general': true,
 	'scroll-blur-status-general': false,
 };
-export const shortcut26 = {
+export const shortcut27 = {
 	// Scale out Fade out less
 	'scroll-scale-scale-easing-general': 'ease',
 	'scroll-scale-scale-end-general': 90,

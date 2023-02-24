@@ -17,6 +17,7 @@ import {
 	smallMode,
 } from '../../icons';
 import { onRequestInsertPattern } from './util';
+import { Button } from '../../components';
 
 /**
  * External dependencies
@@ -62,6 +63,9 @@ const LibraryToolbar = props => {
 		onSelect,
 		isSwapChecked,
 		onChangeTone,
+		onClickConnect,
+		userName,
+		onLogOut,
 	} = props;
 
 	const client = new TypesenseSearchClient({
@@ -456,13 +460,32 @@ const LibraryToolbar = props => {
 					))}
 				</div>
 			)}
+			{!isMaxiProActive && (
+				<Button
+					key='maxi-cloud-toolbar__button__connect'
+					className='maxi-cloud-container__patterns__top-menu__button-connect-pro'
+					label={__('Connect to Maxi Pro Account', 'maxi-blocks')}
+					onClick={onClickConnect}
+				>
+					{__('Connect to Maxi Pro Account', 'maxi-blocks')}
+				</Button>
+			)}
+			{isMaxiProActive && (
+				<div>
+					Signed in as: {userName}
+					<ToolbarButton
+						key='maxi-cloud-toolbar__button__sing-out'
+						label={__('Sign out', 'maxi-blocks')}
+						onClick={onLogOut}
+					/>
+				</div>
+			)}
 			{type !== 'preview' && type !== 'switch-tone' && (
 				<CrispChat className='maxi-cloud-toolbar__help-button' as='a'>
 					{help}
 					{__('Help', 'maxi-blocks')}
 				</CrispChat>
 			)}
-
 			{(type === 'preview' || type === 'switch-tone') && (
 				<div className='maxi-cloud-toolbar__buttons-group_close'>
 					{(!isPro || isBeta || isMaxiProActive) && (

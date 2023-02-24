@@ -9,6 +9,7 @@ import {
 	forwardRef,
 	useRef,
 } from '@wordpress/element';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -16,6 +17,7 @@ import {
 // eslint-disable-next-line import/no-cycle
 import CloudLibrary from '.';
 import { Icon, BaseControl, Button } from '../../components';
+import { authConnect, isProSubActive, getUserName, logOut } from '../auth';
 
 /**
  * External dependencies
@@ -169,6 +171,36 @@ const MaxiModal = props => {
 		[forceIsOpen]
 	);
 
+	const [isMaxiProActive, setIsMaxiProActive] = useState(isProSubActive());
+	const [userName, setUserName] = useState(getUserName());
+
+	console.log(`start isMaxiProActive: ${isMaxiProActive}`);
+
+	const onClickConnect = () => {
+		document.addEventListener('visibilitychange', function userIsBack() {
+			if (!document.hidden) {
+				console.log('back to tab');
+				authConnect(false).then(() => {
+					setIsMaxiProActive(isProSubActive());
+					console.log(`isMaxiProActive after: ${isMaxiProActive}`);
+					setUserName(getUserName());
+				});
+			}
+		});
+
+		authConnect(true).then(() => {
+			setIsMaxiProActive(isProSubActive());
+			setUserName(getUserName());
+			console.log(`onClickConnect isMaxiProActive: ${isMaxiProActive}`);
+		});
+	};
+
+	const onLogOut = () => {
+		logOut();
+		setIsMaxiProActive(false);
+		setUserName('');
+	};
+
 	const onClick = () => {
 		changeIsOpen(!isOpen);
 
@@ -309,6 +341,10 @@ const MaxiModal = props => {
 								prefix={prefix}
 								gutenbergCode={gutenbergCode}
 								isSwapChecked={isSwapChecked}
+								isMaxiProActive={isMaxiProActive}
+								onClickConnect={onClickConnect}
+								userName={userName}
+								onLogOut={onLogOut}
 							/>
 						</div>
 					</div>
@@ -415,6 +451,10 @@ const MaxiModal = props => {
 							onSelect={onSelect}
 							gutenbergCode={gutenbergCode}
 							isSwapChecked={isSwapChecked}
+							isMaxiProActive={isMaxiProActive}
+							onClickConnect={onClickConnect}
+							userName={userName}
+							onLogOut={onLogOut}
 						/>
 					</div>
 				</div>

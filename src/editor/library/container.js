@@ -379,6 +379,8 @@ const LibraryContainer = props => {
 		url,
 		title,
 		prefix = '',
+		isMaxiProActive,
+		onClickConnect,
 	} = props;
 
 	const {
@@ -487,8 +489,6 @@ const LibraryContainer = props => {
 		}
 	};
 
-	// TO DO: connect to auth later
-	const isMaxiProActive = false;
 	/** Patterns / Blocks Results */
 	const patternsResults = hit => {
 		const isPattern = hit?.gutenberg_type?.[0] === 'Patterns';
@@ -513,9 +513,10 @@ const LibraryContainer = props => {
 				taxonomies={hit.category?.[0]}
 				toneUrl={isPattern ? hit.link_to_related : null}
 				gutenbergCode={hit.gutenberg_code}
-				isMaxiProActive={isMaxiProActive}
 				isSwapChecked={isSwapChecked}
 				onSelect={onSelect}
+				isMaxiProActive={isMaxiProActive}
+				onClickConnect={onClickConnect}
 				onRequestInsert={() =>
 					onRequestInsertPattern(
 						hit.gutenberg_code,

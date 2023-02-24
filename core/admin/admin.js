@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		});
 	}
 
+	// for the version rollback
 	const select = document.getElementById('maxi-versions');
 	const version = document.getElementById('maxi-rollback-version');
 
@@ -37,24 +38,58 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		version.value = value;
 	});
 
-	const chatLink = document.getElementById('chat-with-maxi-support');
+	// auth for pro
+	const authClient = () => {
+		// eslint-disable-next-line no-undef
+		const client = new Appwrite.Client();
 
-	chatLink?.addEventListener('click', function openChatSupport(e) {
-		e.preventDefault();
+		client
+			.setEndpoint('https://auth.maxiblocks.com/v1') // Your API Endpoint
+			.setProject('maxi'); // Your project ID
 
-		const chat = document.getElementById('crisp-chatbox');
+		// eslint-disable-next-line no-undef
+		const account = new Appwrite.Account(client);
 
-		if (chat) {
-			window.$crisp.push(['do', 'chat:open']);
-		} else {
-			window.$crisp = [];
-			window.CRISP_WEBSITE_ID = '8434178e-1d60-45d5-b112-14a32ee6903c';
-			const crispScript = document.createElement('script');
-			crispScript.type = 'text/javascript';
-			crispScript.src = 'https://client.crisp.chat/l.js';
-			crispScript.async = 1;
-			document.getElementsByTagName('head')[0].appendChild(crispScript);
-			window.$crisp.push(['do', 'chat:open']);
-		}
-	});
+		const promise = account.get();
+
+		promise.then(
+			function success(response) {
+				if (response.status) {
+					document.getElementById(
+						'maxi-dashboard_main-content_not-pro'
+					).style.display = 'none';
+					document.getElementById(
+						'maxi-dashboard_main-content_pro'
+					).style.display = 'block';
+					document.getElementById(
+						'maxi-dashboard_main-content_pro-not-pro'
+					).style.display = 'block';
+				} else {
+					document.getElementById(
+						'maxi-dashboard_main-content_pro'
+					).style.display = 'none';
+					document.getElementById(
+						'maxi-dashboard_main-content_not-pro'
+					).style.display = 'block';
+					document.getElementById(
+						'maxi-dashboard_main-content_pro-not-pro'
+					).style.display = 'block';
+				}
+			},
+			function error(error) {
+				console.error(error); // Failure
+				document.getElementById(
+					'maxi-dashboard_main-content_pro'
+				).style.display = 'none';
+				document.getElementById(
+					'maxi-dashboard_main-content_not-pro'
+				).style.display = 'block';
+				document.getElementById(
+					'maxi-dashboard_main-content_pro-not-pro'
+				).style.display = 'block';
+			}
+		);
+	};
+	if (document.getElementById('maxi-dashboard_main-content_pro-not-pro'))
+		authClient();
 });

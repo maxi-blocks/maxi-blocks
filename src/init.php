@@ -26,13 +26,13 @@ add_filter('should_load_remote_block_patterns', '__return_false');
 
 /* Enabled option */
 
-if (!get_option('maxi_enable')) {
-    add_option('maxi_enable', 'enabled');
+if (!get_option('maxi_pro')) {
+    add_option('maxi_pro', 'no');
 }
 
-function maxi_get_option()
+function maxi_get_pro_status()
 {
-    echo esc_attr(get_option('maxi_enable'));
+    echo esc_attr(get_option('maxi_pro'));
     die();
 }
 
@@ -81,7 +81,7 @@ function maxi_links_control($rel, $link)
 }
 add_filter('wp_targeted_link_rel', 'maxi_links_control', 10, 2);
 
-add_action('wp_ajax_maxi_get_option', 'maxi_get_option', 9, 1);
+add_action('wp_ajax_maxi_get_pro_status', 'maxi_get_pro_status', 9, 1);
 add_action('wp_ajax_maxi_insert_block', 'maxi_insert_block', 10, 2);
 
 // Add a metabox for Custom Css into Document sidebar
@@ -154,7 +154,7 @@ function maxi_output_css()
 {
     global $post; // Get the current post data
     $maxi_blocks_custom_ccs_page = '';
-    
+
     if ($post && $post->ID) {
         $maxi_blocks_custom_ccs_page = get_post_meta(
             $post->ID,

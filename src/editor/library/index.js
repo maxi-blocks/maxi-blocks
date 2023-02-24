@@ -44,6 +44,10 @@ const CloudLibrary = props => {
 		prefix = '',
 		gutenbergCode: rawGutenbergCode,
 		isSwapChecked,
+		isMaxiProActive,
+		onClickConnect,
+		userName,
+		onLogOut,
 	} = props;
 
 	const [type, setType] = useState(cloudType);
@@ -79,6 +83,10 @@ const CloudLibrary = props => {
 				gutenbergCode={gutenbergCode}
 				onSelect={onSelect}
 				isSwapChecked={isSwapChecked}
+				isMaxiProActive={isMaxiProActive}
+				onClickConnect={onClickConnect}
+				userName={userName}
+				onLogOut={onLogOut}
 				onChangeTone={hit => {
 					const {
 						demo_url: newUrl,
@@ -108,6 +116,8 @@ const CloudLibrary = props => {
 				prefix={prefix}
 				isPro={isPro}
 				isBeta={isBeta}
+				isMaxiProActive={isMaxiProActive}
+				onClickConnect={onClickConnect}
 			/>
 		</Modal>
 	);

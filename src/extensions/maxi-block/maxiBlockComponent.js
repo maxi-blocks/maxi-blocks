@@ -48,7 +48,7 @@ import { updateSCOnEditor } from '../style-cards';
 import getWinBreakpoint from '../dom/getWinBreakpoint';
 import {
 	getBlockData,
-	handleBGLayersOnUniqueIDChange,
+	getUpdatedBGLayersWithNewUniqueID,
 	uniqueIDGenerator,
 } from '../attributes';
 import getHoverStatus from '../relations/getHoverStatus';
@@ -457,8 +457,6 @@ class MaxiBlockComponent extends Component {
 				this.props.attributes.uniqueID
 			);
 
-			handleBGLayersOnUniqueIDChange(this.props.attributes);
-
 			if (this.maxiBlockDidChangeUniqueID)
 				this.maxiBlockDidChangeUniqueID(newUniqueID);
 
@@ -489,13 +487,24 @@ class MaxiBlockComponent extends Component {
 	}
 
 	propagateNewUniqueID(oldUniqueID, newUniqueID) {
+		const blockAttributesUpdate = {};
+		const lastChangedBlocks = getLastChangedBlocks();
+
+		if (isEmpty(lastChangedBlocks)) return;
+
+		const updateBlockAttributesUpdate = (clientId, key, value) => {
+			if (!blockAttributesUpdate[clientId])
+				blockAttributesUpdate[clientId] = {};
+
+			blockAttributesUpdate[clientId][key] = value;
+
+			return blockAttributesUpdate;
+		};
+
 		const updateRelations = () => {
-			const blockAttributesUpdate = {};
-			const lastChangedBlocks = getLastChangedBlocks();
-
-			if (isEmpty(lastChangedBlocks)) return;
-
 			const updateNewUniqueID = block => {
+				if (!block) return;
+
 				const {
 					attributes = {},
 					innerBlocks: rawInnerBlocks = [],
@@ -519,9 +528,11 @@ class MaxiBlockComponent extends Component {
 					});
 
 					if (!isEqual(relations, newRelations) && clientId)
-						blockAttributesUpdate[clientId] = {
-							relations: newRelations,
-						};
+						updateBlockAttributesUpdate(
+							clientId,
+							'relations',
+							newRelations
+						);
 				}
 
 				if (!isEmpty(rawInnerBlocks)) {
@@ -536,24 +547,35 @@ class MaxiBlockComponent extends Component {
 			};
 
 			lastChangedBlocks.forEach(block => updateNewUniqueID(block));
-
-			if (!isEmpty(blockAttributesUpdate)) {
-				const {
-					__unstableMarkNextChangeAsNotPersistent:
-						markNextChangeAsNotPersistent,
-					updateBlockAttributes,
-				} = dispatch('core/block-editor');
-
-				Object.entries(blockAttributesUpdate).forEach(
-					([clientId, attributes]) => {
-						markNextChangeAsNotPersistent();
-						updateBlockAttributes(clientId, attributes);
-					}
-				);
-			}
 		};
 
+		const updateBGLayers = () =>
+			updateBlockAttributesUpdate(
+				this.props.clientId,
+				'background-layers',
+				getUpdatedBGLayersWithNewUniqueID(
+					this.props.attributes['background-layers'],
+					newUniqueID
+				)
+			);
+
 		updateRelations();
+		updateBGLayers();
+
+		if (!isEmpty(blockAttributesUpdate)) {
+			const {
+				__unstableMarkNextChangeAsNotPersistent:
+					markNextChangeAsNotPersistent,
+				updateBlockAttributes,
+			} = dispatch('core/block-editor');
+
+			Object.entries(blockAttributesUpdate).forEach(
+				([clientId, attributes]) => {
+					markNextChangeAsNotPersistent();
+					updateBlockAttributes(clientId, attributes);
+				}
+			);
+		}
 	}
 
 	updateRelationHoverStatus() {

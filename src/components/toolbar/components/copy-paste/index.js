@@ -15,7 +15,7 @@ import CopyPasteGroup from './CopyPasteGroup';
 import Dropdown from '../../../dropdown';
 import { getOrganizedAttributes } from '../../../../extensions/copy-paste';
 import { loadColumnsTemplate } from '../../../../extensions/column-templates';
-import { handleBGLayersOnUniqueIDChange } from '../../../../extensions/attributes';
+import { getUpdatedBGLayersWithNewUniqueID } from '../../../../extensions/attributes';
 
 /**
  * External dependencies
@@ -131,10 +131,11 @@ const CopyPaste = props => {
 			});
 		}
 
-		handleBGLayersOnUniqueIDChange(
-			attributes,
-			copiedAttributes['background-layers']
-		);
+		copiedAttributes['background-layers'] =
+			getUpdatedBGLayersWithNewUniqueID(
+				copiedAttributes['background-layers'],
+				attributes.uniqueID
+			);
 	};
 
 	const onCopyStyles = () => {

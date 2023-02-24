@@ -225,6 +225,20 @@ if (!class_exists('MaxiBlocks_API')):
                     return current_user_can('edit_posts');
                 },
             ]);
+            register_rest_route($this->namespace, '/pro', [
+                'methods' => 'GET',
+                'callback' => [$this, 'get_maxi_blocks_pro_status'],
+                'permission_callback' => function () {
+                    return current_user_can('edit_posts');
+                },
+            ]);
+            register_rest_route($this->namespace, '/pro', [
+                'methods' => 'POST',
+                'callback' => [$this, 'set_maxi_blocks_pro_status'],
+                'permission_callback' => function () {
+                    return current_user_can('edit_posts');
+                },
+            ]);
         }
 
         /**
@@ -420,23 +434,23 @@ if (!class_exists('MaxiBlocks_API')):
             if ((bool) get_option('local_fonts')) {
                 new MaxiBlocks_Local_Fonts();
             }
-            
+
             // Check if Maxi Blocks Theme is installed and active
             if (get_template() === 'maxi-theme') {
                 $template_part = $data['templatePart'];
                 $is_template_part = strpos($template_part, 'maxi-theme//') !== false;
-    
+
                 if ($is_template_part || $is_template) {
                     $template_name;
-    
+
                     if ($is_template) {
                         $template_name = $id;
                     } else {
                         $template_name = $template_part;
                     }
-    
+
                     $template_name = str_replace('maxi-theme//', '', $template_name);
-    
+
                     do_action('maxi_blocks_save_styles', $styles, $template_name, $is_template_part);
                 }
             }
@@ -712,6 +726,30 @@ if (!class_exists('MaxiBlocks_API')):
             }
 
             return $new_custom_data;
+        }
+
+        public function get_maxi_blocks_pro_status()
+        {
+            $pro = get_option('maxi_pro');
+            $default = '{"status": "no", "name": ""}';
+
+            if ($pro === false) {
+                update_option('maxi_pro', $default);
+                return $default;
+            }
+            return $pro;
+        }
+
+        public function set_maxi_blocks_pro_status($data)
+        {
+            $dataString = json_encode($data);
+
+            if($dataString) {
+                update_option('maxi_pro', $dataString);
+                return $dataString;
+            }
+
+            return false;
         }
     }
 endif;

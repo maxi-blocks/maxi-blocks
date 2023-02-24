@@ -1602,7 +1602,8 @@
 					}
 				}
 			}
-			&__button-go-pro {
+			&__button-go-pro,
+			&__button-connect-pro {
 				position: absolute;
 				top: 7px;
 				right: 100px;
@@ -1618,6 +1619,10 @@
 					color: #081219;
 					border-color: #dbdde6;
 				}
+			}
+			&__button-connect-pro {
+				right: 187px;
+				z-index: 1000000;
 			}
 		}
 	}

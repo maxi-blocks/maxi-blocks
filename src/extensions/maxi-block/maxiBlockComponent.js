@@ -582,15 +582,13 @@ class MaxiBlockComponent extends Component {
 			lastChangedBlocks.forEach(block => updateNewUniqueID(block));
 		};
 
-		const updateBGLayers = () =>
-			updateBlockAttributesUpdate(
-				this.props.clientId,
-				'background-layers',
+		const updateBGLayers = () => {
+			this.props.attributes['background-layers'] =
 				getUpdatedBGLayersWithNewUniqueID(
 					this.props.attributes['background-layers'],
 					newUniqueID
-				)
-			);
+				);
+		};
 
 		updateRelations();
 		updateBGLayers();

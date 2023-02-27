@@ -728,8 +728,9 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 '<div class="maxi-dashboard_main-content_accordion-item-content-switcher__input">';
             $input .= '<input name="';
             $input .= $option;
-            $input .=
-                '" class="maxi-dashboard_main-content_accordion-item-input regular-text" type="';
+            $input .= '" id="';
+            $input .= $option;
+            $input .= '" class="maxi-dashboard_main-content_accordion-item-input regular-text" type="';
             $input .= $type;
             $input .= '" value="';
             $input .= get_option($option);
@@ -845,7 +846,9 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= $description;
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-description
             if ($option === 'google_api_key_option') {
+                $content .='<div id="maxi-google-test-map"></div>';
                 $content .= $this->generate_input($option, $function, $type);
+                $content .='<div id="maxi-google-test-map_validation-message"></div>';
             } else {
                 $content .= $this->generate_toggle($option, $function);
             }

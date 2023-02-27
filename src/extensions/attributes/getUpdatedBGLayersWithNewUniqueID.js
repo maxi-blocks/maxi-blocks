@@ -6,7 +6,7 @@ import { injectImgSVG } from '../svg';
 /**
  * External dependencies
  */
-import { isEmpty, cloneDeep } from 'lodash';
+import { isEmpty } from 'lodash';
 
 /**
  * Replaces the uniqueID in the SVGData object.
@@ -16,32 +16,33 @@ import { isEmpty, cloneDeep } from 'lodash';
  * @returns {Object[]} Updated background layers.
  */
 const getUpdatedBGLayersWithNewUniqueID = (rawBackgroundLayers, uniqueID) => {
-	const backgroundLayers = cloneDeep(rawBackgroundLayers);
+	if (isEmpty(rawBackgroundLayers)) return rawBackgroundLayers;
 
-	if (!isEmpty(backgroundLayers))
-		backgroundLayers.forEach(layer => {
-			const SVGData = layer?.['background-svg-SVGData'];
-			if (!SVGData) return;
+	return rawBackgroundLayers.map(layer => {
+		const SVGData = layer?.['background-svg-SVGData'];
+		const SVGElement = layer?.['background-svg-SVGElement'];
+		if (!SVGData || !SVGElement) return layer;
 
-			const id = Object.keys(SVGData)[0];
-			if (id.includes(uniqueID)) return;
+		const id = Object.keys(SVGData)[0];
+		if (id.includes(uniqueID)) return layer;
 
-			const newId = id.replace(/^(.*?)(?=(__))/, uniqueID);
-			SVGData[newId] = { ...SVGData[id] };
-			delete SVGData[id];
+		const newId = id.replace(/^(.*?)(?=(__))/, uniqueID);
+		const newSVGData = { ...SVGData, [newId]: SVGData[id] };
+		delete newSVGData[id];
 
-			const SVGElement = layer?.['background-svg-SVGElement'];
-			if (!SVGElement) return;
+		const newSVGElement = injectImgSVG(
+			SVGElement,
+			newSVGData,
+			false,
+			uniqueID
+		).outerHTML;
 
-			layer['background-svg-SVGElement'] = injectImgSVG(
-				SVGElement,
-				SVGData,
-				false,
-				uniqueID
-			).outerHTML;
-		});
-
-	return backgroundLayers;
+		return {
+			...layer,
+			'background-svg-SVGData': newSVGData,
+			'background-svg-SVGElement': newSVGElement,
+		};
+	});
 };
 
 export default getUpdatedBGLayersWithNewUniqueID;

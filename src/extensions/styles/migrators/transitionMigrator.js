@@ -9,6 +9,8 @@ import getTransformTransitionData from '../transitions/getTransformTransitionDat
 import transitionDefault from '../transitions/transitionDefault';
 
 import { isNil } from 'lodash';
+import getDefaultAttribute from '../getDefaultAttribute';
+import createTransitionObj from '../transitions/createTransitionObj';
 
 const name = 'Transition migrator';
 
@@ -72,6 +74,13 @@ const migrate = newAttributes => {
 	Object.keys(transitionSelectors).forEach(selector => {
 		if (!(selector in transition)) {
 			newAttributes.transition[selector] = transitionSelectors[selector];
+
+			Object.keys(transitionSelectors[selector]).forEach(key => {
+				if (key in newAttributes.transition[selector])
+					newAttributes.transition[selector][key] =
+						getDefaultAttribute('transition')?.[selector]?.[key] ||
+						createTransitionObj();
+			});
 		}
 	});
 

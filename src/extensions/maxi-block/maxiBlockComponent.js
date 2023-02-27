@@ -490,8 +490,6 @@ class MaxiBlockComponent extends Component {
 		const blockAttributesUpdate = {};
 		const lastChangedBlocks = getLastChangedBlocks();
 
-		if (isEmpty(lastChangedBlocks)) return;
-
 		const updateBlockAttributesUpdate = (clientId, key, value) => {
 			if (!blockAttributesUpdate[clientId])
 				blockAttributesUpdate[clientId] = {};
@@ -502,6 +500,8 @@ class MaxiBlockComponent extends Component {
 		};
 
 		const updateRelations = () => {
+			if (isEmpty(lastChangedBlocks)) return;
+
 			const updateNewUniqueID = block => {
 				if (!block) return;
 

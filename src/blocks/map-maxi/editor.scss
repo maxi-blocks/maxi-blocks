@@ -34,6 +34,35 @@
 		z-index: 9999;
 	}
 
+	.maxi-map-block__not-found {
+		-webkit-animation: 1.5s ease 0s normal forwards 1 fadeIn;
+		animation: 1.5s ease 0s normal forwards 1 fadeIn;
+
+		@keyframes fadeIn {
+			0% {
+				opacity: 0;
+			}
+			66% {
+				opacity: 0;
+			}
+			100% {
+				opacity: 1;
+			}
+		}
+
+		@-webkit-keyframes fadeIn {
+			0% {
+				opacity: 0;
+			}
+			66% {
+				opacity: 0;
+			}
+			100% {
+				opacity: 1;
+			}
+		}
+	}
+
 	&__popup {
 		&__content {
 			&__marker-remove {
@@ -48,12 +77,12 @@
 				svg.dashicon {
 					fill: #b52727;
 				}
-				span.dashicon{
-					&::before{
+				span.dashicon {
+					&::before {
 						color: #fff;
 					}
 				}
-				&:hover{
+				&:hover {
 					background: #000;
 				}
 			}

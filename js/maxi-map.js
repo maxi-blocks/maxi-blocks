@@ -45,7 +45,7 @@ window.onload = () => {
 		[
 			isGoogleScriptsNeeded && {
 				properties: {
-					src: `https://maps.googleapis.com/maps/api/js?key=${apiKey}`,
+					src: `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=Function.prototype`,
 					async: true,
 					defer: true,
 				},
@@ -129,12 +129,17 @@ window.onload = () => {
 					</div>
 					`;
 
-					L.marker([latitude, longitude], {
-						icon: markerIcon,
-					})
-						.addTo(map)
-						.bindPopup(popupContent)
-						.openPopup();
+					if (heading === '' && description === '') {
+						L.marker([latitude, longitude], {
+							icon: markerIcon,
+						}).addTo(map);
+					} else
+						L.marker([latitude, longitude], {
+							icon: markerIcon,
+						})
+							.addTo(map)
+							.bindPopup(popupContent)
+							.openPopup();
 				});
 			});
 		}

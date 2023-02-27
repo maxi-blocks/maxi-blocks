@@ -13,6 +13,7 @@ import {
 	editGlobalStyles,
 	checkSCResult,
 	changeResponsive,
+	copySCToEdit,
 } from '../../utils';
 import {
 	generalTypographyOptions,
@@ -29,6 +30,7 @@ describe.skip('StyleCards, Buttons', () => {
 			page,
 			accordion: 'button',
 		});
+		await copySCToEdit(page, `copy - ${Date.now()}`);
 
 		// Size, line-height, letter-spacing
 		await addTypographyOptions({

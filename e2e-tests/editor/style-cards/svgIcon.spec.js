@@ -6,7 +6,7 @@ import { createNewPost, setBrowserViewport } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getStyleCardEditor, checkSCResult } from '../../utils';
+import { getStyleCardEditor, checkSCResult, copySCToEdit } from '../../utils';
 
 describe.skip('SC svg icon', () => {
 	it('Checking svg icon accordion', async () => {
@@ -17,6 +17,7 @@ describe.skip('SC svg icon', () => {
 			page,
 			accordion: 'SVG',
 		});
+		await copySCToEdit(page, `copy - ${Date.now()}`);
 
 		// Global Line Colour
 		await page.$eval(

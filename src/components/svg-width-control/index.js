@@ -8,6 +8,7 @@ import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import { togglePreserveAspectRatio } from '../../extensions/svg';
 
 /**
  * Internal dependencies
@@ -58,7 +59,7 @@ const SvgWidthControl = props => {
 		`${prefix}width-unit-${breakpoint}${isHover ? '-hover' : ''}`
 	);
 
-	const widthFitContent = getLastBreakpointAttribute({
+	const heightFitContent = getLastBreakpointAttribute({
 		target: `${prefix}width-fit-content`,
 		breakpoint,
 		isHover,
@@ -121,24 +122,16 @@ const SvgWidthControl = props => {
 			{!disableHeightFitContent && (
 				<ToggleSwitch
 					label={__('Set height to fit content', 'maxi-blocks')}
-					selected={widthFitContent}
+					selected={heightFitContent}
 					onChange={val => {
-						let icon = getAttributeValue({
+						const contentPrefix = prefix === 'svg-' ? '' : prefix;
+
+						const icon = getAttributeValue({
 							target: 'content',
 							isHover,
-							prefix,
+							prefix: contentPrefix,
 							props,
 						});
-
-						if (
-							!icon.includes(
-								'preserveAspectRatio="xMidYMid slice"'
-							)
-						)
-							icon = icon.replace(
-								'>',
-								' preserveAspectRatio="xMidYMid slice">'
-							);
 
 						onChange({
 							[getAttributeKey(
@@ -147,7 +140,11 @@ const SvgWidthControl = props => {
 								prefix,
 								breakpoint
 							)]: val,
-							[getAttributeKey('content', isHover, prefix)]: icon,
+							[getAttributeKey(
+								'content',
+								isHover,
+								contentPrefix
+							)]: togglePreserveAspectRatio(icon, val),
 						});
 					}}
 				/>

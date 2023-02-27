@@ -11,3 +11,4 @@ export { default as setSVGPosition } from './setSVGPosition';
 export { default as setSVGRatio } from './setSVGRatio';
 export { default as setSVGSize } from './setSVGSize';
 export { default as setSVGStrokeWidth } from './setSVGStrokeWidth';
+export { default as togglePreserveAspectRatio } from './togglePreserveAspectRatio';

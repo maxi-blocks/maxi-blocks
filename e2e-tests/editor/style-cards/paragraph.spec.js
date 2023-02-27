@@ -13,6 +13,7 @@ import {
 	addTypographyOptions,
 	addTypographyStyle,
 	changeResponsive,
+	copySCToEdit,
 } from '../../utils';
 import {
 	generalTypographyOptions,
@@ -29,6 +30,7 @@ describe.skip('StyleCards Paragraph', () => {
 			page,
 			accordion: 'paragraph',
 		});
+		await copySCToEdit(page, `copy - ${Date.now()}`);
 
 		await changeResponsive(page, 'base');
 

@@ -6,7 +6,7 @@ import { createNewPost, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getStyleCardEditor, checkSCResult } from '../../utils';
+import { getStyleCardEditor, checkSCResult, copySCToEdit } from '../../utils';
 
 describe.skip('StyleCards ColorPresets', () => {
 	it('Check Quick Pick Colour Presets', async () => {
@@ -16,6 +16,7 @@ describe.skip('StyleCards ColorPresets', () => {
 			page,
 			accordion: 'color',
 		});
+		await copySCToEdit(page, `copy - ${Date.now()}`);
 
 		// ColorControl check palette-color
 		await page.$$eval(

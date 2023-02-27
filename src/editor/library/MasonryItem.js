@@ -41,7 +41,7 @@ const MasonryItem = props => {
 		gutenbergCode,
 	} = props;
 
-	const getCardSerial = (string = serial) => {
+	const getCardSerial = (string = title) => {
 		const sub = string?.lastIndexOf(' ');
 		const response = string?.substring(sub + 1);
 		return response?.toLowerCase();
@@ -66,14 +66,14 @@ const MasonryItem = props => {
 				<div className='maxi-cloud-masonry-card__container maxi-open-preview'>
 					<div className='maxi-cloud-masonry-card__container__top-bar maxi-open-preview'>
 						<div className='maxi-cloud-masonry__serial-tag maxi-open-preview'>
-							{serial}
+							{title}
 						</div>
 					</div>
 				</div>
 				<div className='maxi-cloud-masonry-card__image maxi-open-preview'>
 					<img
 						src={previewIMG}
-						alt={`Preview for ${serial}`}
+						alt={`Preview for ${title}`}
 						className='maxi-cloud-masonry-card__image-picture maxi-open-preview'
 					/>
 				</div>
@@ -84,7 +84,6 @@ const MasonryItem = props => {
 								type='preview'
 								url={demoUrl}
 								title={title}
-								serial={getCardSerial()}
 								cost={cost}
 								toneUrl={toneUrl}
 								cardId={masonryCardId}

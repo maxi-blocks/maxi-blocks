@@ -184,6 +184,7 @@ describe('Column Maxi', () => {
 		expect(borderHoverResult).toStrictEqual(expectHoverBorder);
 
 		// check first column
+		await page.waitForSelector('.maxi-column-block');
 		await page.$$eval('.maxi-container-block .maxi-column-block', block =>
 			block[0].focus()
 		);
@@ -191,6 +192,7 @@ describe('Column Maxi', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
 		// check last column
+		await page.waitForSelector('.maxi-container-block .maxi-column-block');
 		await page.$$eval('.maxi-container-block .maxi-column-block', block =>
 			block[2].focus()
 		);

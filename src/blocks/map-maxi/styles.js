@@ -211,6 +211,7 @@ const getStyles = props => {
 				},
 				' .leaflet-marker-icon': getSVGWidthStyles({
 					obj: getGroupAttributes(props, 'svg'),
+					prefix: 'svg-',
 				}),
 				' .leaflet-popup-content-wrapper':
 					getAdjustedPositionPopupStyles(props),

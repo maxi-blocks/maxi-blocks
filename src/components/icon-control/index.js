@@ -27,6 +27,7 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import { togglePreserveAspectRatio } from '../../extensions/svg';
 import MaxiModal from '../../editor/library/modal';
 
 /**
@@ -640,6 +641,13 @@ const IconControl = props => {
 		[`${prefix}icon-content`]: iconContent,
 	} = props;
 
+	const heightFitContent = getLastBreakpointAttribute({
+		target: `${prefix}icon-width-fit-content`,
+		breakpoint,
+		attributes: props,
+		isHover,
+	});
+
 	const classes = classnames('maxi-icon-control', className);
 
 	return (
@@ -662,11 +670,8 @@ const IconControl = props => {
 								].filter(Boolean),
 							});
 
-							if (!disableHeightFitContent)
-								icon = icon.replace(
-									'>',
-									' preserveAspectRatio="xMidYMid slice">'
-								);
+							if (!disableHeightFitContent && heightFitContent)
+								icon = togglePreserveAspectRatio(icon, true);
 
 							onChange({
 								...obj,

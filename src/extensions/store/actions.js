@@ -29,8 +29,8 @@ const actions = {
 	saveMaxiSetting(setting, value) {
 		return {
 			type: 'SAVE_GENERAL_SETTING',
-			setting: setting,
-			value: value,
+			setting,
+			value,
 		};
 	},
 	sendMaxiBreakpoints(breakpoints) {
@@ -125,6 +125,18 @@ const actions = {
 		return {
 			type: 'REMOVE_DEPRECATED_BLOCK',
 			uniqueID,
+		};
+	},
+	blockWantsToRender(clientId) {
+		return {
+			type: 'BLOCK_WANTS_TO_RENDER',
+			clientId,
+		};
+	},
+	blockHasBeenRendered(clientId) {
+		return {
+			type: 'BLOCK_HAS_BEEN_RENDERED',
+			clientId,
 		};
 	},
 };

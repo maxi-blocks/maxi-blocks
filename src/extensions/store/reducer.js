@@ -16,7 +16,7 @@ import getWinBreakpoint from '../dom/getWinBreakpoint';
 /**
  * External dependencies
  */
-import { omit } from 'lodash';
+import { omit, isEmpty } from 'lodash';
 
 const breakpointResizer = ({
 	size,
@@ -105,6 +105,14 @@ const reducer = (
 		copiedBlocks: {},
 		inspectorPath: [{ name: 'Settings', value: 0 }],
 		deprecatedBlocks: {},
+		blocksToRender: select('core/block-editor')
+			.getClientIdsWithDescendants()
+			.filter(clientId =>
+				select('core/block-editor')
+					.getBlock(clientId)
+					.name.includes('maxi-blocks/')
+			),
+		renderedBlocks: [],
 	},
 	action
 ) => {
@@ -205,6 +213,60 @@ const reducer = (
 				...state,
 				deprecatedBlocks: omit(state.deprecatedBlocks, action.uniqueID),
 			};
+		case 'BLOCK_WANTS_TO_RENDER': {
+			if (
+				state.blocksToRender.includes(action.clientId) &&
+				!state.renderedBlocks.includes(action.clientId)
+			)
+				return state;
+
+			const getInnerBlocksClientId = clientId => {
+				const innerBlocks =
+					select('core/block-editor').getBlocks(clientId);
+
+				if (isEmpty(innerBlocks)) return [];
+
+				const innerBlocksClientId = [];
+
+				innerBlocks.forEach(innerBlock => {
+					if (!state.blocksToRender.includes(innerBlock.clientId))
+						innerBlocksClientId.push(innerBlock.clientId);
+
+					innerBlocksClientId.push(
+						...getInnerBlocksClientId(innerBlock.clientId)
+					);
+				});
+
+				return innerBlocksClientId;
+			};
+
+			const innerBlocksClientId = getInnerBlocksClientId(action.clientId);
+
+			return {
+				...state,
+				blocksToRender: [
+					...state.blocksToRender,
+					action.clientId,
+					...innerBlocksClientId,
+				],
+			};
+		}
+		case 'BLOCK_HAS_BEEN_RENDERED': {
+			const newBlocksToRender = state.blocksToRender.filter(
+				block => block !== action.clientId
+			);
+			const newRenderedBlocks = !state.renderedBlocks.includes(
+				action.clientId
+			)
+				? [...state.renderedBlocks, action.clientId]
+				: state.renderedBlocks;
+
+			return {
+				...state,
+				blocksToRender: newBlocksToRender,
+				renderedBlocks: newRenderedBlocks,
+			};
+		}
 		default:
 			return state;
 	}

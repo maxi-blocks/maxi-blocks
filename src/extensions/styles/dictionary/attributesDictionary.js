@@ -17,12 +17,34 @@ const dictionary = {
 		width: 'w',
 		height: 'h',
 	},
+	margin: {
+		'margin-top': 'mt',
+		'margin-right': 'mr',
+		'margin-bottom': 'mb',
+		'margin-left': 'ml',
+		'margin-sync': 'ms',
+		'margin-top-unit': 'mtu',
+		'margin-right-unit': 'mru',
+		'margin-bottom-unit': 'mbu',
+		'margin-left-unit': 'mlu',
+	},
+};
+
+const flattenDictionary = dict => {
+	let response = {};
+
+	Object.values(dict).forEach(val => {
+		response = {
+			...response,
+			...val,
+		};
+	});
+
+	return response;
 };
 
 // No type dictionary from long to short terms
-export const noTypeDictionary = {
-	...Object.values(dictionary)[0],
-};
+export const noTypeDictionary = flattenDictionary(dictionary);
 
 // Short to long terms
 export const reversedDictionary = {

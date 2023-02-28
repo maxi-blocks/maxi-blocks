@@ -12,6 +12,7 @@ import withRTC from '../../extensions/maxi-block/withRTC';
 import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
+	getAttributeValue,
 } from '../../extensions/styles';
 
 /**
@@ -240,14 +241,24 @@ const FullSizeControl = props => {
 			<ToggleSwitch
 				label={__('Set custom min/max values', 'maxi-blocks')}
 				className='maxi-full-size-control__custom-min-max'
-				selected={props[`${prefix}size-advanced-options`] || 0}
+				selected={
+					getAttributeValue({
+						target: 'size-advanced-options',
+						prefix,
+						props,
+					}) || 0
+				}
 				onChange={val => {
 					onChange({
 						[`${prefix}size-advanced-options`]: val,
 					});
 				}}
 			/>
-			{props[`${prefix}size-advanced-options`] && (
+			{getAttributeValue({
+				target: 'size-advanced-options',
+				prefix,
+				props,
+			}) && (
 				<>
 					{!hideMaxWidth &&
 						!getLastBreakpointAttribute({

@@ -9,23 +9,32 @@ import { select } from '@wordpress/data';
 import getBreakpointFromAttribute from '../styles/getBreakpointFromAttribute';
 import getDefaultAttribute from '../styles/getDefaultAttribute';
 import handleOnReset from '../attributes/handleOnReset';
+import cleanAttributes from './cleanAttributes';
+import parseLongAttrKey from '../styles/dictionary/parseLongAttrKey';
 
 /**
  * External dependencies
  */
 import { isNil } from 'lodash';
-import cleanAttributes from './cleanAttributes';
 
 const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const handleSetAttributes = ({
-	obj: { isReset, ...obj },
+	obj: { isReset, ...rawObj },
 	attributes,
 	onChange,
 	clientId = null,
 	defaultAttributes,
 	isStyleCard = false,
 }) => {
+	const obj = Object.entries(rawObj).reduce(
+		(acc, [key, value]) => ({
+			...acc,
+			[parseLongAttrKey(key)]: value,
+		}),
+		{}
+	);
+
 	const response = isReset ? { ...handleOnReset(obj) } : { ...obj };
 
 	const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();

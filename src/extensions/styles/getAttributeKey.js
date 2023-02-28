@@ -1,5 +1,5 @@
 const getAttributeKey = (
-	key,
+	key = '',
 	isHover = false,
 	prefix = false,
 	breakpoint = false

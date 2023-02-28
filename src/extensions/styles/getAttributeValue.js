@@ -1,14 +1,13 @@
 /**
+ * Internal dependencies
+ */
+import parseLongAttrKey from './dictionary/parseLongAttrKey';
+import getAttributeKey from './getAttributeKey';
+
+/**
  * External dependencies
  */
 import { isNumber, isBoolean, isEmpty, isNil } from 'lodash';
-
-const getBreakpointLine = (breakpoint, target) => {
-	if (isEmpty(breakpoint)) return '';
-	if (isEmpty(target)) return breakpoint;
-
-	return `-${breakpoint}`;
-};
 
 const getAttributeValue = ({
 	target,
@@ -16,12 +15,13 @@ const getAttributeValue = ({
 	isHover,
 	breakpoint,
 	prefix = '',
+	allowNil = false,
 }) => {
 	const value =
-		props[
-			`${prefix}${target}${getBreakpointLine(breakpoint, target)}${
-				isHover ? '-hover' : ''
-			}`
+		props?.[
+			parseLongAttrKey(
+				getAttributeKey(target, isHover, prefix, breakpoint)
+			)
 		];
 
 	if (
@@ -29,7 +29,9 @@ const getAttributeValue = ({
 		!isNil(value)
 	)
 		return value;
+
 	if (
+		!allowNil &&
 		(isNil(breakpoint) || breakpoint === 'general') &&
 		isHover &&
 		isNil(value)
@@ -42,7 +44,7 @@ const getAttributeValue = ({
 			prefix,
 		});
 
-	return props[`${prefix}${target}`];
+	return props?.[parseLongAttrKey(getAttributeKey(target, null, prefix))];
 };
 
 export default getAttributeValue;

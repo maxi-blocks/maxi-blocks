@@ -62,13 +62,13 @@ const interactionBuilderSettings = {
 	advanced: getAdvancedSettings({ customCss }),
 };
 const maxiAttributes = {
-	'max-width-xxl': '1690',
-	'max-width-xl': '1170',
-	'max-width-l': '90',
-	'max-width-unit-general': undefined,
-	'max-width-unit-xxl': 'px',
-	'max-width-unit-xl': 'px',
-	'max-width-unit-l': '%',
+	'mw-xxl': '1690',
+	'mw-xl': '1170',
+	'mw-l': '90',
+	'mwu-general': undefined,
+	'mwu-xxl': 'px',
+	'mwu-xl': 'px',
+	'mwu-l': '%',
 };
 
 const data = {

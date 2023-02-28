@@ -110,17 +110,17 @@ const interactionBuilderSettings = {
 	advanced: getAdvancedSettings({ customCss }),
 };
 const maxiAttributes = {
-	'max-width-xxl': '1690',
-	'max-width-xl': '1170',
-	'max-width-l': '90',
-	'max-width-unit-xxl': 'px',
-	'max-width-unit-xl': 'px',
-	'max-width-unit-l': '%',
-	'width-l': '1170',
-	'width-m': '1000',
-	'width-s': '700',
-	'width-xs': '460',
-	'width-unit-l': 'px',
+	'mw-xxl': '1690',
+	'mw-xl': '1170',
+	'mw-l': '90',
+	'mwu-xxl': 'px',
+	'mwu-xl': 'px',
+	'mwu-l': '%',
+	'w-l': '1170',
+	'w-m': '1000',
+	'w-s': '700',
+	'w-xs': '460',
+	'wu-l': 'px',
 };
 
 const data = {

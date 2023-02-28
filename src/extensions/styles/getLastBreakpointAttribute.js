@@ -84,11 +84,13 @@ const getLastBreakpointAttributeSingle = (
 	}
 
 	let currentAttr = getValueFromKeys(
-		attr[
-			`${!isEmpty(target) ? `${target}-` : ''}${breakpoint}${
-				isHover ? '-hover' : ''
-			}`
-		],
+		getAttributeValue({
+			target,
+			props: attr,
+			breakpoint,
+			isHover,
+			allowNil: true,
+		}),
 		keys
 	);
 
@@ -110,11 +112,13 @@ const getLastBreakpointAttributeSingle = (
 
 		if (!(avoidXXL && breakpoints[breakpointPosition] === 'xxl'))
 			currentAttr = getValueFromKeys(
-				attr[
-					`${!isEmpty(target) ? `${target}-` : ''}${
-						breakpoints[breakpointPosition]
-					}${isHover ? '-hover' : ''}`
-				],
+				getAttributeValue({
+					target,
+					props: attr,
+					breakpoint: breakpoints[breakpointPosition],
+					isHover,
+					allowNil: true,
+				}),
 				keys
 			);
 	}

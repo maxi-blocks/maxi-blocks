@@ -3,6 +3,7 @@
  */
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 import getDefaultAttribute from '../getDefaultAttribute';
+import getAttributeValue from '../getAttributeValue';
 
 /**
  * External dependencies
@@ -53,7 +54,12 @@ const getSizeStyles = (obj, prefix = '') => {
 					const isMinWidthNeeded = breakpoints
 						.slice(0, breakpoints.indexOf(breakpoint) + 1)
 						.some(bp => {
-							const val = obj[`${prefix}full-width-${bp}`];
+							const val = getAttributeValue({
+								target: 'full-width',
+								breakpoint: bp,
+								props: obj,
+								prefix,
+							});
 							const defaultVal = getDefaultAttribute(
 								`${prefix}full-width-${bp}`
 							);
@@ -99,10 +105,20 @@ const getSizeStyles = (obj, prefix = '') => {
 				}
 			}
 
-			if (
-				isNumber(parseInt(obj[`${prefix}${target}-${breakpoint}`])) ||
-				obj[`${prefix}${target}-unit-${breakpoint}`]
-			) {
+			const currentNum = getAttributeValue({
+				target,
+				prefix,
+				breakpoint,
+				props: obj,
+			});
+			const currentUnit = getAttributeValue({
+				target: `${target}-unit`,
+				prefix,
+				breakpoint,
+				props: obj,
+			});
+
+			if (isNumber(parseInt(currentNum)) || currentUnit) {
 				const num = getLastBreakpointAttribute({
 					target: `${prefix}${target}`,
 					breakpoint,

@@ -56,11 +56,11 @@ const attributes = {
 	...attributesData.boxShadowHover,
 	...{
 		...attributesData.size,
-		'full-width-general': {
+		'fw-general': {
 			type: 'string',
 			default: 'full',
 		},
-		'size-advanced-options': {
+		sao: {
 			type: 'boolean',
 			default: true,
 		},

@@ -17,6 +17,7 @@ describe('FullSizeControl', () => {
 	it('Checking the full size control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
+
 		const accordionPanel = await openSidebarTab(
 			page,
 			'style',
@@ -104,6 +105,7 @@ describe('FullSizeControl', () => {
 		for (let i = 0; i < selector.length; i += 1) {
 			const selection = selector[i];
 
+			// eslint-disable-next-line no-await-in-loop
 			await selection.select('em');
 		}
 
@@ -121,6 +123,7 @@ describe('FullSizeControl', () => {
 
 		expect(result).toStrictEqual(expectSize);
 	});
+
 	it('Checking fullSizeControl force aspect ratio', async () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');

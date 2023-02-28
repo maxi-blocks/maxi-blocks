@@ -1,4 +1,5 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import attributesShorter from '../dictionary/attributesShorter';
 
 export const rawSize = {
 	'size-advanced-options': {
@@ -102,4 +103,4 @@ const size = {
 	...fullWidth,
 };
 
-export default size;
+export default attributesShorter(size, 'size');

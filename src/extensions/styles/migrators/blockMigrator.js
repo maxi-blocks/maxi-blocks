@@ -28,6 +28,7 @@ import transitionMigrator from './transitionMigrator';
  * External dependencies
  */
 import { isNil } from 'lodash';
+import dictionaryMigrator from './dictionaryMigrator';
 
 /**
  * Create a combination of the different migrators, from the most populate ones to the lighter ones.
@@ -103,6 +104,7 @@ const blockMigrator = blockMigratorProps => {
 		corruptedHoverAttributesMigrator,
 		bottomGapMigrator,
 		transitionMigrator,
+		dictionaryMigrator,
 		...(blockMigratorProps.migrators ?? []),
 	];
 

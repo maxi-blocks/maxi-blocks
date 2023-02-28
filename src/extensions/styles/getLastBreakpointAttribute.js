@@ -28,6 +28,7 @@ const getValueFromKeys = (value, keys) =>
  */
 const getLastBreakpointAttributeSingle = (
 	target,
+	prefix,
 	breakpoint,
 	attributes,
 	isHover,
@@ -48,6 +49,7 @@ const getLastBreakpointAttributeSingle = (
 		return getValueFromKeys(
 			getAttributeValue({
 				target,
+				prefix,
 				props: attr,
 				isHover,
 				breakpoint,
@@ -73,6 +75,7 @@ const getLastBreakpointAttributeSingle = (
 	) {
 		const baseBreakpointAttr = getLastBreakpointAttributeSingle(
 			target,
+			prefix,
 			baseBreakpoint,
 			attributes,
 			isHover,
@@ -86,6 +89,7 @@ const getLastBreakpointAttributeSingle = (
 	let currentAttr = getValueFromKeys(
 		getAttributeValue({
 			target,
+			prefix,
 			props: attr,
 			breakpoint,
 			isHover,
@@ -114,6 +118,7 @@ const getLastBreakpointAttributeSingle = (
 			currentAttr = getValueFromKeys(
 				getAttributeValue({
 					target,
+					prefix,
 					props: attr,
 					breakpoint: breakpoints[breakpointPosition],
 					isHover,
@@ -126,6 +131,7 @@ const getLastBreakpointAttributeSingle = (
 	if (isHover && !attrFilter(currentAttr))
 		currentAttr = getLastBreakpointAttributeSingle(
 			target,
+			prefix,
 			breakpoint,
 			attributes,
 			false,
@@ -138,6 +144,7 @@ const getLastBreakpointAttributeSingle = (
 	if (!currentAttr && breakpoint === 'general' && baseBreakpoint)
 		currentAttr = getLastBreakpointAttributeSingle(
 			target,
+			prefix,
 			baseBreakpoint,
 			attributes,
 			isHover,
@@ -150,6 +157,7 @@ const getLastBreakpointAttributeSingle = (
 
 const getLastBreakpointAttributeGroup = (
 	target,
+	prefix,
 	breakpoint,
 	isHover,
 	avoidXXL,
@@ -165,6 +173,7 @@ const getLastBreakpointAttributeGroup = (
 
 		return getLastBreakpointAttributeSingle(
 			target,
+			prefix,
 			breakpoint,
 			attributes,
 			isHover,
@@ -181,6 +190,7 @@ const getLastBreakpointAttributeGroup = (
 
 const getLastBreakpointAttribute = ({
 	target,
+	prefix = '',
 	breakpoint,
 	attributes = null,
 	isHover = false,
@@ -195,6 +205,7 @@ const getLastBreakpointAttribute = ({
 	if (getSelectedBlockCount() > 1 && !forceSingle)
 		return getLastBreakpointAttributeGroup(
 			target,
+			prefix,
 			breakpoint,
 			isHover,
 			avoidXXL,
@@ -203,6 +214,7 @@ const getLastBreakpointAttribute = ({
 
 	return getLastBreakpointAttributeSingle(
 		target,
+		prefix,
 		breakpoint,
 		attributes,
 		isHover,

@@ -20,6 +20,17 @@ const dictionary = {
 		width: 'w',
 		height: 'h',
 	},
+	margin: {
+		'margin-top': 'mt',
+		'margin-right': 'mr',
+		'margin-bottom': 'mb',
+		'margin-left': 'ml',
+		'margin-sync': 'ms',
+		'margin-top-unit': 'mtu',
+		'margin-right-unit': 'mru',
+		'margin-bottom-unit': 'mbu',
+		'margin-left-unit': 'mlu',
+	},
 };
 
 const flattenDictionary = dict => {

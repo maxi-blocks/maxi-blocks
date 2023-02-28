@@ -472,12 +472,15 @@ const LibraryToolbar = props => {
 			)}
 			{isMaxiProActive && (
 				<div>
-					Signed in as: {userName}
-					<ToolbarButton
+					{`${__('Signed in as:', 'maxi-blocks')} ${userName}`}
+					<Button
 						key='maxi-cloud-toolbar__button__sing-out'
+						className='maxi-cloud-container__patterns__top-menu__button-go-pro'
 						label={__('Sign out', 'maxi-blocks')}
 						onClick={onLogOut}
-					/>
+					>
+						{__('Sign out', 'maxi-blocks')}
+					</Button>
 				</div>
 			)}
 			{type !== 'preview' && type !== 'switch-tone' && (

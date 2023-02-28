@@ -1614,6 +1614,7 @@
 				color: #fff;
 				border: 1px solid var(--maxi-primary-color);
 				transition: 0.1s;
+				z-index: 100000;
 				&:hover {
 					background-color: #eaf3f7;
 					color: #081219;
@@ -1622,7 +1623,6 @@
 			}
 			&__button-connect-pro {
 				right: 187px;
-				z-index: 1000000;
 			}
 		}
 	}

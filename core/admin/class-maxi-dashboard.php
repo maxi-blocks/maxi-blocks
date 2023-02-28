@@ -639,7 +639,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '<div class="maxi-dashboard_main-content_accordion" id="maxi-dashboard_main-content_pro-not-pro">';
 
             $content .= '<div id="maxi-dashboard_main-content_not-pro">';
-            $content .= '<h1>'.__('Thousands ot web templates. Unlimited downloads', self::$maxi_text_domain).'</h1>';
+            $content .= '<h1>'.__('Thousands of web templates. Unlimited downloads', self::$maxi_text_domain).'</h1>';
             $content .= '<p>'.__('Build pages faster with premium templates that match your style.', self::$maxi_text_domain).'</p>';
             $content .= '<p>'.__('I want to join', self::$maxi_text_domain).'</p>';
             $content .= '<a href="https://maxiblocks.com/go/pricing" target="_blank">'.__('Sign up', self::$maxi_text_domain).'</a>';
@@ -647,9 +647,9 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '<a href="https://maxiblocks.com/go/user-login" target="_blank">'.__('Log in', self::$maxi_text_domain).'</a>';
             $content .= '</div>'; // maxi-dashboard_main-content_not-pro
             $content .= '<div id="maxi-dashboard_main-content_pro">';
-            $content .= '<h1>'.__('Thousands ot web templates. Unlimited downloads', self::$maxi_text_domain).'</h1>';
+            $content .= '<h1>'.__('Thousands of web templates. Unlimited downloads', self::$maxi_text_domain).'</h1>';
             $content .= '<p>'.__('You are connected to Maxi Pro!', self::$maxi_text_domain).'</p>';
-            $content .= '<p><a href="https://my.maxiblocks.com/" target="_blank">'.__('Edit your profile', self::$maxi_text_domain).'</a></p>';
+            $content .= '<p><a href="https://my.maxiblocks.com/account" target="_blank">'.__('Edit your profile', self::$maxi_text_domain).'</a></p>';
             $content .= '</div>';
 
             $content .= '</div>'; // maxi-dashboard_main-content_accordion

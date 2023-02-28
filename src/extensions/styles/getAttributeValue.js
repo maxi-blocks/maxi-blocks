@@ -1,6 +1,7 @@
 /**
  * Internal dependencies
  */
+import parseLongAttrKey from './dictionary/parseLongAttrKey';
 import getAttributeKey from './getAttributeKey';
 
 /**
@@ -16,7 +17,12 @@ const getAttributeValue = ({
 	prefix = '',
 	allowNil = false,
 }) => {
-	const value = props?.[getAttributeKey(target, isHover, prefix, breakpoint)];
+	const value =
+		props?.[
+			parseLongAttrKey(
+				getAttributeKey(target, isHover, prefix, breakpoint)
+			)
+		];
 
 	if (
 		(value || isNumber(value) || isBoolean(value) || isEmpty(value)) &&
@@ -38,7 +44,7 @@ const getAttributeValue = ({
 			prefix,
 		});
 
-	return props?.[getAttributeKey(target, false, prefix)];
+	return props?.[parseLongAttrKey(getAttributeKey(target, null, prefix))];
 };
 
 export default getAttributeValue;

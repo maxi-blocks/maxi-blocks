@@ -4,8 +4,8 @@ const getAttributeKey = (
 	prefix = false,
 	breakpoint = false
 ) =>
-	`${prefix || ''}${`${key}${breakpoint ? `-${breakpoint}` : ''}${
+	`${prefix || ''}${key}${breakpoint ? `-${breakpoint}` : ''}${
 		isHover ? '-hover' : ''
-	}`}`;
+	}`;
 
 export default getAttributeKey;

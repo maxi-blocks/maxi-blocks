@@ -24,7 +24,8 @@ const getUpdatedBGLayersWithNewUniqueID = (rawBackgroundLayers, uniqueID) => {
 		if (!SVGData || !SVGElement) return layer;
 
 		const id = Object.keys(SVGData)[0];
-		if (id.includes(uniqueID)) return layer;
+		const uniqueIDFromId = id.match(/^(.*?)(?=(__))/)?.[0];
+		if (uniqueIDFromId === uniqueID) return layer;
 
 		const newId = id.replace(/^(.*?)(?=(__))/, uniqueID);
 		const newSVGData = { ...SVGData, [newId]: SVGData[id] };

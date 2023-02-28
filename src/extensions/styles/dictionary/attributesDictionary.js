@@ -22,10 +22,21 @@ const dictionary = {
 	},
 };
 
-// No type dictionary from long to short terms
-export const noTypeDictionary = {
-	...Object.values(dictionary)[0],
+const flattenDictionary = dict => {
+	let response = {};
+
+	Object.values(dict).forEach(val => {
+		response = {
+			...response,
+			...val,
+		};
+	});
+
+	return response;
 };
+
+// No type dictionary from long to short terms
+export const noTypeDictionary = flattenDictionary(dictionary);
 
 // Short to long terms
 export const reversedDictionary = {

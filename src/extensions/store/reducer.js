@@ -105,13 +105,7 @@ const reducer = (
 		copiedBlocks: {},
 		inspectorPath: [{ name: 'Settings', value: 0 }],
 		deprecatedBlocks: {},
-		blocksToRender: select('core/block-editor')
-			.getClientIdsWithDescendants()
-			.filter(clientId =>
-				select('core/block-editor')
-					.getBlock(clientId)
-					.name.includes('maxi-blocks/')
-			),
+		blocksToRender: [],
 		renderedBlocks: [],
 	},
 	action

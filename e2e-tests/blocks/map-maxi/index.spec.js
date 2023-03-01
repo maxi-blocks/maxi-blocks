@@ -62,6 +62,7 @@ describe('Map Maxi', () => {
 	beforeEach(async () => {
 		await createNewPost();
 		await insertBlock('Map Maxi');
+		await page.waitForSelector('.maxi-map-block');
 	});
 
 	it('Map Maxi does not break', async () => {
@@ -106,20 +107,21 @@ describe('Map Maxi', () => {
 	it('Map Maxi add marker by search box', async () => {
 		const map = await getMapContainer(page);
 
+		await page.waitForSelector('.maxi-map-block__search-box');
 		const searchBox = await map.$('.maxi-map-block__search-box');
 
 		// Typing London in the search box
-		await searchBox.focus();
-		await searchBox.type('London');
+		await searchBox.$eval('input', input => input.focus());
+		await searchBox.type('London', { delay: 100 });
 		await page.waitForTimeout(150);
 
 		// Starting search
+		await page.waitForSelector('.maxi-map-block__search-box__button');
 		await searchBox.$eval('.maxi-map-block__search-box__button', button =>
 			button.click()
 		);
 
-		await map.waitForSelector('.maxi-map-block__search-box-results');
-
+		await page.waitForSelector('.maxi-map-block__search-box-results');
 		const searchBoxResults = await map.$(
 			'.maxi-map-block__search-box-results'
 		);

@@ -7,6 +7,7 @@ describe('BlockInserter', () => {
 	it('Checking the block inserter', async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
+		await page.waitForSelector('.maxi-group-block');
 
 		const groupInserter = await page.$eval(
 			'.maxi-block-inserter',

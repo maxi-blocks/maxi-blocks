@@ -16,6 +16,7 @@ describe('Toolbar size', () => {
 	it('Check toolbar size', async () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
+		await page.waitForSelector('.maxi-row-block');
 
 		// Wait for toolbar to be visible
 		await page.waitForSelector('.toolbar-wrapper');

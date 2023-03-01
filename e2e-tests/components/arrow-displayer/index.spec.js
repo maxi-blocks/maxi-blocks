@@ -8,6 +8,7 @@ describe('ArrowDisplay', () => {
 	it('Cheking the arrow display', async () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
+		await page.waitForSelector('.maxi-row-block');
 		await page.$eval('.maxi-container-block', container =>
 			container.focus()
 		);

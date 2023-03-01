@@ -23,6 +23,7 @@ describe('Responsive attributes mechanisms', () => {
 
 		await createNewPost();
 		await insertBlock('Group Maxi');
+		await page.waitForSelector('.maxi-group-block');
 	});
 
 	it('On change attributes from base responsive, just "general" attributes change', async () => {
@@ -641,6 +642,7 @@ describe('Responsive attributes mechanisms', () => {
 
 		await createNewPost();
 		await insertBlock('Group Maxi');
+		await page.waitForSelector('.maxi-group-block');
 
 		await changeResponsive(page, 'xxl');
 
@@ -769,10 +771,12 @@ describe('Responsive attributes mechanisms', () => {
 
 		await createNewPost();
 		await insertBlock('Container Maxi');
+		await page.waitForSelector('.maxi-row-block');
 
 		await page.$$eval('.maxi-row-block__template button', button =>
 			button[0].click()
 		);
+		await page.waitForSelector('.maxi-column-block');
 
 		const accordionPanel = await openSidebarTab(
 			page,

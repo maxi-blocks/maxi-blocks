@@ -17,6 +17,7 @@ describe('ColumnPattern', () => {
 	it('Check column pattern', async () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
+		await page.waitForSelector('.maxi-row-block');
 
 		await page.$eval('.maxi-row-block', row => row.focus());
 

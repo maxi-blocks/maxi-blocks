@@ -16,6 +16,7 @@ describe('Column Maxi hover simple actions', () => {
 	beforeEach(async () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
+		await page.waitForSelector('.maxi-row-block');
 
 		// Select one column
 		await page.$$eval(

@@ -16,6 +16,7 @@ describe('Background color from Toolbar', () => {
 	it('Test background color from toolbar', async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
+		await page.waitForSelector('.maxi-group-block');
 
 		// Wait for toolbar to be visible
 		await page.waitForSelector('.toolbar-wrapper');

@@ -102,6 +102,7 @@ describe('CopyPaste from Toolbar', () => {
 	});
 	it('Should copy and paste styles with special paste', async () => {
 		await insertBlock('Group Maxi');
+		await page.waitForSelector('.maxi-group-block');
 
 		// add border attributes
 		const borderAccordion = await openSidebarTab(page, 'style', 'border');
@@ -185,6 +186,7 @@ describe('CopyPaste from Toolbar', () => {
 
 		// new block
 		await insertBlock('Group Maxi');
+		await page.waitForSelector('.maxi-group-block');
 		await page.waitForTimeout(500);
 
 		// open options
@@ -285,9 +287,11 @@ describe('CopyPaste from Toolbar', () => {
 	it('Should copy nested blocks', async () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
+		await page.waitForSelector('.maxi-row-block');
 		await page.$$eval('.maxi-row-block__template button', button =>
 			button[0].click()
 		);
+		await page.waitForSelector('.maxi-column-block');
 
 		// Select column
 		await page.$eval('.maxi-column-block', column => column.focus());
@@ -331,6 +335,7 @@ describe('CopyPaste from Toolbar', () => {
 		);
 
 		await insertBlock('Container Maxi');
+		await page.waitForSelector('.maxi-row-block');
 
 		// open options
 		await page.$eval(

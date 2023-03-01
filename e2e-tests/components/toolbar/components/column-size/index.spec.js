@@ -16,6 +16,7 @@ describe('Column size from Toolbar', () => {
 	it('Test column size from toolbar', async () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
+		await page.waitForSelector('.maxi-row-block');
 
 		// Wait for toolbar to be visible
 		await page.waitForSelector('.toolbar-wrapper');
@@ -23,6 +24,7 @@ describe('Column size from Toolbar', () => {
 		await page.$eval('.maxi-row-block__template button', button =>
 			button.click()
 		);
+		await page.waitForSelector('.maxi-column-block');
 
 		// column size
 		await page.$eval(

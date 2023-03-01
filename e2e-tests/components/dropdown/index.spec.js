@@ -11,6 +11,7 @@ describe('Dropdown', () => {
 	it('Check dropdown', async () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
+		await page.waitForSelector('.maxi-row-block');
 
 		const accordionPanel = await openSidebarTab(
 			page,

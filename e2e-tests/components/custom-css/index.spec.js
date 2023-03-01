@@ -22,6 +22,7 @@ describe('Custom-Css-Control', () => {
 	it('Checking the custom-css', async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
+		await page.waitForSelector('.maxi-group-block');
 		await expect(await addCustomCSS(page)).toMatchSnapshot();
 	}, 500000);
 

@@ -22,6 +22,7 @@ describe('Shape divider', () => {
 	it('Checking the shape divider', async () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
+		await page.waitForSelector('.maxi-row-block');
 		await page.$eval('.maxi-container-block', select => select.focus());
 		const accordionPanel = await openSidebarTab(
 			page,

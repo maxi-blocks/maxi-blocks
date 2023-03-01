@@ -17,6 +17,7 @@ describe('FlexSettings', () => {
 	it('Checking the flex options', async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
+		await page.waitForSelector('.maxi-group-block');
 		const accordionPanel = await openSidebarTab(
 			page,
 			'advanced',
@@ -306,6 +307,7 @@ describe('FlexSettings', () => {
 		await openSidebarTab(page, 'advanced', 'overflow');
 		await changeResponsive(page, 'base');
 		await insertBlock('Group Maxi');
+		await page.waitForSelector('.maxi-group-block');
 		const accordionPanel = await openSidebarTab(
 			page,
 			'advanced',

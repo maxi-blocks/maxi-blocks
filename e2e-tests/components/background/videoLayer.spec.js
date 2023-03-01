@@ -29,6 +29,7 @@ describe('BackgroundControl', () => {
 	it('Check Background video layer', async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
+		await page.waitForSelector('.maxi-group-block');
 		await openSidebarTab(page, 'style', 'background layer');
 		await addBackgroundLayer(page, 'video');
 

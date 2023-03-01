@@ -12,6 +12,7 @@ describe('Column pattern from Toolbar', () => {
 	it('Test column pattern from toolbar', async () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
+		await page.waitForSelector('.maxi-row-block');
 
 		// Wait for toolbar to be visible
 		await page.waitForSelector('.toolbar-wrapper');
@@ -19,6 +20,7 @@ describe('Column pattern from Toolbar', () => {
 		await page.$$eval('.maxi-row-block__template button', button =>
 			button[0].click()
 		);
+		await page.waitForSelector('.maxi-column-block');
 
 		expect(await getAttributes('row-pattern-general')).toStrictEqual('1');
 

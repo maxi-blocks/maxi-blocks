@@ -124,11 +124,13 @@ describe('FullSizeControl', () => {
 	it('Checking fullSizeControl force aspect ratio', async () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
+		await page.waitForSelector('.maxi-row-block');
 
 		// select 3 columns
 		await page.$$eval('.maxi-row-block__template button', button =>
 			button[6].click()
 		);
+		await page.waitForSelector('.maxi-column-block');
 
 		// select colum
 		await page.$eval(

@@ -7,9 +7,11 @@ describe('Breadcrumbs', () => {
 	it('Test breadcrumbs', async () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
+		await page.waitForSelector('.maxi-row-block');
 		await page.$eval('.maxi-row-block__template button', button =>
 			button.click()
 		);
+		await page.waitForSelector('.maxi-column-block');
 
 		// Select column
 		await page.$eval('.maxi-column-block', column => column.focus());
@@ -52,6 +54,7 @@ describe('Breadcrumbs', () => {
 		await page.$eval('.maxi-row-block__template button', button =>
 			button.click()
 		);
+		await page.waitForSelector('.maxi-column-block');
 
 		// Select column
 		await page.$$eval('.maxi-column-block', columns =>

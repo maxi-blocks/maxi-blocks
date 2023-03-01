@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import getAttributeKey from '../getAttributeKey';
+import getAttributeValue from '../getAttributeValue';
 
 /**
  * General
@@ -17,11 +17,18 @@ const getOpacityStyles = (obj, isHover = false, prefix = '') => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
-		const attrKey = getAttributeKey('opacity', isHover, prefix, breakpoint);
+		const value = getAttributeValue({
+			target: 'opacity',
+			props: obj,
+			isHover,
+			breakpoint,
+			prefix,
+		});
+
 		response[breakpoint] = {
-			...(obj[attrKey] !== undefined &&
-				obj[attrKey] !== '' && {
-					opacity: obj[attrKey],
+			...(value !== undefined &&
+				value !== '' && {
+					opacity: value,
 				}),
 		};
 	});

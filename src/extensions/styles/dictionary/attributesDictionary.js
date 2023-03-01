@@ -28,6 +28,9 @@ const dictionary = {
 		'margin-bottom-unit': 'mbu',
 		'margin-left-unit': 'mlu',
 	},
+	opacity: {
+		opacity: 'o',
+	},
 };
 
 const flattenDictionary = dict => {

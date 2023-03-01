@@ -1,10 +1,7 @@
 /**
  * Internal dependencies
  */
-import {
-	getAttributeKey,
-	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+import { getLastBreakpointAttribute } from '../../extensions/styles';
 import SettingTabsControl from '../setting-tabs-control';
 import Icon from '../icon';
 import withRTC from '../../extensions/maxi-block/withRTC';
@@ -94,7 +91,6 @@ const AlignmentControl = props => {
 	);
 
 	const target = `${prefix}${type === 'text' ? 'text-' : ''}alignment`;
-
 	return (
 		<>
 			{showLabel && (
@@ -121,7 +117,7 @@ const AlignmentControl = props => {
 				}
 				onChange={val =>
 					onChange({
-						[getAttributeKey(target, isHover, prefix, breakpoint)]:
+						[`${target}-${breakpoint}${isHover ? '-hover' : ''}`]:
 							val,
 					})
 				}

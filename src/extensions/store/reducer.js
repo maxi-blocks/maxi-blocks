@@ -208,56 +208,75 @@ const reducer = (
 				deprecatedBlocks: omit(state.deprecatedBlocks, action.uniqueID),
 			};
 		case 'BLOCK_WANTS_TO_RENDER': {
+			const { clientId, uniqueID } = action;
+
 			if (
-				state.blocksToRender.includes(action.clientId) &&
-				!state.renderedBlocks.includes(action.clientId)
+				state.blocksToRender.includes(uniqueID) &&
+				!state.renderedBlocks.includes(uniqueID)
 			)
 				return state;
 
-			const getInnerBlocksClientId = clientId => {
+			const getInnerBlocksUniqueID = clientId => {
 				const innerBlocks =
 					select('core/block-editor').getBlocks(clientId);
 
 				if (isEmpty(innerBlocks)) return [];
 
-				const innerBlocksClientId = [];
+				const innerBlocksUniqueID = [];
 
 				innerBlocks.forEach(innerBlock => {
-					if (!state.blocksToRender.includes(innerBlock.clientId))
-						innerBlocksClientId.push(innerBlock.clientId);
+					const {
+						clientId: innerBlockClientId,
+						attributes: { uniqueID },
+					} = innerBlock;
 
-					innerBlocksClientId.push(
-						...getInnerBlocksClientId(innerBlock.clientId)
+					if (!state.blocksToRender.includes(uniqueID))
+						innerBlocksUniqueID.push(uniqueID);
+
+					innerBlocksUniqueID.push(
+						...getInnerBlocksUniqueID(innerBlockClientId)
 					);
 				});
 
-				return innerBlocksClientId;
+				return innerBlocksUniqueID;
 			};
 
-			const innerBlocksClientId = getInnerBlocksClientId(action.clientId);
+			const innerBlocksUniqueID = getInnerBlocksUniqueID(clientId);
 
 			return {
 				...state,
 				blocksToRender: [
 					...state.blocksToRender,
-					action.clientId,
-					...innerBlocksClientId,
+					uniqueID,
+					...innerBlocksUniqueID,
 				],
 			};
 		}
 		case 'BLOCK_HAS_BEEN_RENDERED': {
+			const { uniqueID } = action;
+
 			const newBlocksToRender = state.blocksToRender.filter(
-				block => block !== action.clientId
+				block => block !== uniqueID
 			);
-			const newRenderedBlocks = !state.renderedBlocks.includes(
-				action.clientId
-			)
-				? [...state.renderedBlocks, action.clientId]
+			const newRenderedBlocks = !state.renderedBlocks.includes(uniqueID)
+				? [...state.renderedBlocks, uniqueID]
 				: state.renderedBlocks;
 
 			return {
 				...state,
 				blocksToRender: newBlocksToRender,
+				renderedBlocks: newRenderedBlocks,
+			};
+		}
+		case 'REMOVE_BLOCK_HAS_BEEN_RENDERED': {
+			const { uniqueID } = action;
+
+			const newRenderedBlocks = state.renderedBlocks.filter(
+				block => block !== uniqueID
+			);
+
+			return {
+				...state,
 				renderedBlocks: newRenderedBlocks,
 			};
 		}

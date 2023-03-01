@@ -3,7 +3,12 @@
  */
 import { dispatch, select } from '@wordpress/data';
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
-import { Suspense, useState, useEffect } from '@wordpress/element';
+import { Suspense, useState, useEffect, useRef } from '@wordpress/element';
+
+/**
+ * External dependencies
+ */
+import { isEmpty, isNil } from 'lodash';
 
 const LoadComponent = ({ onUnmount }) => {
 	useEffect(() => {
@@ -16,15 +21,21 @@ const LoadComponent = ({ onUnmount }) => {
 const withMaxiSuspense = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
-			const { clientId } = ownProps;
+			const {
+				clientId,
+				attributes: { uniqueID },
+			} = ownProps;
 
 			const [canRender, setCanRender] = useState(false);
 			const [hasBeenRendered, setHasBeenRendered] = useState(false);
 
+			const hasInnerBlocks = useRef(null);
+			const isChild = useRef(null);
+
 			useEffect(() => {
 				const { blockWantsToRender } = dispatch('maxiBlocks');
 
-				blockWantsToRender(clientId);
+				blockWantsToRender(uniqueID, clientId);
 			}, []);
 
 			useEffect(() => {
@@ -33,7 +44,25 @@ const withMaxiSuspense = createHigherOrderComponent(
 				const interval = setInterval(() => {
 					const { canBlockRender } = select('maxiBlocks');
 
-					if (!canRender && canBlockRender(clientId)) {
+					if (isNil(isChild.current)) {
+						const { getBlockParents } = select('core/block-editor');
+
+						isChild.current = !isEmpty(
+							getBlockParents(clientId).filter(
+								val => val !== clientId
+							)
+						);
+					}
+
+					if (isNil(hasInnerBlocks.current)) {
+						const { getBlockOrder } = select('core/block-editor');
+
+						hasInnerBlocks.current = !isEmpty(
+							getBlockOrder(clientId)
+						);
+					}
+
+					if (!canRender && canBlockRender(uniqueID, clientId)) {
 						setCanRender(true);
 
 						clearInterval(interval);
@@ -43,15 +72,18 @@ const withMaxiSuspense = createHigherOrderComponent(
 						const { blockHasBeenRendered: getHasBeenRendered } =
 							select('maxiBlocks');
 
-						if (!hasBeenRendered && !getHasBeenRendered(clientId)) {
+						if (
+							!hasBeenRendered &&
+							!getHasBeenRendered(uniqueID, clientId)
+						) {
 							const {
 								blockHasBeenRendered: setBlockHasBeenRendered,
 							} = dispatch('maxiBlocks');
 
-							setBlockHasBeenRendered(clientId);
+							setBlockHasBeenRendered(uniqueID);
 						} else if (
 							!hasBeenRendered &&
-							getHasBeenRendered(clientId)
+							getHasBeenRendered(uniqueID, clientId)
 						) {
 							setHasBeenRendered(true);
 
@@ -65,10 +97,19 @@ const withMaxiSuspense = createHigherOrderComponent(
 
 			if (!canRender) return null;
 
+			// Ensures child blocks with no inner blocks are rendered immediately.
+			if (
+				!isNil(isChild.current) &&
+				isChild.current &&
+				!isNil(hasInnerBlocks.current) &&
+				!hasInnerBlocks.current
+			)
+				return <WrappedComponent {...ownProps} />;
+
 			const onUnmount = () => {
 				const { blockHasBeenRendered } = dispatch('maxiBlocks');
 
-				blockHasBeenRendered(clientId).then(() => {
+				blockHasBeenRendered(uniqueID).then(() => {
 					setHasBeenRendered(true);
 				});
 			};

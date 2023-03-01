@@ -127,16 +127,23 @@ const actions = {
 			uniqueID,
 		};
 	},
-	blockWantsToRender(clientId) {
+	blockWantsToRender(uniqueID, clientId) {
 		return {
 			type: 'BLOCK_WANTS_TO_RENDER',
+			uniqueID,
 			clientId,
 		};
 	},
-	blockHasBeenRendered(clientId) {
+	blockHasBeenRendered(uniqueID) {
 		return {
 			type: 'BLOCK_HAS_BEEN_RENDERED',
-			clientId,
+			uniqueID,
+		};
+	},
+	removeBlockHasBeenRendered(uniqueID) {
+		return {
+			type: 'REMOVE_BLOCK_HAS_BEEN_RENDERED',
+			uniqueID,
 		};
 	},
 };

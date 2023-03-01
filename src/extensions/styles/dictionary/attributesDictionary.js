@@ -1,4 +1,7 @@
 const dictionary = {
+	textAlignment: {
+		'text-alignment': 'ta',
+	},
 	size: {
 		'size-advanced-options': 'sao',
 		'width-fit-content': 'wfc',

@@ -80,13 +80,10 @@ const withAttributes = createHigherOrderComponent(
 			}
 
 			// RTL
-			if (
-				'text-alignment-general' in attributes &&
-				!attributes['text-alignment-general']
-			) {
+			if ('ta-general' in attributes && !attributes['ta-general']) {
 				const { isRTL } = select('core/editor').getEditorSettings();
 
-				attributes['text-alignment-general'] = isRTL ? 'right' : 'left';
+				attributes['ta-general'] = isRTL ? 'right' : 'left';
 			}
 		}
 

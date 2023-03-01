@@ -1,6 +1,7 @@
+import getAttrKeyWithoutBreakpoint from '../getAttrKeyWithoutBreakpoint';
+import getBreakpointFromAttribute from '../getBreakpointFromAttribute';
+import { getNormalAttributeKey } from '../utils';
 import { reversedDictionary } from './attributesDictionary';
-
-const breakpoints = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 /**
  * Parse short key to long one
@@ -11,25 +12,38 @@ const breakpoints = ['g', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 const parseShortAttrKey = attrKey => {
 	let cleanedKey = attrKey;
 
-	let isHover = false;
-	let breakpoint;
+	const isHover = attrKey.includes('-hover');
+	const breakpoint = getBreakpointFromAttribute(attrKey);
 
-	if (attrKey.includes('-hover')) {
-		isHover = true;
-		cleanedKey = attrKey.replace('-hover', '');
-	}
-	if (breakpoints.some(bp => attrKey.includes(`-${bp}`))) {
-		breakpoint = breakpoints.find(bp => attrKey.includes(`-${bp}`));
-		cleanedKey = attrKey.replace(`-${breakpoint}`, '');
-	}
+	if (isHover) cleanedKey = getNormalAttributeKey(attrKey);
+	if (breakpoint) cleanedKey = getAttrKeyWithoutBreakpoint(attrKey);
 
-	const longerKey = reversedDictionary[cleanedKey];
+	let prefix = '';
+	let longerKey;
+
+	if (reversedDictionary[cleanedKey])
+		longerKey = reversedDictionary[cleanedKey];
+	else {
+		const dictEntries = Object.entries(reversedDictionary);
+
+		for (let i = 0; i < dictEntries.length; i += 1) {
+			const [key, value] = dictEntries[i];
+
+			if (cleanedKey.includes(key)) {
+				prefix = cleanedKey.replace(key, '');
+
+				longerKey = value;
+
+				break;
+			}
+		}
+	}
 
 	if (!longerKey) return attrKey;
 
-	const response = `${longerKey}${breakpoint ? `-${breakpoint}` : ''}${
-		isHover ? '-hover' : ''
-	}`;
+	const response = `${prefix}${longerKey}${
+		breakpoint ? `-${breakpoint}` : ''
+	}${isHover ? '-hover' : ''}`;
 
 	return response;
 };

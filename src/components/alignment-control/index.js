@@ -93,7 +93,7 @@ const AlignmentControl = props => {
 		className
 	);
 
-	const target = `${type === 'text' ? 'text-' : ''}alignment`;
+	const target = `${prefix}${type === 'text' ? 'text-' : ''}alignment`;
 
 	return (
 		<>
@@ -113,7 +113,7 @@ const AlignmentControl = props => {
 				items={getOptions()}
 				selected={
 					getLastBreakpointAttribute({
-						target: `${prefix}${target}`,
+						target,
 						breakpoint,
 						attributes: props,
 						isHover,

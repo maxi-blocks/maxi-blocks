@@ -476,7 +476,7 @@ class MaxiBlocks_Styles
                             );
 
                             wp_enqueue_style(
-                                $name . '-font-' . sanitize_title_with_dashes($font),
+                                $name . '-font-' . sanitize_title_with_dashes($font . '-' . $font_weight . '-' . $font_style),
                                 $font_url
                             );
                         }

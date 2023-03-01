@@ -1,4 +1,5 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import attributesShorter from '../dictionary/attributesShorter';
 
 const zIndex = breakpointAttributesCreator({
 	obj: {
@@ -8,4 +9,4 @@ const zIndex = breakpointAttributesCreator({
 	},
 });
 
-export default zIndex;
+export default attributesShorter(zIndex, 'zIndex');

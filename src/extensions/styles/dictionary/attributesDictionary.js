@@ -28,6 +28,9 @@ const dictionary = {
 		'margin-bottom-unit': 'mbu',
 		'margin-left-unit': 'mlu',
 	},
+	zIndex: {
+		'z-index': 'zi',
+	},
 };
 
 const flattenDictionary = dict => {

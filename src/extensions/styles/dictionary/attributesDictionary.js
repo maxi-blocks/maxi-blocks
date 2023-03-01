@@ -28,6 +28,17 @@ const dictionary = {
 		'margin-bottom-unit': 'mbu',
 		'margin-left-unit': 'mlu',
 	},
+	padding: {
+		'padding-top': 'pt',
+		'padding-right': 'pr',
+		'padding-bottom': 'pb',
+		'padding-left': 'pl',
+		'padding-sync': 'ps',
+		'padding-top-unit': 'ptu',
+		'padding-right-unit': 'pru',
+		'padding-bottom-unit': 'pbu',
+		'padding-left-unit': 'plu',
+	},
 };
 
 const flattenDictionary = dict => {

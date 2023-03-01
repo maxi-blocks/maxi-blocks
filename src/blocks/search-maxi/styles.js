@@ -312,7 +312,7 @@ const getSearchInputPlaceholderStyles = props => {
 		});
 
 		const color = getLastBreakpointAttribute({
-			target: 'placeholder-color',
+			target: 'pc',
 			attributes: props,
 			breakpoint,
 		});

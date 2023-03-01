@@ -28,6 +28,10 @@ const dictionary = {
 		'margin-bottom-unit': 'mbu',
 		'margin-left-unit': 'mlu',
 	},
+	placeholderColor: {
+		'placeholder-color': 'pc',
+		'placeholder-color-unit': 'pcu',
+	},
 };
 
 const flattenDictionary = dict => {

@@ -1,4 +1,7 @@
 const dictionary = {
+	clipPath: {
+		'clip-path': 'cp',
+	},
 	size: {
 		'size-advanced-options': 'sao',
 		'width-fit-content': 'wfc',

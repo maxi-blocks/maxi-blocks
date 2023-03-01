@@ -142,10 +142,7 @@ class MaxiBlocks_DynamicContent
             }
 
             // Limit content
-            if ($dc_limit > 0 && strlen($post_data) > $dc_limit) {
-                $post_data = trim($post_data);
-                $post_data = substr($post_data, 0, $dc_limit - 1) . '…';
-            }
+            $post_data = self::get_limited_string($post_data, $dc_limit);
         }
 
         // In case is author, get author name
@@ -270,6 +267,10 @@ class MaxiBlocks_DynamicContent
             }
         }
 
+        if ($dc_field === 'description') {
+            $tax_data = self::get_limited_string($tax_data, $dc_limit);
+        }
+
         return $tax_data;
     }
 
@@ -382,5 +383,15 @@ class MaxiBlocks_DynamicContent
         );
       
         return strtr($format, $replacements);
+    }
+
+    public function get_limited_string($string, $limit)
+    {
+        if ($limit > 0 && strlen($string) > $limit) {
+            $string = trim($string);
+            $string = substr($string, 0, $limit) . '…';
+        }
+
+        return $string;
     }
 }

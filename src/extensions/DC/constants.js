@@ -102,7 +102,7 @@ export const fieldOptions = {
 		{ label: __('Website', 'maxi-blocks'), value: 'url' },
 	],
 	categories: catTagOptions,
-	tags: catTagOptions,
+	tags: catTagOptions.filter(option => option.value !== 'parent'),
 };
 
 export const idOptionByField = {
@@ -246,11 +246,14 @@ export const postTypeDic = {
 	page: 'pages',
 };
 
+export const limitTypes = ['posts', 'pages', 'tags', 'categories'];
+
+export const limitFields = ['excerpt', 'content', 'description'];
+
 export const limitOptions = {
 	disableReset: false,
 	steps: 1,
 	withInputField: false,
 	min: 0,
 	max: 9999,
-	defaultValue: 150,
 };

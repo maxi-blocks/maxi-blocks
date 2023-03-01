@@ -7,7 +7,12 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { relationTypes, renderedFields } from './constants';
+import {
+	limitFields,
+	limitTypes,
+	relationTypes,
+	renderedFields,
+} from './constants';
 import getDCErrors from './getDCErrors';
 import { getSimpleText, limitFormat } from './utils';
 import processDCDate, { formatDateOptions } from './processDCDate';
@@ -16,6 +21,23 @@ import processDCDate, { formatDateOptions } from './processDCDate';
  * External dependencies
  */
 import { isNil } from 'lodash';
+
+const kindDictionary = {
+	posts: 'postType',
+	pages: 'postType',
+	media: 'postType',
+	settings: 'root',
+	categories: 'taxonomy',
+	tags: 'taxonomy',
+};
+const nameDictionary = {
+	posts: 'post',
+	pages: 'page',
+	media: 'attachment',
+	settings: '__unstableBase',
+	categories: 'category',
+	tags: 'post_tag',
+};
 
 const getContentValue = async (dataRequest, data) => {
 	const {
@@ -34,9 +56,9 @@ const getContentValue = async (dataRequest, data) => {
 		!isNil(data[field]?.rendered) &&
 		!['tags', 'categories'].includes(type)
 	) {
-		contentValue = data[field].rendered;
+		contentValue = data?.[field].rendered;
 	} else {
-		contentValue = data[field];
+		contentValue = data?.[field];
 	}
 
 	if (field === 'date') {
@@ -49,7 +71,7 @@ const getContentValue = async (dataRequest, data) => {
 			locale,
 			options
 		);
-	} else if (['excerpt', 'content'].includes(field)) {
+	} else if (limitTypes.includes(type) && limitFields.includes(field)) {
 		// Parse content value
 		if (typeof contentValue === 'string') {
 			const parser = new DOMParser();
@@ -57,12 +79,9 @@ const getContentValue = async (dataRequest, data) => {
 			contentValue = doc.body.textContent;
 		}
 
-		if (field === 'excerpt') {
-			contentValue = limitFormat(contentValue, limit);
-		}
-		if (field === 'content') {
-			contentValue = limitFormat(getSimpleText(contentValue), limit);
-		}
+		if (field === 'content') contentValue = getSimpleText(contentValue);
+
+		contentValue = limitFormat(contentValue, limit);
 	} else if (field === 'author') {
 		const { getUsers } = resolveSelect('core');
 
@@ -76,10 +95,14 @@ const getContentValue = async (dataRequest, data) => {
 		else {
 			const { getEntityRecords } = resolveSelect('core');
 
-			const parent = await getEntityRecords('taxonomy', type, {
-				per_page: 1,
-				include: contentValue,
-			});
+			const parent = await getEntityRecords(
+				'taxonomy',
+				nameDictionary[type],
+				{
+					per_page: 1,
+					include: contentValue,
+				}
+			);
 
 			contentValue = parent[0].name;
 		}
@@ -108,23 +131,6 @@ const getDCContent = async dataRequest => {
 		dataRequest.id = author ?? id;
 	}
 
-	const kindDictionary = {
-		posts: 'postType',
-		pages: 'postType',
-		media: 'postType',
-		settings: 'root',
-		categories: 'taxonomy',
-		tags: 'taxonomy',
-	};
-	const nameDictionary = {
-		posts: 'post',
-		pages: 'page',
-		media: 'attachment',
-		settings: '__unstableBase',
-		categories: 'category',
-		tags: 'post_tag',
-	};
-
 	if (type === 'users') {
 		const { getUsers } = resolveSelect('core');
 
@@ -148,24 +154,12 @@ const getDCContent = async dataRequest => {
 		);
 	}
 	if (type === 'settings') {
-		const canEdit = await resolveSelect('core').canUser(
-			'update',
-			'settings'
-		);
-		const settings = canEdit
-			? await resolveSelect('core').getEditedEntityRecord(
-					kindDictionary[type],
-					'site'
-			  )
-			: {};
-		const readOnlySettings = await resolveSelect('core').getEntityRecord(
+		const settings = await resolveSelect('core').getEditedEntityRecord(
 			kindDictionary[type],
-			'__unstableBase'
+			'site'
 		);
 
-		const siteEntity = canEdit ? settings : readOnlySettings;
-
-		return getContentValue(dataRequest, siteEntity);
+		return getContentValue(dataRequest, settings);
 	}
 	if (['tags', 'categories'].includes(type)) {
 		const termsEntity = await resolveSelect('core').getEntityRecords(

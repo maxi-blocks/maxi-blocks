@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState, useEffect } from '@wordpress/element';
+import { useState } from '@wordpress/element';
 import { Popover } from '@wordpress/components';
 
 /**
@@ -64,27 +64,37 @@ const DateHelperPopover = () => (
 );
 
 const DateFormatting = props => {
-	const { allowCustomDate, onChange, 'dc-content': content } = props;
+	const { allowCustomDate, onChange } = props;
 
-	const [customFormatStatus, setCustomFormatStatus] = useState(
-		props['dc-custom-date']
-	);
 	const [showHelp, setShowHelp] = useState(false);
 	const [linkStatus, setLinkStatus] = useState('year');
 
-	const [day, setDay] = useState(props['dc-day']);
-	const [era, setEra] = useState(props['dc-era']);
-	const [format, setFormat] = useState(props['dc-format']);
-	const [hour, setHour] = useState(props['dc-hour']);
-	const [hour12, setHour12] = useState(props['dc-hour12']);
-	const [minute, setMinute] = useState(props['dc-minute']);
-	const [month, setMonth] = useState(props['dc-month']);
-	const [second, setSecond] = useState(props['dc-second']);
-	const [locale, setLocale] = useState(props['dc-locale']);
-	const [timeZone, setTimeZone] = useState(props['dc-timezone']);
-	const [timeZoneName, setTimeZoneName] = useState(props['dc-timezone-name']);
-	const [weekday, setWeekday] = useState(props['dc-weekday']);
-	const [year, setYear] = useState(props['dc-year']);
+	const {
+		'dc-custom-date': customDate,
+		'dc-day': day,
+		'dc-era': era,
+		'dc-format': format,
+		'dc-hour': hour,
+		'dc-hour12': hour12,
+		'dc-minute': minute,
+		'dc-month': month,
+		'dc-second': second,
+		'dc-locale': locale,
+		'dc-timezone': timeZone,
+		'dc-timezone-name': timeZoneName,
+		'dc-weekday': weekday,
+		'dc-year': year,
+	} = props;
+
+	const changeProps = params => {
+		const hasChangesToSave = Object.entries(props).some(([key, val]) => {
+			if (!(key in params)) return false;
+
+			return params[key] !== val;
+		});
+
+		if (hasChangesToSave) onChange(params);
+	};
 
 	const validateAnchor = str => {
 		const length = [
@@ -136,45 +146,20 @@ const DateFormatting = props => {
 				`^\\s{0,1}${word}${interWord}${word}${interWord}${word}${interWord}${word}${interWord}${word}$`
 			);
 			if (regex.test(str)) {
-				setFormat(str);
+				changeProps({ 'dc-format': str });
 			}
 		}
 	};
-
-	useEffect(() => {
-		const response = {
-			'dc-format': format,
-			'dc-custom-date': customFormatStatus,
-			'dc-locale': locale,
-			'dc-day': day,
-			'dc-era': era,
-			'dc-hour': hour,
-			'dc-hour12': hour12,
-			'dc-minute': minute,
-			'dc-month': month,
-			'dc-second': second,
-			'dc-timezone': timeZone,
-			'dc-timezone-name': timeZoneName,
-			'dc-weekday': weekday,
-			'dc-year': year,
-		};
-
-		const hasChangesToSave = Object.keys(response).some(
-			key => response[key] !== props[key]
-		);
-
-		if (hasChangesToSave) onChange(response);
-	});
 
 	return (
 		<div className='maxi-custom-date-formatting'>
 			{showHelp && <DateHelperPopover />}
 			<ToggleSwitch
 				label={__('Custom date', 'maxi-blocks')}
-				selected={customFormatStatus}
-				onChange={() => setCustomFormatStatus(!customFormatStatus)}
+				selected={customDate}
+				onChange={value => changeProps({ 'dc-custom-date': value })}
 			/>
-			{!customFormatStatus && (
+			{!customDate && (
 				<div className='maxi-custom-date-formatting__help-trigger'>
 					<div
 						className='maxi-custom-date-formatting__help-icon'
@@ -193,7 +178,7 @@ const DateFormatting = props => {
 					/>
 				</div>
 			)}
-			{customFormatStatus && (
+			{customDate && (
 				<>
 					{allowCustomDate && (
 						<>
@@ -224,31 +209,41 @@ const DateFormatting = props => {
 										label={__('Era', 'maxi-blocks')}
 										value={era}
 										options={DateOptions.era}
-										onChange={value => setEra(value)}
+										onChange={value =>
+											changeProps({ 'dc-era': value })
+										}
 									/>
 									<SelectControl
 										label={__('Years', 'maxi-blocks')}
 										value={year}
 										options={DateOptions.year}
-										onChange={value => setYear(value)}
+										onChange={value =>
+											changeProps({ 'dc-year': value })
+										}
 									/>
 									<SelectControl
 										label={__('Month', 'maxi-blocks')}
 										value={month}
 										options={DateOptions.month}
-										onChange={value => setMonth(value)}
+										onChange={value =>
+											changeProps({ 'dc-month': value })
+										}
 									/>
 									<SelectControl
 										label={__('Day', 'maxi-blocks')}
 										value={day}
 										options={DateOptions.day}
-										onChange={value => setDay(value)}
+										onChange={value =>
+											changeProps({ 'dc-day': value })
+										}
 									/>
 									<SelectControl
 										label={__('Weekday', 'maxi-blocks')}
 										value={weekday}
 										options={DateOptions.weekday}
-										onChange={value => setWeekday(value)}
+										onChange={value =>
+											changeProps({ 'dc-weekday': value })
+										}
 									/>
 								</>
 							)}
@@ -258,25 +253,33 @@ const DateFormatting = props => {
 										label={__('Format', 'maxi-blocks')}
 										value={hour12}
 										options={DateOptions.hour12}
-										onChange={value => setHour12(value)}
+										onChange={value =>
+											changeProps({ 'dc-hour12': value })
+										}
 									/>
 									<SelectControl
 										label={__('Hour', 'maxi-blocks')}
 										value={hour}
 										options={DateOptions.hour}
-										onChange={value => setHour(value)}
+										onChange={value =>
+											changeProps({ 'dc-hour': value })
+										}
 									/>
 									<SelectControl
 										label={__('Minute', 'maxi-blocks')}
 										value={minute}
 										options={DateOptions.minute}
-										onChange={value => setMinute(value)}
+										onChange={value =>
+											changeProps({ 'dc-minute': value })
+										}
 									/>
 									<SelectControl
 										label={__('Second', 'maxi-blocks')}
 										value={second}
 										options={DateOptions.second}
-										onChange={value => setSecond(value)}
+										onChange={value =>
+											changeProps({ 'dc-second': value })
+										}
 									/>
 								</>
 							)}
@@ -286,13 +289,19 @@ const DateFormatting = props => {
 										label={__('Locale', 'maxi-blocks')}
 										value={locale}
 										options={DateOptions.locale}
-										onChange={value => setLocale(value)}
+										onChange={value =>
+											changeProps({ 'dc-locale': value })
+										}
 									/>
 									<SelectControl
 										label={__('Timezone', 'maxi-blocks')}
 										value={timeZone}
 										options={DateOptions.timeZone}
-										onChange={value => setTimeZone(value)}
+										onChange={value =>
+											changeProps({
+												'dc-timezone': value,
+											})
+										}
 									/>
 									<SelectControl
 										label={__(
@@ -302,7 +311,9 @@ const DateFormatting = props => {
 										value={timeZoneName}
 										options={DateOptions.timeZoneName}
 										onChange={value =>
-											setTimeZoneName(value)
+											changeProps({
+												'dc-timezone-name': value,
+											})
 										}
 									/>
 								</>

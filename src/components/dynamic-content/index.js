@@ -18,9 +18,12 @@ import {
 	relationOptions,
 	relationTypes,
 	limitOptions,
+	limitTypes,
+	limitFields,
 } from '../../extensions/DC/constants';
 import getDCOptions from '../../extensions/DC/getDCOptions';
 import DateFormatting from './custom-date-formatting';
+import { getDefaultAttribute } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -42,78 +45,30 @@ const DynamicContent = props => {
 
 	const classes = classnames('maxi-dynamic-content', className);
 
-	const { 'dc-content': content, 'dc-custom-date': isCustomDate } =
-		dynamicContent;
-
-	const [status, setStatus] = useState(dynamicContent['dc-status']);
-	const [type, setType] = useState(dynamicContent['dc-type']);
-	const [relation, setRelation] = useState(dynamicContent['dc-relation']);
-	const [id, setId] = useState(dynamicContent['dc-id']);
-	const [field, setField] = useState(dynamicContent['dc-field']);
-	const [author, setAuthor] = useState(dynamicContent['dc-author']);
-	const [show, setShow] = useState(dynamicContent['dc-show']);
-	const [limit, setLimit] = useState(dynamicContent['dc-limit']);
-	const [error, setError] = useState(dynamicContent['dc-error']);
+	const {
+		'dc-status': status,
+		'dc-type': type,
+		'dc-relation': relation,
+		'dc-id': id,
+		'dc-field': field,
+		'dc-author': author,
+		'dc-limit': limit,
+		'dc-error': error,
+	} = dynamicContent;
 
 	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
 	const [postIdOptions, setPostIdOptions] = useState(null);
 
-	const updateState = params => {
-		const paramFn = {
-			'dc-status': setStatus,
-			'dc-type': setType,
-			'dc-relation': setRelation,
-			'dc-id': setId,
-			'dc-field': setField,
-			'dc-author': setAuthor,
-			'dc-show': setShow,
-			'dc-limit': setLimit,
-			'dc-error': setError,
-		};
-		const paramValues = {
-			'dc-status': status,
-			'dc-type': type,
-			'dc-relation': relation,
-			'dc-id': id,
-			'dc-field': field,
-			'dc-author': author,
-			'dc-show': show,
-			'dc-limit': limit,
-			'dc-error': error,
-		};
-
-		Object.entries(params).forEach(([key, val]) => {
-			if (paramFn[key] && paramValues[key] !== val) paramFn[key](val);
-		});
-	};
-
-	const changeProps = (params, updateStates = true) => {
-		if (params && updateStates) updateState(params);
-
-		const newProps = {
-			'dc-status': status,
-			'dc-type': type,
-			'dc-relation': relation,
-			'dc-id': id,
-			'dc-field': field,
-			'dc-author': author,
-			'dc-show': show,
-			'dc-limit': limit,
-			'dc-error': error,
-			'dc-content': content,
-			'dc-custom-date': isCustomDate,
-			...params,
-		};
-
+	const changeProps = params => {
 		const hasChangesToSave = Object.entries(dynamicContent).some(
 			([key, val]) => {
-				if (!(key in newProps)) return false;
+				if (!(key in params)) return false;
 
-				return newProps[key] !== val;
+				return params[key] !== val;
 			}
 		);
 
-		if (hasChangesToSave) onChange(newProps);
+		if (hasChangesToSave) onChange(params);
 	};
 
 	useEffect(async () => {
@@ -134,7 +89,7 @@ const DynamicContent = props => {
 
 				const { id } = await resolveSelect('core').getCurrentUser();
 
-				updateState({ 'dc-author': id });
+				changeProps({ 'dc-author': id });
 			}
 		}
 
@@ -164,7 +119,7 @@ const DynamicContent = props => {
 					!isEqual(postIdOptions, newPostIdOptions)
 				)
 					setPostIdOptions(newPostIdOptions);
-			} else changeProps();
+			}
 		}
 
 		return null;
@@ -175,7 +130,7 @@ const DynamicContent = props => {
 			<ToggleSwitch
 				label={__('Use dynamic content', 'maxi-blocks')}
 				selected={status}
-				onChange={value => updateState({ 'dc-status': value })}
+				onChange={value => changeProps({ 'dc-status': value })}
 			/>
 			{status && (
 				<>
@@ -189,7 +144,7 @@ const DynamicContent = props => {
 								field
 							);
 
-							updateState({
+							changeProps({
 								'dc-type': value,
 								'dc-show': 'current',
 								'dc-error': '',
@@ -207,7 +162,7 @@ const DynamicContent = props => {
 									value={relation}
 									options={relationOptions[type]}
 									onChange={value =>
-										updateState({
+										changeProps({
 											'dc-relation': value,
 											'dc-show': 'current',
 											'dc-error': '',
@@ -221,7 +176,7 @@ const DynamicContent = props => {
 									value={author}
 									options={postAuthorOptions}
 									onChange={value =>
-										updateState({
+										changeProps({
 											'dc-author': Number(value),
 										})
 									}
@@ -238,7 +193,7 @@ const DynamicContent = props => {
 										value={id}
 										options={postIdOptions}
 										onChange={value =>
-											updateState({
+											changeProps({
 												'dc-error': '',
 												'dc-show': 'current',
 												'dc-id': Number(value),
@@ -258,39 +213,46 @@ const DynamicContent = props => {
 									value={field}
 									options={fieldOptions[type]}
 									onChange={value =>
-										updateState({
+										changeProps({
 											'dc-field': value,
 										})
 									}
 								/>
 							)}
-							{['excerpt', 'content'].includes(field) && !error && (
-								<AdvancedNumberControl
-									label={__('Character limit', 'maxi-blocks')}
-									value={limit}
-									onChangeValue={value =>
-										updateState({
-											'dc-limit': Number(value),
-										})
-									}
-									disableReset={limitOptions.disableReset}
-									step={limitOptions.steps}
-									withInputField={limitOptions.withInputField}
-									onReset={() =>
-										updateState({
-											'dc-limit': Number(
-												limitOptions.defaultValue ||
-													'150'
-											),
-										})
-									}
-									min={limitOptions.min}
-									max={limitOptions.max}
-									initialPosition={
-										limit || limitOptions.defaultValue
-									}
-								/>
-							)}
+							{limitTypes.includes(type) &&
+								limitFields.includes(field) &&
+								!error && (
+									<AdvancedNumberControl
+										label={__(
+											'Character limit',
+											'maxi-blocks'
+										)}
+										value={limit}
+										onChangeValue={value =>
+											changeProps({
+												'dc-limit': Number(value),
+											})
+										}
+										disableReset={limitOptions.disableReset}
+										step={limitOptions.steps}
+										withInputField={
+											limitOptions.withInputField
+										}
+										onReset={() =>
+											changeProps({
+												'dc-limit':
+													getDefaultAttribute(
+														'dc-limit'
+													),
+											})
+										}
+										min={limitOptions.min}
+										max={limitOptions.max}
+										initialPosition={
+											limit || limitOptions.defaultValue
+										}
+									/>
+								)}
 							{field === 'date' && !error && (
 								<DateFormatting
 									allowCustomDate={allowCustomDate}

@@ -21,29 +21,29 @@ import {
 	addTypographyStyle,
 } from '../../utils';
 
+const createTextWithList = async (content = 'Testing Text Maxi List') => {
+	await insertBlock('Text Maxi');
+	await page.keyboard.type(content, { delay: 100 });
+	await page.waitForTimeout(150);
+
+	await page.$eval('.toolbar-wrapper .toolbar-item__list-options', button =>
+		button.click()
+	);
+
+	await page.waitForSelector('.toolbar-wrapper .toolbar-item__list-options');
+
+	await page.waitForTimeout(500);
+
+	await page.$$eval(
+		'.components-popover__content .toolbar-item__popover__list-options button',
+		button => button[1].click()
+	);
+};
+
 describe('List in Text-maxi', () => {
 	it('Use list options with list style position inside', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
-		await page.keyboard.type('Testing Text Maxi List', { delay: 100 });
-		await page.waitForTimeout(150);
-
-		await page.$eval(
-			'.toolbar-wrapper .toolbar-item__list-options',
-			button => button.click()
-		);
-
-		await page.waitForSelector(
-			'.toolbar-wrapper .toolbar-item__list-options'
-		);
-
-		await page.waitForTimeout(500);
-
-		await page.$$eval(
-			'.components-popover__content .toolbar-item__popover__list-options button',
-			button => button[1].click()
-		);
-
+		await createTextWithList();
 		await openSidebarTab(page, 'style', 'list options');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
@@ -116,25 +116,7 @@ describe('List in Text-maxi', () => {
 
 	it('Use list options with list style position outside', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
-		await page.keyboard.type('Testing Text Maxi List', { delay: 100 });
-		await page.waitForTimeout(150);
-
-		await page.$eval(
-			'.toolbar-wrapper .toolbar-item__list-options',
-			button => button.click()
-		);
-
-		await page.waitForSelector(
-			'.toolbar-wrapper .toolbar-item__list-options'
-		);
-
-		await page.waitForTimeout(500);
-
-		await page.$$eval(
-			'.components-popover__content .toolbar-item__popover__list-options button',
-			button => button[1].click()
-		);
+		await createTextWithList();
 
 		await openSidebarTab(page, 'style', 'list options');
 
@@ -348,20 +330,7 @@ describe('List in Text-maxi', () => {
 
 	it('Check indent options and styles on multiline list item', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
-		await page.waitForTimeout(150);
-		await page.$eval('.toolbar-item__list-options', button =>
-			button.click()
-		);
-		await page.waitForTimeout(150);
-		await page.waitForSelector(
-			'.toolbar-item__popover__list-options__button'
-		);
-		await page.$$eval(
-			'.toolbar-item__popover__list-options__button',
-			buttons => buttons[1].click()
-		);
-		await page.waitForTimeout(150);
+		await createTextWithList('');
 
 		const selectMaxiTextDiv = await page.$('.maxi-text-block');
 		const selectMaxiTextP = await selectMaxiTextDiv.$(

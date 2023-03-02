@@ -11,7 +11,7 @@ import { Suspense, useState, useEffect, useRef } from '@wordpress/element';
 import { isEmpty, isNil } from 'lodash';
 import { PuffLoader } from 'react-spinners';
 
-const ContentLoader = () => <PuffLoader color='#093c58' size={60} />;
+const ContentLoader = () => <PuffLoader color='#ff4a17' size={20} speedMultiplier={0.8}/>;
 
 const LoadComponent = ({ onUnmount }) => {
 	useEffect(() => {

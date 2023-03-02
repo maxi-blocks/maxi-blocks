@@ -28,6 +28,12 @@ const dictionary = {
 		'margin-bottom-unit': 'mbu',
 		'margin-left-unit': 'mlu',
 	},
+	navigation: {
+		'navigation-arrow-both-status': 'nabs',
+		'navigation-dot-status': 'ndos',
+		'navigation-arrow-position': 'nap',
+		'navigation-dot-position': 'ndp',
+	},
 };
 
 const flattenDictionary = dict => {

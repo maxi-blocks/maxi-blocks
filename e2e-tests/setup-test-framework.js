@@ -134,6 +134,11 @@ function observeConsoleLogging() {
 			return;
 		}
 
+		// CustomCSS validator returns connection errors sometimes
+		if (text.includes('Error validating css: TypeError: Failed to fetch')) {
+			return;
+		}
+
 		// Since 6.1 multiline on RichText is deprecated. Need to be update on #3877
 		if (
 			text.includes(

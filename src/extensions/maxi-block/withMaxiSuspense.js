@@ -11,14 +11,14 @@ import { Suspense, useState, useEffect, useRef } from '@wordpress/element';
 import { isEmpty, isNil } from 'lodash';
 import { PuffLoader } from 'react-spinners';
 
-const Spinner = () => <PuffLoader color='#093c58' size={60} />;
+const ContentLoader = () => <PuffLoader color='#093c58' size={60} />;
 
 const LoadComponent = ({ onUnmount }) => {
 	useEffect(() => {
 		return onUnmount();
 	}, []);
 
-	return <Spinner />;
+	return <ContentLoader />;
 };
 
 const withMaxiSuspense = createHigherOrderComponent(
@@ -98,7 +98,7 @@ const withMaxiSuspense = createHigherOrderComponent(
 				return () => clearInterval(interval);
 			});
 
-			if (!canRender) return <Spinner />;
+			if (!canRender) return <ContentLoader />;
 
 			// Ensures child blocks with no inner blocks are rendered immediately.
 			if (

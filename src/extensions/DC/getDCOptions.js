@@ -18,6 +18,7 @@ import {
  * External dependencies
  */
 import { isEmpty, find, isEqual } from 'lodash';
+import { limitString } from './utils';
 
 export const getIdOptions = async (type, relation, author) => {
 	if (!idFields.includes(type) || (relation === 'author' && !author))
@@ -84,16 +85,17 @@ const getDCOptions = async (dataRequest, postIdOptions, contentType) => {
 	const newPostIdOptions = data.map(item => {
 		if (['tags', 'categories'].includes(type)) {
 			return {
-				label: item.name,
+				label: limitString(item.name, 10),
 				value: +item.id,
 			};
 		}
 
 		return {
-			label: `${item.id} - ${
+			label: `${item.id} - ${limitString(
 				item[idOptionByField[type]]?.rendered ??
-				item[idOptionByField[type]]
-			}`,
+					item[idOptionByField[type]],
+				10
+			)}`,
 			value: +item.id,
 		};
 	});

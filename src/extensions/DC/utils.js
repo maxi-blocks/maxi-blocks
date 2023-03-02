@@ -29,7 +29,7 @@ export const getSimpleText = str => {
 	return cutTags(result);
 };
 
-export const limitFormat = (value, limit) => {
+export const limitString = (value, limit) => {
 	if (limit === 0) return value;
 
 	const str = cutTags(value).trim();

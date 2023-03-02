@@ -14,7 +14,7 @@ import {
 	renderedFields,
 } from './constants';
 import getDCErrors from './getDCErrors';
-import { getSimpleText, limitFormat } from './utils';
+import { getSimpleText, limitString } from './utils';
 import processDCDate, { formatDateOptions } from './processDCDate';
 
 /**
@@ -81,7 +81,7 @@ const getContentValue = async (dataRequest, data) => {
 
 		if (field === 'content') contentValue = getSimpleText(contentValue);
 
-		contentValue = limitFormat(contentValue, limit);
+		contentValue = limitString(contentValue, limit);
 	} else if (field === 'author') {
 		const { getUsers } = resolveSelect('core');
 

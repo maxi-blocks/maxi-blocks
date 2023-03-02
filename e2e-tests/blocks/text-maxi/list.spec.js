@@ -21,7 +21,15 @@ import {
 	addTypographyStyle,
 } from '../../utils';
 
-const createTextWithList = async (content = 'Testing Text Maxi List') => {
+/**
+ *
+ * @param {string} content   - Text to be added in the block
+ * @param {number} typeIndex - Index of the list type to be selected
+ */
+const createTextWithList = async (
+	content = 'Testing Text Maxi List',
+	typeIndex = 1
+) => {
 	await insertBlock('Text Maxi');
 	await page.keyboard.type(content, { delay: 100 });
 	await page.waitForTimeout(150);
@@ -36,7 +44,8 @@ const createTextWithList = async (content = 'Testing Text Maxi List') => {
 
 	await page.$$eval(
 		'.components-popover__content .toolbar-item__popover__list-options button',
-		button => button[1].click()
+		(button, index) => button[index].click(),
+		typeIndex
 	);
 };
 
@@ -380,6 +389,86 @@ describe('List in Text-maxi', () => {
 		expect(await getAttributes('text-direction-general')).toStrictEqual(
 			'rtl'
 		);
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+
+	it('Check options with SVG as a marker', async () => {
+		await createNewPost();
+		await createTextWithList(undefined, 2);
+
+		await openSidebarTab(page, 'style', 'list options');
+
+		// Style custom
+		const styleCustom = await page.$$(
+			'.maxi-text-inspector__list-style select'
+		);
+		await styleCustom[1].select('custom');
+
+		await page.waitForTimeout(150);
+
+		const source = await page.$(
+			'.maxi-text-inspector__list-source-selector select'
+		);
+
+		await source.select('icon');
+
+		await modalMock(page, { type: 'list-svg' });
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+
+		// Change marker size
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-text-inspector__list-marker-size'),
+			newNumber: '4',
+		});
+
+		expect(await getAttributes('list-marker-size-general')).toStrictEqual(
+			4
+		);
+
+		// Change marker color
+		await editColorControl({
+			page,
+			instance: await page.$('.maxi-accordion-control__item__panel'),
+			paletteStatus: true,
+			colorPalette: 7,
+		});
+
+		expect(await getAttributes('list-palette-color')).toStrictEqual(7);
+
+		// Change marker indent
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-text-inspector__list-marker-indent'),
+			newNumber: '10',
+		});
+
+		expect(await getAttributes('list-marker-indent-general')).toStrictEqual(
+			10
+		);
+
+		// Change text indent
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-text-inspector__list-indent'),
+			newNumber: '23',
+		});
+
+		expect(await getAttributes('list-indent-general')).toStrictEqual(23);
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+
+		// Change marker position
+		const textStylePosition = await page.$(
+			'.maxi-text-inspector__list-style-position select'
+		);
+		await textStylePosition.select('outside');
+
+		expect(
+			await getAttributes('list-style-position-general')
+		).toStrictEqual('outside');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

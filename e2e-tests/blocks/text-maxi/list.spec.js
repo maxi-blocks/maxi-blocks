@@ -57,6 +57,12 @@ describe('List in Text-maxi', () => {
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
+		// Text style position
+		const textStylePosition = await page.$(
+			'.maxi-text-inspector__list-style-position select'
+		);
+		await textStylePosition.select('outside');
+
 		// text indent
 		await editAdvancedNumberControl({
 			page,
@@ -121,6 +127,83 @@ describe('List in Text-maxi', () => {
 		expect(await getAttributes('list-text-position-general')).toStrictEqual(
 			'sub'
 		);
+	});
+
+	it('Check options with different units', async () => {
+		// text indent
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-text-inspector__list-indent '),
+			newNumber: '3',
+			newValue: 'em',
+		});
+
+		expect(await getAttributes('list-indent-general')).toStrictEqual(3);
+		expect(await getAttributes('list-indent-unit-general')).toStrictEqual(
+			'em'
+		);
+
+		// List gap
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-text-inspector__list-gap '),
+			newNumber: '21',
+			newValue: '%',
+		});
+
+		expect(await getAttributes('list-gap-general')).toStrictEqual(21);
+		expect(await getAttributes('list-gap-unit-general')).toStrictEqual('%');
+
+		// Paragraph spacing
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$(
+				'.maxi-text-inspector__list-paragraph-spacing '
+			),
+			newNumber: '44',
+			newValue: 'px',
+		});
+
+		expect(
+			await getAttributes('list-paragraph-spacing-general')
+		).toStrictEqual(44);
+		expect(
+			await getAttributes('list-paragraph-spacing-unit-general')
+		).toStrictEqual('px');
+
+		// Marker size
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-text-inspector__list-marker-size '),
+			newNumber: '11',
+			newValue: 'px',
+		});
+
+		expect(await getAttributes('list-marker-size-general')).toStrictEqual(
+			11
+		);
+		expect(
+			await getAttributes('list-marker-size-unit-general')
+		).toStrictEqual('px');
+
+		// Marker indent
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$(
+				'.maxi-text-inspector__list-marker-line-height '
+			),
+			newNumber: '16',
+			newValue: 'vw',
+		});
+
+		expect(
+			await getAttributes('list-marker-line-height-general')
+		).toStrictEqual(16);
+		expect(
+			await getAttributes('list-marker-line-height-unit-general')
+		).toStrictEqual('vw');
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Use list options with list style position outside', async () => {

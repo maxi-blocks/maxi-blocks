@@ -555,4 +555,48 @@ describe('List in Text-maxi', () => {
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
+
+	it('Check indent options on RTL', async () => {
+		await createNewPost();
+		await createTextWithList();
+
+		await openSidebarTab(page, 'style', 'typography');
+
+		await addTypographyStyle({
+			instance: page,
+			direction: 'rtl',
+		});
+
+		expect(await getAttributes('text-direction-general')).toStrictEqual(
+			'rtl'
+		);
+
+		await openSidebarTab(page, 'style', 'list options');
+
+		// Change marker indent
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-text-inspector__list-marker-indent'),
+			newNumber: '40',
+			newValue: 'px',
+		});
+
+		expect(await getAttributes('list-marker-indent-general')).toStrictEqual(
+			40
+		);
+		expect(
+			await getAttributes('list-marker-indent-unit-general')
+		).toStrictEqual('px');
+
+		// Change text indent
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-text-inspector__list-indent'),
+			newNumber: '23',
+		});
+
+		expect(await getAttributes('list-indent-general')).toStrictEqual(23);
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
 });

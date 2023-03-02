@@ -33,11 +33,16 @@ class MaxiBlocks_DynamicContent
         register_block_type('maxi-blocks/text-maxi', array(
             'api_version' => 2,
             'editor_script' => 'maxi-blocks-block-editor',
-            'render_callback' => [$this, 'render_text_maxi'],
+            'render_callback' => [$this, 'render_dc_content'],
+        ));
+        register_block_type('maxi-blocks/button-maxi', array(
+            'api_version' => 2,
+            'editor_script' => 'maxi-blocks-block-editor',
+            'render_callback' => [$this, 'render_dc_content'],
         ));
     }
 
-    public function render_text_maxi($attributes, $content)
+    public function render_dc_content($attributes, $content)
     {
         if (!array_key_exists('dc-status', $attributes)) {
             return $content;

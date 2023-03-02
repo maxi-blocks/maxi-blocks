@@ -40,6 +40,7 @@ const DynamicContent = props => {
 		className,
 		onChange,
 		allowCustomDate = false,
+		contentType = 'text',
 		...dynamicContent
 	} = props;
 
@@ -106,7 +107,8 @@ const DynamicContent = props => {
 
 			const postIDSettings = await getDCOptions(
 				dataRequest,
-				postIdOptions
+				postIdOptions,
+				contentType
 			);
 
 			if (postIDSettings) {
@@ -137,11 +139,12 @@ const DynamicContent = props => {
 					<SelectControl
 						label={__('Type', 'maxi-blocks')}
 						value={type}
-						options={typeOptions}
+						options={typeOptions[contentType]}
 						onChange={value => {
 							const dcFieldActual = validationsValues(
 								value,
-								field
+								field,
+								contentType
 							);
 
 							changeProps({
@@ -160,7 +163,7 @@ const DynamicContent = props => {
 								<SelectControl
 									label={__('Relation', 'maxi-blocks')}
 									value={relation}
-									options={relationOptions[type]}
+									options={relationOptions[contentType][type]}
 									onChange={value =>
 										changeProps({
 											'dc-relation': value,
@@ -211,7 +214,7 @@ const DynamicContent = props => {
 								<SelectControl
 									label={__('Field', 'maxi-blocks')}
 									value={field}
-									options={fieldOptions[type]}
+									options={fieldOptions[contentType][type]}
 									onChange={value =>
 										changeProps({
 											'dc-field': value,

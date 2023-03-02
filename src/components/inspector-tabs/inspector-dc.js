@@ -12,13 +12,14 @@ import { getGroupAttributes } from '../../extensions/styles';
 /**
  * Component
  */
-const dc = ({ props: { attributes, maxiSetAttributes } }) => ({
+const dc = ({ props: { attributes, maxiSetAttributes }, contentType }) => ({
 	label: __('Dynamic content', 'maxi-blocks'),
 	content: (
 		<DynamicContent
 			{...getGroupAttributes(attributes, 'dynamicContent')}
 			onChange={obj => maxiSetAttributes(obj)}
 			allowCustomDate
+			contentType={contentType}
 		/>
 	),
 });

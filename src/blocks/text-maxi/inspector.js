@@ -144,6 +144,7 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.dc({
 										props,
+										contentType: 'text',
 									}),
 									...inspectorTabs.scrollEffects({
 										props,

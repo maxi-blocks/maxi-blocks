@@ -19,10 +19,17 @@ import { toolbarDynamicContent } from '../../../../icons';
  * Dynamic Content
  */
 
+const ALLOWED_BLOCKS = ['maxi-blocks/text-maxi', 'maxi-blocks/button-maxi'];
+
 const DC = props => {
 	const { blockName, ...restProps } = props;
 
-	if (blockName !== 'maxi-blocks/text-maxi') return null;
+	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
+
+	const contentTypes = {
+		'maxi-blocks/text-maxi': 'text',
+		'maxi-blocks/button-maxi': 'button',
+	};
 
 	return (
 		<ToolbarPopover
@@ -32,6 +39,7 @@ const DC = props => {
 		>
 			<DynamicContent
 				className='toolbar-item__dynamic-content__popover toolbar-item__dynamic-content__popover'
+				contentType={contentTypes[blockName]}
 				{...restProps}
 			/>
 		</ToolbarPopover>

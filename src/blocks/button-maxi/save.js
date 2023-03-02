@@ -20,8 +20,14 @@ import { RichText } from '@wordpress/block-editor';
  * Save
  */
 const save = props => {
-	const { attributes } = props;
-	const { linkSettings, buttonContent } = attributes;
+	const {
+		linkSettings,
+		buttonContent,
+		'icon-content': iconContent,
+		'icon-position': iconPosition,
+		'icon-only': iconOnly,
+		'dc-status': dcStatus,
+	} = props.attributes;
 
 	const name = 'maxi-blocks/button-maxi';
 
@@ -35,18 +41,7 @@ const save = props => {
 
 	const buttonClasses = classnames(
 		'maxi-button-block__button',
-		attributes['icon-content'] &&
-			attributes['icon-position'] === 'top' &&
-			'maxi-button-block__button--icon-top',
-		attributes['icon-content'] &&
-			attributes['icon-position'] === 'bottom' &&
-			'maxi-button-block__button--icon-bottom',
-		attributes['icon-content'] &&
-			attributes['icon-position'] === 'left' &&
-			'maxi-button-block__button--icon-left',
-		attributes['icon-content'] &&
-			attributes['icon-position'] === 'right' &&
-			'maxi-button-block__button--icon-right'
+		iconContent && `maxi-button-block__button--icon-${iconPosition}`
 	);
 
 	return (
@@ -55,17 +50,17 @@ const save = props => {
 				className={buttonClasses}
 				{...(!isEmpty(linkProps.href) && linkProps)}
 			>
-				{!attributes['icon-only'] && (
+				{!iconOnly && (
 					<RichText.Content
 						className='maxi-button-block__content'
-						value={buttonContent}
+						value={dcStatus ? '$text-to-replace' : buttonContent}
 						tagName='span'
 					/>
 				)}
-				{attributes['icon-content'] && (
+				{iconContent && (
 					<div className='maxi-button-block__icon'>
 						<div>
-							<RawHTML>{attributes['icon-content']}</RawHTML>
+							<RawHTML>{iconContent}</RawHTML>
 						</div>
 					</div>
 				)}

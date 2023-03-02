@@ -46,8 +46,8 @@ export const sanitizeDCContent = content =>
 		? __(content, 'maxi-blocks')
 		: __('No content found', 'maxi-blocks');
 
-export const validationsValues = (variableValue, field) => {
-	const result = fieldOptions[variableValue].map(x => x.value);
+export const validationsValues = (variableValue, field, contentType) => {
+	const result = fieldOptions[contentType][variableValue].map(x => x.value);
 
 	return result.includes(field) ? {} : { 'dc-field': result[0] };
 };

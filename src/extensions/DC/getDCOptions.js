@@ -11,7 +11,6 @@ import {
 	fieldOptions,
 	idFields,
 	idOptionByField,
-	relationOptions,
 	typeOptions,
 } from './constants';
 
@@ -33,6 +32,10 @@ export const getIdOptions = async (type, relation, author) => {
 		media: 'attachment',
 	};
 
+	const args = {
+		per_page: -1,
+	};
+
 	if (type === 'users') {
 		const users = await getUsers();
 
@@ -43,21 +46,22 @@ export const getIdOptions = async (type, relation, author) => {
 			}));
 		}
 	} else if (type === 'categories') {
-		data = await getEntityRecords('taxonomy', 'category');
+		data = await getEntityRecords('taxonomy', 'category', args);
 	} else if (type === 'tags') {
-		data = await getEntityRecords('taxonomy', 'post_tag');
+		data = await getEntityRecords('taxonomy', 'post_tag', args);
 	} else if (relation === 'author') {
 		data = await getEntityRecords('postType', dictionary[type], {
+			...args,
 			author,
 		});
 	} else {
-		data = await getEntityRecords('postType', dictionary[type]);
+		data = await getEntityRecords('postType', dictionary[type], args);
 	}
 
 	return data;
 };
 
-const disabledType = (valueType, thisType = 'type') => {
+const disabledType = (valueType, contentType) => {
 	const hide = options =>
 		Object.keys(options).forEach(key => {
 			if (options[key].value === valueType) {
@@ -65,10 +69,10 @@ const disabledType = (valueType, thisType = 'type') => {
 			}
 		});
 
-	hide(thisType === 'relation' ? relationOptions : typeOptions);
+	hide(typeOptions[contentType]);
 };
 
-const getDCOptions = async (dataRequest, postIdOptions) => {
+const getDCOptions = async (dataRequest, postIdOptions, contentType) => {
 	const { type, id, field, relation, author } = dataRequest;
 
 	const data = await getIdOptions(type, relation, author);
@@ -114,7 +118,8 @@ const getDCOptions = async (dataRequest, postIdOptions) => {
 		}
 
 		// Ensures first field is selected
-		if (!field) newValues['dc-field'] = fieldOptions[type][0].value;
+		if (!field)
+			newValues['dc-field'] = fieldOptions[contentType][type][0].value;
 
 		return { newValues, newPostIdOptions };
 	}

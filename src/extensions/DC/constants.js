@@ -3,7 +3,10 @@
  */
 import { __ } from '@wordpress/i18n';
 
-export const typeOptions = [
+/**
+ * Type constants
+ */
+export const generalTypeOptions = [
 	{ label: __('Post', 'maxi-blocks'), value: 'posts' },
 	{ label: __('Page', 'maxi-blocks'), value: 'pages' },
 	{ label: __('Site', 'maxi-blocks'), value: 'settings' },
@@ -12,42 +15,57 @@ export const typeOptions = [
 	{ label: __('Categories', 'maxi-blocks'), value: 'categories' },
 	{ label: __('Tags', 'maxi-blocks'), value: 'tags' },
 ];
-export const relationOptionsPosts = [
+
+export const typeOptions = {
+	text: generalTypeOptions,
+	button: generalTypeOptions,
+};
+
+/**
+ * Relation constants
+ */
+const generalRelationOptionsPosts = [
 	{ label: __('Get by id', 'maxi-blocks'), value: 'by-id' },
 	// { label: __('Get by author', 'maxi-blocks'), value: 'author' }, // TODO: add author support
 	{ label: __('Get random'), value: 'random' },
 	// { label: __('Date', 'maxi-blocks'), value: 'date' },	// TODO: add date support
 	// { label: __('Modified', 'maxi-blocks'), value: 'modified' },	// TODO: add modified support
 ];
-export const relationOptionsPages = [
+
+const generalRelationOptionsPages = [
 	{ label: __('Get by id', 'maxi-blocks'), value: 'by-id' },
 	// { label: __('Get by author', 'maxi-blocks'), value: 'author' }, // TODO: add author support
 	{ label: __('Get random'), value: 'random' },
 ];
-export const relationOptionsCategories = [
+
+const generalRelationOptionsCategories = [
 	{ label: __('Get by id', 'maxi-blocks'), value: 'by-id' },
 	{ label: __('Get random'), value: 'random' },
 ];
-export const relationOptionsTags = [
+
+const generalRelationOptionsTags = [
 	{ label: __('Get by id', 'maxi-blocks'), value: 'by-id' },
 	{ label: __('Get random'), value: 'random' },
 ];
-export const relationOptions = {
-	posts: relationOptionsPosts,
-	pages: relationOptionsPages,
-	settings: relationOptionsPosts,
-	media: relationOptionsPosts,
-	categories: relationOptionsCategories,
-	tags: relationOptionsTags,
+
+const generalRelationOptions = {
+	posts: generalRelationOptionsPosts,
+	pages: generalRelationOptionsPages,
+	settings: generalRelationOptionsPosts,
+	media: generalRelationOptionsPosts,
+	categories: generalRelationOptionsCategories,
+	tags: generalRelationOptionsTags,
 };
 
-export const getByOptions = [
-	{ label: __('Date', 'maxi-blocks'), value: 'date' },
-	{ label: __('Author', 'maxi-blocks'), value: 'author' },
-	{ label: __('Modified', 'maxi-blocks'), value: 'modified' },
-];
+export const relationOptions = {
+	text: generalRelationOptions,
+	button: generalRelationOptions,
+};
 
-export const postsPagesOptions = [
+/**
+ * Field constants
+ */
+const generalPostsPagesFields = [
 	{
 		label: __('Title', 'maxi-blocks'),
 		value: 'title',
@@ -64,7 +82,35 @@ export const postsPagesOptions = [
 	{ label: __('Author', 'maxi-blocks'), value: 'author' },
 ];
 
-export const catTagOptions = [
+const generalSettingsFields = [
+	{ label: __('Title', 'maxi-blocks'), value: 'title' },
+	{ label: __('Description', 'maxi-blocks'), value: 'tagline' },
+	{ label: __('Site URL', 'maxi-blocks'), value: 'url' },
+	{ label: __('Admin email', 'maxi-blocks'), value: 'email' },
+	{ label: __('Language', 'maxi-blocks'), value: 'language' },
+];
+
+const generalMediaFields = [
+	{ label: __('Title', 'maxi-blocks'), value: 'title' },
+	{ label: __('Caption', 'maxi-blocks'), value: 'caption' },
+	{ label: __('Description', 'maxi-blocks'), value: 'description' },
+	{ label: __('Alt text', 'maxi-blocks'), value: 'alt_text' },
+	{ label: __('Link', 'maxi-blocks'), value: 'link' },
+	{ label: __('URL', 'maxi-blocks'), value: 'source_url' },
+	{ label: __('Mime type', 'maxi-blocks'), value: 'mime_type' },
+	{ label: __('Date', 'maxi-blocks'), value: 'date' },
+	{ label: __('Author', 'maxi-blocks'), value: 'author' },
+];
+
+const generalUsersFields = [
+	{ label: __('Name', 'maxi-blocks'), value: 'name' },
+	{ label: __('Description', 'maxi-blocks'), value: 'description' },
+	{ label: __('Email', 'maxi-blocks'), value: 'email' },
+	{ label: __('Link', 'maxi-blocks'), value: 'link' },
+	{ label: __('Website', 'maxi-blocks'), value: 'url' },
+];
+
+const generalCategoryFields = [
 	{ label: __('Name', 'maxi-blocks'), value: 'name' },
 	{ label: __('Description', 'maxi-blocks'), value: 'description' },
 	{ label: __('Slug', 'maxi-blocks'), value: 'slug' },
@@ -73,38 +119,138 @@ export const catTagOptions = [
 	{ label: __('Link', 'maxi-blocks'), value: 'link' },
 ];
 
+const generalTagFields = generalCategoryFields.filter(
+	option => option.value !== 'parent'
+);
+
+const buttonPostsPagesFields = generalPostsPagesFields.filter(option =>
+	['title', 'author'].includes(option.value)
+);
+
+const buttonSettingsFields = generalSettingsFields.filter(option =>
+	['title', 'tagline', 'email'].includes(option.value)
+);
+
+const buttonMediaFields = generalMediaFields.filter(option =>
+	['title', 'author'].includes(option.value)
+);
+
+const buttonAuthorFields = generalUsersFields.filter(option =>
+	['name', 'email', 'url'].includes(option.value)
+);
+
+const buttonCategoryFields = generalCategoryFields.filter(option =>
+	['name', 'slug', 'parent'].includes(option.value)
+);
+
+const buttonTagFields = generalTagFields.filter(option =>
+	['name', 'slug'].includes(option.value)
+);
+
 export const fieldOptions = {
-	posts: postsPagesOptions,
-	pages: postsPagesOptions,
-	settings: [
-		{ label: __('Title', 'maxi-blocks'), value: 'title' },
-		{ label: __('Description', 'maxi-blocks'), value: 'tagline' },
-		{ label: __('Site URL', 'maxi-blocks'), value: 'url' },
-		{ label: __('Admin email', 'maxi-blocks'), value: 'email' },
-		{ label: __('Language', 'maxi-blocks'), value: 'language' },
-	],
-	media: [
-		{ label: __('Title', 'maxi-blocks'), value: 'title' },
-		{ label: __('Caption', 'maxi-blocks'), value: 'caption' },
-		{ label: __('Description', 'maxi-blocks'), value: 'description' },
-		{ label: __('Alt text', 'maxi-blocks'), value: 'alt_text' },
-		{ label: __('Link', 'maxi-blocks'), value: 'link' },
-		{ label: __('URL', 'maxi-blocks'), value: 'source_url' },
-		{ label: __('Mime type', 'maxi-blocks'), value: 'mime_type' },
-		{ label: __('Date', 'maxi-blocks'), value: 'date' },
-		{ label: __('Author', 'maxi-blocks'), value: 'author' },
-	],
-	users: [
-		{ label: __('Name', 'maxi-blocks'), value: 'name' },
-		{ label: __('Description', 'maxi-blocks'), value: 'description' },
-		{ label: __('Email', 'maxi-blocks'), value: 'email' },
-		{ label: __('Link', 'maxi-blocks'), value: 'link' },
-		{ label: __('Website', 'maxi-blocks'), value: 'url' },
-	],
-	categories: catTagOptions,
-	tags: catTagOptions.filter(option => option.value !== 'parent'),
+	text: {
+		posts: generalPostsPagesFields,
+		pages: generalPostsPagesFields,
+		settings: generalSettingsFields,
+		media: generalMediaFields,
+		users: generalUsersFields,
+		categories: generalCategoryFields,
+		tags: generalTagFields,
+	},
+	button: {
+		posts: buttonPostsPagesFields,
+		pages: buttonPostsPagesFields,
+		settings: buttonSettingsFields,
+		media: buttonMediaFields,
+		users: buttonAuthorFields,
+		categories: buttonCategoryFields,
+		tags: buttonTagFields,
+	},
 };
 
+/**
+ * Option constants
+ */
+// Random get-by types
+export const postsRandomOptions = [
+	'author',
+	'date',
+	'id',
+	'modified',
+	'parent',
+	'slug',
+	'include_slugs',
+	'title',
+];
+
+export const pagesRandomOptions = [
+	'author',
+	'date',
+	'id',
+	'modified',
+	'parent',
+	'slug',
+	'include_slugs',
+	'title',
+];
+
+export const mediaRandomOptions = [
+	'author',
+	'date',
+	'id',
+	'modified',
+	'parent',
+	'slug',
+	'include_slugs',
+	'title',
+];
+
+export const usersRandomOptions = [
+	'id',
+	'include',
+	'name',
+	'registered_date',
+	'slug',
+	'include_slugs',
+	'email',
+	'url',
+];
+
+export const categoriesRandomOptions = [
+	'id',
+	'include',
+	'name',
+	'slug',
+	'include_slugs',
+	'term_group',
+	'description',
+	'count',
+];
+
+export const tagsRandomOptions = [
+	'id',
+	'include',
+	'name',
+	'slug',
+	'include_slugs',
+	'term_group',
+	'description',
+	'count',
+];
+
+export const randomOptions = {
+	posts: postsRandomOptions,
+	pages: pagesRandomOptions,
+	settings: [],
+	media: mediaRandomOptions,
+	users: usersRandomOptions,
+	categories: categoriesRandomOptions,
+	tags: tagsRandomOptions,
+};
+
+/**
+ * Other constants
+ */
 export const idOptionByField = {
 	posts: 'title',
 	pages: 'title',
@@ -145,78 +291,6 @@ export const relationTypes = [
 	'users', // TODO: Add support for users
 ];
 
-// Random get-by types
-export const postsRandomOptions = [
-	'author',
-	'date',
-	'id',
-	'modified',
-	'parent',
-	'slug',
-	'include_slugs',
-	'title',
-];
-export const pagesRandomOptions = [
-	'author',
-	'date',
-	'id',
-	'modified',
-	'parent',
-	'slug',
-	'include_slugs',
-	'title',
-];
-export const mediaRandomOptions = [
-	'author',
-	'date',
-	'id',
-	'modified',
-	'parent',
-	'slug',
-	'include_slugs',
-	'title',
-];
-export const usersRandomOptions = [
-	'id',
-	'include',
-	'name',
-	'registered_date',
-	'slug',
-	'include_slugs',
-	'email',
-	'url',
-];
-export const categoriesRandomOptions = [
-	'id',
-	'include',
-	'name',
-	'slug',
-	'include_slugs',
-	'term_group',
-	'description',
-	'count',
-];
-export const tagsRandomOptions = [
-	'id',
-	'include',
-	'name',
-	'slug',
-	'include_slugs',
-	'term_group',
-	'description',
-	'count',
-];
-
-export const randomOptions = {
-	posts: postsRandomOptions,
-	pages: pagesRandomOptions,
-	settings: [],
-	media: mediaRandomOptions,
-	users: usersRandomOptions,
-	categories: categoriesRandomOptions,
-	tags: tagsRandomOptions,
-};
-
 export const descriptionOfErrors = {
 	next: __(
 		'Sorry, there is no next post, please choose something else.',
@@ -239,11 +313,6 @@ export const descriptionOfErrors = {
 		'Sorry, you do not have any tags yet, please choose something else.',
 		'maxi-blocks'
 	),
-};
-
-export const postTypeDic = {
-	post: 'posts',
-	page: 'pages',
 };
 
 export const limitTypes = ['posts', 'pages', 'tags', 'categories'];

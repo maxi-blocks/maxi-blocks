@@ -10,7 +10,11 @@ import { useEffect } from '@wordpress/element';
  */
 import { getGroupAttributes } from '../styles';
 import getDCContent from './getDCContent';
-import { getDCDateCustomFormat, sanitizeDCContent } from './utils';
+import {
+	getDCDateCustomFormat,
+	getSimpleText,
+	sanitizeDCContent,
+} from './utils';
 
 /**
  * External dependencies
@@ -85,7 +89,9 @@ const withMaxiDC = createHigherOrderComponent(
 								maxiSetAttributes({
 									'dc-media-id': id,
 									'dc-media-url': url,
-									'dc-media-caption': caption,
+									'dc-media-caption': sanitizeDCContent(
+										getSimpleText(caption)
+									),
 								});
 							}
 						}

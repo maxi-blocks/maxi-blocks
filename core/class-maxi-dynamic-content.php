@@ -33,16 +33,21 @@ class MaxiBlocks_DynamicContent
         register_block_type('maxi-blocks/text-maxi', array(
             'api_version' => 2,
             'editor_script' => 'maxi-blocks-block-editor',
-            'render_callback' => [$this, 'render_dc_content'],
+            'render_callback' => [$this, 'render_dc'],
         ));
         register_block_type('maxi-blocks/button-maxi', array(
             'api_version' => 2,
             'editor_script' => 'maxi-blocks-block-editor',
-            'render_callback' => [$this, 'render_dc_content'],
+            'render_callback' => [$this, 'render_dc'],
+        ));
+        register_block_type('maxi-blocks/image-maxi', array(
+            'api_version' => 2,
+            'editor_script' => 'maxi-blocks-block-editor',
+            'render_callback' => [$this, 'render_dc'],
         ));
     }
 
-    public function render_dc_content($attributes, $content)
+    public function render_dc($attributes, $content)
     {
         if (!array_key_exists('dc-status', $attributes)) {
             return $content;
@@ -51,8 +56,21 @@ class MaxiBlocks_DynamicContent
             return $content;
         }
 
+        $block_name = substr($attributes['uniqueID'], 0, strrpos($attributes['uniqueID'], '-'));
+        
 
 
+        if ($block_name !== 'image-maxi') {
+            $content = self::render_dc_content($attributes, $content);
+        } else {
+            $content = self::render_dc_image($attributes, $content);
+        }
+
+        return $content;
+    }
+
+    public function render_dc_content($attributes, $content)
+    {
         @list(
             'dc-type' => $dc_type,
             'dc-relation' => $dc_relation,
@@ -65,6 +83,8 @@ class MaxiBlocks_DynamicContent
         if (empty($dc_relation)) {
             $dc_relation = 'id';
         }
+        
+        $response = '';
 
         if (in_array($dc_type, ['posts', 'pages'])) { // Post or page
             $response = self::get_post_or_page_content($attributes);
@@ -89,15 +109,77 @@ class MaxiBlocks_DynamicContent
         return $content;
     }
 
-    public function get_post_or_page_content($attributes)
+    public function render_dc_image($attributes, $content)
+    {
+        @list(
+            'dc-type' => $dc_type,
+            'dc-relation' => $dc_relation,
+            'dc-field' => $dc_field,
+            'dc-id' => $dc_id,
+        ) = $attributes;
+
+        if (empty($dc_type)) {
+            $dc_type = 'posts';
+        }
+        if (empty($dc_relation)) {
+            $dc_relation = 'id';
+        }
+        
+        $media_id;
+        $media_src;
+        $media_alt = '';
+        $media_caption = '';
+
+        // Get media ID
+        if (in_array($dc_type, ['posts', 'pages'])) { // Post or page
+            $post = $this->get_post($attributes);
+            // $dc_field is not used here as there's just on option for the moment
+            $media_id =  get_post_meta($post->ID, '_thumbnail_id', true);
+        } elseif ($dc_type === 'settings') { // Site settings
+            // $dc_field is not used here as there's just on option for the moment
+            $media_id = get_theme_mod('custom_logo');
+        } elseif ($dc_type === 'media') {
+            $media_id = $dc_id;
+        }
+
+        if (!empty($media_id) && is_numeric($media_id)) {
+            $media_src = wp_get_attachment_image_src($media_id, 'full')[0];
+
+            $media_alt = get_post_meta($media_id, '_wp_attachment_image_alt', true);
+
+            if (empty($media_alt)) {
+                $media_alt = 'No content found';
+            }
+
+            $media_caption = get_post($media_id)->post_excerpt;
+
+            if (empty($media_caption)) {
+                $media_caption = 'No content found';
+            }
+        }
+
+        if (!empty($media_src)) {
+            $content = str_replace('$media-id-to-replace', $media_id, $content);
+            $content = str_replace('$media-url-to-replace', $media_src, $content);
+            $content = str_replace('$media-alt-to-replace', $media_alt, $content);
+            $content = str_replace('$media-caption-to-replace', $media_caption, $content);
+        } else {
+            $content = str_replace('$media-id-to-replace', '', $content);
+            $content = str_replace('$media-url-to-replace', '', $content);
+            $content = str_replace('$media-alt-to-replace', '', $content);
+            $content = str_replace('$media-caption-to-replace', '', $content);
+        }
+
+        return $content;
+    }
+
+    public function get_post($attributes)
     {
         @list(
             'dc-type' => $dc_type,
             'dc-relation' => $dc_relation,
             'dc-id' => $dc_id,
             'dc-author' => $dc_author,
-            'dc-field' => $dc_field,
-            'dc-limit' => $dc_limit,
         ) = $attributes;
 
         if (empty($dc_type)) {
@@ -107,25 +189,91 @@ class MaxiBlocks_DynamicContent
             $dc_relation = 'id';
         }
 
-        // Basic args
-        $args = [
-            'post_type' => $dc_type === 'posts' ? 'post' : 'page',
-            'post_status' => 'publish',
-            'posts_per_page' => 1,
-        ];
+        if (in_array($dc_type, ['posts', 'pages'])) {
+            // Basic args
+            $args = [
+                'post_type' => $dc_type === 'posts' ? 'post' : 'page',
+                'post_status' => 'publish',
+                'posts_per_page' => 1,
+            ];
+    
+            // DC Relation
+            if ($dc_relation == 'id') {
+                $args['p'] = $dc_id;
+            } elseif ($dc_relation == 'author') {
+                $args['author'] = $dc_author ?? $dc_id;
+            } elseif ($dc_relation == 'random') {
+                $args['orderby'] = 'rand';
+            }
+    
+            $query = new WP_Query($args);
+    
+            return $query->post;
+        } elseif ($dc_type === 'media') {
+            $args = [
+                'post_type' => 'attachment',
+                'posts_per_page' => 1,
+            ];
+    
+            // DC Relation
+            $is_random = $dc_relation === 'random';
+            if ($dc_relation == 'id') {
+                $args['p'] = $dc_id;
+            } elseif ($is_random) {
+                $args= [
+                    'post_type' => 'attachment',
+                    'post_status' => 'inherit',
+                    'posts_per_page' => -1
+                ];
+            }
+    
+            $query = new WP_Query($args);
+    
+            $post;
+    
+            if ($is_random) {
+                $posts = $query->posts;
+                $post = $posts[array_rand($posts)];
+            } else {
+                $post = $query->post;
+            }
 
-        // DC Relation
-        if ($dc_relation == 'id') {
-            $args['p'] = $dc_id;
-        } elseif ($dc_relation == 'author') {
-            $args['author'] = $dc_author ?? $dc_id;
-        } elseif ($dc_relation == 'random') {
-            $args['orderby'] = 'rand';
+            return $post;
+        } elseif (in_array($dc_type, ['categories', 'tags'])) {
+            if ($dc_type === 'categories') {
+                $taxonomy = 'category';
+            } elseif ($dc_type === 'tags') {
+                $taxonomy = 'post_tag';
+            }
+    
+            $args = [
+                'taxonomy' => $taxonomy,
+                'hide_empty' => false,
+                'number' => 1,
+            ];
+    
+            if ($dc_relation == 'random') {
+                $args['orderby'] = 'rand';
+            } else {
+                $args['include'] = $dc_id;
+            }
+    
+            $terms = get_terms($args);
+    
+            return $terms[0];
         }
+    }
 
-        $query = new WP_Query($args);
+    public function get_post_or_page_content($attributes)
+    {
+        @list(
+            'dc-field' => $dc_field,
+            'dc-limit' => $dc_limit,
+        ) = $attributes;
 
-        $post_data = $query->post->{"post_$dc_field"};
+        $post = $this->get_post($attributes);
+
+        $post_data = $post->{$dc_field};
 
         if (empty($post_data) && $dc_field === 'excerpt') {
             $post_data = $query->post->post_content;
@@ -176,49 +324,10 @@ class MaxiBlocks_DynamicContent
     public function get_media_content($attributes)
     {
         @list(
-            'dc-relation' => $dc_relation,
-            'dc-id' => $dc_id,
             'dc-field' => $dc_field,
         ) = $attributes;
-
-        if (empty($dc_relation)) {
-            $dc_relation = 'id';
-        }
-
-        $args = [
-            'post_type' => 'attachment',
-            'posts_per_page' => 1,
-        ];
-
-        // DC Relation
-        $is_random = $dc_relation == 'random';
-        if ($dc_relation == 'id') {
-            $args['p'] = $dc_id;
-        } if ($is_random) {
-            $args= [
-                'post_type' => 'attachment',
-                'post_status' => 'inherit',
-               'posts_per_page' => -1
-            ];
-        }
-
-        $query = new WP_Query($args);
-
-        if ($dc_field === 'caption') {
-            $dc_field = 'excerpt';
-        } elseif ($dc_field === 'description') {
-            $dc_field = 'content';
-        }
-
-        $post;
-
-        if ($is_random) {
-            $posts = $query->posts;
-            $post = $posts[array_rand($posts)];
-        } else {
-            $post = $query->post;
-        }
-
+        
+        $post = $this->get_post($attributes);
         $media_data = $post->{"post_$dc_field"};
 
         if ($dc_field === 'author') {
@@ -231,37 +340,15 @@ class MaxiBlocks_DynamicContent
     public function get_taxonomy_content($attributes)
     {
         @list(
-            'dc-type' => $dc_type,
-            'dc-relation' => $dc_relation,
-            'dc-id' => $dc_id,
             'dc-field' => $dc_field,
             'dc-limit' => $dc_limit,
         ) = $attributes;
 
-        if ($dc_type === 'categories') {
-            $taxonomy = 'category';
-        } elseif ($dc_type === 'tags') {
-            $taxonomy = 'post_tag';
-        }
-
-        $args = [
-            'taxonomy' => $taxonomy,
-            'hide_empty' => false,
-            'number' => 1,
-        ];
-
-        if ($dc_relation == 'random') {
-            $args['orderby'] = 'rand';
-        } else {
-            $args['include'] = $dc_id;
-        }
-
-        $terms = get_terms($args);
-
+        $term = $this->get_post($attributes);
         if ($dc_field === 'link') {
-            $tax_data = get_term_link($terms[0]);
+            $tax_data = get_term_link($term);
         } else {
-            $tax_data = $terms[0]->{"$dc_field"};
+            $tax_data = $term->{"$dc_field"};
         }
 
         if ($dc_field === 'parent') {

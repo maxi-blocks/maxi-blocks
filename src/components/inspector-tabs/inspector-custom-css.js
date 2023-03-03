@@ -22,11 +22,11 @@ const customCss = ({
 	const { attributes, maxiSetAttributes } = props;
 
 	const customCssValue = getLastBreakpointAttribute({
-		target: 'custom-css',
+		target: 'cc',
 		breakpoint,
 		attributes,
 	});
-	const customCssCategory = attributes['custom-css-category'];
+	const customCssCategory = attributes['cc-category'];
 
 	return {
 		label: __('Custom CSS', 'maxi-blocks'),

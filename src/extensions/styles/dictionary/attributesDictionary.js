@@ -28,6 +28,9 @@ const dictionary = {
 		'margin-bottom-unit': 'mbu',
 		'margin-left-unit': 'mlu',
 	},
+	customCss: {
+		'custom-css': 'cc',
+	},
 };
 
 const flattenDictionary = dict => {

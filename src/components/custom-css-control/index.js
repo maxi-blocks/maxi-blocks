@@ -210,7 +210,7 @@ const CustomCssControl = props => {
 		<ResponsiveTabsControl
 			className='maxi-custom-css-control'
 			breakpoint={breakpoint}
-			target='custom-css'
+			target='cc'
 		>
 			<>
 				<SelectControl
@@ -219,7 +219,7 @@ const CustomCssControl = props => {
 					id='maxi-custom-css-control__category'
 					value={category || 'none'}
 					options={getOptions()}
-					onChange={val => onChange('custom-css-category', val)}
+					onChange={val => onChange('cc-category', val)}
 				/>
 				{!isEmpty(selectors?.[category]) &&
 					Object.entries(selectors?.[category])?.map(element => {

@@ -44,6 +44,7 @@ const SVGLayer = props => {
 						}
 						onChange({ ...SVGOptions, ...obj });
 					}}
+					layerIndex={layerOrder}
 					icon={SVGElement}
 					onSelect={obj => onChange(obj)}
 				/>

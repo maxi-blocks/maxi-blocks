@@ -379,6 +379,7 @@ const LibraryContainer = props => {
 		url,
 		title,
 		prefix = '',
+		layerIndex,
 	} = props;
 
 	const {
@@ -589,7 +590,7 @@ const LibraryContainer = props => {
 			uniqueID,
 			mediaID,
 			mediaURL,
-			'background-svg-SVGData': svgData,
+			'background-layers': bgLayers,
 		} = select('core/block-editor').getBlockAttributes(clientId);
 
 		if (isValidTemplate(svgCode)) {
@@ -611,6 +612,8 @@ const LibraryContainer = props => {
 			}
 
 			if (type === 'bg-shape') {
+				const svgData =
+					bgLayers[layerIndex - 1]['background-svg-SVGData'];
 				const cleanedContent = DOMPurify.sanitize(fitSvg(svgCode));
 				const svg = document
 					.createRange()

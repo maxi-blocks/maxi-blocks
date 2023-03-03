@@ -27,7 +27,7 @@ const nameDictionary = {
 };
 
 const getDCContent = async dataRequest => {
-	const data = getDCEntity(dataRequest);
+	const data = await getDCEntity(dataRequest);
 
 	const {
 		'dc-type': type,

@@ -564,10 +564,13 @@ const MaxiToolbar = memo(
 							</>
 						)}
 						<Link
+							{...getGroupAttributes(attributes, [
+								'dynamicContent',
+							])}
 							blockName={name}
 							linkSettings={linkSettings}
-							onChange={linkSettings =>
-								maxiSetAttributes({ linkSettings })
+							onChange={(linkSettings, obj) =>
+								maxiSetAttributes({ linkSettings, ...obj })
 							}
 							clientId={clientId}
 							textLevel={textLevel}
@@ -578,7 +581,9 @@ const MaxiToolbar = memo(
 								'dynamicContent',
 							])}
 							blockName={name}
-							onChange={obj => maxiSetAttributes(obj)}
+							onChange={(linkSettings, obj) =>
+								maxiSetAttributes({ linkSettings, ...obj })
+							}
 							isList={isList}
 							linkSettings={linkSettings}
 							breakpoint={breakpoint}

@@ -13,6 +13,7 @@ import { select } from '@wordpress/data';
 import Button from '../../../button';
 import ToolbarPopover from '../toolbar-popover';
 import ToolbarContext from '../toolbar-popover/toolbarContext';
+import ToggleSwitch from '../../../toggle-switch';
 
 /**
  * External dependencies
@@ -35,6 +36,8 @@ const Link = props => {
 		linkSettings,
 		clientId,
 		disableCustomFormats = false,
+		'dc-status': dcStatus,
+		'dc-link-status': dcLinkStatus,
 	} = props;
 
 	if (
@@ -88,6 +91,20 @@ const Link = props => {
 			>
 				{!childHasLink && (
 					<>
+						{dcStatus && (
+							<ToggleSwitch
+								label={__(
+									'Use dynamic content link',
+									'maxi-blocks'
+								)}
+								selected={dcLinkStatus}
+								onChange={value => {
+									onChange(linkSettings, {
+										'dc-link-status': value,
+									});
+								}}
+							/>
+						)}
 						<LinkControl
 							searchInputPlaceholder='Search or type URL'
 							value={linkSettings}

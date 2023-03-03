@@ -15,12 +15,13 @@ import {
 	getSimpleText,
 	sanitizeDCContent,
 } from './utils';
+import getDCMedia from './getDCMedia';
+import getDCLink from './getDCLink';
 
 /**
  * External dependencies
  */
 import { isNil } from 'lodash';
-import getDCMedia from './getDCMedia';
 
 const withMaxiDC = createHigherOrderComponent(
 	WrappedComponent =>
@@ -41,6 +42,7 @@ const withMaxiDC = createHigherOrderComponent(
 				'dc-field': field,
 				'dc-id': id,
 				'dc-custom-date': isCustomDate,
+				'dc-link-status': linkStatus,
 			} = dynamicContentProps;
 
 			useEffect(async () => {
@@ -55,6 +57,22 @@ const withMaxiDC = createHigherOrderComponent(
 							markNextChangeAsNotPersistent,
 					} = dispatch('core/block-editor');
 
+					const newLinkSettings =
+						ownProps.attributes.linkSettings ?? {};
+					let updateLinkSettings = false;
+					const dcLink = await getDCLink(dynamicContentProps);
+					const isSameLink = dcLink === newLinkSettings.url;
+
+					if (!isSameLink && linkStatus && !isNil(dcLink)) {
+						newLinkSettings.url = dcLink;
+
+						updateLinkSettings = true;
+					} else if (isSameLink && !linkStatus) {
+						newLinkSettings.url = null;
+
+						updateLinkSettings = true;
+					}
+
 					if (!isImageMaxi) {
 						const newContent = sanitizeDCContent(
 							await getDCContent(dynamicContentProps)
@@ -68,6 +86,9 @@ const withMaxiDC = createHigherOrderComponent(
 									'dc-custom-format':
 										getDCDateCustomFormat(newContent),
 								}),
+								...(updateLinkSettings && {
+									linkSettings: newLinkSettings,
+								}),
 							});
 						}
 					} else {
@@ -80,6 +101,9 @@ const withMaxiDC = createHigherOrderComponent(
 							maxiSetAttributes({
 								'dc-media-id': null,
 								'dc-media-url': null,
+								...(updateLinkSettings && {
+									linkSettings: newLinkSettings,
+								}),
 							});
 						} else {
 							const { id, url, caption } = mediaContent;
@@ -92,6 +116,9 @@ const withMaxiDC = createHigherOrderComponent(
 									'dc-media-caption': sanitizeDCContent(
 										getSimpleText(caption)
 									),
+									...(updateLinkSettings && {
+										linkSettings: newLinkSettings,
+									}),
 								});
 							}
 						}

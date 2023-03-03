@@ -56,15 +56,36 @@ class MaxiBlocks_DynamicContent
             return $content;
         }
 
+        if (array_key_exists('dc-link-status', $attributes)) {
+            $dc_link_status = $attributes['dc-link-status'];
+
+            if ($dc_link_status) {
+                $content = self::render_dc_link($attributes, $content);
+            }
+        }
+
         $block_name = substr($attributes['uniqueID'], 0, strrpos($attributes['uniqueID'], '-'));
         
-
-
         if ($block_name !== 'image-maxi') {
             $content = self::render_dc_content($attributes, $content);
         } else {
             $content = self::render_dc_image($attributes, $content);
         }
+
+        return $content;
+    }
+
+    public function render_dc_link($attributes, $content)
+    {
+        $post = self::get_post($attributes);
+
+        if (empty($post)) {
+            return $content;
+        }
+
+        $link = get_permalink($post->ID);
+
+        $content = str_replace('$link-to-replace', $link, $content);
 
         return $content;
     }

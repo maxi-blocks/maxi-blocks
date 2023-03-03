@@ -295,15 +295,7 @@ const TextLink = props => {
 			</ToolbarPopover>
 		);
 
-	return (
-		<Link
-			blockName={blockName}
-			linkSettings={props.linkSettings}
-			onChange={props.onChange}
-			textLevel={props.textLevel}
-			disableCustomFormats={props.disableCustomFormats}
-		/>
-	);
+	return <Link {...props} />;
 };
 
 export default TextLink;

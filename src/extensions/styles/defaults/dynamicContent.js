@@ -101,6 +101,12 @@ const dynamicContent = {
 	'dc-media-caption': {
 		type: 'string',
 	},
+	'dc-link-status': {
+		type: 'boolean',
+	},
+	'dc-link-url': {
+		type: 'string',
+	},
 };
 
 export default dynamicContent;

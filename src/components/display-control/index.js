@@ -41,9 +41,8 @@ const DisplayControl = props => {
 		let i = breakpointIndex;
 
 		do {
-			if (props[`display-${breakpoints[i]}`] === 'none') return true;
-			if (props[`display-${breakpoints[i]}`] === defaultDisplay)
-				return false;
+			if (props[`d-${breakpoints[i]}`] === 'none') return true;
+			if (props[`d-${breakpoints[i]}`] === defaultDisplay) return false;
 			i -= 1;
 		} while (i >= 0);
 
@@ -51,20 +50,19 @@ const DisplayControl = props => {
 	};
 
 	const getValue = () => {
-		if (props[`display-${breakpoint}`] === 'none') return 'none';
+		if (props[`d-${breakpoint}`] === 'none') return 'none';
 
 		const isPrevHide = isHide();
 		if (
 			isPrevHide &&
-			(isNil(props[`display-${breakpoint}`]) ||
-				props[`display-${breakpoint}`] === '')
+			(isNil(props[`d-${breakpoint}`]) || props[`d-${breakpoint}`] === '')
 		)
 			return 'none';
 
 		if (
 			isPrevHide &&
-			(!isNil(props[`display-${breakpoint}`]) ||
-				props[`display-${breakpoint}`] !== '')
+			(!isNil(props[`d-${breakpoint}`]) ||
+				props[`d-${breakpoint}`] !== '')
 		)
 			return defaultDisplay;
 
@@ -94,7 +92,7 @@ const DisplayControl = props => {
 				items={getOptions()}
 				onChange={val =>
 					onChange({
-						[`display-${breakpoint}`]: !isEmpty(val) ? val : null,
+						[`d-${breakpoint}`]: !isEmpty(val) ? val : null,
 					})
 				}
 				hasBorder

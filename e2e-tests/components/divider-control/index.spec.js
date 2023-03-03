@@ -3,17 +3,22 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
-import { openSidebarTab, getBlockStyle, getBlockAttributes } from '../../utils';
+import {
+	openSidebarTab,
+	getBlockStyle,
+	getBlockAttributes,
+	insertMaxiBlock,
+} from '../../utils';
 
 describe('DividerControl', () => {
 	it('Checking the style selector', async () => {
 		await createNewPost();
-		await insertBlock('Divider Maxi');
+		await insertMaxiBlock(page, 'Divider Maxi');
 
 		const accordionPanel = await openSidebarTab(
 			page,

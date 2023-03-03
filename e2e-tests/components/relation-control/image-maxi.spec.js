@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
@@ -10,16 +10,17 @@ import {
 	addImageToImageMaxi,
 	getAttributes,
 	openPreviewPage,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('Image Maxi hover simple actions', () => {
 	beforeEach(async () => {
 		await createNewPost();
-		await insertBlock('Image Maxi');
+		await insertMaxiBlock(page, 'Image Maxi');
 		const imageBlock = await page.$('.maxi-image-block');
 		await addImageToImageMaxi(page, imageBlock);
 
-		await insertBlock('Button Maxi');
+		await insertMaxiBlock(page, 'Button Maxi');
 		await openSidebarTab(page, 'advanced', 'interaction builder');
 
 		// Add interaction

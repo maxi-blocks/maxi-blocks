@@ -1,13 +1,22 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
-import { addCustomCSS, getBlockStyle, getEditedPostContent } from '../../utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
+
+/**
+ * Internal dependencies
+ */
+import {
+	addCustomCSS,
+	getBlockStyle,
+	getEditedPostContent,
+	insertMaxiBlock,
+} from '../../utils';
 
 describe('Video Maxi', () => {
 	it('Video Maxi does not break', async () => {
 		await createNewPost();
-		await insertBlock('Video Maxi');
+		await insertMaxiBlock(page, 'Video Maxi');
 
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();

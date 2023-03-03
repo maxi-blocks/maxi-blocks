@@ -1,12 +1,17 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
+
+/**
+ * Internal dependencies
+ */
+import { insertMaxiBlock } from '../../../../utils';
 
 describe('Delete block', () => {
 	it('Check delete block', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 		await page.keyboard.type('Block 1', { delay: 100 });
 
 		const textContent = await page.$eval(

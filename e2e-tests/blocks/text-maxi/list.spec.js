@@ -2,11 +2,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyWithModifier,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -19,12 +15,13 @@ import {
 	editColorControl,
 	modalMock,
 	addTypographyStyle,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('List in Text-maxi', () => {
 	it('Use list options with list style position inside', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 		await page.keyboard.type('Testing Text Maxi List', { delay: 100 });
 		await page.waitForTimeout(150);
 
@@ -116,7 +113,7 @@ describe('List in Text-maxi', () => {
 
 	it('Use list options with list style position outside', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 		await page.keyboard.type('Testing Text Maxi List', { delay: 100 });
 		await page.waitForTimeout(150);
 
@@ -348,7 +345,7 @@ describe('List in Text-maxi', () => {
 
 	it('Check indent options and styles on multiline list item', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 		await page.waitForTimeout(150);
 		await page.$eval('.toolbar-item__list-options', button =>
 			button.click()

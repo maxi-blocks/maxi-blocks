@@ -7,29 +7,16 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import {
-	limitFields,
-	limitTypes,
-	relationTypes,
-	renderedFields,
-} from './constants';
-import getDCErrors from './getDCErrors';
+import { limitFields, limitTypes, renderedFields } from './constants';
 import { getSimpleText, limitString } from './utils';
 import processDCDate, { formatDateOptions } from './processDCDate';
+import getDCEntity from './getDCEntity';
 
 /**
  * External dependencies
  */
 import { isNil } from 'lodash';
 
-const kindDictionary = {
-	posts: 'postType',
-	pages: 'postType',
-	media: 'postType',
-	settings: 'root',
-	categories: 'taxonomy',
-	tags: 'taxonomy',
-};
 const nameDictionary = {
 	posts: 'post',
 	pages: 'page',
@@ -39,7 +26,9 @@ const nameDictionary = {
 	tags: 'post_tag',
 };
 
-const getContentValue = async (dataRequest, data) => {
+const getDCContent = async dataRequest => {
+	const data = getDCEntity(dataRequest);
+
 	const {
 		'dc-type': type,
 		'dc-field': field,
@@ -109,83 +98,6 @@ const getContentValue = async (dataRequest, data) => {
 	}
 
 	if (contentValue) return contentValue;
-
-	return null;
-};
-
-const getDCContent = async dataRequest => {
-	const {
-		'dc-type': type,
-		'dc-id': id,
-		'dc-error': error,
-		'dc-show': show,
-		'dc-relation': relation,
-		'dc-author': author,
-	} = dataRequest;
-
-	const contentError = getDCErrors(type, error, show, relation);
-
-	if (contentError) return contentError;
-
-	if (type === 'users') {
-		dataRequest.id = author ?? id;
-	}
-
-	if (type === 'users') {
-		const { getUsers } = resolveSelect('core');
-
-		const user = await getUsers({ p: author });
-
-		return getContentValue(dataRequest, user[0]);
-	}
-	if (relationTypes.includes(type) && relation === 'random') {
-		const randomEntity = await resolveSelect('core').getEntityRecords(
-			kindDictionary[type],
-			nameDictionary[type],
-			{
-				per_page: 100,
-				hide_empty: false,
-			}
-		);
-
-		return getContentValue(
-			dataRequest,
-			randomEntity[Math.floor(Math.random() * randomEntity.length)]
-		);
-	}
-	if (type === 'settings') {
-		const settings = await resolveSelect('core').getEditedEntityRecord(
-			kindDictionary[type],
-			'site'
-		);
-
-		return getContentValue(dataRequest, settings);
-	}
-	if (['tags', 'categories'].includes(type)) {
-		const termsEntity = await resolveSelect('core').getEntityRecords(
-			kindDictionary[type],
-			nameDictionary[type],
-			{
-				per_page: 1,
-				hide_empty: false,
-				include: id,
-			}
-		);
-
-		return getContentValue(dataRequest, termsEntity[0]);
-	}
-
-	// Get selected entity
-	const entity = await resolveSelect('core').getEntityRecord(
-		kindDictionary[type],
-		nameDictionary[type] ?? type,
-		id,
-		{
-			per_page: 1,
-		}
-	);
-
-	if (entity) return getContentValue(dataRequest, entity);
 
 	return null;
 };

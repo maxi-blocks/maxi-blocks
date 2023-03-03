@@ -19,6 +19,9 @@ export const generalTypeOptions = [
 export const typeOptions = {
 	text: generalTypeOptions,
 	button: generalTypeOptions,
+	image: generalTypeOptions.filter(
+		option => !['categories', 'tags'].includes(option.value)
+	),
 };
 
 /**
@@ -60,6 +63,7 @@ const generalRelationOptions = {
 export const relationOptions = {
 	text: generalRelationOptions,
 	button: generalRelationOptions,
+	image: generalRelationOptions,
 };
 
 /**
@@ -147,6 +151,20 @@ const buttonTagFields = generalTagFields.filter(option =>
 	['name', 'slug'].includes(option.value)
 );
 
+const mediaPostsPagesFields = [
+	{ label: __('Featured media', 'maxi-blocks'), value: 'featured_media' },
+];
+
+const mediaSettingsFields = [
+	{ label: __('Logo', 'maxi-blocks'), value: 'site_logo' },
+];
+
+const mediaMediaFields = [{ label: __('Image', 'maxi-blocks'), value: 'id' }];
+
+const mediaAuthorFields = [
+	{ label: __('Avatar', 'maxi-blocks'), value: 'avatar' },
+];
+
 export const fieldOptions = {
 	text: {
 		posts: generalPostsPagesFields,
@@ -166,7 +184,18 @@ export const fieldOptions = {
 		categories: buttonCategoryFields,
 		tags: buttonTagFields,
 	},
+	image: {
+		posts: mediaPostsPagesFields,
+		pages: mediaPostsPagesFields,
+		settings: mediaSettingsFields,
+		media: mediaMediaFields,
+		users: mediaAuthorFields,
+	},
 };
+
+export const mediaFieldOptions = Object.values(fieldOptions.image).map(
+	type => type.map(option => option.value)[0]
+);
 
 /**
  * Option constants

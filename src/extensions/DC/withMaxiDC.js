@@ -16,11 +16,14 @@ import { getDCDateCustomFormat, sanitizeDCContent } from './utils';
  * External dependencies
  */
 import { isNil } from 'lodash';
+import getDCMedia from './getDCMedia';
 
 const withMaxiDC = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
 			const { maxiSetAttributes, attributes } = ownProps;
+
+			const isImageMaxi = ownProps.name === 'maxi-blocks/image-maxi';
 
 			const dynamicContentProps = getGroupAttributes(
 				attributes,
@@ -43,24 +46,49 @@ const withMaxiDC = createHigherOrderComponent(
 					!isNil(field) &&
 					(!isNil(id) || type === 'settings') // id is not necessary for site settings
 				) {
-					const newContent = sanitizeDCContent(
-						await getDCContent(dynamicContentProps)
-					);
+					const {
+						__unstableMarkNextChangeAsNotPersistent:
+							markNextChangeAsNotPersistent,
+					} = dispatch('core/block-editor');
 
-					if (newContent !== content) {
-						const {
-							__unstableMarkNextChangeAsNotPersistent:
-								markNextChangeAsNotPersistent,
-						} = dispatch('core/block-editor');
+					if (!isImageMaxi) {
+						const newContent = sanitizeDCContent(
+							await getDCContent(dynamicContentProps)
+						);
 
-						markNextChangeAsNotPersistent();
-						maxiSetAttributes({
-							'dc-content': newContent,
-							...(isCustomDate && {
-								'dc-custom-format':
-									getDCDateCustomFormat(newContent),
-							}),
-						});
+						if (newContent !== content) {
+							markNextChangeAsNotPersistent();
+							maxiSetAttributes({
+								'dc-content': newContent,
+								...(isCustomDate && {
+									'dc-custom-format':
+										getDCDateCustomFormat(newContent),
+								}),
+							});
+						}
+					} else {
+						const mediaContent = await getDCMedia(
+							dynamicContentProps
+						);
+
+						if (isNil(mediaContent)) {
+							markNextChangeAsNotPersistent();
+							maxiSetAttributes({
+								'dc-media-id': null,
+								'dc-media-url': null,
+							});
+						} else {
+							const { id, url, caption } = mediaContent;
+
+							if (!isNil(id) && !isNil(url)) {
+								markNextChangeAsNotPersistent();
+								maxiSetAttributes({
+									'dc-media-id': id,
+									'dc-media-url': url,
+									'dc-media-caption': caption,
+								});
+							}
+						}
 					}
 				}
 			});

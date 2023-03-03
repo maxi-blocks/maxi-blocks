@@ -177,6 +177,8 @@ const handleSetAttributes = ({
 		defaultAttributes,
 	});
 
+	console.log(cleanedResponse);
+
 	return onChange(cleanedResponse);
 };
 

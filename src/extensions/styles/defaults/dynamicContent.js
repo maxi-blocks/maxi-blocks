@@ -92,6 +92,15 @@ const dynamicContent = {
 	'dc-content': {
 		type: 'string',
 	},
+	'dc-media-id': {
+		type: 'number',
+	},
+	'dc-media-url': {
+		type: 'string',
+	},
+	'dc-media-caption': {
+		type: 'string',
+	},
 };
 
 export default dynamicContent;

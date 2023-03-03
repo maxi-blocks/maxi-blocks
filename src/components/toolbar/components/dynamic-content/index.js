@@ -19,7 +19,11 @@ import { toolbarDynamicContent } from '../../../../icons';
  * Dynamic Content
  */
 
-const ALLOWED_BLOCKS = ['maxi-blocks/text-maxi', 'maxi-blocks/button-maxi'];
+const ALLOWED_BLOCKS = [
+	'maxi-blocks/text-maxi',
+	'maxi-blocks/button-maxi',
+	'maxi-blocks/image-maxi',
+];
 
 const DC = props => {
 	const { blockName, ...restProps } = props;
@@ -29,6 +33,7 @@ const DC = props => {
 	const contentTypes = {
 		'maxi-blocks/text-maxi': 'text',
 		'maxi-blocks/button-maxi': 'button',
+		'maxi-blocks/image-maxi': 'image',
 	};
 
 	return (

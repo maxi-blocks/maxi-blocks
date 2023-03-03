@@ -379,7 +379,7 @@ const LibraryContainer = props => {
 		url,
 		title,
 		prefix = '',
-		layerIndex,
+		layerOrder,
 	} = props;
 
 	const {
@@ -612,8 +612,9 @@ const LibraryContainer = props => {
 			}
 
 			if (type === 'bg-shape') {
-				const svgData =
-					bgLayers[layerIndex - 1]['background-svg-SVGData'];
+				const svgData = bgLayers.find(
+					layer => layer.order === layerOrder
+				)['background-svg-SVGData'];
 				const cleanedContent = DOMPurify.sanitize(fitSvg(svgCode));
 				const svg = document
 					.createRange()

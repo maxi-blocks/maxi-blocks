@@ -1,17 +1,16 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openSidebarTab, getAttributes } from '../../utils';
+import { openSidebarTab, getAttributes, insertMaxiBlock } from '../../utils';
 
 describe('Dropdown', () => {
 	it('Check dropdown', async () => {
 		await createNewPost();
-		await insertBlock('Container Maxi');
-		await page.waitForSelector('.maxi-row-block');
+		await insertMaxiBlock(page, 'Container Maxi');
 
 		const accordionPanel = await openSidebarTab(
 			page,

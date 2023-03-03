@@ -1,11 +1,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	setBrowserViewport,
-	insertBlock,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, setBrowserViewport } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -15,12 +11,13 @@ import {
 	editGlobalStyles,
 	checkSCResult,
 	copySCToEdit,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('SC Divider', () => {
 	it('Checking divider accordion', async () => {
 		await createNewPost();
-		await insertBlock('Divider Maxi');
+		await insertMaxiBlock('Divider Maxi');
 		await setBrowserViewport('large');
 
 		await getStyleCardEditor({

@@ -2,11 +2,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyTimes,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, pressKeyTimes } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -18,13 +14,13 @@ import {
 	getBlockStyle,
 	getAttributes,
 	editAdvancedNumberControl,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('ArrowControl', () => {
 	it('Check the arrow control', async () => {
 		await createNewPost();
-		await insertBlock('Container Maxi');
-		await page.waitForSelector('.maxi-row-block');
+		await insertMaxiBlock(page, 'Container Maxi');
 		await page.$eval('.maxi-container-block', container =>
 			container.focus()
 		);

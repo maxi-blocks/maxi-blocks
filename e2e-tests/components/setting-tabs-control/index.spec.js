@@ -3,15 +3,19 @@
  */
 import {
 	createNewPost,
-	insertBlock,
 	ensureSidebarOpened,
 	openDocumentSettingsSidebar,
 } from '@wordpress/e2e-test-utils';
 
+/**
+ * Internal dependencies
+ */
+import { insertMaxiBlock } from '../../utils';
+
 describe('SettingsTabsControl', () => {
 	it('Checking the settings tabs control', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 
 		await openDocumentSettingsSidebar();
 		await ensureSidebarOpened();

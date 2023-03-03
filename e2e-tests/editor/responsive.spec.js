@@ -1,11 +1,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	setBrowserViewport,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, setBrowserViewport } from '@wordpress/e2e-test-utils';
 import {
 	getBlockStyle,
 	getAttributes,
@@ -14,6 +10,7 @@ import {
 	editAxisControl,
 	getStyleCardEditor,
 	editAdvancedNumberControl,
+	insertMaxiBlock,
 } from '../utils';
 
 describe('Responsive attributes mechanisms', () => {
@@ -22,7 +19,7 @@ describe('Responsive attributes mechanisms', () => {
 		await setBrowserViewport({ width: 1240, height: 700 });
 
 		await createNewPost();
-		await insertBlock('Group Maxi');
+		await insertMaxiBlock('Group Maxi');
 		await page.waitForSelector('.maxi-group-block');
 	});
 
@@ -566,7 +563,7 @@ describe('Responsive attributes mechanisms', () => {
 		await setBrowserViewport({ width: 1920, height: 700 });
 
 		await createNewPost();
-		await insertBlock('Button Maxi');
+		await insertMaxiBlock('Button Maxi');
 
 		const accordionPanel = await openSidebarTab(
 			page,
@@ -641,7 +638,7 @@ describe('Responsive attributes mechanisms', () => {
 		await setBrowserViewport({ width: 1920, height: 700 });
 
 		await createNewPost();
-		await insertBlock('Group Maxi');
+		await insertMaxiBlock('Group Maxi');
 		await page.waitForSelector('.maxi-group-block');
 
 		await changeResponsive(page, 'xxl');
@@ -770,7 +767,7 @@ describe('Responsive attributes mechanisms', () => {
 		await setBrowserViewport({ width: 1400, height: 700 });
 
 		await createNewPost();
-		await insertBlock('Container Maxi');
+		await insertMaxiBlock('Container Maxi');
 		await page.waitForSelector('.maxi-row-block');
 
 		await page.$$eval('.maxi-row-block__template button', button =>

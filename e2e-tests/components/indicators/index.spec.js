@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -11,13 +11,13 @@ import {
 	getBlockStyle,
 	editAxisControl,
 	changeResponsive,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('Indicators', () => {
 	it('Checking the indicators', async () => {
 		await createNewPost();
-		await insertBlock('Container Maxi');
-		await page.waitForSelector('.maxi-row-block');
+		await insertMaxiBlock(page, 'Container Maxi');
 
 		const accordionPanel = await openSidebarTab(
 			page,

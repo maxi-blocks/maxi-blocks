@@ -2,7 +2,7 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -16,14 +16,14 @@ import {
 	getBlockStyle,
 	openPreviewPage,
 	editAdvancedNumberControl,
+	insertMaxiBlock,
 } from '../../utils';
 import sizeAndPositionChecker from './utils/sizeAndPositionChecker';
 
 describe('BackgroundControl', () => {
 	it('Check Background shape layer', async () => {
 		await createNewPost();
-		await insertBlock('Group Maxi');
-		await page.waitForSelector('.maxi-group-block');
+		await insertMaxiBlock(page, 'Group Maxi');
 		await openSidebarTab(page, 'style', 'background layer');
 		await addBackgroundLayer(page, 'shape');
 

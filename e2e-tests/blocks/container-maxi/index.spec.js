@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -11,13 +11,13 @@ import {
 	addCustomCSS,
 	getBlockStyle,
 	getEditedPostContent,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('Container Maxi', () => {
 	it('Container Maxi does not break', async () => {
 		await createNewPost();
-		await insertBlock('Container Maxi');
-		await page.waitForSelector('.maxi-row-block');
+		await insertMaxiBlock(page, 'Container Maxi');
 
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();

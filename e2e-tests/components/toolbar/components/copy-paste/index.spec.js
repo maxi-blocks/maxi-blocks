@@ -1,11 +1,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyWithModifier,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -14,13 +10,14 @@ import {
 	openSidebarTab,
 	editAxisControl,
 	getAttributes,
+	insertMaxiBlock,
 } from '../../../../utils';
 
 describe('CopyPaste from Toolbar', () => {
 	it('Should copy and paste bulk styles', async () => {
 		await createNewPost();
 		await page.waitForTimeout(1000);
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 
 		// Wait for toolbar to be visible
 		await page.waitForSelector('.toolbar-wrapper');
@@ -56,7 +53,7 @@ describe('CopyPaste from Toolbar', () => {
 			button => button.click()
 		);
 
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 
 		// open options
 		await page.$eval(
@@ -101,8 +98,7 @@ describe('CopyPaste from Toolbar', () => {
 		expect(positionResult).toStrictEqual(expectPosition);
 	});
 	it('Should copy and paste styles with special paste', async () => {
-		await insertBlock('Group Maxi');
-		await page.waitForSelector('.maxi-group-block');
+		await insertMaxiBlock(page, 'Group Maxi');
 
 		// add border attributes
 		const borderAccordion = await openSidebarTab(page, 'style', 'border');
@@ -185,8 +181,7 @@ describe('CopyPaste from Toolbar', () => {
 		);
 
 		// new block
-		await insertBlock('Group Maxi');
-		await page.waitForSelector('.maxi-group-block');
+		await insertMaxiBlock(page, 'Group Maxi');
 		await page.waitForTimeout(500);
 
 		// open options
@@ -286,8 +281,7 @@ describe('CopyPaste from Toolbar', () => {
 
 	it('Should copy nested blocks', async () => {
 		await createNewPost();
-		await insertBlock('Container Maxi');
-		await page.waitForSelector('.maxi-row-block');
+		await insertMaxiBlock(page, 'Container Maxi');
 		await page.$$eval('.maxi-row-block__template button', button =>
 			button[0].click()
 		);
@@ -334,8 +328,7 @@ describe('CopyPaste from Toolbar', () => {
 			button => button.click()
 		);
 
-		await insertBlock('Container Maxi');
-		await page.waitForSelector('.maxi-row-block');
+		await insertMaxiBlock(page, 'Container Maxi');
 
 		// open options
 		await page.$eval(

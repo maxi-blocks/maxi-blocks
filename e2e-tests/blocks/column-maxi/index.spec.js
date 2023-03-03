@@ -3,7 +3,6 @@
  */
 import {
 	createNewPost,
-	insertBlock,
 	pressKeyTimes,
 	selectBlockByClientId,
 } from '@wordpress/e2e-test-utils';
@@ -18,13 +17,13 @@ import {
 	getBlockStyle,
 	getEditedPostContent,
 	openSidebarTab,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('Column Maxi', () => {
 	it('Column Maxi does not break', async () => {
 		await createNewPost();
-		await insertBlock('Container Maxi');
-		await page.waitForSelector('.maxi-row-block');
+		await insertMaxiBlock(page, 'Container Maxi');
 
 		await page.$eval('.maxi-row-block__template button', button =>
 			button.click()
@@ -113,8 +112,7 @@ describe('Column Maxi', () => {
 
 	it('Check column Border', async () => {
 		await createNewPost();
-		await insertBlock('Container Maxi');
-		await page.waitForSelector('.maxi-row-block');
+		await insertMaxiBlock(page, 'Container Maxi');
 
 		await page.$$eval('.maxi-row-block__template button', button =>
 			button[6].click()

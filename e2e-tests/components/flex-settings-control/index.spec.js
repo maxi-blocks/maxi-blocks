@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
@@ -11,13 +11,13 @@ import {
 	editAdvancedNumberControl,
 	getAttributes,
 	changeResponsive,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('FlexSettings', () => {
 	it('Checking the flex options', async () => {
 		await createNewPost();
-		await insertBlock('Group Maxi');
-		await page.waitForSelector('.maxi-group-block');
+		await insertMaxiBlock(page, 'Group Maxi');
 		const accordionPanel = await openSidebarTab(
 			page,
 			'advanced',
@@ -306,8 +306,7 @@ describe('FlexSettings', () => {
 		// this openSidebar is required
 		await openSidebarTab(page, 'advanced', 'overflow');
 		await changeResponsive(page, 'base');
-		await insertBlock('Group Maxi');
-		await page.waitForSelector('.maxi-group-block');
+		await insertMaxiBlock(page, 'Group Maxi');
 		const accordionPanel = await openSidebarTab(
 			page,
 			'advanced',

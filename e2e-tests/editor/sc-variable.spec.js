@@ -3,21 +3,17 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	saveDraft,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, saveDraft } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
-import { openPreviewPage } from '../utils';
+import { openPreviewPage, insertMaxiBlock } from '../utils';
 
 describe('sc-variable', () => {
 	it('Check sc-vars', async () => {
 		await createNewPost();
-		await insertBlock('Divider Maxi');
+		await insertMaxiBlock('Divider Maxi');
 
 		await page.waitForTimeout(1000);
 		await saveDraft();

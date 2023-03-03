@@ -19,8 +19,7 @@ describe('Responsive attributes mechanisms', () => {
 		await setBrowserViewport({ width: 1240, height: 700 });
 
 		await createNewPost();
-		await insertMaxiBlock('Group Maxi');
-		await page.waitForSelector('.maxi-group-block');
+		await insertMaxiBlock(page, 'Group Maxi');
 	});
 
 	it('On change attributes from base responsive, just "general" attributes change', async () => {
@@ -563,7 +562,7 @@ describe('Responsive attributes mechanisms', () => {
 		await setBrowserViewport({ width: 1920, height: 700 });
 
 		await createNewPost();
-		await insertMaxiBlock('Button Maxi');
+		await insertMaxiBlock(page, 'Button Maxi');
 
 		const accordionPanel = await openSidebarTab(
 			page,
@@ -638,7 +637,7 @@ describe('Responsive attributes mechanisms', () => {
 		await setBrowserViewport({ width: 1920, height: 700 });
 
 		await createNewPost();
-		await insertMaxiBlock('Group Maxi');
+		await insertMaxiBlock(page, 'Group Maxi');
 		await page.waitForSelector('.maxi-group-block');
 
 		await changeResponsive(page, 'xxl');
@@ -767,7 +766,7 @@ describe('Responsive attributes mechanisms', () => {
 		await setBrowserViewport({ width: 1400, height: 700 });
 
 		await createNewPost();
-		await insertMaxiBlock('Container Maxi');
+		await insertMaxiBlock(page, 'Container Maxi');
 		await page.waitForSelector('.maxi-row-block');
 
 		await page.$$eval('.maxi-row-block__template button', button =>

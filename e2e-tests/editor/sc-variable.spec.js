@@ -13,7 +13,7 @@ import { openPreviewPage, insertMaxiBlock } from '../utils';
 describe('sc-variable', () => {
 	it('Check sc-vars', async () => {
 		await createNewPost();
-		await insertMaxiBlock('Divider Maxi');
+		await insertMaxiBlock(page, 'Divider Maxi');
 
 		await page.waitForTimeout(1000);
 		await saveDraft();

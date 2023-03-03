@@ -17,7 +17,7 @@ import {
 describe('SC Divider', () => {
 	it('Checking divider accordion', async () => {
 		await createNewPost();
-		await insertMaxiBlock('Divider Maxi');
+		await insertMaxiBlock(page, 'Divider Maxi');
 		await setBrowserViewport('large');
 
 		await getStyleCardEditor({

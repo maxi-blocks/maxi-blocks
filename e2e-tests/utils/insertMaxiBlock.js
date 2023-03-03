@@ -5,6 +5,7 @@ const insertMaxiBlock = async (page, blockName) => {
 
 	const blockClass = `.maxi-${blockName
 		.replace(' Maxi', '')
+		.replace(/ /g, '-')
 		.toLowerCase()}-block`;
 
 	await page.waitForSelector(blockClass);

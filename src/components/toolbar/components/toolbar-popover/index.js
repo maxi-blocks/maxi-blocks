@@ -155,7 +155,7 @@ class ToolbarPopover extends Component {
 							onClose={onClose}
 							position={position}
 							isAlternate
-							noArrow={false}
+							noArrow
 						>
 							<div>{children}</div>
 							{!!advancedOptions && (

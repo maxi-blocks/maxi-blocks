@@ -156,6 +156,7 @@ const MaxiModal = props => {
 		isBeta,
 		gutenbergCode,
 		isSwapChecked,
+		layerIndex,
 	} = props;
 
 	const ref = useRef(null);
@@ -309,6 +310,7 @@ const MaxiModal = props => {
 								prefix={prefix}
 								gutenbergCode={gutenbergCode}
 								isSwapChecked={isSwapChecked}
+								layerIndex={layerIndex}
 							/>
 						</div>
 					</div>

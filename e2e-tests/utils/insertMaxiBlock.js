@@ -6,6 +6,7 @@ const insertMaxiBlock = async (page, blockName) => {
 	const blockClass = `.maxi-${blockName
 		.replace(' Maxi', '')
 		.replace(/ /g, '-')
+		.replace('Icon', 'svg-icon')
 		.toLowerCase()}-block`;
 
 	await page.waitForSelector(blockClass);

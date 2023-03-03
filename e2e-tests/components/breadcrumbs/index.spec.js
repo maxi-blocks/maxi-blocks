@@ -1,15 +1,21 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
+
+/**
+ * Internal dependencies
+ */
+import { insertMaxiBlock } from '../../utils';
 
 describe('Breadcrumbs', () => {
 	it('Test breadcrumbs', async () => {
 		await createNewPost();
-		await insertBlock('Container Maxi');
+		await insertMaxiBlock(page, 'Container Maxi');
 		await page.$eval('.maxi-row-block__template button', button =>
 			button.click()
 		);
+		await page.waitForSelector('.maxi-column-block');
 
 		// Select column
 		await page.$eval('.maxi-column-block', column => column.focus());
@@ -52,6 +58,7 @@ describe('Breadcrumbs', () => {
 		await page.$eval('.maxi-row-block__template button', button =>
 			button.click()
 		);
+		await page.waitForSelector('.maxi-column-block');
 
 		// Select column
 		await page.$$eval('.maxi-column-block', columns =>

@@ -46,7 +46,11 @@ import {
 } from '../fse';
 import { updateSCOnEditor } from '../style-cards';
 import getWinBreakpoint from '../dom/getWinBreakpoint';
-import { uniqueIDGenerator, getBlockData } from '../attributes';
+import {
+	getBlockData,
+	getUpdatedBGLayersWithNewUniqueID,
+	uniqueIDGenerator,
+} from '../attributes';
 import getHoverStatus from '../relations/getHoverStatus';
 import { getStylesWrapperId } from './utils';
 import getLastChangedBlocks from './getLastChangedBlocks';
@@ -112,6 +116,7 @@ class MaxiBlockComponent extends Component {
 		const { attributes } = this.props;
 		const { uniqueID } = attributes;
 
+		this.isReusable = false;
 		this.currentBreakpoint =
 			select('maxiBlocks').receiveMaxiDeviceType() || 'general';
 		// eslint-disable-next-line react/no-unused-class-component-methods
@@ -146,6 +151,12 @@ class MaxiBlockComponent extends Component {
 					attributes['maxi-version-origin'] = maxiVersion;
 			})
 			.catch(() => console.error('Maxi Blocks: Could not load settings'));
+
+		if (
+			this.blockRef.current.parentNode.classList.contains('is-reusable')
+		) {
+			this.updateBlockSize();
+		}
 
 		if (this.maxiBlockDidMount) this.maxiBlockDidMount();
 
@@ -286,8 +297,8 @@ class MaxiBlockComponent extends Component {
 				return false;
 			};
 
-			keepStylesOnEditor = blocks.some(block => getName(block));
-		});
+			keepStylesOnEditor ||= blocks.some(block => getName(block));
+		}, true);
 
 		// When duplicating Gutenberg creates a copy of the current copied block twice, making the first keep the same uniqueID and second
 		// has a different one. The original block is removed so componentWillUnmount method is triggered, and as its uniqueID coincide with
@@ -319,6 +330,10 @@ class MaxiBlockComponent extends Component {
 				this.props.attributes.uniqueID
 			);
 		}
+
+		dispatch('maxiBlocks').removeBlockHasBeenRendered(
+			this.props.attributes.uniqueID
+		);
 
 		if (this.maxiBlockWillUnmount)
 			this.maxiBlockWillUnmount(isBlockBeingRemoved);
@@ -409,6 +424,32 @@ class MaxiBlockComponent extends Component {
 		return false;
 	}
 
+	// This is a fix for wrong width of reusable blocks on backend only.
+	// This makes reusable blocks container full width and inserts element
+	// that mirrors the block on the same level as reusable container.
+	// The size of the clone if observed to get the width of the real block.
+	updateBlockSize() {
+		this.isReusable = true;
+		this.blockRef.current.parentNode.dataset.containsMaxiBlock = true;
+		const sizeElement = document.createElement('div');
+		sizeElement.classList.add(
+			this.props.attributes.uniqueID,
+			'maxi-block',
+			'maxi-block--backend'
+		);
+		sizeElement.id = `maxi-block-size-checker-${this.props.clientId}`;
+		sizeElement.style =
+			'top: 0 !important; height: 0 !important;  min-height: 0 !important; padding: 0 !important; margin: 0 !important';
+		this.blockRef.current.parentNode.insertAdjacentElement(
+			'afterend',
+			sizeElement
+		);
+		this.widthObserver = new ResizeObserver(entries => {
+			this.blockRef.current.style.width = `${entries[0].contentRect.width}px`;
+		});
+		this.widthObserver.observe(sizeElement);
+	}
+
 	// Removes non-necessary entries of props object for comparison
 	propsObjectCleaner(props) {
 		const newProps = cloneDeep(props);
@@ -483,13 +524,24 @@ class MaxiBlockComponent extends Component {
 	}
 
 	propagateNewUniqueID(oldUniqueID, newUniqueID) {
-		const updateRelations = () => {
-			const blockAttributesUpdate = {};
-			const lastChangedBlocks = getLastChangedBlocks();
+		const blockAttributesUpdate = {};
+		const lastChangedBlocks = getLastChangedBlocks();
 
+		const updateBlockAttributesUpdate = (clientId, key, value) => {
+			if (!blockAttributesUpdate[clientId])
+				blockAttributesUpdate[clientId] = {};
+
+			blockAttributesUpdate[clientId][key] = value;
+
+			return blockAttributesUpdate;
+		};
+
+		const updateRelations = () => {
 			if (isEmpty(lastChangedBlocks)) return;
 
 			const updateNewUniqueID = block => {
+				if (!block) return;
+
 				const {
 					attributes = {},
 					innerBlocks: rawInnerBlocks = [],
@@ -513,9 +565,11 @@ class MaxiBlockComponent extends Component {
 					});
 
 					if (!isEqual(relations, newRelations) && clientId)
-						blockAttributesUpdate[clientId] = {
-							relations: newRelations,
-						};
+						updateBlockAttributesUpdate(
+							clientId,
+							'relations',
+							newRelations
+						);
 				}
 
 				if (!isEmpty(rawInnerBlocks)) {
@@ -530,24 +584,33 @@ class MaxiBlockComponent extends Component {
 			};
 
 			lastChangedBlocks.forEach(block => updateNewUniqueID(block));
+		};
 
-			if (!isEmpty(blockAttributesUpdate)) {
-				const {
-					__unstableMarkNextChangeAsNotPersistent:
-						markNextChangeAsNotPersistent,
-					updateBlockAttributes,
-				} = dispatch('core/block-editor');
-
-				Object.entries(blockAttributesUpdate).forEach(
-					([clientId, attributes]) => {
-						markNextChangeAsNotPersistent();
-						updateBlockAttributes(clientId, attributes);
-					}
+		const updateBGLayers = () => {
+			this.props.attributes['background-layers'] =
+				getUpdatedBGLayersWithNewUniqueID(
+					this.props.attributes['background-layers'],
+					newUniqueID
 				);
-			}
 		};
 
 		updateRelations();
+		updateBGLayers();
+
+		if (!isEmpty(blockAttributesUpdate)) {
+			const {
+				__unstableMarkNextChangeAsNotPersistent:
+					markNextChangeAsNotPersistent,
+				updateBlockAttributes,
+			} = dispatch('core/block-editor');
+
+			Object.entries(blockAttributesUpdate).forEach(
+				([clientId, attributes]) => {
+					markNextChangeAsNotPersistent();
+					updateBlockAttributes(clientId, attributes);
+				}
+			);
+		}
 	}
 
 	updateRelationHoverStatus() {
@@ -776,16 +839,32 @@ class MaxiBlockComponent extends Component {
 			this.props.attributes.uniqueID
 		);
 		const siteEditorIframe = getSiteEditorIframe();
+		const previewIframe = document.querySelector(
+			'.block-editor-block-preview__container iframe'
+		);
 		const iframe = document.querySelector(
 			'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)'
 		);
 
 		const getEditorElement = () =>
-			templateViewIframe || siteEditorIframe || iframe || document;
+			templateViewIframe ||
+			siteEditorIframe ||
+			previewIframe ||
+			iframe ||
+			document;
 
 		getEditorElement()
 			.getElementById(getStylesWrapperId(this.props.attributes.uniqueID))
 			?.remove();
+
+		if (this.isReusable) {
+			this.widthObserver.disconnect();
+			getEditorElement()
+				.getElementById(
+					`maxi-block-size-checker-${this.props.clientId}`
+				)
+				?.remove();
+		}
 	}
 }
 

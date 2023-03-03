@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -14,12 +14,13 @@ import {
 	editColorControl,
 	editAdvancedNumberControl,
 	changeResponsive,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('Video icon control', () => {
 	it('Check video icon control', async () => {
 		await createNewPost();
-		await insertBlock('Video Maxi');
+		await insertMaxiBlock(page, 'Video Maxi');
 
 		const accordionPanel = await openSidebarTab(page, 'style', 'video');
 

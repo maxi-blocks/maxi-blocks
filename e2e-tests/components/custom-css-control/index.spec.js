@@ -1,11 +1,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyWithModifier,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -16,12 +12,13 @@ import {
 	addCustomCSS,
 	changeResponsive,
 	getAttributes,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('Custom-Css-Control', () => {
 	it('Checking the custom-css', async () => {
 		await createNewPost();
-		await insertBlock('Group Maxi');
+		await insertMaxiBlock(page, 'Group Maxi');
 		await expect(await addCustomCSS(page)).toMatchSnapshot();
 	}, 500000);
 

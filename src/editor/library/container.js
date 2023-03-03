@@ -428,7 +428,7 @@ const LibraryContainer = props => {
 				apiKey: '0DpJlIVm3kKOiQ9kAPTklrXrIbFLgWk6', // Be sure to use an API key that only allows search operations
 				nodes: [
 					{
-						host: '24q17endjv0kacilp-1.a1.typesense.net',
+						host: '24q17endjv0kacilp.a1.typesense.net',
 						port: '443',
 						protocol: 'https',
 					},

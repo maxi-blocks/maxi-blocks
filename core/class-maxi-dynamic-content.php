@@ -81,6 +81,8 @@ class MaxiBlocks_DynamicContent
             $link = get_home_url();
         } elseif (array_key_exists('dc-type', $attributes) && in_array($attributes['dc-type'], ['categories', 'tags'])) {
             $link = get_term_link($attributes['dc-id']);
+        } elseif (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'users') {
+            $link = get_author_posts_url($attributes['dc-id']);
         } else {
             $post = self::get_post($attributes);
 
@@ -121,6 +123,8 @@ class MaxiBlocks_DynamicContent
             $response = self::get_media_content($attributes);
         } elseif (in_array($dc_type, ['categories', 'tags'])) { // Categories or tags
             $response = self::get_taxonomy_content($attributes);
+        } elseif ($dc_type === 'users') { // Users
+            $response = self::get_user_content($attributes);
         }
 
         if ($dc_field === 'date') {
@@ -288,6 +292,23 @@ class MaxiBlocks_DynamicContent
             $terms = get_terms($args);
     
             return $terms[0];
+        } elseif ($dc_type === 'users') {
+            $args = [
+                // 'role' => 'author',
+                // 'number' => 1,
+            ];
+    
+            if ($dc_relation == 'random') {
+                $args['orderby'] = 'rand';
+            } else {
+                $args['include'] = $dc_id;
+            }
+    
+            $users = get_users($args);
+    
+            return $users[0];
+        } elseif ($dc_type === 'settings') {
+            return null;
         }
     }
 
@@ -362,6 +383,26 @@ class MaxiBlocks_DynamicContent
         }
 
         return $media_data;
+    }
+
+    public function get_user_content($attributes)
+    {
+        @list(
+            'dc-field' => $dc_field,
+        ) = $attributes;
+
+        $user = $this->get_post($attributes);
+
+        $user_dictionary = [
+            'name' => 'display_name',
+            'email' => 'user_email',
+            'url' => 'user_url',
+            'description' => 'description',
+        ];
+
+        $user_data = $user->data->{$user_dictionary[$dc_field]};
+
+        return $user_data;
     }
 
     public function get_taxonomy_content($attributes)

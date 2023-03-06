@@ -504,9 +504,11 @@ wp.domReady(() => {
 		}, 150);
 	});
 
+	const resizeObserverSelector = '#edit > div:first-child';
+
 	const resizeObserver = new ResizeObserver(() => {
 		const { width, height } = document
-			.querySelector('.interface-interface-skeleton__content')
+			.querySelector('resizeObserverSelector')
 			.getBoundingClientRect();
 		dispatch('maxiBlocks').setEditorContentSize({ width, height });
 
@@ -539,7 +541,7 @@ wp.domReady(() => {
 
 	const editorContentUnsubscribe = subscribe(() => {
 		const resizeObserverTarget = document.querySelector(
-			'.interface-interface-skeleton__content'
+			'resizeObserverSelector'
 		);
 		if (!resizeObserverTarget) {
 			isNewEditorContentObserver = true;

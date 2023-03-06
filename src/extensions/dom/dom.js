@@ -504,7 +504,7 @@ wp.domReady(() => {
 		}, 150);
 	});
 
-	const resizeObserverSelector = '#edit > div:first-child';
+	const resizeObserverSelector = '.interface-interface-skeleton__content';
 
 	const resizeObserver = new ResizeObserver(() => {
 		const { width, height } = document
@@ -543,6 +543,7 @@ wp.domReady(() => {
 		const resizeObserverTarget = document.querySelector(
 			resizeObserverSelector
 		);
+		console.log('resizeObserverTarget', resizeObserverTarget);
 		if (!resizeObserverTarget) {
 			isNewEditorContentObserver = true;
 		}

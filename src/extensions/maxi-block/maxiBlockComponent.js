@@ -14,7 +14,7 @@
 /**
  * WordPress dependencies
  */
-import { Component, render, createRoot, createRef } from '@wordpress/element';
+import { Component, createRoot, createRef } from '@wordpress/element';
 import { dispatch, resolveSelect, select, useSelect } from '@wordpress/data';
 
 /**

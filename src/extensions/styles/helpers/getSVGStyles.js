@@ -20,6 +20,7 @@ export const getSVGWidthStyles = ({
 	isHover = false,
 	prefix = '',
 	iconWidthHeightRatio = 1,
+	disableHeight = true,
 }) => {
 	const response = {
 		label: 'Icon size',
@@ -92,18 +93,20 @@ export const getSVGWidthStyles = ({
 				100;
 
 		if (!isNil(iconSize) && !isEmpty(iconSize)) {
-			response[breakpoint].height = `${
-				iconWidthFitContent && iconWidthHeightRatio !== 1
-					? round(
-							iconWidthHeightRatio > 1
-								? (iconSize * heightToStrokeWidthCoefficient) /
-										iconWidthHeightRatio
-								: iconSize /
-										(iconWidthHeightRatio *
-											heightToStrokeWidthCoefficient)
-					  )
-					: iconSize
-			}${iconUnit}`;
+			if (iconWidthFitContent || !disableHeight)
+				response[breakpoint].height = `${
+					iconWidthFitContent && iconWidthHeightRatio !== 1
+						? round(
+								iconWidthHeightRatio > 1
+									? (iconSize *
+											heightToStrokeWidthCoefficient) /
+											iconWidthHeightRatio
+									: iconSize /
+											(iconWidthHeightRatio *
+												heightToStrokeWidthCoefficient)
+						  )
+						: iconSize
+				}${iconUnit}`;
 			response[breakpoint].width = `${iconSize}${iconUnit}`;
 		}
 

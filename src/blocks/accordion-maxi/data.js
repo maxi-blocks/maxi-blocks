@@ -15,6 +15,7 @@ import { targets as paneTargets } from '../pane-maxi/data';
  */
 const name = 'accordion-maxi';
 const copyPasteMapping = {
+	_exclude: ['icon-content', 'active-icon-content'],
 	settings: {
 		'Accordion settings': {
 			group: {

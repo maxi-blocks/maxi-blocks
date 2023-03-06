@@ -9,7 +9,6 @@
  */
 import {
 	createNewPost,
-	insertBlock,
 	pressKeyWithModifier,
 	setClipboardData,
 } from '@wordpress/e2e-test-utils';
@@ -25,6 +24,7 @@ import {
 	getEditedPostContent,
 	openPreviewPage,
 	setAttributes,
+	insertMaxiBlock,
 } from '../../utils';
 
 const linkExample = 'test.com';
@@ -53,7 +53,7 @@ const pressKeyWithTimeout = async (key, times, timeout = 50) => {
 describe('TextMaxi', () => {
 	beforeEach(async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 		await setAttributes(page, { uniqueID: 'text-maxi-1' });
 	});
 

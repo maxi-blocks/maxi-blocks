@@ -12,6 +12,7 @@ import MapEventsListener from '../map-events-listener';
 import Markers from '../markers';
 import SearchBox from '../search-box';
 import { getGroupAttributes } from '../../../../extensions/styles';
+import { getMaxiAdminSettingsUrl } from '../../utils';
 
 /**
  * External dependencies
@@ -69,7 +70,10 @@ const MapContent = props => {
 						whenReady={map => resizeMap(map.target)}
 					>
 						{isGoogleMaps ? (
-							<ReactLeafletGoogleLayer apiKey={apiKey} />
+							<ReactLeafletGoogleLayer
+								apiKey={apiKey}
+								callback={Function.prototype}
+							/>
 						) : (
 							<TileLayer
 								attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -110,14 +114,14 @@ const MapContent = props => {
 				<div className='maxi-map-block__not-found'>
 					<p>
 						{__(
-							'Oops, you can not see the map because you have not set your Google map API key, please navigate to the Maxi Block Settings > ',
+							'Oops, you can not see the map because you have not set your Google map API key, please navigate to the Maxi Blocks ',
 							'maxi-blocks'
 						)}
-						<a
-							target='_blank'
-							href='/wp-admin/admin.php?page=maxi-blocks-dashboard&tab=maxi_blocks_settings'
-						>
-							{__('Google Maps API Key', 'maxi-blocks')}
+						<a target='_blank' href={getMaxiAdminSettingsUrl()}>
+							{__(
+								'Settings > Google Maps API key',
+								'maxi-blocks'
+							)}
 						</a>
 					</p>
 				</div>

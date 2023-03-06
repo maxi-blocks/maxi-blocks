@@ -2,11 +2,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyWithModifier,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -19,6 +15,7 @@ import {
 	editColorControl,
 	modalMock,
 	addTypographyStyle,
+	insertMaxiBlock,
 } from '../../utils';
 
 /**
@@ -30,7 +27,7 @@ const createTextWithList = async (
 	content = 'Testing Text Maxi List',
 	typeIndex = 1
 ) => {
-	await insertBlock('Text Maxi');
+	await insertMaxiBlock('Text Maxi');
 	await page.keyboard.type(content, { delay: 100 });
 	await page.waitForTimeout(150);
 

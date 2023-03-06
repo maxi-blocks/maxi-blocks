@@ -4,7 +4,6 @@
  */
 import {
 	createNewPost,
-	insertBlock,
 	pressKeyTimes,
 	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
@@ -22,12 +21,13 @@ import {
 	getEditedPostContent,
 	openPreviewPage,
 	openSidebarTab,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe.skip('Image Maxi', () => {
 	it('Image Maxi does not break', async () => {
 		await createNewPost();
-		await insertBlock('Image Maxi');
+		await insertMaxiBlock(page, 'Image Maxi');
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 	});
 

@@ -2,11 +2,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyWithModifier,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -19,12 +15,13 @@ import {
 	getBlockStyle,
 	getEditedPostContent,
 	openSidebarTab,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('Button Maxi', () => {
 	it('Button Maxi does not break', async () => {
 		await createNewPost();
-		await insertBlock('Button Maxi');
+		await insertMaxiBlock(page, 'Button Maxi');
 
 		await page.keyboard.type('Hello', { delay: 100 });
 		await page.waitForTimeout(150);
@@ -59,7 +56,7 @@ describe('Button Maxi', () => {
 
 	it('Check Button Icon', async () => {
 		await createNewPost();
-		await insertBlock('Button Maxi');
+		await insertMaxiBlock(page, 'Button Maxi');
 
 		await page.keyboard.type('Hello', { delay: 100 });
 		await page.waitForTimeout(150);

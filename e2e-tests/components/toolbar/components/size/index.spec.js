@@ -1,21 +1,21 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyWithModifier,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
-import { getAttributes, openSidebarTab } from '../../../../utils';
+import {
+	getAttributes,
+	openSidebarTab,
+	insertMaxiBlock,
+} from '../../../../utils';
 
 describe('Toolbar size', () => {
 	it('Check toolbar size', async () => {
 		await createNewPost();
-		await insertBlock('Container Maxi');
+		await insertMaxiBlock(page, 'Container Maxi');
 
 		// Wait for toolbar to be visible
 		await page.waitForSelector('.toolbar-wrapper');

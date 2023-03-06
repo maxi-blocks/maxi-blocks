@@ -543,7 +543,6 @@ wp.domReady(() => {
 		const resizeObserverTarget = document.querySelector(
 			resizeObserverSelector
 		);
-		console.log('resizeObserverTarget', resizeObserverTarget);
 		if (!resizeObserverTarget) {
 			isNewEditorContentObserver = true;
 		}

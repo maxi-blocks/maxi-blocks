@@ -27,6 +27,7 @@ const save = props => {
 		'icon-position': iconPosition,
 		'icon-only': iconOnly,
 		'dc-status': dcStatus,
+		'dc-link-status': dcLinkStatus,
 	} = props.attributes;
 
 	const name = 'maxi-blocks/button-maxi';
@@ -35,7 +36,7 @@ const save = props => {
 
 	const linkProps = {
 		...linkOpt,
-		href: linkOpt.url || '',
+		href: dcStatus && dcLinkStatus ? '$link-to-replace' : linkOpt.url ?? '',
 		target: linkOpt.opensInNewTab ? '_blank' : '_self',
 	};
 

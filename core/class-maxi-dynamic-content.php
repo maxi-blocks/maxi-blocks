@@ -77,13 +77,19 @@ class MaxiBlocks_DynamicContent
 
     public function render_dc_link($attributes, $content)
     {
-        $post = self::get_post($attributes);
+        if (array_key_exists('dc-type', $attributes) && $attributes['dc-type'] === 'settings') {
+            $link = get_home_url();
+        } elseif (array_key_exists('dc-type', $attributes) && in_array($attributes['dc-type'], ['categories', 'tags'])) {
+            $link = get_term_link($attributes['dc-id']);
+        } else {
+            $post = self::get_post($attributes);
 
-        if (empty($post)) {
-            return $content;
+            if (empty($post)) {
+                return $content;
+            }
+
+            $link = get_permalink($post->ID);
         }
-
-        $link = get_permalink($post->ID);
 
         $content = str_replace('$link-to-replace', $link, $content);
 
@@ -294,7 +300,7 @@ class MaxiBlocks_DynamicContent
 
         $post = $this->get_post($attributes);
 
-        $post_data = $post->{$dc_field};
+        $post_data = $post->{"post_$dc_field"};
 
         if (empty($post_data) && $dc_field === 'excerpt') {
             $post_data = $query->post->post_content;

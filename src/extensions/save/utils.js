@@ -21,7 +21,11 @@ const WithLink = props => {
 	const { 'dc-status': dcStatus, 'dc-link-status': dcLinkStatus } =
 		dynamicContent;
 
-	if (!!linkSettings && !!linkSettings.url && !linkSettings?.disabled) {
+	const hasLink =
+		!!linkSettings && !!linkSettings.url && !linkSettings?.disabled;
+	const hasDCLink = dcStatus && dcLinkStatus;
+
+	if (hasLink || hasDCLink) {
 		return (
 			<a
 				className='maxi-link-wrapper'

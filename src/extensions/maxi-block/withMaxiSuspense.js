@@ -11,7 +11,9 @@ import { Suspense, useState, useEffect, useRef } from '@wordpress/element';
 import { isEmpty, isNil } from 'lodash';
 import { PuffLoader } from 'react-spinners';
 
-const ContentLoader = () => <PuffLoader color='#ff4a17' size={20} speedMultiplier={0.8}/>;
+const ContentLoader = () => (
+	<PuffLoader color='#ff4a17' size={20} speedMultiplier={0.8} />
+);
 
 const LoadComponent = ({ onUnmount }) => {
 	useEffect(() => {
@@ -42,7 +44,10 @@ const withMaxiSuspense = createHigherOrderComponent(
 			}, []);
 
 			useEffect(() => {
-				if (canRender && hasBeenRendered) return true;
+				if (canRender && hasBeenRendered)
+					return () => {
+						true;
+					};
 
 				const interval = setInterval(() => {
 					const { canBlockRender } = select('maxiBlocks');

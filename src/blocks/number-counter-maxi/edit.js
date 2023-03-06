@@ -191,7 +191,7 @@ const NumberCounter = attributes => {
 		if ((startCountValue < endCountValue && preview) || replayStatus) {
 			if (count >= endCountValue) {
 				setCount(endCountValue);
-				return;
+				return () => {};
 			}
 
 			requestAnimationFrame(function animate() {

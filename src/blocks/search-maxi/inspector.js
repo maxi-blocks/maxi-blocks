@@ -204,14 +204,22 @@ const Inspector = props => {
 																					selected={
 																						buttonPosition
 																					}
-																					onChange={val =>
+																					onChange={val => {
 																						maxiSetAttributes(
 																							{
 																								'icon-position':
 																									val,
 																							}
-																						)
-																					}
+																						);
+																						val ===
+																							'left' &&
+																							maxiSetAttributes(
+																								{
+																									'input-border-right-width-general': 4,
+																									'inputPrefix-border-left-width-general': 40,
+																								}
+																							);
+																					}}
 																					breakpoint={
 																						deviceType
 																					}

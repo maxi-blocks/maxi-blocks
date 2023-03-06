@@ -72,7 +72,6 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 							[`${buttonPrefix}border-top-right-radius-general`]: 50,
 							[`${buttonPrefix}border-bottom-left-radius-general`]: 50,
 							[`${buttonPrefix}border-bottom-right-radius-general`]: 50,
-							[`${buttonPrefix}margin-left-general`]: '-20',
 							[`${buttonPrefix}margin-sync-general`]: 'none',
 						});
 					}

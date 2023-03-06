@@ -95,6 +95,27 @@ const breakpointResizer = ({
 	dispatch('maxiBlocks/styles').savePrevSavedAttrs([]);
 };
 
+const getInnerBlocksUniqueID = (clientId, filterFn) => {
+	const innerBlocks = select('core/block-editor').getBlocks(clientId);
+
+	if (isEmpty(innerBlocks)) return [];
+
+	const innerBlocksUniqueID = [];
+
+	innerBlocks.forEach(innerBlock => {
+		const {
+			clientId: innerBlockClientId,
+			attributes: { uniqueID },
+		} = innerBlock;
+
+		if (filterFn && filterFn()) innerBlocksUniqueID.push(uniqueID);
+
+		innerBlocksUniqueID.push(...getInnerBlocksUniqueID(innerBlockClientId));
+	});
+
+	return innerBlocksUniqueID;
+};
+
 const reducer = (
 	state = {
 		settings: {},
@@ -208,40 +229,18 @@ const reducer = (
 				deprecatedBlocks: omit(state.deprecatedBlocks, action.uniqueID),
 			};
 		case 'BLOCK_WANTS_TO_RENDER': {
-			const { clientId, uniqueID } = action;
+			const { uniqueID, clientId } = action;
 
 			if (
-				state.blocksToRender.includes(uniqueID) &&
-				!state.renderedBlocks.includes(uniqueID)
+				state.blocksToRender.includes(uniqueID) ||
+				state.renderedBlocks.includes(uniqueID)
 			)
 				return state;
 
-			const getInnerBlocksUniqueID = clientId => {
-				const innerBlocks =
-					select('core/block-editor').getBlocks(clientId);
-
-				if (isEmpty(innerBlocks)) return [];
-
-				const innerBlocksUniqueID = [];
-
-				innerBlocks.forEach(innerBlock => {
-					const {
-						clientId: innerBlockClientId,
-						attributes: { uniqueID },
-					} = innerBlock;
-
-					if (!state.blocksToRender.includes(uniqueID))
-						innerBlocksUniqueID.push(uniqueID);
-
-					innerBlocksUniqueID.push(
-						...getInnerBlocksUniqueID(innerBlockClientId)
-					);
-				});
-
-				return innerBlocksUniqueID;
-			};
-
-			const innerBlocksUniqueID = getInnerBlocksUniqueID(clientId);
+			const innerBlocksUniqueID = getInnerBlocksUniqueID(
+				clientId,
+				() => !state.blocksToRender.includes(uniqueID)
+			);
 
 			return {
 				...state,

@@ -62,8 +62,11 @@ const selectors = {
 		return false;
 	},
 	canBlockRender(state, uniqueID) {
-		if (state && state.blocksToRender.includes(uniqueID))
-			return state.blocksToRender.indexOf(uniqueID) < 20;
+		if (state)
+			return (
+				state.blocksToRender.indexOf(uniqueID) < 20 ||
+				state.renderedBlocks.includes(uniqueID)
+			);
 
 		return false;
 	},

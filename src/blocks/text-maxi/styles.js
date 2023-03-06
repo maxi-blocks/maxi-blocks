@@ -537,9 +537,6 @@ const getMarkerObject = props => {
 					...(listStylePosition === 'inside' && {
 						'margin-right': indentMarkerSum,
 					}),
-					...(listStyle === 'none' && {
-						'padding-right': '1em',
-					}),
 					...(textPosition && {
 						'vertical-align': textPosition,
 					}),

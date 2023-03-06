@@ -27,7 +27,7 @@ const createTextWithList = async (
 	content = 'Testing Text Maxi List',
 	typeIndex = 1
 ) => {
-	await insertMaxiBlock('Text Maxi');
+	await insertMaxiBlock(page, 'Text Maxi');
 	await page.keyboard.type(content, { delay: 100 });
 	await page.waitForTimeout(150);
 
@@ -593,6 +593,54 @@ describe('List in Text-maxi', () => {
 		});
 
 		expect(await getAttributes('list-indent-general')).toStrictEqual(23);
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+
+	it('Check options with marker none', async () => {
+		await createNewPost();
+		await createTextWithList();
+
+		await openSidebarTab(page, 'style', 'list options');
+
+		// Style none
+		const styleNone = await page.$$(
+			'.maxi-text-inspector__list-style select'
+		);
+		await styleNone[1].select('none');
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+
+		// Change text indent
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-text-inspector__list-indent'),
+			newNumber: '23',
+		});
+
+		expect(await getAttributes('list-indent-general')).toStrictEqual(23);
+
+		// Change marker indent
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-text-inspector__list-marker-indent'),
+			newNumber: '40',
+		});
+
+		expect(await getAttributes('list-marker-indent-general')).toStrictEqual(
+			40
+		);
+
+		// Change marker size
+		await editAdvancedNumberControl({
+			page,
+			instance: await page.$('.maxi-text-inspector__list-marker-size'),
+			newNumber: '4',
+		});
+
+		expect(await getAttributes('list-marker-size-general')).toStrictEqual(
+			4
+		);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

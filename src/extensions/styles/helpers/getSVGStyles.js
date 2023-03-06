@@ -93,6 +93,10 @@ export const getSVGWidthStyles = ({
 				100;
 
 		if (!isNil(iconSize) && !isEmpty(iconSize)) {
+			/**
+			 * Ignore `disableHeight` if `iconWidthFitContent` is true,
+			 * because it's necessary to have height in this case.
+			 */
 			if (iconWidthFitContent || !disableHeight)
 				response[breakpoint].height = `${
 					iconWidthFitContent && iconWidthHeightRatio !== 1

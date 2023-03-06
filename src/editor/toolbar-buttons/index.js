@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { subscribe } from '@wordpress/data';
-import { useState, render } from '@wordpress/element';
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -79,7 +79,8 @@ wp.domReady(() => {
 
 			parentNode.appendChild(toolbarButtonsWrapper);
 
-			render(<ToolbarButtons />, toolbarButtonsWrapper);
+			const root = wp.element.createRoot(toolbarButtonsWrapper);
+			root.render(<ToolbarButtons />);
 
 			if (!getIsSiteEditor()) {
 				unsubscribe();

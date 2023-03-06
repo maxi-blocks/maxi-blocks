@@ -14,7 +14,7 @@
 /**
  * WordPress dependencies
  */
-import { Component, render, createRef } from '@wordpress/element';
+import { Component, render, createRoot, createRef } from '@wordpress/element';
 import { dispatch, resolveSelect, select, useSelect } from '@wordpress/data';
 
 /**
@@ -796,17 +796,18 @@ class MaxiBlockComponent extends Component {
 				wrapper = getStylesWrapper(document.head);
 			}
 
-			if (wrapper)
-				render(
+			if (wrapper) {
+				const root = createRoot(wrapper);
+				root.render(
 					<StyleComponent
 						uniqueID={uniqueID}
 						stylesObj={obj}
 						currentBreakpoint={this.currentBreakpoint}
 						blockBreakpoints={breakpoints}
 						isSiteEditor={isSiteEditor}
-					/>,
-					wrapper
+					/>
 				);
+			}
 
 			// Since WP 5.9 Gutenberg includes the responsive into iframes, so need to add the styles there also
 			const iframe = document.querySelector(
@@ -819,15 +820,15 @@ class MaxiBlockComponent extends Component {
 				if (iframeDocument.head) {
 					const iframeWrapper = getStylesWrapper(iframeDocument.head);
 
-					render(
+					const root = createRoot(iframeWrapper);
+					root.render(
 						<StyleComponent
 							uniqueID={uniqueID}
 							stylesObj={obj}
 							currentBreakpoint={this.currentBreakpoint}
 							blockBreakpoints={breakpoints}
 							isIframe
-						/>,
-						iframeWrapper
+						/>
 					);
 				}
 			}

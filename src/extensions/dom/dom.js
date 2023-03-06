@@ -507,10 +507,15 @@ wp.domReady(() => {
 	const resizeObserverSelector = '.interface-interface-skeleton__content';
 
 	const resizeObserver = new ResizeObserver(() => {
-		const { width, height } = document
-			.querySelector(resizeObserverSelector)
-			.getBoundingClientRect();
-		dispatch('maxiBlocks').setEditorContentSize({ width, height });
+		const resizeObserverTarget = document.querySelector(
+			resizeObserverSelector
+		);
+		if (resizeObserverTarget) {
+			const { width, height } = document
+				.querySelector(resizeObserverSelector)
+				.getBoundingClientRect();
+			dispatch('maxiBlocks').setEditorContentSize({ width, height });
+		}
 
 		// On changing the canvas editor size, we must update the winBreakpoint
 		// to add the necessary attributes to display styles. The observer can't

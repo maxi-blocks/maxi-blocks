@@ -32,6 +32,7 @@ const copyPasteMapping = {
 		'Accordion line': { groupAttributes: 'accordionLine' },
 		'Accordion title': { groupAttributes: 'accordionTitle' },
 		Icon: { groupAttributes: 'accordionIcon' },
+		'Active icon': { groupAttributes: 'accordionIcon', prefix: 'active-' },
 		Background: {
 			template: 'blockBackground',
 		},

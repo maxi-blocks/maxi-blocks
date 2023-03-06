@@ -67,6 +67,16 @@ body.toplevel_page_maxi-blocks-dashboard {
 			justify-content: space-between;
 			padding: 0 39px;
 			max-width: 1026px;
+			#maxi-google-test-map {
+				width: 1px !important;
+				height: 1px !important;
+			}
+			#maxi-google-test-map_validation-message {
+				width: 100%;
+				&.map-error {
+					color: var(--maxi-primary-color);
+				}
+			}
 			&-content {
 				width: 70%;
 				h1,

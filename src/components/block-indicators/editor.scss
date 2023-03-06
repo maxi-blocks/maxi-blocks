@@ -60,7 +60,7 @@
 			right: 0;
 			height: 100%;
 			width: auto;
-			z-index: 3 !important;
+			z-index: 3;
 		}
 
 		&--bottom {
@@ -71,6 +71,7 @@
 			left: 0;
 			height: 100%;
 			width: auto;
+			z-index: 3;
 		}
 	}
 

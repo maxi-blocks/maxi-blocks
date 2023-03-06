@@ -2,11 +2,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyTimes,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, pressKeyTimes } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
@@ -17,12 +13,13 @@ import {
 	getAttributes,
 	getBlockStyle,
 	addResponsiveTest,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('AxisControl', () => {
 	it('Checking AxisControl util', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 		await openSidebarTab(page, 'style', 'margin padding');
 
 		await editAxisControl({
@@ -170,7 +167,7 @@ describe('AxisControl', () => {
 
 	it('Checking AxisControl async buttons', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 		await openSidebarTab(page, 'style', 'margin padding');
 		const axisControlInstance = await page.$('.maxi-axis-control__margin');
 
@@ -262,7 +259,7 @@ describe('AxisControl', () => {
 
 	it('Checking AxisControl arrows when value inherited from higher breakpoints', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 		const accordionPanel = await openSidebarTab(
 			page,
 			'style',

@@ -6,39 +6,112 @@ import getColorRGBAString from '../getColorRGBAString';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 import getPaletteAttributes from '../getPaletteAttributes';
 import getAttributeKey from '../getAttributeKey';
+import getAttributeValue from '../getAttributeValue';
 
 /**
  * External dependencies
  */
-import { isNil, isEmpty } from 'lodash';
+import { isNil, isEmpty, round } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-export const getSVGWidthStyles = ({ obj, prefix = '' }) => {
+export const getSVGWidthStyles = ({
+	obj,
+	isHover = false,
+	prefix = '',
+	iconWidthHeightRatio = 1,
+}) => {
 	const response = {
-		label: 'SVG width',
+		label: 'Icon size',
 		general: {},
 	};
+
+	const svgType = getAttributeValue({
+		target: 'svgType',
+		props: obj,
+		isHover,
+		prefix,
+	});
 
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
-		const svgWidth = obj[`${prefix}svg-width-${breakpoint}`];
-
-		if (!isNil(svgWidth))
-			response[
-				breakpoint
-			].width = `${svgWidth}${getLastBreakpointAttribute({
-				target: `${prefix}svg-width-unit`,
+		const iconSize =
+			getLastBreakpointAttribute({
+				target: `${prefix}width`,
+				isHover,
 				breakpoint,
 				attributes: obj,
-			})}`;
+			}) ??
+			getLastBreakpointAttribute({
+				target: `${prefix}height`,
+				isHover,
+				breakpoint,
+				attributes: obj,
+			});
+
+		const iconUnit =
+			getLastBreakpointAttribute({
+				target: `${prefix}width-unit`,
+				isHover,
+				breakpoint,
+				attributes: obj,
+			}) ??
+			getLastBreakpointAttribute({
+				target: `${prefix}height-unit`,
+				isHover,
+				breakpoint,
+				attributes: obj,
+			}) ??
+			'px';
+
+		const iconWidthFitContent = getLastBreakpointAttribute({
+			target: `${prefix}width-fit-content`,
+			isHover,
+			breakpoint,
+			attributes: obj,
+		});
+
+		const iconStrokeWidth =
+			svgType !== 'Shape'
+				? getLastBreakpointAttribute({
+						target: `${prefix}stroke`,
+						isHover,
+						breakpoint,
+						attributes: obj,
+				  })
+				: 1;
+
+		const perStrokeWidthCoefficient = 4;
+
+		const heightToStrokeWidthCoefficient =
+			1 +
+			((iconStrokeWidth - 1) *
+				perStrokeWidthCoefficient *
+				iconWidthHeightRatio) /
+				100;
+
+		if (!isNil(iconSize) && !isEmpty(iconSize)) {
+			response[breakpoint].height = `${
+				iconWidthFitContent && iconWidthHeightRatio !== 1
+					? round(
+							iconWidthHeightRatio > 1
+								? (iconSize * heightToStrokeWidthCoefficient) /
+										iconWidthHeightRatio
+								: iconSize /
+										(iconWidthHeightRatio *
+											heightToStrokeWidthCoefficient)
+					  )
+					: iconSize
+			}${iconUnit}`;
+			response[breakpoint].width = `${iconSize}${iconUnit}`;
+		}
 
 		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')
 			delete response[breakpoint];
 	});
 
-	return { SVGWidth: response };
+	return { iconSize: response };
 };
 
 const getSVGPathStyles = (obj, prefix = 'svg-', isHover = false) => {

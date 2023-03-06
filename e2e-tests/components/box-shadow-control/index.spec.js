@@ -1,11 +1,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyWithModifier,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
@@ -14,12 +10,13 @@ import {
 	getBlockStyle,
 	getAttributes,
 	changeResponsive,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('BoxShadowControl', () => {
 	it('Checking the boxShadow control', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 
 		const accordionPanel = await openSidebarTab(
 			page,

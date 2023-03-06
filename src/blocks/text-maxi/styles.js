@@ -526,7 +526,7 @@ const getMarkerObject = props => {
 							: ''),
 					[isRTL ? 'right' : 'left']: markerPosition,
 					...(listStylePosition === 'outside' &&
-						(!listStyleCustom?.includes('</svg>')
+						(listStyle !== 'custom'
 							? {
 									width: '1em',
 									'margin-left': '-1em',

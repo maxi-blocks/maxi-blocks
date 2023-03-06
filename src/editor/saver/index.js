@@ -72,6 +72,8 @@ wp.domReady(() => {
 
 		document.head.appendChild(wrapper);
 
-		wp.element.render(<BlockStylesSaver />, wrapper);
+		const root = wp.element.createRoot(wrapper);
+
+		root.render(<BlockStylesSaver />);
 	}
 });

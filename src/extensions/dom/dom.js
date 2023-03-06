@@ -508,7 +508,7 @@ wp.domReady(() => {
 
 	const resizeObserver = new ResizeObserver(() => {
 		const { width, height } = document
-			.querySelector('resizeObserverSelector')
+			.querySelector(resizeObserverSelector)
 			.getBoundingClientRect();
 		dispatch('maxiBlocks').setEditorContentSize({ width, height });
 
@@ -541,7 +541,7 @@ wp.domReady(() => {
 
 	const editorContentUnsubscribe = subscribe(() => {
 		const resizeObserverTarget = document.querySelector(
-			'resizeObserverSelector'
+			resizeObserverSelector
 		);
 		if (!resizeObserverTarget) {
 			isNewEditorContentObserver = true;

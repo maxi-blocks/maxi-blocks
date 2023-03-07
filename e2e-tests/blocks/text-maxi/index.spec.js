@@ -656,7 +656,7 @@ describe('TextMaxi', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it.only('Test Text Maxi when pasting headings', async () => {
+	it('Test Text Maxi when pasting headings', async () => {
 		await setClipboardData({ html: pasteHTML });
 		await page.waitForTimeout(150);
 		await pressKeyWithModifier('primary', 'v');

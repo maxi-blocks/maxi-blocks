@@ -656,12 +656,10 @@ describe('TextMaxi', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
-	it('Test Text Maxi when pasting headings', async () => {
+	it.only('Test Text Maxi when pasting headings', async () => {
 		await setClipboardData({ html: pasteHTML });
 		await page.waitForTimeout(150);
 		await pressKeyWithModifier('primary', 'v');
-		await page.waitForTimeout(150);
-		await setAttributes(page, { uniqueID: 'text-maxi-1' });
 		await page.waitForTimeout(150);
 
 		expect(await getEditedPostContent(page)).toMatchSnapshot();

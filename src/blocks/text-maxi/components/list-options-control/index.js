@@ -748,12 +748,7 @@ const ListOptionsControl = props => {
 								className='maxi-text-inspector__list-source-selector'
 								value={listStyleSource}
 								defaultValue={defaultListStyleSource}
-								onReset={() =>
-									maxiSetAttributes({
-										listStyleCustom: defaultListStyleSource,
-										isReset: true,
-									})
-								}
+								onReset={false}
 								options={[
 									{
 										label: __('Text', 'maxi-blocks'),

@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { useEffect } from '@wordpress/element';
-import { useDispatch, useSelect } from '@wordpress/data';
+import { useDispatch, useSelect, select } from '@wordpress/data';
 
 /**
  * Internal dependencies

@@ -14,7 +14,7 @@
 /**
  * WordPress dependencies
  */
-import { Component, createRoot, createRef } from '@wordpress/element';
+import { Component, createRoot, render, createRef } from '@wordpress/element';
 import { dispatch, resolveSelect, select, useSelect } from '@wordpress/data';
 
 /**
@@ -797,16 +797,31 @@ class MaxiBlockComponent extends Component {
 			}
 
 			if (wrapper) {
-				const root = createRoot(wrapper);
-				root.render(
-					<StyleComponent
-						uniqueID={uniqueID}
-						stylesObj={obj}
-						currentBreakpoint={this.currentBreakpoint}
-						blockBreakpoints={breakpoints}
-						isSiteEditor={isSiteEditor}
-					/>
-				);
+				// check if createRoot is available (since React 18)
+				if (typeof createRoot === 'function') {
+					const root = createRoot(wrapper);
+					root.render(
+						<StyleComponent
+							uniqueID={uniqueID}
+							stylesObj={obj}
+							currentBreakpoint={this.currentBreakpoint}
+							blockBreakpoints={breakpoints}
+							isSiteEditor={isSiteEditor}
+						/>
+					);
+				} else {
+					// for React 17 and below
+					render(
+						<StyleComponent
+							uniqueID={uniqueID}
+							stylesObj={obj}
+							currentBreakpoint={this.currentBreakpoint}
+							blockBreakpoints={breakpoints}
+							isSiteEditor={isSiteEditor}
+						/>,
+						wrapper
+					);
+				}
 			}
 
 			// Since WP 5.9 Gutenberg includes the responsive into iframes, so need to add the styles there also
@@ -820,16 +835,31 @@ class MaxiBlockComponent extends Component {
 				if (iframeDocument.head) {
 					const iframeWrapper = getStylesWrapper(iframeDocument.head);
 
-					const root = createRoot(iframeWrapper);
-					root.render(
-						<StyleComponent
-							uniqueID={uniqueID}
-							stylesObj={obj}
-							currentBreakpoint={this.currentBreakpoint}
-							blockBreakpoints={breakpoints}
-							isIframe
-						/>
-					);
+					// check if createRoot is available (since React 18)
+					if (typeof createRoot === 'function') {
+						const root = createRoot(iframeWrapper);
+						root.render(
+							<StyleComponent
+								uniqueID={uniqueID}
+								stylesObj={obj}
+								currentBreakpoint={this.currentBreakpoint}
+								blockBreakpoints={breakpoints}
+								isIframe
+							/>
+						);
+					} else {
+						// for React 17 and below
+						render(
+							<StyleComponent
+								uniqueID={uniqueID}
+								stylesObj={obj}
+								currentBreakpoint={this.currentBreakpoint}
+								blockBreakpoints={breakpoints}
+								isIframe
+							/>,
+							iframeWrapper
+						);
+					}
 				}
 			}
 		}

@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { subscribe } from '@wordpress/data';
-import { useState } from '@wordpress/element';
+import { render, useState, createRoot } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -79,8 +79,14 @@ wp.domReady(() => {
 
 			parentNode.appendChild(toolbarButtonsWrapper);
 
-			const root = wp.element.createRoot(toolbarButtonsWrapper);
-			root.render(<ToolbarButtons />);
+			// check if createRoot is available (since React 18)
+			if (typeof createRoot === 'function') {
+				const root = createRoot(toolbarButtonsWrapper);
+				root.render(<ToolbarButtons />);
+			} else {
+				// for React 17 and below
+				render(<ToolbarButtons />, toolbarButtonsWrapper);
+			}
 
 			if (!getIsSiteEditor()) {
 				unsubscribe();

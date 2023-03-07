@@ -1,0 +1,12 @@
+.maxi-search-block {
+	&--icon-left {
+		input {
+			margin-left: -25px !important;
+		}
+	}
+	&--icon-right {
+		input {
+			margin-right: -25px !important;
+		}
+	}
+}

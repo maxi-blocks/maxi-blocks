@@ -216,7 +216,8 @@ const Inspector = props => {
 																							maxiSetAttributes(
 																								{
 																									'input-border-right-width-general': 4,
-																									'inputPrefix-border-left-width-general': 40,
+																									'input-border-left-width-general': 0,
+																									'input-padding-left-general': 30,
 																								}
 																							);
 																					}}

@@ -23,6 +23,7 @@ import withMaxiSuspense from '../../extensions/maxi-block/withMaxiSuspense';
 /**
  * Styles and icons
  */
+import './editor.scss';
 import './style.scss';
 import { searchIcon } from '../../icons';
 

@@ -297,7 +297,7 @@ class MaxiBlockComponent extends Component {
 				return false;
 			};
 
-			keepStylesOnEditor ||= blocks.some(block => getName(block));
+			keepStylesOnEditor ||= blocks?.some(block => getName(block));
 		}, true);
 
 		// When duplicating Gutenberg creates a copy of the current copied block twice, making the first keep the same uniqueID and second

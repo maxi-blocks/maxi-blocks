@@ -246,9 +246,7 @@ class edit extends MaxiBlockComponent {
 					ref={this.blockRef}
 					{...getMaxiBlockAttributes(this.props)}
 				>
-					<Fragment>
-						<img src={previews.image_preview} />
-					</Fragment>
+					<img src={previews.image_preview} />
 				</MaxiBlock>
 			);
 

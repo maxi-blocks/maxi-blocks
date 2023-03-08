@@ -41,6 +41,11 @@ registerBlockType('maxi-blocks/image-maxi', {
 	icon: imageBox,
 	description: 'Insert, modify or style an image',
 	category: 'maxi-blocks',
+	example: {
+		attributes: {
+			preview: true,
+		},
+	},
 	supports: {
 		align: true,
 		lightBlockWrapper: true,

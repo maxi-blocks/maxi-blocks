@@ -145,6 +145,7 @@ class edit extends MaxiBlockComponent {
 			'dc-media-id': dcMediaId,
 			'dc-media-url': dcMediaUrl,
 			'dc-media-caption': dcMediaCaption,
+			preview,
 		} = attributes;
 		const { isExternalClass, isUploaderOpen } = this.state;
 
@@ -237,6 +238,19 @@ class edit extends MaxiBlockComponent {
 			!isNil(mediaID) ||
 			mediaURL ||
 			(dcStatus && dcMediaId && dcMediaUrl);
+
+		if (preview)
+			return (
+				<MaxiBlock
+					key={`maxi-image--${uniqueID}`}
+					ref={this.blockRef}
+					{...getMaxiBlockAttributes(this.props)}
+				>
+					<Fragment>
+						<img src={previews.image_preview} />
+					</Fragment>
+				</MaxiBlock>
+			);
 
 		return [
 			<textContext.Provider

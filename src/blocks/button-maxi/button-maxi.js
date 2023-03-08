@@ -43,12 +43,12 @@ registerBlockType('maxi-blocks/button-maxi', {
 	title: __('Button Maxi', 'maxi-blocks'),
 	icon: buttonIcon,
 	description: 'Insert, modify or style a button',
+	category: 'maxi-blocks',
 	example: {
 		attributes: {
 			preview: true,
 		},
 	},
-	category: 'maxi-blocks',
 	supports: {
 		align: true,
 		lightBlockWrapper: true,

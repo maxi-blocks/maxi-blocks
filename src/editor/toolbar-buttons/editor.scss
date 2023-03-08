@@ -27,3 +27,14 @@
 body.maxi-blocks--active .edit-post-header-toolbar {
 	flex-grow: 0;
 }
+
+//FSE
+
+.edit-site {
+	.edit-site-site-hub {
+		z-index: 4;
+	}
+	.edit-site-layout__header {
+		z-index: 3;
+	}
+}

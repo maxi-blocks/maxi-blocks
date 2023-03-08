@@ -188,8 +188,6 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 		await page.keyboard.press('ArrowRight');
 		await page.waitForTimeout(150);
-		await page.keyboard.press('ArrowRight');
-		await page.waitForTimeout(150);
 		await page.keyboard.press('Backspace');
 		await page.waitForTimeout(150);
 

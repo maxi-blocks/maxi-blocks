@@ -158,7 +158,7 @@ const LinkContent = props => {
 		});
 		delete obj.formatValue;
 
-		onChange(obj);
+		onChange(linkValue, obj);
 	};
 
 	const removeLinkFormatHandle = () => {
@@ -172,8 +172,6 @@ const LinkContent = props => {
 			styleCard,
 		});
 
-		onChange(obj);
-
 		const newLinkAttributes = createLinkAttributes({
 			url: '',
 			linkValue,
@@ -185,6 +183,8 @@ const LinkContent = props => {
 		});
 
 		setLinkValue(newLinkValue);
+
+		onChange(newLinkAttributes, obj);
 	};
 
 	const forceSSL = attributes => {
@@ -196,15 +196,16 @@ const LinkContent = props => {
 	};
 
 	const updateLinkString = attributes => {
+		const newLinkAttributes = createLinkAttributes({
+			...attributes,
+			linkValue,
+		});
 		const content = getFormattedString({
-			formatValue: getUpdatedFormatValue(
-				formatValue,
-				createLinkAttributes({ ...attributes, linkValue })
-			),
+			formatValue: getUpdatedFormatValue(formatValue, newLinkAttributes),
 			isList,
 		});
 
-		onChange({ content });
+		onChange(newLinkAttributes, { content });
 	};
 
 	const onClick = attributes => {

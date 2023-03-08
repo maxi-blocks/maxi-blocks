@@ -31,7 +31,7 @@ describe('Dynamic content', () => {
 		await page.waitForSelector('.maxi-text-block__content', {
 			visible: true,
 		});
-		await page.waitForTimeout(1000);
+		await page.waitForTimeout(5000);
 
 		// Check backend
 		const expectedResults = {

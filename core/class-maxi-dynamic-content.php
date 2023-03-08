@@ -324,7 +324,7 @@ class MaxiBlocks_DynamicContent
         $post_data = $post->{"post_$dc_field"};
 
         if (empty($post_data) && $dc_field === 'excerpt') {
-            $post_data = $query->post->post_content;
+            $post_data = $post->post_content;
         }
         // In case is content, remove blocks and strip tags
         if (in_array($dc_field, ['content', 'excerpt'])) {
@@ -348,7 +348,7 @@ class MaxiBlocks_DynamicContent
 
         // In case is author, get author name
         if ($dc_field === 'author') {
-            $post_data = get_the_author_meta('display_name', $query->post->post_author);
+            $post_data = get_the_author_meta('display_name', $post->post_author);
         }
 
         return $post_data;
@@ -379,7 +379,7 @@ class MaxiBlocks_DynamicContent
         $media_data = $post->{"post_$dc_field"};
 
         if ($dc_field === 'author') {
-            $media_data = get_the_author_meta('display_name', $query->post->post_author);
+            $media_data = get_the_author_meta('display_name', $post->post_author);
         }
 
         return $media_data;

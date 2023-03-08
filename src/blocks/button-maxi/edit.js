@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import { RichText } from '@wordpress/block-editor';
 import { RawHTML, createRef, forwardRef } from '@wordpress/element';
-import { compose } from '@wordpress/compose';
 
 /**
  * Internal dependencies
@@ -197,4 +196,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default compose(withMaxiProps, withMaxiDC)(edit);
+export default withMaxiDC(withMaxiProps(edit));

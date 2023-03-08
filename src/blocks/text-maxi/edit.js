@@ -5,7 +5,6 @@
  */
 import { RichText, RichTextShortcut } from '@wordpress/block-editor';
 import { createBlock } from '@wordpress/blocks';
-import { compose } from '@wordpress/compose';
 
 /**
  * Internal dependencies
@@ -375,4 +374,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default compose(withMaxiProps, withMaxiDC)(edit);
+export default withMaxiDC(withMaxiProps(edit));

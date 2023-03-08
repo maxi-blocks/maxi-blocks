@@ -37,9 +37,9 @@ describe('Dynamic content', () => {
 		const expectedResults = {
 			title: 'Sample Page',
 			content:
-				'This is an example page. It’s different from a blog post because it will stay in one place and will…',
+				'This is an example page. It’s different from a blog post because it will stay in one place and will …',
 			excerpt:
-				'This is an example page. It’s different from a blog post because it will stay in one place and will…',
+				'This is an example page. It’s different from a blog post because it will stay in one place and will …',
 			author: 'admin',
 		};
 

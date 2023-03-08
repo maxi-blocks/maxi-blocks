@@ -26,7 +26,7 @@ import { isNil } from 'lodash';
 const withMaxiDC = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
-			const { maxiSetAttributes, attributes } = ownProps;
+			const { setAttributes, attributes } = ownProps;
 
 			const isImageMaxi = ownProps.name === 'maxi-blocks/image-maxi';
 
@@ -80,7 +80,7 @@ const withMaxiDC = createHigherOrderComponent(
 
 						if (newContent !== content) {
 							markNextChangeAsNotPersistent();
-							maxiSetAttributes({
+							setAttributes({
 								'dc-content': newContent,
 								...(isCustomDate && {
 									'dc-custom-format':
@@ -98,7 +98,7 @@ const withMaxiDC = createHigherOrderComponent(
 
 						if (isNil(mediaContent)) {
 							markNextChangeAsNotPersistent();
-							maxiSetAttributes({
+							setAttributes({
 								'dc-media-id': null,
 								'dc-media-url': null,
 								...(updateLinkSettings && {
@@ -110,7 +110,7 @@ const withMaxiDC = createHigherOrderComponent(
 
 							if (!isNil(id) && !isNil(url)) {
 								markNextChangeAsNotPersistent();
-								maxiSetAttributes({
+								setAttributes({
 									'dc-media-id': id,
 									'dc-media-url': url,
 									'dc-media-caption': sanitizeDCContent(

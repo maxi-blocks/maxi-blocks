@@ -34,8 +34,7 @@ export const limitString = (value, limit) => {
 
 	const str = cutTags(value).trim();
 
-	if (str.length > limit && limit !== 0)
-		return `${str.substr(0, limit).trim()}…`;
+	if (str.length > limit && limit !== 0) return `${str.substr(0, limit)}…`;
 
 	return str;
 };

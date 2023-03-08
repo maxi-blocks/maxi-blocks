@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { subscribe } from '@wordpress/data';
+import { subscribe, select } from '@wordpress/data';
 import { render, useState, createRoot } from '@wordpress/element';
 
 /**
@@ -54,6 +54,11 @@ wp.domReady(() => {
 	let isMaxiToolbar = false;
 
 	const unsubscribe = subscribe(() => {
+		// console.log('getIsTemplatesListOpened', getIsTemplatesListOpened());
+		// console.log(
+		// 	'!document.querySelector(#maxi-blocks__toolbar-buttons)',
+		// 	!document.querySelector('#maxi-blocks__toolbar-buttons')
+		// );
 		if (
 			// Resetting isMaxiToolbar if we are switching to a different template
 			getIsTemplatesListOpened() ||
@@ -68,7 +73,11 @@ wp.domReady(() => {
 		);
 		const parentNode =
 			document.querySelector('.edit-post-header__toolbar') ||
-			document.querySelector('.edit-site-header__toolbar');
+			document.querySelector('.edit-site-header__toolbar') ||
+			document.querySelector('.edit-site-header-edit-mode__toolbar');
+
+		console.log('!maxiToolbar', !maxiToolbar);
+		console.log('parentNode', parentNode);
 
 		// Insert Maxi buttons on Gutenberg topbar
 		if (!maxiToolbar && parentNode) {

@@ -63,7 +63,7 @@ const attributes = {
 			[`${inputPrefix}border-left-width-general`]: 4,
 			[`${inputPrefix}border-sync-general`]: 'none',
 			[`${inputPrefix}padding-top-general`]: '8',
-			[`${inputPrefix}padding-right-general`]: '10',
+			[`${inputPrefix}padding-right-general`]: '30',
 			[`${inputPrefix}padding-bottom-general`]: '8',
 			[`${inputPrefix}padding-left-general`]: '10',
 			[`${inputPrefix}padding-sync-general`]: 'axis',

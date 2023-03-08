@@ -1,11 +1,19 @@
 .maxi-search-block {
 	&--icon-left {
-		input {
+		input.icon-reveal {
 			margin-left: -25px !important;
 		}
 	}
+	&--icon-center {
+		.maxi-search-block__input--hidden {
+			display: none !important;
+		}
+		input.icon-reveal {
+			margin-right: -25px !important;
+		}
+	}
 	&--icon-right {
-		input {
+		input.icon-reveal {
 			margin-right: -25px !important;
 		}
 	}

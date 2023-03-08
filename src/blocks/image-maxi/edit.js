@@ -140,6 +140,7 @@ class edit extends MaxiBlockComponent {
 			uniqueID,
 			captionPosition,
 			fitParentSize,
+			preview,
 		} = attributes;
 		const { isExternalClass, isUploaderOpen } = this.state;
 
@@ -227,6 +228,19 @@ class edit extends MaxiBlockComponent {
 					attributes,
 				})) ||
 			!isEmpty(attributes.SVGElement);
+
+		if (preview)
+			return (
+				<MaxiBlock
+					key={`maxi-image--${uniqueID}`}
+					ref={this.blockRef}
+					{...getMaxiBlockAttributes(this.props)}
+				>
+					<Fragment>
+						<img src={previews.image_preview} />
+					</Fragment>
+				</MaxiBlock>
+			);
 
 		return [
 			<textContext.Provider

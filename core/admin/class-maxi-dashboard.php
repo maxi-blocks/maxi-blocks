@@ -73,6 +73,16 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     MAXI_PLUGIN_URL_PATH.'build/admin.js'
                 );
                 wp_enqueue_script('maxi-admin');
+
+				wp_localize_script(
+					'maxi-admin',
+					'previews',
+					array(
+						'image_preview' => plugins_url( '../../img/block-preview/image.png', __FILE__ ),
+						'button_preview' => plugins_url( '../../img/block-preview/button.png', __FILE__ ),
+					)
+				);
+
             }
         }
 

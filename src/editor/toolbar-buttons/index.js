@@ -69,12 +69,13 @@ wp.domReady(() => {
 		const parentNode =
 			document.querySelector('.edit-post-header__toolbar') ||
 			document.querySelector('.edit-site-header__toolbar') ||
-			document.querySelector('.edit-site-header-edit-mode__toolbar');
+			document.querySelector('.edit-site-header-edit-mode');
 
+		// console.log('!maxiToolbar', !maxiToolbar);
+		// console.log('parentNode', parentNode);
+		// console.log('isMaxiToolbar', isMaxiToolbar);
 		// Insert Maxi buttons on Gutenberg topbar
 		if (!maxiToolbar && parentNode) {
-			isMaxiToolbar = true;
-
 			const toolbarButtonsWrapper = document.createElement('div');
 			toolbarButtonsWrapper.id = 'maxi-blocks__toolbar-buttons';
 
@@ -88,6 +89,31 @@ wp.domReady(() => {
 				// for React 17 and below
 				render(<ToolbarButtons />, toolbarButtonsWrapper);
 			}
+
+			if (getIsSiteEditor()) {
+				setTimeout(() => {
+					const toolbarButtonMaxi = document.querySelector(
+						'#maxi-blocks__toolbar-buttons button'
+					);
+
+					console.log(toolbarButtonMaxi);
+
+					if (!toolbarButtonMaxi) return;
+
+					const widthLeftMenu = document.querySelector(
+						'div.edit-site-header-edit-mode__start'
+					).offsetWidth;
+
+					const widthSiteIcon = document.querySelector(
+						'div.edit-site-site-hub'
+					).offsetWidth;
+
+					const leftSpace = widthLeftMenu + widthSiteIcon;
+					toolbarButtonMaxi.style.left = `${leftSpace}px`;
+				}, 100);
+			}
+
+			isMaxiToolbar = true;
 
 			if (!getIsSiteEditor()) {
 				unsubscribe();

@@ -494,7 +494,7 @@ const getMarkerObject = props => {
 				const markerPosition =
 					listStylePosition === 'inside'
 						? 0
-						: `calc(-${sizeNum + sizeUnit} - ${indentMarkerSum})`;
+						: `calc(${-indentMarkerNum + indentMarkerUnit})`;
 
 				// Marker line-height
 				const lineHeightMarkerNum =
@@ -516,7 +516,7 @@ const getMarkerObject = props => {
 					listStyleCustom &&
 					listStyleCustom.includes('</svg>')
 						? {
-								height: sizeNum + sizeUnit,
+								width: sizeNum + sizeUnit,
 						  }
 						: { 'font-size': sizeNum + sizeUnit }),
 					'line-height':
@@ -525,14 +525,17 @@ const getMarkerObject = props => {
 							? lineHeightMarkerUnit
 							: ''),
 					[isRTL ? 'right' : 'left']: markerPosition,
-					...(listStylePosition === 'outside' && {
-						width: 0,
-					}),
+					...(listStylePosition === 'outside' &&
+						(listStyle !== 'custom'
+							? {
+									width: '1em',
+									'margin-left': '-1em',
+							  }
+							: {
+									'margin-left': -sizeNum + sizeUnit,
+							  })),
 					...(listStylePosition === 'inside' && {
 						'margin-right': indentMarkerSum,
-					}),
-					...(listStyle === 'none' && {
-						'padding-right': '1em',
 					}),
 					...(textPosition && {
 						'vertical-align': textPosition,

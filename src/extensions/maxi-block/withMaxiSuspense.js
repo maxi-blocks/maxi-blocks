@@ -85,9 +85,10 @@ const withMaxiSuspense = createHigherOrderComponent(
 				return (
 					<WrappedComponent
 						{...ownProps}
-						onMaxiBlockRender={() =>
-							setBlockHasBeenRendered(uniqueID)
-						}
+						onMaxiBlockRender={() => {
+							setBlockHasBeenRendered(uniqueID);
+							setHasBeenRendered(true);
+						}}
 					/>
 				);
 
@@ -95,9 +96,10 @@ const withMaxiSuspense = createHigherOrderComponent(
 				<Suspense fallback={<ContentLoader />}>
 					<WrappedComponent
 						{...ownProps}
-						onMaxiBlockRender={() =>
-							setBlockHasBeenRendered(uniqueID)
-						}
+						onMaxiBlockRender={() => {
+							setBlockHasBeenRendered(uniqueID);
+							setHasBeenRendered(true);
+						}}
 					/>
 				</Suspense>
 			);

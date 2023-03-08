@@ -19,6 +19,7 @@ import {
 	getHasParallax,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import { MarginValueCalculator } from '../../extensions/dom';
 import InnerBlocksBlock from './innerBlocksBlock';
 import MainMaxiBlock from './mainMaxiBlock';
 
@@ -56,7 +57,8 @@ const getBlockStyle = (attributes, breakpoint) => {
 
 	if (!isFullWidth) return {};
 
-	const marginValue = 8;
+	const getMarginValue = MarginValueCalculator();
+	const marginValue = getMarginValue();
 
 	// Margin
 	const marginRight = getValue('margin-right') || 0;

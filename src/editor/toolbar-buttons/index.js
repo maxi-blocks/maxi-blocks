@@ -54,11 +54,6 @@ wp.domReady(() => {
 	let isMaxiToolbar = false;
 
 	const unsubscribe = subscribe(() => {
-		// console.log('getIsTemplatesListOpened', getIsTemplatesListOpened());
-		// console.log(
-		// 	'!document.querySelector(#maxi-blocks__toolbar-buttons)',
-		// 	!document.querySelector('#maxi-blocks__toolbar-buttons')
-		// );
 		if (
 			// Resetting isMaxiToolbar if we are switching to a different template
 			getIsTemplatesListOpened() ||

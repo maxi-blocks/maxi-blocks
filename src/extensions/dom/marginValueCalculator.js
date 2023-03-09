@@ -1,6 +1,6 @@
 import getEditorWrapper from './getEditorWrapper';
 
-const MarginValueCalculator = blockContainer => {
+const MarginValueCalculator = () => {
 	let fullWidthElementWidth = null;
 	let editorWidth = null;
 	let updateValue = false;
@@ -34,7 +34,6 @@ const MarginValueCalculator = blockContainer => {
 		updateValue = true;
 	});
 
-	// const container = editorWrapper.querySelector('.editor-styles-wrapper');
 	editorSizeObserver.observe(editorWrapper);
 
 	return getMarginValue;

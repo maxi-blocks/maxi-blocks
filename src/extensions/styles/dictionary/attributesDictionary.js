@@ -1,4 +1,7 @@
 const dictionary = {
+	clipPath: {
+		'clip-path': 'cp',
+	},
 	alignment: {
 		alignment: 'a',
 	},

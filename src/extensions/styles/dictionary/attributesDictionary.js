@@ -1,4 +1,7 @@
 const dictionary = {
+	alignment: {
+		alignment: 'a',
+	},
 	size: {
 		'size-advanced-options': 'sao',
 		'width-fit-content': 'wfc',
@@ -31,6 +34,13 @@ const dictionary = {
 	placeholderColor: {
 		'placeholder-color': 'pc',
 		'placeholder-color-unit': 'pcu',
+	},
+	overflow: {
+		'overflow-x': 'ox',
+		'overflow-y': 'oy',
+	},
+	zIndex: {
+		'z-index': 'zi',
 	},
 };
 

@@ -1,16 +1,16 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openSidebarTab } from '../../utils';
+import { openSidebarTab, insertMaxiBlock } from '../../utils';
 
 describe('BaseControl', () => {
 	it('Check base control', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 		const accordionPanel = await openSidebarTab(
 			page,
 			'style',

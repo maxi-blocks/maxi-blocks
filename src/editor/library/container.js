@@ -379,6 +379,7 @@ const LibraryContainer = props => {
 		url,
 		title,
 		prefix = '',
+		layerOrder,
 	} = props;
 
 	const {
@@ -428,7 +429,7 @@ const LibraryContainer = props => {
 				apiKey: '0DpJlIVm3kKOiQ9kAPTklrXrIbFLgWk6', // Be sure to use an API key that only allows search operations
 				nodes: [
 					{
-						host: '24q17endjv0kacilp-1.a1.typesense.net',
+						host: '24q17endjv0kacilp.a1.typesense.net',
 						port: '443',
 						protocol: 'https',
 					},
@@ -589,7 +590,7 @@ const LibraryContainer = props => {
 			uniqueID,
 			mediaID,
 			mediaURL,
-			'background-svg-SVGData': svgData,
+			'background-layers': bgLayers,
 		} = select('core/block-editor').getBlockAttributes(clientId);
 
 		if (isValidTemplate(svgCode)) {
@@ -611,6 +612,9 @@ const LibraryContainer = props => {
 			}
 
 			if (type === 'bg-shape') {
+				const svgData = bgLayers.find(
+					layer => layer.order === layerOrder
+				)['background-svg-SVGData'];
 				const cleanedContent = DOMPurify.sanitize(fitSvg(svgCode));
 				const svg = document
 					.createRange()

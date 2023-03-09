@@ -14,6 +14,7 @@ const getIconSize = (
 		isHover,
 		prefix: `${prefix}icon-`,
 		iconWidthHeightRatio,
+		disableHeight: false,
 	});
 
 export default getIconSize;

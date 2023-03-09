@@ -3,7 +3,6 @@
  */
 import {
 	createNewPost,
-	insertBlock,
 	pressKeyTimes,
 	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
@@ -16,12 +15,13 @@ import {
 	openSidebarTab,
 	changeResponsive,
 	editAdvancedNumberControl,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('Advanced Number Control', () => {
 	it('Checking the advanced number control', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 		const accordionPanel = await openSidebarTab(
 			page,
 			'style',

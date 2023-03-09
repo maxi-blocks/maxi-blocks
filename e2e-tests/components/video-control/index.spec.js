@@ -1,21 +1,22 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyWithModifier,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
-import { getBlockStyle, openSidebarTab, getAttributes } from '../../utils';
+import {
+	getBlockStyle,
+	openSidebarTab,
+	getAttributes,
+	insertMaxiBlock,
+} from '../../utils';
 
 describe('Video maxi control', () => {
 	it('Check video maxi control', async () => {
 		await createNewPost();
-		await insertBlock('Video Maxi');
+		await insertMaxiBlock(page, 'Video Maxi');
 
 		// Needs time to load the YT/Vimeo API
 		await page.waitForTimeout(1000);

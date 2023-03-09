@@ -2,11 +2,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyWithModifier,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
@@ -15,12 +11,13 @@ import {
 	openSidebarTab,
 	getBlockStyle,
 	changeResponsive,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('TextShadowControl', () => {
 	it('Checking the text shadow control', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
 		const accordionPanel = await openSidebarTab(
 			page,

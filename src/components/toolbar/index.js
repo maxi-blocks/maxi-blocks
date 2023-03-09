@@ -543,14 +543,14 @@ const MaxiToolbar = memo(
 							onChange={obj => maxiSetAttributes(obj)}
 							textLevel={textLevel}
 						/>
-						{/* <DynamicContent
+						<DynamicContent
 							blockName={name}
 							onChange={obj => maxiSetAttributes(obj)}
 							{...getGroupAttributes(
 								attributes,
 								'dynamicContent'
 							)}
-						/> */}
+						/>
 						{name === 'maxi-blocks/slider-maxi' && (
 							<>
 								<SliderSlidesSettings />

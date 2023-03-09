@@ -56,16 +56,16 @@ describe('Dynamic content', () => {
 			);
 
 		const titleResults = await Promise.all(
-			titleBlocks.map(block => getBackResults(block, 'title'))
+			titleBlocks.map(async block => getBackResults(block, 'title'))
 		);
 		const contentResults = await Promise.all(
-			contentBlocks.map(block => getBackResults(block, 'content'))
+			contentBlocks.map(async block => getBackResults(block, 'content'))
 		);
 		const excerptResults = await Promise.all(
-			excerptBlocks.map(block => getBackResults(block, 'excerpt'))
+			excerptBlocks.map(async block => getBackResults(block, 'excerpt'))
 		);
 		const authorResults = await Promise.all(
-			authorBlocks.map(block => getBackResults(block, 'author'))
+			authorBlocks.map(async block => getBackResults(block, 'author'))
 		);
 
 		const results = [
@@ -95,16 +95,16 @@ describe('Dynamic content', () => {
 			);
 
 		const frontTitleResults = await Promise.all(
-			titleBlocks.map(block => getFrontResults(block, 'title'))
+			titleBlocks.map(async block => getFrontResults(block, 'title'))
 		);
 		const frontContentResults = await Promise.all(
-			contentBlocks.map(block => getFrontResults(block, 'content'))
+			contentBlocks.map(async block => getFrontResults(block, 'content'))
 		);
 		const frontExcerptResults = await Promise.all(
-			excerptBlocks.map(block => getFrontResults(block, 'excerpt'))
+			excerptBlocks.map(async block => getFrontResults(block, 'excerpt'))
 		);
 		const frontAuthorResults = await Promise.all(
-			authorBlocks.map(block => getFrontResults(block, 'author'))
+			authorBlocks.map(async block => getFrontResults(block, 'author'))
 		);
 		const frontResults = [
 			...frontTitleResults,

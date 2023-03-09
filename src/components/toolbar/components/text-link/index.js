@@ -35,9 +35,10 @@ import { isEmpty, isEqual } from 'lodash';
  */
 import './editor.scss';
 import { toolbarLink } from '../../../../icons';
+import Link from '../link';
 
 /**
- * Link
+ * TextLink
  */
 const LinkContent = props => {
 	const { onChange, isList, textLevel, onClose, blockStyle, styleCard } =
@@ -157,7 +158,7 @@ const LinkContent = props => {
 		});
 		delete obj.formatValue;
 
-		onChange(obj);
+		onChange(linkValue, obj);
 	};
 
 	const removeLinkFormatHandle = () => {
@@ -171,8 +172,6 @@ const LinkContent = props => {
 			styleCard,
 		});
 
-		onChange(obj);
-
 		const newLinkAttributes = createLinkAttributes({
 			url: '',
 			linkValue,
@@ -184,6 +183,8 @@ const LinkContent = props => {
 		});
 
 		setLinkValue(newLinkValue);
+
+		onChange(newLinkAttributes, obj);
 	};
 
 	const forceSSL = attributes => {
@@ -195,15 +196,16 @@ const LinkContent = props => {
 	};
 
 	const updateLinkString = attributes => {
+		const newLinkAttributes = createLinkAttributes({
+			...attributes,
+			linkValue,
+		});
 		const content = getFormattedString({
-			formatValue: getUpdatedFormatValue(
-				formatValue,
-				createLinkAttributes({ ...attributes, linkValue })
-			),
+			formatValue: getUpdatedFormatValue(formatValue, newLinkAttributes),
 			isList,
 		});
 
-		onChange({ content });
+		onChange(newLinkAttributes, { content });
 	};
 
 	const onClick = attributes => {
@@ -261,33 +263,40 @@ const LinkContent = props => {
 	);
 };
 
-const Link = props => {
-	const { blockName, isCaptionToolbar = false } = props;
+const TextLink = props => {
+	const {
+		blockName,
+		isCaptionToolbar = false,
+		'dc-status': dcStatus = false,
+	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi' && !isCaptionToolbar) return null;
 
-	return (
-		<ToolbarPopover
-			icon={toolbarLink}
-			tooltip={__('Link', 'maxi-blocks')}
-			className='toolbar-item__text-link'
-		>
-			<ToolbarContext.Consumer>
-				{({ isOpen, onClose }) => {
-					if (isOpen)
-						return (
-							<LinkContent
-								isOpen={isOpen}
-								onClose={onClose}
-								{...props}
-							/>
-						);
+	if (!dcStatus)
+		return (
+			<ToolbarPopover
+				icon={toolbarLink}
+				tooltip={__('Link', 'maxi-blocks')}
+				className='toolbar-item__text-link'
+			>
+				<ToolbarContext.Consumer>
+					{({ isOpen, onClose }) => {
+						if (isOpen)
+							return (
+								<LinkContent
+									isOpen={isOpen}
+									onClose={onClose}
+									{...props}
+								/>
+							);
 
-					return null;
-				}}
-			</ToolbarContext.Consumer>
-		</ToolbarPopover>
-	);
+						return null;
+					}}
+				</ToolbarContext.Consumer>
+			</ToolbarPopover>
+		);
+
+	return <Link {...props} />;
 };
 
-export default Link;
+export default TextLink;

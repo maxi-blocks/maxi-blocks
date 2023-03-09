@@ -55,7 +55,11 @@ const getColumnSizeStyles = (obj, rowGapProps, clientId) => {
 			breakpoint,
 			attributes: obj,
 		});
-		let columnSize = obj[`column-size-${breakpoint}`];
+		const columnSize = getLastBreakpointAttribute({
+			target: 'column-size',
+			breakpoint,
+			attributes: obj,
+		});
 
 		if (fitContent) {
 			response[breakpoint] = {
@@ -86,13 +90,6 @@ const getColumnSizeStyles = (obj, rowGapProps, clientId) => {
 				breakpoint,
 				attributes: rowGapProps,
 			});
-
-			if (!columnSize)
-				columnSize = getLastBreakpointAttribute({
-					target: 'column-size',
-					breakpoint,
-					attributes: obj,
-				});
 
 			const gapValue = gap ? `${round(gap, 4)}${gapUnit}` : '0px';
 

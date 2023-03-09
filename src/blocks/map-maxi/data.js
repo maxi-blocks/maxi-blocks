@@ -18,7 +18,7 @@ const popupDescriptionClass = `${popupContentClass}__description`;
  */
 const name = 'map-maxi';
 const copyPasteMapping = {
-	_exclude: ['map-marker-icon', 'map-marker'],
+	_exclude: ['map-markers'],
 	settings: {
 		'Configure map': {
 			group: {

@@ -31,6 +31,10 @@ const dictionary = {
 		'margin-bottom-unit': 'mbu',
 		'margin-left-unit': 'mlu',
 	},
+	placeholderColor: {
+		'placeholder-color': 'pc',
+		'placeholder-color-unit': 'pcu',
+	},
 	overflow: {
 		'overflow-x': 'ox',
 		'overflow-y': 'oy',

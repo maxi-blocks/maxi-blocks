@@ -3,13 +3,13 @@ import getAlignmentFlexStyles from '../getAlignmentFlexStyles';
 describe('getAlignmentFlexStyles', () => {
 	it('Get a correct alignment flex styles', () => {
 		const object = {
-			'alignment-general': 'right',
-			'alignment-xxl': 'left',
-			'alignment-xl': 'right',
-			'alignment-l': 'left',
-			'alignment-m': 'right',
-			'alignment-s': 'left',
-			'alignment-xs': 'right',
+			'a-general': 'right',
+			'a-xxl': 'left',
+			'a-xl': 'right',
+			'a-l': 'left',
+			'a-m': 'right',
+			'a-s': 'left',
+			'a-xs': 'right',
 		};
 
 		const result = getAlignmentFlexStyles(object);

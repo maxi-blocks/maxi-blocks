@@ -1,21 +1,17 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyWithModifier,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
-import { getAttributes } from '../../../../utils';
+import { getAttributes, insertMaxiBlock } from '../../../../utils';
 
 describe('Text generator', () => {
 	it('Check text generator', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 
 		// Wait for toolbar to be visible
 		await page.waitForSelector('.toolbar-wrapper');

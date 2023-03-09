@@ -6,6 +6,11 @@ import { createSelectors } from '../../extensions/styles/custom-css';
  */
 const name = 'slider-maxi';
 const copyPasteMapping = {
+	_exclude: [
+		'active-navigation-dot-icon-content',
+		'navigation-arrow-first-icon-content',
+		'navigation-arrow-second-icon-content',
+	],
 	settings: {
 		'Slider settings': {
 			group: {

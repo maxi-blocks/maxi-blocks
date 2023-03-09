@@ -3,11 +3,22 @@ import paletteAttributesCreator from '../paletteAttributesCreator';
 import prefixAttributesCreator from '../prefixAttributesCreator';
 import { rawPosition } from './position';
 import { clipPathRaw } from './clipPath';
+import attributesShorter from '../dictionary/attributesShorter';
 
 const prefix = 'background-';
 
 // eslint-disable-next-line no-unused-vars
 const { position, ...backgroundPosition } = rawPosition;
+
+const rawBgOpacity = attributesShorter(
+	{
+		opacity: {
+			type: 'number',
+			default: 1,
+		},
+	},
+	'opacity'
+);
 
 export const blockBackground = {
 	'background-layers': {
@@ -119,10 +130,10 @@ export const rawBackgroundImage = {
 		type: 'string',
 		default: 'padding-box',
 	},
-	'background-image-opacity': {
-		type: 'number',
-		default: 1,
-	},
+	...prefixAttributesCreator({
+		prefix: 'background-image-',
+		obj: rawBgOpacity,
+	}),
 	'background-image-clip': {
 		type: 'string',
 		default: 'border-box',
@@ -197,10 +208,10 @@ export const rawBackgroundVideo = {
 		type: 'boolean',
 		default: false,
 	},
-	'background-video-opacity': {
-		type: 'number',
-		default: 1,
-	},
+	...prefixAttributesCreator({
+		prefix: 'background-video-',
+		obj: rawBgOpacity,
+	}),
 	'background-video-reduce-border': {
 		type: 'boolean',
 		default: false,
@@ -215,10 +226,10 @@ export const rawBackgroundGradient = {
 	'background-gradient': {
 		type: 'string',
 	},
-	'background-gradient-opacity': {
-		type: 'number',
-		default: 1,
-	},
+	...prefixAttributesCreator({
+		prefix: 'background-gradient-',
+		obj: rawBgOpacity,
+	}),
 	...prefixAttributesCreator({
 		prefix: 'background-gradient-',
 		obj: clipPathRaw,

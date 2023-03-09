@@ -1,17 +1,17 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
-import { changeResponsive } from '../../utils';
+import { changeResponsive, insertMaxiBlock } from '../../utils';
 
 describe('InfoBox', () => {
 	it('Check Infobox', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 		await changeResponsive(page, 's');
 
 		const warningBox = await page.$eval(

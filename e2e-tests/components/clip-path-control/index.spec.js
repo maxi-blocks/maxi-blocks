@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -12,6 +12,7 @@ import {
 	getAttributes,
 	getBlockStyle,
 	openSidebarTab,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('ClipPathControl', () => {
@@ -35,7 +36,7 @@ describe('ClipPathControl', () => {
 
 	it('Checking the clip-path control', async () => {
 		await createNewPost();
-		await insertBlock('Image Maxi');
+		await insertMaxiBlock(page, 'Image Maxi');
 		const accordionPanel = await openSidebarTab(page, 'style', 'clip path');
 
 		// Use clip-path to create a triangle
@@ -47,7 +48,7 @@ describe('ClipPathControl', () => {
 			click[1].click()
 		);
 
-		expect(await getAttributes('clip-path-general')).toStrictEqual(
+		expect(await getAttributes('cp-general')).toStrictEqual(
 			'polygon(50% 0%, 0% 100%, 100% 100%)'
 		);
 
@@ -59,7 +60,7 @@ describe('ClipPathControl', () => {
 
 		await selectType(page, 'inset');
 
-		expect(await getAttributes('clip-path-general')).toStrictEqual(
+		expect(await getAttributes('cp-general')).toStrictEqual(
 			'inset(15% 5% 15% 5%)'
 		);
 
@@ -94,7 +95,7 @@ describe('ClipPathControl', () => {
 			newNumber: '64',
 		});
 
-		expect(await getAttributes('clip-path-general')).toStrictEqual(
+		expect(await getAttributes('cp-general')).toStrictEqual(
 			'inset(28px 10% 25px 64%)'
 		);
 
@@ -137,7 +138,7 @@ describe('ClipPathControl', () => {
 			newValue: 'px',
 		});
 
-		expect(await getAttributes('clip-path-m')).toStrictEqual(
+		expect(await getAttributes('cp-m')).toStrictEqual(
 			'inset(56% 76px 23% 12px)'
 		);
 
@@ -180,7 +181,7 @@ describe('ClipPathControl', () => {
 			newNumber: '34',
 		});
 
-		expect(await getAttributes('clip-path-s')).toStrictEqual(
+		expect(await getAttributes('cp-s')).toStrictEqual(
 			'ellipse(6px 18% at 48px 34%)'
 		);
 

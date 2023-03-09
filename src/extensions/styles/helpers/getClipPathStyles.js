@@ -1,4 +1,9 @@
+/**
+ * Internal dependencies
+ */
+import getAttributeValue from '../getAttributeValue';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+
 /**
  * General
  */
@@ -26,7 +31,11 @@ const getClipPathStyles = ({ obj, isHover = false, isIB = false }) => {
 		response[breakpoint] = {
 			...(currentClipPath &&
 				(isHover
-					? obj['clip-path-status-hover']
+					? getAttributeValue({
+							target: 'clip-path-status',
+							props: obj,
+							isHover,
+					  })
 					: getLastBreakpointAttribute({
 							target: 'clip-path-status',
 							breakpoint,

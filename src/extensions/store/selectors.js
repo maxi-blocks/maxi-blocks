@@ -61,6 +61,17 @@ const selectors = {
 
 		return false;
 	},
+	canBlockRender(state, uniqueID) {
+		if (state && state.blocksToRender.includes(uniqueID))
+			return state.blocksToRender.indexOf(uniqueID) < 20;
+
+		return false;
+	},
+	blockHasBeenRendered(state, uniqueID) {
+		if (state) return state.renderedBlocks.includes(uniqueID);
+
+		return false;
+	},
 };
 
 export default selectors;

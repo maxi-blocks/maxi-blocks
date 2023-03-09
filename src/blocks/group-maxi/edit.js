@@ -36,6 +36,17 @@ class edit extends MaxiBlockComponent {
 					].indexOf(blockName) === -1
 			);
 
+		if (attributes.preview)
+			return (
+				<MaxiBlock
+					key={`maxi-group--${uniqueID}`}
+					ref={this.blockRef}
+					{...getMaxiBlockAttributes(this.props)}
+				>
+					<img src={previews.group_preview} />
+				</MaxiBlock>
+			);
+
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar

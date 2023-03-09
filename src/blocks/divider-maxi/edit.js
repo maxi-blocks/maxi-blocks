@@ -166,6 +166,17 @@ class edit extends MaxiBlockComponent {
 			dividerColor: '.maxi-divider-block__divider',
 		};
 
+		if (attributes.preview)
+			return (
+				<MaxiBlock
+					key={`maxi-divider--${uniqueID}`}
+					ref={this.blockRef}
+					{...getMaxiBlockAttributes(this.props)}
+				>
+					<img src={previews.divider_preview} />
+				</MaxiBlock>
+			);
+
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}

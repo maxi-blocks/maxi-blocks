@@ -198,6 +198,17 @@ class edit extends MaxiBlockComponent {
 			// onRemove={onRemove}
 		};
 
+		if (attributes.preview)
+			return (
+				<MaxiBlock
+					key={`maxi-text--${uniqueID}`}
+					ref={this.blockRef}
+					{...getMaxiBlockAttributes(this.props)}
+				>
+					<img src={previews.text_preview} />
+				</MaxiBlock>
+			);
+
 		return [
 			<textContext.Provider
 				key={`maxi-text-block__context-${uniqueID}`}

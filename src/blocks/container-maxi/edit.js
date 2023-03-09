@@ -78,8 +78,20 @@ class edit extends MaxiBlockComponent {
 			insertInlineStyles,
 			cleanInlineStyles,
 			isSelected,
+			preview,
 		} = this.props;
 		const { uniqueID, isFirstOnHierarchy } = attributes;
+
+		if (preview)
+			return (
+				<MaxiBlock
+					key={`maxi-container--${uniqueID}`}
+					ref={this.blockRef}
+					{...getMaxiBlockAttributes(this.props)}
+				>
+					<img src={previews.container_preview} />
+				</MaxiBlock>
+			);
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,

@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -13,16 +13,17 @@ import {
 	addTypographyOptions,
 	addTypographyStyle,
 	openPreviewPage,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('Text Maxi hover simple actions', () => {
 	beforeEach(async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 
 		await page.keyboard.type('Testing IB');
 
-		await insertBlock('Button Maxi');
+		await insertMaxiBlock(page, 'Button Maxi');
 
 		await openSidebarTab(page, 'advanced', 'interaction builder');
 

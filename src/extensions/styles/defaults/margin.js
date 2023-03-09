@@ -1,4 +1,5 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import attributesShorter from '../dictionary/attributesShorter';
 
 const rawMargin = {
 	'margin-top': {
@@ -39,4 +40,4 @@ const margin = breakpointAttributesCreator({
 	obj: rawMargin,
 });
 
-export default margin;
+export default attributesShorter(margin, 'margin');

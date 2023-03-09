@@ -4,6 +4,11 @@
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 /**
+ * Internal dependencies
+ */
+import getAttributeValue from '../getAttributeValue';
+
+/**
  * External dependencies
  */
 import { isEmpty } from 'lodash';
@@ -12,27 +17,34 @@ const getAlignmentFlexStyles = obj => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
-		if (!isEmpty(obj[`alignment-${breakpoint}`]))
-			switch (obj[`alignment-${breakpoint}`]) {
-				case 'left':
-					response[breakpoint] = {
-						'justify-content': 'flex-start',
-					};
-					break;
-				case 'center':
-				case 'justify':
-					response[breakpoint] = {
-						'justify-content': 'center',
-					};
-					break;
-				case 'right':
-					response[breakpoint] = {
-						'justify-content': 'flex-end',
-					};
-					break;
-				default:
-					return false;
-			}
+		const value = getAttributeValue({
+			target: 'alignment',
+			props: obj,
+			breakpoint,
+		});
+
+		if (isEmpty(value)) return;
+
+		switch (value) {
+			case 'left':
+				response[breakpoint] = {
+					'justify-content': 'flex-start',
+				};
+				break;
+			case 'center':
+			case 'justify':
+				response[breakpoint] = {
+					'justify-content': 'center',
+				};
+				break;
+			case 'right':
+				response[breakpoint] = {
+					'justify-content': 'flex-end',
+				};
+				break;
+			default:
+				break;
+		}
 	});
 
 	return response;

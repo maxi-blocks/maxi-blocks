@@ -44,6 +44,7 @@ const CloudLibrary = props => {
 		prefix = '',
 		gutenbergCode: rawGutenbergCode,
 		isSwapChecked,
+		layerOrder,
 	} = props;
 
 	const [type, setType] = useState(cloudType);
@@ -108,6 +109,7 @@ const CloudLibrary = props => {
 				prefix={prefix}
 				isPro={isPro}
 				isBeta={isBeta}
+				layerOrder={layerOrder}
 			/>
 		</Modal>
 	);

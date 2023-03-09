@@ -1,16 +1,21 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openSidebarTab, getBlockStyle, getAttributes } from '../../utils';
+import {
+	openSidebarTab,
+	getBlockStyle,
+	getAttributes,
+	insertMaxiBlock,
+} from '../../utils';
 
 describe('Button', () => {
 	it('Check button', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 		await openSidebarTab(page, 'style', 'alignment');
 
 		await page.$$eval('.maxi-alignment-control button', click =>

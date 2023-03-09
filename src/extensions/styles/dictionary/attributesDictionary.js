@@ -34,6 +34,9 @@ const dictionary = {
 		'margin-bottom-unit': 'mbu',
 		'margin-left-unit': 'mlu',
 	},
+	opacity: {
+		opacity: 'o',
+	},
 	padding: {
 		'padding-top': 'pt',
 		'padding-right': 'pr',

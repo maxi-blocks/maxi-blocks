@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -10,12 +10,13 @@ import {
 	getAttributes,
 	getEditedPostContent,
 	openSidebarTab,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('Video options control', () => {
 	it('Check video options control', async () => {
 		await createNewPost();
-		await insertBlock('Video Maxi');
+		await insertMaxiBlock(page, 'Video Maxi');
 
 		await openSidebarTab(page, 'style', 'video options');
 

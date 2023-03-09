@@ -50,7 +50,7 @@ const prefix = 'button-';
  */
 const name = 'button-maxi';
 const copyPasteMapping = {
-	_exclude: ['buttonContent'],
+	_exclude: ['buttonContent', 'icon-content'],
 	settings: {
 		'Button text': 'buttonContent',
 		Icon: {

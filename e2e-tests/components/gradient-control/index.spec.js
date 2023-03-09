@@ -1,20 +1,16 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyWithModifier,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openSidebarTab, getAttributes } from '../../utils';
+import { openSidebarTab, getAttributes, insertMaxiBlock } from '../../utils';
 
 describe('GradientControl', () => {
 	it('Check gradient in button background', async () => {
 		await createNewPost();
-		await insertBlock('Button Maxi');
+		await insertMaxiBlock(page, 'Button Maxi');
 		await openSidebarTab(page, 'style', 'button background');
 
 		await page.$eval(

@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
@@ -10,12 +10,13 @@ import {
 	changeResponsive,
 	getAttributes,
 	editAdvancedNumberControl,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('ResponsiveControl', () => {
 	it('Test the responsive control', async () => {
 		await createNewPost();
-		await insertBlock('Button Maxi');
+		await insertMaxiBlock(page, 'Button Maxi');
 		await changeResponsive(page, 'xs');
 		await openSidebarTab(page, 'advanced', 'breakpoint');
 

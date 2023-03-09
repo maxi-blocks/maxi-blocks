@@ -40,6 +40,7 @@ import {
 	DividerAlignment,
 	DividerColor,
 	Duplicate,
+	DynamicContent,
 	Link,
 	Mover,
 	NumberCounterReplay,
@@ -87,6 +88,8 @@ const MaxiToolbar = memo(
 			backgroundAdvancedOptions,
 			backgroundPrefix,
 			clientId,
+			content,
+			disableCustomFormats = false,
 			isSelected,
 			name,
 			maxiSetAttributes,
@@ -106,6 +109,7 @@ const MaxiToolbar = memo(
 			disableInset,
 		} = props;
 		const {
+			blockStyle,
 			customLabel,
 			isFirstOnHierarchy,
 			isList,
@@ -113,7 +117,6 @@ const MaxiToolbar = memo(
 			textLevel,
 			typeOfList,
 			uniqueID,
-			blockStyle,
 			svgType,
 		} = attributes;
 
@@ -209,7 +212,7 @@ const MaxiToolbar = memo(
 											setPinActive(!pinActive);
 										}}
 									>
-										<span className='breadcrumbs-pin-toltip'>
+										<span className='breadcrumbs-pin-tooltip'>
 											{pinActive ? 'Unlock' : 'Lock'}
 										</span>
 										<span className='breadcrumbs-pin-icon'>
@@ -269,6 +272,7 @@ const MaxiToolbar = memo(
 							isList={isList}
 							textLevel={textLevel}
 							styleCard={styleCard}
+							disableCustomFormats={disableCustomFormats}
 						/>
 						<TextOptions
 							{...getGroupAttributes(attributes, [
@@ -283,6 +287,7 @@ const MaxiToolbar = memo(
 							textLevel={textLevel}
 							styleCard={styleCard}
 							clientId={clientId}
+							disableCustomFormats={disableCustomFormats}
 						/>
 						<Mover
 							clientId={clientId}
@@ -538,6 +543,14 @@ const MaxiToolbar = memo(
 							onChange={obj => maxiSetAttributes(obj)}
 							textLevel={textLevel}
 						/>
+						<DynamicContent
+							blockName={name}
+							onChange={obj => maxiSetAttributes(obj)}
+							{...getGroupAttributes(
+								attributes,
+								'dynamicContent'
+							)}
+						/>
 						{name === 'maxi-blocks/slider-maxi' && (
 							<>
 								<SliderSlidesSettings />
@@ -551,24 +564,33 @@ const MaxiToolbar = memo(
 							</>
 						)}
 						<Link
+							{...getGroupAttributes(attributes, [
+								'dynamicContent',
+							])}
 							blockName={name}
 							linkSettings={linkSettings}
-							onChange={linkSettings =>
-								maxiSetAttributes({ linkSettings })
+							onChange={(linkSettings, obj) =>
+								maxiSetAttributes({ linkSettings, ...obj })
 							}
 							clientId={clientId}
 							textLevel={textLevel}
 						/>
 						<TextLink
-							{...getGroupAttributes(attributes, 'typography')}
+							{...getGroupAttributes(attributes, [
+								'typography',
+								'dynamicContent',
+							])}
 							blockName={name}
-							onChange={obj => maxiSetAttributes(obj)}
+							onChange={(linkSettings, obj) =>
+								maxiSetAttributes({ linkSettings, ...obj })
+							}
 							isList={isList}
 							linkSettings={linkSettings}
 							breakpoint={breakpoint}
 							textLevel={textLevel}
 							blockStyle={blockStyle}
 							styleCard={styleCard}
+							disableCustomFormats={disableCustomFormats}
 							clientId={clientId}
 						/>
 						<VerticalAlign
@@ -654,12 +676,14 @@ const MaxiToolbar = memo(
 								'alignment',
 								'textAlignment',
 							])}
+							content={content}
 							blockName={name}
 							breakpoint={breakpoint}
 							copyPasteMapping={copyPasteMapping}
 							prefix={prefix}
 							onChange={obj => maxiSetAttributes(obj)}
 							tooltipsHide={tooltipsHide}
+							disableCustomFormats={disableCustomFormats}
 						/>
 					</div>
 				</Popover>

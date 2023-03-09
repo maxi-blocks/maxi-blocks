@@ -6,6 +6,8 @@ body.maxi-blocks--active figure.maxi-image-block {
 
 	img {
 		box-sizing: border-box;
+		min-height: inherit;
+		max-height: inherit;
 	}
 
 	.maxi-hover-preview {
@@ -24,7 +26,8 @@ body.maxi-blocks--active figure.maxi-image-block {
 		position: relative;
 		width: 100%;
 		max-width: 100%;
-		max-height: 100%;
+		max-height: inherit;
+		min-height: inherit;
 		flex-grow: 1;
 		box-sizing: border-box;
 

@@ -73,58 +73,59 @@ const DynamicContent = props => {
 	};
 
 	useEffect(async () => {
-		// TODO: check if this code is necessary
-		// On init, get post author options and set current user as default
-		if (!postAuthorOptions) {
-			const authors = await resolveSelect('core').getUsers({
-				who: 'authors',
-			});
+		async function specialForReact18() {
+			// TODO: check if this code is necessary
+			// On init, get post author options and set current user as default
+			if (!postAuthorOptions) {
+				const authors = await resolveSelect('core').getUsers({
+					who: 'authors',
+				});
 
-			if (authors) {
-				setPostAuthorOptions(
-					authors.map(({ id, name }) => ({
-						label: `${id} - ${name}`,
-						value: id,
-					}))
+				if (authors) {
+					setPostAuthorOptions(
+						authors.map(({ id, name }) => ({
+							label: `${id} - ${name}`,
+							value: id,
+						}))
+					);
+
+					const { id } = await resolveSelect('core').getCurrentUser();
+
+					changeProps({ 'dc-author': id });
+				}
+			}
+
+			// Sets new content
+			if (status && relationTypes.includes(type)) {
+				const dataRequest = {
+					type,
+					id,
+					field,
+					postIdOptions,
+					relation,
+					author,
+				};
+
+				const postIDSettings = await getDCOptions(
+					dataRequest,
+					postIdOptions,
+					contentType
 				);
 
-				const { id } = await resolveSelect('core').getCurrentUser();
+				if (postIDSettings) {
+					const { newValues, newPostIdOptions } = postIDSettings;
 
-				changeProps({ 'dc-author': id });
+					changeProps(newValues);
+
+					if (
+						!isNil(newPostIdOptions) &&
+						!isEqual(postIdOptions, newPostIdOptions)
+					)
+						setPostIdOptions(newPostIdOptions);
+				}
 			}
 		}
-
-		// Sets new content
-		if (status && relationTypes.includes(type)) {
-			const dataRequest = {
-				type,
-				id,
-				field,
-				postIdOptions,
-				relation,
-				author,
-			};
-
-			const postIDSettings = await getDCOptions(
-				dataRequest,
-				postIdOptions,
-				contentType
-			);
-
-			if (postIDSettings) {
-				const { newValues, newPostIdOptions } = postIDSettings;
-
-				changeProps(newValues);
-
-				if (
-					!isNil(newPostIdOptions) &&
-					!isEqual(postIdOptions, newPostIdOptions)
-				)
-					setPostIdOptions(newPostIdOptions);
-			}
-		}
-
-		return null;
+		specialForReact18();
 	});
 
 	return (

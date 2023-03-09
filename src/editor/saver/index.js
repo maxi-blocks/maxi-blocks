@@ -62,7 +62,7 @@ const BlockStylesSaver = () => {
 		}
 	});
 
-	return () => {};
+	return null;
 };
 
 wp.domReady(() => {

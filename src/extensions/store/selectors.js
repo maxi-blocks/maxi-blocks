@@ -76,6 +76,11 @@ const selectors = {
 
 		return false;
 	},
+	allBlocksHaveBeenRendered(state) {
+		if (state) return state.blocksToRender.length === 0;
+
+		return false;
+	},
 };
 
 export default selectors;

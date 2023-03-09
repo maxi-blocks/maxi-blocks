@@ -53,14 +53,18 @@ const withMaxiSuspense = createHigherOrderComponent(
 				blockHasBeenRendered: setBlockHasBeenRendered,
 			} = useDispatch('maxiBlocks');
 
+			// On first render, request to the store that the block wants to render.
 			useLayoutEffect(() => {
 				blockWantsToRender(uniqueID, clientId);
 			}, []);
 
 			useEffect(() => {
-				if (canRender && hasBeenRendered) return () => {};
+				// If the block has already been rendered, don't need the interval anymore.
+				if (canRender && hasBeenRendered) return null;
 
-				const interval = setInterval(async () => {
+				// Use this interval as a heartbeat to check if the store allows the block to render
+				// and if it has been already rendered.
+				const interval = setInterval(() => {
 					if (!canRender && canBlockRender(uniqueID, clientId)) {
 						setCanRender(true);
 
@@ -79,28 +83,27 @@ const withMaxiSuspense = createHigherOrderComponent(
 				return () => clearInterval(interval);
 			}, [setCanRender, setHasBeenRendered]);
 
+			// Wait for the store to allow the block to render.
 			if (!canRender) return <ContentLoader />;
 
-			if (canRender && hasBeenRendered)
-				return (
-					<WrappedComponent
-						{...ownProps}
-						onMaxiBlockRender={() => {
-							setBlockHasBeenRendered(uniqueID);
-							setHasBeenRendered(true);
-						}}
-					/>
-				);
+			const WrappedComponentWithProps = (
+				<WrappedComponent
+					{...ownProps}
+					onMaxiBlockRender={() => {
+						setBlockHasBeenRendered(uniqueID);
+						setHasBeenRendered(true);
+					}}
+				/>
+			);
+
+			// If the block has already been rendered, don't need the suspense again.
+			// If we leave the suspense, the block will be re-rendered every time we
+			// modify something and generates a strange UX.
+			if (canRender && hasBeenRendered) return WrappedComponentWithProps;
 
 			return (
 				<Suspense fallback={<ContentLoader />}>
-					<WrappedComponent
-						{...ownProps}
-						onMaxiBlockRender={() => {
-							setBlockHasBeenRendered(uniqueID);
-							setHasBeenRendered(true);
-						}}
-					/>
+					{WrappedComponentWithProps}
 				</Suspense>
 			);
 		}),

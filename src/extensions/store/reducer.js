@@ -216,7 +216,7 @@ const reducer = (
 			)
 				return state;
 
-			const getInnerBlocksUniqueID = (clientId, filterFn) => {
+			const getInnerBlocksUniqueID = clientId => {
 				const innerBlocks =
 					select('core/block-editor').getBlocks(clientId);
 

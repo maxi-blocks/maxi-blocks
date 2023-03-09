@@ -34,6 +34,7 @@ import mobile from 'is-mobile';
  * Styles
  */
 import './editor.scss';
+import { useRef } from 'react';
 
 const INNER_BLOCKS = ['maxi-blocks/group-maxi', 'maxi-blocks/column-maxi'];
 
@@ -45,7 +46,7 @@ const getBlockClassName = blockName => {
 		.replace('-maxi', '')}-block`;
 };
 
-const getBlockStyle = (attributes, breakpoint) => {
+const getBlockStyle = (attributes, breakpoint, marginValue) => {
 	const getValue = target =>
 		getLastBreakpointAttribute({
 			target,
@@ -56,9 +57,6 @@ const getBlockStyle = (attributes, breakpoint) => {
 	const isFullWidth = getValue('full-width') === 'full';
 
 	if (!isFullWidth) return {};
-
-	const getMarginValue = MarginValueCalculator();
-	const marginValue = getMarginValue();
 
 	// Margin
 	const marginRight = getValue('margin-right') || 0;
@@ -322,11 +320,24 @@ const MaxiBlock = memo(
 		const { clientId, attributes, deviceType } = props;
 
 		const [isHovered, setHovered] = useReducer(e => !e, false);
+		const getMarginValue = useRef(null);
+
+		useEffect(() => {
+			getMarginValue.current = MarginValueCalculator();
+
+			return () => {
+				getMarginValue.current(true);
+			};
+		}, []);
 
 		// In order to keep the structure that Gutenberg uses for the block,
 		// is necessary to add some inline styles to the first hierarchy blocks.
 		const { isFirstOnHierarchy } = attributes;
-		const styleStr = getBlockStyle(attributes, deviceType);
+		const styleStr = getBlockStyle(
+			attributes,
+			deviceType,
+			getMarginValue.current()
+		);
 
 		return (
 			<>

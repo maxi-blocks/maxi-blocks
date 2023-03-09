@@ -1,13 +1,25 @@
 import getEditorWrapper from './getEditorWrapper';
 
-const MarginValueCalculator = () => {
+const MarginValueCalculator = (unmount = false) => {
 	let fullWidthElementWidth = null;
 	let editorWidth = null;
 	let updateValue = false;
 	const rawWrapper = getEditorWrapper();
 	const editorWrapper = rawWrapper?.contentDocument ?? rawWrapper;
 
-	const getMarginValue = () => {
+	// Some themes have margin values in vw or rem which can change on responsive, so we need to update the value on resize.
+	const editorSizeObserver = new ResizeObserver(() => {
+		updateValue = true;
+	});
+
+	editorSizeObserver.observe(editorWrapper);
+
+	const getMarginValue = (unmount = false) => {
+		if (unmount) {
+			editorSizeObserver.disconnect();
+			return 0;
+		}
+
 		if (
 			fullWidthElementWidth === null ||
 			editorWidth === null ||
@@ -28,13 +40,6 @@ const MarginValueCalculator = () => {
 
 		return (editorWidth - fullWidthElementWidth) / 2;
 	};
-
-	// Some themes have margin values in vw or rem which change on responsive, so we need to update the value on resize.
-	const editorSizeObserver = new ResizeObserver(() => {
-		updateValue = true;
-	});
-
-	editorSizeObserver.observe(editorWrapper);
 
 	return getMarginValue;
 };

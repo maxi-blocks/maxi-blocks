@@ -73,7 +73,7 @@ describe('Dynamic content', () => {
 			);
 
 		const frontResults = Object.entries(expectedResults).map(
-			([block, expect]) => getFrontResults(block, expect)
+			async ([block, expect]) => getFrontResults(block, expect)
 		);
 
 		expect(frontResults.every(result => result)).toBe(true);

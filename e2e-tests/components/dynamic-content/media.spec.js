@@ -6,25 +6,46 @@ import {
 	setClipboardData,
 	pressKeyWithModifier,
 	openPreviewPage,
+	wpDataSelect,
 } from '@wordpress/e2e-test-utils';
-import addImageToLibrary from '../../utils/addImageToLibrary';
 
 /**
  * Internal dependencies
  */
 import { mediaCodeEditor } from './content';
+import addImageToLibrary from '../../utils/addImageToLibrary';
 
 describe('Dynamic content', () => {
 	test('Should return media DC content', async () => {
 		await createNewPost();
 		await addImageToLibrary(page);
 
+		// Need a first call to set the results on the store
+		await wpDataSelect(
+			'core',
+			'getEntityRecords',
+			'postType',
+			'attachment'
+		);
+		await page.waitForTimeout(500);
+
+		const mediaEntities = await wpDataSelect(
+			'core',
+			'getEntityRecords',
+			'postType',
+			'attachment'
+		);
+		const mediaElement = mediaEntities[0];
+
 		// Set code editor as clipboard data
-		const codeEditor = mediaCodeEditor;
+		const codeEditor = mediaCodeEditor.replaceAll(
+			'"dc-id":91',
+			`"dc-id":${mediaElement.id}`
+		);
 		await setClipboardData({ plainText: codeEditor });
 
 		// Set title
-		await page.keyboard.type('Page DC test');
+		await page.keyboard.type('Media DC test');
 
 		// Add code editor
 		await page.keyboard.press('Enter');

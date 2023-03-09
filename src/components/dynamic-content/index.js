@@ -72,7 +72,7 @@ const DynamicContent = props => {
 		if (hasChangesToSave) onChange(params);
 	};
 
-	useEffect(async () => {
+	useEffect(() => {
 		async function specialForReact18() {
 			// TODO: check if this code is necessary
 			// On init, get post author options and set current user as default
@@ -126,7 +126,7 @@ const DynamicContent = props => {
 			}
 		}
 		specialForReact18();
-	});
+	}, []);
 
 	return (
 		<div className={classes}>

@@ -127,11 +127,9 @@ const withMaxiDC = createHigherOrderComponent(
 					}
 				};
 				specialForReact18();
-			});
+			}, []);
 
-			return () => {
-				<WrappedComponent {...ownProps} />;
-			};
+			return <WrappedComponent {...ownProps} />;
 		}),
 	'withMaxiDC'
 );

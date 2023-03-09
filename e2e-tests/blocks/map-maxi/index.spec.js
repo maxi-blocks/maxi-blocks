@@ -68,6 +68,7 @@ describe('Map Maxi', () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Map Maxi');
 		await page.waitForSelector('.maxi-map-block');
+		await page.waitForTimeout(500);
 	});
 
 	it('Map Maxi does not break', async () => {

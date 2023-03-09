@@ -15,6 +15,7 @@ import { Toolbar } from '../../components';
 import {
 	getColorRGBAString,
 	getPaletteAttributes,
+	getGroupAttributes,
 } from '../../extensions/styles';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import getStyles from './styles';
@@ -23,6 +24,7 @@ import { onChangeRichText, textContext } from '../../extensions/text/formats';
 import { setSVGColor } from '../../extensions/svg';
 import { copyPasteMapping } from './data';
 import { indentListItems, outdentListItems } from '../../extensions/text/lists';
+import withMaxiDC from '../../extensions/DC/withMaxiDC';
 
 /**
  * Content
@@ -44,6 +46,22 @@ class edit extends MaxiBlockComponent {
 
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
+	}
+
+	get getMaxiCustomData() {
+		const { attributes } = this.props;
+		const { uniqueID } = attributes;
+		const { 'dc-status': dcStatus } = attributes;
+
+		return {
+			...(dcStatus && {
+				dynamic_content: {
+					[uniqueID]: {
+						...getGroupAttributes(attributes, 'dynamicContent'),
+					},
+				},
+			}),
+		};
 	}
 
 	maxiBlockDidUpdate() {
@@ -83,9 +101,10 @@ class edit extends MaxiBlockComponent {
 		}
 
 		// Ensures white-space is applied from Maxi and not with inline styles
-		Array.from(this.blockRef.current.children).forEach(el => {
-			if (el.style.whiteSpace) el.style.whiteSpace = null;
-		});
+		if (this.blockRef?.current?.children)
+			Array.from(this.blockRef.current.children).forEach(el => {
+				if (el.style.whiteSpace) el.style.whiteSpace = null;
+			});
 	}
 
 	render() {
@@ -104,7 +123,12 @@ class edit extends MaxiBlockComponent {
 			textLevel,
 			typeOfList,
 			uniqueID,
+			'dc-status': dcStatus,
+			'dc-content': dcContent,
 		} = attributes;
+
+		const className = 'maxi-text-block__content';
+		const DCTagName = textLevel;
 
 		/**
 		 * Prevents losing general link format when the link is affecting whole content
@@ -183,7 +207,7 @@ class edit extends MaxiBlockComponent {
 						...this.state.formatValue,
 					},
 					onChangeTextFormat: newFormatValue => {
-						this.state.onChangeFormat(newFormatValue);
+						!dcStatus && this.state.onChangeFormat(newFormatValue);
 						onChangeRichText({
 							attributes,
 							maxiSetAttributes,
@@ -194,12 +218,17 @@ class edit extends MaxiBlockComponent {
 					},
 				}}
 			>
-				<Inspector key={`block-settings-${uniqueID}`} {...this.props} />
+				<Inspector
+					key={`block-settings-${uniqueID}`}
+					disableCustomFormats={dcStatus}
+					{...this.props}
+				/>
 				<Toolbar
 					key={`toolbar-${uniqueID}`}
 					ref={this.blockRef}
 					{...this.props}
 					copyPasteMapping={copyPasteMapping}
+					disableCustomFormats={dcStatus}
 				/>
 				<MaxiBlock
 					key={`maxi-text--${uniqueID}`}
@@ -211,7 +240,7 @@ class edit extends MaxiBlockComponent {
 					ref={this.blockRef}
 					{...getMaxiBlockAttributes(this.props)}
 				>
-					{!isList && (
+					{!dcStatus && !isList && (
 						<RichText
 							tagName={textLevel}
 							__unstableEmbedURLOnPaste
@@ -248,7 +277,10 @@ class edit extends MaxiBlockComponent {
 							}
 						</RichText>
 					)}
-					{isList && (
+					{dcStatus && (
+						<DCTagName className={className}>{dcContent}</DCTagName>
+					)}
+					{!dcStatus && isList && (
 						<RichText
 							multiline='li'
 							tagName={typeOfList}
@@ -342,4 +374,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiProps(edit);
+export default withMaxiDC(withMaxiProps(edit));

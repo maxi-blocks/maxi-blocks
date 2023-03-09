@@ -208,11 +208,11 @@ const reducer = (
 				deprecatedBlocks: omit(state.deprecatedBlocks, action.uniqueID),
 			};
 		case 'BLOCK_WANTS_TO_RENDER': {
-			const { clientId, uniqueID } = action;
+			const { uniqueID, clientId } = action;
 
 			if (
-				state.blocksToRender.includes(uniqueID) &&
-				!state.renderedBlocks.includes(uniqueID)
+				state.blocksToRender.includes(uniqueID) ||
+				state.renderedBlocks.includes(uniqueID)
 			)
 				return state;
 

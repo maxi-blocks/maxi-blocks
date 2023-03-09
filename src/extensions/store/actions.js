@@ -140,10 +140,11 @@ const actions = {
 			uniqueID,
 		};
 	},
-	removeBlockHasBeenRendered(uniqueID) {
+	removeBlockHasBeenRendered(uniqueID, clientId) {
 		return {
 			type: 'REMOVE_BLOCK_HAS_BEEN_RENDERED',
 			uniqueID,
+			clientId,
 		};
 	},
 };

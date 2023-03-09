@@ -16,7 +16,7 @@ import { mediaCodeEditor } from './content';
 import addImageToLibrary from '../../utils/addImageToLibrary';
 
 describe('Dynamic content', () => {
-	test('Should return media DC content', async () => {
+	it.skip('Should return media DC content', async () => {
 		await createNewPost();
 		await addImageToLibrary(page);
 

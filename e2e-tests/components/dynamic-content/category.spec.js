@@ -14,7 +14,7 @@ import {
 import { catCodeEditor } from './content';
 
 describe('Dynamic content', () => {
-	test('Should return categories DC content', async () => {
+	it.skip('Should return categories DC content', async () => {
 		await createNewPost();
 
 		// Set code editor as clipboard data

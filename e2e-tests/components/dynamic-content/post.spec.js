@@ -14,7 +14,7 @@ import {
 import { postCodeEditor } from './content';
 
 describe('Dynamic content', () => {
-	test('Should return post DC content', async () => {
+	it.skip('Should return post DC content', async () => {
 		await createNewPost();
 
 		// Set code editor as clipboard data

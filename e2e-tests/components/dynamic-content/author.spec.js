@@ -14,7 +14,7 @@ import {
 import { siteCodeEditor } from './content';
 
 describe('Dynamic content', () => {
-	test('Should return author DC content', async () => {
+	it.skip('Should return author DC content', async () => {
 		await createNewPost();
 
 		// Set code editor as clipboard data

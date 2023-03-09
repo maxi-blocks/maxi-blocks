@@ -9,6 +9,7 @@ export { default as calloutArrow } from './inspector-callout-arrow';
 export { default as clipPath } from './inspector-clip-path';
 export { default as customClasses } from './inspector-custom-classes';
 export { default as customCss } from './inspector-custom-css';
+export { default as dc } from './inspector-dc';
 export { default as display } from './inspector-display';
 export { default as flex } from './inspector-flex';
 export { default as icon } from './inspector-icon';

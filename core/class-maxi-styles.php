@@ -193,9 +193,11 @@ class MaxiBlocks_Styles
     {
         if (!$is_template) {
             global $post;
+
             if (!$post) {
                 return null;
             }
+        
             return $post->ID;
         }
 

@@ -210,6 +210,19 @@ const reducer = (
 		case 'BLOCK_WANTS_TO_RENDER': {
 			const { uniqueID, clientId } = action;
 
+			const WRAPPER_BLOCKS = [
+				'container-maxi',
+				'row-maxi',
+				'column-maxi',
+				'group-maxi',
+			];
+
+			const isWrapperBlock = WRAPPER_BLOCKS.some(name =>
+				uniqueID.includes(name)
+			);
+
+			if (!isWrapperBlock) return state;
+
 			if (
 				state.blocksToRender.includes(uniqueID) ||
 				state.renderedBlocks.includes(uniqueID)
@@ -228,14 +241,21 @@ const reducer = (
 					const {
 						clientId: innerBlockClientId,
 						attributes: { uniqueID },
+						name: blockName,
 					} = innerBlock;
 
-					if (!state.blocksToRender.includes(uniqueID))
-						innerBlocksUniqueID.push(uniqueID);
-
-					innerBlocksUniqueID.push(
-						...getInnerBlocksUniqueID(innerBlockClientId)
+					const isWrapperBlock = WRAPPER_BLOCKS.some(name =>
+						blockName.includes(name)
 					);
+
+					if (isWrapperBlock) {
+						if (!state.blocksToRender.includes(uniqueID))
+							innerBlocksUniqueID.push(uniqueID);
+
+						innerBlocksUniqueID.push(
+							...getInnerBlocksUniqueID(innerBlockClientId)
+						);
+					}
 				});
 
 				return innerBlocksUniqueID;
@@ -250,6 +270,18 @@ const reducer = (
 					uniqueID,
 					...innerBlocksUniqueID,
 				],
+			};
+		}
+		case 'BLOCK_HAS_CHANGED_UNIQUE_ID': {
+			const { oldUniqueID, newUniqueID } = action;
+
+			const newBlocksToRender = state.blocksToRender.map(block =>
+				block === oldUniqueID ? newUniqueID : block
+			);
+
+			return {
+				...state,
+				blocksToRender: newBlocksToRender,
 			};
 		}
 		case 'BLOCK_HAS_BEEN_RENDERED': {

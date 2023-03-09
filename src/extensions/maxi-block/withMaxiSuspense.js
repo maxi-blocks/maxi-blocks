@@ -8,19 +8,13 @@ import {
 	useState,
 	useEffect,
 	useLayoutEffect,
+	useRef,
 } from '@wordpress/element';
 
 /**
  * External dependencies
  */
 import { PuffLoader } from 'react-spinners';
-
-const SUSPENSE_BLOCKS = [
-	'container-maxi',
-	'row-maxi',
-	'column-maxi',
-	'group-maxi',
-];
 
 const ContentLoader = () => (
 	<PuffLoader color='#ff4a17' size={20} speedMultiplier={0.8} />
@@ -40,23 +34,27 @@ const withMaxiSuspense = createHigherOrderComponent(
 			);
 
 			const [canRender, setCanRender] = useState(
-				SUSPENSE_BLOCKS.some(blockName => uniqueID.includes(blockName))
-					? canBlockRender(uniqueID)
-					: true
+				canBlockRender(uniqueID)
 			);
 			const [hasBeenRendered, setHasBeenRendered] = useState(
 				blockHasBeenRendered(uniqueID)
 			);
 
+			const originalUniqueID = useRef(uniqueID);
+
 			const {
 				blockWantsToRender,
 				blockHasBeenRendered: setBlockHasBeenRendered,
+				blockHasChangedUniqueID,
 			} = useDispatch('maxiBlocks');
 
 			// On first render, request to the store that the block wants to render.
 			useLayoutEffect(() => {
+				if (originalUniqueID.current !== uniqueID)
+					blockHasChangedUniqueID(originalUniqueID.current, uniqueID);
+
 				blockWantsToRender(uniqueID, clientId);
-			}, []);
+			}, [uniqueID]);
 
 			useEffect(() => {
 				// If the block has already been rendered, don't need the interval anymore.
@@ -64,7 +62,7 @@ const withMaxiSuspense = createHigherOrderComponent(
 
 				// Use this interval as a heartbeat to check if the store allows the block to render
 				// and if it has been already rendered.
-				const interval = setInterval(() => {
+				const interval = setInterval(async () => {
 					if (!canRender && canBlockRender(uniqueID, clientId)) {
 						setCanRender(true);
 

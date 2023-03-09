@@ -134,6 +134,13 @@ const actions = {
 			clientId,
 		};
 	},
+	blockHasChangedUniqueID(oldUniqueID, uniqueID) {
+		return {
+			type: 'BLOCK_HAS_CHANGED_UNIQUE_ID',
+			oldUniqueID,
+			uniqueID,
+		};
+	},
 	blockHasBeenRendered(uniqueID) {
 		return {
 			type: 'BLOCK_HAS_BEEN_RENDERED',

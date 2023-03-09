@@ -9,7 +9,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
-import { lazy } from '@wordpress/element';
 
 /**
  * Styles and icons
@@ -21,10 +20,9 @@ import { sliderIcon } from '../../icons';
 /**
  * Block dependencies
  */
-const Edit = lazy(() => import('./edit'));
+import edit from './edit';
 import attributes from './attributes';
 import save from './save';
-import withMaxiSuspense from '../../extensions/maxi-block/withMaxiSuspense';
 
 /**
  * Block
@@ -49,6 +47,6 @@ registerBlockType('maxi-blocks/slider-maxi', {
 			uniqueid: uniqueID,
 		};
 	},
-	edit: withMaxiSuspense(Edit),
+	edit,
 	save,
 });

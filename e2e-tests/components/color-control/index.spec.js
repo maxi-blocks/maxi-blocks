@@ -1,20 +1,21 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyWithModifier,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openSidebarTab, editColorControl, getAttributes } from '../../utils';
+import {
+	openSidebarTab,
+	editColorControl,
+	getAttributes,
+	insertMaxiBlock,
+} from '../../utils';
 
 describe('ColorControl', () => {
 	it('Checking the palette color control', async () => {
 		await createNewPost();
-		await insertBlock('Button Maxi');
+		await insertMaxiBlock(page, 'Button Maxi');
 		const accordionPanel = await openSidebarTab(
 			page,
 			'style',
@@ -86,7 +87,7 @@ describe('ColorControl', () => {
 
 	it('Checking the opacity is never under 0 or more than 100', async () => {
 		await createNewPost();
-		await insertBlock('Button Maxi');
+		await insertMaxiBlock(page, 'Button Maxi');
 		const accordionPanel = await openSidebarTab(
 			page,
 			'style',
@@ -119,7 +120,7 @@ describe('ColorControl', () => {
 	it('Checking the reset button', async () => {
 		await createNewPost();
 
-		await insertBlock('Button Maxi');
+		await insertMaxiBlock(page, 'Button Maxi');
 		const accordionPanel = await openSidebarTab(
 			page,
 			'style',

@@ -20,6 +20,7 @@ export { default as getClientId } from './getClientId';
 export { default as getEditedPostContent } from './getEditedPostContent';
 export { default as getElementAttribute } from './getElementAttribute';
 export { default as getStyleCardEditor } from './getStyleCardEditor';
+export { default as insertMaxiBlock } from './insertMaxiBlock';
 export { default as modalMock } from './modalMock';
 export { default as openPreviewPage } from './openPreviewPage';
 export { default as openSidebarTab } from './openSidebarTab';

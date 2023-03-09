@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -12,6 +12,7 @@ import {
 	getAttributes,
 	getBlockStyle,
 	openSidebarTab,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('ClipPathControl', () => {
@@ -35,7 +36,7 @@ describe('ClipPathControl', () => {
 
 	it('Checking the clip-path control', async () => {
 		await createNewPost();
-		await insertBlock('Image Maxi');
+		await insertMaxiBlock(page, 'Image Maxi');
 		const accordionPanel = await openSidebarTab(page, 'style', 'clip path');
 
 		// Use clip-path to create a triangle

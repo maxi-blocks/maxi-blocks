@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
@@ -11,13 +11,13 @@ import {
 	getBlockStyle,
 	getAttributes,
 	addResponsiveTest,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('FullSizeControl', () => {
 	it('Checking the full size control', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
-
+		await insertMaxiBlock(page, 'Text Maxi');
 		const accordionPanel = await openSidebarTab(
 			page,
 			'style',
@@ -126,12 +126,13 @@ describe('FullSizeControl', () => {
 
 	it('Checking fullSizeControl force aspect ratio', async () => {
 		await createNewPost();
-		await insertBlock('Container Maxi');
+		await insertMaxiBlock(page, 'Container Maxi');
 
 		// select 3 columns
 		await page.$$eval('.maxi-row-block__template button', button =>
 			button[6].click()
 		);
+		await page.waitForSelector('.maxi-column-block');
 
 		// select colum
 		await page.$eval(

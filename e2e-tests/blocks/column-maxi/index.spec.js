@@ -3,7 +3,6 @@
  */
 import {
 	createNewPost,
-	insertBlock,
 	pressKeyTimes,
 	selectBlockByClientId,
 } from '@wordpress/e2e-test-utils';
@@ -18,16 +17,18 @@ import {
 	getBlockStyle,
 	getEditedPostContent,
 	openSidebarTab,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('Column Maxi', () => {
 	it('Column Maxi does not break', async () => {
 		await createNewPost();
-		await insertBlock('Container Maxi');
+		await insertMaxiBlock(page, 'Container Maxi');
 
 		await page.$eval('.maxi-row-block__template button', button =>
 			button.click()
 		);
+		await page.waitForSelector('.maxi-column-block');
 
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 	});
@@ -111,11 +112,12 @@ describe('Column Maxi', () => {
 
 	it('Check column Border', async () => {
 		await createNewPost();
-		await insertBlock('Container Maxi');
+		await insertMaxiBlock(page, 'Container Maxi');
 
 		await page.$$eval('.maxi-row-block__template button', button =>
 			button[6].click()
 		);
+		await page.waitForSelector('.maxi-column-block');
 
 		const borderAccordion = await openSidebarTab(page, 'style', 'border');
 

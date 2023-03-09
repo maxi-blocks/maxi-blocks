@@ -2,7 +2,7 @@
 /**
  * WordPress dependencies
  */
-import { insertBlock, createNewPost } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -15,13 +15,14 @@ import {
 	changeResponsive,
 	openPreviewPage,
 	editAdvancedNumberControl,
+	insertMaxiBlock,
 } from '../../utils';
 import sizeAndPositionChecker from './utils/sizeAndPositionChecker';
 
 describe('Background Color Layer', () => {
 	it('Check Background Color layer', async () => {
 		await createNewPost();
-		await insertBlock('Group Maxi');
+		await insertMaxiBlock(page, 'Group Maxi');
 		await openSidebarTab(page, 'style', 'background layer');
 		await addBackgroundLayer(page, 'color');
 

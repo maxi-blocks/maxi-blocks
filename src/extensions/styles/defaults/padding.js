@@ -1,4 +1,5 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import attributesShorter from '../dictionary/attributesShorter';
 
 const rawPadding = {
 	'padding-top': {
@@ -39,4 +40,4 @@ const padding = breakpointAttributesCreator({
 	obj: rawPadding,
 });
 
-export default padding;
+export default attributesShorter(padding, 'padding');

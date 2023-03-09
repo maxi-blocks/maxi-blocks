@@ -3,7 +3,7 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
@@ -11,6 +11,7 @@ import {
 	getBlockAttributes,
 	changeResponsive,
 	getAttributes,
+	insertMaxiBlock,
 } from '../../../../utils';
 
 const changeAlignment = async (page, index = 0) => {
@@ -50,7 +51,7 @@ const checkAlignment = async (page, index = 0) => {
 describe('AlignmentControl', () => {
 	it('Checking alignment in toolbar', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');
 
 		const alignments = ['center', 'right', 'justify', 'left'];

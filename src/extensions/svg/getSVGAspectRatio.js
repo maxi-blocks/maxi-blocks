@@ -1,4 +1,6 @@
 const getSVGAspectRatio = svg =>
-	svg?.split('preserveaspectratio="')?.pop()?.split('"')[0];
+	svg.includes('preserveaspectratio')
+		? svg?.split('preserveaspectratio="')?.pop()?.split('"')[0]
+		: null;
 
 export default getSVGAspectRatio;

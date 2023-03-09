@@ -2,11 +2,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyWithModifier,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
@@ -19,12 +15,13 @@ import {
 	editAxisControl,
 	addResponsiveTest,
 	changeResponsive,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('BorderControl', () => {
 	it('Checking the border control', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 		const borderAccordion = await openSidebarTab(page, 'style', 'border');
 
 		const axisControlInstance = await borderAccordion.$(
@@ -119,7 +116,7 @@ describe('BorderControl', () => {
 
 	it('Check hover values kept after setting normal border to none', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 		const borderAccordion = await openSidebarTab(page, 'style', 'border');
 		await borderAccordion.$$eval(
 			'.maxi-default-styles-control button',
@@ -294,7 +291,7 @@ describe('BorderControl', () => {
 
 	it('Checking the responsive delete border', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 		const borderAccordion = await openSidebarTab(page, 'style', 'border');
 
 		// base

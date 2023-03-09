@@ -331,6 +331,10 @@ class MaxiBlockComponent extends Component {
 			);
 		}
 
+		dispatch('maxiBlocks').removeBlockHasBeenRendered(
+			this.props.attributes.uniqueID
+		);
+
 		if (this.maxiBlockWillUnmount)
 			this.maxiBlockWillUnmount(isBlockBeingRemoved);
 	}

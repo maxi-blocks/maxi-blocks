@@ -1,17 +1,21 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
-import { getAttributes, openSidebarTab } from '../../../../utils';
+import {
+	getAttributes,
+	openSidebarTab,
+	insertMaxiBlock,
+} from '../../../../utils';
 
 describe('Divider alignment from Toolbar', () => {
 	it('Test divider alignment from toolbar', async () => {
 		await createNewPost();
-		await insertBlock('Divider Maxi');
+		await insertMaxiBlock(page, 'Divider Maxi');
 
 		// Wait for toolbar to be visible
 		await page.waitForSelector('.toolbar-wrapper');

@@ -154,8 +154,19 @@ class MaxiBlocks_StyleCards
         $text_level_values = (object) $style_card_values->$text_level;
 
         $font = $text_level_values->{'font-family-general'};
+        $font_weights = [];
+        $font_styles = [];
 
-        return $font;
+        foreach ($text_level_values as $key => $value) {
+            if (strpos($key, 'font-weight') !== false) {
+                $font_weights[] = $value;
+            }
+            if (strpos($key, 'font-style') !== false) {
+                $font_styles[] = $value;
+            }
+        }
+
+        return [$font, $font_weights, $font_styles];
     }
 
 

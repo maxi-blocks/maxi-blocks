@@ -9,6 +9,7 @@ import {
 	memo,
 	useCallback,
 	useReducer,
+	useRef,
 } from '@wordpress/element';
 import { dispatch, select } from '@wordpress/data';
 
@@ -34,7 +35,6 @@ import mobile from 'is-mobile';
  * Styles
  */
 import './editor.scss';
-import { useRef } from 'react';
 
 const INNER_BLOCKS = ['maxi-blocks/group-maxi', 'maxi-blocks/column-maxi'];
 

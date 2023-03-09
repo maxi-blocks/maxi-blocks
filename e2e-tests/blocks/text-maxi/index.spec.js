@@ -659,8 +659,6 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 		await pressKeyWithModifier('primary', 'v');
 		await page.waitForTimeout(150);
-		await setAttributes(page, { uniqueID: 'text-maxi-1' });
-		await page.waitForTimeout(150);
 
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();

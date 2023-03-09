@@ -119,6 +119,11 @@ describe('Column Maxi', () => {
 		);
 		await page.waitForSelector('.maxi-column-block');
 
+		// Ensure we select the first Column
+		await page.$$eval('.maxi-container-block .maxi-column-block', block =>
+			block[2].focus()
+		);
+
 		const borderAccordion = await openSidebarTab(page, 'style', 'border');
 
 		const axisControlInstance = await borderAccordion.$(

@@ -18,4 +18,15 @@ describe('getSVGAspectRatio', () => {
 
 		expect(aspectRatio).toBe('xMidYMid meet');
 	});
+
+	it('Should return null if the SVG does not have a preserveaspectratio attribute', () => {
+		const newIcon = icon.replace(
+			'preserveaspectratio="xMidYMid slice"',
+			''
+		);
+
+		const aspectRatio = getSVGAspectRatio(newIcon);
+
+		expect(aspectRatio).toBe(null);
+	});
 });

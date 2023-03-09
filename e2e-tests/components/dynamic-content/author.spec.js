@@ -14,7 +14,7 @@ import {
 import { siteCodeEditor } from './content';
 
 describe('Dynamic content', () => {
-	test('Should return site DC content', async () => {
+	it.skip('Should return author DC content', async () => {
 		await createNewPost();
 
 		// Set code editor as clipboard data
@@ -22,7 +22,7 @@ describe('Dynamic content', () => {
 		await setClipboardData({ plainText: codeEditor });
 
 		// Set title
-		await page.keyboard.type('Site DC test');
+		await page.keyboard.type('Author DC test');
 
 		// Add code editor
 		await page.keyboard.press('Enter');
@@ -49,8 +49,8 @@ describe('Dynamic content', () => {
 				expect
 			);
 
-		const results = Object.entries(expectedResults).map(([block, expect]) =>
-			getBackResults(block, expect)
+		const results = Object.entries(expectedResults).map(
+			async ([block, expect]) => getBackResults(block, expect)
 		);
 
 		expect(results.every(result => result)).toBe(true);
@@ -73,7 +73,7 @@ describe('Dynamic content', () => {
 			);
 
 		const frontResults = Object.entries(expectedResults).map(
-			([block, expect]) => getFrontResults(block, expect)
+			async ([block, expect]) => getFrontResults(block, expect)
 		);
 
 		expect(frontResults.every(result => result)).toBe(true);

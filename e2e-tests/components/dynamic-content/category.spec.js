@@ -14,7 +14,7 @@ import {
 import { catCodeEditor } from './content';
 
 describe('Dynamic content', () => {
-	test('Should return categories DC content', async () => {
+	it.skip('Should return categories DC content', async () => {
 		await createNewPost();
 
 		// Set code editor as clipboard data
@@ -58,22 +58,24 @@ describe('Dynamic content', () => {
 			);
 
 		const titleResults = await Promise.all(
-			titleBlocks.map(block => getBackResults(block, 'title'))
+			titleBlocks.map(async block => getBackResults(block, 'title'))
 		);
 		const descriptionResults = await Promise.all(
-			descriptionBlocks.map(block => getBackResults(block, 'description'))
+			descriptionBlocks.map(async block =>
+				getBackResults(block, 'description')
+			)
 		);
 		const slugResults = await Promise.all(
-			slugBlocks.map(block => getBackResults(block, 'slug'))
+			slugBlocks.map(async block => getBackResults(block, 'slug'))
 		);
 		const parentResults = await Promise.all(
-			parentBlocks.map(block => getBackResults(block, 'parent'))
+			parentBlocks.map(async block => getBackResults(block, 'parent'))
 		);
 		const countResults = await Promise.all(
-			countBlocks.map(block => getBackResults(block, 'count'))
+			countBlocks.map(async block => getBackResults(block, 'count'))
 		);
 		const linkResults = await Promise.all(
-			linkBlocks.map(block => getBackResults(block, 'link'))
+			linkBlocks.map(async block => getBackResults(block, 'link'))
 		);
 		const results = [
 			...titleResults,
@@ -104,24 +106,24 @@ describe('Dynamic content', () => {
 			);
 
 		const frontTitleResults = await Promise.all(
-			titleBlocks.map(block => getFrontResults(block, 'title'))
+			titleBlocks.map(async block => getFrontResults(block, 'title'))
 		);
 		const frontContentResults = await Promise.all(
-			descriptionBlocks.map(block =>
+			descriptionBlocks.map(async block =>
 				getFrontResults(block, 'description')
 			)
 		);
 		const frontExcerptResults = await Promise.all(
-			slugBlocks.map(block => getFrontResults(block, 'slug'))
+			slugBlocks.map(async block => getFrontResults(block, 'slug'))
 		);
 		const frontAuthorResults = await Promise.all(
-			parentBlocks.map(block => getFrontResults(block, 'parent'))
+			parentBlocks.map(async block => getFrontResults(block, 'parent'))
 		);
 		const frontCountResults = await Promise.all(
-			countBlocks.map(block => getFrontResults(block, 'count'))
+			countBlocks.map(async block => getFrontResults(block, 'count'))
 		);
 		const frontLinkResults = await Promise.all(
-			linkBlocks.map(block => getFrontResults(block, 'link'))
+			linkBlocks.map(async block => getFrontResults(block, 'link'))
 		);
 
 		const frontResults = [

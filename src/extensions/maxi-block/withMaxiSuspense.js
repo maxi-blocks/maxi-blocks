@@ -1,25 +1,30 @@
 /**
  * WordPress dependencies
  */
-import { dispatch, select } from '@wordpress/data';
+import { useSelect, useDispatch } from '@wordpress/data';
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
-import { Suspense, useState, useEffect, useRef } from '@wordpress/element';
+import {
+	Suspense,
+	useState,
+	useEffect,
+	useLayoutEffect,
+} from '@wordpress/element';
 
 /**
  * External dependencies
  */
-import { isEmpty, isNil } from 'lodash';
 import { PuffLoader } from 'react-spinners';
 
-const ContentLoader = () => <PuffLoader color='#ff4a17' size={20} speedMultiplier={0.8}/>;
+const SUSPENSE_BLOCKS = [
+	'container-maxi',
+	'row-maxi',
+	'column-maxi',
+	'group-maxi',
+];
 
-const LoadComponent = ({ onUnmount }) => {
-	useEffect(() => {
-		return onUnmount();
-	}, []);
-
-	return <ContentLoader />;
-};
+const ContentLoader = () => (
+	<PuffLoader color='#ff4a17' size={20} speedMultiplier={0.8} />
+);
 
 const withMaxiSuspense = createHigherOrderComponent(
 	WrappedComponent =>
@@ -29,99 +34,76 @@ const withMaxiSuspense = createHigherOrderComponent(
 				attributes: { uniqueID },
 			} = ownProps;
 
-			const [canRender, setCanRender] = useState(false);
-			const [hasBeenRendered, setHasBeenRendered] = useState(false);
+			const { canBlockRender, blockHasBeenRendered } = useSelect(
+				select => select('maxiBlocks'),
+				[]
+			);
 
-			const hasInnerBlocks = useRef(null);
-			const isChild = useRef(null);
+			const [canRender, setCanRender] = useState(
+				SUSPENSE_BLOCKS.some(blockName => uniqueID.includes(blockName))
+					? canBlockRender(uniqueID)
+					: true
+			);
+			const [hasBeenRendered, setHasBeenRendered] = useState(
+				blockHasBeenRendered(uniqueID)
+			);
 
-			useEffect(() => {
-				const { blockWantsToRender } = dispatch('maxiBlocks');
+			const {
+				blockWantsToRender,
+				blockHasBeenRendered: setBlockHasBeenRendered,
+			} = useDispatch('maxiBlocks');
 
+			// On first render, request to the store that the block wants to render.
+			useLayoutEffect(() => {
 				blockWantsToRender(uniqueID, clientId);
 			}, []);
 
 			useEffect(() => {
-				if (canRender && hasBeenRendered) return true;
+				// If the block has already been rendered, don't need the interval anymore.
+				if (canRender && hasBeenRendered) return null;
 
+				// Use this interval as a heartbeat to check if the store allows the block to render
+				// and if it has been already rendered.
 				const interval = setInterval(() => {
-					const { canBlockRender } = select('maxiBlocks');
-
-					if (isNil(isChild.current)) {
-						const { getBlockParents } = select('core/block-editor');
-
-						isChild.current = !isEmpty(
-							getBlockParents(clientId).filter(
-								val => val !== clientId
-							)
-						);
-					}
-
-					if (isNil(hasInnerBlocks.current)) {
-						const { getBlockOrder } = select('core/block-editor');
-
-						hasInnerBlocks.current = !isEmpty(
-							getBlockOrder(clientId)
-						);
-					}
-
 					if (!canRender && canBlockRender(uniqueID, clientId)) {
 						setCanRender(true);
 
 						clearInterval(interval);
 					}
+					if (
+						!hasBeenRendered &&
+						blockHasBeenRendered(uniqueID, clientId)
+					) {
+						setHasBeenRendered(true);
 
-					if (canRender) {
-						const { blockHasBeenRendered: getHasBeenRendered } =
-							select('maxiBlocks');
-
-						if (
-							!hasBeenRendered &&
-							!getHasBeenRendered(uniqueID, clientId)
-						) {
-							const {
-								blockHasBeenRendered: setBlockHasBeenRendered,
-							} = dispatch('maxiBlocks');
-
-							setBlockHasBeenRendered(uniqueID);
-						} else if (
-							!hasBeenRendered &&
-							getHasBeenRendered(uniqueID, clientId)
-						) {
-							setHasBeenRendered(true);
-
-							clearInterval(interval);
-						}
+						clearInterval(interval);
 					}
-				}, 10);
+				}, 100);
 
 				return () => clearInterval(interval);
-			});
+			}, [setCanRender, setHasBeenRendered]);
 
+			// Wait for the store to allow the block to render.
 			if (!canRender) return <ContentLoader />;
 
-			// Ensures child blocks with no inner blocks are rendered immediately.
-			if (
-				!isNil(isChild.current) &&
-				isChild.current &&
-				!isNil(hasInnerBlocks.current) &&
-				!hasInnerBlocks.current
-			)
-				return <WrappedComponent {...ownProps} />;
+			const WrappedComponentWithProps = (
+				<WrappedComponent
+					{...ownProps}
+					onMaxiBlockRender={() => {
+						setBlockHasBeenRendered(uniqueID);
+						setHasBeenRendered(true);
+					}}
+				/>
+			);
 
-			const onUnmount = () => {
-				const { blockHasBeenRendered } = dispatch('maxiBlocks');
-
-				blockHasBeenRendered(uniqueID).then(() => {
-					setHasBeenRendered(true);
-				});
-			};
+			// If the block has already been rendered, don't need the suspense again.
+			// If we leave the suspense, the block will be re-rendered every time we
+			// modify something and generates a strange UX.
+			if (canRender && hasBeenRendered) return WrappedComponentWithProps;
 
 			return (
-				<Suspense
-					fallback={<LoadComponent onUnmount={() => onUnmount()} />}
-				>
-					<WrappedComponent {...ownProps} />
+				<Suspense fallback={<ContentLoader />}>
+					{WrappedComponentWithProps}
 				</Suspense>
 			);
 		}),

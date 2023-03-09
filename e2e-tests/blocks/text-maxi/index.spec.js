@@ -681,7 +681,6 @@ describe('TextMaxi', () => {
 			buttons => buttons[1].click()
 		);
 		await page.waitForTimeout(150);
-		await page.waitForTimeout(150);
 		const selectMaxiTextDiv = await page.$('.maxi-text-block');
 		const selectMaxiTextP = await selectMaxiTextDiv.$(
 			'.block-editor-rich-text__editable'

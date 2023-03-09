@@ -31,6 +31,10 @@ const dictionary = {
 		'margin-bottom-unit': 'mbu',
 		'margin-left-unit': 'mlu',
 	},
+	overflow: {
+		'overflow-x': 'ox',
+		'overflow-y': 'oy',
+	},
 	zIndex: {
 		'z-index': 'zi',
 	},

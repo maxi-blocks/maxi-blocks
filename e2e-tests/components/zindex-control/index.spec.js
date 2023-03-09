@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
@@ -11,12 +11,13 @@ import {
 	addResponsiveTest,
 	getBlockStyle,
 	editAdvancedNumberControl,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('ZIndexControl', () => {
 	it('Checking the z-index control', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');
 		await openSidebarTab(page, 'advanced', 'z index');
 

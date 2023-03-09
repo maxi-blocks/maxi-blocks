@@ -1,11 +1,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyTimes,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, pressKeyTimes } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -15,12 +11,13 @@ import {
 	openSidebarTab,
 	getBlockStyle,
 	editAdvancedNumberControl,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('ShapeDividerControl', () => {
 	it('Checking the shape divider control', async () => {
 		await createNewPost();
-		await insertBlock('Container Maxi');
+		await insertMaxiBlock(page, 'Container Maxi');
 		await page.$eval('.maxi-container-block', select => select.focus());
 		const accordionPanel = await openSidebarTab(
 			page,

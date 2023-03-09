@@ -1,4 +1,10 @@
 const dictionary = {
+	clipPath: {
+		'clip-path': 'cp',
+	},
+	alignment: {
+		alignment: 'a',
+	},
 	size: {
 		'size-advanced-options': 'sao',
 		'width-fit-content': 'wfc',
@@ -33,6 +39,31 @@ const dictionary = {
 		'navigation-dot-status': 'ndos',
 		'navigation-arrow-position': 'nap',
 		'navigation-dot-position': 'ndp',
+	},
+	opacity: {
+		opacity: 'o',
+	},
+	padding: {
+		'padding-top': 'pt',
+		'padding-right': 'pr',
+		'padding-bottom': 'pb',
+		'padding-left': 'pl',
+		'padding-sync': 'ps',
+		'padding-top-unit': 'ptu',
+		'padding-right-unit': 'pru',
+		'padding-bottom-unit': 'pbu',
+		'padding-left-unit': 'plu',
+	},
+	placeholderColor: {
+		'placeholder-color': 'pc',
+		'placeholder-color-unit': 'pcu',
+	},
+	overflow: {
+		'overflow-x': 'ox',
+		'overflow-y': 'oy',
+	},
+	zIndex: {
+		'z-index': 'zi',
 	},
 };
 

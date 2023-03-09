@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import {
+	getAttributeValue,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 	styleProcessor,
@@ -385,7 +386,11 @@ const getHoverImageObject = props => {
 				prefix: 'image-',
 			}),
 		}),
-		...(props['clip-path-status-hover'] && {
+		...(getAttributeValue({
+			target: 'clip-path-status',
+			props,
+			isHover: true,
+		}) && {
 			clipPath: getClipPathStyles({
 				obj: {
 					...getGroupAttributes(props, 'clipPath', true),

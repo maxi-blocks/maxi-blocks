@@ -44,6 +44,11 @@ registerBlockType('maxi-blocks/svg-icon-maxi', {
 	icon: iconBox,
 	description: 'Add icon or shape and style it',
 	category: 'maxi-blocks',
+	example: {
+		attributes: {
+			preview: true,
+		},
+	},
 	supports: {
 		align: true,
 		lightBlockWrapper: true,

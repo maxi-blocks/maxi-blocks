@@ -456,6 +456,17 @@ class edit extends MaxiBlockComponent {
 			arrow: '.maxi-slider-block__arrow',
 		};
 
+		if (attributes.preview)
+			return (
+				<MaxiBlock
+					key={`maxi-slider--${uniqueID}`}
+					ref={this.blockRef}
+					{...getMaxiBlockAttributes(this.props)}
+				>
+					<img src={previews.slider_preview} />
+				</MaxiBlock>
+			);
+
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}

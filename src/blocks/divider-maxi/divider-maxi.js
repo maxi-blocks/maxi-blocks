@@ -40,6 +40,11 @@ registerBlockType('maxi-blocks/divider-maxi', {
 	icon: dividerIcon,
 	description: 'Create a divider between visual elements',
 	category: 'maxi-blocks',
+	example: {
+		attributes: {
+			preview: true,
+		},
+	},
 	supports: {
 		align: true,
 		lightBlockWrapper: true,

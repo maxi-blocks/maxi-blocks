@@ -17,9 +17,21 @@ import { isEmpty } from 'lodash';
 class edit extends Component {
 	render() {
 		const { attributes, clientId, maxiSetAttributes } = this.props;
-		const { content, openFirstTime } = attributes;
+		const { content, openFirstTime, uniqueID } = attributes;
 
 		/* Placeholder with layout modal */
+
+		if (attributes.preview)
+			return (
+				<MaxiBlock
+					key={`maxi-cloud--${uniqueID}`}
+					ref={this.blockRef}
+					{...getMaxiBlockAttributes(this.props)}
+				>
+					<img src={previews.library_preview} />
+				</MaxiBlock>
+			);
+
 		return [
 			<div key={this.props.clientId}>
 				{isEmpty(content) && (

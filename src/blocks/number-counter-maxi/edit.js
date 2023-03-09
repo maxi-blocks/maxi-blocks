@@ -109,6 +109,17 @@ class edit extends MaxiBlockComponent {
 
 		const handleReset = () => this.resetNumberHelper();
 
+		if (attributes.preview)
+			return (
+				<MaxiBlock
+					key={`maxi-number-counter--${uniqueID}`}
+					ref={this.blockRef}
+					{...getMaxiBlockAttributes(this.props)}
+				>
+					<img src={previews.nc_preview} />
+				</MaxiBlock>
+			);
+
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar

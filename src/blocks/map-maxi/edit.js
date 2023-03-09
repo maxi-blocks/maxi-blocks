@@ -26,6 +26,7 @@ class edit extends MaxiBlockComponent {
 
 		this.state.googleApiKey = '';
 	}
+
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
@@ -80,6 +81,17 @@ class edit extends MaxiBlockComponent {
 
 			return this.state.googleApiKey;
 		};
+
+		if (attributes.preview)
+			return (
+				<MaxiBlock
+					key={`maxi-map--${uniqueID}`}
+					ref={this.blockRef}
+					{...getMaxiBlockAttributes(this.props)}
+				>
+					<img src={previews.map_preview} />
+				</MaxiBlock>
+			);
 
 		return [
 			<Inspector

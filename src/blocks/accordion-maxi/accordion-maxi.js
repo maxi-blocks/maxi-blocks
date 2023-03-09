@@ -32,6 +32,11 @@ registerBlockType('maxi-blocks/accordion-maxi', {
 	icon: accordionIcon,
 	description: 'Expand or collapse content inside of a panel',
 	category: 'maxi-blocks',
+	example: {
+		attributes: {
+			preview: true,
+		},
+	},
 	supports: {
 		align: true,
 		lightBlockWrapper: true,

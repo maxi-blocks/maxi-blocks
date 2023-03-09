@@ -78,6 +78,7 @@ class edit extends MaxiBlockComponent {
 			titleLevel,
 			isCollapsible,
 			animationDuration,
+			preview,
 		} = attributes;
 
 		const inlineStylesTargets = {
@@ -88,6 +89,17 @@ class edit extends MaxiBlockComponent {
 		};
 
 		const ALLOWED_BLOCKS = ['maxi-blocks/pane-maxi'];
+
+		if (preview)
+			return (
+				<MaxiBlock
+					key={`maxi-accordion--${uniqueID}`}
+					ref={this.blockRef}
+					{...getMaxiBlockAttributes(this.props)}
+				>
+					<img src={previews.accordion_preview} />
+				</MaxiBlock>
+			);
 
 		return [
 			<Inspector

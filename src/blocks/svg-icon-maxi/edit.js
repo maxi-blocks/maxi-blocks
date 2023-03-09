@@ -234,6 +234,17 @@ class edit extends MaxiBlockComponent {
 			background: '.maxi-svg-icon-block__icon',
 		};
 
+		if (attributes.preview)
+			return (
+				<MaxiBlock
+					key={`maxi-icon--${uniqueID}`}
+					ref={this.blockRef}
+					{...getMaxiBlockAttributes(this.props)}
+				>
+					<img src={previews.icon_preview} />
+				</MaxiBlock>
+			);
+
 		return [
 			...[
 				!isEmptyContent && [

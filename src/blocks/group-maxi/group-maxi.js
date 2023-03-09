@@ -41,6 +41,11 @@ registerBlockType('maxi-blocks/group-maxi', {
 	icon: groupIcon,
 	description: 'Combine a set of blocks in a group',
 	category: 'maxi-blocks',
+	example: {
+		attributes: {
+			preview: true,
+		},
+	},
 	supports: {
 		align: true,
 		lightBlockWrapper: true,

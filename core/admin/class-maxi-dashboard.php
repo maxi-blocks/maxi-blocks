@@ -78,8 +78,20 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 					'maxi-admin',
 					'previews',
 					array(
-						'image_preview' => plugins_url( '../../img/block-preview/image.png', __FILE__ ),
+						'accordion_preview' => plugins_url( '../../img/block-preview/accordion.png', __FILE__ ),
 						'button_preview' => plugins_url( '../../img/block-preview/button.png', __FILE__ ),
+						'container_preview' => plugins_url( '../../img/block-preview/container.png', __FILE__ ),
+						'divider_preview' => plugins_url( '../../img/block-preview/divider.png', __FILE__ ),
+						'group_preview' => plugins_url( '../../img/block-preview/group.png', __FILE__ ),
+						'icon_preview' => plugins_url( '../../img/block-preview/icon.png', __FILE__ ),
+						'image_preview' => plugins_url( '../../img/block-preview/image.png', __FILE__ ),
+						'map_preview' => plugins_url( '../../img/block-preview/map.png', __FILE__ ),
+						'nc_preview' => plugins_url( '../../img/block-preview/nc.png', __FILE__ ),
+						'search_preview' => plugins_url( '../../img/block-preview/search.png', __FILE__ ),
+						'slider_preview' => plugins_url( '../../img/block-preview/slider.png', __FILE__ ),
+						'templates_preview' => plugins_url( '../../img/block-preview/templates.png', __FILE__ ),
+						'text_preview' => plugins_url( '../../img/block-preview/text.png', __FILE__ ),
+						'video_preview' => plugins_url( '../../img/block-preview/video.png', __FILE__ ),                        
 					)
 				);
 

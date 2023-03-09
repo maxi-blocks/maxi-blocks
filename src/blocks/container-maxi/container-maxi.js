@@ -42,6 +42,11 @@ registerBlockType('maxi-blocks/container-maxi', {
 	icon: containerIcon,
 	description: 'Wrap blocks within a container',
 	category: 'maxi-blocks',
+	example: {
+		attributes: {
+			preview: true,
+		},
+	},
 	supports: {
 		align: true,
 		lightBlockWrapper: true,

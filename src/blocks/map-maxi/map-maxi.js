@@ -41,6 +41,11 @@ registerBlockType('maxi-blocks/map-maxi', {
 	icon: mapIcon,
 	description: __('Create a map with marker and description', 'maxi-blocks'),
 	category: 'maxi-blocks',
+	example: {
+		attributes: {
+			preview: true,
+		},
+	},
 	supports: {
 		align: true,
 		lightBlockWrapper: true,

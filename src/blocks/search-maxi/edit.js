@@ -172,6 +172,17 @@ class edit extends MaxiBlockComponent {
 			)
 		);
 
+		if (attributes.preview)
+			return (
+				<MaxiBlock
+					key={`maxi-search--${uniqueID}`}
+					ref={this.blockRef}
+					{...getMaxiBlockAttributes(this.props)}
+				>
+					<img src={previews.search_preview} />
+				</MaxiBlock>
+			);
+
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar

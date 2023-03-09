@@ -34,6 +34,11 @@ registerBlockType('maxi-blocks/video-maxi', {
 	icon: videoIcon,
 	description: 'Insert a video with controls or lightbox',
 	category: 'maxi-blocks',
+	example: {
+		attributes: {
+			preview: true,
+		},
+	},
 	supports: {
 		align: true,
 		lightBlockWrapper: true,

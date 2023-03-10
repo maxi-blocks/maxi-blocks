@@ -45,89 +45,90 @@ const withMaxiDC = createHigherOrderComponent(
 				'dc-link-status': linkStatus,
 			} = dynamicContentProps;
 
-			useEffect(() => {
-				const specialForReact18 = async () => {
-					if (
-						status &&
-						!isNil(type) &&
-						!isNil(field) &&
-						(!isNil(id) || type === 'settings') // id is not necessary for site settings
-					) {
-						const {
-							__unstableMarkNextChangeAsNotPersistent:
-								markNextChangeAsNotPersistent,
-						} = dispatch('core/block-editor');
+			const fetchDcData = async () => {
+				if (
+					status &&
+					!isNil(type) &&
+					!isNil(field) &&
+					(!isNil(id) || type === 'settings') // id is not necessary for site settings
+				) {
+					const {
+						__unstableMarkNextChangeAsNotPersistent:
+							markNextChangeAsNotPersistent,
+					} = dispatch('core/block-editor');
 
-						const newLinkSettings =
-							ownProps.attributes.linkSettings ?? {};
-						let updateLinkSettings = false;
-						const dcLink = await getDCLink(dynamicContentProps);
-						const isSameLink = dcLink === newLinkSettings.url;
+					const newLinkSettings =
+						ownProps.attributes.linkSettings ?? {};
+					let updateLinkSettings = false;
+					const dcLink = await getDCLink(dynamicContentProps);
+					const isSameLink = dcLink === newLinkSettings.url;
 
-						if (!isSameLink && linkStatus && !isNil(dcLink)) {
-							newLinkSettings.url = dcLink;
+					if (!isSameLink && linkStatus && !isNil(dcLink)) {
+						newLinkSettings.url = dcLink;
 
-							updateLinkSettings = true;
-						} else if (isSameLink && !linkStatus) {
-							newLinkSettings.url = null;
+						updateLinkSettings = true;
+					} else if (isSameLink && !linkStatus) {
+						newLinkSettings.url = null;
 
-							updateLinkSettings = true;
+						updateLinkSettings = true;
+					}
+
+					if (!isImageMaxi) {
+						const newContent = sanitizeDCContent(
+							await getDCContent(dynamicContentProps)
+						);
+
+						if (newContent !== content) {
+							markNextChangeAsNotPersistent();
+							setAttributes({
+								'dc-content': newContent,
+								...(isCustomDate && {
+									'dc-custom-format':
+										getDCDateCustomFormat(newContent),
+								}),
+								...(updateLinkSettings && {
+									linkSettings: newLinkSettings,
+								}),
+							});
 						}
+					} else {
+						const mediaContent = await getDCMedia(
+							dynamicContentProps
+						);
 
-						if (!isImageMaxi) {
-							const newContent = sanitizeDCContent(
-								await getDCContent(dynamicContentProps)
-							);
-
-							if (newContent !== content) {
-								markNextChangeAsNotPersistent();
-								setAttributes({
-									'dc-content': newContent,
-									...(isCustomDate && {
-										'dc-custom-format':
-											getDCDateCustomFormat(newContent),
-									}),
-									...(updateLinkSettings && {
-										linkSettings: newLinkSettings,
-									}),
-								});
-							}
+						if (isNil(mediaContent)) {
+							markNextChangeAsNotPersistent();
+							setAttributes({
+								'dc-media-id': null,
+								'dc-media-url': null,
+								...(updateLinkSettings && {
+									linkSettings: newLinkSettings,
+								}),
+							});
 						} else {
-							const mediaContent = await getDCMedia(
-								dynamicContentProps
-							);
+							const { id, url, caption } = mediaContent;
 
-							if (isNil(mediaContent)) {
+							if (!isNil(id) && !isNil(url)) {
 								markNextChangeAsNotPersistent();
 								setAttributes({
-									'dc-media-id': null,
-									'dc-media-url': null,
+									'dc-media-id': id,
+									'dc-media-url': url,
+									'dc-media-caption': sanitizeDCContent(
+										getSimpleText(caption)
+									),
 									...(updateLinkSettings && {
 										linkSettings: newLinkSettings,
 									}),
 								});
-							} else {
-								const { id, url, caption } = mediaContent;
-
-								if (!isNil(id) && !isNil(url)) {
-									markNextChangeAsNotPersistent();
-									setAttributes({
-										'dc-media-id': id,
-										'dc-media-url': url,
-										'dc-media-caption': sanitizeDCContent(
-											getSimpleText(caption)
-										),
-										...(updateLinkSettings && {
-											linkSettings: newLinkSettings,
-										}),
-									});
-								}
 							}
 						}
 					}
-				};
-				specialForReact18();
-			}, []);
+				}
+			};
+
+			useEffect(() => {
+				fetchDcData().catch(console.error);
+			}, [fetchDcData]);
 
 			return <WrappedComponent {...ownProps} />;
 		}),

@@ -4,6 +4,11 @@
 import { select } from '@wordpress/data';
 
 /**
+ * Internal dependencies
+ */
+import { getIsSiteEditor } from '../fse';
+
+/**
  * External dependencies
  */
 import { diff } from 'deep-object-diff';
@@ -15,15 +20,17 @@ const getLastChangedBlocks = () => {
 
 	if (!undoEdit) return false;
 
-	const { getCurrentPostType } = select('core/editor');
-
 	const entityRecordEdit = getEntityRecordEdits(
 		'postType',
-		getCurrentPostType(),
+		getIsSiteEditor()
+			? select('core/edit-site').getEditedPostType()
+			: select('core/editor').getCurrentPostType(),
 		undoEdit.recordId
 	);
 
 	const diffBlocks = diff(undoEdit?.edits?.blocks, entityRecordEdit?.blocks);
+
+	if (!diffBlocks) return false;
 
 	return Object.values(diffBlocks);
 };

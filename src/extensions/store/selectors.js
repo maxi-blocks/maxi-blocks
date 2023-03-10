@@ -64,8 +64,7 @@ const selectors = {
 	canBlockRender(state, uniqueID) {
 		if (state)
 			return (
-				(state.blocksToRender.includes(uniqueID) &&
-					state.blocksToRender.indexOf(uniqueID) < 10) ||
+				state.blocksToRender.indexOf(uniqueID) === 0 ||
 				state.renderedBlocks.includes(uniqueID)
 			);
 

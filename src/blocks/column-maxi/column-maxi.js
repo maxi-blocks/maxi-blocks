@@ -9,7 +9,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
-import { lazy } from '@wordpress/element';
 
 /**
  * Styles and icons
@@ -21,7 +20,7 @@ import { columnIcon } from '../../icons';
 /**
  * Block dependencies
  */
-const Edit = lazy(() => import('./edit'));
+import edit from './edit';
 import attributes from './attributes';
 import save from './save';
 import { customCss } from './data';
@@ -56,7 +55,7 @@ registerBlockType('maxi-blocks/column-maxi', {
 			uniqueid: uniqueID,
 		};
 	},
-	edit: withMaxiSuspense(Edit),
+	edit: withMaxiSuspense(edit),
 	save,
 	deprecated: blockMigrator({
 		attributes,

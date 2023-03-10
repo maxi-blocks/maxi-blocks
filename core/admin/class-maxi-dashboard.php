@@ -599,6 +599,128 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
+            $content .= $this->generate_item_header('Template library and Style Cards', false);
+            
+            $content .=
+                '<p>' .
+                __(
+                    'Even the best designers use page templates to save time. The trick is to change styles without wasting hours choosing colours and fonts. You need a shortcut. You need a Style Card. ',
+                    self::$maxi_text_domain,
+                ) .
+                '</p>';
+
+            $content .=
+                '<p>' .
+                __(
+                    'Style Cards change 15 design elements in sync. It works like this;',
+                    self::$maxi_text_domain,
+                ) .
+                '</p>';
+            $content .= '<ol>';
+            $content .=
+                '<li>' .
+                __(
+                    'Choose your favourite Style Card from 100 shown in the library.',
+                    self::$maxi_text_domain,
+                ) .
+                '</li>';
+            $content .=
+                '<li>' .
+                __(
+                    'Browse the template library to find a good page or pattern.',
+                    self::$maxi_text_domain,
+                ) .
+                '</li>';
+            $content .=
+                '<li>' .
+                __(
+                    'Insert and watch how templates instantly match your chosen style.',
+                    self::$maxi_text_domain,
+                ) .
+                '</li>';
+            $content .= '</ol>';
+
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
+
+            $content .= $this->generate_item_header('Maxi Blocks is free and open source', false);
+
+            $content .=
+                '<p>' .
+                __(
+                    'Whatever you create with Maxi Blocks is yours to keep. You are welcome to use the free templates on as many sites as you want. Don’t forget to share your pages with the hashtag',
+                    self::$maxi_text_domain,
+                );
+
+            $content .=
+                '<a href="https://maxiblocks.com/" target="_blank"> ' .
+                __('#maxiblocks', self::$maxi_text_domain) .
+                '</a>';
+
+            $content .=
+                __(
+                    ' - We’re dying to see what you create. ',
+                    self::$maxi_text_domain,
+                ) .
+                '</p>';
+
+            $content .=
+                '<p>' .
+                __(
+                    'Our next goal is to launch the Maxi Blocks Pro template library subscription. Hundreds of patterns and pages have already been completed. It’s going to be epic. This income will help us grow the team and build out the awesome roadmap.',
+                    self::$maxi_text_domain,
+                ) ;
+
+            $content .=
+                '<a href="https://maxiblocks.com/" target="_blank"> ' .
+                __(
+                    'Learn more about Maxi Blocks Pro.',
+                    self::$maxi_text_domain,
+                ) .
+                '</a>';
+
+            $content .=
+                '</p>';
+
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
+
+            $content .= $this->generate_item_header('Roadmap', false);
+
+            $content .=
+                '<p>' .
+                __(
+                    'There’s a grand plan and we need your help. Share your suggestions or vote on what to build next. ',
+                    self::$maxi_text_domain,
+                ) ;
+
+            $content .=
+                '<a href="https://maxiblocks.com/" target="_blank"> ' .
+                __(
+                    "See what's planned in the roadmap.",
+                    self::$maxi_text_domain,
+                ) .
+                '</a>';
+
+            $content .=
+                '</p>';
+
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
+
+            $content .= $this->generate_item_header('Beta 1.0', false);
+            
+            $content .=
+                '<p>' .
+                __(
+                    'The Maxi Blocks editor improves with your feedback. Because we’re open source, everyone can benefit. For quality assurance, every component is coded with its own automated test. Even so, your setup might be different. It’s recommended to build in a staging environment while we’re still in Beta. And if you find an issue, please let us know via our support channels or GitHub. Every bit of feedback helps.',
+                    self::$maxi_text_domain,
+                ) .
+                '</p>';
+
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
+            
             // $content .= $this->generate_item_header('Rollback to previous version', false);
 
             // $content .= '<p>'.__('If you want to restore a previous version of Maxi Blocks, you can do it here. For extra precaution we always recommended running a backup of your website and database before performing a rollback. Alternatively, clone your site to a staging site, then test the rollback function there.', self::$maxi_text_domain).'</p>';

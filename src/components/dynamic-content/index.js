@@ -125,8 +125,6 @@ const DynamicContent = props => {
 		}
 	};
 
-	//fetchDcData().catch(console.error);
-
 	useEffect(() => {
 		fetchDcData().catch(console.error);
 	}, [fetchDcData]);

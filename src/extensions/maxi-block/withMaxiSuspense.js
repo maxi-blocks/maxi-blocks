@@ -1,12 +1,13 @@
 /**
  * WordPress dependencies
  */
-import { useSelect, useDispatch } from '@wordpress/data';
+import { useDispatch, useSelect } from '@wordpress/data';
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
 import {
 	Suspense,
 	useState,
 	useEffect,
+	useCallback,
 	useLayoutEffect,
 } from '@wordpress/element';
 
@@ -15,16 +16,25 @@ import {
  */
 import { PuffLoader } from 'react-spinners';
 
-const SUSPENSE_BLOCKS = [
-	'container-maxi',
-	'row-maxi',
-	'column-maxi',
-	'group-maxi',
-];
-
 const ContentLoader = () => (
-	<PuffLoader color='#ff4a17' size={20} speedMultiplier={0.8} />
+	<div
+		style={{
+			display: 'flex',
+			justifyContent: 'center',
+			alignContent: 'center',
+			width: '100%',
+			height: '100%',
+		}}
+	>
+		<PuffLoader color='#ff4a17' size={20} speedMultiplier={0.8} />
+	</div>
 );
+
+const SuspendedBlock = ({ onMountBlock }) => {
+	useEffect(() => onMountBlock(), []);
+
+	return <ContentLoader />;
+};
 
 const withMaxiSuspense = createHigherOrderComponent(
 	WrappedComponent =>
@@ -34,76 +44,51 @@ const withMaxiSuspense = createHigherOrderComponent(
 				attributes: { uniqueID },
 			} = ownProps;
 
-			const { canBlockRender, blockHasBeenRendered } = useSelect(
+			const { canBlockRender } = useSelect(
 				select => select('maxiBlocks'),
 				[]
 			);
 
-			const [canRender, setCanRender] = useState(
-				SUSPENSE_BLOCKS.some(blockName => uniqueID.includes(blockName))
-					? canBlockRender(uniqueID)
-					: true
-			);
-			const [hasBeenRendered, setHasBeenRendered] = useState(
-				blockHasBeenRendered(uniqueID)
-			);
+			const { blockWantsToRender, blockHasBeenRendered } =
+				useDispatch('maxiBlocks');
 
-			const {
-				blockWantsToRender,
-				blockHasBeenRendered: setBlockHasBeenRendered,
-			} = useDispatch('maxiBlocks');
-
-			// On first render, request to the store that the block wants to render.
 			useLayoutEffect(() => {
 				blockWantsToRender(uniqueID, clientId);
 			}, []);
 
-			useEffect(() => {
-				// If the block has already been rendered, don't need the interval anymore.
-				if (canRender && hasBeenRendered) return null;
+			const [canRender, setCanRender] = useState(
+				canBlockRender(uniqueID, clientId)
+			);
+			const [hasBeenConsolidated, setHasBeenConsolidated] =
+				useState(false);
 
-				// Use this interval as a heartbeat to check if the store allows the block to render
-				// and if it has been already rendered.
+			useEffect(() => {
+				if (hasBeenConsolidated) return true;
+
 				const interval = setInterval(() => {
 					if (!canRender && canBlockRender(uniqueID, clientId)) {
 						setCanRender(true);
 
 						clearInterval(interval);
 					}
-					if (
-						!hasBeenRendered &&
-						blockHasBeenRendered(uniqueID, clientId)
-					) {
-						setHasBeenRendered(true);
-
-						clearInterval(interval);
-					}
 				}, 100);
 
 				return () => clearInterval(interval);
-			}, [setCanRender, setHasBeenRendered]);
+			});
 
-			// Wait for the store to allow the block to render.
+			const onMountBlock = useCallback(() => {
+				blockHasBeenRendered(uniqueID);
+
+				setHasBeenConsolidated(true);
+			});
+
 			if (!canRender) return <ContentLoader />;
 
-			const WrappedComponentWithProps = (
-				<WrappedComponent
-					{...ownProps}
-					onMaxiBlockRender={() => {
-						setBlockHasBeenRendered(uniqueID);
-						setHasBeenRendered(true);
-					}}
-				/>
-			);
-
-			// If the block has already been rendered, don't need the suspense again.
-			// If we leave the suspense, the block will be re-rendered every time we
-			// modify something and generates a strange UX.
-			if (canRender && hasBeenRendered) return WrappedComponentWithProps;
+			if (hasBeenConsolidated) return <WrappedComponent {...ownProps} />;
 
 			return (
 				<Suspense fallback={<ContentLoader />}>
-					{WrappedComponentWithProps}
+					<SuspendedBlock onMountBlock={onMountBlock} />
 				</Suspense>
 			);
 		}),

@@ -23,7 +23,7 @@ const getColumnDefaultValue = (
 
 	const template = getColumnTemplate(
 		getAttributeValue({
-			target: 'row-pattern',
+			target: 'rp',
 			props: rowPattern,
 			breakpoint,
 		}),

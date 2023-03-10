@@ -171,6 +171,7 @@ const attributes = {
 	/**
 	 * Advanced
 	 */
+	...attributesData.dynamicContent,
 	...attributesData.scroll,
 	...attributesData.transform,
 	...{

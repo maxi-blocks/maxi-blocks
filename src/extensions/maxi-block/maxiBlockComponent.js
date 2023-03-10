@@ -329,11 +329,13 @@ class MaxiBlockComponent extends Component {
 			this.removeUnmountedBlockFromRelations(
 				this.props.attributes.uniqueID
 			);
-		}
 
-		dispatch('maxiBlocks').removeBlockHasBeenRendered(
-			this.props.attributes.uniqueID
-		);
+			// Remove the uniqueID from the list of rendered blocks
+			dispatch('maxiBlocks').removeBlockHasBeenRendered(
+				this.props.attributes.uniqueID,
+				this.props.clientId
+			);
+		}
 
 		if (this.maxiBlockWillUnmount)
 			this.maxiBlockWillUnmount(isBlockBeingRemoved);

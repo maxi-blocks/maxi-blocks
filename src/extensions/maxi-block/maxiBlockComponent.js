@@ -284,6 +284,8 @@ class MaxiBlockComponent extends Component {
 
 			const { blocks } = getEditedEntityRecord('postType', name, id);
 
+			if (!blocks) return;
+
 			const getName = block => {
 				const {
 					attributes: { uniqueID },

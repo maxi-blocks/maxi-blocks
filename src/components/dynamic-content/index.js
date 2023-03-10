@@ -72,61 +72,64 @@ const DynamicContent = props => {
 		if (hasChangesToSave) onChange(params);
 	};
 
-	useEffect(() => {
-		async function specialForReact18() {
-			// TODO: check if this code is necessary
-			// On init, get post author options and set current user as default
-			if (!postAuthorOptions) {
-				const authors = await resolveSelect('core').getUsers({
-					who: 'authors',
-				});
+	const fetchDcData = async () => {
+		// TODO: check if this code is necessary
+		// On init, get post author options and set current user as default
+		if (!postAuthorOptions) {
+			const authors = await resolveSelect('core').getUsers({
+				who: 'authors',
+			});
 
-				if (authors) {
-					setPostAuthorOptions(
-						authors.map(({ id, name }) => ({
-							label: `${id} - ${name}`,
-							value: id,
-						}))
-					);
-
-					const { id } = await resolveSelect('core').getCurrentUser();
-
-					changeProps({ 'dc-author': id });
-				}
-			}
-
-			// Sets new content
-			if (status && relationTypes.includes(type)) {
-				const dataRequest = {
-					type,
-					id,
-					field,
-					postIdOptions,
-					relation,
-					author,
-				};
-
-				const postIDSettings = await getDCOptions(
-					dataRequest,
-					postIdOptions,
-					contentType
+			if (authors) {
+				setPostAuthorOptions(
+					authors.map(({ id, name }) => ({
+						label: `${id} - ${name}`,
+						value: id,
+					}))
 				);
 
-				if (postIDSettings) {
-					const { newValues, newPostIdOptions } = postIDSettings;
+				const { id } = await resolveSelect('core').getCurrentUser();
 
-					changeProps(newValues);
-
-					if (
-						!isNil(newPostIdOptions) &&
-						!isEqual(postIdOptions, newPostIdOptions)
-					)
-						setPostIdOptions(newPostIdOptions);
-				}
+				changeProps({ 'dc-author': id });
 			}
 		}
-		specialForReact18();
-	}, []);
+
+		// Sets new content
+		if (status && relationTypes.includes(type)) {
+			const dataRequest = {
+				type,
+				id,
+				field,
+				postIdOptions,
+				relation,
+				author,
+			};
+
+			const postIDSettings = await getDCOptions(
+				dataRequest,
+				postIdOptions,
+				contentType
+			);
+
+			if (postIDSettings) {
+				const { newValues, newPostIdOptions } = postIDSettings;
+
+				changeProps(newValues);
+
+				if (
+					!isNil(newPostIdOptions) &&
+					!isEqual(postIdOptions, newPostIdOptions)
+				)
+					setPostIdOptions(newPostIdOptions);
+			}
+		}
+	};
+
+	//fetchDcData().catch(console.error);
+
+	useEffect(() => {
+		fetchDcData().catch(console.error);
+	}, [fetchDcData]);
 
 	return (
 		<div className={classes}>

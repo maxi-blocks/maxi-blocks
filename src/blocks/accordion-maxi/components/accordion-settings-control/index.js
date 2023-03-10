@@ -13,20 +13,13 @@ import {
 	SelectControl,
 } from '../../../../components';
 import {
+	getAttributeValue,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
 
 const AccordionSettings = props => {
-	const {
-		accordionLayout,
-		onChange,
-		autoPaneClose,
-		isCollapsible,
-		animationDuration,
-		breakpoint,
-		clientId,
-	} = props;
+	const { onChange, breakpoint, clientId } = props;
 
 	const spacingMinMaxSettings = {
 		px: {
@@ -54,7 +47,10 @@ const AccordionSettings = props => {
 				<>
 					<SelectControl
 						label={__('Accordion layout', 'maxi-blocks')}
-						value={accordionLayout}
+						value={getAttributeValue({
+							target: 'accordionLayout',
+							props,
+						})}
 						options={[
 							{ label: 'Simple', value: 'simple' },
 							{ label: 'Boxed', value: 'boxed' },
@@ -63,7 +59,10 @@ const AccordionSettings = props => {
 					/>
 					<ToggleSwitch
 						label={__('Collapsible', 'maxi-block')}
-						selected={isCollapsible}
+						selected={getAttributeValue({
+							target: 'isCollapsible',
+							props,
+						})}
 						onChange={val =>
 							onChange({
 								isCollapsible: val,
@@ -75,7 +74,10 @@ const AccordionSettings = props => {
 							'Pane closes when another opens',
 							'maxi-block'
 						)}
-						selected={autoPaneClose}
+						selected={getAttributeValue({
+							target: 'autoPaneClose',
+							props,
+						})}
 						onChange={val =>
 							onChange({
 								autoPaneClose: val,
@@ -126,7 +128,10 @@ const AccordionSettings = props => {
 				min={0}
 				max={10}
 				step={0.1}
-				value={animationDuration}
+				value={getAttributeValue({
+					target: 'animationDuration',
+					props,
+				})}
 				onChangeValue={val => {
 					onChange({
 						animationDuration: val !== undefined ? val : '',

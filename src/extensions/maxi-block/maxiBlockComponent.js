@@ -275,7 +275,6 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentWillUnmount() {
-		console.log('unmounting');
 		// If it's site editor, when swapping from pages we need to keep the styles
 		// On post editor, when entering to `code editor` page, we need to keep the styles
 		let keepStylesOnEditor = false;

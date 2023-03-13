@@ -4,20 +4,27 @@ const marginValueCalculator = () => {
 	let fullWidthElementWidth = null;
 	let editorWidth = null;
 	let updateValue = false;
-	const rawWrapper = getEditorWrapper();
-	const editorWrapper = rawWrapper?.contentDocument ?? rawWrapper;
-
-	// Some themes have margin values in vw or rem which can change on responsive, so we need to update the value on resize.
-	const editorSizeObserver = new ResizeObserver(() => {
-		updateValue = true;
-	});
-
-	editorSizeObserver.observe(editorWrapper);
+	let observed = false;
+	let editorSizeObserver = null;
 
 	const getMarginValue = (unmount = false) => {
 		if (unmount) {
-			editorSizeObserver.disconnect();
+			editorSizeObserver?.disconnect();
 			return 0;
+		}
+
+		const rawWrapper = getEditorWrapper();
+		const editorWrapper = rawWrapper?.contentDocument ?? rawWrapper;
+		const blockContainer =
+			editorWrapper?.querySelector('.is-root-container');
+
+		if (blockContainer && !observed) {
+			// Some themes have margin values in vw or rem which can change on responsive, so we need to update the value on resize.
+			editorSizeObserver = new ResizeObserver(() => {
+				updateValue = true;
+			});
+			editorSizeObserver.observe(blockContainer);
+			observed = true;
 		}
 
 		if (
@@ -26,7 +33,10 @@ const marginValueCalculator = () => {
 			updateValue
 		) {
 			const blockContainer =
-				editorWrapper.querySelector('.is-root-container');
+				editorWrapper?.querySelector('.is-root-container');
+
+			if (!blockContainer) return 0;
+
 			editorWidth = editorWrapper?.offsetWidth ?? null;
 
 			const fullWidthElement = document.createElement('div');

@@ -71,6 +71,10 @@ const dictionary = {
 		'position-bottom-unit': 'psbu',
 		'position-left-unit': 'pslu',
 	},
+	transition: {
+		transition: 't',
+		'transition-change-all': 'tca',
+	},
 };
 
 const flattenDictionary = dict => {

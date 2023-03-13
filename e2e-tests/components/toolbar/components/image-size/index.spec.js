@@ -1,17 +1,17 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
-import { getAttributes, openSidebarTab } from '../../../../utils';
+import { getAttributes, insertMaxiBlock } from '../../../../utils';
 
 describe.skip('Image size', () => {
 	it('Check image size', async () => {
 		await createNewPost();
-		await insertBlock('Image Maxi');
+		await insertMaxiBlock(page, 'Image Maxi');
 
 		// open settings
 		await page.$eval(

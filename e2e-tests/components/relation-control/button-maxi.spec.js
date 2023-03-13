@@ -1,11 +1,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyWithModifier,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -17,6 +13,7 @@ import {
 	addTypographyOptions,
 	addTypographyStyle,
 	openPreviewPage,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('Button Maxi hover simple actions', () => {
@@ -42,7 +39,7 @@ describe('Button Maxi hover simple actions', () => {
 
 	beforeEach(async () => {
 		await createNewPost();
-		await insertBlock('Button Maxi');
+		await insertMaxiBlock(page, 'Button Maxi');
 
 		// Add icon
 		await openSidebarTab(page, 'style', 'quick styles');
@@ -50,7 +47,7 @@ describe('Button Maxi hover simple actions', () => {
 			buttons[3].click()
 		);
 
-		await insertBlock('Button Maxi');
+		await insertMaxiBlock(page, 'Button Maxi');
 		await openSidebarTab(page, 'advanced', 'interaction builder');
 
 		await addInteraction();

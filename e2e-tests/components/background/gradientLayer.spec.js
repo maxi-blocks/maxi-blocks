@@ -2,7 +2,7 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -16,13 +16,14 @@ import {
 	addResponsiveTest,
 	openPreviewPage,
 	editAdvancedNumberControl,
+	insertMaxiBlock,
 } from '../../utils';
 import sizeAndPositionChecker from './utils/sizeAndPositionChecker';
 
 describe('BackgroundControl', () => {
 	it('Check Background gradient layer', async () => {
 		await createNewPost();
-		await insertBlock('Group Maxi');
+		await insertMaxiBlock(page, 'Group Maxi');
 
 		await openSidebarTab(page, 'style', 'background layer');
 		await addBackgroundLayer(page, 'gradient');

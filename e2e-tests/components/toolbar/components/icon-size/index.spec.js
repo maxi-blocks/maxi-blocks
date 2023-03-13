@@ -1,21 +1,22 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyWithModifier,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
-import { getAttributes, modalMock, openSidebarTab } from '../../../../utils';
+import {
+	getAttributes,
+	modalMock,
+	openSidebarTab,
+	insertMaxiBlock,
+} from '../../../../utils';
 
 describe('Icon size', () => {
 	it('Check icon size', async () => {
 		await createNewPost();
-		await insertBlock('Icon Maxi');
+		await insertMaxiBlock(page, 'Icon Maxi');
 
 		// generate icon
 		await modalMock(page, { type: 'svg' });

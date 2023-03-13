@@ -158,6 +158,7 @@ const MaxiModal = props => {
 		isBeta,
 		gutenbergCode,
 		isSwapChecked,
+		layerOrder,
 	} = props;
 
 	const ref = useRef(null);
@@ -345,6 +346,7 @@ const MaxiModal = props => {
 								onClickConnect={onClickConnect}
 								userName={userName}
 								onLogOut={onLogOut}
+								layerOrder={layerOrder}
 							/>
 						</div>
 					</div>

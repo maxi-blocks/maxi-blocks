@@ -26,6 +26,7 @@ class edit extends MaxiBlockComponent {
 
 		this.state.googleApiKey = '';
 	}
+
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}

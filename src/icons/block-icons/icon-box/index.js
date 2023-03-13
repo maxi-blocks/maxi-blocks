@@ -4,7 +4,7 @@
 import { SVG, Path } from '@wordpress/primitives';
 
 const iconBox = (
-	<SVG preserveAspectRatio='none'viewBox='0 0 24 24'>
+	<SVG preserveAspectRatio='none' viewBox='0 0 24 24'>
 		<defs>
 			<Path
 				id='icon_box__a'

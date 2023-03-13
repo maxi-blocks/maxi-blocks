@@ -25,7 +25,7 @@ const getAlignmentTextStyles = (obj, type = 'text') => {
 
 		if (isEmpty(value)) return;
 
-		switch (obj[`ta-${breakpoint}`]) {
+		switch (value) {
 			case 'left':
 				response[breakpoint] = {
 					'text-align': 'left',

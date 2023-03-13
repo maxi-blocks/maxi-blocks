@@ -71,6 +71,13 @@ const dictionary = {
 		'position-bottom-unit': 'psbu',
 		'position-left-unit': 'pslu',
 	},
+	transform: {
+		'transform-scale': 'ts',
+		'transform-translate': 'ttt',
+		'transform-rotate': 'tr',
+		'transform-origin': 'to',
+		'transform-target': 'tt',
+	},
 };
 
 const flattenDictionary = dict => {

@@ -20,7 +20,7 @@ import {
 	getHasParallax,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-import { MarginValueCalculator } from '../../extensions/dom';
+import { marginValueCalculator } from '../../extensions/dom';
 import InnerBlocksBlock from './innerBlocksBlock';
 import MainMaxiBlock from './mainMaxiBlock';
 
@@ -320,7 +320,7 @@ const MaxiBlock = memo(
 		const { clientId, attributes, deviceType } = props;
 
 		const [isHovered, setHovered] = useReducer(e => !e, false);
-		const getMarginValue = useRef(MarginValueCalculator());
+		const getMarginValue = useRef(marginValueCalculator());
 
 		useEffect(() => {
 			return () => {

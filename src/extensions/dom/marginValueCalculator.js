@@ -1,6 +1,6 @@
 import getEditorWrapper from './getEditorWrapper';
 
-const MarginValueCalculator = (unmount = false) => {
+const marginValueCalculator = () => {
 	let fullWidthElementWidth = null;
 	let editorWidth = null;
 	let updateValue = false;
@@ -44,4 +44,4 @@ const MarginValueCalculator = (unmount = false) => {
 	return getMarginValue;
 };
 
-export default MarginValueCalculator;
+export default marginValueCalculator;

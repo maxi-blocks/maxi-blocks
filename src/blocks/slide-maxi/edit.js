@@ -59,7 +59,8 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, deviceType, hasInnerBlocks, clientId } = this.props;
+		const { attributes, deviceType, hasInnerBlocks, clientId, preview } =
+			this.props;
 		const { uniqueID } = attributes;
 
 		const ALLOWED_BLOCKS = wp.blocks
@@ -79,6 +80,17 @@ class edit extends MaxiBlockComponent {
 		const isActive =
 			this.context.selected ===
 			select('core/block-editor').getBlockIndex(clientId);
+
+		if (preview)
+			return (
+				<MaxiBlock
+					key={`maxi-slide--${uniqueID}`}
+					ref={this.blockRef}
+					{...getMaxiBlockAttributes(this.props)}
+				>
+					<img src={previews.slide_preview} />
+				</MaxiBlock>
+			);
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,

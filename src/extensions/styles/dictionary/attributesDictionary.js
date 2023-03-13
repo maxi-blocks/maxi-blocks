@@ -71,6 +71,15 @@ const dictionary = {
 		'position-bottom-unit': 'psbu',
 		'position-left-unit': 'pslu',
 	},
+	map: {
+		'map-provider': 'mpp',
+		'map-latitude': 'mpl',
+		'map-longitude': 'mplo',
+		'map-zoom': 'mpz',
+		'map-min-zoom': 'mpmz',
+		'map-max-zoom': 'mpmxz',
+		'map-markers': 'mpm',
+	},
 };
 
 const flattenDictionary = dict => {

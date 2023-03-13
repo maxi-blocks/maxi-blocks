@@ -1,11 +1,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyWithModifier,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
@@ -14,12 +10,13 @@ import {
 	openSidebarTab,
 	getAttributes,
 	addResponsiveTest,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('Svg width control', () => {
 	it('Check svg width control', async () => {
 		await createNewPost();
-		await insertBlock('Icon Maxi');
+		await insertMaxiBlock(page, 'Icon Maxi');
 		await modalMock(page, { type: 'svg' });
 
 		// Close model opened automatically by the block

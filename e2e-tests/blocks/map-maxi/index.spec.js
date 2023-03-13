@@ -1,13 +1,18 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
+
+/**
+ * Internal dependencies
+ */
 import {
 	addCustomCSS,
 	getAttributes,
 	getBlockStyle,
 	getEditedPostContent,
 	openPreviewPage,
+	insertMaxiBlock,
 } from '../../utils';
 import getMapContainer from './utils/getMapContainer';
 import roundMarkersCoords from './utils/roundMarkersCoords';
@@ -61,7 +66,9 @@ const popupTest = async map => {
 describe('Map Maxi', () => {
 	beforeEach(async () => {
 		await createNewPost();
-		await insertBlock('Map Maxi');
+		await insertMaxiBlock(page, 'Map Maxi');
+		await page.waitForSelector('.maxi-map-block');
+		await page.waitForTimeout(500);
 	});
 
 	it('Map Maxi does not break', async () => {
@@ -106,20 +113,21 @@ describe('Map Maxi', () => {
 	it('Map Maxi add marker by search box', async () => {
 		const map = await getMapContainer(page);
 
+		await page.waitForSelector('.maxi-map-block__search-box');
 		const searchBox = await map.$('.maxi-map-block__search-box');
 
 		// Typing London in the search box
-		await searchBox.focus();
-		await searchBox.type('London');
+		await searchBox.$eval('input', input => input.focus());
+		await searchBox.type('London', { delay: 100 });
 		await page.waitForTimeout(150);
 
 		// Starting search
+		await page.waitForSelector('.maxi-map-block__search-box__button');
 		await searchBox.$eval('.maxi-map-block__search-box__button', button =>
 			button.click()
 		);
 
-		await map.waitForSelector('.maxi-map-block__search-box-results');
-
+		await page.waitForSelector('.maxi-map-block__search-box-results');
 		const searchBoxResults = await map.$(
 			'.maxi-map-block__search-box-results'
 		);

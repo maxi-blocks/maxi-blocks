@@ -46,7 +46,11 @@ import {
 } from '../fse';
 import { updateSCOnEditor } from '../style-cards';
 import getWinBreakpoint from '../dom/getWinBreakpoint';
-import { uniqueIDGenerator, getBlockData } from '../attributes';
+import {
+	getBlockData,
+	getUpdatedBGLayersWithNewUniqueID,
+	uniqueIDGenerator,
+} from '../attributes';
 import getHoverStatus from '../relations/getHoverStatus';
 import { getStylesWrapperId } from './utils';
 import getLastChangedBlocks from './getLastChangedBlocks';
@@ -293,8 +297,8 @@ class MaxiBlockComponent extends Component {
 				return false;
 			};
 
-			keepStylesOnEditor = blocks.some(block => getName(block));
-		});
+			keepStylesOnEditor ||= blocks.some(block => getName(block));
+		}, true);
 
 		// When duplicating Gutenberg creates a copy of the current copied block twice, making the first keep the same uniqueID and second
 		// has a different one. The original block is removed so componentWillUnmount method is triggered, and as its uniqueID coincide with
@@ -324,6 +328,12 @@ class MaxiBlockComponent extends Component {
 			// IB
 			this.removeUnmountedBlockFromRelations(
 				this.props.attributes.uniqueID
+			);
+
+			// Remove the uniqueID from the list of rendered blocks
+			dispatch('maxiBlocks').removeBlockHasBeenRendered(
+				this.props.attributes.uniqueID,
+				this.props.clientId
 			);
 		}
 
@@ -516,13 +526,24 @@ class MaxiBlockComponent extends Component {
 	}
 
 	propagateNewUniqueID(oldUniqueID, newUniqueID) {
-		const updateRelations = () => {
-			const blockAttributesUpdate = {};
-			const lastChangedBlocks = getLastChangedBlocks();
+		const blockAttributesUpdate = {};
+		const lastChangedBlocks = getLastChangedBlocks();
 
+		const updateBlockAttributesUpdate = (clientId, key, value) => {
+			if (!blockAttributesUpdate[clientId])
+				blockAttributesUpdate[clientId] = {};
+
+			blockAttributesUpdate[clientId][key] = value;
+
+			return blockAttributesUpdate;
+		};
+
+		const updateRelations = () => {
 			if (isEmpty(lastChangedBlocks)) return;
 
 			const updateNewUniqueID = block => {
+				if (!block) return;
+
 				const {
 					attributes = {},
 					innerBlocks: rawInnerBlocks = [],
@@ -546,9 +567,11 @@ class MaxiBlockComponent extends Component {
 					});
 
 					if (!isEqual(relations, newRelations) && clientId)
-						blockAttributesUpdate[clientId] = {
-							relations: newRelations,
-						};
+						updateBlockAttributesUpdate(
+							clientId,
+							'relations',
+							newRelations
+						);
 				}
 
 				if (!isEmpty(rawInnerBlocks)) {
@@ -563,24 +586,33 @@ class MaxiBlockComponent extends Component {
 			};
 
 			lastChangedBlocks.forEach(block => updateNewUniqueID(block));
+		};
 
-			if (!isEmpty(blockAttributesUpdate)) {
-				const {
-					__unstableMarkNextChangeAsNotPersistent:
-						markNextChangeAsNotPersistent,
-					updateBlockAttributes,
-				} = dispatch('core/block-editor');
-
-				Object.entries(blockAttributesUpdate).forEach(
-					([clientId, attributes]) => {
-						markNextChangeAsNotPersistent();
-						updateBlockAttributes(clientId, attributes);
-					}
+		const updateBGLayers = () => {
+			this.props.attributes['background-layers'] =
+				getUpdatedBGLayersWithNewUniqueID(
+					this.props.attributes['background-layers'],
+					newUniqueID
 				);
-			}
 		};
 
 		updateRelations();
+		updateBGLayers();
+
+		if (!isEmpty(blockAttributesUpdate)) {
+			const {
+				__unstableMarkNextChangeAsNotPersistent:
+					markNextChangeAsNotPersistent,
+				updateBlockAttributes,
+			} = dispatch('core/block-editor');
+
+			Object.entries(blockAttributesUpdate).forEach(
+				([clientId, attributes]) => {
+					markNextChangeAsNotPersistent();
+					updateBlockAttributes(clientId, attributes);
+				}
+			);
+		}
 	}
 
 	updateRelationHoverStatus() {

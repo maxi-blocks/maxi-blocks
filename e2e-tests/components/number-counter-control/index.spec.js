@@ -3,7 +3,6 @@
  */
 import {
 	createNewPost,
-	insertBlock,
 	pressKeyTimes,
 	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
@@ -17,12 +16,13 @@ import {
 	editAdvancedNumberControl,
 	changeResponsive,
 	addResponsiveTest,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('NumberCounterControl', () => {
 	it('Check number counter control', async () => {
 		await createNewPost();
-		await insertBlock('Number Counter Maxi');
+		await insertMaxiBlock(page, 'Number Counter Maxi');
 		const accordionPanel = await openSidebarTab(page, 'style', 'number');
 
 		// Start Animation

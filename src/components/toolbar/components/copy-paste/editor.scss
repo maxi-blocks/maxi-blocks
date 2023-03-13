@@ -1,10 +1,6 @@
 .toolbar-item__copy-paste {
 	&__popover {
-		min-width: 170px;
-
 		form {
-			padding: 5px;
-			background-color: var(--maxi-white-1-color);
 			min-width: max-content;
 
 			/* width */
@@ -35,7 +31,7 @@
 			position: relative;
 			cursor: pointer;
 			margin: 0;
-			padding: 5px 7px;
+			padding: 5px 20px 5px 7px;
 			display: flex;
 			align-items: center;
 			&:hover {
@@ -132,12 +128,12 @@
 			&--special {
 				display: block;
 				height: 30px;
-				margin-top: 10px;
 				background: var(--maxi-primary-color);
 				border-radius: 0;
 				color: #fff;
 				font-size: 12px;
 				text-align: center !important;
+				padding-top: 4px !important;
 
 				&::before,
 				&::after {
@@ -184,7 +180,6 @@
 
 .maxi-copy-paste__popover {
 	.components-popover__content {
-		width: fit-content !important;
 		border-radius: 0 !important;
 
 		/* width */

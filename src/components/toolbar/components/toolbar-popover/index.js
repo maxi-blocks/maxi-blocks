@@ -148,14 +148,14 @@ class ToolbarPopover extends Component {
 					{tooltipsHide && buttonContent()}
 					{isOpen && children && (
 						<Popover
-							anchorRef={this.ref?.current?.closest(
+							anchor={this.ref?.current?.closest(
 								'.toolbar-wrapper'
 							)}
 							className='toolbar-item__popover'
 							onClose={onClose}
 							position={position}
 							isAlternate
-							noArrow={false}
+							noArrow
 						>
 							<div>{children}</div>
 							{!!advancedOptions && (

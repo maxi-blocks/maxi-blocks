@@ -32,7 +32,8 @@ const injectImgSVG = (
 	const imageShapePosition = getSVGPosition(svg.outerHTML ?? svg);
 	const imageShapeRatio = getSVGRatio(svg.outerHTML ?? svg);
 
-	const imageShapeRatioValue = imageShapeRatio === 'slice' ? ' slice' : '';
+	const imageShapeRatioValue =
+		imageShapeRatio === 'meet' ? ' meet' : ' slice';
 
 	const SVGValue = !isObject(SVGData) ? JSON.parse(SVGData) : SVGData;
 
@@ -89,10 +90,11 @@ const injectImgSVG = (
 						'preserveAspectRatio',
 						`${imageShapePosition}${imageShapeRatioValue}`
 					);
-				image.setAttribute(
-					'preserveAspectRatio',
-					`xMidYMid${imageShapeRatioValue}`
-				);
+				else
+					image.setAttribute(
+						'preserveAspectRatio',
+						`xMidYMid${imageShapeRatioValue}`
+					);
 
 				pattern.append(image);
 				SVGElement.prepend(pattern);

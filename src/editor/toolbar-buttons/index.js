@@ -88,24 +88,22 @@ wp.domReady(() => {
 			}
 
 			if (getIsSiteEditor()) {
-				setTimeout(() => {
-					const toolbarButtonMaxi = document.querySelector(
-						'#maxi-blocks__toolbar-buttons button'
-					);
+				const toolbarButtonMaxi = document.querySelector(
+					'#maxi-blocks__toolbar-buttons button'
+				);
 
-					if (!toolbarButtonMaxi) return;
+				if (!toolbarButtonMaxi) return;
 
-					const widthLeftMenu = document.querySelector(
-						'div.edit-site-header-edit-mode__start'
-					).offsetWidth;
+				const widthLeftMenu = document.querySelector(
+					'div.edit-site-header-edit-mode__start'
+				).offsetWidth;
 
-					const widthSiteIcon = document.querySelector(
-						'div.edit-site-site-hub'
-					).offsetWidth;
+				const widthSiteIcon = document.querySelector(
+					'div.edit-site-site-hub'
+				).offsetWidth;
 
-					const leftSpace = widthLeftMenu + widthSiteIcon;
-					toolbarButtonMaxi.style.left = `${leftSpace}px`;
-				}, 100);
+				const leftSpace = widthLeftMenu + widthSiteIcon;
+				toolbarButtonMaxi.style.left = `${leftSpace}px`;
 			}
 
 			isMaxiToolbar = true;

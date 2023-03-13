@@ -1,4 +1,7 @@
 const dictionary = {
+	clipPath: {
+		'clip-path': 'cp',
+	},
 	textAlignment: {
 		'text-alignment': 'ta',
 	},
@@ -34,6 +37,9 @@ const dictionary = {
 		'margin-bottom-unit': 'mbu',
 		'margin-left-unit': 'mlu',
 	},
+	opacity: {
+		opacity: 'o',
+	},
 	padding: {
 		'padding-top': 'pt',
 		'padding-right': 'pr',
@@ -55,6 +61,18 @@ const dictionary = {
 	},
 	zIndex: {
 		'z-index': 'zi',
+	},
+	position: {
+		position: 'ps',
+		'position-top': 'pst',
+		'position-right': 'psr',
+		'position-bottom': 'psb',
+		'position-left': 'psl',
+		'position-sync': 'pss',
+		'position-top-unit': 'pstu',
+		'position-right-unit': 'psru',
+		'position-bottom-unit': 'psbu',
+		'position-left-unit': 'pslu',
 	},
 };
 

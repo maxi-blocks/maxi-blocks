@@ -90,3 +90,5 @@ export const getHoverAttributeKey = key =>
 
 // Accepts (possibly) hover attribute key and returns normal key.
 export const getNormalAttributeKey = hoverKey => hoverKey.replace(/-hover/, '');
+
+export const getAttrKeyWithoutStatus = key => key.replace(/-status/, '');

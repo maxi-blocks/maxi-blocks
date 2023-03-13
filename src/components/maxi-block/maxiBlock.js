@@ -337,20 +337,27 @@ const MaxiBlock = memo(
 			getMarginValue.current()
 		);
 
+		useEffect(() => {
+			if (!isFirstOnHierarchy) return false;
+
+			const style = document.createElement('style');
+			style.innerHTML = `#block-${clientId} { ${styleStr} }`;
+			ref.current.ownerDocument.head.appendChild(style);
+
+			return () => {
+				style.remove();
+			};
+		}, [styleStr, isFirstOnHierarchy, clientId]);
+
 		return (
-			<>
-				<MaxiBlockContent
-					key={`maxi-block-content__${clientId}`}
-					ref={ref}
-					onMouseEnter={setHovered}
-					onMouseLeave={setHovered}
-					isHovered={isHovered}
-					{...props}
-				/>
-				{isFirstOnHierarchy && (
-					<style>{`#block-${clientId} { ${styleStr} }`}</style>
-				)}
-			</>
+			<MaxiBlockContent
+				key={`maxi-block-content__${clientId}`}
+				ref={ref}
+				onMouseEnter={setHovered}
+				onMouseLeave={setHovered}
+				isHovered={isHovered}
+				{...props}
+			/>
 		);
 	}),
 	(rawOldProps, rawNewProps) => {

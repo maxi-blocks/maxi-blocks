@@ -22,22 +22,22 @@ export const getArrowObject = props => {
 		response[breakpoint] = {};
 
 		const arrowStatus = getLastBreakpointAttribute({
-			target: 'arrow-status',
+			target: 'ast',
 			breakpoint,
 			attributes: props,
 		});
 		const arrowWidth = getLastBreakpointAttribute({
-			target: 'arrow-width',
+			target: 'awi',
 			breakpoint,
 			attributes: props,
 		});
 		const arrowSide = getLastBreakpointAttribute({
-			target: 'arrow-side',
+			target: 'asi',
 			breakpoint,
 			attributes: props,
 		});
 		const arrowPosition = getLastBreakpointAttribute({
-			target: 'arrow-position',
+			target: 'apos',
 			breakpoint,
 			attributes: props,
 		});

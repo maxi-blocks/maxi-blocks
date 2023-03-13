@@ -105,6 +105,7 @@ class edit extends MaxiBlockComponent {
 			deviceType,
 			hasInnerBlocks,
 			maxiSetAttributes,
+			preview,
 		} = this.props;
 		const { uniqueID } = attributes;
 
@@ -113,6 +114,17 @@ class edit extends MaxiBlockComponent {
 		const emptyRowClass = !hasInnerBlocks
 			? 'maxi-row-block__empty'
 			: 'maxi-row-block__has-inner-block';
+
+		if (preview)
+			return (
+				<MaxiBlock
+					key={`maxi-row--${uniqueID}`}
+					ref={this.blockRef}
+					{...getMaxiBlockAttributes(this.props)}
+				>
+					<img src={previews.row_preview} />
+				</MaxiBlock>
+			);
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,

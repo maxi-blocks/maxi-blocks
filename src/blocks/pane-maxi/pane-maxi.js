@@ -38,6 +38,11 @@ registerBlockType('maxi-blocks/pane-maxi', {
 	description: __('Hide some content inside of it', 'maxi-blocks'),
 	icon: groupIcon,
 	category: 'maxi-blocks',
+	example: {
+		attributes: {
+			preview: true,
+		},
+	},
 	supports: {
 		align: true,
 		lightBlockWrapper: true,

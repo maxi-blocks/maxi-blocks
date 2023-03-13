@@ -169,6 +169,7 @@ class edit extends MaxiBlockComponent {
 			isSelected,
 			hasSelectedChild,
 			hasInnerBlocks,
+			preview,
 		} = this.props;
 		const { uniqueID, title } = attributes;
 		const {
@@ -180,6 +181,17 @@ class edit extends MaxiBlockComponent {
 			onOpen,
 			onClose,
 		} = this.context;
+
+		if (preview)
+			return (
+				<MaxiBlock
+					key={`maxi-pane--${uniqueID}`}
+					ref={this.blockRef}
+					{...getMaxiBlockAttributes(this.props)}
+				>
+					<img src={previews.pane_preview} />
+				</MaxiBlock>
+			);
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,

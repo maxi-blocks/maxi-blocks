@@ -4,11 +4,11 @@
 import { __ } from '@wordpress/i18n';
 
 const getAreaLabel = iconContent => {
-	const defaultLabel = __('Icon only button', 'maxi-blocks');
+	const defaultLabel = __('Icon', 'maxi-blocks');
 
 	if (!iconContent) return defaultLabel;
 
-	let svgClass = iconContent.match(/ class="(.+?(?=))"/)[1];
+	const svgClass = iconContent.match(/ class="(.+?(?=))"/)[1];
 
 	if (!svgClass) return defaultLabel;
 
@@ -19,7 +19,7 @@ const getAreaLabel = iconContent => {
 			.replace('-shape-maxi-svg', '')
 			.replaceAll('-', ' ');
 
-	const ariaLabel = `Button: ${replaceForLabel(svgClass)} icon`;
+	const ariaLabel = `${replaceForLabel(svgClass)} icon`;
 
 	return __(`${ariaLabel}`, 'maxi-blocks') || defaultLabel;
 };

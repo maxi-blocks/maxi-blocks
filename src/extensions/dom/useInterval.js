@@ -15,14 +15,12 @@ const useInterval = (callback, delay) => {
 	useEffect(() => {
 		// Don't schedule if no delay is specified.
 		// Note: 0 is a valid value for delay.
-		if (!delay && delay !== 0) {
-			return () => {};
+		if (delay || delay === 0) {
+			const id = setInterval(() => savedCallback.current(), delay);
+
+			// eslint-disable-next-line consistent-return
+			return () => clearInterval(id);
 		}
-
-		const id = setInterval(() => savedCallback.current(), delay);
-
-		// eslint-disable-next-line consistent-return
-		return () => clearInterval(id);
 	}, [delay]);
 };
 

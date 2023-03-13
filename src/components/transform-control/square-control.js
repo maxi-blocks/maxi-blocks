@@ -165,10 +165,12 @@ const SquareControl = props => {
 	const isShowUnit = axis => !isNaN(toNumber(axis));
 
 	useEffect(() => {
-		if (isMoving) return () => {};
-
-		if (Math.round(tempX) !== xAxis && isNumber(xAxis)) changeTempX(xAxis);
-		if (Math.round(tempY) !== yAxis && isNumber(yAxis)) changeTempY(yAxis);
+		if (!isMoving) {
+			if (Math.round(tempX) !== xAxis && isNumber(xAxis))
+				changeTempX(xAxis);
+			if (Math.round(tempY) !== yAxis && isNumber(yAxis))
+				changeTempY(yAxis);
+		}
 	}, [xAxis, yAxis, xUnit, yUnit]);
 
 	useEffect(() => {

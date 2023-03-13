@@ -191,21 +191,22 @@ const NumberCounter = attributes => {
 		if ((startCountValue < endCountValue && preview) || replayStatus) {
 			if (count >= endCountValue) {
 				setCount(endCountValue);
-				return () => {};
+			} else {
+				requestAnimationFrame(function animate() {
+					const newCount =
+						startCountValue +
+						parseInt(
+							(Date.now() - startTimeRef.current) / frameDuration
+						);
+					newCount === count
+						? requestAnimationFrame(animate)
+						: setCount(
+								newCount > endCountValue
+									? endCountValue
+									: newCount
+						  );
+				});
 			}
-
-			requestAnimationFrame(function animate() {
-				const newCount =
-					startCountValue +
-					parseInt(
-						(Date.now() - startTimeRef.current) / frameDuration
-					);
-				newCount === count
-					? requestAnimationFrame(animate)
-					: setCount(
-							newCount > endCountValue ? endCountValue : newCount
-					  );
-			});
 		}
 	}, [count, replayStatus, preview, endCountValue]);
 

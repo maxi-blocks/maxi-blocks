@@ -166,8 +166,7 @@ const MaxiModal = props => {
 	const [wasOpenedFirstTime, changeOpenedFirstTime] = useState(openFirstTime);
 
 	useEffect(() => {
-		forceIsOpen ? changeIsOpen(forceIsOpen) : null;
-		return () => {};
+		if (forceIsOpen) changeIsOpen(forceIsOpen);
 	}, [forceIsOpen]);
 
 	const onClick = () => {

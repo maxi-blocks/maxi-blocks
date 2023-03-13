@@ -71,6 +71,10 @@ const dictionary = {
 		'position-bottom-unit': 'psbu',
 		'position-left-unit': 'pslu',
 	},
+	columnSize: {
+		'column-size': 'cs',
+		'column-fit-content': 'cfc',
+	},
 };
 
 const flattenDictionary = dict => {

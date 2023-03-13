@@ -117,6 +117,7 @@ class MaxiBlockComponent extends Component {
 		const { uniqueID } = attributes;
 
 		this.isReusable = false;
+		this.rootSlot = null;
 		this.currentBreakpoint =
 			select('maxiBlocks').receiveMaxiDeviceType() || 'general';
 		// eslint-disable-next-line react/no-unused-class-component-methods
@@ -801,8 +802,9 @@ class MaxiBlockComponent extends Component {
 			if (wrapper) {
 				// check if createRoot is available (since React 18)
 				if (typeof createRoot === 'function') {
-					const root = createRoot(wrapper);
-					root.render(
+					if (isNil(this.rootSlot))
+						this.rootSlot = createRoot(wrapper);
+					this.rootSlot.render(
 						<StyleComponent
 							uniqueID={uniqueID}
 							stylesObj={obj}
@@ -839,14 +841,16 @@ class MaxiBlockComponent extends Component {
 
 					// check if createRoot is available (since React 18)
 					if (typeof createRoot === 'function') {
-						const root = createRoot(iframeWrapper);
-						root.render(
+						if (isNil(this.rootSlot))
+							this.rootSlot = createRoot(wrapper);
+
+						this.rootSlot.render(
 							<StyleComponent
 								uniqueID={uniqueID}
 								stylesObj={obj}
 								currentBreakpoint={this.currentBreakpoint}
 								blockBreakpoints={breakpoints}
-								isIframe
+								isSiteEditor={isSiteEditor}
 							/>
 						);
 					} else {

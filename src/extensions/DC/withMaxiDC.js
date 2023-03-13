@@ -125,6 +125,7 @@ const withMaxiDC = createHigherOrderComponent(
 					}
 				}
 			};
+			
 
 			useEffect(() => {
 				fetchDcData().catch(console.error);

@@ -23,15 +23,8 @@ import { isEmpty } from 'lodash';
 const withMaxiProps = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
-			const {
-				setAttributes,
-				attributes,
-				clientId,
-				isSelected,
-				onMaxiBlockRender,
-			} = ownProps;
-
-			useEffect(() => onMaxiBlockRender && onMaxiBlockRender(), []);
+			const { setAttributes, attributes, clientId, isSelected } =
+				ownProps;
 
 			const {
 				deviceType,

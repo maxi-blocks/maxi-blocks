@@ -16,7 +16,7 @@ import getWinBreakpoint from '../dom/getWinBreakpoint';
 /**
  * External dependencies
  */
-import { omit, isEmpty } from 'lodash';
+import { omit } from 'lodash';
 
 const breakpointResizer = ({
 	size,
@@ -105,8 +105,6 @@ const reducer = (
 		copiedBlocks: {},
 		inspectorPath: [{ name: 'Settings', value: 0 }],
 		deprecatedBlocks: {},
-		blocksToRender: [],
-		renderedBlocks: [],
 	},
 	action
 ) => {
@@ -207,79 +205,6 @@ const reducer = (
 				...state,
 				deprecatedBlocks: omit(state.deprecatedBlocks, action.uniqueID),
 			};
-		case 'BLOCK_WANTS_TO_RENDER': {
-			const { uniqueID, clientId } = action;
-
-			if (
-				state.blocksToRender.includes(uniqueID) ||
-				state.renderedBlocks.includes(uniqueID)
-			)
-				return state;
-
-			const getInnerBlocksUniqueID = clientId => {
-				const innerBlocks =
-					select('core/block-editor').getBlocks(clientId);
-
-				if (isEmpty(innerBlocks)) return [];
-
-				const innerBlocksUniqueID = [];
-
-				innerBlocks.forEach(innerBlock => {
-					const {
-						clientId: innerBlockClientId,
-						attributes: { uniqueID },
-					} = innerBlock;
-
-					if (!state.blocksToRender.includes(uniqueID))
-						innerBlocksUniqueID.push(uniqueID);
-
-					innerBlocksUniqueID.push(
-						...getInnerBlocksUniqueID(innerBlockClientId)
-					);
-				});
-
-				return innerBlocksUniqueID;
-			};
-
-			const innerBlocksUniqueID = getInnerBlocksUniqueID(clientId);
-
-			return {
-				...state,
-				blocksToRender: [
-					...state.blocksToRender,
-					uniqueID,
-					...innerBlocksUniqueID,
-				],
-			};
-		}
-		case 'BLOCK_HAS_BEEN_RENDERED': {
-			const { uniqueID } = action;
-
-			const newBlocksToRender = state.blocksToRender.filter(
-				block => block !== uniqueID
-			);
-			const newRenderedBlocks = !state.renderedBlocks.includes(uniqueID)
-				? [...state.renderedBlocks, uniqueID]
-				: state.renderedBlocks;
-
-			return {
-				...state,
-				blocksToRender: newBlocksToRender,
-				renderedBlocks: newRenderedBlocks,
-			};
-		}
-		case 'REMOVE_BLOCK_HAS_BEEN_RENDERED': {
-			const { uniqueID } = action;
-
-			const newRenderedBlocks = state.renderedBlocks.filter(
-				block => block !== uniqueID
-			);
-
-			return {
-				...state,
-				renderedBlocks: newRenderedBlocks,
-			};
-		}
 		default:
 			return state;
 	}

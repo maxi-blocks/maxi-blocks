@@ -59,6 +59,18 @@ const dictionary = {
 	zIndex: {
 		'z-index': 'zi',
 	},
+	position: {
+		position: 'ps',
+		'position-top': 'pst',
+		'position-right': 'psr',
+		'position-bottom': 'psb',
+		'position-left': 'psl',
+		'position-sync': 'pss',
+		'position-top-unit': 'pstu',
+		'position-right-unit': 'psru',
+		'position-bottom-unit': 'psbu',
+		'position-left-unit': 'pslu',
+	},
 };
 
 const flattenDictionary = dict => {

@@ -75,6 +75,14 @@ const ImageAltControl = ({
 		return response;
 	};
 
+	if (typeof altSelector === 'undefined')
+		onChange({
+			altSelector,
+			...{
+				mediaAlt: titleAlt,
+			},
+		});
+
 	return (
 		<>
 			<SelectControl

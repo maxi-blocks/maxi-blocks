@@ -5,7 +5,7 @@ const prefix = 'active-';
 
 const boxShadowActive = prefixAttributesCreator({
 	obj: boxShadow,
-	diffValAttr: { [`${prefix}box-shadow-palette-color-general`]: 6 },
+	diffValAttr: { [`${prefix}box-shadow-pac-general`]: 6 },
 	newAttr: {
 		'box-shadow-status-active': {
 			type: 'boolean',

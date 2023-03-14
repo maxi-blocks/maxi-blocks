@@ -1,9 +1,24 @@
 const dictionary = {
-	clipPath: {
-		'clip-path': 'cp',
+	border: {
+		'border-style': 'bs',
+		'border-top-width': 'btw',
+		'border-right-width': 'brw',
+		'border-bottom-width': 'bbw',
+		'border-left-width': 'blw',
+		'border-sync-width': 'bsw',
+		'border-unit-width': 'buw',
+		'border-top-left-radius': 'btlr',
+		'border-top-right-radius': 'btrr',
+		'border-bottom-right-radius': 'bbrr',
+		'border-bottom-left-radius': 'bblr',
+		'border-sync-radius': 'bsr',
+		'border-unit-radius': 'bur',
 	},
 	alignment: {
 		alignment: 'a',
+	},
+	clipPath: {
+		'clip-path': 'cp',
 	},
 	size: {
 		'size-advanced-options': 'sao',
@@ -70,6 +85,12 @@ const dictionary = {
 		'position-right-unit': 'psru',
 		'position-bottom-unit': 'psbu',
 		'position-left-unit': 'pslu',
+	},
+	palette: {
+		'palette-status': 'past',
+		'palette-color': 'pac',
+		'palette-opacity': 'pao',
+		color: 'c',
 	},
 };
 

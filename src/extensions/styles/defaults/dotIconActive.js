@@ -9,19 +9,19 @@ const dotIconActive = prefixAttributesCreator({
 	prefix: activePrefix,
 	diffValAttr: {
 		[`${prefix}icon-width-general`]: '10',
-		[`${prefix}icon-stroke-palette-color`]: 2,
-		[`${prefix}icon-fill-palette-color`]: 4,
+		[`${prefix}icon-stroke-pac`]: 2,
+		[`${prefix}icon-fill-pac`]: 4,
 	},
 	newAttr: {
 		[`${prefix}icon-status`]: {
 			type: 'boolean',
 			default: true,
 		},
-		[`${prefix}icon-stroke-palette-status`]: {
+		[`${prefix}icon-stroke-past`]: {
 			type: 'boolean',
 			default: true,
 		},
-		[`${prefix}icon-fill-palette-status`]: {
+		[`${prefix}icon-fill-past`]: {
 			type: 'boolean',
 			default: true,
 		},

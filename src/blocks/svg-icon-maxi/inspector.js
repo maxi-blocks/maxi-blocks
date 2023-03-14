@@ -18,6 +18,8 @@ import {
 } from '../../components';
 import { SvgAltControl, SvgColorControl } from './components';
 import {
+	getAttributeKey,
+	getAttributeValue,
 	getColorRGBAString,
 	getGroupAttributes,
 } from '../../extensions/styles';
@@ -62,14 +64,12 @@ const Inspector = props => {
 							const { blockStyle } = obj;
 
 							const {
-								'svg-fill-palette-color': svgPaletteFillColor,
-								'svg-fill-palette-opacity':
-									svgPaletteFillOpacity,
-								'svg-fill-color': svgFillColor,
-								'svg-line-palette-color': svgPaletteLineColor,
-								'svg-line-palette-opacity':
-									svgPaletteLineOpacity,
-								'svg-line-color': svgLineColor,
+								'svg-fill-pac': svgPaletteFillColor,
+								'svg-fill-pao': svgPaletteFillOpacity,
+								'svg-fill-c': svgFillColor,
+								'svg-line-pac': svgPaletteLineColor,
+								'svg-line-pao': svgPaletteLineOpacity,
+								'svg-line-c': svgLineColor,
 							} = attributes;
 
 							const fillColorStr = getColorRGBAString({
@@ -89,10 +89,16 @@ const Inspector = props => {
 								...obj,
 								content: setSVGContentWithBlockStyle(
 									attributes.content,
-									attributes['svg-fill-palette-status']
+									getAttributeValue({
+										target: 'svg-fill-palette-status',
+										props: attributes,
+									})
 										? fillColorStr
 										: svgFillColor,
-									attributes['svg-line-palette-status']
+									getAttributeValue({
+										target: 'svg-line-palette-status',
+										props: attributes,
+									})
 										? lineColorStr
 										: svgLineColor
 								),
@@ -200,7 +206,9 @@ const Inspector = props => {
 												'svg-line-palette-status',
 												'svg-line-color',
 												`svg-width-${deviceType}`,
-											],
+											].map(attributeKey =>
+												getAttributeKey(attributeKey)
+											),
 										},
 									...inspectorTabs.background({
 										label: 'Icon',
@@ -254,7 +262,9 @@ const Inspector = props => {
 											'svg-line-palette-status',
 											'svg-line-color',
 											`svg-stroke-${deviceType}`,
-										],
+										].map(attributeKey =>
+											getAttributeKey(attributeKey)
+										),
 									},
 									...inspectorTabs.marginPadding({
 										props,

@@ -3,8 +3,8 @@ import { border, borderWidth, borderRadius } from './border';
 
 export const borderHover = hoverAttributesCreator({
 	obj: border,
-	sameValAttr: ['border-palette-status-general'],
-	diffValAttr: { 'border-palette-color-general': 6 },
+	sameValAttr: ['border-past-general'],
+	diffValAttr: { 'border-pac-general': 6 },
 	newAttr: {
 		'border-status-hover': {
 			type: 'boolean',

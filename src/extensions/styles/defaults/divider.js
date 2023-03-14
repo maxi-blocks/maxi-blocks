@@ -57,7 +57,7 @@ const rawDivider = {
 		prefix,
 		obj: rawBorder,
 		diffValAttr: {
-			'divider-border-palette-color': 4,
+			'divider-border-pac': 4,
 			'divider-border-style': 'solid',
 		},
 	}),

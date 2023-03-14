@@ -24,9 +24,9 @@ const attributes = {
 				{
 					type: 'color',
 					'display-general': 'block',
-					'background-palette-status-general': true,
-					'background-palette-color-general': 1,
-					'background-palette-opacity': 1,
+					'background-past-general': true,
+					'background-pac-general': 1,
+					'background-pao': 1,
 					'background-color-general': '',
 					'background-color-clip-path-general': '',
 					'background-color-wrapper-position-sync-general': 'all',

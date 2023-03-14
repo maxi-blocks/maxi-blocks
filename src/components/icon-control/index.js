@@ -344,19 +344,31 @@ const IconControlResponsiveSettings = withRTC(props => {
 								});
 
 								onChange({
-									[`${prefix}icon-stroke-color${
-										isHover ? '-hover' : ''
-									}`]: color,
-									[`${prefix}icon-stroke-palette-color${
-										isHover ? '-hover' : ''
-									}`]: paletteColor,
-									[`${prefix}icon-stroke-palette-status${
-										isHover ? '-hover' : ''
-									}`]: paletteStatus,
-									[`${prefix}icon-stroke-palette-opacity${
-										isHover ? '-hover' : ''
-									}`]: paletteOpacity,
-									[`${prefix}icon-content`]: icon,
+									[getAttributeKey(
+										'color',
+										isHover,
+										`${prefix}icon-stroke-`
+									)]: color,
+									[getAttributeKey(
+										'palette-color',
+										isHover,
+										`${prefix}icon-stroke-`
+									)]: paletteColor,
+									[getAttributeKey(
+										'palette-status',
+										isHover,
+										`${prefix}icon-stroke-`
+									)]: paletteStatus,
+									[getAttributeKey(
+										'palette-opacity',
+										isHover,
+										`${prefix}icon-stroke-`
+									)]: paletteOpacity,
+									[getAttributeKey(
+										'content',
+										isHover,
+										`${prefix}icon-`
+									)]: icon,
 								});
 							}}
 							isHover={isHover}
@@ -445,19 +457,31 @@ const IconControlResponsiveSettings = withRTC(props => {
 						});
 
 						onChange({
-							[`${prefix}icon-fill-color${
-								isHover ? '-hover' : ''
-							}`]: color,
-							[`${prefix}icon-fill-palette-color${
-								isHover ? '-hover' : ''
-							}`]: paletteColor,
-							[`${prefix}icon-fill-palette-status${
-								isHover ? '-hover' : ''
-							}`]: paletteStatus,
-							[`${prefix}icon-fill-palette-opacity${
-								isHover ? '-hover' : ''
-							}`]: paletteOpacity,
-							[`${prefix}icon-content`]: icon,
+							[getAttributeKey(
+								'color',
+								isHover,
+								`${prefix}icon-fill-`
+							)]: color,
+							[getAttributeKey(
+								'palette-color',
+								isHover,
+								`${prefix}icon-fill-`
+							)]: paletteColor,
+							[getAttributeKey(
+								'palette-status',
+								isHover,
+								`${prefix}icon-fill-`
+							)]: paletteStatus,
+							[getAttributeKey(
+								'palette-opacity',
+								isHover,
+								`${prefix}icon-fill-`
+							)]: paletteOpacity,
+							[getAttributeKey(
+								'content',
+								isHover,
+								`${prefix}icon-`
+							)]: icon,
 						});
 					}}
 					isHover={isHover}

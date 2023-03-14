@@ -28,11 +28,11 @@ const attributes = {
 	...attributesData.iconPadding,
 	...{
 		...attributesData.iconBackgroundColor,
-		'icon-background-palette-status-general': {
+		'icon-background-past-general': {
 			type: 'boolean',
 			default: true,
 		},
-		'icon-background-palette-color-general': {
+		'icon-background-pac-general': {
 			type: 'number',
 			default: 4,
 		},
@@ -63,7 +63,7 @@ const attributes = {
 			type: 'string',
 			default: '%',
 		},
-		'palette-color-general': {
+		'pac-general': {
 			type: 'number',
 			default: 1,
 		},
@@ -79,7 +79,7 @@ const attributes = {
 	...prefixAttributesCreator({
 		obj: attributesData.backgroundColor,
 		prefix,
-		diffValAttr: { [`${prefix}background-palette-color-general`]: 4 },
+		diffValAttr: { [`${prefix}background-pac-general`]: 4 },
 	}),
 	...prefixAttributesCreator({
 		obj: attributesData.backgroundGradient,
@@ -96,7 +96,7 @@ const attributes = {
 	}),
 	...{
 		...prefixAttributesCreator({ obj: attributesData.border, prefix }),
-		[`${prefix}border-palette-color-general`]: {
+		[`${prefix}border-pac-general`]: {
 			type: 'number',
 			default: 4,
 		},
@@ -127,7 +127,7 @@ const attributes = {
 	}),
 	...{
 		...prefixAttributesCreator({ obj: attributesData.boxShadow, prefix }),
-		[`${prefix}box-shadow-palette-color-general`]: {
+		[`${prefix}box-shadow-pac-general`]: {
 			type: 'number',
 			default: 4,
 		},

@@ -20,6 +20,7 @@ import withRTC from '../../extensions/maxi-block/withRTC';
 import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
+	getAttributeKey,
 } from '../../extensions/styles';
 
 /**
@@ -158,20 +159,22 @@ const BoxShadowControl = props => {
 	const onChangeDefault = defaultProp => {
 		const response = {};
 
-		defaultProp[`${prefix}box-shadow-palette-color`] =
-			getLastBreakpointAttribute({
-				target: `${prefix}box-shadow-palette-color`,
-				breakpoint,
-				attributes: props,
-				isHover,
-			});
-
-		defaultProp[`${prefix}box-shadow-color`] = getLastBreakpointAttribute({
-			target: `${prefix}box-shadow-color`,
+		defaultProp[
+			getAttributeKey('box-shadow-palette-color', false, prefix)
+		] = getLastBreakpointAttribute({
+			target: `${prefix}box-shadow-palette-color`,
 			breakpoint,
 			attributes: props,
 			isHover,
 		});
+
+		defaultProp[getAttributeKey('box-shadow-color', false, prefix)] =
+			getLastBreakpointAttribute({
+				target: `${prefix}box-shadow-color`,
+				breakpoint,
+				attributes: props,
+				isHover,
+			});
 
 		Object.entries(defaultProp).forEach(([key, value]) => {
 			response[`${key}-${breakpoint}${isHover ? '-hover' : ''}`] = value;
@@ -182,7 +185,7 @@ const BoxShadowControl = props => {
 
 	const getIsActive = typeObj => {
 		const items = [
-			`${prefix}box-shadow-palette-opacity`,
+			`${prefix}box-shadow-pao`,
 			`${prefix}box-shadow-horizontal`,
 			`${prefix}box-shadow-horizontal-unit`,
 			`${prefix}box-shadow-vertical`,
@@ -332,18 +335,24 @@ const BoxShadowControl = props => {
 					paletteOpacity,
 				}) => {
 					onChange({
-						[`${prefix}box-shadow-palette-status-${breakpoint}${
-							isHover ? '-hover' : ''
-						}`]: paletteStatus,
-						[`${prefix}box-shadow-palette-color-${breakpoint}${
-							isHover ? '-hover' : ''
-						}`]: paletteColor,
-						[`${prefix}box-shadow-palette-opacity-${breakpoint}${
-							isHover ? '-hover' : ''
-						}`]: paletteOpacity,
-						[`${prefix}box-shadow-color-${breakpoint}${
-							isHover ? '-hover' : ''
-						}`]: color,
+						[getAttributeKey(
+							'palette-status',
+							isHover,
+							'box-shadow-',
+							breakpoint
+						)]: paletteStatus,
+						[getAttributeKey(
+							'palette-color',
+							isHover,
+							'box-shadow-',
+							breakpoint
+						)]: paletteColor,
+						[getAttributeKey(
+							'palette-opacity',
+							isHover,
+							'box-shadow-',
+							breakpoint
+						)]: paletteOpacity,
 					});
 				}}
 				disableGradient

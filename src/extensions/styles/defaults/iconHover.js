@@ -9,19 +9,19 @@ import {
 export const iconHover = hoverAttributesCreator({
 	obj: icon,
 	diffValAttr: {
-		'icon-stroke-palette-color': 6,
-		'icon-fill-palette-color': 2,
+		'icon-stroke-pac': 6,
+		'icon-fill-pac': 2,
 	},
 	newAttr: {
 		'icon-status-hover': {
 			type: 'boolean',
 			default: false,
 		},
-		'icon-stroke-palette-status-hover': {
+		'icon-stroke-past-hover': {
 			type: 'boolean',
 			default: true,
 		},
-		'icon-fill-palette-status-hover': {
+		'icon-fill-past-hover': {
 			type: 'boolean',
 			default: true,
 		},
@@ -38,13 +38,13 @@ export const iconBackgroundHover = hoverAttributesCreator({
 export const iconBackgroundColorHover = hoverAttributesCreator({
 	obj: iconBackgroundColor,
 	diffValAttr: {
-		'icon-background-palette-color-general-hover': 6,
+		'icon-background-pac-general-hover': 6,
 	},
 });
 
 export const iconBackgroundGradientHover = hoverAttributesCreator({
 	obj: iconBackgroundGradient,
 	diffValAttr: {
-		'icon-background-gradient-opacity-general-hover': 1,
+		'icon-background-gradient-o-general-hover': 1,
 	},
 });

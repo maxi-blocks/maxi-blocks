@@ -15,6 +15,8 @@ import {
 	ToggleSwitch,
 } from '../../../../components';
 import {
+	getAttributeKey,
+	getAttributeValue,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
@@ -406,13 +408,30 @@ const NumberCounterControl = props => {
 				}) =>
 					onChange(
 						{
-							[`number-counter-text-palette-status-${breakpoint}`]:
-								paletteStatus,
-							[`number-counter-text-palette-color-${breakpoint}`]:
-								paletteColor,
-							[`number-counter-text-palette-opacity-${breakpoint}`]:
-								paletteOpacity,
-							[`number-counter-text-color-${breakpoint}`]: color,
+							[getAttributeKey(
+								'palette-status',
+								false,
+								'number-counter-text-',
+								breakpoint
+							)]: paletteStatus,
+							[getAttributeKey(
+								'palette-color',
+								false,
+								'number-counter-text-',
+								breakpoint
+							)]: paletteColor,
+							[getAttributeKey(
+								'palette-opacity',
+								false,
+								'number-counter-text-',
+								breakpoint
+							)]: paletteOpacity,
+							[getAttributeKey(
+								'color',
+								false,
+								'number-counter-text-',
+								breakpoint
+							)]: color,
 						},
 						'.maxi-number-counter__box__text'
 					)
@@ -423,22 +442,22 @@ const NumberCounterControl = props => {
 				<>
 					<ColorControl
 						label={__('Circle background', 'maxi-blocks')}
-						paletteStatus={
-							props[
-								'number-counter-circle-background-palette-status'
-							]
-						}
-						paletteColor={
-							props[
-								'number-counter-circle-background-palette-color'
-							]
-						}
-						paletteOpacity={
-							props[
-								'number-counter-circle-background-palette-opacity'
-							]
-						}
-						color={props['number-counter-circle-background-color']}
+						paletteStatus={getAttributeValue({
+							target: 'number-counter-circle-background-palette-status',
+							props,
+						})}
+						paletteColor={getAttributeValue({
+							target: 'number-counter-circle-background-palette-color',
+							props,
+						})}
+						paletteOpacity={getAttributeValue({
+							target: 'number-counter-circle-background-palette-opacity',
+							props,
+						})}
+						color={getAttributeValue({
+							target: 'number-counter-circle-background-color',
+							props,
+						})}
 						prefix='number-counter-circle-background-'
 						onChangeInline={({ color }) =>
 							onChangeInline(
@@ -454,14 +473,18 @@ const NumberCounterControl = props => {
 						}) =>
 							onChange(
 								{
-									'number-counter-circle-background-palette-status':
-										paletteStatus,
-									'number-counter-circle-background-palette-color':
-										paletteColor,
-									'number-counter-circle-background-palette-opacity':
-										paletteOpacity,
-									'number-counter-circle-background-color':
-										color,
+									[getAttributeKey(
+										'number-counter-circle-background-palette-status'
+									)]: paletteStatus,
+									[getAttributeKey(
+										'number-counter-circle-background-palette-color'
+									)]: paletteColor,
+									[getAttributeKey(
+										'number-counter-circle-background-palette-opacity'
+									)]: paletteOpacity,
+									[getAttributeKey(
+										'number-counter-circle-background-color'
+									)]: color,
 								},
 								'.maxi-number-counter__box__background'
 							)
@@ -505,14 +528,22 @@ const NumberCounterControl = props => {
 						}) =>
 							onChange(
 								{
-									[`number-counter-circle-bar-palette-status-${breakpoint}`]:
-										paletteStatus,
-									[`number-counter-circle-bar-palette-color-${breakpoint}`]:
-										paletteColor,
-									[`number-counter-circle-bar-palette-opacity-${breakpoint}`]:
-										paletteOpacity,
-									[`number-counter-circle-bar-color-${breakpoint}`]:
-										color,
+									[getAttributeKey(
+										'number-counter-circle-bar-palette-status',
+										breakpoint
+									)]: paletteStatus,
+									[getAttributeKey(
+										'number-counter-circle-bar-palette-color',
+										breakpoint
+									)]: paletteColor,
+									[getAttributeKey(
+										'number-counter-circle-bar-palette-opacity',
+										breakpoint
+									)]: paletteOpacity,
+									[getAttributeKey(
+										'number-counter-circle-bar-color',
+										breakpoint
+									)]: color,
 								},
 								'.maxi-number-counter__box__circle'
 							)

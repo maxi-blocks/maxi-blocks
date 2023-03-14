@@ -29,8 +29,8 @@ export const svgHover = hoverAttributesCreator({
 		...paletteAttributesCreator({ prefix: 'svg-fill-', palette: 4 }),
 		...paletteAttributesCreator({ prefix: 'svg-line-', palette: 7 }),
 	},
-	sameValAttr: ['svg-fill-palette-status', 'svg-line-palette-status'],
-	diffValAttr: { 'svg-fill-palette-color': 6, 'svg-line-palette-color': 8 },
+	sameValAttr: ['svg-fill-past', 'svg-line-past'],
+	diffValAttr: { 'svg-fill-pac': 6, 'svg-line-pac': 8 },
 	newAttr: {
 		'svg-status-hover': {
 			type: 'boolean',

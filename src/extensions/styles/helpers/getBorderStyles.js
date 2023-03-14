@@ -10,6 +10,7 @@ import { getIsValid } from '../utils';
  * External dependencies
  */
 import { isUndefined, isNil } from 'lodash';
+import getAttributeKey from '../getAttributeKey';
 
 /**
  * General
@@ -118,7 +119,13 @@ const getBorderStyles = ({
 			if (
 				(getIsValid(value, true) ||
 					(isHover && globalHoverStatus && key.includes('color')) ||
-					key === `${prefix}border-palette-color-${breakpoint}`) &&
+					key ===
+						getAttributeKey(
+							'border-palette-color',
+							false,
+							prefix,
+							breakpoint
+						)) &&
 				includesBreakpoint &&
 				!newKey.includes('sync') &&
 				!newKey.includes('unit')
@@ -149,11 +156,9 @@ const getBorderStyles = ({
 						response[breakpoint][borderColorProperty] =
 							getColorString();
 					} else if (
-						![
-							'border-palette-status',
-							'border-palette-color',
-							'border-palette-opacity',
-						].includes(newLabel)
+						!['border-past', 'border-pac', 'border-pao'].includes(
+							newLabel
+						)
 					)
 						response[breakpoint][newLabel] = `${value}`;
 				} else if (

@@ -185,18 +185,35 @@ const getLayerCardTitle = props => {
 
 	const regexLineToChange = /fill=".+?(?=")/;
 	const colorStr = getColorRGBAString({
-		firstVar: `color-${layer['background-svg-palette-color']}`,
-		opacity: layer['background-svg-palette-opacity'],
+		firstVar: `color-${getAttributeValue({
+			target: 'palette-color',
+			prefix: 'background-svg-',
+			props: layer,
+		})}`,
+		opacity: getAttributeValue({
+			target: 'palette-opacity',
+			prefix: 'background-svg-',
+			props: layer,
+		}),
 		blockStyle: getBlockStyle(clientId),
 	});
 	const changeTo = `fill="${colorStr}"`;
 
-	const newSvgElement = layer['background-svg-palette-status']
-		? layer['background-svg-SVGElement']?.replace(
-				regexLineToChange,
-				changeTo
-		  )
-		: layer['background-svg-SVGElement'];
+	const newSvgElement = getAttributeValue({
+		target: 'palette-status',
+		prefix: 'background-svg-',
+		props: layer,
+	})
+		? getAttributeValue({
+				target: 'SVGElement',
+				prefix: 'background-svg-',
+				props: layer,
+		  })?.replace(regexLineToChange, changeTo)
+		: getAttributeValue({
+				target: 'SVGElement',
+				prefix: 'background-svg-',
+				props: layer,
+		  });
 
 	const previewStyles = type => {
 		switch (type) {

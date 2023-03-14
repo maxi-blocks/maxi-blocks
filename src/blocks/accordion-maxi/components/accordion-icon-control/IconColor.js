@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import { ColorControl } from '../../../../components';
 import {
+	getAttributeKey,
 	getAttributeValue,
 	getColorRGBAString,
 } from '../../../../extensions/styles';
@@ -57,26 +58,35 @@ const IconColor = props => {
 					blockStyle,
 				});
 
+				const palettePrefix = `${prefix}${colorType}-`;
+
 				onChange({
-					[`${prefix}${colorType}-color${isHover ? '-hover' : ''}`]:
-						color,
-					[`${prefix}${colorType}-palette-color${
-						isHover ? '-hover' : ''
-					}`]: paletteColor,
-					[`${prefix}${colorType}-palette-status${
-						isHover ? '-hover' : ''
-					}`]: paletteStatus,
-					[`${prefix}${colorType}-palette-opacity${
-						isHover ? '-hover' : ''
-					}`]: paletteOpacity,
-					[`${prefix}content`]: isHover
+					[getAttributeKey('color', isHover, palettePrefix)]: color,
+					[getAttributeKey('palette-color', isHover, palettePrefix)]:
+						paletteColor,
+					[getAttributeKey('palette-status', isHover, palettePrefix)]:
+						paletteStatus,
+					[getAttributeKey(
+						'palette-opacity',
+						isHover,
+						palettePrefix
+					)]: paletteOpacity,
+					[getAttributeKey('content', isHover, prefix)]: isHover
 						? setSVGContentHover(
-								props[`${prefix}content`],
+								getAttributeValue({
+									target: 'content',
+									prefix,
+									props,
+								}),
 								paletteStatus ? lineColorStr : color,
 								colorType
 						  )
 						: setSVGContent(
-								props[`${prefix}content`],
+								getAttributeValue({
+									target: 'content',
+									prefix,
+									props,
+								}),
 								paletteStatus ? lineColorStr : color,
 								colorType
 						  ),

@@ -224,10 +224,10 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 							{
 								label: __(`H${item}`, 'maxi-blocks'),
 								globalAttr: 'color-global',
-								paletteStatus: 'palette-status',
-								paletteColor: 'palette-color',
-								paletteOpacity: 'palette-opacity',
-								color: 'color',
+								paletteStatus: 'past',
+								paletteColor: 'pac',
+								paletteOpacity: 'pao',
+								color: 'c',
 							},
 						]}
 						groupAttr={`h${item}`}
@@ -248,53 +248,53 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 			{
 				label: __('Text', 'maxi-blocks'),
 				globalAttr: 'color-global',
-				paletteStatus: 'palette-status',
-				paletteColor: 'palette-color',
-				paletteOpacity: 'palette-opacity',
-				color: 'color',
+				paletteStatus: 'past',
+				paletteColor: 'pac',
+				paletteOpacity: 'pao',
+				color: 'c',
 			},
 			{
 				label: __('Text hover', 'maxi-blocks'),
 				globalAttr: 'hover-color-global',
 				globalAllAttr: 'hover-color-all',
-				paletteStatus: 'hover-palette-status',
-				paletteColor: 'hover-palette-color',
-				paletteOpacity: 'hover-palette-opacity',
-				color: 'hover-color',
+				paletteStatus: 'hover-past',
+				paletteColor: 'hover-pac',
+				paletteOpacity: 'hover-pao',
+				color: 'hover-c',
 			},
 			{
 				label: __('Background', 'maxi-blocks'),
 				globalAttr: 'background-color-global',
-				paletteStatus: 'background-palette-status',
-				paletteColor: 'background-palette-color',
-				paletteOpacity: 'background-palette-opacity',
-				color: 'background-color',
+				paletteStatus: 'background-past',
+				paletteColor: 'background-pac',
+				paletteOpacity: 'background-pao',
+				color: 'background-c',
 			},
 			{
 				label: __('Background hover', 'maxi-blocks'),
 				globalAttr: 'hover-background-color-global',
 				globalAllAttr: 'hover-background-color-all',
-				paletteStatus: 'hover-background-palette-status',
-				paletteColor: 'hover-background-palette-color',
-				paletteOpacity: 'hover-background-palette-opacity',
-				color: 'hover-background-color',
+				paletteStatus: 'hover-background-past',
+				paletteColor: 'hover-background-pac',
+				paletteOpacity: 'hover-background-pao',
+				color: 'hover-background-c',
 			},
 			{
 				label: __('Border', 'maxi-blocks'),
 				globalAttr: 'border-color-global',
-				paletteStatus: 'border-palette-status',
-				paletteColor: 'border-palette-color',
-				paletteOpacity: 'border-palette-opacity',
-				color: 'border-color',
+				paletteStatus: 'border-past',
+				paletteColor: 'border-pac',
+				paletteOpacity: 'border-pao',
+				color: 'border-c',
 			},
 			{
 				label: __('Border hover', 'maxi-blocks'),
 				globalAttr: 'hover-border-color-global',
 				globalAllAttr: 'hover-border-color-all',
-				paletteStatus: 'hover-border-palette-status',
-				paletteColor: 'hover-border-palette-color',
-				paletteOpacity: 'hover-border-palette-opacity',
-				color: 'hover-border-color',
+				paletteStatus: 'hover-border-past',
+				paletteColor: 'hover-border-pac',
+				paletteOpacity: 'hover-border-pao',
+				color: 'hover-border-c',
 			},
 		],
 	};
@@ -305,10 +305,10 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 			{
 				label: __('Paragraph', 'maxi-blocks'),
 				globalAttr: 'color-global',
-				paletteStatus: 'palette-status',
-				paletteColor: 'palette-color',
-				paletteOpacity: 'palette-opacity',
-				color: 'color',
+				paletteStatus: 'past',
+				paletteColor: 'pac',
+				paletteOpacity: 'pao',
+				color: 'c',
 			},
 		],
 	};
@@ -319,35 +319,35 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 			{
 				label: 'Link',
 				globalAttr: 'link-color-global',
-				paletteStatus: 'link-palette-status',
-				paletteColor: 'link-palette-color',
-				paletteOpacity: 'link-palette-opacity',
-				color: 'link-color',
+				paletteStatus: 'link-past',
+				paletteColor: 'link-pac',
+				paletteOpacity: 'link-pao',
+				color: 'link-c',
 			},
 			{
 				label: 'Hover',
 				globalAttr: 'hover-color-global',
 				globalAllAttr: 'hover-color-all',
-				paletteStatus: 'hover-palette-status',
-				paletteColor: 'hover-palette-color',
-				paletteOpacity: 'hover-palette-opacity',
-				color: 'hover-color',
+				paletteStatus: 'hover-past',
+				paletteColor: 'hover-pac',
+				paletteOpacity: 'hover-pao',
+				color: 'hover-c',
 			},
 			{
 				label: 'Active',
 				globalAttr: 'active-color-global',
-				paletteStatus: 'active-palette-status',
-				paletteColor: 'active-palette-color',
-				paletteOpacity: 'active-palette-opacity',
-				color: 'active-color',
+				paletteStatus: 'active-past',
+				paletteColor: 'active-pac',
+				paletteOpacity: 'active-pao',
+				color: 'active-c',
 			},
 			{
 				label: 'Visited',
 				globalAttr: 'visited-color-global',
-				paletteStatus: 'visited-palette-status',
-				paletteColor: 'visited-palette-color',
-				paletteOpacity: 'visited-palette-opacity',
-				color: 'visited-color',
+				paletteStatus: 'visited-past',
+				paletteColor: 'visited-pac',
+				paletteOpacity: 'visited-pao',
+				color: 'visited-c',
 			},
 		],
 	};
@@ -358,36 +358,36 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 			{
 				label: __('Line', 'maxi-blocks'),
 				globalAttr: 'line-color-global',
-				paletteStatus: 'line-palette-status',
-				paletteColor: 'line-palette-color',
-				paletteOpacity: 'line-palette-opacity',
-				color: 'line-color',
+				paletteStatus: 'line-past',
+				paletteColor: 'line-pac',
+				paletteOpacity: 'line-pao',
+				color: 'line-c',
 			},
 			{
 				label: __('Line hover', 'maxi-blocks'),
 				globalAttr: 'hover-line-color-global',
 				globalAllAttr: 'hover-line-color-all',
-				paletteStatus: 'hover-line-palette-status',
-				paletteColor: 'hover-line-palette-color',
-				paletteOpacity: 'hover-line-palette-opacity',
-				color: 'hover-line-color',
+				paletteStatus: 'hover-line-past',
+				paletteColor: 'hover-line-pac',
+				paletteOpacity: 'hover-line-pao',
+				color: 'hover-line-c',
 			},
 			{
 				label: __('Fill', 'maxi-blocks'),
 				globalAttr: 'fill-color-global',
-				paletteStatus: 'fill-palette-status',
-				paletteColor: 'fill-palette-color',
-				paletteOpacity: 'fill-palette-opacity',
-				color: 'fill-color',
+				paletteStatus: 'fill-past',
+				paletteColor: 'fill-pac',
+				paletteOpacity: 'fill-pao',
+				color: 'fill-c',
 			},
 			{
 				label: __('Fill hover', 'maxi-blocks'),
 				globalAttr: 'hover-fill-color-global',
 				globalAllAttr: 'hover-fill-color-all',
-				paletteStatus: 'hover-fill-palette-status',
-				paletteColor: 'hover-fill-palette-color',
-				paletteOpacity: 'hover-fill-palette-opacity',
-				color: 'hover-fill-color',
+				paletteStatus: 'hover-fill-past',
+				paletteColor: 'hover-fill-pac',
+				paletteOpacity: 'hover-fill-pao',
+				color: 'hover-fill-c',
 			},
 		],
 	};
@@ -398,10 +398,10 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 			{
 				label: __('Divider', 'maxi-blocks'),
 				globalAttr: 'color-global',
-				paletteStatus: 'palette-status',
-				paletteColor: 'palette-color',
-				paletteOpacity: 'palette-opacity',
-				color: 'color',
+				paletteStatus: 'past',
+				paletteColor: 'pac',
+				paletteOpacity: 'pao',
+				color: 'c',
 			},
 		],
 	};
@@ -445,7 +445,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 													background: `rgba(${processSCAttribute(
 														SC,
 														item,
-														'color'
+														'c'
 													)}, 1)`,
 												}}
 											/>
@@ -457,13 +457,13 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 									color={`rgba(${processSCAttribute(
 										SC,
 										quickColorPreset,
-										'color'
+										'c'
 									)}, 1)`}
 									defaultColorAttributes={{
 										defaultColor: `rgba(${processSCAttribute(
 											SC,
 											quickColorPreset,
-											'color'
+											'c'
 										)}, 1)`,
 									}}
 									onChange={({ color }) =>
@@ -488,7 +488,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 										processSCAttribute(
 											SC,
 											quickColorPreset,
-											'color'
+											'c'
 										) ===
 										SC.defaultStyleCard.color[
 											quickColorPreset
@@ -513,7 +513,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 											background: `rgba(${getDefaultSCAttribute(
 												SC,
 												quickColorPreset,
-												'color'
+												'c'
 											)}, 1)`,
 										}}
 									/>

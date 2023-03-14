@@ -21,6 +21,7 @@ const useInterval = (callback, delay) => {
 			// eslint-disable-next-line consistent-return
 			return () => clearInterval(id);
 		}
+		return () => {};
 	}, [delay]);
 };
 

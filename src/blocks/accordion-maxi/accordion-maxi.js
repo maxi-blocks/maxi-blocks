@@ -14,6 +14,7 @@ import { registerBlockType } from '@wordpress/blocks';
 import edit from './edit';
 import attributes from './attributes';
 import save from './save';
+import withMaxiSuspense from '../../extensions/maxi-block/withMaxiSuspense';
 
 /**
  * Styles and icons
@@ -44,6 +45,6 @@ registerBlockType('maxi-blocks/accordion-maxi', {
 			uniqueid: uniqueID,
 		};
 	},
-	edit,
+	edit: withMaxiSuspense(edit),
 	save,
 });

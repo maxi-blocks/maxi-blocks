@@ -23,6 +23,7 @@ import { sliderIcon } from '../../icons';
 import edit from './edit';
 import attributes from './attributes';
 import save from './save';
+import withMaxiSuspense from '../../extensions/maxi-block/withMaxiSuspense';
 
 /**
  * Block
@@ -47,6 +48,6 @@ registerBlockType('maxi-blocks/slider-maxi', {
 			uniqueid: uniqueID,
 		};
 	},
-	edit,
+	edit: withMaxiSuspense(edit),
 	save,
 });

@@ -16,6 +16,7 @@ import { registerBlockType } from '@wordpress/blocks';
 import edit from './edit';
 import attributes from './attributes';
 import save from './save';
+import withMaxiSuspense from '../../extensions/maxi-block/withMaxiSuspense';
 import { customCss } from './data';
 
 /**
@@ -53,7 +54,7 @@ registerBlockType('maxi-blocks/group-maxi', {
 			uniqueid: uniqueID,
 		};
 	},
-	edit,
+	edit: withMaxiSuspense(edit),
 	save,
 	deprecated: blockMigrator({
 		attributes,

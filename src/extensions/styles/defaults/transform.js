@@ -1,4 +1,5 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import attributesShorter from '../dictionary/attributesShorter';
 
 const rawTransform = {
 	'transform-scale': {
@@ -24,4 +25,4 @@ const transform = {
 	}),
 };
 
-export default transform;
+export default attributesShorter(transform, 'transform');

@@ -1,4 +1,5 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import attributesShorter from '../dictionary/attributesShorter';
 
 const rawFlex = {
 	'flex-grow': {
@@ -52,4 +53,4 @@ const flex = breakpointAttributesCreator({
 	obj: rawFlex,
 });
 
-export default flex;
+export default attributesShorter(flex, 'flex');

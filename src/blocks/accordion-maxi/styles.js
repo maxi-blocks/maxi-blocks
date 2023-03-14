@@ -170,7 +170,10 @@ const getColor = ({ props, prefix, isHover, breakpoint }) => {
 };
 
 const getPaneContentWrapperStyles = props => {
-	const { animationDuration } = props;
+	const animationDuration = getAttributeValue({
+		target: 'animationDuration',
+		props,
+	});
 
 	const getPaneContentTransition = duration => {
 		return `max-height ${duration}s, padding-top ${duration}s, padding-bottom ${duration}s`;
@@ -322,7 +325,10 @@ const getPaneHeaderObject = props => {
 };
 
 const getPaneContentObject = props => {
-	const { accordionLayout } = props;
+	const accordionLayout = getAttributeValue({
+		target: 'accordionLayout',
+		props,
+	});
 
 	const response = {
 		' .maxi-pane-block__content-wrapper':

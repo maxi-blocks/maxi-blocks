@@ -89,7 +89,6 @@ const AlignmentControl = props => {
 		isEmpty(label) ? 'maxi-alignment-control__no-label' : '',
 		className
 	);
-
 	const target = `${prefix}${type === 'text' ? 'text-' : ''}alignment`;
 	return (
 		<>

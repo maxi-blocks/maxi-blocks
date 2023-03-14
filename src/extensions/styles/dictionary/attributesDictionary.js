@@ -1,4 +1,10 @@
 const dictionary = {
+	accordion: {
+		accordionLayout: 'al',
+		autoPaneClose: 'apc',
+		isCollapsible: 'ic',
+		animationDuration: 'ad',
+	},
 	clipPath: {
 		'clip-path': 'cp',
 	},

@@ -85,6 +85,7 @@ const dictionary = {
 		'image-shape-rotate': 'ishr',
 		'image-shape-flip-x': 'ishfx',
 		'image-shape-flip-y': 'ishfy',
+	},
 	flex: {
 		'flex-grow': 'fg',
 		'flex-shrink': 'fs',

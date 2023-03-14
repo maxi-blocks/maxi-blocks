@@ -99,7 +99,7 @@ const transforms = {
 					textAlign === 'center' ||
 					textAlign === 'right'
 				) {
-					attributes['text-alignment-general'] = textAlign;
+					attributes['ta-general'] = textAlign;
 				}
 
 				const formatElement = {

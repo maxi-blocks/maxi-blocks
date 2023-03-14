@@ -1,6 +1,15 @@
 const dictionary = {
+	accordion: {
+		accordionLayout: 'al',
+		autoPaneClose: 'apc',
+		isCollapsible: 'ic',
+		animationDuration: 'ad',
+	},
 	clipPath: {
 		'clip-path': 'cp',
+	},
+	textAlignment: {
+		'text-alignment': 'ta',
 	},
 	alignment: {
 		alignment: 'a',
@@ -76,6 +85,38 @@ const dictionary = {
 		'arrow-side': 'asi',
 		'arrow-position': 'apos',
 		'arrow-width': 'awi',
+	},
+	flex: {
+		'flex-grow': 'fg',
+		'flex-shrink': 'fs',
+		'flex-basis': 'fb',
+		'flex-basis-unit': 'fbu',
+		'flex-wrap': 'fw',
+		'justify-content': 'jc',
+		'flex-direction': 'fd',
+		'align-items': 'ai',
+		'align-content': 'ac',
+		'row-gap': 'rg',
+		'row-gap-unit': 'rgu',
+		'column-gap': 'cg',
+		'column-gap-unit': 'cgu',
+		order: '',
+	},
+	map: {
+		'map-provider': 'mpp',
+		'map-latitude': 'mpl',
+		'map-longitude': 'mplo',
+		'map-zoom': 'mpz',
+		'map-min-zoom': 'mpmz',
+		'map-max-zoom': 'mpmxz',
+		'map-markers': 'mpm',
+	},
+	transform: {
+		'transform-scale': 'ts',
+		'transform-translate': 'ttt',
+		'transform-rotate': 'tr',
+		'transform-origin': 'to',
+		'transform-target': 'tt',
 	},
 };
 

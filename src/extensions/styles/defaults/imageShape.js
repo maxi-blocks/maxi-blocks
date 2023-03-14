@@ -17,8 +17,9 @@ export const rawImageShape = {
 	},
 };
 
-const imageShape = breakpointAttributesCreator({
-	obj: rawImageShape,
-});
-
-export default attributesShorter(imageShape, 'imageShape');
+export const imageShape = attributesShorter(
+	breakpointAttributesCreator({
+		obj: rawImageShape,
+	}),
+	'imageShape'
+);

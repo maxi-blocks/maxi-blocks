@@ -14,7 +14,7 @@
 /**
  * WordPress dependencies
  */
-import { Component, render, createRef } from '@wordpress/element';
+import { Component, createRoot, render, createRef } from '@wordpress/element';
 import { dispatch, resolveSelect, select, useSelect } from '@wordpress/data';
 
 /**
@@ -117,6 +117,7 @@ class MaxiBlockComponent extends Component {
 		const { uniqueID } = attributes;
 
 		this.isReusable = false;
+		this.rootSlot = null;
 		this.currentBreakpoint =
 			select('maxiBlocks').receiveMaxiDeviceType() || 'general';
 		// eslint-disable-next-line react/no-unused-class-component-methods
@@ -297,7 +298,7 @@ class MaxiBlockComponent extends Component {
 				return false;
 			};
 
-			keepStylesOnEditor ||= blocks.some(block => getName(block));
+			keepStylesOnEditor ||= blocks?.some(block => getName(block));
 		}, true);
 
 		// When duplicating Gutenberg creates a copy of the current copied block twice, making the first keep the same uniqueID and second
@@ -798,17 +799,34 @@ class MaxiBlockComponent extends Component {
 				wrapper = getStylesWrapper(document.head);
 			}
 
-			if (wrapper)
-				render(
-					<StyleComponent
-						uniqueID={uniqueID}
-						stylesObj={obj}
-						currentBreakpoint={this.currentBreakpoint}
-						blockBreakpoints={breakpoints}
-						isSiteEditor={isSiteEditor}
-					/>,
-					wrapper
-				);
+			if (wrapper) {
+				// check if createRoot is available (since React 18)
+				if (typeof createRoot === 'function') {
+					if (isNil(this.rootSlot))
+						this.rootSlot = createRoot(wrapper);
+					this.rootSlot.render(
+						<StyleComponent
+							uniqueID={uniqueID}
+							stylesObj={obj}
+							currentBreakpoint={this.currentBreakpoint}
+							blockBreakpoints={breakpoints}
+							isSiteEditor={isSiteEditor}
+						/>
+					);
+				} else {
+					// for React 17 and below
+					render(
+						<StyleComponent
+							uniqueID={uniqueID}
+							stylesObj={obj}
+							currentBreakpoint={this.currentBreakpoint}
+							blockBreakpoints={breakpoints}
+							isSiteEditor={isSiteEditor}
+						/>,
+						wrapper
+					);
+				}
+			}
 
 			// Since WP 5.9 Gutenberg includes the responsive into iframes, so need to add the styles there also
 			const iframe = document.querySelector(
@@ -821,16 +839,33 @@ class MaxiBlockComponent extends Component {
 				if (iframeDocument.head) {
 					const iframeWrapper = getStylesWrapper(iframeDocument.head);
 
-					render(
-						<StyleComponent
-							uniqueID={uniqueID}
-							stylesObj={obj}
-							currentBreakpoint={this.currentBreakpoint}
-							blockBreakpoints={breakpoints}
-							isIframe
-						/>,
-						iframeWrapper
-					);
+					// check if createRoot is available (since React 18)
+					if (typeof createRoot === 'function') {
+						if (isNil(this.rootSlot))
+							this.rootSlot = createRoot(wrapper);
+
+						this.rootSlot.render(
+							<StyleComponent
+								uniqueID={uniqueID}
+								stylesObj={obj}
+								currentBreakpoint={this.currentBreakpoint}
+								blockBreakpoints={breakpoints}
+								isSiteEditor={isSiteEditor}
+							/>
+						);
+					} else {
+						// for React 17 and below
+						render(
+							<StyleComponent
+								uniqueID={uniqueID}
+								stylesObj={obj}
+								currentBreakpoint={this.currentBreakpoint}
+								blockBreakpoints={breakpoints}
+								isIframe
+							/>,
+							iframeWrapper
+						);
+					}
 				}
 			}
 		}

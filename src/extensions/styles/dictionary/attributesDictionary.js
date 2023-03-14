@@ -2,6 +2,9 @@ const dictionary = {
 	clipPath: {
 		'clip-path': 'cp',
 	},
+	textAlignment: {
+		'text-alignment': 'ta',
+	},
 	alignment: {
 		alignment: 'a',
 	},

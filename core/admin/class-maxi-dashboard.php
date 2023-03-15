@@ -319,13 +319,13 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             // $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             // $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
-            $content .= $this->generate_item_header('Advanced', false);
+            // $content .= $this->generate_item_header('Advanced', false);
 
-            $content .= '<h4>'.__('Responsive design breakpoints', self::$maxi_text_domain).'</h4>';
-            $content .= '<p>'.__('Maxi Blocks is coded to create pages that adapt to many display devices. Our responsive grid adapts beautifully to screens from <strong>4K</strong> to <strong>desktop</strong>, all the way down to <strong>laptop</strong>, <strong>tablet</strong> and <strong>mobile</strong>. All the templates found in the Maxi Blocks library already adapt to the default breakpoints set here.', self::$maxi_text_domain).'</p>';
-            $content .= '<p>'.__('Normally you don’t need to change breakpoint values. But, you might have special requirements. Adjust at your own discretion and remember to test, test, test.', self::$maxi_text_domain).'</p>';
-            $content .= $this->generate_breakpoint_inputs();
-            $content .= get_submit_button();
+            // $content .= '<h4>'.__('Responsive design breakpoints', self::$maxi_text_domain).'</h4>';
+            // $content .= '<p>'.__('Maxi Blocks is coded to create pages that adapt to many display devices. Our responsive grid adapts beautifully to screens from <strong>4K</strong> to <strong>desktop</strong>, all the way down to <strong>laptop</strong>, <strong>tablet</strong> and <strong>mobile</strong>. All the templates found in the Maxi Blocks library already adapt to the default breakpoints set here.', self::$maxi_text_domain).'</p>';
+            // $content .= '<p>'.__('Normally you don’t need to change breakpoint values. But, you might have special requirements. Adjust at your own discretion and remember to test, test, test.', self::$maxi_text_domain).'</p>';
+            // $content .= $this->generate_breakpoint_inputs();
+            // $content .= get_submit_button();
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
             $content .= '</div>'; // maxi-dashboard_main-content_accordion

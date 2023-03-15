@@ -89,6 +89,12 @@ const dictionary = {
 		'position-bottom-unit': 'psbu',
 		'position-left-unit': 'pslu',
 	},
+	imageShape: {
+		'image-shape-scale': 'ishs',
+		'image-shape-rotate': 'ishr',
+		'image-shape-flip-x': 'ishfx',
+		'image-shape-flip-y': 'ishfy',
+	},
 	arrow: {
 		'arrow-status': 'ast',
 		'arrow-side': 'asi',

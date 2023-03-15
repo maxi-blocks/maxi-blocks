@@ -1,16 +1,17 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
+import { insertMaxiBlock } from '../../../../utils';
 
 describe.skip('Button duplicate', () => {
 	it('Check button duplicate', async () => {
 		await createNewPost();
-		await insertBlock('Button Maxi');
+		await insertMaxiBlock(page, 'Button Maxi');
 
 		// duplicate button
 		await page.$eval(

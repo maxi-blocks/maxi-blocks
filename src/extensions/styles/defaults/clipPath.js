@@ -1,15 +1,19 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import attributesShorter from '../dictionary/attributesShorter';
 
-export const clipPathRaw = {
-	'clip-path': {
-		type: 'string',
-		default: 'none',
+export const clipPathRaw = attributesShorter(
+	{
+		'clip-path': {
+			type: 'string',
+			default: 'none',
+		},
+		'clip-path-status': {
+			type: 'boolean',
+			default: false,
+		},
 	},
-	'clip-path-status': {
-		type: 'boolean',
-		default: false,
-	},
-};
+	'clipPath'
+);
 
 const clipPath = {
 	...breakpointAttributesCreator({

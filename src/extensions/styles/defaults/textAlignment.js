@@ -1,4 +1,5 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import attributesShorter from '../dictionary/attributesShorter';
 
 const textAlignment = breakpointAttributesCreator({
 	obj: {
@@ -8,4 +9,4 @@ const textAlignment = breakpointAttributesCreator({
 	},
 });
 
-export default textAlignment;
+export default attributesShorter(textAlignment, 'textAlignment');

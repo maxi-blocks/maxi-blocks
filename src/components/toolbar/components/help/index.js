@@ -25,16 +25,35 @@ import './editor.scss';
  * Duplicate
  */
 const Help = props => {
-	const { blockName, tooltipsHide } = props;
+	const { blockName, tooltipsHide, supportChat } = props;
 
 	if (blockName === 'maxi-blocks/column-maxi') return null;
 
+	console.log('supportChat');
+	console.log(supportChat);
+
 	const helpContent = () => {
+		if (supportChat)
+			return (
+				<div className='toolbar-item toolbar-item__help'>
+					<CrispChat>
+						<Icon
+							className='toolbar-item__icon'
+							icon={toolbarHelp}
+						/>
+					</CrispChat>
+				</div>
+			);
+
 		return (
 			<div className='toolbar-item toolbar-item__help'>
-				<CrispChat>
+				<a
+					href='https://maxiblocks.com/go/help-center'
+					target='_blank'
+					rel='noopener noreferrer'
+				>
 					<Icon className='toolbar-item__icon' icon={toolbarHelp} />
-				</CrispChat>
+				</a>
 			</div>
 		);
 	};

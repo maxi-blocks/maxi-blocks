@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
+import { useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -75,13 +76,15 @@ const ImageAltControl = ({
 		return response;
 	};
 
-	if (typeof altSelector === 'undefined')
-		onChange({
-			altSelector,
-			...{
-				mediaAlt: titleAlt,
-			},
-		});
+	useEffect(() => {
+		if (typeof altSelector === 'undefined')
+			onChange({
+				altSelector,
+				...{
+					mediaAlt: titleAlt,
+				},
+			});
+	}, []);
 
 	return (
 		<>

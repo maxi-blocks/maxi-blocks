@@ -163,7 +163,7 @@ const imageUploader = async (imageSrc, usePlaceholderImage) => {
 		onError: err =>
 			console.warn(
 				__(
-					`The original image not found (404) on the Cloud Site, using the placeholder image. Error: ${err}`,
+					`The original image not found (404) on the Cloud Site, using the placeholder image. Error: ${err.code}, ${err.message}`,
 					'maxi-blocks'
 				)
 			),

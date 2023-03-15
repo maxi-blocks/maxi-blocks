@@ -24,12 +24,6 @@ const insertCode = async (content, clientId) => {
 	});
 
 	replaceBlock(clientId, parsedContent);
-
-	// dispatch('core/block-editor')
-	// 	.replaceBlock(clientId, parsedContent)
-	// 	.then(() => {
-
-	// 	});
 };
 
 const onRequestInsertPattern = async (
@@ -42,15 +36,6 @@ const onRequestInsertPattern = async (
 	);
 
 	if (isValid) {
-		// const loadingMessage = `<h3>${__(
-		// 	'LOADING…',
-		// 	'maxi-blocks'
-		// )}<span class="maxi-spinner"></span></h3>`;
-
-		// onSelect({ content: loadingMessage });
-
-		// onRequestClose();
-
 		const imagesLinks = [];
 		const imagesIds = [];
 
@@ -123,8 +108,6 @@ const onRequestInsertPattern = async (
 			});
 
 			await insertCode(tempContent, clientId);
-
-			// onRequestClose();
 		} else {
 			// no images to process
 			insertCode(parsedContent, clientId);

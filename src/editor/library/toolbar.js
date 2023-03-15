@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { select, useDispatch } from '@wordpress/data';
+import { select, useDispatch, useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -25,7 +25,7 @@ import { Button } from '../../components';
 import classnames from 'classnames';
 import CrispChat from '../crisp-chat';
 import { SearchClient as TypesenseSearchClient } from 'typesense';
-import { isNil, isUndefined } from 'lodash';
+import { isNil, isUndefined, isEmpty } from 'lodash';
 
 /**
  * Component
@@ -377,6 +377,18 @@ const LibraryToolbar = props => {
 		previewIframeWrap.style.right = 0;
 	};
 
+	const { chatSupport } = useSelect(select => {
+		const { receiveMaxiSettings } = select('maxiBlocks');
+		const maxiSettings = receiveMaxiSettings();
+		const { support_chat: supportChat } = maxiSettings;
+
+		const chatSupport = !isEmpty(supportChat) ? supportChat : false;
+
+		return {
+			chatSupport,
+		};
+	});
+
 	return (
 		<div className='maxi-cloud-toolbar'>
 			{type !== 'preview' && type !== 'switch-tone' && (
@@ -483,11 +495,22 @@ const LibraryToolbar = props => {
 					</Button>
 				</div>
 			)}
-			{type !== 'preview' && type !== 'switch-tone' && (
+			{type !== 'preview' && type !== 'switch-tone' && chatSupport && (
 				<CrispChat className='maxi-cloud-toolbar__help-button' as='a'>
 					{help}
 					{__('Help', 'maxi-blocks')}
 				</CrispChat>
+			)}
+			{type !== 'preview' && type !== 'switch-tone' && !chatSupport && (
+				<a
+					href='https://maxiblocks.com/go/help-center'
+					target='_blank'
+					rel='noopener noreferrer'
+					className='maxi-cloud-toolbar__help-button'
+				>
+					{help}
+					{__('Help', 'maxi-blocks')}
+				</a>
 			)}
 			{(type === 'preview' || type === 'switch-tone') && (
 				<div className='maxi-cloud-toolbar__buttons-group_close'>

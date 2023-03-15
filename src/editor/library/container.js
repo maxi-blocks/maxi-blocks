@@ -1128,10 +1128,10 @@ const LibraryContainer = props => {
 								}}
 							/>
 							<PlaceholderCheckboxControl />
-							<CustomHierarchicalMenu
+							{/* <CustomHierarchicalMenu
 								attributes={['category.lvl0', 'category.lvl1']}
 								limit={100}
-							/>
+							/> */}
 							<div className='ais-ClearRefinements'>
 								<button
 									type='button'

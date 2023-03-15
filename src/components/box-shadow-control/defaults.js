@@ -10,7 +10,7 @@ export const boxShadowNone = prefix => {
 			prefix,
 			props: boxShadow,
 			breakpoint: 'general',
-		}).default;
+		})?.default;
 
 	response = {
 		[getAttributeKey('box-shadow-palette-opacity', false, prefix)]:

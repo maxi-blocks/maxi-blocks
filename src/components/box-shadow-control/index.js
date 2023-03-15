@@ -338,25 +338,25 @@ const BoxShadowControl = props => {
 						[getAttributeKey(
 							'color',
 							isHover,
-							'box-shadow-',
+							`${prefix}box-shadow-`,
 							breakpoint
 						)]: color,
 						[getAttributeKey(
 							'palette-status',
 							isHover,
-							'box-shadow-',
+							`${prefix}box-shadow-`,
 							breakpoint
 						)]: paletteStatus,
 						[getAttributeKey(
 							'palette-color',
 							isHover,
-							'box-shadow-',
+							`${prefix}box-shadow-`,
 							breakpoint
 						)]: paletteColor,
 						[getAttributeKey(
 							'palette-opacity',
 							isHover,
-							'box-shadow-',
+							`${prefix}box-shadow-`,
 							breakpoint
 						)]: paletteOpacity,
 					});

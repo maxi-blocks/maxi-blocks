@@ -338,15 +338,15 @@ const MaxiBlock = memo(
 		);
 
 		useEffect(() => {
-			if (!isFirstOnHierarchy) return false;
+			if (isFirstOnHierarchy) {
+				const style = document.createElement('style');
+				style.innerHTML = `#block-${clientId} { ${styleStr} }`;
+				ref.current.ownerDocument.head.appendChild(style);
 
-			const style = document.createElement('style');
-			style.innerHTML = `#block-${clientId} { ${styleStr} }`;
-			ref.current.ownerDocument.head.appendChild(style);
-
-			return () => {
-				style.remove();
-			};
+				return () => {
+					style.remove();
+				};
+			}
 		}, [styleStr, isFirstOnHierarchy, clientId]);
 
 		return (

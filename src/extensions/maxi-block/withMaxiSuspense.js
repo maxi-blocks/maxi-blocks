@@ -60,27 +60,27 @@ const withMaxiSuspense = createHigherOrderComponent(
 
 			useEffect(() => {
 				// If the block has already been rendered, don't need the interval anymore.
-				if (canRender && hasBeenRendered) return null;
+				if (!canRender || !hasBeenRendered) {
+					// Use this interval as a heartbeat to check if the store allows the block to render
+					// and if it has been already rendered.
+					const interval = setInterval(() => {
+						if (!canRender && canBlockRender(uniqueID, clientId)) {
+							setCanRender(true);
 
-				// Use this interval as a heartbeat to check if the store allows the block to render
-				// and if it has been already rendered.
-				const interval = setInterval(() => {
-					if (!canRender && canBlockRender(uniqueID, clientId)) {
-						setCanRender(true);
+							clearInterval(interval);
+						}
+						if (
+							!hasBeenRendered &&
+							blockHasBeenRendered(uniqueID, clientId)
+						) {
+							setHasBeenRendered(true);
 
-						clearInterval(interval);
-					}
-					if (
-						!hasBeenRendered &&
-						blockHasBeenRendered(uniqueID, clientId)
-					) {
-						setHasBeenRendered(true);
+							clearInterval(interval);
+						}
+					}, 100);
 
-						clearInterval(interval);
-					}
-				}, 100);
-
-				return () => clearInterval(interval);
+					return () => clearInterval(interval);
+				}
 			}, [setCanRender, setHasBeenRendered]);
 
 			// Wait for the store to allow the block to render.

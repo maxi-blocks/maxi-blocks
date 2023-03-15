@@ -10,8 +10,6 @@ import getIsSiteEditor from './getIsSiteEditor';
 import getSiteEditorIframeBody from './getSiteEditorIframeBody';
 
 const getIsTemplatesListOpened = () =>
-	getIsSiteEditor() &&
-	!getSiteEditorIframeBody() &&
-	select('core/edit-site').isNavigationOpened();
+	getIsSiteEditor() && !getSiteEditorIframeBody();
 
 export default getIsTemplatesListOpened;

@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { SVG, Path, G } from '@wordpress/primitives';
+import { SVG, Path } from '@wordpress/primitives';
 
 const dividerIcon = (
 	<SVG viewBox='0 0 24 24'>

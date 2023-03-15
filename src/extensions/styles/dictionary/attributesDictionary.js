@@ -140,6 +140,12 @@ const dictionary = {
 		'title-background-status-hover': 'tbs',
 		'title-background-status-active': 'tbs',
 	},
+	link: {
+		link: 'l',
+		'link-hover': 'lh',
+		'link-active': 'la',
+		'link-visited': 'lv',
+	},
 };
 
 const flattenDictionary = dict => {

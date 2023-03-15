@@ -1,5 +1,6 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import paletteAttributesCreator from '../paletteAttributesCreator';
+import attributesShorter from '../dictionary/attributesShorter';
 
 const rawLink = {
 	...paletteAttributesCreator({ prefix: 'link-', palette: 4 }),
@@ -8,8 +9,9 @@ const rawLink = {
 	...paletteAttributesCreator({ prefix: 'link-visited-', palette: 6 }),
 };
 
-const link = breakpointAttributesCreator({
-	obj: rawLink,
-});
-
-export default link;
+export default attributesShorter(
+	breakpointAttributesCreator({
+		obj: rawLink,
+	}),
+	'link'
+);

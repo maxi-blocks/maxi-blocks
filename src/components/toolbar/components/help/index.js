@@ -48,6 +48,7 @@ const Help = props => {
 					href='https://maxiblocks.com/go/help-center'
 					target='_blank'
 					rel='noopener noreferrer'
+					className='maxi-components-button components-button'
 				>
 					<Icon className='toolbar-item__icon' icon={toolbarHelp} />
 				</a>

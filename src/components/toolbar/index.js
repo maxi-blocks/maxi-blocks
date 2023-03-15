@@ -120,8 +120,8 @@ const MaxiToolbar = memo(
 			svgType,
 		} = attributes;
 
-		const { breakpoint, styleCard, isTyping, tooltipsHide } = useSelect(
-			select => {
+		const { breakpoint, styleCard, isTyping, tooltipsHide, chatSupport } =
+			useSelect(select => {
 				const { receiveMaxiDeviceType, receiveMaxiSettings } =
 					select('maxiBlocks');
 				const { receiveMaxiSelectedStyleCard } = select(
@@ -134,20 +134,25 @@ const MaxiToolbar = memo(
 				const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
 
 				const maxiSettings = receiveMaxiSettings();
-				const { hide_tooltips: hideTooltips } = maxiSettings;
+				const {
+					hide_tooltips: hideTooltips,
+					support_chat: supportChat,
+				} = maxiSettings;
 
 				const tooltipsHide = !isEmpty(hideTooltips)
 					? hideTooltips
 					: false;
+
+				const chatSupport = !isEmpty(supportChat) ? supportChat : false;
 
 				return {
 					breakpoint,
 					styleCard,
 					isTyping: isTyping(),
 					tooltipsHide,
+					chatSupport,
 				};
-			}
-		);
+			});
 
 		const popoverRef = useRef(null);
 
@@ -669,7 +674,10 @@ const MaxiToolbar = memo(
 							tooltipsHide={tooltipsHide}
 							updateSelection={name !== 'maxi-blocks/slide-maxi'}
 						/>
-						<Help tooltipsHide={tooltipsHide} />
+						<Help
+							tooltipsHide={tooltipsHide}
+							supportChat={chatSupport}
+						/>
 						<MoreSettings
 							clientId={clientId}
 							{...getGroupAttributes(attributes, [

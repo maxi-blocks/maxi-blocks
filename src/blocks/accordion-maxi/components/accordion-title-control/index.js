@@ -114,7 +114,12 @@ const TitleSettings = props => {
 };
 
 const AccordionTitleSettings = props => {
-	const { titleLevel, onChange, breakpoint } = props;
+	const { onChange, breakpoint } = props;
+
+	const titleLevel = getAttributeValue({
+		target: 'titleLevel',
+		props,
+	});
 
 	const prefix = 'title-';
 	const bgPrefix = 'title-background-';

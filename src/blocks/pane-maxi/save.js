@@ -8,13 +8,20 @@ import { RichText, useInnerBlocksProps } from '@wordpress/block-editor';
  */
 import { getMaxiBlockAttributes, MaxiBlock } from '../../components/maxi-block';
 import { WithLink } from '../../extensions/save/utils';
+import { getAttributeValue } from '../../extensions/styles';
 
 /**
  * Save
  */
 const save = props => {
 	const { attributes } = props;
-	const { title, titleLevel, accordionUniqueId, linkSettings } = attributes;
+	const { title, accordionUniqueId, linkSettings } = attributes;
+
+	const titleLevel = getAttributeValue({
+		target: 'titleLevel',
+		props: attributes,
+	});
+
 	const name = 'maxi-blocks/pane-maxi';
 
 	return (

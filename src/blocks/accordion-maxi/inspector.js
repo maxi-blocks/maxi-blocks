@@ -37,10 +37,14 @@ const Inspector = props => {
 		inlineStylesTargets,
 	} = props;
 
-	const { blockStyle, titleLevel } = attributes;
+	const { blockStyle } = attributes;
 
 	const accordionLayout = getAttributeValue({
 		target: 'accordionLayout',
+		props: attributes,
+	});
+	const titleLevel = getAttributeValue({
+		target: 'titleLevel',
 		props: attributes,
 	});
 

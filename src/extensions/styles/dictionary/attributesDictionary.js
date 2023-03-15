@@ -1,4 +1,10 @@
 const dictionary = {
+	accordion: {
+		accordionLayout: 'al',
+		autoPaneClose: 'apc',
+		isCollapsible: 'ic',
+		animationDuration: 'ad',
+	},
 	border: {
 		'border-style': 'bs',
 		'border-top-width': 'btw',
@@ -14,12 +20,15 @@ const dictionary = {
 		'border-sync-radius': 'bsr',
 		'border-unit-radius': 'bur',
 	},
-	alignment: {
-		alignment: 'a',
-	},
 	clipPath: {
 		'clip-path': 'cp',
 		'clip-path-status': 'cp-status',
+	},
+	textAlignment: {
+		'text-alignment': 'ta',
+	},
+	alignment: {
+		alignment: 'a',
 	},
 	size: {
 		'size-advanced-options': 'sao',
@@ -49,6 +58,15 @@ const dictionary = {
 		'margin-right-unit': 'mru',
 		'margin-bottom-unit': 'mbu',
 		'margin-left-unit': 'mlu',
+	},
+	customCss: {
+		'custom-css': 'cc',
+	},
+	display: {
+		display: 'd',
+	},
+	displayHover: {
+		'display-hover': 'dh',
 	},
 	opacity: {
 		opacity: 'o',
@@ -86,6 +104,57 @@ const dictionary = {
 		'position-right-unit': 'psru',
 		'position-bottom-unit': 'psbu',
 		'position-left-unit': 'pslu',
+	},
+	imageShape: {
+		'image-shape-scale': 'ishs',
+		'image-shape-rotate': 'ishr',
+		'image-shape-flip-x': 'ishfx',
+		'image-shape-flip-y': 'ishfy',
+	},
+	arrow: {
+		'arrow-status': 'ast',
+		'arrow-side': 'asi',
+		'arrow-position': 'apos',
+		'arrow-width': 'awi',
+	},
+	flex: {
+		'flex-grow': 'fg',
+		'flex-shrink': 'fs',
+		'flex-basis': 'fb',
+		'flex-basis-unit': 'fbu',
+		'flex-wrap': 'fw',
+		'justify-content': 'jc',
+		'flex-direction': 'fd',
+		'align-items': 'ai',
+		'align-content': 'ac',
+		'row-gap': 'rg',
+		'row-gap-unit': 'rgu',
+		'column-gap': 'cg',
+		'column-gap-unit': 'cgu',
+		order: '',
+	},
+	map: {
+		'map-provider': 'mpp',
+		'map-latitude': 'mpl',
+		'map-longitude': 'mplo',
+		'map-zoom': 'mpz',
+		'map-min-zoom': 'mpmz',
+		'map-max-zoom': 'mpmxz',
+		'map-markers': 'mpm',
+	},
+	transform: {
+		'transform-scale': 'ts',
+		'transform-translate': 'ttt',
+		'transform-rotate': 'tr',
+		'transform-origin': 'to',
+		'transform-target': 'tt',
+	},
+	accordionTitle: {
+		'tite-typography-status-hover': 'tths',
+		'tite-typography-status-active': 'ttas',
+		'title-background-status': 'tbs',
+		'title-background-status-hover': 'tbs',
+		'title-background-status-active': 'tbs',
 	},
 	palette: {
 		'palette-status': 'pa-status', // `-status` will be changed to `st` in Phase 2

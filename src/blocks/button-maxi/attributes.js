@@ -55,7 +55,7 @@ const attributes = {
 	},
 	...{
 		...attributesData.textAlignment,
-		'text-alignment-general': { type: 'string', default: 'center' },
+		'ta-general': { type: 'string', default: 'center' },
 	},
 	...{
 		...attributesData.typography,

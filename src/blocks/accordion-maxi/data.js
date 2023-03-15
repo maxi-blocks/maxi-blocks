@@ -19,14 +19,14 @@ const copyPasteMapping = {
 	settings: {
 		'Accordion settings': {
 			group: {
-				'Accordion layout': 'accordionLayout',
-				Collapsible: 'isCollapsible',
-				'Pane closes when another opens': 'autoPaneClose',
+				'Accordion layout': 'al',
+				Collapsible: 'ic',
+				'Pane closes when another opens': 'apc',
 				'Pane spacing': {
 					props: ['pane-spacing', 'pane-spacing-unit'],
 					hasBreakpoints: true,
 				},
-				'Animation duration': 'animationDuration',
+				'Animation duration': 'ad',
 			},
 		},
 		'Accordion line': { groupAttributes: 'accordionLine' },

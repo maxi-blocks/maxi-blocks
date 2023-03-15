@@ -1,17 +1,17 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
-import { getEditedPostContent } from '../../utils';
+import { getEditedPostContent, insertMaxiBlock } from '../../utils';
 
 describe('Maxi Cloud Library', () => {
 	it('Maxi Cloud Library does not break', async () => {
 		/* await createNewPost();
-		await insertBlock('Maxi Cloud Library');
+		await insertMaxiBlock(page, 'Maxi Cloud Library');
 
 		expect(await getEditedPostContent(page)).toMatchSnapshot(); */
 	});

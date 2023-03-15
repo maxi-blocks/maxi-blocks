@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import SettingTabsControl from '../setting-tabs-control';
+import { getAttributeValue } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -41,8 +42,17 @@ const DisplayControl = props => {
 		let i = breakpointIndex;
 
 		do {
-			if (props[`display-${breakpoints[i]}`] === 'none') return true;
-			if (props[`display-${breakpoints[i]}`] === defaultDisplay)
+			if (
+				getAttributeValue({
+					target: `display-${breakpoints[i]}`,
+					props,
+				}) === 'none'
+			)
+				return true;
+			if (
+				getAttributeValue({ target: `display-${breakpoints[i]}` }) ===
+				defaultDisplay
+			)
 				return false;
 			i -= 1;
 		} while (i >= 0);
@@ -51,20 +61,31 @@ const DisplayControl = props => {
 	};
 
 	const getValue = () => {
-		if (props[`display-${breakpoint}`] === 'none') return 'none';
+		if (getAttributeValue({ target: `display-${breakpoint}` }) === 'none')
+			return 'none';
 
 		const isPrevHide = isHide();
 		if (
 			isPrevHide &&
-			(isNil(props[`display-${breakpoint}`]) ||
-				props[`display-${breakpoint}`] === '')
+			(isNil(
+				getAttributeValue({ target: `display-${breakpoint}`, props })
+			) ||
+				getAttributeValue({
+					target: `display-${breakpoint}`,
+					props,
+				}) === '')
 		)
 			return 'none';
 
 		if (
 			isPrevHide &&
-			(!isNil(props[`display-${breakpoint}`]) ||
-				props[`display-${breakpoint}`] !== '')
+			(!isNil(
+				getAttributeValue({ target: `display-${breakpoint}`, props })
+			) ||
+				getAttributeValue({
+					target: `display-${breakpoint}`,
+					props,
+				}) !== '')
 		)
 			return defaultDisplay;
 
@@ -94,7 +115,7 @@ const DisplayControl = props => {
 				items={getOptions()}
 				onChange={val =>
 					onChange({
-						[`display-${breakpoint}`]: !isEmpty(val) ? val : null,
+						[`d-${breakpoint}`]: !isEmpty(val) ? val : null,
 					})
 				}
 				hasBorder

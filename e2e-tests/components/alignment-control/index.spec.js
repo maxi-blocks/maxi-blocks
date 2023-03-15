@@ -3,7 +3,7 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
@@ -13,12 +13,13 @@ import {
 	openSidebarTab,
 	changeResponsive,
 	getBlockStyle,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('AlignmentControl', () => {
 	it('Return correct values on general responsive stage', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');
 
 		await openSidebarTab(page, 'style', 'alignment');
@@ -90,7 +91,7 @@ describe('AlignmentControl', () => {
 
 	it('Check Responsive alignment control', async () => {
 		await createNewPost();
-		await insertBlock('Button Maxi');
+		await insertMaxiBlock(page, 'Button Maxi');
 		const accordionPanel = await openSidebarTab(page, 'style', 'alignment');
 
 		await accordionPanel.$eval(

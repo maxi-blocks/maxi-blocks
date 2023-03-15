@@ -1,11 +1,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	getEditedPostContent,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, getEditedPostContent } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -16,12 +12,13 @@ import {
 	getAttributes,
 	changeResponsive,
 	editAdvancedNumberControl,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('Svg stroke width control', () => {
 	it('Check svg stroke width control', async () => {
 		await createNewPost();
-		await insertBlock('Icon Maxi');
+		await insertMaxiBlock(page, 'Icon Maxi');
 		await modalMock(page, { type: 'svg' });
 
 		// Close model opened automatically by the block

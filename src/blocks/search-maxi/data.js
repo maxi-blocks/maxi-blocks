@@ -31,6 +31,7 @@ const prefixes = {
 	inputPrefix,
 };
 const copyPasteMapping = {
+	_exclude: ['icon-content', 'close-icon-content', 'placeholder'],
 	block: {
 		Border: {
 			template: 'border',

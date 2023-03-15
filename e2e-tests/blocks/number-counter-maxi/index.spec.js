@@ -1,13 +1,22 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
-import { addCustomCSS, getBlockStyle, getEditedPostContent } from '../../utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
+
+/**
+ * Internal dependencies
+ */
+import {
+	addCustomCSS,
+	getBlockStyle,
+	getEditedPostContent,
+	insertMaxiBlock,
+} from '../../utils';
 
 describe('Number Counter Maxi', () => {
 	it('Number Counter Maxi does not break', async () => {
 		await createNewPost();
-		await insertBlock('Number Counter Maxi');
+		await insertMaxiBlock(page, 'Number Counter Maxi');
 
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();

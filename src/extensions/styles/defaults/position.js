@@ -1,4 +1,5 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import attributesShorter from '../dictionary/attributesShorter';
 
 export const rawPosition = {
 	position: {
@@ -43,4 +44,4 @@ const position = breakpointAttributesCreator({
 	obj: rawPosition,
 });
 
-export default position;
+export default attributesShorter(position, 'position');

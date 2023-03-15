@@ -1,3 +1,11 @@
+/**
+ * Internal dependencies
+ */
+import attributesShorter from './dictionary/attributesShorter';
+
+/**
+ * External dependencies
+ */
 import { isNumber, isString } from 'lodash';
 
 const paletteAttributesCreator = ({
@@ -16,10 +24,15 @@ const paletteAttributesCreator = ({
 			type: 'number',
 			...(isNumber(palette) && { default: palette }),
 		},
-		[`${prefix}palette-opacity`]: {
-			type: 'number',
-			...(isNumber(opacity) && { default: opacity }),
-		},
+		...attributesShorter(
+			{
+				[`${prefix}palette-opacity`]: {
+					type: 'number',
+					...(isNumber(opacity) && { default: opacity }),
+				},
+			},
+			'opacity'
+		),
 		[`${prefix}color`]: {
 			type: 'string',
 			...(isString(customColor) && { default: customColor }),

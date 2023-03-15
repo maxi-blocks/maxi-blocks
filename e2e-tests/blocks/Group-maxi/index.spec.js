@@ -1,13 +1,22 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
-import { addCustomCSS, getBlockStyle, getEditedPostContent } from '../../utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
+
+/**
+ * Internal dependencies
+ */
+import {
+	addCustomCSS,
+	getBlockStyle,
+	getEditedPostContent,
+	insertMaxiBlock,
+} from '../../utils';
 
 describe('Group Maxi', () => {
 	it('Group Maxi does not break', async () => {
 		await createNewPost();
-		await insertBlock('Group Maxi');
+		await insertMaxiBlock(page, 'Group Maxi');
 
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();

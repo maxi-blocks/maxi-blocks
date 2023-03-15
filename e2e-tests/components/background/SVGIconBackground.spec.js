@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -11,12 +11,13 @@ import {
 	getEditedPostContent,
 	modalMock,
 	openSidebarTab,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('Icon background', () => {
 	it('Check Icon background', async () => {
 		await createNewPost();
-		await insertBlock('Icon Maxi');
+		await insertMaxiBlock(page, 'Icon Maxi');
 		await modalMock(page, { type: 'svg' });
 
 		// Close model opened automatically by the block

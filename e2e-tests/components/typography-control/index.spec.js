@@ -4,7 +4,6 @@
  */
 import {
 	createNewPost,
-	insertBlock,
 	pressKeyTimes,
 	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
@@ -21,12 +20,13 @@ import {
 	addTypographyStyle,
 	addResponsiveTest,
 	getBlockStyle,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('TypographyControl', () => {
 	beforeAll(async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
 	});
 
@@ -416,7 +416,7 @@ describe('TypographyControl', () => {
 
 	it('Check showed value on TypographyControl on custom format', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
 
 		await pressKeyWithModifier('shift', 'ArrowLeft');

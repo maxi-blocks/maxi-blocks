@@ -210,7 +210,7 @@ const CustomCssControl = props => {
 		<ResponsiveTabsControl
 			className='maxi-custom-css-control'
 			breakpoint={breakpoint}
-			target='custom-css'
+			target='cc'
 		>
 			<>
 				<SelectControl

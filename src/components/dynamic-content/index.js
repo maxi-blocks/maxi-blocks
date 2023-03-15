@@ -175,18 +175,19 @@ const DynamicContent = props => {
 									}
 								/>
 							)}
-							{relationTypes.includes(type) && type === 'users' && (
-								<SelectControl
-									label={__('Author id', 'maxi-blocks')}
-									value={author}
-									options={postAuthorOptions}
-									onChange={value =>
-										changeProps({
-											'dc-author': Number(value),
-										})
-									}
-								/>
-							)}
+							{relationTypes.includes(type) &&
+								type === 'users' && (
+									<SelectControl
+										label={__('Author id', 'maxi-blocks')}
+										value={author}
+										options={postAuthorOptions}
+										onChange={value =>
+											changeProps({
+												'dc-author': Number(value),
+											})
+										}
+									/>
+								)}
 							{relationTypes.includes(type) &&
 								type !== 'users' &&
 								['author', 'by-id'].includes(relation) && (

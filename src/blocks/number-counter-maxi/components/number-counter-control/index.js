@@ -443,19 +443,23 @@ const NumberCounterControl = props => {
 					<ColorControl
 						label={__('Circle background', 'maxi-blocks')}
 						paletteStatus={getAttributeValue({
-							target: 'number-counter-circle-background-palette-status',
+							target: 'palette-status',
+							prefix: 'number-counter-circle-background-',
 							props,
 						})}
 						paletteColor={getAttributeValue({
-							target: 'number-counter-circle-background-palette-color',
+							target: 'palette-color',
+							prefix: 'number-counter-circle-background-',
 							props,
 						})}
 						paletteOpacity={getAttributeValue({
-							target: 'number-counter-circle-background-palette-opacity',
+							target: 'palette-opacity',
+							prefix: 'number-counter-circle-background-',
 							props,
 						})}
 						color={getAttributeValue({
-							target: 'number-counter-circle-background-color',
+							target: 'color',
+							prefix: 'number-counter-circle-background-',
 							props,
 						})}
 						prefix='number-counter-circle-background-'
@@ -474,16 +478,24 @@ const NumberCounterControl = props => {
 							onChange(
 								{
 									[getAttributeKey(
-										'number-counter-circle-background-palette-status'
+										'palette-status',
+										false,
+										'number-counter-circle-background-'
 									)]: paletteStatus,
 									[getAttributeKey(
-										'number-counter-circle-background-palette-color'
+										'palette-color',
+										false,
+										'number-counter-circle-background-'
 									)]: paletteColor,
 									[getAttributeKey(
-										'number-counter-circle-background-palette-opacity'
+										'palette-opacity',
+										false,
+										'number-counter-circle-background-'
 									)]: paletteOpacity,
 									[getAttributeKey(
-										'number-counter-circle-background-color'
+										'color',
+										false,
+										'number-counter-circle-background-'
 									)]: color,
 								},
 								'.maxi-number-counter__box__background'
@@ -529,19 +541,27 @@ const NumberCounterControl = props => {
 							onChange(
 								{
 									[getAttributeKey(
-										'number-counter-circle-bar-palette-status',
+										'palette-status',
+										false,
+										'number-counter-circle-bar-',
 										breakpoint
 									)]: paletteStatus,
 									[getAttributeKey(
-										'number-counter-circle-bar-palette-color',
+										'palette-color',
+										false,
+										'number-counter-circle-bar-',
 										breakpoint
 									)]: paletteColor,
 									[getAttributeKey(
-										'number-counter-circle-bar-palette-opacity',
+										'palette-opacity',
+										false,
+										'number-counter-circle-bar-',
 										breakpoint
 									)]: paletteOpacity,
 									[getAttributeKey(
-										'number-counter-circle-bar-color',
+										'color',
+										false,
+										'number-counter-circle-bar-',
 										breakpoint
 									)]: color,
 								},

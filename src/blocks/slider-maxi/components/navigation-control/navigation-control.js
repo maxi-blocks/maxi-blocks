@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import { SettingTabsControl, ToggleSwitch } from '../../../../components';
 import NavigationIconControl from './navigation-icon-control';
+import { getAttributeValue } from '../../../../extensions/styles';
 
 const NavigationIconsControl = props => {
 	const {
@@ -25,13 +26,22 @@ const NavigationIconsControl = props => {
 	const getSvgType = prefix => {
 		switch (prefix) {
 			case 'navigation-arrow-both-icon-':
-				return props['navigation-arrow-first-svgType'] ===
-					props['navigation-arrow-second-svgType']
-					? props['navigation-arrow-first-svgType']
+				return getAttributeValue({
+					target: 'navigation-arrow-first-svgType',
+					props,
+				}) ===
+					getAttributeValue({
+						target: 'navigation-arrow-second-svgType',
+					})
+					? getAttributeValue({
+							target: 'navigation-arrow-first-svgType',
+					  })
 					: 'Filled';
 			case 'navigation-dot-icon-':
 			default:
-				return props['navigation-dot-svgType'];
+				return getAttributeValue({
+					target: 'navigation-dot-svgType',
+				});
 		}
 	};
 	const svgType = getSvgType(prefix);
@@ -108,9 +118,10 @@ const NavigationIconsControl = props => {
 									'Enable active icon state',
 									'maxi-blocks'
 								)}
-								selected={
-									props['active-navigation-dot-icon-status']
-								}
+								selected={getAttributeValue({
+									target: 'active-navigation-dot-icon-status',
+									props,
+								})}
 								onChange={val =>
 									onChange({
 										'active-navigation-dot-icon-status':
@@ -118,7 +129,10 @@ const NavigationIconsControl = props => {
 									})
 								}
 							/>
-							{props['active-navigation-dot-icon-status'] && (
+							{getAttributeValue({
+								target: 'active-navigation-dot-icon-status',
+								props,
+							}) && (
 								<NavigationIconControl
 									{...props}
 									onChangeInline={(

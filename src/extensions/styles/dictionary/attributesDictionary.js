@@ -48,6 +48,13 @@ const dictionary = {
 		'navigation-dot-status': 'ndos',
 		'navigation-arrow-position': 'nap',
 		'navigation-dot-position': 'ndp',
+		'navigation-arrow-first-svgType': 'nafst',
+		'navigation-arrow-second-svgType': 'nalst',
+		'navigation-dot-svgType': 'ndst',
+		'active-navigation-dot-icon-status': 'andis',
+		'navigation-arrow-first-icon-content': 'nafic',
+		'navigation-arrow-second-icon-content': 'nalic',
+		'navigation-dot-icon-content': 'ndic',
 	},
 	customCss: {
 		'custom-css': 'cc',

@@ -87,7 +87,7 @@ const dictionary = {
 		'position-left-unit': 'pslu',
 	},
 	palette: {
-		'palette-status': 'past',
+		'palette-status': 'pa-status', // `-status` will be changed to `st` in Phase 2
 		'palette-color': 'pac',
 		'palette-opacity': 'pao',
 		color: 'c',

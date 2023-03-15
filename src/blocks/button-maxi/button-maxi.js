@@ -17,8 +17,9 @@ import { registerBlockType } from '@wordpress/blocks';
 import edit from './edit';
 import attributes from './attributes';
 import save from './save';
-import withMaxiSuspense from '../../extensions/maxi-block/withMaxiSuspense';
+import saveOld from './save-old';
 import { customCss } from './data';
+import withMaxiSuspense from '../../extensions/maxi-block/withMaxiSuspense';
 
 /**
  * Styles and icons
@@ -59,11 +60,17 @@ registerBlockType('maxi-blocks/button-maxi', {
 	},
 	edit: withMaxiSuspense(edit),
 	save,
-	deprecated: blockMigrator({
-		attributes,
-		save,
-		prefix: 'button-',
-		selectors: customCss.selectors,
-		migrators: [buttonIconTransitionMigrator],
-	}),
+	deprecated: [
+		{
+			attributes,
+			save: saveOld,
+		},
+		blockMigrator({
+			attributes,
+			save,
+			prefix: 'button-',
+			selectors: customCss.selectors,
+			migrators: [buttonIconTransitionMigrator],
+		}),
+	],
 });

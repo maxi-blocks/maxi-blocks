@@ -9,7 +9,6 @@
  */
 import {
 	createNewPost,
-	insertBlock,
 	pressKeyWithModifier,
 	setClipboardData,
 } from '@wordpress/e2e-test-utils';
@@ -25,6 +24,7 @@ import {
 	getEditedPostContent,
 	openPreviewPage,
 	setAttributes,
+	insertMaxiBlock,
 } from '../../utils';
 
 const linkExample = 'test.com';
@@ -53,7 +53,7 @@ const pressKeyWithTimeout = async (key, times, timeout = 50) => {
 describe('TextMaxi', () => {
 	beforeEach(async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 		await setAttributes(page, { uniqueID: 'text-maxi-1' });
 	});
 
@@ -661,8 +661,6 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 		await pressKeyWithModifier('primary', 'v');
 		await page.waitForTimeout(150);
-		await setAttributes(page, { uniqueID: 'text-maxi-1' });
-		await page.waitForTimeout(150);
 
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
@@ -682,7 +680,6 @@ describe('TextMaxi', () => {
 			'.toolbar-item__popover__list-options__button',
 			buttons => buttons[1].click()
 		);
-		await page.waitForTimeout(150);
 		await page.waitForTimeout(150);
 		const selectMaxiTextDiv = await page.$('.maxi-text-block');
 		const selectMaxiTextP = await selectMaxiTextDiv.$(

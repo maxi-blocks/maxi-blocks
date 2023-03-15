@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { useEffect } from '@wordpress/element';
+import { useEffect, render, createRoot } from '@wordpress/element';
 import { useDispatch, useSelect } from '@wordpress/data';
 
 /**
@@ -72,6 +72,13 @@ wp.domReady(() => {
 
 		document.head.appendChild(wrapper);
 
-		wp.element.render(<BlockStylesSaver />, wrapper);
+		// check if createRoot is available (since React 18)
+		if (typeof createRoot === 'function') {
+			const root = createRoot(wrapper);
+			root.render(<BlockStylesSaver />);
+		} else {
+			// for React 17 and below
+			render(<BlockStylesSaver />, wrapper);
+		}
 	}
 });

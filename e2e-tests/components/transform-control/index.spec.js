@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
@@ -10,12 +10,13 @@ import {
 	openSidebarTab,
 	addResponsiveTest,
 	getBlockStyle,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('TransformControl', () => {
 	it('Check transform control', async () => {
 		await createNewPost();
-		await insertBlock('Image Maxi');
+		await insertMaxiBlock(page, 'Image Maxi');
 		const accordionPanel = await openSidebarTab(
 			page,
 			'advanced',

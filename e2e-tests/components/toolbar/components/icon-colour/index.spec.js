@@ -1,17 +1,22 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
-import { getAttributes, modalMock, openSidebarTab } from '../../../../utils';
+import {
+	getAttributes,
+	modalMock,
+	openSidebarTab,
+	insertMaxiBlock,
+} from '../../../../utils';
 
 describe('Icon colour', () => {
 	it('Check icon colour', async () => {
 		await createNewPost();
-		await insertBlock('Icon Maxi');
+		await insertMaxiBlock(page, 'Icon Maxi');
 
 		// generate icon
 		await modalMock(page, { type: 'svg' });

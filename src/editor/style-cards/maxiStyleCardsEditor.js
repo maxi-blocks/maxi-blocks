@@ -383,7 +383,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 
 		if (!accordions || isEmpty(accordions)) return null;
 
-		for (let accordion of accordions) {
+		for (const accordion of accordions) {
 			accordion.querySelector('[aria-expanded=true]')?.click();
 		}
 	};

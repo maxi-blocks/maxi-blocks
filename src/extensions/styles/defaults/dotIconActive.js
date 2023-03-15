@@ -17,11 +17,11 @@ const dotIconActive = prefixAttributesCreator({
 			type: 'boolean',
 			default: true,
 		},
-		[`${prefix}icon-stroke-past`]: {
+		[`${prefix}icon-stroke-pa-status`]: {
 			type: 'boolean',
 			default: true,
 		},
-		[`${prefix}icon-fill-past`]: {
+		[`${prefix}icon-fill-pa-status`]: {
 			type: 'boolean',
 			default: true,
 		},

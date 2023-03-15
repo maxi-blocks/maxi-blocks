@@ -151,7 +151,7 @@ const TextColor = props => {
 						onChangeFormat({
 							c: color,
 							pac: paletteColor,
-							past: paletteStatus,
+							'pa-status': paletteStatus,
 							pao: paletteOpacity,
 						})
 					}

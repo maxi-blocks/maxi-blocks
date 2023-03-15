@@ -22,7 +22,7 @@ const shapeDividerCopyPasteGenerator = position => {
 				'Divider color': [
 					`shape-divider-${position}-pac`,
 					`shape-divider-${position}-color`,
-					`shape-divider-${position}-past`,
+					`shape-divider-${position}-pa-status`,
 				],
 				'Divider height': `shape-divider-${position}-height`,
 				'Divider height unit': `shape-divider-${position}-height-unit`,

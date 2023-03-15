@@ -156,9 +156,11 @@ const getBorderStyles = ({
 						response[breakpoint][borderColorProperty] =
 							getColorString();
 					} else if (
-						!['border-past', 'border-pac', 'border-pao'].includes(
-							newLabel
-						)
+						![
+							'border-pa-status',
+							'border-pac',
+							'border-pao',
+						].includes(newLabel)
 					)
 						response[breakpoint][newLabel] = `${value}`;
 				} else if (

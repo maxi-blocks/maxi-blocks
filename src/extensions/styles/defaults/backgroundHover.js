@@ -20,7 +20,7 @@ export const backgroundHover = hoverAttributesCreator({
 
 export const backgroundColorHover = hoverAttributesCreator({
 	obj: backgroundColor,
-	sameValAttr: ['background-past-general'],
+	sameValAttr: ['background-pa-status-general'],
 	diffValAttr: { 'background-pac-general': 6 },
 });
 
@@ -38,6 +38,6 @@ export const backgroundGradientHover = hoverAttributesCreator({
 
 export const backgroundSVGHover = hoverAttributesCreator({
 	obj: backgroundSVG,
-	sameValAttr: ['background-svg-past-general'],
+	sameValAttr: ['background-svg-pa-status-general'],
 	diffValAttr: { 'background-svg-pac-general': 6 },
 });

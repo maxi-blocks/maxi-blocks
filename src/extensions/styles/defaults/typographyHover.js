@@ -3,7 +3,7 @@ import { typography } from './typography';
 
 const typographyHover = hoverAttributesCreator({
 	obj: typography,
-	sameValAttr: ['past-general'],
+	sameValAttr: ['pa-status-general'],
 	diffValAttr: { 'pac-general': 5 },
 	newAttr: {
 		'typography-status-hover': {

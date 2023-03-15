@@ -17,11 +17,11 @@ export const iconHover = hoverAttributesCreator({
 			type: 'boolean',
 			default: false,
 		},
-		'icon-stroke-past-hover': {
+		'icon-stroke-pa-status-hover': {
 			type: 'boolean',
 			default: true,
 		},
-		'icon-fill-past-hover': {
+		'icon-fill-pa-status-hover': {
 			type: 'boolean',
 			default: true,
 		},

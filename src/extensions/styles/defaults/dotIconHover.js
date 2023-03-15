@@ -11,11 +11,11 @@ const dotIconHover = hoverAttributesCreator({
 			type: 'boolean',
 			default: false,
 		},
-		'navigation-dot-icon-stroke-past-hover': {
+		'navigation-dot-icon-stroke-pa-status-hover': {
 			type: 'boolean',
 			default: true,
 		},
-		'navigation-dot-icon-fill-past-hover': {
+		'navigation-dot-icon-fill-pa-status-hover': {
 			type: 'boolean',
 			default: true,
 		},

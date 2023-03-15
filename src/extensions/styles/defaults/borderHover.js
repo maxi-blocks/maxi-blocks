@@ -3,7 +3,7 @@ import { border, borderWidth, borderRadius } from './border';
 
 export const borderHover = hoverAttributesCreator({
 	obj: border,
-	sameValAttr: ['border-past-general'],
+	sameValAttr: ['border-pa-status-general'],
 	diffValAttr: { 'border-pac-general': 6 },
 	newAttr: {
 		'border-status-hover': {

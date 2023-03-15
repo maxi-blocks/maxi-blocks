@@ -15,11 +15,11 @@ const arrowIconHover = hoverAttributesCreator({
 			type: 'boolean',
 			default: false,
 		},
-		'navigation-arrow-both-icon-stroke-past-hover': {
+		'navigation-arrow-both-icon-stroke-pa-status-hover': {
 			type: 'boolean',
 			default: true,
 		},
-		'navigation-arrow-both-icon-fill-past-hover': {
+		'navigation-arrow-both-icon-fill-pa-status-hover': {
 			type: 'boolean',
 			default: true,
 		},

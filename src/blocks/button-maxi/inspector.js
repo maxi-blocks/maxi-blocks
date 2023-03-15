@@ -89,8 +89,8 @@ const Inspector = props => {
 		}
 
 		const {
-			'icon-stroke-past': strokePaletteStatus,
-			'icon-stroke-past-hover': strokePaletteHoverStatus,
+			'icon-stroke-pa-status': strokePaletteStatus,
+			'icon-stroke-pa-status-hover': strokePaletteHoverStatus,
 			'icon-content': rawIcon,
 		} = newDefaultPresets[`preset${number}`];
 
@@ -144,8 +144,8 @@ const Inspector = props => {
 		[
 			attributes['pac-general'],
 			attributes['pac-general-hover'],
-			attributes['past-general'],
-			attributes['past-general-hover'],
+			attributes['pa-status-general'],
+			attributes['pa-status-general-hover'],
 			attributes['pao-general'],
 			attributes['pao-general-hover'],
 			attributes['c-general'],

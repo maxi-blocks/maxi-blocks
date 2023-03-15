@@ -80,6 +80,12 @@ const dictionary = {
 		'position-bottom-unit': 'psbu',
 		'position-left-unit': 'pslu',
 	},
+	arrow: {
+		'arrow-status': 'ast',
+		'arrow-side': 'asi',
+		'arrow-position': 'apos',
+		'arrow-width': 'awi',
+	},
 	flex: {
 		'flex-grow': 'fg',
 		'flex-shrink': 'fs',

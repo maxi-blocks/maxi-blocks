@@ -336,6 +336,12 @@ const BoxShadowControl = props => {
 				}) => {
 					onChange({
 						[getAttributeKey(
+							'color',
+							isHover,
+							'box-shadow-',
+							breakpoint
+						)]: color,
+						[getAttributeKey(
 							'palette-status',
 							isHover,
 							'box-shadow-',

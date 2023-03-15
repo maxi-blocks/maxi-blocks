@@ -1,6 +1,7 @@
 /**
  * Internal dependencies
  */
+import getAttributeKey from '../getAttributeKey';
 import getColorRGBAString from '../getColorRGBAString';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 import getPaletteAttributes from '../getPaletteAttributes';
@@ -10,7 +11,6 @@ import { getIsValid } from '../utils';
  * External dependencies
  */
 import { isUndefined, isNil } from 'lodash';
-import getAttributeKey from '../getAttributeKey';
 
 /**
  * General

@@ -90,13 +90,15 @@ const Inspector = props => {
 								content: setSVGContentWithBlockStyle(
 									attributes.content,
 									getAttributeValue({
-										target: 'svg-fill-palette-status',
+										target: 'palette-status',
+										prefix: 'svg-fill-',
 										props: attributes,
 									})
 										? fillColorStr
 										: svgFillColor,
 									getAttributeValue({
-										target: 'svg-line-palette-status',
+										target: 'palette-status',
+										prefix: 'svg-line-',
 										props: attributes,
 									})
 										? lineColorStr

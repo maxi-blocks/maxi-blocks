@@ -43,6 +43,12 @@ const dictionary = {
 		'margin-bottom-unit': 'mbu',
 		'margin-left-unit': 'mlu',
 	},
+	display: {
+		display: 'd',
+	},
+	displayHover: {
+		'display-hover': 'dh',
+	},
 	opacity: {
 		opacity: 'o',
 	},
@@ -86,6 +92,12 @@ const dictionary = {
 		'image-shape-flip-x': 'ishfx',
 		'image-shape-flip-y': 'ishfy',
 	},
+	arrow: {
+		'arrow-status': 'ast',
+		'arrow-side': 'asi',
+		'arrow-position': 'apos',
+		'arrow-width': 'awi',
+	},
 	flex: {
 		'flex-grow': 'fg',
 		'flex-shrink': 'fs',
@@ -117,6 +129,13 @@ const dictionary = {
 		'transform-rotate': 'tr',
 		'transform-origin': 'to',
 		'transform-target': 'tt',
+	},
+	accordionTitle: {
+		'tite-typography-status-hover': 'tths',
+		'tite-typography-status-active': 'ttas',
+		'title-background-status': 'tbs',
+		'title-background-status-hover': 'tbs',
+		'title-background-status-active': 'tbs',
 	},
 };
 

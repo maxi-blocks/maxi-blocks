@@ -140,6 +140,21 @@ const dictionary = {
 		'title-background-status-hover': 'tbs',
 		'title-background-status-active': 'tbs',
 	},
+	divider: {
+		'divider-border-top-width': 'dbtw',
+		'divider-border-top-unit': 'dbtu',
+		'divider-border-right-width': 'dbrw',
+		'divider-border-right-unit': 'dbru',
+		'divider-border-radius': 'dbr',
+		'divider-width': 'dw',
+		'divider-width-unit': 'dwu',
+		'divider-height': 'dh',
+		'line-align': 'la',
+		'line-vertical': 'lv',
+		'line-horizontal': 'lh',
+		'line-orientation': 'lo',
+		'divider-box-shadow-status-hover': 'dbsh',
+	},
 };
 
 const flattenDictionary = dict => {

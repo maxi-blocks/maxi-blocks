@@ -43,6 +43,12 @@ const dictionary = {
 		'margin-bottom-unit': 'mbu',
 		'margin-left-unit': 'mlu',
 	},
+	display: {
+		display: 'd',
+	},
+	displayHover: {
+		'display-hover': 'dh',
+	},
 	opacity: {
 		opacity: 'o',
 	},

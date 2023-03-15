@@ -44,7 +44,7 @@ const TransformControl = props => {
 		depth,
 		categories,
 		selectors,
-		'transform-target': transformTarget,
+		tt: transformTarget,
 		disableHover = false,
 	} = props;
 
@@ -260,7 +260,7 @@ const TransformControl = props => {
 				)}
 				value={transformTarget ?? 'none'}
 				onChange={val => {
-					onChange({ 'transform-target': val });
+					onChange({ tt: val });
 				}}
 				options={getOptions()}
 			/>

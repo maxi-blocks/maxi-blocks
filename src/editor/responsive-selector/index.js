@@ -18,6 +18,7 @@ import CrispChat from '../crisp-chat';
 /**
  * External dependencies
  */
+import { isEmpty } from 'lodash';
 import classnames from 'classnames';
 
 /**
@@ -127,6 +128,18 @@ const ResponsiveSelector = props => {
 
 	const classes = classnames('maxi-responsive-selector', className);
 
+	const { chatSupport } = useSelect(select => {
+		const { receiveMaxiSettings } = select('maxiBlocks');
+		const maxiSettings = receiveMaxiSettings();
+		const { support_chat: supportChat } = maxiSettings;
+
+		const chatSupport = !isEmpty(supportChat) ? supportChat : false;
+
+		return {
+			chatSupport,
+		};
+	});
+
 	return (
 		<div
 			className={classes}
@@ -198,9 +211,23 @@ const ResponsiveSelector = props => {
 				</Button>
 			</div>
 			<MaxiStyleCardsEditorPopUp ref={settingsRef} />
-			<CrispChat className='action-buttons__help'>
-				<Icon className='toolbar-item__icon' icon={helpIcon} /> Help
-			</CrispChat>
+			{chatSupport && (
+				<CrispChat className='action-buttons__help'>
+					<Icon className='toolbar-item__icon' icon={helpIcon} />{' '}
+					{__('Help', 'maxi-blocks')}
+				</CrispChat>
+			)}
+			{!chatSupport && (
+				<a
+					href='https://maxiblocks.com/go/help-center'
+					target='_blank'
+					rel='noopener noreferrer'
+					className='maxi-components-button components-button action-buttons__button'
+				>
+					<Icon className='toolbar-item__icon' icon={helpIcon} />{' '}
+					{__('Help', 'maxi-blocks')}
+				</a>
+			)}
 		</div>
 	);
 };

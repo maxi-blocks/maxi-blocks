@@ -118,6 +118,13 @@ const dictionary = {
 		'transform-origin': 'to',
 		'transform-target': 'tt',
 	},
+	accordionTitle: {
+		'tite-typography-status-hover': 'tths',
+		'tite-typography-status-active': 'ttas',
+		'title-background-status': 'tbs',
+		'title-background-status-hover': 'tbs',
+		'title-background-status-active': 'tbs',
+	},
 };
 
 const flattenDictionary = dict => {

@@ -4,6 +4,7 @@ import paletteAttributesCreator from '../paletteAttributesCreator';
 import prefixAttributesCreator from '../prefixAttributesCreator';
 import { typography } from './typography';
 import typographyHover from './typographyHover';
+import attributesShorter from '../dictionary/attributesShorter';
 
 const prefix = 'title-';
 
@@ -49,4 +50,4 @@ const accordionTitle = {
 	}),
 };
 
-export default accordionTitle;
+export default attributesShorter(accordionTitle, 'accordionTitle');

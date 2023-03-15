@@ -309,13 +309,19 @@ const getPaneHeaderObject = props => {
 				paneHeaderHover: getPaneHeaderStyles(props, '', true),
 			},
 		' .maxi-pane-block__title': getPaneTitleStyles(props, 'title-'),
-		...(props['title-typography-status-active'] && {
+		...(getAttributeValue({
+			target: 'title-typography-status-active',
+			props,
+		}) && {
 			'[aria-expanded=true] .maxi-pane-block__title': getPaneTitleStyles(
 				props,
 				'active-title-'
 			),
 		}),
-		...(props['title-typography-status-hover'] && {
+		...(getAttributeValue({
+			target: 'title-typography-status-hover',
+			props,
+		}) && {
 			'[aria-expanded] .maxi-pane-block__header:hover .maxi-pane-block__title':
 				getPaneTitleStyles(props, 'title-', true),
 		}),

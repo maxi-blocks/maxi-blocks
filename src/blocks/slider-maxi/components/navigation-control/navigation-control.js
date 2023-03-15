@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import { SettingTabsControl, ToggleSwitch } from '../../../../components';
 import NavigationIconControl from './navigation-icon-control';
-import { getAttributeValue } from '../../../../extensions/styles';
+import getAttributeValue from '../../../../extensions/styles';
 
 const NavigationIconsControl = props => {
 	const {

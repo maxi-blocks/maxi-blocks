@@ -1,19 +1,24 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
+
+/**
+ * Internal dependencies
+ */
 import {
 	editAdvancedNumberControl,
 	getAttributes,
 	openSidebarTab,
 	resettingAttributes,
+	insertMaxiBlock,
 } from '../../../../utils';
 import getMapContainer from '../../utils/getMapContainer';
 
 describe('Map Control', () => {
 	beforeEach(async () => {
 		await createNewPost();
-		await insertBlock('Map Maxi');
+		await insertMaxiBlock(page, 'Map Maxi');
 	});
 
 	it('Map Maxi custom min/max zoom', async () => {

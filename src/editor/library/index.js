@@ -48,6 +48,7 @@ const CloudLibrary = props => {
 		onClickConnect,
 		userName,
 		onLogOut,
+		layerOrder,
 	} = props;
 
 	const [type, setType] = useState(cloudType);
@@ -118,6 +119,7 @@ const CloudLibrary = props => {
 				isBeta={isBeta}
 				isMaxiProActive={isMaxiProActive}
 				onClickConnect={onClickConnect}
+				layerOrder={layerOrder}
 			/>
 		</Modal>
 	);

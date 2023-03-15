@@ -1,15 +1,21 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
+
+/**
+ * Internal dependencies
+ */
+import { insertMaxiBlock } from '../../utils';
 
 describe('Breadcrumbs', () => {
 	it('Test breadcrumbs', async () => {
 		await createNewPost();
-		await insertBlock('Container Maxi');
+		await insertMaxiBlock(page, 'Container Maxi');
 		await page.$eval('.maxi-row-block__template button', button =>
 			button.click()
 		);
+		await page.waitForSelector('.maxi-column-block');
 
 		// Select column
 		await page.$eval('.maxi-column-block', column => column.focus());
@@ -29,13 +35,14 @@ describe('Breadcrumbs', () => {
 			'.editor-block-list-item-maxi-blocks-group-maxi',
 			button => button.click()
 		);
+		await page.waitForSelector('.maxi-group-block');
 
 		// Open appender on Group Maxi
-		await page.waitForSelector('.maxi-group-block');
 		await page.$eval(
 			'.maxi-group-block .block-editor-button-block-appender',
 			button => button.click()
 		);
+		await page.waitForTimeout(500);
 
 		// Add Row Maxi
 		await page.keyboard.type('row');
@@ -46,12 +53,14 @@ describe('Breadcrumbs', () => {
 			'.editor-block-list-item-maxi-blocks-row-maxi',
 			button => button.click()
 		);
+		await page.waitForTimeout(500);
 
 		// Select Row and add Column
 		await page.waitForSelector('.maxi-row-block__template');
 		await page.$eval('.maxi-row-block__template button', button =>
 			button.click()
 		);
+		await page.waitForTimeout(500);
 
 		// Select column
 		await page.$$eval('.maxi-column-block', columns =>

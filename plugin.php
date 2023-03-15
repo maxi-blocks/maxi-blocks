@@ -103,6 +103,14 @@ if (class_exists('MaxiBlocks_Dashboard')) {
     MaxiBlocks_Dashboard::register();
 }
 
+//======================================================================
+// MaxiBlocks Dynamic Content
+//======================================================================
+require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-dynamic-content.php';
+if (class_exists('MaxiBlocks_DynamicContent')) {
+    MaxiBlocks_DynamicContent::register();
+}
+
 /**
  * TODO: Old init.php file. Please, delete these lines of comment and require onces this file has been removed
  */

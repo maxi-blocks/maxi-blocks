@@ -14,7 +14,7 @@
 /**
  * WordPress dependencies
  */
-import { Component, render, createRef } from '@wordpress/element';
+import { Component, createRoot, render, createRef } from '@wordpress/element';
 import { dispatch, resolveSelect, select, useSelect } from '@wordpress/data';
 
 /**
@@ -46,7 +46,11 @@ import {
 } from '../fse';
 import { updateSCOnEditor } from '../style-cards';
 import getWinBreakpoint from '../dom/getWinBreakpoint';
-import { uniqueIDGenerator, getBlockData } from '../attributes';
+import {
+	getBlockData,
+	getUpdatedBGLayersWithNewUniqueID,
+	uniqueIDGenerator,
+} from '../attributes';
 import getHoverStatus from '../relations/getHoverStatus';
 import { getStylesWrapperId } from './utils';
 import getLastChangedBlocks from './getLastChangedBlocks';
@@ -113,6 +117,7 @@ class MaxiBlockComponent extends Component {
 		const { uniqueID } = attributes;
 
 		this.isReusable = false;
+		this.rootSlot = null;
 		this.currentBreakpoint =
 			select('maxiBlocks').receiveMaxiDeviceType() || 'general';
 		// eslint-disable-next-line react/no-unused-class-component-methods
@@ -293,8 +298,8 @@ class MaxiBlockComponent extends Component {
 				return false;
 			};
 
-			keepStylesOnEditor = blocks.some(block => getName(block));
-		});
+			keepStylesOnEditor ||= blocks?.some(block => getName(block));
+		}, true);
 
 		// When duplicating Gutenberg creates a copy of the current copied block twice, making the first keep the same uniqueID and second
 		// has a different one. The original block is removed so componentWillUnmount method is triggered, and as its uniqueID coincide with
@@ -324,6 +329,12 @@ class MaxiBlockComponent extends Component {
 			// IB
 			this.removeUnmountedBlockFromRelations(
 				this.props.attributes.uniqueID
+			);
+
+			// Remove the uniqueID from the list of rendered blocks
+			dispatch('maxiBlocks').removeBlockHasBeenRendered(
+				this.props.attributes.uniqueID,
+				this.props.clientId
 			);
 		}
 
@@ -516,13 +527,24 @@ class MaxiBlockComponent extends Component {
 	}
 
 	propagateNewUniqueID(oldUniqueID, newUniqueID) {
-		const updateRelations = () => {
-			const blockAttributesUpdate = {};
-			const lastChangedBlocks = getLastChangedBlocks();
+		const blockAttributesUpdate = {};
+		const lastChangedBlocks = getLastChangedBlocks();
 
+		const updateBlockAttributesUpdate = (clientId, key, value) => {
+			if (!blockAttributesUpdate[clientId])
+				blockAttributesUpdate[clientId] = {};
+
+			blockAttributesUpdate[clientId][key] = value;
+
+			return blockAttributesUpdate;
+		};
+
+		const updateRelations = () => {
 			if (isEmpty(lastChangedBlocks)) return;
 
 			const updateNewUniqueID = block => {
+				if (!block) return;
+
 				const {
 					attributes = {},
 					innerBlocks: rawInnerBlocks = [],
@@ -546,9 +568,11 @@ class MaxiBlockComponent extends Component {
 					});
 
 					if (!isEqual(relations, newRelations) && clientId)
-						blockAttributesUpdate[clientId] = {
-							relations: newRelations,
-						};
+						updateBlockAttributesUpdate(
+							clientId,
+							'relations',
+							newRelations
+						);
 				}
 
 				if (!isEmpty(rawInnerBlocks)) {
@@ -563,24 +587,33 @@ class MaxiBlockComponent extends Component {
 			};
 
 			lastChangedBlocks.forEach(block => updateNewUniqueID(block));
+		};
 
-			if (!isEmpty(blockAttributesUpdate)) {
-				const {
-					__unstableMarkNextChangeAsNotPersistent:
-						markNextChangeAsNotPersistent,
-					updateBlockAttributes,
-				} = dispatch('core/block-editor');
-
-				Object.entries(blockAttributesUpdate).forEach(
-					([clientId, attributes]) => {
-						markNextChangeAsNotPersistent();
-						updateBlockAttributes(clientId, attributes);
-					}
+		const updateBGLayers = () => {
+			this.props.attributes['background-layers'] =
+				getUpdatedBGLayersWithNewUniqueID(
+					this.props.attributes['background-layers'],
+					newUniqueID
 				);
-			}
 		};
 
 		updateRelations();
+		updateBGLayers();
+
+		if (!isEmpty(blockAttributesUpdate)) {
+			const {
+				__unstableMarkNextChangeAsNotPersistent:
+					markNextChangeAsNotPersistent,
+				updateBlockAttributes,
+			} = dispatch('core/block-editor');
+
+			Object.entries(blockAttributesUpdate).forEach(
+				([clientId, attributes]) => {
+					markNextChangeAsNotPersistent();
+					updateBlockAttributes(clientId, attributes);
+				}
+			);
+		}
 	}
 
 	updateRelationHoverStatus() {
@@ -766,17 +799,34 @@ class MaxiBlockComponent extends Component {
 				wrapper = getStylesWrapper(document.head);
 			}
 
-			if (wrapper)
-				render(
-					<StyleComponent
-						uniqueID={uniqueID}
-						stylesObj={obj}
-						currentBreakpoint={this.currentBreakpoint}
-						blockBreakpoints={breakpoints}
-						isSiteEditor={isSiteEditor}
-					/>,
-					wrapper
-				);
+			if (wrapper) {
+				// check if createRoot is available (since React 18)
+				if (typeof createRoot === 'function') {
+					if (isNil(this.rootSlot))
+						this.rootSlot = createRoot(wrapper);
+					this.rootSlot.render(
+						<StyleComponent
+							uniqueID={uniqueID}
+							stylesObj={obj}
+							currentBreakpoint={this.currentBreakpoint}
+							blockBreakpoints={breakpoints}
+							isSiteEditor={isSiteEditor}
+						/>
+					);
+				} else {
+					// for React 17 and below
+					render(
+						<StyleComponent
+							uniqueID={uniqueID}
+							stylesObj={obj}
+							currentBreakpoint={this.currentBreakpoint}
+							blockBreakpoints={breakpoints}
+							isSiteEditor={isSiteEditor}
+						/>,
+						wrapper
+					);
+				}
+			}
 
 			// Since WP 5.9 Gutenberg includes the responsive into iframes, so need to add the styles there also
 			const iframe = document.querySelector(
@@ -789,16 +839,33 @@ class MaxiBlockComponent extends Component {
 				if (iframeDocument.head) {
 					const iframeWrapper = getStylesWrapper(iframeDocument.head);
 
-					render(
-						<StyleComponent
-							uniqueID={uniqueID}
-							stylesObj={obj}
-							currentBreakpoint={this.currentBreakpoint}
-							blockBreakpoints={breakpoints}
-							isIframe
-						/>,
-						iframeWrapper
-					);
+					// check if createRoot is available (since React 18)
+					if (typeof createRoot === 'function') {
+						if (isNil(this.rootSlot))
+							this.rootSlot = createRoot(wrapper);
+
+						this.rootSlot.render(
+							<StyleComponent
+								uniqueID={uniqueID}
+								stylesObj={obj}
+								currentBreakpoint={this.currentBreakpoint}
+								blockBreakpoints={breakpoints}
+								isSiteEditor={isSiteEditor}
+							/>
+						);
+					} else {
+						// for React 17 and below
+						render(
+							<StyleComponent
+								uniqueID={uniqueID}
+								stylesObj={obj}
+								currentBreakpoint={this.currentBreakpoint}
+								blockBreakpoints={breakpoints}
+								isIframe
+							/>,
+							iframeWrapper
+						);
+					}
 				}
 			}
 		}

@@ -13,6 +13,7 @@ import { select } from '@wordpress/data';
 import Button from '../../../button';
 import ToolbarPopover from '../toolbar-popover';
 import ToolbarContext from '../toolbar-popover/toolbarContext';
+import ToggleSwitch from '../../../toggle-switch';
 
 /**
  * External dependencies
@@ -29,13 +30,22 @@ import { toolbarLink } from '../../../../icons';
  * Link
  */
 const Link = props => {
-	const { blockName, onChange, linkSettings, clientId } = props;
+	const {
+		blockName,
+		onChange,
+		linkSettings,
+		clientId,
+		disableCustomFormats = false,
+		'dc-status': dcStatus,
+		'dc-link-status': dcLinkStatus,
+	} = props;
 
 	if (
-		blockName === 'maxi-blocks/divider-maxi' ||
-		blockName === 'maxi-blocks/accordion-maxi' ||
-		blockName === 'maxi-blocks/text-maxi' ||
-		blockName === 'maxi-blocks/slider-maxi'
+		(blockName === 'maxi-blocks/divider-maxi' ||
+			blockName === 'maxi-blocks/accordion-maxi' ||
+			blockName === 'maxi-blocks/text-maxi' ||
+			blockName === 'maxi-blocks/slider-maxi') &&
+		!disableCustomFormats
 	)
 		return null;
 
@@ -81,6 +91,20 @@ const Link = props => {
 			>
 				{!childHasLink && (
 					<>
+						{dcStatus && (
+							<ToggleSwitch
+								label={__(
+									'Use dynamic content link',
+									'maxi-blocks'
+								)}
+								selected={dcLinkStatus}
+								onChange={value => {
+									onChange(linkSettings, {
+										'dc-link-status': value,
+									});
+								}}
+							/>
+						)}
 						<LinkControl
 							searchInputPlaceholder='Search or type URL'
 							value={linkSettings}

@@ -151,6 +151,7 @@ const attributes = {
 	/**
 	 * Canvas styles
 	 */
+	...attributesData.blockBackground,
 	...attributesData.border,
 	...attributesData.borderWidth,
 	...attributesData.borderRadius,
@@ -165,7 +166,7 @@ const attributes = {
 	/**
 	 * Advanced
 	 */
-	...attributesData.blockBackground,
+	...attributesData.dynamicContent,
 	...attributesData.scroll,
 	...attributesData.transform,
 	...{

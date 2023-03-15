@@ -19,6 +19,7 @@ const dictionary = {
 	},
 	clipPath: {
 		'clip-path': 'cp',
+		'clip-path-status': 'cp-status',
 	},
 	size: {
 		'size-advanced-options': 'sao',
@@ -95,9 +96,13 @@ const dictionary = {
 };
 
 const flattenDictionary = dict => {
+	const EXCLUDED_GROUPS = ['palette'];
+
 	let response = {};
 
-	Object.values(dict).forEach(val => {
+	Object.entries(dict).forEach(([key, val]) => {
+		if (EXCLUDED_GROUPS.includes(key)) return;
+
 		response = {
 			...response,
 			...val,
@@ -113,7 +118,7 @@ export const noTypeDictionary = flattenDictionary(dictionary);
 // Short to long terms
 export const reversedDictionary = {
 	...Object.entries(noTypeDictionary).reduce(
-		(acc, [key, val], i) => ({ ...acc, [val]: key }),
+		(acc, [key, val]) => ({ ...acc, [val]: key }),
 		{}
 	),
 };

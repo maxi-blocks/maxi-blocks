@@ -18,6 +18,7 @@ import { lazy } from '@wordpress/element';
 const Edit = lazy(() => import('./edit'));
 import attributes from './attributes';
 import save from './save';
+import saveOld from './save-old';
 import { customCss } from './data';
 import withMaxiSuspense from '../../extensions/maxi-block/withMaxiSuspense';
 
@@ -60,11 +61,17 @@ registerBlockType('maxi-blocks/button-maxi', {
 	},
 	edit: withMaxiSuspense(Edit),
 	save,
-	deprecated: blockMigrator({
-		attributes,
-		save,
-		prefix: 'button-',
-		selectors: customCss.selectors,
-		migrators: [buttonIconTransitionMigrator],
-	}),
+	deprecated: [
+		{
+			attributes,
+			save: saveOld,
+		},
+		blockMigrator({
+			attributes,
+			save,
+			prefix: 'button-',
+			selectors: customCss.selectors,
+			migrators: [buttonIconTransitionMigrator],
+		}),
+	],
 });

@@ -170,7 +170,10 @@ const getColor = ({ props, prefix, isHover, breakpoint }) => {
 };
 
 const getPaneContentWrapperStyles = props => {
-	const { animationDuration } = props;
+	const animationDuration = getAttributeValue({
+		target: 'animationDuration',
+		props,
+	});
 
 	const getPaneContentTransition = duration => {
 		return `max-height ${duration}s, padding-top ${duration}s, padding-bottom ${duration}s`;
@@ -306,13 +309,19 @@ const getPaneHeaderObject = props => {
 				paneHeaderHover: getPaneHeaderStyles(props, '', true),
 			},
 		' .maxi-pane-block__title': getPaneTitleStyles(props, 'title-'),
-		...(props['title-typography-status-active'] && {
+		...(getAttributeValue({
+			target: 'title-typography-status-active',
+			props,
+		}) && {
 			'[aria-expanded=true] .maxi-pane-block__title': getPaneTitleStyles(
 				props,
 				'active-title-'
 			),
 		}),
-		...(props['title-typography-status-hover'] && {
+		...(getAttributeValue({
+			target: 'title-typography-status-hover',
+			props,
+		}) && {
 			'[aria-expanded] .maxi-pane-block__header:hover .maxi-pane-block__title':
 				getPaneTitleStyles(props, 'title-', true),
 		}),
@@ -322,7 +331,10 @@ const getPaneHeaderObject = props => {
 };
 
 const getPaneContentObject = props => {
-	const { accordionLayout } = props;
+	const accordionLayout = getAttributeValue({
+		target: 'accordionLayout',
+		props,
+	});
 
 	const response = {
 		' .maxi-pane-block__content-wrapper':

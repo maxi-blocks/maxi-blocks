@@ -67,7 +67,7 @@ const LibraryToolbar = props => {
 	const client = new TypesenseSearchClient({
 		nodes: [
 			{
-				host: '24q17endjv0kacilp-1.a1.typesense.net',
+				host: '24q17endjv0kacilp.a1.typesense.net',
 				port: '443',
 				protocol: 'https',
 			},

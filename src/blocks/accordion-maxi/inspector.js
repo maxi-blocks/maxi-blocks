@@ -14,7 +14,7 @@ import {
 } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { withMaxiInspector } from '../../extensions/inspector';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getAttributeValue, getGroupAttributes } from '../../extensions/styles';
 import { customCss } from './data';
 import {
 	AccordionIconSettings,
@@ -37,7 +37,12 @@ const Inspector = props => {
 		inlineStylesTargets,
 	} = props;
 
-	const { accordionLayout, blockStyle, titleLevel } = attributes;
+	const { blockStyle, titleLevel } = attributes;
+
+	const accordionLayout = getAttributeValue({
+		target: 'accordionLayout',
+		props: attributes,
+	});
 
 	const lineSettingsProps = {
 		...getGroupAttributes(attributes, 'accordionLine'),

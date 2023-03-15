@@ -7,6 +7,7 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  * Internal dependencies
  */
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+import getAttributeValue from '../getAttributeValue';
 import transitionDefault from '../transitions/transitionDefault';
 
 /**
@@ -35,7 +36,13 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 					: [rawHoverProp];
 			if (
 				hoverProp &&
-				hoverProp.every(prop => !props[prop]) &&
+				hoverProp.every(
+					prop =>
+						!getAttributeValue({
+							target: prop,
+							props,
+						})
+				) &&
 				!isTransform
 			)
 				return;

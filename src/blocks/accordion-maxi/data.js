@@ -15,22 +15,24 @@ import { targets as paneTargets } from '../pane-maxi/data';
  */
 const name = 'accordion-maxi';
 const copyPasteMapping = {
+	_exclude: ['icon-content', 'active-icon-content'],
 	settings: {
 		'Accordion settings': {
 			group: {
-				'Accordion layout': 'accordionLayout',
-				Collapsible: 'isCollapsible',
-				'Pane closes when another opens': 'autoPaneClose',
+				'Accordion layout': 'al',
+				Collapsible: 'ic',
+				'Pane closes when another opens': 'apc',
 				'Pane spacing': {
 					props: ['pane-spacing', 'pane-spacing-unit'],
 					hasBreakpoints: true,
 				},
-				'Animation duration': 'animationDuration',
+				'Animation duration': 'ad',
 			},
 		},
 		'Accordion line': { groupAttributes: 'accordionLine' },
 		'Accordion title': { groupAttributes: 'accordionTitle' },
 		Icon: { groupAttributes: 'accordionIcon' },
+		'Active icon': { groupAttributes: 'accordionIcon', prefix: 'active-' },
 		Background: {
 			template: 'blockBackground',
 		},

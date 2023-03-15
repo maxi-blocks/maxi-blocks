@@ -1,5 +1,6 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import paletteAttributesCreator from '../paletteAttributesCreator';
+import attributesShorter from '../dictionary/attributesShorter';
 
 const placeholderColor = {
 	...breakpointAttributesCreator({
@@ -7,4 +8,4 @@ const placeholderColor = {
 	}),
 };
 
-export default placeholderColor;
+export default attributesShorter(placeholderColor, 'placeholderColor');

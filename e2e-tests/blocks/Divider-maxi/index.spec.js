@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 import {
 	addCustomCSS,
 	addResponsiveTest,
@@ -9,13 +9,14 @@ import {
 	getAttributes,
 	getBlockStyle,
 	getEditedPostContent,
+	insertMaxiBlock,
 	openSidebarTab,
 } from '../../utils';
 
 describe('Divider Maxi', () => {
 	it('Divider Maxi does not break', async () => {
 		await createNewPost();
-		await insertBlock('Divider Maxi');
+		await insertMaxiBlock(page, 'Divider Maxi');
 
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
@@ -97,7 +98,7 @@ describe('Divider Maxi', () => {
 
 	it('Check responsive line orientation', async () => {
 		await createNewPost();
-		await insertBlock('Divider Maxi');
+		await insertMaxiBlock(page, 'Divider Maxi');
 		const accordionPanel = await openSidebarTab(page, 'style', 'alignment');
 
 		const responsiveVertical = await addResponsiveTest({

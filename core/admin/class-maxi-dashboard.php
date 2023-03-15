@@ -571,6 +571,15 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .=
                 __(' for self-service.', self::$maxi_text_domain) . '</p>';
 
+			$description =
+				'<h4>' .
+				__('Enable support chat', 'maxi-blocks') .
+				'</h4>';
+			$description .= '<p><a href="https://help.crisp.chat/en/article/whats-crisp-eu-gdpr-compliance-status-nhv54c/" target="_blank"'.'>' . __('Read more about Crisp tracking', 'maxi-blocks') . '</a></p>';
+
+			$content .= $this->generate_setting($description, 'support_chat');
+			$content .= get_submit_button();
+
             // $content .= '<p>'.__('For support please  ', self::$maxi_text_domain);
             // $content .= '<a href="" target="_blank"> '.__('post your question', self::$maxi_text_domain).'</a>';
             // $content .= __(' in the WordPress.org forum.', self::$maxi_text_domain).'</p>';
@@ -885,6 +894,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             register_setting('maxi-blocks-settings-group', 'remove_local_fonts', $args);
             register_setting('maxi-blocks-settings-group', 'allow_svg_json_uploads', $args);
             register_setting('maxi-blocks-settings-group', 'hide_tooltips', $args);
+            register_setting('maxi-blocks-settings-group', 'support_chat', $args);
             register_setting('maxi-blocks-settings-group', 'swap_cloud_images', $args);
             register_setting('maxi-blocks-settings-group', 'google_api_key_option');
             register_setting('maxi-blocks-settings-group', 'maxi_breakpoints');

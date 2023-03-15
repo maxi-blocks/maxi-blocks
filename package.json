@@ -69,7 +69,6 @@
 		"tilt.js": "^1.2.1",
 		"tinycolor2": "^1.4.2",
 		"typesense-instantsearch-adapter": "^2.4.1",
-		"util": "^0.12.5",
 		"w3c-css-validator": "^1.3.0"
 	},
 	"devDependencies": {

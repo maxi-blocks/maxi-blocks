@@ -5,6 +5,10 @@ const dictionary = {
 		isCollapsible: 'ic',
 		animationDuration: 'ad',
 	},
+	accordionLine: {
+		'line-status-hover': 'lsh',
+		'line-status-active': 'lsa',
+	},
 	clipPath: {
 		'clip-path': 'cp',
 	},

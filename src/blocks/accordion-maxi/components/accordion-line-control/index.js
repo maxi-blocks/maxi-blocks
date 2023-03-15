@@ -13,6 +13,7 @@ import {
 	SelectControl,
 } from '../../../../components';
 import {
+	getAttributeValue,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
@@ -74,16 +75,20 @@ const AccordionLineControl = props => {
 							<>
 								<ToggleSwitch
 									label={__('Enable hover', 'maxi-blocks')}
-									selected={
-										props[`${prefix}line-status-hover`]
-									}
+									selected={getAttributeValue({
+										target: 'line-status-hover',
+										prefix,
+									})}
 									onChange={val =>
 										onChange({
 											[`${prefix}line-status-hover`]: val,
 										})
 									}
 								/>
-								{props[`${prefix}line-status-hover`] && (
+								{getAttributeValue({
+									target: 'line-status-hover',
+									prefix,
+								}) && (
 									<DividerControl
 										{...props}
 										isHover
@@ -99,9 +104,10 @@ const AccordionLineControl = props => {
 							<>
 								<ToggleSwitch
 									label={__('Enable active', 'maxi-blocks')}
-									selected={
-										props[`${prefix}line-status-active`]
-									}
+									selected={getAttributeValue({
+										target: 'line-status-active',
+										prefix,
+									})}
 									onChange={val =>
 										onChange({
 											[`${prefix}line-status-active`]:
@@ -109,7 +115,10 @@ const AccordionLineControl = props => {
 										})
 									}
 								/>
-								{props[`${prefix}line-status-active`] && (
+								{getAttributeValue({
+									target: 'line-status-active',
+									prefix,
+								}) && (
 									<DividerControl
 										{...props}
 										prefix={`${prefix}active-`}

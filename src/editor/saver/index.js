@@ -1,8 +1,8 @@
 /**
  * WordPress dependencies
  */
-import { useEffect } from '@wordpress/element';
-import { useDispatch, useSelect } from '@wordpress/data';
+import { useEffect, useLayoutEffect } from '@wordpress/element';
+import { useDispatch, useSelect, dispatch, select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -61,6 +61,36 @@ const BlockStylesSaver = () => {
 			}
 		}
 	});
+
+	useLayoutEffect(() => {
+		const { getIsPageLoaded } = select('maxiBlocks');
+
+		if (!getIsPageLoaded()) {
+			const isMaxiBlock = block => {
+				if (block.name.includes('maxi-blocks/')) return true;
+
+				if (block.innerBlocks.length) {
+					return block.innerBlocks.some(isMaxiBlock);
+				}
+
+				return false;
+			};
+
+			const { getBlocks } = select('core/block-editor');
+
+			// Waits one second before it checks if the page is a new page or has maxi blocks.
+			// In case it has maxi blocks, it will wait for them to load. If it doesn't, it will
+			// set the page as loaded so next added Maxi Blocks will be not pass the Suspense loading.
+			setTimeout(() => {
+				const blocks = getBlocks();
+				const hasMaxiBlocks = blocks.some(isMaxiBlock);
+
+				if (!hasMaxiBlocks) {
+					dispatch('maxiBlocks').setIsPageLoaded(true);
+				}
+			}, 1000);
+		}
+	}, []);
 
 	return null;
 };

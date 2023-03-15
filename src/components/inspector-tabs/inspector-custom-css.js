@@ -7,7 +7,10 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import CustomCssControl from '../custom-css-control';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
+import {
+	getLastBreakpointAttribute,
+	getAttributeValue,
+} from '../../extensions/styles';
 import { getSelectorsCss, getCategoriesCss } from '../custom-css-control/utils';
 
 /**
@@ -22,11 +25,14 @@ const customCss = ({
 	const { attributes, maxiSetAttributes } = props;
 
 	const customCssValue = getLastBreakpointAttribute({
-		target: 'cc',
+		target: 'custom-css',
 		breakpoint,
 		attributes,
 	});
-	const customCssCategory = attributes['cc-category'];
+	const customCssCategory = getAttributeValue({
+		target: 'custom-css-category',
+		attributes,
+	});
 
 	return {
 		label: __('Custom CSS', 'maxi-blocks'),

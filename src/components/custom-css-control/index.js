@@ -123,7 +123,7 @@ const CustomCssControl = props => {
 					delete newCustomCss[category];
 			}
 
-			onChange(`custom-css-${breakpoint}`, newCustomCss);
+			onChange(`cc-${breakpoint}`, newCustomCss);
 		};
 
 		async function validateCss(code) {

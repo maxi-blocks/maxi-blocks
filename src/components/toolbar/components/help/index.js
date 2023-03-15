@@ -29,9 +29,6 @@ const Help = props => {
 
 	if (blockName === 'maxi-blocks/column-maxi') return null;
 
-	console.log('supportChat');
-	console.log(supportChat);
-
 	const helpContent = () => {
 		if (supportChat)
 			return (

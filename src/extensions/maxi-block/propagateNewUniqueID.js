@@ -1,26 +1,11 @@
 /**
- * Maxi Blocks Block component extension
- *
- * @todo Comment properly
- * @todo Transform to functional component or HOC
- * @todo Integrate `formatValue` into it
- */
-
-/**
- * Disabled some ESLint rules; this file needs to be cleaned
- */
-/* eslint-disable class-methods-use-this */
-
-/**
  * WordPress dependencies
  */
-
 import { dispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
-
 import { getUpdatedBGLayersWithNewUniqueID } from '../attributes';
 import getLastChangedBlocks from './getLastChangedBlocks';
 

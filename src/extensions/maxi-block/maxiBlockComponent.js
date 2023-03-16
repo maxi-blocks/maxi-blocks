@@ -438,13 +438,6 @@ class MaxiBlockComponent extends Component {
 			return newUniqueID;
 		}
 
-		// This code can be removed after migrating #3474
-		if (isEmpty(this.props.attributes.customLabel)) {
-			const label = idToCheck.replace('-maxi-', '_');
-			this.props.attributes.customLabel =
-				label.charAt(0).toUpperCase() + label.slice(1);
-		}
-
 		return idToCheck;
 	}
 

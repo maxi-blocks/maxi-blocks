@@ -34,6 +34,7 @@ import { loadFonts, getAllFonts } from '../text/fonts';
 import uniqueIDStructureChecker from './uniqueIDStructureChecker';
 import {
 	getIsSiteEditor,
+	// getIsTemplatesListOpened,
 	getSiteEditorIframe,
 	getTemplatePartChooseList,
 	getTemplateViewIframe,
@@ -287,6 +288,9 @@ class MaxiBlockComponent extends Component {
 
 			keepStylesOnEditor ||= blocks?.some(block => getName(block));
 		}, true);
+		// const keepStylesOnEditor = !!select('core/block-editor').getBlock(
+		// 	this.props.clientId
+		// );
 
 		// When duplicating Gutenberg creates a copy of the current copied block twice, making the first keep the same uniqueID and second
 		// has a different one. The original block is removed so componentWillUnmount method is triggered, and as its uniqueID coincide with
@@ -315,6 +319,7 @@ class MaxiBlockComponent extends Component {
 
 			// IB
 			removeUnmountedBlockFromRelations(this.props.attributes.uniqueID);
+			console.log('deleting relations', this.props.attributes.uniqueID);
 		}
 
 		if (this.maxiBlockWillUnmount)

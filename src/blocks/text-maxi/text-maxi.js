@@ -20,6 +20,7 @@ import save from './save';
 import withMaxiSuspense from '../../extensions/maxi-block/withMaxiSuspense';
 import transforms from './transforms';
 import { customCss } from './data';
+import withMaxiLoader from '../../extensions/maxi-block/withMaxiLoader';
 
 /**
  * Styles and icons
@@ -55,7 +56,7 @@ registerBlockType('maxi-blocks/text-maxi', {
 			uniqueid: uniqueID,
 		};
 	},
-	edit: withMaxiSuspense(edit),
+	edit: withMaxiLoader(edit),
 	save,
 	transforms,
 	deprecated: blockMigrator({

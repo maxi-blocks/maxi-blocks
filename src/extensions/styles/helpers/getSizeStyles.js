@@ -133,7 +133,10 @@ const getSizeStyles = (obj, prefix = '') => {
 				const auto =
 					prefix === 'number-counter-' &&
 					target === 'width' &&
-					obj['number-counter-circle-status']
+					getAttributeValue({
+						target: 'number-counter-circle-status',
+						obj,
+					})
 						? 'auto'
 						: getLastBreakpointAttribute({
 								target: `${prefix}${target}-auto`,

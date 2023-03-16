@@ -1,6 +1,7 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import paletteAttributesCreator from '../paletteAttributesCreator';
 import alignment from './alignment';
+import attributesShorter from '../dictionary/attributesShorter';
 
 const numberCounter = {
 	...breakpointAttributesCreator({
@@ -91,4 +92,4 @@ const numberCounter = {
 	...alignment,
 };
 
-export default numberCounter;
+export default attributesShorter(numberCounter, 'numberCounter');

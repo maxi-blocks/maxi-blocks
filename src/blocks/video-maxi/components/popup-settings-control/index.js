@@ -13,6 +13,7 @@ import {
 	AspectRatioControl,
 } from '../../../../components';
 import {
+	getAttributeKey,
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -64,13 +65,30 @@ const PopupSettingsControl = props => {
 					color,
 				}) => {
 					onChange({
-						[`lightbox-background-palette-status-${breakpoint}`]:
-							paletteStatus,
-						[`lightbox-background-palette-color-${breakpoint}`]:
-							paletteColor,
-						[`lightbox-background-palette-opacity-${breakpoint}`]:
-							paletteOpacity,
-						[`lightbox-background-color-${breakpoint}`]: color,
+						[getAttributeKey(
+							'palette-status',
+							false,
+							'lightbox-background-',
+							breakpoint
+						)]: paletteStatus,
+						[getAttributeKey(
+							'palette-color',
+							false,
+							'lightbox-background-',
+							breakpoint
+						)]: paletteColor,
+						[getAttributeKey(
+							'palette-opacity',
+							false,
+							'lightbox-background-',
+							breakpoint
+						)]: paletteOpacity,
+						[getAttributeKey(
+							'color',
+							false,
+							'lightbox-background-',
+							breakpoint
+						)]: color,
 					});
 				}}
 				disableImage

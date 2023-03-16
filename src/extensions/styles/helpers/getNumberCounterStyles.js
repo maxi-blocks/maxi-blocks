@@ -3,6 +3,7 @@
  */
 import getColorRGBAString from '../getColorRGBAString';
 import getPaletteAttributes from '../getPaletteAttributes';
+import getAttributeValue from '../getAttributeValue';
 /**
  * External dependencies
  */
@@ -73,7 +74,12 @@ const getTextStyles = (obj, blockStyle) => {
 		general: {},
 	};
 
-	const typeOfStyle = obj['number-counter-circle-status'] ? 'color' : 'fill';
+	const typeOfStyle = getAttributeValue({
+		target: 'number-counter-circle-status',
+		obj,
+	})
+		? 'color'
+		: 'fill';
 
 	const getColor = breakpoint => {
 		const { paletteStatus, paletteColor, paletteOpacity, color } =

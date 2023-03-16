@@ -14,6 +14,7 @@ import getStyles from './styles';
 import { Toolbar } from '../../components';
 import AccordionContext from './context';
 import { copyPasteMapping } from './data';
+import { getAttributesValue } from '../../extensions/styles';
 
 /**
  * Edit
@@ -33,10 +34,22 @@ class edit extends MaxiBlockComponent {
 				[uniqueID]: {
 					paneIcon: attributes['icon-content'],
 					paneIconActive: attributes['active-icon-content'],
-					accordionLayout: attributes.accordionLayout,
-					autoPaneClose: attributes.autoPaneClose,
-					isCollapsible: attributes.isCollapsible,
-					animationDuration: attributes.animationDuration,
+					accordionLayout: getAttributesValue({
+						target: 'accordionLayout',
+						props: attributes,
+					}),
+					autoPaneClose: getAttributesValue({
+						target: 'autoPaneClose',
+						props: attributes,
+					}),
+					isCollapsible: getAttributesValue({
+						target: 'isCollapsible',
+						props: attributes,
+					}),
+					animationDuration: getAttributesValue({
+						target: 'animationDuration',
+						props: attributes,
+					}),
 				},
 			},
 		};
@@ -45,7 +58,10 @@ class edit extends MaxiBlockComponent {
 	}
 
 	openPane(paneId) {
-		const { autoPaneClose } = this.props.attributes;
+		const autoPaneClose = getAttributesValue({
+			target: 'autoPaneClose',
+			props: this.props.attributes,
+		});
 
 		if (autoPaneClose) {
 			this.setState({ openPanes: [paneId] });
@@ -72,13 +88,20 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes } = this.props;
-		const {
-			uniqueID,
-			accordionLayout,
-			titleLevel,
-			isCollapsible,
-			animationDuration,
-		} = attributes;
+		const { uniqueID, titleLevel } = attributes;
+
+		const accordionLayout = getAttributesValue({
+			target: 'accordionLayout',
+			props: attributes,
+		});
+		const isCollapsible = getAttributesValue({
+			target: 'isCollapsible',
+			props: attributes,
+		});
+		const animationDuration = getAttributesValue({
+			target: 'animationDuration',
+			props: attributes,
+		});
 
 		const inlineStylesTargets = {
 			headerLine:

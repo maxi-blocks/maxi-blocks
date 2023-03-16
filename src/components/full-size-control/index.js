@@ -12,7 +12,7 @@ import withRTC from '../../extensions/maxi-block/withRTC';
 import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
-	getAttributeValue,
+	getAttributesValue,
 } from '../../extensions/styles';
 
 /**
@@ -242,7 +242,7 @@ const FullSizeControl = props => {
 				label={__('Set custom min/max values', 'maxi-blocks')}
 				className='maxi-full-size-control__custom-min-max'
 				selected={
-					getAttributeValue({
+					getAttributesValue({
 						target: 'size-advanced-options',
 						prefix,
 						props,
@@ -254,7 +254,7 @@ const FullSizeControl = props => {
 					});
 				}}
 			/>
-			{getAttributeValue({
+			{getAttributesValue({
 				target: 'size-advanced-options',
 				prefix,
 				props,

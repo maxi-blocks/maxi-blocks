@@ -11,7 +11,7 @@ import {
 	getColorRGBAString,
 	styleProcessor,
 	getGroupAttributes,
-	getAttributeValue,
+	getAttributesValue,
 } from '../../extensions/styles';
 import {
 	getBlockBackgroundStyles,
@@ -170,7 +170,10 @@ const getColor = ({ props, prefix, isHover, breakpoint }) => {
 };
 
 const getPaneContentWrapperStyles = props => {
-	const { animationDuration } = props;
+	const animationDuration = getAttributesValue({
+		target: 'animationDuration',
+		props,
+	});
 
 	const getPaneContentTransition = duration => {
 		return `max-height ${duration}s, padding-top ${duration}s, padding-bottom ${duration}s`;
@@ -213,7 +216,7 @@ const getPaneHeaderStyles = (props, prefix, isHover = false) => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
-		const bgStatus = getAttributeValue({
+		const bgStatus = getAttributesValue({
 			target: 'title-background-status',
 			props,
 			isHover,
@@ -306,13 +309,19 @@ const getPaneHeaderObject = props => {
 				paneHeaderHover: getPaneHeaderStyles(props, '', true),
 			},
 		' .maxi-pane-block__title': getPaneTitleStyles(props, 'title-'),
-		...(props['title-typography-status-active'] && {
+		...(getAttributesValue({
+			target: 'title-typography-status-active',
+			props,
+		}) && {
 			'[aria-expanded=true] .maxi-pane-block__title': getPaneTitleStyles(
 				props,
 				'active-title-'
 			),
 		}),
-		...(props['title-typography-status-hover'] && {
+		...(getAttributesValue({
+			target: 'title-typography-status-hover',
+			props,
+		}) && {
 			'[aria-expanded] .maxi-pane-block__header:hover .maxi-pane-block__title':
 				getPaneTitleStyles(props, 'title-', true),
 		}),
@@ -322,7 +331,10 @@ const getPaneHeaderObject = props => {
 };
 
 const getPaneContentObject = props => {
-	const { accordionLayout } = props;
+	const accordionLayout = getAttributesValue({
+		target: 'accordionLayout',
+		props,
+	});
 
 	const response = {
 		' .maxi-pane-block__content-wrapper':

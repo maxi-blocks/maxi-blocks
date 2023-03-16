@@ -2,7 +2,7 @@ import { isArray, isNil } from 'lodash';
 
 import getColorRGBAString from './getColorRGBAString';
 import { setSVGContent, setSVGContentHover } from '../svg';
-import getAttributeValue from './getAttributeValue';
+import getAttributesValue from './getAttributesValue';
 
 const getIconWithColor = (attributes, args = {}, prefix = '') => {
 	const {
@@ -34,25 +34,25 @@ const getIconWithColor = (attributes, args = {}, prefix = '') => {
 			(isHover && !useIconColor && !attributes['typography-status-hover'])
 		) {
 			if (!paletteColor)
-				paletteColor = getAttributeValue({
+				paletteColor = getAttributesValue({
 					target: `icon-${type}-palette-color`,
 					isHover,
 					props: attributes,
 				});
 			if (!paletteOpacity)
-				paletteOpacity = getAttributeValue({
+				paletteOpacity = getAttributesValue({
 					target: `icon-${type}-palette-opacity`,
 					isHover,
 					props: attributes,
 				});
 			if (!paletteStatus)
-				paletteStatus = getAttributeValue({
+				paletteStatus = getAttributesValue({
 					target: `icon-${type}-palette-status`,
 					isHover,
 					props: attributes,
 				});
 			if (!color)
-				color = getAttributeValue({
+				color = getAttributesValue({
 					target: `icon-${type}-color`,
 					isHover,
 					props: attributes,
@@ -66,28 +66,28 @@ const getIconWithColor = (attributes, args = {}, prefix = '') => {
 			});
 		} else {
 			if (!paletteColor)
-				paletteColor = getAttributeValue({
+				paletteColor = getAttributesValue({
 					target: 'palette-color',
 					isHover,
 					breakpoint: 'general',
 					props: attributes,
 				});
 			if (!paletteOpacity)
-				paletteOpacity = getAttributeValue({
+				paletteOpacity = getAttributesValue({
 					target: 'palette-opacity',
 					isHover,
 					breakpoint: 'general',
 					props: attributes,
 				});
 			if (!paletteStatus)
-				paletteStatus = getAttributeValue({
+				paletteStatus = getAttributesValue({
 					target: 'palette-status',
 					isHover,
 					breakpoint: 'general',
 					props: attributes,
 				});
 			if (!color)
-				color = getAttributeValue({
+				color = getAttributesValue({
 					target: 'color',
 					isHover,
 					breakpoint: 'general',

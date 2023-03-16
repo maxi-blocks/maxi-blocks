@@ -42,7 +42,7 @@ const attributes = {
 	 * Block styles
 	 */
 	title: { type: 'string' },
-	accordionLayout: { type: 'string' },
+	al: { type: 'string' },
 	titleLevel: { type: 'string', default: 'h6' },
 	accordionUniqueId: { type: 'string' },
 

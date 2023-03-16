@@ -16,8 +16,8 @@ const overlayColor = {
 		obj: backgroundColor,
 		prefix: 'overlay-',
 		diffValAttr: {
-			'overlay-background-palette-color-general': 5,
-			'overlay-background-palette-opacity-general': 0.7,
+			'overlay-background-pac-general': 5,
+			'overlay-background-pao-general': 0.7,
 		},
 	}),
 };
@@ -28,8 +28,8 @@ const videoOverlay = {
 		obj: overlayColor,
 		sameValAttr: [
 			'overlay-background-active-media-general',
-			'overlay-background-palette-color-general',
-			'overlay-background-palette-opacity-general',
+			'overlay-background-pac-general',
+			'overlay-background-pao-general',
 		],
 		newAttr: {
 			'overlay-background-status-hover': {

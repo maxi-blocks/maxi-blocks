@@ -3,7 +3,7 @@
  */
 import getColorRGBAString from '../getColorRGBAString';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
-import getAttributeValue from '../getAttributeValue';
+import getAttributesValue from '../getAttributesValue';
 import getDefaultAttribute from '../getDefaultAttribute';
 
 /**
@@ -39,7 +39,7 @@ const getBoxShadowStyles = ({
 		let boxShadowString = '';
 
 		const getValue = target => {
-			const value = getAttributeValue({
+			const value = getAttributesValue({
 				target,
 				props: obj,
 				isHover,

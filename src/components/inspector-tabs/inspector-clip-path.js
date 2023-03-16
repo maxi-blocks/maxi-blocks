@@ -11,7 +11,7 @@ import ToggleSwitch from '../toggle-switch';
 import SettingTabsControl from '../setting-tabs-control';
 import {
 	getAttributeKey,
-	getAttributeValue,
+	getAttributesValue,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
@@ -99,7 +99,7 @@ const clipPath = ({ props, selector, prefix = '' }) => {
 										})
 									}
 								/>
-								{getAttributeValue({
+								{getAttributesValue({
 									target: 'clip-path-status',
 									props,
 									isHover: true,

@@ -6,7 +6,7 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import getAttributeValue from './getAttributeValue';
+import getAttributesValue from './getAttributesValue';
 
 /**
  * External dependencies
@@ -46,7 +46,7 @@ const getLastBreakpointAttributeSingle = (
 	if (isNil(attr)) return false;
 	if (isNil(breakpoint))
 		return getValueFromKeys(
-			getAttributeValue({
+			getAttributesValue({
 				target,
 				props: attr,
 				isHover,
@@ -84,7 +84,7 @@ const getLastBreakpointAttributeSingle = (
 	}
 
 	let currentAttr = getValueFromKeys(
-		getAttributeValue({
+		getAttributesValue({
 			target,
 			props: attr,
 			breakpoint,
@@ -112,7 +112,7 @@ const getLastBreakpointAttributeSingle = (
 
 		if (!(avoidXXL && breakpoints[breakpointPosition] === 'xxl'))
 			currentAttr = getValueFromKeys(
-				getAttributeValue({
+				getAttributesValue({
 					target,
 					props: attr,
 					breakpoint: breakpoints[breakpointPosition],

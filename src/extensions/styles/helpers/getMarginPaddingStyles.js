@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
-import getAttributeValue from '../getAttributeValue';
+import getAttributesValue from '../getAttributesValue';
 
 /**
  * External dependencies
@@ -33,7 +33,7 @@ const getMarginPaddingStyles = ({ obj, prefix = '' }) => {
 							attributes: obj,
 						}),
 					target =>
-						getAttributeValue({
+						getAttributesValue({
 							target,
 							attributes: obj,
 							breakpoint,

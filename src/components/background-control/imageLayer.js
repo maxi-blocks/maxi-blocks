@@ -20,7 +20,7 @@ import SizeAndPositionLayerControl from './sizeAndPositionLayerControl';
 import ToggleSwitch from '../toggle-switch';
 import {
 	getAttributeKey,
-	getAttributeValue,
+	getAttributesValue,
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -53,7 +53,7 @@ const ImageLayerSettings = props => {
 
 	const imageOptions = cloneDeep(props.imageOptions);
 
-	const parallaxStatus = getAttributeValue({
+	const parallaxStatus = getAttributesValue({
 		target: 'background-image-parallax-status',
 		props: imageOptions,
 		prefix,
@@ -155,7 +155,7 @@ const ImageLayerSettings = props => {
 				isHover,
 			}) === 'custom' && (
 				<ImageCropControl
-					mediaID={getAttributeValue({
+					mediaID={getAttributesValue({
 						target: 'background-image-mediaID',
 						props: imageOptions,
 						prefix,
@@ -661,7 +661,7 @@ const ImageLayer = props => {
 		);
 	};
 
-	const mediaID = getAttributeValue({
+	const mediaID = getAttributesValue({
 		target: 'background-image-mediaID',
 		props: imageOptions,
 		prefix,
@@ -835,12 +835,14 @@ const ImageLayer = props => {
 											/>
 											<ImageAltControl
 												mediaID={mediaID}
-												altSelector={getAttributeValue({
-													target: 'background-image-parallax-alt-selector',
-													props: imageOptions,
-													prefix,
-												})}
-												mediaAlt={getAttributeValue({
+												altSelector={getAttributesValue(
+													{
+														target: 'background-image-parallax-alt-selector',
+														props: imageOptions,
+														prefix,
+													}
+												)}
+												mediaAlt={getAttributesValue({
 													target: 'background-image-parallax-alt',
 													props: imageOptions,
 													prefix,

@@ -20,7 +20,7 @@ import SettingTabsControl from '../setting-tabs-control';
 import withRTC from '../../extensions/maxi-block/withRTC';
 import {
 	getAttributeKey,
-	getAttributeValue,
+	getAttributesValue,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import getClipPath from './getClipPath';
@@ -162,7 +162,7 @@ const ClipPathControl = props => {
 					attributes: props,
 					isHover,
 			  })
-			: getAttributeValue({
+			: getAttributesValue({
 					target: 'clip-path-status',
 					isHover: true,
 					prefix,

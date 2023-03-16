@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-import { getAttributeValue } from '../../extensions/styles';
+import { getAttributesValue } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -29,7 +29,7 @@ const save = props => {
 			classes={classes}
 			{...getMaxiBlockAttributes({ ...props, name })}
 		>
-			{getAttributeValue({ target: 'divider-border-style', props }) !==
+			{getAttributesValue({ target: 'divider-border-style', props }) !==
 				'none' && <hr className='maxi-divider-block__divider' />}
 		</MaxiBlock.save>
 	);

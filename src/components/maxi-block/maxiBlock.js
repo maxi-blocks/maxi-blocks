@@ -18,6 +18,7 @@ import { dispatch, select } from '@wordpress/data';
 import {
 	getHasParallax,
 	getLastBreakpointAttribute,
+	getAttributeValue,
 } from '../../extensions/styles';
 import InnerBlocksBlock from './innerBlocksBlock';
 import MainMaxiBlock from './mainMaxiBlock';
@@ -220,8 +221,10 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 			`maxi-hover-effect maxi-hover-effect-${uniqueID}`,
 		getHasParallax(background['background-layers']) &&
 			`maxi-bg-parallax maxi-bg-parallax-${uniqueID}`,
-		motion['number-counter-status'] &&
-			`maxi-nc-effect maxi-nc-effect-${uniqueID}`,
+		getAttributeValue({
+			target: 'number-counter-status',
+			motion,
+		}) && `maxi-nc-effect maxi-nc-effect-${uniqueID}`,
 		(motion['shape-divider-top-status'] ||
 			motion['shape-divider-bottom-status']) &&
 			`maxi-sd-effect maxi-sd-effect-${uniqueID}`,

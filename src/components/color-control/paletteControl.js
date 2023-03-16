@@ -9,8 +9,9 @@ import { useSelect } from '@wordpress/data';
  */
 import BaseControl from '../base-control';
 import OpacityControl from '../opacity-control';
-import { getBlockStyle } from '../../extensions/styles';
 import ResetButton from '../reset-control';
+import { getAttributeKey, getBlockStyle } from '../../extensions/styles';
+
 /**
  * External dependencies
  */
@@ -58,14 +59,14 @@ const ColorPaletteControl = props => {
 				: false;
 			const globalPaletteColor = globalProps
 				? receiveStyleCardValue(
-						`${prefix}palette-color`,
+						getAttributeKey('palette-color', false, prefix),
 						globalProps ? getBlockStyle(clientId) : null,
 						globalProps?.type
 				  )
 				: false;
 			const globalPaletteOpacity = globalProps
 				? receiveStyleCardValue(
-						`${prefix}palette-opacity`,
+						getAttributeKey('palette-opacity', false, prefix),
 						globalProps ? getBlockStyle(clientId) : null,
 						globalProps?.type
 				  )

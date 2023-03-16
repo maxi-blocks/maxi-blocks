@@ -7,6 +7,7 @@ const dictionary = {
 	},
 	clipPath: {
 		'clip-path': 'cp',
+		'clip-path-status': 'cp-status',
 	},
 	textAlignment: {
 		'text-alignment': 'ta',
@@ -42,6 +43,25 @@ const dictionary = {
 		'margin-right-unit': 'mru',
 		'margin-bottom-unit': 'mbu',
 		'margin-left-unit': 'mlu',
+	},
+	navigation: {
+		'navigation-arrow-both-status': 'nabs',
+		'navigation-dot-status': 'ndos',
+		'navigation-arrow-position': 'nap',
+		'navigation-dot-position': 'ndp',
+		'navigation-arrow-first-svgType': 'nafst',
+		'navigation-arrow-second-svgType': 'nalst',
+		'navigation-dot-svgType': 'ndst',
+		'active-navigation-dot-icon-status': 'andis',
+		'navigation-arrow-first-icon-content': 'nafic',
+		'navigation-arrow-second-icon-content': 'nalic',
+		'navigation-dot-icon-content': 'ndic',
+	},
+	searchButton: {
+		buttonSkin: 'bs',
+		iconRevealAction: 'ira',
+		buttonContent: 'bc',
+		buttonContentClose: 'bcc',
 	},
 	customCss: {
 		'custom-css': 'cc',
@@ -89,6 +109,14 @@ const dictionary = {
 		'position-bottom-unit': 'psbu',
 		'position-left-unit': 'pslu',
 	},
+	transition: {
+		transition: 't',
+		'transition-change-all': 'tca',
+	},
+	columnSize: {
+		'column-size': 'cs',
+		'column-fit-content': 'cfc',
+	},
 	imageShape: {
 		'image-shape-scale': 'ishs',
 		'image-shape-rotate': 'ishr',
@@ -126,6 +154,10 @@ const dictionary = {
 		'map-max-zoom': 'mpmxz',
 		'map-markers': 'mpm',
 	},
+	mapMarker: {
+		'map-marker': 'mma',
+		'map-marker-icon': 'mmi',
+	},
 	transform: {
 		'transform-scale': 'ts',
 		'transform-translate': 'ttt',
@@ -146,12 +178,55 @@ const dictionary = {
 		'link-active': 'la',
 		'link-visited': 'lv',
 	},
+	palette: {
+		'palette-status': 'pa-status', // `-status` will be changed to `st` in Phase 2
+		'palette-color': 'pac',
+		'palette-opacity': 'pao',
+		color: 'c',
+	},
+	numberCounter: {
+		'number-counter-width-auto': 'ncwa',
+		'number-counter-status': 'ncsa',
+		'number-counter-preview': 'ncp',
+		'number-counter-percentage-sign-status': 'ncpss',
+		'number-counter-rounded-status': 'ncrs',
+		'number-counter-circle-status': 'nccs',
+		'number-counter-start': 'ncsa',
+		'number-counter-end': 'nce',
+		'number-counter-stroke': 'ncst',
+		'number-counter-duration': 'ncd',
+		'number-counter-start-animation': 'ncsan',
+		'number-counter-start-animation-offset': 'ncsao',
+		'number-counter-circle-background-': 'nccbg',
+		'number-counter-circle-bar': 'nccb',
+		'number-counter-title-font-size': 'nctfs',
+		'number-counter-text': 'nct',
+	},
+	divider: {
+		'divider-border-top-width': 'dbtw',
+		'divider-border-top-unit': 'dbtu',
+		'divider-border-right-width': 'dbrw',
+		'divider-border-right-unit': 'dbru',
+		'divider-border-radius': 'dbr',
+		'divider-width': 'dw',
+		'divider-width-unit': 'dwu',
+		'divider-height': 'dh',
+		'line-align': 'la',
+		'line-vertical': 'lv',
+		'line-horizontal': 'lh',
+		'line-orientation': 'lo',
+		'divider-box-shadow-status-hover': 'dbsh',
+	},
 };
 
 const flattenDictionary = dict => {
+	const EXCLUDED_GROUPS = ['palette'];
+
 	let response = {};
 
-	Object.values(dict).forEach(val => {
+	Object.entries(dict).forEach(([key, val]) => {
+		if (EXCLUDED_GROUPS.includes(key)) return;
+
 		response = {
 			...response,
 			...val,
@@ -167,7 +242,7 @@ export const noTypeDictionary = flattenDictionary(dictionary);
 // Short to long terms
 export const reversedDictionary = {
 	...Object.entries(noTypeDictionary).reduce(
-		(acc, [key, val], i) => ({ ...acc, [val]: key }),
+		(acc, [key, val]) => ({ ...acc, [val]: key }),
 		{}
 	),
 };

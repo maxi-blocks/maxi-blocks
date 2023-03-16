@@ -15,11 +15,15 @@ import { getGroupAttributes } from '../../../../extensions/styles';
  */
 import './editor.scss';
 import { toolbarColumnPattern } from '../../../../icons';
+import { getAttributeValue } from 'domutils';
 
 const ToolbarColumnPattern = props => {
 	const { clientId, blockName, onChange, breakpoint } = props;
 
-	if (blockName !== 'maxi-blocks/row-maxi' || !props['row-pattern-general'])
+	if (
+		blockName !== 'maxi-blocks/row-maxi' ||
+		!getAttributeValue({ target: 'row-pattern-general', props })
+	)
 		return null;
 
 	return (

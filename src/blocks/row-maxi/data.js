@@ -15,7 +15,7 @@ const copyPasteMapping = {
 	settings: {
 		'Row settings': {
 			group: {
-				'Row pattern': 'row-pattern',
+				'Row pattern': 'rp',
 				'Row gap': ['row-gap', 'row-gap-unit'],
 				'Column gap': ['column-gap', 'column-gap-unit'],
 				'Flex wrap': 'flex-wrap',

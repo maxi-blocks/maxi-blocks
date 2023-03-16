@@ -17,9 +17,9 @@ import {
 	textContext,
 } from '../../../../extensions/text/formats';
 import {
-	getGroupAttributes,
 	getBlockStyle,
 	getColorRGBAString,
+	getGroupAttributes,
 } from '../../../../extensions/styles';
 
 /**
@@ -149,10 +149,10 @@ const TextColor = props => {
 						paletteOpacity,
 					}) =>
 						onChangeFormat({
-							color,
-							'palette-color': paletteColor,
-							'palette-status': paletteStatus,
-							'palette-opacity': paletteOpacity,
+							c: color,
+							pac: paletteColor,
+							'pa-status': paletteStatus,
+							pao: paletteOpacity,
 						})
 					}
 					globalProps={{ target: '', type: textLevel }}

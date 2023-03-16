@@ -50,9 +50,9 @@ const copyPasteMapping = {
 		Skin: 'skin',
 		Button: {
 			group: {
-				Skin: 'buttonSkin',
-				'Button text': 'buttonContent',
-				'Button text close': 'buttonContentClose',
+				Skin: 'bs',
+				'Button text': 'bc',
+				'Button text close': 'bcc',
 			},
 		},
 		Icon: {

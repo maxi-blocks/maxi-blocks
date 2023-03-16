@@ -27,6 +27,7 @@ import classnames from 'classnames';
  * Styles and icons
  */
 import './editor.scss';
+import { getAttributeValue } from 'domutils';
 
 /**
  * Column patterns
@@ -36,8 +37,10 @@ const ColumnPattern = props => {
 	const { clientId, onChange, breakpoint, toolbar = false } = props;
 
 	const [numCol, setNumCol] = useState(
-		!isNil(props['row-pattern-general'])
-			? getNumCol(props['row-pattern-general'])
+		!isNil(getAttributeValue({ target: 'row-pattern-general', props }))
+			? getNumCol(
+					getAttributeValue({ target: 'row-pattern-general', props })
+			  )
 			: 1
 	);
 	const [DISPLAYED_TEMPLATES, setDisplayedTemplates] = useState([]);
@@ -57,10 +60,17 @@ const ColumnPattern = props => {
 	}, [breakpoint, numCol]);
 
 	useEffect(() => {
-		if (props['row-pattern-general']) {
-			setNumCol(getNumCol(props['row-pattern-general']));
+		if (getAttributeValue({ target: 'row-pattern-general', props })) {
+			setNumCol(
+				getNumCol(
+					getAttributeValue({ target: 'row-pattern-general', props })
+				)
+			);
 		}
-	}, [breakpoint, props['row-pattern-general']]);
+	}, [
+		breakpoint,
+		getAttributeValue({ target: 'row-pattern-general', props }),
+	]);
 
 	/**
 	 * Get current columns sizes

@@ -28,7 +28,7 @@ const arrowIcon = {
 		prefix,
 		diffValAttr: {
 			'navigation-arrow-both-icon-width-general': '20',
-			'navigation-arrow-both-icon-stroke-palette-color': 5,
+			'navigation-arrow-both-icon-stroke-pac': 5,
 			'navigation-arrow-both-icon-background-active-media-general':
 				'none',
 			'navigation-arrow-both-icon-border-unit-radius-general': 'px',

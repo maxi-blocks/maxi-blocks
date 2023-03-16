@@ -16,7 +16,7 @@ import TextControl from '../text-control';
 import ToggleSwitch from '../toggle-switch';
 import {
 	getAttributeKey,
-	getAttributeValue,
+	getAttributesValue,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { videoUrlRegex } from '../../extensions/video';
@@ -115,7 +115,7 @@ const VideoLayer = props => {
 					<TextControl
 						label='URL'
 						type='url'
-						value={getAttributeValue({
+						value={getAttributesValue({
 							target: 'background-video-mediaURL',
 							props: videoOptions,
 							prefix,
@@ -143,7 +143,7 @@ const VideoLayer = props => {
 					<AdvancedNumberControl
 						className='maxi-background-video-start-time'
 						label={__('Start time (s)', 'maxi-blocks')}
-						value={getAttributeValue({
+						value={getAttributesValue({
 							target: 'background-video-startTime',
 							props: videoOptions,
 							prefix,
@@ -173,7 +173,7 @@ const VideoLayer = props => {
 					<AdvancedNumberControl
 						className='maxi-background-video-end-time'
 						label={__('End time (s)', 'maxi-blocks')}
-						value={getAttributeValue({
+						value={getAttributesValue({
 							target: 'background-video-endTime',
 							props: videoOptions,
 							prefix,
@@ -203,13 +203,13 @@ const VideoLayer = props => {
 					<ToggleSwitch
 						className='video-loop'
 						label={__('Loop', 'maxi-blocks')}
-						selected={getAttributeValue({
+						selected={getAttributesValue({
 							target: 'background-video-loop',
 							props: videoOptions,
 							prefix,
 						})}
 						disabled={
-							+getAttributeValue({
+							+getAttributesValue({
 								target: 'background-video-endTime',
 								props: videoOptions,
 								prefix,
@@ -228,7 +228,7 @@ const VideoLayer = props => {
 					<ToggleSwitch
 						className='video-reduce-border'
 						label={__('Reduce black borders', 'maxi-blocks')}
-						selected={getAttributeValue({
+						selected={getAttributesValue({
 							target: 'background-video-reduce-border',
 							props: videoOptions,
 							prefix,

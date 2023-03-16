@@ -7,10 +7,6 @@
  */
 
 /**
- * Disabled some ESLint rules; this file needs to be cleaned
- */
-
-/**
  * WordPress dependencies
  */
 import { Component, createRoot, render, createRef } from '@wordpress/element';
@@ -50,13 +46,13 @@ import removeUnmountedBlockFromRelations from './removeUnmountedBlockFromRelatio
 import updateRelationHoverStatus from './updateRelationHoverStatus';
 import propagateNewUniqueID from './propagateNewUniqueID';
 import updateReusableBlockSize from './updateReusableBlockSize';
+import propsObjectCleaner from './propsObjectCleaner';
 
 /**
  * External dependencies
  */
 import { isEmpty, isEqual, isFunction, isNil } from 'lodash';
 import { diff } from 'deep-object-diff';
-import propsObjectCleaner from './propsObjectCleaner';
 
 /**
  * Style Component

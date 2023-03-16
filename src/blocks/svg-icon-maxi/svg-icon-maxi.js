@@ -17,8 +17,8 @@ import { registerBlockType } from '@wordpress/blocks';
 import edit from './edit';
 import attributes from './attributes';
 import save from './save';
-import withMaxiSuspense from '../../extensions/maxi-block/withMaxiSuspense';
 import { customCss } from './data';
+import withMaxiLoader from '../../extensions/maxi-block/withMaxiLoader';
 
 /**
  * Styles and icons
@@ -57,7 +57,7 @@ registerBlockType('maxi-blocks/svg-icon-maxi', {
 			uniqueid: uniqueID,
 		};
 	},
-	edit: withMaxiSuspense(edit),
+	edit: withMaxiLoader(edit),
 	save,
 	deprecated: blockMigrator({
 		attributes,

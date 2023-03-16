@@ -122,7 +122,7 @@ const SuspendedBlock = ({ onMountBlock, clientId }) => {
 	return null;
 };
 
-const withMaxiSuspense = createHigherOrderComponent(
+const withMaxiLoader = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
 			const {
@@ -188,7 +188,7 @@ const withMaxiSuspense = createHigherOrderComponent(
 				/>
 			);
 		}),
-	'withMaxiSuspense'
+	'withMaxiLoader'
 );
 
-export default withMaxiSuspense;
+export default withMaxiLoader;

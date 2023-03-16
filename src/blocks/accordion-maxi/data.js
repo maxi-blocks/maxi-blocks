@@ -31,8 +31,68 @@ const copyPasteMapping = {
 		},
 		'Accordion line': { groupAttributes: 'accordionLine' },
 		'Accordion title': { groupAttributes: 'accordionTitle' },
-		Icon: { groupAttributes: 'accordionIcon' },
-		'Active icon': { groupAttributes: 'accordionIcon', prefix: 'active-' },
+		Icon: {
+			group: {
+				Icon: { groupAttributes: ['icon', 'iconHover'] },
+				'Icon border': {
+					groupAttributes: [
+						'iconBorder',
+						'iconBorderWidth',
+						'iconBorderRadius',
+						'iconBorderHover',
+						'iconBorderWidthHover',
+						'iconBorderRadiusHover',
+					],
+				},
+				'Icon background': {
+					groupAttributes: [
+						'iconBackground',
+						'iconBackgroundColor',
+						'iconBackgroundGradient',
+						'iconBackgroundHover',
+						'iconBackgroundColorHover',
+						'iconBackgroundGradientHover',
+					],
+				},
+				'Icon padding': {
+					groupAttributes: 'Icon padding',
+				},
+			},
+		},
+		'Active icon': {
+			group: {
+				Icon: {
+					groupAttributes: ['icon', 'iconHover'],
+					prefix: 'active-',
+				},
+				'Icon border': {
+					groupAttributes: [
+						'iconBorder',
+						'iconBorderWidth',
+						'iconBorderRadius',
+						'iconBorderHover',
+						'iconBorderWidthHover',
+						'iconBorderRadiusHover',
+					],
+					prefix: 'active-',
+				},
+				'Icon background': {
+					groupAttributes: [
+						'iconBackground',
+						'iconBackgroundColor',
+						'iconBackgroundGradient',
+						'iconBackgroundHover',
+						'iconBackgroundColorHover',
+						'iconBackgroundGradientHover',
+					],
+					prefix: 'active-',
+				},
+				'Icon padding': {
+					groupAttributes: 'Icon padding',
+					prefix: 'active-',
+				},
+			},
+		},
 		Background: {
 			template: 'blockBackground',
 		},

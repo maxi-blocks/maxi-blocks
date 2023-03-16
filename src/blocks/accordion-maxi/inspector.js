@@ -71,6 +71,18 @@ const Inspector = props => {
 
 	const { selectors, categories } = customCss;
 
+	const iconGroupAttributes = [
+		'icon',
+		'iconHover',
+		'iconBackgroundGradient',
+		'iconBackgroundColor',
+		'iconBorder',
+		'iconBackgroundHover',
+		'iconBorderWidth',
+		'iconBorderRadius',
+		'iconPadding',
+	];
+
 	return (
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}
@@ -144,7 +156,13 @@ const Inspector = props => {
 											<AccordionIconSettings
 												{...getGroupAttributes(
 													attributes,
-													'accordionIcon'
+													iconGroupAttributes
+												)}
+												{...getGroupAttributes(
+													attributes,
+													iconGroupAttributes,
+													false,
+													'active-'
 												)}
 												disableIconOnly
 												disableSpacing

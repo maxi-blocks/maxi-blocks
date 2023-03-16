@@ -109,6 +109,10 @@ const dictionary = {
 		'position-bottom-unit': 'psbu',
 		'position-left-unit': 'pslu',
 	},
+	columnSize: {
+		'column-size': 'cs',
+		'column-fit-content': 'cfc',
+	},
 	imageShape: {
 		'image-shape-scale': 'ishs',
 		'image-shape-rotate': 'ishr',

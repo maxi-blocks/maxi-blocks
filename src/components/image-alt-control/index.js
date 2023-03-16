@@ -77,12 +77,10 @@ const ImageAltControl = ({
 	};
 
 	useEffect(() => {
-		if (typeof altSelector === 'undefined')
+		if (typeof altSelector === 'undefined' && titleAlt)
 			onChange({
-				altSelector,
-				...{
-					mediaAlt: titleAlt,
-				},
+				altSelector: 'title',
+				mediaAlt: titleAlt,
 			});
 	}, []);
 

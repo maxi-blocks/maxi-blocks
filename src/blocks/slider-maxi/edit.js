@@ -17,6 +17,7 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import getStyles from './styles';
 import { copyPasteMapping } from './data';
 import TEMPLATE from './template';
+import { getAttributeValue } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -318,7 +319,10 @@ const SliderWrapper = props => {
 				)}
 			/>
 			<div className={navClasses}>
-				{attributes['navigation-arrow-first-icon-content'] && (
+				{getAttributeValue({
+					target: 'navigation-arrow-first-icon-content',
+					attributes,
+				}) && (
 					<span
 						className='maxi-slider-block__arrow maxi-slider-block__arrow--prev'
 						onClick={!isEditView ? () => prevSlide() : undefined}
@@ -337,7 +341,10 @@ const SliderWrapper = props => {
 						</div>
 					</span>
 				)}
-				{attributes['navigation-arrow-second-icon-content'] && (
+				{getAttributeValue({
+					target: 'navigation-arrow-second-icon-content',
+					attributes,
+				}) && (
 					<span
 						className='maxi-slider-block__arrow maxi-slider-block__arrow--next'
 						onClick={!isEditView ? () => nextSlide() : undefined}
@@ -356,7 +363,10 @@ const SliderWrapper = props => {
 						</div>
 					</span>
 				)}
-				{attributes['navigation-dot-icon-content'] && (
+				{getAttributeValue({
+					target: 'navigation-dot-icon-content',
+					attributes,
+				}) && (
 					<div className='maxi-slider-block__dots'>
 						{Array.from(Array(numberOfSlides).keys()).map(i => {
 							return (

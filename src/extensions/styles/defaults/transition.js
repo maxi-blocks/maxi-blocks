@@ -1,3 +1,5 @@
+import attributesShorter from '../dictionary/attributesShorter';
+
 const transition = {
 	transition: {
 		type: 'object',
@@ -8,4 +10,4 @@ const transition = {
 	},
 };
 
-export default transition;
+export default attributesShorter(transition, 'transition');

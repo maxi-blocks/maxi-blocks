@@ -65,20 +65,10 @@ const Inspector = props => {
 										),
 										content: (
 											<MapControl
-												{...{
-													'map-provider':
-														attributes[
-															'map-provider'
-														],
-													'map-min-zoom':
-														attributes[
-															'map-min-zoom'
-														],
-													'map-max-zoom':
-														attributes[
-															'map-max-zoom'
-														],
-												}}
+												{...getGroupAttributes(
+													attributes,
+													'mapMarker'
+												)}
 												onChange={obj =>
 													maxiSetAttributes(obj)
 												}
@@ -108,7 +98,7 @@ const Inspector = props => {
 												deviceType={deviceType}
 											/>
 										),
-										ignoreIndicator: ['map-marker-icon'],
+										ignoreIndicator: ['mmi'],
 									},
 									{
 										label: __(
@@ -119,7 +109,7 @@ const Inspector = props => {
 											<MapPopupTextControl
 												{...getGroupAttributes(
 													attributes,
-													'typography'
+													['typography', 'mapMarker']
 												)}
 												{...getGroupAttributes(
 													attributes,
@@ -127,12 +117,6 @@ const Inspector = props => {
 													false,
 													'description-'
 												)}
-												{...{
-													'map-marker-heading-level':
-														attributes[
-															'map-marker-heading-level'
-														],
-												}}
 												blockStyle={blockStyle}
 												clientId={clientId}
 												deviceType={deviceType}

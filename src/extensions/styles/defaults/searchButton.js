@@ -1,3 +1,5 @@
+import attributesShorter from '../dictionary/attributesShorter';
+
 const searchButton = {
 	buttonSkin: {
 		type: 'string',
@@ -17,4 +19,4 @@ const searchButton = {
 	},
 };
 
-export default searchButton;
+export default attributesShorter(searchButton, 'searchButton');

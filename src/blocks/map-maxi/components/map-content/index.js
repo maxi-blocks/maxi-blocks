@@ -11,7 +11,10 @@ import DropMarkerAlert from '../drop-marker-alert';
 import MapEventsListener from '../map-events-listener';
 import Markers from '../markers';
 import SearchBox from '../search-box';
-import { getGroupAttributes } from '../../../../extensions/styles';
+import {
+	getAttributesValue,
+	getGroupAttributes,
+} from '../../../../extensions/styles';
 import { getMaxiAdminSettingsUrl } from '../../utils';
 
 /**
@@ -29,15 +32,25 @@ const MapContent = props => {
 		isSelected,
 		maxiSetAttributes,
 	} = props;
+	const { uniqueID } = attributes;
 	const {
-		uniqueID,
 		'map-latitude': mapLatitude,
 		'map-longitude': mapLongitude,
 		'map-markers': mapMarkers,
 		'map-max-zoom': mapMaxZoom,
 		'map-min-zoom': mapMinZoom,
 		'map-zoom': mapZoom,
-	} = attributes;
+	} = getAttributesValue({
+		target: [
+			'map-latitude',
+			'map-longitude',
+			'map-markers',
+			'map-max-zoom',
+			'map-min-zoom',
+			'map-zoom',
+		],
+		props: attributes,
+	});
 
 	const [isDraggingMarker, setIsDraggingMarker] = useState(false);
 	const [isAddingMarker, setIsAddingMarker] = useState(false);
@@ -117,7 +130,11 @@ const MapContent = props => {
 							'Oops, you can not see the map because you have not set your Google map API key, please navigate to the Maxi Blocks ',
 							'maxi-blocks'
 						)}
-						<a target='_blank' href={getMaxiAdminSettingsUrl()}>
+						<a
+							target='_blank'
+							href={getMaxiAdminSettingsUrl()}
+							rel='noreferrer'
+						>
 							{__(
 								'Settings > Google Maps API key',
 								'maxi-blocks'

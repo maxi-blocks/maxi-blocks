@@ -126,8 +126,10 @@ class edit extends MaxiBlockComponent {
 				{...getMaxiBlockAttributes(this.props)}
 			>
 				<NumberCounter
-					{...getGroupAttributes(attributes, 'numberCounter')}
-					{...getGroupAttributes(attributes, 'overflow')}
+					{...getGroupAttributes(attributes, [
+						'numberCounter',
+						'overflow',
+					])}
 					{...getGroupAttributes(
 						attributes,
 						'size',
@@ -163,13 +165,13 @@ class edit extends MaxiBlockComponent {
  */
 const NumberCounter = attributes => {
 	const {
-		'number-counter-duration': countDuration,
-		'number-counter-stroke': stroke,
-		'number-counter-circle-status': circleStatus,
-		'number-counter-preview': preview,
-		'number-counter-percentage-sign-status': usePercentage,
-		'number-counter-start': startNumber,
-		'number-counter-end': endNumber,
+		ncd: countDuration,
+		ncst: stroke,
+		nccs: circleStatus,
+		ncp: preview,
+		ncpss: usePercentage,
+		ncsa: startNumber,
+		nce: endNumber,
 		deviceType,
 		resizerProps,
 		replayCounter,
@@ -303,11 +305,7 @@ const NumberCounter = attributes => {
 						cx={radius + stroke / 2}
 						cy={radius + stroke / 2}
 						r={radius}
-						strokeLinecap={
-							attributes['number-counter-rounded-status']
-								? 'round'
-								: ''
-						}
+						strokeLinecap={attributes.ncrs ? 'round' : ''}
 						strokeDasharray={`${Math.ceil(
 							(count / 360) * circumference
 						)} ${circumference}`}

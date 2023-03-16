@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import {
 	getAttributeKey,
-	getAttributeValue,
+	getAttributesValue,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
@@ -126,7 +126,7 @@ const SvgWidthControl = props => {
 					onChange={val => {
 						const contentPrefix = prefix === 'svg-' ? '' : prefix;
 
-						const icon = getAttributeValue({
+						const icon = getAttributesValue({
 							target: 'content',
 							isHover,
 							prefix: contentPrefix,

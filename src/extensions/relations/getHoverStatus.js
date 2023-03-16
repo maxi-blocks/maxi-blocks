@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getAttributeValue } from '../styles';
+import { getAttributesValue } from '../styles';
 
 /**
  * External dependencies
@@ -11,7 +11,7 @@ import { isFunction } from 'lodash';
 const getHoverStatus = (hoverProp, blockAttributes, relationAttributes) =>
 	isFunction(hoverProp)
 		? hoverProp(blockAttributes, relationAttributes)
-		: getAttributeValue({
+		: getAttributesValue({
 				target: hoverProp,
 				props: blockAttributes,
 		  });

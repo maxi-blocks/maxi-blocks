@@ -15,6 +15,7 @@ import { Button } from '../../../../components';
 import { isEmpty } from 'lodash';
 import { Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
+import { getAttributesValue } from '../../../../extensions/styles';
 
 const Markers = props => {
 	const { attributes, maxiSetAttributes, setIsDraggingMarker } = props;
@@ -22,7 +23,10 @@ const Markers = props => {
 		'map-marker-heading-level': mapMarkerHeadingLevel,
 		'map-marker-icon': mapMarkerIcon,
 		'map-markers': mapMarkers,
-	} = attributes;
+	} = getAttributesValue({
+		target: ['map-marker-heading-level', 'map-marker-icon', 'map-markers'],
+		props: attributes,
+	});
 
 	if (isEmpty(mapMarkers)) return null;
 

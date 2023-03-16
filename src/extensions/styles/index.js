@@ -5,7 +5,7 @@ export { default as createIconTransitions } from './transitions/createIconTransi
 export { default as createTransitionObj } from './transitions/createTransitionObj';
 export { default as entityRecordsWrapper } from './entityRecordsWrapper';
 export { default as getAttributeKey } from './getAttributeKey';
-export { default as getAttributeValue } from './getAttributeValue';
+export { default as getAttributesValue } from './getAttributesValue';
 export { default as getAttrKeyWithoutBreakpoint } from './getAttrKeyWithoutBreakpoint';
 export { default as getBlockStyle } from './getBlockStyle';
 export { default as getColorRGBAParts } from './getColorRGBAParts';

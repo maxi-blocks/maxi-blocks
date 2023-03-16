@@ -12,6 +12,7 @@ import ToolbarPopover from '../toolbar-popover';
 import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
+	getAttributesValue,
 } from '../../../../extensions/styles';
 
 /**
@@ -115,7 +116,10 @@ const Size = props => {
 							}
 						/>
 						{BLOCKS_MAX_WIDTH.includes(blockName) &&
-							props['size-advanced-options'] && (
+							getAttributesValue({
+								target: 'size-advanced-options',
+								props,
+							}) && (
 								<AdvancedNumberControl
 									label={__('Max width', 'maxi-blocks')}
 									enableUnit

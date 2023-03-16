@@ -151,7 +151,7 @@ const withMaxiLoader = createHigherOrderComponent(
 				useState(false);
 
 			useEffect(() => {
-				if (canRender && hasBeenConsolidated) return true;
+				if (canRender && hasBeenConsolidated) return;
 
 				const interval = setInterval(async () => {
 					if (getIsPageLoaded()) {
@@ -169,6 +169,8 @@ const withMaxiLoader = createHigherOrderComponent(
 					}
 				}, 100);
 
+				// Sorry linter, we can't be always consistent 🤷
+				// eslint-disable-next-line consistent-return
 				return () => clearInterval(interval);
 			});
 

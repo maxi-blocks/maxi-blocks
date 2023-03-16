@@ -25,6 +25,7 @@ export { default as CustomCss } from './custom-css-control';
 export { default as CustomLabel } from './custom-label';
 export { default as DefaultStylesControl } from './default-styles-control';
 export { default as DialogBox } from './dialog-box';
+export { default as DynamicContent } from './dynamic-content';
 export { default as DisplayControl } from './display-control';
 export { default as DividerControl } from './divider-control';
 export { default as Dropdown } from './dropdown';

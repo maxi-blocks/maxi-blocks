@@ -90,18 +90,30 @@ const BorderColorControl = props => {
 				color,
 			}) => {
 				onChange({
-					[`${prefix}border-palette-status-${breakpoint}${
-						isHover ? '-hover' : ''
-					}`]: paletteStatus,
-					[`${prefix}border-palette-color-${breakpoint}${
-						isHover ? '-hover' : ''
-					}`]: paletteColor,
-					[`${prefix}border-palette-opacity-${breakpoint}${
-						isHover ? '-hover' : ''
-					}`]: paletteOpacity,
-					[`${prefix}border-color-${breakpoint}${
-						isHover ? '-hover' : ''
-					}`]: color,
+					[getAttributeKey(
+						'border-palette-status',
+						isHover,
+						prefix,
+						breakpoint
+					)]: paletteStatus,
+					[getAttributeKey(
+						'border-palette-color',
+						isHover,
+						prefix,
+						breakpoint
+					)]: paletteColor,
+					[getAttributeKey(
+						'border-palette-opacity',
+						isHover,
+						prefix,
+						breakpoint
+					)]: paletteOpacity,
+					[getAttributeKey(
+						'border-color',
+						isHover,
+						prefix,
+						breakpoint
+					)]: color,
 				});
 			}}
 			disableImage

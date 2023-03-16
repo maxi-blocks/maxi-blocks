@@ -13,7 +13,8 @@ const getPaletteAttributes = ({ obj, prefix = '', breakpoint, isHover }) => {
 	const getValue = key =>
 		isNil(breakpoint)
 			? getAttributesValue({
-					target: `${prefix}${key}`,
+					target: key,
+					prefix,
 					props: obj,
 					isHover,
 			  })

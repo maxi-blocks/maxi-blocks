@@ -20,6 +20,7 @@ import classnames from 'classnames';
 import { cloneDeep, isEmpty, isNil } from 'lodash';
 import {
 	getAttributeKey,
+	getAttributeValue,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { ResponsiveTabsControl } from '..';
@@ -173,16 +174,34 @@ const SVGFillControl = props => {
 						);
 
 						onChange({
-							'background-svg-SVGElement': resEl.outerHTML,
-							'background-svg-SVGData': tempSVGData,
-							'background-svg-palette-color':
-								props.SVGOptions[
-									'background-svg-palette-color'
-								],
-							'background-svg-palette-status':
-								props.SVGOptions[
-									'background-svg-palette-status'
-								],
+							[getAttributeKey(
+								'SVGElement',
+								false,
+								'background-svg-'
+							)]: resEl.outerHTML,
+							[getAttributeKey(
+								'SVGData',
+								false,
+								'background-svg-'
+							)]: tempSVGData,
+							[getAttributeKey(
+								'palette-color',
+								false,
+								'background-svg-'
+							)]: getAttributeValue({
+								target: 'palette-color',
+								prefix: 'background-svg-',
+								props: props.SVGOptions,
+							}),
+							[getAttributeKey(
+								'palette-status',
+								false,
+								'background-svg-'
+							)]: getAttributeValue({
+								target: 'palette-status',
+								prefix: 'background-svg-',
+								props: props.SVGOptions,
+							}),
 						});
 					}}
 				/>
@@ -215,17 +234,34 @@ const SVGFillControl = props => {
 									);
 
 									onChange({
-										'background-svg-SVGElement':
-											resEl.outerHTML,
-										'background-svg-SVGData': SVGData,
-										'background-svg-palette-color':
-											props.SVGOptions[
-												'background-svg-palette-color'
-											],
-										'background-svg-palette-status':
-											props.SVGOptions[
-												'background-svg-palette-status'
-											],
+										[getAttributeKey(
+											'SVGElement',
+											false,
+											'background-svg-'
+										)]: resEl.outerHTML,
+										[getAttributeKey(
+											'SVGData',
+											false,
+											'background-svg-'
+										)]: SVGData,
+										[getAttributeKey(
+											'palette-color',
+											false,
+											'background-svg-'
+										)]: getAttributeValue({
+											target: 'palette-color',
+											prefix: 'background-svg-',
+											props: props.SVGOptions,
+										}),
+										[getAttributeKey(
+											'palette-status',
+											false,
+											'background-svg-'
+										)]: getAttributeValue({
+											target: 'palette-status',
+											prefix: 'background-svg-',
+											props: props.SVGOptions,
+										}),
 									});
 								}}
 								onRemoveImage={() => {
@@ -239,17 +275,34 @@ const SVGFillControl = props => {
 									);
 
 									onChange({
-										'background-svg-SVGElement':
-											resEl.outerHTML,
-										'background-svg-SVGData': SVGData,
-										'background-svg-palette-color':
-											props.SVGOptions[
-												'background-svg-palette-color'
-											],
-										'background-svg-palette-status':
-											props.SVGOptions[
-												'background-svg-palette-status'
-											],
+										[getAttributeKey(
+											'SVGElement',
+											false,
+											'background-svg-'
+										)]: resEl.outerHTML,
+										[getAttributeKey(
+											'SVGData',
+											false,
+											'background-svg-'
+										)]: SVGData,
+										[getAttributeKey(
+											'palette-color',
+											false,
+											'background-svg-'
+										)]: getAttributeValue({
+											target: 'palette-color',
+											prefix: 'background-svg-',
+											props: props.SVGOptions,
+										}),
+										[getAttributeKey(
+											'palette-status',
+											false,
+											'background-svg-'
+										)]: getAttributeValue({
+											target: 'palette-status',
+											prefix: 'background-svg-',
+											props: props.SVGOptions,
+										}),
 									});
 								}}
 							/>

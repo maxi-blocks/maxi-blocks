@@ -105,8 +105,8 @@ export const hoverBackgroundColor = prefixAttributesCreator({
 	obj: backgroundColor,
 	prefix,
 	diffValAttr: {
-		'hover-background-palette-color': 5,
-		'hover-background-palette-opacity': 60,
+		'hover-background-pac': 5,
+		'hover-background-pao': 60,
 	},
 });
 
@@ -142,7 +142,7 @@ export const hoverTitleTypography = prefixAttributesCreator({
 	prefix: 'hover-title-',
 	diffValAttr: {
 		'hover-title-font-size-general': 30,
-		'hover-title-palette-color-general': 1,
+		'hover-title-pac-general': 1,
 	},
 	newAttr: {
 		'hover-title-typography-status': {
@@ -161,7 +161,7 @@ export const hoverContentTypography = prefixAttributesCreator({
 	prefix: 'hover-content-',
 	diffValAttr: {
 		'hover-content-font-size-general': 18,
-		'hover-content-palette-color-general': 1,
+		'hover-content-pac-general': 1,
 	},
 	newAttr: {
 		'hover-content-typography-status': {

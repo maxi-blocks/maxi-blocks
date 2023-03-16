@@ -13,7 +13,7 @@ const videoPopup = {
 		obj: backgroundColor,
 		prefix: 'lightbox-',
 		diffValAttr: {
-			'lightbox-background-palette-color-general': 5,
+			'lightbox-background-pac-general': 5,
 		},
 	}),
 };

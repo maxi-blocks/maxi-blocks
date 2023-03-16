@@ -17,7 +17,6 @@ import { registerBlockType } from '@wordpress/blocks';
 import edit from './edit';
 import attributes from './attributes';
 import save from './save';
-import withMaxiSuspense from '../../extensions/maxi-block/withMaxiSuspense';
 import transforms from './transforms';
 import { customCss } from './data';
 import withMaxiLoader from '../../extensions/maxi-block/withMaxiLoader';

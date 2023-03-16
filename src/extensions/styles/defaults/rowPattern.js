@@ -1,4 +1,5 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import attributesShorter from '../dictionary/attributesShorter';
 
 const rowPattern = breakpointAttributesCreator({
 	obj: {
@@ -8,4 +9,4 @@ const rowPattern = breakpointAttributesCreator({
 	},
 });
 
-export default rowPattern;
+export default attributesShorter(rowPattern, 'rowPattern');

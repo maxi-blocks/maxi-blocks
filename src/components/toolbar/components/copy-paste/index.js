@@ -121,11 +121,11 @@ const CopyPaste = props => {
 	const handleAttributesOnPaste = copiedAttributes => {
 		if (blockName === 'maxi-blocks/row-maxi') {
 			Object.entries(copiedAttributes).forEach(([key, style]) => {
-				if (key.includes('row-pattern-') && style !== attributes[key]) {
+				if (key.includes('rp-') && style !== attributes[key]) {
 					loadColumnsTemplate(
 						style,
 						clientId,
-						key.replace('row-pattern-', '')
+						key.replace('rp-', '')
 					);
 				}
 			});

@@ -672,7 +672,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 ) ;
 
             $content .=
-                '<a href="https://maxiblocks.com/" target="_blank"> ' .
+                '<a href="https://maxiblocks.com/go/pro-subscription" target="_blank"> ' .
                 __(
                     'Learn more about Maxi Blocks Pro.',
                     self::$maxi_text_domain,
@@ -695,7 +695,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 ) ;
 
             $content .=
-                '<a href="https://maxiblocks.com/" target="_blank"> ' .
+                '<a href="https://maxiblocks.com/go/roadmap" target="_blank"> ' .
                 __(
                     "See what's planned in the roadmap.",
                     self::$maxi_text_domain,

@@ -10,6 +10,7 @@ import {
 	getGroupAttributes,
 	styleProcessor,
 	getLastBreakpointAttribute,
+	getAttributeValue,
 } from '../../extensions/styles';
 import {
 	getSizeStyles,
@@ -435,7 +436,10 @@ const getArrowIconObject = (props, isHover = false) => {
 
 const getDotsIconObject = props => {
 	const prefix = 'navigation-dot-';
-	const dotIconHoverStatus = props['navigation-dot-icon-status-hover'];
+	const dotIconHoverStatus = getAttributeValue({
+		target: 'navigation-dot-icon-status-hover',
+		props,
+	});
 	const dotIconActiveStatus = props['active-navigation-dot-icon-status'];
 
 	return {
@@ -482,8 +486,10 @@ const getDotsIconObject = props => {
 const getStyles = props => {
 	const { uniqueID, blockStyle } = props;
 
-	const arrowIconHoverStatus =
-		props['navigation-arrow-both-icon-status-hover'];
+	const arrowIconHoverStatus = getAttributeValue({
+		target: 'navigation-arrow-both-icon-status-hover',
+		props,
+	});
 
 	const response = {
 		[uniqueID]: styleProcessor(

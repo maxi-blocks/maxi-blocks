@@ -13,7 +13,7 @@ import {
 	SelectControl,
 } from '../../../../components';
 import {
-	getAttributeValue,
+	getAttributesValue,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
@@ -47,7 +47,7 @@ const AccordionSettings = props => {
 				<>
 					<SelectControl
 						label={__('Accordion layout', 'maxi-blocks')}
-						value={getAttributeValue({
+						value={getAttributesValue({
 							target: 'accordionLayout',
 							props,
 						})}
@@ -59,7 +59,7 @@ const AccordionSettings = props => {
 					/>
 					<ToggleSwitch
 						label={__('Collapsible', 'maxi-block')}
-						selected={getAttributeValue({
+						selected={getAttributesValue({
 							target: 'isCollapsible',
 							props,
 						})}
@@ -74,7 +74,7 @@ const AccordionSettings = props => {
 							'Pane closes when another opens',
 							'maxi-block'
 						)}
-						selected={getAttributeValue({
+						selected={getAttributesValue({
 							target: 'autoPaneClose',
 							props,
 						})}
@@ -128,7 +128,7 @@ const AccordionSettings = props => {
 				min={0}
 				max={10}
 				step={0.1}
-				value={getAttributeValue({
+				value={getAttributesValue({
 					target: 'animationDuration',
 					props,
 				})}

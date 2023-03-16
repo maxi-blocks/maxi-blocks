@@ -1,5 +1,4 @@
 export { default as accordion } from './accordion';
-export { default as accordionIcon } from './accordionIcon';
 export { default as accordionLine } from './accordionLine';
 export { default as accordionTitle } from './accordionTitle';
 export { default as alignment } from './alignment';

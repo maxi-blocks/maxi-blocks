@@ -1,4 +1,5 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import attributesShorter from '../dictionary/attributesShorter';
 
 const navigation = breakpointAttributesCreator({
 	obj: {
@@ -21,4 +22,4 @@ const navigation = breakpointAttributesCreator({
 	},
 });
 
-export default navigation;
+export default attributesShorter(navigation, 'navigation');

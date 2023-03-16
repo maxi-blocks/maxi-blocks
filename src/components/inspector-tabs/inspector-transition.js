@@ -14,7 +14,7 @@ import ToggleSwitch from '../toggle-switch';
 import TransitionControl from '../transition-control';
 import {
 	createTransitionObj,
-	getAttributeValue,
+	getAttributesValue,
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -219,12 +219,12 @@ const transition = ({
 					(isArray(hoverProp) &&
 						hoverProp.every(
 							prop =>
-								!getAttributeValue({
+								!getAttributesValue({
 									target: prop,
 									props: attributes,
 								})
 						)) ||
-					!getAttributeValue({
+					!getAttributesValue({
 						target: hoverProp,
 						props: attributes,
 					})

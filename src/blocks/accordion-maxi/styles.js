@@ -11,7 +11,7 @@ import {
 	getColorRGBAString,
 	styleProcessor,
 	getGroupAttributes,
-	getAttributeValue,
+	getAttributesValue,
 } from '../../extensions/styles';
 import {
 	getBlockBackgroundStyles,
@@ -170,7 +170,7 @@ const getColor = ({ props, prefix, isHover, breakpoint }) => {
 };
 
 const getPaneContentWrapperStyles = props => {
-	const animationDuration = getAttributeValue({
+	const animationDuration = getAttributesValue({
 		target: 'animationDuration',
 		props,
 	});
@@ -216,7 +216,7 @@ const getPaneHeaderStyles = (props, prefix, isHover = false) => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
-		const bgStatus = getAttributeValue({
+		const bgStatus = getAttributesValue({
 			target: 'title-background-status',
 			props,
 			isHover,
@@ -318,7 +318,7 @@ const getPaneHeaderObject = props => {
 				paneHeaderHover: getPaneHeaderStyles(props, '', true),
 			},
 		' .maxi-pane-block__title': getPaneTitleStyles(props, 'title-'),
-		...(getAttributeValue({
+		...(getAttributesValue({
 			target: 'title-typography-status-active',
 			props,
 		}) && {
@@ -327,7 +327,7 @@ const getPaneHeaderObject = props => {
 				'active-title-'
 			),
 		}),
-		...(getAttributeValue({
+		...(getAttributesValue({
 			target: 'title-typography-status-hover',
 			props,
 		}) && {
@@ -340,7 +340,7 @@ const getPaneHeaderObject = props => {
 };
 
 const getPaneContentObject = props => {
-	const accordionLayout = getAttributeValue({
+	const accordionLayout = getAttributesValue({
 		target: 'accordionLayout',
 		props,
 	});

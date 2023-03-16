@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import getLastBreakpointAttribute from './getLastBreakpointAttribute';
-import getAttributeValue from './getAttributeValue';
+import getAttributesValue from './getAttributesValue';
 
 /**
  * External dependencies
@@ -12,8 +12,9 @@ import { isNil } from 'lodash';
 const getPaletteAttributes = ({ obj, prefix = '', breakpoint, isHover }) => {
 	const getValue = key =>
 		isNil(breakpoint)
-			? getAttributeValue({
-					target: `${prefix}${key}`,
+			? getAttributesValue({
+					target: key,
+					prefix,
 					props: obj,
 					isHover,
 			  })

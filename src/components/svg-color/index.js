@@ -2,7 +2,10 @@
  * Internal dependencies
  */
 import ColorControl from '../color-control';
-import { getAttributeValue, getColorRGBAString } from '../../extensions/styles';
+import {
+	getAttributesValue,
+	getColorRGBAString,
+} from '../../extensions/styles';
 import { setSVGContent, setSVGContentHover } from '../../extensions/svg';
 
 /**
@@ -42,10 +45,10 @@ const SvgColor = props => {
 				blockStyle,
 			});
 		const onChangeObject = {
-			[`svg-${type}-color${isHover ? '-hover' : ''}`]: color,
-			[`svg-${type}-palette-color${isHover ? '-hover' : ''}`]:
+			[getAttributeKey('color', isHover, `svg-${type}-`)]: color,
+			[getAttributeKey('palette-color', isHover, `svg-${type}-`)]:
 				paletteColor,
-			[`svg-${type}-palette-status${isHover ? '-hover' : ''}`]:
+			[getAttributeKey('palette-status', isHover, `svg-${type}-`)]:
 				paletteStatus,
 			content: (isHover ? setSVGContentHover : setSVGContent)(
 				content,
@@ -66,19 +69,19 @@ const SvgColor = props => {
 			label={label}
 			isHover={isHover}
 			className='maxi-color-control__SVG-line-color'
-			color={getAttributeValue({
+			color={getAttributesValue({
 				target: 'svg-line-color',
 				props,
 				isHover,
 			})}
 			prefix='svg-line-'
 			avoidBreakpointForDefault
-			paletteColor={getAttributeValue({
+			paletteColor={getAttributesValue({
 				target: 'svg-line-palette-color',
 				props,
 				isHover,
 			})}
-			paletteStatus={getAttributeValue({
+			paletteStatus={getAttributesValue({
 				target: 'svg-line-palette-status',
 				props,
 				isHover,
@@ -99,19 +102,19 @@ const SvgColor = props => {
 			label={label}
 			isHover={isHover}
 			className='maxi-color-control__SVG-fill-color'
-			color={getAttributeValue({
+			color={getAttributesValue({
 				target: 'svg-fill-color',
 				props,
 				isHover,
 			})}
 			prefix='svg-fill-'
 			avoidBreakpointForDefault
-			paletteColor={getAttributeValue({
+			paletteColor={getAttributesValue({
 				target: 'svg-fill-palette-color',
 				props,
 				isHover,
 			})}
-			paletteStatus={getAttributeValue({
+			paletteStatus={getAttributesValue({
 				target: 'svg-fill-palette-status',
 				props,
 				isHover,

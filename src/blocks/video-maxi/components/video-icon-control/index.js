@@ -17,7 +17,7 @@ import {
 import MaxiModal from '../../../../editor/library/modal';
 import {
 	getAttributeKey,
-	getAttributeValue,
+	getAttributesValue,
 	getColorRGBAString,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
@@ -80,7 +80,7 @@ const IconSettings = props => {
 					<ColorControl
 						className='maxi-video-icon-control__icon-colour'
 						label={label}
-						color={getAttributeValue({
+						color={getAttributesValue({
 							target: 'icon-fill-color',
 							isHover,
 							prefix,
@@ -89,19 +89,19 @@ const IconSettings = props => {
 						defaultColor={getDefaultAttribute(
 							getAttributeKey('icon-fill-color', isHover, prefix)
 						)}
-						paletteStatus={getAttributeValue({
+						paletteStatus={getAttributesValue({
 							target: 'icon-fill-palette-status',
 							isHover,
 							prefix,
 							props,
 						})}
-						paletteColor={getAttributeValue({
+						paletteColor={getAttributesValue({
 							target: 'icon-fill-palette-color',
 							isHover,
 							prefix,
 							props,
 						})}
-						paletteOpacity={getAttributeValue({
+						paletteOpacity={getAttributesValue({
 							target: 'icon-fill-palette-opacity',
 							isHover,
 							prefix,

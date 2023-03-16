@@ -9,7 +9,10 @@ import { __ } from '@wordpress/i18n';
 import AdvancedNumberControl from '../../../../components/advanced-number-control';
 import InfoBox from '../../../../components/info-box';
 import SelectControl from '../../../../components/select-control';
-import { getDefaultAttribute } from '../../../../extensions/styles';
+import {
+	getAttributesValue,
+	getDefaultAttribute,
+} from '../../../../extensions/styles';
 import { getMaxiAdminSettingsUrl } from '../../utils';
 
 /**
@@ -21,7 +24,10 @@ const MapControl = props => {
 		'map-provider': mapProvider,
 		'map-min-zoom': mapMinZoom,
 		'map-max-zoom': mapMaxZoom,
-	} = attributes;
+	} = getAttributesValue({
+		target: ['map-provider', 'map-min-zoom', 'map-max-zoom'],
+		props: attributes,
+	});
 
 	return (
 		<div className='maxi-map-control'>

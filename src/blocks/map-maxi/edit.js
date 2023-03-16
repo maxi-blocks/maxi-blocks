@@ -12,7 +12,10 @@ import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
 import { MapContent } from './components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getAttributesValue,
+	getGroupAttributes,
+} from '../../extensions/styles';
 import getStyles from './styles';
 import { copyPasteMapping } from './data';
 import * as mapMarkerIcons from '../../icons/map-icons/markers';
@@ -26,6 +29,7 @@ class edit extends MaxiBlockComponent {
 
 		this.state.googleApiKey = '';
 	}
+
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
@@ -51,7 +55,10 @@ class edit extends MaxiBlockComponent {
 
 	maxiBlockDidMount() {
 		const { attributes, maxiSetAttributes } = this.props;
-		const { 'map-marker-icon': mapMarkerIcon } = attributes;
+		const mapMarkerIcon = getAttributesValue({
+			target: 'map-marker-icon',
+			props: attributes,
+		});
 
 		if (!mapMarkerIcon) {
 			maxiSetAttributes({
@@ -71,7 +78,11 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const { attributes, isSelected } = this.props;
 		const { googleApiKey } = this.state;
-		const { uniqueID, 'map-provider': mapProvider } = attributes;
+		const { uniqueID } = attributes;
+		const mapProvider = getAttributesValue({
+			target: 'map-provider',
+			props: attributes,
+		});
 
 		const getApiKey = () => {
 			if (!googleApiKey) {

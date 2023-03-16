@@ -81,10 +81,7 @@ const Inspector = props => {
 												<ColumnPicker {...props} />
 											</ResponsiveTabsControl>
 										),
-										ignoreIndicator: [
-											'row-pattern-general',
-											'row-pattern-m',
-										],
+										ignoreIndicator: ['rp-general', 'rp-m'],
 										extraIndicators: [
 											'verticalAlign',
 											'horizontalAlign',
@@ -109,10 +106,7 @@ const Inspector = props => {
 								]}
 							/>
 						),
-						ignoreIndicator: [
-							'row-pattern-general',
-							'row-pattern-m',
-						],
+						ignoreIndicator: ['rp-general', 'rp-m'],
 					},
 					{
 						label: __('Advanced', 'maxi-blocks'),

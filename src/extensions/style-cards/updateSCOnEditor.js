@@ -7,10 +7,12 @@ import { dispatch } from '@wordpress/data';
  * Internal dependencies
  */
 import {
+	getAttributeValue,
 	getColorRGBAString,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../styles';
+import { getTypographyStyles } from '../styles/helpers';
 import { loadFonts } from '../text/fonts';
 import { getSiteEditorIframe } from '../fse';
 import { getActiveColourFromSC } from '../../editor/style-cards/utils';
@@ -19,14 +21,29 @@ import { getActiveColourFromSC } from '../../editor/style-cards/utils';
  * External dependencies
  */
 import { cloneDeep, isArray, isEmpty, merge, times, uniq } from 'lodash';
-import { getTypographyStyles } from '../styles/helpers';
 
 const getColorString = (obj, target, style) => {
 	const prefix = target ? `${target}-` : '';
-	const paletteStatus = obj[`${prefix}palette-status`];
-	const paletteColor = obj[`${prefix}palette-color`];
-	const paletteOpacity = obj[`${prefix}palette-opacity`];
-	const color = obj[`${prefix}color`];
+	const paletteStatus = getAttributeValue({
+		target: 'palette-status',
+		prefix,
+		props: obj,
+	});
+	const paletteColor = getAttributeValue({
+		target: 'palette-color',
+		prefix,
+		props: obj,
+	});
+	const paletteOpacity = getAttributeValue({
+		target: 'palette-opacity',
+		prefix,
+		props: obj,
+	});
+	const color = getAttributeValue({
+		target: 'color',
+		prefix,
+		props: obj,
+	});
 
 	return paletteStatus
 		? getColorRGBAString({

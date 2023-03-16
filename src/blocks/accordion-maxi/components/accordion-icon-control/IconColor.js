@@ -8,7 +8,8 @@ import { __ } from '@wordpress/i18n';
  */
 import { ColorControl } from '../../../../components';
 import {
-	getAttributeValue,
+	getAttributeKey,
+	getAttributesValue,
 	getColorRGBAString,
 } from '../../../../extensions/styles';
 import { setSVGContent, setSVGContentHover } from '../../../../extensions/svg';
@@ -19,26 +20,26 @@ const IconColor = props => {
 		<ColorControl
 			label={__(`Icon ${colorType}`, 'maxi-blocks')}
 			className='maxi-icon-styles-control--color'
-			color={getAttributeValue({
+			color={getAttributesValue({
 				target: `${colorType}-color`,
 				props,
 				isHover,
 				prefix,
 			})}
 			prefix={`${prefix}${colorType}-`}
-			paletteColor={getAttributeValue({
+			paletteColor={getAttributesValue({
 				target: `${colorType}-palette-color`,
 				props,
 				isHover,
 				prefix,
 			})}
-			paletteOpacity={getAttributeValue({
+			paletteOpacity={getAttributesValue({
 				target: `${colorType}-palette-opacity`,
 				props,
 				isHover,
 				prefix,
 			})}
-			paletteStatus={getAttributeValue({
+			paletteStatus={getAttributesValue({
 				target: `${colorType}-palette-status`,
 				props,
 				isHover,
@@ -57,26 +58,35 @@ const IconColor = props => {
 					blockStyle,
 				});
 
+				const palettePrefix = `${prefix}${colorType}-`;
+
 				onChange({
-					[`${prefix}${colorType}-color${isHover ? '-hover' : ''}`]:
-						color,
-					[`${prefix}${colorType}-palette-color${
-						isHover ? '-hover' : ''
-					}`]: paletteColor,
-					[`${prefix}${colorType}-palette-status${
-						isHover ? '-hover' : ''
-					}`]: paletteStatus,
-					[`${prefix}${colorType}-palette-opacity${
-						isHover ? '-hover' : ''
-					}`]: paletteOpacity,
-					[`${prefix}content`]: isHover
+					[getAttributeKey('color', isHover, palettePrefix)]: color,
+					[getAttributeKey('palette-color', isHover, palettePrefix)]:
+						paletteColor,
+					[getAttributeKey('palette-status', isHover, palettePrefix)]:
+						paletteStatus,
+					[getAttributeKey(
+						'palette-opacity',
+						isHover,
+						palettePrefix
+					)]: paletteOpacity,
+					[getAttributeKey('content', isHover, prefix)]: isHover
 						? setSVGContentHover(
-								props[`${prefix}content`],
+								getAttributesValue({
+									target: 'content',
+									prefix,
+									props,
+								}),
 								paletteStatus ? lineColorStr : color,
 								colorType
 						  )
 						: setSVGContent(
-								props[`${prefix}content`],
+								getAttributesValue({
+									target: 'content',
+									prefix,
+									props,
+								}),
 								paletteStatus ? lineColorStr : color,
 								colorType
 						  ),

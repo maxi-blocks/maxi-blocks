@@ -14,7 +14,10 @@ import {
 } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { withMaxiInspector } from '../../extensions/inspector';
-import { getAttributeValue, getGroupAttributes } from '../../extensions/styles';
+import {
+	getAttributesValue,
+	getGroupAttributes,
+} from '../../extensions/styles';
 import { customCss } from './data';
 import {
 	AccordionIconSettings,
@@ -39,7 +42,7 @@ const Inspector = props => {
 
 	const { blockStyle } = attributes;
 
-	const accordionLayout = getAttributeValue({
+	const accordionLayout = getAttributesValue({
 		target: 'accordionLayout',
 		props: attributes,
 	});
@@ -74,6 +77,18 @@ const Inspector = props => {
 	};
 
 	const { selectors, categories } = customCss;
+
+	const iconGroupAttributes = [
+		'icon',
+		'iconHover',
+		'iconBackgroundGradient',
+		'iconBackgroundColor',
+		'iconBorder',
+		'iconBackgroundHover',
+		'iconBorderWidth',
+		'iconBorderRadius',
+		'iconPadding',
+	];
 
 	return (
 		<InspectorControls>
@@ -148,7 +163,13 @@ const Inspector = props => {
 											<AccordionIconSettings
 												{...getGroupAttributes(
 													attributes,
-													'accordionIcon'
+													iconGroupAttributes
+												)}
+												{...getGroupAttributes(
+													attributes,
+													iconGroupAttributes,
+													false,
+													'active-'
 												)}
 												disableIconOnly
 												disableSpacing

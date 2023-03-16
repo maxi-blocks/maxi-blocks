@@ -14,7 +14,7 @@ import getStyles from './styles';
 import { Toolbar } from '../../components';
 import AccordionContext from './context';
 import { copyPasteMapping } from './data';
-import { getAttributeValue } from '../../extensions/styles';
+import { getAttributesValue } from '../../extensions/styles';
 
 /**
  * Edit
@@ -32,28 +32,28 @@ class edit extends MaxiBlockComponent {
 		const response = {
 			accordion: {
 				[uniqueID]: {
-					paneIcon: getAttributeValue({
+					paneIcon: getAttributesValue({
 						target: 'icon-content',
 						props: attributes,
 					}),
-					paneIconActive: getAttributeValue({
+					paneIconActive: getAttributesValue({
 						target: 'icon-content',
 						prefix: 'active-',
 						props: attributes,
 					}),
-					accordionLayout: getAttributeValue({
+					accordionLayout: getAttributesValue({
 						target: 'accordionLayout',
 						props: attributes,
 					}),
-					autoPaneClose: getAttributeValue({
+					autoPaneClose: getAttributesValue({
 						target: 'autoPaneClose',
 						props: attributes,
 					}),
-					isCollapsible: getAttributeValue({
+					isCollapsible: getAttributesValue({
 						target: 'isCollapsible',
 						props: attributes,
 					}),
-					animationDuration: getAttributeValue({
+					animationDuration: getAttributesValue({
 						target: 'animationDuration',
 						props: attributes,
 					}),
@@ -65,7 +65,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	openPane(paneId) {
-		const autoPaneClose = getAttributeValue({
+		const autoPaneClose = getAttributesValue({
 			target: 'autoPaneClose',
 			props: this.props.attributes,
 		});
@@ -97,20 +97,20 @@ class edit extends MaxiBlockComponent {
 		const { attributes } = this.props;
 		const { uniqueID } = attributes;
 
-		const titleLevel = getAttributeValue({
+		const titleLevel = getAttributesValue({
 			target: 'titleLevel',
 			props: attributes,
 		});
 
-		const accordionLayout = getAttributeValue({
+		const accordionLayout = getAttributesValue({
 			target: 'accordionLayout',
 			props: attributes,
 		});
-		const isCollapsible = getAttributeValue({
+		const isCollapsible = getAttributesValue({
 			target: 'isCollapsible',
 			props: attributes,
 		});
-		const animationDuration = getAttributeValue({
+		const animationDuration = getAttributesValue({
 			target: 'animationDuration',
 			props: attributes,
 		});

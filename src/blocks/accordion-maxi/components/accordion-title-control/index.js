@@ -15,13 +15,13 @@ import {
 } from '../../../../components';
 import {
 	getAttributeKey,
-	getAttributeValue,
+	getAttributesValue,
 } from '../../../../extensions/styles';
 
 const TitleSettings = props => {
 	const { onChange, clientId, bgPrefix, isHover = false, breakpoint } = props;
 
-	const bgStatus = getAttributeValue({
+	const bgStatus = getAttributesValue({
 		target: 'status',
 		props,
 		isHover,
@@ -43,7 +43,7 @@ const TitleSettings = props => {
 			{bgStatus && (
 				<ColorControl
 					label={__('Title background', 'maxi-blocks')}
-					color={getAttributeValue({
+					color={getAttributesValue({
 						target: 'color',
 						props,
 						isHover,
@@ -51,21 +51,21 @@ const TitleSettings = props => {
 						breakpoint,
 					})}
 					prefix={bgPrefix}
-					paletteColor={getAttributeValue({
+					paletteColor={getAttributesValue({
 						target: 'palette-color',
 						props,
 						isHover,
 						prefix: bgPrefix,
 						breakpoint,
 					})}
-					paletteOpacity={getAttributeValue({
+					paletteOpacity={getAttributesValue({
 						target: 'palette-opacity',
 						props,
 						isHover,
 						prefix: bgPrefix,
 						breakpoint,
 					})}
-					paletteStatus={getAttributeValue({
+					paletteStatus={getAttributesValue({
 						target: 'palette-status',
 						props,
 						isHover,
@@ -153,7 +153,7 @@ const AccordionTitleSettings = props => {
 							<>
 								<ToggleSwitch
 									label={__('Enable hover', 'maxi-blocks')}
-									selected={getAttributeValue({
+									selected={getAttributesValue({
 										target: 'title-typography-status-hover',
 										props,
 									})}
@@ -164,7 +164,7 @@ const AccordionTitleSettings = props => {
 										})
 									}
 								/>
-								{getAttributeValue({
+								{getAttributesValue({
 									target: 'title-typography-status-hover',
 									props,
 								}) && (
@@ -184,7 +184,7 @@ const AccordionTitleSettings = props => {
 							<>
 								<ToggleSwitch
 									label={__('Enable active', 'maxi-blocks')}
-									selected={getAttributeValue({
+									selected={getAttributesValue({
 										targt: 'title-typography-status-active',
 										props,
 									})}
@@ -195,7 +195,7 @@ const AccordionTitleSettings = props => {
 										})
 									}
 								/>
-								{getAttributeValue({
+								{getAttributesValue({
 									target: 'title-typography-status-active',
 									props,
 								}) && (

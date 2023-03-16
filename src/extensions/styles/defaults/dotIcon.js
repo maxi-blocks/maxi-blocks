@@ -28,8 +28,8 @@ const dotIcon = {
 		prefix,
 		diffValAttr: {
 			'navigation-dot-icon-width-general': '10',
-			'navigation-dot-icon-stroke-palette-color': 5,
-			'navigation-dot-icon-fill-palette-color': 3,
+			'navigation-dot-icon-stroke-pac': 5,
+			'navigation-dot-icon-fill-pac': 3,
 			'navigation-dot-icon-border-unit-radius-general': 'px',
 			'navigation-dot-icon-background-active-media-general': 'none',
 			'navigation-dot-icon-content':

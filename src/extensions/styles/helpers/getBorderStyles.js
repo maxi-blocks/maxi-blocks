@@ -1,6 +1,7 @@
 /**
  * Internal dependencies
  */
+import getAttributeKey from '../getAttributeKey';
 import getColorRGBAString from '../getColorRGBAString';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 import getPaletteAttributes from '../getPaletteAttributes';
@@ -118,7 +119,13 @@ const getBorderStyles = ({
 			if (
 				(getIsValid(value, true) ||
 					(isHover && globalHoverStatus && key.includes('color')) ||
-					key === `${prefix}border-palette-color-${breakpoint}`) &&
+					key ===
+						getAttributeKey(
+							'border-palette-color',
+							false,
+							prefix,
+							breakpoint
+						)) &&
 				includesBreakpoint &&
 				!newKey.includes('sync') &&
 				!newKey.includes('unit')
@@ -150,9 +157,9 @@ const getBorderStyles = ({
 							getColorString();
 					} else if (
 						![
-							'border-palette-status',
-							'border-palette-color',
-							'border-palette-opacity',
+							'border-pa-status',
+							'border-pac',
+							'border-pao',
 						].includes(newLabel)
 					)
 						response[breakpoint][newLabel] = `${value}`;

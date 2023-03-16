@@ -17,7 +17,7 @@ import {
 import { PuffLoader } from 'react-spinners';
 
 const sentences = [
-	__("'Please wait while the minions whip up some magic", 'maxi-blocks'),
+	__('Please wait while the minions whip up some magic', 'maxi-blocks'),
 	__("Grabbing some extra minions like they're hotcakes", 'maxi-blocks'),
 	__("We're working very hard…to look like we're working", 'maxi-blocks'),
 	__('Waking up the minions before they mutiny', 'maxi-blocks'),

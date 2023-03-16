@@ -3,7 +3,10 @@
  */
 import { __ } from '@wordpress/i18n';
 import SelectControl from '../select-control';
-import { getWeightOptions } from '../typography-control/utils';
+import {
+	getClosestAvailableFontWeight,
+	getWeightOptions,
+} from '../typography-control/utils';
 import { loadFontsInEditor } from '../../extensions/text/fonts';
 
 const FontWeightControl = props => {
@@ -20,7 +23,7 @@ const FontWeightControl = props => {
 		<SelectControl
 			label={__('Font weight', 'maxi-blocks')}
 			className='maxi-typography-control__weight'
-			value={fontWeight}
+			value={getClosestAvailableFontWeight(fontName, fontWeight)}
 			defaultValue={defaultFontWeight}
 			options={getWeightOptions(fontName)}
 			onChange={val => {

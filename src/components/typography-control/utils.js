@@ -71,3 +71,6 @@ export const getWeightOptions = fontFamily => {
 	}
 	return null;
 };
+
+export const getClosestAvailableFontWeight = (font, targetWeight) =>
+	getWeightOptions(font).sort(weight => Math.abs(targetWeight - weight))[0];

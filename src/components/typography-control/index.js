@@ -5,7 +5,6 @@
 import { __ } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
 import { useState, useContext } from '@wordpress/element';
-import { getWeightOptions } from './utils';
 
 /**
  * Internal dependencies
@@ -31,6 +30,7 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { getDefaultSCValue } from '../../extensions/style-cards';
+import { getClosestAvailableFontWeight, getWeightOptions } from './utils';
 
 /**
  * External dependencies
@@ -468,6 +468,9 @@ const TypographyControl = props => {
 		return getIsValid(value, true) ? value : 1;
 	};
 
+	const isInWeightOptions = (font, weight) =>
+		getWeightOptions(font).includes(weight);
+
 	return (
 		<ResponsiveTabsControl breakpoint={breakpoint}>
 			<div className={classes}>
@@ -478,11 +481,12 @@ const TypographyControl = props => {
 						onChange={font => {
 							onChangeFormat({
 								[`${prefix}font-family`]: font.value,
-								[`${prefix}font-weight`]: getWeightOptions(
-									font.value
-								).some(e => e.value === getValue('font-weight'))
+								[`${prefix}font-weight`]: isInWeightOptions(
+									font,
+									getValue('font-weight')
+								)
 									? getValue('font-weight')
-									: 400,
+									: getClosestAvailableFontWeight(font.value),
 								[`${prefix}font-options`]: font.files,
 							});
 						}}

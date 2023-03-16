@@ -9,7 +9,10 @@ import { __ } from '@wordpress/i18n';
 import ColorControl from '../../../color-control';
 import Icon from '../../../icon';
 import ToolbarPopover from '../toolbar-popover';
-import { getLastBreakpointAttribute } from '../../../../extensions/styles';
+import {
+	getAttributeKey,
+	getLastBreakpointAttribute,
+} from '../../../../extensions/styles';
 
 /**
  * Styles & Icons
@@ -73,13 +76,30 @@ const DividerColor = props => {
 						paletteOpacity,
 					}) => {
 						onChange({
-							[`divider-border-color-${breakpoint}`]: color,
-							[`divider-border-palette-color-${breakpoint}`]:
-								paletteColor,
-							[`divider-border-palette-opacity-${breakpoint}`]:
-								paletteOpacity,
-							[`divider-border-palette-status-${breakpoint}`]:
-								paletteStatus,
+							[getAttributeKey(
+								'color',
+								false,
+								'divider-border-',
+								breakpoint
+							)]: color,
+							[getAttributeKey(
+								'palette-color',
+								false,
+								'divider-border-',
+								breakpoint
+							)]: paletteColor,
+							[getAttributeKey(
+								'palette-opacity',
+								false,
+								'divider-border-',
+								breakpoint
+							)]: paletteOpacity,
+							[getAttributeKey(
+								'palette-status',
+								false,
+								'divider-border-',
+								breakpoint
+							)]: paletteStatus,
 						});
 					}}
 					deviceType={breakpoint}

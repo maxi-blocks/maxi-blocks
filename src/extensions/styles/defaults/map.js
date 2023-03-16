@@ -1,3 +1,5 @@
+import attributesShorter from '../dictionary/attributesShorter';
+
 const map = {
 	'map-provider': {
 		type: 'string',
@@ -28,4 +30,4 @@ const map = {
 	},
 };
 
-export default map;
+export default attributesShorter(map, 'map');

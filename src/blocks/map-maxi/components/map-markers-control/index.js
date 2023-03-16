@@ -17,6 +17,7 @@ import {
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
+	getAttributeValue,
 } from '../../../../extensions/styles';
 
 /**
@@ -99,7 +100,10 @@ const MapMarkersControl = props => {
 					});
 				}}
 				blockStyle={blockStyle}
-				content={props['map-marker-icon']}
+				content={getAttributeValue({
+					target: 'map-marker-icon',
+					props,
+				})}
 			/>
 			<SvgColor
 				{...svgAttributes}
@@ -113,7 +117,10 @@ const MapMarkersControl = props => {
 					});
 				}}
 				blockStyle={blockStyle}
-				content={props['map-marker-icon']}
+				content={getAttributeValue({
+					target: 'map-marker-icon',
+					props,
+				})}
 			/>
 			<ResponsiveTabsControl breakpoint={deviceType}>
 				<MarkerSize

@@ -22,11 +22,11 @@ const attributes = {
 			type: 'string',
 			default: 'solid',
 		},
-		'border-palette-color-general': {
+		'border-pac-general': {
 			type: 'number',
 			default: 3,
 		},
-		'border-palette-opacity-general': {
+		'border-pao-general': {
 			type: 'number',
 			default: 0.25,
 		},

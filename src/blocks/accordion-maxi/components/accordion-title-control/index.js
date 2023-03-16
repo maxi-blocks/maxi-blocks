@@ -15,13 +15,13 @@ import {
 } from '../../../../components';
 import {
 	getAttributeKey,
-	getAttributeValue,
+	getAttributesValue,
 } from '../../../../extensions/styles';
 
 const TitleSettings = props => {
 	const { onChange, clientId, bgPrefix, isHover = false, breakpoint } = props;
 
-	const bgStatus = getAttributeValue({
+	const bgStatus = getAttributesValue({
 		target: 'status',
 		props,
 		isHover,
@@ -43,7 +43,7 @@ const TitleSettings = props => {
 			{bgStatus && (
 				<ColorControl
 					label={__('Title background', 'maxi-blocks')}
-					color={getAttributeValue({
+					color={getAttributesValue({
 						target: 'color',
 						props,
 						isHover,
@@ -51,21 +51,21 @@ const TitleSettings = props => {
 						breakpoint,
 					})}
 					prefix={bgPrefix}
-					paletteColor={getAttributeValue({
+					paletteColor={getAttributesValue({
 						target: 'palette-color',
 						props,
 						isHover,
 						prefix: bgPrefix,
 						breakpoint,
 					})}
-					paletteOpacity={getAttributeValue({
+					paletteOpacity={getAttributesValue({
 						target: 'palette-opacity',
 						props,
 						isHover,
 						prefix: bgPrefix,
 						breakpoint,
 					})}
-					paletteStatus={getAttributeValue({
+					paletteStatus={getAttributesValue({
 						target: 'palette-status',
 						props,
 						isHover,
@@ -148,9 +148,10 @@ const AccordionTitleSettings = props => {
 							<>
 								<ToggleSwitch
 									label={__('Enable hover', 'maxi-blocks')}
-									selected={
-										props['title-typography-status-hover']
-									}
+									selected={getAttributesValue({
+										target: 'title-typography-status-hover',
+										props,
+									})}
 									onChange={val =>
 										onChange({
 											'title-typography-status-hover':
@@ -158,7 +159,10 @@ const AccordionTitleSettings = props => {
 										})
 									}
 								/>
-								{props['title-typography-status-hover'] && (
+								{getAttributesValue({
+									target: 'title-typography-status-hover',
+									props,
+								}) && (
 									<TitleSettings
 										{...props}
 										prefix={prefix}
@@ -175,9 +179,10 @@ const AccordionTitleSettings = props => {
 							<>
 								<ToggleSwitch
 									label={__('Enable active', 'maxi-blocks')}
-									selected={
-										props['title-typography-status-active']
-									}
+									selected={getAttributesValue({
+										targt: 'title-typography-status-active',
+										props,
+									})}
 									onChange={val =>
 										onChange({
 											'title-typography-status-active':
@@ -185,7 +190,10 @@ const AccordionTitleSettings = props => {
 										})
 									}
 								/>
-								{props['title-typography-status-active'] && (
+								{getAttributesValue({
+									target: 'title-typography-status-active',
+									props,
+								}) && (
 									<TitleSettings
 										{...props}
 										prefix={`active-${prefix}`}

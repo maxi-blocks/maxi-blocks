@@ -1,3 +1,5 @@
+import attributesShorter from '../dictionary/attributesShorter';
+
 const accordion = {
 	accordionLayout: { type: 'string', default: 'simple' },
 	autoPaneClose: { type: 'boolean', default: true },
@@ -11,4 +13,4 @@ const accordion = {
 	},
 };
 
-export default accordion;
+export default attributesShorter(accordion, 'accordion');

@@ -6,7 +6,7 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { getAttributeValue } from '../styles';
+import { getAttributesValue } from '../styles';
 import getColumnTemplate from './getColumnTemplate';
 
 const getColumnDefaultValue = (
@@ -22,7 +22,7 @@ const getColumnDefaultValue = (
 	const colPosition = columns.indexOf(clientId);
 
 	const template = getColumnTemplate(
-		getAttributeValue({
+		getAttributesValue({
 			target: 'row-pattern',
 			props: rowPattern,
 			breakpoint,
@@ -35,7 +35,7 @@ const getColumnDefaultValue = (
 	delete cleanColumnSizes[`column-size-${breakpoint}`];
 	const values = { ...defaultColumnSizes, ...cleanColumnSizes };
 
-	return getAttributeValue({
+	return getAttributesValue({
 		target: 'column-size',
 		props: values,
 		breakpoint,

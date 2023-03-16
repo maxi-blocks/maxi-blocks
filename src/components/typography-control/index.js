@@ -24,6 +24,7 @@ import {
 	textContext,
 } from '../../extensions/text/formats';
 import {
+	getAttributeKey,
 	getDefaultAttribute,
 	getGroupAttributes,
 	getIsValid,
@@ -71,41 +72,65 @@ const LinkOptions = props => {
 						label: __('Link', 'maxi-block'),
 						value: 'normal_link',
 						extraIndicatorsResponsive: [
-							`${prefix}link-color`,
-							`${prefix}link-palette-color`,
-							`${prefix}link-palette-opacity`,
-							`${prefix}link-palette-status`,
-						],
+							'color',
+							'palette-color',
+							'palette-opacity',
+							'palette-status',
+						].map(attributeKey =>
+							getAttributeKey(
+								attributeKey,
+								false,
+								`${prefix}link-`
+							)
+						),
 					},
 					{
 						label: __('Hover', 'maxi-block'),
 						value: 'hover_link',
 						extraIndicatorsResponsive: [
-							`${prefix}link-hover-color`,
-							`${prefix}link-hover-palette-color`,
-							`${prefix}link-hover-palette-opacity`,
-							`${prefix}link-hover-palette-status`,
-						],
+							'hover-color',
+							'hover-palette-color',
+							'hover-palette-opacity',
+							'hover-palette-status',
+						].map(attributeKey =>
+							getAttributeKey(
+								attributeKey,
+								false,
+								`${prefix}link-`
+							)
+						),
 					},
 					{
 						label: __('Active', 'maxi-block'),
 						value: 'active_link',
 						extraIndicatorsResponsive: [
-							`${prefix}link-active-color`,
-							`${prefix}link-active-palette-color`,
-							`${prefix}link-active-palette-opacity`,
-							`${prefix}link-active-palette-status`,
-						],
+							'active-color',
+							'active-palette-color',
+							'active-palette-opacity',
+							'active-palette-status',
+						].map(attributeKey =>
+							getAttributeKey(
+								attributeKey,
+								false,
+								`${prefix}link-`
+							)
+						),
 					},
 					{
 						label: __('Visited', 'maxi-block'),
 						value: 'visited_link',
 						extraIndicatorsResponsive: [
-							`${prefix}link-visited-color`,
-							`${prefix}link-visited-palette-color`,
-							`${prefix}link-visited-palette-opacity`,
-							`${prefix}link-visited-palette-status`,
-						],
+							'visited-color',
+							'visited-palette-color',
+							'visited-palette-opacity',
+							'visited-palette-status',
+						].map(attributeKey =>
+							getAttributeKey(
+								attributeKey,
+								false,
+								`${prefix}link-`
+							)
+						),
 					},
 				]}
 				onChange={val => setLinkStatus(val)}
@@ -130,11 +155,26 @@ const LinkOptions = props => {
 					}) =>
 						onChangeFormat(
 							{
-								[`${prefix}link-palette-status`]: paletteStatus,
-								[`${prefix}link-palette-color`]: paletteColor,
-								[`${prefix}link-palette-opacity`]:
-									paletteOpacity,
-								[`${prefix}link-color`]: color,
+								[getAttributeKey(
+									'palette-status',
+									false,
+									`${prefix}link-`
+								)]: paletteStatus,
+								[getAttributeKey(
+									'palette-color',
+									false,
+									`${prefix}link-`
+								)]: paletteColor,
+								[getAttributeKey(
+									'palette-opacity',
+									false,
+									`${prefix}link-`
+								)]: paletteOpacity,
+								[getAttributeKey(
+									'color',
+									false,
+									`${prefix}link-`
+								)]: color,
 							},
 							{ forceDisableCustomFormats: false, tag: 'a' }
 						)
@@ -166,13 +206,26 @@ const LinkOptions = props => {
 					}) =>
 						onChangeFormat(
 							{
-								[`${prefix}link-hover-palette-status`]:
-									paletteStatus,
-								[`${prefix}link-hover-palette-color`]:
-									paletteColor,
-								[`${prefix}link-hover-palette-opacity`]:
-									paletteOpacity,
-								[`${prefix}link-hover-color`]: color,
+								[getAttributeKey(
+									'hover-palette-status',
+									false,
+									`${prefix}link-`
+								)]: paletteStatus,
+								[getAttributeKey(
+									'hover-palette-color',
+									false,
+									`${prefix}link-`
+								)]: paletteColor,
+								[getAttributeKey(
+									'hover-palette-opacity',
+									false,
+									`${prefix}link-`
+								)]: paletteOpacity,
+								[getAttributeKey(
+									'hover-color',
+									false,
+									`${prefix}link-`
+								)]: color,
 							},
 							{ forceDisableCustomFormats: false, tag: 'a:hover' }
 						)
@@ -204,13 +257,26 @@ const LinkOptions = props => {
 					}) =>
 						onChangeFormat(
 							{
-								[`${prefix}link-active-palette-status`]:
-									paletteStatus,
-								[`${prefix}link-active-palette-color`]:
-									paletteColor,
-								[`${prefix}link-active-palette-opacity`]:
-									paletteOpacity,
-								[`${prefix}link-active-color`]: color,
+								[getAttributeKey(
+									'active-palette-status',
+									false,
+									`${prefix}link-`
+								)]: paletteStatus,
+								[getAttributeKey(
+									'active-palette-color',
+									false,
+									`${prefix}link-`
+								)]: paletteColor,
+								[getAttributeKey(
+									'active-palette-opacity',
+									false,
+									`${prefix}link-`
+								)]: paletteOpacity,
+								[getAttributeKey(
+									'active-color',
+									false,
+									`${prefix}link-`
+								)]: color,
 							},
 							{
 								forceDisableCustomFormats: false,
@@ -245,13 +311,26 @@ const LinkOptions = props => {
 					}) =>
 						onChangeFormat(
 							{
-								[`${prefix}link-visited-palette-status`]:
-									paletteStatus,
-								[`${prefix}link-visited-palette-color`]:
-									paletteColor,
-								[`${prefix}link-visited-palette-opacity`]:
-									paletteOpacity,
-								[`${prefix}link-visited-color`]: color,
+								[getAttributeKey(
+									'visited-palette-status',
+									false,
+									`${prefix}link-`
+								)]: paletteStatus,
+								[getAttributeKey(
+									'visited-palette-color',
+									false,
+									`${prefix}link-`
+								)]: paletteColor,
+								[getAttributeKey(
+									'visited-palette-opacity',
+									false,
+									`${prefix}link-`
+								)]: paletteOpacity,
+								[getAttributeKey(
+									'visited-color',
+									false,
+									`${prefix}link-`
+								)]: color,
 							},
 							{
 								forceDisableCustomFormats: false,
@@ -507,10 +586,23 @@ const TypographyControl = props => {
 							paletteOpacity,
 						}) =>
 							onChangeFormat({
-								[`${prefix}color`]: color,
-								[`${prefix}palette-color`]: paletteColor,
-								[`${prefix}palette-status`]: paletteStatus,
-								[`${prefix}palette-opacity`]: paletteOpacity,
+								[getAttributeKey('color', false, prefix)]:
+									color,
+								[getAttributeKey(
+									'palette-color',
+									false,
+									prefix
+								)]: paletteColor,
+								[getAttributeKey(
+									'palette-status',
+									false,
+									prefix
+								)]: paletteStatus,
+								[getAttributeKey(
+									'palette-opacity',
+									false,
+									prefix
+								)]: paletteOpacity,
 							})
 						}
 						globalProps={globalProps}

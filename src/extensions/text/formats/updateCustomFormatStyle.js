@@ -8,7 +8,11 @@ import { select } from '@wordpress/data';
  */
 import { isEmpty, isNil, isNumber, isBoolean } from 'lodash';
 import getCustomFormat from './getCustomFormat';
-import { getBlockStyle } from '../../styles';
+import {
+	getAttributeKey,
+	getAttributeValue,
+	getBlockStyle,
+} from '../../styles';
 import { getTypographyFromSC } from '../../style-cards';
 
 /**
@@ -85,10 +89,22 @@ export const styleObjectManipulator = ({
 
 	// Ensures palette color is cleaned to avoid unnecessary Custom Formats
 	if (
-		isNil(style[`palette-status-${breakpoint}`]) &&
-		!isEmpty(style[`color-${breakpoint}`])
+		isNil(
+			getAttributeValue({
+				target: 'palette-status',
+				props: style,
+				breakpoint,
+			}) &&
+				!isEmpty(
+					getAttributeValue({
+						target: 'color',
+						props: style,
+						breakpoint,
+					})
+				)
+		)
 	)
-		delete style[`color-${breakpoint}`];
+		delete style[getAttributeKey('color', false, breakpoint)];
 
 	return style;
 };

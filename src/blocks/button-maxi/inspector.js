@@ -89,8 +89,8 @@ const Inspector = props => {
 		}
 
 		const {
-			'icon-stroke-palette-status': strokePaletteStatus,
-			'icon-stroke-palette-status-hover': strokePaletteHoverStatus,
+			'icon-stroke-pa-status': strokePaletteStatus,
+			'icon-stroke-pa-status-hover': strokePaletteHoverStatus,
 			'icon-content': rawIcon,
 		} = newDefaultPresets[`preset${number}`];
 
@@ -98,8 +98,8 @@ const Inspector = props => {
 
 		if (rawIcon && (strokePaletteStatus || strokePaletteHoverStatus)) {
 			const {
-				'icon-stroke-palette-color': strokePaletteColor,
-				'icon-stroke-palette-color-hover': strokePaletteHoverColor,
+				'icon-stroke-pac': strokePaletteColor,
+				'icon-stroke-pac-hover': strokePaletteHoverColor,
 				'icon-inherit': rawIconInherit,
 				'icon-only': rawIconOnly,
 			} = newDefaultPresets[`preset${number}`];
@@ -142,14 +142,14 @@ const Inspector = props => {
 				'icon-content': getIconWithColor(attributes),
 			}),
 		[
-			attributes['palette-color-general'],
-			attributes['palette-color-general-hover'],
-			attributes['palette-status-general'],
-			attributes['palette-status-general-hover'],
-			attributes['palette-opacity-general'],
-			attributes['palette-opacity-general-hover'],
-			attributes['color-general'],
-			attributes['color-general-hover'],
+			attributes['pac-general'],
+			attributes['pac-general-hover'],
+			attributes['pa-status-general'],
+			attributes['pa-status-general-hover'],
+			attributes['pao-general'],
+			attributes['pao-general-hover'],
+			attributes['c-general'],
+			attributes['c-general-hover'],
 		]
 	);
 

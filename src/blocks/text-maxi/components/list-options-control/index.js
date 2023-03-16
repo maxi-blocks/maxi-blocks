@@ -16,6 +16,8 @@ import {
 	ToggleSwitch,
 } from '../../../../components';
 import {
+	getAttributeKey,
+	getAttributeValue,
 	getColorRGBAString,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
@@ -545,10 +547,22 @@ const ListOptionsControl = props => {
 			{deviceType === 'general' && (
 				<ColorControl
 					label={__('Marker', 'maxi-blocks')}
-					color={attributes['list-color']}
-					paletteStatus={attributes['list-palette-status']}
-					paletteColor={attributes['list-palette-color']}
-					paletteOpacity={attributes['list-palette-opacity']}
+					color={getAttributeValue({
+						target: 'list-color',
+						props: attributes,
+					})}
+					paletteStatus={getAttributeValue({
+						target: 'list-palette-status',
+						props: attributes,
+					})}
+					paletteColor={getAttributeValue({
+						target: 'list-palette-color',
+						props: attributes,
+					})}
+					paletteOpacity={getAttributeValue({
+						target: 'list-palette-opacity',
+						props: attributes,
+					})}
 					prefix='list-'
 					avoidBreakpointForDefault
 					onChangeInline={({ color }) =>
@@ -574,10 +588,13 @@ const ListOptionsControl = props => {
 							: color;
 
 						maxiSetAttributes({
-							'list-palette-status': paletteStatus,
-							'list-palette-color': paletteColor,
-							'list-palette-opacity': paletteOpacity,
-							'list-color': color,
+							[getAttributeKey('list-palette-status')]:
+								paletteStatus,
+							[getAttributeKey('list-palette-color')]:
+								paletteColor,
+							[getAttributeKey('list-palette-opacity')]:
+								paletteOpacity,
+							[getAttributeKey('list-color')]: color,
 							...(listStyleCustom?.includes('<svg ') && {
 								listStyleCustom: setSVGColor({
 									svg: listStyleCustom,

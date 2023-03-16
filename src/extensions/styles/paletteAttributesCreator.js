@@ -14,30 +14,27 @@ const paletteAttributesCreator = ({
 	palette,
 	opacity,
 	customColor,
-}) => {
-	return {
-		[`${prefix}palette-status`]: {
-			type: 'boolean',
-			default: status ?? true,
-		},
-		[`${prefix}palette-color`]: {
-			type: 'number',
-			...(isNumber(palette) && { default: palette }),
-		},
-		...attributesShorter(
-			{
-				[`${prefix}palette-opacity`]: {
-					type: 'number',
-					...(isNumber(opacity) && { default: opacity }),
-				},
+}) =>
+	attributesShorter(
+		{
+			[`${prefix}palette-status`]: {
+				type: 'boolean',
+				default: status ?? true,
 			},
-			'opacity'
-		),
-		[`${prefix}color`]: {
-			type: 'string',
-			...(isString(customColor) && { default: customColor }),
+			[`${prefix}palette-color`]: {
+				type: 'number',
+				...(isNumber(palette) && { default: palette }),
+			},
+			[`${prefix}palette-opacity`]: {
+				type: 'number',
+				...(isNumber(opacity) && { default: opacity }),
+			},
+			[`${prefix}color`]: {
+				type: 'string',
+				...(isString(customColor) && { default: customColor }),
+			},
 		},
-	};
-};
+		'palette'
+	);
 
 export default paletteAttributesCreator;

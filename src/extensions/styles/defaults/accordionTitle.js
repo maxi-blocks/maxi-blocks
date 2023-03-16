@@ -2,6 +2,7 @@ import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import hoverAttributesCreator from '../hoverAttributesCreator';
 import paletteAttributesCreator from '../paletteAttributesCreator';
 import prefixAttributesCreator from '../prefixAttributesCreator';
+import getAttributeKey from '../getAttributeKey';
 import { typography } from './typography';
 import typographyHover from './typographyHover';
 import attributesShorter from '../dictionary/attributesShorter';
@@ -31,9 +32,21 @@ const accordionTitle = {
 	}),
 	...hoverAttributesCreator({
 		obj: titleBackground,
-		sameValAttr: [`${prefix}-background-palette-status-general`],
+		sameValAttr: [
+			getAttributeKey(
+				'palette-status',
+				false,
+				`${prefix}-background-`,
+				'general'
+			),
+		],
 		diffValAttr: {
-			[`${prefix}-background-palette-color-general`]: 6,
+			[getAttributeKey(
+				'palette-color',
+				false,
+				`${prefix}-background-`,
+				'general'
+			)]: 6,
 		},
 	}),
 	...prefixAttributesCreator({ obj: typography, prefix }),

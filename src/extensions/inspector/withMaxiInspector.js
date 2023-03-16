@@ -3,7 +3,7 @@
  */
 import { select } from '@wordpress/data';
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
-import { memo, Suspense } from '@wordpress/element';
+import { memo } from '@wordpress/element';
 
 /**
  * External dependencies
@@ -15,13 +15,10 @@ const withMaxiInspector = createHigherOrderComponent(
 		pure(
 			memo(
 				ownProps => {
-					if (!ownProps.isSelected) return null;
+					if (ownProps.isSelected)
+						return <WrappedComponent {...ownProps} />;
 
-					return (
-						<Suspense>
-							<WrappedComponent {...ownProps} />
-						</Suspense>
-					);
+					return null;
 				},
 				(oldProps, newProps) => {
 					const {

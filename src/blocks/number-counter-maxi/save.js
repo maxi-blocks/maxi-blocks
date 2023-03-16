@@ -15,9 +15,9 @@ const save = props => {
 	const { attributes } = props;
 	const {
 		uniqueID,
-		'number-counter-stroke': stroke,
-		'number-counter-circle-status': circleStatus,
-		'number-counter-rounded-status': roundedStatus,
+		ncst: stroke,
+		nccs: circleStatus,
+		ncrs: roundedStatus,
 	} = attributes;
 
 	const classes = 'maxi-number-counter-block';

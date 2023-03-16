@@ -4,7 +4,7 @@
 import {
 	getGroupAttributes,
 	styleProcessor,
-	getAttributeValue,
+	getAttributesValue,
 } from '../../extensions/styles';
 import {
 	getBlockBackgroundStyles,
@@ -150,7 +150,7 @@ const getDividerObject = props => {
 const getHoverObject = props => {
 	const response = {
 		boxShadow:
-			getAttributeValue({
+			getAttributesValue({
 				target: 'divider-box-shadow-status-hover',
 				props,
 			}) &&

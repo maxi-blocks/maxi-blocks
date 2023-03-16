@@ -116,7 +116,11 @@ const getHoverWrapperObject = props => {
 };
 
 const getBoxObject = props => {
-	const { 'number-counter-title-font-size': fontSize } = props;
+	const fontSize = getAttributeValue({
+		target: 'number-counter-title-font-size',
+		props,
+	});
+
 	const endCountValue = Math.ceil(
 		(getAttributeValue({ target: 'number-counter-end', props }) * 360) / 100
 	);

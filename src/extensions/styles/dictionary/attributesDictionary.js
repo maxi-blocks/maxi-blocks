@@ -7,6 +7,7 @@ const dictionary = {
 	},
 	clipPath: {
 		'clip-path': 'cp',
+		'clip-path-status': 'cp-status',
 	},
 	textAlignment: {
 		'text-alignment': 'ta',
@@ -150,6 +151,12 @@ const dictionary = {
 		'title-background-status-hover': 'tbs',
 		'title-background-status-active': 'tbs',
 	},
+	palette: {
+		'palette-status': 'pa-status', // `-status` will be changed to `st` in Phase 2
+		'palette-color': 'pac',
+		'palette-opacity': 'pao',
+		color: 'c',
+	},
 	numberCounter: {
 		'number-counter-width-auto': 'ncwa',
 		'number-counter-status': 'ncsa',
@@ -186,9 +193,13 @@ const dictionary = {
 };
 
 const flattenDictionary = dict => {
+	const EXCLUDED_GROUPS = ['palette'];
+
 	let response = {};
 
-	Object.values(dict).forEach(val => {
+	Object.entries(dict).forEach(([key, val]) => {
+		if (EXCLUDED_GROUPS.includes(key)) return;
+
 		response = {
 			...response,
 			...val,
@@ -204,7 +215,7 @@ export const noTypeDictionary = flattenDictionary(dictionary);
 // Short to long terms
 export const reversedDictionary = {
 	...Object.entries(noTypeDictionary).reduce(
-		(acc, [key, val], i) => ({ ...acc, [val]: key }),
+		(acc, [key, val]) => ({ ...acc, [val]: key }),
 		{}
 	),
 };

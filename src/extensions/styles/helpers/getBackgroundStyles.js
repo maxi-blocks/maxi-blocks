@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import getAttributeValue from '../getAttributeValue';
+import getAttributesValue from '../getAttributesValue';
 import getBorderStyles from './getBorderStyles';
 import getColorRGBAString from '../getColorRGBAString';
 import getDisplayStyles from './getDisplayStyles';
@@ -290,7 +290,7 @@ export const getImageBackgroundObject = ({
 		[breakpoint]: {},
 	};
 
-	const bgImageUrl = getAttributeValue({
+	const bgImageUrl = getAttributesValue({
 		target: 'background-image-mediaURL',
 		props,
 		prefix,
@@ -299,7 +299,7 @@ export const getImageBackgroundObject = ({
 	if (isEmpty(bgImageUrl) && !ignoreMediaAttributes) return {};
 
 	const getBgImageAttributeValue = (target, isHoverParam = isHover) =>
-		getAttributeValue({
+		getAttributesValue({
 			target,
 			isHover: isHoverParam,
 			prefix,
@@ -712,7 +712,7 @@ const getBackgroundLayers = ({
 				};
 				break;
 			case 'image': {
-				const parallaxStatus = getAttributeValue({
+				const parallaxStatus = getAttributesValue({
 					target: 'background-image-parallax-status',
 					props: layer,
 					prefix,
@@ -1168,13 +1168,13 @@ export const getBlockBackgroundStyles = ({
 		return response;
 
 	const layers = compact([
-		...getAttributeValue({
+		...getAttributesValue({
 			target: 'background-layers',
 			props,
 			prefix,
 		}),
 		...(isHover && [
-			...getAttributeValue({
+			...getAttributesValue({
 				target: 'background-layers',
 				props,
 				prefix,

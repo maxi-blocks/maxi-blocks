@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import {
-	getAttributeValue,
+	getAttributesValue,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 	styleProcessor,
@@ -386,7 +386,7 @@ const getHoverImageObject = props => {
 				prefix: 'image-',
 			}),
 		}),
-		...(getAttributeValue({
+		...(getAttributesValue({
 			target: 'clip-path-status',
 			props,
 			isHover: true,

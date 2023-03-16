@@ -7,7 +7,7 @@ import { RawHTML, useRef } from '@wordpress/element';
  * Internal Dependencies
  */
 import VideoLayer from './videoLayer';
-import { getAttributeValue } from '../../extensions/styles';
+import { getAttributesValue } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -55,7 +55,7 @@ const BackgroundContent = props => {
 						/>
 					);
 				case 'image': {
-					const parallaxStatus = getAttributeValue({
+					const parallaxStatus = getAttributesValue({
 						target: 'background-image-parallax-status',
 						props: layer,
 						prefix,
@@ -74,17 +74,17 @@ const BackgroundContent = props => {
 							/>
 						);
 
-					const mediaURL = getAttributeValue({
+					const mediaURL = getAttributesValue({
 						target: 'background-image-mediaURL',
 						props: layer,
 						prefix,
 					});
-					const mediaID = getAttributeValue({
+					const mediaID = getAttributesValue({
 						target: 'background-image-mediaID',
 						props: layer,
 						prefix,
 					});
-					const alt = getAttributeValue({
+					const alt = getAttributesValue({
 						target: 'background-image-parallax-alt',
 						props: layer,
 						prefix,

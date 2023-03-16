@@ -16,6 +16,7 @@ import {
 	ToggleSwitch,
 } from '../../../../components';
 import {
+	getAttributeKey,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
@@ -332,12 +333,24 @@ const ShapeDividerControl = props => {
 														paletteStatus,
 													}) =>
 														onChange({
-															[`shape-divider-top-color-${breakpoint}`]:
-																color,
-															[`shape-divider-top-palette-color-${breakpoint}`]:
-																paletteColor,
-															[`shape-divider-top-palette-status-${breakpoint}`]:
-																paletteStatus,
+															[getAttributeKey(
+																'color',
+																false,
+																'shape-divider-top-',
+																breakpoint
+															)]: color,
+															[getAttributeKey(
+																'palette-color',
+																false,
+																'shape-divider-top-',
+																breakpoint
+															)]: paletteColor,
+															[getAttributeKey(
+																'palette-status',
+																false,
+																'shape-divider-top-',
+																breakpoint
+															)]: paletteStatus,
 														})
 													}
 													disableOpacity
@@ -538,12 +551,24 @@ const ShapeDividerControl = props => {
 														paletteStatus,
 													}) =>
 														onChange({
-															[`shape-divider-bottom-color-${breakpoint}`]:
-																color,
-															[`shape-divider-bottom-palette-color-${breakpoint}`]:
-																paletteColor,
-															[`shape-divider-bottom-palette-status-${breakpoint}`]:
-																paletteStatus,
+															[getAttributeKey(
+																'color',
+																false,
+																'shape-divider-bottom-',
+																breakpoint
+															)]: color,
+															[getAttributeKey(
+																'palette-color',
+																false,
+																'shape-divider-bottom-',
+																breakpoint
+															)]: paletteColor,
+															[getAttributeKey(
+																'palette-status',
+																false,
+																'shape-divider-bottom-',
+																breakpoint
+															)]: paletteStatus,
 														})
 													}
 													disableOpacity

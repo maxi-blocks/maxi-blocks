@@ -19,7 +19,7 @@ import getIconPathStyles from './getIconPathStyles';
 import getGroupAttributes from '../getGroupAttributes';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 import getIconSize from './getIconSize';
-import getAttributeValue from '../getAttributeValue';
+import getAttributesValue from '../getAttributesValue';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -139,7 +139,7 @@ const getIconObject = (props, target, prefix = '', isIB) => {
 
 const getIconHoverObject = (props, target, prefix = '', iconType = '') => {
 	const iconHoverStatus = props[`${prefix}icon-status-hover`];
-	const iconHoverActiveMedia = getAttributeValue({
+	const iconHoverActiveMedia = getAttributesValue({
 		target: 'icon-background-active-media',
 		prefix,
 		isHover: true,

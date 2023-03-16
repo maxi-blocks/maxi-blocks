@@ -8,7 +8,7 @@ const mapPopupText = {
 	},
 	...{
 		...typography,
-		'palette-color-general': {
+		'pac-general': {
 			type: 'number',
 			default: 4,
 		},

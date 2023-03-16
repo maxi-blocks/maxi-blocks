@@ -29,6 +29,11 @@ const MapPopupTextControl = ({
 		onChange,
 	};
 
+	const mapMarkerHeadingLevel = getAttributesValue({
+		target: 'map-marker-heading-level',
+		props: attributes,
+	});
+
 	return (
 		<SettingTabsControl
 			items={[
@@ -44,7 +49,7 @@ const MapPopupTextControl = ({
 									attributes,
 									'typography'
 								)}
-								value={attributes['map-marker-heading-level']}
+								value={mapMarkerHeadingLevel}
 								onChange={obj => {
 									onChange({
 										'map-marker-heading-level':
@@ -57,9 +62,7 @@ const MapPopupTextControl = ({
 									attributes,
 									'typography'
 								)}
-								textLevel={
-									attributes['map-marker-heading-level']
-								}
+								textLevel={mapMarkerHeadingLevel}
 								{...typographyProps}
 							/>
 						</>

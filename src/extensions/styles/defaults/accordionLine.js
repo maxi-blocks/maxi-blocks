@@ -4,7 +4,7 @@ import dividerHover from './dividerHover';
 
 const rawAccordionLine = {
 	...divider,
-	'divider-border-palette-color-general': {
+	'divider-border-pac-general': {
 		type: 'number',
 		default: 3,
 	},
@@ -29,7 +29,7 @@ const rawAccordionLine = {
 		obj: divider,
 		prefix: 'active-',
 		diffValAttr: {
-			'active-divider-border-palette-color-general': 3,
+			'active-divider-border-pac-general': 3,
 			'active-divider-width-general': 100,
 		},
 	}),

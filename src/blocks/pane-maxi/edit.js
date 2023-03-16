@@ -15,7 +15,7 @@ import getStyles from './styles';
 import AccordionContext from '../accordion-maxi/context';
 import Inspector from './inspector';
 import { copyPasteMapping } from './data';
-import { getAttributeValue } from '../../extensions/styles';
+import { getAttributesValue } from '../../extensions/styles';
 
 const boxedPreset = {
 	'border-bottom-left-radius-general': 10,
@@ -115,7 +115,7 @@ class edit extends MaxiBlockComponent {
 			}
 		});
 
-		const accordionLayout = getAttributeValue({
+		const accordionLayout = getAttributesValue({
 			target: 'accordionLayout',
 			props: this.props.attributes,
 		});

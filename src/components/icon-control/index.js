@@ -22,7 +22,7 @@ import ToggleSwitch from '../toggle-switch';
 import withRTC from '../../extensions/maxi-block/withRTC';
 import {
 	getAttributeKey,
-	getAttributeValue,
+	getAttributesValue,
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -296,26 +296,26 @@ const IconControlResponsiveSettings = withRTC(props => {
 							label={__('Icon stroke', 'maxi-blocks')}
 							className='maxi-icon-styles-control--color'
 							avoidBreakpointForDefault
-							color={getAttributeValue({
+							color={getAttributesValue({
 								target: 'icon-stroke-color',
 								props,
 								isHover,
 								prefix,
 							})}
 							prefix={`${prefix}icon-stroke-`}
-							paletteColor={getAttributeValue({
+							paletteColor={getAttributesValue({
 								target: 'icon-stroke-palette-color',
 								props,
 								isHover,
 								prefix,
 							})}
-							paletteOpacity={getAttributeValue({
+							paletteOpacity={getAttributesValue({
 								target: 'icon-stroke-palette-opacity',
 								props,
 								isHover,
 								prefix,
 							})}
-							paletteStatus={getAttributeValue({
+							paletteStatus={getAttributesValue({
 								target: 'icon-stroke-palette-status',
 								props,
 								isHover,
@@ -412,26 +412,26 @@ const IconControlResponsiveSettings = withRTC(props => {
 			{iconStyle === 'fill' && svgType !== 'Line' && (
 				<ColorControl
 					label={__('Icon fill', 'maxi-blocks')}
-					color={getAttributeValue({
+					color={getAttributesValue({
 						target: 'icon-fill-color',
 						props,
 						isHover,
 						prefix,
 					})}
 					prefix={`${prefix}icon-fill-`}
-					paletteColor={getAttributeValue({
+					paletteColor={getAttributesValue({
 						target: 'icon-fill-palette-color',
 						props,
 						isHover,
 						prefix,
 					})}
-					paletteOpacity={getAttributeValue({
+					paletteOpacity={getAttributesValue({
 						target: 'icon-fill-palette-opacity',
 						props,
 						isHover,
 						prefix,
 					})}
-					paletteStatus={getAttributeValue({
+					paletteStatus={getAttributesValue({
 						target: 'icon-fill-palette-status',
 						props,
 						isHover,

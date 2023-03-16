@@ -1,7 +1,11 @@
 /**
  * Internal dependencies
  */
-import { getGroupAttributes, styleProcessor } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	styleProcessor,
+	getAttributeValue,
+} from '../../extensions/styles';
 import {
 	getBlockBackgroundStyles,
 	getBorderStyles,
@@ -112,8 +116,14 @@ const getHoverWrapperObject = props => {
 };
 
 const getBoxObject = props => {
-	const { 'number-counter-title-font-size': fontSize } = props;
-	const endCountValue = Math.ceil((props['number-counter-end'] * 360) / 100);
+	const fontSize = getAttributeValue({
+		target: 'number-counter-title-font-size',
+		props,
+	});
+
+	const endCountValue = Math.ceil(
+		(getAttributeValue({ target: 'number-counter-end', props }) * 360) / 100
+	);
 
 	const size = getSizeStyles(
 		{
@@ -183,7 +193,10 @@ const getBoxObject = props => {
 const getHoverBoxObject = props => {
 	const response = {
 		border:
-			props['number-counter-border-status-hover'] &&
+			getAttributeValue({
+				target: 'number-counter-border-status-hover',
+				props,
+			}) &&
 			getBorderStyles({
 				obj: {
 					...getGroupAttributes(
@@ -198,7 +211,10 @@ const getHoverBoxObject = props => {
 				prefix: 'number-counter-',
 			}),
 		boxShadow:
-			props['number-counter-box-shadow-status-hover'] &&
+			getAttributeValue({
+				target: 'number-counter-box-shadow-status-hover',
+				props,
+			}) &&
 			getBoxShadowStyles({
 				obj: {
 					...getGroupAttributes(

@@ -9,7 +9,7 @@ import { __ } from '@wordpress/i18n';
 import CustomCssControl from '../custom-css-control';
 import {
 	getLastBreakpointAttribute,
-	getAttributeValue,
+	getAttributesValue,
 } from '../../extensions/styles';
 import { getSelectorsCss, getCategoriesCss } from '../custom-css-control/utils';
 
@@ -29,7 +29,7 @@ const customCss = ({
 		breakpoint,
 		attributes,
 	});
-	const customCssCategory = getAttributeValue({
+	const customCssCategory = getAttributesValue({
 		target: 'custom-css-category',
 		attributes,
 	});

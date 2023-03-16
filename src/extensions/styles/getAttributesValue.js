@@ -6,7 +6,7 @@ import getAttributeKey from './getAttributeKey';
 /**
  * External dependencies
  */
-import { isNumber, isBoolean, isEmpty, isNil } from 'lodash';
+import { isNumber, isBoolean, isEmpty, isNil, isArray } from 'lodash';
 
 const getAttributeValue = ({
 	target,
@@ -41,4 +41,36 @@ const getAttributeValue = ({
 	return props?.[getAttributeKey(target, null, prefix)];
 };
 
-export default getAttributeValue;
+const getAttributesValue = ({
+	target,
+	props,
+	isHover,
+	breakpoint,
+	prefix = '',
+	allowNil = false,
+}) => {
+	if (isArray(target))
+		return target.reduce((acc, item) => {
+			acc[item] = getAttributeValue({
+				target: item,
+				props,
+				isHover,
+				breakpoint,
+				prefix,
+				allowNil,
+			});
+
+			return acc;
+		}, {});
+
+	return getAttributeValue({
+		target,
+		props,
+		isHover,
+		breakpoint,
+		prefix,
+		allowNil,
+	});
+};
+
+export default getAttributesValue;

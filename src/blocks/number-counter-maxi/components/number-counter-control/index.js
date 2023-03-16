@@ -16,7 +16,7 @@ import {
 } from '../../../../components';
 import {
 	getAttributeKey,
-	getAttributeValue,
+	getAttributesValue,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
@@ -62,7 +62,10 @@ const NumberCounterControl = props => {
 
 	return (
 		<div className={classes}>
-			{!props['number-counter-circle-status'] && (
+			{!getAttributesValue({
+				target: 'number-counter-circle-status',
+				props,
+			}) && (
 				<>
 					<ToggleSwitch
 						label={__('Auto width', 'maxi-blocks')}
@@ -121,7 +124,10 @@ const NumberCounterControl = props => {
 			)}
 			<ToggleSwitch
 				label={__('Preview', 'maxi-block')}
-				selected={props['number-counter-preview']}
+				selected={getAttributesValue({
+					target: 'number-counter-preview',
+					props,
+				})}
 				onChange={val =>
 					onChange({
 						'number-counter-preview': val,
@@ -131,7 +137,10 @@ const NumberCounterControl = props => {
 			<SelectControl
 				label={__('Start animation', 'maxi-blocks')}
 				className='maxi-number-counter-control__start-animation'
-				value={props['number-counter-start-animation']}
+				value={getAttributesValue({
+					target: 'number-counter-start-animation',
+					props,
+				})}
 				options={[
 					{
 						label: __('Page Load', 'maxi-blocks'),
@@ -146,14 +155,20 @@ const NumberCounterControl = props => {
 					onChange({ 'number-counter-start-animation': val })
 				}
 			/>
-			{props['number-counter-start-animation'] === 'view-scroll' && (
+			{getAttributesValue({
+				target: 'number-counter-start-animation',
+				props,
+			}) === 'view-scroll' && (
 				<AdvancedNumberControl
 					label={__('Offset', 'maxi-blocks')}
 					min={50}
 					max={100}
 					initial={100}
 					step={1}
-					value={props['number-counter-start-animation-offset']}
+					value={getAttributesValue({
+						target: 'number-counter-start-animation-offset',
+						props,
+					})}
 					onChangeValue={val =>
 						onChange({
 							'number-counter-start-animation-offset': val,
@@ -170,7 +185,14 @@ const NumberCounterControl = props => {
 					}
 				/>
 			)}
-			{props['number-counter-start'] >= props['number-counter-end'] && (
+			{getAttributesValue({
+				target: 'number-counter-start',
+				props,
+			}) >=
+				getAttributesValue({
+					target: 'number-counter-end',
+					props,
+				}) && (
 				<div className='maxi-number-counter-control__alert-warning'>
 					<i>{__('Start Number ', 'maxi-blocks')}</i>
 					{__('can not be grater than ', 'maxi-blocks')}
@@ -180,10 +202,16 @@ const NumberCounterControl = props => {
 			<AdvancedNumberControl
 				label={__('Start number', 'maxi-blocks')}
 				min={0}
-				max={props['number-counter-end']}
+				max={getAttributesValue({
+					target: 'number-counter-end',
+					props,
+				})}
 				initial={0}
 				step={1}
-				value={props['number-counter-start']}
+				value={getAttributesValue({
+					target: 'number-counter-start',
+					props,
+				})}
 				onChangeValue={val => onChange({ 'number-counter-start': val })}
 				onReset={() =>
 					onChange({
@@ -197,10 +225,20 @@ const NumberCounterControl = props => {
 			<AdvancedNumberControl
 				label={__('End number', 'maxi-blocks')}
 				min={1}
-				max={props['number-counter-circle-status'] ? 9999999999 : 100}
+				max={
+					getAttributesValue({
+						target: 'number-counter-circle-status',
+						props,
+					})
+						? 9999999999
+						: 100
+				}
 				initial={100}
 				step={1}
-				value={props['number-counter-end']}
+				value={getAttributesValue({
+					target: 'number-counter-end',
+					props,
+				})}
 				onChangeValue={val => onChange({ 'number-counter-end': val })}
 				onReset={() =>
 					onChange({
@@ -210,8 +248,14 @@ const NumberCounterControl = props => {
 					})
 				}
 			/>
-			{!props['number-counter-circle-status'] &&
-				props['number-counter-end'] >= 100 && (
+			{!getAttributesValue({
+				target: 'number-counter-circle-status',
+				props,
+			}) &&
+				getAttributesValue({
+					target: 'number-counter-end',
+					props,
+				}) >= 100 && (
 					<div className='maxi-number-counter-control__alert-warning'>
 						<i>
 							{__(
@@ -227,7 +271,10 @@ const NumberCounterControl = props => {
 				max={10}
 				initial={1}
 				step={1}
-				value={props['number-counter-duration']}
+				value={getAttributesValue({
+					target: 'number-counter-duration',
+					props,
+				})}
 				onChangeValue={val =>
 					onChange({ 'number-counter-duration': val })
 				}
@@ -240,14 +287,20 @@ const NumberCounterControl = props => {
 					})
 				}
 			/>
-			{!props['number-counter-circle-status'] && (
+			{!getAttributesValue({
+				target: 'number-counter-circle-status',
+				props,
+			}) && (
 				<AdvancedNumberControl
 					label={__('Stroke', 'maxi-blocks')}
 					min={1}
 					max={99}
 					initial={8}
 					step={1}
-					value={props['number-counter-stroke']}
+					value={getAttributesValue({
+						target: 'number-counter-stroke',
+						props,
+					})}
 					onChangeValue={val =>
 						onChange({ 'number-counter-stroke': val })
 					}
@@ -332,7 +385,10 @@ const NumberCounterControl = props => {
 			<ToggleSwitch
 				className='number-counter-percentage-sign-status'
 				label={__('Show percentage sign', 'maxi-block')}
-				selected={props['number-counter-percentage-sign-status']}
+				selected={getAttributesValue({
+					target: 'number-counter-percentage-sign-status',
+					props,
+				})}
 				onChange={val =>
 					onChange({
 						'number-counter-percentage-sign-status': val,
@@ -342,26 +398,41 @@ const NumberCounterControl = props => {
 			<ToggleSwitch
 				className='number-counter-circle-status'
 				label={__('Hide circle', 'maxi-block')}
-				selected={props['number-counter-circle-status']}
+				selected={getAttributesValue({
+					target: 'number-counter-circle-status',
+					props,
+				})}
 				onChange={val => {
 					onChange({
 						'number-counter-circle-status': val,
 						...(!val && {
-							...(props['number-counter-end'] > 100 && {
+							...(getAttributesValue({
+								target: 'number-counter-end',
+								props,
+							}) > 100 && {
 								'number-counter-end': 100,
 							}),
-							...(props['number-counter-start'] > 100 && {
+							...(getAttributesValue({
+								target: 'number-counter-start',
+								props,
+							}) > 100 && {
 								'number-counter-start': 100,
 							}),
 						}),
 					});
 				}}
 			/>
-			{!props['number-counter-circle-status'] && (
+			{!getAttributesValue({
+				target: 'number-counter-circle-status',
+				props,
+			}) && (
 				<ToggleSwitch
 					className='number-counter-rounded-status'
 					label={__('Rounded bar', 'maxi-block')}
-					selected={props['number-counter-rounded-status']}
+					selected={getAttributesValue({
+						target: 'number-counter-rounded-status',
+						props,
+					})}
 					onChange={val =>
 						onChange({
 							'number-counter-rounded-status': val,
@@ -438,28 +509,27 @@ const NumberCounterControl = props => {
 				}
 			/>
 			<hr />
-			{!props['number-counter-circle-status'] && (
+			{!getAttributesValue({
+				target: 'number-counter-circle-status',
+				props,
+			}) && (
 				<>
 					<ColorControl
 						label={__('Circle background', 'maxi-blocks')}
-						paletteStatus={getAttributeValue({
-							target: 'palette-status',
-							prefix: 'number-counter-circle-background-',
+						paletteStatus={getAttributesValue({
+							target: 'number-counter-circle-background-palette-status',
 							props,
 						})}
-						paletteColor={getAttributeValue({
-							target: 'palette-color',
-							prefix: 'number-counter-circle-background-',
+						paletteColor={getAttributesValue({
+							target: 'number-counter-circle-background-palette-color',
 							props,
 						})}
-						paletteOpacity={getAttributeValue({
-							target: 'palette-opacity',
-							prefix: 'number-counter-circle-background-',
+						paletteOpacity={getAttributesValue({
+							target: 'number-counter-circle-background-palette-opacity',
 							props,
 						})}
-						color={getAttributeValue({
-							target: 'color',
-							prefix: 'number-counter-circle-background-',
+						color={getAttributesValue({
+							target: 'number-counter-circle-background-color',
 							props,
 						})}
 						prefix='number-counter-circle-background-'

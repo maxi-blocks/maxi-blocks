@@ -10,7 +10,7 @@ import { RawHTML, useRef } from '@wordpress/element';
 import {
 	createTransitionObj,
 	getAttributeKey,
-	getAttributeValue,
+	getAttributesValue,
 	getBlockStyle,
 	getColorRGBAString,
 	getLastBreakpointAttribute,
@@ -276,7 +276,7 @@ const getLayerCardTitle = props => {
 				};
 			}
 			case 'image': {
-				const bgImageURL = getAttributeValue({
+				const bgImageURL = getAttributesValue({
 					target: 'background-image-mediaURL',
 					props: layer,
 				});

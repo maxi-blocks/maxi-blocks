@@ -30,7 +30,7 @@ const copyPasteMapping = {
 		'Map marker': {
 			group: {
 				Markers: 'map-markers',
-				'Marker icon': ['map-marker-icon', 'map-marker'],
+				'Marker icon': ['mmi', 'map-marker'],
 				'Marker fill colour': {
 					props: 'svg-fill',
 					isPalette: true,

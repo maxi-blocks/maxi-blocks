@@ -1,6 +1,18 @@
+import attributesShorter from '../dictionary/attributesShorter';
 import prefixAttributesCreator from '../prefixAttributesCreator';
 import divider from './divider';
 import dividerHover from './dividerHover';
+
+const accordionLineAttributes = {
+	'line-status-hover': {
+		type: 'boolean',
+		default: false,
+	},
+	'line-status-active': {
+		type: 'boolean',
+		default: false,
+	},
+};
 
 const rawAccordionLine = {
 	...divider,
@@ -17,14 +29,7 @@ const rawAccordionLine = {
 		type: 'number',
 		default: 100,
 	},
-	'line-status-hover': {
-		type: 'boolean',
-		default: false,
-	},
-	'line-status-active': {
-		type: 'boolean',
-		default: false,
-	},
+	...attributesShorter(accordionLineAttributes, 'accordionLine'),
 	...prefixAttributesCreator({
 		obj: divider,
 		prefix: 'active-',
@@ -36,8 +41,14 @@ const rawAccordionLine = {
 };
 
 const accordionLine = {
-	...prefixAttributesCreator({ obj: rawAccordionLine, prefix: 'header-' }),
-	...prefixAttributesCreator({ obj: rawAccordionLine, prefix: 'content-' }),
+	...prefixAttributesCreator({
+		obj: rawAccordionLine,
+		prefix: 'header-',
+	}),
+	...prefixAttributesCreator({
+		obj: rawAccordionLine,
+		prefix: 'content-',
+	}),
 };
 
 export default accordionLine;

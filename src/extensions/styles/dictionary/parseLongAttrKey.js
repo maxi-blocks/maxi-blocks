@@ -1,6 +1,6 @@
 import getAttrKeyWithoutBreakpoint from '../getAttrKeyWithoutBreakpoint';
 import getBreakpointFromAttribute from '../getBreakpointFromAttribute';
-import { getAttrKeyWithoutStatus, getNormalAttributeKey } from '../utils';
+import { getNormalAttributeKey } from '../utils';
 import { noTypeDictionary } from './attributesDictionary';
 
 /**
@@ -15,12 +15,10 @@ const parseLongAttrKey = attrKey => {
 	let cleanedKey = attrKey;
 
 	const isHover = attrKey.includes('-hover');
-	const isStatus = attrKey.includes('-status');
 	const breakpoint = getBreakpointFromAttribute(attrKey);
 
 	if (isHover) cleanedKey = getNormalAttributeKey(attrKey);
 	if (breakpoint) cleanedKey = getAttrKeyWithoutBreakpoint(cleanedKey);
-	if (isStatus) cleanedKey = getAttrKeyWithoutStatus(cleanedKey);
 
 	let prefix = '';
 	let shorterKey;
@@ -44,7 +42,7 @@ const parseLongAttrKey = attrKey => {
 
 	if (!shorterKey) return attrKey;
 
-	const response = `${prefix}${shorterKey}${isStatus ? '-status' : ''}${
+	const response = `${prefix}${shorterKey}${
 		breakpoint ? `-${breakpoint}` : ''
 	}${isHover ? '-hover' : ''}`;
 

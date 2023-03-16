@@ -6,8 +6,8 @@ const dictionary = {
 		animationDuration: 'ad',
 	},
 	accordionLine: {
-		'line-status-hover': 'lsh',
 		'line-status-active': 'lsa',
+		'line-status': 'ls',
 	},
 	clipPath: {
 		'clip-path': 'cp',

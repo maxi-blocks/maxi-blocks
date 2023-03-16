@@ -43,6 +43,12 @@ const dictionary = {
 		'margin-bottom-unit': 'mbu',
 		'margin-left-unit': 'mlu',
 	},
+	searchButton: {
+		buttonSkin: 'bs',
+		iconRevealAction: 'ira',
+		buttonContent: 'bc',
+		buttonContentClose: 'bcc',
+	},
 	customCss: {
 		'custom-css': 'cc',
 	},

@@ -46,15 +46,13 @@ const withMaxiProps = createHigherOrderComponent(
 					};
 				});
 
-			const maxiSetAttributes = useCallback(
-				obj =>
-					handleSetAttributes({
-						obj,
-						attributes,
-						clientId,
-						onChange: setAttributes,
-					}),
-				[]
+			const maxiSetAttributes = useCallback(obj =>
+				handleSetAttributes({
+					obj,
+					attributes,
+					clientId,
+					onChange: setAttributes,
+				})
 			);
 
 			const ref = useRef(null);
@@ -75,7 +73,7 @@ const withMaxiProps = createHigherOrderComponent(
 						styleObjKeys,
 						ref,
 					}),
-				[]
+				[styleObjKeys, ref]
 			);
 
 			const cleanInlineStyles = useCallback(
@@ -86,7 +84,7 @@ const withMaxiProps = createHigherOrderComponent(
 						styleObjKeys,
 						ref
 					),
-				[]
+				[styleObjKeys, ref]
 			);
 
 			const getBounds = useCallback(selector => {

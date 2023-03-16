@@ -42,6 +42,7 @@ const TextColor = props => {
 		textLevel,
 		styleCard,
 		isCaptionToolbar = false,
+		disableCustomFormats,
 	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi' && !isCaptionToolbar) return null;
@@ -92,12 +93,13 @@ const TextColor = props => {
 			breakpoint,
 			textLevel,
 			returnFormatValue: true,
+			disableCustomFormats,
 		});
 
 		const newFormatValue = {
 			...obj.formatValue,
 		};
-		delete obj.formatValue;
+		delete obj?.formatValue;
 
 		onChangeTextFormat(newFormatValue);
 

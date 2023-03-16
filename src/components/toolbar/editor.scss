@@ -47,7 +47,7 @@
 				}
 			}
 
-			.breadcrumbs-pin-toltip {
+			.breadcrumbs-pin-tooltip {
 				position: absolute;
 				top: -24px;
 				left: 0;
@@ -66,7 +66,7 @@
 				opacity: 0;
 				pointer-events: none;
 			}
-			.breadcrumbs-pin:hover .breadcrumbs-pin-toltip {
+			.breadcrumbs-pin:hover .breadcrumbs-pin-tooltip {
 				visibility: visible;
 				opacity: 1;
 				transition-delay: 0.8s;

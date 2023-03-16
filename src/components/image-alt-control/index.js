@@ -13,7 +13,13 @@ import TextControl from '../text-control';
 /**
  * Component
  */
-const ImageAltControl = ({ mediaID, altSelector, mediaAlt, onChange }) => {
+const ImageAltControl = ({
+	mediaID,
+	altSelector,
+	mediaAlt,
+	onChange,
+	dcStatus,
+}) => {
 	const { wpAlt, titleAlt } = useSelect(select => {
 		const { getMedia } = select('core');
 
@@ -31,6 +37,18 @@ const ImageAltControl = ({ mediaID, altSelector, mediaAlt, onChange }) => {
 	});
 
 	const getImageAltOptions = () => {
+		if (dcStatus)
+			return [
+				{
+					label: __('Dynamic content', 'maxi-blocks'),
+					value: 'custom',
+				},
+				{
+					label: __('None', 'maxi-blocks'),
+					value: 'none',
+				},
+			];
+
 		const response = [
 			{
 				label: __('Custom', 'maxi-blocks'),

@@ -1,4 +1,5 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import attributesShorter from '../dictionary/attributesShorter';
 
 const columnSize = breakpointAttributesCreator({
 	obj: {
@@ -12,4 +13,4 @@ const columnSize = breakpointAttributesCreator({
 	},
 });
 
-export default columnSize;
+export default attributesShorter(columnSize, 'columnSize');

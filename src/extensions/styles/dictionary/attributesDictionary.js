@@ -113,6 +113,10 @@ const dictionary = {
 		transition: 't',
 		'transition-change-all': 'tca',
 	},
+	columnSize: {
+		'column-size': 'cs',
+		'column-fit-content': 'cfc',
+	},
 	imageShape: {
 		'image-shape-scale': 'ishs',
 		'image-shape-rotate': 'ishr',

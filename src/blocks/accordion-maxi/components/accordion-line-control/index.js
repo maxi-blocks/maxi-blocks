@@ -76,8 +76,10 @@ const AccordionLineControl = props => {
 								<ToggleSwitch
 									label={__('Enable hover', 'maxi-blocks')}
 									selected={getAttributeValue({
-										target: 'line-status-hover',
+										target: 'line-status',
 										prefix,
+										isHover: true,
+										props,
 									})}
 									onChange={val =>
 										onChange({
@@ -86,8 +88,10 @@ const AccordionLineControl = props => {
 									}
 								/>
 								{getAttributeValue({
-									target: 'line-status-hover',
+									target: 'line-status',
 									prefix,
+									isHover: true,
+									props,
 								}) && (
 									<DividerControl
 										{...props}
@@ -107,6 +111,7 @@ const AccordionLineControl = props => {
 									selected={getAttributeValue({
 										target: 'line-status-active',
 										prefix,
+										props,
 									})}
 									onChange={val =>
 										onChange({
@@ -118,6 +123,7 @@ const AccordionLineControl = props => {
 								{getAttributeValue({
 									target: 'line-status-active',
 									prefix,
+									props,
 								}) && (
 									<DividerControl
 										{...props}

@@ -3,7 +3,11 @@ import {
 	borderWidth as defaultBorderWidth,
 } from '../../extensions/styles/defaults/border';
 
-import { prefixAttributesCreator } from '../../extensions/styles';
+import {
+	getAttributeKey,
+	getAttributeValue,
+	prefixAttributesCreator,
+} from '../../extensions/styles';
 
 const getBorderDefault = (
 	prefix,
@@ -30,39 +34,51 @@ export const borderNone = (prefix = '') => {
 		? prefixAttributesCreator({ obj: defaultBorderWidth, prefix })
 		: defaultBorderWidth;
 
+	const getDefaultAttributeValue = (target, props = currentDefaultBorder) =>
+		getAttributeValue({
+			target,
+			prefix,
+			props,
+			breakpoint: 'general',
+		}).default;
+
 	response = {
-		[`${prefix}border-palette-status`]:
-			currentDefaultBorder[`${prefix}border-palette-status-general`]
-				.default,
-		[`${prefix}border-palette-color`]:
-			currentDefaultBorder[`${prefix}border-palette-color-general`]
-				.default,
-		[`${prefix}border-palette-opacity`]:
-			currentDefaultBorder[`${prefix}border-palette-opacity-general`]
-				.default,
-		[`${prefix}border-color`]:
-			currentDefaultBorder[`${prefix}border-color-general`].default,
-		[`${prefix}border-style`]:
-			currentDefaultBorder[`${prefix}border-style-general`].default,
-		[`${prefix}border-top-width`]:
-			currentDefaultBorderWidth[`${prefix}border-top-width-general`]
-				.default,
-		[`${prefix}border-right-width`]:
-			currentDefaultBorderWidth[`${prefix}border-right-width-general`]
-				.default,
-		[`${prefix}border-bottom-width`]:
-			currentDefaultBorderWidth[`${prefix}border-bottom-width-general`]
-				.default,
-		[`${prefix}border-left-width`]:
-			currentDefaultBorderWidth[`${prefix}border-left-width-general`]
-				.default,
-		[`${prefix}border-sync-width`]:
-			currentDefaultBorderWidth[`${prefix}border-sync-width-general`]
-				.default,
-		[`${prefix}border-unit-width`]:
-			currentDefaultBorderWidth[`${prefix}border-unit-width-general`]
-				.default,
+		[getAttributeKey('border-palette-status', false, prefix)]:
+			getDefaultAttributeValue('border-palette-status'),
+		[getAttributeKey('border-palette-color', false, prefix)]:
+			getDefaultAttributeValue('border-palette-color'),
+		[getAttributeKey('border-palette-opacity', false, prefix)]:
+			getDefaultAttributeValue('border-palette-opacity'),
+		[getAttributeKey('border-color', false, prefix)]:
+			getDefaultAttributeValue('border-color'),
+		[getAttributeKey('border-style', false, prefix)]:
+			getDefaultAttributeValue('border-style'),
+		[getAttributeKey('border-top-width', false, prefix)]:
+			getDefaultAttributeValue(
+				'border-top-width',
+				currentDefaultBorderWidth
+			),
+		[getAttributeKey('border-right-width', false, prefix)]:
+			getDefaultAttributeValue(
+				'border-right-width',
+				currentDefaultBorderWidth
+			),
+		[getAttributeKey('border-bottom-width', false, prefix)]:
+			getDefaultAttributeValue(
+				'border-bottom-width',
+				currentDefaultBorderWidth
+			),
+		[getAttributeKey('border-left-width', false, prefix)]:
+			getDefaultAttributeValue(
+				'border-left-width',
+				currentDefaultBorderWidth
+			),
+		[getAttributeKey('border-sync-width', false, prefix)]:
+			getDefaultAttributeValue('border-sync-width', currentDefaultBorder),
+		[getAttributeKey('border-unit-width', false, prefix)]:
+			getDefaultAttributeValue('border-unit-width', currentDefaultBorder),
 	};
+
 	return response;
 };
 

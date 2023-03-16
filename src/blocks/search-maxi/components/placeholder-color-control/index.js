@@ -11,7 +11,10 @@ import {
 	ResponsiveTabsControl,
 	TextControl,
 } from '../../../../components';
-import { getLastBreakpointAttribute } from '../../../../extensions/styles';
+import {
+	getAttributeKey,
+	getLastBreakpointAttribute,
+} from '../../../../extensions/styles';
 
 const PlaceholderColorControl = ({
 	placeholder,
@@ -71,13 +74,30 @@ const PlaceholderColorControl = ({
 					paletteOpacity,
 				}) => {
 					onChange({
-						[`placeholder-color-${deviceType}`]: color,
-						[`placeholder-palette-color-${deviceType}`]:
-							paletteColor,
-						[`placeholder-palette-status-${deviceType}`]:
-							paletteStatus,
-						[`placeholder-palette-opacity-${deviceType}`]:
-							paletteOpacity,
+						[getAttributeKey(
+							'color',
+							false,
+							'placeholder-',
+							deviceType
+						)]: color,
+						[getAttributeKey(
+							'palette-color',
+							false,
+							'placeholder-',
+							deviceType
+						)]: paletteColor,
+						[getAttributeKey(
+							'palette-status',
+							false,
+							'placeholder-',
+							deviceType
+						)]: paletteStatus,
+						[getAttributeKey(
+							'palette-opacity',
+							false,
+							'placeholder-',
+							deviceType
+						)]: paletteOpacity,
 					});
 					cleanInlineStyles(
 						' .maxi-search-block__input',

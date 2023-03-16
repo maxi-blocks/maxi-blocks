@@ -6,7 +6,7 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 /**
  * Internal dependencies
  */
-import getAttributeValue from '../getAttributeValue';
+import getAttributesValue from '../getAttributesValue';
 
 /**
  * External dependencies
@@ -17,7 +17,7 @@ const getAlignmentFlexStyles = obj => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
-		const value = getAttributeValue({
+		const value = getAttributesValue({
 			target: 'alignment',
 			props: obj,
 			breakpoint,

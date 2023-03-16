@@ -46,7 +46,7 @@ const attributes = {
 	...prefixAttributesCreator({
 		obj: attributesData.backgroundColor,
 		prefix,
-		diffValAttr: { [`${prefix}background-palette-color-general`]: 4 },
+		diffValAttr: { [`${prefix}background-pac-general`]: 4 },
 	}),
 	...prefixAttributesCreator({
 		obj: attributesData.backgroundGradient,

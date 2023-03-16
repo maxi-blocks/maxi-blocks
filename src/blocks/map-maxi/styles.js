@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import {
+	getAttributesValue,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 	styleProcessor,
@@ -132,7 +133,12 @@ const getPopupTypographyStyles = (props, isTitle = false) => {
 				},
 				blockStyle,
 				prefix,
-				textLevel: isTitle ? props['map-marker-heading-level'] : 'p',
+				textLevel: isTitle
+					? getAttributesValue({
+							target: 'map-marker-heading-level',
+							props,
+					  })
+					: 'p',
 			}
 		),
 	};

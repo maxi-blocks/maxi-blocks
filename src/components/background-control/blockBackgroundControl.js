@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getAttributeValue } from '../../extensions/styles';
+import { getAttributesValue } from '../../extensions/styles';
 import BackgroundLayersControl from './backgroundLayersControl';
 
 /**
@@ -40,21 +40,21 @@ const BlockBackgroundControl = props => {
 	} = props;
 
 	const layersOptions = compact([
-		...getAttributeValue({
+		...getAttributesValue({
 			target: 'background-layers',
 			props,
 			prefix,
 		}),
 	]);
 	const layersHoverOptions = compact([
-		...getAttributeValue({
+		...getAttributesValue({
 			target: 'background-layers-hover',
 			props,
 			prefix,
 		}),
 	]);
 
-	const hoverStatus = getAttributeValue({
+	const hoverStatus = getAttributesValue({
 		target: 'block-background-status-hover',
 		props,
 		prefix,

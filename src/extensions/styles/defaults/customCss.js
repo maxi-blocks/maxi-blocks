@@ -1,4 +1,5 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import attributesShorter from '../dictionary/attributesShorter';
 
 const customCss = breakpointAttributesCreator({
 	obj: {
@@ -8,4 +9,4 @@ const customCss = breakpointAttributesCreator({
 	},
 });
 
-export default customCss;
+export default attributesShorter(customCss, 'customCss');

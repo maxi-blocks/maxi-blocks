@@ -7,7 +7,10 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import { SelectControl, SettingTabsControl } from '../../../../components';
-import { getDefaultAttribute } from '../../../../extensions/styles';
+import {
+	getAttributeKey,
+	getDefaultAttribute,
+} from '../../../../extensions/styles';
 import { prefixes } from '../../data';
 
 const SkinControl = ({ skin, iconRevealAction, onChange }) => {
@@ -31,7 +34,12 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 	]);
 
 	const classicResetStyles = {
-		[`${inputPrefix}background-palette-color-general`]: 1,
+		[getAttributeKey(
+			'palette-color',
+			false,
+			`${inputPrefix}background-`,
+			'general'
+		)]: 1,
 	};
 
 	return (
@@ -56,7 +64,12 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 				onChange={skin => {
 					if (skin === 'classic') {
 						onChange({
-							[`${inputPrefix}background-palette-color-general`]: 2,
+							[getAttributeKey(
+								'palette-color',
+								false,
+								`${inputPrefix}background-`,
+								'general'
+							)]: 2,
 							...iconRevealResetStyles,
 						});
 					} else if (skin === 'boxed') {

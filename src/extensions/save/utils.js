@@ -19,7 +19,7 @@ const WithLink = props => {
 	const { linkSettings, dynamicContent, children } = props;
 
 	const { 'dc-status': dcStatus, 'dc-link-status': dcLinkStatus } =
-		dynamicContent;
+		dynamicContent || false;
 
 	const hasLink =
 		!!linkSettings && !!linkSettings.url && !linkSettings?.disabled;

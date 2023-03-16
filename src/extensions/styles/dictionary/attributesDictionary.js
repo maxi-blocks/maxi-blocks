@@ -172,6 +172,12 @@ const dictionary = {
 		'title-background-status-hover': 'tbs',
 		'title-background-status-active': 'tbs',
 	},
+	link: {
+		link: 'l',
+		'link-hover': 'lh',
+		'link-active': 'la',
+		'link-visited': 'lv',
+	},
 	palette: {
 		'palette-status': 'pa-status', // `-status` will be changed to `st` in Phase 2
 		'palette-color': 'pac',

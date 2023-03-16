@@ -147,5 +147,10 @@ const actions = {
 			clientId,
 		};
 	},
+	setIsPageLoaded() {
+		return {
+			type: 'SET_IS_PAGE_LOADED',
+		};
+	},
 };
 export default actions;

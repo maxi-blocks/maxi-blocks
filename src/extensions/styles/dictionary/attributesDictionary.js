@@ -126,6 +126,10 @@ const dictionary = {
 		'map-max-zoom': 'mpmxz',
 		'map-markers': 'mpm',
 	},
+	mapMarker: {
+		'map-marker': 'mma',
+		'map-marker-icon': 'mmi',
+	},
 	transform: {
 		'transform-scale': 'ts',
 		'transform-translate': 'ttt',
@@ -157,6 +161,21 @@ const dictionary = {
 		'number-counter-circle-bar': 'nccb',
 		'number-counter-title-font-size': 'nctfs',
 		'number-counter-text': 'nct',
+	},
+	divider: {
+		'divider-border-top-width': 'dbtw',
+		'divider-border-top-unit': 'dbtu',
+		'divider-border-right-width': 'dbrw',
+		'divider-border-right-unit': 'dbru',
+		'divider-border-radius': 'dbr',
+		'divider-width': 'dw',
+		'divider-width-unit': 'dwu',
+		'divider-height': 'dh',
+		'line-align': 'la',
+		'line-vertical': 'lv',
+		'line-horizontal': 'lh',
+		'line-orientation': 'lo',
+		'divider-box-shadow-status-hover': 'dbsh',
 	},
 };
 

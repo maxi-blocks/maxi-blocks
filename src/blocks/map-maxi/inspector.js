@@ -108,7 +108,7 @@ const Inspector = props => {
 												deviceType={deviceType}
 											/>
 										),
-										ignoreIndicator: ['map-marker-icon'],
+										ignoreIndicator: ['mmi'],
 									},
 									{
 										label: __(

@@ -1,5 +1,6 @@
 import prefixAttributesCreator from '../prefixAttributesCreator';
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import attributesShorter from '../dictionary/attributesShorter';
 
 import { rawBorder } from './border';
 
@@ -62,10 +63,10 @@ const rawDivider = {
 		},
 	}),
 };
-const divider = {
-	...breakpointAttributesCreator({
+
+export default attributesShorter(
+	breakpointAttributesCreator({
 		obj: rawDivider,
 	}),
-};
-
-export default divider;
+	'divider'
+);

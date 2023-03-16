@@ -1,4 +1,5 @@
 import { svg } from './svg';
+import attributesShorter from '../dictionary/attributesShorter';
 
 const mapMarker = {
 	...{
@@ -17,4 +18,4 @@ const mapMarker = {
 	},
 };
 
-export default mapMarker;
+export default attributesShorter(mapMarker, 'mapMarker');

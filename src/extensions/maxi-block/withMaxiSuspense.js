@@ -56,31 +56,30 @@ const withMaxiSuspense = createHigherOrderComponent(
 				blockWantsToRender(uniqueID, clientId);
 			}, []);
 
-			const [canRender, setCanRender] = useState(
-				canBlockRender(uniqueID, clientId)
-			);
-			const [hasBeenConsolidated, setHasBeenConsolidated] =
-				useState(false);
-
 			useEffect(() => {
-				if (hasBeenConsolidated) return true;
+				// If the block has already been rendered, don't need the interval anymore.
+				if (!canRender || !hasBeenRendered) {
+					// Use this interval as a heartbeat to check if the store allows the block to render
+					// and if it has been already rendered.
+					const interval = setInterval(() => {
+						if (!canRender && canBlockRender(uniqueID, clientId)) {
+							setCanRender(true);
 
-				const interval = setInterval(() => {
-					if (!canRender && canBlockRender(uniqueID, clientId)) {
-						setCanRender(true);
+							clearInterval(interval);
+						}
+						if (
+							!hasBeenRendered &&
+							blockHasBeenRendered(uniqueID, clientId)
+						) {
+							setHasBeenRendered(true);
 
-						clearInterval(interval);
-					}
-				}, 100);
+							clearInterval(interval);
+						}
+					}, 100);
 
-				return () => clearInterval(interval);
-			});
-
-			const onMountBlock = useCallback(() => {
-				blockHasBeenRendered(uniqueID);
-
-				setHasBeenConsolidated(true);
-			});
+					return () => clearInterval(interval);
+				}
+			}, [setCanRender, setHasBeenRendered]);
 
 			if (!canRender) return <ContentLoader />;
 

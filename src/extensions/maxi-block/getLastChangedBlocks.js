@@ -30,7 +30,7 @@ const getLastChangedBlocks = () => {
 
 	const diffBlocks = diff(undoEdit?.edits?.blocks, entityRecordEdit?.blocks);
 
-	if (!diffBlocks) return false;
+	if (typeof diffBlocks !== 'object') return false;
 
 	return Object.values(diffBlocks);
 };

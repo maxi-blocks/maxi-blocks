@@ -221,22 +221,14 @@ const Inspector = props => {
 																									'input-padding-left-general': 30,
 																								}
 																							);
-																						val ===
-																							'right' &&
+																						(val ===
+																							'right' ||
+																							val ===
+																								'center') &&
 																							maxiSetAttributes(
 																								{
-																									'input-border-right-width-general': 0,
 																									'input-border-left-width-general': 4,
-																									'input-padding-left-general': 10,
-																									'input-padding-right-general': 30,
-																								}
-																							);
-																						val ===
-																							'center' &&
-																							maxiSetAttributes(
-																								{
 																									'input-border-right-width-general': 0,
-																									'input-border-left-width-general': 4,
 																									'input-padding-left-general': 10,
 																									'input-padding-right-general': 30,
 																								}

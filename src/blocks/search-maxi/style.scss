@@ -1,11 +1,12 @@
 body.maxi-blocks--active .maxi-search-block {
 	position: relative;
 	display: flex;
-	align-items: stretch;
+	align-items: center;
 	height: auto;
 
 	&--icon-left {
 		justify-content: flex-start;
+
 		.maxi-search-block__button {
 			order: 0;
 		}
@@ -19,10 +20,14 @@ body.maxi-blocks--active .maxi-search-block {
 
 		.maxi-search-block__button {
 			order: 1;
-
-			.maxi-search-block__input--hidden + & {
-				margin: 0 !important;
-			}
+		}
+		.maxi-search-block__input--hidden {
+			margin: 0 !important;
+			padding: 0 !important;
+			border: 0;
+		}
+		.maxi-search-block__input {
+			margin-right: -25px !important;
 		}
 	}
 

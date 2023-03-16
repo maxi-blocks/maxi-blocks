@@ -126,6 +126,10 @@ const dictionary = {
 		'map-max-zoom': 'mpmxz',
 		'map-markers': 'mpm',
 	},
+	mapMarker: {
+		'map-marker': 'mma',
+		'map-marker-icon': 'mmi',
+	},
 	transform: {
 		'transform-scale': 'ts',
 		'transform-translate': 'ttt',

@@ -16,7 +16,6 @@ import { dispatch, resolveSelect, select, useSelect } from '@wordpress/data';
  * Internal dependencies
  */
 import {
-	entityRecordsWrapper,
 	getBlockStyle,
 	getDefaultAttribute,
 	getGroupAttributes,
@@ -295,7 +294,6 @@ class MaxiBlockComponent extends Component {
 
 			// IB
 			removeUnmountedBlockFromRelations(this.props.attributes.uniqueID);
-			console.log('deleting relations', this.props.attributes.uniqueID);
 		}
 
 		if (this.maxiBlockWillUnmount)

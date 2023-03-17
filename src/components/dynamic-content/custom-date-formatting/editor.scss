@@ -9,14 +9,27 @@
 	&__help-trigger {
 		position: relative;
 	}
-
 	&__help-icon {
-		top: 0%;
-		bottom: 0%;
-		left: 80px;
-		right: inherit;
-		margin-top: auto;
-		margin-bottom: auto;
+		display: flex;
+		column-gap: 10px;
+		align-items: center;
+
+		.maxi-custom-date-formatting__help-icon-span {
+			width: 16px;
+			height: 16px;
+			border-radius: 50%;
+			border: 1px solid var(--maxi-grey-1-color);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			min-width: 16px;
+			font-size: 12px !important;
+			margin-bottom: 8px;
+
+			&:hover {
+				border-color: var(--maxi-grey-5-color);
+			}
+		}
 	}
 
 	.maxi-base-control__field {

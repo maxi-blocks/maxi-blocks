@@ -23,42 +23,44 @@ import './editor.scss';
 const DateHelperPopover = () => (
 	<Popover className='maxi-date-helper-popover maxi-popover-button'>
 		<p>
-			<b>{__('d', 'maxi-blocks')}</b> -
+			<b>d - </b>
 			{__('day in numeric format', 'maxi-blocks')}
 		</p>
 		<p>
-			<b>{__('D', 'maxi-blocks')}</b> -
+			<b>D - </b>
 			{__('day in text format', 'maxi-blocks')}
 		</p>
 		<p>
-			<b>{__('DS', 'maxi-blocks')}</b> -
+			<b>DS - </b>
 			{__('day in text format, short', 'maxi-blocks')}
 		</p>
 		<p>
-			<b>{__('DV', 'maxi-blocks')}</b> -
+			<b>DV - </b>
 			{__('day in text format, very short', 'maxi-blocks')}
 		</p>
 		<p>
-			<b>{__('m', 'maxi-blocks')}</b> -
+			<b>m - </b>
 			{__('month in numeric format', 'maxi-blocks')}
 		</p>
 		<p>
-			<b>{__('M', 'maxi-blocks')}</b> -
+			<b>M - </b>
 			{__('month in text format', 'maxi-blocks')}
 		</p>
 		<p>
-			<b>{__('MS', 'maxi-blocks')}</b> -
+			<b>MS - </b>
 			{__('month in text format, short', 'maxi-blocks')}
 		</p>
 		<p>
-			<b>{__('y', 'maxi-blocks')}</b> -
+			<b>y - </b>
 			{__('year in short format', 'maxi-blocks')}
 		</p>
 		<p>
-			<b>{__('Y', 'maxi-blocks')}</b> -{__('full year', 'maxi-blocks')}
+			<b>Y - </b>
+			{__('full year', 'maxi-blocks')}
 		</p>
 		<p>
-			<b>{__('t', 'maxi-blocks')}</b> -{__('time', 'maxi-blocks')}
+			<b>t - </b>
+			{__('time', 'maxi-blocks')}
 		</p>
 	</Popover>
 );
@@ -165,17 +167,17 @@ const DateFormatting = props => {
 						className='maxi-custom-date-formatting__help-icon'
 						onClick={() => setShowHelp(state => !state)}
 					>
+						<TextControl
+							label={__('Date format', 'maxi-blocks')}
+							help={false}
+							placeholder={__('d.m.Y t', 'maxi-blocks')}
+							value={format}
+							onChange={val => validateAnchor(val)}
+						/>
 						<span className='maxi-custom-date-formatting__help-icon-span'>
 							i
 						</span>
 					</div>
-					<TextControl
-						label={__('Date format', 'maxi-blocks')}
-						help={false}
-						placeholder={__('d.m.Y t', 'maxi-blocks')}
-						value={format}
-						onChange={val => validateAnchor(val)}
-					/>
 				</div>
 			)}
 			{customDate && (

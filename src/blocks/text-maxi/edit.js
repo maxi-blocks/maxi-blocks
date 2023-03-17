@@ -5,6 +5,7 @@
  */
 import { RichText, RichTextShortcut } from '@wordpress/block-editor';
 import { createBlock } from '@wordpress/blocks';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -205,7 +206,10 @@ class edit extends MaxiBlockComponent {
 					ref={this.blockRef}
 					{...getMaxiBlockAttributes(this.props)}
 				>
-					<img src={previews.text_preview} />
+					<img // eslint-disable-next-line no-undef
+						src={previews.text_preview}
+						alt={__('Text block preview', 'maxi-blocks')}
+					/>
 				</MaxiBlock>
 			);
 

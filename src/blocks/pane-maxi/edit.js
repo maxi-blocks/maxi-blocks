@@ -189,7 +189,10 @@ class edit extends MaxiBlockComponent {
 					ref={this.blockRef}
 					{...getMaxiBlockAttributes(this.props)}
 				>
-					<img src={previews.pane_preview} />
+					<img // eslint-disable-next-line no-undef
+						src={previews.pane_preview}
+						alt={__('Pane block preview', 'maxi-blocks')}
+					/>
 				</MaxiBlock>
 			);
 

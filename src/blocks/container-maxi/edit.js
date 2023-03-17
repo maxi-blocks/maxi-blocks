@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { dispatch } from '@wordpress/data';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -88,7 +89,10 @@ class edit extends MaxiBlockComponent {
 					ref={this.blockRef}
 					{...getMaxiBlockAttributes(this.props)}
 				>
-					<img src={previews.container_preview} />
+					<img // eslint-disable-next-line no-undef
+						src={previews.container_preview}
+						alt={__('Container block preview', 'maxi-blocks')}
+					/>
 				</MaxiBlock>
 			);
 

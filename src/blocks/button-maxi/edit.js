@@ -108,7 +108,7 @@ class edit extends MaxiBlockComponent {
 			boxShadow: '.maxi-button-block__button',
 		};
 
-		if (attributes['preview'])
+		if (attributes.preview)
 			return (
 				<MaxiBlock
 					key={`maxi-button--${uniqueID}`}

@@ -87,7 +87,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 						'nc_preview' => plugins_url( '../../img/block-preview/nc.png', __FILE__ ),
 						'search_preview' => plugins_url( '../../img/block-preview/search.png', __FILE__ ),
 						'slider_preview' => plugins_url( '../../img/block-preview/slider.png', __FILE__ ),
-						'templates_preview' => plugins_url( '../../img/block-preview/templates.png', __FILE__ ),
+						'library_preview' => plugins_url( '../../img/block-preview/templates.png', __FILE__ ),
 						'text_preview' => plugins_url( '../../img/block-preview/text.png', __FILE__ ),
 						'video_preview' => plugins_url( '../../img/block-preview/video.png', __FILE__ ),                        
 						'pane_preview' => plugins_url( '../../img/block-preview/pane.png', __FILE__ ),                        

@@ -2,7 +2,7 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { select, useDispatch } from '@wordpress/data';
+import { useDispatch, select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -82,10 +82,10 @@ const RelationControl = props => {
 
 	const getParsedOptions = rawOptions => {
 		const parseOptionsArray = options =>
-			options.map(({ label }) => ({
+			options?.map(({ label }) => ({
 				label,
 				value: label,
-			}));
+			})) ?? [];
 
 		const defaultSetting = {
 			label: __('Choose settings', 'maxi-blocks'),

@@ -50,13 +50,19 @@ import {
 	cloudTopOpacity,
 	cloudBottomOpacity,
 } from '../../icons';
+import { getAttributesValue } from '../../extensions/styles';
 
 /**
  * Component
  */
 const ShapeDivider = ({ location, ...props }) => {
 	const showShapes = () => {
-		switch (props[`shape-divider-${location}-shape-style`]) {
+		const shapeDividerStyle = getAttributesValue({
+			target: `shape-divider-${location}-style`,
+			props,
+		});
+
+		switch (shapeDividerStyle) {
 			case 'waves-top':
 				return wavesTop;
 			case 'waves-bottom':

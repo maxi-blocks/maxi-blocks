@@ -81,9 +81,16 @@ const getWrapperObject = props => {
 };
 
 const getHoverWrapperObject = props => {
+	const { borderStatusHover, boxShadowStatusHover, opacityStatusHover } =
+		getAttributesValue({
+			target: ['border-status', 'box-shadow-status', 'opacity-status'],
+			props,
+			isHover: true,
+		});
+
 	const response = {
 		border:
-			props['border-status-hover'] &&
+			borderStatusHover &&
 			getBorderStyles({
 				obj: {
 					...getGroupAttributes(
@@ -96,7 +103,7 @@ const getHoverWrapperObject = props => {
 				blockStyle: props.blockStyle,
 			}),
 		boxShadow:
-			props['box-shadow-status-hover'] &&
+			boxShadowStatusHover &&
 			getBoxShadowStyles({
 				obj: {
 					...getGroupAttributes(props, 'boxShadow', true),
@@ -105,7 +112,7 @@ const getHoverWrapperObject = props => {
 				blockStyle: props.blockStyle,
 			}),
 		opacity:
-			props['opacity-status-hover'] &&
+			opacityStatusHover &&
 			getOpacityStyles(
 				{ ...getGroupAttributes(props, 'opacity', true) },
 				true

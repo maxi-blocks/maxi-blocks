@@ -72,6 +72,4 @@ const accordionIcon = {
 	},
 };
 
-console.log(accordionIcon);
-
 export default accordionIcon;

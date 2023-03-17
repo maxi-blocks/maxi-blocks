@@ -88,9 +88,16 @@ const getNormalObject = props => {
 };
 
 const getHoverObject = props => {
+	const { borderStatusHover, boxShadowStatusHover, opacityStatusHover } =
+		getAttributesValue({
+			target: ['border-status', 'box-shadow-status', 'opacity-status'],
+			props,
+			isHover: true,
+		});
+
 	const response = {
 		border:
-			props['border-status-hover'] &&
+			borderStatusHover &&
 			getBorderStyles({
 				obj: {
 					...getGroupAttributes(
@@ -103,7 +110,7 @@ const getHoverObject = props => {
 				blockStyle: props.blockStyle,
 			}),
 		boxShadow:
-			props['box-shadow-status-hover'] &&
+			boxShadowStatusHover &&
 			getBoxShadowStyles({
 				obj: {
 					...getGroupAttributes(props, 'boxShadow', true),
@@ -112,7 +119,7 @@ const getHoverObject = props => {
 				blockStyle: props.blockStyle,
 			}),
 		opacity:
-			props['opacity-status-hover'] &&
+			opacityStatusHover &&
 			getOpacityStyles(
 				{ ...getGroupAttributes(props, 'opacity', true) },
 				true
@@ -123,6 +130,12 @@ const getHoverObject = props => {
 };
 
 const getIconObject = (props, uniqueID) => {
+	const iconStatusHover = getAttributesValue({
+		target: 'icon-status',
+		props,
+		isHover: true,
+	});
+
 	const response = {
 		...getButtonIconStyles({
 			obj: props,
@@ -130,7 +143,7 @@ const getIconObject = (props, uniqueID) => {
 			target: ' .maxi-pane-block__icon',
 			wrapperTarget: `.maxi-pane-block[data-accordion="${uniqueID}"][aria-expanded=false] .maxi-pane-block__header`,
 		}),
-		...(props['icon-status-hover'] &&
+		...(iconStatusHover &&
 			getButtonIconStyles({
 				obj: props,
 				blockStyle: props.blockStyle,
@@ -243,7 +256,10 @@ const getPaneHeaderObject = props => {
 			paneHeaderIconPosition: {
 				general: {
 					'flex-direction':
-						props['icon-position'] === 'right'
+						getAttributesValue({
+							target: 'icon-position',
+							props,
+						}) === 'right'
 							? 'row'
 							: 'row-reverse',
 				},
@@ -272,7 +288,7 @@ const getPaneHeaderObject = props => {
 				),
 			},
 		},
-		...(getAttributeValue({
+		...(getAttributesValue({
 			target: 'line-status-active',
 			prefix: 'header-',
 			props,
@@ -290,7 +306,7 @@ const getPaneHeaderObject = props => {
 				},
 			},
 		}),
-		...(getAttributeValue({
+		...(getAttributesValue({
 			target: 'line-status',
 			prefix: 'header-',
 			isHover: true,
@@ -372,7 +388,7 @@ const getPaneContentObject = props => {
 					),
 				},
 			},
-			...(getAttributeValue({
+			...(getAttributesValue({
 				target: 'line-status-active',
 				prefix: 'content-',
 				props,
@@ -390,7 +406,7 @@ const getPaneContentObject = props => {
 					},
 				},
 			}),
-			...(getAttributeValue({
+			...(getAttributesValue({
 				target: 'line-status',
 				prefix: 'content-',
 				isHover: true,

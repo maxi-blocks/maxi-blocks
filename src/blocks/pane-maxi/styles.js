@@ -1,7 +1,11 @@
 /**
  * Internal dependencies
  */
-import { getGroupAttributes, styleProcessor } from '../../extensions/styles';
+import {
+	getAttributesValue,
+	getGroupAttributes,
+	styleProcessor,
+} from '../../extensions/styles';
 import {
 	getBackgroundStyles,
 	getBlockBackgroundStyles,
@@ -73,9 +77,16 @@ const getNormalObject = props => {
 };
 
 const getHoverObject = props => {
+	const { borderStatusHover, boxShadowStatusHover, opacityStatusHover } =
+		getAttributesValue({
+			target: ['border-status', 'box-shadow-status', 'opacity-status'],
+			props,
+			isHover: true,
+		});
+
 	const response = {
 		border:
-			props['border-status-hover'] &&
+			borderStatusHover &&
 			getBorderStyles({
 				obj: {
 					...getGroupAttributes(
@@ -88,7 +99,7 @@ const getHoverObject = props => {
 				blockStyle: props.blockStyle,
 			}),
 		boxShadow:
-			props['box-shadow-status-hover'] &&
+			boxShadowStatusHover &&
 			getBoxShadowStyles({
 				obj: {
 					...getGroupAttributes(props, 'boxShadow', true),
@@ -97,7 +108,7 @@ const getHoverObject = props => {
 				blockStyle: props.blockStyle,
 			}),
 		opacity:
-			props['opacity-status-hover'] &&
+			opacityStatusHover &&
 			getOpacityStyles(
 				{ ...getGroupAttributes(props, 'opacity', true) },
 				true
@@ -154,8 +165,20 @@ const getNormalStyles = (props, prefix) => {
 };
 
 const getHoverStyles = (props, prefix) => {
+	const { backgroundStatusHover, borderStatusHover, boxShadowStatusHover } =
+		getAttributesValue({
+			target: [
+				'background-status-hover',
+				'border-status-hover',
+				'box-shadow-status-hover',
+			],
+			props,
+			isHover: true,
+			prefix,
+		});
+
 	const response = {
-		...(props[`${prefix}background-status-hover`] &&
+		...(backgroundStatusHover &&
 			getBackgroundStyles({
 				...getGroupAttributes(
 					props,
@@ -168,7 +191,7 @@ const getHoverStyles = (props, prefix) => {
 				isHover: true,
 			})),
 		border:
-			props[`${prefix}border-status-hover`] &&
+			borderStatusHover &&
 			getBorderStyles({
 				obj: {
 					...getGroupAttributes(
@@ -183,7 +206,7 @@ const getHoverStyles = (props, prefix) => {
 				isHover: true,
 			}),
 		boxShadow:
-			props[`${prefix}box-shadow-status-hover`] &&
+			boxShadowStatusHover &&
 			getBoxShadowStyles({
 				obj: {
 					...getGroupAttributes(props, 'boxShadow', true, prefix),
@@ -200,8 +223,20 @@ const getHoverStyles = (props, prefix) => {
 const getActiveStyles = (props, rawPrefix) => {
 	const prefix = `${rawPrefix}active-`;
 
+	const { backgroundStatusHover, borderStatusHover, boxShadowStatusHover } =
+		getAttributesValue({
+			target: [
+				'background-status-hover',
+				'border-status-hover',
+				'box-shadow-status-hover',
+			],
+			props,
+			isHover: true,
+			prefix: rawPrefix,
+		});
+
 	return {
-		...(props[`${rawPrefix}background-status-active`] &&
+		...(backgroundStatusHover &&
 			getBackgroundStyles({
 				...getGroupAttributes(
 					props,
@@ -213,7 +248,7 @@ const getActiveStyles = (props, rawPrefix) => {
 				prefix,
 			})),
 		border:
-			props[`${rawPrefix}border-status-active`] &&
+			borderStatusHover &&
 			getBorderStyles({
 				obj: {
 					...getGroupAttributes(
@@ -227,7 +262,7 @@ const getActiveStyles = (props, rawPrefix) => {
 				prefix,
 			}),
 		boxShadow:
-			props[`${rawPrefix}box-shadow-status-active`] &&
+			boxShadowStatusHover &&
 			getBoxShadowStyles({
 				obj: {
 					...getGroupAttributes(props, 'boxShadow', false, prefix),

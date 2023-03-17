@@ -6,7 +6,10 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { getDefaultAttribute } from '../../../../extensions/styles';
+import {
+	getAttributesValue,
+	getDefaultAttribute,
+} from '../../../../extensions/styles';
 import {
 	ToggleSwitch,
 	AdvancedNumberControl,
@@ -29,6 +32,15 @@ const SliderControl = props => {
 		pauseOnHover,
 		pauseOnInteraction,
 	} = props;
+	const { sliderAutoplaySpeed, sliderTransition, sliderTransitionSpeed } =
+		getAttributesValue({
+			target: [
+				'slider-autoplay-speed',
+				'slider-transition',
+				'slider-transition-speed',
+			],
+			props,
+		});
 
 	const classes = classnames('maxi-slider-control', className);
 
@@ -70,7 +82,7 @@ const SliderControl = props => {
 						max={10000}
 						initial={2500}
 						step={100}
-						value={props['slider-autoplay-speed']}
+						value={sliderAutoplaySpeed}
 						onChangeValue={val => {
 							onChange({
 								'slider-autoplay-speed':
@@ -105,7 +117,7 @@ const SliderControl = props => {
 						value: 'fade',
 					},
 				]}
-				value={props['slider-transition']}
+				value={sliderTransition}
 				onChange={val => {
 					onChange({
 						'slider-transition': val,
@@ -118,7 +130,7 @@ const SliderControl = props => {
 				max={10000}
 				initial={200}
 				step={1}
-				value={props['slider-transition-speed']}
+				value={sliderTransitionSpeed}
 				onChangeValue={val => {
 					onChange({
 						'slider-transition-speed':

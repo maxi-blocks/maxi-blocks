@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import OpacityControl from '../opacity-control';
 import {
+	getAttributesValue,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
@@ -21,7 +22,11 @@ import ManageHoverTransitions from '../manage-hover-transitions';
  */
 const opacity = ({ props, depth = 2 }) => {
 	const { attributes, deviceType, maxiSetAttributes } = props;
-	const hoverStatus = attributes['opacity-status-hover'];
+	const opacityopacityHoverStatus = getAttributesValue({
+		target: 'opacity-statys',
+		props: attributes,
+		isHover: true,
+	});
 
 	const normalOpacity = getLastBreakpointAttribute({
 		target: 'opacity',
@@ -55,14 +60,14 @@ const opacity = ({ props, depth = 2 }) => {
 										'Enable opacity hover',
 										'maxi-blocks'
 									)}
-									selected={hoverStatus}
+									selected={opacityHoverStatus}
 									onChange={value =>
 										maxiSetAttributes({
 											'opacity-status-hover': value,
 										})
 									}
 								/>
-								{hoverStatus && (
+								{opacityHoverStatus && (
 									<OpacityControl
 										opacity={
 											getLastBreakpointAttribute({

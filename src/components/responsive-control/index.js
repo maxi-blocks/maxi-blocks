@@ -13,6 +13,7 @@ import AdvancedNumberControl from '../advanced-number-control';
  * External dependencies
  */
 import classnames from 'classnames';
+import { getAttributesValue } from '../../extensions/styles';
 
 /**
  * Component
@@ -38,7 +39,11 @@ const ResponsiveControl = props => {
 				defaultValue={
 					defaultBreakpoints[breakpoint === 'xxl' ? 'xl' : breakpoint]
 				}
-				value={props[`breakpoints-${breakpoint}`]}
+				value={getAttributesValue({
+					target: 'breakpoints',
+					props,
+					breakpoint,
+				})}
 				onChangeValue={val => {
 					onChange({
 						[`breakpoints-${

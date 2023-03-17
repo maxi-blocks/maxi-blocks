@@ -26,11 +26,12 @@ import './style.scss';
  */
 const BackgroundContent = props => {
 	const { wrapperRef, prefix = '' } = props;
+	const { backgroundLayers, backgroundLayersHover } = getAttributesValue({
+		target: ['background-layers', 'background-layers-hover'],
+		props,
+	});
 
-	const layers = compact([
-		...props['background-layers'],
-		...props['background-layers-hover'],
-	]);
+	const layers = compact([...backgroundLayers, ...backgroundLayersHover]);
 
 	if (layers) layers.sort((a, b) => a.order - b.order);
 
@@ -150,9 +151,13 @@ const BackgroundContent = props => {
 const BackgroundDisplayer = props => {
 	const { className, isSave = false } = props;
 
+	const { backgroundLayers, backgroundLayersHover } = getAttributesValue({
+		target: ['background-layers', 'background-layers-hover'],
+		props,
+	});
+
 	const haveLayers =
-		!isEmpty(props['background-layers']) ||
-		!isEmpty(props['background-layers-hover']);
+		!isEmpty(backgroundLayers) || !isEmpty(backgroundLayersHover);
 
 	if (!haveLayers) return null;
 

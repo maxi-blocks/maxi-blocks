@@ -49,15 +49,12 @@ const clipPath = ({ props, selector, prefix = '' }) => {
 							<>
 								<ToggleSwitch
 									label={__('Enable hover', 'maxi-blocks')}
-									selected={
-										attributes[
-											getAttributeKey(
-												'clip-path-status',
-												true,
-												prefix
-											)
-										]
-									}
+									selected={getAttributesValue({
+										target: 'clip-path-status',
+										props: attributes,
+										isHover: true,
+										prefix,
+									})}
 									onChange={val =>
 										maxiSetAttributes({
 											[getAttributeKey(

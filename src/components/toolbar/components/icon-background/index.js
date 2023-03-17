@@ -11,6 +11,7 @@ import ColorControl from '../../../color-control';
 import ToggleSwitch from '../../../toggle-switch';
 import {
 	getAttributeKey,
+	getAttributesValue,
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
 
@@ -34,6 +35,11 @@ const IconBackground = props => {
 
 	if (blockName !== 'maxi-blocks/button-maxi') return null;
 
+	const iconInherit = getAttributesValue({
+		target: 'icon-inherit',
+		props,
+	});
+
 	return (
 		<ToolbarPopover
 			className='toolbar-item__background'
@@ -48,14 +54,14 @@ const IconBackground = props => {
 						'Inherit colour/background from button',
 						'maxi-blocks'
 					)}
-					selected={props['icon-inherit']}
+					selected={iconInherit}
 					onChange={val => {
 						onChange({
 							'icon-inherit': val,
 						});
 					}}
 				/>
-				{props['icon-inherit'] ? (
+				{iconInherit ? (
 					<p className='toolbar-item__icon-background__popover__warning'>
 						{__(
 							'Icon background is inheriting from button.',

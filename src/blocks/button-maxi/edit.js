@@ -13,7 +13,10 @@ import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import IconToolbar from '../../components/toolbar/iconToolbar';
-import { getIconPositionClass } from '../../extensions/styles';
+import {
+	getAttributesValue,
+	getIconPositionClass,
+} from '../../extensions/styles';
 import { getSVGWidthHeightRatio } from '../../extensions/svg';
 import getStyles from './styles';
 import { copyPasteMapping, maxiAttributes } from './data';
@@ -87,13 +90,14 @@ class edit extends MaxiBlockComponent {
 		const { attributes, maxiSetAttributes } = this.props;
 		const { uniqueID } = attributes;
 		const { scValues } = this.state;
+		const { iconPosition, iconOnly, iconContent } = getAttributesValue({
+			target: ['icon-position', 'icon-only', 'icon-content'],
+			props: attributes,
+		});
 
 		const buttonClasses = classnames(
 			'maxi-button-block__button',
-			getIconPositionClass(
-				attributes['icon-position'],
-				'maxi-button-block__button'
-			)
+			getIconPositionClass(iconPosition, 'maxi-button-block__button')
 		);
 
 		const inlineStylesTargets = {
@@ -131,7 +135,7 @@ class edit extends MaxiBlockComponent {
 				{...getMaxiBlockAttributes(this.props)}
 			>
 				<div className={buttonClasses}>
-					{!attributes['icon-only'] && (
+					{!iconOnly && (
 						<RichText
 							className='maxi-button-block__content'
 							value={attributes.buttonContent}
@@ -149,13 +153,13 @@ class edit extends MaxiBlockComponent {
 							withoutInteractiveFormatting
 						/>
 					)}
-					{attributes['icon-content'] && (
+					{iconContent && (
 						<>
 							<IconToolbar
 								key={`icon-toolbar-${uniqueID}`}
 								ref={
-									attributes['icon-position'] === 'top' ||
-									attributes['icon-position'] === 'bottom'
+									iconPosition === 'top' ||
+									iconPosition === 'bottom'
 										? this.blockRef
 										: this.iconRef
 								}
@@ -167,7 +171,7 @@ class edit extends MaxiBlockComponent {
 								uniqueID={uniqueID}
 								className='maxi-button-block__icon'
 							>
-								<RawHTML>{attributes['icon-content']}</RawHTML>
+								<RawHTML>{iconContent}</RawHTML>
 							</IconWrapper>
 						</>
 					)}

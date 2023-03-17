@@ -1,4 +1,5 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import attributesShorter from '../dictionary/attributesShorter';
 
 const rawArrow = {
 	'arrow-status': {
@@ -29,4 +30,4 @@ const arrow = {
 	},
 };
 
-export default arrow;
+export default attributesShorter(arrow, 'arrow');

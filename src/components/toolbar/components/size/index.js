@@ -50,6 +50,12 @@ const Size = props => {
 
 	if (EXCLUDED_BLOCKS.includes(blockName)) return null;
 
+	const fullWidth = getAttributesValue({
+		target: 'full-width',
+		props,
+		breakpoint,
+	});
+
 	return (
 		<ToolbarPopover
 			className='toolbar-item__size'
@@ -63,9 +69,7 @@ const Size = props => {
 					<div>
 						<ToggleSwitch
 							label={__('Enable full width', 'maxi-blocks')}
-							selected={
-								props[`full-width-${breakpoint}`] === 'full'
-							}
+							selected={fullWidth === 'full'}
 							onChange={val => {
 								const full = val ? 'full' : 'normal';
 								onChange({
@@ -75,7 +79,7 @@ const Size = props => {
 						/>
 					</div>
 				)}
-				{props[`full-width-${breakpoint}`] === 'normal' && (
+				{fullWidth === 'normal' && (
 					<>
 						<AdvancedNumberControl
 							label={__('Width', 'maxi-blocks')}

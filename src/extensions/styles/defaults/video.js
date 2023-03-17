@@ -1,3 +1,4 @@
+import attributesShorter from '../dictionary/attributesShorter';
 import prefixAttributesCreator from '../prefixAttributesCreator';
 import { icon } from './icon';
 import { iconHover } from './iconHover';
@@ -113,4 +114,4 @@ const video = {
 	...icons,
 };
 
-export default video;
+export default attributesShorter(video, 'video');

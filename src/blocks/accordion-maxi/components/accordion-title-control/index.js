@@ -116,7 +116,7 @@ const TitleSettings = props => {
 const AccordionTitleSettings = props => {
 	const { onChange, breakpoint } = props;
 
-	const titleLevel = getAttributeValue({
+	const titleLevel = getAttributesValue({
 		target: 'titleLevel',
 		props,
 	});

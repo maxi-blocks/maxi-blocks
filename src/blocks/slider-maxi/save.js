@@ -27,10 +27,24 @@ const save = props => {
 		pauseOnInteraction,
 		numberOfSlides,
 	} = attributes;
-
-	const sliderTransition = attributes['slider-transition'];
-	const sliderTransitionSpeed = attributes['slider-transition-speed'];
-	const sliderAutoplaySpeed = attributes['slider-autoplay-speed'];
+	const {
+		sliderTransition,
+		sliderTransitionSpeed,
+		sliderAutoplaySpeed,
+		navigationArrowFirstIconContent,
+		navigationArrowSecondIconContent,
+		navigationDotIconContent,
+	} = getAttributesValue({
+		target: [
+			'slider-transition',
+			'slider-transition-speed',
+			'slider-autoplay-speed',
+			'navigation-arrow-first-icon-content',
+			'navigation-arrow-second-icon-content',
+			'navigation-dot-icon-content',
+		],
+		props: attributes,
+	});
 
 	const name = 'maxi-blocks/slider-maxi';
 
@@ -64,13 +78,7 @@ const save = props => {
 						attributes,
 					}) && (
 						<span className='maxi-slider-block__arrow maxi-slider-block__arrow--prev'>
-							<RawHTML>
-								{
-									attributes[
-										'navigation-arrow-first-icon-content'
-									]
-								}
-							</RawHTML>
+							<RawHTML>{navigationArrowFirstIconContent}</RawHTML>
 						</span>
 					)}
 					{getAttributesValue({
@@ -78,11 +86,7 @@ const save = props => {
 					}) && (
 						<span className='maxi-slider-block__arrow maxi-slider-block__arrow--next'>
 							<RawHTML>
-								{
-									attributes[
-										'navigation-arrow-second-icon-content'
-									]
-								}
+								{navigationArrowSecondIconContent}
 							</RawHTML>
 						</span>
 					)}
@@ -103,11 +107,7 @@ const save = props => {
 										key={`maxi-slider-block__dot--${i}`}
 									>
 										<RawHTML className='maxi-navigation-dot-icon-block__icon'>
-											{
-												attributes[
-													'navigation-dot-icon-content'
-												]
-											}
+											{navigationDotIconContent}
 										</RawHTML>
 									</span>
 								);

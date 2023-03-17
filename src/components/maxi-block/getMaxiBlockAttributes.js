@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import {
+	getAttributesValue,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
@@ -96,7 +97,13 @@ const getMaxiBlockAttributes = props => {
 	const dataScrollTypeValue = () => {
 		let responseString = '';
 		scrollTypes.forEach(type => {
-			if (attributes[`scroll-${type}-status-general`])
+			if (
+				getAttributesValue({
+					target: `scroll-${type}-status`,
+					props: attributes,
+					breakpoint: deviceType,
+				})
+			)
 				responseString += `${type} `;
 		});
 		return responseString?.trim();
@@ -137,8 +144,11 @@ const getMaxiBlockAttributes = props => {
 				}
 
 				scrollSettings.forEach(setting => {
-					const scrollSettingValue =
-						attributes[`scroll-${type}-${setting}-general`];
+					const scrollSettingValue = getAttributesValue({
+						target: `scroll-${type}-${setting}}`,
+						props: attributes,
+						breakpoint: deviceType,
+					});
 
 					responseString += `${scrollSettingValue} `;
 				});

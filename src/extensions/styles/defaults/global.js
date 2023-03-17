@@ -1,3 +1,4 @@
+import attributesShorter from '../dictionary/attributesShorter';
 import breakpoints from './breakpoints';
 
 const global = {
@@ -34,4 +35,4 @@ const global = {
 	},
 };
 
-export default global;
+export default attributesShorter(global, 'global');

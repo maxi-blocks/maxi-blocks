@@ -15,7 +15,11 @@ import {
 	SettingTabsControl,
 } from '../../components';
 import * as defaultPresets from './defaults';
-import { getGroupAttributes, getIconWithColor } from '../../extensions/styles';
+import {
+	getAttributesValue,
+	getGroupAttributes,
+	getIconWithColor,
+} from '../../extensions/styles';
 import { customCss } from './data';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { withMaxiInspector } from '../../extensions/inspector';
@@ -36,7 +40,10 @@ import * as iconPresets from '../../icons/button-presets/index';
 const Inspector = props => {
 	const { attributes, deviceType, maxiSetAttributes, inlineStylesTargets } =
 		props;
-	const { 'icon-only': iconOnly } = attributes;
+	const { iconOnly, iconContent } = getAttributesValue({
+		target: ['icon-only', 'icon-content'],
+		props: attributes,
+	});
 	const { selectors, categories } = customCss;
 
 	const onChangePreset = (number, type = 'normal') => {
@@ -44,12 +51,10 @@ const Inspector = props => {
 
 		if (
 			type === 'icon' &&
-			!isEmpty(attributes['icon-content']) &&
-			attributes['icon-content'] !==
-				defaultPresets[`preset${number}`]['icon-content']
+			!isEmpty(iconContent) &&
+			iconContent !== defaultPresets[`preset${number}`]['icon-content']
 		)
-			newDefaultPresets[`preset${number}`]['icon-content'] =
-				attributes['icon-content'];
+			newDefaultPresets[`preset${number}`]['icon-content'] = iconContent;
 
 		if (
 			!isNil(

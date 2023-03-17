@@ -9,7 +9,10 @@ import { __ } from '@wordpress/i18n';
 import SettingTabsControl from '../setting-tabs-control';
 import BlockBackgroundControl from '../background-control/blockBackgroundControl';
 import ToggleSwitch from '../toggle-switch';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	getAttributesValue,
+} from '../../extensions/styles';
 import ManageHoverTransitions from '../manage-hover-transitions';
 
 /**
@@ -34,7 +37,10 @@ const blockBackground = ({
 		getBounds,
 	} = props;
 
-	const bgHoverStatus = attributes['block-background-status-hover'];
+	const blockBackgroundStatusHover = getAttributesValue({
+		target: 'block-background-status-hover',
+		props: attributes,
+	});
 
 	return {
 		label: __('Background / Layer', 'maxi-blocks'),
@@ -80,7 +86,7 @@ const blockBackground = ({
 										'Enable background hover',
 										'maxi-blocks'
 									)}
-									selected={bgHoverStatus}
+									selected={blockBackgroundStatusHover}
 									className='maxi-background-status-hover'
 									onChange={val => {
 										maxiSetAttributes({
@@ -89,7 +95,7 @@ const blockBackground = ({
 										});
 									}}
 								/>
-								{bgHoverStatus && (
+								{blockBackgroundStatusHover && (
 									<BlockBackgroundControl
 										{...getGroupAttributes(
 											attributes,

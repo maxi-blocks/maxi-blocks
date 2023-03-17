@@ -8,7 +8,7 @@ import { RichText, useInnerBlocksProps } from '@wordpress/block-editor';
  */
 import { getMaxiBlockAttributes, MaxiBlock } from '../../components/maxi-block';
 import { WithLink } from '../../extensions/save/utils';
-import { getAttributeValue } from '../../extensions/styles';
+import { getAttributesValue } from '../../extensions/styles';
 
 /**
  * Save
@@ -17,7 +17,7 @@ const save = props => {
 	const { attributes } = props;
 	const { title, accordionUniqueId, linkSettings } = attributes;
 
-	const titleLevel = getAttributeValue({
+	const titleLevel = getAttributesValue({
 		target: 'titleLevel',
 		props: attributes,
 	});

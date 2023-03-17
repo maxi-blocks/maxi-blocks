@@ -20,6 +20,7 @@ import {
 } from '../../components';
 import { DimensionTab, HoverEffectControl } from './components';
 import {
+	getAttributesValue,
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -50,6 +51,15 @@ const Inspector = props => {
 		fitParentSize,
 	} = attributes;
 	const { selectors, categories } = customCss;
+	const imageFullWidthGeneral = getAttributesValue({
+		target: 'image-full-width-general',
+		props: attributes,
+	});
+	const captionGap = getAttributesValue({
+		target: 'caption-gap',
+		props: attributes,
+		breakpoint: deviceType,
+	});
 
 	const imageData = useSelect(
 		select => select('core').getMedia(mediaID),
@@ -103,9 +113,7 @@ const Inspector = props => {
 								isSecondary
 								items={[
 									deviceType === 'general' &&
-										attributes[
-											'image-full-width-general'
-										] !== 'full' && {
+										imageFullWidthGeneral !== 'full' && {
 											label: __(
 												'Dimension',
 												'maxi-blocks'
@@ -220,9 +228,7 @@ const Inspector = props => {
 																	}
 																)}
 																value={
-																	attributes[
-																		`caption-gap-${deviceType}`
-																	]
+																	captionGap
 																}
 																onChangeValue={val =>
 																	maxiSetAttributes(

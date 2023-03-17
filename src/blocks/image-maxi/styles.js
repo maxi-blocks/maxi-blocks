@@ -96,8 +96,15 @@ const getWrapperObject = props => {
 };
 
 const getHoverWrapperObject = props => {
+	const { borderStatusHover, boxShadowStatusHover, opacityStatusHover } =
+		getAttributesValue({
+			target: ['border-status', 'box-shadow-status', 'opacity-status'],
+			props,
+			isHover: true,
+		});
+
 	const response = {
-		...(props['border-status-hover'] && {
+		...(borderStatusHover && {
 			border: getBorderStyles({
 				obj: {
 					...getGroupAttributes(
@@ -110,7 +117,7 @@ const getHoverWrapperObject = props => {
 				blockStyle: props.blockStyle,
 			}),
 		}),
-		...(props['box-shadow-status-hover'] && {
+		...(boxShadowStatusHover && {
 			boxShadow: getBoxShadowStyles({
 				obj: {
 					...getGroupAttributes(props, 'boxShadow', true),
@@ -119,7 +126,7 @@ const getHoverWrapperObject = props => {
 				isHover: true,
 			}),
 		}),
-		...(props['opacity-status-hover'] && {
+		...(opacityStatusHover && {
 			opacity: getOpacityStyles(
 				{ ...getGroupAttributes(props, 'opacity', true) },
 				true
@@ -132,7 +139,11 @@ const getHoverWrapperObject = props => {
 
 const getHoverEffectDetailsBoxObject = props => {
 	const response = {
-		...(props['hover-border-status'] && {
+		...(getAttributesValue({
+			target: 'border-status',
+			props,
+			prefix: 'hover-',
+		}) && {
 			border: getBorderStyles({
 				obj: {
 					...getGroupAttributes(
@@ -184,7 +195,11 @@ const getHoverEffectDetailsBoxObject = props => {
 
 const getHoverEffectTitleTextObject = props => {
 	const response = {
-		...(props['hover-title-typography-status'] && {
+		...(getAttributesValue({
+			target: 'typography-status',
+			props,
+			prefix: 'hover-title-',
+		}) && {
 			typography: getTypographyStyles({
 				obj: {
 					...getGroupAttributes(props, 'hoverTitleTypography'),
@@ -200,7 +215,11 @@ const getHoverEffectTitleTextObject = props => {
 
 const getHoverEffectContentTextObject = props => {
 	const response = {
-		...(props['hover-content-typography-status'] && {
+		...(getAttributesValue({
+			target: 'typography-status',
+			props,
+			prefix: 'hover-content-',
+		}) && {
 			typography: getTypographyStyles({
 				obj: {
 					...getGroupAttributes(props, 'hoverContentTypography'),
@@ -228,7 +247,10 @@ const getImageWrapperObject = props => {
 		alignment: getAlignmentFlexStyles({
 			...getGroupAttributes(props, 'alignment'),
 		}),
-		...(props['hover-extension'] && {
+		...(getAttributesValue({
+			target: 'hover-extension',
+			props,
+		}) && {
 			hoverExtension: { general: { overflow: 'visible' } },
 		}),
 		overflow: getOverflowStyles({
@@ -358,8 +380,19 @@ const getImageObject = props => {
 };
 
 const getHoverImageObject = props => {
+	const {
+		imageBorderStatusHover,
+		imageBoxShadowStatusHover,
+		imageClipPathStatusHover,
+	} = getAttributesValue({
+		target: ['border-status', 'box-shadow-status', 'clip-path-status'],
+		props,
+		isHover: true,
+		prefix: 'image-',
+	});
+
 	return {
-		...(props['image-border-status-hover'] && {
+		...(imageBorderStatusHover && {
 			border: getBorderStyles({
 				obj: {
 					...getGroupAttributes(
@@ -374,7 +407,7 @@ const getHoverImageObject = props => {
 				prefix: 'image-',
 			}),
 		}),
-		...(props['image-box-shadow-status-hover'] && {
+		...(imageBoxShadowStatusHover && {
 			boxShadow: getBoxShadowStyles({
 				obj: {
 					...getGroupAttributes(props, 'boxShadow', true, 'image-'),
@@ -386,11 +419,7 @@ const getHoverImageObject = props => {
 				prefix: 'image-',
 			}),
 		}),
-		...(getAttributesValue({
-			target: 'clip-path-status',
-			props,
-			isHover: true,
-		}) && {
+		...(imageClipPathStatusHover && {
 			clipPath: getClipPathStyles({
 				obj: {
 					...getGroupAttributes(props, 'clipPath', true),
@@ -417,7 +446,10 @@ const getClipPathDropShadowObject = (props, isHover = false) => {
 				forClipPath: true,
 			}),
 		}),
-		...(props['image-box-shadow-status-hover'] &&
+		...(getAttributesValue({
+			target: 'image-box-shadow-status-hover',
+			props,
+		}) &&
 			isHover && {
 				boxShadow: getBoxShadowStyles({
 					obj: {
@@ -593,7 +625,7 @@ const getStyles = props => {
 				}),
 				...getCustomFormatsStyles(
 					' .maxi-image-block__caption',
-					props['custom-formats'],
+					getAttributesValue({ target: 'custom-formats', props }),
 					false,
 					{ ...getGroupAttributes(props, 'typography') },
 					'p',
@@ -601,7 +633,10 @@ const getStyles = props => {
 				),
 				...getCustomFormatsStyles(
 					':hover .maxi-image-block__caption',
-					props['custom-formats-hover'],
+					getAttributesValue({
+						target: 'custom-formats-hover',
+						props,
+					}),
 					true,
 					getGroupAttributes(props, 'typographyHover'),
 					'p',

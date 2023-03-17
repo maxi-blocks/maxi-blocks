@@ -39,8 +39,12 @@ const IconSettings = props => {
 		label,
 		breakpoint,
 		clientId,
-		[`${prefix}icon-status-hover`]: iconHoverStatus,
 	} = props;
+	const { iconHoverStatus, iconContent, iconPosition } = getAttributesValue({
+		target: ['icon-status-hover', 'icon-content', 'icon-position'],
+		props,
+		prefix,
+	});
 
 	const minMaxSettings = {
 		px: {
@@ -128,12 +132,12 @@ const IconSettings = props => {
 							});
 							const icon = isHover
 								? setSVGContentHover(
-										props[`${prefix}icon-content`],
+										iconContent,
 										paletteStatus ? fillColorStr : color,
 										'fill'
 								  )
 								: setSVGContent(
-										props[`${prefix}icon-content`],
+										iconContent,
 										paletteStatus ? fillColorStr : color,
 										'fill'
 								  );
@@ -176,7 +180,7 @@ const IconSettings = props => {
 						<SelectControl
 							label={__('Icon position', 'maxi-blocks')}
 							className='maxi-video-icon-control__icon-position'
-							value={props[`${prefix}icon-position`]}
+							value={iconPosition}
 							defaultValue={getDefaultAttribute(
 								`${prefix}icon-position`
 							)}
@@ -355,6 +359,11 @@ const IconSettings = props => {
 
 const VideoIconControl = props => {
 	const { blockStyle, onChange, prefix, label, type } = props;
+	const iconContent = getAttributesValue({
+		target: 'icon-content',
+		props,
+		prefix,
+	});
 
 	return (
 		<>
@@ -364,10 +373,10 @@ const VideoIconControl = props => {
 				style={blockStyle}
 				onSelect={obj => onChange(obj)}
 				onRemove={obj => onChange(obj)}
-				icon={props[`${prefix}icon-content`]}
+				icon={iconContent}
 				label={label}
 			/>
-			{!isEmpty(props[`${prefix}icon-content`]) && (
+			{!isEmpty(iconContent) && (
 				<SettingTabsControl
 					items={[
 						{

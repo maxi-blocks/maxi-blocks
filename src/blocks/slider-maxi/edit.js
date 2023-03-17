@@ -41,11 +41,23 @@ const SliderWrapper = props => {
 		currentSlide,
 		setCurrentSlide,
 	} = props;
+	const { isLoop } = attributes;
 	const {
-		isLoop,
-		'slider-transition': sliderTransition,
-		'slider-transition-speed': sliderTransitionSpeed,
-	} = attributes;
+		sliderTransition,
+		sliderTransitionSpeed,
+		navigationArrowFirstIconContent,
+		navigationArrowSecondIconContent,
+		navigationDotIconContent,
+	} = getAttributesValue({
+		target: [
+			'slider-transition',
+			'slider-transition-speed',
+			'navigation-arrow-first-icon-content',
+			'navigation-arrow-second-icon-content',
+			'navigation-dot-icon-content',
+		],
+		props: attributes,
+	});
 
 	const numberOfClones = 2;
 	const numberOfSlides = useSelect(
@@ -331,13 +343,7 @@ const SliderWrapper = props => {
 							ref={iconRef}
 							className='maxi-navigation-arrow-first-icon-block__icon'
 						>
-							<RawHTML>
-								{
-									attributes[
-										'navigation-arrow-first-icon-content'
-									]
-								}
-							</RawHTML>
+							<RawHTML>{navigationArrowFirstIconContent}</RawHTML>
 						</div>
 					</span>
 				)}
@@ -354,11 +360,7 @@ const SliderWrapper = props => {
 							className='maxi-navigation-arrow-second-icon-block__icon'
 						>
 							<RawHTML>
-								{
-									attributes[
-										'navigation-arrow-second-icon-content'
-									]
-								}
+								{navigationArrowSecondIconContent}
 							</RawHTML>
 						</div>
 					</span>
@@ -389,11 +391,7 @@ const SliderWrapper = props => {
 										className='maxi-navigation-dot-icon-block__icon'
 									>
 										<RawHTML>
-											{
-												attributes[
-													'navigation-dot-icon-content'
-												]
-											}
+											{navigationDotIconContent}
 										</RawHTML>
 									</div>
 								</span>

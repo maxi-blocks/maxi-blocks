@@ -1,7 +1,11 @@
 /**
  * Internal dependencies
  */
-import { getGroupAttributes, styleProcessor } from '../../extensions/styles';
+import {
+	getAttributesValue,
+	getGroupAttributes,
+	styleProcessor,
+} from '../../extensions/styles';
 import {
 	getAlignmentFlexStyles,
 	getBackgroundStyles,
@@ -79,9 +83,16 @@ const getWrapperObject = props => {
 };
 
 const getWrapperObjectHover = props => {
+	const { borderStatusHover, boxShadowStatusHover, opacityStatusHover } =
+		getAttributesValue({
+			target: ['border-status', 'box-shadow-status', 'opacity-status'],
+			props,
+			isHover: true,
+		});
+
 	const response = {
 		border:
-			props['border-status-hover'] &&
+			borderStatusHover &&
 			getBorderStyles({
 				obj: {
 					...getGroupAttributes(
@@ -94,7 +105,7 @@ const getWrapperObjectHover = props => {
 				blockStyle: props.blockStyle,
 			}),
 		boxShadow:
-			props['box-shadow-status-hover'] &&
+			boxShadowStatusHover &&
 			getBoxShadowStyles({
 				obj: {
 					...getGroupAttributes(props, 'boxShadow', true),
@@ -103,7 +114,7 @@ const getWrapperObjectHover = props => {
 				blockStyle: props.blockStyle,
 			}),
 		opacity:
-			props['opacity-status-hover'] &&
+			opacityStatusHover &&
 			getOpacityStyles(
 				{ ...getGroupAttributes(props, 'opacity', true) },
 				true
@@ -167,9 +178,16 @@ const getNormalObject = (props, iconWidthHeightRatio) => {
 };
 
 const getHoverObject = props => {
+	const { borderStatusHover, boxShadowStatusHover } = getAttributesValue({
+		target: ['border-status', 'box-shadow-status'],
+		props,
+		isHover: true,
+		prefix: 'svg-',
+	});
+
 	const response = {
 		border:
-			props['svg-border-status-hover'] &&
+			borderStatusHover &&
 			getBorderStyles({
 				obj: {
 					...getGroupAttributes(
@@ -184,7 +202,7 @@ const getHoverObject = props => {
 				prefix: 'svg-',
 			}),
 		boxShadow:
-			props['svg-box-shadow-status-hover'] &&
+			boxShadowStatusHover &&
 			getBoxShadowStyles({
 				obj: {
 					...getGroupAttributes(props, 'boxShadow', true, 'svg-'),
@@ -230,7 +248,10 @@ const getStyles = (props, iconWidthHeightRatio) => {
 					blockStyle,
 				}),
 
-				...(props['svg-status-hover'] && {
+				...(getAttributesValue({
+					target: 'svg-status-hover',
+					props,
+				}) && {
 					...getSVGStyles({
 						obj: {
 							...getGroupAttributes(props, 'svg', true),

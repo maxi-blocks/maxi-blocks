@@ -15,6 +15,7 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import classnames from 'classnames';
 import { isNil, isEmpty } from 'lodash';
 import { RichText } from '@wordpress/block-editor';
+import { getAttributesValue } from '../../extensions/styles';
 
 /**
  * Save
@@ -22,6 +23,10 @@ import { RichText } from '@wordpress/block-editor';
 const save = props => {
 	const { attributes } = props;
 	const { linkSettings, buttonContent } = attributes;
+	const { iconOnly, iconContent, iconPosition } = getAttributesValue({
+		target: ['icon-only', 'icon-content', 'icon-position'],
+		props: attributes,
+	});
 
 	const name = 'maxi-blocks/button-maxi';
 
@@ -35,17 +40,17 @@ const save = props => {
 
 	const buttonClasses = classnames(
 		'maxi-button-block__button',
-		attributes['icon-content'] &&
-			attributes['icon-position'] === 'top' &&
+		iconContent &&
+			iconPosition === 'top' &&
 			'maxi-button-block__button--icon-top',
-		attributes['icon-content'] &&
-			attributes['icon-position'] === 'bottom' &&
+		iconContent &&
+			iconPosition === 'bottom' &&
 			'maxi-button-block__button--icon-bottom',
-		attributes['icon-content'] &&
-			attributes['icon-position'] === 'left' &&
+		iconContent &&
+			iconPosition === 'left' &&
 			'maxi-button-block__button--icon-left',
-		attributes['icon-content'] &&
-			attributes['icon-position'] === 'right' &&
+		iconContent &&
+			iconPosition === 'right' &&
 			'maxi-button-block__button--icon-right'
 	);
 
@@ -55,17 +60,17 @@ const save = props => {
 				className={buttonClasses}
 				{...(!isEmpty(linkProps.href) && linkProps)}
 			>
-				{!attributes['icon-only'] && (
+				{!iconOnly && (
 					<RichText.Content
 						className='maxi-button-block__content'
 						value={buttonContent}
 						tagName='span'
 					/>
 				)}
-				{attributes['icon-content'] && (
+				{iconContent && (
 					<div className='maxi-button-block__icon'>
 						<div>
-							<RawHTML>{attributes['icon-content']}</RawHTML>
+							<RawHTML>{iconContent}</RawHTML>
 						</div>
 					</div>
 				)}

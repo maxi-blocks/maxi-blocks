@@ -47,6 +47,23 @@ const ListOptionsControl = props => {
 		listStyle,
 		listStyleCustom,
 	} = attributes;
+	const {
+		listIndent,
+		listGap,
+		listParagraphSpacing,
+		listMarkerLineHeight,
+		listMarkerIndent,
+	} = getAttributesValue({
+		target: [
+			'list-indent',
+			'list-gap',
+			'list-paragraph-spacing',
+			'list-marker-line-height',
+			'list-marker-indent',
+		],
+		props: attributes,
+		breakpoint: deviceType,
+	});
 
 	const defaultListStyleSource =
 		(isURL(listStyleCustom) && 'url') ||
@@ -192,7 +209,7 @@ const ListOptionsControl = props => {
 					breakpoint: deviceType,
 					attributes,
 				})}
-				value={attributes[`list-indent-${deviceType}`]}
+				value={listIndent}
 				onChangeValue={val =>
 					maxiSetAttributes({
 						[`list-indent-${deviceType}`]: val,
@@ -247,7 +264,7 @@ const ListOptionsControl = props => {
 					breakpoint: deviceType,
 					attributes,
 				})}
-				value={attributes[`list-gap-${deviceType}`]}
+				value={listGap}
 				onChangeValue={val =>
 					maxiSetAttributes({
 						[`list-gap-${deviceType}`]: val,
@@ -306,7 +323,7 @@ const ListOptionsControl = props => {
 					breakpoint: deviceType,
 					attributes,
 				})}
-				value={attributes[`list-paragraph-spacing-${deviceType}`]}
+				value={listParagraphSpacing}
 				onChangeValue={val =>
 					maxiSetAttributes({
 						[`list-paragraph-spacing-${deviceType}`]: val,
@@ -454,7 +471,7 @@ const ListOptionsControl = props => {
 					breakpoint: deviceType,
 					attributes,
 				})}
-				value={attributes[`list-marker-line-height-${deviceType}`]}
+				value={listMarkerLineHeight}
 				onChangeValue={val =>
 					maxiSetAttributes({
 						[`list-marker-line-height-${deviceType}`]: val,
@@ -494,7 +511,7 @@ const ListOptionsControl = props => {
 					breakpoint: deviceType,
 					attributes,
 				})}
-				value={attributes[`list-marker-indent-${deviceType}`]}
+				value={listMarkerIndent}
 				onChangeValue={val =>
 					maxiSetAttributes({
 						[`list-marker-indent-${deviceType}`]: val,

@@ -7,6 +7,7 @@ import padding from './padding';
 import { typography } from './typography';
 
 import prefixAttributesCreator from '../prefixAttributesCreator';
+import attributesShorter from '../dictionary/attributesShorter';
 
 export const hover = {
 	'hover-type': {
@@ -68,109 +69,139 @@ export const hover = {
 
 const prefix = 'hover-';
 
-export const hoverBorder = prefixAttributesCreator({
-	obj: border,
-	prefix,
-	newAttr: {
-		'hover-border-status': {
-			type: 'boolean',
-			default: false,
+export const hoverBorder = attributesShorter(
+	prefixAttributesCreator({
+		obj: border,
+		prefix,
+		newAttr: {
+			'hover-border-status': {
+				type: 'boolean',
+				default: false,
+			},
 		},
-	},
-});
+	}),
+	'hover'
+);
 
-export const hoverBorderWidth = prefixAttributesCreator({
-	obj: borderWidth,
-	prefix,
-});
+export const hoverBorderWidth = attributesShorter(
+	prefixAttributesCreator({
+		obj: borderWidth,
+		prefix,
+	}),
+	'hover'
+);
 
-export const hoverBorderRadius = prefixAttributesCreator({
-	obj: borderRadius,
-	prefix,
-});
+export const hoverBorderRadius = attributesShorter(
+	prefixAttributesCreator({
+		obj: borderRadius,
+		prefix,
+	}),
+	'hover'
+);
 
-export const hoverBackground = prefixAttributesCreator({
-	obj: background,
-	prefix,
-	diffValAttr: { 'hover-background-active-media': 'color' },
-	newAttr: {
-		'hover-background-status': {
-			type: 'boolean',
-			default: false,
+export const hoverBackground = attributesShorter(
+	prefixAttributesCreator({
+		obj: background,
+		prefix,
+		diffValAttr: { 'hover-background-active-media': 'color' },
+		newAttr: {
+			'hover-background-status': {
+				type: 'boolean',
+				default: false,
+			},
 		},
-	},
-});
+	}),
+	'hover'
+);
 
-export const hoverBackgroundColor = prefixAttributesCreator({
-	obj: backgroundColor,
-	prefix,
-	diffValAttr: {
-		'hover-background-pac': 5,
-		'hover-background-pao': 60,
-	},
-});
+export const hoverBackgroundColor = attributesShorter(
+	prefixAttributesCreator({
+		obj: backgroundColor,
+		prefix,
+		diffValAttr: {
+			'hover-background-pac': 5,
+			'hover-background-pao': 60,
+		},
+	}),
+	'hover'
+);
 
-export const hoverBackgroundGradient = prefixAttributesCreator({
-	obj: backgroundGradient,
-	prefix,
-});
+export const hoverBackgroundGradient = attributesShorter(
+	prefixAttributesCreator({
+		obj: backgroundGradient,
+		prefix,
+	}),
+	'hover'
+);
 
-export const hoverMargin = prefixAttributesCreator({
-	obj: margin,
-	prefix,
-	newAttr: {
-		'hover-margin-status': {
-			type: 'boolean',
-			default: false,
+export const hoverMargin = attributesShorter(
+	prefixAttributesCreator({
+		obj: margin,
+		prefix,
+		newAttr: {
+			'hover-margin-status': {
+				type: 'boolean',
+				default: false,
+			},
 		},
-	},
-});
+	}),
+	'hover'
+);
 
-export const hoverPadding = prefixAttributesCreator({
-	obj: padding,
-	prefix,
-	newAttr: {
-		'hover-padding-status': {
-			type: 'boolean',
-			default: false,
+export const hoverPadding = attributesShorter(
+	prefixAttributesCreator({
+		obj: padding,
+		prefix,
+		newAttr: {
+			'hover-padding-status': {
+				type: 'boolean',
+				default: false,
+			},
 		},
-	},
-});
+	}),
+	'hover'
+);
 
-export const hoverTitleTypography = prefixAttributesCreator({
-	obj: typography,
-	prefix: 'hover-title-',
-	diffValAttr: {
-		'hover-title-font-size-general': 30,
-		'hover-title-pac-general': 1,
-	},
-	newAttr: {
-		'hover-title-typography-status': {
-			type: 'boolean',
-			default: false,
+export const hoverTitleTypography = attributesShorter(
+	prefixAttributesCreator({
+		obj: typography,
+		prefix: 'hover-title-',
+		diffValAttr: {
+			'hover-title-font-size-general': 30,
+			'hover-title-pac-general': 1,
 		},
-		'hover-title-typography-content': {
-			type: 'string',
-			default: __('Add your Hover Title here', 'maxi-blocks'),
+		newAttr: {
+			'hover-title-typography-status': {
+				type: 'boolean',
+				default: false,
+			},
+			'hover-title-typography-content': {
+				type: 'string',
+				default: __('Add your Hover Title here', 'maxi-blocks'),
+			},
 		},
-	},
-});
+	}),
+	'hover'
+);
 
-export const hoverContentTypography = prefixAttributesCreator({
-	obj: typography,
-	prefix: 'hover-content-',
-	diffValAttr: {
-		'hover-content-font-size-general': 18,
-		'hover-content-pac-general': 1,
-	},
-	newAttr: {
-		'hover-content-typography-status': {
-			type: 'boolean',
-			default: false,
+export const hoverContentTypography = attributesShorter(
+	prefixAttributesCreator({
+		obj: typography,
+		prefix: 'hover-content-',
+		diffValAttr: {
+			'hover-content-font-size-general': 18,
+			'hover-content-pac-general': 1,
 		},
-		'hover-content-typography-content': {
-			type: 'string',
-			default: __('Add your Hover Title here', 'maxi-blocks'),
+		newAttr: {
+			'hover-content-typography-status': {
+				type: 'boolean',
+				default: false,
+			},
+			'hover-content-typography-content': {
+				type: 'string',
+				default: __('Add your Hover Title here', 'maxi-blocks'),
+			},
 		},
-	},
-});
+	}),
+	'hover'
+);

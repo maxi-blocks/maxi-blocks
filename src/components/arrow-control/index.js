@@ -13,6 +13,7 @@ import InfoBox from '../info-box';
 import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
+	getAttributesValue,
 } from '../../extensions/styles';
 
 /**
@@ -99,7 +100,10 @@ const ArrowControl = props => {
 				breakpoint,
 				attributes: props,
 			}) &&
-				props['show-warning-box'] && (
+				getAttributesValue({
+					target: 'show-warning-box',
+					props,
+				}) && (
 					<InfoBox
 						message={__(
 							'Please ensure that the background color is not the same as the page background color.'

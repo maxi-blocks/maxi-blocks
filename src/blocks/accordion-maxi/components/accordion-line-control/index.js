@@ -13,7 +13,7 @@ import {
 	SelectControl,
 } from '../../../../components';
 import {
-	getAttributeValue,
+	getAttributesValue,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
@@ -75,7 +75,7 @@ const AccordionLineControl = props => {
 							<>
 								<ToggleSwitch
 									label={__('Enable hover', 'maxi-blocks')}
-									selected={getAttributeValue({
+									selected={getAttributesValue({
 										target: 'line-status',
 										prefix,
 										isHover: true,
@@ -87,7 +87,7 @@ const AccordionLineControl = props => {
 										})
 									}
 								/>
-								{getAttributeValue({
+								{getAttributesValue({
 									target: 'line-status',
 									prefix,
 									isHover: true,
@@ -108,7 +108,7 @@ const AccordionLineControl = props => {
 							<>
 								<ToggleSwitch
 									label={__('Enable active', 'maxi-blocks')}
-									selected={getAttributeValue({
+									selected={getAttributesValue({
 										target: 'line-status-active',
 										prefix,
 										props,
@@ -120,7 +120,7 @@ const AccordionLineControl = props => {
 										})
 									}
 								/>
-								{getAttributeValue({
+								{getAttributesValue({
 									target: 'line-status-active',
 									prefix,
 									props,

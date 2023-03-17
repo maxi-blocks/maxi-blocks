@@ -7,6 +7,7 @@ import {
 	getColorBackgroundObject,
 	getGradientBackgroundObject,
 } from './getBackgroundStyles';
+import getAttributesValue from '../getAttributesValue';
 
 /**
  * External dependencies
@@ -68,7 +69,10 @@ const getHoverEffectsBackgroundStyles = (props, blockStyle) => {
 				.replace(
 					/\((\d+),(\d+),(\d+)\)/g,
 					`($1,$2,$3,${
-						props['hover-background-gradient-opacity'] || 1
+						getAttributesValue({
+							target: 'hover-background-gradient-opacity',
+							props,
+						}) || 1
 					})`
 				);
 	});

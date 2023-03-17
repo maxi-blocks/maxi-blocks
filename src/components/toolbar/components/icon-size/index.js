@@ -8,7 +8,10 @@ import { __ } from '@wordpress/i18n';
  */
 import AdvancedNumberControl from '../../../advanced-number-control';
 import ToolbarPopover from '../toolbar-popover';
-import { getDefaultAttribute } from '../../../../extensions/styles';
+import {
+	getAttributesValue,
+	getDefaultAttribute,
+} from '../../../../extensions/styles';
 import SvgWidthControl from '../../../svg-width-control';
 import SvgStrokeWidthControl from '../../../svg-stroke-width-control';
 
@@ -43,7 +46,10 @@ const IconSize = props => {
 				<SvgStrokeWidthControl
 					prefix='icon-'
 					{...props}
-					content={props['icon-content']}
+					content={getAttributesValue({
+						target: 'icon-content',
+						props,
+					})}
 					onChange={onChange}
 					breakpoint={breakpoint}
 				/>
@@ -53,7 +59,10 @@ const IconSize = props => {
 					max={999}
 					initial={1}
 					step={1}
-					value={props[`icon-spacing-${breakpoint}`]}
+					value={getAttributesValue({
+						target: 'icon-spacing',
+						props,
+					})}
 					onChangeValue={val => {
 						onChange({
 							[`icon-spacing-${breakpoint}`]:

@@ -1,8 +1,10 @@
 /**
- * External dependencies
+  ; * External dependencies
+  ;
  */
 import classnames from 'classnames';
 import { isEmpty, isNull } from 'lodash';
+import { getAttributesValue } from '../../extensions/styles';
 
 /**
  * Styles
@@ -14,18 +16,38 @@ import './editor.scss';
  */
 const MotionPreview = props => {
 	const { className, children } = props;
+	const motionPreviewStatus = getAttributesValue({
+		target: 'motion-preview-status',
+		props,
+	});
 
-	if (!props['motion-preview-status']) return <>{children}</>;
+	if (!motionPreviewStatus) return children;
+
+	const {
+		motionTimeLine,
+		motionActiveTimeLineTime,
+		motionActiveTimeLineIndex,
+		motionTransformOriginX,
+		motionTransformOriginY,
+	} = getAttributesValue({
+		target: [
+			'motion-time-line',
+			'motion-active-time-line-time',
+			'motion-active-time-line-index',
+			'motion-transform-origin-x',
+			'motion-transform-origin-y',
+		],
+		props,
+	});
 
 	let motionPreview = {};
 
-	if (!isEmpty(props['motion-time-line'])) {
-		const currentTime = props['motion-active-time-line-time'];
-		const currentIndex = props['motion-active-time-line-index'];
+	if (!isEmpty(motionTimeLine)) {
+		const currentTime = motionActiveTimeLineTime;
+		const currentIndex = motionActiveTimeLineIndex;
 
 		if (!isNull(currentTime)) {
-			const currentItem =
-				props['motion-time-line'][currentTime][currentIndex];
+			const currentItem = motionTimeLine[currentTime][currentIndex];
 
 			let transformStyle = '';
 
@@ -70,7 +92,7 @@ const MotionPreview = props => {
 			}
 
 			motionPreview = {
-				transformOrigin: `${props['motion-transform-origin-x']} ${props['motion-transform-origin-y']}`,
+				transformOrigin: `${motionTransformOriginX} ${motionTransformOriginY}`,
 				transformStyle: 'preserve-3d',
 				transform: transformStyle,
 				opacity:
@@ -88,7 +110,7 @@ const MotionPreview = props => {
 	return (
 		<div
 			className={classes}
-			style={props['motion-preview-status'] ? motionPreview : null}
+			style={motionPreviewStatus ? motionPreview : null}
 		>
 			{children}
 		</div>

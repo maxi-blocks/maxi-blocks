@@ -17,6 +17,7 @@ import OpacityControl from '../../../../components/opacity-control';
 import withRTC from '../../../../extensions/maxi-block/withRTC';
 import {
 	getAttributeKey,
+	getAttributesValue,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
@@ -135,10 +136,14 @@ const VideoOverlayControl = props => {
 		disableHideImage = false,
 		disableUploadImage = false,
 		disableHover = false,
-		'overlay-mediaID': mediaID,
-		'overlay-altSelector': altSelector,
 		breakpoint,
 	} = props;
+	const { mediaID, altSelector, overLayBackgroundStatusHover } =
+		getAttributesValue({
+			target: ['mediaID', 'overlaySelector', 'background-status-hover'],
+			props,
+			prefix: 'overlay-',
+		});
 
 	const mediaPrefix = 'overlay-media-';
 	const minMaxSettings = {
@@ -328,11 +333,7 @@ const VideoOverlayControl = props => {
 											'Enable hover',
 											'maxi-blocks'
 										)}
-										selected={
-											props[
-												'overlay-background-status-hover'
-											]
-										}
+										selected={overLayBackgroundStatusHover}
 										onChange={val =>
 											onChange({
 												'overlay-background-status-hover':
@@ -340,9 +341,7 @@ const VideoOverlayControl = props => {
 											})
 										}
 									/>
-									{props[
-										'overlay-background-status-hover'
-									] && (
+									{overLayBackgroundStatusHover && (
 										<OverlayColorControl
 											{...props}
 											isHover

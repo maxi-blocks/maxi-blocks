@@ -11,6 +11,7 @@ import getPaletteAttributes from '../getPaletteAttributes';
  * External dependencies
  */
 import { isNil, isEmpty, isNumber } from 'lodash';
+import getAttributesValue from '../getAttributesValue';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -153,12 +154,19 @@ export const getArrowColorObject = (
 };
 
 const getArrowStyles = props => {
+	const { target = '', blockStyle, isHover = false } = props;
 	const {
-		target = '',
-		blockStyle,
-		isHover = false,
-		'background-layers': backgroundLayers,
-	} = props;
+		backgroundLayers,
+		boxShadowStatusHover,
+		blockBackgroundStatusHover,
+	} = getAttributesValue({
+		target: [
+			'background-layers',
+			'box-shadow-status-hover',
+			'block-background-status-hover',
+		],
+		props,
+	});
 
 	// Checks if border is active on some responsive stage
 	const isBorderActive = Object.entries(props).some(([key, val]) => {
@@ -217,7 +225,7 @@ const getArrowStyles = props => {
 				}),
 			},
 		},
-		...(props['box-shadow-status-hover'] && {
+		...(boxShadowStatusHover && {
 			[`${target}${isHover ? ':hover' : ''} .maxi-container-arrow`]: {
 				shadow: {
 					...getBoxShadowStyles({
@@ -246,7 +254,7 @@ const getArrowStyles = props => {
 				),
 			},
 		},
-		...(props['block-background-status-hover'] && {
+		...(blockBackgroundStatusHover && {
 			[`${target}:hover .maxi-container-arrow:before`]: {
 				background: {
 					...getArrowColorObject(backgroundLayers, blockStyle, true),
@@ -259,7 +267,7 @@ const getArrowStyles = props => {
 				},
 			},
 		}),
-		...(props['block-background-status-hover'] && {
+		...(blockBackgroundStatusHover && {
 			[`${target}:hover .maxi-container-arrow .maxi-container-arrow--content:after`]:
 				{
 					background: {

@@ -1,7 +1,11 @@
 /**
  * Internal dependencies
  */
-import { getGroupAttributes, styleProcessor } from '../../extensions/styles';
+import {
+	getAttributesValue,
+	getGroupAttributes,
+	styleProcessor,
+} from '../../extensions/styles';
 import {
 	getAlignmentFlexStyles,
 	getAlignmentTextStyles,
@@ -81,6 +85,12 @@ const getWrapperObject = props => {
 };
 
 const getHoverWrapperObject = props => {
+	const { boxShadowStatusHover, opacityStatusHover } = getAttributesValue({
+		target: ['box-shadow-status', 'opacity-status'],
+		props,
+		isHover: true,
+	});
+
 	const response = {
 		border: getBorderStyles({
 			obj: {
@@ -95,7 +105,7 @@ const getHoverWrapperObject = props => {
 			isButton: false, // yes, is button, but in this case is the wrapper 👍
 		}),
 		boxShadow:
-			props['box-shadow-status-hover'] &&
+			boxShadowStatusHover &&
 			getBoxShadowStyles({
 				obj: {
 					...getGroupAttributes(props, 'boxShadow', true),
@@ -104,7 +114,7 @@ const getHoverWrapperObject = props => {
 				isHover: true,
 			}),
 		opacity:
-			props['opacity-status-hover'] &&
+			opacityStatusHover &&
 			getOpacityStyles(
 				{ ...getGroupAttributes(props, 'opacity', true) },
 				true
@@ -175,6 +185,13 @@ const getNormalObject = props => {
 };
 
 const getHoverObject = (props, scValues) => {
+	const { buttonBoxShadowStatusHover } = getAttributesValue({
+		target: ['box-shadow-status'],
+		props,
+		isHover: true,
+		prefix: 'button-',
+	});
+
 	const response = {
 		border: getBorderStyles({
 			obj: {
@@ -192,7 +209,7 @@ const getHoverObject = (props, scValues) => {
 			scValues,
 		}),
 		boxShadow:
-			props['button-box-shadow-status-hover'] &&
+			buttonBoxShadowStatusHover &&
 			getBoxShadowStyles({
 				obj: {
 					...getGroupAttributes(props, 'boxShadow', true, 'button-'),

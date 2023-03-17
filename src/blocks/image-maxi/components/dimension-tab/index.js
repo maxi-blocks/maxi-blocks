@@ -15,6 +15,7 @@ import {
 	ToggleSwitch,
 } from '../../../../components';
 import {
+	getAttributesValue,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
@@ -44,6 +45,16 @@ const DimensionTab = props => {
 		fitParentSize,
 		isFirstOnHierarchy,
 	} = attributes;
+	const { objectSize, objectPositionHorizontal, objectPositionVertical } =
+		getAttributesValue({
+			target: [
+				'object-size',
+				'object-position-horizontal',
+				'object-position-vertical',
+			],
+			props: attributes,
+			breakpoint: deviceType,
+		});
 
 	const getSizeOptions = () => {
 		const response = [];
@@ -227,7 +238,7 @@ const DimensionTab = props => {
 									breakpoint: deviceType,
 									attributes,
 								})}
-								value={attributes[`object-size-${deviceType}`]}
+								value={objectSize}
 								onChangeValue={val =>
 									maxiSetAttributes({
 										[`object-size-${deviceType}`]: val,
@@ -257,11 +268,7 @@ const DimensionTab = props => {
 									breakpoint: deviceType,
 									attributes,
 								})}
-								value={
-									attributes[
-										`object-position-horizontal-${deviceType}`
-									]
-								}
+								value={objectPositionHorizontal}
 								onChangeValue={val =>
 									maxiSetAttributes({
 										[`object-position-horizontal-${deviceType}`]:
@@ -291,11 +298,7 @@ const DimensionTab = props => {
 									breakpoint: deviceType,
 									attributes,
 								})}
-								value={
-									attributes[
-										`object-position-vertical-${deviceType}`
-									]
-								}
+								value={objectPositionVertical}
 								onChangeValue={val =>
 									maxiSetAttributes({
 										[`object-position-vertical-${deviceType}`]:

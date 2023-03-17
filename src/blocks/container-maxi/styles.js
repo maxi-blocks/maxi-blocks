@@ -1,7 +1,11 @@
 /**
  * Internal dependencies
  */
-import { getGroupAttributes, styleProcessor } from '../../extensions/styles';
+import {
+	getAttributesValue,
+	getGroupAttributes,
+	styleProcessor,
+} from '../../extensions/styles';
 import {
 	getBorderStyles,
 	getSizeStyles,
@@ -75,9 +79,16 @@ const getNormalObject = props => {
 };
 
 const getHoverObject = props => {
+	const { borderStatusHover, boxShadowStatusHover, opacityStatusHover } =
+		getAttributesValue({
+			target: ['border-status', 'box-shadow-status', 'opacity-status'],
+			props,
+			isHover: true,
+		});
+
 	const response = {
 		border:
-			props['border-status-hover'] &&
+			borderStatusHover &&
 			getBorderStyles({
 				obj: {
 					...getGroupAttributes(
@@ -90,7 +101,7 @@ const getHoverObject = props => {
 				blockStyle: props.blockStyle,
 			}),
 		boxShadow:
-			props['box-shadow-status-hover'] &&
+			boxShadowStatusHover &&
 			getBoxShadowStyles({
 				obj: {
 					...getGroupAttributes(props, 'boxShadow', true),
@@ -99,7 +110,7 @@ const getHoverObject = props => {
 				blockStyle: props.blockStyle,
 			}),
 		opacity:
-			props['opacity-status-hover'] &&
+			opacityStatusHover &&
 			getOpacityStyles(
 				{ ...getGroupAttributes(props, 'opacity', true) },
 				true
@@ -110,14 +121,27 @@ const getHoverObject = props => {
 };
 
 const getStyles = props => {
-	const { uniqueID } = props;
+	const {
+		uniqueID,
+		blockStyle,
+		shapeDividerTopStatus,
+		shapeDividerBottomStatus,
+	} = getAttributesValue({
+		target: [
+			'uniqueID',
+			'blockStyle',
+			'shape-divider-top-status',
+			'shape-divider-bottom-status',
+		],
+		props,
+	});
 
 	const response = {
 		[uniqueID]: styleProcessor(
 			{
 				'': getNormalObject(props),
 				':hover': getHoverObject(props),
-				...(props['shape-divider-top-status'] && {
+				...(shapeDividerTopStatus && {
 					' .maxi-shape-divider__top': {
 						shapeDivider: {
 							...getShapeDividerStyles(
@@ -141,12 +165,12 @@ const getStyles = props => {
 									]),
 								},
 								'top',
-								props.blockStyle
+								blockStyle
 							),
 						},
 					},
 				}),
-				...(props['shape-divider-bottom-status'] && {
+				...(shapeDividerBottomStatus && {
 					' .maxi-shape-divider__bottom': {
 						shapeDivider: {
 							...getShapeDividerStyles(
@@ -170,7 +194,7 @@ const getStyles = props => {
 									]),
 								},
 								'bottom',
-								props.blockStyle
+								blockStyle
 							),
 						},
 					},
@@ -182,7 +206,7 @@ const getStyles = props => {
 						'borderWidth',
 						'borderRadius',
 					]),
-					blockStyle: props.blockStyle,
+					blockStyle,
 				}),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(
@@ -196,7 +220,7 @@ const getStyles = props => {
 						true
 					),
 					isHover: true,
-					blockStyle: props.blockStyle,
+					blockStyle,
 				}),
 				...getArrowStyles({
 					...getGroupAttributes(props, [
@@ -207,7 +231,7 @@ const getStyles = props => {
 						'blockBackground',
 						'boxShadow',
 					]),
-					blockStyle: props.blockStyle,
+					blockStyle,
 				}),
 				...getArrowStyles({
 					...getGroupAttributes(
@@ -223,7 +247,7 @@ const getStyles = props => {
 						true
 					),
 					...getGroupAttributes(props, ['arrow']),
-					blockStyle: props.blockStyle,
+					blockStyle,
 					isHover: true,
 				}),
 			},

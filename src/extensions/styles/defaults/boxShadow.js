@@ -1,4 +1,5 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import attributesShorter from '../dictionary/attributesShorter';
 import paletteAttributesCreator from '../paletteAttributesCreator';
 
 const prefix = 'box-shadow-';
@@ -43,4 +44,4 @@ const boxShadow = breakpointAttributesCreator({
 	obj: rawBoxShadow,
 });
 
-export default boxShadow;
+export default attributesShorter(boxShadow, 'boxShadow');

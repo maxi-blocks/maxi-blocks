@@ -9,7 +9,10 @@ import { __ } from '@wordpress/i18n';
 import SettingTabsControl from '../setting-tabs-control';
 import BoxShadowControl from '../box-shadow-control';
 import ToggleSwitch from '../toggle-switch';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getAttributesValue,
+	getGroupAttributes,
+} from '../../extensions/styles';
 import ManageHoverTransitions from '../manage-hover-transitions';
 
 /**
@@ -32,9 +35,10 @@ const boxShadow = ({
 		insertInlineStyles,
 		cleanInlineStyles,
 	} = props;
-
-	const hoverStatus = attributes[`${prefix}box-shadow-status-hover`];
-	const activeStatus = attributes[`${prefix}box-shadow-status-active`];
+	const { boxShadowStatusHover, boxShadowStatusActive } = getAttributesValue({
+		target: ['box-shadow-status-hover', 'box-shadow-status-active'],
+		props: attributes,
+	});
 
 	return {
 		label: __('Box shadow', 'maxi-blocks'),
@@ -79,7 +83,7 @@ const boxShadow = ({
 										'Enable box shadow hover',
 										'maxi-blocks'
 									)}
-									selected={hoverStatus}
+									selected={boxShadowStatusHover}
 									className='maxi-box-shadow-status-hover'
 									onChange={val =>
 										maxiSetAttributes({
@@ -89,7 +93,7 @@ const boxShadow = ({
 									}
 								/>
 
-								{hoverStatus && (
+								{boxShadowStatusHover && (
 									<BoxShadowControl
 										{...getGroupAttributes(
 											attributes,
@@ -119,7 +123,7 @@ const boxShadow = ({
 										'Enable box shadow active',
 										'maxi-blocks'
 									)}
-									selected={activeStatus}
+									selected={boxShadowStatusActive}
 									className='maxi-box-shadow-status-active'
 									onChange={val =>
 										maxiSetAttributes({
@@ -128,7 +132,7 @@ const boxShadow = ({
 										})
 									}
 								/>
-								{activeStatus && (
+								{boxShadowStatusActive && (
 									<BoxShadowControl
 										{...getGroupAttributes(
 											attributes,

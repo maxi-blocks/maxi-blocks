@@ -9,7 +9,10 @@ import { __ } from '@wordpress/i18n';
 import SettingTabsControl from '../setting-tabs-control';
 import BackgroundControl from '../background-control';
 import ToggleSwitch from '../toggle-switch';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getAttributesValue,
+	getGroupAttributes,
+} from '../../extensions/styles';
 import ManageHoverTransitions from '../manage-hover-transitions';
 
 /**
@@ -42,6 +45,12 @@ const background = ({
 		cleanInlineStyles,
 		getBounds,
 	} = props;
+	const { backgroundStatusHover, backgroundStatusActive } =
+		getAttributesValue({
+			target: ['background-status-hover', 'background-status-active'],
+			props: attributes,
+			prefix,
+		});
 
 	const {
 		'hover-background-color-global': isActive,
@@ -49,9 +58,7 @@ const background = ({
 	} = scValues;
 	const globalHoverStatus = isActive && affectAll;
 
-	const hoverStatus =
-		attributes[`${prefix}background-status-hover`] || globalHoverStatus;
-	const activeStatus = attributes[`${prefix}background-status-active`];
+	const hoverStatus = backgroundStatusHover || globalHoverStatus;
 
 	const backgroundControlBasicProps = {
 		prefix,
@@ -149,7 +156,7 @@ const background = ({
 										'Enable background active',
 										'maxi-blocks'
 									)}
-									selected={activeStatus}
+									selected={backgroundStatusActive}
 									className='maxi-background-status-active'
 									onChange={val =>
 										maxiSetAttributes({
@@ -158,7 +165,7 @@ const background = ({
 										})
 									}
 								/>
-								{activeStatus && (
+								{backgroundStatusActive && (
 									<BackgroundControl
 										{...getGroupAttributes(
 											attributes,

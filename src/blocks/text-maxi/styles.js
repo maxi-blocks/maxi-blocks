@@ -8,6 +8,7 @@ import { select } from '@wordpress/data';
  * Internal dependencies
  */
 import {
+	getAttributesValue,
 	getColorRGBAString,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -96,9 +97,16 @@ const getNormalObject = props => {
 };
 
 const getHoverObject = props => {
+	const { borderStatusHover, boxShadowStatusHover, opacityStatusHover } =
+		getAttributesValue({
+			target: ['border-status', 'box-shadow-status', 'opacity-status'],
+			props,
+			isHover: true,
+		});
+
 	const response = {
 		border:
-			props['border-status-hover'] &&
+			borderStatusHover &&
 			getBorderStyles({
 				obj: {
 					...getGroupAttributes(
@@ -111,7 +119,7 @@ const getHoverObject = props => {
 				blockStyle: props.blockStyle,
 			}),
 		boxShadow:
-			props['box-shadow-status-hover'] &&
+			boxShadowStatusHover &&
 			getBoxShadowStyles({
 				obj: {
 					...getGroupAttributes(props, 'boxShadow', true),
@@ -120,7 +128,7 @@ const getHoverObject = props => {
 				blockStyle: props.blockStyle,
 			}),
 		opacity:
-			props['opacity-status-hover'] &&
+			opacityStatusHover &&
 			getOpacityStyles(
 				{ ...getGroupAttributes(props, 'opacity', true) },
 				true
@@ -607,7 +615,7 @@ const getStyles = props => {
 					!isList
 						? ' .maxi-text-block__content'
 						: ' .maxi-text-block__content li',
-					props['custom-formats'],
+					getAttributesValue({ target: 'custom-formats', props }),
 					false,
 					{ ...getGroupAttributes(props, 'typography') },
 					props.textLevel,
@@ -617,7 +625,10 @@ const getStyles = props => {
 					!isList
 						? ':hover .maxi-text-block__content'
 						: ':hover .maxi-text-block__content li',
-					props['custom-formats-hover'],
+					getAttributesValue({
+						target: 'custom-formats-hover',
+						props,
+					}),
 					true,
 					getGroupAttributes(props, [
 						'typography',

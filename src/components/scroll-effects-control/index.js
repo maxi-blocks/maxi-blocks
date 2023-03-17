@@ -10,6 +10,7 @@ import Icon from '../icon';
 import SettingTabsControl from '../setting-tabs-control';
 import ScrollEffectUniqueControl from './scroll-effect-unique-control';
 import {
+	getAttributesValue,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
@@ -58,7 +59,13 @@ const ScrollEffectsControl = props => {
 	const getActiveEffects = () => {
 		const response = [];
 		scrollTypes.forEach(type => {
-			if (props[`scroll-${type}-status-${breakpoint}`])
+			if (
+				getAttributesValue({
+					target: `scroll-${type}-status`,
+					props,
+					breakpoint,
+				})
+			)
 				response.push(type);
 		});
 
@@ -573,7 +580,11 @@ const ScrollEffectsControl = props => {
 							/>
 						)}
 						{scrollStatus === type &&
-							props[`scroll-${type}-status-${breakpoint}`] && (
+							getAttributesValue({
+								target: `scroll-${type}-status`,
+								props,
+								breakpoint,
+							}) && (
 								<>
 									<SelectControl
 										label={__(

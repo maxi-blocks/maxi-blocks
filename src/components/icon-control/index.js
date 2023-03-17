@@ -68,9 +68,24 @@ const IconControlResponsiveSettings = withRTC(props => {
 		getIconWithColor,
 		inlineTarget,
 		prefix = '',
-		[`${prefix}icon-only`]: iconOnly,
-		[`${prefix}icon-inherit`]: iconInherit,
 	} = props;
+	const { iconOnly, iconInherit, iconContent, iconPosition } =
+		getAttributesValue({
+			target: [
+				'icon-only',
+				'icon-inherit',
+				'icon-content',
+				'icon-position',
+			],
+			props,
+			prefix,
+		});
+	const iconSpacing = getAttributesValue({
+		target: 'icon-spacing',
+		props,
+		prefix,
+		breakpoint,
+	});
 
 	const [iconStyle, setIconStyle] = useState('color');
 
@@ -213,7 +228,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 					prefix={`${prefix}icon-`}
 					breakpoint={breakpoint}
 					isHover={isHover}
-					content={props[`${prefix}icon-content`]}
+					content={iconContent}
 				/>
 			)}
 			{!disableSpacing && !isHover && !iconOnly && (
@@ -226,7 +241,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 						initial={1}
 						step={1}
 						breakpoint={breakpoint}
-						value={props[`${prefix}icon-spacing-${breakpoint}`]}
+						value={iconSpacing}
 						onChangeValue={val => {
 							onChange({
 								[`${prefix}icon-spacing-${breakpoint}`]:
@@ -247,7 +262,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 						<AxisPositionControl
 							label='Icon'
 							className='maxi-icon-control__position'
-							selected={props[`${prefix}icon-position`]}
+							selected={iconPosition}
 							onChange={val => {
 								onChange({
 									[`${prefix}icon-position`]: val,

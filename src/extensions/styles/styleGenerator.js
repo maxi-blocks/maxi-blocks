@@ -1,4 +1,5 @@
 import { select } from '@wordpress/data';
+import getAttributesValue from './getAttributesValue';
 
 const ALLOWED_BREAKPOINTS = ['xs', 's', 'm', 'l', 'xl'];
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -99,7 +100,12 @@ const styleGenerator = (styles, isIframe = false, isSiteEditor = false) => {
 			const target = getTarget(key);
 			const { content } = value;
 			Object.entries(content).forEach(([suffix, props]) => {
-				if (!props[breakpoint]) return;
+				const breakpointAttr = getAttributesValue({
+					target: 'breakpoint',
+					props,
+				});
+
+				if (!breakpointAttr) return;
 
 				const isBaseLowerThanCurrent =
 					BREAKPOINTS.indexOf(breakpoint) <=
@@ -112,7 +118,7 @@ const styleGenerator = (styles, isIframe = false, isSiteEditor = false) => {
 				)
 					return;
 
-				const style = getResponsiveStyles(props[breakpoint]);
+				const style = getResponsiveStyles(breakpointAttr);
 
 				response += styleStringGenerator(
 					`${target}${suffix}`,

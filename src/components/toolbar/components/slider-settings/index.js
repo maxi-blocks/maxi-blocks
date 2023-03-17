@@ -13,6 +13,7 @@ import ToolbarPopover from '../toolbar-popover';
 import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
+	getAttributesValue,
 } from '../../../../extensions/styles';
 
 /**
@@ -33,6 +34,10 @@ const SliderSettings = props => {
 		pauseOnInteraction,
 		attributes,
 	} = props;
+	const { sliderAutoPlaySpeed, sliderTransitionSpeed } = getAttributesValue({
+		target: ['slider-auto-play-speed', 'slider-transition-speed'],
+		props,
+	});
 
 	return (
 		<ToolbarPopover
@@ -71,7 +76,7 @@ const SliderSettings = props => {
 							max={10000}
 							initial={1}
 							step={1}
-							value={props['slider-autoplay-speed']}
+							value={sliderAutoPlaySpeed}
 							onChangeValue={val => {
 								onChange({
 									'slider-autoplay-speed':
@@ -125,7 +130,7 @@ const SliderSettings = props => {
 					max={10000}
 					initial={200}
 					step={1}
-					value={props['slider-transition-speed']}
+					value={sliderTransitionSpeed}
 					onChangeValue={val => {
 						onChange({
 							'slider-transition-speed':

@@ -43,11 +43,15 @@ export const getColorBackgroundObject = ({
 	backgroundColorProperty = 'background-color',
 	...props
 }) => {
-	const hoverStatus = props[`${prefix}background-status-hover`];
-	const {
-		'hover-background-color-global': isActive,
-		'hover-background-color-all': affectAll,
-	} = scValues;
+	const { hoverStatus, backgroundActiveMedia } = getAttributesValue({
+		target: [`${prefix}background-status-hover`, 'background-active-media'],
+		props,
+	});
+
+	const { isActive, affectAll } = getAttributesValue({
+		target: ['hover-background-color-global', 'hover-background-color-all'],
+		props: scValues,
+	});
 	const globalHoverStatus = isActive && affectAll;
 
 	if (isHover && !isNil(hoverStatus) && !hoverStatus && !globalHoverStatus)
@@ -100,12 +104,11 @@ export const getColorBackgroundObject = ({
 
 	if (isIconInherit) {
 		const hasBackground =
-			!!props['background-active-media'] &&
-			props['background-active-media'] !== 'none';
+			!!backgroundActiveMedia && backgroundActiveMedia !== 'none';
 
 		if (hasBackground)
 			response[breakpoint][backgroundColorProperty] =
-				props['background-active-media'] !== '' && paletteStatus
+				backgroundActiveMedia !== '' && paletteStatus
 					? getColorRGBAString({
 							firstVar: `button-background-color${
 								isHover ? '-hover' : ''
@@ -128,8 +131,7 @@ export const getColorBackgroundObject = ({
 			: color;
 	else if (isIcon) {
 		const hasBackground =
-			!!props['background-active-media'] &&
-			props['background-active-media'] !== 'none';
+			!!backgroundActiveMedia && backgroundActiveMedia !== 'none';
 
 		const { paletteColor, paletteOpacity, color } = getPaletteAttributes({
 			obj: props,
@@ -192,7 +194,7 @@ export const getGradientBackgroundObject = ({
 		isHover,
 	});
 
-	const isbgGradientClipPathActive = getLastBreakpointAttribute({
+	const isBgGradientClipPathActive = getLastBreakpointAttribute({
 		target: `${prefix}background-gradient-clip-path-status`,
 		breakpoint,
 		attributes: props,
@@ -268,7 +270,7 @@ export const getGradientBackgroundObject = ({
 			if (background) response[breakpoint].background = background;
 		}
 
-		if (isbgGradientClipPathActive)
+		if (isBgGradientClipPathActive)
 			response[breakpoint]['clip-path'] = isEmpty(bgGradientClipPath)
 				? 'none'
 				: bgGradientClipPath;
@@ -997,11 +999,20 @@ const getGeneralBackgroundStyles = (
 			let widthLeft;
 			let widthRight;
 
+			const borderStyle = getAttributesValue({
+				target: 'border-style',
+				breakpoint,
+				props,
+			});
+			const borderStyleGeneral = getAttributesValue({
+				target: 'border-style',
+				breakpoint: 'general',
+				props,
+			});
+
 			if (
-				props[`border-style-${breakpoint}`] !== 'none' &&
-				((props['border-style-general'] &&
-					props['border-style-general'] !== 'none') ||
-					props[`border-style-${breakpoint}`])
+				borderStyleGeneral !== 'none' &&
+				((borderStyle && borderStyle !== 'none') || borderStyleGeneral)
 			) {
 				widthTop = getBorderValue('top', breakpoint);
 				widthBottom = getBorderValue('bottom', breakpoint);
@@ -1112,7 +1123,14 @@ const getBasicResponseObject = ({
 	...props
 }) => {
 	const includeBorder =
-		!isHover || (isHover && props[`${prefix}border-status-hover`]);
+		!isHover ||
+		(isHover &&
+			getAttributesValue({
+				target: 'border-status',
+				props,
+				isHover,
+				prefix,
+			}));
 
 	const borderObj =
 		includeBorder &&
@@ -1164,7 +1182,15 @@ export const getBlockBackgroundStyles = ({
 		...props,
 	});
 
-	if (isHover && !props[`${prefix}block-background-status-hover`])
+	if (
+		isHover &&
+		!getAttributesValue({
+			target: 'block-background-status',
+			props,
+			isHover,
+			prefix,
+		})
+	)
 		return response;
 
 	const layers = compact([

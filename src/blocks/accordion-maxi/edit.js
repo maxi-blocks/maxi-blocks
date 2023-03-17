@@ -97,21 +97,22 @@ class edit extends MaxiBlockComponent {
 		const { attributes } = this.props;
 		const { uniqueID } = attributes;
 
-		const titleLevel = getAttributesValue({
-			target: 'titleLevel',
-			props: attributes,
-		});
-
-		const accordionLayout = getAttributesValue({
-			target: 'accordionLayout',
-			props: attributes,
-		});
-		const isCollapsible = getAttributesValue({
-			target: 'isCollapsible',
-			props: attributes,
-		});
-		const animationDuration = getAttributesValue({
-			target: 'animationDuration',
+		const {
+			titleLevel,
+			accordionLayout,
+			isCollapsible,
+			animationDuration,
+			iconContent,
+			activeIconContent,
+		} = getAttributesValue({
+			target: [
+				'titleLevel',
+				'accordionLayout',
+				'isCollapsible',
+				'animationDuration',
+				'icon-content',
+				'active-icon-content',
+			],
 			props: attributes,
 		});
 
@@ -140,8 +141,8 @@ class edit extends MaxiBlockComponent {
 				key={`accordion-content-${uniqueID}`}
 				value={{
 					accordionUniqueId: uniqueID,
-					paneIcon: attributes['icon-content'],
-					paneIconActive: attributes['active-icon-content'],
+					paneIcon: iconContent,
+					paneIconActive: activeIconContent,
 					accordionLayout,
 					titleLevel,
 					isCollapsible,

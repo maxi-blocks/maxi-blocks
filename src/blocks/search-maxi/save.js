@@ -3,7 +3,10 @@
  */
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import { RawHTML } from '../../components';
-import { getIconPositionClass } from '../../extensions/styles';
+import {
+	getAttributesValue,
+	getIconPositionClass,
+} from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -15,20 +18,18 @@ import classnames from 'classnames';
  */
 const save = props => {
 	const { attributes } = props;
-	const {
-		'icon-content': buttonIcon,
-		buttonContent,
-		buttonSkin,
-		placeholder,
-		skin,
-	} = attributes;
+	const { buttonContent, buttonSkin, placeholder, skin } = attributes;
 	const searchButtonIsIcon = buttonSkin === 'icon';
+	const { iconContent, iconPosition } = getAttributesValue({
+		target: ['icon-content', 'icon-position'],
+		props: attributes,
+	});
 
 	const name = 'maxi-blocks/search-maxi';
 
 	const classes = classnames(
 		'maxi-search-block',
-		getIconPositionClass(attributes['icon-position'], 'maxi-search-block')
+		getIconPositionClass(iconPosition, 'maxi-search-block')
 	);
 
 	const inputClasses = classnames(
@@ -52,9 +53,9 @@ const save = props => {
 			/>
 			<div className='maxi-search-block__button'>
 				{searchButtonIsIcon ? (
-					buttonIcon && (
+					iconContent && (
 						<div className={buttonIconClasses}>
-							<RawHTML>{buttonIcon}</RawHTML>
+							<RawHTML>{iconContent}</RawHTML>
 						</div>
 					)
 				) : (

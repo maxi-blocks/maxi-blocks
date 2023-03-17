@@ -1,3 +1,5 @@
+import attributesShorter from '../dictionary/attributesShorter';
+
 const slider = {
 	isEditView: {
 		type: 'boolean',
@@ -37,4 +39,4 @@ const slider = {
 	},
 };
 
-export default slider;
+export default attributesShorter(slider, 'slider');

@@ -17,7 +17,10 @@ import {
 } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getAttributesValue,
+	getGroupAttributes,
+} from '../../extensions/styles';
 import getStyles from './styles';
 import { copyPasteMapping, maxiAttributes } from './data';
 
@@ -79,7 +82,20 @@ class edit extends MaxiBlockComponent {
 			cleanInlineStyles,
 			isSelected,
 		} = this.props;
-		const { uniqueID, isFirstOnHierarchy } = attributes;
+		const {
+			uniqueID,
+			isFirstOnHierarchy,
+			shapeDividerTopStatus,
+			shapeDividerBottomStatus,
+		} = getAttributesValue({
+			target: [
+				'uniqueID',
+				'isFirstOnHierarchy',
+				'shape-divider-top-status',
+				'shape-divider-bottom-status',
+			],
+			props: attributes,
+		});
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
@@ -104,7 +120,7 @@ class edit extends MaxiBlockComponent {
 				}}
 				{...getMaxiBlockAttributes(this.props)}
 			>
-				{attributes['shape-divider-top-status'] && (
+				{shapeDividerTopStatus && (
 					<ShapeDivider
 						key={`maxi-shape-divider-top__${uniqueID}`}
 						{...getGroupAttributes(attributes, 'shapeDivider')}
@@ -137,7 +153,7 @@ class edit extends MaxiBlockComponent {
 						/>
 					</>
 				)}
-				{attributes['shape-divider-bottom-status'] && (
+				{shapeDividerBottomStatus && (
 					<ShapeDivider
 						key={`maxi-shape-divider-bottom__${uniqueID}`}
 						{...getGroupAttributes(attributes, 'shapeDivider')}

@@ -2,14 +2,16 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import {
-	getDefaultAttribute,
-	getLastBreakpointAttribute,
-} from '../../extensions/styles';
 
 /**
  * Internal dependencies
  */
+import {
+	getAttributeKey,
+	getAttributesValue,
+	getDefaultAttribute,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import AdvancedNumberControl from '../advanced-number-control';
 import { setSVGStrokeWidth } from '../../extensions/svg';
 
@@ -34,10 +36,19 @@ const SvgStrokeWidthControl = props => {
 
 	const classes = classnames('maxi-svg-stroke-width-control', className);
 
-	const strokeAttrLabel = `${prefix}stroke-${breakpoint}${
-		isHover ? '-hover' : ''
-	}`;
-	const stroke = props[strokeAttrLabel];
+	const strokeAttrLabel = getAttributeKey(
+		'stroke',
+		isHover,
+		prefix,
+		breakpoint
+	);
+	const stroke = getAttributesValue({
+		target: 'stroke',
+		props,
+		breakpoint,
+		isHover,
+		prefix,
+	});
 	const defaultStroke = getDefaultAttribute(strokeAttrLabel);
 	const placeholderStroke = getLastBreakpointAttribute({
 		target: `${prefix}stroke`,

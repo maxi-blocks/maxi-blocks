@@ -38,10 +38,19 @@ const SvgWidthControl = props => {
 
 	const classes = classnames('maxi-svg-width-control', className);
 
-	const widthAttrLabel = `${prefix}width-${breakpoint}${
-		isHover ? '-hover' : ''
-	}`;
-	const width = props[widthAttrLabel];
+	const widthAttrLabel = getAttributeKey(
+		'width',
+		isHover,
+		prefix,
+		breakpoint
+	);
+	const width = getAttributesValue({
+		target: 'width',
+		props,
+		breakpoint,
+		isHover,
+		prefix,
+	});
 	const defaultWidth = getDefaultAttribute(widthAttrLabel);
 	const placeholderWidth = getLastBreakpointAttribute({
 		target: `${prefix}width`,
@@ -56,7 +65,7 @@ const SvgWidthControl = props => {
 		attributes: props,
 	});
 	const defaultWidthUnit = getDefaultAttribute(
-		`${prefix}width-unit-${breakpoint}${isHover ? '-hover' : ''}`
+		getAttributeKey('width-unit', isHover, prefix, breakpoint)
 	);
 
 	const heightFitContent = getLastBreakpointAttribute({

@@ -10,7 +10,10 @@ import Inspector from './inspector';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar, RawHTML } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-import { getIconPositionClass } from '../../extensions/styles';
+import {
+	getAttributesValue,
+	getIconPositionClass,
+} from '../../extensions/styles';
 import getStyles from './styles';
 import { prefixes, copyPasteMapping } from './data';
 
@@ -163,13 +166,14 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const { attributes } = this.props;
 		const { uniqueID } = attributes;
+		const iconPosition = getAttributesValue({
+			target: 'icon-position',
+			props: attributes,
+		});
 
 		const classes = classnames(
 			'maxi-search-block',
-			getIconPositionClass(
-				attributes['icon-position'],
-				'maxi-search-block'
-			)
+			getIconPositionClass(iconPosition, 'maxi-search-block')
 		);
 
 		return [

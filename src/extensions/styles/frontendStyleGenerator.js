@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { isNil, isEmpty } from 'lodash';
+import getAttributesValue from './getAttributesValue';
 
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -36,9 +37,14 @@ const frontendStyleGenerator = styles => {
 			const { breakpoints, content } = value;
 
 			Object.entries(content).forEach(([suffix, props]) => {
-				if (!isNil(props[breakpoint]) && !isEmpty(props[breakpoint])) {
+				const breakpointAttr = getAttributesValue({
+					target: 'breakpoint',
+					props,
+				});
+
+				if (!isNil(breakpointAttr) && !isEmpty(breakpointAttr)) {
 					breakpointResponse += `body.maxi-blocks--active #${target}${suffix}{`;
-					breakpointResponse += getStyles(props[breakpoint]);
+					breakpointResponse += getStyles(breakpointAttr);
 					breakpointResponse += '}';
 				}
 			});

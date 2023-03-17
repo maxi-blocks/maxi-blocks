@@ -68,6 +68,12 @@ const NavigationIconControl = props => {
 		prefix,
 		clientId,
 	} = props;
+	const { borderStatus, backgroundStatus, boxShadowStatus } =
+		getAttributesValue({
+			target: ['border-status', 'background-status', 'box-shadow-status'],
+			props,
+			prefix,
+		});
 	const iconBgActiveMedia = getLastBreakpointAttribute({
 		target: `${prefix}background-active-media`,
 		breakpoint,
@@ -167,7 +173,11 @@ const NavigationIconControl = props => {
 						style={blockStyle}
 						onSelect={obj => onChange(obj)}
 						onRemove={obj => onChange(obj)}
-						icon={props[`${shortPrefix}${current}-icon-content`]}
+						icon={getAttributesValue({
+							target: 'icon-content',
+							props,
+							prefix: `${shortPrefix}${current}-`,
+						})}
 						prefix={`${shortPrefix}${current}-`}
 					/>
 				))}
@@ -181,7 +191,11 @@ const NavigationIconControl = props => {
 						style={blockStyle}
 						onSelect={obj => onChange(obj)}
 						onRemove={obj => onChange(obj)}
-						icon={props[`${shortPrefix}icon-content`]}
+						icon={getAttributesValue({
+							target: 'icon-content',
+							props,
+							prefix: shortPrefix,
+						})}
 						prefix={shortPrefix}
 					/>
 				)}
@@ -486,44 +500,32 @@ const NavigationIconControl = props => {
 									`${capitalize(label)} line`,
 									'maxi-blocks'
 								)}
-								color={
-									props[
-										getAttributeKey(
-											'stroke-color',
-											isHover,
-											prefix
-										)
-									]
-								}
+								color={getAttributesValue({
+									target: 'stroke-color',
+									props,
+									isHover,
+									prefix,
+								})}
 								prefix={`${prefix}stroke-`}
 								avoidBreakpointForDefault
-								paletteColor={
-									props[
-										getAttributeKey(
-											'stroke-palette-color',
-											isHover,
-											prefix
-										)
-									]
-								}
-								paletteOpacity={
-									props[
-										getAttributeKey(
-											'stroke-palette-opacity',
-											isHover,
-											prefix
-										)
-									]
-								}
-								paletteStatus={
-									props[
-										getAttributeKey(
-											'stroke-palette-status',
-											isHover,
-											prefix
-										)
-									]
-								}
+								paletteColor={getAttributesValue({
+									target: 'stroke-palette-color',
+									props,
+									isHover,
+									prefix,
+								})}
+								paletteOpacity={getAttributesValue({
+									target: 'stroke-palette-opacity',
+									props,
+									isHover,
+									prefix,
+								})}
+								paletteStatus={getAttributesValue({
+									target: 'stroke-palette-status',
+									props,
+									isHover,
+									prefix,
+								})}
 								onChangeInline={({ color }) =>
 									onChangeInline &&
 									onChangeInline(
@@ -635,44 +637,32 @@ const NavigationIconControl = props => {
 									`${capitalize(label)} fill`,
 									'maxi-blocks'
 								)}
-								color={
-									props[
-										getAttributeKey(
-											'fill-color',
-											isHover,
-											prefix
-										)
-									]
-								}
+								color={getAttributesValue({
+									target: 'fill-color',
+									props,
+									isHover,
+									prefix,
+								})}
 								prefix={`${prefix}fill-`}
 								avoidBreakpointForDefault
-								paletteColor={
-									props[
-										getAttributeKey(
-											'fill-palette-color',
-											isHover,
-											prefix
-										)
-									]
-								}
-								paletteOpacity={
-									props[
-										getAttributeKey(
-											'fill-palette-opacity',
-											isHover,
-											prefix
-										)
-									]
-								}
-								paletteStatus={
-									props[
-										getAttributeKey(
-											'fill-palette-status',
-											isHover,
-											prefix
-										)
-									]
-								}
+								paletteColor={getAttributesValue({
+									target: 'fill-palette-color',
+									props,
+									isHover,
+									prefix,
+								})}
+								paletteOpacity={getAttributesValue({
+									target: 'fill-palette-opacity',
+									props,
+									isHover,
+									prefix,
+								})}
+								paletteStatus={getAttributesValue({
+									target: 'fill-palette-status',
+									props,
+									isHover,
+									prefix,
+								})}
 								onChangeInline={({ color }) =>
 									onChangeInline &&
 									onChangeInline(
@@ -784,14 +774,14 @@ const NavigationIconControl = props => {
 								sprintf('Add %s border', label),
 								'maxi-blocks'
 							)}
-							selected={props[`${prefix}status-border`]}
+							selected={borderStatus}
 							onChange={val =>
 								onChange({
-									[`${prefix}status-border`]: val,
+									[`${prefix}border-status`]: val,
 								})
 							}
 						/>
-						{props[`${prefix}status-border`] && (
+						{borderStatus && (
 							<BorderControl
 								{...getGroupAttributes(
 									props,
@@ -811,14 +801,14 @@ const NavigationIconControl = props => {
 								sprintf('Add %s background', label),
 								'maxi-blocks'
 							)}
-							selected={props[`${prefix}status-background`]}
+							selected={backgroundStatus}
 							onChange={val =>
 								onChange({
-									[`${prefix}status-background`]: val,
+									[`${prefix}background-status`]: val,
 								})
 							}
 						/>
-						{props[`${prefix}status-background`] && (
+						{backgroundStatus && (
 							<>
 								<SettingTabsControl
 									type='buttons'
@@ -990,14 +980,14 @@ const NavigationIconControl = props => {
 								sprintf('Add %s shadow', label),
 								'maxi-blocks'
 							)}
-							selected={props[`${prefix}status-shadow`]}
+							selected={boxShadowStatus}
 							onChange={val =>
 								onChange({
-									[`${prefix}status-shadow`]: val,
+									[`${prefix}shadow-status`]: val,
 								})
 							}
 						/>
-						{props[`${prefix}status-shadow`] && (
+						{boxShadowStatus && (
 							<BoxShadowControl
 								{...getGroupAttributes(
 									props,

@@ -43,15 +43,15 @@ const dotIcon = {
 			'icon-spacing',
 		],
 		newAttr: {
-			'navigation-dot-icon-status-border': {
+			'navigation-dot-icon-border-status': {
 				type: 'boolean',
 				default: false,
 			},
-			'navigation-dot-icon-status-background': {
+			'navigation-dot-icon-background-status': {
 				type: 'boolean',
 				default: false,
 			},
-			'navigation-dot-icon-status-shadow': {
+			'navigation-dot-icon-shadow-status': {
 				type: 'boolean',
 				default: false,
 			},

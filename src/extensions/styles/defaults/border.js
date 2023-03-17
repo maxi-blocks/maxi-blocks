@@ -1,4 +1,5 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import attributesShorter from '../dictionary/attributesShorter';
 import paletteAttributesCreator from '../paletteAttributesCreator';
 
 const prefix = 'border-';
@@ -61,12 +62,21 @@ export const rawBorderRadius = {
 	},
 };
 
-export const border = breakpointAttributesCreator({
-	obj: rawBorder,
-});
-export const borderWidth = breakpointAttributesCreator({
-	obj: rawBorderWidth,
-});
-export const borderRadius = breakpointAttributesCreator({
-	obj: rawBorderRadius,
-});
+export const border = attributesShorter(
+	breakpointAttributesCreator({
+		obj: rawBorder,
+	}),
+	'border'
+);
+export const borderWidth = attributesShorter(
+	breakpointAttributesCreator({
+		obj: rawBorderWidth,
+	}),
+	'border'
+);
+export const borderRadius = attributesShorter(
+	breakpointAttributesCreator({
+		obj: rawBorderRadius,
+	}),
+	'border'
+);

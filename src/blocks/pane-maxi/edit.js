@@ -105,7 +105,10 @@ class edit extends MaxiBlockComponent {
 		accordionAttributes.forEach(attributeName => {
 			if (
 				this.context[attributeName] !==
-				this.props.attributes[attributeName]
+				getAttributesValue({
+					target: attributeName,
+					props: this.props.attributes,
+				})
 			) {
 				const { maxiSetAttributes } = this.props;
 

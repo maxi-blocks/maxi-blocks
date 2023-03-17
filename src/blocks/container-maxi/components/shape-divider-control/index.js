@@ -17,6 +17,7 @@ import {
 } from '../../../../components';
 import {
 	getAttributeKey,
+	getAttributesValue,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
@@ -73,6 +74,24 @@ import {
  */
 const ShapeDividerControl = props => {
 	const { onChangeInline, onChange, breakpoint } = props;
+	const {
+		shapeDividerTopShapeStyle,
+		shapeDividerBottomShapeStyle,
+		shapeDividerTopStatus,
+		shapeDividerTopEffectsStatus,
+		shapeDividerBottomStatus,
+		shapeDividerBottomEffectsStatus,
+	} = getAttributesValue({
+		target: [
+			'shape-divider-top-shape-style',
+			'shape-divider-bottom-shape-style',
+			'shape-divider-top-status',
+			'shape-divider-top-effects-status',
+			'shape-divider-bottom-status',
+			'shape-divider-bottom-effects-status',
+		],
+		props,
+	});
 
 	const shapeItemsTop = [
 		{ label: __('None', 'max-block'), value: '' },
@@ -125,8 +144,8 @@ const ShapeDividerControl = props => {
 	const showShapes = position => {
 		switch (
 			position === 'top'
-				? props['shape-divider-top-shape-style']
-				: props['shape-divider-bottom-shape-style']
+				? shapeDividerTopShapeStyle
+				: shapeDividerBottomShapeStyle
 		) {
 			case 'waves-top':
 				return wavesTop;
@@ -227,14 +246,14 @@ const ShapeDividerControl = props => {
 										'Enable top shape divider',
 										'maxi-blocks'
 									)}
-									selected={props['shape-divider-top-status']}
+									selected={shapeDividerTopStatus}
 									onChange={val =>
 										onChange({
 											'shape-divider-top-status': val,
 										})
 									}
 								/>
-								{!!props['shape-divider-top-status'] && (
+								{!!shapeDividerTopStatus && (
 									<>
 										<Dropdown
 											className='maxi-shape-divider-control__shape-selector'
@@ -257,9 +276,7 @@ const ShapeDividerControl = props => {
 													type='buttons'
 													className='maxi-shape-divider-control__shape-list'
 													selected={
-														props[
-															'shape-divider-top-shape-style'
-														]
+														shapeDividerTopShapeStyle
 													}
 													items={shapeItemsTop}
 													onChange={shapeStyle => {
@@ -414,9 +431,7 @@ const ShapeDividerControl = props => {
 														'maxi-blocks'
 													)}
 													selected={
-														props[
-															'shape-divider-top-effects-status'
-														]
+														shapeDividerTopEffectsStatus
 													}
 													onChange={val =>
 														onChange({
@@ -443,16 +458,14 @@ const ShapeDividerControl = props => {
 										'Enable bottom shape divider',
 										'maxi-blocks'
 									)}
-									selected={
-										props['shape-divider-bottom-status']
-									}
+									selected={shapeDividerBottomStatus}
 									onChange={val =>
 										onChange({
 											'shape-divider-bottom-status': val,
 										})
 									}
 								/>
-								{!!props['shape-divider-bottom-status'] && (
+								{!!shapeDividerBottomStatus && (
 									<>
 										<Dropdown
 											className='maxi-shape-divider-control__shape-selector'
@@ -475,9 +488,7 @@ const ShapeDividerControl = props => {
 													type='buttons'
 													className='maxi-shape-divider-control__shape-list'
 													selected={
-														props[
-															'shape-divider-bottom-shape-style'
-														]
+														shapeDividerBottomShapeStyle
 													}
 													items={shapeItemsBottom}
 													onChange={shapeStyle => {
@@ -632,9 +643,7 @@ const ShapeDividerControl = props => {
 														'maxi-blocks'
 													)}
 													selected={
-														props[
-															'shape-divider-bottom-effects-status'
-														]
+														shapeDividerBottomEffectsStatus
 													}
 													onChange={val =>
 														onChange({

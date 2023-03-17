@@ -46,7 +46,7 @@ const Inspector = props => {
 		target: 'accordionLayout',
 		props: attributes,
 	});
-	const titleLevel = getAttributeValue({
+	const titleLevel = getAttributesValue({
 		target: 'titleLevel',
 		props: attributes,
 	});

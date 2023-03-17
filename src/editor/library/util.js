@@ -7,7 +7,11 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { getBlockStyle, getPaletteAttributes } from '../../extensions/styles';
+import {
+	getAttributesValue,
+	getBlockStyle,
+	getPaletteAttributes,
+} from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -201,7 +205,12 @@ export const svgCurrentColorStatus = (blockStyle, target = 'svg') => {
 	const iconPaletteColor = iconPaletteAttr.paletteColor;
 	const iconColor = iconPaletteAttr.color;
 
-	const iconInheritColor = currentAttributes['icon-inherit']
+	const iconInherit = getAttributesValue({
+		target: 'icon-inherit',
+		props: currentAttributes,
+	});
+
+	const iconInheritColor = iconInherit
 		? !iconPaletteStatus
 			? rgbToHex(iconColor)
 			: rgbToHex(
@@ -227,7 +236,7 @@ export const svgCurrentColorStatus = (blockStyle, target = 'svg') => {
 	return target === 'svg' && lineColorGlobalStatus
 		? isColorLight(rgbToHex(lineColorGlobal))
 		: isColorLight(
-				target === 'icon' && currentAttributes['icon-inherit']
+				target === 'icon' && iconInherit
 					? iconInheritColor
 					: currentColor
 		  );

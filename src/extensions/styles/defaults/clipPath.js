@@ -25,4 +25,4 @@ const clipPath = {
 	},
 };
 
-export default clipPath;
+export default attributesShorter(clipPath, 'clipPath');

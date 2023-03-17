@@ -1,3 +1,4 @@
+import attributesShorter from '../dictionary/attributesShorter';
 import paletteAttributesCreator from '../paletteAttributesCreator';
 
 const shape = {
@@ -12,4 +13,4 @@ const shape = {
 	},
 };
 
-export default shape;
+export default attributesShorter(shape, 'shape');

@@ -2,7 +2,10 @@
  * Internal dependencies
  */
 import { ArrowDisplayer, ShapeDivider } from '../../components';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getAttributesValue,
+	getGroupAttributes,
+} from '../../extensions/styles';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 
 /**
@@ -10,7 +13,16 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
  */
 const save = props => {
 	const { attributes } = props;
-	const { uniqueID } = attributes;
+	const { uniqueID, shapeDividerTopStatus, shapeDividerBottomStatus } =
+		getAttributesValue({
+			target: [
+				'uniqueID',
+				'isFirstOnHierarchy',
+				'shape-divider-top-status',
+				'shape-divider-bottom-status',
+			],
+			props: attributes,
+		});
 
 	const name = 'maxi-blocks/container-maxi';
 
@@ -28,14 +40,14 @@ const save = props => {
 					true
 				)}
 			/>
-			{attributes['shape-divider-top-status'] && (
+			{shapeDividerTopStatus && (
 				<ShapeDivider
 					key={`maxi-shape-divider-top__${uniqueID}`}
 					{...getGroupAttributes(attributes, 'shapeDivider')}
 					location='top'
 				/>
 			)}
-			{attributes['shape-divider-bottom-status'] && (
+			{shapeDividerBottomStatus && (
 				<ShapeDivider
 					key={`maxi-shape-divider-bottom__${uniqueID}`}
 					{...getGroupAttributes(attributes, 'shapeDivider')}

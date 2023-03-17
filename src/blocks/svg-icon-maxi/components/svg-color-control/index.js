@@ -12,6 +12,7 @@ import {
 	ToggleSwitch,
 	SvgColor,
 } from '../../../../components';
+import { getAttributesValue } from '../../../../extensions/styles';
 
 const SvgColorControl = props => {
 	const {
@@ -21,7 +22,10 @@ const SvgColorControl = props => {
 		cleanInlineStyles,
 		disableHover = false,
 	} = props;
-	const hoverStatus = props['svg-status-hover'];
+	const hoverStatus = getAttributesValue({
+		target: 'svg-status-hover',
+		props,
+	});
 
 	const onChangeProps = {
 		onChangeFill: obj => {

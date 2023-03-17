@@ -24,9 +24,15 @@ import getAttributesValue from '../getAttributesValue';
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const getIconObject = (props, target, prefix = '', isIB) => {
+	const iconBackgroundActiveMediaGeneral = getAttributesValue({
+		target: 'icon-background-active-media',
+		props,
+		prefix,
+		breakpoint: 'general',
+	});
+
 	const response = {
-		background: props[`${prefix}icon-background-active-media-general`] ===
-			'color' && {
+		background: iconBackgroundActiveMediaGeneral === 'color' && {
 			...getColorBackgroundObject({
 				...getGroupAttributes(
 					props,
@@ -42,12 +48,15 @@ const getIconObject = (props, target, prefix = '', isIB) => {
 				),
 				prefix: `${prefix}icon-`,
 				blockStyle: props.blockStyle,
-				isIconInherit: props[`${prefix}icon-inherit`],
+				isIconInherit: getAttributesValue({
+					target: 'icon-inherit',
+					props,
+					prefix,
+				}),
 				isIcon: true,
 			}),
 		},
-		gradient: props[`${prefix}icon-background-active-media-general`] ===
-			'gradient' && {
+		gradient: iconBackgroundActiveMediaGeneral === 'gradient' && {
 			...getGradientBackgroundObject({
 				...getGroupAttributes(
 					props,
@@ -93,20 +102,24 @@ const getIconObject = (props, target, prefix = '', isIB) => {
 	breakpoints.forEach(breakpoint => {
 		responsive[breakpoint] = {};
 
-		if (
-			!isNil(props[`${prefix}icon-spacing-${breakpoint}`]) &&
-			!isNil(props[`${prefix}icon-position`])
-		) {
-			props[`${prefix}icon-position`] === 'left' ||
-			props[`${prefix}icon-position`] === 'right'
+		const iconSpacing = getAttributesValue({
+			target: 'icon-spacing',
+			props,
+			prefix,
+			breakpoint,
+		});
+		const { iconPosition, iconOnly } = getAttributesValue({
+			target: ['icon-position', 'icon-only'],
+			props,
+			prefix,
+		});
+
+		if (!isNil(iconSpacing) && !isNil(iconPosition)) {
+			iconPosition === 'left' || iconPosition === 'right'
 				? (responsive[breakpoint][
-						`margin-${
-							props[`${prefix}icon-position`] === 'right'
-								? 'left'
-								: 'right'
-						}`
+						`margin-${iconPosition === 'right' ? 'left' : 'right'}`
 				  ] = `${
-						props[`${prefix}icon-only`]
+						iconOnly
 							? '0'
 							: getLastBreakpointAttribute({
 									target: `${prefix}icon-spacing`,
@@ -115,13 +128,9 @@ const getIconObject = (props, target, prefix = '', isIB) => {
 							  })
 				  }px`)
 				: (responsive[breakpoint][
-						`margin-${
-							props[`${prefix}icon-position`] === 'top'
-								? 'bottom'
-								: 'top'
-						}`
+						`margin-${iconPosition === 'top' ? 'bottom' : 'top'}`
 				  ] = `${
-						props[`${prefix}icon-only`]
+						iconOnly
 							? '0'
 							: getLastBreakpointAttribute({
 									target: `${prefix}icon-spacing`,
@@ -138,7 +147,12 @@ const getIconObject = (props, target, prefix = '', isIB) => {
 };
 
 const getIconHoverObject = (props, target, prefix = '', iconType = '') => {
-	const iconHoverStatus = props[`${prefix}icon-status-hover`];
+	const { iconHoverStatus, iconInherit } = getAttributesValue({
+		target: ['icon-status-hover', 'icon-inherit'],
+		props,
+		prefix,
+	});
+
 	const iconHoverActiveMedia = getAttributesValue({
 		target: 'icon-background-active-media',
 		prefix,
@@ -160,7 +174,7 @@ const getIconHoverObject = (props, target, prefix = '', iconType = '') => {
 					),
 				},
 				props.blockStyle,
-				props[`${prefix}icon-inherit`],
+				iconInherit,
 				true,
 				iconType
 			),
@@ -181,7 +195,7 @@ const getIconHoverObject = (props, target, prefix = '', iconType = '') => {
 					),
 					prefix: `${prefix}icon-`,
 					blockStyle: props.blockStyle,
-					isIconInherit: props[`${prefix}icon-inherit`],
+					isIconInherit: iconInherit,
 					isHover: true,
 					isIcon: true,
 				}),

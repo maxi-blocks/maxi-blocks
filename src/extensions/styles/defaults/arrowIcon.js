@@ -41,15 +41,15 @@ const arrowIcon = {
 			'icon-spacing',
 		],
 		newAttr: {
-			'navigation-arrow-both-icon-status-background': {
+			'navigation-arrow-both-icon-background-status': {
 				type: 'boolean',
 				default: false,
 			},
-			'navigation-arrow-both-icon-status-border': {
+			'navigation-arrow-both-icon-border-status': {
 				type: 'boolean',
 				default: false,
 			},
-			'navigation-arrow-both-icon-status-shadow': {
+			'navigation-arrow-both-icon-shadow-status': {
 				type: 'boolean',
 				default: false,
 			},

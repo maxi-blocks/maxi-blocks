@@ -39,13 +39,15 @@ const TransitionControlWrapper = props => {
 		isOneType,
 		transitionData,
 	} = props;
-	const { 'transition-change-all': transitionChangeAll } = attributes;
+	const { transitionChangeAll, transitionTypeSelect } = getAttributesValue({
+		target: ['transition-change-all', `transition-${type}-selected`],
+		props: attributes,
+	});
 
 	const selected =
-		attributes[`transition-${type}-selected`] === 'none' &&
-		transitionChangeAll
+		transitionTypeSelect === 'none' && transitionChangeAll
 			? Object.keys(transition?.[type])[0]
-			: attributes[`transition-${type}-selected`];
+			: transitionTypeSelect;
 
 	const selectedTransition = transition[type][selected];
 	const defaultTransition =

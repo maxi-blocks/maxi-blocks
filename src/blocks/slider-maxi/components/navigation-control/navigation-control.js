@@ -22,6 +22,10 @@ const NavigationIconsControl = props => {
 		blockStyle,
 		prefix = 'navigation-arrow-both-icon-',
 	} = props;
+	const hoverStatus = getAttributesValue({
+		target: `${prefix}status-hover`,
+		props,
+	});
 
 	const getSvgType = prefix => {
 		switch (prefix) {
@@ -85,14 +89,14 @@ const NavigationIconsControl = props => {
 						<>
 							<ToggleSwitch
 								label={__('Enable icon hover', 'maxi-blocks')}
-								selected={props[`${prefix}status-hover`]}
+								selected={hoverStatus}
 								onChange={val =>
 									onChange({
 										[`${prefix}status-hover`]: val,
 									})
 								}
 							/>
-							{props[`${prefix}status-hover`] && (
+							{hoverStatus && (
 								<NavigationIconControl
 									{...props}
 									onChange={(obj, target) => {

@@ -1,4 +1,5 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import attributesShorter from '../dictionary/attributesShorter';
 
 const display = breakpointAttributesCreator({
 	obj: {
@@ -8,4 +9,4 @@ const display = breakpointAttributesCreator({
 	},
 });
 
-export default display;
+export default attributesShorter(display, 'display');

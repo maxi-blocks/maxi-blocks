@@ -12,6 +12,7 @@ import { createRef } from '@wordpress/element';
 import getStyles from './styles';
 import Inspector from './inspector';
 import {
+	getAttributesValue,
 	getGroupAttributes,
 	getIsOverflowHidden,
 	getLastBreakpointAttribute,
@@ -124,8 +125,6 @@ class edit extends MaxiBlockComponent {
 		const { attributes, maxiSetAttributes, isSelected, deviceType } =
 			this.props;
 		const {
-			'hover-preview': hoverPreview,
-			'hover-type': hoverType,
 			captionContent,
 			captionType,
 			imgWidth,
@@ -142,6 +141,20 @@ class edit extends MaxiBlockComponent {
 			fitParentSize,
 		} = attributes;
 		const { isExternalClass, isUploaderOpen } = this.state;
+		const {
+			hoverPreview,
+			hoverType,
+			hoverBasicEffectType,
+			hoverTextEffectType,
+		} = getAttributesValue({
+			target: [
+				'hover-preview',
+				'hover-type',
+				'hover-basic-effect-type',
+				'hover-text-effect-type',
+			],
+			props: attributes,
+		});
 
 		const wrapperClassName = classnames(
 			'maxi-image-block-wrapper',
@@ -151,10 +164,10 @@ class edit extends MaxiBlockComponent {
 		const hoverClasses = classnames(
 			hoverType === 'basic' &&
 				hoverPreview &&
-				`maxi-hover-effect-active maxi-hover-effect__${hoverType}__${attributes['hover-basic-effect-type']}`,
+				`maxi-hover-effect-active maxi-hover-effect__${hoverType}__${hoverBasicEffectType}`,
 			hoverType === 'text' &&
 				hoverPreview &&
-				`maxi-hover-effect-active maxi-hover-effect__${hoverType}__${attributes['hover-text-effect-type']}`,
+				`maxi-hover-effect-active maxi-hover-effect__${hoverType}__${hoverTextEffectType}`,
 			hoverType !== 'none' &&
 				`maxi-hover-effect__${hoverType === 'basic' ? 'basic' : 'text'}`
 		);

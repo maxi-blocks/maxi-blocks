@@ -1,3 +1,5 @@
+import attributesShorter from '../dictionary/attributesShorter';
+
 const mapInteraction = {
 	'map-dragging': {
 		type: 'boolean',
@@ -17,4 +19,4 @@ const mapInteraction = {
 	},
 };
 
-export default mapInteraction;
+export default attributesShorter(mapInteraction, 'mapInteraction');

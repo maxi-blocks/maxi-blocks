@@ -84,11 +84,25 @@ const getNormalObject = props => {
 };
 
 const getHoverNormalObject = props => {
-	const { blockStyle } = props;
+	const blockStyle = getAttributesValue({
+		target: 'blockStyle',
+		props,
+	});
+	const { borderStatusHover, boxShadowStatusHover, opacityStatusHover } =
+		getAttributesValue({
+			target: [
+				'blockStyle',
+				'border-status',
+				'box-shadow-status',
+				'opacity-status',
+			],
+			props,
+			isHover: true,
+		});
 
 	const response = {
 		border:
-			props['border-status-hover'] &&
+			borderStatusHover &&
 			getBorderStyles({
 				obj: {
 					...getGroupAttributes(
@@ -101,7 +115,7 @@ const getHoverNormalObject = props => {
 				blockStyle,
 			}),
 		boxShadow:
-			props['box-shadow-status-hover'] &&
+			boxShadowStatusHover &&
 			getBoxShadowStyles({
 				obj: {
 					...getGroupAttributes(props, 'boxShadow', true),
@@ -110,7 +124,7 @@ const getHoverNormalObject = props => {
 				blockStyle,
 			}),
 		opacity:
-			props['opacity-status-hover'] &&
+			opacityStatusHover &&
 			getOpacityStyles(
 				{ ...getGroupAttributes(props, 'opacity', true) },
 				true

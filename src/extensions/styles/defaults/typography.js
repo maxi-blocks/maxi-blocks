@@ -2,6 +2,7 @@ import prefixAttributesCreator from '../prefixAttributesCreator';
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import paletteAttributesCreator from '../paletteAttributesCreator';
 import alignment from './alignment';
+import attributesShorter from '../dictionary/attributesShorter';
 
 export const rawTypography = {
 	'font-family': {
@@ -83,10 +84,13 @@ export const rawTypography = {
 	},
 };
 
-export const typography = breakpointAttributesCreator({
-	obj: rawTypography,
-	noBreakpointAttr: ['custom-formats'],
-});
+export const typography = attributesShorter(
+	breakpointAttributesCreator({
+		obj: rawTypography,
+		noBreakpointAttr: ['custom-formats'],
+	}),
+	'typography'
+);
 
 export const typographyAlignment = prefixAttributesCreator({
 	obj: alignment,

@@ -1,4 +1,5 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import attributesShorter from '../dictionary/attributesShorter';
 import paletteAttributesCreator from '../paletteAttributesCreator';
 
 const rawShapeDivider = {
@@ -59,4 +60,4 @@ const shapeDivider = {
 	},
 };
 
-export default shapeDivider;
+export default attributesShorter(shapeDivider, 'shapeDivider');

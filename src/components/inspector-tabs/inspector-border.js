@@ -9,7 +9,10 @@ import { __ } from '@wordpress/i18n';
 import SettingTabsControl from '../setting-tabs-control';
 import BorderControl from '../border-control';
 import ToggleSwitch from '../toggle-switch';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getAttributesValue,
+	getGroupAttributes,
+} from '../../extensions/styles';
 import ManageHoverTransitions from '../manage-hover-transitions';
 /**
  * Component
@@ -32,6 +35,15 @@ const border = ({
 		insertInlineStyles,
 		cleanInlineStyles,
 	} = props;
+	const { borderStatusHover, borderStatusActive, backgroundLayers } =
+		getAttributesValue({
+			target: [
+				'border-status-hover',
+				'border-status-active',
+				'background-layers',
+			],
+			props: attributes,
+		});
 
 	const {
 		'hover-border-color-global': isActive,
@@ -39,14 +51,11 @@ const border = ({
 	} = scValues;
 	const globalHoverStatus = isActive && affectAll;
 
-	const hoverStatus =
-		attributes[`${prefix}border-status-hover`] || globalHoverStatus;
-	const activeStatus = attributes[`${prefix}border-status-active`];
+	const hoverStatus = borderStatusHover || globalHoverStatus;
 
 	const finalInlineTarget =
 		inlineTarget === ''
-			? attributes[`${prefix}background-layers`] &&
-			  attributes[`${prefix}background-layers`].length > 0
+			? backgroundLayers && backgroundLayers.length > 0
 				? '.maxi-background-displayer'
 				: ''
 			: inlineTarget;
@@ -137,7 +146,7 @@ const border = ({
 										'Enable border active',
 										'maxi-blocks'
 									)}
-									selected={activeStatus}
+									selected={borderStatusActive}
 									className='maxi-border-status-active'
 									onChange={val =>
 										maxiSetAttributes({
@@ -146,7 +155,7 @@ const border = ({
 										})
 									}
 								/>
-								{activeStatus && (
+								{borderStatusActive && (
 									<BorderControl
 										{...getGroupAttributes(
 											attributes,

@@ -10,7 +10,7 @@ import { isEmpty, isNil, isNumber, isBoolean } from 'lodash';
 import getCustomFormat from './getCustomFormat';
 import {
 	getAttributeKey,
-	getAttributeValue,
+	getAttributesValue,
 	getBlockStyle,
 } from '../../styles';
 import { getTypographyFromSC } from '../../style-cards';
@@ -90,13 +90,13 @@ export const styleObjectManipulator = ({
 	// Ensures palette color is cleaned to avoid unnecessary Custom Formats
 	if (
 		isNil(
-			getAttributeValue({
+			getAttributesValue({
 				target: 'palette-status',
 				props: style,
 				breakpoint,
 			}) &&
 				!isEmpty(
-					getAttributeValue({
+					getAttributesValue({
 						target: 'color',
 						props: style,
 						breakpoint,

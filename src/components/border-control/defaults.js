@@ -5,7 +5,7 @@ import {
 
 import {
 	getAttributeKey,
-	getAttributeValue,
+	getAttributesValue,
 	prefixAttributesCreator,
 } from '../../extensions/styles';
 
@@ -35,7 +35,7 @@ export const borderNone = (prefix = '') => {
 		: defaultBorderWidth;
 
 	const getDefaultAttributeValue = (target, props = currentDefaultBorder) =>
-		getAttributeValue({
+		getAttributesValue({
 			target,
 			prefix,
 			props,

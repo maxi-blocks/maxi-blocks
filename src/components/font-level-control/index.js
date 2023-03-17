@@ -10,7 +10,7 @@ import { useState } from '@wordpress/element';
 import Button from '../button';
 import {
 	getAttributeKey,
-	getAttributeValue,
+	getAttributesValue,
 	getGroupAttributes,
 } from '../../extensions/styles';
 
@@ -83,7 +83,7 @@ const FontLevelControl = props => {
 		} else if (!isNil(fontOptions)) {
 			const newColor = getNewColor(
 				value,
-				getAttributeValue({
+				getAttributesValue({
 					target: 'palette-color',
 					props: fontOptions,
 					breakpoint: 'general',

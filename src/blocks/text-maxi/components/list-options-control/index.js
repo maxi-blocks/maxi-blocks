@@ -17,7 +17,7 @@ import {
 } from '../../../../components';
 import {
 	getAttributeKey,
-	getAttributeValue,
+	getAttributesValue,
 	getColorRGBAString,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
@@ -547,19 +547,19 @@ const ListOptionsControl = props => {
 			{deviceType === 'general' && (
 				<ColorControl
 					label={__('Marker', 'maxi-blocks')}
-					color={getAttributeValue({
+					color={getAttributesValue({
 						target: 'list-color',
 						props: attributes,
 					})}
-					paletteStatus={getAttributeValue({
+					paletteStatus={getAttributesValue({
 						target: 'list-palette-status',
 						props: attributes,
 					})}
-					paletteColor={getAttributeValue({
+					paletteColor={getAttributesValue({
 						target: 'list-palette-color',
 						props: attributes,
 					})}
-					paletteOpacity={getAttributeValue({
+					paletteOpacity={getAttributesValue({
 						target: 'list-palette-opacity',
 						props: attributes,
 					})}

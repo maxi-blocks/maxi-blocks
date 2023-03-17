@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import { SettingTabsControl, ToggleSwitch } from '../../../../components';
 import NavigationIconControl from './navigation-icon-control';
-import getAttributeValue from '../../../../extensions/styles';
+import { getAttributesValue } from '../../../../extensions/styles';
 
 const NavigationIconsControl = props => {
 	const {
@@ -26,20 +26,20 @@ const NavigationIconsControl = props => {
 	const getSvgType = prefix => {
 		switch (prefix) {
 			case 'navigation-arrow-both-icon-':
-				return getAttributeValue({
+				return getAttributesValue({
 					target: 'navigation-arrow-first-svgType',
 					props,
 				}) ===
-					getAttributeValue({
+					getAttributesValue({
 						target: 'navigation-arrow-second-svgType',
 					})
-					? getAttributeValue({
+					? getAttributesValue({
 							target: 'navigation-arrow-first-svgType',
 					  })
 					: 'Filled';
 			case 'navigation-dot-icon-':
 			default:
-				return getAttributeValue({
+				return getAttributesValue({
 					target: 'navigation-dot-svgType',
 				});
 		}
@@ -118,7 +118,7 @@ const NavigationIconsControl = props => {
 									'Enable active icon state',
 									'maxi-blocks'
 								)}
-								selected={getAttributeValue({
+								selected={getAttributesValue({
 									target: 'active-navigation-dot-icon-status',
 									props,
 								})}
@@ -129,7 +129,7 @@ const NavigationIconsControl = props => {
 									})
 								}
 							/>
-							{getAttributeValue({
+							{getAttributesValue({
 								target: 'active-navigation-dot-icon-status',
 								props,
 							}) && (

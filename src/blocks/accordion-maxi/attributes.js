@@ -71,7 +71,7 @@ const attributes = {
 	 * Block styles
 	 */
 	...attributesData.accordion,
-	...accordionIcon,
+	...attributesData.accordionIcon,
 	...attributesData.accordionTitle,
 	...attributesData.accordionLine,
 	...attributesData.blockBackground,

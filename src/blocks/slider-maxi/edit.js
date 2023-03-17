@@ -17,7 +17,7 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import getStyles from './styles';
 import { copyPasteMapping } from './data';
 import TEMPLATE from './template';
-import { getAttributeValue } from '../../extensions/styles';
+import { getAttributesValue } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -319,7 +319,7 @@ const SliderWrapper = props => {
 				)}
 			/>
 			<div className={navClasses}>
-				{getAttributeValue({
+				{getAttributesValue({
 					target: 'navigation-arrow-first-icon-content',
 					attributes,
 				}) && (
@@ -341,7 +341,7 @@ const SliderWrapper = props => {
 						</div>
 					</span>
 				)}
-				{getAttributeValue({
+				{getAttributesValue({
 					target: 'navigation-arrow-second-icon-content',
 					attributes,
 				}) && (
@@ -363,7 +363,7 @@ const SliderWrapper = props => {
 						</div>
 					</span>
 				)}
-				{getAttributeValue({
+				{getAttributesValue({
 					target: 'navigation-dot-icon-content',
 					attributes,
 				}) && (

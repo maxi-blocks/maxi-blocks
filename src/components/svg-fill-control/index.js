@@ -20,7 +20,7 @@ import classnames from 'classnames';
 import { cloneDeep, isEmpty, isNil } from 'lodash';
 import {
 	getAttributeKey,
-	getAttributeValue,
+	getAttributesValue,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { ResponsiveTabsControl } from '..';
@@ -188,7 +188,7 @@ const SVGFillControl = props => {
 								'palette-color',
 								false,
 								'background-svg-'
-							)]: getAttributeValue({
+							)]: getAttributesValue({
 								target: 'palette-color',
 								prefix: 'background-svg-',
 								props: props.SVGOptions,
@@ -197,7 +197,7 @@ const SVGFillControl = props => {
 								'palette-status',
 								false,
 								'background-svg-'
-							)]: getAttributeValue({
+							)]: getAttributesValue({
 								target: 'palette-status',
 								prefix: 'background-svg-',
 								props: props.SVGOptions,
@@ -248,7 +248,7 @@ const SVGFillControl = props => {
 											'palette-color',
 											false,
 											'background-svg-'
-										)]: getAttributeValue({
+										)]: getAttributesValue({
 											target: 'palette-color',
 											prefix: 'background-svg-',
 											props: props.SVGOptions,
@@ -257,7 +257,7 @@ const SVGFillControl = props => {
 											'palette-status',
 											false,
 											'background-svg-'
-										)]: getAttributeValue({
+										)]: getAttributesValue({
 											target: 'palette-status',
 											prefix: 'background-svg-',
 											props: props.SVGOptions,
@@ -289,7 +289,7 @@ const SVGFillControl = props => {
 											'palette-color',
 											false,
 											'background-svg-'
-										)]: getAttributeValue({
+										)]: getAttributesValue({
 											target: 'palette-color',
 											prefix: 'background-svg-',
 											props: props.SVGOptions,
@@ -298,7 +298,7 @@ const SVGFillControl = props => {
 											'palette-status',
 											false,
 											'background-svg-'
-										)]: getAttributeValue({
+										)]: getAttributesValue({
 											target: 'palette-status',
 											prefix: 'background-svg-',
 											props: props.SVGOptions,

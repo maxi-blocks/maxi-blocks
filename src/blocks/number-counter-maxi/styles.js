@@ -4,7 +4,7 @@
 import {
 	getGroupAttributes,
 	styleProcessor,
-	getAttributeValue,
+	getAttributesValue,
 } from '../../extensions/styles';
 import {
 	getBlockBackgroundStyles,
@@ -116,13 +116,14 @@ const getHoverWrapperObject = props => {
 };
 
 const getBoxObject = props => {
-	const fontSize = getAttributeValue({
+	const fontSize = getAttributesValue({
 		target: 'number-counter-title-font-size',
 		props,
 	});
 
 	const endCountValue = Math.ceil(
-		(getAttributeValue({ target: 'number-counter-end', props }) * 360) / 100
+		(getAttributesValue({ target: 'number-counter-end', props }) * 360) /
+			100
 	);
 
 	const size = getSizeStyles(
@@ -193,7 +194,7 @@ const getBoxObject = props => {
 const getHoverBoxObject = props => {
 	const response = {
 		border:
-			getAttributeValue({
+			getAttributesValue({
 				target: 'number-counter-border-status-hover',
 				props,
 			}) &&
@@ -211,7 +212,7 @@ const getHoverBoxObject = props => {
 				prefix: 'number-counter-',
 			}),
 		boxShadow:
-			getAttributeValue({
+			getAttributesValue({
 				target: 'number-counter-box-shadow-status-hover',
 				props,
 			}) &&

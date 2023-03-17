@@ -19,7 +19,7 @@ import {
 import { SvgAltControl, SvgColorControl } from './components';
 import {
 	getAttributeKey,
-	getAttributeValue,
+	getAttributesValue,
 	getColorRGBAString,
 	getGroupAttributes,
 } from '../../extensions/styles';
@@ -89,14 +89,14 @@ const Inspector = props => {
 								...obj,
 								content: setSVGContentWithBlockStyle(
 									attributes.content,
-									getAttributeValue({
+									getAttributesValue({
 										target: 'palette-status',
 										prefix: 'svg-fill-',
 										props: attributes,
 									})
 										? fillColorStr
 										: svgFillColor,
-									getAttributeValue({
+									getAttributesValue({
 										target: 'palette-status',
 										prefix: 'svg-line-',
 										props: attributes,

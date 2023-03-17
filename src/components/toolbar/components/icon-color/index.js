@@ -17,7 +17,7 @@ import './editor.scss';
 import { toolbarShapeColor } from '../../../../icons';
 import {
 	getAttributeKey,
-	getAttributeValue,
+	getAttributesValue,
 	getColorRGBAString,
 } from '../../../../extensions/styles';
 import { setSVGContent } from '../../../../extensions/svg';
@@ -63,18 +63,18 @@ const IconColor = props => {
 						{svgType !== 'Shape' && (
 							<ColorControl
 								label={__('Icon stroke', 'maxi-blocks')}
-								color={getAttributeValue({
+								color={getAttributesValue({
 									target: 'color',
 									prefix: 'icon-stroke-',
 									props,
 								})}
 								prefix='icon-stroke-'
-								paletteColor={getAttributeValue({
+								paletteColor={getAttributesValue({
 									target: 'palette-color',
 									prefix: 'icon-stroke-',
 									props,
 								})}
-								paletteStatus={getAttributeValue({
+								paletteStatus={getAttributesValue({
 									target: 'palette-status',
 									prefix: 'icon-stroke-',
 									props,
@@ -93,7 +93,7 @@ const IconColor = props => {
 									const lineColorStr = getColorRGBAString({
 										firstVar: 'icon-stroke',
 										secondVar: `color-${paletteColor}`,
-										opacity: getAttributeValue({
+										opacity: getAttributesValue({
 											target: 'palette-opacity',
 											prefix: 'icon-stroke-',
 											props,
@@ -123,7 +123,7 @@ const IconColor = props => {
 												false,
 												'icon-'
 											)]: setSVGContent(
-												getAttributeValue({
+												getAttributesValue({
 													target: 'content',
 													prefix: 'icon-',
 													props,
@@ -143,18 +143,18 @@ const IconColor = props => {
 						{svgType !== 'Line' && (
 							<ColorControl
 								label={__('Icon fill', 'maxi-blocks')}
-								color={getAttributeValue({
+								color={getAttributesValue({
 									target: 'color',
 									prefix: 'icon-fill-',
 									props,
 								})}
 								prefix='icon-fill-'
-								paletteColor={getAttributeValue({
+								paletteColor={getAttributesValue({
 									target: 'palette-color',
 									prefix: 'icon-fill-',
 									props,
 								})}
-								paletteStatus={getAttributeValue({
+								paletteStatus={getAttributesValue({
 									target: 'palette-status',
 									prefix: 'icon-fill-',
 									props,
@@ -173,7 +173,7 @@ const IconColor = props => {
 									const fillColorStr = getColorRGBAString({
 										firstVar: 'icon-fill',
 										secondVar: `color-${paletteColor}`,
-										opacity: getAttributeValue({
+										opacity: getAttributesValue({
 											target: 'palette-opacity',
 											prefix: 'icon-fill-',
 											props,
@@ -203,7 +203,7 @@ const IconColor = props => {
 												false,
 												'icon-'
 											)]: setSVGContent(
-												getAttributeValue({
+												getAttributesValue({
 													target: 'content',
 													prefix: 'icon-',
 													props,

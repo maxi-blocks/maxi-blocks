@@ -27,7 +27,7 @@ import classnames from 'classnames';
  * Styles and icons
  */
 import './editor.scss';
-import { getAttributeValue } from 'domutils';
+import { getAttributesValue } from 'domutils';
 
 /**
  * Column patterns
@@ -37,9 +37,9 @@ const ColumnPattern = props => {
 	const { clientId, onChange, breakpoint, toolbar = false } = props;
 
 	const [numCol, setNumCol] = useState(
-		!isNil(getAttributeValue({ target: 'row-pattern-general', props }))
+		!isNil(getAttributesValue({ target: 'row-pattern-general', props }))
 			? getNumCol(
-					getAttributeValue({ target: 'row-pattern-general', props })
+					getAttributesValue({ target: 'row-pattern-general', props })
 			  )
 			: 1
 	);
@@ -60,16 +60,16 @@ const ColumnPattern = props => {
 	}, [breakpoint, numCol]);
 
 	useEffect(() => {
-		if (getAttributeValue({ target: 'row-pattern-general', props })) {
+		if (getAttributesValue({ target: 'row-pattern-general', props })) {
 			setNumCol(
 				getNumCol(
-					getAttributeValue({ target: 'row-pattern-general', props })
+					getAttributesValue({ target: 'row-pattern-general', props })
 				)
 			);
 		}
 	}, [
 		breakpoint,
-		getAttributeValue({ target: 'row-pattern-general', props }),
+		getAttributesValue({ target: 'row-pattern-general', props }),
 	]);
 
 	/**

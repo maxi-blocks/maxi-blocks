@@ -14,7 +14,7 @@ import {
 } from '../../../../components';
 import MaxiModal from '../../../../editor/library/modal';
 import {
-	getAttributeValue,
+	getAttributesValue,
 	getIconWithColor,
 } from '../../../../extensions/styles';
 
@@ -26,7 +26,7 @@ const AccordionIconSettings = props => {
 			<AxisPositionControl
 				label={__('Icon', 'maxi-blocks')}
 				disableY
-				selected={getAttributeValue({ target: 'icon-position' })}
+				selected={getAttributesValue({ target: 'icon-position' })}
 				breakpoint={breakpoint}
 				onChange={val =>
 					onChange({
@@ -39,7 +39,7 @@ const AccordionIconSettings = props => {
 				style={blockStyle}
 				onSelect={obj => onChange(obj)}
 				onRemove={obj => onChange(obj)}
-				icon={getAttributeValue({ target: 'icon-content' })}
+				icon={getAttributesValue({ target: 'icon-content' })}
 				label='Icon'
 			/>
 			<MaxiModal
@@ -47,7 +47,7 @@ const AccordionIconSettings = props => {
 				style={blockStyle}
 				onSelect={obj => onChange(obj)}
 				onRemove={obj => onChange(obj)}
-				icon={getAttributeValue({
+				icon={getAttributesValue({
 					target: 'icon-content',
 					prefix: 'active-',
 				})}
@@ -55,9 +55,9 @@ const AccordionIconSettings = props => {
 			/>
 			<SettingTabsControl
 				items={[
-					getAttributeValue({ target: 'icon-content' }) !== '' && {
+					getAttributesValue({ target: 'icon-content' }) !== '' && {
 						label: __('Normal state', 'maxi-blocks'),
-						content: getAttributeValue({
+						content: getAttributesValue({
 							target: 'icon-content',
 						}) !== '' && (
 							<IconControl
@@ -69,11 +69,11 @@ const AccordionIconSettings = props => {
 							/>
 						),
 					},
-					(getAttributeValue({
+					(getAttributesValue({
 						target: 'icon-content',
 						prefix: 'active-',
 					}) !== '' ||
-						getAttributeValue({ target: 'icon-content' }) !==
+						getAttributesValue({ target: 'icon-content' }) !==
 							'') && {
 						label: __('Hover state', 'maxi-blocks'),
 						content: (
@@ -83,7 +83,7 @@ const AccordionIconSettings = props => {
 										'Enable Icon Hover',
 										'maxi-blocks'
 									)}
-									selected={getAttributeValue({
+									selected={getAttributesValue({
 										target: 'icon-status-hover',
 									})}
 									onChange={val =>
@@ -92,7 +92,7 @@ const AccordionIconSettings = props => {
 										})
 									}
 								/>
-								{getAttributeValue({
+								{getAttributesValue({
 									target: 'icon-status-hover',
 								}) && (
 									<IconControl
@@ -107,7 +107,7 @@ const AccordionIconSettings = props => {
 							</>
 						),
 					},
-					getAttributeValue({
+					getAttributesValue({
 						target: 'icon-content',
 						prefix: 'active-',
 					}) !== '' && {

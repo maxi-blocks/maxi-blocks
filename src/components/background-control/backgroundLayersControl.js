@@ -185,12 +185,12 @@ const getLayerCardTitle = props => {
 
 	const regexLineToChange = /fill=".+?(?=")/;
 	const colorStr = getColorRGBAString({
-		firstVar: `color-${getAttributeValue({
+		firstVar: `color-${getAttributesValue({
 			target: 'palette-color',
 			prefix: 'background-svg-',
 			props: layer,
 		})}`,
-		opacity: getAttributeValue({
+		opacity: getAttributesValue({
 			target: 'palette-opacity',
 			prefix: 'background-svg-',
 			props: layer,
@@ -199,17 +199,17 @@ const getLayerCardTitle = props => {
 	});
 	const changeTo = `fill="${colorStr}"`;
 
-	const newSvgElement = getAttributeValue({
+	const newSvgElement = getAttributesValue({
 		target: 'palette-status',
 		prefix: 'background-svg-',
 		props: layer,
 	})
-		? getAttributeValue({
+		? getAttributesValue({
 				target: 'SVGElement',
 				prefix: 'background-svg-',
 				props: layer,
 		  })?.replace(regexLineToChange, changeTo)
-		: getAttributeValue({
+		: getAttributesValue({
 				target: 'SVGElement',
 				prefix: 'background-svg-',
 				props: layer,

@@ -3,7 +3,7 @@
  */
 import getColorRGBAString from '../getColorRGBAString';
 import getPaletteAttributes from '../getPaletteAttributes';
-import getAttributeValue from '../getAttributeValue';
+import getAttributesValue from '../getAttributesValue';
 /**
  * External dependencies
  */
@@ -74,7 +74,7 @@ const getTextStyles = (obj, blockStyle) => {
 		general: {},
 	};
 
-	const typeOfStyle = getAttributeValue({
+	const typeOfStyle = getAttributesValue({
 		target: 'number-counter-circle-status',
 		obj,
 	})

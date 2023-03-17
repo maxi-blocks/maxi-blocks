@@ -17,7 +17,7 @@ import {
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-	getAttributeValue,
+	getAttributesValue,
 } from '../../../../extensions/styles';
 
 /**
@@ -100,7 +100,7 @@ const MapMarkersControl = props => {
 					});
 				}}
 				blockStyle={blockStyle}
-				content={getAttributeValue({
+				content={getAttributesValue({
 					target: 'map-marker-icon',
 					props,
 				})}
@@ -117,7 +117,7 @@ const MapMarkersControl = props => {
 					});
 				}}
 				blockStyle={blockStyle}
-				content={getAttributeValue({
+				content={getAttributesValue({
 					target: 'map-marker-icon',
 					props,
 				})}

@@ -258,32 +258,50 @@ export const rawBackgroundSVG = {
 	}),
 };
 
-export const background = breakpointAttributesCreator({
-	obj: rawBackground,
-});
+export const background = attributesShorter(
+	breakpointAttributesCreator({
+		obj: rawBackground,
+	}),
+	'background'
+);
 
-export const backgroundColor = breakpointAttributesCreator({
-	obj: rawBackgroundColor,
-});
+export const backgroundColor = attributesShorter(
+	breakpointAttributesCreator({
+		obj: rawBackgroundColor,
+	}),
+	'background'
+);
 
-export const backgroundImage = breakpointAttributesCreator({
-	obj: rawBackgroundImage,
-	noBreakpointAttr: [
-		'background-image-mediaURL',
-		'background-image-mediaID',
-		'background-image-parallax-alt',
-		'background-image-parallax-alt-selector',
-	],
-});
+export const backgroundImage = attributesShorter(
+	breakpointAttributesCreator({
+		obj: rawBackgroundImage,
+		noBreakpointAttr: [
+			'background-image-mediaURL',
+			'background-image-mediaID',
+			'background-image-parallax-alt',
+			'background-image-parallax-alt-selector',
+		],
+	}),
+	'background'
+);
 
-export const backgroundVideo = breakpointAttributesCreator({
-	obj: rawBackgroundVideo,
-});
+export const backgroundVideo = attributesShorter(
+	breakpointAttributesCreator({
+		obj: rawBackgroundVideo,
+	}),
+	'background'
+);
 
-export const backgroundGradient = breakpointAttributesCreator({
-	obj: rawBackgroundGradient,
-});
+export const backgroundGradient = attributesShorter(
+	breakpointAttributesCreator({
+		obj: rawBackgroundGradient,
+	}),
+	'background'
+);
 
-export const backgroundSVG = breakpointAttributesCreator({
-	obj: rawBackgroundSVG,
-});
+export const backgroundSVG = attributesShorter(
+	breakpointAttributesCreator({
+		obj: rawBackgroundSVG,
+	}),
+	'background'
+);

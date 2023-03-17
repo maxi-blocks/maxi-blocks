@@ -1,11 +1,11 @@
 import boxShadow from '../../extensions/styles/defaults/boxShadow';
-import { getAttributeKey, getAttributeValue } from '../../extensions/styles';
+import { getAttributeKey, getAttributesValue } from '../../extensions/styles';
 
 export const boxShadowNone = prefix => {
 	let response = {};
 
 	const getDefaultAttributeValue = target =>
-		getAttributeValue({
+		getAttributesValue({
 			target,
 			prefix,
 			props: boxShadow,

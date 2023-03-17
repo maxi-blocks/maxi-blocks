@@ -133,7 +133,7 @@ const getSizeStyles = (obj, prefix = '') => {
 				const auto =
 					prefix === 'number-counter-' &&
 					target === 'width' &&
-					getAttributeValue({
+					getAttributesValue({
 						target: 'number-counter-circle-status',
 						obj,
 					})

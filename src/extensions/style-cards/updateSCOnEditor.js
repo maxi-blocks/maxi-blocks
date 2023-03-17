@@ -7,7 +7,7 @@ import { dispatch } from '@wordpress/data';
  * Internal dependencies
  */
 import {
-	getAttributeValue,
+	getAttributesValue,
 	getColorRGBAString,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -24,22 +24,22 @@ import { cloneDeep, isArray, isEmpty, merge, times, uniq } from 'lodash';
 
 const getColorString = (obj, target, style) => {
 	const prefix = target ? `${target}-` : '';
-	const paletteStatus = getAttributeValue({
+	const paletteStatus = getAttributesValue({
 		target: 'palette-status',
 		prefix,
 		props: obj,
 	});
-	const paletteColor = getAttributeValue({
+	const paletteColor = getAttributesValue({
 		target: 'palette-color',
 		prefix,
 		props: obj,
 	});
-	const paletteOpacity = getAttributeValue({
+	const paletteOpacity = getAttributesValue({
 		target: 'palette-opacity',
 		prefix,
 		props: obj,
 	});
-	const color = getAttributeValue({
+	const color = getAttributesValue({
 		target: 'color',
 		prefix,
 		props: obj,

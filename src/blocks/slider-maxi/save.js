@@ -8,7 +8,7 @@ import { RawHTML } from '@wordpress/element';
  * Internal dependencies
  */
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-import getAttributeValue from '../../extensions/styles';
+import { getAttributesValue } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -59,7 +59,7 @@ const save = props => {
 					})}
 				/>
 				<div className='maxi-slider-block__nav'>
-					{getAttributeValue({
+					{getAttributesValue({
 						target: 'navigation-arrow-first-icon-content',
 						attributes,
 					}) && (
@@ -73,7 +73,7 @@ const save = props => {
 							</RawHTML>
 						</span>
 					)}
-					{getAttributeValue({
+					{getAttributesValue({
 						target: 'navigation-arrow-second-icon-content',
 					}) && (
 						<span className='maxi-slider-block__arrow maxi-slider-block__arrow--next'>
@@ -86,7 +86,7 @@ const save = props => {
 							</RawHTML>
 						</span>
 					)}
-					{getAttributeValue({
+					{getAttributesValue({
 						target: 'navigation-dot-icon-content',
 						attributes,
 					}) && (

@@ -12,7 +12,7 @@ import {
 	getColorRGBAString,
 	getDefaultAttribute,
 	getGroupAttributes,
-	getAttributeValue,
+	getAttributesValue,
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
 import {
@@ -185,15 +185,15 @@ const NavigationIconControl = props => {
 						prefix={shortPrefix}
 					/>
 				)}
-			{getAttributeValue({
+			{getAttributesValue({
 				target: 'navigation-arrow-first-icon-content',
 				props,
 			}) ||
-				getAttributeValue({
+				getAttributesValue({
 					target: 'navigation-arrow-second-icon-content',
 					props,
 				}) ||
-				(getAttributeValue({
+				(getAttributesValue({
 					target: 'navigation-dot-icon-content',
 					props,
 				}) && (
@@ -236,7 +236,7 @@ const NavigationIconControl = props => {
 															...prev,
 															[`navigation-arrow-${current}-icon-content`]:
 																setSVGStrokeWidth(
-																	getAttributeValue(
+																	getAttributesValue(
 																		{
 																			target: `navigation-arrow-${current}-icon-content`,
 																			props,
@@ -260,7 +260,7 @@ const NavigationIconControl = props => {
 													...(!isActive && {
 														'navigation-dot-icon-content':
 															setSVGStrokeWidth(
-																getAttributeValue(
+																getAttributesValue(
 																	{
 																		target: 'navigation-dot-icon-content',
 																		props,
@@ -585,7 +585,7 @@ const NavigationIconControl = props => {
 																(isHover
 																	? setSVGContentHover
 																	: setSVGContent)(
-																	getAttributeValue(
+																	getAttributesValue(
 																		{
 																			target: `navigation-arrow-${current}-icon-content`,
 																			props,
@@ -612,7 +612,7 @@ const NavigationIconControl = props => {
 														(isHover
 															? setSVGContentHover
 															: setSVGContent)(
-															getAttributeValue({
+															getAttributesValue({
 																target: 'navigation-dot-icon-content',
 																props,
 															}),
@@ -734,7 +734,7 @@ const NavigationIconControl = props => {
 																(isHover
 																	? setSVGContentHover
 																	: setSVGContent)(
-																	getAttributeValue(
+																	getAttributesValue(
 																		{
 																			target: `navigation-arrow-${current}-icon-content`,
 																			props,
@@ -762,7 +762,7 @@ const NavigationIconControl = props => {
 														(isHover
 															? setSVGContentHover
 															: setSVGContent)(
-															getAttributeValue({
+															getAttributesValue({
 																target: 'navigation-dot-icon-content',
 																props,
 															}),

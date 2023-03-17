@@ -88,14 +88,6 @@ if (class_exists('MaxiBlocks_PageTemplate')) {
 }
 
 //======================================================================
-// MaxiBlocks Image Upload
-//======================================================================
-require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-image-upload.php';
-if (class_exists('MaxiBlocks_ImageUpload')) {
-    MaxiBlocks_ImageUpload::register();
-}
-
-//======================================================================
 // MaxiBlocks Dashboard
 //======================================================================
 require_once MAXI_PLUGIN_DIR_PATH . 'core/admin/class-maxi-dashboard.php';

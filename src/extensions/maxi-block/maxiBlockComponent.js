@@ -639,9 +639,12 @@ class MaxiBlockComponent extends Component {
 			iframe ||
 			document;
 
-		getEditorElement()
-			.getElementById(getStylesWrapperId(this.props.attributes.uniqueID))
-			?.remove();
+		if (!this.props.attributes.preview)
+			getEditorElement()
+				.getElementById(
+					getStylesWrapperId(this.props.attributes.uniqueID)
+				)
+				?.remove();
 
 		if (this.isReusable) {
 			this.widthObserver.disconnect();

@@ -126,12 +126,11 @@ window.onload = () => {
 						${
 							heading &&
 							`<${mapMarkerHeadingLevel} class='maxi-map-block__popup__content__title'>${heading}</${mapMarkerHeadingLevel}>`
+						}				
+						${
+							description &&
+							`<p class='maxi-map-block__popup__content__description'>${description}</p>`
 						}
-							
-							${
-								description &&
-								`<p class='maxi-map-block__popup__content__description'>${description}</p>`
-							}
 						</div>
 					</div>
 					`;

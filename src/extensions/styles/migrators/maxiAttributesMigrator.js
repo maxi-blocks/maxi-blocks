@@ -11,7 +11,13 @@ import { isNil } from 'lodash';
 
 const name = 'maxiAttributes Migrator';
 
-const maxiVersions = ['0.1', '0.0.1 SC1', '0.0.1-SC2', '0.0.1-SC3'];
+const maxiVersions = [
+	'0.1',
+	'0.0.1 SC1',
+	'0.0.1-SC1',
+	'0.0.1-SC2',
+	'0.0.1-SC3',
+];
 
 const isEligible = blockAttributes => {
 	const {

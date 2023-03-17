@@ -105,6 +105,8 @@ const reducer = (
 		copiedBlocks: {},
 		inspectorPath: [{ name: 'Settings', value: 0 }],
 		deprecatedBlocks: {},
+		blocksToRender: [],
+		isPageLoaded: false,
 	},
 	action
 ) => {
@@ -116,6 +118,13 @@ const reducer = (
 					...state.settings,
 					...action.settings,
 				},
+			};
+		case 'SAVE_GENERAL_SETTING':
+			const { setting, value } = action;
+			const newSettings = { [setting]: value };
+			return {
+				...state,
+				settings: { ...state.settings, ...newSettings },
 			};
 		case 'SEND_BREAKPOINTS':
 			return {
@@ -198,6 +207,23 @@ const reducer = (
 				...state,
 				deprecatedBlocks: omit(state.deprecatedBlocks, action.uniqueID),
 			};
+		case 'BLOCK_WANTS_TO_RENDER': {
+			const { uniqueID } = action;
+
+			if (state.blocksToRender.includes(uniqueID)) return state;
+
+			return {
+				...state,
+				blocksToRender: [...state.blocksToRender, uniqueID],
+			};
+		}
+		case 'SET_IS_PAGE_LOADED': {
+			return {
+				...state,
+				isPageLoaded: true,
+				blocksToRender: [],
+			};
+		}
 		default:
 			return state;
 	}

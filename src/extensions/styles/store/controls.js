@@ -56,6 +56,7 @@ const controls = {
 					templateParts: JSON.stringify(
 						name === 'wp_template' ? getTemplatePartsIds() : null
 					),
+					templatePart: name === 'wp_template_part' ? id : null,
 				},
 			}).catch(err => {
 				console.error('Error saving styles. Code error: ', err);

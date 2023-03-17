@@ -1,6 +1,10 @@
 .maxi-toolbar__popover {
 	z-index: 9999999;
 
+	&--icon {
+		z-index: 9999998;
+	}
+
 	.toolbar-more-indicator {
 		margin-left: 10px;
 		position: absolute;
@@ -43,7 +47,7 @@
 				}
 			}
 
-			.breadcrumbs-pin-toltip {
+			.breadcrumbs-pin-tooltip {
 				position: absolute;
 				top: -24px;
 				left: 0;
@@ -62,7 +66,7 @@
 				opacity: 0;
 				pointer-events: none;
 			}
-			.breadcrumbs-pin:hover .breadcrumbs-pin-toltip {
+			.breadcrumbs-pin:hover .breadcrumbs-pin-tooltip {
 				visibility: visible;
 				opacity: 1;
 				transition-delay: 0.8s;

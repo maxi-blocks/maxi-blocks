@@ -13,10 +13,11 @@ import { registerBlockType } from '@wordpress/blocks';
 /**
  * Block dependencies
  */
-import attributes from './attributes';
 import edit from './edit';
+import attributes from './attributes';
 import save from './save';
 import { customCss } from './data';
+import withMaxiLoader from '../../extensions/maxi-block/withMaxiLoader';
 
 /**
  * Styles and icons
@@ -53,7 +54,7 @@ registerBlockType('maxi-blocks/group-maxi', {
 			uniqueid: uniqueID,
 		};
 	},
-	edit,
+	edit: withMaxiLoader(edit),
 	save,
 	deprecated: blockMigrator({
 		attributes,

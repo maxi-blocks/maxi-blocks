@@ -1,8 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
-import { createRef, forwardRef, useEffect, useState } from '@wordpress/element';
+import { createRef } from '@wordpress/element';
 import { dispatch } from '@wordpress/data';
 
 /**
@@ -19,14 +18,16 @@ import {
 	BlockResizer,
 	RawHTML,
 	MaxiPopoverButton,
-	Button,
-	Icon,
 } from '../../components';
+import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import {
 	getIsOverflowHidden,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+import {
+	getSVGWidthHeightRatio,
+	togglePreserveAspectRatio,
+} from '../../extensions/svg';
 import MaxiModal from '../../editor/library/modal';
 import getStyles from './styles';
 import { copyPasteMapping } from './data';
@@ -35,63 +36,7 @@ import { copyPasteMapping } from './data';
  * External dependencies
  */
 import { isEmpty, uniqueId, uniq, isArray } from 'lodash';
-import classNames from 'classnames';
 
-/**
- * Icons
- */
-import { selectIcon } from '../../icons';
-
-/**
- * Content
- */
-const SVGIconPlaceholder = forwardRef((props, ref) => {
-	const { uniqueID, clientId, onClick } = props;
-
-	const [isBlockSmall, setIsBlockSmall] = useState(null);
-	const [isBlockSmaller, setIsBlockSmaller] = useState(null);
-
-	const resizeObserver = new ResizeObserver(entries => {
-		const newIsSmallBlock = entries[0].contentRect.width < 120;
-		const newIsSmallerBlock = entries[0].contentRect.width < 38;
-
-		if (newIsSmallBlock !== isBlockSmall) setIsBlockSmall(newIsSmallBlock);
-		if (newIsSmallerBlock !== isBlockSmaller)
-			setIsBlockSmaller(newIsSmallerBlock);
-	});
-
-	useEffect(() => {
-		resizeObserver.observe(ref.current);
-
-		return () => {
-			resizeObserver.disconnect();
-		};
-	}, []);
-
-	return (
-		<div
-			className={classNames(
-				'maxi-svg-icon-block__placeholder',
-				isBlockSmall && 'maxi-svg-icon-block__placeholder--small',
-				isBlockSmaller && 'maxi-svg-icon-block__placeholder--smaller'
-			)}
-			key={`maxi-svg-icon-block__placeholder--${uniqueID}`}
-		>
-			<Button
-				isPrimary
-				key={`maxi-block-library__modal-button--${clientId}`}
-				className='maxi-block-library__modal-button'
-				onClick={onClick}
-			>
-				<Icon
-					className='maxi-icon-block__select__icon'
-					icon={selectIcon}
-				/>
-				{!isBlockSmall && __('Select icon', 'maxi-blocks')}
-			</Button>
-		</div>
-	);
-});
 class edit extends MaxiBlockComponent {
 	constructor(props) {
 		super(props);
@@ -198,7 +143,14 @@ class edit extends MaxiBlockComponent {
 	}
 
 	get getStylesObject() {
-		return getStyles(this.props.attributes);
+		return getStyles(
+			this.props.attributes,
+			getSVGWidthHeightRatio(
+				this.blockRef.current?.querySelector(
+					'.maxi-svg-icon-block__icon svg'
+				)
+			)
+		);
 	}
 
 	state = {
@@ -217,6 +169,12 @@ class edit extends MaxiBlockComponent {
 		const { isOpen } = this.state;
 
 		const isEmptyContent = isEmpty(content);
+
+		const heightFitContent = getLastBreakpointAttribute({
+			target: 'svg-width-fit-content',
+			breakpoint: deviceType,
+			attributes,
+		});
 
 		const handleOnResizeStop = (event, direction, elt) => {
 			// Return SVG element its CSS width
@@ -247,6 +205,19 @@ class edit extends MaxiBlockComponent {
 				this.setState({ isOpen: true });
 			},
 			onSelect: obj => {
+				const { content } = obj;
+
+				if (content) {
+					const disableHeightFitContent = getLastBreakpointAttribute({
+						target: 'svg-width-fit-content',
+						breakpoint: deviceType,
+						attributes,
+					});
+
+					if (disableHeightFitContent)
+						obj.content = togglePreserveAspectRatio(content, true);
+				}
+
 				maxiSetAttributes(obj);
 
 				this.setState({ isOpen: false });
@@ -294,15 +265,6 @@ class edit extends MaxiBlockComponent {
 					</MaxiPopoverButton>,
 				],
 			],
-			...[
-				isEmptyContent && (
-					<MaxiModal
-						{...maxiModalProps}
-						forceHide
-						key={`maxi-modal--${uniqueID}`}
-					/>
-				),
-			],
 			<MaxiBlock
 				key={`maxi-svg-icon--${uniqueID}`}
 				ref={this.blockRef}
@@ -310,14 +272,13 @@ class edit extends MaxiBlockComponent {
 			>
 				<>
 					{isEmptyContent && (
-						<SVGIconPlaceholder
-							ref={this.blockRef}
-							uniqueID={uniqueID}
-							clientId={clientId}
-							onClick={() => this.setState({ isOpen: true })}
+						<MaxiModal
+							{...maxiModalProps}
+							forceHide
+							key={`maxi-modal--${uniqueID}`}
 						/>
 					)}
-					{!isEmptyContent && (
+					{!isEmptyContent && !heightFitContent && (
 						<BlockResizer
 							className='maxi-svg-icon-block__icon'
 							key={`maxi-svg-icon-block__icon--${clientId}`}
@@ -350,6 +311,11 @@ class edit extends MaxiBlockComponent {
 						>
 							<RawHTML>{content}</RawHTML>
 						</BlockResizer>
+					)}
+					{!isEmptyContent && heightFitContent && (
+						<div className='maxi-svg-icon-block__icon'>
+							<RawHTML>{content}</RawHTML>
+						</div>
 					)}
 				</>
 			</MaxiBlock>,

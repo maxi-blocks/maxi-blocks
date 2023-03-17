@@ -26,6 +26,13 @@ const actions = {
 			settings,
 		};
 	},
+	saveMaxiSetting(setting, value) {
+		return {
+			type: 'SAVE_GENERAL_SETTING',
+			setting,
+			value,
+		};
+	},
 	sendMaxiBreakpoints(breakpoints) {
 		return {
 			type: 'SEND_BREAKPOINTS',
@@ -118,6 +125,31 @@ const actions = {
 		return {
 			type: 'REMOVE_DEPRECATED_BLOCK',
 			uniqueID,
+		};
+	},
+	blockWantsToRender(uniqueID, clientId) {
+		return {
+			type: 'BLOCK_WANTS_TO_RENDER',
+			uniqueID,
+			clientId,
+		};
+	},
+	blockHasBeenRendered(uniqueID) {
+		return {
+			type: 'BLOCK_HAS_BEEN_RENDERED',
+			uniqueID,
+		};
+	},
+	removeBlockHasBeenRendered(uniqueID, clientId) {
+		return {
+			type: 'REMOVE_BLOCK_HAS_BEEN_RENDERED',
+			uniqueID,
+			clientId,
+		};
+	},
+	setIsPageLoaded() {
+		return {
+			type: 'SET_IS_PAGE_LOADED',
 		};
 	},
 };

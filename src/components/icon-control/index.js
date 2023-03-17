@@ -27,6 +27,7 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import { togglePreserveAspectRatio } from '../../extensions/svg';
 import MaxiModal from '../../editor/library/modal';
 
 /**
@@ -63,6 +64,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 		disablePadding = false,
 		disablePosition = false,
 		disableSpacing = false,
+		disableHeightFitContent = false,
 		getIconWithColor,
 		inlineTarget,
 		prefix = '',
@@ -191,6 +193,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 				prefix={`${prefix}icon-`}
 				breakpoint={breakpoint}
 				isHover={isHover}
+				disableHeightFitContent={disableHeightFitContent}
 			/>
 			{svgType !== 'Shape' && (
 				<SvgStrokeWidthControl
@@ -631,11 +634,19 @@ const IconControl = props => {
 		isHover = false,
 		isInteractionBuilder = false,
 		disableModal = false,
+		disableHeightFitContent = false,
 		getIconWithColor,
 		type = 'button-icon',
 		prefix = '',
 		[`${prefix}icon-content`]: iconContent,
 	} = props;
+
+	const heightFitContent = getLastBreakpointAttribute({
+		target: `${prefix}icon-width-fit-content`,
+		breakpoint,
+		attributes: props,
+		isHover,
+	});
 
 	const classes = classnames('maxi-icon-control', className);
 
@@ -651,13 +662,16 @@ const IconControl = props => {
 						onSelect={obj => {
 							const newSvgType = obj[`${prefix}svgType`];
 
-							const icon = getIconWithColor({
+							let icon = getIconWithColor({
 								rawIcon: obj[`${prefix}icon-content`],
 								type: [
 									newSvgType !== 'Shape' && 'stroke',
 									newSvgType !== 'Line' && 'fill',
 								].filter(Boolean),
 							});
+
+							if (!disableHeightFitContent && heightFitContent)
+								icon = togglePreserveAspectRatio(icon, true);
 
 							onChange({
 								...obj,

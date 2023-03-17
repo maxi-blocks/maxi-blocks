@@ -21,6 +21,7 @@ const prefix = 'number-counter-';
  */
 const name = 'number-counter-maxi';
 const copyPasteMapping = {
+	_exclude: ['number-counter-start', 'number-counter-end'],
 	settings: {
 		Alignment: {
 			groupAttributes: 'alignment',

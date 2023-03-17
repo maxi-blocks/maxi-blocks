@@ -90,11 +90,15 @@ class MaxiBlocks_Local_Fonts
         return $array_all;
     }
 
-    public function generateFontURL($font_url, $fontata)
+    public function generateFontURL($font_url, $font_data)
     {
         if (!empty($font_data)) {
-            $font_weight = array_key_exists('weight', $font_data) ? $font_data['weight'] : false;
-            $font_style = array_key_exists('style', $font_data) ? $font_data['style'] : false;
+            // For legacy reasons font data is saved both as 'weight' ('style') and 'fontWeight' ('fontStyle')
+            // See https://github.com/maxi-blocks/maxi-blocks/pull/4305#discussion_r1098988152
+            $font_weight = array_key_exists('fontWeight', $font_data) ? $font_data['fontWeight'] :
+                (array_key_exists('weight', $font_data) ? $font_data['weight'] : false);
+            $font_style = array_key_exists('fontStyle', $font_data) ? $font_data['fontStyle'] :
+                (array_key_exists('style', $font_data) ? $font_data['style'] : false);
 
             if (is_array($font_weight)) {
                 $font_weight = implode(',', array_unique($font_weight));
@@ -153,7 +157,9 @@ class MaxiBlocks_Local_Fonts
                     $breakpoint  = isset($split_font[2]) ? $split_font[2] : 'general';
 
                     if (class_exists('MaxiBlocks_StyleCards')) {
-                        $font_name = MaxiBlocks_StyleCards::get_maxi_blocks_style_card_fonts($block_style, $text_level, $breakpoint);
+                        $sc_fonts = MaxiBlocks_StyleCards::get_maxi_blocks_style_card_fonts($block_style, $text_level, $breakpoint);
+
+                        @list($font_name) = $sc_fonts;
                     }
                 }
             }
@@ -192,7 +198,9 @@ class MaxiBlocks_Local_Fonts
                 $breakpoint = $split_font[2];
 
                 if (class_exists('MaxiBlocks_StyleCards')) {
-                    $font_name = MaxiBlocks_StyleCards::get_maxi_blocks_style_card_fonts($block_style, $text_level, $breakpoint);
+                    $sc_fonts = MaxiBlocks_StyleCards::get_maxi_blocks_style_card_fonts($block_style, $text_level, $breakpoint);
+
+                    @list($font_name) = $sc_fonts;
                 }
             }
 

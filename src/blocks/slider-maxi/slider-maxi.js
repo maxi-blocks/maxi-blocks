@@ -20,9 +20,10 @@ import { sliderIcon } from '../../icons';
 /**
  * Block dependencies
  */
-import attributes from './attributes';
 import edit from './edit';
+import attributes from './attributes';
 import save from './save';
+import withMaxiLoader from '../../extensions/maxi-block/withMaxiLoader';
 
 /**
  * Block
@@ -47,6 +48,6 @@ registerBlockType('maxi-blocks/slider-maxi', {
 			uniqueid: uniqueID,
 		};
 	},
-	edit,
+	edit: withMaxiLoader(edit),
 	save,
 });

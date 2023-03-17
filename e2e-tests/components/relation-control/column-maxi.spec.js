@@ -3,19 +3,23 @@
  */
 import {
 	createNewPost,
-	insertBlock,
 	pressKeyWithModifier,
 	selectBlockByClientId,
 } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openSidebarTab, openPreviewPage, getAttributes } from '../../utils';
+import {
+	openSidebarTab,
+	openPreviewPage,
+	getAttributes,
+	insertMaxiBlock,
+} from '../../utils';
 
 describe('Column Maxi hover simple actions', () => {
 	beforeEach(async () => {
 		await createNewPost();
-		await insertBlock('Container Maxi');
+		await insertMaxiBlock(page, 'Container Maxi');
 
 		// Select one column
 		await page.$$eval(
@@ -31,7 +35,7 @@ describe('Column Maxi hover simple actions', () => {
 		);
 		await page.keyboard.press('Enter');
 
-		await insertBlock('Button Maxi');
+		await insertMaxiBlock(page, 'Button Maxi');
 		await openSidebarTab(page, 'advanced', 'interaction builder');
 
 		// Add interaction

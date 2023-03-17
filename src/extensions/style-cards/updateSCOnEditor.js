@@ -13,6 +13,7 @@ import {
 } from '../styles';
 import { loadFonts } from '../text/fonts';
 import { getSiteEditorIframe } from '../fse';
+import { getActiveColourFromSC } from '../../editor/style-cards/utils';
 
 /**
  * External dependencies
@@ -64,7 +65,10 @@ const getParsedObj = obj => {
 	return newObj;
 };
 
-export const getSCVariablesObject = styleCards => {
+export const getSCVariablesObject = (
+	styleCards,
+	activeSCColour = getActiveColourFromSC(styleCards, 4)
+) => {
 	const response = {};
 	const styles = ['light', 'dark'];
 	const elements = [
@@ -212,7 +216,7 @@ export const getSCVariablesObject = styleCards => {
 			});
 		}
 	});
-
+	response['--maxi-active-sc-color'] = activeSCColour;
 	return response;
 };
 
@@ -235,7 +239,10 @@ const getSCFontsData = obj => {
 	Object.entries(obj).forEach(([key, val]) => {
 		if (key.includes('font-family')) {
 			fontName = val;
-			response[fontName] = { weight: [], style: [] };
+			response[fontName] = response[fontName] ?? {
+				weight: [],
+				style: [],
+			};
 		}
 		if (key.includes('font-weight'))
 			response[fontName].weight.push(val?.toString());
@@ -260,9 +267,13 @@ const getSCFontsData = obj => {
 
 const updateSCOnEditor = (
 	styleCards,
+	activeSCColour,
 	rawElements = [document, getSiteEditorIframe()]
 ) => {
-	const SCObject = getSCVariablesObject({ ...cloneDeep(styleCards) });
+	const SCObject = getSCVariablesObject(
+		{ ...cloneDeep(styleCards) },
+		activeSCColour
+	);
 	const allSCFonts = getSCFontsData(SCObject);
 
 	const elements = isArray(rawElements) ? rawElements : [rawElements];
@@ -280,7 +291,7 @@ const updateSCOnEditor = (
 			const elementHead = Array.from(
 				element.querySelectorAll('head')
 			).pop();
-			elementHead.appendChild(SCStyle);
+			elementHead?.appendChild(SCStyle);
 			const { saveSCStyles } = dispatch('maxiBlocks/style-cards');
 
 			// Needs a delay, if not Redux returns error 3

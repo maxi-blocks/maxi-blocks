@@ -3,19 +3,22 @@
  */
 import {
 	createNewPost,
-	insertBlock,
 	selectBlockByClientId,
 } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
-import { getAttributes, openSidebarTab } from '../../../../utils';
+import {
+	getAttributes,
+	openSidebarTab,
+	insertMaxiBlock,
+} from '../../../../utils';
 
 describe('Vertical align align from Toolbar', () => {
 	it('Test vertical align align from toolbar', async () => {
 		await createNewPost();
-		await insertBlock('Container Maxi');
+		await insertMaxiBlock(page, 'Container Maxi');
 
 		// Wait for toolbar to be visible
 		await page.waitForSelector('.toolbar-wrapper');
@@ -23,6 +26,7 @@ describe('Vertical align align from Toolbar', () => {
 		await page.$$eval('.maxi-row-block__template button', button =>
 			button[0].click()
 		);
+		await page.waitForSelector('.maxi-column-block');
 
 		const columnClientId = await page.$eval('.maxi-column-block', column =>
 			column.getAttribute('data-block')

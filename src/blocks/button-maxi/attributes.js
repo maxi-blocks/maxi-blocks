@@ -6,7 +6,7 @@ import {
 	prefixAttributesCreator,
 	transitionAttributesCreator,
 } from '../../extensions/styles';
-import { transition } from './data';
+import { customCss, transition } from './data';
 
 /**
  * Attributes
@@ -151,6 +151,7 @@ const attributes = {
 	/**
 	 * Canvas styles
 	 */
+	...attributesData.blockBackground,
 	...attributesData.border,
 	...attributesData.borderWidth,
 	...attributesData.borderRadius,
@@ -165,12 +166,15 @@ const attributes = {
 	/**
 	 * Advanced
 	 */
-	...attributesData.blockBackground,
+	...attributesData.dynamicContent,
 	...attributesData.scroll,
 	...attributesData.transform,
 	...{
 		...attributesData.transition,
-		...transitionAttributesCreator(transition),
+		...transitionAttributesCreator({
+			transition,
+			selectors: customCss.selectors,
+		}),
 	},
 	...attributesData.display,
 	...attributesData.position,

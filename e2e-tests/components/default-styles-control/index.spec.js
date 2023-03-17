@@ -1,16 +1,21 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebarTab, getBlockStyle } from '../../utils';
+import {
+	getBlockAttributes,
+	openSidebarTab,
+	getBlockStyle,
+	insertMaxiBlock,
+} from '../../utils';
 
 describe('DefaultStylesControl', () => {
 	it('Checking the default styles control', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 		await page.keyboard.type('check default styles');
 		const accordionPanel = await openSidebarTab(page, 'style', 'border');
 		await accordionPanel.$$(

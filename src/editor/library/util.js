@@ -1,7 +1,6 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
 import { select } from '@wordpress/data';
 
 /**
@@ -12,7 +11,7 @@ import { getBlockStyle, getPaletteAttributes } from '../../extensions/styles';
 /**
  * External dependencies
  */
-import { isEmpty, isNil, uniq } from 'lodash';
+import { isNil } from 'lodash';
 
 export const rgbToHex = color => {
 	if (isNil(color)) return '';
@@ -55,71 +54,6 @@ export const fitSvg = svgCode => {
 	document.querySelector('#maxi-temporary-elem').remove();
 
 	return newSvgCode;
-};
-
-export const placeholderImage = async () => {
-	const ajaxurl = wp.ajax.settings.url;
-	try {
-		const response = await fetch(
-			`${
-				window.location.origin + ajaxurl
-			}?action=maxi_upload_placeholder_image`
-		);
-		const data = await response.json();
-		if (data.error === '404') {
-			console.warn(
-				__(
-					"Can't upload the placeholder image, check directory's permissions",
-					'maxi-blocks'
-				)
-			);
-			return null;
-		}
-		return data;
-	} catch (err) {
-		console.error(
-			__(`Error uploading the placeholder image: ${err}`, 'maxi-blocks')
-		);
-	}
-	return null;
-};
-
-export const imageUploader = async (imageSrc, usePlaceholderImage) => {
-	const ajaxurl = wp.ajax.settings.url;
-	try {
-		if (usePlaceholderImage) return placeholderImage();
-
-		const response = await fetch(
-			`${
-				window.location.origin + ajaxurl
-			}?action=maxi_upload_pattern_image&maxi_image_to_upload=${imageSrc}`
-		);
-
-		if (!response.ok) {
-			console.warn(
-				__(
-					'The Cloud server is down, using the placeholder image',
-					'maxi-blocks'
-				)
-			);
-			return placeholderImage();
-		}
-
-		const data = await response.json();
-		if (data.error === '404') {
-			console.warn(
-				__(
-					'The original image not found (404) on the Cloud Site, using the placeholder image',
-					'maxi-blocks'
-				)
-			);
-			return placeholderImage();
-		}
-		return data;
-	} catch (err) {
-		console.error(__(`Error uploading the image: ${err}`, 'maxi-blocks'));
-	}
-	return null;
 };
 
 export const svgAttributesReplacer = (svgCode, target = 'svg') => {
@@ -172,7 +106,9 @@ export const svgCurrentColorStatus = (blockStyle, target = 'svg') => {
 	const { getSelectedBlockClientId, getBlock } = select('core/block-editor');
 	const clientId = getSelectedBlockClientId();
 
-	const currentAttributes = getBlock(clientId).attributes;
+	const currentAttributes = getBlock(clientId)?.attributes;
+
+	if (!currentAttributes) return null;
 
 	const { receiveStyleCardValue } = select('maxiBlocks/style-cards');
 
@@ -229,115 +165,4 @@ export const svgCurrentColorStatus = (blockStyle, target = 'svg') => {
 					? iconInheritColor
 					: currentColor
 		  );
-};
-
-export const onRequestInsertPattern = (
-	parsedContent,
-	usePlaceholderImage,
-	isValidTemplate,
-	onSelect,
-	onRequestClose,
-	replaceBlock,
-	clientId
-) => {
-	const isValid = isValidTemplate(parsedContent);
-
-	if (isValid) {
-		const loadingMessage = `<h3>${__(
-			'LOADING…',
-			'maxi-blocks'
-		)}<span class="maxi-spinner"></span></h3>`;
-
-		onSelect({ content: loadingMessage });
-
-		onRequestClose();
-
-		const imagesLinks = [];
-		const imagesIds = [];
-
-		const allImagesRegexp = /(mediaID|imageID)":(.*)",/g;
-
-		const allImagesLinks = parsedContent.match(allImagesRegexp);
-
-		allImagesLinks?.forEach(image => {
-			const parsed = image.replace(/\\/g, '');
-
-			const idRegexp = /(mediaID|imageID)":(\d+),/g;
-			const id = parsed
-				?.match(idRegexp)
-				?.map(item => item.match(/\d+/)[0]);
-			if (!isEmpty(id)) imagesIds.push(...id);
-
-			const urlRegexp = /(mediaURL|imageURL)":"([^"]+)"/g;
-			const url = parsed
-				?.match(urlRegexp)
-				?.map(item => item.split(/:(.+)/, 2)[1].replace(/"/g, ''));
-			if (!isEmpty(url)) imagesLinks.push(...url);
-		});
-
-		if (!isEmpty(imagesLinks) && !isEmpty(imagesIds)) {
-			let tempContent = parsedContent;
-			const imagesLinksUniq = uniq(imagesLinks);
-			const imagesIdsUniq = uniq(imagesIds);
-			let counter = imagesLinksUniq.length;
-			const checkCounter = imagesIdsUniq.length;
-
-			if (counter !== checkCounter) {
-				console.error(
-					__(
-						"Error processing images' links and ids - counts do not match",
-						'maxi-blocks'
-					)
-				);
-				replaceBlock(
-					clientId,
-					wp.blocks.rawHandler({
-						HTML: parsedContent,
-						mode: 'BLOCKS',
-					})
-				);
-				return;
-			}
-
-			const imagesUniq = imagesIdsUniq.reduce(
-				(o, k, i) => ({ ...o, [k]: imagesLinksUniq[i] }),
-				{}
-			);
-
-			Object.entries(imagesUniq).map(image => {
-				const id = image[0];
-				const url = image[1];
-
-				imageUploader(url, usePlaceholderImage).then(data => {
-					tempContent = tempContent.replaceAll(url, data.url);
-					tempContent = tempContent.replaceAll(id, data.id);
-					counter -= 1;
-					if (counter === 0) {
-						replaceBlock(
-							clientId,
-							wp.blocks.rawHandler({
-								HTML: tempContent,
-								mode: 'BLOCKS',
-							})
-						);
-					}
-				});
-				return null;
-			});
-		} else {
-			// no images to process
-			replaceBlock(
-				clientId,
-				wp.blocks.rawHandler({
-					HTML: parsedContent,
-					mode: 'BLOCKS',
-				})
-			);
-		}
-	} else {
-		// not valid gutenberg code
-		// TODO: show a human-readable error here
-		console.error(__('The Code is not valid', 'maxi-blocks'));
-		onRequestClose();
-	}
 };

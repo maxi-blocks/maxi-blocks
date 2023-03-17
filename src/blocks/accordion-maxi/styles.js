@@ -272,7 +272,11 @@ const getPaneHeaderObject = props => {
 				),
 			},
 		},
-		...(props['header-line-status-active'] && {
+		...(getAttributeValue({
+			target: 'line-status-active',
+			prefix: 'header-',
+			props,
+		}) && {
 			'[aria-expanded=true] .maxi-pane-block__header-line': {
 				headerLine: {
 					...getDividerStyles(
@@ -286,7 +290,12 @@ const getPaneHeaderObject = props => {
 				},
 			},
 		}),
-		...(props['header-line-status-hover'] && {
+		...(getAttributeValue({
+			target: 'line-status',
+			prefix: 'header-',
+			isHover: true,
+			props,
+		}) && {
 			'[aria-expanded] .maxi-pane-block__header:hover .maxi-pane-block__header-line':
 				{
 					headerLine: {
@@ -363,7 +372,11 @@ const getPaneContentObject = props => {
 					),
 				},
 			},
-			...(props['content-line-status-active'] && {
+			...(getAttributeValue({
+				target: 'line-status-active',
+				prefix: 'content-',
+				props,
+			}) && {
 				'[aria-expanded=true] .maxi-pane-block__content-line': {
 					paneLine: {
 						...getDividerStyles(
@@ -377,7 +390,12 @@ const getPaneContentObject = props => {
 					},
 				},
 			}),
-			...(props['content-line-status-hover'] && {
+			...(getAttributeValue({
+				target: 'line-status',
+				prefix: 'content-',
+				isHover: true,
+				props,
+			}) && {
 				'[aria-expanded] .maxi-pane-block__header:hover .maxi-pane-block__content-line':
 					{
 						paneLine: {

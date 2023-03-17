@@ -32,8 +32,15 @@ class edit extends MaxiBlockComponent {
 		const response = {
 			accordion: {
 				[uniqueID]: {
-					paneIcon: attributes['icon-content'],
-					paneIconActive: attributes['active-icon-content'],
+					paneIcon: getAttributesValue({
+						target: 'icon-content',
+						props: attributes,
+					}),
+					paneIconActive: getAttributesValue({
+						target: 'icon-content',
+						prefix: 'active-',
+						props: attributes,
+					}),
 					accordionLayout: getAttributesValue({
 						target: 'accordionLayout',
 						props: attributes,
@@ -88,7 +95,12 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes } = this.props;
-		const { uniqueID, titleLevel } = attributes;
+		const { uniqueID } = attributes;
+
+		const titleLevel = getAttributesValue({
+			target: 'titleLevel',
+			props: attributes,
+		});
 
 		const accordionLayout = getAttributesValue({
 			target: 'accordionLayout',

@@ -5,10 +5,14 @@ const dictionary = {
 		isCollapsible: 'ico',
 		animationDuration: 'ad',
 	},
-	accordionLine: {},
+	accordionLine: {
+		'line-status-active': 'lsa',
+		'line-status': 'ls',
+	},
 	accordionTitle: {
-		'tite-typography-status-hover': 'tths',
-		'tite-typography-status-active': 'ttas',
+		titleLevel: 'tl',
+		'title-typography-status-hover': 'tths',
+		'title-typography-status-active': 'ttas',
 		'title-background-status': 'tbgs',
 		'title-background-status-hover': 'tbgsh',
 		'title-background-status-active': 'tbgsa',

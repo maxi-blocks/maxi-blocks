@@ -64,20 +64,19 @@ const selectors = {
 	canBlockRender(state, uniqueID) {
 		if (state)
 			return (
-				(state.blocksToRender.includes(uniqueID) &&
-					state.blocksToRender.indexOf(uniqueID) < 10) ||
-				state.renderedBlocks.includes(uniqueID)
+				state.isPageLoaded ||
+				state.blocksToRender.indexOf(uniqueID) === 0
 			);
-
-		return false;
-	},
-	blockHasBeenRendered(state, uniqueID) {
-		if (state) return state.renderedBlocks.includes(uniqueID);
 
 		return false;
 	},
 	allBlocksHaveBeenRendered(state) {
 		if (state) return state.blocksToRender.length === 0;
+
+		return false;
+	},
+	getIsPageLoaded(state) {
+		if (state) return state.isPageLoaded;
 
 		return false;
 	},

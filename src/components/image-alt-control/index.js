@@ -21,21 +21,24 @@ const ImageAltControl = ({
 	onChange,
 	dcStatus,
 }) => {
-	const { wpAlt, titleAlt } = useSelect(select => {
-		const { getMedia } = select('core');
+	const { wpAlt, titleAlt } = useSelect(
+		select => {
+			const { getMedia } = select('core');
 
-		const mediaData = getMedia(mediaID) ?? {
-			alt_text: { wpAlt: '' },
-			title: { rendered: { titleAlt: '' } },
-		};
+			const mediaData = getMedia(mediaID) ?? {
+				alt_text: { wpAlt: '' },
+				title: { rendered: { titleAlt: '' } },
+			};
 
-		const {
-			alt_text: wpAlt,
-			title: { rendered: titleAlt },
-		} = mediaData;
+			const {
+				alt_text: wpAlt,
+				title: { rendered: titleAlt },
+			} = mediaData;
 
-		return { wpAlt, titleAlt };
-	});
+			return { wpAlt, titleAlt };
+		},
+		[mediaID]
+	);
 
 	const getImageAltOptions = () => {
 		if (dcStatus)

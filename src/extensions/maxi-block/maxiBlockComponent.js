@@ -7,11 +7,6 @@
  */
 
 /**
- * Disabled some ESLint rules; this file needs to be cleaned
- */
-/* eslint-disable class-methods-use-this */
-
-/**
  * WordPress dependencies
  */
 import { Component, createRoot, render, createRef } from '@wordpress/element';
@@ -36,7 +31,6 @@ import getBreakpoints from '../styles/helpers/getBreakpoints';
 import getIsUniqueIDRepeated from './getIsUniqueIDRepeated';
 import getCustomLabel from './getCustomLabel';
 import { loadFonts, getAllFonts } from '../text/fonts';
-import goThroughMaxiBlocks from './goThroughMaxiBlocks';
 import uniqueIDStructureChecker from './uniqueIDStructureChecker';
 import {
 	getIsSiteEditor,
@@ -46,26 +40,19 @@ import {
 } from '../fse';
 import { updateSCOnEditor } from '../style-cards';
 import getWinBreakpoint from '../dom/getWinBreakpoint';
-import {
-	getBlockData,
-	getUpdatedBGLayersWithNewUniqueID,
-	uniqueIDGenerator,
-} from '../attributes';
-import getHoverStatus from '../relations/getHoverStatus';
+import { uniqueIDGenerator } from '../attributes';
 import { getStylesWrapperId } from './utils';
-import getLastChangedBlocks from './getLastChangedBlocks';
+import removeUnmountedBlockFromRelations from './removeUnmountedBlockFromRelations';
+import updateRelationHoverStatus from './updateRelationHoverStatus';
+import propagateNewUniqueID from './propagateNewUniqueID';
+import updateReusableBlockSize from './updateReusableBlockSize';
+import propsObjectCleaner from './propsObjectCleaner';
 
 /**
  * External dependencies
  */
-import {
-	cloneDeep,
-	isEmpty,
-	isEqual,
-	isFunction,
-	isNil,
-	isArray,
-} from 'lodash';
+import { isEmpty, isEqual, isFunction, isNil } from 'lodash';
+import { diff } from 'deep-object-diff';
 
 /**
  * Style Component
@@ -118,9 +105,6 @@ class MaxiBlockComponent extends Component {
 
 		this.isReusable = false;
 		this.rootSlot = null;
-		this.currentBreakpoint =
-			select('maxiBlocks').receiveMaxiDeviceType() || 'general';
-		// eslint-disable-next-line react/no-unused-class-component-methods
 		this.blockRef = createRef();
 		this.typography = getGroupAttributes(attributes, 'typography');
 		this.isPreviewBlock = !!getTemplatePartChooseList();
@@ -128,13 +112,8 @@ class MaxiBlockComponent extends Component {
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
 
 		// Init
-		const newUniqueID = this.uniqueIDChecker(uniqueID);
-		this.loadFonts();
+		this.uniqueIDChecker(uniqueID);
 		this.getCurrentBlockStyle();
-		this.displayStyles(newUniqueID);
-
-		this.maxiAttributes = this.getMaxiAttributes();
-
 		this.setMaxiAttributes();
 	}
 
@@ -153,10 +132,16 @@ class MaxiBlockComponent extends Component {
 			})
 			.catch(() => console.error('Maxi Blocks: Could not load settings'));
 
-		if (
-			this.blockRef.current.parentNode.classList.contains('is-reusable')
-		) {
-			this.updateBlockSize();
+		// Check if the block is reusable
+		this.isReusable =
+			this.blockRef.current.parentNode.classList.contains('is-reusable');
+
+		if (this.isReusable) {
+			this.widthObserver = updateReusableBlockSize(
+				this.blockRef.current,
+				this.props.attributes.uniqueID,
+				this.props.clientId
+			);
 		}
 
 		if (this.maxiBlockDidMount) this.maxiBlockDidMount();
@@ -213,14 +198,14 @@ class MaxiBlockComponent extends Component {
 					nextState
 				) ||
 				!isEqual(
-					this.propsObjectCleaner(this.props),
-					this.propsObjectCleaner(nextProps)
+					propsObjectCleaner(this.props),
+					propsObjectCleaner(nextProps)
 				)
 			);
 
 		return !isEqual(
-			this.propsObjectCleaner(this.props),
-			this.propsObjectCleaner(nextProps)
+			propsObjectCleaner(this.props),
+			propsObjectCleaner(nextProps)
 		);
 	}
 
@@ -260,16 +245,16 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState, shouldDisplayStyles) {
-		this.updateRelationHoverStatus();
+		// Check if the modified attribute is related with hover status,
+		// and in that case we update the other blocks IB relation
+		const diffAttributes = diff(
+			prevProps.attributes,
+			this.props.attributes
+		);
+		if (Object.keys(diffAttributes).some(key => key.includes('hover')))
+			updateRelationHoverStatus(this.props.name, this.props.attributes);
 
-		// Even when not rendering, on breakpoint stage change
-		// re-render the styles
-		const breakpoint = select('maxiBlocks').receiveMaxiDeviceType();
-
-		if (!shouldDisplayStyles || breakpoint !== this.currentBreakpoint) {
-			this.currentBreakpoint = breakpoint;
-			this.displayStyles();
-		}
+		if (!shouldDisplayStyles) this.displayStyles();
 
 		if (this.maxiBlockDidUpdate)
 			this.maxiBlockDidUpdate(prevProps, prevState, shouldDisplayStyles);
@@ -327,29 +312,24 @@ class MaxiBlockComponent extends Component {
 			);
 
 			// IB
-			this.removeUnmountedBlockFromRelations(
-				this.props.attributes.uniqueID
-			);
-
-			// Remove the uniqueID from the list of rendered blocks
-			dispatch('maxiBlocks').removeBlockHasBeenRendered(
-				this.props.attributes.uniqueID,
-				this.props.clientId
-			);
+			removeUnmountedBlockFromRelations(this.props.attributes.uniqueID);
 		}
 
 		if (this.maxiBlockWillUnmount)
 			this.maxiBlockWillUnmount(isBlockBeingRemoved);
 	}
 
+	// eslint-disable-next-line class-methods-use-this
 	getMaxiAttributes() {
 		return null;
 	}
 
 	setMaxiAttributes() {
-		if (!this.maxiAttributes) return;
+		const maxiAttributes = this.getMaxiAttributes();
 
-		Object.entries(this.maxiAttributes).forEach(([key, value]) => {
+		if (!maxiAttributes) return;
+
+		Object.entries(maxiAttributes).forEach(([key, value]) => {
 			const currentValue = this.props.attributes[key];
 			const defaultValue = getDefaultAttribute(key, this.props.clientId);
 
@@ -427,55 +407,6 @@ class MaxiBlockComponent extends Component {
 		return false;
 	}
 
-	// This is a fix for wrong width of reusable blocks on backend only.
-	// This makes reusable blocks container full width and inserts element
-	// that mirrors the block on the same level as reusable container.
-	// The size of the clone if observed to get the width of the real block.
-	updateBlockSize() {
-		this.isReusable = true;
-		this.blockRef.current.parentNode.dataset.containsMaxiBlock = true;
-		const sizeElement = document.createElement('div');
-		sizeElement.classList.add(
-			this.props.attributes.uniqueID,
-			'maxi-block',
-			'maxi-block--backend'
-		);
-		sizeElement.id = `maxi-block-size-checker-${this.props.clientId}`;
-		sizeElement.style =
-			'top: 0 !important; height: 0 !important;  min-height: 0 !important; padding: 0 !important; margin: 0 !important';
-		this.blockRef.current.parentNode.insertAdjacentElement(
-			'afterend',
-			sizeElement
-		);
-		this.widthObserver = new ResizeObserver(entries => {
-			this.blockRef.current.style.width = `${entries[0].contentRect.width}px`;
-		});
-		this.widthObserver.observe(sizeElement);
-	}
-
-	// Removes non-necessary entries of props object for comparison
-	propsObjectCleaner(props) {
-		const newProps = cloneDeep(props);
-		const entriesToRemove = [
-			'maxiSetAttributes',
-			'insertInlineStyles',
-			'cleanInlineStyles',
-			'context',
-		];
-
-		entriesToRemove.forEach(entry => {
-			delete newProps[entry];
-		});
-
-		// Transform objects into strings to compare easier
-		Object.entries(newProps).forEach(([key, value]) => {
-			if (typeof value === 'object')
-				newProps[key] = JSON.stringify(value);
-		});
-
-		return newProps;
-	}
-
 	uniqueIDChecker(idToCheck) {
 		const { clientId, name: blockName } = this.props;
 
@@ -489,7 +420,11 @@ class MaxiBlockComponent extends Component {
 				clientId,
 			});
 
-			this.propagateNewUniqueID(idToCheck, newUniqueID);
+			propagateNewUniqueID(
+				idToCheck,
+				newUniqueID,
+				this.props.attributes['background-layers']
+			);
 
 			this.props.attributes.uniqueID = newUniqueID;
 			this.props.attributes.customLabel = getCustomLabel(
@@ -517,185 +452,6 @@ class MaxiBlockComponent extends Component {
 
 		loadFonts(response, true, target);
 		this.areFontsLoaded.current = true;
-	}
-
-	propagateNewUniqueID(oldUniqueID, newUniqueID) {
-		const blockAttributesUpdate = {};
-		const lastChangedBlocks = getLastChangedBlocks();
-
-		const updateBlockAttributesUpdate = (clientId, key, value) => {
-			if (!blockAttributesUpdate[clientId])
-				blockAttributesUpdate[clientId] = {};
-
-			blockAttributesUpdate[clientId][key] = value;
-
-			return blockAttributesUpdate;
-		};
-
-		const updateRelations = () => {
-			if (isEmpty(lastChangedBlocks)) return;
-
-			const updateNewUniqueID = block => {
-				if (!block) return;
-
-				const {
-					attributes = {},
-					innerBlocks: rawInnerBlocks = [],
-					clientId,
-				} = block;
-
-				if (
-					'relations' in attributes &&
-					!isEmpty(attributes.relations)
-				) {
-					const { relations } = attributes;
-
-					const newRelations = cloneDeep(relations).map(relation => {
-						const { uniqueID } = relation;
-
-						if (uniqueID === oldUniqueID) {
-							relation.uniqueID = newUniqueID;
-						}
-
-						return relation;
-					});
-
-					if (!isEqual(relations, newRelations) && clientId)
-						updateBlockAttributesUpdate(
-							clientId,
-							'relations',
-							newRelations
-						);
-				}
-
-				if (!isEmpty(rawInnerBlocks)) {
-					const innerBlocks = isArray(rawInnerBlocks)
-						? rawInnerBlocks
-						: Object.values(rawInnerBlocks);
-
-					innerBlocks.forEach(innerBlock => {
-						updateNewUniqueID(innerBlock);
-					});
-				}
-			};
-
-			lastChangedBlocks.forEach(block => updateNewUniqueID(block));
-		};
-
-		const updateBGLayers = () => {
-			this.props.attributes['background-layers'] =
-				getUpdatedBGLayersWithNewUniqueID(
-					this.props.attributes['background-layers'],
-					newUniqueID
-				);
-		};
-
-		updateRelations();
-		updateBGLayers();
-
-		if (!isEmpty(blockAttributesUpdate)) {
-			const {
-				__unstableMarkNextChangeAsNotPersistent:
-					markNextChangeAsNotPersistent,
-				updateBlockAttributes,
-			} = dispatch('core/block-editor');
-
-			Object.entries(blockAttributesUpdate).forEach(
-				([clientId, attributes]) => {
-					markNextChangeAsNotPersistent();
-					updateBlockAttributes(clientId, attributes);
-				}
-			);
-		}
-	}
-
-	updateRelationHoverStatus() {
-		const { name: blockName, attributes: blockAttributes } = this.props;
-		const { uniqueID } = blockAttributes;
-
-		goThroughMaxiBlocks(
-			({ clientId, attributes: currentBlockAttributes, innerBlocks }) => {
-				const { relations, uniqueID: blockUniqueID } =
-					currentBlockAttributes;
-
-				if (uniqueID !== blockUniqueID && !isEmpty(relations)) {
-					const newRelations = relations.map(relation => {
-						const {
-							attributes: relationAttributes,
-							settings: settingName,
-							uniqueID: relationUniqueID,
-						} = relation;
-
-						if (!settingName || uniqueID !== relationUniqueID)
-							return relation;
-
-						const { effects } = relation;
-
-						if (!('hoverStatus' in effects)) return relation;
-
-						const blockData = getBlockData(blockName);
-
-						if (!blockData?.interactionBuilderSettings)
-							return relation;
-
-						const { hoverProp } = Object.values(
-							blockData.interactionBuilderSettings
-						)
-							.flat()
-							.find(({ label }) => label === settingName);
-
-						return {
-							...relation,
-							effects: {
-								...effects,
-								hoverStatus: getHoverStatus(
-									hoverProp,
-									blockAttributes,
-									relationAttributes
-								),
-							},
-						};
-					});
-
-					if (!isEqual(relations, newRelations))
-						dispatch('core/block-editor').updateBlockAttributes(
-							clientId,
-							{ relations: newRelations }
-						);
-				}
-			}
-		);
-	}
-
-	removeUnmountedBlockFromRelations(uniqueID) {
-		const { isDraggingBlocks } = select('core/block-editor');
-
-		const isDragging = isDraggingBlocks();
-
-		if (!isDragging)
-			goThroughMaxiBlocks(({ clientId, attributes }) => {
-				const { relations, uniqueID: blockUniqueID } = attributes;
-
-				if (uniqueID !== blockUniqueID && !isEmpty(relations)) {
-					const filteredRelations = relations.filter(
-						({ uniqueID: relationUniqueID }) =>
-							relationUniqueID !== uniqueID
-					);
-
-					if (!isEqual(relations, filteredRelations)) {
-						const { updateBlockAttributes } =
-							dispatch('core/block-editor');
-
-						updateBlockAttributes(clientId, {
-							relations: filteredRelations,
-						});
-
-						return true;
-					}
-				}
-
-				return false;
-			});
 	}
 
 	/**
@@ -801,7 +557,7 @@ class MaxiBlockComponent extends Component {
 						<StyleComponent
 							uniqueID={uniqueID}
 							stylesObj={obj}
-							currentBreakpoint={this.currentBreakpoint}
+							currentBreakpoint={this.props.deviceType}
 							blockBreakpoints={breakpoints}
 							isSiteEditor={isSiteEditor}
 						/>
@@ -812,7 +568,7 @@ class MaxiBlockComponent extends Component {
 						<StyleComponent
 							uniqueID={uniqueID}
 							stylesObj={obj}
-							currentBreakpoint={this.currentBreakpoint}
+							currentBreakpoint={this.props.deviceType}
 							blockBreakpoints={breakpoints}
 							isSiteEditor={isSiteEditor}
 						/>,
@@ -841,7 +597,7 @@ class MaxiBlockComponent extends Component {
 							<StyleComponent
 								uniqueID={uniqueID}
 								stylesObj={obj}
-								currentBreakpoint={this.currentBreakpoint}
+								currentBreakpoint={this.props.deviceType}
 								blockBreakpoints={breakpoints}
 								isSiteEditor={isSiteEditor}
 							/>
@@ -852,7 +608,7 @@ class MaxiBlockComponent extends Component {
 							<StyleComponent
 								uniqueID={uniqueID}
 								stylesObj={obj}
-								currentBreakpoint={this.currentBreakpoint}
+								currentBreakpoint={this.props.deviceType}
 								blockBreakpoints={breakpoints}
 								isIframe
 							/>,

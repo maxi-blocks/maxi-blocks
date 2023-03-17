@@ -33,7 +33,6 @@ import { loadFonts, getAllFonts } from '../text/fonts';
 import uniqueIDStructureChecker from './uniqueIDStructureChecker';
 import {
 	getIsSiteEditor,
-	// getIsTemplatesListOpened,
 	getSiteEditorIframe,
 	getTemplatePartChooseList,
 	getTemplateViewIframe,

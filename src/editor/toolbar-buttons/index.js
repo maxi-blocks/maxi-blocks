@@ -16,11 +16,6 @@ import {
 } from '../../extensions/fse';
 
 /**
- * External dependencies
- */
-import { isNil } from 'lodash';
-
-/**
  * Styles
  */
 import './editor.scss';

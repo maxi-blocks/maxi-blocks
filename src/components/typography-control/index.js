@@ -42,6 +42,7 @@ import { isEmpty, isNil } from 'lodash';
  * Styles
  */
 import './editor.scss';
+import onChangeFontWeight from '../font-weight-control/utils';
 
 /**
  * Component
@@ -468,9 +469,6 @@ const TypographyControl = props => {
 		return getIsValid(value, true) ? value : 1;
 	};
 
-	const isInWeightOptions = (font, weight) =>
-		getWeightOptions(font).includes(weight);
-
 	return (
 		<ResponsiveTabsControl breakpoint={breakpoint}>
 			<div className={classes}>
@@ -479,16 +477,36 @@ const TypographyControl = props => {
 						className='maxi-typography-control__font-family'
 						font={getValue('font-family')}
 						onChange={font => {
+							const currentWeight =
+								getValue('font-weight') ??
+								getDefault('font-weight') ??
+								'400';
+							const isInWeightOptions =
+								getWeightOptions(font).includes(currentWeight);
+
 							onChangeFormat({
 								[`${prefix}font-family`]: font.value,
-								[`${prefix}font-weight`]: isInWeightOptions(
-									font,
-									getValue('font-weight')
-								)
-									? getValue('font-weight')
-									: getClosestAvailableFontWeight(font.value),
+								...(!isInWeightOptions && {
+									[`${prefix}font-weight`]:
+										getClosestAvailableFontWeight(
+											font.value,
+											currentWeight
+										),
+								}),
 								[`${prefix}font-options`]: font.files,
 							});
+
+							if (!isInWeightOptions) {
+								onChangeFontWeight(
+									getClosestAvailableFontWeight(
+										font.value,
+										currentWeight
+									),
+									font.value,
+									getValue('font-style') ??
+										getDefault('font-style')
+								);
+							}
 						}}
 						fontWeight={getValue('font-weight')}
 						fontStyle={getValue('font-style')}

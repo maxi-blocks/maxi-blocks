@@ -3,6 +3,7 @@
  */
 import { resolveSelect } from '@wordpress/data';
 import { renderToString } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -89,7 +90,10 @@ class edit extends MaxiBlockComponent {
 					ref={this.blockRef}
 					{...getMaxiBlockAttributes(this.props)}
 				>
-					<img src={previews.map_preview} />
+					<img // eslint-disable-next-line no-undef
+						src={previews.map_preview}
+						alt={__('Map block preview', 'maxi-blocks')}
+					/>
 				</MaxiBlock>
 			);
 

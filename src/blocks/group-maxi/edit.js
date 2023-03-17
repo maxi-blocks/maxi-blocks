@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies.
+ */
+import { __ } from '@wordpress/i18n';
+
+/**
  * Internal dependencies
  */
 import Inspector from './inspector';
@@ -43,7 +48,10 @@ class edit extends MaxiBlockComponent {
 					ref={this.blockRef}
 					{...getMaxiBlockAttributes(this.props)}
 				>
-					<img src={previews.group_preview} />
+					<img // eslint-disable-next-line no-undef
+						src={previews.group_preview}
+						alt={__('Group block preview', 'maxi-blocks')}
+					/>
 				</MaxiBlock>
 			);
 

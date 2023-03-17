@@ -6,7 +6,7 @@ import { useInnerBlocksProps } from '@wordpress/block-editor';
 import { compose, withInstanceId } from '@wordpress/compose';
 import { useRef, useState, useEffect, RawHTML } from '@wordpress/element';
 import { dispatch, select, useSelect } from '@wordpress/data';
-
+import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
@@ -463,7 +463,11 @@ class edit extends MaxiBlockComponent {
 					ref={this.blockRef}
 					{...getMaxiBlockAttributes(this.props)}
 				>
-					<img src={previews.slider_preview} />
+					<img
+						// eslint-disable-next-line no-undef
+						src={previews.slider_preview}
+						alt={__('Slider block preview', 'maxi-blocks')}
+					/>
 				</MaxiBlock>
 			);
 

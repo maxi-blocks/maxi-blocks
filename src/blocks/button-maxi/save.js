@@ -8,6 +8,7 @@ import { RawHTML } from '@wordpress/element';
  */
 import { Button } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+import getAreaLabel from './utils';
 
 /**
  * External dependencies
@@ -49,6 +50,7 @@ const save = props => {
 		<MaxiBlock.save {...getMaxiBlockAttributes({ ...props, name })}>
 			<Button
 				className={buttonClasses}
+				{...(iconOnly && { 'aria-label': getAreaLabel(iconContent) })}
 				{...(!isEmpty(linkProps.href) && linkProps)}
 			>
 				{!iconOnly && (

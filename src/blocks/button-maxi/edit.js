@@ -18,6 +18,7 @@ import { getSVGWidthHeightRatio } from '../../extensions/svg';
 import getStyles from './styles';
 import { copyPasteMapping, maxiAttributes } from './data';
 import withMaxiDC from '../../extensions/DC/withMaxiDC';
+import getAreaLabel from './utils';
 
 /**
  * External dependencies
@@ -145,6 +146,9 @@ class edit extends MaxiBlockComponent {
 				key={`maxi-button--${uniqueID}`}
 				ref={this.blockRef}
 				{...getMaxiBlockAttributes(this.props)}
+				{...(attributes['icon-only'] && {
+					'aria-label': getAreaLabel(attributes['icon-content']),
+				})}
 			>
 				<div className={buttonClasses}>
 					{!attributes['icon-only'] && (

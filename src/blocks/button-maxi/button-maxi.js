@@ -10,16 +10,16 @@
  */
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
-import { lazy } from '@wordpress/element';
 
 /**
  * Block dependencies
  */
-const Edit = lazy(() => import('./edit'));
+import edit from './edit';
 import attributes from './attributes';
 import save from './save';
+import saveOld from './save-old';
 import { customCss } from './data';
-import withMaxiSuspense from '../../extensions/maxi-block/withMaxiSuspense';
+import withMaxiLoader from '../../extensions/maxi-block/withMaxiLoader';
 
 /**
  * Styles and icons
@@ -63,13 +63,19 @@ registerBlockType('maxi-blocks/button-maxi', {
 			uniqueid: uniqueID,
 		};
 	},
-	edit: withMaxiSuspense(Edit),
+	edit: withMaxiLoader(edit),
 	save,
-	deprecated: blockMigrator({
-		attributes,
-		save,
-		prefix: 'button-',
-		selectors: customCss.selectors,
-		migrators: [buttonIconTransitionMigrator],
-	}),
+	deprecated: [
+		{
+			attributes,
+			save: saveOld,
+		},
+		blockMigrator({
+			attributes,
+			save,
+			prefix: 'button-',
+			selectors: customCss.selectors,
+			migrators: [buttonIconTransitionMigrator],
+		}),
+	],
 });

@@ -1,77 +1,21 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 /**
- * WordPress dependencies
- */
-import { __ } from '@wordpress/i18n';
-import { useDispatch } from '@wordpress/data';
-
-/**
  * Internal dependencies
  */
 import Inspector from './inspector';
 import RowContext from './context';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
-import { Toolbar, Button, Icon } from '../../components';
+import { Toolbar } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-
-import { getTemplates } from '../../extensions/column-templates';
 import { getGroupAttributes } from '../../extensions/styles';
 import getRowGapProps from '../../extensions/attributes/getRowGapProps';
 import getStyles from './styles';
 import { copyPasteMapping, maxiAttributes } from './data';
-import loadColumnsTemplate from '../../extensions/column-templates/loadColumnsTemplate';
-
-/**
- * External dependencies
- */
-import { uniqueId } from 'lodash';
+import { RowBlockTemplate } from './components';
 
 /**
  * Edit
  */
-const RowBlockTemplate = ({ clientId, maxiSetAttributes, deviceType }) => {
-	const { selectBlock } = useDispatch('core/block-editor');
-
-	return (
-		<>
-			<div className='maxi-row-block__title'>
-				<span>{__('Column picker', 'maxi-blocks')}</span>
-			</div>
-			<div
-				className='maxi-row-block__template'
-				onClick={() => selectBlock(clientId)}
-				key={`maxi-row-block--${clientId}`}
-			>
-				{getTemplates().map(template => {
-					return (
-						<Button
-							key={uniqueId(`maxi-row-block--${clientId}--`)}
-							className='maxi-row-block__template__button'
-							onClick={() => {
-								maxiSetAttributes({
-									'row-pattern-general': template.name,
-									'row-pattern-m': template.responsiveLayout,
-								});
-								loadColumnsTemplate(
-									template.name,
-									clientId,
-									deviceType
-								);
-							}}
-						>
-							<Icon
-								className='maxi-row-block__template__icon'
-								icon={template.icon}
-								avoidSize
-							/>
-						</Button>
-					);
-				})}
-			</div>
-		</>
-	);
-};
-
 class edit extends MaxiBlockComponent {
 	get getStylesObject() {
 		return getStyles(this.props.attributes);

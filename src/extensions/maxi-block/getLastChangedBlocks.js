@@ -4,11 +4,6 @@
 import { select } from '@wordpress/data';
 
 /**
- * Internal dependencies
- */
-import { getIsSiteEditor } from '../fse';
-
-/**
  * External dependencies
  */
 import { diff } from 'deep-object-diff';
@@ -22,9 +17,7 @@ const getLastChangedBlocks = () => {
 
 	const entityRecordEdit = getEntityRecordEdits(
 		'postType',
-		getIsSiteEditor()
-			? select('core/edit-site').getEditedPostType()
-			: select('core/editor').getCurrentPostType(),
+		undoEdit.name,
 		undoEdit.recordId
 	);
 

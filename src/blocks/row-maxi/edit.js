@@ -1,4 +1,9 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
+
+/**
+ * WordPress dependencies.
+ */
+import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
@@ -66,7 +71,10 @@ class edit extends MaxiBlockComponent {
 					ref={this.blockRef}
 					{...getMaxiBlockAttributes(this.props)}
 				>
-					<img src={previews.row_preview} />
+					<img // eslint-disable-next-line no-undef
+						src={previews.row_preview}
+						alt={__('Row block preview', 'maxi-blocks')}
+					/>
 				</MaxiBlock>
 			);
 

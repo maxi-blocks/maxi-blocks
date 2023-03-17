@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { createRef } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -173,7 +174,10 @@ class edit extends MaxiBlockComponent {
 					ref={this.blockRef}
 					{...getMaxiBlockAttributes(this.props)}
 				>
-					<img src={previews.divider_preview} />
+					<img // eslint-disable-next-line no-undef
+						src={previews.divider_preview}
+						alt={__('Divider block preview', 'maxi-blocks')}
+					/>
 				</MaxiBlock>
 			);
 

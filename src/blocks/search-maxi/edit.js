@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { useEffect, useState } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -179,7 +180,10 @@ class edit extends MaxiBlockComponent {
 					ref={this.blockRef}
 					{...getMaxiBlockAttributes(this.props)}
 				>
-					<img src={previews.search_preview} />
+					<img // eslint-disable-next-line no-undef
+						src={previews.search_preview}
+						alt={__('Search block preview', 'maxi-blocks')}
+					/>
 				</MaxiBlock>
 			);
 

@@ -3,6 +3,7 @@
  */
 import { createRef } from '@wordpress/element';
 import { dispatch } from '@wordpress/data';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -241,7 +242,10 @@ class edit extends MaxiBlockComponent {
 					ref={this.blockRef}
 					{...getMaxiBlockAttributes(this.props)}
 				>
-					<img src={previews.icon_preview} />
+					<img // eslint-disable-next-line no-undef
+						src={previews.icon_preview}
+						alt={__('SVG block preview', 'maxi-blocks')}
+					/>
 				</MaxiBlock>
 			);
 

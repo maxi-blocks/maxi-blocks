@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { dispatch } from '@wordpress/data';
+import { __ } from '@wordpress/i18n';
 
 /* eslint-disable react/jsx-no-constructed-context-values */
 /**
@@ -97,7 +98,11 @@ class edit extends MaxiBlockComponent {
 					ref={this.blockRef}
 					{...getMaxiBlockAttributes(this.props)}
 				>
-					<img src={previews.accordion_preview} />
+					<img
+						// eslint-disable-next-line no-undef
+						src={previews.accordion_preview}
+						alt={__('Accordion block preview', 'maxi-blocks')}
+					/>
 				</MaxiBlock>
 			);
 

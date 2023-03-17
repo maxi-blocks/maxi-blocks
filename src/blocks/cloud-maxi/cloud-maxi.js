@@ -28,6 +28,7 @@ registerBlockType('maxi-blocks/maxi-cloud', {
 	example: {
 		attributes: {
 			preview: true,
+			openFirstTime: false,
 		},
 	},
 	keywords: [__('layout', 'maxi-blocks'), __('block', 'maxi-blocks')],
@@ -43,6 +44,10 @@ registerBlockType('maxi-blocks/maxi-cloud', {
 		openFirstTime: {
 			type: 'boolean',
 			default: true,
+		},
+		preview: {
+			type: 'boolean',
+			default: false,
 		},
 	},
 	/* Save the block markup. */

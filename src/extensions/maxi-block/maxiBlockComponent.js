@@ -260,6 +260,9 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentWillUnmount() {
+		// Return if it's a FSE preview block
+		if (this.isPreviewBlock) return;
+
 		// If it's site editor, when swapping from pages we need to keep the styles
 		// On post editor, when entering to `code editor` page, we need to keep the styles
 		const keepStylesOnEditor = !!select('core/block-editor').getBlock(

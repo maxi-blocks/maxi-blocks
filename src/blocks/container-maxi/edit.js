@@ -78,11 +78,10 @@ class edit extends MaxiBlockComponent {
 			insertInlineStyles,
 			cleanInlineStyles,
 			isSelected,
-			preview,
 		} = this.props;
 		const { uniqueID, isFirstOnHierarchy } = attributes;
 
-		if (preview)
+		if (attributes.preview)
 			return (
 				<MaxiBlock
 					key={`maxi-container--${uniqueID}`}

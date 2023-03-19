@@ -8,7 +8,6 @@ import { RawHTML } from '@wordpress/element';
  */
 import { Button } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-import getAreaLabel from './utils';
 
 /**
  * External dependencies
@@ -20,7 +19,7 @@ import { RichText } from '@wordpress/block-editor';
 /**
  * Save
  */
-const save = props => {
+const saveOld = props => {
 	const {
 		linkSettings,
 		buttonContent,
@@ -50,7 +49,6 @@ const save = props => {
 		<MaxiBlock.save {...getMaxiBlockAttributes({ ...props, name })}>
 			<Button
 				className={buttonClasses}
-				{...(iconOnly && { 'aria-label': getAreaLabel(iconContent) })}
 				{...(!isEmpty(linkProps.href) && linkProps)}
 			>
 				{!iconOnly && (
@@ -72,4 +70,4 @@ const save = props => {
 	);
 };
 
-export default save;
+export default saveOld;

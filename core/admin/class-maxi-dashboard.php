@@ -573,9 +573,10 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             $description =
                 '<h4>' .
-                __('Enable support chat', 'maxi-blocks') .
+                __('Enable live chat support (temporary)', 'maxi-blocks') .
                 '</h4>';
-            $description .= '<p><a href="https://help.crisp.chat/en/article/whats-crisp-eu-gdpr-compliance-status-nhv54c/" target="_blank"'.'>' . __('Read more about Crisp tracking', 'maxi-blocks') . '</a></p>';
+            $description .= '<p>For a short time we\'re offering live chat to help troubleshoot issues during the beta plugin release. Live chat will be removed in a future update. By activating this option you agree to the GDPR terms as set out in the Crisp chat service terms.</p>';
+            $description .= '<p><a href="https://help.crisp.chat/en/article/whats-crisp-eu-gdpr-compliance-status-nhv54c/" target="_blank"'.'>' . __('Read about Crisp GDPR terms', 'maxi-blocks') . '</a></p>';
 
             $content .= $this->generate_setting($description, 'support_chat');
             $content .= get_submit_button();

@@ -28,10 +28,17 @@ export async function authConnect(withRedirect = false) {
 	userInfo
 		.then(response => {
 			if (response.status) {
-				dispatch('maxiBlocks/pro').saveMaxiProStatus({
-					status: 'yes',
-					name: response?.name,
-				});
+				if (response?.prefs?.pro_active) {
+					dispatch('maxiBlocks/pro').saveMaxiProStatus({
+						status: 'yes',
+						name: response?.name,
+					});
+				} else {
+					dispatch('maxiBlocks/pro').saveMaxiProStatus({
+						status: 'no',
+						name: response?.name,
+					});
+				}
 			} else {
 				dispatch('maxiBlocks/pro').saveMaxiProStatus({
 					status: 'no',

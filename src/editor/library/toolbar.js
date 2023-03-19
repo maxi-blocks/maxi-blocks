@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { select, useDispatch, useSelect } from '@wordpress/data';
+import { select, useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -16,7 +16,7 @@ import {
 	mediumMode,
 	smallMode,
 } from '../../icons';
-import { onRequestInsertPattern } from './util';
+import onRequestInsertPattern from './utils/onRequestInsertPattern';
 import { Button } from '../../components';
 
 /**
@@ -60,7 +60,7 @@ const LibraryToolbar = props => {
 		isPro,
 		isBeta,
 		gutenbergCode,
-		onSelect,
+		onInsert,
 		isSwapChecked,
 		onChangeTone,
 		onClickConnect,
@@ -163,10 +163,8 @@ const LibraryToolbar = props => {
 		}
 	};
 
-	const { isValidTemplate, getSelectedBlockClientId } =
-		select('core/block-editor');
+	const { getSelectedBlockClientId } = select('core/block-editor');
 	const clientId = getSelectedBlockClientId();
-	const { replaceBlock } = useDispatch('core/block-editor');
 
 	const openRelatedPattern = () => {
 		let relatedSerial = toneUrl.toLowerCase();
@@ -517,17 +515,14 @@ const LibraryToolbar = props => {
 					{(!isPro || isBeta || isMaxiProActive) && (
 						<ToolbarButton
 							label={__('Insert', 'maxi-blocks')}
-							onClick={() => {
-								onRequestInsertPattern(
+							onClick={async () => {
+								onInsert();
+
+								await onRequestInsertPattern(
 									gutenbergCode,
 									isSwapChecked,
-									isValidTemplate,
-									onSelect,
-									onRequestClose,
-									replaceBlock,
 									clientId
 								);
-								onRequestClose();
 							}}
 						/>
 					)}

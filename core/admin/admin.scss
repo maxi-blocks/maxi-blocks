@@ -174,8 +174,58 @@ body.toplevel_page_maxi-blocks-dashboard {
 					}
 				}
 				&-pro-library{
+					padding-top: 36px;
 					h1{
 						font-size: 50px;
+						margin-bottom: 28px;
+					}
+					h2{
+						margin-bottom: 29px;
+						font-size: 20px;
+						color: #5E5656;
+					}
+					h3{
+						margin-top: 53px !important;
+						font-size: 20px !important;
+					}
+					.sign-up_button{
+						background-color: var(--maxi-primary-color);
+    					border: none;
+    					border-radius: 8px;
+    					-webkit-box-shadow: none;
+    					box-shadow: none;
+    					padding: 17px 29px;
+						color: #fff;
+    					font-size: 16px;
+						text-decoration: none;
+    					-webkit-transition: 0.3s;
+    					-o-transition: 0.3s;
+    					transition: 0.3s;
+					}
+					.sign-up_button-wrap{
+						display: flex;
+    					align-items: center;
+    					column-gap: 10px;
+						margin-top: 24px;
+					}
+					.maxi-dashboard_main-content_accordion{
+						max-width: 642px;
+					}
+					ul{
+						display: flex;
+						margin-top: 85px;
+						li{
+							color: #081219;
+							font-weight: 700;
+							a{
+								color: #081219;
+								text-decoration: none;
+							}
+							&:not(:last-child):after{
+								content: '|';
+								margin: 0 5px;
+							}
+						}
 					}
 				}
 				.maxi-dashboard_main-content_accordion {
@@ -424,10 +474,24 @@ body.toplevel_page_maxi-blocks-dashboard {
 				display: block;
 				&-content {
 					width: 100%;
+					&-pro-library,
+					&-start {
+						padding-top: 0;
+						h1 {
+							font-size: 36px;
+						}
+					}
+					&-pro-library{
+						h2,
+						h3{
+							font-size: 18px;
+						}
+					}
 				}
 				&-sidebar {
 					width: 100%;
 					max-width: 100%;
+					margin-top: 20px;
 				}
 			}
 		}
@@ -456,6 +520,30 @@ body.toplevel_page_maxi-blocks-dashboard {
 						-ms-flex: 70%;
 						flex: 76%;
 						padding-right: 10px;
+					}
+					&-pro-library{
+						ul{
+							display: block;
+							text-align: center;
+							li{
+								display: inline-block;
+								margin: 0 5px;
+								&::after{
+									display: none;
+								}
+							}
+						} 
+						.sign-up_button-wrap{
+							flex-direction: column;
+							align-items: flex-start;
+   							row-gap: 7px;
+						}
+					}
+					&-pro-library,
+					&-start {
+						h1 {
+							font-size: 30px;
+						}
 					}
 				}
 			}

@@ -169,9 +169,8 @@ class edit extends MaxiBlockComponent {
 			isSelected,
 			hasSelectedChild,
 			hasInnerBlocks,
-			preview,
 		} = this.props;
-		const { uniqueID, title } = attributes;
+		const { uniqueID, title, preview } = attributes;
 		const {
 			paneIcon,
 			paneIconActive,
@@ -180,13 +179,14 @@ class edit extends MaxiBlockComponent {
 			accordionUniqueId,
 			onOpen,
 			onClose,
-		} = this.context;
+		} = this?.context || {};
 
 		if (preview)
 			return (
 				<MaxiBlock
 					key={`maxi-pane--${uniqueID}`}
 					ref={this.blockRef}
+					className={`maxi-pane-block--${accordionLayout}-layout`}
 					{...getMaxiBlockAttributes(this.props)}
 				>
 					<img // eslint-disable-next-line no-undef

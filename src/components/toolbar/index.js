@@ -120,34 +120,43 @@ const MaxiToolbar = memo(
 			svgType,
 		} = attributes;
 
-		const { breakpoint, styleCard, isTyping, tooltipsHide } = useSelect(
-			select => {
-				const { receiveMaxiDeviceType, receiveMaxiSettings } =
-					select('maxiBlocks');
-				const { receiveMaxiSelectedStyleCard } = select(
-					'maxiBlocks/style-cards'
-				);
-				const { isTyping } = select('core/block-editor');
-
-				const breakpoint = receiveMaxiDeviceType();
-
-				const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
-
-				const maxiSettings = receiveMaxiSettings();
-				const { hide_tooltips: hideTooltips } = maxiSettings;
-
-				const tooltipsHide = !isEmpty(hideTooltips)
-					? hideTooltips
-					: false;
-
-				return {
-					breakpoint,
-					styleCard,
-					isTyping: isTyping(),
-					tooltipsHide,
-				};
-			}
+		const { isTyping, getBlockParents } = useSelect(
+			select => select('core/block-editor'),
+			[]
 		);
+
+		const { tooltipsHide, chatSupport } = useSelect(select => {
+			const { receiveMaxiSettings } = select('maxiBlocks');
+
+			const maxiSettings = receiveMaxiSettings();
+			const { hide_tooltips: hideTooltips, support_chat: supportChat } =
+				maxiSettings;
+
+			const tooltipsHide = !isEmpty(hideTooltips) ? hideTooltips : false;
+
+			const chatSupport = !isEmpty(supportChat) ? supportChat : false;
+
+			return {
+				tooltipsHide,
+				chatSupport,
+			};
+		}, []);
+
+		const { breakpoint, styleCard } = useSelect(select => {
+			const { receiveMaxiDeviceType } = select('maxiBlocks');
+			const { receiveMaxiSelectedStyleCard } = select(
+				'maxiBlocks/style-cards'
+			);
+
+			const breakpoint = receiveMaxiDeviceType();
+
+			const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
+
+			return {
+				breakpoint,
+				styleCard,
+			};
+		});
 
 		const popoverRef = useRef(null);
 
@@ -156,15 +165,16 @@ const MaxiToolbar = memo(
 
 		useEffect(() => {
 			setAnchorRef(ref.current);
-		});
+		}, [!!ref.current]);
 
 		const breadcrumbStatus = () => {
-			const { getBlockParents } = select('core/block-editor');
 			const originalNestedBlocks = clientId
 				? getBlockParents(clientId)
 				: [];
+
 			if (!originalNestedBlocks.includes(clientId))
 				originalNestedBlocks.push(clientId);
+
 			return originalNestedBlocks.length > 1;
 		};
 
@@ -203,7 +213,7 @@ const MaxiToolbar = memo(
 					position='top center'
 				>
 					<div className={`toolbar-wrapper pinned--${pinActive}`}>
-						{!isTyping && (
+						{!isTyping() && (
 							<div className='toolbar-block-custom-label'>
 								{!isFirstOnHierarchy && (
 									<span
@@ -669,7 +679,10 @@ const MaxiToolbar = memo(
 							tooltipsHide={tooltipsHide}
 							updateSelection={name !== 'maxi-blocks/slide-maxi'}
 						/>
-						<Help tooltipsHide={tooltipsHide} />
+						<Help
+							tooltipsHide={tooltipsHide}
+							supportChat={chatSupport}
+						/>
 						<MoreSettings
 							clientId={clientId}
 							{...getGroupAttributes(attributes, [

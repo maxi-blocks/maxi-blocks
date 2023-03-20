@@ -61,6 +61,9 @@ const CloudLibrary = props => {
 	const [title, setTitle] = useState(rowTitle);
 	const [cost, setCost] = useState(rawCost);
 
+	const [isInserting, setIsInserting] = useState(false);
+	const onInsert = () => setIsInserting(true);
+
 	const classes = classnames('maxi-library-modal', className);
 
 	return (
@@ -83,6 +86,7 @@ const CloudLibrary = props => {
 				isBeta={isBeta}
 				gutenbergCode={gutenbergCode}
 				onSelect={onSelect}
+				onInsert={onInsert}
 				isSwapChecked={isSwapChecked}
 				isMaxiProActive={isMaxiProActive}
 				onClickConnect={onClickConnect}
@@ -120,6 +124,8 @@ const CloudLibrary = props => {
 				isMaxiProActive={isMaxiProActive}
 				onClickConnect={onClickConnect}
 				layerOrder={layerOrder}
+				isInserting={isInserting}
+				onInsert={onInsert}
 			/>
 		</Modal>
 	);

@@ -9,7 +9,6 @@ import {
 	forwardRef,
 	useRef,
 } from '@wordpress/element';
-import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -167,23 +166,18 @@ const MaxiModal = props => {
 	);
 	const [wasOpenedFirstTime, changeOpenedFirstTime] = useState(openFirstTime);
 
-	useEffect(
-		() => (forceIsOpen ? changeIsOpen(forceIsOpen) : null),
-		[forceIsOpen]
-	);
+	useEffect(() => {
+		if (forceIsOpen) changeIsOpen(forceIsOpen);
+	}, [forceIsOpen]);
 
 	const [isMaxiProActive, setIsMaxiProActive] = useState(isProSubActive());
 	const [userName, setUserName] = useState(getUserName());
 
-	console.log(`start isMaxiProActive: ${isMaxiProActive}`);
-
 	const onClickConnect = () => {
 		document.addEventListener('visibilitychange', function userIsBack() {
 			if (!document.hidden) {
-				console.log('back to tab');
 				authConnect(false).then(() => {
 					setIsMaxiProActive(isProSubActive());
-					console.log(`isMaxiProActive after: ${isMaxiProActive}`);
 					setUserName(getUserName());
 				});
 			}
@@ -192,7 +186,6 @@ const MaxiModal = props => {
 		authConnect(true).then(() => {
 			setIsMaxiProActive(isProSubActive());
 			setUserName(getUserName());
-			console.log(`onClickConnect isMaxiProActive: ${isMaxiProActive}`);
 		});
 	};
 

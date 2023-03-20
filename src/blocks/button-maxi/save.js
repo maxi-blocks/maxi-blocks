@@ -8,6 +8,7 @@ import { RawHTML } from '@wordpress/element';
  */
 import { Button } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+import getAreaLabel from './utils';
 
 /**
  * External dependencies
@@ -22,9 +23,23 @@ import { getAttributesValue } from '../../extensions/styles';
  */
 const save = props => {
 	const { attributes } = props;
-	const { linkSettings, buttonContent } = attributes;
-	const { iconOnly, iconContent, iconPosition } = getAttributesValue({
-		target: ['icon-only', 'icon-content', 'icon-position'],
+	const { buttonContent } = attributes;
+	const {
+		linkSettings,
+		iconOnly,
+		iconContent,
+		iconPosition,
+		dcStatus,
+		dcLinkStatus,
+	} = getAttributesValue({
+		target: [
+			'linkSettings',
+			'icon-only',
+			'icon-content',
+			'icon-position',
+			'dc-status',
+			'dc-link-status',
+		],
 		props: attributes,
 	});
 
@@ -34,36 +49,26 @@ const save = props => {
 
 	const linkProps = {
 		...linkOpt,
-		href: linkOpt.url || '',
+		href: dcStatus && dcLinkStatus ? '$link-to-replace' : linkOpt.url ?? '',
 		target: linkOpt.opensInNewTab ? '_blank' : '_self',
 	};
 
 	const buttonClasses = classnames(
 		'maxi-button-block__button',
-		iconContent &&
-			iconPosition === 'top' &&
-			'maxi-button-block__button--icon-top',
-		iconContent &&
-			iconPosition === 'bottom' &&
-			'maxi-button-block__button--icon-bottom',
-		iconContent &&
-			iconPosition === 'left' &&
-			'maxi-button-block__button--icon-left',
-		iconContent &&
-			iconPosition === 'right' &&
-			'maxi-button-block__button--icon-right'
+		iconContent && `maxi-button-block__button--icon-${iconPosition}`
 	);
 
 	return (
 		<MaxiBlock.save {...getMaxiBlockAttributes({ ...props, name })}>
 			<Button
 				className={buttonClasses}
+				{...(iconOnly && { 'aria-label': getAreaLabel(iconContent) })}
 				{...(!isEmpty(linkProps.href) && linkProps)}
 			>
 				{!iconOnly && (
 					<RichText.Content
 						className='maxi-button-block__content'
-						value={buttonContent}
+						value={dcStatus ? '$text-to-replace' : buttonContent}
 						tagName='span'
 					/>
 				)}

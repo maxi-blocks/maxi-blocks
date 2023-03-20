@@ -184,9 +184,7 @@ const Inspector = props => {
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}
 			{inspectorTabs.blockSettings({
-				props: {
-					...props,
-				},
+				props,
 			})}
 			<SettingTabsControl
 				target='sidebar-settings-tabs'
@@ -224,9 +222,7 @@ const Inspector = props => {
 									}),
 									...(!iconOnly && {
 										...inspectorTabs.typography({
-											props: {
-												...props,
-											},
+											props,
 											styleCardPrefix: 'button',
 											hideAlignment: true,
 											hideBottomGap: true,
@@ -243,9 +239,7 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.background({
 										label: 'Button',
-										props: {
-											...props,
-										},
+										props,
 										disableImage: true,
 										disableVideo: true,
 										disableClipPath: true,
@@ -263,9 +257,7 @@ const Inspector = props => {
 											inlineStylesTargets.background,
 									}),
 									...inspectorTabs.border({
-										props: {
-											...props,
-										},
+										props,
 										prefix: 'button-',
 										globalProps: {
 											target: 'border',
@@ -277,21 +269,15 @@ const Inspector = props => {
 										},
 									}),
 									...inspectorTabs.boxShadow({
-										props: {
-											...props,
-										},
+										props,
 										prefix: 'button-',
 									}),
 									...inspectorTabs.size({
-										props: {
-											...props,
-										},
+										props,
 										prefix: 'button-',
 									}),
 									...inspectorTabs.marginPadding({
-										props: {
-											...props,
-										},
+										props,
 										prefix: 'button-',
 									}),
 								]}
@@ -305,30 +291,20 @@ const Inspector = props => {
 								isPrimary
 								items={[
 									...inspectorTabs.blockBackground({
-										props: {
-											...props,
-										},
+										props,
 									}),
 									...inspectorTabs.border({
-										props: {
-											...props,
-										},
+										props,
 									}),
 									...inspectorTabs.boxShadow({
-										props: {
-											...props,
-										},
+										props,
 									}),
 									...inspectorTabs.size({
-										props: {
-											...props,
-										},
+										props,
 										block: true,
 									}),
 									...inspectorTabs.marginPadding({
-										props: {
-											...props,
-										},
+										props,
 									}),
 								]}
 							/>
@@ -342,80 +318,58 @@ const Inspector = props => {
 								items={[
 									deviceType === 'general' && {
 										...inspectorTabs.customClasses({
-											props: {
-												...props,
-											},
+											props,
 										}),
 									},
 									deviceType === 'general' && {
 										...inspectorTabs.anchor({
-											props: {
-												...props,
-											},
+											props,
 										}),
 									},
 									...inspectorTabs.customCss({
-										props: {
-											...props,
-										},
+										props,
 										breakpoint: deviceType,
 										selectors,
 										categories: getCategoriesCss(),
 									}),
+									...inspectorTabs.dc({
+										props,
+										contentType: 'button',
+									}),
 									...inspectorTabs.scrollEffects({
-										props: {
-											...props,
-										},
+										props,
 									}),
 									...inspectorTabs.transform({
-										props: {
-											...props,
-										},
+										props,
 										categories: getCategoriesCss(),
 										selectors,
 									}),
 									...inspectorTabs.transition({
-										props: {
-											...props,
-										},
+										props,
 										selectors,
 									}),
 									...inspectorTabs.display({
-										props: {
-											...props,
-										},
+										props,
 									}),
 									...inspectorTabs.opacity({
-										props: {
-											...props,
-										},
+										props,
 									}),
 									...inspectorTabs.position({
-										props: {
-											...props,
-										},
+										props,
 									}),
 									deviceType !== 'general' && {
 										...inspectorTabs.responsive({
-											props: {
-												...props,
-											},
+											props,
 										}),
 									},
 									...inspectorTabs.overflow({
-										props: {
-											...props,
-										},
+										props,
 									}),
 									...inspectorTabs.flex({
-										props: {
-											...props,
-										},
+										props,
 									}),
 									...inspectorTabs.zindex({
-										props: {
-											...props,
-										},
+										props,
 									}),
 									...inspectorTabs.relation({
 										props,

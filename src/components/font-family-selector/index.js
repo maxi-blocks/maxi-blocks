@@ -50,7 +50,7 @@ const FontFamilySelector = props => {
 		return {
 			options,
 		};
-	});
+	}, []);
 
 	const [value, setValue] = useState({ label: font, value: font });
 

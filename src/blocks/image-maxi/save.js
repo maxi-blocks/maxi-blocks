@@ -22,6 +22,29 @@ import { isEmpty } from 'lodash';
 /**
  * Save
  */
+const FigCaption = props => {
+	const { captionType, captionContent, dcStatus } = props;
+
+	const showDCCaption = dcStatus && captionType === 'custom';
+	const showNormalCaption =
+		!dcStatus && captionType !== 'none' && !isEmpty(captionContent);
+	const showCaption = showDCCaption || showNormalCaption;
+
+	if (!showCaption) return null;
+
+	return dcStatus ? (
+		<figcaption className='maxi-image-block__caption'>
+			$media-caption-to-replace
+		</figcaption>
+	) : (
+		<RichText.Content
+			className='maxi-image-block__caption'
+			value={captionContent}
+			tagName='figcaption'
+		/>
+	);
+};
+
 const save = props => {
 	const { attributes } = props;
 	const {
@@ -37,6 +60,7 @@ const save = props => {
 		isImageUrl,
 		captionPosition,
 		fitParentSize,
+		'dc-status': dcStatus,
 	} = attributes;
 	const { hoverType, hoverBasicEffectType, hoverTextEffectType } =
 		getAttributesValue({
@@ -71,15 +95,13 @@ const save = props => {
 			{...getMaxiBlockAttributes({ ...props, name })}
 		>
 			<>
-				{captionType !== 'none' &&
-					!isEmpty(captionContent) &&
-					captionPosition === 'top' && (
-						<RichText.Content
-							className='maxi-image-block__caption'
-							value={captionContent}
-							tagName='figcaption'
-						/>
-					)}
+				{captionPosition === 'top' && (
+					<FigCaption
+						captionType={captionType}
+						captionContent={captionContent}
+						dcStatus={dcStatus}
+					/>
+				)}
 				<HoverPreview
 					key={`hover-preview-${uniqueID}`}
 					wrapperClassName={wrapperClassName}
@@ -92,31 +114,36 @@ const save = props => {
 					])}
 					isSave
 				>
-					{SVGElement ? (
+					{SVGElement && !dcStatus ? (
 						<RawHTML>{SVGElement}</RawHTML>
 					) : (
+						// eslint-disable-next-line jsx-a11y/alt-text
 						<img
 							className={
 								isImageUrl
 									? 'maxi-image-block__image wp-image-external'
-									: `maxi-image-block__image wp-image-${mediaID}`
+									: `maxi-image-block__image wp-image-${
+											dcStatus
+												? '$media-id-to-replace'
+												: mediaID
+									  }`
 							}
-							src={mediaURL}
-							width={mediaWidth}
-							height={mediaHeight}
-							alt={mediaAlt}
+							src={dcStatus ? '$media-url-to-replace' : mediaURL}
+							alt={dcStatus ? '$media-alt-to-replace' : mediaAlt}
+							{...(!dcStatus && {
+								width: mediaWidth,
+								height: mediaHeight,
+							})}
 						/>
 					)}
 				</HoverPreview>
-				{captionType !== 'none' &&
-					!isEmpty(captionContent) &&
-					captionPosition === 'bottom' && (
-						<RichText.Content
-							className='maxi-image-block__caption'
-							value={captionContent}
-							tagName='figcaption'
-						/>
-					)}
+				{captionPosition === 'bottom' && (
+					<FigCaption
+						captionType={captionType}
+						captionContent={captionContent}
+						dcStatus={dcStatus}
+					/>
+				)}
 			</>
 		</MaxiBlock.save>
 	);

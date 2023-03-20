@@ -62,13 +62,21 @@ const selectors = {
 		return false;
 	},
 	canBlockRender(state, uniqueID) {
-		if (state && state.blocksToRender.includes(uniqueID))
-			return state.blocksToRender.indexOf(uniqueID) < 20;
+		if (state)
+			return (
+				state.isPageLoaded ||
+				state.blocksToRender.indexOf(uniqueID) === 0
+			);
 
 		return false;
 	},
-	blockHasBeenRendered(state, uniqueID) {
-		if (state) return state.renderedBlocks.includes(uniqueID);
+	allBlocksHaveBeenRendered(state) {
+		if (state) return state.blocksToRender.length === 0;
+
+		return false;
+	},
+	getIsPageLoaded(state) {
+		if (state) return state.isPageLoaded;
 
 		return false;
 	},

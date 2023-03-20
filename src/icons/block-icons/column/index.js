@@ -4,7 +4,7 @@
 import { SVG, Path } from '@wordpress/primitives';
 
 const columnIcon = (
-	<SVG preserveAspectRatio='none'viewBox='0 0 24 24'>
+	<SVG preserveAspectRatio='none' viewBox='0 0 24 24'>
 		<Path
 			stroke='#ff4a17'
 			strokeWidth='1.5'

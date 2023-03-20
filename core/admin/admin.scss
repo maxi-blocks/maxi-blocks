@@ -230,7 +230,9 @@ body.toplevel_page_maxi-blocks-dashboard {
 										border-color: #dbdde6;
 									}
 
-									label:not(label[for='maxi-breakpoint-maxi-versions']) {
+									label:not(
+											label[for='maxi-breakpoint-maxi-versions']
+										) {
 										text-transform: uppercase;
 										width: 20px;
 										display: inline-block;
@@ -361,7 +363,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 	}
 }
 
-@media only screen and(max-width: 767px) {
+@media only screen and (max-width: 767px) {
 	body.toplevel_page_maxi-blocks-dashboard {
 		.maxi-dashboard_form {
 			.maxi-dashboard_main {
@@ -378,7 +380,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 	}
 }
 
-@media only screen and(max-width: 480px) {
+@media only screen and (max-width: 480px) {
 	body.toplevel_page_maxi-blocks-dashboard {
 		.notice-warning {
 			&.inline {

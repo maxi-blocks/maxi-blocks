@@ -661,8 +661,6 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 		await pressKeyWithModifier('primary', 'v');
 		await page.waitForTimeout(150);
-		await setAttributes(page, { uniqueID: 'text-maxi-1' });
-		await page.waitForTimeout(150);
 
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
@@ -682,7 +680,6 @@ describe('TextMaxi', () => {
 			'.toolbar-item__popover__list-options__button',
 			buttons => buttons[1].click()
 		);
-		await page.waitForTimeout(150);
 		await page.waitForTimeout(150);
 		const selectMaxiTextDiv = await page.$('.maxi-text-block');
 		const selectMaxiTextP = await selectMaxiTextDiv.$(

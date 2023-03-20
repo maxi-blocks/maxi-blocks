@@ -292,7 +292,7 @@ const interactionBuilderSettings = {
 			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
 		},
 		{
-			'sid:': 'imb',
+			sid: 'imb',
 			label: __('Border', 'maxi-blocks'),
 			transitionTarget: transition.block.border.target,
 			hoverProp: 'image-border-status-hover',

@@ -28,7 +28,7 @@ class Relation {
 		);
 
 		this.action = item.action;
-		this.sids = item.sid ?? item.settings;
+		this.sids = item.sid || item.settings;
 		this.effects = item.effects;
 		this.attributes = item.attributes;
 

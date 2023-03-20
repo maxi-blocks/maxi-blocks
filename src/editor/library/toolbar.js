@@ -470,7 +470,7 @@ const LibraryToolbar = props => {
 					))}
 				</div>
 			)}
-			{!isMaxiProActive && (
+			{/* {!isMaxiProActive && (
 				<Button
 					key='maxi-cloud-toolbar__button__connect'
 					className='maxi-cloud-container__patterns__top-menu__button-connect-pro'
@@ -479,7 +479,7 @@ const LibraryToolbar = props => {
 				>
 					{__('Connect to Maxi Pro Account', 'maxi-blocks')}
 				</Button>
-			)}
+			)} */}
 			{isMaxiProActive && (
 				<div>
 					<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>{`${__(

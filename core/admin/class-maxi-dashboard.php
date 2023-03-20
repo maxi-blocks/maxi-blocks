@@ -221,14 +221,28 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .=
                 '<p>' .
                 __(
-                    "Maxi Blocks is here to break the cycle. It's open source and free to use. No locked features, no domain limits, and no licence keys to keep track of. Start with 700 free templates and customize them quickly with a style card. Need some icons? Speed search our collection of 13.4K designer icons and shapes - all free.",
+                    "Maxi is here to break the cycle! We're open source and free to use. No locked features, no domain limits, and no licence keys to keep track of.",
+                    self::$maxi_text_domain,
+                ) .
+                '</p>';
+                $content .=
+                '<p>' .
+                __(
+                    " Start with 700 free templates and customize them quickly with a style card. Need some icons? Speed search our collection of 13.4K designer icons and shapes - all free.",
                     self::$maxi_text_domain,
                 ) .
                 '</p>';
             $content .=
                 '<p>' .
                 __(
-                    "And if you're loving Maxi Blocks and want to help us out, join the Pro library. Find inspiration, get more variety and work faster with production ready templates. We've created thousands of designs using Maxi, so we know what works. Copy, remix, and learn as you go - it's all possible with Maxi Blocks.",
+                    "And if you're loving Maxi Blocks and want to help us out, join the Pro library. Find inspiration, get variety and work faster with production ready templates.",
+                    self::$maxi_text_domain,
+                ) .
+                '</p>';
+                $content .=
+                '<p>' .
+                __(
+                    "We've created thousands of designs using Maxi, so we know what works. Copy, remix, and learn as you go - it's all possible with Maxi Blocks.",
                     self::$maxi_text_domain,
                 ) .
                 '</p>';

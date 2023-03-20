@@ -10,6 +10,11 @@
 		input.icon-reveal {
 			margin-right: -25px !important;
 		}
+		input.icon-reveal.maxi-search-block__input--hidden {
+			margin: 0 !important;
+			padding: 0 !important;
+			border: 0;
+		}
 	}
 	&--icon-right {
 		input.icon-reveal {

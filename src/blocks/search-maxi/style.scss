@@ -21,13 +21,13 @@ body.maxi-blocks--active .maxi-search-block {
 		.maxi-search-block__button {
 			order: 1;
 		}
-		.maxi-search-block__input--hidden {
+		.maxi-search-block__input {
+			margin-right: -25px !important;
+		}
+		.maxi-search-block__input.maxi-search-block__input--hidden {
 			margin: 0 !important;
 			padding: 0 !important;
 			border: 0;
-		}
-		.maxi-search-block__input {
-			margin-right: -25px !important;
 		}
 	}
 

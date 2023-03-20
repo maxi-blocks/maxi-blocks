@@ -814,14 +814,14 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</p>';
             $content .= '</div>';
             $content .= '<ul class="not_loggedin-bottom-menu">';
-            $content .= '<li><a href="#" target="_blank">'.__('help desk', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="https://maxiblocks.com/go/help-desk" target="_blank">'.__('help desk', self::$maxi_text_domain).'</a></li>';
             $content .= '<li><a href="#" target="_blank">'.__('pro library', self::$maxi_text_domain).'</a></li>';
             $content .= '<li><a href="#" target="_blank">'.__('demo library', self::$maxi_text_domain).'</a></li>';
-            $content .= '<li><a href="#" target="_blank">'.__('youtube', self::$maxi_text_domain).'</a></li>';
-            $content .= '<li><a href="#" target="_blank">'.__('maxiblocks.com', self::$maxi_text_domain).'</a></li>';
-            $content .= '<li><a href="#" target="_blank">'.__('twitter', self::$maxi_text_domain).'</a></li>';
-            $content .= '<li><a href="#" target="_blank">'.__('discord community', self::$maxi_text_domain).'</a></li>';
-            $content .= '<li><a href="#" target="_blank">'.__('roadmap', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="https://www.youtube.com/@maxiblocks" target="_blank">'.__('youtube', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="https://maxiblocks.com" target="_blank">'.__('maxiblocks.com', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="https://twitter.com/maxiblocks" target="_blank">'.__('twitter', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="https://discord.gg/BzGBCZMz" target="_blank">'.__('discord community', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="https://maxiblocks.com/go/roadmap" target="_blank">'.__('roadmap', self::$maxi_text_domain).'</a></li>';
             $content .= '</ul>';
             
             $content .= '</div>'; // maxi-dashboard_main-content_not-pro
@@ -864,15 +864,15 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</ul>';
             $content .= '<h3>'.__("Support links", self::$maxi_text_domain).'</h3>';
             $content .= '<ul class="loggedin-bottom-menu">';
-            $content .= '<li><a href="#" target="_blank">'.__('Help desk', self::$maxi_text_domain).'</a></li>';
-            $content .= '<li><a href="#" target="_blank">'.__('YouTube', self::$maxi_text_domain).'</a></li>';
-            $content .= '<li><a href="#" target="_blank">'.__('maxiblocks.com', self::$maxi_text_domain).'</a></li>';
-            $content .= '<li><a href="#" target="_blank">'.__('Roadmap', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="https://maxiblocks.com/go/help-desk" target="_blank">'.__('Help desk', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="https://www.youtube.com/@maxiblocks" target="_blank">'.__('YouTube', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="https://maxiblocks.com" target="_blank">'.__('maxiblocks.com', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="https://maxiblocks.com/go/roadmap" target="_blank">'.__('Roadmap', self::$maxi_text_domain).'</a></li>';
             $content .= '</ul>';
             $content .= '<h4>'.__("Community", self::$maxi_text_domain).'</h4>';
             $content .= '<ul class="loggedin-bottom-menu">';
-            $content .= '<li><a href="#" target="_blank">'.__('Twitter', self::$maxi_text_domain).'</a></li>';
-            $content .= '<li><a href="#" target="_blank">'.__('Discord community', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="https://twitter.com/maxiblocks" target="_blank">'.__('Twitter', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="https://discord.gg/BzGBCZMz" target="_blank">'.__('Discord community', self::$maxi_text_domain).'</a></li>';
             $content .= '</ul>';
             // $content .= '<p>'.__('You are connected to Maxi Pro!', self::$maxi_text_domain).'</p>';
             // $content .= '<p><a href="https://my.maxiblocks.com/account" target="_blank">'.__('Edit your profile', self::$maxi_text_domain).'</a></p>';

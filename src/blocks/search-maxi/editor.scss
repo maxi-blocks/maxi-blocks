@@ -11,9 +11,12 @@
 			margin-right: -25px !important;
 		}
 		input.icon-reveal.maxi-search-block__input--hidden {
-			margin: 0 !important;
-			padding: 0 !important;
-			border: 0;
+			margin-left: 0 !important;
+			margin-right: 0 !important;
+			padding-left: 0 !important;
+			padding-right: 0 !important;
+			border-left: 0 !important;
+			border-right: 0 !important;
 		}
 	}
 	&--icon-right {

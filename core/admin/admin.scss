@@ -12,6 +12,12 @@ body.toplevel_page_maxi-blocks-dashboard {
 			margin: 20px 39px;
 		}
 	}
+	#wpwrap{
+		min-height: auto;
+	}
+	#wpbody{
+		height: calc(100vh - 73px);
+	}
 	#wpcontent {
 		padding-left: 0;
 		.maxi-dashboard_wrap {

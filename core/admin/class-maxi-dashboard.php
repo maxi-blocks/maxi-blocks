@@ -789,16 +789,32 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '<div class="maxi-dashboard_main-content_accordion" id="maxi-dashboard_main-content_pro-not-pro">';
 
             $content .= '<div id="maxi-dashboard_main-content_not-pro">';
-            $content .= '<h1>'.__('Thousands of web templates. Unlimited downloads', self::$maxi_text_domain).'</h1>';
-            $content .= '<p>'.__('Build pages faster with premium templates that match your style.', self::$maxi_text_domain).'</p>';
-            $content .= '<p>'.__('I want to join', self::$maxi_text_domain).'</p>';
-            $content .= '<a href="https://maxiblocks.com/go/pricing" target="_blank">'.__('Sign up', self::$maxi_text_domain).'</a>';
-            $content .= '<p>'.__('I have an account', self::$maxi_text_domain).'</p>';
-            $content .= '<a href="https://maxiblocks.com/go/user-login" target="_blank">'.__('Log in', self::$maxi_text_domain).'</a>';
+            $content .= '<h1>'.__('Thousands of premium templates to work faster', self::$maxi_text_domain).'</h1>';
+            $content .= '<h2>'.__('Unlimited downloads. Unlimited sites. No feature lock-in.', self::$maxi_text_domain).'</h2>';
+            $content .= '<p>'.__('Find inspiration, or add variety to your designs. Boost your productivity and grow your audience. Join our community of creators who love to build fast, beautiful, responsive websites.', self::$maxi_text_domain).'</p>';
+            $content .= '<h3>'.__("Let’s create something amazing with Maxi", self::$maxi_text_domain).'</h3>';
+            // $content .= '<p>'.__('I want to join', self::$maxi_text_domain).'</p>';
+            $content .= '<div class="sign-up_button-wrap">';
+            $content .= '<a href="https://maxiblocks.com/go/pricing" target="_blank" class="sign-up_button">'.__('Sign up', self::$maxi_text_domain).'</a>';
+            $content .= '<p>'.__('Already have an account? ', self::$maxi_text_domain);
+            $content .= '<a href="https://maxiblocks.com/go/user-login" target="_blank">'.__('Sign in', self::$maxi_text_domain).'</a>';
+            $content .= '</p>';
+            $content .= '</div>';
+            $content .= '<ul>';
+            $content .= '<li><a href="#" target="_blank">'.__('help desk', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="#" target="_blank">'.__('pro library', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="#" target="_blank">'.__('demo library', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="#" target="_blank">'.__('youtube', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="#" target="_blank">'.__('maxiblocks.com', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="#" target="_blank">'.__('twitter', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="#" target="_blank">'.__('discord community', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="#" target="_blank">'.__('roadmap', self::$maxi_text_domain).'</a></li>';
+            $content .= '</ul>';
+            
             $content .= '</div>'; // maxi-dashboard_main-content_not-pro
             $content .= '<div id="maxi-dashboard_main-content_pro">';
             $content .= '<h1>'.__('Thousands of web templates. Unlimited downloads', self::$maxi_text_domain).'</h1>';
-            $content .= '<p>'.__('Find inspiration, or add variety to your designs. Boost your productivity and grow your audience. Join our community of creators who love to build fast, beautiful, responsive websites.', self::$maxi_text_domain).'</p>';
+            $content .= '<p>'.__('You are connected to Maxi Pro!', self::$maxi_text_domain).'</p>';
             $content .= '<p><a href="https://my.maxiblocks.com/account" target="_blank">'.__('Edit your profile', self::$maxi_text_domain).'</a></p>';
             $content .= '</div>';
 

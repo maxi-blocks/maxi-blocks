@@ -184,9 +184,9 @@ class edit extends MaxiBlockComponent {
 		if (preview)
 			return (
 				<MaxiBlock
+					className={`maxi-pane-block--${accordionLayout}-layout`}
 					key={`maxi-pane--${uniqueID}`}
 					ref={this.blockRef}
-					className={`maxi-pane-block--${accordionLayout}-layout`}
 					{...getMaxiBlockAttributes(this.props)}
 				>
 					<img // eslint-disable-next-line no-undef

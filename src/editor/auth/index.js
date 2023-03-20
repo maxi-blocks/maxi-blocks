@@ -75,7 +75,7 @@ export const logOut = () => {
 
 	logOutSession.then(
 		function success(response) {
-			console.log(response); // Success
+			// console.log(response); // Success
 			dispatch('maxiBlocks/pro').saveMaxiProStatus({
 				status: 'no',
 				name: '',

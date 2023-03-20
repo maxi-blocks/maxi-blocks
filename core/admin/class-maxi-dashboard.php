@@ -782,9 +782,11 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             return $content;
         }
-
+  
         public function maxi_blocks_pro()
         {
+            $current_user = wp_get_current_user();
+            $user_name = $current_user->user_firstname;
             $content = '<div class="maxi-dashboard_main-content maxi-dashboard_main-content-pro-library">';
             $content .= '<div class="maxi-dashboard_main-content_accordion" id="maxi-dashboard_main-content_pro-not-pro">';
 
@@ -800,7 +802,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '<a href="https://maxiblocks.com/go/user-login" target="_blank">'.__('Sign in', self::$maxi_text_domain).'</a>';
             $content .= '</p>';
             $content .= '</div>';
-            $content .= '<ul>';
+            $content .= '<ul class="not_loggedin-bottom-menu">';
             $content .= '<li><a href="#" target="_blank">'.__('help desk', self::$maxi_text_domain).'</a></li>';
             $content .= '<li><a href="#" target="_blank">'.__('pro library', self::$maxi_text_domain).'</a></li>';
             $content .= '<li><a href="#" target="_blank">'.__('demo library', self::$maxi_text_domain).'</a></li>';
@@ -812,10 +814,57 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</ul>';
             
             $content .= '</div>'; // maxi-dashboard_main-content_not-pro
-            $content .= '<div id="maxi-dashboard_main-content_pro">';
-            $content .= '<h1>'.__('Thousands of web templates. Unlimited downloads', self::$maxi_text_domain).'</h1>';
-            $content .= '<p>'.__('You are connected to Maxi Pro!', self::$maxi_text_domain).'</p>';
-            $content .= '<p><a href="https://my.maxiblocks.com/account" target="_blank">'.__('Edit your profile', self::$maxi_text_domain).'</a></p>';
+            $content .= '<div id="maxi-dashboard_main-content_pro" class="maxi-dashboard_main-content-pro-library-logged-in">';
+            $content .=
+                '<h2>' .
+                __('Hi ', self::$maxi_text_domain);
+            $content .=
+                '<span>' .
+                __('[username]', self::$maxi_text_domain).'</span>';
+            $content .= '</h2>';
+            $content .=
+                '<h2>' .
+                esc_html($user_name) .
+                '</h2>';
+            $content .= '<h1>'.__("You're signed in. Pro library is connected.", self::$maxi_text_domain).'</h1>';
+            $content .= '<h3>'.__("Browse for templates", self::$maxi_text_domain).'</h3>';
+            $content .= '<ul>';
+            $content .=
+                '<li>' .
+                __(
+                    '-  Create a new page to launch the editing experience',
+                    self::$maxi_text_domain,
+                ) .
+                '</li>';
+            $content .=
+                '<li>' .
+                __(
+                    '-  Open master toolbar from the square Maxi Blocks launcher icon',
+                    self::$maxi_text_domain,
+                ) .
+                '</li>';
+            $content .=
+                '<li>' .
+                __(
+                    '-  Choose "Template library" and select the blue "Pro" tab to start browsing',
+                    self::$maxi_text_domain,
+                ) .
+                '</li>';
+            $content .= '</ul>';
+            $content .= '<h3>'.__("Support links", self::$maxi_text_domain).'</h3>';
+            $content .= '<ul class="loggedin-bottom-menu">';
+            $content .= '<li><a href="#" target="_blank">'.__('Help desk', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="#" target="_blank">'.__('YouTube', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="#" target="_blank">'.__('maxiblocks.com', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="#" target="_blank">'.__('Roadmap', self::$maxi_text_domain).'</a></li>';
+            $content .= '</ul>';
+            $content .= '<h4>'.__("Community", self::$maxi_text_domain).'</h4>';
+            $content .= '<ul class="loggedin-bottom-menu">';
+            $content .= '<li><a href="#" target="_blank">'.__('Twitter', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="#" target="_blank">'.__('Discord community', self::$maxi_text_domain).'</a></li>';
+            $content .= '</ul>';
+            // $content .= '<p>'.__('You are connected to Maxi Pro!', self::$maxi_text_domain).'</p>';
+            // $content .= '<p><a href="https://my.maxiblocks.com/account" target="_blank">'.__('Edit your profile', self::$maxi_text_domain).'</a></p>';
             $content .= '</div>';
 
             $content .= '</div>'; // maxi-dashboard_main-content_accordion

@@ -318,7 +318,7 @@ const RelationControl = props => {
 				onChangeRelation(relations, item.id, {
 					attributes: newAttributesObj,
 					css: styles,
-					...(item.sid === 'Transform' && {
+					...(item.sid === 't' && {
 						effects: {
 							...item.effects,
 							transitionTarget: Object.keys(styles),

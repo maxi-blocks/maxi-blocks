@@ -275,7 +275,7 @@ const interactionBuilderSettings = {
 				}),
 		},
 		{
-			sid: 'bt',
+			sid: 'bty',
 			label: __('Button typography', 'maxi-blocks'),
 			transitionTarget: transition.block.typography.target,
 			transitionTrigger: buttonClass,

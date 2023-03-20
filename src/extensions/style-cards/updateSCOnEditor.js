@@ -291,7 +291,7 @@ const updateSCOnEditor = (
 			const elementHead = Array.from(
 				element.querySelectorAll('head')
 			).pop();
-			elementHead.appendChild(SCStyle);
+			elementHead?.appendChild(SCStyle);
 			const { saveSCStyles } = dispatch('maxiBlocks/style-cards');
 
 			// Needs a delay, if not Redux returns error 3

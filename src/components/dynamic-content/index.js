@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useEffect, useState } from '@wordpress/element';
+import { useEffect, useState, useCallback } from '@wordpress/element';
 import { resolveSelect } from '@wordpress/data';
 
 /**
@@ -72,7 +72,7 @@ const DynamicContent = props => {
 		if (hasChangesToSave) onChange(params);
 	};
 
-	useEffect(async () => {
+	const fetchDcData = useCallback(async () => {
 		// TODO: check if this code is necessary
 		// On init, get post author options and set current user as default
 		if (!postAuthorOptions) {
@@ -123,9 +123,11 @@ const DynamicContent = props => {
 					setPostIdOptions(newPostIdOptions);
 			}
 		}
-
-		return null;
 	});
+
+	useEffect(() => {
+		fetchDcData().catch(console.error);
+	}, [fetchDcData]);
 
 	return (
 		<div className={classes}>
@@ -173,18 +175,19 @@ const DynamicContent = props => {
 									}
 								/>
 							)}
-							{relationTypes.includes(type) && type === 'users' && (
-								<SelectControl
-									label={__('Author id', 'maxi-blocks')}
-									value={author}
-									options={postAuthorOptions}
-									onChange={value =>
-										changeProps({
-											'dc-author': Number(value),
-										})
-									}
-								/>
-							)}
+							{relationTypes.includes(type) &&
+								type === 'users' && (
+									<SelectControl
+										label={__('Author id', 'maxi-blocks')}
+										value={author}
+										options={postAuthorOptions}
+										onChange={value =>
+											changeProps({
+												'dc-author': Number(value),
+											})
+										}
+									/>
+								)}
 							{relationTypes.includes(type) &&
 								type !== 'users' &&
 								['author', 'by-id'].includes(relation) && (

@@ -599,6 +599,16 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .=
                 __(' for self-service.', self::$maxi_text_domain) . '</p>';
 
+            $description =
+                '<h4>' .
+                __('Enable live chat support (temporary)', 'maxi-blocks') .
+                '</h4>';
+            $description .= '<p>For a short time we\'re offering live chat to help troubleshoot issues during the beta plugin release. Live chat will be removed in a future update. By activating this option you agree to the GDPR terms as set out in the Crisp chat service terms.</p>';
+            $description .= '<p><a href="https://help.crisp.chat/en/article/whats-crisp-eu-gdpr-compliance-status-nhv54c/" target="_blank"'.'>' . __('Read about Crisp GDPR terms', 'maxi-blocks') . '</a></p>';
+
+            $content .= $this->generate_setting($description, 'support_chat');
+            $content .= get_submit_button();
+
             // $content .= '<p>'.__('For support please  ', self::$maxi_text_domain);
             // $content .= '<a href="" target="_blank"> '.__('post your question', self::$maxi_text_domain).'</a>';
             // $content .= __(' in the WordPress.org forum.', self::$maxi_text_domain).'</p>';
@@ -749,6 +759,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
             
+            // TO DO: uncomment when we have a WP directory link for the rollback function
             // $content .= $this->generate_item_header('Rollback to previous version', false);
 
             // $content .= '<p>'.__('If you want to restore a previous version of Maxi Blocks, you can do it here. For extra precaution we always recommended running a backup of your website and database before performing a rollback. Alternatively, clone your site to a staging site, then test the rollback function there.', self::$maxi_text_domain).'</p>';
@@ -1009,44 +1020,28 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             return $breakpoints_html;
         }
 
-        public function generate_dropdown()
-        {
-            $dropdown =
-                '<div class="maxi-dashboard_main-content_accordion-item-content-switcher">';
-            $dropdown .=
-                '<div class="maxi-dashboard_main-content_accordion-item-content-switcher__dropdown">';
-            $dropdown .=
-                '<select name="maxi_versions" id="maxi-versions" class="maxi-dashboard_main-content_accordion-item-input regular-text">';
-            $dropdown .=
-                '<option value="current">' .
-                __('Select a version', self::$maxi_text_domain) .
-                '</option>';
+        // TO DO: uncomment this when we have a list of versions
+        // public function generate_dropdown()
+        // {
+        //     $dropdown = '<div class="maxi-dashboard_main-content_accordion-item-content-switcher">';
+        //     $dropdown .= '<div class="maxi-dashboard_main-content_accordion-item-content-switcher__dropdown">';
+        //     $dropdown .= '<select name="maxi_versions" id="maxi-versions" class="maxi-dashboard_main-content_accordion-item-input regular-text">';
+        //     $dropdown .= '<option value="current">'.__('Select a version', self::$maxi_text_domain).'</option>';
 
-            $versions = $this->get_versions_list();
-            if ($versions) {
-                foreach ($versions as $version => $url) {
-                    $dropdown .=
-                        '<option value="' .
-                        $url .
-                        '">' .
-                        $version .
-                        '</option>';
-                }
-            } else {
-                $dropdown .=
-                    '<option value="">' .
-                    __(
-                        'Can\'t get a list of versions from WordPress.com',
-                        self::$maxi_text_domain,
-                    ) .
-                    '</option>';
-            }
-            $dropdown .= '</select>';
-            $dropdown .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher__dropdown
-            $dropdown .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher
+        //     $versions = $this->get_versions_list();
+        //     if ($versions) {
+        //         foreach ($versions as $version => $url) {
+        //             $dropdown .= '<option value="'.$url.'">'.$version.'</option>';
+        //         }
+        //     } else {
+        //         $dropdown .= '<option value="">'.__('Can\'t get a list of versions from WordPress.com', self::$maxi_text_domain).'</option>';
+        //     }
+        //     $dropdown .= '</select>';
+        //     $dropdown .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher__dropdown
+        //     $dropdown .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher
 
-            return $dropdown;
-        }
+        //     return $dropdown;
+        // }
 
         public function generate_setting(
             $description,
@@ -1100,6 +1095,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             register_setting('maxi-blocks-settings-group', 'remove_local_fonts', $args);
             register_setting('maxi-blocks-settings-group', 'allow_svg_json_uploads', $args);
             register_setting('maxi-blocks-settings-group', 'hide_tooltips', $args);
+            register_setting('maxi-blocks-settings-group', 'support_chat', $args);
             register_setting('maxi-blocks-settings-group', 'swap_cloud_images', $args);
             register_setting('maxi-blocks-settings-group', 'google_api_key_option');
             register_setting('maxi-blocks-settings-group', 'maxi_breakpoints');
@@ -1188,56 +1184,40 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             update_option('maxi_rollback_version', 'current');
         }
 
-        public function get_versions_list()
-        {
-            // You can test with the Jetpack plugin for now
+        // public function get_versions_list()
+        // {
 
-            // $args = array(
-            //     'slug' => 'jetpack', // change to Maxi when we have it on WordPress plugins directory
-            //     'fields' => array(
-            //         'downloaded' => true,
-            //         'downloadlink' => true
-            //     )
-            // );
-            // $response = wp_remote_post(
-            //     'http://api.wordpress.org/plugins/info/1.0/',
-            //     array(
-            //         'body' => array(
-            //             'action' => 'plugin_information',
-            //             'request'=>serialize((object)$args)
-            //         )
-            //     )
-            // );
+        //     $args = array(
+        //         'slug' => '', // change to Maxi when we have it on WordPress plugins directory
+        //         'fields' => array(
+        //             'downloaded' => true,
+        //             'downloadlink' => true
+        //         )
+        //     );
+        //     $response = wp_remote_post(
+        //         'http://api.wordpress.org/plugins/info/1.0/',
+        //         array(
+        //             'body' => array(
+        //                 'action' => 'plugin_information',
+        //                 'request'=>serialize((object)$args)
+        //             )
+        //         )
+        //     );
 
-            // if (!is_wp_error($response)) {
-            //     $returned_object = unserialize(wp_remote_retrieve_body($response));
-            //     $versions = $returned_object->versions;
-            //     if (!is_array($versions)) {
-            //         return false;
-            //     } else {
-            //         if ($versions) {
-            //             return $versions;
-            //         }
-            //     }
-            // } else {
-            //     return false;
-            // }
+        //     if (!is_wp_error($response)) {
+        //         $returned_object = unserialize(wp_remote_retrieve_body($response));
+        //         $versions = $returned_object->versions;
+        //         if (!is_array($versions)) {
+        //             return false;
+        //         } else {
+        //             if ($versions) {
+        //                 return $versions;
+        //             }
+        //         }
+        //     } else {
+        //         return false;
+        //     }
 
-            // Temporary solution until we have our plugin in the WP plugins directory
-            $json = file_get_contents(
-                'https://storage.googleapis.com/plugin-files/updates/versions.json',
-            );
-            $returned_object = json_decode($json, true);
-
-            $versions = $returned_object['versions'];
-
-            if (!is_array($versions)) {
-                return false;
-            } else {
-                if ($versions) {
-                    return $versions;
-                }
-            }
-        }
+        // }
     }
 endif;

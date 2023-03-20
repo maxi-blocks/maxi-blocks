@@ -11,12 +11,7 @@ import { CheckboxControl, Button } from '@wordpress/components';
  * Internal dependencies
  */
 import { updateSCOnEditor } from '../../extensions/style-cards';
-import {
-	svgAttributesReplacer,
-	svgCurrentColorStatus,
-	fitSvg,
-	onRequestInsertPattern,
-} from './util';
+import { svgAttributesReplacer, svgCurrentColorStatus, fitSvg } from './util';
 import { injectImgSVG } from '../../extensions/svg';
 import MasonryItem from './MasonryItem';
 import masonryGenerator from './masonryGenerator';
@@ -45,6 +40,7 @@ import DOMPurify from 'dompurify';
  * Icons
  */
 import { arrowIcon } from '../../icons';
+import onRequestInsertPattern from './utils/onRequestInsertPattern';
 
 // hack to fix issue #3930: top level tags resetting when we choose a second-level tag
 const removeMenuBugFix = () => {
@@ -75,6 +71,24 @@ const resultsCount = {
 		);
 	},
 };
+
+/**
+ * TODO: add a loading state component
+ */
+const LoadingContent = () => (
+	<div
+		className='maxi-cloud-container__content-loading'
+		style={{
+			display: 'flex',
+			justifyContent: 'center',
+			alignItems: 'center',
+			height: '100%',
+			width: '100%',
+		}}
+	>
+		Loading!
+	</div>
+);
 
 const MenuSC = ({ items, refine }) => (
 	<ul className='maxi-cloud-container__content__svg-categories'>
@@ -382,6 +396,8 @@ const LibraryContainer = props => {
 		isMaxiProActive,
 		onClickConnect,
 		layerOrder,
+		isInserting,
+		onInsert,
 	} = props;
 
 	const {
@@ -416,7 +432,6 @@ const LibraryContainer = props => {
 		};
 	});
 
-	const { replaceBlock } = useDispatch('core/block-editor');
 	const { saveMaxiStyleCards, setSelectedStyleCard } = useDispatch(
 		'maxiBlocks/style-cards'
 	);
@@ -518,17 +533,14 @@ const LibraryContainer = props => {
 				onSelect={onSelect}
 				isMaxiProActive={isMaxiProActive}
 				onClickConnect={onClickConnect}
-				onRequestInsert={() =>
-					onRequestInsertPattern(
+				onRequestInsert={async () => {
+					onInsert();
+					await onRequestInsertPattern(
 						hit.gutenberg_code,
 						isSwapChecked,
-						isValidTemplate,
-						onSelect,
-						onRequestClose,
-						replaceBlock,
 						clientId
-					)
-				}
+					);
+				}}
 			/>
 		);
 	};
@@ -830,6 +842,13 @@ const LibraryContainer = props => {
 			</>
 		);
 	};
+
+	if (isInserting)
+		return (
+			<div className='maxi-cloud-container'>
+				<LoadingContent />
+			</div>
+		);
 
 	return (
 		<div className='maxi-cloud-container'>

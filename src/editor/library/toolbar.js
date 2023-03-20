@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { select, useDispatch } from '@wordpress/data';
+import { select, useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -16,7 +16,7 @@ import {
 	mediumMode,
 	smallMode,
 } from '../../icons';
-import { onRequestInsertPattern } from './util';
+import onRequestInsertPattern from './utils/onRequestInsertPattern';
 import { Button } from '../../components';
 
 /**
@@ -25,7 +25,7 @@ import { Button } from '../../components';
 import classnames from 'classnames';
 import CrispChat from '../crisp-chat';
 import { SearchClient as TypesenseSearchClient } from 'typesense';
-import { isNil, isUndefined } from 'lodash';
+import { isNil, isUndefined, isEmpty } from 'lodash';
 
 /**
  * Component
@@ -60,7 +60,7 @@ const LibraryToolbar = props => {
 		isPro,
 		isBeta,
 		gutenbergCode,
-		onSelect,
+		onInsert,
 		isSwapChecked,
 		onChangeTone,
 		onClickConnect,
@@ -163,10 +163,8 @@ const LibraryToolbar = props => {
 		}
 	};
 
-	const { isValidTemplate, getSelectedBlockClientId } =
-		select('core/block-editor');
+	const { getSelectedBlockClientId } = select('core/block-editor');
 	const clientId = getSelectedBlockClientId();
-	const { replaceBlock } = useDispatch('core/block-editor');
 
 	const openRelatedPattern = () => {
 		let relatedSerial = toneUrl.toLowerCase();
@@ -377,6 +375,18 @@ const LibraryToolbar = props => {
 		previewIframeWrap.style.right = 0;
 	};
 
+	const { chatSupport } = useSelect(select => {
+		const { receiveMaxiSettings } = select('maxiBlocks');
+		const maxiSettings = receiveMaxiSettings();
+		const { support_chat: supportChat } = maxiSettings;
+
+		const chatSupport = !isEmpty(supportChat) ? supportChat : false;
+
+		return {
+			chatSupport,
+		};
+	});
+
 	return (
 		<div className='maxi-cloud-toolbar'>
 			{type !== 'preview' && type !== 'switch-tone' && (
@@ -472,7 +482,10 @@ const LibraryToolbar = props => {
 			)}
 			{isMaxiProActive && (
 				<div>
-					{`${__('Signed in as:', 'maxi-blocks')} ${userName}`}
+					<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>{`${__(
+						'Signed in as:',
+						'maxi-blocks'
+					)} ${userName}`}</h5>
 					<Button
 						key='maxi-cloud-toolbar__button__sing-out'
 						className='maxi-cloud-container__patterns__top-menu__button-go-pro'
@@ -483,28 +496,36 @@ const LibraryToolbar = props => {
 					</Button>
 				</div>
 			)}
-			{type !== 'preview' && type !== 'switch-tone' && (
+			{type !== 'preview' && type !== 'switch-tone' && chatSupport && (
 				<CrispChat className='maxi-cloud-toolbar__help-button' as='a'>
 					{help}
 					{__('Help', 'maxi-blocks')}
 				</CrispChat>
+			)}
+			{type !== 'preview' && type !== 'switch-tone' && !chatSupport && (
+				<a
+					href='https://maxiblocks.com/go/help-center'
+					target='_blank'
+					rel='noopener noreferrer'
+					className='maxi-cloud-toolbar__help-button'
+				>
+					{help}
+					{__('Help', 'maxi-blocks')}
+				</a>
 			)}
 			{(type === 'preview' || type === 'switch-tone') && (
 				<div className='maxi-cloud-toolbar__buttons-group_close'>
 					{(!isPro || isBeta || isMaxiProActive) && (
 						<ToolbarButton
 							label={__('Insert', 'maxi-blocks')}
-							onClick={() => {
-								onRequestInsertPattern(
+							onClick={async () => {
+								onInsert();
+
+								await onRequestInsertPattern(
 									gutenbergCode,
 									isSwapChecked,
-									isValidTemplate,
-									onSelect,
-									onRequestClose,
-									replaceBlock,
 									clientId
 								);
-								onRequestClose();
 							}}
 						/>
 					)}

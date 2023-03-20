@@ -1370,6 +1370,7 @@ Object {
   "helper": [Function],
   "hoverProp": "box-shadow-status-hover",
   "label": "Box shadow",
+  "sid": "bs",
 }
 `;
 
@@ -1390,6 +1391,34 @@ Object {
   "helper": [Function],
   "hoverProp": "icon-status-hover",
   "label": "Button icon",
+  "sid": "bi",
+  "transitionTarget": Array [
+    "  .maxi-button-block__icon svg > *:not(g)",
+    " .maxi-button-block__icon svg",
+    " .maxi-button-block__icon",
+    " .maxi-button-block__icon",
+  ],
+}
+`;
+
+exports[`getTransitionSetting Should support sid 1`] = `
+Object {
+  "attrGroupName": Array [
+    "icon",
+    "iconBackground",
+    "iconBackgroundGradient",
+    "iconBackgroundColor",
+    "iconBorder",
+    "iconBorderWidth",
+    "iconBorderRadius",
+    "iconPadding",
+    "typography",
+  ],
+  "component": [Function],
+  "helper": [Function],
+  "hoverProp": "icon-status-hover",
+  "label": "Button icon",
+  "sid": "bi",
   "transitionTarget": Array [
     "  .maxi-button-block__icon svg > *:not(g)",
     " .maxi-button-block__icon svg",

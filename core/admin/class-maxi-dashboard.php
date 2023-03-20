@@ -232,13 +232,13 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     self::$maxi_text_domain,
                 ) .
                 '</p>';
-            $content .=
-                '<h3>' .
-                __(
-                    "[This is the title for the intro video]",
-                    self::$maxi_text_domain,
-                ) .
-                '</h3>';
+            // $content .=
+            //     '<h3>' .
+            //     __(
+            //         "[This is the title for the intro video]",
+            //         self::$maxi_text_domain,
+            //     ) .
+            //     '</h3>';
             // $content .=
             //     '<h2>' .
             //     __(
@@ -387,19 +387,19 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '<div class="maxi-dashboard_main-sidebar-item">';
             $content .= '<svg class="news-maxi-svg" width="64px" height="64px" viewBox="0 0 64 64" data-stroke="" stroke="#081219" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"><path d="M55.8 16.2V9.9H15.6v6.3h40.2m-39 9.3v12.4h10.3V25.5H16.8M56 29.7H45.7v25.8H56V29.7z" data-fill="" fill="#FF4A17"></path><g fill="none"><path d="M62.1 5.6l-2.3-3.1L57.3 5l-2.6-2.5L52.1 5l-2.6-2.5L47 5l-2.5-2.5L41.8 5l-2.5-2.5L36.7 5l-2.6-2.5L31.5 5 29 2.5 26.4 5l-2.6-2.5L21.2 5l-2.6-2.5L16.1 5l-2.6-2.5-2.9 3.1v8.7 40.6c-.4 4.9-2.4 6.5-4.3 6.5.5.2 1.1.3 1.8.3h54V5.6"></path><path d="M44.7 21.5H57m-12.3 4H57M10.6 14.3H2v41.3c0 2.6 1.9 5 4.3 5.7m9.5-39.8h12.3M15.8 42.7h12.3m-12.3 4.1h12.3M15.8 51h12.3m-12.3 4.5h12.3m3.2-34H41m-9.7 4.1H41m-9.7 4.3H41m-9.7 4.2H41m-9.7 4.2H41m-9.7 4.2H41m-9.7 13H41m-9.7-8.7H41"></path><path d="M31.3 51H41"></path></g></svg>';
             $content .= '<p>'.__('News and stories for creators.', self::$maxi_text_domain);
-            $content .= ' <a href="" target="_blank">'.__('Read the blog', self::$maxi_text_domain).'</a>.</p>';
+            $content .= ' <a href="https://maxiblocks.com/go/read-the-blog" target="_blank">'.__('Read the blog', self::$maxi_text_domain).'</a>.</p>';
             $content .='</div>'; // maxi-dashboard_main-sidebar-item
 
             $content .= '<div class="maxi-dashboard_main-sidebar-item">';
             $content .= '<svg class="email-marketing-2-maxi-svg" width="64px" height="64px" viewBox="0 0 64 64"><style>.email-marketing-2-maxi-svg .D{stroke:#081219}.email-marketing-2-maxi-svg .E{stroke-width:2}.email-marketing-2-maxi-svg .F{stroke-linejoin:round}.email-marketing-2-maxi-svg .G{stroke-miterlimit:10}.email-marketing-2-maxi-svg .H{fill:#FF4A17}.email-marketing-2-maxi-svg .I{stroke-linecap:round}</style><path d="M59.2 29.6l-7.3-5.7h-.5v13.4zm-46.6-5.9h-.5l-7.3 5.9 7.8 8z" data-stroke="" data-fill="" class="D E F G H"></path><g fill="none" data-stroke="" class="D E F G"><path d="M12.6 6.8v16.9 13.9l10.3 10.6 1.8-1.6c4.2-3.8 10.6-3.8 14.8 0l1.5 1.3 10.6-10.6V23.9 6.8h-39zm4.5 5.1h4.4m-4.4 4h5.3M49.2 26l-17.7 7.5 4.9 4.9-3 3-4.9-4.9-1.2 1.2a4.89 4.89 0 0 1-6.9 0 4.89 4.89 0 0 1 0-6.9l4.2-4.2 1.3-2.9 4.3-10.2 2-4.5 6 6c1.4-1.4 3.7-1.4 5.1 0s1.4 3.7 0 5.1l3.8 3.8 2.1 2.1z" class="I"></path><path d="M28.6 36.5l2.9-2.9h0zm22.8.8L40.9 47.9l1.1 1 13.4 12.2c2.2-.3 3.8-2.2 3.8-4.5v-27l-7.8 7.7zm-38.8.3l-7.7-8v27.1c0 2.3 1.7 4.1 3.8 4.5L22.1 49l.8-.7-10.3-10.7z"></path><path d="M9.4 61.1c-.2 0-.5 0-.7-.1m46.6.1c-.2 0-.5.1-.7.1" class="I"></path></g><path d="M41.9 48.9l-1.1-1-1.5-1.3c-4.2-3.8-10.6-3.8-14.8 0l-1.8 1.6-.8.7L9.4 61.1h45.3c.2 0 .5 0 .7-.1L41.9 48.9zM43.2 15c-1.4-1.4-3.7-1.4-5.1 0l5.1 5.1c1.4-1.4 1.4-3.7 0-5.1z" data-stroke="" data-fill="" class="H D E F G"></path><g fill="none" data-stroke="" class="D E F"><path d="M24.7,26.7l-4.2,4.2c-1.9,1.9-1.9,5,0,6.9c1.9,1.9,5,1.9,6.9,0l1.2-1.2l3-3L24.7,26.7z" class="G"></path><path d="M28.547 36.494l2.97-2.97 4.879 4.879-2.97 2.97z" stroke-miterlimit="9.9999"></path></g><g data-stroke="" class="G D E F"><path d="M44.7 28l-4.2-4.2-10.2-10.2-4.4 10.2-1.2 2.9 6.8 6.9h0 0L49.2 26z" data-fill="" class="H"></path><g fill="none"><path d="M31.5 33.6l-6.8-6.9 6.8 6.9zm-1.2-20h0L32.2 9z"></path><path d="M47 23.9l-3.8-3.8h0l-5-5.1h0l-6-6-1.9 4.6 10.2 10.2 4.2 4.2 4.5-2z"></path><path d="M21.5 11.9h-4.4m5.3 4h-5.3" class="I"></path></g><path d="M49.4 12.6c.4 0 .8-.2 1.1-.5L57 5.6a1.57 1.57 0 0 0 0-2.2c-.6-.6-1.6-.6-2.3 0l-6.5 6.5c-.6.6-.6 1.6 0 2.3.4.2.8.4 1.2.4zm-6-3.3A1.58 1.58 0 0 0 45 7.7V4.5a1.6 1.6 0 1 0-3.2 0v3.2c0 .8.7 1.6 1.6 1.6zm12.5 5.9h-3.3a1.58 1.58 0 0 0-1.6 1.6 1.58 1.58 0 0 0 1.6 1.6h3.3a1.58 1.58 0 0 0 1.6-1.6c0-.8-.7-1.6-1.6-1.6z" data-fill="" class="H"></path></g></svg>';
             $content .= '<p>'.__('Get a summary of stories you missed.', self::$maxi_text_domain);
-            $content .= ' <a href="" target="_blank">'.__('Notify me', self::$maxi_text_domain).'</a>.</p>';
+            $content .= ' <a href="https://maxiblocks.com/go/notify-me" target="_blank">'.__('Notify me', self::$maxi_text_domain).'</a>.</p>';
             $content .='</div>'; // maxi-dashboard_main-sidebar-item
 
             $content .= '<div class="maxi-dashboard_main-sidebar-item">';
             $content .= '<svg class="achievement-2-maxi-svg" width="64px" height="64px" viewBox="0 0 64 64" data-stroke="" stroke="#081219" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="10"><path d="M25 40.6h7.1 7.2l-7.2-3.7z" fill="none"></path><path d="M32.1 36.9l7.2 3.7h5.5l-1.9-11.5 5.4-5.3 5.3-5.2-14.8-2.2-6.7-13.5-6.6 13.5-14.9 2.2 10.8 10.5-2 11.5H25zm29 10.6h-8.8l-4.5 6.8h0l-4.5 6.8h17.8l-4.5-6.8zm-44.7 6.8l-4.5-6.8h-9l4.5 6.8-4.5 6.8H21l-4.6-6.8z" data-fill="" fill="#FF4A17"></path><g fill="none"><path d="M47.8 54.3l4.5-6.8h0z"></path><path d="M44.8 40.6h-5.5-7.2H25h-5.6H7.3l4.6 6.9 4.5 6.8h0 2.1 7.8 5.8 5.8 7.9 2 0l4.5-6.8 4.6-6.9z"></path></g></svg>';
             $content .= '<p>'.__('Your thoughts can inspire others.', self::$maxi_text_domain);
-            $content .= ' <a href="" target="_blank">'.__('Give a quick review', self::$maxi_text_domain).'</a>.</p>';
+            $content .= ' <a href="https://maxiblocks.com/go/give-a-review" target="_blank">'.__('Give a quick review', self::$maxi_text_domain).'</a>.</p>';
             $content .='</div>'; // maxi-dashboard_main-sidebar-item
 
             $content .='</div>'; // maxi-dashboard_main-sidebar
@@ -815,12 +815,12 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>';
             $content .= '<ul class="not_loggedin-bottom-menu">';
             $content .= '<li><a href="https://maxiblocks.com/go/help-desk" target="_blank">'.__('help desk', self::$maxi_text_domain).'</a></li>';
-            $content .= '<li><a href="#" target="_blank">'.__('pro library', self::$maxi_text_domain).'</a></li>';
-            $content .= '<li><a href="#" target="_blank">'.__('demo library', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="https://maxiblocks.com/go/pro-library" target="_blank">'.__('pro library', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href=" https://maxiblocks.com/go/demo-library" target="_blank">'.__('demo library', self::$maxi_text_domain).'</a></li>';
             $content .= '<li><a href="https://www.youtube.com/@maxiblocks" target="_blank">'.__('youtube', self::$maxi_text_domain).'</a></li>';
             $content .= '<li><a href="https://maxiblocks.com" target="_blank">'.__('maxiblocks.com', self::$maxi_text_domain).'</a></li>';
             $content .= '<li><a href="https://twitter.com/maxiblocks" target="_blank">'.__('twitter', self::$maxi_text_domain).'</a></li>';
-            $content .= '<li><a href="https://discord.gg/BzGBCZMz" target="_blank">'.__('discord community', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="https://maxiblocks.com/go/maxi-discord" target="_blank">'.__('discord community', self::$maxi_text_domain).'</a></li>';
             $content .= '<li><a href="https://maxiblocks.com/go/roadmap" target="_blank">'.__('roadmap', self::$maxi_text_domain).'</a></li>';
             $content .= '</ul>';
             
@@ -872,7 +872,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '<h4>'.__("Community", self::$maxi_text_domain).'</h4>';
             $content .= '<ul class="loggedin-bottom-menu">';
             $content .= '<li><a href="https://twitter.com/maxiblocks" target="_blank">'.__('Twitter', self::$maxi_text_domain).'</a></li>';
-            $content .= '<li><a href="https://discord.gg/BzGBCZMz" target="_blank">'.__('Discord community', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="https://maxiblocks.com/go/maxi-discord" target="_blank">'.__('Discord community', self::$maxi_text_domain).'</a></li>';
             $content .= '</ul>';
             // $content .= '<p>'.__('You are connected to Maxi Pro!', self::$maxi_text_domain).'</p>';
             // $content .= '<p><a href="https://my.maxiblocks.com/account" target="_blank">'.__('Edit your profile', self::$maxi_text_domain).'</a></p>';

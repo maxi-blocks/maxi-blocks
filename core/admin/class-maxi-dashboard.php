@@ -108,15 +108,15 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 '',
                 null,
             );
-            add_submenu_page(
-                self::$maxi_slug_dashboard,
-                __('Pro library', self::$maxi_text_domain),
-                __('Pro library', self::$maxi_text_domain),
-                'manage_options',
-                'admin.php?page='.self::$maxi_slug_dashboard.'&tab=maxi_blocks_pro',
-                '',
-                null
-            );
+            // add_submenu_page(
+            //     self::$maxi_slug_dashboard,
+            //     __('Pro library', self::$maxi_text_domain),
+            //     __('Pro library', self::$maxi_text_domain),
+            //     'manage_options',
+            //     'admin.php?page='.self::$maxi_slug_dashboard.'&tab=maxi_blocks_pro',
+            //     '',
+            //     null
+            // );
         }
 
         // Draw option page
@@ -131,10 +131,10 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     'Settings',
                     self::$maxi_text_domain,
                 ),
-                self::$maxi_prefix.'pro' => __(
-                    'Pro library',
-                    self::$maxi_text_domain
-                ),
+                // self::$maxi_prefix.'pro' => __(
+                //     'Pro library',
+                //     self::$maxi_text_domain
+                // ),
             ];
 
             if (isset($_GET['tab'])) {
@@ -186,12 +186,13 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                         $this->maxi_blocks_settings(),
                         maxi_blocks_allowed_html(),
                     );
-                } elseif ($tab === self::$maxi_prefix.'pro') {
-                    echo wp_kses(
-                        $this->maxi_blocks_pro(),
-                        maxi_blocks_allowed_html()
-                    );
                 }
+                // elseif ($tab === self::$maxi_prefix.'pro') {
+                //     echo wp_kses(
+                //         $this->maxi_blocks_pro(),
+                //         maxi_blocks_allowed_html()
+                //     );
+                // }
             }
 
             echo '</div>'; // maxi-dashboard_main
@@ -644,30 +645,30 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             return $content;
         }
 
-        public function maxi_blocks_pro()
-        {
-            $content = '<div class="maxi-dashboard_main-content">';
-            $content .= '<div class="maxi-dashboard_main-content_accordion" id="maxi-dashboard_main-content_pro-not-pro">';
+        // public function maxi_blocks_pro()
+        // {
+        //     $content = '<div class="maxi-dashboard_main-content">';
+        //     $content .= '<div class="maxi-dashboard_main-content_accordion" id="maxi-dashboard_main-content_pro-not-pro">';
 
-            $content .= '<div id="maxi-dashboard_main-content_not-pro">';
-            $content .= '<h1>'.__('Thousands of web templates. Unlimited downloads', self::$maxi_text_domain).'</h1>';
-            $content .= '<p>'.__('Build pages faster with premium templates that match your style.', self::$maxi_text_domain).'</p>';
-            $content .= '<p>'.__('I want to join', self::$maxi_text_domain).'</p>';
-            $content .= '<a href="https://maxiblocks.com/go/pricing" target="_blank">'.__('Sign up', self::$maxi_text_domain).'</a>';
-            $content .= '<p>'.__('I have an account', self::$maxi_text_domain).'</p>';
-            $content .= '<a href="https://maxiblocks.com/go/user-login" target="_blank">'.__('Log in', self::$maxi_text_domain).'</a>';
-            $content .= '</div>'; // maxi-dashboard_main-content_not-pro
-            $content .= '<div id="maxi-dashboard_main-content_pro">';
-            $content .= '<h1>'.__('Thousands of web templates. Unlimited downloads', self::$maxi_text_domain).'</h1>';
-            $content .= '<p>'.__('You are connected to Maxi Pro!', self::$maxi_text_domain).'</p>';
-            $content .= '<p><a href="https://my.maxiblocks.com/account" target="_blank">'.__('Edit your profile', self::$maxi_text_domain).'</a></p>';
-            $content .= '</div>';
+        //     $content .= '<div id="maxi-dashboard_main-content_not-pro">';
+        //     $content .= '<h1>'.__('Thousands of web templates. Unlimited downloads', self::$maxi_text_domain).'</h1>';
+        //     $content .= '<p>'.__('Build pages faster with premium templates that match your style.', self::$maxi_text_domain).'</p>';
+        //     $content .= '<p>'.__('I want to join', self::$maxi_text_domain).'</p>';
+        //     $content .= '<a href="https://maxiblocks.com/go/pro-library" target="_blank">'.__('Sign up', self::$maxi_text_domain).'</a>';
+        //     $content .= '<p>'.__('I have an account', self::$maxi_text_domain).'</p>';
+        //     $content .= '<a href="https://maxiblocks.com/go/user-login" target="_blank">'.__('Log in', self::$maxi_text_domain).'</a>';
+        //     $content .= '</div>'; // maxi-dashboard_main-content_not-pro
+        //     $content .= '<div id="maxi-dashboard_main-content_pro">';
+        //     $content .= '<h1>'.__('Thousands of web templates. Unlimited downloads', self::$maxi_text_domain).'</h1>';
+        //     $content .= '<p>'.__('You are connected to Maxi Pro!', self::$maxi_text_domain).'</p>';
+        //     $content .= '<p><a href="https://my.maxiblocks.com/account" target="_blank">'.__('Edit your profile', self::$maxi_text_domain).'</a></p>';
+        //     $content .= '</div>';
 
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion
-            $content .= '</div>'; // maxi-dashboard_main-content
+        //     $content .= '</div>'; // maxi-dashboard_main-content_accordion
+        //     $content .= '</div>'; // maxi-dashboard_main-content
 
-            return $content;
-        }
+        //     return $content;
+        // }
 
         public function generate_item_header($title, $checked)
         {

@@ -218,6 +218,7 @@ const transition = {
 const interactionBuilderSettings = {
 	block: [
 		{
+			sid: 'a',
 			label: __('Alignment', 'maxi-blocks'),
 			attrGroupName: 'alignment',
 			component: props => <AlignmentControl disableJustify {...props} />,
@@ -226,6 +227,7 @@ const interactionBuilderSettings = {
 			disableTransition: true,
 		},
 		{
+			sid: 'sm',
 			label: __('Shape mask', 'maxi-blocks'),
 			attrGroupName: 'imageShape',
 			component: props => {
@@ -265,6 +267,7 @@ const interactionBuilderSettings = {
 				}, {}),
 		},
 		{
+			sid: 'cp',
 			label: __('Clip-path', 'maxi-blocks'),
 			attrGroupName: 'clipPath',
 			transitionTarget: transition.block['clip path'].target,
@@ -289,6 +292,7 @@ const interactionBuilderSettings = {
 			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
 		},
 		{
+			'sid:': 'ib',
 			label: __('Border', 'maxi-blocks'),
 			transitionTarget: transition.block.border.target,
 			hoverProp: 'image-border-status-hover',

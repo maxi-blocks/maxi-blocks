@@ -456,7 +456,6 @@ const AxisControl = props => {
 				step: 0.1,
 			},
 		},
-		auxTarget = false,
 		isHover = false,
 		inputsArray = [
 			'top',
@@ -500,9 +499,7 @@ const AxisControl = props => {
 		return options;
 	};
 
-	const getKey = key => {
-		return `${prefix}${target}-${key}${auxTarget ? `-${auxTarget}` : ''}`;
-	};
+	const getKey = key => `${prefix}${target}-${key}`;
 
 	const getLastBreakpointValue = key => {
 		const inputValue = getLastBreakpointAttribute({

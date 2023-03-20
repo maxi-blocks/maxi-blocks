@@ -1,3 +1,4 @@
+import attributesShorter from '../dictionary/attributesShorter';
 import hoverAttributesCreator from '../hoverAttributesCreator';
 import prefixAttributesCreator from '../prefixAttributesCreator';
 import { background, backgroundColor } from './background';
@@ -16,7 +17,7 @@ const overlayColor = {
 		obj: backgroundColor,
 		prefix: 'overlay-',
 		diffValAttr: {
-			'overlay-background-pac-general': 5,
+			'overlay-background-palette-color-general': 5,
 			'overlay-background-pao-general': 0.7,
 		},
 	}),
@@ -28,7 +29,7 @@ const videoOverlay = {
 		obj: overlayColor,
 		sameValAttr: [
 			'overlay-background-active-media-general',
-			'overlay-background-pac-general',
+			'overlay-background-palette-color-general',
 			'overlay-background-pao-general',
 		],
 		newAttr: {
@@ -65,4 +66,4 @@ const videoOverlay = {
 	},
 };
 
-export default videoOverlay;
+export default attributesShorter(videoOverlay, 'videoOverlay');

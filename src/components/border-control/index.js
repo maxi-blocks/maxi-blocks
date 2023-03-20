@@ -140,14 +140,13 @@ const BorderWidthControl = props => {
 	return (
 		<AxisControl
 			{...getGroupAttributes(props, 'borderWidth', isHover, prefix)}
-			target={`${prefix}border`}
-			auxTarget='width'
+			target={`${prefix}border-width`}
 			{...(!isToolbar && { label: __('Border width', 'maxi-blocks') })}
 			onChange={obj => {
 				if (!isToolbar) onChange(obj);
 				else
 					onChange({
-						[`border-sync-width-${breakpoint}`]: 'all',
+						[`border-width-sync-${breakpoint}`]: 'all',
 						...obj,
 					});
 			}}
@@ -191,7 +190,7 @@ const BorderControl = props => {
 		['top', 'right', 'bottom', 'left'].forEach(item => {
 			response[`border${capitalize(item)}Width`] =
 				getLastBreakpointAttribute({
-					target: `${prefix}border-${item}-width`,
+					target: `${prefix}border-width-${item}`,
 					breakpoint,
 					attributes: props,
 					isHover,
@@ -217,10 +216,10 @@ const BorderControl = props => {
 	);
 
 	const axisItems = [
-		`${prefix}border-top-width`,
-		`${prefix}border-right-width`,
-		`${prefix}border-bottom-width`,
-		`${prefix}border-left-width`,
+		`${prefix}border-width-top`,
+		`${prefix}border-width-right`,
+		`${prefix}border-width-bottom`,
+		`${prefix}border-width-left`,
 	];
 
 	const onChangeDefault = defaultProp => {
@@ -398,8 +397,7 @@ const BorderControl = props => {
 							isHover,
 							prefix
 						)}
-						target={`${prefix}border`}
-						auxTarget='radius'
+						target={`${prefix}border-radius`}
 						label={__('Border radius', 'maxi-blocks')}
 						onChange={onChange}
 						breakpoint={breakpoint}

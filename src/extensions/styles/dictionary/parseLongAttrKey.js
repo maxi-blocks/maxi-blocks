@@ -1,7 +1,7 @@
 import getAttrKeyWithoutBreakpoint from '../getAttrKeyWithoutBreakpoint';
 import getBreakpointFromAttribute from '../getBreakpointFromAttribute';
 import { getNormalAttributeKey } from '../utils';
-import dictionary, { noTypeDictionary } from './attributesDictionary';
+import { colorDictionary, noTypeDictionary } from './attributesDictionary';
 
 /**
  * Replaces palette long keys with short ones, if it's `attrKey` includes them,
@@ -11,7 +11,7 @@ import dictionary, { noTypeDictionary } from './attributesDictionary';
  * @returns {string}
  */
 const parsePalette = attrKey =>
-	Object.entries(dictionary.palette).reduce((acc, [key, value]) => {
+	Object.entries(colorDictionary).reduce((acc, [key, value]) => {
 		if (attrKey?.includes(key)) {
 			return acc.replace(key, value);
 		}

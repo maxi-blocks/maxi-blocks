@@ -2,10 +2,8 @@
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
-import {
-	prefixAttributesCreator,
-	transitionAttributesCreator,
-} from '../../extensions/styles';
+import prefixAttributesCreator from '../../extensions/styles/prefixAttributesCreator';
+import transitionAttributesCreator from '../../extensions/styles/transitions/transitionAttributesCreator';
 import { customCss, transition } from './data';
 
 /**
@@ -185,5 +183,7 @@ const attributes = {
 	...attributesData.customCss,
 	...attributesData.flex,
 };
+
+// console.log(attributes);
 
 export default attributes;

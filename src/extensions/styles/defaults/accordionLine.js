@@ -16,7 +16,7 @@ const accordionLineAttributes = {
 
 const rawAccordionLine = {
 	...divider,
-	'divider-border-pac-general': {
+	'divider-border-palette-color-general': {
 		type: 'number',
 		default: 3,
 	},
@@ -34,7 +34,7 @@ const rawAccordionLine = {
 		obj: divider,
 		prefix: 'active-',
 		diffValAttr: {
-			'active-divider-border-pac-general': 3,
+			'active-divider-border-palette-color-general': 3,
 			'active-divider-width-general': 100,
 		},
 	}),
@@ -51,4 +51,4 @@ const accordionLine = {
 	}),
 };
 
-export default accordionLine;
+export default attributesShorter(accordionLine, 'accordionLine');

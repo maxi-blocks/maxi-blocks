@@ -1,22 +1,32 @@
+import attributesShorter from '../dictionary/attributesShorter';
 import hoverAttributesCreator from '../hoverAttributesCreator';
 import { border, borderWidth, borderRadius } from './border';
 
-export const borderHover = hoverAttributesCreator({
-	obj: border,
-	sameValAttr: ['border-pa-status-general'],
-	diffValAttr: { 'border-pac-general': 6 },
-	newAttr: {
-		'border-status-hover': {
-			type: 'boolean',
-			default: false,
+export const borderHover = attributesShorter(
+	hoverAttributesCreator({
+		obj: border,
+		sameValAttr: ['border-pa-status-general'],
+		diffValAttr: { 'border-palette-color-general': 6 },
+		newAttr: {
+			'border-status-hover': {
+				type: 'boolean',
+				default: false,
+			},
 		},
-	},
-});
+	}),
+	'borderHover'
+);
 
-export const borderWidthHover = hoverAttributesCreator({
-	obj: borderWidth,
-});
+export const borderWidthHover = attributesShorter(
+	hoverAttributesCreator({
+		obj: borderWidth,
+	}),
+	'borderWidthHover'
+);
 
-export const borderRadiusHover = hoverAttributesCreator({
-	obj: borderRadius,
-});
+export const borderRadiusHover = attributesShorter(
+	hoverAttributesCreator({
+		obj: borderRadius,
+	}),
+	'borderRadiusHover'
+);

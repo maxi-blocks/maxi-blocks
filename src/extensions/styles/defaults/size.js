@@ -82,15 +82,36 @@ export const rawFullWidth = {
 	},
 };
 
-export const maxWidth = breakpointAttributesCreator({ obj: rawMaxWidth });
-export const width = breakpointAttributesCreator({ obj: rawWidth });
-export const minWidth = breakpointAttributesCreator({ obj: rawMinWidth });
-export const maxHeight = breakpointAttributesCreator({ obj: rawMaxHeight });
-export const height = breakpointAttributesCreator({ obj: rawHeight });
-export const minHeight = breakpointAttributesCreator({ obj: rawMinHeight });
-export const fullWidth = breakpointAttributesCreator({
-	obj: rawFullWidth,
-});
+export const maxWidth = attributesShorter(
+	breakpointAttributesCreator({ obj: rawMaxWidth }),
+	'size'
+);
+export const width = attributesShorter(
+	breakpointAttributesCreator({ obj: rawWidth }),
+	'size'
+);
+export const minWidth = attributesShorter(
+	breakpointAttributesCreator({ obj: rawMinWidth }),
+	'size'
+);
+export const maxHeight = attributesShorter(
+	breakpointAttributesCreator({ obj: rawMaxHeight }),
+	'size'
+);
+export const height = attributesShorter(
+	breakpointAttributesCreator({ obj: rawHeight }),
+	'size'
+);
+export const minHeight = attributesShorter(
+	breakpointAttributesCreator({ obj: rawMinHeight }),
+	'size'
+);
+export const fullWidth = attributesShorter(
+	breakpointAttributesCreator({
+		obj: rawFullWidth,
+	}),
+	'size'
+);
 
 const size = {
 	...rawSize,

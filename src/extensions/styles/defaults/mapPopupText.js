@@ -1,5 +1,6 @@
 import { typography } from './typography';
 import prefixAttributesCreator from '../prefixAttributesCreator';
+import attributesShorter from '../dictionary/attributesShorter';
 
 const mapPopupText = {
 	'map-marker-heading-level': {
@@ -22,4 +23,4 @@ const mapPopupText = {
 	}),
 };
 
-export default mapPopupText;
+export default attributesShorter(mapPopupText, 'mapPopupText');

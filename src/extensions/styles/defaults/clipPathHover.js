@@ -1,3 +1,4 @@
+import attributesShorter from '../dictionary/attributesShorter';
 import getAttributeKey from '../getAttributeKey';
 import hoverAttributesCreator from '../hoverAttributesCreator';
 import clipPath from './clipPath';
@@ -9,4 +10,4 @@ const clipPathHover = hoverAttributesCreator({
 	),
 });
 
-export default clipPathHover;
+export default attributesShorter(clipPathHover, 'clipPathHover');

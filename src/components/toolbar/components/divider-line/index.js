@@ -96,21 +96,21 @@ const Divider = props => {
 								<Icon icon={borderWidth} />
 								<AdvancedNumberControl
 									value={getLastBreakpointAttribute({
-										target: 'divider-border-top-width',
+										target: 'divider-border-top',
 										breakpoint,
 										attributes: props,
 									})}
 									onChangeValue={val =>
 										onChange({
-											[`divider-border-top-width-${breakpoint}`]:
+											[`divider-border-top-${breakpoint}`]:
 												val,
 										})
 									}
 									onReset={() =>
 										onChange({
-											[`divider-border-top-width-${breakpoint}`]:
+											[`divider-border-top-${breakpoint}`]:
 												getDefaultAttribute(
-													`divider-border-top-width-${breakpoint}`
+													`divider-border-top-${breakpoint}`
 												),
 											[`divider-border-top-unit-${breakpoint}`]:
 												getDefaultAttribute(
@@ -168,13 +168,13 @@ const Divider = props => {
 								<Icon icon={borderWidth} />
 								<AdvancedNumberControl
 									value={getLastBreakpointAttribute({
-										target: 'divider-border-right-width',
+										target: 'divider-border-right',
 										breakpoint,
 										attributes: props,
 									})}
 									onChangeValue={val => {
 										onChange({
-											[`divider-border-right-width-${breakpoint}`]:
+											[`divider-border-right-${breakpoint}`]:
 												val !== undefined && val !== ''
 													? val
 													: '',
@@ -184,15 +184,15 @@ const Divider = props => {
 									max={100}
 									onReset={() =>
 										onChange({
-											[`divider-border-right-width-${breakpoint}`]:
+											[`divider-border-right-${breakpoint}`]:
 												getDefaultAttribute(
-													`divider-border-right-width-${breakpoint}`
+													`divider-border-right-${breakpoint}`
 												),
 											isReset: true,
 										})
 									}
 									initialPosition={getDefaultAttribute(
-										`divider-border-right-width-${breakpoint}`
+										`divider-border-right-${breakpoint}`
 									)}
 								/>
 							</div>

@@ -49,9 +49,9 @@ const copyPasteMapping = {
 				},
 				'Line size': ['divider-height', 'divider-width'],
 				'Line weight': [
-					'divider-border-top-width',
+					'divider-border-top',
 					'divider-border-top-unit',
-					'divider-border-right-width',
+					'divider-border-right',
 					'divider-border-right-unit',
 				],
 			},

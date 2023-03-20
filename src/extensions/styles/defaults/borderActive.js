@@ -1,26 +1,36 @@
+import attributesShorter from '../dictionary/attributesShorter';
 import prefixAttributesCreator from '../prefixAttributesCreator';
 import { border, borderWidth, borderRadius } from './border';
 
 const prefix = 'active-';
 
-export const borderActive = prefixAttributesCreator({
-	obj: border,
-	diffValAttr: { [`${prefix}border-pac-general`]: 6 },
-	newAttr: {
-		'border-status-active': {
-			type: 'boolean',
-			default: false,
+export const borderActive = attributesShorter(
+	prefixAttributesCreator({
+		obj: border,
+		diffValAttr: { [`${prefix}border-palette-color-general`]: 6 },
+		newAttr: {
+			'border-status-active': {
+				type: 'boolean',
+				default: false,
+			},
 		},
-	},
-	prefix,
-});
+		prefix,
+	}),
+	'borderActive'
+);
 
-export const borderWidthActive = prefixAttributesCreator({
-	obj: borderWidth,
-	prefix,
-});
+export const borderWidthActive = attributesShorter(
+	prefixAttributesCreator({
+		obj: borderWidth,
+		prefix,
+	}),
+	'borderWidthActive'
+);
 
-export const borderRadiusActive = prefixAttributesCreator({
-	obj: borderRadius,
-	prefix,
-});
+export const borderRadiusActive = attributesShorter(
+	prefixAttributesCreator({
+		obj: borderRadius,
+		prefix,
+	}),
+	'borderRadiusActive'
+);

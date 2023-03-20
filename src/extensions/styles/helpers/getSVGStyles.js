@@ -6,7 +6,7 @@ import getColorRGBAString from '../getColorRGBAString';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 import getPaletteAttributes from '../getPaletteAttributes';
 import getAttributeKey from '../getAttributeKey';
-import getAttributesValue from '../getAttributesValue';
+import getAttributeValue from '../getAttributesValue';
 
 /**
  * External dependencies
@@ -27,7 +27,7 @@ export const getSVGWidthStyles = ({
 		general: {},
 	};
 
-	const svgType = getAttributesValue({
+	const svgType = getAttributeValue({
 		target: 'svgType',
 		props: obj,
 		isHover,

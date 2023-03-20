@@ -1,15 +1,25 @@
+import attributesShorter from '../dictionary/attributesShorter';
 import hoverAttributesCreator from '../hoverAttributesCreator';
 import { iconBorder, iconBorderWidth, iconBorderRadius } from './iconBorder';
 
-export const iconBorderHover = hoverAttributesCreator({
-	obj: iconBorder,
-});
+export const iconBorderHover = attributesShorter(
+	hoverAttributesCreator({
+		obj: iconBorder,
+	}),
+	'iconBorderHover'
+);
 
-export const iconBorderWidthHover = hoverAttributesCreator({
-	obj: iconBorderWidth,
-});
+export const iconBorderWidthHover = attributesShorter(
+	hoverAttributesCreator({
+		obj: iconBorderWidth,
+	}),
+	'iconBorderWidthHover'
+);
 
-export const iconBorderRadiusHover = hoverAttributesCreator({
-	obj: iconBorderRadius,
-	diffValAttr: { 'icon-border-unit-radius-general-hover': 'px' },
-});
+export const iconBorderRadiusHover = attributesShorter(
+	hoverAttributesCreator({
+		obj: iconBorderRadius,
+		diffValAttr: { 'icon-border-unit-radius-general-hover': 'px' },
+	}),
+	'iconBorderRadiusHover'
+);

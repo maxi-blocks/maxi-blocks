@@ -165,10 +165,10 @@ const getBorderStyles = ({
 						response[breakpoint][newLabel] = `${value}`;
 				} else if (
 					[
-						'border-top-width',
-						'border-right-width',
-						'border-left-width',
-						'border-bottom-width',
+						'border-width-top',
+						'border-width-right',
+						'border-width-left',
+						'border-width-bottom',
 					].includes(newLabel)
 				) {
 					if (isBorderNone) return;

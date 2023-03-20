@@ -9,6 +9,7 @@ import {
 	iconPadding,
 } from './icon';
 import { iconBorder, iconBorderRadius, iconBorderWidth } from './iconBorder';
+import attributesShorter from '../dictionary/attributesShorter';
 
 const prefix = 'navigation-dot-';
 
@@ -28,8 +29,8 @@ const dotIcon = {
 		prefix,
 		diffValAttr: {
 			'navigation-dot-icon-width-general': '10',
-			'navigation-dot-icon-stroke-pac': 5,
-			'navigation-dot-icon-fill-pac': 3,
+			'navigation-dot-icon-stroke-palette-color': 5,
+			'navigation-dot-icon-fill-palette-color': 3,
 			'navigation-dot-icon-border-unit-radius-general': 'px',
 			'navigation-dot-icon-background-active-media-general': 'none',
 			'navigation-dot-icon-content':
@@ -75,4 +76,4 @@ const dotIcon = {
 	}),
 };
 
-export default dotIcon;
+export default attributesShorter(dotIcon, 'dotIcon');

@@ -28,17 +28,23 @@ export const svg = attributesShorter(
 	'svg'
 );
 
-export const svgHover = hoverAttributesCreator({
-	obj: {
-		...paletteAttributesCreator({ prefix: 'svg-fill-', palette: 4 }),
-		...paletteAttributesCreator({ prefix: 'svg-line-', palette: 7 }),
-	},
-	sameValAttr: ['svg-fill-pa-status', 'svg-line-pa-status'],
-	diffValAttr: { 'svg-fill-pac': 6, 'svg-line-pac': 8 },
-	newAttr: {
-		'svg-status-hover': {
-			type: 'boolean',
-			default: false,
+export const svgHover = attributesShorter(
+	hoverAttributesCreator({
+		obj: {
+			...paletteAttributesCreator({ prefix: 'svg-fill-', palette: 4 }),
+			...paletteAttributesCreator({ prefix: 'svg-line-', palette: 7 }),
 		},
-	},
-});
+		sameValAttr: ['svg-fill-pa-status', 'svg-line-pa-status'],
+		diffValAttr: {
+			'svg-fill-palette-color': 6,
+			'svg-line-palette-color': 8,
+		},
+		newAttr: {
+			'svg-status-hover': {
+				type: 'boolean',
+				default: false,
+			},
+		},
+	}),
+	'svgHover'
+);

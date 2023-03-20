@@ -6,7 +6,7 @@ import { rawBorder } from './border';
 
 const prefix = 'divider-';
 const rawDivider = {
-	'divider-border-top-width': {
+	'divider-border-top': {
 		type: 'number',
 		default: 2,
 	},
@@ -14,7 +14,7 @@ const rawDivider = {
 		type: 'string',
 		default: 'px',
 	},
-	'divider-border-right-width': {
+	'divider-border-right': {
 		type: 'number',
 		default: 2,
 	},
@@ -58,7 +58,7 @@ const rawDivider = {
 		prefix,
 		obj: rawBorder,
 		diffValAttr: {
-			'divider-border-pac': 4,
+			'divider-border-palette-color': 4,
 			'divider-border-style': 'solid',
 		},
 	}),

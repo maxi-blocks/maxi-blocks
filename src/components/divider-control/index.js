@@ -379,7 +379,7 @@ const DividerControl = props => {
 							onChange={val =>
 								onChange({
 									[getAttributeKey(
-										'divider-border-top-width',
+										'divider-border-top',
 										isHover,
 										prefix,
 										breakpoint
@@ -387,7 +387,7 @@ const DividerControl = props => {
 								})
 							}
 							value={getLastBreakpointAttribute({
-								target: `${prefix}divider-border-top-width`,
+								target: `${prefix}divider-border-top`,
 								breakpoint,
 								attributes: props,
 								isHover,
@@ -395,7 +395,7 @@ const DividerControl = props => {
 							onChangeValue={val =>
 								onChange({
 									[getAttributeKey(
-										'divider-border-top-width',
+										'divider-border-top',
 										isHover,
 										prefix,
 										breakpoint
@@ -405,12 +405,12 @@ const DividerControl = props => {
 							onReset={() =>
 								onChange({
 									[getAttributeKey(
-										'divider-border-top-width',
+										'divider-border-top',
 										isHover,
 										prefix,
 										breakpoint
 									)]: getDefaultAttribute(
-										`divider-border-top-width-${breakpoint}`
+										`divider-border-top-${breakpoint}`
 									),
 									[getAttributeKey(
 										'divider-border-top-unit',
@@ -474,7 +474,7 @@ const DividerControl = props => {
 						<AdvancedNumberControl
 							label={__('Weight', 'maxi-blocks')}
 							value={getLastBreakpointAttribute({
-								target: `${prefix}divider-border-right-width`,
+								target: `${prefix}divider-border-right`,
 								breakpoint,
 								attributes: props,
 								isHover,
@@ -482,7 +482,7 @@ const DividerControl = props => {
 							onChangeValue={val => {
 								onChange({
 									[getAttributeKey(
-										'divider-border-right-width',
+										'divider-border-right',
 										isHover,
 										prefix,
 										breakpoint
@@ -497,18 +497,18 @@ const DividerControl = props => {
 							onReset={() =>
 								onChange({
 									[getAttributeKey(
-										'divider-border-right-width',
+										'divider-border-right',
 										isHover,
 										prefix,
 										breakpoint
 									)]: getDefaultAttribute(
-										`divider-border-right-width-${breakpoint}`
+										`divider-border-right-${breakpoint}`
 									),
 									isReset: true,
 								})
 							}
 							initialPosition={getDefaultAttribute(
-								`divider-border-right-width-${breakpoint}`
+								`divider-border-right-${breakpoint}`
 							)}
 						/>
 					</>

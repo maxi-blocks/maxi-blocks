@@ -1,9 +1,10 @@
+import attributesShorter from '../dictionary/attributesShorter';
 import hoverAttributesCreator from '../hoverAttributesCreator';
 import boxShadow from './boxShadow';
 
 const boxShadowHover = hoverAttributesCreator({
 	obj: boxShadow,
-	diffValAttr: { 'box-shadow-pac-general': 6 },
+	diffValAttr: { 'box-shadow-palette-color-general': 6 },
 	newAttr: {
 		'box-shadow-status-hover': {
 			type: 'boolean',
@@ -12,4 +13,4 @@ const boxShadowHover = hoverAttributesCreator({
 	},
 });
 
-export default boxShadowHover;
+export default attributesShorter(boxShadowHover, 'boxShadowHover');

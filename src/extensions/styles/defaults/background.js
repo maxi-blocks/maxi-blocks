@@ -5,8 +5,6 @@ import { rawPosition } from './position';
 import { clipPathRaw } from './clipPath';
 import attributesShorter from '../dictionary/attributesShorter';
 
-const prefix = 'background-';
-
 // eslint-disable-next-line no-unused-vars
 const { position, ...backgroundPosition } = rawPosition;
 
@@ -20,243 +18,258 @@ const rawBgOpacity = attributesShorter(
 	'opacity'
 );
 
-export const blockBackground = {
-	'background-layers': {
-		type: 'array',
+export const blockBackground = attributesShorter(
+	{
+		'background-layers': {
+			type: 'array',
+		},
+		'background-layers-hover': {
+			type: 'array',
+		},
+		'block-background-status-hover': {
+			type: 'boolean',
+			default: false,
+		},
 	},
-	'background-layers-hover': {
-		type: 'array',
-	},
-	'block-background-status-hover': {
-		type: 'boolean',
-		default: false,
-	},
-};
+	'background'
+);
 
-export const rawBackground = {
-	'background-active-media': {
-		type: 'string',
+export const rawBackground = attributesShorter(
+	{
+		'background-active-media': {
+			type: 'string',
+		},
 	},
-};
+	'background'
+);
 
-const layerSize = {
-	width: {
-		type: 'number',
-		default: 100,
+const layerSize = attributesShorter(
+	{
+		width: {
+			type: 'number',
+			default: 100,
+		},
+		'width-unit': {
+			type: 'string',
+			default: '%',
+		},
+		height: {
+			type: 'number',
+			default: 100,
+		},
+		'height-unit': {
+			type: 'string',
+			default: '%',
+		},
 	},
-	'width-unit': {
-		type: 'string',
-		default: '%',
-	},
-	height: {
-		type: 'number',
-		default: 100,
-	},
-	'height-unit': {
-		type: 'string',
-		default: '%',
-	},
-};
+	'size'
+);
 
-export const rawBackgroundColor = {
-	...paletteAttributesCreator({ prefix, palette: 1 }),
+export const rawBackgroundColor = attributesShorter(
+	{
+		...paletteAttributesCreator({
+			prefix: 'background-color-',
+			palette: 1,
+		}),
 
-	...prefixAttributesCreator({
-		prefix: 'background-color-',
-		obj: clipPathRaw,
-	}),
+		...prefixAttributesCreator({
+			prefix: 'background-color-',
+			obj: clipPathRaw,
+		}),
 
-	...prefixAttributesCreator({
-		obj: { ...backgroundPosition, ...layerSize },
-		prefix: 'background-color-wrapper-',
-	}),
-};
+		...prefixAttributesCreator({
+			obj: { ...backgroundPosition, ...layerSize },
+			prefix: 'background-color-wrapper-',
+		}),
+	},
+	'background'
+);
 
-export const rawBackgroundImage = {
-	'background-image-mediaID': {
-		type: 'number',
+export const rawBackgroundImage = attributesShorter(
+	{
+		'background-image-mediaID': {
+			type: 'number',
+		},
+		'background-image-mediaURL': {
+			type: 'string',
+		},
+		'background-image-size': {
+			type: 'string',
+			default: 'auto',
+		},
+		...prefixAttributesCreator({
+			obj: layerSize,
+			prefix: 'background-image-',
+		}),
+		'background-image-crop-options': {
+			type: 'object',
+		},
+		'background-image-repeat': {
+			type: 'string',
+			default: 'no-repeat',
+		},
+		'background-image-position': {
+			type: 'string',
+			default: 'center center',
+		},
+		'background-image-position-width-unit': {
+			type: 'string',
+			default: '%',
+		},
+		'background-image-position-width': {
+			type: 'number',
+			default: 0,
+		},
+		'background-image-position-height-unit': {
+			type: 'string',
+			default: '%',
+		},
+		'background-image-position-height': {
+			type: 'number',
+			default: 0,
+		},
+		'background-image-origin': {
+			type: 'string',
+			default: 'padding-box',
+		},
+		...prefixAttributesCreator({
+			prefix: 'background-image-',
+			obj: rawBgOpacity,
+		}),
+		'background-image-clip': {
+			type: 'string',
+			default: 'border-box',
+		},
+		'background-image-attachment': {
+			type: 'string',
+			default: 'scroll',
+		},
+		'background-image-clip-path': {
+			type: 'string',
+		},
+		...prefixAttributesCreator({
+			prefix: 'background-image-',
+			obj: clipPathRaw,
+		}),
+		'background-image-parallax-status': {
+			type: 'boolean',
+			default: false,
+		},
+		'background-image-parallax-speed': {
+			type: 'number',
+			default: 4,
+		},
+		'background-image-parallax-direction': {
+			type: 'string',
+			default: 'down',
+		},
+		'background-image-parallax-alt': {
+			type: 'string',
+		},
+		'background-image-parallax-alt-selector': {
+			type: 'string',
+		},
+		...prefixAttributesCreator({
+			obj: { ...backgroundPosition, ...layerSize },
+			prefix: 'background-image-wrapper-',
+		}),
 	},
-	'background-image-mediaURL': {
-		type: 'string',
-	},
-	'background-image-size': {
-		type: 'string',
-		default: 'auto',
-	},
-	'background-image-width': {
-		type: 'number',
-		default: 100,
-	},
-	'background-image-width-unit': {
-		type: 'string',
-		default: '%',
-	},
-	'background-image-height': {
-		type: 'number',
-		default: 100,
-	},
-	'background-image-height-unit': {
-		type: 'string',
-		default: '%',
-	},
-	'background-image-crop-options': {
-		type: 'object',
-	},
-	'background-image-repeat': {
-		type: 'string',
-		default: 'no-repeat',
-	},
-	'background-image-position': {
-		type: 'string',
-		default: 'center center',
-	},
-	'background-image-position-width-unit': {
-		type: 'string',
-		default: '%',
-	},
-	'background-image-position-width': {
-		type: 'number',
-		default: 0,
-	},
-	'background-image-position-height-unit': {
-		type: 'string',
-		default: '%',
-	},
-	'background-image-position-height': {
-		type: 'number',
-		default: 0,
-	},
-	'background-image-origin': {
-		type: 'string',
-		default: 'padding-box',
-	},
-	...prefixAttributesCreator({
-		prefix: 'background-image-',
-		obj: rawBgOpacity,
-	}),
-	'background-image-clip': {
-		type: 'string',
-		default: 'border-box',
-	},
-	'background-image-attachment': {
-		type: 'string',
-		default: 'scroll',
-	},
-	'background-image-clip-path': {
-		type: 'string',
-	},
-	...prefixAttributesCreator({
-		prefix: 'background-image-',
-		obj: clipPathRaw,
-	}),
-	'background-image-parallax-status': {
-		type: 'boolean',
-		default: false,
-	},
-	'background-image-parallax-speed': {
-		type: 'number',
-		default: 4,
-	},
-	'background-image-parallax-direction': {
-		type: 'string',
-		default: 'down',
-	},
-	'background-image-parallax-alt': {
-		type: 'string',
-	},
-	'background-image-parallax-alt-selector': {
-		type: 'string',
-	},
-	...prefixAttributesCreator({
-		obj: { ...backgroundPosition, ...layerSize },
-		prefix: 'background-image-wrapper-',
-	}),
-};
+	'background'
+);
 
-export const rawBackgroundVideo = {
-	'background-video-mediaID': {
-		type: 'number',
+export const rawBackgroundVideo = attributesShorter(
+	{
+		'background-video-mediaID': {
+			type: 'number',
+		},
+		'background-video-mediaURL': {
+			type: 'string',
+			default: 'https://www.youtube.com/watch?v=ScMzIvxBSi4',
+		},
+		'background-video-startTime': {
+			type: 'string',
+		},
+		'background-video-endTime': {
+			type: 'string',
+		},
+		'background-video-loop': {
+			type: 'boolean',
+			default: false,
+		},
+		'background-video-clip-path': {
+			type: 'string',
+		},
+		'background-video-clip-path-status': {
+			type: 'boolean',
+			default: false,
+		},
+		'background-video-fallbackID': {
+			type: 'number',
+		},
+		'background-video-fallbackURL': {
+			type: 'string',
+		},
+		'background-video-playOnMobile': {
+			type: 'boolean',
+			default: false,
+		},
+		...prefixAttributesCreator({
+			prefix: 'background-video-',
+			obj: rawBgOpacity,
+		}),
+		'background-video-reduce-border': {
+			type: 'boolean',
+			default: false,
+		},
+		...prefixAttributesCreator({
+			obj: { ...backgroundPosition, ...layerSize },
+			prefix: 'background-video-wrapper-',
+		}),
 	},
-	'background-video-mediaURL': {
-		type: 'string',
-		default: 'https://www.youtube.com/watch?v=ScMzIvxBSi4',
-	},
-	'background-video-startTime': {
-		type: 'string',
-	},
-	'background-video-endTime': {
-		type: 'string',
-	},
-	'background-video-loop': {
-		type: 'boolean',
-		default: false,
-	},
-	'background-video-clip-path': {
-		type: 'string',
-	},
-	'background-video-clip-path-status': {
-		type: 'boolean',
-		default: false,
-	},
-	'background-video-fallbackID': {
-		type: 'number',
-	},
-	'background-video-fallbackURL': {
-		type: 'string',
-	},
-	'background-video-playOnMobile': {
-		type: 'boolean',
-		default: false,
-	},
-	...prefixAttributesCreator({
-		prefix: 'background-video-',
-		obj: rawBgOpacity,
-	}),
-	'background-video-reduce-border': {
-		type: 'boolean',
-		default: false,
-	},
-	...prefixAttributesCreator({
-		obj: { ...backgroundPosition, ...layerSize },
-		prefix: 'background-video-wrapper-',
-	}),
-};
+	'background'
+);
 
-export const rawBackgroundGradient = {
-	'background-gradient': {
-		type: 'string',
+export const rawBackgroundGradient = attributesShorter(
+	{
+		'background-gradient-content': {
+			type: 'string',
+		},
+		...prefixAttributesCreator({
+			prefix: 'background-gradient-',
+			obj: rawBgOpacity,
+		}),
+		...prefixAttributesCreator({
+			prefix: 'background-gradient-',
+			obj: clipPathRaw,
+		}),
+		...prefixAttributesCreator({
+			obj: { ...backgroundPosition, ...layerSize },
+			prefix: 'background-gradient-wrapper-',
+		}),
 	},
-	...prefixAttributesCreator({
-		prefix: 'background-gradient-',
-		obj: rawBgOpacity,
-	}),
-	...prefixAttributesCreator({
-		prefix: 'background-gradient-',
-		obj: clipPathRaw,
-	}),
-	...prefixAttributesCreator({
-		obj: { ...backgroundPosition, ...layerSize },
-		prefix: 'background-gradient-wrapper-',
-	}),
-};
+	'background'
+);
 
-export const rawBackgroundSVG = {
-	...paletteAttributesCreator({ prefix: 'background-svg-', palette: 5 }),
-	'background-svg-SVGElement': {
-		type: 'string',
+export const rawBackgroundSVG = attributesShorter(
+	{
+		...paletteAttributesCreator({ prefix: 'background-svg-', palette: 5 }),
+		'background-svg-SVGElement': {
+			type: 'string',
+		},
+		'background-svg-SVGData': {
+			type: 'object',
+		},
+		'background-svg-top-unit': {
+			type: 'string',
+			default: '%',
+		},
+		...prefixAttributesCreator({
+			obj: { ...backgroundPosition, ...layerSize },
+			prefix: 'background-svg-',
+		}),
 	},
-	'background-svg-SVGData': {
-		type: 'object',
-	},
-	'background-svg-top-unit': {
-		type: 'string',
-		default: '%',
-	},
-	...prefixAttributesCreator({
-		obj: { ...backgroundPosition, ...layerSize },
-		prefix: 'background-svg-',
-	}),
-};
+	'background'
+);
 
 export const background = attributesShorter(
 	breakpointAttributesCreator({

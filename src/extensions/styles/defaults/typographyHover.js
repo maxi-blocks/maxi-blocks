@@ -1,3 +1,4 @@
+import attributesShorter from '../dictionary/attributesShorter';
 import hoverAttributesCreator from '../hoverAttributesCreator';
 import { typography } from './typography';
 
@@ -13,4 +14,4 @@ const typographyHover = hoverAttributesCreator({
 	},
 });
 
-export default typographyHover;
+export default attributesShorter(typographyHover, 'typographyHover');

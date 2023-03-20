@@ -929,7 +929,7 @@ const NavigationIconControl = props => {
 											'maxi-blocks'
 										)}
 										gradient={getLastBreakpointAttribute({
-											target: `${prefix}background-gradient`,
+											target: `${prefix}background-gradient-content`,
 											breakpoint,
 											attributes: props,
 											isHover,
@@ -944,7 +944,7 @@ const NavigationIconControl = props => {
 										)}
 										defaultGradient={getDefaultAttribute(
 											getAttributeKey(
-												'background-gradient',
+												'background-gradient-content',
 												isHover,
 												prefix,
 												breakpoint
@@ -953,7 +953,7 @@ const NavigationIconControl = props => {
 										onChange={val =>
 											onChange({
 												[getAttributeKey(
-													'background-gradient',
+													'background-gradient-content',
 													isHover,
 													prefix,
 													breakpoint

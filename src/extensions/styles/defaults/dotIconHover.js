@@ -1,10 +1,11 @@
+import attributesShorter from '../dictionary/attributesShorter';
 import hoverAttributesCreator from '../hoverAttributesCreator';
 import dotIcon from './dotIcon';
 
 const dotIconHover = hoverAttributesCreator({
 	obj: dotIcon,
 	diffValAttr: {
-		'navigation-dot-icon-box-shadow-pac-general': 6,
+		'navigation-dot-icon-box-shadow-palette-color-general': 6,
 	},
 	newAttr: {
 		'navigation-dot-icon-status-hover': {
@@ -19,11 +20,11 @@ const dotIconHover = hoverAttributesCreator({
 			type: 'boolean',
 			default: true,
 		},
-		'navigation-dot-icon-stroke-pac-hover': {
+		'navigation-dot-icon-stroke-palette-color-hover': {
 			type: 'number',
 			default: 2,
 		},
-		'navigation-dot-icon-fill-pac-hover': {
+		'navigation-dot-icon-fill-palette-color-hover': {
 			type: 'number',
 			default: 6,
 		},
@@ -34,4 +35,4 @@ const dotIconHover = hoverAttributesCreator({
 	},
 });
 
-export default dotIconHover;
+export default attributesShorter(dotIconHover, 'dotIconHover');

@@ -2,10 +2,8 @@
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
-import { transitionAttributesCreator } from '../../extensions/styles';
+import transitionAttributesCreator from '../../extensions/styles/transitions/transitionAttributesCreator';
 import { customCss, transition } from './data';
-
-console.log(attributesData);
 
 /**
  * Attributes

@@ -92,10 +92,13 @@ export const typography = attributesShorter(
 	'typography'
 );
 
-export const typographyAlignment = prefixAttributesCreator({
-	obj: alignment,
-	prefix: 'typography-',
-	diffValAttr: {
-		'typography-alignment-general': 'left',
-	},
-});
+export const typographyAlignment = attributesShorter(
+	prefixAttributesCreator({
+		obj: alignment,
+		prefix: 'typography-',
+		diffValAttr: {
+			'typography-alignment-general': 'left',
+		},
+	}),
+	'typography'
+);

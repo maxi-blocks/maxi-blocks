@@ -33,23 +33,23 @@ const attributes = {
 	},
 	...{
 		...attributesData.borderWidth,
-		'border-top-width-general': {
+		'border-width-top-general': {
 			type: 'number',
 			default: 1,
 		},
-		'border-right-width-general': {
+		'border-width-right-general': {
 			type: 'number',
 			default: 1,
 		},
-		'border-bottom-width-general': {
+		'border-width-bottom-general': {
 			type: 'number',
 			default: 1,
 		},
-		'border-left-width-general': {
+		'border-width-left-general': {
 			type: 'number',
 			default: 1,
 		},
-		'border-sync-width-general': {
+		'border-width-sync-general': {
 			type: 'string',
 			default: 'all',
 		},

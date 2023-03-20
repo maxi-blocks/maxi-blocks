@@ -18,25 +18,25 @@ import { copyPasteMapping } from './data';
 import { getAttributesValue } from '../../extensions/styles';
 
 const boxedPreset = {
-	'border-bottom-left-radius-general': 10,
-	'border-bottom-right-radius-general': 10,
-	'border-bottom-width-general': 5,
-	'border-left-width-general': 5,
-	'border-right-width-general': 5,
-	'border-top-left-radius-general': 10,
-	'border-top-right-radius-general': 10,
-	'border-top-width-general': 5,
-	'border-unit-radius-general': 'px',
-	'border-unit-width-general': 'px',
+	'border-radius-bottom-left-general': 10,
+	'border-radius-bottom-right-general': 10,
+	'border-width-bottom-general': 5,
+	'border-width-left-general': 5,
+	'border-width-right-general': 5,
+	'border-radius-top-left-general': 10,
+	'border-radius-top-right-general': 10,
+	'border-width-top-general': 5,
+	'border-radius-unit-general': 'px',
+	'border-width-unit-general': 'px',
 	'border-style-general': 'solid',
 };
 
 const simplePreset = {
 	'border-style-general': null,
-	'border-top-left-radius-general': 0,
-	'border-top-right-radius-general': 0,
-	'border-bottom-left-radius-general': 0,
-	'border-bottom-right-radius-general': 0,
+	'border-radius-top-left-general': 0,
+	'border-radius-top-right-general': 0,
+	'border-radius-bottom-left-general': 0,
+	'border-radius-bottom-right-general': 0,
 };
 
 const Content = forwardRef((props, ref) => {

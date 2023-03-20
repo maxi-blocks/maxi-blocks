@@ -9,6 +9,7 @@ import {
 	iconPadding,
 } from './icon';
 import { iconBorder, iconBorderRadius, iconBorderWidth } from './iconBorder';
+import attributesShorter from '../dictionary/attributesShorter';
 
 const prefix = 'navigation-arrow-both-';
 
@@ -28,7 +29,7 @@ const arrowIcon = {
 		prefix,
 		diffValAttr: {
 			'navigation-arrow-both-icon-width-general': '20',
-			'navigation-arrow-both-icon-stroke-pac': 5,
+			'navigation-arrow-both-icon-stroke-palette-color': 5,
 			'navigation-arrow-both-icon-background-active-media-general':
 				'none',
 			'navigation-arrow-both-icon-border-unit-radius-general': 'px',
@@ -89,4 +90,4 @@ const arrowIcon = {
 	},
 };
 
-export default arrowIcon;
+export default attributesShorter(arrowIcon, 'arrowIcon');

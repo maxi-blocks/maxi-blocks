@@ -1,3 +1,4 @@
+import attributesShorter from '../dictionary/attributesShorter';
 import prefixAttributesCreator from '../prefixAttributesCreator';
 import { background, backgroundColor } from './background';
 
@@ -13,9 +14,9 @@ const videoPopup = {
 		obj: backgroundColor,
 		prefix: 'lightbox-',
 		diffValAttr: {
-			'lightbox-background-pac-general': 5,
+			'lightbox-background-palette-color-general': 5,
 		},
 	}),
 };
 
-export default videoPopup;
+export default attributesShorter(videoPopup, 'videoPopup');

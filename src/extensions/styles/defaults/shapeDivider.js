@@ -1,63 +1,67 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import attributesShorter from '../dictionary/attributesShorter';
 import paletteAttributesCreator from '../paletteAttributesCreator';
+import prefixAttributesCreator from '../prefixAttributesCreator';
 
-const rawShapeDivider = {
-	'shape-divider-top-height': {
+const prefix = 'shape-divider-';
+const prefixTop = `${prefix}top-`;
+const prefixBottom = `${prefix}bottom-`;
+
+const commonShapeDividerBP = {
+	height: {
 		type: 'number',
 		default: 100,
 	},
-	'shape-divider-top-height-unit': {
+	'height-unit': {
 		type: 'string',
 		default: 'px',
 	},
-	'shape-divider-bottom-height': {
-		type: 'number',
-		default: 100,
-	},
-	'shape-divider-bottom-height-unit': {
-		type: 'string',
-		default: 'px',
-	},
-	...paletteAttributesCreator({ prefix: 'shape-divider-top-', palette: 5 }),
-	...paletteAttributesCreator({
-		prefix: 'shape-divider-bottom-',
-		palette: 5,
-	}),
-	'shape-divider-top-opacity': {
-		type: 'number',
-		default: 1,
-	},
-	'shape-divider-bottom-opacity': {
+	opacity: {
 		type: 'number',
 		default: 1,
 	},
 };
 
+const commonShapeDivider = {
+	status: {
+		type: 'boolean',
+		default: false,
+	},
+	'shape-style': {
+		type: 'string',
+	},
+	'effects-status': {
+		type: 'boolean',
+		default: false,
+	},
+};
+
+const rawShapeDivider = {
+	...prefixAttributesCreator({
+		obj: commonShapeDividerBP,
+		prefix: prefixTop,
+	}),
+	...prefixAttributesCreator({
+		obj: commonShapeDividerBP,
+		prefix: prefixBottom,
+	}),
+	...paletteAttributesCreator({ prefix: 'shape-divider-top-', palette: 5 }),
+	...paletteAttributesCreator({
+		prefix: 'shape-divider-bottom-',
+		palette: 5,
+	}),
+};
+
 const shapeDivider = {
 	...breakpointAttributesCreator({ obj: rawShapeDivider }),
-	'shape-divider-top-status': {
-		type: 'boolean',
-		default: false,
-	},
-	'shape-divider-top-shape-style': {
-		type: 'string',
-	},
-	'shape-divider-top-effects-status': {
-		type: 'boolean',
-		default: false,
-	},
-	'shape-divider-bottom-status': {
-		type: 'boolean',
-		default: false,
-	},
-	'shape-divider-bottom-shape-style': {
-		type: 'string',
-	},
-	'shape-divider-bottom-effects-status': {
-		type: 'boolean',
-		default: false,
-	},
+	...prefixAttributesCreator({
+		obj: commonShapeDivider,
+		prefix: prefixTop,
+	}),
+	...prefixAttributesCreator({
+		obj: commonShapeDivider,
+		prefix: prefixBottom,
+	}),
 };
 
 export default attributesShorter(shapeDivider, 'shapeDivider');

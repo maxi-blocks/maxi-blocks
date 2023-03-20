@@ -219,7 +219,7 @@ const getLayerCardTitle = props => {
 		switch (type) {
 			case 'color': {
 				const paletteStatus = getLastBreakpointAttribute({
-					target: 'background-palette-status',
+					target: 'background-color-palette-status',
 					breakpoint,
 					attributes: layer,
 					isHover,
@@ -227,13 +227,13 @@ const getLayerCardTitle = props => {
 
 				if (paletteStatus) {
 					const paletteColor = getLastBreakpointAttribute({
-						target: 'background-palette-color',
+						target: 'background-color-palette-color',
 						breakpoint,
 						attributes: layer,
 						isHover,
 					});
 					const paletteOpacity = getLastBreakpointAttribute({
-						target: 'background-palette-opacity',
+						target: 'background-color-palette-opacity',
 						breakpoint,
 						attributes: layer,
 						isHover,
@@ -250,7 +250,7 @@ const getLayerCardTitle = props => {
 
 				return {
 					background: getLastBreakpointAttribute({
-						target: 'background-color',
+						target: 'background-color-color',
 						breakpoint,
 						attributes: layer,
 						isHover,
@@ -259,7 +259,7 @@ const getLayerCardTitle = props => {
 			}
 			case 'gradient': {
 				const bgGradient = getLastBreakpointAttribute({
-					target: 'background-gradient',
+					target: 'background-gradient-content',
 					breakpoint,
 					attributes: layer,
 					isHover,

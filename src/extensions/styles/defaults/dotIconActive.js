@@ -1,3 +1,4 @@
+import attributesShorter from '../dictionary/attributesShorter';
 import prefixAttributesCreator from '../prefixAttributesCreator';
 import dotIcon from './dotIcon';
 
@@ -9,8 +10,8 @@ const dotIconActive = prefixAttributesCreator({
 	prefix: activePrefix,
 	diffValAttr: {
 		[`${prefix}icon-width-general`]: '10',
-		[`${prefix}icon-stroke-pac`]: 2,
-		[`${prefix}icon-fill-pac`]: 4,
+		[`${prefix}icon-stroke-palette-color`]: 2,
+		[`${prefix}icon-fill-palette-color`]: 4,
 	},
 	newAttr: {
 		[`${prefix}icon-status`]: {
@@ -28,4 +29,4 @@ const dotIconActive = prefixAttributesCreator({
 	},
 });
 
-export default dotIconActive;
+export default attributesShorter(dotIconActive, 'dotIconActive');

@@ -57,19 +57,19 @@ const ColorLayerContent = props => {
 	}) => {
 		const response = {
 			[getAttributeKey(
-				'background-palette-status',
+				'background-color-palette-status',
 				isHover,
 				prefix,
 				breakpoint
 			)]: paletteStatus,
 			[getAttributeKey(
-				'background-palette-color',
+				'background-color-palette-color',
 				isHover,
 				prefix,
 				breakpoint
 			)]: paletteColor,
 			[getAttributeKey(
-				'background-palette-opacity',
+				'background-color-palette-opacity',
 				isHover,
 				prefix,
 				breakpoint
@@ -82,7 +82,7 @@ const ColorLayerContent = props => {
 	};
 
 	const getDefaultAttr = () => {
-		const bgPrefix = `${prefix}background-`;
+		const bgPrefix = `${prefix}background-color-`;
 
 		if (isLayer) {
 			const defaultColor = {};
@@ -170,28 +170,28 @@ const ColorLayerContent = props => {
 			<ColorControl
 				label={__('Background', 'maxi-blocks')}
 				color={getLastBreakpointAttribute({
-					target: `${prefix}background-color`,
+					target: `${prefix}background-color-color`,
 					breakpoint,
 					attributes: colorOptions,
 					isHover,
 				})}
-				prefix={`${prefix}background-`}
+				prefix={`${prefix}background-color-`}
 				defaultColorAttributes={getDefaultAttr()}
 				{...(isLayer && { onReset })}
 				paletteStatus={getLastBreakpointAttribute({
-					target: `${prefix}background-palette-status`,
+					target: `${prefix}background-color-palette-status`,
 					breakpoint,
 					attributes: colorOptions,
 					isHover,
 				})}
 				paletteColor={getLastBreakpointAttribute({
-					target: `${prefix}background-palette-color`,
+					target: `${prefix}background-color-palette-color`,
 					breakpoint,
 					attributes: colorOptions,
 					isHover,
 				})}
 				paletteOpacity={getLastBreakpointAttribute({
-					target: `${prefix}background-palette-opacity`,
+					target: `${prefix}background-color-palette-opacity`,
 					breakpoint,
 					attributes: colorOptions,
 					isHover,

@@ -67,30 +67,45 @@ export const icon = attributesShorter(
 	'icon'
 );
 
-export const iconBackground = prefixAttributesCreator({
-	obj: background,
-	prefix,
-	diffValAttr: { 'icon-background-active-media-general': 'none' },
-});
+export const iconBackground = attributesShorter(
+	prefixAttributesCreator({
+		obj: background,
+		prefix,
+		diffValAttr: { 'icon-background-active-media-general': 'none' },
+	}),
+	'background'
+);
 
-export const iconPadding = prefixAttributesCreator({
-	obj: padding,
-	prefix,
-});
+export const iconPadding = attributesShorter(
+	prefixAttributesCreator({
+		obj: padding,
+		prefix,
+	}),
+	'padding'
+);
 
-export const iconBackgroundColor = prefixAttributesCreator({
-	obj: backgroundColor,
-	prefix,
-	exclAttr: ['background-color-clip-path'],
-});
+export const iconBackgroundColor = attributesShorter(
+	prefixAttributesCreator({
+		obj: backgroundColor,
+		prefix,
+		exclAttr: ['background-color-clip-path'],
+	}),
+	'background'
+);
 
-export const iconBackgroundGradient = prefixAttributesCreator({
-	obj: backgroundGradient,
-	prefix,
-	exclAttr: ['background-gradient-clip-path'],
-});
+export const iconBackgroundGradient = attributesShorter(
+	prefixAttributesCreator({
+		obj: backgroundGradient,
+		prefix,
+		exclAttr: ['background-gradient-clip-path'],
+	}),
+	'background'
+);
 
-export const iconBoxShadow = prefixAttributesCreator({
-	obj: boxShadow,
-	prefix,
-});
+export const iconBoxShadow = attributesShorter(
+	prefixAttributesCreator({
+		obj: boxShadow,
+		prefix,
+	}),
+	'boxShadow'
+);

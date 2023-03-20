@@ -14,12 +14,12 @@ const getBorderDefault = (
 	{ borderTopWidth, borderRightWidth, borderBottomWidth, borderLeftWidth }
 ) => {
 	return {
-		[`${prefix}border-sync-width`]: 'all',
-		[`${prefix}border-unit-width`]: 'px',
-		[`${prefix}border-top-width`]: borderTopWidth || 2,
-		[`${prefix}border-right-width`]: borderRightWidth || 2,
-		[`${prefix}border-bottom-width`]: borderBottomWidth || 2,
-		[`${prefix}border-left-width`]: borderLeftWidth || 2,
+		[`${prefix}border-width-sync`]: 'all',
+		[`${prefix}border-width-unit`]: 'px',
+		[`${prefix}border-width-top`]: borderTopWidth || 2,
+		[`${prefix}border-width-right`]: borderRightWidth || 2,
+		[`${prefix}border-width-bottom`]: borderBottomWidth || 2,
+		[`${prefix}border-width-left`]: borderLeftWidth || 2,
 	};
 };
 
@@ -53,30 +53,30 @@ export const borderNone = (prefix = '') => {
 			getDefaultAttributeValue('border-color'),
 		[getAttributeKey('border-style', false, prefix)]:
 			getDefaultAttributeValue('border-style'),
-		[getAttributeKey('border-top-width', false, prefix)]:
+		[getAttributeKey('border-width-top', false, prefix)]:
 			getDefaultAttributeValue(
-				'border-top-width',
+				'border-width-top',
 				currentDefaultBorderWidth
 			),
-		[getAttributeKey('border-right-width', false, prefix)]:
+		[getAttributeKey('border-width-right', false, prefix)]:
 			getDefaultAttributeValue(
-				'border-right-width',
+				'border-width-right',
 				currentDefaultBorderWidth
 			),
-		[getAttributeKey('border-bottom-width', false, prefix)]:
+		[getAttributeKey('border-width-bottom', false, prefix)]:
 			getDefaultAttributeValue(
-				'border-bottom-width',
+				'border-width-bottom',
 				currentDefaultBorderWidth
 			),
-		[getAttributeKey('border-left-width', false, prefix)]:
+		[getAttributeKey('border-width-left', false, prefix)]:
 			getDefaultAttributeValue(
-				'border-left-width',
+				'border-width-left',
 				currentDefaultBorderWidth
 			),
-		[getAttributeKey('border-sync-width', false, prefix)]:
-			getDefaultAttributeValue('border-sync-width', currentDefaultBorder),
-		[getAttributeKey('border-unit-width', false, prefix)]:
-			getDefaultAttributeValue('border-unit-width', currentDefaultBorder),
+		[getAttributeKey('border-width-sync', false, prefix)]:
+			getDefaultAttributeValue('border-width-sync', currentDefaultBorder),
+		[getAttributeKey('border-width-unit', false, prefix)]:
+			getDefaultAttributeValue('border-width-unit', currentDefaultBorder),
 	};
 
 	return response;

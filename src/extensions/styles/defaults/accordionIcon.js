@@ -18,6 +18,7 @@ import {
 	iconBorderRadiusHover,
 	iconBorderWidthHover,
 } from './iconBorderHover';
+import attributesShorter from '../dictionary/attributesShorter';
 
 const accordionIcon = {
 	...prefixAttributesCreator({
@@ -33,7 +34,7 @@ const accordionIcon = {
 		},
 		prefix: 'active-',
 		diffValAttr: {
-			'active-icon-stroke-pac': 5,
+			'active-icon-stroke-palette-color': 5,
 			'active-icon-inherit': false,
 			'active-icon-content':
 				'<svg class="arrow-up-2-line-maxi-svg" width="64px" height="64px" viewBox="0 0 24 24"><path d="M2.9 17.25L12 6.75l9.1 10.5" fill="none" data-stroke="" stroke="#081219" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"></path></svg>',
@@ -66,10 +67,10 @@ const accordionIcon = {
 		default:
 			'<svg class="arrow-down-2-line-maxi-svg" width="64px" height="64px" viewBox="0 0 24 24"><path d="M21.1 6.75L12 17.25 2.9 6.75" fill="none" data-stroke="" stroke="#081219" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"></path></svg>',
 	},
-	'icon-stroke-pac': {
+	'icon-stroke-palette-color': {
 		type: 'number',
 		default: 5,
 	},
 };
 
-export default accordionIcon;
+export default attributesShorter(accordionIcon, 'accordionIcon');

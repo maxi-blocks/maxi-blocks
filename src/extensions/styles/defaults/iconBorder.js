@@ -1,20 +1,30 @@
+import attributesShorter from '../dictionary/attributesShorter';
 import prefixAttributesCreator from '../prefixAttributesCreator';
 import { border, borderWidth, borderRadius } from './border';
 
 const prefix = 'icon-';
 
-export const iconBorder = prefixAttributesCreator({
-	obj: border,
-	prefix,
-});
+export const iconBorder = attributesShorter(
+	prefixAttributesCreator({
+		obj: border,
+		prefix,
+	}),
+	'iconBorder'
+);
 
-export const iconBorderWidth = prefixAttributesCreator({
-	obj: borderWidth,
-	prefix,
-});
+export const iconBorderWidth = attributesShorter(
+	prefixAttributesCreator({
+		obj: borderWidth,
+		prefix,
+	}),
+	'iconBorderWidth'
+);
 
-export const iconBorderRadius = prefixAttributesCreator({
-	obj: borderRadius,
-	prefix,
-	diffValAttr: { 'icon-border-unit-radius-general': 'px' },
-});
+export const iconBorderRadius = attributesShorter(
+	prefixAttributesCreator({
+		obj: borderRadius,
+		prefix,
+		diffValAttr: { 'icon-border-unit-radius-general': 'px' },
+	}),
+	'iconBorderRadius'
+);

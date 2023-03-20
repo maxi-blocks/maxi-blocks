@@ -1,15 +1,14 @@
-import dictionary, {
+import {
 	colorDictionary,
+	noTypeDictionary,
 	prefixesDictionary,
 	suffixesDictionary,
 } from './attributesDictionary';
 
-const attributesShorter = (obj, type) => {
-	const currentDictionary = dictionary[type] ?? {};
+const blockAttributesShorter = attributes => {
+	const newAttributes = {};
 
-	const attributes = {};
-
-	Object.entries(obj).forEach(([objKey, objVal]) => {
+	Object.entries(attributes).forEach(([objKey, objVal]) => {
 		let newKey = objKey;
 
 		// if (type === 'background') debugger;
@@ -22,15 +21,15 @@ const attributesShorter = (obj, type) => {
 					if (newKey.includes(key)) newKey = newKey.replace(key, val);
 				});
 
-		dictionaryReplacer(currentDictionary);
+		dictionaryReplacer(noTypeDictionary);
 		dictionaryReplacer(prefixesDictionary);
 		dictionaryReplacer(suffixesDictionary);
 		dictionaryReplacer(colorDictionary);
 
-		attributes[newKey] = { ...objVal, originalLabel: objKey };
+		newAttributes[newKey] = { ...objVal, originalLabel: objKey };
 	});
 
-	return attributes;
+	return newAttributes;
 };
 
-export default attributesShorter;
+export default blockAttributesShorter;

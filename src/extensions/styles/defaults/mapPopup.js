@@ -1,6 +1,7 @@
 import { background, backgroundColor } from './background';
 import boxShadow from './boxShadow';
 import prefixAttributesCreator from '../prefixAttributesCreator';
+import attributesShorter from '../dictionary/attributesShorter';
 
 const prefix = 'popup-';
 
@@ -22,4 +23,4 @@ const mapPopup = {
 	}),
 };
 
-export default mapPopup;
+export default attributesShorter(mapPopup, 'mapPopup');

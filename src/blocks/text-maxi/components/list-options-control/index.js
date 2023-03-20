@@ -752,7 +752,7 @@ const ListOptionsControl = props => {
 						<>
 							<SelectControl
 								label={__('Source', 'maxi-blocks')}
-								className='maxi-text-inspector__list-source-selector maxi-input-no-reset'
+								className='maxi-text-inspector__list-source-selector'
 								value={listStyleSource}
 								defaultValue={defaultListStyleSource}
 								options={[

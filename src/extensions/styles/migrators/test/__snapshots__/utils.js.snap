@@ -1363,7 +1363,7 @@ Object {
 }
 `;
 
-exports[`getTransitionSetting Should return the IB setting 1`] = `
+exports[`getIBDataItem Should return the IB setting 1`] = `
 Object {
   "attrGroupName": "boxShadow",
   "component": [Function],
@@ -1374,7 +1374,7 @@ Object {
 }
 `;
 
-exports[`getTransitionSetting Should return the IB setting, which has transitionTarget 1`] = `
+exports[`getIBDataItem Should return the IB setting, which has transitionTarget 1`] = `
 Object {
   "attrGroupName": Array [
     "icon",
@@ -1401,7 +1401,7 @@ Object {
 }
 `;
 
-exports[`getTransitionSetting Should support sid 1`] = `
+exports[`getIBDataItem Should support sid 1`] = `
 Object {
   "attrGroupName": Array [
     "icon",

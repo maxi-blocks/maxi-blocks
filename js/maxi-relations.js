@@ -148,9 +148,14 @@ class Relation {
 		const currentEl = document.querySelector(`#${styleEl.id}`);
 
 		if (currentEl) {
+			const currentElSids = currentEl
+				.getAttribute('data-sids')
+				.split(',')
+				.map(item => item.trim());
+
 			if (
 				currentEl.getAttribute('data-type') === this.action &&
-				currentEl.getAttribute('data-sids') === this.sids
+				JSON.stringify(currentElSids) === JSON.stringify(this.sids)
 			)
 				currentEl.replaceWith(styleEl);
 			else currentEl.insertAdjacentElement('afterend', styleEl);

@@ -28,7 +28,7 @@ class Relation {
 		);
 
 		this.action = item.action;
-		this.settings = item.settings;
+		this.sids = item.sid ?? item.settings;
 		this.effects = item.effects;
 		this.attributes = item.attributes;
 
@@ -79,8 +79,13 @@ class Relation {
 		this.isBorderArray = this.attributes.map(attributes =>
 			Object.keys(attributes).some(attr => attr.startsWith('border'))
 		);
-		this.isIconArray = item.settings.map(
-			setting => setting === 'Icon colour' || setting === 'Button icon'
+		this.isIconArray = this.sids.map(
+			sid =>
+				sid === 'ic' ||
+				sid === 'bi' ||
+				// support for old versions
+				sid === 'Icon colour' ||
+				sid === 'Button icon'
 		);
 		this.isSVG = this.fullTarget.includes('svg-icon-maxi');
 		this.avoidHoverArray = [];
@@ -112,21 +117,21 @@ class Relation {
 		this.stylesEl = document.createElement('style');
 		this.stylesEl.id = `relations--${this.uniqueID}-styles`;
 		this.stylesEl.setAttribute('data-type', this.action);
-		this.stylesEl.setAttribute('data-settings', this.settings);
+		this.stylesEl.setAttribute('data-sids', this.sids);
 		this.stylesEl.innerText = this.stylesString;
 
 		if (this.inTransitionString.length > 0) {
 			this.inTransitionEl = document.createElement('style');
 			this.inTransitionEl.id = `relations--${this.uniqueID}-in-transitions`;
 			this.inTransitionEl.setAttribute('data-type', this.action);
-			this.inTransitionEl.setAttribute('data-settings', this.settings);
+			this.inTransitionEl.setAttribute('data-sids', this.sids);
 			this.inTransitionEl.innerText = this.inTransitionString;
 		}
 		if (this.outTransitionString.length > 0) {
 			this.outTransitionEl = document.createElement('style');
 			this.outTransitionEl.id = `relations--${this.uniqueID}-out-transitions`;
 			this.outTransitionEl.setAttribute('data-type', this.action);
-			this.outTransitionEl.setAttribute('data-settings', this.settings);
+			this.outTransitionEl.setAttribute('data-sids', this.sids);
 			this.outTransitionEl.innerText = this.outTransitionString;
 		}
 	}
@@ -145,7 +150,7 @@ class Relation {
 		if (currentEl) {
 			if (
 				currentEl.getAttribute('data-type') === this.action &&
-				currentEl.getAttribute('data-settings') === this.settings
+				currentEl.getAttribute('data-sids') === this.sids
 			)
 				currentEl.replaceWith(styleEl);
 			else currentEl.insertAdjacentElement('afterend', styleEl);

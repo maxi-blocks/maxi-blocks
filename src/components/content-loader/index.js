@@ -95,9 +95,9 @@ const ContentLoader = () => (
 				margin: '0 auto',
 			}}
 		/>
-		<p style={{ textAlign: 'center' }}>
+		<h3 style={{ textAlign: 'center' }}>
 			{sentences[Math.floor(Math.random() * sentences.length)]}
-		</p>
+		</h3>
 	</div>
 );
 

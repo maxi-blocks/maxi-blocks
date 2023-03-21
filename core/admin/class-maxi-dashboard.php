@@ -73,6 +73,32 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     MAXI_PLUGIN_URL_PATH.'build/admin.js'
                 );
                 wp_enqueue_script('maxi-admin');
+
+                $path_to_previews = plugins_url('../../img/block-preview/', __FILE__);
+
+                wp_localize_script(
+                    'maxi-admin',
+                    'previews',
+                    array(
+                        'accordion_preview' => $path_to_previews.'accordion.png',
+                        'button_preview'    => $path_to_previews.'button.png',
+                        'container_preview' => $path_to_previews.'container.png',
+                        'row_preview'       => $path_to_previews.'row.png',
+                        'divider_preview'   => $path_to_previews.'divider.png',
+                        'group_preview'     => $path_to_previews.'group.png',
+                        'icon_preview'      => $path_to_previews.'icon.png',
+                        'image_preview'     => $path_to_previews.'image.png',
+                        'map_preview'       => $path_to_previews.'map.png',
+                        'nc_preview'        => $path_to_previews.'nc.png',
+                        'search_preview'    => $path_to_previews.'search.png',
+                        'slider_preview'    => $path_to_previews.'slider.png',
+                        'library_preview'   => $path_to_previews.'templates.png',
+                        'text_preview'      => $path_to_previews.'text.png',
+                        'video_preview'     => $path_to_previews.'video.png',
+                        'pane_preview'      => $path_to_previews.'pane.png',
+                        'slide_preview'     => $path_to_previews.'slide.png',
+                    )
+                );
             }
         }
 
@@ -299,7 +325,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
-			// TO DO: uncomment when we have a WP directory link for the rollback function
+            // TO DO: uncomment when we have a WP directory link for the rollback function
             // $content .= $this->generate_item_header('Rollback to previous version', false);
 
             // $content .= '<p>'.__('If you want to restore a previous version of Maxi Blocks, you can do it here. For extra precaution we always recommended running a backup of your website and database before performing a rollback. Alternatively, clone your site to a staging site, then test the rollback function there.', self::$maxi_text_domain).'</p>';
@@ -443,7 +469,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             return $breakpoints_html;
         }
 
-		// TO DO: uncomment this when we have a list of versions
+        // TO DO: uncomment this when we have a list of versions
         // public function generate_dropdown()
         // {
         //     $dropdown = '<div class="maxi-dashboard_main-content_accordion-item-content-switcher">';

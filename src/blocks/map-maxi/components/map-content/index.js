@@ -117,7 +117,11 @@ const MapContent = props => {
 							'Oops, you can not see the map because you have not set your Google map API key, please navigate to the Maxi Blocks ',
 							'maxi-blocks'
 						)}
-						<a target='_blank' href={getMaxiAdminSettingsUrl()}>
+						<a
+							target='_blank'
+							href={getMaxiAdminSettingsUrl()}
+							rel='noreferrer'
+						>
 							{__(
 								'Settings > Google Maps API key',
 								'maxi-blocks'

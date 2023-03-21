@@ -26,43 +26,25 @@ const withMaxiProps = createHigherOrderComponent(
 			const { setAttributes, attributes, clientId, isSelected } =
 				ownProps;
 
-			const {
-				deviceType,
-				baseBreakpoint,
-				hasInnerBlocks,
-				isChild,
-				hasSelectedChild,
-				isTyping,
-			} = useSelect(select => {
-				const { receiveMaxiDeviceType, receiveBaseBreakpoint } =
-					select('maxiBlocks');
-				const {
-					getBlockOrder,
-					getBlockParents,
-					hasSelectedInnerBlock,
-					isTyping,
-				} = select('core/block-editor');
+			const { getBlockOrder, getBlockParents } = useSelect(
+				select => select('core/block-editor'),
+				[]
+			);
 
-				const deviceType = receiveMaxiDeviceType();
-				const baseBreakpoint = receiveBaseBreakpoint();
+			const { deviceType, baseBreakpoint, hasSelectedChild, isTyping } =
+				useSelect(select => {
+					const { receiveMaxiDeviceType, receiveBaseBreakpoint } =
+						select('maxiBlocks');
+					const { hasSelectedInnerBlock, isTyping } =
+						select('core/block-editor');
 
-				const hasInnerBlocks = !isEmpty(getBlockOrder(clientId));
-
-				const isChild = !isEmpty(
-					getBlockParents(clientId).filter(val => val !== clientId)
-				);
-
-				const hasSelectedChild = hasSelectedInnerBlock(clientId, true);
-
-				return {
-					deviceType,
-					baseBreakpoint,
-					hasInnerBlocks,
-					isChild,
-					hasSelectedChild,
-					isTyping: isTyping(),
-				};
-			});
+					return {
+						deviceType: receiveMaxiDeviceType(),
+						baseBreakpoint: receiveBaseBreakpoint(),
+						hasSelectedChild: hasSelectedInnerBlock(clientId, true),
+						isTyping: isTyping(),
+					};
+				});
 
 			const maxiSetAttributes = useCallback(obj =>
 				handleSetAttributes({
@@ -90,7 +72,8 @@ const withMaxiProps = createHigherOrderComponent(
 						pseudoElement,
 						styleObjKeys,
 						ref,
-					})
+					}),
+				[styleObjKeys, ref]
 			);
 
 			const cleanInlineStyles = useCallback(
@@ -100,7 +83,8 @@ const withMaxiProps = createHigherOrderComponent(
 						pseudoElement,
 						styleObjKeys,
 						ref
-					)
+					),
+				[styleObjKeys, ref]
 			);
 
 			const getBounds = useCallback(selector => {
@@ -115,7 +99,7 @@ const withMaxiProps = createHigherOrderComponent(
 				};
 
 				return getTarget().getBoundingClientRect();
-			});
+			}, []);
 
 			useEffect(() => {
 				dispatch('maxiBlocks/styles').savePrevSavedAttrs([]);
@@ -132,8 +116,14 @@ const withMaxiProps = createHigherOrderComponent(
 						getBounds={getBounds}
 						deviceType={deviceType}
 						baseBreakpoint={baseBreakpoint}
-						hasInnerBlocks={hasInnerBlocks}
-						isChild={isChild}
+						hasInnerBlocks={!isEmpty(getBlockOrder(clientId))}
+						isChild={
+							!isEmpty(
+								getBlockParents(clientId).filter(
+									val => val !== clientId
+								)
+							)
+						}
 						hasSelectedChild={hasSelectedChild}
 					/>
 					{/*

@@ -17,6 +17,8 @@ import { getIconPositionClass } from '../../extensions/styles';
 import { getSVGWidthHeightRatio } from '../../extensions/svg';
 import getStyles from './styles';
 import { copyPasteMapping, maxiAttributes } from './data';
+import withMaxiDC from '../../extensions/DC/withMaxiDC';
+import getAreaLabel from './utils';
 
 /**
  * External dependencies
@@ -85,7 +87,11 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes, maxiSetAttributes } = this.props;
-		const { uniqueID } = attributes;
+		const {
+			uniqueID,
+			'dc-status': dcStatus,
+			'dc-content': dcContent,
+		} = attributes;
 		const { scValues } = this.state;
 
 		const buttonClasses = classnames(
@@ -129,25 +135,42 @@ class edit extends MaxiBlockComponent {
 				key={`maxi-button--${uniqueID}`}
 				ref={this.blockRef}
 				{...getMaxiBlockAttributes(this.props)}
+				{...(attributes['icon-only'] && {
+					'aria-label': getAreaLabel(attributes['icon-content']),
+				})}
 			>
 				<div className={buttonClasses}>
 					{!attributes['icon-only'] && (
-						<RichText
-							className='maxi-button-block__content'
-							value={attributes.buttonContent}
-							identifier='content'
-							onChange={buttonContent => {
-								if (this.typingTimeout) {
-									clearTimeout(this.typingTimeout);
-								}
+						<>
+							{dcStatus && (
+								<div className='maxi-button-block__content'>
+									{dcContent}
+								</div>
+							)}
+							{!dcStatus && (
+								<RichText
+									className='maxi-button-block__content'
+									value={attributes.buttonContent}
+									identifier='content'
+									onChange={buttonContent => {
+										if (this.typingTimeout) {
+											clearTimeout(this.typingTimeout);
+										}
 
-								this.typingTimeout = setTimeout(() => {
-									maxiSetAttributes({ buttonContent });
-								}, 100);
-							}}
-							placeholder={__('Button text', 'maxi-blocks')}
-							withoutInteractiveFormatting
-						/>
+										this.typingTimeout = setTimeout(() => {
+											maxiSetAttributes({
+												buttonContent,
+											});
+										}, 100);
+									}}
+									placeholder={__(
+										'Button text',
+										'maxi-blocks'
+									)}
+									withoutInteractiveFormatting
+								/>
+							)}
+						</>
 					)}
 					{attributes['icon-content'] && (
 						<>
@@ -177,4 +200,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiProps(edit);
+export default withMaxiDC(withMaxiProps(edit));

@@ -59,6 +59,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         public function maxi_admin_scripts_styles()
         {
             if (is_admin()) {
+                wp_enqueue_script('appwrite', 'https://cdn.jsdelivr.net/npm/appwrite@10.2.0');
                 wp_register_style(
                     'maxi-admin',
                     MAXI_PLUGIN_URL_PATH . 'build/admin.css',
@@ -85,7 +86,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 self::$maxi_slug_dashboard,
                 [$this, 'maxi_config_page'],
                 $this->maxi_get_menu_icon_base64(),
-                null,
+                60,
             );
             add_submenu_page(
                 self::$maxi_slug_dashboard,
@@ -107,6 +108,15 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 '',
                 null,
             );
+            add_submenu_page(
+                self::$maxi_slug_dashboard,
+                __('Pro library', self::$maxi_text_domain),
+                __('Pro library', self::$maxi_text_domain),
+                'manage_options',
+                'admin.php?page='.self::$maxi_slug_dashboard.'&tab=maxi_blocks_pro',
+                '',
+                null
+            );
         }
 
         // Draw option page
@@ -121,6 +131,10 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     'Settings',
                     self::$maxi_text_domain,
                 ),
+                self::$maxi_prefix.'pro' => __(
+                    'Pro library',
+                    self::$maxi_text_domain
+                ),
             ];
 
             if (isset($_GET['tab'])) {
@@ -133,7 +147,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             echo '<div class="maxi-dashboard_wrap">';
             echo '<header class="maxi-dashboard_header"><img class="maxi-dashboard_logo" width="200" src="' .
                 esc_url(MAXI_PLUGIN_URL_PATH) .
-                'img/maxi-logo-dashboard-beta.svg' .
+                'img/maxi-logo-dashboard-beta-wite.svg' .
                 '" alt="' .
                 esc_html(__('Maxi Blocks Logo', self::$maxi_text_domain)) .
                 '"></header>';
@@ -172,6 +186,11 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                         $this->maxi_blocks_settings(),
                         maxi_blocks_allowed_html(),
                     );
+                } elseif ($tab === self::$maxi_prefix.'pro') {
+                    echo wp_kses(
+                        $this->maxi_blocks_pro(),
+                        maxi_blocks_allowed_html()
+                    );
                 }
             }
 
@@ -186,134 +205,176 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $current_user = wp_get_current_user();
             $user_name = $current_user->user_firstname;
 
-            $content = '<div class="maxi-dashboard_main-content">';
+            $content = '<div class="maxi-dashboard_main-content maxi-dashboard_main-content-start">';
             $content .=
                 '<h1>' .
-                __('Hello friend ', self::$maxi_text_domain) .
+                __('Hello, friend 👋 ', self::$maxi_text_domain) .
                 esc_html($user_name) .
                 '</h1>';
             $content .=
                 '<h2>' .
                 __(
-                    'Craft your digital story with web templates that instantly match your style',
+                    'Tired of those page builders that tease you with basic features and make you pay for the rest?',
                     self::$maxi_text_domain,
                 ) .
                 '</h2>';
             $content .=
                 '<p>' .
                 __(
-                    'Maxi Blocks is a modern page builder and template library made for creators like you. Join us as we explore the full potential of Gutenberg and the future of WordPress.',
+                    "Maxi is here to break the cycle! We're open source and free to use. No locked features, no domain limits, and no licence keys to keep track of.",
                     self::$maxi_text_domain,
                 ) .
                 '</p>';
-
-            $content .=
-                '<h3>' .
-                __('Open source and free to build', self::$maxi_text_domain) .
-                '</h3>';
-            $content .=
+                $content .=
                 '<p>' .
                 __(
-                    'Anything you create with Maxi Blocks builder is yours to keep. There’s no lock in, no domain restrictions or license keys to keep track of. Start with 700 free templates and build as many sites as you want. All you need is time and effort.',
-                    self::$maxi_text_domain,
-                );
-            $content .=
-                '<h3>' .
-                __('Work smarter with pro patterns', self::$maxi_text_domain) .
-                '</h3>';
-            $content .=
-                '<p>' .
-                __(
-                    'Building beautiful web pages from scratch takes time and effort. Our pro template library offers 600+ professional patterns to help you work faster and more efficiently. With 1,579 additional designs in development, our collection is constantly growing. Your support helps us improve the library and add new features.',
-                    self::$maxi_text_domain,
-                );
-            $content .=
-                '<p><a href="https://maxiblocks.com/go/pro-subscription" target="_blank"> ' .
-                __(
-                    'Visit Maxi Blocks Pro to learn more',
-                    self::$maxi_text_domain,
-                ) .
-                '</a>.</p>';
-
-            $content .=
-                '<h3>' .
-                __(
-                    'Template library and style cards',
-                    self::$maxi_text_domain,
-                ) .
-                '</h3>';
-            $content .=
-                '<p>' .
-                __(
-                    'Combine page templates with style cards to save time. Here’s how it works;',
+                    " Start with 700 free templates and customize them quickly with a style card. Need some icons? Speed search our collection of 13.4K designer icons and shapes - all free.",
                     self::$maxi_text_domain,
                 ) .
                 '</p>';
-
-            $content .= '<ol>';
-            $content .=
-                '<li>' .
-                __(
-                    'First create a new blank page from the WordPress pages menu. Then click the Maxi Blocks launcher icon.',
-                    self::$maxi_text_domain,
-                ) .
-                '</li>';
-            $content .=
-                '<li>' .
-                __(
-                    'Find a style card and activate it. You can change it later.',
-                    self::$maxi_text_domain,
-                ) .
-                '</li>';
-            $content .=
-                '<li>' .
-                __(
-                    'Browse the template library for a good page or pattern. Click insert.',
-                    self::$maxi_text_domain,
-                ) .
-                '</li>';
-            $content .=
-                '<li>' .
-                __(
-                    'Notice how templates automatically update to match your style card.',
-                    self::$maxi_text_domain,
-                ) .
-                '</li>';
-            $content .=
-                '<li>' .
-                __(
-                    'Use the editor to update content or tweak the design. For help, click the (?) icon.',
-                    self::$maxi_text_domain,
-                ) .
-                '</li>';
-            $content .= '</ol>';
-
-            $content .=
-                '<h3>' . __('Roadmap', self::$maxi_text_domain) . '</h3>';
             $content .=
                 '<p>' .
                 __(
-                    'There’s a grand plan, and we need your help. Share your suggestions or vote on what to build next.',
-                    self::$maxi_text_domain,
-                ) .
-                ' <a href="https://maxiblocks.com/go/roadmap" target="_blank">' .
-                __(
-                    'See what’s planned in the roadmap',
-                    self::$maxi_text_domain,
-                ) .
-                '</a></p>';
-
-            $content .=
-                '<h3>' .
-                __('About Beta 1.0', self::$maxi_text_domain) .
-                '</h3>';
-            $content .=
-                '<p>' .
-                __(
-                    'The Maxi Blocks builder will improve with your valuable feedback. And because we’re open source, everyone can benefit. Even so, your setup might be different. It’s recommended to build in a staging environment while we’re still in Beta. If you find an issue, please let us know via our support channels. Every bit of feedback helps. Thank you!',
+                    "And if you're loving Maxi Blocks and want to help us out, join the Pro library. Find inspiration, get variety and work faster with production ready templates.",
                     self::$maxi_text_domain,
                 ) .
                 '</p>';
+                $content .=
+                '<p>' .
+                __(
+                    "We've created thousands of designs using Maxi, so we know what works. Copy, remix, and learn as you go - it's all possible with Maxi Blocks.",
+                    self::$maxi_text_domain,
+                ) .
+                '</p>';
+            // $content .=
+            //     '<h3>' .
+            //     __(
+            //         "[This is the title for the intro video]",
+            //         self::$maxi_text_domain,
+            //     ) .
+            //     '</h3>';
+            // $content .=
+            //     '<h2>' .
+            //     __(
+            //         'Craft your digital story with web templates that instantly match your style',
+            //         self::$maxi_text_domain,
+            //     ) .
+            //     '</h2>';
+            // $content .=
+            //     '<p>' .
+            //     __(
+            //         'Maxi Blocks is a modern page builder and template library made for creators like you. Join us as we explore the full potential of Gutenberg and the future of WordPress.',
+            //         self::$maxi_text_domain,
+            //     ) .
+            //     '</p>';
+
+            // $content .=
+            //     '<h3>' .
+            //     __('Open source and free to build', self::$maxi_text_domain) .
+            //     '</h3>';
+            // $content .=
+            //     '<p>' .
+            //     __(
+            //         'Anything you create with Maxi Blocks builder is yours to keep. There’s no lock in, no domain restrictions or license keys to keep track of. Start with 700 free templates and build as many sites as you want. All you need is time and effort.',
+            //         self::$maxi_text_domain,
+            //     );
+            // $content .=
+            //     '<h3>' .
+            //     __('Work smarter with pro patterns', self::$maxi_text_domain) .
+            //     '</h3>';
+            // $content .=
+            //     '<p>' .
+            //     __(
+            //         'Building beautiful web pages from scratch takes time and effort. Our pro template library offers 600+ professional patterns to help you work faster and more efficiently. With 1,579 additional designs in development, our collection is constantly growing. Your support helps us improve the library and add new features.',
+            //         self::$maxi_text_domain,
+            //     );
+            // $content .=
+            //     '<p><a href="https://maxiblocks.com/go/pro-subscription" target="_blank"> ' .
+            //     __(
+            //         'Visit Maxi Blocks Pro to learn more',
+            //         self::$maxi_text_domain,
+            //     ) .
+            //     '</a>.</p>';
+
+            // $content .=
+            //     '<h3>' .
+            //     __(
+            //         'Template library and style cards',
+            //         self::$maxi_text_domain,
+            //     ) .
+            //     '</h3>';
+            // $content .=
+            //     '<p>' .
+            //     __(
+            //         'Combine page templates with style cards to save time. Here’s how it works;',
+            //         self::$maxi_text_domain,
+            //     ) .
+            //     '</p>';
+
+            // $content .= '<ol>';
+            // $content .=
+            //     '<li>' .
+            //     __(
+            //         'First create a new blank page from the WordPress pages menu. Then click the Maxi Blocks launcher icon.',
+            //         self::$maxi_text_domain,
+            //     ) .
+            //     '</li>';
+            // $content .=
+            //     '<li>' .
+            //     __(
+            //         'Find a style card and activate it. You can change it later.',
+            //         self::$maxi_text_domain,
+            //     ) .
+            //     '</li>';
+            // $content .=
+            //     '<li>' .
+            //     __(
+            //         'Browse the template library for a good page or pattern. Click insert.',
+            //         self::$maxi_text_domain,
+            //     ) .
+            //     '</li>';
+            // $content .=
+            //     '<li>' .
+            //     __(
+            //         'Notice how templates automatically update to match your style card.',
+            //         self::$maxi_text_domain,
+            //     ) .
+            //     '</li>';
+            // $content .=
+            //     '<li>' .
+            //     __(
+            //         'Use the editor to update content or tweak the design. For help, click the (?) icon.',
+            //         self::$maxi_text_domain,
+            //     ) .
+            //     '</li>';
+            // $content .= '</ol>';
+
+            // $content .=
+            //     '<h3>' . __('Roadmap', self::$maxi_text_domain) . '</h3>';
+            // $content .=
+            //     '<p>' .
+            //     __(
+            //         'There’s a grand plan, and we need your help. Share your suggestions or vote on what to build next.',
+            //         self::$maxi_text_domain,
+            //     ) .
+            //     ' <a href="https://maxiblocks.com/go/roadmap" target="_blank">' .
+            //     __(
+            //         'See what’s planned in the roadmap',
+            //         self::$maxi_text_domain,
+            //     ) .
+            //     '</a></p>';
+
+            // $content .=
+            //     '<h3>' .
+            //     __('About Beta 1.0', self::$maxi_text_domain) .
+            //     '</h3>';
+            // $content .=
+            //     '<p>' .
+            //     __(
+            //         'The Maxi Blocks builder will improve with your valuable feedback. And because we’re open source, everyone can benefit. Even so, your setup might be different. It’s recommended to build in a staging environment while we’re still in Beta. If you find an issue, please let us know via our support channels. Every bit of feedback helps. Thank you!',
+            //         self::$maxi_text_domain,
+            //     ) .
+            //     '</p>';
 
             $content .= '</div>'; // maxi-dashboard_main-content
 
@@ -335,27 +396,27 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             // $content .= ' <a href="" target="_blank">'.__('Notify me', self::$maxi_text_domain).'</a>.</p>';
             // $content .='</div>'; // maxi-dashboard_main-sidebar-item
 
-            // $content .= '<div class="maxi-dashboard_main-sidebar">';
+            $content .= '<div class="maxi-dashboard_main-sidebar">';
 
-            // $content .= '<div class="maxi-dashboard_main-sidebar-item">';
-            // $content .= '<svg class="news-maxi-svg" width="64px" height="64px" viewBox="0 0 64 64" data-stroke="" stroke="var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-7,8,18,25),1))" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"><path d="M55.8 16.2V9.9H15.6v6.3h40.2m-39 9.3v12.4h10.3V25.5H16.8M56 29.7H45.7v25.8H56V29.7z" data-fill="" fill="var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1))"></path><g fill="none"><path d="M62.1 5.6l-2.3-3.1L57.3 5l-2.6-2.5L52.1 5l-2.6-2.5L47 5l-2.5-2.5L41.8 5l-2.5-2.5L36.7 5l-2.6-2.5L31.5 5 29 2.5 26.4 5l-2.6-2.5L21.2 5l-2.6-2.5L16.1 5l-2.6-2.5-2.9 3.1v8.7 40.6c-.4 4.9-2.4 6.5-4.3 6.5.5.2 1.1.3 1.8.3h54V5.6"></path><path d="M44.7 21.5H57m-12.3 4H57M10.6 14.3H2v41.3c0 2.6 1.9 5 4.3 5.7m9.5-39.8h12.3M15.8 42.7h12.3m-12.3 4.1h12.3M15.8 51h12.3m-12.3 4.5h12.3m3.2-34H41m-9.7 4.1H41m-9.7 4.3H41m-9.7 4.2H41m-9.7 4.2H41m-9.7 4.2H41m-9.7 13H41m-9.7-8.7H41"></path><path d="M31.3 51H41"></path></g></svg>';
-            // $content .= '<p>'.__('News and stories for creators.', self::$maxi_text_domain);
-            // $content .= ' <a href="" target="_blank">'.__('Read the blog', self::$maxi_text_domain).'</a>.</p>';
-            // $content .='</div>'; // maxi-dashboard_main-sidebar-item
+            $content .= '<div class="maxi-dashboard_main-sidebar-item">';
+            $content .= '<svg class="news-maxi-svg" width="64px" height="64px" viewBox="0 0 64 64" data-stroke="" stroke="#081219" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"><path d="M55.8 16.2V9.9H15.6v6.3h40.2m-39 9.3v12.4h10.3V25.5H16.8M56 29.7H45.7v25.8H56V29.7z" data-fill="" fill="#FF4A17"></path><g fill="none"><path d="M62.1 5.6l-2.3-3.1L57.3 5l-2.6-2.5L52.1 5l-2.6-2.5L47 5l-2.5-2.5L41.8 5l-2.5-2.5L36.7 5l-2.6-2.5L31.5 5 29 2.5 26.4 5l-2.6-2.5L21.2 5l-2.6-2.5L16.1 5l-2.6-2.5-2.9 3.1v8.7 40.6c-.4 4.9-2.4 6.5-4.3 6.5.5.2 1.1.3 1.8.3h54V5.6"></path><path d="M44.7 21.5H57m-12.3 4H57M10.6 14.3H2v41.3c0 2.6 1.9 5 4.3 5.7m9.5-39.8h12.3M15.8 42.7h12.3m-12.3 4.1h12.3M15.8 51h12.3m-12.3 4.5h12.3m3.2-34H41m-9.7 4.1H41m-9.7 4.3H41m-9.7 4.2H41m-9.7 4.2H41m-9.7 4.2H41m-9.7 13H41m-9.7-8.7H41"></path><path d="M31.3 51H41"></path></g></svg>';
+            $content .= '<p>'.__('News and stories for creators.', self::$maxi_text_domain);
+            $content .= ' <a href="https://maxiblocks.com/go/read-the-blog" target="_blank">'.__('Read the blog', self::$maxi_text_domain).'</a>.</p>';
+            $content .='</div>'; // maxi-dashboard_main-sidebar-item
 
-            // $content .= '<div class="maxi-dashboard_main-sidebar-item">';
-            // $content .= '<svg class="email-marketing-2-maxi-svg" width="64px" height="64px" viewBox="0 0 64 64"><style>.email-marketing-2-maxi-svg .D{stroke:var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-7,8,18,25),1))}.email-marketing-2-maxi-svg .E{stroke-width:2}.email-marketing-2-maxi-svg .F{stroke-linejoin:round}.email-marketing-2-maxi-svg .G{stroke-miterlimit:10}.email-marketing-2-maxi-svg .H{fill:var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1))}.email-marketing-2-maxi-svg .I{stroke-linecap:round}</style><path d="M59.2 29.6l-7.3-5.7h-.5v13.4zm-46.6-5.9h-.5l-7.3 5.9 7.8 8z" data-stroke="" data-fill="" class="D E F G H"></path><g fill="none" data-stroke="" class="D E F G"><path d="M12.6 6.8v16.9 13.9l10.3 10.6 1.8-1.6c4.2-3.8 10.6-3.8 14.8 0l1.5 1.3 10.6-10.6V23.9 6.8h-39zm4.5 5.1h4.4m-4.4 4h5.3M49.2 26l-17.7 7.5 4.9 4.9-3 3-4.9-4.9-1.2 1.2a4.89 4.89 0 0 1-6.9 0 4.89 4.89 0 0 1 0-6.9l4.2-4.2 1.3-2.9 4.3-10.2 2-4.5 6 6c1.4-1.4 3.7-1.4 5.1 0s1.4 3.7 0 5.1l3.8 3.8 2.1 2.1z" class="I"></path><path d="M28.6 36.5l2.9-2.9h0zm22.8.8L40.9 47.9l1.1 1 13.4 12.2c2.2-.3 3.8-2.2 3.8-4.5v-27l-7.8 7.7zm-38.8.3l-7.7-8v27.1c0 2.3 1.7 4.1 3.8 4.5L22.1 49l.8-.7-10.3-10.7z"></path><path d="M9.4 61.1c-.2 0-.5 0-.7-.1m46.6.1c-.2 0-.5.1-.7.1" class="I"></path></g><path d="M41.9 48.9l-1.1-1-1.5-1.3c-4.2-3.8-10.6-3.8-14.8 0l-1.8 1.6-.8.7L9.4 61.1h45.3c.2 0 .5 0 .7-.1L41.9 48.9zM43.2 15c-1.4-1.4-3.7-1.4-5.1 0l5.1 5.1c1.4-1.4 1.4-3.7 0-5.1z" data-stroke="" data-fill="" class="H D E F G"></path><g fill="none" data-stroke="" class="D E F"><path d="M24.7,26.7l-4.2,4.2c-1.9,1.9-1.9,5,0,6.9c1.9,1.9,5,1.9,6.9,0l1.2-1.2l3-3L24.7,26.7z" class="G"></path><path d="M28.547 36.494l2.97-2.97 4.879 4.879-2.97 2.97z" stroke-miterlimit="9.9999"></path></g><g data-stroke="" class="G D E F"><path d="M44.7 28l-4.2-4.2-10.2-10.2-4.4 10.2-1.2 2.9 6.8 6.9h0 0L49.2 26z" data-fill="" class="H"></path><g fill="none"><path d="M31.5 33.6l-6.8-6.9 6.8 6.9zm-1.2-20h0L32.2 9z"></path><path d="M47 23.9l-3.8-3.8h0l-5-5.1h0l-6-6-1.9 4.6 10.2 10.2 4.2 4.2 4.5-2z"></path><path d="M21.5 11.9h-4.4m5.3 4h-5.3" class="I"></path></g><path d="M49.4 12.6c.4 0 .8-.2 1.1-.5L57 5.6a1.57 1.57 0 0 0 0-2.2c-.6-.6-1.6-.6-2.3 0l-6.5 6.5c-.6.6-.6 1.6 0 2.3.4.2.8.4 1.2.4zm-6-3.3A1.58 1.58 0 0 0 45 7.7V4.5a1.6 1.6 0 1 0-3.2 0v3.2c0 .8.7 1.6 1.6 1.6zm12.5 5.9h-3.3a1.58 1.58 0 0 0-1.6 1.6 1.58 1.58 0 0 0 1.6 1.6h3.3a1.58 1.58 0 0 0 1.6-1.6c0-.8-.7-1.6-1.6-1.6z" data-fill="" class="H"></path></g></svg>';
-            // $content .= '<p>'.__('Get a summary of stories you missed.', self::$maxi_text_domain);
-            // $content .= ' <a href="" target="_blank">'.__('Notify me', self::$maxi_text_domain).'</a>.</p>';
-            // $content .='</div>'; // maxi-dashboard_main-sidebar-item
+            $content .= '<div class="maxi-dashboard_main-sidebar-item">';
+            $content .= '<svg class="email-marketing-2-maxi-svg" width="64px" height="64px" viewBox="0 0 64 64"><style>.email-marketing-2-maxi-svg .D{stroke:#081219}.email-marketing-2-maxi-svg .E{stroke-width:2}.email-marketing-2-maxi-svg .F{stroke-linejoin:round}.email-marketing-2-maxi-svg .G{stroke-miterlimit:10}.email-marketing-2-maxi-svg .H{fill:#FF4A17}.email-marketing-2-maxi-svg .I{stroke-linecap:round}</style><path d="M59.2 29.6l-7.3-5.7h-.5v13.4zm-46.6-5.9h-.5l-7.3 5.9 7.8 8z" data-stroke="" data-fill="" class="D E F G H"></path><g fill="none" data-stroke="" class="D E F G"><path d="M12.6 6.8v16.9 13.9l10.3 10.6 1.8-1.6c4.2-3.8 10.6-3.8 14.8 0l1.5 1.3 10.6-10.6V23.9 6.8h-39zm4.5 5.1h4.4m-4.4 4h5.3M49.2 26l-17.7 7.5 4.9 4.9-3 3-4.9-4.9-1.2 1.2a4.89 4.89 0 0 1-6.9 0 4.89 4.89 0 0 1 0-6.9l4.2-4.2 1.3-2.9 4.3-10.2 2-4.5 6 6c1.4-1.4 3.7-1.4 5.1 0s1.4 3.7 0 5.1l3.8 3.8 2.1 2.1z" class="I"></path><path d="M28.6 36.5l2.9-2.9h0zm22.8.8L40.9 47.9l1.1 1 13.4 12.2c2.2-.3 3.8-2.2 3.8-4.5v-27l-7.8 7.7zm-38.8.3l-7.7-8v27.1c0 2.3 1.7 4.1 3.8 4.5L22.1 49l.8-.7-10.3-10.7z"></path><path d="M9.4 61.1c-.2 0-.5 0-.7-.1m46.6.1c-.2 0-.5.1-.7.1" class="I"></path></g><path d="M41.9 48.9l-1.1-1-1.5-1.3c-4.2-3.8-10.6-3.8-14.8 0l-1.8 1.6-.8.7L9.4 61.1h45.3c.2 0 .5 0 .7-.1L41.9 48.9zM43.2 15c-1.4-1.4-3.7-1.4-5.1 0l5.1 5.1c1.4-1.4 1.4-3.7 0-5.1z" data-stroke="" data-fill="" class="H D E F G"></path><g fill="none" data-stroke="" class="D E F"><path d="M24.7,26.7l-4.2,4.2c-1.9,1.9-1.9,5,0,6.9c1.9,1.9,5,1.9,6.9,0l1.2-1.2l3-3L24.7,26.7z" class="G"></path><path d="M28.547 36.494l2.97-2.97 4.879 4.879-2.97 2.97z" stroke-miterlimit="9.9999"></path></g><g data-stroke="" class="G D E F"><path d="M44.7 28l-4.2-4.2-10.2-10.2-4.4 10.2-1.2 2.9 6.8 6.9h0 0L49.2 26z" data-fill="" class="H"></path><g fill="none"><path d="M31.5 33.6l-6.8-6.9 6.8 6.9zm-1.2-20h0L32.2 9z"></path><path d="M47 23.9l-3.8-3.8h0l-5-5.1h0l-6-6-1.9 4.6 10.2 10.2 4.2 4.2 4.5-2z"></path><path d="M21.5 11.9h-4.4m5.3 4h-5.3" class="I"></path></g><path d="M49.4 12.6c.4 0 .8-.2 1.1-.5L57 5.6a1.57 1.57 0 0 0 0-2.2c-.6-.6-1.6-.6-2.3 0l-6.5 6.5c-.6.6-.6 1.6 0 2.3.4.2.8.4 1.2.4zm-6-3.3A1.58 1.58 0 0 0 45 7.7V4.5a1.6 1.6 0 1 0-3.2 0v3.2c0 .8.7 1.6 1.6 1.6zm12.5 5.9h-3.3a1.58 1.58 0 0 0-1.6 1.6 1.58 1.58 0 0 0 1.6 1.6h3.3a1.58 1.58 0 0 0 1.6-1.6c0-.8-.7-1.6-1.6-1.6z" data-fill="" class="H"></path></g></svg>';
+            $content .= '<p>'.__('Get a summary of stories you missed.', self::$maxi_text_domain);
+            $content .= ' <a href="https://maxiblocks.com/go/notify-me" target="_blank">'.__('Notify me', self::$maxi_text_domain).'</a>.</p>';
+            $content .='</div>'; // maxi-dashboard_main-sidebar-item
 
-            // $content .= '<div class="maxi-dashboard_main-sidebar-item">';
-            // $content .= '<svg class="achievement-2-maxi-svg" width="64px" height="64px" viewBox="0 0 64 64" data-stroke="" stroke="var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-7,8,18,25),1))" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="10"><path d="M25 40.6h7.1 7.2l-7.2-3.7z" fill="none"></path><path d="M32.1 36.9l7.2 3.7h5.5l-1.9-11.5 5.4-5.3 5.3-5.2-14.8-2.2-6.7-13.5-6.6 13.5-14.9 2.2 10.8 10.5-2 11.5H25zm29 10.6h-8.8l-4.5 6.8h0l-4.5 6.8h17.8l-4.5-6.8zm-44.7 6.8l-4.5-6.8h-9l4.5 6.8-4.5 6.8H21l-4.6-6.8z" data-fill="" fill="var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4,255,74,23),1))"></path><g fill="none"><path d="M47.8 54.3l4.5-6.8h0z"></path><path d="M44.8 40.6h-5.5-7.2H25h-5.6H7.3l4.6 6.9 4.5 6.8h0 2.1 7.8 5.8 5.8 7.9 2 0l4.5-6.8 4.6-6.9z"></path></g></svg>';
-            // $content .= '<p>'.__('Your thoughts can inspire others.', self::$maxi_text_domain);
-            // $content .= ' <a href="" target="_blank">'.__('Give a quick review', self::$maxi_text_domain).'</a>.</p>';
-            // $content .='</div>'; // maxi-dashboard_main-sidebar-item
+            $content .= '<div class="maxi-dashboard_main-sidebar-item">';
+            $content .= '<svg class="achievement-2-maxi-svg" width="64px" height="64px" viewBox="0 0 64 64" data-stroke="" stroke="#081219" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="10"><path d="M25 40.6h7.1 7.2l-7.2-3.7z" fill="none"></path><path d="M32.1 36.9l7.2 3.7h5.5l-1.9-11.5 5.4-5.3 5.3-5.2-14.8-2.2-6.7-13.5-6.6 13.5-14.9 2.2 10.8 10.5-2 11.5H25zm29 10.6h-8.8l-4.5 6.8h0l-4.5 6.8h17.8l-4.5-6.8zm-44.7 6.8l-4.5-6.8h-9l4.5 6.8-4.5 6.8H21l-4.6-6.8z" data-fill="" fill="#FF4A17"></path><g fill="none"><path d="M47.8 54.3l4.5-6.8h0z"></path><path d="M44.8 40.6h-5.5-7.2H25h-5.6H7.3l4.6 6.9 4.5 6.8h0 2.1 7.8 5.8 5.8 7.9 2 0l4.5-6.8 4.6-6.9z"></path></g></svg>';
+            $content .= '<p>'.__('Your thoughts can inspire others.', self::$maxi_text_domain);
+            $content .= ' <a href="https://maxiblocks.com/go/give-a-review" target="_blank">'.__('Give a quick review', self::$maxi_text_domain).'</a>.</p>';
+            $content .='</div>'; // maxi-dashboard_main-sidebar-item
 
-            // $content .='</div>'; // maxi-dashboard_main-sidebar
+            $content .='</div>'; // maxi-dashboard_main-sidebar
             return $content;
         }
 
@@ -552,6 +613,16 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .=
                 __(' for self-service.', self::$maxi_text_domain) . '</p>';
 
+            $description =
+                '<h4>' .
+                __('Enable live chat support (temporary)', 'maxi-blocks') .
+                '</h4>';
+            $description .= '<p>For a short time we\'re offering live chat to help troubleshoot issues during the beta plugin release. Live chat will be removed in a future update. By activating this option you agree to the GDPR terms as set out in the Crisp chat service terms.</p>';
+            $description .= '<p><a href="https://help.crisp.chat/en/article/whats-crisp-eu-gdpr-compliance-status-nhv54c/" target="_blank"'.'>' . __('Read about Crisp GDPR terms', 'maxi-blocks') . '</a></p>';
+
+            $content .= $this->generate_setting($description, 'support_chat');
+            $content .= get_submit_button();
+
             // $content .= '<p>'.__('For support please  ', self::$maxi_text_domain);
             // $content .= '<a href="" target="_blank"> '.__('post your question', self::$maxi_text_domain).'</a>';
             // $content .= __(' in the WordPress.org forum.', self::$maxi_text_domain).'</p>';
@@ -580,6 +651,128 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
+            $content .= $this->generate_item_header('Template library and Style Cards', false);
+            
+            $content .=
+                '<p>' .
+                __(
+                    'Even the best designers use page templates to save time. The trick is to change styles without wasting hours choosing colours and fonts. You need a shortcut. You need a Style Card. ',
+                    self::$maxi_text_domain,
+                ) .
+                '</p>';
+
+            $content .=
+                '<p>' .
+                __(
+                    'Style Cards change 15 design elements in sync. It works like this;',
+                    self::$maxi_text_domain,
+                ) .
+                '</p>';
+            $content .= '<ol>';
+            $content .=
+                '<li>' .
+                __(
+                    'Choose your favourite Style Card from 100 shown in the library.',
+                    self::$maxi_text_domain,
+                ) .
+                '</li>';
+            $content .=
+                '<li>' .
+                __(
+                    'Browse the template library to find a good page or pattern.',
+                    self::$maxi_text_domain,
+                ) .
+                '</li>';
+            $content .=
+                '<li>' .
+                __(
+                    'Insert and watch how templates instantly match your chosen style.',
+                    self::$maxi_text_domain,
+                ) .
+                '</li>';
+            $content .= '</ol>';
+
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
+
+            $content .= $this->generate_item_header('Maxi Blocks is free and open source', false);
+
+            $content .=
+                '<p>' .
+                __(
+                    'Whatever you create with Maxi Blocks is yours to keep. You are welcome to use the free templates on as many sites as you want. Don’t forget to share your pages with the hashtag',
+                    self::$maxi_text_domain,
+                );
+
+            $content .=
+                '<a href="https://maxiblocks.com/" target="_blank"> ' .
+                __('#maxiblocks', self::$maxi_text_domain) .
+                '</a>';
+
+            $content .=
+                __(
+                    ' - We’re dying to see what you create. ',
+                    self::$maxi_text_domain,
+                ) .
+                '</p>';
+
+            $content .=
+                '<p>' .
+                __(
+                    'Our next goal is to launch the Maxi Blocks Pro template library subscription. Hundreds of patterns and pages have already been completed. It’s going to be epic. This income will help us grow the team and build out the awesome roadmap.',
+                    self::$maxi_text_domain,
+                ) ;
+
+            $content .=
+                '<a href="https://maxiblocks.com/go/pro-subscription" target="_blank"> ' .
+                __(
+                    'Learn more about Maxi Blocks Pro.',
+                    self::$maxi_text_domain,
+                ) .
+                '</a>';
+
+            $content .=
+                '</p>';
+
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
+
+            $content .= $this->generate_item_header('Roadmap', false);
+
+            $content .=
+                '<p>' .
+                __(
+                    'There’s a grand plan and we need your help. Share your suggestions or vote on what to build next. ',
+                    self::$maxi_text_domain,
+                ) ;
+
+            $content .=
+                '<a href="https://maxiblocks.com/go/roadmap" target="_blank"> ' .
+                __(
+                    "See what's planned in the roadmap.",
+                    self::$maxi_text_domain,
+                ) .
+                '</a>';
+
+            $content .=
+                '</p>';
+
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
+
+            $content .= $this->generate_item_header('Beta 1.0', false);
+            
+            $content .=
+                '<p>' .
+                __(
+                    'The Maxi Blocks editor improves with your feedback. Because we’re open source, everyone can benefit. For quality assurance, every component is coded with its own automated test. Even so, your setup might be different. It’s recommended to build in a staging environment while we’re still in Beta. And if you find an issue, please let us know via our support channels or GitHub. Every bit of feedback helps.',
+                    self::$maxi_text_domain,
+                ) .
+                '</p>';
+
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
+            
             // TO DO: uncomment when we have a WP directory link for the rollback function
             // $content .= $this->generate_item_header('Rollback to previous version', false);
 
@@ -609,6 +802,96 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             // $content .= get_submit_button();
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion
+            $content .= '</div>'; // maxi-dashboard_main-content
+
+            return $content;
+        }
+  
+        public function maxi_blocks_pro()
+        {
+            $current_user = wp_get_current_user();
+            $user_name = $current_user->user_firstname;
+            $content = '<div class="maxi-dashboard_main-content maxi-dashboard_main-content-pro-library">';
+            $content .= '<div class="maxi-dashboard_main-content_accordion" id="maxi-dashboard_main-content_pro-not-pro">';
+
+            $content .= '<div id="maxi-dashboard_main-content_not-pro">';
+            $content .= '<h1>'.__('Thousands of premium templates to work faster', self::$maxi_text_domain).'</h1>';
+            $content .= '<h2>'.__('Unlimited downloads. Unlimited sites. No feature lock-in.', self::$maxi_text_domain).'</h2>';
+            $content .= '<p>'.__('Find inspiration, or add variety to your designs. Boost your productivity and grow your audience. Join our community of creators who love to build fast, beautiful, responsive websites.', self::$maxi_text_domain).'</p>';
+            $content .= '<h3>'.__("Let’s create something amazing with Maxi", self::$maxi_text_domain).'</h3>';
+            // $content .= '<p>'.__('I want to join', self::$maxi_text_domain).'</p>';
+            $content .= '<div class="sign-up_button-wrap">';
+            $content .= '<a href="https://maxiblocks.com/go/pricing" target="_blank" class="sign-up_button">'.__('Sign up', self::$maxi_text_domain).'</a>';
+            $content .= '<p>'.__('Already have an account? ', self::$maxi_text_domain);
+            $content .= '<a href="https://maxiblocks.com/go/user-login" target="_blank">'.__('Sign in', self::$maxi_text_domain).'</a>';
+            $content .= '</p>';
+            $content .= '</div>';
+            $content .= '<ul class="not_loggedin-bottom-menu">';
+            $content .= '<li><a href="https://maxiblocks.com/go/help-desk" target="_blank">'.__('help desk', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="https://maxiblocks.com/go/pro-library" target="_blank">'.__('pro library', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href=" https://maxiblocks.com/go/demo-library" target="_blank">'.__('demo library', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="https://www.youtube.com/@maxiblocks" target="_blank">'.__('youtube', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="https://maxiblocks.com" target="_blank">'.__('maxiblocks.com', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="https://twitter.com/maxiblocks" target="_blank">'.__('twitter', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="https://maxiblocks.com/go/maxi-discord" target="_blank">'.__('discord community', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="https://maxiblocks.com/go/roadmap" target="_blank">'.__('roadmap', self::$maxi_text_domain).'</a></li>';
+            $content .= '</ul>';
+            
+            $content .= '</div>'; // maxi-dashboard_main-content_not-pro
+            $content .= '<div id="maxi-dashboard_main-content_pro" class="maxi-dashboard_main-content-pro-library-logged-in">';
+            $content .=
+                '<h2>' .
+                __('Hi ', self::$maxi_text_domain);
+            $content .=
+                '<span>' .
+                __('[username]', self::$maxi_text_domain).'</span>';
+            $content .= '</h2>';
+            $content .=
+                '<h2>' .
+                esc_html($user_name) .
+                '</h2>';
+            $content .= '<h1>'.__("You're signed in. Pro library is connected.", self::$maxi_text_domain).'</h1>';
+            $content .= '<h3>'.__("Browse for templates", self::$maxi_text_domain).'</h3>';
+            $content .= '<ul>';
+            $content .=
+                '<li>' .
+                __(
+                    '-  Create a new page to launch the editing experience',
+                    self::$maxi_text_domain,
+                ) .
+                '</li>';
+            $content .=
+                '<li>' .
+                __(
+                    '-  Open master toolbar from the square Maxi Blocks launcher icon',
+                    self::$maxi_text_domain,
+                ) .
+                '</li>';
+            $content .=
+                '<li>' .
+                __(
+                    '-  Choose "Template library" and select the blue "Pro" tab to start browsing',
+                    self::$maxi_text_domain,
+                ) .
+                '</li>';
+            $content .= '</ul>';
+            $content .= '<h3>'.__("Support links", self::$maxi_text_domain).'</h3>';
+            $content .= '<ul class="loggedin-bottom-menu">';
+            $content .= '<li><a href="https://maxiblocks.com/go/help-desk" target="_blank">'.__('Help desk', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="https://www.youtube.com/@maxiblocks" target="_blank">'.__('YouTube', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="https://maxiblocks.com" target="_blank">'.__('maxiblocks.com', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="https://maxiblocks.com/go/roadmap" target="_blank">'.__('Roadmap', self::$maxi_text_domain).'</a></li>';
+            $content .= '</ul>';
+            $content .= '<h4>'.__("Community", self::$maxi_text_domain).'</h4>';
+            $content .= '<ul class="loggedin-bottom-menu">';
+            $content .= '<li><a href="https://twitter.com/maxiblocks" target="_blank">'.__('Twitter', self::$maxi_text_domain).'</a></li>';
+            $content .= '<li><a href="https://maxiblocks.com/go/maxi-discord" target="_blank">'.__('Discord community', self::$maxi_text_domain).'</a></li>';
+            $content .= '</ul>';
+            // $content .= '<p>'.__('You are connected to Maxi Pro!', self::$maxi_text_domain).'</p>';
+            // $content .= '<p><a href="https://my.maxiblocks.com/account" target="_blank">'.__('Edit your profile', self::$maxi_text_domain).'</a></p>';
+            $content .= '</div>';
+
             $content .= '</div>'; // maxi-dashboard_main-content_accordion
             $content .= '</div>'; // maxi-dashboard_main-content
 
@@ -826,6 +1109,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             register_setting('maxi-blocks-settings-group', 'remove_local_fonts', $args);
             register_setting('maxi-blocks-settings-group', 'allow_svg_json_uploads', $args);
             register_setting('maxi-blocks-settings-group', 'hide_tooltips', $args);
+            register_setting('maxi-blocks-settings-group', 'support_chat', $args);
             register_setting('maxi-blocks-settings-group', 'swap_cloud_images', $args);
             register_setting('maxi-blocks-settings-group', 'google_api_key_option');
             register_setting('maxi-blocks-settings-group', 'maxi_breakpoints');

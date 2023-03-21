@@ -16,7 +16,7 @@ import {
 } from '../fse';
 import getWinBreakpoint from './getWinBreakpoint';
 import { setScreenSize } from '../styles';
-import { authConnect } from '../../editor/auth';
+// import { authConnect } from '../../editor/auth';
 
 /**
  * External dependencies
@@ -54,7 +54,7 @@ const allowedBlocks = [
 ];
 
 wp.domReady(() => {
-	authConnect(false);
+	// authConnect(false);
 	const observerSubscribe = subscribe(() => {
 		const targetNode =
 			document.querySelector('.edit-post-layout') ||

@@ -147,7 +147,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             echo '<div class="maxi-dashboard_wrap">';
             echo '<header class="maxi-dashboard_header"><img class="maxi-dashboard_logo" width="200" src="' .
                 esc_url(MAXI_PLUGIN_URL_PATH) .
-                'img/maxi-logo-dashboard-beta-wite.svg' .
+                'img/maxi-logo-dashboard-beta-white.svg' .
                 '" alt="' .
                 esc_html(__('Maxi Blocks Logo', self::$maxi_text_domain)) .
                 '"></header>';
@@ -225,13 +225,13 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     self::$maxi_text_domain,
                 ) .
                 '</p>';
-                $content .=
-                '<p>' .
-                __(
-                    " Start with 700 free templates and customize them quickly with a style card. Need some icons? Speed search our collection of 13.4K designer icons and shapes - all free.",
-                    self::$maxi_text_domain,
-                ) .
-                '</p>';
+            $content .=
+            '<p>' .
+            __(
+                " Start with 700 free templates and customize them quickly with a style card. Need some icons? Speed search our collection of 13.4K designer icons and shapes - all free.",
+                self::$maxi_text_domain,
+            ) .
+            '</p>';
             $content .=
                 '<p>' .
                 __(
@@ -239,13 +239,13 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     self::$maxi_text_domain,
                 ) .
                 '</p>';
-                $content .=
-                '<p>' .
-                __(
-                    "We've created thousands of designs using Maxi, so we know what works. Copy, remix, and learn as you go - it's all possible with Maxi Blocks.",
-                    self::$maxi_text_domain,
-                ) .
-                '</p>';
+            $content .=
+            '<p>' .
+            __(
+                "We've created thousands of designs using Maxi, so we know what works. Copy, remix, and learn as you go - it's all possible with Maxi Blocks.",
+                self::$maxi_text_domain,
+            ) .
+            '</p>';
             // $content .=
             //     '<h3>' .
             //     __(
@@ -652,7 +652,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
             $content .= $this->generate_item_header('Template library and Style Cards', false);
-            
+
             $content .=
                 '<p>' .
                 __(
@@ -761,7 +761,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
             $content .= $this->generate_item_header('Beta 1.0', false);
-            
+
             $content .=
                 '<p>' .
                 __(
@@ -772,7 +772,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
-            
+
             // TO DO: uncomment when we have a WP directory link for the rollback function
             // $content .= $this->generate_item_header('Rollback to previous version', false);
 
@@ -807,7 +807,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             return $content;
         }
-  
+
         public function maxi_blocks_pro()
         {
             $current_user = wp_get_current_user();
@@ -837,7 +837,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '<li><a href="https://maxiblocks.com/go/maxi-discord" target="_blank">'.__('discord community', self::$maxi_text_domain).'</a></li>';
             $content .= '<li><a href="https://maxiblocks.com/go/roadmap" target="_blank">'.__('roadmap', self::$maxi_text_domain).'</a></li>';
             $content .= '</ul>';
-            
+
             $content .= '</div>'; // maxi-dashboard_main-content_not-pro
             $content .= '<div id="maxi-dashboard_main-content_pro" class="maxi-dashboard_main-content-pro-library-logged-in">';
             $content .=
@@ -1161,42 +1161,42 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             }
         }
 
-        public function allow_svg_json_uploads()
-        {
-            function maxi_svg_json_upload($mimes)
-            {
-                $mimes['json'] = 'text/plain';
-                $mimes['svg'] = 'image/svg+xml';
-                return $mimes;
-            }
+        // public function allow_svg_json_uploads()
+        // {
+        //     function maxi_svg_json_upload($mimes)
+        //     {
+        //         $mimes['json'] = 'text/plain';
+        //         $mimes['svg'] = 'image/svg+xml';
+        //         return $mimes;
+        //     }
 
-            if (get_option('allow_svg_json_uploads')) {
-                add_filter('upload_mimes', 'maxi_svg_json_upload');
-            }
-        }
+        //     if (get_option('allow_svg_json_uploads')) {
+        //         add_filter('upload_mimes', 'maxi_svg_json_upload');
+        //     }
+        // }
 
-        public function rollback_zip($url)
-        {
-            $zip_file = substr($url, strrpos($url, '/') + 1);
-            $file_content = file_put_contents(
-                $zip_file,
-                fopen($url, 'r'),
-                LOCK_EX,
-            );
-            if (false === $file_content) {
-                die('Couldn\'t write to file.');
-            }
+        // public function rollback_zip($url)
+        // {
+        //     $zip_file = substr($url, strrpos($url, '/') + 1);
+        //     $file_content = file_put_contents(
+        //         $zip_file,
+        //         fopen($url, 'r'),
+        //         LOCK_EX,
+        //     );
+        //     if (false === $file_content) {
+        //         die('Couldn\'t write to file.');
+        //     }
 
-            $zip = new ZipArchive();
-            $res = $zip->open($zip_file);
+        //     $zip = new ZipArchive();
+        //     $res = $zip->open($zip_file);
 
-            if ($res === true) {
-                $zip->extractTo(plugin_dir_path(__DIR__) . '../..');
-                $zip->close();
-            }
+        //     if ($res === true) {
+        //         $zip->extractTo(plugin_dir_path(__DIR__) . '../..');
+        //         $zip->close();
+        //     }
 
-            update_option('maxi_rollback_version', 'current');
-        }
+        //     update_option('maxi_rollback_version', 'current');
+        // }
 
         // public function get_versions_list()
         // {

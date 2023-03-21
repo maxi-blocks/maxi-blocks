@@ -463,13 +463,13 @@ class MaxiBlocks_Styles
 
                     $font_url = "https://fonts.googleapis.com/css2?family=$font";
 
-					// Load default font weight for cases where the saved font weight doesn't exist
-					wp_enqueue_style(
-						$name . '-font-' . sanitize_title_with_dashes($font),
-						$font_url
-					);
+                    // Load default font weight for cases where the saved font weight doesn't exist
+                    wp_enqueue_style(
+                        $name . '-font-' . sanitize_title_with_dashes($font),
+                        $font_url
+                    );
 
-					$font_url .= ':';
+                    $font_url .= ':';
 
                     foreach ($font_weights as $font_weight) {
                         foreach ($font_styles as $font_style) {

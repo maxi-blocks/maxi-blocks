@@ -41,6 +41,11 @@ registerBlockType('maxi-blocks/text-maxi', {
 	icon: textIcon,
 	description: 'Insert, modify or style text',
 	category: 'maxi-blocks',
+	example: {
+		attributes: {
+			preview: true,
+		},
+	},
 	supports: {
 		align: false,
 		lightBlockWrapper: true,

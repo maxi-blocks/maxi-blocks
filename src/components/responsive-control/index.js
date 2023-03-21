@@ -27,7 +27,7 @@ const ResponsiveControl = props => {
 		return {
 			defaultBreakpoints,
 		};
-	});
+	}, []);
 
 	const classes = classnames('maxi-responsive-control', className);
 

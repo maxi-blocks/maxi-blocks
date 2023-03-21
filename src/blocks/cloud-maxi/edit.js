@@ -1,13 +1,14 @@
 /**
+ * WordPress dependencies.
+ */
+import { Component, RawHTML } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
+
+/**
  * Internal dependencies.
  */
 import MaxiModal from '../../editor/library/modal';
 import { withMaxiProps } from '../../extensions/maxi-block';
-
-/**
- * WordPress dependencies.
- */
-import { Component, RawHTML } from '@wordpress/element';
 
 /**
  * External dependencies
@@ -17,7 +18,16 @@ import { isEmpty } from 'lodash';
 class edit extends Component {
 	render() {
 		const { attributes, clientId, maxiSetAttributes } = this.props;
-		const { content, openFirstTime } = attributes;
+		const { content, openFirstTime, preview } = attributes;
+
+		if (preview)
+			return (
+				<img
+					// eslint-disable-next-line no-undef
+					src={previews.library_preview}
+					alt={__('Template Library block preview', 'maxi-blocks')}
+				/>
+			);
 
 		/* Placeholder with layout modal */
 		return [

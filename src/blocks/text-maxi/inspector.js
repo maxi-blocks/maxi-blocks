@@ -22,7 +22,13 @@ import { withMaxiInspector } from '../../extensions/inspector';
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, maxiSetAttributes, context } = props;
+	const {
+		attributes,
+		deviceType,
+		maxiSetAttributes,
+		context,
+		disableCustomFormats,
+	} = props;
 	const { isList, textLevel } = attributes;
 	const { selectors, categories } = customCss;
 
@@ -92,6 +98,7 @@ const Inspector = props => {
 											type: textLevel,
 										},
 										context,
+										disableCustomFormats,
 									}),
 									...inspectorTabs.blockBackground({
 										props,
@@ -135,6 +142,10 @@ const Inspector = props => {
 										selectors,
 										categories,
 									}),
+									...inspectorTabs.dc({
+										props,
+										contentType: 'text',
+									}),
 									...inspectorTabs.scrollEffects({
 										props,
 									}),
@@ -147,6 +158,7 @@ const Inspector = props => {
 										props: {
 											...props,
 										},
+										selectors,
 									}),
 									...inspectorTabs.display({
 										props,

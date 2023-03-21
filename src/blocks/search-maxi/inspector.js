@@ -396,6 +396,7 @@ const Inspector = props => {
 										props: {
 											...props,
 										},
+										selectors,
 									}),
 									...inspectorTabs.display({
 										props,

@@ -4,7 +4,7 @@
 import { SVG, Path } from '@wordpress/primitives';
 
 const selectIcon = (
-	<SVG preserveAspectRatio='none'viewBox='0 0 24 24'>
+	<SVG preserveAspectRatio='none' viewBox='0 0 24 24'>
 		<defs>
 			<Path
 				id='select_icon'

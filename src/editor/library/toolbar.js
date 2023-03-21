@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { select, useDispatch } from '@wordpress/data';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -16,7 +16,7 @@ import {
 	mediumMode,
 	smallMode,
 } from '../../icons';
-import { onRequestInsertPattern } from './util';
+import onRequestInsertPattern from './utils/onRequestInsertPattern';
 
 /**
  * External dependencies
@@ -59,7 +59,7 @@ const LibraryToolbar = props => {
 		isPro,
 		isBeta,
 		gutenbergCode,
-		onSelect,
+		onInsert,
 		isSwapChecked,
 		onChangeTone,
 	} = props;
@@ -67,7 +67,7 @@ const LibraryToolbar = props => {
 	const client = new TypesenseSearchClient({
 		nodes: [
 			{
-				host: '24q17endjv0kacilp-1.a1.typesense.net',
+				host: '24q17endjv0kacilp.a1.typesense.net',
 				port: '443',
 				protocol: 'https',
 			},
@@ -159,10 +159,8 @@ const LibraryToolbar = props => {
 		}
 	};
 
-	const { isValidTemplate, getSelectedBlockClientId } =
-		select('core/block-editor');
+	const { getSelectedBlockClientId } = select('core/block-editor');
 	const clientId = getSelectedBlockClientId();
-	const { replaceBlock } = useDispatch('core/block-editor');
 
 	const openRelatedPattern = () => {
 		let relatedSerial = toneUrl.toLowerCase();
@@ -469,17 +467,14 @@ const LibraryToolbar = props => {
 					{(!isPro || isBeta || isMaxiProActive) && (
 						<ToolbarButton
 							label={__('Insert', 'maxi-blocks')}
-							onClick={() => {
-								onRequestInsertPattern(
+							onClick={async () => {
+								onInsert();
+
+								await onRequestInsertPattern(
 									gutenbergCode,
 									isSwapChecked,
-									isValidTemplate,
-									onSelect,
-									onRequestClose,
-									replaceBlock,
 									clientId
 								);
-								onRequestClose();
 							}}
 						/>
 					)}

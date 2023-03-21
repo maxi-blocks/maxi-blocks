@@ -45,7 +45,7 @@ window.onload = () => {
 		[
 			isGoogleScriptsNeeded && {
 				properties: {
-					src: `https://maps.googleapis.com/maps/api/js?key=${apiKey}`,
+					src: `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=Function.prototype`,
 					async: true,
 					defer: true,
 				},
@@ -123,18 +123,29 @@ window.onload = () => {
 					const popupContent = `
 					<div class='maxi-map-block__popup'>
 						<div class='maxi-map-block__popup__content'>
-							<${mapMarkerHeadingLevel} class='maxi-map-block__popup__content__title'>${heading}</${mapMarkerHeadingLevel}>
-							<p class='maxi-map-block__popup__content__description'>${description}</p>
+						${
+							heading &&
+							`<${mapMarkerHeadingLevel} class='maxi-map-block__popup__content__title'>${heading}</${mapMarkerHeadingLevel}>`
+						}				
+						${
+							description &&
+							`<p class='maxi-map-block__popup__content__description'>${description}</p>`
+						}
 						</div>
 					</div>
 					`;
 
-					L.marker([latitude, longitude], {
-						icon: markerIcon,
-					})
-						.addTo(map)
-						.bindPopup(popupContent)
-						.openPopup();
+					if (heading === '' && description === '') {
+						L.marker([latitude, longitude], {
+							icon: markerIcon,
+						}).addTo(map);
+					} else
+						L.marker([latitude, longitude], {
+							icon: markerIcon,
+						})
+							.addTo(map)
+							.bindPopup(popupContent)
+							.openPopup();
 				});
 			});
 		}

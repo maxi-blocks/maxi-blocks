@@ -1,2 +1,2 @@
-// eslint-disable-next-line import/prefer-default-export
 export { default as ColumnPattern } from './column-pattern';
+export { default as RowBlockTemplate } from './row-block-template';

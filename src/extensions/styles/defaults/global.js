@@ -32,6 +32,7 @@ const global = {
 	relations: {
 		type: 'array',
 	},
+	preview: { type: 'boolean', default: false },
 };
 
 export default global;

@@ -1,21 +1,21 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyWithModifier,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebarTab } from '../../../../utils';
+import {
+	getBlockAttributes,
+	openSidebarTab,
+	insertMaxiBlock,
+} from '../../../../utils';
 
 describe('Background color from Toolbar', () => {
 	it('Test background color from toolbar', async () => {
 		await createNewPost();
-		await insertBlock('Group Maxi');
+		await insertMaxiBlock(page, 'Group Maxi');
 
 		// Wait for toolbar to be visible
 		await page.waitForSelector('.toolbar-wrapper');

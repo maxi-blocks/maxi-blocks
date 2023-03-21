@@ -357,6 +357,9 @@ svg path#styleCardBoat_b,
 
 .maxi-block {
 	&::after {
+		content: '';
+		position: absolute;
+		pointer-events: none;
 		top: -1px !important;
 		right: -1px !important;
 		bottom: -1px !important;

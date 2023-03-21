@@ -135,10 +135,10 @@ class edit extends MaxiBlockComponent {
 					width: columnWidth,
 					height: columnHeight,
 				});
-
-				this.resizableObject.current.resizable.style.flexBasis = '';
-				this.resizableObject.current.resizable.style.flexShrink = '';
 			}
+
+			this.resizableObject.current.resizable.style.flexBasis = '';
+			this.resizableObject.current.resizable.style.flexShrink = '';
 		}
 
 		// Updates columnSize on the context if the column size has changed.

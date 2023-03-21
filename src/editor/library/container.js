@@ -11,12 +11,7 @@ import { CheckboxControl, Button } from '@wordpress/components';
  * Internal dependencies
  */
 import { updateSCOnEditor } from '../../extensions/style-cards';
-import {
-	svgAttributesReplacer,
-	svgCurrentColorStatus,
-	fitSvg,
-	onRequestInsertPattern,
-} from './util';
+import { svgAttributesReplacer, svgCurrentColorStatus, fitSvg } from './util';
 import { injectImgSVG } from '../../extensions/svg';
 import MasonryItem from './MasonryItem';
 import masonryGenerator from './masonryGenerator';
@@ -45,6 +40,7 @@ import DOMPurify from 'dompurify';
  * Icons
  */
 import { arrowIcon } from '../../icons';
+import onRequestInsertPattern from './utils/onRequestInsertPattern';
 
 // hack to fix issue #3930: top level tags resetting when we choose a second-level tag
 const removeMenuBugFix = () => {
@@ -75,6 +71,24 @@ const resultsCount = {
 		);
 	},
 };
+
+/**
+ * TODO: add a loading state component
+ */
+const LoadingContent = () => (
+	<div
+		className='maxi-cloud-container__content-loading'
+		style={{
+			display: 'flex',
+			justifyContent: 'center',
+			alignItems: 'center',
+			height: '100%',
+			width: '100%',
+		}}
+	>
+		Loading!
+	</div>
+);
 
 const MenuSC = ({ items, refine }) => (
 	<ul className='maxi-cloud-container__content__svg-categories'>
@@ -379,6 +393,9 @@ const LibraryContainer = props => {
 		url,
 		title,
 		prefix = '',
+		layerOrder,
+		isInserting,
+		onInsert,
 	} = props;
 
 	const {
@@ -413,7 +430,6 @@ const LibraryContainer = props => {
 		};
 	});
 
-	const { replaceBlock } = useDispatch('core/block-editor');
 	const { saveMaxiStyleCards, setSelectedStyleCard } = useDispatch(
 		'maxiBlocks/style-cards'
 	);
@@ -428,7 +444,7 @@ const LibraryContainer = props => {
 				apiKey: '0DpJlIVm3kKOiQ9kAPTklrXrIbFLgWk6', // Be sure to use an API key that only allows search operations
 				nodes: [
 					{
-						host: '24q17endjv0kacilp-1.a1.typesense.net',
+						host: '24q17endjv0kacilp.a1.typesense.net',
 						port: '443',
 						protocol: 'https',
 					},
@@ -491,10 +507,6 @@ const LibraryContainer = props => {
 	const isMaxiProActive = false;
 	/** Patterns / Blocks Results */
 	const patternsResults = hit => {
-		const wrapClassName =
-			hit.cost?.[0] === 'Pro'
-				? 'ais-InfiniteHits-item-pro'
-				: 'ais-InfiniteHits-item-free';
 		const isPattern = hit?.gutenberg_type?.[0] === 'Patterns';
 
 		return (
@@ -502,7 +514,12 @@ const LibraryContainer = props => {
 				type='patterns'
 				target='patterns'
 				key={`maxi-cloud-masonry__item-${hit.post_id}`}
-				className={wrapClassName}
+				className={classnames(
+					hit.cost?.[0] === 'Pro'
+						? 'ais-InfiniteHits-item-pro'
+						: 'ais-InfiniteHits-item-free',
+					hit.post_title.length > 23 && 'maxi-modal-long-title'
+				)}
 				title={hit.post_title}
 				demoUrl={hit.demo_url}
 				previewIMG={hit.preview_image_url}
@@ -510,23 +527,20 @@ const LibraryContainer = props => {
 				isBeta={hit.post_tag?.includes('Beta')}
 				isPro={hit.cost?.[0] === 'Pro'}
 				taxonomies={hit.category?.[0]}
-				serial={hit.post_number}
 				toneUrl={isPattern ? hit.link_to_related : null}
 				gutenbergCode={hit.gutenberg_code}
 				isMaxiProActive={isMaxiProActive}
 				isSwapChecked={isSwapChecked}
 				onSelect={onSelect}
-				onRequestInsert={() =>
-					onRequestInsertPattern(
+				onRequestInsert={async () => {
+					onInsert();
+
+					await onRequestInsertPattern(
 						hit.gutenberg_code,
 						isSwapChecked,
-						isValidTemplate,
-						onSelect,
-						onRequestClose,
-						replaceBlock,
 						clientId
-					)
-				}
+					);
+				}}
 			/>
 		);
 	};
@@ -589,7 +603,7 @@ const LibraryContainer = props => {
 			uniqueID,
 			mediaID,
 			mediaURL,
-			'background-svg-SVGData': svgData,
+			'background-layers': bgLayers,
 		} = select('core/block-editor').getBlockAttributes(clientId);
 
 		if (isValidTemplate(svgCode)) {
@@ -611,6 +625,9 @@ const LibraryContainer = props => {
 			}
 
 			if (type === 'bg-shape') {
+				const svgData = bgLayers.find(
+					layer => layer.order === layerOrder
+				)['background-svg-SVGData'];
 				const cleanedContent = DOMPurify.sanitize(fitSvg(svgCode));
 				const svg = document
 					.createRange()
@@ -825,6 +842,13 @@ const LibraryContainer = props => {
 			</>
 		);
 	};
+
+	if (isInserting)
+		return (
+			<div className='maxi-cloud-container'>
+				<LoadingContent />
+			</div>
+		);
 
 	return (
 		<div className='maxi-cloud-container'>
@@ -1047,13 +1071,12 @@ const LibraryContainer = props => {
 											item => item.label === name
 										);
 										if (item) return item;
-										else
-											return {
-												label: name,
-												value: name,
-												count: 0,
-												isRefined: false,
-											};
+										return {
+											label: name,
+											value: name,
+											count: 0,
+											isRefined: false,
+										};
 									};
 
 									const itemsReturn = [];
@@ -1099,13 +1122,13 @@ const LibraryContainer = props => {
 										if (item) {
 											item.label = `${name} tone`;
 											return item;
-										} else
-											return {
-												label: `${name} tone`,
-												value: name,
-												count: 0,
-												isRefined: false,
-											};
+										}
+										return {
+											label: `${name} tone`,
+											value: name,
+											count: 0,
+											isRefined: false,
+										};
 									};
 									const itemsReturn = [];
 									itemsReturn.push(generateItem('Light'));

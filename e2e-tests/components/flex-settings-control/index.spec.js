@@ -1,7 +1,8 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
+
 /**
  * Internal dependencies
  */
@@ -11,12 +12,13 @@ import {
 	editAdvancedNumberControl,
 	getAttributes,
 	changeResponsive,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('FlexSettings', () => {
 	it('Checking the flex options', async () => {
 		await createNewPost();
-		await insertBlock('Group Maxi');
+		await insertMaxiBlock(page, 'Group Maxi');
 		const accordionPanel = await openSidebarTab(
 			page,
 			'advanced',
@@ -48,6 +50,7 @@ describe('FlexSettings', () => {
 			button => button[1].click()
 		);
 
+		await page.waitForSelector('.maxi-gap-control__row-gap');
 		await editAdvancedNumberControl({
 			page,
 			instance: await page.$('.maxi-gap-control__row-gap'),
@@ -55,6 +58,7 @@ describe('FlexSettings', () => {
 			newValue: 'vw',
 		});
 
+		await page.waitForSelector('.maxi-gap-control__column-gap');
 		await editAdvancedNumberControl({
 			page,
 			instance: await page.$('.maxi-gap-control__column-gap'),
@@ -119,18 +123,21 @@ describe('FlexSettings', () => {
 			button => button.click()
 		);
 
+		await page.waitForSelector('.maxi-typography-control__order');
 		await editAdvancedNumberControl({
 			page,
 			instance: await page.$('.maxi-typography-control__order'),
 			newNumber: '4',
 		});
 
+		await page.waitForSelector('.maxi-typography-control__flex-grow');
 		await editAdvancedNumberControl({
 			page,
 			instance: await page.$('.maxi-typography-control__flex-grow'),
 			newNumber: '10',
 		});
 
+		await page.waitForSelector('.maxi-typography-control__flex-shrink');
 		await editAdvancedNumberControl({
 			page,
 			instance: await page.$('.maxi-typography-control__flex-shrink'),
@@ -186,18 +193,21 @@ describe('FlexSettings', () => {
 		// check s
 		await changeResponsive(page, 's');
 
+		await page.waitForSelector('.maxi-typography-control__order');
 		await editAdvancedNumberControl({
 			page,
 			instance: await page.$('.maxi-typography-control__order'),
 			newNumber: '2',
 		});
 
+		await page.waitForSelector('.maxi-typography-control__flex-grow');
 		await editAdvancedNumberControl({
 			page,
 			instance: await page.$('.maxi-typography-control__flex-grow'),
 			newNumber: '5',
 		});
 
+		await page.waitForSelector('.maxi-typography-control__flex-shrink');
 		await editAdvancedNumberControl({
 			page,
 			instance: await page.$('.maxi-typography-control__flex-shrink'),
@@ -305,7 +315,7 @@ describe('FlexSettings', () => {
 		// this openSidebar is required
 		await openSidebarTab(page, 'advanced', 'overflow');
 		await changeResponsive(page, 'base');
-		await insertBlock('Group Maxi');
+		await insertMaxiBlock(page, 'Group Maxi');
 		const accordionPanel = await openSidebarTab(
 			page,
 			'advanced',

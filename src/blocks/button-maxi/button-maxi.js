@@ -14,10 +14,12 @@ import { registerBlockType } from '@wordpress/blocks';
 /**
  * Block dependencies
  */
-import attributes from './attributes';
 import edit from './edit';
+import attributes from './attributes';
 import save from './save';
+import saveOld from './save-old';
 import { customCss } from './data';
+import withMaxiLoader from '../../extensions/maxi-block/withMaxiLoader';
 
 /**
  * Styles and icons
@@ -42,6 +44,11 @@ registerBlockType('maxi-blocks/button-maxi', {
 	icon: buttonIcon,
 	description: 'Insert, modify or style a button',
 	category: 'maxi-blocks',
+	example: {
+		attributes: {
+			preview: true,
+		},
+	},
 	supports: {
 		align: true,
 		lightBlockWrapper: true,
@@ -56,13 +63,19 @@ registerBlockType('maxi-blocks/button-maxi', {
 			uniqueid: uniqueID,
 		};
 	},
-	edit,
+	edit: withMaxiLoader(edit),
 	save,
-	deprecated: blockMigrator({
-		attributes,
-		save,
-		prefix: 'button-',
-		selectors: customCss.selectors,
-		migrators: [buttonIconTransitionMigrator],
-	}),
+	deprecated: [
+		{
+			attributes,
+			save: saveOld,
+		},
+		blockMigrator({
+			attributes,
+			save,
+			prefix: 'button-',
+			selectors: customCss.selectors,
+			migrators: [buttonIconTransitionMigrator],
+		}),
+	],
 });

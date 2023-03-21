@@ -13,47 +13,56 @@ import { isEmpty, isEqual, cloneDeep } from 'lodash';
 const withMaxiInspector = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(
-			memo(WrappedComponent, (oldProps, newProps) => {
-				const {
-					attributes: oldAttr,
-					propsToAvoid,
-					isSelected: wasSelected,
-					deviceType: oldBreakpoint,
-					scValues: oldSCValues,
-				} = oldProps;
+			memo(
+				ownProps => {
+					if (ownProps.isSelected)
+						return <WrappedComponent {...ownProps} />;
 
-				const {
-					attributes: newAttr,
-					isSelected,
-					deviceType: breakpoint,
-					scValues,
-				} = newProps;
+					return null;
+				},
+				(oldProps, newProps) => {
+					const {
+						attributes: oldAttr,
+						propsToAvoid,
+						isSelected: wasSelected,
+						deviceType: oldBreakpoint,
+						scValues: oldSCValues,
+					} = oldProps;
 
-				// If is not selected, don't render
-				if (!isSelected && wasSelected === isSelected) return true;
+					const {
+						attributes: newAttr,
+						isSelected,
+						deviceType: breakpoint,
+						scValues,
+					} = newProps;
 
-				if (select('core/block-editor').isDraggingBlocks()) return true;
+					// If is not selected, don't render
+					if (!isSelected && wasSelected === isSelected) return true;
 
-				if (
-					!wasSelected ||
-					wasSelected !== isSelected ||
-					oldBreakpoint !== breakpoint ||
-					!isEqual(oldSCValues, scValues)
-				)
-					return false;
+					if (select('core/block-editor').isDraggingBlocks())
+						return true;
 
-				const oldAttributes = cloneDeep(oldAttr);
-				const newAttributes = cloneDeep(newAttr);
+					if (
+						!wasSelected ||
+						wasSelected !== isSelected ||
+						oldBreakpoint !== breakpoint ||
+						!isEqual(oldSCValues, scValues)
+					)
+						return false;
 
-				if (!isEmpty(propsToAvoid)) {
-					propsToAvoid.forEach(prop => {
-						delete oldAttributes[prop];
-						delete newAttributes[prop];
-					});
+					const oldAttributes = cloneDeep(oldAttr);
+					const newAttributes = cloneDeep(newAttr);
+
+					if (!isEmpty(propsToAvoid)) {
+						propsToAvoid.forEach(prop => {
+							delete oldAttributes[prop];
+							delete newAttributes[prop];
+						});
+					}
+
+					return isEqual(oldAttributes, newAttributes);
 				}
-
-				return isEqual(oldAttributes, newAttributes);
-			})
+			)
 		),
 	'withMaxiInspector'
 );

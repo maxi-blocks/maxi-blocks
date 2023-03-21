@@ -134,11 +134,27 @@ function observeConsoleLogging() {
 			return;
 		}
 
+		// CustomCSS validator returns connection errors sometimes
+		if (text.includes('Error validating css: TypeError: Failed to fetch')) {
+			return;
+		}
+		if (text.includes('Failed to load resource: net::ERR_FAILED')) {
+			return;
+		}
+
 		// Since 6.1 multiline on RichText is deprecated. Need to be update on #3877
 		if (
 			text.includes(
 				'wp.blockEditor.RichText multiline prop is deprecated'
 			)
+		) {
+			return;
+		}
+
+		// In case there's no internet connection (like when you're in a plane working lol)
+		if (
+			text.includes('ERR_INTERNET_DISCONNECTED') ||
+			text.includes('network error occurred')
 		) {
 			return;
 		}

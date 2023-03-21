@@ -30,6 +30,7 @@ import { groupIcon } from '../../icons';
  * Migrators
  */
 import { blockMigrator } from '../../extensions/styles/migrators';
+import withMaxiPreview from '../../extensions/maxi-block/withMaxiPreview';
 
 /**
  * Block
@@ -59,7 +60,7 @@ registerBlockType('maxi-blocks/group-maxi', {
 			uniqueid: uniqueID,
 		};
 	},
-	edit: withMaxiLoader(edit),
+	edit: withMaxiPreview(withMaxiLoader(edit)),
 	save,
 	deprecated: blockMigrator({
 		attributes,

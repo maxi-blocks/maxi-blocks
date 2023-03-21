@@ -42,8 +42,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 $this,
                 'maxi_admin_scripts_styles',
             ]);
-
-            $this->allow_svg_json_uploads();
         }
 
         public function maxi_get_menu_icon_base64()
@@ -542,10 +540,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
             $content .= $this->generate_item_header('Fonts and files', false);
-
-            // $description = '<h4>'.__('Allow SVG / JSON file uploads (recommended)', self::$maxi_text_domain).'</h4>';
-            // $description .= '<p>'.__('Scalable Vector Graphics (SVG) are great for design and SEO. Commonly used as icons and shapes. These small image files scale without any blur. Style Cards rely on SVG for automatic colour changes. JSON files enable the import and export of templates in the library.', self::$maxi_text_domain).'</p>';
-            // $content .= $this->generate_setting($description, 'allow_svg_json_uploads');
 
             $description =
                 '<h4>' .
@@ -1107,7 +1101,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             register_setting('maxi-blocks-settings-group', 'local_fonts', $args);
             register_setting('maxi-blocks-settings-group', 'local_fonts_uploaded', $args);
             register_setting('maxi-blocks-settings-group', 'remove_local_fonts', $args);
-            register_setting('maxi-blocks-settings-group', 'allow_svg_json_uploads', $args);
             register_setting('maxi-blocks-settings-group', 'hide_tooltips', $args);
             register_setting('maxi-blocks-settings-group', 'support_chat', $args);
             register_setting('maxi-blocks-settings-group', 'swap_cloud_images', $args);
@@ -1160,20 +1153,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 new MaxiBlocks_Local_Fonts();
             }
         }
-
-        // public function allow_svg_json_uploads()
-        // {
-        //     function maxi_svg_json_upload($mimes)
-        //     {
-        //         $mimes['json'] = 'text/plain';
-        //         $mimes['svg'] = 'image/svg+xml';
-        //         return $mimes;
-        //     }
-
-        //     if (get_option('allow_svg_json_uploads')) {
-        //         add_filter('upload_mimes', 'maxi_svg_json_upload');
-        //     }
-        // }
 
         // public function rollback_zip($url)
         // {

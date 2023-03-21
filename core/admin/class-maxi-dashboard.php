@@ -57,7 +57,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         public function maxi_admin_scripts_styles()
         {
             if (is_admin()) {
-                wp_enqueue_script('appwrite', 'https://cdn.jsdelivr.net/npm/appwrite@10.2.0');
                 wp_register_style(
                     'maxi-admin',
                     MAXI_PLUGIN_URL_PATH . 'build/admin.css',
@@ -904,8 +903,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '<li><a href="https://twitter.com/maxiblocks" target="_blank">'.__('Twitter', self::$maxi_text_domain).'</a></li>';
             $content .= '<li><a href="https://maxiblocks.com/go/maxi-discord" target="_blank">'.__('Discord community', self::$maxi_text_domain).'</a></li>';
             $content .= '</ul>';
-            // $content .= '<p>'.__('You are connected to Maxi Pro!', self::$maxi_text_domain).'</p>';
-            // $content .= '<p><a href="https://my.maxiblocks.com/account" target="_blank">'.__('Edit your profile', self::$maxi_text_domain).'</a></p>';
             $content .= '</div>';
 
             $content .= '</div>'; // maxi-dashboard_main-content_accordion

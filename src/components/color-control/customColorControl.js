@@ -109,9 +109,18 @@ const CustomColorControl = props => {
 								}}
 							/>
 						</div>
+						{!disableReset && (
+							<ResetButton
+								onReset={e => {
+									onReset();
+								}}
+								isSmall
+							/>
+						)}
 					</BaseControl>
 					<Icon icon={colorOpacity} />
 					<OpacityControl
+						label={__('Colour opacity', 'maxi-blocks')}
 						opacity={color.a}
 						onChangeOpacity={val => {
 							if (!isEmpty(color)) {

@@ -1,6 +1,12 @@
 .toolbar-item__background {
 	&__popover {
 		min-width: 279px;
+		.maxi-color-control__wrap{
+			display: block;
+		}
+		.maxi-reset-button{
+			padding: 8px 8px;
+		}
 	}
 
 	&-content {

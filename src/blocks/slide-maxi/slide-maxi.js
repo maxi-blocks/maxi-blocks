@@ -33,6 +33,11 @@ registerBlockType('maxi-blocks/slide-maxi', {
 	icon: slideIcon,
 	description: 'Stack one or more blocks, top-to-bottom (vertical)',
 	category: 'maxi-blocks',
+	example: {
+		attributes: {
+			preview: true,
+		},
+	},
 	supports: {
 		align: true,
 		lightBlockWrapper: true,

@@ -69,6 +69,32 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     MAXI_PLUGIN_URL_PATH . 'build/admin.js',
                 );
                 wp_enqueue_script('maxi-admin');
+
+                $path_to_previews = plugins_url('../../img/block-preview/', __FILE__);
+
+                wp_localize_script(
+                    'maxi-admin',
+                    'previews',
+                    array(
+                        'accordion_preview' => $path_to_previews.'accordion.png',
+                        'button_preview'    => $path_to_previews.'button.png',
+                        'container_preview' => $path_to_previews.'container.png',
+                        'row_preview'       => $path_to_previews.'row.png',
+                        'divider_preview'   => $path_to_previews.'divider.png',
+                        'group_preview'     => $path_to_previews.'group.png',
+                        'icon_preview'      => $path_to_previews.'icon.png',
+                        'image_preview'     => $path_to_previews.'image.png',
+                        'map_preview'       => $path_to_previews.'map.png',
+                        'nc_preview'        => $path_to_previews.'nc.png',
+                        'search_preview'    => $path_to_previews.'search.png',
+                        'slider_preview'    => $path_to_previews.'slider.png',
+                        'library_preview'   => $path_to_previews.'templates.png',
+                        'text_preview'      => $path_to_previews.'text.png',
+                        'video_preview'     => $path_to_previews.'video.png',
+                        'pane_preview'      => $path_to_previews.'pane.png',
+                        'slide_preview'     => $path_to_previews.'slide.png',
+                    )
+                );
             }
         }
 

@@ -1,4 +1,5 @@
 === Maxi Blocks - Page Builder Gutenberg Template Library ===
+
 Contributors: @ckp267, @kyrapieterse, @svitlana41319, @maxiblocks
 Tags: page builder, templates, site builder, template library, fse, starter templates, gutenberg blocks, blocks, landing pages, elements, style cards, svg icons shapes
 Donate link: https://ko-fi.com/maxiblocks
@@ -11,6 +12,7 @@ License: GNU General Public License as published by the Free Software Foundation
 Tired of locked page builders? Discover freedom with 700+ unique templates, 13K+ icons, 100 design styles. 100% free & unlocked. Join our community!
 
 == Description ==
+
 🚀 ** Tired of those page builders that tease you with basic features and make you pay for the rest? It’s time to break the cycle. **
 
 🌟 **Welcome to the Maxi Blocks WordPress plugin**, an all-in-one page builder that will change how you build websites. Say goodbye to locked features, domain limits, and annoying license keys.  
@@ -37,7 +39,7 @@ Explore a wide array of tools and templates to enhance your designs:
 **700+ free patterns and templates:** Start your project with a huge library of ready-to-use patterns.  
 **13.4K designer icons and shapes:** Customize your designs with a wide collection of icons and shapes.  
 **Style cards functionality:** Change your page or website\'s look easily with 100 unique style cards.  
-**Pro template library:** Enhance your design experience with 806 patterns built, and 2500 more designs waiting to be built. You’ll get more variety and inspiration to help you work faster. Our templates can help you reach new audiences.
+**Pro template library:** Enhance your design experience with 806 patterns built, and 2500 more designs waiting to be built. You’ll get more variety and inspiration to help you work faster. Our templates can help you reach new audiences. [pro library](https://maxiblocks.com/pro-library/) | [demo library](https://maxiblocks.com/demo/)
 
 🧩 ### Maxi components
 Build your site with components made for speedy design:  
@@ -73,31 +75,33 @@ Look forward to exciting additions to enhance your design experience:
 **Loop builder:** Create dynamic page layout templates with advanced controls.  
 **Nested slider:** Display any Maxi foundation block in a slider format with player controls & custom icons.  
 **Menu builder:** A custom navigation block for responsive menus.  
-**Context loop with repeater fields:** Speed up your page building process with this powerful feature, similar to Gutenberg\'s \"query loop block\" but integrated with Maxi\'s blocks, container, row, column, and group. It works with the responsive grid and dynamic content.
+**Context loop with repeater fields:** Speed up your page building process with this powerful feature, similar to Gutenberg\'s \"query loop block\" but integrated with Maxi\'s blocks, container, row, column, and group. It works with the responsive grid and dynamic content.  
+**Dynamic content:** Soon to implement support for services like **ACF**, **Meta Box**, **JetEngine** & **Toolset**. Your ideas here... let us know what you need.
+**Roadmap:** Check out our roadmap for more info. [roadmap](https://maxiblocks.com/go/roadmap)
 
 📚 ### Documentation & Support
 Our resources will help you get started and master Maxi Blocks in no time:  
 **Detailed documentation:** Step-by-step guides, troubleshooting tips, and in-depth explanations for every feature.  
 **Video tutorials:** A library of video tutorials, covering everything from installation to advanced techniques.  
-**Dedicated support:** A support team available to address any questions or concerns you might have.
+**Dedicated support:** A support team available to address any questions or concerns you might have. Please use the support forums, or visit our [help desk](https://maxiblocks.com/go/help-desk).
 
 🌐 ### Community & Contributions
 Maxi Blocks is more than a plugin—it\'s a community of passionate designers, developers, and users. We welcome your contributions and feedback to make Maxi Blocks even better:  
-**Join the Maxi Blocks community:** Participate in forums, share your experiences, and connect with other users.  
-**Contribute to Maxi Blocks:** Submit your suggestions, or contribute code to our open-source project.  
-**Share your work:** Show off your amazing creations with Maxi Blocks and inspire others with your designs.
+**Join the Maxi Blocks community:** Participate in forums, share your experiences, and connect with other users. [twitter](https://twitter.com/maxiblocks) | [discord community](https://maxiblocks.com/go/maxi-discord)
+**Contribute to Maxi Blocks:** Submit your suggestions, or contribute code to our open-source project. GitHub repo https://maxiblocks.com/go/github-maxi-blocks
+**Share your work:** Show off your amazing creations with Maxi Blocks and inspire others with your designs. Use the hashtag #maxiblocks, #madewithmaxi
 
 📥 ### Get Started with Maxi Blocks
-Ready to take your website design to the next level? Download Maxi Blocks today and experience the power of this versatile page builder.  
-Begin your journey to fun web design today.
+Ready to take your website design to the next level? Download Maxi Blocks today and experience the power of this versatile page builder. Begin your journey to fun web design today.
 
 “Join us in our mission to provide a user-friendly solution for website creation. With Maxi Blocks, you\'ll have a faster, easier, and more enjoyable website design experience. We\'re excited to see the websites you create with Maxi Blocks!”
 
 Take care,  
-Kyra Pieterse,  
+Kyra,  
 Design Lead & Co-founder of Maxi Blocks
 
 == Installation ==
+
 Install the Maxi Blocks from the WordPress plugin directory, or by uploading the files to your hosting account via ftp to the wp-content/plugins folder.
 
 -   Activate the plugin from the ‘Plugins’ menu in WordPress.
@@ -115,6 +119,7 @@ Craft your digital story with Maxi Blocks. Template library and page builder.
 [pro library](https://maxiblocks.com/pro-library/) | [demo library](https://maxiblocks.com/demo/) | [maxiblocks.com](https://maxiblocks.com/) | [twitter](https://twitter.com/maxiblocks) | [discord community](https://maxiblocks.com/go/maxi-discord) | [roadmap](https://maxiblocks.com/go/roadmap)
 
 == Frequently Asked Questions ==
+
 **Do I own what I create?** Absolutely! Your creations are yours to keep.  
 **How many sites can I build?** There\'s no limit to the number of sites you can build with Maxi Blocks. The plugin is free to use for personal and commercial projects.  
 **Do I need a subscription for pro features?** No, all page builder features are free. Instead we have a pro template library subscription that gives you thousands more templates to help you work faster.
@@ -126,7 +131,8 @@ Craft your digital story with Maxi Blocks. Template library and page builder.
 1. https://maxi-blocks-wp-org-images.b-cdn.net/maxi-blocks-team-pattern-demos.gif
 
 == Changelog ==
-19 March 2023
+
+28 March 2023
 Translations pot file by @elzadj in #4425
 Issue 4406 - Modal items titles by @Marko64 in #4407
 Issue 4393 - Block indicators z-index by @Marko64 in #4413
@@ -172,4 +178,5 @@ Add missing alt tag for parallax images by @elzadj in #4546
 New block Loader by @Naaaaiix in #4557
 
 == Upgrade Notice ==
+
 New version of Maxi Blocks is available. Upgrade for improved security, more stable experience, important bug fixes or interface refinements. For peace of mind create a backup of your database first, or trial the update on a staging site. Use the rollback feature in the plugin settings if needed.

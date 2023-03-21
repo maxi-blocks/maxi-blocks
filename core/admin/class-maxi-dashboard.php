@@ -458,86 +458,82 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
-            $content .= $this->generate_item_header(
-                'Google Maps API key',
-                false,
-            );
+            // $content .= $this->generate_item_header(
+            //     'Google Maps API key',
+            //     false,
+            // );
 
-            // $description = '<h4>'.__('Use post excerpts, if defined by your theme', self::$maxi_text_domain).'</h4>';
-            // $description .= '<p>'.__('Let your active theme control the length and display of post excerpts.', self::$maxi_text_domain).'</p>';
-            // $content .= $this->generate_setting($description, 'post_excerpts');
+            // $content .=
+            //     '<h4>' .
+            //     __('Create Google Maps API key', self::$maxi_text_domain) .
+            //     '</h4>';
+            // $content .=
+            //     '<p>' .
+            //     __(
+            //         'To use Google Maps features, Google requires you to provide an API key that the plugin can use to make these requests on your behalf.',
+            //         self::$maxi_text_domain,
+            //     ) .
+            //     '</p>';
+            // $content .=
+            //     '<p>' .
+            //     __(
+            //         'To create an API key, you will need to do the following:',
+            //         self::$maxi_text_domain,
+            //     ) .
+            //     '</p>';
+            // $content .= '<ol>';
+            // $content .=
+            //     '<li>' .
+            //     __(
+            //         'Create a Google Cloud Platform account, if you don’t already have one.',
+            //         self::$maxi_text_domain,
+            //     ) .
+            //     '</li>';
+            // $content .=
+            //     '<li>' .
+            //     __(
+            //         'Create a new Google Cloud Platform project.',
+            //         self::$maxi_text_domain,
+            //     ) .
+            //     '</li>';
+            // $content .=
+            //     '<li>' .
+            //     __(
+            //         'Enable Google Maps Platform APIs.',
+            //         self::$maxi_text_domain,
+            //     ) .
+            //     '</li>';
+            // $content .=
+            //     '<li>' .
+            //     __('Generate an API key.', self::$maxi_text_domain) .
+            //     '</li>';
+            // $content .= '</ol>';
+            // $content .=
+            //     '<p>' .
+            //     __(
+            //         'To make this process easy, launch <a href="https://maxiblocks.com/go/google-maps-api-quickstart" target="_blank" rel="noreferrer">' .
+            //             __(
+            //                 'Google Maps API Quickstart',
+            //                 self::$maxi_text_domain,
+            //             ) .
+            //             '</a> which will handle the setup of your account and generate the API key that you can insert below.',
+            //         self::$maxi_text_domain,
+            //     ) .
+            //     '</p>';
 
-            $content .=
-                '<h4>' .
-                __('Create Google Maps API key', self::$maxi_text_domain) .
-                '</h4>';
-            $content .=
-                '<p>' .
-                __(
-                    'To use Google Maps features, Google requires you to provide an API key that the plugin can use to make these requests on your behalf.',
-                    self::$maxi_text_domain,
-                ) .
-                '</p>';
-            $content .=
-                '<p>' .
-                __(
-                    'To create an API key, you will need to do the following:',
-                    self::$maxi_text_domain,
-                ) .
-                '</p>';
-            $content .= '<ol>';
-            $content .=
-                '<li>' .
-                __(
-                    'Create a Google Cloud Platform account, if you don’t already have one.',
-                    self::$maxi_text_domain,
-                ) .
-                '</li>';
-            $content .=
-                '<li>' .
-                __(
-                    'Create a new Google Cloud Platform project.',
-                    self::$maxi_text_domain,
-                ) .
-                '</li>';
-            $content .=
-                '<li>' .
-                __(
-                    'Enable Google Maps Platform APIs.',
-                    self::$maxi_text_domain,
-                ) .
-                '</li>';
-            $content .=
-                '<li>' .
-                __('Generate an API key.', self::$maxi_text_domain) .
-                '</li>';
-            $content .= '</ol>';
-            $content .=
-                '<p>' .
-                __(
-                    'To make this process easy, launch <a href="https://maxiblocks.com/go/google-maps-api-quickstart" target="_blank" rel="noreferrer">' .
-                        __(
-                            'Google Maps API Quickstart',
-                            self::$maxi_text_domain,
-                        ) .
-                        '</a> which will handle the setup of your account and generate the API key that you can insert below.',
-                    self::$maxi_text_domain,
-                ) .
-                '</p>';
+            // $description =
+            //     '<h4>' .
+            //     __('Insert Google Maps API Key here', self::$maxi_text_domain) .
+            //     '</h4>';
+            // $content .= $this->generate_setting(
+            //     $description,
+            //     'google_api_key_option',
+            // );
 
-            $description =
-                '<h4>' .
-                __('Insert Google Maps API Key here', self::$maxi_text_domain) .
-                '</h4>';
-            $content .= $this->generate_setting(
-                $description,
-                'google_api_key_option',
-            );
+            // $content .= get_submit_button();
 
-            $content .= get_submit_button();
-
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
-            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
+            // $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
+            // $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
 
             $content .= $this->generate_item_header('Fonts and files', false);
 

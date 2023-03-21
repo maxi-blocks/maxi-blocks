@@ -21,6 +21,7 @@ import withMaxiLoader from '../../extensions/maxi-block/withMaxiLoader';
  */
 import './style.scss';
 import { accordionIcon } from '../../icons';
+import { getAttributesValue } from '../../extensions/styles';
 
 /**
  * Block
@@ -39,7 +40,10 @@ registerBlockType('maxi-blocks/accordion-maxi', {
 		...attributes,
 	},
 	getEditWrapperProps(attributes) {
-		const { uniqueID } = attributes;
+		const uniqueID = getAttributesValue({
+			target: 'uniqueID',
+			props: attributes,
+		});
 
 		return {
 			uniqueid: uniqueID,

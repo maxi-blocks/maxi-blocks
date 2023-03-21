@@ -14628,7 +14628,7 @@ Object {
     },
     "na-b-i-sha-s": Object {
       "default": false,
-      "originalLabel": "navigation-arrow-both-icon-shadow-status",
+      "originalLabel": "navigation-arrow-both-icon-box-shadow-status",
       "type": "boolean",
     },
     "na-b-i-st-g": Object {
@@ -34160,7 +34160,7 @@ Object {
     },
     "nd-i-shadow-s": Object {
       "default": false,
-      "originalLabel": "navigation-dot-icon-shadow-status",
+      "originalLabel": "navigation-dot-icon-box-shadow-status",
       "type": "boolean",
     },
     "nd-i-spacing-between-g": Object {

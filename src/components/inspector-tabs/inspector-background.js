@@ -10,6 +10,7 @@ import SettingTabsControl from '../setting-tabs-control';
 import BackgroundControl from '../background-control';
 import ToggleSwitch from '../toggle-switch';
 import {
+	getAttributeKey,
 	getAttributesValue,
 	getGroupAttributes,
 } from '../../extensions/styles';
@@ -45,12 +46,14 @@ const background = ({
 		cleanInlineStyles,
 		getBounds,
 	} = props;
-	const { backgroundStatusHover, backgroundStatusActive } =
-		getAttributesValue({
-			target: ['background-status-hover', 'background-status-active'],
-			props: attributes,
-			prefix,
-		});
+	const {
+		'background-status-hover': backgroundStatusHover,
+		'background-status-active': backgroundStatusActive,
+	} = getAttributesValue({
+		target: ['background-status-hover', 'background-status-active'],
+		props: attributes,
+		prefix,
+	});
 
 	const {
 		'hover-background-color-global': isActive,
@@ -119,8 +122,11 @@ const background = ({
 									className='maxi-background-status-hover'
 									onChange={val =>
 										maxiSetAttributes({
-											[`${prefix}background-status-hover`]:
-												val,
+											[getAttributeKey(
+												'background-status-hover',
+												false,
+												prefix
+											)]: val,
 										})
 									}
 								/>
@@ -145,7 +151,13 @@ const background = ({
 								)}
 							</>
 						),
-						extraIndicators: [`${prefix}background-status-hover`],
+						extraIndicators: [
+							getAttributeKey(
+								'background-status-hover',
+								false,
+								prefix
+							),
+						],
 					},
 					enableActiveState && {
 						label: 'Active state',
@@ -160,8 +172,11 @@ const background = ({
 									className='maxi-background-status-active'
 									onChange={val =>
 										maxiSetAttributes({
-											[`${prefix}background-status-active`]:
-												val,
+											[getAttributeKey(
+												'background-status-active',
+												false,
+												prefix
+											)]: val,
 										})
 									}
 								/>
@@ -186,7 +201,13 @@ const background = ({
 								)}
 							</>
 						),
-						extraIndicators: [`${prefix}background-status-active`],
+						extraIndicators: [
+							getAttributeKey(
+								'background-status-active',
+								false,
+								prefix
+							),
+						],
 					},
 				]}
 				depth={depth}

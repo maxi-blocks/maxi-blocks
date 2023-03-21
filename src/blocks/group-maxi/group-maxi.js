@@ -30,6 +30,7 @@ import { groupIcon } from '../../icons';
  * Migrators
  */
 import { blockMigrator } from '../../extensions/styles/migrators';
+import { getAttributesValue } from '../../extensions/styles';
 
 /**
  * Block
@@ -48,7 +49,10 @@ registerBlockType('maxi-blocks/group-maxi', {
 		...attributes,
 	},
 	getEditWrapperProps(attributes) {
-		const { uniqueID } = attributes;
+		const uniqueID = getAttributesValue({
+			target: 'uniqueID',
+			props: attributes,
+		});
 
 		return {
 			uniqueid: uniqueID,

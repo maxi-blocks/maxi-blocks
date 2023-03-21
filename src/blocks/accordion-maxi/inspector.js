@@ -40,7 +40,10 @@ const Inspector = props => {
 		inlineStylesTargets,
 	} = props;
 
-	const { blockStyle } = attributes;
+	const blockStyle = getAttributesValue({
+		target: 'blockStyle',
+		props: attributes,
+	});
 
 	const accordionLayout = getAttributesValue({
 		target: 'accordionLayout',

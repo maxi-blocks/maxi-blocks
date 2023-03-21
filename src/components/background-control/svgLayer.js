@@ -4,7 +4,11 @@
 import MaxiModal from '../../editor/library/modal';
 import SizeAndPositionLayerControl from './sizeAndPositionLayerControl';
 import SVGFillControl from '../svg-fill-control';
-import { getBlockStyle } from '../../extensions/styles';
+import {
+	getAttributeKey,
+	getAttributesValue,
+	getBlockStyle,
+} from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -25,7 +29,10 @@ const SVGLayer = props => {
 	const SVGOptions = cloneDeep(props.SVGOptions);
 	const isLayerHover = SVGOptions.isHover;
 
-	const SVGElement = SVGOptions[`${prefix}background-svg-SVGElement`];
+	const SVGElement = getAttributesValue({
+		target: `${prefix}background-svg-SVGElement`,
+		props: SVGOptions,
+	});
 
 	return (
 		<>
@@ -36,10 +43,18 @@ const SVGLayer = props => {
 					onRemove={obj => {
 						if (layerOrder) {
 							delete SVGOptions[
-								`${prefix}background-svg-SVGElement`
+								getAttributeKey(
+									'background-svg-SVGElement',
+									false,
+									prefix
+								)
 							];
 							delete SVGOptions[
-								`${prefix}background-svg-SVGData`
+								getAttributeKey(
+									'background-svg-SVGData',
+									false,
+									prefix
+								)
 							];
 						}
 						onChange({ ...SVGOptions, ...obj });

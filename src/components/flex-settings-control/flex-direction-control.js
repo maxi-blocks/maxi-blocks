@@ -8,7 +8,10 @@ import { __ } from '@wordpress/i18n';
  */
 import SettingTabsControl from '../setting-tabs-control';
 import Icon from '../icon';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
+import {
+	getAttributeKey,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 
 /**
  * Icons
@@ -84,7 +87,12 @@ const FlexDirectionControl = props => {
 			}
 			onChange={val =>
 				onChange({
-					[`flex-direction-${breakpoint}`]: val,
+					[getAttributeKey(
+						'flex-direction',
+						false,
+						false,
+						breakpoint
+					)]: val,
 				})
 			}
 		/>

@@ -333,13 +333,17 @@ const MaxiBlock = memo(
 
 		// In order to keep the structure that Gutenberg uses for the block,
 		// is necessary to add some inline styles to the first hierarchy blocks.
-		const { isFirstOnHierarchy } = attributes;
+		const isFirstOnHierarchy = getAttributesValue({
+			target: 'isFirstOnHierarchy',
+			attributes,
+		});
 		const styleStr = getBlockStyle(
 			attributes,
 			deviceType,
 			getMarginValue.current()
 		);
 
+		// eslint-disable-next-line consistent-return
 		useEffect(() => {
 			if (isFirstOnHierarchy) {
 				const style = document.createElement('style');

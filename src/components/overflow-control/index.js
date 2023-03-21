@@ -11,6 +11,7 @@ import { Tooltip } from '@wordpress/components';
 import Button from '../button';
 import SelectControl from '../select-control';
 import {
+	getAttributeKey,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
@@ -81,7 +82,8 @@ const OverflowControl = props => {
 		sync: currentSync = sync,
 	}) =>
 		(currentSync ? axes : [axis]).reduce((acc, axis) => {
-			acc[`overflow-${axis}-${breakpoint}`] = val;
+			acc[getAttributeKey(`overflow-${axis}`, false, false, breakpoint)] =
+				val;
 			return acc;
 		}, {});
 
@@ -123,13 +125,23 @@ const OverflowControl = props => {
 						}) || ''
 					}
 					defaultValue={getDefaultAttribute(
-						`overflow-${axis}-${breakpoint}`
+						getAttributeKey(
+							`overflow-${axis}`,
+							false,
+							false,
+							breakpoint
+						)
 					)}
 					onChange={val => onChangeValue(val, axis)}
 					onReset={() =>
 						onChangeValue(
 							getDefaultAttribute(
-								`overflow-${axis}-${breakpoint}`
+								getAttributeKey(
+									`overflow-${axis}`,
+									false,
+									false,
+									breakpoint
+								)
 							),
 							axis
 						)

@@ -1,32 +1,14 @@
-import {
-	colorDictionary,
-	noTypeDictionary,
-	prefixesDictionary,
-	suffixesDictionary,
-} from './attributesDictionary';
+import parseLongAttrKey from './parseLongAttrKey';
+import parseShortAttrKey from './parseShortAttrKey';
 
 const blockAttributesShorter = attributes => {
 	const newAttributes = {};
 
 	Object.entries(attributes).forEach(([objKey, objVal]) => {
-		let newKey = objKey;
+		const newKey = parseLongAttrKey(objKey);
+		const longKey = parseShortAttrKey(newKey);
 
-		// if (type === 'background') debugger;
-
-		// Ensures we set from the longest word to the shortest
-		const dictionaryReplacer = dictionary =>
-			Object.entries(dictionary)
-				.sort(([a], [b]) => b.length - a.length)
-				.forEach(([key, val]) => {
-					if (newKey.includes(key)) newKey = newKey.replace(key, val);
-				});
-
-		dictionaryReplacer(noTypeDictionary);
-		dictionaryReplacer(prefixesDictionary);
-		dictionaryReplacer(suffixesDictionary);
-		dictionaryReplacer(colorDictionary);
-
-		newAttributes[newKey] = { ...objVal, originalLabel: objKey };
+		newAttributes[newKey] = { ...objVal, originalLabel: longKey };
 	});
 
 	return newAttributes;

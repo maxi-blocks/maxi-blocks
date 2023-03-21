@@ -1,4 +1,5 @@
 import { select } from '@wordpress/data';
+import { getAttributesValue } from '../styles';
 
 const getClientIdFromUniqueId = uniqueID => {
 	const { getBlocks } = select('core/block-editor');
@@ -7,7 +8,12 @@ const getClientIdFromUniqueId = uniqueID => {
 		let clientId = null;
 
 		blocks.forEach(block => {
-			if (block.attributes.uniqueID === uniqueID) {
+			const blockUniqueID = getAttributesValue({
+				target: 'uniqueID',
+				props: block.attributes,
+			});
+
+			if (blockUniqueID === uniqueID) {
 				clientId = block.clientId;
 			}
 

@@ -26,7 +26,10 @@ import './style.scss';
  */
 const BackgroundContent = props => {
 	const { wrapperRef, prefix = '' } = props;
-	const { backgroundLayers, backgroundLayersHover } = getAttributesValue({
+	const {
+		'background-layers': backgroundLayers,
+		'background-layers-hover': backgroundLayersHover,
+	} = getAttributesValue({
 		target: ['background-layers', 'background-layers-hover'],
 		props,
 	});
@@ -151,7 +154,10 @@ const BackgroundContent = props => {
 const BackgroundDisplayer = props => {
 	const { className, isSave = false } = props;
 
-	const { backgroundLayers, backgroundLayersHover } = getAttributesValue({
+	const {
+		'background-layers': backgroundLayers,
+		'background-layers-hover': backgroundLayersHover,
+	} = getAttributesValue({
 		target: ['background-layers', 'background-layers-hover'],
 		props,
 	});

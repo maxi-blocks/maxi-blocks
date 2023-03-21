@@ -10,6 +10,7 @@ import AdvancedNumberControl from '../advanced-number-control';
 import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
+	getAttributeKey,
 } from '../../extensions/styles';
 
 /**
@@ -29,7 +30,9 @@ const ZIndexControl = props => {
 		<AdvancedNumberControl
 			label={__('Z-index', 'maxi-blocks')}
 			className={classes}
-			defaultValue={getDefaultAttribute(`z-index-${breakpoint}`)}
+			defaultValue={getDefaultAttribute(
+				getAttributeKey('z-index', breakpoint)
+			)}
 			value={getLastBreakpointAttribute({
 				target: 'z-index',
 				breakpoint,
@@ -37,7 +40,7 @@ const ZIndexControl = props => {
 			})}
 			onChangeValue={val => {
 				onChange({
-					[`z-index-${breakpoint}`]:
+					[getAttributeKey('z-index', breakpoint)]:
 						val !== undefined && val !== '' ? val : '',
 				});
 			}}
@@ -45,13 +48,16 @@ const ZIndexControl = props => {
 			max={9999}
 			onReset={() =>
 				onChange({
-					[`z-index-${breakpoint}`]: getDefaultAttribute(
-						`z-index-${breakpoint}`
-					),
+					[getAttributeKey('z-index', breakpoint)]:
+						getDefaultAttribute(
+							getAttributeKey('z-index', breakpoint)
+						),
 					isReset: true,
 				})
 			}
-			initialPosition={getDefaultAttribute(`z-index-${breakpoint}`)}
+			initialPosition={getDefaultAttribute(
+				getAttributeKey('z-index', breakpoint)
+			)}
 		/>
 	);
 };

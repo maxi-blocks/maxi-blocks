@@ -37,15 +37,11 @@ const GradientControl = props => {
 		onChange,
 	} = props;
 
-	const gradient = getLastBreakpointAttribute({
-		target: `${prefix}gradient`,
-		breakpoint,
-		attributes: props,
-		isHover,
-	});
-
-	const gradientOpacity = getLastBreakpointAttribute({
-		target: `${prefix}gradient-opacity`,
+	const {
+		[`${prefix}gradient`]: gradient,
+		[`${prefix}gradient-opacity`]: gradientOpacity,
+	} = getLastBreakpointAttribute({
+		target: [`${prefix}gradient`, `${prefix}gradient-opacity`],
 		breakpoint,
 		attributes: props,
 		isHover,

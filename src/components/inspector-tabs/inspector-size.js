@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import FullSizeControl from '../full-size-control';
 import {
+	getAttributesValue,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
@@ -27,7 +28,10 @@ const size = ({
 	isImage = false,
 }) => {
 	const { attributes, deviceType, maxiSetAttributes, name } = props;
-	const { isFirstOnHierarchy } = attributes;
+	const isFirstOnHierarchy = getAttributesValue({
+		target: 'isFirstOnHierarchy',
+		props: attributes,
+	});
 
 	const fullWidth = getLastBreakpointAttribute({
 		target: `${prefix}full-width`,

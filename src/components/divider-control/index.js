@@ -120,22 +120,16 @@ const DividerControl = props => {
 		},
 	};
 
-	const lineOrientation = getLastBreakpointAttribute({
-		target: `${prefix}line-orientation`,
-		breakpoint,
-		attributes: props,
-		isHover,
-	});
-
-	const dividerBorderStyle = getLastBreakpointAttribute({
-		target: `${prefix}divider-border-style`,
-		breakpoint,
-		attributes: props,
-		isHover,
-	});
-
-	const dividerBorderRadius = getLastBreakpointAttribute({
-		target: `${prefix}divider-border-radius`,
+	const {
+		[`${prefix}line-orientation`]: lineOrientation,
+		[`${prefix}divider-border-style`]: dividerBorderStyle,
+		[`${prefix}divider-border-radius`]: dividerBorderRadius,
+	} = getLastBreakpointAttribute({
+		target: [
+			`${prefix}line-orientation`,
+			`${prefix}divider-border-style`,
+			`${prefix}divider-border-radius`,
+		],
 		breakpoint,
 		attributes: props,
 		isHover,
@@ -182,14 +176,28 @@ const DividerControl = props => {
 						}) || 'none'
 					}
 					defaultValue={getDefaultAttribute(
-						`${prefix}divider-border-style-${breakpoint}`
+						getAttributeKey(
+							'divider-border-style',
+							false,
+							false,
+							breakpoint
+						)
 					)}
 					onReset={() =>
 						onChange({
-							[`${prefix}divider-border-style-${breakpoint}`]:
-								getDefaultAttribute(
-									`${prefix}divider-border-style-${breakpoint}`
-								),
+							[getAttributeKey(
+								'divider-border-style',
+								false,
+								false,
+								breakpoint
+							)]: getDefaultAttribute(
+								getAttributeKey(
+									'divider-border-style',
+									false,
+									false,
+									breakpoint
+								)
+							),
 							isReset: true,
 						})
 					}
@@ -462,13 +470,23 @@ const DividerControl = props => {
 										prefix,
 										breakpoint
 									)]: getDefaultAttribute(
-										`divider-height-${breakpoint}`
+										getAttributeKey(
+											'divider-height',
+											false,
+											false,
+											breakpoint
+										)
 									),
 									isReset: true,
 								})
 							}
 							initialPosition={getDefaultAttribute(
-								`divider-height-${breakpoint}`
+								getAttributeKey(
+									'divider-height',
+									false,
+									false,
+									breakpoint
+								)
 							)}
 						/>
 						<AdvancedNumberControl
@@ -502,13 +520,23 @@ const DividerControl = props => {
 										prefix,
 										breakpoint
 									)]: getDefaultAttribute(
-										`divider-border-right-${breakpoint}`
+										getAttributeKey(
+											'divider-border-right',
+											false,
+											false,
+											breakpoint
+										)
 									),
 									isReset: true,
 								})
 							}
 							initialPosition={getDefaultAttribute(
-								`divider-border-right-${breakpoint}`
+								getAttributeKey(
+									'divider-border-right',
+									false,
+									false,
+									breakpoint
+								)
 							)}
 						/>
 					</>

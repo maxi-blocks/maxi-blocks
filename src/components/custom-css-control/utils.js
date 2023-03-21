@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { isNil, isEmpty, without } from 'lodash';
+import { getAttributesValue } from '../../extensions/styles';
 
 export function getBgLayersSelectorsCss(
 	bgLayers,
@@ -66,7 +67,14 @@ export function getSelectorsCss(selectors, attributes) {
 		'background-layers': bgLayers = [],
 		'background-layers-hover': bgLayersHover = [],
 		'block-background-status-hover': blockBackgroundHoverStatus = false,
-	} = attributes;
+	} = getAttributesValue({
+		target: [
+			'background-layers',
+			'background-layers-hover',
+			'block-background-status-hover',
+		],
+		props: attributes,
+	});
 
 	const newSelectors = {
 		...selectors,
@@ -85,7 +93,14 @@ export function getCategoriesCss(categories, attributes) {
 		'background-layers': bgLayers = [],
 		'background-layers-hover': bgLayersHover = [],
 		'block-background-status-hover': blockBackgroundHoverStatus = false,
-	} = attributes;
+	} = getAttributesValue({
+		target: [
+			'background-layers',
+			'background-layers-hover',
+			'block-background-status-hover',
+		],
+		props: attributes,
+	});
 
 	return without(
 		categories,

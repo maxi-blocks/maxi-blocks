@@ -52,7 +52,7 @@ const dotIcon = {
 				type: 'boolean',
 				default: false,
 			},
-			'navigation-dot-icon-shadow-status': {
+			'navigation-dot-icon-box-shadow-status': {
 				type: 'boolean',
 				default: false,
 			},

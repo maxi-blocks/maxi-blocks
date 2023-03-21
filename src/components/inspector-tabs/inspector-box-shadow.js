@@ -35,7 +35,10 @@ const boxShadow = ({
 		insertInlineStyles,
 		cleanInlineStyles,
 	} = props;
-	const { boxShadowStatusHover, boxShadowStatusActive } = getAttributesValue({
+	const {
+		'box-shadow-status-hover': boxShadowStatusHover,
+		'box-shadow-status-active': boxShadowStatusActive,
+	} = getAttributesValue({
 		target: ['box-shadow-status-hover', 'box-shadow-status-active'],
 		props: attributes,
 	});

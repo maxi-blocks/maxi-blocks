@@ -13,6 +13,7 @@ import getLastChangedBlocks from './getLastChangedBlocks';
  * External dependencies
  */
 import { cloneDeep, isEmpty, isEqual, isArray } from 'lodash';
+import { getAttributesValue } from '../styles';
 
 const propagateNewUniqueID = (oldUniqueID, newUniqueID, bgLayers) => {
 	const blockAttributesUpdate = {};
@@ -40,7 +41,10 @@ const propagateNewUniqueID = (oldUniqueID, newUniqueID, bgLayers) => {
 			} = block;
 
 			if ('relations' in attributes && !isEmpty(attributes.relations)) {
-				const { relations } = attributes;
+				const relations = getAttributesValue({
+					target: 'relations',
+					props: attributes,
+				});
 
 				const newRelations = cloneDeep(relations).map(relation => {
 					const { uniqueID } = relation;

@@ -50,7 +50,10 @@ class edit extends MaxiBlockComponent {
 			hasInnerBlocks,
 			maxiSetAttributes,
 		} = this.props;
-		const { uniqueID } = attributes;
+		const uniqueID = getAttributesValue({
+			target: 'uniqueID',
+			props: attributes,
+		});
 
 		const ALLOWED_BLOCKS = ['maxi-blocks/column-maxi'];
 

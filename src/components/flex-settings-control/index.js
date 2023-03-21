@@ -18,6 +18,7 @@ import FlexContentAlignControl from './flex-content-align-control';
 import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
+	getAttributeKey,
 } from '../../extensions/styles';
 import getOptions from './utils';
 
@@ -118,7 +119,12 @@ const FlexSettingsControl = props => {
 									})}
 									onChangeValue={val => {
 										onChange({
-											[`order-${breakpoint}`]: val,
+											[getAttributeKey(
+												'order',
+												false,
+												false,
+												breakpoint
+											)]: val,
 										});
 									}}
 									min={0}
@@ -126,7 +132,12 @@ const FlexSettingsControl = props => {
 									step={1}
 									onReset={() =>
 										onChange({
-											[`order-${breakpoint}`]: null,
+											[getAttributeKey(
+												'order',
+												false,
+												false,
+												breakpoint
+											)]: null,
 											isReset: true,
 										})
 									}
@@ -142,7 +153,12 @@ const FlexSettingsControl = props => {
 									})}
 									onChangeValue={val => {
 										onChange({
-											[`flex-grow-${breakpoint}`]: val,
+											[getAttributeKey(
+												'flex-grow',
+												false,
+												false,
+												breakpoint
+											)]: val,
 										});
 									}}
 									min={0}
@@ -150,7 +166,12 @@ const FlexSettingsControl = props => {
 									step={0.1}
 									onReset={() =>
 										onChange({
-											[`flex-grow-${breakpoint}`]: null,
+											[getAttributeKey(
+												'flex-grow',
+												false,
+												false,
+												breakpoint
+											)]: null,
 											isReset: true,
 										})
 									}
@@ -166,7 +187,12 @@ const FlexSettingsControl = props => {
 									})}
 									onChangeValue={val => {
 										onChange({
-											[`flex-shrink-${breakpoint}`]: val,
+											[getAttributeKey(
+												'flex-shrink',
+												false,
+												false,
+												breakpoint
+											)]: val,
 										});
 									}}
 									min={0}
@@ -174,7 +200,12 @@ const FlexSettingsControl = props => {
 									step={0.1}
 									onReset={() =>
 										onChange({
-											[`flex-shrink-${breakpoint}`]: null,
+											[getAttributeKey(
+												'flex-shrink',
+												false,
+												false,
+												breakpoint
+											)]: null,
 											isReset: true,
 										})
 									}
@@ -192,14 +223,28 @@ const FlexSettingsControl = props => {
 											  }) ?? ''
 									}
 									defaultValue={getDefaultAttribute(
-										`flex-basis-${breakpoint}`
+										getAttributeKey(
+											'flex-basis',
+											false,
+											false,
+											breakpoint
+										)
 									)}
 									onReset={() =>
 										onChange({
-											[`flex-basis-${breakpoint}`]:
-												getDefaultAttribute(
-													`flex-basis-${breakpoint}`
-												),
+											[getAttributeKey(
+												'flex-basis',
+												false,
+												false,
+												breakpoint
+											)]: getDefaultAttribute(
+												getAttributeKey(
+													'flex-basis',
+													false,
+													false,
+													breakpoint
+												)
+											),
 											isReset: true,
 										})
 									}
@@ -213,8 +258,12 @@ const FlexSettingsControl = props => {
 									onChange={val => {
 										if (val !== 'custom') {
 											onChange({
-												[`flex-basis-${breakpoint}`]:
-													val,
+												[getAttributeKey(
+													'flex-basis',
+													false,
+													false,
+													breakpoint
+												)]: val,
 											});
 											setCustomFlexBasis(false);
 										} else {
@@ -238,8 +287,12 @@ const FlexSettingsControl = props => {
 										})}
 										onChangeUnit={val => {
 											onChange({
-												[`flex-basis-unit-${breakpoint}`]:
-													val,
+												[getAttributeKey(
+													'flex-basis-unit',
+													false,
+													false,
+													breakpoint
+												)]: val,
 											});
 										}}
 										value={getLastBreakpointAttribute({
@@ -249,8 +302,12 @@ const FlexSettingsControl = props => {
 										})}
 										onChangeValue={val => {
 											onChange({
-												[`flex-basis-${breakpoint}`]:
-													toString(val),
+												[getAttributeKey(
+													'flex-basis',
+													false,
+													false,
+													breakpoint
+												)]: toString(val),
 											});
 										}}
 										minMaxSettings={{
@@ -274,8 +331,12 @@ const FlexSettingsControl = props => {
 										allowedUnits={['px', 'em', 'vw', '%']}
 										onReset={() =>
 											onChange({
-												[`flex-basis-${breakpoint}`]:
-													null,
+												[getAttributeKey(
+													'flex-basis',
+													false,
+													false,
+													breakpoint
+												)]: null,
 												isReset: true,
 											})
 										}

@@ -70,7 +70,10 @@ class edit extends MaxiBlockComponent {
 
 	get getMaxiCustomData() {
 		const { attributes } = this.props;
-		const { uniqueID } = attributes;
+		const uniqueID = getAttributesValue({
+			target: 'uniqueID',
+			props: attributes,
+		});
 
 		const response = {
 			number_counter: {
@@ -87,7 +90,10 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const { attributes, maxiSetAttributes, deviceType, isSelected } =
 			this.props;
-		const { uniqueID } = attributes;
+		const uniqueID = getAttributesValue({
+			target: 'uniqueID',
+			props: attributes,
+		});
 
 		const classes = 'maxi-number-counter-block';
 

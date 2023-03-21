@@ -1,6 +1,7 @@
 /**
  * Internal dependencies
  */
+import { getAttributesValue } from '../../extensions/styles';
 import BlockStylesControl from '../block-styles-control';
 import CustomLabel from '../custom-label';
 
@@ -9,7 +10,10 @@ import CustomLabel from '../custom-label';
  */
 const blockSettings = ({ props }) => {
 	const { attributes, deviceType, clientId, maxiSetAttributes } = props;
-	const { blockStyle, customLabel, isFirstOnHierarchy } = attributes;
+	const { blockStyle, customLabel, isFirstOnHierarchy } = getAttributesValue({
+		target: ['blockStyle', 'customLabel', 'isFirstOnHierarchy'],
+		props: attributes,
+	});
 
 	return (
 		deviceType === 'general' && (

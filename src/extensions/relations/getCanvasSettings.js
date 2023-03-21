@@ -22,7 +22,11 @@ import {
 	getMarginPaddingStyles,
 	getSizeStyles,
 } from '../styles/helpers';
-import { getGroupAttributes, getLastBreakpointAttribute } from '../styles';
+import {
+	getAttributesValue,
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../styles';
 import { getEditorWrapper } from '../dom';
 
 /**
@@ -43,8 +47,14 @@ const getCanvasSettings = ({ name }) => [
 		],
 		component: props => {
 			const { attributes, onChange, blockAttributes } = props;
-			const { 'background-layers': currentBgLayers } = attributes;
-			const { 'background-layers': blockBgLayers } = blockAttributes;
+			const currentBgLayers = getAttributesValue({
+				target: 'background-layers',
+				props: attributes,
+			});
+			const blockBgLayers = getAttributesValue({
+				target: 'background-layers',
+				props: blockAttributes,
+			});
 
 			return !isEmpty(currentBgLayers) ? (
 				<BlockBackgroundControl

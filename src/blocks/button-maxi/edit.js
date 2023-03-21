@@ -90,14 +90,23 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes, maxiSetAttributes } = this.props;
+		const { scValues } = this.state;
 		const {
 			uniqueID,
-			'dc-status': dcStatus,
-			'dc-content': dcContent,
-		} = attributes;
-		const { scValues } = this.state;
-		const { iconPosition, iconOnly, iconContent } = getAttributesValue({
-			target: ['icon-position', 'icon-only', 'icon-content'],
+			iconPosition,
+			iconOnly,
+			iconContent,
+			dcStatus,
+			dcContent,
+		} = getAttributesValue({
+			target: [
+				'uniqueID',
+				'icon-position',
+				'icon-only',
+				'icon-content',
+				'dc-status',
+				'dc-content',
+			],
 			props: attributes,
 		});
 

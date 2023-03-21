@@ -22,8 +22,8 @@ import ManageHoverTransitions from '../manage-hover-transitions';
  */
 const opacity = ({ props, depth = 2 }) => {
 	const { attributes, deviceType, maxiSetAttributes } = props;
-	const opacityopacityHoverStatus = getAttributesValue({
-		target: 'opacity-statys',
+	const opacityHoverStatus = getAttributesValue({
+		target: 'opacity-status',
 		props: attributes,
 		isHover: true,
 	});

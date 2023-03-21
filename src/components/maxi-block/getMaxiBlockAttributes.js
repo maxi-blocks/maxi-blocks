@@ -25,7 +25,16 @@ const getMaxiBlockAttributes = props => {
 		hasSelectedChild,
 	} = props;
 	const { blockStyle, extraClassName, anchorLink, uniqueID, linkSettings } =
-		attributes;
+		getAttributesValue({
+			target: [
+				'blockStyle',
+				'extraClassName',
+				'anchorLink',
+				'uniqueID',
+				'linkSettings',
+			],
+			props: attributes,
+		});
 
 	const motion = {
 		...getGroupAttributes(attributes, [

@@ -453,7 +453,10 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes, hasInnerBlocks } = this.props;
-		const { uniqueID } = attributes;
+		const uniqueID = getAttributesValue({
+			target: 'uniqueID',
+			props: attributes,
+		});
 
 		const emptySliderClass = `maxi-slide-block__${
 			hasInnerBlocks ? 'has-innerBlock' : 'empty'

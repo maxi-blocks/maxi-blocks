@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { getAttributesValue } from '../../extensions/styles';
 
 /**
  * Internal dependencies
@@ -13,7 +14,10 @@ import TextControl from '../text-control';
  */
 const anchor = ({ props }) => {
 	const { attributes, maxiSetAttributes } = props;
-	const { anchorLink } = attributes;
+	const anchorLink = getAttributesValue({
+		target: 'anchorLink',
+		props: attributes,
+	});
 
 	const validateAnchor = text => {
 		const regex = /^[a-zA-Z0-9-_]+$/;

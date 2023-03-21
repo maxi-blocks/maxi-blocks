@@ -9,6 +9,7 @@ import { __ } from '@wordpress/i18n';
 import SettingTabsControl from '../setting-tabs-control';
 import Icon from '../icon';
 import {
+	getAttributeKey,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
@@ -81,15 +82,22 @@ const FlexWrapControl = props => {
 			}
 			onReset={() =>
 				onChange({
-					[`flex-wrap-${breakpoint}`]: getDefaultAttribute(
-						`flex-wrap-${breakpoint}`
-					),
+					[getAttributeKey('flex-wrap', false, false, breakpoint)]:
+						getDefaultAttribute(
+							getAttributeKey(
+								'flex-wrap',
+								false,
+								false,
+								breakpoint
+							)
+						),
 					isReset: true,
 				})
 			}
 			onChange={val =>
 				onChange({
-					[`flex-wrap-${breakpoint}`]: val,
+					[getAttributeKey('flex-wrap', false, false, breakpoint)]:
+						val,
 				})
 			}
 		/>

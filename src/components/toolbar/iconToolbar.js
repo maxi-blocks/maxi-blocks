@@ -18,7 +18,10 @@ import IconColor from './components/icon-color';
 import IconBackground from './components/icon-background';
 import Border from './components/border';
 import PaddingMargin from './components/padding-margin';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getAttributesValue,
+	getGroupAttributes,
+} from '../../extensions/styles';
 import Popover from '../popover';
 
 /**
@@ -40,7 +43,10 @@ const IconToolbar = memo(
 			name,
 			isSelected,
 		} = props;
-		const { uniqueID, svgType, blockStyle } = attributes;
+		const { uniqueID, svgType, blockStyle } = getAttributesValue({
+			target: ['uniqueID', 'svgType', 'blockStyle'],
+			props: attributes,
+		});
 
 		const { breakpoint } = useSelect(select => {
 			const { receiveMaxiDeviceType } = select('maxiBlocks');

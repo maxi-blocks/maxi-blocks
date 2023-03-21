@@ -9,6 +9,7 @@ import { __ } from '@wordpress/i18n';
 import SettingTabsControl from '../setting-tabs-control';
 import Icon from '../icon';
 import {
+	getAttributeKey,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
@@ -137,15 +138,30 @@ const FlexAlignControl = props => {
 				}
 				onReset={() =>
 					onChange({
-						[`justify-content-${breakpoint}`]: getDefaultAttribute(
-							`justify-content-${breakpoint}`
+						[getAttributeKey(
+							'justify-content',
+							false,
+							false,
+							breakpoint
+						)]: getDefaultAttribute(
+							getAttributeKey(
+								'justify-content',
+								false,
+								false,
+								breakpoint
+							)
 						),
 						isReset: true,
 					})
 				}
 				onChange={val =>
 					onChange({
-						[`justify-content-${breakpoint}`]: val,
+						[getAttributeKey(
+							'justify-content',
+							false,
+							false,
+							breakpoint
+						)]: val,
 					})
 				}
 			/>
@@ -173,15 +189,30 @@ const FlexAlignControl = props => {
 				}
 				onReset={() =>
 					onChange({
-						[`align-items-${breakpoint}`]: getDefaultAttribute(
-							`align-items-${breakpoint}`
+						[getAttributeKey(
+							'align-items',
+							false,
+							false,
+							breakpoint
+						)]: getDefaultAttribute(
+							getAttributeKey(
+								'align-items',
+								false,
+								false,
+								breakpoint
+							)
 						),
 						isReset: true,
 					})
 				}
 				onChange={val =>
 					onChange({
-						[`align-items-${breakpoint}`]: val,
+						[getAttributeKey(
+							'align-items',
+							false,
+							false,
+							breakpoint
+						)]: val,
 					})
 				}
 			/>

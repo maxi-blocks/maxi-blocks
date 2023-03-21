@@ -6,7 +6,10 @@ import classnames from 'classnames';
 /**
  * Internal Dependencies
  */
-import { getLastBreakpointAttribute } from '../../extensions/styles';
+import {
+	getAttributesValue,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import { parseVideo, videoValidation } from '../../extensions/video';
 import { isNil } from 'lodash';
 
@@ -21,11 +24,17 @@ import './style.scss';
 const VideoLayer = props => {
 	const { videoOptions, wrapperRef, className, breakpoint } = props;
 
-	let videoUrl = videoOptions['background-video-mediaURL'];
+	let videoUrl = getAttributesValue({
+		target: 'background-video-url',
+		props,
+	});
 
 	if (isNil(videoUrl)) return null;
 
-	const reduceBorder = videoOptions['background-video-reduce-border'];
+	const reduceBorder = getAttributesValue({
+		target: 'background-video-reduce-border',
+		props,
+	});
 
 	const style = {
 		height: '100%',
@@ -63,18 +72,16 @@ const VideoLayer = props => {
 		style.height = `${newHeight}px`; // 1.77 is the aspect ratio 16:9
 	}
 
-	const videoLoop = getLastBreakpointAttribute({
-		target: 'background-video-loop',
-		breakpoint,
-		attributes: videoOptions,
-	});
-	const videoStartTime = getLastBreakpointAttribute({
-		target: 'background-video-startTime',
-		breakpoint,
-		attributes: videoOptions,
-	});
-	const videoEndTime = getLastBreakpointAttribute({
-		target: 'background-video-endTime',
+	const {
+		'background-video-loop': videoLoop,
+		'background-video-startTime': videoStartTime,
+		'background-video-endTime': videoEndTime,
+	} = getLastBreakpointAttribute({
+		target: [
+			'background-video-loop',
+			'background-video-startTime',
+			'background-video-endTime',
+		],
 		breakpoint,
 		attributes: videoOptions,
 	});

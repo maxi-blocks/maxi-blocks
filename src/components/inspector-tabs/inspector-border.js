@@ -35,15 +35,18 @@ const border = ({
 		insertInlineStyles,
 		cleanInlineStyles,
 	} = props;
-	const { borderStatusHover, borderStatusActive, backgroundLayers } =
-		getAttributesValue({
-			target: [
-				'border-status-hover',
-				'border-status-active',
-				'background-layers',
-			],
-			props: attributes,
-		});
+	const {
+		'border-status-hover': borderStatusHover,
+		'border-status-active': borderStatusActive,
+		'background-layers': backgroundLayers,
+	} = getAttributesValue({
+		target: [
+			'border-status-hover',
+			'border-status-active',
+			'background-layers',
+		],
+		props: attributes,
+	});
 
 	const {
 		'hover-border-color-global': isActive,

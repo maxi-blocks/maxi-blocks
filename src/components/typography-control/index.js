@@ -556,8 +556,13 @@ const TypographyControl = props => {
 						font={getValue('font-family')}
 						onChange={font => {
 							onChangeFormat({
-								[`${prefix}font-family`]: font.value,
-								[`${prefix}font-options`]: font.files,
+								[getAttributeKey('font-family', false, prefix)]:
+									font.value,
+								[getAttributeKey(
+									'font-options',
+									false,
+									prefix
+								)]: font.files,
 							});
 						}}
 						fontWeight={getValue('font-weight')}
@@ -633,7 +638,8 @@ const TypographyControl = props => {
 					defaultUnit={getDefault('font-size-unit')}
 					onChangeUnit={val => {
 						onChangeFormat({
-							[`${prefix}font-size-unit`]: val,
+							[getAttributeKey('font-size-unit', false, prefix)]:
+								val,
 						});
 					}}
 					placeholder={getValue('font-size')}
@@ -641,16 +647,26 @@ const TypographyControl = props => {
 					defaultValue={getDefault('font-size')}
 					onChangeValue={(val, unit) => {
 						onChangeFormat({
-							[`${prefix}font-size`]: val,
-							...(unit && { [`${prefix}font-size-unit`]: unit }),
+							[getAttributeKey('font-size', false, prefix)]: val,
+							...(unit && {
+								[getAttributeKey(
+									'font-size-unit',
+									false,
+									prefix
+								)]: unit,
+							}),
 						});
 					}}
 					onReset={() =>
 						onChangeFormat(
 							{
-								[`${prefix}font-size-unit`]:
-									getDefault('font-size-unit'),
-								[`${prefix}font-size`]: getDefault('font-size'),
+								[getAttributeKey(
+									'font-size-unit',
+									false,
+									prefix
+								)]: getDefault('font-size-unit'),
+								[getAttributeKey('font-size', false, prefix)]:
+									getDefault('font-size'),
 							},
 							{ isReset: true }
 						)
@@ -666,7 +682,11 @@ const TypographyControl = props => {
 					defaultUnit={getDefault('line-height-unit')}
 					onChangeUnit={val => {
 						onChangeFormat({
-							[`${prefix}line-height-unit`]: val,
+							[getAttributeKey(
+								'line-height-unit',
+								false,
+								prefix
+							)]: val,
 						});
 					}}
 					placeholder={getValue('line-height')}
@@ -674,18 +694,26 @@ const TypographyControl = props => {
 					defaultValue={getDefault('line-height')}
 					onChangeValue={(val, unit) => {
 						onChangeFormat({
-							[`${prefix}line-height`]: val,
+							[getAttributeKey('line-height', false, prefix)]:
+								val,
 							...(unit && {
-								[`${prefix}line-height-unit`]: unit,
+								[getAttributeKey(
+									'line-height-unit',
+									false,
+									prefix
+								)]: unit,
 							}),
 						});
 					}}
 					onReset={() =>
 						onChangeFormat(
 							{
-								[`${prefix}line-height-unit`]:
-									getDefault('line-height-unit'),
-								[`${prefix}line-height`]:
+								[getAttributeKey(
+									'line-height-unit',
+									false,
+									prefix
+								)]: getDefault('line-height-unit'),
+								[getAttributeKey('line-height', false, prefix)]:
 									getDefault('line-height'),
 							},
 							{ isReset: true }
@@ -710,7 +738,11 @@ const TypographyControl = props => {
 					defaultUnit={getDefault('letter-spacing-unit')}
 					onChangeUnit={val => {
 						onChangeFormat({
-							[`${prefix}letter-spacing-unit`]: val,
+							[getAttributeKey(
+								'letter-spacing-unit',
+								false,
+								prefix
+							)]: val,
 						});
 					}}
 					placeholder={getValue('letter-spacing')}
@@ -718,17 +750,23 @@ const TypographyControl = props => {
 					defaultValue={getDefault('letter-spacing')}
 					onChangeValue={val => {
 						onChangeFormat({
-							[`${prefix}letter-spacing`]: val,
+							[getAttributeKey('letter-spacing', false, prefix)]:
+								val,
 						});
 					}}
 					onReset={() =>
 						onChangeFormat(
 							{
-								[`${prefix}letter-spacing-unit`]: getDefault(
-									'letter-spacing-unit'
-								),
-								[`${prefix}letter-spacing`]:
-									getDefault('letter-spacing'),
+								[getAttributeKey(
+									'letter-spacing-unit',
+									false,
+									prefix
+								)]: getDefault('letter-spacing-unit'),
+								[getAttributeKey(
+									'letter-spacing',
+									false,
+									prefix
+								)]: getDefault('letter-spacing'),
 							},
 							{ isReset: true }
 						)
@@ -743,12 +781,15 @@ const TypographyControl = props => {
 					!hideAlignment && <hr style={{ margin: '15px 0' }} />}
 				<FontWeightControl
 					onChange={val => {
-						onChangeFormat({ [`${prefix}font-weight`]: val });
+						onChangeFormat({
+							[getAttributeKey('font-weight', false, prefix)]:
+								val,
+						});
 					}}
 					onReset={() => {
 						onChangeFormat(
 							{
-								[`${prefix}font-weight`]:
+								[getAttributeKey('font-weight', false, prefix)]:
 									getDefault('font-weight'),
 							},
 							{ isReset: true }
@@ -785,14 +826,18 @@ const TypographyControl = props => {
 					]}
 					onChange={val => {
 						onChangeFormat({
-							[`${prefix}text-transform`]: val,
+							[getAttributeKey('text-transform', false, prefix)]:
+								val,
 						});
 					}}
 					onReset={() =>
 						onChangeFormat(
 							{
-								[`${prefix}text-transform`]:
-									getDefault('text-transform'),
+								[getAttributeKey(
+									'text-transform',
+									false,
+									prefix
+								)]: getDefault('text-transform'),
 							},
 							{ isReset: true }
 						)
@@ -819,13 +864,13 @@ const TypographyControl = props => {
 					]}
 					onChange={val => {
 						onChangeFormat({
-							[`${prefix}font-style`]: val,
+							[getAttributeKey('font-style', false, prefix)]: val,
 						});
 					}}
 					onReset={() =>
 						onChangeFormat(
 							{
-								[`${prefix}font-style`]:
+								[getAttributeKey('font-style', false, prefix)]:
 									getDefault('font-style'),
 							},
 							{ isReset: true }
@@ -861,14 +906,18 @@ const TypographyControl = props => {
 					]}
 					onChange={val => {
 						onChangeFormat({
-							[`${prefix}text-decoration`]: val,
+							[getAttributeKey('text-decoration', false, prefix)]:
+								val,
 						});
 					}}
 					onReset={() =>
 						onChangeFormat(
 							{
-								[`${prefix}text-decoration`]:
-									getDefault('text-decoration'),
+								[getAttributeKey(
+									'text-decoration',
+									false,
+									prefix
+								)]: getDefault('text-decoration'),
 							},
 							{ isReset: true }
 						)
@@ -902,7 +951,11 @@ const TypographyControl = props => {
 							onChange={val => {
 								onChangeFormat(
 									{
-										[`${prefix}text-orientation`]: val,
+										[getAttributeKey(
+											'text-orientation',
+											false,
+											prefix
+										)]: val,
 									},
 									{ forceDisableCustomFormats: true }
 								);
@@ -910,8 +963,11 @@ const TypographyControl = props => {
 							onReset={() =>
 								onChangeFormat(
 									{
-										[`${prefix}text-orientation`]:
-											getDefault('text-orientation'),
+										[getAttributeKey(
+											'text-orientation',
+											false,
+											prefix
+										)]: getDefault('text-orientation'),
 									},
 									{ isReset: true }
 								)
@@ -934,14 +990,21 @@ const TypographyControl = props => {
 							]}
 							onChange={val => {
 								onChangeFormat({
-									[`${prefix}text-direction`]: val,
+									[getAttributeKey(
+										'text-direction',
+										false,
+										prefix
+									)]: val,
 								});
 							}}
 							onReset={() =>
 								onChangeFormat(
 									{
-										[`${prefix}text-direction`]:
-											getDefault('text-direction'),
+										[getAttributeKey(
+											'text-direction',
+											false,
+											prefix
+										)]: getDefault('text-direction'),
 									},
 									{ isReset: true }
 								)
@@ -958,7 +1021,11 @@ const TypographyControl = props => {
 					onChangeUnit={val => {
 						onChangeFormat(
 							{
-								[`${prefix}text-indent-unit`]: val,
+								[getAttributeKey(
+									'text-indent-unit',
+									false,
+									prefix
+								)]: val,
 							},
 							{ forceDisableCustomFormats: true }
 						);
@@ -969,7 +1036,8 @@ const TypographyControl = props => {
 					onChangeValue={val => {
 						onChangeFormat(
 							{
-								[`${prefix}text-indent`]: val,
+								[getAttributeKey('text-indent', false, prefix)]:
+									val,
 							},
 							{ forceDisableCustomFormats: true }
 						);
@@ -977,9 +1045,12 @@ const TypographyControl = props => {
 					onReset={() =>
 						onChangeFormat(
 							{
-								[`${prefix}text-indent-unit`]:
-									getDefault('text-indent-unit'),
-								[`${prefix}text-indent`]:
+								[getAttributeKey(
+									'text-indent-unit',
+									false,
+									prefix
+								)]: getDefault('text-indent-unit'),
+								[getAttributeKey('text-indent', false, prefix)]:
 									getDefault('text-indent'),
 							},
 							{ forceDisableCustomFormats: true, isReset: true }
@@ -1038,13 +1109,14 @@ const TypographyControl = props => {
 					]}
 					onChange={val => {
 						onChangeFormat({
-							[`${prefix}white-space`]: val,
+							[getAttributeKey('white-space', false, prefix)]:
+								val,
 						});
 					}}
 					onReset={() => {
 						onChangeFormat(
 							{
-								[`${prefix}white-space`]:
+								[getAttributeKey('white-space', false, prefix)]:
 									getDefault('white-space'),
 							},
 							{ isReset: true }
@@ -1060,7 +1132,11 @@ const TypographyControl = props => {
 					onChangeUnit={val => {
 						onChangeFormat(
 							{
-								[`${prefix}word-spacing-unit`]: val,
+								[getAttributeKey(
+									'word-spacing-unit',
+									false,
+									prefix
+								)]: val,
 							},
 							{ forceDisableCustomFormats: true }
 						);
@@ -1071,7 +1147,11 @@ const TypographyControl = props => {
 					onChangeValue={val => {
 						onChangeFormat(
 							{
-								[`${prefix}word-spacing`]: val,
+								[getAttributeKey(
+									'word-spacing',
+									false,
+									prefix
+								)]: val,
 							},
 							{ forceDisableCustomFormats: true }
 						);
@@ -1079,10 +1159,16 @@ const TypographyControl = props => {
 					onReset={() =>
 						onChangeFormat(
 							{
-								[`${prefix}word-spacing-unit`]:
-									getDefault('word-spacing-unit'),
-								[`${prefix}word-spacing`]:
-									getDefault('word-spacing'),
+								[getAttributeKey(
+									'word-spacing-unit',
+									false,
+									prefix
+								)]: getDefault('word-spacing-unit'),
+								[getAttributeKey(
+									'word-spacing',
+									false,
+									prefix
+								)]: getDefault('word-spacing'),
 							},
 							{ forceDisableCustomFormats: true, isReset: true }
 						)
@@ -1117,7 +1203,11 @@ const TypographyControl = props => {
 						onChangeUnit={val => {
 							onChangeFormat(
 								{
-									[`${prefix}bottom-gap-unit`]: val,
+									[getAttributeKey(
+										'bottom-gap-unit',
+										false,
+										prefix
+									)]: val,
 								},
 								{ forceDisableCustomFormats: true }
 							);
@@ -1128,7 +1218,11 @@ const TypographyControl = props => {
 						onChangeValue={val => {
 							onChangeFormat(
 								{
-									[`${prefix}bottom-gap`]: val,
+									[getAttributeKey(
+										'bottom-gap',
+										false,
+										prefix
+									)]: val,
 								},
 								{ forceDisableCustomFormats: true }
 							);
@@ -1136,10 +1230,16 @@ const TypographyControl = props => {
 						onReset={() =>
 							onChangeFormat(
 								{
-									[`${prefix}bottom-gap-unit`]:
-										getDefault('bottom-gap-unit'),
-									[`${prefix}bottom-gap`]:
-										getDefault('bottom-gap'),
+									[getAttributeKey(
+										'bottom-gap-unit',
+										false,
+										prefix
+									)]: getDefault('bottom-gap-unit'),
+									[getAttributeKey(
+										'bottom-gap',
+										false,
+										prefix
+									)]: getDefault('bottom-gap'),
 								},
 								{
 									forceDisableCustomFormats: true,
@@ -1179,7 +1279,11 @@ const TypographyControl = props => {
 							}
 							onChange={val => {
 								onChangeFormat({
-									[`${prefix}text-shadow`]: val,
+									[getAttributeKey(
+										'text-shadow',
+										false,
+										prefix
+									)]: val,
 								});
 							}}
 							defaultColor={getLastBreakpointAttribute({

@@ -57,36 +57,28 @@ const PositionControl = props => {
 	};
 
 	const getCleanOptions = () => {
-		return {
-			[`${prefix}position-top-${breakpoint}`]: getDefaultAttribute(
-				`${prefix}position-top-${breakpoint}`
-			),
-			[`${prefix}position-right-${breakpoint}`]: getDefaultAttribute(
-				`${prefix}position-right-${breakpoint}`
-			),
-			[`${prefix}position-bottom-${breakpoint}`]: getDefaultAttribute(
-				`${prefix}position-bottom-${breakpoint}`
-			),
-			[`${prefix}position-left-${breakpoint}`]: getDefaultAttribute(
-				`${prefix}position-left-${breakpoint}`
-			),
-			[`${prefix}position-sync-${breakpoint}`]: getDefaultAttribute(
-				`${prefix}position-sync-${breakpoint}`
-			),
-			[`${prefix}position-top-unit-${breakpoint}`]: getDefaultAttribute(
-				`${prefix}position-top-unit-${breakpoint}`
-			),
-			[`${prefix}position-right-unit-${breakpoint}`]: getDefaultAttribute(
-				`${prefix}position-right-unit-${breakpoint}`
-			),
-			[`${prefix}position-bottom-unit-${breakpoint}`]:
-				getDefaultAttribute(
-					`${prefix}position-bottom-unit-${breakpoint}`
-				),
-			[`${prefix}position-left-unit-${breakpoint}`]: getDefaultAttribute(
-				`${prefix}position-left-unit-${breakpoint}`
-			),
-		};
+		return [
+			'top',
+			'right',
+			'bottom',
+			'left',
+			'sync',
+			'top-unit',
+			'right-unit',
+			'bottom-unit',
+			'left-unit',
+		].reduce((acc, key) => {
+			const attrLabel = getAttributeKey(
+				`position-${key}`,
+				false,
+				prefix,
+				breakpoint
+			);
+
+			acc[attrLabel] = getDefaultAttribute(attrLabel);
+
+			return acc;
+		}, {});
 	};
 
 	const PositionAxisControl = (
@@ -154,7 +146,12 @@ const PositionControl = props => {
 						}
 						onChange={val =>
 							onChange({
-								[`${prefix}position-${breakpoint}`]: val,
+								[getAttributeKey(
+									'position',
+									false,
+									prefix,
+									breakpoint
+								)]: val,
 								...(isEmpty(val) && getCleanOptions()),
 							})
 						}

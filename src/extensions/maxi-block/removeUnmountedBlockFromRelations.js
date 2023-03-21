@@ -12,6 +12,7 @@ import goThroughMaxiBlocks from './goThroughMaxiBlocks';
  * External dependencies
  */
 import { isEmpty, isEqual } from 'lodash';
+import { getAttributesValue } from '../styles';
 
 const removeUnmountedBlockFromRelations = uniqueID => {
 	const { isDraggingBlocks } = select('core/block-editor');
@@ -20,7 +21,10 @@ const removeUnmountedBlockFromRelations = uniqueID => {
 
 	if (!isDragging)
 		goThroughMaxiBlocks(({ clientId, attributes }) => {
-			const { relations, uniqueID: blockUniqueID } = attributes;
+			const { relations, uniqueID: blockUniqueID } = getAttributesValue({
+				target: ['relations', 'uniqueID'],
+				props: attributes,
+			});
 
 			if (uniqueID !== blockUniqueID && !isEmpty(relations)) {
 				const filteredRelations = relations.filter(

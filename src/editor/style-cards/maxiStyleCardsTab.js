@@ -259,7 +259,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				globalAllAttr: 'hover-color-all',
 				paletteStatus: 'hover-pa-status',
 				paletteColor: 'hover-pac',
-				paletteOpacity: 'hover-pao',
+				paletteOpacity: 'hover-palette-opacity',
 				color: 'hover-c',
 			},
 			{
@@ -267,7 +267,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				globalAttr: 'background-color-global',
 				paletteStatus: 'background-pa-status',
 				paletteColor: 'background-pac',
-				paletteOpacity: 'background-pao',
+				paletteOpacity: 'background-palette-opacity',
 				color: 'background-c',
 			},
 			{
@@ -276,7 +276,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				globalAllAttr: 'hover-background-color-all',
 				paletteStatus: 'hover-background-pa-status',
 				paletteColor: 'hover-background-pac',
-				paletteOpacity: 'hover-background-pao',
+				paletteOpacity: 'hover-background-palette-opacity',
 				color: 'hover-background-c',
 			},
 			{
@@ -284,7 +284,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				globalAttr: 'border-color-global',
 				paletteStatus: 'border-pa-status',
 				paletteColor: 'border-pac',
-				paletteOpacity: 'border-pao',
+				paletteOpacity: 'border-palette-opacity',
 				color: 'border-c',
 			},
 			{
@@ -293,7 +293,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				globalAllAttr: 'hover-border-color-all',
 				paletteStatus: 'hover-border-pa-status',
 				paletteColor: 'hover-border-pac',
-				paletteOpacity: 'hover-border-pao',
+				paletteOpacity: 'hover-border-palette-opacity',
 				color: 'hover-border-c',
 			},
 		],
@@ -321,7 +321,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				globalAttr: 'link-color-global',
 				paletteStatus: 'link-pa-status',
 				paletteColor: 'link-pac',
-				paletteOpacity: 'link-pao',
+				paletteOpacity: 'link-palette-opacity',
 				color: 'link-c',
 			},
 			{
@@ -330,7 +330,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				globalAllAttr: 'hover-color-all',
 				paletteStatus: 'hover-pa-status',
 				paletteColor: 'hover-pac',
-				paletteOpacity: 'hover-pao',
+				paletteOpacity: 'hover-palette-opacity',
 				color: 'hover-c',
 			},
 			{
@@ -338,7 +338,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				globalAttr: 'active-color-global',
 				paletteStatus: 'active-pa-status',
 				paletteColor: 'active-pac',
-				paletteOpacity: 'active-pao',
+				paletteOpacity: 'active-palette-opacity',
 				color: 'active-c',
 			},
 			{
@@ -346,7 +346,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				globalAttr: 'visited-color-global',
 				paletteStatus: 'visited-pa-status',
 				paletteColor: 'visited-pac',
-				paletteOpacity: 'visited-pao',
+				paletteOpacity: 'visited-palette-opacity',
 				color: 'visited-c',
 			},
 		],
@@ -360,7 +360,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				globalAttr: 'line-color-global',
 				paletteStatus: 'line-pa-status',
 				paletteColor: 'line-pac',
-				paletteOpacity: 'line-pao',
+				paletteOpacity: 'line-palette-opacity',
 				color: 'line-c',
 			},
 			{
@@ -369,7 +369,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				globalAllAttr: 'hover-line-color-all',
 				paletteStatus: 'hover-line-pa-status',
 				paletteColor: 'hover-line-pac',
-				paletteOpacity: 'hover-line-pao',
+				paletteOpacity: 'hover-line-palette-opacity',
 				color: 'hover-line-c',
 			},
 			{
@@ -377,7 +377,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				globalAttr: 'fill-color-global',
 				paletteStatus: 'fill-pa-status',
 				paletteColor: 'fill-pac',
-				paletteOpacity: 'fill-pao',
+				paletteOpacity: 'fill-palette-opacity',
 				color: 'fill-c',
 			},
 			{
@@ -386,7 +386,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				globalAllAttr: 'hover-fill-color-all',
 				paletteStatus: 'hover-fill-pa-status',
 				paletteColor: 'hover-fill-pac',
-				paletteOpacity: 'hover-fill-pao',
+				paletteOpacity: 'hover-fill-palette-opacity',
 				color: 'hover-fill-c',
 			},
 		],

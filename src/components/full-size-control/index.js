@@ -13,6 +13,7 @@ import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
 	getAttributesValue,
+	getAttributeKey,
 } from '../../extensions/styles';
 
 /**
@@ -91,9 +92,12 @@ const FullSizeControl = props => {
 						selected={isBlockFullWidth}
 						onChange={val =>
 							onChange({
-								[`full-width-${breakpoint}`]: val
-									? 'full'
-									: 'normal',
+								[getAttributeKey(
+									'full-width',
+									false,
+									false,
+									breakpoint
+								)]: val ? 'full' : 'normal',
 							})
 						}
 					/>
@@ -107,12 +111,20 @@ const FullSizeControl = props => {
 										imageRatio: 'original',
 										imageSize: 'full',
 										imgWidth: 100,
-										[`${prefix}full-width-${breakpoint}`]:
-											val ? 'full' : 'normal',
+										[getAttributeKey(
+											'full-width',
+											false,
+											prefix,
+											breakpoint
+										)]: val ? 'full' : 'normal',
 								  })
 								: onChange({
-										[`${prefix}full-width-${breakpoint}`]:
-											val ? 'full' : 'normal',
+										[getAttributeKey(
+											'full-width',
+											false,
+											prefix,
+											breakpoint
+										)]: val ? 'full' : 'normal',
 								  })
 						}
 					/>
@@ -128,7 +140,12 @@ const FullSizeControl = props => {
 					})}
 					onChange={val => {
 						onChange({
-							[`${prefix}width-fit-content-${breakpoint}`]: val,
+							[getAttributeKey(
+								'width-fit-content',
+								false,
+								prefix,
+								breakpoint
+							)]: val,
 						});
 					}}
 				/>
@@ -144,7 +161,14 @@ const FullSizeControl = props => {
 						attributes: props,
 					})}
 					onChangeUnit={val =>
-						onChange({ [`${prefix}width-unit-${breakpoint}`]: val })
+						onChange({
+							[getAttributeKey(
+								'width-unit',
+								false,
+								prefix,
+								breakpoint
+							)]: val,
+						})
 					}
 					value={getLastBreakpointAttribute({
 						target: `${prefix}width`,
@@ -152,18 +176,43 @@ const FullSizeControl = props => {
 						attributes: props,
 					})}
 					onChangeValue={val =>
-						onChange({ [`${prefix}width-${breakpoint}`]: val })
+						onChange({
+							[getAttributeKey(
+								'width',
+								false,
+								prefix,
+								breakpoint
+							)]: val,
+						})
 					}
 					onReset={() => {
 						onChange({
-							[`${prefix}width-${breakpoint}`]:
-								getDefaultAttribute(
-									`${prefix}width-${breakpoint}`
-								),
-							[`${prefix}width-unit-${breakpoint}`]:
-								getDefaultAttribute(
-									`${prefix}width-unit-${breakpoint}`
-								),
+							[getAttributeKey(
+								'width',
+								false,
+								prefix,
+								breakpoint
+							)]: getDefaultAttribute(
+								getAttributeKey(
+									'width',
+									false,
+									prefix,
+									breakpoint
+								)
+							),
+							[getAttributeKey(
+								'width-unit',
+								false,
+								prefix,
+								breakpoint
+							)]: getDefaultAttribute(
+								getAttributeKey(
+									'width-unit',
+									false,
+									prefix,
+									breakpoint
+								)
+							),
 							isReset: true,
 						});
 					}}
@@ -186,7 +235,12 @@ const FullSizeControl = props => {
 					})}
 					onChange={val =>
 						onChange({
-							[`${prefix}force-aspect-ratio-${breakpoint}`]: val,
+							[getAttributeKey(
+								'force-aspect-ratio',
+								false,
+								prefix,
+								breakpoint
+							)]: val,
 						})
 					}
 				/>
@@ -208,7 +262,12 @@ const FullSizeControl = props => {
 						})}
 						onChangeUnit={val =>
 							onChange({
-								[`${prefix}height-unit-${breakpoint}`]: val,
+								[getAttributeKey(
+									'height-unit',
+									false,
+									prefix,
+									breakpoint
+								)]: val,
 							})
 						}
 						value={getLastBreakpointAttribute({
@@ -226,10 +285,19 @@ const FullSizeControl = props => {
 										`${prefix}height-${breakpoint}`
 									),
 
-								[`${prefix}height-unit-${breakpoint}`]:
-									getDefaultAttribute(
-										`${prefix}height-unit-${breakpoint}`
-									),
+								[getAttributeKey(
+									'height-unit',
+									false,
+									prefix,
+									breakpoint
+								)]: getDefaultAttribute(
+									getAttributeKey(
+										'height-unit',
+										false,
+										prefix,
+										breakpoint
+									)
+								),
 								isReset: true,
 							});
 						}}
@@ -250,7 +318,12 @@ const FullSizeControl = props => {
 				}
 				onChange={val => {
 					onChange({
-						[`${prefix}size-advanced-options`]: val,
+						[getAttributeKey(
+							'size-advanced-options',
+							false,
+							prefix,
+							breakpoint
+						)]: val,
 					});
 				}}
 			/>
@@ -277,8 +350,12 @@ const FullSizeControl = props => {
 								})}
 								onChangeUnit={val =>
 									onChange({
-										[`${prefix}max-width-unit-${breakpoint}`]:
-											val,
+										[getAttributeKey(
+											'max-width-unit',
+											false,
+											prefix,
+											breakpoint
+										)]: val,
 									})
 								}
 								value={getLastBreakpointAttribute({
@@ -288,20 +365,42 @@ const FullSizeControl = props => {
 								})}
 								onChangeValue={val =>
 									onChange({
-										[`${prefix}max-width-${breakpoint}`]:
-											val,
+										[getAttributeKey(
+											'max-width',
+											false,
+											prefix,
+											breakpoint
+										)]: val,
 									})
 								}
 								onReset={() => {
 									onChange({
-										[`${prefix}max-width-${breakpoint}`]:
-											getDefaultAttribute(
-												`${prefix}max-width-${breakpoint}`
-											),
-										[`${prefix}max-width-unit-${breakpoint}`]:
-											getDefaultAttribute(
-												`${prefix}max-width-unit-${breakpoint}`
-											),
+										[getAttributeKey(
+											'max-width',
+											false,
+											prefix,
+											breakpoint
+										)]: getDefaultAttribute(
+											getAttributeKey(
+												'max-width',
+												false,
+												prefix,
+												breakpoint
+											)
+										),
+										[getAttributeKey(
+											'max-width-unit',
+											false,
+											prefix,
+											breakpoint
+										)]: getDefaultAttribute(
+											getAttributeKey(
+												'max-width-unit',
+												false,
+												prefix,
+												breakpoint
+											)
+										),
 										isReset: true,
 									});
 								}}
@@ -326,8 +425,12 @@ const FullSizeControl = props => {
 							})}
 							onChangeUnit={val =>
 								onChange({
-									[`${prefix}min-width-unit-${breakpoint}`]:
-										val,
+									[getAttributeKey(
+										'min-width-unit',
+										false,
+										prefix,
+										breakpoint
+									)]: val,
 								})
 							}
 							value={getLastBreakpointAttribute({
@@ -337,19 +440,42 @@ const FullSizeControl = props => {
 							})}
 							onChangeValue={val =>
 								onChange({
-									[`${prefix}min-width-${breakpoint}`]: val,
+									[getAttributeKey(
+										'min-width',
+										false,
+										prefix,
+										breakpoint
+									)]: val,
 								})
 							}
 							onReset={() => {
 								onChange({
-									[`${prefix}min-width-${breakpoint}`]:
-										getDefaultAttribute(
-											`${prefix}min-width-${breakpoint}`
-										),
-									[`${prefix}min-width-unit-${breakpoint}`]:
-										getDefaultAttribute(
-											`${prefix}min-width-unit-${breakpoint}`
-										),
+									[getAttributeKey(
+										'min-width',
+										false,
+										prefix,
+										breakpoint
+									)]: getDefaultAttribute(
+										getAttributeKey(
+											'min-width',
+											false,
+											prefix,
+											breakpoint
+										)
+									),
+									[getAttributeKey(
+										'min-width-unit',
+										false,
+										prefix,
+										breakpoint
+									)]: getDefaultAttribute(
+										getAttributeKey(
+											'min-width-unit',
+											false,
+											prefix,
+											breakpoint
+										)
+									),
 									isReset: true,
 								});
 							}}
@@ -369,7 +495,12 @@ const FullSizeControl = props => {
 						})}
 						onChangeUnit={val =>
 							onChange({
-								[`${prefix}max-height-unit-${breakpoint}`]: val,
+								[getAttributeKey(
+									'max-height-unit',
+									false,
+									prefix,
+									breakpoint
+								)]: val,
 							})
 						}
 						value={getLastBreakpointAttribute({
@@ -379,19 +510,42 @@ const FullSizeControl = props => {
 						})}
 						onChangeValue={val =>
 							onChange({
-								[`${prefix}max-height-${breakpoint}`]: val,
+								[getAttributeKey(
+									'max-height',
+									false,
+									prefix,
+									breakpoint
+								)]: val,
 							})
 						}
 						onReset={() => {
 							onChange({
-								[`${prefix}max-height-${breakpoint}`]:
-									getDefaultAttribute(
-										`${prefix}max-height-${breakpoint}`
-									),
-								[`${prefix}max-height-unit-${breakpoint}`]:
-									getDefaultAttribute(
-										`${prefix}max-height-unit-${breakpoint}`
-									),
+								[getAttributeKey(
+									'max-height',
+									false,
+									prefix,
+									breakpoint
+								)]: getDefaultAttribute(
+									getAttributeKey(
+										'max-height',
+										false,
+										prefix,
+										breakpoint
+									)
+								),
+								[getAttributeKey(
+									'max-height-unit',
+									false,
+									prefix,
+									breakpoint
+								)]: getDefaultAttribute(
+									getAttributeKey(
+										'max-height-unit',
+										false,
+										prefix,
+										breakpoint
+									)
+								),
 								isReset: true,
 							});
 						}}
@@ -410,7 +564,12 @@ const FullSizeControl = props => {
 						})}
 						onChangeUnit={val =>
 							onChange({
-								[`${prefix}min-height-unit-${breakpoint}`]: val,
+								[getAttributeKey(
+									'min-height-unit',
+									false,
+									prefix,
+									breakpoint
+								)]: val,
 							})
 						}
 						value={getLastBreakpointAttribute({
@@ -420,19 +579,42 @@ const FullSizeControl = props => {
 						})}
 						onChangeValue={val =>
 							onChange({
-								[`${prefix}min-height-${breakpoint}`]: val,
+								[getAttributeKey(
+									'min-height',
+									false,
+									prefix,
+									breakpoint
+								)]: val,
 							})
 						}
 						onReset={() => {
 							onChange({
-								[`${prefix}min-height-${breakpoint}`]:
-									getDefaultAttribute(
-										`${prefix}min-height-${breakpoint}`
-									),
-								[`${prefix}min-height-unit-${breakpoint}`]:
-									getDefaultAttribute(
-										`${prefix}min-height-unit-${breakpoint}`
-									),
+								[getAttributeKey(
+									'min-height',
+									false,
+									prefix,
+									breakpoint
+								)]: getDefaultAttribute(
+									getAttributeKey(
+										'min-height',
+										false,
+										prefix,
+										breakpoint
+									)
+								),
+								[getAttributeKey(
+									'min-height-unit',
+									false,
+									prefix,
+									breakpoint
+								)]: getDefaultAttribute(
+									getAttributeKey(
+										'min-height-unit',
+										false,
+										prefix,
+										breakpoint
+									)
+								),
 								isReset: true,
 							});
 						}}

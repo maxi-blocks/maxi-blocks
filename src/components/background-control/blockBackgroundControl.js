@@ -34,7 +34,7 @@ const BlockBackgroundControl = props => {
 		disableColor = false,
 		disableSVG = false,
 		disableAddLayer = false,
-		transition,
+		t: transition,
 		getBounds,
 		getBlockClipPath, // for IB
 	} = props;

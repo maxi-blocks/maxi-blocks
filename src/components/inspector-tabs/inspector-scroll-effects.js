@@ -7,7 +7,10 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import ScrollEffectsControl from '../scroll-effects-control';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getAttributesValue,
+	getGroupAttributes,
+} from '../../extensions/styles';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 
 /**
@@ -17,7 +20,10 @@ const scrollEffects = ({ props, depth = 2 }) => {
 	const { attributes, maxiSetAttributes, blockStyle, clientId, deviceType } =
 		props;
 
-	const { uniqueID } = attributes;
+	const uniqueID = getAttributesValue({
+		target: 'uniqueID',
+		props: attributes,
+	});
 
 	return {
 		label: __('Scroll effects', 'maxi-blocks'),

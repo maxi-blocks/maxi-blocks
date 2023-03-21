@@ -120,7 +120,7 @@ export const hoverBackgroundColor = attributesShorter(
 		prefix,
 		diffValAttr: {
 			'hover-background-palette-color': 5,
-			'hover-background-pao': 60,
+			'hover-background-palette-opacity': 60,
 		},
 	}),
 	'hover'

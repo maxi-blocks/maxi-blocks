@@ -22,6 +22,7 @@ import SelectControl from '../select-control';
  * Styles
  */
 import './editor.scss';
+import { getAttributeKey } from '../../extensions/styles';
 
 /**
  * Component
@@ -123,7 +124,10 @@ const CustomCssControl = props => {
 					delete newCustomCss[category];
 			}
 
-			onChange(`custom-css-${breakpoint}`, newCustomCss);
+			onChange(
+				getAttributeKey('custom-css', null, null, breakpoint),
+				newCustomCss
+			);
 		};
 
 		async function validateCss(code) {

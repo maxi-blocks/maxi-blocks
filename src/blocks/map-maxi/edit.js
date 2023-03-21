@@ -78,7 +78,10 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const { attributes, isSelected } = this.props;
 		const { googleApiKey } = this.state;
-		const { uniqueID } = attributes;
+		const uniqueID = getAttributesValue({
+			target: 'uniqueID',
+			props: attributes,
+		});
 		const mapProvider = getAttributesValue({
 			target: 'map-provider',
 			props: attributes,

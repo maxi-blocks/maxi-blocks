@@ -10,6 +10,7 @@ import getDefaultAttribute from '../getDefaultAttribute';
  * External dependencies
  */
 import { isBoolean, isNil, isNumber, round, isEmpty } from 'lodash';
+import getAttributeKey from '../getAttributeKey';
 
 /**
  * General
@@ -50,7 +51,12 @@ const getBoxShadowStyles = ({
 			const defaultValue =
 				breakpoint === 'general'
 					? getDefaultAttribute(
-							`${prefix}box-shadow-${target}-${breakpoint}`
+							getAttributeKey(
+								`box-shadow-${target}`,
+								false,
+								prefix,
+								breakpoint
+							)
 					  )
 					: getLastBreakpointAttribute({
 							target: `${prefix}box-shadow-${target}`,

@@ -11,7 +11,15 @@ import getAttributesValue from './getAttributesValue';
 /**
  * External dependencies
  */
-import { isNil, isEmpty, isBoolean, isNumber, isString, uniq } from 'lodash';
+import {
+	isNil,
+	isEmpty,
+	isBoolean,
+	isNumber,
+	isString,
+	uniq,
+	isArray,
+} from 'lodash';
 
 /**
  * Breakpoints
@@ -188,6 +196,20 @@ const getLastBreakpointAttribute = ({
 	avoidXXL = true,
 	keys = [],
 }) => {
+	if (isArray(target))
+		return target.reduce((acc, item) => {
+			acc[item] = getLastBreakpointAttribute({
+				target: item,
+				breakpoint,
+				attributes,
+				isHover,
+				avoidXXL,
+				keys,
+			});
+
+			return acc;
+		}, {});
+
 	const { getSelectedBlockCount } = select('core/block-editor') || {
 		getSelectedBlockCount: () => 1, // Necessary for testing, mocking '@wordpress/data' is too dense
 	};

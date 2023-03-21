@@ -50,7 +50,7 @@ const arrowIcon = {
 				type: 'boolean',
 				default: false,
 			},
-			'navigation-arrow-both-icon-shadow-status': {
+			'navigation-arrow-both-icon-box-shadow-status': {
 				type: 'boolean',
 				default: false,
 			},

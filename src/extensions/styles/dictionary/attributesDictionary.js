@@ -16,10 +16,9 @@ const dictionary = {
 		alignment: 'a',
 	},
 	arrow: {
-		'arrow-status': 'as',
-		'arrow-side': 'asi',
-		'arrow-position': 'ap',
-		'arrow-width': 'aw',
+		side: 'si',
+		position: 'ps',
+		width: 'w',
 	},
 	arrowIcon: {
 		both: 'b',
@@ -27,7 +26,7 @@ const dictionary = {
 		svgType: 'st',
 		'spacing-vertical': 'sv',
 		'spacing-horizontal': 'sh',
-		shadow: 'sha',
+		// shadow: 'sha',
 	},
 	arrowIconHover: {},
 	background: {
@@ -47,11 +46,10 @@ const dictionary = {
 		clip: 'c',
 		attachment: 'a',
 		'clip-path': 'cp',
+		'parallax-speed': 'ps',
+		'parallax-direction': 'pd',
+		'parallax-alt-selector': 'pas',
 		parallax: 'p',
-		'-speed': 's', // parallax-speed
-		'-direction': 'd', // parallax-direction
-		'-alt': 'a', // parallax-alt
-		'-selector': 's', // parallax-alt-selector
 		startTime: 's',
 		endTime: 'e',
 		loop: 'l',
@@ -205,11 +203,10 @@ const dictionary = {
 	},
 	numberCounter: {
 		'width-auto': 'wa',
-		status: 's',
 		preview: 'p',
-		'percentage-sign-status': 'pss',
-		'rounded-status': 'rs',
-		'circle-status': 'cs',
+		'percentage-sign': 'ps',
+		rounded: 'r',
+		circle: 'c',
 		start: 'sa',
 		end: 'e',
 		stroke: 'st',
@@ -280,7 +277,7 @@ const dictionary = {
 		'slider-transition-speed': 'sts',
 	},
 	svg: {
-		'svg-status-hover': 'ssh',
+		svg: 'svg',
 	},
 	textAlignment: {
 		'text-alignment': 'ta',
@@ -346,7 +343,7 @@ const dictionary = {
 
 export const prefixesDictionary = {
 	'active-': 'a-',
-	'header-': 'h-',
+	'header-': 'he-',
 	'content-': 'c-',
 	'title-': 'ti-',
 	'background-color-wrapper-': 'bcw-',
@@ -375,33 +372,34 @@ export const prefixesDictionary = {
 	'navigation-dot-': 'nd-',
 	'transform-': 'tr-',
 	'list-': 'l-',
+	'arrow-': 'ar-',
 };
 
 export const suffixesDictionary = {
-	'-status': '-s',
-	'-status-hover': '-sh',
-	'-status-active': '-sa',
-	'-hover': '-h',
-	'-active': '-a',
-	'-unit': '-u',
-	'-top': '-t',
-	'-right': '-r',
-	'-bottom': '-b',
-	'-left': '-l',
-	'-top-left': '-tl',
-	'-top-right': '-tr',
-	'-bottom-left': '-bl',
-	'-bottom-right': '-br',
-	'-radius': '-r',
-	'-sync': '-sy',
-	'-general': '-g',
+	'-status': '.s',
+	'-status-hover': '.sh',
+	'-status-active': '.sa',
+	'-hover': '.h',
+	'-active': '.a',
+	'-unit': '.u',
+	'-top': '.t',
+	'-right': '.r',
+	'-bottom': '.b',
+	'-left': '.l',
+	'-top-left': '.tl',
+	'-top-right': '.tr',
+	'-bottom-left': '.bl',
+	'-bottom-right': '.br',
+	'-radius': '.r',
+	'-sync': '.sy',
+	// '-general': '-g',
 };
 
 export const colorDictionary = {
 	'palette-color': 'pc',
 	'palette-opacity': 'po',
-	'palette-': 'p',
-	color: 'c',
+	palette: 'p',
+	// color: 'c',
 };
 
 const flattenDictionary = dict => {
@@ -423,6 +421,27 @@ export const noTypeDictionary = flattenDictionary(dictionary);
 // Short to long terms
 export const reversedDictionary = {
 	...Object.entries(noTypeDictionary).reduce(
+		(acc, [key, val]) => ({ ...acc, [val]: key }),
+		{}
+	),
+};
+
+export const prefixesReversedDictionary = {
+	...Object.entries(prefixesDictionary).reduce(
+		(acc, [key, val]) => ({ ...acc, [val]: key }),
+		{}
+	),
+};
+
+export const suffixesReversedDictionary = {
+	...Object.entries(suffixesDictionary).reduce(
+		(acc, [key, val]) => ({ ...acc, [val]: key }),
+		{}
+	),
+};
+
+export const colorReversedDictionary = {
+	...Object.entries(colorDictionary).reduce(
 		(acc, [key, val]) => ({ ...acc, [val]: key }),
 		{}
 	),

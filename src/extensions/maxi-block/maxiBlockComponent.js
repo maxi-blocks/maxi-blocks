@@ -17,6 +17,8 @@ import { dispatch, resolveSelect, select, useSelect } from '@wordpress/data';
  */
 import {
 	entityRecordsWrapper,
+	getAttributeKey,
+	getAttributesValue,
 	getBlockStyle,
 	getDefaultAttribute,
 	getGroupAttributes,
@@ -101,7 +103,10 @@ class MaxiBlockComponent extends Component {
 		this.areFontsLoaded = createRef(false);
 
 		const { attributes } = this.props;
-		const { uniqueID } = attributes;
+		const uniqueID = getAttributesValue({
+			target: 'uniqueID',
+			props: attributes,
+		});
 
 		this.isReusable = false;
 		this.rootSlot = null;
@@ -124,11 +129,16 @@ class MaxiBlockComponent extends Component {
 				const { attributes } = this.props;
 				const maxiVersion = settings.maxi_version;
 
-				if (maxiVersion !== attributes['maxi-version-current'])
-					attributes['maxi-version-current'] = maxiVersion;
+				if (
+					maxiVersion !==
+					attributes[getAttributeKey('maxi-version-current')]
+				)
+					attributes[getAttributeKey('maxi-version-current')] =
+						maxiVersion;
 
-				if (!attributes['maxi-version-origin'])
-					attributes['maxi-version-origin'] = maxiVersion;
+				if (!attributes[getAttributeKey('maxi-version-origin')])
+					attributes[getAttributeKey('maxi-version-origin')] =
+						maxiVersion;
 			})
 			.catch(() => console.error('Maxi Blocks: Could not load settings'));
 
@@ -137,9 +147,14 @@ class MaxiBlockComponent extends Component {
 			this.blockRef.current.parentNode.classList.contains('is-reusable');
 
 		if (this.isReusable) {
+			const uniqueID = getAttributesValue({
+				target: 'uniqueID',
+				props: this.props.attributes,
+			});
+
 			this.widthObserver = updateReusableBlockSize(
 				this.blockRef.current,
-				this.props.attributes.uniqueID,
+				uniqueID,
 				this.props.clientId
 			);
 		}
@@ -163,13 +178,18 @@ class MaxiBlockComponent extends Component {
 			).receiveMaxiSelectedStyleCard();
 
 			if (!isEqual(this.state.oldSC, SC)) {
+				const blockStyle = getAttributesValue({
+					target: 'blockStyle',
+					props: this.props.attributes,
+				});
+
 				this.setState({
 					oldSC: SC,
 					scValues: select(
 						'maxiBlocks/style-cards'
 					).receiveStyleCardValue(
 						this.scProps.scElements,
-						this.props.attributes.blockStyle,
+						blockStyle,
 						this.scProps.scType
 					),
 				});
@@ -225,15 +245,13 @@ class MaxiBlockComponent extends Component {
 
 		// For render styles when there's no <style> element for the block
 		// Normally happens when duplicate the block
+		const uniqueID = getAttributesValue({
+			target: 'uniqueID',
+			props: this.props.attributes,
+		});
 		if (
-			!document.querySelector(
-				`#maxi-blocks__styles--${this.props.attributes.uniqueID}`
-			) ||
-			isNil(
-				select('maxiBlocks/styles').getBlockStyles(
-					this.props.attributes.uniqueID
-				)
-			)
+			!document.querySelector(`#maxi-blocks__styles--${uniqueID}`) ||
+			isNil(select('maxiBlocks/styles').getBlockStyles(uniqueID))
 		)
 			return false;
 
@@ -261,6 +279,11 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentWillUnmount() {
+		const uniqueID = getAttributesValue({
+			target: 'uniqueID',
+			props: this.props.attributes,
+		});
+
 		// If it's site editor, when swapping from pages we need to keep the styles
 		// On post editor, when entering to `code editor` page, we need to keep the styles
 		let keepStylesOnEditor = false;
@@ -270,12 +293,14 @@ class MaxiBlockComponent extends Component {
 			const { blocks } = getEditedEntityRecord('postType', name, id);
 
 			const getName = block => {
-				const {
-					attributes: { uniqueID },
-					innerBlocks,
-				} = block;
+				const { attributes, innerBlocks } = block;
 
-				if (uniqueID === this.props.attributes.uniqueID) return true;
+				const blockUniqueID = getAttributesValue({
+					target: 'uniqueID',
+					props: attributes,
+				});
+
+				if (blockUniqueID === uniqueID) return true;
 
 				if (innerBlocks.length)
 					return innerBlocks.some(block => getName(block));
@@ -291,9 +316,7 @@ class MaxiBlockComponent extends Component {
 		// the first copied block, on removing the styles the copied block appears naked. That's why we check if there's more than one block
 		// with same uniqueID
 		const keepStylesOnCloning =
-			Array.from(
-				document.getElementsByClassName(this.props.attributes.uniqueID)
-			).length > 1;
+			Array.from(document.getElementsByClassName(uniqueID)).length > 1;
 
 		// Different cases:
 		// 1. Swapping page on site editor or entering to `code editor` page on post editor
@@ -307,9 +330,7 @@ class MaxiBlockComponent extends Component {
 			this.removeStyles();
 
 			// Custom data
-			dispatch('maxiBlocks/customData').removeCustomData(
-				this.props.attributes.uniqueID
-			);
+			dispatch('maxiBlocks/customData').removeCustomData(uniqueID);
 
 			// IB
 			removeUnmountedBlockFromRelations(this.props.attributes.uniqueID);
@@ -360,7 +381,10 @@ class MaxiBlockComponent extends Component {
 			uniqueID,
 			'background-layers': bgLayers,
 			relations: relationsRaw,
-		} = this.props.attributes;
+		} = getAttributesValue({
+			target: ['uniqueID', 'background-layers', 'relations'],
+			props: this.props.attributes,
+		});
 
 		const scroll = getGroupAttributes(
 			this.props.attributes,
@@ -391,15 +415,17 @@ class MaxiBlockComponent extends Component {
 	}
 
 	getCurrentBlockStyle() {
-		const {
-			clientId,
-			attributes: { blockStyle },
-		} = this.props;
+		const { clientId, attributes } = this.props;
+		const blockStyle = getAttributesValue({
+			target: 'blockStyle',
+			props: attributes,
+		});
 
 		const newBlockStyle = getBlockStyle(clientId);
 
 		if (blockStyle !== newBlockStyle) {
-			this.props.attributes.blockStyle = newBlockStyle;
+			this.props.attributes[getAttributeKey('blockStyle')] =
+				newBlockStyle;
 
 			return true;
 		}
@@ -414,23 +440,23 @@ class MaxiBlockComponent extends Component {
 			getIsUniqueIDRepeated(idToCheck) ||
 			!uniqueIDStructureChecker(idToCheck, clientId)
 		) {
+			const { 'background-layers': bgLayers, customLabel } =
+				getAttributesValue({
+					target: ['background-layers', 'customLabel'],
+					props: this.props.attributes,
+				});
+
 			const newUniqueID = uniqueIDGenerator({
 				blockName,
 				diff: 1,
 				clientId,
 			});
 
-			propagateNewUniqueID(
-				idToCheck,
-				newUniqueID,
-				this.props.attributes['background-layers']
-			);
+			propagateNewUniqueID(idToCheck, newUniqueID, bgLayers);
 
-			this.props.attributes.uniqueID = newUniqueID;
-			this.props.attributes.customLabel = getCustomLabel(
-				this.props.attributes.customLabel,
-				this.props.attributes.uniqueID
-			);
+			this.props.attributes[getAttributeKey('uniqueID')] = newUniqueID;
+			this.props.attributes[getAttributeKey('customLabel')] =
+				getCustomLabel(customLabel, newUniqueID);
 
 			if (this.maxiBlockDidChangeUniqueID)
 				this.maxiBlockDidChangeUniqueID(newUniqueID);
@@ -461,13 +487,17 @@ class MaxiBlockComponent extends Component {
 		const obj = this.getStylesObject;
 		const breakpoints = this.getBreakpoints;
 
-		const uniqueID = rawUniqueID ?? this.props.attributes.uniqueID;
+		const oldUniqueID = getAttributesValue({
+			target: 'uniqueID',
+			props: this.props.attributes,
+		});
+		const uniqueID = rawUniqueID ?? oldUniqueID;
 
 		// When duplicating, need to change the obj target for the new uniqueID
-		if (!obj[uniqueID] && !!obj[this.props.attributes.uniqueID]) {
-			obj[uniqueID] = obj[this.props.attributes.uniqueID];
+		if (!obj[uniqueID] && !!obj[oldUniqueID]) {
+			obj[uniqueID] = obj[oldUniqueID];
 
-			delete obj[this.props.attributes.uniqueID];
+			delete obj[oldUniqueID];
 		}
 
 		const customData = this.getCustomData;
@@ -621,9 +651,12 @@ class MaxiBlockComponent extends Component {
 	}
 
 	removeStyles() {
-		const templateViewIframe = getTemplateViewIframe(
-			this.props.attributes.uniqueID
-		);
+		const uniqueID = getAttributesValue({
+			target: 'uniqueID',
+			props: this.props.attributes,
+		});
+
+		const templateViewIframe = getTemplateViewIframe(uniqueID);
 		const siteEditorIframe = getSiteEditorIframe();
 		const previewIframe = document.querySelector(
 			'.block-editor-block-preview__container iframe'
@@ -640,7 +673,7 @@ class MaxiBlockComponent extends Component {
 			document;
 
 		getEditorElement()
-			.getElementById(getStylesWrapperId(this.props.attributes.uniqueID))
+			.getElementById(getStylesWrapperId(uniqueID))
 			?.remove();
 
 		if (this.isReusable) {

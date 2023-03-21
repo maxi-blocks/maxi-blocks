@@ -28,7 +28,10 @@ class edit extends MaxiBlockComponent {
 
 	get getMaxiCustomData() {
 		const { attributes } = this.props;
-		const { uniqueID } = attributes;
+		const uniqueID = getAttributesValue({
+			target: 'uniqueID',
+			props: attributes,
+		});
 		const response = {
 			accordion: {
 				[uniqueID]: {
@@ -95,7 +98,10 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes } = this.props;
-		const { uniqueID } = attributes;
+		const uniqueID = getAttributesValue({
+			target: 'uniqueID',
+			props: attributes,
+		});
 
 		const {
 			titleLevel,

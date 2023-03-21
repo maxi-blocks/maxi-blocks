@@ -9,7 +9,11 @@ import { __ } from '@wordpress/i18n';
 import IconControl from '../icon-control';
 import ToggleSwitch from '../toggle-switch';
 import SettingTabsControl from '../setting-tabs-control';
-import { getGroupAttributes, getIconWithColor } from '../../extensions/styles';
+import {
+	getAttributesValue,
+	getGroupAttributes,
+	getIconWithColor,
+} from '../../extensions/styles';
 import ManageHoverTransitions from '../manage-hover-transitions';
 
 /**
@@ -35,7 +39,11 @@ const icon = ({
 	ignoreIndicator = [],
 }) => {
 	const { attributes, deviceType } = props;
-	const { [`${prefix}icon-content`]: iconContent } = attributes;
+	const { [`${prefix}icon-content`]: iconContent } = getAttributesValue({
+		target: `${prefix}icon-content`,
+		props: attributes,
+	});
+
 	if (deviceType !== 'general' && isEmpty(iconContent)) return null;
 
 	const {
@@ -48,7 +56,14 @@ const icon = ({
 		[`${prefix}icon-status-hover`]: hoverStatus,
 		blockStyle,
 		[`${prefix}svgType`]: svgType,
-	} = attributes;
+	} = getAttributesValue({
+		target: [
+			`${prefix}icon-status-hover`,
+			'blockStyle',
+			`${prefix}svgType`,
+		],
+		props: attributes,
+	});
 
 	const iconControlBasicProps = {
 		svgType,
@@ -128,7 +143,11 @@ const icon = ({
 									selected={hoverStatus}
 									onChange={val =>
 										maxiSetAttributes({
-											[`${prefix}icon-status-hover`]: val,
+											[getAttributesValue(
+												'icon-status',
+												true,
+												prefix
+											)]: val,
 										})
 									}
 								/>

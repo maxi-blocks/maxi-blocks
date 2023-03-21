@@ -11,6 +11,7 @@ import { getIsValid } from '../utils';
  * External dependencies
  */
 import { isUndefined, isNil } from 'lodash';
+import getAttributesValue from '../getAttributesValue';
 
 /**
  * General
@@ -34,11 +35,19 @@ const getBorderStyles = ({
 }) => {
 	const response = {};
 
-	const hoverStatus = obj[`${prefix}border-status-hover`];
+	const hoverStatus = getAttributesValue({
+		target: 'border-status-hover',
+		props: obj,
+		prefix,
+	});
+
 	const {
 		'hover-border-color-global': isActive,
 		'hover-border-color-all': affectAll,
-	} = scValues;
+	} = getAttributesValue({
+		target: ['hover-border-color-global', 'hover-border-color-all'],
+		props: scValues,
+	});
 	const globalHoverStatus = isActive && affectAll;
 
 	if (isHover && !isNil(hoverStatus) && !hoverStatus && !globalHoverStatus)
@@ -157,9 +166,9 @@ const getBorderStyles = ({
 							getColorString();
 					} else if (
 						![
-							'border-pa-status',
-							'border-pac',
-							'border-pao',
+							'border-palette-status',
+							'border-palette-color',
+							'border-palette-opacity',
 						].includes(newLabel)
 					)
 						response[breakpoint][newLabel] = `${value}`;

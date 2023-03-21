@@ -18,6 +18,7 @@ import TransitionControl from '../transition-control';
 import { openSidebarAccordion } from '../../extensions/inspector';
 import {
 	createTransitionObj,
+	getAttributesValue,
 	getDefaultAttribute,
 	getGroupAttributes,
 } from '../../extensions/styles';
@@ -37,17 +38,15 @@ import { capitalize, cloneDeep, isEmpty, merge } from 'lodash';
 import './editor.scss';
 
 const RelationControl = props => {
+	const { deviceType, isButton, onChange, uniqueID } = props;
+	const rawRelations = getAttributesValue({
+		target: 'relations',
+		props,
+	});
+
 	const { getBlock } = select('core/block-editor');
 
 	const { selectBlock } = useDispatch('core/block-editor');
-
-	const {
-		deviceType,
-		isButton,
-		onChange,
-		relations: rawRelations,
-		uniqueID,
-	} = props;
 
 	const cloneRelations = relations =>
 		!isEmpty(relations) ? cloneDeep(relations) : [];

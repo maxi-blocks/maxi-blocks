@@ -1,6 +1,7 @@
 import { cloneElement } from '@wordpress/element';
 
 import { isNil, isArray } from 'lodash';
+import getAttributesValue from '../getAttributesValue';
 
 const name = 'Remove Fullwidth to Responsive';
 
@@ -35,7 +36,10 @@ const migrate = ({ newAttributes, prefix }) => {
 const saveMigrator = (saveInstance, props) => {
 	const { attributes } = props;
 
-	const { fullWidth, blockFullWidth } = attributes;
+	const { fullWidth, blockFullWidth } = getAttributesValue({
+		target: ['fullWidth', 'blockFullWidth'],
+		props: attributes,
+	});
 
 	let newInstance = cloneElement(saveInstance, {
 		'data-align': blockFullWidth,

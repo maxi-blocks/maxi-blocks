@@ -41,7 +41,16 @@ const Inspector = props => {
 		cleanInlineStyles,
 		inlineStylesTargets,
 	} = props;
-	const { blockStyle, customLabel, isFirstOnHierarchy, svgType } = attributes;
+	const { blockStyle, customLabel, isFirstOnHierarchy, svgType } =
+		getAttributesValue({
+			target: [
+				'blockStyle',
+				'customLabel',
+				'isFirstOnHierarchy',
+				'svgType',
+			],
+			props: attributes,
+		});
 	const { selectors, categories } = customCss;
 
 	return (
@@ -64,13 +73,25 @@ const Inspector = props => {
 							const { blockStyle } = obj;
 
 							const {
-								'svg-fill-pac': svgPaletteFillColor,
-								'svg-fill-pao': svgPaletteFillOpacity,
-								'svg-fill-c': svgFillColor,
-								'svg-line-pac': svgPaletteLineColor,
-								'svg-line-pao': svgPaletteLineOpacity,
-								'svg-line-c': svgLineColor,
-							} = attributes;
+								'svg-fill-palette-color': svgPaletteFillColor,
+								'svg-fill-palette-opacity':
+									svgPaletteFillOpacity,
+								'svg-fill-color': svgFillColor,
+								'svg-line-palette-color': svgPaletteLineColor,
+								'svg-line-palette-opacity':
+									svgPaletteLineOpacity,
+								'svg-line-color': svgLineColor,
+							} = getAttributesValue({
+								target: [
+									'svg-fill-palette-color',
+									'svg-fill-palette-opacity',
+									'svg-fill-color',
+									'svg-line-palette-color',
+									'svg-line-palette-opacity',
+									'svg-line-color',
+								],
+								props: attributes,
+							});
 
 							const fillColorStr = getColorRGBAString({
 								firstVar: 'icon-fill',

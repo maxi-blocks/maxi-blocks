@@ -5,7 +5,10 @@ import Inspector from './inspector';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { ArrowDisplayer, BlockInserter, Toolbar } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getAttributesValue,
+	getGroupAttributes,
+} from '../../extensions/styles';
 import getStyles from './styles';
 import { copyPasteMapping } from './data';
 
@@ -19,7 +22,10 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes, deviceType, hasInnerBlocks, clientId } = this.props;
-		const { uniqueID } = attributes;
+		const uniqueID = getAttributesValue({
+			target: 'uniqueID',
+			props: attributes,
+		});
 
 		/**
 		 * TODO: Gutenberg still does not have the disallowedBlocks feature

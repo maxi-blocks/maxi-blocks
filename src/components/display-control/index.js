@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import SettingTabsControl from '../setting-tabs-control';
-import { getAttributesValue } from '../../extensions/styles';
+import { getAttributeKey, getAttributesValue } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -50,8 +50,10 @@ const DisplayControl = props => {
 			)
 				return true;
 			if (
-				getAttributesValue({ target: `display-${breakpoints[i]}` }) ===
-				defaultDisplay
+				getAttributesValue(
+					{ target: `display-${breakpoints[i]}` },
+					props
+				) === defaultDisplay
 			)
 				return false;
 			i -= 1;
@@ -61,7 +63,10 @@ const DisplayControl = props => {
 	};
 
 	const getValue = () => {
-		if (getAttributesValue({ target: `display-${breakpoint}` }) === 'none')
+		if (
+			getAttributesValue({ target: `display-${breakpoint}` }, props) ===
+			'none'
+		)
 			return 'none';
 
 		const isPrevHide = isHide();
@@ -115,7 +120,8 @@ const DisplayControl = props => {
 				items={getOptions()}
 				onChange={val =>
 					onChange({
-						[`d-${breakpoint}`]: !isEmpty(val) ? val : null,
+						[getAttributeKey('display', null, null, breakpoint)]:
+							!isEmpty(val) ? val : null,
 					})
 				}
 				hasBorder

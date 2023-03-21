@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import AdvancedNumberControl from '../advanced-number-control';
 import {
+	getAttributeKey,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
@@ -49,7 +50,12 @@ const GapAxisControl = props => {
 			})}
 			onChangeUnit={val => {
 				onChange({
-					[`${target}-unit-${breakpoint}`]: val,
+					[getAttributeKey(
+						`${target}-unit`,
+						false,
+						false,
+						breakpoint
+					)]: val,
 				});
 			}}
 			value={getLastBreakpointAttribute({
@@ -59,17 +65,28 @@ const GapAxisControl = props => {
 			})}
 			onChangeValue={val => {
 				onChange({
-					[`${target}-${breakpoint}`]: val,
+					[getAttributeKey(target, false, false, breakpoint)]: val,
 				});
 			}}
 			allowedUnits={['px', 'em', 'vw', '%']}
 			onReset={() =>
 				onChange({
-					[`${target}-${breakpoint}`]: getDefaultAttribute(
-						`${target}-${breakpoint}`
-					),
-					[`${target}-unit-${breakpoint}`]: getDefaultAttribute(
-						`${target}-unit-${breakpoint}`
+					[getAttributeKey(target, false, false, breakpoint)]:
+						getDefaultAttribute(
+							getAttributeKey(target, false, false, breakpoint)
+						),
+					[getAttributeKey(
+						`${target}-unit`,
+						false,
+						false,
+						breakpoint
+					)]: getDefaultAttribute(
+						getAttributeKey(
+							`${target}-unit`,
+							false,
+							false,
+							breakpoint
+						)
 					),
 					isReset: true,
 				})

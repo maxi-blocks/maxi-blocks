@@ -10,7 +10,15 @@ const getIconWithColor = (attributes, args = {}, prefix = '') => {
 		[`${prefix}icon-only`]: iconOnly,
 		[`${prefix}icon-inherit`]: iconInherit,
 		[`${prefix}icon-content`]: iconContent,
-	} = attributes;
+	} = getAttributesValue({
+		target: [
+			'blockStyle',
+			`${prefix}icon-only`,
+			`${prefix}icon-inherit`,
+			`${prefix}icon-content`,
+		],
+		props: attributes,
+	});
 
 	let { isInherit, isIconOnly } = args;
 	const { isHover, type: rawType = ['stroke'], rawIcon } = args;

@@ -39,7 +39,10 @@ const TransitionControlWrapper = props => {
 		isOneType,
 		transitionData,
 	} = props;
-	const { transitionChangeAll, transitionTypeSelect } = getAttributesValue({
+	const {
+		'transition-change-all': transitionChangeAll,
+		[`transition-${type}-selected`]: transitionTypeSelect,
+	} = getAttributesValue({
 		target: ['transition-change-all', `transition-${type}-selected`],
 		props: attributes,
 	});
@@ -203,7 +206,10 @@ const transition = ({
 	const {
 		transition: rawTransition,
 		'transition-change-all': transitionChangeAll,
-	} = attributes;
+	} = getAttributesValue({
+		target: ['transition', 'transition-change-all'],
+		props: attributes,
+	});
 
 	const transition = cloneDeep(rawTransition);
 

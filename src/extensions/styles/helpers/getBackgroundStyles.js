@@ -43,12 +43,18 @@ export const getColorBackgroundObject = ({
 	backgroundColorProperty = 'background-color',
 	...props
 }) => {
-	const { hoverStatus, backgroundActiveMedia } = getAttributesValue({
+	const {
+		[`${prefix}background-status-hover`]: hoverStatus,
+		'background-active-media': backgroundActiveMedia,
+	} = getAttributesValue({
 		target: [`${prefix}background-status-hover`, 'background-active-media'],
 		props,
 	});
 
-	const { isActive, affectAll } = getAttributesValue({
+	const {
+		'hover-background-color-global': isActive,
+		'hover-background-color-all': affectAll,
+	} = getAttributesValue({
 		target: ['hover-background-color-global', 'hover-background-color-all'],
 		props: scValues,
 	});
@@ -65,23 +71,23 @@ export const getColorBackgroundObject = ({
 	const { paletteStatus, paletteColor, paletteOpacity, color } =
 		getPaletteAttributes({
 			obj: props,
-			prefix: `${prefix}background-`,
+			prefix: `${prefix}background-color-`,
 			isHover,
 			breakpoint,
 		});
 
-	const bgClipPath = getLastBreakpointAttribute({
-		target: `${prefix}background-color-clip-path`,
+	const {
+		[`${prefix}background-color-clip-path`]: bgClipPath,
+		[`${prefix}background-color-clip-path-status`]: isBgColorClipPathActive,
+	} = getLastBreakpointAttribute({
+		target: [
+			'background-color-clip-path',
+			'background-color-clip-path-status',
+		],
 		breakpoint,
 		attributes: props,
 		isHover,
-	});
-
-	const isBgColorClipPathActive = getLastBreakpointAttribute({
-		target: `${prefix}background-color-clip-path-status`,
-		breakpoint,
-		attributes: props,
-		isHover,
+		prefix,
 	});
 
 	if (!paletteStatus && !isEmpty(color))
@@ -175,42 +181,28 @@ export const getGradientBackgroundObject = ({
 		[breakpoint]: {},
 	};
 
-	const bgGradientOpacity = getLastBreakpointAttribute({
-		target: `${prefix}background-gradient-opacity`,
+	const {
+		[`${prefix}background-gradient-opacity`]: bgGradientOpacity,
+		[`${prefix}background-gradient`]: bgGradient,
+		[`${prefix}background-gradient-clip-path`]: bgGradientClipPath,
+		[`${prefix}background-gradient-clip-path-status`]:
+			isBgGradientClipPathActive,
+		[`${prefix}background-active-media`]: backgroundActiveMedia,
+	} = getLastBreakpointAttribute({
+		target: [
+			'background-gradient-opacity',
+			'background-gradient',
+			'background-gradient-clip-path',
+			'background-gradient-clip-path-status',
+			'background-active-media',
+		],
 		breakpoint,
 		attributes: props,
 		isHover,
-	});
-	const bgGradient = getLastBreakpointAttribute({
-		target: `${prefix}background-gradient`,
-		breakpoint,
-		attributes: props,
-		isHover,
-	});
-	const bgGradientClipPath = getLastBreakpointAttribute({
-		target: `${prefix}background-gradient-clip-path`,
-		breakpoint,
-		attributes: props,
-		isHover,
-	});
-
-	const isBgGradientClipPathActive = getLastBreakpointAttribute({
-		target: `${prefix}background-gradient-clip-path-status`,
-		breakpoint,
-		attributes: props,
-		isHover,
+		prefix,
 	});
 
-	if (
-		(isIcon &&
-			getLastBreakpointAttribute({
-				target: `${prefix}background-active-media`,
-				breakpoint,
-				attributes: props,
-				isHover,
-			}) === 'gradient') ||
-		!isIcon
-	) {
+	if ((isIcon && backgroundActiveMedia === 'gradient') || !isIcon) {
 		if (
 			isNumber(bgGradientOpacity) &&
 			!isEmpty(bgGradient) &&
@@ -489,23 +481,20 @@ export const getVideoBackgroundObject = ({
 		[breakpoint]: {},
 	};
 
-	const bgVideoOpacity = getLastBreakpointAttribute({
-		target: `${prefix}background-video-opacity`,
+	const {
+		[`${prefix}background-video-opacity`]: bgVideoOpacity,
+		[`${prefix}background-video-clip-path`]: bgVideoClipPath,
+		[`${prefix}background-video-fallbackURL`]: bgVideoFallbackUrl,
+	} = getLastBreakpointAttribute({
+		target: [
+			'background-video-opacity',
+			'background-video-clip-path',
+			'background-video-fallbackURL',
+		],
 		breakpoint,
 		attributes: props,
 		isHover,
-	});
-	const bgVideoClipPath = getLastBreakpointAttribute({
-		target: `${prefix}background-video-clip-path`,
-		breakpoint,
-		attributes: props,
-		isHover,
-	});
-	const bgVideoFallbackUrl = getLastBreakpointAttribute({
-		target: `${prefix}background-video-fallbackURL`,
-		breakpoint,
-		attributes: props,
-		isHover,
+		prefix,
 	});
 
 	// Opacity
@@ -560,15 +549,14 @@ const getWrapperObject = ({
 	const keyWords = ['top', 'right', 'bottom', 'left'];
 
 	keyWords.forEach(keyWord => {
-		const positionValue = getLastBreakpointAttribute({
-			target: `${prefix}position-${keyWord}`,
-			breakpoint,
-			attributes: props,
-			isHover,
-		});
-
-		const positionUnit = getLastBreakpointAttribute({
-			target: `${prefix}position-${keyWord}-unit`,
+		const {
+			[`${prefix}position-${keyWord}`]: positionValue,
+			[`${prefix}position-${keyWord}-unit`]: positionUnit,
+		} = getLastBreakpointAttribute({
+			target: [
+				`${prefix}position-${keyWord}`,
+				`${prefix}position-${keyWord}-unit`,
+			],
 			breakpoint,
 			attributes: props,
 			isHover,
@@ -1230,6 +1218,7 @@ export const getBlockBackgroundStyles = ({
 			};
 		});
 
+	console.log(response);
 	return response;
 };
 

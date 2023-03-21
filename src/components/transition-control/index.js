@@ -11,7 +11,11 @@ import AdvancedNumberControl from '../advanced-number-control';
 import SelectControl from '../select-control';
 import SettingTabsControl from '../setting-tabs-control';
 import ToggleSwitch from '../toggle-switch';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
+import {
+	getAttributeKey,
+	getAttributesValue,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import withRTC from '../../extensions/maxi-block/withRTC';
 
 /**
@@ -24,29 +28,23 @@ import classnames from 'classnames';
  * Component
  */
 const TransitionControl = props => {
-	const {
-		transition: transitionRaw,
-		breakpoint,
-		className,
-		onChange,
-		getDefaultTransitionAttribute,
-	} = props;
+	const { breakpoint, className, onChange, getDefaultTransitionAttribute } =
+		props;
+	const transitionRaw = getAttributesValue({
+		target: 'transition',
+		props,
+	});
 
 	const [splitMode, setSplitMode] = useState('in');
 
 	const transition = splitMode === 'out' ? transitionRaw?.out : transitionRaw;
 
-	const transitionSplit = getLastBreakpointAttribute({
-		target: 'split',
-		attributes: transitionRaw,
-		breakpoint,
-	});
-
-	const transitionStatus = getLastBreakpointAttribute({
-		target: 'transition-status',
-		attributes: transition,
-		breakpoint,
-	});
+	const { split: transitionSplit, 'transition-status': transitionStatus } =
+		getLastBreakpointAttribute({
+			target: ['split', 'transition-status'],
+			attributes: transitionRaw,
+			breakpoint,
+		});
 
 	const classes = classnames('maxi-transition-control', className);
 
@@ -124,8 +122,12 @@ const TransitionControl = props => {
 						})}
 						onChangeValue={val => {
 							handleChange({
-								[`transition-duration-${breakpoint}`]:
-									val !== undefined && val !== '' ? val : '',
+								[getAttributeKey(
+									'transition-duration',
+									false,
+									false,
+									breakpoint
+								)]: val !== undefined && val !== '' ? val : '',
 							});
 						}}
 						min={0}
@@ -134,10 +136,14 @@ const TransitionControl = props => {
 						initial={0.3}
 						onReset={() =>
 							handleChange({
-								[`transition-duration-${breakpoint}`]:
-									getDefaultTransitionAttribute(
-										'transition-duration'
-									),
+								[getAttributeKey(
+									'transition-duration',
+									false,
+									false,
+									breakpoint
+								)]: getDefaultTransitionAttribute(
+									'transition-duration'
+								),
 							})
 						}
 					/>
@@ -154,8 +160,12 @@ const TransitionControl = props => {
 						})}
 						onChangeValue={val => {
 							handleChange({
-								[`transition-delay-${breakpoint}`]:
-									val !== undefined && val !== '' ? val : '',
+								[getAttributeKey(
+									'transition-delay',
+									false,
+									false,
+									breakpoint
+								)]: val !== undefined && val !== '' ? val : '',
 							});
 						}}
 						min={0}
@@ -164,7 +174,12 @@ const TransitionControl = props => {
 						initial={0}
 						onReset={() =>
 							handleChange({
-								[`transition-delay-${breakpoint}`]:
+								[getAttributeKey(
+									'transition-delay',
+									false,
+									false,
+									breakpoint
+								)]:
 									getDefaultTransitionAttribute(
 										'transition-delay'
 									),
@@ -201,14 +216,22 @@ const TransitionControl = props => {
 						]}
 						onChange={val => {
 							handleChange({
-								[`easing-${breakpoint}`]:
-									val !== undefined && val !== '' ? val : '',
+								[getAttributeKey(
+									'easing',
+									false,
+									false,
+									breakpoint
+								)]: val !== undefined && val !== '' ? val : '',
 							});
 						}}
 						onReset={() =>
 							handleChange({
-								[`easing-${breakpoint}`]:
-									getDefaultTransitionAttribute('easing'),
+								[getAttributeKey(
+									'easing',
+									false,
+									false,
+									breakpoint
+								)]: getDefaultTransitionAttribute('easing'),
 							})
 						}
 					/>

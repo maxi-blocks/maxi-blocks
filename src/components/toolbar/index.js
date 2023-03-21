@@ -61,6 +61,7 @@ import {
 	ToolbarMediaUpload,
 } from './components';
 import {
+	getAttributesValue,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
@@ -118,7 +119,20 @@ const MaxiToolbar = memo(
 			typeOfList,
 			uniqueID,
 			svgType,
-		} = attributes;
+		} = getAttributesValue({
+			target: [
+				'blockStyle',
+				'customLabel',
+				'isFirstOnHierarchy',
+				'isList',
+				'linkSettings',
+				'textLevel',
+				'typeOfList',
+				'uniqueID',
+				'svgType',
+			],
+			props: attributes,
+		});
 
 		const { isTyping, getBlockParents } = useSelect(
 			select => select('core/block-editor'),

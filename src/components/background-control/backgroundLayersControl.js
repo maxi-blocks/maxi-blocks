@@ -517,7 +517,7 @@ const BackgroundLayersControl = ({
 		if (!isEqual(newLayers, isHoverLayer ? layersHover : layers))
 			onChange(
 				{
-					[`background-layers${isHoverLayer ? '-hover' : ''}`]:
+					[getAttributeKey('background-layers', isHoverLayer)]:
 						newLayers,
 				},
 				target
@@ -531,7 +531,7 @@ const BackgroundLayersControl = ({
 		newLayers.push(layer);
 
 		onChange({
-			[`background-layers${isHoverLayer ? '-hover' : ''}`]: newLayers,
+			[getAttributeKey('background-layers', isHoverLayer)]: newLayers,
 			...(!isHoverLayer
 				? {
 						transition: {
@@ -561,7 +561,7 @@ const BackgroundLayersControl = ({
 		);
 
 		onChange({
-			[`background-layers${isHover ? '-hover' : ''}`]: newLayers,
+			[getAttributeKey('background-layers', isHoverLayer)]: newLayers,
 			transition: {
 				...transition,
 				transform: omit(transition.transform, `_${idOfRemovedLayer}`),

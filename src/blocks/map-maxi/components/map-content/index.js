@@ -32,7 +32,10 @@ const MapContent = props => {
 		isSelected,
 		maxiSetAttributes,
 	} = props;
-	const { uniqueID } = attributes;
+	const uniqueID = getAttributesValue({
+		target: 'uniqueID',
+		props: attributes,
+	});
 	const {
 		'map-latitude': mapLatitude,
 		'map-longitude': mapLongitude,

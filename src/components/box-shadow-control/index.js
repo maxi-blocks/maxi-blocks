@@ -22,6 +22,7 @@ import {
 	getDefaultAttribute,
 	getAttributeKey,
 } from '../../extensions/styles';
+import ToggleSwitch from '../toggle-switch';
 
 /**
  * External dependencies
@@ -34,7 +35,6 @@ import { capitalize } from 'lodash';
  */
 import './editor.scss';
 import { styleNone, boxShadow } from '../../icons';
-import ToggleSwitch from '../toggle-switch';
 
 /**
  * Component
@@ -87,9 +87,12 @@ const BoxShadowValueControl = props => {
 			})}
 			onChangeValue={val => {
 				onChange({
-					[`${prefix}box-shadow-${type}-${breakpoint}${
-						isHover ? '-hover' : ''
-					}`]: val !== undefined && val !== '' ? val : '',
+					[getAttributeKey(
+						`box-shadow-${type}`,
+						isHover,
+						prefix,
+						breakpoint
+					)]: val !== undefined && val !== '' ? val : '',
 				});
 			}}
 			min={-100}
@@ -97,27 +100,42 @@ const BoxShadowValueControl = props => {
 			minMaxSettings={minMaxSettings}
 			onReset={() =>
 				onChange({
-					[`${prefix}box-shadow-${type}-${breakpoint}${
-						isHover ? '-hover' : ''
-					}`]: getDefaultAttribute(
-						`${prefix}box-shadow-${type}-${breakpoint}${
-							isHover ? '-hover' : ''
-						}`
+					[getAttributeKey(
+						`box-shadow-${type}`,
+						isHover,
+						prefix,
+						breakpoint
+					)]: getDefaultAttribute(
+						getAttributeKey(
+							`box-shadow-${type}`,
+							isHover,
+							prefix,
+							breakpoint
+						)
 					),
-					[`${prefix}box-shadow-${type}-unit-${breakpoint}${
-						isHover ? '-hover' : ''
-					}`]: getDefaultAttribute(
-						`${prefix}box-shadow-${type}-unit-${breakpoint}${
-							isHover ? '-hover' : ''
-						}`
+					[getAttributeKey(
+						`box-shadow-${type}-unit`,
+						isHover,
+						prefix,
+						breakpoint
+					)]: getDefaultAttribute(
+						getAttributeKey(
+							`box-shadow-${type}-unit`,
+							isHover,
+							prefix,
+							breakpoint
+						)
 					),
 					isReset: true,
 				})
 			}
 			initialPosition={getDefaultAttribute(
-				`${prefix}box-shadow-${type}-${breakpoint}${
-					isHover ? '-hover' : ''
-				}`
+				getAttributeKey(
+					`box-shadow-${type}`,
+					isHover,
+					prefix,
+					breakpoint
+				)
 			)}
 			{...(!isToolbar && { enableUnit: true })}
 			unit={getLastBreakpointAttribute({
@@ -128,9 +146,12 @@ const BoxShadowValueControl = props => {
 			})}
 			onChangeUnit={val =>
 				onChange({
-					[`${prefix}box-shadow-${type}-unit-${breakpoint}${
-						isHover ? '-hover' : ''
-					}`]: val,
+					[getAttributeKey(
+						`box-shadow-${type}-unit`,
+						isHover,
+						prefix,
+						breakpoint
+					)]: val,
 				})
 			}
 			allowedUnits={['px', 'em', 'vw']}
@@ -177,7 +198,7 @@ const BoxShadowControl = props => {
 			});
 
 		Object.entries(defaultProp).forEach(([key, value]) => {
-			response[`${key}-${breakpoint}${isHover ? '-hover' : ''}`] = value;
+			response[getAttributeKey(key, isHover, null, breakpoint)] = value;
 		});
 
 		onChange(response);
@@ -185,7 +206,7 @@ const BoxShadowControl = props => {
 
 	const getIsActive = typeObj => {
 		const items = [
-			`${prefix}box-shadow-pao`,
+			`${prefix}box-shadow-palette-opacity`,
 			`${prefix}box-shadow-horizontal`,
 			`${prefix}box-shadow-horizontal-unit`,
 			`${prefix}box-shadow-vertical`,
@@ -381,9 +402,12 @@ const BoxShadowControl = props => {
 							})}
 							onChange={val =>
 								onChange({
-									[`${prefix}box-shadow-inset-${breakpoint}${
-										isHover ? '-hover' : ''
-									}`]: val,
+									[getAttributeKey(
+										'box-shadow-inset',
+										isHover,
+										prefix,
+										breakpoint
+									)]: val,
 								})
 							}
 						/>

@@ -126,7 +126,11 @@ const SVGFillControl = props => {
 
 	const classes = classnames('maxi-svg-fill-control', className);
 
-	const SVGElement = SVGOptions['background-svg-SVGElement'];
+	const SVGElement = getAttributesValue({
+		target: 'background-svg-SVGElement',
+		attributes: SVGOptions,
+	});
+
 	const SVGData = cloneDeep(
 		SVGOptions[getAttributeKey('background-svg-SVGData', isHover)] ||
 			SVGOptions['background-svg-SVGData']

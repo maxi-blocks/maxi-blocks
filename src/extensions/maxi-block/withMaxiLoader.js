@@ -15,6 +15,7 @@ import {
  * External dependencies
  */
 import { PuffLoader } from 'react-spinners';
+import { getAttributesValue } from '../styles';
 
 const sentences = [
 	__('Please wait while the minions whip up some magic', 'maxi-blocks'),
@@ -125,10 +126,11 @@ const SuspendedBlock = ({ onMountBlock, clientId }) => {
 const withMaxiLoader = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
-			const {
-				clientId,
-				attributes: { uniqueID, isFirstOnHierarchy },
-			} = ownProps;
+			const { clientId, attributes } = ownProps;
+			const { uniqueID, isFirstOnHierarchy } = getAttributesValue({
+				target: ['uniqueID', 'isFirstOnHierarchy'],
+				props: attributes,
+			});
 
 			const { canBlockRender, getIsPageLoaded } = useSelect(
 				select => select('maxiBlocks'),

@@ -7,7 +7,10 @@ import { forwardRef, useRef } from '@wordpress/element';
  * Internal dependencies
  */
 import Popover from '../popover';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
+import {
+	getAttributesValue,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -31,7 +34,6 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 		className,
 		clientId,
 	} = props;
-	const { uniqueID } = attributes;
 
 	const popoverRef = useRef(null);
 	const previousWidthAttribute = useRef();
@@ -47,6 +49,11 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 	const shouldDisplayComponent = () => !(!isSelected || !ref.current);
 
 	if (!shouldDisplayComponent()) return null;
+
+	const { uniqueID, imgWidth } = getAttributesValue({
+		target: ['uniqueID', 'imgWidth'],
+		props: attributes,
+	});
 
 	const shouldHideComponent = () => {
 		if (isEmptyContent) return false;
@@ -85,7 +92,7 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 
 		const resizerWidth =
 			prefix === 'image-'
-				? (attributes.imgWidth / 100) * containerWidth
+				? (imgWidth / 100) * containerWidth
 				: toNumber(
 						getLastBreakpointAttribute({
 							target: `${prefix}width`,

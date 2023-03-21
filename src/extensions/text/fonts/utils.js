@@ -11,7 +11,7 @@ import { isEmpty, isString, cloneDeep, isObject } from 'lodash';
 /**
  * Internal dependencies
  */
-import { getGroupAttributes } from '../../styles';
+import { getAttributesValue, getGroupAttributes } from '../../styles';
 import { getCustomFormatValue } from '../formats';
 import { goThroughMaxiBlocks } from '../../maxi-block';
 
@@ -165,8 +165,11 @@ export const getPageFonts = (onlyBackend = false) => {
 		if (blocksWithFonts.includes(name) && !isEmpty(attributes)) {
 			let typography = {};
 			let typographyHover = {};
-			let textLevel = attributes?.textLevel || 'p';
-			const { blockStyle } = attributes;
+			const { blockStyle, textLevel: rawTextLevel } = getAttributesValue({
+				target: ['blockStyle', 'textLevel'],
+				props: attributes,
+			});
+			let textLevel = rawTextLevel || 'p';
 
 			switch (name) {
 				case 'maxi-blocks/number-counter-maxi':

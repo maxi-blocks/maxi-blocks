@@ -15,6 +15,7 @@ import { getCustomLabel } from '../maxi-block';
  * External Dependencies
  */
 import { isEmpty, isNil } from 'lodash';
+import { getAttributeKey, getAttributesValue } from '../styles';
 
 /**
  * General
@@ -48,15 +49,19 @@ const allowedBlocks = [
 const withAttributes = createHigherOrderComponent(
 	BlockEdit => props => {
 		const { attributes, name: blockName, clientId } = props;
-		const { uniqueID } = attributes;
+		const uniqueID = getAttributesValue({
+			target: 'uniqueID',
+			props: attributes,
+		});
 
 		if (allowedBlocks.includes(blockName)) {
 			// uniqueID
 			if (isNil(uniqueID)) {
 				const newUniqueID = uniqueIDGenerator({ blockName, clientId });
-				attributes.uniqueID = newUniqueID;
-				attributes.customLabel = getCustomLabel(
-					attributes.customLabel,
+
+				attributes[getAttributeKey('uniqueID')] = newUniqueID;
+				attributes[getAttributeKey('customLabel')] = getCustomLabel(
+					attributes[getAttributeKey('customLabel')],
 					newUniqueID
 				);
 			}
@@ -69,21 +74,34 @@ const withAttributes = createHigherOrderComponent(
 
 			if (parentBlocks.includes(clientId)) parentBlocks.pop();
 
-			attributes.isFirstOnHierarchy = isEmpty(parentBlocks);
-			if (!attributes.isFirstOnHierarchy) {
+			attributes[getAttributeKey('isFirstOnHierarchy')] =
+				isEmpty(parentBlocks);
+			if (!attributes[getAttributeKey('isFirstOnHierarchy')]) {
 				const firstMaxiParentBlock = select(
 					'core/block-editor'
 				).getBlock(parentBlocks[0]);
 
-				attributes.blockStyle =
-					firstMaxiParentBlock.attributes.blockStyle;
+				attributes[getAttributeKey('blockStyle')] =
+					firstMaxiParentBlock.attributes[
+						getAttributeKey('blockStyle')
+					];
 			}
 
 			// RTL
-			if ('ta-general' in attributes && !attributes['ta-general']) {
+			const textAlignmentLabel = getAttributeKey(
+				'text-alignment',
+				false,
+				false,
+				'general'
+			);
+
+			if (
+				textAlignmentLabel in attributes &&
+				!attributes[textAlignmentLabel]
+			) {
 				const { isRTL } = select('core/editor').getEditorSettings();
 
-				attributes['ta-general'] = isRTL ? 'right' : 'left';
+				attributes[textAlignmentLabel] = isRTL ? 'right' : 'left';
 			}
 		}
 

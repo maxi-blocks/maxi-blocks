@@ -26,14 +26,17 @@ import { isNil, isEmpty } from 'lodash';
  * Component
  */
 const ArrowControl = props => {
-	const {
-		className,
-		onChange,
-		isFullWidth,
-		breakpoint = 'general',
-		isFirstOnHierarchy,
-		'background-layers': backgroundLayers,
-	} = props;
+	const { className, onChange, isFullWidth, breakpoint = 'general' } = props;
+	const { isFirstOnHierarchy, 'background-layers': backgroundLayers } =
+		getAttributesValue({
+			target: ['isFirstOnHierarchy', 'background-layers'],
+			props,
+		});
+	const arrowStatus = getLastBreakpointAttribute({
+		target: 'arrow-status',
+		breakpoint,
+		attributes: props,
+	});
 
 	const classes = classnames('maxi-arrow-control', className);
 
@@ -52,9 +55,8 @@ const ArrowControl = props => {
 		return response;
 	};
 
-	const onChangeValue = (target, value) => {
+	const onChangeValue = (target, value) =>
 		onChange({ [`${target}-${breakpoint}`]: value });
-	};
 
 	const minMaxSettings = {
 		px: {
@@ -95,11 +97,7 @@ const ArrowControl = props => {
 					]}
 				/>
 			)}
-			{getLastBreakpointAttribute({
-				target: 'arrow-status',
-				breakpoint,
-				attributes: props,
-			}) &&
+			{arrowStatus &&
 				getAttributesValue({
 					target: 'show-warning-box',
 					props,
@@ -113,20 +111,12 @@ const ArrowControl = props => {
 				)}
 			<ToggleSwitch
 				label={__('Show arrow on boundary', 'maxi-blocks')}
-				selected={getLastBreakpointAttribute({
-					target: 'arrow-status',
-					breakpoint,
-					attributes: props,
-				})}
+				selected={arrowStatus}
 				onChange={val =>
 					onChange({ [`arrow-status-${breakpoint}`]: val })
 				}
 			/>
-			{getLastBreakpointAttribute({
-				target: 'arrow-status',
-				breakpoint,
-				attributes: props,
-			}) && (
+			{arrowStatus && (
 				<>
 					<SettingTabsControl
 						label=''

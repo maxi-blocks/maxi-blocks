@@ -14,23 +14,19 @@ import Button from '../button';
  */
 import { reset } from '../../icons';
 
-const ResetButton = props => {
-	return (
-		<Button
-			className='maxi-reset-button'
-			action='reset'
-			type='reset'
-			aria-label={__('Reset', 'maxi-blocks')}
-			onClick={
-				(e => {
-					e.preventDefault();
-				},
-				props.onReset)
-			}
-		>
-			{reset}
-		</Button>
-	);
-};
+const ResetButton = props => (
+	<Button
+		className='maxi-reset-button'
+		action='reset'
+		type='reset'
+		aria-label={__('Reset', 'maxi-blocks')}
+		onClick={e => {
+			e.preventDefault();
+			props.onReset();
+		}}
+	>
+		{reset}
+	</Button>
+);
 
 export default ResetButton;

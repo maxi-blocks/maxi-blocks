@@ -1,7 +1,10 @@
 /**
  * Internal dependencies
  */
-import { getLastBreakpointAttribute } from '../../extensions/styles';
+import {
+	getAttributesValue,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -18,11 +21,11 @@ import './style.scss';
  * Component
  */
 const ArrowDisplayer = props => {
-	const {
-		className,
-		breakpoint = 'general',
-		'background-layers': backgroundLayers,
-	} = props;
+	const { className, breakpoint = 'general' } = props;
+	const backgroundLayers = getAttributesValue({
+		target: 'background-layers',
+		props,
+	});
 
 	const arrowClasses = classnames(
 		'maxi-container-arrow',

@@ -1,7 +1,10 @@
 import getAttrKeyWithoutBreakpoint from '../getAttrKeyWithoutBreakpoint';
 import getBreakpointFromAttribute from '../getBreakpointFromAttribute';
-import { getNormalAttributeKey } from '../utils';
-import { reversedDictionary } from './attributesDictionary';
+import {
+	prefixesReversedDictionary,
+	reversedDictionary,
+	suffixesReversedDictionary,
+} from './attributesDictionary';
 
 /**
  * Parse short key to long one
@@ -12,40 +15,39 @@ import { reversedDictionary } from './attributesDictionary';
 const parseShortAttrKey = attrKey => {
 	let cleanedKey = attrKey;
 
-	const isHover = attrKey.includes('-hover');
 	const breakpoint = getBreakpointFromAttribute(attrKey);
 
-	if (isHover) cleanedKey = getNormalAttributeKey(attrKey);
 	if (breakpoint) cleanedKey = getAttrKeyWithoutBreakpoint(attrKey);
 
-	let prefix = '';
-	let longerKey;
+	// Abstract prefixes
+	const prefixes = cleanedKey.split('-');
+	cleanedKey = prefixes.pop();
 
-	if (reversedDictionary[cleanedKey])
-		longerKey = reversedDictionary[cleanedKey];
-	else {
-		const dictEntries = Object.entries(reversedDictionary);
+	// Abstract suffixes
+	const suffixes = cleanedKey.split('.');
+	cleanedKey = suffixes.shift();
 
-		for (let i = 0; i < dictEntries.length; i += 1) {
-			const [key, value] = dictEntries[i];
+	// Translate prefixes
+	const prefixesStr = prefixes
+		.map(prefix => prefixesReversedDictionary[`${prefix}-`])
+		.filter(Boolean)
+		.join('-');
 
-			if (cleanedKey.includes(key)) {
-				prefix = cleanedKey.replace(key, '');
+	// Translate suffixes
+	const suffixesStr = suffixes
+		.map(suffix => suffixesReversedDictionary[`.${suffix}`])
+		.filter(Boolean)
+		.join('-');
 
-				longerKey = value;
+	// Translate key
+	const key = reversedDictionary[cleanedKey] || cleanedKey;
 
-				break;
-			}
-		}
-	}
+	// Join all together
+	const newKey = [prefixesStr, key, suffixesStr, breakpoint]
+		.filter(Boolean)
+		.join('-');
 
-	if (!longerKey) return attrKey;
-
-	const response = `${prefix}${longerKey}${
-		breakpoint ? `-${breakpoint}` : ''
-	}${isHover ? '-hover' : ''}`;
-
-	return response;
+	return newKey;
 };
 
 export default parseShortAttrKey;

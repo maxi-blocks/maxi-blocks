@@ -331,4 +331,26 @@ describe('getLastBreakpointAttribute', () => {
 		});
 		expect(result).toBe(3);
 	});
+
+	test.only('Should return an object when target is an array', () => {
+		const result = getLastBreakpointAttribute({
+			target: ['test', 'test-2'],
+			breakpoint: 'm',
+			attributes: {
+				'test-general': 'test-general',
+				'test-xl': 'test-xl',
+				'test-m': 'test-m',
+				'test-s': 'test-s',
+				'test-2-general': 'test-2-general',
+				'test-2-xl': 'test-2-xl',
+				'test-2-m': 'test-2-m',
+				'test-2-s': 'test-2-s',
+			},
+		});
+
+		expect(result).toEqual({
+			test: 'test-m',
+			'test-2': 'test-2-m',
+		});
+	});
 });

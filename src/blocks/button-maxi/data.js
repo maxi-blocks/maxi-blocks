@@ -9,6 +9,7 @@ import { __ } from '@wordpress/i18n';
 import { createSelectors } from '../../extensions/styles/custom-css';
 import {
 	createIconTransitions,
+	getAttributesValue,
 	getIconWithColor,
 } from '../../extensions/styles';
 import {
@@ -246,8 +247,17 @@ const interactionBuilderSettings = {
 			],
 			component: props => {
 				const { attributes, blockAttributes } = props;
-				const { svgType, 'icon-content': iconContent } = attributes;
-				const { 'icon-inherit': iconInherit } = blockAttributes;
+				const { svgType, 'icon-content': iconContent } =
+					getAttributesValue({
+						target: ['svgType', 'icon-content'],
+						props: attributes,
+					});
+
+				const iconInherit = getAttributesValue({
+					target: 'icon-inherit',
+					props: blockAttributes,
+				});
+
 				return iconContent ? (
 					<IconControl
 						{...props}

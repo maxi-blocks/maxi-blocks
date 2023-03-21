@@ -7,6 +7,7 @@ import { injectImgSVG } from '../svg';
  * External dependencies
  */
 import { isEmpty } from 'lodash';
+import { getAttributesValue } from '../styles';
 
 /**
  * Replaces the uniqueID in the SVGData object.
@@ -19,8 +20,14 @@ const getUpdatedBGLayersWithNewUniqueID = (rawBackgroundLayers, uniqueID) => {
 	if (isEmpty(rawBackgroundLayers)) return rawBackgroundLayers;
 
 	return rawBackgroundLayers.map(layer => {
-		const SVGData = layer?.['background-svg-SVGData'];
-		const SVGElement = layer?.['background-svg-SVGElement'];
+		const {
+			'background-svg-SVGData': SVGData,
+			'background-svg-svgElement': SVGElement,
+		} = getAttributesValue({
+			target: ['background-svg-SVGData', 'background-svg-svgElement'],
+			props: layer,
+		});
+
 		if (!SVGData || !SVGElement) return layer;
 
 		const id = Object.keys(SVGData)[0];

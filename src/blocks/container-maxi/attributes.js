@@ -26,7 +26,7 @@ const attributes = {
 					'display-general': 'block',
 					'background-pa-status-general': true,
 					'background-pac-general': 1,
-					'background-pao': 1,
+					'background-palette-opacity': 1,
 					'background-color-general': '',
 					'background-color-clip-path-general': '',
 					'background-color-wrapper-position-sync-general': 'all',

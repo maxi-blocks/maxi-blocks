@@ -36,7 +36,10 @@ import Popover from '../popover';
  * Styles
  */
 import './editor.scss';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getAttributesValue,
+	getGroupAttributes,
+} from '../../extensions/styles';
 import {
 	getTypographyValue,
 	setFormat,
@@ -57,7 +60,14 @@ const CaptionToolbar = memo(
 			cleanInlineStyles,
 			isSelected,
 		} = props;
-		const { isList = false, textLevel = 'p', uniqueID } = attributes;
+		const {
+			isList = false,
+			textLevel = 'p',
+			uniqueID,
+		} = getAttributesValue({
+			target: ['isList', 'textLevel', 'uniqueID'],
+			props: attributes,
+		});
 
 		const typography = { ...getGroupAttributes(props, 'typography') };
 

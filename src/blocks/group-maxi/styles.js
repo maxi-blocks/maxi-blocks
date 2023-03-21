@@ -115,7 +115,10 @@ const getHoverObject = props => {
 };
 
 const getStyles = props => {
-	const { uniqueID } = props;
+	const { uniqueID, blockStyle } = getAttributesValue({
+		target: ['uniqueID', 'blockStyle'],
+		props,
+	});
 
 	const response = {
 		[uniqueID]: styleProcessor(
@@ -129,7 +132,7 @@ const getStyles = props => {
 						'borderWidth',
 						'borderRadius',
 					]),
-					blockStyle: props.blockStyle,
+					blockStyle,
 				}),
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(
@@ -143,7 +146,7 @@ const getStyles = props => {
 						true
 					),
 					isHover: true,
-					blockStyle: props.blockStyle,
+					blockStyle,
 				}),
 				...getArrowStyles({
 					...getGroupAttributes(props, [
@@ -154,7 +157,7 @@ const getStyles = props => {
 						'blockBackground',
 						'boxShadow',
 					]),
-					blockStyle: props.blockStyle,
+					blockStyle,
 				}),
 				...getArrowStyles({
 					...getGroupAttributes(
@@ -170,7 +173,7 @@ const getStyles = props => {
 						true
 					),
 					...getGroupAttributes(props, ['arrow']),
-					blockStyle: props.blockStyle,
+					blockStyle,
 					isHover: true,
 				}),
 			},

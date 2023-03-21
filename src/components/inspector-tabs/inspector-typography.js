@@ -9,7 +9,11 @@ import { __ } from '@wordpress/i18n';
 import SettingTabsControl from '../setting-tabs-control';
 import TypographyControl from '../typography-control';
 import ToggleSwitch from '../toggle-switch';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getAttributeKey,
+	getAttributesValue,
+	getGroupAttributes,
+} from '../../extensions/styles';
 import ManageHoverTransitions from '../manage-hover-transitions';
 
 /**
@@ -41,7 +45,15 @@ const typography = ({
 		textLevel,
 		isList,
 		[`${prefix}typography-status-hover`]: typographyHoverStatus,
-	} = attributes;
+	} = getAttributesValue({
+		target: [
+			'blockStyle',
+			'textLevel',
+			'isList',
+			`${prefix}typography-status-hover`,
+		],
+		props: attributes,
+	});
 
 	const { 'hover-color-global': isActive, 'hover-color-all': affectAll } =
 		scValues;
@@ -111,8 +123,11 @@ const typography = ({
 										selected={hoverStatus}
 										onChange={val =>
 											maxiSetAttributes({
-												[`${prefix}typography-status-hover`]:
-													val,
+												[getAttributeKey(
+													'typography-status-hover',
+													false,
+													prefix
+												)]: val,
 											})
 										}
 									/>

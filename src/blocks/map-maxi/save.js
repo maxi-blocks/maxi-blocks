@@ -8,7 +8,10 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
  */
 const save = props => {
 	const { attributes } = props;
-	const { uniqueID } = attributes;
+	const uniqueID = getAttributesValue({
+		target: 'uniqueID',
+		props: attributes,
+	});
 
 	const classes = 'maxi-map-block';
 

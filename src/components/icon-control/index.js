@@ -194,8 +194,16 @@ const IconControlResponsiveSettings = withRTC(props => {
 								});
 
 								onChange({
-									[`${prefix}icon-only`]: val,
-									[`${prefix}icon-content`]: icon,
+									[getAttributeKey(
+										'icon-only',
+										false,
+										prefix
+									)]: val,
+									[getAttributeKey(
+										'icon-content',
+										false,
+										prefix
+									)]: icon,
 								});
 							}}
 						/>
@@ -244,16 +252,29 @@ const IconControlResponsiveSettings = withRTC(props => {
 						value={iconSpacing}
 						onChangeValue={val => {
 							onChange({
-								[`${prefix}icon-spacing-${breakpoint}`]:
-									val !== undefined && val !== '' ? val : '',
+								[getAttributeKey(
+									'icon-spacing',
+									false,
+									prefix,
+									breakpoint
+								)]: val !== undefined && val !== '' ? val : '',
 							});
 						}}
 						onReset={() =>
 							onChange({
-								[`${prefix}icon-spacing-${breakpoint}`]:
-									getDefaultAttribute(
-										`${prefix}icon-spacing-${breakpoint}`
-									),
+								[getAttributeKey(
+									'icon-spacing',
+									false,
+									prefix,
+									breakpoint
+								)]: getDefaultAttribute(
+									getAttributeKey(
+										'icon-spacing',
+										false,
+										prefix,
+										breakpoint
+									)
+								),
 								isReset: true,
 							})
 						}
@@ -265,7 +286,11 @@ const IconControlResponsiveSettings = withRTC(props => {
 							selected={iconPosition}
 							onChange={val => {
 								onChange({
-									[`${prefix}icon-position`]: val,
+									[getAttributeKey(
+										'icon-position',
+										false,
+										prefix
+									)]: val,
 								});
 							}}
 							breakpoint={breakpoint}
@@ -288,8 +313,10 @@ const IconControlResponsiveSettings = withRTC(props => {
 						});
 
 						onChange({
-							[`${prefix}icon-inherit`]: val,
-							[`${prefix}icon-content`]: icon,
+							[getAttributeKey('icon-inherit', false, prefix)]:
+								val,
+							[getAttributeKey('icon-content', false, prefix)]:
+								icon,
 						});
 					}}
 				/>
@@ -677,8 +704,11 @@ const IconControl = props => {
 		getIconWithColor,
 		type = 'button-icon',
 		prefix = '',
-		[`${prefix}icon-content`]: iconContent,
 	} = props;
+	const iconContent = getAttributesValue({
+		target: `${prefix}icon-content`,
+		props,
+	});
 
 	const heightFitContent = getLastBreakpointAttribute({
 		target: `${prefix}icon-width-fit-content`,
@@ -699,10 +729,18 @@ const IconControl = props => {
 						type={type}
 						style={blockStyle}
 						onSelect={obj => {
-							const newSvgType = obj[`${prefix}svgType`];
+							const newSvgType =
+								obj[getAttributeKey('svgType', false, prefix)];
 
 							let icon = getIconWithColor({
-								rawIcon: obj[`${prefix}icon-content`],
+								rawIcon:
+									obj[
+										getAttributeKey(
+											'icon-content',
+											false,
+											prefix
+										)
+									],
 								type: [
 									newSvgType !== 'Shape' && 'stroke',
 									newSvgType !== 'Line' && 'fill',
@@ -714,7 +752,11 @@ const IconControl = props => {
 
 							onChange({
 								...obj,
-								[`${prefix}icon-content`]: icon,
+								[getAttributeKey(
+									'icon-content',
+									false,
+									prefix
+								)]: icon,
 							});
 						}}
 						onRemove={obj => onChange(obj)}

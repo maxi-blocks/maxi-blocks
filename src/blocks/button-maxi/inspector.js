@@ -134,7 +134,11 @@ const Inspector = props => {
 	};
 
 	const getCategoriesCss = () => {
-		const { 'icon-content': iconContent } = attributes;
+		const iconContent = getAttributesValue({
+			target: 'icon-content',
+			props: attributes,
+		});
+
 		return without(categories, isEmpty(iconContent) && 'icon');
 	};
 

@@ -1,4 +1,5 @@
 import { isNaN, merge } from 'lodash';
+import parseLongAttrObj from '../../dictionary/parseLongAttrObj';
 
 import {
 	getBlockBackgroundStyles,
@@ -119,57 +120,59 @@ describe('getBackgroundStyles', () => {
 			})
 		);
 
-	it('Get correct block background styles for color layer with different values on different responsive stages', () => {
+	it.only('Get correct block background styles for color layer with different values on different responsive stages', () => {
 		const result = getBlockBackgroundStyles({
 			target,
 			isHover: false,
 			blockStyle: 'light',
-			'background-layers': [
+			bl: [
 				{
 					type: 'color',
-					'display-general': 'block',
-					'background-palette-status-general': true,
-					'background-palette-color-general': 1,
-					'background-palette-opacity-general': 0.07,
-					'background-color-general': '',
-					'background-color-clip-path-general':
-						'polygon(50% 0%, 0% 100%, 100% 100%)',
 					order: 0,
-					'background-palette-status-xl': true,
-					'background-palette-color-xl': 1,
-					'background-palette-opacity-xl': 0.07,
-					'background-color-xl': '',
-					'background-color-clip-path-xl':
-						'polygon(50% 0%, 0% 100%, 100% 100%)',
-					'background-color-clip-path-xxl':
-						'polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)',
-					'background-palette-status-xxl': true,
-					'background-palette-color-xxl': 2,
-					'background-palette-opacity-xxl': 0.2,
-					'background-color-xxl': '',
-					'background-palette-status-l': true,
-					'background-palette-color-l': 4,
-					'background-palette-opacity-l': 0.3,
-					'background-color-l': '',
-					'background-color-clip-path-l':
-						'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
-					'background-palette-status-m': true,
-					'background-palette-color-m': 5,
-					'background-palette-opacity-m': 0.59,
-					'background-color-m': '',
-					'background-color-clip-path-m':
-						'polygon(50% 0%, 80% 10%, 100% 35%, 100% 70%, 80% 90%, 50% 100%, 20% 90%, 0% 70%, 0% 35%, 20% 10%)',
-					'background-palette-status-s': false,
-					'background-palette-color-s': 5,
-					'background-palette-opacity-s': 0.59,
-					'background-color-s': 'rgba(204,68,68,0.59)',
-					'background-color-clip-path-s':
-						'polygon(0% 20%, 60% 20%, 60% 0%, 100% 50%, 60% 100%, 60% 80%, 0% 80%)',
-					'background-color-clip-path-xs':
-						'polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%)',
-					...getGeneralSizeAndPositionAttributes({
-						type: 'color',
-						isResponsive: true,
+					...parseLongAttrObj({
+						'display-general': 'block',
+						'background-color-palette-status-general': true,
+						'background-color-palette-color-general': 1,
+						'background-color-palette-opacity-general': 0.07,
+						'background-color-general': '',
+						'background-color-clip-path-general':
+							'polygon(50% 0%, 0% 100%, 100% 100%)',
+						'background-color-palette-status-xl': true,
+						'background-color-palette-color-xl': 1,
+						'background-color-palette-opacity-xl': 0.07,
+						'background-color-color-xl': '',
+						'background-color-clip-path-xl':
+							'polygon(50% 0%, 0% 100%, 100% 100%)',
+						'background-color-clip-path-xxl':
+							'polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)',
+						'background-color-palette-status-xxl': true,
+						'background-color-palette-color-xxl': 2,
+						'background-color-palette-opacity-xxl': 0.2,
+						'background-color-color-xxl': '',
+						'background-color-palette-status-l': true,
+						'background-color-palette-color-l': 4,
+						'background-color-palette-opacity-l': 0.3,
+						'background-color-color-l': '',
+						'background-color-clip-path-l':
+							'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
+						'background-color-palette-status-m': true,
+						'background-color-palette-color-m': 5,
+						'background-color-palette-opacity-m': 0.59,
+						'background-color-color-m': '',
+						'background-color-clip-path-m':
+							'polygon(50% 0%, 80% 10%, 100% 35%, 100% 70%, 80% 90%, 50% 100%, 20% 90%, 0% 70%, 0% 35%, 20% 10%)',
+						'background-color-palette-status-s': false,
+						'background-color-palette-color-s': 5,
+						'background-color-palette-opacity-s': 0.59,
+						'background-color-color-s': 'rgba(204,68,68,0.59)',
+						'background-color-clip-path-s':
+							'polygon(0% 20%, 60% 20%, 60% 0%, 100% 50%, 60% 100%, 60% 80%, 0% 80%)',
+						'background-color-clip-path-xs':
+							'polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%)',
+						...getGeneralSizeAndPositionAttributes({
+							type: 'color',
+							isResponsive: true,
+						}),
 					}),
 				},
 			],

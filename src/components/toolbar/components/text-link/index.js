@@ -12,7 +12,10 @@ import { useContext, useEffect, useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { getGroupAttributes } from '../../../../extensions/styles';
+import {
+	getAttributesValue,
+	getGroupAttributes,
+} from '../../../../extensions/styles';
 import Button from '../../../button';
 import ToolbarContext from '../toolbar-popover/toolbarContext';
 import ToolbarPopover from '../toolbar-popover';
@@ -188,7 +191,10 @@ const LinkContent = props => {
 	};
 
 	const forceSSL = attributes => {
-		const { url } = attributes;
+		const { url } = getAttributesValue({
+			target: 'url',
+			props: attributes,
+		});
 
 		attributes.url = url.replace(/^http:\/\//i, 'https://');
 

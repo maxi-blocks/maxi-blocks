@@ -49,7 +49,10 @@ registerBlockType('maxi-blocks/column-maxi', {
 	},
 	parent: ['maxi-blocks/row-maxi'],
 	getEditWrapperProps(attributes) {
-		const { uniqueID } = attributes;
+		const uniqueID = getAttributesValue({
+			target: 'uniqueID',
+			props: attributes,
+		});
 
 		return {
 			uniqueid: uniqueID,

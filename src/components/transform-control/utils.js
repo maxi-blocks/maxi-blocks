@@ -7,6 +7,7 @@ import { getBgLayersSelectorsCss } from '../custom-css-control/utils';
  * External dependencies
  */
 import { isEmpty, pickBy, uniq, without } from 'lodash';
+import { getAttributesValue } from '../../extensions/styles';
 
 const getBgLayersSelectorsKeys = bgLayersSelectors =>
 	uniq(
@@ -30,7 +31,10 @@ export const getTransformSelectors = (selectors, attributes = {}) => {
 	const {
 		'background-layers': bgLayers = [],
 		'background-layers-hover': bgLayersHover = [],
-	} = attributes;
+	} = getAttributesValue({
+		target: ['background-layers', 'background-layers-hover'],
+		props: attributes,
+	});
 
 	const bgLayersSelectors = getBgLayersSelectorsCss(
 		[...bgLayers, ...bgLayersHover],
@@ -83,7 +87,10 @@ export const getTransformCategories = (categories, attributes) => {
 	const {
 		'background-layers': bgLayers = [],
 		'background-layers-hover': bgLayersHover = [],
-	} = attributes;
+	} = getAttributesValue({
+		target: ['background-layers', 'background-layers-hover'],
+		props: attributes,
+	});
 
 	const bgLayersSelectors = getBgLayersSelectorsCss(
 		[...bgLayers, ...bgLayersHover],

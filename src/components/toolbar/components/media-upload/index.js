@@ -16,6 +16,7 @@ import { injectImgSVG } from '../../../../extensions/svg';
  */
 import DOMPurify from 'dompurify';
 import { isEmpty, uniqueId } from 'lodash';
+import { getAttributesValue } from '../../../../extensions/styles';
 
 const ALLOWED_BLOCKS = [
 	'maxi-blocks/image-maxi',
@@ -48,7 +49,16 @@ const ToolbarMediaUpload = props => {
 		playerType,
 		hideImage,
 		uniqueID,
-	} = attributes;
+	} = getAttributesValue({
+		target: [
+			`${prefix}mediaID`,
+			`${prefix}altSelector`,
+			'playerType',
+			'hideImage',
+			'uniqueID',
+		],
+		props: attributes,
+	});
 
 	if (
 		!ALLOWED_BLOCKS.includes(blockName) ||

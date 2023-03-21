@@ -14,25 +14,45 @@ export const boxShadowNone = prefix => {
 
 	response = {
 		[getAttributeKey('box-shadow-palette-opacity', false, prefix)]:
-			getDefaultAttributeValue('box-shadow-palette-opacity'),
+			getDefaultAttributeValue(
+				getAttributeKey('box-shadow-palette-opacity', false, prefix)
+			),
 		[getAttributeKey('box-shadow-horizontal', false, prefix)]:
-			getDefaultAttributeValue('box-shadow-horizontal'),
+			getDefaultAttributeValue(
+				getAttributeKey('box-shadow-horizontal', false, prefix)
+			),
 		[getAttributeKey('box-shadow-horizontal-unit', false, prefix)]:
-			getDefaultAttributeValue('box-shadow-horizontal-unit'),
+			getDefaultAttributeValue(
+				getAttributeKey('box-shadow-horizontal-unit', false, prefix)
+			),
 		[getAttributeKey('box-shadow-vertical', false, prefix)]:
-			getDefaultAttributeValue('box-shadow-vertical'),
+			getDefaultAttributeValue(
+				getAttributeKey('box-shadow-vertical', false, prefix)
+			),
 		[getAttributeKey('box-shadow-vertical-unit', false, prefix)]:
-			getDefaultAttributeValue('box-shadow-vertical-unit'),
+			getDefaultAttributeValue(
+				getAttributeKey('box-shadow-vertical-unit', false, prefix)
+			),
 		[getAttributeKey('box-shadow-blur', false, prefix)]:
-			getDefaultAttributeValue('box-shadow-blur'),
+			getDefaultAttributeValue(
+				getAttributeKey('box-shadow-blur', false, prefix)
+			),
 		[getAttributeKey('box-shadow-blur-unit', false, prefix)]:
-			getDefaultAttributeValue('box-shadow-blur-unit'),
+			getDefaultAttributeValue(
+				getAttributeKey('box-shadow-blur-unit', false, prefix)
+			),
 		[getAttributeKey('box-shadow-spread', false, prefix)]:
-			getDefaultAttributeValue('box-shadow-spread'),
+			getDefaultAttributeValue(
+				getAttributeKey('box-shadow-spread', false, prefix)
+			),
 		[getAttributeKey('box-shadow-spread-unit', false, prefix)]:
-			getDefaultAttributeValue('box-shadow-spread-unit'),
+			getDefaultAttributeValue(
+				getAttributeKey('box-shadow-spread-unit', false, prefix)
+			),
 		[getAttributeKey('box-shadow-inset', false, prefix)]:
-			getDefaultAttributeValue('box-shadow-inset'),
+			getDefaultAttributeValue(
+				getAttributeKey('box-shadow-inset', false, prefix)
+			),
 	};
 
 	return response;
@@ -42,10 +62,10 @@ const boxShadowUnits = prefix => {
 	let response = {};
 
 	response = {
-		[`${[prefix]}box-shadow-horizontal-unit`]: 'px',
-		[`${[prefix]}box-shadow-vertical-unit`]: 'px',
-		[`${[prefix]}box-shadow-blur-unit`]: 'px',
-		[`${[prefix]}box-shadow-spread-unit`]: 'px',
+		[getAttributeKey('box-shadow-horizontal-unit', false, prefix)]: 'px',
+		[getAttributeKey('box-shadow-vertical-unit', false, prefix)]: 'px',
+		[getAttributeKey('box-shadow-blur-unit', false, prefix)]: 'px',
+		[getAttributeKey('box-shadow-spread-unit', false, prefix)]: 'px',
 	};
 
 	return response;
@@ -55,12 +75,12 @@ export const boxShadowTotal = prefix => {
 	let response = {};
 
 	response = {
-		[`${prefix}box-shadow-pao`]: 0.23,
-		[`${prefix}box-shadow-horizontal`]: 0,
-		[`${prefix}box-shadow-vertical`]: 30,
-		[`${prefix}box-shadow-blur`]: 50,
-		[`${prefix}box-shadow-spread`]: 0,
-		[`${prefix}box-shadow-inset`]: false,
+		[getAttributeKey('box-shadow-palette-opacity', false, prefix)]: 0.23,
+		[getAttributeKey('box-shadow-horizontal', false, prefix)]: 0,
+		[getAttributeKey('box-shadow-vertical', false, prefix)]: 30,
+		[getAttributeKey('box-shadow-blur', false, prefix)]: 50,
+		[getAttributeKey('box-shadow-spread', false, prefix)]: 0,
+		[getAttributeKey('box-shadow-inset', false, prefix)]: false,
 		...boxShadowUnits(prefix),
 	};
 
@@ -71,12 +91,12 @@ export const boxShadowBottom = prefix => {
 	let response = {};
 
 	response = {
-		[`${prefix}box-shadow-pao`]: 0.5,
-		[`${prefix}box-shadow-horizontal`]: 0,
-		[`${prefix}box-shadow-vertical`]: 30,
-		[`${prefix}box-shadow-blur`]: 50,
-		[`${prefix}box-shadow-spread`]: 0,
-		[`${prefix}box-shadow-inset`]: false,
+		[getAttributeKey('box-shadow-palette-opacity', false, prefix)]: 0.5,
+		[getAttributeKey('box-shadow-horizontal', false, prefix)]: 0,
+		[getAttributeKey('box-shadow-vertical', false, prefix)]: 30,
+		[getAttributeKey('box-shadow-blur', false, prefix)]: 50,
+		[getAttributeKey('box-shadow-spread', false, prefix)]: 0,
+		[getAttributeKey('box-shadow-inset', false, prefix)]: false,
 		...boxShadowUnits(prefix),
 	};
 
@@ -87,12 +107,12 @@ export const boxShadowSolid = prefix => {
 	let response = {};
 
 	response = {
-		[`${prefix}box-shadow-pao`]: 0.5,
-		[`${prefix}box-shadow-horizontal`]: 5,
-		[`${prefix}box-shadow-vertical`]: 6,
-		[`${prefix}box-shadow-blur`]: 0,
-		[`${prefix}box-shadow-spread`]: 0,
-		[`${prefix}box-shadow-inset`]: false,
+		[getAttributeKey('box-shadow-palette-opacity', false, prefix)]: 0.5,
+		[getAttributeKey('box-shadow-horizontal', false, prefix)]: 5,
+		[getAttributeKey('box-shadow-vertical', false, prefix)]: 6,
+		[getAttributeKey('box-shadow-blur', false, prefix)]: 0,
+		[getAttributeKey('box-shadow-spread', false, prefix)]: 0,
+		[getAttributeKey('box-shadow-inset', false, prefix)]: false,
 		...boxShadowUnits(prefix),
 	};
 

@@ -23,7 +23,10 @@ import {
 } from '../../extensions/DC/constants';
 import getDCOptions from '../../extensions/DC/getDCOptions';
 import DateFormatting from './custom-date-formatting';
-import { getDefaultAttribute } from '../../extensions/styles';
+import {
+	getAttributesValue,
+	getDefaultAttribute,
+} from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -55,7 +58,19 @@ const DynamicContent = props => {
 		'dc-author': author,
 		'dc-limit': limit,
 		'dc-error': error,
-	} = dynamicContent;
+	} = getAttributesValue({
+		target: [
+			'dc-status',
+			'dc-type',
+			'dc-relation',
+			'dc-id',
+			'dc-field',
+			'dc-author',
+			'dc-limit',
+			'dc-error',
+		],
+		props: dynamicContent,
+	});
 
 	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
 	const [postIdOptions, setPostIdOptions] = useState(null);

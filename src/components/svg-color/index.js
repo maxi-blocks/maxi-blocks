@@ -3,6 +3,7 @@
  */
 import ColorControl from '../color-control';
 import {
+	getAttributeKey,
 	getAttributesValue,
 	getColorRGBAString,
 } from '../../extensions/styles';

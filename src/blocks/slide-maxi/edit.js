@@ -60,7 +60,10 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes, deviceType, hasInnerBlocks, clientId } = this.props;
-		const { uniqueID } = attributes;
+		const uniqueID = getAttributesValue({
+			target: 'uniqueID',
+			props: attributes,
+		});
 
 		const ALLOWED_BLOCKS = wp.blocks
 			.getBlockTypes()

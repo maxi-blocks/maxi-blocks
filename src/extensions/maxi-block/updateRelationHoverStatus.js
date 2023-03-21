@@ -14,12 +14,16 @@ import { getBlockData } from '../attributes';
  * External dependencies
  */
 import { isEmpty, isEqual } from 'lodash';
+import { getAttributesValue } from '../styles';
 
 const updateRelationHoverStatus = (blockName, blockAttributes) => {
 	const { uniqueID } = blockAttributes;
 
 	goThroughMaxiBlocks(({ clientId, attributes: currentBlockAttributes }) => {
-		const { relations, uniqueID: blockUniqueID } = currentBlockAttributes;
+		const { relations, uniqueID: blockUniqueID } = getAttributesValue({
+			target: ['relations', 'uniqueID'],
+			props: currentBlockAttributes,
+		});
 
 		if (uniqueID !== blockUniqueID && !isEmpty(relations)) {
 			const newRelations = relations.map(relation => {

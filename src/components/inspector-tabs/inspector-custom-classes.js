@@ -7,13 +7,17 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import TextControl from '../text-control';
+import { getAttributesValue } from '../../extensions/styles';
 
 /**
  * Component
  */
 const customClasses = ({ props }) => {
 	const { attributes, maxiSetAttributes } = props;
-	const { extraClassName } = attributes;
+	const extraClassName = getAttributesValue({
+		target: 'extraClassName',
+		props: attributes,
+	});
 
 	return {
 		label: __('Add CSS classes', 'maxi-blocks'),

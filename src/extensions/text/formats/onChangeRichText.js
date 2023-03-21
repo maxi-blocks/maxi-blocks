@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getGroupAttributes } from '../../styles';
+import { getAttributesValue, getGroupAttributes } from '../../styles';
 import getHasNativeFormat from './getHasNativeFormat';
 import setCustomFormatsWhenPaste from './setCustomFormatsWhenPaste';
 
@@ -28,7 +28,10 @@ const onChangeRichText = ({
 	const hasNativeFormat = getHasNativeFormat(formatValue);
 
 	if (hasNativeFormat) {
-		const { typeOfList, content, textLevel, isList } = attributes;
+		const { typeOfList, content, textLevel, isList } = getAttributesValue({
+			target: ['typeOfList', 'content', 'textLevel', 'isList'],
+			props: attributes,
+		});
 
 		const cleanCustomProps = setCustomFormatsWhenPaste({
 			formatValue,

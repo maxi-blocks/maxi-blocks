@@ -26,7 +26,7 @@ const attributes = {
 			type: 'number',
 			default: 3,
 		},
-		'border-pao-general': {
+		'border-palette-opacity-general': {
 			type: 'number',
 			default: 0.25,
 		},

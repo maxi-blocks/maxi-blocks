@@ -453,6 +453,11 @@ body[maxi-blocks-responsive] {
 *******************************/
 
 html[dir='rtl'] {
+	.interface-interface-skeleton {
+		&__sidebar {
+			scrollbar-gutter: auto;
+		}
+	}
 	.maxi-sidebar {
 		input[type='number'] {
 			padding-right: 8px;

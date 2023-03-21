@@ -39,6 +39,11 @@ registerBlockType('maxi-blocks/search-maxi', {
 	icon: searchIcon,
 	description: 'Add a search bar with icon',
 	category: 'maxi-blocks',
+	example: {
+		attributes: {
+			preview: true,
+		},
+	},
 	supports: {
 		align: true,
 		lightBlockWrapper: true,

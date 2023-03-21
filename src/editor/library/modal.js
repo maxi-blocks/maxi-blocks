@@ -16,7 +16,6 @@ import {
 // eslint-disable-next-line import/no-cycle
 import CloudLibrary from '.';
 import { Icon, BaseControl, Button } from '../../components';
-import { authConnect, isProSubActive, getUserName, logOut } from '../auth';
 
 /**
  * External dependencies
@@ -170,27 +169,12 @@ const MaxiModal = props => {
 		if (forceIsOpen) changeIsOpen(forceIsOpen);
 	}, [forceIsOpen]);
 
-	const [isMaxiProActive, setIsMaxiProActive] = useState(isProSubActive());
-	const [userName, setUserName] = useState(getUserName());
+	const [isMaxiProActive, setIsMaxiProActive] = useState(false);
+	const [userName, setUserName] = useState('');
 
-	const onClickConnect = () => {
-		document.addEventListener('visibilitychange', function userIsBack() {
-			if (!document.hidden) {
-				authConnect(false).then(() => {
-					setIsMaxiProActive(isProSubActive());
-					setUserName(getUserName());
-				});
-			}
-		});
-
-		authConnect(true).then(() => {
-			setIsMaxiProActive(isProSubActive());
-			setUserName(getUserName());
-		});
-	};
+	const onClickConnect = () => {};
 
 	const onLogOut = () => {
-		logOut();
 		setIsMaxiProActive(false);
 		setUserName('');
 	};

@@ -82,7 +82,7 @@ export const logOut = () => {
 			});
 		},
 		function error(error) {
-			console.log(error); // Failure
+			console.error(error); // Failure
 		}
 	);
 };

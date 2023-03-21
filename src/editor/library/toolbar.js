@@ -63,7 +63,6 @@ const LibraryToolbar = props => {
 		onInsert,
 		isSwapChecked,
 		onChangeTone,
-		onClickConnect,
 		userName,
 		onLogOut,
 	} = props;

@@ -714,7 +714,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 ) ;
 
             $content .=
-                '<a href="https://maxiblocks.com/go/pro-subscription" target="_blank"> ' .
+                ' <a href="https://maxiblocks.com/go/pro-subscription" target="_blank">' .
                 __(
                     'Learn more about Maxi Blocks Pro.',
                     self::$maxi_text_domain,

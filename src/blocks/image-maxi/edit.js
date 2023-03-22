@@ -141,11 +141,11 @@ class edit extends MaxiBlockComponent {
 			uniqueID,
 			captionPosition,
 			fitParentSize,
+			preview,
 			'dc-status': dcStatus,
 			'dc-media-id': dcMediaId,
 			'dc-media-url': dcMediaUrl,
 			'dc-media-caption': dcMediaCaption,
-			preview,
 		} = attributes;
 		const { isExternalClass, isUploaderOpen } = this.state;
 

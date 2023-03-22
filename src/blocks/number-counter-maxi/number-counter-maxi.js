@@ -39,6 +39,11 @@ registerBlockType('maxi-blocks/number-counter-maxi', {
 	icon: numberCounterIcon,
 	description: __('Create a number counter', 'maxi-blocks'),
 	category: 'maxi-blocks',
+	example: {
+		attributes: {
+			preview: true,
+		},
+	},
 	supports: {
 		align: true,
 		lightBlockWrapper: true,

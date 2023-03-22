@@ -41,6 +41,11 @@ registerBlockType('maxi-blocks/row-maxi', {
 	description: 'Configure columns inside a row',
 	category: 'maxi-blocks',
 	parent: ['maxi-blocks/container-maxi'],
+	example: {
+		attributes: {
+			preview: true,
+		},
+	},
 	supports: {
 		align: true,
 		lightBlockWrapper: true,

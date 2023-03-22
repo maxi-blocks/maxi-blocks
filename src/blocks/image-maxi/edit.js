@@ -141,6 +141,7 @@ class edit extends MaxiBlockComponent {
 			uniqueID,
 			captionPosition,
 			fitParentSize,
+			preview,
 			'dc-status': dcStatus,
 			'dc-media-id': dcMediaId,
 			'dc-media-url': dcMediaUrl,
@@ -237,6 +238,21 @@ class edit extends MaxiBlockComponent {
 			!isNil(mediaID) ||
 			mediaURL ||
 			(dcStatus && dcMediaId && dcMediaUrl);
+
+		if (preview)
+			return (
+				<MaxiBlock
+					key={`maxi-image--${uniqueID}`}
+					ref={this.blockRef}
+					{...getMaxiBlockAttributes(this.props)}
+				>
+					<img
+						// eslint-disable-next-line no-undef
+						src={previews.image_preview}
+						alt={__('Image block preview', 'maxi-blocks')}
+					/>
+				</MaxiBlock>
+			);
 
 		return [
 			<textContext.Provider

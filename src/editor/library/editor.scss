@@ -2287,3 +2287,25 @@ html[dir='rtl'] {
 		padding-right: 5px;
 	}
 }
+
+/*******************************
+* RTL
+*******************************/
+html[dir='rtl'] {
+	.maxi-library-modal
+		.ais-InfiniteHits-list
+		.ais-InfiniteHits-item
+		.maxi-cloud-masonry-card__tags {
+		right: unset;
+		left: 8px;
+	}
+	.ais-SearchBox-reset {
+		right: unset !important;
+		left: 1px;
+	}
+	.maxi-library-modal
+		.maxi-cloud-container__patterns__top-menu__button-go-pro {
+		right: unset;
+		left: 100px;
+	}
+}

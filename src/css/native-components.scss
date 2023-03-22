@@ -251,3 +251,42 @@
 		}
 	}
 }
+
+/*******************************
+* RTL
+*******************************/
+
+html[dir='rtl'] {
+	.components-base-control__label {
+		margin-left: 10px;
+		margin-right: 0;
+	}
+	.components-range-control {
+		.components-range-control__root {
+			& > span:not(.components-range-control__wrapper) {
+				margin-right: 8px;
+				margin-left: 0;
+			}
+		}
+		.components-range-control__slider {
+			& + span {
+				margin-left: -8px;
+				margin-right: 0;
+			}
+		}
+		.components-range-control__track {
+			margin-left: 0px;
+			margin-right: -8px;
+
+			& + span {
+				margin-left: 0px;
+				margin-right: -9px;
+
+				span {
+					margin-left: -3px;
+					margin-right: 0;
+				}
+			}
+		}
+	}
+}

@@ -634,3 +634,22 @@ body {
 		}
 	}
 }
+
+/*******************************
+* RTL
+*******************************/
+html[dir='rtl'] {
+	.maxi-responsive-selector .maxi-style-cards__popover {
+		right: 0 !important;
+		left: unset !important;
+	}
+	.active-style-card .maxi-responsive-close {
+		left: 8px;
+		right: unset;
+	}
+	.has-tooltip {
+		.tooltip {
+			left: 25px;
+		}
+	}
+}

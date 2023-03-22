@@ -16,7 +16,7 @@ const ClipPathRadiusPoint = props => {
 	const { radius, color, onMouseOut, onChangeMoving, number, position } =
 		props;
 
-	const tooltipText = sprintf(__('Radius: %s', 'maxi-blocks'), radius);
+	const tooltipText = sprintf(__('Radius: %s', 'maxi-blocks'), radius); // translators: Radius value of the clip path point
 
 	const classes = classnames(
 		'maxi-clip-path-button',

@@ -482,15 +482,20 @@ const TypographyControl = props => {
 								getValue('font-weight') ??
 								getDefault('font-weight') ??
 								'400';
+							const fontName =
+								font.value ?? getDefault('font-family');
 							const isInWeightOptions =
-								getWeightOptions(font).includes(currentWeight);
+								isNil(fontName) ||
+								getWeightOptions(fontName).includes(
+									currentWeight
+								);
 
 							onChangeFormat({
 								[`${prefix}font-family`]: font.value,
 								...(!isInWeightOptions && {
 									[`${prefix}font-weight`]:
 										getClosestAvailableFontWeight(
-											font.value,
+											fontName,
 											currentWeight
 										),
 								}),
@@ -500,10 +505,10 @@ const TypographyControl = props => {
 							if (!isInWeightOptions) {
 								onChangeFontWeight(
 									getClosestAvailableFontWeight(
-										font.value,
+										fontName,
 										currentWeight
 									),
-									font.value,
+									fontName,
 									getValue('font-style') ??
 										getDefault('font-style')
 								);
@@ -692,7 +697,9 @@ const TypographyControl = props => {
 					}}
 					fontWeight={getValue('font-weight')}
 					defaultFontWeight={getDefault('font-weight')}
-					fontName={getValue('font-family')}
+					fontName={
+						getValue('font-family') ?? getDefault('font-family')
+					}
 					fontStyle={getValue('font-style')}
 					breakpoint={breakpoint}
 				/>

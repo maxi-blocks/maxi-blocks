@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { RichText } from '@wordpress/block-editor';
+import classnames from 'classnames';
 
 /**
  * Internal dependencies
@@ -28,9 +29,10 @@ const save = props => {
 
 	return (
 		<MaxiBlock.save
-			classes={`${dcStatus ? 'maxi-text-block__dc' : ''} ${
-				isList ? 'maxi-list-block' : ''
-			}`}
+			classes={classnames(
+				dcStatus && 'maxi-text-block__dc',
+				isList && 'maxi-list-block'
+			)}
 			{...getMaxiBlockAttributes({ ...props, name })}
 		>
 			<RichText.Content

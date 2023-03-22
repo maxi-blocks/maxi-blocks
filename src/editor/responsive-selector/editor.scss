@@ -309,3 +309,29 @@
 		}
 	}
 }
+
+/*******************************
+* RTL
+*******************************/
+html[dir='rtl'] {
+	.maxi-responsive-selector {
+		padding-right: 0;
+		padding-left: 18px;
+		left: unset;
+		right: 0;
+		.action-buttons {
+			&__button {
+				&-item {
+					border-left: 1px solid #dbdde6;
+					border-right: 0;
+					&:hover {
+						&::after {
+							left: auto;
+							right: 0;
+						}
+					}
+				}
+			}
+		}
+	}
+}

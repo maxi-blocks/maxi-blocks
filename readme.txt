@@ -219,7 +219,7 @@ Install the Maxi Blocks plugin from the WordPress plugin directory in your WordP
 
 == Changelog ==
 
-_Updates: 28 March 2023_
+_Updates: 22 March 2023_
 
 -   Translations pot file in #4425
 -   Issue 4406 - Modal items titles in #4407

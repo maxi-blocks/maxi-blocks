@@ -171,11 +171,12 @@ const NumberCounterControl = props => {
 			{props['number-counter-start'] >= props['number-counter-end'] && (
 				<div className='maxi-number-counter-control__alert-warning'>
 					<i>{__('Start Number ', 'maxi-blocks')}</i>
-					{__('can not be grater than ', 'maxi-blocks')}
+					{__('can not be greater than ', 'maxi-blocks')}
 					<i>{__('End Number ', 'maxi-blocks')}</i>
 				</div>
 			)}
 			<AdvancedNumberControl
+				className='number-counter-control__start-end'
 				label={__('Start number', 'maxi-blocks')}
 				min={0}
 				max={props['number-counter-end']}
@@ -193,6 +194,7 @@ const NumberCounterControl = props => {
 				}
 			/>
 			<AdvancedNumberControl
+				className='number-counter-control__start-end'
 				label={__('End number', 'maxi-blocks')}
 				min={1}
 				max={props['number-counter-circle-status'] ? 9999999999 : 100}
@@ -213,7 +215,7 @@ const NumberCounterControl = props => {
 					<div className='maxi-number-counter-control__alert-warning'>
 						<i>
 							{__(
-								"End Number can't be grater than 100 when circle is enabled",
+								"End Number can't be greater than 100 when circle is enabled",
 								'maxi-blocks'
 							)}
 						</i>

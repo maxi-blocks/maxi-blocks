@@ -84,7 +84,6 @@ const VideoControl = props => {
 				}}
 				validationText={validationText}
 			/>
-
 			<AdvancedNumberControl
 				className='maxi-video-start-time'
 				label={__('Start time (s)', 'maxi-blocks')}
@@ -100,7 +99,7 @@ const VideoControl = props => {
 					});
 				}}
 				min={0}
-				max={999}
+				max={endTime ? endTime - 1 : 999}
 				onReset={() =>
 					onChange({
 						startTime: '',
@@ -123,7 +122,7 @@ const VideoControl = props => {
 						}),
 					});
 				}}
-				min={0}
+				min={startTime ? Number(startTime) + 1 : 1}
 				max={999}
 				onReset={() =>
 					onChange({

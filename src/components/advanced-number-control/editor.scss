@@ -34,3 +34,26 @@
 		}
 	}
 }
+
+/*******************************
+* RTL
+*******************************/
+html[dir='rtl'] {
+	.maxi-base-control__field,
+	.components-base-control__field {
+		& > * {
+			margin-right: 4px !important;
+			margin-left: 0px !important;
+		}
+		.maxi-base-control__label,
+		.components-base-control__label,
+		.components-range-control {
+			margin-right: 0;
+		}
+
+		.components-range-control__root {
+			margin-left: 0 !important;
+			margin-right: 7px !important;
+		}
+	}
+}

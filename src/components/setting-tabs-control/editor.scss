@@ -266,9 +266,21 @@
 * RTL
 *******************************/
 html[dir='rtl'] {
-	.maxi-settingstab-control .maxi-tabs-control__button {
+	.maxi-settingstab-control_has-border-left-right
+		.maxi-tabs-control__button:first-child {
+		border-right: 1px solid var(--maxi-grey-1-color);
+		border-left: none;
+	}
+	.maxi-settingstab-control_has-border-left-right
+		.maxi-tabs-control__button:last-child {
 		border-left: 1px solid var(--maxi-grey-1-color);
-		border-right: none;
+	}
+	.maxi-settingstab-control .maxi-tabs-control__button {
+		border-right: 1px solid var(--maxi-grey-1-color);
+		border-left: none;
+	}
+	.maxi-settingstab-control .maxi-tabs-control__button:last-child {
+		border-left: 1px solid var(--maxi-grey-1-color);
 	}
 	.sidebar-block-info {
 		padding-right: 5px;

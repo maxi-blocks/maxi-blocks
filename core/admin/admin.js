@@ -6,6 +6,20 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 	const checkBox = document.getElementById(toCheck);
 	if (checkBox) checkBox.checked = true;
 
+	// Hide the "Pro" tab if the user is not logged in
+	const proDiv = document.getElementById('maxi-dashboard_main-content_pro');
+	if (proDiv) proDiv.style.display = 'none';
+
+	const notProDiv = document.getElementById(
+		'maxi-dashboard_main-content_not-pro'
+	);
+	if (notProDiv) {
+		notProDiv.style.display = 'block';
+		document.getElementById(
+			'maxi-dashboard_main-content_pro-not-pro'
+		).style.display = 'block';
+	}
+
 	// save new breakpoints to the hidden input
 	const inputs = document.getElementsByClassName(
 		'maxi-dashboard_main-content_accordion-item-input'

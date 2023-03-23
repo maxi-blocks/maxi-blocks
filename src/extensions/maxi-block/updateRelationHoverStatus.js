@@ -25,11 +25,11 @@ const updateRelationHoverStatus = (blockName, blockAttributes) => {
 			const newRelations = relations.map(relation => {
 				const {
 					attributes: relationAttributes,
-					settings: settingName,
+					sid: relationSettingID,
 					uniqueID: relationUniqueID,
 				} = relation;
 
-				if (!settingName || uniqueID !== relationUniqueID)
+				if (!relationSettingID || uniqueID !== relationUniqueID)
 					return relation;
 
 				const { effects } = relation;
@@ -44,7 +44,7 @@ const updateRelationHoverStatus = (blockName, blockAttributes) => {
 					blockData.interactionBuilderSettings
 				)
 					.flat()
-					.find(({ label }) => label === settingName);
+					.find(({ sid }) => sid === relationSettingID);
 
 				return {
 					...relation,

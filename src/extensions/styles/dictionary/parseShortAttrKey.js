@@ -1,6 +1,7 @@
 import getAttrKeyWithoutBreakpoint from '../getAttrKeyWithoutBreakpoint';
 import getBreakpointFromAttribute from '../getBreakpointFromAttribute';
 import {
+	colorReversedDictionary,
 	prefixesReversedDictionary,
 	reversedDictionary,
 	suffixesReversedDictionary,
@@ -40,12 +41,16 @@ const parseShortAttrKey = attrKey => {
 		.join('-');
 
 	// Translate key
-	const key = reversedDictionary[cleanedKey] || cleanedKey;
+	const key =
+		colorReversedDictionary[cleanedKey] ??
+		reversedDictionary[cleanedKey] ??
+		cleanedKey;
 
 	// Join all together
 	const newKey = [prefixesStr, key, suffixesStr, breakpoint]
 		.filter(Boolean)
-		.join('-');
+		.join('-')
+		.replaceAll('--', '-');
 
 	return newKey;
 };

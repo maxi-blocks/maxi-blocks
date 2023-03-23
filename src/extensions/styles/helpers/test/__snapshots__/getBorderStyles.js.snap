@@ -3,23 +3,35 @@
 exports[`getBorderStyles Ensures 0 is accepted on responsive stages 1`] = `
 Object {
   "general": Object {
-    "border-bottom-radius": "2px",
     "border-bottom-width": "2px",
     "border-color": "rgba(var(--maxi-light-color-7,8,18,25),1)",
-    "border-left-radius": "2px",
     "border-left-width": "2px",
-    "border-right-radius": "2px",
     "border-right-width": "2px",
     "border-style": "solid",
-    "border-top-radius": "2px",
     "border-top-width": "2px",
   },
   "l": Object {},
   "m": Object {},
   "s": Object {
-    "border-right-radius": "0px",
     "border-right-width": "0px",
   },
+  "xl": Object {},
+  "xs": Object {},
+  "xxl": Object {},
+}
+`;
+
+exports[`getBorderStyles Return a border radius object as the one that can be required by background helper 1`] = `
+Object {
+  "general": Object {
+    "border-bottom-left-radius": "181px",
+    "border-bottom-right-radius": "182px",
+    "border-top-left-radius": "183px",
+    "border-top-right-radius": "184px",
+  },
+  "l": Object {},
+  "m": Object {},
+  "s": Object {},
   "xl": Object {},
   "xs": Object {},
   "xxl": Object {},
@@ -153,9 +165,7 @@ Object {
     "border-top-width": "20px",
   },
   "m": Object {
-    "border-bottom-width": "0px",
     "border-left-width": "0px",
-    "border-right-width": "0px",
     "border-top-width": "0px",
   },
   "s": Object {
@@ -242,7 +252,9 @@ Object {
 
 exports[`getBorderStyles Test simple and default border attributes 1`] = `
 Object {
-  "general": Object {},
+  "general": Object {
+    "border": "none",
+  },
   "l": Object {},
   "m": Object {},
   "s": Object {},

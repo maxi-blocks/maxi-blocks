@@ -1,22 +1,23 @@
 /**
  * Internal dependencies
  */
-import getAttributeKey from '../getAttributeKey';
 import getColorRGBAString from '../getColorRGBAString';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 import getPaletteAttributes from '../getPaletteAttributes';
-import { getIsValid } from '../utils';
+import getAttributesValue from '../getAttributesValue';
+import getAttributeKey from '../getAttributeKey';
 
 /**
  * External dependencies
  */
 import { isUndefined, isNil } from 'lodash';
-import getAttributesValue from '../getAttributesValue';
 
 /**
  * General
  */
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const getPrevBreakpoint = breakpoint =>
+	breakpoints[breakpoints.indexOf(breakpoint) - 1] ?? 'general';
 
 /**
  * Generates border styles object
@@ -53,16 +54,8 @@ const getBorderStyles = ({
 	if (isHover && !isNil(hoverStatus) && !hoverStatus && !globalHoverStatus)
 		return response;
 
-	const keyWords = [
-		'top-left',
-		'top-right',
-		'bottom-right',
-		'bottom-left',
-		'top',
-		'right',
-		'bottom',
-		'left',
-	];
+	const widthKeys = ['top', 'right', 'bottom', 'left'];
+	const radiusKeys = ['top-left', 'top-right', 'bottom-right', 'bottom-left'];
 
 	let omitBorderStyle = !isIB && !hoverStatus && !globalHoverStatus;
 	breakpoints.forEach(breakpoint => {
@@ -74,124 +67,136 @@ const getBorderStyles = ({
 			attributes: obj,
 			isHover,
 		});
+
 		const isBorderNone = isUndefined(borderStyle) || borderStyle === 'none';
 		omitBorderStyle = omitBorderStyle ? isBorderNone : false;
 
-		const getColorString = () => {
-			const { paletteStatus, paletteColor, paletteOpacity, color } =
-				getPaletteAttributes({
-					obj,
-					prefix: `${prefix}border-`,
+		const getValueAndUnit = target => {
+			const currentValue =
+				obj[getAttributeKey(target, isHover, prefix, breakpoint)];
+			const currentUnit =
+				obj[
+					getAttributeKey(
+						`${target}-unit`,
+						isHover,
+						prefix,
+						breakpoint
+					)
+				];
+
+			const hasCurrent = !isNil(currentValue) || !isNil(currentUnit);
+
+			if (!hasCurrent) return null;
+
+			const lastValue = getLastBreakpointAttribute({
+				target: `${prefix}${target}`,
+				breakpoint,
+				attributes: obj,
+				isHover,
+			});
+
+			if (isNil(lastValue)) return null;
+
+			const lastUnit =
+				getLastBreakpointAttribute({
+					target: `${prefix}${target}-unit`,
+					breakpoint,
+					attributes: obj,
 					isHover,
+				}) || 'px';
+
+			return `${lastValue}${lastUnit}`;
+		};
+
+		const prevBreakpoint = getPrevBreakpoint(breakpoint);
+
+		if (!isBorderNone) {
+			const getColorString = () => {
+				const currentColor = getAttributesValue({
+					target: [
+						'border-palette-status',
+						'border-palette-color',
+						'border-palette-opacity',
+						'border-color',
+					],
+					props: obj,
+					isHover,
+					prefix,
 					breakpoint,
 				});
 
-			if (paletteStatus)
-				if (isButton && (!isHover || hoverStatus || globalHoverStatus))
-					return getColorRGBAString({
-						firstVar: `${isButton ? 'button-' : ''}border-color${
-							isHover ? '-hover' : ''
-						}`,
-						secondVar: `color-${paletteColor}`,
-						opacity: paletteOpacity,
-						blockStyle,
-					});
-				else
-					return getColorRGBAString({
-						firstVar: `color-${paletteColor}`,
-						opacity: paletteOpacity,
-						blockStyle,
-					});
-			return color;
-		};
+				const hasDifferentColorAttributes = Object.values(
+					currentColor
+				).some(value => !isNil(value));
 
-		Object.entries(obj).forEach(([key, rawValue]) => {
-			const newKey = prefix ? key.replace(prefix, '') : key;
-			const includesBreakpoint =
-				newKey.lastIndexOf(`-${breakpoint}${isHover ? '-hover' : ''}`) +
-					`-${breakpoint}${isHover ? '-hover' : ''}`.length ===
-				newKey.length;
-			const replacer = new RegExp(
-				`\\b-${breakpoint}${
-					isHover ? '-hover' : ''
-				}\\b(?!.*\\b-${breakpoint}${isHover ? '-hover' : ''}\\b)`,
-				'gm'
-			);
-			const newLabel = newKey.replace(replacer, '');
-			const value = getLastBreakpointAttribute({
-				target: `${prefix}${newLabel}`,
-				isHover,
-				breakpoint,
-				attributes: obj,
-			});
+				if (!hasDifferentColorAttributes) return null;
 
-			if (
-				(getIsValid(value, true) ||
-					(isHover && globalHoverStatus && key.includes('color')) ||
-					key ===
-						getAttributeKey(
-							'border-palette-color',
-							false,
-							prefix,
-							breakpoint
-						)) &&
-				includesBreakpoint &&
-				!newKey.includes('sync') &&
-				!newKey.includes('unit')
-			) {
-				const unitKey = keyWords.filter(key =>
-					newLabel.includes(key)
-				)[0];
-
-				const unit =
-					getLastBreakpointAttribute({
-						target: `${prefix}${newLabel.replace(unitKey, 'unit')}`,
-						breakpoint,
-						attributes: obj,
+				const { paletteStatus, paletteColor, paletteOpacity, color } =
+					getPaletteAttributes({
+						obj,
+						prefix: `${prefix}border-`,
 						isHover,
-					}) || 'px';
+						breakpoint,
+					});
 
-				if (key.includes('style')) {
-					if (!omitBorderStyle)
-						if ((isHover || isIB) && isBorderNone) {
-							response[breakpoint].border = 'none';
-						} else
-							response[breakpoint]['border-style'] = borderStyle;
-				} else if (!keyWords.some(key => newKey.includes(key))) {
+				if (paletteStatus)
 					if (
-						(key.includes('color') || key.includes('opacity')) &&
-						(!isBorderNone || (isHover && globalHoverStatus))
-					) {
-						response[breakpoint][borderColorProperty] =
-							getColorString();
-					} else if (
-						![
-							'border-palette-status',
-							'border-palette-color',
-							'border-palette-opacity',
-						].includes(newLabel)
+						isButton &&
+						(!isHover || hoverStatus || globalHoverStatus)
 					)
-						response[breakpoint][newLabel] = `${value}`;
-				} else if (
-					[
-						'border-width-top',
-						'border-width-right',
-						'border-width-left',
-						'border-width-bottom',
-					].includes(newLabel)
-				) {
-					if (isBorderNone) return;
-					if (Number.isFinite(value)) {
-						response[breakpoint][newLabel] = `${value}${unit}`;
-					} else {
-						response[breakpoint][newLabel] = `0${unit}`;
-					}
-				} else if (Number.isFinite(value)) {
-					response[breakpoint][newLabel] = `${value}${unit}`;
-				} else {
-					response[breakpoint][newLabel] = `0${unit}`;
-				}
-			}
+						return getColorRGBAString({
+							firstVar: `${
+								isButton ? 'button-' : ''
+							}border-color${isHover ? '-hover' : ''}`,
+							secondVar: `color-${paletteColor}`,
+							opacity: paletteOpacity,
+							blockStyle,
+						});
+					else
+						return getColorRGBAString({
+							firstVar: `color-${paletteColor}`,
+							opacity: paletteOpacity,
+							blockStyle,
+						});
+				return color;
+			};
+
+			const currentBorderStyle =
+				obj[
+					getAttributeKey('border-style', isHover, prefix, breakpoint)
+				];
+			if (!isNil(currentBorderStyle))
+				response[breakpoint]['border-style'] = borderStyle;
+
+			const borderColor = getColorString();
+			if (borderColor)
+				response[breakpoint][borderColorProperty] = borderColor;
+
+			widthKeys.forEach(axis => {
+				const val = getValueAndUnit(`border-width-${axis}`);
+				const prevVal =
+					response[prevBreakpoint][`border-${axis}-width`];
+
+				if (val && val !== prevVal)
+					response[breakpoint][`border-${axis}-width`] = val;
+			});
+		} else if (
+			!isNil(
+				obj[
+					getAttributeKey('border-style', isHover, prefix, breakpoint)
+				]
+			) &&
+			borderStyle === 'none'
+		)
+			response[breakpoint].border = 'none';
+
+		// Border radius doesn't need border style
+		radiusKeys.forEach(axis => {
+			const val = getValueAndUnit(`border-radius-${axis}`);
+			const prevVal = response[prevBreakpoint][`border-${axis}-radius`];
+
+			if (val && val !== prevVal)
+				response[breakpoint][`border-${axis}-radius`] = val;
 		});
 	});
 

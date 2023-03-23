@@ -1,3 +1,5 @@
+import parseLongAttrKey from './dictionary/parseLongAttrKey';
+
 const prefixAttributesCreator = ({
 	obj,
 	prefix,
@@ -12,7 +14,7 @@ const prefixAttributesCreator = ({
 		if (exclAttr.every(excl => !key.includes(excl))) {
 			const newKey = `${prefix}${key}`;
 
-			if (diffValAttrKeys.includes(newKey))
+			if (diffValAttrKeys.map(parseLongAttrKey).includes(newKey))
 				response[newKey] = {
 					...val,
 					default: diffValAttr[newKey],

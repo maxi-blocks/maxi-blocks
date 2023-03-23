@@ -1,4 +1,5 @@
 import * as attributes from '../../defaults';
+import dictionary from '../attributesDictionary';
 
 describe('attributesDictionary', () => {
 	it('test', () => {
@@ -7,10 +8,10 @@ describe('attributesDictionary', () => {
 		expect(test).toMatchSnapshot();
 	});
 
-	it('Expect no duplicates', () => {
-		const test = attributes;
-
-		const allKeys = Object.values(test).map(obj => Object.keys(obj));
+	it.only('Expect no duplicates', () => {
+		const allKeys = Object.values(dictionary).map(item =>
+			Object.values(item)
+		);
 
 		const allKeysFlat = allKeys.flat();
 

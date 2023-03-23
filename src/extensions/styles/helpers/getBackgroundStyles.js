@@ -183,7 +183,7 @@ export const getGradientBackgroundObject = ({
 
 	const {
 		[`${prefix}background-gradient-opacity`]: bgGradientOpacity,
-		[`${prefix}background-gradient`]: bgGradient,
+		[`${prefix}background-gradient-content`]: bgGradient,
 		[`${prefix}background-gradient-clip-path`]: bgGradientClipPath,
 		[`${prefix}background-gradient-clip-path-status`]:
 			isBgGradientClipPathActive,
@@ -191,7 +191,7 @@ export const getGradientBackgroundObject = ({
 	} = getLastBreakpointAttribute({
 		target: [
 			'background-gradient-opacity',
-			'background-gradient',
+			'background-gradient-content',
 			'background-gradient-clip-path',
 			'background-gradient-clip-path-status',
 			'background-active-media',
@@ -338,7 +338,7 @@ export const getImageBackgroundObject = ({
 		isHover,
 	});
 
-	const isbgImageClipPathActive = getLastBreakpointAttribute({
+	const isBGImageClipPathActive = getLastBreakpointAttribute({
 		target: `${prefix}background-image-clip-path-status`,
 		breakpoint,
 		attributes: props,
@@ -450,19 +450,19 @@ export const getImageBackgroundObject = ({
 
 		// To avoid image blinking on opacity hover
 		if (!isHover) {
-			const bgImageOpacity = getBgImageAttributeValue(
+			const bgImageOpacityHover = getBgImageAttributeValue(
 				'background-image-opacity',
 				true
 			);
 
-			if (bgImageOpacity)
+			if (isNumber(bgImageOpacityHover))
 				response[breakpoint]['-webkit-transform'] =
 					'translate3d(0,0,0)';
 		}
 	}
 
 	// Clip-path
-	if (isbgImageClipPathActive)
+	if (isBGImageClipPathActive)
 		response[breakpoint]['clip-path'] = isEmpty(bgImageClipPath)
 			? 'none'
 			: bgImageClipPath;
@@ -964,7 +964,7 @@ const getGeneralBackgroundStyles = (
 
 	const getBorderValue = (target, breakpoint, forceIsHover = null) => {
 		const lastValue = getLastBreakpointAttribute({
-			target: `border-${target}-width`,
+			target: `border-width-${target}`,
 			breakpoint,
 			attributes: props,
 			avoidXXL: !isHover,
@@ -980,7 +980,7 @@ const getGeneralBackgroundStyles = (
 		isHover,
 	});
 
-	!isEmpty(props) &&
+	if (!isEmpty(props)) {
 		breakpoints.forEach(breakpoint => {
 			let widthTop;
 			let widthBottom;
@@ -1044,23 +1044,24 @@ const getGeneralBackgroundStyles = (
 				};
 			}
 		});
+	}
 
 	breakpoints.forEach(breakpoint => {
+		const breakpointStyle = border[breakpoint]['border-style'];
+
+		if (!breakpointStyle) return;
+
 		if (border[breakpoint]['border-top-width'])
-			border[breakpoint]['border-top-style'] =
-				border[breakpoint]['border-style'];
+			border[breakpoint]['border-top-style'] = breakpointStyle;
 
 		if (border[breakpoint]['border-right-width'])
-			border[breakpoint]['border-right-style'] =
-				border[breakpoint]['border-style'];
+			border[breakpoint]['border-right-style'] = breakpointStyle;
 
 		if (border[breakpoint]['border-bottom-width'])
-			border[breakpoint]['border-bottom-style'] =
-				border[breakpoint]['border-style'];
+			border[breakpoint]['border-bottom-style'] = breakpointStyle;
 
 		if (border[breakpoint]['border-left-width'])
-			border[breakpoint]['border-left-style'] =
-				border[breakpoint]['border-style'];
+			border[breakpoint]['border-left-style'] = breakpointStyle;
 	});
 
 	delete border.general['border-style'];
@@ -1218,7 +1219,6 @@ export const getBlockBackgroundStyles = ({
 			};
 		});
 
-	console.log(response);
 	return response;
 };
 

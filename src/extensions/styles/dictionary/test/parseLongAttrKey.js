@@ -2,18 +2,20 @@ import parseLongAttrKey from '../parseLongAttrKey';
 
 describe('parseLongAttrKey', () => {
 	it('should return the correct key', () => {
-		expect(
-			parseLongAttrKey('background-color-palette-status-general')
-		).toBe('bc-p.s-general');
+		const attributes = {
+			'background-color-palette-status-general': 'bc-ps-general',
+			'border-style-general': 'bo-s-general',
+			'background-layers': 'bl',
+			'background-color-palette-opacity-general': 'bc-po-general',
+			'box-shadow-palette-color': 'bs-pc',
+			'border-width-top-general': 'bo-w.t-general',
+			'padding-top-general': 'p.t-general',
+			'margin-top-general': 'm.t-general',
+			'background-image-opacity-general-hover': 'bi-o-general-hover',
+		};
 
-		expect(parseLongAttrKey('border-style-general')).toBe('bo-s-general');
-
-		expect(parseLongAttrKey('background-layers')).toBe('bl');
-
-		expect(
-			parseLongAttrKey('background-color-palette-opacity-general')
-		).toBe('bc-po-general');
-
-		expect(parseLongAttrKey('box-shadow-palette-color')).toBe('bs-pc');
+		Object.entries(attributes).forEach(([key, value]) => {
+			expect(parseLongAttrKey(key)).toBe(value);
+		});
 	});
 });

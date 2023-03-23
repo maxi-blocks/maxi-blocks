@@ -3,6 +3,7 @@
  */
 import { getIsValid } from './utils';
 import * as defaults from './defaults/index';
+import parseLongAttrKey from './dictionary/parseLongAttrKey';
 
 const getGroupAttributes = (
 	attributes,
@@ -25,8 +26,10 @@ const getGroupAttributes = (
 
 		if (defaultAttributes)
 			Object?.keys(defaultAttributes)?.forEach(key => {
-				if (getIsValid(attributes[`${prefix}${key}`], cleaned))
-					response[`${prefix}${key}`] = attributes[`${prefix}${key}`];
+				const parsedKey = parseLongAttrKey(`${prefix}${key}`);
+				const value = attributes[parsedKey];
+
+				if (getIsValid(value, cleaned)) response[parsedKey] = value;
 			});
 	} else
 		target.forEach(el => {
@@ -35,9 +38,10 @@ const getGroupAttributes = (
 
 			if (defaultAttributes)
 				Object.keys(defaultAttributes).forEach(key => {
-					if (getIsValid(attributes[`${prefix}${key}`], cleaned))
-						response[`${prefix}${key}`] =
-							attributes[`${prefix}${key}`];
+					const parsedKey = parseLongAttrKey(`${prefix}${key}`);
+					const value = attributes[parsedKey];
+
+					if (getIsValid(value, cleaned)) response[parsedKey] = value;
 				});
 		});
 

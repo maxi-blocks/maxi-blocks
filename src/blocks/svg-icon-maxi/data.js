@@ -181,6 +181,7 @@ const transition = {
 const interactionBuilderSettings = {
 	block: [
 		{
+			sid: 'ic',
 			label: __('Icon colour'),
 			transitionTarget: [
 				transition.block.colour.target,
@@ -216,6 +217,7 @@ const interactionBuilderSettings = {
 		},
 		// TODO: fix #3619
 		// {
+		//  sid: 'ilw',
 		// 	label: __('Icon line width', 'maxi-blocks'),
 		// 	attrGroupName: 'svg',
 		// 	component: props => {
@@ -238,6 +240,7 @@ const interactionBuilderSettings = {
 		// 		}),
 		// },
 		{
+			sid: 'ibg',
 			label: __('Icon background', 'maxi-blocks'),
 			transitionTarget: transition.block.background.target,
 			hoverProp: 'svg-background-status-hover',
@@ -261,6 +264,7 @@ const interactionBuilderSettings = {
 			target: ' .maxi-svg-icon-block__icon',
 		},
 		{
+			sid: 'ib',
 			label: __('Icon border', 'maxi-blocks'),
 			transitionTarget: transition.block.border.target,
 			hoverProp: 'svg-border-status-hover',

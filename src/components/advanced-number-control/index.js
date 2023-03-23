@@ -260,10 +260,19 @@ const AdvancedNumberControl = props => {
 							isSmall
 						/>
 					)}
+
 					{!disableRange && (
 						<RangeControl
 							label={label}
-							className='maxi-advanced-number-control__range'
+							className={`maxi-advanced-number-control__range${
+								value > 11111
+									? (value / max) * 100 <= 10
+										? '--small'
+										: (value / max) * 100 >= 90
+										? '--big'
+										: ''
+									: ''
+							}`}
 							value={
 								+[
 									value ||

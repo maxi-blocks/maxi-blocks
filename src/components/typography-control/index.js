@@ -31,6 +31,7 @@ import {
 } from '../../extensions/styles';
 import { getDefaultSCValue } from '../../extensions/style-cards';
 import { getClosestAvailableFontWeight, getWeightOptions } from './utils';
+import onChangeFontWeight from '../font-weight-control/utils';
 
 /**
  * External dependencies
@@ -42,7 +43,6 @@ import { isEmpty, isNil } from 'lodash';
  * Styles
  */
 import './editor.scss';
-import onChangeFontWeight from '../font-weight-control/utils';
 
 /**
  * Component
@@ -478,16 +478,14 @@ const TypographyControl = props => {
 						className='maxi-typography-control__font-family'
 						font={getValue('font-family')}
 						onChange={font => {
-							const currentWeight =
-								getValue('font-weight') ??
-								getDefault('font-weight') ??
-								'400';
+							const currentWeight = getValue('font-weight');
 							const fontName =
 								font.value ?? getDefault('font-family');
 							const isInWeightOptions =
+								isNil(currentWeight) ||
 								isNil(fontName) ||
-								getWeightOptions(fontName).includes(
-									currentWeight
+								getWeightOptions(fontName).some(
+									({ value }) => +value === +currentWeight
 								);
 
 							onChangeFormat({

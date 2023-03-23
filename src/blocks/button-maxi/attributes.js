@@ -104,10 +104,10 @@ const attributes = {
 		obj: attributesData.borderRadius,
 		prefix,
 		diffValAttr: {
-			[`${prefix}border-top-left-radius-general`]: 10,
-			[`${prefix}border-top-right-radius-general`]: 10,
-			[`${prefix}border-bottom-left-radius-general`]: 10,
-			[`${prefix}border-bottom-right-radius-general`]: 10,
+			[`${prefix}border-radius-top-left-general`]: 10,
+			[`${prefix}border-radius-top-right-general`]: 10,
+			[`${prefix}border-radius-bottom-left-general`]: 10,
+			[`${prefix}border-radius-bottom-right-general`]: 10,
 		},
 	}),
 	...prefixAttributesCreator({

@@ -31,28 +31,28 @@ describe('Responsive attributes mechanisms', () => {
 
 		const expectBorder = {
 			'border-style-general': 'solid',
-			'border-top-width-general': 2,
-			'border-right-width-general': 2,
-			'border-bottom-width-general': 2,
-			'border-left-width-general': 2,
+			'border-width-top-general': 2,
+			'border-width-right-general': 2,
+			'border-width-bottom-general': 2,
+			'border-width-left-general': 2,
 			'border-style-m': undefined,
-			'border-top-width-m': undefined,
-			'border-right-width-m': undefined,
-			'border-bottom-width-m': undefined,
-			'border-left-width-m': undefined,
+			'border-width-top-m': undefined,
+			'border-width-right-m': undefined,
+			'border-width-bottom-m': undefined,
+			'border-width-left-m': undefined,
 		};
 
 		const borderResult = await getAttributes([
 			'border-style-general',
-			'border-top-width-general',
-			'border-right-width-general',
-			'border-bottom-width-general',
-			'border-left-width-general',
+			'border-width-top-general',
+			'border-width-right-general',
+			'border-width-bottom-general',
+			'border-width-left-general',
 			'border-style-m',
-			'border-top-width-m',
-			'border-right-width-m',
-			'border-bottom-width-m',
-			'border-left-width-m',
+			'border-width-top-m',
+			'border-width-right-m',
+			'border-width-bottom-m',
+			'border-width-left-m',
 		]);
 
 		expect(borderResult).toStrictEqual(expectBorder);
@@ -111,36 +111,36 @@ describe('Responsive attributes mechanisms', () => {
 
 		const expectBorder = {
 			'border-style-general': 'solid',
-			'border-top-width-general': 2,
-			'border-right-width-general': 2,
-			'border-bottom-width-general': 2,
-			'border-left-width-general': 2,
-			'border-sync-width-general': 'all',
-			'border-unit-width-general': 'px',
+			'border-width-top-general': 2,
+			'border-width-right-general': 2,
+			'border-width-bottom-general': 2,
+			'border-width-left-general': 2,
+			'border-width-sync-general': 'all',
+			'border-width-unit-general': 'px',
 			'border-style-m': undefined,
-			'border-top-width-m': undefined,
-			'border-right-width-m': undefined,
-			'border-bottom-width-m': undefined,
-			'border-left-width-m': undefined,
-			'border-sync-width-m': undefined,
-			'border-unit-width-m': undefined,
+			'border-width-top-m': undefined,
+			'border-width-right-m': undefined,
+			'border-width-bottom-m': undefined,
+			'border-width-left-m': undefined,
+			'border-width-sync-m': undefined,
+			'border-width-unit-m': undefined,
 		};
 
 		const borderResult = await getAttributes([
 			'border-style-general',
-			'border-top-width-general',
-			'border-right-width-general',
-			'border-bottom-width-general',
-			'border-left-width-general',
-			'border-sync-width-general',
-			'border-unit-width-general',
+			'border-width-top-general',
+			'border-width-right-general',
+			'border-width-bottom-general',
+			'border-width-left-general',
+			'border-width-sync-general',
+			'border-width-unit-general',
 			'border-style-m',
-			'border-top-width-m',
-			'border-right-width-m',
-			'border-bottom-width-m',
-			'border-left-width-m',
-			'border-sync-width-m',
-			'border-unit-width-m',
+			'border-width-top-m',
+			'border-width-right-m',
+			'border-width-bottom-m',
+			'border-width-left-m',
+			'border-width-sync-m',
+			'border-width-unit-m',
 		]);
 
 		expect(borderResult).toStrictEqual(expectBorder);
@@ -191,32 +191,32 @@ describe('Responsive attributes mechanisms', () => {
 
 		const expectBorder = {
 			'border-style-xxl': 'solid',
-			'border-top-width-xxl': undefined,
-			'border-right-width-xxl': undefined,
-			'border-bottom-width-xxl': undefined,
-			'border-left-width-xxl': undefined,
-			'border-sync-width-xxl': undefined,
-			'border-unit-width-xxl': undefined,
+			'border-width-top-xxl': undefined,
+			'border-width-right-xxl': undefined,
+			'border-width-bottom-xxl': undefined,
+			'border-width-left-xxl': undefined,
+			'border-width-sync-xxl': undefined,
+			'border-width-unit-xxl': undefined,
 			'border-style-general': 'none',
-			'border-top-width-general': 2,
-			'border-right-width-general': 2,
-			'border-bottom-width-general': 2,
-			'border-left-width-general': 2,
+			'border-width-top-general': 2,
+			'border-width-right-general': 2,
+			'border-width-bottom-general': 2,
+			'border-width-left-general': 2,
 		};
 
 		const borderResult = await getAttributes([
 			'border-style-xxl',
-			'border-top-width-xxl',
-			'border-right-width-xxl',
-			'border-bottom-width-xxl',
-			'border-left-width-xxl',
-			'border-sync-width-xxl',
-			'border-unit-width-xxl',
+			'border-width-top-xxl',
+			'border-width-right-xxl',
+			'border-width-bottom-xxl',
+			'border-width-left-xxl',
+			'border-width-sync-xxl',
+			'border-width-unit-xxl',
 			'border-style-general',
-			'border-top-width-general',
-			'border-right-width-general',
-			'border-bottom-width-general',
-			'border-left-width-general',
+			'border-width-top-general',
+			'border-width-right-general',
+			'border-width-bottom-general',
+			'border-width-left-general',
 		]);
 
 		expect(borderResult).toStrictEqual(expectBorder);
@@ -477,13 +477,13 @@ describe('Responsive attributes mechanisms', () => {
 		await page.keyboard.type('100', { delay: 100 });
 
 		const expectRadiusOnM = {
-			'border-top-left-radius-general': 100,
-			'border-top-left-radius-m': undefined,
+			'border-radius-top-left-general': 100,
+			'border-radius-top-left-m': undefined,
 		};
 
 		const radiusOnM = await getAttributes([
-			'border-top-left-radius-general',
-			'border-top-left-radius-m',
+			'border-radius-top-left-general',
+			'border-radius-top-left-m',
 		]);
 
 		expect(radiusOnM).toStrictEqual(expectRadiusOnM);
@@ -499,15 +499,15 @@ describe('Responsive attributes mechanisms', () => {
 		await page.keyboard.type('150', { delay: 100 });
 
 		const expectRadiusOnXl = {
-			'border-top-left-radius-general': 100,
-			'border-top-left-radius-xl': 150,
-			'border-top-left-radius-m': 100,
+			'border-radius-top-left-general': 100,
+			'border-radius-top-left-xl': 150,
+			'border-radius-top-left-m': 100,
 		};
 
 		const radiusOnXl = await getAttributes([
-			'border-top-left-radius-general',
-			'border-top-left-radius-m',
-			'border-top-left-radius-xl',
+			'border-radius-top-left-general',
+			'border-radius-top-left-m',
+			'border-radius-top-left-xl',
 		]);
 
 		expect(radiusOnXl).toStrictEqual(expectRadiusOnXl);
@@ -519,15 +519,15 @@ describe('Responsive attributes mechanisms', () => {
 		);
 
 		const expectResetRadiusOnXl = {
-			'border-top-left-radius-general': 100,
-			'border-top-left-radius-m': undefined,
-			'border-top-left-radius-xl': undefined,
+			'border-radius-top-left-general': 100,
+			'border-radius-top-left-m': undefined,
+			'border-radius-top-left-xl': undefined,
 		};
 
 		const resetRadiusOnXl = await getAttributes([
-			'border-top-left-radius-general',
-			'border-top-left-radius-m',
-			'border-top-left-radius-xl',
+			'border-radius-top-left-general',
+			'border-radius-top-left-m',
+			'border-radius-top-left-xl',
 		]);
 
 		expect(resetRadiusOnXl).toStrictEqual(expectResetRadiusOnXl);
@@ -543,15 +543,15 @@ describe('Responsive attributes mechanisms', () => {
 		);
 
 		const expectResetRadiusOnM = {
-			'border-top-left-radius-general': undefined,
-			'border-top-left-radius-m': undefined,
-			'border-top-left-radius-xl': undefined,
+			'border-radius-top-left-general': undefined,
+			'border-radius-top-left-m': undefined,
+			'border-radius-top-left-xl': undefined,
 		};
 
 		const resetRadiusOnM = await getAttributes([
-			'border-top-left-radius-general',
-			'border-top-left-radius-m',
-			'border-top-left-radius-xl',
+			'border-radius-top-left-general',
+			'border-radius-top-left-m',
+			'border-radius-top-left-xl',
 		]);
 
 		expect(resetRadiusOnM).toStrictEqual(expectResetRadiusOnM);

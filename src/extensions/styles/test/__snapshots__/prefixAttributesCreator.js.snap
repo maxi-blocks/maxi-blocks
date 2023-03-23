@@ -202,136 +202,136 @@ Object {
 
 exports[`prefixAttributesCreator Returns prefixed object with default values 1`] = `
 Object {
-  "button-border-bottom-width-general": Object {
+  "button-border-width-bottom-general": Object {
     "default": 2,
     "type": "number",
   },
-  "button-border-bottom-width-l": Object {
+  "button-border-width-bottom-l": Object {
     "type": "number",
   },
-  "button-border-bottom-width-m": Object {
+  "button-border-width-bottom-m": Object {
     "type": "number",
   },
-  "button-border-bottom-width-s": Object {
+  "button-border-width-bottom-s": Object {
     "type": "number",
   },
-  "button-border-bottom-width-xl": Object {
+  "button-border-width-bottom-xl": Object {
     "type": "number",
   },
-  "button-border-bottom-width-xs": Object {
+  "button-border-width-bottom-xs": Object {
     "type": "number",
   },
-  "button-border-bottom-width-xxl": Object {
+  "button-border-width-bottom-xxl": Object {
     "type": "number",
   },
-  "button-border-left-width-general": Object {
+  "button-border-width-left-general": Object {
     "default": 2,
     "type": "number",
   },
-  "button-border-left-width-l": Object {
+  "button-border-width-left-l": Object {
     "type": "number",
   },
-  "button-border-left-width-m": Object {
+  "button-border-width-left-m": Object {
     "type": "number",
   },
-  "button-border-left-width-s": Object {
+  "button-border-width-left-s": Object {
     "type": "number",
   },
-  "button-border-left-width-xl": Object {
+  "button-border-width-left-xl": Object {
     "type": "number",
   },
-  "button-border-left-width-xs": Object {
+  "button-border-width-left-xs": Object {
     "type": "number",
   },
-  "button-border-left-width-xxl": Object {
+  "button-border-width-left-xxl": Object {
     "type": "number",
   },
-  "button-border-right-width-general": Object {
+  "button-border-width-right-general": Object {
     "default": 2,
     "type": "number",
   },
-  "button-border-right-width-l": Object {
+  "button-border-width-right-l": Object {
     "type": "number",
   },
-  "button-border-right-width-m": Object {
+  "button-border-width-right-m": Object {
     "type": "number",
   },
-  "button-border-right-width-s": Object {
+  "button-border-width-right-s": Object {
     "type": "number",
   },
-  "button-border-right-width-xl": Object {
+  "button-border-width-right-xl": Object {
     "type": "number",
   },
-  "button-border-right-width-xs": Object {
+  "button-border-width-right-xs": Object {
     "type": "number",
   },
-  "button-border-right-width-xxl": Object {
+  "button-border-width-right-xxl": Object {
     "type": "number",
   },
-  "button-border-sync-width-general": Object {
+  "button-border-width-sync-general": Object {
     "default": "all",
     "type": "string",
   },
-  "button-border-sync-width-l": Object {
+  "button-border-width-sync-l": Object {
     "type": "string",
   },
-  "button-border-sync-width-m": Object {
+  "button-border-width-sync-m": Object {
     "type": "string",
   },
-  "button-border-sync-width-s": Object {
+  "button-border-width-sync-s": Object {
     "type": "string",
   },
-  "button-border-sync-width-xl": Object {
+  "button-border-width-sync-xl": Object {
     "type": "string",
   },
-  "button-border-sync-width-xs": Object {
+  "button-border-width-sync-xs": Object {
     "type": "string",
   },
-  "button-border-sync-width-xxl": Object {
+  "button-border-width-sync-xxl": Object {
     "type": "string",
   },
-  "button-border-top-width-general": Object {
+  "button-border-width-top-general": Object {
     "default": 2,
     "type": "number",
   },
-  "button-border-top-width-l": Object {
+  "button-border-width-top-l": Object {
     "type": "number",
   },
-  "button-border-top-width-m": Object {
+  "button-border-width-top-m": Object {
     "type": "number",
   },
-  "button-border-top-width-s": Object {
+  "button-border-width-top-s": Object {
     "type": "number",
   },
-  "button-border-top-width-xl": Object {
+  "button-border-width-top-xl": Object {
     "type": "number",
   },
-  "button-border-top-width-xs": Object {
+  "button-border-width-top-xs": Object {
     "type": "number",
   },
-  "button-border-top-width-xxl": Object {
+  "button-border-width-top-xxl": Object {
     "type": "number",
   },
-  "button-border-unit-width-general": Object {
+  "button-border-width-unit-general": Object {
     "default": "px",
     "type": "string",
   },
-  "button-border-unit-width-l": Object {
+  "button-border-width-unit-l": Object {
     "type": "string",
   },
-  "button-border-unit-width-m": Object {
+  "button-border-width-unit-m": Object {
     "type": "string",
   },
-  "button-border-unit-width-s": Object {
+  "button-border-width-unit-s": Object {
     "type": "string",
   },
-  "button-border-unit-width-xl": Object {
+  "button-border-width-unit-xl": Object {
     "type": "string",
   },
-  "button-border-unit-width-xs": Object {
+  "button-border-width-unit-xs": Object {
     "type": "string",
   },
-  "button-border-unit-width-xxl": Object {
+  "button-border-width-unit-xxl": Object {
     "type": "string",
   },
   "button-box-shadow-blur-general-hover": Object {

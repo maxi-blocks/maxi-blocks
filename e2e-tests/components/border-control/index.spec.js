@@ -37,16 +37,16 @@ describe('BorderControl', () => {
 		});
 
 		const expectMargin = {
-			'border-bottom-left-radius-general': 44,
-			'border-bottom-right-radius-general': 96,
-			'border-top-left-radius-general': 56,
-			'border-top-right-radius-general': 15,
+			'border-radius-bottom-left-general': 44,
+			'border-radius-bottom-right-general': 96,
+			'border-radius-top-left-general': 56,
+			'border-radius-top-right-general': 15,
 		};
 		const marginResult = await getAttributes([
-			'border-bottom-left-radius-general',
-			'border-bottom-right-radius-general',
-			'border-top-left-radius-general',
-			'border-top-right-radius-general',
+			'border-radius-bottom-left-general',
+			'border-radius-bottom-right-general',
+			'border-radius-top-left-general',
+			'border-radius-top-right-general',
 		]);
 
 		expect(marginResult).toStrictEqual(expectMargin);
@@ -141,18 +141,18 @@ describe('BorderControl', () => {
 		);
 
 		const expectBorder = {
-			'border-bottom-width-general': 2,
-			'border-bottom-width-general-hover': undefined,
+			'border-width-bottom-general': 2,
+			'border-width-bottom-general-hover': undefined,
 			'border-color-general': undefined,
 			'border-color-general-hover': undefined,
-			'border-left-width-general': 2,
-			'border-left-width-general-hover': undefined,
-			'border-right-width-general': 2,
-			'border-right-width-general-hover': undefined,
+			'border-width-left-general': 2,
+			'border-width-left-general-hover': undefined,
+			'border-width-right-general': 2,
+			'border-width-right-general-hover': undefined,
 			'border-style-general': 'none',
 			'border-style-general-hover': undefined,
-			'border-top-width-general': 2,
-			'border-top-width-general-hover': undefined,
+			'border-width-top-general': 2,
+			'border-width-top-general-hover': undefined,
 		};
 
 		const borderResult = await getAttributes([
@@ -160,14 +160,14 @@ describe('BorderControl', () => {
 			'border-color-general-hover',
 			'border-style-general',
 			'border-style-general-hover',
-			'border-top-width-general',
-			'border-top-width-general-hover',
-			'border-right-width-general',
-			'border-right-width-general-hover',
-			'border-bottom-width-general',
-			'border-bottom-width-general-hover',
-			'border-left-width-general',
-			'border-left-width-general-hover',
+			'border-width-top-general',
+			'border-width-top-general-hover',
+			'border-width-right-general',
+			'border-width-right-general-hover',
+			'border-width-bottom-general',
+			'border-width-bottom-general-hover',
+			'border-width-left-general',
+			'border-width-left-general-hover',
 		]);
 
 		expect(borderResult).toStrictEqual(expectBorder);
@@ -188,7 +188,7 @@ describe('BorderControl', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('59');
 
-		expect(await getAttributes('border-left-width-general')).toStrictEqual(
+		expect(await getAttributes('border-width-left-general')).toStrictEqual(
 			59
 		);
 
@@ -202,7 +202,7 @@ describe('BorderControl', () => {
 		await page.keyboard.type('26');
 
 		expect(
-			await getAttributes('border-bottom-left-radius-general')
+			await getAttributes('border-radius-bottom-left-general')
 		).toStrictEqual(26);
 
 		// change style
@@ -232,7 +232,7 @@ describe('BorderControl', () => {
 			button => button.click()
 		);
 
-		expect(await getAttributes('border-left-width-general')).toStrictEqual(
+		expect(await getAttributes('border-width-left-general')).toStrictEqual(
 			2
 		);
 
@@ -242,7 +242,7 @@ describe('BorderControl', () => {
 		);
 
 		expect(
-			await getAttributes('border-bottom-left-radius-general')
+			await getAttributes('border-radius-bottom-left-general')
 		).toStrictEqual(undefined);
 	});
 

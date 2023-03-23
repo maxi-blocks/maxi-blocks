@@ -32,7 +32,7 @@ const arrowIcon = {
 			'navigation-arrow-both-icon-stroke-palette-color': 5,
 			'navigation-arrow-both-icon-background-active-media-general':
 				'none',
-			'navigation-arrow-both-icon-border-unit-radius-general': 'px',
+			'navigation-arrow-both-icon-border-radius-unit-general': 'px',
 		},
 		exclAttr: [
 			'icon-inherit',

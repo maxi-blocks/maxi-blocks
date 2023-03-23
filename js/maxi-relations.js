@@ -573,7 +573,7 @@ class Relation {
 						if (this.isBorderArray[index] && isBackground) {
 							const getBorderValue = target =>
 								this.attributes[
-									`border-${target}-width-${breakpoint}`
+									`border-width-${target}-${breakpoint}`
 								];
 
 							const widthTop = getBorderValue('top');

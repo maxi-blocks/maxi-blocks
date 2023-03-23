@@ -573,10 +573,10 @@ describe('getBackgroundStyles', () => {
 			...parseLongAttrObj({
 				'border-palette-status-general': true,
 				'border-palette-color-general': 2,
-				'border-sync-width-general': true,
-				'border-unit-width-general': 'px',
-				'border-sync-radius-general': true,
-				'border-unit-radius-general': 'px',
+				'border-width-sync-general': true,
+				'border-width-unit-general': 'px',
+				'border-radius-sync-general': true,
+				'border-radius-unit-general': 'px',
 			}),
 		});
 

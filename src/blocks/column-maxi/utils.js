@@ -1,17 +1,17 @@
 const getBorderRadiusCorners = (index, originalNestedColumns) => {
 	if (index === 0 && originalNestedColumns.length === 1) {
 		return [
-			'border-top-left-radius',
-			'border-top-right-radius',
-			'border-bottom-left-radius',
-			'border-bottom-right-radius',
+			'border-radius-top-left',
+			'border-radius-top-right',
+			'border-radius-bottom-left',
+			'border-radius-bottom-right',
 		];
 	}
 	if (index === 0) {
-		return ['border-top-left-radius', 'border-bottom-left-radius'];
+		return ['border-radius-top-left', 'border-radius-bottom-left'];
 	}
 	if (index === originalNestedColumns.length - 1) {
-		return ['border-top-right-radius', 'border-bottom-right-radius'];
+		return ['border-radius-top-right', 'border-radius-bottom-right'];
 	}
 	return null;
 };

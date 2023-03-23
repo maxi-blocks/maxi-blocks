@@ -23,11 +23,11 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 		}, {});
 
 	const iconRevealResetStyles = getDefaultAttributes([
-		`${buttonPrefix}border-unit-radius-general`,
-		`${buttonPrefix}border-top-left-radius-general`,
-		`${buttonPrefix}border-top-right-radius-general`,
-		`${buttonPrefix}border-bottom-left-radius-general`,
-		`${buttonPrefix}border-bottom-right-radius-general`,
+		`${buttonPrefix}border-radius-unit-general`,
+		`${buttonPrefix}border-radius-top-left-general`,
+		`${buttonPrefix}border-radius-top-right-general`,
+		`${buttonPrefix}border-radius-bottom-left-general`,
+		`${buttonPrefix}border-radius-bottom-right-general`,
 		`${buttonPrefix}margin-left-general`,
 		`${buttonPrefix}margin-sync-general`,
 		'icon-position',
@@ -80,11 +80,11 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 					} else if (skin === 'icon-reveal') {
 						onChange({
 							...classicResetStyles,
-							[`${buttonPrefix}border-unit-radius-general`]: '%',
-							[`${buttonPrefix}border-top-left-radius-general`]: 50,
-							[`${buttonPrefix}border-top-right-radius-general`]: 50,
-							[`${buttonPrefix}border-bottom-left-radius-general`]: 50,
-							[`${buttonPrefix}border-bottom-right-radius-general`]: 50,
+							[`${buttonPrefix}border-radius-unit-general`]: '%',
+							[`${buttonPrefix}border-radius-top-left-general`]: 50,
+							[`${buttonPrefix}border-radius-top-right-general`]: 50,
+							[`${buttonPrefix}border-radius-bottom-left-general`]: 50,
+							[`${buttonPrefix}border-radius-bottom-right-general`]: 50,
 							[`${buttonPrefix}margin-left-general`]: '-20',
 							[`${buttonPrefix}margin-sync-general`]: 'none',
 						});

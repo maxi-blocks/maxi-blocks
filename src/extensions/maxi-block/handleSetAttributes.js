@@ -10,7 +10,7 @@ import getBreakpointFromAttribute from '../styles/getBreakpointFromAttribute';
 import getDefaultAttribute from '../styles/getDefaultAttribute';
 import handleOnReset from '../attributes/handleOnReset';
 import cleanAttributes from './cleanAttributes';
-import blockAttributesShorter from '../styles/dictionary/blockAttributesShorter';
+import parseLongAttrObj from '../styles/dictionary/parseLongAttrObj';
 
 /**
  * External dependencies
@@ -27,7 +27,7 @@ const handleSetAttributes = ({
 	defaultAttributes,
 	isStyleCard = false,
 }) => {
-	const obj = blockAttributesShorter(rawObj);
+	const obj = parseLongAttrObj(rawObj);
 
 	const response = isReset ? { ...handleOnReset(obj) } : { ...obj };
 

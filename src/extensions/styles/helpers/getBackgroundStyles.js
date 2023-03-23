@@ -1010,7 +1010,7 @@ const getGeneralBackgroundStyles = (
 
 			const widthUnit =
 				getLastBreakpointAttribute({
-					target: 'border-unit-width',
+					target: 'border-width-unit',
 					breakpoint,
 					attributes: props,
 				}) || 'px';
@@ -1051,16 +1051,16 @@ const getGeneralBackgroundStyles = (
 
 		if (!breakpointStyle) return;
 
-		if (border[breakpoint]['border-top-width'])
+		if (border[breakpoint]['border-width-top'])
 			border[breakpoint]['border-top-style'] = breakpointStyle;
 
-		if (border[breakpoint]['border-right-width'])
+		if (border[breakpoint]['border-width-right'])
 			border[breakpoint]['border-right-style'] = breakpointStyle;
 
-		if (border[breakpoint]['border-bottom-width'])
+		if (border[breakpoint]['border-width-bottom'])
 			border[breakpoint]['border-bottom-style'] = breakpointStyle;
 
-		if (border[breakpoint]['border-left-width'])
+		if (border[breakpoint]['border-width-left'])
 			border[breakpoint]['border-left-style'] = breakpointStyle;
 	});
 

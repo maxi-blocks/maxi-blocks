@@ -184,7 +184,7 @@ describe('Button Maxi', () => {
 		await page.keyboard.type('59');
 
 		expect(
-			await getAttributes('icon-border-bottom-width-general')
+			await getAttributes('icon-border-width-bottom-general')
 		).toStrictEqual(59);
 
 		// check border radius
@@ -197,7 +197,7 @@ describe('Button Maxi', () => {
 		await page.keyboard.type('26');
 
 		expect(
-			await getAttributes('icon-border-bottom-right-radius-general')
+			await getAttributes('icon-border-radius-bottom-right-general')
 		).toStrictEqual(26);
 
 		// icon padding
@@ -286,7 +286,7 @@ describe('Button Maxi', () => {
 		await page.keyboard.type('70');
 
 		expect(
-			await getAttributes('icon-border-bottom-width-general-hover')
+			await getAttributes('icon-border-width-bottom-general-hover')
 		).toStrictEqual(70);
 
 		expect(await getEditedPostContent(page)).toMatchSnapshot();

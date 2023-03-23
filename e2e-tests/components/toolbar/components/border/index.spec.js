@@ -59,14 +59,14 @@ describe('Border from Toolbar', () => {
 			'button-border-style-general': 'solid',
 			'button-border-palette-color-general': 8,
 			'button-border-palette-opacity-general': 0.66,
-			'button-border-bottom-width-general': 59,
+			'button-border-width-bottom-general': 59,
 		};
 
 		const borderResult = await getAttributes([
 			'button-border-style-general',
 			'button-border-palette-color-general',
 			'button-border-palette-opacity-general',
-			'button-border-bottom-width-general',
+			'button-border-width-bottom-general',
 		]);
 
 		expect(borderResult).toStrictEqual(expectBorder);

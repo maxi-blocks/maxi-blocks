@@ -139,16 +139,16 @@ describe('Column Maxi', () => {
 		});
 
 		const expectBorder = {
-			'border-bottom-left-radius-general': 25,
-			'border-bottom-right-radius-general': 24,
-			'border-top-left-radius-general': 16,
-			'border-top-right-radius-general': 15,
+			'border-radius-bottom-left-general': 25,
+			'border-radius-bottom-right-general': 24,
+			'border-radius-top-left-general': 16,
+			'border-radius-top-right-general': 15,
 		};
 		const borderResult = await getAttributes([
-			'border-bottom-left-radius-general',
-			'border-bottom-right-radius-general',
-			'border-top-left-radius-general',
-			'border-top-right-radius-general',
+			'border-radius-bottom-left-general',
+			'border-radius-bottom-right-general',
+			'border-radius-top-left-general',
+			'border-radius-top-right-general',
 		]);
 
 		expect(borderResult).toStrictEqual(expectBorder);
@@ -177,16 +177,16 @@ describe('Column Maxi', () => {
 		});
 
 		const expectHoverBorder = {
-			'border-bottom-left-radius-general-hover': 12,
-			'border-bottom-right-radius-general-hover': 55,
-			'border-top-left-radius-general-hover': 33,
-			'border-top-right-radius-general-hover': 25,
+			'border-radius-bottom-left-general-hover': 12,
+			'border-radius-bottom-right-general-hover': 55,
+			'border-radius-top-left-general-hover': 33,
+			'border-radius-top-right-general-hover': 25,
 		};
 		const borderHoverResult = await getAttributes([
-			'border-bottom-left-radius-general-hover',
-			'border-bottom-right-radius-general-hover',
-			'border-top-left-radius-general-hover',
-			'border-top-right-radius-general-hover',
+			'border-radius-bottom-left-general-hover',
+			'border-radius-bottom-right-general-hover',
+			'border-radius-top-left-general-hover',
+			'border-radius-top-right-general-hover',
 		]);
 		expect(borderHoverResult).toStrictEqual(expectHoverBorder);
 

@@ -57,13 +57,13 @@ describe('Divider line from Toolbar', () => {
 
 		const expectDivider = {
 			'divider-border-style-general': 'dashed',
-			'divider-border-top-width-general': 12,
+			'divider-border-width-top-general': 12,
 			'divider-width-general': 45,
 		};
 
 		const dividerResult = await getAttributes([
 			'divider-border-style-general',
-			'divider-border-top-width-general',
+			'divider-border-width-top-general',
 			'divider-width-general',
 		]);
 

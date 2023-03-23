@@ -84,7 +84,7 @@ export const getArrowBorder = (props, isHover) => {
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 		const borderRadiusUnit = getLastBreakpointAttribute({
-			target: 'border-unit-radius',
+			target: 'border-radius-unit',
 			breakpoint,
 			attributes: props,
 			isHover,
@@ -93,7 +93,7 @@ export const getArrowBorder = (props, isHover) => {
 		['top-left', 'top-right', 'bottom-left', 'bottom-right'].forEach(
 			target => {
 				const val = getLastBreakpointAttribute({
-					target: `border-${target}-radius`,
+					target: `border-radius-${target}`,
 					breakpoint,
 					attributes: props,
 					isHover,
@@ -101,7 +101,7 @@ export const getArrowBorder = (props, isHover) => {
 
 				if (isNumber(val))
 					response[breakpoint][
-						`border-${target}-radius`
+						`border-radius-${target}`
 					] = `${val}${borderRadiusUnit}`;
 			}
 		);

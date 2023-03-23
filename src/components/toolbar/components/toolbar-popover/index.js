@@ -154,6 +154,7 @@ class ToolbarPopover extends Component {
 							className='toolbar-item__popover'
 							onClose={onClose}
 							position={position}
+							useFlip
 							isAlternate
 							noArrow
 						>

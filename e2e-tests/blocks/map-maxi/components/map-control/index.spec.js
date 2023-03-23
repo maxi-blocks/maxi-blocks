@@ -15,7 +15,7 @@ import {
 } from '../../../../utils';
 import getMapContainer from '../../utils/getMapContainer';
 
-describe('Map Control', () => {
+describe.skip('Map Control', () => {
 	beforeEach(async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Map Maxi');

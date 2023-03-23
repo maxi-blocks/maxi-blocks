@@ -32,7 +32,7 @@ Array [
     },
     "id": 1,
     "isButton": true,
-    "settings": "Alignment",
+    "sid": "a",
     "target": " .maxi-image-block-wrapper",
     "title": "Hello World!",
     "uniqueID": "image-maxi-1",

@@ -74,6 +74,7 @@ const customCss = {
 const interactionBuilderSettings = {
 	block: [
 		{
+			sid: 'cs',
 			label: __('Column settings', 'maxi-blocks'),
 			attrGroupName: ['columnSize', 'flex'],
 			component: props => {

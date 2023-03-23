@@ -93,7 +93,7 @@ describe('Button Maxi hover simple actions', () => {
 	it('Button icon', async () => {
 		// Select setting
 		let selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[3].select('Button icon');
+		await selectControls[3].select('bi');
 
 		// Width
 		await page.$$eval(
@@ -169,7 +169,7 @@ describe('Button Maxi hover simple actions', () => {
 	it('Button typography', async () => {
 		// Select setting
 		const selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[3].select('Button typography');
+		await selectControls[3].select('bty');
 
 		// Change font family
 		await page.$eval(
@@ -217,7 +217,7 @@ describe('Button Maxi hover simple actions', () => {
 	it('Button border', async () => {
 		// Select setting
 		let selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[3].select('Button border');
+		await selectControls[3].select('bb');
 
 		// Select first default
 		await page.$$eval('.maxi-default-styles-control__button', buttons =>
@@ -253,7 +253,7 @@ describe('Button Maxi hover simple actions', () => {
 	it('Button background', async () => {
 		// Select setting
 		const selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[3].select('Button background');
+		await selectControls[3].select('bbg');
 
 		// Background color
 		await editColorControl({
@@ -272,7 +272,7 @@ describe('Button Maxi hover simple actions', () => {
 	it('Button shadow', async () => {
 		// Select setting
 		const selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[3].select('Button box shadow');
+		await selectControls[3].select('bbs');
 
 		// Select first default
 		await page.$$eval('.maxi-default-styles-control__button', buttons =>
@@ -328,7 +328,7 @@ describe('Button Maxi hover simple actions', () => {
 	it('Button margin/padding', async () => {
 		// Select setting
 		const selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[3].select('Button margin/padding');
+		await selectControls[3].select('bmp');
 
 		// Margin
 		await page.$$eval(
@@ -364,7 +364,7 @@ describe('Button Maxi hover simple actions', () => {
 		const backgroundSelectControls = await page.$$(
 			'.maxi-select-control__input'
 		);
-		await backgroundSelectControls[3].select('Button background');
+		await backgroundSelectControls[3].select('bbg');
 
 		// Background color
 		await editColorControl({
@@ -381,7 +381,7 @@ describe('Button Maxi hover simple actions', () => {
 		const shadowSelectControls = await page.$$(
 			'.maxi-select-control__input'
 		);
-		await shadowSelectControls[3].select('Button box shadow');
+		await shadowSelectControls[3].select('bbs');
 
 		// Select first default
 		await page.$$eval('.maxi-default-styles-control__button', buttons =>

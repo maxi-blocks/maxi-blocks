@@ -98,7 +98,7 @@ describe('Column Maxi hover simple actions', () => {
 	it('Column size', async () => {
 		// Select setting
 		let selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[3].select('Column settings');
+		await selectControls[3].select('cs');
 
 		// Column size
 		await page.waitForSelector(

@@ -32,7 +32,7 @@ Array [
     },
     "id": 1,
     "isButton": true,
-    "settings": "Alignment",
+    "sid": "a",
     "target": "",
     "title": "Test",
     "uniqueID": "text-maxi-1",

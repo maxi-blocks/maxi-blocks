@@ -9,3 +9,15 @@
 		margin-bottom: 10px;
 	}
 }
+/*******************************
+* RTL
+*******************************/
+html[dir='rtl'] {
+	.maxi-list-item-control__title__id::before {
+		margin-right: 0;
+		margin-left: 7px;
+	}
+	.maxi-relation-control .maxi-list-item-control__open .maxi-text-input {
+		min-width: 140px;
+	}
+}

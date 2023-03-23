@@ -152,6 +152,8 @@ html[dir='rtl'] {
 	}
 	.maxi-background-control .maxi-background-layer__preview {
 		float: right;
+		margin-right: 0;
+		margin-left: 5px;
 	}
 	.maxi-background-control .maxi-background-layer__title__mover {
 		margin: auto auto auto 0;

@@ -383,7 +383,10 @@ const RelationControl = props => {
 									<TextControl
 										label={__('Name', 'maxi-blocks')}
 										value={item.title}
-										placeholder={__('Give memorable name…')}
+										placeholder={__(
+											'Give memorable name',
+											'maxi-blocks'
+										)}
 										onChange={value =>
 											onChangeRelation(
 												relations,

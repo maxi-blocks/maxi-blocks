@@ -1,18 +1,19 @@
+import parseLongAttrObj from '../../dictionary/parseLongAttrObj';
 import getOverflowStyles from '../getOverflowStyles';
 
 describe('getOverflowStyles', () => {
 	it('Get a correct overflow styles with default values', () => {
-		const object = {
+		const object = parseLongAttrObj({
 			'overflow-x-general': 'visible',
 			'overflow-y-general': 'visible',
-		};
+		});
 
 		const result = getOverflowStyles(object);
 		expect(result).toMatchSnapshot();
 	});
 
 	it('Get a correct overflow styles when all values visible', () => {
-		const object = {
+		const object = parseLongAttrObj({
 			'overflow-x-general': 'visible',
 			'overflow-y-general': 'visible',
 			'overflow-x-xxl': 'visible',
@@ -27,14 +28,14 @@ describe('getOverflowStyles', () => {
 			'overflow-y-s': 'visible',
 			'overflow-x-xs': 'visible',
 			'overflow-y-xs': 'visible',
-		};
+		});
 
 		const result = getOverflowStyles(object);
 		expect(result).toMatchSnapshot();
 	});
 
 	it('Get a correct overflow styles', () => {
-		const object = {
+		const object = parseLongAttrObj({
 			'overflow-x-general': 'visible',
 			'overflow-y-general': 'hidden',
 			'overflow-x-xxl': 'hidden',
@@ -49,7 +50,7 @@ describe('getOverflowStyles', () => {
 			'overflow-y-s': 'auto',
 			'overflow-x-xs': 'visible',
 			'overflow-y-xs': 'visible',
-		};
+		});
 
 		const result = getOverflowStyles(object);
 		expect(result).toMatchSnapshot();

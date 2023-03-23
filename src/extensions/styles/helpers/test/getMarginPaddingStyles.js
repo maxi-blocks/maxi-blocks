@@ -1,8 +1,9 @@
+import parseLongAttrObj from '../../dictionary/parseLongAttrObj';
 import getMarginPaddingStyles from '../getMarginPaddingStyles';
 
 describe('getMarginPaddingStyles', () => {
 	it('Get a correct margin and padding simple styles', () => {
-		const obj = {
+		const obj = parseLongAttrObj({
 			'margin-top-general': '1',
 			'margin-top-unit-general': 'px',
 			'margin-right-general': '2',
@@ -35,14 +36,14 @@ describe('getMarginPaddingStyles', () => {
 			'padding-bottom-unit-xl': 'px',
 			'padding-left-xl': '4',
 			'padding-left-unit-xl': 'px',
-		};
+		});
 
 		const result = getMarginPaddingStyles({ obj });
 		expect(result).toMatchSnapshot();
 	});
 
 	it('Get a correct margin and padding', () => {
-		const obj = {
+		const obj = parseLongAttrObj({
 			'margin-top-general': '1',
 			'margin-right-general': '2',
 			'margin-bottom-general': '3',
@@ -106,7 +107,7 @@ describe('getMarginPaddingStyles', () => {
 			'margin-right-unit-xs': 'px',
 			'margin-bottom-unit-xs': 'px',
 			'margin-left-unit-xs': 'px',
-		};
+		});
 
 		const result = getMarginPaddingStyles({
 			obj,
@@ -115,7 +116,7 @@ describe('getMarginPaddingStyles', () => {
 	});
 
 	it('Different values ​​depends on the responsive', () => {
-		const obj = {
+		const obj = parseLongAttrObj({
 			'margin-top-general': '11',
 			'margin-right-general': '11',
 			'margin-bottom-general': '11',
@@ -179,7 +180,7 @@ describe('getMarginPaddingStyles', () => {
 			'margin-right-unit-xs': 'px',
 			'margin-bottom-unit-xs': 'px',
 			'margin-left-unit-xs': 'px',
-		};
+		});
 
 		const result = getMarginPaddingStyles({
 			obj,
@@ -188,14 +189,14 @@ describe('getMarginPaddingStyles', () => {
 	});
 
 	it('Get a correct margin and padding styles, when only unit on some breakpoint was changed', () => {
-		const obj = {
+		const obj = parseLongAttrObj({
 			'margin-top-general': '11',
 			'margin-top-unit-general': 'em',
 			'margin-top-xl': '11',
 			'margin-top-unit-xl': 'em',
 			'margin-top-unit-xxl': 'px',
 			'margin-top-unit-m': '%',
-		};
+		});
 		const result = getMarginPaddingStyles({
 			obj,
 		});
@@ -203,7 +204,7 @@ describe('getMarginPaddingStyles', () => {
 	});
 
 	it('Get a correct margin and padding styles, when value is undefined but unit is defined', () => {
-		const obj = {
+		const obj = parseLongAttrObj({
 			'margin-top-general': '',
 			'margin-right-general': '',
 			'margin-bottom-general': '',
@@ -213,7 +214,7 @@ describe('getMarginPaddingStyles', () => {
 			'margin-right-unit-general': 'px',
 			'margin-bottom-unit-general': 'px',
 			'margin-left-unit-general': 'px',
-		};
+		});
 
 		const result = getMarginPaddingStyles({
 			obj,

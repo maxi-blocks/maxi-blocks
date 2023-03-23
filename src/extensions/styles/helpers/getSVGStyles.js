@@ -181,7 +181,11 @@ const getSVGPathStrokeStyles = (
 		label: 'SVG Path stroke',
 	};
 
-	if (isHover && !useIconColor && !obj['typography-status-hover']) {
+	if (
+		isHover &&
+		!useIconColor &&
+		!obj[getAttributeKey('typography-status-hover')]
+	) {
 		response.general = {};
 		response.general.stroke = '';
 

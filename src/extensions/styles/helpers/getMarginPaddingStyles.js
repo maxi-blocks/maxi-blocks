@@ -35,7 +35,7 @@ const getMarginPaddingStyles = ({ obj, prefix = '' }) => {
 					target =>
 						getAttributesValue({
 							target,
-							attributes: obj,
+							props: obj,
 							breakpoint,
 						}),
 				].flatMap(callback =>

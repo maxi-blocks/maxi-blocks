@@ -1,3 +1,4 @@
+import parseLongAttrObj from '../../dictionary/parseLongAttrObj';
 import getBoxShadowStyles from '../getBoxShadowStyles';
 
 jest.mock('src/extensions/styles/getDefaultAttribute.js', () =>
@@ -32,7 +33,7 @@ jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 
 describe('getBoxShadowStyles', () => {
 	it('Get a correct box shadow styles with values in all responsive and with custom color', () => {
-		const object = {
+		const object = parseLongAttrObj({
 			'box-shadow-palette-status-general': false,
 			'box-shadow-color-general': 'rgb(255, 99, 71)',
 			'box-shadow-horizontal-general': 1,
@@ -106,7 +107,7 @@ describe('getBoxShadowStyles', () => {
 			'box-shadow-horizontal-unit-xs': 'px',
 			'box-shadow-vertical-unit-xs': 'px',
 			'box-shadow-spread-unit-xs': 'px',
-		};
+		});
 
 		const result = getBoxShadowStyles({
 			obj: object,
@@ -116,7 +117,7 @@ describe('getBoxShadowStyles', () => {
 	});
 
 	it('Returns box-shadow object with different colors based on palette', () => {
-		const object = {
+		const object = parseLongAttrObj({
 			'box-shadow-palette-status-general': true,
 			'box-shadow-palette-color-general': 4,
 			'box-shadow-horizontal-general': 1,
@@ -129,7 +130,7 @@ describe('getBoxShadowStyles', () => {
 			'box-shadow-horizontal-unit-general': 'px',
 			'box-shadow-vertical-unit-general': 'px',
 			'box-shadow-spread-unit-general': 'px',
-		};
+		});
 
 		const result = getBoxShadowStyles({
 			obj: object,
@@ -139,7 +140,7 @@ describe('getBoxShadowStyles', () => {
 	});
 
 	it('Returns box-shadow default styles for IB', () => {
-		const object = {
+		const object = parseLongAttrObj({
 			'box-shadow-palette-status-general': true,
 			'box-shadow-palette-color-general': 8,
 			'box-shadow-palette-color-l': 8,
@@ -162,7 +163,7 @@ describe('getBoxShadowStyles', () => {
 			'box-shadow-spread-l': 0,
 			'box-shadow-spread-unit-general': 'px',
 			'box-shadow-spread-unit-l': 'px',
-		};
+		});
 
 		const result = getBoxShadowStyles({
 			obj: object,

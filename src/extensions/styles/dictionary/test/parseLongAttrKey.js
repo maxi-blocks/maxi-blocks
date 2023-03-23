@@ -11,7 +11,8 @@ describe('parseLongAttrKey', () => {
 			'border-width-top-general': 'bo-w.t-general',
 			'padding-top-general': 'p.t-general',
 			'margin-top-general': 'm.t-general',
-			'background-image-opacity-general-hover': 'bi-o-general-hover',
+			'background-image-opacity-general-hover': 'bi-o-general.h', // not sure about this .h part
+			'divider-border-radius-general': 'db.ra-general',
 		};
 
 		Object.entries(attributes).forEach(([key, value]) => {

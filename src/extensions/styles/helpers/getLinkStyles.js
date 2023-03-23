@@ -29,7 +29,7 @@ const getLinkStyles = (obj, target, blockStyle) => {
 	};
 
 	const getTextDecoration = (breakpoint, isHover = false) => {
-		const hoverStatus = obj['typography-status-hover'];
+		const hoverStatus = obj[getAttributeKey('typography-status-hover')];
 		const value =
 			obj[getAttributeKey('text-decoration', isHover, '', breakpoint)];
 		return !isNil(value) && (hoverStatus || !isHover) && value;

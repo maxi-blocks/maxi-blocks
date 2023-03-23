@@ -1,4 +1,6 @@
-import { isNaN, merge } from 'lodash';
+/**
+ * Internal dependencies
+ */
 import parseLongAttrKey from '../../dictionary/parseLongAttrKey';
 import parseLongAttrObj from '../../dictionary/parseLongAttrObj';
 
@@ -6,6 +8,11 @@ import {
 	getBlockBackgroundStyles,
 	getBackgroundStyles,
 } from '../getBackgroundStyles';
+
+/**
+ * External dependencies
+ */
+import { isNaN, merge } from 'lodash';
 
 jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 	return jest.fn(() => {

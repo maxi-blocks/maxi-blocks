@@ -1,4 +1,5 @@
 import { createSelectors } from '../../custom-css';
+import parseLongAttrObj from '../../dictionary/parseLongAttrObj';
 import getTransformStyles from '../getTransformStyles';
 
 describe('getTransformStyles', () => {
@@ -7,7 +8,7 @@ describe('getTransformStyles', () => {
 	});
 
 	it('Get a correct transform styles', () => {
-		const object = {
+		const object = parseLongAttrObj({
 			'transform-origin-general': {
 				canvas: {
 					normal: {
@@ -54,14 +55,14 @@ describe('getTransformStyles', () => {
 					},
 				},
 			},
-		};
+		});
 
 		const result = getTransformStyles(object, selectors);
 		expect(result).toMatchSnapshot();
 	});
 
 	it('Get a correct default hover transform styles', () => {
-		const object = {
+		const object = parseLongAttrObj({
 			'transform-origin-general': {
 				canvas: {
 					'hover-status': true,
@@ -102,7 +103,7 @@ describe('getTransformStyles', () => {
 					},
 				},
 			},
-		};
+		});
 
 		const result = getTransformStyles(object, selectors);
 		expect(result).toMatchSnapshot();

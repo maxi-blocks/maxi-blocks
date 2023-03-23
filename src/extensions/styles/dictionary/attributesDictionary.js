@@ -370,7 +370,7 @@ export const suffixesDictionary = {
 	'-top-right': '.tr',
 	'-bottom-left': '.bl',
 	'-bottom-right': '.br',
-	'-radius': '.r',
+	'-radius': '.ra',
 	'-sync': '.sy',
 	// '-general': '-g',
 };

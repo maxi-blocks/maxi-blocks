@@ -1,3 +1,4 @@
+import parseLongAttrObj from '../../dictionary/parseLongAttrObj';
 import getNumberCounterStyles from '../getNumberCounterStyles';
 
 jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
@@ -28,7 +29,7 @@ jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 
 describe('getNumberCounterStyles', () => {
 	it('Returns correct styles', () => {
-		const obj = {
+		const obj = parseLongAttrObj({
 			'number-counter-status': true,
 			'number-counter-preview': true,
 			'number-counter-percentage-sign-status': false,
@@ -48,7 +49,7 @@ describe('getNumberCounterStyles', () => {
 			'number-counter-circle-bar-palette-color-general': 4,
 			'number-counter-title-font-size-general': 40,
 			'font-family-general': 'Roboto',
-		};
+		});
 		const target = '.maxi-number-counter__box';
 		const blockStyle = 'light';
 

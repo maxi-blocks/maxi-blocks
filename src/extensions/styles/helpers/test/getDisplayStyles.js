@@ -1,8 +1,9 @@
+import parseLongAttrObj from '../../dictionary/parseLongAttrObj';
 import getDisplayStyles from '../getDisplayStyles';
 
 describe('getDisplayStyles', () => {
 	it('Get a correct display styles', () => {
-		const object = {
+		const object = parseLongAttrObj({
 			'display-general': 'block',
 			'display-xxl': 'block',
 			'display-xl': 'block',
@@ -10,7 +11,7 @@ describe('getDisplayStyles', () => {
 			'display-m': 'flex',
 			'display-s': 'flex',
 			'display-xs': 'flex',
-		};
+		});
 
 		const result = getDisplayStyles(object);
 		expect(result).toMatchSnapshot();

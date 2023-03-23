@@ -3,16 +3,21 @@
  */
 import { select } from '@wordpress/data';
 
+/**
+ * Internal dependencies
+ */
+import getAttributeKey from '../getAttributeKey';
+
 const getBreakpoints = obj => {
 	const defaultBreakpoints = select('maxiBlocks').receiveMaxiBreakpoints();
 
 	return {
-		xxl: obj['breakpoints-xl'] || defaultBreakpoints.xl,
-		xl: obj['breakpoints-xl'] || defaultBreakpoints.xl,
-		l: obj['breakpoints-l'] || defaultBreakpoints.l,
-		m: obj['breakpoints-m'] || defaultBreakpoints.m,
-		s: obj['breakpoints-s'] || defaultBreakpoints.s,
-		xs: obj['breakpoints-xs'] || defaultBreakpoints.xs,
+		xxl: obj[getAttributeKey('breakpoints-xl')] || defaultBreakpoints.xl,
+		xl: obj[getAttributeKey('breakpoints-xl')] || defaultBreakpoints.xl,
+		l: obj[getAttributeKey('breakpoints-l')] || defaultBreakpoints.l,
+		m: obj[getAttributeKey('breakpoints-m')] || defaultBreakpoints.m,
+		s: obj[getAttributeKey('breakpoints-s')] || defaultBreakpoints.s,
+		xs: obj[getAttributeKey('breakpoints-xs')] || defaultBreakpoints.xs,
 	};
 };
 

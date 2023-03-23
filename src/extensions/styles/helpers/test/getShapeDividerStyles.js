@@ -1,3 +1,4 @@
+import parseLongAttrObj from '../../dictionary/parseLongAttrObj';
 import {
 	getShapeDividerStyles,
 	getShapeDividerSVGStyles,
@@ -5,7 +6,7 @@ import {
 
 describe('getShapeDividerStyles', () => {
 	it('Get a correct shape divider styles', () => {
-		const object = {
+		const object = parseLongAttrObj({
 			'shape-divider-top-status': true,
 			'shape-divider-top-height-general': 1,
 			'shape-divider-top-height-unit-general': 'px',
@@ -20,9 +21,9 @@ describe('getShapeDividerStyles', () => {
 			'shape-divider-bottom-shape-style': 'default',
 			'shape-divider-bottom-effects-status': true,
 			'shape-divider-bottom-color-general': 'rgb(255, 99, 71)',
-		};
+		});
 
-		const objectSVGStyles = {
+		const objectSVGStyles = parseLongAttrObj({
 			'shape-divider-top-status': true,
 			'shape-divider-top-height-general': 3,
 			'shape-divider-top-height-unit-general': 'px',
@@ -37,7 +38,7 @@ describe('getShapeDividerStyles', () => {
 			'shape-divider-bottom-shape-style': 'default',
 			'shape-divider-bottom-effects-status': true,
 			'shape-divider-bottom-color-general': 'rgb(255, 99, 71)',
-		};
+		});
 
 		const result = getShapeDividerStyles(object, 'top');
 		expect(result).toMatchSnapshot();

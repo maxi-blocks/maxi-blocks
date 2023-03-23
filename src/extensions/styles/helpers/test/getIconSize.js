@@ -1,15 +1,16 @@
+import parseLongAttrObj from '../../dictionary/parseLongAttrObj';
 import getIconSize from '../getIconSize';
 
 describe('getIconSize', () => {
 	it('Should return correct icon size', () => {
-		const attributes = {
+		const attributes = parseLongAttrObj({
 			'icon-height-general': '32',
 			'icon-height-unit-general': 'px',
 			'icon-width-fit-content-general': false,
 			'icon-width-general': '71',
 			'icon-width-general-hover': '123',
 			'icon-width-unit-general': '%',
-		};
+		});
 
 		// Normal state
 		expect(getIconSize(attributes, false)).toMatchSnapshot();
@@ -19,12 +20,12 @@ describe('getIconSize', () => {
 	});
 
 	it('Should use height when width is not specified', () => {
-		const attributes = {
+		const attributes = parseLongAttrObj({
 			'icon-height-general': '32',
 			'icon-height-unit-general': 'px',
 			'icon-height-general-hover': '50',
 			'icon-height-unit-general-hover': '%',
-		};
+		});
 
 		// Normal state
 		expect(getIconSize(attributes, false)).toMatchSnapshot();
@@ -36,12 +37,12 @@ describe('getIconSize', () => {
 	it('Should work with prefixes', () => {
 		const prefix = 'any-prefix-';
 
-		const attributes = {
+		const attributes = parseLongAttrObj({
 			[`${prefix}icon-height-general`]: '32',
 			[`${prefix}icon-height-unit-general`]: 'px',
 			[`${prefix}icon-height-general-hover`]: '50',
 			[`${prefix}icon-height-unit-general-hover`]: '%',
-		};
+		});
 
 		// Normal state
 		expect(getIconSize(attributes, false, prefix)).toMatchSnapshot();
@@ -53,7 +54,7 @@ describe('getIconSize', () => {
 	it('Should work on responsive', () => {
 		const prefix = 'any-prefix-';
 
-		const attributes = {
+		const attributes = parseLongAttrObj({
 			[`${prefix}icon-height-general`]: '32',
 			[`${prefix}icon-height-unit-general`]: 'px',
 			[`${prefix}icon-height-general-hover`]: '50',
@@ -62,7 +63,7 @@ describe('getIconSize', () => {
 			[`${prefix}icon-height-unit-m`]: 'em',
 			[`${prefix}icon-height-m-hover`]: '15',
 			[`${prefix}icon-height-unit-m-hover`]: 'px',
-		};
+		});
 
 		// Normal state
 		expect(getIconSize(attributes, false, prefix)).toMatchSnapshot();
@@ -72,37 +73,37 @@ describe('getIconSize', () => {
 	});
 
 	it('Should return right hover styles with only value specified on hover (no unit)', () => {
-		const attributes = {
+		const attributes = parseLongAttrObj({
 			'icon-width-general': '32',
 			'icon-width-unit-general': '%',
 			'icon-width-general-hover': '64',
-		};
+		});
 
 		expect(getIconSize(attributes, true)).toMatchSnapshot();
 	});
 
 	it('Should return right hover styles with only unit specified on hover', () => {
-		const attributes = {
+		const attributes = parseLongAttrObj({
 			'icon-width-general': '32',
 			'icon-width-unit-general': '%',
 			'icon-width-unit-general-hover': 'em',
-		};
+		});
 
 		expect(getIconSize(attributes, true)).toMatchSnapshot();
 	});
 
 	it('Should return right styles with only unit specified on responsive', () => {
-		const attributes = {
+		const attributes = parseLongAttrObj({
 			'icon-width-general': '32',
 			'icon-width-unit-general': '%',
 			'icon-width-unit-l': 'em',
-		};
+		});
 
 		expect(getIconSize(attributes, true)).toMatchSnapshot();
 	});
 
 	it('Should return right styles with height fit-content, width/height ratio > 1', () => {
-		const attributes = {
+		const attributes = parseLongAttrObj({
 			'icon-width-general': '36',
 			'icon-width-unit-general': '%',
 			'icon-width-fit-content-general': true,
@@ -113,13 +114,13 @@ describe('getIconSize', () => {
 			'icon-stroke-general': '1',
 			'icon-stroke-l': '3',
 			'icon-stroke-m': '4',
-		};
+		});
 
 		expect(getIconSize(attributes, false, '', 3)).toMatchSnapshot();
 	});
 
 	it('Should return right styles with height fit-content, width/height ratio < 1', () => {
-		const attributes = {
+		const attributes = parseLongAttrObj({
 			'icon-width-general': '36',
 			'icon-width-unit-general': '%',
 			'icon-width-fit-content-general': true,
@@ -130,7 +131,7 @@ describe('getIconSize', () => {
 			'icon-stroke-general': '1',
 			'icon-stroke-l': '3',
 			'icon-stroke-m': '4',
-		};
+		});
 
 		expect(getIconSize(attributes, false, '', 0.5)).toMatchSnapshot();
 	});

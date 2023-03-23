@@ -1,3 +1,4 @@
+import parseLongAttrObj from '../../dictionary/parseLongAttrObj';
 import getLinkStyles from '../getLinkStyles';
 
 jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
@@ -28,7 +29,7 @@ jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 
 describe('getLinkStyles', () => {
 	it('Returns a correct object', () => {
-		const obj = {
+		const obj = parseLongAttrObj({
 			'link-palette-status-general': true,
 			'link-palette-color-general': 4,
 			'link-hover-palette-status-general': true,
@@ -38,7 +39,7 @@ describe('getLinkStyles', () => {
 			'link-active-palette-color-general': 3,
 			'link-visited-palette-status-general': true,
 			'link-visited-palette-color-general': 3,
-		};
+		});
 		const target = ' p.maxi-text-block__content a';
 		const blockStyles = 'light';
 
@@ -48,7 +49,7 @@ describe('getLinkStyles', () => {
 	});
 
 	it('Returns a correct object with custom colors', () => {
-		const obj = {
+		const obj = parseLongAttrObj({
 			'link-palette-status-general': false,
 			'link-palette-color-general': 4,
 			'link-color-general': 'rgba(57,189,39,1)',
@@ -62,7 +63,7 @@ describe('getLinkStyles', () => {
 			'link-visited-palette-status-general': false,
 			'link-visited-palette-color-general': 3,
 			'link-visited-color-general': 'rgba(27,109,168,1)',
-		};
+		});
 		const target = ' p.maxi-text-block__content a';
 		const blockStyles = 'light';
 

@@ -25,30 +25,26 @@ const getImageShapeStyles = (
 	ignoreGeneralOmit = false
 ) => {
 	const response = {};
+
 	let omitTransformScale = true;
+
 	breakpoints.forEach(breakpoint => {
 		let transformString = '';
-		const scale = getLastBreakpointAttribute({
-			target: `${prefix}image-shape-scale`,
+		const {
+			[`${prefix}image-shape-scale`]: scale,
+			[`${prefix}image-shape-rotate`]: rotate,
+			[`${prefix}image-shape-flip-x`]: flipX,
+			[`${prefix}image-shape-flip-y`]: flipY,
+		} = getLastBreakpointAttribute({
+			target: [
+				`${prefix}image-shape-scale`,
+				`${prefix}image-shape-rotate`,
+				`${prefix}image-shape-flip-x`,
+				`${prefix}image-shape-flip-y`,
+			],
 			breakpoint,
 			attributes: obj,
-		});
-		const rotate = getLastBreakpointAttribute({
-			target: `${prefix}image-shape-rotate`,
-			breakpoint,
-			attributes: obj,
-		});
-
-		const flipX = getLastBreakpointAttribute({
-			target: `${prefix}image-shape-flip-x`,
-			breakpoint,
-			attributes: obj,
-		});
-
-		const flipY = getLastBreakpointAttribute({
-			target: `${prefix}image-shape-flip-y`,
-			breakpoint,
-			attributes: obj,
+			prefix,
 		});
 
 		if (isNumber(scale)) {
@@ -73,17 +69,13 @@ const getImageShapeStyles = (
 				else transformString += `rotate(${-rotate}deg) `;
 		}
 
-		if (flipX) {
-			transformString += 'scaleX(-1) ';
-		}
-
-		if (flipY) {
-			transformString += 'scaleY(-1) ';
-		}
+		if (flipX) transformString += 'scaleX(-1) ';
+		if (flipY) transformString += 'scaleY(-1) ';
 
 		const transformObj = {
 			...(!isEmpty(transformString) && { transform: transformString }),
 		};
+
 		if (!isEmpty(transformObj)) response[breakpoint] = transformObj;
 	});
 

@@ -7,6 +7,7 @@ import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
  * External dependencies
  */
 import { isNumber, round } from 'lodash';
+import getAttributeKey from '../getAttributeKey';
 
 /**
  * General
@@ -68,7 +69,11 @@ const getColumnSizeStyles = (obj, rowGapProps, clientId) => {
 			};
 		} else if (
 			isNumber(columnSize) ||
-			isNumber(rowGapProps?.[`column-gap-${breakpoint}`])
+			isNumber(
+				rowGapProps?.[
+					getAttributeKey('column-gap', false, false, breakpoint)
+				]
+			)
 		) {
 			const columnNum = getColumnNum(
 				rowGapProps?.columnsSize,

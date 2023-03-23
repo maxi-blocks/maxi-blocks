@@ -9,6 +9,7 @@ import getAttributesValue from '../getAttributesValue';
  * External dependencies
  */
 import { isNumber, isNil } from 'lodash';
+import getAttributeKey from '../getAttributeKey';
 
 /**
  * General
@@ -26,6 +27,7 @@ const getSizeStyles = (obj, prefix = '') => {
 	breakpoints.forEach(breakpoint => {
 		const getValue = target => {
 			let fullWidthNormalStyles = {};
+
 			if (
 				target === 'width' ||
 				target === 'max-width' ||
@@ -40,16 +42,14 @@ const getSizeStyles = (obj, prefix = '') => {
 				if (
 					(target === 'width' || target === 'min-width') &&
 					fullWidth === 'full'
-				) {
+				)
 					return null;
-				}
 
 				if (target === 'max-width') {
-					if (fullWidth === 'full') {
+					if (fullWidth === 'full')
 						return {
 							'min-width': '100%',
 						};
-					}
 
 					const isMinWidthNeeded = breakpoints
 						.slice(0, breakpoints.indexOf(breakpoint) + 1)
@@ -61,7 +61,7 @@ const getSizeStyles = (obj, prefix = '') => {
 								prefix,
 							});
 							const defaultVal = getDefaultAttribute(
-								`${prefix}full-width-${bp}`
+								getAttributeKey('full-width', false, prefix, bp)
 							);
 
 							return val !== defaultVal;
@@ -75,7 +75,7 @@ const getSizeStyles = (obj, prefix = '') => {
 				}
 			}
 
-			if (!obj[`${prefix}size-advanced-options`]) {
+			if (!obj[getAttributeKey('size-advanced-options', false, prefix)]) {
 				if (target.includes('min')) return null;
 				if (target.includes('max')) return fullWidthNormalStyles;
 			}
@@ -89,7 +89,8 @@ const getSizeStyles = (obj, prefix = '') => {
 
 				if (forceAspectRatio)
 					return { 'aspect-ratio': 1, height: 'auto' };
-				if (obj.fitParentSize) return { height: '100% !important' };
+				if (obj[getAttributeKey('fitParentSize')])
+					return { height: '100% !important' };
 			}
 			if (target === 'width') {
 				const fitContent = getLastBreakpointAttribute({
@@ -98,11 +99,10 @@ const getSizeStyles = (obj, prefix = '') => {
 					attributes: obj,
 				});
 
-				if (fitContent) {
+				if (fitContent)
 					return {
 						width: 'fit-content',
 					};
-				}
 			}
 
 			const currentNum = getAttributesValue({

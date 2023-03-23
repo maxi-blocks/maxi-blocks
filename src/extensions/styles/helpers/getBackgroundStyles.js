@@ -190,16 +190,15 @@ export const getGradientBackgroundObject = ({
 		[`${prefix}background-active-media`]: backgroundActiveMedia,
 	} = getLastBreakpointAttribute({
 		target: [
-			'background-gradient-opacity',
-			'background-gradient-content',
-			'background-gradient-clip-path',
-			'background-gradient-clip-path-status',
-			'background-active-media',
+			`${prefix}background-gradient-opacity`,
+			`${prefix}background-gradient-content`,
+			`${prefix}background-gradient-clip-path`,
+			`${prefix}background-gradient-clip-path-status`,
+			`${prefix}background-active-media`,
 		],
 		breakpoint,
 		attributes: props,
 		isHover,
-		prefix,
 	});
 
 	if ((isIcon && backgroundActiveMedia === 'gradient') || !isIcon) {
@@ -1051,16 +1050,16 @@ const getGeneralBackgroundStyles = (
 
 		if (!breakpointStyle) return;
 
-		if (border[breakpoint]['border-width-top'])
+		if (border[breakpoint]['border-top-width'])
 			border[breakpoint]['border-top-style'] = breakpointStyle;
 
-		if (border[breakpoint]['border-width-right'])
+		if (border[breakpoint]['border-right-width'])
 			border[breakpoint]['border-right-style'] = breakpointStyle;
 
-		if (border[breakpoint]['border-width-bottom'])
+		if (border[breakpoint]['border-bottom-width'])
 			border[breakpoint]['border-bottom-style'] = breakpointStyle;
 
-		if (border[breakpoint]['border-width-left'])
+		if (border[breakpoint]['border-left-width'])
 			border[breakpoint]['border-left-style'] = breakpointStyle;
 	});
 

@@ -33,55 +33,30 @@ const getFlexStyles = obj => {
 			})}`;
 		}
 
-		const flexGrow = getLastBreakpointAttribute({
-			target: 'flex-grow',
-			breakpoint,
-			attributes: obj,
-		});
-
-		const flexShrink = getLastBreakpointAttribute({
-			target: 'flex-shrink',
-			breakpoint,
-			attributes: obj,
-		});
-		const flexWrap = getLastBreakpointAttribute({
-			target: 'flex-wrap',
-			breakpoint,
-			attributes: obj,
-		});
-		const flexOrder = getLastBreakpointAttribute({
-			target: 'order',
-			breakpoint,
-			attributes: obj,
-		});
-		const justifyContent = getLastBreakpointAttribute({
-			target: 'justify-content',
-			breakpoint,
-			attributes: obj,
-		});
-		const flexDirection = getLastBreakpointAttribute({
-			target: 'flex-direction',
-			breakpoint,
-			attributes: obj,
-		});
-		const alignItems = getLastBreakpointAttribute({
-			target: 'align-items',
-			breakpoint,
-			attributes: obj,
-		});
-		const alignContent = getLastBreakpointAttribute({
-			target: 'align-content',
-			breakpoint,
-			attributes: obj,
-		});
-		const rowGapProps = getLastBreakpointAttribute({
-			target: 'row-gap',
-			breakpoint,
-			attributes: obj,
-		});
-
-		const columnGap = getLastBreakpointAttribute({
-			target: 'column-gap',
+		const {
+			'flex-grow': flexGrow,
+			'flex-shrink': flexShrink,
+			'flex-wrap': flexWrap,
+			order: flexOrder,
+			'justify-content': justifyContent,
+			'flex-direction': flexDirection,
+			'align-items': alignItems,
+			'align-content': alignContent,
+			'row-gap': rowGapProps,
+			'column-gap': columnGap,
+		} = getLastBreakpointAttribute({
+			target: [
+				'flex-grow',
+				'flex-shrink',
+				'flex-wrap',
+				'order',
+				'justify-content',
+				'flex-direction',
+				'align-items',
+				'align-content',
+				'row-gap',
+				'column-gap',
+			],
 			breakpoint,
 			attributes: obj,
 		});

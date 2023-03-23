@@ -10,6 +10,7 @@ import getGroupAttributes from '../getGroupAttributes';
  * External dependencies
  */
 import { isNil } from 'lodash';
+import getAttributeKey from '../getAttributeKey';
 
 /**
  * General
@@ -24,16 +25,58 @@ export const getShapeDividerStyles = (obj, location) => {
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
-		if (!isNil(obj[`shape-divider-${location}-height-${breakpoint}`]))
+		if (
+			!isNil(
+				obj[
+					getAttributeKey(
+						`shape-divider-${location}-height`,
+						false,
+						false,
+						breakpoint
+					)
+				]
+			)
+		)
 			response[breakpoint].height = `${
-				obj[`shape-divider-${location}-height-${breakpoint}`]
+				obj[
+					getAttributeKey(
+						`shape-divider-${location}-height`,
+						false,
+						false,
+						breakpoint
+					)
+				]
 			}${
-				obj[`shape-divider-${location}-height-unit-${breakpoint}`] ??
-				'px'
+				obj[
+					getAttributeKey(
+						`shape-divider-${location}-height-unit`,
+						false,
+						false,
+						breakpoint
+					)
+				] ?? 'px'
 			}`;
-		if (!isNil(obj[`shape-divider-${location}-opacity-${breakpoint}`]))
+		if (
+			!isNil(
+				obj[
+					getAttributeKey(
+						`shape-divider-${location}-opacity`,
+						false,
+						false,
+						breakpoint
+					)
+				]
+			)
+		)
 			response[breakpoint].opacity =
-				obj[`shape-divider-${location}-opacity-${breakpoint}`];
+				obj[
+					getAttributeKey(
+						`shape-divider-${location}-opacity`,
+						false,
+						false,
+						breakpoint
+					)
+				];
 	});
 
 	const rawPositions = getMarginPaddingStyles({

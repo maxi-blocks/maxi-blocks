@@ -147,7 +147,10 @@ const getIconObject = (props, target, prefix = '', isIB) => {
 };
 
 const getIconHoverObject = (props, target, prefix = '', iconType = '') => {
-	const { iconHoverStatus, iconInherit } = getAttributesValue({
+	const {
+		'icon-status-hover': iconHoverStatus,
+		'icon-inherit': iconInherit,
+	} = getAttributesValue({
 		target: ['icon-status-hover', 'icon-inherit'],
 		props,
 		prefix,
@@ -247,11 +250,16 @@ const getButtonIconStyles = ({
 	prefix = '',
 	iconWidthHeightRatio,
 }) => {
-	const hasIcon = !!obj[`${prefix}icon-content`];
 	const {
 		[`${prefix}icon-inherit`]: iconInherit,
 		[`${prefix}icon-status-hover`]: iconHoverStatus,
-	} = obj;
+		[`${prefix}icon-content`]: iconContent,
+	} = getAttributesValue({
+		target: ['icon-inherit', 'icon-status-hover', 'icon-content'],
+		props: obj,
+		prefix,
+	});
+	const hasIcon = !!iconContent;
 	const useIconColor = !iconInherit;
 	const normalTarget = `${wrapperTarget} ${target}`;
 	const hoverTarget = `${wrapperTarget}:hover ${target}`;

@@ -1,7 +1,8 @@
+import parseLongAttrObj from '../../dictionary/parseLongAttrObj';
 import getClipPathStyles from '../getClipPathStyles';
 
 describe('getClipPathStyles', () => {
-	const object = {
+	const object = parseLongAttrObj({
 		'cp-status-general': true,
 		'cp-general': 'polygon(50% 0%, 0% 100%, 100% 100%)',
 		'cp-status-l': true,
@@ -25,7 +26,7 @@ describe('getClipPathStyles', () => {
 			'polygon(0% 0%, 100% 0%, 100% 75%, 75% 75%, 75% 100%, 50% 75%, 0% 75%)',
 		'cp-s-hover':
 			'polygon(40% 0%, 40% 20%, 100% 20%, 100% 80%, 40% 80%, 40% 100%, 0% 50%)',
-	};
+	});
 
 	it('Get a correct clipPath styles', () => {
 		const result = getClipPathStyles({ obj: object });
@@ -39,7 +40,7 @@ describe('getClipPathStyles', () => {
 
 	it('Get an empty hover clipPath styles, when hover-status is false', () => {
 		const result = getClipPathStyles({
-			obj: { ...object, 'cp-status-hover': false },
+			obj: parseLongAttrObj({ ...object, 'cp-status-hover': false }),
 			isHover: true,
 		});
 		expect(result).toMatchSnapshot();
@@ -47,20 +48,20 @@ describe('getClipPathStyles', () => {
 
 	it('Get an empty clipPath styles, when clipPath - none', () => {
 		const result = getClipPathStyles({
-			obj: {
+			obj: parseLongAttrObj({
 				'cp-general': 'none',
 				'cp-status-general': true,
-			},
+			}),
 		});
 		expect(result).toMatchSnapshot();
 	});
 
 	it('Get a none hover clipPath styles, when clipPath - none', () => {
 		const result = getClipPathStyles({
-			obj: {
+			obj: parseLongAttrObj({
 				'cp-general-hover': 'none',
 				'cp-status-hover': true,
-			},
+			}),
 			isHover: true,
 		});
 		expect(result).toMatchSnapshot();

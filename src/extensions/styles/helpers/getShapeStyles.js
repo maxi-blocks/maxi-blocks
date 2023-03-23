@@ -8,6 +8,7 @@ import getPaletteAttributes from '../getPaletteAttributes';
  * External dependencies
  */
 import { isNil } from 'lodash';
+import getAttributesValue from '../getAttributesValue';
 
 const getShapeStyles = (obj, target, blockStyle) => {
 	const response = {
@@ -16,12 +17,16 @@ const getShapeStyles = (obj, target, blockStyle) => {
 	};
 
 	if (target === 'svg' && !isNil(obj['shape-width'])) {
-		response.general[
-			'max-width'
-		] = `${obj['shape-width']}${obj['shape-width-unit']}`;
-		response.general[
-			'max-height'
-		] = `${obj['shape-width']}${obj['shape-width-unit']}`;
+		const {
+			'shape-width': shapeWidth,
+			'shape-width-unit': shapeWidthUnit,
+		} = getAttributesValue({
+			target: ['shape-width', 'shape-width-unit'],
+			props: obj,
+		});
+
+		response.general['max-width'] = `${shapeWidth}${shapeWidthUnit}`;
+		response.general['max-height'] = `${shapeWidth}${shapeWidthUnit}`;
 	}
 
 	if (target === 'path') {

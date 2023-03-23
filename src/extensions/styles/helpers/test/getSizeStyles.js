@@ -1,3 +1,4 @@
+import parseLongAttrObj from '../../dictionary/parseLongAttrObj';
 import getSizeStyles from '../getSizeStyles';
 
 jest.mock('../../getDefaultAttribute', () => {
@@ -8,7 +9,7 @@ jest.mock('../../getDefaultAttribute', () => {
 
 describe('getSizeStyles', () => {
 	it('Get a correct size styles', () => {
-		const object = {
+		const object = parseLongAttrObj({
 			'size-advanced-options': true,
 			'max-width-unit-general': 'px',
 			'max-width-general': '2',
@@ -91,14 +92,14 @@ describe('getSizeStyles', () => {
 			'height-xs': '3',
 			'min-height-unit-xs': 'px',
 			'min-height-xs': '4',
-		};
+		});
 
 		const result = getSizeStyles(object);
 		expect(result).toMatchSnapshot();
 	});
 
 	it('Get a correct size styles with force aspect ratio', () => {
-		const object = {
+		const object = parseLongAttrObj({
 			'size-advanced-options': true,
 			'max-width-unit-general': 'px',
 			'max-width-general': '2',
@@ -178,13 +179,13 @@ describe('getSizeStyles', () => {
 			'height-xs': '3',
 			'min-height-unit-xs': 'px',
 			'min-height-xs': '4',
-		};
+		});
 		const result = getSizeStyles(object);
 		expect(result).toMatchSnapshot();
 	});
 
 	it('Get a correct size styles with width fit content', () => {
-		const object = {
+		const object = parseLongAttrObj({
 			'size-advanced-options': true,
 			'max-width-unit-general': 'px',
 			'max-width-general': '2',
@@ -265,24 +266,24 @@ describe('getSizeStyles', () => {
 			'min-height-unit-xs': 'px',
 			'min-height-xs': '4',
 			'width-fit-content-general': true,
-		};
+		});
 
 		const result = getSizeStyles(object);
 		expect(result).toMatchSnapshot();
 	});
 
 	it('Get a correct size styles with full width', () => {
-		const object = {
+		const object = parseLongAttrObj({
 			'full-width-general': 'full',
 			'full-width-l': 'normal',
-		};
+		});
 
 		const result = getSizeStyles(object);
 		expect(result).toMatchSnapshot();
 	});
 
 	it('Get a correct size styles with full width 2', () => {
-		const object = {
+		const object = parseLongAttrObj({
 			'size-advanced-options': true,
 			'full-width-general': 'full',
 			'full-width-xl': 'normal',
@@ -292,14 +293,14 @@ describe('getSizeStyles', () => {
 			'full-width-m': 'normal',
 			'min-width-m': '3',
 			'min-width-s': '0',
-		};
+		});
 
 		const result = getSizeStyles(object);
 		expect(result).toMatchSnapshot();
 	});
 
 	it('Get a correct size styles with full width 3', () => {
-		const object = {
+		const object = parseLongAttrObj({
 			'full-width-general': 'full',
 			'size-advanced-options': true,
 			'max-width-unit-general': 'px',
@@ -314,14 +315,14 @@ describe('getSizeStyles', () => {
 			'height-general': '4',
 			'min-height-unit-general': 'px',
 			'min-height-general': '1',
-		};
+		});
 
 		const result = getSizeStyles(object);
 		expect(result).toMatchSnapshot();
 	});
 
 	it('Get a correct size styles with full width responsive', () => {
-		const object = {
+		const object = parseLongAttrObj({
 			'full-width-general': 'full',
 			'size-advanced-options': true,
 			'max-width-unit-general': 'px',
@@ -409,14 +410,14 @@ describe('getSizeStyles', () => {
 			'min-height-unit-xs': 'px',
 			'min-height-xs': '4',
 			'width-fit-content-general': true,
-		};
+		});
 
 		const result = getSizeStyles(object);
 		expect(result).toMatchSnapshot();
 	});
 
 	it('Get a correct size styles with full width responsive 2', () => {
-		const object = {
+		const object = parseLongAttrObj({
 			'full-width-general': 'normal',
 			'size-advanced-options': true,
 			'max-width-unit-general': 'px',
@@ -500,7 +501,7 @@ describe('getSizeStyles', () => {
 			'min-height-unit-xs': 'px',
 			'min-height-xs': '4',
 			'width-fit-content-general': true,
-		};
+		});
 
 		const result = getSizeStyles(object);
 		expect(result).toMatchSnapshot();

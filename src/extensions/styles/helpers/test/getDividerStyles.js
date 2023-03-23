@@ -1,3 +1,4 @@
+import parseLongAttrObj from '../../dictionary/parseLongAttrObj';
 import getDividerStyles from '../getDividerStyles';
 
 jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
@@ -28,12 +29,12 @@ jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 
 describe('getDividerStyles', () => {
 	it('Get a correct divider styles', () => {
-		const obj = {
-			'divider-border-width-top-general': 38,
-			'divider-border-width-top-s': 149,
+		const obj = parseLongAttrObj({
+			'divider-border-top-general': 38,
+			'divider-border-top-s': 149,
 			'divider-border-top-unit-general': 'px',
-			'divider-border-width-right-general': 2,
-			'divider-border-width-right-l': 14,
+			'divider-border-right-general': 2,
+			'divider-border-right-l': 14,
 			'divider-border-right-unit-general': 'px',
 			'divider-border-radius-general': false,
 			'divider-width-general': 79,
@@ -61,7 +62,7 @@ describe('getDividerStyles', () => {
 			'divider-border-palette-opacity-s': 0.56,
 			'divider-border-style-general': 'dashed',
 			'divider-border-style-l': 'solid',
-		};
+		});
 
 		const resultLine = getDividerStyles(obj, 'line', 'light');
 		expect(resultLine).toMatchSnapshot();

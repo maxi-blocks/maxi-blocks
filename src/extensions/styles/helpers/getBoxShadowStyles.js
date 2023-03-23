@@ -71,6 +71,11 @@ const getBoxShadowStyles = ({
 			};
 		};
 
+		const SVGElement = getAttributesValue({
+			target: 'SVGElement',
+			props: obj,
+		});
+
 		const clipPathExists =
 			(getLastBreakpointAttribute({
 				target: 'clip-path',
@@ -82,7 +87,7 @@ const getBoxShadowStyles = ({
 					breakpoint,
 					attributes: obj,
 				})) ||
-			!isEmpty(obj.SVGElement);
+			!isEmpty(SVGElement);
 
 		const defaultClipPathExists =
 			breakpoint === 'general'
@@ -97,7 +102,7 @@ const getBoxShadowStyles = ({
 							breakpoint: getPrevBreakpoint(breakpoint),
 							attributes: obj,
 						})) ||
-				  !isEmpty(obj.SVGElement);
+				  !isEmpty(SVGElement);
 
 		// Inset
 		const { value: inset, defaultValue: defaultInset } = getValue('inset');

@@ -1,8 +1,9 @@
+import parseLongAttrObj from '../../dictionary/parseLongAttrObj';
 import getZIndexStyles from '../getZIndexStyles';
 
 describe('getZIndexStyle', () => {
 	it('Get a correct z-index style', () => {
-		const object = {
+		const object = parseLongAttrObj({
 			'z-index-general': 1,
 			'z-index-xxl': 2,
 			'z-index-xl': 3,
@@ -10,7 +11,8 @@ describe('getZIndexStyle', () => {
 			'z-index-m': 5,
 			'z-index-s': 6,
 			'z-index-xs': 7,
-		};
+		});
+
 		const result = getZIndexStyles(object);
 		expect(result).toMatchSnapshot();
 	});

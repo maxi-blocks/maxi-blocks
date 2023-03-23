@@ -14,6 +14,7 @@ import transitionDefault from '../transitions/transitionDefault';
  * External dependencies
  */
 import { isArray, isEmpty, isEqual, isNil } from 'lodash';
+import getAttributeKey from '../getAttributeKey';
 
 /**
  * Generates size styles object
@@ -87,7 +88,14 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 							attributes: transition[type][key],
 						});
 						const transitionSplit =
-							transition[type][key]?.[`split-${breakpoint}`];
+							transition[type][key]?.[
+								getAttributeKey(
+									'split',
+									false,
+									false,
+									breakpoint
+								)
+							];
 
 						const isNewTransitionSplit =
 							isEqual(transitionSplit, lastTransitionSplit) &&

@@ -101,7 +101,7 @@ export const getArrowBorder = (props, isHover) => {
 
 				if (isNumber(val))
 					response[breakpoint][
-						`border-radius-${target}`
+						`border-${target}-radius`
 					] = `${val}${borderRadiusUnit}`;
 			}
 		);
@@ -151,9 +151,9 @@ export const getArrowColorObject = (
 const getArrowStyles = props => {
 	const { target = '', blockStyle, isHover = false } = props;
 	const {
-		backgroundLayers,
-		boxShadowStatusHover,
-		blockBackgroundStatusHover,
+		'background-layers': backgroundLayers,
+		'box-shadow-status-hover': boxShadowStatusHover,
+		'block-background-status-hover': blockBackgroundStatusHover,
 	} = getAttributesValue({
 		target: [
 			'background-layers',
@@ -164,39 +164,58 @@ const getArrowStyles = props => {
 	});
 
 	// Checks if border is active on some responsive stage
-	const isBorderActive = Object.entries(props).some(([key, val]) => {
-		if (key.includes('border-style') && !isNil(val) && val !== 'none')
-			return true;
+	const isBorderActive = breakpoints.some(breakpoint => {
+		const borderStyle = getLastBreakpointAttribute({
+			target: 'border-style',
+			breakpoint,
+			attributes: props,
+			isHover,
+		});
 
-		return false;
+		return !isNil(borderStyle) && borderStyle !== 'none';
 	});
+
 	// Checks if all border styles are 'solid' or 'none'
-	const isCorrectBorder = Object.entries(props).every(([key, val]) => {
-		if (key.includes('border-style')) {
-			if (
-				key === 'border-style-general' &&
-				val !== 'solid' &&
-				val !== 'none'
-			)
-				return false;
+	const isCorrectBorder = breakpoints.every(breakpoint => {
+		const borderStyle = getAttributesValue({
+			target: 'border-style',
+			breakpoint,
+			props,
+		});
 
-			if (!isNil(val) && val !== 'solid' && val !== 'none') return false;
-		}
+		if (
+			breakpoint === 'general' &&
+			borderStyle !== 'solid' &&
+			borderStyle !== 'none'
+		)
+			return false;
 
-		return true;
+		return (
+			isNil(borderStyle) ||
+			borderStyle === 'solid' ||
+			borderStyle === 'none'
+		);
 	});
 
+	// Checks if background color is active on some responsive stage
 	const isBackgroundColor = !isEmpty(backgroundLayers)
 		? backgroundLayers.some(layer => layer.type === 'color')
 		: false;
 
+	// Checks if arrow is active on some responsive stage
+	const arrowStatus = breakpoints.some(breakpoint => {
+		const arrowStatus = getLastBreakpointAttribute({
+			target: 'arrow-status',
+			breakpoint,
+			attributes: props,
+			isHover,
+		});
+
+		return arrowStatus;
+	});
+
 	if (
-		!Object.entries(getGroupAttributes(props, 'arrow')).some(
-			([key, val]) => {
-				if (key.includes('arrow-status') && val) return true;
-				return false;
-			}
-		) ||
+		!arrowStatus ||
 		!isBackgroundColor ||
 		(isBorderActive && !isCorrectBorder)
 	)

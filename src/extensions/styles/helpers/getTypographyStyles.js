@@ -33,7 +33,7 @@ const getTypographyStyles = ({
 }) => {
 	const response = {};
 
-	const hoverStatus = obj[`${prefix}typography-status-hover`];
+	const hoverStatus = obj[getAttributeKey('typography-status', true, prefix)];
 	const { 'hover-color-global': isActive, 'hover-color-all': affectAll } =
 		scValues;
 

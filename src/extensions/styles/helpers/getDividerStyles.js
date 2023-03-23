@@ -72,13 +72,13 @@ const getDividerStyles = (
 
 			const dividerLineWeight = isHorizontal
 				? getLastBreakpointAttribute({
-						target: `${prefix}divider-border-top-width`,
+						target: `${prefix}divider-border-top`,
 						breakpoint,
 						attributes: obj,
 						isHover,
 				  })
 				: getLastBreakpointAttribute({
-						target: `${prefix}divider-border-${positionVertical}-width`,
+						target: `${prefix}divider-border-${positionVertical}`,
 						breakpoint,
 						attributes: obj,
 						isHover,
@@ -114,7 +114,7 @@ const getDividerStyles = (
 					isHover,
 				}) ?? 'px';
 
-			const dividerBorderRaidus = getLastBreakpointAttribute({
+			const dividerBorderRadius = getLastBreakpointAttribute({
 				target: `${prefix}divider-border-radius`,
 				breakpoint,
 				attributes: obj,
@@ -124,7 +124,7 @@ const getDividerStyles = (
 			response[breakpoint] = {
 				...getColor(breakpoint),
 				...(dividerBorderStyle === 'solid' &&
-					(dividerBorderRaidus
+					(dividerBorderRadius
 						? {
 								'border-radius': '20px',
 						  }

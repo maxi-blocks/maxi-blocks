@@ -8,6 +8,7 @@ import getPaletteAttributes from '../getPaletteAttributes';
  * External dependencies
  */
 import { isNil } from 'lodash';
+import getAttributeKey from '../getAttributeKey';
 
 const getIconStyles = (
 	obj,
@@ -24,7 +25,8 @@ const getIconStyles = (
 
 	const isShape = iconType !== 'shape';
 
-	if (isIconInherit && !obj['typography-status-hover']) return response;
+	if (isIconInherit && !obj[getAttributeKey('typography-status-hover')])
+		return response;
 
 	if (isIconInherit) {
 		const { paletteStatus, paletteColor, paletteOpacity, color } =

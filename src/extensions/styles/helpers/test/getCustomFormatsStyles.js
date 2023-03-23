@@ -1,18 +1,19 @@
+import parseLongAttrObj from '../../dictionary/parseLongAttrObj';
 import getCustomFormatsStyles from '../getCustomFormatsStyles';
 
 describe('getCustomFormatsStyles', () => {
 	it('Get a correct custom formats styles', () => {
 		const object = {
-			'maxi-text-block__custom-format--0': {
+			'maxi-text-block__custom-format--0': parseLongAttrObj({
 				'color-general': 'rgba(57,28,202,1)',
 				'font-style-general': 'italic',
 				'font-weight-general': 800,
-			},
-			'maxi-text-block__custom-format--1': {
+			}),
+			'maxi-text-block__custom-format--1': parseLongAttrObj({
 				'text-decoration-general': 'underline',
-			},
+			}),
 		};
-		const objectTypography = {
+		const objectTypography = parseLongAttrObj({
 			'font-family-general': 'roboto',
 			'color-general': 'rgb(255, 99, 71)',
 			'font-size-unit-general': 'px',
@@ -112,7 +113,7 @@ describe('getCustomFormatsStyles', () => {
 			'text-shadow-xs': 'none',
 			'vertical-align-xs': 'none',
 			'custom-formats': 'object',
-		};
+		});
 		const target = 'test';
 		const isHover = false;
 		const textLevel = 'p';

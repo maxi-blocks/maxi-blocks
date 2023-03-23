@@ -8,6 +8,7 @@ import getAttributesValue from '../getAttributesValue';
  * External dependencies
  */
 import { isNil } from 'lodash';
+import getAttributeKey from '../getAttributeKey';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -99,16 +100,44 @@ const getTextStyles = (obj, blockStyle) => {
 
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {
-			...(!isNil(obj[`number-counter-title-font-size-${breakpoint}`]) && {
+			...(!isNil(
+				obj[
+					getAttributeKey(
+						'number-counter-title-font-size',
+						false,
+						false,
+						breakpoint
+					)
+				]
+			) && {
 				'font-size': `${
-					obj[`number-counter-title-font-size-${breakpoint}`]
+					obj[
+						getAttributeKey(
+							'number-counter-title-font-size',
+							false,
+							false,
+							breakpoint
+						)
+					]
 				}px`,
 			}),
-			...(!isNil(obj[`font-family-${breakpoint}`]) && {
-				'font-family': `${obj[`font-family-${breakpoint}`]}`,
+			...(!isNil(
+				obj[getAttributeKey('font-family', false, false, breakpoint)]
+			) && {
+				'font-family': `${
+					obj[
+						getAttributeKey('font-family', false, false, breakpoint)
+					]
+				}`,
 			}),
-			...(!isNil(obj[`font-weight-${breakpoint}`]) && {
-				'font-weight': `${obj[`font-weight-${breakpoint}`]}`,
+			...(!isNil(
+				obj[getAttributeKey('font-weight', false, false, breakpoint)]
+			) && {
+				'font-weight': `${
+					obj[
+						getAttributeKey('font-weight', false, false, breakpoint)
+					]
+				}`,
 			}),
 			[typeOfStyle]: getColor(breakpoint),
 		};
@@ -124,9 +153,27 @@ const getSupStyles = obj => {
 	};
 
 	breakpoints.forEach(breakpoint => {
-		if (!isNil(obj[`number-counter-title-font-size-${breakpoint}`]))
+		if (
+			!isNil(
+				obj[
+					getAttributeKey(
+						'number-counter-title-font-size',
+						false,
+						false,
+						breakpoint
+					)
+				]
+			)
+		)
 			response.general['font-size'] = `${
-				obj[`number-counter-title-font-size-${breakpoint}`] / 1.5
+				obj[
+					getAttributeKey(
+						'number-counter-title-font-size',
+						false,
+						false,
+						breakpoint
+					)
+				] / 1.5
 			}px`;
 	});
 

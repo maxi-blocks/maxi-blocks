@@ -1,8 +1,9 @@
+import parseLongAttrObj from '../../dictionary/parseLongAttrObj';
 import getPositionStyles from '../getPositionStyles';
 
 describe('getPositionStyles', () => {
 	it('Get a correct position styles', () => {
-		const object = {
+		const object = parseLongAttrObj({
 			'position-general': 'relative',
 			'position-xxl': 'absolute',
 			'position-xl': 'relative',
@@ -70,13 +71,13 @@ describe('getPositionStyles', () => {
 			'position-right-unit-xs': 'em',
 			'position-bottom-unit-xs': 'vw',
 			'position-left-unit-xs': '%',
-		};
+		});
 		const result = getPositionStyles(object);
 		expect(result).toMatchSnapshot();
 	});
 
 	it('Ensure unnecessary position styles are not added', () => {
-		const object = {
+		const object = parseLongAttrObj({
 			'position-general': 'inherit',
 			'position-top-unit-xl': 'px',
 			'position-right-unit-xl': 'em',
@@ -94,11 +95,11 @@ describe('getPositionStyles', () => {
 			'position-bottom-xs': 3,
 			'position-left-xs': 4,
 			'position-sync-xs': true,
-		};
+		});
 		const result = getPositionStyles(object);
 		expect(result).toMatchSnapshot();
 
-		const object2 = {
+		const object2 = parseLongAttrObj({
 			'position-general': 'relative',
 			'position-top-general': 1,
 			'position-right-general': 2,
@@ -125,7 +126,7 @@ describe('getPositionStyles', () => {
 			'position-bottom-xs': 3,
 			'position-left-xs': 4,
 			'position-sync-xs': true,
-		};
+		});
 
 		const result2 = getPositionStyles(object2);
 		expect(result2).toMatchSnapshot();

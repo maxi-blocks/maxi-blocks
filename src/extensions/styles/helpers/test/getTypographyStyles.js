@@ -6,6 +6,7 @@ jest.mock('@wordpress/data', () => {
 	};
 });
 import { select } from '@wordpress/data';
+import parseLongAttrObj from '../../dictionary/parseLongAttrObj';
 
 jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 	return jest.fn(() => {
@@ -35,7 +36,7 @@ jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 
 describe('getTypographyStyles', () => {
 	it('Get a correct typography styles', () => {
-		const obj = {
+		const obj = parseLongAttrObj({
 			'font-family-general': 'roboto',
 			'color-general': 'rgb(255, 99, 71)',
 			'font-size-unit-general': 'px',
@@ -149,7 +150,7 @@ describe('getTypographyStyles', () => {
 			'text-shadow-xs': 'none',
 			'vertical-align-xs': 'none',
 			'custom-formats': 'object',
-		};
+		});
 
 		const result = getTypographyStyles({
 			obj,
@@ -159,7 +160,7 @@ describe('getTypographyStyles', () => {
 	});
 
 	it('Get a correct typography styles with hover', () => {
-		const obj = {
+		const obj = parseLongAttrObj({
 			content: 'Testing',
 			textLevel: 'p',
 			isList: false,
@@ -292,8 +293,8 @@ describe('getTypographyStyles', () => {
 			'link-hover-palette-status-general': true,
 			'link-hover-palette-color-general': 6,
 			'link-hover-palette-color-l': '3',
-		};
-		const hoverObj = {
+		});
+		const hoverObj = parseLongAttrObj({
 			'typography-status-hover': true,
 			'palette-status-general-hover': true,
 			'palette-color-general-hover': '3',
@@ -319,7 +320,7 @@ describe('getTypographyStyles', () => {
 			'text-decoration-l-hover': 'underline',
 			'text-indent-l': 10,
 			'text-indent-unit-l': 'px',
-		};
+		});
 
 		const result = getTypographyStyles({
 			obj: hoverObj,
@@ -340,7 +341,7 @@ describe('getTypographyStyles', () => {
 				};
 			})
 		);
-		const obj = {
+		const obj = parseLongAttrObj({
 			'palette-status-general': true,
 			'palette-color-general': 5,
 			'list-palette-status-general': true,
@@ -359,7 +360,7 @@ describe('getTypographyStyles', () => {
 			'line-height-xxl': 1.19,
 			'line-height-m': 70,
 			'line-height-s': 48,
-		};
+		});
 
 		const result = getTypographyStyles({
 			obj,

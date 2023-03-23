@@ -225,6 +225,7 @@ const transition = {
 const interactionBuilderSettings = {
 	block: [
 		{
+			sid: 'bi',
 			label: __('Button icon', 'maxi-blocks'),
 			transitionTarget: [
 				transition.block['icon colour'].target,
@@ -274,6 +275,7 @@ const interactionBuilderSettings = {
 				}),
 		},
 		{
+			sid: 'bty',
 			label: __('Button typography', 'maxi-blocks'),
 			transitionTarget: transition.block.typography.target,
 			transitionTrigger: buttonClass,
@@ -294,6 +296,7 @@ const interactionBuilderSettings = {
 			target: '.maxi-button-block__content',
 		},
 		{
+			sid: 'bb',
 			label: __('Button border', 'maxi-blocks'),
 			transitionTarget: transition.block.border.target,
 			hoverProp: 'button-border-status-hover',
@@ -304,6 +307,7 @@ const interactionBuilderSettings = {
 			target: '.maxi-button-block__button',
 		},
 		{
+			sid: 'bbg',
 			label: __('Button background', 'maxi-blocks'),
 			transitionTarget: transition.block['button background'].target,
 			hoverProp: 'button-background-status-hover',
@@ -331,6 +335,7 @@ const interactionBuilderSettings = {
 			target: '.maxi-button-block__button',
 		},
 		{
+			sid: 'bbs',
 			label: __('Button box shadow', 'maxi-blocks'),
 			transitionTarget: transition.block['box shadow'].target,
 			hoverProp: 'button-box-shadow-status-hover',
@@ -341,6 +346,7 @@ const interactionBuilderSettings = {
 			target: '.maxi-button-block__button',
 		},
 		{
+			sid: 'bmp',
 			label: __('Button margin/padding', 'maxi-blocks'),
 			attrGroupName: ['margin', 'padding'],
 			prefix: 'button-',

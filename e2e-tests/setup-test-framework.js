@@ -138,6 +138,9 @@ function observeConsoleLogging() {
 		if (text.includes('Error validating css: TypeError: Failed to fetch')) {
 			return;
 		}
+		if (text.includes('Failed to load resource: net::ERR_FAILED')) {
+			return;
+		}
 
 		// Since 6.1 multiline on RichText is deprecated. Need to be update on #3877
 		if (

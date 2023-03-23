@@ -85,7 +85,7 @@ Array [
     },
     "id": 1,
     "isButton": true,
-    "settings": "Column settings",
+    "sid": "cs",
     "target": "",
     "title": "Hello World!",
     "uniqueID": "column-maxi-1",

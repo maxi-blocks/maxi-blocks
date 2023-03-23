@@ -34,6 +34,11 @@ registerBlockType('maxi-blocks/slider-maxi', {
 	description:
 		'Position one or more blocks, arranged side-by-side (horizontal)',
 	category: 'maxi-blocks',
+	example: {
+		attributes: {
+			preview: true,
+		},
+	},
 	supports: {
 		align: true,
 		lightBlockWrapper: true,

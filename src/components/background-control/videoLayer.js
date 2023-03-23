@@ -108,6 +108,18 @@ const VideoLayer = props => {
 
 	const defaultURL = 'https://www.youtube.com/watch?v=ScMzIvxBSi4';
 
+	const startTime = getAttributeValue({
+		target: 'background-video-startTime',
+		props: videoOptions,
+		prefix,
+	});
+
+	const endTime = getAttributeValue({
+		target: 'background-video-endTime',
+		props: videoOptions,
+		prefix,
+	});
+
 	return (
 		<div className='maxi-background-control__video'>
 			{(!isHover || (isHover && isLayerHover)) && (
@@ -143,11 +155,7 @@ const VideoLayer = props => {
 					<AdvancedNumberControl
 						className='maxi-background-video-start-time'
 						label={__('Start time (s)', 'maxi-blocks')}
-						value={getAttributeValue({
-							target: 'background-video-startTime',
-							props: videoOptions,
-							prefix,
-						})}
+						value={startTime}
 						onChangeValue={val => {
 							onChange({
 								[getAttributeKey(
@@ -158,7 +166,7 @@ const VideoLayer = props => {
 							});
 						}}
 						min={0}
-						max={999}
+						max={endTime ? endTime - 1 : 999}
 						onReset={() =>
 							onChange({
 								[getAttributeKey(
@@ -173,11 +181,7 @@ const VideoLayer = props => {
 					<AdvancedNumberControl
 						className='maxi-background-video-end-time'
 						label={__('End time (s)', 'maxi-blocks')}
-						value={getAttributeValue({
-							target: 'background-video-endTime',
-							props: videoOptions,
-							prefix,
-						})}
+						value={endTime}
 						onChangeValue={val =>
 							onChange({
 								[getAttributeKey(
@@ -187,7 +191,7 @@ const VideoLayer = props => {
 								)]: val !== undefined && val !== '' ? val : '',
 							})
 						}
-						min={0}
+						min={startTime ? Number(startTime) + 1 : 1}
 						max={999}
 						onReset={() =>
 							onChange({

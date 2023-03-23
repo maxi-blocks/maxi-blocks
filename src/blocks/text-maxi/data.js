@@ -174,6 +174,7 @@ const transition = {
 const interactionBuilderSettings = {
 	block: [
 		{
+			sid: 'a',
 			label: __('Alignment', 'maxi-blocks'),
 			attrGroupName: 'textAlignment',
 			component: props => <AlignmentControl {...props} type='text' />,
@@ -181,6 +182,7 @@ const interactionBuilderSettings = {
 			disableTransition: true,
 		},
 		{
+			sid: 'ty',
 			label: __('Typography', 'maxi-blocks'),
 			transitionTarget: transition.canvas.typography.target,
 			hoverProp: 'typography-status-hover',

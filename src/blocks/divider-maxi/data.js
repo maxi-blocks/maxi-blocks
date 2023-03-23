@@ -118,6 +118,7 @@ const transition = {
 const interactionBuilderSettings = {
 	block: [
 		{
+			sid: 'dbs',
 			label: __('Divider box shadow', 'maxi-blocks'),
 			transitionTarget: transition.block['box shadow'].target,
 			hoverProp: 'divider-box-shadow-status-hover',
@@ -128,6 +129,7 @@ const interactionBuilderSettings = {
 			target: dividerClass,
 		},
 		{
+			sid: 'dls',
 			label: __('Line settings', 'maxi-blocks'),
 			attrGroupName: ['divider', 'size'],
 			component: props => <DividerControl {...props} />,

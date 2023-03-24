@@ -2,6 +2,7 @@
  * Wordpress dependencies
  */
 import { select } from '@wordpress/data';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -33,7 +34,7 @@ class edit extends MaxiBlockComponent {
 	maxiBlockDidMount() {
 		const { clientId } = this.props;
 
-		this.context.setSlideWidth(
+		this.context?.setSlideWidth(
 			clientId,
 			this.blockRef.current.getBoundingClientRect().width
 		);
@@ -44,18 +45,18 @@ class edit extends MaxiBlockComponent {
 		const { isSelected: wasSelected } = prevProps;
 		const { width } = this.blockRef.current.getBoundingClientRect();
 
-		if (this.context.slidesWidth[clientId] !== width) {
-			this.context.setSlideWidth(clientId, width);
+		if (this.context?.slidesWidth[clientId] !== width) {
+			this.context?.setSlideWidth(clientId, width);
 		}
 		if (isSelected !== wasSelected && isSelected) {
-			this.context.onSelect(clientId);
+			this.context?.onSelect(clientId);
 			this.blockRef.current.setAttribute('data-slide-active', 'true');
 		}
 	}
 
 	maxiBlockWillUnmount() {
 		const { clientId } = this.props;
-		this.context.onRemoveSlide(clientId);
+		this.context?.onRemoveSlide(clientId);
 	}
 
 	render() {
@@ -77,8 +78,22 @@ class edit extends MaxiBlockComponent {
 			hasInnerBlocks ? 'has-innerBlock' : 'empty'
 		}`;
 		const isActive =
-			this.context.selected ===
+			this.context?.selected ===
 			select('core/block-editor').getBlockIndex(clientId);
+
+		if (attributes.preview)
+			return (
+				<MaxiBlock
+					key={`maxi-slide--${uniqueID}`}
+					ref={this.blockRef}
+					{...getMaxiBlockAttributes(this.props)}
+				>
+					<img // eslint-disable-next-line no-undef
+						src={previews.slide_preview}
+						alt={__('Slide block preview', 'maxi-blocks')}
+					/>
+				</MaxiBlock>
+			);
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,

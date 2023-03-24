@@ -10,7 +10,7 @@ import { InspectorControls } from '@wordpress/block-editor';
 import { AccordionControl, SettingTabsControl } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { customCss } from './data';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/attributes';
 import {
 	PopupSettingsControl,
 	VideoControl,

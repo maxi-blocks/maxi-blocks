@@ -6,12 +6,6 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { createSelectors } from '../../extensions/styles/custom-css';
-import {
-	createIconTransitions,
-	getAttributesValue,
-	getIconWithColor,
-} from '../../extensions/styles';
 import {
 	BackgroundControl,
 	BorderControl,
@@ -22,6 +16,17 @@ import {
 	PaddingControl,
 	TypographyControl,
 } from '../../components';
+import { getAttributesValue } from '../../extensions/attributes';
+import { createSelectors } from '../../extensions/attributes/custom-css';
+import {
+	createIconTransitions,
+	transitionDefault,
+} from '../../extensions/attributes/transitions';
+import {
+	getAdvancedSettings,
+	getCanvasSettings,
+} from '../../extensions/relations';
+import { getIconWithColor } from '../../extensions/styles';
 import {
 	getBackgroundStyles,
 	getBorderStyles,
@@ -30,11 +35,6 @@ import {
 	getMarginPaddingStyles,
 	getTypographyStyles,
 } from '../../extensions/styles/helpers';
-import {
-	getCanvasSettings,
-	getAdvancedSettings,
-} from '../../extensions/relations';
-import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
 /**
  * Classnames

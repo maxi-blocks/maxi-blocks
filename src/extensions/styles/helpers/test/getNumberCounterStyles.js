@@ -1,4 +1,4 @@
-import parseLongAttrObj from '../../dictionary/parseLongAttrObj';
+import parseLongAttrObj from '../../../attributes/dictionary/parseLongAttrObj';
 import getNumberCounterStyles from '../getNumberCounterStyles';
 
 jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {

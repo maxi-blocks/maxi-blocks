@@ -12,7 +12,7 @@ import {
 	getDefaultAttribute,
 	getIsValid,
 	getAttributeKey,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 
 /**
  * External dependencies

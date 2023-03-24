@@ -17,7 +17,7 @@ import withRTC from '../../extensions/maxi-block/withRTC';
 import {
 	getLastBreakpointAttribute,
 	getGroupAttributes,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 import { getTransformStyles } from '../../extensions/styles/helpers';
 import { getActiveTabName } from '../../extensions/inspector';
 

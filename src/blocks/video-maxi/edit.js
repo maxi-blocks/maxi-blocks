@@ -18,7 +18,10 @@ import {
 	MaxiPopoverButton,
 	Button,
 } from '../../components';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getAttributesValue,
+	getGroupAttributes,
+} from '../../extensions/attributes';
 import { videoValidation } from '../../extensions/video';
 import { copyPasteMapping } from './data';
 import { placeholderImage, toolbarReplaceImage } from '../../icons';

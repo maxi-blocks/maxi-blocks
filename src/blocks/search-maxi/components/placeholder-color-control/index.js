@@ -14,7 +14,7 @@ import {
 import {
 	getAttributeKey,
 	getLastBreakpointAttribute,
-} from '../../../../extensions/styles';
+} from '../../../../extensions/attributes';
 
 const PlaceholderColorControl = ({
 	placeholder,

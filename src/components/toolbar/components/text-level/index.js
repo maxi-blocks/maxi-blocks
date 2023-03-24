@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import FontLevelControl from '../../../font-level-control';
 import ToolbarPopover from '../toolbar-popover';
-import { getGroupAttributes } from '../../../../extensions/styles';
+import { getGroupAttributes } from '../../../../extensions/attributes';
 
 /**
  * Styles and icons

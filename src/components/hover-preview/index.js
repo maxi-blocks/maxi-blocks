@@ -10,7 +10,7 @@ import classnames from 'classnames';
 import { isEmpty, isNil } from 'lodash';
 import DOMPurify from 'dompurify';
 import parse from 'html-react-parser';
-import { getAttributesValue } from '../../extensions/styles';
+import { getAttributesValue } from '../../extensions/attributes';
 
 /**
  * Component

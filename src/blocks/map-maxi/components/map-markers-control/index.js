@@ -18,7 +18,7 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 	getAttributesValue,
-} from '../../../../extensions/styles';
+} from '../../../../extensions/attributes';
 
 /**
  * Icons

@@ -1,19 +1,23 @@
 /**
  * Internal dependencies
  */
-import { getGroupAttributes, styleProcessor } from '../../extensions/styles';
 import {
-	getSizeStyles,
-	getBoxShadowStyles,
-	getZIndexStyles,
-	getPositionStyles,
-	getDisplayStyles,
-	getMarginPaddingStyles,
+	getAttributesValue,
+	getGroupAttributes,
+} from '../../extensions/attributes';
+import { styleProcessor } from '../../extensions/styles';
+import {
 	getBlockBackgroundStyles,
 	getBorderStyles,
+	getBoxShadowStyles,
+	getDisplayStyles,
+	getFlexStyles,
+	getMarginPaddingStyles,
 	getOpacityStyles,
 	getOverflowStyles,
-	getFlexStyles,
+	getPositionStyles,
+	getSizeStyles,
+	getZIndexStyles,
 } from '../../extensions/styles/helpers';
 import data from './data';
 

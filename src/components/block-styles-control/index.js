@@ -9,7 +9,7 @@ import { select, dispatch } from '@wordpress/data';
  * Internal dependencies
  */
 import SelectControl from '../select-control';
-import { getBlockStyle } from '../../extensions/styles';
+import { getBlockStyle } from '../../extensions/attributes';
 
 /**
  * External dependencies

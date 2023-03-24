@@ -10,10 +10,8 @@ import Inspector from './inspector';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar, RawHTML } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-import {
-	getAttributesValue,
-	getIconPositionClass,
-} from '../../extensions/styles';
+import { getAttributesValue } from '../../extensions/attributes';
+import { getIconPositionClass } from '../../extensions/styles';
 import getStyles from './styles';
 import { prefixes, copyPasteMapping } from './data';
 

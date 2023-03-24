@@ -1,5 +1,5 @@
 import { select } from '@wordpress/data';
-import { getAttributesValue } from '../styles';
+import getAttributesValue from './getAttributesValue';
 
 const getClientIdFromUniqueId = uniqueID => {
 	const { getBlocks } = select('core/block-editor');

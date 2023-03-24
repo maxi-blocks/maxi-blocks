@@ -9,19 +9,22 @@
 /**
  * WordPress dependencies
  */
-import { Component, createRoot, render, createRef } from '@wordpress/element';
 import { dispatch, resolveSelect, select, useSelect } from '@wordpress/data';
+import { Component, createRef, createRoot, render } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import {
-	entityRecordsWrapper,
 	getAttributeKey,
 	getAttributesValue,
 	getBlockStyle,
 	getDefaultAttribute,
 	getGroupAttributes,
+	uniqueIDGenerator,
+} from '../attributes';
+import {
+	entityRecordsWrapper,
 	getHasScrollEffects,
 	getHasVideo,
 	getParallaxLayers,
@@ -29,11 +32,7 @@ import {
 	styleGenerator,
 	styleResolver,
 } from '../styles';
-import getBreakpoints from '../styles/helpers/getBreakpoints';
-import getIsUniqueIDRepeated from './getIsUniqueIDRepeated';
-import getCustomLabel from './getCustomLabel';
-import { loadFonts, getAllFonts } from '../text/fonts';
-import uniqueIDStructureChecker from './uniqueIDStructureChecker';
+import getWinBreakpoint from '../dom/getWinBreakpoint';
 import {
 	getIsSiteEditor,
 	getSiteEditorIframe,
@@ -41,20 +40,23 @@ import {
 	getTemplateViewIframe,
 } from '../fse';
 import { updateSCOnEditor } from '../style-cards';
-import getWinBreakpoint from '../dom/getWinBreakpoint';
-import { uniqueIDGenerator } from '../attributes';
-import { getStylesWrapperId } from './utils';
-import removeUnmountedBlockFromRelations from './removeUnmountedBlockFromRelations';
-import updateRelationHoverStatus from './updateRelationHoverStatus';
+import getBreakpoints from '../styles/helpers/getBreakpoints';
+import { getAllFonts, loadFonts } from '../text/fonts';
+import getCustomLabel from './getCustomLabel';
+import getIsUniqueIDRepeated from './getIsUniqueIDRepeated';
 import propagateNewUniqueID from './propagateNewUniqueID';
-import updateReusableBlockSize from './updateReusableBlockSize';
 import propsObjectCleaner from './propsObjectCleaner';
+import removeUnmountedBlockFromRelations from './removeUnmountedBlockFromRelations';
+import uniqueIDStructureChecker from './uniqueIDStructureChecker';
+import updateRelationHoverStatus from './updateRelationHoverStatus';
+import updateReusableBlockSize from './updateReusableBlockSize';
+import { getStylesWrapperId } from './utils';
 
 /**
  * External dependencies
  */
-import { isEmpty, isEqual, isFunction, isNil } from 'lodash';
 import { diff } from 'deep-object-diff';
+import { isEmpty, isEqual, isFunction, isNil } from 'lodash';
 
 /**
  * Style Component

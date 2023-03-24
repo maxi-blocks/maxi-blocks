@@ -332,7 +332,7 @@ describe('getLastBreakpointAttribute', () => {
 		expect(result).toBe(3);
 	});
 
-	test.only('Should return an object when target is an array', () => {
+	test('Should return an object when target is an array', () => {
 		const result = getLastBreakpointAttribute({
 			target: ['test', 'test-2'],
 			breakpoint: 'm',

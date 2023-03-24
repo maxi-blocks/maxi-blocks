@@ -16,7 +16,7 @@ import {
 import {
 	getAttributeKey,
 	getAttributesValue,
-} from '../../../../extensions/styles';
+} from '../../../../extensions/attributes';
 
 const TitleSettings = props => {
 	const { onChange, clientId, bgPrefix, isHover = false, breakpoint } = props;

@@ -39,7 +39,7 @@ import './editor.scss';
 import {
 	getAttributesValue,
 	getGroupAttributes,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 import {
 	getTypographyValue,
 	setFormat,

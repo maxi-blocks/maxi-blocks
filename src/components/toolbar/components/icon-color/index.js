@@ -6,21 +6,21 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ToolbarPopover from '../toolbar-popover';
+import {
+	getAttributeKey,
+	getAttributesValue,
+} from '../../../../extensions/attributes';
+import { getColorRGBAString } from '../../../../extensions/styles';
+import { setSVGContent } from '../../../../extensions/svg';
 import ColorControl from '../../../color-control';
 import ToggleSwitch from '../../../toggle-switch';
+import ToolbarPopover from '../toolbar-popover';
 
 /**
  * Styles
  */
-import './editor.scss';
 import { toolbarShapeColor } from '../../../../icons';
-import {
-	getAttributeKey,
-	getAttributesValue,
-	getColorRGBAString,
-} from '../../../../extensions/styles';
-import { setSVGContent } from '../../../../extensions/svg';
+import './editor.scss';
 
 /**
  * Component

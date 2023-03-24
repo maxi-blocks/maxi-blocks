@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import templates from './templates';
-import { getGroupAttributes, paletteAttributesCreator } from '../styles';
+import { getGroupAttributes, paletteAttributesCreator } from '../attributes';
 
 /**
  * External dependencies

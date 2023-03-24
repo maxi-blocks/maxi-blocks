@@ -6,7 +6,7 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 /**
  * Internal dependencies
  */
-import getAttributesValue from '../getAttributesValue';
+import getAttributesValue from '../../attributes/getAttributesValue';
 
 /**
  * External dependencies

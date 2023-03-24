@@ -15,7 +15,7 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import {
 	getAttributesValue,
 	getGroupAttributes,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 import getStyles from './styles';
 import { copyPasteMapping } from './data';
 import * as mapMarkerIcons from '../../icons/map-icons/markers';

@@ -34,7 +34,8 @@ import { buttonIcon } from '../../icons';
 import {
 	blockMigrator,
 	buttonIconTransitionMigrator,
-} from '../../extensions/styles/migrators';
+} from '../../extensions/maxi-block/migrators';
+import { getAttributesValue } from '../../extensions/attributes';
 
 /**
  * Block

@@ -10,7 +10,7 @@ import ClipPathControl from '../clip-path-control';
 import GradientControl from '../gradient-control';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 import SizeAndPositionLayerControl from './sizeAndPositionLayerControl';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/attributes';
 
 /**
  * External dependencies

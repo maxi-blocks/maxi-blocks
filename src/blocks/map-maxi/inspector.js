@@ -20,7 +20,7 @@ import {
 	MapPopupControl,
 	MapPopupTextControl,
 } from './components';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/attributes';
 import { customCss } from './data';
 import * as inspectorTabs from '../../components/inspector-tabs';
 

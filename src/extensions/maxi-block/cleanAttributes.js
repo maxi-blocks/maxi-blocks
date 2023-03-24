@@ -6,11 +6,11 @@ import { dispatch, select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import getAttributeKey from '../styles/getAttributeKey';
-import getBreakpointFromAttribute from '../styles/getBreakpointFromAttribute';
-import getDefaultAttribute from '../styles/getDefaultAttribute';
-import getLastBreakpointAttribute from '../styles/getLastBreakpointAttribute';
-import { getHoverAttributeKey, getNormalAttributeKey } from '../styles/utils';
+import getAttributeKey from '../attributes/getAttributeKey';
+import getBreakpointFromAttribute from '../attributes/getBreakpointFromAttribute';
+import getDefaultAttribute from '../attributes/getDefaultAttribute';
+import getLastBreakpointAttribute from '../attributes/getLastBreakpointAttribute';
+import { getHoverAttributeKey, getNormalAttributeKey } from '../attributes';
 
 /**
  * External dependencies

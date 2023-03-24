@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import SelectControl from '../../../select-control';
 import ToolbarPopover from '../toolbar-popover';
-import { getDefaultAttribute } from '../../../../extensions/styles';
+import { getDefaultAttribute } from '../../../../extensions/attributes';
 
 /**
  * Styles & Icons

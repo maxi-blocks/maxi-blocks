@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import getAttributesValue from '../getAttributesValue';
+import getAttributesValue from '../../attributes/getAttributesValue';
 
 /**
  * General

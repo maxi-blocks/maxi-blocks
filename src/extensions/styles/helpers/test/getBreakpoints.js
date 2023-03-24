@@ -1,6 +1,6 @@
 import getBreakpoints from '../getBreakpoints';
 import '../../../store';
-import parseLongAttrObj from '../../dictionary/parseLongAttrObj';
+import parseLongAttrObj from '../../../attributes/dictionary/parseLongAttrObj';
 
 describe('getBreakpoints', () => {
 	it('Get a correct breakpoint', () => {

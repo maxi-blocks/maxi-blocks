@@ -2,10 +2,10 @@
  * Internal dependencies
  */
 import {
-	getGroupAttributes,
-	styleProcessor,
 	getAttributesValue,
-} from '../../extensions/styles';
+	getGroupAttributes,
+} from '../../extensions/attributes';
+import { styleProcessor } from '../../extensions/styles';
 import {
 	getBlockBackgroundStyles,
 	getBorderStyles,

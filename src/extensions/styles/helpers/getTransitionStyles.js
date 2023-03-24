@@ -6,15 +6,15 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 /**
  * Internal dependencies
  */
-import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
-import getAttributesValue from '../getAttributesValue';
-import transitionDefault from '../transitions/transitionDefault';
+import getLastBreakpointAttribute from '../../attributes/getLastBreakpointAttribute';
+import getAttributesValue from '../../attributes/getAttributesValue';
+import transitionDefault from '../../attributes/transitions/transitionDefault';
+import getAttributeKey from '../../attributes/getAttributeKey';
 
 /**
  * External dependencies
  */
 import { isArray, isEmpty, isEqual, isNil } from 'lodash';
-import getAttributeKey from '../getAttributeKey';
 
 /**
  * Generates size styles object

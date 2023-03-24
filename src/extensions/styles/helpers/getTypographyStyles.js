@@ -2,8 +2,8 @@
  * Internal dependencies
  */
 import getColorRGBAString from '../getColorRGBAString';
-import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
-import getAttributeKey from '../getAttributeKey';
+import getLastBreakpointAttribute from '../../attributes/getLastBreakpointAttribute';
+import getAttributeKey from '../../attributes/getAttributeKey';
 
 /**
  * External dependencies

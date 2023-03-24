@@ -29,7 +29,7 @@ import {
 import {
 	getGroupAttributes,
 	getDefaultAttribute,
-} from '../../../../extensions/styles';
+} from '../../../../extensions/attributes';
 
 /**
  * External dependencies

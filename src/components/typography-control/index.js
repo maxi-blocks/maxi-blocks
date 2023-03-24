@@ -29,7 +29,7 @@ import {
 	getGroupAttributes,
 	getIsValid,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 import { getDefaultSCValue } from '../../extensions/style-cards';
 
 /**

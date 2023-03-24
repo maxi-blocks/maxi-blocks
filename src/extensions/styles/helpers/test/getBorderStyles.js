@@ -1,5 +1,5 @@
 import getBorderStyles from '../getBorderStyles';
-import parseLongAttrObj from '../../dictionary/parseLongAttrObj';
+import parseLongAttrObj from '../../../attributes/dictionary/parseLongAttrObj';
 
 jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 	return jest.fn(() => {

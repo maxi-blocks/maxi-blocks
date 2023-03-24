@@ -1,8 +1,8 @@
 /**
  * Internal dependencies
  */
-import { createSelectors } from '../../extensions/styles/custom-css';
-import { createIconTransitions } from '../../extensions/styles';
+import { createSelectors } from '../../extensions/attributes/custom-css';
+import { createIconTransitions } from '../../extensions/attributes/transitions';
 import {
 	getCanvasSettings,
 	getAdvancedSettings,

@@ -11,7 +11,7 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
-} from '../../../../extensions/styles';
+} from '../../../../extensions/attributes';
 import AdvancedNumberControl from '../../../advanced-number-control';
 import { getColumnDefaultValue } from '../../../../extensions/column-templates';
 

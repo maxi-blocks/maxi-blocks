@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import DynamicContent from '../dynamic-content';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/attributes';
 
 /**
  * Component

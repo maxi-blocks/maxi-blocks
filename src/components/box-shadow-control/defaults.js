@@ -1,5 +1,8 @@
-import boxShadow from '../../extensions/styles/defaults/boxShadow';
-import { getAttributeKey, getAttributesValue } from '../../extensions/styles';
+import boxShadow from '../../extensions/attributes/defaults/boxShadow';
+import {
+	getAttributeKey,
+	getAttributesValue,
+} from '../../extensions/attributes';
 
 export const boxShadowNone = prefix => {
 	let response = {};

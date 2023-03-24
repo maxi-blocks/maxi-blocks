@@ -9,7 +9,7 @@ import classnames from 'classnames';
 import {
 	getAttributesValue,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 import { parseVideo, videoValidation } from '../../extensions/video';
 import { isNil } from 'lodash';
 

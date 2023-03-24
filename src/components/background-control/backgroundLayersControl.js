@@ -8,13 +8,13 @@ import { RawHTML, useRef } from '@wordpress/element';
  * Internal dependencies
  */
 import {
-	createTransitionObj,
 	getAttributeKey,
 	getAttributesValue,
 	getBlockStyle,
-	getColorRGBAString,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
+import { createTransitionObj } from '../../extensions/attributes/transitions';
+import { getColorRGBAString } from '../../extensions/styles';
 import { handleSetAttributes } from '../../extensions/maxi-block';
 import * as backgroundLayers from './layers';
 import ColorLayer from './colorLayer';

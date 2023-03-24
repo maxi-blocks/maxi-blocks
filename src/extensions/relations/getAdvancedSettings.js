@@ -20,7 +20,7 @@ import {
 	getTransformCategories,
 	getTransformSelectors,
 } from '../../components/transform-control/utils';
-import { getGroupAttributes, getLastBreakpointAttribute } from '../styles';
+import { getGroupAttributes, getLastBreakpointAttribute } from '../attributes';
 
 /**
  * External dependencies

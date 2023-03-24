@@ -10,7 +10,7 @@ import { lowerCase } from 'lodash';
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 import SettingTabsControl from '../setting-tabs-control';
 import AdvancedNumberControl from '../advanced-number-control';
 import { applyEffect } from './scroll-effect-preview';

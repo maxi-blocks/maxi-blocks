@@ -6,7 +6,7 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { getDefaultAttribute } from '../styles';
+import { getDefaultAttribute } from '../attributes';
 
 const handleOnReset = props => {
 	const { receiveBaseBreakpoint, receiveMaxiDeviceType } =

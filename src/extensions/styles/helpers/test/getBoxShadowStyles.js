@@ -1,4 +1,4 @@
-import parseLongAttrObj from '../../dictionary/parseLongAttrObj';
+import parseLongAttrObj from '../../../attributes/dictionary/parseLongAttrObj';
 import getBoxShadowStyles from '../getBoxShadowStyles';
 
 jest.mock('src/extensions/styles/getDefaultAttribute.js', () =>

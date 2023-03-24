@@ -1,4 +1,11 @@
-import { getSVGStyles } from '../helpers/getSVGStyles';
+/**
+ * Internal dependencies
+ */
+import { getSVGStyles } from '../../styles/helpers/getSVGStyles';
+
+/**
+ * External dependencies
+ */
 import { merge } from 'lodash';
 
 const name = 'IB SVG Icon Target';

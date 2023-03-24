@@ -18,9 +18,9 @@ import {
 } from '../../../../extensions/text/formats';
 import {
 	getBlockStyle,
-	getColorRGBAString,
 	getGroupAttributes,
-} from '../../../../extensions/styles';
+} from '../../../../extensions/attributes';
+import { getColorRGBAString } from '../../../../extensions/styles';
 
 /**
  * Styles and icons

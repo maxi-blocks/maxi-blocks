@@ -11,7 +11,7 @@ import {
 	getAttributesValue,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 import AdvancedNumberControl from '../advanced-number-control';
 import { setSVGStrokeWidth } from '../../extensions/svg';
 

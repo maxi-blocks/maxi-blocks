@@ -7,12 +7,11 @@ import { isNil } from 'lodash';
  * Internal dependencies
  */
 import {
-	getPaletteAttributes,
-	getColorRGBAString,
-	styleProcessor,
-	getGroupAttributes,
 	getAttributesValue,
-} from '../../extensions/styles';
+	getGroupAttributes,
+	getPaletteAttributes,
+} from '../../extensions/attributes';
+import { getColorRGBAString, styleProcessor } from '../../extensions/styles';
 import {
 	getBlockBackgroundStyles,
 	getBorderStyles,

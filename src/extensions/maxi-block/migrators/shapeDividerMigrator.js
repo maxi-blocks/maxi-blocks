@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import paletteAttributesCreator from '../paletteAttributesCreator';
+import paletteAttributesCreator from '../../attributes/paletteAttributesCreator';
 
 const name = 'Shape Divider';
 

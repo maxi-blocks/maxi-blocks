@@ -6,7 +6,7 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { getAttributesValue } from '../styles';
+import { getAttributesValue } from '../attributes';
 import getColumnTemplate from './getColumnTemplate';
 
 const getColumnDefaultValue = (

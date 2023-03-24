@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import PositionControl from '../position-control';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/attributes';
 
 /**
  * Component

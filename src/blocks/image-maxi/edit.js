@@ -2,49 +2,49 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
 import { MediaUpload, RichText } from '@wordpress/block-editor';
 import { createRef } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
  */
-import getStyles from './styles';
-import Inspector from './inspector';
-import {
-	getAttributesValue,
-	getGroupAttributes,
-	getIsOverflowHidden,
-	getLastBreakpointAttribute,
-} from '../../extensions/styles';
-import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import {
 	BlockResizer,
 	Button,
 	HoverPreview,
-	Toolbar,
+	MaxiPopoverButton,
 	Placeholder,
 	RawHTML,
-	MaxiPopoverButton,
+	Toolbar,
 } from '../../components';
-import { injectImgSVG } from '../../extensions/svg';
-import { copyPasteMapping } from './data';
-import { textContext, onChangeRichText } from '../../extensions/text/formats';
+import { getMaxiBlockAttributes, MaxiBlock } from '../../components/maxi-block';
 import CaptionToolbar from '../../components/toolbar/captionToolbar';
+import {
+	getAttributesValue,
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/attributes';
 import withMaxiDC from '../../extensions/DC/withMaxiDC';
+import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
+import { getIsOverflowHidden } from '../../extensions/styles';
+import { injectImgSVG } from '../../extensions/svg';
+import { onChangeRichText, textContext } from '../../extensions/text/formats';
+import { copyPasteMapping } from './data';
+import Inspector from './inspector';
+import getStyles from './styles';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil, round, isNumber, uniqueId } from 'lodash';
 import DOMPurify from 'dompurify';
+import { isEmpty, isNil, isNumber, round, uniqueId } from 'lodash';
 
 /**
  * Icons
  */
-import { toolbarReplaceImage, placeholderImage } from '../../icons';
+import { placeholderImage, toolbarReplaceImage } from '../../icons';
 
 /**
  * Content

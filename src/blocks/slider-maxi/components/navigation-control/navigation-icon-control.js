@@ -9,12 +9,12 @@ import { useState } from '@wordpress/element';
  */
 import {
 	getAttributeKey,
-	getColorRGBAString,
 	getDefaultAttribute,
 	getGroupAttributes,
 	getAttributesValue,
 	getLastBreakpointAttribute,
-} from '../../../../extensions/styles';
+} from '../../../../extensions/attributes';
+
 import {
 	Icon,
 	ResponsiveTabsControl,
@@ -35,6 +35,7 @@ import {
 	setSVGStrokeWidth,
 } from '../../../../extensions/svg';
 import GradientControl from '../../../../components/gradient-control';
+import { getColorRGBAString } from '../../../../extensions/styles';
 
 /**
  * External dependencies

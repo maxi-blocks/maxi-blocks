@@ -3,10 +3,8 @@
  */
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import { RawHTML } from '../../components';
-import {
-	getAttributesValue,
-	getIconPositionClass,
-} from '../../extensions/styles';
+import { getAttributesValue } from '../../extensions/attributes';
+import { getIconPositionClass } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -20,10 +18,11 @@ const save = props => {
 	const { attributes } = props;
 	const { buttonContent, buttonSkin, placeholder, skin } = attributes;
 	const searchButtonIsIcon = buttonSkin === 'icon';
-	const { iconContent, iconPosition } = getAttributesValue({
-		target: ['icon-content', 'icon-position'],
-		props: attributes,
-	});
+	const { 'icon-content': iconContent, 'icon-position': iconPosition } =
+		getAttributesValue({
+			target: ['icon-content', 'icon-position'],
+			props: attributes,
+		});
 
 	const name = 'maxi-blocks/search-maxi';
 

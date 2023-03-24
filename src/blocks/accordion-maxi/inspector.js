@@ -17,7 +17,7 @@ import { withMaxiInspector } from '../../extensions/inspector';
 import {
 	getAttributesValue,
 	getGroupAttributes,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 import { customCss } from './data';
 import {
 	AccordionIconSettings,

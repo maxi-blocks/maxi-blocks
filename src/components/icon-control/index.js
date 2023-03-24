@@ -26,7 +26,7 @@ import {
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 import { togglePreserveAspectRatio } from '../../extensions/svg';
 import MaxiModal from '../../editor/library/modal';
 

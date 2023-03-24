@@ -1,5 +1,5 @@
 import { getCanvasSettings } from '../../extensions/relations';
-import { createSelectors } from '../../extensions/styles/custom-css';
+import { createSelectors } from '../../extensions/attributes/custom-css';
 
 /**
  * Data object

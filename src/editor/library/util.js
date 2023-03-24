@@ -10,7 +10,7 @@ import {
 	getAttributesValue,
 	getBlockStyle,
 	getPaletteAttributes,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 
 /**
  * External dependencies

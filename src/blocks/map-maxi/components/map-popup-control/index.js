@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import { BackgroundControl, BoxShadowControl } from '../../../../components';
-import { getGroupAttributes } from '../../../../extensions/styles';
+import { getGroupAttributes } from '../../../../extensions/attributes';
 
 const MapPopupControl = props => {
 	const { onChange, clientId, deviceType, ...attributes } = props;

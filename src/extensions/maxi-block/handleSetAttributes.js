@@ -6,11 +6,11 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import getBreakpointFromAttribute from '../styles/getBreakpointFromAttribute';
-import getDefaultAttribute from '../styles/getDefaultAttribute';
-import handleOnReset from '../attributes/handleOnReset';
+import getBreakpointFromAttribute from '../attributes/getBreakpointFromAttribute';
+import getDefaultAttribute from '../attributes/getDefaultAttribute';
+import handleOnReset from './handleOnReset';
 import cleanAttributes from './cleanAttributes';
-import parseLongAttrObj from '../styles/dictionary/parseLongAttrObj';
+import parseLongAttrObj from '../attributes/dictionary/parseLongAttrObj';
 
 /**
  * External dependencies

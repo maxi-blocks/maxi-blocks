@@ -15,7 +15,7 @@ import getStyles from './styles';
 import AccordionContext from '../accordion-maxi/context';
 import Inspector from './inspector';
 import { copyPasteMapping } from './data';
-import { getAttributesValue } from '../../extensions/styles';
+import { getAttributesValue } from '../../extensions/attributes';
 
 const boxedPreset = {
 	'border-radius-bottom-left-general': 10,

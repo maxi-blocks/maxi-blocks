@@ -10,12 +10,13 @@ import { select } from '@wordpress/data';
  */
 import uniqueIDGenerator from './uniqueIDGenerator';
 import { getCustomLabel } from '../maxi-block';
+import getAttributeKey from './getAttributeKey';
+import getAttributesValue from './getAttributesValue';
 
 /**
  * External Dependencies
  */
 import { isEmpty, isNil } from 'lodash';
-import { getAttributeKey, getAttributesValue } from '../styles';
 
 /**
  * General

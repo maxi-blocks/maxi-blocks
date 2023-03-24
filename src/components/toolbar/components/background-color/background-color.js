@@ -12,7 +12,7 @@ import {
 	getAttributeKey,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-} from '../../../../extensions/styles';
+} from '../../../../extensions/attributes';
 import ToggleSwitch from '../../../toggle-switch';
 
 /**

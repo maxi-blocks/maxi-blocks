@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { createSelectors } from '../../extensions/styles/custom-css';
+import { createSelectors } from '../../extensions/attributes/custom-css';
 import { AlignmentControl, TypographyControl } from '../../components';
 import {
 	getAlignmentTextStyles,
@@ -16,7 +16,7 @@ import {
 	getCanvasSettings,
 	getAdvancedSettings,
 } from '../../extensions/relations';
-import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
+import { transitionDefault } from '../../extensions/attributes/transitions';
 
 /**
  * Classnames

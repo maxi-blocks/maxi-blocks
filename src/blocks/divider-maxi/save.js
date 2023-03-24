@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-import { getAttributesValue } from '../../extensions/styles';
+import { getAttributesValue } from '../../extensions/attributes';
 
 /**
  * External dependencies

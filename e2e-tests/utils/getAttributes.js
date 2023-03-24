@@ -1,5 +1,5 @@
 import getBlockAttributes from './getBlockAttributes';
-import parseLongAttrKey from '../../src/extensions/styles/dictionary/parseLongAttrKey';
+import parseLongAttrKey from '../../src/extensions/attributes/dictionary/parseLongAttrKey';
 
 const getAttributes = async target => {
 	const attributes = await getBlockAttributes();

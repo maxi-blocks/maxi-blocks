@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import ZIndexControl from '../zindex-control';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/attributes';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 
 /**

@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 
-import getLastBreakpointAttribute from './getLastBreakpointAttribute';
+import getLastBreakpointAttribute from '../attributes/getLastBreakpointAttribute';
 
 export const getIsOverflowHidden = (attributes, breakpoint) =>
 	getLastBreakpointAttribute({

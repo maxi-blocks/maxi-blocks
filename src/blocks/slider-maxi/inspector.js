@@ -12,7 +12,7 @@ import * as inspectorTabs from '../../components/inspector-tabs';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 import SliderControl from './components/slider-control';
 import NavigationControl from './components/navigation-control';
 import NavigationIconsControl from './components/navigation-control/navigation-control';

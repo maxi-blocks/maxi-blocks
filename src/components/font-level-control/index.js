@@ -12,7 +12,7 @@ import {
 	getAttributeKey,
 	getAttributesValue,
 	getGroupAttributes,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 
 /**
  * External dependencies

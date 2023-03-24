@@ -1,30 +1,30 @@
 /**
  * WordPress dependencies
  */
+import { useEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import { getColorRGBAParts, getColorRGBAString } from '../../extensions/styles';
+import AdvancedNumberControl from '../advanced-number-control';
 import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
-import ToggleSwitch from '../toggle-switch';
-import AdvancedNumberControl from '../advanced-number-control';
 import Icon from '../icon';
-import { getColorRGBAString, getColorRGBAParts } from '../../extensions/styles';
+import ToggleSwitch from '../toggle-switch';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, isEmpty, trim } from 'lodash';
+import { isEmpty, isNil, trim } from 'lodash';
 
 /**
  * Styles and icons
  */
-import './editor.scss';
 import { styleNone } from '../../icons';
+import './editor.scss';
 
 /**
  * Component

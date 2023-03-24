@@ -10,7 +10,7 @@ import { SelectControl, SettingTabsControl } from '../../../../components';
 import {
 	getAttributeKey,
 	getDefaultAttribute,
-} from '../../../../extensions/styles';
+} from '../../../../extensions/attributes';
 import { prefixes } from '../../data';
 
 const SkinControl = ({ skin, iconRevealAction, onChange }) => {

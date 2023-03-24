@@ -1,5 +1,5 @@
 import getImageShapeStyles from '../getImageShapeStyles';
-import parseLongAttrObj from '../../dictionary/parseLongAttrObj';
+import parseLongAttrObj from '../../../attributes/dictionary/parseLongAttrObj';
 
 describe('getImageShapeStyles', () => {
 	const object = parseLongAttrObj({

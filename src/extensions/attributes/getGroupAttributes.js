@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getIsValid } from './utils';
+import getIsValid from './getIsValid';
 import * as defaults from './defaults/index';
 import parseLongAttrKey from './dictionary/parseLongAttrKey';
 

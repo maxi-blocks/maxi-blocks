@@ -1,11 +1,9 @@
 /**
  * Internal dependencies
  */
-import * as attributesData from '../../extensions/styles/defaults/index';
-import {
-	prefixAttributesCreator,
-	transitionAttributesCreator,
-} from '../../extensions/styles';
+import * as attributesData from '../../extensions/attributes/defaults/index';
+import { prefixAttributesCreator } from '../../extensions/attributes';
+import { transitionAttributesCreator } from '../../extensions/attributes/transitions';
 import { customCss, transition } from './data';
 
 const mutualAttributes = {

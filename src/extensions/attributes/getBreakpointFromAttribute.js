@@ -1,4 +1,4 @@
-import { getNormalAttributeKey } from './utils';
+import getNormalAttributeKey from './getNormalAttributeKey';
 
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 

@@ -20,7 +20,7 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import {
 	getAttributesValue,
 	getGroupAttributes,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 import getStyles from './styles';
 import { copyPasteMapping, maxiAttributes } from './data';
 

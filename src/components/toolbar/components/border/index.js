@@ -15,7 +15,7 @@ import ToolbarPopover from '../toolbar-popover';
  */
 import './editor.scss';
 import { toolbarBorder } from '../../../../icons';
-import { getGroupAttributes } from '../../../../extensions/styles';
+import { getGroupAttributes } from '../../../../extensions/attributes';
 
 /**
  * Border

@@ -8,8 +8,8 @@ import { select } from '@wordpress/data';
  * Internal dependencies
  */
 import { ColumnSizeControl } from './components';
-import { createSelectors } from '../../extensions/styles/custom-css';
-import { getGroupAttributes } from '../../extensions/styles';
+import { createSelectors } from '../../extensions/attributes/custom-css';
+import { getGroupAttributes } from '../../extensions/attributes';
 import getRowGapProps from '../../extensions/attributes/getRowGapProps';
 import {
 	getColumnSizeStyles,

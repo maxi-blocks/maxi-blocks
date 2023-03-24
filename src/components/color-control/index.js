@@ -6,16 +6,16 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
+import {
+	getAttributeKey,
+	getBlockStyle,
+	getDefaultAttribute,
+} from '../../extensions/attributes';
+import { getPaletteColor } from '../../extensions/style-cards';
+import { getColorRGBAParts } from '../../extensions/styles';
+import ToggleSwitch from '../toggle-switch';
 import CustomColorControl from './customColorControl';
 import ColorPaletteControl from './paletteControl';
-import ToggleSwitch from '../toggle-switch';
-import {
-	getBlockStyle,
-	getColorRGBAParts,
-	getAttributeKey,
-	getDefaultAttribute,
-} from '../../extensions/styles';
-import { getPaletteColor } from '../../extensions/style-cards';
 
 /**
  * External dependencies

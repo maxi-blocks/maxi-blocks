@@ -14,7 +14,7 @@ import getStyles from './styles';
 import { Toolbar } from '../../components';
 import AccordionContext from './context';
 import { copyPasteMapping } from './data';
-import { getAttributesValue } from '../../extensions/styles';
+import { getAttributesValue } from '../../extensions/attributes';
 
 /**
  * Edit

@@ -1,5 +1,5 @@
-import parseLongAttrKey from '../../dictionary/parseLongAttrKey';
-import parseLongAttrObj from '../../dictionary/parseLongAttrObj';
+import parseLongAttrKey from '../../../attributes/dictionary/parseLongAttrKey';
+import parseLongAttrObj from '../../../attributes/dictionary/parseLongAttrObj';
 import getArrowStyles from '../getArrowStyles';
 
 jest.mock('src/extensions/styles/getDefaultAttribute.js', () =>

@@ -4,9 +4,9 @@
  * Can be used as example for future migrations
  */
 
-import getGroupAttributes from '../getGroupAttributes';
+import getGroupAttributes from '../../attributes/getGroupAttributes';
 import { isEmpty } from 'lodash';
-import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import breakpointAttributesCreator from '../../attributes/breakpointAttributesCreator';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 const targets = ['position', 'blockBackground'];

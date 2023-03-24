@@ -7,7 +7,7 @@ import { select } from '@wordpress/data';
  * Internal dependencies
  */
 import FlexSettingsControl from '../flex-settings-control';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/attributes';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 
 /**

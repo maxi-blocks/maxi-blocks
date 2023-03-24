@@ -10,7 +10,7 @@ import { HoverPreview, RawHTML } from '../../components';
 import {
 	getAttributesValue,
 	getGroupAttributes,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 
 /**

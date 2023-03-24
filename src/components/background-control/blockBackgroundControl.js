@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getAttributesValue } from '../../extensions/styles';
+import { getAttributesValue } from '../../extensions/attributes';
 import BackgroundLayersControl from './backgroundLayersControl';
 
 /**

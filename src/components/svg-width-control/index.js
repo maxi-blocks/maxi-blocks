@@ -7,7 +7,7 @@ import {
 	getAttributesValue,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 import { togglePreserveAspectRatio } from '../../extensions/svg';
 
 /**

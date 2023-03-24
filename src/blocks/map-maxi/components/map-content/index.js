@@ -14,7 +14,7 @@ import SearchBox from '../search-box';
 import {
 	getAttributesValue,
 	getGroupAttributes,
-} from '../../../../extensions/styles';
+} from '../../../../extensions/attributes';
 import { getMaxiAdminSettingsUrl } from '../../utils';
 
 /**

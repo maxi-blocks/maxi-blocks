@@ -9,12 +9,11 @@ import { select } from '@wordpress/data';
  */
 import {
 	getAttributesValue,
-	getColorRGBAString,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 	getPaletteAttributes,
-	styleProcessor,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
+import { getColorRGBAString, styleProcessor } from '../../extensions/styles';
 import {
 	getAlignmentTextStyles,
 	getBlockBackgroundStyles,

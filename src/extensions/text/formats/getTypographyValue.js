@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getLastBreakpointAttribute } from '../../styles';
+import { getLastBreakpointAttribute } from '../../attributes';
 import getCustomFormatValue from './getCustomFormatValue';
 
 /**

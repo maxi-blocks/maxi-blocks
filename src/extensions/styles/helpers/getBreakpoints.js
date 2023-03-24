@@ -6,7 +6,7 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import getAttributeKey from '../getAttributeKey';
+import getAttributeKey from '../../attributes/getAttributeKey';
 
 const getBreakpoints = obj => {
 	const defaultBreakpoints = select('maxiBlocks').receiveMaxiBreakpoints();

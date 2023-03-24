@@ -1,8 +1,23 @@
 import './withAttributes';
 
+export { default as breakpointAttributesCreator } from './breakpointAttributesCreator';
+export { default as getAttributeKey } from './getAttributeKey';
+export { default as getAttributesValue } from './getAttributesValue';
+export { default as getAttrKeyWithoutBreakpoint } from './getAttrKeyWithoutBreakpoint';
 export { default as getBlockData } from './getBlockData';
+export { default as getBlockStyle } from './getBlockStyle';
+export { default as getBreakpointFromAttribute } from './getBreakpointFromAttribute';
 export { default as getClientIdFromUniqueId } from './getClientIdFromUniqueId';
+export { default as getDefaultAttribute } from './getDefaultAttribute';
+export { default as getGroupAttributes } from './getGroupAttributes';
+export { default as getHoverAttributeKey } from './getHoverAttributeKey';
+export { default as getIsValid } from './getIsValid';
+export { default as getLastBreakpointAttribute } from './getLastBreakpointAttribute';
+export { default as getNormalAttributeKey } from './getNormalAttributeKey';
+export { default as getPaletteAttributes } from './getPaletteAttributes';
 export { default as getRowGapProps } from './getRowGapProps';
 export { default as getUpdatedBGLayersWithNewUniqueID } from './getUpdatedBGLayersWithNewUniqueID';
-export { default as handleOnReset } from './handleOnReset';
+export { default as hoverAttributesCreator } from './hoverAttributesCreator';
+export { default as paletteAttributesCreator } from './paletteAttributesCreator';
+export { default as prefixAttributesCreator } from './prefixAttributesCreator';
 export { default as uniqueIDGenerator } from './uniqueIDGenerator';

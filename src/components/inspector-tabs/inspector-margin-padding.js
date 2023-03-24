@@ -11,7 +11,7 @@ import PaddingControl from '../padding-control';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 
 /**
  * Component

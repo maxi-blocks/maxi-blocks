@@ -10,7 +10,7 @@ import CustomCssControl from '../custom-css-control';
 import {
 	getLastBreakpointAttribute,
 	getAttributesValue,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 import { getSelectorsCss, getCategoriesCss } from '../custom-css-control/utils';
 
 /**

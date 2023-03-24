@@ -13,7 +13,7 @@ import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
 	getAttributesValue,
-} from '../../../../extensions/styles';
+} from '../../../../extensions/attributes';
 
 /**
  * Styles & Icons

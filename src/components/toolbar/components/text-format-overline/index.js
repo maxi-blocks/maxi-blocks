@@ -24,7 +24,7 @@ import { trim, isEmpty } from 'lodash';
  * Styles and icons
  */
 import { toolbarOverline } from '../../../../icons';
-import { getGroupAttributes } from '../../../../extensions/styles';
+import { getGroupAttributes } from '../../../../extensions/attributes';
 
 /**
  * TextFormatOverline

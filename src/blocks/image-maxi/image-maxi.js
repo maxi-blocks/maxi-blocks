@@ -30,7 +30,8 @@ import { imageBox } from '../../icons';
 /**
  * Migrators
  */
-import { blockMigrator } from '../../extensions/styles/migrators';
+import { blockMigrator } from '../../extensions/maxi-block/migrators';
+import { getAttributesValue } from '../../extensions/attributes';
 
 /**
  * Block

@@ -16,7 +16,7 @@ import MaxiModal from '../../editor/library/modal';
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 import {
 	setSVGRatio,
 	setSVGPosition,

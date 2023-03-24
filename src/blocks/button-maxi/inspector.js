@@ -18,8 +18,8 @@ import * as defaultPresets from './defaults';
 import {
 	getAttributesValue,
 	getGroupAttributes,
-	getIconWithColor,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
+import { getIconWithColor } from '../../extensions/styles';
 import { customCss } from './data';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { withMaxiInspector } from '../../extensions/inspector';

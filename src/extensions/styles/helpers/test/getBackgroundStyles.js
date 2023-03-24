@@ -1,8 +1,8 @@
 /**
  * Internal dependencies
  */
-import parseLongAttrKey from '../../dictionary/parseLongAttrKey';
-import parseLongAttrObj from '../../dictionary/parseLongAttrObj';
+import parseLongAttrKey from '../../../attributes/dictionary/parseLongAttrKey';
+import parseLongAttrObj from '../../../attributes/dictionary/parseLongAttrObj';
 
 import {
 	getBlockBackgroundStyles,

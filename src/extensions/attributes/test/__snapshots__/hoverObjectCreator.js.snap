@@ -1,0 +1,437 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`hoverAttributesCreator Returns a color bg object 1`] = `
+Object {
+  "background-color-clip-path-general-hover": Object {
+    "type": "string",
+  },
+  "background-color-clip-path-l-hover": Object {
+    "type": "string",
+  },
+  "background-color-clip-path-m-hover": Object {
+    "type": "string",
+  },
+  "background-color-clip-path-s-hover": Object {
+    "type": "string",
+  },
+  "background-color-clip-path-status-general-hover": Object {
+    "type": "boolean",
+  },
+  "background-color-clip-path-status-l-hover": Object {
+    "type": "boolean",
+  },
+  "background-color-clip-path-status-m-hover": Object {
+    "type": "boolean",
+  },
+  "background-color-clip-path-status-s-hover": Object {
+    "type": "boolean",
+  },
+  "background-color-clip-path-status-xl-hover": Object {
+    "type": "boolean",
+  },
+  "background-color-clip-path-status-xs-hover": Object {
+    "type": "boolean",
+  },
+  "background-color-clip-path-status-xxl-hover": Object {
+    "type": "boolean",
+  },
+  "background-color-clip-path-xl-hover": Object {
+    "type": "string",
+  },
+  "background-color-clip-path-xs-hover": Object {
+    "type": "string",
+  },
+  "background-color-clip-path-xxl-hover": Object {
+    "type": "string",
+  },
+  "background-color-general-hover": Object {
+    "type": "string",
+  },
+  "background-color-l-hover": Object {
+    "type": "string",
+  },
+  "background-color-m-hover": Object {
+    "type": "string",
+  },
+  "background-color-s-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-height-general-hover": Object {
+    "type": "number",
+  },
+  "background-color-wrapper-height-l-hover": Object {
+    "type": "number",
+  },
+  "background-color-wrapper-height-m-hover": Object {
+    "type": "number",
+  },
+  "background-color-wrapper-height-s-hover": Object {
+    "type": "number",
+  },
+  "background-color-wrapper-height-unit-general-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-height-unit-l-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-height-unit-m-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-height-unit-s-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-height-unit-xl-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-height-unit-xs-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-height-unit-xxl-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-height-xl-hover": Object {
+    "type": "number",
+  },
+  "background-color-wrapper-height-xs-hover": Object {
+    "type": "number",
+  },
+  "background-color-wrapper-height-xxl-hover": Object {
+    "type": "number",
+  },
+  "background-color-wrapper-position-bottom-general-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-bottom-l-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-bottom-m-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-bottom-s-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-bottom-unit-general-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-bottom-unit-l-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-bottom-unit-m-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-bottom-unit-s-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-bottom-unit-xl-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-bottom-unit-xs-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-bottom-unit-xxl-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-bottom-xl-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-bottom-xs-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-bottom-xxl-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-left-general-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-left-l-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-left-m-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-left-s-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-left-unit-general-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-left-unit-l-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-left-unit-m-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-left-unit-s-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-left-unit-xl-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-left-unit-xs-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-left-unit-xxl-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-left-xl-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-left-xs-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-left-xxl-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-right-general-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-right-l-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-right-m-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-right-s-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-right-unit-general-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-right-unit-l-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-right-unit-m-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-right-unit-s-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-right-unit-xl-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-right-unit-xs-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-right-unit-xxl-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-right-xl-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-right-xs-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-right-xxl-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-sync-general-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-sync-l-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-sync-m-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-sync-s-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-sync-xl-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-sync-xs-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-sync-xxl-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-top-general-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-top-l-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-top-m-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-top-s-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-top-unit-general-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-top-unit-l-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-top-unit-m-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-top-unit-s-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-top-unit-xl-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-top-unit-xs-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-top-unit-xxl-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-top-xl-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-top-xs-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-position-top-xxl-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-width-general-hover": Object {
+    "type": "number",
+  },
+  "background-color-wrapper-width-l-hover": Object {
+    "type": "number",
+  },
+  "background-color-wrapper-width-m-hover": Object {
+    "type": "number",
+  },
+  "background-color-wrapper-width-s-hover": Object {
+    "type": "number",
+  },
+  "background-color-wrapper-width-unit-general-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-width-unit-l-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-width-unit-m-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-width-unit-s-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-width-unit-xl-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-width-unit-xs-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-width-unit-xxl-hover": Object {
+    "type": "string",
+  },
+  "background-color-wrapper-width-xl-hover": Object {
+    "type": "number",
+  },
+  "background-color-wrapper-width-xs-hover": Object {
+    "type": "number",
+  },
+  "background-color-wrapper-width-xxl-hover": Object {
+    "type": "number",
+  },
+  "background-color-xl-hover": Object {
+    "type": "string",
+  },
+  "background-color-xs-hover": Object {
+    "type": "string",
+  },
+  "background-color-xxl-hover": Object {
+    "type": "string",
+  },
+  "background-palette-color-general-hover": Object {
+    "default": 6,
+    "type": "number",
+  },
+  "background-palette-color-l-hover": Object {
+    "type": "number",
+  },
+  "background-palette-color-m-hover": Object {
+    "type": "number",
+  },
+  "background-palette-color-s-hover": Object {
+    "type": "number",
+  },
+  "background-palette-color-xl-hover": Object {
+    "type": "number",
+  },
+  "background-palette-color-xs-hover": Object {
+    "type": "number",
+  },
+  "background-palette-color-xxl-hover": Object {
+    "type": "number",
+  },
+  "background-palette-opacity-general-hover": Object {
+    "type": "number",
+  },
+  "background-palette-opacity-l-hover": Object {
+    "type": "number",
+  },
+  "background-palette-opacity-m-hover": Object {
+    "type": "number",
+  },
+  "background-palette-opacity-s-hover": Object {
+    "type": "number",
+  },
+  "background-palette-opacity-xl-hover": Object {
+    "type": "number",
+  },
+  "background-palette-opacity-xs-hover": Object {
+    "type": "number",
+  },
+  "background-palette-opacity-xxl-hover": Object {
+    "type": "number",
+  },
+  "background-palette-status-general-hover": Object {
+    "default": true,
+    "type": "boolean",
+  },
+  "background-palette-status-l-hover": Object {
+    "type": "boolean",
+  },
+  "background-palette-status-m-hover": Object {
+    "type": "boolean",
+  },
+  "background-palette-status-s-hover": Object {
+    "type": "boolean",
+  },
+  "background-palette-status-xl-hover": Object {
+    "type": "boolean",
+  },
+  "background-palette-status-xs-hover": Object {
+    "type": "boolean",
+  },
+  "background-palette-status-xxl-hover": Object {
+    "type": "boolean",
+  },
+}
+`;
+
+exports[`hoverAttributesCreator Returns basic background object 1`] = `
+Object {
+  "background-active-media-general-hover": Object {
+    "type": "string",
+  },
+  "background-active-media-l-hover": Object {
+    "type": "string",
+  },
+  "background-active-media-m-hover": Object {
+    "type": "string",
+  },
+  "background-active-media-s-hover": Object {
+    "type": "string",
+  },
+  "background-active-media-xl-hover": Object {
+    "type": "string",
+  },
+  "background-active-media-xs-hover": Object {
+    "type": "string",
+  },
+  "background-active-media-xxl-hover": Object {
+    "type": "string",
+  },
+  "background-status-hover": Object {
+    "default": false,
+    "type": "boolean",
+  },
+}
+`;

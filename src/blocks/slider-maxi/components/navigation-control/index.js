@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { getLastBreakpointAttribute } from '../../../../extensions/styles';
+import { getLastBreakpointAttribute } from '../../../../extensions/attributes';
 import { ToggleSwitch, SelectControl } from '../../../../components';
 
 /**

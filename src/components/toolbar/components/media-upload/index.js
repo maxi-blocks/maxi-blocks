@@ -10,13 +10,13 @@ import { MediaUpload } from '@wordpress/block-editor';
  */
 import Button from '../../../button';
 import { injectImgSVG } from '../../../../extensions/svg';
+import { getAttributesValue } from '../../../../extensions/attributes';
 
 /**
  * External dependencies
  */
 import DOMPurify from 'dompurify';
 import { isEmpty, uniqueId } from 'lodash';
-import { getAttributesValue } from '../../../../extensions/styles';
 
 const ALLOWED_BLOCKS = [
 	'maxi-blocks/image-maxi',

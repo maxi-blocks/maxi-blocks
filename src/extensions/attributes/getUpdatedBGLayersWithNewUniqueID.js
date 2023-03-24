@@ -2,12 +2,12 @@
  * Internal dependencies
  */
 import { injectImgSVG } from '../svg';
+import getAttributesValue from './getAttributesValue';
 
 /**
  * External dependencies
  */
 import { isEmpty } from 'lodash';
-import { getAttributesValue } from '../styles';
 
 /**
  * Replaces the uniqueID in the SVGData object.

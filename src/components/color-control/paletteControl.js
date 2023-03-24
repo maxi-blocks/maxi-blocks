@@ -10,7 +10,7 @@ import { useSelect } from '@wordpress/data';
 import BaseControl from '../base-control';
 import OpacityControl from '../opacity-control';
 import ResetButton from '../reset-control';
-import { getAttributeKey, getBlockStyle } from '../../extensions/styles';
+import { getAttributeKey, getBlockStyle } from '../../extensions/attributes';
 
 /**
  * External dependencies

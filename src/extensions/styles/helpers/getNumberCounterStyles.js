@@ -2,13 +2,13 @@
  * Internal dependencies
  */
 import getColorRGBAString from '../getColorRGBAString';
-import getPaletteAttributes from '../getPaletteAttributes';
-import getAttributesValue from '../getAttributesValue';
+import getPaletteAttributes from '../../attributes/getPaletteAttributes';
+import getAttributesValue from '../../attributes/getAttributesValue';
 /**
  * External dependencies
  */
 import { isNil } from 'lodash';
-import getAttributeKey from '../getAttributeKey';
+import getAttributeKey from '../../attributes/getAttributeKey';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 

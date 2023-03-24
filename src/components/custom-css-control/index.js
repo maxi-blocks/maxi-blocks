@@ -22,7 +22,7 @@ import SelectControl from '../select-control';
  * Styles
  */
 import './editor.scss';
-import { getAttributeKey } from '../../extensions/styles';
+import { getAttributeKey } from '../../extensions/attributes';
 
 /**
  * Component

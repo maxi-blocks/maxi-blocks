@@ -1,8 +1,12 @@
 /**
+ * Internal dependencies
+ */
+import getAttributesValue from '../attributes/getAttributesValue';
+
+/**
  * External dependencies
  */
 import { isNil, isEmpty } from 'lodash';
-import getAttributesValue from './getAttributesValue';
 
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 

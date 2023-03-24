@@ -13,7 +13,7 @@ import AdvancedNumberControl from '../advanced-number-control';
  * External dependencies
  */
 import classnames from 'classnames';
-import { getAttributesValue } from '../../extensions/styles';
+import { getAttributesValue } from '../../extensions/attributes';
 
 /**
  * Component

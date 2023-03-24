@@ -2,12 +2,11 @@
  * Internal dependencies
  */
 import {
+	getAttributesValue,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-	getColorRGBAString,
-	styleProcessor,
-	getAttributesValue,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
+import { getColorRGBAString, styleProcessor } from '../../extensions/styles';
 import {
 	getBackgroundStyles,
 	getBorderStyles,

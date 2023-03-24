@@ -18,7 +18,7 @@ import {
 	SettingTabsControl,
 	TextControl,
 } from '../../../../components';
-import { getDefaultAttribute } from '../../../../extensions/styles';
+import { getDefaultAttribute } from '../../../../extensions/attributes';
 
 const VideoControl = props => {
 	const {

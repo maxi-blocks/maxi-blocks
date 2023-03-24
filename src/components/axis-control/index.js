@@ -18,7 +18,7 @@ import {
 	getDefaultAttribute,
 	getAttributeKey,
 	getAttributesValue,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 import ResetButton from '../reset-control';
 
 /**

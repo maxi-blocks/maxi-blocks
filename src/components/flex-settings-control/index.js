@@ -19,7 +19,7 @@ import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
 	getAttributeKey,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 import getOptions from './utils';
 
 /**

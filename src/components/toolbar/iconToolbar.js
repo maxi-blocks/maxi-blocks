@@ -21,7 +21,7 @@ import PaddingMargin from './components/padding-margin';
 import {
 	getAttributesValue,
 	getGroupAttributes,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 import Popover from '../popover';
 
 /**

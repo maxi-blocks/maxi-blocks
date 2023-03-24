@@ -15,7 +15,7 @@ import {
 	getTemplates,
 	loadColumnsTemplate,
 } from '../../../../extensions/column-templates';
-import { getLastBreakpointAttribute } from '../../../../extensions/styles';
+import { getLastBreakpointAttribute } from '../../../../extensions/attributes';
 
 /**
  * External dependencies

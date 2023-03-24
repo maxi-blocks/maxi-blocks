@@ -6,15 +6,15 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import IconControl from '../icon-control';
-import ToggleSwitch from '../toggle-switch';
-import SettingTabsControl from '../setting-tabs-control';
 import {
 	getAttributesValue,
 	getGroupAttributes,
-	getIconWithColor,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
+import { getIconWithColor } from '../../extensions/styles';
+import IconControl from '../icon-control';
 import ManageHoverTransitions from '../manage-hover-transitions';
+import SettingTabsControl from '../setting-tabs-control';
+import ToggleSwitch from '../toggle-switch';
 
 /**
  * External dependencies

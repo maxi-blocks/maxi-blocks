@@ -1,6 +1,6 @@
 import getHoverEffectsBackgroundStyles from '../getHoverEffectsBackgroundStyles';
 import '@wordpress/i18n';
-import parseLongAttrObj from '../../dictionary/parseLongAttrObj';
+import parseLongAttrObj from '../../../attributes/dictionary/parseLongAttrObj';
 
 describe('getHoverEffectsBackgroundStyles', () => {
 	it('Get a correct hover effects color background style', () => {

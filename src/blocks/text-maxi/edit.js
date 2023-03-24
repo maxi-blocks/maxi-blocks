@@ -13,10 +13,11 @@ import Inspector from './inspector';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
 import {
-	getColorRGBAString,
 	getPaletteAttributes,
 	getGroupAttributes,
-} from '../../extensions/styles';
+	getAttributesValue,
+} from '../../extensions/attributes';
+import { getColorRGBAString } from '../../extensions/styles';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import getStyles from './styles';
 import onMerge from './utils';

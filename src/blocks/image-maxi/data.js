@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { createSelectors } from '../../extensions/styles/custom-css';
+import { createSelectors } from '../../extensions/attributes/custom-css';
 import {
 	AlignmentControl,
 	BorderControl,
@@ -20,12 +20,13 @@ import {
 	getClipPathStyles,
 	getImageShapeStyles,
 } from '../../extensions/styles/helpers';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/attributes';
 import {
 	getCanvasSettings,
 	getAdvancedSettings,
 } from '../../extensions/relations';
-import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
+import { transitionDefault } from '../../extensions/attributes/transitions';
+
 import { getEditorWrapper } from '../../extensions/dom';
 
 /**

@@ -10,7 +10,7 @@ import ScrollEffectsControl from '../scroll-effects-control';
 import {
 	getAttributesValue,
 	getGroupAttributes,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 
 /**

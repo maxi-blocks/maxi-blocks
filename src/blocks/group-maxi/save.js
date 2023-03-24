@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import { ArrowDisplayer } from '../../components';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/attributes';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 
 /**

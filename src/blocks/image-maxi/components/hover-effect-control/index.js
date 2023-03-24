@@ -28,7 +28,7 @@ import {
 	getAttributesValue,
 	getDefaultAttribute,
 	getGroupAttributes,
-} from '../../../../extensions/styles';
+} from '../../../../extensions/attributes';
 
 /**
  * External dependencies

@@ -1,7 +1,7 @@
 import { cloneElement } from '@wordpress/element';
 
 import { isNil, isArray } from 'lodash';
-import getAttributesValue from '../getAttributesValue';
+import getAttributesValue from '../../attributes/getAttributesValue';
 
 const name = 'Remove Fullwidth to Responsive';
 

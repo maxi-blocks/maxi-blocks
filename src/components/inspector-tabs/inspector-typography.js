@@ -13,7 +13,7 @@ import {
 	getAttributeKey,
 	getAttributesValue,
 	getGroupAttributes,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 import ManageHoverTransitions from '../manage-hover-transitions';
 
 /**

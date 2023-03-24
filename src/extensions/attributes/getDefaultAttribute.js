@@ -8,9 +8,9 @@ import { getBlockAttributes } from '@wordpress/blocks';
  * Internal dependencies
  */
 import * as defaults from './defaults/index';
-import { getIsValid } from './utils';
+import getIsValid from './getIsValid';
 import getBreakpointFromAttribute from './getBreakpointFromAttribute';
-import { getBlockData } from '../attributes';
+import getBlockData from './getBlockData';
 import parseLongAttrKey from './dictionary/parseLongAttrKey';
 
 /**

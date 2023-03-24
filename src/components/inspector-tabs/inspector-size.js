@@ -11,7 +11,7 @@ import {
 	getAttributesValue,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 
 /**
  * Component

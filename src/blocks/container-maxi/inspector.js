@@ -9,7 +9,7 @@ import { InspectorControls } from '@wordpress/block-editor';
  */
 import { AccordionControl, SettingTabsControl } from '../../components';
 import { ShapeDividerControl } from './components';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/attributes';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { customCss } from './data';
 import { withMaxiInspector } from '../../extensions/inspector';

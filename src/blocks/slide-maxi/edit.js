@@ -10,15 +10,18 @@ import Inspector from './inspector';
 import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import { BlockInserter, Toolbar } from '../../components';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
+import {
+	getAttributesValue,
+	getLastBreakpointAttribute,
+} from '../../extensions/attributes';
 import getStyles from './styles';
 import SliderContext from '../slider-maxi/context';
+import { copyPasteMapping } from './data';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { copyPasteMapping } from './data';
 
 /**
  * Editor

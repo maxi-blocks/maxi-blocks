@@ -5,8 +5,8 @@ import {
 	getAttributesValue,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-	styleProcessor,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
+import { styleProcessor } from '../../extensions/styles';
 import {
 	getAlignmentFlexStyles,
 	getAlignmentTextStyles,

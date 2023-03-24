@@ -7,7 +7,7 @@ import { getBgLayersSelectorsCss } from '../custom-css-control/utils';
  * External dependencies
  */
 import { isEmpty, pickBy, uniq, without } from 'lodash';
-import { getAttributesValue } from '../../extensions/styles';
+import { getAttributesValue } from '../../extensions/attributes';
 
 const getBgLayersSelectorsKeys = bgLayersSelectors =>
 	uniq(

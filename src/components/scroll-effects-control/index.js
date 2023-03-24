@@ -13,8 +13,8 @@ import {
 	getAttributesValue,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
-import { scrollTypes } from '../../extensions/styles/defaults/scroll';
+} from '../../extensions/attributes';
+import { scrollTypes } from '../../extensions/attributes/defaults/scroll';
 import SelectControl from '../select-control';
 import AdvancedNumberControl from '../advanced-number-control';
 import ToggleSwitch from '../toggle-switch';

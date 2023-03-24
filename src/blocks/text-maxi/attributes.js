@@ -4,13 +4,13 @@
 import {
 	breakpointAttributesCreator,
 	paletteAttributesCreator,
-	transitionAttributesCreator,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
+import { transitionAttributesCreator } from '../../extensions/attributes/transitions';
 
 /**
  * Imports
  */
-import * as attributesData from '../../extensions/styles/defaults/index';
+import * as attributesData from '../../extensions/attributes/defaults/index';
 import { customCss, transition } from './data';
 
 /**

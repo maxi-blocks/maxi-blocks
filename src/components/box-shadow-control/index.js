@@ -21,7 +21,7 @@ import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
 	getAttributeKey,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 import ToggleSwitch from '../toggle-switch';
 
 /**

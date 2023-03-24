@@ -4,8 +4,8 @@
 import {
 	getAttributesValue,
 	getGroupAttributes,
-	styleProcessor,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
+import { styleProcessor } from '../../extensions/styles';
 import {
 	getBackgroundStyles,
 	getBlockBackgroundStyles,

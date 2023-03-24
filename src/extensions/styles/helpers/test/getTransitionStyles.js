@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import getTransitionStyles from '../getTransitionStyles';
-import transitionDefault from '../../transitions/transitionDefault';
+import transitionDefault from '../../../attributes/transitions/transitionDefault';
 
 /**
  * External dependencies

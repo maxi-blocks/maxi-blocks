@@ -17,7 +17,7 @@ import ReusableBlocks from '../reusable-blocks';
 import Delete from '../delete';
 import Alignment from '../alignment';
 import TextGenerator from '../text-generator';
-import { getGroupAttributes } from '../../../../extensions/styles';
+import { getGroupAttributes } from '../../../../extensions/attributes';
 import { openSidebarAccordion } from '../../../../extensions/inspector';
 
 /**

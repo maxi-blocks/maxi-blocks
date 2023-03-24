@@ -11,7 +11,7 @@ import { isEmpty, isString, cloneDeep, isObject } from 'lodash';
 /**
  * Internal dependencies
  */
-import { getAttributesValue, getGroupAttributes } from '../../styles';
+import { getAttributesValue, getGroupAttributes } from '../../attributes';
 import { getCustomFormatValue } from '../formats';
 import { goThroughMaxiBlocks } from '../../maxi-block';
 

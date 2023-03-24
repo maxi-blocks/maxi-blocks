@@ -2,13 +2,13 @@
  * Internal dependencies
  */
 import getColorRGBAString from '../getColorRGBAString';
-import getPaletteAttributes from '../getPaletteAttributes';
+import getPaletteAttributes from '../../attributes/getPaletteAttributes';
 
 /**
  * External dependencies
  */
 import { isNil } from 'lodash';
-import getAttributesValue from '../getAttributesValue';
+import getAttributesValue from '../../attributes/getAttributesValue';
 
 const getShapeStyles = (obj, target, blockStyle) => {
 	const response = {

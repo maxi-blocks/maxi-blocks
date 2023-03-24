@@ -11,8 +11,8 @@ import {
 	getAttributesValue,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
-import { opacity as opacityAttr } from '../../extensions/styles/defaults';
+} from '../../extensions/attributes';
+import { opacity as opacityAttr } from '../../extensions/attributes/defaults';
 import SettingTabsControl from '../setting-tabs-control';
 import ToggleSwitch from '../toggle-switch';
 import ManageHoverTransitions from '../manage-hover-transitions';

@@ -2,26 +2,26 @@
 /**
  * WordPress dependencies
  */
+import { dispatch, select } from '@wordpress/data';
 import {
 	forwardRef,
-	useEffect,
-	useState,
 	memo,
 	useCallback,
+	useEffect,
 	useReducer,
 	useRef,
+	useState,
 } from '@wordpress/element';
-import { dispatch, select } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import {
-	getHasParallax,
-	getLastBreakpointAttribute,
 	getAttributesValue,
-} from '../../extensions/styles';
+	getLastBreakpointAttribute,
+} from '../../extensions/attributes';
 import { marginValueCalculator } from '../../extensions/dom';
+import { getHasParallax } from '../../extensions/styles';
 import InnerBlocksBlock from './innerBlocksBlock';
 import MainMaxiBlock from './mainMaxiBlock';
 
@@ -29,8 +29,8 @@ import MainMaxiBlock from './mainMaxiBlock';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isEqual, isNil } from 'lodash';
 import mobile from 'is-mobile';
+import { isEmpty, isEqual, isNil } from 'lodash';
 
 /**
  * Styles

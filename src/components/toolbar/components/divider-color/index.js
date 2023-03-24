@@ -12,7 +12,7 @@ import ToolbarPopover from '../toolbar-popover';
 import {
 	getAttributeKey,
 	getLastBreakpointAttribute,
-} from '../../../../extensions/styles';
+} from '../../../../extensions/attributes';
 
 /**
  * Styles & Icons

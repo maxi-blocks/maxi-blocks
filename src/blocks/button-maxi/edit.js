@@ -13,10 +13,8 @@ import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { Toolbar } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import IconToolbar from '../../components/toolbar/iconToolbar';
-import {
-	getAttributesValue,
-	getIconPositionClass,
-} from '../../extensions/styles';
+import { getAttributesValue } from '../../extensions/attributes';
+import { getIconPositionClass } from '../../extensions/styles';
 import { getSVGWidthHeightRatio } from '../../extensions/svg';
 import getStyles from './styles';
 import { copyPasteMapping, maxiAttributes } from './data';

@@ -20,10 +20,8 @@ import {
 	MaxiPopoverButton,
 } from '../../components';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-import {
-	getIsOverflowHidden,
-	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+import { getLastBreakpointAttribute } from '../../extensions/attributes';
+import { getIsOverflowHidden } from '../../extensions/styles';
 import {
 	getSVGWidthHeightRatio,
 	togglePreserveAspectRatio,

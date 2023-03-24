@@ -1,13 +1,13 @@
 import {
 	border as defaultBorder,
 	borderWidth as defaultBorderWidth,
-} from '../../extensions/styles/defaults/border';
+} from '../../extensions/attributes/defaults/border';
 
 import {
 	getAttributeKey,
 	getAttributesValue,
 	prefixAttributesCreator,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 
 const getBorderDefault = (
 	prefix,

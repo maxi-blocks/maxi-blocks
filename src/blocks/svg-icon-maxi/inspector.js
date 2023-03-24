@@ -20,9 +20,9 @@ import { SvgAltControl, SvgColorControl } from './components';
 import {
 	getAttributeKey,
 	getAttributesValue,
-	getColorRGBAString,
 	getGroupAttributes,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
+import { getColorRGBAString } from '../../extensions/styles';
 import { setSVGContentWithBlockStyle } from '../../extensions/svg';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { customCss } from './data';

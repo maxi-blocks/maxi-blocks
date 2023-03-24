@@ -11,7 +11,7 @@ import { AccordionControl, SettingTabsControl } from '../../components';
 import { ColumnSizeControl } from './components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { customCss } from './data';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/attributes';
 import { withMaxiInspector } from '../../extensions/inspector';
 
 /**

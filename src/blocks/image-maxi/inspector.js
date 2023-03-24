@@ -24,7 +24,7 @@ import {
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { customCss } from './data';
 import { withMaxiInspector } from '../../extensions/inspector';

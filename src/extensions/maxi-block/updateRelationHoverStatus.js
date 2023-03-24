@@ -8,13 +8,12 @@ import { dispatch } from '@wordpress/data';
  */
 import goThroughMaxiBlocks from './goThroughMaxiBlocks';
 import getHoverStatus from '../relations/getHoverStatus';
-import { getBlockData } from '../attributes';
+import { getBlockData, getAttributesValue } from '../attributes';
 
 /**
  * External dependencies
  */
 import { isEmpty, isEqual } from 'lodash';
-import { getAttributesValue } from '../styles';
 
 const updateRelationHoverStatus = (blockName, blockAttributes) => {
 	const { uniqueID } = blockAttributes;

@@ -1,25 +1,27 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
 import { useEffect } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
  */
+import {
+	getAttributesValue,
+	getDefaultAttribute,
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/attributes';
+import {
+	createTransitionObj,
+	getTransitionData,
+} from '../../extensions/attributes/transitions';
 import InfoBox from '../info-box';
 import SelectControl from '../select-control';
 import SettingTabsControl from '../setting-tabs-control';
 import ToggleSwitch from '../toggle-switch';
 import TransitionControl from '../transition-control';
-import {
-	createTransitionObj,
-	getAttributesValue,
-	getDefaultAttribute,
-	getGroupAttributes,
-	getLastBreakpointAttribute,
-	getTransitionData,
-} from '../../extensions/styles';
 
 /**
  * External dependencies

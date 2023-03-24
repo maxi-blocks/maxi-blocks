@@ -3,15 +3,15 @@
  */
 import getBoxShadowStyles from './getBoxShadowStyles';
 import getColorRGBAString from '../getColorRGBAString';
-import getGroupAttributes from '../getGroupAttributes';
-import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
-import getPaletteAttributes from '../getPaletteAttributes';
+import getGroupAttributes from '../../attributes/getGroupAttributes';
+import getLastBreakpointAttribute from '../../attributes/getLastBreakpointAttribute';
+import getPaletteAttributes from '../../attributes/getPaletteAttributes';
 
 /**
  * External dependencies
  */
 import { isNil, isEmpty, isNumber } from 'lodash';
-import getAttributesValue from '../getAttributesValue';
+import getAttributesValue from '../../attributes/getAttributesValue';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 

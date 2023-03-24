@@ -1,5 +1,5 @@
-import { createSelectors } from '../../custom-css';
-import parseLongAttrObj from '../../dictionary/parseLongAttrObj';
+import { createSelectors } from '../../../attributes/custom-css';
+import parseLongAttrObj from '../../../attributes/dictionary/parseLongAttrObj';
 import getTransformStyles from '../getTransformStyles';
 
 describe('getTransformStyles', () => {

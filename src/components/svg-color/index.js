@@ -5,8 +5,8 @@ import ColorControl from '../color-control';
 import {
 	getAttributeKey,
 	getAttributesValue,
-	getColorRGBAString,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
+import { getColorRGBAString } from '../../extensions/styles';
 import { setSVGContent, setSVGContentHover } from '../../extensions/svg';
 
 /**

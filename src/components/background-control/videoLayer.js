@@ -18,7 +18,7 @@ import {
 	getAttributeKey,
 	getAttributesValue,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 import { videoUrlRegex } from '../../extensions/video';
 
 /**

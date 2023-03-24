@@ -1,4 +1,4 @@
-import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+import getLastBreakpointAttribute from '../../attributes/getLastBreakpointAttribute';
 
 /**
  * General

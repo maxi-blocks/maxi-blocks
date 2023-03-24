@@ -8,6 +8,7 @@ import { RichText } from '@wordpress/block-editor';
  * Internal dependencies
  */
 import { Button } from '../../../../components';
+import { getAttributesValue } from '../../../../extensions/attributes';
 
 /**
  * External dependencies
@@ -15,7 +16,6 @@ import { Button } from '../../../../components';
 import { isEmpty } from 'lodash';
 import { Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
-import { getAttributesValue } from '../../../../extensions/styles';
 
 const Markers = props => {
 	const { attributes, maxiSetAttributes, setIsDraggingMarker } = props;

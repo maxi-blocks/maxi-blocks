@@ -1,4 +1,4 @@
-import { getAttributesValue } from '../styles';
+import { getAttributesValue } from '../attributes';
 
 const getLinkAttributesFromLinkSettings = (
 	linkSettings,

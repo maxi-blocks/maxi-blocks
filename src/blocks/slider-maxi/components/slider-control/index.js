@@ -9,7 +9,7 @@ import { __ } from '@wordpress/i18n';
 import {
 	getAttributesValue,
 	getDefaultAttribute,
-} from '../../../../extensions/styles';
+} from '../../../../extensions/attributes';
 import {
 	ToggleSwitch,
 	AdvancedNumberControl,

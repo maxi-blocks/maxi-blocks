@@ -12,7 +12,7 @@ import AdvancedNumberControl from '../../../advanced-number-control';
 import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-} from '../../../../extensions/styles';
+} from '../../../../extensions/attributes';
 import { DefaultDividersControl } from '../../../divider-control';
 
 /**

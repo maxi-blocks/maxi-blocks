@@ -11,7 +11,7 @@ import ToolbarPopover from '../toolbar-popover';
 import {
 	getAttributesValue,
 	getDefaultAttribute,
-} from '../../../../extensions/styles';
+} from '../../../../extensions/attributes';
 
 /**
  * Styles & Icons

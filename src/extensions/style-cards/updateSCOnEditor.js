@@ -6,16 +6,16 @@ import { dispatch } from '@wordpress/data';
 /**
  * Internal dependencies
  */
+import { getActiveColourFromSC } from '../../editor/style-cards/utils';
 import {
 	getAttributesValue,
-	getColorRGBAString,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-} from '../styles';
+} from '../attributes';
+import { getSiteEditorIframe } from '../fse';
+import { getColorRGBAString } from '../styles';
 import { getTypographyStyles } from '../styles/helpers';
 import { loadFonts } from '../text/fonts';
-import { getSiteEditorIframe } from '../fse';
-import { getActiveColourFromSC } from '../../editor/style-cards/utils';
 
 /**
  * External dependencies

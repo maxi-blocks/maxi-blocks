@@ -16,7 +16,7 @@ import {
 	getAttributesValue,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-} from '../../../../extensions/styles';
+} from '../../../../extensions/attributes';
 
 const AccordionSettings = props => {
 	const { onChange, breakpoint, clientId } = props;

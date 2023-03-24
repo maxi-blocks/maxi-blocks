@@ -29,8 +29,9 @@ import { containerIcon } from '../../icons';
 /**
  * Migrators
  */
-import { blockMigrator } from '../../extensions/styles/migrators';
-import shapeDividerMigrator from '../../extensions/styles/migrators/shapeDividerMigrator';
+import { blockMigrator } from '../../extensions/maxi-block/migrators';
+import shapeDividerMigrator from '../../extensions/maxi-block/migrators/shapeDividerMigrator';
+import { getAttributesValue } from '../../extensions/attributes';
 
 /**
  * Block

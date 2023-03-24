@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import AlignmentControl from '../../../alignment-control';
-import { getGroupAttributes } from '../../../../extensions/styles';
+import { getGroupAttributes } from '../../../../extensions/attributes';
 import Button from '../../../button';
 import Icon from '../../../icon';
 import Dropdown from '../../../dropdown';

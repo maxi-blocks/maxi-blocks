@@ -22,7 +22,7 @@ import {
 	getAttributeKey,
 	getAttributesValue,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 import getClipPath from './getClipPath';
 import optionColors from './optionColors';
 import typeDefaults from './typeDefaults';

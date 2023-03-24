@@ -10,7 +10,7 @@ import SettingTabsControl from '../setting-tabs-control';
 import {
 	getAttributeKey,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 import Icon from '../icon';
 
 /**

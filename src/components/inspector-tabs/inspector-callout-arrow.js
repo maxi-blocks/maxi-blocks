@@ -10,7 +10,7 @@ import ArrowControl from '../arrow-control';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 import ResponsiveTabsControl from '../responsive-tabs-control';
 
 /**

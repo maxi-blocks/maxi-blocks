@@ -2,8 +2,8 @@
  * Internal dependencies
  */
 import getColorRGBAString from '../getColorRGBAString';
-import getPaletteAttributes from '../getPaletteAttributes';
-import getAttributeKey from '../getAttributeKey';
+import getPaletteAttributes from '../../attributes/getPaletteAttributes';
+import getAttributeKey from '../../attributes/getAttributeKey';
 
 /**
  * External dependencies

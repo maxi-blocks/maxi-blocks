@@ -1,8 +1,8 @@
 /**
  * Internal dependencies
  */
-import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
-import getAttributesValue from '../getAttributesValue';
+import getLastBreakpointAttribute from '../../attributes/getLastBreakpointAttribute';
+import getAttributesValue from '../../attributes/getAttributesValue';
 
 /**
  * External dependencies

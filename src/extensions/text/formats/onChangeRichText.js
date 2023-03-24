@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getAttributesValue, getGroupAttributes } from '../../styles';
+import { getAttributesValue, getGroupAttributes } from '../../attributes';
 import getHasNativeFormat from './getHasNativeFormat';
 import setCustomFormatsWhenPaste from './setCustomFormatsWhenPaste';
 

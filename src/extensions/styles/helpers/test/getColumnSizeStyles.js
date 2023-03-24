@@ -1,4 +1,4 @@
-import parseLongAttrObj from '../../dictionary/parseLongAttrObj';
+import parseLongAttrObj from '../../../attributes/dictionary/parseLongAttrObj';
 import getColumnSizeStyles, { getColumnNum } from '../getColumnSizeStyles';
 
 const rowGapProps = {

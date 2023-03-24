@@ -24,7 +24,7 @@ import { isEmpty, isNumber, merge, trim } from 'lodash';
  * Styles
  */
 import './editor.scss';
-import { getIsValid } from '../../extensions/styles';
+import { getIsValid } from '../../extensions/attributes';
 
 /**
  * Component

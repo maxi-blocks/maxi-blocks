@@ -2,15 +2,15 @@
  * Internal dependencies
  */
 import getColorRGBAString from '../getColorRGBAString';
-import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
-import getAttributesValue from '../getAttributesValue';
-import getDefaultAttribute from '../getDefaultAttribute';
+import getLastBreakpointAttribute from '../../attributes/getLastBreakpointAttribute';
+import getAttributesValue from '../../attributes/getAttributesValue';
+import getDefaultAttribute from '../../attributes/getDefaultAttribute';
 
 /**
  * External dependencies
  */
 import { isBoolean, isNil, isNumber, round, isEmpty } from 'lodash';
-import getAttributeKey from '../getAttributeKey';
+import getAttributeKey from '../../attributes/getAttributeKey';
 
 /**
  * General

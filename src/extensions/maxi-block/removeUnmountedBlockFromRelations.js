@@ -12,7 +12,7 @@ import goThroughMaxiBlocks from './goThroughMaxiBlocks';
  * External dependencies
  */
 import { isEmpty, isEqual } from 'lodash';
-import { getAttributesValue } from '../styles';
+import { getAttributesValue } from '../attributes';
 
 const removeUnmountedBlockFromRelations = uniqueID => {
 	const { isDraggingBlocks } = select('core/block-editor');

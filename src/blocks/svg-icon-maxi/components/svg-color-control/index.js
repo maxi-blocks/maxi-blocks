@@ -12,7 +12,7 @@ import {
 	ToggleSwitch,
 	SvgColor,
 } from '../../../../components';
-import { getAttributesValue } from '../../../../extensions/styles';
+import { getAttributesValue } from '../../../../extensions/attributes';
 
 const SvgColorControl = props => {
 	const {

@@ -1,14 +1,14 @@
 /**
  * Internal dependencies
  */
-import getAttributesValue from '../getAttributesValue';
+import getAttributesValue from '../../attributes/getAttributesValue';
 import getBorderStyles from './getBorderStyles';
 import getColorRGBAString from '../getColorRGBAString';
 import getDisplayStyles from './getDisplayStyles';
-import getGroupAttributes from '../getGroupAttributes';
+import getGroupAttributes from '../../attributes/getGroupAttributes';
 import getImageShapeStyles from './getImageShapeStyles';
-import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
-import getPaletteAttributes from '../getPaletteAttributes';
+import getLastBreakpointAttribute from '../../attributes/getLastBreakpointAttribute';
+import getPaletteAttributes from '../../attributes/getPaletteAttributes';
 
 /**
  * External dependencies

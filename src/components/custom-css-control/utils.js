@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { isNil, isEmpty, without } from 'lodash';
-import { getAttributesValue } from '../../extensions/styles';
+import { getAttributesValue } from '../../extensions/attributes';
 
 export function getBgLayersSelectorsCss(
 	bgLayers,

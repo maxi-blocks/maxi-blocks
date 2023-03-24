@@ -1,13 +1,13 @@
 /**
  * Internal dependencies
  */
-import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+import getLastBreakpointAttribute from '../../attributes/getLastBreakpointAttribute';
 
 /**
  * External dependencies
  */
 import { isNumber, round } from 'lodash';
-import getAttributeKey from '../getAttributeKey';
+import getAttributeKey from '../../attributes/getAttributeKey';
 
 /**
  * General

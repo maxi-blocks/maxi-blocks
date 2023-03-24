@@ -16,7 +16,7 @@ import getAreaLabel from './utils';
 import classnames from 'classnames';
 import { isNil, isEmpty } from 'lodash';
 import { RichText } from '@wordpress/block-editor';
-import { getAttributesValue } from '../../extensions/styles';
+import { getAttributesValue } from '../../extensions/attributes';
 
 /**
  * Save

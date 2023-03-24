@@ -29,7 +29,8 @@ import withMaxiLoader from '../../extensions/maxi-block/withMaxiLoader';
 /**
  * Migrators
  */
-import { blockMigrator } from '../../extensions/styles/migrators';
+import { blockMigrator } from '../../extensions/maxi-block/migrators';
+import { getAttributesValue } from '../../extensions/attributes';
 
 /**
  * Block

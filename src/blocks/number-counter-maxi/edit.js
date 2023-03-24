@@ -1,28 +1,29 @@
 /**
  * WordPress dependencies
  */
-import { useState, useEffect, useRef, createRef } from '@wordpress/element';
+import { createRef, useEffect, useRef, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
-import Inspector from './inspector';
+import { BlockResizer, Toolbar } from '../../components';
+import { getMaxiBlockAttributes, MaxiBlock } from '../../components/maxi-block';
 import {
 	getResizerSize,
 	MaxiBlockComponent,
 	withMaxiProps,
 } from '../../extensions/maxi-block';
-import { BlockResizer, Toolbar } from '../../components';
-import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
+import Inspector from './inspector';
 
 import {
+	getAttributesValue,
 	getGroupAttributes,
-	getIsOverflowHidden,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
-import getStyles from './styles';
+} from '../../extensions/attributes';
+import { getIsOverflowHidden } from '../../extensions/styles';
 import { getBreakpoints } from '../../extensions/styles/helpers';
 import { copyPasteMapping } from './data';
+import getStyles from './styles';
 
 /**
  * External dependencies

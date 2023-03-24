@@ -26,7 +26,7 @@ import DateFormatting from './custom-date-formatting';
 import {
 	getAttributesValue,
 	getDefaultAttribute,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 
 /**
  * External dependencies

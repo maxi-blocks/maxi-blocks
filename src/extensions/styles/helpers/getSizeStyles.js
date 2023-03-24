@@ -1,15 +1,15 @@
 /**
  * Internal dependencies
  */
-import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
-import getDefaultAttribute from '../getDefaultAttribute';
-import getAttributesValue from '../getAttributesValue';
+import getLastBreakpointAttribute from '../../attributes/getLastBreakpointAttribute';
+import getDefaultAttribute from '../../attributes/getDefaultAttribute';
+import getAttributesValue from '../../attributes/getAttributesValue';
 
 /**
  * External dependencies
  */
 import { isNumber, isNil } from 'lodash';
-import getAttributeKey from '../getAttributeKey';
+import getAttributeKey from '../../attributes/getAttributeKey';
 
 /**
  * General

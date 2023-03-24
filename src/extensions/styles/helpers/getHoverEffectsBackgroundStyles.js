@@ -1,13 +1,13 @@
 /**
  * Internal dependencies
  */
-import getGroupAttributes from '../getGroupAttributes';
-import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+import getGroupAttributes from '../../attributes/getGroupAttributes';
+import getLastBreakpointAttribute from '../../attributes/getLastBreakpointAttribute';
 import {
 	getColorBackgroundObject,
 	getGradientBackgroundObject,
 } from './getBackgroundStyles';
-import getAttributesValue from '../getAttributesValue';
+import getAttributesValue from '../../attributes/getAttributesValue';
 
 /**
  * External dependencies

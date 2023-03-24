@@ -1,12 +1,23 @@
 /**
  * WordPress dependencies.
  */
-import { __ } from '@wordpress/i18n';
 import { select, useDispatch } from '@wordpress/data';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
  */
+import {
+	getAttributesValue,
+	getBlockData,
+	getDefaultAttribute,
+	getGroupAttributes,
+} from '../../extensions/attributes';
+import { createTransitionObj } from '../../extensions/attributes/transitions';
+import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
+import { openSidebarAccordion } from '../../extensions/inspector';
+import { goThroughMaxiBlocks } from '../../extensions/maxi-block';
+import { getHoverStatus } from '../../extensions/relations';
 import Button from '../button';
 import InfoBox from '../info-box';
 import ListControl from '../list-control';
@@ -15,17 +26,6 @@ import SelectControl from '../select-control';
 import SettingTabsControl from '../setting-tabs-control';
 import TextControl from '../text-control';
 import TransitionControl from '../transition-control';
-import { openSidebarAccordion } from '../../extensions/inspector';
-import {
-	createTransitionObj,
-	getAttributesValue,
-	getDefaultAttribute,
-	getGroupAttributes,
-} from '../../extensions/styles';
-import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
-import { goThroughMaxiBlocks } from '../../extensions/maxi-block';
-import { getHoverStatus } from '../../extensions/relations';
-import { getBlockData } from '../../extensions/attributes';
 
 /**
  * External dependencies

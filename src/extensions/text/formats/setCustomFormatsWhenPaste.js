@@ -13,7 +13,7 @@ import getInstancePositions from './getInstancePositions';
 /**
  * External dependencies
  */
-import getGroupAttributes from '../../styles/getGroupAttributes';
+import getGroupAttributes from '../../attributes/getGroupAttributes';
 
 /**
  * Check if the RichText format value is formatted with requested format

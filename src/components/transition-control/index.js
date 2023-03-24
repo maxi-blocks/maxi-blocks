@@ -15,7 +15,7 @@ import {
 	getAttributeKey,
 	getAttributesValue,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 import withRTC from '../../extensions/maxi-block/withRTC';
 
 /**

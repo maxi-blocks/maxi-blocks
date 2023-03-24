@@ -16,7 +16,7 @@ import {
 	getGroupAttributes,
 	getBlockStyle,
 	getDefaultAttribute,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 import { getDefaultLayerAttr } from './utils';
 import { getPaletteColor } from '../../extensions/style-cards';
 

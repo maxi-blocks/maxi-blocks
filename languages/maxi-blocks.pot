@@ -3548,8 +3548,8 @@ msgstr ""
 msgid "No background layers added"
 msgstr ""
 
-#: src/extensions/styles/defaults/hover.js:154
-#: src/extensions/styles/defaults/hover.js:173
+#: src/extensions/attributes/defaults/hover.js:154
+#: src/extensions/attributes/defaults/hover.js:173
 msgid "Add your Hover Title here"
 msgstr ""
 

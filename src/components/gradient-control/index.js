@@ -12,7 +12,7 @@ import OpacityControl from '../opacity-control';
 import {
 	getAttributeKey,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 
 /**
  * External dependencies

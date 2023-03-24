@@ -6,7 +6,7 @@ jest.mock('@wordpress/data', () => {
 	};
 });
 import { select } from '@wordpress/data';
-import parseLongAttrObj from '../../dictionary/parseLongAttrObj';
+import parseLongAttrObj from '../../../attributes/dictionary/parseLongAttrObj';
 
 jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 	return jest.fn(() => {

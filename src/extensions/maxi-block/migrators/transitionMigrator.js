@@ -2,15 +2,15 @@
  * This migrator is used to ensure transition objects are complete
  */
 
-import breakpointAttributesCreator from '../breakpointAttributesCreator';
+import breakpointAttributesCreator from '../../attributes/breakpointAttributesCreator';
 import { getBlockNameFromUniqueID } from './utils';
 import { getBlockData } from '../../attributes';
-import getTransformTransitionData from '../transitions/getTransformTransitionData';
-import transitionDefault from '../transitions/transitionDefault';
+import getTransformTransitionData from '../../attributes/transitions/getTransformTransitionData';
+import transitionDefault from '../../attributes/transitions/transitionDefault';
 
 import { isNil } from 'lodash';
-import getDefaultAttribute from '../getDefaultAttribute';
-import createTransitionObj from '../transitions/createTransitionObj';
+import getDefaultAttribute from '../../attributes/getDefaultAttribute';
+import createTransitionObj from '../../attributes/transitions/createTransitionObj';
 
 const name = 'Transition migrator';
 

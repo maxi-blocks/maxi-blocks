@@ -17,7 +17,7 @@ import {
 	SkinControl,
 	PlaceholderColorControl,
 } from './components';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/attributes';
 import { customCss, prefixes } from './data';
 import { withMaxiInspector } from '../../extensions/inspector';
 import * as inspectorTabs from '../../components/inspector-tabs';

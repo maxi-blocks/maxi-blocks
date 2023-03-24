@@ -2,13 +2,13 @@
  * Internal dependencies
  */
 import getColorRGBAString from '../getColorRGBAString';
-import getPaletteAttributes from '../getPaletteAttributes';
+import getPaletteAttributes from '../../attributes/getPaletteAttributes';
 
 /**
  * External dependencies
  */
 import { isNil } from 'lodash';
-import getAttributeKey from '../getAttributeKey';
+import getAttributeKey from '../../attributes/getAttributeKey';
 
 const getIconStyles = (
 	obj,

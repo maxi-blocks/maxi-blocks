@@ -26,7 +26,7 @@ import {
 	getAttributesValue,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-} from '../styles';
+} from '../attributes';
 import { getEditorWrapper } from '../dom';
 
 /**

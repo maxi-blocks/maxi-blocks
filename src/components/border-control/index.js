@@ -23,7 +23,7 @@ import {
 	getLastBreakpointAttribute,
 	getAttributeKey,
 	getDefaultAttribute,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 
 /**
  * External dependencies

@@ -4,16 +4,20 @@
 import { select } from '@wordpress/data';
 
 /**
- * External dependencies
+ * Internal dependencies
  */
-import { isEmpty, isNil, isNumber, isBoolean } from 'lodash';
 import getCustomFormat from './getCustomFormat';
 import {
 	getAttributeKey,
 	getAttributesValue,
 	getBlockStyle,
-} from '../../styles';
+} from '../../attributes';
 import { getTypographyFromSC } from '../../style-cards';
+
+/**
+ * External dependencies
+ */
+import { isEmpty, isNil, isNumber, isBoolean } from 'lodash';
 
 /**
  * Ensures that custom formats on typography is an object

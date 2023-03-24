@@ -1,5 +1,5 @@
-import { noTypeDictionary } from '../dictionary/attributesDictionary';
-import parseLongAttrObj from '../dictionary/parseLongAttrObj';
+import { noTypeDictionary } from '../../attributes/dictionary/attributesDictionary';
+import parseLongAttrObj from '../../attributes/dictionary/parseLongAttrObj';
 
 const name = 'Dictionary migrator';
 

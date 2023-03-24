@@ -1,10 +1,10 @@
 /**
  * Imports
  */
-import * as attributesData from '../../extensions/styles/defaults/index';
-import { transitionAttributesCreator } from '../../extensions/styles';
+import * as attributesData from '../../extensions/attributes/defaults/index';
+import { transitionAttributesCreator } from '../../extensions/attributes/transitions';
 import { customCss } from './data';
-import blockAttributesShorter from '../../extensions/styles/dictionary/blockAttributesShorter';
+import blockAttributesShorter from '../../extensions/attributes/dictionary/blockAttributesShorter';
 
 /**
  * Attributes

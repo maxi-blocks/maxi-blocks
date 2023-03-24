@@ -15,7 +15,7 @@ import {
  * External dependencies
  */
 import { PuffLoader } from 'react-spinners';
-import { getAttributesValue } from '../styles';
+import { getAttributesValue } from '../attributes';
 
 const sentences = [
 	__('Please wait while the minions whip up some magic', 'maxi-blocks'),

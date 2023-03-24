@@ -1,8 +1,15 @@
-import { isArray, isNil } from 'lodash';
-
+/**
+ * Internal dependencies
+ */
 import getColorRGBAString from './getColorRGBAString';
 import { setSVGContent, setSVGContentHover } from '../svg';
-import getAttributesValue from './getAttributesValue';
+import getAttributeKey from '../attributes/getAttributeKey';
+import { getAttributesValue } from '../attributes';
+
+/**
+ * External dependencies
+ */
+import { isArray, isNil } from 'lodash';
 
 const getIconWithColor = (attributes, args = {}, prefix = '') => {
 	const {
@@ -39,7 +46,9 @@ const getIconWithColor = (attributes, args = {}, prefix = '') => {
 		if (
 			type === 'fill' ||
 			useIconColor ||
-			(isHover && !useIconColor && !attributes['typography-status-hover'])
+			(isHover &&
+				!useIconColor &&
+				!attributes[getAttributeKey('typography-status-hover')])
 		) {
 			if (!paletteColor)
 				paletteColor = getAttributesValue({

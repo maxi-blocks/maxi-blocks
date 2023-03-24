@@ -5,7 +5,7 @@ import {
 	getCanvasSettings,
 	getAdvancedSettings,
 } from '../../extensions/relations';
-import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
+import { transitionDefault } from '../../extensions/attributes/transitions';
 
 const headerPrefix = 'header-';
 const contentPrefix = 'content-';

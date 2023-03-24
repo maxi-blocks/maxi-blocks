@@ -1,15 +1,17 @@
 /**
  * Internal dependencies
  */
+import { getSelectorsCss } from '../../components/custom-css-control/utils';
+import { getTransformSelectors } from '../../components/transform-control/utils';
+import {
+	getTransformTransitionData,
+	transitionDefault,
+} from '../attributes/transitions';
 import {
 	getCustomCssObject,
 	getTransformStyles,
 	getTransitionStyles,
 } from './helpers';
-import { getSelectorsCss } from '../../components/custom-css-control/utils';
-import { getTransformSelectors } from '../../components/transform-control/utils';
-import getTransformTransitionData from './transitions/getTransformTransitionData';
-import transitionDefault from './transitions/transitionDefault';
 
 /**
  * External dependencies

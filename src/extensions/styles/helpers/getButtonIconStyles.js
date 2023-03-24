@@ -16,10 +16,10 @@ import getBorderStyles from './getBorderStyles';
 import { getSVGStyles } from './getSVGStyles';
 import getIconStyles from './getIconStyles';
 import getIconPathStyles from './getIconPathStyles';
-import getGroupAttributes from '../getGroupAttributes';
-import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+import getGroupAttributes from '../../attributes/getGroupAttributes';
+import getLastBreakpointAttribute from '../../attributes/getLastBreakpointAttribute';
 import getIconSize from './getIconSize';
-import getAttributesValue from '../getAttributesValue';
+import getAttributesValue from '../../attributes/getAttributesValue';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 

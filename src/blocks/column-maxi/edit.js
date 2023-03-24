@@ -6,26 +6,27 @@ import { createRef } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import Inspector from './inspector';
-import RowContext from '../row-maxi/context';
-import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
 import { BlockInserter, BlockResizer, Toolbar } from '../../components';
-import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-import { getColumnSizeStyles } from '../../extensions/styles/helpers';
+import { getMaxiBlockAttributes, MaxiBlock } from '../../components/maxi-block';
 import {
+	getAttributesValue,
 	getGroupAttributes,
-	getIsOverflowHidden,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
-import getStyles from './styles';
+} from '../../extensions/attributes';
+import { MaxiBlockComponent, withMaxiProps } from '../../extensions/maxi-block';
+import { getIsOverflowHidden } from '../../extensions/styles';
+import { getColumnSizeStyles } from '../../extensions/styles/helpers';
+import RowContext from '../row-maxi/context';
 import { copyPasteMapping } from './data';
+import Inspector from './inspector';
+import getStyles from './styles';
 import getRowBorderRadius from './utils';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { round, isEqual } from 'lodash';
+import { isEqual, round } from 'lodash';
 
 /**
  * Editor

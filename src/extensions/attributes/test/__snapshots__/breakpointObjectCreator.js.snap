@@ -1,0 +1,761 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`breakpointAttributesCreator Returns an image bg object 1`] = `
+Object {
+  "background-image-attachment-general": Object {
+    "default": "scroll",
+    "type": "string",
+  },
+  "background-image-attachment-l": Object {
+    "type": "string",
+  },
+  "background-image-attachment-m": Object {
+    "type": "string",
+  },
+  "background-image-attachment-s": Object {
+    "type": "string",
+  },
+  "background-image-attachment-xl": Object {
+    "type": "string",
+  },
+  "background-image-attachment-xs": Object {
+    "type": "string",
+  },
+  "background-image-attachment-xxl": Object {
+    "type": "string",
+  },
+  "background-image-clip-general": Object {
+    "default": "border-box",
+    "type": "string",
+  },
+  "background-image-clip-l": Object {
+    "type": "string",
+  },
+  "background-image-clip-m": Object {
+    "type": "string",
+  },
+  "background-image-clip-path-general": Object {
+    "default": "none",
+    "type": "string",
+  },
+  "background-image-clip-path-l": Object {
+    "type": "string",
+  },
+  "background-image-clip-path-m": Object {
+    "type": "string",
+  },
+  "background-image-clip-path-s": Object {
+    "type": "string",
+  },
+  "background-image-clip-path-status-general": Object {
+    "default": false,
+    "type": "boolean",
+  },
+  "background-image-clip-path-status-l": Object {
+    "type": "boolean",
+  },
+  "background-image-clip-path-status-m": Object {
+    "type": "boolean",
+  },
+  "background-image-clip-path-status-s": Object {
+    "type": "boolean",
+  },
+  "background-image-clip-path-status-xl": Object {
+    "type": "boolean",
+  },
+  "background-image-clip-path-status-xs": Object {
+    "type": "boolean",
+  },
+  "background-image-clip-path-status-xxl": Object {
+    "type": "boolean",
+  },
+  "background-image-clip-path-xl": Object {
+    "type": "string",
+  },
+  "background-image-clip-path-xs": Object {
+    "type": "string",
+  },
+  "background-image-clip-path-xxl": Object {
+    "type": "string",
+  },
+  "background-image-clip-s": Object {
+    "type": "string",
+  },
+  "background-image-clip-xl": Object {
+    "type": "string",
+  },
+  "background-image-clip-xs": Object {
+    "type": "string",
+  },
+  "background-image-clip-xxl": Object {
+    "type": "string",
+  },
+  "background-image-crop-options-general": Object {
+    "type": "object",
+  },
+  "background-image-crop-options-l": Object {
+    "type": "object",
+  },
+  "background-image-crop-options-m": Object {
+    "type": "object",
+  },
+  "background-image-crop-options-s": Object {
+    "type": "object",
+  },
+  "background-image-crop-options-xl": Object {
+    "type": "object",
+  },
+  "background-image-crop-options-xs": Object {
+    "type": "object",
+  },
+  "background-image-crop-options-xxl": Object {
+    "type": "object",
+  },
+  "background-image-height-general": Object {
+    "default": 100,
+    "type": "number",
+  },
+  "background-image-height-l": Object {
+    "type": "number",
+  },
+  "background-image-height-m": Object {
+    "type": "number",
+  },
+  "background-image-height-s": Object {
+    "type": "number",
+  },
+  "background-image-height-unit-general": Object {
+    "default": "%",
+    "type": "string",
+  },
+  "background-image-height-unit-l": Object {
+    "type": "string",
+  },
+  "background-image-height-unit-m": Object {
+    "type": "string",
+  },
+  "background-image-height-unit-s": Object {
+    "type": "string",
+  },
+  "background-image-height-unit-xl": Object {
+    "type": "string",
+  },
+  "background-image-height-unit-xs": Object {
+    "type": "string",
+  },
+  "background-image-height-unit-xxl": Object {
+    "type": "string",
+  },
+  "background-image-height-xl": Object {
+    "type": "number",
+  },
+  "background-image-height-xs": Object {
+    "type": "number",
+  },
+  "background-image-height-xxl": Object {
+    "type": "number",
+  },
+  "background-image-mediaID": Object {
+    "type": "number",
+  },
+  "background-image-mediaURL": Object {
+    "type": "string",
+  },
+  "background-image-opacity-general": Object {
+    "default": 1,
+    "type": "number",
+  },
+  "background-image-opacity-l": Object {
+    "type": "number",
+  },
+  "background-image-opacity-m": Object {
+    "type": "number",
+  },
+  "background-image-opacity-s": Object {
+    "type": "number",
+  },
+  "background-image-opacity-xl": Object {
+    "type": "number",
+  },
+  "background-image-opacity-xs": Object {
+    "type": "number",
+  },
+  "background-image-opacity-xxl": Object {
+    "type": "number",
+  },
+  "background-image-origin-general": Object {
+    "default": "padding-box",
+    "type": "string",
+  },
+  "background-image-origin-l": Object {
+    "type": "string",
+  },
+  "background-image-origin-m": Object {
+    "type": "string",
+  },
+  "background-image-origin-s": Object {
+    "type": "string",
+  },
+  "background-image-origin-xl": Object {
+    "type": "string",
+  },
+  "background-image-origin-xs": Object {
+    "type": "string",
+  },
+  "background-image-origin-xxl": Object {
+    "type": "string",
+  },
+  "background-image-parallax-alt": Object {
+    "type": "string",
+  },
+  "background-image-parallax-alt-selector": Object {
+    "type": "string",
+  },
+  "background-image-parallax-direction-general": Object {
+    "default": "down",
+    "type": "string",
+  },
+  "background-image-parallax-direction-l": Object {
+    "type": "string",
+  },
+  "background-image-parallax-direction-m": Object {
+    "type": "string",
+  },
+  "background-image-parallax-direction-s": Object {
+    "type": "string",
+  },
+  "background-image-parallax-direction-xl": Object {
+    "type": "string",
+  },
+  "background-image-parallax-direction-xs": Object {
+    "type": "string",
+  },
+  "background-image-parallax-direction-xxl": Object {
+    "type": "string",
+  },
+  "background-image-parallax-speed-general": Object {
+    "default": 4,
+    "type": "number",
+  },
+  "background-image-parallax-speed-l": Object {
+    "type": "number",
+  },
+  "background-image-parallax-speed-m": Object {
+    "type": "number",
+  },
+  "background-image-parallax-speed-s": Object {
+    "type": "number",
+  },
+  "background-image-parallax-speed-xl": Object {
+    "type": "number",
+  },
+  "background-image-parallax-speed-xs": Object {
+    "type": "number",
+  },
+  "background-image-parallax-speed-xxl": Object {
+    "type": "number",
+  },
+  "background-image-parallax-status-general": Object {
+    "default": false,
+    "type": "boolean",
+  },
+  "background-image-parallax-status-l": Object {
+    "type": "boolean",
+  },
+  "background-image-parallax-status-m": Object {
+    "type": "boolean",
+  },
+  "background-image-parallax-status-s": Object {
+    "type": "boolean",
+  },
+  "background-image-parallax-status-xl": Object {
+    "type": "boolean",
+  },
+  "background-image-parallax-status-xs": Object {
+    "type": "boolean",
+  },
+  "background-image-parallax-status-xxl": Object {
+    "type": "boolean",
+  },
+  "background-image-position-general": Object {
+    "default": "center center",
+    "type": "string",
+  },
+  "background-image-position-height-general": Object {
+    "default": 0,
+    "type": "number",
+  },
+  "background-image-position-height-l": Object {
+    "type": "number",
+  },
+  "background-image-position-height-m": Object {
+    "type": "number",
+  },
+  "background-image-position-height-s": Object {
+    "type": "number",
+  },
+  "background-image-position-height-unit-general": Object {
+    "default": "%",
+    "type": "string",
+  },
+  "background-image-position-height-unit-l": Object {
+    "type": "string",
+  },
+  "background-image-position-height-unit-m": Object {
+    "type": "string",
+  },
+  "background-image-position-height-unit-s": Object {
+    "type": "string",
+  },
+  "background-image-position-height-unit-xl": Object {
+    "type": "string",
+  },
+  "background-image-position-height-unit-xs": Object {
+    "type": "string",
+  },
+  "background-image-position-height-unit-xxl": Object {
+    "type": "string",
+  },
+  "background-image-position-height-xl": Object {
+    "type": "number",
+  },
+  "background-image-position-height-xs": Object {
+    "type": "number",
+  },
+  "background-image-position-height-xxl": Object {
+    "type": "number",
+  },
+  "background-image-position-l": Object {
+    "type": "string",
+  },
+  "background-image-position-m": Object {
+    "type": "string",
+  },
+  "background-image-position-s": Object {
+    "type": "string",
+  },
+  "background-image-position-width-general": Object {
+    "default": 0,
+    "type": "number",
+  },
+  "background-image-position-width-l": Object {
+    "type": "number",
+  },
+  "background-image-position-width-m": Object {
+    "type": "number",
+  },
+  "background-image-position-width-s": Object {
+    "type": "number",
+  },
+  "background-image-position-width-unit-general": Object {
+    "default": "%",
+    "type": "string",
+  },
+  "background-image-position-width-unit-l": Object {
+    "type": "string",
+  },
+  "background-image-position-width-unit-m": Object {
+    "type": "string",
+  },
+  "background-image-position-width-unit-s": Object {
+    "type": "string",
+  },
+  "background-image-position-width-unit-xl": Object {
+    "type": "string",
+  },
+  "background-image-position-width-unit-xs": Object {
+    "type": "string",
+  },
+  "background-image-position-width-unit-xxl": Object {
+    "type": "string",
+  },
+  "background-image-position-width-xl": Object {
+    "type": "number",
+  },
+  "background-image-position-width-xs": Object {
+    "type": "number",
+  },
+  "background-image-position-width-xxl": Object {
+    "type": "number",
+  },
+  "background-image-position-xl": Object {
+    "type": "string",
+  },
+  "background-image-position-xs": Object {
+    "type": "string",
+  },
+  "background-image-position-xxl": Object {
+    "type": "string",
+  },
+  "background-image-repeat-general": Object {
+    "default": "no-repeat",
+    "type": "string",
+  },
+  "background-image-repeat-l": Object {
+    "type": "string",
+  },
+  "background-image-repeat-m": Object {
+    "type": "string",
+  },
+  "background-image-repeat-s": Object {
+    "type": "string",
+  },
+  "background-image-repeat-xl": Object {
+    "type": "string",
+  },
+  "background-image-repeat-xs": Object {
+    "type": "string",
+  },
+  "background-image-repeat-xxl": Object {
+    "type": "string",
+  },
+  "background-image-size-general": Object {
+    "default": "auto",
+    "type": "string",
+  },
+  "background-image-size-l": Object {
+    "type": "string",
+  },
+  "background-image-size-m": Object {
+    "type": "string",
+  },
+  "background-image-size-s": Object {
+    "type": "string",
+  },
+  "background-image-size-xl": Object {
+    "type": "string",
+  },
+  "background-image-size-xs": Object {
+    "type": "string",
+  },
+  "background-image-size-xxl": Object {
+    "type": "string",
+  },
+  "background-image-width-general": Object {
+    "default": 100,
+    "type": "number",
+  },
+  "background-image-width-l": Object {
+    "type": "number",
+  },
+  "background-image-width-m": Object {
+    "type": "number",
+  },
+  "background-image-width-s": Object {
+    "type": "number",
+  },
+  "background-image-width-unit-general": Object {
+    "default": "%",
+    "type": "string",
+  },
+  "background-image-width-unit-l": Object {
+    "type": "string",
+  },
+  "background-image-width-unit-m": Object {
+    "type": "string",
+  },
+  "background-image-width-unit-s": Object {
+    "type": "string",
+  },
+  "background-image-width-unit-xl": Object {
+    "type": "string",
+  },
+  "background-image-width-unit-xs": Object {
+    "type": "string",
+  },
+  "background-image-width-unit-xxl": Object {
+    "type": "string",
+  },
+  "background-image-width-xl": Object {
+    "type": "number",
+  },
+  "background-image-width-xs": Object {
+    "type": "number",
+  },
+  "background-image-width-xxl": Object {
+    "type": "number",
+  },
+  "background-image-wrapper-height-general": Object {
+    "default": 100,
+    "type": "number",
+  },
+  "background-image-wrapper-height-l": Object {
+    "type": "number",
+  },
+  "background-image-wrapper-height-m": Object {
+    "type": "number",
+  },
+  "background-image-wrapper-height-s": Object {
+    "type": "number",
+  },
+  "background-image-wrapper-height-unit-general": Object {
+    "default": "%",
+    "type": "string",
+  },
+  "background-image-wrapper-height-unit-l": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-height-unit-m": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-height-unit-s": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-height-unit-xl": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-height-unit-xs": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-height-unit-xxl": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-height-xl": Object {
+    "type": "number",
+  },
+  "background-image-wrapper-height-xs": Object {
+    "type": "number",
+  },
+  "background-image-wrapper-height-xxl": Object {
+    "type": "number",
+  },
+  "background-image-wrapper-position-bottom-general": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-bottom-l": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-bottom-m": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-bottom-s": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-bottom-unit-general": Object {
+    "default": "px",
+    "type": "string",
+  },
+  "background-image-wrapper-position-bottom-unit-l": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-bottom-unit-m": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-bottom-unit-s": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-bottom-unit-xl": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-bottom-unit-xs": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-bottom-unit-xxl": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-bottom-xl": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-bottom-xs": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-bottom-xxl": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-left-general": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-left-l": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-left-m": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-left-s": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-left-unit-general": Object {
+    "default": "px",
+    "type": "string",
+  },
+  "background-image-wrapper-position-left-unit-l": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-left-unit-m": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-left-unit-s": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-left-unit-xl": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-left-unit-xs": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-left-unit-xxl": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-left-xl": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-left-xs": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-left-xxl": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-right-general": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-right-l": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-right-m": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-right-s": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-right-unit-general": Object {
+    "default": "px",
+    "type": "string",
+  },
+  "background-image-wrapper-position-right-unit-l": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-right-unit-m": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-right-unit-s": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-right-unit-xl": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-right-unit-xs": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-right-unit-xxl": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-right-xl": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-right-xs": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-right-xxl": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-sync-general": Object {
+    "default": "all",
+    "type": "string",
+  },
+  "background-image-wrapper-position-sync-l": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-sync-m": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-sync-s": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-sync-xl": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-sync-xs": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-sync-xxl": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-top-general": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-top-l": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-top-m": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-top-s": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-top-unit-general": Object {
+    "default": "px",
+    "type": "string",
+  },
+  "background-image-wrapper-position-top-unit-l": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-top-unit-m": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-top-unit-s": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-top-unit-xl": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-top-unit-xs": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-top-unit-xxl": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-top-xl": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-top-xs": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-position-top-xxl": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-width-general": Object {
+    "default": 100,
+    "type": "number",
+  },
+  "background-image-wrapper-width-l": Object {
+    "type": "number",
+  },
+  "background-image-wrapper-width-m": Object {
+    "type": "number",
+  },
+  "background-image-wrapper-width-s": Object {
+    "type": "number",
+  },
+  "background-image-wrapper-width-unit-general": Object {
+    "default": "%",
+    "type": "string",
+  },
+  "background-image-wrapper-width-unit-l": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-width-unit-m": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-width-unit-s": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-width-unit-xl": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-width-unit-xs": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-width-unit-xxl": Object {
+    "type": "string",
+  },
+  "background-image-wrapper-width-xl": Object {
+    "type": "number",
+  },
+  "background-image-wrapper-width-xs": Object {
+    "type": "number",
+  },
+  "background-image-wrapper-width-xxl": Object {
+    "type": "number",
+  },
+}
+`;

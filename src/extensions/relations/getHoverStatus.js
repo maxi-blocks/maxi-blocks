@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getAttributesValue } from '../styles';
+import { getAttributesValue } from '../attributes';
 
 /**
  * External dependencies

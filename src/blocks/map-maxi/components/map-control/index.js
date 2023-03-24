@@ -12,7 +12,7 @@ import SelectControl from '../../../../components/select-control';
 import {
 	getAttributesValue,
 	getDefaultAttribute,
-} from '../../../../extensions/styles';
+} from '../../../../extensions/attributes';
 import { getMaxiAdminSettingsUrl } from '../../utils';
 
 /**

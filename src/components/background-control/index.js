@@ -10,7 +10,7 @@ import {
 	getAttributeKey,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 import ColorLayer from './colorLayer';
 import GradientLayer from './gradientLayer';
 import Icon from '../icon';

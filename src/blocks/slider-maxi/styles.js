@@ -8,10 +8,10 @@ import { isNil } from 'lodash';
  */
 import {
 	getGroupAttributes,
-	styleProcessor,
 	getLastBreakpointAttribute,
 	getAttributesValue,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
+import { styleProcessor } from '../../extensions/styles';
 import {
 	getSizeStyles,
 	getBoxShadowStyles,

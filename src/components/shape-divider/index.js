@@ -50,7 +50,7 @@ import {
 	cloudTopOpacity,
 	cloudBottomOpacity,
 } from '../../icons';
-import { getAttributesValue } from '../../extensions/styles';
+import { getAttributesValue } from '../../extensions/attributes';
 
 /**
  * Component

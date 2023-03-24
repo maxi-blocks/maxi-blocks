@@ -1,8 +1,8 @@
 /**
  * Imports
  */
-import * as attributesData from '../../extensions/styles/defaults/index';
-import transitionAttributesCreator from '../../extensions/styles/transitions/transitionAttributesCreator';
+import * as attributesData from '../../extensions/attributes/defaults/index';
+import transitionAttributesCreator from '../../extensions/attributes/transitions/transitionAttributesCreator';
 import { customCss, transition } from './data';
 
 /**

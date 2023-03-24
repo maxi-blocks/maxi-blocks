@@ -24,6 +24,7 @@ import edit from './edit';
 import attributes from './attributes';
 import save from './save';
 import withMaxiLoader from '../../extensions/maxi-block/withMaxiLoader';
+import { getAttributesValue } from '../../extensions/attributes';
 
 /**
  * Block

@@ -12,17 +12,22 @@ import {
 } from '@wordpress/element';
 
 /**
- * External dependencies
- */
-import { isEmpty, cloneDeep, isEqual, merge } from 'lodash';
-import classnames from 'classnames';
-
-/**
  * Internal dependencies
  */
 import SvgColorToolbar from './components/svg-color';
 import VideoUrl from './components/video-url';
 import Popover from '../popover';
+import {
+	getAttributesValue,
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/attributes';
+
+/**
+ * External dependencies
+ */
+import { isEmpty, cloneDeep, isEqual, merge } from 'lodash';
+import classnames from 'classnames';
 
 /**
  * Utils
@@ -60,11 +65,6 @@ import {
 	TextMargin,
 	ToolbarMediaUpload,
 } from './components';
-import {
-	getAttributesValue,
-	getGroupAttributes,
-	getLastBreakpointAttribute,
-} from '../../extensions/styles';
 
 /**
  * Styles & icons

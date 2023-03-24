@@ -8,7 +8,7 @@ import {
 	getAttributeKey,
 	getAttributesValue,
 	getBlockStyle,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 
 /**
  * External dependencies

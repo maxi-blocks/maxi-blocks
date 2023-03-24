@@ -15,7 +15,7 @@ import { useContext, useEffect, useState } from '@wordpress/element';
 import {
 	getAttributesValue,
 	getGroupAttributes,
-} from '../../../../extensions/styles';
+} from '../../../../extensions/attributes';
 import Button from '../../../button';
 import ToolbarContext from '../toolbar-popover/toolbarContext';
 import ToolbarPopover from '../toolbar-popover';

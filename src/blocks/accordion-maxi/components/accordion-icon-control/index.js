@@ -13,10 +13,8 @@ import {
 	IconControl,
 } from '../../../../components';
 import MaxiModal from '../../../../editor/library/modal';
-import {
-	getAttributesValue,
-	getIconWithColor,
-} from '../../../../extensions/styles';
+import { getAttributesValue } from '../../../../extensions/attributes';
+import { getIconWithColor } from '../../../../extensions/styles';
 
 const AccordionIconSettings = props => {
 	const { onChange, blockStyle, svgTypeActive, breakpoint } = props;

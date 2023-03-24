@@ -17,7 +17,7 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import getStyles from './styles';
 import { copyPasteMapping } from './data';
 import TEMPLATE from './template';
-import { getAttributesValue } from '../../extensions/styles';
+import { getAttributesValue } from '../../extensions/attributes';
 
 /**
  * External dependencies

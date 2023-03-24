@@ -10,8 +10,8 @@ import { ColorControl } from '../../../../components';
 import {
 	getAttributeKey,
 	getAttributesValue,
-	getColorRGBAString,
-} from '../../../../extensions/styles';
+} from '../../../../extensions/attributes';
+import { getColorRGBAString } from '../../../../extensions/styles';
 import { setSVGContent, setSVGContentHover } from '../../../../extensions/svg';
 
 const IconColor = props => {

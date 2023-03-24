@@ -1,4 +1,4 @@
-import { getGroupAttributes } from '../styles';
+import getGroupAttributes from './getGroupAttributes';
 
 const getRowGapProps = attributes => {
 	const response = getGroupAttributes(attributes, 'flex');

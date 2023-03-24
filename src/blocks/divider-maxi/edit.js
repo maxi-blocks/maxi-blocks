@@ -13,10 +13,8 @@ import {
 	withMaxiProps,
 } from '../../extensions/maxi-block';
 import { BlockResizer, Toolbar } from '../../components';
-import {
-	getIsOverflowHidden,
-	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+import { getLastBreakpointAttribute } from '../../extensions/attributes';
+import { getIsOverflowHidden } from '../../extensions/styles';
 import getStyles from './styles';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 import { copyPasteMapping } from './data';

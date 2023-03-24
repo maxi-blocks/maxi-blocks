@@ -13,7 +13,7 @@ import {
 	getAttributeKey,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
 import {
 	getDefaultLayerAttr,
 	getDefaultLayerAttrs,

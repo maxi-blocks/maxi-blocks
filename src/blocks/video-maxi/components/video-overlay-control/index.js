@@ -20,7 +20,7 @@ import {
 	getAttributesValue,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-} from '../../../../extensions/styles';
+} from '../../../../extensions/attributes';
 
 const OverlayColor = props => {
 	const {

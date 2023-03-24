@@ -21,7 +21,7 @@ import withMaxiLoader from '../../extensions/maxi-block/withMaxiLoader';
  */
 import './style.scss';
 import { accordionIcon } from '../../icons';
-import { getAttributesValue } from '../../extensions/styles';
+import { getAttributesValue } from '../../extensions/attributes';
 
 /**
  * Block

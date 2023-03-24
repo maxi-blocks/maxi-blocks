@@ -8,7 +8,7 @@ import { useEffect, useCallback } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { getGroupAttributes } from '../styles';
+import { getGroupAttributes } from '../attributes';
 import getDCContent from './getDCContent';
 import {
 	getDCDateCustomFormat,

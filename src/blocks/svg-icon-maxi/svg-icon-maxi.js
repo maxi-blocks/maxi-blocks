@@ -33,7 +33,8 @@ import { iconBox } from '../../icons';
 import {
 	blockMigrator,
 	SVGTransitionMigrator,
-} from '../../extensions/styles/migrators';
+} from '../../extensions/maxi-block/migrators';
+import { getAttributesValue } from '../../extensions/attributes';
 
 /**
  * Block

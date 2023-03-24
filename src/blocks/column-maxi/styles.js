@@ -1,19 +1,23 @@
 /**
  * Internal dependencies
  */
-import { getGroupAttributes, styleProcessor } from '../../extensions/styles';
 import {
-	getBoxShadowStyles,
-	getZIndexStyles,
-	getColumnSizeStyles,
-	getDisplayStyles,
-	getMarginPaddingStyles,
+	getAttributesValue,
+	getGroupAttributes,
+} from '../../extensions/attributes';
+import { styleProcessor } from '../../extensions/styles';
+import {
 	getBlockBackgroundStyles,
 	getBorderStyles,
+	getBoxShadowStyles,
+	getColumnSizeStyles,
+	getDisplayStyles,
+	getFlexStyles,
+	getMarginPaddingStyles,
 	getOpacityStyles,
 	getOverflowStyles,
-	getFlexStyles,
 	getSizeStyles,
+	getZIndexStyles,
 } from '../../extensions/styles/helpers';
 import data from './data';
 
@@ -74,12 +78,15 @@ const getNormalObject = (props, rowGapProps, clientId) => {
 };
 
 const getHoverObject = props => {
-	const { borderStatusHover, boxShadowStatusHover, opacityStatusHover } =
-		getAttributesValue({
-			target: ['border-status', 'box-shadow-status', 'opacity-status'],
-			props,
-			isHover: true,
-		});
+	const {
+		'border-status': borderStatusHover,
+		'box-shadow-status': boxShadowStatusHover,
+		'opacity-status': opacityStatusHover,
+	} = getAttributesValue({
+		target: ['border-status', 'box-shadow-status', 'opacity-status'],
+		props,
+		isHover: true,
+	});
 
 	const response = {
 		border:

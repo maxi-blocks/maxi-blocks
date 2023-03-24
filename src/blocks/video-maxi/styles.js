@@ -5,25 +5,25 @@ import {
 	getAttributesValue,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-	styleProcessor,
-} from '../../extensions/styles';
+} from '../../extensions/attributes';
+import { styleProcessor } from '../../extensions/styles';
 import {
-	getBlockBackgroundStyles,
-	getBoxShadowStyles,
-	getZIndexStyles,
-	getDisplayStyles,
-	getMarginPaddingStyles,
+	getAspectRatio,
 	getBackgroundStyles,
+	getBlockBackgroundStyles,
 	getBorderStyles,
+	getBoxShadowStyles,
+	getDisplayStyles,
+	getFlexStyles,
+	getIconPathStyles,
+	getIconSize,
+	getIconStyles,
+	getMarginPaddingStyles,
 	getOpacityStyles,
 	getOverflowStyles,
-	getFlexStyles,
 	getSizeStyles,
-	getIconPathStyles,
-	getIconStyles,
-	getAspectRatio,
 	getSVGStyles,
-	getIconSize,
+	getZIndexStyles,
 } from '../../extensions/styles/helpers';
 import data from './data';
 

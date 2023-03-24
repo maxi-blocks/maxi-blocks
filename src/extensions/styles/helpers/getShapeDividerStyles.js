@@ -2,15 +2,15 @@
  * Internal dependencies
  */
 import getColorRGBAString from '../getColorRGBAString';
-import getPaletteAttributes from '../getPaletteAttributes';
+import getPaletteAttributes from '../../attributes/getPaletteAttributes';
 import getMarginPaddingStyles from './getMarginPaddingStyles';
-import getGroupAttributes from '../getGroupAttributes';
+import getGroupAttributes from '../../attributes/getGroupAttributes';
+import getAttributeKey from '../../attributes/getAttributeKey';
 
 /**
  * External dependencies
  */
 import { isNil } from 'lodash';
-import getAttributeKey from '../getAttributeKey';
 
 /**
  * General

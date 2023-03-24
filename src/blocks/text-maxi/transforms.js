@@ -11,7 +11,7 @@ import {
 	generateFormatValue,
 	setCustomFormatsWhenPaste,
 } from '../../extensions/text/formats';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/attributes';
 
 const name = 'maxi-blocks/text-maxi';
 

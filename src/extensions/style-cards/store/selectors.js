@@ -1,5 +1,5 @@
+import { getIsValid } from '../../attributes';
 import getActiveStyleCard from '../getActiveStyleCard';
-import { getIsValid } from '../../styles';
 
 export const receiveMaxiStyleCards = state => {
 	if (state.styleCards) return state.styleCards;

@@ -6,14 +6,16 @@ import { dispatch } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { getUpdatedBGLayersWithNewUniqueID } from '../attributes';
+import {
+	getUpdatedBGLayersWithNewUniqueID,
+	getAttributesValue,
+} from '../attributes';
 import getLastChangedBlocks from './getLastChangedBlocks';
 
 /**
  * External dependencies
  */
-import { cloneDeep, isEmpty, isEqual, isArray } from 'lodash';
-import { getAttributesValue } from '../styles';
+import { cloneDeep, isArray, isEmpty, isEqual } from 'lodash';
 
 const propagateNewUniqueID = (oldUniqueID, newUniqueID, bgLayers) => {
 	const blockAttributesUpdate = {};

@@ -18,10 +18,10 @@ import MaxiModal from '../../../../editor/library/modal';
 import {
 	getAttributeKey,
 	getAttributesValue,
-	getColorRGBAString,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-} from '../../../../extensions/styles';
+} from '../../../../extensions/attributes';
+import { getColorRGBAString } from '../../../../extensions/styles';
 import { setSVGContent, setSVGContentHover } from '../../../../extensions/svg';
 
 /**

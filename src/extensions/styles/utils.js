@@ -1,15 +1,12 @@
 /**
+ * Internal dependencies
+ */
+import getAttributeKey from '../attributes/getAttributeKey';
+
+/**
  * External dependencies
  */
-import { cloneDeep, isNumber, isBoolean, isEmpty, isNil } from 'lodash';
-
-export const getIsValid = (val, cleaned = false) =>
-	(cleaned &&
-		(val ||
-			isNumber(val) ||
-			isBoolean(val) ||
-			(isEmpty(val) && !isNil(val)))) ||
-	!cleaned;
+import { cloneDeep, isEmpty } from 'lodash';
 
 export const validateOriginValue = val => {
 	const isNumeric = val => {
@@ -27,7 +24,8 @@ export const validateOriginValue = val => {
 export const getParallaxLayers = (uniqueID, bgLayers) => {
 	const response = bgLayers?.filter(
 		layer =>
-			layer.type === 'image' && layer['background-image-parallax-status']
+			layer.type === 'image' &&
+			layer[getAttributeKey('background-image-parallax-status')]
 	);
 
 	if (!response || isEmpty(response)) return null;
@@ -84,9 +82,3 @@ export const getRelations = (uniqueID, relations) => {
 
 	return newRelations;
 };
-
-export const getHoverAttributeKey = key =>
-	key.includes('-hover') ? key : `${key}-hover`;
-
-// Accepts (possibly) hover attribute key and returns normal key.
-export const getNormalAttributeKey = hoverKey => hoverKey.replace(/-hover/, '');

@@ -50,9 +50,9 @@ const ListItemControl = props => {
 				</span>
 				<div className='maxi-list-item-control__title'>
 					<span className='maxi-list-item-control__title__id' />
-					<span className='maxi-list-item-control__title__title-text'>
+					<div className='maxi-list-item-control__title__wrapper'>
 						{title}
-					</span>
+					</div>
 					{isCloseButton && (
 						<span
 							className={classnames(

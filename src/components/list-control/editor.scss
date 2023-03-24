@@ -94,10 +94,9 @@
 		padding-right: 5px;
 		background-color: #fff;
 
-		&__title-text {
-			overflow: hidden;
-			max-width: 190px;
+		&__wrapper {
 			width: 100%;
+			display: flex;
 		}
 
 		&__text {

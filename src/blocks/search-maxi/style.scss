@@ -22,6 +22,9 @@ body.maxi-blocks--active .maxi-search-block {
 		.maxi-search-block__button {
 			order: 1;
 		}
+		.maxi-search-block__input {
+			margin-right: -25px !important;
+		}
 		input.icon-reveal.maxi-search-block__input--hidden {
 			visibility: collapse;
 		}

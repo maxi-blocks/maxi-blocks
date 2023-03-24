@@ -84,7 +84,7 @@ describe('Image Maxi hover simple actions', () => {
 
 	it('Alignment', async () => {
 		const selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[3].select('Alignment');
+		await selectControls[3].select('a');
 
 		await page.$eval(
 			'.maxi-alignment-control .maxi-tabs-control__button.maxi-tabs-control__button-right',

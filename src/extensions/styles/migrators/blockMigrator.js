@@ -24,6 +24,7 @@ import corruptedHoverAttributesMigrator from './corruptedHoverAttributesMigrator
 import bottomGapMigrator from './bottomGapMigrator';
 import transitionMigrator from './transitionMigrator';
 import fullWidthAttributeMigrator from './fullWidthAttributeMigrator';
+import IBLabelToIDMigrator from './IBLabelToIDMigrator';
 
 /**
  * External dependencies
@@ -105,6 +106,7 @@ const blockMigrator = blockMigratorProps => {
 		bottomGapMigrator,
 		transitionMigrator,
 		fullWidthAttributeMigrator,
+		IBLabelToIDMigrator,
 		...(blockMigratorProps.migrators ?? []),
 	];
 

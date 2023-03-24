@@ -48,11 +48,11 @@ const ListOptionsControl = props => {
 		listStyleCustom,
 	} = attributes;
 	const {
-		listIndent,
-		listGap,
-		listParagraphSpacing,
-		listMarkerLineHeight,
-		listMarkerIndent,
+		'list-indent': listIndent,
+		'list-gap': listGap,
+		'list-paragraph-spacing': listParagraphSpacing,
+		'list-marker-line-height': listMarkerLineHeight,
+		'list-marker-indent': listMarkerIndent,
 	} = getAttributesValue({
 		target: [
 			'list-indent',

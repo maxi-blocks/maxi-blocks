@@ -78,12 +78,15 @@ const getNormalObject = props => {
 };
 
 const getHoverObject = props => {
-	const { borderStatusHover, boxShadowStatusHover, opacityStatusHover } =
-		getAttributesValue({
-			target: ['border-status', 'box-shadow-status', 'opacity-status'],
-			props,
-			isHover: true,
-		});
+	const {
+		'border-status': borderStatusHover,
+		'box-shadow-status': boxShadowStatusHover,
+		'opacity-status': opacityStatusHover,
+	} = getAttributesValue({
+		target: ['border-status', 'box-shadow-status', 'opacity-status'],
+		props,
+		isHover: true,
+	});
 
 	const response = {
 		border:
@@ -304,12 +307,13 @@ const getIconObject = (prefix, obj) => {
 };
 
 const getVideoStyles = (props, isHover = false) => {
-	const { borderStatusHover, boxShadowStatusHover } = getAttributesValue({
-		target: ['border-status', 'box-shadow-status'],
-		props,
-		isHover: true,
-		prefix: videoPrefix,
-	});
+	const { 'border-status': borderStatusHover, boxShadowStatusHover } =
+		getAttributesValue({
+			target: ['border-status', 'box-shadow-status'],
+			props,
+			isHover: true,
+			prefix: videoPrefix,
+		});
 
 	return {
 		...((!isHover || borderStatusHover) && {
@@ -360,11 +364,15 @@ const getVideoStyles = (props, isHover = false) => {
 };
 
 const getStyles = props => {
-	const { uniqueID, playerType } = props;
-	const { overlayBackgroundStatusHover } = getAttributesValue({
-		target: 'overlay-background-status-hover',
-		props,
-	});
+	const { uniqueID, playerType, overlayBackgroundStatusHover } =
+		getAttributesValue({
+			target: [
+				'uniqueID',
+				'playerType',
+				'overlay-background-status-hover',
+			],
+			props,
+		});
 
 	const response = {
 		[uniqueID]: styleProcessor(

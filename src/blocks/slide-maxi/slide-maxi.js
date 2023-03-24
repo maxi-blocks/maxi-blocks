@@ -38,9 +38,7 @@ registerBlockType('maxi-blocks/slide-maxi', {
 		align: true,
 		lightBlockWrapper: true,
 	},
-	attributes: {
-		...attributes,
-	},
+	attributes,
 	parent: ['maxi-blocks/slider-maxi'],
 	getEditWrapperProps(attributes) {
 		const uniqueID = getAttributesValue({

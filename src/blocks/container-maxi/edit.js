@@ -88,8 +88,8 @@ class edit extends MaxiBlockComponent {
 		const {
 			uniqueID,
 			isFirstOnHierarchy,
-			shapeDividerTopStatus,
-			shapeDividerBottomStatus,
+			'shape-divider-top-status': shapeDividerTopStatus,
+			'shape-divider-bottom-status': shapeDividerBottomStatus,
 		} = getAttributesValue({
 			target: [
 				'uniqueID',

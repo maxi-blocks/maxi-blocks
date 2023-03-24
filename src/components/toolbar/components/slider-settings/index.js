@@ -34,7 +34,10 @@ const SliderSettings = props => {
 		pauseOnInteraction,
 		attributes,
 	} = props;
-	const { sliderAutoPlaySpeed, sliderTransitionSpeed } = getAttributesValue({
+	const {
+		'slider-auto-play-speed': sliderAutoPlaySpeed,
+		'slider-transition-speed': sliderTransitionSpeed,
+	} = getAttributesValue({
 		target: ['slider-auto-play-speed', 'slider-transition-speed'],
 		props,
 	});

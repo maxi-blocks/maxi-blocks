@@ -83,12 +83,15 @@ const getWrapperObject = props => {
 };
 
 const getWrapperObjectHover = props => {
-	const { borderStatusHover, boxShadowStatusHover, opacityStatusHover } =
-		getAttributesValue({
-			target: ['border-status', 'box-shadow-status', 'opacity-status'],
-			props,
-			isHover: true,
-		});
+	const {
+		'border-status': borderStatusHover,
+		'box-shadow-status': boxShadowStatusHover,
+		'opacity-status': opacityStatusHover,
+	} = getAttributesValue({
+		target: ['border-status', 'box-shadow-status', 'opacity-status'],
+		props,
+		isHover: true,
+	});
 
 	const response = {
 		border:
@@ -178,12 +181,13 @@ const getNormalObject = (props, iconWidthHeightRatio) => {
 };
 
 const getHoverObject = props => {
-	const { borderStatusHover, boxShadowStatusHover } = getAttributesValue({
-		target: ['border-status', 'box-shadow-status'],
-		props,
-		isHover: true,
-		prefix: 'svg-',
-	});
+	const { 'border-status': borderStatusHover, boxShadowStatusHover } =
+		getAttributesValue({
+			target: ['border-status', 'box-shadow-status'],
+			props,
+			isHover: true,
+			prefix: 'svg-',
+		});
 
 	const response = {
 		border:

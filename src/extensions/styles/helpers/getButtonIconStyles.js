@@ -108,11 +108,12 @@ const getIconObject = (props, target, prefix = '', isIB) => {
 			prefix,
 			breakpoint,
 		});
-		const { iconPosition, iconOnly } = getAttributesValue({
-			target: ['icon-position', 'icon-only'],
-			props,
-			prefix,
-		});
+		const { 'icon-position': iconPosition, 'icon-only': iconOnly } =
+			getAttributesValue({
+				target: ['icon-position', 'icon-only'],
+				props,
+				prefix,
+			});
 
 		if (!isNil(iconSpacing) && !isNil(iconPosition)) {
 			iconPosition === 'left' || iconPosition === 'right'

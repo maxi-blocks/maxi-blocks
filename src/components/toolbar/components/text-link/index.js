@@ -191,7 +191,7 @@ const LinkContent = props => {
 	};
 
 	const forceSSL = attributes => {
-		const { url } = getAttributesValue({
+		const url = getAttributesValue({
 			target: 'url',
 			props: attributes,
 		});

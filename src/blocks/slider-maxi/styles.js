@@ -85,11 +85,12 @@ const getNormalObject = props => {
 };
 
 const getHoverObject = props => {
-	const { borderStatusHover, boxShadowStatusHover } = getAttributesValue({
-		target: ['border-status', 'box-shadow-status'],
-		props,
-		isHover: true,
-	});
+	const { 'border-status': borderStatusHover, boxShadowStatusHover } =
+		getAttributesValue({
+			target: ['border-status', 'box-shadow-status'],
+			props,
+			isHover: true,
+		});
 
 	const response = {
 		border:
@@ -122,10 +123,10 @@ const getHoverObject = props => {
 const getIconStyles = (props, prefix = 'navigation-arrow-both-') => {
 	const iconPrefix = `${prefix}icon-`;
 	const {
-		backgroundStatus,
-		backgroundActiveMediaGeneral,
-		boxShadowStatus,
-		borderStatus,
+		'background-status': backgroundStatus,
+		'background-active-media-general': backgroundActiveMediaGeneral,
+		[`${iconPrefix}shadow-status`]: boxShadowStatus,
+		[`${iconPrefix}border-status`]: borderStatus,
 	} = getAttributesValue({
 		target: [
 			'background-status',
@@ -209,7 +210,11 @@ const getIconStyles = (props, prefix = 'navigation-arrow-both-') => {
 
 const getIconHoverStyles = (props, prefix) => {
 	const iconPrefix = `${prefix}icon-`;
-	const { iconHoverStatus, iconHoverActiveMedia } = getAttributesValue({
+	const {
+		[`${iconPrefix}status-hover`]: iconHoverStatus,
+		[`${iconPrefix}background-active-media-general-hover`]:
+			iconHoverActiveMedia,
+	} = getAttributesValue({
 		target: [
 			`${iconPrefix}status-hover`,
 			`${iconPrefix}background-active-media-general-hover`,
@@ -460,7 +465,10 @@ const getArrowIconObject = (props, isHover = false) => {
 
 const getDotsIconObject = props => {
 	const prefix = 'navigation-dot-';
-	const { dotIconHoverStatus, dotIconActiveStatus } = getAttributesValue({
+	const {
+		'navigation-dot-icon-status-hover': dotIconHoverStatus,
+		'active-navigation-dot-icon-status': dotIconActiveStatus,
+	} = getAttributesValue({
 		target: [
 			'navigation-dot-icon-status-hover',
 			'active-navigation-dot-icon-status',

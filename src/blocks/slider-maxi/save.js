@@ -28,12 +28,13 @@ const save = props => {
 		numberOfSlides,
 	} = attributes;
 	const {
-		sliderTransition,
-		sliderTransitionSpeed,
-		sliderAutoplaySpeed,
-		navigationArrowFirstIconContent,
-		navigationArrowSecondIconContent,
-		navigationDotIconContent,
+		'slider-transition': sliderTransition,
+		'slider-transition-speed': sliderTransitionSpeed,
+		'slider-autoplay-speed': sliderAutoplaySpeed,
+		'navigation-arrow-first-icon-content': navigationArrowFirstIconContent,
+		'navigation-arrow-second-icon-content':
+			navigationArrowSecondIconContent,
+		'navigation-dot-icon-content': navigationDotIconContent,
 	} = getAttributesValue({
 		target: [
 			'slider-transition',

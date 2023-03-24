@@ -26,11 +26,11 @@ const save = props => {
 	const { buttonContent } = attributes;
 	const {
 		linkSettings,
-		iconOnly,
-		iconContent,
-		iconPosition,
-		dcStatus,
-		dcLinkStatus,
+		'icon-only': iconOnly,
+		'icon-content': iconContent,
+		'icon-position': iconPosition,
+		'dc-status': dcStatus,
+		'dc-link-status': dcLinkStatus,
 	} = getAttributesValue({
 		target: [
 			'linkSettings',

@@ -40,7 +40,11 @@ const IconSettings = props => {
 		breakpoint,
 		clientId,
 	} = props;
-	const { iconHoverStatus, iconContent, iconPosition } = getAttributesValue({
+	const {
+		'icon-status-hover': iconHoverStatus,
+		'icon-content': iconContent,
+		'icon-position': iconPosition,
+	} = getAttributesValue({
 		target: ['icon-status-hover', 'icon-content', 'icon-position'],
 		props,
 		prefix,

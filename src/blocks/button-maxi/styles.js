@@ -85,7 +85,10 @@ const getWrapperObject = props => {
 };
 
 const getHoverWrapperObject = props => {
-	const { boxShadowStatusHover, opacityStatusHover } = getAttributesValue({
+	const {
+		'box-shadow-status': boxShadowStatusHover,
+		'opacity-status': opacityStatusHover,
+	} = getAttributesValue({
 		target: ['box-shadow-status', 'opacity-status'],
 		props,
 		isHover: true,
@@ -185,8 +188,8 @@ const getNormalObject = props => {
 };
 
 const getHoverObject = (props, scValues) => {
-	const { buttonBoxShadowStatusHover } = getAttributesValue({
-		target: ['box-shadow-status'],
+	const buttonBoxShadowStatusHover = getAttributesValue({
+		target: 'box-shadow-status',
 		props,
 		isHover: true,
 		prefix: 'button-',

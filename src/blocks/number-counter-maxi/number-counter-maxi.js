@@ -44,9 +44,7 @@ registerBlockType('maxi-blocks/number-counter-maxi', {
 		align: true,
 		lightBlockWrapper: true,
 	},
-	attributes: {
-		...attributes,
-	},
+	attributes,
 	getEditWrapperProps(attributes) {
 		const uniqueID = getAttributesValue({
 			target: 'uniqueID',

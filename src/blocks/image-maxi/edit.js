@@ -147,10 +147,10 @@ class edit extends MaxiBlockComponent {
 		} = attributes;
 		const { isExternalClass, isUploaderOpen } = this.state;
 		const {
-			hoverPreview,
-			hoverType,
-			hoverBasicEffectType,
-			hoverTextEffectType,
+			'hover-preview': hoverPreview,
+			'hover-type': hoverType,
+			'hover-basic-effect-type': hoverBasicEffectType,
+			'hover-text-effect-type': hoverTextEffectType,
 		} = getAttributesValue({
 			target: [
 				'hover-preview',

@@ -42,9 +42,7 @@ registerBlockType('maxi-blocks/pane-maxi', {
 		align: true,
 		lightBlockWrapper: true,
 	},
-	attributes: {
-		...attributes,
-	},
+	attributes,
 	parent: ['maxi-blocks/accordion-maxi'],
 	getEditWrapperProps(attributes) {
 		const uniqueID = getAttributesValue({

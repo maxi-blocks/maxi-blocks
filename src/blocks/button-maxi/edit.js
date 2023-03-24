@@ -91,11 +91,11 @@ class edit extends MaxiBlockComponent {
 		const { scValues } = this.state;
 		const {
 			uniqueID,
-			iconPosition,
-			iconOnly,
-			iconContent,
-			dcStatus,
-			dcContent,
+			'icon-position': iconPosition,
+			'icon-only': iconOnly,
+			'icon-content': iconContent,
+			'dc-status': dcStatus,
+			'dc-content': dcContent,
 		} = getAttributesValue({
 			target: [
 				'uniqueID',

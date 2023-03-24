@@ -46,9 +46,7 @@ registerBlockType('maxi-blocks/row-maxi', {
 		align: true,
 		lightBlockWrapper: true,
 	},
-	attributes: {
-		...attributes,
-	},
+	attributes,
 	getEditWrapperProps(attributes) {
 		const uniqueID = getAttributesValue({
 			target: 'uniqueID',

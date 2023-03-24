@@ -211,27 +211,6 @@ const Inspector = props => {
 																									val,
 																							}
 																						);
-																						val ===
-																							'left' &&
-																							maxiSetAttributes(
-																								{
-																									'input-border-left-width-general': 4,
-																									'input-border-right-width-general': 4,
-																									'input-padding-right-general': 10,
-																								}
-																							);
-																						(val ===
-																							'right' ||
-																							val ===
-																								'center') &&
-																							maxiSetAttributes(
-																								{
-																									'input-border-left-width-general': 4,
-																									'input-border-right-width-general': 4,
-																									'input-padding-left-general': 10,
-																									'input-padding-right-general': 30,
-																								}
-																							);
 																					}}
 																					breakpoint={
 																						deviceType

@@ -70,7 +70,7 @@ registerBlockType('maxi-blocks/button-maxi', {
 			attributes,
 			save: saveOld,
 		},
-		blockMigrator({
+		...blockMigrator({
 			attributes,
 			save,
 			prefix: 'button-',

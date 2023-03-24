@@ -290,7 +290,7 @@ const transition = {
 		'icon reveal appear': {
 			title: 'Icon reveal appear',
 			target: inputClass,
-			property: ['opacity', 'visibility', 'width', 'padding'],
+			property: ['opacity', 'visibility', 'width'],
 		},
 	},
 };

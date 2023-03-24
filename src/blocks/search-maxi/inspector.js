@@ -215,10 +215,9 @@ const Inspector = props => {
 																							'left' &&
 																							maxiSetAttributes(
 																								{
-																									'input-border-left-width-general': 0,
+																									'input-border-left-width-general': 4,
 																									'input-border-right-width-general': 4,
 																									'input-padding-right-general': 10,
-																									'input-padding-left-general': 30,
 																								}
 																							);
 																						(val ===
@@ -228,7 +227,7 @@ const Inspector = props => {
 																							maxiSetAttributes(
 																								{
 																									'input-border-left-width-general': 4,
-																									'input-border-right-width-general': 0,
+																									'input-border-right-width-general': 4,
 																									'input-padding-left-general': 10,
 																									'input-padding-right-general': 30,
 																								}

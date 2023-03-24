@@ -58,7 +58,7 @@ const attributes = {
 			[`${inputPrefix}font-size-general`]: '20',
 			[`${inputPrefix}border-style-general`]: 'solid',
 			[`${inputPrefix}border-top-width-general`]: 4,
-			[`${inputPrefix}border-right-width-general`]: 0,
+			[`${inputPrefix}border-right-width-general`]: 4,
 			[`${inputPrefix}border-bottom-width-general`]: 4,
 			[`${inputPrefix}border-left-width-general`]: 4,
 			[`${inputPrefix}border-sync-general`]: 'none',

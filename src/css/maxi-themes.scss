@@ -118,6 +118,14 @@ body.maxi-blocks--active {
 					}
 				}
 			}
+			&.maxi-text-block,
+			.maxi-text-block{
+				@each $level in $levels {
+					#{$level} {
+						border-color: inherit;
+					}
+				}
+			}
 			& .maxi-pane-block .maxi-pane-block__header {
 				@each $level in $levels {
 					#{$level} {

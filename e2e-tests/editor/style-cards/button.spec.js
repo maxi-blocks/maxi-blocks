@@ -22,7 +22,7 @@ import {
 	responsiveButtonTypographyStyle,
 } from './constants';
 
-describe.skip('StyleCards, Buttons', () => {
+describe('StyleCards, Buttons', () => {
 	it('Check Button', async () => {
 		await createNewPost();
 

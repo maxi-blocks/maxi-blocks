@@ -13,7 +13,7 @@ import {
 	copySCToEdit,
 } from '../../utils';
 
-describe.skip('SC Link', () => {
+describe('SC Link', () => {
 	it('Checking link accordion', async () => {
 		await createNewPost();
 		await setBrowserViewport('large');

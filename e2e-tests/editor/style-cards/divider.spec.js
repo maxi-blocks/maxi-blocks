@@ -14,7 +14,7 @@ import {
 	insertMaxiBlock,
 } from '../../utils';
 
-describe.skip('SC Divider', () => {
+describe('SC Divider', () => {
 	it('Checking divider accordion', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Divider Maxi');

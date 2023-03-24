@@ -8,7 +8,7 @@ import { createNewPost, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
  */
 import { getStyleCardEditor, checkSCResult, copySCToEdit } from '../../utils';
 
-describe.skip('StyleCards ColorPresets', () => {
+describe('StyleCards ColorPresets', () => {
 	it('Check Quick Pick Colour Presets', async () => {
 		await createNewPost();
 

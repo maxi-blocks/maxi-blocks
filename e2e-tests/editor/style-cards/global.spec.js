@@ -59,7 +59,7 @@ const switchSC = async (title = 'Template: Daemon') => {
 	await page.waitForTimeout(100);
 };
 
-describe.skip('SC settings', () => {
+describe('SC settings', () => {
 	beforeAll(async () => {
 		// Ensures clean SC
 		await createNewPost();

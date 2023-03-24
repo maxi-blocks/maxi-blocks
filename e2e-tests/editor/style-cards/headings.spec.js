@@ -22,7 +22,7 @@ import {
 	responsiveTypographyStyle,
 } from './constants';
 
-describe.skip('StyleCards headings', () => {
+describe('StyleCards headings', () => {
 	it('Check Headings', async () => {
 		await createNewPost();
 

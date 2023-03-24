@@ -485,7 +485,7 @@ const AxisControl = props => {
 	const useResponsiveTabs =
 		!noResponsiveTabs && ['margin', 'padding'].includes(target);
 
-	const disableLeftRightMargin = target === 'margin' && fullWidth === 'full';
+	const disableLeftRightMargin = target === 'margin' && fullWidth;
 
 	const getOptions = () => {
 		const options = [];

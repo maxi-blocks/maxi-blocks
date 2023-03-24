@@ -42,7 +42,7 @@ const ArrowControl = props => {
 			{ label: __('Bottom', 'maxi-blocks'), value: 'bottom' },
 		];
 
-		if (!isFirstOnHierarchy || isFullWidth === 'normal')
+		if (!isFirstOnHierarchy || !isFullWidth)
 			response = response.concat([
 				{ label: __('Right', 'maxi-blocks'), value: 'right' },
 				{ label: __('Left', 'maxi-blocks'), value: 'left' },

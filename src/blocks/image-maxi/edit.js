@@ -389,15 +389,11 @@ class edit extends MaxiBlockComponent {
 							)}
 							defaultSize={{
 								width: `${
-									fullWidth !== 'full' && !useInitSize
-										? imgWidth
-										: 100
+									!fullWidth && !useInitSize ? imgWidth : 100
 								}%`,
 							}}
 							showHandle={
-								isSelected &&
-								fullWidth !== 'full' &&
-								!useInitSize
+								isSelected && !fullWidth && !useInitSize
 							}
 							maxWidth={getMaxWidth()}
 							enable={{

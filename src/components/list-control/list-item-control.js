@@ -50,7 +50,9 @@ const ListItemControl = props => {
 				</span>
 				<div className='maxi-list-item-control__title'>
 					<span className='maxi-list-item-control__title__id' />
-					{title.substring(0, 25) + (title.length > 25 ? '...' : '')}
+					<span className='maxi-list-item-control__title__title-text'>
+						{title}
+					</span>
 					{isCloseButton && (
 						<span
 							className={classnames(

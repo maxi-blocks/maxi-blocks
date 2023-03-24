@@ -94,6 +94,12 @@
 		padding-right: 5px;
 		background-color: #fff;
 
+		&__title-text {
+			overflow: hidden;
+			max-width: 190px;
+			width: 100%;
+		}
+
 		&__text {
 			line-height: 25px;
 		}

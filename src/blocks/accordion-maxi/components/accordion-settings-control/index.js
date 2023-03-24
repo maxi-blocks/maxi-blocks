@@ -13,6 +13,7 @@ import {
 	SelectControl,
 } from '../../../../components';
 import {
+	getAttributeKey,
 	getAttributesValue,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
@@ -65,7 +66,7 @@ const AccordionSettings = props => {
 						})}
 						onChange={val =>
 							onChange({
-								isCollapsible: val,
+								[getAttributeKey('isCollapsible')]: val,
 							})
 						}
 					/>
@@ -80,7 +81,7 @@ const AccordionSettings = props => {
 						})}
 						onChange={val =>
 							onChange({
-								autoPaneClose: val,
+								[getAttributeKey('autoPaneClose')]: val,
 							})
 						}
 					/>
@@ -104,8 +105,12 @@ const AccordionSettings = props => {
 					allowedUnits={['px', 'em', 'vh']}
 					onChangeValue={val => {
 						onChange({
-							[`row-gap-${breakpoint}`]:
-								val !== undefined ? val : '',
+							[getAttributeKey(
+								'row-gap',
+								false,
+								false,
+								breakpoint
+							)]: val !== undefined ? val : '',
 						});
 					}}
 					onChangeUnit={val => {
@@ -115,8 +120,18 @@ const AccordionSettings = props => {
 					}}
 					onReset={() =>
 						onChange({
-							[`row-gap-${breakpoint}`]: getDefaultAttribute(
-								`row-gap-${breakpoint}`
+							[getAttributeKey(
+								'row-gap',
+								false,
+								false,
+								breakpoint
+							)]: getDefaultAttribute(
+								getAttributeKey(
+									'row-gap',
+									false,
+									false,
+									breakpoint
+								)
 							),
 							isReset: true,
 						})
@@ -134,13 +149,16 @@ const AccordionSettings = props => {
 				})}
 				onChangeValue={val => {
 					onChange({
-						animationDuration: val !== undefined ? val : '',
+						[getAttributeKey('animationDuration')]:
+							val !== undefined ? val : '',
 					});
 				}}
 				onReset={() =>
 					onChange({
-						animationDuration:
-							getDefaultAttribute('animationDuration'),
+						[getAttributeKey('animationDuration')]:
+							getDefaultAttribute(
+								getAttributeKey('animationDuration')
+							),
 						isReset: true,
 					})
 				}

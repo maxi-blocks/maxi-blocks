@@ -4,6 +4,7 @@
 import * as attributesData from '../../extensions/attributes/defaults/index';
 import transitionAttributesCreator from '../../extensions/attributes/transitions/transitionAttributesCreator';
 import { customCss, transition } from './data';
+import blockAttributesShorter from '../../extensions/attributes/dictionary/blockAttributesShorter';
 
 /**
  * Attributes
@@ -62,4 +63,4 @@ const attributes = {
 	},
 };
 
-export default attributes;
+export default blockAttributesShorter(attributes);

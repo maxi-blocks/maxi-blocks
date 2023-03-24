@@ -13,6 +13,7 @@ import {
 	SelectControl,
 } from '../../../../components';
 import {
+	getAttributeKey,
 	getAttributesValue,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
@@ -31,7 +32,12 @@ const AccordionLineControl = props => {
 					attributes: props,
 				})}
 				defaultValue={getDefaultAttribute(
-					`${prefix}line-horizontal-${breakpoint}`
+					getAttributeKey(
+						'line-horizontal',
+						false,
+						prefix,
+						breakpoint
+					)
 				)}
 				options={[
 					{
@@ -49,15 +55,29 @@ const AccordionLineControl = props => {
 				]}
 				onChange={val =>
 					onChange({
-						[`${prefix}line-horizontal-${breakpoint}`]: val,
+						[getAttributeKey(
+							'line-horizontal',
+							false,
+							prefix,
+							breakpoint
+						)]: val,
 					})
 				}
 				onReset={() => {
 					onChange({
-						[`${prefix}line-horizontal-${breakpoint}`]:
-							getDefaultAttribute(
-								`${prefix}line-horizontal-${breakpoint}`
-							),
+						[getAttributeKey(
+							'line-horizontal',
+							false,
+							prefix,
+							breakpoint
+						)]: getDefaultAttribute(
+							getAttributeKey(
+								'line-horizontal',
+								false,
+								prefix,
+								breakpoint
+							)
+						),
 						isReset: true,
 					});
 				}}
@@ -83,7 +103,11 @@ const AccordionLineControl = props => {
 									})}
 									onChange={val =>
 										onChange({
-											[`${prefix}line-status-hover`]: val,
+											[getAttributeKey(
+												'line-status-hover',
+												false,
+												prefix
+											)]: val,
 										})
 									}
 								/>
@@ -115,8 +139,11 @@ const AccordionLineControl = props => {
 									})}
 									onChange={val =>
 										onChange({
-											[`${prefix}line-status-active`]:
-												val,
+											[getAttributeKey(
+												'line-status-active',
+												false,
+												prefix
+											)]: val,
 										})
 									}
 								/>

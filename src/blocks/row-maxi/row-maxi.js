@@ -20,10 +20,11 @@ import { rowIcon } from '../../icons';
 /**
  * Block dependencies
  */
-import attributes from './attributes';
 import edit from './edit';
+import attributes from './attributes';
 import save from './save';
 import { customCss } from './data';
+import withMaxiLoader from '../../extensions/maxi-block/withMaxiLoader';
 
 /**
  * Migrators
@@ -40,6 +41,11 @@ registerBlockType('maxi-blocks/row-maxi', {
 	description: 'Configure columns inside a row',
 	category: 'maxi-blocks',
 	parent: ['maxi-blocks/container-maxi'],
+	example: {
+		attributes: {
+			preview: true,
+		},
+	},
 	supports: {
 		align: true,
 		lightBlockWrapper: true,
@@ -54,7 +60,7 @@ registerBlockType('maxi-blocks/row-maxi', {
 			uniqueid: uniqueID,
 		};
 	},
-	edit,
+	edit: withMaxiLoader(edit),
 	save,
 	deprecated: blockMigrator({
 		attributes,

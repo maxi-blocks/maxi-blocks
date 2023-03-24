@@ -108,22 +108,13 @@ const MoreSettings = props => {
 							</div>
 						)}
 						{blockName === 'maxi-blocks/image-maxi' && (
-							<>
-								<Button
-									onClick={() => {
-										openSidebarAccordion(0, 'dimension');
-									}}
-								>
-									{__('Image dimension', 'maxi-blocks')}
-								</Button>
-								<Button
-									onClick={() => {
-										openSidebarAccordion(0, 'caption');
-									}}
-								>
-									{__('Caption', 'maxi-blocks')}
-								</Button>
-							</>
+							<Button
+								onClick={() => {
+									openSidebarAccordion(0, 'caption');
+								}}
+							>
+								{__('Caption', 'maxi-blocks')}
+							</Button>
 						)}
 						{(blockName === 'maxi-blocks/svg-icon-maxi' ||
 							blockName === 'maxi-blocks/image-maxi') && (

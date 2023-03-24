@@ -12,11 +12,18 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
  * Save
  */
 const save = props => {
-	const { textLevel, isList, typeOfList, content, listReversed, listStart } =
-		props.attributes;
+	const {
+		textLevel,
+		isList,
+		typeOfList,
+		content,
+		listReversed,
+		listStart,
+		'dc-status': dcStatus,
+	} = props.attributes;
 
 	const name = 'maxi-blocks/text-maxi';
-
+	const className = 'maxi-text-block__content';
 	const value = content?.replace(/\n/g, '<br />');
 
 	return (
@@ -25,11 +32,14 @@ const save = props => {
 			{...getMaxiBlockAttributes({ ...props, name })}
 		>
 			<RichText.Content
-				className='maxi-text-block__content'
-				value={value}
-				tagName={isList ? typeOfList : textLevel}
-				reversed={!!listReversed}
-				start={listStart}
+				className={className}
+				value={dcStatus ? '$text-to-replace' : value}
+				// TODO: avoid DC for lists
+				tagName={isList && !dcStatus ? typeOfList : textLevel}
+				{...(!dcStatus && {
+					reversed: !!listReversed,
+					start: listStart,
+				})}
 			/>
 		</MaxiBlock.save>
 	);

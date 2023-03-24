@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -13,16 +13,17 @@ import {
 	addTypographyOptions,
 	addTypographyStyle,
 	openPreviewPage,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('Text Maxi hover simple actions', () => {
 	beforeEach(async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 
 		await page.keyboard.type('Testing IB');
 
-		await insertBlock('Button Maxi');
+		await insertMaxiBlock(page, 'Button Maxi');
 
 		await openSidebarTab(page, 'advanced', 'interaction builder');
 
@@ -87,7 +88,7 @@ describe('Text Maxi hover simple actions', () => {
 
 	it('Alignment', async () => {
 		const selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[3].select('Alignment');
+		await selectControls[3].select('a');
 
 		await page.$eval(
 			'.maxi-alignment-control .maxi-tabs-control__button.maxi-tabs-control__button-right',
@@ -104,7 +105,7 @@ describe('Text Maxi hover simple actions', () => {
 	// Needs #3767 to be fixed
 	it.skip('Typography', async () => {
 		const selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[3].select('Typography');
+		await selectControls[3].select('ty');
 
 		await page.$eval(
 			'.maxi-typography-control .maxi-typography-control__font-family',

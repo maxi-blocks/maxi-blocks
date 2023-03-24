@@ -1,0 +1,51 @@
+.maxi-date-helper-popover {
+	.components-popover__content {
+		width: 220px;
+		padding: 0px 16px;
+		transform: translateY(0%) !important;
+	}
+}
+.maxi-custom-date-formatting {
+	&__help-trigger {
+		position: relative;
+	}
+	&__help-icon {
+		display: flex;
+		column-gap: 10px;
+		align-items: center;
+
+		.maxi-custom-date-formatting__help-icon-span {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 16px;
+			height: 16px;
+			min-width: 16px;
+			margin-bottom: 8px;
+			font-size: 12px !important;
+			border-radius: 50%;
+			border: 1px solid var(--maxi-grey-1-color);
+
+			&:hover {
+				border-color: var(--maxi-grey-5-color);
+			}
+		}
+	}
+
+	.maxi-base-control__field {
+		.maxi-text-control__input {
+			-webkit-box-flex: 1;
+			-ms-flex: 1;
+			flex: 1;
+			min-height: unset;
+			max-height: unset !important;
+			border: 1px solid var(--maxi-grey-1-color);
+			color: var(--maxi-grey-5-color);
+			font-size: 12px;
+			line-height: 14px;
+			width: 100%;
+			min-width: 50px;
+			max-width: 25rem;
+		}
+	}
+}

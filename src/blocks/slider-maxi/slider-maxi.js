@@ -20,9 +20,10 @@ import { sliderIcon } from '../../icons';
 /**
  * Block dependencies
  */
-import attributes from './attributes';
 import edit from './edit';
+import attributes from './attributes';
 import save from './save';
+import withMaxiLoader from '../../extensions/maxi-block/withMaxiLoader';
 
 /**
  * Block
@@ -33,6 +34,11 @@ registerBlockType('maxi-blocks/slider-maxi', {
 	description:
 		'Position one or more blocks, arranged side-by-side (horizontal)',
 	category: 'maxi-blocks',
+	example: {
+		attributes: {
+			preview: true,
+		},
+	},
 	supports: {
 		align: true,
 		lightBlockWrapper: true,
@@ -47,6 +53,6 @@ registerBlockType('maxi-blocks/slider-maxi', {
 			uniqueid: uniqueID,
 		};
 	},
-	edit,
+	edit: withMaxiLoader(edit),
 	save,
 });

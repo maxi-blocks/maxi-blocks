@@ -205,12 +205,94 @@ const Inspector = props => {
 																						buttonPosition
 																					}
 																					onChange={val => {
-																						maxiSetAttributes(
-																							{
-																								'icon-position':
-																									val,
-																							}
-																						);
+																						(val ===
+																							'center' ||
+																							val ===
+																								'right') &&
+																							maxiSetAttributes(
+																								{
+																									'icon-position':
+																										val,
+																									'input-border-left-width-general':
+																										props[
+																											'input-border-left-width-general'
+																										]
+																											? props[
+																													'input-border-left-width-general'
+																											  ]
+																											: 4,
+																									'input-border-right-width-general':
+																										props[
+																											'input-border-right-width-general'
+																										]
+																											? props[
+																													'input-border-right-width-general'
+																											  ]
+																											: 0,
+																									'input-padding-left-general':
+																										props[
+																											'input-padding-left-general'
+																										]
+																											? props[
+																													'input-padding-left-general'
+																											  ]
+																											: 10,
+																									'input-padding-right-general':
+																										props[
+																											'input-padding-right-general'
+																										]
+																											? props[
+																													'input-padding-right-general'
+																											  ]
+																											: skin ===
+																											  'icon-reveal'
+																											? 30
+																											: 10,
+																								}
+																							);
+																						val ===
+																							'left' &&
+																							maxiSetAttributes(
+																								{
+																									'icon-position':
+																										val,
+																									'input-border-left-width-general':
+																										props[
+																											'input-border-left-width-general'
+																										]
+																											? props[
+																													'input-border-left-width-general'
+																											  ]
+																											: 0,
+																									'input-border-right-width-general':
+																										props[
+																											'input-border-right-width-general'
+																										]
+																											? props[
+																													'input-border-right-width-general'
+																											  ]
+																											: 4,
+																									'input-padding-left-general':
+																										props[
+																											'input-padding-left-general'
+																										]
+																											? props[
+																													'input-padding-left-general'
+																											  ]
+																											: skin ===
+																											  'icon-reveal'
+																											? 30
+																											: 10,
+																									'input-padding-right-general':
+																										props[
+																											'input-padding-right-general'
+																										]
+																											? props[
+																													'input-padding-right-general'
+																											  ]
+																											: 10,
+																								}
+																							);
 																					}}
 																					breakpoint={
 																						deviceType

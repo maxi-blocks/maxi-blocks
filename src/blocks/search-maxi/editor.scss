@@ -4,15 +4,14 @@
 	&--icon-left {
 		input.icon-reveal {
 			margin-left: -25px !important;
-			text-indent: 20px !important;
 		}
 	}
 	&--icon-center {
-		input.icon-reveal {
-			margin-right: -25px !important;
-		}
 		input.icon-reveal.maxi-search-block__input--hidden {
 			visibility: collapse;
+		}
+		input.icon-reveal {
+			margin-right: -25px !important;
 		}
 	}
 	&--icon-right {

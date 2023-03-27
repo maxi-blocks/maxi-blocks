@@ -1,6 +1,6 @@
 .maxi-dropdown__alignment-content {
 	z-index: 99999999;
-	margin: -33px 0 0 120px !important;
+	margin: -33px 0 0 98px !important;
 
 	.components-popover__content {
 		width: 75px;
@@ -14,6 +14,12 @@
 				&__button {
 					display: block;
 					align-items: flex-start;
+					&:hover {
+						background-color: var(--maxi-grey-8-color);
+					}
+					&:focus:not(:disabled) {
+						background-color: var(--maxi-white-4-color);
+					}
 				}
 			}
 		}

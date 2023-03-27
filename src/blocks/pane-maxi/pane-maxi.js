@@ -20,6 +20,7 @@ import withMaxiLoader from '../../extensions/maxi-block/withMaxiLoader';
 /**
  * Styles and icons
  */
+import './editor.scss';
 import './style.scss';
 import { groupIcon } from '../../icons';
 

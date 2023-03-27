@@ -8,6 +8,7 @@ const videoEvents = () => {
 
 		const videoID = video.id;
 		const videoData =
+			// eslint-disable-next-line no-undef
 			maxiVideo[0][videoID] !== undefined ? maxiVideo[0][videoID] : null;
 
 		const { videoType } = videoData;
@@ -47,6 +48,7 @@ const handleYoutubeVideos = () => {
 		const videoID = video.id;
 
 		const videoData =
+			// eslint-disable-next-line no-undef
 			maxiVideo[0][videoID] !== undefined ? maxiVideo[0][videoID] : null;
 
 		const popupContent = insertPopup(video);
@@ -58,7 +60,7 @@ const handleYoutubeVideos = () => {
 		iframe.id = `${videoID}-iframe`;
 		iframe.src = videoData.embedUrl;
 
-		const player = new YT.Player(iframe, {
+		const player = new window.YT.Player(iframe, {
 			events: {
 				onStateChange: handleStateChange,
 			},
@@ -67,7 +69,7 @@ const handleYoutubeVideos = () => {
 		function handleStateChange(state) {
 			const { isLoop, startTime } = videoData;
 
-			if (state.data === YT.PlayerState.ENDED && isLoop) {
+			if (state.data === window.YT.PlayerState.ENDED && isLoop) {
 				player.seekTo(startTime || 0);
 			}
 		}
@@ -84,6 +86,7 @@ function handleVimeoVideos() {
 		const videoID = video.id;
 
 		const videoData =
+			// eslint-disable-next-line no-undef
 			maxiVideo[0][videoID] !== undefined ? maxiVideo[0][videoID] : null;
 
 		const popupContent = insertPopup(video);
@@ -93,12 +96,12 @@ function handleVimeoVideos() {
 				: video.querySelector('iframe');
 
 		player.src = videoData.embedUrl;
-		const vimeoPlayer = new Vimeo.Player(player);
+		const vimeoPlayer = new window.Vimeo.Player(player);
 		const { endTime } = videoData;
 		const { startTime } = videoData;
 		const { isLoop } = videoData;
 
-		vimeoPlayer.on('timeupdate', function (data) {
+		vimeoPlayer.on('timeupdate', data => {
 			if (data.seconds > +endTime) {
 				if (isLoop) vimeoPlayer.setCurrentTime(startTime || '0');
 				else vimeoPlayer.pause();

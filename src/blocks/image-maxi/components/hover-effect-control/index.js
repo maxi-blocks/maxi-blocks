@@ -458,6 +458,7 @@ const HoverEffectControl = props => {
 							onChange={onChange}
 							prefix='hover-title-'
 							disableCustomFormats
+							showBottomGap
 							blockStyle={blockStyle}
 							clientId={clientId}
 							globalProps={{

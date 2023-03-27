@@ -37,6 +37,10 @@ const attributes = {
 			type: 'string',
 			default: 'px',
 		},
+		'bottom-gap-general': {
+			type: 'number',
+			default: 10,
+		},
 	},
 	...attributesData.margin,
 	...attributesData.padding,

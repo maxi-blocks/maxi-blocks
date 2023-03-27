@@ -51,7 +51,8 @@ const handleYoutubeVideos = () => {
 			// eslint-disable-next-line no-undef
 			maxiVideo[0][videoID] !== undefined ? maxiVideo[0][videoID] : null;
 
-		const popupContent = insertPopup(video);
+		const popupContent =
+			videoData.playerType === 'popup' && insertPopup(video);
 		const iframe =
 			videoData.playerType === 'popup'
 				? popupContent.querySelector('iframe')
@@ -89,7 +90,8 @@ function handleVimeoVideos() {
 			// eslint-disable-next-line no-undef
 			maxiVideo[0][videoID] !== undefined ? maxiVideo[0][videoID] : null;
 
-		const popupContent = insertPopup(video);
+		const popupContent =
+			videoData.playerType === 'popup' && insertPopup(video);
 		const player =
 			videoData.playerType === 'popup'
 				? popupContent.querySelector('iframe')

@@ -1,50 +1,56 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
-import attributesShorter from '../dictionary/attributesShorter';
 
-export const rawPosition = attributesShorter(
-	{
-		position: {
-			type: 'string',
-			default: 'inherit',
-		},
-		'position-top': {
-			type: 'string',
-		},
-		'position-right': {
-			type: 'string',
-		},
-		'position-bottom': {
-			type: 'string',
-		},
-		'position-left': {
-			type: 'string',
-		},
-		'position-sync': {
-			type: 'string',
-			default: 'all',
-		},
-		'position-top-unit': {
-			type: 'string',
-			default: 'px',
-		},
-		'position-right-unit': {
-			type: 'string',
-			default: 'px',
-		},
-		'position-bottom-unit': {
-			type: 'string',
-			default: 'px',
-		},
-		'position-left-unit': {
-			type: 'string',
-			default: 'px',
-		},
+export const rawPosition = {
+	pos: {
+		type: 'string',
+		default: 'inherit',
+		longLabel: 'position',
 	},
-	'position'
-);
+	'pos.t': {
+		type: 'string',
+		longLabel: 'position-top',
+	},
+	'pos.r': {
+		type: 'string',
+		longLabel: 'position-right',
+	},
+	'pos.b': {
+		type: 'string',
+		longLabel: 'position-bottom',
+	},
+	'pos.l': {
+		type: 'string',
+		longLabel: 'position-left',
+	},
+	'pos.s': {
+		type: 'string',
+		default: 'all',
+		longLabel: 'position-sync',
+	},
+	'pos.t.u': {
+		type: 'string',
+		default: 'px',
+		longLabel: 'position-top-unit',
+	},
+	'pos.r.u': {
+		type: 'string',
+		default: 'px',
+		longLabel: 'position-right-unit',
+	},
+	'pos.b.u': {
+		type: 'string',
+		default: 'px',
+		longLabel: 'position-bottom-unit',
+	},
+	'pos.l.u': {
+		type: 'string',
+		default: 'px',
+		longLabel: 'position-left-unit',
+	},
+};
 
 const position = breakpointAttributesCreator({
 	obj: rawPosition,
 });
 
-export default attributesShorter(position, 'position');
+export default position;

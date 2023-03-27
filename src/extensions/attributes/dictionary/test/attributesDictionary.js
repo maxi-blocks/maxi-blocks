@@ -6,7 +6,13 @@ import dictionary, {
 
 describe('attributesDictionary', () => {
 	it.only('test', () => {
-		const test = attributes;
+		const test = attributes.icon;
+
+		// Object.entries(attributes).forEach(([key, val]) => {
+		// 	console.log(key, val);
+
+		// 	debugger;
+		// });
 
 		expect(test).toMatchSnapshot();
 	});

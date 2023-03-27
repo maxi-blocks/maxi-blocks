@@ -1,90 +1,103 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import paletteAttributesCreator from '../paletteAttributesCreator';
 import alignment from './alignment';
-import attributesShorter from '../dictionary/attributesShorter';
 
 const numberCounter = {
 	...breakpointAttributesCreator({
 		obj: {
-			'number-counter-width-auto': {
+			'nc-wa': {
 				type: 'boolean',
 				default: false,
+				longLabel: 'number-counter-width-auto',
 			},
 		},
 	}),
-	'number-counter-status': {
+	'nc.s': {
 		type: 'boolean',
 		default: true,
+		longLabel: 'number-counter-status',
 	},
-	'number-counter-preview': {
+	'nc-pr': {
 		type: 'boolean',
 		default: true,
+		longLabel: 'number-counter-preview',
 	},
-	'number-counter-percentage-sign-status': {
+	'nc-psi.s': {
 		type: 'boolean',
 		default: false,
+		longLabel: 'number-counter-percentage-sign-status',
 	},
-	'number-counter-rounded-status': {
+	'nc-rou.s': {
 		type: 'boolean',
 		default: false,
+		longLabel: 'number-counter-rounded-status',
 	},
-	'number-counter-circle-status': {
+	'nc-ci.s': {
 		type: 'boolean',
 		default: false,
+		longLabel: 'number-counter-circle-status',
 	},
-	'number-counter-start': {
+	'nc-sta': {
 		type: 'number',
 		default: 0,
+		longLabel: 'number-counter-start',
 	},
-	'number-counter-end': {
+	'nc-e': {
 		type: 'number',
 		default: 100,
+		longLabel: 'number-counter-end',
 	},
-	'number-counter-stroke': {
+	'nc-str': {
 		type: 'number',
 		default: 5,
+		longLabel: 'number-counter-stroke',
 	},
-	'number-counter-duration': {
+	'nc-du': {
 		type: 'number',
 		default: 1,
+		longLabel: 'number-counter-duration',
 	},
-	'number-counter-start-animation': {
+	'nc-san': {
 		type: 'string',
 		default: 'page-load',
+		longLabel: 'number-counter-start-animation',
 	},
-	'number-counter-start-animation-offset': {
+	'nc-saof': {
 		type: 'number',
 		default: 100,
+		longLabel: 'number-counter-start-animation-offset',
 	},
 
 	...paletteAttributesCreator({
-		prefix: 'number-counter-circle-background-',
+		prefix: 'nccb-', // number-counter-circle-background-
 		palette: 2,
 	}),
 	...paletteAttributesCreator({
-		prefix: 'number-counter-circle-bar-',
+		prefix: 'nccba-', // number-counter-circle-bar-
 		palette: 4,
 	}),
 
 	...breakpointAttributesCreator({
 		obj: {
-			'number-counter-title-font-size': {
+			'nc-ti-fs': {
 				type: 'number',
 				default: 40,
+				longLabel: 'number-counter-title-font-size',
 			},
-			'font-family': {
+			ff: {
 				type: 'string',
 				default: 'Roboto',
+				longLabel: 'font-family',
 			},
-			'font-weight': {
+			fwe: {
 				type: 'string',
 			},
 			...paletteAttributesCreator({
-				prefix: 'number-counter-text-',
+				prefix: 'nct-', // number-counter-text-
 				palette: 4,
 			}),
 			...paletteAttributesCreator({
-				prefix: 'number-counter-circle-bar-',
+				prefix: 'nccba-', // number-counter-circle-bar-
 				palette: 4,
 			}),
 		},
@@ -92,4 +105,4 @@ const numberCounter = {
 	...alignment,
 };
 
-export default attributesShorter(numberCounter, 'numberCounter');
+export default numberCounter;

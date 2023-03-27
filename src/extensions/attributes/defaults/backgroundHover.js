@@ -1,4 +1,3 @@
-import attributesShorter from '../dictionary/attributesShorter';
 import hoverAttributesCreator from '../hoverAttributesCreator';
 import {
 	background,
@@ -9,54 +8,37 @@ import {
 	backgroundSVG,
 } from './background';
 
-export const backgroundHover = attributesShorter(
-	hoverAttributesCreator({
-		obj: background,
-		newAttr: {
-			'background-status-hover': {
-				type: 'boolean',
-				default: false,
-			},
+export const backgroundHover = hoverAttributesCreator({
+	obj: background,
+	newAttr: {
+		'b.sh': {
+			type: 'boolean',
+			default: false,
+			longLabel: 'background-status-hover',
 		},
-	}),
-	'backgroundHover'
-);
+	},
+});
 
-export const backgroundColorHover = attributesShorter(
-	hoverAttributesCreator({
-		obj: backgroundColor,
-		sameValAttr: ['background-pa-status-general'],
-		diffValAttr: { 'background-palette-color-general': 6 },
-	}),
-	'backgroundColorHover'
-);
+export const backgroundColorHover = hoverAttributesCreator({
+	obj: backgroundColor,
+	sameValAttr: ['b-ps-general'], // background-palette-status-general
+	diffValAttr: { 'b-pc-general': 6 }, // background-palette-color-general
+});
 
-export const backgroundImageHover = attributesShorter(
-	hoverAttributesCreator({
-		obj: backgroundImage,
-	}),
-	'backgroundImageHover'
-);
+export const backgroundImageHover = hoverAttributesCreator({
+	obj: backgroundImage,
+});
 
-export const backgroundVideoHover = attributesShorter(
-	hoverAttributesCreator({
-		obj: backgroundVideo,
-	}),
-	'backgroundVideoHover'
-);
+export const backgroundVideoHover = hoverAttributesCreator({
+	obj: backgroundVideo,
+});
 
-export const backgroundGradientHover = attributesShorter(
-	hoverAttributesCreator({
-		obj: backgroundGradient,
-	}),
-	'backgroundGradientHover'
-);
+export const backgroundGradientHover = hoverAttributesCreator({
+	obj: backgroundGradient,
+});
 
-export const backgroundSVGHover = attributesShorter(
-	hoverAttributesCreator({
-		obj: backgroundSVG,
-		sameValAttr: ['background-svg-pa-status-general'],
-		diffValAttr: { 'background-svg-palette-color-general': 6 },
-	}),
-	'backgroundSVGHover'
-);
+export const backgroundSVGHover = hoverAttributesCreator({
+	obj: backgroundSVG,
+	sameValAttr: ['bs-ps-general'], // background-svg-palette-status-general
+	diffValAttr: { 'bs-pc-general': 6 }, // background-svg-palette-color-general
+});

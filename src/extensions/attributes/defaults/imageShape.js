@@ -1,25 +1,25 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
-import attributesShorter from '../dictionary/attributesShorter';
 
 export const rawImageShape = {
-	'image-shape-scale': {
+	'is-sc': {
 		type: 'number',
 		default: 100,
+		longLabel: 'image-shape-scale',
 	},
-	'image-shape-rotate': {
+	'is-rot': {
 		type: 'number',
+		longLabel: 'image-shape-rotate',
 	},
-	'image-shape-flip-x': {
+	'is-fx': {
 		type: 'boolean',
+		longLabel: 'image-shape-flip-x',
 	},
-	'image-shape-flip-y': {
+	'is-fy': {
 		type: 'boolean',
+		longLabel: 'image-shape-flip-y',
 	},
 };
 
-export const imageShape = attributesShorter(
-	breakpointAttributesCreator({
-		obj: rawImageShape,
-	}),
-	'imageShape'
-);
+export const imageShape = breakpointAttributesCreator({
+	obj: rawImageShape,
+});

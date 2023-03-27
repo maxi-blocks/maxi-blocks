@@ -1,12 +1,12 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
-import attributesShorter from '../dictionary/attributesShorter';
 
 const opacity = breakpointAttributesCreator({
 	obj: {
-		opacity: {
+		o: {
 			type: 'number',
+			longLabel: 'opacity',
 		},
 	},
 });
 
-export default attributesShorter(opacity, 'opacity');
+export default opacity;

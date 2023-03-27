@@ -1,13 +1,13 @@
-import attributesShorter from '../dictionary/attributesShorter';
-
 const transition = {
-	transition: {
+	t: {
 		type: 'object',
+		longLabel: 'transition',
 	},
-	'transition-change-all': {
+	tca: {
 		type: 'boolean',
 		default: true,
+		longLabel: 'transition-change-all',
 	},
 };
 
-export default attributesShorter(transition, 'transition');
+export default transition;

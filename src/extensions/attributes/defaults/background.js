@@ -3,318 +3,317 @@ import paletteAttributesCreator from '../paletteAttributesCreator';
 import prefixAttributesCreator from '../prefixAttributesCreator';
 import { rawPosition } from './position';
 import { clipPathRaw } from './clipPath';
-import attributesShorter from '../dictionary/attributesShorter';
 
 // eslint-disable-next-line no-unused-vars
 const { position, ...backgroundPosition } = rawPosition;
 
-const rawBgOpacity = attributesShorter(
-	{
-		opacity: {
-			type: 'number',
-			default: 1,
+const rawBgOpacity = {
+	o: {
+		type: 'number',
+		default: 1,
+		longLabel: 'opacity',
+	},
+};
+
+export const blockBackground = {
+	bl: {
+		type: 'array',
+		longLabel: 'background-layers',
+	},
+	'bl.h': {
+		type: 'array',
+		longLabel: 'background-layers-hover',
+	},
+	'bb.sh': {
+		type: 'boolean',
+		default: false,
+		longLabel: 'block-background-status-hover',
+	},
+};
+
+export const rawBackground =
+	({
+		bam: {
+			type: 'string',
+			longLabel: 'background-active-media',
 		},
 	},
-	'opacity'
-);
+	'background');
 
-export const blockBackground = attributesShorter(
-	{
-		'background-layers': {
-			type: 'array',
-		},
-		'background-layers-hover': {
-			type: 'array',
-		},
-		'block-background-status-hover': {
-			type: 'boolean',
-			default: false,
-		},
+const layerSize = {
+	w: {
+		type: 'number',
+		default: 100,
+		longLabel: 'width',
 	},
-	'background'
-);
-
-export const rawBackground = attributesShorter(
-	{
-		'background-active-media': {
-			type: 'string',
-		},
+	'w.u': {
+		type: 'string',
+		default: '%',
+		longLabel: 'width-unit',
 	},
-	'background'
-);
-
-const layerSize = attributesShorter(
-	{
-		width: {
-			type: 'number',
-			default: 100,
-		},
-		'width-unit': {
-			type: 'string',
-			default: '%',
-		},
-		height: {
-			type: 'number',
-			default: 100,
-		},
-		'height-unit': {
-			type: 'string',
-			default: '%',
-		},
+	h: {
+		type: 'number',
+		default: 100,
+		longLabel: 'height',
 	},
-	'size'
-);
-
-export const rawBackgroundColor = attributesShorter(
-	{
-		...paletteAttributesCreator({
-			prefix: 'background-color-',
-			palette: 1,
-		}),
-
-		...prefixAttributesCreator({
-			prefix: 'background-color-',
-			obj: clipPathRaw,
-		}),
-
-		...prefixAttributesCreator({
-			obj: { ...backgroundPosition, ...layerSize },
-			prefix: 'background-color-wrapper-',
-		}),
+	'h.u': {
+		type: 'string',
+		default: '%',
+		longLabel: 'height-unit',
 	},
-	'background'
-);
+};
 
-export const rawBackgroundImage = attributesShorter(
-	{
-		'background-image-mediaID': {
-			type: 'number',
-		},
-		'background-image-mediaURL': {
-			type: 'string',
-		},
-		'background-image-size': {
-			type: 'string',
-			default: 'auto',
-		},
-		...prefixAttributesCreator({
-			obj: layerSize,
-			prefix: 'background-image-',
-		}),
-		'background-image-crop-options': {
-			type: 'object',
-		},
-		'background-image-repeat': {
-			type: 'string',
-			default: 'no-repeat',
-		},
-		'background-image-position': {
-			type: 'string',
-			default: 'center center',
-		},
-		'background-image-position-width-unit': {
-			type: 'string',
-			default: '%',
-		},
-		'background-image-position-width': {
-			type: 'number',
-			default: 0,
-		},
-		'background-image-position-height-unit': {
-			type: 'string',
-			default: '%',
-		},
-		'background-image-position-height': {
-			type: 'number',
-			default: 0,
-		},
-		'background-image-origin': {
-			type: 'string',
-			default: 'padding-box',
-		},
-		...prefixAttributesCreator({
-			prefix: 'background-image-',
-			obj: rawBgOpacity,
-		}),
-		'background-image-clip': {
-			type: 'string',
-			default: 'border-box',
-		},
-		'background-image-attachment': {
-			type: 'string',
-			default: 'scroll',
-		},
-		'background-image-clip-path': {
-			type: 'string',
-		},
-		...prefixAttributesCreator({
-			prefix: 'background-image-',
-			obj: clipPathRaw,
-		}),
-		'background-image-parallax-status': {
-			type: 'boolean',
-			default: false,
-		},
-		'background-image-parallax-speed': {
-			type: 'number',
-			default: 4,
-		},
-		'background-image-parallax-direction': {
-			type: 'string',
-			default: 'down',
-		},
-		'background-image-parallax-alt': {
-			type: 'string',
-		},
-		'background-image-parallax-alt-selector': {
-			type: 'string',
-		},
-		...prefixAttributesCreator({
-			obj: { ...backgroundPosition, ...layerSize },
-			prefix: 'background-image-wrapper-',
-		}),
-	},
-	'background'
-);
-
-export const rawBackgroundVideo = attributesShorter(
-	{
-		'background-video-mediaID': {
-			type: 'number',
-		},
-		'background-video-mediaURL': {
-			type: 'string',
-			default: 'https://www.youtube.com/watch?v=ScMzIvxBSi4',
-		},
-		'background-video-startTime': {
-			type: 'string',
-		},
-		'background-video-endTime': {
-			type: 'string',
-		},
-		'background-video-loop': {
-			type: 'boolean',
-			default: false,
-		},
-		'background-video-clip-path': {
-			type: 'string',
-		},
-		'background-video-clip-path-status': {
-			type: 'boolean',
-			default: false,
-		},
-		'background-video-fallbackID': {
-			type: 'number',
-		},
-		'background-video-fallbackURL': {
-			type: 'string',
-		},
-		'background-video-playOnMobile': {
-			type: 'boolean',
-			default: false,
-		},
-		...prefixAttributesCreator({
-			prefix: 'background-video-',
-			obj: rawBgOpacity,
-		}),
-		'background-video-reduce-border': {
-			type: 'boolean',
-			default: false,
-		},
-		...prefixAttributesCreator({
-			obj: { ...backgroundPosition, ...layerSize },
-			prefix: 'background-video-wrapper-',
-		}),
-	},
-	'background'
-);
-
-export const rawBackgroundGradient = attributesShorter(
-	{
-		'background-gradient-content': {
-			type: 'string',
-		},
-		...prefixAttributesCreator({
-			prefix: 'background-gradient-',
-			obj: rawBgOpacity,
-		}),
-		...prefixAttributesCreator({
-			prefix: 'background-gradient-',
-			obj: clipPathRaw,
-		}),
-		...prefixAttributesCreator({
-			obj: { ...backgroundPosition, ...layerSize },
-			prefix: 'background-gradient-wrapper-',
-		}),
-	},
-	'background'
-);
-
-export const rawBackgroundSVG = attributesShorter(
-	{
-		...paletteAttributesCreator({ prefix: 'background-svg-', palette: 5 }),
-		'background-svg-SVGElement': {
-			type: 'string',
-		},
-		'background-svg-SVGData': {
-			type: 'object',
-		},
-		'background-svg-top-unit': {
-			type: 'string',
-			default: '%',
-		},
-		...prefixAttributesCreator({
-			obj: { ...backgroundPosition, ...layerSize },
-			prefix: 'background-svg-',
-		}),
-	},
-	'background'
-);
-
-export const background = attributesShorter(
-	breakpointAttributesCreator({
-		obj: rawBackground,
+export const rawBackgroundColor = {
+	...paletteAttributesCreator({
+		prefix: 'bc-', // background-color-
+		palette: 1,
 	}),
-	'background'
-);
 
-export const backgroundColor = attributesShorter(
-	breakpointAttributesCreator({
-		obj: rawBackgroundColor,
+	...prefixAttributesCreator({
+		prefix: 'bc-', // background-color-
+		obj: clipPathRaw,
 	}),
-	'background'
-);
 
-export const backgroundImage = attributesShorter(
-	breakpointAttributesCreator({
-		obj: rawBackgroundImage,
-		noBreakpointAttr: [
-			'background-image-mediaURL',
-			'background-image-mediaID',
-			'background-image-parallax-alt',
-			'background-image-parallax-alt-selector',
-		],
+	...prefixAttributesCreator({
+		obj: { ...backgroundPosition, ...layerSize },
+		prefix: 'bcw-', // background-color-wrapper
 	}),
-	'background'
-);
+};
 
-export const backgroundVideo = attributesShorter(
-	breakpointAttributesCreator({
-		obj: rawBackgroundVideo,
+export const rawBackgroundImage = {
+	'bi-mi': {
+		type: 'number',
+		longLabel: 'background-image-mediaID',
+	},
+	'bi-mu': {
+		type: 'string',
+		longLabel: 'background-image-mediaURL',
+	},
+	'bi-si': {
+		type: 'string',
+		default: 'auto',
+		longLabel: 'background-image-size',
+	},
+	...prefixAttributesCreator({
+		obj: layerSize,
+		prefix: 'bi-', // background-image-
 	}),
-	'background'
-);
+	'bi-co': {
+		type: 'object',
+		longLabel: 'background-image-crop-options',
+	},
+	'bi-re': {
+		type: 'string',
+		default: 'no-repeat',
+		longLabel: 'background-image-repeat',
+	},
+	'bi-pos': {
+		type: 'string',
+		default: 'center center',
+		longLabel: 'background-image-position',
+	},
+	'bi-pw.u': {
+		type: 'string',
+		default: '%',
+		longLabel: 'background-image-position-width-unit',
+	},
+	'bi-pw': {
+		type: 'number',
+		default: 0,
+		longLabel: 'background-image-position-width',
+	},
+	'bi-ph.u': {
+		type: 'string',
+		default: '%',
+		longLabel: 'background-image-position-height-unit',
+	},
+	'bi-ph': {
+		type: 'number',
+		default: 0,
+		longLabel: 'background-image-position-height',
+	},
+	'bi-ori': {
+		type: 'string',
+		default: 'padding-box',
+		longLabel: 'background-image-origin',
+	},
+	...prefixAttributesCreator({
+		prefix: 'bi-', // background-image-
+		obj: rawBgOpacity,
+	}),
+	'bi-clp': {
+		type: 'string',
+		default: 'border-box',
+		longLabel: 'background-image-clip',
+	},
+	'bi-at': {
+		type: 'string',
+		default: 'scroll',
+		longLabel: 'background-image-attachment',
+	},
+	'bi-cp': {
+		type: 'string',
+		longLabel: 'background-image-clip-path',
+	},
+	...prefixAttributesCreator({
+		prefix: 'bi-', // background-image-
+		obj: clipPathRaw,
+	}),
+	'bi-pa.s': {
+		type: 'boolean',
+		default: false,
+		longLabel: 'background-image-parallax-status',
+	},
+	'bi-psp': {
+		type: 'number',
+		default: 4,
+		longLabel: 'background-image-parallax-speed',
+	},
+	'bi-pd': {
+		type: 'string',
+		default: 'down',
+		longLabel: 'background-image-parallax-direction',
+	},
+	'bi-pal': {
+		type: 'string',
+		longLabel: 'background-image-parallax-alt',
+	},
+	'bi-pas': {
+		type: 'string',
+		longLabel: 'background-image-parallax-alt-selector',
+	},
+	...prefixAttributesCreator({
+		obj: { ...backgroundPosition, ...layerSize },
+		prefix: 'biw', // background-image-wrapper-
+	}),
+};
 
-export const backgroundGradient = attributesShorter(
-	breakpointAttributesCreator({
-		obj: rawBackgroundGradient,
+export const rawBackgroundVideo = {
+	'bv-mi': {
+		type: 'number',
+		longLabel: 'background-video-mediaID',
+	},
+	'bv-mu': {
+		type: 'string',
+		default: 'https://www.youtube.com/watch?v=ScMzIvxBSi4',
+		longLabel: 'background-video-mediaURL',
+	},
+	'bv-sti': {
+		type: 'string',
+		longLabel: 'background-video-startTime',
+	},
+	'bv-eti': {
+		type: 'string',
+		longLabel: 'background-video-endTime',
+	},
+	'bv-loo': {
+		type: 'boolean',
+		default: false,
+		longLabel: 'background-video-loop',
+	},
+	'bv-cp': {
+		type: 'string',
+		longLabel: 'background-video-clip-path',
+	},
+	'bv-cp.s': {
+		type: 'boolean',
+		default: false,
+		longLabel: 'background-video-clip-path-status',
+	},
+	'bv-fi': {
+		type: 'number',
+		longLabel: 'background-video-fallbackID',
+	},
+	'bv-fu': {
+		type: 'string',
+		longLabel: 'background-video-fallbackURL',
+	},
+	'bv-pm': {
+		type: 'boolean',
+		default: false,
+		longLabel: 'background-video-playOnMobile',
+	},
+	...prefixAttributesCreator({
+		prefix: 'bi-', // background-video-
+		obj: rawBgOpacity,
 	}),
-	'background'
-);
+	'bv-rb': {
+		type: 'boolean',
+		default: false,
+		longLabel: 'background-video-reduce-border',
+	},
+	...prefixAttributesCreator({
+		obj: { ...backgroundPosition, ...layerSize },
+		prefix: 'bvw-', // background-video-wrapper-
+	}),
+};
 
-export const backgroundSVG = attributesShorter(
-	breakpointAttributesCreator({
-		obj: rawBackgroundSVG,
+export const rawBackgroundGradient = {
+	'bg-c': {
+		type: 'string',
+		longLabel: 'background-gradient-content',
+	},
+	...prefixAttributesCreator({
+		prefix: 'bg-', // background-gradient-
+		obj: rawBgOpacity,
 	}),
-	'background'
-);
+	...prefixAttributesCreator({
+		prefix: 'bg-', // background-gradient-
+		obj: clipPathRaw,
+	}),
+	...prefixAttributesCreator({
+		obj: { ...backgroundPosition, ...layerSize },
+		prefix: 'bg-', // background-gradient-wrapper-
+	}),
+};
+
+export const rawBackgroundSVG = {
+	...paletteAttributesCreator({ prefix: 'bs-', palette: 5 }), // background-svg-
+	'bg-se': {
+		type: 'string',
+		longLabel: 'background-svg-SVGElement',
+	},
+	'bg-sd': {
+		type: 'object',
+		longLabel: 'background-svg-SVGData',
+	},
+	'bg.t.u': {
+		type: 'string',
+		default: '%',
+		longLabel: 'background-svg-top-unit',
+	},
+	...prefixAttributesCreator({
+		obj: { ...backgroundPosition, ...layerSize },
+		prefix: 'bs-', // background-svg-
+	}),
+};
+
+export const background = breakpointAttributesCreator({
+	obj: rawBackground,
+});
+
+export const backgroundColor = breakpointAttributesCreator({
+	obj: rawBackgroundColor,
+});
+
+export const backgroundImage = breakpointAttributesCreator({
+	obj: rawBackgroundImage,
+	noBreakpointAttr: [
+		'bi-mu', // 'background-image-mediaURL'
+		'bi-mi', // 'background-image-mediaID'
+		'bi-pal', // 'background-image-parallax-alt'
+		'bi-pas', // 'background-image-parallax-alt-selector'
+	],
+});
+
+export const backgroundVideo = breakpointAttributesCreator({
+	obj: rawBackgroundVideo,
+});
+
+export const backgroundGradient = breakpointAttributesCreator({
+	obj: rawBackgroundGradient,
+});
+
+export const backgroundSVG = breakpointAttributesCreator({
+	obj: rawBackgroundSVG,
+});

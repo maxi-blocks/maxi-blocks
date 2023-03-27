@@ -1,22 +1,24 @@
-import attributesShorter from '../dictionary/attributesShorter';
-
 const searchButton = {
-	buttonSkin: {
+	bus: {
 		type: 'string',
 		default: 'icon',
+		longLabel: 'buttonSkin',
 	},
-	iconRevealAction: {
+	ira: {
 		type: 'string',
 		default: 'click',
+		longLabel: 'iconRevealAction',
 	},
-	buttonContent: {
+	bc: {
 		type: 'string',
 		default: 'Find',
+		longLabel: 'buttonContent',
 	},
-	buttonContentClose: {
+	bcc: {
 		type: 'string',
 		default: 'Close',
+		longLabel: 'buttonContentClose',
 	},
 };
 
-export default attributesShorter(searchButton, 'searchButton');
+export default searchButton;

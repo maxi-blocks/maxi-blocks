@@ -1,72 +1,79 @@
-import prefixAttributesCreator from '../prefixAttributesCreator';
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
-import attributesShorter from '../dictionary/attributesShorter';
+import paletteAttributesCreator from '../paletteAttributesCreator';
 
-import { rawBorder } from './border';
-
-const prefix = 'divider-';
+const prefix = 'db-'; // divider-border-
 const rawDivider = {
-	'divider-border-top': {
+	'db.t': {
 		type: 'number',
 		default: 2,
+		longLabel: 'divider-border-top',
 	},
-	'divider-border-top-unit': {
+	'db.t.u': {
 		type: 'string',
 		default: 'px',
+		longLabel: 'divider-border-top-unit',
 	},
-	'divider-border-right': {
+	'db.r': {
 		type: 'number',
 		default: 2,
+		longLabel: 'divider-border-right',
 	},
-	'divider-border-right-unit': {
+	'db.r.u': {
 		type: 'string',
 		default: 'px',
+		longLabel: 'divider-border-right-unit',
 	},
-	'divider-border-radius': {
+	'db.ra': {
 		type: 'boolean',
 		default: false,
+		longLabel: 'divider-border-radius',
 	},
-	'divider-width': {
+	dw: {
 		type: 'number',
 		default: 50,
+		longLabel: 'divider-width',
 	},
-	'divider-width-unit': {
+	'dw.u': {
 		type: 'string',
 		default: '%',
+		longLabel: 'divider-width-unit',
 	},
-	'divider-height': {
+	dh: {
 		type: 'number',
 		default: 100,
+		longLabel: 'divider-height',
 	},
-	'line-align': {
+	la: {
 		type: 'string',
 		default: 'row',
+		longLabel: 'line-align',
 	},
-	'line-vertical': {
+	lv: {
 		type: 'string',
 		default: 'center',
+		longLabel: 'line-vertical',
 	},
-	'line-horizontal': {
+	lh: {
 		type: 'string',
 		default: 'center',
+		longLabel: 'line-horizontal',
 	},
-	'line-orientation': {
+	lo: {
 		type: 'string',
 		default: 'horizontal',
+		longLabel: 'line-orientation',
 	},
-	...prefixAttributesCreator({
+	'db-s': {
+		type: 'string',
+		default: 'solid',
+		longLabel: 'divider-border-style',
+	},
+	...paletteAttributesCreator({
 		prefix,
-		obj: rawBorder,
-		diffValAttr: {
-			'divider-border-palette-color': 4,
-			'divider-border-style': 'solid',
-		},
+		palette: 4,
 	}),
 };
 
-export default attributesShorter(
-	breakpointAttributesCreator({
-		obj: rawDivider,
-	}),
-	'divider'
-);
+export default breakpointAttributesCreator({
+	obj: rawDivider,
+});

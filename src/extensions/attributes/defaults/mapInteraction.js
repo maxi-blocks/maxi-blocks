@@ -1,22 +1,24 @@
-import attributesShorter from '../dictionary/attributesShorter';
-
 const mapInteraction = {
-	'map-dragging': {
+	'm-dr': {
 		type: 'boolean',
 		default: true,
+		longLabel: 'map-dragging',
 	},
-	'map-touch-zoom': {
+	'm-tx': {
 		type: 'boolean',
 		default: true,
+		longLabel: 'map-touch-zoom',
 	},
-	'map-double-click-zoom': {
+	'm-dcz': {
 		type: 'boolean',
 		default: true,
+		longLabel: 'map-double-click-zoom',
 	},
-	'map-scroll-wheel-zoom': {
+	'm-swz': {
 		type: 'boolean',
 		default: true,
+		longLabel: 'map-scroll-wheel-zoom',
 	},
 };
 
-export default attributesShorter(mapInteraction, 'mapInteraction');
+export default mapInteraction;

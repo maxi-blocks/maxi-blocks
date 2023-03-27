@@ -1,24 +1,25 @@
-import attributesShorter from '../dictionary/attributesShorter';
 import hoverAttributesCreator from '../hoverAttributesCreator';
 import prefixAttributesCreator from '../prefixAttributesCreator';
 import { background, backgroundColor } from './background';
 import opacity from './opacity';
 import { height, width } from './size';
 
+const prefix = 'o-'; // overlay-
+
 const overlayColor = {
 	...prefixAttributesCreator({
 		obj: background,
-		prefix: 'overlay-',
+		prefix,
 		diffValAttr: {
-			'overlay-background-active-media-general': 'color',
+			'o-bam-general': 'color', // overlay-background-active-media-general
 		},
 	}),
 	...prefixAttributesCreator({
 		obj: backgroundColor,
-		prefix: 'overlay-',
+		prefix,
 		diffValAttr: {
-			'overlay-background-palette-color-general': 5,
-			'overlay-background-palette-opacity-general': 0.7,
+			'o-b-pc-general': 5, // overlay-background-palette-color-general
+			'o-b-po-general': 0.7, // overlay-background-palette-opacity-general
 		},
 	}),
 };
@@ -27,43 +28,44 @@ const videoOverlay = {
 	...overlayColor,
 	...hoverAttributesCreator({
 		obj: overlayColor,
-		sameValAttr: [
-			'overlay-background-active-media-general',
-			'overlay-background-palette-color-general',
-			'overlay-background-palette-opacity-general',
-		],
+		sameValAttr: ['o-bam-general', 'o-b-pc-general', 'o-b-po-general'],
 		newAttr: {
-			'overlay-background-status-hover': {
+			'o-b.sh': {
 				type: 'boolean',
 				default: false,
+				longLabel: 'overlay-background-status-hover',
 			},
 		},
 	}),
 
 	...prefixAttributesCreator({
 		obj: { ...width, ...height, ...opacity },
-		prefix: 'overlay-media-',
+		prefix: 'om-', // overlay-media
 		diffValAttr: {
-			'overlay-media-width-general': '100',
-			'overlay-media-width-unit-general': '%',
-			'overlay-media-height-general': '100',
-			'overlay-media-height-unit-general': '%',
+			'om-w-general': '100', // overlay-media-width-general
+			'om-w.u-general': '%', // overlay-media-width-unit-general
+			'om-h-general': '100', // overlay-media-height-general
+			'om-h.u-general': '%', // overlay-media-height-unit-general
 		},
 	}),
 
-	'overlay-mediaID': {
+	'o-mi': {
 		type: 'number',
+		longLabel: 'overlay-mediaID',
 	},
-	'overlay-mediaURL': {
+	'o-my': {
 		type: 'string',
+		longLabel: 'overlay-mediaURL',
 	},
-	'overlay-altSelector': {
+	'o-as': {
 		type: 'string',
 		default: 'wordpress',
+		longLabel: 'overlay-altSelector',
 	},
-	'overlay-mediaAlt': {
+	'o-mal': {
 		type: 'string',
+		longLabel: 'overlay-mediaAlt',
 	},
 };
 
-export default attributesShorter(videoOverlay, 'videoOverlay');
+export default videoOverlay;

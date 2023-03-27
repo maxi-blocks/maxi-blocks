@@ -1,22 +1,23 @@
-import attributesShorter from '../dictionary/attributesShorter';
 import prefixAttributesCreator from '../prefixAttributesCreator';
 import { background, backgroundColor } from './background';
+
+const prefix = 'lb-'; // lightbox-
 
 const videoPopup = {
 	...prefixAttributesCreator({
 		obj: background,
-		prefix: 'lightbox-',
+		prefix,
 		diffValAttr: {
-			'lightbox-background-active-media-general': 'color',
+			'lb-bam-general': 'color', // lightbox-background-active-media-general
 		},
 	}),
 	...prefixAttributesCreator({
 		obj: backgroundColor,
-		prefix: 'lightbox-',
+		prefix,
 		diffValAttr: {
-			'lightbox-background-palette-color-general': 5,
+			'lb-b-pc-general': 5, // lightbox-background-palette-color-general
 		},
 	}),
 };
 
-export default attributesShorter(videoPopup, 'videoPopup');
+export default videoPopup;

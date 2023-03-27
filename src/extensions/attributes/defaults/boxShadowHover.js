@@ -1,16 +1,16 @@
-import attributesShorter from '../dictionary/attributesShorter';
 import hoverAttributesCreator from '../hoverAttributesCreator';
 import boxShadow from './boxShadow';
 
 const boxShadowHover = hoverAttributesCreator({
 	obj: boxShadow,
-	diffValAttr: { 'box-shadow-palette-color-general': 6 },
+	diffValAttr: { 'bs-pc-general': 6 }, // box-shadow-palette-color-general
 	newAttr: {
-		'box-shadow-status-hover': {
+		'bs.sh': {
 			type: 'boolean',
 			default: false,
+			longLabel: 'box-shadow-status-hover',
 		},
 	},
 });
 
-export default attributesShorter(boxShadowHover, 'boxShadowHover');
+export default boxShadowHover;

@@ -1,12 +1,11 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
-import attributesShorter from '../dictionary/attributesShorter';
 
 const zIndex = breakpointAttributesCreator({
 	obj: {
-		'z-index': {
+		zi: {
 			type: 'number',
 		},
 	},
 });
 
-export default attributesShorter(zIndex, 'zIndex');
+export default zIndex;

@@ -6,106 +6,95 @@ import padding from './padding';
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import paletteAttributesCreator from '../paletteAttributesCreator';
 import boxShadow from './boxShadow';
-import attributesShorter from '../dictionary/attributesShorter';
 
-const prefix = 'icon-';
+const prefix = 'i-'; // icon-
 
-export const icon = attributesShorter(
-	{
-		svgType: {
-			type: 'string',
-		},
-		'icon-inherit': {
-			type: 'boolean',
-			default: true,
-		},
-		'icon-content': {
-			type: 'string',
-			default: '',
-		},
-		'icon-only': {
-			type: 'boolean',
-			default: false,
-		},
-		'icon-position': {
-			type: 'string',
-			default: 'right',
-		},
-		...breakpointAttributesCreator({
-			obj: {
-				'icon-spacing': {
-					type: 'number',
-					default: 5,
-				},
-				'icon-spacing-unit': {
-					type: 'string',
-					default: '%',
-				},
-				'icon-stroke': {
-					type: 'number',
-					default: 2,
-				},
-			},
-		}),
-		...prefixAttributesCreator({
-			obj: width,
-			prefix,
-			diffValAttr: {
-				'icon-width-general': '32',
-			},
-		}),
-		...prefixAttributesCreator({
-			obj: height,
-			prefix,
-			diffValAttr: {
-				'icon-height-general': '32',
-			},
-		}),
-		...paletteAttributesCreator({ prefix: `${prefix}stroke-`, palette: 1 }),
-		...paletteAttributesCreator({ prefix: `${prefix}fill-`, palette: 4 }),
+export const icon = {
+	st: {
+		type: 'string',
+		longLabel: 'svgType',
 	},
-	'icon'
-);
-
-export const iconBackground = attributesShorter(
-	prefixAttributesCreator({
-		obj: background,
-		prefix,
-		diffValAttr: { 'icon-background-active-media-general': 'none' },
+	'i-i': {
+		type: 'boolean',
+		default: true,
+		longLabel: 'icon-inherit',
+	},
+	'i-c': {
+		type: 'string',
+		default: '',
+		longLabel: 'icon-content',
+	},
+	'i-on': {
+		type: 'boolean',
+		default: false,
+		longLabel: 'icon-only',
+	},
+	'i-pos': {
+		type: 'string',
+		default: 'right',
+		longLabel: 'icon-position',
+	},
+	...breakpointAttributesCreator({
+		obj: {
+			'i-spa': {
+				type: 'number',
+				default: 5,
+				longLabel: 'icon-spacing',
+			},
+			'i-spa.u': {
+				type: 'string',
+				default: '%',
+				longLabel: 'icon-spacing-unit',
+			},
+			'i-si': {
+				type: 'number',
+				default: 2,
+				longLabel: 'icon-size',
+			},
+		},
 	}),
-	'background'
-);
-
-export const iconPadding = attributesShorter(
-	prefixAttributesCreator({
-		obj: padding,
+	...prefixAttributesCreator({
+		obj: width,
 		prefix,
+		diffValAttr: {
+			'i-w-general': '32',
+		},
 	}),
-	'padding'
-);
-
-export const iconBackgroundColor = attributesShorter(
-	prefixAttributesCreator({
-		obj: backgroundColor,
+	...prefixAttributesCreator({
+		obj: height,
 		prefix,
-		exclAttr: ['background-color-clip-path'],
+		diffValAttr: {
+			'i-h-general': '32',
+		},
 	}),
-	'background'
-);
+	...paletteAttributesCreator({ prefix: `${prefix}s-`, palette: 1 }), // stroke
+	...paletteAttributesCreator({ prefix: `${prefix}f-`, palette: 4 }), // fill
+};
 
-export const iconBackgroundGradient = attributesShorter(
-	prefixAttributesCreator({
-		obj: backgroundGradient,
-		prefix,
-		exclAttr: ['background-gradient-clip-path'],
-	}),
-	'background'
-);
+export const iconBackground = prefixAttributesCreator({
+	obj: background,
+	prefix,
+	diffValAttr: { 'i-bam-general': 'none' },
+});
 
-export const iconBoxShadow = attributesShorter(
-	prefixAttributesCreator({
-		obj: boxShadow,
-		prefix,
-	}),
-	'boxShadow'
-);
+export const iconPadding = prefixAttributesCreator({
+	obj: padding,
+	prefix,
+});
+
+export const iconBackgroundColor = prefixAttributesCreator({
+	obj: backgroundColor,
+	prefix,
+	exclAttr: ['bc-cp'],
+});
+
+export const iconBackgroundGradient = prefixAttributesCreator({
+	obj: backgroundGradient,
+	prefix,
+	exclAttr: ['bg-cp'],
+});
+
+export const iconBoxShadow = prefixAttributesCreator({
+	obj: boxShadow,
+	prefix,
+});

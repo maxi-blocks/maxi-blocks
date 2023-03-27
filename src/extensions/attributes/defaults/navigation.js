@@ -1,25 +1,28 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
-import attributesShorter from '../dictionary/attributesShorter';
 
 const navigation = breakpointAttributesCreator({
 	obj: {
-		'navigation-arrow-both-status': {
+		'na-b.s': {
 			type: 'boolean',
 			default: true,
+			longLabel: 'navigation-arrow-both-status',
 		},
-		'navigation-dot-status': {
+		'ng.s': {
 			type: 'boolean',
 			default: true,
+			longLabel: 'navigation-dot-status',
 		},
-		'navigation-arrow-position': {
+		'na-pos': {
 			type: 'string',
 			default: 'inside',
+			longLabel: 'navigation-arrow-position',
 		},
-		'navigation-dot-position': {
+		'ng-pos': {
 			type: 'string',
 			default: 'inside',
+			longLabel: 'navigation-dot-position',
 		},
 	},
 });
 
-export default attributesShorter(navigation, 'navigation');
+export default navigation;

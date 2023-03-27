@@ -1,13 +1,13 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
-import attributesShorter from '../dictionary/attributesShorter';
 
 const alignment = breakpointAttributesCreator({
 	obj: {
-		alignment: {
+		a: {
 			type: 'string',
 			default: 'center',
+			longLabel: 'alignment',
 		},
 	},
 });
 
-export default attributesShorter(alignment, 'alignment');
+export default alignment;

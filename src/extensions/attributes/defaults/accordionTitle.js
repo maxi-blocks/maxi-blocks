@@ -5,22 +5,22 @@ import prefixAttributesCreator from '../prefixAttributesCreator';
 import getAttributeKey from '../getAttributeKey';
 import { typography } from './typography';
 import typographyHover from './typographyHover';
-import attributesShorter from '../dictionary/attributesShorter';
 
-const prefix = 'title-';
+const prefix = 'ti-'; // title-
 
 const titleBackground = breakpointAttributesCreator({
 	obj: {
-		[`${prefix}background-status`]: {
+		[`${prefix}b.s`]: {
+			// background-status
 			type: 'boolean',
 			default: false,
 		},
 		...paletteAttributesCreator({
-			prefix: `${prefix}background-`,
+			prefix: `${prefix}b-`, // background-
 			palette: 4,
 		}),
 	},
-	noBreakpointAttr: [`${prefix}background-status`],
+	noBreakpointAttr: [`${prefix}b.s`], // background-status
 });
 
 const accordionTitle = {
@@ -28,23 +28,23 @@ const accordionTitle = {
 	...titleBackground,
 	...prefixAttributesCreator({
 		obj: titleBackground,
-		prefix: 'active-',
+		prefix: 'a-', // active-
 	}),
 	...hoverAttributesCreator({
 		obj: titleBackground,
 		sameValAttr: [
 			getAttributeKey(
-				'palette-status',
+				'ps', // palette-status
 				false,
-				`${prefix}-background-`,
+				`${prefix}-b-`, // background-
 				'general'
 			),
 		],
 		diffValAttr: {
 			[getAttributeKey(
-				'palette-color',
+				'pc', // palette-color
 				false,
-				`${prefix}-background-`,
+				`${prefix}-b-`, // background-
 				'general'
 			)]: 6,
 		},
@@ -53,9 +53,10 @@ const accordionTitle = {
 	...prefixAttributesCreator({ obj: typographyHover, prefix }),
 	...prefixAttributesCreator({
 		obj: typography,
-		prefix: `active-${prefix}`,
+		prefix: `a-${prefix}`, // active-
 		newAttr: {
-			[`${prefix}typography-status-active`]: {
+			// typography-status-active
+			[`${prefix}t.sa`]: {
 				type: 'boolean',
 				default: false,
 			},
@@ -63,4 +64,4 @@ const accordionTitle = {
 	}),
 };
 
-export default attributesShorter(accordionTitle, 'accordionTitle');
+export default accordionTitle;

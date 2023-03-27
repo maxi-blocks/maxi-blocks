@@ -1,12 +1,12 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
-import attributesShorter from '../dictionary/attributesShorter';
 
 const rowPattern = breakpointAttributesCreator({
 	obj: {
-		'row-pattern': {
+		wp: {
 			type: 'string',
+			longLabel: 'row-pattern',
 		},
 	},
 });
 
-export default attributesShorter(rowPattern, 'rowPattern');
+export default rowPattern;

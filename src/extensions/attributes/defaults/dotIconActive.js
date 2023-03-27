@@ -1,32 +1,37 @@
-import attributesShorter from '../dictionary/attributesShorter';
 import prefixAttributesCreator from '../prefixAttributesCreator';
 import dotIcon from './dotIcon';
 
-const activePrefix = 'active-';
-const prefix = 'active-navigation-dot-';
+const activePrefix = 'a-'; // 'active-'
+const prefix = 'a-nd-'; // 'active-navigation-dot-'
 
 const dotIconActive = prefixAttributesCreator({
 	obj: dotIcon,
 	prefix: activePrefix,
 	diffValAttr: {
-		[`${prefix}icon-width-general`]: '10',
-		[`${prefix}icon-stroke-palette-color`]: 2,
-		[`${prefix}icon-fill-palette-color`]: 4,
+		[`${prefix}i-w-general`]: '10', // icon-width-general
+		[`${prefix}i-str-px`]: 2, // icon-stroke-palette-color
+		[`${prefix}i-f-pc`]: 4, // icon-fill-palette-color
 	},
 	newAttr: {
-		[`${prefix}icon-status`]: {
+		[`${prefix}i.s`]: {
+			// icon-status
 			type: 'boolean',
 			default: true,
+			longLabel: 'icon-status',
 		},
-		[`${prefix}icon-stroke-pa-status`]: {
+		[`${prefix}i-str-pa.s`]: {
+			// icon-stroke-pa-status
 			type: 'boolean',
 			default: true,
+			longLabel: 'icon-stroke-palette-status',
 		},
-		[`${prefix}icon-fill-pa-status`]: {
+		[`${prefix}i-f-pa.s`]: {
+			// icon-fill-pa-status
 			type: 'boolean',
 			default: true,
+			longLabel: 'icon-fill-palette-status',
 		},
 	},
 });
 
-export default attributesShorter(dotIconActive, 'dotIconActive');
+export default dotIconActive;

@@ -1,42 +1,49 @@
-import attributesShorter from '../dictionary/attributesShorter';
-
 const slider = {
-	isEditView: {
+	iev: {
 		type: 'boolean',
 		default: false,
+		longLabel: 'isEditView',
 	},
-	numberOfSlides: {
+	nos: {
 		type: 'number',
 		default: 2,
+		longLabel: 'numberOfSlides',
 	},
-	isLoop: {
+	il: {
 		type: 'boolean',
 		default: false,
+		longLabel: 'isLoop',
 	},
-	isAutoplay: {
+	ia: {
 		type: 'boolean',
 		default: false,
+		longLabel: 'isAutoplay',
 	},
-	pauseOnHover: {
+	poh: {
 		type: 'boolean',
 		default: false,
+		longLabel: 'pauseOnHover',
 	},
-	pauseOnInteraction: {
+	poi: {
 		type: 'boolean',
 		default: false,
+		longLabel: 'pauseOnInteraction',
 	},
-	'slider-autoplay-speed': {
+	sas: {
 		type: 'number',
 		default: 2500,
+		longLabel: 'slider-autoplay-speed',
 	},
-	'slider-transition': {
+	slt: {
 		type: 'string',
 		default: 'slide',
+		longLabel: 'slider-transition',
 	},
-	'slider-transition-speed': {
+	sts: {
 		type: 'number',
 		default: 500,
+		longLabel: 'slider-transition-speed',
 	},
 };
 
-export default attributesShorter(slider, 'slider');
+export default slider;

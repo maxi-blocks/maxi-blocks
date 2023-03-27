@@ -1,21 +1,23 @@
 import { svg } from './svg';
-import attributesShorter from '../dictionary/attributesShorter';
 
 const mapMarker = {
 	...{
 		...svg,
-		'svg-width-general': {
+		'svg-w-general': {
 			type: 'string',
 			default: '20',
+			longLabel: 'svg-width-general',
 		},
 	},
-	'map-marker': {
+	'm-ma': {
 		type: 'number',
 		default: 1,
+		longLabel: 'map-marker',
 	},
-	'map-marker-icon': {
+	'm-mi': {
 		type: 'string',
+		longLabel: 'map-marker-icon',
 	},
 };
 
-export default attributesShorter(mapMarker, 'mapMarker');
+export default mapMarker;

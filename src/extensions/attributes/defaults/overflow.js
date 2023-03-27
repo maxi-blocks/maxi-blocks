@@ -1,14 +1,15 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
-import attributesShorter from '../dictionary/attributesShorter';
 
 const rawOverflow = {
 	'overflow-x': {
 		type: 'string',
 		default: 'visible',
+		longLabel: 'overflow-x',
 	},
 	'overflow-y': {
 		type: 'string',
 		default: 'visible',
+		longLabel: 'overflow-y',
 	},
 };
 
@@ -16,4 +17,4 @@ const overflow = breakpointAttributesCreator({
 	obj: rawOverflow,
 });
 
-export default attributesShorter(overflow, 'overflow');
+export default overflow;

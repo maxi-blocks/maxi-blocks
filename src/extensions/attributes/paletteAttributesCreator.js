@@ -1,9 +1,4 @@
 /**
- * Internal dependencies
- */
-import attributesShorter from './dictionary/attributesShorter';
-
-/**
  * External dependencies
  */
 import { isNumber, isString } from 'lodash';
@@ -14,27 +9,27 @@ const paletteAttributesCreator = ({
 	palette,
 	opacity,
 	customColor,
-}) =>
-	attributesShorter(
-		{
-			[`${prefix}palette-status`]: {
-				type: 'boolean',
-				default: status ?? true,
-			},
-			[`${prefix}palette-color`]: {
-				type: 'number',
-				...(isNumber(palette) && { default: palette }),
-			},
-			[`${prefix}palette-opacity`]: {
-				type: 'number',
-				...(isNumber(opacity) && { default: opacity }),
-			},
-			[`${prefix}color`]: {
-				type: 'string',
-				...(isString(customColor) && { default: customColor }),
-			},
-		},
-		'palette'
-	);
+}) => ({
+	[`${prefix}ps`]: {
+		type: 'boolean',
+		default: status ?? true,
+		longLabel: `${prefix}palette-status`,
+	},
+	[`${prefix}pc`]: {
+		type: 'number',
+		...(isNumber(palette) && { default: palette }),
+		longLabel: `${prefix}palette-color`,
+	},
+	[`${prefix}po`]: {
+		type: 'number',
+		...(isNumber(opacity) && { default: opacity }),
+		longLabel: `${prefix}palette-opacity`,
+	},
+	[`${prefix}cc`]: {
+		type: 'string',
+		...(isString(customColor) && { default: customColor }),
+		longLabel: `${prefix}custom-color`,
+	},
+});
 
 export default paletteAttributesCreator;

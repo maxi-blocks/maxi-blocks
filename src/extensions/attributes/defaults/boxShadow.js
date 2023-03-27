@@ -1,47 +1,58 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
-import attributesShorter from '../dictionary/attributesShorter';
 import paletteAttributesCreator from '../paletteAttributesCreator';
 
-const prefix = 'box-shadow-';
+const prefix = 'bs-'; // box-shadow-
 
 const rawBoxShadow = {
 	...paletteAttributesCreator({ prefix, palette: 8, opacity: 1 }),
-	'box-shadow-inset': { type: 'boolean', default: false },
-	'box-shadow-horizontal': {
+	'bs-in': {
+		type: 'boolean',
+		default: false,
+		longLabel: 'box-shadow-inset',
+	},
+	'bs-ho': {
 		type: 'number',
 		default: 0,
+		longLabel: 'box-shadow-horizontal',
 	},
-	'box-shadow-horizontal-unit': {
+	'bs-ho.u': {
 		type: 'string',
 		default: 'px',
+		longLabel: 'box-shadow-horizontal-unit',
 	},
-	'box-shadow-vertical': {
+	'bs-v': {
 		type: 'number',
 		default: 0,
+		longLabel: 'box-shadow-vertical',
 	},
-	'box-shadow-vertical-unit': {
+	'bs-v.u': {
 		type: 'string',
 		default: 'px',
+		longLabel: 'box-shadow-vertical-unit',
 	},
-	'box-shadow-blur': {
+	'bs-blu': {
 		type: 'number',
 		default: 0,
+		longLabel: 'box-shadow-blur',
 	},
-	'box-shadow-blur-unit': {
+	'bs-blu.u': {
 		type: 'string',
 		default: 'px',
+		longLabel: 'box-shadow-blur-unit',
 	},
-	'box-shadow-spread': {
+	'bs-sp': {
 		type: 'number',
 		default: 0,
+		longLabel: 'box-shadow-spread',
 	},
-	'box-shadow-spread-unit': {
+	'bs-sp.u': {
 		type: 'string',
 		default: 'px',
+		longLabel: 'box-shadow-spread-unit',
 	},
 };
 const boxShadow = breakpointAttributesCreator({
 	obj: rawBoxShadow,
 });
 
-export default attributesShorter(boxShadow, 'boxShadow');
+export default boxShadow;

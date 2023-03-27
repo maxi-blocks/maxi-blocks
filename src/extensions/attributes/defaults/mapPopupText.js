@@ -1,26 +1,27 @@
 import { typography } from './typography';
 import prefixAttributesCreator from '../prefixAttributesCreator';
-import attributesShorter from '../dictionary/attributesShorter';
 
 const mapPopupText = {
-	'map-marker-heading-level': {
+	'm-mhl': {
 		type: 'string',
 		default: 'h6',
+		longLabel: 'map-marker-heading-level',
 	},
 	...{
 		...typography,
-		'pac-general': {
+		'pc-general': {
 			type: 'number',
 			default: 4,
+			longLabel: 'palette-color-general',
 		},
 	},
 	...prefixAttributesCreator({
 		obj: typography,
-		prefix: 'description-',
+		prefix: 'd-', // description-
 		diffValAttr: {
-			'description-font-size-general': 16,
+			'd-fs-general': 16, // description-font-size-general
 		},
 	}),
 };
 
-export default attributesShorter(mapPopupText, 'mapPopupText');
+export default mapPopupText;

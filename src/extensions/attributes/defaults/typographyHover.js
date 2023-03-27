@@ -1,17 +1,17 @@
-import attributesShorter from '../dictionary/attributesShorter';
 import hoverAttributesCreator from '../hoverAttributesCreator';
 import { typography } from './typography';
 
 const typographyHover = hoverAttributesCreator({
 	obj: typography,
-	sameValAttr: ['pa-status-general'],
-	diffValAttr: { 'pac-general': 5 },
+	sameValAttr: ['ps-general'], // palette-status-general
+	diffValAttr: { 'pc-general': 5 }, // palette-color-general
 	newAttr: {
-		'typography-status-hover': {
+		't.sh': {
 			type: 'boolean',
 			default: false,
+			longLabel: 'typography-status-hover',
 		},
 	},
 });
 
-export default attributesShorter(typographyHover, 'typographyHover');
+export default typographyHover;

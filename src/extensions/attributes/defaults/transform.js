@@ -1,28 +1,32 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
-import attributesShorter from '../dictionary/attributesShorter';
 
 const rawTransform = {
-	'transform-scale': {
+	'tr-sc': {
 		type: 'object',
+		longLabel: 'transform-scale',
 	},
-	'transform-translate': {
+	'tr-tr': {
 		type: 'object',
+		longLabel: 'transform-translate',
 	},
-	'transform-rotate': {
+	'tr-rot': {
 		type: 'object',
+		longLabel: 'transform-rotate',
 	},
-	'transform-origin': {
+	'tr-ori': {
 		type: 'object',
+		longLabel: 'transform-origin',
 	},
 };
 
 const transform = {
-	'transform-target': {
+	'tr-tar': {
 		type: 'string',
+		longLabel: 'transform-target',
 	},
 	...breakpointAttributesCreator({
 		obj: rawTransform,
 	}),
 };
 
-export default attributesShorter(transform, 'transform');
+export default transform;

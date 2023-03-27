@@ -13,6 +13,11 @@ describe('parseLongAttrKey', () => {
 			'margin-top-general': 'm.t-general',
 			'background-image-opacity-general-hover': 'bi-o-general.h', // not sure about this .h part
 			'divider-border-radius-general': 'db.ra-general',
+			'icon-size': 'i-si',
+			'active-icon-divider-border-custom-color-general':
+				'a-i-db-cc-general',
+			'line-status-hover': 'li.sh',
+			'active-title-typography-status-active': 'a-ti-t.sa',
 		};
 
 		Object.entries(attributes).forEach(([key, value]) => {

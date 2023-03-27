@@ -1,11 +1,10 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import paletteAttributesCreator from '../paletteAttributesCreator';
-import attributesShorter from '../dictionary/attributesShorter';
 
 const placeholderColor = {
 	...breakpointAttributesCreator({
-		obj: paletteAttributesCreator({ prefix: 'placeholder-', palette: 3 }),
+		obj: paletteAttributesCreator({ prefix: 'pl-', palette: 3 }), // placeholder-
 	}),
 };
 
-export default attributesShorter(placeholderColor, 'placeholderColor');
+export default placeholderColor;

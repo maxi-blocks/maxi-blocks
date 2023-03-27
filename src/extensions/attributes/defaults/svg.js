@@ -3,48 +3,43 @@ import hoverAttributesCreator from '../hoverAttributesCreator';
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import prefixAttributesCreator from '../prefixAttributesCreator';
 import { width } from './size';
-import attributesShorter from '../dictionary/attributesShorter';
 
-const prefix = 'svg-';
+const prefix = 's-'; // svg-
 
-export const svg = attributesShorter(
-	{
-		...paletteAttributesCreator({ prefix: 'svg-fill-', palette: 4 }),
-		...paletteAttributesCreator({ prefix: 'svg-line-', palette: 7 }),
-		...prefixAttributesCreator({
-			obj: width,
-			prefix,
-			diffValAttr: { 'svg-width-general': '64' },
-		}),
-		...breakpointAttributesCreator({
-			obj: {
-				'svg-stroke': {
-					type: 'number',
-					default: 2,
-				},
-			},
-		}),
-	},
-	'svg'
-);
-
-export const svgHover = attributesShorter(
-	hoverAttributesCreator({
+export const svg = {
+	...paletteAttributesCreator({ prefix: 'sfi-', palette: 4 }), // svg-fill-
+	...paletteAttributesCreator({ prefix: 'sli-', palette: 7 }), // svg-line-
+	...prefixAttributesCreator({
+		obj: width,
+		prefix,
+		diffValAttr: { 's-w-general': '64' }, // svg-width-general
+	}),
+	...breakpointAttributesCreator({
 		obj: {
-			...paletteAttributesCreator({ prefix: 'svg-fill-', palette: 4 }),
-			...paletteAttributesCreator({ prefix: 'svg-line-', palette: 7 }),
-		},
-		sameValAttr: ['svg-fill-pa-status', 'svg-line-pa-status'],
-		diffValAttr: {
-			'svg-fill-palette-color': 6,
-			'svg-line-palette-color': 8,
-		},
-		newAttr: {
-			'svg-status-hover': {
-				type: 'boolean',
-				default: false,
+			's-str': {
+				type: 'number',
+				default: 2,
+				longLabel: 'svg-stroke',
 			},
 		},
 	}),
-	'svgHover'
-);
+};
+
+export const svgHover = hoverAttributesCreator({
+	obj: {
+		...paletteAttributesCreator({ prefix: 'sfi-', palette: 4 }), // svg-fill-
+		...paletteAttributesCreator({ prefix: 'sli-', palette: 7 }), // svg-line-
+	},
+	sameValAttr: ['sfi-ps', 'sli-ps'], // svg-fill-palette-status, svg-line-palette-status
+	diffValAttr: {
+		'sfi-pc': 6, // svg-fill-palette-color
+		'sli-pc': 8, // svg-line-palette-color
+	},
+	newAttr: {
+		's.sh': {
+			type: 'boolean',
+			default: false,
+			longLabel: 'svg-status-hover',
+		},
+	},
+});

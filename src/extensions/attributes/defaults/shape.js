@@ -1,16 +1,17 @@
-import attributesShorter from '../dictionary/attributesShorter';
 import paletteAttributesCreator from '../paletteAttributesCreator';
 
 const shape = {
-	...paletteAttributesCreator({ prefix: 'shape-fill-', palette: 4 }),
-	'shape-width': {
+	...paletteAttributesCreator({ prefix: 'sf-', palette: 4 }), // shape-fill-
+	sw: {
 		type: 'number',
 		default: 64,
+		longLabel: 'shape-width',
 	},
-	'shape-width-unit': {
+	'sw.u': {
 		type: 'string',
 		default: 'px',
+		longLabel: 'shape-width-unit',
 	},
 };
 
-export default attributesShorter(shape, 'shape');
+export default shape;

@@ -1,12 +1,12 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
-import attributesShorter from '../dictionary/attributesShorter';
 
 const customCss = breakpointAttributesCreator({
 	obj: {
-		'custom-css': {
+		cc: {
 			type: 'object',
+			longLabel: 'custom-css',
 		},
 	},
 });
 
-export default attributesShorter(customCss, 'customCss');
+export default customCss;

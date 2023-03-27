@@ -1,12 +1,12 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
-import attributesShorter from '../dictionary/attributesShorter';
 
 const breakpoints = breakpointAttributesCreator({
 	obj: {
-		breakpoints: {
+		bp: {
 			type: 'number',
+			longLabel: 'breakpoints',
 		},
 	},
 });
 
-export default attributesShorter(breakpoints, 'breakpoints');
+export default breakpoints;

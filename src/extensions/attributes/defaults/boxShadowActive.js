@@ -1,19 +1,19 @@
-import attributesShorter from '../dictionary/attributesShorter';
 import prefixAttributesCreator from '../prefixAttributesCreator';
 import boxShadow from './boxShadow';
 
-const prefix = 'active-';
+const prefix = 'a-'; // active-
 
 const boxShadowActive = prefixAttributesCreator({
 	obj: boxShadow,
-	diffValAttr: { [`${prefix}box-shadow-palette-color-general`]: 6 },
+	diffValAttr: { [`${prefix}bs-pc-general`]: 6 }, // box-shadow-palette-color-general
 	newAttr: {
-		'box-shadow-status-active': {
+		'bs.sa': {
 			type: 'boolean',
 			default: false,
+			longLabel: 'box-shadow-status-active',
 		},
 	},
 	prefix,
 });
 
-export default attributesShorter(boxShadowActive, 'boxShadowActive');
+export default boxShadowActive;

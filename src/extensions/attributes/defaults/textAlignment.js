@@ -1,12 +1,12 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
-import attributesShorter from '../dictionary/attributesShorter';
 
 const textAlignment = breakpointAttributesCreator({
 	obj: {
-		'text-alignment': {
+		ta: {
 			type: 'string',
+			longLabel: 'text-alignment',
 		},
 	},
 });
 
-export default attributesShorter(textAlignment, 'textAlignment');
+export default textAlignment;

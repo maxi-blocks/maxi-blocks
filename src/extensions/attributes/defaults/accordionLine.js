@@ -1,41 +1,45 @@
-import attributesShorter from '../dictionary/attributesShorter';
 import prefixAttributesCreator from '../prefixAttributesCreator';
 import divider from './divider';
 import dividerHover from './dividerHover';
 
 const accordionLineAttributes = {
-	'line-status-hover': {
+	'li.sh': {
 		type: 'boolean',
 		default: false,
+		longLabel: 'line-status-hover',
 	},
-	'line-status-active': {
+	'li.sa': {
 		type: 'boolean',
 		default: false,
+		longLabel: 'line-status-active',
 	},
 };
 
 const rawAccordionLine = {
 	...divider,
-	'divider-border-palette-color-general': {
+	'db-pc-general': {
 		type: 'number',
 		default: 3,
+		longLabel: 'divider-border-palette-color-general',
 	},
-	'divider-width-general': {
+	'dw-general': {
 		type: 'number',
 		default: 100,
+		longLabel: 'divider-width-general',
 	},
 	...dividerHover,
-	'divider-width-general-hover': {
+	'dw-general.h': {
 		type: 'number',
 		default: 100,
+		longLabel: 'divider-width-general-hover',
 	},
-	...attributesShorter(accordionLineAttributes, 'accordionLine'),
+	...accordionLineAttributes,
 	...prefixAttributesCreator({
 		obj: divider,
-		prefix: 'active-',
+		prefix: 'a-', // active-
 		diffValAttr: {
-			'active-divider-border-palette-color-general': 3,
-			'active-divider-width-general': 100,
+			'a-db-pc-general': 3, // active-divider-border-palette-color-general
+			'a-dw-general': 100, // active-divider-width-general
 		},
 	}),
 };
@@ -43,12 +47,12 @@ const rawAccordionLine = {
 const accordionLine = {
 	...prefixAttributesCreator({
 		obj: rawAccordionLine,
-		prefix: 'header-',
+		prefix: 'he-', // he-
 	}),
 	...prefixAttributesCreator({
 		obj: rawAccordionLine,
-		prefix: 'content-',
+		prefix: 'c-', // content-
 	}),
 };
 
-export default attributesShorter(accordionLine, 'accordionLine');
+export default accordionLine;

@@ -1,50 +1,62 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
-import attributesShorter from '../dictionary/attributesShorter';
 
 const rawFlex = {
-	'flex-grow': {
+	fg: {
 		type: 'number',
+		longLabel: 'flex-grow',
 	},
-	'flex-shrink': {
+	fls: {
 		type: 'number',
+		longLabel: 'flex-shrink',
 	},
-	'flex-basis': {
+	fb: {
 		type: 'string',
+		longLabel: 'flex-basis',
 	},
-	'flex-basis-unit': {
+	'fb.u': {
 		type: 'string',
 		default: 'px',
+		longLabel: 'flex-basis-unit',
 	},
-	'flex-wrap': {
+	flw: {
 		type: 'string',
+		longLabel: 'flex-wrap',
 	},
-	'justify-content': {
+	js: {
 		type: 'string',
+		longLabel: 'justify-content',
 	},
-	'flex-direction': {
+	fd: {
 		type: 'string',
+		longLabel: 'flex-direction',
 	},
-	'align-items': {
+	ai: {
 		type: 'string',
+		longLabel: 'align-items',
 	},
-	'align-content': {
+	ac: {
 		type: 'string',
+		longLabel: 'align-content',
 	},
-	'row-gap': {
+	rg: {
 		type: 'number',
+		longLabel: 'row-gap',
 	},
-	'row-gap-unit': {
+	'rg.u': {
 		type: 'string',
 		default: 'px',
+		longLabel: 'row-gap-unit',
 	},
-	'column-gap': {
+	cg: {
 		type: 'number',
+		longLabel: 'column-gap',
 	},
-	'column-gap-unit': {
+	'cg.u': {
 		type: 'string',
 		default: 'px',
+		longLabel: 'column-gap-unit',
 	},
-	order: {
+	or: {
 		type: 'number',
 	},
 };
@@ -53,4 +65,4 @@ const flex = breakpointAttributesCreator({
 	obj: rawFlex,
 });
 
-export default attributesShorter(flex, 'flex');
+export default flex;

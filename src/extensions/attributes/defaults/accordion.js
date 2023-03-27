@@ -1,22 +1,24 @@
-import attributesShorter from '../dictionary/attributesShorter';
-
 const accordion = {
-	accordionLayout: {
+	acl: {
 		type: 'string',
 		default: 'simple',
+		originalName: 'accordionLayout',
 	},
-	autoPaneClose: {
+	apc: {
 		type: 'boolean',
 		default: true,
+		originalName: 'autoPaneClose',
 	},
-	isCollapsible: {
+	ico: {
 		type: 'boolean',
 		default: true,
+		originalName: 'isCollapsible',
 	},
-	animationDuration: {
+	ad: {
 		type: 'number',
 		default: 0.3,
+		originalName: 'animationDuration',
 	},
 };
 
-export default attributesShorter(accordion, 'accordion');
+export default accordion;

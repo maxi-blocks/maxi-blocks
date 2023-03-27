@@ -1,38 +1,47 @@
-import attributesShorter from '../dictionary/attributesShorter';
 import breakpoints from './breakpoints';
 
 const global = {
 	...breakpoints,
-	'maxi-version-current': {
+	mvc: {
 		type: 'string',
+		longLabel: 'maxi-version-current',
 	},
-	'maxi-version-origin': {
+	mvo: {
 		type: 'string',
+		longLabel: 'maxi-version-origin',
 	},
-	blockStyle: {
+	bs: {
 		type: 'string',
+		longLabel: 'blockStyle',
 	},
-	extraClassName: {
+	ecn: {
 		type: 'string',
+		longLabel: 'extraClassName',
 	},
-	anchorLink: {
+	al: {
 		type: 'string',
+		longLabel: 'anchorLink',
 	},
-	isFirstOnHierarchy: {
+	ioh: {
 		type: 'boolean',
+		longLabel: 'isFirstOnHierarchy',
 	},
-	linkSettings: {
+	lse: {
 		type: 'object',
+		longLabel: 'linkSettings',
 	},
-	uniqueID: {
+	uid: {
 		type: 'string',
+		longLabel: 'uniqueID',
 	},
-	customLabel: {
+	cl: {
 		type: 'string',
+		longLabel: 'customLabel',
 	},
-	relations: {
+	r: {
 		type: 'array',
+		longLabel: 'relations',
 	},
 };
 
-export default attributesShorter(global, 'global');
+export default global;

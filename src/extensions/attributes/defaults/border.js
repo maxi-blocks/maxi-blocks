@@ -1,98 +1,92 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
-import attributesShorter from '../dictionary/attributesShorter';
 import paletteAttributesCreator from '../paletteAttributesCreator';
 import prefixAttributesCreator from '../prefixAttributesCreator';
 
-const prefix = 'border-';
+const prefix = 'bo-'; // border
 
-export const rawBorder = attributesShorter(
-	{
-		...paletteAttributesCreator({ prefix, palette: 2 }),
-		'border-style': {
+export const rawBorder = {
+	...paletteAttributesCreator({ prefix, palette: 2 }),
+	'bo-s': {
+		type: 'string',
+		default: 'none',
+		longLabel: 'border-style',
+	},
+};
+
+export const rawBorderWidth = prefixAttributesCreator({
+	obj: {
+		'w.t': {
+			type: 'number',
+			default: 2,
+			longLabel: 'width-top',
+		},
+		'w.r': {
+			type: 'number',
+			default: 2,
+			longLabel: 'width-right',
+		},
+		'w.b': {
+			type: 'number',
+			default: 2,
+			longLabel: 'width-bottom',
+		},
+		'w.l': {
+			type: 'number',
+			default: 2,
+			longLabel: 'width-left',
+		},
+		'w.sync': {
 			type: 'string',
-			default: 'none',
+			default: 'all',
+			longLabel: 'width-sync',
+		},
+		'w.u': {
+			type: 'string',
+			default: 'px',
+			longLabel: 'width-unit',
 		},
 	},
-	'border'
-);
+	prefix,
+});
 
-export const rawBorderWidth = attributesShorter(
-	prefixAttributesCreator({
-		obj: {
-			'width-top': {
-				type: 'number',
-				default: 2,
-			},
-			'width-right': {
-				type: 'number',
-				default: 2,
-			},
-			'width-bottom': {
-				type: 'number',
-				default: 2,
-			},
-			'width-left': {
-				type: 'number',
-				default: 2,
-			},
-			'width-sync': {
-				type: 'string',
-				default: 'all',
-			},
-			'width-unit': {
-				type: 'string',
-				default: 'px',
-			},
+export const rawBorderRadius = prefixAttributesCreator({
+	obj: {
+		'.ra-t.l': {
+			type: 'number',
+			longLabel: 'radius-top-left',
 		},
-		prefix,
-	}),
-	'border'
-);
-
-export const rawBorderRadius = attributesShorter(
-	prefixAttributesCreator({
-		obj: {
-			'radius-top-left': {
-				type: 'number',
-			},
-			'radius-top-right': {
-				type: 'number',
-			},
-			'radius-bottom-right': {
-				type: 'number',
-			},
-			'radius-bottom-left': {
-				type: 'number',
-			},
-			'radius-sync': {
-				type: 'string',
-				default: 'all',
-			},
-			'radius-unit': {
-				type: 'string',
-				default: 'px',
-			},
+		'.ra-t.r': {
+			type: 'number',
+			longLabel: 'radius-top-right',
 		},
-		prefix,
-	}),
-	'border'
-);
+		'.ra-b.r': {
+			type: 'number',
+			longLabel: 'radius-bottom-right',
+		},
+		'.ra-b.l': {
+			type: 'number',
+			longLabel: 'radius-bottom-left',
+		},
+		'.ra-sy': {
+			type: 'string',
+			default: 'all',
+			longLabel: 'radius-sync',
+		},
+		'.ra-u': {
+			type: 'string',
+			default: 'px',
+			longLabel: 'radius-unit',
+		},
+	},
+	prefix,
+});
 
-export const border = attributesShorter(
-	breakpointAttributesCreator({
-		obj: rawBorder,
-	}),
-	'border'
-);
-export const borderWidth = attributesShorter(
-	breakpointAttributesCreator({
-		obj: rawBorderWidth,
-	}),
-	'border'
-);
-export const borderRadius = attributesShorter(
-	breakpointAttributesCreator({
-		obj: rawBorderRadius,
-	}),
-	'border'
-);
+export const border = breakpointAttributesCreator({
+	obj: rawBorder,
+});
+export const borderWidth = breakpointAttributesCreator({
+	obj: rawBorderWidth,
+});
+export const borderRadius = breakpointAttributesCreator({
+	obj: rawBorderRadius,
+});

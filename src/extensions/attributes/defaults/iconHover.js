@@ -1,4 +1,3 @@
-import attributesShorter from '../dictionary/attributesShorter';
 import hoverAttributesCreator from '../hoverAttributesCreator';
 import {
 	icon,
@@ -7,57 +6,48 @@ import {
 	iconBackgroundGradient,
 } from './icon';
 
-export const iconHover = attributesShorter(
-	hoverAttributesCreator({
-		obj: icon,
-		diffValAttr: {
-			'icon-stroke-palette-color': 6,
-			'icon-fill-palette-color': 2,
+export const iconHover = hoverAttributesCreator({
+	obj: icon,
+	diffValAttr: {
+		'i-str-pc': 6, // icon-stroke-palette-color
+		'i-f-pc': 2, // icon-fill-palette-color
+	},
+	newAttr: {
+		'i.sh': {
+			type: 'boolean',
+			default: false,
+			longLabel: 'icon-status-hover',
 		},
-		newAttr: {
-			'icon-status-hover': {
-				type: 'boolean',
-				default: false,
-			},
-			'icon-stroke-pa-status-hover': {
-				type: 'boolean',
-				default: true,
-			},
-			'icon-fill-pa-status-hover': {
-				type: 'boolean',
-				default: true,
-			},
+		'i-str-ps.h': {
+			type: 'boolean',
+			default: true,
+			longLabel: 'icon-stroke-palette-status-hover',
 		},
-	}),
-	'iconHover'
-);
+		'i-f-ps.h': {
+			type: 'boolean',
+			default: true,
+			longLabel: 'icon-fill-palette-status-hover',
+		},
+	},
+});
 
-export const iconBackgroundHover = attributesShorter(
-	hoverAttributesCreator({
-		obj: iconBackground,
-		diffValAttr: {
-			'icon-background-active-media-general-hover': 'none',
-		},
-	}),
-	'iconBackgroundHover'
-);
+export const iconBackgroundHover = hoverAttributesCreator({
+	obj: iconBackground,
+	diffValAttr: {
+		'i-bam-general.h': 'none', // icon-background-active-media-general-hover
+	},
+});
 
-export const iconBackgroundColorHover = attributesShorter(
-	hoverAttributesCreator({
-		obj: iconBackgroundColor,
-		diffValAttr: {
-			'icon-background-palette-color-general-hover': 6,
-		},
-	}),
-	'iconBackgroundColorHover'
-);
+export const iconBackgroundColorHover = hoverAttributesCreator({
+	obj: iconBackgroundColor,
+	diffValAttr: {
+		'i-b-pc-general.h': 6, // icon-background-palette-color-general-hover
+	},
+});
 
-export const iconBackgroundGradientHover = attributesShorter(
-	hoverAttributesCreator({
-		obj: iconBackgroundGradient,
-		diffValAttr: {
-			'icon-background-gradient-o-general-hover': 1,
-		},
-	}),
-	'iconBackgroundGradientHover'
-);
+export const iconBackgroundGradientHover = hoverAttributesCreator({
+	obj: iconBackgroundGradient,
+	diffValAttr: {
+		'i-bg-o-general.h': 1, // icon-background-gradient-opacity-general-hover
+	},
+});

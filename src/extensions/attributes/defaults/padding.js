@@ -1,38 +1,46 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
-import attributesShorter from '../dictionary/attributesShorter';
 
 const rawPadding = {
-	'padding-top': {
+	'p.t': {
 		type: 'string',
+		longLabel: 'padding-top',
 	},
-	'padding-right': {
+	'p.r': {
 		type: 'string',
+		longLabel: 'padding-right',
 	},
-	'padding-bottom': {
+	'p.b': {
 		type: 'string',
+		longLabel: 'padding-bottom',
 	},
-	'padding-left': {
+	'p.l': {
 		type: 'string',
+		longLabel: 'padding-left',
 	},
-	'padding-top-unit': {
-		type: 'string',
-		default: 'px',
-	},
-	'padding-right-unit': {
-		type: 'string',
-		default: 'px',
-	},
-	'padding-bottom-unit': {
+	'p.t.u': {
 		type: 'string',
 		default: 'px',
+		longLabel: 'padding-top-unit',
 	},
-	'padding-left-unit': {
+	'p.r.u': {
 		type: 'string',
 		default: 'px',
+		longLabel: 'padding-right-unit',
 	},
-	'padding-sync': {
+	'p.b.u': {
+		type: 'string',
+		default: 'px',
+		longLabel: 'padding-bottom-unit',
+	},
+	'p.l.u': {
+		type: 'string',
+		default: 'px',
+		longLabel: 'padding-left-unit',
+	},
+	'p.sy': {
 		type: 'string',
 		default: 'all',
+		longLabel: 'padding-sync',
 	},
 };
 
@@ -40,4 +48,4 @@ const padding = breakpointAttributesCreator({
 	obj: rawPadding,
 });
 
-export default attributesShorter(padding, 'padding');
+export default padding;

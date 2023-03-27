@@ -1,15 +1,15 @@
 import hoverAttributesCreator from '../hoverAttributesCreator';
 import opacity from './opacity';
-import attributesShorter from '../dictionary/attributesShorter';
 
 const opacityHover = hoverAttributesCreator({
 	obj: opacity,
 	newAttr: {
-		'opacity-status-hover': {
+		'o.sh': {
 			type: 'boolean',
 			default: false,
+			longLabel: 'opacity-status-hover',
 		},
 	},
 });
 
-export default attributesShorter(opacityHover, 'opacityHover');
+export default opacityHover;

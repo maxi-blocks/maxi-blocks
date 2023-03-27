@@ -1,117 +1,111 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
-import attributesShorter from '../dictionary/attributesShorter';
 
 export const rawSize = {
-	'size-advanced-options': {
+	sao: {
 		type: 'boolean',
 		default: false,
+		longLabel: 'size-advanced-options',
 	},
 };
 
 export const rawMaxWidth = {
-	'max-width-unit': {
+	'mw.u': {
 		type: 'string',
 		default: 'px',
+		longLabel: 'max-width-unit',
 	},
-	'max-width': {
+	mw: {
 		type: 'string',
+		longLabel: 'max-width',
 	},
 };
 
 export const rawWidth = {
-	'width-unit': {
+	'w-u': {
 		type: 'string',
 		default: 'px',
+		longLabel: 'width-unit',
 	},
-	width: {
+	w: {
 		type: 'string',
+		longLabel: 'width',
 	},
-	'width-fit-content': {
+	wfc: {
 		type: 'boolean',
 		default: false,
+		longLabel: 'width-fit-content',
 	},
 };
 
 export const rawMinWidth = {
-	'min-width-unit': {
+	'miw.u': {
 		type: 'string',
 		default: 'px',
+		longLabel: 'min-width-unit',
 	},
-	'min-width': {
+	miw: {
 		type: 'string',
+		longLabel: 'min-width',
 	},
 };
 
 export const rawMaxHeight = {
-	'max-height-unit': {
+	'mh.u': {
 		type: 'string',
 		default: 'px',
+		longLabel: 'max-height-unit',
 	},
-	'max-height': {
+	mh: {
 		type: 'string',
+		longLabel: 'max-height',
 	},
 };
 
 export const rawHeight = {
-	'height-unit': {
+	'h.u': {
 		type: 'string',
 		default: 'px',
+		longLabel: 'height-unit',
 	},
-	height: {
+	h: {
 		type: 'string',
+		longLabel: 'height',
 	},
-	'force-aspect-ratio': {
+	far: {
 		type: 'boolean',
+		longLabel: 'force-aspect-ratio',
 	},
 };
 
 export const rawMinHeight = {
-	'min-height-unit': {
+	'mih.u': {
 		type: 'string',
 		default: 'px',
+		longLabel: 'min-height-unit',
 	},
-	'min-height': {
+	mih: {
 		type: 'string',
+		longLabel: 'min-height',
 	},
 };
 
 export const rawFullWidth = {
-	'full-width': {
+	fw: {
 		type: 'string',
 		default: 'normal',
+		longLabel: 'full-width',
 	},
 };
 
-export const maxWidth = attributesShorter(
-	breakpointAttributesCreator({ obj: rawMaxWidth }),
-	'size'
-);
-export const width = attributesShorter(
-	breakpointAttributesCreator({ obj: rawWidth }),
-	'size'
-);
-export const minWidth = attributesShorter(
-	breakpointAttributesCreator({ obj: rawMinWidth }),
-	'size'
-);
-export const maxHeight = attributesShorter(
-	breakpointAttributesCreator({ obj: rawMaxHeight }),
-	'size'
-);
-export const height = attributesShorter(
-	breakpointAttributesCreator({ obj: rawHeight }),
-	'size'
-);
-export const minHeight = attributesShorter(
-	breakpointAttributesCreator({ obj: rawMinHeight }),
-	'size'
-);
-export const fullWidth = attributesShorter(
-	breakpointAttributesCreator({
-		obj: rawFullWidth,
-	}),
-	'size'
-);
+export const maxWidth = breakpointAttributesCreator({ obj: rawMaxWidth });
+export const width = breakpointAttributesCreator({ obj: rawWidth });
+export const minWidth = breakpointAttributesCreator({ obj: rawMinWidth });
+export const maxHeight = breakpointAttributesCreator({ obj: rawMaxHeight });
+export const height = breakpointAttributesCreator({ obj: rawHeight });
+export const minHeight = breakpointAttributesCreator({ obj: rawMinHeight });
+export const fullWidth = breakpointAttributesCreator({
+	obj: rawFullWidth,
+});
 
 const size = {
 	...rawSize,
@@ -124,4 +118,4 @@ const size = {
 	...fullWidth,
 };
 
-export default attributesShorter(size, 'size');
+export default size;

@@ -8,7 +8,7 @@ const blockAttributesShorter = attributes => {
 		const newKey = parseLongAttrKey(objKey);
 		const longKey = parseShortAttrKey(newKey);
 
-		newAttributes[newKey] = { ...objVal, originalLabel: longKey };
+		newAttributes[newKey] = { ...objVal, longLabel: longKey };
 	});
 
 	return newAttributes;

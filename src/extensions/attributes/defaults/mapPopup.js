@@ -1,16 +1,15 @@
 import { background, backgroundColor } from './background';
 import boxShadow from './boxShadow';
 import prefixAttributesCreator from '../prefixAttributesCreator';
-import attributesShorter from '../dictionary/attributesShorter';
 
-const prefix = 'popup-';
+const prefix = 'p-'; // popup-
 
 const mapPopup = {
 	...prefixAttributesCreator({
 		obj: background,
 		prefix,
 		diffValAttr: {
-			[`${prefix}background-active-media-general`]: 'color',
+			[`${prefix}bam-general`]: 'color', // background-active-media-general
 		},
 	}),
 	...prefixAttributesCreator({
@@ -23,4 +22,4 @@ const mapPopup = {
 	}),
 };
 
-export default attributesShorter(mapPopup, 'mapPopup');
+export default mapPopup;

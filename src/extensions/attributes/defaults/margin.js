@@ -1,38 +1,46 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
-import attributesShorter from '../dictionary/attributesShorter';
 
 const rawMargin = {
-	'margin-top': {
+	'm.t': {
 		type: 'string',
+		longLabel: 'margin-top',
 	},
-	'margin-right': {
+	'm.r': {
 		type: 'string',
+		longLabel: 'margin-right',
 	},
-	'margin-bottom': {
+	'm.b': {
 		type: 'string',
+		longLabel: 'margin-bottom',
 	},
-	'margin-left': {
+	'm.l': {
 		type: 'string',
+		longLabel: 'margin-left',
 	},
-	'margin-sync': {
+	'm.s': {
 		type: 'string',
 		default: 'all',
+		longLabel: 'margin-sync',
 	},
-	'margin-top-unit': {
+	'm.t.u': {
 		type: 'string',
 		default: 'px',
+		longLabel: 'margin-top-unit',
 	},
-	'margin-right-unit': {
+	'm.r.u': {
 		type: 'string',
 		default: 'px',
+		longLabel: 'margin-right-unit',
 	},
-	'margin-bottom-unit': {
+	'm.b.u': {
 		type: 'string',
 		default: 'px',
+		longLabel: 'margin-bottom-unit',
 	},
-	'margin-left-unit': {
+	'm.l.u': {
 		type: 'string',
 		default: 'px',
+		longLabel: 'margin-left-unit',
 	},
 };
 
@@ -40,4 +48,4 @@ const margin = breakpointAttributesCreator({
 	obj: rawMargin,
 });
 
-export default attributesShorter(margin, 'margin');
+export default margin;

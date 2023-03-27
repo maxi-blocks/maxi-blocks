@@ -1,16 +1,17 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
-import attributesShorter from '../dictionary/attributesShorter';
 
 const columnSize = breakpointAttributesCreator({
 	obj: {
-		'column-size': {
+		cs: {
 			type: 'number',
 			default: 90,
+			longLabel: 'column-size',
 		},
-		'column-fit-content': {
+		cfc: {
 			type: 'boolean',
+			longLabel: 'column-fit-content',
 		},
 	},
 });
 
-export default attributesShorter(columnSize, 'columnSize');
+export default columnSize;

@@ -2,103 +2,119 @@ import prefixAttributesCreator from '../prefixAttributesCreator';
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import paletteAttributesCreator from '../paletteAttributesCreator';
 import alignment from './alignment';
-import attributesShorter from '../dictionary/attributesShorter';
 
 export const rawTypography = {
-	'font-family': {
+	ff: {
 		type: 'string',
+		longLabel: 'font-family',
 	},
 	...paletteAttributesCreator({ prefix: '', palette: 3 }),
 	...paletteAttributesCreator({ prefix: 'list-', palette: 4 }),
-	'font-size-unit': {
+	'fs.u': {
 		type: 'string',
 		default: 'px',
+		longLabel: 'font-size-unit',
 	},
-	'font-size': {
+	fs: {
 		type: 'number',
+		longLabel: 'font-size',
 	},
-	'line-height-unit': {
+	'lhe.u': {
 		type: 'string',
 		default: 'px',
+		longLabel: 'line-height-unit',
 	},
-	'line-height': {
+	lhe: {
 		type: 'number',
+		longLabel: 'line-height',
 	},
-	'letter-spacing-unit': {
+	'ls.u': {
 		type: 'string',
 		default: 'px',
+		longLabel: 'letter-spacing-unit',
 	},
-	'letter-spacing': {
+	ls: {
 		type: 'number',
+		longLabel: 'letter-spacing',
 	},
-	'font-weight': {
+	fwe: {
 		type: 'string',
+		longLabel: 'font-weight',
 	},
-	'text-transform': {
+	ttr: {
 		type: 'string',
+		longLabel: 'text-transform',
 	},
-	'font-style': {
+	fst: {
 		type: 'string',
+		longLabel: 'font-style',
 	},
-	'text-decoration': {
+	td: {
 		type: 'string',
+		longLabel: 'text-decoration',
 	},
-	'text-indent': {
+	ti: {
 		type: 'number',
+		longLabel: 'text-indent',
 	},
-	'text-indent-unit': {
+	'ti.u': {
 		type: 'string',
 		default: 'px',
+		longLabel: 'text-indent-unit',
 	},
-	'text-shadow': {
+	tsh: {
 		type: 'string',
+		longLabel: 'text-shadow',
 	},
-	'vertical-align': {
+	va: {
 		type: 'string',
+		longLabel: 'vertical-align',
 	},
-	'custom-formats': {
+	cf: {
 		type: 'object',
+		longLabel: 'custom-formats',
 	},
-	'text-orientation': {
+	to: {
 		type: 'string',
+		longLabel: 'text-orientation',
 	},
-	'text-direction': {
+	tdi: {
 		type: 'string',
+		longLabel: 'text-direction',
 	},
-	'white-space': {
+	ws: {
 		type: 'string',
+		longLabel: 'white-space',
 	},
-	'word-spacing': {
+	wsp: {
 		type: 'number',
+		longLabel: 'word-spacing',
 	},
-	'word-spacing-unit': {
+	'wsp.u': {
 		type: 'string',
 		default: 'px',
+		longLabel: 'word-spacing-unit',
 	},
-	'bottom-gap': {
+	bg: {
 		type: 'number',
+		longLabel: 'bottom-gap',
 	},
-	'bottom-gap-unit': {
+	'bg.u': {
 		type: 'string',
 		default: 'px',
+		longLabel: 'bottom-gap-unit',
 	},
 };
 
-export const typography = attributesShorter(
-	breakpointAttributesCreator({
-		obj: rawTypography,
-		noBreakpointAttr: ['custom-formats'],
-	}),
-	'typography'
-);
+export const typography = breakpointAttributesCreator({
+	obj: rawTypography,
+	noBreakpointAttr: ['cf'], // custom-formats
+});
 
-export const typographyAlignment = attributesShorter(
-	prefixAttributesCreator({
-		obj: alignment,
-		prefix: 'typography-',
-		diffValAttr: {
-			'typography-alignment-general': 'left',
-		},
-	}),
-	'typography'
-);
+export const typographyAlignment = prefixAttributesCreator({
+	obj: alignment,
+	prefix: 'typography-',
+	diffValAttr: {
+		'ta-general': 'left', // typography-alignment-general
+	},
+});

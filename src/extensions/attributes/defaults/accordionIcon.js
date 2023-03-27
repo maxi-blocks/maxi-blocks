@@ -18,7 +18,6 @@ import {
 	iconBorderRadiusHover,
 	iconBorderWidthHover,
 } from './iconBorderHover';
-import attributesShorter from '../dictionary/attributesShorter';
 
 const accordionIcon = {
 	...prefixAttributesCreator({
@@ -32,19 +31,21 @@ const accordionIcon = {
 			...iconBorderWidth,
 			...iconPadding,
 		},
-		prefix: 'active-',
+		prefix: 'a-', // active-
 		diffValAttr: {
-			'active-icon-stroke-palette-color': 5,
-			'active-icon-inherit': false,
-			'active-icon-content':
+			'a-i-str-pc': 5, // active-icon-stroke-palette-color
+			'a-i-i': false, // active-icon-inherit
+			// active-icon-content
+			'a-i-c':
 				'<svg class="arrow-up-2-line-maxi-svg" width="64px" height="64px" viewBox="0 0 24 24"><path d="M2.9 17.25L12 6.75l9.1 10.5" fill="none" data-stroke="" stroke="#081219" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"></path></svg>',
 		},
 	}),
 	...{
 		...icon,
-		'icon-inherit': {
+		'i-i': {
 			type: 'boolean',
 			default: false,
+			longLabel: 'icon-inherit',
 		},
 	},
 	...iconBackground,
@@ -62,15 +63,17 @@ const accordionIcon = {
 	...iconBorderRadiusHover,
 	...iconBorderWidthHover,
 
-	'icon-content': {
+	'i-c': {
 		type: 'string',
 		default:
 			'<svg class="arrow-down-2-line-maxi-svg" width="64px" height="64px" viewBox="0 0 24 24"><path d="M21.1 6.75L12 17.25 2.9 6.75" fill="none" data-stroke="" stroke="#081219" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"></path></svg>',
+		longLabel: 'icon-content',
 	},
-	'icon-stroke-palette-color': {
+	'i-str-pc': {
 		type: 'number',
 		default: 5,
+		longLabel: 'icon-stroke-palette-color',
 	},
 };
 
-export default attributesShorter(accordionIcon, 'accordionIcon');
+export default accordionIcon;

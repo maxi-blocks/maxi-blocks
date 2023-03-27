@@ -9,16 +9,15 @@
  */
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
-import { lazy } from '@wordpress/element';
 
 /**
  * Block dependencies
  */
-const Edit = lazy(() => import('./edit'));
+import edit from './edit';
 import attributes from './attributes';
 import save from './save';
 import { customCss } from './data';
-import withMaxiSuspense from '../../extensions/maxi-block/withMaxiSuspense';
+import withMaxiLoader from '../../extensions/maxi-block/withMaxiLoader';
 
 /**
  * Styles and icons
@@ -42,6 +41,11 @@ registerBlockType('maxi-blocks/container-maxi', {
 	icon: containerIcon,
 	description: 'Wrap blocks within a container',
 	category: 'maxi-blocks',
+	example: {
+		attributes: {
+			preview: true,
+		},
+	},
 	supports: {
 		align: true,
 		lightBlockWrapper: true,
@@ -56,7 +60,7 @@ registerBlockType('maxi-blocks/container-maxi', {
 			uniqueid: uniqueID,
 		};
 	},
-	edit: withMaxiSuspense(Edit),
+	edit: withMaxiLoader(edit),
 	save,
 	deprecated: blockMigrator({
 		attributes,

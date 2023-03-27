@@ -6,7 +6,7 @@
  * Description: A powerful page builder for WordPress Gutenberg with a vast library of free web templates, icons & patterns. Open source and free to build. Anything you create with Maxi Blocks is yours to keep. There's no lock-in, no domain restrictions or license keys to keep track of. All blocks and features are free to use. Save time, get advanced designs & more with the Pro template library upgrade.
  * Author: Maxi Blocks
  * Author URI: https://maxiblocks.com/
- * Version: 1.0.0-RC1
+ * Version: 1.0.0-RC2
  * Requires at least: 6.1
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
@@ -85,14 +85,6 @@ if (class_exists('MaxiBlocks_API')) {
 require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-page-template.php';
 if (class_exists('MaxiBlocks_PageTemplate')) {
     add_action('plugins_loaded', array( 'MaxiBlocks_PageTemplate', 'register' ));
-}
-
-//======================================================================
-// MaxiBlocks Image Upload
-//======================================================================
-require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-image-upload.php';
-if (class_exists('MaxiBlocks_ImageUpload')) {
-    MaxiBlocks_ImageUpload::register();
 }
 
 //======================================================================

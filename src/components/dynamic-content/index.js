@@ -2,7 +2,12 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useEffect, useState, useContext } from '@wordpress/element';
+import {
+	useCallback,
+	useContext,
+	useEffect,
+	useState,
+} from '@wordpress/element';
 import { resolveSelect } from '@wordpress/data';
 
 /**
@@ -67,7 +72,7 @@ const DynamicContent = props => {
 		if (hasChangesToSave) onChange(params);
 	};
 
-	useEffect(async () => {
+	const fetchDcData = useCallback(async () => {
 		// TODO: check if this code is necessary
 		// On init, get post author options and set current user as default
 		if (!postAuthorOptions) {
@@ -118,9 +123,11 @@ const DynamicContent = props => {
 					setPostIdOptions(newPostIdOptions);
 			}
 		}
-
-		return null;
 	});
+
+	useEffect(() => {
+		fetchDcData().catch(console.error);
+	}, [fetchDcData]);
 
 	return (
 		<div className={classes}>

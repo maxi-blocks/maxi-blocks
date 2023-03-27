@@ -32,6 +32,7 @@ import { isEmpty, isEqual, pickBy } from 'lodash';
 
 const getCanvasSettings = ({ name }) => [
 	{
+		sid: 'bgl',
 		label: __('Background / Layer', 'maxi-blocks'),
 		transitionTarget: ' > .maxi-background-displayer > div',
 		hoverProp: 'block-background-status-hover',
@@ -83,7 +84,7 @@ const getCanvasSettings = ({ name }) => [
 					getBlockClipPath={layerID => {
 						const layerAttributes = Object.values(
 							props.blockAttributes['background-layers']
-						).find(({ id }) => id === layerID);
+						).find(({ sid }) => sid === layerID);
 						return getGroupAttributes(
 							layerAttributes,
 							'clipPath',
@@ -108,6 +109,7 @@ const getCanvasSettings = ({ name }) => [
 			}),
 	},
 	{
+		sid: 'b',
 		label: __('Border', 'maxi-blocks'),
 		transitionTarget: ['', ' > .maxi-background-displayer'],
 		hoverProp: 'border-status-hover',
@@ -116,6 +118,7 @@ const getCanvasSettings = ({ name }) => [
 		helper: props => getBorderStyles(props),
 	},
 	{
+		sid: 'bs',
 		label: __('Box shadow', 'maxi-blocks'),
 		hoverProp: 'box-shadow-status-hover',
 		attrGroupName: 'boxShadow',
@@ -123,6 +126,7 @@ const getCanvasSettings = ({ name }) => [
 		helper: props => getBoxShadowStyles(props),
 	},
 	{
+		sid: 's',
 		label: __('Height / Width', 'maxi-blocks'),
 		attrGroupName: 'size',
 		component: props => {
@@ -146,6 +150,7 @@ const getCanvasSettings = ({ name }) => [
 		helper: props => getSizeStyles(props.obj, props.prefix),
 	},
 	{
+		sid: 'mp',
 		label: __('Margin / Padding', 'maxi-blocks'),
 		attrGroupName: ['margin', 'padding'],
 		component: props => (

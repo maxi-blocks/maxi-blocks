@@ -15,15 +15,15 @@ const getLastChangedBlocks = () => {
 
 	if (!undoEdit) return false;
 
-	const { getCurrentPostType } = select('core/editor');
-
 	const entityRecordEdit = getEntityRecordEdits(
 		'postType',
-		getCurrentPostType(),
+		undoEdit.name,
 		undoEdit.recordId
 	);
 
 	const diffBlocks = diff(undoEdit?.edits?.blocks, entityRecordEdit?.blocks);
+
+	if (typeof diffBlocks !== 'object') return false;
 
 	return Object.values(diffBlocks);
 };

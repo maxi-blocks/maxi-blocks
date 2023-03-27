@@ -3,7 +3,7 @@
  */
 import { dispatch } from '@wordpress/data';
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
-import { useContext, useEffect } from '@wordpress/element';
+import { useCallback, useContext, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -54,7 +54,7 @@ const withMaxiDC = createHigherOrderComponent(
 				linkStatus,
 			} = dynamicContentProps;
 
-			useEffect(async () => {
+			const fetchDcData = useCallback(async () => {
 				if (
 					status &&
 					!isNil(type) &&
@@ -134,6 +134,10 @@ const withMaxiDC = createHigherOrderComponent(
 					}
 				}
 			});
+
+			useEffect(() => {
+				fetchDcData().catch(console.error);
+			}, [fetchDcData]);
 
 			return <WrappedComponent {...ownProps} />;
 		}),

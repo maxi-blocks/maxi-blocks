@@ -141,6 +141,16 @@ function observeConsoleLogging() {
 		if (text.includes('Failed to load resource: net::ERR_FAILED')) {
 			return;
 		}
+		if (
+			text.includes(
+				'Error validating css: Error: The request took longer than'
+			)
+		) {
+			return;
+		}
+		if (text.includes('Failed to load resource: the server responded')) {
+			return;
+		}
 
 		// Since 6.1 multiline on RichText is deprecated. Need to be update on #3877
 		if (

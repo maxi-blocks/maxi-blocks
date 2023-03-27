@@ -71,6 +71,7 @@ class edit extends MaxiBlockComponent {
 					[
 						'maxi-blocks/container-maxi',
 						'maxi-blocks/slide-maxi',
+						'maxi-blocks/maxi-cloud',
 					].indexOf(blockName) === -1
 			);
 

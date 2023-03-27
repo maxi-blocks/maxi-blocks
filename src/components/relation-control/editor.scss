@@ -11,5 +11,8 @@
 	.maxi-list-item-control__title__wrapper {
 		overflow: hidden;
 		max-width: 190px;
+		display: block;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 }

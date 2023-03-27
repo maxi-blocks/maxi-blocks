@@ -14,10 +14,11 @@ import { registerBlockType } from '@wordpress/blocks';
 /**
  * Block dependencies
  */
-import attributes from './attributes';
 import edit from './edit';
+import attributes from './attributes';
 import save from './save';
 import { customCss } from './data';
+import withMaxiLoader from '../../extensions/maxi-block/withMaxiLoader';
 
 /**
  * Styles and icons
@@ -39,6 +40,11 @@ registerBlockType('maxi-blocks/image-maxi', {
 	icon: imageBox,
 	description: 'Insert, modify or style an image',
 	category: 'maxi-blocks',
+	example: {
+		attributes: {
+			preview: true,
+		},
+	},
 	supports: {
 		align: true,
 		lightBlockWrapper: true,
@@ -53,7 +59,7 @@ registerBlockType('maxi-blocks/image-maxi', {
 			uniqueid: uniqueID,
 		};
 	},
-	edit,
+	edit: withMaxiLoader(edit),
 	save,
 	deprecated: blockMigrator({
 		attributes,

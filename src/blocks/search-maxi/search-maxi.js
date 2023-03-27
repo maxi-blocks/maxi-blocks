@@ -13,10 +13,11 @@ import { registerBlockType } from '@wordpress/blocks';
 /**
  * Block dependencies
  */
-import attributes from './attributes';
 import edit from './edit';
+import attributes from './attributes';
 import save from './save';
 import { customCss } from './data';
+import withMaxiLoader from '../../extensions/maxi-block/withMaxiLoader';
 
 /**
  * Styles and icons
@@ -38,6 +39,11 @@ registerBlockType('maxi-blocks/search-maxi', {
 	icon: searchIcon,
 	description: 'Add a search bar with icon',
 	category: 'maxi-blocks',
+	example: {
+		attributes: {
+			preview: true,
+		},
+	},
 	supports: {
 		align: true,
 		lightBlockWrapper: true,
@@ -52,7 +58,7 @@ registerBlockType('maxi-blocks/search-maxi', {
 			uniqueid: uniqueID,
 		};
 	},
-	edit,
+	edit: withMaxiLoader(edit),
 	save,
 	deprecated: blockMigrator({
 		attributes,

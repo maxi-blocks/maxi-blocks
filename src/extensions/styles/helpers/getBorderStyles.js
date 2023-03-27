@@ -24,6 +24,7 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 const getBorderStyles = ({
 	obj,
 	isHover = false,
+	isIB = false,
 	prefix = '',
 	blockStyle,
 	isButton = false,
@@ -53,6 +54,7 @@ const getBorderStyles = ({
 		'left',
 	];
 
+	let omitBorderStyle = !isIB && !hoverStatus && !globalHoverStatus;
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
@@ -63,6 +65,7 @@ const getBorderStyles = ({
 			isHover,
 		});
 		const isBorderNone = isUndefined(borderStyle) || borderStyle === 'none';
+		omitBorderStyle = omitBorderStyle ? isBorderNone : false;
 
 		const getColorString = () => {
 			const { paletteStatus, paletteColor, paletteOpacity, color } =
@@ -92,12 +95,25 @@ const getBorderStyles = ({
 			return color;
 		};
 
-		Object.entries(obj).forEach(([key, value]) => {
+		Object.entries(obj).forEach(([key, rawValue]) => {
 			const newKey = prefix ? key.replace(prefix, '') : key;
 			const includesBreakpoint =
 				newKey.lastIndexOf(`-${breakpoint}${isHover ? '-hover' : ''}`) +
 					`-${breakpoint}${isHover ? '-hover' : ''}`.length ===
 				newKey.length;
+			const replacer = new RegExp(
+				`\\b-${breakpoint}${
+					isHover ? '-hover' : ''
+				}\\b(?!.*\\b-${breakpoint}${isHover ? '-hover' : ''}\\b)`,
+				'gm'
+			);
+			const newLabel = newKey.replace(replacer, '');
+			const value = getLastBreakpointAttribute({
+				target: `${prefix}${newLabel}`,
+				isHover,
+				breakpoint,
+				attributes: obj,
+			});
 
 			if (
 				(getIsValid(value, true) ||
@@ -107,13 +123,6 @@ const getBorderStyles = ({
 				!newKey.includes('sync') &&
 				!newKey.includes('unit')
 			) {
-				const replacer = new RegExp(
-					`\\b-${breakpoint}${
-						isHover ? '-hover' : ''
-					}\\b(?!.*\\b-${breakpoint}${isHover ? '-hover' : ''}\\b)`,
-					'gm'
-				);
-				const newLabel = newKey.replace(replacer, '');
 				const unitKey = keyWords.filter(key =>
 					newLabel.includes(key)
 				)[0];
@@ -127,9 +136,11 @@ const getBorderStyles = ({
 					}) || 'px';
 
 				if (key.includes('style')) {
-					if (isHover && isBorderNone) {
-						response[breakpoint].border = 'none';
-					} else response[breakpoint]['border-style'] = borderStyle;
+					if (!omitBorderStyle)
+						if ((isHover || isIB) && isBorderNone) {
+							response[breakpoint].border = 'none';
+						} else
+							response[breakpoint]['border-style'] = borderStyle;
 				} else if (!keyWords.some(key => newKey.includes(key))) {
 					if (
 						(key.includes('color') || key.includes('opacity')) &&
@@ -154,9 +165,15 @@ const getBorderStyles = ({
 					].includes(newLabel)
 				) {
 					if (isBorderNone) return;
+					if (Number.isFinite(value)) {
+						response[breakpoint][newLabel] = `${value}${unit}`;
+					} else {
+						response[breakpoint][newLabel] = `0${unit}`;
+					}
+				} else if (Number.isFinite(value)) {
 					response[breakpoint][newLabel] = `${value}${unit}`;
 				} else {
-					response[breakpoint][newLabel] = `${value}${unit}`;
+					response[breakpoint][newLabel] = `0${unit}`;
 				}
 			}
 		});

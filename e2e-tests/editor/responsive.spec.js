@@ -1,11 +1,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	setBrowserViewport,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, setBrowserViewport } from '@wordpress/e2e-test-utils';
 import {
 	getBlockStyle,
 	getAttributes,
@@ -14,6 +10,7 @@ import {
 	editAxisControl,
 	getStyleCardEditor,
 	editAdvancedNumberControl,
+	insertMaxiBlock,
 } from '../utils';
 
 describe('Responsive attributes mechanisms', () => {
@@ -22,7 +19,7 @@ describe('Responsive attributes mechanisms', () => {
 		await setBrowserViewport({ width: 1240, height: 700 });
 
 		await createNewPost();
-		await insertBlock('Group Maxi');
+		await insertMaxiBlock(page, 'Group Maxi');
 	});
 
 	it('On change attributes from base responsive, just "general" attributes change', async () => {
@@ -154,23 +151,31 @@ describe('Responsive attributes mechanisms', () => {
 	it('On change attributes from XXL responsive and without a default general attribute value, just "general" change', async () => {
 		await changeResponsive(page, 'xxl');
 
-		const borderAccordion = await openSidebarTab(page, 'style', 'border');
-		const selector = await borderAccordion.$(
-			'.maxi-border-control__type select'
+		const marginPaddingAccordion = await openSidebarTab(
+			page,
+			'style',
+			'margin padding'
 		);
-		await selector.select('solid');
+		const axisControlInstance = await marginPaddingAccordion.$(
+			'.maxi-axis-control__margin'
+		);
+		await editAxisControl({
+			page,
+			instance: axisControlInstance,
+			values: '100',
+		});
 
-		const expectBorder = {
-			'border-style-general': 'solid',
-			'border-style-xxl': undefined,
+		const expectMargin = {
+			'margin-top-general': '100',
+			'margin-top-xxl': undefined,
 		};
 
-		const borderResult = await getAttributes([
-			'border-style-general',
-			'border-style-xxl',
+		const marginResult = await getAttributes([
+			'margin-top-general',
+			'margin-top-xxl',
 		]);
 
-		expect(borderResult).toStrictEqual(expectBorder);
+		expect(marginResult).toStrictEqual(expectMargin);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
@@ -185,14 +190,14 @@ describe('Responsive attributes mechanisms', () => {
 		);
 
 		const expectBorder = {
-			'border-style-xxl': undefined,
+			'border-style-xxl': 'solid',
 			'border-top-width-xxl': undefined,
 			'border-right-width-xxl': undefined,
 			'border-bottom-width-xxl': undefined,
 			'border-left-width-xxl': undefined,
 			'border-sync-width-xxl': undefined,
 			'border-unit-width-xxl': undefined,
-			'border-style-general': 'solid',
+			'border-style-general': 'none',
 			'border-top-width-general': 2,
 			'border-right-width-general': 2,
 			'border-bottom-width-general': 2,
@@ -222,31 +227,48 @@ describe('Responsive attributes mechanisms', () => {
 	it('On first change attributes from XXL responsive and without a default general attribute value, and then changing from XL, just "general" and XL attributes change', async () => {
 		await changeResponsive(page, 'xxl');
 
-		let borderAccordion = await openSidebarTab(page, 'style', 'border');
-		let selector = await borderAccordion.$(
-			'.maxi-border-control__type select'
+		let marginPaddingAccordion = await openSidebarTab(
+			page,
+			'style',
+			'margin padding'
 		);
-		await selector.select('solid');
+		let axisControlInstance = await marginPaddingAccordion.$(
+			'.maxi-axis-control__margin'
+		);
+		await editAxisControl({
+			page,
+			instance: axisControlInstance,
+			values: '10',
+		});
 
 		await changeResponsive(page, 'xl');
+		marginPaddingAccordion = await openSidebarTab(
+			page,
+			'style',
+			'margin padding'
+		);
+		axisControlInstance = await marginPaddingAccordion.$(
+			'.maxi-axis-control__margin'
+		);
+		await editAxisControl({
+			page,
+			instance: axisControlInstance,
+			values: '20',
+		});
 
-		borderAccordion = await openSidebarTab(page, 'style', 'border');
-		selector = await borderAccordion.$('.maxi-border-control__type select');
-		await selector.select('dashed');
-
-		const expectBorder = {
-			'border-style-general': 'solid',
-			'border-style-xl': 'dashed',
-			'border-style-m': 'solid',
+		const expectMargin = {
+			'margin-top-general': '10',
+			'margin-top-xl': '20',
+			'margin-top-m': '10',
 		};
 
-		const borderResult = await getAttributes([
-			'border-style-general',
-			'border-style-xl',
-			'border-style-m',
+		const marginResult = await getAttributes([
+			'margin-top-general',
+			'margin-top-xl',
+			'margin-top-m',
 		]);
 
-		expect(borderResult).toStrictEqual(expectBorder);
+		expect(marginResult).toStrictEqual(expectMargin);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
@@ -254,33 +276,49 @@ describe('Responsive attributes mechanisms', () => {
 	it('On first change attributes from XXL responsive and some of them have default general attribute value, and then changing from XL, "XL" change', async () => {
 		await changeResponsive(page, 'xxl');
 
-		let borderAccordion = await openSidebarTab(page, 'style', 'border');
-		await borderAccordion.$$eval(
-			'.maxi-tabs-content .maxi-default-styles-control button',
-			buttons => buttons[1].click()
+		let marginPaddingAccordion = await openSidebarTab(
+			page,
+			'style',
+			'margin padding'
 		);
+		let axisControlInstance = await marginPaddingAccordion.$(
+			'.maxi-axis-control__margin'
+		);
+		await editAxisControl({
+			page,
+			instance: axisControlInstance,
+			values: '10',
+		});
 
 		await changeResponsive(page, 'xl');
 
-		borderAccordion = await openSidebarTab(page, 'style', 'border');
-		await borderAccordion.$$eval(
-			'.maxi-tabs-content .maxi-default-styles-control button',
-			buttons => buttons[2].click()
+		marginPaddingAccordion = await openSidebarTab(
+			page,
+			'style',
+			'margin padding'
 		);
+		axisControlInstance = await marginPaddingAccordion.$(
+			'.maxi-axis-control__margin'
+		);
+		await editAxisControl({
+			page,
+			instance: axisControlInstance,
+			values: '20',
+		});
 
-		const expectBorder = {
-			'border-style-general': 'solid',
-			'border-style-xl': 'dashed',
-			'border-style-m': 'solid',
+		const expectMargin = {
+			'margin-top-general': '10',
+			'margin-top-xl': '20',
+			'margin-top-m': '10',
 		};
 
-		const borderResult = await getAttributes([
-			'border-style-general',
-			'border-style-xl',
-			'border-style-m',
+		const marginResult = await getAttributes([
+			'margin-top-general',
+			'margin-top-xl',
+			'margin-top-m',
 		]);
 
-		expect(borderResult).toStrictEqual(expectBorder);
+		expect(marginResult).toStrictEqual(expectMargin);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
@@ -308,7 +346,7 @@ describe('Responsive attributes mechanisms', () => {
 		);
 
 		const expectBorder = {
-			'border-style-xxl': undefined,
+			'border-style-xxl': 'solid',
 			'border-style-general': 'dotted',
 			'border-style-xl': 'dashed',
 			'border-style-m': 'dotted',
@@ -349,31 +387,49 @@ describe('Responsive attributes mechanisms', () => {
 	it('On change attributes from XL responsive and then change from "M", "general" attributes change', async () => {
 		await changeResponsive(page, 'xl');
 
-		let borderAccordion = await openSidebarTab(page, 'style', 'border');
-		let selector = await borderAccordion.$(
-			'.maxi-border-control__type select'
+		let marginPaddingAccordion = await openSidebarTab(
+			page,
+			'style',
+			'margin padding'
 		);
-		await selector.select('solid');
+		let axisControlInstance = await marginPaddingAccordion.$(
+			'.maxi-axis-control__margin'
+		);
+		await editAxisControl({
+			page,
+			instance: axisControlInstance,
+			values: '20',
+		});
 
 		await changeResponsive(page, 'm');
 
-		borderAccordion = await openSidebarTab(page, 'style', 'border');
-		selector = await borderAccordion.$('.maxi-border-control__type select');
-		await selector.select('dashed');
+		marginPaddingAccordion = await openSidebarTab(
+			page,
+			'style',
+			'margin padding'
+		);
+		axisControlInstance = await marginPaddingAccordion.$(
+			'.maxi-axis-control__margin'
+		);
+		await editAxisControl({
+			page,
+			instance: axisControlInstance,
+			values: '10',
+		});
 
-		const expectBorder = {
-			'border-style-general': 'dashed',
-			'border-style-xl': 'solid',
-			'border-style-m': undefined,
+		const expectMargin = {
+			'margin-top-general': '10',
+			'margin-top-xl': '20',
+			'margin-top-m': '10',
 		};
 
-		const borderResult = await getAttributes([
-			'border-style-general',
-			'border-style-xl',
-			'border-style-m',
+		const marginResult = await getAttributes([
+			'margin-top-general',
+			'margin-top-xl',
+			'margin-top-m',
 		]);
 
-		expect(borderResult).toStrictEqual(expectBorder);
+		expect(marginResult).toStrictEqual(expectMargin);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
@@ -506,7 +562,7 @@ describe('Responsive attributes mechanisms', () => {
 		await setBrowserViewport({ width: 1920, height: 700 });
 
 		await createNewPost();
-		await insertBlock('Button Maxi');
+		await insertMaxiBlock(page, 'Button Maxi');
 
 		const accordionPanel = await openSidebarTab(
 			page,
@@ -581,7 +637,8 @@ describe('Responsive attributes mechanisms', () => {
 		await setBrowserViewport({ width: 1920, height: 700 });
 
 		await createNewPost();
-		await insertBlock('Group Maxi');
+		await insertMaxiBlock(page, 'Group Maxi');
+		await page.waitForSelector('.maxi-group-block');
 
 		await changeResponsive(page, 'xxl');
 
@@ -709,11 +766,13 @@ describe('Responsive attributes mechanisms', () => {
 		await setBrowserViewport({ width: 1400, height: 700 });
 
 		await createNewPost();
-		await insertBlock('Container Maxi');
+		await insertMaxiBlock(page, 'Container Maxi');
+		await page.waitForSelector('.maxi-row-block');
 
 		await page.$$eval('.maxi-row-block__template button', button =>
 			button[0].click()
 		);
+		await page.waitForSelector('.maxi-column-block');
 
 		const accordionPanel = await openSidebarTab(
 			page,

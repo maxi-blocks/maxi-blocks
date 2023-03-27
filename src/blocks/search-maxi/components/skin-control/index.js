@@ -20,13 +20,13 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 		}, {});
 
 	const iconRevealResetStyles = getDefaultAttributes([
-		[`${buttonPrefix}border-unit-radius-general`],
-		[`${buttonPrefix}border-top-left-radius-general`],
-		[`${buttonPrefix}border-top-right-radius-general`],
-		[`${buttonPrefix}border-bottom-left-radius-general`],
-		[`${buttonPrefix}border-bottom-right-radius-general`],
-		[`${buttonPrefix}margin-left-general`],
-		[`${buttonPrefix}margin-sync-general`],
+		`${buttonPrefix}border-unit-radius-general`,
+		`${buttonPrefix}border-top-left-radius-general`,
+		`${buttonPrefix}border-top-right-radius-general`,
+		`${buttonPrefix}border-bottom-left-radius-general`,
+		`${buttonPrefix}border-bottom-right-radius-general`,
+		`${buttonPrefix}margin-left-general`,
+		`${buttonPrefix}margin-sync-general`,
 		'icon-position',
 	]);
 
@@ -37,7 +37,7 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 	return (
 		<>
 			<SelectControl
-				label={__('Skin', 'maxi-blocks')}
+				label={__('Choose', 'maxi-blocks')}
 				value={skin}
 				options={[
 					{

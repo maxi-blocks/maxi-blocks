@@ -6,7 +6,7 @@ import { createNewPost, setBrowserViewport } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getStyleCardEditor, checkSCResult } from '../../utils';
+import { getStyleCardEditor, checkSCResult, copySCToEdit } from '../../utils';
 
 describe('SC svg icon', () => {
 	it('Checking svg icon accordion', async () => {
@@ -17,10 +17,11 @@ describe('SC svg icon', () => {
 			page,
 			accordion: 'SVG',
 		});
+		await copySCToEdit(page, `copy - ${Date.now()}`);
 
 		// Global Line Colour
 		await page.$eval(
-			'.maxi-blocks-sc__type--SVG .maxi-style-cards-control__toggle-line-global input',
+			'.maxi-blocks-sc__type--SVG .maxi-style-cards-control__toggle-line-color-global input',
 			button => button.click()
 		);
 
@@ -31,7 +32,7 @@ describe('SC svg icon', () => {
 
 		// Global Fill Colour
 		await page.$eval(
-			'.maxi-blocks-sc__type--SVG .maxi-style-cards-control__toggle-fill-global input',
+			'.maxi-blocks-sc__type--SVG .maxi-style-cards-control__toggle-fill-color-global input',
 			button => button.click()
 		);
 

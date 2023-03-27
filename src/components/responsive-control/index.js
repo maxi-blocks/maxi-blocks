@@ -27,7 +27,7 @@ const ResponsiveControl = props => {
 		return {
 			defaultBreakpoints,
 		};
-	});
+	}, []);
 
 	const classes = classnames('maxi-responsive-control', className);
 
@@ -56,6 +56,7 @@ const ResponsiveControl = props => {
 							defaultBreakpoints[
 								breakpoint === 'xxl' ? 'xl' : breakpoint
 							],
+						isReset: true,
 					})
 				}
 				initialPosition={

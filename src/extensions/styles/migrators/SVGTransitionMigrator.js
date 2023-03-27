@@ -21,22 +21,19 @@ const isEligible = blockAttributes => {
 };
 
 const migrate = newAttributes => {
-	const {
-		uniqueID,
-		transition,
-		'transition-change-all': transitionChangeAll,
-	} = newAttributes;
+	const { uniqueID, 'transition-change-all': transitionChangeAll } =
+		newAttributes;
 	const blockName = getBlockNameFromUniqueID(uniqueID);
 	const blockDataTransition = getTransitionData(blockName);
 
-	const defaultAttributes =
-		transitionAttributesCreator(blockDataTransition).transition.default
-			.block;
+	const defaultAttributes = transitionAttributesCreator({
+		transition: blockDataTransition,
+	}).transition.default.block;
 
 	Object.keys(blockDataTransition.block).forEach(transitionName => {
-		if (!transition.block[transitionName]) {
-			transition.block[transitionName] = transitionChangeAll
-				? Object.values(transition.block)[0]
+		if (!newAttributes.transition.block[transitionName]) {
+			newAttributes.transition.block[transitionName] = transitionChangeAll
+				? Object.values(newAttributes.transition.block)[0]
 				: defaultAttributes[transitionName];
 		}
 	});

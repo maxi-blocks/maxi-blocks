@@ -1,8 +1,9 @@
 /**
  * WordPress dependencies
  */
-import { select } from '@wordpress/data';
+import { resolveSelect } from '@wordpress/data';
 import { renderToString } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -21,6 +22,12 @@ import * as mapMarkerIcons from '../../icons/map-icons/markers';
  * Edit
  */
 class edit extends MaxiBlockComponent {
+	constructor(...args) {
+		super(...args);
+
+		this.state.googleApiKey = '';
+	}
+
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
@@ -53,22 +60,42 @@ class edit extends MaxiBlockComponent {
 				'map-marker-icon': renderToString(mapMarkerIcons.mapMarker1),
 			});
 		}
+
+		const { receiveMaxiSettings } = resolveSelect('maxiBlocks');
+		receiveMaxiSettings()
+			.then(maxiSettings => {
+				const googleApiKey = maxiSettings?.google_api_key;
+				this.setState({ googleApiKey });
+			})
+			.catch(() => console.error('Maxi Blocks: Could not load settings'));
 	}
 
 	render() {
 		const { attributes, isSelected } = this.props;
+		const { googleApiKey } = this.state;
 		const { uniqueID, 'map-provider': mapProvider } = attributes;
 
 		const getApiKey = () => {
-			const { receiveMaxiSettings } = select('maxiBlocks');
+			if (!googleApiKey) {
+				this.setState({ googleApiKey });
+			}
 
-			const maxiSettings = receiveMaxiSettings();
-
-			const key = maxiSettings?.google_api_key;
-
-			if (key) return key;
-			return false;
+			return this.state.googleApiKey;
 		};
+
+		if (attributes.preview)
+			return (
+				<MaxiBlock
+					key={`maxi-map--${uniqueID}`}
+					ref={this.blockRef}
+					{...getMaxiBlockAttributes(this.props)}
+				>
+					<img // eslint-disable-next-line no-undef
+						src={previews.map_preview}
+						alt={__('Map block preview', 'maxi-blocks')}
+					/>
+				</MaxiBlock>
+			);
 
 		return [
 			<Inspector

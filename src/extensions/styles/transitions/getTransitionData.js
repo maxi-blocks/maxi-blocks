@@ -1,9 +1,10 @@
-import * as blocksData from '../../../blocks/data';
+import { getBlockData } from '../../attributes';
+import getTransformTransitionData from './getTransformTransitionData';
 import transitionDefault from './transitionDefault';
 
-const getTransitionData = name =>
-	Object.values(blocksData).find(
-		({ name: blockName }) => blockName === name.replace('maxi-blocks/', '')
-	)?.transition || transitionDefault;
+const getTransitionData = (name, selectors, attributes) => ({
+	...(getBlockData(name)?.transition || transitionDefault),
+	transform: getTransformTransitionData(selectors, attributes),
+});
 
 export default getTransitionData;

@@ -1,21 +1,19 @@
 /**
  * Internal dependencies
  */
-import * as blocksData from '../../../blocks/data';
+import { getBlockData } from '../../attributes';
 
 /**
  * Returns block name from uniqueID
  */
 export const getBlockNameFromUniqueID = uniqueID =>
-	uniqueID.slice(0, uniqueID.lastIndexOf('-'));
+	uniqueID.slice(0, uniqueID.indexOf('maxi') + 4);
 
 /**
  * Returns block data from uniqueID
  */
 export const getBlockDataByUniqueID = uniqueID =>
-	Object.values(blocksData).find(
-		data => data?.name === getBlockNameFromUniqueID(uniqueID)
-	);
+	getBlockData(getBlockNameFromUniqueID(uniqueID));
 
 /**
  * Returns blocks customCss selectors
@@ -24,9 +22,9 @@ export const getBlockSelectorsByUniqueID = uniqueID =>
 	getBlockDataByUniqueID(uniqueID)?.customCss.selectors;
 
 /**
- * Returns blocks interactionBuilderSettings
+ * Returns blocks `interactionBuilderSettings`
  */
-export const getTransitionSetting = ({ uniqueID, settings }) => {
+export const getIBDataItem = ({ uniqueID, sid, settings }) => {
 	const interactionBuilderSettings =
 		getBlockDataByUniqueID(uniqueID)?.interactionBuilderSettings;
 
@@ -35,7 +33,10 @@ export const getTransitionSetting = ({ uniqueID, settings }) => {
 	return (
 		Object.values(interactionBuilderSettings)
 			.flat()
-			.find(currentSettings => currentSettings?.label === settings) ||
-		null
+			.find(
+				item =>
+					(sid && item?.sid === sid) ||
+					(!sid && settings && item?.label === settings)
+			) || null
 	);
 };

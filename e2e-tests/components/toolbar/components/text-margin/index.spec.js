@@ -1,21 +1,21 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyWithModifier,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
-import { getAttributes, openSidebarTab } from '../../../../utils';
+import {
+	getAttributes,
+	openSidebarTab,
+	insertMaxiBlock,
+} from '../../../../utils';
 
 describe('Text margin', () => {
 	it('Check text margin', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 
 		// Wait for toolbar to be visible
 		await page.waitForSelector('.toolbar-wrapper');
@@ -28,7 +28,7 @@ describe('Text margin', () => {
 
 		// edit margin
 		await page.$eval(
-			'.components-popover__content .toolbar-item__padding-margin__popover input',
+			'.components-popover__content .maxi-axis-control__content__item__margin .maxi-advanced-number-control__value',
 			button => button.focus()
 		);
 

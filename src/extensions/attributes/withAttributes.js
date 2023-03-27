@@ -9,6 +9,7 @@ import { select } from '@wordpress/data';
  * Internal dependencies
  */
 import uniqueIDGenerator from './uniqueIDGenerator';
+import { getCustomLabel } from '../maxi-block';
 
 /**
  * External Dependencies
@@ -30,6 +31,8 @@ const allowedBlocks = [
 	'maxi-blocks/group-maxi',
 	'maxi-blocks/number-counter-maxi',
 	'maxi-blocks/svg-icon-maxi',
+	'maxi-blocks/slide-maxi',
+	'maxi-blocks/slider-maxi',
 	'maxi-blocks/pane-maxi',
 	'maxi-blocks/accordion-maxi',
 	'maxi-blocks/video-maxi',
@@ -49,19 +52,17 @@ const withAttributes = createHigherOrderComponent(
 
 		if (allowedBlocks.includes(blockName)) {
 			// uniqueID
-			if (
-				isNil(uniqueID) ||
-				document.getElementsByClassName(uniqueID).length > 1
-			) {
-				attributes.uniqueID = uniqueIDGenerator(blockName);
-
-				const label = attributes.uniqueID.replace('-maxi-', '_');
-				attributes.customLabel =
-					label.charAt(0).toUpperCase() + label.slice(1);
+			if (isNil(uniqueID)) {
+				const newUniqueID = uniqueIDGenerator({ blockName, clientId });
+				attributes.uniqueID = newUniqueID;
+				attributes.customLabel = getCustomLabel(
+					attributes.customLabel,
+					newUniqueID
+				);
 			}
 			// isFirstOnHierarchy
 			const parentBlocks = select('core/block-editor')
-				.getBlockParents(clientId)
+				.getBlockParentsByBlockName(clientId, allowedBlocks)
 				.filter(el => {
 					return el !== clientId;
 				});
@@ -70,14 +71,12 @@ const withAttributes = createHigherOrderComponent(
 
 			attributes.isFirstOnHierarchy = isEmpty(parentBlocks);
 			if (!attributes.isFirstOnHierarchy) {
-				const { getBlockHierarchyRootClientId } =
-					select('core/block-editor');
+				const firstMaxiParentBlock = select(
+					'core/block-editor'
+				).getBlock(parentBlocks[0]);
 
-				const firstParentBlock = select('core/block-editor').getBlock(
-					getBlockHierarchyRootClientId(clientId)
-				);
-
-				attributes.blockStyle = firstParentBlock.attributes.blockStyle;
+				attributes.blockStyle =
+					firstMaxiParentBlock.attributes.blockStyle;
 			}
 
 			// RTL

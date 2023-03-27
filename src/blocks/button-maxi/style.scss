@@ -1,5 +1,5 @@
 body.maxi-blocks--active .maxi-button-block {
-	display: flex !important;
+	display: flex;
 	text-align: center;
 
 	&__icon {
@@ -14,6 +14,7 @@ body.maxi-blocks--active .maxi-button-block {
 		svg {
 			width: 100%;
 			height: 100%;
+			max-width: unset; //Twenty Twenty theme fix
 		}
 	}
 	&__content {

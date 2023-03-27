@@ -1,9 +1,12 @@
 /**
  * Internal dependencies
  */
-import { createSelectors } from '../../extensions/styles/custom-css';
+import {
+	getCanvasSettings,
+	getAdvancedSettings,
+} from '../../extensions/relations';
 import { createIconTransitions } from '../../extensions/styles';
-import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
+import { createSelectors } from '../../extensions/styles/custom-css';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
 /**
@@ -18,7 +21,7 @@ const overlayClass = `${blockClass}__overlay`;
  */
 const name = 'video-maxi';
 const copyPasteMapping = {
-	_exclude: ['url', 'embedUrl', 'videoType'],
+	_exclude: ['url', 'embedUrl', 'videoType', 'overlay-mediaURL'],
 	settings: {
 		Video: {
 			group: {
@@ -72,6 +75,7 @@ const copyPasteMapping = {
 					groupAttributes: ['background', 'backgroundColor'],
 					prefix: 'overlay-',
 				},
+				'Image source': 'overlay-mediaURL',
 			},
 		},
 		Border: {
@@ -220,7 +224,8 @@ const transition = {
 	},
 };
 const interactionBuilderSettings = {
-	canvas: getCanvasSettings({ name, customCss }),
+	canvas: getCanvasSettings({ name }),
+	advanced: getAdvancedSettings({ customCss }),
 };
 
 const data = {

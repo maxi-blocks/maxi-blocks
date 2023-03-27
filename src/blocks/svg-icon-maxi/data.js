@@ -19,7 +19,10 @@ import {
 	getBorderStyles,
 	getSVGStyles,
 } from '../../extensions/styles/helpers';
-import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
+import {
+	getCanvasSettings,
+	getAdvancedSettings,
+} from '../../extensions/relations';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
 /**
@@ -178,8 +181,12 @@ const transition = {
 const interactionBuilderSettings = {
 	block: [
 		{
+			sid: 'ic',
 			label: __('Icon colour'),
-			transitionTarget: transition.block.colour.target,
+			transitionTarget: [
+				transition.block.colour.target,
+				transition.block['colour two'].target,
+			],
 			transitionTrigger: `${iconClass} svg`,
 			hoverProp: 'svg-status-hover',
 			attrGroupName: 'svg',
@@ -210,6 +217,7 @@ const interactionBuilderSettings = {
 		},
 		// TODO: fix #3619
 		// {
+		//  sid: 'ilw',
 		// 	label: __('Icon line width', 'maxi-blocks'),
 		// 	attrGroupName: 'svg',
 		// 	component: props => {
@@ -232,6 +240,7 @@ const interactionBuilderSettings = {
 		// 		}),
 		// },
 		{
+			sid: 'ibg',
 			label: __('Icon background', 'maxi-blocks'),
 			transitionTarget: transition.block.background.target,
 			hoverProp: 'svg-background-status-hover',
@@ -255,6 +264,7 @@ const interactionBuilderSettings = {
 			target: ' .maxi-svg-icon-block__icon',
 		},
 		{
+			sid: 'ib',
 			label: __('Icon border', 'maxi-blocks'),
 			transitionTarget: transition.block.border.target,
 			hoverProp: 'svg-border-status-hover',
@@ -265,7 +275,8 @@ const interactionBuilderSettings = {
 			target: ' .maxi-svg-icon-block__icon',
 		},
 	],
-	canvas: getCanvasSettings({ name, customCss }),
+	canvas: getCanvasSettings({ name }),
+	advanced: getAdvancedSettings({ customCss }),
 };
 
 const data = {

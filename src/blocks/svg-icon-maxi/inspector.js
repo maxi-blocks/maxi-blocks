@@ -237,6 +237,7 @@ const Inspector = props => {
 														attributes,
 														'svg'
 													)}
+													content={attributes.content}
 													onChange={obj => {
 														maxiSetAttributes(obj);
 													}}
@@ -280,9 +281,6 @@ const Inspector = props => {
 										props,
 									}),
 									...inspectorTabs.boxShadow({
-										props,
-									}),
-									...inspectorTabs.opacity({
 										props,
 									}),
 									...inspectorTabs.size({
@@ -330,6 +328,9 @@ const Inspector = props => {
 										props,
 									}),
 									...inspectorTabs.display({
+										props,
+									}),
+									...inspectorTabs.opacity({
 										props,
 									}),
 									...inspectorTabs.position({

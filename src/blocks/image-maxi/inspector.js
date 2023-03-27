@@ -11,7 +11,6 @@ import { InspectorControls } from '@wordpress/block-editor';
 import {
 	AccordionControl,
 	AdvancedNumberControl,
-	ClipPath,
 	ImageAltControl,
 	ImageShape,
 	ResponsiveTabsControl,
@@ -49,6 +48,7 @@ const Inspector = props => {
 		mediaID,
 		captionPosition,
 		fitParentSize,
+		'dc-status': dcStatus,
 	} = attributes;
 	const { selectors, categories } = customCss;
 
@@ -71,10 +71,17 @@ const Inspector = props => {
 		!isEmpty(attributes.SVGElement);
 
 	const getCaptionOptions = () => {
+		if (dcStatus)
+			return [
+				{ label: 'None', value: 'none' },
+				{ label: 'Dynamic caption', value: 'custom' }, // Left as custom, because it's the same as custom caption
+			];
+
 		const response = [
 			{ label: 'None', value: 'none' },
 			{ label: 'Custom caption', value: 'custom' },
 		];
+
 		if (imageData && !isEmpty(imageData.caption.rendered)) {
 			const newCaption = {
 				label: 'Attachment caption',
@@ -271,6 +278,7 @@ const Inspector = props => {
 																				getDefaultAttribute(
 																					`caption-gap-unit-${deviceType}`
 																				),
+																			isReset: true,
 																		}
 																	)
 																}
@@ -387,31 +395,10 @@ const Inspector = props => {
 											`image-shape-flip-y-${deviceType}`,
 										],
 									},
-									{
-										label: __('Clip-path', 'maxi-blocks'),
-										content: (
-											<ResponsiveTabsControl
-												breakpoint={deviceType}
-											>
-												<ClipPath
-													onChange={obj => {
-														maxiSetAttributes(obj);
-													}}
-													{...getGroupAttributes(
-														attributes,
-														'clipPath',
-														false,
-														''
-													)}
-													breakpoint={deviceType}
-													prefix=''
-												/>
-											</ResponsiveTabsControl>
-										),
-										ignoreIndicator: [
-											`clip-path-${deviceType}`,
-										],
-									},
+									...inspectorTabs.clipPath({
+										props,
+										selector: '.maxi-image-block__image',
+									}),
 									...inspectorTabs.border({
 										props,
 										prefix: 'image-',
@@ -455,9 +442,6 @@ const Inspector = props => {
 									...inspectorTabs.boxShadow({
 										props,
 									}),
-									...inspectorTabs.opacity({
-										props,
-									}),
 									...inspectorTabs.size({
 										props,
 										block: true,
@@ -493,6 +477,10 @@ const Inspector = props => {
 										selectors,
 										categories,
 									}),
+									...inspectorTabs.dc({
+										props,
+										contentType: 'image',
+									}),
 									...inspectorTabs.scrollEffects({
 										props,
 									}),
@@ -502,11 +490,13 @@ const Inspector = props => {
 										categories,
 									}),
 									...inspectorTabs.transition({
-										props: {
-											...props,
-										},
+										props,
+										selectors,
 									}),
 									...inspectorTabs.display({
+										props,
+									}),
+									...inspectorTabs.opacity({
 										props,
 									}),
 									...inspectorTabs.position({

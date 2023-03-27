@@ -15,7 +15,7 @@ jest.mock('../../../styles/getBlockStyle', () => {
 		return 'light';
 	});
 });
-
+jest.mock('../../../attributes/getBlockData.js', () => jest.fn());
 jest.mock('../../../style-cards/getActiveStyleCard', () => {
 	return jest.fn(() => {
 		return {

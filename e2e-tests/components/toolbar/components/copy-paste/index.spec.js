@@ -1,11 +1,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyWithModifier,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -14,13 +10,14 @@ import {
 	openSidebarTab,
 	editAxisControl,
 	getAttributes,
+	insertMaxiBlock,
 } from '../../../../utils';
 
 describe('CopyPaste from Toolbar', () => {
 	it('Should copy and paste bulk styles', async () => {
 		await createNewPost();
 		await page.waitForTimeout(1000);
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 
 		// Wait for toolbar to be visible
 		await page.waitForSelector('.toolbar-wrapper');
@@ -56,7 +53,7 @@ describe('CopyPaste from Toolbar', () => {
 			button => button.click()
 		);
 
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 
 		// open options
 		await page.$eval(
@@ -101,7 +98,7 @@ describe('CopyPaste from Toolbar', () => {
 		expect(positionResult).toStrictEqual(expectPosition);
 	});
 	it('Should copy and paste styles with special paste', async () => {
-		await insertBlock('Group Maxi');
+		await insertMaxiBlock(page, 'Group Maxi');
 
 		// add border attributes
 		const borderAccordion = await openSidebarTab(page, 'style', 'border');
@@ -150,15 +147,14 @@ describe('CopyPaste from Toolbar', () => {
 			'flexbox'
 		);
 
-		const wrapSelector = await accordionPanel.$(
-			'.maxi-flex-wrap-control select'
+		await accordionPanel.$eval(
+			'.maxi-flex-wrap-control .maxi-tabs-control button[aria-label="wrap"]',
+			button => button.click()
 		);
-		await wrapSelector.select('wrap');
-
-		const directionSelector = await accordionPanel.$(
-			'.maxi-flex__direction select'
+		await accordionPanel.$eval(
+			'.maxi-flex__direction .maxi-tabs-control button[aria-label="row"]',
+			button => button.click()
 		);
-		await directionSelector.select('row');
 
 		// add box shadow (these attributes should not appear in the second group maxi)
 		const boxShadowAccordion = await openSidebarTab(
@@ -185,7 +181,7 @@ describe('CopyPaste from Toolbar', () => {
 		);
 
 		// new block
-		await insertBlock('Group Maxi');
+		await insertMaxiBlock(page, 'Group Maxi');
 		await page.waitForTimeout(500);
 
 		// open options
@@ -285,10 +281,11 @@ describe('CopyPaste from Toolbar', () => {
 
 	it('Should copy nested blocks', async () => {
 		await createNewPost();
-		await insertBlock('Container Maxi');
+		await insertMaxiBlock(page, 'Container Maxi');
 		await page.$$eval('.maxi-row-block__template button', button =>
 			button[0].click()
 		);
+		await page.waitForSelector('.maxi-column-block');
 
 		// Select column
 		await page.$eval('.maxi-column-block', column => column.focus());
@@ -331,7 +328,7 @@ describe('CopyPaste from Toolbar', () => {
 			button => button.click()
 		);
 
-		await insertBlock('Container Maxi');
+		await insertMaxiBlock(page, 'Container Maxi');
 
 		// open options
 		await page.$eval(

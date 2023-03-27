@@ -3,7 +3,7 @@
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
 import { transitionAttributesCreator } from '../../extensions/styles';
-import { transition } from './data';
+import { customCss, transition } from './data';
 
 /**
  * Attributes
@@ -18,7 +18,7 @@ const attributes = {
 	...attributesData.accordionIcon,
 	...attributesData.accordionTitle,
 	...attributesData.accordionLine,
-
+	...attributesData.blockBackground,
 	...attributesData.border,
 	...attributesData.borderHover,
 	...attributesData.borderRadius,
@@ -36,9 +36,14 @@ const attributes = {
 	...attributesData.transform,
 	...{
 		...attributesData.transition,
-		...transitionAttributesCreator(transition),
+		...transitionAttributesCreator({
+			transition,
+			selectors: customCss.selectors,
+		}),
 	},
 	...attributesData.display,
+	...attributesData.opacity,
+	...attributesData.opacityHover,
 	...attributesData.position,
 	...attributesData.overflow,
 	...attributesData.zIndex,

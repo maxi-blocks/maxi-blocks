@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import { createSelectors } from '../../extensions/styles/custom-css';
-import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
+import { getCanvasSettings } from '../../extensions/relations';
 
 /**
  * Classnames
@@ -18,6 +18,7 @@ const popupDescriptionClass = `${popupContentClass}__description`;
  */
 const name = 'map-maxi';
 const copyPasteMapping = {
+	_exclude: ['map-markers'],
 	settings: {
 		'Configure map': {
 			group: {

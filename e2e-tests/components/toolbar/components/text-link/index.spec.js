@@ -1,17 +1,17 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
-import { getAttributes } from '../../../../utils';
+import { getAttributes, insertMaxiBlock } from '../../../../utils';
 
 describe('Text link', () => {
 	it('Check text link', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
 
 		// open editor
@@ -51,8 +51,6 @@ describe('Text link', () => {
 		await page.keyboard.type('test.com', { delay: 100 });
 		await page.keyboard.press('Enter');
 
-		expect(await getAttributes('content')).toStrictEqual(
-			'<a href="test.com" rel="noreferrer noopener nofollow sponsored ugc" target="_blank" title="" class="maxi-text-block--link">Testing Text Maxi</a>'
-		);
+		expect(await getAttributes('content')).toMatchSnapshot();
 	});
 });

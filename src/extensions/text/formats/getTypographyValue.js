@@ -15,9 +15,9 @@ const getTypographyValue = ({
 	breakpoint,
 	typography,
 	isHover,
-	avoidXXL,
 	formatValue,
 	textLevel,
+	blockStyle,
 	styleCard,
 	styleCardPrefix,
 	avoidSC = false,
@@ -29,7 +29,6 @@ const getTypographyValue = ({
 			breakpoint,
 			attributes: typography,
 			isHover,
-			avoidXXL,
 		});
 
 	const nonHoverValue =
@@ -39,9 +38,10 @@ const getTypographyValue = ({
 			prop,
 			breakpoint,
 			textLevel,
+			blockStyle,
 			styleCard,
 			styleCardPrefix,
-			avoidXXL,
+			avoidXXL: true,
 			avoidSC,
 		}) ??
 		// In cases like HoverEffectControl, where we want the SC 'p' value
@@ -52,9 +52,10 @@ const getTypographyValue = ({
 			prop: prop.replace(prefix, ''),
 			breakpoint,
 			textLevel,
+			blockStyle,
 			styleCard,
 			styleCardPrefix,
-			avoidXXL,
+			avoidXXL: true,
 			avoidSC,
 		});
 
@@ -67,8 +68,11 @@ const getTypographyValue = ({
 		breakpoint,
 		isHover,
 		textLevel,
+		blockStyle,
 		styleCard,
 		styleCardPrefix,
+		avoidXXL: true,
+		avoidSC,
 	});
 
 	if (hoverValue || isBoolean(hoverValue) || isNumber(hoverValue))

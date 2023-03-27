@@ -2,11 +2,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyWithModifier,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
@@ -19,12 +15,13 @@ import {
 	editAxisControl,
 	addResponsiveTest,
 	changeResponsive,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('BorderControl', () => {
 	it('Checking the border control', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 		const borderAccordion = await openSidebarTab(page, 'style', 'border');
 
 		const axisControlInstance = await borderAccordion.$(
@@ -53,11 +50,9 @@ describe('BorderControl', () => {
 		]);
 
 		expect(marginResult).toStrictEqual(expectMargin);
-		await borderAccordion.$$(
-			'.maxi-tabs-content .maxi-default-styles-control button'
-		);
+		await borderAccordion.$$('.maxi-default-styles-control button');
 
-		const expectAttributes = [undefined, 'solid', 'dashed', 'dotted'];
+		const expectAttributes = ['none', 'solid', 'dashed', 'dotted'];
 
 		for (let i = 0; i < expectAttributes.length; i += 1) {
 			await page.$$eval(
@@ -73,7 +68,7 @@ describe('BorderControl', () => {
 		}
 
 		const borderType = await borderAccordion.$(
-			'.maxi-tabs-content .maxi-border-control__type .maxi-base-control__field select'
+			'.maxi-border-control__type .maxi-base-control__field select'
 		);
 
 		await borderType.select('groove');
@@ -95,7 +90,7 @@ describe('BorderControl', () => {
 		).toStrictEqual(4);
 
 		const selector = await borderAccordion.$(
-			'.maxi-tabs-content .maxi-border-control .maxi-base-control__field select'
+			'.maxi-border-control .maxi-base-control__field select'
 		);
 		await selector.select('dotted');
 
@@ -106,10 +101,9 @@ describe('BorderControl', () => {
 		// check responsive border
 		const responsiveBorder = await addResponsiveTest({
 			page,
-			instance:
-				'.maxi-tabs-content .maxi-border-control .maxi-base-control__field select',
+			instance: '.maxi-border-control .maxi-base-control__field select',
 			selectInstance:
-				'.maxi-tabs-content .maxi-border-control .maxi-base-control__field select',
+				'.maxi-border-control .maxi-base-control__field select',
 			needSelectIndex: true,
 			baseExpect: 'dotted',
 			xsExpect: 'groove',
@@ -122,46 +116,43 @@ describe('BorderControl', () => {
 
 	it('Check hover values kept after setting normal border to none', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 		const borderAccordion = await openSidebarTab(page, 'style', 'border');
 		await borderAccordion.$$eval(
-			'.maxi-tabs-content .maxi-default-styles-control button',
+			'.maxi-default-styles-control button',
 			buttons => buttons[1].click()
 		);
 
 		await borderAccordion.$$eval(
-			'.maxi-accordion-control__item__panel .maxi-tabs-content .maxi-tabs-control button',
+			'.maxi-accordion-control__item__panel .maxi-tabs-control button',
 			buttons => buttons[1].click()
 		);
 
-		await page.$eval(
-			'.maxi-tabs-content .maxi-border-status-hover input',
-			use => use.click()
-		);
+		await page.$eval('.maxi-border-status-hover input', use => use.click());
 
 		await borderAccordion.$$eval(
-			'.maxi-accordion-control__item__panel .maxi-tabs-content .maxi-tabs-control button',
+			'.maxi-accordion-control__item__panel .maxi-tabs-control button',
 			buttons => buttons[0].click()
 		);
 
 		await borderAccordion.$$eval(
-			'.maxi-tabs-content .maxi-default-styles-control button',
+			'.maxi-default-styles-control button',
 			buttons => buttons[0].click()
 		);
 
 		const expectBorder = {
+			'border-bottom-width-general': 2,
+			'border-bottom-width-general-hover': undefined,
 			'border-color-general': undefined,
 			'border-color-general-hover': undefined,
-			'border-style-general': undefined,
-			'border-style-general-hover': 'solid',
-			'border-top-width-general': 2,
-			'border-top-width-general-hover': 2,
-			'border-right-width-general': 2,
-			'border-right-width-general-hover': 2,
-			'border-bottom-width-general': 2,
-			'border-bottom-width-general-hover': 2,
 			'border-left-width-general': 2,
-			'border-left-width-general-hover': 2,
+			'border-left-width-general-hover': undefined,
+			'border-right-width-general': 2,
+			'border-right-width-general-hover': undefined,
+			'border-style-general': 'none',
+			'border-style-general-hover': undefined,
+			'border-top-width-general': 2,
+			'border-top-width-general-hover': undefined,
 		};
 
 		const borderResult = await getAttributes([
@@ -260,7 +251,7 @@ describe('BorderControl', () => {
 
 		// base
 		await borderAccordion.$$eval(
-			'.maxi-tabs-content .maxi-default-styles-control button',
+			'.maxi-default-styles-control button',
 			buttons => buttons[1].click()
 		);
 
@@ -271,7 +262,7 @@ describe('BorderControl', () => {
 		// s
 		await changeResponsive(page, 's');
 		await borderAccordion.$$eval(
-			'.maxi-tabs-content .maxi-default-styles-control button',
+			'.maxi-default-styles-control button',
 			buttons => buttons[2].click()
 		);
 
@@ -300,12 +291,12 @@ describe('BorderControl', () => {
 
 	it('Checking the responsive delete border', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 		const borderAccordion = await openSidebarTab(page, 'style', 'border');
 
 		// base
 		await borderAccordion.$$eval(
-			'.maxi-tabs-content .maxi-default-styles-control button',
+			'.maxi-default-styles-control button',
 			buttons => buttons[1].click()
 		);
 
@@ -316,7 +307,7 @@ describe('BorderControl', () => {
 		// s
 		await changeResponsive(page, 's');
 		await borderAccordion.$$eval(
-			'.maxi-tabs-content .maxi-default-styles-control button',
+			'.maxi-default-styles-control button',
 			buttons => buttons[0].click()
 		);
 

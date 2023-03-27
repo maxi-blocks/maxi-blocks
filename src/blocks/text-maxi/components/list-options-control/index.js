@@ -46,10 +46,12 @@ const ListOptionsControl = props => {
 		listStyleCustom,
 	} = attributes;
 
-	const [listStyleSource, setListStyleSource] = useState(
+	const defaultListStyleSource =
 		(isURL(listStyleCustom) && 'url') ||
-			(listStyleCustom?.includes('<svg ') && 'icon') ||
-			'text'
+		(listStyleCustom?.includes('<svg ') && 'icon') ||
+		'text';
+	const [listStyleSource, setListStyleSource] = useState(
+		defaultListStyleSource
 	);
 	const [listStyleCustoms, setListStyleCustoms] = useState({
 		[listStyleSource]: listStyleCustom,
@@ -129,6 +131,19 @@ const ListOptionsControl = props => {
 		});
 	};
 
+	const getSVGElement = (size, unit) => {
+		let svgElement = null;
+
+		if (typeOfList === 'ul' && listStyleSource === 'icon') {
+			svgElement = setSVGSize({
+				svg: listStyleCustom,
+				size: size + unit,
+			});
+		}
+
+		return svgElement;
+	};
+
 	return (
 		<>
 			<SelectControl
@@ -139,6 +154,18 @@ const ListOptionsControl = props => {
 					breakpoint: deviceType,
 					attributes,
 				})}
+				defaultValue={getDefaultAttribute(
+					`list-style-position-${deviceType}`
+				)}
+				onReset={() =>
+					maxiSetAttributes({
+						[`list-style-position-${deviceType}`]:
+							getDefaultAttribute(
+								`list-style-position-${deviceType}`
+							),
+						isReset: true,
+					})
+				}
 				options={[
 					{
 						label: __('Inside', 'maxi-blocks'),
@@ -206,6 +233,7 @@ const ListOptionsControl = props => {
 						[`list-indent-unit-${deviceType}`]: getDefaultAttribute(
 							`list-indent-unit-${deviceType}`
 						),
+						isReset: true,
 					});
 				}}
 			/>
@@ -264,6 +292,7 @@ const ListOptionsControl = props => {
 						[`list-gap-unit-${deviceType}`]: getDefaultAttribute(
 							`list-gap-unit-${deviceType}`
 						),
+						isReset: true,
 					});
 				}}
 			/>
@@ -324,6 +353,7 @@ const ListOptionsControl = props => {
 							getDefaultAttribute(
 								`list-paragraph-spacing-unit-${deviceType}`
 							),
+						isReset: true,
 					});
 				}}
 			/>
@@ -336,20 +366,12 @@ const ListOptionsControl = props => {
 					attributes,
 				})}
 				onChangeValue={val => {
-					let svgElement = null;
-
-					if (typeOfList === 'ul' && listStyleSource === 'icon') {
-						const unit = getLastBreakpointAttribute({
-							target: 'list-marker-size-unit',
-							breakpoint: deviceType,
-							attributes,
-						});
-
-						svgElement = setSVGSize({
-							svg: listStyleCustom,
-							size: val + unit,
-						});
-					}
+					const unit = getLastBreakpointAttribute({
+						target: 'list-marker-size-unit',
+						breakpoint: deviceType,
+						attributes,
+					});
+					const svgElement = getSVGElement(val, unit);
 
 					maxiSetAttributes({
 						[`list-marker-size-${deviceType}`]:
@@ -366,20 +388,12 @@ const ListOptionsControl = props => {
 					attributes,
 				})}
 				onChangeUnit={val => {
-					let svgElement = null;
-
-					if (typeOfList === 'ul' && listStyleSource === 'icon') {
-						const size = getLastBreakpointAttribute({
-							target: 'list-marker-size',
-							breakpoint: deviceType,
-							attributes,
-						});
-
-						svgElement = setSVGSize({
-							svg: listStyleCustom,
-							size: size + val,
-						});
-					}
+					const size = getLastBreakpointAttribute({
+						target: 'list-marker-size',
+						breakpoint: deviceType,
+						attributes,
+					});
+					const svgElement = getSVGElement(size, val);
 
 					maxiSetAttributes({
 						[`list-marker-size-unit-${deviceType}`]: val,
@@ -407,7 +421,14 @@ const ListOptionsControl = props => {
 						max: 999,
 					},
 				}}
-				onReset={() =>
+				onReset={() => {
+					const defaultSize = getDefaultAttribute(
+						`list-marker-size-${deviceType}`
+					);
+					const defaultUnit = getDefaultAttribute(
+						`list-marker-size-unit-${deviceType}`
+					);
+					const svgElement = getSVGElement(defaultSize, defaultUnit);
 					maxiSetAttributes({
 						[`list-marker-size-${deviceType}`]: getDefaultAttribute(
 							`list-marker-size-${deviceType}`
@@ -416,8 +437,12 @@ const ListOptionsControl = props => {
 							getDefaultAttribute(
 								`list-marker-size-unit-${deviceType}`
 							),
-					})
-				}
+						...(svgElement && {
+							listStyleCustom: svgElement,
+						}),
+						isReset: true,
+					});
+				}}
 			/>
 			<AdvancedNumberControl
 				label={__('Marker line-height', 'maxi-blocks')}
@@ -454,6 +479,7 @@ const ListOptionsControl = props => {
 							getDefaultAttribute(
 								`list-marker-line-height-unit-${deviceType}`
 							),
+						isReset: true,
 					});
 				}}
 				allowedUnits={['px', 'em', 'vw', '%', '-']}
@@ -512,6 +538,7 @@ const ListOptionsControl = props => {
 							getDefaultAttribute(
 								`list-marker-indent-unit-${deviceType}`
 							),
+						isReset: true,
 					});
 				}}
 			/>
@@ -571,6 +598,18 @@ const ListOptionsControl = props => {
 					breakpoint: deviceType,
 					attributes,
 				})}
+				defaultValue={getDefaultAttribute(
+					`list-text-position-${deviceType}`
+				)}
+				onReset={() =>
+					maxiSetAttributes({
+						[`list-text-position-${deviceType}`]:
+							getDefaultAttribute(
+								`list-text-position-${deviceType}`
+							),
+						isReset: true,
+					})
+				}
 				options={[
 					{
 						label: __('Baseline', 'maxi-blocks'),
@@ -610,6 +649,16 @@ const ListOptionsControl = props => {
 					label={__('Type of list', 'maxi-blocks')}
 					className='maxi-text-inspector__list-type'
 					value={typeOfList}
+					defaultValue={getDefaultAttribute('typeOfList')}
+					onReset={() =>
+						maxiSetAttributes({
+							typeOfList: getDefaultAttribute('typeOfList'),
+							listStyle: getListStyleOptions(
+								getDefaultAttribute('typeOfList')
+							)[0].value,
+							isReset: true,
+						})
+					}
 					options={[
 						{
 							label: __('Unordered', 'maxi-blocks'),
@@ -634,6 +683,13 @@ const ListOptionsControl = props => {
 						label={__('Style', 'maxi-blocks')}
 						className='maxi-text-inspector__list-style'
 						value={listStyle || 'disc'}
+						defaultValue={getDefaultAttribute('listStyle')}
+						onReset={() =>
+							maxiSetAttributes({
+								listStyle: getDefaultAttribute('listStyle'),
+								isReset: true,
+							})
+						}
 						options={getListStyleOptions(typeOfList)}
 						onChange={listStyle => {
 							maxiSetAttributes({
@@ -676,6 +732,7 @@ const ListOptionsControl = props => {
 								onReset={() =>
 									maxiSetAttributes({
 										listStart: '',
+										isReset: true,
 									})
 								}
 							/>
@@ -697,6 +754,7 @@ const ListOptionsControl = props => {
 								label={__('Source', 'maxi-blocks')}
 								className='maxi-text-inspector__list-source-selector'
 								value={listStyleSource}
+								defaultValue={defaultListStyleSource}
 								options={[
 									{
 										label: __('Text', 'maxi-blocks'),

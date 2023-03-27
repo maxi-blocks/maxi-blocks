@@ -1,3 +1,9 @@
+/**
+ * WordPress dependencies
+ */
+import { dispatch } from '@wordpress/data';
+import { __ } from '@wordpress/i18n';
+
 /* eslint-disable react/jsx-no-constructed-context-values */
 /**
  * Internal dependencies
@@ -58,6 +64,13 @@ class edit extends MaxiBlockComponent {
 		});
 	}
 
+	maxiBlockDidUpdate() {
+		if (!this.props.hasInnerBlocks) {
+			const { removeBlock } = dispatch('core/block-editor');
+			removeBlock(this.props.clientId);
+		}
+	}
+
 	render() {
 		const { attributes } = this.props;
 		const {
@@ -66,6 +79,7 @@ class edit extends MaxiBlockComponent {
 			titleLevel,
 			isCollapsible,
 			animationDuration,
+			preview,
 		} = attributes;
 
 		const inlineStylesTargets = {
@@ -76,6 +90,21 @@ class edit extends MaxiBlockComponent {
 		};
 
 		const ALLOWED_BLOCKS = ['maxi-blocks/pane-maxi'];
+
+		if (preview)
+			return (
+				<MaxiBlock
+					key={`maxi-accordion--${uniqueID}`}
+					ref={this.blockRef}
+					{...getMaxiBlockAttributes(this.props)}
+				>
+					<img
+						// eslint-disable-next-line no-undef
+						src={previews.accordion_preview}
+						alt={__('Accordion block preview', 'maxi-blocks')}
+					/>
+				</MaxiBlock>
+			);
 
 		return [
 			<Inspector

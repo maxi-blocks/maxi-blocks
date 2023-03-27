@@ -15,7 +15,10 @@ import {
 	getColumnSizeStyles,
 	getFlexStyles,
 } from '../../extensions/styles/helpers';
-import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
+import {
+	getCanvasSettings,
+	getAdvancedSettings,
+} from '../../extensions/relations';
 
 /**
  * External dependencies
@@ -71,6 +74,7 @@ const customCss = {
 const interactionBuilderSettings = {
 	block: [
 		{
+			sid: 'cs',
 			label: __('Column settings', 'maxi-blocks'),
 			attrGroupName: ['columnSize', 'flex'],
 			component: props => {
@@ -125,7 +129,8 @@ const interactionBuilderSettings = {
 			},
 		},
 	],
-	canvas: getCanvasSettings({ name, customCss }),
+	canvas: getCanvasSettings({ name }),
+	advanced: getAdvancedSettings({ customCss }),
 };
 
 const data = {

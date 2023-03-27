@@ -12,7 +12,10 @@ import {
 	getBoxShadowStyles,
 	getDividerStyles,
 } from '../../extensions/styles/helpers';
-import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
+import {
+	getCanvasSettings,
+	getAdvancedSettings,
+} from '../../extensions/relations';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
 /**
@@ -115,6 +118,7 @@ const transition = {
 const interactionBuilderSettings = {
 	block: [
 		{
+			sid: 'dbs',
 			label: __('Divider box shadow', 'maxi-blocks'),
 			transitionTarget: transition.block['box shadow'].target,
 			hoverProp: 'divider-box-shadow-status-hover',
@@ -125,6 +129,7 @@ const interactionBuilderSettings = {
 			target: dividerClass,
 		},
 		{
+			sid: 'dls',
 			label: __('Line settings', 'maxi-blocks'),
 			attrGroupName: ['divider', 'size'],
 			component: props => <DividerControl {...props} />,
@@ -133,7 +138,8 @@ const interactionBuilderSettings = {
 			target: dividerClass,
 		},
 	],
-	canvas: getCanvasSettings({ name, customCss }),
+	canvas: getCanvasSettings({ name }),
+	advanced: getAdvancedSettings({ customCss }),
 };
 
 const data = {

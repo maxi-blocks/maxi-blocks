@@ -12,8 +12,18 @@ import positionToNumberMigrator from './positionToNumberMigrator';
 import positionUnitsToAxisMigrator from './positionUnitsToAxisMigrator';
 import transformIBMigrator from './transformIBMigrator';
 import SVGIBTargetsMigrator from './SVGIBTargetsMigrator';
-import transitionTargetIBmigrator from './transitionTargetIBmigrator';
+import IBEffectsMigrator from './IBEffectsMigrator';
 import hoverStatusMigrator from './hoverStatusMigrator';
+import backgroundSizeMigrator from './backgroundSizeMigrator';
+import opacityTransitionMigrator from './opacityTransitionMigrator';
+import maxiAttributesMigrator from './maxiAttributesMigrator';
+import transformIBTargetMigrator from './transformIBTargetMigrator';
+import backgroundPositionMigrator from './backgroundPositionMigrator';
+import disableTransitionIBMigrator from './disableTransitionIBMigrator';
+import corruptedHoverAttributesMigrator from './corruptedHoverAttributesMigrator';
+import bottomGapMigrator from './bottomGapMigrator';
+import transitionMigrator from './transitionMigrator';
+import IBLabelToIDMigrator from './IBLabelToIDMigrator';
 
 /**
  * External dependencies
@@ -83,8 +93,18 @@ const blockMigrator = blockMigratorProps => {
 		transformMigrator,
 		transformIBMigrator,
 		SVGIBTargetsMigrator,
-		transitionTargetIBmigrator,
+		IBEffectsMigrator,
 		hoverStatusMigrator,
+		backgroundSizeMigrator,
+		opacityTransitionMigrator,
+		maxiAttributesMigrator,
+		transformIBTargetMigrator,
+		backgroundPositionMigrator,
+		disableTransitionIBMigrator,
+		corruptedHoverAttributesMigrator,
+		bottomGapMigrator,
+		transitionMigrator,
+		IBLabelToIDMigrator,
 		...(blockMigratorProps.migrators ?? []),
 	];
 

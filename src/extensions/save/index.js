@@ -7,6 +7,7 @@ import { addFilter } from '@wordpress/hooks';
  * Internal dependencies
  */
 import { WithLink } from './utils';
+import getGroupAttributes from '../styles/getGroupAttributes';
 
 /**
  * General
@@ -21,6 +22,8 @@ const allowedBlocks = [
 	'maxi-blocks/group-maxi',
 	'maxi-blocks/number-counter-maxi',
 	'maxi-blocks/svg-icon-maxi',
+	'maxi-blocks/slider-maxi',
+	'maxi-blocks/slide-maxi',
 	'maxi-blocks/video-maxi',
 	'maxi-blocks/accordion-maxi',
 	'maxi-blocks/search-maxi',
@@ -35,9 +38,21 @@ const allowedBlocks = [
 
 const withSave = (element, blockType, attributes) => {
 	const linkSettings = { ...attributes.linkSettings };
+	const dynamicContent = getGroupAttributes(attributes, 'dynamicContent');
 
-	if (allowedBlocks.includes(blockType.name)) {
-		return <WithLink linkSettings={linkSettings}>{element}</WithLink>;
+	if (
+		allowedBlocks.includes(blockType.name) ||
+		(dynamicContent['dc-status'] &&
+			blockType.name === 'maxi-blocks/text-maxi')
+	) {
+		return (
+			<WithLink
+				linkSettings={linkSettings}
+				dynamicContent={dynamicContent}
+			>
+				{element}
+			</WithLink>
+		);
 	}
 
 	return element;

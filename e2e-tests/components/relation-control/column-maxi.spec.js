@@ -3,19 +3,23 @@
  */
 import {
 	createNewPost,
-	insertBlock,
 	pressKeyWithModifier,
 	selectBlockByClientId,
 } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openSidebarTab, openPreviewPage, getAttributes } from '../../utils';
+import {
+	openSidebarTab,
+	openPreviewPage,
+	getAttributes,
+	insertMaxiBlock,
+} from '../../utils';
 
 describe('Column Maxi hover simple actions', () => {
 	beforeEach(async () => {
 		await createNewPost();
-		await insertBlock('Container Maxi');
+		await insertMaxiBlock(page, 'Container Maxi');
 
 		// Select one column
 		await page.$$eval(
@@ -31,7 +35,7 @@ describe('Column Maxi hover simple actions', () => {
 		);
 		await page.keyboard.press('Enter');
 
-		await insertBlock('Button Maxi');
+		await insertMaxiBlock(page, 'Button Maxi');
 		await openSidebarTab(page, 'advanced', 'interaction builder');
 
 		// Add interaction
@@ -71,19 +75,30 @@ describe('Column Maxi hover simple actions', () => {
 		expect(stylesCSS).toMatchSnapshot();
 
 		await previewPage.waitForSelector(
-			'#relations--column-maxi-1-transitions'
+			'#relations--column-maxi-1-in-transitions'
 		);
-		const transitionsCSS = await previewPage.$eval(
-			'#relations--column-maxi-1-transitions',
+		const inTransitionsCSS = await previewPage.$eval(
+			'#relations--column-maxi-1-in-transitions',
 			el => el.textContent
 		);
-		expect(transitionsCSS).toMatchSnapshot();
+		expect(inTransitionsCSS).toMatchSnapshot();
+
+		await previewPage.mouse.move(0, 0);
+
+		await previewPage.waitForSelector(
+			'#relations--column-maxi-1-out-transitions'
+		);
+		const outTransitionsCSS = await previewPage.$eval(
+			'#relations--column-maxi-1-out-transitions',
+			el => el.textContent
+		);
+		expect(outTransitionsCSS).toMatchSnapshot();
 	};
 
 	it('Column size', async () => {
 		// Select setting
 		let selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[3].select('Column settings');
+		await selectControls[3].select('cs');
 
 		// Column size
 		await page.waitForSelector(

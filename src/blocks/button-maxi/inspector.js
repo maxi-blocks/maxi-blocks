@@ -13,15 +13,9 @@ import {
 	DefaultStylesControl,
 	Icon,
 	SettingTabsControl,
-	ResponsiveTabsControl,
-	AlignmentControl,
 } from '../../components';
 import * as defaultPresets from './defaults';
-import {
-	getGroupAttributes,
-	setHoverAttributes,
-	getIconWithColor,
-} from '../../extensions/styles';
+import { getGroupAttributes, getIconWithColor } from '../../extensions/styles';
 import { customCss } from './data';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { withMaxiInspector } from '../../extensions/inspector';
@@ -87,7 +81,6 @@ const Inspector = props => {
 			Object.keys(nonHoverAttr).forEach(h => {
 				if (h.includes('hover')) delete nonHoverAttr[h];
 			});
-			setHoverAttributes(nonHoverAttr, hoverAttr);
 
 			newDefaultPresets[`preset${number}`] = {
 				...newDefaultPresets[`preset${number}`],
@@ -186,9 +179,7 @@ const Inspector = props => {
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}
 			{inspectorTabs.blockSettings({
-				props: {
-					...props,
-				},
+				props,
 			})}
 			<SettingTabsControl
 				target='sidebar-settings-tabs'
@@ -217,66 +208,16 @@ const Inspector = props => {
 									...inspectorTabs.icon({
 										props,
 									}),
-									{
-										label: __('Alignment', 'maxi-blocks'),
-										content: (
-											<ResponsiveTabsControl
-												breakpoint={deviceType}
-											>
-												<>
-													<label
-														className='maxi-base-control__label'
-														htmlFor={`${alignmentLabel}-alignment`}
-													>
-														{`${alignmentLabel} alignment`}
-													</label>
-													<AlignmentControl
-														id={`${alignmentLabel}-alignment`}
-														label={alignmentLabel}
-														{...getGroupAttributes(
-															attributes,
-															'alignment'
-														)}
-														onChange={obj =>
-															maxiSetAttributes(
-																obj
-															)
-														}
-														breakpoint={deviceType}
-														disableJustify
-													/>
-													<label
-														className='maxi-base-control__label'
-														htmlFor={`${textAlignmentLabel}-alignment`}
-													>
-														{`${textAlignmentLabel} alignment`}
-													</label>
-													<AlignmentControl
-														id={`${textAlignmentLabel}-alignment`}
-														label={
-															textAlignmentLabel
-														}
-														{...getGroupAttributes(
-															attributes,
-															'textAlignment'
-														)}
-														onChange={obj =>
-															maxiSetAttributes(
-																obj
-															)
-														}
-														breakpoint={deviceType}
-														type='text'
-													/>
-												</>
-											</ResponsiveTabsControl>
-										),
-									},
+									...inspectorTabs.alignment({
+										props,
+										isAlignment: true,
+										isTextAlignment: true,
+										alignmentLabel,
+										textAlignmentLabel,
+									}),
 									...(!iconOnly && {
 										...inspectorTabs.typography({
-											props: {
-												...props,
-											},
+											props,
 											styleCardPrefix: 'button',
 											hideAlignment: true,
 											disableCustomFormats: true,
@@ -292,9 +233,7 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.background({
 										label: 'Button',
-										props: {
-											...props,
-										},
+										props,
 										disableImage: true,
 										disableVideo: true,
 										disableClipPath: true,
@@ -312,9 +251,7 @@ const Inspector = props => {
 											inlineStylesTargets.background,
 									}),
 									...inspectorTabs.border({
-										props: {
-											...props,
-										},
+										props,
 										prefix: 'button-',
 										globalProps: {
 											target: 'border',
@@ -326,21 +263,15 @@ const Inspector = props => {
 										},
 									}),
 									...inspectorTabs.boxShadow({
-										props: {
-											...props,
-										},
+										props,
 										prefix: 'button-',
 									}),
 									...inspectorTabs.size({
-										props: {
-											...props,
-										},
+										props,
 										prefix: 'button-',
 									}),
 									...inspectorTabs.marginPadding({
-										props: {
-											...props,
-										},
+										props,
 										prefix: 'button-',
 									}),
 								]}
@@ -354,35 +285,20 @@ const Inspector = props => {
 								isPrimary
 								items={[
 									...inspectorTabs.blockBackground({
-										props: {
-											...props,
-										},
+										props,
 									}),
 									...inspectorTabs.border({
-										props: {
-											...props,
-										},
+										props,
 									}),
 									...inspectorTabs.boxShadow({
-										props: {
-											...props,
-										},
-									}),
-									...inspectorTabs.opacity({
-										props: {
-											...props,
-										},
+										props,
 									}),
 									...inspectorTabs.size({
-										props: {
-											...props,
-										},
+										props,
 										block: true,
 									}),
 									...inspectorTabs.marginPadding({
-										props: {
-											...props,
-										},
+										props,
 									}),
 								]}
 							/>
@@ -396,74 +312,58 @@ const Inspector = props => {
 								items={[
 									deviceType === 'general' && {
 										...inspectorTabs.customClasses({
-											props: {
-												...props,
-											},
+											props,
 										}),
 									},
 									deviceType === 'general' && {
 										...inspectorTabs.anchor({
-											props: {
-												...props,
-											},
+											props,
 										}),
 									},
 									...inspectorTabs.customCss({
-										props: {
-											...props,
-										},
+										props,
 										breakpoint: deviceType,
 										selectors,
 										categories: getCategoriesCss(),
 									}),
+									...inspectorTabs.dc({
+										props,
+										contentType: 'button',
+									}),
 									...inspectorTabs.scrollEffects({
-										props: {
-											...props,
-										},
+										props,
 									}),
 									...inspectorTabs.transform({
-										props: {
-											...props,
-										},
+										props,
 										categories: getCategoriesCss(),
 										selectors,
 									}),
 									...inspectorTabs.transition({
-										props: {
-											...props,
-										},
+										props,
+										selectors,
 									}),
 									...inspectorTabs.display({
-										props: {
-											...props,
-										},
+										props,
+									}),
+									...inspectorTabs.opacity({
+										props,
 									}),
 									...inspectorTabs.position({
-										props: {
-											...props,
-										},
+										props,
 									}),
 									deviceType !== 'general' && {
 										...inspectorTabs.responsive({
-											props: {
-												...props,
-											},
+											props,
 										}),
 									},
 									...inspectorTabs.overflow({
-										props: {
-											...props,
-										},
+										props,
 									}),
 									...inspectorTabs.flex({
-										props: {
-											...props,
-										},
+										props,
 									}),
 									...inspectorTabs.zindex({
-										props: {
-											...props,
-										},
+										props,
 									}),
 									...inspectorTabs.relation({
 										props,

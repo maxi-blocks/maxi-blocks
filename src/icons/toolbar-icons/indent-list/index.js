@@ -5,6 +5,8 @@ import { SVG, Path } from '@wordpress/primitives';
 
 const toolbarIndentList = (
 	<SVG
+		width={15.784}
+		height={15.461}
 		xmlns='http://www.w3.org/2000/svg'
 		data-name='Layer 1'
 		viewBox='0 0 19.38 20.7'

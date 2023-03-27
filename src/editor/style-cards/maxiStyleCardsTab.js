@@ -48,6 +48,8 @@ const GlobalColor = props => {
 		SC,
 		onChangeValue,
 		SCStyle,
+		disableOpacity = false,
+		isHover = false,
 	} = props;
 
 	return (
@@ -132,6 +134,8 @@ const GlobalColor = props => {
 							);
 						}}
 						blockStyle={SCStyle}
+						disableOpacity={disableOpacity}
+						isHover={isHover}
 						disableGradient
 					/>
 				</>
@@ -149,7 +153,12 @@ const SCAccordion = props => {
 		SCStyle,
 		onChangeValue,
 		disableTypography = false,
+		disableOpacity = false,
 	} = props;
+
+	const ifParagraphOrHeading = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'].some(
+		tag => groupAttr === tag
+	);
 
 	return (
 		<>
@@ -164,6 +173,7 @@ const SCAccordion = props => {
 						onChangeValue({ typography: obj }, groupAttr);
 					}}
 					hideTextShadow
+					showBottomGap={ifParagraphOrHeading}
 					hideAlignment
 					blockStyle={SCStyle}
 					disablePalette
@@ -196,6 +206,8 @@ const SCAccordion = props => {
 							SC={SC}
 							onChangeValue={onChangeValue}
 							SCStyle={SCStyle}
+							disableOpacity={disableOpacity}
+							isHover={label.includes('hover')}
 						/>
 					)
 				)}
@@ -247,6 +259,15 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				color: 'color',
 			},
 			{
+				label: __('Text hover', 'maxi-blocks'),
+				globalAttr: 'hover-color-global',
+				globalAllAttr: 'hover-color-all',
+				paletteStatus: 'hover-palette-status',
+				paletteColor: 'hover-palette-color',
+				paletteOpacity: 'hover-palette-opacity',
+				color: 'hover-color',
+			},
+			{
 				label: __('Background', 'maxi-blocks'),
 				globalAttr: 'background-color-global',
 				paletteStatus: 'background-palette-status',
@@ -262,15 +283,6 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				paletteColor: 'hover-background-palette-color',
 				paletteOpacity: 'hover-background-palette-opacity',
 				color: 'hover-background-color',
-			},
-			{
-				label: __('Text hover', 'maxi-blocks'),
-				globalAttr: 'hover-color-global',
-				globalAllAttr: 'hover-color-all',
-				paletteStatus: 'hover-palette-status',
-				paletteColor: 'hover-palette-color',
-				paletteOpacity: 'hover-palette-opacity',
-				color: 'hover-color',
 			},
 			{
 				label: __('Border', 'maxi-blocks'),
@@ -350,37 +362,37 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 		colorContent: [
 			{
 				label: __('Line', 'maxi-blocks'),
-				globalAttr: 'line-global',
+				globalAttr: 'line-color-global',
 				paletteStatus: 'line-palette-status',
 				paletteColor: 'line-palette-color',
 				paletteOpacity: 'line-palette-opacity',
-				color: 'line',
+				color: 'line-color',
 			},
 			{
 				label: __('Line hover', 'maxi-blocks'),
-				globalAttr: 'hover-line-global',
-				globalAllAttr: 'hover-line-all',
+				globalAttr: 'hover-line-color-global',
+				globalAllAttr: 'hover-line-color-all',
 				paletteStatus: 'hover-line-palette-status',
 				paletteColor: 'hover-line-palette-color',
 				paletteOpacity: 'hover-line-palette-opacity',
-				color: 'hover-line',
+				color: 'hover-line-color',
 			},
 			{
 				label: __('Fill', 'maxi-blocks'),
-				globalAttr: 'fill-global',
+				globalAttr: 'fill-color-global',
 				paletteStatus: 'fill-palette-status',
 				paletteColor: 'fill-palette-color',
 				paletteOpacity: 'fill-palette-opacity',
-				color: 'fill',
+				color: 'fill-color',
 			},
 			{
 				label: __('Fill hover', 'maxi-blocks'),
-				globalAttr: 'hover-fill-global',
-				globalAllAttr: 'hover-fill-all',
+				globalAttr: 'hover-fill-color-global',
+				globalAllAttr: 'hover-fill-color-all',
 				paletteStatus: 'hover-fill-palette-status',
 				paletteColor: 'hover-fill-palette-color',
 				paletteOpacity: 'hover-fill-palette-opacity',
-				color: 'hover-fill',
+				color: 'hover-fill-color',
 			},
 		],
 	};
@@ -476,30 +488,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 									disableGradient
 									disablePalette
 								/>
-								<Button
-									disabled={
-										processSCAttribute(
-											SC,
-											quickColorPreset,
-											'color'
-										) ===
-										SC.defaultStyleCard.color[
-											quickColorPreset
-										]
-									}
-									className='maxi-style-cards__quick-color-presets__reset-button'
-									onClick={() =>
-										onChangeValue(
-											{
-												[`${quickColorPreset}`]:
-													SC.defaultStyleCard.color[
-														quickColorPreset
-													],
-											},
-											'color'
-										)
-									}
-								>
+								<div className='maxi-style-cards__quick-color-presets__reset'>
 									<span
 										className='maxi-style-cards__quick-color-presets__reset-button__preview'
 										style={{
@@ -510,9 +499,34 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 											)}, 1)`,
 										}}
 									/>
-									<Icon icon={reset} />
-									{__('Reset Preset', 'maxi-blocks')}
-								</Button>
+									<Button
+										disabled={
+											processSCAttribute(
+												SC,
+												quickColorPreset,
+												'color'
+											) ===
+											SC.defaultStyleCard.color[
+												quickColorPreset
+											]
+										}
+										className='maxi-style-cards__quick-color-presets__reset-button'
+										onClick={() =>
+											onChangeValue(
+												{
+													[`${quickColorPreset}`]:
+														SC.defaultStyleCard
+															.color[
+															quickColorPreset
+														],
+												},
+												'color'
+											)
+										}
+									>
+										<Icon icon={reset} />
+									</Button>
+								</div>
 							</>
 						),
 					},
@@ -581,6 +595,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 								SCStyle={SCStyle}
 								onChangeValue={onChangeValue}
 								disableTypography
+								disableOpacity
 							/>
 						),
 					},

@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -11,12 +11,13 @@ import {
 	getBlockStyle,
 	editAxisControl,
 	changeResponsive,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('Indicators', () => {
 	it('Checking the indicators', async () => {
 		await createNewPost();
-		await insertBlock('Container Maxi');
+		await insertMaxiBlock(page, 'Container Maxi');
 
 		const accordionPanel = await openSidebarTab(
 			page,
@@ -47,22 +48,22 @@ describe('Indicators', () => {
 		});
 
 		const paddingTop = await page.$eval(
-			'.maxi-indicators__padding.maxi-indicators__padding--top',
+			'.maxi-block-indicators__padding.maxi-block-indicator--top',
 			div => div.outerHTML
 		);
 
 		const paddingRight = await page.$eval(
-			'.maxi-indicators__padding.maxi-indicators__padding--right',
+			'.maxi-block-indicators__padding.maxi-block-indicator--right',
 			div => div.outerHTML
 		);
 
 		const paddingBottom = await page.$eval(
-			'.maxi-indicators__padding.maxi-indicators__padding--bottom',
+			'.maxi-block-indicators__padding.maxi-block-indicator--bottom',
 			div => div.outerHTML
 		);
 
 		const paddingLeft = await page.$eval(
-			'.maxi-indicators__padding.maxi-indicators__padding--left',
+			'.maxi-block-indicators__padding.maxi-block-indicator--left',
 			div => div.outerHTML
 		);
 
@@ -72,28 +73,17 @@ describe('Indicators', () => {
 		expect(paddingLeft).toMatchSnapshot();
 
 		const marginTop = await page.$eval(
-			'.maxi-indicators__margin.maxi-indicators__margin--top',
-			div => div.outerHTML
-		);
-
-		const marginRight = await page.$eval(
-			'.maxi-indicators__margin.maxi-indicators__margin--right',
+			'.maxi-block-indicators__margin.maxi-block-indicator--top',
 			div => div.outerHTML
 		);
 
 		const marginBottom = await page.$eval(
-			'.maxi-indicators__margin.maxi-indicators__margin--bottom',
+			'.maxi-block-indicators__margin.maxi-block-indicator--bottom',
 			div => div.outerHTML
 		);
 
-		const marginLeft = await page.$eval(
-			'.maxi-indicators__margin.maxi-indicators__margin--left',
-			div => div.outerHTML
-		);
 		expect(marginTop).toMatchSnapshot();
-		expect(marginRight).toMatchSnapshot();
 		expect(marginBottom).toMatchSnapshot();
-		expect(marginLeft).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 	it('Checking the indicators responsive', async () => {
@@ -125,22 +115,22 @@ describe('Indicators', () => {
 		await changeResponsive(page, 'xs');
 
 		const paddingTopXs = await page.$eval(
-			'.maxi-indicators__padding.maxi-indicators__padding--top',
+			'.maxi-block-indicators__padding.maxi-block-indicator--top',
 			div => div.outerHTML
 		);
 
 		const paddingRightXs = await page.$eval(
-			'.maxi-indicators__padding.maxi-indicators__padding--right',
+			'.maxi-block-indicators__padding.maxi-block-indicator--right',
 			div => div.outerHTML
 		);
 
 		const paddingBottomXs = await page.$eval(
-			'.maxi-indicators__padding.maxi-indicators__padding--bottom',
+			'.maxi-block-indicators__padding.maxi-block-indicator--bottom',
 			div => div.outerHTML
 		);
 
 		const paddingLeftXs = await page.$eval(
-			'.maxi-indicators__padding.maxi-indicators__padding--left',
+			'.maxi-block-indicators__padding.maxi-block-indicator--left',
 			div => div.outerHTML
 		);
 
@@ -150,48 +140,38 @@ describe('Indicators', () => {
 		expect(paddingLeftXs).toMatchSnapshot();
 
 		const marginTopXs = await page.$eval(
-			'.maxi-indicators__margin.maxi-indicators__margin--top',
-			div => div.outerHTML
-		);
-
-		const marginRightXs = await page.$eval(
-			'.maxi-indicators__margin.maxi-indicators__margin--right',
+			'.maxi-block-indicators__margin.maxi-block-indicator--top',
 			div => div.outerHTML
 		);
 
 		const marginBottomXs = await page.$eval(
-			'.maxi-indicators__margin.maxi-indicators__margin--bottom',
+			'.maxi-block-indicators__margin.maxi-block-indicator--bottom',
 			div => div.outerHTML
 		);
 
-		const marginLeftXs = await page.$eval(
-			'.maxi-indicators__margin.maxi-indicators__margin--left',
-			div => div.outerHTML
-		);
 		expect(marginTopXs).toMatchSnapshot();
-		expect(marginRightXs).toMatchSnapshot();
 		expect(marginBottomXs).toMatchSnapshot();
-		expect(marginLeftXs).toMatchSnapshot();
+
 		// m responsive
 		await changeResponsive(page, 'm');
 
 		const paddingTopM = await page.$eval(
-			'.maxi-indicators__padding.maxi-indicators__padding--top',
+			'.maxi-block-indicators__padding.maxi-block-indicator--top',
 			div => div.outerHTML
 		);
 
 		const paddingRightM = await page.$eval(
-			'.maxi-indicators__padding.maxi-indicators__padding--right',
+			'.maxi-block-indicators__padding.maxi-block-indicator--right',
 			div => div.outerHTML
 		);
 
 		const paddingBottomM = await page.$eval(
-			'.maxi-indicators__padding.maxi-indicators__padding--bottom',
+			'.maxi-block-indicators__padding.maxi-block-indicator--bottom',
 			div => div.outerHTML
 		);
 
 		const paddingLeftM = await page.$eval(
-			'.maxi-indicators__padding.maxi-indicators__padding--left',
+			'.maxi-block-indicators__padding.maxi-block-indicator--left',
 			div => div.outerHTML
 		);
 
@@ -201,28 +181,17 @@ describe('Indicators', () => {
 		expect(paddingLeftM).toMatchSnapshot();
 
 		const marginTopM = await page.$eval(
-			'.maxi-indicators__margin.maxi-indicators__margin--top',
-			div => div.outerHTML
-		);
-
-		const marginRightM = await page.$eval(
-			'.maxi-indicators__margin.maxi-indicators__margin--right',
+			'.maxi-block-indicators__margin.maxi-block-indicator--top',
 			div => div.outerHTML
 		);
 
 		const marginBottomM = await page.$eval(
-			'.maxi-indicators__margin.maxi-indicators__margin--bottom',
+			'.maxi-block-indicators__margin.maxi-block-indicator--bottom',
 			div => div.outerHTML
 		);
 
-		const marginLeftM = await page.$eval(
-			'.maxi-indicators__margin.maxi-indicators__margin--left',
-			div => div.outerHTML
-		);
 		expect(marginTopM).toMatchSnapshot();
-		expect(marginRightM).toMatchSnapshot();
 		expect(marginBottomM).toMatchSnapshot();
-		expect(marginLeftM).toMatchSnapshot();
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

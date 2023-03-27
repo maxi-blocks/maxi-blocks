@@ -116,6 +116,7 @@ const Divider = props => {
 												getDefaultAttribute(
 													`divider-border-top-unit-${breakpoint}`
 												),
+											isReset: true,
 										})
 									}
 									minMaxSettings={minMaxSettings}
@@ -148,6 +149,7 @@ const Divider = props => {
 										getDefaultAttribute(
 											`divider-width-unit-${breakpoint}`
 										),
+									isReset: true,
 								})
 							}
 							minMaxSettings={minMaxSettings}
@@ -186,6 +188,7 @@ const Divider = props => {
 												getDefaultAttribute(
 													`divider-border-right-width-${breakpoint}`
 												),
+											isReset: true,
 										})
 									}
 									initialPosition={getDefaultAttribute(
@@ -221,6 +224,7 @@ const Divider = props => {
 										getDefaultAttribute(
 											`divider-height-${breakpoint}`
 										),
+									isReset: true,
 								})
 							}
 							initialPosition={getDefaultAttribute(

@@ -4,20 +4,20 @@
 import { getGroupAttributes, styleProcessor } from '../../extensions/styles';
 import {
 	getAlignmentFlexStyles,
+	getBackgroundStyles,
 	getBlockBackgroundStyles,
 	getBorderStyles,
 	getBoxShadowStyles,
 	getDisplayStyles,
+	getFlexStyles,
 	getMarginPaddingStyles,
 	getOpacityStyles,
+	getOverflowStyles,
 	getPositionStyles,
 	getSizeStyles,
 	getSVGStyles,
-	getZIndexStyles,
-	getOverflowStyles,
 	getSVGWidthStyles,
-	getFlexStyles,
-	getBackgroundStyles,
+	getZIndexStyles,
 } from '../../extensions/styles/helpers';
 import data from './data';
 
@@ -102,12 +102,18 @@ const getWrapperObjectHover = props => {
 				isHover: true,
 				blockStyle: props.blockStyle,
 			}),
+		opacity:
+			props['opacity-status-hover'] &&
+			getOpacityStyles(
+				{ ...getGroupAttributes(props, 'opacity', true) },
+				true
+			),
 	};
 
 	return response;
 };
 
-const getNormalObject = props => {
+const getNormalObject = (props, iconWidthHeightRatio) => {
 	const response = {
 		boxShadow: getBoxShadowStyles({
 			obj: {
@@ -140,7 +146,11 @@ const getNormalObject = props => {
 			blockStyle: props.blockStyle,
 			prefix: 'svg-',
 		}),
-		...getSVGWidthStyles({ obj: getGroupAttributes(props, 'svg') }),
+		...getSVGWidthStyles({
+			obj: getGroupAttributes(props, 'svg'),
+			prefix: 'svg-',
+			iconWidthHeightRatio,
+		}),
 		...getBackgroundStyles({
 			...getGroupAttributes(
 				props,
@@ -199,7 +209,7 @@ const getHoverObject = props => {
 	return response;
 };
 
-const getStyles = props => {
+const getStyles = (props, iconWidthHeightRatio) => {
 	const { uniqueID, blockStyle } = props;
 
 	const response = {
@@ -207,7 +217,10 @@ const getStyles = props => {
 			{
 				'': getWrapperObject(props),
 				':hover': getWrapperObjectHover(props),
-				' .maxi-svg-icon-block__icon': getNormalObject(props),
+				' .maxi-svg-icon-block__icon': getNormalObject(
+					props,
+					iconWidthHeightRatio
+				),
 				' .maxi-svg-icon-block__icon:hover': getHoverObject(props),
 				...getSVGStyles({
 					obj: {
@@ -220,7 +233,7 @@ const getStyles = props => {
 				...(props['svg-status-hover'] && {
 					...getSVGStyles({
 						obj: {
-							...getGroupAttributes(props, 'svgHover', true),
+							...getGroupAttributes(props, 'svg', true),
 						},
 						target: '.maxi-svg-icon-block__icon:hover',
 						blockStyle,

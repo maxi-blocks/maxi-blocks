@@ -31,6 +31,7 @@ import { injectImgSVG } from '../../extensions/svg';
 import { copyPasteMapping } from './data';
 import { textContext, onChangeRichText } from '../../extensions/text/formats';
 import CaptionToolbar from '../../components/toolbar/captionToolbar';
+import withMaxiDC from '../../extensions/DC/withMaxiDC';
 
 /**
  * External dependencies
@@ -140,6 +141,11 @@ class edit extends MaxiBlockComponent {
 			uniqueID,
 			captionPosition,
 			fitParentSize,
+			preview,
+			'dc-status': dcStatus,
+			'dc-media-id': dcMediaId,
+			'dc-media-url': dcMediaUrl,
+			'dc-media-caption': dcMediaCaption,
 		} = attributes;
 		const { isExternalClass, isUploaderOpen } = this.state;
 
@@ -228,6 +234,25 @@ class edit extends MaxiBlockComponent {
 				})) ||
 			!isEmpty(attributes.SVGElement);
 
+		if (preview)
+			return (
+				<MaxiBlock
+					key={`maxi-image--${uniqueID}`}
+					ref={this.blockRef}
+					{...getMaxiBlockAttributes(this.props)}
+				>
+					<img
+						// eslint-disable-next-line no-undef
+						src={previews.image_preview}
+						alt={__('Image block preview', 'maxi-blocks')}
+					/>
+				</MaxiBlock>
+			);
+		const showImage =
+			!isNil(mediaID) ||
+			mediaURL ||
+			(dcStatus && dcMediaId && dcMediaUrl);
+
 		return [
 			<textContext.Provider
 				key={`maxi-text-block__context-${uniqueID}`}
@@ -248,6 +273,9 @@ class edit extends MaxiBlockComponent {
 				<Inspector
 					key={`block-settings-${uniqueID}`}
 					resizableObject={this.resizableObject.current}
+					getBlockRefBounds={() =>
+						this.blockRef.current.getBoundingClientRect()
+					}
 					{...this.props}
 				/>
 				<Toolbar
@@ -262,6 +290,8 @@ class edit extends MaxiBlockComponent {
 					key={`popover-${uniqueID}`}
 					ref={this.blockRef}
 					isOpen={isUploaderOpen}
+					isEmptyContent={!mediaID}
+					prefix='image-'
 					{...this.props}
 				>
 					<MediaUpload
@@ -348,7 +378,7 @@ class edit extends MaxiBlockComponent {
 					className='maxi-image-block'
 					{...getMaxiBlockAttributes(this.props)}
 				>
-					{!isNil(mediaID) || mediaURL ? (
+					{showImage ? (
 						<BlockResizer
 							key={uniqueID}
 							className='maxi-block__resizer maxi-image-block__resizer'
@@ -393,47 +423,63 @@ class edit extends MaxiBlockComponent {
 											ref={this.textRef}
 											{...this.props}
 										/>
-										<RichText
-											ref={this.textRef}
-											className='maxi-image-block__caption'
-											value={captionContent}
-											onChange={processContent}
-											tagName='figcaption'
-											placeholder={__(
-												'Set your Image Maxi caption here…',
-												'maxi-blocks'
-											)}
-											__unstableEmbedURLOnPaste
-											__unstableAllowPrefixTransformations
-										>
-											{richTextValues =>
-												onChangeRichText({
-													attributes,
-													maxiSetAttributes,
-													oldFormatValue:
-														this.state.formatValue,
-													onChange: newState => {
-														if (
-															this
-																.typingTimeoutFormatValue
-														) {
-															clearTimeout(
+										{dcStatus ? (
+											<figcaption className='maxi-image-block__caption'>
+												{dcMediaCaption &&
+												!isEmpty(dcMediaCaption)
+													? dcMediaCaption
+													: __(
+															'No content found',
+															'maxi-blocks'
+													  )}
+											</figcaption>
+										) : (
+											<RichText
+												ref={this.textRef}
+												className='maxi-image-block__caption'
+												value={captionContent}
+												onChange={processContent}
+												tagName='figcaption'
+												placeholder={__(
+													'Set your Image Maxi caption here…',
+													'maxi-blocks'
+												)}
+												__unstableEmbedURLOnPaste
+												__unstableAllowPrefixTransformations
+											>
+												{richTextValues =>
+													onChangeRichText({
+														attributes,
+														maxiSetAttributes,
+														oldFormatValue:
+															this.state
+																.formatValue,
+														onChange: newState => {
+															if (
 																this
 																	.typingTimeoutFormatValue
-															);
-														}
-
-														this.typingTimeoutFormatValue =
-															setTimeout(() => {
-																this.setState(
-																	newState
+															) {
+																clearTimeout(
+																	this
+																		.typingTimeoutFormatValue
 																);
-															}, 600);
-													},
-													richTextValues,
-												})
-											}
-										</RichText>
+															}
+
+															this.typingTimeoutFormatValue =
+																setTimeout(
+																	() => {
+																		this.setState(
+																			newState
+																		);
+																	},
+																	600
+																);
+														},
+														richTextValues,
+													})
+												}
+											</RichText>
+										)}
 									</>
 								)}
 							<HoverPreview
@@ -447,19 +493,26 @@ class edit extends MaxiBlockComponent {
 									'hoverContentTypography',
 								])}
 							>
-								{SVGElement ? (
+								{!dcStatus && SVGElement ? (
 									<RawHTML>{SVGElement}</RawHTML>
 								) : (
+									// eslint-disable-next-line jsx-a11y/alt-text
 									<img
 										className={
-											isExternalClass
+											isExternalClass && !dcStatus
 												? 'maxi-image-block__image wp-image-external'
-												: `maxi-image-block__image wp-image-${mediaID}`
+												: `maxi-image-block__image wp-image-${
+														dcStatus
+															? dcMediaId
+															: mediaID
+												  }`
 										}
-										src={mediaURL}
-										width={mediaWidth}
-										height={mediaHeight}
-										alt={mediaAlt}
+										src={dcStatus ? dcMediaUrl : mediaURL}
+										{...(dcStatus && {
+											width: mediaWidth,
+											height: mediaHeight,
+											alt: mediaAlt,
+										})}
 									/>
 								)}
 							</HoverPreview>
@@ -471,47 +524,63 @@ class edit extends MaxiBlockComponent {
 											ref={this.textRef}
 											{...this.props}
 										/>
-										<RichText
-											ref={this.textRef}
-											className='maxi-image-block__caption'
-											value={captionContent}
-											onChange={processContent}
-											tagName='figcaption'
-											placeholder={__(
-												'Set your Image Maxi caption here…',
-												'maxi-blocks'
-											)}
-											__unstableEmbedURLOnPaste
-											__unstableAllowPrefixTransformations
-										>
-											{richTextValues =>
-												onChangeRichText({
-													attributes,
-													maxiSetAttributes,
-													oldFormatValue:
-														this.state.formatValue,
-													onChange: newState => {
-														if (
-															this
-																.typingTimeoutFormatValue
-														) {
-															clearTimeout(
+										{dcStatus ? (
+											<figcaption className='maxi-image-block__caption'>
+												{dcMediaCaption &&
+												!isEmpty(dcMediaCaption)
+													? dcMediaCaption
+													: __(
+															'No content found',
+															'maxi-blocks'
+													  )}
+											</figcaption>
+										) : (
+											<RichText
+												ref={this.textRef}
+												className='maxi-image-block__caption'
+												value={captionContent}
+												onChange={processContent}
+												tagName='figcaption'
+												placeholder={__(
+													'Set your Image Maxi caption here…',
+													'maxi-blocks'
+												)}
+												__unstableEmbedURLOnPaste
+												__unstableAllowPrefixTransformations
+											>
+												{richTextValues =>
+													onChangeRichText({
+														attributes,
+														maxiSetAttributes,
+														oldFormatValue:
+															this.state
+																.formatValue,
+														onChange: newState => {
+															if (
 																this
 																	.typingTimeoutFormatValue
-															);
-														}
-
-														this.typingTimeoutFormatValue =
-															setTimeout(() => {
-																this.setState(
-																	newState
+															) {
+																clearTimeout(
+																	this
+																		.typingTimeoutFormatValue
 																);
-															}, 600);
-													},
-													richTextValues,
-												})
-											}
-										</RichText>
+															}
+
+															this.typingTimeoutFormatValue =
+																setTimeout(
+																	() => {
+																		this.setState(
+																			newState
+																		);
+																	},
+																	600
+																);
+														},
+														richTextValues,
+													})
+												}
+											</RichText>
+										)}
 									</>
 								)}
 						</BlockResizer>
@@ -519,7 +588,11 @@ class edit extends MaxiBlockComponent {
 						<div className='maxi-image-block__placeholder'>
 							<Placeholder
 								icon={placeholderImage}
-								instructions='Placeholder image'
+								instructions={
+									dcStatus
+										? __('No content found', 'maxi-blocks')
+										: __('Placeholder image', 'maxi-blocks')
+								}
 							/>
 						</div>
 					)}
@@ -529,4 +602,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiProps(edit);
+export default withMaxiDC(withMaxiProps(edit));

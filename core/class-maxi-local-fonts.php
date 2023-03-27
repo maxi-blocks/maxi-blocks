@@ -32,13 +32,13 @@ class MaxiBlocks_Local_Fonts
     {
         if ((bool) get_option('local_fonts')) {
             $this->fontsUploadDir = wp_upload_dir()['basedir'] . '/maxi/fonts';
-            $allFonts = $this->getAllFontsDB();
+            $all_fonts = $this->getAllFontsDB();
 
-            if (is_array($allFonts) && !empty($allFonts)) {
-                $allURLs = $this->constructFontURLs($allFonts);
-                if (is_array($allURLs) && !empty($allURLs)) {
+            if (is_array($all_fonts) && !empty($all_fonts)) {
+                $all_urls = $this->constructFontURLs($all_fonts);
+                if (is_array($all_urls) && !empty($all_urls)) {
                     $this->createUploadFolder();
-                    $this->uploadCssFiles($allURLs);
+                    $this->uploadCssFiles($all_urls);
                 }
                 update_option('local_fonts_uploaded', true);
             }
@@ -85,85 +85,91 @@ class MaxiBlocks_Local_Fonts
 
         $array = array_filter($array, 'filterNull');
 
-        $arrayAll = array_merge_recursive(...$array);
+        $array_all = array_merge_recursive(...$array);
 
-        return $arrayAll;
+        return $array_all;
     }
 
-    public function generateFontURL($fontUrl, $fontData)
+    public function generateFontURL($font_url, $font_data)
     {
-        if (!empty($fontData)) {
-            $fontWeight = array_key_exists('weight', $fontData) ? $fontData['weight'] : false;
-            $fontStyle = array_key_exists('style', $fontData) ? $fontData['style'] : false;
+        if (!empty($font_data)) {
+            // For legacy reasons font data is saved both as 'weight' ('style') and 'fontWeight' ('fontStyle')
+            // See https://github.com/maxi-blocks/maxi-blocks/pull/4305#discussion_r1098988152
+            $font_weight = array_key_exists('fontWeight', $font_data) ? $font_data['fontWeight'] :
+                (array_key_exists('weight', $font_data) ? $font_data['weight'] : false);
+            $font_style = array_key_exists('fontStyle', $font_data) ? $font_data['fontStyle'] :
+                (array_key_exists('style', $font_data) ? $font_data['style'] : false);
 
-            if (is_array($fontWeight)) {
-                $fontWeight = implode(',', array_unique($fontWeight));
+            if (is_array($font_weight)) {
+                $font_weight = implode(',', array_unique($font_weight));
             }
 
-            if ($fontStyle === 'italic') {
-                $fontUrl .= 'ital,';
+            if ($font_style === 'italic') {
+                $font_url .= 'ital,';
             }
 
-            if (strpos($fontWeight, ',') !== false) {
-                $fontWeightArr = array_unique(explode(',', $fontWeight));
-                sort($fontWeightArr);
-                $fontUrl .= 'wght@';
-                if ($fontStyle === 'italic') {
-                    foreach ($fontWeightArr as $fw) {
-                        $fontUrl .= '0,'.$fw.';';
+            if (strpos($font_weight, ',') !== false) {
+                $font_weight_arr = array_unique(explode(',', $font_weight));
+                sort($font_weight_arr);
+                $font_url .= 'wght@';
+                if ($font_style === 'italic') {
+                    foreach ($font_weight_arr as $fw) {
+                        $font_url .= '0,'.$fw.';';
                     }
-                    foreach ($fontWeightArr as $fw) {
-                        $fontUrl .= '1,'.$fw.';';
+                    foreach ($font_weight_arr as $fw) {
+                        $font_url .= '1,'.$fw.';';
                     }
                 } else {
-                    foreach ($fontWeightArr as $fw) {
-                        $fontUrl .= $fw.';';
+                    foreach ($font_weight_arr as $fw) {
+                        $font_url .= $fw.';';
                     }
                 }
-                $fontUrl = rtrim($fontUrl, ';');
-            } elseif ($fontWeight) {
-                if ($fontStyle === 'italic') {
-                    $fontUrl .= 'wght@0,'.$fontWeight.';1,'.$fontWeight;
+                $font_url = rtrim($font_url, ';');
+            } elseif ($font_weight) {
+                if ($font_style === 'italic') {
+                    $font_url .= 'wght@0,'.$font_weight.';1,'.$font_weight;
                 } else {
-                    $fontUrl .= 'wght@'.$fontWeight;
+                    $font_url .= 'wght@'.$font_weight;
                 }
             } else {
-                if ($fontStyle === 'italic') {
-                    $fontUrl .= 'wght@0,400;1,400';
+                if ($font_style === 'italic') {
+                    $font_url .= 'wght@0,400;1,400';
                 } else {
-                    $fontUrl .= 'wght@400';
+                    $font_url .= 'wght@400';
                 }
             }
         } else {
-            $fontUrl = rtrim($fontUrl, ':');
+            $font_url = rtrim($font_url, ':');
         }
 
-        return $fontUrl;
+        return $font_url;
     }
 
-    public function constructFontURLs($allFonts)
+    public function constructFontURLs($all_fonts)
     {
         $response = [];
-        foreach ($allFonts as $fontName => $fontData) {
-            if (strpos($fontName, 'sc_font') !== false) {
-                $split_font = explode('_', str_replace('sc_font_', '', $fontName));
+        foreach ($all_fonts as $font_name => $font_data) {
+            if (strpos($font_name, 'sc_font') !== false) {
+                $split_font = explode('_', str_replace('sc_font_', '', $font_name));
                 if (isset($split_font)) {
                     $block_style = isset($split_font[0]) ? $split_font[0] : 'light';
                     $text_level  = isset($split_font[1]) ? $split_font[1] : 'p';
                     $breakpoint  = isset($split_font[2]) ? $split_font[2] : 'general';
 
                     if (class_exists('MaxiBlocks_StyleCards')) {
-                        $fontName = MaxiBlocks_StyleCards::get_maxi_blocks_style_card_fonts($block_style, $text_level, $breakpoint);
+                        $sc_fonts = MaxiBlocks_StyleCards::get_maxi_blocks_style_card_fonts($block_style, $text_level, $breakpoint);
+
+                        @list($font_name) = $sc_fonts;
                     }
                 }
             }
 
-            $fontNameSanitized = str_replace(' ', '+', $fontName);
+            $font_name_sanitized = str_replace(' ', '+', $font_name);
 
 
-            $fontUrl = "https://fonts.googleapis.com/css2?family=$fontNameSanitized:";
+            $font_url = "https://fonts.googleapis.com/css2?family=$font_name_sanitized:";
 
-            $response[$fontName] = $this->generateFontURL($fontUrl, $fontData);
+            $response[$font_name] = $this->generateFontURL($font_url, $font_data);
         }
         return $response;
     }
@@ -173,78 +179,80 @@ class MaxiBlocks_Local_Fonts
         wp_mkdir_p($this->fontsUploadDir);
     }
 
-    public function minimizeFontCss($fontCss)
+    public function minimizeFontCss($font_css)
     {
-        $fontCss = preg_replace('/\/\*((?!\*\/).)*\*\//', '', $fontCss);
-        $fontCss = preg_replace('/\s{2,}/', ' ', $fontCss);
-        $fontCss = preg_replace('/\s*([:;{}])\s*/', '$1', $fontCss);
-        $fontCss = preg_replace('/;}/', '}', $fontCss);
-        return $fontCss;
+        $font_css = preg_replace('/\/\*((?!\*\/).)*\*\//', '', $font_css);
+        $font_css = preg_replace('/\s{2,}/', ' ', $font_css);
+        $font_css = preg_replace('/\s*([:;{}])\s*/', '$1', $font_css);
+        $font_css = preg_replace('/;}/', '}', $font_css);
+        return $font_css;
     }
 
-    public function uploadCssFiles($allURLs)
+    public function uploadCssFiles($all_urls)
     {
-        foreach ($allURLs as $fontName => $fontUrl) {
-            if (strpos($fontName, 'sc_font') !== false) {
-                $split_font = explode('_', str_replace('sc_font_', '', $fontName));
+        foreach ($all_urls as $font_name => $font_url) {
+            if (strpos($font_name, 'sc_font') !== false) {
+                $split_font = explode('_', str_replace('sc_font_', '', $font_name));
                 $block_style = $split_font[0];
                 $text_level = $split_font[1];
                 $breakpoint = $split_font[2];
 
                 if (class_exists('MaxiBlocks_StyleCards')) {
-                    $fontName = MaxiBlocks_StyleCards::get_maxi_blocks_style_card_fonts($block_style, $text_level, $breakpoint);
+                    $sc_fonts = MaxiBlocks_StyleCards::get_maxi_blocks_style_card_fonts($block_style, $text_level, $breakpoint);
+
+                    @list($font_name) = $sc_fonts;
                 }
             }
 
-            $fontNameSanitized = str_replace(' ', '', strtolower($fontName));
+            $font_name_sanitized = str_replace(' ', '', strtolower($font_name));
 
 
-            $allFontsNames[] = $fontNameSanitized;
+            $all_fonts_names[] = $font_name_sanitized;
 
-            $fontUploadsDir =  $this->fontsUploadDir.'/'.$fontNameSanitized;
-            wp_mkdir_p($fontUploadsDir);
+            $font_uploads_dir =  $this->fontsUploadDir.'/'.$font_name_sanitized;
+            wp_mkdir_p($font_uploads_dir);
 
-            $fontUrlDir = wp_upload_dir()['baseurl'] . '/maxi/fonts/'.$fontNameSanitized;
+            $font_url_dir = wp_upload_dir()['baseurl'] . '/maxi/fonts/'.$font_name_sanitized;
 
-            $response = wp_remote_get($fontUrl);
-            $cssFile  = wp_remote_retrieve_body($response);
+            $response = wp_remote_get($font_url);
+            $css_file  = wp_remote_retrieve_body($response);
 
-            preg_match_all('/url\((.*?)\)/s', $cssFile, $urls);
+            preg_match_all('/url\((.*?)\)/s', $css_file, $urls);
 
             if (!is_array($urls) || empty($urls)) {
                 return false;
             }
 
-            $fontFiles = $urls[1];
-            $newFontFiles = [];
+            $font_files = $urls[1];
+            $new_font_files = [];
 
-            foreach ($fontFiles as $filePath) {
-                $fontResponse = wp_remote_get($filePath);
-                $fontBody     = wp_remote_retrieve_body($fontResponse);
-                $fileName = basename($filePath);
-                $newFilePath = $fontUploadsDir.'/'. $fileName;
+            foreach ($font_files as $file_path) {
+                $font_response = wp_remote_get($file_path);
+                $font_body = wp_remote_retrieve_body($font_response);
+                $file_name = basename($file_path);
+                $new_file_path = $font_uploads_dir.'/'. $file_name;
 
-                $newFontFiles[] =  $fontUrlDir.'/'. $fileName;
+                $new_font_files[] =  $font_url_dir.'/'. $file_name;
 
-                if (!file_exists($newFilePath)) {
-                    file_put_contents($newFilePath, $fontBody);
+                if (!file_exists($new_file_path)) {
+                    file_put_contents($new_file_path, $font_body);
                 }
             }
 
-            $newCssFile = str_replace($fontFiles, $newFontFiles, $cssFile);
+            $new_css_file = str_replace($font_files, $new_font_files, $css_file);
 
-            $newCssFile = str_replace('}', 'font-display: swap; }', $newCssFile);
+            $new_css_file = str_replace('}', 'font-display: swap; }', $new_css_file);
 
-            $newCssFile = $this->minimizeFontCss($newCssFile);
+            $new_css_file = $this->minimizeFontCss($new_css_file);
 
-            file_put_contents($fontUploadsDir.'/style.css', $newCssFile);
+            file_put_contents($font_uploads_dir.'/style.css', $new_css_file);
         }
 
         // remove not used fonts directories
         $directories = glob($this->fontsUploadDir.'/*', GLOB_ONLYDIR);
         foreach ($directories as $directory) {
-            $folderName = basename($directory);
-            if (!in_array($folderName, $allFontsNames)) {
+            $folder_name = basename($directory);
+            if (!in_array($folder_name, $all_fonts_names)) {
                 array_map('unlink', glob("$directory/*"));
                 rmdir($directory);
             }

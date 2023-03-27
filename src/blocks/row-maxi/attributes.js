@@ -3,6 +3,7 @@
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
 import { transitionAttributesCreator } from '../../extensions/styles';
+import { customCss } from './data';
 
 /**
  * Attributes
@@ -29,34 +30,6 @@ const attributes = {
 			type: 'boolean',
 			default: true,
 		},
-		'max-width-xxl': {
-			type: 'string',
-			default: '1690',
-		},
-		'max-width-xl': {
-			type: 'string',
-			default: '1170',
-		},
-		'max-width-l': {
-			type: 'string',
-			default: '90',
-		},
-		'max-width-unit-general': {
-			type: 'string',
-			default: undefined,
-		},
-		'max-width-unit-xxl': {
-			type: 'string',
-			default: 'px',
-		},
-		'max-width-unit-xl': {
-			type: 'string',
-			default: 'px',
-		},
-		'max-width-unit-l': {
-			type: 'string',
-			default: '%',
-		},
 	},
 	...attributesData.margin,
 	...attributesData.padding,
@@ -67,10 +40,11 @@ const attributes = {
 	...attributesData.transform,
 	...{
 		...attributesData.transition,
-		...transitionAttributesCreator(),
+		...transitionAttributesCreator({ selectors: customCss.selectors }),
 	},
 	...attributesData.display,
 	...attributesData.opacity,
+	...attributesData.opacityHover,
 	...attributesData.position,
 	...attributesData.overflow,
 	...attributesData.zIndex,

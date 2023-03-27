@@ -1,22 +1,39 @@
+const getButtonConstants = obj => {
+	const newObj = { ...obj };
+
+	delete newObj.bottomGap;
+
+	return newObj;
+};
+
 export const generalTypographyStyle = {
 	decoration: 'overline',
 	weight: '300',
 	transform: 'capitalize',
 	style: 'italic',
-	orientation: 'mixed',
-	direction: 'ltr',
 	indent: '44',
+	whiteSpace: 'pre',
+	wordSpacing: '10',
+	bottomGap: '20',
 };
+export const generalButtonTypographyStyle = getButtonConstants(
+	generalTypographyStyle
+);
 
 export const responsiveTypographyStyle = {
 	decoration: 'underline',
 	weight: '400',
 	transform: 'uppercase',
 	style: 'oblique',
-	orientation: 'upright',
-	direction: 'rtl',
 	indent: '22',
+	whiteSpace: 'pre-wrap',
+	wordSpacing: '20',
+	bottomGap: '10',
 };
+
+export const responsiveButtonTypographyStyle = getButtonConstants(
+	responsiveTypographyStyle
+);
 
 export const generalTypographyOptions = {
 	size: '20',

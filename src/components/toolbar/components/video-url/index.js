@@ -9,7 +9,7 @@ import { useState } from '@wordpress/element';
  */
 
 import ToolbarPopover from '../toolbar-popover';
-import { SettingTabsControl, TextControl } from '../../../';
+import { TextInput } from '../../../';
 import {
 	videoUrlRegex,
 	getParsedVideoUrl,
@@ -20,22 +20,27 @@ import {
 import { toolbarVideo } from '../../../../icons';
 
 const VideoUrl = props => {
-	const { url, onChange, playerType } = props;
+	const { url, onChange } = props;
 
 	const [validationText, setValidationText] = useState(null);
+
+	const defaultURL = 'https://www.youtube.com/watch?v=ScMzIvxBSi4';
 
 	return (
 		<ToolbarPopover
 			className='toolbar-item__video-url'
-			tooltip={__('Video url', 'maxi-blocks')}
+			tooltip={__('Video URL', 'maxi-blocks')}
 			advancedOptions='video'
 			icon={toolbarVideo}
 		>
 			<div className='toolbar-item__video-url__popover'>
-				<TextControl
+				<label className='maxi-base-control__label' htmlFor='URL'>
+					{__('URL', 'maxi-blocks')}
+				</label>
+				<TextInput
 					type='url'
+					placeholder={defaultURL}
 					value={url}
-					placeholder='Youtube, Vimeo, or Direct Link'
 					onChange={val => {
 						if (val && !videoUrlRegex.test(val)) {
 							setValidationText(
@@ -46,10 +51,10 @@ const VideoUrl = props => {
 						}
 
 						onChange({
-							url: val,
+							url: val !== '' ? val : defaultURL,
 							embedUrl: getParsedVideoUrl({
 								...props,
-								url: val,
+								url: val !== '' ? val : defaultURL,
 							}),
 							videoType: parseVideo(val).type,
 						});

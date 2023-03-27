@@ -18,13 +18,17 @@ class Relation {
 
 		if (!this.triggerEl || !this.targetEl) return;
 
+		this.defaultTransition = window
+			.getComputedStyle(this.targetEl)
+			.getPropertyValue('transition');
+
 		this.breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 		this.hasMultipleTargetsArray = this.css.map(item =>
 			Object.keys(item).some(key => !this.breakpoints.includes(key))
 		);
 
 		this.action = item.action;
-		this.settings = item.settings;
+		this.sids = item.sid || item.settings;
 		this.effects = item.effects;
 		this.attributes = item.attributes;
 
@@ -40,21 +44,33 @@ class Relation {
 		// transitionTrigger is an alternative trigger to target; not always used
 		// Check its eventListeners to understand better about its responsibility
 		this.transitionTriggers = Array.from(
-			new Set(this.effects.map(item => item.transitionTrigger))
-		);
-		this.transitionTriggerEls = this.transitionTriggers.map(
-			transitionTrigger =>
-				transitionTrigger
-					? this.blockTargetEl.querySelector(transitionTrigger)
-					: this.targetEl
-		);
+			new Set(
+				this.effects.map(
+					item => !item.disableTransition && item.transitionTrigger
+				)
+			)
+		).filter(Boolean);
+		this.transitionTriggerEls =
+			this.transitionTriggers.length > 0
+				? this.transitionTriggers.map(transitionTrigger =>
+						transitionTrigger
+							? this.blockTargetEl.querySelector(
+									transitionTrigger
+							  )
+							: this.targetEl
+				  )
+				: [this.targetEl];
 
 		this.transitionTargetsArray = this.effects.map(item => {
+			if (item.disableTransition) return [''];
+
 			switch (typeof item.transitionTarget) {
 				case 'string':
 					return [item.transitionTarget];
-				case 'object' && item.transitionTarget?.length > 0:
-					return item.transitionTarget;
+				case 'object':
+					if (item.transitionTarget?.length > 0)
+						return item.transitionTarget;
+					return [''];
 				default:
 					return [''];
 			}
@@ -63,21 +79,28 @@ class Relation {
 		this.isBorderArray = this.attributes.map(attributes =>
 			Object.keys(attributes).some(attr => attr.startsWith('border'))
 		);
-		this.isIconArray = item.settings.map(
-			setting => setting === 'Icon colour' || setting === 'Button icon'
+		this.isIconArray = this.sids.map(
+			sid =>
+				sid === 'ic' ||
+				sid === 'bi' ||
+				// support for old versions
+				sid === 'Icon colour' ||
+				sid === 'Button icon'
 		);
 		this.isSVG = this.fullTarget.includes('svg-icon-maxi');
 		this.avoidHoverArray = [];
 		this.getAvoidHover();
 
-		this.transitionString = '';
+		this.inTransitionString = '';
+		this.outTransitionString = '';
 		this.generateTransitions();
 
 		this.stylesString = '';
 		this.generateStyles();
 
 		this.stylesEl = null;
-		this.transitionEl = null;
+		this.inTransitionEl = null;
+		this.outTransitionEl = null;
 		this.generateStylesEls();
 
 		// Prevents removing the IB transitions before they end when mouse leave the IB trigger
@@ -94,29 +117,45 @@ class Relation {
 		this.stylesEl = document.createElement('style');
 		this.stylesEl.id = `relations--${this.uniqueID}-styles`;
 		this.stylesEl.setAttribute('data-type', this.action);
-		this.stylesEl.setAttribute('data-settings', this.settings);
+		this.stylesEl.setAttribute('data-sids', this.sids);
 		this.stylesEl.innerText = this.stylesString;
 
-		this.transitionEl = document.createElement('style');
-		this.transitionEl.id = `relations--${this.uniqueID}-transitions`;
-		this.transitionEl.setAttribute('data-type', this.action);
-		this.transitionEl.setAttribute('data-settings', this.settings);
-		this.transitionEl.innerText = this.transitionString;
+		if (this.inTransitionString.length > 0) {
+			this.inTransitionEl = document.createElement('style');
+			this.inTransitionEl.id = `relations--${this.uniqueID}-in-transitions`;
+			this.inTransitionEl.setAttribute('data-type', this.action);
+			this.inTransitionEl.setAttribute('data-sids', this.sids);
+			this.inTransitionEl.innerText = this.inTransitionString;
+		}
+		if (this.outTransitionString.length > 0) {
+			this.outTransitionEl = document.createElement('style');
+			this.outTransitionEl.id = `relations--${this.uniqueID}-out-transitions`;
+			this.outTransitionEl.setAttribute('data-type', this.action);
+			this.outTransitionEl.setAttribute('data-sids', this.sids);
+			this.outTransitionEl.innerText = this.outTransitionString;
+		}
 	}
 
 	// Insert transitions or styles element just after Maxi inline css element
 	addStyleEl(styleEl) {
+		if (!styleEl) return;
+
 		if (!this.inlineStylesEl)
 			this.inlineStylesEl = document.querySelector(
-				'#maxi-blocks-inline-css'
+				'style[id*=maxi-blocks]'
 			);
 
 		const currentEl = document.querySelector(`#${styleEl.id}`);
 
 		if (currentEl) {
+			const currentElSids = currentEl
+				.getAttribute('data-sids')
+				.split(',')
+				.map(item => item.trim());
+
 			if (
 				currentEl.getAttribute('data-type') === this.action &&
-				currentEl.getAttribute('data-settings') === this.settings
+				JSON.stringify(currentElSids) === JSON.stringify(this.sids)
 			)
 				currentEl.replaceWith(styleEl);
 			else currentEl.insertAdjacentElement('afterend', styleEl);
@@ -168,10 +207,25 @@ class Relation {
 			];
 
 		return this.effects.reduce((promise, effects) => {
-			const transitionDuration = getTransitionValue(effects, 'duration');
-			const transitionDelay = getTransitionValue(effects, 'delay');
-			const transitionTimeout =
-				(transitionDuration + transitionDelay) * 1000;
+			if (effects.disableTransition) return promise;
+
+			let transitionTimeout = 0;
+			[effects, effects?.out].forEach(effects => {
+				if (!effects) return;
+
+				const transitionDuration = getTransitionValue(
+					effects,
+					'duration'
+				);
+				const transitionDelay = getTransitionValue(effects, 'delay');
+				const transitionTimeoutTemp =
+					(transitionDuration + transitionDelay) * 1000;
+
+				transitionTimeout = Math.max(
+					transitionTimeout,
+					transitionTimeoutTemp
+				);
+			});
 
 			return Math.max(promise, transitionTimeout);
 		}, 0);
@@ -188,20 +242,25 @@ class Relation {
 
 			const getLastEffectsBreakpointAttribute = (
 				target,
-				currentBreakpoint
+				currentBreakpoint,
+				isOut = false
 			) => {
+				const inOrOutEffects = isOut ? effects.out : effects;
+
 				const lastBreakpoint = this.getLastUsableBreakpoint(
 					currentBreakpoint,
 					breakpoint =>
 						Object.prototype.hasOwnProperty.call(
-							effects,
+							inOrOutEffects,
 							`${target}-${breakpoint}`
 						)
 				);
 
 				return {
 					[target]:
-						effects[`${target}-${lastBreakpoint ?? 'general'}`],
+						inOrOutEffects[
+							`${target}-${lastBreakpoint ?? 'general'}`
+						],
 				};
 			};
 
@@ -214,21 +273,31 @@ class Relation {
 				if (hasCSS)
 					stylesObj[breakpoint] = { ...css[breakpoint].styles };
 
-				effectsObj[breakpoint] = {
-					...getLastEffectsBreakpointAttribute(
+				if (effects.disableTransition) return;
+
+				const getTransitionAttributes = (isOut = false) =>
+					[
+						'split',
 						'transition-status',
-						breakpoint
-					),
-					...getLastEffectsBreakpointAttribute(
 						'transition-duration',
-						breakpoint
-					),
-					...getLastEffectsBreakpointAttribute(
 						'transition-delay',
-						breakpoint
-					),
-					...getLastEffectsBreakpointAttribute('easing', breakpoint),
-				};
+						'easing',
+					].reduce(
+						(prev, curr) => ({
+							...prev,
+							...getLastEffectsBreakpointAttribute(
+								curr,
+								breakpoint,
+								isOut
+							),
+						}),
+						{}
+					);
+
+				effectsObj[breakpoint] = getTransitionAttributes();
+
+				if (effectsObj[breakpoint].split)
+					effectsObj[breakpoint].out = getTransitionAttributes(true);
 			});
 
 			return { stylesObj, effectsObj };
@@ -268,11 +337,14 @@ class Relation {
 		const stylesObjs = [];
 		const effectsObjs = [];
 
-		const pushStylesAndEffects = ({ stylesObj, effectsObj }) => {
+		const pushStylesAndEffects = obj => {
 			const isEmptyObject = obj => Object.keys(obj).length === 0;
 
-			if (!isEmptyObject(stylesObj)) stylesObjs.push(stylesObj);
-			if (!isEmptyObject(effectsObj)) effectsObjs.push(effectsObj);
+			Object.entries(obj).forEach(([key, value]) => {
+				const arrayToPush =
+					key === 'stylesObj' ? stylesObjs : effectsObjs;
+				arrayToPush.push(!isEmptyObject(value) ? value : null);
+			});
 		};
 
 		this.css.forEach((css, index) => {
@@ -376,7 +448,22 @@ class Relation {
 	}
 
 	setDataAttrToBlock(value) {
-		this.blockTargetEl.setAttribute('data-maxi-relations', value);
+		// On setting the 'false' value, is necessary to check the 'data-maxi-relations-trigger'
+		// to ensure the last trigger is not removed. It happens when moving from some trigger to
+		// other really fast between while `transitionTimeout` is still running.
+		if (value === 'false') {
+			const currentTrigger = this.blockTargetEl.getAttribute(
+				'data-maxi-relations-trigger'
+			);
+
+			if (currentTrigger === this.trigger || !currentTrigger)
+				this.blockTargetEl.setAttribute('data-maxi-relations', value);
+		} else this.blockTargetEl.setAttribute('data-maxi-relations', value);
+
+		this.blockTargetEl.setAttribute(
+			'data-maxi-relations-trigger',
+			this.trigger
+		);
 	}
 
 	addDataAttrToBlock() {
@@ -431,16 +518,52 @@ class Relation {
 							breakpointValue
 						);
 
+						let finalTarget;
+						// For background layers styles, avoidHoverString needs to be added to the parent element
+						// to make sure hover styles will override the IB styles.
+						if (target.includes('.maxi-background-displayer')) {
+							finalTarget = target
+								.replace(
+									/(\s*)> .maxi-background-displayer/,
+									match => `${avoidHoverString}${match}`
+								)
+								.trim();
+						} else if (
+							target.includes('.maxi-button-block__button')
+						) {
+							// Avoids button content and icon have different trigger when hovering.
+							finalTarget = target.replace(
+								'maxi-button-block__button',
+								match => `${match}${avoidHoverString}`
+							);
+						} else if (this.isSVG) {
+							finalTarget = target.replace(
+								'maxi-svg-icon-block__icon',
+								match => `${match}${avoidHoverString}`
+							);
+						} else {
+							finalTarget = `${target.trim()}${avoidHoverString}`;
+						}
+
+						if (
+							finalTarget.includes(
+								'maxi-button-block__content'
+							) &&
+							!finalTarget.includes('maxi-button-block__button')
+						) {
+							finalTarget = finalTarget
+								.replace(avoidHoverString, '')
+								.replace(
+									'.maxi-button-block__content',
+									`.maxi-button-block__button${avoidHoverString} .maxi-button-block__content`
+								);
+						}
+
 						const selector =
-							`${prevLine} body.maxi-blocks--active ${
-								this.isSVG
-									? target.replace(
-											'maxi-svg-icon-block__icon',
-											match =>
-												`${match}${avoidHoverString}`
-									  )
-									: `${target.trim()}${avoidHoverString}`
-							} {`.replace(/\s{2,}/g, ' ');
+							`${prevLine} body.maxi-blocks--active ${finalTarget} {`.replace(
+								/\s{2,}/g,
+								' '
+							);
 
 						Object.entries(stylesObj[breakpoint]).forEach(
 							([key, value]) => {
@@ -559,23 +682,15 @@ class Relation {
 	}
 
 	generateTransitions() {
+		let inTransitionString = '';
+		let outTransitionString = '';
+
 		const getTransitionLine = (stylesObj, target, index) => {
 			const isBackground = target.includes('maxi-background-displayer');
 
 			Object.entries(this.breakpointsObj).forEach(
 				([breakpoint, breakpointValue]) => {
 					if (this.effectsObjs[index][breakpoint]) {
-						const { prevLine, postLine } = this.getMediaLines(
-							breakpoint,
-							breakpointValue
-						);
-
-						const selector =
-							`${prevLine}body.maxi-blocks--active ${target} {`.replace(
-								/\s{2,}/g,
-								' '
-							);
-
 						let currentStyleObj =
 							stylesObj[
 								this.getLastUsableBreakpoint(
@@ -595,45 +710,111 @@ class Relation {
 							};
 
 						if (currentStyleObj) {
-							const transitionString = this.getTransitionString(
-								currentStyleObj,
-								this.effectsObjs[index][breakpoint],
-								this.isIconArray[index]
-							);
+							const addTransitionString = (
+								transitionString,
+								transitionTarget,
+								fullTransitionStringRaw
+							) => {
+								let fullTransitionString =
+									fullTransitionStringRaw;
 
-							const selectorRegExp = new RegExp(
-								`(${this.escapeRegExp(selector)})`
-							);
-							if (!this.transitionString.match(selectorRegExp))
-								this.transitionString += `${selector}}${postLine}`;
-
-							const transitionExistsRegExp = new RegExp(
-								`(${this.escapeRegExp(
-									selector
-								)}[^{]*transition:)`
-							);
-							if (!transitionString) return;
-
-							if (
-								this.transitionString.match(
-									transitionExistsRegExp
-								)
-							) {
-								if (!this.isIconArray[index])
-									this.transitionString =
-										this.transitionString.replace(
-											transitionExistsRegExp,
-											`$1 ${transitionString}`
-										);
-							} else {
-								this.transitionString =
-									this.transitionString.replace(
-										selectorRegExp,
-										`$1 transition: ${transitionString.replace(
-											/, $/,
-											''
-										)};`
+								const { prevLine, postLine } =
+									this.getMediaLines(
+										breakpoint,
+										breakpointValue
 									);
+
+								const selector =
+									`${prevLine}body.maxi-blocks--active ${transitionTarget} {`.replace(
+										/\s{2,}/g,
+										' '
+									);
+
+								const selectorRegExp = new RegExp(
+									`(${this.escapeRegExp(selector)})`
+								);
+
+								if (!fullTransitionString.match(selectorRegExp))
+									fullTransitionString += `${selector}}${postLine}`;
+
+								const transitionExistsRegExp = new RegExp(
+									`(${this.escapeRegExp(
+										selector
+									)}[^{]*transition:)`
+								);
+								if (!transitionString) return '';
+
+								if (
+									fullTransitionString.match(
+										transitionExistsRegExp
+									)
+								) {
+									if (!this.isIconArray[index])
+										fullTransitionString =
+											fullTransitionString.replace(
+												transitionExistsRegExp,
+												`$1 ${transitionString}`
+											);
+								} else {
+									fullTransitionString =
+										fullTransitionString.replace(
+											selectorRegExp,
+											`$1 transition: ${transitionString.replace(
+												/, $/,
+												''
+											)};`
+										);
+								}
+
+								return fullTransitionString;
+							};
+
+							const effectsObj =
+								this.effectsObjs[index][breakpoint];
+							const { split } = effectsObj;
+
+							if (split) {
+								const inTransitionStringPart =
+									this.getTransitionString(
+										currentStyleObj,
+										effectsObj,
+										this.isIconArray[index]
+									);
+								inTransitionString = addTransitionString(
+									inTransitionStringPart,
+									target,
+									inTransitionString
+								);
+
+								const outTransitionStringPart =
+									this.getTransitionString(
+										currentStyleObj,
+										effectsObj.out,
+										this.isIconArray[index]
+									);
+								outTransitionString = addTransitionString(
+									outTransitionStringPart,
+									target,
+									outTransitionString
+								);
+							} else {
+								const transitionString =
+									this.getTransitionString(
+										currentStyleObj,
+										effectsObj,
+										this.isIconArray[index]
+									);
+
+								inTransitionString = addTransitionString(
+									transitionString,
+									target,
+									inTransitionString
+								);
+								outTransitionString = addTransitionString(
+									transitionString,
+									target,
+									outTransitionString
+								);
 							}
 						}
 					}
@@ -642,6 +823,8 @@ class Relation {
 		};
 
 		this.stylesObjs.forEach((stylesObj, index) => {
+			if (this.effects[index].disableTransition) return;
+
 			if (this.hasMultipleTargetsArray[index]) {
 				if (!this.isSVG)
 					Object.keys(stylesObj).forEach(targetSelector => {
@@ -682,14 +865,17 @@ class Relation {
 					)
 				);
 		});
+
+		this.inTransitionString = inTransitionString;
+		this.outTransitionString = outTransitionString;
 	}
 
-	addTransition() {
-		this.addStyleEl(this.transitionEl);
+	addTransition(element) {
+		this.addStyleEl(element);
 	}
 
-	removeTransition() {
-		this.transitionEl.remove();
+	removeTransition(element) {
+		element?.remove();
 	}
 
 	getTransitionString(styleObj, effectsObj, isIcon) {
@@ -701,16 +887,53 @@ class Relation {
 		} = effectsObj;
 
 		const transitionPropertiesString = `${
-			status ? `${duration}s ${delay}s ${easing}` : '0s 0s'
+			status ? `${duration}s ${easing} ${delay}s` : '0s 0s'
 		}, `;
 
-		return isIcon
+		const transitionString = isIcon
 			? `all ${transitionPropertiesString}`
 			: Object.keys(styleObj).reduce(
 					(transitionString, style) =>
 						`${transitionString}${style} ${transitionPropertiesString}`,
 					''
 			  );
+
+		if (
+			this.defaultTransition !== 'none 0s ease 0s' &&
+			!transitionString.includes(this.defaultTransition)
+		) {
+			return `${this.defaultTransition}, ${transitionString}`;
+		}
+		return transitionString;
+	}
+
+	// Ensures the data-maxi-relations attributes keeps 'true' while the main element is hovered.
+	// This situation prevents the attribute set to false when the target element is triggered by 2
+	// or more elements that are nested one inside the other
+	addRelationSubscriber() {
+		const observer = new MutationObserver(mutations => {
+			mutations.forEach(mutation => {
+				if (
+					mutation.type === 'attributes' &&
+					mutation.attributeName === 'data-maxi-relations'
+				) {
+					if (mutation.target.dataset.maxiRelations !== 'true')
+						mutation.target.dataset.maxiRelations = 'true';
+				}
+			});
+		});
+
+		observer.observe(this.blockTargetEl, {
+			attributes: true,
+			attributeFilter: ['data-maxi-relations'],
+		});
+
+		this.observer = observer;
+	}
+
+	// Removes the observer added by the addRelationSubscriber method
+	removeRelationSubscriber() {
+		this.observer.disconnect();
 	}
 
 	init() {
@@ -741,12 +964,12 @@ class Relation {
 		 * to ensure it has the selected effects
 		 */
 		if (this.isHoveredContained) {
-			this.transitionTriggerEls.forEach(transitionTriggerEl => {
+			this.transitionTriggerEls?.forEach(transitionTriggerEl => {
 				transitionTriggerEl.addEventListener('mouseenter', () => {
 					// console.log('Entering hover target'); // 🔥
 
 					// Remove transitions to let the original ones be applied
-					this.removeTransition();
+					this.removeTransition(this.inTransitionEl);
 
 					clearTimeout(this.contentTimeout);
 				});
@@ -754,35 +977,39 @@ class Relation {
 				transitionTriggerEl.addEventListener('mouseleave', () => {
 					const transitionDuration = Array.from(
 						new Set(this.transitionTargetsArray.flat())
-					).reduce((promise, transitionTarget) => {
-						const transitionTargetEl = document.querySelector(
-							`${this.dataTarget} ${transitionTarget ?? ''}`
-						);
+					)
+						.filter(Boolean)
+						.reduce((promise, transitionTarget) => {
+							const transitionTargetEl = document.querySelector(
+								`${this.dataTarget} ${transitionTarget ?? ''}`
+							);
 
-						const transitionDuration = transitionTargetEl
-							? [
-									'transition-duration',
-									'transition-delay',
-							  ].reduce(
-									(sum, prop) =>
-										sum +
-										parseFloat(
-											getComputedStyle(transitionTargetEl)
-												.getPropertyValue(prop)
-												.replace('s', '')
-										),
-									0
-							  ) * 1000
-							: 0;
+							const transitionDuration = transitionTargetEl
+								? [
+										'transition-duration',
+										'transition-delay',
+								  ].reduce(
+										(sum, prop) =>
+											sum +
+											parseFloat(
+												getComputedStyle(
+													transitionTargetEl
+												)
+													.getPropertyValue(prop)
+													.replace('s', '')
+											),
+										0
+								  ) * 1000
+								: 0;
 
-						return Math.max(promise, transitionDuration);
-					}, 0);
+							return Math.max(promise, transitionDuration);
+						}, 0);
 
 					// console.log('Leaving hover target'); // 🔥
 
 					this.contentTimeout = setTimeout(() => {
 						// Set the transitions back waiting the original to be done
-						this.addTransition();
+						this.addTransition(this.inTransitionEl);
 					}, transitionDuration);
 				});
 			});
@@ -791,23 +1018,48 @@ class Relation {
 
 	onMouseEnter() {
 		// console.log('IB is active'); // 🔥
+		if (this.transitionTimeout) this.removeTransition(this.outTransitionEl);
 		clearTimeout(this.transitionTimeout);
 
+		this.addRelationSubscriber();
+
 		this.addDataAttrToBlock();
-		this.addTransition();
+		this.addTransition(this.inTransitionEl);
 		this.addStyles();
 	}
 
 	onMouseLeave() {
 		// console.log('IB is inactive'); // 🔥
-		if (this.isContained) this.addTransition();
+		this.removeTransition(this.inTransitionEl);
+		this.addTransition(this.outTransitionEl);
 
 		this.removeStyles();
 
-		this.transitionTimeout = setTimeout(() => {
-			this.removeTransition();
+		// If the targeted element is hovered and the element has a transition set, remove transitions immediately
+		if (
+			this.targetEl.matches(':hover') &&
+			this.defaultTransition !== 'none 0s ease 0s'
+		) {
+			this.removeTransition(this.outTransitionEl);
 			this.removeAddAttrToBlock();
-		}, this.getTransitionTimeout());
+		} else {
+			const transitionTimeout = this.getTransitionTimeout();
+
+			const removeTransitionAction = () => {
+				this.removeTransition(this.outTransitionEl);
+				this.removeAddAttrToBlock();
+				this.removeRelationSubscriber();
+			};
+
+			if (transitionTimeout === 0) {
+				removeTransitionAction();
+			} else {
+				this.transitionTimeout = setTimeout(
+					removeTransitionAction,
+					transitionTimeout
+				);
+			}
+		}
 	}
 
 	addClickEvents() {
@@ -816,16 +1068,16 @@ class Relation {
 
 	onMouseClick() {
 		this.addDataAttrToBlock();
-		this.addTransition();
+		this.addTransition(this.inTransitionEl);
 		this.addStyles();
 
 		this.transitionTimeout = setTimeout(() => {
-			this.removeTransition();
+			this.removeTransition(this.inTransitionEl);
 		}, this.getTransitionTimeout());
 	}
 }
 
-window.addEventListener('load', () => {
+window.addEventListener('DOMContentLoaded', () => {
 	// eslint-disable-next-line no-undef
 	const relations = maxiRelations?.[0];
 	if (!relations) return;

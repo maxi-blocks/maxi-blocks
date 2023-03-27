@@ -2,7 +2,10 @@
  * Internal dependencies
  */
 import { createSelectors } from '../../extensions/styles/custom-css';
-import getCanvasSettings from '../../components/relation-control/getCanvasSettings';
+import {
+	getCanvasSettings,
+	getAdvancedSettings,
+} from '../../extensions/relations';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
 
 /**
@@ -18,6 +21,7 @@ const prefix = 'number-counter-';
  */
 const name = 'number-counter-maxi';
 const copyPasteMapping = {
+	_exclude: ['number-counter-start', 'number-counter-end'],
 	settings: {
 		Alignment: {
 			groupAttributes: 'alignment',
@@ -105,7 +109,8 @@ const transition = {
 	},
 };
 const interactionBuilderSettings = {
-	canvas: getCanvasSettings({ name, customCss }),
+	canvas: getCanvasSettings({ name }),
+	advanced: getAdvancedSettings({ customCss }),
 };
 
 const data = {

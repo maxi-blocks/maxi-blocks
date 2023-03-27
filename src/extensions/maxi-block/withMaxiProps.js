@@ -13,6 +13,7 @@ import {
 	handleInsertInlineStyles,
 	handleCleanInlineStyles,
 } from './inlineStyles';
+import BlockInserter from '../../components/block-inserter';
 
 /**
  * External dependencies
@@ -25,40 +26,25 @@ const withMaxiProps = createHigherOrderComponent(
 			const { setAttributes, attributes, clientId, isSelected } =
 				ownProps;
 
-			const {
-				deviceType,
-				baseBreakpoint,
-				hasInnerBlocks,
-				isChild,
-				hasSelectedChild,
-			} = useSelect(select => {
-				const { receiveMaxiDeviceType, receiveBaseBreakpoint } =
-					select('maxiBlocks');
-				const {
-					getBlockOrder,
-					getBlockParents,
-					hasSelectedInnerBlock,
-				} = select('core/block-editor');
+			const { getBlockOrder, getBlockParents } = useSelect(
+				select => select('core/block-editor'),
+				[]
+			);
 
-				const deviceType = receiveMaxiDeviceType();
-				const baseBreakpoint = receiveBaseBreakpoint();
+			const { deviceType, baseBreakpoint, hasSelectedChild, isTyping } =
+				useSelect(select => {
+					const { receiveMaxiDeviceType, receiveBaseBreakpoint } =
+						select('maxiBlocks');
+					const { hasSelectedInnerBlock, isTyping } =
+						select('core/block-editor');
 
-				const hasInnerBlocks = !isEmpty(getBlockOrder(clientId));
-
-				const isChild = !isEmpty(
-					getBlockParents(clientId).filter(val => val !== clientId)
-				);
-
-				const hasSelectedChild = hasSelectedInnerBlock(clientId, true);
-
-				return {
-					deviceType,
-					baseBreakpoint,
-					hasInnerBlocks,
-					isChild,
-					hasSelectedChild,
-				};
-			});
+					return {
+						deviceType: receiveMaxiDeviceType(),
+						baseBreakpoint: receiveBaseBreakpoint(),
+						hasSelectedChild: hasSelectedInnerBlock(clientId, true),
+						isTyping: isTyping(),
+					};
+				});
 
 			const maxiSetAttributes = useCallback(obj =>
 				handleSetAttributes({
@@ -86,7 +72,8 @@ const withMaxiProps = createHigherOrderComponent(
 						pseudoElement,
 						styleObjKeys,
 						ref,
-					})
+					}),
+				[styleObjKeys, ref]
 			);
 
 			const cleanInlineStyles = useCallback(
@@ -96,26 +83,60 @@ const withMaxiProps = createHigherOrderComponent(
 						pseudoElement,
 						styleObjKeys,
 						ref
-					)
+					),
+				[styleObjKeys, ref]
 			);
+
+			const getBounds = useCallback(selector => {
+				const blockRef = ref.current.blockRef.current;
+
+				const getTarget = () => {
+					if (selector) {
+						const target = blockRef.querySelector(selector);
+						if (target) return target;
+					}
+					return blockRef;
+				};
+
+				return getTarget().getBoundingClientRect();
+			}, []);
 
 			useEffect(() => {
 				dispatch('maxiBlocks/styles').savePrevSavedAttrs([]);
 			}, [isSelected]);
 
 			return (
-				<WrappedComponent
-					{...ownProps}
-					ref={ref}
-					maxiSetAttributes={maxiSetAttributes}
-					insertInlineStyles={insertInlineStyles}
-					cleanInlineStyles={cleanInlineStyles}
-					deviceType={deviceType}
-					baseBreakpoint={baseBreakpoint}
-					hasInnerBlocks={hasInnerBlocks}
-					isChild={isChild}
-					hasSelectedChild={hasSelectedChild}
-				/>
+				<>
+					<WrappedComponent
+						{...ownProps}
+						ref={ref}
+						maxiSetAttributes={maxiSetAttributes}
+						insertInlineStyles={insertInlineStyles}
+						cleanInlineStyles={cleanInlineStyles}
+						getBounds={getBounds}
+						deviceType={deviceType}
+						baseBreakpoint={baseBreakpoint}
+						hasInnerBlocks={!isEmpty(getBlockOrder(clientId))}
+						isChild={
+							!isEmpty(
+								getBlockParents(clientId).filter(
+									val => val !== clientId
+								)
+							)
+						}
+						hasSelectedChild={hasSelectedChild}
+					/>
+					{/*
+						Need to check if it's typing to avoid an error on Text Maxi when moving the caret selector doing a keyDown event.
+						It happens when, for example, you are typing and you move the caret selector to another block using the arrows.
+					*/}
+					{!isTyping && (
+						<BlockInserter.InterBlockInserter
+							ref={ref}
+							{...ownProps}
+						/>
+					)}
+				</>
 			);
 		}),
 	'withMaxiProps'

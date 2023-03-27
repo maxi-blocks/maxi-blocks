@@ -1,14 +1,18 @@
 import cleanAttributes from '../cleanAttributes';
 
 jest.mock('src/extensions/styles/getDefaultAttribute.js', () =>
-	jest.fn(() => undefined)
+	jest.fn(attr =>
+		attr === 'attribute-with-default-value-hover' ? true : undefined
+	)
 );
 jest.mock('@wordpress/data', () => {
 	return {
 		select: jest.fn(() => {
 			return {
 				receiveBaseBreakpoint: jest.fn(() => 'm'),
+				receiveMaxiDeviceType: jest.fn(() => 'general'),
 				getPrevSavedAttrs: jest.fn(() => []),
+				getSelectedBlockCount: jest.fn(() => 1),
 			};
 		}),
 		createReduxStore: jest.fn(),
@@ -22,17 +26,20 @@ import { select } from '@wordpress/data';
 
 describe('cleanAttributes', () => {
 	it('Should flat the entry object with same value for same attribute with different breakpoints, and just return general one', () => {
-		const newAttributes = {
-			'test-general': 10,
-			'test-xl': 10,
+		const obj = {
+			newAttributes: {
+				'test-general': 10,
+				'test-xl': 10,
+			},
+			attributes: {
+				'test-general': 11,
+				'test-xl': 11,
+			},
+			defaultAttributes: {},
 		};
 
-		const attributes = {
-			'test-general': 11,
-			'test-xl': 11,
-		};
+		const result = cleanAttributes(obj);
 
-		const result = cleanAttributes({ newAttributes, attributes });
 		const expectedResult = {
 			'test-general': 10,
 			'test-xl': undefined,
@@ -42,16 +49,20 @@ describe('cleanAttributes', () => {
 	});
 
 	it('Should return M value as default, as is equal as its closest valid attribute (general)', () => {
-		const newAttributes = {
-			'test-m': 100,
+		const obj = {
+			newAttributes: {
+				'test-m': 100,
+			},
+
+			attributes: {
+				'test-general': 100,
+				'test-m': 99,
+			},
+			defaultAttributes: {},
 		};
 
-		const attributes = {
-			'test-general': 100,
-			'test-m': 99,
-		};
+		const result = cleanAttributes(obj);
 
-		const result = cleanAttributes({ newAttributes, attributes });
 		const expectedResult = {
 			'test-m': undefined,
 		};
@@ -70,7 +81,11 @@ describe('cleanAttributes', () => {
 			'test-m': 98,
 		};
 
-		const result = cleanAttributes({ newAttributes, attributes });
+		const result = cleanAttributes({
+			newAttributes,
+			attributes,
+			defaultAttributes: {},
+		});
 		const expectedResult = {
 			'test-m': undefined,
 		};
@@ -90,6 +105,7 @@ describe('cleanAttributes', () => {
 		const result = cleanAttributes({
 			newAttributes,
 			attributes,
+			defaultAttributes: {},
 		});
 
 		const expectedResult = {
@@ -109,7 +125,11 @@ describe('cleanAttributes', () => {
 			'test-l': 100,
 		};
 
-		const result = cleanAttributes({ newAttributes, attributes });
+		const result = cleanAttributes({
+			newAttributes,
+			attributes,
+			defaultAttributes: {},
+		});
 		const expectedResult = {
 			'test-general': 100,
 			'test-l': undefined,
@@ -128,7 +148,11 @@ describe('cleanAttributes', () => {
 			'test-xxl': 100,
 		};
 
-		const result = cleanAttributes({ newAttributes, attributes });
+		const result = cleanAttributes({
+			newAttributes,
+			attributes,
+			defaultAttributes: {},
+		});
 		const expectedResult = {
 			'test-general': 100,
 			'test-xxl': undefined,
@@ -182,6 +206,7 @@ describe('cleanAttributes', () => {
 				'test-m': 8,
 				'test-opacity-general': 1,
 			},
+			defaultAttributes: {},
 		};
 
 		const result = cleanAttributes(obj);
@@ -309,12 +334,552 @@ describe('cleanAttributes', () => {
 		expect(expectedResult).toStrictEqual(result);
 	});
 
+	it('On changing general value by one and on crossing the same values on smaller breakpoints, if general value change stopped not on the same values as smaller breakpoints, smaller breakpoints should be returned to previous value', () => {
+		let i = 0;
+		select.mockImplementation(
+			jest.fn(() => {
+				return {
+					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					receiveMaxiDeviceType: jest.fn(() => 'xl'),
+					getSelectedBlockCount: jest.fn(() => 1),
+					getPrevSavedAttrs: jest.fn(() => {
+						i += 1;
+						switch (i) {
+							case 2:
+								return ['test-general'];
+							case 3:
+								return ['test-general', 'test-l'];
+							case 1:
+							default:
+								return [];
+						}
+					}),
+				};
+			})
+		);
+
+		const firstRound = {
+			newAttributes: {
+				'test-general': 3,
+			},
+			attributes: {
+				'test-general': undefined,
+				'test-l': 4,
+			},
+		};
+		const secondRound = {
+			newAttributes: {
+				'test-general': 4,
+			},
+			attributes: {
+				'test-general': 3,
+				'test-l': 4,
+			},
+		};
+		const thirdRound = {
+			newAttributes: {
+				'test-general': 5,
+			},
+			attributes: {
+				'test-general': 4,
+				'test-l': undefined,
+			},
+		};
+
+		const resultFirstRound = cleanAttributes(firstRound);
+		const resultSecondRound = cleanAttributes(secondRound);
+		const resultThirdRound = cleanAttributes(thirdRound);
+
+		const expectedFirstRound = {
+			'test-general': 3,
+		};
+		const expectedSecondRound = {
+			'test-general': 4,
+			'test-l': undefined,
+		};
+		const expectedThirdRound = {
+			'test-general': 5,
+			'test-l': 4,
+		};
+
+		expect(resultFirstRound).toStrictEqual(expectedFirstRound);
+		expect(resultSecondRound).toStrictEqual(expectedSecondRound);
+		expect(resultThirdRound).toStrictEqual(expectedThirdRound);
+	});
+
+	it('On changing general obj value by one and on crossing the same obj values on smaller breakpoints, if general obj value change stopped not on the same values as smaller breakpoints, smaller breakpoints should be returned to previous value', () => {
+		select.mockImplementation(
+			jest.fn(() => {
+				return {
+					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
+					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
+				};
+			})
+		);
+
+		const firstRound = {
+			newAttributes: {
+				'test-general': {
+					normal: {
+						numberWhichIsChanging: 3,
+						keyOfUndefined: undefined,
+					},
+					hover: {
+						numberWhichIsNotChanging: 1,
+					},
+				},
+			},
+			attributes: {
+				'test-general': undefined,
+				'test-l': {
+					normal: {
+						numberWhichIsChanging: 4,
+						keyOfUndefined: undefined,
+					},
+					hover: {
+						numberWhichIsNotChanging: 1,
+					},
+				},
+			},
+		};
+		const secondRound = {
+			newAttributes: {
+				'test-general': {
+					normal: {
+						numberWhichIsChanging: 4,
+						keyOfUndefined: undefined,
+					},
+					hover: {
+						numberWhichIsNotChanging: 1,
+					},
+				},
+			},
+			attributes: {
+				'test-general': {
+					normal: {
+						numberWhichIsChanging: 3,
+						keyOfUndefined: undefined,
+					},
+					hover: {
+						numberWhichIsNotChanging: 1,
+					},
+				},
+				'test-l': {
+					normal: {
+						numberWhichIsChanging: 4,
+						keyOfUndefined: undefined,
+					},
+					hover: {
+						numberWhichIsNotChanging: 1,
+					},
+				},
+			},
+		};
+		const thirdRound = {
+			newAttributes: {
+				'test-general': {
+					normal: {
+						numberWhichIsChanging: 5,
+						keyOfUndefined: undefined,
+					},
+					hover: {
+						numberWhichIsNotChanging: 1,
+					},
+				},
+			},
+			attributes: {
+				'test-general': {
+					normal: {
+						numberWhichIsChanging: 4,
+						keyOfUndefined: undefined,
+					},
+					hover: {
+						numberWhichIsNotChanging: 1,
+					},
+				},
+				'test-l': undefined,
+			},
+		};
+
+		const resultFirstRound = cleanAttributes(firstRound);
+		select.mockImplementation(
+			jest.fn(() => {
+				return {
+					receiveMaxiDeviceType: jest.fn(() => 'xl'),
+					getSelectedBlockCount: jest.fn(() => 1),
+					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					getPrevSavedAttrs: jest.fn(() => [
+						'test-general',
+						'test-l',
+					]),
+				};
+			})
+		);
+		const resultSecondRound = cleanAttributes(secondRound);
+		const resultThirdRound = cleanAttributes(thirdRound);
+
+		const expectedFirstRound = {
+			'test-general': {
+				normal: {
+					numberWhichIsChanging: 3,
+					keyOfUndefined: undefined,
+				},
+				hover: {
+					numberWhichIsNotChanging: 1,
+				},
+			},
+		};
+		const expectedSecondRound = {
+			'test-general': {
+				normal: {
+					numberWhichIsChanging: 4,
+					keyOfUndefined: undefined,
+				},
+				hover: {
+					numberWhichIsNotChanging: 1,
+				},
+			},
+			'test-l': undefined,
+		};
+		const expectedThirdRound = {
+			'test-general': {
+				normal: {
+					numberWhichIsChanging: 5,
+					keyOfUndefined: undefined,
+				},
+				hover: {
+					numberWhichIsNotChanging: 1,
+				},
+			},
+			'test-l': {
+				normal: {
+					numberWhichIsChanging: 4,
+					keyOfUndefined: undefined,
+				},
+				hover: {
+					numberWhichIsNotChanging: 1,
+				},
+			},
+		};
+
+		expect(resultFirstRound).toStrictEqual(expectedFirstRound);
+		expect(resultSecondRound).toStrictEqual(expectedSecondRound);
+		expect(resultThirdRound).toStrictEqual(expectedThirdRound);
+	});
+
+	it('On changing general value by one and on crossing the same values on smaller and higher breakpoints, if general value change stopped not on the same values as other breakpoints, they breakpoints should be returned to previous value', () => {
+		let i = 0;
+		select.mockImplementation(
+			jest.fn(() => {
+				return {
+					receiveMaxiDeviceType: jest.fn(() => 'xl'),
+					getSelectedBlockCount: jest.fn(() => 1),
+					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					getPrevSavedAttrs: jest.fn(() => {
+						i += 1;
+						switch (i) {
+							case 2:
+								return ['test-general'];
+							case 3:
+								return ['test-general', 'test-l', 'test-xxl'];
+							case 1:
+							default:
+								return [];
+						}
+					}),
+				};
+			})
+		);
+
+		const firstRound = {
+			newAttributes: {
+				'test-general': 3,
+			},
+			attributes: {
+				'test-general': undefined,
+				'test-xxl': 4,
+				'test-l': 4,
+			},
+		};
+		const secondRound = {
+			newAttributes: {
+				'test-general': 4,
+			},
+			attributes: {
+				'test-general': 3,
+				'test-xxl': 4,
+				'test-l': 4,
+			},
+		};
+		const thirdRound = {
+			newAttributes: {
+				'test-general': 5,
+			},
+			attributes: {
+				'test-general': 4,
+				'test-xxl': undefined,
+				'test-l': undefined,
+			},
+		};
+
+		const resultFirstRound = cleanAttributes(firstRound);
+		const resultSecondRound = cleanAttributes(secondRound);
+		const resultThirdRound = cleanAttributes(thirdRound);
+
+		const expectedFirstRound = {
+			'test-general': 3,
+		};
+		const expectedSecondRound = {
+			'test-general': 4,
+			'test-xxl': undefined,
+			'test-l': undefined,
+		};
+		const expectedThirdRound = {
+			'test-general': 5,
+			'test-xxl': 4,
+			'test-l': 4,
+		};
+
+		expect(resultFirstRound).toStrictEqual(expectedFirstRound);
+		expect(resultSecondRound).toStrictEqual(expectedSecondRound);
+		expect(resultThirdRound).toStrictEqual(expectedThirdRound);
+	});
+
+	it('On changing XL value by one and on crossing the same values with general breakpoint, if XL value change stopped not on the same values as smaller breakpoints, general value should be returned to previous', () => {
+		select.mockImplementation(
+			jest.fn(() => {
+				return {
+					receiveBaseBreakpoint: jest.fn(() => 'm'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
+					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
+				};
+			})
+		);
+
+		const firstRound = {
+			newAttributes: {
+				'test-xl': 3,
+			},
+			attributes: {
+				'test-general': 4,
+				'test-xl': undefined,
+			},
+		};
+		const secondRound = {
+			newAttributes: {
+				'test-xl': 4,
+			},
+			attributes: {
+				'test-general': 4,
+				'test-m': 4,
+				'test-xl': 3,
+			},
+		};
+		const thirdRound = {
+			newAttributes: {
+				'test-xl': 5,
+			},
+			attributes: {
+				'test-general': 4,
+				'test-m': undefined,
+				'test-xl': undefined,
+			},
+		};
+
+		const resultFirstRound = cleanAttributes(firstRound);
+		select.mockImplementation(
+			jest.fn(() => {
+				return {
+					receiveMaxiDeviceType: jest.fn(() => 'xl'),
+					getSelectedBlockCount: jest.fn(() => 1),
+					receiveBaseBreakpoint: jest.fn(() => 'm'),
+					getPrevSavedAttrs: jest.fn(() => ['test-xl', 'test-m']),
+				};
+			})
+		);
+		const resultSecondRound = cleanAttributes(secondRound);
+		const resultThirdRound = cleanAttributes(thirdRound);
+
+		const expectedFirstRound = {
+			'test-m': 4,
+			'test-xl': 3,
+		};
+		const expectedSecondRound = {
+			'test-m': undefined,
+			'test-xl': undefined,
+		};
+		const expectedThirdRound = {
+			'test-m': 4,
+			'test-xl': 5,
+		};
+
+		expect(resultFirstRound).toStrictEqual(expectedFirstRound);
+		expect(resultSecondRound).toStrictEqual(expectedSecondRound);
+		expect(resultThirdRound).toStrictEqual(expectedThirdRound);
+	});
+
+	it('On changing M value by one and on crossing the same values with S breakpoint and also when we have values on other bps, if M value change stopped not on the same values as smaller breakpoints, S value should be returned to previous', () => {
+		let i = 0;
+		select.mockImplementation(
+			jest.fn(() => {
+				return {
+					receiveMaxiDeviceType: jest.fn(() => 'xl'),
+					getSelectedBlockCount: jest.fn(() => 1),
+					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					getPrevSavedAttrs: jest.fn(() => {
+						i += 1;
+						switch (i) {
+							case 2:
+								return ['test-m'];
+							case 3:
+								return ['test-m', 'test-s'];
+							case 1:
+							default:
+								return [];
+						}
+					}),
+				};
+			})
+		);
+
+		const firstRound = {
+			newAttributes: {
+				'test-m': 3,
+			},
+			attributes: {
+				'test-xl': 10,
+				'test-s': 4,
+				'test-xs': 1,
+			},
+		};
+		const secondRound = {
+			newAttributes: {
+				'test-m': 4,
+			},
+			attributes: {
+				'test-xl': 10,
+				'test-m': 3,
+				'test-s': 4,
+				'test-xs': 1,
+			},
+		};
+		const thirdRound = {
+			newAttributes: {
+				'test-m': 5,
+			},
+			attributes: {
+				'test-xl': 10,
+				'test-m': 4,
+				'test-s': undefined,
+				'test-xs': 1,
+			},
+		};
+
+		const resultFirstRound = cleanAttributes(firstRound);
+		const resultSecondRound = cleanAttributes(secondRound);
+		const resultThirdRound = cleanAttributes(thirdRound);
+
+		const expectedFirstRound = {
+			'test-m': 3,
+		};
+		const expectedSecondRound = {
+			'test-m': 4,
+			'test-s': undefined,
+		};
+		const expectedThirdRound = {
+			'test-m': 5,
+			'test-s': 4,
+		};
+
+		expect(resultFirstRound).toStrictEqual(expectedFirstRound);
+		expect(resultSecondRound).toStrictEqual(expectedSecondRound);
+		expect(resultThirdRound).toStrictEqual(expectedThirdRound);
+	});
+
+	it('On typing general value by one digit and on crossing the same values on smaller breakpoints, if general value change stopped not on the same values as smaller breakpoints, smaller breakpoints should be returned to previous value', () => {
+		let i = 0;
+		select.mockImplementation(
+			jest.fn(() => {
+				return {
+					receiveMaxiDeviceType: jest.fn(() => 'xl'),
+					getSelectedBlockCount: jest.fn(() => 1),
+					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					getPrevSavedAttrs: jest.fn(() => {
+						i += 1;
+						switch (i) {
+							case 2:
+								return ['test-general'];
+							case 3:
+								return ['test-general', 'test-l'];
+							case 1:
+							default:
+								return [];
+						}
+					}),
+				};
+			})
+		);
+
+		const firstRound = {
+			newAttributes: {
+				'test-general': 4,
+			},
+			attributes: {
+				'test-general': undefined,
+				'test-l': 40,
+			},
+		};
+		const secondRound = {
+			newAttributes: {
+				'test-general': 40,
+			},
+			attributes: {
+				'test-general': 4,
+				'test-l': 40,
+			},
+		};
+		const thirdRound = {
+			newAttributes: {
+				'test-general': 400,
+			},
+			attributes: {
+				'test-general': 40,
+				'test-l': undefined,
+			},
+		};
+
+		const resultFirstRound = cleanAttributes(firstRound);
+		const resultSecondRound = cleanAttributes(secondRound);
+		const resultThirdRound = cleanAttributes(thirdRound);
+
+		const expectedFirstRound = {
+			'test-general': 4,
+		};
+		const expectedSecondRound = {
+			'test-general': 40,
+			'test-l': undefined,
+		};
+		const expectedThirdRound = {
+			'test-general': 400,
+			'test-l': 40,
+		};
+
+		expect(resultFirstRound).toStrictEqual(expectedFirstRound);
+		expect(resultSecondRound).toStrictEqual(expectedSecondRound);
+		expect(resultThirdRound).toStrictEqual(expectedThirdRound);
+	});
+
 	it('Random test', () => {
 		select.mockImplementation(
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'l'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
 					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
 		);
@@ -352,7 +917,9 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'm'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
 					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
 		);
@@ -414,7 +981,9 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'l'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
 					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
 		);
@@ -428,6 +997,7 @@ describe('cleanAttributes', () => {
 				'border-palette-color-l': 4,
 				'border-palette-color-m': 5,
 			},
+			defaultAttributes: {},
 		};
 
 		const result = cleanAttributes(obj);
@@ -472,7 +1042,9 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'm'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
 					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
 		);
@@ -526,7 +1098,9 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
 					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
 		);
@@ -561,7 +1135,9 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'l'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
 					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
 		);
@@ -599,7 +1175,9 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
 					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
 		);
@@ -638,7 +1216,9 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
 					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
 		);
@@ -673,12 +1253,14 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
 					getPrevSavedAttrs: jest.fn(() => [
 						'test-general',
 						'test-m',
 						'test-xxl',
 						'test-xl',
 					]),
+					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
 		);
@@ -708,7 +1290,7 @@ describe('cleanAttributes', () => {
 		const expectedResult = {
 			'test-general': 20,
 			'test-xxl': 24,
-			'test-xl': undefined,
+			'test-xl': 16,
 			'test-m': undefined,
 		};
 
@@ -720,7 +1302,9 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
 					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
 		);
@@ -760,7 +1344,9 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
 					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
 		);
@@ -799,7 +1385,9 @@ describe('cleanAttributes', () => {
 			jest.fn(() => {
 				return {
 					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
 					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
 				};
 			})
 		);
@@ -820,6 +1408,261 @@ describe('cleanAttributes', () => {
 		const expectedResult = {
 			'test-general': 'full',
 			'test-xxl': undefined,
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
+
+	it('Random test 13', () => {
+		select.mockImplementation(
+			jest.fn(() => {
+				return {
+					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
+					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
+				};
+			})
+		);
+
+		const obj = {
+			newAttributes: {
+				'test-general': undefined,
+				'test-xl': '1170',
+			},
+			attributes: {
+				'test-general': 100,
+				'test-xl': undefined,
+			},
+			defaultAttributes: {
+				'test-general': undefined,
+				'test-xl': '1170',
+			},
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'test-general': undefined,
+			'test-xl': '1170',
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
+
+	it('Random test 14', () => {
+		select.mockImplementation(
+			jest.fn(() => {
+				return {
+					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
+					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
+				};
+			})
+		);
+
+		const obj = {
+			newAttributes: {
+				'test-general': undefined,
+				'test-xl': '1170',
+			},
+			attributes: {
+				'test-general': undefined,
+				'test-xl': undefined,
+			},
+			defaultAttributes: {
+				'test-general': undefined,
+				'test-xl': '1170',
+			},
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'test-general': undefined,
+			'test-xl': '1170',
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
+
+	it('Random test 15', () => {
+		select.mockImplementation(
+			jest.fn(() => {
+				return {
+					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
+					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
+				};
+			})
+		);
+
+		const obj = {
+			newAttributes: {
+				'test-xxl': 'none',
+				'test-xl': 'none',
+			},
+			attributes: {
+				'test-general': 'none',
+				'test-xxl': 'axis',
+			},
+			defaultAttributes: {
+				'test-general': 'axis',
+				'test-xxl': 'axis',
+			},
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'test-xxl': undefined,
+			'test-xl': undefined,
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
+
+	it('Random test 16', () => {
+		select.mockImplementation(
+			jest.fn(() => {
+				return {
+					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					receiveMaxiDeviceType: jest.fn(() => 'general'),
+					getPrevSavedAttrs: jest.fn(() => []),
+					getSelectedBlockCount: jest.fn(() => 1),
+				};
+			})
+		);
+
+		const obj = {
+			newAttributes: {
+				'test-m': undefined,
+			},
+			attributes: {
+				'test-general': '5',
+				'test-xl': undefined,
+				'test-xxl': '23',
+			},
+			defaultAttributes: {
+				'test-xl': '15',
+				'test-xxl': '23',
+			},
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'test-m': undefined,
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
+
+	it('Should save hover attribute same as normal one as undefined', () => {
+		const obj = {
+			newAttributes: {
+				'test-general-hover': '5',
+			},
+			attributes: {
+				'test-general': '5',
+				'test-general-hover': '4',
+			},
+			defaultAttributes: {},
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'test-general-hover': undefined,
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
+
+	it('Should delete hover attribute same as normal one', () => {
+		const obj = {
+			newAttributes: {
+				'test-general': '4',
+			},
+			attributes: {
+				'test-general': '5',
+				'test-general-hover': '4',
+			},
+			defaultAttributes: {},
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'test-general': '4',
+			'test-general-hover': undefined,
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
+
+	it('Should save responsive hover attributes same as general as undefined', () => {
+		const obj = {
+			newAttributes: {
+				'test-s-hover': '4',
+			},
+			attributes: {
+				'test-general': '5',
+				'test-general-hover': '4',
+				'test-s-hover': '3',
+			},
+			defaultAttributes: {},
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'test-s-hover': undefined,
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
+
+	it('Should delete responsive hover attributes same as general', () => {
+		const obj = {
+			newAttributes: {
+				'test-general-hover': '3',
+			},
+			attributes: {
+				'test-general': '5',
+				'test-general-hover': '4',
+				'test-s-hover': '3',
+			},
+			defaultAttributes: {},
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'test-general-hover': '3',
+			'test-s-hover': undefined,
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
+
+	it('Should not delete hover attributes if they have default value', () => {
+		const obj = {
+			newAttributes: {
+				'attribute-with-default-value-hover': 3,
+			},
+			attributes: {
+				'attribute-with-default-value': 3,
+			},
+			defaultAttributes: {},
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'attribute-with-default-value-hover': 3,
 		};
 
 		expect(result).toStrictEqual(expectedResult);

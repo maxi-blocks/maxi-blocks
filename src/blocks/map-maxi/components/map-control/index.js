@@ -10,6 +10,7 @@ import AdvancedNumberControl from '../../../../components/advanced-number-contro
 import InfoBox from '../../../../components/info-box';
 import SelectControl from '../../../../components/select-control';
 import { getDefaultAttribute } from '../../../../extensions/styles';
+import { getMaxiAdminSettingsUrl } from '../../utils';
 
 /**
  * Component
@@ -33,7 +34,7 @@ const MapControl = props => {
 					links={[
 						{
 							title: __('Maxi Block Settings', 'maxi-blocks'),
-							href: '/wp-admin/admin.php?page=maxi-blocks-dashboard&tab=maxi_blocks_settings',
+							href: getMaxiAdminSettingsUrl(),
 						},
 					]}
 				/>
@@ -58,7 +59,7 @@ const MapControl = props => {
 				className='maxi-map-control__min-zoom'
 				label={__('Minimum zoom', 'maxi-blocks')}
 				min={1}
-				max={21}
+				max={mapMaxZoom - 1 || 21}
 				initial={1}
 				step={1}
 				value={mapMinZoom}
@@ -66,13 +67,14 @@ const MapControl = props => {
 				onReset={() =>
 					onChange({
 						'map-min-zoom': getDefaultAttribute('map-min-zoom'),
+						isReset: true,
 					})
 				}
 			/>
 			<AdvancedNumberControl
 				className='maxi-map-control__max-zoom'
 				label={__('Maximum zoom', 'maxi-blocks')}
-				min={2}
+				min={mapMinZoom + 1 || 2}
 				max={22}
 				initial={1}
 				step={1}
@@ -81,6 +83,7 @@ const MapControl = props => {
 				onReset={() =>
 					onChange({
 						'map-max-zoom': getDefaultAttribute('map-max-zoom'),
+						isReset: true,
 					})
 				}
 			/>

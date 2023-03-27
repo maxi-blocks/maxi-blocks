@@ -34,6 +34,8 @@ const handleInsertInlineStyles = ({
 			: [parentElement];
 
 	targetElements.forEach(targetElement => {
+		if (!targetElement) return;
+
 		if (pseudoElement !== '') {
 			const styleElement = targetElement.querySelector(
 				`style[data-pseudo-element="${pseudoElement}"]`

@@ -118,6 +118,12 @@ const getHoverWrapperObject = props => {
 				isHover: true,
 			}),
 		}),
+		...(props['opacity-status-hover'] && {
+			opacity: getOpacityStyles(
+				{ ...getGroupAttributes(props, 'opacity', true) },
+				true
+			),
+		}),
 	};
 
 	return response;
@@ -207,6 +213,15 @@ const getHoverEffectContentTextObject = props => {
 	return response;
 };
 
+const getImageOverflow = props => {
+	const response = {
+		overflow: getOverflowStyles({
+			...getGroupAttributes(props, 'overflow'),
+		}),
+	};
+
+	return response;
+};
 const getImageWrapperObject = props => {
 	const response = {
 		alignment: getAlignmentFlexStyles({
@@ -323,7 +338,9 @@ const getImageObject = props => {
 			'image-'
 		),
 		clipPath: getClipPathStyles({
-			...getGroupAttributes(props, 'clipPath'),
+			obj: {
+				...getGroupAttributes(props, 'clipPath'),
+			},
 		}),
 		...(imgWidth && {
 			imgWidth: {
@@ -366,6 +383,14 @@ const getHoverImageObject = props => {
 				isHover: true,
 				blockStyle: props.blockStyle,
 				prefix: 'image-',
+			}),
+		}),
+		...(props['clip-path-status-hover'] && {
+			clipPath: getClipPathStyles({
+				obj: {
+					...getGroupAttributes(props, 'clipPath', true),
+				},
+				isHover: true,
 			}),
 		}),
 	};
@@ -489,7 +514,16 @@ const getStyles = props => {
 	const response = {
 		[uniqueID]: styleProcessor(
 			{
-				'': getWrapperObject(props),
+				'': { ...getWrapperObject(props) },
+				' .maxi-block__resizer--overflow': {
+					...getImageOverflow(props),
+					border: getBorderStyles({
+						obj: {
+							...getGroupAttributes(props, ['borderRadius']),
+						},
+						blockStyle: props.blockStyle,
+					}),
+				},
 				':hover': getHoverWrapperObject(props),
 				' .maxi-image-block-wrapper': {
 					...getImageWrapperObject(props),

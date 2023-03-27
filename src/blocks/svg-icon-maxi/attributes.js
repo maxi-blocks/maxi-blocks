@@ -6,7 +6,7 @@ import {
 	prefixAttributesCreator,
 	transitionAttributesCreator,
 } from '../../extensions/styles';
-import { transition } from './data';
+import { customCss, transition } from './data';
 
 /**
  * Attributes
@@ -91,6 +91,7 @@ const attributes = {
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
 	...attributesData.opacity,
+	...attributesData.opacityHover,
 	...attributesData.size,
 	...attributesData.margin,
 	...attributesData.padding,
@@ -103,7 +104,10 @@ const attributes = {
 	...attributesData.transform,
 	...{
 		...attributesData.transition,
-		...transitionAttributesCreator(transition),
+		...transitionAttributesCreator({
+			transition,
+			selectors: customCss.selectors,
+		}),
 	},
 	...attributesData.display,
 	...attributesData.position,

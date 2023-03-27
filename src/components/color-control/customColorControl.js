@@ -7,7 +7,6 @@ import { useEffect, useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import Icon from '../icon';
 import BaseControl from '../base-control';
 import OpacityControl from '../opacity-control';
 import ResetButton from '../reset-control';
@@ -23,7 +22,6 @@ import { isEmpty } from 'lodash';
  * Icons
  */
 import './editor.scss';
-import { colorOpacity } from '../../icons';
 
 /**
  * Component
@@ -81,7 +79,7 @@ const CustomColorControl = props => {
 						<OpacityControl
 							label={__('Colour opacity', 'maxi-blocks')}
 							opacity={color.a}
-							onChange={val => {
+							onChangeOpacity={val => {
 								if (!isEmpty(color)) {
 									color.a = val;
 
@@ -109,11 +107,19 @@ const CustomColorControl = props => {
 								}}
 							/>
 						</div>
+						{!disableReset && (
+							<ResetButton
+								onReset={e => {
+									onReset();
+								}}
+								isSmall
+							/>
+						)}
 					</BaseControl>
-					<Icon icon={colorOpacity} />
 					<OpacityControl
+						label={__('Colour opacity', 'maxi-blocks')}
 						opacity={color.a}
-						onChange={val => {
+						onChangeOpacity={val => {
 							if (!isEmpty(color)) {
 								color.a = val;
 

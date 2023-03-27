@@ -129,6 +129,29 @@ function observeConsoleLogging() {
 			return;
 		}
 
+		// Youtube API returns random errors sometimes
+		if (text.includes('The YouTube player is not attached to the DOM')) {
+			return;
+		}
+
+		// CustomCSS validator returns connection errors sometimes
+		if (text.includes('Error validating css: TypeError: Failed to fetch')) {
+			return;
+		}
+		if (text.includes('Failed to load resource: net::ERR_FAILED')) {
+			return;
+		}
+		if (
+			text.includes(
+				'Error validating css: Error: The request took longer than'
+			)
+		) {
+			return;
+		}
+		if (text.includes('Failed to load resource: the server responded')) {
+			return;
+		}
+
 		// Since 6.1 multiline on RichText is deprecated. Need to be update on #3877
 		if (
 			text.includes(
@@ -138,11 +161,10 @@ function observeConsoleLogging() {
 			return;
 		}
 
-		// Since 6.1 GradientPicker is deprecated. Need to be update on #3880
+		// In case there's no internet connection (like when you're in a plane working lol)
 		if (
-			text.includes(
-				'Outer margin styles for wp.components.GradientPicker is deprecated'
-			)
+			text.includes('ERR_INTERNET_DISCONNECTED') ||
+			text.includes('network error occurred')
 		) {
 			return;
 		}
@@ -188,8 +210,8 @@ beforeAll(async () => {
 
 	await setupBrowser();
 
-	await deactivatePlugin('maxi-blocks-last-github-version');
-	await activatePlugin('maxi-blocks-last-github-version');
+	await deactivatePlugin('maxi-blocks');
+	await activatePlugin('maxi-blocks');
 
 	// Default theme, twentytwentytwo, has a bug that returns a console.error
 	await activateTheme('twentytwentyone');

@@ -6,7 +6,7 @@ import {
 	prefixAttributesCreator,
 	transitionAttributesCreator,
 } from '../../extensions/styles';
-import { transition } from './data';
+import { customCss, transition } from './data';
 
 /**
  * Attributes
@@ -19,9 +19,6 @@ const attributes = {
 	 * Block styles
 	 */
 	buttonContent: {
-		type: 'string',
-	},
-	svgType: {
 		type: 'string',
 	},
 	...attributesData.icon,
@@ -65,10 +62,6 @@ const attributes = {
 		'line-height-unit-general': {
 			type: 'string',
 			default: '%',
-		},
-		'line-height-general': {
-			type: 'number',
-			default: '100',
 		},
 		'palette-color-general': {
 			type: 'number',
@@ -147,22 +140,18 @@ const attributes = {
 		obj: attributesData.padding,
 		prefix,
 		diffValAttr: {
-			[`${prefix}padding-sync-xxl`]: 'axis',
-			[`${prefix}padding-top-xxl`]: '23',
-			[`${prefix}padding-right-xxl`]: '55',
-			[`${prefix}padding-bottom-xxl`]: '23',
-			[`${prefix}padding-left-xxl`]: '55',
-			[`${prefix}padding-sync-general`]: 'axis',
-			[`${prefix}padding-top-general`]: '15',
-			[`${prefix}padding-right-general`]: '36',
-			[`${prefix}padding-bottom-general`]: '15',
-			[`${prefix}padding-left-general`]: '36',
+			'button-padding-sync-general': 'axis',
+			'button-padding-top-general': '15',
+			'button-padding-right-general': '36',
+			'button-padding-bottom-general': '15',
+			'button-padding-left-general': '36',
 		},
 	}),
 
 	/**
 	 * Canvas styles
 	 */
+	...attributesData.blockBackground,
 	...attributesData.border,
 	...attributesData.borderWidth,
 	...attributesData.borderRadius,
@@ -172,16 +161,20 @@ const attributes = {
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
 	...attributesData.opacity,
+	...attributesData.opacityHover,
 
 	/**
 	 * Advanced
 	 */
-	...attributesData.blockBackground,
+	...attributesData.dynamicContent,
 	...attributesData.scroll,
 	...attributesData.transform,
 	...{
 		...attributesData.transition,
-		...transitionAttributesCreator(transition),
+		...transitionAttributesCreator({
+			transition,
+			selectors: customCss.selectors,
+		}),
 	},
 	...attributesData.display,
 	...attributesData.position,

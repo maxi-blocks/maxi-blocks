@@ -6,7 +6,7 @@ import {
 	prefixAttributesCreator,
 	transitionAttributesCreator,
 } from '../../extensions/styles';
-import { transition } from './data';
+import { customCss, transition } from './data';
 
 const mutualAttributes = {
 	...attributesData.background,
@@ -16,13 +16,18 @@ const mutualAttributes = {
 	...attributesData.backgroundHover,
 	...attributesData.backgroundColorHover,
 	...attributesData.backgroundGradientHover,
+	...attributesData.backgroundActive,
+	...attributesData.backgroundColorActive,
+	...attributesData.backgroundGradientActive,
 
 	...attributesData.border,
 	...attributesData.borderHover,
+	...attributesData.borderActive,
 	...attributesData.borderRadius,
 	...attributesData.borderWidth,
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
+	...attributesData.boxShadowActive,
 	...attributesData.size,
 	...attributesData.padding,
 };
@@ -107,9 +112,14 @@ const attributes = {
 	...attributesData.transform,
 	...{
 		...attributesData.transition,
-		...transitionAttributesCreator(transition),
+		...transitionAttributesCreator({
+			transition,
+			selectors: customCss.selectors,
+		}),
 	},
 	...attributesData.display,
+	...attributesData.opacity,
+	...attributesData.opacityHover,
 	...attributesData.position,
 	...attributesData.overflow,
 	...attributesData.zIndex,

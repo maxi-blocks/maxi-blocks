@@ -8,17 +8,20 @@ import { dispatch, select } from '@wordpress/data';
  * External dependencies
  */
 import { isEmpty, uniq } from 'lodash';
+
 /**
  * Loads the font on background using JS FontFace API
  * FontFaceSet API uses check() to check if a font exists, but needs to compare with some exact value:
  * in this case is used '12px' as a standard that returns if the font has been loaded.
  *
- * @param {string} font Name of the selected font
+ * @param {string}      font        Name of the selected font
+ * @param {boolean}     backendOnly If true, `dispatch('maxiBlocks/text').updateFonts()` isn't called
+ * @param {HTMLElement} target      Element, where the font will be loaded
  */
 const loadFonts = (font, backendOnly = true, target = document) => {
 	if (typeof font === 'object' && font !== null) {
 		Object.entries(font).forEach(([fontName, fontData]) => {
-			if (isEmpty(fontName)) return null;
+			if (isEmpty(fontName)) return;
 
 			const fontWeight = fontData?.weight || '400';
 			const fontStyle = fontData?.style;
@@ -26,27 +29,35 @@ const loadFonts = (font, backendOnly = true, target = document) => {
 			let fontWeightArr = [];
 			let fontDataNew;
 
-			if (Array.isArray(fontWeight))
+			if (Array.isArray(fontWeight)) {
 				font[fontName].weight = uniq(fontWeight).join();
-
-			if (fontWeight?.includes(',')) {
-				fontWeightArr = uniq(fontWeight.split(','));
+				fontWeightArr = fontWeight;
+			} else if (typeof fontWeight === 'string') {
+				fontWeightArr = uniq(fontWeight.split(',')).filter(
+					weight => !isEmpty(weight)
+				);
 				fontDataNew = {
 					...fontData,
 					...{ weight: fontWeightArr.join() },
 				};
 				font[fontName].weight = fontWeightArr.join();
-			} else fontDataNew = { ...fontData, ...{ weight: fontWeight } };
-
-			if (Array.isArray(fontStyle))
-				font[fontName].style = uniq(fontStyle).join();
+			} else {
+				fontWeightArr = [fontWeight];
+				fontDataNew = { ...fontData, ...{ weight: fontWeight } };
+			}
 
 			let fontStyleArr = [];
 
-			if (fontStyle?.includes(',')) {
-				fontStyleArr = uniq(fontStyle.split(','));
+			if (Array.isArray(fontStyle) && !isEmpty(fontStyle)) {
+				font[fontName].style = uniq(fontStyle).join();
+			} else if (typeof fontStyle === 'string') {
+				fontStyleArr = uniq(fontStyle.split(',')).filter(
+					style => !isEmpty(style)
+				);
 
 				font[fontName].style = fontStyleArr.join();
+			} else {
+				fontStyleArr = ['normal'];
 			}
 
 			if (isEmpty(fontDataNew.style)) delete fontDataNew.style;
@@ -54,7 +65,7 @@ const loadFonts = (font, backendOnly = true, target = document) => {
 			const fontFiles =
 				select('maxiBlocks/text').getFont(fontName)?.files;
 
-			if (isEmpty(fontFiles)) return null;
+			if (isEmpty(fontFiles)) return;
 
 			const loadBackendFont = url => {
 				const fontLoad = new FontFace(
@@ -72,10 +83,26 @@ const loadFonts = (font, backendOnly = true, target = document) => {
 				});
 			};
 
-			if (!isEmpty(fontWeightArr)) {
-				fontWeightArr.forEach(weight => {
-					let weightFile = weight;
-					if (!(Number(weight) in fontFiles)) {
+			const getWeightFile = (weight, style) =>
+				style === 'italic'
+					? `${weight === '400' ? '' : weight}italic`
+					: weight;
+
+			/**
+			 * Returns font weight from weightFile
+			 *
+			 * @example getWeight('100italic') // returns 100;
+			 */
+			const getWeight = weightFile => {
+				const weightStr = weightFile.replace(/\D+/, '');
+
+				return isEmpty(weightStr) ? '400' : weightStr;
+			};
+
+			fontWeightArr.forEach(weight => {
+				fontStyleArr.forEach(currentFontStyle => {
+					let weightFile = getWeightFile(weight, currentFontStyle);
+					if (!(weightFile in fontFiles)) {
 						weightFile = '400';
 						const newFontWeightArr = uniq(fontWeightArr).filter(
 							value => {
@@ -93,33 +120,15 @@ const loadFonts = (font, backendOnly = true, target = document) => {
 						if (variant[0].toString() === weightFile) {
 							fontDataNew = {
 								...fontData,
-								...{ weight: weightFile },
+								...{ style: currentFontStyle },
+								...{ weight: getWeight(weightFile) },
 							};
-							if (
-								fontDataNew?.style === ',italic' ||
-								fontDataNew?.style === 'normal,italic'
-							)
-								fontDataNew.style = 'italic';
 
 							loadBackendFont(variant[1]);
 						}
 					});
 				});
-			} else
-				Object.entries(fontFiles).forEach(variant => {
-					let weightFile = fontWeight.toString();
-					if (
-						isEmpty(fontWeight) ||
-						!(Number(fontWeight) in fontFiles)
-					) {
-						weightFile = '400';
-						font[fontName].weight = weightFile;
-						fontData.weight = weightFile;
-					}
-
-					if (variant[0] === weightFile) loadBackendFont(variant[1]);
-				});
-			return null;
+			});
 		});
 
 		if (!backendOnly)
@@ -129,11 +138,9 @@ const loadFonts = (font, backendOnly = true, target = document) => {
 	return null;
 };
 
-const loadFontsInEditor = (breakpoint, objFont) => {
-	if (breakpoint === 's' || breakpoint === 'xs') {
-		const iframeEditor = document.querySelector(
-			'iframe[name="editor-canvas"]'
-		);
+const loadFontsInEditor = objFont => {
+	const iframeEditor = document.querySelector('iframe[name="editor-canvas"]');
+	if (iframeEditor) {
 		loadFonts(objFont, true, iframeEditor.contentDocument);
 	} else loadFonts(objFont);
 };

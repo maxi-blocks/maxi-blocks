@@ -38,13 +38,13 @@ const HoverPreview = props => {
 		'clear-grey-scale',
 	];
 
+	const showEffects = props['hover-preview'] || isSave;
+
 	const classes = classnames(
 		'maxi-hover-preview',
 		wrapperClassName,
-		hoverType !== 'none' && hoverClassName
+		showEffects && hoverType !== 'none' && hoverClassName
 	);
-
-	const showEffects = props['hover-preview'] || isSave;
 
 	const transitionTimingFunction = `${
 		hoverTransitionEasing !== 'cubic-bezier'
@@ -55,63 +55,65 @@ const HoverPreview = props => {
 	}`;
 
 	const mouseHoverHandle = ({ target }) => {
+		const targetWrapper = target.closest('.maxi-hover-preview img');
 		if (
-			hoverType === 'text' ||
-			transitionDurationEffects.includes(hoverBasicEffectType)
+			hoverType !== 'none' &&
+			(hoverType === 'text' ||
+				transitionDurationEffects.includes(hoverBasicEffectType)) &&
+			showEffects
 		) {
-			target.style.transform = '';
-			target.style.marginLeft = '';
-			target.style.filter = '';
-			target.style.transitionDuration = `${hoverTransitionDuration}s`;
-			target.style.transitionTimingFunction = transitionTimingFunction;
+			targetWrapper.style.transform = '';
+			targetWrapper.style.filter = '';
+			targetWrapper.style.transitionDuration = `${hoverTransitionDuration}s`;
+			targetWrapper.style.transitionTimingFunction =
+				transitionTimingFunction;
 		}
 
 		if (hoverType === 'basic' && showEffects) {
 			if (hoverBasicEffectType === 'zoom-in')
-				target.style.transform = `scale(${props['hover-basic-zoom-in-value']})`;
+				targetWrapper.style.transform = `scale(${props['hover-basic-zoom-in-value']})`;
 			else if (hoverBasicEffectType === 'rotate')
-				target.style.transform = `rotate(${props['hover-basic-rotate-value']}deg)`;
+				targetWrapper.style.transform = `rotate(${props['hover-basic-rotate-value']}deg)`;
 			else if (hoverBasicEffectType === 'zoom-out')
-				target.style.transform = 'scale(1)';
+				targetWrapper.style.transform = 'scale(1)';
 			else if (hoverBasicEffectType === 'slide')
-				target.style.marginLeft = `${props['hover-basic-slide-value']}px`;
+				targetWrapper.style.transform = `translateX(${props['hover-basic-slide-value']}%)`;
 			else if (hoverBasicEffectType === 'blur')
-				target.style.filter = `blur(${props['hover-basic-blur-value']}px)`;
+				targetWrapper.style.filter = `blur(${props['hover-basic-blur-value']}px)`;
 			else {
-				target.style.transform = '';
-				target.style.marginLeft = '';
-				target.style.filter = '';
+				targetWrapper.style.transform = '';
+				targetWrapper.style.filter = '';
 			}
 		}
 	};
 
 	const mouseOutHandle = ({ target }) => {
+		const targetWrapper = target.closest('.maxi-hover-preview img');
 		if (hoverType === 'basic') {
 			if (hoverBasicEffectType === 'zoom-in')
-				target.style.transform = 'scale(1)';
+				targetWrapper.style.transform = 'scale(1)';
 			else if (hoverBasicEffectType === 'rotate')
-				target.style.transform = 'rotate(0)';
+				targetWrapper.style.transform = 'rotate(0)';
 			else if (hoverBasicEffectType === 'zoom-out')
-				target.style.transform = `scale(${props['hover-basic-zoom-out-value']})`;
+				targetWrapper.style.transform = `scale(${props['hover-basic-zoom-out-value']})`;
 			else if (hoverBasicEffectType === 'slide')
-				target.style.marginLeft = 0;
+				targetWrapper.style.transform = 'translateX(0%)';
 			else if (hoverBasicEffectType === 'blur')
-				target.style.filter = 'blur(0)';
+				targetWrapper.style.filter = 'blur(0)';
 			else {
-				target.style.transform = '';
-				target.style.marginLeft = '';
-				target.style.filter = '';
+				targetWrapper.style.transform = '';
+				targetWrapper.style.filter = '';
 			}
 		}
 	};
 
 	const getEnhancedChildren = children => {
-		if (children.type === 'img')
+		if (children.type === 'img') {
 			return cloneElement(children, {
 				onMouseOver: mouseHoverHandle,
 				onMouseOut: mouseOutHandle,
 			});
-
+		}
 		if (children?.props?.children) {
 			const cleanedChildren = DOMPurify.sanitize(children.props.children);
 			const parsedContent = parse(cleanedChildren, {

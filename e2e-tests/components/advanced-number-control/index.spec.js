@@ -3,7 +3,6 @@
  */
 import {
 	createNewPost,
-	insertBlock,
 	pressKeyTimes,
 	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
@@ -16,12 +15,13 @@ import {
 	openSidebarTab,
 	changeResponsive,
 	editAdvancedNumberControl,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('Advanced Number Control', () => {
 	it('Checking the advanced number control', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 		const accordionPanel = await openSidebarTab(
 			page,
 			'style',
@@ -52,7 +52,7 @@ describe('Advanced Number Control', () => {
 		await pressKeyTimes('Backspace', 2);
 		await page.keyboard.type('4');
 
-		expect(await getAttributes('letter-spacing-m')).toStrictEqual(-3);
+		expect(await getAttributes('letter-spacing-m')).toStrictEqual(-4);
 
 		// Reset value
 		await editAdvancedNumberControl({

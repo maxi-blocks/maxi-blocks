@@ -2,28 +2,26 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyWithModifier,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
 import {
 	addCustomCSS,
+	editAdvancedNumberControl,
 	editColorControl,
 	getAttributes,
 	getBlockStyle,
 	getEditedPostContent,
 	openSidebarTab,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('Button Maxi', () => {
 	it('Button Maxi does not break', async () => {
 		await createNewPost();
-		await insertBlock('Button Maxi');
+		await insertMaxiBlock(page, 'Button Maxi');
 
 		await page.keyboard.type('Hello', { delay: 100 });
 		await page.waitForTimeout(150);
@@ -57,38 +55,52 @@ describe('Button Maxi', () => {
 	});
 
 	it('Check Button Icon', async () => {
-		const buttons = await page.$$('.maxi-button-default-styles button');
-		buttons[4].click();
-		await openSidebarTab(page, 'style', 'icon');
+		await createNewPost();
+		await insertMaxiBlock(page, 'Button Maxi');
+
+		await page.keyboard.type('Hello', { delay: 100 });
+		await page.waitForTimeout(150);
+
+		const quickStylesAccordion = await openSidebarTab(
+			page,
+			'style',
+			'quick styles'
+		);
+
+		await quickStylesAccordion.waitForSelector(
+			'	.maxi-button-default-styles button[aria-label="Button shortcut 5"]'
+		);
+		await quickStylesAccordion.$eval(
+			'.maxi-button-default-styles button[aria-label="Button shortcut 5"]',
+			buttons => buttons.click()
+		);
+
+		const iconAccordion = await openSidebarTab(page, 'style', 'icon');
 
 		// Icon Width
-		await page.$$eval(
-			'.maxi-tabs-content .maxi-icon-control .maxi-advanced-number-control input',
-			select => select[0].focus()
-		);
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('343');
+		await editAdvancedNumberControl({
+			page,
+			instance: await iconAccordion.$('.maxi-icon-control__width'),
+			newNumber: '343',
+		});
 
 		//  stroke Width
-		await page.$$eval(
-			'.maxi-tabs-content .maxi-icon-control .maxi-advanced-number-control input',
-			select => select[2].focus()
-		);
-
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('2');
+		await editAdvancedNumberControl({
+			page,
+			instance: await iconAccordion.$('.maxi-icon-control__stroke-width'),
+			newNumber: '2',
+		});
 
 		// spacing
-		await page.$$eval(
-			'.maxi-tabs-content .maxi-icon-control .maxi-advanced-number-control input',
-			select => select[4].focus()
-		);
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('20');
+		await editAdvancedNumberControl({
+			page,
+			instance: await iconAccordion.$('.maxi-icon-control__spacing'),
+			newNumber: '20',
+		});
 
 		// icon position
 		await page.$eval(
-			'.maxi-icon-position-control button.maxi-tabs-control__button-bottom',
+			'.maxi-icon-control__position button.maxi-tabs-control__button-bottom',
 			bottomButton => bottomButton.click()
 		);
 
@@ -123,7 +135,6 @@ describe('Button Maxi', () => {
 		);
 
 		// Icon inherit color
-
 		await page.$eval('button.maxi-tabs-control__button-border', button =>
 			button.click()
 		);
@@ -201,6 +212,9 @@ describe('Button Maxi', () => {
 		expect(
 			await getAttributes('icon-padding-bottom-general')
 		).toStrictEqual('33');
+
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Check Button Icon Hover', async () => {
@@ -274,6 +288,9 @@ describe('Button Maxi', () => {
 		expect(
 			await getAttributes('icon-border-bottom-width-general-hover')
 		).toStrictEqual(70);
+
+		expect(await getEditedPostContent(page)).toMatchSnapshot();
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Button Maxi Custom CSS', async () => {

@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-/* eslint-disable @wordpress/no-unsafe-wp-apis */
 /**
  * WordPress dependencies
  */
@@ -10,13 +9,18 @@ import {
 	memo,
 	useCallback,
 	useReducer,
+	useRef,
 } from '@wordpress/element';
 import { dispatch, select } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
-import { getHasParallax } from '../../extensions/styles';
+import {
+	getHasParallax,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
+import { marginValueCalculator } from '../../extensions/dom';
 import InnerBlocksBlock from './innerBlocksBlock';
 import MainMaxiBlock from './mainMaxiBlock';
 
@@ -24,7 +28,8 @@ import MainMaxiBlock from './mainMaxiBlock';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isEqual } from 'lodash';
+import { isEmpty, isEqual, isNil } from 'lodash';
+import mobile from 'is-mobile';
 
 /**
  * Styles
@@ -33,10 +38,58 @@ import './editor.scss';
 
 const INNER_BLOCKS = ['maxi-blocks/group-maxi', 'maxi-blocks/column-maxi'];
 
+const DISALLOWED_BREAKPOINTS = ['m', 's', 'xs'];
+
 const getBlockClassName = blockName => {
 	return `maxi-${blockName
 		.replace('maxi-blocks/', '')
 		.replace('-maxi', '')}-block`;
+};
+
+const getBlockStyle = (attributes, breakpoint, marginValue) => {
+	const getValue = target =>
+		getLastBreakpointAttribute({
+			target,
+			breakpoint,
+			attributes,
+		});
+
+	const isFullWidth = getValue('full-width') === 'full';
+
+	if (!isFullWidth) return {};
+
+	// Margin
+	const marginRight = getValue('margin-right') || 0;
+	const marginRightUnit = getValue('margin-right-unit') || 'px';
+	const marginLeft = getValue('margin-left') || 0;
+	const marginLeftUnit = getValue('margin-left-unit') || 'px';
+	const marginRightString = `${
+		marginRight === 'auto' ? 0 : marginRight
+	}${marginRightUnit}`;
+	const marginLeftString = `${
+		marginLeft === 'auto' ? 0 : marginLeft
+	}${marginLeftUnit}`;
+
+	// Width
+	const width = getValue('width');
+	const widthUnit = getValue('width-unit');
+	const maxWidth = getValue('max-width');
+	const maxWidthUnit = getValue('max-width-unit');
+
+	return Object.entries({
+		'margin-right': `calc(${marginRightString} - ${marginValue}px) !important`,
+		'margin-left': `calc(${marginLeftString} - ${marginValue}px) !important`,
+		width: `calc(${
+			isFullWidth || isNil(width) ? '100%' : `${width}${widthUnit}`
+		} + ${marginValue * 2}px)`,
+		'max-width': `calc(${
+			isFullWidth || isNil(maxWidth)
+				? '100%'
+				: `${maxWidth}${maxWidthUnit}`
+		} + ${marginValue * 2}px)`,
+	})
+		.map(([key, value]) => `${key}: ${value};`)
+		.join('');
 };
 
 const MaxiBlockContent = forwardRef((props, ref) => {
@@ -63,6 +116,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		isSelected,
 		hasSelectedChild,
 		isHovered,
+		isChild,
 		...extraProps
 	} = props;
 
@@ -103,11 +157,32 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 			});
 		}
 	}
+
+	// Gets if the block is full-width
+	const isFullWidth =
+		getLastBreakpointAttribute({
+			target: 'full-width',
+			breakpoint: extraProps.deviceType,
+			attributes: extraProps.attributes,
+		}) === 'full';
+
+	// Gets if the block has to be disabled due to the device type
+	const isDisabled =
+		DISALLOWED_BREAKPOINTS.includes(extraProps.baseBreakpoint) &&
+		mobile({ tablet: true });
+
+	// Unselect the block if it's disabled
+	if (isDisabled && isSelected)
+		setTimeout(() => {
+			dispatch('core/block-editor').selectBlock();
+		}, 0);
+
 	// Are just necessary for the memo() part
 	delete extraProps.attributes;
-	delete extraProps.isChild;
 	delete extraProps.deviceType;
+	delete extraProps.baseBreakpoint;
 	delete extraProps.context;
+	delete extraProps.state;
 
 	// Not usable/necessary on save blocks
 	const [isDragOverBlock, setIsDragOverBlock] = isSave ? [] : useState(false);
@@ -160,7 +235,9 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		paletteClasses,
 		hasLink && 'maxi-block--has-link',
 		isDragging && isDragOverBlock && 'maxi-block--is-drag-over',
-		isHovered && 'maxi-block--is-hovered'
+		isHovered && 'maxi-block--is-hovered',
+		isDisabled && 'maxi-block--disabled',
+		!isSave && isFullWidth && 'maxi-block--full-width'
 	);
 
 	const onDragLeave = isSave
@@ -210,6 +287,8 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		anchorLink,
 		background,
 		disableBackground: !disableBackground,
+		isChild,
+		isDisabled,
 		isSave,
 		...(!isSave &&
 			INNER_BLOCKS.includes(blockName) && {
@@ -238,9 +317,37 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 
 const MaxiBlock = memo(
 	forwardRef((props, ref) => {
-		const { clientId } = props;
+		const { clientId, attributes, deviceType } = props;
 
 		const [isHovered, setHovered] = useReducer(e => !e, false);
+		const getMarginValue = useRef(marginValueCalculator());
+
+		useEffect(() => {
+			return () => {
+				getMarginValue.current(true);
+			};
+		}, []);
+
+		// In order to keep the structure that Gutenberg uses for the block,
+		// is necessary to add some inline styles to the first hierarchy blocks.
+		const { isFirstOnHierarchy } = attributes;
+		const styleStr = getBlockStyle(
+			attributes,
+			deviceType,
+			getMarginValue.current()
+		);
+
+		useEffect(() => {
+			if (isFirstOnHierarchy) {
+				const style = document.createElement('style');
+				style.innerHTML = `#block-${clientId} { ${styleStr} }`;
+				ref.current.ownerDocument.head.appendChild(style);
+
+				return () => {
+					style.remove();
+				};
+			}
+		}, [styleStr, isFirstOnHierarchy, clientId]);
 
 		return (
 			<MaxiBlockContent
@@ -259,6 +366,7 @@ const MaxiBlock = memo(
 			isSelected: wasSelected,
 			deviceType: oldDeviceType,
 			context: oldContext,
+			state: oldState,
 		} = rawOldProps;
 
 		const {
@@ -266,9 +374,21 @@ const MaxiBlock = memo(
 			isSelected,
 			deviceType: newDeviceType,
 			context,
+			state,
 		} = rawNewProps;
 
+		// Check differences between attributes
 		if (!isEqual(oldAttr, newAttr)) return false;
+
+		// Check differences between children
+		if (rawOldProps?.children || rawNewProps?.children) {
+			const areChildrenEqual = isEqual(
+				rawOldProps.children,
+				rawNewProps.children
+			);
+
+			if (!areChildrenEqual) return false;
+		}
 
 		if (select('core/block-editor').isDraggingBlocks()) return true;
 
@@ -277,6 +397,8 @@ const MaxiBlock = memo(
 		if (!isEqual(oldDeviceType, newDeviceType)) return false;
 
 		if (!isEqual(oldContext, context)) return false;
+
+		if (!isEqual(oldState, state)) return false;
 
 		const propsCleaner = props => {
 			const response = {};

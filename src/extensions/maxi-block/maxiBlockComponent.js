@@ -7,14 +7,9 @@
  */
 
 /**
- * Disabled some ESLint rules; this file needs to be cleaned
- */
-/* eslint-disable class-methods-use-this */
-
-/**
  * WordPress dependencies
  */
-import { Component, render, createRef } from '@wordpress/element';
+import { Component, createRoot, render, createRef } from '@wordpress/element';
 import { dispatch, resolveSelect, select, useSelect } from '@wordpress/data';
 
 /**
@@ -22,6 +17,7 @@ import { dispatch, resolveSelect, select, useSelect } from '@wordpress/data';
  */
 import {
 	getBlockStyle,
+	getDefaultAttribute,
 	getGroupAttributes,
 	getHasScrollEffects,
 	getHasVideo,
@@ -32,21 +28,40 @@ import {
 } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
 import getIsUniqueIDRepeated from './getIsUniqueIDRepeated';
+import getCustomLabel from './getCustomLabel';
 import { loadFonts, getAllFonts } from '../text/fonts';
+import uniqueIDStructureChecker from './uniqueIDStructureChecker';
+import {
+	getIsSiteEditor,
+	getSiteEditorIframe,
+	getTemplatePartChooseList,
+	getTemplateViewIframe,
+} from '../fse';
+import { updateSCOnEditor } from '../style-cards';
+import getWinBreakpoint from '../dom/getWinBreakpoint';
 import { uniqueIDGenerator } from '../attributes';
-import getHoverStatus from '../../components/relation-control/getHoverStatus';
-import * as blocksData from '../../blocks/data';
 import { getStylesWrapperId } from './utils';
+import removeUnmountedBlockFromRelations from './removeUnmountedBlockFromRelations';
+import updateRelationHoverStatus from './updateRelationHoverStatus';
+import propagateNewUniqueID from './propagateNewUniqueID';
+import updateReusableBlockSize from './updateReusableBlockSize';
+import propsObjectCleaner from './propsObjectCleaner';
 
 /**
  * External dependencies
  */
-import { isEmpty, isEqual, cloneDeep, isNil } from 'lodash';
+import { isEmpty, isEqual, isFunction, isNil } from 'lodash';
+import { diff } from 'deep-object-diff';
 
 /**
  * Style Component
  */
-const StyleComponent = ({ stylesObj, blockBreakpoints, isIframe = false }) => {
+const StyleComponent = ({
+	stylesObj,
+	blockBreakpoints,
+	isIframe = false,
+	isSiteEditor = false,
+}) => {
 	const { breakpoints } = useSelect(select => {
 		const { receiveMaxiBreakpoints } = select('maxiBlocks');
 
@@ -65,7 +80,7 @@ const StyleComponent = ({ stylesObj, blockBreakpoints, isIframe = false }) => {
 
 	const styles = styleResolver(stylesObj, false, getBreakpoints());
 
-	const styleContent = styleGenerator(styles, isIframe);
+	const styleContent = styleGenerator(styles, isIframe, isSiteEditor);
 
 	return <style>{styleContent}</style>;
 };
@@ -82,22 +97,23 @@ class MaxiBlockComponent extends Component {
 			scValues: {},
 		};
 
+		this.areFontsLoaded = createRef(false);
+
 		const { attributes } = this.props;
 		const { uniqueID } = attributes;
 
-		this.currentBreakpoint =
-			select('maxiBlocks').receiveMaxiDeviceType() || 'general';
-		// eslint-disable-next-line react/no-unused-class-component-methods
+		this.isReusable = false;
+		this.rootSlot = null;
 		this.blockRef = createRef();
 		this.typography = getGroupAttributes(attributes, 'typography');
+		this.isPreviewBlock = !!getTemplatePartChooseList();
 
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
 
 		// Init
-		const newUniqueID = this.uniqueIDChecker(uniqueID);
-		if (!isEmpty(this.typography)) this.loadFonts();
+		this.uniqueIDChecker(uniqueID);
 		this.getCurrentBlockStyle();
-		this.displayStyles(newUniqueID);
+		this.setMaxiAttributes();
 	}
 
 	componentDidMount() {
@@ -115,8 +131,21 @@ class MaxiBlockComponent extends Component {
 			})
 			.catch(() => console.error('Maxi Blocks: Could not load settings'));
 
+		// Check if the block is reusable
+		this.isReusable =
+			this.blockRef.current.parentNode.classList.contains('is-reusable');
+
+		if (this.isReusable) {
+			this.widthObserver = updateReusableBlockSize(
+				this.blockRef.current,
+				this.props.attributes.uniqueID,
+				this.props.clientId
+			);
+		}
+
 		if (this.maxiBlockDidMount) this.maxiBlockDidMount();
 
+		this.loadFonts();
 		this.displayStyles();
 
 		if (!this.getBreakpoints.xxl) this.forceUpdate();
@@ -168,14 +197,14 @@ class MaxiBlockComponent extends Component {
 					nextState
 				) ||
 				!isEqual(
-					this.propsObjectCleaner(this.props),
-					this.propsObjectCleaner(nextProps)
+					propsObjectCleaner(this.props),
+					propsObjectCleaner(nextProps)
 				)
 			);
 
 		return !isEqual(
-			this.propsObjectCleaner(this.props),
-			this.propsObjectCleaner(nextProps)
+			propsObjectCleaner(this.props),
+			propsObjectCleaner(nextProps)
 		);
 	}
 
@@ -207,54 +236,100 @@ class MaxiBlockComponent extends Component {
 		)
 			return false;
 
-		// If baseBreakpoint changes, render styles
-		if (this.props.baseBreakpoint !== prevProps.baseBreakpoint)
+		// If deviceType or baseBreakpoint changes, render styles
+		if (
+			this.props.deviceType !== prevProps.deviceType ||
+			this.props.baseBreakpoint !== prevProps.baseBreakpoint
+		)
 			return false;
 
 		return isEqual(prevProps.attributes, this.props.attributes);
 	}
 
 	componentDidUpdate(prevProps, prevState, shouldDisplayStyles) {
-		this.updateRelationHoverStatus();
+		// Check if the modified attribute is related with hover status,
+		// and in that case we update the other blocks IB relation
+		const diffAttributes = diff(
+			prevProps.attributes,
+			this.props.attributes
+		);
+		if (Object.keys(diffAttributes).some(key => key.includes('hover')))
+			updateRelationHoverStatus(this.props.name, this.props.attributes);
 
-		// Even when not rendering, on breakpoint stage change
-		// re-render the styles
-		const breakpoint = select('maxiBlocks').receiveMaxiDeviceType();
-
-		if (!shouldDisplayStyles || breakpoint !== this.currentBreakpoint) {
-			this.currentBreakpoint = breakpoint;
-			this.displayStyles();
-		}
+		if (!shouldDisplayStyles) this.displayStyles();
 
 		if (this.maxiBlockDidUpdate)
 			this.maxiBlockDidUpdate(prevProps, prevState, shouldDisplayStyles);
 	}
 
 	componentWillUnmount() {
+		// Return if it's a FSE preview block
+		if (this.isPreviewBlock) return;
+
+		// If it's site editor, when swapping from pages we need to keep the styles
+		// On post editor, when entering to `code editor` page, we need to keep the styles
+		const keepStylesOnEditor = !!select('core/block-editor').getBlock(
+			this.props.clientId
+		);
+
 		// When duplicating Gutenberg creates a copy of the current copied block twice, making the first keep the same uniqueID and second
 		// has a different one. The original block is removed so componentWillUnmount method is triggered, and as its uniqueID coincide with
 		// the first copied block, on removing the styles the copied block appears naked. That's why we check if there's more than one block
 		// with same uniqueID
-		if (
+		const keepStylesOnCloning =
 			Array.from(
 				document.getElementsByClassName(this.props.attributes.uniqueID)
-			).length <= 1
-		) {
+			).length > 1;
+
+		// Different cases:
+		// 1. Swapping page on site editor or entering to `code editor` page on post editor
+		// 2. Duplicating block
+		const isBlockBeingRemoved = !keepStylesOnEditor && !keepStylesOnCloning;
+
+		if (isBlockBeingRemoved) {
+			// Styles
 			const obj = this.getStylesObject;
 			styleResolver(obj, true);
 			this.removeStyles();
+
+			// Custom data
+			dispatch('maxiBlocks/customData').removeCustomData(
+				this.props.attributes.uniqueID
+			);
+
+			// IB
+			removeUnmountedBlockFromRelations(this.props.attributes.uniqueID);
 		}
 
-		dispatch('maxiBlocks/customData').removeCustomData(
-			this.props.attributes.uniqueID
-		);
+		if (this.maxiBlockWillUnmount)
+			this.maxiBlockWillUnmount(isBlockBeingRemoved);
+	}
 
-		this.removeUnmountedBlockFromRelations(
-			this.props.attributes.uniqueID,
-			select('core/block-editor').getBlocks()
-		);
+	// eslint-disable-next-line class-methods-use-this
+	getMaxiAttributes() {
+		return null;
+	}
 
-		if (this.maxiBlockWillUnmount) this.maxiBlockWillUnmount();
+	setMaxiAttributes() {
+		const maxiAttributes = this.getMaxiAttributes();
+
+		if (!maxiAttributes) return;
+
+		Object.entries(maxiAttributes).forEach(([key, value]) => {
+			const currentValue = this.props.attributes[key];
+			const defaultValue = getDefaultAttribute(key, this.props.clientId);
+
+			if (
+				(!isEqual(currentValue, defaultValue) ||
+					!isEqual(currentValue, value)) &&
+				// Using `maxi-version-current` as is an attribute that set on componentDidMount
+				// so it ensures we add these attributes the first time we add the block
+				'maxi-version-current' in this.props.attributes
+			)
+				return;
+
+			this.props.attributes[key] = value;
+		});
 	}
 
 	get getBreakpoints() {
@@ -318,169 +393,51 @@ class MaxiBlockComponent extends Component {
 		return false;
 	}
 
-	// Removes non-necessary entries of props object for comparison
-	propsObjectCleaner(props) {
-		const newProps = cloneDeep(props);
-		const entriesToRemove = [
-			'maxiSetAttributes',
-			'insertInlineStyles',
-			'cleanInlineStyles',
-			'context',
-		];
-
-		entriesToRemove.forEach(entry => {
-			delete newProps[entry];
-		});
-
-		// Transform objects into strings to compare easier
-		Object.entries(newProps).forEach(([key, value]) => {
-			if (typeof value === 'object')
-				newProps[key] = JSON.stringify(value);
-		});
-
-		return newProps;
-	}
-
 	uniqueIDChecker(idToCheck) {
-		if (getIsUniqueIDRepeated(idToCheck)) {
-			const newUniqueID = uniqueIDGenerator(this.props.name);
+		const { clientId, name: blockName } = this.props;
+
+		if (
+			getIsUniqueIDRepeated(idToCheck) ||
+			!uniqueIDStructureChecker(idToCheck, clientId)
+		) {
+			const newUniqueID = uniqueIDGenerator({
+				blockName,
+				diff: 1,
+				clientId,
+			});
+
+			propagateNewUniqueID(
+				idToCheck,
+				newUniqueID,
+				this.props.attributes['background-layers']
+			);
 
 			this.props.attributes.uniqueID = newUniqueID;
+			this.props.attributes.customLabel = getCustomLabel(
+				this.props.attributes.customLabel,
+				this.props.attributes.uniqueID
+			);
 
-			const label = this.props.attributes.uniqueID.replace('-maxi-', '_');
-			this.props.attributes.customLabel =
-				label.charAt(0).toUpperCase() + label.slice(1);
+			if (this.maxiBlockDidChangeUniqueID)
+				this.maxiBlockDidChangeUniqueID(newUniqueID);
 
 			return newUniqueID;
-		}
-
-		// This code can be removed after migrating #3474
-		if (isEmpty(this.props.attributes.customLabel)) {
-			const label = idToCheck.replace('-maxi-', '_');
-			this.props.attributes.customLabel =
-				label.charAt(0).toUpperCase() + label.slice(1);
 		}
 
 		return idToCheck;
 	}
 
 	loadFonts() {
+		if (this.areFontsLoaded.current || isEmpty(this.typography)) return;
+
+		const target = getIsSiteEditor() ? getSiteEditorIframe() : document;
+		if (!target) return;
+
 		const response = getAllFonts(this.typography, 'custom-formats');
+		if (isEmpty(response)) return;
 
-		if (!isEmpty(response)) loadFonts(response);
-	}
-
-	updateRelationHoverStatus() {
-		const { name, attributes } = this.props;
-
-		const updateRelationHoverStatusRecursive = (
-			blockName,
-			blockAttributes,
-			blocksToCheck
-		) => {
-			const { uniqueID } = blockAttributes;
-
-			blocksToCheck.forEach(
-				({
-					clientId,
-					attributes: currentBlockAttributes,
-					innerBlocks,
-				}) => {
-					const { relations, uniqueID: blockUniqueID } =
-						currentBlockAttributes;
-
-					if (uniqueID !== blockUniqueID && !isEmpty(relations)) {
-						const newRelations = relations.map(relation => {
-							const {
-								attributes: relationAttributes,
-								settings: settingName,
-								uniqueID: relationUniqueID,
-							} = relation;
-
-							if (!settingName || uniqueID !== relationUniqueID)
-								return relation;
-
-							const { effects } = relation;
-
-							if (!('hoverStatus' in effects)) return relation;
-
-							const blockData = Object.values(blocksData).find(
-								({ name }) =>
-									name ===
-									blockName.replace('maxi-blocks/', '')
-							);
-
-							if (!blockData?.interactionBuilderSettings)
-								return relation;
-
-							const { hoverProp } = Object.values(
-								blockData.interactionBuilderSettings
-							)
-								.flat()
-								.find(({ label }) => label === settingName);
-
-							return {
-								...relation,
-								effects: {
-									...effects,
-									hoverStatus: getHoverStatus(
-										hoverProp,
-										blockAttributes,
-										relationAttributes
-									),
-								},
-							};
-						});
-
-						if (!isEqual(relations, newRelations))
-							dispatch('core/block-editor').updateBlockAttributes(
-								clientId,
-								{ relations: newRelations }
-							);
-					}
-
-					if (!isEmpty(innerBlocks))
-						updateRelationHoverStatusRecursive(
-							blockName,
-							blockAttributes,
-							innerBlocks
-						);
-				}
-			);
-		};
-
-		updateRelationHoverStatusRecursive(
-			name,
-			attributes,
-			select('core/block-editor').getBlocks()
-		);
-	}
-
-	removeUnmountedBlockFromRelations(uniqueID, blocksToCheck) {
-		if (getIsUniqueIDRepeated(uniqueID, 0)) return;
-
-		blocksToCheck.forEach(({ clientId, attributes, innerBlocks }) => {
-			const { relations, uniqueID: blockUniqueID } = attributes;
-
-			if (uniqueID !== blockUniqueID && !isEmpty(relations)) {
-				const filteredRelations = relations.filter(
-					({ uniqueID: relationUniqueID }) =>
-						relationUniqueID !== uniqueID
-				);
-
-				if (!isEqual(relations, filteredRelations)) {
-					const { updateBlockAttributes } =
-						dispatch('core/block-editor');
-
-					updateBlockAttributes(clientId, {
-						relations: filteredRelations,
-					});
-				}
-			}
-
-			if (!isEmpty(innerBlocks))
-				this.removeUnmountedBlockFromRelations(uniqueID, innerBlocks);
-		});
+		loadFonts(response, true, target);
+		this.areFontsLoaded.current = true;
 	}
 
 	/**
@@ -503,66 +460,186 @@ class MaxiBlockComponent extends Component {
 		dispatch('maxiBlocks/customData').updateCustomData(customData);
 
 		if (document.body.classList.contains('maxi-blocks--active')) {
-			let wrapper = document.querySelector(
-				`#${getStylesWrapperId(uniqueID)}`
-			);
+			const getStylesWrapper = (element, onCreateWrapper) => {
+				const wrapperId = getStylesWrapperId(uniqueID);
 
-			if (!wrapper) {
-				wrapper = document.createElement('div');
-				wrapper.id = getStylesWrapperId(uniqueID);
-				wrapper.classList.add('maxi-blocks__styles');
-				document.head.appendChild(wrapper);
+				let wrapper = element.querySelector(`#${wrapperId}`);
+
+				if (!wrapper) {
+					wrapper = document.createElement('div');
+					wrapper.id = wrapperId;
+					wrapper.classList.add('maxi-blocks__styles');
+					element.appendChild(wrapper);
+
+					if (isFunction(onCreateWrapper)) onCreateWrapper(wrapper);
+				}
+
+				return wrapper;
+			};
+
+			let wrapper;
+
+			const isSiteEditor = getIsSiteEditor();
+			if (isSiteEditor) {
+				// for full site editor (FSE)
+				const siteEditorIframe = getSiteEditorIframe();
+
+				if (this.isPreviewBlock) {
+					const templateViewIframe = getTemplateViewIframe(uniqueID);
+					if (templateViewIframe) {
+						const iframeHead = Array.from(
+							templateViewIframe.querySelectorAll('head')
+						).pop();
+
+						const iframeBody = Array.from(
+							templateViewIframe.querySelectorAll('body')
+						).pop();
+
+						iframeBody.classList.add('maxi-blocks--active');
+						iframeBody.setAttribute(
+							'maxi-blocks-responsive',
+							getWinBreakpoint(iframeBody.offsetWidth)
+						);
+
+						wrapper = getStylesWrapper(iframeHead, () => {
+							if (
+								!templateViewIframe.getElementById(
+									'maxi-blocks-sc-vars-inline-css'
+								)
+							) {
+								const SC = select(
+									'maxiBlocks/style-cards'
+								).receiveMaxiActiveStyleCard();
+								if (SC) {
+									updateSCOnEditor(
+										SC.value,
+										templateViewIframe
+									);
+								}
+							}
+						});
+					}
+				} else if (siteEditorIframe) {
+					// Iframe on creation generates head, then gutenberg generates their own head
+					// and in some moment we have two heads, so we need to add styles only to second head(gutenberg one)
+					const iframeHead = Array.from(
+						siteEditorIframe.querySelectorAll('head')
+					).pop();
+
+					if (isEmpty(iframeHead.childNodes)) return;
+
+					wrapper = getStylesWrapper(iframeHead);
+				}
+			} else {
+				wrapper = getStylesWrapper(document.head);
 			}
 
-			render(
-				<StyleComponent
-					uniqueID={uniqueID}
-					stylesObj={obj}
-					currentBreakpoint={this.currentBreakpoint}
-					blockBreakpoints={breakpoints}
-				/>,
-				wrapper
-			);
+			if (wrapper) {
+				// check if createRoot is available (since React 18)
+				if (typeof createRoot === 'function') {
+					if (isNil(this.rootSlot))
+						this.rootSlot = createRoot(wrapper);
+					this.rootSlot.render(
+						<StyleComponent
+							uniqueID={uniqueID}
+							stylesObj={obj}
+							currentBreakpoint={this.props.deviceType}
+							blockBreakpoints={breakpoints}
+							isSiteEditor={isSiteEditor}
+						/>
+					);
+				} else {
+					// for React 17 and below
+					render(
+						<StyleComponent
+							uniqueID={uniqueID}
+							stylesObj={obj}
+							currentBreakpoint={this.props.deviceType}
+							blockBreakpoints={breakpoints}
+							isSiteEditor={isSiteEditor}
+						/>,
+						wrapper
+					);
+				}
+			}
 
 			// Since WP 5.9 Gutenberg includes the responsive into iframes, so need to add the styles there also
 			const iframe = document.querySelector(
-				'iframe[name="editor-canvas"]'
+				'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)'
 			);
 
 			if (iframe) {
 				const iframeDocument = iframe.contentDocument;
 
 				if (iframeDocument.head) {
-					let iframeWrapper = iframeDocument.querySelector(
-						`#${getStylesWrapperId(uniqueID)}`
-					);
+					const iframeWrapper = getStylesWrapper(iframeDocument.head);
 
-					if (!iframeWrapper) {
-						iframeWrapper = iframeDocument.createElement('div');
-						iframeWrapper.id = getStylesWrapperId(uniqueID);
-						iframeWrapper.classList.add('maxi-blocks__styles');
-						iframeDocument.head.appendChild(iframeWrapper);
+					// check if createRoot is available (since React 18)
+					if (typeof createRoot === 'function') {
+						if (isNil(this.rootSlot))
+							this.rootSlot = createRoot(wrapper);
+
+						this.rootSlot.render(
+							<StyleComponent
+								uniqueID={uniqueID}
+								stylesObj={obj}
+								currentBreakpoint={this.props.deviceType}
+								blockBreakpoints={breakpoints}
+								isSiteEditor={isSiteEditor}
+							/>
+						);
+					} else {
+						// for React 17 and below
+						render(
+							<StyleComponent
+								uniqueID={uniqueID}
+								stylesObj={obj}
+								currentBreakpoint={this.props.deviceType}
+								blockBreakpoints={breakpoints}
+								isIframe
+							/>,
+							iframeWrapper
+						);
 					}
-
-					render(
-						<StyleComponent
-							uniqueID={uniqueID}
-							stylesObj={obj}
-							currentBreakpoint={this.currentBreakpoint}
-							blockBreakpoints={breakpoints}
-							isIframe
-						/>,
-						iframeWrapper
-					);
 				}
 			}
 		}
 	}
 
 	removeStyles() {
-		document
-			.getElementById(getStylesWrapperId(this.props.attributes.uniqueID))
-			.remove();
+		const templateViewIframe = getTemplateViewIframe(
+			this.props.attributes.uniqueID
+		);
+		const siteEditorIframe = getSiteEditorIframe();
+		const previewIframe = document.querySelector(
+			'.block-editor-block-preview__container iframe'
+		);
+		const iframe = document.querySelector(
+			'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)'
+		);
+
+		const getEditorElement = () =>
+			templateViewIframe ||
+			siteEditorIframe ||
+			previewIframe ||
+			iframe ||
+			document;
+
+		if (!this.props.attributes.preview)
+			getEditorElement()
+				.getElementById(
+					getStylesWrapperId(this.props.attributes.uniqueID)
+				)
+				?.remove();
+
+		if (this.isReusable) {
+			this.widthObserver.disconnect();
+			getEditorElement()
+				.getElementById(
+					`maxi-block-size-checker-${this.props.clientId}`
+				)
+				?.remove();
+		}
 	}
 }
 

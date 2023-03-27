@@ -6,6 +6,7 @@ jest.mock('@wordpress/data', () => {
 			return {
 				getSelectedBlockCount: jest.fn(() => 1),
 				receiveBaseBreakpoint: jest.fn(() => 'xl'),
+				receiveMaxiDeviceType: jest.fn(() => 'general'),
 			};
 		}),
 	};
@@ -163,6 +164,7 @@ describe('getLastBreakpointAttribute', () => {
 	test('Should return XXL value when breakpoint is General but there is not General attribute; baseBreakpoint is XXL', () => {
 		select.mockImplementation(() => ({
 			getSelectedBlockCount: jest.fn(() => 1),
+			receiveMaxiDeviceType: jest.fn(() => 'general'),
 			receiveBaseBreakpoint: jest.fn(() => 'xxl'),
 		}));
 
@@ -185,6 +187,7 @@ describe('getLastBreakpointAttribute', () => {
 	test('Should return XXL value when breakpoint is General and baseBreakpoint is XXL', () => {
 		select.mockImplementation(() => ({
 			getSelectedBlockCount: jest.fn(() => 1),
+			receiveMaxiDeviceType: jest.fn(() => 'general'),
 			receiveBaseBreakpoint: jest.fn(() => 'xxl'),
 		}));
 
@@ -203,5 +206,129 @@ describe('getLastBreakpointAttribute', () => {
 		});
 
 		expect(result).toBe(2);
+	});
+
+	test('Should return general key of object', () => {
+		const result = getLastBreakpointAttribute({
+			target: 'test',
+			breakpoint: 'general',
+			attributes: {
+				'test-general': {
+					'test-key': 1,
+				},
+			},
+			keys: ['test-key'],
+		});
+
+		expect(result).toBe(1);
+	});
+
+	test('Should return m breakpoint key of object', () => {
+		const result = getLastBreakpointAttribute({
+			target: 'test',
+			breakpoint: 'm',
+			attributes: {
+				'test-general': {
+					'test-key': 1,
+				},
+				'test-xl': {
+					'test-key': 2,
+				},
+				'test-m': {
+					'test-key': 3,
+				},
+				'test-s': {
+					'test-key': 4,
+				},
+			},
+			keys: ['test-key'],
+		});
+		expect(result).toBe(3);
+	});
+
+	test('Should return general hover key of object', () => {
+		const result = getLastBreakpointAttribute({
+			target: 'test',
+			breakpoint: 'general',
+			attributes: {
+				'test-general-hover': {
+					'test-key': 1,
+				},
+			},
+			keys: ['test-key'],
+			isHover: true,
+		});
+		expect(result).toBe(1);
+	});
+
+	test('Should return m breakpoint hover key of object', () => {
+		const result = getLastBreakpointAttribute({
+			target: 'test',
+			breakpoint: 'm',
+			attributes: {
+				'test-general-hover': {
+					'test-key': 1,
+				},
+				'test-xl-hover': {
+					'test-key': 2,
+				},
+				'test-m-hover': {
+					'test-key': 3,
+				},
+				'test-s-hover': {
+					'test-key': 4,
+				},
+			},
+			keys: ['test-key'],
+			isHover: true,
+		});
+		expect(result).toBe(3);
+	});
+
+	test('Should return general key of object, when object has multiply nested keys', () => {
+		const result = getLastBreakpointAttribute({
+			target: 'test',
+			breakpoint: 'general',
+			attributes: {
+				'test-general': {
+					'test-key': {
+						'test-key-2': 1,
+					},
+				},
+			},
+			keys: ['test-key', 'test-key-2'],
+		});
+		expect(result).toBe(1);
+	});
+
+	test('Should return m breakpoint key of object, when object has multiply nested keys', () => {
+		const result = getLastBreakpointAttribute({
+			target: 'test',
+			breakpoint: 'm',
+			attributes: {
+				'test-general': {
+					'test-key': {
+						'test-key-2': 1,
+					},
+				},
+				'test-xl': {
+					'test-key': {
+						'test-key-2': 2,
+					},
+				},
+				'test-m': {
+					'test-key': {
+						'test-key-2': 3,
+					},
+				},
+				'test-s': {
+					'test-key': {
+						'test-key-2': 4,
+					},
+				},
+			},
+			keys: ['test-key', 'test-key-2'],
+		});
+		expect(result).toBe(3);
 	});
 });

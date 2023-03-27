@@ -1,5 +1,5 @@
 /**
- * External dependencies
+ * Internal dependencies
  */
 import getWinBreakpoint from '../dom/getWinBreakpoint';
 
@@ -58,6 +58,25 @@ const selectors = {
 	},
 	receiveDeprecatedBlock(state, uniqueID) {
 		if (state) return state.deprecatedBlocks?.[uniqueID] ?? null;
+
+		return false;
+	},
+	canBlockRender(state, uniqueID) {
+		if (state)
+			return (
+				state.isPageLoaded ||
+				state.blocksToRender.indexOf(uniqueID) === 0
+			);
+
+		return false;
+	},
+	allBlocksHaveBeenRendered(state) {
+		if (state) return state.blocksToRender.length === 0;
+
+		return false;
+	},
+	getIsPageLoaded(state) {
+		if (state) return state.isPageLoaded;
 
 		return false;
 	},

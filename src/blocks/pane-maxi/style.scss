@@ -9,7 +9,7 @@
 		justify-content: space-between;
 		column-gap: 20px;
 
-		padding: 0 0 25px 0;
+		padding: 0 0 25px;
 	}
 
 	&__icon {
@@ -20,12 +20,6 @@
 		width: 100%;
 		height: fit-content;
 		display: flex;
-	}
-
-	&__content-line-container {
-		position: absolute;
-		bottom: 0;
-		left: 0;
 	}
 
 	&__line {
@@ -42,7 +36,6 @@
 	}
 
 	&__content-wrapper {
-		position: relative;
 		padding: 0;
 	}
 

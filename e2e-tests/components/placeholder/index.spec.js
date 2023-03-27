@@ -1,7 +1,12 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
+
+/**
+ * Internal dependencies
+ */
+import { insertMaxiBlock } from '../../utils';
 
 describe('Placeholder', () => {
 	it('Test template library placeholder', async () => {
@@ -25,7 +30,7 @@ describe('Placeholder', () => {
 
 		// check placeholder
 		const placeholder = await page.$eval(
-			'.maxi-placeholder ',
+			'.maxi-block-library__placeholder ',
 			div => div.innerHTML
 		);
 		await page.waitForTimeout(500);
@@ -33,7 +38,7 @@ describe('Placeholder', () => {
 	});
 
 	it('Test icon placeholder', async () => {
-		await insertBlock('Icon Maxi');
+		await insertMaxiBlock(page, 'Icon Maxi');
 
 		// close modal
 		await page.$eval('.components-modal__header button', button =>
@@ -49,7 +54,7 @@ describe('Placeholder', () => {
 		expect(placeholder).toMatchSnapshot();
 	});
 	it('Test image placeholder', async () => {
-		await insertBlock('Image Maxi');
+		await insertMaxiBlock(page, 'Image Maxi');
 
 		// check image placeholder
 		const placeholder = await page.$eval(

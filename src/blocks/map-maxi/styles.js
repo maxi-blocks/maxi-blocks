@@ -108,6 +108,12 @@ const getHoverNormalObject = props => {
 				isHover: true,
 				blockStyle,
 			}),
+		opacity:
+			props['opacity-status-hover'] &&
+			getOpacityStyles(
+				{ ...getGroupAttributes(props, 'opacity', true) },
+				true
+			),
 	};
 
 	return response;
@@ -205,6 +211,7 @@ const getStyles = props => {
 				},
 				' .leaflet-marker-icon': getSVGWidthStyles({
 					obj: getGroupAttributes(props, 'svg'),
+					prefix: 'svg-',
 				}),
 				' .leaflet-popup-content-wrapper':
 					getAdjustedPositionPopupStyles(props),

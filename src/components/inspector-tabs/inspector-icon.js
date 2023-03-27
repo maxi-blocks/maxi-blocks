@@ -12,6 +12,11 @@ import SettingTabsControl from '../setting-tabs-control';
 import { getGroupAttributes, getIconWithColor } from '../../extensions/styles';
 import ManageHoverTransitions from '../manage-hover-transitions';
 
+/**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
+
 const icon = ({
 	props,
 	label = __('Icon', 'maxi-blocks'),
@@ -24,13 +29,16 @@ const icon = ({
 	disablePadding = false,
 	disablePosition = false,
 	disableSpacing = false,
+	disableHeightFitContent = false,
 	inlineTarget = '.maxi-button-block__icon',
 	prefix = '',
 	ignoreIndicator = [],
 }) => {
+	const { attributes, deviceType } = props;
+	const { [`${prefix}icon-content`]: iconContent } = attributes;
+	if (deviceType !== 'general' && isEmpty(iconContent)) return null;
+
 	const {
-		attributes,
-		deviceType,
 		maxiSetAttributes,
 		insertInlineStyles,
 		cleanInlineStyles,
@@ -54,6 +62,7 @@ const icon = ({
 		disablePadding,
 		disablePosition,
 		disableSpacing,
+		disableHeightFitContent,
 		type,
 		prefix,
 		getIconWithColor: args => getIconWithColor(attributes, args, prefix),

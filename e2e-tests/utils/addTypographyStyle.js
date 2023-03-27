@@ -17,6 +17,10 @@ const addTypographyStyle = async ({
 	orientation,
 	direction,
 	indent,
+	whiteSpace,
+	wordSpacing,
+	bottomGap,
+	isStyleCards = false,
 }) => {
 	const response = {};
 	// Weight, Transform, Style, Decoration
@@ -50,18 +54,24 @@ const addTypographyStyle = async ({
 	const orientationSelector = await instance.$(
 		'.maxi-typography-control__orientation .maxi-base-control__field select'
 	);
-	if (orientation) await orientationSelector.select(orientation);
+	if (!isStyleCards && orientation)
+		await orientationSelector.select(orientation);
 
-	response.orientation = await getElementAttribute(
-		orientationSelector,
-		'value'
-	);
+	if (!isStyleCards)
+		response.orientation = await getElementAttribute(
+			orientationSelector,
+			'value'
+		);
 
 	const directionSelector = await instance.$(
 		'.maxi-typography-control__direction .maxi-base-control__field select'
 	);
-	if (direction) await directionSelector.select(direction);
-	response.direction = await getElementAttribute(directionSelector, 'value');
+	if (!isStyleCards && direction) await directionSelector.select(direction);
+	if (!isStyleCards)
+		response.direction = await getElementAttribute(
+			directionSelector,
+			'value'
+		);
 
 	const textIndentInput = await instance.$(
 		'.maxi-typography-control__text-indent input'
@@ -73,6 +83,42 @@ const addTypographyStyle = async ({
 		await textIndentInput.type(`${indent}`);
 	}
 	response.indent = await getElementAttribute(textIndentInput, 'value');
+
+	// White space
+	const whiteSpaceSelector = await instance.$(
+		'.maxi-typography-control__white-space .maxi-base-control__field select'
+	);
+	if (whiteSpace) await whiteSpaceSelector.select(whiteSpace);
+	response.whiteSpace = await getElementAttribute(
+		whiteSpaceSelector,
+		'value'
+	);
+
+	// Word spacing
+	const wordSpaceInput = await instance.$(
+		'.maxi-typography-control__word-spacing input'
+	);
+	if (wordSpacing) {
+		wordSpaceInput.focus();
+		await pressKeyWithModifier('primary', 'a');
+		await wordSpaceInput.type(`${wordSpacing}`);
+	}
+	response.wordSpacing = await getElementAttribute(wordSpaceInput, 'value');
+
+	// Bottom gap
+	const bottomGapInput = await instance.$(
+		'.maxi-typography-control__bottom-gap input'
+	);
+
+	if (bottomGapInput) {
+		if (bottomGap) {
+			bottomGapInput.focus();
+			await pressKeyWithModifier('primary', 'a');
+			await bottomGapInput.type(`${bottomGap}`);
+		}
+
+		response.bottomGap = await getElementAttribute(bottomGapInput, 'value');
+	}
 
 	if ('_frame' in instance) await instance._frame.waitForTimeout(150);
 	else await instance.waitForTimeout(150);

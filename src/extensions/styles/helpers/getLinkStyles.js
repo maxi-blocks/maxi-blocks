@@ -2,12 +2,13 @@
  * Internal dependencies
  */
 import getColorRGBAString from '../getColorRGBAString';
+import getPaletteAttributes from '../getPaletteAttributes';
+import getAttributeKey from '../getAttributeKey';
 
 /**
  * External dependencies
  */
-import { isBoolean } from 'lodash';
-import getPaletteAttributes from '../getPaletteAttributes';
+import { isBoolean, isNil } from 'lodash';
 
 const getLinkStyles = (obj, target, blockStyle) => {
 	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -27,7 +28,21 @@ const getLinkStyles = (obj, target, blockStyle) => {
 		},
 	};
 
+	const getTextDecoration = (breakpoint, isHover = false) => {
+		const hoverStatus = obj['typography-status-hover'];
+		const value =
+			obj[getAttributeKey('text-decoration', isHover, '', breakpoint)];
+		return !isNil(value) && (hoverStatus || !isHover) && value;
+	};
+
 	breakpoints.forEach(breakpoint => {
+		response[target].link[breakpoint] = {};
+
+		const decoration = getTextDecoration(breakpoint);
+		if (decoration) {
+			response[target].link[breakpoint]['text-decoration'] = decoration;
+		}
+
 		const {
 			paletteStatus: linkPaletteStatus,
 			paletteColor: linkPaletteColor,
@@ -40,7 +55,6 @@ const getLinkStyles = (obj, target, blockStyle) => {
 		});
 
 		if (isBoolean(linkPaletteStatus) && !linkPaletteStatus) {
-			response[target].link[breakpoint] = {};
 			response[
 				[`.block-editor-block-list__block ${target}:visited`]
 			].link[breakpoint] = {};
@@ -50,7 +64,6 @@ const getLinkStyles = (obj, target, blockStyle) => {
 				[`.block-editor-block-list__block ${target}:visited`]
 			].link[breakpoint].color = linkColor;
 		} else if (linkPaletteColor) {
-			response[target].link[breakpoint] = {};
 			response[
 				[`.block-editor-block-list__block ${target}:visited`]
 			].link[breakpoint] = {};
@@ -71,6 +84,13 @@ const getLinkStyles = (obj, target, blockStyle) => {
 			});
 		}
 
+		response[`${target}:hover`].link[breakpoint] = {};
+		const hoverDecoration = getTextDecoration(breakpoint);
+		if (hoverDecoration) {
+			response[target].link[breakpoint]['text-decoration'] =
+				hoverDecoration;
+		}
+
 		const {
 			paletteStatus: linkHoverPaletteStatus,
 			paletteColor: linkHoverPaletteColor,
@@ -83,8 +103,6 @@ const getLinkStyles = (obj, target, blockStyle) => {
 		});
 
 		if (isBoolean(linkHoverPaletteStatus) && !linkHoverPaletteStatus) {
-			response[`${target}:hover`].link[breakpoint] = {};
-
 			response[[`${target}:visited:hover`]].link[breakpoint] = {};
 
 			response[`${target}:hover`].link[breakpoint].color = linkHoverColor;
@@ -99,7 +117,7 @@ const getLinkStyles = (obj, target, blockStyle) => {
 				blockStyle,
 			});
 
-			response[`${target}:hover`].link[breakpoint] = { color };
+			response[`${target}:hover`].link[breakpoint].color = color;
 
 			response[[`${target}:visited:hover`]].link[breakpoint] = { color };
 		}

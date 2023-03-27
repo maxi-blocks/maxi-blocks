@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { cloneBlock } from '@wordpress/blocks';
-import { select, useDispatch, useSelect } from '@wordpress/data';
+import { useDispatch, useSelect } from '@wordpress/data';
 import { useState } from '@wordpress/element';
 
 /**
@@ -16,6 +16,7 @@ import Dropdown from '../../../dropdown';
 import { getOrganizedAttributes } from '../../../../extensions/copy-paste';
 import { loadColumnsTemplate } from '../../../../extensions/column-templates';
 import labelOptions from './utils';
+import { getUpdatedBGLayersWithNewUniqueID } from '../../../../extensions/attributes';
 
 /**
  * External dependencies
@@ -50,6 +51,7 @@ const CopyPaste = props => {
 	const { blockName, clientId, closeMoreSettings, copyPasteMapping } = props;
 
 	const {
+		attributes,
 		blockAttributes,
 		organizedAttributes,
 		currentOrganizedAttributes,
@@ -70,9 +72,9 @@ const CopyPaste = props => {
 				getOrganizedAttributes(copiedStyles, copyPasteMapping)) ||
 			{};
 
-		const blockValues = getBlock(clientId);
+		const { attributes, innerBlocks } = getBlock(clientId);
 		const blockAttributes = getOrganizedAttributes(
-			blockValues.attributes,
+			attributes,
 			copyPasteMapping,
 			true
 		);
@@ -80,10 +82,10 @@ const CopyPaste = props => {
 			blockAttributes,
 			copyPasteMapping
 		);
-		const { innerBlocks } = blockValues;
 		const hasInnerBlocks = !isEmpty(innerBlocks);
 
 		return {
+			attributes,
 			blockAttributes,
 			organizedAttributes,
 			currentOrganizedAttributes,
@@ -116,6 +118,26 @@ const CopyPaste = props => {
 	const { updateBlockAttributes, replaceInnerBlocks } =
 		useDispatch('core/block-editor');
 
+	const handleAttributesOnPaste = copiedAttributes => {
+		if (blockName === 'maxi-blocks/row-maxi') {
+			Object.entries(copiedAttributes).forEach(([key, style]) => {
+				if (key.includes('row-pattern-') && style !== attributes[key]) {
+					loadColumnsTemplate(
+						style,
+						clientId,
+						key.replace('row-pattern-', '')
+					);
+				}
+			});
+		}
+
+		copiedAttributes['background-layers'] =
+			getUpdatedBGLayersWithNewUniqueID(
+				copiedAttributes['background-layers'],
+				attributes.uniqueID
+			);
+	};
+
 	const onCopyStyles = () => {
 		closeMoreSettings();
 		copyStyles(blockAttributes);
@@ -130,22 +152,7 @@ const CopyPaste = props => {
 
 		closeMoreSettings();
 
-		if (blockName === 'maxi-blocks/row-maxi') {
-			Object.entries(styles).forEach(([key, style]) => {
-				if (key.includes('row-pattern-')) {
-					const { getBlock } = select('core/block-editor');
-
-					const { attributes } = getBlock(clientId);
-
-					if (style !== attributes[key])
-						loadColumnsTemplate(
-							style,
-							clientId,
-							key.replace('row-pattern-', '')
-						);
-				}
-			});
-		}
+		handleAttributesOnPaste(styles);
 
 		updateBlockAttributes(clientId, styles);
 	};
@@ -284,22 +291,7 @@ const CopyPaste = props => {
 
 		closeMoreSettings();
 
-		if (blockName === 'maxi-blocks/row-maxi') {
-			Object.entries(res).forEach(([key, style]) => {
-				if (key.includes('row-pattern-')) {
-					const { getBlock } = select('core/block-editor');
-
-					const { attributes } = getBlock(clientId);
-
-					if (style !== attributes[key])
-						loadColumnsTemplate(
-							style,
-							clientId,
-							key.replace('row-pattern-', '')
-						);
-				}
-			});
-		}
+		handleAttributesOnPaste(res);
 
 		updateBlockAttributes(clientId, res);
 	};

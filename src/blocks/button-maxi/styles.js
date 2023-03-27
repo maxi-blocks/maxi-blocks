@@ -103,6 +103,12 @@ const getHoverWrapperObject = props => {
 				blockStyle: props.blockStyle,
 				isHover: true,
 			}),
+		opacity:
+			props['opacity-status-hover'] &&
+			getOpacityStyles(
+				{ ...getGroupAttributes(props, 'opacity', true) },
+				true
+			),
 	};
 
 	return response;
@@ -246,7 +252,7 @@ const getHoverContentObject = (props, scValues) => {
 	return response;
 };
 
-const getStyles = (props, scValues) => {
+const getStyles = (props, scValues, iconWidthHeightRatio) => {
 	const { uniqueID, blockStyle } = props;
 
 	const response = {
@@ -270,6 +276,7 @@ const getStyles = (props, scValues) => {
 					blockStyle,
 					target: '.maxi-button-block__icon',
 					wrapperTarget: '.maxi-button-block__button',
+					iconWidthHeightRatio,
 				}),
 				// Hover
 				' .maxi-button-block__button:hover': getHoverObject(
@@ -294,6 +301,7 @@ const getStyles = (props, scValues) => {
 					isHover: true,
 					target: '.maxi-button-block__icon',
 					wrapperTarget: '.maxi-button-block__button',
+					iconWidthHeightRatio,
 				}),
 			},
 			data,

@@ -15,12 +15,12 @@ import getFormatType from './getFormatType';
 import updateCustomFormatStyle from './updateCustomFormatStyle';
 import getCustomFormat from './getCustomFormat';
 import getIsFullFormat from './getIsFullFormat';
+import getHasCustomFormat from './getHasCustomFormat';
 
 /**
  * External dependencies
  */
 import { isEmpty, isNil, isBoolean } from 'lodash';
-import getHasCustomFormat from './getHasCustomFormat';
 
 /**
  * Generates a format and unique className

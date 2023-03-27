@@ -1,27 +1,38 @@
 .maxi-row-block {
 	position: relative;
+	flex-wrap: wrap;
+	z-index: 2;
 	width: 100%;
 	margin: auto;
 	padding: 0;
-	z-index: 2;
-	flex-wrap: wrap;
+
+	&__title {
+		display: block;
+		text-align: center;
+
+		span {
+			font-size: 18px;
+			margin: 0;
+		}
+	}
 
 	&__template {
 		display: flex;
 		flex-wrap: wrap;
-		background-color: transparent;
-		width: 100%;
-		padding: 36px 1rem;
-		margin: 0 auto;
 		justify-content: center;
-		max-width: 1170px;
+		gap: 12px;
 		z-index: 1;
+		width: 100%;
+		max-width: 1170px;
+		margin: 0 auto;
+		padding: 36px 1rem;
+		background-color: transparent;
 
 		&__button {
-			width: auto;
-			height: auto !important;
 			display: inline-block;
-			padding: 12px !important;
+			width: initial;
+			height: auto !important;
+			padding: 0 !important;
 
 			&:hover {
 				svg {
@@ -32,11 +43,13 @@
 			}
 
 			svg {
-				width: 152px;
-				height: 48px;
+				display: block;
+				width: 100%;
+				max-width: 152px;
+				height: auto;
+				max-height: 48px;
 				fill: #151617;
 				stroke: #151617;
-				display: block;
 			}
 		}
 	}

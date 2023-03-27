@@ -8,6 +8,7 @@ import { RawHTML, useRef } from '@wordpress/element';
  * Internal dependencies
  */
 import {
+	createTransitionObj,
 	getAttributeKey,
 	getAttributeValue,
 	getBlockStyle,
@@ -31,7 +32,15 @@ import ListItemControl from '../list-control/list-item-control';
  * External dependencies
  */
 import classnames from 'classnames';
-import { cloneDeep, findIndex, isEmpty, isEqual, isNil, omitBy } from 'lodash';
+import {
+	cloneDeep,
+	findIndex,
+	isEmpty,
+	isEqual,
+	isNil,
+	omit,
+	omitBy,
+} from 'lodash';
 
 /**
  * Icons
@@ -51,7 +60,16 @@ const getLayerCardContent = props => {
 		onChangeInline = null,
 		onChange,
 		previewRef,
+		getBounds,
+		getBlockClipPath, // for IB
 	} = props;
+
+	const handleGetBounds = () =>
+		getBounds(
+			`.maxi-background-displayer .maxi-background-displayer__${layer.order}`
+		);
+
+	const handleGetBlockClipPath = () => getBlockClipPath(layer.id);
 
 	switch (layer.type) {
 		case 'color':
@@ -76,7 +94,10 @@ const getLayerCardContent = props => {
 					}}
 					breakpoint={breakpoint}
 					isHover={isHover}
+					isIB={isIB}
 					isLayer
+					getBounds={handleGetBounds}
+					getBlockClipPath={handleGetBlockClipPath}
 				/>
 			);
 		case 'image':
@@ -92,8 +113,11 @@ const getLayerCardContent = props => {
 					}
 					breakpoint={breakpoint}
 					isHover={isHover}
+					isIB={isIB}
 					disableUpload={isHover || isIB}
 					isLayer
+					getBounds={handleGetBounds}
+					getBlockClipPath={handleGetBlockClipPath}
 				/>
 			);
 		case 'video':
@@ -109,6 +133,7 @@ const getLayerCardContent = props => {
 					}
 					breakpoint={breakpoint}
 					isHover={isHover}
+					isIB={isIB}
 					isLayer
 				/>
 			);
@@ -125,7 +150,10 @@ const getLayerCardContent = props => {
 					}
 					breakpoint={breakpoint}
 					isHover={isHover}
+					isIB={isIB}
 					isLayer
+					getBounds={handleGetBounds}
+					getBlockClipPath={handleGetBlockClipPath}
 				/>
 			);
 		case 'shape':
@@ -361,6 +389,7 @@ const getLayerCardTitle = props => {
 const BackgroundLayersControl = ({
 	layersOptions,
 	layersHoverOptions,
+	transition,
 	isHover = false,
 	isIB = false,
 	onChangeInline,
@@ -368,6 +397,8 @@ const BackgroundLayersControl = ({
 	clientId,
 	breakpoint,
 	disableAddLayer,
+	getBounds,
+	getBlockClipPath, // for IB
 }) => {
 	const previewRef = useRef(null);
 
@@ -484,16 +515,40 @@ const BackgroundLayersControl = ({
 
 		onChange({
 			[`background-layers${isHoverLayer ? '-hover' : ''}`]: newLayers,
+			...(!isHoverLayer
+				? {
+						transition: {
+							...transition,
+							transform: {
+								...transition.transform,
+								[`_${layer.id}`]: createTransitionObj(),
+							},
+						},
+				  }
+				: {}),
 		});
 	};
 
 	const onRemoveLayer = ({ order, isHover: isHoverLayer }) => {
+		let idOfRemovedLayer;
+
 		const newLayers = cloneDeep(isHoverLayer ? layersHover : layers).filter(
-			lay => lay.order !== order
+			lay => {
+				if (lay.order !== order) {
+					return true;
+				}
+
+				idOfRemovedLayer = lay.id;
+				return false;
+			}
 		);
 
 		onChange({
 			[`background-layers${isHover ? '-hover' : ''}`]: newLayers,
+			transition: {
+				...transition,
+				transform: omit(transition.transform, `_${idOfRemovedLayer}`),
+			},
 		});
 	};
 
@@ -527,6 +582,8 @@ const BackgroundLayersControl = ({
 										onChangeInline,
 										onChange: onChangeLayer,
 										previewRef,
+										getBounds,
+										getBlockClipPath, // for IB
 									})}
 									id={layer.order}
 									onRemove={() => onRemoveLayer(layer)}

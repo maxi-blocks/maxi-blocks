@@ -1,5 +1,9 @@
 .maxi-toolbar__popover {
-	z-index: 29;
+	z-index: 9999999;
+
+	&--icon {
+		z-index: 9999998;
+	}
 
 	.toolbar-more-indicator {
 		margin-left: 10px;
@@ -15,7 +19,7 @@
 		justify-content: center;
 	}
 	.components-popover__content {
-		overflow: visible;
+		overflow: visible !important;
 		background-color: transparent;
 		border: none;
 		box-shadow: none;
@@ -43,7 +47,7 @@
 				}
 			}
 
-			.breadcrumbs-pin-toltip {
+			.breadcrumbs-pin-tooltip {
 				position: absolute;
 				top: -24px;
 				left: 0;
@@ -62,7 +66,7 @@
 				opacity: 0;
 				pointer-events: none;
 			}
-			.breadcrumbs-pin:hover .breadcrumbs-pin-toltip {
+			.breadcrumbs-pin:hover .breadcrumbs-pin-tooltip {
 				visibility: visible;
 				opacity: 1;
 				transition-delay: 0.8s;
@@ -163,7 +167,7 @@
 				&__duplicate .components-button,
 				&__move,
 				&__replay,
-				&__alignment,
+				&__alignment:not(.maxi-dropdown),
 				&__bold,
 				&__italic,
 				&__button {
@@ -211,7 +215,7 @@
 						outline: 0;
 					}
 				}
-				&__alignment,
+				&__alignment:not(.maxi-dropdown),
 				&__bold,
 				&__italic {
 					height: auto;
@@ -402,7 +406,7 @@ body .toolbar-item__popover {
 		border-radius: 0;
 		min-width: auto;
 		padding: 8px 8px 0;
-		overflow: visible;
+		overflow: visible !important;
 		box-shadow: 0 -2px 6px 0px rgb(0, 0, 0, 0.1);
 		margin-left: -2px;
 		outline: none;
@@ -473,11 +477,12 @@ body .toolbar-item__popover {
 	}
 
 	input[type='number'] {
-		border: 1px solid var(--maxi-grey-1-color);
-		color: var(--maxi-grey-5-color);
+		border: 1px solid var(--maxi-grey-1-color) !important;
+		color: var(--maxi-grey-5-color) !important;
 		flex: 2;
 		&::placeholder {
-			color: #fff;
+			color: var(--maxi-grey-5-color);
+			opacity: 0.8;
 		}
 	}
 
@@ -549,7 +554,6 @@ body .toolbar-item__popover {
 	}
 
 	.maxi-tabs-control {
-		width: 100%;
 		&__button {
 			background: transparent;
 			color: #141516;

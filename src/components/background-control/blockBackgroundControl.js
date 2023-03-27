@@ -34,6 +34,9 @@ const BlockBackgroundControl = props => {
 		disableColor = false,
 		disableSVG = false,
 		disableAddLayer = false,
+		transition,
+		getBounds,
+		getBlockClipPath, // for IB
 	} = props;
 
 	const layersOptions = compact([
@@ -45,10 +48,9 @@ const BlockBackgroundControl = props => {
 	]);
 	const layersHoverOptions = compact([
 		...getAttributeValue({
-			target: 'background-layers',
+			target: 'background-layers-hover',
 			props,
 			prefix,
-			isHover: true,
 		}),
 	]);
 
@@ -79,6 +81,9 @@ const BlockBackgroundControl = props => {
 				clientId={clientId}
 				breakpoint={breakpoint}
 				hoverStatus={hoverStatus}
+				transition={transition}
+				getBounds={getBounds}
+				getBlockClipPath={getBlockClipPath}
 			/>
 		</div>
 	);

@@ -11,13 +11,14 @@ import {
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
-import { transition } from './data';
+import { customCss, transition } from './data';
 
 /**
  * Attributes
  */
 const attributes = {
 	...attributesData.global,
+	...attributesData.dynamicContent,
 
 	/**
 	 * Block styles
@@ -98,7 +99,7 @@ const attributes = {
 			},
 			'list-style-position': {
 				type: 'string',
-				default: 'inside',
+				default: 'outside',
 			},
 		},
 	}),
@@ -133,10 +134,14 @@ const attributes = {
 	...attributesData.transform,
 	...{
 		...attributesData.transition,
-		...transitionAttributesCreator(transition),
+		...transitionAttributesCreator({
+			transition,
+			selectors: customCss.selectors,
+		}),
 	},
 	...attributesData.display,
 	...attributesData.opacity,
+	...attributesData.opacityHover,
 	...attributesData.position,
 	...attributesData.overflow,
 	...attributesData.zIndex,

@@ -27,6 +27,8 @@ import data, { prefixes } from './data';
 const { buttonPrefix, closeIconPrefix, inputPrefix } = prefixes;
 
 const getNormalObject = props => {
+	const { blockStyle } = props;
+
 	const response = {
 		border: getBorderStyles({
 			obj: {
@@ -36,6 +38,7 @@ const getNormalObject = props => {
 					'borderRadius',
 				]),
 			},
+			blockStyle,
 		}),
 		margin: getMarginPaddingStyles({
 			obj: { ...getGroupAttributes(props, 'margin') },
@@ -99,6 +102,12 @@ const getHoverObject = props => {
 				isHover: true,
 				blockStyle: props.blockStyle,
 			}),
+		opacity:
+			props['opacity-status-hover'] &&
+			getOpacityStyles(
+				{ ...getGroupAttributes(props, 'opacity', true) },
+				true
+			),
 	};
 
 	return response;
@@ -130,7 +139,7 @@ const getSearchButtonStyles = (props, isHover = false) => {
 			},
 			isHover,
 			prefix: buttonPrefix,
-			blockStyle: props.blockStyle,
+			blockStyle,
 		}),
 		...(!isHover && {
 			margin: getMarginPaddingStyles({

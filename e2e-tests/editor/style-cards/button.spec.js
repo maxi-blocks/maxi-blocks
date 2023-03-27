@@ -13,12 +13,13 @@ import {
 	editGlobalStyles,
 	checkSCResult,
 	changeResponsive,
+	copySCToEdit,
 } from '../../utils';
 import {
 	generalTypographyOptions,
 	responsiveTypographyOptions,
-	generalTypographyStyle,
-	responsiveTypographyStyle,
+	generalButtonTypographyStyle,
+	responsiveButtonTypographyStyle,
 } from './constants';
 
 describe('StyleCards, Buttons', () => {
@@ -29,6 +30,7 @@ describe('StyleCards, Buttons', () => {
 			page,
 			accordion: 'button',
 		});
+		await copySCToEdit(page, `copy - ${Date.now()}`);
 
 		// Size, line-height, letter-spacing
 		await addTypographyOptions({
@@ -46,7 +48,8 @@ describe('StyleCards, Buttons', () => {
 			instance: await page.$(
 				'.maxi-typography-control.maxi-style-cards-control__sc__button-typography'
 			),
-			...generalTypographyStyle,
+			...generalButtonTypographyStyle,
+			isStyleCards: true,
 		});
 
 		// Check Button global styles
@@ -111,7 +114,8 @@ describe('StyleCards, Buttons', () => {
 			instance: await page.$(
 				'.maxi-typography-control.maxi-style-cards-control__sc__button-typography'
 			),
-			...responsiveTypographyStyle,
+			...responsiveButtonTypographyStyle,
+			isStyleCards: true,
 		});
 
 		expect(await checkSCResult(page)).toMatchSnapshot();
@@ -122,9 +126,12 @@ describe('StyleCards, Buttons', () => {
 			instance: await page.$(
 				'.maxi-typography-control.maxi-style-cards-control__sc__button-typography'
 			),
+			isStyleCards: true,
 		});
 
-		expect(typographyStylesS).toStrictEqual(responsiveTypographyStyle);
+		expect(typographyStylesS).toStrictEqual(
+			responsiveButtonTypographyStyle
+		);
 
 		// Check values on L to be the same as on general breakpoint
 		await changeResponsive(page, 'l');
@@ -132,8 +139,9 @@ describe('StyleCards, Buttons', () => {
 			instance: await page.$(
 				'.maxi-typography-control.maxi-style-cards-control__sc__button-typography'
 			),
+			isStyleCards: true,
 		});
 
-		expect(typographyStylesL).toStrictEqual(generalTypographyStyle);
+		expect(typographyStylesL).toStrictEqual(generalButtonTypographyStyle);
 	});
 });

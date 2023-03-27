@@ -30,24 +30,28 @@ const ColorPaletteControl = props => {
 		value,
 		onChange,
 		globalProps,
-		noColorPrefix = false,
 		disableOpacity,
 		opacity = 1,
 		clientId,
 		disableReset,
 		onReset,
 		onResetOpacity,
+		isHover,
 	} = props;
 
 	const { globalStatus, globalPaletteColor, globalPaletteOpacity } =
 		useSelect(select => {
 			const { receiveStyleCardValue } = select('maxiBlocks/style-cards');
 
-			const prefix = globalProps?.target ? `${globalProps?.target}-` : '';
+			const prefix = globalProps?.target
+				? isHover && !globalProps?.target.includes('hover')
+					? `hover-${globalProps?.target}-`
+					: `${globalProps?.target}-`
+				: '';
 
 			const globalStatus = globalProps
 				? receiveStyleCardValue(
-						`${prefix}${noColorPrefix ? '' : 'color-'}global`,
+						`${prefix}color-global`,
 						globalProps ? getBlockStyle(clientId) : null,
 						globalProps?.type
 				  )
@@ -135,12 +139,13 @@ const ColorPaletteControl = props => {
 				<OpacityControl
 					label={__('Colour opacity', 'maxi-blocks')}
 					opacity={globalStatus ? globalPaletteOpacity : opacity}
-					onChange={val =>
+					onChangeOpacity={val =>
 						onChange({
 							paletteOpacity: val,
 						})
 					}
 					onReset={onResetOpacity}
+					disableRTC
 				/>
 			)}
 		</div>

@@ -1,11 +1,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyTimes,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, pressKeyTimes } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
@@ -15,12 +11,13 @@ import {
 	getEditedPostContent,
 	modalMock,
 	openSidebarTab,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('IconControl', () => {
 	it('Check Icon Control', async () => {
 		await createNewPost();
-		await insertBlock('Button Maxi');
+		await insertMaxiBlock(page, 'Button Maxi');
 		await openSidebarTab(page, 'style', 'icon');
 
 		// select icon
@@ -55,7 +52,7 @@ describe('IconControl', () => {
 
 		// icon position
 		const iconPosition = await page.$$(
-			'.maxi-settingstab-control.maxi-icon-position-control button'
+			'.maxi-settingstab-control.maxi-icon-control__position button'
 		);
 
 		await iconPosition[2].click();

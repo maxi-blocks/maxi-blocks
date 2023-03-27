@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
@@ -10,12 +10,13 @@ import {
 	getAttributes,
 	changeResponsive,
 	getBlockAttributes,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('OverflowControl', () => {
 	it('Checking the overflow control', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 		await openSidebarTab(page, 'advanced', 'overflow');
 
 		const selectorX = await page.$$('.maxi-overflow-control select');

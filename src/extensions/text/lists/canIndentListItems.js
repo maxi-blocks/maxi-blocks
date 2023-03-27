@@ -15,7 +15,7 @@ const canIndentListItems = value => {
 	const lineIndex = getLineIndex(value);
 
 	// There is only one line, so the line cannot be indented.
-	if (lineIndex === undefined) {
+	if (!lineIndex) {
 		return false;
 	}
 

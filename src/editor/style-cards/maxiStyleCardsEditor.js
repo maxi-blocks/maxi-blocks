@@ -2,49 +2,43 @@
 /**
  * WordPress dependencies
  */
-import { __, sprintf } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 import { useSelect, useDispatch } from '@wordpress/data';
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, useRef, forwardRef } from '@wordpress/element';
 import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
-import { PostPreviewButton } from '@wordpress/editor';
+import { getSettings, date } from '@wordpress/date';
 import { Popover } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
-import {
-	showMaxiSCSavedActiveSnackbar,
-	showMaxiSCSavedSnackbar,
-	showMaxiSCAppliedActiveSnackbar,
-	exportStyleCard,
-} from './utils';
-import {
-	SettingTabsControl,
-	SelectControl,
-	Button,
-	Icon,
-} from '../../components';
+import { exportStyleCard, getActiveColourFromSC } from './utils';
+import { SettingTabsControl, Button, Icon, DialogBox } from '../../components';
 import MaxiStyleCardsTab from './maxiStyleCardsTab';
 import { updateSCOnEditor } from '../../extensions/style-cards';
 import MaxiModal from '../library/modal';
 import { handleSetAttributes } from '../../extensions/maxi-block';
+import standardSC from '../../../core/utils/defaultSC.json';
 
 /**
  * External dependencies
  */
-import { isEmpty, isNil, isEqual } from 'lodash';
+import { isEmpty, isNil, isEqual, cloneDeep, merge } from 'lodash';
+import Select from 'react-select';
 
 /**
  * Icons
  */
-import { styleCardBoat, reset, SCDelete, closeIcon } from '../../icons';
+import { styleCardBoat, SCDelete, closeIcon } from '../../icons';
 
-const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
+const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	const {
 		isRTL,
 		breakpoint,
 		SCList,
 		activeSCKey,
+		activeSCValue,
+		activeStyleCard,
 		savedStyleCards,
 		selectedSCKey,
 		selectedSCValue,
@@ -64,7 +58,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 
 		const SCList = receiveStyleCardsList();
 		const activeStyleCard = receiveMaxiActiveStyleCard();
-		const { key: activeSCKey } = activeStyleCard;
+		const { key: activeSCKey, value: activeSCValue } = activeStyleCard;
 		const savedStyleCards = receiveSavedMaxiStyleCards();
 		const selectedStyleCard = receiveMaxiSelectedStyleCard();
 		const { key: selectedSCKey, value: selectedSCValue } =
@@ -75,6 +69,8 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 			breakpoint,
 			SCList,
 			activeSCKey,
+			activeStyleCard,
+			activeSCValue,
 			savedStyleCards,
 			selectedSCKey,
 			selectedSCValue,
@@ -89,23 +85,31 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 		saveSCStyles,
 	} = useDispatch('maxiBlocks/style-cards');
 
-	const [styleCardName, setStyleCardName] = useState('');
+	const [styleCardName, setStyleCardName] = useState(
+		`${activeSCValue?.name} - `
+	);
 	const [currentSCStyle, setCurrentSCStyle] = useState('light');
 
-	useEffect(() => {
-		if (selectedSCValue) updateSCOnEditor(selectedSCValue);
-	}, [selectedSCKey]);
-
-	const canBeReset = keySC => {
-		if (
-			!isNil(styleCards[keySC]) &&
-			(!isEmpty(styleCards[keySC].light.styleCard) ||
-				!isEmpty(styleCards[keySC].dark.styleCard))
-		)
-			return true;
-
-		return false;
+	const getIsUserCreatedStyleCard = (card = selectedSCValue) => {
+		return card?.type === 'user';
 	};
+
+	const [isTemplate, setIsTemplate] = useState(!getIsUserCreatedStyleCard());
+	const [showCopyCardDialog, setShowCopyCardDialog] = useState(false);
+	const [activeSCColour, setActiveSCColour] = useState(
+		getActiveColourFromSC(activeStyleCard, 4)
+	);
+
+	useEffect(() => {
+		if (selectedSCValue) {
+			updateSCOnEditor(selectedSCValue, activeSCColour);
+			setStyleCardName(`${selectedSCValue?.name} - `);
+
+			const isUserCreatedSC = getIsUserCreatedStyleCard();
+			setIsTemplate(!isUserCreatedSC);
+			setShowCopyCardDialog(false);
+		}
+	}, [selectedSCKey]);
 
 	const canBeSaved = keySC => {
 		const currentSC = {
@@ -128,15 +132,14 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 		return false;
 	};
 
-	const canBeRemoved = keySC => {
-		if (keySC === 'sc_maxi') return false;
+	const canBeRemoved = (keySC, activeSCKey) => {
+		if (keySC === 'sc_maxi' || keySC === activeSCKey) return false;
 
 		return true;
 	};
 
 	const onChangeValue = (obj, type) => {
 		let newSC = { ...selectedSCValue };
-
 		const isTypography = Object.keys(obj)[0] === 'typography';
 
 		const newObj = handleSetAttributes({
@@ -148,6 +151,7 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 			defaultAttributes:
 				selectedSCValue[currentSCStyle].defaultStyleCard[type],
 			onChange: response => response,
+			isStyleCard: true,
 		});
 
 		Object.entries(newObj).forEach(([prop, value]) => {
@@ -181,284 +185,269 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 			},
 		};
 		saveMaxiStyleCards(newStyleCards);
-		updateSCOnEditor(newSC);
+		updateSCOnEditor(newSC, activeSCColour);
 	};
 
-	const getCurrentSCName = () => {
-		if (!isNil(selectedSCValue)) {
-			return selectedSCValue.name;
-		}
+	const [postDate] = useState();
 
-		return 'Current Style Card';
+	const saveImportedStyleCard = card => {
+		const newId = `sc_${new Date().getTime()}`;
+
+		const standardMerge = cloneDeep(standardSC?.sc_maxi);
+		const mergeWith = cloneDeep(card);
+		const newCard = merge(standardMerge, mergeWith);
+
+		const newAllSCs = {
+			...styleCards,
+			[newId]: newCard,
+		};
+
+		saveMaxiStyleCards(newAllSCs, true);
+		updateSCOnEditor(card, activeSCColour);
+		setSelectedStyleCard(newId);
 	};
+
+	const customiseInputRef = useRef();
+
+	useEffect(() => {
+		customiseInputRef?.current?.focus?.();
+	}, [showCopyCardDialog]);
 
 	const applyCurrentSCGlobally = () => {
 		setActiveStyleCard(selectedSCKey);
-
-		const newStyleCards = {
-			...styleCards,
-			[selectedSCKey]: {
-				...selectedSCValue,
-				status: 'active',
-			},
-		};
-
 		saveMaxiStyleCards(selectedSCValue);
-		updateSCOnEditor(selectedSCValue);
+		updateSCOnEditor(
+			selectedSCValue,
+			getActiveColourFromSC(selectedSCValue, 4)
+		);
+
+		setActiveSCColour(getActiveColourFromSC(selectedSCValue, 4));
+		const newStyleCards = cloneDeep(styleCards);
+
+		Object.entries(newStyleCards).forEach(([key, value]) => {
+			if (key === selectedSCKey)
+				newStyleCards[key] = { ...value, status: 'active' };
+			else newStyleCards[key] = { ...value, status: '' };
+		});
 
 		saveMaxiStyleCards(newStyleCards, true);
 		saveSCStyles(true);
 	};
 
 	const saveCurrentSC = () => {
+		const isChosenActive = selectedSCValue?.status === 'active';
 		const newStyleCards = {
 			...styleCards,
-			[selectedSCKey]: { ...selectedSCValue },
-		};
-
-		saveMaxiStyleCards(newStyleCards, true);
-		saveSCStyles(true);
-	};
-
-	const resetCurrentSC = () => {
-		const resetStyleCards = {
-			...styleCards,
 			[selectedSCKey]: {
-				...styleCards[selectedSCKey],
-				dark: {
-					styleCard: {},
-					defaultStyleCard: {
-						...styleCards[selectedSCKey].dark.defaultStyleCard,
-					},
-				},
-				light: {
-					styleCard: {},
-					defaultStyleCard: {
-						...styleCards[selectedSCKey].light.defaultStyleCard,
-					},
-				},
+				...selectedSCValue,
+				...{ status: isChosenActive ? 'active' : '' },
 			},
 		};
-		saveMaxiStyleCards(resetStyleCards);
-		updateSCOnEditor(resetStyleCards[selectedSCKey]);
+
+		if (isChosenActive) {
+			setActiveSCColour(getActiveColourFromSC(selectedSCValue, 4));
+			updateSCOnEditor(
+				selectedSCValue,
+				getActiveColourFromSC(selectedSCValue, 4)
+			);
+		}
+
+		saveMaxiStyleCards(newStyleCards, true);
+		saveSCStyles(isChosenActive);
 	};
 
-	const saveImportedStyleCard = card => {
-		const newId = `sc_${new Date().getTime()}`;
+	const deleteSC = () => {
+		removeStyleCard(selectedSCKey);
 
-		const newAllSCs = {
-			...styleCards,
-			[newId]: card,
-		};
+		if (activeSCKey === selectedSCKey) setActiveStyleCard('sc_maxi');
+	};
 
-		saveMaxiStyleCards(newAllSCs);
-		updateSCOnEditor(card);
-		setSelectedStyleCard(newId);
+	const [cardAlreadyExists, setCardAlreadyExists] = useState(false);
+	const [importedCardExists, setImportedCardExists] = useState(false);
+
+	const currentDate = date(getSettings()?.formats?.date);
+
+	const getOptionsSCList = () => {
+		const response = [];
+
+		!isEmpty(styleCards) &&
+			Object.entries(styleCards).map(([key, val], i) => {
+				if (val?.type !== 'user')
+					response.push({
+						label: `${__('Template', 'maxi-blocks')}: ${val.name}`,
+						value: key,
+						status: val?.status,
+						selected: val?.selected || false,
+					});
+				else if (!isEmpty(val?.updated))
+					response.push({
+						label: `${val.name} - ${val.updated}`,
+						value: key,
+						status: val?.status,
+						selected: val?.selected || false,
+					});
+				else
+					response.push({
+						label: `${val.name}`,
+						value: key,
+						status: val?.status,
+						selected: val?.selected || false,
+					});
+				return null;
+			});
+
+		const sortedTemplates = response.sort((a, b) => {
+			if (a?.label?.includes('Template:')) {
+				return 1;
+			}
+
+			if (b?.label?.includes('Template:')) {
+				return -1;
+			}
+
+			return a < b ? -1 : 1;
+		});
+
+		const sortedByDate = sortedTemplates.sort((a, b) => {
+			if (
+				a?.label?.includes('Template:') ||
+				b?.label?.includes('Template:')
+			)
+				return null;
+			const aDate = a?.label?.split('- ').pop();
+			const bDate = b?.label?.split('- ').pop();
+
+			if (Date.parse(aDate) && Date.parse(bDate))
+				return new Date(bDate) - new Date(aDate);
+			return null;
+		});
+
+		return sortedByDate;
+	};
+
+	const getActiveInList = list => {
+		let response = '';
+		list.forEach((sc, index) => {
+			if (sc.status === 'active') response = index;
+		});
+		return response;
+	};
+
+	const getSelectedInList = list => {
+		let response = '';
+		list.forEach((sc, index) => {
+			if (sc.selected) response = index;
+		});
+		return response;
+	};
+
+	const customStyles = {
+		option: (base, state, selected) => ({
+			...base,
+			padding: '8px',
+			whiteSpace: 'wrap',
+			borderBottom: '1px solid #E3E3E3',
+			backgroundColor: state.isSelected
+				? 'rgb(var(--maxi-light-color-4)) !important'
+				: '#fff !important' && state.isFocused
+				? 'rgba(229, 242, 248, 0.7) !important'
+				: '#fff !important',
+			color: state.isSelected
+				? '#fff !important'
+				: 'color: var(--maxi-grey-5-color) !important',
+			width: 'auto',
+			cursor: 'pointer',
+		}),
+		control: () => ({
+			display: 'flex',
+			padding: '0',
+			marginBottom: '8px',
+			borderRadius: '0px',
+			border: '1px solid rgb(var(--maxi-light-color-4))',
+			cursor: 'pointer',
+		}),
+	};
+
+	const listForDropdown = getOptionsSCList();
+	const selectedForDropdown =
+		listForDropdown[getSelectedInList(listForDropdown)];
+	const activeForDropdown = listForDropdown[getActiveInList(listForDropdown)];
+
+	const closeAllAccordions = () => {
+		const scEditor = document.getElementsByClassName(
+			'maxi-style-cards__settings'
+		)[0];
+		const accordions = scEditor?.getElementsByClassName(
+			'maxi-accordion-control__item'
+		);
+
+		if (!accordions || isEmpty(accordions)) return null;
+
+		for (const accordion of accordions) {
+			accordion.querySelector('[aria-expanded=true]')?.click();
+		}
 	};
 
 	return (
 		!isEmpty(styleCards) && (
 			<Popover
+				anchor={ref.current}
 				noArrow
-				position={isRTL ? 'top left right' : 'top right left'}
+				resize
+				position={isRTL ? 'bottom left right' : 'bottom right left'}
 				className='maxi-style-cards__popover maxi-sidebar'
 				focusOnMount
+				strategy='fixed'
 			>
-				<h2 className='maxi-style-cards__popover__title'>
-					<Icon icon={styleCardBoat} />
-					{__('Style card manager', 'maxi-blocks')}
+				<div className='active-style-card'>
+					<div className='active-style-card_icon'>
+						<Icon icon={styleCardBoat} />
+					</div>
+					<div className='active-style-card_title'>
+						<span>{__('Active style card', 'maxi-blocks')}</span>
+						<h2 className='maxi-style-cards__popover__title'>
+							{activeStyleCard.value.name}
+							{postDate && <span>| {postDate}</span>}
+						</h2>
+					</div>
 					<span
-						className='maxi-responsive-selector__close'
+						className='maxi-responsive-close has-tooltip'
 						onClick={() => setIsVisible(false)}
 					>
+						<span className='tooltip'>
+							{__('Close', 'maxi-blocks')}
+						</span>
 						<Icon icon={closeIcon} />
 					</span>
-				</h2>
-				<hr />
-				<div className='maxi-style-cards__popover__sub-title'>
-					{__('Search or edit style cards', 'maxi-blocks')}
 				</div>
+
 				<div className='maxi-style-cards__sc'>
 					<div className='maxi-style-cards__sc__more-sc'>
 						<MaxiModal type='sc' />
-						<SelectControl
-							className='maxi-style-cards__sc__more-sc--select'
-							value={selectedSCKey}
-							options={SCList}
-							onChange={val => {
-								setSelectedStyleCard(val);
-							}}
-						/>
-						<Button
-							disabled={!canBeReset(selectedSCKey)}
-							className='maxi-style-cards__sc__more-sc--reset'
-							onClick={() => {
-								if (
-									window.confirm(
-										sprintf(
-											__(
-												'Are you sure to reset "%s" style card\'s styles to defaults? Don\'t forget to apply the changes after',
-												'maxi-blocks'
-											),
-											getCurrentSCName
-										)
-									)
-								) {
-									resetCurrentSC();
-								}
-							}}
-						>
-							<Icon icon={reset} />
-						</Button>
-						<Button
-							disabled={!canBeRemoved(selectedSCKey)}
-							className='maxi-style-cards__sc__more-sc--delete'
-							onClick={() => {
-								if (
-									window.confirm(
-										sprintf(
-											__(
-												'Are you sure you want to delete "%s" style card? You cannot undo it',
-												'maxi-blocks'
-											),
-											styleCards[selectedSCKey].name
-										)
-									)
-								) {
-									removeStyleCard(selectedSCKey);
-
-									if (activeSCKey === selectedSCKey)
-										setActiveStyleCard('sc_maxi');
-								}
-							}}
-						>
-							<Icon icon={SCDelete} />
-						</Button>
-					</div>
-					<div className='maxi-style-cards__sc__actions'>
-						<PostPreviewButton
-							className='maxi-style-cards__sc__actions--preview'
-							textContent={__('Preview', 'maxi-blocks')}
-						/>
-						<Button
-							className='maxi-style-cards__sc__actions--save'
-							disabled={!canBeSaved(selectedSCKey)}
-							onClick={() => {
-								if (activeSCKey === selectedSCKey) {
-									if (
-										window.confirm(
-											sprintf(
-												__(
-													'Are you sure you want to save active "%s" style card? It will apply new styles to the whole site',
-													'maxi-blocks'
-												),
-												getCurrentSCName
-											)
-										)
-									) {
-										saveCurrentSC();
-										showMaxiSCSavedActiveSnackbar(
-											selectedSCValue.name
-										);
-									}
-								} else {
-									showMaxiSCSavedSnackbar(
-										selectedSCValue.name
-									);
-									saveCurrentSC();
-								}
-							}}
-						>
-							{__('Save', 'maxi-blocks')}
-						</Button>
-						<Button
-							className='maxi-style-cards__sc__actions--apply'
-							disabled={!canBeApplied(selectedSCKey, activeSCKey)}
-							onClick={() => {
-								if (
-									window.confirm(
-										sprintf(
-											__(
-												'Are you sure you want to apply "%s" style card? It will apply the styles to the whole site',
-												'maxi-blocks'
-											),
-											getCurrentSCName
-										)
-									)
-								) {
-									applyCurrentSCGlobally();
-									showMaxiSCAppliedActiveSnackbar(
-										selectedSCValue.name
-									);
-								}
-							}}
-						>
-							{__('Apply', 'maxi-blocks')}
-						</Button>
-					</div>
-					<div className='maxi-style-cards__sc__save'>
-						<input
-							type='text'
-							placeholder={__(
-								'Add your Style Card Name here',
-								'maxi-blocks'
-							)}
-							value={styleCardName}
-							onChange={e => setStyleCardName(e.target.value)}
-						/>
-						<Button
-							disabled={isEmpty(styleCardName)}
-							onClick={() => {
-								const newStyleCard = {
-									name: styleCardName,
-									status: '',
-									dark: {
-										defaultStyleCard: {
-											...selectedSCValue.dark
-												.defaultStyleCard,
-											...selectedSCValue.dark.styleCard,
-										},
-										styleCard: {},
-									},
-									light: {
-										defaultStyleCard: {
-											...selectedSCValue.light
-												.defaultStyleCard,
-											...selectedSCValue.light.styleCard,
-										},
-										styleCard: {},
-									},
-								};
-								saveImportedStyleCard(newStyleCard);
-							}}
-						>
-							{__('Add', 'maxi-blocks')}
-						</Button>
-					</div>
-					<div className='maxi-style-cards__sc__ie'>
-						<Button
-							className='maxi-style-cards__sc__ie--export'
-							disabled={false}
-							onClick={() => {
-								const fileName = `${selectedSCValue.name}.txt`;
-								exportStyleCard(
-									{
-										...selectedSCValue,
-										status: '',
-									},
-									fileName
-								);
-							}}
-						>
-							{__('Export', 'maxi-blocks')}
-						</Button>
 						<MediaUploadCheck>
 							<MediaUpload
 								onSelect={media => {
 									fetch(media.url)
+										// Need to parse the response 2 times,
+										// because it was stringified twice in the export function
 										.then(response => response.json())
+										.then(response => JSON.parse(response))
 										.then(jsonData => {
-											saveImportedStyleCard(jsonData);
+											if (
+												SCList.map(
+													listItem => listItem.label
+												)
+													.filter(
+														cardname => cardname
+													)
+													.indexOf(jsonData.name) < 0
+											) {
+												saveImportedStyleCard(jsonData);
+												setImportedCardExists(false);
+												setCardAlreadyExists(false);
+											} else {
+												setImportedCardExists(true);
+											}
 										})
 										.catch(error => {
 											console.error(error);
@@ -475,44 +464,275 @@ const MaxiStyleCardsEditor = ({ styleCards, setIsVisible }) => {
 								)}
 							/>
 						</MediaUploadCheck>
+						<div className='maxi-style-cards__sc__ie'>
+							<Button
+								className='maxi-style-cards__sc__ie--export'
+								disabled={false}
+								onClick={() => {
+									const fileName = `${selectedSCValue.name}_exported.txt`;
+									exportStyleCard(
+										{
+											...selectedSCValue,
+											name: `${selectedSCValue.name} exported`,
+											status: '',
+										},
+										fileName
+									);
+								}}
+							>
+								{__('Export', 'maxi-blocks')}
+							</Button>
+						</div>
+					</div>
+					<div className='maxi-style-cards__active-edit'>
+						<div className='maxi-style-cards__active-edit-title'>
+							<h3>{__('Style card editor', 'maxi-blocks')}</h3>
+							<span>
+								{__(
+									'Preview, edit or activate style card',
+									'maxi-blocks'
+								)}
+							</span>
+						</div>
+						{importedCardExists && (
+							<div className='maxi-style-cards__card-already-exists'>
+								<span>
+									{__('Imported card already exists.')}
+								</span>
+							</div>
+						)}
+						<div className='maxi-style-cards__active-edit-options'>
+							<div className='maxi-style-cards__sc__more-sc--select'>
+								<Select
+									options={listForDropdown}
+									value={
+										selectedForDropdown || activeForDropdown
+									}
+									placeholder={__(
+										'Type to search…',
+										'maxi-blocks'
+									)}
+									styles={customStyles}
+									onChange={val => {
+										const newSCKey = val?.value;
+										setSelectedStyleCard(newSCKey);
+										const newSCValue =
+											styleCards?.[newSCKey];
+										!getIsUserCreatedStyleCard(
+											newSCValue
+										) && closeAllAccordions();
+									}}
+									hideSelectedOptions
+									noOptionsMessage={() => null}
+								/>
+							</div>
+							<DialogBox
+								message={__(
+									`Deleting${` ${selectedSCValue.name} `}style card. This action is permanent.`,
+									'maxi-blocks'
+								)}
+								cancelLabel={__('Cancel', 'maxi-blocks')}
+								confirmLabel={__('Delete', 'maxi-blocks')}
+								onConfirm={deleteSC}
+								buttonDisabled={
+									!canBeRemoved(selectedSCKey, activeSCKey)
+								}
+								buttonClassName='maxi-style-cards__sc__more-sc--delete has-tooltip'
+								buttonChildren={
+									<>
+										<span className='tooltip'>
+											{__('Delete', 'maxi-blocks')}
+										</span>
+										<Icon icon={SCDelete} />
+									</>
+								}
+							/>
+						</div>
+					</div>
+					<div className='maxi-style-cards__sc__actions edit-activate'>
+						<Button
+							className='maxi-style-cards-customise-card-button'
+							onClick={() =>
+								setShowCopyCardDialog(!showCopyCardDialog)
+							}
+						>
+							{isTemplate && __('Customise card', 'maxi-blocks')}
+							{!isTemplate && __('Copy card', 'maxi-blocks')}
+						</Button>
+						{!isTemplate && (
+							<Button
+								className='maxi-style-cards__sc__actions--save'
+								disabled={!canBeSaved(selectedSCKey)}
+								onClick={saveCurrentSC}
+							>
+								{__('Save changes', 'maxi-blocks')}
+							</Button>
+						)}
+						<DialogBox
+							message={__(
+								`Activate new style. Customized blocks will not change. All other Maxi blocks will get new,${` "${selectedSCValue.name}" `}styles.`,
+								'maxi-blocks'
+							)}
+							cancelLabel={__('Cancel', 'maxi-blocks')}
+							confirmLabel={__('Activate', 'maxi-blocks')}
+							onConfirm={applyCurrentSCGlobally}
+							buttonDisabled={
+								!canBeApplied(selectedSCKey, activeSCKey)
+							}
+							buttonClassName='maxi-style-cards__sc__actions--apply'
+							buttonChildren={
+								<>
+									{(isTemplate ||
+										!canBeSaved(selectedSCKey)) &&
+										__('Activate now', 'maxi-blocks')}
+									{!isTemplate &&
+										canBeSaved(selectedSCKey) &&
+										__(
+											'Save and activate now',
+											'maxi-blocks'
+										)}
+								</>
+							}
+						/>
 					</div>
 				</div>
-				<hr />
-				<SettingTabsControl
-					disablePadding
-					returnValue={({ key }) => setCurrentSCStyle(key)}
-					items={[
-						{
-							label: __('Light tone globals', 'maxi-blocks'),
-							key: 'light',
-							content: (
-								<MaxiStyleCardsTab
-									SC={selectedSCValue.light}
-									SCStyle='light'
-									onChangeValue={onChangeValue}
-									breakpoint={breakpoint}
-									currentKey={selectedSCKey}
+
+				<div className='maxi-style-cards__sc maxi-style-cards__settings'>
+					{showCopyCardDialog && (
+						<div className='maxi-style-cards__sc-custom-name'>
+							<h3>
+								{__('Create new style from', 'maxi-blocks')}
+								<b> {selectedSCValue.name}</b>
+							</h3>
+
+							<div className='maxi-style-cards__sc__save'>
+								<input
+									type='text'
+									maxLength='35'
+									placeholder={__(
+										'Short memorable name*',
+										'maxi-blocks'
+									)}
+									value={styleCardName}
+									onChange={e => {
+										setStyleCardName(e.target.value);
+										setCardAlreadyExists(false);
+									}}
+									ref={customiseInputRef}
 								/>
-							),
-						},
-						{
-							label: __('Dark tone globals', 'maxi-blocks'),
-							key: 'dark',
-							content: (
-								<MaxiStyleCardsTab
-									SC={selectedSCValue.dark}
-									SCStyle='dark'
-									onChangeValue={onChangeValue}
-									breakpoint={breakpoint}
-									currentKey={selectedSCKey}
-								/>
-							),
-						},
-					]}
-				/>
+								<Button
+									disabled={isEmpty(styleCardName)}
+									onClick={() => {
+										if (
+											SCList.map(
+												listItem => listItem.label
+											)
+												.filter(cardname => cardname)
+												.indexOf(styleCardName) >= 0
+										) {
+											setCardAlreadyExists(true);
+										} else {
+											setCardAlreadyExists(false);
+											setImportedCardExists(false);
+											const newStyleCard = {
+												name: styleCardName,
+												status: '',
+												dark: {
+													defaultStyleCard: {
+														...selectedSCValue.dark
+															.defaultStyleCard,
+														...selectedSCValue.dark
+															.styleCard,
+													},
+													styleCard: {},
+												},
+												light: {
+													defaultStyleCard: {
+														...selectedSCValue.light
+															.defaultStyleCard,
+														...selectedSCValue.light
+															.styleCard,
+													},
+													styleCard: {},
+												},
+												type: 'user',
+												updated: currentDate,
+											};
+											saveImportedStyleCard(newStyleCard);
+											setShowCopyCardDialog(false);
+										}
+									}}
+								>
+									{__('Create', 'maxi-blocks')}
+								</Button>
+								<Button
+									onClick={() => setShowCopyCardDialog(false)}
+								>
+									{__('Cancel', 'maxi-blocks')}
+								</Button>
+							</div>
+							{cardAlreadyExists && (
+								<div className='maxi-style-cards__card-already-exists create-new-section'>
+									<span>
+										{__(
+											'A card with this name already exists.'
+										)}
+									</span>
+								</div>
+							)}
+						</div>
+					)}
+
+					<div
+						className={
+							isTemplate
+								? 'maxi-style-card-settings-disabled'
+								: 'maxi-style-card-settings'
+						}
+					>
+						<SettingTabsControl
+							disablePadding
+							returnValue={({ key }) => setCurrentSCStyle(key)}
+							items={[
+								{
+									label: __(
+										'Light tone globals',
+										'maxi-blocks'
+									),
+									key: 'light',
+									content: (
+										<MaxiStyleCardsTab
+											SC={selectedSCValue.light}
+											SCStyle='light'
+											onChangeValue={onChangeValue}
+											breakpoint={breakpoint}
+											currentKey={selectedSCKey}
+										/>
+									),
+								},
+								{
+									label: __(
+										'Dark tone globals',
+										'maxi-blocks'
+									),
+									key: 'dark',
+									content: (
+										<MaxiStyleCardsTab
+											SC={selectedSCValue.dark}
+											SCStyle='dark'
+											onChangeValue={onChangeValue}
+											breakpoint={breakpoint}
+											currentKey={selectedSCKey}
+										/>
+									),
+								},
+							]}
+						/>
+					</div>
+				</div>
 			</Popover>
 		)
 	);
-};
+});
 
 export default MaxiStyleCardsEditor;

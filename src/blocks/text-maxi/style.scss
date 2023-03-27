@@ -19,10 +19,12 @@ body.maxi-blocks--active .maxi-text-block {
 
 				&::before {
 					content: '';
-					display: inline;
-					position: static;
+					position: relative;
+					display: inline-block;
 					line-height: 0.5;
 					vertical-align: middle;
+					word-wrap: normal;
+					text-indent: 0 !important;
 				}
 
 				&::marker {
@@ -69,14 +71,14 @@ body.maxi-blocks--active .maxi-text-block {
 		position: relative;
 		display: block;
 		margin: 0;
-		border: 2px dotted var(--maxi-grey-7-color);
 	}
 	p:not(&__content):not(.maxi-pane-block__title) {
 		margin-left: auto;
 		margin-right: auto;
 	}
 	a {
-		text-decoration: none;
+		text-decoration: unset;
+		text-underline-offset: inherit !important;
 		text-decoration-skip-ink: auto;
 	}
 }

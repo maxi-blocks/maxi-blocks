@@ -1,21 +1,17 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyWithModifier,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
-import { getAttributes } from '../../../../utils';
+import { getAttributes, insertMaxiBlock } from '../../../../utils';
 
 describe('Text generator', () => {
 	it('Check text generator', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 
 		// Wait for toolbar to be visible
 		await page.waitForSelector('.toolbar-wrapper');
@@ -32,7 +28,7 @@ describe('Text generator', () => {
 
 		// Words per sentence
 		await page.$eval(
-			'.components-popover__content .toolbar-item__text-generator-blocks__popover .maxi-text-control input',
+			'.components-popover__content .toolbar-item__text-generator-blocks__popover .maxi-advanced-number-control .maxi-advanced-number-control__value',
 			input => input.focus()
 		);
 
@@ -42,7 +38,7 @@ describe('Text generator', () => {
 
 		// sentences
 		await page.$$eval(
-			'.components-popover__content .toolbar-item__text-generator-blocks__popover .maxi-text-control input',
+			'.components-popover__content .toolbar-item__text-generator-blocks__popover .maxi-advanced-number-control .maxi-advanced-number-control__value',
 			input => input[1].focus()
 		);
 
@@ -51,7 +47,7 @@ describe('Text generator', () => {
 		await page.waitForTimeout(150);
 
 		await page.$eval(
-			'.components-popover__content .toolbar-item__text-generator-blocks__popover button',
+			'.components-popover__content .toolbar-item__text-generator-blocks__popover .maxi-components-button',
 			button => button.click()
 		);
 		expect(await getAttributes('content')).toStrictEqual('Lorem.');

@@ -1,9 +1,8 @@
 body.maxi-blocks--active .maxi-image-block {
-	height: inherit;
-
 	&__resizer {
 		height: inherit !important;
-		max-height: 100%;
+		min-height: inherit;
+		max-height: inherit;
 	}
 
 	&__image {
@@ -15,7 +14,6 @@ body.maxi-blocks--active .maxi-image-block {
 		&:not(.maxi-image-block-wrapper--fit-parent-size) {
 			.maxi-image-block__image {
 				width: 100% !important;
-				max-height: 100%;
 			}
 		}
 	}

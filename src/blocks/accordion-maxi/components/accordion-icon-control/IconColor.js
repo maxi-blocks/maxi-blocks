@@ -7,7 +7,10 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import { ColorControl } from '../../../../components';
-import { getColorRGBAString } from '../../../../extensions/styles';
+import {
+	getAttributeValue,
+	getColorRGBAString,
+} from '../../../../extensions/styles';
 import { setSVGContent, setSVGContentHover } from '../../../../extensions/svg';
 
 const IconColor = props => {
@@ -16,31 +19,31 @@ const IconColor = props => {
 		<ColorControl
 			label={__(`Icon ${colorType}`, 'maxi-blocks')}
 			className='maxi-icon-styles-control--color'
-			color={
-				props[`${prefix}${colorType}-color${isHover ? '-hover' : ''}`]
-			}
+			color={getAttributeValue({
+				target: `${colorType}-color`,
+				props,
+				isHover,
+				prefix,
+			})}
 			prefix={`${prefix}${colorType}-`}
-			paletteColor={
-				props[
-					`${prefix}${colorType}-palette-color${
-						isHover ? '-hover' : ''
-					}`
-				]
-			}
-			paletteOpacity={
-				props[
-					`${prefix}${colorType}-palette-opacity${
-						isHover ? '-hover' : ''
-					}`
-				]
-			}
-			paletteStatus={
-				props[
-					`${prefix}${colorType}-palette-status${
-						isHover ? '-hover' : ''
-					}`
-				]
-			}
+			paletteColor={getAttributeValue({
+				target: `${colorType}-palette-color`,
+				props,
+				isHover,
+				prefix,
+			})}
+			paletteOpacity={getAttributeValue({
+				target: `${colorType}-palette-opacity`,
+				props,
+				isHover,
+				prefix,
+			})}
+			paletteStatus={getAttributeValue({
+				target: `${colorType}-palette-status`,
+				props,
+				isHover,
+				prefix,
+			})}
 			onChange={({
 				color,
 				paletteColor,

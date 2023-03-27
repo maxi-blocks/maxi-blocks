@@ -49,8 +49,10 @@ const getGeneralSizeAndPositionAttributes = ({
 		[`background-${typeString}-position-sync-general`]: 'all',
 		[`background-${typeString}-position-top-general`]: '10',
 		[`background-${typeString}-position-top-unit-general`]: 'px',
-		[`background-${typeString}-size-general`]: 100,
-		[`background-${typeString}-size-unit-general`]: '%',
+		[`background-${typeString}-width-general`]: 100,
+		[`background-${typeString}-width-unit-general`]: '%',
+		[`background-${typeString}-height-general`]: 100,
+		[`background-${typeString}-height-unit-general`]: '%',
 	};
 
 	if (!isResponsive) return generalAttributes;
@@ -539,8 +541,8 @@ describe('getBackgroundStyles', () => {
 					'background-svg-top-general': null,
 					'background-svg-left-unit-general': '%',
 					'background-svg-left-general': null,
-					'background-svg-size-general': 100,
-					'background-svg-size-unit-general': '%',
+					'background-svg-width-general': 100,
+					'background-svg-width-unit-general': '%',
 					order: 4,
 				},
 			],
@@ -1157,10 +1159,14 @@ describe('getBackgroundStyles', () => {
 					'background-svg-wrapper-position-right-unit-general': '%',
 					'background-svg-wrapper-position-bottom-unit-general': '%',
 					'background-svg-wrapper-position-left-unit-general': '%',
-					'background-svg-wrapper-size-general': 100,
-					'background-svg-wrapper-size-general-hover': 100,
-					'background-svg-wrapper-size-unit-general': '%',
-					'background-svg-wrapper-size-unit-general-hover': '%',
+					'background-svg-wrapper-width-general': 100,
+					'background-svg-wrapper-width-general-hover': 100,
+					'background-svg-wrapper-width-unit-general': '%',
+					'background-svg-wrapper-width-unit-general-hover': '%',
+					'background-svg-wrapper-height-general': 100,
+					'background-svg-wrapper-height-general-hover': 100,
+					'background-svg-wrapper-height-unit-general': '%',
+					'background-svg-wrapper-height-unit-general-hover': '%',
 					order: 1,
 					'background-svg-palette-status-xl-hover': true,
 					'background-svg-palette-color-xl-hover': 2,
@@ -1211,6 +1217,79 @@ describe('getBackgroundStyles', () => {
 			'border-unit-radius-general': 'px',
 			'border-unit-radius-general-hover': 'px',
 			'border-unit-width-general': 'px',
+		});
+
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Get correct block background styles for color layer different values for border on different responsive stages and hovers', () => {
+		const result = getBlockBackgroundStyles({
+			target,
+			isHover: false,
+			blockStyle: 'light',
+
+			'background-layers': [
+				{
+					type: 'color',
+					isHover: false,
+					'display-general': 'block',
+					'background-palette-status-general': true,
+					'background-palette-color-general': 4,
+					'background-color-clip-path-status-general': false,
+					'background-color-wrapper-position-sync-general': 'all',
+					'background-color-wrapper-position-top-unit-general': 'px',
+					'background-color-wrapper-position-right-unit-general':
+						'px',
+					'background-color-wrapper-position-bottom-unit-general':
+						'px',
+					'background-color-wrapper-position-left-unit-general': 'px',
+					order: 1,
+					id: 1,
+					'background-color-wrapper-width-general': 100,
+					'background-color-wrapper-width-unit-general': '%',
+				},
+			],
+			'block-background-status-hover': false,
+			'border-palette-status-general': true,
+			'border-palette-color-general': 5,
+			'border-style-general': 'solid',
+			'border-top-width-general': 5,
+			'border-top-width-l': 10,
+			'border-top-width-m': 0,
+			'border-right-width-general': 10,
+			'border-right-width-l': 15,
+			'border-bottom-width-general': 15,
+			'border-bottom-width-l': 20,
+			'border-left-width-general': 20,
+			'border-left-width-l': 5,
+			'border-left-width-m': 0,
+			'border-sync-width-general': 'none',
+			'border-unit-width-general': 'px',
+			'border-sync-radius-general': 'all',
+			'border-unit-radius-general': 'px',
+			'border-palette-status-general-hover': true,
+			'border-palette-color-general-hover': 3,
+			'border-style-general-hover': 'solid',
+			'border-style-m-hover': 'solid',
+			'border-status-hover': true,
+			'border-top-width-general-hover': 5,
+			'border-top-width-l-hover': 10,
+			'border-top-width-m-hover': 2,
+			'border-right-width-general-hover': 10,
+			'border-right-width-l-hover': 15,
+			'border-right-width-m-hover': 15,
+			'border-bottom-width-general-hover': 15,
+			'border-bottom-width-l-hover': 20,
+			'border-bottom-width-m-hover': 20,
+			'border-left-width-general-hover': 20,
+			'border-left-width-l-hover': 5,
+			'border-left-width-m-hover': 2,
+			'border-sync-width-general-hover': 'none',
+			'border-sync-width-m-hover': 'all',
+			'border-unit-width-general-hover': 'px',
+			'border-unit-width-m-hover': 'px',
+			'border-sync-radius-general-hover': 'all',
+			'border-unit-radius-general-hover': 'px',
 		});
 
 		expect(result).toMatchSnapshot();
@@ -1347,6 +1426,117 @@ describe('getBackgroundStyles', () => {
 					}),
 				},
 			],
+		};
+
+		const result = getBlockBackgroundNormalAndHoverStyles(attributes);
+
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Get correct block background styles when border attributes are default, so the source is the normal attributes', () => {
+		const attributes = {
+			blockStyle: 'light',
+			'background-layers': [
+				{
+					type: 'color',
+					isHover: false,
+					'display-general': 'block',
+					'background-palette-status-general': true,
+					'background-palette-color-general': 1,
+					'background-color-clip-path-status-general': false,
+					order: 1,
+					id: 1,
+					'background-palette-status-general-hover': true,
+					'background-palette-color-general-hover': 1,
+					'background-palette-opacity-general-hover': 0,
+					'background-color-wrapper-position-top-unit-general': 'px',
+					'background-color-wrapper-position-left-unit-general': 'px',
+					'background-color-wrapper-position-bottom-unit-general':
+						'px',
+					'background-color-wrapper-position-right-unit-general':
+						'px',
+				},
+			],
+			'block-background-status-hover': true,
+			'border-palette-status-general': true,
+			'border-palette-color-general': 2,
+			'border-style-general': 'solid',
+			'border-top-width-general': 2,
+			'border-top-width-xxl': 4,
+			'border-top-width-xl': 2,
+			'border-right-width-general': 2,
+			'border-right-width-xxl': 4,
+			'border-right-width-xl': 2,
+			'border-bottom-width-general': 2,
+			'border-bottom-width-xxl': 4,
+			'border-bottom-width-xl': 2,
+			'border-left-width-general': 2,
+			'border-left-width-xxl': 4,
+			'border-left-width-xl': 2,
+			'border-sync-width-general': 'all',
+			'border-unit-width-general': 'px',
+			'border-sync-radius-general': 'all',
+			'border-unit-radius-general': 'px',
+			'border-status-hover': true,
+			'border-palette-status-general-hover': true,
+			'border-palette-color-general-hover': 6,
+			'border-palette-opacity-general-hover': 0,
+		};
+
+		const result = getBlockBackgroundNormalAndHoverStyles(attributes);
+
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Get correct block background styles when most border attributes are default, so the source is the normal attributes and the one different', () => {
+		const attributes = {
+			blockStyle: 'light',
+			'background-layers': [
+				{
+					type: 'color',
+					isHover: false,
+					'display-general': 'block',
+					'background-palette-status-general': true,
+					'background-palette-color-general': 1,
+					'background-color-clip-path-status-general': false,
+					order: 1,
+					id: 1,
+					'background-palette-status-general-hover': true,
+					'background-palette-color-general-hover': 1,
+					'background-palette-opacity-general-hover': 0,
+					'background-color-wrapper-position-top-unit-general': 'px',
+					'background-color-wrapper-position-left-unit-general': 'px',
+					'background-color-wrapper-position-bottom-unit-general':
+						'px',
+					'background-color-wrapper-position-right-unit-general':
+						'px',
+				},
+			],
+			'block-background-status-hover': true,
+			'border-palette-status-general': true,
+			'border-palette-color-general': 2,
+			'border-style-general': 'solid',
+			'border-top-width-general': 2,
+			'border-top-width-xxl': 4,
+			'border-top-width-xl': 2,
+			'border-right-width-general': 2,
+			'border-right-width-xxl': 4,
+			'border-right-width-xl': 2,
+			'border-bottom-width-general': 2,
+			'border-bottom-width-xxl': 4,
+			'border-bottom-width-xl': 2,
+			'border-left-width-general': 2,
+			'border-left-width-xxl': 4,
+			'border-left-width-xl': 2,
+			'border-sync-width-general': 'all',
+			'border-unit-width-general': 'px',
+			'border-sync-radius-general': 'all',
+			'border-unit-radius-general': 'px',
+			'border-status-hover': true,
+			'border-palette-status-general-hover': true,
+			'border-palette-color-general-hover': 6,
+			'border-palette-opacity-general-hover': 0,
+			'border-top-width-general-hover': 3,
 		};
 
 		const result = getBlockBackgroundNormalAndHoverStyles(attributes);

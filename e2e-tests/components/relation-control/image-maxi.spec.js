@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
@@ -10,16 +10,17 @@ import {
 	addImageToImageMaxi,
 	getAttributes,
 	openPreviewPage,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('Image Maxi hover simple actions', () => {
 	beforeEach(async () => {
 		await createNewPost();
-		await insertBlock('Image Maxi');
+		await insertMaxiBlock(page, 'Image Maxi');
 		const imageBlock = await page.$('.maxi-image-block');
 		await addImageToImageMaxi(page, imageBlock);
 
-		await insertBlock('Button Maxi');
+		await insertMaxiBlock(page, 'Button Maxi');
 		await openSidebarTab(page, 'advanced', 'interaction builder');
 
 		// Add interaction
@@ -41,7 +42,7 @@ describe('Image Maxi hover simple actions', () => {
 		await selectControls[2].select('hover');
 	});
 
-	const checkFrontend = async () => {
+	const checkFrontend = async (disableTransition = false) => {
 		const previewPage = await openPreviewPage(page);
 		await previewPage.waitForSelector('.entry-content');
 
@@ -58,30 +59,40 @@ describe('Image Maxi hover simple actions', () => {
 		);
 		expect(stylesCSS).toMatchSnapshot();
 
-		await previewPage.waitForSelector(
-			'#relations--image-maxi-1-transitions'
-		);
-		const transitionsCSS = await previewPage.$eval(
-			'#relations--image-maxi-1-transitions',
-			el => el.textContent
-		);
-		expect(transitionsCSS).toMatchSnapshot();
+		if (!disableTransition) {
+			await previewPage.waitForSelector(
+				'#relations--image-maxi-1-in-transitions'
+			);
+			const inTransitionsCSS = await previewPage.$eval(
+				'#relations--image-maxi-1-in-transitions',
+				el => el.textContent
+			);
+			expect(inTransitionsCSS).toMatchSnapshot();
+
+			await previewPage.mouse.move(0, 0);
+
+			await previewPage.waitForSelector(
+				'#relations--image-maxi-1-out-transitions'
+			);
+			const outTransitionsCSS = await previewPage.$eval(
+				'#relations--image-maxi-1-out-transitions',
+				el => el.textContent
+			);
+			expect(outTransitionsCSS).toMatchSnapshot();
+		}
 	};
 
 	it('Alignment', async () => {
 		const selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[3].select('Alignment');
+		await selectControls[3].select('a');
 
-		await page.$$eval('.maxi-tabs-control', tabs =>
-			tabs[2]
-				.querySelector(
-					'.maxi-tabs-control__button.maxi-tabs-control__button-right'
-				)
-				.click()
+		await page.$eval(
+			'.maxi-alignment-control .maxi-tabs-control__button.maxi-tabs-control__button-right',
+			button => button.click()
 		);
 		expect(await getAttributes('relations')).toMatchSnapshot();
 
-		await checkFrontend();
+		await checkFrontend(true);
 	});
 
 	// TODO: shape mask (need)

@@ -1,16 +1,22 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openSidebarTab, getBlockStyle, getAttributes } from '../../utils';
+import {
+	openSidebarTab,
+	getBlockStyle,
+	getAttributes,
+	changeResponsive,
+	insertMaxiBlock,
+} from '../../utils';
 
 describe('FontFamilySelector', () => {
 	it('Checking the font family selector', async () => {
 		await createNewPost();
-		await insertBlock('Text Maxi');
+		await insertMaxiBlock(page, 'Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');
 		const accordionPanel = await openSidebarTab(
 			page,
@@ -42,5 +48,32 @@ describe('FontFamilySelector', () => {
 		);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+
+	it('Works on responsive', async () => {
+		await changeResponsive(page, 's');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'typography'
+		);
+
+		await accordionPanel.$eval(
+			'.maxi-typography-control .maxi-typography-control__font-family input',
+			button => button.focus()
+		);
+
+		await page.keyboard.type('Montserrat');
+		await page.keyboard.press('Enter');
+		await page.waitForTimeout(100);
+
+		expect(await getAttributes('font-family-s')).toStrictEqual(
+			'Montserrat'
+		);
+
+		const hasBeenLoaded = await page.evaluate(() =>
+			document.fonts.check('12px Montserrat')
+		);
+		expect(hasBeenLoaded).toBeTruthy();
 	});
 });

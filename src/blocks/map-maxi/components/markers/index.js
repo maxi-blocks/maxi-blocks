@@ -2,8 +2,12 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Button } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
+
+/**
+ * Internal dependencies
+ */
+import { Button } from '../../../../components';
 
 /**
  * External dependencies
@@ -74,7 +78,7 @@ const Markers = props => {
 					},
 				}}
 			>
-				<Popup>
+				<Popup closeIcon='trash'>
 					<div className='maxi-map-block__popup'>
 						<div className='maxi-map-block__popup__content'>
 							<RichText
@@ -114,9 +118,7 @@ const Markers = props => {
 										handleRemoveMarker(event, index)
 									}
 									showTooltip
-								>
-									{__('Remove', 'maxi-blocks')}
-								</Button>
+								/>
 							</div>
 						</div>
 					</div>

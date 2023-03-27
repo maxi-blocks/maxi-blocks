@@ -16,6 +16,7 @@ import BlockInserter from '../block-inserter';
  * External dependencies
  */
 import { isEmpty, isArray, compact, isEqual } from 'lodash';
+import DisabledMaxiBlock from './disabledMaxiBlock';
 
 const getInnerBlocksChild = ({
 	children,
@@ -25,20 +26,27 @@ const getInnerBlocksChild = ({
 	anchorLink,
 	isSave = false,
 	uniqueID,
-	blockName,
 	ref,
 	clientId,
 	hasInnerBlocks,
 	isSelected,
 	hasSelectedChild,
 	renderWrapperInserter = true,
+	isChild,
+	isDisabled,
 }) => {
 	const needToSplit =
 		isArray(children) &&
 		children.some(child => child?.props?.afterInnerProps);
 
+	const showWrapperInserter =
+		!isSave && hasInnerBlocks && renderWrapperInserter;
+
 	if (!needToSplit)
 		return [
+			...(isDisabled && !isChild && (
+				<DisabledMaxiBlock key={`maxi-block-disabled__${uniqueID}`} />
+			)),
 			...(!isEmpty(anchorLink) && (
 				<span
 					id={anchorLink}
@@ -57,7 +65,7 @@ const getInnerBlocksChild = ({
 			cloneElement(innerBlocksChildren, {
 				key: `maxi-inner-content__${uniqueID}`,
 			}),
-			...(!isSave && hasInnerBlocks && renderWrapperInserter && (
+			...(showWrapperInserter && (
 				<BlockInserter.WrapperInserter
 					key={`maxi-block-wrapper-inserter__${clientId}`}
 					ref={ref}
@@ -76,6 +84,9 @@ const getInnerBlocksChild = ({
 		);
 
 	return [
+		...(isDisabled && !isChild && (
+			<DisabledMaxiBlock key={`maxi-block-disabled__${uniqueID}`} />
+		)),
 		...(!isEmpty(anchorLink) && (
 			<span
 				id={anchorLink}
@@ -95,7 +106,7 @@ const getInnerBlocksChild = ({
 			key: `maxi-inner-content__${uniqueID}`,
 		}),
 		...secondGroup,
-		...(!isSave && hasInnerBlocks && renderWrapperInserter && (
+		...(showWrapperInserter && (
 			<BlockInserter.WrapperInserter
 				key={`maxi-block-wrapper-inserter__${clientId}`}
 				ref={ref}
@@ -124,6 +135,8 @@ const MainInnerBlocksBlock = forwardRef(
 			isSelected,
 			hasSelectedChild,
 			renderWrapperInserter,
+			isChild,
+			isDisabled,
 			...props
 		},
 		ref
@@ -158,6 +171,8 @@ const MainInnerBlocksBlock = forwardRef(
 				isSelected,
 				hasSelectedChild,
 				renderWrapperInserter,
+				isChild,
+				isDisabled,
 			})
 		);
 

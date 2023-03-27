@@ -3,15 +3,38 @@
  */
 import getActiveStyleCard from '../getActiveStyleCard';
 import controls from './controls';
+import standardSC from '../../../../core/utils/defaultSC.json';
+
+/**
+ * External dependencies
+ */
+import { cloneDeep, merge } from 'lodash';
 
 const getNewActiveStyleCards = (styleCards, cardKey) => {
-	const newStyleCards = { ...styleCards };
-	const currentSC = getActiveStyleCard(newStyleCards).key;
+	const newStyleCards = cloneDeep(styleCards);
 
 	Object.entries(newStyleCards).forEach(([key, value]) => {
-		if (key === currentSC) newStyleCards[key] = { ...value, status: '' };
-		if (key === cardKey)
-			newStyleCards[key] = { ...value, status: 'active' };
+		const standardMerge = cloneDeep(standardSC?.sc_maxi);
+		const mergeWith = cloneDeep(value);
+		const newSCvalue = merge(standardMerge, mergeWith);
+		newStyleCards[key] = { ...newSCvalue, status: '' };
+		if (key === cardKey) {
+			newStyleCards[key] = {
+				...newSCvalue,
+				status: 'active',
+			};
+		}
+	});
+
+	return newStyleCards;
+};
+
+export const getNewSelectedStyleCards = (styleCards, cardKey) => {
+	const newStyleCards = cloneDeep(styleCards);
+
+	Object.entries(newStyleCards).forEach(([key, value]) => {
+		if (key === cardKey) newStyleCards[key] = { ...value, selected: true };
+		else delete newStyleCards[key].selected;
 	});
 
 	return newStyleCards;
@@ -57,7 +80,7 @@ function reducer(state = { styleCards: {}, savedStyleCards: {} }, action) {
 		case 'SET_SELECTED_STYLE_CARD':
 			return {
 				...state,
-				styleCards: getNewActiveStyleCards(
+				styleCards: getNewSelectedStyleCards(
 					state.styleCards,
 					action.cardKey
 				),

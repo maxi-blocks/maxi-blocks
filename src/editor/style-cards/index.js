@@ -2,14 +2,14 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
-import { Button, Icon } from '@wordpress/components';
+import { useState, forwardRef } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import MaxiStyleCardsEditor from './maxiStyleCardsEditor';
+import { Button, Icon } from '../../components';
 
 /**
  * Styles and icons
@@ -17,7 +17,7 @@ import MaxiStyleCardsEditor from './maxiStyleCardsEditor';
 import './editor.scss';
 import { styleCardMenu } from '../../icons';
 
-const MaxiStyleCardsEditorPopUp = () => {
+const MaxiStyleCardsEditorPopUp = forwardRef((props, settingsRef) => {
 	const { styleCards } = useSelect(select => {
 		const { receiveMaxiStyleCards } = select('maxiBlocks/style-cards');
 
@@ -33,20 +33,21 @@ const MaxiStyleCardsEditorPopUp = () => {
 			<Button
 				id='maxi-button__go-to-customizer'
 				className='action-buttons__button style-card-button'
-				aria-label={__('Style card manager', 'maxi-blocks')}
+				aria-label={__('Style cards', 'maxi-blocks')}
 				onClick={() => setIsVisible(!isVisible)}
 			>
 				<Icon icon={styleCardMenu} />
-				<span>{__('Style card manager', 'maxi-blocks')}</span>
+				<span>{__('Style cards', 'maxi-blocks')}</span>
 			</Button>
 			{isVisible && (
 				<MaxiStyleCardsEditor
+					ref={settingsRef}
 					styleCards={styleCards}
 					setIsVisible={setIsVisible}
 				/>
 			)}
 		</>
 	);
-};
+});
 
 export default MaxiStyleCardsEditorPopUp;

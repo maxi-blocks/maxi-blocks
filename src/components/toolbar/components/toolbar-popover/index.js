@@ -38,6 +38,11 @@ class ToolbarPopover extends Component {
 		},
 	};
 
+	toolbarContextValue = {
+		isOpen: this.state.isOpen,
+		onClose: this.state.onClose,
+	};
+
 	constructor(...args) {
 		super(...args);
 
@@ -139,7 +144,7 @@ class ToolbarPopover extends Component {
 
 		return (
 			<div ref={this.ref}>
-				<ToolbarContext.Provider value={{ isOpen, onClose }}>
+				<ToolbarContext.Provider value={this.toolbarContextValue}>
 					{!tooltipsHide && (
 						<Tooltip text={tooltip} position='top center'>
 							{buttonContent()}

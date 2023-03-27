@@ -156,6 +156,11 @@ class ToolbarPopover extends Component {
 							position={position}
 							useFlip
 							useShift
+							shiftPadding={
+								!!advancedOptions && {
+									right: 20,
+								}
+							}
 							isAlternate
 							noArrow
 						>

@@ -29,17 +29,17 @@ describe('Video maxi control', () => {
 		);
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('31');
+		await page.keyboard.type('5');
 
-		expect(await getAttributes('startTime')).toStrictEqual('31');
+		expect(await getAttributes('startTime')).toStrictEqual('5');
 
 		// End time
 		await page.$eval('.maxi-video-end-time input', input => input.focus());
 
 		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('22');
+		await page.keyboard.type('8');
 
-		expect(await getAttributes('endTime')).toStrictEqual('22');
+		expect(await getAttributes('endTime')).toStrictEqual('8');
 
 		// Change aspect ratio
 		const ratioSelector = await page.$('.maxi-video-control__ratio select');

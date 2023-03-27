@@ -109,11 +109,18 @@ body.maxi-blocks--active {
 						word-spacing: var(
 							--maxi-#{$style}-#{$level}-word-spacing-general
 						);
-						margin-bottom: var(
-							--maxi-#{$style}-#{$level}-margin-bottom-general
-						);
 						text-indent: var(
 							--maxi-#{$style}-#{$level}-text-indent-general
+						);
+					}
+				}
+			}
+			&.maxi-text-block,
+			.maxi-text-block {
+				@each $level in $levels {
+					#{$level} {
+						margin-bottom: var(
+							--maxi-#{$style}-#{$level}-margin-bottom-general
 						);
 					}
 				}
@@ -480,9 +487,6 @@ body.maxi-blocks--active {
 						);
 						word-spacing: var(
 							--maxi-#{$style}-p-word-spacing-#{$responsive_size}
-						);
-						margin-bottom: var(
-							--maxi-#{$style}-p-margin-bottom-#{$responsive_size}
 						);
 						text-indent: var(
 							--maxi-#{$style}-p-text-indent-#{$responsive_size}

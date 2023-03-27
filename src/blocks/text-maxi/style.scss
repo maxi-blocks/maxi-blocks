@@ -17,6 +17,7 @@ body.maxi-blocks--active .maxi-text-block {
 
 			li {
 				counter-increment: li;
+				margin: revert;
 
 				&::before {
 					content: '';

@@ -25,6 +25,7 @@ import loadColumnsTemplate from '../../extensions/column-templates/loadColumnsTe
  * External dependencies
  */
 import { uniqueId } from 'lodash';
+import { withMaxiContextLoop } from '../../extensions/DC';
 
 /**
  * Edit
@@ -183,4 +184,4 @@ class edit extends MaxiBlockComponent {
 	}
 }
 
-export default withMaxiProps(edit);
+export default withMaxiContextLoop(withMaxiProps(edit));

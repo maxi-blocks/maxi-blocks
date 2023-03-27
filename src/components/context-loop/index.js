@@ -2,34 +2,26 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useEffect, useState, useContext } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 import { resolveSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
 import SelectControl from '../select-control';
 import ToggleSwitch from '../toggle-switch';
 import { validationsValues } from '../../extensions/DC/utils';
 import {
 	typeOptions,
-	fieldOptions,
 	relationOptions,
 	relationTypes,
-	limitOptions,
-	limitTypes,
-	limitFields,
 } from '../../extensions/DC/constants';
 import getDCOptions from '../../extensions/DC/getDCOptions';
-import DateFormatting from './custom-date-formatting';
-import { getDefaultAttribute } from '../../extensions/styles';
-import { getDCValues, loopContext } from '../../extensions/DC';
 
 /**
  * External dependencies
  */
-import { isEmpty, isFinite, isNil, capitalize, isEqual } from 'lodash';
+import { isEmpty, isNil, capitalize, isEqual } from 'lodash';
 import classnames from 'classnames';
 
 /**
@@ -40,17 +32,20 @@ const DynamicContent = props => {
 	const {
 		className,
 		onChange,
-		allowCustomDate = false,
 		contentType = 'text',
 		...dynamicContent
 	} = props;
 
-	const { contextLoop } = useContext(loopContext);
-
 	const classes = classnames('maxi-dynamic-content', className);
 
-	const { status, type, relation, id, field, author, limit, error } =
-		getDCValues(dynamicContent, contextLoop);
+	const {
+		'cl-status': status,
+		'cl-type': type,
+		'cl-relation': relation,
+		'cl-id': id,
+		'cl-field': field,
+		'cl-author': author,
+	} = dynamicContent;
 
 	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
 	const [postIdOptions, setPostIdOptions] = useState(null);
@@ -85,7 +80,7 @@ const DynamicContent = props => {
 
 				const { id } = await resolveSelect('core').getCurrentUser();
 
-				changeProps({ 'dc-author': id });
+				changeProps({ 'cl-author': id });
 			}
 		}
 
@@ -127,7 +122,7 @@ const DynamicContent = props => {
 			<ToggleSwitch
 				label={__('Use dynamic content', 'maxi-blocks')}
 				selected={status}
-				onChange={value => changeProps({ 'dc-status': value })}
+				onChange={value => changeProps({ 'cl-status': value })}
 			/>
 			{status && (
 				<>
@@ -136,17 +131,17 @@ const DynamicContent = props => {
 						value={type}
 						options={typeOptions[contentType]}
 						onChange={value => {
-							const dcFieldActual = validationsValues(
+							const clFieldActual = validationsValues(
 								value,
 								field,
 								contentType
 							);
 
 							changeProps({
-								'dc-type': value,
-								'dc-show': 'current',
-								'dc-error': '',
-								...dcFieldActual,
+								'cl-type': value,
+								'cl-show': 'current',
+								'cl-error': '',
+								...clFieldActual,
 							});
 						}}
 					/>
@@ -161,9 +156,9 @@ const DynamicContent = props => {
 									options={relationOptions[contentType][type]}
 									onChange={value =>
 										changeProps({
-											'dc-relation': value,
-											'dc-show': 'current',
-											'dc-error': '',
+											'cl-relation': value,
+											'cl-show': 'current',
+											'cl-error': '',
 										})
 									}
 								/>
@@ -175,7 +170,7 @@ const DynamicContent = props => {
 									options={postAuthorOptions}
 									onChange={value =>
 										changeProps({
-											'dc-author': Number(value),
+											'cl-author': Number(value),
 										})
 									}
 								/>
@@ -192,72 +187,13 @@ const DynamicContent = props => {
 										options={postIdOptions}
 										onChange={value =>
 											changeProps({
-												'dc-error': '',
-												'dc-show': 'current',
-												'dc-id': Number(value),
+												'cl-error': '',
+												'cl-show': 'current',
+												'cl-id': Number(value),
 											})
 										}
 									/>
 								)}
-							{(['settings'].includes(type) ||
-								(relation === 'by-id' && isFinite(id)) ||
-								(relation === 'author' &&
-									!isEmpty(postIdOptions)) ||
-								['date', 'modified', 'random'].includes(
-									relation
-								)) && (
-								<SelectControl
-									label={__('Field', 'maxi-blocks')}
-									value={field}
-									options={fieldOptions[contentType][type]}
-									onChange={value =>
-										changeProps({
-											'dc-field': value,
-										})
-									}
-								/>
-							)}
-							{limitTypes.includes(type) &&
-								limitFields.includes(field) &&
-								!error && (
-									<AdvancedNumberControl
-										label={__(
-											'Character limit',
-											'maxi-blocks'
-										)}
-										value={limit}
-										onChangeValue={value =>
-											changeProps({
-												'dc-limit': Number(value),
-											})
-										}
-										disableReset={limitOptions.disableReset}
-										step={limitOptions.steps}
-										withInputField={
-											limitOptions.withInputField
-										}
-										onReset={() =>
-											changeProps({
-												'dc-limit':
-													getDefaultAttribute(
-														'dc-limit'
-													),
-											})
-										}
-										min={limitOptions.min}
-										max={limitOptions.max}
-										initialPosition={
-											limit || limitOptions.defaultValue
-										}
-									/>
-								)}
-							{field === 'date' && !error && (
-								<DateFormatting
-									allowCustomDate={allowCustomDate}
-									onChange={obj => changeProps(obj)}
-									{...dynamicContent}
-								/>
-							)}
 						</>
 					)}
 				</>

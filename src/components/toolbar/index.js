@@ -59,6 +59,7 @@ import {
 	VerticalAlign,
 	TextMargin,
 	ToolbarMediaUpload,
+	ContextLoop,
 } from './components';
 import {
 	getGroupAttributes,
@@ -544,6 +545,14 @@ const MaxiToolbar = memo(
 							textLevel={textLevel}
 						/>
 						<DynamicContent
+							blockName={name}
+							onChange={obj => maxiSetAttributes(obj)}
+							{...getGroupAttributes(
+								attributes,
+								'dynamicContent'
+							)}
+						/>
+						<ContextLoop
 							blockName={name}
 							onChange={obj => maxiSetAttributes(obj)}
 							{...getGroupAttributes(

@@ -3,7 +3,7 @@
  */
 import { dispatch } from '@wordpress/data';
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
-import { useEffect } from '@wordpress/element';
+import { useContext, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -22,27 +22,36 @@ import getDCLink from './getDCLink';
  * External dependencies
  */
 import { isNil } from 'lodash';
+import loopContext from './loopContext';
+import getDCValues from './getDCValues';
 
 const withMaxiDC = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
 			const { setAttributes, attributes } = ownProps;
 
+			const { contextLoop } = useContext(loopContext);
+
 			const isImageMaxi = ownProps.name === 'maxi-blocks/image-maxi';
 
-			const dynamicContentProps = getGroupAttributes(
+			const dynamicContent = getGroupAttributes(
 				attributes,
 				'dynamicContent'
 			);
 
+			const dynamicContentProps = getDCValues(
+				dynamicContent,
+				contextLoop
+			);
+
 			const {
-				'dc-status': status,
-				'dc-content': content,
-				'dc-type': type,
-				'dc-field': field,
-				'dc-id': id,
-				'dc-custom-date': isCustomDate,
-				'dc-link-status': linkStatus,
+				status,
+				content,
+				type,
+				field,
+				id,
+				isCustomDate,
+				linkStatus,
 			} = dynamicContentProps;
 
 			useEffect(async () => {

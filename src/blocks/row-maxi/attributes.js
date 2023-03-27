@@ -37,6 +37,7 @@ const attributes = {
 	/**
 	 * Advanced
 	 */
+	...attributesData.contextLoop,
 	...attributesData.transform,
 	...{
 		...attributesData.transition,

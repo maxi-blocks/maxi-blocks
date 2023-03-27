@@ -110,6 +110,7 @@ const Inspector = props => {
 										selectors,
 										categories,
 									}),
+									...inspectorTabs.contextLoop({ props }),
 									...inspectorTabs.scrollEffects({
 										props,
 									}),
@@ -119,9 +120,7 @@ const Inspector = props => {
 										categories,
 									}),
 									...inspectorTabs.transition({
-										props: {
-											...props,
-										},
+										props,
 										selectors,
 									}),
 									...inspectorTabs.display({

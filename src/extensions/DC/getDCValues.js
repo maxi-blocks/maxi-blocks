@@ -1,15 +1,19 @@
 /**
  * External dependencies
  */
-import { isNil } from 'lodash';
+import { isBoolean, isNil } from 'lodash';
 
 const getDCValues = (dynamicContent, contextLoop) => {
 	const getDCValue = target => {
-		const clValue = contextLoop[`cl-${target}`];
+		const dcValue = dynamicContent[`dc-${target}`];
 
-		if (!isNil(clValue)) return clValue;
+		if (
+			(isBoolean(dcValue) && dcValue) ||
+			(!isBoolean(dcValue) && !isNil(dcValue))
+		)
+			return dcValue;
 
-		return dynamicContent[`dc-${target}`];
+		return contextLoop[`cl-${target}`];
 	};
 
 	const contextLoopStatus = contextLoop['cl-status'];

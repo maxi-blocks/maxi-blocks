@@ -14,15 +14,16 @@ const removeCustomFormat = ({ formatValue, className, isList, isHover }) => {
 	const { start, end, formats } = newFormatValue;
 
 	Object.entries(formats).forEach(([key, value], i) => {
-		const format = value.filter(
+		let format = value.filter(
 			val => val.type === getFormatType(isHover)
 		)[0];
 		if (
 			inRange(+key, start, end) &&
 			format &&
 			format.attributes.className === className
-		)
-			delete newFormatValue.formats[key];
+		) {
+			format = null;
+		}
 	});
 
 	const newContent = toHTMLString({

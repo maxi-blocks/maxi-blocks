@@ -5,6 +5,23 @@ import { select } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import { isNil } from 'lodash';
 
+export const getWeightLabel = weight => {
+	const weightOptions = {
+		100: 'Hairline (100)',
+		200: 'Extra light (200)',
+		300: 'Light (300)',
+		400: 'Regular (400)',
+		500: 'Medium (500)',
+		600: 'Semi bold (600)',
+		700: 'Bold (700)',
+		800: 'Extra bold (800)',
+		900: 'Heavy (900)',
+		950: 'Extra heavy (950)',
+	};
+
+	return weightOptions[weight];
+};
+
 export const getWeightOptions = fontFamily => {
 	const { getFont } = select('maxiBlocks/text');
 
@@ -43,26 +60,15 @@ export const getWeightOptions = fontFamily => {
 				},
 			];
 		}
-		const weightOptions = {
-			100: 'Hairline (100)',
-			200: 'Extra light (200)',
-			300: 'Light (300)',
-			400: 'Regular (400)',
-			500: 'Medium (500)',
-			600: 'Semi bold (600)',
-			700: 'Bold (700)',
-			800: 'Extra bold (800)',
-			900: 'Heavy (900)',
-			950: 'Extra heavy (950)',
-		};
+
 		const response = [];
 		if (!fontOptions.includes('900')) {
 			fontOptions.push('900');
 		}
 		fontOptions.forEach(weight => {
 			const weightOption = {};
-			if (weightOptions[weight]) {
-				weightOption.label = __(weightOptions[weight], 'maxi-blocks');
+			if (getWeightLabel(weight)) {
+				weightOption.label = __(getWeightLabel(weight), 'maxi-blocks');
 				weightOption.value = weight;
 				response.push(weightOption);
 			}
@@ -71,3 +77,17 @@ export const getWeightOptions = fontFamily => {
 	}
 	return null;
 };
+
+/**
+ * Returns the closest available font-weight
+ *
+ * @param {string} font         - current font family
+ * @param {string} targetWeight - current font weight
+ * @returns {string}
+ */
+export const getClosestAvailableFontWeight = (font, targetWeight) =>
+	getWeightOptions(font).sort(
+		({ value: prevValue }, { value: currValue }) =>
+			Math.abs(Number(targetWeight) - Number(prevValue)) -
+			Math.abs(Number(targetWeight) - Number(currValue))
+	)[0].value;

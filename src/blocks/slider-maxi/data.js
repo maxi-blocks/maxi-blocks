@@ -1,4 +1,7 @@
-import { getCanvasSettings } from '../../extensions/relations';
+import {
+	getAdvancedSettings,
+	getCanvasSettings,
+} from '../../extensions/relations';
 import { createSelectors } from '../../extensions/styles/custom-css';
 
 /**
@@ -6,6 +9,11 @@ import { createSelectors } from '../../extensions/styles/custom-css';
  */
 const name = 'slider-maxi';
 const copyPasteMapping = {
+	_exclude: [
+		'active-navigation-dot-icon-content',
+		'navigation-arrow-first-icon-content',
+		'navigation-arrow-second-icon-content',
+	],
 	settings: {
 		'Slider settings': {
 			group: {
@@ -129,7 +137,10 @@ const customCss = {
 		'dot icon',
 	],
 };
-const interactionBuilderSettings = getCanvasSettings({ name, customCss });
+const interactionBuilderSettings = {
+	canvas: getCanvasSettings({ name }),
+	advanced: getAdvancedSettings({ customCss }),
+};
 
 const data = {
 	name,

@@ -48,6 +48,7 @@ const Inspector = props => {
 		mediaID,
 		captionPosition,
 		fitParentSize,
+		'dc-status': dcStatus,
 	} = attributes;
 	const { selectors, categories } = customCss;
 
@@ -70,10 +71,17 @@ const Inspector = props => {
 		!isEmpty(attributes.SVGElement);
 
 	const getCaptionOptions = () => {
+		if (dcStatus)
+			return [
+				{ label: 'None', value: 'none' },
+				{ label: 'Dynamic caption', value: 'custom' }, // Left as custom, because it's the same as custom caption
+			];
+
 		const response = [
 			{ label: 'None', value: 'none' },
 			{ label: 'Custom caption', value: 'custom' },
 		];
+
 		if (imageData && !isEmpty(imageData.caption.rendered)) {
 			const newCaption = {
 				label: 'Attachment caption',
@@ -469,6 +477,10 @@ const Inspector = props => {
 										selectors,
 										categories,
 									}),
+									...inspectorTabs.dc({
+										props,
+										contentType: 'image',
+									}),
 									...inspectorTabs.scrollEffects({
 										props,
 									}),
@@ -478,9 +490,8 @@ const Inspector = props => {
 										categories,
 									}),
 									...inspectorTabs.transition({
-										props: {
-											...props,
-										},
+										props,
+										selectors,
 									}),
 									...inspectorTabs.display({
 										props,

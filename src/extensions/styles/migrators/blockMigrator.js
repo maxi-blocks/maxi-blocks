@@ -22,6 +22,8 @@ import backgroundPositionMigrator from './backgroundPositionMigrator';
 import disableTransitionIBMigrator from './disableTransitionIBMigrator';
 import corruptedHoverAttributesMigrator from './corruptedHoverAttributesMigrator';
 import bottomGapMigrator from './bottomGapMigrator';
+import transitionMigrator from './transitionMigrator';
+import IBLabelToIDMigrator from './IBLabelToIDMigrator';
 
 /**
  * External dependencies
@@ -101,6 +103,8 @@ const blockMigrator = blockMigratorProps => {
 		disableTransitionIBMigrator,
 		corruptedHoverAttributesMigrator,
 		bottomGapMigrator,
+		transitionMigrator,
+		IBLabelToIDMigrator,
 		...(blockMigratorProps.migrators ?? []),
 	];
 

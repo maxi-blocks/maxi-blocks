@@ -1,4 +1,7 @@
 body.maxi-blocks--active .maxi-text-block {
+	& * {
+		border-color: inherit;
+	}
 	a.maxi-text-block--link {
 		&:visited span {
 			color: inherit !important;
@@ -71,7 +74,6 @@ body.maxi-blocks--active .maxi-text-block {
 		position: relative;
 		display: block;
 		margin: 0;
-		border: 2px dotted var(--maxi-grey-7-color);
 	}
 	p:not(&__content):not(.maxi-pane-block__title) {
 		margin-left: auto;

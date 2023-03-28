@@ -2,7 +2,7 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { select, useDispatch } from '@wordpress/data';
+import { useDispatch, select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -82,10 +82,10 @@ const RelationControl = props => {
 
 	const getParsedOptions = rawOptions => {
 		const parseOptionsArray = options =>
-			options.map(({ label }) => ({
+			options?.map(({ sid, label }) => ({
 				label,
-				value: label,
-			}));
+				value: sid,
+			})) ?? [];
 
 		const defaultSetting = {
 			label: __('Choose settings', 'maxi-blocks'),
@@ -125,7 +125,7 @@ const RelationControl = props => {
 			uniqueID: '',
 			target: '',
 			action: '',
-			settings: '',
+			sid: '',
 			attributes: {},
 			css: {},
 			id: getRelationId(relations),
@@ -158,20 +158,17 @@ const RelationControl = props => {
 		});
 	};
 
-	const getSelectedSettingsObj = (clientId, settingsLabel) =>
+	const getSelectedSettingsObj = (clientId, value) =>
 		Object.values(getOptions(clientId))
 			.flat()
-			.find(option => option.label === settingsLabel);
+			.find(option => option.sid === value);
 
 	const displaySelectedSetting = item => {
 		if (!item) return null;
 
 		const clientId = getClientIdFromUniqueId(item.uniqueID);
 
-		const selectedSettingsObj = getSelectedSettingsObj(
-			clientId,
-			item.settings
-		);
+		const selectedSettingsObj = getSelectedSettingsObj(clientId, item.sid);
 
 		if (!selectedSettingsObj) return null;
 
@@ -321,7 +318,7 @@ const RelationControl = props => {
 				onChangeRelation(relations, item.id, {
 					attributes: newAttributesObj,
 					css: styles,
-					...(item.settings === 'Transform' && {
+					...(item.sid === 't' && {
 						effects: {
 							...item.effects,
 							transitionTarget: Object.keys(styles),
@@ -475,7 +472,7 @@ const RelationControl = props => {
 													'Settings',
 													'maxi-blocks'
 												)}
-												value={item.settings}
+												value={item.sid}
 												options={getParsedOptions(
 													getOptions(
 														getClientIdFromUniqueId(
@@ -566,7 +563,7 @@ const RelationControl = props => {
 															attributes: {},
 															css: {},
 															target: getTarget(),
-															settings: value,
+															sid: value,
 															effects: {
 																...item.effects,
 																transitionTarget,
@@ -602,7 +599,7 @@ const RelationControl = props => {
 										</>
 									)}
 									{item.uniqueID &&
-										item.settings &&
+										item.sid &&
 										(item.effects.disableTransition ? (
 											displaySelectedSetting(item)
 										) : (

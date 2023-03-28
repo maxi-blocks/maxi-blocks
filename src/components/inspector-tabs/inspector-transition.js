@@ -13,8 +13,10 @@ import SettingTabsControl from '../setting-tabs-control';
 import ToggleSwitch from '../toggle-switch';
 import TransitionControl from '../transition-control';
 import {
+	createTransitionObj,
 	getDefaultAttribute,
 	getGroupAttributes,
+	getLastBreakpointAttribute,
 	getTransitionData,
 } from '../../extensions/styles';
 
@@ -45,7 +47,9 @@ const TransitionControlWrapper = props => {
 			: attributes[`transition-${type}-selected`];
 
 	const selectedTransition = transition[type][selected];
-	const defaultTransition = getDefaultAttribute('transition')[type][selected];
+	const defaultTransition =
+		getDefaultAttribute('transition')?.[type]?.[selected] ||
+		createTransitionObj();
 
 	const getDefaultTransitionAttribute = prop =>
 		defaultTransition[`${prop}-${deviceType}`];
@@ -139,11 +143,20 @@ const TransitionControlWrapper = props => {
 							label: __('Select setting', 'maxi-blocks'),
 							value: 'none',
 						},
-						...(transition[type] &&
-							Object.keys(transition[type]).map(name => ({
-								label: __(capitalize(name), 'maxi-blocks'),
-								value: name,
-							}))),
+						...(transitionData[type] &&
+							Object.entries(transitionData[type]).reduce(
+								(acc, [key, { title }]) => {
+									if (!transition[type][key]) return acc;
+
+									acc.push({
+										label: __(title, 'maxi-blocks'),
+										value: key,
+									});
+
+									return acc;
+								},
+								[]
+							)),
 					]}
 					onChange={val => {
 						maxiSetAttributes({
@@ -180,6 +193,7 @@ const TransitionControlWrapper = props => {
 
 const transition = ({
 	props,
+	selectors,
 	label = __('Hover transition', 'maxi-blocks'),
 }) => {
 	const { attributes, deviceType, maxiSetAttributes, name } = props;
@@ -190,17 +204,40 @@ const transition = ({
 
 	const transition = cloneDeep(rawTransition);
 
-	const transitionData = getTransitionData(name);
+	const transitionData = getTransitionData(name, selectors, attributes);
 
 	Object.keys(transition).forEach(type => {
 		Object.keys(transition[type]).forEach(key => {
-			const hoverProp = transitionData?.[type]?.[key]?.hoverProp;
-			if (!hoverProp) return;
+			if (!transitionData?.[type]?.[key]) return;
 
-			if (isArray(hoverProp))
-				hoverProp.every(prop => !attributes[prop]) &&
+			const { hoverProp, isTransform = false } =
+				transitionData[type][key];
+
+			if (hoverProp) {
+				if (
+					isArray(hoverProp) &&
+					hoverProp.every(prop => !attributes[prop])
+				)
 					delete transition[type][key];
-			else !attributes[hoverProp] && delete transition[type][key];
+				else !attributes[hoverProp] && delete transition[type][key];
+			}
+
+			if (
+				isTransform &&
+				['scale', 'rotate', 'translate', 'origin'].every(
+					prop =>
+						!getLastBreakpointAttribute({
+							target: `transform-${prop}`,
+							breakpoint: deviceType,
+							attributes,
+							keys: [
+								key.replace('transform ', ''),
+								'hover-status',
+							],
+						})
+				)
+			)
+				delete transition[type][key];
 		});
 	});
 
@@ -234,7 +271,20 @@ const transition = ({
 					<SettingTabsControl
 						breakpoint={deviceType}
 						items={Object.keys(rawTransition).map(type => ({
-							label: __(capitalize(type), 'maxi-blocks'),
+							label: __(
+								capitalize(
+									// For blocks that don't have a `canvas` tab, the block's transition attributes are in `transition.canvas`.
+									// To avoid confusion with labeling, display the `block` instead of the `canvas`
+									// if the `block` transition attribute is missing.
+									type === 'canvas' &&
+										!Object.keys(rawTransition).includes(
+											'block'
+										)
+										? 'block'
+										: type
+								),
+								'maxi-blocks'
+							),
 							content: (
 								<TransitionControlWrapper
 									type={type}

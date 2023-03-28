@@ -38,6 +38,16 @@ const goThroughMaxiBlocks = callback => {
 				}
 			}
 
+			if (block.name === 'core/block') {
+				const blocks = select('core/block-editor').getBlocks(
+					block.clientId
+				);
+
+				if (blocks?.length) {
+					innerBlocks = blocks;
+				}
+			}
+
 			if (innerBlocks.length && goThroughBlocks(innerBlocks)) {
 				return true;
 			}

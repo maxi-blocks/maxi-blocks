@@ -176,6 +176,7 @@ const NumberCounterControl = props => {
 				</div>
 			)}
 			<AdvancedNumberControl
+				className='number-counter-control__start-end'
 				label={__('Start number', 'maxi-blocks')}
 				min={0}
 				max={props['number-counter-end']}
@@ -193,6 +194,7 @@ const NumberCounterControl = props => {
 				}
 			/>
 			<AdvancedNumberControl
+				className='number-counter-control__start-end'
 				label={__('End number', 'maxi-blocks')}
 				min={1}
 				max={props['number-counter-circle-status'] ? 9999999999 : 100}

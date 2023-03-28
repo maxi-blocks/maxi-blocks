@@ -134,28 +134,21 @@ const customCss = {
 			{
 				'text wrapper': '',
 				links: linkClass,
+				'ordered list': ' ol.maxi-text-block__content',
+				'unordered list': ' ul.maxi-text-block__content',
 			},
 			false
 		),
 		...createSelectors({
 			text: contentClass,
 		}),
-		lists: {
-			ordered: {
-				label: 'Ordered list',
-				target: ' ol.maxi-text-block__content',
-			},
-			unordered: {
-				label: 'Unordered list',
-				target: ' ul.maxi-text-block__content',
-			},
-		},
 	},
 	categories: [
 		'text wrapper',
 		'text',
 		'links',
-		'lists',
+		'ordered list',
+		'unordered list',
 		'before text',
 		'after text',
 		'background',
@@ -181,6 +174,7 @@ const transition = {
 const interactionBuilderSettings = {
 	block: [
 		{
+			sid: 'a',
 			label: __('Alignment', 'maxi-blocks'),
 			attrGroupName: 'textAlignment',
 			component: props => <AlignmentControl {...props} type='text' />,
@@ -188,6 +182,7 @@ const interactionBuilderSettings = {
 			disableTransition: true,
 		},
 		{
+			sid: 'ty',
 			label: __('Typography', 'maxi-blocks'),
 			transitionTarget: transition.canvas.typography.target,
 			hoverProp: 'typography-status-hover',

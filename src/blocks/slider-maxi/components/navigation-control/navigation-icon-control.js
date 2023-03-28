@@ -202,6 +202,7 @@ const NavigationIconControl = props => {
 									customLabel={`${capitalize(label)} size`}
 									breakpoint={breakpoint}
 									isHover={isHover}
+									disableHeightFitContent
 								/>
 							)}
 							{svgType !== 'Shape' && (

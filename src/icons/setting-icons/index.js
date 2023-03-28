@@ -68,7 +68,7 @@ export { default as flexWrap } from './flex-wrap';
 export { default as flexDirectionRow } from './flex-direction-row';
 export { default as flexDirectionRowReverse } from './flex-direction-row-reverse';
 export { default as flexDirectionColumn } from './flex-direction-column';
-export { default as flexDirectionColumnReverse } from './flex-direction-column-reverse'
+export { default as flexDirectionColumnReverse } from './flex-direction-column-reverse';
 export { default as flexJustifyCenter } from './flex-justify-center';
 export { default as flexJustifyStart } from './flex-justify-start';
 export { default as flexJustifyEnd } from './flex-justify-end';

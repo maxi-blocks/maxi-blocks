@@ -156,6 +156,10 @@ const SCAccordion = props => {
 		disableOpacity = false,
 	} = props;
 
+	const ifParagraphOrHeading = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'].some(
+		tag => groupAttr === tag
+	);
+
 	return (
 		<>
 			{!disableTypography && (
@@ -169,6 +173,7 @@ const SCAccordion = props => {
 						onChangeValue({ typography: obj }, groupAttr);
 					}}
 					hideTextShadow
+					showBottomGap={ifParagraphOrHeading}
 					hideAlignment
 					blockStyle={SCStyle}
 					disablePalette
@@ -483,30 +488,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 									disableGradient
 									disablePalette
 								/>
-								<Button
-									disabled={
-										processSCAttribute(
-											SC,
-											quickColorPreset,
-											'color'
-										) ===
-										SC.defaultStyleCard.color[
-											quickColorPreset
-										]
-									}
-									className='maxi-style-cards__quick-color-presets__reset-button'
-									onClick={() =>
-										onChangeValue(
-											{
-												[`${quickColorPreset}`]:
-													SC.defaultStyleCard.color[
-														quickColorPreset
-													],
-											},
-											'color'
-										)
-									}
-								>
+								<div className='maxi-style-cards__quick-color-presets__reset'>
 									<span
 										className='maxi-style-cards__quick-color-presets__reset-button__preview'
 										style={{
@@ -517,8 +499,34 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 											)}, 1)`,
 										}}
 									/>
-									<Icon icon={reset} />
-								</Button>
+									<Button
+										disabled={
+											processSCAttribute(
+												SC,
+												quickColorPreset,
+												'color'
+											) ===
+											SC.defaultStyleCard.color[
+												quickColorPreset
+											]
+										}
+										className='maxi-style-cards__quick-color-presets__reset-button'
+										onClick={() =>
+											onChangeValue(
+												{
+													[`${quickColorPreset}`]:
+														SC.defaultStyleCard
+															.color[
+															quickColorPreset
+														],
+												},
+												'color'
+											)
+										}
+									>
+										<Icon icon={reset} />
+									</Button>
+								</div>
 							</>
 						),
 					},

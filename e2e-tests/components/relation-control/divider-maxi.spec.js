@@ -3,7 +3,6 @@
  */
 import {
 	createNewPost,
-	insertBlock,
 	pressKeyWithModifier,
 	selectBlockByClientId,
 } from '@wordpress/e2e-test-utils';
@@ -16,12 +15,13 @@ import {
 	editColorControl,
 	getAttributes,
 	openPreviewPage,
+	insertMaxiBlock,
 } from '../../utils';
 
 describe('Divider Maxi hover simple actions', () => {
 	beforeEach(async () => {
 		await createNewPost();
-		await insertBlock('Divider Maxi');
+		await insertMaxiBlock(page, 'Divider Maxi');
 
 		// Add native paragraph block
 		await selectBlockByClientId(
@@ -31,7 +31,7 @@ describe('Divider Maxi hover simple actions', () => {
 		);
 		await page.keyboard.press('Enter');
 
-		await insertBlock('Button Maxi');
+		await insertMaxiBlock(page, 'Button Maxi');
 		await openSidebarTab(page, 'advanced', 'interaction builder');
 
 		// Add interaction
@@ -94,7 +94,7 @@ describe('Divider Maxi hover simple actions', () => {
 	it('Divider shadow', async () => {
 		// Select setting
 		const selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[3].select('Divider box shadow');
+		await selectControls[3].select('dbs');
 
 		// Select first default
 		await page.$$eval('.maxi-default-styles-control__button', buttons =>
@@ -150,7 +150,7 @@ describe('Divider Maxi hover simple actions', () => {
 	it('Line settings', async () => {
 		// Select setting
 		const selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[3].select('Line settings');
+		await selectControls[3].select('dls');
 
 		// Select second default
 		await page.$$eval('.maxi-default-styles-control__button', buttons =>

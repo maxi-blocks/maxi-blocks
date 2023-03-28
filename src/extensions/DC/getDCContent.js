@@ -96,6 +96,24 @@ const getDCContent = async dataRequest => {
 			contentValue = parent[0].name;
 		}
 	}
+	if (['tags', 'categories'].includes(field)) {
+		const { getEntityRecord } = resolveSelect('core');
+		const idArray = contentValue;
+
+		const namesArray = await Promise.all(
+			idArray.map(async id => {
+				const tag = await getEntityRecord(
+					'taxonomy',
+					nameDictionary[field],
+					id
+				);
+
+				return tag.name;
+			})
+		);
+
+		contentValue = namesArray.join(' ');
+	}
 
 	if (contentValue) return contentValue;
 

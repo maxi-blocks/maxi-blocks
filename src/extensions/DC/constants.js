@@ -87,6 +87,12 @@ const generalPostsPagesFields = [
 	// TODO: add URL
 ];
 
+const generalPostsFields = [
+	...generalPostsPagesFields,
+	{ label: __('Categories', 'maxi-blocks'), value: 'categories' },
+	{ label: __('Tags', 'maxi-blocks'), value: 'tags' },
+];
+
 const generalSettingsFields = [
 	{ label: __('Title', 'maxi-blocks'), value: 'title' },
 	{ label: __('Description', 'maxi-blocks'), value: 'tagline' },
@@ -168,7 +174,7 @@ const mediaAuthorFields = [
 
 export const fieldOptions = {
 	text: {
-		posts: generalPostsPagesFields,
+		posts: generalPostsFields,
 		pages: generalPostsPagesFields,
 		settings: generalSettingsFields,
 		media: generalMediaFields,

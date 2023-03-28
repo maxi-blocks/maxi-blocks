@@ -39,4 +39,9 @@ html[dir='rtl'] {
 		background-position: left 8px center !important;
 		padding-right: 8px !important;
 	}
+
+	.maxi-video-icon-control__icon-position .maxi-select-control__input,
+	.maxi-video-control__ratio .maxi-select-control__input {
+		min-width: 125px;
+	}
 }

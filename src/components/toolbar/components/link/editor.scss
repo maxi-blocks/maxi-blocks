@@ -222,3 +222,18 @@
 		height: 100%;
 	}
 }
+
+/*******************************
+* RTL
+*******************************/
+html[dir='rtl'] {
+	.block-editor-link-control {
+		&__search-submit {
+			float: left;
+		}
+		.block-editor-link-control__search-input-container
+			.block-editor-link-control__search-actions {
+			left: 0;
+		}
+	}
+}

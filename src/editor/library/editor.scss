@@ -2286,12 +2286,6 @@ html[dir='rtl'] {
 		padding-left: 8px;
 		padding-right: 5px;
 	}
-}
-
-/*******************************
-* RTL
-*******************************/
-html[dir='rtl'] {
 	.maxi-library-modal
 		.ais-InfiniteHits-list
 		.ais-InfiniteHits-item
@@ -2307,5 +2301,9 @@ html[dir='rtl'] {
 		.maxi-cloud-container__patterns__top-menu__button-go-pro {
 		right: unset;
 		left: 100px;
+	}
+	.maxi-library-modal .top-Menu {
+		left: auto;
+		right: 230px;
 	}
 }

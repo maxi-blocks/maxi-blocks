@@ -504,7 +504,7 @@ html[dir='rtl'] {
 	}
 	.maxi-advanced-number-control .maxi-base-control__field > *,
 	.maxi-advanced-number-control .components-base-control__field > * {
-		margin-left: 0;
+		margin-left: 0 !important;
 		margin-right: 4px !important;
 	}
 	.maxi-tab-content__box
@@ -512,5 +512,8 @@ html[dir='rtl'] {
 	.maxi-tab-content__box
 		.maxi-base-control.maxi-typography-control__direction {
 		margin-bottom: 8px;
+	}
+	.maxi-base-control.maxi-select-control.maxi-dimensions-control__units {
+		margin-right: 0 !important;
 	}
 }

@@ -192,3 +192,17 @@
 		}
 	}
 }
+
+/*******************************
+* RTL
+*******************************/
+html[dir='rtl'] {
+	.maxi-clip-path-delete-handle {
+		left: auto !important;
+		right: 0;
+	}
+	.maxi-clip-path-color-handle {
+		margin-left: 0.5rem;
+		margin-right: 0 !important;
+	}
+}

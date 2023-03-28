@@ -17,7 +17,7 @@ import {
 /**
  * External dependencies
  */
-import { isEmpty, find, isEqual } from 'lodash';
+import { find, isEmpty, isEqual } from 'lodash';
 import { limitString } from './utils';
 
 export const getIdOptions = async (type, relation, author) => {
@@ -106,7 +106,8 @@ const getDCOptions = async (dataRequest, postIdOptions, contentType) => {
 
 			if (['tags', 'media'].includes(type)) {
 				newValues['dc-error'] = type;
-				disabledType(type);
+				// TODO: this does not work without the second parameter, so it never works ^_^
+				// disabledType(type);
 			}
 
 			return { newValues, newPostIdOptions: [] };

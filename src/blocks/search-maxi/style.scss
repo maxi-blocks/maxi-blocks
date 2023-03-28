@@ -25,7 +25,12 @@ body.maxi-blocks--active .maxi-search-block {
 			margin-right: -25px !important;
 		}
 		.maxi-search-block__input--hidden {
-			visibility: collapse;
+			margin-right: 0 !important;
+			margin-left: 0 !important;
+			padding-left: 0 !important;
+			padding-right: 0 !important;
+			border-left-width: 0 !important;
+			border-right-width: 0 !important;
 		}
 	}
 

@@ -7,13 +7,19 @@
 		}
 	}
 	&--icon-center {
-		input.icon-reveal.maxi-search-block__input--hidden {
-			visibility: collapse;
+		.maxi-search-block__input--hidden {
+			margin-right: 0 !important;
+			margin-left: 0 !important;
+			padding-left: 0 !important;
+			padding-right: 0 !important;
+			border-left-width: 0 !important;
+			border-right-width: 0 !important;
 		}
 		input.icon-reveal {
 			margin-right: -25px !important;
 		}
 	}
+
 	&--icon-right {
 		input.icon-reveal {
 			margin-right: -25px !important;

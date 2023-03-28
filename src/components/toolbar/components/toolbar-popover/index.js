@@ -162,6 +162,7 @@ class ToolbarPopover extends Component {
 									right: 20,
 								}
 							}
+							shiftLimit={{ mainAxis: false }}
 							isAlternate
 							noArrow
 						>

@@ -1,6 +1,7 @@
 .maxi-toolbar__popover {
 	z-index: 9999999;
 
+	&-caption,
 	&--icon {
 		z-index: 9999998;
 	}

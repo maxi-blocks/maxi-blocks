@@ -8,11 +8,12 @@ import { useContext, useMemo } from '@wordpress/element';
  * Internal dependencies
  */
 import { getGroupAttributes } from '../styles';
+import LoopContext from './loopContext';
 
 /**
  * External dependencies
  */
-import LoopContext from './loopContext';
+import { merge } from 'lodash';
 
 const withMaxiContextLoop = createHigherOrderComponent(
 	WrappedComponent =>
@@ -32,11 +33,11 @@ const withMaxiContextLoop = createHigherOrderComponent(
 				'contextLoop'
 			);
 
-			// TODO: Needs logics, temporary
-			const contextLoop = {
-				...contextLoopAttributes,
-				...prevContextLoopAttributes,
-			};
+			const contextLoop = merge(
+				{},
+				prevContextLoopAttributes,
+				contextLoopAttributes
+			);
 
 			const memoizedValue = useMemo(() => {
 				return {

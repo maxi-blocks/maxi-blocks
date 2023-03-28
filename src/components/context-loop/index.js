@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useEffect, useState } from '@wordpress/element';
+import { useContext, useEffect, useState } from '@wordpress/element';
 import { resolveSelect } from '@wordpress/data';
 
 /**
@@ -17,6 +17,7 @@ import {
 	relationTypes,
 } from '../../extensions/DC/constants';
 import getDCOptions from '../../extensions/DC/getDCOptions';
+import LoopContext from '../../extensions/DC/loopContext';
 
 /**
  * External dependencies
@@ -29,12 +30,9 @@ import classnames from 'classnames';
  */
 
 const DynamicContent = props => {
-	const {
-		className,
-		onChange,
-		contentType = 'text',
-		...dynamicContent
-	} = props;
+	const { className, onChange, contentType = 'text' } = props;
+
+	const { contextLoop } = useContext(LoopContext);
 
 	const classes = classnames('maxi-dynamic-content', className);
 
@@ -45,13 +43,13 @@ const DynamicContent = props => {
 		'cl-id': id,
 		'cl-field': field,
 		'cl-author': author,
-	} = dynamicContent;
+	} = contextLoop;
 
 	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
 	const [postIdOptions, setPostIdOptions] = useState(null);
 
 	const changeProps = params => {
-		const hasChangesToSave = Object.entries(dynamicContent).some(
+		const hasChangesToSave = Object.entries(contextLoop).some(
 			([key, val]) => {
 				if (!(key in params)) return false;
 

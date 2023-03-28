@@ -65,7 +65,7 @@ class MaxiBlocks_DynamicContent
         }
 
         $block_name = substr($attributes['uniqueID'], 0, strrpos($attributes['uniqueID'], '-'));
-        
+
         if ($block_name !== 'image-maxi') {
             $content = self::render_dc_content($attributes, $content);
         } else {
@@ -112,7 +112,7 @@ class MaxiBlocks_DynamicContent
         if (empty($dc_relation)) {
             $dc_relation = 'id';
         }
-        
+
         $response = '';
 
         if (in_array($dc_type, ['posts', 'pages'])) { // Post or page
@@ -155,7 +155,7 @@ class MaxiBlocks_DynamicContent
         if (empty($dc_relation)) {
             $dc_relation = 'id';
         }
-        
+
         $media_id;
         $media_src;
         $media_alt = '';
@@ -227,7 +227,7 @@ class MaxiBlocks_DynamicContent
                 'post_status' => 'publish',
                 'posts_per_page' => 1,
             ];
-    
+
             // DC Relation
             if ($dc_relation == 'id') {
                 $args['p'] = $dc_id;
@@ -236,16 +236,16 @@ class MaxiBlocks_DynamicContent
             } elseif ($dc_relation == 'random') {
                 $args['orderby'] = 'rand';
             }
-    
+
             $query = new WP_Query($args);
-    
+
             return $query->post;
         } elseif ($dc_type === 'media') {
             $args = [
                 'post_type' => 'attachment',
                 'posts_per_page' => 1,
             ];
-    
+
             // DC Relation
             $is_random = $dc_relation === 'random';
             if ($dc_relation == 'id') {
@@ -257,11 +257,11 @@ class MaxiBlocks_DynamicContent
                     'posts_per_page' => -1
                 ];
             }
-    
+
             $query = new WP_Query($args);
-    
+
             $post;
-    
+
             if ($is_random) {
                 $posts = $query->posts;
                 $post = $posts[array_rand($posts)];
@@ -276,36 +276,36 @@ class MaxiBlocks_DynamicContent
             } elseif ($dc_type === 'tags') {
                 $taxonomy = 'post_tag';
             }
-    
+
             $args = [
                 'taxonomy' => $taxonomy,
                 'hide_empty' => false,
                 'number' => 1,
             ];
-    
+
             if ($dc_relation == 'random') {
                 $args['orderby'] = 'rand';
             } else {
                 $args['include'] = $dc_id;
             }
-    
+
             $terms = get_terms($args);
-    
+
             return $terms[0];
         } elseif ($dc_type === 'users') {
             $args = [
                 // 'role' => 'author',
                 // 'number' => 1,
             ];
-    
+
             if ($dc_relation == 'random') {
                 $args['orderby'] = 'rand';
             } else {
                 $args['include'] = $dc_id;
             }
-    
+
             $users = get_users($args);
-    
+
             return $users[0];
         } elseif ($dc_type === 'settings') {
             return null;
@@ -351,6 +351,22 @@ class MaxiBlocks_DynamicContent
             $post_data = get_the_author_meta('display_name', $post->post_author);
         }
 
+        if (in_array($dc_field, ['categories', 'tags'])) {
+            $field_name_to_taxonomy = [
+                'tags' => 'post_tag',
+                'categories' => 'category',
+            ];
+
+            $tags = wp_get_post_terms($post->ID, $field_name_to_taxonomy[$dc_field]);
+            $tag_names = [];
+
+            foreach ($tags as $tag) {
+                $tag_names[] = $tag->name;
+            }
+
+            $post_data = implode(' ', $tag_names);
+        }
+
         return $post_data;
     }
 
@@ -374,7 +390,7 @@ class MaxiBlocks_DynamicContent
         @list(
             'dc-field' => $dc_field,
         ) = $attributes;
-        
+
         $post = $this->get_post($attributes);
         $media_data = $post->{"post_$dc_field"};
 
@@ -463,7 +479,7 @@ class MaxiBlocks_DynamicContent
         if (!isset($dc_format)) {
             $dc_format = 'd.m.Y t';
         }
-        
+
         $options = array(
             'day' => $dc_day === 'none' ? null : $dc_day,
             'era' => $dc_era === 'none' ? null : $dc_era,
@@ -510,7 +526,7 @@ class MaxiBlocks_DynamicContent
 
         return $content;
     }
-    
+
     public function convert_moment_to_php_date_format($format)
     {
         $replacements = array(
@@ -541,7 +557,7 @@ class MaxiBlocks_DynamicContent
           'zz' => 'e',
           'X' => 'U'
         );
-      
+
         return strtr($format, $replacements);
     }
 

@@ -94,6 +94,11 @@
 		padding-right: 5px;
 		background-color: #fff;
 
+		&__wrapper {
+			width: 100%;
+			display: flex;
+		}
+
 		&__text {
 			line-height: 25px;
 		}

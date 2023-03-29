@@ -22,7 +22,7 @@ const withMaxiContextLoop = createHigherOrderComponent(
 
 			let prevContextLoopAttributes = null;
 
-			if (ownProps.name !== 'maxi-blocks/container-maxi') {
+			if (!attributes.isFirstOnHierarchy) {
 				const context = useContext(LoopContext);
 
 				prevContextLoopAttributes = context.contextLoop;

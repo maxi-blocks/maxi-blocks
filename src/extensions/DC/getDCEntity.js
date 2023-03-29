@@ -78,6 +78,18 @@ const getDCEntity = async dataRequest => {
 		return termsEntity[0];
 	}
 
+	const existingPost = await resolveSelect('core').getEntityRecords(
+		kindDictionary[type],
+		nameDictionary[type] ?? type,
+		{
+			include: id,
+		}
+	);
+
+	if (!existingPost || existingPost.length === 0) {
+		return null;
+	}
+
 	// Get selected entity
 	const entity = await resolveSelect('core').getEntityRecord(
 		kindDictionary[type],

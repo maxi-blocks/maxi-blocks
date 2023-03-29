@@ -29,6 +29,8 @@ const nameDictionary = {
 const getDCContent = async dataRequest => {
 	const data = await getDCEntity(dataRequest);
 
+	if (!data) return null;
+
 	const { type, field, limit, customDate, format, locale } = dataRequest;
 
 	let contentValue;

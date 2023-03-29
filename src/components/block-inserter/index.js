@@ -94,7 +94,7 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 		select('core/block-editor');
 
 	const blockHierarchy = {};
-	const blockOrder = [getBlockParents(clientId, true)?.[0], clientId];
+	const blockOrder = [clientId, ...getBlockParents(clientId, true)];
 	blockOrder.forEach(blockClientId => {
 		if (WRAPPER_BLOCKS.includes(getBlockName(blockClientId)))
 			blockHierarchy[blockClientId] = getBlockName(blockClientId);

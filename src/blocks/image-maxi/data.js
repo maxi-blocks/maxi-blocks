@@ -314,6 +314,13 @@ const data = {
 	transition,
 	interactionBuilderSettings,
 };
+const dcContentType = 'image';
 
-export { copyPasteMapping, customCss, transition, interactionBuilderSettings };
+export {
+	copyPasteMapping,
+	customCss,
+	transition,
+	interactionBuilderSettings,
+	dcContentType,
+};
 export default data;

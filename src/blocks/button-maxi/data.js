@@ -370,6 +370,7 @@ const maxiAttributes = {
 	'button-padding-bottom-xxl': '23',
 	'button-padding-left-xxl': '55',
 };
+const dcContentType = 'button';
 
 const data = {
 	name,
@@ -378,6 +379,7 @@ const data = {
 	transition,
 	interactionBuilderSettings,
 	maxiAttributes,
+	dcContentType,
 };
 
 export {
@@ -386,5 +388,6 @@ export {
 	transition,
 	interactionBuilderSettings,
 	maxiAttributes,
+	dcContentType,
 };
 export default data;

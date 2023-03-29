@@ -23,6 +23,7 @@ import {
 import getDCOptions from './getDCOptions';
 import getDCMedia from './getDCMedia';
 import getDCLink from './getDCLink';
+import { getBlockData } from '../attributes';
 
 /**
  * External dependencies
@@ -34,7 +35,7 @@ import getDCValues from './getDCValues';
 const withMaxiDC = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
-			const { setAttributes, attributes } = ownProps;
+			const { attributes, name, setAttributes } = ownProps;
 
 			const contextLoop = useContext(loopContext)?.contextLoop;
 
@@ -56,7 +57,12 @@ const withMaxiDC = createHigherOrderComponent(
 			const { status, content, type, field, id, customDate, linkStatus } =
 				dynamicContentProps;
 
-			const fetchDcData = useCallback(async () => {
+			const contentType = useMemo(
+				() => getBlockData(name)?.dcContentType,
+				[]
+			);
+
+			const fetchDcData = useCallback(async dynamicContentProps => {
 				if (
 					status &&
 					!isNil(type) &&
@@ -141,7 +147,7 @@ const withMaxiDC = createHigherOrderComponent(
 				const dcOptions = await getDCOptions(
 					dynamicContentProps,
 					dynamicContentProps.id,
-					'text'
+					contentType
 				);
 
 				if (dcOptions?.newValues) {
@@ -154,7 +160,12 @@ const withMaxiDC = createHigherOrderComponent(
 					setAttributes(dcOptions.newValues);
 				}
 
-				fetchDcData().catch(console.error);
+				fetchDcData(
+					getDCValues(
+						{ ...dynamicContent, ...dcOptions?.newValues },
+						contextLoop
+					)
+				).catch(console.error);
 			}, [fetchDcData, Object.values(dynamicContentProps)]);
 
 			return <WrappedComponent {...ownProps} />;

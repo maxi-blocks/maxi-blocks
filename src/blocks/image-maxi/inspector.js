@@ -25,7 +25,7 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
-import { customCss } from './data';
+import { customCss, dcContentType } from './data';
 import { withMaxiInspector } from '../../extensions/inspector';
 
 /**
@@ -479,7 +479,7 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.dc({
 										props,
-										contentType: 'image',
+										contentType: dcContentType,
 									}),
 									...inspectorTabs.scrollEffects({
 										props,

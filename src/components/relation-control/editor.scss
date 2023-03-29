@@ -9,9 +9,9 @@
 		margin-bottom: 10px;
 	}
 	.maxi-list-item-control__title__wrapper {
+		display: block;
 		overflow: hidden;
 		max-width: 190px;
-		display: block;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}

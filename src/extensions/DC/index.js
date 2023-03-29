@@ -3,6 +3,7 @@ export { default as getDCEntity } from './getDCEntity';
 export { default as getDCErrors } from './getDCErrors';
 export { default as getDCLink } from './getDCLink';
 export { default as getDCMedia } from './getDCMedia';
+export { default as getDCOptions } from './getDCOptions';
 export { default as getDCValues } from './getDCValues';
 export { default as loopContext } from './loopContext';
 export { default as processDCDate } from './processDCDate';

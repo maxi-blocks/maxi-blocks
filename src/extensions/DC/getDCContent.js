@@ -29,7 +29,7 @@ const nameDictionary = {
 const getDCContent = async dataRequest => {
 	const data = await getDCEntity(dataRequest);
 
-	const { type, field, limit, isCustomDate, format, locale } = dataRequest;
+	const { type, field, limit, customDate, format, locale } = dataRequest;
 
 	let contentValue;
 
@@ -48,7 +48,7 @@ const getDCContent = async dataRequest => {
 
 		contentValue = processDCDate(
 			contentValue,
-			isCustomDate,
+			customDate,
 			format,
 			locale,
 			options

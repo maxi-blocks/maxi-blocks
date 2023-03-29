@@ -150,6 +150,7 @@ const Popover = (
 		resize = false,
 		__unstableObserveElement,
 		__unstableSlotName = SLOT_NAME,
+		style,
 		...contentProps
 	},
 	forwardedRef
@@ -386,15 +387,16 @@ const Popover = (
 			ref={mergedFloatingRef}
 			{...dialogProps}
 			tabIndex='-1'
-			style={
-				isExpanded
+			style={{
+				...style,
+				...(isExpanded
 					? undefined
 					: {
 							position: strategy,
 							left: Number.isNaN(x) ? 0 : x,
 							top: Number.isNaN(y) ? 0 : y,
-					  }
-			}
+					  }),
+			}}
 		>
 			{/* Prevents scroll on the document */}
 			{isExpanded && <ScrollLock />}

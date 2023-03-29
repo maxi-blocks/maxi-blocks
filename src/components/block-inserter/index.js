@@ -31,6 +31,7 @@ const WRAPPER_BLOCKS = [
 	'maxi-blocks/column-maxi',
 	'maxi-blocks/group-maxi',
 	'maxi-blocks/slide-maxi',
+	'maxi-blocks/accordion-maxi',
 ];
 
 const BlockInserter = props => {
@@ -89,10 +90,11 @@ const ButtonInserter = props => {
 const WrapperBlockInserter = forwardRef((props, ref) => {
 	const { clientId, isSelected, hasSelectedChild } = props;
 
-	const { getBlockName, getBlockParents } = select('core/block-editor');
+	const { getBlockName, getBlockParents, getAdjacentBlockClientId } =
+		select('core/block-editor');
 
 	const blockHierarchy = {};
-	const blockOrder = [...getBlockParents(clientId), clientId];
+	const blockOrder = [getBlockParents(clientId, true)?.[0], clientId];
 	blockOrder.forEach(blockClientId => {
 		if (WRAPPER_BLOCKS.includes(getBlockName(blockClientId)))
 			blockHierarchy[blockClientId] = getBlockName(blockClientId);
@@ -135,16 +137,26 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 							<ButtonInserter
 								onToggle={onToggle}
 								setShouldRemain={setShouldRemain}
-								style={style}
+								style={{
+									zIndex:
+										Object.keys(blockHierarchy).length + 1,
+									...style,
+								}}
 							/>
 						)}
-						renderContent={({ onToggle }) => (
+						renderContent={() => (
 							<div className='maxi-block-inserter__content'>
 								{Object.entries(blockHierarchy).map(
 									([blockClientId, blockName]) => (
 										<Inserter
 											key={`maxi-wrapper-block-inserter__content-${blockClientId}`}
 											rootClientId={blockClientId}
+											clientId={
+												clientId !== blockClientId &&
+												getAdjacentBlockClientId(
+													clientId
+												)
+											}
 											position='bottom center'
 											isAppender
 											__experimentalIsQuick
@@ -160,8 +172,11 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 													onClick={() => {
 														onToggleInserter();
 													}}
+													style={{
+														textTransform: 'none',
+													}}
 												>
-													Add{' '}
+													Add to{' '}
 													{blockName
 														.replace(
 															'maxi-blocks/',
@@ -283,7 +298,7 @@ const InterBlockInserter = forwardRef((props, ref) => {
 
 	const popoverRef = useRef(null);
 
-	const { nextClientId, isNextMaxiBlock } = useSelect(select => {
+	const { nextClientId, isNextMaxiBlock, blockName } = useSelect(select => {
 		const { getBlockOrder, getBlockRootClientId, getBlockName } =
 			select('core/block-editor');
 
@@ -297,13 +312,22 @@ const InterBlockInserter = forwardRef((props, ref) => {
 		const isNextMaxiBlock =
 			nextClientId && getBlockName(nextClientId).includes('maxi-blocks/');
 
+		const blockName = getBlockName(clientId);
+
 		return {
 			nextClientId,
 			isNextMaxiBlock,
+			blockName,
 		};
 	}, []);
 
-	if (!blockRef || !nextClientId || !isNextMaxiBlock) return null;
+	if (
+		!blockRef ||
+		!nextClientId ||
+		!isNextMaxiBlock ||
+		WRAPPER_BLOCKS.includes(blockName)
+	)
+		return null;
 
 	return (
 		<Popover

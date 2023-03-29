@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+
 const videoEvents = () => {
 	const videoBLocks = document.querySelectorAll('.maxi-video-block');
 	videoBLocks.forEach(video => {
@@ -8,7 +10,6 @@ const videoEvents = () => {
 
 		const videoID = video.id;
 		const videoData =
-			// eslint-disable-next-line no-undef
 			maxiVideo[0][videoID] !== undefined ? maxiVideo[0][videoID] : null;
 
 		const { videoType } = videoData;
@@ -48,7 +49,6 @@ const handleYoutubeVideos = () => {
 		const videoID = video.id;
 
 		const videoData =
-			// eslint-disable-next-line no-undef
 			maxiVideo[0][videoID] !== undefined ? maxiVideo[0][videoID] : null;
 
 		const popupContent =
@@ -87,7 +87,6 @@ function handleVimeoVideos() {
 		const videoID = video.id;
 
 		const videoData =
-			// eslint-disable-next-line no-undef
 			maxiVideo[0][videoID] !== undefined ? maxiVideo[0][videoID] : null;
 
 		const popupContent =

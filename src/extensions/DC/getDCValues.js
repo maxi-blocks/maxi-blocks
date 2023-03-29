@@ -1,46 +1,38 @@
 /**
  * External dependencies
  */
-import { isBoolean, isNil } from 'lodash';
+import { camelCase, isNil } from 'lodash';
+
+const DEFAULTS = {
+	status: false,
+	type: 'posts',
+	relation: 'by-id',
+};
 
 const getDCValues = (dynamicContent, contextLoop) => {
 	const getDCValue = target => {
+		const contextLoopStatus = !!contextLoop?.['cl-status'];
+
 		const dcValue = dynamicContent[`dc-${target}`];
+		const contextLoopValue = contextLoop?.[`cl-${target}`];
 
-		if (
-			(isBoolean(dcValue) && dcValue) ||
-			(!isBoolean(dcValue) && !isNil(dcValue))
-		)
-			return dcValue;
+		if (target === 'status') return dcValue ?? DEFAULTS?.[target];
 
-		return contextLoop[`cl-${target}`];
+		if (!isNil(dcValue)) return dcValue;
+
+		if (contextLoopStatus && contextLoopValue) return contextLoopValue;
+
+		return DEFAULTS?.[target];
 	};
 
-	const contextLoopStatus = contextLoop['cl-status'];
+	return Object.keys(dynamicContent).reduce((acc, key) => {
+		const target = key.replace('dc-', '');
+		const value = getDCValue(target);
+		const newKey = camelCase(target);
 
-	if (!contextLoopStatus)
-		return Object.keys(dynamicContent).reduce((acc, key) => {
-			const newKey = key.replace('dc-', '');
-			const value = dynamicContent[key];
-
-			return {
-				...acc,
-				[newKey]: value,
-			};
-		}, {});
-
-	return {
-		status: getDCValue('status'),
-		type: getDCValue('type'),
-		relation: getDCValue('relation'),
-		id: getDCValue('id'),
-		field: getDCValue('field'),
-		author: getDCValue('author'),
-		limit: getDCValue('limit'),
-		error: getDCValue('error'),
-		isCustomDate: getDCValue('custom-date'),
-		linkStatus: getDCValue('link-status'),
-	};
+		acc[newKey] = value;
+		return acc;
+	}, {});
 };
 
 export default getDCValues;

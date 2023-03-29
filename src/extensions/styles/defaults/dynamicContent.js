@@ -5,15 +5,12 @@ const dynamicContent = {
 	},
 	'dc-status': {
 		type: 'boolean',
-		default: false,
 	},
 	'dc-type': {
 		type: 'string',
-		default: 'posts',
 	},
 	'dc-relation': {
 		type: 'string',
-		default: 'by-id',
 	},
 	'dc-id': {
 		type: 'number',

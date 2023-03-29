@@ -44,6 +44,11 @@ registerBlockType('maxi-blocks/button-maxi', {
 	icon: buttonIcon,
 	description: 'Insert, modify or style a button',
 	category: 'maxi-blocks',
+	example: {
+		attributes: {
+			preview: true,
+		},
+	},
 	supports: {
 		align: true,
 		lightBlockWrapper: true,
@@ -65,7 +70,7 @@ registerBlockType('maxi-blocks/button-maxi', {
 			attributes,
 			save: saveOld,
 		},
-		blockMigrator({
+		...blockMigrator({
 			attributes,
 			save,
 			prefix: 'button-',

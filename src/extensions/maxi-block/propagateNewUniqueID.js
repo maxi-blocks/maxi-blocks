@@ -39,7 +39,11 @@ const propagateNewUniqueID = (oldUniqueID, newUniqueID, bgLayers) => {
 				clientId,
 			} = block;
 
-			if ('relations' in attributes && !isEmpty(attributes.relations)) {
+			if (
+				'relations' in attributes &&
+				!isEmpty(attributes.relations) &&
+				isArray(attributes.relations)
+			) {
 				const { relations } = attributes;
 
 				const newRelations = cloneDeep(relations).map(relation => {

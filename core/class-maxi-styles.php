@@ -403,7 +403,6 @@ class MaxiBlocks_Styles
      *
      * @return object   Font name with font options
      */
-
     public function enqueue_fonts($fonts, $name)
     {
         if (empty($fonts) || !is_array($fonts)) {
@@ -464,7 +463,15 @@ class MaxiBlocks_Styles
                         $font_styles = [$font_data['style']];
                     }
 
-                    $font_url = "https://fonts.googleapis.com/css2?family=$font:";
+                    $font_url = "https://fonts.googleapis.com/css2?family=$font";
+
+                    // Load default font weight for cases where the saved font weight doesn't exist
+                    wp_enqueue_style(
+                        $name . '-font-' . sanitize_title_with_dashes($font),
+                        $font_url
+                    );
+
+                    $font_url .= ':';
 
                     foreach ($font_weights as $font_weight) {
                         foreach ($font_styles as $font_style) {

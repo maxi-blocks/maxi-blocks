@@ -1,6 +1,9 @@
 .toolbar-item__background {
 	&__popover {
 		min-width: 279px;
+		.maxi-color-control__wrap{
+			display: block;
+		}
 	}
 
 	&-content {

@@ -64,3 +64,15 @@
 		}
 	}
 }
+
+/*******************************
+* RTL
+*******************************/
+html[dir='rtl'] {
+	.maxi-custom-css-control .w-tc-editor textarea {
+		text-align: right;
+	}
+	.maxi-custom-css-control code {
+		float: right;
+	}
+}

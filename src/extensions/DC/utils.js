@@ -46,9 +46,13 @@ export const sanitizeDCContent = content =>
 		: __('No content found', 'maxi-blocks');
 
 export const validationsValues = (variableValue, field, contentType) => {
-	const result = fieldOptions[contentType][variableValue].map(x => x.value);
+	const result = fieldOptions?.[contentType]?.[variableValue]?.map(
+		x => x.value
+	);
 
-	return result.includes(field) ? {} : { 'dc-field': result[0] };
+	if (!result || result.includes(field)) return {};
+
+	return { 'dc-field': result[0] };
 };
 
 export const getDCDateCustomFormat = date => moment.parseFormat(date);

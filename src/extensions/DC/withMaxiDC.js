@@ -3,7 +3,12 @@
  */
 import { dispatch } from '@wordpress/data';
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
-import { useCallback, useContext, useEffect } from '@wordpress/element';
+import {
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo,
+} from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -15,13 +20,14 @@ import {
 	getSimpleText,
 	sanitizeDCContent,
 } from './utils';
+import getDCOptions from './getDCOptions';
 import getDCMedia from './getDCMedia';
 import getDCLink from './getDCLink';
 
 /**
  * External dependencies
  */
-import { isNil } from 'lodash';
+import { isNil, isObject } from 'lodash';
 import loopContext from './loopContext';
 import getDCValues from './getDCValues';
 
@@ -30,7 +36,7 @@ const withMaxiDC = createHigherOrderComponent(
 		pure(ownProps => {
 			const { setAttributes, attributes } = ownProps;
 
-			const { contextLoop } = useContext(loopContext);
+			const contextLoop = useContext(loopContext)?.contextLoop;
 
 			const isImageMaxi = ownProps.name === 'maxi-blocks/image-maxi';
 
@@ -39,20 +45,16 @@ const withMaxiDC = createHigherOrderComponent(
 				'dynamicContent'
 			);
 
-			const dynamicContentProps = getDCValues(
-				dynamicContent,
-				contextLoop
+			const dynamicContentProps = useMemo(
+				() => getDCValues(dynamicContent, contextLoop),
+				[
+					Object.values(dynamicContent),
+					isObject(contextLoop) ? Object.values(contextLoop) : [],
+				]
 			);
 
-			const {
-				status,
-				content,
-				type,
-				field,
-				id,
-				isCustomDate,
-				linkStatus,
-			} = dynamicContentProps;
+			const { status, content, type, field, id, customDate, linkStatus } =
+				dynamicContentProps;
 
 			const fetchDcData = useCallback(async () => {
 				if (
@@ -91,7 +93,7 @@ const withMaxiDC = createHigherOrderComponent(
 							markNextChangeAsNotPersistent();
 							setAttributes({
 								'dc-content': newContent,
-								...(isCustomDate && {
+								...(customDate && {
 									'dc-custom-format':
 										getDCDateCustomFormat(newContent),
 								}),
@@ -135,9 +137,25 @@ const withMaxiDC = createHigherOrderComponent(
 				}
 			});
 
-			useEffect(() => {
+			useEffect(async () => {
+				const dcOptions = await getDCOptions(
+					dynamicContentProps,
+					dynamicContentProps.id,
+					'text'
+				);
+
+				if (dcOptions?.newValues) {
+					const {
+						__unstableMarkNextChangeAsNotPersistent:
+							markNextChangeAsNotPersistent,
+					} = dispatch('core/block-editor');
+
+					markNextChangeAsNotPersistent();
+					setAttributes(dcOptions.newValues);
+				}
+
 				fetchDcData().catch(console.error);
-			}, [fetchDcData]);
+			}, [fetchDcData, Object.values(dynamicContentProps)]);
 
 			return <WrappedComponent {...ownProps} />;
 		}),

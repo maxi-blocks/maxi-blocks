@@ -346,7 +346,7 @@ if (!class_exists('MaxiBlocks_API')):
 
             ['table' => $table, 'id_key' => $id_key, 'where_clause' => $where_clause] = $this->get_query_params('maxi_blocks_styles', $is_template);
 
-            if (empty($styles) || $styles === '{}') {
+            if ((empty($styles) || $styles === '{}') && !$is_template) {
                 $wpdb->query($wpdb->prepare("DELETE FROM $table WHERE $where_clause", $id));
                 return '{}';
             }
@@ -692,7 +692,7 @@ if (!class_exists('MaxiBlocks_API')):
 
             if ($update) {
                 if($is_json) {
-					$array_new_data = $is_json ? json_decode($data_val, true) : $data_val;
+                    $array_new_data = $is_json ? json_decode($data_val, true) : $data_val;
                     $new_custom_data = serialize(array_merge_recursive(...array_values($array_new_data)));
                 } else {
                     $new_custom_data = $data_val;

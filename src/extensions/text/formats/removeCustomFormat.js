@@ -14,7 +14,7 @@ const removeCustomFormat = ({ formatValue, className, isList, isHover }) => {
 	const { start, end, formats } = newFormatValue;
 
 	Object.entries(formats).forEach(([key, value], i) => {
-		let format = value.filter(
+		const format = value.filter(
 			val => val.type === getFormatType(isHover)
 		)[0];
 		if (
@@ -22,7 +22,8 @@ const removeCustomFormat = ({ formatValue, className, isList, isHover }) => {
 			format &&
 			format.attributes.className === className
 		) {
-			format = null;
+			const index = value.indexOf(format);
+			newFormatValue.formats[key].splice(index, 1);
 		}
 	});
 

@@ -518,7 +518,7 @@ class MaxiBlocks_Styles
     /**
      * Custom Meta
      */
-    public function custom_meta($metaJs, $is_template, $id = null)
+    public function custom_meta($metaJs, $is_template = false, $id = null)
     {
         global $post;
         if ((!$is_template && (!$post || !isset($post->ID))) || empty($metaJs)) {

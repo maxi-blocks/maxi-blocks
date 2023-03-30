@@ -1,4 +1,5 @@
 <?php
+require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-styles.php';
 
 /**
  * Server side part of MaxiBlocks_DynamicContent Gutenberg component
@@ -13,6 +14,8 @@ class MaxiBlocks_DynamicContent
      * @var MaxiBlocks_DynamicContent
      */
     private static $instance;
+
+    private static $custom_data = null;
 
     /**
      * Registers the plugin.
@@ -56,6 +59,20 @@ class MaxiBlocks_DynamicContent
             return $content;
         }
 
+        if (self::$custom_data === null) {
+            if (class_exists('MaxiBlocks_Styles')) {
+                $styles = new MaxiBlocks_Styles();
+                self::$custom_data = $styles->custom_meta('dynamic_content');
+            } else {
+                self::$custom_data = [];
+            }
+        }
+
+        if (array_key_exists($attributes['uniqueID'], self::$custom_data)) {
+            $context_loop = self::$custom_data[$attributes['uniqueID']];
+            $attributes = array_merge($attributes, $this->get_dc_values($attributes, $context_loop));
+        }
+
         if (array_key_exists('dc-link-status', $attributes)) {
             $dc_link_status = $attributes['dc-link-status'];
 
@@ -65,7 +82,7 @@ class MaxiBlocks_DynamicContent
         }
 
         $block_name = substr($attributes['uniqueID'], 0, strrpos($attributes['uniqueID'], '-'));
-        
+
         if ($block_name !== 'image-maxi') {
             $content = self::render_dc_content($attributes, $content);
         } else {
@@ -110,9 +127,9 @@ class MaxiBlocks_DynamicContent
             $dc_type = 'posts';
         }
         if (empty($dc_relation)) {
-            $dc_relation = 'id';
+            $dc_relation = 'by-id';
         }
-        
+
         $response = '';
 
         if (in_array($dc_type, ['posts', 'pages'])) { // Post or page
@@ -153,9 +170,9 @@ class MaxiBlocks_DynamicContent
             $dc_type = 'posts';
         }
         if (empty($dc_relation)) {
-            $dc_relation = 'id';
+            $dc_relation = 'by-id';
         }
-        
+
         $media_id;
         $media_src;
         $media_alt = '';
@@ -217,7 +234,7 @@ class MaxiBlocks_DynamicContent
             $dc_type = 'posts';
         }
         if (empty($dc_relation)) {
-            $dc_relation = 'id';
+            $dc_relation = 'by-id';
         }
 
         if (in_array($dc_type, ['posts', 'pages'])) {
@@ -227,28 +244,28 @@ class MaxiBlocks_DynamicContent
                 'post_status' => 'publish',
                 'posts_per_page' => 1,
             ];
-    
+
             // DC Relation
-            if ($dc_relation == 'id') {
-                $args['p'] = $dc_id;
+            if ($dc_relation == 'by-id') {
+                $args[$dc_type === 'posts' ? 'p' : 'page_id'] = $dc_id;
             } elseif ($dc_relation == 'author') {
                 $args['author'] = $dc_author ?? $dc_id;
             } elseif ($dc_relation == 'random') {
                 $args['orderby'] = 'rand';
             }
-    
+
             $query = new WP_Query($args);
-    
+
             return $query->post;
         } elseif ($dc_type === 'media') {
             $args = [
                 'post_type' => 'attachment',
                 'posts_per_page' => 1,
             ];
-    
+
             // DC Relation
             $is_random = $dc_relation === 'random';
-            if ($dc_relation == 'id') {
+            if ($dc_relation == 'by-id') {
                 $args['p'] = $dc_id;
             } elseif ($is_random) {
                 $args= [
@@ -257,11 +274,11 @@ class MaxiBlocks_DynamicContent
                     'posts_per_page' => -1
                 ];
             }
-    
+
             $query = new WP_Query($args);
-    
+
             $post;
-    
+
             if ($is_random) {
                 $posts = $query->posts;
                 $post = $posts[array_rand($posts)];
@@ -276,36 +293,36 @@ class MaxiBlocks_DynamicContent
             } elseif ($dc_type === 'tags') {
                 $taxonomy = 'post_tag';
             }
-    
+
             $args = [
                 'taxonomy' => $taxonomy,
                 'hide_empty' => false,
                 'number' => 1,
             ];
-    
+
             if ($dc_relation == 'random') {
                 $args['orderby'] = 'rand';
             } else {
                 $args['include'] = $dc_id;
             }
-    
+
             $terms = get_terms($args);
-    
+
             return $terms[0];
         } elseif ($dc_type === 'users') {
             $args = [
                 // 'role' => 'author',
                 // 'number' => 1,
             ];
-    
+
             if ($dc_relation == 'random') {
                 $args['orderby'] = 'rand';
             } else {
                 $args['include'] = $dc_id;
             }
-    
+
             $users = get_users($args);
-    
+
             return $users[0];
         } elseif ($dc_type === 'settings') {
             return null;
@@ -374,7 +391,7 @@ class MaxiBlocks_DynamicContent
         @list(
             'dc-field' => $dc_field,
         ) = $attributes;
-        
+
         $post = $this->get_post($attributes);
         $media_data = $post->{"post_$dc_field"};
 
@@ -463,7 +480,7 @@ class MaxiBlocks_DynamicContent
         if (!isset($dc_format)) {
             $dc_format = 'd.m.Y t';
         }
-        
+
         $options = array(
             'day' => $dc_day === 'none' ? null : $dc_day,
             'era' => $dc_era === 'none' ? null : $dc_era,
@@ -510,7 +527,7 @@ class MaxiBlocks_DynamicContent
 
         return $content;
     }
-    
+
     public function convert_moment_to_php_date_format($format)
     {
         $replacements = array(
@@ -541,7 +558,7 @@ class MaxiBlocks_DynamicContent
           'zz' => 'e',
           'X' => 'U'
         );
-      
+
         return strtr($format, $replacements);
     }
 
@@ -553,5 +570,55 @@ class MaxiBlocks_DynamicContent
         }
 
         return $string;
+    }
+
+    public function get_dc_value($target, $dynamic_content, $context_loop, $defaults)
+    {
+        $context_loop_status = isset($context_loop['cl-status']) ? $context_loop['cl-status'] : false;
+
+        $dc_value = isset($dynamic_content['dc-' . $target]) ? $dynamic_content['dc-' . $target] : null;
+        $context_loop_value = isset($context_loop['cl-' . $target]) ? $context_loop['cl-' . $target] : null;
+
+        if ($target === 'status') {
+            return $dc_value !== null ? $dc_value : $defaults[$target];
+        }
+
+        if ($dc_value !== null) {
+            return $dc_value;
+        }
+
+        if ($context_loop_status && $context_loop_value !== null) {
+            return $context_loop_value;
+        }
+
+        return $defaults[$target];
+    }
+
+    public function get_dc_values($attributes, $context_loop)
+    {
+        $defaults = [
+            'status' => false,
+            'type' => 'posts',
+            'relation' => 'by-id',
+        ];
+
+        $dynamic_content = array_filter($attributes, function ($key) {
+            return strpos($key, 'dc-') === 0;
+        }, ARRAY_FILTER_USE_KEY);
+
+        $result = array_combine(array_map(function ($key) {
+            return 'dc-' . $key;
+        }, array_keys($defaults)), array_values($defaults));
+
+        $dynamic_content_keys = array_merge(array_keys($dynamic_content), array_map(function ($key) {
+            return str_replace('cl-', 'dc-', $key);
+        }, array_keys($context_loop)));
+        foreach ($dynamic_content_keys as $key) {
+            $target = str_replace('dc-', '', $key);
+            $dc_value = $this->get_dc_value($target, $attributes, $context_loop, $defaults);
+            $result[$key] = $dc_value;
+        }
+
+        return $result;
     }
 }

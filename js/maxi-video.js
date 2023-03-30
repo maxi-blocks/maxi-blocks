@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+
 const videoEvents = () => {
 	const videoBLocks = document.querySelectorAll('.maxi-video-block');
 	videoBLocks.forEach(video => {
@@ -49,7 +51,8 @@ const handleYoutubeVideos = () => {
 		const videoData =
 			maxiVideo[0][videoID] !== undefined ? maxiVideo[0][videoID] : null;
 
-		const popupContent = insertPopup(video);
+		const popupContent =
+			videoData.playerType === 'popup' && insertPopup(video);
 		const iframe =
 			videoData.playerType === 'popup'
 				? popupContent.querySelector('iframe')
@@ -58,7 +61,7 @@ const handleYoutubeVideos = () => {
 		iframe.id = `${videoID}-iframe`;
 		iframe.src = videoData.embedUrl;
 
-		const player = new YT.Player(iframe, {
+		const player = new window.YT.Player(iframe, {
 			events: {
 				onStateChange: handleStateChange,
 			},
@@ -67,7 +70,7 @@ const handleYoutubeVideos = () => {
 		function handleStateChange(state) {
 			const { isLoop, startTime } = videoData;
 
-			if (state.data === YT.PlayerState.ENDED && isLoop) {
+			if (state.data === window.YT.PlayerState.ENDED && isLoop) {
 				player.seekTo(startTime || 0);
 			}
 		}
@@ -86,19 +89,20 @@ function handleVimeoVideos() {
 		const videoData =
 			maxiVideo[0][videoID] !== undefined ? maxiVideo[0][videoID] : null;
 
-		const popupContent = insertPopup(video);
+		const popupContent =
+			videoData.playerType === 'popup' && insertPopup(video);
 		const player =
 			videoData.playerType === 'popup'
 				? popupContent.querySelector('iframe')
 				: video.querySelector('iframe');
 
 		player.src = videoData.embedUrl;
-		const vimeoPlayer = new Vimeo.Player(player);
+		const vimeoPlayer = new window.Vimeo.Player(player);
 		const { endTime } = videoData;
 		const { startTime } = videoData;
 		const { isLoop } = videoData;
 
-		vimeoPlayer.on('timeupdate', function (data) {
+		vimeoPlayer.on('timeupdate', data => {
 			if (data.seconds > +endTime) {
 				if (isLoop) vimeoPlayer.setCurrentTime(startTime || '0');
 				else vimeoPlayer.pause();

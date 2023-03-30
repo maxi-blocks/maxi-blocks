@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { ButtonBlockAppender, Inserter } from '@wordpress/block-editor';
-import { select, useDispatch, useSelect } from '@wordpress/data';
+import { useDispatch, useSelect } from '@wordpress/data';
 import { useRef, forwardRef, useState } from '@wordpress/element';
 import { Tooltip } from '@wordpress/components';
 
@@ -11,7 +11,6 @@ import { Tooltip } from '@wordpress/components';
  * Internal dependencies
  */
 import Button from '../button';
-import Dropdown from '../dropdown';
 import Popover from '../popover';
 
 /**
@@ -31,8 +30,6 @@ const WRAPPER_BLOCKS = [
 	'maxi-blocks/column-maxi',
 	'maxi-blocks/group-maxi',
 	'maxi-blocks/slide-maxi',
-	'maxi-blocks/accordion-maxi',
-	'maxi-blocks/pane-maxi',
 ];
 
 const BlockInserter = props => {
@@ -91,21 +88,7 @@ const ButtonInserter = props => {
 const WrapperBlockInserter = forwardRef((props, ref) => {
 	const { clientId, isSelected, hasSelectedChild } = props;
 
-	const { getBlockName, getBlockParents, getAdjacentBlockClientId } =
-		select('core/block-editor');
-
 	const blockHierarchy = [];
-	const blockOrder = [clientId, ...getBlockParents(clientId, true)];
-	for (let i = 0; i < blockOrder.length; i += 1) {
-		const blockClientId = blockOrder[i];
-		if (WRAPPER_BLOCKS.includes(getBlockName(blockClientId))) {
-			if (i > 1 && getAdjacentBlockClientId(blockOrder[i - 2])) break;
-			blockHierarchy.push({
-				blockClientId,
-				blockName: getBlockName(blockClientId),
-			});
-		}
-	}
 
 	const shouldRemain = useRef(false);
 	const setShouldRemain = val => {
@@ -135,84 +118,17 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 				useAnimationFrame
 				placement='bottom'
 			>
-				{blockHierarchy.length > 1 && (
-					<Dropdown
-						className='maxi-block-inserter__dropdown'
-						contentClassName='maxi-block-inserter__dropdown-content'
-						position='bottom center'
-						renderToggle={({ onToggle }) => (
-							<ButtonInserter
-								onToggle={onToggle}
-								setShouldRemain={setShouldRemain}
-								style={{
-									zIndex:
-										Object.keys(blockHierarchy).length + 1,
-									...style,
-								}}
-							/>
-						)}
-						renderContent={() => (
-							<div className='maxi-block-inserter__content'>
-								{blockHierarchy.map(
-									({ blockClientId, blockName }, i) => (
-										<Inserter
-											key={`maxi-wrapper-block-inserter__content-${blockClientId}`}
-											rootClientId={blockClientId}
-											clientId={
-												i > 0 &&
-												getAdjacentBlockClientId(
-													blockHierarchy[i - 1]
-														.blockClientId
-												)
-											}
-											position='bottom center'
-											isAppender
-											__experimentalIsQuick
-											onSelectOrClose={() =>
-												setShouldRemain(false)
-											}
-											renderToggle={({
-												onToggle: onToggleInserter,
-											}) => (
-												<Button
-													key={`maxi-wrapper-block-inserter__content-item-${blockClientId}`}
-													className='maxi-wrapper-block-inserter__content-item'
-													onClick={() => {
-														onToggleInserter();
-													}}
-													style={{
-														textTransform: 'none',
-													}}
-												>
-													Add to{' '}
-													{blockName
-														.replace(
-															'maxi-blocks/',
-															''
-														)
-														.replace('-', ' ')}
-												</Button>
-											)}
-										/>
-									)
-								)}
-							</div>
-						)}
-					/>
-				)}
-				{blockHierarchy.length <= 1 && (
-					<Inserter
-						key={`maxi-wrapper-block-inserter__content-${clientId}`}
-						rootClientId={clientId}
-						position='bottom center'
-						isAppender
-						__experimentalIsQuick
-						onSelectOrClose={() => setShouldRemain(false)}
-						renderToggle={({ onToggle }) => (
-							<ButtonInserter onToggle={onToggle} style={style} />
-						)}
-					/>
-				)}
+				<Inserter
+					key={`maxi-wrapper-block-inserter__content-${clientId}`}
+					rootClientId={clientId}
+					position='bottom center'
+					isAppender
+					__experimentalIsQuick
+					onSelectOrClose={() => setShouldRemain(false)}
+					renderToggle={({ onToggle }) => (
+						<ButtonInserter onToggle={onToggle} style={style} />
+					)}
+				/>
 			</Popover>
 		);
 

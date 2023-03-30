@@ -183,7 +183,11 @@ const MainInnerBlocksBlock = forwardRef(
 				</TagName>
 			);
 
-		return <TagName {...restInnerBlocksProps}>{blockChildren}</TagName>;
+		return (
+			<TagName {...restInnerBlocksProps} style={{ marginBottom: '20px' }}>
+				{blockChildren}
+			</TagName>
+		);
 	}
 );
 

@@ -37,7 +37,7 @@ const getBorderStyles = ({
 	const response = {};
 
 	const hoverStatus = getAttributesValue({
-		target: 'border-status-hover',
+		target: 'bo.sh',
 		props: obj,
 		prefix,
 	});
@@ -76,12 +76,7 @@ const getBorderStyles = ({
 				obj[getAttributeKey(target, isHover, prefix, breakpoint)];
 			const currentUnit =
 				obj[
-					getAttributeKey(
-						`${target}-unit`,
-						isHover,
-						prefix,
-						breakpoint
-					)
+					getAttributeKey(`${target}.u`, isHover, prefix, breakpoint)
 				];
 
 			const hasCurrent = !isNil(currentValue) || !isNil(currentUnit);
@@ -99,7 +94,7 @@ const getBorderStyles = ({
 
 			const lastUnit =
 				getLastBreakpointAttribute({
-					target: `${prefix}${target}-unit`,
+					target: `${prefix}${target}.u`,
 					breakpoint,
 					attributes: obj,
 					isHover,

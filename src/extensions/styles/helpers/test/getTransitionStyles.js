@@ -12,9 +12,9 @@ import { merge } from 'lodash';
 describe('getTransitionStyles', () => {
 	it('Get a correct transition styles', () => {
 		const object = {
-			'border-status-hover': true,
-			'box-shadow-status-hover': false,
-			'block-background-status-hover': true,
+			'bo.sh': true,
+			'bs.sh': false,
+			'bb.sh': true,
 			transition: {
 				block: {},
 				canvas: {
@@ -23,21 +23,21 @@ describe('getTransitionStyles', () => {
 						'transition-delay-general': 0,
 						'easing-general': 'ease',
 						'transition-status-general': true,
-						hoverProp: 'border-status-hover',
+						hoverProp: 'bo.sh',
 					},
 					'box shadow': {
 						'transition-duration-general': 0.3,
 						'transition-delay-general': 0,
 						'easing-general': 'ease',
 						'transition-status-general': true,
-						hoverProp: 'box-shadow-status-hover',
+						hoverProp: 'bs.sh',
 					},
 					'background / layer': {
 						'transition-duration-general': 0.3,
 						'transition-delay-general': 0,
 						'easing-general': 'ease',
 						'transition-status-general': false,
-						hoverProp: 'block-background-status-hover',
+						hoverProp: 'bb.sh',
 					},
 				},
 			},
@@ -77,9 +77,9 @@ describe('getTransitionStyles', () => {
 
 	it('Get a correct responsive transition styles', () => {
 		const object = {
-			'border-status-hover': true,
-			'box-shadow-status-hover': true,
-			'block-background-status-hover': false,
+			'bo.sh': true,
+			'bs.sh': true,
+			'bb.sh': false,
 			transition: {
 				block: {},
 				canvas: {
@@ -91,7 +91,7 @@ describe('getTransitionStyles', () => {
 						'transition-status-s': false,
 						'transition-status-xs': true,
 						'transition-status-xxl': false,
-						hoverProp: 'border-status-hover',
+						hoverProp: 'bo.sh',
 					},
 					'box shadow': {
 						...repeatedAttributes,
@@ -101,7 +101,7 @@ describe('getTransitionStyles', () => {
 						'transition-status-s': true,
 						'transition-status-xs': false,
 						'transition-status-xxl': true,
-						hoverProp: 'box-shadow-status-hover',
+						hoverProp: 'bs.sh',
 					},
 					'background / layer': {
 						...repeatedAttributes,
@@ -111,7 +111,7 @@ describe('getTransitionStyles', () => {
 						'transition-status-s': false,
 						'transition-status-xs': true,
 						'transition-status-xxl': false,
-						hoverProp: 'block-background-status-hover',
+						hoverProp: 'bb.sh',
 					},
 				},
 			},
@@ -150,9 +150,9 @@ describe('getTransitionStyles', () => {
 	};
 
 	const responsiveTransitionAttributes = {
-		'border-status-hover': true,
-		'box-shadow-status-hover': true,
-		'block-background-status-hover': false,
+		'bo.sh': true,
+		'bs.sh': true,
+		'bb.sh': false,
 		'typography-status-hover': true,
 		'button-background-status-hover': false,
 		transition: {
@@ -178,9 +178,9 @@ describe('getTransitionStyles', () => {
 
 	it('Get a correct in/out transition styles', () => {
 		const object = {
-			'border-status-hover': true,
-			'box-shadow-status-hover': true,
-			'block-background-status-hover': true,
+			'bo.sh': true,
+			'bs.sh': true,
+			'bb.sh': true,
 			transition: {
 				block: {},
 				canvas: {
@@ -196,7 +196,7 @@ describe('getTransitionStyles', () => {
 							'transition-status-general': true,
 						},
 						'split-general': true,
-						hoverProp: 'border-status-hover',
+						hoverProp: 'bo.sh',
 					},
 					'box shadow': {
 						'transition-duration-general': 0.3,
@@ -210,14 +210,14 @@ describe('getTransitionStyles', () => {
 							'transition-status-general': true,
 						},
 						'split-general': false,
-						hoverProp: 'box-shadow-status-hover',
+						hoverProp: 'bs.sh',
 					},
 					'background / layer': {
 						'transition-duration-general': 0.3,
 						'transition-delay-general': 0,
 						'easing-general': 'ease',
 						'transition-status-general': false,
-						hoverProp: 'block-background-status-hover',
+						hoverProp: 'bb.sh',
 					},
 				},
 			},
@@ -251,9 +251,9 @@ describe('getTransitionStyles', () => {
 		};
 
 		const object = {
-			'border-status-hover': true,
-			'box-shadow-status-hover': true,
-			'block-background-status-hover': false,
+			'bo.sh': true,
+			'bs.sh': true,
+			'bb.sh': false,
 			transition: {
 				block: {},
 				canvas: {
@@ -272,7 +272,7 @@ describe('getTransitionStyles', () => {
 						'split-s': true,
 						'split-xs': true,
 						'split-xxl': false,
-						hoverProp: 'border-status-hover',
+						hoverProp: 'bo.sh',
 					},
 					'box shadow': {
 						...repeatedAttributes,
@@ -289,7 +289,7 @@ describe('getTransitionStyles', () => {
 						'split-s': true,
 						'split-xs': false,
 						'split-xxl': true,
-						hoverProp: 'box-shadow-status-hover',
+						hoverProp: 'bs.sh',
 					},
 					'background / layer': {
 						...repeatedAttributes,
@@ -306,7 +306,7 @@ describe('getTransitionStyles', () => {
 						'split-s': true,
 						'split-xs': true,
 						'split-xxl': false,
-						hoverProp: 'block-background-status-hover',
+						hoverProp: 'bb.sh',
 					},
 				},
 			},

@@ -23,13 +23,13 @@ import ManageHoverTransitions from '../manage-hover-transitions';
 const opacity = ({ props, depth = 2 }) => {
 	const { attributes, deviceType, maxiSetAttributes } = props;
 	const opacityHoverStatus = getAttributesValue({
-		target: 'opacity-status',
+		target: '_o.s',
 		props: attributes,
 		isHover: true,
 	});
 
 	const normalOpacity = getLastBreakpointAttribute({
-		target: 'opacity',
+		target: '_o',
 		breakpoint: deviceType,
 		attributes: getGroupAttributes(attributes, 'opacity'),
 	});
@@ -63,7 +63,7 @@ const opacity = ({ props, depth = 2 }) => {
 									selected={opacityHoverStatus}
 									onChange={value =>
 										maxiSetAttributes({
-											'opacity-status-hover': value,
+											'_o.sh': value,
 										})
 									}
 								/>
@@ -71,7 +71,7 @@ const opacity = ({ props, depth = 2 }) => {
 									<OpacityControl
 										opacity={
 											getLastBreakpointAttribute({
-												target: 'opacity',
+												target: '_o',
 												breakpoint: deviceType,
 												attributes: getGroupAttributes(
 													attributes,

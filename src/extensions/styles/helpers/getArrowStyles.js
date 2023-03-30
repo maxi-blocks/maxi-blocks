@@ -22,21 +22,12 @@ export const getArrowObject = props => {
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
-		const {
-			'arrow-status': arrowStatus,
-			'arrow-width': arrowWidth,
-			'arrow-side': arrowSide,
-			'arrow-position': arrowPosition,
-		} = getLastBreakpointAttribute({
-			target: [
-				'arrow-status',
-				'arrow-width',
-				'arrow-side',
-				'arrow-position',
-			],
-			breakpoint,
-			attributes: props,
-		});
+		const [arrowStatus, arrowWidth, arrowSide, arrowPosition] =
+			getLastBreakpointAttribute({
+				target: ['a.s', 'a.w', 'a.sid', 'a.pos'],
+				breakpoint,
+				attributes: props,
+			});
 
 		response[breakpoint].display = arrowStatus ? 'block' : 'none';
 
@@ -150,18 +141,6 @@ export const getArrowColorObject = (
 
 const getArrowStyles = props => {
 	const { target = '', blockStyle, isHover = false } = props;
-	const {
-		'background-layers': backgroundLayers,
-		'box-shadow-status-hover': boxShadowStatusHover,
-		'block-background-status-hover': blockBackgroundStatusHover,
-	} = getAttributesValue({
-		target: [
-			'background-layers',
-			'box-shadow-status-hover',
-			'block-background-status-hover',
-		],
-		props,
-	});
 
 	// Checks if border is active on some responsive stage
 	const isBorderActive = breakpoints.some(breakpoint => {
@@ -197,6 +176,11 @@ const getArrowStyles = props => {
 		);
 	});
 
+	const backgroundLayers = getAttributesValue({
+		target: 'b_ly',
+		props,
+	});
+
 	// Checks if background color is active on some responsive stage
 	const isBackgroundColor = !isEmpty(backgroundLayers)
 		? backgroundLayers.some(layer => layer.type === 'color')
@@ -205,7 +189,7 @@ const getArrowStyles = props => {
 	// Checks if arrow is active on some responsive stage
 	const arrowStatus = breakpoints.some(breakpoint => {
 		const arrowStatus = getLastBreakpointAttribute({
-			target: 'arrow-status',
+			target: 'a.s',
 			breakpoint,
 			attributes: props,
 			isHover,
@@ -220,6 +204,12 @@ const getArrowStyles = props => {
 		(isBorderActive && !isCorrectBorder)
 	)
 		return {};
+
+	const [boxShadowStatusHover, blockBackgroundStatusHover] =
+		getAttributesValue({
+			target: ['bs.sh', 'bb.sh'],
+			props,
+		});
 
 	const response = {
 		...(!isHover && {

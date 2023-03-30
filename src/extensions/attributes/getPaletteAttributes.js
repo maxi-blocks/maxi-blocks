@@ -26,10 +26,10 @@ const getPaletteAttributes = ({ obj, prefix = '', breakpoint, isHover }) => {
 			  });
 
 	return {
-		paletteStatus: getValue('palette-status'),
-		paletteColor: getValue('palette-color'),
-		paletteOpacity: getValue('palette-opacity'),
-		color: getValue('color'),
+		paletteStatus: getValue('_ps'),
+		paletteColor: getValue('_pc'),
+		paletteOpacity: getValue('_po'),
+		color: getValue('_cc'),
 	};
 };
 

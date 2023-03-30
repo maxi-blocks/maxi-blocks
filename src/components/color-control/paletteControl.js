@@ -59,14 +59,14 @@ const ColorPaletteControl = props => {
 				: false;
 			const globalPaletteColor = globalProps
 				? receiveStyleCardValue(
-						getAttributeKey('palette-color', false, prefix),
+						getAttributeKey('_pc', false, prefix),
 						globalProps ? getBlockStyle(clientId) : null,
 						globalProps?.type
 				  )
 				: false;
 			const globalPaletteOpacity = globalProps
 				? receiveStyleCardValue(
-						getAttributeKey('palette-opacity', false, prefix),
+						getAttributeKey('_po', false, prefix),
 						globalProps ? getBlockStyle(clientId) : null,
 						globalProps?.type
 				  )

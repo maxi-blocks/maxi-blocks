@@ -23,11 +23,7 @@ describe('CopyPaste from Toolbar', () => {
 		await page.waitForSelector('.toolbar-wrapper');
 
 		// edit text maxi
-		const accordionPanel = await openSidebarTab(
-			page,
-			'advanced',
-			'position'
-		);
+		const accordionPanel = await openSidebarTab(page, 'advanced', '_pos');
 		const selectPosition = await accordionPanel.$(
 			'.maxi-position-control .maxi-base-control__field select'
 		);
@@ -253,8 +249,8 @@ describe('CopyPaste from Toolbar', () => {
 			'border-radius-bottom-right-general': 96,
 			'border-radius-top-left-general': 56,
 			'border-radius-top-right-general': 15,
-			'box-shadow-blur-general': 0,
-			'box-shadow-color-general': undefined,
+			'bs_blu-general': 0,
+			'bs_cc-general': undefined,
 			'margin-top-general': '24',
 			'margin-right-general': '24',
 			'margin-bottom-general': '24',

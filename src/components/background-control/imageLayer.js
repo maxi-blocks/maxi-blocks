@@ -327,7 +327,7 @@ const ImageLayerSettings = props => {
 						label={__('Y-axis', 'maxi-blocks')}
 						enableUnit
 						unit={getLastBreakpointAttribute({
-							target: `${prefix}background-image-position-width-unit`,
+							target: `${prefix}background-image-position-width.u`,
 							breakpoint,
 							attributes: imageOptions,
 							isHover,

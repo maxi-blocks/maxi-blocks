@@ -54,7 +54,7 @@ class edit extends MaxiBlockComponent {
 			maxiSetAttributes,
 		} = this.props;
 		const uniqueID = getAttributesValue({
-			target: 'uniqueID',
+			target: '_uid',
 			props: attributes,
 		});
 

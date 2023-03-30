@@ -50,11 +50,11 @@ const modalMock = async (
 							},
 					  }
 					: {
-							'background-layers': [
+							b_ly: [
 								{
 									type: 'shape',
 									isHover: false,
-									'display-general': 'block',
+									'd-general': 'block',
 									'background-svg-palette-status-general': true,
 									'background-svg-palette-color-general': 5,
 									'background-svg-SVGElement':

@@ -48,7 +48,7 @@ registerBlockType('maxi-blocks/map-maxi', {
 	attributes,
 	getEditWrapperProps(attributes) {
 		const uniqueID = getAttributesValue({
-			target: 'uniqueID',
+			target: '_uid',
 			props: attributes,
 		});
 

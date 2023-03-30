@@ -66,25 +66,25 @@ const PopupSettingsControl = props => {
 				}) => {
 					onChange({
 						[getAttributeKey(
-							'palette-status',
+							'_ps',
 							false,
 							'lightbox-background-',
 							breakpoint
 						)]: paletteStatus,
 						[getAttributeKey(
-							'palette-color',
+							'_pc',
 							false,
 							'lightbox-background-',
 							breakpoint
 						)]: paletteColor,
 						[getAttributeKey(
-							'palette-opacity',
+							'_po',
 							false,
 							'lightbox-background-',
 							breakpoint
 						)]: paletteOpacity,
 						[getAttributeKey(
-							'color',
+							'_cc',
 							false,
 							'lightbox-background-',
 							breakpoint

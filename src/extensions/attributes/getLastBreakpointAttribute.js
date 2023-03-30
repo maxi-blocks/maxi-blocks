@@ -195,20 +195,32 @@ const getLastBreakpointAttribute = ({
 	forceSingle = false,
 	avoidXXL = true,
 	keys = [],
+	returnObj = false,
 }) => {
 	if (isArray(target))
-		return target.reduce((acc, item) => {
-			acc[item] = getLastBreakpointAttribute({
-				target: item,
-				breakpoint,
-				attributes,
-				isHover,
-				avoidXXL,
-				keys,
-			});
+		return returnObj
+			? target.reduce((acc, item) => {
+					acc[item] = getLastBreakpointAttribute({
+						target: item,
+						breakpoint,
+						attributes,
+						isHover,
+						avoidXXL,
+						keys,
+					});
 
-			return acc;
-		}, {});
+					return acc;
+			  }, {})
+			: target.map(item =>
+					getLastBreakpointAttribute({
+						target: item,
+						breakpoint,
+						attributes,
+						isHover,
+						avoidXXL,
+						keys,
+					})
+			  );
 
 	const { getSelectedBlockCount } = select('core/block-editor') || {
 		getSelectedBlockCount: () => 1, // Necessary for testing, mocking '@wordpress/data' is too dense

@@ -30,21 +30,21 @@ describe('BoxShadowControl', () => {
 		);
 
 		const expectAttributes = {
-			'box-shadow-blur-general': 50,
-			'box-shadow-color-general': undefined,
-			'box-shadow-horizontal-general': 0,
-			'box-shadow-spread-general': 0,
-			'box-shadow-status-hover': false,
-			'box-shadow-vertical-general': 30,
+			'bs_blu-general': 50,
+			'bs_cc-general': undefined,
+			'bs_ho-general': 0,
+			'bs_sp-general': 0,
+			'bs.sh': false,
+			'bs_v-general': 30,
 		};
 
 		const typographyAttributes = await getAttributes([
-			'box-shadow-blur-general',
-			'box-shadow-color-general',
-			'box-shadow-horizontal-general',
-			'box-shadow-spread-general',
-			'box-shadow-status-hover',
-			'box-shadow-vertical-general',
+			'bs_blu-general',
+			'bs_cc-general',
+			'bs_ho-general',
+			'bs_sp-general',
+			'bs.sh',
+			'bs_v-general',
 		]);
 
 		expect(typographyAttributes).toStrictEqual(expectAttributes);
@@ -79,17 +79,17 @@ describe('BoxShadowControl', () => {
 		await page.keyboard.press('Enter');
 
 		const expectChanges = {
-			'box-shadow-blur-general': 10,
-			'box-shadow-horizontal-general': 30,
-			'box-shadow-spread-general': 60,
-			'box-shadow-vertical-general': 40,
+			'bs_blu-general': 10,
+			'bs_ho-general': 30,
+			'bs_sp-general': 60,
+			'bs_v-general': 40,
 		};
 
 		const boxShadowAttributes = await getAttributes([
-			'box-shadow-blur-general',
-			'box-shadow-horizontal-general',
-			'box-shadow-spread-general',
-			'box-shadow-vertical-general',
+			'bs_blu-general',
+			'bs_ho-general',
+			'bs_sp-general',
+			'bs_v-general',
 		]);
 
 		expect(boxShadowAttributes).toStrictEqual(expectChanges);
@@ -127,25 +127,25 @@ describe('BoxShadowControl', () => {
 		);
 
 		const expectBoxShadow = {
-			'box-shadow-blur-general': 0,
-			'box-shadow-blur-general-hover': undefined,
-			'box-shadow-horizontal-general': 0,
-			'box-shadow-horizontal-general-hover': undefined,
-			'box-shadow-spread-general': 0,
-			'box-shadow-spread-general-hover': undefined,
-			'box-shadow-vertical-general': 0,
-			'box-shadow-vertical-general-hover': undefined,
+			'bs_blu-general': 0,
+			'bs_blu-general-hover': undefined,
+			'bs_ho-general': 0,
+			'bs_ho-general-hover': undefined,
+			'bs_sp-general': 0,
+			'bs_sp-general-hover': undefined,
+			'bs_v-general': 0,
+			'bs_v-general-hover': undefined,
 		};
 
 		const boxShadowResult = await getAttributes([
-			'box-shadow-blur-general',
-			'box-shadow-blur-general-hover',
-			'box-shadow-horizontal-general',
-			'box-shadow-horizontal-general-hover',
-			'box-shadow-spread-general',
-			'box-shadow-spread-general-hover',
-			'box-shadow-vertical-general',
-			'box-shadow-vertical-general-hover',
+			'bs_blu-general',
+			'bs_blu-general-hover',
+			'bs_ho-general',
+			'bs_ho-general-hover',
+			'bs_sp-general',
+			'bs_sp-general-hover',
+			'bs_v-general',
+			'bs_v-general-hover',
 		]);
 
 		expect(boxShadowResult).toStrictEqual(expectBoxShadow);
@@ -172,21 +172,21 @@ describe('BoxShadowControl', () => {
 		);
 
 		const expectAttributes = {
-			'box-shadow-blur-general': 50,
-			'box-shadow-color-general': undefined,
-			'box-shadow-horizontal-general': 0,
-			'box-shadow-spread-general': 0,
-			'box-shadow-status-hover': true,
-			'box-shadow-vertical-general': 30,
+			'bs_blu-general': 50,
+			'bs_cc-general': undefined,
+			'bs_ho-general': 0,
+			'bs_sp-general': 0,
+			'bs.sh': true,
+			'bs_v-general': 30,
 		};
 
 		const typographyAttributes = await getAttributes([
-			'box-shadow-blur-general',
-			'box-shadow-color-general',
-			'box-shadow-horizontal-general',
-			'box-shadow-spread-general',
-			'box-shadow-status-hover',
-			'box-shadow-vertical-general',
+			'bs_blu-general',
+			'bs_cc-general',
+			'bs_ho-general',
+			'bs_sp-general',
+			'bs.sh',
+			'bs_v-general',
 		]);
 
 		expect(typographyAttributes).toStrictEqual(expectAttributes);
@@ -200,17 +200,17 @@ describe('BoxShadowControl', () => {
 		);
 
 		const expectSAttributes = {
-			'box-shadow-blur-s': 0,
-			'box-shadow-horizontal-s': 5,
-			'box-shadow-spread-s': undefined,
-			'box-shadow-vertical-s': 6,
+			'bs_blu-s': 0,
+			'bs_ho-s': 5,
+			'bs_sp-s': undefined,
+			'bs_v-s': 6,
 		};
 
 		const typographySAttributes = await getAttributes([
-			'box-shadow-blur-s',
-			'box-shadow-horizontal-s',
-			'box-shadow-spread-s',
-			'box-shadow-vertical-s',
+			'bs_blu-s',
+			'bs_ho-s',
+			'bs_sp-s',
+			'bs_v-s',
 		]);
 
 		expect(typographySAttributes).toStrictEqual(expectSAttributes);

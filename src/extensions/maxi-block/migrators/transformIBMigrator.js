@@ -147,7 +147,7 @@ const getAttributesFromStyle = (styles, selector) => {
 									selector
 								].normal,
 								[axis]: num,
-								[`${axis}-unit`]: unit,
+								[`${axis}.u`]: unit,
 							},
 						},
 					};
@@ -175,7 +175,7 @@ const getAttributesFromStyle = (styles, selector) => {
 
 								return {
 									[axis]: `${num}`,
-									[`${axis}-unit`]: unit,
+									[`${axis}.u`]: unit,
 								};
 						  })()
 						: (() => {

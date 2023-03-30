@@ -72,7 +72,7 @@ const AxisInput = props => {
 	const value = getValue(target, breakpoint);
 	const lastValue = getLastBreakpointValue(target);
 
-	const unit = getLastBreakpointValue(`${target}-unit`, breakpoint);
+	const unit = getLastBreakpointValue(`${target}.u`, breakpoint);
 
 	return (
 		<AdvancedNumberControl
@@ -93,7 +93,7 @@ const AxisInput = props => {
 			max={minMaxSettings[currentUnit].max || 999}
 			step={minMaxSettings[currentUnit].step || 1}
 			onChangeUnit={val =>
-				onChangeUnit(val, singleTarget, breakpoint, '-unit')
+				onChangeUnit(val, singleTarget, breakpoint, '.u')
 			}
 			unit={unit}
 			onReset={onReset}
@@ -122,7 +122,7 @@ const AxisContent = props => {
 	} = props;
 
 	const sync = getLastBreakpointAttribute({
-		target: getKey('sync'),
+		target: getKey('.sy'),
 		breakpoint,
 		attributes: props,
 		isHover,
@@ -288,7 +288,7 @@ const AxisControlContent = props => {
 	} = props;
 
 	const sync = getLastBreakpointAttribute({
-		target: getKey('sync'),
+		target: getKey('.sy'),
 		breakpoint,
 		attributes: props,
 		isHover,
@@ -323,10 +323,10 @@ const AxisControlContent = props => {
 
 		inputsArray.forEach(input => {
 			if (
-				input.includes('top') ||
-				input.includes('left') ||
-				input.includes('bottom') ||
-				input.includes('right')
+				input.includes('.t') ||
+				input.includes('.l') ||
+				input.includes('.b') ||
+				input.includes('.r')
 			) {
 				const key = getAttributeKey(
 					getKey(input),
@@ -350,7 +350,7 @@ const AxisControlContent = props => {
 		});
 
 		onChange({
-			[getAttributeKey(getKey('unit'), isHover, false, breakpoint)]: val,
+			[getAttributeKey(getKey('.u'), isHover, false, breakpoint)]: val,
 			...response,
 		});
 	};
@@ -436,17 +436,17 @@ const AxisControl = props => {
 		prefix = '',
 		minMaxSettings = {
 			px: {
-				min: target === 'padding' ? 0 : -999,
+				min: target === '_p' ? 0 : -999,
 				max: 999,
 				step: 1,
 			},
 			em: {
-				min: target === 'padding' ? 0 : -999,
+				min: target === '_p' ? 0 : -999,
 				max: 999,
 				step: 0.1,
 			},
 			vw: {
-				min: target === 'padding' ? 0 : -999,
+				min: target === '_p' ? 0 : -999,
 				max: 999,
 				step: 0.1,
 			},
@@ -458,15 +458,15 @@ const AxisControl = props => {
 		},
 		isHover = false,
 		inputsArray = [
-			'top',
-			'right',
-			'bottom',
-			'left',
-			'top-unit',
-			'right-unit',
-			'bottom-unit',
-			'left-unit',
-			'unit',
+			'.t',
+			'.r',
+			'.b',
+			'.l',
+			'.t.u',
+			'.r.u',
+			'.b.u',
+			'.l.u',
+			'.u',
 		],
 		optionType = 'number',
 		disableSync = false,
@@ -483,9 +483,9 @@ const AxisControl = props => {
 	);
 
 	const useResponsiveTabs =
-		!noResponsiveTabs && ['margin', 'padding'].includes(target);
+		!noResponsiveTabs && ['_m', '_p'].includes(target);
 
-	const disableLeftRightMargin = target === 'margin' && fullWidth === 'full';
+	const disableLeftRightMargin = target === '_m' && fullWidth === 'full';
 
 	const getOptions = () => {
 		const options = [];
@@ -499,7 +499,7 @@ const AxisControl = props => {
 		return options;
 	};
 
-	const getKey = key => `${prefix}${target}-${key}`;
+	const getKey = key => `${prefix}${target}${key}`;
 
 	const getLastBreakpointValue = key => {
 		const inputValue = getLastBreakpointAttribute({
@@ -553,7 +553,7 @@ const AxisControl = props => {
 				keys.some(
 					key =>
 						input === key ||
-						(input.includes(key) && input.includes('-unit'))
+						(input.includes(key) && input.includes('.u'))
 				)
 			);
 
@@ -606,7 +606,7 @@ const AxisControl = props => {
 			right,
 			bottom,
 			left,
-			unit: ['unit'],
+			unit: ['.u'],
 		};
 
 		const attributesKeys = cases[reset]
@@ -630,7 +630,7 @@ const AxisControl = props => {
 	const onChangeSync = (value, customBreakpoint) => {
 		const response = {
 			[getAttributeKey(
-				getKey('sync'),
+				getKey('.sy'),
 				isHover,
 				false,
 				customBreakpoint ?? breakpoint
@@ -642,7 +642,7 @@ const AxisControl = props => {
 
 	const currentUnit =
 		getLastBreakpointAttribute({
-			target: getKey('unit'),
+			target: getKey('.u'),
 			breakpoint,
 			attributes: props,
 			isHover,
@@ -658,10 +658,10 @@ const AxisControl = props => {
 		else if (optionType === 'string') newValue = val.toString();
 		else newValue = val;
 
-		if (target === 'padding' && newValue < 0) newValue = 0;
+		if (target === '_p' && newValue < 0) newValue = 0;
 
 		const sync = getLastBreakpointAttribute({
-			target: getKey('sync'),
+			target: getKey('.sy'),
 			breakpoint,
 			attributes: props,
 			isHover,
@@ -672,47 +672,41 @@ const AxisControl = props => {
 		const isAllChange = key => {
 			if (prefix) {
 				return (
-					key.includes(`top${prefix}`) ||
-					key.includes(`left${prefix}`) ||
-					key.includes(`bottom${prefix}`) ||
-					key.includes(`right${prefix}`)
+					key.includes(`${prefix}.t`) ||
+					key.includes(`${prefix}.l`) ||
+					key.includes(`${prefix}.b`) ||
+					key.includes(`${prefix}.r`)
 				);
 			}
 			return (
-				(key.includes('top') ||
-					key.includes('left') ||
-					key.includes('bottom') ||
-					key.includes('right')) &&
-				!key.includes('unit')
+				(key.includes('.t') ||
+					key.includes('.l') ||
+					key.includes('.b') ||
+					key.includes('.r')) &&
+				!key.includes('.u')
 			);
 		};
 
 		const isHorizontalChange = key => {
 			if (prefix) {
-				return [
-					`left${prefix}`,
-					`right${prefix}`,
-					'bottom-left',
-					'top-right',
-				].includes(key);
+				return [`${prefix}.l`, `${prefix}.r`, '.bl', '.tr'].includes(
+					key
+				);
 			}
 			return (
-				['left', 'right', 'bottom-left', 'top-right'].includes(key) &&
+				['.l', '.r', '.bl', '.tr'].includes(key) &&
 				!key.includes('unit')
 			);
 		};
 
 		const isVerticalChange = key => {
 			if (prefix) {
-				return [
-					`top${prefix}`,
-					`bottom${prefix}`,
-					'top-left',
-					'bottom-right',
-				].includes(key);
+				return [`${prefix}.t`, `${prefix}.b`, '.tl', '.br'].includes(
+					key
+				);
 			}
 			return (
-				['top', 'bottom', 'top-left', 'bottom-right'].includes(key) &&
+				['.t', '.b', '.tl', '.br'].includes(key) &&
 				!key.includes('unit')
 			);
 		};

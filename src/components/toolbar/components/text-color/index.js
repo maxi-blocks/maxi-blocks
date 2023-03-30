@@ -54,7 +54,7 @@ const TextColor = props => {
 	const color = getCustomFormatValue({
 		typography,
 		formatValue,
-		prop: 'color',
+		prop: '_cc',
 		breakpoint,
 		textLevel,
 		styleCard,
@@ -62,7 +62,7 @@ const TextColor = props => {
 	const colorPaletteStatus = getCustomFormatValue({
 		typography,
 		formatValue,
-		prop: 'palette-status',
+		prop: '_ps',
 		breakpoint,
 		textLevel,
 		styleCard,
@@ -70,7 +70,7 @@ const TextColor = props => {
 	const colorPalette = getCustomFormatValue({
 		typography,
 		formatValue,
-		prop: 'palette-color',
+		prop: '_pc',
 		breakpoint,
 		textLevel,
 		styleCard,
@@ -78,7 +78,7 @@ const TextColor = props => {
 	const colorOpacity = getCustomFormatValue({
 		typography,
 		formatValue,
-		prop: 'palette-opacity',
+		prop: '_po',
 		breakpoint,
 		textLevel,
 		styleCard,

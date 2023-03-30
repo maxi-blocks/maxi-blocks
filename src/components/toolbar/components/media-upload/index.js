@@ -55,7 +55,7 @@ const ToolbarMediaUpload = props => {
 			`${prefix}altSelector`,
 			'playerType',
 			'hideImage',
-			'uniqueID',
+			'_uid',
 		],
 		props: attributes,
 	});

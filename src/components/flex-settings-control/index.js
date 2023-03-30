@@ -47,7 +47,7 @@ const FlexSettingsControl = props => {
 
 	const isCustomFlexBasis = /\d/.test(
 		getLastBreakpointAttribute({
-			target: 'flex-basis',
+			target: '_fb',
 			attributes: props,
 			isHover: false,
 			breakpoint,
@@ -113,14 +113,14 @@ const FlexSettingsControl = props => {
 									label={__('Order', 'maxi-blocks')}
 									enableUnit={false}
 									value={getLastBreakpointAttribute({
-										target: 'order',
+										target: '_or',
 										breakpoint,
 										attributes: props,
 									})}
 									onChangeValue={val => {
 										onChange({
 											[getAttributeKey(
-												'order',
+												'_or',
 												false,
 												false,
 												breakpoint
@@ -133,7 +133,7 @@ const FlexSettingsControl = props => {
 									onReset={() =>
 										onChange({
 											[getAttributeKey(
-												'order',
+												'_or',
 												false,
 												false,
 												breakpoint
@@ -147,14 +147,14 @@ const FlexSettingsControl = props => {
 									label={__('Flex-grow', 'maxi-blocks')}
 									enableUnit={false}
 									value={getLastBreakpointAttribute({
-										target: 'flex-grow',
+										target: '_fg',
 										breakpoint,
 										attributes: props,
 									})}
 									onChangeValue={val => {
 										onChange({
 											[getAttributeKey(
-												'flex-grow',
+												'_fg',
 												false,
 												false,
 												breakpoint
@@ -167,7 +167,7 @@ const FlexSettingsControl = props => {
 									onReset={() =>
 										onChange({
 											[getAttributeKey(
-												'flex-grow',
+												'_fg',
 												false,
 												false,
 												breakpoint
@@ -178,17 +178,17 @@ const FlexSettingsControl = props => {
 								/>
 								<AdvancedNumberControl
 									className='maxi-typography-control__flex-shrink'
-									label={__('Flex-shrink', 'maxi-blocks')}
+									label={__('_fls', 'maxi-blocks')}
 									enableUnit={false}
 									value={getLastBreakpointAttribute({
-										target: 'flex-shrink',
+										target: '_fls',
 										breakpoint,
 										attributes: props,
 									})}
 									onChangeValue={val => {
 										onChange({
 											[getAttributeKey(
-												'flex-shrink',
+												'_fls',
 												false,
 												false,
 												breakpoint
@@ -201,7 +201,7 @@ const FlexSettingsControl = props => {
 									onReset={() =>
 										onChange({
 											[getAttributeKey(
-												'flex-shrink',
+												'_fls',
 												false,
 												false,
 												breakpoint
@@ -217,14 +217,14 @@ const FlexSettingsControl = props => {
 										customFlexBasis
 											? 'custom'
 											: getLastBreakpointAttribute({
-													target: 'flex-basis',
+													target: '_fb',
 													breakpoint,
 													attributes: props,
 											  }) ?? ''
 									}
 									defaultValue={getDefaultAttribute(
 										getAttributeKey(
-											'flex-basis',
+											'_fb',
 											false,
 											false,
 											breakpoint
@@ -233,13 +233,13 @@ const FlexSettingsControl = props => {
 									onReset={() =>
 										onChange({
 											[getAttributeKey(
-												'flex-basis',
+												'_fb',
 												false,
 												false,
 												breakpoint
 											)]: getDefaultAttribute(
 												getAttributeKey(
-													'flex-basis',
+													'_fb',
 													false,
 													false,
 													breakpoint
@@ -259,7 +259,7 @@ const FlexSettingsControl = props => {
 										if (val !== 'custom') {
 											onChange({
 												[getAttributeKey(
-													'flex-basis',
+													'_fb',
 													false,
 													false,
 													breakpoint
@@ -281,14 +281,14 @@ const FlexSettingsControl = props => {
 										)}
 										enableUnit
 										unit={getLastBreakpointAttribute({
-											target: 'flex-basis-unit',
+											target: '_fb.u',
 											breakpoint,
 											attributes: props,
 										})}
 										onChangeUnit={val => {
 											onChange({
 												[getAttributeKey(
-													'flex-basis-unit',
+													'_fb.u',
 													false,
 													false,
 													breakpoint
@@ -296,14 +296,14 @@ const FlexSettingsControl = props => {
 											});
 										}}
 										value={getLastBreakpointAttribute({
-											target: 'flex-basis',
+											target: '_fb',
 											breakpoint,
 											attributes: props,
 										})}
 										onChangeValue={val => {
 											onChange({
 												[getAttributeKey(
-													'flex-basis',
+													'_fb',
 													false,
 													false,
 													breakpoint
@@ -332,7 +332,7 @@ const FlexSettingsControl = props => {
 										onReset={() =>
 											onChange({
 												[getAttributeKey(
-													'flex-basis',
+													'_fb',
 													false,
 													false,
 													breakpoint

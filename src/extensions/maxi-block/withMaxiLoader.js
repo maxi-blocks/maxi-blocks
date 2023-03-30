@@ -127,8 +127,8 @@ const withMaxiLoader = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
 			const { clientId, attributes } = ownProps;
-			const { uniqueID, isFirstOnHierarchy } = getAttributesValue({
-				target: ['uniqueID', 'isFirstOnHierarchy'],
+			const [uniqueID, isFirstOnHierarchy] = getAttributesValue({
+				target: ['_uid', '_ioh'],
 				props: attributes,
 			});
 

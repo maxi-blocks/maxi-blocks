@@ -73,26 +73,21 @@ const FlexDirectionControl = props => {
 			items={getOptions()}
 			value={
 				getLastBreakpointAttribute({
-					target: 'flex-direction',
+					target: '_fd',
 					breakpoint,
 					attributes: props,
 				}) ?? ''
 			}
 			selected={
 				getLastBreakpointAttribute({
-					target: 'flex-direction',
+					target: '_fd',
 					breakpoint,
 					attributes: props,
 				}) || getOptions()[0].value
 			}
 			onChange={val =>
 				onChange({
-					[getAttributeKey(
-						'flex-direction',
-						false,
-						false,
-						breakpoint
-					)]: val,
+					[getAttributeKey('_fd', false, false, breakpoint)]: val,
 				})
 			}
 		/>

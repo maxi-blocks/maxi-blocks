@@ -81,8 +81,10 @@ const propagateNewUniqueID = (oldUniqueID, newUniqueID, bgLayers) => {
 	};
 
 	const updateBGLayers = () => {
-		blockAttributesUpdate['background-layers'] =
-			getUpdatedBGLayersWithNewUniqueID(bgLayers, newUniqueID);
+		blockAttributesUpdate.b_ly = getUpdatedBGLayersWithNewUniqueID(
+			bgLayers,
+			newUniqueID
+		);
 	};
 
 	updateRelations();

@@ -43,12 +43,7 @@ const Inspector = props => {
 	} = props;
 	const { blockStyle, customLabel, isFirstOnHierarchy, svgType } =
 		getAttributesValue({
-			target: [
-				'blockStyle',
-				'customLabel',
-				'isFirstOnHierarchy',
-				'svgType',
-			],
+			target: ['_bs', 'customLabel', '_ioh', 'svgType'],
 			props: attributes,
 		});
 	const { selectors, categories } = customCss;
@@ -111,14 +106,14 @@ const Inspector = props => {
 								content: setSVGContentWithBlockStyle(
 									attributes.content,
 									getAttributesValue({
-										target: 'palette-status',
+										target: '_ps',
 										prefix: 'svg-fill-',
 										props: attributes,
 									})
 										? fillColorStr
 										: svgFillColor,
 									getAttributesValue({
-										target: 'palette-status',
+										target: '_ps',
 										prefix: 'svg-line-',
 										props: attributes,
 									})

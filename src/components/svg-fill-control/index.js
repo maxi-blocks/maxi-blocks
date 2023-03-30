@@ -61,7 +61,7 @@ const ColorContent = ({
 				isHover,
 			})}
 			color={getLastBreakpointAttribute({
-				target: 'color',
+				target: '_cc',
 				breakpoint,
 				attributes: value,
 				isHover,
@@ -73,7 +73,7 @@ const ColorContent = ({
 				color,
 			}) => {
 				SVGData[id][
-					getAttributeKey('color', isHover, false, breakpoint)
+					getAttributeKey('_cc', isHover, false, breakpoint)
 				] = color;
 
 				onChange({
@@ -188,24 +188,18 @@ const SVGFillControl = props => {
 								false,
 								'background-svg-'
 							)]: tempSVGData,
-							[getAttributeKey(
-								'palette-color',
-								false,
-								'background-svg-'
-							)]: getAttributesValue({
-								target: 'palette-color',
-								prefix: 'background-svg-',
-								props: props.SVGOptions,
-							}),
-							[getAttributeKey(
-								'palette-status',
-								false,
-								'background-svg-'
-							)]: getAttributesValue({
-								target: 'palette-status',
-								prefix: 'background-svg-',
-								props: props.SVGOptions,
-							}),
+							[getAttributeKey('_pc', false, 'background-svg-')]:
+								getAttributesValue({
+									target: '_pc',
+									prefix: 'background-svg-',
+									props: props.SVGOptions,
+								}),
+							[getAttributeKey('_ps', false, 'background-svg-')]:
+								getAttributesValue({
+									target: '_ps',
+									prefix: 'background-svg-',
+									props: props.SVGOptions,
+								}),
 						});
 					}}
 				/>
@@ -249,20 +243,20 @@ const SVGFillControl = props => {
 											'background-svg-'
 										)]: SVGData,
 										[getAttributeKey(
-											'palette-color',
+											'_pc',
 											false,
 											'background-svg-'
 										)]: getAttributesValue({
-											target: 'palette-color',
+											target: '_pc',
 											prefix: 'background-svg-',
 											props: props.SVGOptions,
 										}),
 										[getAttributeKey(
-											'palette-status',
+											'_ps',
 											false,
 											'background-svg-'
 										)]: getAttributesValue({
-											target: 'palette-status',
+											target: '_ps',
 											prefix: 'background-svg-',
 											props: props.SVGOptions,
 										}),
@@ -290,20 +284,20 @@ const SVGFillControl = props => {
 											'background-svg-'
 										)]: SVGData,
 										[getAttributeKey(
-											'palette-color',
+											'_pc',
 											false,
 											'background-svg-'
 										)]: getAttributesValue({
-											target: 'palette-color',
+											target: '_pc',
 											prefix: 'background-svg-',
 											props: props.SVGOptions,
 										}),
 										[getAttributeKey(
-											'palette-status',
+											'_ps',
 											false,
 											'background-svg-'
 										)]: getAttributesValue({
-											target: 'palette-status',
+											target: '_ps',
 											prefix: 'background-svg-',
 											props: props.SVGOptions,
 										}),

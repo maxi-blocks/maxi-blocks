@@ -9,7 +9,7 @@ const getClientIdFromUniqueId = uniqueID => {
 
 		blocks.forEach(block => {
 			const blockUniqueID = getAttributesValue({
-				target: 'uniqueID',
+				target: '_uid',
 				props: block.attributes,
 			});
 

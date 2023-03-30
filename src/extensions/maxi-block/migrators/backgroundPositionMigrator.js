@@ -1,6 +1,6 @@
 const axis = ['top', 'left', 'bottom', 'right'];
 
-const positionArray = axis.map(a => `position-${a}-unit-general`);
+const positionArray = axis.map(a => `_pos${a}-unit-general`);
 
 const getLayerType = layer => {
 	let { type } = layer;
@@ -14,7 +14,7 @@ const getLayerType = layer => {
 const name = 'Background Position';
 
 const isEligible = blockAttributes =>
-	blockAttributes['background-layers']?.some(
+	blockAttributes.b_ly?.some(
 		layer =>
 			!positionArray.every(
 				unit => `background-${getLayerType(layer)}-${unit}` in layer
@@ -24,13 +24,12 @@ const isEligible = blockAttributes =>
 const migrate = newAttributes => {
 	const response = { ...newAttributes };
 
-	response['background-layers'].forEach((layer, i) => {
+	response.b_ly.forEach((layer, i) => {
 		const type = getLayerType(layer);
 
 		positionArray.forEach(unit => {
 			if (!(`background-${type}-${unit}` in layer))
-				response['background-layers'][i][`background-${type}-${unit}`] =
-					'px';
+				response.b_ly[i][`background-${type}-${unit}`] = 'px';
 		});
 	});
 

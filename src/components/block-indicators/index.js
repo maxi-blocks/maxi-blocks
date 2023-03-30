@@ -203,7 +203,7 @@ const MainIndicator = props => {
 
 		const unit =
 			getLastBreakpointAttribute({
-				target: `${type}-${dir}-unit`,
+				target: `${type}-${dir}.u`,
 				breakpoint,
 				attributes: props,
 			}) || 'px';

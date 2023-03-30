@@ -46,7 +46,7 @@ describe('ArrowControl', () => {
 				i
 			);
 			const attributes = await getBlockAttributes();
-			const arrowAttributeX = attributes['arrow-side-general'];
+			const arrowAttributeX = attributes['a.sid-general'];
 			expect(arrowAttributeX).toStrictEqual(values[i]);
 		}
 
@@ -63,14 +63,14 @@ describe('ArrowControl', () => {
 			newNumber: '59',
 		});
 
-		expect(await getAttributes('arrow-position-general')).toStrictEqual(59);
+		expect(await getAttributes('a.pos-general')).toStrictEqual(59);
 
 		// Use Arrow Size
 		await selectInput[2].focus();
 		await pressKeyTimes('Backspace', '2');
 		await page.keyboard.type('120');
 
-		expect(await getAttributes('arrow-width-general')).toStrictEqual(120);
+		expect(await getAttributes('a.w-general')).toStrictEqual(120);
 	});
 
 	it('Check the responsive arrow control', async () => {
@@ -120,9 +120,9 @@ describe('ArrowControl', () => {
 			),
 			newNumber: '33',
 		});
-		expect(await getAttributes('arrow-position-s')).toStrictEqual(33);
+		expect(await getAttributes('a.pos-s')).toStrictEqual(33);
 
-		expect(await getAttributes('arrow-side-s')).toStrictEqual('right');
+		expect(await getAttributes('a.sid-s')).toStrictEqual('right');
 
 		// responsive XS
 		await changeResponsive(page, 'xs');

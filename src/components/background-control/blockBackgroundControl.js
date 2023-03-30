@@ -41,21 +41,21 @@ const BlockBackgroundControl = props => {
 
 	const layersOptions = compact([
 		...getAttributesValue({
-			target: 'background-layers',
+			target: 'b_ly',
 			props,
 			prefix,
 		}),
 	]);
 	const layersHoverOptions = compact([
 		...getAttributesValue({
-			target: 'background-layers-hover',
+			target: 'b_ly.h',
 			props,
 			prefix,
 		}),
 	]);
 
 	const hoverStatus = getAttributesValue({
-		target: 'block-background-status-hover',
+		target: 'bb.sh',
 		props,
 		prefix,
 	});

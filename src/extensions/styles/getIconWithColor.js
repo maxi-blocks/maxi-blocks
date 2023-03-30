@@ -19,7 +19,7 @@ const getIconWithColor = (attributes, args = {}, prefix = '') => {
 		[`${prefix}icon-content`]: iconContent,
 	} = getAttributesValue({
 		target: [
-			'blockStyle',
+			'_bs',
 			`${prefix}icon-only`,
 			`${prefix}icon-inherit`,
 			`${prefix}icon-content`,
@@ -84,28 +84,28 @@ const getIconWithColor = (attributes, args = {}, prefix = '') => {
 		} else {
 			if (!paletteColor)
 				paletteColor = getAttributesValue({
-					target: 'palette-color',
+					target: '_pc',
 					isHover,
 					breakpoint: 'general',
 					props: attributes,
 				});
 			if (!paletteOpacity)
 				paletteOpacity = getAttributesValue({
-					target: 'palette-opacity',
+					target: '_po',
 					isHover,
 					breakpoint: 'general',
 					props: attributes,
 				});
 			if (!paletteStatus)
 				paletteStatus = getAttributesValue({
-					target: 'palette-status',
+					target: '_ps',
 					isHover,
 					breakpoint: 'general',
 					props: attributes,
 				});
 			if (!color)
 				color = getAttributesValue({
-					target: 'color',
+					target: '_cc',
 					isHover,
 					breakpoint: 'general',
 					props: attributes,

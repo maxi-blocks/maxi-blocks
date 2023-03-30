@@ -16,8 +16,8 @@ const save = props => {
 	const { uniqueID, shapeDividerTopStatus, shapeDividerBottomStatus } =
 		getAttributesValue({
 			target: [
-				'uniqueID',
-				'isFirstOnHierarchy',
+				'_uid',
+				'_ioh',
 				'shape-divider-top-status',
 				'shape-divider-bottom-status',
 			],

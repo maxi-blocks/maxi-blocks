@@ -41,7 +41,7 @@ const Inspector = props => {
 	} = props;
 
 	const blockStyle = getAttributesValue({
-		target: 'blockStyle',
+		target: '_bs',
 		props: attributes,
 	});
 

@@ -153,13 +153,13 @@ const transition = {
 			title: 'Border',
 			target: iconClass,
 			property: ['border', 'border-radius'],
-			hoverProp: `${prefix}border-status-hover`,
+			hoverProp: `${prefix}bo.sh`,
 		},
 		'box shadow': {
 			title: 'Box shadow',
 			target: iconClass,
 			property: 'box-shadow',
-			hoverProp: `${prefix}box-shadow-status-hover`,
+			hoverProp: `${prefix}bs.sh`,
 		},
 		...createIconTransitions({
 			target: iconClass,

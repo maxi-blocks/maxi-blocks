@@ -208,13 +208,13 @@ const transition = {
 			title: 'Border',
 			target: buttonClass,
 			property: ['border', 'border-radius'],
-			hoverProp: `${prefix}border-status-hover`,
+			hoverProp: `${prefix}bo.sh`,
 		},
 		'box shadow': {
 			title: 'Box shadow',
 			target: buttonClass,
 			property: 'box-shadow',
-			hoverProp: `${prefix}box-shadow-status-hover`,
+			hoverProp: `${prefix}bs.sh`,
 		},
 		...createIconTransitions({
 			target: ' .maxi-button-block__icon',
@@ -306,7 +306,7 @@ const interactionBuilderSettings = {
 		{
 			label: __('Button border', 'maxi-blocks'),
 			transitionTarget: transition.block.border.target,
-			hoverProp: 'button-border-status-hover',
+			hoverProp: 'bt-bo.sh',
 			attrGroupName: ['border', 'borderWidth', 'borderRadius'],
 			prefix: 'button-',
 			component: props => <BorderControl {...props} />,

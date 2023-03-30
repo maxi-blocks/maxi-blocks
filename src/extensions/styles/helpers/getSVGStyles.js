@@ -39,13 +39,13 @@ export const getSVGWidthStyles = ({
 
 		const iconSize =
 			getLastBreakpointAttribute({
-				target: `${prefix}width`,
+				target: `${prefix}_w`,
 				isHover,
 				breakpoint,
 				attributes: obj,
 			}) ??
 			getLastBreakpointAttribute({
-				target: `${prefix}height`,
+				target: `${prefix}_h`,
 				isHover,
 				breakpoint,
 				attributes: obj,
@@ -53,13 +53,13 @@ export const getSVGWidthStyles = ({
 
 		const iconUnit =
 			getLastBreakpointAttribute({
-				target: `${prefix}width-unit`,
+				target: `${prefix}_w.u`,
 				isHover,
 				breakpoint,
 				attributes: obj,
 			}) ??
 			getLastBreakpointAttribute({
-				target: `${prefix}height-unit`,
+				target: `${prefix}_h.u`,
 				isHover,
 				breakpoint,
 				attributes: obj,
@@ -67,7 +67,7 @@ export const getSVGWidthStyles = ({
 			'px';
 
 		const iconWidthFitContent = getLastBreakpointAttribute({
-			target: `${prefix}width-fit-content`,
+			target: `${prefix}_wfc`,
 			isHover,
 			breakpoint,
 			attributes: obj,

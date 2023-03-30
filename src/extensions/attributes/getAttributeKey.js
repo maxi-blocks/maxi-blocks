@@ -9,10 +9,10 @@ const getAttributeKey = (
 	prefix = false,
 	breakpoint = false
 ) =>
-	parseLongAttrKey(
-		`${prefix || ''}${`${key}${breakpoint ? `-${breakpoint}` : ''}${
-			isHover ? '-hover' : ''
-		}`}`
-	);
+	// parseLongAttrKey(
+	`${prefix || ''}${`${key}${breakpoint ? `-${breakpoint}` : ''}${
+		isHover ? '-hover' : ''
+	}`}`;
+// );
 
 export default getAttributeKey;

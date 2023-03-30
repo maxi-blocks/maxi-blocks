@@ -78,16 +78,16 @@ const templates = {
 	},
 	// Advanced
 	customCssClasses: {
-		props: 'extraClassName',
+		props: '_ecn',
 	},
 	anchor: {
-		props: ['anchor', 'linkSettings'],
+		props: ['anchor', '_lse'],
 	},
 	interaction: {
 		props: 'relations',
 	},
 	breakpoints: {
-		groupAttributes: 'breakpoints',
+		groupAttributes: '_bp',
 	},
 	customCss: {
 		groupAttributes: 'customCss',
@@ -99,13 +99,13 @@ const templates = {
 		groupAttributes: 'transform',
 	},
 	transition: {
-		groupAttributes: 'transition',
+		groupAttributes: '_t',
 	},
 	display: {
 		groupAttributes: 'display',
 	},
 	position: {
-		groupAttributes: 'position',
+		groupAttributes: '_pos',
 	},
 	overflow: {
 		groupAttributes: 'overflow',
@@ -127,7 +127,7 @@ const templates = {
 			template: 'interaction',
 		},
 		Breakpoints: {
-			template: 'breakpoints',
+			template: '_bp',
 		},
 		'Custom CSS': {
 			template: 'customCss',
@@ -139,13 +139,13 @@ const templates = {
 			template: 'transform',
 		},
 		'Hover transition': {
-			template: 'transition',
+			template: '_t',
 		},
 		'Show/hide block': {
 			template: 'display',
 		},
 		Position: {
-			template: 'position',
+			template: '_pos',
 		},
 		Overflow: {
 			template: 'overflow',

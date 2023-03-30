@@ -18,12 +18,12 @@ const attributes = {
 	...attributesData.shapeDivider,
 	...{
 		...attributesData.blockBackground,
-		'background-layers': {
+		b_ly: {
 			type: 'array',
 			default: [
 				{
 					type: 'color',
-					'display-general': 'block',
+					'd-general': 'block',
 					'background-pa-status-general': true,
 					'background-pac-general': 1,
 					'background-palette-opacity': 1,

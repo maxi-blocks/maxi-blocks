@@ -284,7 +284,7 @@ const IconSettings = props => {
 											prefix,
 											breakpoint
 										)]: getDefaultAttribute(
-											`${prefix}icon-height-unit`
+											`${prefix}icon-height.u`
 										),
 										isReset: true,
 									})
@@ -310,7 +310,7 @@ const IconSettings = props => {
 									}
 									enableUnit
 									unit={getLastBreakpointAttribute({
-										target: `${prefix}icon-spacing-unit`,
+										target: `${prefix}icon-spacing.u`,
 										breakpoint,
 										attributes: props,
 									})}

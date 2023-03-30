@@ -86,8 +86,8 @@ const TextOptionsContent = props => {
 						true
 					)
 				}
-				min={minMaxSettings[getValue(`${prefix}font-size-unit`)].min}
-				max={minMaxSettings[getValue(`${prefix}font-size-unit`)].max}
+				min={minMaxSettings[getValue(`${prefix}font-size.u`)].min}
+				max={minMaxSettings[getValue(`${prefix}font-size.u`)].max}
 			/>
 			<Icon
 				className='toolbar-item__text-size-icon'
@@ -112,8 +112,8 @@ const TextOptionsContent = props => {
 						true
 					)
 				}
-				min={minMaxSettings[getValue(`${prefix}line-height-unit`)].min}
-				max={minMaxSettings[getValue(`${prefix}line-height-unit`)].max}
+				min={minMaxSettings[getValue(`${prefix}line-height.u`)].min}
+				max={minMaxSettings[getValue(`${prefix}line-height.u`)].max}
 			/>
 			<Icon
 				className='toolbar-item__text-size-icon'
@@ -142,12 +142,12 @@ const TextOptionsContent = props => {
 				}
 				min={
 					minMaxSettingsLetterSpacing[
-						getValue(`${prefix}letter-spacing-unit`)
+						getValue(`${prefix}letter-spacing.u`)
 					].min
 				}
 				max={
 					minMaxSettingsLetterSpacing[
-						getValue(`${prefix}letter-spacing-unit`)
+						getValue(`${prefix}letter-spacing.u`)
 					].max
 				}
 				step={0.1}

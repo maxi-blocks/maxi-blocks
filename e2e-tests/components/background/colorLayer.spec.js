@@ -52,7 +52,7 @@ describe('Background Color Layer', () => {
 		await sizeAndPositionChecker({ page });
 
 		const layerExpect = await getBlockAttributes();
-		expect(layerExpect['background-layers']).toMatchSnapshot();
+		expect(layerExpect.b_ly).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
@@ -166,7 +166,7 @@ describe('Background Color Layer', () => {
 		});
 
 		const layerExpect = await getBlockAttributes();
-		expect(layerExpect['background-layers']).toMatchSnapshot();
+		expect(layerExpect.b_ly).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 

@@ -38,7 +38,7 @@ const blockBackground = ({
 	} = props;
 
 	const blockBackgroundStatusHover = getAttributesValue({
-		target: 'block-background-status-hover',
+		target: 'bb.sh',
 		props: attributes,
 	});
 
@@ -54,7 +54,6 @@ const blockBackground = ({
 							<BlockBackgroundControl
 								{...getGroupAttributes(attributes, [
 									'blockBackground',
-									'background-layers',
 									'transition',
 								])}
 								onChangeInline={(obj, target) =>
@@ -74,7 +73,7 @@ const blockBackground = ({
 								getBounds={getBounds}
 							/>
 						),
-						extraIndicators: ['background-layers'],
+						extraIndicators: ['b_ly'],
 					},
 					{
 						label: __('Hover state', 'maxi-blocks'),
@@ -90,8 +89,7 @@ const blockBackground = ({
 									className='maxi-background-status-hover'
 									onChange={val => {
 										maxiSetAttributes({
-											'block-background-status-hover':
-												val,
+											'bb.sh': val,
 										});
 									}}
 								/>
@@ -111,7 +109,7 @@ const blockBackground = ({
 								)}
 							</>
 						),
-						extraIndicators: ['block-background-status-hover'],
+						extraIndicators: ['bb.sh'],
 					},
 				]}
 				depth={depth}

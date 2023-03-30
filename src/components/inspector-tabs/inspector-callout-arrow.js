@@ -20,7 +20,7 @@ const calloutArrow = ({ props }) => {
 	const { attributes, deviceType, maxiSetAttributes } = props;
 
 	const fullWidth = getLastBreakpointAttribute({
-		target: 'full-width',
+		target: '_fw',
 		breakpoint: deviceType,
 		attributes,
 	});

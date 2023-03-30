@@ -19,7 +19,7 @@ const getCustomCss = (obj, category, index) => {
 
 	breakpoints.forEach(breakpoint => {
 		const customCssValue = getLastBreakpointAttribute({
-			target: 'custom-css',
+			target: '_ccs',
 			breakpoint,
 			attributes: obj,
 		});

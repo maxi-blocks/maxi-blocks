@@ -15,7 +15,7 @@ const getBorderDefault = (
 ) => {
 	return {
 		[`${prefix}border-width-sync`]: 'all',
-		[`${prefix}border-width-unit`]: 'px',
+		[`${prefix}border-width.u`]: 'px',
 		[`${prefix}border-width-top`]: borderTopWidth || 2,
 		[`${prefix}border-width-right`]: borderRightWidth || 2,
 		[`${prefix}border-width-bottom`]: borderBottomWidth || 2,

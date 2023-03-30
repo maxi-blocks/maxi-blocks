@@ -38,7 +38,7 @@ const getCanvasSettings = ({ name }) => [
 	{
 		label: __('Background / Layer', 'maxi-blocks'),
 		transitionTarget: ' > .maxi-background-displayer > div',
-		hoverProp: 'block-background-status-hover',
+		hoverProp: 'bb.sh',
 		attrGroupName: [
 			'blockBackground',
 			'border',
@@ -48,11 +48,11 @@ const getCanvasSettings = ({ name }) => [
 		component: props => {
 			const { attributes, onChange, blockAttributes } = props;
 			const currentBgLayers = getAttributesValue({
-				target: 'background-layers',
+				target: 'b_ly',
 				props: attributes,
 			});
 			const blockBgLayers = getAttributesValue({
-				target: 'background-layers',
+				target: 'b_ly',
 				props: blockAttributes,
 			});
 
@@ -60,7 +60,7 @@ const getCanvasSettings = ({ name }) => [
 				<BlockBackgroundControl
 					{...props}
 					onChange={obj => {
-						const { 'background-layers': bgLayers, ...rest } = obj;
+						const { b_ly: bgLayers, ...rest } = obj;
 						const newBgLayers = bgLayers.map((bgLayer, index) => {
 							const newBgLayer = pickBy(
 								bgLayer,
@@ -82,7 +82,7 @@ const getCanvasSettings = ({ name }) => [
 
 						onChange({
 							...rest,
-							'background-layers': newBgLayers,
+							b_ly: newBgLayers,
 						});
 					}}
 					getBounds={() =>
@@ -92,7 +92,7 @@ const getCanvasSettings = ({ name }) => [
 					}
 					getBlockClipPath={layerID => {
 						const layerAttributes = Object.values(
-							props.blockAttributes['background-layers']
+							props.blockAttributes.b_ly
 						).find(({ id }) => id === layerID);
 						return getGroupAttributes(
 							layerAttributes,
@@ -120,14 +120,14 @@ const getCanvasSettings = ({ name }) => [
 	{
 		label: __('Border', 'maxi-blocks'),
 		transitionTarget: ['', ' > .maxi-background-displayer'],
-		hoverProp: 'border-status-hover',
+		hoverProp: 'bo.sh',
 		attrGroupName: ['border', 'borderWidth', 'borderRadius'],
 		component: props => <BorderControl {...props} />,
 		helper: props => getBorderStyles(props),
 	},
 	{
 		label: __('Box shadow', 'maxi-blocks'),
-		hoverProp: 'box-shadow-status-hover',
+		hoverProp: 'bs.sh',
 		attrGroupName: 'boxShadow',
 		component: props => <BoxShadowControl {...props} />,
 		helper: props => getBoxShadowStyles(props),
@@ -137,7 +137,7 @@ const getCanvasSettings = ({ name }) => [
 		attrGroupName: 'size',
 		component: props => {
 			const fullWidth = getLastBreakpointAttribute({
-				target: 'full-width',
+				target: '_fw',
 				breakpoint: props.breakpoint,
 				attributes: getGroupAttributes(props, 'size'),
 			});

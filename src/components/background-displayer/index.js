@@ -26,13 +26,11 @@ import './style.scss';
  */
 const BackgroundContent = props => {
 	const { wrapperRef, prefix = '' } = props;
-	const {
-		'background-layers': backgroundLayers,
-		'background-layers-hover': backgroundLayersHover,
-	} = getAttributesValue({
-		target: ['background-layers', 'background-layers-hover'],
-		props,
-	});
+	const { b_ly: backgroundLayers, 'b_ly.h': backgroundLayersHover } =
+		getAttributesValue({
+			target: ['b_ly', 'b_ly.h'],
+			props,
+		});
 
 	const layers = compact([...backgroundLayers, ...backgroundLayersHover]);
 
@@ -154,13 +152,11 @@ const BackgroundContent = props => {
 const BackgroundDisplayer = props => {
 	const { className, isSave = false } = props;
 
-	const {
-		'background-layers': backgroundLayers,
-		'background-layers-hover': backgroundLayersHover,
-	} = getAttributesValue({
-		target: ['background-layers', 'background-layers-hover'],
-		props,
-	});
+	const { b_ly: backgroundLayers, 'b_ly.h': backgroundLayersHover } =
+		getAttributesValue({
+			target: ['b_ly', 'b_ly.h'],
+			props,
+		});
 
 	const haveLayers =
 		!isEmpty(backgroundLayers) || !isEmpty(backgroundLayersHover);

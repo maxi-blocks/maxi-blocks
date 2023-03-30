@@ -166,7 +166,7 @@ export const getPageFonts = (onlyBackend = false) => {
 			let typography = {};
 			let typographyHover = {};
 			const { blockStyle, textLevel: rawTextLevel } = getAttributesValue({
-				target: ['blockStyle', 'textLevel'],
+				target: ['_bs', 'textLevel'],
 				props: attributes,
 			});
 			let textLevel = rawTextLevel || 'p';

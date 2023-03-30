@@ -28,8 +28,15 @@ import { getAttributeKey } from '../../extensions/attributes';
  * Component
  */
 const CustomCssControl = props => {
-	const { breakpoint, categories, category, selectors, value, onChange } =
-		props;
+	const {
+		breakpoint,
+		categories,
+		category,
+		setCategory,
+		selectors,
+		value,
+		onChange,
+	} = props;
 
 	const [notValidCode, setNotValidCode] = useState({});
 
@@ -125,7 +132,7 @@ const CustomCssControl = props => {
 			}
 
 			onChange(
-				getAttributeKey('custom-css', null, null, breakpoint),
+				getAttributeKey('_ccs', null, null, breakpoint),
 				newCustomCss
 			);
 		};
@@ -223,7 +230,7 @@ const CustomCssControl = props => {
 					id='maxi-custom-css-control__category'
 					value={category || 'none'}
 					options={getOptions()}
-					onChange={val => onChange('custom-css-category', val)}
+					onChange={val => setCategory(val)}
 				/>
 				{!isEmpty(selectors?.[category]) &&
 					Object.entries(selectors?.[category])?.map(element => {

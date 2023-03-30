@@ -246,19 +246,13 @@ const transition = {
 			title: 'Border',
 			target: ' .maxi-pane-block__header',
 			property: 'border',
-			hoverProp: [
-				`${headerPrefix}border-status-hover`,
-				`${headerPrefix}border-status-active`,
-			],
+			hoverProp: [`${headerPrefix}bo.sh`, `${headerPrefix}bo.sa`],
 		},
 		'box shadow': {
 			title: 'Box shadow',
 			target: ' .maxi-pane-block__header',
 			property: 'box-shadow',
-			hoverProp: [
-				`${headerPrefix}box-shadow-status-hover`,
-				`${headerPrefix}box-shadow-status-active`,
-			],
+			hoverProp: [`${headerPrefix}bs.sh`, `${headerPrefix}bs.sa`],
 		},
 		background: {
 			title: 'Background',
@@ -275,19 +269,13 @@ const transition = {
 			title: 'Border',
 			target: ' .maxi-pane-block__content',
 			property: 'border',
-			hoverProp: [
-				`${contentPrefix}border-status-hover`,
-				`${contentPrefix}border-status-active`,
-			],
+			hoverProp: [`${contentPrefix}bo.sh`, `${contentPrefix}bo.sa`],
 		},
 		'box shadow': {
 			title: 'Box shadow',
 			target: ' .maxi-pane-block__content',
 			property: 'box-shadow',
-			hoverProp: [
-				`${contentPrefix}box-shadow-status-hover`,
-				`${contentPrefix}box-shadow-status-active`,
-			],
+			hoverProp: [`${contentPrefix}bs.sh`, `${contentPrefix}bs.sa`],
 		},
 		background: {
 			title: 'Background',

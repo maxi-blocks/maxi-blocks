@@ -95,20 +95,20 @@ export const styleObjectManipulator = ({
 	if (
 		isNil(
 			getAttributesValue({
-				target: 'palette-status',
+				target: '_ps',
 				props: style,
 				breakpoint,
 			}) &&
 				!isEmpty(
 					getAttributesValue({
-						target: 'color',
+						target: '_cc',
 						props: style,
 						breakpoint,
 					})
 				)
 		)
 	)
-		delete style[getAttributeKey('color', false, breakpoint)];
+		delete style[getAttributeKey('_cc', false, breakpoint)];
 
 	return style;
 };

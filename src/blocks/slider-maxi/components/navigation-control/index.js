@@ -71,13 +71,13 @@ const NavigationControl = props => {
 						},
 					]}
 					value={getLastBreakpointAttribute({
-						target: `${arrowPrefix}position`,
+						target: `${arrowPrefix}_pos`,
 						breakpoint: deviceType,
 						props,
 					})}
 					onChange={val => {
 						onChange({
-							[`${arrowPrefix}position-${deviceType}`]: val,
+							[`${arrowPrefix}_pos${deviceType}`]: val,
 							...(val === 'inside' && {
 								[`${arrowPrefix}both-icon-spacing-horizontal-${deviceType}`]:
 									-40,
@@ -103,13 +103,13 @@ const NavigationControl = props => {
 						},
 					]}
 					value={getLastBreakpointAttribute({
-						target: `${dotPrefix}position`,
+						target: `${dotPrefix}_pos`,
 						breakpoint: deviceType,
 						props,
 					})}
 					onChange={val => {
 						onChange({
-							[`${dotPrefix}position-${deviceType}`]: val,
+							[`${dotPrefix}_pos${deviceType}`]: val,
 							...(val === 'inside' && {
 								[`${dotPrefix}icon-spacing-vertical-${deviceType}`]: 85,
 							}),

@@ -69,7 +69,7 @@ const PositionControl = props => {
 			'left-unit',
 		].reduce((acc, key) => {
 			const attrLabel = getAttributeKey(
-				`position-${key}`,
+				`_pos${key}`,
 				false,
 				prefix,
 				breakpoint
@@ -84,7 +84,7 @@ const PositionControl = props => {
 	const PositionAxisControl = (
 		<AxisControl
 			{...props}
-			target='position'
+			target='_pos'
 			prefix={prefix}
 			onChange={obj => onChange(obj)}
 			breakpoint={breakpoint}
@@ -113,29 +113,24 @@ const PositionControl = props => {
 						]}
 						value={
 							getLastBreakpointAttribute({
-								target: `${prefix}position`,
+								target: `${prefix}_pos`,
 								breakpoint,
 								attributes: props,
 							}) || ''
 						}
 						defaultValue={getDefaultAttribute(
-							getAttributeKey(
-								'position',
-								isHover,
-								prefix,
-								breakpoint
-							)
+							getAttributeKey('_pos', isHover, prefix, breakpoint)
 						)}
 						onReset={() =>
 							onChange({
 								[getAttributeKey(
-									'position',
+									'_pos',
 									isHover,
 									prefix,
 									breakpoint
 								)]: getDefaultAttribute(
 									getAttributeKey(
-										'position',
+										'_pos',
 										isHover,
 										prefix,
 										breakpoint
@@ -147,7 +142,7 @@ const PositionControl = props => {
 						onChange={val =>
 							onChange({
 								[getAttributeKey(
-									'position',
+									'_pos',
 									false,
 									prefix,
 									breakpoint
@@ -157,7 +152,7 @@ const PositionControl = props => {
 						}
 					/>
 					{getLastBreakpointAttribute({
-						target: `${prefix}position`,
+						target: `${prefix}_pos`,
 						breakpoint,
 						attributes: props,
 					}) !== 'inherit' && PositionAxisControl}

@@ -5,12 +5,12 @@ import parseLongAttrObj from '../../../attributes/dictionary/parseLongAttrObj';
 describe('getBreakpoints', () => {
 	it('Get a correct breakpoint', () => {
 		const object = parseLongAttrObj({
-			'breakpoints-general': 1800,
-			'breakpoints-xl': 2000,
-			'breakpoints-l': 1300,
-			'breakpoints-m': 1000,
-			'breakpoints-s': 800,
-			'breakpoints-xs': 500,
+			'_bp-general': 1800,
+			'_bp-xl': 2000,
+			'_bp-l': 1300,
+			'_bp-m': 1000,
+			'_bp-s': 800,
+			'_bp-xs': 500,
 		});
 
 		const result = getBreakpoints(object);

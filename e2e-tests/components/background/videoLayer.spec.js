@@ -64,7 +64,7 @@ describe('BackgroundControl', () => {
 		await sizeAndPositionChecker({ page });
 
 		const layerExpect = await getBlockAttributes();
-		expect(layerExpect['background-layers']).toMatchSnapshot();
+		expect(layerExpect.b_ly).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
@@ -120,7 +120,7 @@ describe('BackgroundControl', () => {
 		expect(backgroundOpacityM).toStrictEqual('44');
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 		const layerExpect = await getBlockAttributes();
-		expect(layerExpect['background-layers']).toMatchSnapshot();
+		expect(layerExpect.b_ly).toMatchSnapshot();
 	});
 
 	it('Check Background video layer hover', async () => {
@@ -160,7 +160,7 @@ describe('BackgroundControl', () => {
 		await sizeAndPositionChecker({ page, isHover: true });
 
 		const layerExpect = await getBlockAttributes();
-		expect(layerExpect['background-layers']).toMatchSnapshot();
+		expect(layerExpect.b_ly).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 

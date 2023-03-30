@@ -29,7 +29,7 @@ describe('DisplayControl', () => {
 			button => button.click()
 		);
 
-		expect(await getAttributes('display-general')).toStrictEqual('none');
+		expect(await getAttributes('d-general')).toStrictEqual('none');
 	});
 
 	it('Check Responsive display control', async () => {
@@ -55,7 +55,7 @@ describe('DisplayControl', () => {
 
 		expect(responsiveSOption).toBe('true');
 
-		expect(await getAttributes('display-s')).toStrictEqual('flex');
+		expect(await getAttributes('d-s')).toStrictEqual('flex');
 
 		// responsive XS
 		await changeResponsive(page, 'xs');

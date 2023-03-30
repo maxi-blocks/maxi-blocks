@@ -164,7 +164,7 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const { attributes } = this.props;
 		const uniqueID = getAttributesValue({
-			target: 'uniqueID',
+			target: '_uid',
 			props: attributes,
 		});
 		const iconPosition = getAttributesValue({

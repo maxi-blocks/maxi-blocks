@@ -18,7 +18,7 @@ const getOpacityStyles = (obj, isHover = false, prefix = '') => {
 
 	breakpoints.forEach(breakpoint => {
 		const value = getAttributesValue({
-			target: 'opacity',
+			target: '_o',
 			props: obj,
 			isHover,
 			breakpoint,

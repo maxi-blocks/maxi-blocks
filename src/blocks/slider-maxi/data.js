@@ -28,7 +28,7 @@ const copyPasteMapping = {
 			group: {
 				'Enable arrows': 'navigation-arrow-both-status',
 				'Enable dots': 'navigation-dot-status',
-				'Arrows position': 'navigation-arrow-position',
+				'Arrows position': 'navigation-a.pos',
 				'Dots position': 'navigation-dot-position',
 			},
 			hasBreakpoints: true,

@@ -17,7 +17,7 @@ const getDisplayStyles = (obj, isHover = false) => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
-		const attrKey = getAttributeKey('display', isHover, false, breakpoint);
+		const attrKey = getAttributeKey('d-', isHover, false, breakpoint);
 		if (obj[attrKey])
 			response[breakpoint] = {
 				display: obj[attrKey],

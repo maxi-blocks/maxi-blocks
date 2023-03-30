@@ -15,8 +15,8 @@ const isEligible = blockAttributes => {
 	} = blockAttributes;
 
 	const corruptedAttributes = [
-		'border-status-hover',
-		'box-shadow-status-hover',
+		'bo.sh',
+		'bs.sh',
 		'background-status-hover',
 		'svg-status-hover',
 	];

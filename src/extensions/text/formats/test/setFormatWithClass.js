@@ -1385,7 +1385,7 @@ describe('setFormatWithClass', () => {
 		};
 		const value = {
 			color: 'rgba(58,22,237,1)',
-			'palette-status': false,
+			_ps: false,
 		};
 		const isList = false;
 		const textLevel = 'p';
@@ -1810,7 +1810,7 @@ describe('setFormatWithClass', () => {
 			},
 		};
 		const value = {
-			'palette-status': false,
+			_ps: false,
 			color: 'rgba(52,17,228,1)',
 		};
 		const isList = false;
@@ -2597,7 +2597,7 @@ describe('setFormatWithClass', () => {
 		};
 		const typography = {};
 		const value = {
-			'palette-status': false,
+			_ps: false,
 			color: 'rgba(221,31,31,1)',
 		};
 		const isList = false;

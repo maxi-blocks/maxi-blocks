@@ -25,22 +25,22 @@ import { cloneDeep, isArray, isEmpty, merge, times, uniq } from 'lodash';
 const getColorString = (obj, target, style) => {
 	const prefix = target ? `${target}-` : '';
 	const paletteStatus = getAttributesValue({
-		target: 'palette-status',
+		target: '_ps',
 		prefix,
 		props: obj,
 	});
 	const paletteColor = getAttributesValue({
-		target: 'palette-color',
+		target: '_pc',
 		prefix,
 		props: obj,
 	});
 	const paletteOpacity = getAttributesValue({
-		target: 'palette-opacity',
+		target: '_po',
 		prefix,
 		props: obj,
 	});
 	const color = getAttributesValue({
-		target: 'color',
+		target: '_cc',
 		prefix,
 		props: obj,
 	});

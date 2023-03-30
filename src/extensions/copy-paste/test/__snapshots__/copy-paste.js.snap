@@ -26,7 +26,7 @@ Object {
       "custom-css-xxl": undefined,
     },
     "Custom CSS classes": Object {
-      "extraClassName": undefined,
+      "_ecn": undefined,
     },
     "Flexbox": Object {
       "align-content-general": undefined,
@@ -592,9 +592,9 @@ Object {
   },
   "canvas": Object {
     "Background": Object {
-      "background-layers": undefined,
-      "background-layers-hover": undefined,
-      "block-background-status-hover": false,
+      "b_ly": undefined,
+      "b_ly.h": undefined,
+      "bb.sh": false,
     },
     "Border": Object {
       "Border": Object {
@@ -663,7 +663,7 @@ Object {
         "border-palette-status-xl-hover": undefined,
         "border-palette-status-xs-hover": undefined,
         "border-palette-status-xxl-hover": undefined,
-        "border-status-hover": false,
+        "bo.sh": false,
         "border-style-general-hover": undefined,
         "border-style-l-hover": undefined,
         "border-style-m-hover": undefined,
@@ -3225,9 +3225,9 @@ Object {
   "alignment-xxl": undefined,
   "altSelector": "title",
   "anchor": undefined,
-  "background-layers": undefined,
-  "background-layers-hover": undefined,
-  "block-background-status-hover": false,
+  "b_ly": undefined,
+  "b_ly.h": undefined,
+  "bb.sh": false,
   "border-radius-bottom-left-general": undefined,
   "border-radius-bottom-left-general-hover": undefined,
   "border-radius-bottom-left-l": undefined,
@@ -3354,7 +3354,7 @@ Object {
   "border-width-right-xs-hover": undefined,
   "border-width-right-xxl": undefined,
   "border-width-right-xxl-hover": undefined,
-  "border-status-hover": false,
+  "bo.sh": false,
   "border-style-general": undefined,
   "border-style-general-hover": undefined,
   "border-style-l": undefined,
@@ -3739,7 +3739,7 @@ Object {
   "display-xl": undefined,
   "display-xs": undefined,
   "display-xxl": undefined,
-  "extraClassName": undefined,
+  "_ecn": undefined,
   "flex-basis-general": undefined,
   "flex-basis-l": undefined,
   "flex-basis-m": undefined,

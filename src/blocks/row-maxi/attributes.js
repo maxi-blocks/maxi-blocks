@@ -26,7 +26,7 @@ const attributes = {
 	...attributesData.boxShadowHover,
 	...{
 		...attributesData.size,
-		'size-advanced-options': {
+		_sao: {
 			type: 'boolean',
 			default: true,
 		},

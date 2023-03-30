@@ -52,7 +52,7 @@ registerBlockType('maxi-blocks/button-maxi', {
 	attributes,
 	getEditWrapperProps(attributes) {
 		const uniqueID = getAttributesValue({
-			target: 'uniqueID',
+			target: '_uid',
 			props: attributes,
 		});
 

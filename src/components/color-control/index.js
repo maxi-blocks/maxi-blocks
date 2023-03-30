@@ -115,7 +115,7 @@ const ColorControl = props => {
 
 				defaultColorAttr.paletteStatus = getDefaultAttribute(
 					getAttributeKey(
-						'palette-status',
+						'_ps',
 						isHover,
 						prefix,
 						avoidBreakpointForDefault ? '' : deviceType
@@ -123,7 +123,7 @@ const ColorControl = props => {
 				);
 				defaultColorAttr.paletteColor = getDefaultAttribute(
 					getAttributeKey(
-						'palette-color',
+						'_pc',
 						isHover,
 						prefix,
 						avoidBreakpointForDefault ? '' : deviceType
@@ -131,7 +131,7 @@ const ColorControl = props => {
 				);
 				defaultColorAttr.paletteOpacity = getDefaultAttribute(
 					getAttributeKey(
-						'palette-opacity',
+						'_po',
 						isHover,
 						prefix,
 						avoidBreakpointForDefault ? '' : deviceType
@@ -139,7 +139,7 @@ const ColorControl = props => {
 				);
 				defaultColorAttr.color = getDefaultAttribute(
 					getAttributeKey(
-						'color',
+						'_cc',
 						isHover,
 						prefix,
 						avoidBreakpointForDefault ? '' : deviceType
@@ -177,7 +177,7 @@ const ColorControl = props => {
 			defaultColorAttributes?.paletteOpacity ??
 			getDefaultAttribute(
 				getAttributeKey(
-					'palette-opacity',
+					'_po',
 					isHover,
 					prefix,
 					!avoidBreakpointForDefault ? deviceType : null

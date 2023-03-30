@@ -64,7 +64,7 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const { attributes, deviceType, hasInnerBlocks, clientId } = this.props;
 		const uniqueID = getAttributesValue({
-			target: 'uniqueID',
+			target: '_uid',
 			props: attributes,
 		});
 
@@ -109,7 +109,7 @@ class edit extends MaxiBlockComponent {
 					'maxi-slide-block__resizer',
 					`maxi-slide-block__resizer__${uniqueID}`,
 					getLastBreakpointAttribute({
-						target: 'display',
+						target: 'd-',
 						breakpoint: deviceType,
 						attributes,
 						isHover: false,

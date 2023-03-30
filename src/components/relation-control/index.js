@@ -40,7 +40,7 @@ import './editor.scss';
 const RelationControl = props => {
 	const { deviceType, isButton, onChange, uniqueID } = props;
 	const rawRelations = getAttributesValue({
-		target: 'relations',
+		target: '_r',
 		props,
 	});
 
@@ -191,7 +191,7 @@ const RelationControl = props => {
 			xxl: receiveXXLSize(),
 			...Object.keys(blockBreakpoints).reduce((acc, key) => {
 				if (blockAttributes[key]) {
-					const newKey = key.replace('breakpoints-', '');
+					const newKey = key.replace('_bp-', '');
 					acc[newKey] = blockBreakpoints[key];
 				}
 				return acc;

@@ -72,7 +72,7 @@ class edit extends MaxiBlockComponent {
 	get getMaxiCustomData() {
 		const { attributes } = this.props;
 		const uniqueID = getAttributesValue({
-			target: 'uniqueID',
+			target: '_uid',
 			props: attributes,
 		});
 
@@ -92,7 +92,7 @@ class edit extends MaxiBlockComponent {
 		const { attributes, maxiSetAttributes, deviceType, isSelected } =
 			this.props;
 		const uniqueID = getAttributesValue({
-			target: 'uniqueID',
+			target: '_uid',
 			props: attributes,
 		});
 

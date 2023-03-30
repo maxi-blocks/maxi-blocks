@@ -96,7 +96,7 @@ describe('FullSizeControl', () => {
 		await selectorWidth.select('vh');
 
 		expect(await getAttributes('height-unit-general')).toStrictEqual('vh');
-		expect(await getAttributes('min-width-unit-general')).toStrictEqual('');
+		expect(await getAttributes('_miw-unit-general')).toStrictEqual('');
 
 		const selector = await page.$$(
 			'.maxi-full-size-control .maxi-dimensions-control__units select'
@@ -110,15 +110,15 @@ describe('FullSizeControl', () => {
 		}
 
 		const expectSize = {
-			'max-height-unit-general': 'em',
-			'min-height-unit-general': 'em',
-			'min-width-unit-general': 'em',
+			'_mh-unit-general': 'em',
+			'_mh-unit-general': 'em',
+			'_miw-unit-general': 'em',
 		};
 
 		const result = await getAttributes([
-			'max-height-unit-general',
-			'min-height-unit-general',
-			'min-width-unit-general',
+			'_mh-unit-general',
+			'_mh-unit-general',
+			'_miw-unit-general',
 		]);
 
 		expect(result).toStrictEqual(expectSize);
@@ -149,9 +149,7 @@ describe('FullSizeControl', () => {
 		);
 
 		// forceAspectRatioInput
-		expect(await getAttributes('force-aspect-ratio-general')).toStrictEqual(
-			true
-		);
+		expect(await getAttributes('_far-general')).toStrictEqual(true);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
@@ -163,9 +161,7 @@ describe('FullSizeControl', () => {
 			'.maxi-full-size-control .maxi-full-size-control__force-aspect-ratio input',
 			input => input.click()
 		);
-		expect(await getAttributes('force-aspect-ratio-s')).toStrictEqual(
-			false
-		);
+		expect(await getAttributes('_far-s')).toStrictEqual(false);
 
 		await changeResponsive(page, 'xs');
 		const forceAspectXs = await page.$eval(

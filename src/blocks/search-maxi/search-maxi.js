@@ -47,7 +47,7 @@ registerBlockType('maxi-blocks/search-maxi', {
 	attributes,
 	getEditWrapperProps(attributes) {
 		const uniqueID = getAttributesValue({
-			target: 'uniqueID',
+			target: '_uid',
 			props: attributes,
 		});
 

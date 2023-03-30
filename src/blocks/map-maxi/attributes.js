@@ -29,11 +29,11 @@ const attributes = {
 	...attributesData.mapPopupText,
 	...{
 		...attributesData.size,
-		'height-general': {
+		'_h-general': {
 			type: 'string',
 			default: '300',
 		},
-		'height-unit-general': {
+		'_h-unit-general': {
 			type: 'string',
 			default: 'px',
 		},

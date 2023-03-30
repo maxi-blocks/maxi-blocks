@@ -15,10 +15,10 @@ const copyPasteMapping = {
 	settings: {
 		'Callout arrow': {
 			group: {
-				'Show arrow': 'arrow-status',
-				'Arrow side': 'arrow-side',
-				'Arrow position': 'arrow-position',
-				'Arrow size': 'arrow-width',
+				'Show arrow': 'a.s',
+				'Arrow side': 'a.sid',
+				'Arrow position': 'a.pos',
+				'Arrow size': 'a.w',
 			},
 			hasBreakpoints: true,
 		},

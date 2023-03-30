@@ -47,14 +47,14 @@ const DisplayControl = props => {
 		do {
 			if (
 				getAttributesValue({
-					target: `display-${breakpoints[i]}`,
+					target: `_d-${breakpoints[i]}`,
 					props,
 				}) === 'none'
 			)
 				return true;
 			if (
 				getAttributesValue(
-					{ target: `display-${breakpoints[i]}` },
+					{ target: `_d-${breakpoints[i]}` },
 					props
 				) === defaultDisplay
 			)
@@ -67,19 +67,16 @@ const DisplayControl = props => {
 
 	const getValue = () => {
 		if (
-			getAttributesValue({ target: `display-${breakpoint}` }, props) ===
-			'none'
+			getAttributesValue({ target: `_d-${breakpoint}` }, props) === 'none'
 		)
 			return 'none';
 
 		const isPrevHide = isHide();
 		if (
 			isPrevHide &&
-			(isNil(
-				getAttributesValue({ target: `display-${breakpoint}`, props })
-			) ||
+			(isNil(getAttributesValue({ target: `_d-${breakpoint}`, props })) ||
 				getAttributesValue({
-					target: `display-${breakpoint}`,
+					target: `_d-${breakpoint}`,
 					props,
 				}) === '')
 		)
@@ -88,10 +85,10 @@ const DisplayControl = props => {
 		if (
 			isPrevHide &&
 			(!isNil(
-				getAttributesValue({ target: `display-${breakpoint}`, props })
+				getAttributesValue({ target: `_d-${breakpoint}`, props })
 			) ||
 				getAttributesValue({
-					target: `display-${breakpoint}`,
+					target: `_d-${breakpoint}`,
 					props,
 				}) !== '')
 		)
@@ -123,7 +120,7 @@ const DisplayControl = props => {
 				items={getOptions()}
 				onChange={val =>
 					onChange({
-						[getAttributeKey('display', null, null, breakpoint)]:
+						[getAttributeKey('_d', null, null, breakpoint)]:
 							!isEmpty(val) ? val : null,
 					})
 				}

@@ -40,7 +40,7 @@ describe('Column size from Toolbar', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('365');
 
-		expect(await getAttributes('width-general')).toStrictEqual(365);
+		expect(await getAttributes('_w-general')).toStrictEqual(365);
 
 		// Check changes in sidebar
 		await openSidebarTab(page, 'style', 'height width');

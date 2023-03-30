@@ -21,7 +21,7 @@ const scrollEffects = ({ props, depth = 2 }) => {
 		props;
 
 	const uniqueID = getAttributesValue({
-		target: 'uniqueID',
+		target: '_uid',
 		props: attributes,
 	});
 

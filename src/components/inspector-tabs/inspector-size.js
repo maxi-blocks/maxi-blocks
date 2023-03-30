@@ -29,12 +29,12 @@ const size = ({
 }) => {
 	const { attributes, deviceType, maxiSetAttributes, name } = props;
 	const isFirstOnHierarchy = getAttributesValue({
-		target: 'isFirstOnHierarchy',
+		target: '_ioh',
 		props: attributes,
 	});
 
 	const fullWidth = getLastBreakpointAttribute({
-		target: `${prefix}full-width`,
+		target: `${prefix}_fw`,
 		breakpoint: deviceType,
 		attributes,
 	});
@@ -63,9 +63,7 @@ const size = ({
 				isImage={isImage}
 			/>
 		),
-		extraIndicators: [
-			...(isFirstOnHierarchy ? 'blockFullWidth' : 'fullWidth'),
-		],
+		extraIndicators: ['_fw'],
 	};
 };
 

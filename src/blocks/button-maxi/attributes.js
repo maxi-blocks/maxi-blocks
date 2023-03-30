@@ -113,7 +113,7 @@ const attributes = {
 	...prefixAttributesCreator({
 		obj: attributesData.borderHover,
 		prefix,
-		diffValAttr: { [`${prefix}border-status-hover`]: false },
+		diffValAttr: { [`${prefix}bo.sh`]: false },
 	}),
 	...prefixAttributesCreator({
 		obj: attributesData.borderWidthHover,

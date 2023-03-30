@@ -23,14 +23,14 @@ import './style.scss';
 const ArrowDisplayer = props => {
 	const { className, breakpoint = 'general' } = props;
 	const backgroundLayers = getAttributesValue({
-		target: 'background-layers',
+		target: 'b_ly',
 		props,
 	});
 
 	const arrowClasses = classnames(
 		'maxi-container-arrow',
 		`maxi-container-arrow__${getLastBreakpointAttribute({
-			target: 'arrow-side',
+			target: 'a.sid',
 			breakpoint,
 			attributes: props,
 		})}`,
@@ -43,7 +43,7 @@ const ArrowDisplayer = props => {
 
 	const shouldDisplayBorder =
 		!!getLastBreakpointAttribute({
-			target: 'arrow-status',
+			target: 'a.s',
 			breakpoint,
 			attributes: props,
 		}) && backgroundLayer;

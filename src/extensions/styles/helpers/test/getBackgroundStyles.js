@@ -138,7 +138,7 @@ describe('getBackgroundStyles', () => {
 					type: 'color',
 					order: 0,
 					...parseLongAttrObj({
-						'display-general': 'block',
+						'd-general': 'block',
 						'background-color-palette-status-general': true,
 						'background-color-palette-color-general': 1,
 						'background-color-palette-opacity-general': 0.07,
@@ -199,7 +199,7 @@ describe('getBackgroundStyles', () => {
 					type: 'image',
 					order: 0,
 					...parseLongAttrObj({
-						'display-general': 'block',
+						'd-general': 'block',
 						'background-image-mediaID': 302,
 						'background-image-mediaURL':
 							'http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg',
@@ -272,7 +272,7 @@ describe('getBackgroundStyles', () => {
 					type: 'image',
 					order: 0,
 					...parseLongAttrObj({
-						'display-general': 'block',
+						'd-general': 'block',
 						'background-image-parallax-status': true,
 						'background-image-mediaID': 302,
 						'background-image-mediaURL':
@@ -346,7 +346,7 @@ describe('getBackgroundStyles', () => {
 					type: 'video',
 					order: 0,
 					...parseLongAttrObj({
-						'display-general': 'block',
+						'd-general': 'block',
 						'background-video-mediaID': null,
 						'background-video-mediaURL':
 							'https://www.youtube.com/watch?v=y1dbbrfekAM',
@@ -394,7 +394,7 @@ describe('getBackgroundStyles', () => {
 					type: 'gradient',
 					order: 0,
 					...parseLongAttrObj({
-						'display-general': 'block',
+						'd-general': 'block',
 						'background-gradient-content-general':
 							'radial-gradient(rgb(6,147,227) 0%,rgb(68,150,185) 52%,rgb(155,81,224) 100%)',
 						'background-gradient-opacity-general': 0.15,
@@ -436,7 +436,7 @@ describe('getBackgroundStyles', () => {
 					type: 'shape',
 					order: 0,
 					...parseLongAttrObj({
-						'display-general': 'block',
+						'd-general': 'block',
 						'background-svg-palette-status-general': true,
 						'background-svg-palette-color-general': 5,
 						'background-svg-top-unit-general': '%',
@@ -495,7 +495,7 @@ describe('getBackgroundStyles', () => {
 					type: 'color',
 					order: 0,
 					...parseLongAttrObj({
-						'display-general': 'block',
+						'd-general': 'block',
 						'background-color-palette-status-general': true,
 						'background-color-palette-color-general': 1,
 						'background-color-color-general': '',
@@ -506,7 +506,7 @@ describe('getBackgroundStyles', () => {
 					type: 'image',
 					order: 1,
 					...parseLongAttrObj({
-						'display-general': 'block',
+						'd-general': 'block',
 						'background-image-mediaID': '',
 						'background-image-mediaURL': '',
 						'background-image-size-general': '',
@@ -536,7 +536,7 @@ describe('getBackgroundStyles', () => {
 					type: 'video',
 					order: 2,
 					...parseLongAttrObj({
-						'display-general': 'block',
+						'd-general': 'block',
 						'background-video-mediaID': null,
 						'background-video-mediaURL': '',
 						'background-video-startTime-general': '',
@@ -553,7 +553,7 @@ describe('getBackgroundStyles', () => {
 					type: 'gradient',
 					order: 3,
 					...parseLongAttrObj({
-						'display-general': 'block',
+						'd-general': 'block',
 						'background-gradient-general': '',
 						'background-gradient-opacity-general': 1,
 						'background-gradient-clip-path-general': '',
@@ -563,7 +563,7 @@ describe('getBackgroundStyles', () => {
 					type: 'shape',
 					order: 4,
 					...parseLongAttrObj({
-						'display-general': 'block',
+						'd-general': 'block',
 						'background-svg-palette-status-general': true,
 						'background-svg-palette-color-general': 5,
 						'background-svg-SVGElement-general': '',
@@ -611,8 +611,8 @@ describe('getBackgroundStyles', () => {
 				'background-gradient-opacity-l': 0.29,
 				'background-gradient-content-xs':
 					'linear-gradient(135deg,rgb(6,147,227) 0%,rgb(73,131,156) 39%,rgb(102,186,223) 67%,rgb(155,81,224) 100%)',
-				'background-layers-status-general': false,
-				'background-layers-status-general-hover': false,
+				'b_ly.s-general': false,
+				'b_ly.s-general-hover': false,
 				'background-color-palette-color-general': 1,
 				'background-color-palette-color-general-hover': 6,
 				'background-color-palette-color-m': 4,
@@ -638,13 +638,13 @@ describe('getBackgroundStyles', () => {
 	it('Get correct block background styles for color layer with different values on different responsive stages and hover', () => {
 		const attributes = {
 			blockStyle: 'light',
-			[parseLongAttrKey('block-background-status-hover')]: true,
+			[parseLongAttrKey('bb.sh')]: true,
 			bl: [
 				{
 					type: 'color',
 					order: 0,
 					...parseLongAttrObj({
-						'display-general': 'block',
+						'd-general': 'block',
 						'background-color-palette-status-general': true,
 						'background-color-palette-color-general': 1,
 						'background-color-palette-opacity-general': 0.07,
@@ -724,13 +724,13 @@ describe('getBackgroundStyles', () => {
 	it('Get correct block background styles for image layer with different values on different responsive stages and hovers', () => {
 		const attributes = {
 			blockStyle: 'light',
-			[parseLongAttrKey('block-background-status-hover')]: true,
+			[parseLongAttrKey('bb.sh')]: true,
 			bl: [
 				{
 					type: 'image',
 					order: 0,
 					...parseLongAttrObj({
-						'display-general': 'block',
+						'd-general': 'block',
 						'background-image-mediaID': 302,
 						'background-image-mediaURL':
 							'http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg',
@@ -824,13 +824,13 @@ describe('getBackgroundStyles', () => {
 	it('Get correct block background styles for video layer with different values on different responsive stages and hovers', () => {
 		const attributes = {
 			blockStyle: 'light',
-			[parseLongAttrKey('block-background-status-hover')]: true,
+			[parseLongAttrKey('bb.sh')]: true,
 			bl: [
 				{
 					type: 'video',
 					order: 0,
 					...parseLongAttrObj({
-						'display-general': 'block',
+						'd-general': 'block',
 						'background-video-mediaID': null,
 						'background-video-mediaURL':
 							'https://www.youtube.com/watch?v=y1dbbrfekAM',
@@ -879,13 +879,13 @@ describe('getBackgroundStyles', () => {
 	it('Get correct block background styles for gradient layer with different values on different responsive stages and hovers', () => {
 		const attributes = {
 			blockStyle: 'light',
-			[parseLongAttrKey('block-background-status-hover')]: true,
+			[parseLongAttrKey('bb.sh')]: true,
 			bl: [
 				{
 					type: 'gradient',
 					order: 0,
 					...parseLongAttrObj({
-						'display-general': 'block',
+						'd-general': 'block',
 						'background-gradient-content-general':
 							'radial-gradient(rgb(6,147,227) 0%,rgb(68,150,185) 52%,rgb(155,81,224) 100%)',
 						'background-gradient-opacity-general': 0.15,
@@ -961,13 +961,13 @@ describe('getBackgroundStyles', () => {
 	it('Get correct block background styles for shape layer with different values on different responsive stages and hovers', () => {
 		const attributes = {
 			blockStyle: 'light',
-			[parseLongAttrKey('block-background-status-hover')]: true,
+			[parseLongAttrKey('bb.sh')]: true,
 			bl: [
 				{
 					type: 'shape',
 					order: 0,
 					...parseLongAttrObj({
-						'display-general': 'block',
+						'd-general': 'block',
 						'background-svg-palette-status-general': true,
 						'background-svg-palette-color-general': 5,
 						'background-svg-SVGElement':
@@ -1082,7 +1082,7 @@ describe('getBackgroundStyles', () => {
 					isHover: false,
 					'isHover-general': false,
 					...parseLongAttrObj({
-						'display-general': 'block',
+						'd-general': 'block',
 						'background-color-palette-status-general': true,
 						'background-color-palette-color-general': 1,
 						'background-color-palette-status-xl-hover': true,
@@ -1097,7 +1097,7 @@ describe('getBackgroundStyles', () => {
 					isHover: false,
 					'isHover-general': false,
 					...parseLongAttrObj({
-						'display-general': 'block',
+						'd-general': 'block',
 						'background-svg-palette-status-general': true,
 						'background-svg-palette-color-general': 4,
 						'background-svg-SVGElement':
@@ -1124,7 +1124,7 @@ describe('getBackgroundStyles', () => {
 					isHover: false,
 					'isHover-general': false,
 					...parseLongAttrObj({
-						'display-general': 'block',
+						'd-general': 'block',
 						'background-video-mediaURL':
 							'https://www.youtube.com/watch?v=CXSV98tr51A',
 						'background-video-loop': false,
@@ -1134,7 +1134,7 @@ describe('getBackgroundStyles', () => {
 					}),
 				},
 			],
-			'background-layers-hover': [
+			'b_ly.h': [
 				{
 					type: 'image',
 					isHover: true,
@@ -1142,8 +1142,8 @@ describe('getBackgroundStyles', () => {
 					'isHover-general': false,
 					order: 0,
 					...parseLongAttrObj({
-						'display-general': 'none',
-						'display-general-hover': 'block',
+						'd-general': 'none',
+						'd-general-hover': 'block',
 						'background-image-size-general': 'auto',
 						'background-image-size-general-hover': 'auto',
 						'background-image-width-general': 100,
@@ -1192,8 +1192,8 @@ describe('getBackgroundStyles', () => {
 					'isHover-general': false,
 					'isHover-general-hover': false,
 					...parseLongAttrObj({
-						'display-general': 'none',
-						'display-general-hover': 'block',
+						'd-general': 'none',
+						'd-general-hover': 'block',
 						'background-svg-palette-status-general': true,
 						'background-svg-palette-status-general-hover': true,
 						'background-svg-palette-color-general': 5,
@@ -1253,7 +1253,7 @@ describe('getBackgroundStyles', () => {
 					type: 'color',
 					order: 0,
 					...parseLongAttrObj({
-						'display-general': 'block',
+						'd-general': 'block',
 						'background-color-palette-status-general': true,
 						'background-color-palette-color-general': 1,
 						'background-color-palette-opacity-general': 0.07,
@@ -1274,7 +1274,7 @@ describe('getBackgroundStyles', () => {
 				'border-palette-status-general': true,
 				'border-palette-status-general-hover': true,
 				'border-width-right-general': 2,
-				'border-status-hover': false,
+				'bo.sh': false,
 				'border-style-general': 'solid',
 				'border-radius-sync-general': 'all',
 				'border-width-sync-general': 'all',
@@ -1303,7 +1303,7 @@ describe('getBackgroundStyles', () => {
 					order: 1,
 					id: 1,
 					...parseLongAttrObj({
-						'display-general': 'block',
+						'd-general': 'block',
 						'background-color-palette-status-general': true,
 						'background-color-palette-color-general': 4,
 						'background-color-clip-path-status-general': false,
@@ -1322,7 +1322,7 @@ describe('getBackgroundStyles', () => {
 				},
 			],
 			...parseLongAttrObj({
-				'block-background-status-hover': false,
+				'bb.sh': false,
 				'border-palette-status-general': true,
 				'border-palette-color-general': 5,
 				'border-style-general': 'solid',
@@ -1344,7 +1344,7 @@ describe('getBackgroundStyles', () => {
 				'border-palette-color-general-hover': 3,
 				'border-style-general-hover': 'solid',
 				'border-style-m-hover': 'solid',
-				'border-status-hover': true,
+				'bo.sh': true,
 				'border-width-top-general-hover': 5,
 				'border-width-top-l-hover': 10,
 				'border-width-top-m-hover': 2,
@@ -1379,7 +1379,7 @@ describe('getBackgroundStyles', () => {
 					type: 'color',
 					order: 0,
 					...parseLongAttrObj({
-						'display-general': 'block',
+						'd-general': 'block',
 						'background-color-palette-status-general': true,
 						'background-color-palette-color-general': 1,
 						'background-color-palette-opacity-general': 0.07,
@@ -1408,7 +1408,7 @@ describe('getBackgroundStyles', () => {
 					type: 'color',
 					order: 0,
 					...parseLongAttrObj({
-						'display-general': 'block',
+						'd-general': 'block',
 						'background-color-palette-status-general': true,
 						'background-color-palette-color-general': 1,
 						'background-color-palette-opacity-general': 0.07,
@@ -1439,7 +1439,7 @@ describe('getBackgroundStyles', () => {
 					type: 'color',
 					order: 0,
 					...parseLongAttrObj({
-						'display-general': 'block',
+						'd-general': 'block',
 						'background-color-palette-status-general': true,
 						'background-color-palette-color-general': 1,
 						'background-color-palette-opacity-general': 0.07,
@@ -1526,7 +1526,7 @@ describe('getBackgroundStyles', () => {
 					order: 1,
 					id: 1,
 					...parseLongAttrObj({
-						'display-general': 'block',
+						'd-general': 'block',
 						'background-color-palette-status-general': true,
 						'background-color-palette-color-general': 1,
 						'background-color-clip-path-status-general': false,
@@ -1545,7 +1545,7 @@ describe('getBackgroundStyles', () => {
 				},
 			],
 			...parseLongAttrObj({
-				'block-background-status-hover': true,
+				'bb.sh': true,
 				'border-palette-status-general': true,
 				'border-palette-color-general': 2,
 				'border-style-general': 'solid',
@@ -1565,7 +1565,7 @@ describe('getBackgroundStyles', () => {
 				'border-width-unit-general': 'px',
 				'border-radius-sync-general': 'all',
 				'border-radius-unit-general': 'px',
-				'border-status-hover': true,
+				'bo.sh': true,
 				'border-palette-status-general-hover': true,
 				'border-palette-color-general-hover': 6,
 				'border-palette-opacity-general-hover': 0,
@@ -1587,7 +1587,7 @@ describe('getBackgroundStyles', () => {
 					order: 1,
 					id: 1,
 					...parseLongAttrObj({
-						'display-general': 'block',
+						'd-general': 'block',
 						'background-color-palette-status-general': true,
 						'background-color-palette-color-general': 1,
 						'background-color-clip-path-status-general': false,
@@ -1606,7 +1606,7 @@ describe('getBackgroundStyles', () => {
 				},
 			],
 			...parseLongAttrObj({
-				'block-background-status-hover': true,
+				'bb.sh': true,
 				'border-palette-status-general': true,
 				'border-palette-color-general': 2,
 				'border-style-general': 'solid',
@@ -1626,7 +1626,7 @@ describe('getBackgroundStyles', () => {
 				'border-width-unit-general': 'px',
 				'border-radius-sync-general': 'all',
 				'border-radius-unit-general': 'px',
-				'border-status-hover': true,
+				'bo.sh': true,
 				'border-palette-status-general-hover': true,
 				'border-palette-color-general-hover': 6,
 				'border-palette-opacity-general-hover': 0,

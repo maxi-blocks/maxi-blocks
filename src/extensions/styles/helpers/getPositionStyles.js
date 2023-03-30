@@ -20,13 +20,19 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  */
 
 const getPositionStyles = obj => {
-	const keyWords = ['top', 'right', 'bottom', 'left'];
+	const axis = ['.t', '.r', '.b', '.l'];
+	const keyWords = {
+		'.t': 'top',
+		'.r': 'right',
+		'.b': 'bottom',
+		'.l': 'left',
+	};
 	const response = {};
 	let omitPositionStyle = true;
 
 	breakpoints.forEach(breakpoint => {
 		const position = getLastBreakpointAttribute({
-			target: 'position',
+			target: '_pos',
 			breakpoint,
 			attributes: obj,
 		});
@@ -40,9 +46,9 @@ const getPositionStyles = obj => {
 			};
 		}
 
-		keyWords.forEach(keyWord => {
+		axis.forEach(axis => {
 			const lastBreakpointValue = getLastBreakpointAttribute({
-				target: `position-${keyWord}`,
+				target: `_pos${axis}`,
 				breakpoint,
 				attributes: obj,
 			});
@@ -50,13 +56,13 @@ const getPositionStyles = obj => {
 			const value = position !== 'inherit' ? lastBreakpointValue : null;
 
 			const unit = getLastBreakpointAttribute({
-				target: `position-${keyWord}-unit`,
+				target: `_pos${axis}.u`,
 				breakpoint,
 				attributes: obj,
 			});
 
 			if (!isNil(value) && !isNil(unit) && !omitPositionStyle)
-				response[breakpoint][keyWord] =
+				response[breakpoint][keyWords[axis]] =
 					value !== 'auto' ? `${value}${unit}` : value;
 		});
 

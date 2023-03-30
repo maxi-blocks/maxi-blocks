@@ -64,15 +64,11 @@ export function getSelectorsCss(selectors, attributes) {
 	if (isNil(attributes)) return null;
 
 	const {
-		'background-layers': bgLayers = [],
-		'background-layers-hover': bgLayersHover = [],
-		'block-background-status-hover': blockBackgroundHoverStatus = false,
+		b_ly: bgLayers = [],
+		'b_ly.h': bgLayersHover = [],
+		'bb.sh': blockBackgroundHoverStatus = false,
 	} = getAttributesValue({
-		target: [
-			'background-layers',
-			'background-layers-hover',
-			'block-background-status-hover',
-		],
+		target: ['b_ly', 'b_ly.h', 'bb.sh'],
 		props: attributes,
 	});
 
@@ -89,16 +85,12 @@ export function getSelectorsCss(selectors, attributes) {
 }
 
 export function getCategoriesCss(categories, attributes) {
-	const {
-		'background-layers': bgLayers = [],
-		'background-layers-hover': bgLayersHover = [],
-		'block-background-status-hover': blockBackgroundHoverStatus = false,
-	} = getAttributesValue({
-		target: [
-			'background-layers',
-			'background-layers-hover',
-			'block-background-status-hover',
-		],
+	const [
+		bgLayers = [],
+		bgLayersHover = [],
+		blockBackgroundHoverStatus = false,
+	] = getAttributesValue({
+		target: ['b_ly', 'b_ly.h', 'bb.sh'],
 		props: attributes,
 	});
 

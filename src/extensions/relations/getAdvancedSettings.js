@@ -62,13 +62,13 @@ const getTransformControl = ({ categories, selectors }) => ({
 const getAdvancedSettings = ({ customCss }) => [
 	{
 		label: __('Opacity', 'maxi-blocks'),
-		hoverProp: 'opacity-status-hover',
+		hoverProp: '_o.sh',
 		attrGroupName: 'opacity',
 		component: props => (
 			<OpacityControl
 				{...props}
 				opacity={getLastBreakpointAttribute({
-					target: 'opacity',
+					target: '_o',
 					breakpoint: props.breakpoint,
 					attributes: getGroupAttributes(props, 'opacity'),
 				})}

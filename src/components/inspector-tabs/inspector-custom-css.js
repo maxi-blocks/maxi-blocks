@@ -2,15 +2,13 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import CustomCssControl from '../custom-css-control';
-import {
-	getLastBreakpointAttribute,
-	getAttributesValue,
-} from '../../extensions/attributes';
+import { getLastBreakpointAttribute } from '../../extensions/attributes';
 import { getSelectorsCss, getCategoriesCss } from '../custom-css-control/utils';
 
 /**
@@ -25,14 +23,13 @@ const customCss = ({
 	const { attributes, maxiSetAttributes } = props;
 
 	const customCssValue = getLastBreakpointAttribute({
-		target: 'custom-css',
+		target: '_ccs',
 		breakpoint,
 		attributes,
 	});
-	const customCssCategory = getAttributesValue({
-		target: 'custom-css-category',
-		attributes,
-	});
+
+	// eslint-disable-next-line react-hooks/rules-of-hooks
+	const [customCSSCategory, setCustomCSSCategory] = useState(null);
 
 	return {
 		label: __('Custom CSS', 'maxi-blocks'),
@@ -40,7 +37,8 @@ const customCss = ({
 			<CustomCssControl
 				breakpoint={breakpoint}
 				categories={getCategoriesCss(categories, attributes)}
-				category={customCssCategory}
+				category={customCSSCategory}
+				setCategory={setCustomCSSCategory}
 				selectors={getSelectorsCss(selectors, attributes)}
 				value={customCssValue}
 				onChange={(attr, val) =>
@@ -50,7 +48,7 @@ const customCss = ({
 				}
 			/>
 		),
-		extraIndicators: [`custom-css-${breakpoint}`],
+		extraIndicators: [`_ccs-${breakpoint}`],
 	};
 };
 

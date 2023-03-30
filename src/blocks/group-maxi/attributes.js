@@ -47,7 +47,7 @@ const attributes = {
 	...attributesData.customCss,
 	...{
 		...attributesData.flex,
-		'flex-direction-general': {
+		'_fd-general': {
 			type: 'string',
 			default: 'column',
 		},

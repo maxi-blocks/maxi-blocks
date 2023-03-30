@@ -140,7 +140,7 @@ const getBoxShadowStyles = ({
 
 		// Palette
 		const paletteStatus = getLastBreakpointAttribute({
-			target: `${prefix}box-shadow-palette-status`,
+			target: `${prefix}bs_ps`,
 			breakpoint,
 			attributes: obj,
 			isHover,
@@ -148,10 +148,10 @@ const getBoxShadowStyles = ({
 
 		// Color
 		const { value: paletteColor, defaultValue: defaultPaletteColor } =
-			paletteStatus ? getValue('palette-color') : getValue('color');
+			paletteStatus ? getValue('_pc') : getValue('_cc');
 		const defaultColor = getColorRGBAString({
 			firstVar: `color-${defaultPaletteColor}`,
-			opacity: getValue('palette-opacity').defaultValue,
+			opacity: getValue('_po').defaultValue,
 			blockStyle,
 		});
 
@@ -159,7 +159,7 @@ const getBoxShadowStyles = ({
 			paletteStatus && paletteColor
 				? getColorRGBAString({
 						firstVar: `color-${paletteColor}`,
-						opacity: getValue('palette-opacity').value,
+						opacity: getValue('_po').value,
 						blockStyle,
 				  })
 				: paletteColor;

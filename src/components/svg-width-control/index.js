@@ -38,14 +38,9 @@ const SvgWidthControl = props => {
 
 	const classes = classnames('maxi-svg-width-control', className);
 
-	const widthAttrLabel = getAttributeKey(
-		'width',
-		isHover,
-		prefix,
-		breakpoint
-	);
+	const widthAttrLabel = getAttributeKey('_w', isHover, prefix, breakpoint);
 	const width = getAttributesValue({
-		target: 'width',
+		target: '_w',
 		props,
 		breakpoint,
 		isHover,
@@ -53,23 +48,23 @@ const SvgWidthControl = props => {
 	});
 	const defaultWidth = getDefaultAttribute(widthAttrLabel);
 	const placeholderWidth = getLastBreakpointAttribute({
-		target: `${prefix}width`,
+		target: `${prefix}_w`,
 		breakpoint,
 		isHover,
 		attributes: props,
 	});
 	const widthUnit = getLastBreakpointAttribute({
-		target: `${prefix}width-unit`,
+		target: `${prefix}_w.u`,
 		breakpoint,
 		isHover,
 		attributes: props,
 	});
 	const defaultWidthUnit = getDefaultAttribute(
-		getAttributeKey('width-unit', isHover, prefix, breakpoint)
+		getAttributeKey('_w-unit', isHover, prefix, breakpoint)
 	);
 
 	const heightFitContent = getLastBreakpointAttribute({
-		target: `${prefix}width-fit-content`,
+		target: `${prefix}_wfc`,
 		breakpoint,
 		isHover,
 		attributes: props,
@@ -85,7 +80,7 @@ const SvgWidthControl = props => {
 					const newVal = val !== undefined && val !== '' ? val : '';
 
 					onChange({
-						[getAttributeKey('width', isHover, prefix, breakpoint)]:
+						[getAttributeKey('_w', isHover, prefix, breakpoint)]:
 							newVal,
 					});
 				}}
@@ -95,7 +90,7 @@ const SvgWidthControl = props => {
 				onChangeUnit={val => {
 					onChange({
 						[getAttributeKey(
-							'width-unit',
+							'_w-unit',
 							isHover,
 							prefix,
 							breakpoint
@@ -112,10 +107,10 @@ const SvgWidthControl = props => {
 				step={1}
 				onReset={() =>
 					onChange({
-						[getAttributeKey('width', isHover, prefix, breakpoint)]:
+						[getAttributeKey('_w', isHover, prefix, breakpoint)]:
 							defaultWidth,
 						[getAttributeKey(
-							'width-unit',
+							'_w-unit',
 							isHover,
 							prefix,
 							breakpoint
@@ -144,7 +139,7 @@ const SvgWidthControl = props => {
 
 						onChange({
 							[getAttributeKey(
-								'width-fit-content',
+								'_wfc',
 								isHover,
 								prefix,
 								breakpoint

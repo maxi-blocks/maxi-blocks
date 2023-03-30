@@ -93,26 +93,21 @@ const FlexContentAlignControl = props => {
 			showTooltip
 			value={
 				getLastBreakpointAttribute({
-					target: 'align-content',
+					target: '_ac',
 					breakpoint,
 					attributes: props,
 				}) ?? ''
 			}
 			selected={
 				getLastBreakpointAttribute({
-					target: 'align-content',
+					target: '_ac',
 					breakpoint,
 					attributes: props,
 				}) || getOptions()[0].value
 			}
 			onChange={val =>
 				onChange({
-					[getAttributeKey(
-						'align-content',
-						false,
-						false,
-						breakpoint
-					)]: val,
+					[getAttributeKey('_ac', false, false, breakpoint)]: val,
 				})
 			}
 		/>

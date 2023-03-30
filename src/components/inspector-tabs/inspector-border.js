@@ -35,18 +35,11 @@ const border = ({
 		insertInlineStyles,
 		cleanInlineStyles,
 	} = props;
-	const {
-		'border-status-hover': borderStatusHover,
-		'border-status-active': borderStatusActive,
-		'background-layers': backgroundLayers,
-	} = getAttributesValue({
-		target: [
-			'border-status-hover',
-			'border-status-active',
-			'background-layers',
-		],
-		props: attributes,
-	});
+	const [borderStatusHover, borderStatusActive, backgroundLayers] =
+		getAttributesValue({
+			target: ['bo.sh', 'bo.sa', 'b_ly'],
+			props: attributes,
+		});
 
 	const {
 		'hover-border-color-global': isActive,
@@ -110,8 +103,7 @@ const border = ({
 										className='maxi-border-status-hover'
 										onChange={val =>
 											maxiSetAttributes({
-												[`${prefix}border-status-hover`]:
-													val,
+												[`${prefix}bo.sh`]: val,
 											})
 										}
 									/>
@@ -138,7 +130,7 @@ const border = ({
 								)}
 							</>
 						),
-						extraIndicators: [`${prefix}border-status-hover`],
+						extraIndicators: [`${prefix}bo.sh`],
 					},
 					enableActiveState && {
 						label: __('Active state', 'maxi-blocks'),
@@ -153,8 +145,7 @@ const border = ({
 									className='maxi-border-status-active'
 									onChange={val =>
 										maxiSetAttributes({
-											[`${prefix}border-status-active`]:
-												val,
+											[`${prefix}bo.sa`]: val,
 										})
 									}
 								/>
@@ -178,7 +169,7 @@ const border = ({
 								)}
 							</>
 						),
-						extraIndicators: [`${prefix}border-status-active`],
+						extraIndicators: [`${prefix}bo.sa`],
 					},
 				]}
 				depth={depth}

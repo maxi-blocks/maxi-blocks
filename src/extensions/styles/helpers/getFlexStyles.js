@@ -16,7 +16,7 @@ const getFlexStyles = obj => {
 	const response = {};
 	breakpoints.forEach(breakpoint => {
 		let flexBasis = getLastBreakpointAttribute({
-			target: 'flex-basis',
+			target: '_fb',
 			breakpoint,
 			attributes: obj,
 		});

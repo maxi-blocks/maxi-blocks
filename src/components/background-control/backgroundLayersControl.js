@@ -186,12 +186,12 @@ const getLayerCardTitle = props => {
 	const regexLineToChange = /fill=".+?(?=")/;
 	const colorStr = getColorRGBAString({
 		firstVar: `color-${getAttributesValue({
-			target: 'palette-color',
+			target: '_pc',
 			prefix: 'background-svg-',
 			props: layer,
 		})}`,
 		opacity: getAttributesValue({
-			target: 'palette-opacity',
+			target: '_po',
 			prefix: 'background-svg-',
 			props: layer,
 		}),
@@ -200,7 +200,7 @@ const getLayerCardTitle = props => {
 	const changeTo = `fill="${colorStr}"`;
 
 	const newSvgElement = getAttributesValue({
-		target: 'palette-status',
+		target: '_ps',
 		prefix: 'background-svg-',
 		props: layer,
 	})
@@ -339,7 +339,7 @@ const getLayerCardTitle = props => {
 
 	const onChangeDisplay = () => {
 		const currentDisplay = getLastBreakpointAttribute({
-			target: 'display',
+			target: 'd-',
 			breakpoint,
 			attributes: layer,
 			isHover,
@@ -347,14 +347,14 @@ const getLayerCardTitle = props => {
 
 		onChange({
 			...layer,
-			[getAttributeKey('display', isHover, false, breakpoint)]:
+			[getAttributeKey('d-', isHover, false, breakpoint)]:
 				currentDisplay === 'block' ? 'none' : 'block',
 		});
 	};
 
 	const getIsDisplayed = () => {
 		const currentDisplay = getLastBreakpointAttribute({
-			target: 'display',
+			target: 'd-',
 			breakpoint,
 			attributes: layer,
 			isHover,
@@ -482,8 +482,8 @@ const BackgroundLayersControl = ({
 		const hoverLayers = allLayers.filter(layer => layer.isHover);
 
 		onChange({
-			'background-layers': normalLayers,
-			'background-layers-hover': hoverLayers,
+			b_ly: normalLayers,
+			'b_ly.h': hoverLayers,
 		});
 	};
 
@@ -517,8 +517,7 @@ const BackgroundLayersControl = ({
 		if (!isEqual(newLayers, isHoverLayer ? layersHover : layers))
 			onChange(
 				{
-					[getAttributeKey('background-layers', isHoverLayer)]:
-						newLayers,
+					[getAttributeKey('b_ly', isHoverLayer)]: newLayers,
 				},
 				target
 			);
@@ -531,7 +530,7 @@ const BackgroundLayersControl = ({
 		newLayers.push(layer);
 
 		onChange({
-			[getAttributeKey('background-layers', isHoverLayer)]: newLayers,
+			[getAttributeKey('b_ly', isHoverLayer)]: newLayers,
 			...(!isHoverLayer
 				? {
 						transition: {
@@ -561,7 +560,7 @@ const BackgroundLayersControl = ({
 		);
 
 		onChange({
-			[getAttributeKey('background-layers', isHoverLayer)]: newLayers,
+			[getAttributeKey('b_ly', isHoverLayer)]: newLayers,
 			transition: {
 				...transition,
 				transform: omit(transition.transform, `_${idOfRemovedLayer}`),

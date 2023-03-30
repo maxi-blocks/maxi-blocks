@@ -29,7 +29,7 @@ class edit extends MaxiBlockComponent {
 	get getMaxiCustomData() {
 		const { attributes } = this.props;
 		const uniqueID = getAttributesValue({
-			target: 'uniqueID',
+			target: '_uid',
 			props: attributes,
 		});
 		const response = {
@@ -108,7 +108,7 @@ class edit extends MaxiBlockComponent {
 			'active-icon-content': activeIconContent,
 		} = getAttributesValue({
 			target: [
-				'uniqueID',
+				'_uid',
 				'titleLevel',
 				'accordionLayout',
 				'isCollapsible',

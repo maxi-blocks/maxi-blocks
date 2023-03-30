@@ -81,9 +81,9 @@ const getHoverObject = props => {
 	const {
 		'border-status': borderStatusHover,
 		'box-shadow-status': boxShadowStatusHover,
-		'opacity-status': opacityStatusHover,
+		'_o.s': opacityStatusHover,
 	} = getAttributesValue({
-		target: ['border-status', 'box-shadow-status', 'opacity-status'],
+		target: ['border-status', 'box-shadow-status', '_o.s'],
 		props,
 		isHover: true,
 	});
@@ -366,11 +366,7 @@ const getVideoStyles = (props, isHover = false) => {
 const getStyles = props => {
 	const { uniqueID, playerType, overlayBackgroundStatusHover } =
 		getAttributesValue({
-			target: [
-				'uniqueID',
-				'playerType',
-				'overlay-background-status-hover',
-			],
+			target: ['_uid', 'playerType', 'overlay-background-status-hover'],
 			props,
 		});
 

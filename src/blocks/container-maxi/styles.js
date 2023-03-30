@@ -82,9 +82,9 @@ const getHoverObject = props => {
 	const {
 		'border-status': borderStatusHover,
 		'box-shadow-status': boxShadowStatusHover,
-		'opacity-status': opacityStatusHover,
+		'_o.s': opacityStatusHover,
 	} = getAttributesValue({
-		target: ['border-status', 'box-shadow-status', 'opacity-status'],
+		target: ['border-status', 'box-shadow-status', '_o.s'],
 		props,
 		isHover: true,
 	});
@@ -124,15 +124,15 @@ const getHoverObject = props => {
 };
 
 const getStyles = props => {
-	const {
+	const [
 		uniqueID,
 		blockStyle,
-		'shape-divider-top-status': shapeDividerTopStatus,
-		'shape-divider-bottom-status': shapeDividerBottomStatus,
-	} = getAttributesValue({
+		shapeDividerTopStatus,
+		shapeDividerBottomStatus,
+	] = getAttributesValue({
 		target: [
-			'uniqueID',
-			'blockStyle',
+			'_uid',
+			'_bs',
 			'shape-divider-top-status',
 			'shape-divider-bottom-status',
 		],

@@ -57,11 +57,7 @@ const icon = ({
 		blockStyle,
 		[`${prefix}svgType`]: svgType,
 	} = getAttributesValue({
-		target: [
-			`${prefix}icon-status-hover`,
-			'blockStyle',
-			`${prefix}svgType`,
-		],
+		target: [`${prefix}icon-status-hover`, '_bs', `${prefix}svgType`],
 		props: attributes,
 	});
 

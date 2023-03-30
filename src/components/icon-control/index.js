@@ -387,22 +387,22 @@ const IconControlResponsiveSettings = withRTC(props => {
 
 								onChange({
 									[getAttributeKey(
-										'color',
+										'_cc',
 										isHover,
 										`${prefix}icon-stroke-`
 									)]: color,
 									[getAttributeKey(
-										'palette-color',
+										'_pc',
 										isHover,
 										`${prefix}icon-stroke-`
 									)]: paletteColor,
 									[getAttributeKey(
-										'palette-status',
+										'_ps',
 										isHover,
 										`${prefix}icon-stroke-`
 									)]: paletteStatus,
 									[getAttributeKey(
-										'palette-opacity',
+										'_po',
 										isHover,
 										`${prefix}icon-stroke-`
 									)]: paletteOpacity,
@@ -500,22 +500,22 @@ const IconControlResponsiveSettings = withRTC(props => {
 
 						onChange({
 							[getAttributeKey(
-								'color',
+								'_cc',
 								isHover,
 								`${prefix}icon-fill-`
 							)]: color,
 							[getAttributeKey(
-								'palette-color',
+								'_pc',
 								isHover,
 								`${prefix}icon-fill-`
 							)]: paletteColor,
 							[getAttributeKey(
-								'palette-status',
+								'_ps',
 								isHover,
 								`${prefix}icon-fill-`
 							)]: paletteStatus,
 							[getAttributeKey(
-								'palette-opacity',
+								'_po',
 								isHover,
 								`${prefix}icon-fill-`
 							)]: paletteOpacity,

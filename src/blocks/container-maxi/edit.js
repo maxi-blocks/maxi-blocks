@@ -46,7 +46,7 @@ class edit extends MaxiBlockComponent {
 	get getMaxiCustomData() {
 		const { attributes } = this.props;
 		const uniqueID = getAttributesValue({
-			target: 'uniqueID',
+			target: '_uid',
 			props: attributes,
 		});
 		const {
@@ -92,8 +92,8 @@ class edit extends MaxiBlockComponent {
 			'shape-divider-bottom-status': shapeDividerBottomStatus,
 		} = getAttributesValue({
 			target: [
-				'uniqueID',
-				'isFirstOnHierarchy',
+				'_uid',
+				'_ioh',
 				'shape-divider-top-status',
 				'shape-divider-bottom-status',
 			],

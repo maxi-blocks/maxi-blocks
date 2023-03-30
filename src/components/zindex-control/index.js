@@ -24,23 +24,23 @@ import classnames from 'classnames';
 const ZIndexControl = props => {
 	const { onChange, className, breakpoint } = props;
 
-	const classes = classnames('maxi-zIndex-control', className);
+	const classes = classnames('maxi-zindex-control', className);
 
 	return (
 		<AdvancedNumberControl
 			label={__('Z-index', 'maxi-blocks')}
 			className={classes}
 			defaultValue={getDefaultAttribute(
-				getAttributeKey('z-index', breakpoint)
+				getAttributeKey('_zi', breakpoint)
 			)}
 			value={getLastBreakpointAttribute({
-				target: 'z-index',
+				target: '_zi',
 				breakpoint,
 				attributes: props,
 			})}
 			onChangeValue={val => {
 				onChange({
-					[getAttributeKey('z-index', breakpoint)]:
+					[getAttributeKey('_zi', breakpoint)]:
 						val !== undefined && val !== '' ? val : '',
 				});
 			}}
@@ -48,15 +48,14 @@ const ZIndexControl = props => {
 			max={9999}
 			onReset={() =>
 				onChange({
-					[getAttributeKey('z-index', breakpoint)]:
-						getDefaultAttribute(
-							getAttributeKey('z-index', breakpoint)
-						),
+					[getAttributeKey('_zi', breakpoint)]: getDefaultAttribute(
+						getAttributeKey('_zi', breakpoint)
+					),
 					isReset: true,
 				})
 			}
 			initialPosition={getDefaultAttribute(
-				getAttributeKey('z-index', breakpoint)
+				getAttributeKey('_zi', breakpoint)
 			)}
 		/>
 	);

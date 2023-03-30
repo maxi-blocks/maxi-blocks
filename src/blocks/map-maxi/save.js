@@ -10,7 +10,7 @@ import { getAttributesValue } from '../../extensions/attributes';
 const save = props => {
 	const { attributes } = props;
 	const uniqueID = getAttributesValue({
-		target: 'uniqueID',
+		target: '_uid',
 		props: attributes,
 	});
 

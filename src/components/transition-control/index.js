@@ -31,7 +31,7 @@ const TransitionControl = props => {
 	const { breakpoint, className, onChange, getDefaultTransitionAttribute } =
 		props;
 	const transitionRaw = getAttributesValue({
-		target: 'transition',
+		target: '_t',
 		props,
 	});
 

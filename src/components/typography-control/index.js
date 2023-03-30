@@ -72,10 +72,10 @@ const LinkOptions = props => {
 						label: __('Link', 'maxi-block'),
 						value: 'normal_link',
 						extraIndicatorsResponsive: [
-							'color',
-							'palette-color',
-							'palette-opacity',
-							'palette-status',
+							'_cc',
+							'_pc',
+							'_po',
+							'_ps',
 						].map(attributeKey =>
 							getAttributeKey(
 								attributeKey,
@@ -156,22 +156,22 @@ const LinkOptions = props => {
 						onChangeFormat(
 							{
 								[getAttributeKey(
-									'palette-status',
+									'_ps',
 									false,
 									`${prefix}link-`
 								)]: paletteStatus,
 								[getAttributeKey(
-									'palette-color',
+									'_pc',
 									false,
 									`${prefix}link-`
 								)]: paletteColor,
 								[getAttributeKey(
-									'palette-opacity',
+									'_po',
 									false,
 									`${prefix}link-`
 								)]: paletteOpacity,
 								[getAttributeKey(
-									'color',
+									'_cc',
 									false,
 									`${prefix}link-`
 								)]: color,
@@ -574,13 +574,13 @@ const TypographyControl = props => {
 					<ColorControl
 						label={__('Font', 'maxi-blocks')}
 						className='maxi-typography-control__color'
-						color={getValue('color')}
+						color={getValue('_cc')}
 						prefix={prefix}
-						paletteColor={getValue('palette-color')}
+						paletteColor={getValue('_pc')}
 						paletteOpacity={getOpacityValue(
 							`${prefix}palette-opacity`
 						)}
-						paletteStatus={getValue('palette-status')}
+						paletteStatus={getValue('_ps')}
 						onChangeInline={({ color }) =>
 							onChangeInlineValue({ color })
 						}
@@ -591,23 +591,13 @@ const TypographyControl = props => {
 							paletteOpacity,
 						}) =>
 							onChangeFormat({
-								[getAttributeKey('color', false, prefix)]:
-									color,
-								[getAttributeKey(
-									'palette-color',
-									false,
-									prefix
-								)]: paletteColor,
-								[getAttributeKey(
-									'palette-status',
-									false,
-									prefix
-								)]: paletteStatus,
-								[getAttributeKey(
-									'palette-opacity',
-									false,
-									prefix
-								)]: paletteOpacity,
+								[getAttributeKey('_cc', false, prefix)]: color,
+								[getAttributeKey('_pc', false, prefix)]:
+									paletteColor,
+								[getAttributeKey('_ps', false, prefix)]:
+									paletteStatus,
+								[getAttributeKey('_po', false, prefix)]:
+									paletteOpacity,
 							})
 						}
 						globalProps={globalProps}
@@ -1287,7 +1277,7 @@ const TypographyControl = props => {
 								});
 							}}
 							defaultColor={getLastBreakpointAttribute({
-								target: 'color',
+								target: '_cc',
 								breakpoint,
 								attributes: typography,
 							})}

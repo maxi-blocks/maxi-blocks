@@ -35,11 +35,8 @@ const boxShadow = ({
 		insertInlineStyles,
 		cleanInlineStyles,
 	} = props;
-	const {
-		'box-shadow-status-hover': boxShadowStatusHover,
-		'box-shadow-status-active': boxShadowStatusActive,
-	} = getAttributesValue({
-		target: ['box-shadow-status-hover', 'box-shadow-status-active'],
+	const [boxShadowStatusHover, boxShadowStatusActive] = getAttributesValue({
+		target: ['bs.sh', 'bs.sa'],
 		props: attributes,
 	});
 
@@ -90,8 +87,7 @@ const boxShadow = ({
 									className='maxi-box-shadow-status-hover'
 									onChange={val =>
 										maxiSetAttributes({
-											[`${prefix}box-shadow-status-hover`]:
-												val,
+											[`${prefix}bs.sh`]: val,
 										})
 									}
 								/>
@@ -115,7 +111,7 @@ const boxShadow = ({
 								)}
 							</>
 						),
-						extraIndicators: [`${prefix}box-shadow-status-hover`],
+						extraIndicators: [`${prefix}bs.sh`],
 					},
 					enableActiveState && {
 						label: __('Active state', 'maxi-blocks'),
@@ -130,8 +126,7 @@ const boxShadow = ({
 									className='maxi-box-shadow-status-active'
 									onChange={val =>
 										maxiSetAttributes({
-											[`${prefix}box-shadow-status-active`]:
-												val,
+											[`${prefix}bs.sa`]: val,
 										})
 									}
 								/>
@@ -153,7 +148,7 @@ const boxShadow = ({
 								)}
 							</>
 						),
-						extraIndicators: [`${prefix}box-shadow-status-active`],
+						extraIndicators: [`${prefix}bs.sa`],
 					},
 				]}
 				depth={depth}

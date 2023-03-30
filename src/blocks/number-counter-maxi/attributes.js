@@ -35,8 +35,8 @@ const attributes = {
 		obj: attributesData.size,
 		prefix,
 		diffValAttr: {
-			[`${prefix}width-general`]: '250',
-			[`${prefix}width-unit-general`]: 'px',
+			[`${prefix}_w-general`]: '250',
+			[`${prefix}_w-unit-general`]: 'px',
 		},
 	}),
 	...prefixAttributesCreator({ obj: attributesData.margin, prefix }),

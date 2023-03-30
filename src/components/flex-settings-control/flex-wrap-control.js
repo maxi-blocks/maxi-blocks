@@ -68,36 +68,30 @@ const FlexWrapControl = props => {
 			items={getOptions()}
 			value={
 				getLastBreakpointAttribute({
-					target: 'flex-wrap',
+					target: '_flw',
 					breakpoint,
 					attributes: props,
 				}) ?? ''
 			}
 			selected={
 				getLastBreakpointAttribute({
-					target: 'flex-wrap',
+					target: '_flw',
 					breakpoint,
 					attributes: props,
 				}) || getOptions()[0].value
 			}
 			onReset={() =>
 				onChange({
-					[getAttributeKey('flex-wrap', false, false, breakpoint)]:
+					[getAttributeKey('_flw', false, false, breakpoint)]:
 						getDefaultAttribute(
-							getAttributeKey(
-								'flex-wrap',
-								false,
-								false,
-								breakpoint
-							)
+							getAttributeKey('_flw', false, false, breakpoint)
 						),
 					isReset: true,
 				})
 			}
 			onChange={val =>
 				onChange({
-					[getAttributeKey('flex-wrap', false, false, breakpoint)]:
-						val,
+					[getAttributeKey('_flw', false, false, breakpoint)]: val,
 				})
 			}
 		/>

@@ -30,8 +30,6 @@ describe('CheckBoxControl', () => {
 		);
 
 		expect(await getAttributes('full-width-general')).toStrictEqual('full');
-		expect(await getAttributes('force-aspect-ratio-general')).toStrictEqual(
-			true
-		);
+		expect(await getAttributes('_far-general')).toStrictEqual(true);
 	});
 });

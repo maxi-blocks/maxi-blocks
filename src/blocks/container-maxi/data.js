@@ -25,7 +25,7 @@ const shapeDividerCopyPasteGenerator = position => {
 					`shape-divider-${position}-pa-status`,
 				],
 				'Divider height': `shape-divider-${position}-height`,
-				'Divider height unit': `shape-divider-${position}-height-unit`,
+				'Divider height unit': `shape-divider-${position}-height.u`,
 				'Divider scroll effect': `shape-divider-${position}-effects-status`,
 			},
 		},
@@ -40,10 +40,10 @@ const copyPasteMapping = {
 	settings: {
 		'Callout arrow': {
 			group: {
-				'Show arrow': 'arrow-status',
-				'Arrow side': 'arrow-side',
-				'Arrow position': 'arrow-position',
-				'Arrow size': 'arrow-width',
+				'Show arrow': 'a.s',
+				'Arrow side': 'a.sid',
+				'Arrow position': 'a.pos',
+				'Arrow size': 'a.w',
 			},
 			hasBreakpoints: true,
 		},

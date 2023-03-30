@@ -15,7 +15,7 @@ const navigation = breakpointAttributesCreator({
 		na_pos: {
 			type: 'string',
 			default: 'inside',
-			longLabel: 'navigation-arrow-position',
+			longLabel: 'navigation-a.pos',
 		},
 		nd_pos: {
 			type: 'string',

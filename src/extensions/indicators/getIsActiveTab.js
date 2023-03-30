@@ -34,9 +34,9 @@ const getIsActiveTab = (
 	});
 
 	const excludedAttributes = [
-		'blockStyle',
-		'isFirstOnHierarchy',
-		'uniqueID',
+		'_bs',
+		'_ioh',
+		'_uid',
 		'svgType',
 		...ignoreIndicator,
 		...ignoreAttributes,

@@ -23,7 +23,7 @@ describe('BlockStylesControl', () => {
 		);
 		await input.select('dark');
 
-		expect(await getAttributes('blockStyle')).toStrictEqual('dark');
+		expect(await getAttributes('_bs')).toStrictEqual('dark');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});

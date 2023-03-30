@@ -93,15 +93,15 @@ const Size = ({
 						isHover: false,
 				  })
 				: getDefaultAttr(target),
-			[getAttributeKey(`${target}-unit`, isHover, prefix, breakpoint)]:
+			[getAttributeKey(`${target}.u`, isHover, prefix, breakpoint)]:
 				isHover
 					? getLastBreakpointAttribute({
-							target: `${prefix}${target}-unit`,
+							target: `${prefix}${target}.u`,
 							breakpoint,
 							attributes: options,
 							isHover: false,
 					  })
-					: getDefaultAttr(`${target}-unit`),
+					: getDefaultAttr(`${target}.u`),
 			isReset: true,
 		});
 	};
@@ -111,7 +111,7 @@ const Size = ({
 			<AdvancedNumberControl
 				label={__('Width', 'maxi-blocks')}
 				value={getLastBreakpointAttribute({
-					target: `${prefix}width`,
+					target: `${prefix}_w`,
 					breakpoint,
 					attributes: options,
 					isHover,
@@ -119,34 +119,34 @@ const Size = ({
 				allowedUnits={['px', 'em', 'vw', '%']}
 				enableUnit
 				unit={getLastBreakpointAttribute({
-					target: `${prefix}width-unit`,
+					target: `${prefix}_w.u`,
 					breakpoint,
 					attributes: options,
 					isHover,
 				})}
 				onChangeValue={val => {
 					onChange({
-						[getAttributeKey('width', isHover, prefix, breakpoint)]:
+						[getAttributeKey('_w', isHover, prefix, breakpoint)]:
 							val,
 					});
 				}}
 				onChangeUnit={val =>
 					onChange({
 						[getAttributeKey(
-							'width-unit',
+							'_w-unit',
 							isHover,
 							prefix,
 							breakpoint
 						)]: val,
 					})
 				}
-				onReset={() => onReset('width')}
+				onReset={() => onReset('_w')}
 				minMaxSettings={minMaxSettings}
 			/>
 			<AdvancedNumberControl
 				label={__('Height', 'maxi-blocks')}
 				value={getLastBreakpointAttribute({
-					target: `${prefix}height`,
+					target: `${prefix}_h`,
 					breakpoint,
 					attributes: options,
 					isHover,
@@ -154,32 +154,28 @@ const Size = ({
 				allowedUnits={['px', 'em', 'vw', '%']}
 				enableUnit
 				unit={getLastBreakpointAttribute({
-					target: `${prefix}height-unit`,
+					target: `${prefix}_h.u`,
 					breakpoint,
 					attributes: options,
 					isHover,
 				})}
 				onChangeValue={val => {
 					onChange({
-						[getAttributeKey(
-							'height',
-							isHover,
-							prefix,
-							breakpoint
-						)]: val,
+						[getAttributeKey('_h', isHover, prefix, breakpoint)]:
+							val,
 					});
 				}}
 				onChangeUnit={val =>
 					onChange({
 						[getAttributeKey(
-							'height-unit',
+							'_h-unit',
 							isHover,
 							prefix,
 							breakpoint
 						)]: val,
 					})
 				}
-				onReset={() => onReset('height')}
+				onReset={() => onReset('_h')}
 				minMaxSettings={minMaxSettings}
 			/>
 		</div>

@@ -51,7 +51,7 @@ registerBlockType('maxi-blocks/svg-icon-maxi', {
 	attributes,
 	getEditWrapperProps(attributes) {
 		const uniqueID = getAttributesValue({
-			target: 'uniqueID',
+			target: '_uid',
 			props: attributes,
 		});
 

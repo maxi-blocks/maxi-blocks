@@ -24,16 +24,16 @@ import { getAttributesValue } from '../../extensions/attributes';
 const save = props => {
 	const { attributes } = props;
 	const { buttonContent } = attributes;
-	const {
+	const [
 		linkSettings,
-		'icon-only': iconOnly,
-		'icon-content': iconContent,
-		'icon-position': iconPosition,
-		'dc-status': dcStatus,
-		'dc-link-status': dcLinkStatus,
-	} = getAttributesValue({
+		iconOnly,
+		iconContent,
+		iconPosition,
+		dcStatus,
+		dcLinkStatus,
+	] = getAttributesValue({
 		target: [
-			'linkSettings',
+			'_lse',
 			'icon-only',
 			'icon-content',
 			'icon-position',

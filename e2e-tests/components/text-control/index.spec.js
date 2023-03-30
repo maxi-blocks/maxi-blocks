@@ -27,6 +27,6 @@ describe('TextControl', () => {
 		await page.keyboard.type('title');
 		await page.waitForTimeout(150);
 
-		expect(await getAttributes('extraClassName')).toStrictEqual('title');
+		expect(await getAttributes('_ecn')).toStrictEqual('title');
 	});
 });

@@ -12,12 +12,12 @@ const getBreakpoints = obj => {
 	const defaultBreakpoints = select('maxiBlocks').receiveMaxiBreakpoints();
 
 	return {
-		xxl: obj[getAttributeKey('breakpoints-xl')] || defaultBreakpoints.xl,
-		xl: obj[getAttributeKey('breakpoints-xl')] || defaultBreakpoints.xl,
-		l: obj[getAttributeKey('breakpoints-l')] || defaultBreakpoints.l,
-		m: obj[getAttributeKey('breakpoints-m')] || defaultBreakpoints.m,
-		s: obj[getAttributeKey('breakpoints-s')] || defaultBreakpoints.s,
-		xs: obj[getAttributeKey('breakpoints-xs')] || defaultBreakpoints.xs,
+		xxl: obj[getAttributeKey('_bp-xl')] || defaultBreakpoints.xl,
+		xl: obj[getAttributeKey('_bp-xl')] || defaultBreakpoints.xl,
+		l: obj[getAttributeKey('_bp-l')] || defaultBreakpoints.l,
+		m: obj[getAttributeKey('_bp-m')] || defaultBreakpoints.m,
+		s: obj[getAttributeKey('_bp-s')] || defaultBreakpoints.s,
+		xs: obj[getAttributeKey('_bp-xs')] || defaultBreakpoints.xs,
 	};
 };
 

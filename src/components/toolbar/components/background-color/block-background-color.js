@@ -45,7 +45,7 @@ const BlockBackgroundColor = props => {
 		onChangeInline,
 		onChange,
 		breakpoint,
-		'background-layers': backgroundLayers = [],
+		b_ly: backgroundLayers = [],
 	} = props;
 
 	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
@@ -82,7 +82,7 @@ const BlockBackgroundColor = props => {
 					onChange={val => {
 						if (val) {
 							onChange({
-								'background-layers': [
+								b_ly: [
 									...backgroundLayers,
 									{
 										...setBreakpointToLayer({
@@ -98,7 +98,7 @@ const BlockBackgroundColor = props => {
 								bgLayer => bgLayer.order !== layer.order
 							);
 
-							onChange({ 'background-layers': newBGLayers });
+							onChange({ b_ly: newBGLayers });
 						}
 					}}
 				/>
@@ -130,7 +130,7 @@ const BlockBackgroundColor = props => {
 							if (!isEqual(newLayers, backgroundLayers))
 								onChange(
 									{
-										'background-layers': newLayers,
+										b_ly: newLayers,
 									},
 									`.maxi-background-displayer__${layer.order}`
 								);

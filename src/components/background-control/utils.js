@@ -53,9 +53,8 @@ export const setBreakpointToLayer = ({
 			}
 		} else response[key] = val;
 
-		if (key === 'display' && (isHover || breakpoint !== 'general'))
-			response[getAttributeKey('display', false, false, 'general')] =
-				'none';
+		if (key === 'd-' && (isHover || breakpoint !== 'general'))
+			response[getAttributeKey('d-', false, false, 'general')] = 'none';
 
 		response.isHover = isHover;
 	});

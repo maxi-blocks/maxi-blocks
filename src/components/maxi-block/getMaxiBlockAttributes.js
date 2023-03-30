@@ -24,15 +24,9 @@ const getMaxiBlockAttributes = props => {
 		isSelected,
 		hasSelectedChild,
 	} = props;
-	const { blockStyle, extraClassName, anchorLink, uniqueID, linkSettings } =
+	const [blockStyle, extraClassName, anchorLink, uniqueID, linkSettings] =
 		getAttributesValue({
-			target: [
-				'blockStyle',
-				'extraClassName',
-				'anchorLink',
-				'uniqueID',
-				'linkSettings',
-			],
+			target: ['_bs', '_ecn', '_al', '_uid', '_lse'],
 			props: attributes,
 		});
 
@@ -170,7 +164,7 @@ const getMaxiBlockAttributes = props => {
 	}
 
 	const displayValue = getLastBreakpointAttribute({
-		target: 'display',
+		target: 'd-',
 		breakpoint: deviceType,
 		attributes,
 		forceSingle: true,

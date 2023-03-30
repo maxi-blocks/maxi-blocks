@@ -77,7 +77,7 @@ const FullSizeControl = props => {
 		!hideWidth &&
 		!isBlockFullWidth &&
 		!getLastBreakpointAttribute({
-			target: `${prefix}width-fit-content`,
+			target: `${prefix}_wfc`,
 			breakpoint,
 			attributes: props,
 		});
@@ -93,7 +93,7 @@ const FullSizeControl = props => {
 						onChange={val =>
 							onChange({
 								[getAttributeKey(
-									'full-width',
+									'_fw',
 									false,
 									false,
 									breakpoint
@@ -112,7 +112,7 @@ const FullSizeControl = props => {
 										imageSize: 'full',
 										imgWidth: 100,
 										[getAttributeKey(
-											'full-width',
+											'_fw',
 											false,
 											prefix,
 											breakpoint
@@ -120,7 +120,7 @@ const FullSizeControl = props => {
 								  })
 								: onChange({
 										[getAttributeKey(
-											'full-width',
+											'_fw',
 											false,
 											prefix,
 											breakpoint
@@ -134,14 +134,14 @@ const FullSizeControl = props => {
 					label={__('Set width to fit content', 'maxi-blocks')}
 					className='maxi-full-size-control__width-fit-content'
 					selected={getLastBreakpointAttribute({
-						target: `${prefix}width-fit-content`,
+						target: `${prefix}_wfc`,
 						breakpoint,
 						attributes: props,
 					})}
 					onChange={val => {
 						onChange({
 							[getAttributeKey(
-								'width-fit-content',
+								'_wfc',
 								false,
 								prefix,
 								breakpoint
@@ -156,14 +156,14 @@ const FullSizeControl = props => {
 					className='maxi-full-size-control__width'
 					enableUnit
 					unit={getLastBreakpointAttribute({
-						target: `${prefix}width-unit`,
+						target: `${prefix}_w.u`,
 						breakpoint,
 						attributes: props,
 					})}
 					onChangeUnit={val =>
 						onChange({
 							[getAttributeKey(
-								'width-unit',
+								'_w.u',
 								false,
 								prefix,
 								breakpoint
@@ -171,43 +171,35 @@ const FullSizeControl = props => {
 						})
 					}
 					value={getLastBreakpointAttribute({
-						target: `${prefix}width`,
+						target: `${prefix}_w`,
 						breakpoint,
 						attributes: props,
 					})}
 					onChangeValue={val =>
 						onChange({
-							[getAttributeKey(
-								'width',
-								false,
-								prefix,
-								breakpoint
-							)]: val,
+							[getAttributeKey('_w', false, prefix, breakpoint)]:
+								val,
 						})
 					}
 					onReset={() => {
 						onChange({
+							[getAttributeKey('_w', false, prefix, breakpoint)]:
+								getDefaultAttribute(
+									getAttributeKey(
+										'_w',
+										false,
+										prefix,
+										breakpoint
+									)
+								),
 							[getAttributeKey(
-								'width',
+								'_w.u',
 								false,
 								prefix,
 								breakpoint
 							)]: getDefaultAttribute(
 								getAttributeKey(
-									'width',
-									false,
-									prefix,
-									breakpoint
-								)
-							),
-							[getAttributeKey(
-								'width-unit',
-								false,
-								prefix,
-								breakpoint
-							)]: getDefaultAttribute(
-								getAttributeKey(
-									'width-unit',
+									'_w.u',
 									false,
 									prefix,
 									breakpoint
@@ -229,14 +221,14 @@ const FullSizeControl = props => {
 					)}
 					className='maxi-full-size-control__force-aspect-ratio'
 					selected={getLastBreakpointAttribute({
-						target: `${prefix}force-aspect-ratio`,
+						target: `${prefix}_far`,
 						breakpoint,
 						attributes: props,
 					})}
 					onChange={val =>
 						onChange({
 							[getAttributeKey(
-								'force-aspect-ratio',
+								'_far',
 								false,
 								prefix,
 								breakpoint
@@ -246,7 +238,7 @@ const FullSizeControl = props => {
 				/>
 			)}
 			{!getLastBreakpointAttribute({
-				target: `${prefix}force-aspect-ratio`,
+				target: `${prefix}_far`,
 				breakpoint,
 				attributes: props,
 			}) &&
@@ -256,14 +248,14 @@ const FullSizeControl = props => {
 						className='maxi-full-size-control__height'
 						enableUnit
 						unit={getLastBreakpointAttribute({
-							target: `${prefix}height-unit`,
+							target: `${prefix}_h.u`,
 							breakpoint,
 							attributes: props,
 						})}
 						onChangeUnit={val =>
 							onChange({
 								[getAttributeKey(
-									'height-unit',
+									'_h.u',
 									false,
 									prefix,
 									breakpoint
@@ -271,28 +263,28 @@ const FullSizeControl = props => {
 							})
 						}
 						value={getLastBreakpointAttribute({
-							target: `${prefix}height`,
+							target: `${prefix}_h`,
 							breakpoint,
 							attributes: props,
 						})}
 						onChangeValue={val =>
-							onChange({ [`${prefix}height-${breakpoint}`]: val })
+							onChange({ [`${prefix}_h-${breakpoint}`]: val })
 						}
 						onReset={() => {
 							onChange({
-								[`${prefix}height-${breakpoint}`]:
+								[`${prefix}_h-${breakpoint}`]:
 									getDefaultAttribute(
-										`${prefix}height-${breakpoint}`
+										`${prefix}_h-${breakpoint}`
 									),
 
 								[getAttributeKey(
-									'height-unit',
+									'_h.u',
 									false,
 									prefix,
 									breakpoint
 								)]: getDefaultAttribute(
 									getAttributeKey(
-										'height-unit',
+										'_h.u',
 										false,
 										prefix,
 										breakpoint
@@ -311,31 +303,27 @@ const FullSizeControl = props => {
 				className='maxi-full-size-control__custom-min-max'
 				selected={
 					getAttributesValue({
-						target: 'size-advanced-options',
+						target: '_sao',
 						prefix,
 						props,
 					}) || 0
 				}
 				onChange={val => {
 					onChange({
-						[getAttributeKey(
-							'size-advanced-options',
-							false,
-							prefix,
-							breakpoint
-						)]: val,
+						[getAttributeKey('_sao', false, prefix, breakpoint)]:
+							val,
 					});
 				}}
 			/>
 			{getAttributesValue({
-				target: 'size-advanced-options',
+				target: '_sao',
 				prefix,
 				props,
 			}) && (
 				<>
 					{!hideMaxWidth &&
 						!getLastBreakpointAttribute({
-							target: `${prefix}width-fit-content`,
+							target: `${prefix}_wfc`,
 							breakpoint,
 							attributes: props,
 						}) && (
@@ -344,14 +332,14 @@ const FullSizeControl = props => {
 								className='maxi-full-size-control__max-width'
 								enableUnit
 								unit={getLastBreakpointAttribute({
-									target: `${prefix}max-width-unit`,
+									target: `${prefix}_mw.u`,
 									breakpoint,
 									attributes: props,
 								})}
 								onChangeUnit={val =>
 									onChange({
 										[getAttributeKey(
-											'max-width-unit',
+											'_mw.u',
 											false,
 											prefix,
 											breakpoint
@@ -359,14 +347,14 @@ const FullSizeControl = props => {
 									})
 								}
 								value={getLastBreakpointAttribute({
-									target: `${prefix}max-width`,
+									target: `${prefix}_mw`,
 									breakpoint,
 									attributes: props,
 								})}
 								onChangeValue={val =>
 									onChange({
 										[getAttributeKey(
-											'max-width',
+											'_mw',
 											false,
 											prefix,
 											breakpoint
@@ -376,26 +364,26 @@ const FullSizeControl = props => {
 								onReset={() => {
 									onChange({
 										[getAttributeKey(
-											'max-width',
+											'_mw',
 											false,
 											prefix,
 											breakpoint
 										)]: getDefaultAttribute(
 											getAttributeKey(
-												'max-width',
+												'_mw',
 												false,
 												prefix,
 												breakpoint
 											)
 										),
 										[getAttributeKey(
-											'max-width-unit',
+											'_mw.u',
 											false,
 											prefix,
 											breakpoint
 										)]: getDefaultAttribute(
 											getAttributeKey(
-												'max-width-unit',
+												'_mw.u',
 												false,
 												prefix,
 												breakpoint
@@ -410,7 +398,7 @@ const FullSizeControl = props => {
 							/>
 						)}
 					{!getLastBreakpointAttribute({
-						target: `${prefix}width-fit-content`,
+						target: `${prefix}_wfc`,
 						breakpoint,
 						attributes: props,
 					}) && (
@@ -419,14 +407,14 @@ const FullSizeControl = props => {
 							className='maxi-full-size-control__min-width'
 							enableUnit
 							unit={getLastBreakpointAttribute({
-								target: `${prefix}min-width-unit`,
+								target: `${prefix}_mw.u`,
 								breakpoint,
 								attributes: props,
 							})}
 							onChangeUnit={val =>
 								onChange({
 									[getAttributeKey(
-										'min-width-unit',
+										'_miw.u',
 										false,
 										prefix,
 										breakpoint
@@ -434,14 +422,14 @@ const FullSizeControl = props => {
 								})
 							}
 							value={getLastBreakpointAttribute({
-								target: `${prefix}min-width`,
+								target: `${prefix}_mw`,
 								breakpoint,
 								attributes: props,
 							})}
 							onChangeValue={val =>
 								onChange({
 									[getAttributeKey(
-										'min-width',
+										'_miw',
 										false,
 										prefix,
 										breakpoint
@@ -451,26 +439,26 @@ const FullSizeControl = props => {
 							onReset={() => {
 								onChange({
 									[getAttributeKey(
-										'min-width',
+										'_miw',
 										false,
 										prefix,
 										breakpoint
 									)]: getDefaultAttribute(
 										getAttributeKey(
-											'min-width',
+											'_miw',
 											false,
 											prefix,
 											breakpoint
 										)
 									),
 									[getAttributeKey(
-										'min-width-unit',
+										'_miw.u',
 										false,
 										prefix,
 										breakpoint
 									)]: getDefaultAttribute(
 										getAttributeKey(
-											'min-width-unit',
+											'_miw.u',
 											false,
 											prefix,
 											breakpoint
@@ -489,14 +477,14 @@ const FullSizeControl = props => {
 						className='maxi-full-size-control__max-height'
 						enableUnit
 						unit={getLastBreakpointAttribute({
-							target: `${prefix}max-height-unit`,
+							target: `${prefix}_mh.u`,
 							breakpoint,
 							attributes: props,
 						})}
 						onChangeUnit={val =>
 							onChange({
 								[getAttributeKey(
-									'max-height-unit',
+									'_mh.u',
 									false,
 									prefix,
 									breakpoint
@@ -504,14 +492,14 @@ const FullSizeControl = props => {
 							})
 						}
 						value={getLastBreakpointAttribute({
-							target: `${prefix}max-height`,
+							target: `${prefix}_mh`,
 							breakpoint,
 							attributes: props,
 						})}
 						onChangeValue={val =>
 							onChange({
 								[getAttributeKey(
-									'max-height',
+									'_mh',
 									false,
 									prefix,
 									breakpoint
@@ -521,26 +509,26 @@ const FullSizeControl = props => {
 						onReset={() => {
 							onChange({
 								[getAttributeKey(
-									'max-height',
+									'_mh',
 									false,
 									prefix,
 									breakpoint
 								)]: getDefaultAttribute(
 									getAttributeKey(
-										'max-height',
+										'_mh',
 										false,
 										prefix,
 										breakpoint
 									)
 								),
 								[getAttributeKey(
-									'max-height-unit',
+									'_mh.u',
 									false,
 									prefix,
 									breakpoint
 								)]: getDefaultAttribute(
 									getAttributeKey(
-										'max-height-unit',
+										'_mh.u',
 										false,
 										prefix,
 										breakpoint
@@ -558,14 +546,14 @@ const FullSizeControl = props => {
 						className='maxi-full-size-control__min-height'
 						enableUnit
 						unit={getLastBreakpointAttribute({
-							target: `${prefix}min-height-unit`,
+							target: `${prefix}_mh.u`,
 							breakpoint,
 							attributes: props,
 						})}
 						onChangeUnit={val =>
 							onChange({
 								[getAttributeKey(
-									'min-height-unit',
+									'_mh.u',
 									false,
 									prefix,
 									breakpoint
@@ -573,14 +561,14 @@ const FullSizeControl = props => {
 							})
 						}
 						value={getLastBreakpointAttribute({
-							target: `${prefix}min-height`,
+							target: `${prefix}_mh`,
 							breakpoint,
 							attributes: props,
 						})}
 						onChangeValue={val =>
 							onChange({
 								[getAttributeKey(
-									'min-height',
+									'_mh',
 									false,
 									prefix,
 									breakpoint
@@ -590,26 +578,26 @@ const FullSizeControl = props => {
 						onReset={() => {
 							onChange({
 								[getAttributeKey(
-									'min-height',
+									'_mh',
 									false,
 									prefix,
 									breakpoint
 								)]: getDefaultAttribute(
 									getAttributeKey(
-										'min-height',
+										'_mh',
 										false,
 										prefix,
 										breakpoint
 									)
 								),
 								[getAttributeKey(
-									'min-height-unit',
+									'_mh.u',
 									false,
 									prefix,
 									breakpoint
 								)]: getDefaultAttribute(
 									getAttributeKey(
-										'min-height-unit',
+										'_mh.u',
 										false,
 										prefix,
 										breakpoint

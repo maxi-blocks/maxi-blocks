@@ -19,7 +19,7 @@ const MarginControl = props => {
 			label={__('Margin', 'maxi-blocks')}
 			onChange={onChange}
 			breakpoint={breakpoint}
-			target='margin'
+			target='_m'
 			optionType='string'
 			fullWidth={fullWidth}
 			noResponsiveTabs={noResponsiveTabs}

@@ -77,25 +77,25 @@ const DividerColor = props => {
 					}) => {
 						onChange({
 							[getAttributeKey(
-								'color',
+								'_cc',
 								false,
 								'divider-border-',
 								breakpoint
 							)]: color,
 							[getAttributeKey(
-								'palette-color',
+								'_pc',
 								false,
 								'divider-border-',
 								breakpoint
 							)]: paletteColor,
 							[getAttributeKey(
-								'palette-opacity',
+								'_po',
 								false,
 								'divider-border-',
 								breakpoint
 							)]: paletteOpacity,
 							[getAttributeKey(
-								'palette-status',
+								'_ps',
 								false,
 								'divider-border-',
 								breakpoint

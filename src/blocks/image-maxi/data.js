@@ -200,13 +200,13 @@ const transition = {
 			title: 'Border',
 			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
 			property: ['border', 'border-radius'],
-			hoverProp: `${prefix}border-status-hover`,
+			hoverProp: `${prefix}bo.sh`,
 		},
 		'box shadow': {
 			title: 'Box shadow',
 			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
 			property: 'box-shadow',
-			hoverProp: `${prefix}box-shadow-status-hover`,
+			hoverProp: `${prefix}bs.sh`,
 		},
 		'clip path': {
 			title: 'Clip path',

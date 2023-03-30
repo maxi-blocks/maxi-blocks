@@ -47,7 +47,7 @@ describe('Background color from Toolbar', () => {
 		await page.keyboard.type('66');
 
 		const layerExpect = await getBlockAttributes();
-		expect(layerExpect['background-layers']).toMatchSnapshot();
+		expect(layerExpect.b_ly).toMatchSnapshot();
 
 		// Check changes in sidebar
 

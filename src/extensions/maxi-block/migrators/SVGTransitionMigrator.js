@@ -21,8 +21,7 @@ const isEligible = blockAttributes => {
 };
 
 const migrate = newAttributes => {
-	const { uniqueID, 'transition-change-all': transitionChangeAll } =
-		newAttributes;
+	const { uniqueID, _tca: transitionChangeAll } = newAttributes;
 	const blockName = getBlockNameFromUniqueID(uniqueID);
 	const blockDataTransition = getTransitionData(blockName);
 

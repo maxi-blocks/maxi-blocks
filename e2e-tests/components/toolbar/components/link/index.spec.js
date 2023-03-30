@@ -54,6 +54,6 @@ describe('Button link', () => {
 		await page.keyboard.type('test.com', { delay: 100 });
 		await page.keyboard.press('Enter');
 
-		expect(await getAttributes('linkSettings')).toMatchSnapshot();
+		expect(await getAttributes('_lse')).toMatchSnapshot();
 	});
 });

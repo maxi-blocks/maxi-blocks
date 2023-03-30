@@ -75,25 +75,25 @@ const PlaceholderColorControl = ({
 				}) => {
 					onChange({
 						[getAttributeKey(
-							'color',
+							'_cc',
 							false,
 							'placeholder-',
 							deviceType
 						)]: color,
 						[getAttributeKey(
-							'palette-color',
+							'_pc',
 							false,
 							'placeholder-',
 							deviceType
 						)]: paletteColor,
 						[getAttributeKey(
-							'palette-status',
+							'_ps',
 							false,
 							'placeholder-',
 							deviceType
 						)]: paletteStatus,
 						[getAttributeKey(
-							'palette-opacity',
+							'_po',
 							false,
 							'placeholder-',
 							deviceType

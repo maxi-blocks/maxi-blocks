@@ -23,7 +23,7 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const { attributes, deviceType, hasInnerBlocks, clientId } = this.props;
 		const uniqueID = getAttributesValue({
-			target: 'uniqueID',
+			target: '_uid',
 			props: attributes,
 		});
 

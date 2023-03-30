@@ -44,7 +44,7 @@ const OverflowControl = props => {
 	const updateSync = (changedAttributes = null) => {
 		const [x, y] = axes.map(axis =>
 			getLastBreakpointAttribute({
-				target: `overflow-${axis}`,
+				target: `_o${axis}`,
 				breakpoint,
 				attributes: changedAttributes
 					? { ...props, ...changedAttributes }
@@ -63,7 +63,7 @@ const OverflowControl = props => {
 			!isEmpty(val)
 				? val
 				: getLastBreakpointAttribute({
-						target: 'overflow-x',
+						target: '_ox',
 						breakpoint,
 						attributes: changedAttributes
 							? { ...props, ...changedAttributes }
@@ -82,8 +82,7 @@ const OverflowControl = props => {
 		sync: currentSync = sync,
 	}) =>
 		(currentSync ? axes : [axis]).reduce((acc, axis) => {
-			acc[getAttributeKey(`overflow-${axis}`, false, false, breakpoint)] =
-				val;
+			acc[getAttributeKey(`_o${axis}`, false, false, breakpoint)] = val;
 			return acc;
 		}, {});
 
@@ -119,25 +118,20 @@ const OverflowControl = props => {
 					]}
 					value={
 						getLastBreakpointAttribute({
-							target: `overflow-${axis}`,
+							target: `_o${axis}`,
 							breakpoint,
 							attributes: props,
 						}) || ''
 					}
 					defaultValue={getDefaultAttribute(
-						getAttributeKey(
-							`overflow-${axis}`,
-							false,
-							false,
-							breakpoint
-						)
+						getAttributeKey(`_o${axis}`, false, false, breakpoint)
 					)}
 					onChange={val => onChangeValue(val, axis)}
 					onReset={() =>
 						onChangeValue(
 							getDefaultAttribute(
 								getAttributeKey(
-									`overflow-${axis}`,
+									`_o${axis}`,
 									false,
 									false,
 									breakpoint

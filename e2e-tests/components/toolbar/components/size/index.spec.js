@@ -40,7 +40,7 @@ describe('Toolbar size', () => {
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('754');
 
-		expect(await getAttributes('width-general')).toStrictEqual(754);
+		expect(await getAttributes('_w-general')).toStrictEqual(754);
 
 		// Check changes in sidebar
 		await openSidebarTab(page, 'style', 'height width');

@@ -480,25 +480,25 @@ const NumberCounterControl = props => {
 					onChange(
 						{
 							[getAttributeKey(
-								'palette-status',
+								'_ps',
 								false,
 								'number-counter-text-',
 								breakpoint
 							)]: paletteStatus,
 							[getAttributeKey(
-								'palette-color',
+								'_pc',
 								false,
 								'number-counter-text-',
 								breakpoint
 							)]: paletteColor,
 							[getAttributeKey(
-								'palette-opacity',
+								'_po',
 								false,
 								'number-counter-text-',
 								breakpoint
 							)]: paletteOpacity,
 							[getAttributeKey(
-								'color',
+								'_cc',
 								false,
 								'number-counter-text-',
 								breakpoint
@@ -548,22 +548,22 @@ const NumberCounterControl = props => {
 							onChange(
 								{
 									[getAttributeKey(
-										'palette-status',
+										'_ps',
 										false,
 										'number-counter-circle-background-'
 									)]: paletteStatus,
 									[getAttributeKey(
-										'palette-color',
+										'_pc',
 										false,
 										'number-counter-circle-background-'
 									)]: paletteColor,
 									[getAttributeKey(
-										'palette-opacity',
+										'_po',
 										false,
 										'number-counter-circle-background-'
 									)]: paletteOpacity,
 									[getAttributeKey(
-										'color',
+										'_cc',
 										false,
 										'number-counter-circle-background-'
 									)]: color,
@@ -611,25 +611,25 @@ const NumberCounterControl = props => {
 							onChange(
 								{
 									[getAttributeKey(
-										'palette-status',
+										'_ps',
 										false,
 										'number-counter-circle-bar-',
 										breakpoint
 									)]: paletteStatus,
 									[getAttributeKey(
-										'palette-color',
+										'_pc',
 										false,
 										'number-counter-circle-bar-',
 										breakpoint
 									)]: paletteColor,
 									[getAttributeKey(
-										'palette-opacity',
+										'_po',
 										false,
 										'number-counter-circle-bar-',
 										breakpoint
 									)]: paletteOpacity,
 									[getAttributeKey(
-										'color',
+										'_cc',
 										false,
 										'number-counter-circle-bar-',
 										breakpoint

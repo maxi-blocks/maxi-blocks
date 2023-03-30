@@ -124,44 +124,30 @@ const FlexAlignControl = props => {
 				items={getOptions()}
 				value={
 					getLastBreakpointAttribute({
-						target: 'justify-content',
+						target: '_jc',
 						breakpoint,
 						attributes: props,
 					}) ?? ''
 				}
 				selected={
 					getLastBreakpointAttribute({
-						target: 'justify-content',
+						target: '_jc',
 						breakpoint,
 						attributes: props,
 					}) || getOptions()[0].value
 				}
 				onReset={() =>
 					onChange({
-						[getAttributeKey(
-							'justify-content',
-							false,
-							false,
-							breakpoint
-						)]: getDefaultAttribute(
-							getAttributeKey(
-								'justify-content',
-								false,
-								false,
-								breakpoint
-							)
-						),
+						[getAttributeKey('_jc', false, false, breakpoint)]:
+							getDefaultAttribute(
+								getAttributeKey('_jc', false, false, breakpoint)
+							),
 						isReset: true,
 					})
 				}
 				onChange={val =>
 					onChange({
-						[getAttributeKey(
-							'justify-content',
-							false,
-							false,
-							breakpoint
-						)]: val,
+						[getAttributeKey('_jc', false, false, breakpoint)]: val,
 					})
 				}
 			/>
@@ -175,44 +161,30 @@ const FlexAlignControl = props => {
 				items={getOptionsVertical()}
 				value={
 					getLastBreakpointAttribute({
-						target: 'align-items',
+						target: '_ai',
 						breakpoint,
 						attributes: props,
 					}) ?? ''
 				}
 				selected={
 					getLastBreakpointAttribute({
-						target: 'align-items',
+						target: '_ai',
 						breakpoint,
 						attributes: props,
 					}) || getOptions()[0].value
 				}
 				onReset={() =>
 					onChange({
-						[getAttributeKey(
-							'align-items',
-							false,
-							false,
-							breakpoint
-						)]: getDefaultAttribute(
-							getAttributeKey(
-								'align-items',
-								false,
-								false,
-								breakpoint
-							)
-						),
+						[getAttributeKey('_ai', false, false, breakpoint)]:
+							getDefaultAttribute(
+								getAttributeKey('_ai', false, false, breakpoint)
+							),
 						isReset: true,
 					})
 				}
 				onChange={val =>
 					onChange({
-						[getAttributeKey(
-							'align-items',
-							false,
-							false,
-							breakpoint
-						)]: val,
+						[getAttributeKey('_ai', false, false, breakpoint)]: val,
 					})
 				}
 			/>

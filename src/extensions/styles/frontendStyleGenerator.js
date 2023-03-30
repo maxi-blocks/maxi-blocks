@@ -24,9 +24,7 @@ const getStyles = content => {
 };
 
 const getMediaQueryString = (breakpoint, media) =>
-	`@media only screen and (${
-		breakpoint !== 'xxl' ? 'max-width' : 'min-width'
-	}:${
+	`@media only screen and (${breakpoint !== 'xxl' ? 'max-width' : '_miw'}:${
 		breakpoint !== 'xxl' ? media : media + 1 // Ensures XXl doesn't affect XL
 	}px){`;
 

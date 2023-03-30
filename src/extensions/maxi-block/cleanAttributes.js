@@ -97,7 +97,7 @@ const flatSameAsPrev = (
 
 				// Covers a concrete situation where we've got XXL and XL
 				// values by default, but General is undefined. An example
-				// is Row Maxi `max-width-unit` attribute.
+				// is Row Maxi `max-width.u` attribute.
 				if (key in newAttributes && isNil(generalDefaultValue)) {
 					result[key] = undefined;
 
@@ -545,7 +545,7 @@ const flatLowerAttr = (
 			if (isEqual(value, attribute)) {
 				// Covers a concrete situation where we've got XXL and XL
 				// values by default, but General is undefined. An example
-				// is Row Maxi `max-width-unit` attribute.
+				// is Row Maxi `max-width.u` attribute.
 				if (label in newAttributes && isGeneral) {
 					const generalDefaultValue =
 						defaultAttributes?.[generalKey] ??

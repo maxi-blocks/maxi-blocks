@@ -26,7 +26,7 @@ describe('ResponsiveControl', () => {
 			newNumber: '450',
 		});
 
-		expect(await getAttributes('breakpoints-xs')).toStrictEqual(450);
+		expect(await getAttributes('_bp-xs')).toStrictEqual(450);
 
 		await openSidebarTab(page, 'style', 'alignment');
 		await changeResponsive(page, 'xxl');
@@ -102,7 +102,7 @@ describe('ResponsiveControl', () => {
 		expect(breakpointS).toStrictEqual('855');
 
 		const attributes = await getBlockAttributes();
-		const breakpoints = attributes['breakpoints-s'];
+		const breakpoints = attributes['_bp-s'];
 
 		expect(breakpoints).toStrictEqual(855);
 

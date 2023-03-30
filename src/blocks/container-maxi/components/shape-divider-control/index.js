@@ -351,19 +351,19 @@ const ShapeDividerControl = props => {
 													}) =>
 														onChange({
 															[getAttributeKey(
-																'color',
+																'_cc',
 																false,
 																'shape-divider-top-',
 																breakpoint
 															)]: color,
 															[getAttributeKey(
-																'palette-color',
+																'_pc',
 																false,
 																'shape-divider-top-',
 																breakpoint
 															)]: paletteColor,
 															[getAttributeKey(
-																'palette-status',
+																'_ps',
 																false,
 																'shape-divider-top-',
 																breakpoint
@@ -563,19 +563,19 @@ const ShapeDividerControl = props => {
 													}) =>
 														onChange({
 															[getAttributeKey(
-																'color',
+																'_cc',
 																false,
 																'shape-divider-bottom-',
 																breakpoint
 															)]: color,
 															[getAttributeKey(
-																'palette-color',
+																'_pc',
 																false,
 																'shape-divider-bottom-',
 																breakpoint
 															)]: paletteColor,
 															[getAttributeKey(
-																'palette-status',
+																'_ps',
 																false,
 																'shape-divider-bottom-',
 																breakpoint

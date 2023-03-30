@@ -19,7 +19,7 @@ const PaddingControl = props => {
 			label={__('Padding', 'maxi-blocks')}
 			onChange={onChange}
 			breakpoint={breakpoint}
-			target='padding'
+			target='_p'
 			optionType='string'
 			disableAuto
 			enableAxisUnits

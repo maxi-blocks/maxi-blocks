@@ -28,7 +28,7 @@ const migrate = ({ newAttributes, prefix }) => {
 	delete newAttributes.blockFullWidth;
 
 	newAttributes['full-width-general'] = blockFullWidth;
-	if (prefix) newAttributes[`${prefix}full-width-general`] = fullWidth;
+	if (prefix) newAttributes[`${prefix}_fw-general`] = fullWidth;
 
 	return newAttributes;
 };
@@ -37,7 +37,7 @@ const saveMigrator = (saveInstance, props) => {
 	const { attributes } = props;
 
 	const { fullWidth, blockFullWidth } = getAttributesValue({
-		target: ['fullWidth', 'blockFullWidth'],
+		target: ['_fw', 'blockFullWidth'],
 		props: attributes,
 	});
 

@@ -28,24 +28,20 @@ const getSizeStyles = (obj, prefix = '') => {
 		const getValue = target => {
 			let fullWidthNormalStyles = {};
 
-			if (
-				target === 'width' ||
-				target === 'max-width' ||
-				target === 'min-width'
-			) {
+			if (target === '_w' || target === '_mw' || target === '_miw') {
 				const fullWidth = getLastBreakpointAttribute({
-					target: `${prefix}full-width`,
+					target: `${prefix}_fw`,
 					breakpoint,
 					attributes: obj,
 				});
 
 				if (
-					(target === 'width' || target === 'min-width') &&
+					(target === '_w' || target === '_miw') &&
 					fullWidth === 'full'
 				)
 					return null;
 
-				if (target === 'max-width') {
+				if (target === '_mw') {
 					if (fullWidth === 'full')
 						return {
 							'min-width': '100%',
@@ -55,13 +51,13 @@ const getSizeStyles = (obj, prefix = '') => {
 						.slice(0, breakpoints.indexOf(breakpoint) + 1)
 						.some(bp => {
 							const val = getAttributesValue({
-								target: 'full-width',
+								target: '_fw',
 								breakpoint: bp,
 								props: obj,
 								prefix,
 							});
 							const defaultVal = getDefaultAttribute(
-								getAttributeKey('full-width', false, prefix, bp)
+								getAttributeKey('_fw', false, prefix, bp)
 							);
 
 							return val !== defaultVal;
@@ -75,14 +71,14 @@ const getSizeStyles = (obj, prefix = '') => {
 				}
 			}
 
-			if (!obj[getAttributeKey('size-advanced-options', false, prefix)]) {
+			if (!obj[getAttributeKey('_sao', false, prefix)]) {
 				if (target.includes('min')) return null;
 				if (target.includes('max')) return fullWidthNormalStyles;
 			}
 
-			if (target === 'height') {
+			if (target === '_h') {
 				const forceAspectRatio = getLastBreakpointAttribute({
-					target: `${prefix}force-aspect-ratio`,
+					target: `${prefix}_far`,
 					breakpoint,
 					attributes: obj,
 				});
@@ -92,9 +88,9 @@ const getSizeStyles = (obj, prefix = '') => {
 				if (obj[getAttributeKey('fitParentSize')])
 					return { height: '100% !important' };
 			}
-			if (target === 'width') {
+			if (target === '_w') {
 				const fitContent = getLastBreakpointAttribute({
-					target: `${prefix}width-fit-content`,
+					target: `${prefix}_wfc`,
 					breakpoint,
 					attributes: obj,
 				});
@@ -112,7 +108,7 @@ const getSizeStyles = (obj, prefix = '') => {
 				props: obj,
 			});
 			const currentUnit = getAttributesValue({
-				target: `${target}-unit`,
+				target: `${target}.u`,
 				prefix,
 				breakpoint,
 				props: obj,
@@ -125,14 +121,14 @@ const getSizeStyles = (obj, prefix = '') => {
 					attributes: obj,
 				});
 				const unit = getLastBreakpointAttribute({
-					target: `${prefix}${target}-unit`,
+					target: `${prefix}${target}.u`,
 					breakpoint,
 					attributes: obj,
 				});
 
 				const auto =
 					prefix === 'number-counter-' &&
-					target === 'width' &&
+					target === '_w' &&
 					getAttributesValue({
 						target: 'number-counter-circle-status',
 						obj,
@@ -157,12 +153,12 @@ const getSizeStyles = (obj, prefix = '') => {
 		};
 
 		response[breakpoint] = {
-			...getValue('max-width'),
-			...getValue('width'),
-			...getValue('min-width'),
-			...getValue('max-height'),
-			...getValue('height'),
-			...getValue('min-height'),
+			...getValue('_mw'),
+			...getValue('_w'),
+			...getValue('_miw'),
+			...getValue('_mh'),
+			...getValue('_h'),
+			...getValue('_mh'),
 		};
 	});
 

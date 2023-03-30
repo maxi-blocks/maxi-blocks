@@ -15,7 +15,7 @@ import TextControl from '../text-control';
 const anchor = ({ props }) => {
 	const { attributes, maxiSetAttributes } = props;
 	const anchorLink = getAttributesValue({
-		target: 'anchorLink',
+		target: '_al',
 		props: attributes,
 	});
 
@@ -41,13 +41,14 @@ const anchor = ({ props }) => {
 				value={anchorLink}
 				onChange={anchorLink => {
 					const link = validateAnchor(anchorLink);
+
 					maxiSetAttributes({
-						anchorLink: link,
+						_al: link,
 					});
 				}}
 			/>
 		),
-		extraIndicators: ['anchorLink'],
+		extraIndicators: ['_al'],
 	};
 };
 

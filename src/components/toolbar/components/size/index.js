@@ -51,7 +51,7 @@ const Size = props => {
 	if (EXCLUDED_BLOCKS.includes(blockName)) return null;
 
 	const fullWidth = getAttributesValue({
-		target: 'full-width',
+		target: '_fw',
 		props,
 		breakpoint,
 	});
@@ -85,7 +85,7 @@ const Size = props => {
 							label={__('Width', 'maxi-blocks')}
 							enableUnit
 							unit={getLastBreakpointAttribute({
-								target: 'width-unit',
+								target: '_w-unit',
 								breakpoint,
 								attributes: props,
 							})}
@@ -95,7 +95,7 @@ const Size = props => {
 								})
 							}
 							value={getLastBreakpointAttribute({
-								target: 'width',
+								target: '_w',
 								breakpoint,
 								attributes: props,
 							})}
@@ -121,14 +121,14 @@ const Size = props => {
 						/>
 						{BLOCKS_MAX_WIDTH.includes(blockName) &&
 							getAttributesValue({
-								target: 'size-advanced-options',
+								target: '_sao',
 								props,
 							}) && (
 								<AdvancedNumberControl
 									label={__('Max width', 'maxi-blocks')}
 									enableUnit
 									unit={getLastBreakpointAttribute({
-										target: 'max-width-unit',
+										target: '_mw-unit',
 										breakpoint,
 										attributes: props,
 									})}
@@ -152,7 +152,7 @@ const Size = props => {
 										})
 									}
 									value={getLastBreakpointAttribute({
-										target: 'max-width',
+										target: '_mw',
 										breakpoint,
 										attributes: props,
 									})}

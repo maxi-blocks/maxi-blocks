@@ -40,24 +40,21 @@ const ResponsiveControl = props => {
 					defaultBreakpoints[breakpoint === 'xxl' ? 'xl' : breakpoint]
 				}
 				value={getAttributesValue({
-					target: 'breakpoints',
+					target: '_bp',
 					props,
 					breakpoint,
 				})}
 				onChangeValue={val => {
 					onChange({
-						[`breakpoints-${
-							breakpoint === 'xxl' ? 'xl' : breakpoint
-						}`]: val !== undefined && val !== '' ? val : '',
+						[`_bp-${breakpoint === 'xxl' ? 'xl' : breakpoint}`]:
+							val !== undefined && val !== '' ? val : '',
 					});
 				}}
 				min={0}
 				max={9999}
 				onReset={() =>
 					onChange({
-						[`breakpoints-${
-							breakpoint === 'xxl' ? 'xl' : breakpoint
-						}`]:
+						[`_bp-${breakpoint === 'xxl' ? 'xl' : breakpoint}`]:
 							defaultBreakpoints[
 								breakpoint === 'xxl' ? 'xl' : breakpoint
 							],

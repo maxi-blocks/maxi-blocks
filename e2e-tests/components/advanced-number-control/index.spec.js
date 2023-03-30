@@ -86,7 +86,7 @@ describe('Advanced Number Control', () => {
 	});
 	it('Checking the advanced number control max value', async () => {
 		await changeResponsive(page, 'base');
-		await openSidebarTab(page, 'style', 'height width');
+		await openSidebarTab(page, 'style', '_h width');
 
 		// px max default value
 		await editAdvancedNumberControl({
@@ -96,7 +96,7 @@ describe('Advanced Number Control', () => {
 			),
 			newNumber: '4000',
 		});
-		expect(await getAttributes('height-general')).toStrictEqual('3999');
+		expect(await getAttributes('_h-general')).toStrictEqual('3999');
 
 		// em max default value
 
@@ -114,7 +114,7 @@ describe('Advanced Number Control', () => {
 			newNumber: '9999',
 		});
 
-		expect(await getAttributes('height-general')).toStrictEqual('3999');
+		expect(await getAttributes('_h-general')).toStrictEqual('3999');
 
 		// vw max default value
 		await heightSelector.select('vw');
@@ -127,7 +127,7 @@ describe('Advanced Number Control', () => {
 			newNumber: '9999',
 		});
 
-		expect(await getAttributes('height-general')).toStrictEqual('3999');
+		expect(await getAttributes('_h-general')).toStrictEqual('3999');
 	});
 
 	it('Checking the advanced number control min value', async () => {

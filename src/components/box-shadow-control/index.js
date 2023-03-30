@@ -51,19 +51,19 @@ const BoxShadowValueControl = props => {
 
 	const minMaxSettings = {
 		px: {
-			min: type === 'blur' ? 0 : -3999,
+			min: type === '_blu' ? 0 : -3999,
 			max: 3999,
 			minRange: -1999,
 			maxRange: 1999,
 		},
 		em: {
-			min: type === 'blur' ? 0 : -999,
+			min: type === '_blu' ? 0 : -999,
 			max: 999,
 			minRange: -300,
 			maxRange: 300,
 		},
 		vw: {
-			min: type === 'blur' ? 0 : -999,
+			min: type === '_blu' ? 0 : -999,
 			max: 999,
 			minRange: -300,
 			maxRange: 300,
@@ -74,25 +74,21 @@ const BoxShadowValueControl = props => {
 		<AdvancedNumberControl
 			{...(!isToolbar && { label: __(capitalize(type), 'maxi-blocks') })}
 			value={getLastBreakpointAttribute({
-				target: `${prefix}box-shadow-${type}`,
+				target: `${prefix}bs${type}`,
 				breakpoint,
 				attributes: props,
 				isHover,
 			})}
 			defaultValue={getLastBreakpointAttribute({
-				target: `${prefix}box-shadow-${type}`,
+				target: `${prefix}bs${type}`,
 				breakpoint,
 				attributes: props,
 				isHover,
 			})}
 			onChangeValue={val => {
 				onChange({
-					[getAttributeKey(
-						`box-shadow-${type}`,
-						isHover,
-						prefix,
-						breakpoint
-					)]: val !== undefined && val !== '' ? val : '',
+					[getAttributeKey(`bs${type}`, isHover, prefix, breakpoint)]:
+						val !== undefined && val !== '' ? val : '',
 				});
 			}}
 			min={-100}
@@ -100,27 +96,23 @@ const BoxShadowValueControl = props => {
 			minMaxSettings={minMaxSettings}
 			onReset={() =>
 				onChange({
+					[getAttributeKey(`bs${type}`, isHover, prefix, breakpoint)]:
+						getDefaultAttribute(
+							getAttributeKey(
+								`bs${type}`,
+								isHover,
+								prefix,
+								breakpoint
+							)
+						),
 					[getAttributeKey(
-						`box-shadow-${type}`,
+						`bs${type}.u`,
 						isHover,
 						prefix,
 						breakpoint
 					)]: getDefaultAttribute(
 						getAttributeKey(
-							`box-shadow-${type}`,
-							isHover,
-							prefix,
-							breakpoint
-						)
-					),
-					[getAttributeKey(
-						`box-shadow-${type}-unit`,
-						isHover,
-						prefix,
-						breakpoint
-					)]: getDefaultAttribute(
-						getAttributeKey(
-							`box-shadow-${type}-unit`,
+							`bs${type}.u`,
 							isHover,
 							prefix,
 							breakpoint
@@ -130,16 +122,11 @@ const BoxShadowValueControl = props => {
 				})
 			}
 			initialPosition={getDefaultAttribute(
-				getAttributeKey(
-					`box-shadow-${type}`,
-					isHover,
-					prefix,
-					breakpoint
-				)
+				getAttributeKey(`bs${type}`, isHover, prefix, breakpoint)
 			)}
 			{...(!isToolbar && { enableUnit: true })}
 			unit={getLastBreakpointAttribute({
-				target: `${prefix}box-shadow-${type}-unit`,
+				target: `${prefix}bs${type}.u`,
 				breakpoint,
 				attributes: props,
 				isHover,
@@ -147,7 +134,7 @@ const BoxShadowValueControl = props => {
 			onChangeUnit={val =>
 				onChange({
 					[getAttributeKey(
-						`box-shadow-${type}-unit`,
+						`bs${type}.u`,
 						isHover,
 						prefix,
 						breakpoint
@@ -174,24 +161,23 @@ const BoxShadowControl = props => {
 		disableInset = false,
 	} = props;
 
-	const boxShadowItems = ['horizontal', 'vertical', 'blur'];
-	!dropShadow && boxShadowItems.push('spread');
+	const boxShadowItems = ['_ho', '_v', '_blu']; // horizontal, vertical, blur
+	!dropShadow && boxShadowItems.push('_sp'); // spread
 
 	const onChangeDefault = defaultProp => {
 		const response = {};
 
-		defaultProp[
-			getAttributeKey('box-shadow-palette-color', false, prefix)
-		] = getLastBreakpointAttribute({
-			target: `${prefix}box-shadow-palette-color`,
-			breakpoint,
-			attributes: props,
-			isHover,
-		});
-
-		defaultProp[getAttributeKey('box-shadow-color', false, prefix)] =
+		defaultProp[getAttributeKey('bs_pc', false, prefix)] =
 			getLastBreakpointAttribute({
-				target: `${prefix}box-shadow-color`,
+				target: `${prefix}bs_pc`,
+				breakpoint,
+				attributes: props,
+				isHover,
+			});
+
+		defaultProp[getAttributeKey('bs_cc', false, prefix)] =
+			getLastBreakpointAttribute({
+				target: `${prefix}bs_cc`,
 				breakpoint,
 				attributes: props,
 				isHover,
@@ -206,15 +192,15 @@ const BoxShadowControl = props => {
 
 	const getIsActive = typeObj => {
 		const items = [
-			`${prefix}box-shadow-palette-opacity`,
-			`${prefix}box-shadow-horizontal`,
-			`${prefix}box-shadow-horizontal-unit`,
-			`${prefix}box-shadow-vertical`,
-			`${prefix}box-shadow-vertical-unit`,
-			`${prefix}box-shadow-blur`,
-			`${prefix}box-shadow-blur-unit`,
-			`${prefix}box-shadow-spread`,
-			`${prefix}box-shadow-spread-unit`,
+			`${prefix}bs_po`,
+			`${prefix}bs_ho`,
+			`${prefix}bs_ho.u`,
+			`${prefix}bs_v`,
+			`${prefix}bs_v.u`,
+			`${prefix}bs_blu`,
+			`${prefix}bs_blu.u`,
+			`${prefix}bs_sp`,
+			`${prefix}bs_sp.u`,
 		];
 
 		const isActive = !items.some(item => {
@@ -292,33 +278,33 @@ const BoxShadowControl = props => {
 					<div className='maxi-shadow-control__icon'>
 						<Icon icon={boxShadow} />
 					</div>
-					<BoxShadowValueControl type='spread' isToolbar {...props} />
+					<BoxShadowValueControl type='_sp' isToolbar {...props} />
 				</>
 			)}
 			<ColorControl
 				label={__(label, 'maxi-blocks')}
 				className='maxi-shadow-control__color'
 				color={getLastBreakpointAttribute({
-					target: `${prefix}box-shadow-color`,
+					target: `${prefix}bs_cc`,
 					breakpoint,
 					attributes: props,
 					isHover,
 				})}
 				prefix={`${prefix}box-shadow-`}
 				paletteStatus={getLastBreakpointAttribute({
-					target: `${prefix}box-shadow-palette-status`,
+					target: `${prefix}bs_ps`,
 					breakpoint,
 					attributes: props,
 					isHover,
 				})}
 				paletteColor={getLastBreakpointAttribute({
-					target: `${prefix}box-shadow-palette-color`,
+					target: `${prefix}bs_pc`,
 					breakpoint,
 					attributes: props,
 					isHover,
 				})}
 				paletteOpacity={getLastBreakpointAttribute({
-					target: `${prefix}box-shadow-palette-opacity`,
+					target: `${prefix}bs_po`,
 					breakpoint,
 					attributes: props,
 					isHover,
@@ -327,22 +313,22 @@ const BoxShadowControl = props => {
 					onChangeInline &&
 						onChangeInline({
 							'box-shadow': `${getLastBreakpointAttribute({
-								target: `${prefix}box-shadow-horizontal`,
+								target: `${prefix}bs_ho`,
 								breakpoint,
 								attributes: props,
 								isHover,
 							})}px ${getLastBreakpointAttribute({
-								target: `${prefix}box-shadow-vertical`,
+								target: `${prefix}bs_v`,
 								breakpoint,
 								attributes: props,
 								isHover,
 							})}px ${getLastBreakpointAttribute({
-								target: `${prefix}box-shadow-blur`,
+								target: `${prefix}bs_blu`,
 								breakpoint,
 								attributes: props,
 								isHover,
 							})}px ${getLastBreakpointAttribute({
-								target: `${prefix}box-shadow-spread`,
+								target: `${prefix}bs_sp`,
 								breakpoint,
 								attributes: props,
 								isHover,
@@ -357,25 +343,25 @@ const BoxShadowControl = props => {
 				}) => {
 					onChange({
 						[getAttributeKey(
-							'color',
+							'_cc',
 							isHover,
 							`${prefix}box-shadow-`,
 							breakpoint
 						)]: color,
 						[getAttributeKey(
-							'palette-status',
+							'_ps',
 							isHover,
 							`${prefix}box-shadow-`,
 							breakpoint
 						)]: paletteStatus,
 						[getAttributeKey(
-							'palette-color',
+							'_pc',
 							isHover,
 							`${prefix}box-shadow-`,
 							breakpoint
 						)]: paletteColor,
 						[getAttributeKey(
-							'palette-opacity',
+							'_po',
 							isHover,
 							`${prefix}box-shadow-`,
 							breakpoint
@@ -395,7 +381,7 @@ const BoxShadowControl = props => {
 						<ToggleSwitch
 							label={__('Inset', 'maxi-block')}
 							selected={getLastBreakpointAttribute({
-								target: `${prefix}box-shadow-inset`,
+								target: `${prefix}bs_in`,
 								breakpoint,
 								attributes: props,
 								isHover,
@@ -403,7 +389,7 @@ const BoxShadowControl = props => {
 							onChange={val =>
 								onChange({
 									[getAttributeKey(
-										'box-shadow-inset',
+										'bs_in',
 										isHover,
 										prefix,
 										breakpoint

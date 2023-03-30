@@ -47,7 +47,7 @@ const typography = ({
 		[`${prefix}typography-status-hover`]: typographyHoverStatus,
 	} = getAttributesValue({
 		target: [
-			'blockStyle',
+			'_bs',
 			'textLevel',
 			'isList',
 			`${prefix}typography-status-hover`,

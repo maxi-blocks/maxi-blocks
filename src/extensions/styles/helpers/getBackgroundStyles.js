@@ -525,7 +525,7 @@ const getWrapperObject = ({
 		[breakpoint]: {},
 	};
 
-	['width', 'height'].forEach(size => {
+	['_w', '_h'].forEach(size => {
 		const bgSize = getLastBreakpointAttribute({
 			target: `${prefix}${size}`,
 			breakpoint,
@@ -535,7 +535,7 @@ const getWrapperObject = ({
 
 		if (isNumber(bgSize)) {
 			const bgSVGSizeUnit = getLastBreakpointAttribute({
-				target: `${prefix}${size}-unit`,
+				target: `${prefix}${size}.u`,
 				breakpoint,
 				attributes: props,
 				isHover,
@@ -549,13 +549,10 @@ const getWrapperObject = ({
 
 	keyWords.forEach(keyWord => {
 		const {
-			[`${prefix}position-${keyWord}`]: positionValue,
-			[`${prefix}position-${keyWord}-unit`]: positionUnit,
+			[`${prefix}_pos${keyWord}`]: positionValue,
+			[`${prefix}_pos${keyWord}.u`]: positionUnit,
 		} = getLastBreakpointAttribute({
-			target: [
-				`${prefix}position-${keyWord}`,
-				`${prefix}position-${keyWord}-unit`,
-			],
+			target: [`${prefix}_pos${keyWord}`, `${prefix}_pos${keyWord}.u`],
 			breakpoint,
 			attributes: props,
 			isHover,
@@ -1183,13 +1180,13 @@ export const getBlockBackgroundStyles = ({
 
 	const layers = compact([
 		...getAttributesValue({
-			target: 'background-layers',
+			target: 'b_ly',
 			props,
 			prefix,
 		}),
 		...(isHover && [
 			...getAttributesValue({
-				target: 'background-layers',
+				target: 'b_ly',
 				props,
 				prefix,
 				isHover,

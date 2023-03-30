@@ -98,13 +98,13 @@ const transition = {
 			title: 'Border',
 			target: boxClass,
 			property: ['border', 'border-radius'],
-			hoverProp: `${prefix}border-status-hover`,
+			hoverProp: `${prefix}bo.sh`,
 		},
 		'box shadow': {
 			title: 'Box shadow',
 			target: boxClass,
 			property: 'box-shadow',
-			hoverProp: `${prefix}box-shadow-status-hover`,
+			hoverProp: `${prefix}bs.sh`,
 		},
 	},
 };

@@ -44,7 +44,7 @@ const TitleSettings = props => {
 				<ColorControl
 					label={__('Title background', 'maxi-blocks')}
 					color={getAttributesValue({
-						target: 'color',
+						target: '_cc',
 						props,
 						isHover,
 						prefix: bgPrefix,
@@ -52,21 +52,21 @@ const TitleSettings = props => {
 					})}
 					prefix={bgPrefix}
 					paletteColor={getAttributesValue({
-						target: 'palette-color',
+						target: '_pc',
 						props,
 						isHover,
 						prefix: bgPrefix,
 						breakpoint,
 					})}
 					paletteOpacity={getAttributesValue({
-						target: 'palette-opacity',
+						target: '_po',
 						props,
 						isHover,
 						prefix: bgPrefix,
 						breakpoint,
 					})}
 					paletteStatus={getAttributesValue({
-						target: 'palette-status',
+						target: '_ps',
 						props,
 						isHover,
 						prefix: bgPrefix,
@@ -80,25 +80,25 @@ const TitleSettings = props => {
 					}) =>
 						onChange({
 							[getAttributeKey(
-								'palette-status',
+								'_ps',
 								isHover,
 								bgPrefix,
 								breakpoint
 							)]: paletteStatus,
 							[getAttributeKey(
-								'palette-color',
+								'_pc',
 								isHover,
 								bgPrefix,
 								breakpoint
 							)]: paletteColor,
 							[getAttributeKey(
-								'palette-opacity',
+								'_po',
 								isHover,
 								bgPrefix,
 								breakpoint
 							)]: paletteOpacity,
 							[getAttributeKey(
-								'color',
+								'_cc',
 								isHover,
 								bgPrefix,
 								breakpoint

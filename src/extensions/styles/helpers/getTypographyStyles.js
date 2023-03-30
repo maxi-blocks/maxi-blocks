@@ -76,8 +76,8 @@ const getTypographyStyles = ({
 
 	const getColorString = breakpoint => {
 		const paletteStatus = getPaletteColorStatus(breakpoint);
-		const paletteColor = getValue('palette-color', breakpoint);
-		const paletteOpacity = getValue('palette-opacity', breakpoint);
+		const paletteColor = getValue('_pc', breakpoint);
+		const paletteOpacity = getValue('_po', breakpoint);
 
 		if (paletteStatus && (!isHover || hoverStatus || globalHoverStatus))
 			return {
@@ -103,7 +103,7 @@ const getTypographyStyles = ({
 				}),
 			};
 
-		const color = getValue('color', breakpoint);
+		const color = getValue('_cc', breakpoint);
 		return {
 			...(!isNil(color) && {
 				color,

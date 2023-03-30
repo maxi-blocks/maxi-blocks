@@ -40,7 +40,7 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 
 	previousWidthAttribute.current = toNumber(
 		getLastBreakpointAttribute({
-			target: 'width',
+			target: '_w',
 			breakpoint: deviceType,
 			attributes,
 		})
@@ -51,7 +51,7 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 	if (!shouldDisplayComponent()) return null;
 
 	const { uniqueID, imgWidth } = getAttributesValue({
-		target: ['uniqueID', 'imgWidth'],
+		target: ['_uid', 'imgWidth'],
 		props: attributes,
 	});
 
@@ -60,7 +60,7 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 
 		if (
 			getLastBreakpointAttribute({
-				target: 'width-fit-content',
+				target: '_wfc',
 				breakpoint: deviceType,
 				attributes,
 			})
@@ -71,7 +71,7 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 			const blockRefWidth = ref.current.getBoundingClientRect().width;
 			const widthAttribute = toNumber(
 				getLastBreakpointAttribute({
-					target: 'width',
+					target: '_w',
 					breakpoint: deviceType,
 					attributes,
 				})
@@ -95,7 +95,7 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 				? (imgWidth / 100) * containerWidth
 				: toNumber(
 						getLastBreakpointAttribute({
-							target: `${prefix}width`,
+							target: `${prefix}_w`,
 							breakpoint: deviceType,
 							attributes,
 						})

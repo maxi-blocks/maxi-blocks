@@ -28,6 +28,6 @@ describe('CustomLabel', () => {
 		await page.keyboard.type('Column');
 		await page.waitForTimeout(150);
 
-		expect(await getAttributes('extraClassName')).toStrictEqual('Column');
+		expect(await getAttributes('_ecn')).toStrictEqual('Column');
 	});
 });

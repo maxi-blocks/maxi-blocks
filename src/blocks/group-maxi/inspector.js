@@ -91,9 +91,7 @@ const Inspector = props => {
 										categories,
 									}),
 									...inspectorTabs.transition({
-										props: {
-											...props,
-										},
+										props,
 										selectors,
 									}),
 									...inspectorTabs.display({

@@ -84,9 +84,9 @@ const getHoverWrapperObject = props => {
 	const {
 		'border-status': borderStatusHover,
 		'box-shadow-status': boxShadowStatusHover,
-		'opacity-status': opacityStatusHover,
+		'_o.s': opacityStatusHover,
 	} = getAttributesValue({
-		target: ['border-status', 'box-shadow-status', 'opacity-status'],
+		target: ['border-status', 'box-shadow-status', '_o.s'],
 		props,
 		isHover: true,
 	});
@@ -144,7 +144,7 @@ const getBoxObject = props => {
 		'number-counter-'
 	);
 	Object.entries(size).forEach(([key, val]) => {
-		if (key.includes('min-width') && !val)
+		if (key.includes('_miw') && !val)
 			size[key] = fontSize * (endCountValue.toString().length - 1);
 	});
 

@@ -28,13 +28,11 @@ const getKey = key => {
 };
 
 export const getTransformSelectors = (selectors, attributes = {}) => {
-	const {
-		'background-layers': bgLayers = [],
-		'background-layers-hover': bgLayersHover = [],
-	} = getAttributesValue({
-		target: ['background-layers', 'background-layers-hover'],
-		props: attributes,
-	});
+	const { b_ly: bgLayers = [], 'b_ly.h': bgLayersHover = [] } =
+		getAttributesValue({
+			target: ['b_ly', 'b_ly.h'],
+			props: attributes,
+		});
 
 	const bgLayersSelectors = getBgLayersSelectorsCss(
 		[...bgLayers, ...bgLayersHover],
@@ -84,13 +82,11 @@ export const getTransformSelectors = (selectors, attributes = {}) => {
 };
 
 export const getTransformCategories = (categories, attributes) => {
-	const {
-		'background-layers': bgLayers = [],
-		'background-layers-hover': bgLayersHover = [],
-	} = getAttributesValue({
-		target: ['background-layers', 'background-layers-hover'],
-		props: attributes,
-	});
+	const { b_ly: bgLayers = [], 'b_ly.h': bgLayersHover = [] } =
+		getAttributesValue({
+			target: ['b_ly', 'b_ly.h'],
+			props: attributes,
+		});
 
 	const bgLayersSelectors = getBgLayersSelectorsCss(
 		[...bgLayers, ...bgLayersHover],

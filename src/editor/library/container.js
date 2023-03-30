@@ -603,7 +603,7 @@ const LibraryContainer = props => {
 			uniqueID,
 			mediaID,
 			mediaURL,
-			'background-layers': bgLayers,
+			b_ly: bgLayers,
 		} = select('core/block-editor').getBlockAttributes(clientId);
 
 		if (isValidTemplate(svgCode)) {

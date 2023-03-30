@@ -108,7 +108,7 @@ class edit extends MaxiBlockComponent {
 				});
 
 				let newContent = svgCode
-					.replace('height="64px"', '')
+					.replace('_h="64px"', '')
 					.replace('width="64px"', '');
 
 				if (newContent.indexOf('viewBox') === -1) {

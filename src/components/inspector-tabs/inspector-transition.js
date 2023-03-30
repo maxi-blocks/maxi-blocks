@@ -41,11 +41,8 @@ const TransitionControlWrapper = props => {
 		isOneType,
 		transitionData,
 	} = props;
-	const {
-		'transition-change-all': transitionChangeAll,
-		[`transition-${type}-selected`]: transitionTypeSelect,
-	} = getAttributesValue({
-		target: ['transition-change-all', `transition-${type}-selected`],
+	const [transitionChangeAll, transitionTypeSelect] = getAttributesValue({
+		target: ['_tca', `_t-${type}-selected`],
 		props: attributes,
 	});
 
@@ -56,8 +53,7 @@ const TransitionControlWrapper = props => {
 
 	const selectedTransition = transition[type][selected];
 	const defaultTransition =
-		getDefaultAttribute('transition')?.[type]?.[selected] ||
-		createTransitionObj();
+		getDefaultAttribute('_t')?.[type]?.[selected] || createTransitionObj();
 
 	const getDefaultTransitionAttribute = prop =>
 		defaultTransition[`${prop}-${deviceType}`];
@@ -70,40 +66,32 @@ const TransitionControlWrapper = props => {
 		};
 
 		if (transitionChangeAll) {
-			Object.keys(attributes?.transition).forEach(currentType => {
-				newObj.transition[currentType] = {};
+			Object.keys(attributes?._t).forEach(currentType => {
+				newObj._t[currentType] = {};
 
-				Object.keys(attributes.transition?.[currentType]).forEach(
-					key => {
-						newObj.transition[currentType][key] = {
-							...attributes.transition[currentType][key],
-							...(splitMode === 'out'
-								? {
-										out: {
-											...attributes.transition[
-												currentType
-											][key].out,
-											...attributes.transition[type][
-												selected
-											].out,
-											...obj,
-										},
-								  }
-								: {
-										...attributes.transition[type][
-											selected
-										],
+				Object.keys(attributes._t?.[currentType]).forEach(key => {
+					newObj._t[currentType][key] = {
+						...attributes._t[currentType][key],
+						...(splitMode === 'out'
+							? {
+									out: {
+										...attributes._t[currentType][key].out,
+										...attributes._t[type][selected].out,
 										...obj,
-								  }),
-						};
-					}
-				);
+									},
+							  }
+							: {
+									...attributes._t[type][selected],
+									...obj,
+							  }),
+					};
+				});
 			});
 		} else {
-			newObj.transition = {
-				...attributes?.transition,
+			newObj._t = {
+				...attributes?._t,
 				[type]: {
-					...(attributes?.transition?.[type] || []),
+					...(attributes?._t?.[type] || []),
 					[selected]: {
 						...selectedTransition,
 						...(splitMode === 'out'
@@ -131,7 +119,7 @@ const TransitionControlWrapper = props => {
 		return {
 			...getGroupAttributes(attributes, 'transition'),
 			...Object.entries(attributes).reduce((acc, [key, value]) => {
-				if (key.startsWith('transition-') && key.includes('selected')) {
+				if (key.startsWith('_t') && key.includes('selected')) {
 					acc[key] = value;
 				}
 
@@ -168,14 +156,14 @@ const TransitionControlWrapper = props => {
 					]}
 					onChange={val => {
 						maxiSetAttributes({
-							[`transition-${type}-selected`]: val,
+							[`_t${type}-selected`]: val,
 						});
 					}}
 				/>
 			)}
 			{selected && selected !== 'none' && (
 				<TransitionControl
-					{...getTransitionAttributes(attributes, 'transition')}
+					{...getTransitionAttributes(attributes, '_t')}
 					onChange={onChangeTransition}
 					getDefaultTransitionAttribute={
 						getDefaultTransitionAttribute
@@ -205,11 +193,8 @@ const transition = ({
 	label = __('Hover transition', 'maxi-blocks'),
 }) => {
 	const { attributes, deviceType, maxiSetAttributes, name } = props;
-	const {
-		transition: rawTransition,
-		'transition-change-all': transitionChangeAll,
-	} = getAttributesValue({
-		target: ['transition', 'transition-change-all'],
+	const [rawTransition, transitionChangeAll] = getAttributesValue({
+		target: ['_t', '_tca'],
 		props: attributes,
 	});
 
@@ -244,16 +229,13 @@ const transition = ({
 
 			if (
 				isTransform &&
-				['scale', 'rotate', 'translate', 'origin'].every(
+				['_sc', '_rot', '_tr', '_ori'].every(
 					prop =>
 						!getLastBreakpointAttribute({
-							target: `transform-${prop}`,
+							target: `_t${prop}`,
 							breakpoint: deviceType,
 							attributes,
-							keys: [
-								key.replace('transform ', ''),
-								'hover-status',
-							],
+							keys: [key.replace('transform ', ''), '.sh'],
 						})
 				)
 			)
@@ -281,7 +263,7 @@ const transition = ({
 					selected={transitionChangeAll}
 					onChange={val => {
 						maxiSetAttributes({
-							'transition-change-all': val,
+							_tca: val,
 						});
 					}}
 				/>

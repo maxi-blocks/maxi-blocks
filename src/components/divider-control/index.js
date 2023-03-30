@@ -310,7 +310,7 @@ const DividerControl = props => {
 							label={__('Line size', 'maxi-blocks')}
 							enableUnit
 							unit={getLastBreakpointAttribute({
-								target: `${prefix}divider-width-unit`,
+								target: `${prefix}divider-width.u`,
 								breakpoint,
 								attributes: props,
 								isHover,
@@ -369,7 +369,7 @@ const DividerControl = props => {
 							enableUnit
 							allowedUnits={['px', 'em', 'vw']}
 							unit={getLastBreakpointAttribute({
-								target: `${prefix}divider-border-top-unit`,
+								target: `${prefix}divider-border-top.u`,
 								breakpoint,
 								attributes: props,
 								isHover,

@@ -21,7 +21,7 @@ const relation = ({ props, isButton = false }) => {
 				isButton={isButton}
 			/>
 		),
-		indicatorProps: ['relations'],
+		indicatorProps: ['_r'],
 	};
 };
 

@@ -43,7 +43,7 @@ describe('BackgroundControl', () => {
 		await selector.select('radial-gradient');
 
 		const layerExpect = await getBlockAttributes();
-		expect(layerExpect['background-layers']).toMatchSnapshot();
+		expect(layerExpect.b_ly).toMatchSnapshot();
 
 		await sizeAndPositionChecker({ page });
 
@@ -121,7 +121,7 @@ describe('BackgroundControl', () => {
 		await sizeAndPositionChecker({ page, breakpoint: 'm', isHover: true });
 
 		const layerExpect = await getBlockAttributes();
-		expect(layerExpect['background-layers']).toMatchSnapshot();
+		expect(layerExpect.b_ly).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 	it('Check Background Gradient layer display', async () => {

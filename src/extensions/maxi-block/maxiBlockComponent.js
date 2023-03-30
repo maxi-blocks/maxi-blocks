@@ -106,7 +106,7 @@ class MaxiBlockComponent extends Component {
 
 		const { attributes } = this.props;
 		const uniqueID = getAttributesValue({
-			target: 'uniqueID',
+			target: '_uid',
 			props: attributes,
 		});
 
@@ -150,7 +150,7 @@ class MaxiBlockComponent extends Component {
 
 		if (this.isReusable) {
 			const uniqueID = getAttributesValue({
-				target: 'uniqueID',
+				target: '_uid',
 				props: this.props.attributes,
 			});
 
@@ -181,7 +181,7 @@ class MaxiBlockComponent extends Component {
 
 			if (!isEqual(this.state.oldSC, SC)) {
 				const blockStyle = getAttributesValue({
-					target: 'blockStyle',
+					target: '_bs',
 					props: this.props.attributes,
 				});
 
@@ -248,7 +248,7 @@ class MaxiBlockComponent extends Component {
 		// For render styles when there's no <style> element for the block
 		// Normally happens when duplicate the block
 		const uniqueID = getAttributesValue({
-			target: 'uniqueID',
+			target: '_uid',
 			props: this.props.attributes,
 		});
 		if (
@@ -282,7 +282,7 @@ class MaxiBlockComponent extends Component {
 
 	componentWillUnmount() {
 		const uniqueID = getAttributesValue({
-			target: 'uniqueID',
+			target: '_uid',
 			props: this.props.attributes,
 		});
 
@@ -298,7 +298,7 @@ class MaxiBlockComponent extends Component {
 				const { attributes, innerBlocks } = block;
 
 				const blockUniqueID = getAttributesValue({
-					target: 'uniqueID',
+					target: '_uid',
 					props: attributes,
 				});
 
@@ -381,10 +381,10 @@ class MaxiBlockComponent extends Component {
 	get getCustomData() {
 		const {
 			uniqueID,
-			'background-layers': bgLayers,
+			b_ly: bgLayers,
 			relations: relationsRaw,
 		} = getAttributesValue({
-			target: ['uniqueID', 'background-layers', 'relations'],
+			target: ['_uid', 'b_ly', 'relations'],
 			props: this.props.attributes,
 		});
 
@@ -419,15 +419,14 @@ class MaxiBlockComponent extends Component {
 	getCurrentBlockStyle() {
 		const { clientId, attributes } = this.props;
 		const blockStyle = getAttributesValue({
-			target: 'blockStyle',
+			target: '_bs',
 			props: attributes,
 		});
 
 		const newBlockStyle = getBlockStyle(clientId);
 
 		if (blockStyle !== newBlockStyle) {
-			this.props.attributes[getAttributeKey('blockStyle')] =
-				newBlockStyle;
+			this.props.attributes[getAttributeKey('_bs')] = newBlockStyle;
 
 			return true;
 		}
@@ -442,11 +441,10 @@ class MaxiBlockComponent extends Component {
 			getIsUniqueIDRepeated(idToCheck) ||
 			!uniqueIDStructureChecker(idToCheck, clientId)
 		) {
-			const { 'background-layers': bgLayers, customLabel } =
-				getAttributesValue({
-					target: ['background-layers', 'customLabel'],
-					props: this.props.attributes,
-				});
+			const { b_ly: bgLayers, customLabel } = getAttributesValue({
+				target: ['b_ly', 'customLabel'],
+				props: this.props.attributes,
+			});
 
 			const newUniqueID = uniqueIDGenerator({
 				blockName,
@@ -456,9 +454,11 @@ class MaxiBlockComponent extends Component {
 
 			propagateNewUniqueID(idToCheck, newUniqueID, bgLayers);
 
-			this.props.attributes[getAttributeKey('uniqueID')] = newUniqueID;
-			this.props.attributes[getAttributeKey('customLabel')] =
-				getCustomLabel(customLabel, newUniqueID);
+			this.props.attributes._uid = newUniqueID;
+			this.props.attributes._cl = getCustomLabel(
+				customLabel,
+				newUniqueID
+			);
 
 			if (this.maxiBlockDidChangeUniqueID)
 				this.maxiBlockDidChangeUniqueID(newUniqueID);
@@ -475,7 +475,7 @@ class MaxiBlockComponent extends Component {
 		const target = getIsSiteEditor() ? getSiteEditorIframe() : document;
 		if (!target) return;
 
-		const response = getAllFonts(this.typography, 'custom-formats');
+		const response = getAllFonts(this.typography, '_cf');
 		if (isEmpty(response)) return;
 
 		loadFonts(response, true, target);
@@ -490,7 +490,7 @@ class MaxiBlockComponent extends Component {
 		const breakpoints = this.getBreakpoints;
 
 		const oldUniqueID = getAttributesValue({
-			target: 'uniqueID',
+			target: '_uid',
 			props: this.props.attributes,
 		});
 		const uniqueID = rawUniqueID ?? oldUniqueID;
@@ -654,7 +654,7 @@ class MaxiBlockComponent extends Component {
 
 	removeStyles() {
 		const uniqueID = getAttributesValue({
-			target: 'uniqueID',
+			target: '_uid',
 			props: this.props.attributes,
 		});
 

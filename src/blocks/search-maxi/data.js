@@ -219,19 +219,19 @@ const transition = {
 			title: 'Border',
 			target: ['', ' > .maxi-background-displayer'],
 			property: ['border', 'top', 'left'],
-			hoverProp: 'border-status-hover',
+			hoverProp: 'bo.sh',
 		},
 		'box shadow': {
 			title: 'Box shadow',
 			target: '',
 			property: 'box-shadow',
-			hoverProp: 'box-shadow-status-hover',
+			hoverProp: 'bs.sh',
 		},
 		opacity: {
 			title: 'Opacity',
 			target: '',
 			property: 'opacity',
-			hoverProp: 'opacity-status-hover',
+			hoverProp: '_o.sh',
 		},
 	},
 	button: {
@@ -279,7 +279,7 @@ const transition = {
 			title: 'Border',
 			target: inputClass,
 			property: ['border', 'border-radius'],
-			hoverProp: `${inputPrefix}border-status-hover`,
+			hoverProp: `${inputPrefix}bo.sh`,
 		},
 		'input background': {
 			title: 'Input background',

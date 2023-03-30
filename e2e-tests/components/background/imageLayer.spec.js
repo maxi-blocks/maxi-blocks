@@ -92,7 +92,7 @@ describe('BackgroundControl', () => {
 		await sizeAndPositionChecker({ page });
 
 		const layerExpect = await getBlockAttributes();
-		expect(layerExpect['background-layers']).toMatchSnapshot();
+		expect(layerExpect.b_ly).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
@@ -332,7 +332,7 @@ describe('BackgroundControl', () => {
 		await sizeAndPositionChecker({ page, isHover: true });
 
 		const layerExpect = await getBlockAttributes();
-		expect(layerExpect['background-layers']).toMatchSnapshot();
+		expect(layerExpect.b_ly).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 

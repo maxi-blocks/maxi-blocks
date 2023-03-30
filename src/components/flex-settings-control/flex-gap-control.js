@@ -44,18 +44,14 @@ const GapAxisControl = props => {
 			label={__(label, 'maxi-blocks')}
 			enableUnit
 			unit={getLastBreakpointAttribute({
-				target: `${target}-unit`,
+				target: `${target}.u`,
 				breakpoint,
 				attributes: props,
 			})}
 			onChangeUnit={val => {
 				onChange({
-					[getAttributeKey(
-						`${target}-unit`,
-						false,
-						false,
-						breakpoint
-					)]: val,
+					[getAttributeKey(`${target}.u`, false, false, breakpoint)]:
+						val,
 				});
 			}}
 			value={getLastBreakpointAttribute({
@@ -75,19 +71,15 @@ const GapAxisControl = props => {
 						getDefaultAttribute(
 							getAttributeKey(target, false, false, breakpoint)
 						),
-					[getAttributeKey(
-						`${target}-unit`,
-						false,
-						false,
-						breakpoint
-					)]: getDefaultAttribute(
-						getAttributeKey(
-							`${target}-unit`,
-							false,
-							false,
-							breakpoint
-						)
-					),
+					[getAttributeKey(`${target}.u`, false, false, breakpoint)]:
+						getDefaultAttribute(
+							getAttributeKey(
+								`${target}.u`,
+								false,
+								false,
+								breakpoint
+							)
+						),
 					isReset: true,
 				})
 			}

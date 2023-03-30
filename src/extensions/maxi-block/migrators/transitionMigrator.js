@@ -78,7 +78,7 @@ const migrate = newAttributes => {
 			Object.keys(transitionSelectors[selector]).forEach(key => {
 				if (key in newAttributes.transition[selector])
 					newAttributes.transition[selector][key] =
-						getDefaultAttribute('transition')?.[selector]?.[key] ||
+						getDefaultAttribute('_t')?.[selector]?.[key] ||
 						createTransitionObj();
 			});
 		}

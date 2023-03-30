@@ -61,7 +61,8 @@ const getDefaultAttribute = (
 
 	if (!isMaxiBlock) return response;
 
-	const prop = parseLongAttrKey(rawProp);
+	// const prop = parseLongAttrKey(rawProp);
+	const prop = rawProp;
 
 	// Check default value on block
 	response = getBlockAttributes(blockName)[prop];

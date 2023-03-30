@@ -20,7 +20,7 @@ class Relation {
 
 		this.defaultTransition = window
 			.getComputedStyle(this.targetEl)
-			.getPropertyValue('transition');
+			.getPropertyValue('_t');
 
 		this.breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 		this.hasMultipleTargetsArray = this.css.map(item =>

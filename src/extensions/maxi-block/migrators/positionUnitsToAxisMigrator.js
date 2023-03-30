@@ -16,7 +16,7 @@ const name = 'Position Axis Units';
 
 const getOldUnits = attributes =>
 	breakpoints.map(bp => ({
-		[`position-unit-${bp}`]: attributes[`position-unit-${bp}`],
+		[`_pos-unit-${bp}`]: attributes[`_pos-unit-${bp}`],
 	}));
 
 const getAttrsToChange = attributes =>
@@ -54,7 +54,7 @@ const isEligible = blockAttributes => {
 			return unitChecker(attrKey, attrVal);
 		}
 
-		if (attrKey.includes('background-layers') && !isEmpty(attrVal)) {
+		if (attrKey.includes('b_ly') && !isEmpty(attrVal)) {
 			return attrVal.some(layer => {
 				if (layer.type === 'shape') {
 					return Object.entries(layer).some(([key, val]) => {
@@ -89,7 +89,7 @@ const migrate = newAttributes => {
 	Object.entries(attrsToChange).forEach(([key, val]) => {
 		migratePositionAttributes(key, val, newAttributes, attributes);
 
-		if (key.includes('background-layers') && !isEmpty(val)) {
+		if (key.includes('b_ly') && !isEmpty(val)) {
 			val.forEach(layer => {
 				Object.entries(layer).forEach(([key, val]) => {
 					migratePositionAttributes(key, val, layer, attributes);

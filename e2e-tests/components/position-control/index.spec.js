@@ -19,11 +19,7 @@ describe('PositionControl', () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
 
-		const accordionPanel = await openSidebarTab(
-			page,
-			'advanced',
-			'position'
-		);
+		const accordionPanel = await openSidebarTab(page, 'advanced', '_pos');
 		const selectPosition = await accordionPanel.$(
 			'.maxi-position-control .maxi-base-control__field select'
 		);
@@ -184,11 +180,7 @@ describe('PositionControl', () => {
 	it('Check position static and sticky', async () => {
 		await changeResponsive(page, 'base');
 
-		const accordionPanel = await openSidebarTab(
-			page,
-			'advanced',
-			'position'
-		);
+		const accordionPanel = await openSidebarTab(page, 'advanced', '_pos');
 
 		const selectPosition = await accordionPanel.$(
 			'.maxi-position-control .maxi-base-control__field select'

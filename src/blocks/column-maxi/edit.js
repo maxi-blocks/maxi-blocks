@@ -94,13 +94,13 @@ class edit extends MaxiBlockComponent {
 			target: null,
 			breakpoint: deviceType,
 			attributes: columnValues,
-			keys: ['width'],
+			keys: ['_w'],
 		});
 	}
 
 	getHeight() {
 		const forceAspectRatio = getLastBreakpointAttribute({
-			target: 'force-aspect-ratio',
+			target: '_far',
 			breakpoint: this.props.deviceType || 'general',
 			attributes: this.props.attributes,
 		});
@@ -108,14 +108,14 @@ class edit extends MaxiBlockComponent {
 		if (forceAspectRatio) return 'auto';
 
 		const columnHeightAttribute = getLastBreakpointAttribute({
-			target: 'height',
+			target: '_h',
 			breakpoint: this.props.deviceType || 'general',
 			attributes: this.props.attributes,
 		});
 
 		if (columnHeightAttribute)
 			return `${columnHeightAttribute}${getLastBreakpointAttribute({
-				target: 'height-unit',
+				target: '_h-unit',
 				breakpoint: this.props.deviceType || 'general',
 				attributes: this.props.attributes,
 			})}`;
@@ -181,7 +181,7 @@ class edit extends MaxiBlockComponent {
 			clientId,
 		} = this.props;
 		const uniqueID = getAttributesValue({
-			target: 'uniqueID',
+			target: '_uid',
 			props: attributes,
 		});
 
@@ -239,7 +239,7 @@ class edit extends MaxiBlockComponent {
 							'maxi-column-block__resizer',
 							`maxi-column-block__resizer__${uniqueID}`,
 							getLastBreakpointAttribute({
-								target: 'display',
+								target: 'd-',
 								breakpoint: deviceType,
 								attributes,
 								isHover: false,

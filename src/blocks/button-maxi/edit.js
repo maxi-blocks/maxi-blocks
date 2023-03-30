@@ -98,7 +98,7 @@ class edit extends MaxiBlockComponent {
 			'dc-content': dcContent,
 		} = getAttributesValue({
 			target: [
-				'uniqueID',
+				'_uid',
 				'icon-position',
 				'icon-only',
 				'icon-content',

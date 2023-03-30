@@ -69,18 +69,18 @@ const IconColor = props => {
 							<ColorControl
 								label={__('Icon stroke', 'maxi-blocks')}
 								color={getAttributesValue({
-									target: 'color',
+									target: '_cc',
 									prefix: 'icon-stroke-',
 									props,
 								})}
 								prefix='icon-stroke-'
 								paletteColor={getAttributesValue({
-									target: 'palette-color',
+									target: '_pc',
 									prefix: 'icon-stroke-',
 									props,
 								})}
 								paletteStatus={getAttributesValue({
-									target: 'palette-status',
+									target: '_ps',
 									prefix: 'icon-stroke-',
 									props,
 								})}
@@ -99,7 +99,7 @@ const IconColor = props => {
 										firstVar: 'icon-stroke',
 										secondVar: `color-${paletteColor}`,
 										opacity: getAttributesValue({
-											target: 'palette-opacity',
+											target: '_po',
 											prefix: 'icon-stroke-',
 											props,
 										}),
@@ -109,17 +109,17 @@ const IconColor = props => {
 									onChange(
 										{
 											[getAttributeKey(
-												'color',
+												'_cc',
 												false,
 												'icon-stroke-'
 											)]: color,
 											[getAttributeKey(
-												'palette-color',
+												'_pc',
 												false,
 												'icon-stroke-'
 											)]: paletteColor,
 											[getAttributeKey(
-												'palette-status',
+												'_ps',
 												false,
 												'icon-stroke-'
 											)]: paletteStatus,
@@ -149,18 +149,18 @@ const IconColor = props => {
 							<ColorControl
 								label={__('Icon fill', 'maxi-blocks')}
 								color={getAttributesValue({
-									target: 'color',
+									target: '_cc',
 									prefix: 'icon-fill-',
 									props,
 								})}
 								prefix='icon-fill-'
 								paletteColor={getAttributesValue({
-									target: 'palette-color',
+									target: '_pc',
 									prefix: 'icon-fill-',
 									props,
 								})}
 								paletteStatus={getAttributesValue({
-									target: 'palette-status',
+									target: '_ps',
 									prefix: 'icon-fill-',
 									props,
 								})}
@@ -179,7 +179,7 @@ const IconColor = props => {
 										firstVar: 'icon-fill',
 										secondVar: `color-${paletteColor}`,
 										opacity: getAttributesValue({
-											target: 'palette-opacity',
+											target: '_po',
 											prefix: 'icon-fill-',
 											props,
 										}),
@@ -189,17 +189,17 @@ const IconColor = props => {
 									onChange(
 										{
 											[getAttributeKey(
-												'color',
+												'_cc',
 												false,
 												'icon-fill-'
 											)]: color,
 											[getAttributeKey(
-												'palette-color',
+												'_pc',
 												false,
 												'icon-fill-'
 											)]: paletteColor,
 											[getAttributeKey(
-												'palette-status',
+												'_ps',
 												false,
 												'icon-fill-'
 											)]: paletteStatus,

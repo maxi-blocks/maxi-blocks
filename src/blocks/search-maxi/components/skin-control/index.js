@@ -35,7 +35,7 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 
 	const classicResetStyles = {
 		[getAttributeKey(
-			'palette-color',
+			'_pc',
 			false,
 			`${inputPrefix}background-`,
 			'general'
@@ -65,7 +65,7 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 					if (skin === 'classic') {
 						onChange({
 							[getAttributeKey(
-								'palette-color',
+								'_pc',
 								false,
 								`${inputPrefix}background-`,
 								'general'

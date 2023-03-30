@@ -41,27 +41,27 @@ class edit extends MaxiBlockComponent {
 	maxiBlockDidUpdate() {
 		if (this.resizableObject.current) {
 			const width = getLastBreakpointAttribute({
-				target: 'width',
+				target: '_w',
 				breakpoint: this.props.deviceType,
 				attributes: this.props.attributes,
 			});
 			const widthUnit = getLastBreakpointAttribute({
-				target: 'width-unit',
+				target: '_w-unit',
 				breakpoint: this.props.deviceType,
 				attributes: this.props.attributes,
 			});
 			const height = `${getLastBreakpointAttribute({
-				target: 'height',
+				target: '_h',
 				breakpoint: this.props.deviceType,
 				attributes: this.props.attributes,
 			})}${getLastBreakpointAttribute({
-				target: 'height-unit',
+				target: '_h-unit',
 				breakpoint: this.props.deviceType,
 				attributes: this.props.attributes,
 			})}`;
 
 			const forceAspectRatio = getLastBreakpointAttribute({
-				target: 'force-aspect-ratio',
+				target: '_far',
 				breakpoint: this.props.deviceType,
 				attributes: this.props.attributes,
 			});
@@ -84,27 +84,27 @@ class edit extends MaxiBlockComponent {
 	maxiBlockDidMount() {
 		if (this.resizableObject.current) {
 			const width = getLastBreakpointAttribute({
-				target: 'width',
+				target: '_w',
 				breakpoint: this.props.deviceType,
 				attributes: this.props.attributes,
 			});
 			const widthUnit = getLastBreakpointAttribute({
-				target: 'width-unit',
+				target: '_w-unit',
 				breakpoint: this.props.deviceType,
 				attributes: this.props.attributes,
 			});
 			const height = `${getLastBreakpointAttribute({
-				target: 'height',
+				target: '_h',
 				breakpoint: this.props.deviceType,
 				attributes: this.props.attributes,
 			})}${getLastBreakpointAttribute({
-				target: 'height-unit',
+				target: '_h-unit',
 				breakpoint: this.props.deviceType,
 				attributes: this.props.attributes,
 			})}`;
 
 			const forceAspectRatio = getLastBreakpointAttribute({
-				target: 'force-aspect-ratio',
+				target: '_far',
 				breakpoint: this.props.deviceType,
 				attributes: this.props.attributes,
 			});
@@ -132,7 +132,7 @@ class edit extends MaxiBlockComponent {
 			event.preventDefault();
 
 			const sizeUnit = getLastBreakpointAttribute({
-				target: 'height-unit',
+				target: '_h-unit',
 				breakpoint: deviceType,
 				attributes,
 			});
@@ -145,7 +145,7 @@ class edit extends MaxiBlockComponent {
 
 		const handleOnResizeStop = (event, direction, elt) => {
 			const sizeUnit = getLastBreakpointAttribute({
-				target: 'height-unit',
+				target: '_h-unit',
 				breakpoint: deviceType,
 				attributes,
 			});
@@ -155,7 +155,7 @@ class edit extends MaxiBlockComponent {
 					elt,
 					this.blockRef,
 					sizeUnit,
-					'height'
+					'_h'
 				),
 			});
 		};
@@ -189,11 +189,11 @@ class edit extends MaxiBlockComponent {
 				defaultSize={{
 					width: '100%',
 					height: `${getLastBreakpointAttribute({
-						target: 'height',
+						target: '_h',
 						breakpoint: deviceType,
 						attributes,
 					})}${getLastBreakpointAttribute({
-						target: 'height-unit',
+						target: '_h-unit',
 						breakpoint: deviceType,
 						attributes,
 					})}`,

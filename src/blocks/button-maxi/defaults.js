@@ -77,7 +77,7 @@ export const preset1 = {
 	'button-background-pac-general-hover': 6,
 	'button-background-pa-status-hover-general': true,
 	'button-background-status-hover': true,
-	'button-border-status-hover': false,
+	'bt-bo.sh': false,
 	'typography-status-hover': false,
 };
 
@@ -156,7 +156,7 @@ export const preset2 = {
 	'icon-padding-top-xxl': undefined,
 	// hover
 	'button-background-status-hover-general': false,
-	'button-border-status-hover': true,
+	'bt-bo.sh': true,
 	'button-border-pac-general-hover': 6,
 	'button-border-pa-status-general-hover': true,
 	'pac-general-hover': 6,
@@ -239,7 +239,7 @@ export const preset3 = {
 	'icon-padding-top-xxl': undefined,
 	// hover
 	'button-background-status-hover-general': false,
-	'button-border-status-hover': true,
+	'bt-bo.sh': true,
 	'button-border-pac-general-hover': 6,
 	'button-border-pa-status-general-hover': true,
 	'pac-general-hover': 6,
@@ -342,7 +342,7 @@ export const preset4 = {
 	'button-background-pac-general-hover': 6,
 	'button-background-pa-status-hover-general': true,
 	'button-background-status-hover': true,
-	'button-border-status-hover': false,
+	'bt-bo.sh': false,
 	'typography-status-hover': false,
 	'icon-status-hover': false,
 };
@@ -441,7 +441,7 @@ export const preset5 = {
 	'icon-border-pac-general-hover': 6,
 	'icon-stroke-pac-hover': 6,
 	'button-background-status-hover-general': false,
-	'button-border-status-hover': true,
+	'bt-bo.sh': true,
 	'button-border-pac-general-hover': 6,
 	'button-border-pa-status-general-hover': true,
 	'pac-general-hover': 6,
@@ -518,7 +518,7 @@ export const preset6 = {
 	// hover
 	'icon-status-hover': true,
 	'icon-stroke-pac-hover': 6,
-	'button-border-status-hover': false,
+	'bt-bo.sh': false,
 	'button-background-status-hover-general': false,
 	'button-background-pac-general-hover': 1,
 	'pac-general-hover': 6,
@@ -588,7 +588,7 @@ export const preset7 = {
 	'icon-padding-top-xxl': undefined,
 	// hover
 	'button-background-status-hover-general': false,
-	'button-border-status-hover': false,
+	'bt-bo.sh': false,
 	'pa-status-hover': false,
 	'typography-status-hover': false,
 	'icon-status-hover': true,
@@ -670,7 +670,7 @@ export const preset8 = {
 	'icon-stroke-xxl': 1.3,
 	// hover
 	'button-background-status-hover-general': false,
-	'button-border-status-hover': false,
+	'bt-bo.sh': false,
 	'pa-status-hover': false,
 	'typography-status-hover': false,
 	'icon-status-hover': true,
@@ -746,7 +746,7 @@ export const preset9 = {
 	'icon-stroke-xxl': 1.3,
 	// hover
 	'button-background-status-hover-general': false,
-	'button-border-status-hover': false,
+	'bt-bo.sh': false,
 	'pa-status-hover': false,
 	'typography-status-hover': false,
 	'icon-status-hover': true,
@@ -829,7 +829,7 @@ export const preset10 = {
 	'icon-stroke-xxl': 1.3,
 	// hover
 	'button-background-status-hover-general': false,
-	'button-border-status-hover': false,
+	'bt-bo.sh': false,
 	'pa-status-hover': false,
 	'typography-status-hover': false,
 	'icon-status-hover': true,
@@ -905,7 +905,7 @@ export const preset11 = {
 	'icon-stroke-xxl': 1.3,
 	// hover
 	'button-background-status-hover-general': false,
-	'button-border-status-hover': false,
+	'bt-bo.sh': false,
 	'pa-status-hover': false,
 	'typography-status-hover': false,
 	'icon-background-pac-general-hover': 6,

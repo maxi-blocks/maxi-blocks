@@ -15,7 +15,7 @@ import { getAttributesValue } from '../../extensions/attributes';
 const customClasses = ({ props }) => {
 	const { attributes, maxiSetAttributes } = props;
 	const extraClassName = getAttributesValue({
-		target: 'extraClassName',
+		target: '_ecn',
 		props: attributes,
 	});
 
@@ -34,14 +34,14 @@ const customClasses = ({ props }) => {
 				)}
 				className='maxi-additional__css-classes'
 				value={extraClassName}
-				onChange={extraClassName =>
+				onChange={_ecn =>
 					maxiSetAttributes({
-						extraClassName,
+						_ecn,
 					})
 				}
 			/>
 		),
-		extraIndicators: ['extraClassName'],
+		extraIndicators: ['_ecn'],
 	};
 };
 

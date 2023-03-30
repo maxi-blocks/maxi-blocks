@@ -49,7 +49,7 @@ export const getShapeDividerStyles = (obj, location) => {
 			}${
 				obj[
 					getAttributeKey(
-						`shape-divider-${location}-height-unit`,
+						`shape-divider-${location}-height.u`,
 						false,
 						false,
 						breakpoint

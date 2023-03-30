@@ -55,7 +55,7 @@ const getBlockStyle = (attributes, breakpoint, marginValue) => {
 			attributes,
 		});
 
-	const isFullWidth = getValue('full-width') === 'full';
+	const isFullWidth = getValue('_fw') === 'full';
 
 	if (!isFullWidth) return {};
 
@@ -72,10 +72,10 @@ const getBlockStyle = (attributes, breakpoint, marginValue) => {
 	}${marginLeftUnit}`;
 
 	// Width
-	const width = getValue('width');
-	const widthUnit = getValue('width-unit');
-	const maxWidth = getValue('max-width');
-	const maxWidthUnit = getValue('max-width-unit');
+	const width = getValue('_w');
+	const widthUnit = getValue('_w-unit');
+	const maxWidth = getValue('_mw');
+	const maxWidthUnit = getValue('_mw-unit');
 
 	return Object.entries({
 		'margin-right': `calc(${marginRightString} - ${marginValue}px) !important`,
@@ -162,7 +162,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 	// Gets if the block is full-width
 	const isFullWidth =
 		getLastBreakpointAttribute({
-			target: 'full-width',
+			target: '_fw',
 			breakpoint: extraProps.deviceType,
 			attributes: extraProps.attributes,
 		}) === 'full';
@@ -216,7 +216,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		motion['hover-type'] &&
 			motion['hover-type'] !== 'none' &&
 			`maxi-hover-effect maxi-hover-effect-${uniqueID}`,
-		getHasParallax(background['background-layers']) &&
+		getHasParallax(background.b_ly) &&
 			`maxi-bg-parallax maxi-bg-parallax-${uniqueID}`,
 		getAttributesValue({
 			target: 'number-counter-status',
@@ -334,7 +334,7 @@ const MaxiBlock = memo(
 		// In order to keep the structure that Gutenberg uses for the block,
 		// is necessary to add some inline styles to the first hierarchy blocks.
 		const isFirstOnHierarchy = getAttributesValue({
-			target: 'isFirstOnHierarchy',
+			target: '_ioh',
 			attributes,
 		});
 		const styleStr = getBlockStyle(

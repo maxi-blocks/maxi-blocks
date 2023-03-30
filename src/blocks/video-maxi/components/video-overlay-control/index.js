@@ -217,37 +217,37 @@ const VideoOverlayControl = props => {
 						className='maxi-video-overlay-control__width'
 						enableUnit
 						unit={getLastBreakpointAttribute({
-							target: `${mediaPrefix}width-unit`,
+							target: `${mediaPrefix}_w.u`,
 							breakpoint,
 							attributes: props,
 						})}
 						onChangeUnit={val =>
 							onChange({
-								[`${mediaPrefix}width-unit-${breakpoint}`]: val,
+								[`${mediaPrefix}_w-unit-${breakpoint}`]: val,
 							})
 						}
 						value={getLastBreakpointAttribute({
-							target: `${mediaPrefix}width`,
+							target: `${mediaPrefix}_w`,
 							breakpoint,
 							attributes: props,
 						})}
 						onChangeValue={val =>
 							onChange({
-								[`${mediaPrefix}width-${breakpoint}`]: val,
+								[`${mediaPrefix}_w-${breakpoint}`]: val,
 							})
 						}
 						defaultValue={getDefaultAttribute(
-							`${mediaPrefix}width-${breakpoint}`
+							`${mediaPrefix}_w-${breakpoint}`
 						)}
 						onReset={() => {
 							onChange({
-								[`${mediaPrefix}width-${breakpoint}`]:
+								[`${mediaPrefix}_w-${breakpoint}`]:
 									getDefaultAttribute(
-										`${mediaPrefix}width-${breakpoint}`
+										`${mediaPrefix}_w-${breakpoint}`
 									),
-								[`${mediaPrefix}width-unit-${breakpoint}`]:
+								[`${mediaPrefix}_w-unit-${breakpoint}`]:
 									getDefaultAttribute(
-										`${mediaPrefix}width-unit-${breakpoint}`
+										`${mediaPrefix}_w-unit-${breakpoint}`
 									),
 								isReset: true,
 							});
@@ -261,38 +261,37 @@ const VideoOverlayControl = props => {
 						className='maxi-video-overlay-control__height'
 						enableUnit
 						unit={getLastBreakpointAttribute({
-							target: `${mediaPrefix}height-unit`,
+							target: `${mediaPrefix}_h.u`,
 							breakpoint,
 							attributes: props,
 						})}
 						onChangeUnit={val =>
 							onChange({
-								[`${mediaPrefix}height-unit-${breakpoint}`]:
-									val,
+								[`${mediaPrefix}_h-unit-${breakpoint}`]: val,
 							})
 						}
 						value={getLastBreakpointAttribute({
-							target: `${mediaPrefix}height`,
+							target: `${mediaPrefix}_h`,
 							breakpoint,
 							attributes: props,
 						})}
 						onChangeValue={val =>
 							onChange({
-								[`${mediaPrefix}height-${breakpoint}`]: val,
+								[`${mediaPrefix}_h-${breakpoint}`]: val,
 							})
 						}
 						defaultValue={getDefaultAttribute(
-							`${mediaPrefix}height-${breakpoint}`
+							`${mediaPrefix}_h-${breakpoint}`
 						)}
 						onReset={() => {
 							onChange({
-								[`${mediaPrefix}height-${breakpoint}`]:
+								[`${mediaPrefix}_h-${breakpoint}`]:
 									getDefaultAttribute(
-										`${mediaPrefix}height-${breakpoint}`
+										`${mediaPrefix}_h-${breakpoint}`
 									),
-								[`${mediaPrefix}height-unit-${breakpoint}`]:
+								[`${mediaPrefix}_h-unit-${breakpoint}`]:
 									getDefaultAttribute(
-										`${mediaPrefix}height-unit-${breakpoint}`
+										`${mediaPrefix}_h-unit-${breakpoint}`
 									),
 								isReset: true,
 							});

@@ -39,28 +39,28 @@ Object {
   " .maxi-number-counter__box .maxi-number-counter__box__text": Object {
     "numberCounterText": Object {
       "general": Object {
-        "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
+        "color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
         "font-family": "Roboto",
         "font-size": "40px",
       },
       "l": Object {
-        "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
+        "color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
       "label": "Number Counter",
       "m": Object {
-        "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
+        "color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
       "s": Object {
-        "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
+        "color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
       "xl": Object {
-        "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
+        "color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
       "xs": Object {
-        "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
+        "color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
       "xxl": Object {
-        "fill": "rgba(var(--maxi-light-color-5,0,0,0),1)",
+        "color": "rgba(var(--maxi-light-color-5,0,0,0),1)",
       },
     },
   },

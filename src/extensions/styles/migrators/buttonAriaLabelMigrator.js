@@ -6,9 +6,11 @@ import { RawHTML } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { Button } from '../../components';
-import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
-
+import Button from '../../../components/button';
+import {
+	getMaxiBlockAttributes,
+	MaxiBlock,
+} from '../../../components/maxi-block';
 /**
  * External dependencies
  */
@@ -16,10 +18,24 @@ import classnames from 'classnames';
 import { isNil, isEmpty } from 'lodash';
 import { RichText } from '@wordpress/block-editor';
 
-/**
- * Save
- */
-const saveOld = props => {
+const name = 'Button aria label';
+
+const versions = [
+	'0.0.1-SC1',
+	'0.0.1-SC2',
+	'0.0.1-SC3',
+	'0.0.1-SC4',
+	'0.0.1-SC5',
+	'0.0.1-SC6',
+	'1.0.0-RC1',
+	'1.0.0-RC2',
+];
+
+const isEligible = blockAttributes =>
+	versions.includes(blockAttributes['maxi-version-current']) ||
+	!blockAttributes['maxi-version-origin'];
+
+const save = props => {
 	const {
 		linkSettings,
 		buttonContent,
@@ -70,4 +86,4 @@ const saveOld = props => {
 	);
 };
 
-export default saveOld;
+export default { save, isEligible, name };

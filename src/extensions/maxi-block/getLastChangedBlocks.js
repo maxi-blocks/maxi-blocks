@@ -15,11 +15,9 @@ const getLastChangedBlocks = () => {
 
 	if (!undoEdit) return false;
 
-	const { getCurrentPostType } = select('core/editor');
-
 	const entityRecordEdit = getEntityRecordEdits(
 		'postType',
-		getCurrentPostType(),
+		undoEdit.name,
 		undoEdit.recordId
 	);
 

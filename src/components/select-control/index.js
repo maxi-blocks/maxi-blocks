@@ -74,7 +74,7 @@ export default function SelectControl({
 				<select
 					id={id}
 					className='maxi-select-control__input'
-					value={value ?? defaultValue ?? options[0].value}
+					value={value ?? defaultValue ?? options[0]?.value}
 					onChange={onChangeValue}
 					aria-describedby={help ? `${id}__help` : undefined}
 					multiple={multiple}

@@ -338,6 +338,10 @@ class MaxiBlocks_DynamicContent
 
         $post = $this->get_post($attributes);
 
+        if (is_null($post)) {
+            return '';
+        }
+
         $post_data = $post->{"post_$dc_field"};
 
         if (empty($post_data) && $dc_field === 'excerpt') {

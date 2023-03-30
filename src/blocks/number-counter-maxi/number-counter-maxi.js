@@ -29,6 +29,7 @@ import { numberCounterIcon } from '../../icons';
  * Migrators
  */
 import { blockMigrator } from '../../extensions/styles/migrators';
+import NCMigrator from '../../extensions/styles/migrators/NCMigrator';
 
 /**
  * Block
@@ -64,5 +65,6 @@ registerBlockType('maxi-blocks/number-counter-maxi', {
 		attributes,
 		save,
 		selectors: customCss.selectors,
+		migrators: [NCMigrator],
 	}),
 });

@@ -306,7 +306,7 @@ const NumberCounterControl = props => {
 				className='maxi-number-counter-control__font-size'
 				label={__('Title font size', 'maxi-blocks')}
 				min={0}
-				max={99}
+				max={999}
 				initial={32}
 				step={1}
 				value={getLastBreakpointAttribute({
@@ -395,10 +395,7 @@ const NumberCounterControl = props => {
 				prefix='number-counter-text-'
 				deviceType={breakpoint}
 				onChangeInline={({ color }) =>
-					onChangeInline(
-						{ fill: color },
-						'.maxi-number-counter__box__text'
-					)
+					onChangeInline({ color }, '.maxi-number-counter__box__text')
 				}
 				onChange={({
 					paletteStatus,
@@ -444,7 +441,7 @@ const NumberCounterControl = props => {
 						prefix='number-counter-circle-background-'
 						onChangeInline={({ color }) =>
 							onChangeInline(
-								{ fill: color },
+								{ color },
 								'.maxi-number-counter__box__background'
 							)
 						}

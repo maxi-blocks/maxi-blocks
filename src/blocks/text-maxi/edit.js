@@ -25,12 +25,15 @@ import { onChangeRichText, textContext } from '../../extensions/text/formats';
 import { setSVGColor } from '../../extensions/svg';
 import { copyPasteMapping } from './data';
 import { indentListItems, outdentListItems } from '../../extensions/text/lists';
+import { getDCCustomData, getDCValues, loopContext } from '../../extensions/DC';
 import withMaxiDC from '../../extensions/DC/withMaxiDC';
 
 /**
  * Content
  */
 class edit extends MaxiBlockComponent {
+	static contextType = loopContext;
+
 	state = {
 		formatValue: {},
 		onChangeFormat: null,
@@ -50,19 +53,9 @@ class edit extends MaxiBlockComponent {
 	}
 
 	get getMaxiCustomData() {
-		const { attributes } = this.props;
-		const { uniqueID } = attributes;
-		const { 'dc-status': dcStatus } = attributes;
-
-		return {
-			...(dcStatus && {
-				dynamic_content: {
-					[uniqueID]: {
-						...getGroupAttributes(attributes, 'dynamicContent'),
-					},
-				},
-			}),
-		};
+		const { uniqueID, 'dc-status': dcStatus } = this.props.attributes;
+		const contextLoop = this.context?.contextLoop;
+		return getDCCustomData(contextLoop, dcStatus, uniqueID);
 	}
 
 	maxiBlockDidUpdate() {
@@ -124,9 +117,12 @@ class edit extends MaxiBlockComponent {
 			textLevel,
 			typeOfList,
 			uniqueID,
-			'dc-status': dcStatus,
-			'dc-content': dcContent,
 		} = attributes;
+
+		const { status: dcStatus, content: dcContent } = getDCValues(
+			getGroupAttributes(attributes, 'dynamicContent'),
+			this.context?.contextLoop
+		);
 
 		const className = 'maxi-text-block__content';
 		const DCTagName = textLevel;

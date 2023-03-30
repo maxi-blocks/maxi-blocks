@@ -50,7 +50,7 @@ const DynamicContent = props => {
 		...dynamicContent
 	} = props;
 
-	const { contextLoop } = useContext(loopContext);
+	const contextLoop = useContext(loopContext)?.contextLoop;
 
 	const classes = classnames('maxi-dynamic-content', className);
 
@@ -262,7 +262,7 @@ const DynamicContent = props => {
 								<DateFormatting
 									allowCustomDate={allowCustomDate}
 									onChange={obj => changeProps(obj)}
-									{...dynamicContent}
+									{...dcValues}
 								/>
 							)}
 						</>

@@ -31,6 +31,7 @@ import { injectImgSVG } from '../../extensions/svg';
 import { copyPasteMapping } from './data';
 import { textContext, onChangeRichText } from '../../extensions/text/formats';
 import CaptionToolbar from '../../components/toolbar/captionToolbar';
+import { getDCCustomData, getDCValues, loopContext } from '../../extensions/DC';
 import withMaxiDC from '../../extensions/DC/withMaxiDC';
 
 /**
@@ -49,6 +50,8 @@ import { toolbarReplaceImage, placeholderImage } from '../../icons';
  * Content
  */
 class edit extends MaxiBlockComponent {
+	static contextType = loopContext;
+
 	constructor(...args) {
 		super(...args);
 
@@ -74,8 +77,13 @@ class edit extends MaxiBlockComponent {
 	}
 
 	get getMaxiCustomData() {
-		const { 'hover-type': hoverType, uniqueID } = this.props.attributes;
+		const {
+			uniqueID,
+			'dc-status': dcStatus,
+			'hover-type': hoverType,
+		} = this.props.attributes;
 		const hoverStatus = hoverType !== 'none';
+		const contextLoop = this.context?.contextLoop;
 
 		return {
 			...(hoverStatus && {
@@ -85,6 +93,7 @@ class edit extends MaxiBlockComponent {
 					},
 				},
 			}),
+			...getDCCustomData(contextLoop, dcStatus, uniqueID),
 		};
 	}
 
@@ -142,11 +151,16 @@ class edit extends MaxiBlockComponent {
 			captionPosition,
 			fitParentSize,
 			preview,
-			'dc-status': dcStatus,
-			'dc-media-id': dcMediaId,
-			'dc-media-url': dcMediaUrl,
-			'dc-media-caption': dcMediaCaption,
 		} = attributes;
+		const {
+			status: dcStatus,
+			mediaId: dcMediaId,
+			mediaUrl: dcMediaUrl,
+			mediaCaption: dcMediaCaption,
+		} = getDCValues(
+			getGroupAttributes(attributes, 'dynamicContent'),
+			this.context?.contextLoop
+		);
 		const { isExternalClass, isUploaderOpen } = this.state;
 
 		const wrapperClassName = classnames(

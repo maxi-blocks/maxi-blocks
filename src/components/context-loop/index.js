@@ -16,8 +16,7 @@ import {
 	relationOptions,
 	relationTypes,
 } from '../../extensions/DC/constants';
-import getDCOptions from '../../extensions/DC/getDCOptions';
-import LoopContext from '../../extensions/DC/loopContext';
+import { getDCOptions, loopContext } from '../../extensions/DC';
 
 /**
  * External dependencies
@@ -32,7 +31,7 @@ import classnames from 'classnames';
 const DynamicContent = props => {
 	const { className, onChange, contentType = 'text' } = props;
 
-	const { contextLoop } = useContext(LoopContext);
+	const { contextLoop } = useContext(loopContext);
 
 	const classes = classnames('maxi-dynamic-content', className);
 

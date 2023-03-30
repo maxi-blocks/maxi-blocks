@@ -3,32 +3,35 @@
  */
 import { isNumber, isString } from 'lodash';
 
+const getLabel = (prefix, suffix) => `${prefix}${suffix}`.replace('-_', '_');
+
 const paletteAttributesCreator = ({
 	prefix = '',
+	longPrefix = '',
 	status,
 	palette,
 	opacity,
 	customColor,
 }) => ({
-	[`${prefix}ps`]: {
+	[getLabel(prefix, '_ps')]: {
 		type: 'boolean',
 		default: status ?? true,
-		longLabel: `${prefix}palette-status`,
+		longLabel: `${longPrefix}palette-status`,
 	},
-	[`${prefix}pc`]: {
+	[getLabel(prefix, '_pc')]: {
 		type: 'number',
 		...(isNumber(palette) && { default: palette }),
-		longLabel: `${prefix}palette-color`,
+		longLabel: `${longPrefix}palette-color`,
 	},
-	[`${prefix}po`]: {
+	[getLabel(prefix, '_po')]: {
 		type: 'number',
 		...(isNumber(opacity) && { default: opacity }),
-		longLabel: `${prefix}palette-opacity`,
+		longLabel: `${longPrefix}palette-opacity`,
 	},
-	[`${prefix}cc`]: {
+	[getLabel(prefix, '_cc')]: {
 		type: 'string',
 		...(isString(customColor) && { default: customColor }),
-		longLabel: `${prefix}custom-color`,
+		longLabel: `${longPrefix}custom-color`,
 	},
 });
 

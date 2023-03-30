@@ -9,87 +9,89 @@ import { typography } from './typography';
 import prefixAttributesCreator from '../prefixAttributesCreator';
 
 export const hover = {
-	'h-ty': {
+	h_ty: {
 		type: 'string',
 		default: 'none',
 		longLabel: 'hover-type',
 	},
-	'h-pr': {
+	h_pr: {
 		type: 'boolean',
 		default: true,
 		longLabel: 'hover-preview',
 	},
-	'h-ex': {
+	h_ex: {
 		type: 'boolean',
 		default: false,
 		longLabel: 'hover-extension',
 	},
-	'h-bet': {
+	h_bet: {
 		type: 'string',
 		default: 'zoom-in',
 		longLabel: 'hover-basic-effect-type',
 	},
-	'h-tety': {
+	h_tety: {
 		type: 'string',
 		default: 'fade',
 		longLabel: 'hover-text-effect-type',
 	},
-	'h-tp': {
+	h_tp: {
 		type: 'string',
 		default: 'center-center',
 		longLabel: 'hover-text-preset',
 	},
-	'h-te': {
+	h_te: {
 		type: 'string',
 		default: 'ease',
 		longLabel: 'hover-transition-easing',
 	},
-	'h-tecb': {
+	h_tecb: {
 		type: 'object',
 		longLabel: 'hover-transition-easing-cubic-bezier',
 	},
-	'h-tdu': {
+	h_tdu: {
 		type: 'number',
 		default: 0.5,
 		longLabel: 'hover-transition-duration',
 	},
-	'h-bziv': {
+	h_bziv: {
 		type: 'number',
 		default: 1.3,
 		longLabel: 'hover-basic-zoom-in-value',
 	},
-	'h-bxov': {
+	h_bzov: {
 		type: 'number',
 		default: 1.5,
 		longLabel: 'hover-basic-zoom-out-value',
 	},
-	'h-bsv': {
+	h_bsv: {
 		type: 'number',
 		default: 30,
 		longLabel: 'hover-basic-slide-value',
 	},
-	'h-brv': {
+	h_brv: {
 		type: 'number',
 		default: 15,
 		longLabel: 'hover-basic-rotate-value',
 	},
-	'h-bbv': {
+	h_bbv: {
 		type: 'number',
 		default: 2,
 		longLabel: 'hover-basic-blur-value',
 	},
 };
 
-const prefix = 'h-'; // hover-
+const prefix = 'h-';
+const longPrefix = 'hover-';
 
 export const hoverBorder = prefixAttributesCreator({
 	obj: border,
 	prefix,
+	longPrefix,
 	newAttr: {
 		'h-bo.s': {
-			// hover-border-status
 			type: 'boolean',
 			default: false,
+			longLabel: 'hover-border-status',
 		},
 	},
 });
@@ -97,17 +99,20 @@ export const hoverBorder = prefixAttributesCreator({
 export const hoverBorderWidth = prefixAttributesCreator({
 	obj: borderWidth,
 	prefix,
+	longPrefix,
 });
 
 export const hoverBorderRadius = prefixAttributesCreator({
 	obj: borderRadius,
 	prefix,
+	longPrefix,
 });
 
 export const hoverBackground = prefixAttributesCreator({
 	obj: background,
 	prefix,
-	diffValAttr: { 'h-bam': 'color' }, // hover-background-active-media
+	longPrefix,
+	diffValAttr: { 'h-b_am': 'color' }, // hover-background-active-media
 	newAttr: {
 		'h-b.s': {
 			type: 'boolean',
@@ -120,8 +125,9 @@ export const hoverBackground = prefixAttributesCreator({
 export const hoverBackgroundColor = prefixAttributesCreator({
 	obj: backgroundColor,
 	prefix,
+	longPrefix,
 	diffValAttr: {
-		'h-b-pc': 5, // hover-background-palette-color
+		'h-b_pc': 5, // hover-background-palette-color
 		'h-b-po': 60, // hover-background-palette-opacity
 	},
 });
@@ -129,13 +135,15 @@ export const hoverBackgroundColor = prefixAttributesCreator({
 export const hoverBackgroundGradient = prefixAttributesCreator({
 	obj: backgroundGradient,
 	prefix,
+	longPrefix,
 });
 
 export const hoverMargin = prefixAttributesCreator({
 	obj: margin,
 	prefix,
+	longPrefix,
 	newAttr: {
-		'h-m.s': {
+		'h_m.s': {
 			type: 'boolean',
 			default: false,
 			longLabel: 'hover-margin-status',
@@ -146,8 +154,9 @@ export const hoverMargin = prefixAttributesCreator({
 export const hoverPadding = prefixAttributesCreator({
 	obj: padding,
 	prefix,
+	longPrefix,
 	newAttr: {
-		'h-p.s': {
+		'h_p.s': {
 			type: 'boolean',
 			default: false,
 			longLabel: 'hover-padding-status',
@@ -157,10 +166,11 @@ export const hoverPadding = prefixAttributesCreator({
 
 export const hoverTitleTypography = prefixAttributesCreator({
 	obj: typography,
-	prefix: 'h-ti-', // hover-title-
+	prefix: 'h-ti-',
+	longPrefix: 'hover-title-',
 	diffValAttr: {
-		'h-ti-fs-general': 30, // hover-title-font-size-general
-		'h-ti-pc-general': 1, // hover-title-palette-color-general
+		'h-ti_fs-general': 30, // hover-title-font-size-general
+		'h-ti_pc-general': 1, // hover-title-palette-color-general
 	},
 	newAttr: {
 		'h-ti-t.s': {
@@ -168,7 +178,7 @@ export const hoverTitleTypography = prefixAttributesCreator({
 			default: false,
 			longLabel: 'hover-title-typography-status',
 		},
-		'h-ti-t-c': {
+		'h-ti-t_c': {
 			type: 'string',
 			default: __('Add your Hover Title here', 'maxi-blocks'),
 			longLabel: 'hover-title-typography-content',
@@ -178,18 +188,19 @@ export const hoverTitleTypography = prefixAttributesCreator({
 
 export const hoverContentTypography = prefixAttributesCreator({
 	obj: typography,
-	prefix: 'hover-content-',
+	prefix: 'hc-',
+	longPrefix: 'hover-content-',
 	diffValAttr: {
-		'h-c-fs-general': 18, // hover-content-font-size-general
-		'h-c-pc-general': 1, // hover-content-palette-color-general
+		'hc_fs-general': 18, // hover-content-font-size-general
+		'hc_pc-general': 1, // hover-content-palette-color-general
 	},
 	newAttr: {
-		'h-c-t.s': {
+		'hc-t.s': {
 			type: 'boolean',
 			default: false,
 			longLabel: 'hover-content-typography-status',
 		},
-		'h-c-t-c': {
+		'hc-t_c': {
 			type: 'string',
 			default: __('Add your Hover Title here', 'maxi-blocks'),
 			longLabel: 'hover-content-typography-content',

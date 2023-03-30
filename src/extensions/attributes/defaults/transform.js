@@ -1,26 +1,26 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
 const rawTransform = {
-	'tr-sc': {
+	tr_sc: {
 		type: 'object',
 		longLabel: 'transform-scale',
 	},
-	'tr-tr': {
+	tr_tr: {
 		type: 'object',
 		longLabel: 'transform-translate',
 	},
-	'tr-rot': {
+	tr_rot: {
 		type: 'object',
 		longLabel: 'transform-rotate',
 	},
-	'tr-ori': {
+	tr_ori: {
 		type: 'object',
 		longLabel: 'transform-origin',
 	},
 };
 
 const transform = {
-	'tr-tar': {
+	tr_tar: {
 		type: 'string',
 		longLabel: 'transform-target',
 	},

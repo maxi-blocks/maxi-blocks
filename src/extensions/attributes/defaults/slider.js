@@ -1,45 +1,45 @@
 const slider = {
-	iev: {
+	_iev: {
 		type: 'boolean',
 		default: false,
 		longLabel: 'isEditView',
 	},
-	nos: {
+	_nos: {
 		type: 'number',
 		default: 2,
 		longLabel: 'numberOfSlides',
 	},
-	il: {
+	_il: {
 		type: 'boolean',
 		default: false,
 		longLabel: 'isLoop',
 	},
-	ia: {
+	_ia: {
 		type: 'boolean',
 		default: false,
 		longLabel: 'isAutoplay',
 	},
-	poh: {
+	_poh: {
 		type: 'boolean',
 		default: false,
 		longLabel: 'pauseOnHover',
 	},
-	poi: {
+	_poi: {
 		type: 'boolean',
 		default: false,
 		longLabel: 'pauseOnInteraction',
 	},
-	sas: {
+	_sas: {
 		type: 'number',
 		default: 2500,
 		longLabel: 'slider-autoplay-speed',
 	},
-	slt: {
+	_slt: {
 		type: 'string',
 		default: 'slide',
 		longLabel: 'slider-transition',
 	},
-	sts: {
+	_sts: {
 		type: 'number',
 		default: 500,
 		longLabel: 'slider-transition-speed',

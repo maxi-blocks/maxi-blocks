@@ -1,51 +1,52 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import paletteAttributesCreator from '../paletteAttributesCreator';
 
-const prefix = 'bs-'; // box-shadow-
+const prefix = 'bs-';
+const longPrefix = 'box-shadow-';
 
 const rawBoxShadow = {
-	...paletteAttributesCreator({ prefix, palette: 8, opacity: 1 }),
-	'bs-in': {
+	...paletteAttributesCreator({ prefix, longPrefix, palette: 8, opacity: 1 }),
+	bs_in: {
 		type: 'boolean',
 		default: false,
 		longLabel: 'box-shadow-inset',
 	},
-	'bs-ho': {
+	bs_ho: {
 		type: 'number',
 		default: 0,
 		longLabel: 'box-shadow-horizontal',
 	},
-	'bs-ho.u': {
+	'bs_ho.u': {
 		type: 'string',
 		default: 'px',
 		longLabel: 'box-shadow-horizontal-unit',
 	},
-	'bs-v': {
+	bs_v: {
 		type: 'number',
 		default: 0,
 		longLabel: 'box-shadow-vertical',
 	},
-	'bs-v.u': {
+	'bs_v.u': {
 		type: 'string',
 		default: 'px',
 		longLabel: 'box-shadow-vertical-unit',
 	},
-	'bs-blu': {
+	bs_blu: {
 		type: 'number',
 		default: 0,
 		longLabel: 'box-shadow-blur',
 	},
-	'bs-blu.u': {
+	'bs_blu.u': {
 		type: 'string',
 		default: 'px',
 		longLabel: 'box-shadow-blur-unit',
 	},
-	'bs-sp': {
+	bs_sp: {
 		type: 'number',
 		default: 0,
 		longLabel: 'box-shadow-spread',
 	},
-	'bs-sp.u': {
+	'bs_sp.u': {
 		type: 'string',
 		default: 'px',
 		longLabel: 'box-shadow-spread-unit',

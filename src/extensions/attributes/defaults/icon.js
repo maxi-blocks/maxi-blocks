@@ -7,46 +7,47 @@ import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import paletteAttributesCreator from '../paletteAttributesCreator';
 import boxShadow from './boxShadow';
 
-const prefix = 'i-'; // icon-
+const prefix = 'i-';
+const longPrefix = 'icon-';
 
 export const icon = {
-	st: {
+	_st: {
 		type: 'string',
 		longLabel: 'svgType',
 	},
-	'i-i': {
+	i_i: {
 		type: 'boolean',
 		default: true,
 		longLabel: 'icon-inherit',
 	},
-	'i-c': {
+	i_c: {
 		type: 'string',
 		default: '',
 		longLabel: 'icon-content',
 	},
-	'i-on': {
+	i_on: {
 		type: 'boolean',
 		default: false,
 		longLabel: 'icon-only',
 	},
-	'i-pos': {
+	i_pos: {
 		type: 'string',
 		default: 'right',
 		longLabel: 'icon-position',
 	},
 	...breakpointAttributesCreator({
 		obj: {
-			'i-spa': {
+			i_spa: {
 				type: 'number',
 				default: 5,
 				longLabel: 'icon-spacing',
 			},
-			'i-spa.u': {
+			'i_spa.u': {
 				type: 'string',
 				default: '%',
 				longLabel: 'icon-spacing-unit',
 			},
-			'i-si': {
+			i_si: {
 				type: 'number',
 				default: 2,
 				longLabel: 'icon-size',
@@ -56,45 +57,60 @@ export const icon = {
 	...prefixAttributesCreator({
 		obj: width,
 		prefix,
+		longPrefix,
 		diffValAttr: {
-			'i-w-general': '32',
+			'i_w-general': '32',
 		},
 	}),
 	...prefixAttributesCreator({
 		obj: height,
 		prefix,
+		longPrefix,
 		diffValAttr: {
-			'i-h-general': '32',
+			'i_h-general': '32',
 		},
 	}),
-	...paletteAttributesCreator({ prefix: `${prefix}s-`, palette: 1 }), // stroke
-	...paletteAttributesCreator({ prefix: `${prefix}f-`, palette: 4 }), // fill
+	...paletteAttributesCreator({
+		prefix: `${prefix}str-`,
+		longPrefix: `${longPrefix}stroke-`,
+		palette: 1,
+	}),
+	...paletteAttributesCreator({
+		prefix: `${prefix}f-`,
+		longPrefix: `${longPrefix}fill-`,
+		palette: 4,
+	}),
 };
 
 export const iconBackground = prefixAttributesCreator({
 	obj: background,
 	prefix,
-	diffValAttr: { 'i-bam-general': 'none' },
+	longPrefix,
+	diffValAttr: { 'i-b_am-general': 'none' }, // icon-background-active-media-general
 });
 
 export const iconPadding = prefixAttributesCreator({
 	obj: padding,
 	prefix,
+	longPrefix,
 });
 
 export const iconBackgroundColor = prefixAttributesCreator({
 	obj: backgroundColor,
 	prefix,
-	exclAttr: ['bc-cp'],
+	longPrefix,
+	exclAttr: ['bc_cp'], // background-color-color-palette
 });
 
 export const iconBackgroundGradient = prefixAttributesCreator({
 	obj: backgroundGradient,
 	prefix,
-	exclAttr: ['bg-cp'],
+	longPrefix,
+	exclAttr: ['bg_cp'], // background-gradient-color-palette
 });
 
 export const iconBoxShadow = prefixAttributesCreator({
 	obj: boxShadow,
 	prefix,
+	longPrefix,
 });

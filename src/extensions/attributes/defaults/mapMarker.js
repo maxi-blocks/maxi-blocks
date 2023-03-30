@@ -3,18 +3,18 @@ import { svg } from './svg';
 const mapMarker = {
 	...{
 		...svg,
-		'svg-w-general': {
+		's_w-general': {
 			type: 'string',
 			default: '20',
 			longLabel: 'svg-width-general',
 		},
 	},
-	'm-ma': {
+	m_ma: {
 		type: 'number',
 		default: 1,
 		longLabel: 'map-marker',
 	},
-	'm-mi': {
+	m_mic: {
 		type: 'string',
 		longLabel: 'map-marker-icon',
 	},

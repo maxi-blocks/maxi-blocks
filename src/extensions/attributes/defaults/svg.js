@@ -4,15 +4,25 @@ import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import prefixAttributesCreator from '../prefixAttributesCreator';
 import { width } from './size';
 
-const prefix = 's-'; // svg-
+const prefix = 's-';
+const longPrefix = 'svg-';
 
 export const svg = {
-	...paletteAttributesCreator({ prefix: 'sfi-', palette: 4 }), // svg-fill-
-	...paletteAttributesCreator({ prefix: 'sli-', palette: 7 }), // svg-line-
+	...paletteAttributesCreator({
+		prefix: 'sfi-',
+		longPrefix: 'svg-fill-',
+		palette: 4,
+	}),
+	...paletteAttributesCreator({
+		prefix: 'sli-',
+		longPrefix: 'svg-line-',
+		palette: 7,
+	}),
 	...prefixAttributesCreator({
 		obj: width,
 		prefix,
-		diffValAttr: { 's-w-general': '64' }, // svg-width-general
+		longPrefix,
+		diffValAttr: { 's_w-general': '64' }, // svg-width-general
 	}),
 	...breakpointAttributesCreator({
 		obj: {
@@ -27,13 +37,21 @@ export const svg = {
 
 export const svgHover = hoverAttributesCreator({
 	obj: {
-		...paletteAttributesCreator({ prefix: 'sfi-', palette: 4 }), // svg-fill-
-		...paletteAttributesCreator({ prefix: 'sli-', palette: 7 }), // svg-line-
+		...paletteAttributesCreator({
+			prefix: 'sfi-',
+			longPrefix: 'svg-fill-',
+			palette: 4,
+		}),
+		...paletteAttributesCreator({
+			prefix: 'sli-',
+			longPrefix: 'svg-line-',
+			palette: 7,
+		}),
 	},
-	sameValAttr: ['sfi-ps', 'sli-ps'], // svg-fill-palette-status, svg-line-palette-status
+	sameValAttr: ['sfi_ps', 'sli_ps'], // svg-fill-palette-status, svg-line-palette-status
 	diffValAttr: {
-		'sfi-pc': 6, // svg-fill-palette-color
-		'sli-pc': 8, // svg-line-palette-color
+		sfi_pc: 6, // svg-fill-palette-color
+		sli_pc: 8, // svg-line-palette-color
 	},
 	newAttr: {
 		's.sh': {

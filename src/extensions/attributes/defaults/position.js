@@ -1,48 +1,48 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
 export const rawPosition = {
-	pos: {
+	_pos: {
 		type: 'string',
 		default: 'inherit',
 		longLabel: 'position',
 	},
-	'pos.t': {
+	'_pos.t': {
 		type: 'string',
 		longLabel: 'position-top',
 	},
-	'pos.r': {
+	'_pos.r': {
 		type: 'string',
 		longLabel: 'position-right',
 	},
-	'pos.b': {
+	'_pos.b': {
 		type: 'string',
 		longLabel: 'position-bottom',
 	},
-	'pos.l': {
+	'_pos.l': {
 		type: 'string',
 		longLabel: 'position-left',
 	},
-	'pos.s': {
+	'_pos.sy': {
 		type: 'string',
 		default: 'all',
 		longLabel: 'position-sync',
 	},
-	'pos.t.u': {
+	'_pos.t.u': {
 		type: 'string',
 		default: 'px',
 		longLabel: 'position-top-unit',
 	},
-	'pos.r.u': {
+	'_pos.r.u': {
 		type: 'string',
 		default: 'px',
 		longLabel: 'position-right-unit',
 	},
-	'pos.b.u': {
+	'_pos.b.u': {
 		type: 'string',
 		default: 'px',
 		longLabel: 'position-bottom-unit',
 	},
-	'pos.l.u': {
+	'_pos.l.u': {
 		type: 'string',
 		default: 'px',
 		longLabel: 'position-left-unit',

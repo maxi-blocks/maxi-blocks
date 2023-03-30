@@ -1,13 +1,17 @@
 import paletteAttributesCreator from '../paletteAttributesCreator';
 
 const shape = {
-	...paletteAttributesCreator({ prefix: 'sf-', palette: 4 }), // shape-fill-
-	sw: {
+	...paletteAttributesCreator({
+		prefix: 'sf-',
+		longPrefix: 'shape-fill-',
+		palette: 4,
+	}),
+	_sw: {
 		type: 'number',
 		default: 64,
 		longLabel: 'shape-width',
 	},
-	'sw.u': {
+	'_sw.u': {
 		type: 'string',
 		default: 'px',
 		longLabel: 'shape-width-unit',

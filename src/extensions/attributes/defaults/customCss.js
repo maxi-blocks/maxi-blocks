@@ -2,7 +2,7 @@ import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
 const customCss = breakpointAttributesCreator({
 	obj: {
-		cc: {
+		_ccs: {
 			type: 'object',
 			longLabel: 'custom-css',
 		},

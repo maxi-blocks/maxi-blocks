@@ -1,23 +1,47 @@
+/**
+ * Internal dependencies
+ */
 import * as attributes from '../../defaults';
 import dictionary, {
 	prefixesDictionary,
 	suffixesDictionary,
 } from '../attributesDictionary';
+import parseLongAttrKey from '../parseLongAttrKey';
+import parseShortAttrKey from '../parseShortAttrKey';
+
+/**
+ * External dependencies
+ */
+import { isBoolean } from 'lodash';
 
 describe('attributesDictionary', () => {
-	it.only('test', () => {
-		const test = attributes.icon;
+	it('All attributes label coincide with the longLabel when are parsed, and vice versa', () => {
+		const test = Object.entries(attributes).map(([attrKey, attrType]) =>
+			Object.entries(attrType).map(([label, { longLabel }]) => {
+				// Scroll hasn't been update yet
+				if (attrKey === 'scroll') return true;
 
-		// Object.entries(attributes).forEach(([key, val]) => {
-		// 	console.log(key, val);
+				const parsedLabel = parseShortAttrKey(label);
+				const parsedLongLabel = parseLongAttrKey(longLabel);
 
-		// 	debugger;
-		// });
+				// if (
+				// 	attrKey !== 'scroll' &&
+				// 	!(parsedLabel === longLabel && parsedLongLabel === label)
+				// )
+				// 	debugger;
 
-		expect(test).toMatchSnapshot();
+				return parsedLabel === longLabel && parsedLongLabel === label
+					? true
+					: label;
+			})
+		);
+
+		const result = test.flat().filter(el => !isBoolean(el));
+
+		expect(result).toStrictEqual([]);
 	});
 
-	it('Expect no duplicates', () => {
+	it('Expect no duplicated keys', () => {
 		const allKeys = Object.values(dictionary).map(item =>
 			Object.values(item)
 		);
@@ -32,9 +56,7 @@ describe('attributesDictionary', () => {
 	});
 
 	it('Expect no duplicated prefixes', () => {
-		const allKeys = Object.values(prefixesDictionary).map(item =>
-			Object.values(item)
-		);
+		const allKeys = Object.values(prefixesDictionary);
 
 		const allKeysFlat = allKeys.flat();
 
@@ -46,9 +68,7 @@ describe('attributesDictionary', () => {
 	});
 
 	it('Expect no duplicated suffixes', () => {
-		const allKeys = Object.values(suffixesDictionary).map(item =>
-			Object.values(item)
-		);
+		const allKeys = Object.values(suffixesDictionary);
 
 		const allKeysFlat = allKeys.flat();
 

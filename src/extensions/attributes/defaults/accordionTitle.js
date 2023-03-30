@@ -6,7 +6,8 @@ import getAttributeKey from '../getAttributeKey';
 import { typography } from './typography';
 import typographyHover from './typographyHover';
 
-const prefix = 'ti-'; // title-
+const prefix = 'ti-';
+const longPrefix = 'title-';
 
 const titleBackground = breakpointAttributesCreator({
 	obj: {
@@ -14,9 +15,11 @@ const titleBackground = breakpointAttributesCreator({
 			// background-status
 			type: 'boolean',
 			default: false,
+			longLabel: `${longPrefix}background-status`,
 		},
 		...paletteAttributesCreator({
-			prefix: `${prefix}b-`, // background-
+			prefix: `${prefix}b-`,
+			longPrefix: `${longPrefix}background-`,
 			palette: 4,
 		}),
 	},
@@ -24,11 +27,16 @@ const titleBackground = breakpointAttributesCreator({
 });
 
 const accordionTitle = {
-	titleLevel: { type: 'string', default: 'h6' },
+	_tl: {
+		type: 'string',
+		default: 'h6',
+		longLabel: 'titleLevel',
+	},
 	...titleBackground,
 	...prefixAttributesCreator({
 		obj: titleBackground,
-		prefix: 'a-', // active-
+		prefix: 'a-',
+		longPrefix: 'active-',
 	}),
 	...hoverAttributesCreator({
 		obj: titleBackground,
@@ -49,16 +57,18 @@ const accordionTitle = {
 			)]: 6,
 		},
 	}),
-	...prefixAttributesCreator({ obj: typography, prefix }),
-	...prefixAttributesCreator({ obj: typographyHover, prefix }),
+	...prefixAttributesCreator({ obj: typography, prefix, longPrefix }),
+	...prefixAttributesCreator({ obj: typographyHover, prefix, longPrefix }),
 	...prefixAttributesCreator({
 		obj: typography,
-		prefix: `a-${prefix}`, // active-
+		prefix: `a-${prefix}`,
+		longPrefix: `active-${longPrefix}`,
 		newAttr: {
 			// typography-status-active
 			[`${prefix}t.sa`]: {
 				type: 'boolean',
 				default: false,
+				longLabel: `${longPrefix}typography-status-active`,
 			},
 		},
 	}),

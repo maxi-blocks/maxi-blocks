@@ -6,17 +6,17 @@ const rawArrow = {
 		default: false,
 		longLabel: 'arrow-status',
 	},
-	'ar-sid': {
+	ar_sid: {
 		type: 'string',
 		default: 'bottom',
 		longLabel: 'arrow-side',
 	},
-	'ar-pos': {
+	ar_pos: {
 		type: 'number',
 		default: 50,
 		longLabel: 'arrow-position',
 	},
-	'ar-w': {
+	ar_w: {
 		type: 'number',
 		default: 80,
 		longLabel: 'arrow-width',
@@ -27,7 +27,7 @@ const arrow = {
 	...breakpointAttributesCreator({
 		obj: rawArrow,
 	}),
-	swb: {
+	_swb: {
 		type: 'boolean',
 		default: true,
 		longLabel: 'show-warning-box',

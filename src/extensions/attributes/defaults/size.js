@@ -1,7 +1,7 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
 export const rawSize = {
-	sao: {
+	_sao: {
 		type: 'boolean',
 		default: false,
 		longLabel: 'size-advanced-options',
@@ -9,28 +9,28 @@ export const rawSize = {
 };
 
 export const rawMaxWidth = {
-	'mw.u': {
+	'_mw.u': {
 		type: 'string',
 		default: 'px',
 		longLabel: 'max-width-unit',
 	},
-	mw: {
+	_mw: {
 		type: 'string',
 		longLabel: 'max-width',
 	},
 };
 
 export const rawWidth = {
-	'w-u': {
+	'_w.u': {
 		type: 'string',
 		default: 'px',
 		longLabel: 'width-unit',
 	},
-	w: {
+	_w: {
 		type: 'string',
 		longLabel: 'width',
 	},
-	wfc: {
+	_wfc: {
 		type: 'boolean',
 		default: false,
 		longLabel: 'width-fit-content',
@@ -38,59 +38,59 @@ export const rawWidth = {
 };
 
 export const rawMinWidth = {
-	'miw.u': {
+	'_miw.u': {
 		type: 'string',
 		default: 'px',
 		longLabel: 'min-width-unit',
 	},
-	miw: {
+	_miw: {
 		type: 'string',
 		longLabel: 'min-width',
 	},
 };
 
 export const rawMaxHeight = {
-	'mh.u': {
+	'_mh.u': {
 		type: 'string',
 		default: 'px',
 		longLabel: 'max-height-unit',
 	},
-	mh: {
+	_mh: {
 		type: 'string',
 		longLabel: 'max-height',
 	},
 };
 
 export const rawHeight = {
-	'h.u': {
+	'_h.u': {
 		type: 'string',
 		default: 'px',
 		longLabel: 'height-unit',
 	},
-	h: {
+	_h: {
 		type: 'string',
 		longLabel: 'height',
 	},
-	far: {
+	_far: {
 		type: 'boolean',
 		longLabel: 'force-aspect-ratio',
 	},
 };
 
 export const rawMinHeight = {
-	'mih.u': {
+	'_mih.u': {
 		type: 'string',
 		default: 'px',
 		longLabel: 'min-height-unit',
 	},
-	mih: {
+	_mih: {
 		type: 'string',
 		longLabel: 'min-height',
 	},
 };
 
 export const rawFullWidth = {
-	fw: {
+	_fw: {
 		type: 'string',
 		default: 'normal',
 		longLabel: 'full-width',

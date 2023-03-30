@@ -1,23 +1,23 @@
 const accordion = {
-	acl: {
+	_acl: {
 		type: 'string',
 		default: 'simple',
-		originalName: 'accordionLayout',
+		longLabel: 'accordionLayout',
 	},
-	apc: {
+	_apc: {
 		type: 'boolean',
 		default: true,
-		originalName: 'autoPaneClose',
+		longLabel: 'autoPaneClose',
 	},
-	ico: {
+	_ico: {
 		type: 'boolean',
 		default: true,
-		originalName: 'isCollapsible',
+		longLabel: 'isCollapsible',
 	},
-	ad: {
+	_ad: {
 		type: 'number',
 		default: 0.3,
-		originalName: 'animationDuration',
+		longLabel: 'animationDuration',
 	},
 };
 

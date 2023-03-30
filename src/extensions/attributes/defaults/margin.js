@@ -1,43 +1,43 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
 const rawMargin = {
-	'm.t': {
+	'_m.t': {
 		type: 'string',
 		longLabel: 'margin-top',
 	},
-	'm.r': {
+	'_m.r': {
 		type: 'string',
 		longLabel: 'margin-right',
 	},
-	'm.b': {
+	'_m.b': {
 		type: 'string',
 		longLabel: 'margin-bottom',
 	},
-	'm.l': {
+	'_m.l': {
 		type: 'string',
 		longLabel: 'margin-left',
 	},
-	'm.s': {
+	'_m.sy': {
 		type: 'string',
 		default: 'all',
 		longLabel: 'margin-sync',
 	},
-	'm.t.u': {
+	'_m.t.u': {
 		type: 'string',
 		default: 'px',
 		longLabel: 'margin-top-unit',
 	},
-	'm.r.u': {
+	'_m.r.u': {
 		type: 'string',
 		default: 'px',
 		longLabel: 'margin-right-unit',
 	},
-	'm.b.u': {
+	'_m.b.u': {
 		type: 'string',
 		default: 'px',
 		longLabel: 'margin-bottom-unit',
 	},
-	'm.l.u': {
+	'_m.l.u': {
 		type: 'string',
 		default: 'px',
 		longLabel: 'margin-left-unit',

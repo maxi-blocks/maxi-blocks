@@ -1,75 +1,75 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import paletteAttributesCreator from '../paletteAttributesCreator';
 
-const prefix = 'db-'; // divider-border-
 const rawDivider = {
-	'db.t': {
+	'di-bo.t': {
 		type: 'number',
 		default: 2,
 		longLabel: 'divider-border-top',
 	},
-	'db.t.u': {
+	'di-bo.t.u': {
 		type: 'string',
 		default: 'px',
 		longLabel: 'divider-border-top-unit',
 	},
-	'db.r': {
+	'di-bo.r': {
 		type: 'number',
 		default: 2,
 		longLabel: 'divider-border-right',
 	},
-	'db.r.u': {
+	'di-bo.r.u': {
 		type: 'string',
 		default: 'px',
 		longLabel: 'divider-border-right-unit',
 	},
-	'db.ra': {
+	'di-bo.ra': {
 		type: 'boolean',
 		default: false,
 		longLabel: 'divider-border-radius',
 	},
-	dw: {
+	di_w: {
 		type: 'number',
 		default: 50,
 		longLabel: 'divider-width',
 	},
-	'dw.u': {
+	'di_w.u': {
 		type: 'string',
 		default: '%',
 		longLabel: 'divider-width-unit',
 	},
-	dh: {
+	di_h: {
 		type: 'number',
 		default: 100,
 		longLabel: 'divider-height',
 	},
-	la: {
+	_la: {
 		type: 'string',
 		default: 'row',
 		longLabel: 'line-align',
 	},
-	lv: {
+	_lv: {
 		type: 'string',
 		default: 'center',
 		longLabel: 'line-vertical',
 	},
-	lh: {
+	_lh: {
 		type: 'string',
 		default: 'center',
 		longLabel: 'line-horizontal',
 	},
-	lo: {
+	_lo: {
 		type: 'string',
 		default: 'horizontal',
 		longLabel: 'line-orientation',
 	},
-	'db-s': {
+	'di-bo_s': {
 		type: 'string',
 		default: 'solid',
 		longLabel: 'divider-border-style',
 	},
 	...paletteAttributesCreator({
-		prefix,
+		prefix: 'di-bo',
+		longPrefix: 'divider-border-',
 		palette: 4,
 	}),
 };

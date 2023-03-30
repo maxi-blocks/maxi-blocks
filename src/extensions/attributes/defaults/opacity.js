@@ -2,7 +2,7 @@ import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
 const opacity = breakpointAttributesCreator({
 	obj: {
-		o: {
+		_o: {
 			type: 'number',
 			longLabel: 'opacity',
 		},

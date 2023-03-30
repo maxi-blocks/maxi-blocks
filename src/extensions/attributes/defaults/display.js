@@ -2,7 +2,7 @@ import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
 const display = breakpointAttributesCreator({
 	obj: {
-		d: {
+		_d: {
 			type: 'string',
 			longLabel: 'display',
 		},

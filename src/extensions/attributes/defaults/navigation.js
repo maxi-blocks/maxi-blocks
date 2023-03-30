@@ -2,22 +2,22 @@ import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
 const navigation = breakpointAttributesCreator({
 	obj: {
-		'na-b.s': {
+		'nab.s': {
 			type: 'boolean',
 			default: true,
 			longLabel: 'navigation-arrow-both-status',
 		},
-		'ng.s': {
+		'nd.s': {
 			type: 'boolean',
 			default: true,
 			longLabel: 'navigation-dot-status',
 		},
-		'na-pos': {
+		na_pos: {
 			type: 'string',
 			default: 'inside',
 			longLabel: 'navigation-arrow-position',
 		},
-		'ng-pos': {
+		nd_pos: {
 			type: 'string',
 			default: 'inside',
 			longLabel: 'navigation-dot-position',

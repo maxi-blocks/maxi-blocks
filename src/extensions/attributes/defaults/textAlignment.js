@@ -2,7 +2,7 @@ import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
 const textAlignment = breakpointAttributesCreator({
 	obj: {
-		ta: {
+		_ta: {
 			type: 'string',
 			longLabel: 'text-alignment',
 		},

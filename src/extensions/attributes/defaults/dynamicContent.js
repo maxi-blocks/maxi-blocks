@@ -1,5 +1,5 @@
 const dynamicContent = {
-	'dc-er': {
+	dc_er: {
 		type: 'string',
 		default: '',
 		longLabel: 'dc-error',
@@ -9,131 +9,131 @@ const dynamicContent = {
 		default: false,
 		longLabel: 'dc-status',
 	},
-	'dc-ty': {
+	dc_ty: {
 		type: 'string',
 		default: 'posts',
 		longLabel: 'dc-type',
 	},
-	'dc-rel': {
+	dc_rel: {
 		type: 'string',
 		default: 'by-id',
 		longLabel: 'dc-relation',
 	},
-	'dc-id': {
+	dc_id: {
 		type: 'number',
 		longLabel: 'dc-id',
 	},
-	'dc-au': {
+	dc_au: {
 		type: 'number',
 		longLabel: 'dc-author',
 	},
-	'dc-sho': {
+	dc_sho: {
 		type: 'string',
 		default: 'current',
 		longLabel: 'dc-show',
 	},
-	'dc-f': {
+	dc_f: {
 		type: 'string',
 		longLabel: 'dc-field',
 	},
-	'dc-fo': {
+	dc_fo: {
 		type: 'string',
 		default: 'd.m.Y t',
 		longLabel: 'dc-format',
 	},
-	'dc-cfo': {
+	dc_cfo: {
 		type: 'string',
 		longLabel: 'dc-custom-format',
 	},
-	'dc-cd': {
+	dc_cd: {
 		type: 'boolean',
 		default: false,
 		longLabel: 'dc-custom-date',
 	},
-	'dc-y': {
+	dc_y: {
 		type: 'string',
 		default: 'numeric',
 		longLabel: 'dc-year',
 	},
-	'dc-mo': {
+	dc_mo: {
 		type: 'string',
 		default: 'numeric',
 		longLabel: 'dc-month',
 	},
-	'dc-da': {
+	dc_da: {
 		type: 'string',
 		default: 'numeric',
 		longLabel: 'dc-day',
 	},
-	'dc-hou': {
+	dc_hou: {
 		type: 'boolean',
 		default: 'numeric',
 		longLabel: 'dc-hour',
 	},
-	'dc-h12': {
+	dc_h12: {
 		type: 'string',
 		default: false,
 		longLabel: 'dc-hour12',
 	},
-	'dc-min': {
+	dc_min: {
 		type: 'string',
 		default: 'numeric',
 		longLabel: 'dc-minute',
 	},
-	'dc-sec': {
+	dc_sec: {
 		type: 'string',
 		default: 'numeric',
 		longLabel: 'dc-second',
 	},
-	'dc-loc': {
+	dc_loc: {
 		type: 'string',
 		default: 'en',
 		longLabel: 'dc-locale',
 	},
-	'dc-tz': {
+	dc_tz: {
 		type: 'string',
 		default: 'Europe/London',
 		longLabel: 'dc-timezone',
 	},
-	'dc-tzn': {
+	dc_tzn: {
 		type: 'string',
 		default: 'none',
 		longLabel: 'dc-timezone-name',
 	},
-	'dc-wd': {
+	dc_wd: {
 		type: 'string',
 		longLabel: 'dc-weekday',
 	},
-	'dc-era': {
+	dc_era: {
 		type: 'string',
 		longLabel: 'dc-era',
 	},
-	'dc-lim': {
+	dc_lim: {
 		type: 'number',
 		default: 100,
 		longLabel: 'dc-limit',
 	},
-	'dc-content': {
+	dc_c: {
 		type: 'string',
 		longLabel: 'dc-content',
 	},
-	'dc-mid': {
+	dc_mid: {
 		type: 'number',
 		longLabel: 'dc-media-id',
 	},
-	'dc-mur': {
+	dc_mur: {
 		type: 'string',
 		longLabel: 'dc-media-url',
 	},
-	'dc-mc': {
+	dc_mc: {
 		type: 'string',
 		longLabel: 'dc-media-caption',
 	},
-	'dc-l.s': {
+	'dc_l.s': {
 		type: 'boolean',
 		longLabel: 'dc-link-status',
 	},
-	'dc-lur': {
+	dc_lur: {
 		type: 'string',
 		longLabel: 'dc-link-url',
 	},

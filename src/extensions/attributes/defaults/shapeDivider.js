@@ -2,21 +2,23 @@ import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import paletteAttributesCreator from '../paletteAttributesCreator';
 import prefixAttributesCreator from '../prefixAttributesCreator';
 
-const prefixTop = 'sdt-'; // shape-divider-top-
-const prefixBottom = 'sdb-'; // shape-divider-bottom-
+const prefixTop = 'sdt-';
+const longPrefixTop = 'shape-divider-top-';
+const prefixBottom = 'sdb-';
+const longPrefixBottom = 'shape-divider-bottom-';
 
 const commonShapeDividerBP = {
-	h: {
+	_h: {
 		type: 'number',
 		default: 100,
 		longLabel: 'height',
 	},
-	'h.u': {
+	'_h.u': {
 		type: 'string',
 		default: 'px',
 		longLabel: 'height-unit',
 	},
-	o: {
+	_o: {
 		type: 'number',
 		default: 1,
 		longLabel: 'opacity',
@@ -29,11 +31,11 @@ const commonShapeDivider = {
 		default: false,
 		longLabel: 'status',
 	},
-	ss: {
+	_ss: {
 		type: 'string',
 		longLabel: 'shape-style',
 	},
-	'ef.s': {
+	'_ef.s': {
 		type: 'boolean',
 		default: false,
 		longLabel: 'effects-status',
@@ -44,14 +46,21 @@ const rawShapeDivider = {
 	...prefixAttributesCreator({
 		obj: commonShapeDividerBP,
 		prefix: prefixTop,
+		longPrefix: longPrefixTop,
 	}),
 	...prefixAttributesCreator({
 		obj: commonShapeDividerBP,
 		prefix: prefixBottom,
+		longPrefix: longPrefixBottom,
 	}),
-	...paletteAttributesCreator({ prefix: 'sdt-', palette: 5 }), // shape-divider-top-
 	...paletteAttributesCreator({
-		prefix: 'shape-divider-bottom-',
+		prefix: prefixTop,
+		longPrefix: longPrefixTop,
+		palette: 5,
+	}),
+	...paletteAttributesCreator({
+		prefix: prefixBottom,
+		longPrefix: longPrefixBottom,
 		palette: 5,
 	}),
 };
@@ -61,10 +70,12 @@ const shapeDivider = {
 	...prefixAttributesCreator({
 		obj: commonShapeDivider,
 		prefix: prefixTop,
+		longPrefix: longPrefixTop,
 	}),
 	...prefixAttributesCreator({
 		obj: commonShapeDivider,
 		prefix: prefixBottom,
+		longPrefix: longPrefixBottom,
 	}),
 };
 

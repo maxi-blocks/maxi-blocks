@@ -1,20 +1,20 @@
 const mapInteraction = {
-	'm-dr': {
+	m_dr: {
 		type: 'boolean',
 		default: true,
 		longLabel: 'map-dragging',
 	},
-	'm-tx': {
+	m_tzo: {
 		type: 'boolean',
 		default: true,
 		longLabel: 'map-touch-zoom',
 	},
-	'm-dcz': {
+	m_dcz: {
 		type: 'boolean',
 		default: true,
 		longLabel: 'map-double-click-zoom',
 	},
-	'm-swz': {
+	m_swz: {
 		type: 'boolean',
 		default: true,
 		longLabel: 'map-scroll-wheel-zoom',

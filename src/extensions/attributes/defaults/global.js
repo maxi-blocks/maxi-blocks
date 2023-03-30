@@ -2,43 +2,43 @@ import breakpoints from './breakpoints';
 
 const global = {
 	...breakpoints,
-	mvc: {
+	_mvc: {
 		type: 'string',
 		longLabel: 'maxi-version-current',
 	},
-	mvo: {
+	_mvo: {
 		type: 'string',
 		longLabel: 'maxi-version-origin',
 	},
-	bs: {
+	_bs: {
 		type: 'string',
 		longLabel: 'blockStyle',
 	},
-	ecn: {
+	_ecn: {
 		type: 'string',
 		longLabel: 'extraClassName',
 	},
-	al: {
+	_al: {
 		type: 'string',
 		longLabel: 'anchorLink',
 	},
-	ioh: {
+	_ioh: {
 		type: 'boolean',
 		longLabel: 'isFirstOnHierarchy',
 	},
-	lse: {
+	_lse: {
 		type: 'object',
 		longLabel: 'linkSettings',
 	},
-	uid: {
+	_uid: {
 		type: 'string',
 		longLabel: 'uniqueID',
 	},
-	cl: {
+	_cl: {
 		type: 'string',
 		longLabel: 'customLabel',
 	},
-	r: {
+	_r: {
 		type: 'array',
 		longLabel: 'relations',
 	},

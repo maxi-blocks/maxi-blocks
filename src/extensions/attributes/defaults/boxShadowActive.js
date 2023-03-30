@@ -1,11 +1,12 @@
 import prefixAttributesCreator from '../prefixAttributesCreator';
 import boxShadow from './boxShadow';
 
-const prefix = 'a-'; // active-
+const prefix = 'a-';
+const longPrefix = 'active-';
 
 const boxShadowActive = prefixAttributesCreator({
 	obj: boxShadow,
-	diffValAttr: { [`${prefix}bs-pc-general`]: 6 }, // box-shadow-palette-color-general
+	diffValAttr: { [`${prefix}bs_pc-general`]: 6 }, // box-shadow-palette-color-general
 	newAttr: {
 		'bs.sa': {
 			type: 'boolean',
@@ -14,6 +15,7 @@ const boxShadowActive = prefixAttributesCreator({
 		},
 	},
 	prefix,
+	longPrefix,
 });
 
 export default boxShadowActive;

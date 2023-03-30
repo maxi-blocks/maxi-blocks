@@ -3,7 +3,11 @@ import paletteAttributesCreator from '../paletteAttributesCreator';
 
 const placeholderColor = {
 	...breakpointAttributesCreator({
-		obj: paletteAttributesCreator({ prefix: 'pl-', palette: 3 }), // placeholder-
+		obj: paletteAttributesCreator({
+			prefix: 'pla-',
+			longPrefix: 'placeholder-',
+			palette: 3,
+		}),
 	}),
 };
 

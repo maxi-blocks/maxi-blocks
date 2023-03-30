@@ -1,63 +1,64 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
 const rawFlex = {
-	fg: {
+	_fg: {
 		type: 'number',
 		longLabel: 'flex-grow',
 	},
-	fls: {
+	_fls: {
 		type: 'number',
 		longLabel: 'flex-shrink',
 	},
-	fb: {
+	_fb: {
 		type: 'string',
 		longLabel: 'flex-basis',
 	},
-	'fb.u': {
+	'_fb.u': {
 		type: 'string',
 		default: 'px',
 		longLabel: 'flex-basis-unit',
 	},
-	flw: {
+	_flw: {
 		type: 'string',
 		longLabel: 'flex-wrap',
 	},
-	js: {
+	_jc: {
 		type: 'string',
 		longLabel: 'justify-content',
 	},
-	fd: {
+	_fd: {
 		type: 'string',
 		longLabel: 'flex-direction',
 	},
-	ai: {
+	_ai: {
 		type: 'string',
 		longLabel: 'align-items',
 	},
-	ac: {
+	_ac: {
 		type: 'string',
 		longLabel: 'align-content',
 	},
-	rg: {
+	_rg: {
 		type: 'number',
 		longLabel: 'row-gap',
 	},
-	'rg.u': {
+	'_rg.u': {
 		type: 'string',
 		default: 'px',
 		longLabel: 'row-gap-unit',
 	},
-	cg: {
+	_cg: {
 		type: 'number',
 		longLabel: 'column-gap',
 	},
-	'cg.u': {
+	'_cg.u': {
 		type: 'string',
 		default: 'px',
 		longLabel: 'column-gap-unit',
 	},
-	or: {
+	_or: {
 		type: 'number',
+		longLabel: 'order',
 	},
 };
 

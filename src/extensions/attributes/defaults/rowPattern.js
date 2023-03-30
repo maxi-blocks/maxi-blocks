@@ -2,7 +2,7 @@ import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
 const rowPattern = breakpointAttributesCreator({
 	obj: {
-		wp: {
+		_rp: {
 			type: 'string',
 			longLabel: 'row-pattern',
 		},

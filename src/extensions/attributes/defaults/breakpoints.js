@@ -2,7 +2,7 @@ import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
 const breakpoints = breakpointAttributesCreator({
 	obj: {
-		bp: {
+		_bp: {
 			type: 'number',
 			longLabel: 'breakpoints',
 		},

@@ -10,7 +10,8 @@ import {
 } from './icon';
 import { iconBorder, iconBorderRadius, iconBorderWidth } from './iconBorder';
 
-const prefix = 'na-b-'; // navigation-arrow-both-
+const prefix = 'nab-'; // navigation-arrow-both-
+const longPrefix = 'navigation-arrow-both-';
 
 const arrowIcon = {
 	...prefixAttributesCreator({
@@ -26,31 +27,32 @@ const arrowIcon = {
 			...iconBoxShadow,
 		},
 		prefix,
+		longPrefix,
 		diffValAttr: {
-			'na-b-i-w-general': '20', // navigation-arrow-both-icon-width-general
-			'na-b-i-str-pc': 5, // navigation-arrow-both-icon-stroke-palette-color
-			'na-b-i-bam-general': 'none', // navigation-arrow-both-icon-background-active-media-general
-			'na-b-i-bo-ra.u-general': 'px', // navigation-arrow-both-icon-border-radius-unit-general
+			'nab-i_w-general': '20', // navigation-arrow-both-icon-width-general
+			'nab-i-str_pc': 5, // navigation-arrow-both-icon-stroke-palette-color
+			'nab-i-b_am-general': 'none', // navigation-arrow-both-icon-background-active-media-general
+			'nab-i-bo.ra.u-general': 'px', // navigation-arrow-both-icon-border-radius-unit-general
 		},
 		exclAttr: [
-			'i-i', // 'icon-inherit'
-			'i-on', // 'icon-only'
-			'i-pos', // 'icon-position'
-			'i-c', // 'icon-content'
-			'i-spa', // 'icon-spacing'
+			'i_i', // 'icon-inherit'
+			'i_on', // 'icon-only'
+			'i_pos', // 'icon-position'
+			'i_c', // 'icon-content'
+			'i_spa', // 'icon-spacing'
 		],
 		newAttr: {
-			'na-b-i-b.s': {
+			'nab-i-b.s': {
 				type: 'boolean',
 				default: false,
 				longLabel: 'navigation-arrow-both-icon-background-status',
 			},
-			'na-b-i-bo.s': {
+			'nab-i-bo.s': {
 				type: 'boolean',
 				default: false,
 				longLabel: 'navigation-arrow-both-icon-border-status',
 			},
-			'na-b-i-bs.s': {
+			'nab-i-bs.s': {
 				type: 'boolean',
 				default: false,
 				longLabel: 'navigation-arrow-both-icon-box-shadow-status',
@@ -58,39 +60,39 @@ const arrowIcon = {
 		},
 	}),
 	...{
-		// navigation-arrow-first-icon-content
-		'na-fi-i-c': {
+		'naf-i_c': {
 			type: 'string',
 			default:
 				'<svg class="arrow-left-line-maxi-svg" width="64px" height="64px" viewBox="0 0 24 24" fill="none" data-stroke stroke="#081219" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"><path d="M8.85 19l-7-7 7-7m-7 7h20.3"/></svg>',
+			longLabel: 'navigation-arrow-first-icon-content',
 		},
-		// navigation-arrow-second-icon-content
-		'na-sec-i-c': {
+		'nas-i_c': {
 			type: 'string',
 			default:
 				'<svg class="arrow-right-line-maxi-svg" width="64px" height="64px" viewBox="0 0 24 24" fill="none" data-stroke stroke="#081219" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"><path d="M15.15 5l7 7-7 7m7-7H1.85"/></svg>',
+			longLabel: 'navigation-arrow-second-icon-content',
 		},
 	},
 	...breakpointAttributesCreator({
 		obj: {
-			'na-b-i-sh': {
+			'nab-i_sh': {
 				type: 'number',
 				default: -40,
 				longLabel: 'navigation-arrow-both-icon-spacing-horizontal',
 			},
-			'na-b-i-sv': {
+			'nab-i_sv': {
 				type: 'number',
 				default: 50,
 				longLabel: 'navigation-arrow-both-icon-spacing-vertical',
 			},
 		},
 	}),
-	'na-fi-st': {
+	naf_st: {
 		type: 'string',
 		default: 'Line',
 		longLabel: 'navigation-arrow-first-svgType',
 	},
-	'na-sec-st': {
+	nas_st: {
 		type: 'string',
 		default: 'Line',
 		longLabel: 'navigation-arrow-second-svgType',

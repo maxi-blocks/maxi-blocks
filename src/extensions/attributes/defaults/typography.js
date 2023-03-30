@@ -4,102 +4,106 @@ import paletteAttributesCreator from '../paletteAttributesCreator';
 import alignment from './alignment';
 
 export const rawTypography = {
-	ff: {
+	_ff: {
 		type: 'string',
 		longLabel: 'font-family',
 	},
 	...paletteAttributesCreator({ prefix: '', palette: 3 }),
-	...paletteAttributesCreator({ prefix: 'list-', palette: 4 }),
-	'fs.u': {
+	...paletteAttributesCreator({
+		prefix: 'l-',
+		longPrefix: 'list-',
+		palette: 4,
+	}),
+	'_fs.u': {
 		type: 'string',
 		default: 'px',
 		longLabel: 'font-size-unit',
 	},
-	fs: {
+	_fs: {
 		type: 'number',
 		longLabel: 'font-size',
 	},
-	'lhe.u': {
+	'_lhe.u': {
 		type: 'string',
 		default: 'px',
 		longLabel: 'line-height-unit',
 	},
-	lhe: {
+	_lhe: {
 		type: 'number',
 		longLabel: 'line-height',
 	},
-	'ls.u': {
+	'_ls.u': {
 		type: 'string',
 		default: 'px',
 		longLabel: 'letter-spacing-unit',
 	},
-	ls: {
+	_ls: {
 		type: 'number',
 		longLabel: 'letter-spacing',
 	},
-	fwe: {
+	_fwe: {
 		type: 'string',
 		longLabel: 'font-weight',
 	},
-	ttr: {
+	_ttr: {
 		type: 'string',
 		longLabel: 'text-transform',
 	},
-	fst: {
+	_fst: {
 		type: 'string',
 		longLabel: 'font-style',
 	},
-	td: {
+	_td: {
 		type: 'string',
 		longLabel: 'text-decoration',
 	},
-	ti: {
+	_ti: {
 		type: 'number',
 		longLabel: 'text-indent',
 	},
-	'ti.u': {
+	'_ti.u': {
 		type: 'string',
 		default: 'px',
 		longLabel: 'text-indent-unit',
 	},
-	tsh: {
+	_tsh: {
 		type: 'string',
 		longLabel: 'text-shadow',
 	},
-	va: {
+	_va: {
 		type: 'string',
 		longLabel: 'vertical-align',
 	},
-	cf: {
+	_cf: {
 		type: 'object',
 		longLabel: 'custom-formats',
 	},
-	to: {
+	_to: {
 		type: 'string',
 		longLabel: 'text-orientation',
 	},
-	tdi: {
+	_tdi: {
 		type: 'string',
 		longLabel: 'text-direction',
 	},
-	ws: {
+	_ws: {
 		type: 'string',
 		longLabel: 'white-space',
 	},
-	wsp: {
+	_wsp: {
 		type: 'number',
 		longLabel: 'word-spacing',
 	},
-	'wsp.u': {
+	'_wsp.u': {
 		type: 'string',
 		default: 'px',
 		longLabel: 'word-spacing-unit',
 	},
-	bg: {
+	_bg: {
 		type: 'number',
 		longLabel: 'bottom-gap',
 	},
-	'bg.u': {
+	'_bg.u': {
 		type: 'string',
 		default: 'px',
 		longLabel: 'bottom-gap-unit',
@@ -113,8 +117,9 @@ export const typography = breakpointAttributesCreator({
 
 export const typographyAlignment = prefixAttributesCreator({
 	obj: alignment,
-	prefix: 'typography-',
+	prefix: 't-',
+	longPrefix: 'typography-',
 	diffValAttr: {
-		'ta-general': 'left', // typography-alignment-general
+		'_ta-general': 'left', // typography-alignment-general
 	},
 });

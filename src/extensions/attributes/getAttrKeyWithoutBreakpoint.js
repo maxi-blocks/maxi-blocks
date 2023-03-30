@@ -1,16 +1,16 @@
 import getBreakpointFromAttribute from './getBreakpointFromAttribute';
+import getNormalAttributeKey from './getNormalAttributeKey';
 
 const getAttrKeyWithoutBreakpoint = key => {
-	const isHover = key.includes('-hover');
-
-	const target = isHover ? key.replace('-hover', '') : key;
+	const target = getNormalAttributeKey(key);
+	const isHover = target !== key;
 
 	const breakpoint = getBreakpointFromAttribute(target);
 
 	if (!breakpoint) return key;
 
 	const response = `${target.slice(0, -(breakpoint.length + 1))}${
-		isHover ? '-hover' : ''
+		isHover ? '.h' : ''
 	}`;
 
 	return response;

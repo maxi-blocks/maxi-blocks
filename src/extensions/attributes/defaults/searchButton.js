@@ -1,20 +1,20 @@
 const searchButton = {
-	bus: {
+	_bus: {
 		type: 'string',
 		default: 'icon',
 		longLabel: 'buttonSkin',
 	},
-	ira: {
+	_ira: {
 		type: 'string',
 		default: 'click',
 		longLabel: 'iconRevealAction',
 	},
-	bc: {
+	_bc: {
 		type: 'string',
 		default: 'Find',
 		longLabel: 'buttonContent',
 	},
-	bcc: {
+	_bcc: {
 		type: 'string',
 		default: 'Close',
 		longLabel: 'buttonContentClose',

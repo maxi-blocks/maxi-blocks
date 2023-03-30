@@ -2,11 +2,12 @@ import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import paletteAttributesCreator from '../paletteAttributesCreator';
 import prefixAttributesCreator from '../prefixAttributesCreator';
 
-const prefix = 'bo-'; // border
+const prefix = 'bo-';
+const longPrefix = 'border-';
 
 export const rawBorder = {
-	...paletteAttributesCreator({ prefix, palette: 2 }),
-	'bo-s': {
+	...paletteAttributesCreator({ prefix, longPrefix, palette: 2 }),
+	bo_s: {
 		type: 'string',
 		default: 'none',
 		longLabel: 'border-style',
@@ -15,70 +16,72 @@ export const rawBorder = {
 
 export const rawBorderWidth = prefixAttributesCreator({
 	obj: {
-		'w.t': {
+		'_w.t': {
 			type: 'number',
 			default: 2,
 			longLabel: 'width-top',
 		},
-		'w.r': {
+		'_w.r': {
 			type: 'number',
 			default: 2,
 			longLabel: 'width-right',
 		},
-		'w.b': {
+		'_w.b': {
 			type: 'number',
 			default: 2,
 			longLabel: 'width-bottom',
 		},
-		'w.l': {
+		'_w.l': {
 			type: 'number',
 			default: 2,
 			longLabel: 'width-left',
 		},
-		'w.sync': {
+		'_w.sy': {
 			type: 'string',
 			default: 'all',
 			longLabel: 'width-sync',
 		},
-		'w.u': {
+		'_w.u': {
 			type: 'string',
 			default: 'px',
 			longLabel: 'width-unit',
 		},
 	},
 	prefix,
+	longPrefix,
 });
 
 export const rawBorderRadius = prefixAttributesCreator({
 	obj: {
-		'.ra-t.l': {
+		'.ra.tl': {
 			type: 'number',
 			longLabel: 'radius-top-left',
 		},
-		'.ra-t.r': {
+		'.ra.tr': {
 			type: 'number',
 			longLabel: 'radius-top-right',
 		},
-		'.ra-b.r': {
+		'.ra.br': {
 			type: 'number',
 			longLabel: 'radius-bottom-right',
 		},
-		'.ra-b.l': {
+		'.ra.bl': {
 			type: 'number',
 			longLabel: 'radius-bottom-left',
 		},
-		'.ra-sy': {
+		'.ra.sy': {
 			type: 'string',
 			default: 'all',
 			longLabel: 'radius-sync',
 		},
-		'.ra-u': {
+		'.ra.u': {
 			type: 'string',
 			default: 'px',
 			longLabel: 'radius-unit',
 		},
 	},
-	prefix,
+	prefix: 'bo-',
+	longPrefix: 'border-',
 });
 
 export const border = breakpointAttributesCreator({

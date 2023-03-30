@@ -1,20 +1,20 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
 export const rawImageShape = {
-	'is-sc': {
+	is_sc: {
 		type: 'number',
 		default: 100,
 		longLabel: 'image-shape-scale',
 	},
-	'is-rot': {
+	is_rot: {
 		type: 'number',
 		longLabel: 'image-shape-rotate',
 	},
-	'is-fx': {
+	is_fx: {
 		type: 'boolean',
 		longLabel: 'image-shape-flip-x',
 	},
-	'is-fy': {
+	is_fy: {
 		type: 'boolean',
 		longLabel: 'image-shape-flip-y',
 	},

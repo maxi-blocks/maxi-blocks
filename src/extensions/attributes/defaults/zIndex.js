@@ -2,8 +2,9 @@ import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
 const zIndex = breakpointAttributesCreator({
 	obj: {
-		zi: {
+		_zi: {
 			type: 'number',
+			longLabel: 'z-index',
 		},
 	},
 });

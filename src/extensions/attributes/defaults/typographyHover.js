@@ -3,8 +3,8 @@ import { typography } from './typography';
 
 const typographyHover = hoverAttributesCreator({
 	obj: typography,
-	sameValAttr: ['ps-general'], // palette-status-general
-	diffValAttr: { 'pc-general': 5 }, // palette-color-general
+	sameValAttr: ['_ps-general'], // palette-status-general
+	diffValAttr: { '_pc-general': 5 }, // palette-color-general
 	newAttr: {
 		't.sh': {
 			type: 'boolean',

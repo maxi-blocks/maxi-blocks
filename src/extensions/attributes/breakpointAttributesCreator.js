@@ -1,5 +1,3 @@
-import parseLongAttrKey from './dictionary/parseLongAttrKey';
-
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const breakpointAttributesCreator = ({
@@ -11,7 +9,7 @@ const breakpointAttributesCreator = ({
 	const diffValAttrKeys = Object.keys(diffValAttr);
 
 	Object.entries(obj).forEach(([key, val]) => {
-		if (noBreakpointAttr.map(parseLongAttrKey)?.includes(key)) {
+		if (noBreakpointAttr?.includes(key)) {
 			response[key] = val;
 
 			return;
@@ -19,7 +17,10 @@ const breakpointAttributesCreator = ({
 
 		breakpoints.forEach(breakpoint => {
 			const newKey = `${key}-${breakpoint}`;
-			const newVal = { ...val };
+			const newVal = {
+				...val,
+				longLabel: `${val.longLabel}-${breakpoint}`,
+			};
 
 			if (diffValAttrKeys.includes(newKey))
 				newVal.default = diffValAttr[newKey];

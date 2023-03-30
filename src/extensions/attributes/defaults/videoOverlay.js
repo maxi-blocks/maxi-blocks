@@ -4,22 +4,25 @@ import { background, backgroundColor } from './background';
 import opacity from './opacity';
 import { height, width } from './size';
 
-const prefix = 'o-'; // overlay-
+const prefix = 'o-';
+const longPrefix = 'overlay-';
 
 const overlayColor = {
 	...prefixAttributesCreator({
 		obj: background,
 		prefix,
+		longPrefix,
 		diffValAttr: {
-			'o-bam-general': 'color', // overlay-background-active-media-general
+			'o-b_am-general': 'color', // overlay-background-active-media-general
 		},
 	}),
 	...prefixAttributesCreator({
 		obj: backgroundColor,
 		prefix,
+		longPrefix,
 		diffValAttr: {
-			'o-b-pc-general': 5, // overlay-background-palette-color-general
-			'o-b-po-general': 0.7, // overlay-background-palette-opacity-general
+			'o-b_pc-general': 5, // overlay-background-palette-color-general
+			'o-b_po-general': 0.7, // overlay-background-palette-opacity-general
 		},
 	}),
 };
@@ -28,7 +31,7 @@ const videoOverlay = {
 	...overlayColor,
 	...hoverAttributesCreator({
 		obj: overlayColor,
-		sameValAttr: ['o-bam-general', 'o-b-pc-general', 'o-b-po-general'],
+		sameValAttr: ['o-b_am-general', 'o-b_pc-general', 'o-b_po-general'],
 		newAttr: {
 			'o-b.sh': {
 				type: 'boolean',
@@ -40,29 +43,30 @@ const videoOverlay = {
 
 	...prefixAttributesCreator({
 		obj: { ...width, ...height, ...opacity },
-		prefix: 'om-', // overlay-media
+		prefix: 'om-',
+		longPrefix: 'overlay-media-',
 		diffValAttr: {
-			'om-w-general': '100', // overlay-media-width-general
-			'om-w.u-general': '%', // overlay-media-width-unit-general
-			'om-h-general': '100', // overlay-media-height-general
-			'om-h.u-general': '%', // overlay-media-height-unit-general
+			'om_w-general': '100', // overlay-media-width-general
+			'om_w.u-general': '%', // overlay-media-width-unit-general
+			'om_h-general': '100', // overlay-media-height-general
+			'om_h.u-general': '%', // overlay-media-height-unit-general
 		},
 	}),
 
-	'o-mi': {
+	o_mi: {
 		type: 'number',
 		longLabel: 'overlay-mediaID',
 	},
-	'o-my': {
+	o_mu: {
 		type: 'string',
 		longLabel: 'overlay-mediaURL',
 	},
-	'o-as': {
+	o_as: {
 		type: 'string',
 		default: 'wordpress',
 		longLabel: 'overlay-altSelector',
 	},
-	'o-mal': {
+	o_mal: {
 		type: 'string',
 		longLabel: 'overlay-mediaAlt',
 	},

@@ -1,9 +1,9 @@
 const transition = {
-	t: {
+	_t: {
 		type: 'object',
 		longLabel: 'transition',
 	},
-	tca: {
+	_tca: {
 		type: 'boolean',
 		default: true,
 		longLabel: 'transition-change-all',

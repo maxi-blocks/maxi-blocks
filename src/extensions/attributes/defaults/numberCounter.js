@@ -5,7 +5,7 @@ import alignment from './alignment';
 const numberCounter = {
 	...breakpointAttributesCreator({
 		obj: {
-			'nc-wa': {
+			nc_wa: {
 				type: 'boolean',
 				default: false,
 				longLabel: 'number-counter-width-auto',
@@ -17,87 +17,92 @@ const numberCounter = {
 		default: true,
 		longLabel: 'number-counter-status',
 	},
-	'nc-pr': {
+	nc_pr: {
 		type: 'boolean',
 		default: true,
 		longLabel: 'number-counter-preview',
 	},
-	'nc-psi.s': {
+	'nc_psi.s': {
 		type: 'boolean',
 		default: false,
 		longLabel: 'number-counter-percentage-sign-status',
 	},
-	'nc-rou.s': {
+	'nc_rou.s': {
 		type: 'boolean',
 		default: false,
 		longLabel: 'number-counter-rounded-status',
 	},
-	'nc-ci.s': {
+	'nc_ci.s': {
 		type: 'boolean',
 		default: false,
 		longLabel: 'number-counter-circle-status',
 	},
-	'nc-sta': {
+	nc_sta: {
 		type: 'number',
 		default: 0,
 		longLabel: 'number-counter-start',
 	},
-	'nc-e': {
+	nc_e: {
 		type: 'number',
 		default: 100,
 		longLabel: 'number-counter-end',
 	},
-	'nc-str': {
+	nc_str: {
 		type: 'number',
 		default: 5,
 		longLabel: 'number-counter-stroke',
 	},
-	'nc-du': {
+	nc_du: {
 		type: 'number',
 		default: 1,
 		longLabel: 'number-counter-duration',
 	},
-	'nc-san': {
+	nc_san: {
 		type: 'string',
 		default: 'page-load',
 		longLabel: 'number-counter-start-animation',
 	},
-	'nc-saof': {
+	nc_saof: {
 		type: 'number',
 		default: 100,
 		longLabel: 'number-counter-start-animation-offset',
 	},
 
 	...paletteAttributesCreator({
-		prefix: 'nccb-', // number-counter-circle-background-
+		prefix: 'nccb-',
+		longPrefix: 'number-counter-circle-background-',
 		palette: 2,
 	}),
 	...paletteAttributesCreator({
-		prefix: 'nccba-', // number-counter-circle-bar-
+		prefix: 'nccba-',
+		longPrefix: 'number-counter-circle-bar-',
 		palette: 4,
 	}),
 
 	...breakpointAttributesCreator({
 		obj: {
-			'nc-ti-fs': {
+			'nc-ti_fs': {
 				type: 'number',
 				default: 40,
 				longLabel: 'number-counter-title-font-size',
 			},
-			ff: {
+			_ff: {
 				type: 'string',
 				default: 'Roboto',
 				longLabel: 'font-family',
 			},
-			fwe: {
+			_fwe: {
 				type: 'string',
+				longLabel: 'font-weight',
 			},
 			...paletteAttributesCreator({
-				prefix: 'nct-', // number-counter-text-
+				prefix: 'nct-',
+				longPrefix: 'number-counter-text-',
 				palette: 4,
 			}),
 			...paletteAttributesCreator({
-				prefix: 'nccba-', // number-counter-circle-bar-
+				prefix: 'nccba-',
+				longPrefix: 'number-counter-circle-bar-',
 				palette: 4,
 			}),
 		},

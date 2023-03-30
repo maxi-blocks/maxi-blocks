@@ -48,20 +48,32 @@ const getAttributesValue = ({
 	breakpoint,
 	prefix = '',
 	allowNil = false,
+	returnObj = false,
 }) => {
 	if (isArray(target))
-		return target.reduce((acc, item) => {
-			acc[item] = getAttributeValue({
-				target: item,
-				props,
-				isHover,
-				breakpoint,
-				prefix,
-				allowNil,
-			});
+		return returnObj
+			? target.reduce((acc, item) => {
+					acc[item] = getAttributeValue({
+						target: item,
+						props,
+						isHover,
+						breakpoint,
+						prefix,
+						allowNil,
+					});
 
-			return acc;
-		}, {});
+					return acc;
+			  }, {})
+			: target.map(item =>
+					getAttributeValue({
+						target: item,
+						props,
+						isHover,
+						breakpoint,
+						prefix,
+						allowNil,
+					})
+			  );
 
 	return getAttributeValue({
 		target,

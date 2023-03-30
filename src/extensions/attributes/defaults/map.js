@@ -1,36 +1,37 @@
 const map = {
-	'm-pro': {
+	m_pro: {
 		type: 'string',
 		default: 'openstreetmap', // or googlemaps
 		longLabel: 'map-provider',
 	},
-	'm-lat': {
+	m_lat: {
 		type: 'number',
 		default: 52.514477,
 		longLabel: 'map-latitude',
 	},
-	'm-long': {
+	m_lon: {
 		type: 'number',
 		default: 13.350174,
 		longLabel: 'map-longitude',
 	},
-	'm-x': {
+	m_z: {
 		type: 'number',
 		default: 4,
 		longLabel: 'map-zoom',
 	},
-	'm-mz': {
+	m_mz: {
 		type: 'number',
 		default: 1,
 		longLabel: 'map-min-zoom',
 	},
-	'm-mxz': {
+	m_mzo: {
 		type: 'number',
 		default: 22,
 		longLabel: 'map-max-zoom',
 	},
-	'm-mar': {
+	m_mar: {
 		type: 'array',
+		longLabel: 'map-markers',
 	},
 };
 

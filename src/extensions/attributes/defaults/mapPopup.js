@@ -2,23 +2,27 @@ import { background, backgroundColor } from './background';
 import boxShadow from './boxShadow';
 import prefixAttributesCreator from '../prefixAttributesCreator';
 
-const prefix = 'p-'; // popup-
+const prefix = 'p-';
+const longPrefix = 'popup-';
 
 const mapPopup = {
 	...prefixAttributesCreator({
 		obj: background,
 		prefix,
+		longPrefix,
 		diffValAttr: {
-			[`${prefix}bam-general`]: 'color', // background-active-media-general
+			[`${prefix}b_am-general`]: 'color', // background-active-media-general
 		},
 	}),
 	...prefixAttributesCreator({
 		obj: backgroundColor,
 		prefix,
+		longPrefix,
 	}),
 	...prefixAttributesCreator({
 		obj: boxShadow,
 		prefix,
+		longPrefix,
 	}),
 };
 

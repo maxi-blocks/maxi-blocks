@@ -8,7 +8,7 @@ import { clipPathRaw } from './clipPath';
 const { position, ...backgroundPosition } = rawPosition;
 
 const rawBgOpacity = {
-	o: {
+	_o: {
 		type: 'number',
 		default: 1,
 		longLabel: 'opacity',
@@ -16,11 +16,11 @@ const rawBgOpacity = {
 };
 
 export const blockBackground = {
-	bl: {
+	b_ly: {
 		type: 'array',
 		longLabel: 'background-layers',
 	},
-	'bl.h': {
+	'b_ly.h': {
 		type: 'array',
 		longLabel: 'background-layers-hover',
 	},
@@ -31,32 +31,30 @@ export const blockBackground = {
 	},
 };
 
-export const rawBackground =
-	({
-		bam: {
-			type: 'string',
-			longLabel: 'background-active-media',
-		},
+export const rawBackground = {
+	b_am: {
+		type: 'string',
+		longLabel: 'background-active-media',
 	},
-	'background');
+};
 
 const layerSize = {
-	w: {
+	_w: {
 		type: 'number',
 		default: 100,
 		longLabel: 'width',
 	},
-	'w.u': {
+	'_w.u': {
 		type: 'string',
 		default: '%',
 		longLabel: 'width-unit',
 	},
-	h: {
+	_h: {
 		type: 'number',
 		default: 100,
 		longLabel: 'height',
 	},
-	'h.u': {
+	'_h.u': {
 		type: 'string',
 		default: '%',
 		longLabel: 'height-unit',
@@ -65,226 +63,243 @@ const layerSize = {
 
 export const rawBackgroundColor = {
 	...paletteAttributesCreator({
-		prefix: 'bc-', // background-color-
+		prefix: 'bc-',
+		longPrefix: 'background-color-',
 		palette: 1,
 	}),
 
 	...prefixAttributesCreator({
-		prefix: 'bc-', // background-color-
+		prefix: 'bc-',
+		longPrefix: 'background-color-',
 		obj: clipPathRaw,
 	}),
 
 	...prefixAttributesCreator({
 		obj: { ...backgroundPosition, ...layerSize },
-		prefix: 'bcw-', // background-color-wrapper
+		prefix: 'bcw-',
+		longPrefix: 'background-color-wrapper-',
 	}),
 };
 
 export const rawBackgroundImage = {
-	'bi-mi': {
+	bi_mi: {
 		type: 'number',
 		longLabel: 'background-image-mediaID',
 	},
-	'bi-mu': {
+	bi_mu: {
 		type: 'string',
 		longLabel: 'background-image-mediaURL',
 	},
-	'bi-si': {
+	bi_si: {
 		type: 'string',
 		default: 'auto',
 		longLabel: 'background-image-size',
 	},
 	...prefixAttributesCreator({
 		obj: layerSize,
-		prefix: 'bi-', // background-image-
+		prefix: 'bi-',
+		longPrefix: 'background-image-',
 	}),
-	'bi-co': {
+	bi_co: {
 		type: 'object',
 		longLabel: 'background-image-crop-options',
 	},
-	'bi-re': {
+	bi_re: {
 		type: 'string',
 		default: 'no-repeat',
 		longLabel: 'background-image-repeat',
 	},
-	'bi-pos': {
+	bi_pos: {
 		type: 'string',
 		default: 'center center',
 		longLabel: 'background-image-position',
 	},
-	'bi-pw.u': {
+	'bi_pw.u': {
 		type: 'string',
 		default: '%',
 		longLabel: 'background-image-position-width-unit',
 	},
-	'bi-pw': {
+	bi_pw: {
 		type: 'number',
 		default: 0,
 		longLabel: 'background-image-position-width',
 	},
-	'bi-ph.u': {
+	'bi_ph.u': {
 		type: 'string',
 		default: '%',
 		longLabel: 'background-image-position-height-unit',
 	},
-	'bi-ph': {
+	bi_ph: {
 		type: 'number',
 		default: 0,
 		longLabel: 'background-image-position-height',
 	},
-	'bi-ori': {
+	bi_ori: {
 		type: 'string',
 		default: 'padding-box',
 		longLabel: 'background-image-origin',
 	},
 	...prefixAttributesCreator({
-		prefix: 'bi-', // background-image-
+		prefix: 'bi-',
+		longPrefix: 'background-image-',
 		obj: rawBgOpacity,
 	}),
-	'bi-clp': {
+	bi_clp: {
 		type: 'string',
 		default: 'border-box',
 		longLabel: 'background-image-clip',
 	},
-	'bi-at': {
+	bi_at: {
 		type: 'string',
 		default: 'scroll',
 		longLabel: 'background-image-attachment',
 	},
-	'bi-cp': {
+	bi_cp: {
 		type: 'string',
 		longLabel: 'background-image-clip-path',
 	},
 	...prefixAttributesCreator({
-		prefix: 'bi-', // background-image-
+		prefix: 'bi-',
+		longPrefix: 'background-image-',
 		obj: clipPathRaw,
 	}),
-	'bi-pa.s': {
+	'bi_pa.s': {
 		type: 'boolean',
 		default: false,
 		longLabel: 'background-image-parallax-status',
 	},
-	'bi-psp': {
+	bi_psp: {
 		type: 'number',
 		default: 4,
 		longLabel: 'background-image-parallax-speed',
 	},
-	'bi-pd': {
+	bi_pd: {
 		type: 'string',
 		default: 'down',
 		longLabel: 'background-image-parallax-direction',
 	},
-	'bi-pal': {
+	bi_pal: {
 		type: 'string',
 		longLabel: 'background-image-parallax-alt',
 	},
-	'bi-pas': {
+	bi_pas: {
 		type: 'string',
 		longLabel: 'background-image-parallax-alt-selector',
 	},
 	...prefixAttributesCreator({
 		obj: { ...backgroundPosition, ...layerSize },
-		prefix: 'biw', // background-image-wrapper-
+		prefix: 'biw',
+		longPrefix: 'background-image-wrapper-',
 	}),
 };
 
 export const rawBackgroundVideo = {
-	'bv-mi': {
+	bv_mi: {
 		type: 'number',
 		longLabel: 'background-video-mediaID',
 	},
-	'bv-mu': {
+	bv_mu: {
 		type: 'string',
 		default: 'https://www.youtube.com/watch?v=ScMzIvxBSi4',
 		longLabel: 'background-video-mediaURL',
 	},
-	'bv-sti': {
+	bv_sti: {
 		type: 'string',
 		longLabel: 'background-video-startTime',
 	},
-	'bv-eti': {
+	bv_et: {
 		type: 'string',
 		longLabel: 'background-video-endTime',
 	},
-	'bv-loo': {
+	bv_loo: {
 		type: 'boolean',
 		default: false,
 		longLabel: 'background-video-loop',
 	},
-	'bv-cp': {
+	bv_cp: {
 		type: 'string',
 		longLabel: 'background-video-clip-path',
 	},
-	'bv-cp.s': {
+	'bv_cp.s': {
 		type: 'boolean',
 		default: false,
 		longLabel: 'background-video-clip-path-status',
 	},
-	'bv-fi': {
+	bv_fi: {
 		type: 'number',
 		longLabel: 'background-video-fallbackID',
 	},
-	'bv-fu': {
+	bv_fu: {
 		type: 'string',
 		longLabel: 'background-video-fallbackURL',
 	},
-	'bv-pm': {
+	bv_pm: {
 		type: 'boolean',
 		default: false,
 		longLabel: 'background-video-playOnMobile',
 	},
 	...prefixAttributesCreator({
-		prefix: 'bi-', // background-video-
+		prefix: 'bi-',
+		longPrefix: 'background-image-',
 		obj: rawBgOpacity,
 	}),
-	'bv-rb': {
+	bv_rb: {
 		type: 'boolean',
 		default: false,
 		longLabel: 'background-video-reduce-border',
 	},
 	...prefixAttributesCreator({
 		obj: { ...backgroundPosition, ...layerSize },
-		prefix: 'bvw-', // background-video-wrapper-
+		prefix: 'bvw-',
+		longPrefix: 'background-video-wrapper-',
 	}),
 };
 
 export const rawBackgroundGradient = {
-	'bg-c': {
+	bg_c: {
 		type: 'string',
 		longLabel: 'background-gradient-content',
 	},
 	...prefixAttributesCreator({
-		prefix: 'bg-', // background-gradient-
+		prefix: 'bg-',
+		longPrefix: 'background-gradient-',
 		obj: rawBgOpacity,
 	}),
 	...prefixAttributesCreator({
-		prefix: 'bg-', // background-gradient-
+		prefix: 'bg-',
+		longPrefix: 'background-gradient-',
 		obj: clipPathRaw,
 	}),
 	...prefixAttributesCreator({
 		obj: { ...backgroundPosition, ...layerSize },
-		prefix: 'bg-', // background-gradient-wrapper-
+		prefix: 'bgw-',
+		longPrefix: 'background-gradient-wrapper-',
 	}),
 };
 
 export const rawBackgroundSVG = {
-	...paletteAttributesCreator({ prefix: 'bs-', palette: 5 }), // background-svg-
-	'bg-se': {
+	...paletteAttributesCreator({
+		prefix: 'bsv-',
+		longPrefix: 'background-svg-',
+		palette: 5,
+	}),
+	bsv_se: {
 		type: 'string',
 		longLabel: 'background-svg-SVGElement',
 	},
-	'bg-sd': {
+	bsv_sd: {
 		type: 'object',
 		longLabel: 'background-svg-SVGData',
 	},
-	'bg.t.u': {
+	'bsv.t.u': {
 		type: 'string',
 		default: '%',
 		longLabel: 'background-svg-top-unit',
 	},
 	...prefixAttributesCreator({
 		obj: { ...backgroundPosition, ...layerSize },
-		prefix: 'bs-', // background-svg-
+		prefix: 'bsv-',
+		longPrefix: 'background-svg-',
 	}),
 };
 
@@ -299,10 +314,10 @@ export const backgroundColor = breakpointAttributesCreator({
 export const backgroundImage = breakpointAttributesCreator({
 	obj: rawBackgroundImage,
 	noBreakpointAttr: [
-		'bi-mu', // 'background-image-mediaURL'
-		'bi-mi', // 'background-image-mediaID'
-		'bi-pal', // 'background-image-parallax-alt'
-		'bi-pas', // 'background-image-parallax-alt-selector'
+		'bi_mu', // 'background-image-mediaURL'
+		'bi_mi', // 'background-image-mediaID'
+		'bi_pal', // 'background-image-parallax-alt'
+		'bi_pas', // 'background-image-parallax-alt-selector'
 	],
 });
 

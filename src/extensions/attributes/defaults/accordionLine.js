@@ -3,12 +3,12 @@ import divider from './divider';
 import dividerHover from './dividerHover';
 
 const accordionLineAttributes = {
-	'li.sh': {
+	'_li.sh': {
 		type: 'boolean',
 		default: false,
 		longLabel: 'line-status-hover',
 	},
-	'li.sa': {
+	'_li.sa': {
 		type: 'boolean',
 		default: false,
 		longLabel: 'line-status-active',
@@ -17,18 +17,18 @@ const accordionLineAttributes = {
 
 const rawAccordionLine = {
 	...divider,
-	'db-pc-general': {
+	'di-bo_pc-general': {
 		type: 'number',
 		default: 3,
 		longLabel: 'divider-border-palette-color-general',
 	},
-	'dw-general': {
+	'di_w-general': {
 		type: 'number',
 		default: 100,
 		longLabel: 'divider-width-general',
 	},
 	...dividerHover,
-	'dw-general.h': {
+	'di_w-general.h': {
 		type: 'number',
 		default: 100,
 		longLabel: 'divider-width-general-hover',
@@ -36,10 +36,11 @@ const rawAccordionLine = {
 	...accordionLineAttributes,
 	...prefixAttributesCreator({
 		obj: divider,
-		prefix: 'a-', // active-
+		prefix: 'a-',
+		longPrefix: 'active-',
 		diffValAttr: {
-			'a-db-pc-general': 3, // active-divider-border-palette-color-general
-			'a-dw-general': 100, // active-divider-width-general
+			'a-db_pc-general': 3, // active-divider-border-palette-color-general
+			'a-di_w-general': 100, // active-divider-width-general
 		},
 	}),
 };
@@ -47,11 +48,13 @@ const rawAccordionLine = {
 const accordionLine = {
 	...prefixAttributesCreator({
 		obj: rawAccordionLine,
-		prefix: 'he-', // he-
+		prefix: 'he-',
+		longPrefix: 'header-',
 	}),
 	...prefixAttributesCreator({
 		obj: rawAccordionLine,
-		prefix: 'c-', // content-
+		prefix: 'c-',
+		longPrefix: 'content-',
 	}),
 };
 

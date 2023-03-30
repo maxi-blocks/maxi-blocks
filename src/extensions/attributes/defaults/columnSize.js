@@ -2,12 +2,12 @@ import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
 const columnSize = breakpointAttributesCreator({
 	obj: {
-		cs: {
+		_cs: {
 			type: 'number',
 			default: 90,
 			longLabel: 'column-size',
 		},
-		cfc: {
+		_cfc: {
 			type: 'boolean',
 			longLabel: 'column-fit-content',
 		},

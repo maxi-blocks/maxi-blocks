@@ -5,41 +5,41 @@ const arrowIconHover = hoverAttributesCreator({
 	obj: arrowIcon,
 	diffValAttr: {
 		// navigation-arrow-both-icon-background-gradient-opacity-general-hover
-		'na-b-i-bg-o-general.h': 1,
+		'nab-i-bg_o-general.h': 1,
 		// navigation-arrow-both-icon-background-palette-color-general-hover
-		'na-b-i-b-pc-general.h': 6,
+		'nab-i-b_pc-general.h': 6,
 		// navigation-arrow-both-icon-background-active-media-general-hover
-		'na-b-i-bam-general.h': 'none',
+		'nab-i-b_am-general.h': 'none',
 		// navigation-arrow-both-icon-box-shadow-palette-color-general
-		'na-b-i-bs-pc-general': 6,
+		'nab-i-bs_pc-general': 6,
 	},
 	newAttr: {
-		'na-b-i.sh': {
+		'nab-i.sh': {
 			type: 'boolean',
 			default: false,
 			longLabel: 'navigation-arrow-both-icon-status-hover',
 		},
-		'na-b-i-str-pa.sh': {
+		'nab-i-str_ps.h': {
 			type: 'boolean',
 			default: true,
-			longLabel: 'navigation-arrow-both-icon-stroke-pa-status-hover',
+			longLabel: 'navigation-arrow-both-icon-stroke-palette-status-hover',
 		},
-		'na-b-i-f-pa.sh': {
+		'nab-i-f_ps.h': {
 			type: 'boolean',
 			default: true,
-			longLabel: 'navigation-arrow-both-icon-fill-pa-status-hover',
+			longLabel: 'navigation-arrow-both-icon-fill-palette-status-hover',
 		},
-		'na-b-i-str-pc.h': {
+		'nab-i-str_pc.h': {
 			type: 'number',
 			default: 6,
 			longLabel: 'navigation-arrow-both-icon-stroke-palette-color-hover',
 		},
-		'na-b-i-fill-pc.h': {
+		'nab-i-f_pc.h': {
 			type: 'number',
 			default: 2,
 			longLabel: 'navigation-arrow-both-icon-fill-palette-color-hover',
 		},
-		'na-b-i-bs.sh': {
+		'nab-i-bs.sh': {
 			type: 'boolean',
 			default: false,
 			longLabel: 'navigation-arrow-both-icon-box-shadow-status-hover',

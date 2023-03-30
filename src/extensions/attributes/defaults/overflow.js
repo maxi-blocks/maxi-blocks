@@ -1,12 +1,12 @@
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
 const rawOverflow = {
-	'overflow-x': {
+	_ox: {
 		type: 'string',
 		default: 'visible',
 		longLabel: 'overflow-x',
 	},
-	'overflow-y': {
+	_oy: {
 		type: 'string',
 		default: 'visible',
 		longLabel: 'overflow-y',

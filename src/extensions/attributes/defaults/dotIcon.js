@@ -10,7 +10,8 @@ import {
 } from './icon';
 import { iconBorder, iconBorderRadius, iconBorderWidth } from './iconBorder';
 
-const prefix = 'nd-'; // navigation-dot-
+const prefix = 'nd-';
+const longPrefix = 'navigation-dot-';
 
 const dotIcon = {
 	...prefixAttributesCreator({
@@ -26,28 +27,29 @@ const dotIcon = {
 			...iconBoxShadow,
 		},
 		prefix,
+		longPrefix,
 		diffValAttr: {
 			// navigation-dot-icon-width-general
-			'nd-i-w-general': '10',
+			'nd-i_w-general': '10',
 			// navigation-dot-icon-stroke-palette-color
-			'nd-i-str-palette-color': 5,
+			'nd-i-str_pc': 5,
 			// navigation-dot-icon-fill-palette-color
-			'nd-i-f-palette-color': 3,
+			'nd-i-f_pc': 3,
 			// navigation-dot-icon-border-radius-unit-general
-			'nd-i-bo-ra.u-general': 'px',
+			'nd-i_bo-ra.u-general': 'px',
 			// navigation-dot-icon-background-active-media-general
-			'nd-i-bam-general': 'none',
+			'nd-i-b_am-general': 'none',
 			// navigation-dot-icon-content
-			'nd-i-c':
+			'nd-i_c':
 				'<svg class="circle-2-shape-maxi-svg__3" width="64px" height="64px" viewBox="0 0 36.1 36.1"><circle cx="18" cy="18" r="17.2" data-fill  fill="var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-5,0,0,0),1))"/></svg>',
 			// navigation-dot-svgType
-			'nd-st': 'Shape',
+			nd_st: 'Shape',
 		},
 		exclAttr: [
-			'i-i', // icon-inherit
-			'i-on', // icon-only
-			'i-pos', // icon-position
-			'i-spa', // icon-spacing
+			'i_i', // icon-inherit
+			'i_on', // icon-only
+			'i_pos', // icon-position
+			'i_spa', // icon-spacing
 		],
 		newAttr: {
 			'nd-i-bo.s': {
@@ -69,17 +71,17 @@ const dotIcon = {
 	}),
 	...breakpointAttributesCreator({
 		obj: {
-			'nd-i-sh': {
+			'nd-i_sh': {
 				type: 'number',
 				default: 50,
 				longLabel: 'navigation-dot-icon-spacing-horizontal',
 			},
-			'nd-i-sv': {
+			'nd-i_sv': {
 				type: 'number',
 				default: 85,
 				longLabel: 'navigation-dot-icon-spacing-vertical',
 			},
-			'nd-i-sb': {
+			'nd-i_sb': {
 				type: 'number',
 				default: 3,
 				longLabel: 'navigation-dot-icon-spacing-between',

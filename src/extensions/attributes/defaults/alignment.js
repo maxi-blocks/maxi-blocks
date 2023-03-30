@@ -2,7 +2,7 @@ import breakpointAttributesCreator from '../breakpointAttributesCreator';
 
 const alignment = breakpointAttributesCreator({
 	obj: {
-		a: {
+		_a: {
 			type: 'string',
 			default: 'center',
 			longLabel: 'alignment',

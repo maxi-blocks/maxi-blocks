@@ -1,8 +1,7 @@
-import parseLongAttrKey from './dictionary/parseLongAttrKey';
-
 const prefixAttributesCreator = ({
 	obj,
 	prefix,
+	longPrefix,
 	diffValAttr = {},
 	newAttr = {},
 	exclAttr = [],
@@ -12,14 +11,22 @@ const prefixAttributesCreator = ({
 
 	Object.entries(obj).forEach(([key, val]) => {
 		if (exclAttr.every(excl => !key.includes(excl))) {
-			const newKey = `${prefix}${key}`;
+			const newKey = `${prefix}${key}`
+				.replace('-_', '_')
+				.replace('-.', '.')
+				.replace('--', '-');
 
-			if (diffValAttrKeys.map(parseLongAttrKey).includes(newKey))
+			if (diffValAttrKeys.includes(newKey))
 				response[newKey] = {
 					...val,
 					default: diffValAttr[newKey],
+					longLabel: `${longPrefix}${val.longLabel}`,
 				};
-			else response[newKey] = val;
+			else
+				response[newKey] = {
+					...val,
+					longLabel: `${longPrefix}${val.longLabel}`,
+				};
 		}
 	});
 

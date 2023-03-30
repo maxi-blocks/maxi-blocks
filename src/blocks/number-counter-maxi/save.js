@@ -32,39 +32,36 @@ const save = props => {
 		>
 			<div className='maxi-number-counter__box'>
 				{!circleStatus && (
-					<svg
-						viewBox={`0 0 ${radius * 2 + stroke} ${
-							radius * 2 + stroke
-						}`}
-					>
-						<circle
-							className='maxi-number-counter__box__background'
-							stroke-width={stroke}
-							fill='none'
-							cx={radius + stroke / 2}
-							cy={radius + stroke / 2}
-							r={radius}
-						/>
-						<circle
-							className='maxi-number-counter__box__circle'
-							stroke-width={stroke}
-							fill='none'
-							cx={radius + stroke / 2}
-							cy={radius + stroke / 2}
-							r={radius}
-							stroke-linecap={roundedStatus ? 'round' : ''}
-							stroke-dasharray={`0 ${2 * Math.PI * radius}`}
-						/>
-						<text
-							className='maxi-number-counter__box__text'
-							text-anchor='middle'
-							x='50%'
-							y='50%'
-						/>
-					</svg>
+					<div className='maxi-number-counter__box__container'>
+						<svg
+							viewBox={`0 0 ${radius * 2 + stroke} ${
+								radius * 2 + stroke
+							}`}
+						>
+							<circle
+								className='maxi-number-counter__box__background'
+								stroke-width={stroke}
+								fill='none'
+								cx={radius + stroke / 2}
+								cy={radius + stroke / 2}
+								r={radius}
+							/>
+							<circle
+								className='maxi-number-counter__box__circle'
+								stroke-width={stroke}
+								fill='none'
+								cx={radius + stroke / 2}
+								cy={radius + stroke / 2}
+								r={radius}
+								stroke-linecap={roundedStatus ? 'round' : ''}
+								stroke-dasharray={`0 ${2 * Math.PI * radius}`}
+							/>
+						</svg>
+						<span className='maxi-number-counter__box__text' />
+					</div>
 				)}
 				{circleStatus && (
-					<span className='maxi-number-counter__box__text' />
+					<span className='maxi-number-counter__box__text circle-hidden' />
 				)}
 			</div>
 		</MaxiBlock.save>

@@ -107,6 +107,13 @@ const dynamicContent = {
 	'dc-link-url': {
 		type: 'string',
 	},
+	'dc-order': {
+		type: 'string',
+	},
+	'dc-accumulator': {
+		type: 'number',
+		default: 0,
+	},
 };
 
 export default dynamicContent;

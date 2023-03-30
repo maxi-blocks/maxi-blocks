@@ -32,6 +32,7 @@ const WRAPPER_BLOCKS = [
 	'maxi-blocks/group-maxi',
 	'maxi-blocks/slide-maxi',
 	'maxi-blocks/accordion-maxi',
+	'maxi-blocks/pane-maxi',
 ];
 
 const BlockInserter = props => {
@@ -93,12 +94,18 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 	const { getBlockName, getBlockParents, getAdjacentBlockClientId } =
 		select('core/block-editor');
 
-	const blockHierarchy = {};
+	const blockHierarchy = [];
 	const blockOrder = [clientId, ...getBlockParents(clientId, true)];
-	blockOrder.forEach(blockClientId => {
-		if (WRAPPER_BLOCKS.includes(getBlockName(blockClientId)))
-			blockHierarchy[blockClientId] = getBlockName(blockClientId);
-	});
+	for (let i = 0; i < blockOrder.length; i += 1) {
+		const blockClientId = blockOrder[i];
+		if (WRAPPER_BLOCKS.includes(getBlockName(blockClientId))) {
+			if (i > 1 && getAdjacentBlockClientId(blockOrder[i - 2])) break;
+			blockHierarchy.push({
+				blockClientId,
+				blockName: getBlockName(blockClientId),
+			});
+		}
+	}
 
 	const shouldRemain = useRef(false);
 	const setShouldRemain = val => {
@@ -128,7 +135,7 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 				useAnimationFrame
 				placement='bottom'
 			>
-				{Object.keys(blockHierarchy).length > 1 && (
+				{blockHierarchy.length > 1 && (
 					<Dropdown
 						className='maxi-block-inserter__dropdown'
 						contentClassName='maxi-block-inserter__dropdown-content'
@@ -146,15 +153,16 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 						)}
 						renderContent={() => (
 							<div className='maxi-block-inserter__content'>
-								{Object.entries(blockHierarchy).map(
-									([blockClientId, blockName]) => (
+								{blockHierarchy.map(
+									({ blockClientId, blockName }, i) => (
 										<Inserter
 											key={`maxi-wrapper-block-inserter__content-${blockClientId}`}
 											rootClientId={blockClientId}
 											clientId={
-												clientId !== blockClientId &&
+												i > 0 &&
 												getAdjacentBlockClientId(
-													clientId
+													blockHierarchy[i - 1]
+														.blockClientId
 												)
 											}
 											position='bottom center'
@@ -192,7 +200,7 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 						)}
 					/>
 				)}
-				{Object.keys(blockHierarchy).length <= 1 && (
+				{blockHierarchy.length <= 1 && (
 					<Inserter
 						key={`maxi-wrapper-block-inserter__content-${clientId}`}
 						rootClientId={clientId}

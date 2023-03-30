@@ -26,6 +26,18 @@ import { main } from '../../icons';
  */
 const ToolbarButtons = () => {
 	const [isResponsiveOpen, setIsResponsiveOpen] = useState(false);
+	const toggleSidebarClass = () => {
+		const sidebar = document.querySelector(
+			'.interface-interface-skeleton__body'
+		);
+		if (!sidebar) return;
+
+		if (isResponsiveOpen) {
+			sidebar.classList.remove('maxi-toolbar-opened');
+		} else {
+			sidebar.classList.add('maxi-toolbar-opened');
+		}
+	};
 
 	return (
 		<>
@@ -33,7 +45,10 @@ const ToolbarButtons = () => {
 				<Button
 					className='maxi-toolbar-layout__button'
 					aria-pressed={isResponsiveOpen}
-					onClick={() => setIsResponsiveOpen(!isResponsiveOpen)}
+					onClick={() => {
+						setIsResponsiveOpen(!isResponsiveOpen);
+						toggleSidebarClass();
+					}}
 				>
 					<Icon icon={main} />
 				</Button>

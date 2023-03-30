@@ -54,11 +54,18 @@ const DynamicContent = props => {
 		'dc-field': field,
 		'dc-author': author,
 		'dc-limit': limit,
+		'dc-delimiter': delimiter,
 		'dc-error': error,
 	} = dynamicContent;
 
 	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
 	const [postIdOptions, setPostIdOptions] = useState(null);
+
+	const delimiterOptions = [
+		{ label: __('None', 'maxi-blocks'), value: '' },
+		{ label: __('Comma', 'maxi-blocks'), value: ',' },
+		{ label: __('Semicolon', 'maxi-blocks'), value: ';' },
+	];
 
 	const changeProps = params => {
 		const hasChangesToSave = Object.entries(dynamicContent).some(
@@ -263,6 +270,18 @@ const DynamicContent = props => {
 									allowCustomDate={allowCustomDate}
 									onChange={obj => changeProps(obj)}
 									{...dynamicContent}
+								/>
+							)}
+							{['tags', 'categories'].includes(field) && !error && (
+								<SelectControl
+									label={__('Delimiter', 'maxi-blocks')}
+									value={delimiter}
+									options={delimiterOptions}
+									onChange={value =>
+										changeProps({
+											'dc-delimiter': value,
+										})
+									}
 								/>
 							)}
 						</>

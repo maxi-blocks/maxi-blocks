@@ -56,7 +56,7 @@ const getBlockStyle = (attributes, breakpoint, marginValue) => {
 
 	const isFullWidth = getValue('full-width') === 'full';
 
-	if (!isFullWidth) return {};
+	if (!isFullWidth) return '';
 
 	// Margin
 	const marginRight = getValue('margin-right') || 0;
@@ -338,7 +338,7 @@ const MaxiBlock = memo(
 		);
 
 		useEffect(() => {
-			if (isFirstOnHierarchy) {
+			if (isFirstOnHierarchy && styleStr) {
 				const style = document.createElement('style');
 				style.innerHTML = `#block-${clientId} { ${styleStr} }`;
 				ref.current.ownerDocument.head.appendChild(style);
@@ -347,6 +347,8 @@ const MaxiBlock = memo(
 					style.remove();
 				};
 			}
+
+			return null;
 		}, [styleStr, isFirstOnHierarchy, clientId]);
 
 		return (

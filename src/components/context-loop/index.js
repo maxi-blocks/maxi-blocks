@@ -2,7 +2,12 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useContext, useEffect, useState } from '@wordpress/element';
+import {
+	useCallback,
+	useContext,
+	useEffect,
+	useState,
+} from '@wordpress/element';
 import { resolveSelect } from '@wordpress/data';
 
 /**
@@ -10,7 +15,6 @@ import { resolveSelect } from '@wordpress/data';
  */
 import SelectControl from '../select-control';
 import ToggleSwitch from '../toggle-switch';
-import { validationsValues } from '../../extensions/DC/utils';
 import {
 	typeOptions,
 	relationOptions,
@@ -23,6 +27,7 @@ import { getDCOptions, loopContext } from '../../extensions/DC';
  */
 import { isEmpty, isNil, capitalize, isEqual } from 'lodash';
 import classnames from 'classnames';
+import { getDefaultAttribute } from '../../extensions/styles';
 
 /**
  * Dynamic Content
@@ -59,7 +64,7 @@ const DynamicContent = props => {
 		if (hasChangesToSave) onChange(params);
 	};
 
-	useEffect(async () => {
+	const fetchDcData = useCallback(async () => {
 		// TODO: check if this code is necessary
 		// On init, get post author options and set current user as default
 		if (!postAuthorOptions) {
@@ -95,7 +100,8 @@ const DynamicContent = props => {
 			const postIDSettings = await getDCOptions(
 				dataRequest,
 				postIdOptions,
-				contentType
+				contentType,
+				true
 			);
 
 			if (postIDSettings) {
@@ -110,14 +116,16 @@ const DynamicContent = props => {
 					setPostIdOptions(newPostIdOptions);
 			}
 		}
-
-		return null;
 	});
+
+	useEffect(() => {
+		fetchDcData().catch(console.error);
+	}, [fetchDcData]);
 
 	return (
 		<div className={classes}>
 			<ToggleSwitch
-				label={__('Use dynamic content', 'maxi-blocks')}
+				label={__('Use context loop', 'maxi-blocks')}
 				selected={status}
 				onChange={value => changeProps({ 'cl-status': value })}
 			/>
@@ -128,19 +136,15 @@ const DynamicContent = props => {
 						value={type}
 						options={typeOptions[contentType]}
 						onChange={value => {
-							const clFieldActual = validationsValues(
-								value,
-								field,
-								contentType
-							);
-
 							changeProps({
 								'cl-type': value,
-								'cl-show': 'current',
-								'cl-error': '',
-								...clFieldActual,
 							});
 						}}
+						onReset={() =>
+							changeProps({
+								'cl-type': getDefaultAttribute('cl-type'),
+							})
+						}
 					/>
 					{isEmpty(postIdOptions) && type !== 'settings' ? (
 						<p>{__('This type is empty', 'maxi-blocks')}</p>
@@ -154,8 +158,14 @@ const DynamicContent = props => {
 									onChange={value =>
 										changeProps({
 											'cl-relation': value,
-											'cl-show': 'current',
-											'cl-error': '',
+										})
+									}
+									onReset={() =>
+										changeProps({
+											'cl-relation':
+												getDefaultAttribute(
+													'cl-relation'
+												),
 										})
 									}
 								/>
@@ -168,6 +178,14 @@ const DynamicContent = props => {
 									onChange={value =>
 										changeProps({
 											'cl-author': Number(value),
+										})
+									}
+									onReset={() =>
+										changeProps({
+											'cl-author':
+												getDefaultAttribute(
+													'cl-author'
+												),
 										})
 									}
 								/>
@@ -184,9 +202,15 @@ const DynamicContent = props => {
 										options={postIdOptions}
 										onChange={value =>
 											changeProps({
-												'cl-error': '',
-												'cl-show': 'current',
 												'cl-id': Number(value),
+											})
+										}
+										onReset={() =>
+											changeProps({
+												'cl-id':
+													getDefaultAttribute(
+														'cl-id'
+													),
 											})
 										}
 									/>

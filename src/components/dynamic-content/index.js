@@ -52,13 +52,14 @@ const DynamicContent = props => {
 
 	const contextLoop = useContext(loopContext)?.contextLoop;
 
-	const classes = classnames('maxi-dynamic-content', className);
-
-	const { status, type, relation, id, field, author, limit, error } =
-		getDCValues(dynamicContent, contextLoop);
-
 	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
 	const [postIdOptions, setPostIdOptions] = useState(null);
+
+	const classes = classnames('maxi-dynamic-content', className);
+
+	const dcValues = getDCValues(dynamicContent, contextLoop);
+	const { status, type, relation, id, field, author, limit, error } =
+		dcValues;
 
 	const changeProps = params => {
 		const hasChangesToSave = Object.entries(dynamicContent).some(
@@ -108,7 +109,9 @@ const DynamicContent = props => {
 			const postIDSettings = await getDCOptions(
 				dataRequest,
 				postIdOptions,
-				contentType
+				contentType,
+				false,
+				contextLoop
 			);
 
 			if (postIDSettings) {
@@ -156,6 +159,11 @@ const DynamicContent = props => {
 								...dcFieldActual,
 							});
 						}}
+						onReset={() =>
+							changeProps({
+								'dc-type': getDefaultAttribute('dc-type'),
+							})
+						}
 					/>
 					{isEmpty(postIdOptions) && type !== 'settings' ? (
 						<p>{__('This type is empty', 'maxi-blocks')}</p>
@@ -173,6 +181,14 @@ const DynamicContent = props => {
 											'dc-error': '',
 										})
 									}
+									onReset={() =>
+										changeProps({
+											'dc-relation':
+												getDefaultAttribute(
+													'dc-relation'
+												),
+										})
+									}
 								/>
 							)}
 							{relationTypes.includes(type) && type === 'users' && (
@@ -183,6 +199,14 @@ const DynamicContent = props => {
 									onChange={value =>
 										changeProps({
 											'dc-author': Number(value),
+										})
+									}
+									onReset={() =>
+										changeProps({
+											'dc-author':
+												getDefaultAttribute(
+													'dc-author'
+												),
 										})
 									}
 								/>
@@ -204,6 +228,14 @@ const DynamicContent = props => {
 												'dc-id': Number(value),
 											})
 										}
+										onReset={() =>
+											changeProps({
+												'dc-id':
+													getDefaultAttribute(
+														'dc-id'
+													),
+											})
+										}
 									/>
 								)}
 							{(['settings'].includes(type) ||
@@ -220,6 +252,14 @@ const DynamicContent = props => {
 									onChange={value =>
 										changeProps({
 											'dc-field': value,
+										})
+									}
+									onReset={() =>
+										changeProps({
+											'dc-field':
+												fieldOptions[contentType][
+													type
+												][0]?.value,
 										})
 									}
 								/>

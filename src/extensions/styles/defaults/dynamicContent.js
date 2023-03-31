@@ -107,7 +107,10 @@ const dynamicContent = {
 	'dc-link-url': {
 		type: 'string',
 	},
-	'dc-delimiter': {
+	'dc-custom-delimiter-status': {
+		type: 'boolean',
+	},
+	'dc-delimiter-content': {
 		type: 'string',
 		default: '',
 	},

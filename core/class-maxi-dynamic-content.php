@@ -136,7 +136,10 @@ class MaxiBlocks_DynamicContent
         'dc-link-url' => [
             'type' => 'string',
         ],
-        'dc-delimiter' => [
+        'dc-custom-delimiter-status' => [
+            'type' => 'boolean',
+        ],
+        'dc-delimiter-content' => [
             'type' => 'string',
             'default' => '',
         ],
@@ -438,7 +441,7 @@ class MaxiBlocks_DynamicContent
         @list(
             'dc-field' => $dc_field,
             'dc-limit' => $dc_limit,
-            'dc-delimiter' => $dc_delimiter,
+            'dc-delimiter-content' => $dc_delimiter,
         ) = $attributes;
 
         $post = $this->get_post($attributes);

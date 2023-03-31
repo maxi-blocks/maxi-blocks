@@ -30,6 +30,12 @@ import { getDefaultAttribute } from '../../extensions/styles';
  */
 import { isEmpty, isFinite, isNil, capitalize, isEqual } from 'lodash';
 import classnames from 'classnames';
+import TextControl from '../text-control';
+
+/**
+ * Styles
+ */
+import './editor.scss';
 
 /**
  * Dynamic Content
@@ -54,7 +60,8 @@ const DynamicContent = props => {
 		'dc-field': field,
 		'dc-author': author,
 		'dc-limit': limit,
-		'dc-delimiter': delimiter,
+		'dc-delimiter-content': delimiter,
+		'dc-custom-delimiter-status': customDelimiterStatus,
 		'dc-error': error,
 	} = dynamicContent;
 
@@ -65,6 +72,7 @@ const DynamicContent = props => {
 		{ label: __('None', 'maxi-blocks'), value: '' },
 		{ label: __('Comma', 'maxi-blocks'), value: ',' },
 		{ label: __('Semicolon', 'maxi-blocks'), value: ';' },
+		{ label: __('Custom', 'maxi-blocks'), value: 'custom' },
 	];
 
 	const changeProps = params => {
@@ -273,16 +281,46 @@ const DynamicContent = props => {
 								/>
 							)}
 							{['tags', 'categories'].includes(field) && !error && (
-								<SelectControl
-									label={__('Delimiter', 'maxi-blocks')}
-									value={delimiter}
-									options={delimiterOptions}
-									onChange={value =>
-										changeProps({
-											'dc-delimiter': value,
-										})
-									}
-								/>
+								<>
+									<SelectControl
+										label={__('Delimiter', 'maxi-blocks')}
+										value={
+											customDelimiterStatus
+												? 'custom'
+												: delimiter
+										}
+										options={delimiterOptions}
+										onChange={value => {
+											changeProps(
+												value === 'custom'
+													? {
+															'dc-custom-delimiter-status': true,
+													  }
+													: {
+															'dc-custom-delimiter-status': false,
+															'dc-delimiter-content':
+																value,
+													  }
+											);
+										}}
+									/>
+									{customDelimiterStatus && (
+										<TextControl
+											className='maxi-dynamic-content__custom-delimiter'
+											label={__(
+												'Custom delimiter',
+												'maxi-blocks'
+											)}
+											value={delimiter}
+											onChange={value =>
+												changeProps({
+													'dc-delimiter-content':
+														value,
+												})
+											}
+										/>
+									)}
+								</>
 							)}
 						</>
 					)}

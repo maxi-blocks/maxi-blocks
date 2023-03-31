@@ -42,6 +42,7 @@ const accordionIcon = {
 		obj: allIconAttributes,
 		prefix: 'active-',
 		diffValAttr: {
+			'active-svgType': 'Line',
 			'active-icon-stroke-palette-color': 5,
 			'active-icon-inherit': false,
 			'active-icon-content':
@@ -50,6 +51,10 @@ const accordionIcon = {
 	}),
 	...allIconAttributes,
 
+	svgType: {
+		type: 'string',
+		default: 'Line',
+	},
 	'icon-inherit': {
 		type: 'boolean',
 		default: false,

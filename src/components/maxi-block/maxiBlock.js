@@ -347,8 +347,6 @@ const MaxiBlock = memo(
 					style.remove();
 				};
 			}
-
-			return null;
 		}, [styleStr, isFirstOnHierarchy, clientId]);
 
 		return (

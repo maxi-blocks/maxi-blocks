@@ -73,12 +73,20 @@ const disabledType = (valueType, contentType) => {
 	hide(typeOptions[contentType]);
 };
 
-const getDCOptions = async (dataRequest, postIdOptions, contentType) => {
+const getDCOptions = async (
+	dataRequest,
+	postIdOptions,
+	contentType,
+	isCL = false,
+	contextLoop
+) => {
 	const { type, id, field, relation, author } = dataRequest;
 
 	const data = await getIdOptions(type, relation, author);
 
 	if (!data) return null;
+
+	const prefix = isCL ? 'cl-' : 'dc-';
 
 	const newValues = {};
 
@@ -101,28 +109,40 @@ const getDCOptions = async (dataRequest, postIdOptions, contentType) => {
 	});
 
 	if (!isEqual(newPostIdOptions, postIdOptions)) {
-		if (isEmpty(newPostIdOptions)) {
-			if (relation === 'author') newValues['dc-error'] = relation;
-
-			if (['tags', 'media'].includes(type)) {
-				newValues['dc-error'] = type;
-				// TODO: this does not work without the second parameter, so it never works ^_^
-				// disabledType(type);
-			}
-
-			return { newValues, newPostIdOptions: [] };
-		}
-		if (relation === 'author') newValues['dc-error'] = '';
-
 		// Ensures first post id is selected
 		if (isEmpty(find(newPostIdOptions, { value: id }))) {
-			newValues['dc-id'] = Number(data[0].id);
-			idFields.current = data[0].id;
+			if (
+				!contextLoop?.['cl-status'] ||
+				(contextLoop?.['cl-status'] &&
+					type !== contextLoop?.['cl-type'])
+			) {
+				newValues[`${prefix}id`] = Number(data[0].id);
+				idFields.current = data[0].id;
+			} else {
+				newValues[`${prefix}id`] = undefined;
+			}
 		}
 
-		// Ensures first field is selected
-		if (!field)
-			newValues['dc-field'] = fieldOptions[contentType][type][0].value;
+		if (!isCL) {
+			if (isEmpty(newPostIdOptions)) {
+				if (relation === 'author')
+					newValues[`${prefix}error`] = relation;
+
+				if (['tags', 'media'].includes(type)) {
+					newValues[`${prefix}error`] = type;
+					// TODO: this does not work without the second parameter, so it never works ^_^
+					// disabledType(type);
+				}
+
+				return { newValues, newPostIdOptions: [] };
+			}
+			if (relation === 'author') newValues[`${prefix}error`] = '';
+
+			// Ensures first field is selected
+			if (!field)
+				newValues[`${prefix}field`] =
+					fieldOptions[contentType][type][0].value;
+		}
 
 		return { newValues, newPostIdOptions };
 	}

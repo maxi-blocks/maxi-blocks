@@ -57,7 +57,7 @@ const withMaxiLoader = createHigherOrderComponent(
 				useState(false);
 
 			useEffect(() => {
-				if (canRender && hasBeenConsolidated) return;
+				if (canRender && hasBeenConsolidated) return () => {};
 
 				const interval = setInterval(async () => {
 					if (getIsPageLoaded()) {

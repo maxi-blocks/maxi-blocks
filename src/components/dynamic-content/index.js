@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { sprintf, __ } from '@wordpress/i18n';
 import { useEffect, useState, useCallback } from '@wordpress/element';
 import { resolveSelect } from '@wordpress/data';
 
@@ -62,6 +62,7 @@ const DynamicContent = props => {
 		'dc-limit': limit,
 		'dc-delimiter-content': delimiter,
 		'dc-custom-delimiter-status': customDelimiterStatus,
+		'dc-post-taxonomy-links-status': postTaxonomyLinksStatus,
 		'dc-error': error,
 	} = dynamicContent;
 
@@ -282,6 +283,19 @@ const DynamicContent = props => {
 							)}
 							{['tags', 'categories'].includes(field) && !error && (
 								<>
+									<ToggleSwitch
+										label={__(
+											sprintf('Use %s links', field),
+											'maxi-blocks'
+										)}
+										selected={postTaxonomyLinksStatus}
+										onChange={value =>
+											changeProps({
+												'dc-post-taxonomy-links-status':
+													value,
+											})
+										}
+									/>
 									<SelectControl
 										label={__('Delimiter', 'maxi-blocks')}
 										value={

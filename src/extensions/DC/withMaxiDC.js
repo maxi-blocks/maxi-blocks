@@ -19,6 +19,7 @@ import {
 	getDCDateCustomFormat,
 	getSimpleText,
 	sanitizeDCContent,
+	validationsValues,
 } from './utils';
 import getDCOptions from './getDCOptions';
 import getDCMedia from './getDCMedia';
@@ -147,17 +148,28 @@ const withMaxiDC = createHigherOrderComponent(
 				const dcOptions = await getDCOptions(
 					dynamicContentProps,
 					dynamicContentProps.id,
-					contentType
+					contentType,
+					false,
+					contextLoop
+				);
+				const validatedAttributes = validationsValues(
+					type,
+					field,
+					contentType,
+					true
 				);
 
-				if (dcOptions?.newValues) {
+				if (dcOptions?.newValues || validatedAttributes) {
 					const {
 						__unstableMarkNextChangeAsNotPersistent:
 							markNextChangeAsNotPersistent,
 					} = dispatch('core/block-editor');
 
 					markNextChangeAsNotPersistent();
-					setAttributes(dcOptions.newValues);
+					setAttributes({
+						...dcOptions?.newValues,
+						...validatedAttributes,
+					});
 				}
 
 				fetchDcData(

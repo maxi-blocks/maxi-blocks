@@ -16,6 +16,7 @@ import {
 // eslint-disable-next-line import/no-cycle
 import CloudLibrary from '.';
 import { Icon, BaseControl, Button } from '../../components';
+import { authConnect, isProSubActive, getUserName, logOut } from '../auth';
 
 /**
  * External dependencies

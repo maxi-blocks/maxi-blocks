@@ -356,3 +356,9 @@ export const limitOptions = {
 	min: 0,
 	max: 9999,
 };
+
+export const attributeDefaults = {
+	status: false,
+	type: 'posts',
+	relation: 'by-id',
+};

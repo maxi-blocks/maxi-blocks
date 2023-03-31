@@ -1,13 +1,12 @@
 /**
+ * Internal dependencies
+ */
+import { attributeDefaults } from './constants';
+
+/**
  * External dependencies
  */
 import { camelCase, isNil } from 'lodash';
-
-const DEFAULTS = {
-	status: false,
-	type: 'posts',
-	relation: 'by-id',
-};
 
 const getDCValues = (dynamicContent, contextLoop) => {
 	const getDCValue = target => {
@@ -16,13 +15,13 @@ const getDCValues = (dynamicContent, contextLoop) => {
 		const dcValue = dynamicContent[`dc-${target}`];
 		const contextLoopValue = contextLoop?.[`cl-${target}`];
 
-		if (target === 'status') return dcValue ?? DEFAULTS?.[target];
+		if (target === 'status') return dcValue ?? attributeDefaults?.[target];
 
 		if (!isNil(dcValue)) return dcValue;
 
 		if (contextLoopStatus && contextLoopValue) return contextLoopValue;
 
-		return DEFAULTS?.[target];
+		return attributeDefaults?.[target];
 	};
 
 	return Object.keys(dynamicContent).reduce((acc, key) => {

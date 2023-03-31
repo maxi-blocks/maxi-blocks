@@ -8,6 +8,7 @@ import { useContext, useMemo } from '@wordpress/element';
  * Internal dependencies
  */
 import { getGroupAttributes } from '../styles';
+import getCLAttributes from './getCLAttributes';
 import LoopContext from './loopContext';
 
 /**
@@ -33,10 +34,8 @@ const withMaxiContextLoop = createHigherOrderComponent(
 				'contextLoop'
 			);
 
-			const contextLoop = merge(
-				{},
-				prevContextLoopAttributes,
-				contextLoopAttributes
+			const contextLoop = getCLAttributes(
+				merge({}, prevContextLoopAttributes, contextLoopAttributes)
 			);
 
 			const memoizedValue = useMemo(() => {

@@ -174,6 +174,14 @@ const DynamicContent = props => {
 											'dc-relation': value,
 											'dc-show': 'current',
 											'dc-error': '',
+											...([
+												'by-date',
+												'alphabetical',
+											].includes(value) && {
+												'dc-order':
+													orderByOptions[value][0]
+														.value,
+											}),
 										})
 									}
 								/>

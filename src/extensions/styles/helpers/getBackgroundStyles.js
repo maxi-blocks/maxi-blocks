@@ -922,10 +922,11 @@ const getBackgroundLayers = ({
 									getGroupAttributes(
 										layer,
 										'imageShape',
-										false,
+										isHover,
 										'background-svg-'
 									),
-									'background-svg-'
+									'background-svg-',
+									isHover
 								)
 							),
 						},

@@ -33,7 +33,7 @@ const getDCContent = async dataRequest => {
 		'dc-type': type,
 		'dc-field': field,
 		'dc-limit': limit,
-		'dc-delimiter': delimiter,
+		'dc-delimiter-content': delimiter,
 		'dc-custom-date': isCustomDate,
 		'dc-format': format,
 		'dc-locale': locale,

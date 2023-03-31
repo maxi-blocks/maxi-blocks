@@ -23,15 +23,6 @@ import classnames from 'classnames';
  */
 import './editor.scss';
 
-/**
- * Component
- */
-const WRAPPER_BLOCKS = [
-	'maxi-blocks/column-maxi',
-	'maxi-blocks/group-maxi',
-	'maxi-blocks/slide-maxi',
-];
-
 const BlockInserter = props => {
 	const { className, clientId } = props;
 
@@ -88,8 +79,6 @@ const ButtonInserter = props => {
 const WrapperBlockInserter = forwardRef((props, ref) => {
 	const { clientId, isSelected, hasSelectedChild } = props;
 
-	const blockHierarchy = [];
-
 	const shouldRemain = useRef(false);
 	const setShouldRemain = val => {
 		shouldRemain.current = val;
@@ -113,7 +102,6 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 				animate={false}
 				position='bottom center'
 				focusOnMount={false}
-				style={{ zIndex: Object.keys(blockHierarchy).length + 1 }}
 				__unstableSlotName='block-toolbar'
 				useAnimationFrame
 				placement='bottom'
@@ -222,7 +210,7 @@ const InterBlockInserter = forwardRef((props, ref) => {
 
 	const popoverRef = useRef(null);
 
-	const { nextClientId, isNextMaxiBlock, blockName } = useSelect(select => {
+	const { nextClientId, isNextMaxiBlock } = useSelect(select => {
 		const { getBlockOrder, getBlockRootClientId, getBlockName } =
 			select('core/block-editor');
 
@@ -236,22 +224,13 @@ const InterBlockInserter = forwardRef((props, ref) => {
 		const isNextMaxiBlock =
 			nextClientId && getBlockName(nextClientId).includes('maxi-blocks/');
 
-		const blockName = getBlockName(clientId);
-
 		return {
 			nextClientId,
 			isNextMaxiBlock,
-			blockName,
 		};
 	}, []);
 
-	if (
-		!blockRef ||
-		!nextClientId ||
-		!isNextMaxiBlock ||
-		WRAPPER_BLOCKS.includes(blockName)
-	)
-		return null;
+	if (!blockRef || !nextClientId || !isNextMaxiBlock) return null;
 
 	return (
 		<Popover

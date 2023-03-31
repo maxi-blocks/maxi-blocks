@@ -68,7 +68,7 @@ const Content = forwardRef((props, ref) => {
 					}
 				)}
 			/>
-			{isOpen && (
+			{isOpen && hasInnerBlocks && (
 				<BlockInserter.WrapperInserter
 					key={`maxi-block-wrapper-inserter__${clientId}`}
 					ref={ref}

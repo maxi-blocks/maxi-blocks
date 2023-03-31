@@ -363,11 +363,11 @@ export const limitOptions = {
 
 export const orderByOptions = {
 	'by-date': [
-		{ label: __('New/old', 'maxi-blocks'), value: 'new-old' },
-		{ label: __('Old/new', 'maxi-blocks'), value: 'old-new' },
+		{ label: __('New/old', 'maxi-blocks'), value: 'desc' },
+		{ label: __('Old/new', 'maxi-blocks'), value: 'asc' },
 	],
 	alphabetical: [
-		{ label: __('A/Z', 'maxi-blocks'), value: 'a-z' },
-		{ label: __('Z/A', 'maxi-blocks'), value: 'z-a' },
+		{ label: __('A/Z', 'maxi-blocks'), value: 'asc' },
+		{ label: __('Z/A', 'maxi-blocks'), value: 'desc' },
 	],
 };

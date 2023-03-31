@@ -26,17 +26,6 @@ const nameDictionary = {
 	tags: 'post_tag',
 };
 
-const getOrderForQuery = (relation, order) => {
-	switch (relation) {
-		case 'by-date':
-			return order === 'new-old' ? 'desc' : 'asc';
-		case 'alphabetical':
-			return order === 'a-z' ? 'desc' : 'asc';
-		default:
-			return 'asc';
-	}
-};
-
 const getDCEntity = async dataRequest => {
 	const {
 		'dc-type': type,
@@ -86,7 +75,7 @@ const getDCEntity = async dataRequest => {
 			{
 				per_page: accumulator + 1,
 				hide_empty: false,
-				order: getOrderForQuery(relation, order),
+				order,
 				orderby: relation === 'by-date' ? 'date' : 'title',
 			}
 		);

@@ -224,6 +224,9 @@ class MaxiBlocks_DynamicContent
         if (empty($dc_accumulator)) {
             $dc_accumulator = 0;
         }
+        if (empty($dc_order)) {
+            $dc_order = 'desc';
+        }
 
         $is_sort_relation = in_array($dc_relation, ['by-date', 'alphabetical']);
         $is_random = $dc_relation === 'random';
@@ -577,20 +580,8 @@ class MaxiBlocks_DynamicContent
     {
         return [
             'orderby' => $relation === 'by-date' ? 'date' : 'title',
-            'order' => $this->get_order($relation, $order),
+            'order' => $order,
             'posts_per_page' => $accumulator + 1,
         ];
-    }
-
-    public function get_order($relation, $order)
-    {
-        switch ($relation) {
-            case 'by-date':
-                return $order === 'new-old' ? 'desc' : 'asc';
-            case 'alphabetical':
-                return $order === 'a-z' ? 'desc' : 'asc';
-            default:
-                return 'asc';
-        }
     }
 }

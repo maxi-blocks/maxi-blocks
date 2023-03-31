@@ -109,6 +109,7 @@ const dynamicContent = {
 	},
 	'dc-order': {
 		type: 'string',
+		default: 'desc',
 	},
 	'dc-accumulator': {
 		type: 'number',

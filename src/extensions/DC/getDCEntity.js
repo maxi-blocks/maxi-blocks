@@ -27,7 +27,8 @@ const nameDictionary = {
 };
 
 const getDCEntity = async dataRequest => {
-	const { type, id, error, show, relation, author } = dataRequest;
+	const { type, id, error, show, relation, author, order, accumulator } =
+		dataRequest;
 
 	const contentError = getDCErrors(type, error, show, relation);
 
@@ -56,6 +57,24 @@ const getDCEntity = async dataRequest => {
 
 		return randomEntity[Math.floor(Math.random() * randomEntity.length)];
 	}
+	if (
+		relationTypes.includes(type) &&
+		['by-date', 'alphabetical'].includes(relation)
+	) {
+		const entities = await resolveSelect('core').getEntityRecords(
+			kindDictionary[type],
+			nameDictionary[type],
+			{
+				per_page: accumulator + 1,
+				hide_empty: false,
+				order,
+				orderby: relation === 'by-date' ? 'date' : 'title',
+			}
+		);
+
+		return entities.at(-1);
+	}
+
 	if (type === 'settings') {
 		const settings = await resolveSelect('core').getEditedEntityRecord(
 			kindDictionary[type],

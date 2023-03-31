@@ -228,6 +228,8 @@ class MaxiBlocks_DynamicContent
             'dc-relation' => $dc_relation,
             'dc-id' => $dc_id,
             'dc-author' => $dc_author,
+            'dc-order' => $dc_order_by,
+            'dc-accumulator' => $dc_accumulator,
         ) = $attributes;
 
         if (empty($dc_type)) {
@@ -236,6 +238,15 @@ class MaxiBlocks_DynamicContent
         if (empty($dc_relation)) {
             $dc_relation = 'by-id';
         }
+        if (empty($dc_accumulator)) {
+            $dc_accumulator = 0;
+        }
+        if (empty($dc_order)) {
+            $dc_order = 'desc';
+        }
+
+        $is_sort_relation = in_array($dc_relation, ['by-date', 'alphabetical']);
+        $is_random = $dc_relation === 'random';
 
         if (in_array($dc_type, ['posts', 'pages'])) {
             // Basic args
@@ -250,13 +261,15 @@ class MaxiBlocks_DynamicContent
                 $args[$dc_type === 'posts' ? 'p' : 'page_id'] = $dc_id;
             } elseif ($dc_relation == 'author') {
                 $args['author'] = $dc_author ?? $dc_id;
-            } elseif ($dc_relation == 'random') {
+            } elseif ($is_random) {
                 $args['orderby'] = 'rand';
+            } elseif ($is_sort_relation) {
+                $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_accumulator));
             }
 
             $query = new WP_Query($args);
 
-            return $query->post;
+            return end($query->posts);
         } elseif ($dc_type === 'media') {
             $args = [
                 'post_type' => 'attachment',
@@ -273,6 +286,9 @@ class MaxiBlocks_DynamicContent
                     'post_status' => 'inherit',
                     'posts_per_page' => -1
                 ];
+            } elseif ($is_sort_relation) {
+                $args['post_status'] = 'inherit';
+                $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_accumulator));
             }
 
             $query = new WP_Query($args);
@@ -283,7 +299,7 @@ class MaxiBlocks_DynamicContent
                 $posts = $query->posts;
                 $post = $posts[array_rand($posts)];
             } else {
-                $post = $query->post;
+                $post = end($query->posts);
             }
 
             return $post;
@@ -300,7 +316,7 @@ class MaxiBlocks_DynamicContent
                 'number' => 1,
             ];
 
-            if ($dc_relation == 'random') {
+            if ($is_random) {
                 $args['orderby'] = 'rand';
             } else {
                 $args['include'] = $dc_id;
@@ -317,6 +333,8 @@ class MaxiBlocks_DynamicContent
 
             if ($dc_relation == 'random') {
                 $args['orderby'] = 'rand';
+            } elseif ($is_sort_relation) {
+                $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_accumulator));
             } else {
                 $args['include'] = $dc_id;
             }
@@ -624,5 +642,14 @@ class MaxiBlocks_DynamicContent
         }
 
         return $result;
+    }
+
+    public function get_order_by_args($relation, $order, $accumulator)
+    {
+        return [
+            'orderby' => $relation === 'by-date' ? 'date' : 'title',
+            'order' => $order,
+            'posts_per_page' => $accumulator + 1,
+        ];
     }
 }

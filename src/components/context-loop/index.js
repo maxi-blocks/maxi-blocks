@@ -259,6 +259,7 @@ const DynamicContent = props => {
 												'maxi-blocks'
 											)}
 											value={accumulator}
+											min={-1}
 											onChangeValue={value =>
 												changeProps({
 													'cl-accumulator': value,

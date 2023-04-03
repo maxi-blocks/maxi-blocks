@@ -380,7 +380,7 @@ export const orderByOptions = {
 	],
 };
 
-export const attributeDefaults = {
+export const dcAttributeDefaults = {
 	status: false,
 	type: 'posts',
 	relation: 'by-id',
@@ -389,4 +389,9 @@ export const attributeDefaults = {
 		return relation === 'by-date' ? 'desc' : 'asc';
 	},
 	accumulator: 0,
+};
+
+export const clAttributeDefaults = {
+	...dcAttributeDefaults,
+	accumulator: -1,
 };

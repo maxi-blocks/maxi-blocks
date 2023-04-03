@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { attributeDefaults } from './constants';
+import { dcAttributeDefaults } from './constants';
 
 /**
  * External dependencies
@@ -10,11 +10,11 @@ import { camelCase, isFunction, isNil } from 'lodash';
 
 const getDCValues = (dynamicContent, contextLoop) => {
 	const getDefaultDCValue = (target, obj) => {
-		if (isFunction(attributeDefaults?.[target])) {
-			return attributeDefaults?.[target](obj);
+		if (isFunction(dcAttributeDefaults?.[target])) {
+			return dcAttributeDefaults?.[target](obj);
 		}
 
-		return attributeDefaults?.[target];
+		return dcAttributeDefaults?.[target];
 	};
 
 	const getDCValue = (target, obj) => {

@@ -172,7 +172,12 @@ const ColumnPattern = props => {
 							key={uniqueId(
 								`components-column-pattern--${instanceId}--`
 							)}
-							className={patternButtonClassName}
+							className={
+								patternButtonClassName +
+								(template.isMoreThanEightColumns
+									? ' components-column-pattern-apply_settings'
+									: '')
+							}
 							aria-pressed={isEqual(
 								getCurrentColumnsSizes(),
 								(template.isMoreThanEightColumns

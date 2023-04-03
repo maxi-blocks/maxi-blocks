@@ -51,18 +51,20 @@ export const validationsValues = (
 	relation,
 	contentType
 ) => {
-	const fieldResult = fieldOptions[contentType][variableValue].map(
+	const fieldResult = fieldOptions?.[contentType]?.[variableValue].map(
 		x => x.value
 	);
-	const relationResult = relationOptions[contentType][variableValue].map(
+	const relationResult = relationOptions?.[contentType]?.[variableValue].map(
 		x => x.value
 	);
 
 	return {
-		...(!fieldResult.includes(field) && { 'dc-field': fieldResult[0] }),
-		...(!relationResult.includes(relation) && {
-			'dc-relation': relationResult[0],
-		}),
+		...(fieldResult &&
+			!fieldResult.includes(field) && { 'dc-field': fieldResult[0] }),
+		...(relationResult &&
+			!relationResult.includes(relation) && {
+				'dc-relation': relationResult[0],
+			}),
 	};
 };
 

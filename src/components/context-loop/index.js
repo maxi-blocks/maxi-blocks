@@ -240,6 +240,14 @@ const DynamicContent = props => {
 													'cl-order': value,
 												})
 											}
+											onReset={() =>
+												changeProps({
+													'cl-order':
+														getDefaultAttribute(
+															'cl-order'
+														),
+												})
+											}
 										/>
 										<AdvancedNumberControl
 											label={__(

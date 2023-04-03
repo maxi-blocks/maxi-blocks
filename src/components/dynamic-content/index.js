@@ -271,6 +271,14 @@ const DynamicContent = props => {
 													'dc-order': value,
 												})
 											}
+											onReset={() =>
+												changeProps({
+													'dc-order':
+														getDefaultAttribute(
+															'dc-order'
+														),
+												})
+											}
 										/>
 										<AdvancedNumberControl
 											label={__(

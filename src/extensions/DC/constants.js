@@ -384,6 +384,9 @@ export const attributeDefaults = {
 	status: false,
 	type: 'posts',
 	relation: 'by-id',
-	order: 'asc',
+	order: attributes => {
+		const relation = attributes?.relation ?? attributes?.['cl-value'];
+		return relation === 'by-date' ? 'desc' : 'asc';
+	},
 	accumulator: 0,
 };

@@ -3,7 +3,7 @@
  */
 
 const labelOptions = {
-	Settings: 'Paste special - choose',
+	Settings: 'Settings',
 };
 
 export default labelOptions;

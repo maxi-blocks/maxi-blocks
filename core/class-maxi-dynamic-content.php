@@ -492,7 +492,7 @@ class MaxiBlocks_DynamicContent
             function get_item_content($item, $link_status)
             {
                 return ($link_status)
-                    ? '<a href="' . get_term_link($item) . '">' . $item->name . '</a>'
+                    ? '<a href="' . get_term_link($item) . '"><span>' . $item->name . '</span></a>'
                     : $item->name;
             }
 

@@ -45,6 +45,11 @@ class MaxiBlocks_Local_Fonts
         }
     }
 
+    public function filterNull($arr)
+    {
+        return ($arr !== null && $arr !== false && $arr !== '');
+    }
+
     public function getAllFontsDB()
     {
         global $wpdb;
@@ -78,12 +83,7 @@ class MaxiBlocks_Local_Fonts
             $array[$key] = json_decode($value, true);
         }
 
-        function filterNull($arr)
-        {
-            return ($arr !== null && $arr !== false && $arr !== '');
-        }
-
-        $array = array_filter($array, 'filterNull');
+        $array = array_filter($array, $this->filterNull);
 
         $array_all = array_merge_recursive(...$array);
 

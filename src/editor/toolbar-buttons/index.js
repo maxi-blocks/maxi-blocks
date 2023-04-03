@@ -14,6 +14,7 @@ import {
 	getIsSiteEditor,
 	getIsTemplatesListOpened,
 } from '../../extensions/fse';
+
 /**
  * Styles
  */
@@ -96,11 +97,13 @@ wp.domReady(() => {
 
 				const widthLeftMenu = document.querySelector(
 					'div.edit-site-header-edit-mode__start'
-				).offsetWidth;
+				)?.offsetWidth;
 
 				const widthSiteIcon = document.querySelector(
 					'div.edit-site-site-hub'
-				).offsetWidth;
+				)?.offsetWidth;
+
+				if (!widthLeftMenu || !widthSiteIcon) return;
 
 				const leftSpace = widthLeftMenu + widthSiteIcon;
 				toolbarButtonMaxi.style.left = `${leftSpace}px`;

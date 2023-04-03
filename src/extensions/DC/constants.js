@@ -31,6 +31,8 @@ const generalRelationOptionsPosts = [
 	{ label: __('Get by id', 'maxi-blocks'), value: 'by-id' },
 	// { label: __('Get by author', 'maxi-blocks'), value: 'author' }, // TODO: add author support
 	{ label: __('Get random'), value: 'random' },
+	{ label: __('Get by date'), value: 'by-date' },
+	{ label: __('Get alphabetical'), value: 'alphabetical' },
 	// { label: __('Date', 'maxi-blocks'), value: 'date' },	// TODO: add date support
 	// { label: __('Modified', 'maxi-blocks'), value: 'modified' },	// TODO: add modified support
 ];
@@ -39,6 +41,8 @@ const generalRelationOptionsPages = [
 	{ label: __('Get by id', 'maxi-blocks'), value: 'by-id' },
 	// { label: __('Get by author', 'maxi-blocks'), value: 'author' }, // TODO: add author support
 	{ label: __('Get random'), value: 'random' },
+	{ label: __('Get by date'), value: 'by-date' },
+	{ label: __('Get alphabetical'), value: 'alphabetical' },
 ];
 
 const generalRelationOptionsCategories = [
@@ -355,4 +359,15 @@ export const limitOptions = {
 	withInputField: false,
 	min: 0,
 	max: 9999,
+};
+
+export const orderByOptions = {
+	'by-date': [
+		{ label: __('New/old', 'maxi-blocks'), value: 'desc' },
+		{ label: __('Old/new', 'maxi-blocks'), value: 'asc' },
+	],
+	alphabetical: [
+		{ label: __('A/Z', 'maxi-blocks'), value: 'asc' },
+		{ label: __('Z/A', 'maxi-blocks'), value: 'desc' },
+	],
 };

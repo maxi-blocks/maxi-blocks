@@ -1,6 +1,7 @@
 <?php
 require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-local-fonts.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-style-cards.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-api.php';
 
 class MaxiBlocks_Styles
 {
@@ -27,6 +28,7 @@ class MaxiBlocks_Styles
     public function __construct()
     {
         add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
+        add_action('save_post', [$this, 'set_home_to_front_page'], 10, 3);
     }
 
     /**
@@ -207,15 +209,15 @@ class MaxiBlocks_Styles
         if ($template_slug != '' && $template_slug !== false) {
             $template_id .= $template_slug;
         } elseif (is_home() || is_front_page()) {
-            $block_templates = get_block_templates(['slug__in' => ['index', 'front-page']]);
+            $block_templates = get_block_templates(['slug__in' => ['index', 'front-page', 'home']]);
 
-            $has_front_page_and_home = count($block_templates) === 2;
+            $has_front_page_and_home = count($block_templates) > 2;
 
             if ($has_front_page_and_home) {
                 if (is_home() && !is_front_page()) {
                     $template_id .= 'index';
                 } else {
-                    $template_id .= 'front-page';
+                    $template_id .= in_array('front-page', array_column($block_templates, 'slug')) ? 'front-page' : 'home';
                 }
             } else {
                 $template_id .= $block_templates[0]->slug;
@@ -654,6 +656,54 @@ class MaxiBlocks_Styles
             }
 
             return $new_style;
+        }
+    }
+    /**
+     * Set styles and custom data from home template to front-page template
+     */
+    public function set_home_to_front_page($post_id, $post, $update)
+    {
+        if (!($post->post_type === 'wp_template' && $post->post_name === 'front-page' && !$update)) {
+            return;
+        }
+
+        global $wpdb;
+
+        if (class_exists('MaxiBlocks_API')) {
+            $home_id =  get_template() . '//' . 'home';
+            $home_content = $this->get_content(true, $home_id);
+
+            $front_page_id = get_template() . '//' . 'front-page';
+
+            $api = new MaxiBlocks_API();
+
+            $api->post_maxi_blocks_styles([
+                'id' => $front_page_id,
+                'meta' => [
+                    'styles' => $home_content['css_value'],
+                    'fonts' => [json_decode($home_content['fonts_value'], true)],
+                ],
+                'isTemplate' => true,
+                'templateParts' => $home_content['template_parts'],
+                'update' => true,
+            ], false);
+
+            ['table' => $table, 'where_clause' => $where_clause] = $api->get_query_params('maxi_blocks_custom_data', true);
+
+            $home_custom_data = $wpdb->get_results(
+                $wpdb->prepare(
+                    "SELECT * FROM $table WHERE $where_clause",
+                    $home_id
+                ),
+                OBJECT
+            );
+
+            $api->set_maxi_blocks_current_custom_data([
+                'id' => $front_page_id,
+                'data' => $custom_data[0]->custom_data_value,
+                'isTemplate' => true,
+                'update' => true,
+            ], false);
         }
     }
 }

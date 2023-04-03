@@ -385,7 +385,7 @@ export const dcAttributeDefaults = {
 	type: 'posts',
 	relation: 'by-id',
 	order: attributes => {
-		const relation = attributes?.relation ?? attributes?.['cl-value'];
+		const relation = attributes?.relation ?? attributes?.['cl-relation'];
 		return relation === 'by-date' ? 'desc' : 'asc';
 	},
 	accumulator: 0,

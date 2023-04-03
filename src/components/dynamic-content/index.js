@@ -20,6 +20,7 @@ import {
 	limitOptions,
 	limitTypes,
 	limitFields,
+	orderByOptions,
 } from '../../extensions/DC/constants';
 import getDCOptions from '../../extensions/DC/getDCOptions';
 import DateFormatting from './custom-date-formatting';
@@ -40,7 +41,6 @@ import './editor.scss';
 /**
  * Dynamic Content
  */
-
 const DynamicContent = props => {
 	const {
 		className,
@@ -64,6 +64,8 @@ const DynamicContent = props => {
 		'dc-custom-delimiter-status': customDelimiterStatus,
 		'dc-post-taxonomy-links-status': postTaxonomyLinksStatus,
 		'dc-error': error,
+		'dc-order': order,
+		'dc-accumulator': accumulator,
 	} = dynamicContent;
 
 	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
@@ -159,9 +161,10 @@ const DynamicContent = props => {
 						value={type}
 						options={typeOptions[contentType]}
 						onChange={value => {
-							const dcFieldActual = validationsValues(
+							const validatedAttributes = validationsValues(
 								value,
 								field,
+								relation,
 								contentType
 							);
 
@@ -169,7 +172,7 @@ const DynamicContent = props => {
 								'dc-type': value,
 								'dc-show': 'current',
 								'dc-error': '',
-								...dcFieldActual,
+								...validatedAttributes,
 							});
 						}}
 					/>
@@ -187,6 +190,14 @@ const DynamicContent = props => {
 											'dc-relation': value,
 											'dc-show': 'current',
 											'dc-error': '',
+											...([
+												'by-date',
+												'alphabetical',
+											].includes(value) && {
+												'dc-order':
+													orderByOptions[value][0]
+														.value,
+											}),
 										})
 									}
 								/>
@@ -222,13 +233,56 @@ const DynamicContent = props => {
 										}
 									/>
 								)}
+							{['posts', 'pages', 'media'].includes(type) &&
+								['by-date', 'alphabetical'].includes(
+									relation
+								) && (
+									<>
+										<SelectControl
+											label={__('Order', 'maxi-blocks')}
+											value={order}
+											options={orderByOptions[relation]}
+											onChange={value =>
+												changeProps({
+													'dc-order': value,
+												})
+											}
+										/>
+										<AdvancedNumberControl
+											label={__(
+												'Accumulator',
+												'maxi-blocks'
+											)}
+											value={accumulator}
+											onChangeValue={value =>
+												changeProps({
+													'dc-accumulator': value,
+												})
+											}
+											onReset={() =>
+												changeProps({
+													'dc-accumulator':
+														getDefaultAttribute(
+															'dc-accumulator'
+														),
+												})
+											}
+											disableRange
+										/>
+									</>
+								)}
+
 							{(['settings'].includes(type) ||
 								(relation === 'by-id' && isFinite(id)) ||
 								(relation === 'author' &&
 									!isEmpty(postIdOptions)) ||
-								['date', 'modified', 'random'].includes(
-									relation
-								)) && (
+								[
+									'date',
+									'modified',
+									'random',
+									'by-date',
+									'alphabetical',
+								].includes(relation)) && (
 								<SelectControl
 									label={__('Field', 'maxi-blocks')}
 									value={field}

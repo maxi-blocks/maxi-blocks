@@ -35,6 +35,7 @@ body.maxi-blocks--active .maxi-search-block {
 	&__input {
 		order: 1;
 		width: 100%;
+		height: unset;
 		display: flex;
 		align-items: center;
 		outline: none;

@@ -136,6 +136,9 @@ class MaxiBlocks_DynamicContent
         'dc-link-url' => [
             'type' => 'string',
         ],
+        'dc-post-taxonomy-links-status' => [
+            'type' => 'boolean',
+        ],
         'dc-custom-delimiter-status' => [
             'type' => 'boolean',
         ],
@@ -442,6 +445,7 @@ class MaxiBlocks_DynamicContent
             'dc-field' => $dc_field,
             'dc-limit' => $dc_limit,
             'dc-delimiter-content' => $dc_delimiter,
+            'dc-post-taxonomy-links-status' => $dc_post_taxonomy_links_status,
         ) = $attributes;
 
         $post = $this->get_post($attributes);
@@ -482,14 +486,21 @@ class MaxiBlocks_DynamicContent
                 'categories' => 'category',
             ];
 
-            $tags = wp_get_post_terms($post->ID, $field_name_to_taxonomy[$dc_field]);
-            $tag_names = [];
+            $taxonomy_list = wp_get_post_terms($post->ID, $field_name_to_taxonomy[$dc_field]);
+            $taxonomy_content = [];
 
-            foreach ($tags as $tag) {
-                $tag_names[] = $tag->name;
+            function get_item_content($item, $link_status)
+            {
+                return ($link_status)
+                    ? '<a href="' . get_term_link($item) . '">' . $item->name . '</a>'
+                    : $item->name;
             }
 
-            $post_data = implode("$dc_delimiter ", $tag_names);
+            foreach ($taxonomy_list as $taxonomy_item) {
+                $taxonomy_content[] = get_item_content($taxonomy_item, $dc_post_taxonomy_links_status);
+            }
+
+            $post_data = implode("$dc_delimiter ", $taxonomy_content);
         }
 
         return $post_data;

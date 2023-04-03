@@ -926,6 +926,7 @@ const getBackgroundLayers = ({
 										'background-svg-'
 									),
 									'background-svg-',
+									false,
 									isHover
 								)
 							),

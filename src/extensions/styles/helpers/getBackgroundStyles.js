@@ -528,6 +528,7 @@ const getWrapperObject = ({
 	breakpoint,
 	isHover = false,
 	prefix = '',
+	setSameWidthAndHeight = false,
 	...props
 }) => {
 	const response = {
@@ -535,7 +536,8 @@ const getWrapperObject = ({
 		[breakpoint]: {},
 	};
 
-	['width', 'height'].forEach(size => {
+	['width', 'height'].forEach(type => {
+		const size = setSameWidthAndHeight ? 'width' : type;
 		const bgSize = getLastBreakpointAttribute({
 			target: `${prefix}${size}`,
 			breakpoint,
@@ -551,7 +553,7 @@ const getWrapperObject = ({
 				isHover,
 			});
 
-			response[breakpoint][size] = `${bgSize}${bgSVGSizeUnit}`;
+			response[breakpoint][type] = `${bgSize}${bgSVGSizeUnit}`;
 		}
 	});
 
@@ -877,6 +879,7 @@ const getBackgroundLayers = ({
 								breakpoint,
 								prefix: 'background-svg-',
 								isHover,
+								setSameWidthAndHeight: true,
 							}),
 							getDisplayStyles(
 								{

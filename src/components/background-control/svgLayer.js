@@ -73,6 +73,7 @@ const SVGLayer = props => {
 						isHover={isHover}
 						isLayer={isLayer}
 						breakpoint={breakpoint}
+						onlyWidth
 					/>
 				</>
 			)}

@@ -104,7 +104,7 @@ const getDCContent = async dataRequest => {
 
 		const getItemContent = item =>
 			postTaxonomyLinksStatus
-				? `<a href="${item.link}" class="maxi-text-block--link">${item.name}</a>`
+				? `<a href="${item.link}" class="maxi-text-block--link"><span>${item.name}</span></a>`
 				: item.name;
 
 		const namesArray = await Promise.all(

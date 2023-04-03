@@ -14,6 +14,12 @@ const contextLoop = {
 	'cl-author': {
 		type: 'number',
 	},
+	'cl-order': {
+		type: 'string',
+	},
+	'cl-accumulator': {
+		type: 'number',
+	},
 };
 
 export default contextLoop;

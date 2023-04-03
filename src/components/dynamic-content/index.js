@@ -294,7 +294,6 @@ const DynamicContent = props => {
 										/>
 									</>
 								)}
-
 							{(['settings'].includes(type) ||
 								(relation === 'by-id' && isFinite(id)) ||
 								(relation === 'author' &&

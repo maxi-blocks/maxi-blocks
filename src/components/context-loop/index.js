@@ -13,30 +13,34 @@ import { resolveSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
+import AdvancedNumberControl from '../advanced-number-control';
 import SelectControl from '../select-control';
 import ToggleSwitch from '../toggle-switch';
 import {
 	typeOptions,
 	relationOptions,
 	relationTypes,
+	orderByOptions,
 } from '../../extensions/DC/constants';
 import { getDCOptions, loopContext } from '../../extensions/DC';
 
 /**
  * External dependencies
  */
-import { isEmpty, isNil, capitalize, isEqual } from 'lodash';
+import { capitalize, isEmpty, isEqual, isNil } from 'lodash';
 import classnames from 'classnames';
 import { getDefaultAttribute } from '../../extensions/styles';
 
 /**
  * Dynamic Content
  */
-
 const DynamicContent = props => {
 	const { className, onChange, contentType = 'group' } = props;
 
 	const { contextLoop } = useContext(loopContext);
+
+	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
+	const [postIdOptions, setPostIdOptions] = useState(null);
 
 	const classes = classnames('maxi-dynamic-content', className);
 
@@ -47,10 +51,13 @@ const DynamicContent = props => {
 		'cl-id': id,
 		'cl-field': field,
 		'cl-author': author,
+		'cl-order': order,
+		'cl-accumulator': accumulator,
 	} = contextLoop;
 
-	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
-	const [postIdOptions, setPostIdOptions] = useState(null);
+	const isTypeHasRelations =
+		relationTypes.includes(type) &&
+		!!relationOptions?.[contentType]?.[type];
 
 	const changeProps = params => {
 		const hasChangesToSave = Object.entries(contextLoop).some(
@@ -87,7 +94,7 @@ const DynamicContent = props => {
 		}
 
 		// Sets new content
-		if (status && relationTypes.includes(type)) {
+		if (status && isTypeHasRelations) {
 			const dataRequest = {
 				type,
 				id,
@@ -146,11 +153,13 @@ const DynamicContent = props => {
 							})
 						}
 					/>
-					{isEmpty(postIdOptions) && type !== 'settings' ? (
+					{isEmpty(postIdOptions) &&
+					type !== 'settings' &&
+					relationOptions?.[contentType] !== null ? (
 						<p>{__('This type is empty', 'maxi-blocks')}</p>
 					) : (
 						<>
-							{relationTypes.includes(type) && (
+							{isTypeHasRelations && (
 								<SelectControl
 									label={__('Relation', 'maxi-blocks')}
 									value={relation}
@@ -170,26 +179,28 @@ const DynamicContent = props => {
 									}
 								/>
 							)}
-							{relationTypes.includes(type) && type === 'users' && (
-								<SelectControl
-									label={__('Author id', 'maxi-blocks')}
-									value={author}
-									options={postAuthorOptions}
-									onChange={value =>
-										changeProps({
-											'cl-author': Number(value),
-										})
-									}
-									onReset={() =>
-										changeProps({
-											'cl-author':
-												getDefaultAttribute(
-													'cl-author'
-												),
-										})
-									}
-								/>
-							)}
+							{contentType !== 'container' &&
+								relationTypes.includes(type) &&
+								type === 'users' && (
+									<SelectControl
+										label={__('Author id', 'maxi-blocks')}
+										value={author}
+										options={postAuthorOptions}
+										onChange={value =>
+											changeProps({
+												'cl-author': Number(value),
+											})
+										}
+										onReset={() =>
+											changeProps({
+												'cl-author':
+													getDefaultAttribute(
+														'cl-author'
+													),
+											})
+										}
+									/>
+								)}
 							{relationTypes.includes(type) &&
 								type !== 'users' &&
 								['author', 'by-id'].includes(relation) && (
@@ -214,6 +225,43 @@ const DynamicContent = props => {
 											})
 										}
 									/>
+								)}
+							{['posts', 'pages', 'media'].includes(type) &&
+								['by-date', 'alphabetical'].includes(
+									relation
+								) && (
+									<>
+										<SelectControl
+											label={__('Order', 'maxi-blocks')}
+											value={order}
+											options={orderByOptions[relation]}
+											onChange={value =>
+												changeProps({
+													'cl-order': value,
+												})
+											}
+										/>
+										<AdvancedNumberControl
+											label={__(
+												'Accumulator',
+												'maxi-blocks'
+											)}
+											value={accumulator}
+											onChangeValue={value =>
+												changeProps({
+													'cl-accumulator': value,
+												})
+											}
+											onReset={() =>
+												changeProps({
+													'cl-accumulator':
+														getDefaultAttribute(
+															'cl-accumulator'
+														),
+												})
+											}
+										/>
+									</>
 								)}
 						</>
 					)}

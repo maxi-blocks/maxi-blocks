@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
+import { select } from '@wordpress/data';
 import { useContext, useMemo } from '@wordpress/element';
 
 /**
@@ -19,7 +20,7 @@ import { merge } from 'lodash';
 const withMaxiContextLoop = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
-			const { attributes } = ownProps;
+			const { attributes, clientId } = ownProps;
 
 			let prevContextLoopAttributes = null;
 
@@ -34,9 +35,61 @@ const withMaxiContextLoop = createHigherOrderComponent(
 				'contextLoop'
 			);
 
-			const contextLoop = getCLAttributes(
-				merge({}, prevContextLoopAttributes, contextLoopAttributes)
-			);
+			const getAccumulator = () => {
+				const getIsRelationHasAccumulator = relation =>
+					['by-date', 'alphabetical'].includes(relation);
+
+				const currentAccumulator =
+					contextLoopAttributes?.['cl-accumulator'];
+				if (
+					currentAccumulator &&
+					getIsRelationHasAccumulator(
+						contextLoopAttributes?.['cl-relation']
+					)
+				) {
+					return currentAccumulator;
+				}
+
+				const prevContextLoopStatus =
+					prevContextLoopAttributes?.['cl-status'];
+
+				if (
+					!prevContextLoopStatus ||
+					attributes.isFirstOnHierarchy ||
+					!getIsRelationHasAccumulator(
+						prevContextLoopAttributes?.['cl-relation']
+					)
+				) {
+					return 0;
+				}
+
+				const { getBlock, getBlockParents } =
+					select('core/block-editor');
+				const parent = getBlock(
+					getBlockParents(clientId)
+						.filter(id => id !== clientId)
+						.at(-1)
+				);
+
+				if (!parent) {
+					return 0;
+				}
+
+				const currentBlockIndex = parent.innerBlocks.findIndex(
+					block => block.clientId === clientId
+				);
+
+				return (
+					prevContextLoopAttributes['cl-accumulator'] +
+					currentBlockIndex +
+					1
+				);
+			};
+
+			const contextLoop = getCLAttributes({
+				...merge({}, prevContextLoopAttributes, contextLoopAttributes),
+				'cl-accumulator': getAccumulator(),
+			});
 
 			const memoizedValue = useMemo(() => {
 				return {

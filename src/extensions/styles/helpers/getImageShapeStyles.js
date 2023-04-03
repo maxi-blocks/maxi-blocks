@@ -22,8 +22,8 @@ const getImageShapeStyles = (
 	target = 'svg',
 	obj,
 	prefix = '',
-	isHover = false,
-	ignoreGeneralOmit = false
+	ignoreGeneralOmit = false,
+	isHover = false
 ) => {
 	const response = {};
 	let omitTransformScale = true;

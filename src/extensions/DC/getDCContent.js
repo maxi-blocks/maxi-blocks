@@ -37,6 +37,7 @@ const getDCContent = async dataRequest => {
 		'dc-custom-date': isCustomDate,
 		'dc-format': format,
 		'dc-locale': locale,
+		'dc-post-taxonomy-links-status': postTaxonomyLinksStatus,
 	} = dataRequest;
 
 	let contentValue;
@@ -101,15 +102,20 @@ const getDCContent = async dataRequest => {
 		const { getEntityRecord } = resolveSelect('core');
 		const idArray = contentValue;
 
+		const getItemContent = item =>
+			postTaxonomyLinksStatus
+				? `<a href="${item.link}" class="maxi-text-block--link">${item.name}</a>`
+				: item.name;
+
 		const namesArray = await Promise.all(
 			idArray.map(async id => {
-				const tag = await getEntityRecord(
+				const taxonomyItem = await getEntityRecord(
 					'taxonomy',
 					nameDictionary[field],
 					id
 				);
 
-				return tag.name;
+				return getItemContent(taxonomyItem);
 			})
 		);
 

@@ -6,6 +6,7 @@
 import { RichText, RichTextShortcut } from '@wordpress/block-editor';
 import { createBlock } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
+import { RawHTML } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -293,7 +294,9 @@ class edit extends MaxiBlockComponent {
 						</RichText>
 					)}
 					{dcStatus && (
-						<DCTagName className={className}>{dcContent}</DCTagName>
+						<DCTagName className={className}>
+							<RawHTML>{dcContent}</RawHTML>
+						</DCTagName>
 					)}
 					{!dcStatus && isList && (
 						<RichText

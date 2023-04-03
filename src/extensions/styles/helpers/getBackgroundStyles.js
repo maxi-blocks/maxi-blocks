@@ -536,8 +536,7 @@ const getWrapperObject = ({
 		[breakpoint]: {},
 	};
 
-	['width', 'height'].forEach(type => {
-		const size = setSameWidthAndHeight ? 'width' : type;
+	['width', 'height'].forEach(size => {
 		const bgSize = getLastBreakpointAttribute({
 			target: `${prefix}${size}`,
 			breakpoint,
@@ -553,7 +552,8 @@ const getWrapperObject = ({
 				isHover,
 			});
 
-			response[breakpoint][type] = `${bgSize}${bgSVGSizeUnit}`;
+			if (!(setSameWidthAndHeight && size === 'height'))
+				response[breakpoint][size] = `${bgSize}${bgSVGSizeUnit}`;
 		}
 	});
 

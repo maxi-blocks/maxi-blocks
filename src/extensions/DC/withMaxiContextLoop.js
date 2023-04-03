@@ -35,18 +35,24 @@ const withMaxiContextLoop = createHigherOrderComponent(
 			);
 
 			const getAccumulator = () => {
-				const isRelationHasAccumulator = [
-					contextLoopAttributes,
-					prevContextLoopAttributes,
-				].some(attributes =>
+				const getIsAccumulator = attributes =>
 					['by-date', 'alphabetical'].includes(
 						attributes?.['cl-relation']
-					)
+					);
+
+				const isCurrentAccumulator = getIsAccumulator(
+					contextLoopAttributes
+				);
+				const isPrevAccumulator = getIsAccumulator(
+					prevContextLoopAttributes
 				);
 
 				const currentAccumulator =
 					contextLoopAttributes?.['cl-accumulator'];
-				if (currentAccumulator && isRelationHasAccumulator) {
+				if (
+					currentAccumulator &&
+					(isCurrentAccumulator || isPrevAccumulator)
+				) {
 					return currentAccumulator;
 				}
 
@@ -56,7 +62,7 @@ const withMaxiContextLoop = createHigherOrderComponent(
 				if (
 					!prevContextLoopStatus ||
 					attributes.isFirstOnHierarchy ||
-					!isRelationHasAccumulator
+					!isPrevAccumulator
 				) {
 					return null;
 				}

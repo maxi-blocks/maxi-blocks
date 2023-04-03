@@ -273,6 +273,7 @@ const DynamicContent = props => {
 														),
 												})
 											}
+											disableRange
 										/>
 									</>
 								)}

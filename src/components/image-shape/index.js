@@ -83,6 +83,7 @@ export const ImageShapeResponsiveSettings = ({
 				min={0}
 				max={500}
 				step={1}
+				placeholder='100'
 				initial={100}
 				{...getProps('scale')}
 			/>

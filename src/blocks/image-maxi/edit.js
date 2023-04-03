@@ -31,7 +31,7 @@ import { injectImgSVG } from '../../extensions/svg';
 import { copyPasteMapping } from './data';
 import { textContext, onChangeRichText } from '../../extensions/text/formats';
 import CaptionToolbar from '../../components/toolbar/captionToolbar';
-import { getDCCustomData, getDCValues, loopContext } from '../../extensions/DC';
+import { getDCCustomData, getDCValues, LoopContext } from '../../extensions/DC';
 import withMaxiDC from '../../extensions/DC/withMaxiDC';
 
 /**
@@ -50,7 +50,7 @@ import { toolbarReplaceImage, placeholderImage } from '../../icons';
  * Content
  */
 class edit extends MaxiBlockComponent {
-	static contextType = loopContext;
+	static contextType = LoopContext;
 
 	constructor(...args) {
 		super(...args);

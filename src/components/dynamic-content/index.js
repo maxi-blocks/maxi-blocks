@@ -30,7 +30,7 @@ import {
 import getDCOptions from '../../extensions/DC/getDCOptions';
 import DateFormatting from './custom-date-formatting';
 import { getDefaultAttribute } from '../../extensions/styles';
-import { getDCValues, loopContext } from '../../extensions/DC';
+import { getDCValues, LoopContext } from '../../extensions/DC';
 
 /**
  * External dependencies
@@ -50,7 +50,7 @@ const DynamicContent = props => {
 		...dynamicContent
 	} = props;
 
-	const contextLoop = useContext(loopContext)?.contextLoop;
+	const contextLoop = useContext(LoopContext)?.contextLoop;
 
 	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
 	const [postIdOptions, setPostIdOptions] = useState(null);

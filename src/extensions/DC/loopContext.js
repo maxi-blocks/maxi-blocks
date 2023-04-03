@@ -3,6 +3,6 @@
  */
 import { createContext } from '@wordpress/element';
 
-const loopContext = createContext();
+const LoopContext = createContext();
 
-export default loopContext;
+export default LoopContext;

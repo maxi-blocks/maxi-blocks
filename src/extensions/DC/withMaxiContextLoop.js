@@ -9,8 +9,7 @@ import { useContext, useMemo } from '@wordpress/element';
  * Internal dependencies
  */
 import { getGroupAttributes } from '../styles';
-import getCLAttributes from './getCLAttributes';
-import LoopContext from './loopContext';
+import LoopContext from './LoopContext';
 
 /**
  * External dependencies
@@ -59,7 +58,7 @@ const withMaxiContextLoop = createHigherOrderComponent(
 					attributes.isFirstOnHierarchy ||
 					!isRelationHasAccumulator
 				) {
-					return 0;
+					return null;
 				}
 
 				const { getBlock, getBlockParents } =
@@ -71,7 +70,7 @@ const withMaxiContextLoop = createHigherOrderComponent(
 				);
 
 				if (!parent) {
-					return 0;
+					return null;
 				}
 
 				const currentBlockIndex = parent.innerBlocks.findIndex(
@@ -85,10 +84,10 @@ const withMaxiContextLoop = createHigherOrderComponent(
 				);
 			};
 
-			const contextLoop = getCLAttributes({
+			const contextLoop = {
 				...merge({}, prevContextLoopAttributes, contextLoopAttributes),
 				'cl-accumulator': getAccumulator(),
-			});
+			};
 
 			const memoizedValue = useMemo(() => {
 				return {

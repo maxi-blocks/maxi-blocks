@@ -22,7 +22,11 @@ import {
 	relationTypes,
 	orderByOptions,
 } from '../../extensions/DC/constants';
-import { getDCOptions, loopContext } from '../../extensions/DC';
+import {
+	getCLAttributes,
+	getDCOptions,
+	LoopContext,
+} from '../../extensions/DC';
 
 /**
  * External dependencies
@@ -37,7 +41,7 @@ import { getDefaultAttribute } from '../../extensions/styles';
 const DynamicContent = props => {
 	const { className, onChange, contentType = 'group' } = props;
 
-	const { contextLoop } = useContext(loopContext);
+	const { contextLoop } = useContext(LoopContext);
 
 	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
 	const [postIdOptions, setPostIdOptions] = useState(null);
@@ -53,7 +57,7 @@ const DynamicContent = props => {
 		'cl-author': author,
 		'cl-order': order,
 		'cl-accumulator': accumulator,
-	} = contextLoop;
+	} = getCLAttributes(contextLoop);
 
 	const isTypeHasRelations =
 		relationTypes.includes(type) &&

@@ -30,7 +30,7 @@ import { getBlockData } from '../attributes';
  * External dependencies
  */
 import { isNil, isObject } from 'lodash';
-import loopContext from './loopContext';
+import LoopContext from './LoopContext';
 import getDCValues from './getDCValues';
 
 const withMaxiDC = createHigherOrderComponent(
@@ -38,7 +38,7 @@ const withMaxiDC = createHigherOrderComponent(
 		pure(ownProps => {
 			const { attributes, name, setAttributes } = ownProps;
 
-			const contextLoop = useContext(loopContext)?.contextLoop;
+			const contextLoop = useContext(LoopContext)?.contextLoop;
 
 			const isImageMaxi = ownProps.name === 'maxi-blocks/image-maxi';
 

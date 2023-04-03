@@ -22,6 +22,10 @@ export const typeOptions = {
 	image: generalTypeOptions.filter(
 		option => !['categories', 'tags'].includes(option.value)
 	),
+	container: generalTypeOptions,
+	row: generalTypeOptions,
+	column: generalTypeOptions,
+	group: generalTypeOptions,
 };
 
 /**
@@ -68,6 +72,10 @@ export const relationOptions = {
 	text: generalRelationOptions,
 	button: generalRelationOptions,
 	image: generalRelationOptions,
+	container: null,
+	row: generalRelationOptions,
+	column: generalRelationOptions,
+	group: generalRelationOptions,
 };
 
 /**
@@ -376,4 +384,6 @@ export const attributeDefaults = {
 	status: false,
 	type: 'posts',
 	relation: 'by-id',
+	order: 'asc',
+	accumulator: 0,
 };

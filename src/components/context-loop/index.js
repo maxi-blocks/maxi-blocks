@@ -34,7 +34,7 @@ import { getDefaultAttribute } from '../../extensions/styles';
  */
 
 const DynamicContent = props => {
-	const { className, onChange, contentType = 'text' } = props;
+	const { className, onChange, contentType = 'group' } = props;
 
 	const { contextLoop } = useContext(loopContext);
 

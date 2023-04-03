@@ -31,6 +31,13 @@ const ContextLoopToolbar = props => {
 
 	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
 
+	const contentTypes = {
+		'maxi-blocks/container-maxi': 'container',
+		'maxi-blocks/row-maxi': 'row',
+		'maxi-blocks/column-maxi': 'column',
+		'maxi-blocks/group-maxi': 'group',
+	};
+
 	return (
 		<ToolbarPopover
 			className='toolbar-item__context-loop'
@@ -39,6 +46,7 @@ const ContextLoopToolbar = props => {
 		>
 			<ContextLoop
 				className='toolbar-item__context-loop__popover'
+				contentType={contentTypes[blockName]}
 				{...restProps}
 			/>
 		</ToolbarPopover>

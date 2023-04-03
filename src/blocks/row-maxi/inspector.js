@@ -136,7 +136,10 @@ const Inspector = props => {
 										selectors,
 										categories,
 									}),
-									...inspectorTabs.contextLoop({ props }),
+									...inspectorTabs.contextLoop({
+										props,
+										contentType: 'row',
+									}),
 									...inspectorTabs.scrollEffects({
 										props,
 									}),

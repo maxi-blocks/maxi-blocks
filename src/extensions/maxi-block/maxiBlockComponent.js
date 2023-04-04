@@ -39,9 +39,8 @@ import {
 } from '../fse';
 import { updateSCOnEditor } from '../style-cards';
 import getWinBreakpoint from '../dom/getWinBreakpoint';
-import { uniqueIDGenerator } from '../attributes';
+import { getClientIdFromUniqueId, uniqueIDGenerator } from '../attributes';
 import { getStylesWrapperId } from './utils';
-import removeUnmountedBlockFromRelations from './removeUnmountedBlockFromRelations';
 import updateRelationHoverStatus from './updateRelationHoverStatus';
 import propagateNewUniqueID from './propagateNewUniqueID';
 import updateReusableBlockSize from './updateReusableBlockSize';
@@ -109,11 +108,13 @@ class MaxiBlockComponent extends Component {
 		this.isPreviewBlock = !!getTemplatePartChooseList();
 
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
+		dispatch('maxiBlocks/blocks').addBlock(uniqueID, this.props.clientId);
 
 		// Init
 		this.uniqueIDChecker(uniqueID);
 		this.getCurrentBlockStyle();
 		this.setMaxiAttributes();
+		this.setRelations();
 	}
 
 	componentDidMount() {
@@ -258,6 +259,24 @@ class MaxiBlockComponent extends Component {
 
 		if (!shouldDisplayStyles) this.displayStyles();
 
+		const { uniqueID, relations } = this.props.attributes;
+
+		if (
+			relations &&
+			select('maxiBlocks/relations').receiveRelations(uniqueID).length !==
+				relations.length
+		) {
+			relations.forEach(({ uniqueID: targetUniqueID }) =>
+				dispatch('maxiBlocks/relations').addRelation(
+					{ uniqueID, clientId: this.props.clientId },
+					{
+						uniqueID: targetUniqueID,
+						clientId: getClientIdFromUniqueId(targetUniqueID),
+					}
+				)
+			);
+		}
+
 		if (this.maxiBlockDidUpdate)
 			this.maxiBlockDidUpdate(prevProps, prevState, shouldDisplayStyles);
 	}
@@ -298,7 +317,12 @@ class MaxiBlockComponent extends Component {
 			);
 
 			// IB
-			removeUnmountedBlockFromRelations(this.props.attributes.uniqueID);
+			dispatch('maxiBlocks/relations').removeBlockRelation(
+				this.props.attributes.uniqueID
+			);
+			dispatch('maxiBlocks/blocks').removeBlock(
+				this.props.attributes.uniqueID
+			);
 		}
 
 		if (this.maxiBlockWillUnmount)
@@ -330,6 +354,28 @@ class MaxiBlockComponent extends Component {
 
 			this.props.attributes[key] = value;
 		});
+	}
+
+	setRelations() {
+		const { clientId, attributes } = this.props;
+		const { relations, uniqueID } = attributes;
+
+		if (!isEmpty(relations)) {
+			relations.forEach(relation => {
+				const { uniqueID: targetUniqueID } = relation;
+
+				dispatch('maxiBlocks/relations').addRelation(
+					{
+						uniqueID,
+						clientId,
+					},
+					{
+						uniqueID: targetUniqueID,
+						clientId: getClientIdFromUniqueId(targetUniqueID),
+					}
+				);
+			});
+		}
 	}
 
 	get getBreakpoints() {
@@ -420,6 +466,12 @@ class MaxiBlockComponent extends Component {
 
 			if (this.maxiBlockDidChangeUniqueID)
 				this.maxiBlockDidChangeUniqueID(newUniqueID);
+
+			dispatch('maxiBlocks/blocks').updateBlock(newUniqueID, clientId);
+			dispatch('maxiBlocks/relations').updateRelation(
+				idToCheck,
+				newUniqueID
+			);
 
 			return newUniqueID;
 		}

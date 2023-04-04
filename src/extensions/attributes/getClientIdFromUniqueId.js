@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+import { select } from '@wordpress/data';
+
+/**
  * Internal dependencies
  */
 import { goThroughMaxiBlocks } from '../maxi-block';
@@ -14,6 +19,11 @@ const getClientIdFromUniqueId = uniqueID => {
 		const block = getSiteEditorIframeBody().querySelector(`.${uniqueID}`);
 		if (block) return block.getAttribute('data-block');
 	}
+
+	// First try to get from the store
+	const blocks = select('maxiBlocks/blocks').receiveBlocks();
+	if (blocks && Object.keys(blocks).includes(uniqueID))
+		return blocks[uniqueID];
 
 	let clientId = null;
 

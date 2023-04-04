@@ -3,7 +3,7 @@
  */
 import { addFilter } from '@wordpress/hooks';
 import { createHigherOrderComponent } from '@wordpress/compose';
-import { select } from '@wordpress/data';
+import { select, dispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -58,6 +58,11 @@ const withAttributes = createHigherOrderComponent(
 				attributes.customLabel = getCustomLabel(
 					attributes.customLabel,
 					newUniqueID
+				);
+
+				dispatch('maxiBlocks/blocks').updateBlock(
+					newUniqueID,
+					clientId
 				);
 			}
 			// isFirstOnHierarchy

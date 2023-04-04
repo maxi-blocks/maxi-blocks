@@ -1,12 +1,11 @@
 /**
  * WordPress dependencies
  */
-import { dispatch } from '@wordpress/data';
+import { dispatch, select } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
-import goThroughMaxiBlocks from './goThroughMaxiBlocks';
 import getHoverStatus from '../relations/getHoverStatus';
 import { getBlockData } from '../attributes';
 
@@ -18,51 +17,62 @@ import { isEmpty, isEqual } from 'lodash';
 const updateRelationHoverStatus = (blockName, blockAttributes) => {
 	const { uniqueID } = blockAttributes;
 
-	goThroughMaxiBlocks(({ clientId, attributes: currentBlockAttributes }) => {
-		const { relations, uniqueID: blockUniqueID } = currentBlockAttributes;
+	const blocksRelations = select('maxiBlocks/relations').receiveRelations();
 
-		if (uniqueID !== blockUniqueID && !isEmpty(relations)) {
-			const newRelations = relations.map(relation => {
-				const {
-					attributes: relationAttributes,
-					sid: relationSettingID,
-					uniqueID: relationUniqueID,
-				} = relation;
+	if (!blocksRelations) return;
 
-				if (!relationSettingID || uniqueID !== relationUniqueID)
-					return relation;
+	Object.values(blocksRelations).forEach(blockRelationData => {
+		if (uniqueID in blockRelationData) {
+			const { clientId: targetClientId } = blockRelationData;
+			const { relations } =
+				select('core/block-editor').getBlockAttributes(targetClientId);
 
-				const { effects } = relation;
+			if (!isEmpty(relations)) {
+				const newRelations = relations.map(relation => {
+					const {
+						attributes: relationAttributes,
+						sid: relationSettingID,
+						uniqueID: relationUniqueID,
+					} = relation;
 
-				if (!('hoverStatus' in effects)) return relation;
+					if (!relationSettingID || uniqueID !== relationUniqueID)
+						return relation;
 
-				const blockData = getBlockData(blockName);
+					const { effects } = relation;
 
-				if (!blockData?.interactionBuilderSettings) return relation;
+					if (!('hoverStatus' in effects)) return relation;
 
-				const { hoverProp } = Object.values(
-					blockData.interactionBuilderSettings
-				)
-					.flat()
-					.find(({ sid }) => sid === relationSettingID);
+					const blockData = getBlockData(blockName);
 
-				return {
-					...relation,
-					effects: {
-						...effects,
-						hoverStatus: getHoverStatus(
-							hoverProp,
-							blockAttributes,
-							relationAttributes
-						),
-					},
-				};
-			});
+					if (!blockData?.interactionBuilderSettings) return relation;
 
-			if (!isEqual(relations, newRelations))
-				dispatch('core/block-editor').updateBlockAttributes(clientId, {
-					relations: newRelations,
+					const { hoverProp } = Object.values(
+						blockData.interactionBuilderSettings
+					)
+						.flat()
+						.find(({ sid }) => sid === relationSettingID);
+
+					return {
+						...relation,
+						effects: {
+							...effects,
+							hoverStatus: getHoverStatus(
+								hoverProp,
+								blockAttributes,
+								relationAttributes
+							),
+						},
+					};
 				});
+
+				if (!isEqual(relations, newRelations))
+					dispatch('core/block-editor').updateBlockAttributes(
+						targetClientId,
+						{
+							relations: newRelations,
+						}
+					);
+			}
 		}
 	});
 };

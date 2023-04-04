@@ -2,7 +2,7 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { useDispatch, select } from '@wordpress/data';
+import { useDispatch, dispatch, select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -22,7 +22,6 @@ import {
 	getGroupAttributes,
 } from '../../extensions/styles';
 import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
-import { goThroughMaxiBlocks } from '../../extensions/maxi-block';
 import { getHoverStatus } from '../../extensions/relations';
 import { getBlockData } from '../../extensions/attributes';
 
@@ -136,7 +135,7 @@ const RelationControl = props => {
 		onChange({ relations: [...newRelations, relation] });
 	};
 
-	const onChangeRelation = (relations, id, obj) => {
+	const onChangeRelation = (relations, id, obj, changesTarget = false) => {
 		const newRelations = cloneRelations(relations);
 
 		newRelations.forEach(relation => {
@@ -147,11 +146,32 @@ const RelationControl = props => {
 			}
 		});
 
+		if (changesTarget && obj.uniqueID) {
+			dispatch('maxiBlocks/relations').addRelation(
+				{ uniqueID, clientId: getClientIdFromUniqueId(uniqueID) },
+				{
+					uniqueID: obj.uniqueID,
+					clientId: getClientIdFromUniqueId(obj.uniqueID),
+				}
+			);
+		}
+
 		onChange({ relations: newRelations });
 	};
 
 	const onRemoveRelation = (id, relations) => {
 		const newRelations = cloneRelations(relations);
+
+		dispatch('maxiBlocks/relations').removeRelation(
+			{ uniqueID, clientId: getClientIdFromUniqueId(uniqueID) },
+			{
+				uniqueID: newRelations.find(relation => relation.id === id)
+					.uniqueID,
+				clientId: getClientIdFromUniqueId(
+					newRelations.find(relation => relation.id === id).uniqueID
+				),
+			}
+		);
 
 		onChange({
 			relations: newRelations.filter(relation => relation.id !== id),
@@ -333,24 +353,29 @@ const RelationControl = props => {
 		});
 	};
 
-	const getBlocksToAffect = () => {
+	const blocksToAffect = (() => {
 		const arr = [];
-		goThroughMaxiBlocks(block => {
+
+		const blocks = select('maxiBlocks/blocks').receiveBlocks();
+
+		Object.entries(blocks).forEach(([blockUniqueID, blockClientId]) => {
+			const { customLabel } =
+				select('core/block-editor').getBlockAttributes(blockClientId);
+
 			if (
-				block.attributes.customLabel !==
-					getDefaultAttribute('customLabel', block.clientId) &&
-				block.attributes.uniqueID !== uniqueID
+				customLabel !==
+					getDefaultAttribute('customLabel', blockClientId) &&
+				blockUniqueID !== uniqueID
 			) {
 				arr.push({
-					label: block.attributes.customLabel,
-					value: block.attributes.uniqueID,
+					label: customLabel,
+					value: blockUniqueID,
 				});
 			}
 		});
-		return arr;
-	};
 
-	const blocksToAffect = getBlocksToAffect();
+		return arr;
+	})();
 
 	const getDefaultTransitionAttribute = target =>
 		transitionDefaultAttributes[`${target}-${deviceType}`];
@@ -422,7 +447,8 @@ const RelationControl = props => {
 												item.id,
 												{
 													uniqueID: value,
-												}
+												},
+												true
 											)
 										}
 									/>

@@ -258,7 +258,7 @@ class MaxiBlocks_DynamicContent
 
             // DC Relation
             if ($dc_relation == 'by-id') {
-                $args[$dc_type === 'posts' ? 'p' : 'page_id'] = $dc_id;
+                $args['p'] = $dc_id;
             } elseif ($dc_relation == 'author') {
                 $args['author'] = $dc_author ?? $dc_id;
             } elseif ($is_random) {
@@ -277,7 +277,6 @@ class MaxiBlocks_DynamicContent
             ];
 
             // DC Relation
-            $is_random = $dc_relation === 'random';
             if ($dc_relation == 'by-id') {
                 $args['p'] = $dc_id;
             } elseif ($is_random) {

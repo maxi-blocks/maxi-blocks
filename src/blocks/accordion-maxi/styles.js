@@ -123,29 +123,24 @@ const getHoverObject = props => {
 };
 
 const getIconObject = (props, uniqueID) => {
+	const getIconStyles = (isHover = false, isActive = false) =>
+		getButtonIconStyles({
+			obj: props,
+			blockStyle: props.blockStyle,
+			target: ' .maxi-pane-block__icon',
+			wrapperTarget: `.maxi-pane-block[data-accordion="${uniqueID}"][aria-expanded=${isActive}] .maxi-pane-block__header`,
+			prefix: isActive ? 'active-' : '',
+			isHover,
+			hoverOnIcon: true,
+		});
+
 	const response = {
-		...getButtonIconStyles({
-			obj: props,
-			blockStyle: props.blockStyle,
-			target: ' .maxi-pane-block__icon',
-			wrapperTarget: `.maxi-pane-block[data-accordion="${uniqueID}"][aria-expanded=false] .maxi-pane-block__header`,
-		}),
-		...(props['icon-status-hover'] &&
-			getButtonIconStyles({
-				obj: props,
-				blockStyle: props.blockStyle,
-				target: ' .maxi-pane-block__icon',
-				wrapperTarget: `.maxi-pane-block[data-accordion="${uniqueID}"][aria-expanded] .maxi-pane-block__header`,
-				isHover: true,
-			})),
-		...getButtonIconStyles({
-			obj: props,
-			blockStyle: props.blockStyle,
-			target: ' .maxi-pane-block__icon',
-			wrapperTarget: `.maxi-pane-block[data-accordion="${uniqueID}"][aria-expanded=true] .maxi-pane-block__header`,
-			prefix: 'active-',
-		}),
+		...getIconStyles(),
+		...(props['icon-status-hover'] && getIconStyles(true)),
+		...getIconStyles(false, true),
+		...(props['active-icon-status-hover'] && getIconStyles(true, true)),
 	};
+
 	return response;
 };
 

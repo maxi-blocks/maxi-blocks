@@ -10,6 +10,7 @@ import { getSelectorsCss } from '../../components/custom-css-control/utils';
 import { getTransformSelectors } from '../../components/transform-control/utils';
 import getTransformTransitionData from './transitions/getTransformTransitionData';
 import transitionDefault from './transitions/transitionDefault';
+import { getVhSize, getVwSize } from '../dom/getViewPortUnitsSize';
 
 /**
  * External dependencies
@@ -198,6 +199,33 @@ const styleCleaner = styles => {
 	return styles;
 };
 
+const viewportUnitsProcessor = obj => {
+	const response = cloneDeep(obj);
+	const sizeMap = {
+		vw: getVwSize(),
+		vh: getVhSize(),
+	};
+
+	const checkObjUnits = obj => {
+		Object.entries(obj).forEach(([key, val]) => {
+			if (isObject(val)) {
+				checkObjUnits(val);
+			} else if (
+				typeof val === 'string' &&
+				(val.includes('vw') || val.includes('vh'))
+			) {
+				const value = parseFloat(val);
+
+				obj[key] = `${value * sizeMap[val.replace(value, '')]}px`;
+			}
+		});
+
+		return obj;
+	};
+
+	return checkObjUnits(response);
+};
+
 const styleProcessor = (obj, data, props) => {
 	const selectors = data?.customCss?.selectors;
 	const transitionSelectors = {
@@ -238,7 +266,7 @@ const styleProcessor = (obj, data, props) => {
 			});
 		}
 	}
-	return styleCleaner(styles);
+	return viewportUnitsProcessor(styleCleaner(styles));
 };
 
 export default styleProcessor;

@@ -54,7 +54,7 @@ const ImageLayerSettings = props => {
 	const imageOptions = cloneDeep(props.imageOptions);
 
 	const parallaxStatus = getAttributesValue({
-		target: 'background-image-parallax-status',
+		target: 'bi_pa.s',
 		props: imageOptions,
 		prefix,
 	});
@@ -64,13 +64,14 @@ const ImageLayerSettings = props => {
 			<OpacityControl
 				label={__('Background opacity', 'maxi-blocks')}
 				opacity={getLastBreakpointAttribute({
-					target: `${prefix}background-image-opacity`,
+					target: 'bi_o',
 					breakpoint,
 					attributes: imageOptions,
 					isHover,
+					prefix,
 				})}
 				breakpoint={breakpoint}
-				prefix={`${prefix}background-image-`}
+				prefix={`${prefix}bi`}
 				isHover={isHover}
 				onChange={onChange}
 				disableRTC
@@ -79,12 +80,13 @@ const ImageLayerSettings = props => {
 				label={__('Background size', 'maxi-blocks')}
 				className='maxi-background-control__image-layer__size-selector'
 				value={getLastBreakpointAttribute({
-					target: `${prefix}background-image-size`,
+					target: 'bi_si',
 					breakpoint,
 					attributes: imageOptions,
 					isHover,
+					prefix,
 				})}
-				defaultValue={getDefaultAttr('background-image-size')}
+				defaultValue={getDefaultAttr('bi_si')}
 				options={[
 					{
 						label: __('Auto', 'maxi-blocks'),
@@ -129,53 +131,47 @@ const ImageLayerSettings = props => {
 				]}
 				onChange={val =>
 					onChange({
-						[getAttributeKey(
-							'background-image-size',
-							isHover,
-							prefix,
-							breakpoint
-						)]: val,
+						[getAttributeKey('bi_si', isHover, prefix, breakpoint)]:
+							val,
 					})
 				}
 				onReset={() =>
 					onChange({
-						[getAttributeKey(
-							'background-image-size',
-							isHover,
-							prefix,
-							breakpoint
-						)]: getDefaultAttr('background-image-size'),
+						[getAttributeKey('bi_si', isHover, prefix, breakpoint)]:
+							getDefaultAttr('bi_si'),
 					})
 				}
 			/>
 			{getLastBreakpointAttribute({
-				target: `${prefix}background-image-size`,
+				target: 'bi_si',
 				breakpoint,
 				attributes: imageOptions,
 				isHover,
+				prefix,
 			}) === 'custom' && (
 				<ImageCropControl
 					mediaID={getAttributesValue({
-						target: 'background-image-mediaID',
+						target: 'bi_mi',
 						props: imageOptions,
 						prefix,
 					})}
 					cropOptions={getLastBreakpointAttribute({
-						target: `${prefix}background-image-crop-options`,
+						target: 'bi_co',
 						breakpoint,
 						attributes: imageOptions,
 						isHover,
+						prefix,
 					})}
 					onChange={cropOptions =>
 						onChange({
 							[getAttributeKey(
-								'background-image-crop-options',
+								'bi_co',
 								isHover,
 								prefix,
 								breakpoint
 							)]: cropOptions,
 							[getAttributeKey(
-								'background-image-mediaURL',
+								'bi_mu',
 								isHover,
 								prefix,
 								breakpoint
@@ -189,12 +185,13 @@ const ImageLayerSettings = props => {
 					label={__('Background repeat', 'maxi-blocks')}
 					className='maxi-background-control__image-layer__repeat-selector'
 					value={getLastBreakpointAttribute({
-						target: `${prefix}background-image-repeat`,
+						target: 'bi_re',
 						breakpoint,
 						attributes: imageOptions,
 						isHover,
+						prefix,
 					})}
-					defaultValue={getDefaultAttr('background-image-repeat')}
+					defaultValue={getDefaultAttr('bi_re')}
 					options={[
 						{
 							label: __('No repeat', 'maxi-blocks'),
@@ -224,7 +221,7 @@ const ImageLayerSettings = props => {
 					onChange={val =>
 						onChange({
 							[getAttributeKey(
-								'background-image-repeat',
+								'bi_re',
 								isHover,
 								prefix,
 								breakpoint
@@ -234,11 +231,11 @@ const ImageLayerSettings = props => {
 					onReset={() =>
 						onChange({
 							[getAttributeKey(
-								'background-image-repeat',
+								'bi_re',
 								isHover,
 								prefix,
 								breakpoint
-							)]: getDefaultAttr('background-image-repeat'),
+							)]: getDefaultAttr('bi_re'),
 						})
 					}
 				/>
@@ -247,12 +244,13 @@ const ImageLayerSettings = props => {
 				label={__('Background position', 'maxi-blocks')}
 				className='maxi-background-control__image-layer__position-selector'
 				value={getLastBreakpointAttribute({
-					target: `${prefix}background-image-position`,
+					target: 'bi_pos',
 					breakpoint,
 					attributes: imageOptions,
 					isHover,
+					prefix,
 				})}
-				defaultValue={getDefaultAttr('background-image-position')}
+				defaultValue={getDefaultAttr('bi_pos')}
 				options={[
 					{
 						label: __('Left top', 'maxi-blocks'),
@@ -298,7 +296,7 @@ const ImageLayerSettings = props => {
 				onChange={val =>
 					onChange({
 						[getAttributeKey(
-							'background-image-position',
+							'bi_pos',
 							isHover,
 							prefix,
 							breakpoint
@@ -308,34 +306,36 @@ const ImageLayerSettings = props => {
 				onReset={() =>
 					onChange({
 						[getAttributeKey(
-							'background-image-position',
+							'bi_pos',
 							isHover,
 							prefix,
 							breakpoint
-						)]: getDefaultAttr('background-image-position'),
+						)]: getDefaultAttr('bi_pos'),
 					})
 				}
 			/>
 			{getLastBreakpointAttribute({
-				target: `${prefix}background-image-position`,
+				target: 'bi_pos',
 				breakpoint,
 				attributes: imageOptions,
 				isHover,
+				prefix,
 			}) === 'custom' && (
 				<>
 					<AdvancedNumberControl
 						label={__('Y-axis', 'maxi-blocks')}
 						enableUnit
 						unit={getLastBreakpointAttribute({
-							target: `${prefix}background-image-position-width.u`,
+							target: '}bi_pos_w.u',
 							breakpoint,
 							attributes: imageOptions,
 							isHover,
+							prefix,
 						})}
 						onChangeUnit={val =>
 							onChange({
 								[getAttributeKey(
-									'background-image-position-width-unit',
+									'bi_pos_w.u',
 									isHover,
 									prefix,
 									breakpoint
@@ -343,15 +343,16 @@ const ImageLayerSettings = props => {
 							})
 						}
 						value={getLastBreakpointAttribute({
-							target: `${prefix}background-image-position-width`,
+							target: 'bi_pos_w',
 							breakpoint,
 							attributes: imageOptions,
 							isHover,
+							prefix,
 						})}
 						onChangeValue={val =>
 							onChange({
 								[getAttributeKey(
-									'background-image-position-width',
+									'bi_pos_w',
 									isHover,
 									prefix,
 									breakpoint
@@ -361,21 +362,17 @@ const ImageLayerSettings = props => {
 						onReset={() =>
 							onChange({
 								[getAttributeKey(
-									'background-image-position-width',
+									'bi_pos_w',
 									isHover,
 									prefix,
 									breakpoint
-								)]: getDefaultAttr(
-									'background-image-position-width'
-								),
+								)]: getDefaultAttr('bi_pos_w'),
 								[getAttributeKey(
-									'background-image-position-width-unit',
+									'bi_pos_w.u',
 									isHover,
 									prefix,
 									breakpoint
-								)]: getDefaultAttr(
-									'background-image-position-width-unit'
-								),
+								)]: getDefaultAttr('bi_pos_w.u'),
 								isReset: true,
 							})
 						}
@@ -384,7 +381,7 @@ const ImageLayerSettings = props => {
 						label={__('X-axis', 'maxi-blocks')}
 						enableUnit
 						unit={getLastBreakpointAttribute({
-							target: 'background-image-position-height-unit',
+							target: 'bi_pos_h.u',
 							breakpoint,
 							attributes: imageOptions,
 							isHover,
@@ -392,7 +389,7 @@ const ImageLayerSettings = props => {
 						onChangeUnit={val =>
 							onChange({
 								[getAttributeKey(
-									'background-image-position-height-unit',
+									'bi_pos_h.u',
 									isHover,
 									prefix,
 									breakpoint
@@ -400,7 +397,7 @@ const ImageLayerSettings = props => {
 							})
 						}
 						value={getLastBreakpointAttribute({
-							target: 'background-image-position-height',
+							target: 'bi_pos_h',
 							breakpoint,
 							attributes: imageOptions,
 							isHover,
@@ -408,7 +405,7 @@ const ImageLayerSettings = props => {
 						onChangeValue={val =>
 							onChange({
 								[getAttributeKey(
-									'background-image-position-height',
+									'bi_pos_h',
 									isHover,
 									prefix,
 									breakpoint
@@ -418,21 +415,17 @@ const ImageLayerSettings = props => {
 						onReset={() =>
 							onChange({
 								[getAttributeKey(
-									'background-image-position-height',
+									'bi_pos_h',
 									isHover,
 									prefix,
 									breakpoint
-								)]: getDefaultAttr(
-									'background-image-position-height'
-								),
+								)]: getDefaultAttr('bi_pos_h'),
 								[getAttributeKey(
-									'background-image-position-height-unit',
+									'bi_pos_h.u',
 									isHover,
 									prefix,
 									breakpoint
-								)]: getDefaultAttr(
-									'background-image-position-height-unit'
-								),
+								)]: getDefaultAttr('bi_pos_h.u'),
 								isReset: true,
 							})
 						}
@@ -445,14 +438,13 @@ const ImageLayerSettings = props => {
 						label={__('Background attachment', 'maxi-blocks')}
 						className='maxi-background-control__image-layer__attachment-selector'
 						value={getLastBreakpointAttribute({
-							target: `${prefix}background-image-attachment`,
+							target: 'bi_at',
 							breakpoint,
 							attributes: imageOptions,
 							isHover,
+							prefix,
 						})}
-						defaultValue={getDefaultAttr(
-							'background-image-attachment'
-						)}
+						defaultValue={getDefaultAttr('bi_at')}
 						options={[
 							{
 								label: __('Scroll', 'maxi-blocks'),
@@ -470,7 +462,7 @@ const ImageLayerSettings = props => {
 						onChange={val =>
 							onChange({
 								[getAttributeKey(
-									'background-image-attachment',
+									'bi_at',
 									isHover,
 									prefix,
 									breakpoint
@@ -480,13 +472,11 @@ const ImageLayerSettings = props => {
 						onReset={() =>
 							onChange({
 								[getAttributeKey(
-									'background-image-attachment',
+									'bi_at',
 									isHover,
 									prefix,
 									breakpoint
-								)]: getDefaultAttr(
-									'background-image-attachment'
-								),
+								)]: getDefaultAttr('bi_at'),
 							})
 						}
 					/>
@@ -504,14 +494,13 @@ const ImageLayerSettings = props => {
 								label={__('Background origin', 'maxi-blocks')}
 								className='maxi-background-control__image-layer__origin-selector'
 								value={getLastBreakpointAttribute({
-									target: `${prefix}background-image-origin`,
+									target: 'bi_ori',
 									breakpoint,
 									attributes: imageOptions,
 									isHover,
+									prefix,
 								})}
-								defaultValue={getDefaultAttr(
-									'background-image-origin'
-								)}
+								defaultValue={getDefaultAttr('bi_ori')}
 								options={[
 									{
 										label: __('Padding', 'maxi-blocks'),
@@ -529,7 +518,7 @@ const ImageLayerSettings = props => {
 								onChange={val =>
 									onChange({
 										[getAttributeKey(
-											'background-image-origin',
+											'bi_ori',
 											isHover,
 											prefix,
 											breakpoint
@@ -539,13 +528,11 @@ const ImageLayerSettings = props => {
 								onReset={() =>
 									onChange({
 										[getAttributeKey(
-											'background-image-origin',
+											'bi_ori',
 											isHover,
 											prefix,
 											breakpoint
-										)]: getDefaultAttr(
-											'background-image-origin'
-										),
+										)]: getDefaultAttr('bi_ori'),
 									})
 								}
 							/>
@@ -553,14 +540,13 @@ const ImageLayerSettings = props => {
 								label={__('Background clip', 'maxi-blocks')}
 								className='maxi-background-control__image-layer__clip-selector'
 								value={getLastBreakpointAttribute({
-									target: `${prefix}background-image-clip`,
+									target: 'bi_clp',
 									breakpoint,
 									attributes: imageOptions,
 									isHover,
+									prefix,
 								})}
-								defaultValue={getDefaultAttr(
-									'background-image-clip'
-								)}
+								defaultValue={getDefaultAttr('bi_clp')}
 								options={[
 									{
 										label: __('Border', 'maxi-blocks'),
@@ -578,7 +564,7 @@ const ImageLayerSettings = props => {
 								onChange={val =>
 									onChange({
 										[getAttributeKey(
-											'background-image-clip',
+											'bi_clp',
 											isHover,
 											prefix,
 											breakpoint
@@ -588,13 +574,11 @@ const ImageLayerSettings = props => {
 								onReset={() =>
 									onChange({
 										[getAttributeKey(
-											'background-image-clip',
+											'bi_clp',
 											isHover,
 											prefix,
 											breakpoint
-										)]: getDefaultAttr(
-											'background-image-clip'
-										),
+										)]: getDefaultAttr('bi_clp'),
 									})
 								}
 							/>
@@ -610,12 +594,12 @@ const ImageLayerSettings = props => {
 						imageOptions,
 						'clipPath',
 						false,
-						'background-image-'
+						'bi'
 					)}
 					{...imageOptions}
 					isHover={isHover}
 					isIB={isIB}
-					prefix='background-image-'
+					prefix='bi'
 					breakpoint={breakpoint}
 					getBounds={getBounds}
 					getBlockClipPath={getBlockClipPath}
@@ -662,7 +646,7 @@ const ImageLayer = props => {
 	};
 
 	const mediaID = getAttributesValue({
-		target: 'background-image-mediaID',
+		target: 'bi_mi',
 		props: imageOptions,
 		prefix,
 	});
@@ -674,50 +658,22 @@ const ImageLayer = props => {
 					mediaID={mediaID}
 					onSelectImage={imageData =>
 						onChange({
-							[getAttributeKey(
-								'background-image-mediaID',
-								isHover,
-								prefix
-							)]: imageData.id,
-							[getAttributeKey(
-								'background-image-mediaURL',
-								isHover,
-								prefix
-							)]: imageData.url,
-							[getAttributeKey(
-								'background-image-width',
-								isHover,
-								prefix
-							)]: imageData.width,
-							[getAttributeKey(
-								'background-image-height',
-								isHover,
-								prefix
-							)]: imageData.height,
+							[getAttributeKey('bi_mi', isHover, prefix)]:
+								imageData.id,
+							[getAttributeKey('bi_mu', isHover, prefix)]:
+								imageData.url,
+							[getAttributeKey('bi_w', isHover, prefix)]:
+								imageData.width,
+							[getAttributeKey('bi_h', isHover, prefix)]:
+								imageData.height,
 						})
 					}
 					onRemoveImage={() =>
 						onChange({
-							[getAttributeKey(
-								'background-image-mediaID',
-								false,
-								prefix
-							)]: '',
-							[getAttributeKey(
-								'background-image-mediaURL',
-								false,
-								prefix
-							)]: '',
-							[getAttributeKey(
-								'background-image-width',
-								isHover,
-								prefix
-							)]: '',
-							[getAttributeKey(
-								'background-image-height',
-								isHover,
-								prefix
-							)]: '',
+							[getAttributeKey('bi_mi', false, prefix)]: '',
+							[getAttributeKey('bi_mu', false, prefix)]: '',
+							[getAttributeKey('bi_w', isHover, prefix)]: '',
+							[getAttributeKey('bi_h', isHover, prefix)]: '',
 						})
 					}
 				/>
@@ -747,21 +703,14 @@ const ImageLayer = props => {
 											'Enable Parallax',
 											'maxi-blocks'
 										)}
-										selected={
-											imageOptions[
-												'background-image-parallax-status'
-											]
-										}
+										selected={imageOptions['bi_pa.s']}
 										onChange={val =>
 											onChange({
-												'background-image-parallax-status':
-													val,
+												'bi_pa.s': val,
 											})
 										}
 									/>
-									{imageOptions[
-										'background-image-parallax-status'
-									] && (
+									{imageOptions['bi_pa.s'] && (
 										<>
 											<SettingTabsControl
 												className='parallax-direction'
@@ -770,11 +719,7 @@ const ImageLayer = props => {
 													'Direction',
 													'maxi-blocks'
 												)}
-												selected={
-													imageOptions[
-														'background-image-parallax-direction'
-													]
-												}
+												selected={imageOptions.bi_pd}
 												items={[
 													{
 														label: __(
@@ -793,8 +738,7 @@ const ImageLayer = props => {
 												]}
 												onChange={val =>
 													onChange({
-														'background-image-parallax-direction':
-															val,
+														bi_pd: val,
 													})
 												}
 											/>
@@ -803,14 +747,10 @@ const ImageLayer = props => {
 													'Speed',
 													'maxi-blocks'
 												)}
-												value={
-													imageOptions[
-														'background-image-parallax-speed'
-													]
-												}
+												value={imageOptions.bi_psp}
 												onChangeValue={val => {
 													onChange({
-														'background-image-parallax-speed':
+														bi_psp:
 															val !== undefined &&
 															val !== ''
 																? val
@@ -822,28 +762,27 @@ const ImageLayer = props => {
 												step={0.1}
 												onReset={() =>
 													onChange({
-														'background-image-parallax-speed':
-															getDefaultAttr(
-																'background-image-parallax-speed'
-															),
+														bi_psp: getDefaultAttr(
+															'bi_psp'
+														),
 														isReset: true,
 													})
 												}
 												initialPosition={getDefaultAttr(
-													'background-image-parallax-speed'
+													'bi_psp'
 												)}
 											/>
 											<ImageAltControl
 												mediaID={mediaID}
 												altSelector={getAttributesValue(
 													{
-														target: 'background-image-parallax-alt-selector',
+														target: 'bi_pas',
 														props: imageOptions,
 														prefix,
 													}
 												)}
 												mediaAlt={getAttributesValue({
-													target: 'background-image-parallax-alt',
+													target: 'bi_pal',
 													props: imageOptions,
 													prefix,
 												})}
@@ -853,12 +792,10 @@ const ImageLayer = props => {
 												}) => {
 													onChange({
 														...(altSelector && {
-															'background-image-parallax-alt-selector':
-																altSelector,
+															bi_pas: altSelector,
 														}),
 														...(mediaAlt && {
-															'background-image-parallax-alt':
-																mediaAlt,
+															bi_pal: mediaAlt,
 														}),
 													});
 												}}

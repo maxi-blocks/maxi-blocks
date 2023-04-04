@@ -22,6 +22,8 @@ const dictionary = {
 		// border: '_bo',
 		mediaID: '_mi',
 		mediaURL: '_mu',
+		SVGElement: '_se',
+		SVGData: '_sd',
 	},
 	accordion: {
 		accordionLayout: '_acl',
@@ -71,8 +73,6 @@ const dictionary = {
 		fallbackURL: '_fu',
 		playOnMobile: '_pm',
 		'reduce-border': '_rb',
-		SVGElement: '_se',
-		SVGData: '_sd',
 	},
 	backgroundActive: {},
 	backgroundHover: {},

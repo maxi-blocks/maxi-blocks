@@ -35,7 +35,7 @@ const PopupSettingsControl = props => {
 				className='maxi-video-options-control__lightbox-colour'
 				label={__('Lightbox background', 'maxi-blocks')}
 				color={getLastBreakpointAttribute({
-					target: 'lightbox-background-color',
+					target: 'lightbox-background-color-custom-color',
 					breakpoint,
 					attributes: props,
 				})}

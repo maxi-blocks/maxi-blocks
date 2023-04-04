@@ -6,7 +6,7 @@ describe('getHoverEffectsBackgroundStyles', () => {
 	it('Get a correct hover effects color background style', () => {
 		const object = parseLongAttrObj({
 			'hover-background-active-media-general': 'color',
-			'hover-background-color-color-general': 'rgb(255,99,71)',
+			'hover-background-color-custom-color-general': 'rgb(255,99,71)',
 		});
 
 		const result = getHoverEffectsBackgroundStyles(object, 'light');

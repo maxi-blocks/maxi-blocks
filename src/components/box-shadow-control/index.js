@@ -70,9 +70,18 @@ const BoxShadowValueControl = props => {
 		},
 	};
 
+	const boxShadowDictionary = {
+		_ho: 'horizontal',
+		_v: 'vertical',
+		_blu: 'blur',
+		_sp: 'spread',
+	};
+
 	return (
 		<AdvancedNumberControl
-			{...(!isToolbar && { label: __(capitalize(type), 'maxi-blocks') })}
+			{...(!isToolbar && {
+				label: __(capitalize(boxShadowDictionary[type]), 'maxi-blocks'),
+			})}
 			value={getLastBreakpointAttribute({
 				target: `${prefix}bs${type}`,
 				breakpoint,
@@ -290,7 +299,7 @@ const BoxShadowControl = props => {
 					attributes: props,
 					isHover,
 				})}
-				prefix={`${prefix}box-shadow-`}
+				prefix={`${prefix}bs`}
 				paletteStatus={getLastBreakpointAttribute({
 					target: `${prefix}bs_ps`,
 					breakpoint,
@@ -345,25 +354,25 @@ const BoxShadowControl = props => {
 						[getAttributeKey(
 							'_cc',
 							isHover,
-							`${prefix}box-shadow-`,
+							`${prefix}bs`,
 							breakpoint
 						)]: color,
 						[getAttributeKey(
 							'_ps',
 							isHover,
-							`${prefix}box-shadow-`,
+							`${prefix}bs`,
 							breakpoint
 						)]: paletteStatus,
 						[getAttributeKey(
 							'_pc',
 							isHover,
-							`${prefix}box-shadow-`,
+							`${prefix}bs`,
 							breakpoint
 						)]: paletteColor,
 						[getAttributeKey(
 							'_po',
 							isHover,
-							`${prefix}box-shadow-`,
+							`${prefix}bs`,
 							breakpoint
 						)]: paletteOpacity,
 					});

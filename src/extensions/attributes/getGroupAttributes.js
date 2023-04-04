@@ -3,6 +3,7 @@
  */
 import getIsValid from './getIsValid';
 import * as defaults from './defaults/index';
+import getAttributeKey from './getAttributeKey';
 
 const getGroupAttributes = (
 	attributes,
@@ -25,7 +26,7 @@ const getGroupAttributes = (
 
 		if (defaultAttributes)
 			Object?.keys(defaultAttributes)?.forEach(key => {
-				const newKey = `${prefix}${key}`;
+				const newKey = getAttributeKey(key, false, prefix);
 				const value = attributes[newKey];
 
 				if (getIsValid(value, cleaned)) response[newKey] = value;
@@ -37,7 +38,7 @@ const getGroupAttributes = (
 
 			if (defaultAttributes)
 				Object.keys(defaultAttributes).forEach(key => {
-					const newKey = `${prefix}${key}`;
+					const newKey = getAttributeKey(key, false, prefix);
 					const value = attributes[newKey];
 
 					if (getIsValid(value, cleaned)) response[newKey] = value;

@@ -38,14 +38,14 @@ const OverlayColor = props => {
 			className='maxi-video-overlay-control__overlay-background-colour'
 			label={__('Overlay background', 'maxi-blocks')}
 			color={getLastBreakpointAttribute({
-				target: 'overlay-background-color',
+				target: 'overlay-background-color-custom-color',
 				breakpoint,
 				attributes: props,
 				isHover,
 			})}
 			defaultColor={getDefaultAttribute(
 				getAttributeKey(
-					'overlay-background-color',
+					'overlay-background-color-custom-color',
 					isHover,
 					'',
 					breakpoint
@@ -105,7 +105,7 @@ const OverlayColor = props => {
 						breakpoint
 					)]: paletteOpacity,
 					[getAttributeKey(
-						'overlay-background-color',
+						'overlay-background-color-custom-color',
 						isHover,
 						'',
 						breakpoint

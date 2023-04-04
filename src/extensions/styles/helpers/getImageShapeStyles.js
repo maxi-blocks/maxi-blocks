@@ -30,18 +30,8 @@ const getImageShapeStyles = (
 
 	breakpoints.forEach(breakpoint => {
 		let transformString = '';
-		const {
-			[`${prefix}image-shape-scale`]: scale,
-			[`${prefix}image-shape-rotate`]: rotate,
-			[`${prefix}image-shape-flip-x`]: flipX,
-			[`${prefix}image-shape-flip-y`]: flipY,
-		} = getLastBreakpointAttribute({
-			target: [
-				`${prefix}image-shape-scale`,
-				`${prefix}image-shape-rotate`,
-				`${prefix}image-shape-flip-x`,
-				`${prefix}image-shape-flip-y`,
-			],
+		const [scale, rotate, flipX, flipY] = getLastBreakpointAttribute({
+			target: ['is_sc', 'is_rot', 'is_fx', 'is_fy'],
 			breakpoint,
 			attributes: obj,
 			prefix,

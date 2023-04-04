@@ -622,7 +622,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 												breakpoint
 											)]: paletteOpacity,
 											[getAttributeKey(
-												'background-color',
+												'bc_cc',
 												isHover,
 												`${prefix}icon-`,
 												breakpoint

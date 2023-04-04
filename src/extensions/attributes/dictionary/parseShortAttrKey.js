@@ -1,5 +1,9 @@
+/**
+ * Internal dependencies
+ */
 import getAttrKeyWithoutBreakpoint from '../getAttrKeyWithoutBreakpoint';
 import getBreakpointFromAttribute from '../getBreakpointFromAttribute';
+import getCleanKey from '../getCleanKey';
 import getNormalAttributeKey from '../getNormalAttributeKey';
 import {
 	colorReversedDictionary,
@@ -8,6 +12,9 @@ import {
 	suffixesReversedDictionary,
 } from './attributesDictionary';
 
+/**
+ * External dependencies
+ */
 import { isEmpty } from 'lodash';
 
 /**
@@ -117,19 +124,18 @@ const parseShortAttrKey = attrKey => {
 	else key = key.join('-');
 
 	// Join all together
-	const newKey = [
-		prefixesStr,
-		key,
-		suffixesStr,
-		colorStr,
-		breakpoint,
-		isHover ? '-hover' : '',
-	]
-		.filter(Boolean)
-		.join('-')
-		.replaceAll('--', '-')
-		.replaceAll('--', '-')
-		.replaceAll('-_', '_');
+	const newKey = getCleanKey(
+		[
+			prefixesStr,
+			key,
+			suffixesStr,
+			colorStr,
+			breakpoint,
+			isHover ? '-hover' : '',
+		]
+			.filter(Boolean)
+			.join('-')
+	);
 
 	return newKey;
 };

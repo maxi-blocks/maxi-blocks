@@ -164,7 +164,7 @@ const getMaxiBlockAttributes = props => {
 	}
 
 	const displayValue = getLastBreakpointAttribute({
-		target: 'd-',
+		target: '_d',
 		breakpoint: deviceType,
 		attributes,
 		forceSingle: true,

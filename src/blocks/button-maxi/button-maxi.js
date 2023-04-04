@@ -70,7 +70,7 @@ registerBlockType('maxi-blocks/button-maxi', {
 		blockMigrator({
 			attributes,
 			save,
-			prefix: 'button-',
+			prefix: 'bt-',
 			selectors: customCss.selectors,
 			migrators: [buttonIconTransitionMigrator],
 		}),

@@ -39,13 +39,14 @@ const VideoLayerContent = props => {
 			<OpacityControl
 				label={__('Video opacity', 'maxi-blocks')}
 				opacity={getLastBreakpointAttribute({
-					target: `${prefix}background-video-opacity`,
+					target: 'bv_o',
 					breakpoint,
 					attributes: videoOptions,
 					isHover,
+					prefix,
 				})}
 				breakpoint={breakpoint}
-				prefix={`${prefix}background-video-`}
+				prefix={`${prefix}bv`}
 				isHover={isHover}
 				onChange={onChange}
 				disableRTC
@@ -55,21 +56,22 @@ const VideoLayerContent = props => {
 					className='maxi-mediauploader-control__video-fallback'
 					placeholder={__('Background fallback')}
 					mediaID={getLastBreakpointAttribute({
-						target: `${prefix}background-video-fallbackID`,
+						target: 'bv_fi',
 						breakpoint,
 						attributes: videoOptions,
 						isHover,
+						prefix,
 					})}
 					onSelectImage={val =>
 						onChange({
 							[getAttributeKey(
-								'background-video-fallbackID',
+								'bv_fi',
 								isHover,
 								prefix,
 								breakpoint
 							)]: val.id,
 							[getAttributeKey(
-								'background-video-fallbackURL',
+								'bv_fu',
 								isHover,
 								prefix,
 								breakpoint
@@ -79,13 +81,13 @@ const VideoLayerContent = props => {
 					onRemoveImage={() =>
 						onChange({
 							[getAttributeKey(
-								'background-video-fallbackID',
+								'bv_fi',
 								isHover,
 								prefix,
 								breakpoint
 							)]: '',
 							[getAttributeKey(
-								'background-video-fallbackURL',
+								'bv_fu',
 								isHover,
 								prefix,
 								breakpoint
@@ -116,7 +118,7 @@ const VideoLayer = props => {
 						label='URL'
 						type='url'
 						value={getAttributesValue({
-							target: 'background-video-mediaURL',
+							target: 'bv_mu',
 							props: videoOptions,
 							prefix,
 						})}
@@ -131,71 +133,54 @@ const VideoLayer = props => {
 							}
 
 							onChange({
-								[getAttributeKey(
-									'background-video-mediaURL',
-									false,
-									prefix
-								)]: val !== '' ? val : defaultURL,
+								[getAttributeKey('bv_mu', false, prefix)]:
+									val !== '' ? val : defaultURL,
 							});
 						}}
 						validationText={validationText}
 					/>
 					<AdvancedNumberControl
-						className='maxi-background-video-start-time'
+						className='maxi-bv_start-time'
 						label={__('Start time (s)', 'maxi-blocks')}
 						value={getAttributesValue({
-							target: 'background-video-startTime',
+							target: 'bv_sti',
 							props: videoOptions,
 							prefix,
 						})}
 						onChangeValue={val => {
 							onChange({
-								[getAttributeKey(
-									'background-video-startTime',
-									false,
-									prefix
-								)]: val !== undefined && val !== '' ? val : '',
+								[getAttributeKey('bv_sti', false, prefix)]:
+									val !== undefined && val !== '' ? val : '',
 							});
 						}}
 						min={0}
 						max={999}
 						onReset={() =>
 							onChange({
-								[getAttributeKey(
-									'background-video-startTime',
-									false,
-									prefix
-								)]: '',
+								[getAttributeKey('bv_sti', false, prefix)]: '',
 								isReset: true,
 							})
 						}
 					/>
 					<AdvancedNumberControl
-						className='maxi-background-video-end-time'
+						className='maxi-bv_end-time'
 						label={__('End time (s)', 'maxi-blocks')}
 						value={getAttributesValue({
-							target: 'background-video-endTime',
+							target: 'bv_et',
 							props: videoOptions,
 							prefix,
 						})}
 						onChangeValue={val =>
 							onChange({
-								[getAttributeKey(
-									'background-video-endTime',
-									false,
-									prefix
-								)]: val !== undefined && val !== '' ? val : '',
+								[getAttributeKey('bv_et', false, prefix)]:
+									val !== undefined && val !== '' ? val : '',
 							})
 						}
 						min={0}
 						max={999}
 						onReset={() =>
 							onChange({
-								[getAttributeKey(
-									'background-video-endTime',
-									false,
-									prefix
-								)]: '',
+								[getAttributeKey('bv_et', false, prefix)]: '',
 								isReset: true,
 							})
 						}
@@ -204,24 +189,20 @@ const VideoLayer = props => {
 						className='video-loop'
 						label={__('Loop', 'maxi-blocks')}
 						selected={getAttributesValue({
-							target: 'background-video-loop',
+							target: 'bv_loo',
 							props: videoOptions,
 							prefix,
 						})}
 						disabled={
 							+getAttributesValue({
-								target: 'background-video-endTime',
+								target: 'bv_et',
 								props: videoOptions,
 								prefix,
 							}) === 0
 						}
 						onChange={val =>
 							onChange({
-								[getAttributeKey(
-									'background-video-loop',
-									false,
-									prefix
-								)]: val,
+								[getAttributeKey('bv_loo', false, prefix)]: val,
 							})
 						}
 					/>
@@ -229,41 +210,35 @@ const VideoLayer = props => {
 						className='video-reduce-border'
 						label={__('Reduce black borders', 'maxi-blocks')}
 						selected={getAttributesValue({
-							target: 'background-video-reduce-border',
+							target: 'bv_rb',
 							props: videoOptions,
 							prefix,
 						})}
 						onChange={val =>
 							onChange({
-								[getAttributeKey(
-									'background-video-reduce-border',
-									false,
-									prefix
-								)]: val,
+								[getAttributeKey('bv_rb', false, prefix)]: val,
 							})
 						}
 					/>
 				</>
 			)}
 			<ResponsiveTabsControl breakpoint={breakpoint}>
-				<>
-					<VideoLayerContent
-						videoOptions={videoOptions}
-						onChange={onChange}
-						isHover={isHover}
-						prefix={prefix}
-						isIB={isIB}
-						breakpoint={breakpoint}
-					/>
-					<SizeAndPositionLayerControl
-						prefix={prefix}
-						options={videoOptions}
-						onChange={onChange}
-						isHover={isHover}
-						isLayer
-						breakpoint={breakpoint}
-					/>
-				</>
+				<VideoLayerContent
+					videoOptions={videoOptions}
+					onChange={onChange}
+					isHover={isHover}
+					prefix={prefix}
+					isIB={isIB}
+					breakpoint={breakpoint}
+				/>
+				<SizeAndPositionLayerControl
+					prefix={prefix}
+					options={videoOptions}
+					onChange={onChange}
+					isHover={isHover}
+					isLayer
+					breakpoint={breakpoint}
+				/>
 			</ResponsiveTabsControl>
 		</div>
 	);

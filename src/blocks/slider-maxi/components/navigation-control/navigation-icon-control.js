@@ -910,7 +910,7 @@ const NavigationIconControl = props => {
 														breakpoint
 													)]: paletteOpacity,
 													[getAttributeKey(
-														'background-color',
+														'bc_cc',
 														isHover,
 														prefix,
 														breakpoint

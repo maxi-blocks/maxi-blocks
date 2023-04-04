@@ -239,7 +239,7 @@ class edit extends MaxiBlockComponent {
 							'maxi-column-block__resizer',
 							`maxi-column-block__resizer__${uniqueID}`,
 							getLastBreakpointAttribute({
-								target: 'd-',
+								target: '_d',
 								breakpoint: deviceType,
 								attributes,
 								isHover: false,

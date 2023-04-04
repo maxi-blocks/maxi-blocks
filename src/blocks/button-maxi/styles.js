@@ -146,7 +146,7 @@ const getNormalObject = props => {
 			},
 			blockStyle: props.blockStyle,
 			isButton: true,
-			prefix: 'button-',
+			prefix: 'bt-',
 			scValues: props.scValues,
 		}),
 		boxShadow: getBoxShadowStyles({
@@ -154,7 +154,7 @@ const getNormalObject = props => {
 				...getGroupAttributes(props, 'boxShadow', false, 'button-'),
 			},
 			blockStyle: props.blockStyle,
-			prefix: 'button-',
+			prefix: 'bt-',
 		}),
 		textAlignment: getAlignmentTextStyles({
 			...getGroupAttributes(props, 'textAlignment'),
@@ -168,19 +168,19 @@ const getNormalObject = props => {
 			),
 			isButton: true,
 			blockStyle: props.blockStyle,
-			prefix: 'button-',
+			prefix: 'bt-',
 		}),
 		margin: getMarginPaddingStyles({
 			obj: {
 				...getGroupAttributes(props, 'margin', false, 'button-'),
 			},
-			prefix: 'button-',
+			prefix: 'bt-',
 		}),
 		padding: getMarginPaddingStyles({
 			obj: {
 				...getGroupAttributes(props, 'padding', false, 'button-'),
 			},
-			prefix: 'button-',
+			prefix: 'bt-',
 		}),
 	};
 
@@ -192,7 +192,7 @@ const getHoverObject = (props, scValues) => {
 		target: 'box-shadow-status',
 		props,
 		isHover: true,
-		prefix: 'button-',
+		prefix: 'bt-',
 	});
 
 	const response = {
@@ -208,7 +208,7 @@ const getHoverObject = (props, scValues) => {
 			isHover: true,
 			blockStyle: props.blockStyle,
 			isButton: true,
-			prefix: 'button-',
+			prefix: 'bt-',
 			scValues,
 		}),
 		boxShadow:
@@ -218,7 +218,7 @@ const getHoverObject = (props, scValues) => {
 					...getGroupAttributes(props, 'boxShadow', true, 'button-'),
 				},
 				isHover: true,
-				prefix: 'button-',
+				prefix: 'bt-',
 				blockStyle: props.blockStyle,
 			}),
 		...getBackgroundStyles({
@@ -231,7 +231,7 @@ const getHoverObject = (props, scValues) => {
 			isButton: true,
 			blockStyle: props.blockStyle,
 			isHover: true,
-			prefix: 'button-',
+			prefix: 'bt-',
 			scValues,
 		}),
 	};

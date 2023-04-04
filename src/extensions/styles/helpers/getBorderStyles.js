@@ -45,24 +45,33 @@ const getBorderStyles = ({
 	const {
 		'hover-border-color-global': isActive,
 		'hover-border-color-all': affectAll,
-	} = getAttributesValue({
-		target: ['hover-border-color-global', 'hover-border-color-all'],
-		props: scValues,
-	});
+	} = scValues;
 	const globalHoverStatus = isActive && affectAll;
 
 	if (isHover && !isNil(hoverStatus) && !hoverStatus && !globalHoverStatus)
 		return response;
 
-	const widthKeys = ['top', 'right', 'bottom', 'left'];
-	const radiusKeys = ['top-left', 'top-right', 'bottom-right', 'bottom-left'];
+	const widthKeys = ['.t', '.r', '.b', '.l'];
+	const widthDictionary = {
+		'.t': 'top',
+		'.r': 'right',
+		'.b': 'bottom',
+		'.l': 'left',
+	};
+	const radiusKeys = ['.tl', '.tr', '.br', '.bl'];
+	const radiusDictionary = {
+		'.tl': 'top-left',
+		'.tr': 'top-right',
+		'.br': 'bottom-right',
+		'.bl': 'bottom-left',
+	};
 
 	let omitBorderStyle = !isIB && !hoverStatus && !globalHoverStatus;
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
 		const borderStyle = getLastBreakpointAttribute({
-			target: `${prefix}border-style`,
+			target: `${prefix}bo_s`,
 			breakpoint,
 			attributes: obj,
 			isHover,
@@ -108,16 +117,12 @@ const getBorderStyles = ({
 		if (!isBorderNone) {
 			const getColorString = () => {
 				const currentColor = getAttributesValue({
-					target: [
-						'border-palette-status',
-						'border-palette-color',
-						'border-palette-opacity',
-						'border-color',
-					],
+					target: ['bo_ps', 'bo_pc', 'bo_po', 'bo_cc'],
 					props: obj,
 					isHover,
 					prefix,
 					breakpoint,
+					returnObj: true,
 				});
 
 				const hasDifferentColorAttributes = Object.values(
@@ -129,7 +134,7 @@ const getBorderStyles = ({
 				const { paletteStatus, paletteColor, paletteOpacity, color } =
 					getPaletteAttributes({
 						obj,
-						prefix: `${prefix}border-`,
+						prefix: `${prefix}bo`,
 						isHover,
 						breakpoint,
 					});
@@ -153,13 +158,12 @@ const getBorderStyles = ({
 							opacity: paletteOpacity,
 							blockStyle,
 						});
+
 				return color;
 			};
 
 			const currentBorderStyle =
-				obj[
-					getAttributeKey('border-style', isHover, prefix, breakpoint)
-				];
+				obj[getAttributeKey('bo_s', isHover, prefix, breakpoint)];
 			if (!isNil(currentBorderStyle))
 				response[breakpoint]['border-style'] = borderStyle;
 
@@ -168,30 +172,26 @@ const getBorderStyles = ({
 				response[breakpoint][borderColorProperty] = borderColor;
 
 			widthKeys.forEach(axis => {
-				const val = getValueAndUnit(`border-width-${axis}`);
-				const prevVal =
-					response[prevBreakpoint][`border-${axis}-width`];
+				const val = getValueAndUnit(`bo_w${axis}`);
+				const cssProperty = `border-${widthDictionary[axis]}-width`;
+				const prevVal = response[prevBreakpoint][cssProperty];
 
 				if (val && val !== prevVal)
-					response[breakpoint][`border-${axis}-width`] = val;
+					response[breakpoint][cssProperty] = val;
 			});
 		} else if (
-			!isNil(
-				obj[
-					getAttributeKey('border-style', isHover, prefix, breakpoint)
-				]
-			) &&
+			!isNil(obj[getAttributeKey('bo_s', isHover, prefix, breakpoint)]) &&
 			borderStyle === 'none'
 		)
 			response[breakpoint].border = 'none';
 
 		// Border radius doesn't need border style
 		radiusKeys.forEach(axis => {
-			const val = getValueAndUnit(`border-radius-${axis}`);
-			const prevVal = response[prevBreakpoint][`border-${axis}-radius`];
+			const val = getValueAndUnit(`bo.ra${axis}`);
+			const cssProperty = `border-${radiusDictionary[axis]}-radius`;
+			const prevVal = response[prevBreakpoint][cssProperty];
 
-			if (val && val !== prevVal)
-				response[breakpoint][`border-${axis}-radius`] = val;
+			if (val && val !== prevVal) response[breakpoint][cssProperty] = val;
 		});
 	});
 

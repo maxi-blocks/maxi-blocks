@@ -41,21 +41,21 @@ const ColorContent = ({
 	return (
 		<ColorControl
 			label={__('Fill', 'maxi-blocks')}
-			prefix='background-svg-'
+			prefix='bsv'
 			paletteStatus={getLastBreakpointAttribute({
-				target: 'background-svg-palette-status',
+				target: 'bsv_ps',
 				breakpoint,
 				attributes: SVGOptions,
 				isHover,
 			})}
 			paletteColor={getLastBreakpointAttribute({
-				target: 'background-svg-palette-color',
+				target: 'bsv_pc',
 				breakpoint,
 				attributes: SVGOptions,
 				isHover,
 			})}
 			paletteOpacity={getLastBreakpointAttribute({
-				target: 'background-svg-palette-opacity',
+				target: 'bsv_po',
 				breakpoint,
 				attributes: SVGOptions,
 				isHover,
@@ -77,35 +77,19 @@ const ColorContent = ({
 				] = color;
 
 				onChange({
-					'background-svg-SVGElement': injectImgSVG(
-						SVGOptions['background-svg-SVGElement'],
+					bsvSVGElement: injectImgSVG(
+						SVGOptions.bsvSVGElement,
 						SVGData
 					).outerHTML,
-					'background-svg-SVGData': SVGData,
-					[getAttributeKey(
-						'background-svg-palette-status',
-						isHover,
-						false,
-						breakpoint
-					)]: paletteStatus,
-					[getAttributeKey(
-						'background-svg-palette-color',
-						isHover,
-						false,
-						breakpoint
-					)]: paletteColor,
-					[getAttributeKey(
-						'background-svg-palette-opacity',
-						isHover,
-						false,
-						breakpoint
-					)]: paletteOpacity,
-					[getAttributeKey(
-						'background-svg-color',
-						isHover,
-						false,
-						breakpoint
-					)]: color,
+					bsvSVGData: SVGData,
+					[getAttributeKey('bsv_ps', isHover, false, breakpoint)]:
+						paletteStatus,
+					[getAttributeKey('bsv_pc', isHover, false, breakpoint)]:
+						paletteColor,
+					[getAttributeKey('bsv_po', isHover, false, breakpoint)]:
+						paletteOpacity,
+					[getAttributeKey('bsv_cc', isHover, false, breakpoint)]:
+						color,
 				});
 			}}
 			isHover={isHover}
@@ -127,13 +111,12 @@ const SVGFillControl = props => {
 	const classes = classnames('maxi-svg-fill-control', className);
 
 	const SVGElement = getAttributesValue({
-		target: 'background-svg-SVGElement',
+		target: 'bsv_se',
 		attributes: SVGOptions,
 	});
 
 	const SVGData = cloneDeep(
-		SVGOptions[getAttributeKey('background-svg-SVGData', isHover)] ||
-			SVGOptions['background-svg-SVGData']
+		SVGOptions[getAttributeKey('bsv_sd', isHover)] || SVGOptions.bsvSVGData
 	);
 
 	const bgImage = Object.values(SVGData)[0]?.imageURL;
@@ -178,26 +161,19 @@ const SVGFillControl = props => {
 						);
 
 						onChange({
-							[getAttributeKey(
-								'SVGElement',
-								false,
-								'background-svg-'
-							)]: resEl.outerHTML,
-							[getAttributeKey(
-								'SVGData',
-								false,
-								'background-svg-'
-							)]: tempSVGData,
-							[getAttributeKey('_pc', false, 'background-svg-')]:
+							[getAttributeKey('_se', false, 'bsv')]:
+								resEl.outerHTML,
+							[getAttributeKey('_sd', false, 'bsv')]: tempSVGData,
+							[getAttributeKey('_pc', false, 'bsv')]:
 								getAttributesValue({
 									target: '_pc',
-									prefix: 'background-svg-',
+									prefix: 'bsv',
 									props: props.SVGOptions,
 								}),
-							[getAttributeKey('_ps', false, 'background-svg-')]:
+							[getAttributeKey('_ps', false, 'bsv')]:
 								getAttributesValue({
 									target: '_ps',
-									prefix: 'background-svg-',
+									prefix: 'bsv',
 									props: props.SVGOptions,
 								}),
 						});
@@ -232,34 +208,22 @@ const SVGFillControl = props => {
 									);
 
 									onChange({
-										[getAttributeKey(
-											'SVGElement',
-											false,
-											'background-svg-'
-										)]: resEl.outerHTML,
-										[getAttributeKey(
-											'SVGData',
-											false,
-											'background-svg-'
-										)]: SVGData,
-										[getAttributeKey(
-											'_pc',
-											false,
-											'background-svg-'
-										)]: getAttributesValue({
-											target: '_pc',
-											prefix: 'background-svg-',
-											props: props.SVGOptions,
-										}),
-										[getAttributeKey(
-											'_ps',
-											false,
-											'background-svg-'
-										)]: getAttributesValue({
-											target: '_ps',
-											prefix: 'background-svg-',
-											props: props.SVGOptions,
-										}),
+										[getAttributeKey('_se', false, 'bsv')]:
+											resEl.outerHTML,
+										[getAttributeKey('_sd', false, 'bsv')]:
+											SVGData,
+										[getAttributeKey('_pc', false, 'bsv')]:
+											getAttributesValue({
+												target: '_pc',
+												prefix: 'bsv',
+												props: props.SVGOptions,
+											}),
+										[getAttributeKey('_ps', false, 'bsv')]:
+											getAttributesValue({
+												target: '_ps',
+												prefix: 'bsv',
+												props: props.SVGOptions,
+											}),
 									});
 								}}
 								onRemoveImage={() => {
@@ -273,34 +237,22 @@ const SVGFillControl = props => {
 									);
 
 									onChange({
-										[getAttributeKey(
-											'SVGElement',
-											false,
-											'background-svg-'
-										)]: resEl.outerHTML,
-										[getAttributeKey(
-											'SVGData',
-											false,
-											'background-svg-'
-										)]: SVGData,
-										[getAttributeKey(
-											'_pc',
-											false,
-											'background-svg-'
-										)]: getAttributesValue({
-											target: '_pc',
-											prefix: 'background-svg-',
-											props: props.SVGOptions,
-										}),
-										[getAttributeKey(
-											'_ps',
-											false,
-											'background-svg-'
-										)]: getAttributesValue({
-											target: '_ps',
-											prefix: 'background-svg-',
-											props: props.SVGOptions,
-										}),
+										[getAttributeKey('_se', false, 'bsv')]:
+											resEl.outerHTML,
+										[getAttributeKey('_sd', false, 'bsv')]:
+											SVGData,
+										[getAttributeKey('_pc', false, 'bsv')]:
+											getAttributesValue({
+												target: '_pc',
+												prefix: 'bsv',
+												props: props.SVGOptions,
+											}),
+										[getAttributeKey('_ps', false, 'bsv')]:
+											getAttributesValue({
+												target: '_ps',
+												prefix: 'bsv',
+												props: props.SVGOptions,
+											}),
 									});
 								}}
 							/>
@@ -309,10 +261,9 @@ const SVGFillControl = props => {
 							<ImageShape
 								{...SVGOptions}
 								onChange={obj => {
-									['SVGElement', 'SVGData'].forEach(el => {
+									['_se', '_sd'].forEach(el => {
 										if (el in obj) {
-											obj[`background-svg-${el}`] =
-												obj[el];
+											obj[`bsv${el}`] = obj[el];
 
 											delete obj[el];
 										}
@@ -322,7 +273,7 @@ const SVGFillControl = props => {
 								}}
 								icon={SVGElement}
 								breakpoint={breakpoint}
-								prefix='background-svg-'
+								prefix='bsv'
 								disableModal
 							/>
 						)}

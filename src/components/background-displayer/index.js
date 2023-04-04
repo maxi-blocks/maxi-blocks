@@ -26,11 +26,10 @@ import './style.scss';
  */
 const BackgroundContent = props => {
 	const { wrapperRef, prefix = '' } = props;
-	const { b_ly: backgroundLayers, 'b_ly.h': backgroundLayersHover } =
-		getAttributesValue({
-			target: ['b_ly', 'b_ly.h'],
-			props,
-		});
+	const [backgroundLayers, backgroundLayersHover] = getAttributesValue({
+		target: ['b_ly', 'b_ly.h'],
+		props,
+	});
 
 	const layers = compact([...backgroundLayers, ...backgroundLayersHover]);
 
@@ -58,7 +57,7 @@ const BackgroundContent = props => {
 					);
 				case 'image': {
 					const parallaxStatus = getAttributesValue({
-						target: 'background-image-parallax-status',
+						target: 'bi_pa.s',
 						props: layer,
 						prefix,
 					});
@@ -77,17 +76,17 @@ const BackgroundContent = props => {
 						);
 
 					const mediaURL = getAttributesValue({
-						target: 'background-image-mediaURL',
+						target: 'bi_mu',
 						props: layer,
 						prefix,
 					});
 					const mediaID = getAttributesValue({
-						target: 'background-image-mediaID',
+						target: 'bi_mi',
 						props: layer,
 						prefix,
 					});
 					const alt = getAttributesValue({
-						target: 'background-image-parallax-alt',
+						target: 'bi_pal',
 						props: layer,
 						prefix,
 					});
@@ -125,7 +124,7 @@ const BackgroundContent = props => {
 						/>
 					);
 				case 'shape': {
-					const svg = layer['background-svg-SVGElement'];
+					const svg = layer.bs_se;
 
 					return (
 						<RawHTML
@@ -152,11 +151,10 @@ const BackgroundContent = props => {
 const BackgroundDisplayer = props => {
 	const { className, isSave = false } = props;
 
-	const { b_ly: backgroundLayers, 'b_ly.h': backgroundLayersHover } =
-		getAttributesValue({
-			target: ['b_ly', 'b_ly.h'],
-			props,
-		});
+	const [backgroundLayers, backgroundLayersHover] = getAttributesValue({
+		target: ['b_ly', 'b_ly.h'],
+		props,
+	});
 
 	const haveLayers =
 		!isEmpty(backgroundLayers) || !isEmpty(backgroundLayersHover);

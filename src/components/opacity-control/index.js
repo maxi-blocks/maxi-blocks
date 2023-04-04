@@ -38,7 +38,7 @@ const OpacityControl = props => {
 	} = props;
 
 	const getOpacityAttributeKey = () =>
-		getAttributeKey('opacity', isHover, prefix, breakpoint);
+		getAttributeKey('_o', isHover, prefix, breakpoint);
 
 	const classes = classnames('maxi-opacity-control', className);
 

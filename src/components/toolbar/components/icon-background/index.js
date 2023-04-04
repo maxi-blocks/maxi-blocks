@@ -90,7 +90,7 @@ const IconBackground = props => {
 							isHover,
 						})}
 						color={getLastBreakpointAttribute({
-							target: 'icon-background-color',
+							target: 'icon-background-color-custom-color',
 							breakpoint,
 							attributes: props,
 							isHover,
@@ -133,7 +133,7 @@ const IconBackground = props => {
 										breakpoint
 									)]: paletteOpacity,
 									[getAttributeKey(
-										'background-color',
+										'bc_cc',
 										isHover,
 										'icon-',
 										breakpoint

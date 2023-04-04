@@ -249,7 +249,7 @@ const Inspector = props => {
 										disableVideo: true,
 										disableClipPath: true,
 										disableSVG: true,
-										prefix: 'button-',
+										prefix: 'bt-',
 										globalProps: {
 											target: 'background',
 											type: 'button',
@@ -263,7 +263,7 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.border({
 										props,
-										prefix: 'button-',
+										prefix: 'bt-',
 										globalProps: {
 											target: 'border',
 											type: 'button',
@@ -275,15 +275,15 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.boxShadow({
 										props,
-										prefix: 'button-',
+										prefix: 'bt-',
 									}),
 									...inspectorTabs.size({
 										props,
-										prefix: 'button-',
+										prefix: 'bt-',
 									}),
 									...inspectorTabs.marginPadding({
 										props,
-										prefix: 'button-',
+										prefix: 'bt-',
 									}),
 								]}
 							/>

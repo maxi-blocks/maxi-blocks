@@ -2,7 +2,10 @@
  * Internal dependencies
  */
 import { ArrowDisplayer } from '../../components';
-import { getGroupAttributes } from '../../extensions/attributes';
+import {
+	getAttributesValue,
+	getGroupAttributes,
+} from '../../extensions/attributes';
 import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
 
 /**
@@ -10,6 +13,10 @@ import { MaxiBlock, getMaxiBlockAttributes } from '../../components/maxi-block';
  */
 const save = props => {
 	const { attributes } = props;
+	const uniqueID = getAttributesValue({
+		target: '_uid',
+		props: attributes,
+	});
 
 	const name = 'maxi-blocks/group-maxi';
 
@@ -19,7 +26,7 @@ const save = props => {
 			useInnerBlocks
 		>
 			<ArrowDisplayer
-				key={`maxi-arrow-displayer__${attributes.uniqueID}`}
+				key={`maxi-arrow-displayer__${uniqueID}`}
 				{...getGroupAttributes(
 					attributes,
 					['blockBackground', 'arrow', 'border'],

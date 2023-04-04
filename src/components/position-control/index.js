@@ -58,15 +58,15 @@ const PositionControl = props => {
 
 	const getCleanOptions = () => {
 		return [
-			'top',
-			'right',
-			'bottom',
-			'left',
-			'sync',
-			'top-unit',
-			'right-unit',
-			'bottom-unit',
-			'left-unit',
+			'.t',
+			'.r',
+			'.b',
+			'.l',
+			'.s',
+			'.t-u',
+			'.r-u',
+			'.b-u',
+			'.l-u',
 		].reduce((acc, key) => {
 			const attrLabel = getAttributeKey(
 				`_pos${key}`,
@@ -113,9 +113,10 @@ const PositionControl = props => {
 						]}
 						value={
 							getLastBreakpointAttribute({
-								target: `${prefix}_pos`,
+								target: '_pos',
 								breakpoint,
 								attributes: props,
+								prefix,
 							}) || ''
 						}
 						defaultValue={getDefaultAttribute(

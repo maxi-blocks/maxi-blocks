@@ -19,10 +19,11 @@ const getPaletteAttributes = ({ obj, prefix = '', breakpoint, isHover }) => {
 					isHover,
 			  })
 			: getLastBreakpointAttribute({
-					target: `${prefix}${key}`,
+					target: key,
 					breakpoint,
 					attributes: obj,
 					isHover,
+					prefix,
 			  });
 
 	return {

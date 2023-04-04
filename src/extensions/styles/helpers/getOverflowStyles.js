@@ -18,12 +18,12 @@ const getOverflowStyles = obj => {
 
 	breakpoints.forEach(breakpoint => {
 		const overflowX = getLastBreakpointAttribute({
-			target: 'overflow-x',
+			target: '_ox',
 			breakpoint,
 			attributes: obj,
 		});
 		const overflowY = getLastBreakpointAttribute({
-			target: 'overflow-y',
+			target: '_oy',
 			breakpoint,
 			attributes: obj,
 		});

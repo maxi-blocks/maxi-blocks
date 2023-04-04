@@ -27,35 +27,35 @@ const getFlexStyles = obj => {
 			)
 		) {
 			flexBasis = `${flexBasis}${getLastBreakpointAttribute({
-				target: 'flex-basis-unit',
+				target: '_fb.u',
 				breakpoint,
 				attributes: obj,
 			})}`;
 		}
 
-		const {
-			'flex-grow': flexGrow,
-			'flex-shrink': flexShrink,
-			'flex-wrap': flexWrap,
-			order: flexOrder,
-			'justify-content': justifyContent,
-			'flex-direction': flexDirection,
-			'align-items': alignItems,
-			'align-content': alignContent,
-			'row-gap': rowGapProps,
-			'column-gap': columnGap,
-		} = getLastBreakpointAttribute({
+		const [
+			flexGrow,
+			flexShrink,
+			flexWrap,
+			flexOrder,
+			justifyContent,
+			flexDirection,
+			alignItems,
+			alignContent,
+			rowGapProps,
+			columnGap,
+		] = getLastBreakpointAttribute({
 			target: [
-				'flex-grow',
-				'flex-shrink',
-				'flex-wrap',
-				'order',
-				'justify-content',
-				'flex-direction',
-				'align-items',
-				'align-content',
-				'row-gap',
-				'column-gap',
+				'_fg',
+				'_fls',
+				'_flw',
+				'_or',
+				'_jc',
+				'_fd',
+				'_ai',
+				'_ac',
+				'_rg',
+				'_cg',
 			],
 			breakpoint,
 			attributes: obj,
@@ -87,14 +87,14 @@ const getFlexStyles = obj => {
 			}),
 			...(!isNil(rowGapProps) && {
 				'row-gap': `${rowGapProps}${getLastBreakpointAttribute({
-					target: 'row-gap-unit',
+					target: '_rg.u',
 					breakpoint,
 					attributes: obj,
 				})}`,
 			}),
 			...(!isNil(columnGap) && {
 				'column-gap': `${columnGap}${getLastBreakpointAttribute({
-					target: 'column-gap-unit',
+					target: '_cg.u',
 					breakpoint,
 					attributes: obj,
 				})}`,

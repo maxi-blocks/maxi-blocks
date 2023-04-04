@@ -25,11 +25,11 @@ export const setBreakpointToLayer = ({
 		'background-video-loop',
 		'background-svg-SVGElement',
 		'background-svg-SVGData',
-		'background-image-mediaURL',
-		'background-image-mediaID',
-		'background-image-parallax-status',
-		'background-image-parallax-speed',
-		'background-image-parallax-direction',
+		'bi_mu',
+		'bi_mi',
+		'bi_pa.s',
+		'bi_psp',
+		'bi_pd',
 	];
 
 	Object.entries(layer).forEach(([key, val]) => {
@@ -53,8 +53,8 @@ export const setBreakpointToLayer = ({
 			}
 		} else response[key] = val;
 
-		if (key === 'd-' && (isHover || breakpoint !== 'general'))
-			response[getAttributeKey('d-', false, false, 'general')] = 'none';
+		if (key === '_d' && (isHover || breakpoint !== 'general'))
+			response[getAttributeKey('_d', false, false, 'general')] = 'none';
 
 		response.isHover = isHover;
 	});

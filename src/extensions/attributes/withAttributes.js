@@ -84,7 +84,7 @@ const withAttributes = createHigherOrderComponent(
 
 			// RTL
 			const textAlignmentLabel = getAttributeKey(
-				'text-alignment',
+				'_ta',
 				false,
 				false,
 				'general'

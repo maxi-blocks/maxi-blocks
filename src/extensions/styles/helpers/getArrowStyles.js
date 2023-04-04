@@ -12,6 +12,7 @@ import getPaletteAttributes from '../../attributes/getPaletteAttributes';
  */
 import { isNil, isEmpty, isNumber } from 'lodash';
 import getAttributesValue from '../../attributes/getAttributesValue';
+import { radiusAxisDictionary } from '../../attributes/constants';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -24,7 +25,7 @@ export const getArrowObject = props => {
 
 		const [arrowStatus, arrowWidth, arrowSide, arrowPosition] =
 			getLastBreakpointAttribute({
-				target: ['a.s', 'a.w', 'a.sid', 'a.pos'],
+				target: ['ar.s', 'ar_w', 'ar_sid', 'ar_pos'],
 				breakpoint,
 				attributes: props,
 			});
@@ -75,27 +76,26 @@ export const getArrowBorder = (props, isHover) => {
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 		const borderRadiusUnit = getLastBreakpointAttribute({
-			target: 'border-radius-unit',
+			target: 'bo.ra.u',
 			breakpoint,
 			attributes: props,
 			isHover,
 		});
 
-		['top-left', 'top-right', 'bottom-left', 'bottom-right'].forEach(
-			target => {
-				const val = getLastBreakpointAttribute({
-					target: `border-radius-${target}`,
-					breakpoint,
-					attributes: props,
-					isHover,
-				});
+		Object.entries(radiusAxisDictionary).forEach(([axis, target]) => {
+			const val = getLastBreakpointAttribute({
+				target: axis,
+				breakpoint,
+				attributes: props,
+				isHover,
+				prefix: 'bo.ra',
+			});
 
-				if (isNumber(val))
-					response[breakpoint][
-						`border-${target}-radius`
-					] = `${val}${borderRadiusUnit}`;
-			}
-		);
+			if (isNumber(val))
+				response[breakpoint][
+					`border-${target}-radius`
+				] = `${val}${borderRadiusUnit}`;
+		});
 	});
 
 	return response;
@@ -122,7 +122,7 @@ export const getArrowColorObject = (
 		const { paletteStatus, paletteColor, paletteOpacity, color } =
 			getPaletteAttributes({
 				obj: layer,
-				prefix: 'background-',
+				prefix: 'bc',
 				isHover,
 				breakpoint,
 			});
@@ -145,7 +145,7 @@ const getArrowStyles = props => {
 	// Checks if border is active on some responsive stage
 	const isBorderActive = breakpoints.some(breakpoint => {
 		const borderStyle = getLastBreakpointAttribute({
-			target: 'border-style',
+			target: 'bo_s',
 			breakpoint,
 			attributes: props,
 			isHover,
@@ -157,7 +157,7 @@ const getArrowStyles = props => {
 	// Checks if all border styles are 'solid' or 'none'
 	const isCorrectBorder = breakpoints.every(breakpoint => {
 		const borderStyle = getAttributesValue({
-			target: 'border-style',
+			target: 'bo_s',
 			breakpoint,
 			props,
 		});
@@ -189,7 +189,7 @@ const getArrowStyles = props => {
 	// Checks if arrow is active on some responsive stage
 	const arrowStatus = breakpoints.some(breakpoint => {
 		const arrowStatus = getLastBreakpointAttribute({
-			target: 'a.s',
+			target: 'ar.s',
 			breakpoint,
 			attributes: props,
 			isHover,

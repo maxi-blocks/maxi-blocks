@@ -58,9 +58,9 @@ registerBlockType('maxi-blocks/group-maxi', {
 	},
 	edit: withMaxiLoader(edit),
 	save,
-	deprecated: blockMigrator({
-		attributes,
-		save,
-		selectors: customCss.selectors,
-	}),
+	// deprecated: blockMigrator({
+	// 	attributes,
+	// 	save,
+	// 	selectors: customCss.selectors,
+	// }),
 });

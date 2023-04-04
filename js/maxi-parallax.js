@@ -212,8 +212,8 @@ parallaxElements.forEach(elem => {
 			parallaxData.bgParallaxLayers.forEach(layer => {
 				const {
 					id,
-					'background-image-parallax-speed': parallaxSpeed,
-					'background-image-parallax-direction': parallaxDirection,
+					bi_psp: parallaxSpeed,
+					bi_pd: parallaxDirection,
 				} = layer;
 
 				const parallaxElem = document.querySelector(

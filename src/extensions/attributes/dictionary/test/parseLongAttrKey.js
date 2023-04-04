@@ -28,6 +28,7 @@ describe('parseLongAttrKey', () => {
 			'active-icon-width-fit-content-general': 'a-i_wfc-general',
 			'active-icon-background-gradient-content-general':
 				'a-i-bg_c-general',
+			'background-video-opacity-general': 'bv_o-general',
 		};
 
 		Object.entries(attributes).forEach(([key, value]) => {

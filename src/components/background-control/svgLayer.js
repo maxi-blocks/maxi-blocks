@@ -30,8 +30,9 @@ const SVGLayer = props => {
 	const isLayerHover = SVGOptions.isHover;
 
 	const SVGElement = getAttributesValue({
-		target: `${prefix}background-svg-SVGElement`,
+		target: 'bsv_se',
 		props: SVGOptions,
+		prefix,
 	});
 
 	return (
@@ -43,18 +44,10 @@ const SVGLayer = props => {
 					onRemove={obj => {
 						if (layerOrder) {
 							delete SVGOptions[
-								getAttributeKey(
-									'background-svg-SVGElement',
-									false,
-									prefix
-								)
+								getAttributeKey('bsv_se', false, prefix)
 							];
 							delete SVGOptions[
-								getAttributeKey(
-									'background-svg-SVGData',
-									false,
-									prefix
-								)
+								getAttributeKey('bsv_sd', false, prefix)
 							];
 						}
 						onChange({ ...SVGOptions, ...obj });

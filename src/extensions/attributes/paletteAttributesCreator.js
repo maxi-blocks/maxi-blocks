@@ -1,9 +1,14 @@
 /**
+ * Internal dependencies
+ */
+import getCleanKey from './getCleanKey';
+
+/**
  * External dependencies
  */
 import { isNumber, isString } from 'lodash';
 
-const getLabel = (prefix, suffix) => `${prefix}${suffix}`.replace('-_', '_');
+const getLabel = (prefix, suffix) => getCleanKey(`${prefix}${suffix}`);
 
 const paletteAttributesCreator = ({
 	prefix = '',
@@ -16,17 +21,17 @@ const paletteAttributesCreator = ({
 	[getLabel(prefix, '_ps')]: {
 		type: 'boolean',
 		default: status ?? true,
-		longLabel: `${longPrefix}palette-status`,
+		longLabel: `${longPrefix}_ps`,
 	},
 	[getLabel(prefix, '_pc')]: {
 		type: 'number',
 		...(isNumber(palette) && { default: palette }),
-		longLabel: `${longPrefix}palette-color`,
+		longLabel: `${longPrefix}_pc`,
 	},
 	[getLabel(prefix, '_po')]: {
 		type: 'number',
 		...(isNumber(opacity) && { default: opacity }),
-		longLabel: `${longPrefix}palette-opacity`,
+		longLabel: `${longPrefix}_po`,
 	},
 	[getLabel(prefix, '_cc')]: {
 		type: 'string',

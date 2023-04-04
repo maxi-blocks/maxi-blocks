@@ -44,7 +44,7 @@ const getBoxShadowStyles = ({
 				target,
 				props: obj,
 				isHover,
-				prefix: `${prefix}box-shadow-`,
+				prefix: `${prefix}bs`,
 				breakpoint,
 			});
 
@@ -52,14 +52,14 @@ const getBoxShadowStyles = ({
 				breakpoint === 'general'
 					? getDefaultAttribute(
 							getAttributeKey(
-								`box-shadow-${target}`,
+								`bs${target}`,
 								false,
 								prefix,
 								breakpoint
 							)
 					  )
 					: getLastBreakpointAttribute({
-							target: `${prefix}box-shadow-${target}`,
+							target: `${prefix}bs${target}`,
 							breakpoint: getPrevBreakpoint(breakpoint),
 							attributes: obj,
 							isHover,
@@ -72,18 +72,18 @@ const getBoxShadowStyles = ({
 		};
 
 		const SVGElement = getAttributesValue({
-			target: 'SVGElement',
+			target: '_se',
 			props: obj,
 		});
 
 		const clipPathExists =
 			(getLastBreakpointAttribute({
-				target: 'clip-path',
+				target: '_cp',
 				breakpoint,
 				attributes: obj,
 			}) &&
 				getLastBreakpointAttribute({
-					target: 'clip-path-status',
+					target: '_cp.s',
 					breakpoint,
 					attributes: obj,
 				})) ||
@@ -93,50 +93,49 @@ const getBoxShadowStyles = ({
 			breakpoint === 'general'
 				? false
 				: (getLastBreakpointAttribute({
-						target: 'clip-path',
+						target: '_cp',
 						breakpoint: getPrevBreakpoint(breakpoint),
 						attributes: obj,
 				  }) &&
 						getLastBreakpointAttribute({
-							target: 'clip-path-status',
+							target: '_cp.s',
 							breakpoint: getPrevBreakpoint(breakpoint),
 							attributes: obj,
 						})) ||
 				  !isEmpty(SVGElement);
 
 		// Inset
-		const { value: inset, defaultValue: defaultInset } = getValue('inset');
+		const { value: inset, defaultValue: defaultInset } = getValue('_in');
 
 		// Horizontal
 		const { value: horizontal, defaultValue: defaultHorizontal } =
-			getValue('horizontal');
+			getValue('_ho');
 
 		// Vertical
 		const { value: vertical, defaultValue: defaultVertical } =
-			getValue('vertical');
+			getValue('_v');
 
 		// Blur
-		const { value: blur, defaultValue: defaultBlur } = getValue('blur');
+		const { value: blur, defaultValue: defaultBlur } = getValue('_blu');
 
 		// Spread
-		const { value: spread, defaultValue: defaultSpread } =
-			getValue('spread');
+		const { value: spread, defaultValue: defaultSpread } = getValue('_sp');
 
 		// Horizontal Unit
 		const { value: horizontalUnit, defaultValue: defaultHorizontalUnit } =
-			getValue('horizontal-unit');
+			getValue('_ho.u');
 
 		// Vertical Unit
 		const { value: verticalUnit, defaultValue: defaultVerticalUnit } =
-			getValue('vertical-unit');
+			getValue('_v.u');
 
 		// Blur Unit
 		const { value: blurUnit, defaultValue: defaultBlurUnit } =
-			getValue('blur-unit');
+			getValue('_blu.u');
 
 		// Spread Unit
 		const { value: spreadUnit, defaultValue: defaultSpreadUnit } =
-			getValue('spread-unit');
+			getValue('_sp.u');
 
 		// Palette
 		const paletteStatus = getLastBreakpointAttribute({

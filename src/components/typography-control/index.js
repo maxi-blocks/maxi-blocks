@@ -577,9 +577,7 @@ const TypographyControl = props => {
 						color={getValue('_cc')}
 						prefix={prefix}
 						paletteColor={getValue('_pc')}
-						paletteOpacity={getOpacityValue(
-							`${prefix}palette-opacity`
-						)}
+						paletteOpacity={getOpacityValue(`${prefix}_po`)}
 						paletteStatus={getValue('_ps')}
 						onChangeInline={({ color }) =>
 							onChangeInlineValue({ color })

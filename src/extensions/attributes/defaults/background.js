@@ -239,8 +239,8 @@ export const rawBackgroundVideo = {
 		longLabel: 'background-video-playOnMobile',
 	},
 	...prefixAttributesCreator({
-		prefix: 'bi-',
-		longPrefix: 'background-image-',
+		prefix: 'bv-',
+		longPrefix: 'background-video-',
 		obj: rawBgOpacity,
 	}),
 	bv_rb: {

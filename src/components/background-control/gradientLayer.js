@@ -41,7 +41,7 @@ const GradientLayerContent = props => {
 				{...gradientOptions}
 				label={__('Background gradient', 'maxi-blocks')}
 				breakpoint={breakpoint}
-				prefix={`${prefix}background-`}
+				prefix={`${prefix}bg`}
 				isHover={isHover}
 				onChange={onChange}
 			/>
@@ -52,12 +52,12 @@ const GradientLayerContent = props => {
 						props,
 						'clipPath',
 						false,
-						`${prefix}background-gradient-`
+						`${prefix}bg`
 					)}
 					{...gradientOptions}
 					isHover={isHover}
 					isIB={isIB}
-					prefix={`${prefix}background-gradient-`}
+					prefix={`${prefix}bg`}
 					breakpoint={breakpoint}
 					isLayer
 					disableRTC

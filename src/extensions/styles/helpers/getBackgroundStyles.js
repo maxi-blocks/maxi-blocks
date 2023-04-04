@@ -23,6 +23,8 @@ import {
 	round,
 	toNumber,
 } from 'lodash';
+import getAttributeKey from '../../attributes/getAttributeKey';
+import { axisDictionary, sizeDictionary } from '../../attributes/constants';
 
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -43,21 +45,15 @@ export const getColorBackgroundObject = ({
 	backgroundColorProperty = 'background-color',
 	...props
 }) => {
-	const {
-		[`${prefix}background-status-hover`]: hoverStatus,
-		'background-active-media': backgroundActiveMedia,
-	} = getAttributesValue({
-		target: [`${prefix}background-status-hover`, 'background-active-media'],
+	const hoverStatus = getAttributesValue({
+		target: 'b.sh',
 		props,
 	});
 
 	const {
 		'hover-background-color-global': isActive,
 		'hover-background-color-all': affectAll,
-	} = getAttributesValue({
-		target: ['hover-background-color-global', 'hover-background-color-all'],
-		props: scValues,
-	});
+	} = scValues;
 	const globalHoverStatus = isActive && affectAll;
 
 	if (isHover && !isNil(hoverStatus) && !hoverStatus && !globalHoverStatus)
@@ -68,22 +64,21 @@ export const getColorBackgroundObject = ({
 		[breakpoint]: {},
 	};
 
+	const backgroundActiveMedia = getAttributesValue({
+		target: 'b_am',
+		props,
+	});
+
 	const { paletteStatus, paletteColor, paletteOpacity, color } =
 		getPaletteAttributes({
 			obj: props,
-			prefix: `${prefix}background-color-`,
+			prefix: getAttributeKey('bc', false, prefix),
 			isHover,
 			breakpoint,
 		});
 
-	const {
-		[`${prefix}background-color-clip-path`]: bgClipPath,
-		[`${prefix}background-color-clip-path-status`]: isBgColorClipPathActive,
-	} = getLastBreakpointAttribute({
-		target: [
-			'background-color-clip-path',
-			'background-color-clip-path-status',
-		],
+	const [bgClipPath, isBgColorClipPathActive] = getLastBreakpointAttribute({
+		target: ['bc_cp', 'bc_cp.s'],
 		breakpoint,
 		attributes: props,
 		isHover,
@@ -141,7 +136,7 @@ export const getColorBackgroundObject = ({
 
 		const { paletteColor, paletteOpacity, color } = getPaletteAttributes({
 			obj: props,
-			prefix: 'button-background-',
+			prefix: 'bt-b',
 			isHover,
 			breakpoint,
 		});
@@ -181,20 +176,19 @@ export const getGradientBackgroundObject = ({
 		[breakpoint]: {},
 	};
 
-	const {
-		[`${prefix}background-gradient-opacity`]: bgGradientOpacity,
-		[`${prefix}background-gradient-content`]: bgGradient,
-		[`${prefix}background-gradient-clip-path`]: bgGradientClipPath,
-		[`${prefix}background-gradient-clip-path-status`]:
-			isBgGradientClipPathActive,
-		[`${prefix}background-active-media`]: backgroundActiveMedia,
-	} = getLastBreakpointAttribute({
+	const [
+		bgGradientOpacity,
+		bgGradient,
+		bgGradientClipPath,
+		isBgGradientClipPathActive,
+		backgroundActiveMedia,
+	] = getLastBreakpointAttribute({
 		target: [
-			`${prefix}background-gradient-opacity`,
-			`${prefix}background-gradient-content`,
-			`${prefix}background-gradient-clip-path`,
-			`${prefix}background-gradient-clip-path-status`,
-			`${prefix}background-active-media`,
+			`${prefix}bg_o`,
+			`${prefix}bg_c`,
+			`${prefix}bg_cp`,
+			`${prefix}bg_cp.s`,
+			`${prefix}b_am`,
 		],
 		breakpoint,
 		attributes: props,
@@ -284,7 +278,7 @@ export const getImageBackgroundObject = ({
 	};
 
 	const bgImageUrl = getAttributesValue({
-		target: 'background-image-mediaURL',
+		target: 'bi_mu',
 		props,
 		prefix,
 	});
@@ -308,37 +302,33 @@ export const getImageBackgroundObject = ({
 		});
 
 	const bgImageSize = getLastBreakpointAttribute({
-		target: `${prefix}background-image-size`,
+		target: `${prefix}bi_si`,
 		breakpoint,
 		attributes: props,
 		isHover,
 	});
-	const bgImageCropOptions = getBgImageAttributeValue(
-		'background-image-crop-options'
-	);
-	const bgImageRepeat = getBgImageAttributeValue('background-image-repeat');
+	const bgImageCropOptions = getBgImageAttributeValue('bi_co');
+	const bgImageRepeat = getBgImageAttributeValue('bi_re');
 	const bgImagePosition = getLastBreakpointAttribute({
-		target: `${prefix}background-image-position`,
+		target: `${prefix}bi_pos`,
 		breakpoint,
 		attributes: props,
 		isHover,
 	});
-	const bgImageOrigin = getBgImageAttributeValue('background-image-origin');
-	const bgImageClip = getBgImageAttributeValue('background-image-clip');
-	const bgImageAttachment = getBgImageAttributeValue(
-		'background-image-attachment'
-	);
-	const bgImageOpacity = getBgImageAttributeValue('background-image-opacity');
+	const bgImageOrigin = getBgImageAttributeValue('bi_ori');
+	const bgImageClip = getBgImageAttributeValue('bi_clp');
+	const bgImageAttachment = getBgImageAttributeValue('bi_at');
+	const bgImageOpacity = getBgImageAttributeValue('bi_o');
 
 	const bgImageClipPath = getLastBreakpointAttribute({
-		target: `${prefix}background-image-clip-path`,
+		target: `${prefix}bi_cp`,
 		breakpoint,
 		attributes: props,
 		isHover,
 	});
 
 	const isBGImageClipPathActive = getLastBreakpointAttribute({
-		target: `${prefix}background-image-clip-path-status`,
+		target: `${prefix}bi_cp.s`,
 		breakpoint,
 		attributes: props,
 		isHover,
@@ -382,18 +372,14 @@ export const getImageBackgroundObject = ({
 		if (bgImagePosition !== 'custom')
 			response[breakpoint]['background-position'] = bgImagePosition;
 		else {
-			const bgImagePositionWidth = getBgImageLastBreakpointAttribute(
-				'background-image-position-width'
-			);
-			const bgImagePositionWidthUnit = getBgImageLastBreakpointAttribute(
-				'background-image-position-width-unit'
-			);
-			const bgImagePositionHeight = getBgImageLastBreakpointAttribute(
-				'background-image-position-height'
-			);
-			const bgImagePositionHeightUnit = getBgImageLastBreakpointAttribute(
-				'background-image-position-height-unit'
-			);
+			const bgImagePositionWidth =
+				getBgImageLastBreakpointAttribute('bi_pos_w');
+			const bgImagePositionWidthUnit =
+				getBgImageLastBreakpointAttribute('bi_pos_w.u');
+			const bgImagePositionHeight =
+				getBgImageLastBreakpointAttribute('bi_pos_h');
+			const bgImagePositionHeightUnit =
+				getBgImageLastBreakpointAttribute('bi_pos_h.u');
 			response[breakpoint][
 				'background-position'
 			] = `${bgImagePositionWidth}${bgImagePositionWidthUnit} ${bgImagePositionHeight}${bgImagePositionHeightUnit}`;
@@ -425,18 +411,14 @@ export const getImageBackgroundObject = ({
 		if (bgImagePosition !== 'custom')
 			response[breakpoint]['object-position'] = bgImagePosition;
 		else {
-			const bgImagePositionWidth = getBgImageLastBreakpointAttribute(
-				'background-image-position-width'
-			);
-			const bgImagePositionWidthUnit = getBgImageLastBreakpointAttribute(
-				'background-image-position-width-unit'
-			);
-			const bgImagePositionHeight = getBgImageLastBreakpointAttribute(
-				'background-image-position-height'
-			);
-			const bgImagePositionHeightUnit = getBgImageLastBreakpointAttribute(
-				'background-image-position-height-unit'
-			);
+			const bgImagePositionWidth =
+				getBgImageLastBreakpointAttribute('bi_pos_w');
+			const bgImagePositionWidthUnit =
+				getBgImageLastBreakpointAttribute('bi_pos_w.u');
+			const bgImagePositionHeight =
+				getBgImageLastBreakpointAttribute('bi_pos_h');
+			const bgImagePositionHeightUnit =
+				getBgImageLastBreakpointAttribute('bi_pos_h.u');
 			response[breakpoint][
 				'object-position'
 			] = `${bgImagePositionWidth}${bgImagePositionWidthUnit} ${bgImagePositionHeight}${bgImagePositionHeightUnit}`;
@@ -449,10 +431,7 @@ export const getImageBackgroundObject = ({
 
 		// To avoid image blinking on opacity hover
 		if (!isHover) {
-			const bgImageOpacityHover = getBgImageAttributeValue(
-				'background-image-opacity',
-				true
-			);
+			const bgImageOpacityHover = getBgImageAttributeValue('bi_o', true);
 
 			if (isNumber(bgImageOpacityHover))
 				response[breakpoint]['-webkit-transform'] =
@@ -480,21 +459,14 @@ export const getVideoBackgroundObject = ({
 		[breakpoint]: {},
 	};
 
-	const {
-		[`${prefix}background-video-opacity`]: bgVideoOpacity,
-		[`${prefix}background-video-clip-path`]: bgVideoClipPath,
-		[`${prefix}background-video-fallbackURL`]: bgVideoFallbackUrl,
-	} = getLastBreakpointAttribute({
-		target: [
-			'background-video-opacity',
-			'background-video-clip-path',
-			'background-video-fallbackURL',
-		],
-		breakpoint,
-		attributes: props,
-		isHover,
-		prefix,
-	});
+	const [bgVideoOpacity, bgVideoClipPath, bgVideoFallbackUrl] =
+		getLastBreakpointAttribute({
+			target: ['bv_o', 'bv_cp', 'bv_fu'],
+			breakpoint,
+			attributes: props,
+			isHover,
+			prefix,
+		});
 
 	// Opacity
 	if (isNumber(bgVideoOpacity)) response[breakpoint].opacity = bgVideoOpacity;
@@ -527,39 +499,41 @@ const getWrapperObject = ({
 
 	['_w', '_h'].forEach(size => {
 		const bgSize = getLastBreakpointAttribute({
-			target: `${prefix}${size}`,
+			target: size,
 			breakpoint,
 			attributes: props,
 			isHover,
+			prefix,
 		});
 
 		if (isNumber(bgSize)) {
 			const bgSVGSizeUnit = getLastBreakpointAttribute({
-				target: `${prefix}${size}.u`,
+				target: `${size}.u`,
 				breakpoint,
 				attributes: props,
 				isHover,
+				prefix,
 			});
 
-			response[breakpoint][size] = `${bgSize}${bgSVGSizeUnit}`;
+			response[breakpoint][
+				sizeDictionary[size]
+			] = `${bgSize}${bgSVGSizeUnit}`;
 		}
 	});
 
-	const keyWords = ['top', 'right', 'bottom', 'left'];
+	const axisWords = Object.keys(axisDictionary);
 
-	keyWords.forEach(keyWord => {
-		const {
-			[`${prefix}_pos${keyWord}`]: positionValue,
-			[`${prefix}_pos${keyWord}.u`]: positionUnit,
-		} = getLastBreakpointAttribute({
-			target: [`${prefix}_pos${keyWord}`, `${prefix}_pos${keyWord}.u`],
+	axisWords.forEach(axis => {
+		const [positionValue, positionUnit] = getLastBreakpointAttribute({
+			target: [`_pos${axis}`, `_pos${axis}.u`],
 			breakpoint,
 			attributes: props,
 			isHover,
+			prefix,
 		});
 
 		if (!isNil(positionValue) && !isNil(positionUnit)) {
-			response[breakpoint][keyWord] =
+			response[breakpoint][axisDictionary[axis]] =
 				positionValue === 'auto'
 					? 'auto'
 					: `${positionValue}${positionUnit}`;
@@ -583,7 +557,7 @@ const getSVGBackgroundObject = ({
 	const { paletteStatus, paletteColor, paletteOpacity, color } =
 		getPaletteAttributes({
 			obj: props,
-			prefix: 'background-svg-',
+			prefix: 'bsv',
 			isHover,
 			breakpoint,
 		});
@@ -628,7 +602,7 @@ const getBackgroundLayers = ({
 									isHover
 								),
 								breakpoint,
-								prefix: 'background-color-wrapper-',
+								prefix: 'bcw',
 								isHover,
 							}),
 							getColorBackgroundObject({
@@ -680,7 +654,7 @@ const getBackgroundLayers = ({
 									isHover
 								),
 								breakpoint,
-								prefix: 'background-gradient-wrapper-',
+								prefix: 'bgw',
 								isHover,
 							}),
 							getDisplayStyles(
@@ -699,7 +673,7 @@ const getBackgroundLayers = ({
 				break;
 			case 'image': {
 				const parallaxStatus = getAttributesValue({
-					target: 'background-image-parallax-status',
+					target: 'bi_pa.s',
 					props: layer,
 					prefix,
 				});
@@ -724,9 +698,8 @@ const getBackgroundLayers = ({
 												true
 											),
 											(value, key) =>
-												key.includes(
-													'background-image-opacity'
-												) && key.includes('-hover')
+												key.includes('bi_o') &&
+												key.includes('-hover')
 										)),
 									isHover,
 									prefix,
@@ -741,7 +714,7 @@ const getBackgroundLayers = ({
 										isHover
 									),
 									breakpoint,
-									prefix: 'background-image-wrapper-',
+									prefix: 'biw',
 									isHover,
 								}),
 								getDisplayStyles(
@@ -831,7 +804,7 @@ const getBackgroundLayers = ({
 									isHover
 								),
 								breakpoint,
-								prefix: 'background-video-wrapper-',
+								prefix: 'bvw',
 								isHover,
 							}),
 							getDisplayStyles(
@@ -861,7 +834,7 @@ const getBackgroundLayers = ({
 									isHover
 								),
 								breakpoint,
-								prefix: 'background-svg-',
+								prefix: 'bsv',
 								isHover,
 							}),
 							getDisplayStyles(
@@ -909,9 +882,9 @@ const getBackgroundLayers = ({
 										layer,
 										'imageShape',
 										false,
-										'background-svg-'
+										'bsv'
 									),
-									'background-svg-'
+									'bsv'
 								)
 							),
 						},
@@ -932,9 +905,9 @@ const getBackgroundLayers = ({
 											layer,
 											'imageShape',
 											false,
-											'background-svg-'
+											'bsv'
 										),
-										'background-svg-'
+										'bsv'
 									)
 								),
 							},
@@ -960,11 +933,12 @@ const getGeneralBackgroundStyles = (
 
 	const getBorderValue = (target, breakpoint, forceIsHover = null) => {
 		const lastValue = getLastBreakpointAttribute({
-			target: `border-width-${target}`,
+			target,
 			breakpoint,
 			attributes: props,
 			avoidXXL: !isHover,
 			isHover: forceIsHover ?? isHover,
+			prefix: 'bo_w',
 		});
 
 		return isNumber(lastValue) ? lastValue : 2;
@@ -984,12 +958,12 @@ const getGeneralBackgroundStyles = (
 			let widthRight;
 
 			const borderStyle = getAttributesValue({
-				target: 'border-style',
+				target: 'bo_s',
 				breakpoint,
 				props,
 			});
 			const borderStyleGeneral = getAttributesValue({
-				target: 'border-style',
+				target: 'bo_s',
 				breakpoint: 'general',
 				props,
 			});
@@ -998,15 +972,15 @@ const getGeneralBackgroundStyles = (
 				borderStyleGeneral !== 'none' &&
 				((borderStyle && borderStyle !== 'none') || borderStyleGeneral)
 			) {
-				widthTop = getBorderValue('top', breakpoint);
-				widthBottom = getBorderValue('bottom', breakpoint);
-				widthLeft = getBorderValue('left', breakpoint);
-				widthRight = getBorderValue('right', breakpoint);
+				widthTop = getBorderValue('.t', breakpoint);
+				widthBottom = getBorderValue('.b', breakpoint);
+				widthLeft = getBorderValue('.l', breakpoint);
+				widthRight = getBorderValue('.r', breakpoint);
 			}
 
 			const widthUnit =
 				getLastBreakpointAttribute({
-					target: 'border-width-unit',
+					target: 'bo_w.u',
 					breakpoint,
 					attributes: props,
 				}) || 'px';
@@ -1029,14 +1003,16 @@ const getGeneralBackgroundStyles = (
 							return null;
 						}
 					}
-					return { [target]: -round(width, 2) + widthUnit };
+					return {
+						[axisDictionary[target]]: -round(width, 2) + widthUnit,
+					};
 				};
 
 				size[breakpoint] = {
-					...getSize(widthTop, 'top'),
-					...getSize(widthBottom, 'bottom'),
-					...getSize(widthLeft, 'left'),
-					...getSize(widthRight, 'right'),
+					...getSize(widthTop, '.t'),
+					...getSize(widthBottom, '.b'),
+					...getSize(widthLeft, '.l'),
+					...getSize(widthRight, '.r'),
 				};
 			}
 		});
@@ -1111,7 +1087,7 @@ const getBasicResponseObject = ({
 		!isHover ||
 		(isHover &&
 			getAttributesValue({
-				target: 'border-status',
+				target: 'bo.s',
 				props,
 				isHover,
 				prefix,
@@ -1170,7 +1146,7 @@ export const getBlockBackgroundStyles = ({
 	if (
 		isHover &&
 		!getAttributesValue({
-			target: 'block-background-status',
+			target: 'bb.s',
 			props,
 			isHover,
 			prefix,
@@ -1232,7 +1208,7 @@ export const getBackgroundStyles = ({
 
 	BREAKPOINTS.forEach(breakpoint => {
 		const currentActiveMedia = getLastBreakpointAttribute({
-			target: `${prefix}background-active-media`,
+			target: `${prefix}b_am`,
 			breakpoint,
 			attributes: props,
 			isHover,

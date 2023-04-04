@@ -35,11 +35,12 @@ const getValueFromKeys = (value, keys) =>
  * normal attribute on hover requests when the hover attribute doesn't exist.
  */
 const getLastBreakpointAttributeSingle = (
-	target,
+	rawTarget,
 	breakpoint,
 	attributes,
 	isHover,
 	avoidXXL,
+	prefix,
 	keys
 ) => {
 	const { getBlockAttributes, getSelectedBlockClientId } = select(
@@ -52,13 +53,15 @@ const getLastBreakpointAttributeSingle = (
 	const attr = attributes || getBlockAttributes(getSelectedBlockClientId());
 
 	if (isNil(attr)) return false;
+
 	if (isNil(breakpoint))
 		return getValueFromKeys(
 			getAttributesValue({
-				target,
+				target: rawTarget,
 				props: attr,
 				isHover,
 				breakpoint,
+				prefix,
 			}),
 			keys
 		);
@@ -80,11 +83,12 @@ const getLastBreakpointAttributeSingle = (
 			(baseBreakpoint !== 'xxl' && currentBreakpoint !== baseBreakpoint))
 	) {
 		const baseBreakpointAttr = getLastBreakpointAttributeSingle(
-			target,
+			rawTarget,
 			baseBreakpoint,
 			attributes,
 			isHover,
 			avoidXXL,
+			prefix,
 			keys
 		);
 
@@ -93,11 +97,12 @@ const getLastBreakpointAttributeSingle = (
 
 	let currentAttr = getValueFromKeys(
 		getAttributesValue({
-			target,
+			target: rawTarget,
 			props: attr,
 			breakpoint,
 			isHover,
 			allowNil: true,
+			prefix,
 		}),
 		keys
 	);
@@ -121,11 +126,12 @@ const getLastBreakpointAttributeSingle = (
 		if (!(avoidXXL && breakpoints[breakpointPosition] === 'xxl'))
 			currentAttr = getValueFromKeys(
 				getAttributesValue({
-					target,
+					target: rawTarget,
 					props: attr,
 					breakpoint: breakpoints[breakpointPosition],
 					isHover,
 					allowNil: true,
+					prefix,
 				}),
 				keys
 			);
@@ -133,11 +139,12 @@ const getLastBreakpointAttributeSingle = (
 
 	if (isHover && !attrFilter(currentAttr))
 		currentAttr = getLastBreakpointAttributeSingle(
-			target,
+			rawTarget,
 			breakpoint,
 			attributes,
 			false,
 			avoidXXL,
+			prefix,
 			keys
 		);
 
@@ -145,11 +152,12 @@ const getLastBreakpointAttributeSingle = (
 	// check for the win selected breakpoint
 	if (!currentAttr && breakpoint === 'general' && baseBreakpoint)
 		currentAttr = getLastBreakpointAttributeSingle(
-			target,
+			rawTarget,
 			baseBreakpoint,
 			attributes,
 			isHover,
 			baseBreakpoint === 'xxl' ? false : avoidXXL,
+			prefix,
 			keys
 		);
 
@@ -161,6 +169,7 @@ const getLastBreakpointAttributeGroup = (
 	breakpoint,
 	isHover,
 	avoidXXL,
+	prefix,
 	keys
 ) => {
 	const { getSelectedBlockClientIds, getBlockAttributes } =
@@ -177,6 +186,7 @@ const getLastBreakpointAttributeGroup = (
 			attributes,
 			isHover,
 			avoidXXL,
+			prefix,
 			keys
 		);
 	});
@@ -195,6 +205,7 @@ const getLastBreakpointAttribute = ({
 	forceSingle = false,
 	avoidXXL = true,
 	keys = [],
+	prefix = '',
 	returnObj = false,
 }) => {
 	if (isArray(target))
@@ -206,6 +217,7 @@ const getLastBreakpointAttribute = ({
 						attributes,
 						isHover,
 						avoidXXL,
+						prefix,
 						keys,
 					});
 
@@ -218,6 +230,7 @@ const getLastBreakpointAttribute = ({
 						attributes,
 						isHover,
 						avoidXXL,
+						prefix,
 						keys,
 					})
 			  );
@@ -232,6 +245,7 @@ const getLastBreakpointAttribute = ({
 			breakpoint,
 			isHover,
 			avoidXXL,
+			prefix,
 			keys
 		);
 
@@ -241,6 +255,7 @@ const getLastBreakpointAttribute = ({
 		attributes,
 		isHover,
 		avoidXXL,
+		prefix,
 		keys
 	);
 };

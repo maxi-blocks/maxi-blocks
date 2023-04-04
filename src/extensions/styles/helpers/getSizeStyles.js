@@ -25,7 +25,7 @@ const getSizeStyles = (obj, prefix = '') => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
-		const getValue = target => {
+		const getValue = (target, cssProperty) => {
 			let fullWidthNormalStyles = {};
 
 			if (target === '_w' || target === '_mw' || target === '_miw') {
@@ -142,7 +142,7 @@ const getSizeStyles = (obj, prefix = '') => {
 
 				if (!isNil(num) && !isNil(unit))
 					return {
-						[target]: auto || num + unit,
+						[cssProperty]: auto || num + unit,
 						...fullWidthNormalStyles,
 					};
 			}
@@ -153,12 +153,12 @@ const getSizeStyles = (obj, prefix = '') => {
 		};
 
 		response[breakpoint] = {
-			...getValue('_mw'),
-			...getValue('_w'),
-			...getValue('_miw'),
-			...getValue('_mh'),
-			...getValue('_h'),
-			...getValue('_mh'),
+			...getValue('_mw', 'max-width'),
+			...getValue('_w', 'width'),
+			...getValue('_miw', 'min-width'),
+			...getValue('_mh', 'max-height'),
+			...getValue('_h', 'height'),
+			...getValue('_mih', 'min-height'),
 		};
 	});
 

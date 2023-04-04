@@ -78,8 +78,7 @@ const getLayerCardContent = props => {
 					key={`background-color-layer--${layer.order}`}
 					colorOptions={layer}
 					onChangeInline={obj => {
-						previewRef.current.style.background =
-							obj['background-color'];
+						previewRef.current.style.background = obj.bc_cc;
 						onChangeInline &&
 							onChangeInline(
 								obj,
@@ -219,7 +218,7 @@ const getLayerCardTitle = props => {
 		switch (type) {
 			case 'color': {
 				const paletteStatus = getLastBreakpointAttribute({
-					target: 'background-color-palette-status',
+					target: 'bc_ps',
 					breakpoint,
 					attributes: layer,
 					isHover,
@@ -227,13 +226,13 @@ const getLayerCardTitle = props => {
 
 				if (paletteStatus) {
 					const paletteColor = getLastBreakpointAttribute({
-						target: 'background-color-palette-color',
+						target: 'bc_pc',
 						breakpoint,
 						attributes: layer,
 						isHover,
 					});
 					const paletteOpacity = getLastBreakpointAttribute({
-						target: 'background-color-palette-opacity',
+						target: 'bc_po',
 						breakpoint,
 						attributes: layer,
 						isHover,
@@ -250,7 +249,7 @@ const getLayerCardTitle = props => {
 
 				return {
 					background: getLastBreakpointAttribute({
-						target: 'background-color-color',
+						target: 'background-color-custom-color',
 						breakpoint,
 						attributes: layer,
 						isHover,
@@ -277,11 +276,11 @@ const getLayerCardTitle = props => {
 			}
 			case 'image': {
 				const bgImageURL = getAttributesValue({
-					target: 'background-image-mediaURL',
+					target: 'bi_mu',
 					props: layer,
 				});
 				const bgImageOpacity = getLastBreakpointAttribute({
-					target: 'background-image-opacity',
+					target: 'bi_o',
 					breakpoint,
 					attributes: layer,
 					isHover,
@@ -339,7 +338,7 @@ const getLayerCardTitle = props => {
 
 	const onChangeDisplay = () => {
 		const currentDisplay = getLastBreakpointAttribute({
-			target: 'd-',
+			target: '_d',
 			breakpoint,
 			attributes: layer,
 			isHover,
@@ -347,14 +346,14 @@ const getLayerCardTitle = props => {
 
 		onChange({
 			...layer,
-			[getAttributeKey('d-', isHover, false, breakpoint)]:
+			[getAttributeKey('_d', isHover, false, breakpoint)]:
 				currentDisplay === 'block' ? 'none' : 'block',
 		});
 	};
 
 	const getIsDisplayed = () => {
 		const currentDisplay = getLastBreakpointAttribute({
-			target: 'd-',
+			target: '_d',
 			breakpoint,
 			attributes: layer,
 			isHover,
@@ -533,7 +532,7 @@ const BackgroundLayersControl = ({
 			[getAttributeKey('b_ly', isHoverLayer)]: newLayers,
 			...(!isHoverLayer
 				? {
-						transition: {
+						_t: {
 							...transition,
 							transform: {
 								...transition.transform,

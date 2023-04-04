@@ -2,7 +2,7 @@ import parseLongAttrKey from '../../../attributes/dictionary/parseLongAttrKey';
 import parseLongAttrObj from '../../../attributes/dictionary/parseLongAttrObj';
 import getArrowStyles from '../getArrowStyles';
 
-jest.mock('src/extensions/styles/getDefaultAttribute.js', () =>
+jest.mock('src/extensions/attributes/getDefaultAttribute.js', () =>
 	jest.fn(() => 0)
 );
 
@@ -38,70 +38,71 @@ describe('getArrowStyles', () => {
 			target: '',
 			blockStyle: 'light',
 			...parseLongAttrObj({
-				'arrow-status-general': true,
-				'a.sid-general': 'top',
-				'a.pos-general': 1,
-				'a.w-general': 2,
-				'a.sid-xxl': 'top',
-				'a.pos-xxl': 4,
-				'a.w-xxl': 1,
-				'a.sid-xl': 'top',
-				'a.pos-xl': 2,
-				'a.w-xl': 3,
-				'arrow-status-l': false,
-				'a.sid-l': 'top',
-				'a.pos-l': 4,
-				'a.w-l': 1,
-				'a.sid-m': 'bottom',
-				'a.pos-m': 2,
-				'a.w-m': 3,
-				'arrow-status-s': true,
-				'a.sid-s': 'bottom',
-				'a.pos-s': 4,
-				'a.w-s': 1,
-				'a.sid-xs': 'bottom',
-				'a.pos-xs': 2,
-				'a.w-xs': 3,
+				'ar.s-general': true,
+				'ar_sid-general': 'top',
+				'ar_pos-general': 1,
+				'ar_w-general': 2,
+				'ar_sid-xxl': 'top',
+				'ar_pos-xxl': 4,
+				'ar_w-xxl': 1,
+				'ar_sid-xl': 'top',
+				'ar_pos-xl': 2,
+				'ar_w-xl': 3,
+				'ar.s-l': false,
+				'ar_sid-l': 'top',
+				'ar_pos-l': 4,
+				'ar_w-l': 1,
+				'ar_sid-m': 'bottom',
+				'ar_pos-m': 2,
+				'ar_w-m': 3,
+				'ar.s-s': true,
+				'ar_sid-s': 'bottom',
+				'ar_pos-s': 4,
+				'ar_w-s': 1,
+				'ar_sid-xs': 'bottom',
+				'ar_pos-xs': 2,
+				'ar_w-xs': 3,
 				b_ly: [
 					{
 						order: 0,
 						type: 'color',
 						...parseLongAttrObj({
-							'd-general': 'block',
-							'background-palette-status-general': true,
-							'background-palette-color-general': 1,
-							'background-palette-opacity-general': 0.07,
-							'background-color-general': '',
+							'_d-general': 'block',
+							'background-color-palette-status-general': true,
+							'background-color-palette-color-general': 1,
+							'background-color-palette-opacity-general': 0.07,
+							'background-color-custom-color-general': '',
 							'background-color-clip-path-general':
 								'polygon(50% 0%, 0% 100%, 100% 100%)',
-							'background-palette-status-xl': true,
-							'background-palette-color-xl': 1,
-							'background-palette-opacity-xl': 0.07,
-							'background-color-xl': '',
+							'background-color-palette-status-xl': true,
+							'background-color-palette-color-xl': 1,
+							'background-color-palette-opacity-xl': 0.07,
+							'background-color-custom-color-xl': '',
 							'background-color-clip-path-xl':
 								'polygon(50% 0%, 0% 100%, 100% 100%)',
 							'background-color-clip-path-xxl':
 								'polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)',
-							'background-palette-status-xxl': true,
-							'background-palette-color-xxl': 2,
-							'background-palette-opacity-xxl': 0.2,
-							'background-color-xxl': '',
-							'background-palette-status-l': true,
-							'background-palette-color-l': 4,
-							'background-palette-opacity-l': 0.3,
-							'background-color-l': '',
+							'background-color-palette-status-xxl': true,
+							'background-color-palette-color-xxl': 2,
+							'background-color-palette-opacity-xxl': 0.2,
+							'background-color-custom-color-xxl': '',
+							'background-color-palette-status-l': true,
+							'background-color-palette-color-l': 4,
+							'background-color-palette-opacity-l': 0.3,
+							'background-color-custom-color-l': '',
 							'background-color-clip-path-l':
 								'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
-							'background-palette-status-m': true,
-							'background-palette-color-m': 5,
-							'background-palette-opacity-m': 0.59,
-							'background-color-m': '',
+							'background-color-palette-status-m': true,
+							'background-color-palette-color-m': 5,
+							'background-color-palette-opacity-m': 0.59,
+							'background-color-custom-color-m': '',
 							'background-color-clip-path-m':
 								'polygon(50% 0%, 80% 10%, 100% 35%, 100% 70%, 80% 90%, 50% 100%, 20% 90%, 0% 70%, 0% 35%, 20% 10%)',
-							'background-palette-status-s': false,
-							'background-palette-color-s': 5,
-							'background-palette-opacity-s': 0.59,
-							'background-color-s': 'rgba(204,68,68,0.59)',
+							'background-color-palette-status-s': false,
+							'background-color-palette-color-s': 5,
+							'background-color-palette-opacity-s': 0.59,
+							'background-color-custom-color-s':
+								'rgba(204,68,68,0.59)',
 							'background-color-clip-path-s':
 								'polygon(0% 20%, 60% 20%, 60% 0%, 100% 50%, 60% 100%, 60% 80%, 0% 80%)',
 							'background-color-clip-path-xs':
@@ -118,7 +119,7 @@ describe('getArrowStyles', () => {
 				'border-width-left-general': 1,
 				'border-width-unit-general': 'px',
 				'border-palette-status-m': false,
-				'border-color-m': 'rgba(61,133,209)',
+				'border-color-custom-color-m': 'rgba(61,133,209)',
 				'border-style-m': 'solid',
 				'border-width-top-m': 3,
 				'border-width-right-m': 3,
@@ -145,7 +146,7 @@ describe('getArrowStyles', () => {
 			target: '',
 			isHover: true,
 			blockStyle: 'light',
-			'arrow-status-general': true,
+			'ar.s-general': true,
 			'background-active-media-general': 'color',
 			'box-shadow-palette-status-general': true,
 			'bs_pc-general': 2,
@@ -179,12 +180,12 @@ describe('getArrowStyles', () => {
 			'border-radius-bottom-left-general-hover': 4,
 			'border-radius-sync-general-hover': true,
 			'border-radius-unit-general-hover': 'px',
-			'background-palette-status-general': true,
-			'background-palette-color-general': 5,
+			'background-color-palette-status-general': true,
+			'background-color-palette-color-general': 5,
 			'background-status-hover': true,
 			'background-active-media-general-hover': 'color',
-			'background-palette-status-general-hover': true,
-			'background-palette-color-general-hover': 1,
+			'background-color-palette-status-general-hover': true,
+			'background-color-palette-color-general-hover': 1,
 		};
 
 		const result = getArrowStyles(object);
@@ -197,7 +198,7 @@ describe('getArrowStyles', () => {
 			isHover: true,
 			blockStyle: 'light',
 			...parseLongAttrObj({
-				'arrow-status-general': true,
+				'ar.s-general': true,
 				'box-shadow-palette-status-general': true,
 				'bs_pc-general': 2,
 				'bs_po-general': 0.2,
@@ -215,7 +216,7 @@ describe('getArrowStyles', () => {
 				'border-style-general': 'solid',
 				'bo.sh': true,
 				'border-palette-status-general-hover': false,
-				'border-color-general-hover': 'rgba(150,200,90)',
+				'border-color-custom-color-general-hover': 'rgba(150,200,90)',
 				'border-palette-opacity-general-hover': 0.2,
 				'border-style-general-hover': 'solid',
 				'border-width-top-general-hover': 1,
@@ -236,18 +237,19 @@ describe('getArrowStyles', () => {
 				'border-radius-bottom-left-general': 10,
 				'border-radius-sync-general': 'all',
 				'border-radius-unit-general': 'px',
-				'background-palette-status-general': true,
-				'background-palette-color-general': 5,
+				'background-color-palette-status-general': true,
+				'background-color-palette-color-general': 5,
 				b_ly: [
 					{
 						type: 'color',
 						order: 0,
 						...parseLongAttrObj({
 							'd-general': 'block',
-							'background-palette-status-general': false,
-							'background-palette-color-general': 1,
-							'background-palette-opacity-general': 0.07,
-							'background-color-general': 'rgba(150,200,90)',
+							'background-color-palette-status-general': false,
+							'background-color-palette-color-general': 1,
+							'background-color-palette-opacity-general': 0.07,
+							'background-color-custom-color-general':
+								'rgba(150,200,90)',
 							'background-color-clip-path-general':
 								'polygon(50% 0%, 0% 100%, 100% 100%)',
 						}),
@@ -264,7 +266,7 @@ describe('getArrowStyles', () => {
 		const object = {
 			target: '',
 			blockStyle: 'light',
-			[parseLongAttrKey('arrow-status-general')]: false,
+			[parseLongAttrKey('ar.s-general')]: false,
 		};
 
 		const result = getArrowStyles(object);
@@ -276,7 +278,7 @@ describe('getArrowStyles', () => {
 			target: '',
 			blockStyle: 'light',
 			...parseLongAttrObj({
-				'arrow-status-general': true,
+				'ar.s-general': true,
 				'background-active-media': 'gradient',
 			}),
 		};
@@ -290,7 +292,7 @@ describe('getArrowStyles', () => {
 			target: '',
 			blockStyle: 'light',
 			...parseLongAttrObj({
-				'arrow-status-general': true,
+				'ar.s-general': true,
 				'background-active-media': 'color',
 				'border-style-general': undefined,
 				'border-style-s': 'dashed',
@@ -306,7 +308,7 @@ describe('getArrowStyles', () => {
 			target: '',
 			blockStyle: 'light',
 			...parseLongAttrObj({
-				'arrow-status-general': true,
+				'ar.s-general': true,
 				'background-active-media': 'color',
 				'border-style-general': undefined,
 				'border-style-s': 'solid',

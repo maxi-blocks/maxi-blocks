@@ -1,3 +1,5 @@
+import getCleanKey from './getCleanKey';
+
 const prefixAttributesCreator = ({
 	obj,
 	prefix,
@@ -11,10 +13,7 @@ const prefixAttributesCreator = ({
 
 	Object.entries(obj).forEach(([key, val]) => {
 		if (exclAttr.every(excl => !key.includes(excl))) {
-			const newKey = `${prefix}${key}`
-				.replace('-_', '_')
-				.replace('-.', '.')
-				.replace('--', '-');
+			const newKey = getCleanKey(`${prefix}${key}`);
 
 			if (diffValAttrKeys.includes(newKey))
 				response[newKey] = {

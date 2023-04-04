@@ -14,13 +14,8 @@ describe('getAttributeKey', () => {
 		);
 	});
 	it('Should return the correct shortened key', () => {
-		expect(
-			getAttributeKey(
-				'background-color-palette-status',
-				false,
-				false,
-				'general'
-			)
-		).toBe('bc-p.s-general');
+		expect(getAttributeKey('bc_ps', false, false, 'general')).toBe(
+			'bc-p.s-general'
+		);
 	});
 });

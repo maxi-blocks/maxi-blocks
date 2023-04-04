@@ -56,33 +56,20 @@ const ColorLayerContent = props => {
 		paletteOpacity,
 	}) => {
 		const response = {
-			[getAttributeKey(
-				'background-color-palette-status',
-				isHover,
-				prefix,
-				breakpoint
-			)]: paletteStatus,
-			[getAttributeKey(
-				'background-color-palette-color',
-				isHover,
-				prefix,
-				breakpoint
-			)]: paletteColor,
-			[getAttributeKey(
-				'background-color-palette-opacity',
-				isHover,
-				prefix,
-				breakpoint
-			)]: paletteOpacity,
-			[getAttributeKey('background-color', isHover, prefix, breakpoint)]:
-				color,
+			[getAttributeKey('bc_ps', isHover, prefix, breakpoint)]:
+				paletteStatus,
+			[getAttributeKey('bc_pc', isHover, prefix, breakpoint)]:
+				paletteColor,
+			[getAttributeKey('bc_po', isHover, prefix, breakpoint)]:
+				paletteOpacity,
+			[getAttributeKey('bc_cc', isHover, prefix, breakpoint)]: color,
 		};
 
 		onChange(response);
 	};
 
 	const getDefaultAttr = () => {
-		const bgPrefix = `${prefix}background-color-`;
+		const bgPrefix = `${prefix}bc`;
 
 		if (isLayer) {
 			const defaultColor = {};
@@ -99,35 +86,29 @@ const ColorLayerContent = props => {
 					  })
 					: getDefaultLayerAttr('colorOptions', target);
 
-			defaultColor.paletteStatus = getResetValue(
-				`${bgPrefix}palette-status`
-			);
-			defaultColor.paletteColor = getResetValue(
-				`${bgPrefix}palette-color`
-			);
-			defaultColor.paletteOpacity = getResetValue(
-				`${bgPrefix}palette-opacity`
-			);
-			defaultColor.color = getResetValue(`${bgPrefix}color`);
+			defaultColor.paletteStatus = getResetValue(`${bgPrefix}_ps`);
+			defaultColor.paletteColor = getResetValue(`${bgPrefix}_pc`);
+			defaultColor.paletteOpacity = getResetValue(`${bgPrefix}_po`);
+			defaultColor.color = getResetValue(`${bgPrefix}_cc`);
 
 			return defaultColor;
 		}
 
 		return {
 			paletteStatus: getDefaultAttribute(
-				`${bgPrefix}palette-status-${breakpoint}`,
+				`${bgPrefix}_ps-${breakpoint}`,
 				clientId
 			),
 			paletteColor: getDefaultAttribute(
-				`${bgPrefix}palette-color-${breakpoint}`,
+				`${bgPrefix}_pc-${breakpoint}`,
 				clientId
 			),
 			paletteOpacity: getDefaultAttribute(
-				`${bgPrefix}palette-opacity-${breakpoint}`,
+				`${bgPrefix}_po-${breakpoint}`,
 				clientId
 			),
 			color: getDefaultAttribute(
-				`${bgPrefix}color-${breakpoint}`,
+				`${bgPrefix}_cc-${breakpoint}`,
 				clientId
 			),
 		};
@@ -170,28 +151,28 @@ const ColorLayerContent = props => {
 			<ColorControl
 				label={__('Background', 'maxi-blocks')}
 				color={getLastBreakpointAttribute({
-					target: `${prefix}background-color-color`,
+					target: `${prefix}bc_cc`,
 					breakpoint,
 					attributes: colorOptions,
 					isHover,
 				})}
-				prefix={`${prefix}background-color-`}
+				prefix={`${prefix}bc`}
 				defaultColorAttributes={getDefaultAttr()}
 				{...(isLayer && { onReset })}
 				paletteStatus={getLastBreakpointAttribute({
-					target: `${prefix}background-color-palette-status`,
+					target: `${prefix}bc_ps`,
 					breakpoint,
 					attributes: colorOptions,
 					isHover,
 				})}
 				paletteColor={getLastBreakpointAttribute({
-					target: `${prefix}background-color-palette-color`,
+					target: `${prefix}bc_pc`,
 					breakpoint,
 					attributes: colorOptions,
 					isHover,
 				})}
 				paletteOpacity={getLastBreakpointAttribute({
-					target: `${prefix}background-color-palette-opacity`,
+					target: `${prefix}bc_po`,
 					breakpoint,
 					attributes: colorOptions,
 					isHover,
@@ -215,12 +196,12 @@ const ColorLayerContent = props => {
 						props,
 						'clipPath',
 						false,
-						`${prefix}background-color-`
+						`${prefix}bc`
 					)}
 					{...colorOptions}
 					isHover={isHover}
 					isIB={isIB}
-					prefix={`${prefix}background-color-`}
+					prefix={`${prefix}bc`}
 					breakpoint={breakpoint}
 					isLayer
 					disableRTC

@@ -18,7 +18,7 @@ const getZIndexStyles = obj => {
 
 	breakpoints.forEach(breakpoint => {
 		const value = getAttributesValue({
-			target: 'z-index',
+			target: '_zi',
 			breakpoint,
 			props: obj,
 		});

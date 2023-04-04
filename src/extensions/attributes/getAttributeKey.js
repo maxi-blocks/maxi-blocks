@@ -1,18 +1,26 @@
 /**
  * Internal dependencies
  */
-import parseLongAttrKey from './dictionary/parseLongAttrKey';
+import getCleanKey from './getCleanKey';
+
+const getPrefix = prefix => {
+	if (prefix === '' || !prefix) return '';
+
+	if (prefix.endsWith('-')) return prefix;
+
+	return `${prefix}-`;
+};
 
 const getAttributeKey = (
 	key = '',
 	isHover = false,
-	prefix = false,
+	prefix = '',
 	breakpoint = false
 ) =>
-	// parseLongAttrKey(
-	`${prefix || ''}${`${key}${breakpoint ? `-${breakpoint}` : ''}${
-		isHover ? '-hover' : ''
-	}`}`;
-// );
+	getCleanKey(
+		`${getPrefix(prefix)}${`${key}${breakpoint ? `-${breakpoint}` : ''}${
+			isHover ? '.h' : ''
+		}`}`
+	);
 
 export default getAttributeKey;

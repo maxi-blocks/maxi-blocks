@@ -32,7 +32,7 @@ const ArrowControl = props => {
 		props,
 	});
 	const arrowStatus = getLastBreakpointAttribute({
-		target: 'a.s',
+		target: 'ar.s',
 		breakpoint,
 		attributes: props,
 	});
@@ -98,20 +98,20 @@ const ArrowControl = props => {
 			)}
 			{arrowStatus &&
 				getAttributesValue({
-					target: 'show-warning-box',
+					target: '_swb',
 					props,
 				}) && (
 					<InfoBox
 						message={__(
 							'Please ensure that the background color is not the same as the page background color.'
 						)}
-						onClose={() => onChange({ 'show-warning-box': false })}
+						onClose={() => onChange({ _swb: false })}
 					/>
 				)}
 			<ToggleSwitch
 				label={__('Show arrow on boundary', 'maxi-blocks')}
 				selected={arrowStatus}
-				onChange={val => onChange({ [`a.s-${breakpoint}`]: val })}
+				onChange={val => onChange({ [`ar.s-${breakpoint}`]: val })}
 			/>
 			{arrowStatus && (
 				<>
@@ -120,25 +120,25 @@ const ArrowControl = props => {
 						type='buttons'
 						fullWidthMode
 						selected={getLastBreakpointAttribute({
-							target: 'a.sid',
+							target: 'ar_sid',
 							breakpoint,
 							attributes: props,
 						})}
 						items={getOptions()}
 						onChange={val =>
-							onChange({ [`a.sid-${breakpoint}`]: val })
+							onChange({ [`ar_sid-${breakpoint}`]: val })
 						}
 					/>
 					<AdvancedNumberControl
 						label={__('Position', 'maxi-blocks')}
 						value={getLastBreakpointAttribute({
-							target: 'a.pos',
+							target: 'ar_pos',
 							breakpoint,
 							attributes: props,
 						})}
 						onChangeValue={val => {
 							onChangeValue(
-								'a.pos',
+								'ar_pos',
 								val !== undefined && val !== '' ? val : ''
 							);
 						}}
@@ -146,34 +146,34 @@ const ArrowControl = props => {
 						max={100}
 						onReset={() =>
 							onChange({
-								[`a.pos-${breakpoint}`]: getDefaultAttribute(
-									`a.pos-${breakpoint}`
+								[`ar_pos-${breakpoint}`]: getDefaultAttribute(
+									`ar_pos-${breakpoint}`
 								),
 								isReset: true,
 							})
 						}
 						initialPosition={getDefaultAttribute(
-							`a.pos-${breakpoint}`
+							`ar_pos-${breakpoint}`
 						)}
 					/>
 					<AdvancedNumberControl
 						label={__('Arrow size', 'maxi-blocks')}
 						value={getLastBreakpointAttribute({
-							target: 'a.w',
+							target: 'ar_w',
 							breakpoint,
 							attributes: props,
 						})}
 						onChangeValue={val => {
 							const value = isNil(val)
-								? getDefaultAttribute(`a.w-${breakpoint}`)
+								? getDefaultAttribute(`ar_w-${breakpoint}`)
 								: val;
 
-							onChangeValue('a.w', value);
+							onChangeValue('ar_w', value);
 						}}
 						onReset={() =>
 							onChange({
-								[`a.w-${breakpoint}`]: getDefaultAttribute(
-									`a.w-${breakpoint}`
+								[`ar_w-${breakpoint}`]: getDefaultAttribute(
+									`ar_w-${breakpoint}`
 								),
 								isReset: true,
 							})

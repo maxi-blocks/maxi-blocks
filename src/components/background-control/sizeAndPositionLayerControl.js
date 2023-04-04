@@ -132,12 +132,8 @@ const Size = ({
 				}}
 				onChangeUnit={val =>
 					onChange({
-						[getAttributeKey(
-							'_w-unit',
-							isHover,
-							prefix,
-							breakpoint
-						)]: val,
+						[getAttributeKey('_w.u', isHover, prefix, breakpoint)]:
+							val,
 					})
 				}
 				onReset={() => onReset('_w')}
@@ -167,12 +163,8 @@ const Size = ({
 				}}
 				onChangeUnit={val =>
 					onChange({
-						[getAttributeKey(
-							'_h-unit',
-							isHover,
-							prefix,
-							breakpoint
-						)]: val,
+						[getAttributeKey('_h.u', isHover, prefix, breakpoint)]:
+							val,
 					})
 				}
 				onReset={() => onReset('_h')}
@@ -191,9 +183,7 @@ const SizeAndPositionLayerControl = ({
 	breakpoint,
 }) => {
 	const { type } = options;
-	const prefix = `${rawPrefix}background-${
-		type === 'shape' ? 'svg' : `${type}-wrapper`
-	}-`;
+	const prefix = `${rawPrefix}b${type === 'shape' ? 'sv' : `${type[0]}w`}-`;
 
 	// Add new attributes if they don't exist
 	useEffect(() => {

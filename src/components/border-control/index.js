@@ -24,6 +24,10 @@ import {
 	getAttributeKey,
 	getDefaultAttribute,
 } from '../../extensions/attributes';
+import {
+	axisDictionary,
+	radiusAxisDictionary,
+} from '../../extensions/attributes/constants';
 
 /**
  * External dependencies
@@ -54,28 +58,32 @@ const BorderColorControl = props => {
 		<ColorControl
 			label={__('Border', 'maxi-blocks')}
 			color={getLastBreakpointAttribute({
-				target: `${prefix}border-color`,
+				target: 'bo_cc',
 				breakpoint,
 				attributes: props,
 				isHover,
+				prefix,
 			})}
 			paletteStatus={getLastBreakpointAttribute({
-				target: `${prefix}border-palette-status`,
+				target: 'bo_ps',
 				breakpoint,
 				attributes: props,
 				isHover,
+				prefix,
 			})}
 			paletteColor={getLastBreakpointAttribute({
-				target: `${prefix}border-palette-color`,
+				target: 'bo_pc',
 				breakpoint,
 				attributes: props,
 				isHover,
+				prefix,
 			})}
 			paletteOpacity={getLastBreakpointAttribute({
-				target: `${prefix}border-palette-opacity`,
+				target: 'bo_po',
 				breakpoint,
 				attributes: props,
 				isHover,
+				prefix,
 			})}
 			onChangeInline={({ color }) => {
 				onChangeInline &&
@@ -90,30 +98,14 @@ const BorderColorControl = props => {
 				color,
 			}) => {
 				onChange({
-					[getAttributeKey(
-						'border-palette-status',
-						isHover,
-						prefix,
-						breakpoint
-					)]: paletteStatus,
-					[getAttributeKey(
-						'border-palette-color',
-						isHover,
-						prefix,
-						breakpoint
-					)]: paletteColor,
-					[getAttributeKey(
-						'border-palette-opacity',
-						isHover,
-						prefix,
-						breakpoint
-					)]: paletteOpacity,
-					[getAttributeKey(
-						'border-color',
-						isHover,
-						prefix,
-						breakpoint
-					)]: color,
+					[getAttributeKey('bo_ps', isHover, prefix, breakpoint)]:
+						paletteStatus,
+					[getAttributeKey('bo_pc', isHover, prefix, breakpoint)]:
+						paletteColor,
+					[getAttributeKey('bo_po', isHover, prefix, breakpoint)]:
+						paletteOpacity,
+					[getAttributeKey('bo_cc', isHover, prefix, breakpoint)]:
+						color,
 				});
 			}}
 			disableImage
@@ -123,7 +115,7 @@ const BorderColorControl = props => {
 			deviceType={breakpoint}
 			clientId={clientId}
 			globalProps={globalProps}
-			prefix={`${prefix}border-`}
+			prefix={`${prefix}bo`}
 		/>
 	);
 };
@@ -140,13 +132,13 @@ const BorderWidthControl = props => {
 	return (
 		<AxisControl
 			{...getGroupAttributes(props, 'borderWidth', isHover, prefix)}
-			target={`${prefix}border-width`}
+			target={`${prefix}bo_w`}
 			{...(!isToolbar && { label: __('Border width', 'maxi-blocks') })}
 			onChange={obj => {
 				if (!isToolbar) onChange(obj);
 				else
 					onChange({
-						[`border-width-sync-${breakpoint}`]: 'all',
+						[`bo_w-sy-${breakpoint}`]: 'all',
 						...obj,
 					});
 			}}
@@ -187,13 +179,14 @@ const BorderControl = props => {
 	const borderWidthLastValue = () => {
 		const response = {};
 
-		['top', 'right', 'bottom', 'left'].forEach(item => {
+		Object.keys(axisDictionary).forEach(item => {
 			response[`border${capitalize(item)}Width`] =
 				getLastBreakpointAttribute({
-					target: `${prefix}border-width-${item}`,
+					target: 'bo_w.${item}',
 					breakpoint,
 					attributes: props,
 					isHover,
+					prefix,
 				});
 		});
 
@@ -201,10 +194,11 @@ const BorderControl = props => {
 	};
 
 	const borderStyleValue = getLastBreakpointAttribute({
-		target: `${prefix}border-style`,
+		target: 'bo_s',
 		breakpoint,
 		attributes: props,
 		isHover,
+		prefix,
 	});
 
 	const isBorderEnable = borderStyleValue && borderStyleValue !== 'none';
@@ -216,10 +210,10 @@ const BorderControl = props => {
 	);
 
 	const axisItems = [
-		`${prefix}border-width-top`,
-		`${prefix}border-width-right`,
-		`${prefix}border-width-bottom`,
-		`${prefix}border-width-left`,
+		`${prefix}bo_w.t`,
+		`${prefix}bo_w.r`,
+		`${prefix}bo_w.b`,
+		`${prefix}bo_w.l`,
 	];
 
 	const onChangeDefault = defaultProp => {
@@ -245,6 +239,7 @@ const BorderControl = props => {
 		});
 
 		if (hasBorderWidth) return borderStyleValue || 'none';
+
 		return 'none';
 	};
 
@@ -327,23 +322,18 @@ const BorderControl = props => {
 					className='maxi-border-control__type'
 					value={borderStyleValue || 'none'}
 					defaultValue={getDefaultAttribute(
-						getAttributeKey(
-							'border-style',
-							isHover,
-							prefix,
-							breakpoint
-						)
+						getAttributeKey('bo_s', isHover, prefix, breakpoint)
 					)}
 					onReset={() =>
 						onChange({
 							[getAttributeKey(
-								'border-style',
+								'bo_s',
 								isHover,
 								prefix,
 								breakpoint
 							)]: getDefaultAttribute(
 								getAttributeKey(
-									'border-style',
+									'bo_s',
 									isHover,
 									prefix,
 									breakpoint
@@ -365,9 +355,12 @@ const BorderControl = props => {
 					]}
 					onChange={val => {
 						onChange({
-							[`${prefix}border-style-${breakpoint}${
-								isHover ? '-hover' : ''
-							}`]: val,
+							[getAttributeKey(
+								'bo_s',
+								isHover,
+								prefix,
+								breakpoint
+							)]: val,
 							...getValuesOnChangeType(),
 						});
 					}}
@@ -397,7 +390,7 @@ const BorderControl = props => {
 							isHover,
 							prefix
 						)}
-						target={`${prefix}border-radius`}
+						target={`${prefix}bo.ra`}
 						label={__('Border radius', 'maxi-blocks')}
 						onChange={onChange}
 						breakpoint={breakpoint}
@@ -422,10 +415,7 @@ const BorderControl = props => {
 						disableAuto
 						isHover={isHover}
 						inputsArray={[
-							'top-left',
-							'top-right',
-							'bottom-right',
-							'bottom-left',
+							...Object.keys(radiusAxisDictionary),
 							'unit',
 						]}
 					/>

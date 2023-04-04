@@ -37,14 +37,12 @@ const GradientControl = props => {
 		onChange,
 	} = props;
 
-	const {
-		[`${prefix}gradient`]: gradient,
-		[`${prefix}gradient-opacity`]: gradientOpacity,
-	} = getLastBreakpointAttribute({
-		target: [`${prefix}gradient`, `${prefix}gradient-opacity`],
+	const [gradient, gradientOpacity] = getLastBreakpointAttribute({
+		target: ['content', 'opacity'],
 		breakpoint,
 		attributes: props,
 		isHover,
+		prefix,
 	});
 
 	const classes = classnames('maxi-gradient-control', className);
@@ -64,7 +62,7 @@ const GradientControl = props => {
 				opacity={gradientOpacity}
 				onChange={onChange}
 				breakpoint={breakpoint}
-				prefix={`${prefix}gradient-`}
+				prefix={prefix}
 				isHover={isHover}
 				disableRTC
 			/>
@@ -74,7 +72,7 @@ const GradientControl = props => {
 					onChange={gradient =>
 						onChange({
 							[getAttributeKey(
-								'gradient',
+								'content',
 								isHover,
 								prefix,
 								breakpoint

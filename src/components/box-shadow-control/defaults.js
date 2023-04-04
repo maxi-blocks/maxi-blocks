@@ -22,30 +22,27 @@ export const boxShadowNone = prefix => {
 		[getAttributeKey('bs_ho', false, prefix)]: getDefaultAttributeValue(
 			getAttributeKey('bs_ho', false, prefix)
 		),
-		[getAttributeKey('bs_ho-unit', false, prefix)]:
-			getDefaultAttributeValue(
-				getAttributeKey('bs_ho-unit', false, prefix)
-			),
+		[getAttributeKey('bs_ho.u', false, prefix)]: getDefaultAttributeValue(
+			getAttributeKey('bs_ho.u', false, prefix)
+		),
 		[getAttributeKey('bs_v', false, prefix)]: getDefaultAttributeValue(
 			getAttributeKey('bs_v', false, prefix)
 		),
-		[getAttributeKey('bs_v-unit', false, prefix)]: getDefaultAttributeValue(
-			getAttributeKey('bs_v-unit', false, prefix)
+		[getAttributeKey('bs_v.u', false, prefix)]: getDefaultAttributeValue(
+			getAttributeKey('bs_v.u', false, prefix)
 		),
 		[getAttributeKey('bs_blu', false, prefix)]: getDefaultAttributeValue(
 			getAttributeKey('bs_blu', false, prefix)
 		),
-		[getAttributeKey('bs_blu-unit', false, prefix)]:
-			getDefaultAttributeValue(
-				getAttributeKey('bs_blu-unit', false, prefix)
-			),
+		[getAttributeKey('bs_blu.u', false, prefix)]: getDefaultAttributeValue(
+			getAttributeKey('bs_blu.u', false, prefix)
+		),
 		[getAttributeKey('bs_sp', false, prefix)]: getDefaultAttributeValue(
 			getAttributeKey('bs_sp', false, prefix)
 		),
-		[getAttributeKey('bs_sp-unit', false, prefix)]:
-			getDefaultAttributeValue(
-				getAttributeKey('bs_sp-unit', false, prefix)
-			),
+		[getAttributeKey('bs_sp.u', false, prefix)]: getDefaultAttributeValue(
+			getAttributeKey('bs_sp.u', false, prefix)
+		),
 		[getAttributeKey('bs_in', false, prefix)]: getDefaultAttributeValue(
 			getAttributeKey('bs_in', false, prefix)
 		),
@@ -58,10 +55,10 @@ const boxShadowUnits = prefix => {
 	let response = {};
 
 	response = {
-		[getAttributeKey('bs_ho-unit', false, prefix)]: 'px',
-		[getAttributeKey('bs_v-unit', false, prefix)]: 'px',
-		[getAttributeKey('bs_blu-unit', false, prefix)]: 'px',
-		[getAttributeKey('bs_sp-unit', false, prefix)]: 'px',
+		[getAttributeKey('bs_ho.u', false, prefix)]: 'px',
+		[getAttributeKey('bs_v.u', false, prefix)]: 'px',
+		[getAttributeKey('bs_blu.u', false, prefix)]: 'px',
+		[getAttributeKey('bs_sp.u', false, prefix)]: 'px',
 	};
 
 	return response;

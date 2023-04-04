@@ -11,7 +11,6 @@ import * as defaults from './defaults/index';
 import getIsValid from './getIsValid';
 import getBreakpointFromAttribute from './getBreakpointFromAttribute';
 import getBlockData from './getBlockData';
-import parseLongAttrKey from './dictionary/parseLongAttrKey';
 
 /**
  * External dependencies
@@ -61,7 +60,6 @@ const getDefaultAttribute = (
 
 	if (!isMaxiBlock) return response;
 
-	// const prop = parseLongAttrKey(rawProp);
 	const prop = rawProp;
 
 	// Check default value on block

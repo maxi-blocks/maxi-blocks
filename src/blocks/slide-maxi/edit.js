@@ -109,7 +109,7 @@ class edit extends MaxiBlockComponent {
 					'maxi-slide-block__resizer',
 					`maxi-slide-block__resizer__${uniqueID}`,
 					getLastBreakpointAttribute({
-						target: 'd-',
+						target: '_d',
 						breakpoint: deviceType,
 						attributes,
 						isHover: false,

@@ -308,7 +308,7 @@ const interactionBuilderSettings = {
 			transitionTarget: transition.block.border.target,
 			hoverProp: 'bt-bo.sh',
 			attrGroupName: ['border', 'borderWidth', 'borderRadius'],
-			prefix: 'button-',
+			prefix: 'bt-',
 			component: props => <BorderControl {...props} />,
 			helper: props => getBorderStyles(props),
 			target: '.maxi-button-block__button',
@@ -322,7 +322,7 @@ const interactionBuilderSettings = {
 				'backgroundColor',
 				'backgroundGradient',
 			],
-			prefix: 'button-',
+			prefix: 'bt-',
 			component: props => (
 				<BackgroundControl
 					{...props}
@@ -345,7 +345,7 @@ const interactionBuilderSettings = {
 			transitionTarget: transition.block['box shadow'].target,
 			hoverProp: 'button-box-shadow-status-hover',
 			attrGroupName: 'boxShadow',
-			prefix: 'button-',
+			prefix: 'bt-',
 			component: props => <BoxShadowControl {...props} />,
 			helper: props => getBoxShadowStyles(props),
 			target: '.maxi-button-block__button',
@@ -353,7 +353,7 @@ const interactionBuilderSettings = {
 		{
 			label: __('Button margin/padding', 'maxi-blocks'),
 			attrGroupName: ['margin', 'padding'],
-			prefix: 'button-',
+			prefix: 'bt-',
 			component: props => (
 				<>
 					<MarginControl {...props} />

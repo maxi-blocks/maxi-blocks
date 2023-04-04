@@ -44,12 +44,12 @@ class edit extends MaxiBlockComponent {
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
-			<Toolbar
-				key={`toolbar-${uniqueID}`}
-				ref={this.blockRef}
-				{...this.props}
-				copyPasteMapping={copyPasteMapping}
-			/>,
+			// <Toolbar
+			// 	key={`toolbar-${uniqueID}`}
+			// 	ref={this.blockRef}
+			// 	{...this.props}
+			// 	copyPasteMapping={copyPasteMapping}
+			// />,
 			<MaxiBlock
 				key={`maxi-group--${uniqueID}`}
 				ref={this.blockRef}

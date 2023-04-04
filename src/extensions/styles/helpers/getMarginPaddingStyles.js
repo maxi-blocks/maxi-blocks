@@ -15,15 +15,25 @@ import { isNil } from 'lodash';
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const getMarginPaddingStyles = ({ obj, prefix = '' }) => {
-	const keyWords = ['top', 'right', 'bottom', 'left'];
+	const keyWords = ['.t', '.r', '.b', '.l'];
+	const keyDictionary = {
+		'.t': 'top',
+		'.r': 'right',
+		'.b': 'bottom',
+		'.l': 'left',
+	};
+	const typeDictionary = {
+		_m: 'margin',
+		_p: 'padding',
+	};
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
-		['margin', 'padding'].forEach(type =>
+		['_m', '_p'].forEach(type =>
 			keyWords.forEach(key => {
-				const attributeName = `${prefix}${type}-${key}`;
+				const attributeName = `${prefix}${type}${key}`;
 
 				const [lastValue, lastUnit, value, unit] = [
 					target =>
@@ -39,21 +49,23 @@ const getMarginPaddingStyles = ({ obj, prefix = '' }) => {
 							breakpoint,
 						}),
 				].flatMap(callback =>
-					['', '-unit'].map(suffix =>
+					['', '.u'].map(suffix =>
 						callback(`${attributeName}${suffix}`)
 					)
 				);
+
+				const cssProperty = `${typeDictionary[type]}-${keyDictionary[key]}`;
 
 				if (
 					!isNil(lastValue) &&
 					(lastValue === value || lastUnit === unit)
 				)
-					response[breakpoint][`${type}-${key}`] =
+					response[breakpoint][cssProperty] =
 						lastValue === 'auto'
 							? 'auto'
 							: `${lastValue}${lastUnit}`;
 
-				if (value === '') delete response[breakpoint][`${type}-${key}`];
+				if (value === '') delete response[breakpoint][cssProperty];
 			})
 		);
 	});

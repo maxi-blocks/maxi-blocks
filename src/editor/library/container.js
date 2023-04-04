@@ -705,7 +705,7 @@ const LibraryContainer = props => {
 			if (type === 'accordion-icon-active') {
 				onSelect({
 					'active-icon-content': svgCode,
-					svgTypeActive: svgType,
+					'active-svgType': svgType,
 				});
 
 				onRequestClose();

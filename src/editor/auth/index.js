@@ -18,17 +18,23 @@ export const authClient = () => {
 
 	const account = new Account(client);
 
+	console.log('account');
+	console.log(account);
+
 	return { client, account };
 };
 
 export async function authConnect(withRedirect = false) {
-	const url = 'https://maxiblocks.com/go/user-login';
+	const url = 'https://my.maxiblocks.com/login?plugin'; // 'https://maxiblocks.com/go/user-login'
 
 	const userInfo = authClient().account.get();
 	userInfo
 		.then(response => {
+			console.log(response);
 			if (response.status) {
 				if (response?.prefs?.pro_active) {
+					console.log("dispatch('maxiBlocks/pro')");
+					console.log(response?.name);
 					dispatch('maxiBlocks/pro').saveMaxiProStatus({
 						status: 'yes',
 						name: response?.name,

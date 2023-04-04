@@ -170,12 +170,30 @@ const MaxiModal = props => {
 		if (forceIsOpen) changeIsOpen(forceIsOpen);
 	}, [forceIsOpen]);
 
-	const [isMaxiProActive, setIsMaxiProActive] = useState(false);
-	const [userName, setUserName] = useState('');
+	const [isMaxiProActive, setIsMaxiProActive] = useState(isProSubActive());
+	const [userName, setUserName] = useState(getUserName());
 
-	const onClickConnect = () => {};
+	const onClickConnect = () => {
+		document.addEventListener('visibilitychange', function userIsBack() {
+			if (!document.hidden) {
+				console.log('user is back');
+				authConnect(false).then(() => {
+					setIsMaxiProActive(isProSubActive());
+					setUserName(getUserName());
+					console.log('set user name');
+					console.log('username', getUserName());
+				});
+			}
+		});
+
+		authConnect(true).then(() => {
+			setIsMaxiProActive(isProSubActive());
+			setUserName(getUserName());
+		});
+	};
 
 	const onLogOut = () => {
+		logOut();
 		setIsMaxiProActive(false);
 		setUserName('');
 	};

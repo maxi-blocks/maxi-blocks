@@ -593,7 +593,16 @@ class MaxiBlocks_DynamicContent
         return $string;
     }
 
-    public function get_dc_value($target, $dynamic_content, $context_loop, $defaults)
+    public function get_default_dc_value($target, $obj, $defaults)
+    {
+        if (is_callable($defaults[$target])) {
+            return $defaults[$target]($obj);
+        }
+
+        return $defaults[$target];
+    }
+
+    public function get_dc_value($target, $dynamic_content, $context_loop, $defaults, $result)
     {
         $context_loop_status = isset($context_loop['cl-status']) ? $context_loop['cl-status'] : false;
 
@@ -601,7 +610,7 @@ class MaxiBlocks_DynamicContent
         $context_loop_value = isset($context_loop['cl-' . $target]) ? $context_loop['cl-' . $target] : null;
 
         if ($target === 'status') {
-            return $dc_value !== null ? $dc_value : $defaults[$target];
+            return $dc_value !== null ? $dc_value : $this->get_default_dc_value($target, $result, $defaults);
         }
 
         if ($dc_value !== null) {
@@ -612,7 +621,7 @@ class MaxiBlocks_DynamicContent
             return $context_loop_value;
         }
 
-        return $defaults[$target];
+        return $this->get_default_dc_value($target, $result, $defaults);
     }
 
     public function get_dc_values($attributes, $context_loop)
@@ -621,22 +630,29 @@ class MaxiBlocks_DynamicContent
             'status' => false,
             'type' => 'posts',
             'relation' => 'by-id',
+            'order' => [$this, 'order_callback'],
+            'accumulator' => 0,
         ];
 
         $dynamic_content = array_filter($attributes, function ($key) {
             return strpos($key, 'dc-') === 0;
         }, ARRAY_FILTER_USE_KEY);
 
-        $result = array_combine(array_map(function ($key) {
-            return 'dc-' . $key;
-        }, array_keys($defaults)), array_values($defaults));
-
-        $dynamic_content_keys = array_merge(array_keys($dynamic_content), array_map(function ($key) {
+        $dynamic_content_keys = array_keys($dynamic_content);
+        $context_loop_keys = array_map(function ($key) {
             return str_replace('cl-', 'dc-', $key);
-        }, array_keys($context_loop)));
-        foreach ($dynamic_content_keys as $key) {
+        }, array_keys($context_loop));
+        $defaults_keys = array_map(function ($key) {
+            return 'dc-' . $key;
+        }, array_keys($defaults));
+
+        $values_keys = array_merge($dynamic_content_keys, $context_loop_keys, $defaults_keys);
+
+        $result = [];
+
+        foreach ($values_keys as $key) {
             $target = str_replace('dc-', '', $key);
-            $dc_value = $this->get_dc_value($target, $attributes, $context_loop, $defaults);
+            $dc_value = $this->get_dc_value($target, $dynamic_content, $context_loop, $defaults, $result);
             $result[$key] = $dc_value;
         }
 
@@ -650,5 +666,11 @@ class MaxiBlocks_DynamicContent
             'order' => $order,
             'posts_per_page' => $accumulator + 1,
         ];
+    }
+
+    public function order_callback($attributes)
+    {
+        $relation = $attributes['dc-relation'] ?? $attributes['cl-relation'] ?? null;
+        return $relation === 'by-date' ? 'desc' : 'asc';
     }
 }

@@ -624,6 +624,12 @@ class MaxiBlocks_DynamicContent
         return $this->get_default_dc_value($target, $result, $defaults);
     }
 
+    public function order_callback($attributes)
+    {
+        $relation = $attributes['dc-relation'] ?? $attributes['cl-relation'] ?? null;
+        return $relation === 'by-date' ? 'desc' : 'asc';
+    }
+
     public function get_dc_values($attributes, $context_loop)
     {
         $defaults = [
@@ -666,11 +672,5 @@ class MaxiBlocks_DynamicContent
             'order' => $order,
             'posts_per_page' => $accumulator + 1,
         ];
-    }
-
-    public function order_callback($attributes)
-    {
-        $relation = $attributes['dc-relation'] ?? $attributes['cl-relation'] ?? null;
-        return $relation === 'by-date' ? 'desc' : 'asc';
     }
 }

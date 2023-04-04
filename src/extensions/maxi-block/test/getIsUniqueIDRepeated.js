@@ -238,6 +238,22 @@ jest.mock('@wordpress/data', () => {
 						},
 					]
 			),
+			receiveBlocks: jest.fn(() => ({
+				'button-maxi-1': '89293228-0e7b-4176-a6fd-87ad56f72be2',
+				'button-maxi-2': '4da1841c-a90b-41f3-964c-038c088cbf95',
+				'button-maxi-3': 'aec3ceb0-18dc-4e93-909d-f9ecbdfeef85',
+				'button-maxi-4': '8646bf0a-084d-442c-b916-7001b3dd63f9',
+				'container-maxi-1': '1822e076-34a5-4068-87f1-1f8dc9e764a5',
+				'row-maxi-1': 'dc4dfd7a-5165-407a-b8a3-7251aefafec6',
+				'column-maxi-1': 'cbaec051-a442-4937-9123-f50d3e70519c',
+				'row-maxi-2': '3a6240bb-fe2d-4484-ae19-fbe6c88ca4c5',
+				'row-maxi-3': 'd03c54eb-54e2-4726-b110-10f3641c1355',
+				'column-maxi-8': '21047fc0-727a-49d5-a461-5e1981799c79',
+				'divider-maxi-1': '87a36bb0-6e2d-4717-bd50-c1bd22936fa2',
+				'text-maxi-1': 'b0de73d4-8b63-448e-8c60-4d86a14f620c',
+				'column-maxi-2': '8037ccce-f388-4cc4-86b0-68c2b90ea9bb',
+				'column-maxi-3': '6e4443d9-3457-4ab7-a754-92dc9452f31d',
+			})),
 		})),
 	};
 });
@@ -314,7 +330,15 @@ describe('getIsUniqueIDRepeated', () => {
 						},
 					]
 			),
+			receiveBlocks: jest.fn(() => ({
+				'group-maxi-1': '36d5807b-981b-4d80-88ea-21fef846647d',
+				'text-maxi-1': 'a8db982d-4460-4092-8c34-3e7d8ff1623f',
+				'group-maxi-2': '437157e6-2af5-4e6e-8b2c-f2274fff85eb',
+				// eslint-disable-next-line no-dupe-keys
+				'text-maxi-1': '687687a4-0636-4b9a-a70c-979ef4dbad60',
+			})),
 		}));
+
 		expect(getIsUniqueIDRepeated('text-maxi-1')).toBe(true);
 	});
 });

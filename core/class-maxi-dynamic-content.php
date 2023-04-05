@@ -27,7 +27,7 @@ class MaxiBlocks_DynamicContent
     /**
      * Variables
      */
-    private static $dynamicContentAttributes = [
+    private static $dynamic_content_attributes = [
         'dc-error' => [
             'type' => 'string',
             'default' => '',
@@ -158,19 +158,19 @@ class MaxiBlocks_DynamicContent
             'api_version' => 2,
             'editor_script' => 'maxi-blocks-block-editor',
             'render_callback' => [$this, 'render_dc'],
-            'attributes' => self::$dynamicContentAttributes,
+            'attributes' => self::$dynamic_content_attributes,
         ));
         register_block_type('maxi-blocks/button-maxi', array(
             'api_version' => 2,
             'editor_script' => 'maxi-blocks-block-editor',
             'render_callback' => [$this, 'render_dc'],
-            'attributes' => self::$dynamicContentAttributes,
+            'attributes' => self::$dynamic_content_attributes,
         ));
         register_block_type('maxi-blocks/image-maxi', array(
             'api_version' => 2,
             'editor_script' => 'maxi-blocks-block-editor',
             'render_callback' => [$this, 'render_dc'],
-            'attributes' => self::$dynamicContentAttributes,
+            'attributes' => self::$dynamic_content_attributes,
         ));
     }
 

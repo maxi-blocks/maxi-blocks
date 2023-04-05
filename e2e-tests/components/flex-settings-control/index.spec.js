@@ -19,11 +19,7 @@ describe('FlexSettings', () => {
 	it('Checking the flex options', async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Group Maxi');
-		const accordionPanel = await openSidebarTab(
-			page,
-			'advanced',
-			'flexbox'
-		);
+		let accordionPanel = await openSidebarTab(page, 'advanced', 'flexbox');
 
 		await page.$$eval(
 			'.maxi-flex-wrap-control .maxi-tabs-control button',
@@ -98,10 +94,13 @@ describe('FlexSettings', () => {
 			button => button.click()
 		);
 
+		await accordionPanel.waitForSelector('.maxi-warning-box');
 		const warningBox = await accordionPanel.$eval(
 			'.maxi-warning-box',
 			content => content.innerHTML
 		);
+		// console.error('hey!');
+
 		expect(warningBox).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
@@ -118,35 +117,45 @@ describe('FlexSettings', () => {
 			button => button.click()
 		);
 
+		await page.waitForTimeout(100);
+
+		accordionPanel = await openSidebarTab(page, 'advanced', 'flexbox');
+
 		await accordionPanel.$eval(
 			'.maxi-settingstab-control_has-border-left-right .maxi-tabs-control__button-flex-child',
 			button => button.click()
 		);
 
-		await page.waitForSelector('.maxi-typography-control__order');
+		await page.waitForSelector('.maxi-flex-settings-control__order');
 		await editAdvancedNumberControl({
 			page,
-			instance: await page.$('.maxi-typography-control__order'),
+			instance: await accordionPanel.$(
+				'.maxi-flex-settings-control__order'
+			),
 			newNumber: '4',
 		});
 
-		await page.waitForSelector('.maxi-typography-control__flex-grow');
+		await page.waitForSelector('.maxi-flex-settings-control__flex-grow');
 		await editAdvancedNumberControl({
 			page,
-			instance: await page.$('.maxi-typography-control__flex-grow'),
+			instance: await accordionPanel.$(
+				'.maxi-flex-settings-control__flex-grow'
+			),
 			newNumber: '10',
 		});
 
-		await page.waitForSelector('.maxi-typography-control__flex-shrink');
+		await page.waitForSelector('.maxi-flex-settings-control__flex-shrink');
 		await editAdvancedNumberControl({
 			page,
-			instance: await page.$('.maxi-typography-control__flex-shrink'),
+			instance: await accordionPanel.$(
+				'.maxi-flex-settings-control__flex-shrink'
+			),
 			newNumber: '6',
 		});
 		await page.waitForTimeout(100);
 
 		const flexBasisSelector = await page.$(
-			'.maxi-typography-control__flex-basis .maxi-select-control__input'
+			'.maxi-flex-settings-control__flex-basis .maxi-select-control__input'
 		);
 		await page.waitForTimeout(100);
 
@@ -171,14 +180,14 @@ describe('FlexSettings', () => {
 
 		// expect custom flex-basis
 		const flexBasisCustomSelector = await page.$(
-			'.maxi-typography-control__flex-basis .maxi-select-control__input'
+			'.maxi-flex-settings-control__flex-basis .maxi-select-control__input'
 		);
 		await flexBasisCustomSelector.select('custom');
 
 		await editAdvancedNumberControl({
 			page,
 			instance: await page.$(
-				'.maxi-typography-control__custom-flex-basis'
+				'.maxi-flex-settings-control__custom-flex-basis'
 			),
 			newNumber: '33',
 			newValue: '%',
@@ -193,31 +202,31 @@ describe('FlexSettings', () => {
 		// check s
 		await changeResponsive(page, 's');
 
-		await page.waitForSelector('.maxi-typography-control__order');
+		await page.waitForSelector('.maxi-flex-settings-control__order');
 		await editAdvancedNumberControl({
 			page,
-			instance: await page.$('.maxi-typography-control__order'),
+			instance: await page.$('.maxi-flex-settings-control__order'),
 			newNumber: '2',
 		});
 
-		await page.waitForSelector('.maxi-typography-control__flex-grow');
+		await page.waitForSelector('.maxi-flex-settings-control__flex-grow');
 		await editAdvancedNumberControl({
 			page,
-			instance: await page.$('.maxi-typography-control__flex-grow'),
+			instance: await page.$('.maxi-flex-settings-control__flex-grow'),
 			newNumber: '5',
 		});
 
-		await page.waitForSelector('.maxi-typography-control__flex-shrink');
+		await page.waitForSelector('.maxi-flex-settings-control__flex-shrink');
 		await editAdvancedNumberControl({
 			page,
-			instance: await page.$('.maxi-typography-control__flex-shrink'),
+			instance: await page.$('.maxi-flex-settings-control__flex-shrink'),
 			newNumber: '4',
 		});
 
 		await page.waitForTimeout(100);
 
 		const flexBasisSelectorS = await page.$(
-			'.maxi-typography-control__flex-basis .maxi-select-control__input'
+			'.maxi-flex-settings-control__flex-basis .maxi-select-control__input'
 		);
 		await page.waitForTimeout(100);
 
@@ -240,29 +249,32 @@ describe('FlexSettings', () => {
 
 		// check xs
 		await changeResponsive(page, 'xs');
+		await page.waitForSelector(
+			'.maxi-flex-settings-control__flex-shrink input'
+		);
 		const flexShrinkXS = await page.$eval(
-			'.maxi-typography-control__flex-shrink input',
+			'.maxi-flex-settings-control__flex-shrink input',
 			input => input.value
 		);
 
 		expect(flexShrinkXS).toStrictEqual('4');
 
 		const flexGrowXS = await page.$eval(
-			'.maxi-typography-control__flex-grow input',
+			'.maxi-flex-settings-control__flex-grow input',
 			input => input.value
 		);
 
 		expect(flexGrowXS).toStrictEqual('5');
 
 		const orderXS = await page.$eval(
-			'.maxi-typography-control__order input',
+			'.maxi-flex-settings-control__order input',
 			input => input.value
 		);
 
 		expect(orderXS).toStrictEqual('2');
 
 		const flexBasisXS = await page.$eval(
-			'.maxi-typography-control__flex-basis .maxi-select-control__input',
+			'.maxi-flex-settings-control__flex-basis .maxi-select-control__input',
 			input => input.value
 		);
 
@@ -271,22 +283,25 @@ describe('FlexSettings', () => {
 		// check m
 		await changeResponsive(page, 'm');
 
+		await page.waitForSelector(
+			'.maxi-flex-settings-control__flex-shrink input'
+		);
 		const flexShrinkM = await page.$eval(
-			'.maxi-typography-control__flex-shrink input',
+			'.maxi-flex-settings-control__flex-shrink input',
 			input => input.value
 		);
 
 		expect(flexShrinkM).toStrictEqual('6');
 
 		const flexGrowM = await page.$eval(
-			'.maxi-typography-control__flex-grow input',
+			'.maxi-flex-settings-control__flex-grow input',
 			input => input.value
 		);
 
 		expect(flexGrowM).toStrictEqual('10');
 
 		const orderM = await page.$eval(
-			'.maxi-typography-control__order input',
+			'.maxi-flex-settings-control__order input',
 			input => input.value
 		);
 
@@ -295,13 +310,19 @@ describe('FlexSettings', () => {
 		await page.waitForTimeout(100);
 
 		const flexBasisM = await page.$eval(
-			'.maxi-typography-control__flex-basis .maxi-select-control__input',
+			'.maxi-flex-settings-control__flex-basis .maxi-select-control__input',
 			input => input.value
 		);
 
 		expect(flexBasisM).toStrictEqual('custom');
 
 		// warning box
+		await accordionPanel.$eval(
+			'.maxi-settingstab-control_has-border-left-right .maxi-tabs-control__button-flex-parent',
+			button => button.click()
+		);
+
+		await accordionPanel.waitForSelector('.maxi-warning-box');
 		const warningBoxFlex = await accordionPanel.$eval(
 			'.maxi-warning-box',
 			content => content.innerHTML

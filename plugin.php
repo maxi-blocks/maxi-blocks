@@ -7,7 +7,7 @@
  * Author: Maxi Blocks
  * Author URI: https://maxiblocks.com/
  * Version: 1.0.0-RC2
- * Requires at least: 6.1
+ * Requires at least: 6.2
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  */

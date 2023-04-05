@@ -28,6 +28,130 @@ class MaxiBlocks_DynamicContent
     }
 
     /**
+     * Variables
+     */
+    private static $dynamicContentAttributes = [
+        'dc-error' => [
+            'type' => 'string',
+            'default' => '',
+        ],
+        'dc-status' => [
+            'type' => 'boolean',
+            'default' => false,
+        ],
+        'dc-type' => [
+            'type' => 'string',
+            'default' => 'posts',
+        ],
+        'dc-relation' => [
+            'type' => 'string',
+            'default' => 'by-id',
+        ],
+        'dc-id' => [
+            'type' => 'number',
+        ],
+        'dc-author' => [
+            'type' => 'number',
+        ],
+        'dc-show' => [
+            'type' => 'string',
+            'default' => 'current',
+        ],
+        'dc-field' => [
+            'type' => 'string',
+        ],
+        'dc-format' => [
+            'type' => 'string',
+            'default' => 'd.m.Y t',
+        ],
+        'dc-custom-format' => [
+            'type' => 'string',
+        ],
+        'dc-custom-date' => [
+            'type' => 'boolean',
+            'default' => false,
+        ],
+        'dc-year' => [
+            'type' => 'string',
+            'default' => 'numeric',
+        ],
+        'dc-month' => [
+            'type' => 'string',
+            'default' => 'numeric',
+        ],
+        'dc-day' => [
+            'type' => 'string',
+            'default' => 'numeric',
+        ],
+        'dc-hour' => [
+            'type' => 'boolean',
+            'default' => 'numeric',
+        ],
+        'dc-hour12' => [
+            'type' => 'string',
+            'default' => false,
+        ],
+        'dc-minute' => [
+            'type' => 'string',
+            'default' => 'numeric',
+        ],
+        'dc-second' => [
+            'type' => 'string',
+            'default' => 'numeric',
+        ],
+        'dc-locale' => [
+            'type' => 'string',
+            'default' => 'en',
+        ],
+        'dc-timezone' => [
+            'type' => 'string',
+            'default' => 'Europe/London',
+        ],
+        'dc-timezone-name' => [
+            'type' => 'string',
+            'default' => 'none',
+        ],
+        'dc-weekday' => [
+            'type' => 'string',
+        ],
+        'dc-era' => [
+            'type' => 'string',
+        ],
+        'dc-limit' => [
+            'type' => 'number',
+            'default' => 100,
+        ],
+        'dc-content' => [
+            'type' => 'string',
+        ],
+        'dc-media-id' => [
+            'type' => 'number',
+        ],
+        'dc-media-url' => [
+            'type' => 'string',
+        ],
+        'dc-media-caption' => [
+            'type' => 'string',
+        ],
+        'dc-link-status' => [
+            'type' => 'boolean',
+        ],
+        'dc-link-url' => [
+            'type' => 'string',
+        ],
+        'dc-post-taxonomy-links-status' => [
+            'type' => 'boolean',
+        ],
+        'dc-custom-delimiter-status' => [
+            'type' => 'boolean',
+        ],
+        'dc-delimiter-content' => [
+            'type' => 'string',
+            'default' => '',
+        ],
+    ];
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -37,16 +161,19 @@ class MaxiBlocks_DynamicContent
             'api_version' => 2,
             'editor_script' => 'maxi-blocks-block-editor',
             'render_callback' => [$this, 'render_dc'],
+            'attributes' => self::$dynamicContentAttributes,
         ));
         register_block_type('maxi-blocks/button-maxi', array(
             'api_version' => 2,
             'editor_script' => 'maxi-blocks-block-editor',
             'render_callback' => [$this, 'render_dc'],
+            'attributes' => self::$dynamicContentAttributes,
         ));
         register_block_type('maxi-blocks/image-maxi', array(
             'api_version' => 2,
             'editor_script' => 'maxi-blocks-block-editor',
             'render_callback' => [$this, 'render_dc'],
+            'attributes' => self::$dynamicContentAttributes,
         ));
     }
 
@@ -351,6 +478,8 @@ class MaxiBlocks_DynamicContent
         @list(
             'dc-field' => $dc_field,
             'dc-limit' => $dc_limit,
+            'dc-delimiter-content' => $dc_delimiter,
+            'dc-post-taxonomy-links-status' => $dc_post_taxonomy_links_status,
         ) = $attributes;
 
         $post = $this->get_post($attributes);
@@ -387,6 +516,29 @@ class MaxiBlocks_DynamicContent
         // In case is author, get author name
         if ($dc_field === 'author') {
             $post_data = get_the_author_meta('display_name', $post->post_author);
+        }
+
+        if (in_array($dc_field, ['categories', 'tags'])) {
+            $field_name_to_taxonomy = [
+                'tags' => 'post_tag',
+                'categories' => 'category',
+            ];
+
+            $taxonomy_list = wp_get_post_terms($post->ID, $field_name_to_taxonomy[$dc_field]);
+            $taxonomy_content = [];
+
+            function get_item_content($item, $link_status)
+            {
+                return ($link_status)
+                    ? '<a href="' . get_term_link($item) . '"><span>' . $item->name . '</span></a>'
+                    : $item->name;
+            }
+
+            foreach ($taxonomy_list as $taxonomy_item) {
+                $taxonomy_content[] = get_item_content($taxonomy_item, $dc_post_taxonomy_links_status);
+            }
+
+            $post_data = implode("$dc_delimiter ", $taxonomy_content);
         }
 
         return $post_data;

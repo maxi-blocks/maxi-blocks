@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { sprintf, __ } from '@wordpress/i18n';
 import {
 	useCallback,
 	useContext,
@@ -37,6 +37,12 @@ import { getDCValues, LoopContext } from '../../extensions/DC';
  */
 import { isEmpty, isFinite, isNil, capitalize, isEqual } from 'lodash';
 import classnames from 'classnames';
+import TextControl from '../text-control';
+
+/**
+ * Styles
+ */
+import './editor.scss';
 
 /**
  * Dynamic Content
@@ -66,10 +72,19 @@ const DynamicContent = props => {
 		field,
 		author,
 		limit,
+		delimiterContent,
+		customDelimiterStatus,
+		postTaxonomyLinksStatus,
 		error,
 		order,
 		accumulator,
 	} = dcValues;
+	const delimiterOptions = [
+		{ label: __('None', 'maxi-blocks'), value: '' },
+		{ label: __('Comma', 'maxi-blocks'), value: ',' },
+		{ label: __('Semicolon', 'maxi-blocks'), value: ';' },
+		{ label: __('Custom', 'maxi-blocks'), value: 'custom' },
+	];
 
 	const changeProps = params => {
 		const hasChangesToSave = Object.entries(dynamicContent).some(
@@ -373,6 +388,61 @@ const DynamicContent = props => {
 									onChange={obj => changeProps(obj)}
 									{...dcValues}
 								/>
+							)}
+							{['tags', 'categories'].includes(field) && !error && (
+								<>
+									<ToggleSwitch
+										label={__(
+											sprintf('Use %s links', field),
+											'maxi-blocks'
+										)}
+										selected={postTaxonomyLinksStatus}
+										onChange={value =>
+											changeProps({
+												'dc-post-taxonomy-links-status':
+													value,
+											})
+										}
+									/>
+									<SelectControl
+										label={__('Delimiter', 'maxi-blocks')}
+										value={
+											customDelimiterStatus
+												? 'custom'
+												: delimiterContent
+										}
+										options={delimiterOptions}
+										onChange={value => {
+											changeProps(
+												value === 'custom'
+													? {
+															'dc-custom-delimiter-status': true,
+													  }
+													: {
+															'dc-custom-delimiter-status': false,
+															'dc-delimiter-content':
+																value,
+													  }
+											);
+										}}
+									/>
+									{customDelimiterStatus && (
+										<TextControl
+											className='maxi-dynamic-content__custom-delimiter'
+											label={__(
+												'Custom delimiter',
+												'maxi-blocks'
+											)}
+											value={delimiterContent}
+											onChange={value =>
+												changeProps({
+													'dc-delimiter-content':
+														value,
+												})
+											}
+										/>
+									)}
+								</>
 							)}
 						</>
 					)}

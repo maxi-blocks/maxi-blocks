@@ -55,8 +55,16 @@ const withMaxiDC = createHigherOrderComponent(
 				]
 			);
 
-			const { status, content, type, field, id, customDate, linkStatus } =
-				dynamicContentProps;
+			const {
+				status,
+				content,
+				type,
+				field,
+				id,
+				customDate,
+				linkStatus,
+				postTaxonomyLinksStatus,
+			} = dynamicContentProps;
 
 			const contentType = useMemo(
 				() => getBlockData(name)?.dcContentType,
@@ -81,6 +89,13 @@ const withMaxiDC = createHigherOrderComponent(
 					const dcLink = await getDCLink(dynamicContentProps);
 					const isSameLink = dcLink === newLinkSettings.url;
 
+					if (
+						postTaxonomyLinksStatus !== !!newLinkSettings.disabled
+					) {
+						newLinkSettings.disabled = postTaxonomyLinksStatus;
+
+						updateLinkSettings = true;
+					}
 					if (!isSameLink && linkStatus && !isNil(dcLink)) {
 						newLinkSettings.url = dcLink;
 

@@ -31,7 +31,16 @@ const getDCContent = async dataRequest => {
 
 	if (!data) return null;
 
-	const { type, field, limit, customDate, format, locale } = dataRequest;
+	const {
+		type,
+		field,
+		limit,
+		delimiterContent,
+		customDate,
+		format,
+		locale,
+		postTaxonomyLinksStatus,
+	} = dataRequest;
 
 	let contentValue;
 
@@ -90,6 +99,29 @@ const getDCContent = async dataRequest => {
 
 			contentValue = parent[0].name;
 		}
+	}
+	if (['tags', 'categories'].includes(field)) {
+		const { getEntityRecord } = resolveSelect('core');
+		const idArray = contentValue;
+
+		const getItemContent = item =>
+			postTaxonomyLinksStatus
+				? `<a href="${item.link}" class="maxi-text-block--link"><span>${item.name}</span></a>`
+				: item.name;
+
+		const namesArray = await Promise.all(
+			idArray.map(async id => {
+				const taxonomyItem = await getEntityRecord(
+					'taxonomy',
+					nameDictionary[field],
+					id
+				);
+
+				return getItemContent(taxonomyItem);
+			})
+		);
+
+		contentValue = namesArray.join(`${delimiterContent} `);
 	}
 
 	if (contentValue) return contentValue;

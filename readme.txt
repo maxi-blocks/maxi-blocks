@@ -229,51 +229,85 @@ Install the Maxi Blocks plugin from the WordPress plugin directory in your WordP
 
 _Updates: 5 April 2023_
 
+- Main Maxi block component optimization
+- Library loader
+- Issue 4514 - DC UI
+- Fixed Title for SC library
+- Issue 3790 & 4222 - IB labels problem
+- Fix Svg for button icon border
+- Issue 4505 - Range tooltip position for long numbers
+- Issue 4561 - load default font weight for sc fonts
+- Toolbar Background Color UI
+- Issue 4610 minor button label spacing
+- Add 2 more custom css server errors to ignore
+- Fixed Alignment bg color
+- Disallowed template library for some blocks
+- Issue 4233 - Button bottom gap remove
+- Issue - Fix button migrators
+- Issue 4322 - Font weight on family change
+- Issue 4507 - FSE. IB work fix on pattern inserting/block duplication/copy-paste
+- Inherit border color for text-block
+- Fix Fatal error: Cannot redeclare filterNull()
+- Issue 4612 - IB relation label substring
+- Issue 4307 - NC text element bugs
+- Removing underline from links removes the link
+- Issue 4467 - Toolbar settings cut off fix
+- Issue 4630 - theme bugs
+- Image Maxi HoverPreview incongruence
+- Issue 4650 - fix wrong css for non full width blocks
+- Issue 4656 - fix pane header and content size settings
+- Issue 4369 - FSE. 'home' slug support
+- Fix return for useEffect
+- Issue 4662 – DC. Get by date and get alphabetical relations
+- Issue 4572 - Breadcrumbs disappear on Text Maxi
+- Issue 4654 - accordion icon hover
+- Issue 4680 - Text font size limit in toolbar
+- Fix button presets
+
 
 _Updates: 28 March 2023_
 
-- Translations pot file in #4425
-- Issue 4406 - Modal items titles in #4407
-- Issue 4393 - Block indicators z-index in #4413
-- Issue 4124 - Column value on responsive resetting in #4420
-- Issue 4349 - Style cards test in #4421
-- Issue 4411 - Copy/paste UI in #4414
-- Issue 4416 - Baby toolbar z-index in #4426
-- Issue 4388 - svg-icon-maxi fit-height support in #4422
-- Issue 4392 - Scroll effects default values in #4401
-- Map fixes #4412
-- Issue 4437 - Margin conflict on full width Containers in #4439
-- Transition migrator from old broken patterns in #4438
-- Issue 4419 - Show/hide fixes by #4428
-- Fix column outline after resetting in #4250
-- v1.0.0-RC1 by #4423
-- Issue 4432 - fix IB relations dissapearing on switch to code editor #4453
-- Issue 4368 - Replace bg shape image in copypasted block fix #4405
-- Issue 4411 - Special paste UI #4442
-- Issue 4447 - Only the last font weight from the page is loaded on frontend #4452
-- Bump dns-packet from 5.3.1 to 5.4.0 #4474
-- Fix CustomCSS validations fake positives in tests #4472
-- Lazy load and Suspense for blocks and inspectors #4443
-- Update typesense node url #4477
-- Issue 4468 - Popover arrow #4481
-- Issue 4490 - Hides image dimension from toolbar #4493
-- Issue 4464 - fix image disappearing on changing shape mask #4484
-- Issue 4451 - Don't set unnecessary height for svg-icon-maxi #4497
-- Issue 4359 - list markers #4473
-- Issue 4499 - Paste part 3 #4501
-- Issue 4176 - image-maxi: canvas max-height fix #4503
-- Issue 4360 - Correct column size styles on small devices #4506
-- Issue 4411 - Special paste UI part 3 #4502
-- Issues 4487 & 4489 - Suspense Lazy load issues #4491
-- Issue 3388 - DC by #4430
-- Issue 4394 - calculating margin value for different themes #4522
-- Fix Maxi Blocks for WP 6.2 (beta 5) and 6.1.1 #4508
-- Bump webpack from 5.72.0 to 5.76.1 by @dependabot in #4548
-- Issue 4510 button #4539
-- Deal with version rollback for wp #4549
-- Removes unused code in maxiBlockComponent.js  #4553
-- Add missing alt tag for parallax images #4546
-- New block Loader by #4557
+- Translations pot file
+- Issue 4406 - Modal items titles
+- Issue 4393 - Block indicators z-index
+- Issue 4124 - Column value on responsive resetting
+- Issue 4349 - Style cards test
+- Issue 4411 - Copy/paste UI
+- Issue 4416 - Baby toolbar z-index
+- Issue 4388 - svg-icon-maxi fit-height support
+- Issue 4392 - Scroll effects default values
+- Issue 4437 - Margin conflict on full width Containers
+- Transition migrator from old broken patterns
+- Issue 4419 - Show/hide fixes
+- Fix column outline after resetting
+- v1.0.0-RC1
+- Issue 4432 - fix IB relations dissapearing on switch to code editor
+- Issue 4368 - Replace bg shape image in copypasted block fix
+- Issue 4411 - Special paste UI
+- Issue 4447 - Only the last font weight from the page is loaded on frontend
+- Bump dns-packet from 5.3.1 to 5.4.0
+- Fix CustomCSS validations fake positives in tests
+- Lazy load and Suspense for blocks and inspectors
+- Update typesense node url
+- Issue 4468 - Popover arrow
+- Issue 4490 - Hides image dimension from toolbar
+- Issue 4464 - fix image disappearing on changing shape mask
+- Issue 4451 - Don't set unnecessary height for svg-icon-maxi
+- Issue 4359 - list markers
+- Issue 4499 - Paste part 3
+- Issue 4176 - image-maxi: canvas max-height fix
+- Issue 4360 - Correct column size styles on small devices
+- Issue 4411 - Special paste UI part 3
+- Issues 4487 & 4489 - Suspense Lazy load issues
+- Issue 3388 - DC
+- Issue 4394 - calculating margin value for different themes
+- Fix Maxi Blocks for WP 6.2 (beta 5) and 6.1.1
+- Bump webpack from 5.72.0 to 5.76.1
+- Issue 4510 button
+- Deal with version rollback for wp
+- Removes unused code in maxiBlockComponent.js
+- Add missing alt tag for parallax images
+- New block Loader
 
 == Upgrade Notice ==
 

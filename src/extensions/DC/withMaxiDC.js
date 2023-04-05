@@ -43,7 +43,7 @@ const withMaxiDC = createHigherOrderComponent(
 				'dc-id': id,
 				'dc-custom-date': isCustomDate,
 				'dc-link-status': linkStatus,
-				'dc-post-taxonomy-links-status': dcPostTaxonomyLinksStatus,
+				'dc-post-taxonomy-links-status': postTaxonomyLinksStatus,
 			} = dynamicContentProps;
 
 			const fetchDcData = useCallback(async () => {
@@ -65,9 +65,9 @@ const withMaxiDC = createHigherOrderComponent(
 					const isSameLink = dcLink === newLinkSettings.url;
 
 					if (
-						dcPostTaxonomyLinksStatus !== !!newLinkSettings.disabled
+						postTaxonomyLinksStatus !== !!newLinkSettings.disabled
 					) {
-						newLinkSettings.disabled = dcPostTaxonomyLinksStatus;
+						newLinkSettings.disabled = postTaxonomyLinksStatus;
 
 						updateLinkSettings = true;
 					}

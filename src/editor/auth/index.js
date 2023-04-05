@@ -18,23 +18,40 @@ export const authClient = () => {
 
 	const account = new Account(client);
 
-	fetch('https://my.maxiblocks.com/plugin-api-fwefqw.php')
-		.then(response => {
-			if (response.status !== 200) {
-				console.log(
-					`Looks like there was a problem. Status Code: ${response.status}`
-				);
-				return;
-			}
+	// fetch('https://my.maxiblocks.com/plugin-api-fwefqw.php')
+	// 	.then(response => {
+	// 		if (response.status !== 200) {
+	// 			console.error(
+	// 				`Looks like there was a problem with an API call. Status Code: ${response.status}`
+	// 			);
+	// 			return;
+	// 		}
 
-			// Examine the text in the response
-			response.text().then(data => {
-				console.log(data);
-			});
-		})
-		.catch(err => {
-			console.log('Fetch Error :-S', err);
+	// 		// Examine the text in the response
+	// 		response.text().then(data => {
+	// 			console.log(data);
+	// 		});
+	// 	})
+	// 	.catch(err => {
+	// 		console.error('Fetch Error for the API call:', err);
+	// 	});
+
+	const userAction = async () => {
+		await fetch('https://auth.maxiblocks.com/v1/account/jwt', {
+			method: 'POST',
+			body: '', // string or object
+			headers: {
+				HOST: 'auth.maxiblocks.com',
+				'Content-Type': 'application/json',
+				'X-Appwrite-Response-Format': '1.0.0',
+				'X-Appwrite-Project': 'maxi',
+			},
+		}).then(response => {
+			console.log('here');
+			console.log(response);
 		});
+	};
+	userAction();
 
 	return { client, account };
 };
@@ -45,11 +62,9 @@ export async function authConnect(withRedirect = false) {
 	const userInfo = authClient().account.get();
 	userInfo
 		.then(response => {
-			console.log(response);
 			if (response.status) {
 				if (response?.prefs?.pro_active) {
 					console.log("dispatch('maxiBlocks/pro')");
-					console.log(response?.name);
 					dispatch('maxiBlocks/pro').saveMaxiProStatus({
 						status: 'yes',
 						name: response?.name,

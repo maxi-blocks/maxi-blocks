@@ -20,6 +20,10 @@
 		width: 33.3333333333%;
 		padding: 0 5px;
 
+		&:active {
+			color: #ff4a17 !important;
+		}
+
 		&:hover {
 			border-color: #ff4a17;
 			color: #ff4a17;

@@ -626,7 +626,7 @@ class MaxiBlocks_DynamicContent
 
     public function order_callback($attributes)
     {
-        $relation = $attributes['dc-relation'] ?? $attributes['cl-relation'] ?? null;
+        $relation = $attributes['dc-relation'] ?? null;
         return $relation === 'by-date' ? 'desc' : 'asc';
     }
 

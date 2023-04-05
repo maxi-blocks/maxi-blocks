@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { clAttributeDefaults } from './constants';
+import { attributeDefaults } from './constants';
 
 /**
  * External dependencies
@@ -13,10 +13,10 @@ const getCLAttributes = contextLoop =>
 		if (!isNil(value)) acc[key] = value;
 		else {
 			const target = key.replace('cl-', '');
-			if (isFunction(clAttributeDefaults?.[target])) {
-				acc[key] = clAttributeDefaults?.[target](contextLoop);
+			if (isFunction(attributeDefaults?.[target])) {
+				acc[key] = attributeDefaults?.[target](contextLoop);
 			} else {
-				acc[key] = clAttributeDefaults?.[target];
+				acc[key] = attributeDefaults?.[target];
 			}
 		}
 

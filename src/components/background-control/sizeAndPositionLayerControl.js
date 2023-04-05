@@ -242,7 +242,7 @@ const SizeAndPositionLayerControl = ({
 				{...equivalentProps}
 				options={options}
 				isLayer={isLayer}
-				onlyWidth
+				onlyWidth={onlyWidth}
 			/>
 			<PositionControl
 				{...options}

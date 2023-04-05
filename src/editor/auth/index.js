@@ -18,8 +18,23 @@ export const authClient = () => {
 
 	const account = new Account(client);
 
-	console.log('account');
-	console.log(account);
+	fetch('https://my.maxiblocks.com/plugin-api-fwefqw.php')
+		.then(response => {
+			if (response.status !== 200) {
+				console.log(
+					`Looks like there was a problem. Status Code: ${response.status}`
+				);
+				return;
+			}
+
+			// Examine the text in the response
+			response.text().then(data => {
+				console.log(data);
+			});
+		})
+		.catch(err => {
+			console.log('Fetch Error :-S', err);
+		});
 
 	return { client, account };
 };

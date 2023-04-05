@@ -62,16 +62,17 @@ export const getIdOptions = async (type, relation, author) => {
 	return data;
 };
 
-const disabledType = (valueType, contentType) => {
-	const hide = options =>
-		Object.keys(options).forEach(key => {
-			if (options[key].value === valueType) {
-				options[key].disabled = true;
-			}
-		});
+// TODO: looks like it's not necessary
+// const disabledType = (valueType, contentType) => {
+// 	const hide = options =>
+// 		Object.keys(options).forEach(key => {
+// 			if (options[key].value === valueType) {
+// 				options[key].disabled = true;
+// 			}
+// 		});
 
-	hide(typeOptions[contentType]);
-};
+// 	hide(typeOptions[contentType]);
+// };
 
 const getDCOptions = async (
 	dataRequest,

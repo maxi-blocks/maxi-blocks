@@ -112,7 +112,7 @@ const withMaxiDC = createHigherOrderComponent(
 				isObject(contextLoop) ? Object.values(contextLoop) : [],
 			]);
 
-			const fetchDcData = useCallback(async () => {
+			const fetchAndUpdateDCData = useCallback(async () => {
 				if (
 					status &&
 					!isNil(type) &&
@@ -230,8 +230,8 @@ const withMaxiDC = createHigherOrderComponent(
 			});
 
 			useEffect(() => {
-				fetchDcData().catch(console.error);
-			}, [fetchDcData, Object.values(dynamicContentProps)]);
+				fetchAndUpdateDCData().catch(console.error);
+			}, [fetchAndUpdateDCData, Object.values(dynamicContentProps)]);
 
 			return <WrappedComponent {...ownProps} />;
 		}),

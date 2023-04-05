@@ -5,6 +5,7 @@ import {
 	createNewPost,
 	pressKeyWithModifier,
 	selectBlockByClientId,
+	saveDraft,
 } from '@wordpress/e2e-test-utils';
 
 /**
@@ -54,6 +55,8 @@ describe('Divider Maxi hover simple actions', () => {
 	});
 
 	const checkFrontend = async () => {
+		await saveDraft();
+
 		const previewPage = await openPreviewPage(page);
 		await previewPage.waitForSelector('.entry-content');
 

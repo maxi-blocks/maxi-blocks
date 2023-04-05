@@ -84,12 +84,18 @@ describe('ColumnPattern', () => {
 		// s responsive
 		await changeResponsive(page, 's');
 
-		await page.$$eval(
+		let accordionControl = await openSidebarTab(
+			page,
+			'style',
+			'column picker'
+		);
+
+		await accordionControl.$$eval(
 			'.components-column-pattern__templates button',
 			click => click[1].click()
 		);
 
-		const buttonClick = await page.$$eval(
+		const buttonClick = await accordionControl.$$eval(
 			'.components-column-pattern__templates button',
 			button => button[1].ariaPressed
 		);
@@ -101,7 +107,7 @@ describe('ColumnPattern', () => {
 		// row gap S
 		await editAdvancedNumberControl({
 			page,
-			instance: await page.$(
+			instance: await accordionControl.$(
 				'.maxi-gap-control .maxi-gap-control__row-gap'
 			),
 			newNumber: '6',
@@ -111,7 +117,7 @@ describe('ColumnPattern', () => {
 		// column gap S
 		await editAdvancedNumberControl({
 			page,
-			instance: await page.$(
+			instance: await accordionControl.$(
 				'.maxi-gap-control .maxi-gap-control__column-gap'
 			),
 			newNumber: '12',
@@ -127,27 +133,29 @@ describe('ColumnPattern', () => {
 		// xs responsive
 		await changeResponsive(page, 'xs');
 
-		const rowSelectedXs = await page.$$eval(
+		accordionControl = await openSidebarTab(page, 'style', 'column picker');
+
+		const rowSelectedXs = await accordionControl.$$eval(
 			'.components-column-pattern__templates button',
 			button => button[1].ariaPressed
 		);
 
 		expect(rowSelectedXs).toBeTruthy();
 
-		const rowGapValueXs = await page.$eval(
+		const rowGapValueXs = await accordionControl.$eval(
 			'.maxi-gap-control .maxi-gap-control__row-gap input',
 			input => input.value
 		);
-		const rowGapSelectXs = await page.$eval(
+		const rowGapSelectXs = await accordionControl.$eval(
 			'.maxi-gap-control .maxi-gap-control__row-gap select',
 			input => input.value
 		);
 
-		const columnGapValueXs = await page.$eval(
+		const columnGapValueXs = await accordionControl.$eval(
 			'.maxi-gap-control .maxi-gap-control__column-gap input',
 			input => input.value
 		);
-		const columnGapSelectXs = await page.$eval(
+		const columnGapSelectXs = await accordionControl.$eval(
 			'.maxi-gap-control .maxi-gap-control__column-gap select',
 			input => input.value
 		);
@@ -161,27 +169,29 @@ describe('ColumnPattern', () => {
 		// m responsive
 		await changeResponsive(page, 'm');
 
-		const rowSelectedL = await page.$$eval(
+		accordionControl = await openSidebarTab(page, 'style', 'column picker');
+
+		const rowSelectedL = await accordionControl.$$eval(
 			'.components-column-pattern__templates button',
 			button => button[0].ariaPressed
 		);
 
 		expect(rowSelectedL).toBeTruthy();
 
-		const rowGapValueM = await page.$eval(
+		const rowGapValueM = await accordionControl.$eval(
 			'.maxi-gap-control .maxi-gap-control__row-gap input',
 			input => input.value
 		);
-		const rowGapSelectM = await page.$eval(
+		const rowGapSelectM = await accordionControl.$eval(
 			'.maxi-gap-control .maxi-gap-control__row-gap select',
 			input => input.value
 		);
 
-		const columnGapValueM = await page.$eval(
+		const columnGapValueM = await accordionControl.$eval(
 			'.maxi-gap-control .maxi-gap-control__column-gap input',
 			input => input.value
 		);
-		const columnGapSelectM = await page.$eval(
+		const columnGapSelectM = await accordionControl.$eval(
 			'.maxi-gap-control .maxi-gap-control__column-gap select',
 			input => input.value
 		);

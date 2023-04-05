@@ -1,7 +1,11 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
+import {
+	createNewPost,
+	pressKeyWithModifier,
+	saveDraft,
+} from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -54,6 +58,8 @@ describe('Button Maxi hover simple actions', () => {
 	});
 
 	const checkFrontend = async () => {
+		await saveDraft();
+
 		const previewPage = await openPreviewPage(page);
 		await previewPage.waitForSelector('.entry-content');
 

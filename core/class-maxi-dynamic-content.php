@@ -15,8 +15,6 @@ class MaxiBlocks_DynamicContent
      */
     private static $instance;
 
-    private static $custom_data = null;
-
     /**
      * Registers the plugin.
      */
@@ -30,6 +28,8 @@ class MaxiBlocks_DynamicContent
     /**
      * Variables
      */
+    private static $custom_data = null;
+
     private static $dynamicContentAttributes = [
         'dc-error' => [
             'type' => 'string',
@@ -37,15 +37,12 @@ class MaxiBlocks_DynamicContent
         ],
         'dc-status' => [
             'type' => 'boolean',
-            'default' => false,
         ],
         'dc-type' => [
             'type' => 'string',
-            'default' => 'posts',
         ],
         'dc-relation' => [
             'type' => 'string',
-            'default' => 'by-id',
         ],
         'dc-id' => [
             'type' => 'number',
@@ -149,6 +146,12 @@ class MaxiBlocks_DynamicContent
             'type' => 'string',
             'default' => '',
         ],
+        'dc-order' => [
+            'type' => 'string',
+        ],
+        'dc-accumulator' => [
+            'type' => 'number',
+        ],
     ];
 
     /**
@@ -195,10 +198,13 @@ class MaxiBlocks_DynamicContent
             }
         }
 
+        $context_loop = [];
+
         if (array_key_exists($attributes['uniqueID'], self::$custom_data)) {
             $context_loop = self::$custom_data[$attributes['uniqueID']];
-            $attributes = array_merge($attributes, $this->get_dc_values($attributes, $context_loop));
         }
+
+        $attributes = array_merge($attributes, $this->get_dc_values($attributes, $context_loop));
 
         if (array_key_exists('dc-link-status', $attributes)) {
             $dc_link_status = $attributes['dc-link-status'];
@@ -782,6 +788,10 @@ class MaxiBlocks_DynamicContent
         return $relation === 'by-date' ? 'desc' : 'asc';
     }
 
+	/**
+	 * Combines `attributes` with `context_loop` and `defaults`
+	 * to get the final values for dynamic content.
+	 */
     public function get_dc_values($attributes, $context_loop)
     {
         $defaults = [

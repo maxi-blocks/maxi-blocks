@@ -86,10 +86,12 @@ const withMaxiContextLoop = createHigherOrderComponent(
 					block => block.clientId === clientId
 				);
 
-				if (
-					name !== 'maxi-blocks/column-maxi' ||
-					currentBlockIndex === 0
-				) {
+				const isFirstOnHierarchyColumn =
+					name === 'maxi-blocks/column-maxi' &&
+					getBlock(getBlockParents(parent.clientId).at(-1)).name ===
+						'maxi-blocks/container-maxi';
+
+				if (!isFirstOnHierarchyColumn || currentBlockIndex === 0) {
 					return prevAccumulator;
 				}
 

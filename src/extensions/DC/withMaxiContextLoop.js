@@ -19,7 +19,7 @@ import { merge } from 'lodash';
 const withMaxiContextLoop = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(ownProps => {
-			const { attributes, clientId } = ownProps;
+			const { attributes, clientId, name } = ownProps;
 
 			let prevContextLoopAttributes = null;
 
@@ -79,15 +79,21 @@ const withMaxiContextLoop = createHigherOrderComponent(
 					return null;
 				}
 
+				const prevAccumulator =
+					prevContextLoopAttributes?.['cl-accumulator'];
+
 				const currentBlockIndex = parent.innerBlocks.findIndex(
 					block => block.clientId === clientId
 				);
 
-				return (
-					prevContextLoopAttributes['cl-accumulator'] +
-					currentBlockIndex +
-					1
-				);
+				if (
+					name !== 'maxi-blocks/column-maxi' ||
+					currentBlockIndex === 0
+				) {
+					return prevAccumulator;
+				}
+
+				return prevAccumulator + currentBlockIndex;
 			};
 
 			const contextLoop = {

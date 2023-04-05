@@ -9,7 +9,7 @@ import { useContext, useMemo } from '@wordpress/element';
  * Internal dependencies
  */
 import { getGroupAttributes } from '../styles';
-import LoopContext from './LoopContext';
+import LoopContext from './loopContext';
 
 /**
  * External dependencies

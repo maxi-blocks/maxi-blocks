@@ -1,4 +1,4 @@
-.maxi-pane-block {
+body.maxi-blocks--active .maxi-pane-block {
 	&__header {
 		position: relative;
 	}
@@ -30,8 +30,8 @@
 		width: 100%;
 	}
 
-	&__title,
-	&__line {
+	.maxi-pane-block__title,
+	.maxi-pane-block__line {
 		margin: 0;
 	}
 

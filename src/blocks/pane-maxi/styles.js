@@ -131,10 +131,12 @@ const getNormalStyles = (props, prefix) => {
 			blockStyle: props.blockStyle,
 			prefix,
 		}),
-		size: getSizeStyles({
-			...getGroupAttributes(props, 'size', false, prefix),
-			prefix,
-		}),
+		size: getSizeStyles(
+			{
+				...getGroupAttributes(props, 'size', false, prefix),
+			},
+			prefix
+		),
 		boxShadow: getBoxShadowStyles({
 			obj: {
 				...getGroupAttributes(props, 'boxShadow', false, prefix),

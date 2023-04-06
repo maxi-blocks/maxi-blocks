@@ -65,7 +65,7 @@ class MaxiBlocks_DynamicContent
         }
 
         $block_name = substr($attributes['uniqueID'], 0, strrpos($attributes['uniqueID'], '-'));
-        
+
         if ($block_name !== 'image-maxi') {
             $content = self::render_dc_content($attributes, $content);
         } else {
@@ -112,7 +112,7 @@ class MaxiBlocks_DynamicContent
         if (empty($dc_relation)) {
             $dc_relation = 'id';
         }
-        
+
         $response = '';
 
         if (in_array($dc_type, ['posts', 'pages'])) { // Post or page
@@ -155,7 +155,7 @@ class MaxiBlocks_DynamicContent
         if (empty($dc_relation)) {
             $dc_relation = 'id';
         }
-        
+
         $media_id;
         $media_src;
         $media_alt = '';
@@ -211,6 +211,8 @@ class MaxiBlocks_DynamicContent
             'dc-relation' => $dc_relation,
             'dc-id' => $dc_id,
             'dc-author' => $dc_author,
+            'dc-order' => $dc_order_by,
+            'dc-accumulator' => $dc_accumulator,
         ) = $attributes;
 
         if (empty($dc_type)) {
@@ -219,6 +221,15 @@ class MaxiBlocks_DynamicContent
         if (empty($dc_relation)) {
             $dc_relation = 'id';
         }
+        if (empty($dc_accumulator)) {
+            $dc_accumulator = 0;
+        }
+        if (empty($dc_order)) {
+            $dc_order = 'desc';
+        }
+
+        $is_sort_relation = in_array($dc_relation, ['by-date', 'alphabetical']);
+        $is_random = $dc_relation === 'random';
 
         if (in_array($dc_type, ['posts', 'pages'])) {
             // Basic args
@@ -227,27 +238,28 @@ class MaxiBlocks_DynamicContent
                 'post_status' => 'publish',
                 'posts_per_page' => 1,
             ];
-    
+
             // DC Relation
             if ($dc_relation == 'id') {
                 $args['p'] = $dc_id;
             } elseif ($dc_relation == 'author') {
                 $args['author'] = $dc_author ?? $dc_id;
-            } elseif ($dc_relation == 'random') {
+            } elseif ($is_random) {
                 $args['orderby'] = 'rand';
+            } elseif ($is_sort_relation) {
+                $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_accumulator));
             }
-    
+
             $query = new WP_Query($args);
-    
-            return $query->post;
+
+            return end($query->posts);
         } elseif ($dc_type === 'media') {
             $args = [
                 'post_type' => 'attachment',
                 'posts_per_page' => 1,
             ];
-    
+
             // DC Relation
-            $is_random = $dc_relation === 'random';
             if ($dc_relation == 'id') {
                 $args['p'] = $dc_id;
             } elseif ($is_random) {
@@ -256,17 +268,20 @@ class MaxiBlocks_DynamicContent
                     'post_status' => 'inherit',
                     'posts_per_page' => -1
                 ];
+            } elseif ($is_sort_relation) {
+                $args['post_status'] = 'inherit';
+                $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_accumulator));
             }
-    
+
             $query = new WP_Query($args);
-    
+
             $post;
-    
+
             if ($is_random) {
                 $posts = $query->posts;
                 $post = $posts[array_rand($posts)];
             } else {
-                $post = $query->post;
+                $post = end($query->posts);
             }
 
             return $post;
@@ -276,36 +291,38 @@ class MaxiBlocks_DynamicContent
             } elseif ($dc_type === 'tags') {
                 $taxonomy = 'post_tag';
             }
-    
+
             $args = [
                 'taxonomy' => $taxonomy,
                 'hide_empty' => false,
                 'number' => 1,
             ];
-    
-            if ($dc_relation == 'random') {
+
+            if ($is_random) {
                 $args['orderby'] = 'rand';
             } else {
                 $args['include'] = $dc_id;
             }
-    
+
             $terms = get_terms($args);
-    
+
             return $terms[0];
         } elseif ($dc_type === 'users') {
             $args = [
                 // 'role' => 'author',
                 // 'number' => 1,
             ];
-    
+
             if ($dc_relation == 'random') {
                 $args['orderby'] = 'rand';
+            } elseif ($is_sort_relation) {
+                $args = array_merge($args, $this->get_order_by_args($dc_relation, $dc_order_by, $dc_accumulator));
             } else {
                 $args['include'] = $dc_id;
             }
-    
+
             $users = get_users($args);
-    
+
             return $users[0];
         } elseif ($dc_type === 'settings') {
             return null;
@@ -320,6 +337,10 @@ class MaxiBlocks_DynamicContent
         ) = $attributes;
 
         $post = $this->get_post($attributes);
+
+        if (is_null($post)) {
+            return '';
+        }
 
         $post_data = $post->{"post_$dc_field"};
 
@@ -374,7 +395,7 @@ class MaxiBlocks_DynamicContent
         @list(
             'dc-field' => $dc_field,
         ) = $attributes;
-        
+
         $post = $this->get_post($attributes);
         $media_data = $post->{"post_$dc_field"};
 
@@ -463,7 +484,7 @@ class MaxiBlocks_DynamicContent
         if (!isset($dc_format)) {
             $dc_format = 'd.m.Y t';
         }
-        
+
         $options = array(
             'day' => $dc_day === 'none' ? null : $dc_day,
             'era' => $dc_era === 'none' ? null : $dc_era,
@@ -510,7 +531,7 @@ class MaxiBlocks_DynamicContent
 
         return $content;
     }
-    
+
     public function convert_moment_to_php_date_format($format)
     {
         $replacements = array(
@@ -541,7 +562,7 @@ class MaxiBlocks_DynamicContent
           'zz' => 'e',
           'X' => 'U'
         );
-      
+
         return strtr($format, $replacements);
     }
 
@@ -553,5 +574,14 @@ class MaxiBlocks_DynamicContent
         }
 
         return $string;
+    }
+
+    public function get_order_by_args($relation, $order, $accumulator)
+    {
+        return [
+            'orderby' => $relation === 'by-date' ? 'date' : 'title',
+            'order' => $order,
+            'posts_per_page' => $accumulator + 1,
+        ];
     }
 }

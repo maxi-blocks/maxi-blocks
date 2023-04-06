@@ -23,6 +23,7 @@ import {
 	round,
 	toNumber,
 } from 'lodash';
+import { hasKeys, removeNullValues } from '../../maxi-block';
 
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -41,6 +42,8 @@ export const getColorBackgroundObject = ({
 	breakpoint = 'general',
 	scValues = {},
 	backgroundColorProperty = 'background-color',
+	isIB = true,
+	IBAttributes = {},
 	...props
 }) => {
 	const hoverStatus = props[`${prefix}background-status-hover`];
@@ -57,6 +60,20 @@ export const getColorBackgroundObject = ({
 		label: 'Background Color',
 		[breakpoint]: {},
 	};
+
+	if (
+		isIB &&
+		!hasKeys(
+			IBAttributes,
+			[
+				`${prefix}background-palette-color-${breakpoint}`,
+				`${prefix}background-color-${breakpoint}`,
+				`${prefix}background-palette-opacity-${breakpoint}`,
+			],
+			'or'
+		)
+	)
+		return response;
 
 	const { paletteStatus, paletteColor, paletteOpacity, color } =
 		getPaletteAttributes({
@@ -528,6 +545,8 @@ const getWrapperObject = ({
 	breakpoint,
 	isHover = false,
 	prefix = '',
+	isIB = false,
+	IBAttributes = {},
 	...props
 }) => {
 	const response = {
@@ -535,11 +554,11 @@ const getWrapperObject = ({
 		[breakpoint]: {},
 	};
 
-	['width', 'height'].forEach(size => {
+	[('width', 'height')].forEach(size => {
 		const bgSize = getLastBreakpointAttribute({
 			target: `${prefix}${size}`,
 			breakpoint,
-			attributes: props,
+			attributes: isIB ? IBAttributes : props,
 			isHover,
 		});
 
@@ -561,7 +580,7 @@ const getWrapperObject = ({
 		const positionValue = getLastBreakpointAttribute({
 			target: `${prefix}position-${keyWord}`,
 			breakpoint,
-			attributes: props,
+			attributes: isIB ? IBAttributes : props,
 			isHover,
 		});
 
@@ -579,7 +598,7 @@ const getWrapperObject = ({
 					: `${positionValue}${positionUnit}`;
 		}
 	});
-
+	if (isIB && response[breakpoint]) removeNullValues(response[breakpoint]);
 	return !isEmpty(response[breakpoint]) ? response : {};
 };
 
@@ -622,8 +641,10 @@ const getBackgroundLayers = ({
 	prefix,
 	breakpoint,
 	ignoreMediaAttributes,
+	isIB = false,
+	IBAttributes = [],
 }) => {
-	layers.forEach(layer => {
+	layers.forEach((layer, i) => {
 		const { type } = layer;
 
 		const layerTarget = `${target} > .maxi-background-displayer .maxi-background-displayer__${layer.order}`;
@@ -644,6 +665,8 @@ const getBackgroundLayers = ({
 								breakpoint,
 								prefix: 'background-color-wrapper-',
 								isHover,
+								isIB,
+								IBAttributes: IBAttributes[i],
 							}),
 							getColorBackgroundObject({
 								...getGroupAttributes(
@@ -655,6 +678,8 @@ const getBackgroundLayers = ({
 								prefix,
 								blockStyle,
 								breakpoint,
+								isIB,
+								IBAttributes: IBAttributes[i],
 							}),
 							getDisplayStyles(
 								{
@@ -1198,6 +1223,9 @@ export const getBlockBackgroundStyles = ({
 							prefix,
 							breakpoint,
 							ignoreMediaAttributes,
+							isIB: props.isIB,
+							IBAttributes:
+								props.IBAttributes?.['background-layers'],
 						}),
 					}
 				),

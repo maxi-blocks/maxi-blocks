@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+import { select } from '@wordpress/data';
+
+/**
  * Internal dependencies
  */
 import { getVhSize, getVwSize } from '../dom/getViewPortUnitsSize';
@@ -8,8 +13,12 @@ import { getVhSize, getVwSize } from '../dom/getViewPortUnitsSize';
  */
 import { cloneDeep, isObject } from 'lodash';
 
-// Replaces vw and vh units with px values
+// Replaces vw and vh units with px values on responsive on editor
 const viewportUnitsProcessor = obj => {
+	const breakpoint = select('maxiBlocks').receiveMaxiDeviceType();
+
+	if (breakpoint === 'general') return obj;
+
 	const response = cloneDeep(obj);
 	const sizeMap = {
 		vw: getVwSize(),

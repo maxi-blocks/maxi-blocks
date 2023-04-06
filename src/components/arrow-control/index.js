@@ -102,7 +102,7 @@ const ArrowControl = props => {
 				props['show-warning-box'] && (
 					<InfoBox
 						message={__(
-							'Please ensure that the background color is not the same as the page background color.'
+							'Please ensure that the background colour is not the same as the page background colouur.'
 						)}
 						onClose={() => onChange({ 'show-warning-box': false })}
 					/>

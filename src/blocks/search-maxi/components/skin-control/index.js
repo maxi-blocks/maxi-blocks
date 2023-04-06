@@ -63,7 +63,7 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 							[`${inputPrefix}background-palette-color-general`]: 2,
 							...iconRevealResetStyles,
 							...resetBorders,
-							[`${inputPrefix}padding-left-general`]: 10,
+							[`${inputPrefix}padding-left-general`]: 30,
 							'icon-position': 'left',
 						});
 					} else if (skin === 'boxed') {
@@ -71,7 +71,7 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 							...iconRevealResetStyles,
 							...classicResetStyles,
 							...resetBorders,
-							[`${inputPrefix}padding-left-general`]: 10,
+							[`${inputPrefix}padding-left-general`]: 30,
 							'icon-position': 'left',
 						});
 					} else if (skin === 'icon-reveal') {

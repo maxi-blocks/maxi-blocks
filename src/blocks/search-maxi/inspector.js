@@ -279,10 +279,7 @@ const Inspector = props => {
 																											? props[
 																													'input-padding-left-general'
 																											  ]
-																											: skin ===
-																											  'icon-reveal'
-																											? 30
-																											: 10,
+																											: 30,
 																									'input-padding-right-general':
 																										props[
 																											'input-padding-right-general'

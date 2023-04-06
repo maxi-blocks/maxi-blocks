@@ -205,6 +205,23 @@ const Inspector = props => {
 																						buttonPosition
 																					}
 																					onChange={val => {
+																						const inpRightWidth =
+																							props[
+																								'input-border-left-width-general'
+																							];
+																						const inpLeftWidth =
+																							props[
+																								'input-border-right-width-general'
+																							];
+																						const inpLeftPadding =
+																							props[
+																								'input-padding-left-general'
+																							];
+																						const inpRightPadding =
+																							props[
+																								'input-padding-right-general'
+																							];
+
 																						(val ===
 																							'center' ||
 																							val ===
@@ -214,40 +231,20 @@ const Inspector = props => {
 																									'icon-position':
 																										val,
 																									'input-border-left-width-general':
-																										props[
-																											'input-border-left-width-general'
-																										]
-																											? props[
-																													'input-border-left-width-general'
-																											  ]
-																											: 4,
+																										inpRightWidth ||
+																										4,
 																									'input-border-right-width-general':
-																										props[
-																											'input-border-right-width-general'
-																										]
-																											? props[
-																													'input-border-right-width-general'
-																											  ]
-																											: 0,
+																										inpLeftWidth ||
+																										0,
 																									'input-padding-left-general':
-																										props[
-																											'input-padding-left-general'
-																										]
-																											? props[
-																													'input-padding-left-general'
-																											  ]
-																											: 10,
+																										inpLeftPadding ||
+																										10,
 																									'input-padding-right-general':
-																										props[
-																											'input-padding-right-general'
-																										]
-																											? props[
-																													'input-padding-right-general'
-																											  ]
-																											: skin ===
-																											  'icon-reveal'
+																										inpRightPadding ||
+																										(skin ===
+																										'icon-reveal'
 																											? 30
-																											: 10,
+																											: 10),
 																								}
 																							);
 																						val ===
@@ -257,37 +254,17 @@ const Inspector = props => {
 																									'icon-position':
 																										val,
 																									'input-border-left-width-general':
-																										props[
-																											'input-border-left-width-general'
-																										]
-																											? props[
-																													'input-border-left-width-general'
-																											  ]
-																											: 0,
+																										inpRightWidth ||
+																										0,
 																									'input-border-right-width-general':
-																										props[
-																											'input-border-right-width-general'
-																										]
-																											? props[
-																													'input-border-right-width-general'
-																											  ]
-																											: 4,
+																										inpLeftWidth ||
+																										4,
 																									'input-padding-left-general':
-																										props[
-																											'input-padding-left-general'
-																										]
-																											? props[
-																													'input-padding-left-general'
-																											  ]
-																											: 30,
+																										inpLeftPadding ||
+																										30,
 																									'input-padding-right-general':
-																										props[
-																											'input-padding-right-general'
-																										]
-																											? props[
-																													'input-padding-right-general'
-																											  ]
-																											: 10,
+																										inpRightPadding ||
+																										10,
 																								}
 																							);
 																					}}

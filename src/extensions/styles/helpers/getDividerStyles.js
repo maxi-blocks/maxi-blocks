@@ -24,11 +24,12 @@ const getDividerStyles = (
 		label: 'Divider',
 		general: {},
 	};
+	const attributes = obj.isIB ? obj.IBAttributes : obj;
 
 	const getColor = breakpoint => {
 		const { paletteStatus, paletteColor, paletteOpacity, color } =
 			getPaletteAttributes({
-				obj,
+				obj: attributes,
 				prefix: `${prefix}divider-border-`,
 				breakpoint,
 				isHover,
@@ -63,7 +64,7 @@ const getDividerStyles = (
 			const dividerBorderStyle = getLastBreakpointAttribute({
 				target: `${prefix}divider-border-style`,
 				breakpoint,
-				attributes: obj,
+				attributes,
 				isHover,
 			});
 
@@ -74,13 +75,13 @@ const getDividerStyles = (
 				? getLastBreakpointAttribute({
 						target: `${prefix}divider-border-top-width`,
 						breakpoint,
-						attributes: obj,
+						attributes,
 						isHover,
 				  })
 				: getLastBreakpointAttribute({
 						target: `${prefix}divider-border-${positionVertical}-width`,
 						breakpoint,
-						attributes: obj,
+						attributes,
 						isHover,
 				  });
 			const dividerLineWeightUnit =
@@ -97,13 +98,13 @@ const getDividerStyles = (
 				? getLastBreakpointAttribute({
 						target: `${prefix}divider-width`,
 						breakpoint,
-						attributes: obj,
+						attributes,
 						isHover,
 				  })
 				: getLastBreakpointAttribute({
 						target: `${prefix}divider-height`,
 						breakpoint,
-						attributes: obj,
+						attributes,
 						isHover,
 				  });
 			const dividerSizeUnit =
@@ -117,7 +118,7 @@ const getDividerStyles = (
 			const dividerBorderRaidus = getLastBreakpointAttribute({
 				target: `${prefix}divider-border-radius`,
 				breakpoint,
-				attributes: obj,
+				attributes,
 				isHover,
 			});
 
@@ -131,7 +132,7 @@ const getDividerStyles = (
 						: getLastBreakpointAttribute({
 								target: `${prefix}divider-border-radius`,
 								breakpoint: getPrevBreakpoint(breakpoint),
-								attributes: obj,
+								attributes,
 								isHover,
 						  }) && {
 								'border-radius': '0px',
@@ -162,23 +163,31 @@ const getDividerStyles = (
 		} else {
 			response[breakpoint] = {
 				'flex-direction': 'row',
-				'align-items': obj[`line-vertical-${breakpoint}`]
-					? obj[`line-vertical-${breakpoint}`]
+				'align-items': attributes[`line-vertical-${breakpoint}`]
+					? attributes[`line-vertical-${breakpoint}`]
 					: getLastBreakpointAttribute({
 							target: `${prefix}line-vertical`,
 							breakpoint,
-							attributes: obj,
+							attributes,
 							isHover,
 					  }),
-				'justify-content': obj[`line-horizontal-${breakpoint}`]
-					? obj[`line-horizontal-${breakpoint}`]
+				'justify-content': attributes[`line-horizontal-${breakpoint}`]
+					? attributes[`line-horizontal-${breakpoint}`]
 					: getLastBreakpointAttribute({
 							target: `${prefix}line-horizontal`,
 							breakpoint,
-							attributes: obj,
+							attributes,
 							isHover,
 					  }),
 			};
+		}
+
+		if (obj.isIB) {
+			Object.entries(response[breakpoint]).forEach(([key, value]) => {
+				if (isNil(value)) {
+					delete response[breakpoint][key];
+				}
+			});
 		}
 	});
 

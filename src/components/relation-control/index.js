@@ -231,7 +231,7 @@ const RelationControl = props => {
 			return newAttributes;
 		};
 
-		const getStylesObj = attributes => {
+		const getStylesObj = (attributes, IBAttributes = {}) => {
 			const newGroupAttributes = getGroupAttributes(
 				attributes,
 				selectedSettingsObj.attrGroupName,
@@ -240,7 +240,7 @@ const RelationControl = props => {
 			);
 
 			return selectedSettingsObj?.helper({
-				obj: newGroupAttributes,
+				obj: { ...newGroupAttributes, isIB: true, IBAttributes },
 				isIB: true,
 				prefix,
 				blockStyle: blockAttributes.blockStyle,
@@ -311,7 +311,10 @@ const RelationControl = props => {
 					  };
 
 				const styles = getStyles(
-					getStylesObj(merge({}, blockAttributes, newAttributesObj)),
+					getStylesObj(
+						merge({}, blockAttributes, newAttributesObj),
+						newAttributesObj
+					),
 					true
 				);
 

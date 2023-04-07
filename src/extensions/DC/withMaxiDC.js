@@ -3,12 +3,7 @@
  */
 import { dispatch } from '@wordpress/data';
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
-import {
-	useCallback,
-	useContext,
-	useEffect,
-	useMemo,
-} from '@wordpress/element';
+import { useCallback, useContext, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -46,9 +41,9 @@ const withMaxiDC = createHigherOrderComponent(
 				'dynamicContent'
 			);
 
-			const dynamicContentProps = useMemo(
-				() => getDCValues(dynamicContent, contextLoop),
-				[dynamicContent, contextLoop]
+			const dynamicContentProps = getDCValues(
+				dynamicContent,
+				contextLoop
 			);
 
 			const {

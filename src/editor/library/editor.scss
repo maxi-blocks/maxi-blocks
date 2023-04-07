@@ -1584,7 +1584,8 @@
 				display: block;
 				position: absolute;
 				left: 230px;
-				width: calc(100% - 230px);
+				max-width: 450px;
+				//width: calc(100% - 230px);
 				margin-top: -38px;
 				margin-left: 13px;
 				&-item {
@@ -1630,8 +1631,16 @@
 			&__text_pro {
 				position: absolute;
 				top: 17px;
-				right: 200px;
+				right: 420px;
 				margin-top: 0;
+			}
+			&__input {
+				position: absolute;
+				right: 24%;
+				input {
+					width: 300px;
+					border-radius: 0;
+				}
 			}
 		}
 	}

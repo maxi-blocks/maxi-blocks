@@ -173,11 +173,14 @@ const MaxiModal = props => {
 	const [isMaxiProActive, setIsMaxiProActive] = useState(isProSubActive());
 	const [userName, setUserName] = useState(getUserName());
 
-	const onClickConnect = () => {
+	console.log('isMaxiProActive', isMaxiProActive);
+	console.log('userName', userName);
+
+	const onClickConnect = email => {
 		document.addEventListener('visibilitychange', function userIsBack() {
 			if (!document.hidden) {
 				console.log('user is back');
-				authConnect(false).then(() => {
+				authConnect(false, email).then(() => {
 					setIsMaxiProActive(isProSubActive());
 					setUserName(getUserName());
 					console.log('set user name');
@@ -186,7 +189,7 @@ const MaxiModal = props => {
 			}
 		});
 
-		authConnect(true).then(() => {
+		authConnect(true, email).then(() => {
 			setIsMaxiProActive(isProSubActive());
 			setUserName(getUserName());
 		});

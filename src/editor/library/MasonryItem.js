@@ -33,7 +33,7 @@ const MasonryItem = props => {
 		className,
 		onRequestInsert,
 		isSaved = false,
-		isMaxiProActive = false,
+		isMaxiProActive,
 		isPro,
 		isBeta,
 		isSwapChecked,

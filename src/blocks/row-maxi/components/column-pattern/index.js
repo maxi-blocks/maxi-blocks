@@ -161,56 +161,59 @@ const ColumnPattern = props => {
 					disableReset
 				/>
 			)}
-			{(toolbar || breakpoint === 'general') && (
-				<div className='components-column-pattern__templates'>
-					{DISPLAYED_TEMPLATES.map(template => {
-						return (
-							<Button
-								key={uniqueId(
-									`components-column-pattern--${instanceId}--`
-								)}
-								className={
-									patternButtonClassName +
-									(template.isMoreThanEightColumns
-										? ' components-column-pattern-apply_settings'
-										: '')
-								}
-								aria-pressed={isEqual(
-									getCurrentColumnsSizes(),
-									(template.isMoreThanEightColumns
-										? Array(numCol).fill(100 / numCol)
-										: applyGap(template.sizes)
-									).map(value => floor(value, 2))
-								)}
-								onClick={() => {
-									loadColumnsTemplate(
-										template.name,
-										clientId,
-										breakpoint,
-										numCol
-									);
+			<div className='components-column-pattern__templates'>
+				{DISPLAYED_TEMPLATES.map(template => {
+					if (
+						template.isMoreThanEightColumns &&
+						breakpoint !== 'general'
+					)
+						return null;
+					return (
+						<Button
+							key={uniqueId(
+								`components-column-pattern--${instanceId}--`
+							)}
+							className={
+								patternButtonClassName +
+								(template.isMoreThanEightColumns
+									? ' components-column-pattern-apply_settings'
+									: '')
+							}
+							aria-pressed={isEqual(
+								getCurrentColumnsSizes(),
+								(template.isMoreThanEightColumns
+									? Array(numCol).fill(100 / numCol)
+									: applyGap(template.sizes)
+								).map(value => floor(value, 2))
+							)}
+							onClick={() => {
+								loadColumnsTemplate(
+									template.name,
+									clientId,
+									breakpoint,
+									numCol
+								);
 
-									onChange({
-										[`row-pattern-${breakpoint}`]:
-											template.isMoreThanEightColumns
-												? numCol.toString()
-												: template.name,
-									});
-								}}
-							>
-								{template.isMoreThanEightColumns ? (
-									'Apply Setting'
-								) : (
-									<Icon
-										className='components-column-pattern__icon'
-										icon={template.icon}
-									/>
-								)}
-							</Button>
-						);
-					})}
-				</div>
-			)}
+								onChange({
+									[`row-pattern-${breakpoint}`]:
+										template.isMoreThanEightColumns
+											? numCol.toString()
+											: template.name,
+								});
+							}}
+						>
+							{template.isMoreThanEightColumns ? (
+								'Apply Setting'
+							) : (
+								<Icon
+									className='components-column-pattern__icon'
+									icon={template.icon}
+								/>
+							)}
+						</Button>
+					);
+				})}
+			</div>
 		</div>
 	);
 };

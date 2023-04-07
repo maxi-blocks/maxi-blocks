@@ -9,6 +9,7 @@ import getAttributeKey from '../getAttributeKey';
  * External dependencies
  */
 import { isEmpty, isNil } from 'lodash';
+import { removeNullValues } from '../../maxi-block';
 
 /**
  * General
@@ -44,7 +45,7 @@ const getTypographyStyles = ({
 	const isCustomFormat = !!customFormatTypography;
 
 	const getValue = (target, breakpoint) =>
-		obj[
+		(obj.isIB ? obj.IBAttributes : obj)[
 			getAttributeKey(
 				target,
 				!isCustomFormat && isHover,
@@ -218,7 +219,11 @@ const getTypographyStyles = ({
 			}),
 		};
 
-		if (!isEmpty(typography)) response[breakpoint] = typography;
+		if (!isEmpty(typography)) {
+			if (obj.isIB) removeNullValues(typography);
+
+			response[breakpoint] = typography;
+		}
 	});
 
 	return response;

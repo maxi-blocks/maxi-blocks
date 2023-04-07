@@ -297,9 +297,19 @@ const TypographyControl = props => {
 		allowLink = false,
 		blockStyle,
 		globalProps,
+		isIB = false,
 	} = props;
 	const { formatValue, onChangeTextFormat } =
 		!isStyleCards && !disableCustomFormats ? useContext(textContext) : {};
+
+	const onChangeIB = value => {
+		const newTypography = {};
+		Object.entries(value).forEach(([key, val]) => {
+			newTypography[`${key}-${breakpoint}${isHover ? '-hover' : ''}`] =
+				val;
+		});
+		onChange(newTypography);
+	};
 
 	const typography =
 		props.typography ||
@@ -478,6 +488,12 @@ const TypographyControl = props => {
 						className='maxi-typography-control__font-family'
 						font={getValue('font-family')}
 						onChange={font => {
+							if (isIB) {
+								onChangeIB({
+									[`${prefix}font-family`]: font.value,
+								});
+								return;
+							}
 							const currentWeight = getValue('font-weight');
 							const fontName =
 								font.value ?? getDefault('font-family');
@@ -537,7 +553,7 @@ const TypographyControl = props => {
 							paletteStatus,
 							paletteOpacity,
 						}) =>
-							onChangeFormat({
+							(isIB ? onChangeIB : onChangeFormat)({
 								[`${prefix}color`]: color,
 								[`${prefix}palette-color`]: paletteColor,
 								[`${prefix}palette-status`]: paletteStatus,
@@ -571,7 +587,7 @@ const TypographyControl = props => {
 					unit={getValue('font-size-unit')}
 					defaultUnit={getDefault('font-size-unit')}
 					onChangeUnit={val => {
-						onChangeFormat({
+						(isIB ? onChangeIB : onChangeFormat)({
 							[`${prefix}font-size-unit`]: val,
 						});
 					}}
@@ -579,13 +595,13 @@ const TypographyControl = props => {
 					value={getValue('font-size', !isStyleCards)}
 					defaultValue={getDefault('font-size')}
 					onChangeValue={(val, unit) => {
-						onChangeFormat({
+						(isIB ? onChangeIB : onChangeFormat)({
 							[`${prefix}font-size`]: val,
 							...(unit && { [`${prefix}font-size-unit`]: unit }),
 						});
 					}}
 					onReset={() =>
-						onChangeFormat(
+						(isIB ? onChangeIB : onChangeFormat)(
 							{
 								[`${prefix}font-size-unit`]:
 									getDefault('font-size-unit'),
@@ -604,7 +620,7 @@ const TypographyControl = props => {
 					unit={getValue('line-height-unit') || ''}
 					defaultUnit={getDefault('line-height-unit')}
 					onChangeUnit={val => {
-						onChangeFormat({
+						(isIB ? onChangeIB : onChangeFormat)({
 							[`${prefix}line-height-unit`]: val,
 						});
 					}}
@@ -612,7 +628,7 @@ const TypographyControl = props => {
 					value={getValue('line-height', !isStyleCards)}
 					defaultValue={getDefault('line-height')}
 					onChangeValue={(val, unit) => {
-						onChangeFormat({
+						(isIB ? onChangeIB : onChangeFormat)({
 							[`${prefix}line-height`]: val,
 							...(unit && {
 								[`${prefix}line-height-unit`]: unit,
@@ -620,7 +636,7 @@ const TypographyControl = props => {
 						});
 					}}
 					onReset={() =>
-						onChangeFormat(
+						(isIB ? onChangeIB : onChangeFormat)(
 							{
 								[`${prefix}line-height-unit`]:
 									getDefault('line-height-unit'),
@@ -648,7 +664,7 @@ const TypographyControl = props => {
 					unit={getValue('letter-spacing-unit')}
 					defaultUnit={getDefault('letter-spacing-unit')}
 					onChangeUnit={val => {
-						onChangeFormat({
+						(isIB ? onChangeIB : onChangeFormat)({
 							[`${prefix}letter-spacing-unit`]: val,
 						});
 					}}
@@ -656,12 +672,12 @@ const TypographyControl = props => {
 					value={getValue('letter-spacing', !isStyleCards)}
 					defaultValue={getDefault('letter-spacing')}
 					onChangeValue={val => {
-						onChangeFormat({
+						(isIB ? onChangeIB : onChangeFormat)({
 							[`${prefix}letter-spacing`]: val,
 						});
 					}}
 					onReset={() =>
-						onChangeFormat(
+						(isIB ? onChangeIB : onChangeFormat)(
 							{
 								[`${prefix}letter-spacing-unit`]: getDefault(
 									'letter-spacing-unit'
@@ -682,10 +698,12 @@ const TypographyControl = props => {
 					!hideAlignment && <hr style={{ margin: '15px 0' }} />}
 				<FontWeightControl
 					onChange={val => {
-						onChangeFormat({ [`${prefix}font-weight`]: val });
+						(isIB ? onChangeIB : onChangeFormat)({
+							[`${prefix}font-weight`]: val,
+						});
 					}}
 					onReset={() => {
-						onChangeFormat(
+						(isIB ? onChangeIB : onChangeFormat)(
 							{
 								[`${prefix}font-weight`]:
 									getDefault('font-weight'),
@@ -725,12 +743,12 @@ const TypographyControl = props => {
 						},
 					]}
 					onChange={val => {
-						onChangeFormat({
+						(isIB ? onChangeIB : onChangeFormat)({
 							[`${prefix}text-transform`]: val,
 						});
 					}}
 					onReset={() =>
-						onChangeFormat(
+						(isIB ? onChangeIB : onChangeFormat)(
 							{
 								[`${prefix}text-transform`]:
 									getDefault('text-transform'),
@@ -759,12 +777,12 @@ const TypographyControl = props => {
 						},
 					]}
 					onChange={val => {
-						onChangeFormat({
+						(isIB ? onChangeIB : onChangeFormat)({
 							[`${prefix}font-style`]: val,
 						});
 					}}
 					onReset={() =>
-						onChangeFormat(
+						(isIB ? onChangeIB : onChangeFormat)(
 							{
 								[`${prefix}font-style`]:
 									getDefault('font-style'),
@@ -801,12 +819,12 @@ const TypographyControl = props => {
 						},
 					]}
 					onChange={val => {
-						onChangeFormat({
+						(isIB ? onChangeIB : onChangeFormat)({
 							[`${prefix}text-decoration`]: val,
 						});
 					}}
 					onReset={() =>
-						onChangeFormat(
+						(isIB ? onChangeIB : onChangeFormat)(
 							{
 								[`${prefix}text-decoration`]:
 									getDefault('text-decoration'),
@@ -841,7 +859,7 @@ const TypographyControl = props => {
 								},
 							]}
 							onChange={val => {
-								onChangeFormat(
+								(isIB ? onChangeIB : onChangeFormat)(
 									{
 										[`${prefix}text-orientation`]: val,
 									},
@@ -849,7 +867,7 @@ const TypographyControl = props => {
 								);
 							}}
 							onReset={() =>
-								onChangeFormat(
+								(isIB ? onChangeIB : onChangeFormat)(
 									{
 										[`${prefix}text-orientation`]:
 											getDefault('text-orientation'),
@@ -874,12 +892,12 @@ const TypographyControl = props => {
 								},
 							]}
 							onChange={val => {
-								onChangeFormat({
+								(isIB ? onChangeIB : onChangeFormat)({
 									[`${prefix}text-direction`]: val,
 								});
 							}}
 							onReset={() =>
-								onChangeFormat(
+								(isIB ? onChangeIB : onChangeFormat)(
 									{
 										[`${prefix}text-direction`]:
 											getDefault('text-direction'),
@@ -897,33 +915,36 @@ const TypographyControl = props => {
 					unit={getValue('text-indent-unit')}
 					defaultUnit={getDefault('text-indent-unit')}
 					onChangeUnit={val => {
-						onChangeFormat(
+						(isIB ? onChangeIB : onChangeFormat)(
 							{
 								[`${prefix}text-indent-unit`]: val,
 							},
-							{ forceDisableCustomFormats: true }
+							!isIB && { forceDisableCustomFormats: true }
 						);
 					}}
 					placeholder={getValue('text-indent')}
 					value={getValue('text-indent', !isStyleCards)}
 					defaultValue={getDefault('text-indent')}
 					onChangeValue={val => {
-						onChangeFormat(
+						(isIB ? onChangeIB : onChangeFormat)(
 							{
 								[`${prefix}text-indent`]: val,
 							},
-							{ forceDisableCustomFormats: true }
+							!isIB && { forceDisableCustomFormats: true }
 						);
 					}}
 					onReset={() =>
-						onChangeFormat(
+						(isIB ? onChangeIB : onChangeFormat)(
 							{
 								[`${prefix}text-indent-unit`]:
 									getDefault('text-indent-unit'),
 								[`${prefix}text-indent`]:
 									getDefault('text-indent'),
 							},
-							{ forceDisableCustomFormats: true, isReset: true }
+							{
+								forceDisableCustomFormats: true,
+								isReset: true,
+							}
 						)
 					}
 					minMaxSettings={{
@@ -978,12 +999,12 @@ const TypographyControl = props => {
 						},
 					]}
 					onChange={val => {
-						onChangeFormat({
+						(isIB ? onChangeIB : onChangeFormat)({
 							[`${prefix}white-space`]: val,
 						});
 					}}
 					onReset={() => {
-						onChangeFormat(
+						(isIB ? onChangeIB : onChangeFormat)(
 							{
 								[`${prefix}white-space`]:
 									getDefault('white-space'),
@@ -999,33 +1020,36 @@ const TypographyControl = props => {
 					unit={getValue('word-spacing-unit')}
 					defaultUnit={getDefault('word-spacing-unit')}
 					onChangeUnit={val => {
-						onChangeFormat(
+						(isIB ? onChangeIB : onChangeFormat)(
 							{
 								[`${prefix}word-spacing-unit`]: val,
 							},
-							{ forceDisableCustomFormats: true }
+							!isIB && { forceDisableCustomFormats: true }
 						);
 					}}
 					placeholder={getValue('word-spacing')}
 					value={getValue('word-spacing')}
 					defaultValue={getDefault('word-spacing', !isStyleCards)}
 					onChangeValue={val => {
-						onChangeFormat(
+						(isIB ? onChangeIB : onChangeFormat)(
 							{
 								[`${prefix}word-spacing`]: val,
 							},
-							{ forceDisableCustomFormats: true }
+							!isIB && { forceDisableCustomFormats: true }
 						);
 					}}
 					onReset={() =>
-						onChangeFormat(
+						(isIB ? onChangeIB : onChangeFormat)(
 							{
 								[`${prefix}word-spacing-unit`]:
 									getDefault('word-spacing-unit'),
 								[`${prefix}word-spacing`]:
 									getDefault('word-spacing'),
 							},
-							{ forceDisableCustomFormats: true, isReset: true }
+							{
+								forceDisableCustomFormats: true,
+								isReset: true,
+							}
 						)
 					}
 					minMaxSettings={{
@@ -1056,26 +1080,26 @@ const TypographyControl = props => {
 						unit={getValue('bottom-gap-unit')}
 						defaultUnit={getDefault('bottom-gap-unit')}
 						onChangeUnit={val => {
-							onChangeFormat(
+							(isIB ? onChangeIB : onChangeFormat)(
 								{
 									[`${prefix}bottom-gap-unit`]: val,
 								},
-								{ forceDisableCustomFormats: true }
+								!isIB && { forceDisableCustomFormats: true }
 							);
 						}}
 						placeholder={getValue('bottom-gap')}
 						value={getValue('bottom-gap')}
 						defaultValue={getDefault('bottom-gap', !isStyleCards)}
 						onChangeValue={val => {
-							onChangeFormat(
+							(isIB ? onChangeIB : onChangeFormat)(
 								{
 									[`${prefix}bottom-gap`]: val,
 								},
-								{ forceDisableCustomFormats: true }
+								!isIB && { forceDisableCustomFormats: true }
 							);
 						}}
 						onReset={() =>
-							onChangeFormat(
+							(isIB ? onChangeIB : onChangeFormat)(
 								{
 									[`${prefix}bottom-gap-unit`]:
 										getDefault('bottom-gap-unit'),
@@ -1119,7 +1143,7 @@ const TypographyControl = props => {
 								onChangeInlineValue({ 'text-shadow': val })
 							}
 							onChange={val => {
-								onChangeFormat({
+								(isIB ? onChangeIB : onChangeFormat)({
 									[`${prefix}text-shadow`]: val,
 								});
 							}}
@@ -1138,7 +1162,7 @@ const TypographyControl = props => {
 						getValue={getValue}
 						getDefault={getDefault}
 						onChangeInline={onChangeInlineValue}
-						onChangeFormat={onChangeFormat}
+						onChangeFormat={isIB ? onChangeIB : onChangeFormat}
 						prefix={prefix}
 						breakpoint={breakpoint}
 						textLevel={textLevel}

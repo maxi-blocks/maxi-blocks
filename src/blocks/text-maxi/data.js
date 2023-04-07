@@ -193,6 +193,7 @@ const interactionBuilderSettings = {
 					styleCardPrefix=''
 					hideAlignment
 					disableCustomFormats
+					isIB
 				/>
 			),
 			helper: props => getTypographyStyles({ ...props }),

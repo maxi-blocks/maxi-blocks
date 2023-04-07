@@ -331,7 +331,7 @@ const NumberCounterControl = props => {
 			/>
 			<ToggleSwitch
 				className='number-counter-percentage-sign-status'
-				label={__('Show percentage sign', 'maxi-block')}
+				label={__('Show percentage sign', 'maxi-blocks')}
 				selected={props['number-counter-percentage-sign-status']}
 				onChange={val =>
 					onChange({
@@ -360,7 +360,7 @@ const NumberCounterControl = props => {
 			{!props['number-counter-circle-status'] && (
 				<ToggleSwitch
 					className='number-counter-rounded-status'
-					label={__('Rounded bar', 'maxi-block')}
+					label={__('Rounded bar', 'maxi-blocks')}
 					selected={props['number-counter-rounded-status']}
 					onChange={val =>
 						onChange({

@@ -26,7 +26,6 @@ import getDCMedia from './getDCMedia';
 import getDCLink from './getDCLink';
 import getDCValues from './getDCValues';
 import LoopContext from './loopContext';
-import { getBlockData } from '../attributes';
 
 /**
  * External dependencies

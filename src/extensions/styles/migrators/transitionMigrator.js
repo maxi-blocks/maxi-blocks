@@ -11,6 +11,7 @@ import transitionDefault from '../transitions/transitionDefault';
 import { isNil } from 'lodash';
 import getDefaultAttribute from '../getDefaultAttribute';
 import createTransitionObj from '../transitions/createTransitionObj';
+import transitionAttributesCreator from '../transitions/transitionAttributesCreator';
 
 const name = 'Transition migrator';
 
@@ -48,11 +49,27 @@ const isEligible = blockAttributes => {
 		transform: getTransformTransitionData(selectors, blockAttributes),
 	};
 
+	// Check if all selector exist on transition object
 	const hasAllTransitionSelectors = Object.keys(transitionSelectors).every(
 		selector => selector in transition
 	);
 
 	if (!hasAllTransitionSelectors) return true;
+
+	const defaultTransitionByBlock = data?.transition;
+
+	// Check if all transition keys exist on each transition selector object
+	const allSelectorHasAllTransitions = Object.entries(
+		defaultTransitionByBlock
+	).every(([selector, defaultTransition]) => {
+		const hasAllTransitions = Object.keys(defaultTransition).every(
+			key => key in transition[selector]
+		);
+
+		return hasAllTransitions;
+	});
+
+	if (!allSelectorHasAllTransitions) return true;
 
 	return false;
 };
@@ -83,6 +100,22 @@ const migrate = newAttributes => {
 			});
 		}
 	});
+
+	// Includes the missing transition keys on each transition selector object
+	const defaultTransitions = transitionAttributesCreator({
+		transition: data?.transition,
+		selectors: data?.customCss.selectors,
+	}).transition.default;
+
+	Object.entries(defaultTransitions).forEach(
+		([selector, defaultTransition]) => {
+			Object.keys(defaultTransition).forEach(key => {
+				if (!(key in transition[selector]))
+					newAttributes.transition[selector][key] =
+						defaultTransitions[selector][key];
+			});
+		}
+	);
 
 	return newAttributes;
 };

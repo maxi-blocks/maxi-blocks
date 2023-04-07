@@ -617,3 +617,12 @@ body.rtl .toolbar-item__popover {
 		}
 	}
 }
+
+/*******************************
+* RTL
+*******************************/
+html[dir='rtl'] {
+	.maxi-toolbar__popover .toolbar-block-custom-label {
+		flex-direction: row-reverse;
+	}
+}

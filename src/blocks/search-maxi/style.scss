@@ -76,3 +76,12 @@ body.maxi-blocks--active .maxi-search-block {
 		}
 	}
 }
+
+/*******************************
+* RTL
+*******************************/
+html[dir='rtl'] {
+	body.maxi-blocks--active .maxi-search-block {
+		flex-direction: row-reverse;
+	}
+}

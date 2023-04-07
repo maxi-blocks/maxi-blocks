@@ -30,7 +30,7 @@ import LoopContext from './loopContext';
 /**
  * External dependencies
  */
-import { isNil, isObject } from 'lodash';
+import { isNil } from 'lodash';
 
 const withMaxiDC = createHigherOrderComponent(
 	WrappedComponent =>
@@ -48,10 +48,7 @@ const withMaxiDC = createHigherOrderComponent(
 
 			const dynamicContentProps = useMemo(
 				() => getDCValues(dynamicContent, contextLoop),
-				[
-					Object.values(dynamicContent),
-					isObject(contextLoop) ? Object.values(contextLoop) : [],
-				]
+				[dynamicContent, contextLoop]
 			);
 
 			const {
@@ -105,10 +102,7 @@ const withMaxiDC = createHigherOrderComponent(
 				}
 
 				return null;
-			}, [
-				Object.values(dynamicContentProps),
-				isObject(contextLoop) ? Object.values(contextLoop) : [],
-			]);
+			}, [dynamicContentProps, contextLoop]);
 
 			const fetchAndUpdateDCData = useCallback(async () => {
 				if (
@@ -229,7 +223,7 @@ const withMaxiDC = createHigherOrderComponent(
 
 			useEffect(() => {
 				fetchAndUpdateDCData().catch(console.error);
-			}, [fetchAndUpdateDCData, Object.values(dynamicContentProps)]);
+			}, [fetchAndUpdateDCData, dynamicContentProps]);
 
 			return <WrappedComponent {...ownProps} />;
 		}),

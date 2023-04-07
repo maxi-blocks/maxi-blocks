@@ -112,7 +112,7 @@ const withMaxiContextLoop = createHigherOrderComponent(
 				return {
 					contextLoop,
 				};
-			}, Object.values(contextLoop));
+			}, [contextLoop]);
 
 			return (
 				<LoopContext.Provider value={memoizedValue}>

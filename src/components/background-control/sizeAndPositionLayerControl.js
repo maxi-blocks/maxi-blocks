@@ -110,10 +110,11 @@ const Size = ({
 	return (
 		<div className='maxi-background-control__size'>
 			<AdvancedNumberControl
-				label={__(
-					onlyWidth ? 'Height and Width' : 'Width',
-					'maxi-blocks'
-				)}
+				label={
+					onlyWidth
+						? __('Height and Width', 'maxi-blocks')
+						: __('Width', 'maxi-blocks')
+				}
 				value={getLastBreakpointAttribute({
 					target: `${prefix}width`,
 					breakpoint,

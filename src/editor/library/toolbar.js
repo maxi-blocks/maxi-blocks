@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { select, useSelect } from '@wordpress/data';
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -17,7 +18,7 @@ import {
 	smallMode,
 } from '../../icons';
 import onRequestInsertPattern from './utils/onRequestInsertPattern';
-import { Button } from '../../components';
+import { Button, TextControl } from '../../components';
 
 /**
  * External dependencies
@@ -67,6 +68,8 @@ const LibraryToolbar = props => {
 		onLogOut,
 		onClickConnect,
 	} = props;
+
+	const [userEmail, setUserEmail] = useState('');
 
 	const client = new TypesenseSearchClient({
 		nodes: [
@@ -470,17 +473,7 @@ const LibraryToolbar = props => {
 					))}
 				</div>
 			)}
-			{!isMaxiProActive && (
-				<Button
-					key='maxi-cloud-toolbar__button__connect'
-					className='maxi-cloud-container__patterns__top-menu__button-connect-pro'
-					label={__('Connect to Maxi Pro Account', 'maxi-blocks')}
-					onClick={onClickConnect}
-				>
-					{__('Connect to Maxi Pro Account', 'maxi-blocks')}
-				</Button>
-			)}
-			{isMaxiProActive && (
+			{isMaxiProActive && userName && (
 				<div>
 					<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>{`${__(
 						'Signed in as:',
@@ -496,6 +489,34 @@ const LibraryToolbar = props => {
 					</Button>
 				</div>
 			)}
+			{!isMaxiProActive && userName && (
+				<div>
+					<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>{`${__(
+						'Expired:',
+						'maxi-blocks'
+					)} ${userName}`}</h5>
+				</div>
+			)}
+			{!isMaxiProActive && !userName && (
+				<div className='maxi-cloud-container__patterns__top-menu__input'>
+					<TextControl
+						placeholder={__('Input your Maxi email', 'maxi-blocks')}
+						value={userEmail}
+						onChange={value => setUserEmail(value)}
+					/>
+				</div>
+			)}
+			{!isMaxiProActive && (
+				<Button
+					key='maxi-cloud-toolbar__button__connect'
+					className='maxi-cloud-container__patterns__top-menu__button-connect-pro'
+					label={__('Connect to Maxi Pro Account', 'maxi-blocks')}
+					onClick={() => onClickConnect(userEmail)}
+				>
+					{__('Connect to Maxi Pro Account', 'maxi-blocks')}
+				</Button>
+			)}
+
 			{type !== 'preview' && type !== 'switch-tone' && chatSupport && (
 				<CrispChat className='maxi-cloud-toolbar__help-button' as='a'>
 					{help}

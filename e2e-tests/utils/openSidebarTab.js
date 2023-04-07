@@ -38,6 +38,10 @@ const openSidebarTab = async (page, tab, item) => {
 		if (el.getAttribute('aria-expanded') === 'false') el.click();
 	});
 
+	await page.waitForSelector(
+		`.maxi-accordion-control__item[data-name="${item}"] .maxi-accordion-control__item__panel:not([hidden])`
+	);
+
 	return content;
 };
 

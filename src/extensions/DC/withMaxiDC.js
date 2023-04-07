@@ -66,10 +66,9 @@ const withMaxiDC = createHigherOrderComponent(
 				postTaxonomyLinksStatus,
 			} = dynamicContentProps;
 
-			const contentType = useMemo(
-				() => getBlockData(name)?.dcContentType,
-				[]
-			);
+			const contentType = name
+				.replace(/maxi-blocks\//, '')
+				.replace(/-maxi/, '');
 
 			/**
 			 * Synchronize attributes between context loop and dynamic content.

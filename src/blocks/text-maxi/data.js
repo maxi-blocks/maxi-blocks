@@ -202,7 +202,6 @@ const interactionBuilderSettings = {
 	canvas: getCanvasSettings({ name }),
 	advanced: getAdvancedSettings({ customCss }),
 };
-const dcContentType = 'text';
 
 const data = {
 	name,
@@ -210,14 +209,7 @@ const data = {
 	customCss,
 	transition,
 	interactionBuilderSettings,
-	dcContentType,
 };
 
-export {
-	copyPasteMapping,
-	customCss,
-	transition,
-	interactionBuilderSettings,
-	dcContentType,
-};
+export { copyPasteMapping, customCss, transition, interactionBuilderSettings };
 export default data;

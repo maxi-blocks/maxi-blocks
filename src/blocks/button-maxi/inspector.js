@@ -16,7 +16,7 @@ import {
 } from '../../components';
 import * as defaultPresets from './defaults';
 import { getGroupAttributes, getIconWithColor } from '../../extensions/styles';
-import { customCss, dcContentType } from './data';
+import { customCss } from './data';
 import * as inspectorTabs from '../../components/inspector-tabs';
 import { withMaxiInspector } from '../../extensions/inspector';
 
@@ -328,7 +328,7 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.dc({
 										props,
-										contentType: dcContentType,
+										contentType: 'button',
 									}),
 									...inspectorTabs.scrollEffects({
 										props,

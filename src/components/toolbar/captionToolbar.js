@@ -143,7 +143,10 @@ const CaptionToolbar = memo(
 					noArrow
 					animate={false}
 					focusOnMount={false}
-					className={classnames('maxi-toolbar__popover')}
+					className={classnames(
+						'maxi-toolbar__popover',
+						'maxi-toolbar__popover-caption'
+					)}
 					uniqueid={uniqueID}
 					__unstableSlotName='block-toolbar'
 					observeBlockPosition={clientId}

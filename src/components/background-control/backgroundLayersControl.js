@@ -605,7 +605,7 @@ const BackgroundLayersControl = ({
 								value: 'normal',
 							},
 							{
-								label: __('Background color', 'maxi-blocks'),
+								label: __('Background colour', 'maxi-blocks'),
 								value: 'color',
 							},
 							{

@@ -120,9 +120,12 @@ const MaxiToolbar = memo(
 			svgType,
 		} = attributes;
 
-		const { isTyping, getBlockParents } = useSelect(
-			select => select('core/block-editor'),
-			[]
+		const { getBlockParents } = useSelect(select =>
+			select('core/block-editor')
+		);
+
+		const isTyping = useSelect(select =>
+			select('core/block-editor').isTyping()
 		);
 
 		const { tooltipsHide } = useSelect(select => {
@@ -209,7 +212,7 @@ const MaxiToolbar = memo(
 					position='top center'
 				>
 					<div className={`toolbar-wrapper pinned--${pinActive}`}>
-						{!isTyping() && (
+						{!isTyping && (
 							<div className='toolbar-block-custom-label'>
 								{!isFirstOnHierarchy && (
 									<span

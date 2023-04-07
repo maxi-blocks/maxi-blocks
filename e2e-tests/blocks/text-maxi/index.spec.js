@@ -93,7 +93,7 @@ describe('TextMaxi', () => {
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(150);
 		await page.keyboard.type('...OnMerge', { delay: 100 });
-		await pressKeyWithTimeout('ArrowLeft', 12);
+		await pressKeyWithTimeout('ArrowLeft', 11);
 		await page.waitForTimeout(150);
 		await page.keyboard.press('Delete');
 		await page.waitForTimeout(150);

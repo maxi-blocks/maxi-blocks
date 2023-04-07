@@ -182,7 +182,7 @@ const interactionBuilderSettings = {
 	block: [
 		{
 			sid: 'ic',
-			label: __('Icon colour'),
+			label: __('Icon colour', 'maxi-blocks'),
 			transitionTarget: [
 				transition.block.colour.target,
 				transition.block['colour two'].target,

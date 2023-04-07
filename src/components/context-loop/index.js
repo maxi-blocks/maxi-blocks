@@ -35,10 +35,7 @@ import { capitalize, isEmpty, isEqual, isNil } from 'lodash';
 import classnames from 'classnames';
 import { getDefaultAttribute } from '../../extensions/styles';
 
-/**
- * Dynamic Content
- */
-const DynamicContent = props => {
+const ContextLoop = props => {
 	const { className, onChange, contentType = 'group' } = props;
 
 	const { contextLoop } = useContext(LoopContext);
@@ -46,7 +43,7 @@ const DynamicContent = props => {
 	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
 	const [postIdOptions, setPostIdOptions] = useState(null);
 
-	const classes = classnames('maxi-dynamic-content', className);
+	const classes = classnames('maxi-context-loop', className);
 
 	const {
 		'cl-status': status,
@@ -284,4 +281,4 @@ const DynamicContent = props => {
 	);
 };
 
-export default DynamicContent;
+export default ContextLoop;

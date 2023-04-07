@@ -74,7 +74,7 @@ const ShapeDividerControl = props => {
 	const { onChangeInline, onChange, breakpoint } = props;
 
 	const shapeItemsTop = [
-		{ label: __('None', 'max-block'), value: '' },
+		{ label: __('None', 'maxi-blocks'), value: '' },
 		{ icon: wavesTop, value: 'waves-top' },
 		{ icon: wavesTopOpacity, value: 'waves-top-opacity' },
 		{ icon: waveTop, value: 'wave-top' },
@@ -98,7 +98,7 @@ const ShapeDividerControl = props => {
 	];
 
 	const shapeItemsBottom = [
-		{ label: __('None', 'max-block'), value: '' },
+		{ label: __('None', 'maxi-blocks'), value: '' },
 		{ icon: wavesBottom, value: 'waves-bottom' },
 		{ icon: wavesBottomOpacity, value: 'waves-bottom-opacity' },
 		{ icon: waveBottom, value: 'wave-bottom' },
@@ -208,7 +208,7 @@ const ShapeDividerControl = props => {
 			case 'cloud-bottom-opacity':
 				return cloudBottomOpacity;
 			default:
-				return __('Divider style', 'max-block');
+				return __('Divider style', 'maxi-blocks');
 		}
 	};
 

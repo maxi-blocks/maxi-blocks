@@ -3,7 +3,7 @@
  */
 import { select } from '@wordpress/data';
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
-import { memo } from '@wordpress/element';
+import { memo, useEffect } from '@wordpress/element';
 
 /**
  * External dependencies
@@ -15,8 +15,47 @@ const withMaxiInspector = createHigherOrderComponent(
 		pure(
 			memo(
 				ownProps => {
-					if (ownProps.isSelected)
+					// Adds correct class to the wrapper
+					useEffect(() => {
+						if (ownProps.isSelected) {
+							const editPostSidebarNode = document.querySelector(
+								'.interface-complementary-area'
+							);
+
+							if (editPostSidebarNode)
+								editPostSidebarNode.classList.add(
+									'maxi-sidebar'
+								);
+
+							const blockEditorBlockInspectorNode =
+								document.querySelector(
+									'.block-editor-block-inspector'
+								);
+
+							if (blockEditorBlockInspectorNode)
+								blockEditorBlockInspectorNode.classList.add(
+									'maxi-controls'
+								);
+
+							return () => {
+								if (editPostSidebarNode)
+									editPostSidebarNode.classList.remove(
+										'maxi-sidebar'
+									);
+
+								if (blockEditorBlockInspectorNode)
+									blockEditorBlockInspectorNode.classList.remove(
+										'maxi-controls'
+									);
+							};
+						}
+
+						return () => {};
+					});
+
+					if (ownProps.isSelected) {
 						return <WrappedComponent {...ownProps} />;
+					}
 
 					return null;
 				},

@@ -49,6 +49,7 @@ const CloudLibrary = props => {
 		userName,
 		onLogOut,
 		layerOrder,
+		showNotValidEmail,
 	} = props;
 
 	const [type, setType] = useState(cloudType);
@@ -92,6 +93,7 @@ const CloudLibrary = props => {
 				onClickConnect={onClickConnect}
 				userName={userName}
 				onLogOut={onLogOut}
+				showNotValidEmail={showNotValidEmail}
 				onChangeTone={hit => {
 					const {
 						demo_url: newUrl,

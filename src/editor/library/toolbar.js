@@ -67,6 +67,7 @@ const LibraryToolbar = props => {
 		userName,
 		onLogOut,
 		onClickConnect,
+		showNotValidEmail,
 	} = props;
 
 	const [userEmail, setUserEmail] = useState('');
@@ -504,6 +505,7 @@ const LibraryToolbar = props => {
 						value={userEmail}
 						onChange={value => setUserEmail(value)}
 					/>
+					{showNotValidEmail && <span>The email is not valid</span>}
 				</div>
 			)}
 			{!isMaxiProActive && (

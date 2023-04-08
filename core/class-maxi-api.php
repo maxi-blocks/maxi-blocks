@@ -769,6 +769,15 @@ if (!class_exists('MaxiBlocks_API')):
             $this->write_log('==================');
             $dataString = json_encode($data['data']);
             $this->write_log($dataString);
+            $this->write_log('gettype(data)');
+            $this->write_log(gettype($data));
+
+            if(get_option('maxi_pro')) {
+                $oldData = json_decode(get_option('maxi_pro'));
+                $this->write_log('$oldData');
+                $this->write_log($oldData);
+                $this->write_log(gettype($oldData));
+            }
 
             if($dataString) {
                 update_option('maxi_pro', $dataString);

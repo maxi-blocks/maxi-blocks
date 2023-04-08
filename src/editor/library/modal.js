@@ -173,8 +173,8 @@ const MaxiModal = props => {
 	const [isMaxiProActive, setIsMaxiProActive] = useState(isProSubActive());
 	const [userName, setUserName] = useState(getUserName());
 
-	console.log('isMaxiProActive', isMaxiProActive);
-	console.log('userName', userName);
+	// console.log('isMaxiProActive', isMaxiProActive);
+	// console.log('userName', userName);
 
 	const onClickConnect = email => {
 		document.addEventListener('visibilitychange', function userIsBack() {

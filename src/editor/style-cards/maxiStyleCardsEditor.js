@@ -497,7 +497,10 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 						{importedCardExists && (
 							<div className='maxi-style-cards__card-already-exists'>
 								<span>
-									{__('Imported card already exists.')}
+									{__(
+										'Imported card already exists.',
+										'maxi-blocks'
+									)}
 								</span>
 							</div>
 						)}

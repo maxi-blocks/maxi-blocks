@@ -33,7 +33,10 @@ const anchor = ({ props }) => {
 					'maxi-blocks'
 				)}
 				className='maxi-anchor-link'
-				placeholder={__('Allowed chars: 0-9, A-Z, a-z, _ , -')}
+				placeholder={__(
+					'Allowed chars: 0-9, A-Z, a-z, _ , -',
+					'maxi-blocks'
+				)}
 				value={anchorLink}
 				onChange={anchorLink => {
 					const link = validateAnchor(anchorLink);

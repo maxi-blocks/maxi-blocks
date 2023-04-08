@@ -54,7 +54,7 @@ const allowedBlocks = [
 ];
 
 wp.domReady(() => {
-	authConnect(false);
+	// authConnect(false);
 	const observerSubscribe = subscribe(() => {
 		const targetNode =
 			document.querySelector('.edit-post-layout') ||

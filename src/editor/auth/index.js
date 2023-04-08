@@ -1,187 +1,9 @@
 import './store';
-/**
- * External dependencies
- */
-import { Client, Account } from 'appwrite';
 
 /**
  * WordPress dependencies
  */
 import { select, dispatch } from '@wordpress/data';
-
-export const authClient = () => {
-	const client = new Client();
-
-	client
-		.setEndpoint('https://auth.maxiblocks.com/v1') // Your API Endpoint
-		.setProject('maxi'); // Your project ID
-
-	const account = new Account(client);
-
-	// fetch('https://my.maxiblocks.com/plugin-api-fwefqw.php')
-	// 	.then(response => {
-	// 		if (response.status !== 200) {
-	// 			console.error(
-	// 				`Looks like there was a problem with an API call. Status Code: ${response.status}`
-	// 			);
-	// 			return;
-	// 		}
-
-	// 		// Examine the text in the response
-	// 		response.text().then(data => {
-	// 			console.log(data);
-	// 		});
-	// 	})
-	// 	.catch(err => {
-	// 		console.error('Fetch Error for the API call:', err);
-	// 	});
-
-	return { client, account };
-};
-
-export async function authConnect(
-	withRedirect = false,
-	email = 'spry.note7764@maxiblocks.com'
-) {
-	const url = 'https://my.maxiblocks.com/login?plugin'; // 'https://maxiblocks.com/go/user-login'
-
-	const redirect = () => {
-		withRedirect && window.open(url, '_blank')?.focus();
-	};
-	const emailActive = () => {
-		console.log('emailActive');
-		dispatch('maxiBlocks/pro').saveMaxiProStatus({
-			status: 'yes',
-			name: email, // TO DO: get user name
-		});
-	};
-	const emailNotActive = () => {
-		dispatch('maxiBlocks/pro').saveMaxiProStatus({
-			status: 'no',
-			name: email, // TO DO: get user name
-		});
-	};
-	const notActive = () => {
-		dispatch('maxiBlocks/pro').saveMaxiProStatus({
-			status: 'no',
-			name: '',
-		});
-	};
-
-	const fetchUrl = `https://my.maxiblocks.com/plugin-api-fwefqw.php?${new URLSearchParams(
-		{
-			email,
-		}
-	)}`;
-
-	console.log(fetchUrl);
-
-	fetch(fetchUrl)
-		.then(response => {
-			if (response.status !== 200) {
-				console.error(
-					`There was a problem with an API call. Status Code: ${response.status}`
-				);
-				return;
-			}
-
-			response.text().then(date => {
-				if (typeof date === 'string' && date !== '') {
-					console.log(`exp date: ${date}`);
-					const today = new Date().toISOString().slice(0, 10);
-					console.log(`today: ${today}`);
-
-					if (today > date) {
-						emailNotActive();
-						redirect();
-					} else {
-						console.log('not expired');
-						emailActive();
-					}
-				}
-				if (date === '') {
-					// no email
-					notActive();
-					redirect();
-				}
-
-				redirect();
-			});
-		})
-		.catch(err => {
-			console.error('Fetch Error for the API call:', err);
-			notActive();
-			redirect();
-		});
-
-	// userInfo
-	// 	.then(response => {
-	// 		if (response.status) {
-	// 			if (response?.prefs?.pro_active) {
-	// 				dispatch('maxiBlocks/pro').saveMaxiProStatus({
-	// 					status: 'yes',
-	// 					name: response?.name,
-	// 				});
-	// 			} else {
-	// 				dispatch('maxiBlocks/pro').saveMaxiProStatus({
-	// 					status: 'no',
-	// 					name: response?.name,
-	// 				});
-	// 			}
-	// 		} else {
-	// 			dispatch('maxiBlocks/pro').saveMaxiProStatus({
-	// 				status: 'no',
-	// 				name: '',
-	// 			});
-	// 			withRedirect && window.open(url, '_blank')?.focus();
-	// 		}
-	// 	})
-	// 	.catch(error => {
-	// 		console.error(error);
-	// 		dispatch('maxiBlocks/pro').saveMaxiProStatus({
-	// 			status: 'no',
-	// 			name: '',
-	// 		});
-	// 		withRedirect && window.open(url, '_blank')?.focus();
-	// 	});
-}
-
-// export async function authConnect(withRedirect = false) {
-// 	const url = 'https://my.maxiblocks.com/login?plugin'; // 'https://maxiblocks.com/go/user-login'
-
-// 	const userInfo = authClient().account.get();
-// 	userInfo
-// 		.then(response => {
-// 			if (response.status) {
-// 				if (response?.prefs?.pro_active) {
-// 					console.log("dispatch('maxiBlocks/pro')");
-// 					dispatch('maxiBlocks/pro').saveMaxiProStatus({
-// 						status: 'yes',
-// 						name: response?.name,
-// 					});
-// 				} else {
-// 					dispatch('maxiBlocks/pro').saveMaxiProStatus({
-// 						status: 'no',
-// 						name: response?.name,
-// 					});
-// 				}
-// 			} else {
-// 				dispatch('maxiBlocks/pro').saveMaxiProStatus({
-// 					status: 'no',
-// 					name: '',
-// 				});
-// 				withRedirect && window.open(url, '_blank')?.focus();
-// 			}
-// 		})
-// 		.catch(error => {
-// 			console.error(error);
-// 			dispatch('maxiBlocks/pro').saveMaxiProStatus({
-// 				status: 'no',
-// 				name: '',
-// 			});
-// 			withRedirect && window.open(url, '_blank')?.focus();
-// 		});
-// }
 
 export const isProSubActive = () => {
 	const { status } = select('maxiBlocks/pro').receiveMaxiProStatus();
@@ -191,24 +13,130 @@ export const isProSubActive = () => {
 };
 
 export const getUserName = () => {
-	const { name } = select('maxiBlocks/pro').receiveMaxiProStatus();
-	if (name !== '') return name;
+	const { name, email } = select('maxiBlocks/pro').receiveMaxiProStatus();
+	if (name && name !== '') return name;
+	return email;
+};
+
+export const getUserEmail = () => {
+	const { email } = select('maxiBlocks/pro').receiveMaxiProStatus();
+	if (email !== '') return email;
 	return false;
 };
 
-export const logOut = () => {
-	const logOutSession = authClient().account.deleteSession('current');
+export async function authConnect(withRedirect = false, email = false) {
+	const url = 'https://my.maxiblocks.com/login?plugin'; // 'https://maxiblocks.com/go/user-login'
 
-	logOutSession.then(
-		function success(response) {
-			// console.log(response); // Success
-			dispatch('maxiBlocks/pro').saveMaxiProStatus({
-				status: 'no',
-				name: '',
-			});
-		},
-		function error(error) {
-			console.error(error); // Failure
+	const generateCookieKey = length => {
+		let key = '';
+		const string =
+			'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+		const stringLength = string.length;
+		let i = 0;
+		while (i < length) {
+			key += string.charAt(Math.floor(Math.random() * stringLength));
+			i += 1;
 		}
-	);
-};
+		return key;
+	};
+
+	let cookieKey = document.cookie
+		.split(';')
+		.find(row => row.startsWith('maxi_blocks_key='))
+		?.split('=')[1];
+
+	if (!cookieKey) {
+		cookieKey = generateCookieKey(20);
+		document.cookie = `maxi_blocks_key=${cookieKey};max-age=2592000`;
+	}
+
+	const redirect = () => {
+		withRedirect && window.open(url, '_blank')?.focus();
+	};
+
+	const emailActive = (name, info) => {
+		console.log('emailActive');
+		dispatch('maxiBlocks/pro').saveMaxiProStatus({
+			status: 'yes',
+			email,
+			name,
+			key: cookieKey,
+			info,
+		});
+	};
+	const emailNotActive = (name, info) => {
+		dispatch('maxiBlocks/pro').saveMaxiProStatus({
+			status: 'no',
+			email,
+			name,
+			key: cookieKey,
+			info,
+		});
+	};
+	const notActive = () => {
+		dispatch('maxiBlocks/pro').saveMaxiProStatus({
+			status: 'no',
+			name: '',
+			email: '',
+			info: '',
+			key: cookieKey,
+		});
+	};
+
+	const useEmail = email || getUserEmail();
+
+	const fetchUrl = 'https://my.maxiblocks.com/plugin-api-fwefqw.php';
+
+	const fetchOptions = {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-Xaiscmolkb': 'sdeqw239ejkdgaorti482',
+		},
+		body: JSON.stringify({ email: useEmail, cookie: cookieKey }),
+	};
+
+	fetch(fetchUrl, fetchOptions)
+		.then(response => {
+			if (response.status !== 200) {
+				console.error(
+					`There was a problem with an API call. Status Code: ${response.status}`
+				);
+				return;
+			}
+
+			response.json().then(data => {
+				if (data) {
+					const date = data.expiration_date;
+					const { name, info, status } = data;
+					console.log(`exp date: ${date}`);
+					console.log(`name: ${name}`);
+					console.log(`info: ${info}`);
+					console.log(`status: ${status}`);
+
+					if (status === 'ok') {
+						const today = new Date().toISOString().slice(0, 10);
+						if (today > date) {
+							emailNotActive(name, info);
+							redirect();
+						} else {
+							console.log('not expired');
+							emailActive(name, info);
+						}
+					}
+				}
+				if (!data) {
+					// no email
+					notActive();
+					redirect();
+				}
+			});
+		})
+		.catch(err => {
+			console.error('Fetch Error for the API call:', err);
+			notActive();
+			redirect();
+		});
+}
+
+export const logOut = () => {};

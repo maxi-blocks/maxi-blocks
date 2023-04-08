@@ -172,27 +172,40 @@ const MaxiModal = props => {
 
 	const [isMaxiProActive, setIsMaxiProActive] = useState(isProSubActive());
 	const [userName, setUserName] = useState(getUserName());
+	const [showNotValidEmail, setShowNotValidEmail] = useState(false);
 
 	// console.log('isMaxiProActive', isMaxiProActive);
 	// console.log('userName', userName);
 
 	const onClickConnect = email => {
-		document.addEventListener('visibilitychange', function userIsBack() {
-			if (!document.hidden) {
-				console.log('user is back');
-				authConnect(false, email).then(() => {
-					setIsMaxiProActive(isProSubActive());
-					setUserName(getUserName());
-					console.log('set user name');
-					console.log('username', getUserName());
-				});
-			}
-		});
+		const isValidEmail = email => {
+			const emailPattern =
+				/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+			return emailPattern.test(email);
+		};
+		const isValid = isValidEmail(email);
+		if (isValid) {
+			setShowNotValidEmail(false);
+			document.addEventListener(
+				'visibilitychange',
+				function userIsBack() {
+					if (!document.hidden) {
+						console.log('user is back');
+						authConnect(false, email).then(() => {
+							setIsMaxiProActive(isProSubActive());
+							setUserName(getUserName());
+							console.log('set user name');
+							console.log('username', getUserName());
+						});
+					}
+				}
+			);
 
-		authConnect(true, email).then(() => {
-			setIsMaxiProActive(isProSubActive());
-			setUserName(getUserName());
-		});
+			authConnect(true, email).then(() => {
+				setIsMaxiProActive(isProSubActive());
+				setUserName(getUserName());
+			});
+		} else setShowNotValidEmail(true);
 	};
 
 	const onLogOut = () => {
@@ -343,6 +356,7 @@ const MaxiModal = props => {
 								isSwapChecked={isSwapChecked}
 								isMaxiProActive={isMaxiProActive}
 								onClickConnect={onClickConnect}
+								showNotValidEmail={showNotValidEmail}
 								userName={userName}
 								onLogOut={onLogOut}
 								layerOrder={layerOrder}
@@ -454,6 +468,7 @@ const MaxiModal = props => {
 							isSwapChecked={isSwapChecked}
 							isMaxiProActive={isMaxiProActive}
 							onClickConnect={onClickConnect}
+							showNotValidEmail={showNotValidEmail}
 							userName={userName}
 							onLogOut={onLogOut}
 						/>

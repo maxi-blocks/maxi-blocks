@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { select } from '@wordpress/data';
+import { select, subscribe } from '@wordpress/data';
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
 import { memo, useEffect } from '@wordpress/element';
 
@@ -26,6 +26,24 @@ const withMaxiInspector = createHigherOrderComponent(
 								editPostSidebarNode.classList.add(
 									'maxi-sidebar'
 								);
+							else {
+								const sidebarIntervalUnsubscribe = subscribe(
+									() => {
+										const editPostSidebarNode =
+											document.querySelector(
+												'.interface-complementary-area'
+											);
+
+										if (editPostSidebarNode) {
+											editPostSidebarNode.classList.add(
+												'maxi-sidebar'
+											);
+
+											sidebarIntervalUnsubscribe();
+										}
+									}
+								);
+							}
 
 							const blockEditorBlockInspectorNode =
 								document.querySelector(
@@ -36,6 +54,24 @@ const withMaxiInspector = createHigherOrderComponent(
 								blockEditorBlockInspectorNode.classList.add(
 									'maxi-controls'
 								);
+							else {
+								const controlsIntervalUnsubscribe = subscribe(
+									() => {
+										const blockEditorBlockInspectorNode =
+											document.querySelector(
+												'.block-editor-block-inspector'
+											);
+
+										if (blockEditorBlockInspectorNode) {
+											blockEditorBlockInspectorNode.classList.add(
+												'maxi-controls'
+											);
+
+											controlsIntervalUnsubscribe();
+										}
+									}
+								);
+							}
 
 							return () => {
 								if (editPostSidebarNode)

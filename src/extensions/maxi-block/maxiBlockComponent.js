@@ -325,7 +325,7 @@ class MaxiBlockComponent extends Component {
 			removeUnmountedBlockFromRelations(this.props.attributes.uniqueID);
 
 			// CSSCache
-			dispatch('maxiBlocks/cssCache').removeCSSCache(
+			dispatch('maxiBlocks/styles').removeCSSCache(
 				this.props.attributes.uniqueID
 			);
 		}

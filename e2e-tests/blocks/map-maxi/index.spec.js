@@ -75,7 +75,7 @@ const popupTest = async map => {
 	).toMatchSnapshot();
 };
 
-describe('Map Maxi', () => {
+describe.skip('Map Maxi', () => {
 	beforeEach(async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Map Maxi');

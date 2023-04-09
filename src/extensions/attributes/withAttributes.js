@@ -60,10 +60,7 @@ const withAttributes = createHigherOrderComponent(
 					newUniqueID
 				);
 
-				dispatch('maxiBlocks/blocks').updateBlock(
-					newUniqueID,
-					clientId
-				);
+				dispatch('maxiBlocks/blocks').addBlock(newUniqueID, clientId);
 			}
 			// isFirstOnHierarchy
 			const parentBlocks = select('core/block-editor')

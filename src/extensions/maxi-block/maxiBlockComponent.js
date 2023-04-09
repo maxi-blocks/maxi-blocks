@@ -108,7 +108,6 @@ class MaxiBlockComponent extends Component {
 		this.isPreviewBlock = !!getTemplatePartChooseList();
 
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
-		dispatch('maxiBlocks/blocks').addBlock(uniqueID, this.props.clientId);
 
 		// Init
 		this.uniqueIDChecker(uniqueID);
@@ -467,14 +466,12 @@ class MaxiBlockComponent extends Component {
 			if (this.maxiBlockDidChangeUniqueID)
 				this.maxiBlockDidChangeUniqueID(newUniqueID);
 
-			dispatch('maxiBlocks/blocks').updateBlock(newUniqueID, clientId);
-			dispatch('maxiBlocks/relations').updateRelation(
-				idToCheck,
-				newUniqueID
-			);
+			dispatch('maxiBlocks/blocks').addBlock(newUniqueID, clientId);
 
 			return newUniqueID;
 		}
+
+		dispatch('maxiBlocks/blocks').addBlock(idToCheck, this.props.clientId);
 
 		return idToCheck;
 	}

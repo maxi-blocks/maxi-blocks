@@ -14,7 +14,13 @@ const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  * @return {Object} Updated state.
  */
 function reducer(
-	state = { styles: {}, isUpdate: null, prevSavedAttrs: [], cssCache: {} },
+	state = {
+		styles: {},
+		isUpdate: null,
+		prevSavedAttrs: [],
+		cssCache: {},
+		blockMarginValue: '',
+	},
 	action
 ) {
 	switch (action.type) {
@@ -75,6 +81,12 @@ function reducer(
 			delete state.cssCache[uniqueID];
 
 			return state;
+		}
+		case 'SAVE_BLOCK_MARGIN_VALUE': {
+			return {
+				...state,
+				blockMarginValue: action.blockMarginValue,
+			};
 		}
 		default:
 			return state;

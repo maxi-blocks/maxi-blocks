@@ -61,3 +61,10 @@ export const removeCSSCache = uniqueID => {
 		uniqueID,
 	};
 };
+
+export const saveBlockMarginValue = blockMarginValue => {
+	return {
+		type: 'SAVE_BLOCK_MARGIN_VALUE',
+		blockMarginValue,
+	};
+};

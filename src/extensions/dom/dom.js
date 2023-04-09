@@ -20,6 +20,7 @@ import { setScreenSize } from '../styles';
  * External dependencies
  */
 import { isNil } from 'lodash';
+import getEditorWrapper from './getEditorWrapper';
 
 /**
  * General
@@ -115,6 +116,31 @@ wp.domReady(() => {
 			else if (!['xs', 's'].includes(deviceType))
 				setScreenSize(deviceType, false);
 		}
+	});
+
+	/**
+	 * Block margin css
+	 * Some themes contain a margin on each block that centers it in the editor.
+	 * As Maxi removes that margin, we need to add it back to the block in order
+	 * to keep a good UX.
+	 */
+	const blockMarginObserver = new ResizeObserver(() => {
+		const rawWrapper = getEditorWrapper();
+		const editorWrapper = rawWrapper?.contentDocument ?? rawWrapper;
+		const blockContainer =
+			editorWrapper?.querySelector('.is-root-container');
+
+		const editorWidth = editorWrapper?.offsetWidth ?? null;
+
+		const fullWidthElement = document.createElement('div');
+		fullWidthElement.style.minWidth = '100%';
+		blockContainer.appendChild(fullWidthElement);
+		const fullWidthElementWidth = fullWidthElement.offsetWidth;
+		blockContainer.removeChild(fullWidthElement);
+
+		const blockMargin = (editorWidth - fullWidthElementWidth) / 2;
+
+		dispatch('maxiBlocks/styles').saveBlockMarginValue(blockMargin);
 	});
 
 	const isSiteEditor = getIsSiteEditor();
@@ -216,6 +242,14 @@ wp.domReady(() => {
 			[resizeObserverTarget, document.body].forEach(
 				element => element && resizeObserver.observe(element)
 			);
+
+			// Block margin value
+			const rawWrapper = getEditorWrapper();
+			const editorWrapper = rawWrapper?.contentDocument ?? rawWrapper;
+			const blockContainer =
+				editorWrapper?.querySelector('.is-root-container');
+
+			if (blockContainer) blockMarginObserver.observe(blockContainer);
 
 			editorContentUnsubscribe();
 		}

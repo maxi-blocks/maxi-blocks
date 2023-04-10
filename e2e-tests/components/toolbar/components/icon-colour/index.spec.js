@@ -20,7 +20,7 @@ describe('Icon colour', () => {
 
 		// generate icon
 		await modalMock(page, { type: 'svg' });
-		await page.$eval('button[aria-label="Close dialog"]', button =>
+		await page.$eval('button[aria-label="Close"]', button =>
 			button.click()
 		);
 		await page.waitForTimeout(200);

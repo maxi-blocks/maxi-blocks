@@ -45,6 +45,7 @@ const CloudLibrary = props => {
 		gutenbergCode: rawGutenbergCode,
 		isSwapChecked,
 		isMaxiProActive,
+		isMaxiProExpired,
 		onClickConnect,
 		userName,
 		onLogOut,
@@ -90,6 +91,7 @@ const CloudLibrary = props => {
 				onInsert={onInsert}
 				isSwapChecked={isSwapChecked}
 				isMaxiProActive={isMaxiProActive}
+				isMaxiProExpired={isMaxiProExpired}
 				onClickConnect={onClickConnect}
 				userName={userName}
 				onLogOut={onLogOut}

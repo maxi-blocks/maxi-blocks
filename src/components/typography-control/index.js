@@ -302,13 +302,16 @@ const TypographyControl = props => {
 	const { formatValue, onChangeTextFormat } =
 		!isStyleCards && !disableCustomFormats ? useContext(textContext) : {};
 
-	const onChangeIB = value => {
+	const onChangeIB = (value, options) => {
 		const newTypography = {};
 		Object.entries(value).forEach(([key, val]) => {
 			newTypography[`${key}-${breakpoint}${isHover ? '-hover' : ''}`] =
 				val;
 		});
-		onChange(newTypography);
+		onChange({
+			...newTypography,
+			...(options?.isReset && { isReset: true }),
+		});
 	};
 
 	const typography =
@@ -589,6 +592,9 @@ const TypographyControl = props => {
 					onChangeUnit={val => {
 						(isIB ? onChangeIB : onChangeFormat)({
 							[`${prefix}font-size-unit`]: val,
+							...(isIB && {
+								[`${prefix}font-size`]: getValue('font-size'),
+							}),
 						});
 					}}
 					placeholder={getValue('font-size')}
@@ -622,6 +628,10 @@ const TypographyControl = props => {
 					onChangeUnit={val => {
 						(isIB ? onChangeIB : onChangeFormat)({
 							[`${prefix}line-height-unit`]: val,
+							...(isIB && {
+								[`${prefix}line-height`]:
+									getValue('line-height'),
+							}),
 						});
 					}}
 					placeholder={getValue('line-height')}
@@ -666,6 +676,10 @@ const TypographyControl = props => {
 					onChangeUnit={val => {
 						(isIB ? onChangeIB : onChangeFormat)({
 							[`${prefix}letter-spacing-unit`]: val,
+							...(isIB && {
+								[`${prefix}letter-spacing`]:
+									getValue('letter-spacing'),
+							}),
 						});
 					}}
 					placeholder={getValue('letter-spacing')}
@@ -918,6 +932,10 @@ const TypographyControl = props => {
 						(isIB ? onChangeIB : onChangeFormat)(
 							{
 								[`${prefix}text-indent-unit`]: val,
+								...(isIB && {
+									[`${prefix}text-indent`]:
+										getValue('text-indent'),
+								}),
 							},
 							!isIB && { forceDisableCustomFormats: true }
 						);
@@ -1023,6 +1041,10 @@ const TypographyControl = props => {
 						(isIB ? onChangeIB : onChangeFormat)(
 							{
 								[`${prefix}word-spacing-unit`]: val,
+								...(isIB && {
+									[`${prefix}word-spacing`]:
+										getValue('word-spacing'),
+								}),
 							},
 							!isIB && { forceDisableCustomFormats: true }
 						);
@@ -1083,6 +1105,10 @@ const TypographyControl = props => {
 							(isIB ? onChangeIB : onChangeFormat)(
 								{
 									[`${prefix}bottom-gap-unit`]: val,
+									...(isIB && {
+										[`${prefix}bottom-gap`]:
+											getValue('bottom-gap'),
+									}),
 								},
 								!isIB && { forceDisableCustomFormats: true }
 							);

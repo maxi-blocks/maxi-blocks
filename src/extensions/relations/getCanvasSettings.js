@@ -28,7 +28,8 @@ import { getEditorWrapper } from '../dom';
 /**
  * External dependencies
  */
-import { isEmpty, isEqual, pickBy } from 'lodash';
+import { isEmpty, pickBy } from 'lodash';
+import { addRelatedAttributes, getOnlyDifferentValues } from '../maxi-block';
 
 const getCanvasSettings = ({ name }) => [
 	{
@@ -47,6 +48,21 @@ const getCanvasSettings = ({ name }) => [
 			const { 'background-layers': currentBgLayers } = attributes;
 			const { 'background-layers': blockBgLayers } = blockAttributes;
 
+			const attributesMap = {
+				mandatory: ['type', 'order'],
+				relatedAttributes: [
+					{
+						props: [
+							'background-image-position-height',
+							'background-image-position-height-unit',
+							'background-image-position-width',
+							'background-image-position-width-unit',
+							'background-image-position',
+						],
+					},
+				],
+			};
+
 			return !isEmpty(currentBgLayers) ? (
 				<BlockBackgroundControl
 					{...props}
@@ -60,15 +76,16 @@ const getCanvasSettings = ({ name }) => [
 									!key.includes('mediaURL')
 							);
 
-							return Object.fromEntries(
-								Object.entries(newBgLayer).filter(
-									([key, attr]) =>
-										!isEqual(
-											attr,
-											blockBgLayers[index][key]
-										)
-								)
+							const IBAttributes = getOnlyDifferentValues(
+								newBgLayer,
+								blockBgLayers[index]
 							);
+
+							return addRelatedAttributes({
+								IBAttributes,
+								props: newBgLayer,
+								attributesMap,
+							});
 						});
 
 						onChange({
@@ -107,6 +124,7 @@ const getCanvasSettings = ({ name }) => [
 				blockStyle,
 				ignoreMediaAttributes: true,
 			}),
+		excludeRelatedAttributes: true,
 	},
 	{
 		sid: 'b',

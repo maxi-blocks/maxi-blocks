@@ -22,7 +22,11 @@ import {
 	getGroupAttributes,
 } from '../../extensions/styles';
 import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
-import { goThroughMaxiBlocks } from '../../extensions/maxi-block';
+import {
+	addRelatedAttributes,
+	deepOmit,
+	goThroughMaxiBlocks,
+} from '../../extensions/maxi-block';
 import { getHoverStatus } from '../../extensions/relations';
 import { getBlockData } from '../../extensions/attributes';
 
@@ -231,16 +235,9 @@ const RelationControl = props => {
 			return newAttributes;
 		};
 
-		const getStylesObj = (attributes, IBAttributes = {}) => {
-			const newGroupAttributes = getGroupAttributes(
-				attributes,
-				selectedSettingsObj.attrGroupName,
-				false,
-				prefix
-			);
-
-			return selectedSettingsObj?.helper({
-				obj: { ...newGroupAttributes, isIB: true, IBAttributes },
+		const getStylesObj = attributes => {
+			const styleObj = selectedSettingsObj?.helper({
+				obj: { ...attributes },
 				isIB: true,
 				prefix,
 				blockStyle: blockAttributes.blockStyle,
@@ -252,6 +249,8 @@ const RelationControl = props => {
 				target: selectedSettingsObj?.target,
 				clientId,
 			});
+
+			return deepOmit(styleObj);
 		};
 
 		const getStyles = (stylesObj, isFirst = false) => {
@@ -310,16 +309,21 @@ const RelationControl = props => {
 							...transformGeneralAttributesToBaseBreakpoint(obj),
 					  };
 
-				const styles = getStyles(
-					getStylesObj(
-						merge({}, blockAttributes, newAttributesObj),
-						newAttributesObj
-					),
-					true
-				);
+				const withRelatedAttributes =
+					selectedSettingsObj?.excludeRelatedAttributes
+						? newAttributesObj
+						: addRelatedAttributes({
+								props: blockAttributes,
+								IBAttributes: newAttributesObj,
+								attributesMap:
+									selectedSettingsObj?.attributesMap,
+						  });
+				const styles = getStyles(getStylesObj(newAttributesObj), true);
+
+				console.log({ styles });
 
 				onChangeRelation(relations, item.id, {
-					attributes: newAttributesObj,
+					attributes: withRelatedAttributes,
 					css: styles,
 					...(item.sid === 't' && {
 						effects: {

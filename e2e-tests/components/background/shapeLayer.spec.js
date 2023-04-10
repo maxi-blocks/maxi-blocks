@@ -51,6 +51,26 @@ describe('BackgroundControl', () => {
 			newNumber: '77',
 		});
 
+		const scaleAndRotate = await page.$$('.maxi-advanced-number-control');
+		// scale
+
+		await editAdvancedNumberControl({
+			page,
+			instance: scaleAndRotate[1],
+			newNumber: '88',
+		});
+		// rotate
+		await editAdvancedNumberControl({
+			page,
+			instance: scaleAndRotate[2],
+			newNumber: '188',
+		});
+
+		const flipX = await page.$$('.maxi-toggle-switch input');
+
+		// flipX
+		await flipX[2].click();
+
 		await sizeAndPositionChecker({ page });
 
 		const layerExpect = await getBlockAttributes();

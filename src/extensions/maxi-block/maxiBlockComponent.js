@@ -56,18 +56,31 @@ import { diff } from 'deep-object-diff';
  * Style Component
  */
 const StyleComponent = ({
+	uniqueID,
 	stylesObj,
 	blockBreakpoints,
 	isIframe = false,
 	isSiteEditor = false,
+	isBreakpointChange,
 }) => {
-	const { breakpoints } = useSelect(select => {
-		const { receiveMaxiBreakpoints } = select('maxiBlocks');
+	const { breakpoints, currentBreakpoint } = useSelect(select => {
+		const { receiveMaxiBreakpoints, receiveMaxiDeviceType } =
+			select('maxiBlocks');
 
 		const breakpoints = receiveMaxiBreakpoints();
+		const currentBreakpoint = receiveMaxiDeviceType();
 
-		return { breakpoints };
+		return { breakpoints, currentBreakpoint };
 	});
+
+	if (isBreakpointChange) {
+		const styleContent =
+			select('maxiBlocks/styles').getCSSCache(uniqueID)[
+				currentBreakpoint
+			];
+
+		return <style>{styleContent}</style>;
+	}
 
 	const getBreakpoints = () => {
 		const areBreakpointsLoaded =
@@ -80,6 +93,13 @@ const StyleComponent = ({
 	const styles = styleResolver(stylesObj, false, getBreakpoints());
 
 	const styleContent = styleGenerator(styles, isIframe, isSiteEditor);
+
+	dispatch('maxiBlocks/styles').saveCSSCache(
+		uniqueID,
+		styles,
+		isIframe,
+		isSiteEditor
+	);
 
 	return <style>{styleContent}</style>;
 };
@@ -256,7 +276,11 @@ class MaxiBlockComponent extends Component {
 		if (Object.keys(diffAttributes).some(key => key.includes('hover')))
 			updateRelationHoverStatus(this.props.name, this.props.attributes);
 
-		if (!shouldDisplayStyles) this.displayStyles();
+		if (!shouldDisplayStyles)
+			this.displayStyles(
+				this.props.deviceType !== prevProps.deviceType ||
+					this.props.baseBreakpoint !== prevProps.baseBreakpoint
+			);
 
 		const { uniqueID, relations } = this.props.attributes;
 
@@ -319,7 +343,12 @@ class MaxiBlockComponent extends Component {
 			dispatch('maxiBlocks/relations').removeBlockRelation(
 				this.props.attributes.uniqueID
 			);
+			// Block store
 			dispatch('maxiBlocks/blocks').removeBlock(
+				this.props.attributes.uniqueID
+			);
+			// CSSCache
+			dispatch('maxiBlocks/styles').removeCSSCache(
 				this.props.attributes.uniqueID
 			);
 		}
@@ -492,21 +521,26 @@ class MaxiBlockComponent extends Component {
 	/**
 	 * Refresh the styles on Editor
 	 */
-	displayStyles(rawUniqueID) {
-		const obj = this.getStylesObject;
-		const breakpoints = this.getBreakpoints;
+	displayStyles(isBreakpointChange = false) {
+		const { uniqueID } = this.props.attributes;
 
-		const uniqueID = rawUniqueID ?? this.props.attributes.uniqueID;
+		let obj;
+		let breakpoints;
 
-		// When duplicating, need to change the obj target for the new uniqueID
-		if (!obj[uniqueID] && !!obj[this.props.attributes.uniqueID]) {
-			obj[uniqueID] = obj[this.props.attributes.uniqueID];
+		if (!isBreakpointChange) {
+			obj = this.getStylesObject;
+			breakpoints = this.getBreakpoints;
 
-			delete obj[this.props.attributes.uniqueID];
+			// When duplicating, need to change the obj target for the new uniqueID
+			if (!obj[uniqueID] && !!obj[this.props.attributes.uniqueID]) {
+				obj[uniqueID] = obj[this.props.attributes.uniqueID];
+
+				delete obj[this.props.attributes.uniqueID];
+			}
+
+			const customData = this.getCustomData;
+			dispatch('maxiBlocks/customData').updateCustomData(customData);
 		}
-
-		const customData = this.getCustomData;
-		dispatch('maxiBlocks/customData').updateCustomData(customData);
 
 		if (document.body.classList.contains('maxi-blocks--active')) {
 			const getStylesWrapper = (element, onCreateWrapper) => {
@@ -579,9 +613,7 @@ class MaxiBlockComponent extends Component {
 
 					wrapper = getStylesWrapper(iframeHead);
 				}
-			} else {
-				wrapper = getStylesWrapper(document.head);
-			}
+			} else wrapper = getStylesWrapper(document.head);
 
 			if (wrapper) {
 				// check if createRoot is available (since React 18)
@@ -595,6 +627,7 @@ class MaxiBlockComponent extends Component {
 							currentBreakpoint={this.props.deviceType}
 							blockBreakpoints={breakpoints}
 							isSiteEditor={isSiteEditor}
+							isBreakpointChange={isBreakpointChange}
 						/>
 					);
 				} else {

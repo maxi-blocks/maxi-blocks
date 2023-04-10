@@ -41,6 +41,7 @@ describe('TransformControl', () => {
 			'.maxi-transform-control .maxi-transform-control__square-control .maxi-transform-control__square-control__y-control__value input',
 			select => select.focus()
 		);
+		await page.waitForTimeout(100);
 
 		await page.keyboard.type('55');
 
@@ -52,6 +53,7 @@ describe('TransformControl', () => {
 			'.maxi-transform-control .maxi-transform-control__square-control .maxi-transform-control__square-control__x-control__value input',
 			select => select.focus()
 		);
+		await page.waitForTimeout(100);
 
 		await page.keyboard.type('44');
 
@@ -70,6 +72,7 @@ describe('TransformControl', () => {
 			'.maxi-transform-control .maxi-transform-control__square-control .maxi-transform-control__square-control__y-control__value input',
 			select => select.focus()
 		);
+		await page.waitForTimeout(100);
 		await page.keyboard.type('55');
 
 		const selectYUnit = await accordionPanel.$(
@@ -85,6 +88,7 @@ describe('TransformControl', () => {
 			'.maxi-transform-control .maxi-transform-control__square-control .maxi-transform-control__square-control__x-control__value input',
 			select => select.focus()
 		);
+		await page.waitForTimeout(100);
 		await page.keyboard.type('66');
 
 		const selectXUnit = await accordionPanel.$(
@@ -128,6 +132,7 @@ describe('TransformControl', () => {
 			'.maxi-transform-control .maxi-transform-control__square-control .maxi-transform-control__square-control__y-control__value input',
 			select => select.focus()
 		);
+		await page.waitForTimeout(100);
 
 		await page.keyboard.type('80');
 
@@ -139,6 +144,7 @@ describe('TransformControl', () => {
 			'.maxi-transform-control .maxi-transform-control__square-control .maxi-transform-control__square-control__x-control__value input',
 			select => select.focus()
 		);
+		await page.waitForTimeout(100);
 
 		await page.keyboard.type('20');
 

@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { createBlock } from '@wordpress/blocks';
-import { useRef } from '@wordpress/element';
+import { useEffect, useRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -104,12 +104,19 @@ const ResponsiveSelector = props => {
 
 	const { insertBlock } = useDispatch('core/block-editor');
 
-	const { deviceType, breakpoints, baseBreakpoint } = useSelect(select => {
+	const {
+		deviceType,
+		breakpoints,
+		baseBreakpoint,
+		isListViewOpened,
+		isInserterOpened,
+	} = useSelect(select => {
 		const {
 			receiveMaxiDeviceType,
 			receiveMaxiBreakpoints,
 			receiveBaseBreakpoint,
 		} = select('maxiBlocks');
+		const { isListViewOpened, isInserterOpened } = select('core/edit-post');
 
 		const baseBreakpoint = receiveBaseBreakpoint();
 
@@ -117,8 +124,22 @@ const ResponsiveSelector = props => {
 			deviceType: receiveMaxiDeviceType(),
 			breakpoints: receiveMaxiBreakpoints(),
 			baseBreakpoint,
+			isListViewOpened: isListViewOpened(),
+			isInserterOpened: isInserterOpened(),
 		};
 	});
+
+	useEffect(() => {
+		const secondSidebar = document.querySelector(
+			'.interface-interface-skeleton__secondary-sidebar'
+		);
+
+		if (secondSidebar && isOpen) secondSidebar.style.marginTop = '41px'; // the height Maxi topbar does
+
+		return () => {
+			if (secondSidebar) secondSidebar.style.marginTop = '0';
+		};
+	}, [isListViewOpened, isInserterOpened, isOpen]);
 
 	const addCloudLibrary = () => {
 		insertBlock(createBlock('maxi-blocks/maxi-cloud'));

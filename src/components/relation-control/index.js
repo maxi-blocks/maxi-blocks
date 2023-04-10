@@ -34,6 +34,7 @@ import { capitalize, cloneDeep, isEmpty, merge } from 'lodash';
  * Styles
  */
 import './editor.scss';
+import { goThroughMaxiBlocks } from '../../extensions/maxi-block';
 
 const RelationControl = props => {
 	const { getBlock } = select('core/block-editor');
@@ -356,20 +357,15 @@ const RelationControl = props => {
 	const blocksToAffect = (() => {
 		const arr = [];
 
-		const blocks = select('maxiBlocks/blocks').receiveBlocks();
-
-		Object.entries(blocks).forEach(([blockUniqueID, blockClientId]) => {
-			const { customLabel } =
-				select('core/block-editor').getBlockAttributes(blockClientId);
-
+		goThroughMaxiBlocks(block => {
 			if (
-				customLabel !==
-					getDefaultAttribute('customLabel', blockClientId) &&
-				blockUniqueID !== uniqueID
+				block.attributes.customLabel !==
+					getDefaultAttribute('customLabel', block.clientId) &&
+				block.attributes.uniqueID !== uniqueID
 			) {
 				arr.push({
-					label: customLabel,
-					value: blockUniqueID,
+					label: block.attributes.customLabel,
+					value: block.attributes.uniqueID,
 				});
 			}
 		});

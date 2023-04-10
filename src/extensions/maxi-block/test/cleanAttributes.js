@@ -1667,4 +1667,26 @@ describe('cleanAttributes', () => {
 
 		expect(result).toStrictEqual(expectedResult);
 	});
+
+	it('Should save both XXL and general attribute if XXL attribute is already set', () => {
+		const obj = {
+			newAttributes: {
+				'test-general': '5',
+				'test-xxl': '5',
+			},
+			attributes: {
+				'test-xxl': '4',
+			},
+			defaultAttributes: {},
+		};
+
+		const result = cleanAttributes(obj);
+
+		const expectedResult = {
+			'test-general': '5',
+			'test-xxl': '5',
+		};
+
+		expect(result).toStrictEqual(expectedResult);
+	});
 });

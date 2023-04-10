@@ -363,7 +363,11 @@ const flatNewAttributes = (
 	Object.entries(newAttributes).forEach(([key, value]) => {
 		const breakpoint = getBreakpointFromAttribute(key);
 
-		if (!breakpoint || breakpoint === 'general') {
+		if (
+			!breakpoint ||
+			breakpoint === 'general' ||
+			(breakpoint === 'xxl' && attributes[key]) // save new xxl attribute when it is already set
+		) {
 			result[key] = value;
 			return;
 		}

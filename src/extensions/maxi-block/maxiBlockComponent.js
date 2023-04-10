@@ -94,15 +94,13 @@ const StyleComponent = ({
 
 	const styles = styleResolver(stylesObj, false, getBreakpoints());
 
-	const styleContent = styleGenerator(
-		viewportUnitsProcessor(styles), // replacing viewport units only for the editor
-		isIframe,
-		isSiteEditor
-	);
+	const cleanedStyles = viewportUnitsProcessor(styles); // replacing viewport units only for the editor
+
+	const styleContent = styleGenerator(cleanedStyles, isIframe, isSiteEditor);
 
 	dispatch('maxiBlocks/styles').saveCSSCache(
 		uniqueID,
-		styles,
+		cleanedStyles,
 		isIframe,
 		isSiteEditor
 	);

@@ -12,6 +12,13 @@ export const isProSubActive = () => {
 	return false;
 };
 
+export const isProSubExpired = () => {
+	const { status } = select('maxiBlocks/pro').receiveMaxiProStatus();
+
+	if (status === 'expired') return true;
+	return false;
+};
+
 export const getUserName = () => {
 	const { name, email } = select('maxiBlocks/pro').receiveMaxiProStatus();
 	if (name && name !== '') return name;
@@ -73,6 +80,15 @@ export async function authConnect(withRedirect = false, email = false) {
 			info,
 		});
 	};
+	const emailExpired = (name, info) => {
+		dispatch('maxiBlocks/pro').saveMaxiProStatus({
+			status: 'expired',
+			email,
+			name,
+			key: cookieKey,
+			info,
+		});
+	};
 	const notActive = () => {
 		dispatch('maxiBlocks/pro').saveMaxiProStatus({
 			status: 'no',
@@ -107,6 +123,11 @@ export async function authConnect(withRedirect = false, email = false) {
 
 			response.json().then(data => {
 				if (data) {
+					if (data.error) {
+						console.error(data.error);
+						notActive();
+						return;
+					}
 					const date = data.expiration_date;
 					const { name, info, status } = data;
 					console.log(`exp date: ${date}`);
@@ -117,12 +138,18 @@ export async function authConnect(withRedirect = false, email = false) {
 					if (status === 'ok') {
 						const today = new Date().toISOString().slice(0, 10);
 						if (today > date) {
-							emailNotActive(name, info);
+							emailExpired(name, info);
 							redirect();
 						} else {
 							console.log('not expired');
 							emailActive(name, info);
 						}
+					}
+					if (
+						status === 'error' &&
+						data.message === 'already logged in'
+					) {
+						emailNotActive(name, info);
 					}
 				}
 				if (!data) {
@@ -139,4 +166,12 @@ export async function authConnect(withRedirect = false, email = false) {
 		});
 }
 
-export const logOut = () => {};
+export const logOut = () => {
+	const url = 'https://my.maxiblocks.com/log-out?plugin';
+	window.open(url, '_blank')?.focus();
+};
+
+export const isValidEmail = email => {
+	const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+	return emailPattern.test(email);
+};

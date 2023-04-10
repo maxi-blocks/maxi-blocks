@@ -19,6 +19,7 @@ import {
 } from '../../icons';
 import onRequestInsertPattern from './utils/onRequestInsertPattern';
 import { Button, TextControl } from '../../components';
+import { isValidEmail } from '../auth';
 
 /**
  * External dependencies
@@ -58,6 +59,7 @@ const LibraryToolbar = props => {
 		cost = '',
 		toneUrl,
 		isMaxiProActive,
+		isMaxiProExpired,
 		isPro,
 		isBeta,
 		gutenbergCode,
@@ -71,6 +73,9 @@ const LibraryToolbar = props => {
 	} = props;
 
 	const [userEmail, setUserEmail] = useState('');
+
+	console.log('isMaxiProExpired', isMaxiProExpired);
+	console.log('isMaxiProActive', isMaxiProActive);
 
 	const client = new TypesenseSearchClient({
 		nodes: [
@@ -391,6 +396,11 @@ const LibraryToolbar = props => {
 		};
 	});
 
+	const usernameClasses = classnames(
+		'maxi-username',
+		isValidEmail(userName) && 'maxi-username__hide'
+	);
+
 	return (
 		<div className='maxi-cloud-toolbar'>
 			{type !== 'preview' && type !== 'switch-tone' && (
@@ -476,10 +486,10 @@ const LibraryToolbar = props => {
 			)}
 			{isMaxiProActive && userName && (
 				<div>
-					<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>{`${__(
-						'Signed in as:',
-						'maxi-blocks'
-					)} ${userName}`}</h5>
+					<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>
+						{__('Signed in as: ', 'maxi-blocks')}
+						<span className={usernameClasses}>{userName}</span>
+					</h5>
 					<Button
 						key='maxi-cloud-toolbar__button__sing-out'
 						className='maxi-cloud-container__patterns__top-menu__button-go-pro'
@@ -490,12 +500,31 @@ const LibraryToolbar = props => {
 					</Button>
 				</div>
 			)}
-			{!isMaxiProActive && userName && (
+			{!isMaxiProActive && userName && isMaxiProExpired && (
 				<div>
-					<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>{`${__(
-						'Expired:',
-						'maxi-blocks'
-					)} ${userName}`}</h5>
+					<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>
+						{__('Expired: ', 'maxi-blocks')}
+						<span className={usernameClasses}>{userName}</span>
+					</h5>
+				</div>
+			)}
+			{!isMaxiProActive && userName && !isMaxiProExpired && (
+				<div>
+					<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>
+						<span className={usernameClasses}>{userName}</span>
+						{__(
+							', you are already signed in on another device',
+							'maxi-blocks'
+						)}
+					</h5>
+					<Button
+						key='maxi-cloud-toolbar__button__sing-out'
+						className='maxi-cloud-container__patterns__top-menu__button-go-pro'
+						label={__('Sign out', 'maxi-blocks')}
+						onClick={onLogOut}
+					>
+						{__('Sign out', 'maxi-blocks')}
+					</Button>
 				</div>
 			)}
 			{!isMaxiProActive && !userName && (

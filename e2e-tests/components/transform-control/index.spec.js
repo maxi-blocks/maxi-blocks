@@ -34,6 +34,9 @@ describe('TransformControl', () => {
 
 		// Scale
 		// Y
+		await accordionPanel.waitForSelector(
+			'.maxi-transform-control .maxi-transform-control__square-control .maxi-transform-control__square-control__y-control__value input'
+		);
 		await accordionPanel.$eval(
 			'.maxi-transform-control .maxi-transform-control__square-control .maxi-transform-control__square-control__y-control__value input',
 			select => select.focus()
@@ -42,6 +45,9 @@ describe('TransformControl', () => {
 		await page.keyboard.type('55');
 
 		// X
+		await accordionPanel.waitForSelector(
+			'.maxi-transform-control .maxi-transform-control__square-control .maxi-transform-control__square-control__x-control__value input'
+		);
 		await accordionPanel.$eval(
 			'.maxi-transform-control .maxi-transform-control__square-control .maxi-transform-control__square-control__x-control__value input',
 			select => select.focus()
@@ -57,6 +63,9 @@ describe('TransformControl', () => {
 		await buttons[1].click();
 
 		// Y
+		await accordionPanel.waitForSelector(
+			'.maxi-transform-control .maxi-transform-control__square-control .maxi-transform-control__square-control__y-control__value input'
+		);
 		await accordionPanel.$eval(
 			'.maxi-transform-control .maxi-transform-control__square-control .maxi-transform-control__square-control__y-control__value input',
 			select => select.focus()
@@ -69,6 +78,9 @@ describe('TransformControl', () => {
 		await selectYUnit.select('px');
 
 		// X
+		await accordionPanel.waitForSelector(
+			'.maxi-transform-control .maxi-transform-control__square-control .maxi-transform-control__square-control__x-control__value input'
+		);
 		await accordionPanel.$eval(
 			'.maxi-transform-control .maxi-transform-control__square-control .maxi-transform-control__square-control__x-control__value input',
 			select => select.focus()
@@ -109,6 +121,9 @@ describe('TransformControl', () => {
 		// Origin
 		await buttons[3].click();
 		// Y
+		await accordionPanel.waitForSelector(
+			'.maxi-transform-control .maxi-transform-control__square-control .maxi-transform-control__square-control__y-control__value input'
+		);
 		await accordionPanel.$eval(
 			'.maxi-transform-control .maxi-transform-control__square-control .maxi-transform-control__square-control__y-control__value input',
 			select => select.focus()
@@ -117,6 +132,9 @@ describe('TransformControl', () => {
 		await page.keyboard.type('80');
 
 		// X
+		await accordionPanel.waitForSelector(
+			'.maxi-transform-control .maxi-transform-control__square-control .maxi-transform-control__square-control__x-control__value input'
+		);
 		await accordionPanel.$eval(
 			'.maxi-transform-control .maxi-transform-control__square-control .maxi-transform-control__square-control__x-control__value input',
 			select => select.focus()

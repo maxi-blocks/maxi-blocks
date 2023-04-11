@@ -17,8 +17,6 @@ import {
 	getAdvancedSettings,
 } from '../../extensions/relations';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
-import { getOnlyDifferentValues } from '../../extensions/maxi-block';
-import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * Classnames
@@ -195,19 +193,6 @@ const interactionBuilderSettings = {
 					styleCardPrefix=''
 					hideAlignment
 					disableCustomFormats
-					onChange={({ isReset, ...value }) => {
-						const changedAttributes = getOnlyDifferentValues(
-							value,
-							getGroupAttributes(
-								props,
-								'typography',
-								false,
-								props.prefix
-							)
-						);
-
-						props.onChange({ ...changedAttributes, isReset });
-					}}
 					isIB
 				/>
 			),

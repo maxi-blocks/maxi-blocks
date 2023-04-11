@@ -1,18 +1,19 @@
 /**
- * This migrator is used to ensure transition objects are complete
+ * Internal dependencies
  */
-
 import breakpointAttributesCreator from '../breakpointAttributesCreator';
 import { getBlockNameFromUniqueID } from './utils';
 import { getBlockData } from '../../attributes';
-import getTransformTransitionData from '../transitions/getTransformTransitionData';
-import transitionDefault from '../transitions/transitionDefault';
-
-import { isNil } from 'lodash';
-import getDefaultAttribute from '../getDefaultAttribute';
-import createTransitionObj from '../transitions/createTransitionObj';
 import transitionAttributesCreator from '../transitions/transitionAttributesCreator';
 
+/**
+ * External dependencies
+ */
+import { isNil } from 'lodash';
+
+/**
+ * This migrator is used to ensure transition objects are complete
+ */
 const name = 'Transition migrator';
 
 const attributes = breakpointAttributesCreator({
@@ -42,26 +43,16 @@ const isEligible = blockAttributes => {
 
 	const data = getBlockData(blockName);
 
-	const selectors = data?.customCss?.selectors;
-
-	const transitionSelectors = {
-		...(transition || transitionDefault),
-		transform: getTransformTransitionData(selectors, blockAttributes),
-	};
-
-	// Check if all selector exist on transition object
-	const hasAllTransitionSelectors = Object.keys(transitionSelectors).every(
-		selector => selector in transition
-	);
-
-	if (!hasAllTransitionSelectors) return true;
-
-	const defaultTransitionByBlock = data?.transition;
+	const defaultTransitionByBlock =
+		data?.transition ||
+		transitionAttributesCreator({ selectors: data?.customCss.selectors });
 
 	// Check if all transition keys exist on each transition selector object
 	const allSelectorHasAllTransitions = Object.entries(
 		defaultTransitionByBlock
 	).every(([selector, defaultTransition]) => {
+		if (!(selector in transition)) return false;
+
 		const hasAllTransitions = Object.keys(defaultTransition).every(
 			key => key in transition[selector]
 		);
@@ -81,26 +72,6 @@ const migrate = newAttributes => {
 
 	const data = getBlockData(blockName);
 
-	const selectors = data?.customCss?.selectors;
-
-	const transitionSelectors = {
-		...(transition || transitionDefault),
-		transform: getTransformTransitionData(selectors, newAttributes),
-	};
-
-	Object.keys(transitionSelectors).forEach(selector => {
-		if (!(selector in transition)) {
-			newAttributes.transition[selector] = transitionSelectors[selector];
-
-			Object.keys(transitionSelectors[selector]).forEach(key => {
-				if (key in newAttributes.transition[selector])
-					newAttributes.transition[selector][key] =
-						getDefaultAttribute('transition')?.[selector]?.[key] ||
-						createTransitionObj();
-			});
-		}
-	});
-
 	// Includes the missing transition keys on each transition selector object
 	const defaultTransitions = transitionAttributesCreator({
 		transition: data?.transition,
@@ -109,11 +80,14 @@ const migrate = newAttributes => {
 
 	Object.entries(defaultTransitions).forEach(
 		([selector, defaultTransition]) => {
-			Object.keys(defaultTransition).forEach(key => {
-				if (!(key in transition[selector]))
-					newAttributes.transition[selector][key] =
-						defaultTransitions[selector][key];
-			});
+			if (!(selector in transition))
+				newAttributes.transition[selector] = defaultTransition;
+			else
+				Object.keys(defaultTransition).forEach(key => {
+					if (!(key in transition[selector]))
+						newAttributes.transition[selector][key] =
+							defaultTransitions[selector][key];
+				});
 		}
 	);
 

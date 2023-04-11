@@ -1,3 +1,5 @@
+import { isNumber } from 'lodash';
+
 /**
  * Returns post styles.
  *
@@ -23,6 +25,21 @@ export const getBlockStyles = (state, target) => {
 
 export const getPrevSavedAttrs = state => {
 	if (state.prevSavedAttrs) return state.prevSavedAttrs;
+
+	return false;
+};
+
+export const getCSSCache = (state, uniqueID) => {
+	if (state.cssCache && state.cssCache[uniqueID])
+		return state.cssCache[uniqueID];
+
+	if (state.cssCache && !uniqueID) return state.cssCache;
+
+	return false;
+};
+
+export const getBlockMarginValue = state => {
+	if (isNumber(state.blockMarginValue)) return state.blockMarginValue;
 
 	return false;
 };

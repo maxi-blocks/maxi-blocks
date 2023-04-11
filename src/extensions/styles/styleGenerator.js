@@ -88,11 +88,17 @@ const styleStringGenerator = (
 	return string;
 };
 
-const styleGenerator = (styles, isIframe = false, isSiteEditor = false) => {
+const styleGenerator = (
+	styles,
+	isIframe = false,
+	isSiteEditor = false,
+	breakpoint
+) => {
 	let response = '';
 
 	const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
-	const currentBreakpoint = select('maxiBlocks').receiveMaxiDeviceType();
+	const currentBreakpoint =
+		breakpoint ?? select('maxiBlocks').receiveMaxiDeviceType();
 
 	BREAKPOINTS.forEach(breakpoint => {
 		Object.entries(styles).forEach(([key, value]) => {

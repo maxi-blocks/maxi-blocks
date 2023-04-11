@@ -136,6 +136,9 @@ const interactionBuilderSettings = {
 			helper: props =>
 				getDividerStyles(props.obj, 'line', props.blockStyle),
 			target: dividerClass,
+			attributesMap: {
+				mandatory: ['line-orientation'],
+			},
 		},
 	],
 	canvas: getCanvasSettings({ name }),

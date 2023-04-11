@@ -33,7 +33,7 @@ import { getBlockData } from '../../extensions/attributes';
 /**
  * External dependencies
  */
-import { capitalize, cloneDeep, isEmpty, merge } from 'lodash';
+import { capitalize, cloneDeep, isEmpty, merge, omitBy, isNil } from 'lodash';
 
 /**
  * Styles
@@ -250,7 +250,7 @@ const RelationControl = props => {
 				clientId,
 			});
 
-			return deepOmit(styleObj);
+			return deepOmit(styleObj ?? {});
 		};
 
 		const getStyles = (stylesObj, isFirst = false) => {
@@ -314,13 +314,14 @@ const RelationControl = props => {
 						? newAttributesObj
 						: addRelatedAttributes({
 								props: blockAttributes,
-								IBAttributes: newAttributesObj,
+								IBAttributes: omitBy(newAttributesObj, isNil),
 								attributesMap:
 									selectedSettingsObj?.attributesMap,
 						  });
-				const styles = getStyles(getStylesObj(newAttributesObj), true);
-
-				console.log({ styles });
+				const styles = getStyles(
+					getStylesObj(withRelatedAttributes),
+					true
+				);
 
 				onChangeRelation(relations, item.id, {
 					attributes: withRelatedAttributes,

@@ -258,6 +258,7 @@ const interactionBuilderSettings = {
 							getIconWithColor(attributes, args)
 						}
 						disableIconInherit={!iconInherit}
+						disablePosition
 					/>
 				) : (
 					<InfoBox
@@ -273,6 +274,9 @@ const interactionBuilderSettings = {
 					target: iconClass,
 					wrapperTarget: buttonClass,
 				}),
+			attributesMap: {
+				mandatory: ['icon-content', 'icon-background-active-media'],
+			},
 		},
 		{
 			sid: 'bty',
@@ -333,6 +337,9 @@ const interactionBuilderSettings = {
 					isButton: true,
 				}).background,
 			target: '.maxi-button-block__button',
+			attributesMap: {
+				mandatory: ['button-background-active-media'],
+			},
 		},
 		{
 			sid: 'bbs',

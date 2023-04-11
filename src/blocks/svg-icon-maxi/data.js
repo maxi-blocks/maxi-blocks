@@ -262,6 +262,9 @@ const interactionBuilderSettings = {
 			helper: props =>
 				getBackgroundStyles({ ...props, ...props.obj }).background,
 			target: ' .maxi-svg-icon-block__icon',
+			attributesMap: {
+				mandatory: ['background-active-media'],
+			},
 		},
 		{
 			sid: 'ib',

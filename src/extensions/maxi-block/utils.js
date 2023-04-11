@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { round, isNil, isEqual } from 'lodash';
+import { round, isNil, isEqual, omitBy } from 'lodash';
 
 export const getResizerSize = (elt, blockRef, unit, axis = 'width') => {
 	const pxSize = elt.getBoundingClientRect()[axis];
@@ -27,9 +27,29 @@ export const getStylesWrapperId = uniqueID =>
 	`maxi-blocks__styles--${uniqueID}`;
 
 const defaultWithUnit = ['top', 'right', 'bottom', 'left', 'width', 'height'];
-const defaultRelatedAttributes = {
-	props: ['palette-color', 'palette-status', 'palette-opacity', 'color'],
-};
+const defaultRelatedAttributes = [
+	{
+		props: ['palette-color', 'palette-status', 'palette-opacity', 'color'],
+	},
+	{
+		props: [
+			'box-shadow-inset',
+			'box-shadow-palette-color',
+			'box-shadow-palette-status',
+			'box-shadow-palette-opacity',
+			'box-shadow-color',
+			'box-shadow-horizontal',
+			'box-shadow-vertical',
+			'box-shadow-blur',
+			'box-shadow-spread',
+			'box-shadow-horizontal-unit',
+			'box-shadow-vertical-unit',
+			'box-shadow-blur-unit',
+			'box-shadow-spread-unit',
+		],
+	},
+	{ props: ['background-gradient', 'background-gradient-opacity'] },
+];
 
 export const addRelatedAttributes = ({
 	props,
@@ -45,7 +65,9 @@ export const addRelatedAttributes = ({
 	} = attributesMap;
 
 	mandatory.forEach(prop => {
-		attributes[prop] = props[prop];
+		const key = Object.keys(props).find(key => key.includes(prop));
+
+		if (key) attributes[key] = props[key];
 	});
 
 	const relatedAttributesAll = [
@@ -87,7 +109,7 @@ export const addRelatedAttributes = ({
 		}
 	});
 
-	return { ...attributes, ...IBAttributes };
+	return { ...omitBy(attributes, isNil), ...IBAttributes };
 };
 
 export const deepOmit = obj => {

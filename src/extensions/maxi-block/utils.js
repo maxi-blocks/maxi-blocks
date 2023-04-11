@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { round, isNil, isEqual, omitBy } from 'lodash';
+import { round, isNil, isEqual, omitBy, compact } from 'lodash';
 
 export const getResizerSize = (elt, blockRef, unit, axis = 'width') => {
 	const pxSize = elt.getBoundingClientRect()[axis];
@@ -52,11 +52,17 @@ const defaultRelatedAttributes = [
 ];
 
 export const addRelatedAttributes = ({
-	props,
+	props: propsObj,
 	IBAttributes,
 	attributesMap = {},
 }) => {
 	const attributes = {};
+
+	const props = Object.fromEntries(
+		Object.entries(omitBy(propsObj, isNil)).filter(
+			([key]) => !key.includes('-hover')
+		)
+	);
 
 	const {
 		mandatory = [],
@@ -78,21 +84,24 @@ export const addRelatedAttributes = ({
 	relatedAttributesAll.forEach(relation => {
 		const relatedProps = relation.props;
 
-		const includesProp = relatedProps.some(prop => {
-			if (Object.keys(IBAttributes).some(key => key.includes(prop))) {
-				return true;
-			}
-			return false;
-		});
+		const propsArray = compact(
+			Object.keys(IBAttributes).map(prop => {
+				const key = relatedProps.find(key => prop.includes(key));
+				if (key) {
+					return [prop, key];
+				}
+				return null;
+			})
+		);
 
-		if (includesProp) {
-			const keys = Object.keys(props).filter(key =>
-				relatedProps.some(prop => key.includes(prop))
-			);
-			keys.forEach(key => {
-				attributes[key] = props[key];
+		propsArray.forEach(([prop, key]) => {
+			relatedProps.forEach(value => {
+				if (value !== key) {
+					const replacedKey = prop.replace(key, value);
+					attributes[replacedKey] = props[replacedKey];
+				}
 			});
-		}
+		});
 	});
 	const withUnitAttributes = [...withUnit, ...defaultWithUnit];
 

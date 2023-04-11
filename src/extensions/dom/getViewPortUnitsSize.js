@@ -1,12 +1,7 @@
 import { select } from '@wordpress/data';
 
-const getVwSize = () => {
+const getVwSize = breakpoint => {
 	const xxlSize = select('maxiBlocks').receiveXXLSize();
-	const currentBreakpoint = select('maxiBlocks').receiveMaxiDeviceType();
-	const breakpoint =
-		currentBreakpoint === 'general'
-			? select('maxiBlocks').receiveBaseBreakpoint()
-			: currentBreakpoint;
 
 	return (
 		(breakpoint === 'xxl'
@@ -15,6 +10,4 @@ const getVwSize = () => {
 	);
 };
 
-const getVhSize = () => window.innerHeight * 0.01;
-
-export { getVwSize, getVhSize };
+export default getVwSize;

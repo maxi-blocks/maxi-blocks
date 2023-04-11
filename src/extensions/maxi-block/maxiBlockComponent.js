@@ -25,7 +25,6 @@ import {
 	getRelations,
 	styleGenerator,
 	styleResolver,
-	viewportUnitsProcessor,
 } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
 import getIsUniqueIDRepeated from './getIsUniqueIDRepeated';
@@ -94,13 +93,11 @@ const StyleComponent = ({
 
 	const styles = styleResolver(stylesObj, false, getBreakpoints());
 
-	const cleanedStyles = viewportUnitsProcessor(styles); // replacing viewport units only for the editor
-
-	const styleContent = styleGenerator(cleanedStyles, isIframe, isSiteEditor);
+	const styleContent = styleGenerator(styles, isIframe, isSiteEditor);
 
 	dispatch('maxiBlocks/styles').saveCSSCache(
 		uniqueID,
-		cleanedStyles,
+		styles,
 		isIframe,
 		isSiteEditor
 	);

@@ -237,7 +237,7 @@ class MaxiBlocks_DynamicContent
             $dc_type = 'posts';
         }
         if (empty($dc_relation)) {
-            $dc_relation = 'id';
+            $dc_relation = 'by-id';
         }
 
         $response = '';
@@ -280,7 +280,7 @@ class MaxiBlocks_DynamicContent
             $dc_type = 'posts';
         }
         if (empty($dc_relation)) {
-            $dc_relation = 'id';
+            $dc_relation = 'by-id';
         }
 
         $media_id;
@@ -346,7 +346,7 @@ class MaxiBlocks_DynamicContent
             $dc_type = 'posts';
         }
         if (empty($dc_relation)) {
-            $dc_relation = 'id';
+            $dc_relation = 'by-id';
         }
         if (empty($dc_accumulator)) {
             $dc_accumulator = 0;
@@ -367,7 +367,7 @@ class MaxiBlocks_DynamicContent
             ];
 
             // DC Relation
-            if ($dc_relation == 'id') {
+            if ($dc_relation == 'by-id') {
                 $args['p'] = $dc_id;
             } elseif ($dc_relation == 'author') {
                 $args['author'] = $dc_author ?? $dc_id;
@@ -387,7 +387,7 @@ class MaxiBlocks_DynamicContent
             ];
 
             // DC Relation
-            if ($dc_relation == 'id') {
+            if ($dc_relation == 'by-id') {
                 $args['p'] = $dc_id;
             } elseif ($is_random) {
                 $args= [
@@ -456,6 +456,13 @@ class MaxiBlocks_DynamicContent
         }
     }
 
+    public function get_post_taxonomy_item_content($item, $link_status)
+    {
+        return ($link_status)
+            ? '<a href="' . get_term_link($item) . '"><span>' . $item->name . '</span></a>'
+            : $item->name;
+    }
+
     public function get_post_or_page_content($attributes)
     {
         @list(
@@ -508,17 +515,11 @@ class MaxiBlocks_DynamicContent
             ];
 
             $taxonomy_list = wp_get_post_terms($post->ID, $field_name_to_taxonomy[$dc_field]);
+
             $taxonomy_content = [];
 
-            function get_item_content($item, $link_status)
-            {
-                return ($link_status)
-                    ? '<a href="' . get_term_link($item) . '"><span>' . $item->name . '</span></a>'
-                    : $item->name;
-            }
-
             foreach ($taxonomy_list as $taxonomy_item) {
-                $taxonomy_content[] = get_item_content($taxonomy_item, $dc_post_taxonomy_links_status);
+                $taxonomy_content[] = $this->get_post_taxonomy_item_content($taxonomy_item, $dc_post_taxonomy_links_status);
             }
 
             $post_data = implode("$dc_delimiter ", $taxonomy_content);

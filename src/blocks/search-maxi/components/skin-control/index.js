@@ -64,6 +64,7 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 							...iconRevealResetStyles,
 							...resetBorders,
 							[`${inputPrefix}padding-left-general`]: 30,
+							[`${inputPrefix}padding-right-general`]: 10,
 							'icon-position': 'left',
 						});
 					} else if (skin === 'boxed') {
@@ -72,6 +73,7 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 							...classicResetStyles,
 							...resetBorders,
 							[`${inputPrefix}padding-left-general`]: 30,
+							[`${inputPrefix}padding-right-general`]: 10,
 							'icon-position': 'left',
 						});
 					} else if (skin === 'icon-reveal') {
@@ -84,6 +86,7 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 							[`${buttonPrefix}border-bottom-right-radius-general`]: 50,
 							[`${buttonPrefix}margin-sync-general`]: 'none',
 							[`${inputPrefix}padding-left-general`]: 30,
+							[`${inputPrefix}padding-right-general`]: 10,
 							...resetBorders,
 							'icon-position': 'left',
 						});

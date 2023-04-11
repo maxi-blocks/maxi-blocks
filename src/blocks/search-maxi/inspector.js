@@ -241,10 +241,7 @@ const Inspector = props => {
 																										10,
 																									'input-padding-right-general':
 																										inpRightPadding ||
-																										(skin ===
-																										'icon-reveal'
-																											? 30
-																											: 10),
+																										35,
 																								}
 																							);
 																						val ===
@@ -261,7 +258,7 @@ const Inspector = props => {
 																										4,
 																									'input-padding-left-general':
 																										inpLeftPadding ||
-																										30,
+																										35,
 																									'input-padding-right-general':
 																										inpRightPadding ||
 																										10,

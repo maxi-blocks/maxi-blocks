@@ -290,6 +290,7 @@ const interactionBuilderSettings = {
 					{...props}
 					hideAlignment
 					disableCustomFormats
+					isIB
 				/>
 			),
 			helper: props =>
@@ -298,6 +299,16 @@ const interactionBuilderSettings = {
 					textLevel: 'button',
 				}),
 			target: '.maxi-button-block__content',
+			attributesMap: {
+				withUnit: [
+					'font-size',
+					'line-height',
+					'letter-spacing',
+					'text-indent',
+					'word-spacing',
+					'bottom-gap',
+				],
+			},
 		},
 		{
 			sid: 'bb',

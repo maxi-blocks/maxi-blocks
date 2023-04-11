@@ -34,7 +34,11 @@ const addResponsiveTest = async ({
 		);
 
 		if (checkBaseResponsive !== baseExpect)
-			console.error('Error on `addResponsiveTest` for Base');
+			console.error(
+				'Error on `addResponsiveTest` for Base',
+				checkBaseResponsive,
+				baseExpect
+			);
 		if (checkBaseResponsive !== baseExpect) return false;
 
 		// change responsive s
@@ -59,7 +63,11 @@ const addResponsiveTest = async ({
 		);
 
 		if (checkXsResponsive !== xsExpect)
-			console.error('Error on `addResponsiveTest` for Xs');
+			console.error(
+				'Error on `addResponsiveTest` for Xs',
+				checkXsResponsive,
+				xsExpect
+			);
 		if (checkXsResponsive !== xsExpect) return false;
 
 		// change responsive m
@@ -71,7 +79,11 @@ const addResponsiveTest = async ({
 		const checkMResponsive = await page.$eval(`${instance}`, m => m.value);
 
 		if (checkMResponsive !== baseExpect)
-			console.error('Error on `addResponsiveTest` for M');
+			console.error(
+				'Error on `addResponsiveTest` for M',
+				checkMResponsive,
+				baseExpect
+			);
 		if (checkMResponsive !== baseExpect) return false;
 
 		return true;

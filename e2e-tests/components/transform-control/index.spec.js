@@ -43,7 +43,7 @@ describe('TransformControl', () => {
 		);
 		await page.waitForTimeout(100);
 
-		await page.keyboard.type('55');
+		await page.keyboard.type('55', { delay: 100 });
 
 		// X
 		await accordionPanel.waitForSelector(
@@ -55,7 +55,7 @@ describe('TransformControl', () => {
 		);
 		await page.waitForTimeout(100);
 
-		await page.keyboard.type('44');
+		await page.keyboard.type('44', { delay: 100 });
 
 		expect(
 			await getAttributes('transform-scale-general')
@@ -73,7 +73,7 @@ describe('TransformControl', () => {
 			select => select.focus()
 		);
 		await page.waitForTimeout(100);
-		await page.keyboard.type('55');
+		await page.keyboard.type('55', { delay: 100 });
 
 		const selectYUnit = await accordionPanel.$(
 			'.maxi-transform-control .maxi-transform-control__square-control .maxi-transform-control__square-control__y-control__value select'
@@ -89,7 +89,7 @@ describe('TransformControl', () => {
 			select => select.focus()
 		);
 		await page.waitForTimeout(100);
-		await page.keyboard.type('66');
+		await page.keyboard.type('66', { delay: 100 });
 
 		const selectXUnit = await accordionPanel.$(
 			'.maxi-transform-control .maxi-transform-control__square-control .maxi-transform-control__square-control__x-control__value select'
@@ -108,15 +108,15 @@ describe('TransformControl', () => {
 
 		// X
 		await rotateInputs[0].focus();
-		await page.keyboard.type('150');
+		await page.keyboard.type('150', { delay: 100 });
 
 		// Y
 		await rotateInputs[1].focus();
-		await page.keyboard.type('200');
+		await page.keyboard.type('200', { delay: 100 });
 
 		// Z
 		await rotateInputs[2].focus();
-		await page.keyboard.type('100');
+		await page.keyboard.type('100', { delay: 100 });
 
 		expect(
 			await getAttributes('transform-rotate-general')
@@ -134,7 +134,7 @@ describe('TransformControl', () => {
 		);
 		await page.waitForTimeout(100);
 
-		await page.keyboard.type('80');
+		await page.keyboard.type('81', { delay: 100 });
 
 		// X
 		await accordionPanel.waitForSelector(
@@ -146,11 +146,23 @@ describe('TransformControl', () => {
 		);
 		await page.waitForTimeout(100);
 
-		await page.keyboard.type('20');
+		await page.keyboard.type('21', { delay: 100 });
 
 		expect(
 			await getAttributes('transform-origin-general')
 		).toMatchSnapshot();
+	});
+
+	it('Should check responsive', async () => {
+		const accordionPanel = await openSidebarTab(
+			page,
+			'advanced',
+			'transform'
+		);
+
+		const buttons = await accordionPanel.$$(
+			'.maxi-transform-control .maxi-settingstab-control button'
+		);
 
 		// check responsive scale
 		await buttons[0].click();
@@ -214,7 +226,7 @@ describe('TransformControl', () => {
 			instance:
 				'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input',
 			needFocus: true,
-			baseExpect: '80',
+			baseExpect: '81',
 			xsExpect: '88',
 			newValue: '88',
 		});

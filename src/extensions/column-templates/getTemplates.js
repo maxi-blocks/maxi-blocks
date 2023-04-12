@@ -21,6 +21,7 @@ function getTemplates(deviceType = 'general', columnsNumber = undefined) {
 		sixColumns,
 		sevenColumns,
 		eightColumns,
+		moreThanEightColumns,
 	} = columnTemplates;
 
 	switch (columnsNumber) {
@@ -66,7 +67,7 @@ function getTemplates(deviceType = 'general', columnsNumber = undefined) {
 			}
 			return eightColumns.default;
 
-		default:
+		case undefined:
 			return oneColumn.default.concat(
 				twoColumns.default,
 				threeColumns.default,
@@ -76,6 +77,8 @@ function getTemplates(deviceType = 'general', columnsNumber = undefined) {
 				sevenColumns.default,
 				eightColumns.default
 			);
+		default:
+			return moreThanEightColumns.default;
 	}
 }
 

@@ -181,7 +181,7 @@ const VideoOverlayControl = props => {
 					{!disableUploadImage && (
 						<MediaUploaderControl
 							className='maxi-video-overlay-control__cover-image'
-							placeholder={__('Image overlay')}
+							placeholder={__('Image overlay', 'maxi-blocks')}
 							mediaID={mediaID}
 							onSelectImage={val => {
 								const alt =

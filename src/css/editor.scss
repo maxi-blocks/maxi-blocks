@@ -26,6 +26,12 @@
 	}
 }
 
+//List view absolute position to prevent breakpoint change
+.edit-post-editor__document-overview-panel {
+	position: absolute;
+	border-right: 1px solid var(--maxi-grey-4-color);
+}
+
 // Scrollbar fix for Safari
 @media not all and (min-resolution: 0.001dpcm) {
 	@supports (-webkit-appearance: none) {

@@ -125,6 +125,10 @@ const dynamicContent = {
 		type: 'number',
 		default: 0,
 	},
+	'dc-contains-html': {
+		type: 'boolean',
+		default: false,
+	},
 };
 
 export default dynamicContent;

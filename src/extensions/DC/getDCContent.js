@@ -119,7 +119,9 @@ const getDCContent = async dataRequest => {
 			})
 		);
 
-		contentValue = namesArray.join(`${delimiter} `);
+		contentValue = postTaxonomyLinksStatus
+			? `<span>${namesArray.join(`${delimiter} `)}</span>`
+			: namesArray.join(`${delimiter} `);
 	}
 
 	if (contentValue) return contentValue;

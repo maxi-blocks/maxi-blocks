@@ -41,15 +41,14 @@ const SliderWrapper = props => {
 		currentSlide,
 		setCurrentSlide,
 	} = props;
-	const {
+	const [
 		isLoop,
-		'slider-transition': sliderTransition,
-		'slider-transition-speed': sliderTransitionSpeed,
-		'navigation-arrow-first-icon-content': navigationArrowFirstIconContent,
-		'navigation-arrow-second-icon-content':
-			navigationArrowSecondIconContent,
-		'navigation-dot-icon-content': navigationDotIconContent,
-	} = getAttributesValue({
+		sliderTransition,
+		sliderTransitionSpeed,
+		navigationArrowFirstIconContent,
+		navigationArrowSecondIconContent,
+		navigationDotIconContent,
+	] = getAttributesValue({
 		target: [
 			'isLoop',
 			'slider-transition',

@@ -379,11 +379,7 @@ class MaxiBlockComponent extends Component {
 	}
 
 	get getCustomData() {
-		const {
-			uniqueID,
-			b_ly: bgLayers,
-			relations: relationsRaw,
-		} = getAttributesValue({
+		const [uniqueID, bgLayers, relationsRaw] = getAttributesValue({
 			target: ['_uid', 'b_ly', 'relations'],
 			props: this.props.attributes,
 		});
@@ -441,7 +437,7 @@ class MaxiBlockComponent extends Component {
 			getIsUniqueIDRepeated(idToCheck) ||
 			!uniqueIDStructureChecker(idToCheck, clientId)
 		) {
-			const { b_ly: bgLayers, customLabel } = getAttributesValue({
+			const [bgLayers, customLabel] = getAttributesValue({
 				target: ['b_ly', 'customLabel'],
 				props: this.props.attributes,
 			});

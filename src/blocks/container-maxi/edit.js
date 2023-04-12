@@ -85,12 +85,12 @@ class edit extends MaxiBlockComponent {
 			cleanInlineStyles,
 			isSelected,
 		} = this.props;
-		const {
+		const [
 			uniqueID,
 			isFirstOnHierarchy,
-			'shape-divider-top-status': shapeDividerTopStatus,
-			'shape-divider-bottom-status': shapeDividerBottomStatus,
-		} = getAttributesValue({
+			shapeDividerTopStatus,
+			shapeDividerBottomStatus,
+		] = getAttributesValue({
 			target: [
 				'_uid',
 				'_ioh',

@@ -109,7 +109,7 @@ const MaxiToolbar = memo(
 			dropShadow,
 			disableInset,
 		} = props;
-		const {
+		const [
 			blockStyle,
 			customLabel,
 			isFirstOnHierarchy,
@@ -119,14 +119,13 @@ const MaxiToolbar = memo(
 			typeOfList,
 			uniqueID,
 			svgType,
-		} = getAttributesValue({
+		] = getAttributesValue({
 			target: [
 				'_bs',
 				'customLabel',
 				'_ioh',
 				'isList',
 				'_lse',
-				,
 				'textLevel',
 				'typeOfList',
 				'_uid',

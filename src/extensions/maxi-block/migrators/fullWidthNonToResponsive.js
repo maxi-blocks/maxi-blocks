@@ -36,7 +36,7 @@ const migrate = ({ newAttributes, prefix }) => {
 const saveMigrator = (saveInstance, props) => {
 	const { attributes } = props;
 
-	const { fullWidth, blockFullWidth } = getAttributesValue({
+	const [fullWidth, blockFullWidth] = getAttributesValue({
 		target: ['_fw', 'blockFullWidth'],
 		props: attributes,
 	});

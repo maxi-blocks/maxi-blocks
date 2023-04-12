@@ -43,22 +43,17 @@ const ToolbarMediaUpload = props => {
 		prefix = '',
 		onModalOpen,
 	} = props;
-	const {
-		[`${prefix}mediaID`]: mediaID,
-		[`${prefix}altSelector`]: altSelector,
-		playerType,
-		hideImage,
-		uniqueID,
-	} = getAttributesValue({
-		target: [
-			`${prefix}mediaID`,
-			`${prefix}altSelector`,
-			'playerType',
-			'hideImage',
-			'_uid',
-		],
-		props: attributes,
-	});
+	const [mediaID, altSelector, playerType, hideImage, uniqueID] =
+		getAttributesValue({
+			target: [
+				`${prefix}mediaID`,
+				`${prefix}altSelector`,
+				'playerType',
+				'hideImage',
+				'_uid',
+			],
+			props: attributes,
+		});
 
 	if (
 		!ALLOWED_BLOCKS.includes(blockName) ||

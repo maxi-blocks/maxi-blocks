@@ -69,15 +69,12 @@ const NavigationIconControl = props => {
 		prefix,
 		clientId,
 	} = props;
-	const {
-		[`${prefix}border-status`]: borderStatus,
-		[`${prefix}background-status`]: backgroundStatus,
-		[`${prefix}box-shadow-status`]: boxShadowStatus,
-	} = getAttributesValue({
-		target: ['border-status', 'background-status', 'box-shadow-status'],
-		props,
-		prefix,
-	});
+	const [borderStatus, backgroundStatus, boxShadowStatus] =
+		getAttributesValue({
+			target: ['border-status', 'background-status', 'box-shadow-status'],
+			props,
+			prefix,
+		});
 	const iconBgActiveMedia = getLastBreakpointAttribute({
 		target: `${prefix}background-active-media`,
 		breakpoint,

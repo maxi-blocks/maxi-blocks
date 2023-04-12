@@ -74,14 +74,14 @@ import {
  */
 const ShapeDividerControl = props => {
 	const { onChangeInline, onChange, breakpoint } = props;
-	const {
-		'shape-divider-top-shape-style': shapeDividerTopShapeStyle,
-		'shape-divider-bottom-shape-style': shapeDividerBottomShapeStyle,
-		'shape-divider-top-status': shapeDividerTopStatus,
-		'shape-divider-top-effects-status': shapeDividerTopEffectsStatus,
-		'shape-divider-bottom-status': shapeDividerBottomStatus,
-		'shape-divider-bottom-effects-status': shapeDividerBottomEffectsStatus,
-	} = getAttributesValue({
+	const [
+		shapeDividerTopShapeStyle,
+		shapeDividerBottomShapeStyle,
+		shapeDividerTopStatus,
+		shapeDividerTopEffectsStatus,
+		shapeDividerBottomStatus,
+		shapeDividerBottomEffectsStatus,
+	] = getAttributesValue({
 		target: [
 			'shape-divider-top-shape-style',
 			'shape-divider-bottom-shape-style',

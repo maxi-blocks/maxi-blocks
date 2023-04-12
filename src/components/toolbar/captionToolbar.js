@@ -60,11 +60,7 @@ const CaptionToolbar = memo(
 			cleanInlineStyles,
 			isSelected,
 		} = props;
-		const {
-			isList = false,
-			textLevel = 'p',
-			uniqueID,
-		} = getAttributesValue({
+		const [isList = false, textLevel = 'p', uniqueID] = getAttributesValue({
 			target: ['isList', 'textLevel', 'uniqueID'],
 			props: attributes,
 		});

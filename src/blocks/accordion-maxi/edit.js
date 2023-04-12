@@ -98,15 +98,15 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes } = this.props;
-		const {
+		const [
 			uniqueID,
 			titleLevel,
 			accordionLayout,
 			isCollapsible,
 			animationDuration,
-			'icon-content': iconContent,
-			'active-icon-content': activeIconContent,
-		} = getAttributesValue({
+			iconContent,
+			activeIconContent,
+		] = getAttributesValue({
 			target: [
 				'_uid',
 				'titleLevel',

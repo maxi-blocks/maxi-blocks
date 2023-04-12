@@ -40,11 +40,10 @@ import * as iconPresets from '../../icons/button-presets/index';
 const Inspector = props => {
 	const { attributes, deviceType, maxiSetAttributes, inlineStylesTargets } =
 		props;
-	const { 'icon-only': iconOnly, 'icon-content': iconContent } =
-		getAttributesValue({
-			target: ['icon-only', 'icon-content'],
-			props: attributes,
-		});
+	const [iconOnly, iconContent] = getAttributesValue({
+		target: ['icon-only', 'icon-content'],
+		props: attributes,
+	});
 	const { selectors, categories } = customCss;
 
 	const onChangePreset = (number, type = 'normal') => {

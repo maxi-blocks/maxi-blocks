@@ -62,25 +62,25 @@ const HoverEffectControl = props => {
 		clientId,
 		breakpoint,
 	} = props;
-	const {
-		'hover-type': hoverType,
-		'hover-basic-effect-type': hoverBasicEffectType,
-		'hover-transition-duration': hoverTransitionDuration,
-		'hover-preview': hoverPreview,
-		'hover-extension': hoverExtension,
-		'hover-transition-easing': hoverTransitionEasing,
-		'hover-transition-easing-cubic-bezier':
-			hoverTransitionEasingCubicBezier,
-		'hover-text-effect-type': hoverTextEffectType,
-		'hover-text-preset': hoverTextPreset,
-		'hover-title-typography-content': hoverTitleTypographyContent,
-		'hover-title-typography-status': hoverTitleTypographyStatus,
-		'hover-content-typography-content': hoverContentTypographyContent,
-		'hover-content-typography-status': hoverContentTypographyStatus,
-		'hover-border-status': hoverBorderStatus,
-		'hover-padding-status': hoverPaddingStatus,
-		'hover-margin-status': hoverMarginStatus,
-	} = getAttributesValue({
+	const [
+		hoverType,
+		hoverBasicEffectType,
+		hoverTransitionDuration,
+		hoverPreview,
+		hoverExtension,
+		hoverTransitionEasing,
+
+		hoverTransitionEasingCubicBezier,
+		hoverTextEffectType,
+		hoverTextPreset,
+		hoverTitleTypographyContent,
+		hoverTitleTypographyStatus,
+		hoverContentTypographyContent,
+		hoverContentTypographyStatus,
+		hoverBorderStatus,
+		hoverPaddingStatus,
+		hoverMarginStatus,
+	] = getAttributesValue({
 		targets: [
 			'hover-type',
 			'hover-basic-effect-type',

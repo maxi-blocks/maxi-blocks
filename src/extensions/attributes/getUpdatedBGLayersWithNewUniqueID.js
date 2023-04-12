@@ -20,10 +20,7 @@ const getUpdatedBGLayersWithNewUniqueID = (rawBackgroundLayers, uniqueID) => {
 	if (isEmpty(rawBackgroundLayers)) return rawBackgroundLayers;
 
 	return rawBackgroundLayers.map(layer => {
-		const {
-			'background-svg-SVGData': SVGData,
-			'background-svg-svgElement': SVGElement,
-		} = getAttributesValue({
+		const [SVGData, SVGElement] = getAttributesValue({
 			target: ['background-svg-SVGData', 'background-svg-svgElement'],
 			props: layer,
 		});

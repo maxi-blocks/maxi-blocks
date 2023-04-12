@@ -39,7 +39,7 @@ const icon = ({
 	ignoreIndicator = [],
 }) => {
 	const { attributes, deviceType } = props;
-	const { [`${prefix}icon-content`]: iconContent } = getAttributesValue({
+	const iconContent = getAttributesValue({
 		target: `${prefix}icon-content`,
 		props: attributes,
 	});
@@ -52,11 +52,7 @@ const icon = ({
 		cleanInlineStyles,
 		clientId,
 	} = props;
-	const {
-		[`${prefix}icon-status-hover`]: hoverStatus,
-		blockStyle,
-		[`${prefix}svgType`]: svgType,
-	} = getAttributesValue({
+	const [hoverStatus, blockStyle, svgType] = getAttributesValue({
 		target: [`${prefix}icon-status-hover`, '_bs', `${prefix}svgType`],
 		props: attributes,
 	});

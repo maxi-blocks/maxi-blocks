@@ -63,11 +63,11 @@ export function getBgLayersSelectorsCss(
 export function getSelectorsCss(selectors, attributes) {
 	if (isNil(attributes)) return null;
 
-	const {
-		b_ly: bgLayers = [],
-		'b_ly.h': bgLayersHover = [],
-		'bb.sh': blockBackgroundHoverStatus = false,
-	} = getAttributesValue({
+	const [
+		bgLayers = [],
+		bgLayersHover = [],
+		blockBackgroundHoverStatus = false,
+	] = getAttributesValue({
 		target: ['b_ly', 'b_ly.h', 'bb.sh'],
 		props: attributes,
 	});

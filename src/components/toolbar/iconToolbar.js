@@ -43,7 +43,7 @@ const IconToolbar = memo(
 			name,
 			isSelected,
 		} = props;
-		const { uniqueID, svgType, blockStyle } = getAttributesValue({
+		const [uniqueID, svgType, blockStyle] = getAttributesValue({
 			target: ['_uid', 'svgType', '_bs'],
 			props: attributes,
 		});

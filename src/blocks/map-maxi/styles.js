@@ -84,12 +84,12 @@ const getNormalObject = props => {
 };
 
 const getHoverNormalObject = props => {
-	const {
+	const [
 		blockStyle,
-		'border-status': borderStatusHover,
-		'box-shadow-status': boxShadowStatusHover,
-		'_o.s': opacityStatusHover,
-	} = getAttributesValue({
+		borderStatusHover,
+		boxShadowStatusHover,
+		opacityStatusHover,
+	] = getAttributesValue({
 		target: ['_bs', 'bo.s', 'bs.s', '_o.s'],
 		props,
 		isHover: true,

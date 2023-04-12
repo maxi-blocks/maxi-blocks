@@ -247,11 +247,10 @@ const interactionBuilderSettings = {
 			],
 			component: props => {
 				const { attributes, blockAttributes } = props;
-				const { svgType, 'icon-content': iconContent } =
-					getAttributesValue({
-						target: ['svgType', 'icon-content'],
-						props: attributes,
-					});
+				const [svgType, iconContent] = getAttributesValue({
+					target: ['svgType', 'icon-content'],
+					props: attributes,
+				});
 
 				const iconInherit = getAttributesValue({
 					target: 'icon-inherit',

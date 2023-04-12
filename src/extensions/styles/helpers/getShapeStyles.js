@@ -17,10 +17,7 @@ const getShapeStyles = (obj, target, blockStyle) => {
 	};
 
 	if (target === 'svg' && !isNil(obj['shape-width'])) {
-		const {
-			'shape-width': shapeWidth,
-			'shape-width-unit': shapeWidthUnit,
-		} = getAttributesValue({
+		const [shapeWidth, shapeWidthUnit] = getAttributesValue({
 			target: ['shape-width', 'shape-width-unit'],
 			props: obj,
 		});

@@ -20,11 +20,10 @@ const getLinkAttributesFromLinkSettings = (
 const WithLink = props => {
 	const { linkSettings, dynamicContent, children } = props;
 
-	const { 'dc-status': dcStatus, 'dc-link-status': dcLinkStatus } =
-		getAttributesValue({
-			target: ['dc-status', 'dc-link-status'],
-			props: dynamicContent,
-		});
+	const [dcStatus, dcLinkStatus] = getAttributesValue({
+		target: ['dc-status', 'dc-link-status'],
+		props: dynamicContent,
+	});
 
 	const hasLink =
 		!!linkSettings && !!linkSettings.url && !linkSettings?.disabled;

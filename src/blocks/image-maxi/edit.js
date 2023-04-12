@@ -146,12 +146,12 @@ class edit extends MaxiBlockComponent {
 			'dc-media-caption': dcMediaCaption,
 		} = attributes;
 		const { isExternalClass, isUploaderOpen } = this.state;
-		const {
-			'hover-preview': hoverPreview,
-			'hover-type': hoverType,
-			'hover-basic-effect-type': hoverBasicEffectType,
-			'hover-text-effect-type': hoverTextEffectType,
-		} = getAttributesValue({
+		const [
+			hoverPreview,
+			hoverType,
+			hoverBasicEffectType,
+			hoverTextEffectType,
+		] = getAttributesValue({
 			target: [
 				'hover-preview',
 				'hover-type',

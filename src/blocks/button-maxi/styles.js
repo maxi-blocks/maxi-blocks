@@ -85,10 +85,7 @@ const getWrapperObject = props => {
 };
 
 const getHoverWrapperObject = props => {
-	const {
-		'box-shadow-status': boxShadowStatusHover,
-		'_o.s': opacityStatusHover,
-	} = getAttributesValue({
+	const [boxShadowStatusHover, opacityStatusHover] = getAttributesValue({
 		target: ['box-shadow-status', '_o.s'],
 		props,
 		isHover: true,

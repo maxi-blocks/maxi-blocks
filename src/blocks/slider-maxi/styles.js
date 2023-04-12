@@ -85,12 +85,11 @@ const getNormalObject = props => {
 };
 
 const getHoverObject = props => {
-	const { 'border-status': borderStatusHover, boxShadowStatusHover } =
-		getAttributesValue({
-			target: ['bo.s', 'bs.s'],
-			props,
-			isHover: true,
-		});
+	const [borderStatusHover, boxShadowStatusHover] = getAttributesValue({
+		target: ['bo.s', 'bs.s'],
+		props,
+		isHover: true,
+	});
 
 	const response = {
 		border:
@@ -122,12 +121,12 @@ const getHoverObject = props => {
 
 const getIconStyles = (props, prefix = 'navigation-arrow-both-') => {
 	const iconPrefix = `${prefix}icon-`;
-	const {
-		'background-status': backgroundStatus,
-		'background-active-media-general': backgroundActiveMediaGeneral,
-		[`${iconPrefix}shadow-status`]: boxShadowStatus,
-		[`${iconPrefix}border-status`]: borderStatus,
-	} = getAttributesValue({
+	const [
+		backgroundStatus,
+		backgroundActiveMediaGeneral,
+		boxShadowStatus,
+		borderStatus,
+	] = getAttributesValue({
 		target: [
 			'background-status',
 			'background-active-media-general',
@@ -210,11 +209,7 @@ const getIconStyles = (props, prefix = 'navigation-arrow-both-') => {
 
 const getIconHoverStyles = (props, prefix) => {
 	const iconPrefix = `${prefix}icon-`;
-	const {
-		[`${iconPrefix}status-hover`]: iconHoverStatus,
-		[`${iconPrefix}background-active-media-general-hover`]:
-			iconHoverActiveMedia,
-	} = getAttributesValue({
+	const [iconHoverStatus, iconHoverActiveMedia] = getAttributesValue({
 		target: [
 			`${iconPrefix}status-hover`,
 			`${iconPrefix}background-active-media-general-hover`,
@@ -465,10 +460,7 @@ const getArrowIconObject = (props, isHover = false) => {
 
 const getDotsIconObject = props => {
 	const prefix = 'navigation-dot-';
-	const {
-		'navigation-dot-icon-status-hover': dotIconHoverStatus,
-		'active-navigation-dot-icon-status': dotIconActiveStatus,
-	} = getAttributesValue({
+	const [dotIconHoverStatus, dotIconActiveStatus] = getAttributesValue({
 		target: [
 			'navigation-dot-icon-status-hover',
 			'active-navigation-dot-icon-status',

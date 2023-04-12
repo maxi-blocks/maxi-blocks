@@ -108,12 +108,11 @@ const getIconObject = (props, target, prefix = '', isIB) => {
 			prefix,
 			breakpoint,
 		});
-		const { 'icon-position': iconPosition, 'icon-only': iconOnly } =
-			getAttributesValue({
-				target: ['icon-position', 'icon-only'],
-				props,
-				prefix,
-			});
+		const [iconPosition, iconOnly] = getAttributesValue({
+			target: ['icon-position', 'icon-only'],
+			props,
+			prefix,
+		});
 
 		if (!isNil(iconSpacing) && !isNil(iconPosition)) {
 			iconPosition === 'left' || iconPosition === 'right'
@@ -148,10 +147,7 @@ const getIconObject = (props, target, prefix = '', isIB) => {
 };
 
 const getIconHoverObject = (props, target, prefix = '', iconType = '') => {
-	const {
-		'icon-status-hover': iconHoverStatus,
-		'icon-inherit': iconInherit,
-	} = getAttributesValue({
+	const [iconHoverStatus, iconInherit] = getAttributesValue({
 		target: ['icon-status-hover', 'icon-inherit'],
 		props,
 		prefix,
@@ -251,11 +247,7 @@ const getButtonIconStyles = ({
 	prefix = '',
 	iconWidthHeightRatio,
 }) => {
-	const {
-		[`${prefix}icon-inherit`]: iconInherit,
-		[`${prefix}icon-status-hover`]: iconHoverStatus,
-		[`${prefix}icon-content`]: iconContent,
-	} = getAttributesValue({
+	const [iconInherit, iconHoverStatus, iconContent] = getAttributesValue({
 		target: ['icon-inherit', 'icon-status-hover', 'icon-content'],
 		props: obj,
 		prefix,

@@ -50,7 +50,7 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 
 	if (!shouldDisplayComponent()) return null;
 
-	const { uniqueID, imgWidth } = getAttributesValue({
+	const [uniqueID, imgWidth] = getAttributesValue({
 		target: ['_uid', 'imgWidth'],
 		props: attributes,
 	});

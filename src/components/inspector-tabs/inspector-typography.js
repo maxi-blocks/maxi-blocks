@@ -40,20 +40,16 @@ const typography = ({
 		insertInlineStyles,
 		cleanInlineStyles,
 	} = props;
-	const {
-		blockStyle,
-		textLevel,
-		isList,
-		[`${prefix}typography-status-hover`]: typographyHoverStatus,
-	} = getAttributesValue({
-		target: [
-			'_bs',
-			'textLevel',
-			'isList',
-			`${prefix}typography-status-hover`,
-		],
-		props: attributes,
-	});
+	const [blockStyle, textLevel, isList, typographyHoverStatus] =
+		getAttributesValue({
+			target: [
+				'_bs',
+				'textLevel',
+				'isList',
+				`${prefix}typography-status-hover`,
+			],
+			props: attributes,
+		});
 
 	const { 'hover-color-global': isActive, 'hover-color-all': affectAll } =
 		scValues;

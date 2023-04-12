@@ -12,20 +12,17 @@ import { getAttributesValue } from '../attributes';
 import { isArray, isNil } from 'lodash';
 
 const getIconWithColor = (attributes, args = {}, prefix = '') => {
-	const {
-		blockStyle,
-		[`${prefix}icon-only`]: iconOnly,
-		[`${prefix}icon-inherit`]: iconInherit,
-		[`${prefix}icon-content`]: iconContent,
-	} = getAttributesValue({
-		target: [
-			'_bs',
-			`${prefix}icon-only`,
-			`${prefix}icon-inherit`,
-			`${prefix}icon-content`,
-		],
-		props: attributes,
-	});
+	const [blockStyle, iconOnly, iconInherit, iconContent] = getAttributesValue(
+		{
+			target: [
+				'_bs',
+				`${prefix}icon-only`,
+				`${prefix}icon-inherit`,
+				`${prefix}icon-content`,
+			],
+			props: attributes,
+		}
+	);
 
 	let { isInherit, isIconOnly } = args;
 	const { isHover, type: rawType = ['stroke'], rawIcon } = args;

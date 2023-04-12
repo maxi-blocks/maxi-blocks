@@ -18,11 +18,10 @@ const save = props => {
 	const { attributes } = props;
 	const { buttonContent, buttonSkin, placeholder, skin } = attributes;
 	const searchButtonIsIcon = buttonSkin === 'icon';
-	const { 'icon-content': iconContent, 'icon-position': iconPosition } =
-		getAttributesValue({
-			target: ['icon-content', 'icon-position'],
-			props: attributes,
-		});
+	const [iconContent, iconPosition] = getAttributesValue({
+		target: ['icon-content', 'icon-position'],
+		props: attributes,
+	});
 
 	const name = 'maxi-blocks/search-maxi';
 

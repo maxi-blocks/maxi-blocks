@@ -27,15 +27,14 @@ const save = props => {
 		pauseOnInteraction,
 		numberOfSlides,
 	} = attributes;
-	const {
-		'slider-transition': sliderTransition,
-		'slider-transition-speed': sliderTransitionSpeed,
-		'slider-autoplay-speed': sliderAutoplaySpeed,
-		'navigation-arrow-first-icon-content': navigationArrowFirstIconContent,
-		'navigation-arrow-second-icon-content':
-			navigationArrowSecondIconContent,
-		'navigation-dot-icon-content': navigationDotIconContent,
-	} = getAttributesValue({
+	const [
+		sliderTransition,
+		sliderTransitionSpeed,
+		sliderAutoplaySpeed,
+		navigationArrowFirstIconContent,
+		navigationArrowSecondIconContent,
+		navigationDotIconContent,
+	] = getAttributesValue({
 		target: [
 			'slider-transition',
 			'slider-transition-speed',

@@ -36,14 +36,14 @@ const MapContent = props => {
 		target: '_uid',
 		props: attributes,
 	});
-	const {
-		'map-latitude': mapLatitude,
-		'map-longitude': mapLongitude,
-		'map-markers': mapMarkers,
-		'map-max-zoom': mapMaxZoom,
-		'map-min-zoom': mapMinZoom,
-		'map-zoom': mapZoom,
-	} = getAttributesValue({
+	const [
+		mapLatitude,
+		mapLongitude,
+		mapMarkers,
+		mapMaxZoom,
+		mapMinZoom,
+		mapZoom,
+	] = getAttributesValue({
 		target: [
 			'map-latitude',
 			'map-longitude',

@@ -46,10 +46,7 @@ const background = ({
 		cleanInlineStyles,
 		getBounds,
 	} = props;
-	const {
-		'background-status-hover': backgroundStatusHover,
-		'background-status-active': backgroundStatusActive,
-	} = getAttributesValue({
+	const [backgroundStatusHover, backgroundStatusActive] = getAttributesValue({
 		target: ['background-status-hover', 'background-status-active'],
 		props: attributes,
 		prefix,

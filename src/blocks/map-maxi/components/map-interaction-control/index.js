@@ -10,20 +10,16 @@ import { ToggleSwitch } from '../../../../components';
 import { getAttributesValue } from '../../../../extensions/attributes';
 
 const MapInteractionControl = ({ onChange, ...attributes }) => {
-	const {
-		'map-dragging': mapDragging,
-		'map-touch-zoom': mapTouchZoom,
-		'map-double-click-zoom': mapDoubleClickZoom,
-		'map-scroll-wheel-zoom': mapScrollWheelZoom,
-	} = getAttributesValue({
-		target: [
-			'map-dragging',
-			'map-touch-zoom',
-			'map-double-click-zoom',
-			'map-scroll-wheel-zoom',
-		],
-		props: attributes,
-	});
+	const [mapDragging, mapTouchZoom, mapDoubleClickZoom, mapScrollWheelZoom] =
+		getAttributesValue({
+			target: [
+				'map-dragging',
+				'map-touch-zoom',
+				'map-double-click-zoom',
+				'map-scroll-wheel-zoom',
+			],
+			props: attributes,
+		});
 
 	return (
 		<>

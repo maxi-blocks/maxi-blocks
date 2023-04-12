@@ -67,16 +67,14 @@ const Inspector = props => {
 						onChange={obj => {
 							const { blockStyle } = obj;
 
-							const {
-								'svg-fill-palette-color': svgPaletteFillColor,
-								'svg-fill-palette-opacity':
-									svgPaletteFillOpacity,
-								'svg-fill-color': svgFillColor,
-								'svg-line-palette-color': svgPaletteLineColor,
-								'svg-line-palette-opacity':
-									svgPaletteLineOpacity,
-								'svg-line-color': svgLineColor,
-							} = getAttributesValue({
+							const [
+								svgPaletteFillColor,
+								svgPaletteFillOpacity,
+								svgFillColor,
+								svgPaletteLineColor,
+								svgPaletteLineOpacity,
+								svgLineColor,
+							] = getAttributesValue({
 								target: [
 									'svg-fill-palette-color',
 									'svg-fill-palette-opacity',

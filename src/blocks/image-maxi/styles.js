@@ -96,15 +96,12 @@ const getWrapperObject = props => {
 };
 
 const getHoverWrapperObject = props => {
-	const {
-		'border-status': borderStatusHover,
-		'box-shadow-status': boxShadowStatusHover,
-		'_o.s': opacityStatusHover,
-	} = getAttributesValue({
-		target: ['bo.s', 'bs.s', '_o.s'],
-		props,
-		isHover: true,
-	});
+	const [borderStatusHover, boxShadowStatusHover, opacityStatusHover] =
+		getAttributesValue({
+			target: ['bo.s', 'bs.s', '_o.s'],
+			props,
+			isHover: true,
+		});
 
 	const response = {
 		...(borderStatusHover && {
@@ -384,11 +381,11 @@ const getImageObject = props => {
 
 const getHoverImageObject = props => {
 	const prefix = 'image-';
-	const {
-		[`${prefix}border-status`]: imageBorderStatusHover,
-		[`${prefix}box-shadow-status`]: imageBoxShadowStatusHover,
-		[`${prefix}clip-path-status`]: imageClipPathStatusHover,
-	} = getAttributesValue({
+	const [
+		imageBorderStatusHover,
+		imageBoxShadowStatusHover,
+		imageClipPathStatusHover,
+	] = getAttributesValue({
 		target: ['bo.s', 'bs.s', 'clip-path-status'],
 		props,
 		isHover: true,

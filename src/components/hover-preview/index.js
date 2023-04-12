@@ -17,22 +17,22 @@ import { getAttributesValue } from '../../extensions/attributes';
  */
 const HoverPreview = props => {
 	const { wrapperClassName, hoverClassName, isSave = false } = props;
-	const {
-		'hover-type': hoverType,
-		'hover-basic-effect-type': hoverBasicEffectType,
-		'hover-transition-duration': hoverTransitionDuration,
-		'hover-transition-easing': hoverTransitionEasing,
-		'hover-transition-easing-cb': hoverTransitionEasingCB,
-		'hover-preview': hoverPreview,
-		'hover-basic-zoom-in-value': hoverBasicZoomInValue,
-		'hover-basic-rotate-value': hoverBasicRotateValue,
-		'hover-basic-slide-value': HoverBasicSlideValue,
-		'hover-basic-blur-value': hoverBasicBlurValue,
-		'hover-basic-zoom-out-value': hoverBasicZoomOutValue,
-		'hover-text-preset': hoverTextPreset,
-		'hover-title-typography-content': hoverTitleTypographyContent,
-		'hover-content-typography-content': hoverContentTypographyContent,
-	} = getAttributesValue({
+	const [
+		hoverType,
+		hoverBasicEffectType,
+		hoverTransitionDuration,
+		hoverTransitionEasing,
+		hoverTransitionEasingCB,
+		hoverPreview,
+		hoverBasicZoomInValue,
+		hoverBasicRotateValue,
+		HoverBasicSlideValue,
+		hoverBasicBlurValue,
+		hoverBasicZoomOutValue,
+		hoverTextPreset,
+		hoverTitleTypographyContent,
+		hoverContentTypographyContent,
+	] = getAttributesValue({
 		target: [
 			'hover-type',
 			'hover-basic-effect-type',

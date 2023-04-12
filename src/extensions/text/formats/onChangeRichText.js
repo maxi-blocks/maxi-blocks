@@ -28,7 +28,7 @@ const onChangeRichText = ({
 	const hasNativeFormat = getHasNativeFormat(formatValue);
 
 	if (hasNativeFormat) {
-		const { typeOfList, content, textLevel, isList } = getAttributesValue({
+		const [typeOfList, content, textLevel, isList] = getAttributesValue({
 			target: ['typeOfList', 'content', 'textLevel', 'isList'],
 			props: attributes,
 		});

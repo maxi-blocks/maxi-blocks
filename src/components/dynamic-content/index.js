@@ -49,28 +49,20 @@ const DynamicContent = props => {
 
 	const classes = classnames('maxi-dynamic-content', className);
 
-	const {
-		'dc-status': status,
-		'dc-type': type,
-		'dc-relation': relation,
-		'dc-id': id,
-		'dc-field': field,
-		'dc-author': author,
-		'dc-limit': limit,
-		'dc-error': error,
-	} = getAttributesValue({
-		target: [
-			'dc-status',
-			'dc-type',
-			'dc-relation',
-			'dc-id',
-			'dc-field',
-			'dc-author',
-			'dc-limit',
-			'dc-error',
-		],
-		props: dynamicContent,
-	});
+	const [status, type, relation, id, field, author, limit, error] =
+		getAttributesValue({
+			target: [
+				'dc-status',
+				'dc-type',
+				'dc-relation',
+				'dc-id',
+				'dc-field',
+				'dc-author',
+				'dc-limit',
+				'dc-error',
+			],
+			props: dynamicContent,
+		});
 
 	const [postAuthorOptions, setPostAuthorOptions] = useState(null);
 	const [postIdOptions, setPostIdOptions] = useState(null);

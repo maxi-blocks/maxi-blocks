@@ -20,11 +20,7 @@ import { getMaxiAdminSettingsUrl } from '../../utils';
  */
 const MapControl = props => {
 	const { onChange, hasApiKey = false, ...attributes } = props;
-	const {
-		'map-provider': mapProvider,
-		'map-min-zoom': mapMinZoom,
-		'map-max-zoom': mapMaxZoom,
-	} = getAttributesValue({
+	const [mapProvider, mapMinZoom, mapMaxZoom] = getAttributesValue({
 		target: ['map-provider', 'map-min-zoom', 'map-max-zoom'],
 		props: attributes,
 	});

@@ -459,7 +459,7 @@ class MaxiBlocks_DynamicContent
     public function get_post_taxonomy_item_content($item, $link_status)
     {
         return ($link_status)
-            ? '<a href="' . get_term_link($item) . '"><span>' . $item->name . '</span></a>'
+            ? '<a href="' . get_term_link($item) . '" class="maxi-text-block--link"><span>' . $item->name . '</span></a>'
             : $item->name;
     }
 

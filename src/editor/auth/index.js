@@ -27,6 +27,7 @@ export const getUserName = () => {
 
 export const getUserEmail = () => {
 	const { email } = select('maxiBlocks/pro').receiveMaxiProStatus();
+	console.log('email getUserEmail', email);
 	if (email !== '') return email;
 	return false;
 };
@@ -34,25 +35,24 @@ export const getUserEmail = () => {
 export async function authConnect(withRedirect = false, email = false) {
 	const url = 'https://my.maxiblocks.com/login?plugin'; // 'https://maxiblocks.com/go/user-login'
 
-	const generateCookieKey = length => {
-		let key = '';
-		const string =
-			'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-		const stringLength = string.length;
-		let i = 0;
-		while (i < length) {
-			key += string.charAt(Math.floor(Math.random() * stringLength));
-			i += 1;
-		}
-		return key;
-	};
-
 	let cookieKey = document.cookie
 		.split(';')
 		.find(row => row.startsWith('maxi_blocks_key='))
 		?.split('=')[1];
 
 	if (!cookieKey) {
+		const generateCookieKey = length => {
+			let key = '';
+			const string =
+				'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+			const stringLength = string.length;
+			let i = 0;
+			while (i < length) {
+				key += string.charAt(Math.floor(Math.random() * stringLength));
+				i += 1;
+			}
+			return key;
+		};
 		cookieKey = generateCookieKey(20);
 		document.cookie = `maxi_blocks_key=${cookieKey};max-age=2592000`;
 	}
@@ -101,69 +101,74 @@ export async function authConnect(withRedirect = false, email = false) {
 
 	const useEmail = email || getUserEmail();
 
-	const fetchUrl = 'https://my.maxiblocks.com/plugin-api-fwefqw.php';
+	console.log('useEmail', useEmail);
+	console.log('getUserEmail', getUserEmail());
 
-	const fetchOptions = {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-			'X-Xaiscmolkb': 'sdeqw239ejkdgaorti482',
-		},
-		body: JSON.stringify({ email: useEmail, cookie: cookieKey }),
-	};
+	if (useEmail) {
+		const fetchUrl = 'https://my.maxiblocks.com/plugin-api-fwefqw.php';
 
-	fetch(fetchUrl, fetchOptions)
-		.then(response => {
-			if (response.status !== 200) {
-				console.error(
-					`There was a problem with an API call. Status Code: ${response.status}`
-				);
-				return;
-			}
+		const fetchOptions = {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-Xaiscmolkb': 'sdeqw239ejkdgaorti482',
+			},
+			body: JSON.stringify({ email: useEmail, cookie: cookieKey }),
+		};
 
-			response.json().then(data => {
-				if (data) {
-					if (data.error) {
-						console.error(data.error);
-						notActive();
-						return;
-					}
-					const date = data.expiration_date;
-					const { name, info, status } = data;
-					console.log(`exp date: ${date}`);
-					console.log(`name: ${name}`);
-					console.log(`info: ${info}`);
-					console.log(`status: ${status}`);
+		fetch(fetchUrl, fetchOptions)
+			.then(response => {
+				if (response.status !== 200) {
+					console.error(
+						`There was a problem with an API call. Status Code: ${response.status}`
+					);
+					return;
+				}
 
-					if (status === 'ok') {
-						const today = new Date().toISOString().slice(0, 10);
-						if (today > date) {
-							emailExpired(name, info);
-							redirect();
-						} else {
-							console.log('not expired');
-							emailActive(name, info);
+				response.json().then(data => {
+					if (data) {
+						if (data.error) {
+							console.error(data.error);
+							notActive();
+							return;
+						}
+						const date = data.expiration_date;
+						const { name, info, status } = data;
+						console.log(`exp date: ${date}`);
+						console.log(`name: ${name}`);
+						console.log(`info: ${info}`);
+						console.log(`status: ${status}`);
+
+						if (status === 'ok') {
+							const today = new Date().toISOString().slice(0, 10);
+							if (today > date) {
+								emailExpired(name, info);
+								redirect();
+							} else {
+								console.log('not expired');
+								emailActive(name, info);
+							}
+						}
+						if (
+							status === 'error' &&
+							data.message === 'already logged in'
+						) {
+							emailNotActive(name, info);
 						}
 					}
-					if (
-						status === 'error' &&
-						data.message === 'already logged in'
-					) {
-						emailNotActive(name, info);
+					if (!data) {
+						// no email
+						notActive();
+						redirect();
 					}
-				}
-				if (!data) {
-					// no email
-					notActive();
-					redirect();
-				}
+				});
+			})
+			.catch(err => {
+				console.error('Fetch Error for the API call:', err);
+				notActive();
+				redirect();
 			});
-		})
-		.catch(err => {
-			console.error('Fetch Error for the API call:', err);
-			notActive();
-			redirect();
-		});
+	}
 }
 
 export const logOut = () => {

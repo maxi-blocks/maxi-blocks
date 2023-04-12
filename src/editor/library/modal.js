@@ -190,8 +190,8 @@ const MaxiModal = props => {
 		setIsMaxiProExpired(isProSubExpired());
 	}, [isMaxiProExpired]);
 
-	console.log('isMaxiProActive', isMaxiProActive);
-	console.log('userName', userName);
+	// console.log('isMaxiProActive', isMaxiProActive);
+	// console.log('userName', userName);
 
 	const onClickConnect = email => {
 		const isValid = isValidEmail(email);

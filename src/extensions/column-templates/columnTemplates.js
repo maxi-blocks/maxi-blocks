@@ -310,6 +310,15 @@ const columnTemplates = {
 			},
 		],
 	},
+	moreThanEightColumns: {
+		default: [
+			{
+				name: 'more than 8 columns',
+				isMoreThanEightColumns: true,
+			},
+		],
+		responsive: [],
+	},
 };
 
 export default columnTemplates;

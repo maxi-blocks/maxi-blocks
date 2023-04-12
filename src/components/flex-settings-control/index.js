@@ -41,7 +41,7 @@ const FlexSettingsControl = props => {
 		onChange,
 		name,
 		breakpoint = 'general',
-		getParentBlockName,
+		parentBlockName,
 	} = props;
 
 	const isCustomFlexBasis = /\d/.test(
@@ -63,7 +63,7 @@ const FlexSettingsControl = props => {
 		'maxi-blocks/accordion-maxi',
 	];
 
-	const classes = classnames('maxi-flex-settings--control', className);
+	const classes = classnames('maxi-flex-settings-control', className);
 
 	return (
 		<div className={classes}>
@@ -105,10 +105,10 @@ const FlexSettingsControl = props => {
 					{
 						label: __('Flex-child', 'maxi-blocks'),
 						value: 'flex-child',
-						content: wrapperBlocks.includes(getParentBlockName) ? (
+						content: wrapperBlocks.includes(parentBlockName) ? (
 							<>
 								<AdvancedNumberControl
-									className='maxi-typography-control__order'
+									className='maxi-flex-settings-control__order'
 									label={__('Order', 'maxi-blocks')}
 									enableUnit={false}
 									value={getLastBreakpointAttribute({
@@ -132,7 +132,7 @@ const FlexSettingsControl = props => {
 									}
 								/>
 								<AdvancedNumberControl
-									className='maxi-typography-control__flex-grow'
+									className='maxi-flex-settings-control__flex-grow'
 									label={__('Flex-grow', 'maxi-blocks')}
 									enableUnit={false}
 									value={getLastBreakpointAttribute({
@@ -156,7 +156,7 @@ const FlexSettingsControl = props => {
 									}
 								/>
 								<AdvancedNumberControl
-									className='maxi-typography-control__flex-shrink'
+									className='maxi-flex-settings-control__flex-shrink'
 									label={__('Flex-shrink', 'maxi-blocks')}
 									enableUnit={false}
 									value={getLastBreakpointAttribute({
@@ -181,7 +181,7 @@ const FlexSettingsControl = props => {
 								/>
 								<SelectControl
 									label={__('Flex-basis', 'maxi-blocks')}
-									className='maxi-typography-control__flex-basis'
+									className='maxi-flex-settings-control__flex-basis'
 									value={
 										customFlexBasis
 											? 'custom'
@@ -225,7 +225,7 @@ const FlexSettingsControl = props => {
 
 								{customFlexBasis && (
 									<AdvancedNumberControl
-										className='maxi-typography-control__custom-flex-basis'
+										className='maxi-flex-settings-control__custom-flex-basis'
 										label={__(
 											'Custom flex-basis',
 											'maxi-blocks'

@@ -306,7 +306,7 @@ describe('CopyPaste from Toolbar', () => {
 
 		// focus container
 		await page.$eval(
-			'.edit-post-header__toolbar .edit-post-header-toolbar__left .edit-post-header-toolbar__list-view-toggle',
+			'.edit-post-header__toolbar .edit-post-header-toolbar__left .edit-post-header-toolbar__document-overview-toggle',
 			toolbar => toolbar.click()
 		);
 

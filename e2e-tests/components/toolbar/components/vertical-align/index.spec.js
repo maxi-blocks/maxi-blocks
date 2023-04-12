@@ -23,6 +23,7 @@ describe('Vertical align align from Toolbar', () => {
 		// Wait for toolbar to be visible
 		await page.waitForSelector('.toolbar-wrapper');
 
+		await page.waitForSelector('.maxi-row-block__template');
 		await page.$$eval('.maxi-row-block__template button', button =>
 			button[0].click()
 		);

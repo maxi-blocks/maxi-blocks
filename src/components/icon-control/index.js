@@ -65,6 +65,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 		disablePosition = false,
 		disableSpacing = false,
 		disableHeightFitContent = false,
+		disablePositionY = false,
 		getIconWithColor,
 		inlineTarget,
 		prefix = '',
@@ -216,33 +217,37 @@ const IconControlResponsiveSettings = withRTC(props => {
 					content={props[`${prefix}icon-content`]}
 				/>
 			)}
-			{!disableSpacing && !isHover && !iconOnly && (
+			{!isHover && !iconOnly && (
 				<>
-					<AdvancedNumberControl
-						label={__('Spacing', 'maxi-blocks')}
-						className='maxi-icon-control__spacing'
-						min={0}
-						max={999}
-						initial={1}
-						step={1}
-						breakpoint={breakpoint}
-						value={props[`${prefix}icon-spacing-${breakpoint}`]}
-						onChangeValue={val => {
-							onChange({
-								[`${prefix}icon-spacing-${breakpoint}`]:
-									val !== undefined && val !== '' ? val : '',
-							});
-						}}
-						onReset={() =>
-							onChange({
-								[`${prefix}icon-spacing-${breakpoint}`]:
-									getDefaultAttribute(
-										`${prefix}icon-spacing-${breakpoint}`
-									),
-								isReset: true,
-							})
-						}
-					/>
+					{!disableSpacing && (
+						<AdvancedNumberControl
+							label={__('Spacing', 'maxi-blocks')}
+							className='maxi-icon-control__spacing'
+							min={0}
+							max={999}
+							initial={1}
+							step={1}
+							breakpoint={breakpoint}
+							value={props[`${prefix}icon-spacing-${breakpoint}`]}
+							onChangeValue={val => {
+								onChange({
+									[`${prefix}icon-spacing-${breakpoint}`]:
+										val !== undefined && val !== ''
+											? val
+											: '',
+								});
+							}}
+							onReset={() =>
+								onChange({
+									[`${prefix}icon-spacing-${breakpoint}`]:
+										getDefaultAttribute(
+											`${prefix}icon-spacing-${breakpoint}`
+										),
+									isReset: true,
+								})
+							}
+						/>
+					)}
 					{!disablePosition && (
 						<AxisPositionControl
 							label='Icon'
@@ -253,6 +258,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 									[`${prefix}icon-position`]: val,
 								});
 							}}
+							disableY={disablePositionY}
 							breakpoint={breakpoint}
 						/>
 					)}

@@ -9,7 +9,6 @@ import {
 	memo,
 	useCallback,
 	useReducer,
-	useRef,
 } from '@wordpress/element';
 import { dispatch, select } from '@wordpress/data';
 
@@ -20,7 +19,6 @@ import {
 	getHasParallax,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-import { marginValueCalculator } from '../../extensions/dom';
 import InnerBlocksBlock from './innerBlocksBlock';
 import MainMaxiBlock from './mainMaxiBlock';
 
@@ -319,22 +317,12 @@ const MaxiBlock = memo(
 		const { clientId, attributes, deviceType } = props;
 
 		const [isHovered, setHovered] = useReducer(e => !e, false);
-		const getMarginValue = useRef(marginValueCalculator());
-
-		useEffect(() => {
-			return () => {
-				getMarginValue.current(true);
-			};
-		}, []);
+		const marginValue = select('maxiBlocks/styles').getBlockMarginValue();
 
 		// In order to keep the structure that Gutenberg uses for the block,
 		// is necessary to add some inline styles to the first hierarchy blocks.
 		const { isFirstOnHierarchy } = attributes;
-		const styleStr = getBlockStyle(
-			attributes,
-			deviceType,
-			getMarginValue.current()
-		);
+		const styleStr = getBlockStyle(attributes, deviceType, marginValue);
 
 		useEffect(() => {
 			if (isFirstOnHierarchy && styleStr) {
@@ -347,7 +335,7 @@ const MaxiBlock = memo(
 				};
 			}
 
-			return null;
+			return () => {};
 		}, [styleStr, isFirstOnHierarchy, clientId]);
 
 		return (

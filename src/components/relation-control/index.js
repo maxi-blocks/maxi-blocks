@@ -20,6 +20,7 @@ import {
 	createTransitionObj,
 	getDefaultAttribute,
 	getGroupAttributes,
+	getPaletteAttributes,
 } from '../../extensions/styles';
 import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
 import {
@@ -347,6 +348,58 @@ const RelationControl = props => {
 					);
 					if (blockAttributes[unitKey])
 						acc[unitKey] = blockAttributes[unitKey];
+
+					// Ensure the palette-status is passed if the values is a palette attribute
+					if (key.includes('palette')) {
+						const {
+							paletteStatus,
+							paletteColor,
+							paletteOpacity,
+							color,
+						} = getPaletteAttributes({
+							obj: {
+								...blockAttributes,
+								...filteredAttributesObj,
+							},
+							prefix,
+							breakpoint,
+						});
+						const paletteStatusKey = key
+							.replace('palette-color', 'palette-status')
+							.replace('palette-opacity', 'palette-status');
+						const paletteColorKey = key
+							.replace('palette-opacity', 'palette-color')
+							.replace('palette-status', 'palette-color');
+						const paletteOpacityKey = key
+							.replace('palette-color', 'palette-opacity')
+							.replace('palette-status', 'palette-opacity');
+						// replace the last 'palette-color' or 'palette-opacity' with 'color'
+						const colorKey = key.replace(
+							/palette-(color|opacity)$/,
+							'color'
+						);
+
+						if (
+							paletteStatus &&
+							!filteredAttributesObj[paletteStatusKey]
+						)
+							acc[paletteStatusKey] = paletteStatus;
+
+						if (
+							paletteColor &&
+							!filteredAttributesObj[paletteColorKey]
+						)
+							acc[paletteColorKey] = paletteColor;
+
+						if (
+							paletteOpacity &&
+							!filteredAttributesObj[paletteOpacityKey]
+						)
+							acc[paletteOpacityKey] = paletteOpacity;
+
+						if (color && !filteredAttributesObj[colorKey])
+							acc[colorKey] = color;
+					}
 
 					acc[key] = value;
 

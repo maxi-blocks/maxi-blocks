@@ -44,6 +44,7 @@ const withMaxiDC = createHigherOrderComponent(
 				'dc-custom-date': isCustomDate,
 				'dc-link-status': linkStatus,
 				'dc-post-taxonomy-links-status': postTaxonomyLinksStatus,
+				'dc-contains-html': containsHTML,
 			} = dynamicContentProps;
 
 			const fetchDcData = useCallback(async () => {
@@ -82,9 +83,13 @@ const withMaxiDC = createHigherOrderComponent(
 					}
 
 					if (!isImageMaxi) {
-						const newContent = sanitizeDCContent(
-							await getDCContent(dynamicContentProps)
+						let newContent = await getDCContent(
+							dynamicContentProps
 						);
+
+						if (!postTaxonomyLinksStatus) {
+							newContent = sanitizeDCContent(newContent);
+						}
 
 						if (newContent !== content) {
 							markNextChangeAsNotPersistent();
@@ -96,6 +101,10 @@ const withMaxiDC = createHigherOrderComponent(
 								}),
 								...(updateLinkSettings && {
 									linkSettings: newLinkSettings,
+								}),
+								...(postTaxonomyLinksStatus !==
+									containsHTML && {
+									'dc-contains-html': postTaxonomyLinksStatus,
 								}),
 							});
 						}

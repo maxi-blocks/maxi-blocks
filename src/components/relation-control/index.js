@@ -22,19 +22,23 @@ import {
 	getGroupAttributes,
 } from '../../extensions/styles';
 import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
-import { goThroughMaxiBlocks } from '../../extensions/maxi-block';
+import {
+	goThroughMaxiBlocks,
+	handleSetAttributes,
+} from '../../extensions/maxi-block';
 import { getHoverStatus } from '../../extensions/relations';
 import { getBlockData } from '../../extensions/attributes';
 
 /**
  * External dependencies
  */
-import { capitalize, cloneDeep, isEmpty, merge } from 'lodash';
+import { capitalize, cloneDeep, isEmpty, merge, isNil } from 'lodash';
 
 /**
  * Styles
  */
 import './editor.scss';
+import getBreakpointFromAttribute from '../../extensions/styles/getBreakpointFromAttribute';
 
 const RelationControl = props => {
 	const { getBlock } = select('core/block-editor');
@@ -309,14 +313,53 @@ const RelationControl = props => {
 							...obj,
 							...transformGeneralAttributesToBaseBreakpoint(obj),
 					  };
+				const filteredAttributesObj = Object.entries(
+					newAttributesObj
+				).reduce((acc, [key, value]) => {
+					const originalValue = blockAttributes[key];
+
+					if (originalValue !== value) acc[key] = value;
+
+					return acc;
+				}, {});
+
+				const cleanAttributesObject = Object.entries(
+					handleSetAttributes({
+						obj: filteredAttributesObj,
+						attributes: blockAttributes,
+						clientId: getClientIdFromUniqueId(item.uniqueID),
+						onChange: response => response,
+					})
+				).reduce((acc, [key, value]) => {
+					if (isNil(value)) return acc;
+
+					// Ensure the value for unit attributes exist to create styles
+					if (key.includes('-unit')) {
+						const newKey = key.replace('-unit', '');
+
+						if (blockAttributes[newKey])
+							acc[newKey] = blockAttributes[newKey];
+					}
+					const breakpoint = getBreakpointFromAttribute(key);
+					const unitKey = key.replace(
+						`-${breakpoint}`,
+						`-unit-${breakpoint}`
+					);
+					if (blockAttributes[unitKey])
+						acc[unitKey] = blockAttributes[unitKey];
+
+					acc[key] = value;
+
+					return acc;
+				}, {});
 
 				const styles = getStyles(
-					getStylesObj(merge({}, blockAttributes, newAttributesObj)),
+					getStylesObj(cleanAttributesObject),
 					true
 				);
 
 				onChangeRelation(relations, item.id, {
-					attributes: newAttributesObj,
+					attributes: cleanAttributesObject,
 					css: styles,
 					...(item.sid === 't' && {
 						effects: {

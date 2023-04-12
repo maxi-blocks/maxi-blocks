@@ -9,12 +9,12 @@ import { select } from '@wordpress/data';
 import getBreakpointFromAttribute from '../styles/getBreakpointFromAttribute';
 import getDefaultAttribute from '../styles/getDefaultAttribute';
 import handleOnReset from '../attributes/handleOnReset';
+import cleanAttributes from './cleanAttributes';
 
 /**
  * External dependencies
  */
 import { isNil } from 'lodash';
-import cleanAttributes from './cleanAttributes';
 
 const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -176,6 +176,8 @@ const handleSetAttributes = ({
 		clientId,
 		defaultAttributes,
 	});
+
+	// console.log(cleanedResponse);
 
 	return onChange(cleanedResponse);
 };

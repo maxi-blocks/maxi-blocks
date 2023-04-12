@@ -401,6 +401,11 @@ const LibraryToolbar = props => {
 		isValidEmail(userName) && 'maxi-username__hide'
 	);
 
+	const manageSessions = () => {
+		const url = 'https://my.maxiblocks.com/manage-sessions?plugin';
+		window.open(url, '_blank')?.focus();
+	};
+
 	return (
 		<div className='maxi-cloud-toolbar'>
 			{type !== 'preview' && type !== 'switch-tone' && (
@@ -513,39 +518,46 @@ const LibraryToolbar = props => {
 					<h5 className='maxi-cloud-container__patterns__top-menu__text_pro'>
 						<span className={usernameClasses}>{userName}</span>
 						{__(
-							', you are already signed in on another device',
+							", you're already signed in on another device",
 							'maxi-blocks'
 						)}
 					</h5>
 					<Button
 						key='maxi-cloud-toolbar__button__sing-out'
 						className='maxi-cloud-container__patterns__top-menu__button-go-pro'
-						label={__('Sign out', 'maxi-blocks')}
-						onClick={onLogOut}
+						label={__('Manage sessions', 'maxi-blocks')}
+						onClick={() => manageSessions()}
 					>
-						{__('Sign out', 'maxi-blocks')}
+						{__('Manage sessions', 'maxi-blocks')}
 					</Button>
 				</div>
 			)}
 			{!isMaxiProActive && !userName && (
-				<div className='maxi-cloud-container__patterns__top-menu__input'>
-					<TextControl
-						placeholder={__('Input your Maxi email', 'maxi-blocks')}
-						value={userEmail}
-						onChange={value => setUserEmail(value)}
-					/>
-					{showNotValidEmail && <span>The email is not valid</span>}
-				</div>
-			)}
-			{!isMaxiProActive && (
-				<Button
-					key='maxi-cloud-toolbar__button__connect'
-					className='maxi-cloud-container__patterns__top-menu__button-connect-pro'
-					label={__('Connect to Maxi Pro Account', 'maxi-blocks')}
-					onClick={() => onClickConnect(userEmail)}
-				>
-					{__('Connect to Maxi Pro Account', 'maxi-blocks')}
-				</Button>
+				<>
+					<div className='maxi-cloud-container__patterns__top-menu__input'>
+						<TextControl
+							placeholder={__(
+								'Input your Maxi email',
+								'maxi-blocks'
+							)}
+							value={userEmail}
+							onChange={value => setUserEmail(value)}
+						/>
+						{showNotValidEmail && (
+							<span>
+								{__('The email is not valid', 'maxi-blocks')}
+							</span>
+						)}
+					</div>
+					<Button
+						key='maxi-cloud-toolbar__button__connect'
+						className='maxi-cloud-container__patterns__top-menu__button-connect-pro'
+						label={__('Connect to Maxi Pro Account', 'maxi-blocks')}
+						onClick={() => onClickConnect(userEmail)}
+					>
+						{__('Connect to Maxi Pro Account', 'maxi-blocks')}
+					</Button>
+				</>
 			)}
 
 			{type !== 'preview' && type !== 'switch-tone' && chatSupport && (
@@ -581,7 +593,7 @@ const LibraryToolbar = props => {
 							}}
 						/>
 					)}
-					{isPro && !isBeta && !isMaxiProActive && (
+					{isPro && !isBeta && !isMaxiProActive && !userName && (
 						<ToolbarButton
 							label={__('Go Pro', 'maxi-blocks')}
 							onClick={() =>

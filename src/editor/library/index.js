@@ -125,6 +125,7 @@ const CloudLibrary = props => {
 				prefix={prefix}
 				isPro={isPro}
 				isBeta={isBeta}
+				userName={userName}
 				isMaxiProActive={isMaxiProActive}
 				onClickConnect={onClickConnect}
 				layerOrder={layerOrder}

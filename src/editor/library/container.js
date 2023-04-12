@@ -399,6 +399,8 @@ const LibraryContainer = props => {
 		layerOrder,
 		isInserting,
 		onInsert,
+		isBeta,
+		userName,
 	} = props;
 
 	const {
@@ -1097,7 +1099,7 @@ const LibraryContainer = props => {
 									return itemsReturn;
 								}}
 							/>
-							{!isMaxiProActive && (
+							{!isMaxiProActive && !isBeta && !userName && (
 								<Button
 									type='button'
 									label='Go Pro'

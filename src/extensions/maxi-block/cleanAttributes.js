@@ -15,14 +15,7 @@ import { getHoverAttributeKey, getNormalAttributeKey } from '../styles/utils';
 /**
  * External dependencies
  */
-import {
-	isBoolean,
-	isEqual,
-	isNil,
-	isPlainObject,
-	pickBy,
-	toNumber,
-} from 'lodash';
+import { isEqual, isNil, isPlainObject, pickBy, toNumber } from 'lodash';
 
 const breakpoints = ['general', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -80,7 +73,7 @@ const flatSameAsPrev = (
 	Object.entries(newAttributes).forEach(([key, value]) => {
 		const breakpoint = getBreakpointFromAttribute(key);
 
-		if (!breakpoint || breakpoint === 'general' || isBoolean(value)) {
+		if (!breakpoint || breakpoint === 'general') {
 			result[key] = value;
 			return;
 		}
@@ -202,7 +195,7 @@ const flatWithGeneral = (
 	const prevSavedAttrs = select('maxiBlocks/styles').getPrevSavedAttrs();
 
 	Object.entries(newAttributes).forEach(([key, value]) => {
-		if (isNil(value) || isBoolean(value)) return;
+		if (isNil(value)) return;
 
 		const breakpoint = getBreakpointFromAttribute(key);
 
@@ -370,7 +363,7 @@ const flatNewAttributes = (
 	Object.entries(newAttributes).forEach(([key, value]) => {
 		const breakpoint = getBreakpointFromAttribute(key);
 
-		if (!breakpoint || breakpoint === 'general' || isBoolean(value)) {
+		if (!breakpoint || breakpoint === 'general') {
 			result[key] = value;
 			return;
 		}
@@ -416,9 +409,7 @@ const removeHoverSameAsNormal = (newAttributes, attributes) => {
 
 	const result = { ...newAttributes };
 
-	Object.entries(newAttributes).forEach(([key, value]) => {
-		if (isBoolean(value)) return;
-
+	Object.entries(newAttributes).forEach(([key]) => {
 		const breakpoint = getBreakpointFromAttribute(key);
 		// If hover value is on responsive there is possibly hover value on higher breakpoint
 		// that will overwrite the responsive value if it is deleted,
@@ -426,7 +417,6 @@ const removeHoverSameAsNormal = (newAttributes, attributes) => {
 		if (!breakpoint || breakpoint === 'general') {
 			const hoverKey = getHoverAttributeKey(key);
 			const hoverValue = getValue(hoverKey);
-
 			const normalValue = getValue(getNormalAttributeKey(key));
 
 			if (
@@ -457,7 +447,7 @@ const removeSameAsGeneral = (
 	Object.entries(newAttributes).forEach(([key, value]) => {
 		const breakpoint = getBreakpointFromAttribute(key);
 
-		if (!breakpoint || isBoolean(value)) {
+		if (!breakpoint) {
 			result[key] = value;
 			return;
 		}
@@ -518,11 +508,10 @@ const flatLowerAttr = (
 	Object.entries(newAttributes).forEach(([key, value]) => {
 		const breakpoint = getBreakpointFromAttribute(key);
 
-		if (!breakpoint || isBoolean(value)) {
+		if (!breakpoint) {
 			result[key] = value;
 			return;
 		}
-
 		if (breakpoint === 'xxl') return;
 
 		const isGeneral = breakpoint === 'general';
@@ -621,13 +610,7 @@ const preserveBaseBreakpoint = (newAttributes, attributes) => {
 	Object.entries(newAttributes).forEach(([key, value]) => {
 		const breakpoint = getBreakpointFromAttribute(key);
 
-		if (
-			!breakpoint ||
-			breakpoint === 'general' ||
-			isNil(value) ||
-			isBoolean(value)
-		)
-			return;
+		if (!breakpoint || breakpoint === 'general' || isNil(value)) return;
 
 		const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 		const isHigherThanBase =

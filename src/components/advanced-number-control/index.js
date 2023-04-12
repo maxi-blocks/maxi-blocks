@@ -80,6 +80,7 @@ const AdvancedNumberControl = props => {
 		disableInputsLimits = false,
 		min = 0,
 		max = 999,
+		maxRange,
 		initial = 0,
 		step = 1,
 		defaultValue = '',
@@ -287,7 +288,7 @@ const AdvancedNumberControl = props => {
 								);
 							}}
 							min={enableUnit ? minValueRange : min}
-							max={enableUnit ? maxValueRange : max}
+							max={maxRange || (enableUnit ? maxValueRange : max)}
 							step={stepValue}
 							withInputField={false}
 							initialPosition={value || initial}

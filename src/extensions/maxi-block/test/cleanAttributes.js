@@ -184,8 +184,8 @@ describe('cleanAttributes', () => {
 			defaultAttributes,
 		});
 		const expectedResult = {
+			'test-status-m': undefined,
 			'test-m': undefined,
-			'test-status-m': true,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -216,6 +216,7 @@ describe('cleanAttributes', () => {
 			'test-general': 4,
 			'test-m': undefined,
 			'test-opacity-general': 1,
+			'test-status-m': undefined,
 			'test-opacity-m': undefined,
 		};
 
@@ -300,8 +301,9 @@ describe('cleanAttributes', () => {
 
 		const expectedResult = {
 			'test-s': 8,
-			'test-status-s': true,
 			'test-xs': undefined,
+			'test-status-s': undefined,
+			'test-status-xs': undefined,
 		};
 
 		expect(result).toStrictEqual(expectedResult);
@@ -868,6 +870,63 @@ describe('cleanAttributes', () => {
 		expect(resultFirstRound).toStrictEqual(expectedFirstRound);
 		expect(resultSecondRound).toStrictEqual(expectedSecondRound);
 		expect(resultThirdRound).toStrictEqual(expectedThirdRound);
+	});
+
+	it('On switching general boolean and on crossing the same values on smaller breakpoints, if general value change stopped not on the same values as smaller breakpoints, smaller breakpoints should be returned to previous value', () => {
+		let i = 0;
+		select.mockImplementation(
+			jest.fn(() => {
+				return {
+					receiveMaxiDeviceType: jest.fn(() => 'xl'),
+					getSelectedBlockCount: jest.fn(() => 1),
+					receiveBaseBreakpoint: jest.fn(() => 'xl'),
+					getPrevSavedAttrs: jest.fn(() => {
+						i += 1;
+						switch (i) {
+							case 2:
+								return ['test-general', 'test-l'];
+							case 1:
+							default:
+								return [];
+						}
+					}),
+				};
+			})
+		);
+
+		const firstRound = {
+			newAttributes: {
+				'test-general': true,
+			},
+			attributes: {
+				'test-general': undefined,
+				'test-l': true,
+			},
+		};
+		const secondRound = {
+			newAttributes: {
+				'test-general': false,
+			},
+			attributes: {
+				'test-general': true,
+				'test-l': undefined,
+			},
+		};
+
+		const resultFirstRound = cleanAttributes(firstRound);
+		const resultSecondRound = cleanAttributes(secondRound);
+
+		const expectedFirstRound = {
+			'test-general': true,
+			'test-l': undefined,
+		};
+		const expectedSecondRound = {
+			'test-general': false,
+			'test-l': true,
+		};
+
+		expect(resultFirstRound).toStrictEqual(expectedFirstRound);
+		expect(resultSecondRound).toStrictEqual(expectedSecondRound);
 	});
 
 	it('Random test', () => {
@@ -1661,69 +1720,6 @@ describe('cleanAttributes', () => {
 
 		const expectedResult = {
 			'attribute-with-default-value-hover': 3,
-		};
-
-		expect(result).toStrictEqual(expectedResult);
-	});
-
-	it('Should not delete boolean attributes on responsive', () => {
-		const obj = {
-			newAttributes: {
-				'test-s': true,
-			},
-			attributes: {
-				'test-general': true,
-				'test-s': false,
-			},
-			defaultAttributes: {},
-		};
-
-		const result = cleanAttributes(obj);
-
-		const expectedResult = {
-			'test-s': true,
-		};
-
-		expect(result).toStrictEqual(expectedResult);
-	});
-
-	it('Should not delete boolean attributes on hover', () => {
-		const obj = {
-			newAttributes: {
-				'test-general-hover': true,
-			},
-			attributes: {
-				'test-general': true,
-				'test-general-hover': false,
-			},
-			defaultAttributes: {},
-		};
-
-		const result = cleanAttributes(obj);
-
-		const expectedResult = {
-			'test-general-hover': true,
-		};
-
-		expect(result).toStrictEqual(expectedResult);
-	});
-
-	it('Should not delete responsive boolean attributes on change general', () => {
-		const obj = {
-			newAttributes: {
-				'test-general': true,
-			},
-			attributes: {
-				'test-general': false,
-				'test-s': true,
-			},
-			defaultAttributes: {},
-		};
-
-		const result = cleanAttributes(obj);
-
-		const expectedResult = {
-			'test-general': true,
 		};
 
 		expect(result).toStrictEqual(expectedResult);

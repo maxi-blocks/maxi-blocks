@@ -29,6 +29,7 @@ import { getEditorWrapper } from '../dom';
  * External dependencies
  */
 import { isEmpty, isEqual, pickBy } from 'lodash';
+import { addRelatedAttributes } from '../maxi-block';
 
 const getCanvasSettings = ({ name }) => [
 	{
@@ -60,7 +61,7 @@ const getCanvasSettings = ({ name }) => [
 									!key.includes('mediaURL')
 							);
 
-							return Object.fromEntries(
+							const IBAttributes = Object.fromEntries(
 								Object.entries(newBgLayer).filter(
 									([key, attr]) =>
 										!isEqual(
@@ -69,6 +70,21 @@ const getCanvasSettings = ({ name }) => [
 										)
 								)
 							);
+
+							const { order, type } = blockBgLayers[index];
+
+							return {
+								...addRelatedAttributes({
+									props: blockBgLayers[index],
+									IBAttributes,
+									relatedAttributes: [
+										'background-gradient-opacity',
+										'background-gradient',
+									],
+								}),
+								order,
+								type,
+							};
 						});
 
 						onChange({
@@ -125,7 +141,7 @@ const getCanvasSettings = ({ name }) => [
 		attrGroupName: 'boxShadow',
 		component: props => <BoxShadowControl {...props} />,
 		helper: props => getBoxShadowStyles(props),
-		styleAttrs: [
+		relatedAttributes: [
 			'box-shadow-inset',
 			'box-shadow-horizontal',
 			'box-shadow-horizontal-unit',
@@ -135,6 +151,10 @@ const getCanvasSettings = ({ name }) => [
 			'box-shadow-blur-unit',
 			'box-shadow-spread',
 			'box-shadow-spread-unit',
+			'box-shadow-palette-color',
+			'box-shadow-color',
+			'box-shadow-palette-status',
+			'box-shadow-palette-opacity',
 		],
 	},
 	{

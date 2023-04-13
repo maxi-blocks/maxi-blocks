@@ -273,6 +273,7 @@ const interactionBuilderSettings = {
 					target: iconClass,
 					wrapperTarget: buttonClass,
 				}),
+			styleAttrs: ['icon-content', 'icon-background-active-media'],
 		},
 		{
 			sid: 'bty',
@@ -333,6 +334,7 @@ const interactionBuilderSettings = {
 					isButton: true,
 				}).background,
 			target: '.maxi-button-block__button',
+			styleAttrs: ['button-background-active-media'],
 		},
 		{
 			sid: 'bbs',

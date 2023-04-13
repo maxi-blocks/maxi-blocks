@@ -127,6 +127,17 @@ const interactionBuilderSettings = {
 			component: props => <BoxShadowControl {...props} />,
 			helper: props => getBoxShadowStyles(props),
 			target: dividerClass,
+			styleAttrs: [
+				'divider-box-shadow-inset',
+				'divider-box-shadow-horizontal',
+				'divider-box-shadow-horizontal-unit',
+				'divider-box-shadow-vertical',
+				'divider-box-shadow-vertical-unit',
+				'divider-box-shadow-blur',
+				'divider-box-shadow-blur-unit',
+				'divider-box-shadow-spread',
+				'divider-box-shadow-spread-unit',
+			],
 		},
 		{
 			sid: 'dls',
@@ -136,6 +147,7 @@ const interactionBuilderSettings = {
 			helper: props =>
 				getDividerStyles(props.obj, 'line', props.blockStyle),
 			target: dividerClass,
+			styleAttrs: ['line-orientation', 'divider-border-style'],
 		},
 	],
 	canvas: getCanvasSettings({ name }),

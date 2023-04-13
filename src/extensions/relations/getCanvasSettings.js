@@ -107,6 +107,7 @@ const getCanvasSettings = ({ name }) => [
 				blockStyle,
 				ignoreMediaAttributes: true,
 			}),
+		styleAttrs: ['type', 'order'],
 	},
 	{
 		sid: 'b',
@@ -124,6 +125,17 @@ const getCanvasSettings = ({ name }) => [
 		attrGroupName: 'boxShadow',
 		component: props => <BoxShadowControl {...props} />,
 		helper: props => getBoxShadowStyles(props),
+		styleAttrs: [
+			'box-shadow-inset',
+			'box-shadow-horizontal',
+			'box-shadow-horizontal-unit',
+			'box-shadow-vertical',
+			'box-shadow-vertical-unit',
+			'box-shadow-blur',
+			'box-shadow-blur-unit',
+			'box-shadow-spread',
+			'box-shadow-spread-unit',
+		],
 	},
 	{
 		sid: 's',

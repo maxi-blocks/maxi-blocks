@@ -18,9 +18,11 @@ import TransitionControl from '../transition-control';
 import { openSidebarAccordion } from '../../extensions/inspector';
 import {
 	createTransitionObj,
+	getAttributeKey,
+	getAttributeValue,
 	getDefaultAttribute,
 	getGroupAttributes,
-	getPaletteAttributes,
+	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
 import {
@@ -29,6 +31,7 @@ import {
 } from '../../extensions/maxi-block';
 import { getHoverStatus } from '../../extensions/relations';
 import { getBlockData } from '../../extensions/attributes';
+import getBreakpointFromAttribute from '../../extensions/styles/getBreakpointFromAttribute';
 
 /**
  * External dependencies
@@ -39,7 +42,6 @@ import { capitalize, cloneDeep, isEmpty, merge, isNil } from 'lodash';
  * Styles
  */
 import './editor.scss';
-import getBreakpointFromAttribute from '../../extensions/styles/getBreakpointFromAttribute';
 
 const RelationControl = props => {
 	const { getBlock } = select('core/block-editor');
@@ -334,7 +336,7 @@ const RelationControl = props => {
 				).reduce((acc, [key, value]) => {
 					if (isNil(value)) return acc;
 
-					// Ensure the value for unit attributes exist to create styles
+					// Ensure the value for unit attributes is saved if the modified value is related
 					if (key.includes('-unit')) {
 						const newKey = key.replace('-unit', '');
 
@@ -349,21 +351,8 @@ const RelationControl = props => {
 					if (blockAttributes[unitKey])
 						acc[unitKey] = blockAttributes[unitKey];
 
-					// Ensure the palette-status is passed if the values is a palette attribute
+					// Ensure the palette attributes pack is passed if the modified value is related
 					if (key.includes('palette')) {
-						const {
-							paletteStatus,
-							paletteColor,
-							paletteOpacity,
-							color,
-						} = getPaletteAttributes({
-							obj: {
-								...blockAttributes,
-								...filteredAttributesObj,
-							},
-							prefix,
-							breakpoint,
-						});
 						const paletteStatusKey = key
 							.replace('palette-color', 'palette-status')
 							.replace('palette-opacity', 'palette-status');
@@ -373,32 +362,38 @@ const RelationControl = props => {
 						const paletteOpacityKey = key
 							.replace('palette-color', 'palette-opacity')
 							.replace('palette-status', 'palette-opacity');
-						// replace the last 'palette-color' or 'palette-opacity' with 'color'
+						// Replace the last 'palette-color' or 'palette-opacity' with 'color'
 						const colorKey = key.replace(
 							/palette-(color|opacity)$/,
 							'color'
 						);
 
 						if (
-							paletteStatus &&
+							blockAttributes[paletteStatusKey] &&
 							!filteredAttributesObj[paletteStatusKey]
 						)
-							acc[paletteStatusKey] = paletteStatus;
+							acc[paletteStatusKey] =
+								blockAttributes[paletteStatusKey];
 
 						if (
-							paletteColor &&
+							blockAttributes[paletteColorKey] &&
 							!filteredAttributesObj[paletteColorKey]
 						)
-							acc[paletteColorKey] = paletteColor;
+							acc[paletteColorKey] =
+								blockAttributes[paletteColorKey];
 
 						if (
-							paletteOpacity &&
+							blockAttributes[paletteOpacityKey] &&
 							!filteredAttributesObj[paletteOpacityKey]
 						)
-							acc[paletteOpacityKey] = paletteOpacity;
+							acc[paletteOpacityKey] =
+								blockAttributes[paletteOpacityKey];
 
-						if (color && !filteredAttributesObj[colorKey])
-							acc[colorKey] = color;
+						if (
+							blockAttributes[colorKey] &&
+							!filteredAttributesObj[colorKey]
+						)
+							acc[colorKey] = blockAttributes[colorKey];
 					}
 
 					acc[key] = value;
@@ -406,8 +401,52 @@ const RelationControl = props => {
 					return acc;
 				}, {});
 
+				// These attributes are necessary for styling, not need to save in IB
+				const tempAttributes = {};
+
+				if (selectedSettingsObj.styleAttrs)
+					selectedSettingsObj.styleAttrs.forEach(attrKey => {
+						if (
+							attrKey in cleanAttributesObject ||
+							`${attrKey}-${deviceType}` in cleanAttributesObject
+						)
+							return;
+
+						let value = getLastBreakpointAttribute({
+							target: attrKey,
+							attributes: blockAttributes,
+							breakpoint: deviceType,
+						});
+
+						if (value)
+							tempAttributes[
+								getAttributeKey(
+									attrKey,
+									null,
+									prefix,
+									deviceType
+								)
+							] = value;
+						else {
+							value = getAttributeValue({
+								target: attrKey,
+								props: blockAttributes,
+								prefix,
+								breakpoint: deviceType,
+							});
+
+							if (value)
+								tempAttributes[
+									getAttributeKey(attrKey, null, prefix)
+								] = value;
+						}
+					});
+
 				const styles = getStyles(
-					getStylesObj(cleanAttributesObject),
+					getStylesObj({
+						...cleanAttributesObject,
+						...tempAttributes,
+					}),
 					true
 				);
 

@@ -334,7 +334,10 @@ const interactionBuilderSettings = {
 					isButton: true,
 				}).background,
 			target: '.maxi-button-block__button',
-			styleAttrs: ['button-background-active-media'],
+			styleAttrs: [
+				'button-background-active-media',
+				'button-background-gradient-opacity',
+			],
 		},
 		{
 			sid: 'bbs',

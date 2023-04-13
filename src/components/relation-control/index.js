@@ -261,7 +261,7 @@ const RelationControl = props => {
 			});
 		};
 
-		const getStyles = (stylesObj, isFirst = false) => {
+		const getStyles = (stylesObj = {}, isFirst = false) => {
 			if (Object.keys(stylesObj).some(key => key.includes('general'))) {
 				const styles = Object.keys(stylesObj).reduce((acc, key) => {
 					if (
@@ -420,12 +420,7 @@ const RelationControl = props => {
 
 						if (value)
 							tempAttributes[
-								getAttributeKey(
-									attrKey,
-									null,
-									prefix,
-									deviceType
-								)
+								getAttributeKey(attrKey, null, '', deviceType)
 							] = value;
 						else {
 							value = getAttributeValue({

@@ -153,7 +153,8 @@ const PositionControl = props => {
 						}
 					/>
 					{getLastBreakpointAttribute({
-						target: `${prefix}_pos`,
+						target: '_pos',
+						prefix,
 						breakpoint,
 						attributes: props,
 					}) !== 'inherit' && PositionAxisControl}

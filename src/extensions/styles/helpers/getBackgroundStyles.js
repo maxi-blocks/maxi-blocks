@@ -183,13 +183,8 @@ export const getGradientBackgroundObject = ({
 		isBgGradientClipPathActive,
 		backgroundActiveMedia,
 	] = getLastBreakpointAttribute({
-		target: [
-			`${prefix}bg_o`,
-			`${prefix}bg_c`,
-			`${prefix}bg_cp`,
-			`${prefix}bg_cp.s`,
-			`${prefix}b_am`,
-		],
+		target: ['bg_o', 'bg_c', 'bg_cp', 'bg_cp.s', 'b_am'],
+		prefix,
 		breakpoint,
 		attributes: props,
 		isHover,
@@ -295,14 +290,16 @@ export const getImageBackgroundObject = ({
 		});
 	const getBgImageLastBreakpointAttribute = target =>
 		getLastBreakpointAttribute({
-			target: prefix + target,
+			target,
+			prefix,
 			breakpoint,
 			attributes: props,
 			isHover,
 		});
 
 	const bgImageSize = getLastBreakpointAttribute({
-		target: `${prefix}bi_si`,
+		target: 'bi_si',
+		prefix,
 		breakpoint,
 		attributes: props,
 		isHover,
@@ -310,7 +307,8 @@ export const getImageBackgroundObject = ({
 	const bgImageCropOptions = getBgImageAttributeValue('bi_co');
 	const bgImageRepeat = getBgImageAttributeValue('bi_re');
 	const bgImagePosition = getLastBreakpointAttribute({
-		target: `${prefix}bi_pos`,
+		target: 'bi_pos',
+		prefix,
 		breakpoint,
 		attributes: props,
 		isHover,
@@ -321,14 +319,16 @@ export const getImageBackgroundObject = ({
 	const bgImageOpacity = getBgImageAttributeValue('bi_o');
 
 	const bgImageClipPath = getLastBreakpointAttribute({
-		target: `${prefix}bi_cp`,
+		target: 'bi_cp',
+		prefix,
 		breakpoint,
 		attributes: props,
 		isHover,
 	});
 
 	const isBGImageClipPathActive = getLastBreakpointAttribute({
-		target: `${prefix}bi_cp.s`,
+		target: 'bi_cp.s',
+		prefix,
 		breakpoint,
 		attributes: props,
 		isHover,
@@ -1208,7 +1208,8 @@ export const getBackgroundStyles = ({
 
 	BREAKPOINTS.forEach(breakpoint => {
 		const currentActiveMedia = getLastBreakpointAttribute({
-			target: `${prefix}b_am`,
+			target: 'b_am',
+			prefix,
 			breakpoint,
 			attributes: props,
 			isHover,

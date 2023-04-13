@@ -55,7 +55,8 @@ const getTypographyStyles = ({
 
 	const getPaletteColorStatus = breakpoint => {
 		const paletteStatus = getLastBreakpointAttribute({
-			target: `${prefix}_ps`,
+			target: '_ps',
+			prefix,
 			breakpoint,
 			attributes: { ...obj, ...normalTypography },
 			isHover,
@@ -66,7 +67,8 @@ const getTypographyStyles = ({
 		return (
 			isCustomFormat &&
 			getLastBreakpointAttribute({
-				target: `${prefix}_ps`,
+				target: '_ps',
+				prefix,
 				breakpoint,
 				attributes: customFormatTypography,
 				isHover,
@@ -115,7 +117,8 @@ const getTypographyStyles = ({
 	// be able to request the non-hover unit
 	const getUnitValue = (prop, breakpoint) => {
 		const unit = getLastBreakpointAttribute({
-			target: `${prefix}${prop}`,
+			target: prop,
+			prefix,
 			breakpoint,
 			attributes: isCustomFormat ? customFormatTypography : obj,
 		});
@@ -123,7 +126,8 @@ const getTypographyStyles = ({
 		if (!normalTypography || unit) return unit === '-' ? '' : unit;
 
 		return getLastBreakpointAttribute({
-			target: `${prefix}${prop}`,
+			target: prop,
+			prefix,
 			breakpoint,
 			attributes: normalTypography,
 		});

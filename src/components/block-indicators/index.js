@@ -193,7 +193,8 @@ const MainIndicator = props => {
 
 		const value =
 			getLastBreakpointAttribute({
-				target: `${type}-${dir}`,
+				target: dir,
+				prefix: `${type}-`,
 				breakpoint,
 				attributes: props,
 			}) || 0;

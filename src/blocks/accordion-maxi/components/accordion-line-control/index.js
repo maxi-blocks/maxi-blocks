@@ -27,7 +27,8 @@ const AccordionLineControl = props => {
 			<SelectControl
 				label={__('Line horizontal position', 'maxi-blocks')}
 				value={getLastBreakpointAttribute({
-					target: `${prefix}line-horizontal`,
+					prefix,
+					target: 'line-horizontal',
 					breakpoint,
 					attributes: props,
 				})}

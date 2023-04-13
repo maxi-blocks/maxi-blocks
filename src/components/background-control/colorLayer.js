@@ -151,7 +151,8 @@ const ColorLayerContent = props => {
 			<ColorControl
 				label={__('Background', 'maxi-blocks')}
 				color={getLastBreakpointAttribute({
-					target: `${prefix}bc_cc`,
+					target: 'bc_cc',
+					prefix,
 					breakpoint,
 					attributes: colorOptions,
 					isHover,
@@ -160,19 +161,22 @@ const ColorLayerContent = props => {
 				defaultColorAttributes={getDefaultAttr()}
 				{...(isLayer && { onReset })}
 				paletteStatus={getLastBreakpointAttribute({
-					target: `${prefix}bc_ps`,
+					target: 'bc_ps',
+					prefix,
 					breakpoint,
 					attributes: colorOptions,
 					isHover,
 				})}
 				paletteColor={getLastBreakpointAttribute({
-					target: `${prefix}bc_pc`,
+					target: 'bc_pc',
+					prefix,
 					breakpoint,
 					attributes: colorOptions,
 					isHover,
 				})}
 				paletteOpacity={getLastBreakpointAttribute({
-					target: `${prefix}bc_po`,
+					target: 'bc_po',
+					prefix,
 					breakpoint,
 					attributes: colorOptions,
 					isHover,

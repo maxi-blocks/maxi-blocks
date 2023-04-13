@@ -87,7 +87,8 @@ const Size = ({
 		onChange({
 			[getAttributeKey(target, isHover, prefix, breakpoint)]: isHover
 				? getLastBreakpointAttribute({
-						target: `${prefix}${target}`,
+						target,
+						prefix,
 						breakpoint,
 						attributes: options,
 						isHover: false,
@@ -96,7 +97,8 @@ const Size = ({
 			[getAttributeKey(`${target}.u`, isHover, prefix, breakpoint)]:
 				isHover
 					? getLastBreakpointAttribute({
-							target: `${prefix}${target}.u`,
+							target,
+							prefix,
 							breakpoint,
 							attributes: options,
 							isHover: false,
@@ -111,7 +113,8 @@ const Size = ({
 			<AdvancedNumberControl
 				label={__('Width', 'maxi-blocks')}
 				value={getLastBreakpointAttribute({
-					target: `${prefix}_w`,
+					target: '_w',
+					prefix,
 					breakpoint,
 					attributes: options,
 					isHover,
@@ -119,7 +122,8 @@ const Size = ({
 				allowedUnits={['px', 'em', 'vw', '%']}
 				enableUnit
 				unit={getLastBreakpointAttribute({
-					target: `${prefix}_w.u`,
+					target: '_w.u',
+					prefix,
 					breakpoint,
 					attributes: options,
 					isHover,
@@ -142,7 +146,8 @@ const Size = ({
 			<AdvancedNumberControl
 				label={__('Height', 'maxi-blocks')}
 				value={getLastBreakpointAttribute({
-					target: `${prefix}_h`,
+					target: '_h',
+					prefix,
 					breakpoint,
 					attributes: options,
 					isHover,
@@ -150,7 +155,8 @@ const Size = ({
 				allowedUnits={['px', 'em', 'vw', '%']}
 				enableUnit
 				unit={getLastBreakpointAttribute({
-					target: `${prefix}_h.u`,
+					target: '_h.u',
+					prefix,
 					breakpoint,
 					attributes: options,
 					isHover,

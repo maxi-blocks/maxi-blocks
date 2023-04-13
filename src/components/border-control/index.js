@@ -182,7 +182,7 @@ const BorderControl = props => {
 		Object.keys(axisDictionary).forEach(item => {
 			response[`border${capitalize(item)}Width`] =
 				getLastBreakpointAttribute({
-					target: 'bo_w.${item}',
+					target: `bo_w.${item}`,
 					breakpoint,
 					attributes: props,
 					isHover,

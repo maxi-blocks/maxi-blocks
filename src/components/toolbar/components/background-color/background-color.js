@@ -47,7 +47,8 @@ const BackgroundColor = props => {
 		return null;
 
 	const activeMedia = getLastBreakpointAttribute({
-		target: `${prefix}background-active-media`,
+		target: 'background-active-media',
+		prefix,
 		breakpoint,
 		attributes: props,
 	});

@@ -63,7 +63,8 @@ const BackgroundControl = props => {
 	} = props;
 
 	const backgroundActiveMedia = getLastBreakpointAttribute({
-		target: `${prefix}background-active-media`,
+		target: 'background-active-media',
+		prefix,
 		breakpoint,
 		attributes: props,
 		isHover,

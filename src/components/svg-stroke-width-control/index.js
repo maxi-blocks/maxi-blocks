@@ -51,7 +51,8 @@ const SvgStrokeWidthControl = props => {
 	});
 	const defaultStroke = getDefaultAttribute(strokeAttrLabel);
 	const placeholderStroke = getLastBreakpointAttribute({
-		target: `${prefix}stroke`,
+		target: 'stroke',
+		prefix,
 		breakpoint,
 		attributes: props,
 		isHover,

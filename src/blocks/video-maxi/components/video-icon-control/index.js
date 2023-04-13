@@ -223,7 +223,8 @@ const IconSettings = props => {
 								className='maxi-video-icon-control__icon-height'
 								optionType='string'
 								value={getLastBreakpointAttribute({
-									target: `${prefix}icon-height`,
+									target: 'icon-height',
+									prefix,
 									breakpoint,
 									isHover,
 									attributes: props,
@@ -294,7 +295,8 @@ const IconSettings = props => {
 									className='maxi-video-icon-control__icon-spacing'
 									placeholder={0}
 									value={getLastBreakpointAttribute({
-										target: `${prefix}icon-spacing`,
+										target: 'icon-spacing',
+										prefix,
 										breakpoint,
 										attributes: props,
 									})}
@@ -306,7 +308,8 @@ const IconSettings = props => {
 									}
 									enableUnit
 									unit={getLastBreakpointAttribute({
-										target: `${prefix}icon-spacing.u`,
+										target: 'icon-spacing.u',
+										prefix,
 										breakpoint,
 										attributes: props,
 									})}

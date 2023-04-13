@@ -76,7 +76,8 @@ const NavigationIconControl = props => {
 			prefix,
 		});
 	const iconBgActiveMedia = getLastBreakpointAttribute({
-		target: `${prefix}background-active-media`,
+		target: 'background-active-media',
+		prefix,
 		breakpoint,
 		attributes: props,
 		isHover,
@@ -316,7 +317,8 @@ const NavigationIconControl = props => {
 											step={1}
 											breakpoint={breakpoint}
 											value={getLastBreakpointAttribute({
-												target: `${prefix}spacing-horizontal`,
+												target: 'spacing-horizontal',
+												prefix,
 												breakpoint,
 												attributes: props,
 												isHover,
@@ -367,7 +369,8 @@ const NavigationIconControl = props => {
 											step={1}
 											breakpoint={breakpoint}
 											value={getLastBreakpointAttribute({
-												target: `${prefix}spacing-vertical`,
+												target: 'spacing-vertical',
+												prefix,
 												breakpoint,
 												attributes: props,
 												isHover,
@@ -418,7 +421,8 @@ const NavigationIconControl = props => {
 												breakpoint={breakpoint}
 												value={getLastBreakpointAttribute(
 													{
-														target: `${prefix}spacing-between`,
+														target: 'spacing-between',
+														prefix,
 														breakpoint,
 														attributes: props,
 														isHover,
@@ -836,7 +840,8 @@ const NavigationIconControl = props => {
 										)}
 										paletteStatus={getLastBreakpointAttribute(
 											{
-												target: `${prefix}background-palette-status`,
+												target: 'background-palette-status',
+												prefix,
 												breakpoint,
 												attributes: props,
 												isHover,
@@ -844,7 +849,8 @@ const NavigationIconControl = props => {
 										)}
 										paletteColor={getLastBreakpointAttribute(
 											{
-												target: `${prefix}background-palette-color`,
+												target: 'background-palette-color',
+												prefix,
 												breakpoint,
 												attributes: props,
 												isHover,
@@ -852,14 +858,16 @@ const NavigationIconControl = props => {
 										)}
 										paletteOpacity={getLastBreakpointAttribute(
 											{
-												target: `${prefix}background-palette-opacity`,
+												target: 'background-palette-opacity',
+												prefix,
 												breakpoint,
 												attributes: props,
 												isHover,
 											}
 										)}
 										color={getLastBreakpointAttribute({
-											target: `${prefix}background-color`,
+											target: 'background-color',
+											prefix,
 											breakpoint,
 											attributes: props,
 											isHover,
@@ -930,14 +938,16 @@ const NavigationIconControl = props => {
 											'maxi-blocks'
 										)}
 										gradient={getLastBreakpointAttribute({
-											target: `${prefix}background-gradient-content`,
+											target: 'background-gradient-content',
+											prefix,
 											breakpoint,
 											attributes: props,
 											isHover,
 										})}
 										gradientOpacity={getLastBreakpointAttribute(
 											{
-												target: `${prefix}background-gradient-opacity`,
+												target: 'background-gradient-opacity',
+												prefix,
 												breakpoint,
 												attributes: props,
 												isHover,

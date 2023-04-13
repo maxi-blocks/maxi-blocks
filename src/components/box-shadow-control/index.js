@@ -83,13 +83,15 @@ const BoxShadowValueControl = props => {
 				label: __(capitalize(boxShadowDictionary[type]), 'maxi-blocks'),
 			})}
 			value={getLastBreakpointAttribute({
-				target: `${prefix}bs${type}`,
+				target: `bs${type}`,
+				prefix,
 				breakpoint,
 				attributes: props,
 				isHover,
 			})}
 			defaultValue={getLastBreakpointAttribute({
-				target: `${prefix}bs${type}`,
+				target: `bs${type}`,
+				prefix,
 				breakpoint,
 				attributes: props,
 				isHover,
@@ -135,7 +137,8 @@ const BoxShadowValueControl = props => {
 			)}
 			{...(!isToolbar && { enableUnit: true })}
 			unit={getLastBreakpointAttribute({
-				target: `${prefix}bs${type}.u`,
+				target: `bs${type}.u`,
+				prefix,
 				breakpoint,
 				attributes: props,
 				isHover,
@@ -178,7 +181,8 @@ const BoxShadowControl = props => {
 
 		defaultProp[getAttributeKey('bs_pc', false, prefix)] =
 			getLastBreakpointAttribute({
-				target: `${prefix}bs_pc`,
+				target: 'bs_pc',
+				prefix,
 				breakpoint,
 				attributes: props,
 				isHover,
@@ -186,7 +190,8 @@ const BoxShadowControl = props => {
 
 		defaultProp[getAttributeKey('bs_cc', false, prefix)] =
 			getLastBreakpointAttribute({
-				target: `${prefix}bs_cc`,
+				target: 'bs_cc',
+				prefix,
 				breakpoint,
 				attributes: props,
 				isHover,
@@ -294,26 +299,30 @@ const BoxShadowControl = props => {
 				label={__(label, 'maxi-blocks')}
 				className='maxi-shadow-control__color'
 				color={getLastBreakpointAttribute({
-					target: `${prefix}bs_cc`,
+					target: 'bs_cc',
+					prefix,
 					breakpoint,
 					attributes: props,
 					isHover,
 				})}
 				prefix={`${prefix}bs`}
 				paletteStatus={getLastBreakpointAttribute({
-					target: `${prefix}bs_ps`,
+					target: 'bs_ps',
+					prefix,
 					breakpoint,
 					attributes: props,
 					isHover,
 				})}
 				paletteColor={getLastBreakpointAttribute({
-					target: `${prefix}bs_pc`,
+					target: 'bs_pc',
+					prefix,
 					breakpoint,
 					attributes: props,
 					isHover,
 				})}
 				paletteOpacity={getLastBreakpointAttribute({
-					target: `${prefix}bs_po`,
+					target: 'bs_po',
+					prefix,
 					breakpoint,
 					attributes: props,
 					isHover,
@@ -322,22 +331,26 @@ const BoxShadowControl = props => {
 					onChangeInline &&
 						onChangeInline({
 							'box-shadow': `${getLastBreakpointAttribute({
-								target: `${prefix}bs_ho`,
+								target: 'bs_ho',
+								prefix,
 								breakpoint,
 								attributes: props,
 								isHover,
 							})}px ${getLastBreakpointAttribute({
-								target: `${prefix}bs_v`,
+								target: 'bs_v',
+								prefix,
 								breakpoint,
 								attributes: props,
 								isHover,
 							})}px ${getLastBreakpointAttribute({
-								target: `${prefix}bs_blu`,
+								target: 'bs_blu',
+								prefix,
 								breakpoint,
 								attributes: props,
 								isHover,
 							})}px ${getLastBreakpointAttribute({
-								target: `${prefix}bs_sp`,
+								target: 'bs_sp',
+								prefix,
 								breakpoint,
 								attributes: props,
 								isHover,
@@ -390,7 +403,8 @@ const BoxShadowControl = props => {
 						<ToggleSwitch
 							label={__('Inset', 'maxi-block')}
 							selected={getLastBreakpointAttribute({
-								target: `${prefix}bs_in`,
+								target: 'bs_in',
+								prefix,
 								breakpoint,
 								attributes: props,
 								isHover,

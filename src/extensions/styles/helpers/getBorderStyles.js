@@ -71,7 +71,8 @@ const getBorderStyles = ({
 		response[breakpoint] = {};
 
 		const borderStyle = getLastBreakpointAttribute({
-			target: `${prefix}bo_s`,
+			target: 'bo_s',
+			prefix,
 			breakpoint,
 			attributes: obj,
 			isHover,
@@ -93,7 +94,8 @@ const getBorderStyles = ({
 			if (!hasCurrent) return null;
 
 			const lastValue = getLastBreakpointAttribute({
-				target: `${prefix}${target}`,
+				target,
+				prefix,
 				breakpoint,
 				attributes: obj,
 				isHover,
@@ -103,7 +105,8 @@ const getBorderStyles = ({
 
 			const lastUnit =
 				getLastBreakpointAttribute({
-					target: `${prefix}${target}.u`,
+					target: `${target}.u`,
+					prefix,
 					breakpoint,
 					attributes: obj,
 					isHover,

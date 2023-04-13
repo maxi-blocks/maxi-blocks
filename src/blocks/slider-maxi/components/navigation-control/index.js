@@ -27,13 +27,15 @@ const NavigationControl = props => {
 	const arrowPrefix = 'navigation-arrow-';
 
 	const arrowsEnabled = getLastBreakpointAttribute({
-		target: `${arrowPrefix}both-status`,
+		target: 'both-status',
+		prefix: arrowPrefix,
 		breakpoint: deviceType,
 		props,
 		forceSingle: true,
 	});
 	const dotsEnabled = getLastBreakpointAttribute({
-		target: `${dotPrefix}status`,
+		target: 'status',
+		prefix: dotPrefix,
 		breakpoint: deviceType,
 		props,
 		forceSingle: true,
@@ -71,7 +73,8 @@ const NavigationControl = props => {
 						},
 					]}
 					value={getLastBreakpointAttribute({
-						target: `${arrowPrefix}_pos`,
+						target: '_pos',
+						prefix: arrowPrefix,
 						breakpoint: deviceType,
 						props,
 					})}
@@ -103,7 +106,8 @@ const NavigationControl = props => {
 						},
 					]}
 					value={getLastBreakpointAttribute({
-						target: `${dotPrefix}_pos`,
+						target: '_pos',
+						prefix: dotPrefix,
 						breakpoint: deviceType,
 						props,
 					})}

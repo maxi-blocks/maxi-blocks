@@ -165,7 +165,8 @@ const IconControlResponsiveSettings = withRTC(props => {
 	};
 
 	const iconBackgroundActiveMedia = getLastBreakpointAttribute({
-		target: `${prefix}icon-background-active-media`,
+		target: 'icon-background-active-media',
+		prefix,
 		breakpoint,
 		attributes: props,
 		isHover,
@@ -558,27 +559,28 @@ const IconControlResponsiveSettings = withRTC(props => {
 							<ColorControl
 								label={__('Icon background', 'maxi-blocks')}
 								paletteStatus={getLastBreakpointAttribute({
-									target: `${prefix}icon-background-palette-status`,
+									target: 'icon-background-palette-status',
+									prefix,
 									breakpoint,
 									attributes: props,
 									isHover,
 								})}
 								paletteColor={getLastBreakpointAttribute({
-									target: `${prefix}icon-background-palette-color`,
+									target: 'icon-background-palette-color',
+									prefix,
 									breakpoint,
 									attributes: props,
 									isHover,
-									prefix,
 								})}
 								paletteOpacity={getLastBreakpointAttribute({
-									target: `${prefix}icon-background-palette-opacity`,
+									target: 'icon-background-palette-opacity',
+									prefix,
 									breakpoint,
 									attributes: props,
 									isHover,
-									prefix,
 								})}
 								color={getLastBreakpointAttribute({
-									target: `${prefix}icon-background-color`,
+									target: 'icon-background-color',
 									breakpoint,
 									attributes: props,
 									isHover,
@@ -711,7 +713,8 @@ const IconControl = props => {
 	});
 
 	const heightFitContent = getLastBreakpointAttribute({
-		target: `${prefix}icon-width-fit-content`,
+		target: 'icon-width-fit-content',
+		prefix,
 		breakpoint,
 		attributes: props,
 		isHover,

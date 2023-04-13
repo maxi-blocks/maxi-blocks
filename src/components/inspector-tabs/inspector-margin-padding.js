@@ -25,7 +25,8 @@ const marginPadding = ({
 	const { attributes, deviceType, maxiSetAttributes } = props;
 
 	const fullWidth = getLastBreakpointAttribute({
-		target: `${prefix}_fw`,
+		target: '_fw',
+		prefix,
 		breakpoint: deviceType,
 		attributes,
 	});

@@ -217,7 +217,8 @@ const VideoOverlayControl = props => {
 						className='maxi-video-overlay-control__width'
 						enableUnit
 						unit={getLastBreakpointAttribute({
-							target: `${mediaPrefix}_w.u`,
+							target: '_w.u',
+							prefix: mediaPrefix,
 							breakpoint,
 							attributes: props,
 						})}
@@ -227,7 +228,8 @@ const VideoOverlayControl = props => {
 							})
 						}
 						value={getLastBreakpointAttribute({
-							target: `${mediaPrefix}_w`,
+							target: '_w',
+							prefix: mediaPrefix,
 							breakpoint,
 							attributes: props,
 						})}
@@ -261,7 +263,8 @@ const VideoOverlayControl = props => {
 						className='maxi-video-overlay-control__height'
 						enableUnit
 						unit={getLastBreakpointAttribute({
-							target: `${mediaPrefix}_h.u`,
+							target: '_h.u',
+							prefix: mediaPrefix,
 							breakpoint,
 							attributes: props,
 						})}
@@ -271,7 +274,8 @@ const VideoOverlayControl = props => {
 							})
 						}
 						value={getLastBreakpointAttribute({
-							target: `${mediaPrefix}_h`,
+							target: '_h',
+							prefix: mediaPrefix,
 							breakpoint,
 							attributes: props,
 						})}
@@ -303,7 +307,8 @@ const VideoOverlayControl = props => {
 					<OpacityControl
 						label={__('Image opacity', 'maxi-blocks')}
 						opacity={getLastBreakpointAttribute({
-							target: `${mediaPrefix}opacity`,
+							target: 'opacity',
+							prefix: mediaPrefix,
 							breakpoint,
 							attributes: props,
 						})}

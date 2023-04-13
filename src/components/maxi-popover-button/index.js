@@ -95,7 +95,8 @@ const MaxiPopoverButton = forwardRef((props, ref) => {
 				? (imgWidth / 100) * containerWidth
 				: toNumber(
 						getLastBreakpointAttribute({
-							target: `${prefix}_w`,
+							target: '_w',
+							prefix,
 							breakpoint: deviceType,
 							attributes,
 						})

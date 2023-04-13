@@ -126,10 +126,11 @@ const DividerControl = props => {
 		[`${prefix}divider-border-radius`]: dividerBorderRadius,
 	} = getLastBreakpointAttribute({
 		target: [
-			`${prefix}line-orientation`,
-			`${prefix}divider-border-style`,
-			`${prefix}divider-border-radius`,
+			'line-orientation',
+			'divider-border-style',
+			'divider-border-radius',
 		],
+		prefix,
 		breakpoint,
 		attributes: props,
 		isHover,
@@ -169,7 +170,8 @@ const DividerControl = props => {
 					]}
 					value={
 						getLastBreakpointAttribute({
-							target: `${prefix}divider-border-style`,
+							target: 'divider-border-style',
+							prefix,
 							breakpoint,
 							attributes: props,
 							isHover,
@@ -235,7 +237,8 @@ const DividerControl = props => {
 				<ColorControl
 					label={__('Divider', 'maxi-blocks')}
 					color={getLastBreakpointAttribute({
-						target: `${prefix}divider-border-color`,
+						target: 'divider-border-color',
+						prefix,
 						breakpoint,
 						attributes: props,
 						isHover,
@@ -243,19 +246,22 @@ const DividerControl = props => {
 					deviceType={breakpoint}
 					prefix='divider-border-'
 					paletteColor={getLastBreakpointAttribute({
-						target: `${prefix}divider-border-palette-color`,
+						target: 'divider-border-palette-color',
+						prefix,
 						breakpoint,
 						attributes: props,
 						isHover,
 					})}
 					paletteOpacity={getLastBreakpointAttribute({
-						target: `${prefix}divider-border-palette-opacity`,
+						target: 'divider-border-palette-opacity',
+						prefix,
 						breakpoint,
 						attributes: props,
 						isHover,
 					})}
 					paletteStatus={getLastBreakpointAttribute({
-						target: `${prefix}divider-border-palette-status`,
+						target: 'divider-border-palette-status',
+						prefix,
 						breakpoint,
 						attributes: props,
 						isHover,
@@ -310,7 +316,8 @@ const DividerControl = props => {
 							label={__('Line size', 'maxi-blocks')}
 							enableUnit
 							unit={getLastBreakpointAttribute({
-								target: `${prefix}divider-width.u`,
+								target: 'divider-width.u',
+								prefix,
 								breakpoint,
 								attributes: props,
 								isHover,
@@ -326,7 +333,8 @@ const DividerControl = props => {
 								})
 							}
 							value={getLastBreakpointAttribute({
-								target: `${prefix}divider-width`,
+								target: 'divider-width',
+								prefix,
 								breakpoint,
 								attributes: props,
 								isHover,
@@ -369,7 +377,8 @@ const DividerControl = props => {
 							enableUnit
 							allowedUnits={['px', 'em', 'vw']}
 							unit={getLastBreakpointAttribute({
-								target: `${prefix}divider-border-top.u`,
+								target: 'divider-border-top.u',
+								prefix,
 								breakpoint,
 								attributes: props,
 								isHover,
@@ -395,7 +404,8 @@ const DividerControl = props => {
 								})
 							}
 							value={getLastBreakpointAttribute({
-								target: `${prefix}divider-border-top`,
+								target: 'divider-border-top',
+								prefix,
 								breakpoint,
 								attributes: props,
 								isHover,
@@ -442,7 +452,8 @@ const DividerControl = props => {
 						<AdvancedNumberControl
 							label={__('Size', 'maxi-blocks')}
 							value={getLastBreakpointAttribute({
-								target: `${prefix}divider-height`,
+								target: 'divider-height',
+								prefix,
 								breakpoint,
 								attributes: props,
 								isHover,
@@ -492,7 +503,8 @@ const DividerControl = props => {
 						<AdvancedNumberControl
 							label={__('Weight', 'maxi-blocks')}
 							value={getLastBreakpointAttribute({
-								target: `${prefix}divider-border-right`,
+								target: 'divider-border-right',
+								prefix,
 								breakpoint,
 								attributes: props,
 								isHover,

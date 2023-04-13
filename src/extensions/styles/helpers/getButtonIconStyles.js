@@ -122,7 +122,8 @@ const getIconObject = (props, target, prefix = '', isIB) => {
 						iconOnly
 							? '0'
 							: getLastBreakpointAttribute({
-									target: `${prefix}icon-spacing`,
+									target: 'icon-spacing',
+									prefix,
 									breakpoint,
 									attributes: props,
 							  })
@@ -133,7 +134,8 @@ const getIconObject = (props, target, prefix = '', isIB) => {
 						iconOnly
 							? '0'
 							: getLastBreakpointAttribute({
-									target: `${prefix}icon-spacing`,
+									target: 'icon-spacing',
+									prefix,
 									breakpoint,
 									attributes: props,
 							  })

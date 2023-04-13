@@ -34,7 +34,8 @@ const size = ({
 	});
 
 	const fullWidth = getLastBreakpointAttribute({
-		target: `${prefix}_fw`,
+		target: '_fw',
+		prefix,
 		breakpoint: deviceType,
 		attributes,
 	});

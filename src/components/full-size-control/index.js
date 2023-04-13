@@ -77,7 +77,8 @@ const FullSizeControl = props => {
 		!hideWidth &&
 		!isBlockFullWidth &&
 		!getLastBreakpointAttribute({
-			target: `${prefix}_wfc`,
+			target: '_wfc',
+			prefix,
 			breakpoint,
 			attributes: props,
 		});
@@ -134,7 +135,8 @@ const FullSizeControl = props => {
 					label={__('Set width to fit content', 'maxi-blocks')}
 					className='maxi-full-size-control__width-fit-content'
 					selected={getLastBreakpointAttribute({
-						target: `${prefix}_wfc`,
+						target: '_wfc',
+						prefix,
 						breakpoint,
 						attributes: props,
 					})}
@@ -156,7 +158,8 @@ const FullSizeControl = props => {
 					className='maxi-full-size-control__width'
 					enableUnit
 					unit={getLastBreakpointAttribute({
-						target: `${prefix}_w.u`,
+						target: '_w.u',
+						prefix,
 						breakpoint,
 						attributes: props,
 					})}
@@ -171,7 +174,8 @@ const FullSizeControl = props => {
 						})
 					}
 					value={getLastBreakpointAttribute({
-						target: `${prefix}_w`,
+						target: '_w',
+						prefix,
 						breakpoint,
 						attributes: props,
 					})}
@@ -221,7 +225,8 @@ const FullSizeControl = props => {
 					)}
 					className='maxi-full-size-control__force-aspect-ratio'
 					selected={getLastBreakpointAttribute({
-						target: `${prefix}_far`,
+						target: '_far',
+						prefix,
 						breakpoint,
 						attributes: props,
 					})}
@@ -238,7 +243,8 @@ const FullSizeControl = props => {
 				/>
 			)}
 			{!getLastBreakpointAttribute({
-				target: `${prefix}_far`,
+				target: '_far',
+				prefix,
 				breakpoint,
 				attributes: props,
 			}) &&
@@ -248,7 +254,8 @@ const FullSizeControl = props => {
 						className='maxi-full-size-control__height'
 						enableUnit
 						unit={getLastBreakpointAttribute({
-							target: `${prefix}_h.u`,
+							target: '_h.u',
+							prefix,
 							breakpoint,
 							attributes: props,
 						})}
@@ -263,7 +270,8 @@ const FullSizeControl = props => {
 							})
 						}
 						value={getLastBreakpointAttribute({
-							target: `${prefix}_h`,
+							target: '_h',
+							prefix,
 							breakpoint,
 							attributes: props,
 						})}
@@ -323,7 +331,8 @@ const FullSizeControl = props => {
 				<>
 					{!hideMaxWidth &&
 						!getLastBreakpointAttribute({
-							target: `${prefix}_wfc`,
+							target: '_wfc',
+							prefix,
 							breakpoint,
 							attributes: props,
 						}) && (
@@ -332,7 +341,8 @@ const FullSizeControl = props => {
 								className='maxi-full-size-control__max-width'
 								enableUnit
 								unit={getLastBreakpointAttribute({
-									target: `${prefix}_mw.u`,
+									target: '_mw.u',
+									prefix,
 									breakpoint,
 									attributes: props,
 								})}
@@ -347,7 +357,8 @@ const FullSizeControl = props => {
 									})
 								}
 								value={getLastBreakpointAttribute({
-									target: `${prefix}_mw`,
+									target: '_mw',
+									prefix,
 									breakpoint,
 									attributes: props,
 								})}
@@ -398,7 +409,8 @@ const FullSizeControl = props => {
 							/>
 						)}
 					{!getLastBreakpointAttribute({
-						target: `${prefix}_wfc`,
+						target: '_wfc',
+						prefix,
 						breakpoint,
 						attributes: props,
 					}) && (
@@ -407,7 +419,8 @@ const FullSizeControl = props => {
 							className='maxi-full-size-control__min-width'
 							enableUnit
 							unit={getLastBreakpointAttribute({
-								target: `${prefix}_mw.u`,
+								target: '_mw.u',
+								prefix,
 								breakpoint,
 								attributes: props,
 							})}
@@ -422,7 +435,8 @@ const FullSizeControl = props => {
 								})
 							}
 							value={getLastBreakpointAttribute({
-								target: `${prefix}_mw`,
+								target: '_mw',
+								prefix,
 								breakpoint,
 								attributes: props,
 							})}
@@ -477,7 +491,8 @@ const FullSizeControl = props => {
 						className='maxi-full-size-control__max-height'
 						enableUnit
 						unit={getLastBreakpointAttribute({
-							target: `${prefix}_mh.u`,
+							target: '_mh.u',
+							prefix,
 							breakpoint,
 							attributes: props,
 						})}
@@ -492,7 +507,8 @@ const FullSizeControl = props => {
 							})
 						}
 						value={getLastBreakpointAttribute({
-							target: `${prefix}_mh`,
+							target: '_mh',
+							prefix,
 							breakpoint,
 							attributes: props,
 						})}
@@ -546,7 +562,8 @@ const FullSizeControl = props => {
 						className='maxi-full-size-control__min-height'
 						enableUnit
 						unit={getLastBreakpointAttribute({
-							target: `${prefix}_mh.u`,
+							target: '_mh.u',
+							prefix,
 							breakpoint,
 							attributes: props,
 						})}
@@ -561,7 +578,8 @@ const FullSizeControl = props => {
 							})
 						}
 						value={getLastBreakpointAttribute({
-							target: `${prefix}_mh`,
+							target: '_mh',
+							prefix,
 							breakpoint,
 							attributes: props,
 						})}

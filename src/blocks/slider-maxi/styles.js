@@ -303,13 +303,15 @@ const getIconSpacing = (
 		responsive[breakpoint] = {};
 
 		const horizontalSpacing = getLastBreakpointAttribute({
-			target: `${prefix}icon-spacing-horizontal`,
+			target: 'icon-spacing-horizontal',
+			prefix,
 			breakpoint,
 			attributes: props,
 			isHover,
 		});
 		const verticalSpacing = getLastBreakpointAttribute({
-			target: `${prefix}icon-spacing-vertical`,
+			target: 'icon-spacing-vertical',
+			prefix,
 			breakpoint,
 			attributes: props,
 			isHover,
@@ -363,7 +365,8 @@ const getIconSpacingBetween = (
 			responsive[breakpoint][
 				'margin-right'
 			] = `${getLastBreakpointAttribute({
-				target: `${prefix}icon-spacing-between`,
+				target: 'icon-spacing-between',
+				prefix,
 				breakpoint,
 				attributes: props,
 				isHover,
@@ -385,7 +388,8 @@ const getDisabledStyles = (props, prefix) => {
 		response.iconDisplay[breakpoint] = {};
 
 		const isEnabled = getLastBreakpointAttribute({
-			target: `${prefix}status`,
+			target: 'status',
+			prefix,
 			breakpoint,
 			attributes: props,
 			forceSingle: true,

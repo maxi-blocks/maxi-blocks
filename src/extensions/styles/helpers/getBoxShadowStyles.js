@@ -59,7 +59,8 @@ const getBoxShadowStyles = ({
 							)
 					  )
 					: getLastBreakpointAttribute({
-							target: `${prefix}bs${target}`,
+							target: `bs${target}`,
+							prefix,
 							breakpoint: getPrevBreakpoint(breakpoint),
 							attributes: obj,
 							isHover,
@@ -139,7 +140,8 @@ const getBoxShadowStyles = ({
 
 		// Palette
 		const paletteStatus = getLastBreakpointAttribute({
-			target: `${prefix}bs_ps`,
+			target: 'bs_ps',
+			prefix,
 			breakpoint,
 			attributes: obj,
 			isHover,

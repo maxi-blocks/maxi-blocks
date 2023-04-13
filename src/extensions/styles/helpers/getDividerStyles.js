@@ -54,14 +54,16 @@ const getDividerStyles = (
 		if (target === 'line') {
 			const isHorizontal =
 				getLastBreakpointAttribute({
-					target: `${prefix}line-orientation`,
+					target: 'line-orientation',
+					prefix,
 					breakpoint,
 					attributes: obj,
 					isHover,
 				}) === 'horizontal';
 
 			const dividerBorderStyle = getLastBreakpointAttribute({
-				target: `${prefix}divider-border-style`,
+				target: 'divider-border-style',
+				prefix,
 				breakpoint,
 				attributes: obj,
 				isHover,
@@ -72,13 +74,15 @@ const getDividerStyles = (
 
 			const dividerLineWeight = isHorizontal
 				? getLastBreakpointAttribute({
-						target: `${prefix}divider-border-top`,
+						target: 'divider-border-top',
+						prefix,
 						breakpoint,
 						attributes: obj,
 						isHover,
 				  })
 				: getLastBreakpointAttribute({
-						target: `${prefix}divider-border-${positionVertical}`,
+						target: `divider-border-${positionVertical}`,
+						prefix,
 						breakpoint,
 						attributes: obj,
 						isHover,
@@ -86,8 +90,9 @@ const getDividerStyles = (
 			const dividerLineWeightUnit =
 				getLastBreakpointAttribute({
 					target: isHorizontal
-						? `${prefix}divider-border-top.u`
-						: `${prefix}divider-border-${positionVertical}.u`,
+						? 'divider-border-top.u'
+						: `divider-border-${positionVertical}.u`,
+					prefix,
 					breakpoint,
 					attributes: obj,
 					isHover,
@@ -95,27 +100,31 @@ const getDividerStyles = (
 
 			const dividerSize = isHorizontal
 				? getLastBreakpointAttribute({
-						target: `${prefix}divider-width`,
+						target: 'divider-width',
+						prefix,
 						breakpoint,
 						attributes: obj,
 						isHover,
 				  })
 				: getLastBreakpointAttribute({
-						target: `${prefix}divider-height`,
+						target: 'divider-height',
+						prefix,
 						breakpoint,
 						attributes: obj,
 						isHover,
 				  });
 			const dividerSizeUnit =
 				getLastBreakpointAttribute({
-					target: `${prefix}divider-width.u`,
+					target: 'divider-width.u',
+					prefix,
 					breakpoint,
 					attributes: obj,
 					isHover,
 				}) ?? 'px';
 
 			const dividerBorderRadius = getLastBreakpointAttribute({
-				target: `${prefix}divider-border-radius`,
+				target: 'divider-border-radius',
+				prefix,
 				breakpoint,
 				attributes: obj,
 				isHover,
@@ -129,7 +138,8 @@ const getDividerStyles = (
 								'border-radius': '20px',
 						  }
 						: getLastBreakpointAttribute({
-								target: `${prefix}divider-border-radius`,
+								target: 'divider-border-radius',
+								prefix,
 								breakpoint: getPrevBreakpoint(breakpoint),
 								attributes: obj,
 								isHover,
@@ -165,7 +175,8 @@ const getDividerStyles = (
 				'align-items': obj[`line-vertical-${breakpoint}`]
 					? obj[`line-vertical-${breakpoint}`]
 					: getLastBreakpointAttribute({
-							target: `${prefix}line-vertical`,
+							target: 'line-vertical',
+							prefix,
 							breakpoint,
 							attributes: obj,
 							isHover,
@@ -173,7 +184,8 @@ const getDividerStyles = (
 				'justify-content': obj[`line-horizontal-${breakpoint}`]
 					? obj[`line-horizontal-${breakpoint}`]
 					: getLastBreakpointAttribute({
-							target: `${prefix}line-horizontal`,
+							target: 'line-horizontal',
+							prefix,
 							breakpoint,
 							attributes: obj,
 							isHover,

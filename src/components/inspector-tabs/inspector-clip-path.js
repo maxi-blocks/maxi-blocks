@@ -64,7 +64,8 @@ const clipPath = ({ props, selector, prefix = '' }) => {
 											)]: val,
 											...(isEmpty(
 												getLastBreakpointAttribute({
-													target: `${prefix}clip-path`,
+													target: 'clip-path',
+													prefix,
 													breakpoint: deviceType,
 													attributes,
 													isHover: true,
@@ -72,7 +73,8 @@ const clipPath = ({ props, selector, prefix = '' }) => {
 											) &&
 											!isEmpty(
 												getLastBreakpointAttribute({
-													target: `${prefix}clip-path`,
+													target: 'clip-path',
+													prefix,
 													breakpoint: deviceType,
 													attributes,
 												})
@@ -85,7 +87,8 @@ const clipPath = ({ props, selector, prefix = '' }) => {
 															deviceType
 														)]: getLastBreakpointAttribute(
 															{
-																target: `${prefix}clip-path`,
+																target: 'clip-path',
+																prefix,
 																breakpoint:
 																	deviceType,
 																attributes,

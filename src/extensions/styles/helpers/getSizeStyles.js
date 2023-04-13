@@ -30,7 +30,8 @@ const getSizeStyles = (obj, prefix = '') => {
 
 			if (target === '_w' || target === '_mw' || target === '_miw') {
 				const fullWidth = getLastBreakpointAttribute({
-					target: `${prefix}_fw`,
+					target: '_fw',
+					prefix,
 					breakpoint,
 					attributes: obj,
 				});
@@ -78,7 +79,8 @@ const getSizeStyles = (obj, prefix = '') => {
 
 			if (target === '_h') {
 				const forceAspectRatio = getLastBreakpointAttribute({
-					target: `${prefix}_far`,
+					target: '_far',
+					prefix,
 					breakpoint,
 					attributes: obj,
 				});
@@ -90,7 +92,8 @@ const getSizeStyles = (obj, prefix = '') => {
 			}
 			if (target === '_w') {
 				const fitContent = getLastBreakpointAttribute({
-					target: `${prefix}_wfc`,
+					target: '_wfc',
+					prefix,
 					breakpoint,
 					attributes: obj,
 				});
@@ -116,12 +119,14 @@ const getSizeStyles = (obj, prefix = '') => {
 
 			if (isNumber(parseInt(currentNum)) || currentUnit) {
 				const num = getLastBreakpointAttribute({
-					target: `${prefix}${target}`,
+					target: `${target}`,
+					prefix,
 					breakpoint,
 					attributes: obj,
 				});
 				const unit = getLastBreakpointAttribute({
-					target: `${prefix}${target}.u`,
+					target: `${target}.u`,
+					prefix,
 					breakpoint,
 					attributes: obj,
 				});
@@ -135,7 +140,8 @@ const getSizeStyles = (obj, prefix = '') => {
 					})
 						? 'auto'
 						: getLastBreakpointAttribute({
-								target: `${prefix}${target}-auto`,
+								target: `${target}-auto`,
+								prefix,
 								breakpoint,
 								attributes: obj,
 						  }) && '100%';

@@ -11,7 +11,13 @@ import { getSelectedIBSettings } from './utils';
 import getIBStyles from './getIBStyles';
 import getIBStylesObj from './getIBStylesObj';
 
-const updateRelationsRemotely = async ({
+/**
+ * External dependencies
+ */
+import { diff } from 'deep-object-diff';
+import { isEmpty } from 'lodash';
+
+const updateRelationsRemotely = ({
 	blockTriggerClientId,
 	blockTargetClientId,
 	blockAttributes,
@@ -24,18 +30,15 @@ const updateRelationsRemotely = async ({
 	if (!relations) return;
 
 	const newRelations = [];
-	let hasBeenUpdated = false;
 
 	const { uniqueID } = blockAttributes;
 
-	Object.entries(relations).forEach(([blockClientId, item]) => {
+	Object.values(relations).forEach(item => {
 		if (item.uniqueID !== uniqueID) {
 			newRelations.push(item);
 
 			return;
 		}
-
-		hasBeenUpdated = true;
 
 		const selectedSettings = getSelectedIBSettings(
 			blockTargetClientId,
@@ -82,7 +85,7 @@ const updateRelationsRemotely = async ({
 		});
 	});
 
-	if (hasBeenUpdated) {
+	if (!isEmpty(diff(relations, newRelations))) {
 		const {
 			__unstableMarkNextChangeAsNotPersistent:
 				markNextChangeAsNotPersistent,

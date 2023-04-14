@@ -50,12 +50,19 @@ const getIBStyles = ({ stylesObj = {}, blockAttributes, isFirst = false }) => {
 
 	const styles = Object.keys(stylesObj).reduce((acc, key) => {
 		if (isFirst) {
-			if (!key.includes(':hover')) acc[key] = getIBStyles(stylesObj[key]);
+			if (!key.includes(':hover'))
+				acc[key] = getIBStyles({
+					stylesObj: stylesObj[key],
+					blockAttributes,
+				});
 
 			return acc;
 		}
 
-		const newAcc = merge(acc, getIBStyles(stylesObj[key]));
+		const newAcc = merge(
+			acc,
+			getIBStyles({ stylesObj: stylesObj[key], blockAttributes })
+		);
 
 		return newAcc;
 	}, {});

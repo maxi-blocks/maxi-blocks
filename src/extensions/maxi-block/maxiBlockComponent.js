@@ -138,7 +138,41 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidMount() {
+		// As we can't use a migrator to update relations as we don't have access to other blocks attributes,
+		// setting this snippet here that should act the same way as a migrator
+		const blocksIBRelations = select(
+			'maxiBlocks/relations'
+		).receiveBlockUnderRelationClientIDs(this.props.attributes.uniqueID);
+
+		if (!isEmpty(blocksIBRelations))
+			blocksIBRelations.forEach(({ clientId }) => {
+				const { 'maxi-version-current': maxiVersionCurrent } =
+					select('core/block-editor').getBlockAttributes(clientId);
+
+				const needUpdate = [
+					'0.0.1-SC1',
+					'0.0.1-SC2',
+					'0.0.1-SC3',
+					'0.0.1-SC4',
+					'0.0.1-SC5',
+					'0.0.1-SC6',
+					'1.0.0-RC1',
+					'1.0.0-RC2',
+					'1.0.0',
+					'1.0.1',
+				].includes(maxiVersionCurrent);
+
+				if (needUpdate)
+					updateRelationsRemotely({
+						blockTriggerClientId: clientId,
+						blockTargetClientId: this.props.clientId,
+						blockAttributes: this.props.attributes,
+						breakpoint: this.props.deviceType,
+					});
+			});
+
 		const { receiveMaxiSettings } = resolveSelect('maxiBlocks');
+
 		receiveMaxiSettings()
 			.then(settings => {
 				const { attributes } = this.props;

@@ -13,7 +13,7 @@ import { omitBy, isNil, compact } from 'lodash';
  * saving attributes to ensure the changes done on the affected block aren't modifying
  * the IB attributes and styles.
  */
-const addRelatedAttributes = ({
+const getRelatedAttributes = ({
 	props: propsObj,
 	IBAttributes = {},
 	relatedAttributes = [],
@@ -94,4 +94,4 @@ const addRelatedAttributes = ({
 	return { ...omitBy(attributes, isNil), ...IBAttributes };
 };
 
-export default addRelatedAttributes;
+export default getRelatedAttributes;

@@ -18,21 +18,17 @@ import TransitionControl from '../transition-control';
 import { openSidebarAccordion } from '../../extensions/inspector';
 import {
 	createTransitionObj,
-	getAttributeKey,
-	getAttributeValue,
 	getDefaultAttribute,
 	getGroupAttributes,
-	getLastBreakpointAttribute,
-	getPaletteAttributes,
 } from '../../extensions/styles';
 import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
-import {
-	goThroughMaxiBlocks,
-	handleSetAttributes,
-} from '../../extensions/maxi-block';
+import { goThroughMaxiBlocks } from '../../extensions/maxi-block';
 import { getHoverStatus } from '../../extensions/relations';
-import { getBlockData } from '../../extensions/attributes';
-import addRelatedAttributes from '../../extensions/relations/addRelatedAttributes';
+import getCleanResponseIBAttributes from '../../extensions/relations/getCleanResponseIBAttributes';
+import getIBOptionsFromBlockData from '../../extensions/relations/getIBOptionsFromBlockData';
+import { getSelectedIBSettings } from '../../extensions/relations/utils';
+import getIBStylesObj from '../../extensions/relations/getIBStylesObj';
+import getIBStyles from '../../extensions/relations/getIBStyles';
 
 /**
  * External dependencies
@@ -75,17 +71,6 @@ const RelationControl = props => {
 					)
 			  ) + 1
 			: 1;
-	};
-
-	const getOptions = clientId => {
-		const blockName = getBlock(clientId)?.name.replace('maxi-blocks/', '');
-
-		// TODO: without this line, the block may break after copy/pasting
-		if (!blockName) return {};
-
-		const blockOptions = getBlockData(blockName).interactionBuilderSettings;
-
-		return blockOptions || {};
 	};
 
 	const getParsedOptions = rawOptions => {
@@ -166,43 +151,18 @@ const RelationControl = props => {
 		});
 	};
 
-	const getSelectedSettingsObj = (clientId, value) =>
-		Object.values(getOptions(clientId))
-			.flat()
-			.find(option => option.sid === value);
-
 	const displaySelectedSetting = item => {
 		if (!item) return null;
 
 		const clientId = getClientIdFromUniqueId(item.uniqueID);
 
-		const selectedSettingsObj = getSelectedSettingsObj(clientId, item.sid);
+		const selectedSettings = getSelectedIBSettings(clientId, item.sid);
 
-		if (!selectedSettingsObj) return null;
+		if (!selectedSettings) return null;
 
-		const settingsComponent = selectedSettingsObj.component;
-		const prefix = selectedSettingsObj?.prefix || '';
+		const settingsComponent = selectedSettings.component;
+		const prefix = selectedSettings?.prefix || '';
 		const blockAttributes = cloneDeep(getBlock(clientId)?.attributes);
-
-		const { receiveMaxiBreakpoints, receiveXXLSize } = select('maxiBlocks');
-
-		const storeBreakpoints = receiveMaxiBreakpoints();
-		const blockBreakpoints = getGroupAttributes(
-			blockAttributes,
-			'breakpoints'
-		);
-
-		const breakpoints = {
-			...storeBreakpoints,
-			xxl: receiveXXLSize(),
-			...Object.keys(blockBreakpoints).reduce((acc, key) => {
-				if (blockAttributes[key]) {
-					const newKey = key.replace('breakpoints-', '');
-					acc[newKey] = blockBreakpoints[key];
-				}
-				return acc;
-			}, {}),
-		};
 
 		// Merging into empty object because lodash `merge` mutates first argument
 		const mergedAttributes = merge({}, blockAttributes, item.attributes);
@@ -239,71 +199,10 @@ const RelationControl = props => {
 			return newAttributes;
 		};
 
-		const getStylesObj = attributes => {
-			const newGroupAttributes = getGroupAttributes(
-				attributes,
-				selectedSettingsObj.attrGroupName,
-				false,
-				prefix
-			);
-
-			return selectedSettingsObj?.helper({
-				obj: newGroupAttributes,
-				isIB: true,
-				prefix,
-				blockStyle: blockAttributes.blockStyle,
-				deviceType,
-				blockAttributes: {
-					...blockAttributes,
-					...attributes,
-				},
-				target: selectedSettingsObj?.target,
-				clientId,
-			});
-		};
-
-		const getStyles = (stylesObj = {}, isFirst = false) => {
-			if (Object.keys(stylesObj).some(key => key.includes('general'))) {
-				const styles = Object.keys(stylesObj).reduce((acc, key) => {
-					if (
-						breakpoints[key] ||
-						key === 'xxl' ||
-						key === 'general'
-					) {
-						acc[key] = {
-							styles: stylesObj[key],
-							breakpoint: breakpoints[key] || null,
-						};
-
-						return acc;
-					}
-
-					return acc;
-				}, {});
-
-				return styles;
-			}
-
-			const styles = Object.keys(stylesObj).reduce((acc, key) => {
-				if (isFirst) {
-					if (!key.includes(':hover'))
-						acc[key] = getStyles(stylesObj[key]);
-
-					return acc;
-				}
-
-				const newAcc = merge(acc, getStyles(stylesObj[key]));
-
-				return newAcc;
-			}, {});
-
-			return styles;
-		};
-
 		return settingsComponent({
 			...getGroupAttributes(
 				mergedAttributes,
-				selectedSettingsObj.attrGroupName,
+				selectedSettings.attrGroupName,
 				false,
 				prefix
 			),
@@ -317,116 +216,30 @@ const RelationControl = props => {
 							...obj,
 							...transformGeneralAttributesToBaseBreakpoint(obj),
 					  };
-				const filteredAttributesObj = Object.entries(
-					newAttributesObj
-				).reduce((acc, [key, value]) => {
-					const originalValue = blockAttributes[key];
+				const { cleanAttributesObject, tempAttributes } =
+					getCleanResponseIBAttributes(
+						newAttributesObj,
+						blockAttributes,
+						item.uniqueID,
+						selectedSettings,
+						deviceType,
+						prefix
+					);
 
-					if (originalValue !== value) acc[key] = value;
-
-					return acc;
-				}, {});
-
-				const cleanAttributesObject = addRelatedAttributes({
-					IBAttributes: handleSetAttributes({
-						obj: filteredAttributesObj,
-						attributes: blockAttributes,
-						clientId: getClientIdFromUniqueId(item.uniqueID),
-						onChange: response => response,
+				const styles = getIBStyles({
+					stylesObj: getIBStylesObj({
+						clientId,
+						sid: item.sid,
+						attributes: {
+							...cleanAttributesObject,
+							...tempAttributes,
+						},
+						blockAttributes,
+						breakpoint: deviceType,
 					}),
-					props: blockAttributes,
-					relatedAttributes:
-						selectedSettingsObj.relatedAttributes ?? [],
+					blockAttributes,
+					isFirst: true,
 				});
-
-				// These attributes are necessary for styling, not need to save in IB
-				const tempAttributes = {};
-
-				if (selectedSettingsObj.styleAttrs)
-					selectedSettingsObj.styleAttrs.forEach(attrKey => {
-						if (
-							attrKey in cleanAttributesObject ||
-							`${attrKey}-${deviceType}` in cleanAttributesObject
-						)
-							return;
-
-						let value = getLastBreakpointAttribute({
-							target: attrKey,
-							attributes: blockAttributes,
-							breakpoint: deviceType,
-						});
-
-						if (value)
-							tempAttributes[
-								getAttributeKey(attrKey, null, '', deviceType)
-							] = value;
-						else {
-							value = getAttributeValue({
-								target: attrKey,
-								props: blockAttributes,
-								prefix,
-								breakpoint: deviceType,
-							});
-
-							if (value)
-								tempAttributes[
-									getAttributeKey(attrKey, null, prefix)
-								] = value;
-						}
-					});
-
-				// In some cases we need to force the adding of colours to the IB styles
-				if (selectedSettingsObj.forceTempPalette) {
-					let needPaletteInTemp =
-						selectedSettingsObj.forceTempPalette;
-
-					if (typeof needPaletteInTemp === 'function')
-						needPaletteInTemp = needPaletteInTemp(
-							blockAttributes,
-							deviceType
-						);
-
-					if (needPaletteInTemp) {
-						const {
-							paletteStatus,
-							paletteColor,
-							paletteOpacity,
-							color,
-						} = getPaletteAttributes({
-							obj: blockAttributes,
-							prefix:
-								selectedSettingsObj.forceTempPalettePrefix ??
-								prefix,
-							breakpoint: deviceType,
-						});
-
-						const addPaletteAttrToTemp = (attrValue, attrKey) => {
-							const key = getAttributeKey(
-								attrKey,
-								null,
-								selectedSettingsObj.forceTempPalettePrefix ??
-									prefix,
-								deviceType
-							);
-
-							if (!(key in cleanAttributesObject) && attrValue)
-								tempAttributes[key] = attrValue;
-						};
-
-						addPaletteAttrToTemp(paletteStatus, 'palette-status');
-						addPaletteAttrToTemp(paletteColor, 'palette-color');
-						addPaletteAttrToTemp(paletteOpacity, 'palette-opacity');
-						addPaletteAttrToTemp(color, 'color');
-					}
-				}
-
-				const styles = getStyles(
-					getStylesObj({
-						...cleanAttributesObject,
-						...tempAttributes,
-					}),
-					true
-				);
 
 				onChangeRelation(relations, item.id, {
 					attributes: cleanAttributesObject,
@@ -590,7 +403,7 @@ const RelationControl = props => {
 												)}
 												value={item.sid}
 												options={getParsedOptions(
-													getOptions(
+													getIBOptionsFromBlockData(
 														getClientIdFromUniqueId(
 															item.uniqueID
 														)
@@ -602,8 +415,8 @@ const RelationControl = props => {
 															item.uniqueID
 														);
 
-													const selectedSettingsObj =
-														getSelectedSettingsObj(
+													const selectedSettings =
+														getSelectedIBSettings(
 															clientId,
 															value
 														) || {};
@@ -611,7 +424,7 @@ const RelationControl = props => {
 														transitionTarget,
 														transitionTrigger,
 														hoverProp,
-													} = selectedSettingsObj;
+													} = selectedSettings;
 
 													const blockAttributes =
 														getBlock(
@@ -631,7 +444,7 @@ const RelationControl = props => {
 															);
 
 														const target =
-															selectedSettingsObj?.target ||
+															selectedSettings?.target ||
 															'';
 
 														const textMaxiPrefix =
@@ -687,7 +500,7 @@ const RelationControl = props => {
 																hoverStatus:
 																	!!hoverStatus,
 																disableTransition:
-																	!!selectedSettingsObj?.disableTransition,
+																	!!selectedSettings?.disableTransition,
 															},
 														}
 													);

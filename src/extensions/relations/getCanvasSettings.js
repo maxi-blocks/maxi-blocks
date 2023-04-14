@@ -24,7 +24,7 @@ import {
 } from '../styles/helpers';
 import { getGroupAttributes, getLastBreakpointAttribute } from '../styles';
 import { getEditorWrapper } from '../dom';
-import addRelatedAttributes from './addRelatedAttributes';
+import getRelatedAttributes from './getRelatedAttributes';
 
 /**
  * External dependencies
@@ -74,7 +74,7 @@ const getCanvasSettings = ({ name }) => [
 							const { order, type } = blockBgLayers[index];
 
 							return {
-								...addRelatedAttributes({
+								...getRelatedAttributes({
 									props: blockBgLayers[index],
 									IBAttributes,
 									relatedAttributes: [
@@ -142,6 +142,7 @@ const getCanvasSettings = ({ name }) => [
 
 			return borderStyle && borderStyle === 'none';
 		},
+		styleAttrs: ['border-style'],
 	},
 	{
 		sid: 'bs',

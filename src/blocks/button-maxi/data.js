@@ -317,6 +317,7 @@ const interactionBuilderSettings = {
 				return borderStyle && borderStyle === 'none';
 			},
 			forceTempPalettePrefix: 'button-border-',
+			styleAttrs: ['button-border-style'],
 		},
 		{
 			sid: 'bbg',

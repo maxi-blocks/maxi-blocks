@@ -39,7 +39,6 @@ const getTempAttributes = (
 					target: attrKey,
 					props: blockAttributes,
 					prefix,
-					breakpoint,
 				});
 
 				if (value)

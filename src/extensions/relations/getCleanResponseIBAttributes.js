@@ -6,6 +6,11 @@ import { handleSetAttributes } from '../maxi-block';
 import getRelatedAttributes from './getRelatedAttributes';
 import getTempAttributes from './getTempAttributes';
 
+/**
+ * External dependencies
+ */
+import { isEqual } from 'lodash';
+
 const getCleanResponseIBAttributes = (
 	newAttributesObj,
 	blockAttributes,
@@ -18,7 +23,7 @@ const getCleanResponseIBAttributes = (
 		(acc, [key, value]) => {
 			const originalValue = blockAttributes[key];
 
-			if (originalValue !== value) acc[key] = value;
+			if (!isEqual(originalValue, value)) acc[key] = value;
 
 			return acc;
 		},

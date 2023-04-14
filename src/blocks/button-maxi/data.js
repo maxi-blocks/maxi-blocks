@@ -10,6 +10,7 @@ import { createSelectors } from '../../extensions/styles/custom-css';
 import {
 	createIconTransitions,
 	getIconWithColor,
+	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import {
 	BackgroundControl,
@@ -306,6 +307,16 @@ const interactionBuilderSettings = {
 			component: props => <BorderControl {...props} />,
 			helper: props => getBorderStyles(props),
 			target: '.maxi-button-block__button',
+			forceTempPalette: (attributes, breakpoint) => {
+				const borderStyle = getLastBreakpointAttribute({
+					target: 'button-border-style',
+					attributes,
+					breakpoint,
+				});
+
+				return borderStyle && borderStyle === 'none';
+			},
+			forceTempPalettePrefix: 'button-border-',
 		},
 		{
 			sid: 'bbg',

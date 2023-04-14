@@ -24,12 +24,12 @@ import {
 } from '../styles/helpers';
 import { getGroupAttributes, getLastBreakpointAttribute } from '../styles';
 import { getEditorWrapper } from '../dom';
+import addRelatedAttributes from './addRelatedAttributes';
 
 /**
  * External dependencies
  */
 import { isEmpty, isEqual, pickBy } from 'lodash';
-import { addRelatedAttributes } from '../maxi-block';
 
 const getCanvasSettings = ({ name }) => [
 	{
@@ -133,6 +133,15 @@ const getCanvasSettings = ({ name }) => [
 		attrGroupName: ['border', 'borderWidth', 'borderRadius'],
 		component: props => <BorderControl {...props} />,
 		helper: props => getBorderStyles(props),
+		forceTempPalette: (attributes, breakpoint) => {
+			const borderStyle = getLastBreakpointAttribute({
+				target: 'border-style',
+				attributes,
+				breakpoint,
+			});
+
+			return borderStyle && borderStyle === 'none';
+		},
 	},
 	{
 		sid: 'bs',

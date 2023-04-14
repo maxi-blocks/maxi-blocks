@@ -23,15 +23,16 @@ import {
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
+	getPaletteAttributes,
 } from '../../extensions/styles';
 import getClientIdFromUniqueId from '../../extensions/attributes/getClientIdFromUniqueId';
 import {
-	addRelatedAttributes,
 	goThroughMaxiBlocks,
 	handleSetAttributes,
 } from '../../extensions/maxi-block';
 import { getHoverStatus } from '../../extensions/relations';
 import { getBlockData } from '../../extensions/attributes';
+import addRelatedAttributes from '../../extensions/relations/addRelatedAttributes';
 
 /**
  * External dependencies
@@ -373,6 +374,51 @@ const RelationControl = props => {
 								] = value;
 						}
 					});
+
+				// In some cases we need to force the adding of colours to the IB styles
+				if (selectedSettingsObj.forceTempPalette) {
+					let needPaletteInTemp =
+						selectedSettingsObj.forceTempPalette;
+
+					if (typeof needPaletteInTemp === 'function')
+						needPaletteInTemp = needPaletteInTemp(
+							blockAttributes,
+							deviceType
+						);
+
+					if (needPaletteInTemp) {
+						const {
+							paletteStatus,
+							paletteColor,
+							paletteOpacity,
+							color,
+						} = getPaletteAttributes({
+							obj: blockAttributes,
+							prefix:
+								selectedSettingsObj.forceTempPalettePrefix ??
+								prefix,
+							breakpoint: deviceType,
+						});
+
+						const addPaletteAttrToTemp = (attrValue, attrKey) => {
+							const key = getAttributeKey(
+								attrKey,
+								null,
+								selectedSettingsObj.forceTempPalettePrefix ??
+									prefix,
+								deviceType
+							);
+
+							if (!(key in cleanAttributesObject) && attrValue)
+								tempAttributes[key] = attrValue;
+						};
+
+						addPaletteAttrToTemp(paletteStatus, 'palette-status');
+						addPaletteAttrToTemp(paletteColor, 'palette-color');
+						addPaletteAttrToTemp(paletteOpacity, 'palette-opacity');
+						addPaletteAttrToTemp(color, 'color');
+					}
+				}
 
 				const styles = getStyles(
 					getStylesObj({

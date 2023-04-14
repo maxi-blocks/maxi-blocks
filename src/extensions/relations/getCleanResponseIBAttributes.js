@@ -31,6 +31,7 @@ const getCleanResponseIBAttributes = (
 			attributes: blockAttributes,
 			clientId: getClientIdFromUniqueId(uniqueID),
 			onChange: response => response,
+			allowXXLOverGeneral: true,
 		}),
 		props: blockAttributes,
 		relatedAttributes: selectedSettingsObj.relatedAttributes ?? [],

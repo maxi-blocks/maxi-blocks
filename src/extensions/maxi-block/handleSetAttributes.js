@@ -25,6 +25,7 @@ const handleSetAttributes = ({
 	clientId = null,
 	defaultAttributes,
 	isStyleCard = false,
+	allowXXLOverGeneral = false,
 }) => {
 	const response = isReset ? { ...handleOnReset(obj) } : { ...obj };
 
@@ -175,6 +176,7 @@ const handleSetAttributes = ({
 		attributes,
 		clientId,
 		defaultAttributes,
+		allowXXLOverGeneral,
 	});
 
 	return onChange(cleanedResponse);

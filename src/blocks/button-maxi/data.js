@@ -307,7 +307,9 @@ const interactionBuilderSettings = {
 			component: props => <BorderControl {...props} />,
 			helper: props => getBorderStyles(props),
 			target: '.maxi-button-block__button',
-			forceTempPalette: (attributes, breakpoint) => {
+			forceTempPalette: (attributes, breakpoint, IBAttributes) => {
+				if ('button-border-style' in IBAttributes) return false;
+
 				const borderStyle = getLastBreakpointAttribute({
 					target: 'button-border-style',
 					attributes,

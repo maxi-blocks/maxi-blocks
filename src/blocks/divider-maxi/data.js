@@ -17,6 +17,12 @@ import {
 	getAdvancedSettings,
 } from '../../extensions/relations';
 import transitionDefault from '../../extensions/styles/transitions/transitionDefault';
+import { getPaletteAttributes } from '../../extensions/styles';
+
+/**
+ * External dependencies
+ */
+import { isNil } from 'lodash';
 
 /**
  * Classnames
@@ -137,11 +143,19 @@ const interactionBuilderSettings = {
 				'box-shadow-blur-unit',
 				'box-shadow-spread',
 				'box-shadow-spread-unit',
-				'box-shadow-palette-color',
-				'box-shadow-color',
-				'box-shadow-palette-status',
-				'box-shadow-palette-opacity',
 			],
+			forceTempPalette: (attributes, breakpoint, IBAttributes) => {
+				const paletteAttributes = getPaletteAttributes({
+					obj: IBAttributes,
+					prefix: 'box-shadow-',
+					breakpoint,
+				});
+
+				return Object.values(paletteAttributes).every(attr =>
+					isNil(attr)
+				);
+			},
+			forceTempPalettePrefix: 'box-shadow-',
 		},
 		{
 			sid: 'dls',

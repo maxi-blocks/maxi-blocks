@@ -22,14 +22,18 @@ import {
 	getMarginPaddingStyles,
 	getSizeStyles,
 } from '../styles/helpers';
-import { getGroupAttributes, getLastBreakpointAttribute } from '../styles';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+	getPaletteAttributes,
+} from '../styles';
 import { getEditorWrapper } from '../dom';
 import getRelatedAttributes from './getRelatedAttributes';
 
 /**
  * External dependencies
  */
-import { isEmpty, isEqual, pickBy } from 'lodash';
+import { isEmpty, isEqual, pickBy, isNil } from 'lodash';
 
 const getCanvasSettings = ({ name }) => [
 	{
@@ -161,11 +165,17 @@ const getCanvasSettings = ({ name }) => [
 			'box-shadow-blur-unit',
 			'box-shadow-spread',
 			'box-shadow-spread-unit',
-			'box-shadow-palette-color',
-			'box-shadow-color',
-			'box-shadow-palette-status',
-			'box-shadow-palette-opacity',
 		],
+		forceTempPalette: (attributes, breakpoint, IBAttributes) => {
+			const paletteAttributes = getPaletteAttributes({
+				obj: IBAttributes,
+				prefix: 'box-shadow-',
+				breakpoint,
+			});
+
+			return Object.values(paletteAttributes).every(attr => isNil(attr));
+		},
+		forceTempPalettePrefix: 'box-shadow-',
 	},
 	{
 		sid: 's',

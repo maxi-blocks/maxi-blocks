@@ -48,16 +48,14 @@ const getRelatedAttributes = ({
 
 	// add unit attributes when needed
 	Object.keys(IBAttributes).forEach(key => {
-		const breakpoint = getBreakpointFromAttribute(key);
-
-		if (!breakpoint) return;
-
 		// Ensure the value for unit attributes is saved if the modified value is related
 		if (key.includes('-unit')) {
 			const newKey = key.replace('-unit', '');
 
 			if (props[newKey]) attributes[newKey] = props[newKey];
 		}
+
+		const breakpoint = getBreakpointFromAttribute(key);
 
 		const unitKey = key.replace(`-${breakpoint}`, `-unit-${breakpoint}`);
 

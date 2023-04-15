@@ -52,7 +52,11 @@ const getTempAttributes = (
 		let needPaletteInTemp = selectedSettingsObj.forceTempPalette;
 
 		if (typeof needPaletteInTemp === 'function')
-			needPaletteInTemp = needPaletteInTemp(blockAttributes, breakpoint);
+			needPaletteInTemp = needPaletteInTemp(
+				blockAttributes,
+				breakpoint,
+				cleanAttributesObject
+			);
 
 		if (needPaletteInTemp) {
 			const { paletteStatus, paletteColor, paletteOpacity, color } =
